@@ -87,10 +87,9 @@ namespace Reko.UnitTests.Mocks
         public IProcessorArchitecture Architecture { get; private set; }
         public int InstructionSize { get; set; }
 
-        private Block BlockOf(string label)
+        protected Block BlockOf(string label)
         {
-            Block b;
-            if (!blocks.TryGetValue(label, out b))
+            if (!blocks.TryGetValue(label, out Block b))
             {
                 b = Procedure.AddBlock(label);
                 blocks.Add(label, b);
@@ -298,6 +297,17 @@ namespace Reko.UnitTests.Mocks
         public override Frame Frame
         {
             get { return Procedure.Frame; }
+        }
+
+        public Statement Phi(Identifier idDst, params (Expression, string)[] exprs)
+        {
+            var phi = new PhiFunction(
+                idDst.DataType,
+                exprs.Select(de => new PhiArgument(
+                    BlockOf(de.Item2),
+                    de.Item1))
+                .ToArray());
+            return Emit(new PhiAssignment(idDst, phi));
         }
 
         public Identifier Register(string name)

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -324,10 +324,10 @@ namespace Reko.Typing
 		public override void VisitPhiFunction(PhiFunction phi)
 		{
 			TypeVariable tPhi = EnsureTypeVariable(phi);
-			for (int i = 0; i < phi.Arguments.Length; ++i)
+			foreach (var arg in phi.Arguments)
 			{
-				phi.Arguments[i].Accept(this);
-				store.MergeClasses(tPhi, phi.Arguments[i].TypeVariable);
+				arg.Value.Accept(this);
+				store.MergeClasses(tPhi, arg.Value.TypeVariable);
 			}
 		}
 

@@ -40,9 +40,9 @@ l0C00_0027:
 	ax_11 = ax >> cl_9
 	cl_12 = -cl_9
 l0C00_002D:
-	cl_21 = PHI(cl_6, cl_12)
-	bx_19 = PHI(bx_16, bx)
-	ax_18 = PHI(ax, ax_11)
+	cl_21 = PHI((cl_6, l0C00_0022), (cl_12, l0C00_0027))
+	bx_19 = PHI((bx_16, l0C00_0022), (bx, l0C00_0027))
+	ax_18 = PHI((ax, l0C00_0022), (ax_11, l0C00_0027))
 	ax_20 = ax_18 + bx_19
 	cl_23 = cl_21 + ch
 	return

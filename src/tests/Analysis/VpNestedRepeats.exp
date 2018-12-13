@@ -9,19 +9,19 @@ Top_3: orig: Top
 dx_4: orig: dx
     def:  dx_4 = 0x0000
     uses: SZO_5 = cond(dx_4)
-          dx_14 = PHI(dx_4, dx_15, dx_15)
+          dx_14 = PHI((dx_4, l0C00_0000), (dx_15, l0C00_0008), (dx_15, l0C00_000D))
 SZO_5: orig: SZO
     def:  SZO_5 = cond(dx_4)
 C_6: orig: C
     def:  C_6 = false
 cx_7: orig: cx
     def:  cx_7 = 0x0004
-    uses: cx_17 = PHI(cx_7, cx_18, cx_19)
+    uses: cx_17 = PHI((cx_7, l0C00_0000), (cx_18, l0C00_0008), (cx_19, l0C00_000D))
 di_8: orig: di
     def:  di_8 = 0x0004
-    uses: di_20 = PHI(di_8, di_20, di_21)
+    uses: di_20 = PHI((di_8, l0C00_0000), (di_20, l0C00_0008), (di_21, l0C00_000D))
 si_10: orig: si
-    def:  si_10 = PHI(si, si_13, si_13)
+    def:  si_10 = PHI((si, l0C00_0000), (si_13, l0C00_0008), (si_13, l0C00_000D))
     uses: ax_12 = Mem0[ds:si_10:word16]
           si_13 = si_10 + 0x0002
 ax_12: orig: ax
@@ -29,37 +29,37 @@ ax_12: orig: ax
     uses: dx_15 = dx_14 + ax_12
 si_13: orig: si
     def:  si_13 = si_10 + 0x0002
-    uses: si_10 = PHI(si, si_13, si_13)
-          si_10 = PHI(si, si_13, si_13)
+    uses: si_10 = PHI((si, l0C00_0000), (si_13, l0C00_0008), (si_13, l0C00_000D))
+          si_10 = PHI((si, l0C00_0000), (si_13, l0C00_0008), (si_13, l0C00_000D))
 dx_14: orig: dx
-    def:  dx_14 = PHI(dx_4, dx_15, dx_15)
+    def:  dx_14 = PHI((dx_4, l0C00_0000), (dx_15, l0C00_0008), (dx_15, l0C00_000D))
     uses: dx_15 = dx_14 + ax_12
 dx_15: orig: dx
     def:  dx_15 = dx_14 + ax_12
     uses: SCZO_16 = cond(dx_15)
           Mem24[ds:0x0300:word16] = dx_15
-          dx_14 = PHI(dx_4, dx_15, dx_15)
-          dx_14 = PHI(dx_4, dx_15, dx_15)
+          dx_14 = PHI((dx_4, l0C00_0000), (dx_15, l0C00_0008), (dx_15, l0C00_000D))
+          dx_14 = PHI((dx_4, l0C00_0000), (dx_15, l0C00_0008), (dx_15, l0C00_000D))
 SCZO_16: orig: SCZO
     def:  SCZO_16 = cond(dx_15)
 cx_17: orig: cx
-    def:  cx_17 = PHI(cx_7, cx_18, cx_19)
+    def:  cx_17 = PHI((cx_7, l0C00_0000), (cx_18, l0C00_0008), (cx_19, l0C00_000D))
     uses: cx_18 = cx_17 - 0x0001
 cx_18: orig: cx
     def:  cx_18 = cx_17 - 0x0001
     uses: branch cx_18 != 0x0000 l0C00_0008
-          cx_17 = PHI(cx_7, cx_18, cx_19)
+          cx_17 = PHI((cx_7, l0C00_0000), (cx_18, l0C00_0008), (cx_19, l0C00_000D))
 cx_19: orig: cx
     def:  cx_19 = 0x0004
-    uses: cx_17 = PHI(cx_7, cx_18, cx_19)
+    uses: cx_17 = PHI((cx_7, l0C00_0000), (cx_18, l0C00_0008), (cx_19, l0C00_000D))
 di_20: orig: di
-    def:  di_20 = PHI(di_8, di_20, di_21)
+    def:  di_20 = PHI((di_8, l0C00_0000), (di_20, l0C00_0008), (di_21, l0C00_000D))
     uses: di_21 = di_20 - 0x0001
-          di_20 = PHI(di_8, di_20, di_21)
+          di_20 = PHI((di_8, l0C00_0000), (di_20, l0C00_0008), (di_21, l0C00_000D))
 di_21: orig: di
     def:  di_21 = di_20 - 0x0001
     uses: SZO_22 = cond(di_21)
-          di_20 = PHI(di_8, di_20, di_21)
+          di_20 = PHI((di_8, l0C00_0000), (di_20, l0C00_0008), (di_21, l0C00_000D))
           branch di_21 != 0x0000 l0C00_0008
 SZO_22: orig: SZO
     def:  SZO_22 = cond(di_21)
@@ -74,7 +74,7 @@ ds:ds
           Mem24[ds:0x0300:word16] = dx_15
 si:si
     def:  def si
-    uses: si_10 = PHI(si, si_13, si_13)
+    uses: si_10 = PHI((si, l0C00_0000), (si_13, l0C00_0008), (si_13, l0C00_000D))
 Mem0:Mem
     def:  def Mem0
     uses: ax_12 = Mem0[ds:si_10:word16]
@@ -97,10 +97,10 @@ l0C00_0000:
 	di_8 = 0x0004
 	// succ:  l0C00_0008
 l0C00_0008:
-	di_20 = PHI(di_8, di_20, di_21)
-	cx_17 = PHI(cx_7, cx_18, cx_19)
-	dx_14 = PHI(dx_4, dx_15, dx_15)
-	si_10 = PHI(si, si_13, si_13)
+	di_20 = PHI((di_8, l0C00_0000), (di_20, l0C00_0008), (di_21, l0C00_000D))
+	cx_17 = PHI((cx_7, l0C00_0000), (cx_18, l0C00_0008), (cx_19, l0C00_000D))
+	dx_14 = PHI((dx_4, l0C00_0000), (dx_15, l0C00_0008), (dx_15, l0C00_000D))
+	si_10 = PHI((si, l0C00_0000), (si_13, l0C00_0008), (si_13, l0C00_000D))
 	ax_12 = Mem0[ds:si_10:word16]
 	si_13 = si_10 + 0x0002
 	dx_15 = dx_14 + ax_12
@@ -130,19 +130,19 @@ Top_3: orig: Top
     def:  Top_3 = 0
 dx_4: orig: dx
     def:  dx_4 = 0x0000
-    uses: dx_14 = PHI(dx_4, dx_15, dx_15)
+    uses: dx_14 = PHI((dx_4, l0C00_0000), (dx_15, l0C00_0008), (dx_15, l0C00_000D))
 SZO_5: orig: SZO
     def:  SZO_5 = cond(0x0000)
 C_6: orig: C
     def:  C_6 = false
 cx_7: orig: cx
     def:  cx_7 = 0x0004
-    uses: cx_17 = PHI(cx_7, cx_18, cx_19)
+    uses: cx_17 = PHI((cx_7, l0C00_0000), (cx_18, l0C00_0008), (cx_19, l0C00_000D))
 di_8: orig: di
     def:  di_8 = 0x0004
-    uses: di_20 = PHI(di_8, di_20, di_21)
+    uses: di_20 = PHI((di_8, l0C00_0000), (di_20, l0C00_0008), (di_21, l0C00_000D))
 si_10: orig: si
-    def:  si_10 = PHI(si, si_13, si_13)
+    def:  si_10 = PHI((si, l0C00_0000), (si_13, l0C00_0008), (si_13, l0C00_000D))
     uses: ax_12 = Mem0[ds:si_10:word16]
           si_13 = si_10 + 0x0002
 ax_12: orig: ax
@@ -150,38 +150,38 @@ ax_12: orig: ax
     uses: dx_15 = dx_14 + ax_12
 si_13: orig: si
     def:  si_13 = si_10 + 0x0002
-    uses: si_10 = PHI(si, si_13, si_13)
-          si_10 = PHI(si, si_13, si_13)
+    uses: si_10 = PHI((si, l0C00_0000), (si_13, l0C00_0008), (si_13, l0C00_000D))
+          si_10 = PHI((si, l0C00_0000), (si_13, l0C00_0008), (si_13, l0C00_000D))
 dx_14: orig: dx
-    def:  dx_14 = PHI(dx_4, dx_15, dx_15)
+    def:  dx_14 = PHI((dx_4, l0C00_0000), (dx_15, l0C00_0008), (dx_15, l0C00_000D))
     uses: dx_15 = dx_14 + ax_12
 dx_15: orig: dx
     def:  dx_15 = dx_14 + ax_12
     uses: SCZO_16 = cond(dx_15)
           Mem24[ds:0x0300:word16] = dx_15
-          dx_14 = PHI(dx_4, dx_15, dx_15)
-          dx_14 = PHI(dx_4, dx_15, dx_15)
+          dx_14 = PHI((dx_4, l0C00_0000), (dx_15, l0C00_0008), (dx_15, l0C00_000D))
+          dx_14 = PHI((dx_4, l0C00_0000), (dx_15, l0C00_0008), (dx_15, l0C00_000D))
 SCZO_16: orig: SCZO
     def:  SCZO_16 = cond(dx_15)
 cx_17: orig: cx
-    def:  cx_17 = PHI(cx_7, cx_18, cx_19)
+    def:  cx_17 = PHI((cx_7, l0C00_0000), (cx_18, l0C00_0008), (cx_19, l0C00_000D))
     uses: cx_18 = cx_17 - 0x0001
 cx_18: orig: cx
     def:  cx_18 = cx_17 - 0x0001
     uses: branch cx_18 != 0x0000 l0C00_0008
-          cx_17 = PHI(cx_7, cx_18, cx_19)
+          cx_17 = PHI((cx_7, l0C00_0000), (cx_18, l0C00_0008), (cx_19, l0C00_000D))
 cx_19: orig: cx
     def:  cx_19 = 0x0004
-    uses: cx_17 = PHI(cx_7, cx_18, cx_19)
+    uses: cx_17 = PHI((cx_7, l0C00_0000), (cx_18, l0C00_0008), (cx_19, l0C00_000D))
 di_20: orig: di
-    def:  di_20 = PHI(di_8, di_20, di_21)
+    def:  di_20 = PHI((di_8, l0C00_0000), (di_20, l0C00_0008), (di_21, l0C00_000D))
     uses: di_21 = di_20 - 0x0001
-          di_20 = PHI(di_8, di_20, di_21)
+          di_20 = PHI((di_8, l0C00_0000), (di_20, l0C00_0008), (di_21, l0C00_000D))
 di_21: orig: di
     def:  di_21 = di_20 - 0x0001
     uses: SZO_22 = cond(di_21)
           branch di_21 != 0x0000 l0C00_0008
-          di_20 = PHI(di_8, di_20, di_21)
+          di_20 = PHI((di_8, l0C00_0000), (di_20, l0C00_0008), (di_21, l0C00_000D))
 SZO_22: orig: SZO
     def:  SZO_22 = cond(di_21)
     uses: Z_23 = SLICE(SZO_22, bool, 2) (alias)
@@ -195,7 +195,7 @@ ds:ds
           Mem24[ds:0x0300:word16] = dx_15
 si:si
     def:  def si
-    uses: si_10 = PHI(si, si_13, si_13)
+    uses: si_10 = PHI((si, l0C00_0000), (si_13, l0C00_0008), (si_13, l0C00_000D))
 Mem0:Mem
     def:  def Mem0
     uses: ax_12 = Mem0[ds:si_10:word16]
@@ -218,10 +218,10 @@ l0C00_0000:
 	di_8 = 0x0004
 	// succ:  l0C00_0008
 l0C00_0008:
-	di_20 = PHI(di_8, di_20, di_21)
-	cx_17 = PHI(cx_7, cx_18, cx_19)
-	dx_14 = PHI(dx_4, dx_15, dx_15)
-	si_10 = PHI(si, si_13, si_13)
+	di_20 = PHI((di_8, l0C00_0000), (di_20, l0C00_0008), (di_21, l0C00_000D))
+	cx_17 = PHI((cx_7, l0C00_0000), (cx_18, l0C00_0008), (cx_19, l0C00_000D))
+	dx_14 = PHI((dx_4, l0C00_0000), (dx_15, l0C00_0008), (dx_15, l0C00_000D))
+	si_10 = PHI((si, l0C00_0000), (si_13, l0C00_0008), (si_13, l0C00_000D))
 	ax_12 = Mem0[ds:si_10:word16]
 	si_13 = si_10 + 0x0002
 	dx_15 = dx_14 + ax_12

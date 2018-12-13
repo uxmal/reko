@@ -148,7 +148,7 @@ Spbp_LinearProcedure_exit:
             m.Assign(sp_5, m.IAdd(sp_4, m.Int32(4)));
             m.Return();
 
-            m.AddPhiToExitBlock(sp_6, sp_3, sp_5);
+            m.AddPhiToExitBlock(sp_6, (sp_3, "m_ne0"), (sp_5, "m_eq0"));
             m.AddUseToExitBlock(sp_6);
 
             RunTest(m.Ssa);
@@ -174,7 +174,7 @@ m_ne0:
 	sp_3 = sp_2 + 4
 	return
 Spbp_TwoExits_exit:
-	sp_6 = PHI(sp_3, sp_5)
+	sp_6 = PHI((sp_3, m_ne0), (sp_5, m_eq0))
 	use sp_6
 ";
             #endregion

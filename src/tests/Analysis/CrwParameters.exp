@@ -102,8 +102,8 @@ l0C00_002D:
 	si_15 = si + 0x0002
 	// succ:  l0C00_002E
 l0C00_002E:
-	si_22 = PHI(si_8, si_15)
-	ax_16 = PHI(ax_4, ax_14)
+	si_22 = PHI((si_8, l0C00_0027), (si_15, l0C00_002D))
+	ax_16 = PHI((ax_4, l0C00_0027), (ax_14, l0C00_002D))
 	siOut = si_22
 	return ax_16
 	// succ:  fn0C00_0027_exit

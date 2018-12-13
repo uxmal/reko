@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,12 +31,10 @@ namespace Reko.Core.Code
 		public Identifier Dst;
 		public PhiFunction Src;
 
-		public PhiAssignment(Identifier d, int c)
+		public PhiAssignment(Identifier d, params PhiArgument[] args)
 		{
 			Dst = d;
-			PhiFunction phi = new PhiFunction(d.DataType, new Expression[c]);
-			for (int i = 0; i < c; ++i)
-				phi.Arguments[i] = d;
+            var phi = new PhiFunction(d.DataType, args);
 			Src = phi;
 		}
 

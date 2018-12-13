@@ -12,7 +12,7 @@ SZO_11: orig: SZO
 Z_12: orig: Z
 ax_13: orig: ax
     def:  ax_13 = 0x0001
-    uses: ax_37 = PHI(ax_27, ax_13)
+    uses: ax_37 = PHI((ax_27, l0C00_0018), (ax_13, l0C00_0026))
 sp_14: orig: sp
 Mem15: orig: Mem0
 sp_16: orig: sp
@@ -32,7 +32,7 @@ dx_ax_25: orig: dx_ax
 dx_26: orig: dx
 ax_27: orig: ax
     def:  ax_27 = (word16) dx_ax_25 (alias)
-    uses: ax_37 = PHI(ax_27, ax_13)
+    uses: ax_37 = PHI((ax_27, l0C00_0018), (ax_13, l0C00_0026))
 SCZO_28: orig: SCZO
 wLoc02_34: orig: wLoc02
 sp_30: orig: sp
@@ -46,7 +46,7 @@ wArg02:Stack +0002
           ax_17 = fn0C00_000F(wArg02 - 0x0001)
 wLoc04_36: orig: wLoc04
 ax_37: orig: ax
-    def:  ax_37 = PHI(ax_27, ax_13)
+    def:  ax_37 = PHI((ax_27, l0C00_0018), (ax_13, l0C00_0026))
     uses: return ax_37
 C_38: orig: C
 C_39: orig: C
@@ -81,7 +81,7 @@ l0C00_0026:
 	ax_13 = 0x0001
 	// succ:  l0C00_0029
 l0C00_0029:
-	ax_37 = PHI(ax_27, ax_13)
+	ax_37 = PHI((ax_27, l0C00_0018), (ax_13, l0C00_0026))
 	return ax_37
 	// succ:  fn0C00_000F_exit
 fn0C00_000F_exit:

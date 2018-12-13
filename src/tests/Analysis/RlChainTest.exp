@@ -45,8 +45,8 @@ l0C00_0015:
 	si_15 = si_14 + dx_11
 	dx_17 = dx_11 - 0x0001
 l0C00_0018:
-	si_14 = PHI(si_8, si_15)
-	dx_11 = PHI(dx, dx_17)
+	si_14 = PHI((si_8, l0C00_000F), (si_15, l0C00_0015))
+	dx_11 = PHI((dx, l0C00_000F), (dx_17, l0C00_0015))
 	branch dx_11 >= 0x0000 l0C00_0015
 l0C00_001D:
 	ax_19 = si_14

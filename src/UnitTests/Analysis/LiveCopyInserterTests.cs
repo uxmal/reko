@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -73,7 +73,7 @@ namespace Reko.UnitTests.Analysis
             var reg_4 = ssaIds.Where(s => s.Identifier.Name == "reg_4").Single();
 
             ssa.Dump(true);
-			Assert.AreEqual("reg_4 = PHI(reg, reg_3)", reg_4.DefStatement.Instruction.ToString());
+			Assert.AreEqual("reg_4 = PHI((reg, l1), (reg_3, l2))", reg_4.DefStatement.Instruction.ToString());
 			Assert.IsTrue(lci.IsLiveOut(reg.Identifier, reg_4.DefStatement));
 		}
 

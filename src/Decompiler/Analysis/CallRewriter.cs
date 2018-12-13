@@ -161,7 +161,7 @@ namespace Reko.Analysis
                 sb.AddFpuStackArgument(fpu.FpuStackOffset, id);
 			}
 
-            var liveOut = allLiveOut
+            var liveOut = flow.LiveOut
                 .Where(de =>
                 {
                     return de.Key is RegisterStorage reg
@@ -294,6 +294,8 @@ namespace Reko.Analysis
         /// a signature yet.</returns>
         public bool RewriteCall(SsaState ssaCaller, Statement stm, CallInstruction call)
         {
+            if (stm.LinearAddress == 0x000000000000049e)    //$DEBUG
+                stm.ToString();
             if (!(call.Callee is ProcedureConstant callee))
                 return false;          //$REVIEW: what happens with indirect calls?
             var procCallee = callee.Procedure;

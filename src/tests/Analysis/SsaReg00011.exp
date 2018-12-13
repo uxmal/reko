@@ -51,9 +51,9 @@ bx_6: orig: bx
     def:  bx_6 = 0x0FFF
     uses: bh_40 = SLICE(bx_6, byte, 8) (alias)
           bl_42 = (byte) bx_6 (alias)
-          bx_33 = PHI(bx_6, bx_37)
+          bx_33 = PHI((bx_6, l0C00_0004), (bx_37, l0C00_000C))
 bh_7: orig: bh
-    def:  bh_7 = PHI(bh_40, bh_41)
+    def:  bh_7 = PHI((bh_40, l0C00_0004), (bh_41, l0C00_000C))
     uses: al_8 = bh_7
           bx_34 = DPB(bx_33, bh_7, 8) (alias)
 al_8: orig: al
@@ -66,7 +66,7 @@ al_9: orig: al
 SZO_10: orig: SZO
     def:  SZO_10 = cond(al_9)
 bl_11: orig: bl
-    def:  bl_11 = PHI(bl_42, bl_43)
+    def:  bl_11 = PHI((bl_42, l0C00_0004), (bl_43, l0C00_000C))
     uses: ah_12 = bl_11
           al_20 = bl_11
           bx_35 = DPB(bx_34, bl_11, 0) (alias)
@@ -133,7 +133,7 @@ ax_44: orig: ax
     def:  ax_44 = DPB(ax_18, al_29, 0) (alias)
     uses: use ax_44
 bx_33: orig: bx
-    def:  bx_33 = PHI(bx_6, bx_37)
+    def:  bx_33 = PHI((bx_6, l0C00_0004), (bx_37, l0C00_000C))
     uses: bx_34 = DPB(bx_33, bh_7, 8) (alias)
 bx_34: orig: bx
     def:  bx_34 = DPB(bx_33, bh_7, 8) (alias)
@@ -149,7 +149,7 @@ bx_37: orig: bx
     uses: SZO_38 = cond(bx_37)
           bh_41 = SLICE(bx_37, byte, 8) (alias)
           bl_43 = (byte) bx_37 (alias)
-          bx_33 = PHI(bx_6, bx_37)
+          bx_33 = PHI((bx_6, l0C00_0004), (bx_37, l0C00_000C))
           use bx_37
 SZO_38: orig: SZO
     def:  SZO_38 = cond(bx_37)
@@ -162,16 +162,16 @@ S_39: orig: S
           use S_39
 bh_40: orig: bh
     def:  bh_40 = SLICE(bx_6, byte, 8) (alias)
-    uses: bh_7 = PHI(bh_40, bh_41)
+    uses: bh_7 = PHI((bh_40, l0C00_0004), (bh_41, l0C00_000C))
 bh_41: orig: bh
     def:  bh_41 = SLICE(bx_37, byte, 8) (alias)
-    uses: bh_7 = PHI(bh_40, bh_41)
+    uses: bh_7 = PHI((bh_40, l0C00_0004), (bh_41, l0C00_000C))
 bl_42: orig: bl
     def:  bl_42 = (byte) bx_6 (alias)
-    uses: bl_11 = PHI(bl_42, bl_43)
+    uses: bl_11 = PHI((bl_42, l0C00_0004), (bl_43, l0C00_000C))
 bl_43: orig: bl
     def:  bl_43 = (byte) bx_37 (alias)
-    uses: bl_11 = PHI(bl_42, bl_43)
+    uses: bl_11 = PHI((bl_42, l0C00_0004), (bl_43, l0C00_000C))
 O_45: orig: O
     def:  O_45 = SLICE(SZO_38, bool, 4) (alias)
     uses: use O_45
@@ -194,10 +194,10 @@ l0C00_0004:
 	bl_42 = (byte) bx_6 (alias)
 	// succ:  l0C00_000C
 l0C00_000C:
-	bx_33 = PHI(bx_6, bx_37)
-	bl_11 = PHI(bl_42, bl_43)
+	bx_33 = PHI((bx_6, l0C00_0004), (bx_37, l0C00_000C))
+	bl_11 = PHI((bl_42, l0C00_0004), (bl_43, l0C00_000C))
 	bx_35 = DPB(bx_34, bl_11, 0) (alias)
-	bh_7 = PHI(bh_40, bh_41)
+	bh_7 = PHI((bh_40, l0C00_0004), (bh_41, l0C00_000C))
 	bx_34 = DPB(bx_33, bh_7, 8) (alias)
 	al_8 = bh_7
 	al_9 = al_8 + 0x01

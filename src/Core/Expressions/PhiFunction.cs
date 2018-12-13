@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,16 +30,16 @@ namespace Reko.Core.Expressions
 	/// </summary>
 	public class PhiFunction : Expression
 	{
-		public PhiFunction(DataType joinType, params Expression [] arguments) : base(joinType)
+		public PhiFunction(DataType joinType, params PhiArgument[] arguments) : base(joinType)
 		{
 			this.Arguments = arguments;
 		}
 
-        public Expression[] Arguments { get; private set; }
+        public PhiArgument[] Arguments { get; private set; }
 
         public override IEnumerable<Expression> Children
         {
-            get { return Arguments; }
+            get { return Arguments.Select(de => de.Value); }
         }
 
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
@@ -59,8 +59,26 @@ namespace Reko.Core.Expressions
 
         public override Expression CloneExpression()
         {
-            var args = Arguments.Select(a => a.CloneExpression()).ToArray();
+            var args = Arguments
+                .Select(a => new PhiArgument(a.Block, a.Value.CloneExpression()))
+                .ToArray();
             return new PhiFunction(DataType, args);
         }
 	}
+
+    /// <summary>
+    /// The phi function arguments need to keep track of both the SSA identifier 
+    /// and the predecessor block from which the identifier came.
+    /// </summary>
+    public struct PhiArgument
+    {
+        public readonly Expression Value;
+        public readonly Block Block;
+
+        public PhiArgument(Block block, Expression value)
+        {
+            this.Value = value;
+            this.Block = block;
+        }
+    }
 }

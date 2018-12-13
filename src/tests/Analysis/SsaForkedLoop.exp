@@ -10,13 +10,13 @@ Top_3: orig: Top
 ax_4: orig: ax
     def:  ax_4 = 0x0000
     uses: SZO_5 = cond(ax_4)
-          ax_7 = PHI(ax_4, ax_21, ax_19)
+          ax_7 = PHI((ax_4, l0C00_0000), (ax_21, l0C00_000D), (ax_19, l0C00_0012))
 SZO_5: orig: SZO
     def:  SZO_5 = cond(ax_4)
 C_6: orig: C
     def:  C_6 = false
 ax_7: orig: ax
-    def:  ax_7 = PHI(ax_4, ax_21, ax_19)
+    def:  ax_7 = PHI((ax_4, l0C00_0000), (ax_21, l0C00_000D), (ax_19, l0C00_0012))
     uses: SCZO_9 = cond(ax_7 - bx)
           ax_19 = ax_7 + Mem0[ds:si_18 + 0x0004:word16]
           ax_21 = ax_7 + Mem0[ds:si_14:word16]
@@ -48,7 +48,7 @@ si_14: orig: si
     def:  si_14 = si_13 | si_13
     uses: SZO_15 = cond(si_14)
           ax_21 = ax_7 + Mem0[ds:si_14:word16]
-          si_29 = PHI(si, si_14, si_18)
+          si_29 = PHI((si, l0C00_0000), (si_14, l0C00_000D), (si_18, l0C00_0012))
 SZO_15: orig: SZO
     def:  SZO_15 = cond(si_14)
     uses: Z_17 = SLICE(SZO_15, bool, 2) (alias)
@@ -60,17 +60,17 @@ Z_17: orig: Z
 si_18: orig: si
     def:  si_18 = Mem0[ds:0x0302:word16]
     uses: ax_19 = ax_7 + Mem0[ds:si_18 + 0x0004:word16]
-          si_29 = PHI(si, si_14, si_18)
+          si_29 = PHI((si, l0C00_0000), (si_14, l0C00_000D), (si_18, l0C00_0012))
 ax_19: orig: ax
     def:  ax_19 = ax_7 + Mem0[ds:si_18 + 0x0004:word16]
     uses: SCZO_20 = cond(ax_19)
-          ax_7 = PHI(ax_4, ax_21, ax_19)
+          ax_7 = PHI((ax_4, l0C00_0000), (ax_21, l0C00_000D), (ax_19, l0C00_0012))
 SCZO_20: orig: SCZO
     def:  SCZO_20 = cond(ax_19)
 ax_21: orig: ax
     def:  ax_21 = ax_7 + Mem0[ds:si_14:word16]
     uses: SCZO_22 = cond(ax_21)
-          ax_7 = PHI(ax_4, ax_21, ax_19)
+          ax_7 = PHI((ax_4, l0C00_0000), (ax_21, l0C00_000D), (ax_19, l0C00_0012))
 SCZO_22: orig: SCZO
     def:  SCZO_22 = cond(ax_21)
 bx:bx
@@ -89,11 +89,11 @@ Mem0:Mem
           ax_19 = ax_7 + Mem0[ds:si_18 + 0x0004:word16]
           ax_21 = ax_7 + Mem0[ds:si_14:word16]
 si_29: orig: si
-    def:  si_29 = PHI(si, si_14, si_18)
+    def:  si_29 = PHI((si, l0C00_0000), (si_14, l0C00_000D), (si_18, l0C00_0012))
     uses: use si_29
 si:si
     def:  def si
-    uses: si_29 = PHI(si, si_14, si_18)
+    uses: si_29 = PHI((si, l0C00_0000), (si_14, l0C00_000D), (si_18, l0C00_0012))
 Z_33: orig: Z
     def:  Z_33 = SLICE(SCZO_9, bool, 2) (alias)
     uses: use Z_33
@@ -134,8 +134,8 @@ l0C00_0012:
 	SCZO_20 = cond(ax_19)
 	// succ:  l0C00_0019
 l0C00_0019:
-	si_29 = PHI(si, si_14, si_18)
-	ax_7 = PHI(ax_4, ax_21, ax_19)
+	si_29 = PHI((si, l0C00_0000), (si_14, l0C00_000D), (si_18, l0C00_0012))
+	ax_7 = PHI((ax_4, l0C00_0000), (ax_21, l0C00_000D), (ax_19, l0C00_0012))
 	SCZO_9 = cond(ax_7 - bx)
 	SO_10 = SLICE(SCZO_9, bool, 4) (alias)
 	C_26 = SLICE(SCZO_9, bool, 1) (alias)

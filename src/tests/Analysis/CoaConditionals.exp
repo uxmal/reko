@@ -23,16 +23,16 @@ ds:ds
 Mem0:Mem
     def:  def Mem0
     uses: branch Mem0[ds:0x0102:word16] == Mem0[ds:0x0100:word16] l0C00_000F
-          Mem11 = PHI(Mem0, Mem9)
+          Mem11 = PHI((Mem0, l0C00_0000), (Mem9, l0C00_000A))
           branch Mem0[ds:0x0102:word16] == Mem0[ds:0x0100:word16] l0C00_000F
 ax_6: orig: ax
 SCZO_7: orig: SCZO
 Z_8: orig: Z
 Mem9: orig: Mem0
     def:  Mem9[ds:0x0F00:byte] = 0x01
-    uses: Mem11 = PHI(Mem0, Mem9)
+    uses: Mem11 = PHI((Mem0, l0C00_0000), (Mem9, l0C00_000A))
 Mem11: orig: Mem0
-    def:  Mem11 = PHI(Mem0, Mem9)
+    def:  Mem11 = PHI((Mem0, l0C00_0000), (Mem9, l0C00_000A))
     uses: v7_13 = Mem11[ds:0x0106:word16] - Mem11[ds:0x0104:word16]
           v7_13 = Mem11[ds:0x0106:word16] - Mem11[ds:0x0104:word16]
 ax_12: orig: ax
@@ -42,15 +42,15 @@ v7_13: orig: v7
           branch v7_13 <= 0x0000 l0C00_001E
 Mem14: orig: Mem0
     def:  Mem14[ds:0x0106:word16] = v7_13
-    uses: Mem19 = PHI(Mem14, Mem17)
+    uses: Mem19 = PHI((Mem14, l0C00_000F), (Mem17, l0C00_0019))
 SCZO_15: orig: SCZO
 SZO_16: orig: SZO
 Mem17: orig: Mem0
     def:  Mem17[ds:0x0F01:byte] = 0x01
-    uses: Mem19 = PHI(Mem14, Mem17)
+    uses: Mem19 = PHI((Mem14, l0C00_000F), (Mem17, l0C00_0019))
 Mem19: orig: Mem0
-    def:  Mem19 = PHI(Mem14, Mem17)
-    uses: Mem27 = PHI(Mem19, Mem25)
+    def:  Mem19 = PHI((Mem14, l0C00_000F), (Mem17, l0C00_0019))
+    uses: Mem27 = PHI((Mem19, l0C00_001E), (Mem25, l0C00_0028))
           branch (Mem19[ds:0x0106:word16] & Mem19[ds:0x0108:word16]) == 0x0000 l0C00_002D
           branch (Mem19[ds:0x0106:word16] & Mem19[ds:0x0108:word16]) == 0x0000 l0C00_002D
 ax_20: orig: ax
@@ -60,9 +60,9 @@ C_23: orig: C
 Z_24: orig: Z
 Mem25: orig: Mem0
     def:  Mem25[ds:0x0F02:byte] = 0x01
-    uses: Mem27 = PHI(Mem19, Mem25)
+    uses: Mem27 = PHI((Mem19, l0C00_001E), (Mem25, l0C00_0028))
 Mem27: orig: Mem0
-    def:  Mem27 = PHI(Mem19, Mem25)
+    def:  Mem27 = PHI((Mem19, l0C00_001E), (Mem25, l0C00_0028))
     uses: branch Mem27[ds:0x010A:word16] >=u Mem27[ds:0x010C:word16] l0C00_003D
           branch Mem27[ds:0x010A:word16] >=u Mem27[ds:0x010C:word16] l0C00_003D
 ax_28: orig: ax
@@ -76,17 +76,17 @@ ss:ss
     def:  def ss
     uses: Mem68[ss:bp - 0x000A:byte] = 0x01
 Mem43: orig: Mem0
-    uses: Mem51 = PHI(Mem43, Mem49)
+    uses: Mem51 = PHI((Mem43, l0C00_003D), (Mem49, l0C00_0044))
 S_44: orig: S
 C_45: orig: C
 Z_46: orig: Z
 O_47: orig: O
 Mem49: orig: Mem0
     def:  Mem49[ds:0x0F04:byte] = 0x01
-    uses: Mem51 = PHI(Mem43, Mem49)
+    uses: Mem51 = PHI((Mem43, l0C00_003D), (Mem49, l0C00_0044))
 S_87: orig: S
 Mem51: orig: Mem0
-    def:  Mem51 = PHI(Mem43, Mem49)
+    def:  Mem51 = PHI((Mem43, l0C00_003D), (Mem49, l0C00_0044))
     uses: branch (Mem51[ds:0x010E:word16] & 0x01FF) == 0x0000 l0C00_0056
 SZO_52: orig: SZO
 C_53: orig: C
@@ -127,7 +127,7 @@ l0C00_000A:
 	Mem9[ds:0x0F00:byte] = 0x01
 	// succ:  l0C00_000F
 l0C00_000F:
-	Mem11 = PHI(Mem0, Mem9)
+	Mem11 = PHI((Mem0, l0C00_0000), (Mem9, l0C00_000A))
 	v7_13 = Mem11[ds:0x0106:word16] - Mem11[ds:0x0104:word16]
 	Mem14[ds:0x0106:word16] = v7_13
 	branch v7_13 <= 0x0000 l0C00_001E
@@ -136,14 +136,14 @@ l0C00_0019:
 	Mem17[ds:0x0F01:byte] = 0x01
 	// succ:  l0C00_001E
 l0C00_001E:
-	Mem19 = PHI(Mem14, Mem17)
+	Mem19 = PHI((Mem14, l0C00_000F), (Mem17, l0C00_0019))
 	branch (Mem19[ds:0x0106:word16] & Mem19[ds:0x0108:word16]) == 0x0000 l0C00_002D
 	// succ:  l0C00_0028 l0C00_002D
 l0C00_0028:
 	Mem25[ds:0x0F02:byte] = 0x01
 	// succ:  l0C00_002D
 l0C00_002D:
-	Mem27 = PHI(Mem19, Mem25)
+	Mem27 = PHI((Mem19, l0C00_001E), (Mem25, l0C00_0028))
 	branch Mem27[ds:0x010A:word16] >=u Mem27[ds:0x010C:word16] l0C00_003D
 	// succ:  l0C00_0038 l0C00_003D
 l0C00_0038:
@@ -156,7 +156,7 @@ l0C00_0044:
 	Mem49[ds:0x0F04:byte] = 0x01
 	// succ:  l0C00_0049
 l0C00_0049:
-	Mem51 = PHI(Mem43, Mem49)
+	Mem51 = PHI((Mem43, l0C00_003D), (Mem49, l0C00_0044))
 	branch (Mem51[ds:0x010E:word16] & 0x01FF) == 0x0000 l0C00_0056
 	// succ:  l0C00_0051 l0C00_0056
 l0C00_0051:

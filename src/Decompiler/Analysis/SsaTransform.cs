@@ -1306,7 +1306,7 @@ namespace Reko.Analysis
             /// <returns>The inserted phi Assignment</returns>
             private SsaIdentifier NewPhi(Identifier id, Block b)
             {
-                var phiAss = new PhiAssignment(id, 0);
+                var phiAss = new PhiAssignment(id);
                 var stm = new Statement(b.Address.ToLinear(), phiAss, b);
                 b.Statements.Insert(0, stm);
                 var sid = ssaIds.Add(phiAss.Dst, stm, phiAss.Src, false);
@@ -1323,8 +1323,11 @@ namespace Reko.Analysis
                 {
                     // Haven't visited some of the predecessors yet,
                     // so we can't backwalk... yet. 
-                    ((PhiAssignment)phi.DefStatement.Instruction).Src =
-                                new PhiFunction(phi.Identifier.DataType, new Expression[preds.Count]);
+                    ((PhiAssignment) phi.DefStatement.Instruction).Src =
+                        new PhiFunction(
+                            phi.Identifier.DataType,
+                            preds.Select(p => new PhiArgument(p, null)).
+                                ToArray());
                     outer.incompletePhis.Add(phi);
                     return phi;
                 }
@@ -1334,7 +1337,8 @@ namespace Reko.Analysis
             public SsaIdentifier AddPhiOperandsCore(SsaIdentifier phi)
             {
                 var preds = phi.DefStatement.Block.Pred;
-                var sids = preds.Select(p => ReadVariable(blockstates[p])).ToArray();
+                var sids = preds.Select(p => new PhiArgument(p, ReadVariable(blockstates[p]).Identifier))
+                    .ToArray();
                 GeneratePhiFunction(phi, sids);
 
                 if (!TryRemoveTrivial(phi, out var newSid))
@@ -1346,12 +1350,12 @@ namespace Reko.Analysis
                 return newSid;
             }
 
-            private static void GeneratePhiFunction(SsaIdentifier phi, SsaIdentifier[] sids)
+            private static void GeneratePhiFunction(SsaIdentifier phi, PhiArgument[] sids)
             {
-                ((PhiAssignment)phi.DefStatement.Instruction).Src =
+                ((PhiAssignment) phi.DefStatement.Instruction).Src =
                 new PhiFunction(
                         phi.Identifier.DataType,
-                        sids.Select(s => s.Identifier).ToArray());
+                        sids);
             }
 
             /// <summary>
@@ -1367,7 +1371,7 @@ namespace Reko.Analysis
             {
                 var phiFunc = ((PhiAssignment) phi.DefStatement.Instruction).Src;
                 DebugEx.PrintIf(trace.TraceVerbose, "  Checking {0} for triviality", phiFunc);
-                if (phiFunc.Arguments.All(a => a == phi.Identifier))
+                if (phiFunc.Arguments.All(a => a.Value == phi.Identifier))
                 {
                     DebugEx.PrintIf(trace.TraceVerbose, "  {0} is a def", phi.Identifier);
                     // Undef'ined or unreachable parameter; assume it's a def.
@@ -1423,19 +1427,20 @@ namespace Reko.Analysis
             }
 
             /// <summary>
-            /// If the arguments of phi function are same, return it.
+            /// If the arguments of phi function are equal, return it.
             /// </summary>
             /// <param name="phi">SSA identifier of phi function</param>
             /// <returns>
-            /// If the arguments of phi function are same, return it.
-            /// Return null otherwise
+            /// If the arguments of phi function are equal, return it.
+            /// Return null otherwise.
             /// </returns>
             private SsaIdentifier SamePhiArgument(SsaIdentifier phi)
             {
                 Identifier same = null;
                 var phiFunc = ((PhiAssignment) phi.DefStatement.Instruction).Src;
-                foreach (Identifier op in phiFunc.Arguments)
+                foreach (var de in phiFunc.Arguments)
                 {
+                    var op = (Identifier) de.Value;
                     if (op == same || op == phi.Identifier)
                         continue;
                     if (same != null)
@@ -1448,8 +1453,9 @@ namespace Reko.Analysis
             private void UsePhiArguments(SsaIdentifier phi)
             {
                 var phiFunc = ((PhiAssignment)phi.DefStatement.Instruction).Src;
-                foreach (Identifier id in phiFunc.Arguments)
+                foreach (var de in phiFunc.Arguments)
                 {
+                    var id = (Identifier) de.Value;
                     ssaIds[id].Uses.Add(phi.DefStatement);
                 }
             }

@@ -291,7 +291,7 @@ l5:
 	loc6 = loc1 + 0xFFFFFFFF
 	// succ:  l7
 l7:
-	loc8 = PHI(loc4, loc6)
+	loc8 = PHI((loc4, l3), (loc6, l5))
 	return loc8
 	// succ:  foo_exit
 foo_exit:

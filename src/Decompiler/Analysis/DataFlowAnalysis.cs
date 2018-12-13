@@ -316,6 +316,9 @@ namespace Reko.Analysis
                 var sst = new SsaTransform(program, proc, sccProcs, importResolver, this.ProgramDataFlow);
                 var ssa = sst.Transform();
 
+                if (ssa.Procedure.Name == "fn1326") //$DEBUG
+                    ssa.ToString();
+
                 // Merge unaligned memory accesses.
                 var fuser = new UnalignedMemoryAccessFuser(ssa);
                 fuser.Transform();

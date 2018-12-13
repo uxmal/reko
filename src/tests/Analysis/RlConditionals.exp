@@ -16,7 +16,7 @@ l0C00_0000:
 l0C00_000A:
 	Mem9[ds:0x0F00:byte] = 0x01
 l0C00_000F:
-	Mem11 = PHI(Mem0, Mem9)
+	Mem11 = PHI((Mem0, l0C00_0000), (Mem9, l0C00_000A))
 	ax_12 = Mem11[ds:0x0104:word16]
 	v7_13 = Mem11[ds:0x0106:word16] - ax_12
 	Mem14[ds:0x0106:word16] = v7_13
@@ -24,14 +24,14 @@ l0C00_000F:
 l0C00_0019:
 	Mem17[ds:0x0F01:byte] = 0x01
 l0C00_001E:
-	Mem19 = PHI(Mem14, Mem17)
+	Mem19 = PHI((Mem14, l0C00_000F), (Mem17, l0C00_0019))
 	ax_20 = Mem19[ds:0x0106:word16]
 	ax_21 = ax_20 & Mem19[ds:0x0108:word16]
 	branch ax_21 == 0x0000 l0C00_002D
 l0C00_0028:
 	Mem25[ds:0x0F02:byte] = 0x01
 l0C00_002D:
-	Mem27 = PHI(Mem19, Mem25)
+	Mem27 = PHI((Mem19, l0C00_001E), (Mem25, l0C00_0028))
 	ax_28 = Mem27[ds:0x010A:word16]
 	branch ax_28 >=u Mem27[ds:0x010C:word16] l0C00_003D
 l0C00_0038:
@@ -44,7 +44,7 @@ l0C00_003D:
 l0C00_0044:
 	Mem49[ds:0x0F04:byte] = 0x01
 l0C00_0049:
-	Mem51 = PHI(Mem43, Mem49)
+	Mem51 = PHI((Mem43, l0C00_003D), (Mem49, l0C00_0044))
 	branch (Mem51[ds:0x010E:word16] & 0x01FF) == 0x0000 l0C00_0056
 l0C00_0051:
 	Mem55[ds:0x0F05:byte] = 0x01

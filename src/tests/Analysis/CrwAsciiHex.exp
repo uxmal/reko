@@ -86,7 +86,7 @@ l0C00_002E:
 	al_27 = al - 0x57
 	// succ:  l0C00_0030
 l0C00_0030:
-	al_32 = PHI(al_19, al_23, al_27)
+	al_32 = PHI((al_19, l0C00_0022), (al_23, l0C00_0028), (al_27, l0C00_002E))
 	C_29 = false
 	alOut = al_32
 	return C_29

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ using Reko.Core.Lib;
 using Reko.Core.Operators;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Reko.Analysis
 {
@@ -163,8 +164,7 @@ namespace Reko.Analysis
 			{
 				foreach (Statement u in sid.Uses)
 				{
-					Branch b = u.Instruction as Branch;
-                    if (b == null)
+					if (!(u.Instruction is Branch b))
                         continue;
 					if (b.Condition is BinaryExpression bin && 
                         bin.Left is Identifier && 
@@ -184,14 +184,13 @@ namespace Reko.Analysis
 		{
 			if (phi.Arguments.Length != 2)
 				return null;
-            var sid0 = ssa.Identifiers[(Identifier)phi.Arguments[0]];
-            var sid1 = ssa.Identifiers[(Identifier)phi.Arguments[1]];
+            var sid0 = ssa.Identifiers[(Identifier)phi.Arguments[0].Value];
+            var sid1 = ssa.Identifiers[(Identifier)phi.Arguments[1].Value];
             if (sid0.DefStatement == null || sid1.DefStatement == null)
                 return null;
             var sid = doms.DominatesStrictly(sid1.DefStatement, sid0.DefStatement)
                 ? sid1 : sid0;
-			Assignment ass = sid.DefStatement.Instruction as Assignment;
-			if (ass == null)
+            if (!(sid.DefStatement.Instruction is Assignment ass))
 				return null;
 
 			if (ass.Dst != sid.Identifier)
@@ -208,8 +207,7 @@ namespace Reko.Analysis
             {
                 if (sid.DefStatement == null)
                     continue;
-                Assignment ass = sid.DefStatement.Instruction as Assignment;
-                if (ass == null)
+                if (!(sid.DefStatement.Instruction is Assignment ass))
                     continue;
                 if (ass.Src is BinaryExpression bin && (bin.Operator == Operator.IAdd || bin.Operator == Operator.ISub))
                 {

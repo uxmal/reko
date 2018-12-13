@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -173,15 +173,15 @@ namespace Reko.Evaluation
 
         public Expression VisitPhiFunction(PhiFunction phi)
         {
-            var exprs = new Expression[phi.Arguments.Length];
-            for (int i = 0; i < exprs.Length; ++i)
+            var exprs = new List<PhiArgument>();
+            foreach (var de in phi.Arguments)
             {
-                var exp = phi.Arguments[i].Accept(this);
+                var exp = de.Value.Accept(this);
                 if (exp == Constant.Invalid)
                     return exp;
-                exprs[i] = exp;
+                exprs.Add(new PhiArgument(de.Block, exp));
             }
-            return new PhiFunction(phi.DataType, exprs);
+            return new PhiFunction(phi.DataType, exprs.ToArray());
         }
 
         public Expression VisitPointerAddition(PointerAddition pa)

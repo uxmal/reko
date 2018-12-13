@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -148,12 +148,12 @@ namespace Reko.Analysis
 
 		public void VisitPhiAssignment(PhiAssignment p)
 		{
-			Identifier idDst = (Identifier) p.Dst;
+			Identifier idDst = p.Dst;
 			PhiFunction phi = p.Src;
-			for (int i = 0; i < phi.Arguments.Length; ++i)
+			foreach (var de in phi.Arguments)
 			{
-                Identifier id = phi.Arguments[i] as Identifier;
-				Block pred = stmCur.Block.Pred[i];
+                Identifier id = de.Value as Identifier;
+                Block pred = de.Block;
 				if (id != null && id != idDst)
 					Merge(webOf[idDst], webOf[id]);
 			}

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -347,7 +347,7 @@ namespace Reko.Analysis
                     .Select(phi => phi.Src.Arguments
                         .Select(a => new CallBinding(
                             phi.Dst.Storage,
-                            a)).ToArray()).ToArray();
+                            a.Value)).ToArray()).ToArray();
                 var arrs = Reko.Core.EnumerableEx.ZipMany(
                     phis,
                     ids => ids.ToArray()).ToArray();

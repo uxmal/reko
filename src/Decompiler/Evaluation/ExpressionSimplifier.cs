@@ -611,17 +611,17 @@ namespace Reko.Evaluation
             var args = pc.Arguments
                 .Select(a =>
                 {
-                    var arg = SimplifyPhiArg(a.Accept(this));
+                    var arg = SimplifyPhiArg(a.Value.Accept(this));
                     ctx.RemoveExpressionUse(arg);
-                    return arg;
+                    return new PhiArgument(a.Block, arg);
                 })
-                .Where(a => ctx.GetValue(a as Identifier) != pc)
+                .Where(a => ctx.GetValue(a.Value as Identifier) != pc)
                 .ToArray();
             Changed = oldChanged;
 
             var cmp = new ExpressionValueComparer();
-            var e = args.FirstOrDefault();
-            if (e != null && args.All(a => cmp.Equals(a, e)))
+            var e = args.Select(de => de.Value).FirstOrDefault();
+            if (e != null && args.All(a => cmp.Equals(a.Value, e)))
             {
                 Changed = true;
                 ctx.UseExpression(e);

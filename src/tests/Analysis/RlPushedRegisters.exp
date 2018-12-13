@@ -40,7 +40,7 @@ fn0C00_0034_entry:
 l0C00_0034:
 	bx_18 = fp + 0x0006
 l0C00_003D:
-	bx_20 = PHI(bx_18, bx_23)
+	bx_20 = PHI((bx_18, l0C00_0034), (bx_23, l0C00_003D))
 	ax_22 = Mem16[ds:bx_20:word16]
 	bx_23 = bx_20 + 0x0002
 	branch ax_22 != 0x0000 l0C00_003D

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -126,9 +126,9 @@ namespace Reko.Analysis
 
         private void ProcessPhi(PhiAssignment phi, Queue<Identifier> worklist)
         {
-            foreach (Identifier id in phi.Src.Arguments)
+            foreach (var de in phi.Src.Arguments)
             {
-                worklist.Enqueue(id);
+                worklist.Enqueue((Identifier)de.Value);
             }
         }
 
