@@ -94,7 +94,9 @@ namespace Reko.Analysis
 		{
 			var stm = new Statement(
                 b.Address.ToLinear(),
-				new PhiAssignment(v, b.Pred.Count),
+				new PhiAssignment(v, b.Pred
+                    .Select(p => new PhiArgument(p, v))
+                    .ToArray()),
 				b);
 			b.Statements.Insert(0, stm);
 			return stm;
@@ -521,15 +523,15 @@ namespace Reko.Analysis
 
 							foreach (Statement stm in y.Statements.Where(s => s.Instruction is PhiAssignment))
 							{
-
                                 var newPhi = newPhiStatements.Contains(stm);
 								stmCur = stm;
 								PhiAssignment phi = (PhiAssignment) stmCur.Instruction;
 								PhiFunction p = phi.Src;
-								// replace 'n's slot with the renamed name of the variable.
-								p.Arguments[j] = 
-									NewUse((Identifier)p.Arguments[j], stm, newPhi
-                                    );
+                                // replace 'n's slot with the renamed name of the variable.
+                                var value = NewUse((Identifier) p.Arguments[j].Value, stm, newPhi);
+                                p.Arguments[j] = new PhiArgument(
+                                    p.Arguments[j].Block,
+									value);
 							}
 						}
 					}
@@ -1063,7 +1065,7 @@ namespace Reko.Analysis
         /// <returns>The inserted phi Assignment</returns>
         private SsaIdentifier NewPhi( Identifier id, Block b)
         {
-            var phiAss = new PhiAssignment(id, 0);
+            var phiAss = new PhiAssignment(id);
             var stm = new Statement(
                 b.Address.ToLinear(),
                 phiAss,
@@ -1081,7 +1083,11 @@ namespace Reko.Analysis
             ((PhiAssignment)phi.DefStatement.Instruction).Src =
                 new PhiFunction(
                     id.DataType,
-                    phi.DefStatement.Block.Pred.Select(p => ReadVariable(id, p).Identifier).ToArray());
+                    phi.DefStatement.Block.Pred.
+                        Select(p => new PhiArgument(
+                            p,
+                            ReadVariable(id, p).Identifier))
+                        .ToArray());
             return TryRemoveTrivial(phi);
         }
 
@@ -1093,8 +1099,9 @@ namespace Reko.Analysis
         private SsaIdentifier TryRemoveTrivial(SsaIdentifier phi)
         {
             Identifier same = null;
-            foreach (Identifier op in ((PhiAssignment)phi.DefStatement.Instruction).Src.Arguments)
+            foreach (var arg in ((PhiAssignment)phi.DefStatement.Instruction).Src.Arguments)
             {
+                var op = (Identifier) arg.Value;
                 if (op == same || op == phi.Identifier)
                 {
                     // Unique value or self-reference

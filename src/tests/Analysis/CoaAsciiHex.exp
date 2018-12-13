@@ -45,12 +45,12 @@ al:al
           al_29 = al - 0x37
           branch al <u 0x47 l0C00_0030
           al_33 = al - 0x57
-          al_6 = PHI(al, al_23)
+          al_6 = PHI((al, l0C00_0032), (al_23, l0C00_0030))
 SCZO_3: orig: SCZO
 C_4: orig: C
 CZ_5: orig: CZ
 al_6: orig: al
-    def:  al_6 = PHI(al, al_23)
+    def:  al_6 = PHI((al, l0C00_0032), (al_23, l0C00_0030))
     uses: use al_6 (=> alOut)
 C_7: orig: C
 SCZO_8: orig: SCZO
@@ -66,13 +66,13 @@ C_17: orig: C
 CZ_18: orig: CZ
 al_19: orig: al
     def:  al_19 = al - 0x30
-    uses: al_23 = PHI(al_19, al_29, al_33)
+    uses: al_23 = PHI((al_19, l0C00_0022), (al_29, l0C00_0028), (al_33, l0C00_002E))
 SCZO_20: orig: SCZO
 C_21: orig: C
 CZ_22: orig: CZ
 al_23: orig: al
-    def:  al_23 = PHI(al_19, al_29, al_33)
-    uses: al_6 = PHI(al, al_23)
+    def:  al_23 = PHI((al_19, l0C00_0022), (al_29, l0C00_0028), (al_33, l0C00_002E))
+    uses: al_6 = PHI((al, l0C00_0032), (al_23, l0C00_0030))
 SCZO_24: orig: SCZO
 CZ_25: orig: CZ
 C_26: orig: C
@@ -80,13 +80,13 @@ SCZO_27: orig: SCZO
 CZ_28: orig: CZ
 al_29: orig: al
     def:  al_29 = al - 0x37
-    uses: al_23 = PHI(al_19, al_29, al_33)
+    uses: al_23 = PHI((al_19, l0C00_0022), (al_29, l0C00_0028), (al_33, l0C00_002E))
 SCZO_30: orig: SCZO
 C_31: orig: C
 CZ_32: orig: CZ
 al_33: orig: al
     def:  al_33 = al - 0x57
-    uses: al_23 = PHI(al_19, al_29, al_33)
+    uses: al_23 = PHI((al_19, l0C00_0022), (al_29, l0C00_0028), (al_33, l0C00_002E))
 SCZO_34: orig: SCZO
 C_35: orig: C
 CZ_36: orig: CZ
@@ -138,13 +138,13 @@ l0C00_002E:
 	al_33 = al - 0x57
 	// succ:  l0C00_0030
 l0C00_0030:
-	al_23 = PHI(al_19, al_29, al_33)
+	al_23 = PHI((al_19, l0C00_0022), (al_29, l0C00_0028), (al_33, l0C00_002E))
 	return false
 	// succ:  fn0C00_000A_exit
 l0C00_0032:
 	return true
 	// succ:  fn0C00_000A_exit
 fn0C00_000A_exit:
-	al_6 = PHI(al, al_23)
+	al_6 = PHI((al, l0C00_0032), (al_23, l0C00_0030))
 	use al_6 (=> alOut)
 

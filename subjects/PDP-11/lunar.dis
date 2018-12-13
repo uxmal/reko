@@ -1839,8 +1839,8 @@ l0AF8_in_fn0AF6:
 // SymbolicIn: sp:fp + 0x0002
 
 fn0AF6_exit:
-	NZ_14 = PHI(NZ_12, NZ)
-	V_15 = PHI(V_13, V)
+	NZ_14 = PHI((NZ_12, l0AF8_in_fn0AF6), (NZ, l0AF8))
+	V_15 = PHI((V_13, l0AF8_in_fn0AF6), (V, l0AF8))
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + 0x0002

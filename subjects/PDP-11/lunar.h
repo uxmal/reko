@@ -9345,7 +9345,7 @@ T_2082: (in r4_51 | 0x4000 : word16)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: cui16
-T_2083: (in PHI(NZ_12, NZ) : byte)
+T_2083: (in PHI((NZ_12, l0AF8_in_fn0AF6), (NZ, l0AF8)) : byte)
   Class: Eq_2083
   DataType: byte
   OrigDataType: 
@@ -9361,7 +9361,7 @@ T_2086: (in NZ_14 : byte)
   Class: Eq_2083
   DataType: byte
   OrigDataType: 
-T_2087: (in PHI(V_13, V) : bool)
+T_2087: (in PHI((V_13, l0AF8_in_fn0AF6), (V, l0AF8)) : bool)
   Class: Eq_2087
   DataType: bool
   OrigDataType: 

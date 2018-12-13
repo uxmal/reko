@@ -34,7 +34,7 @@ Z_8: orig: Z
     def:  Z_8 = (bool) SCZO_7 (alias)
     uses: branch Test(NE,Z_8) l0C00_0015
 cx_9: orig: cx
-    def:  cx_9 = PHI(cx_13, cx_15)
+    def:  cx_9 = PHI((cx_13, l0C00_000B), (cx_15, l0C00_0015))
     uses: Mem10[ds:0x012C:word16] = cx_9
 Mem10: orig: Mem0
     def:  Mem10[ds:0x012C:word16] = cx_9
@@ -47,13 +47,13 @@ si:si
           cx_15 = Mem14[ds:si:word16]
 cx_13: orig: cx
     def:  cx_13 = Mem11[ds:si:word16]
-    uses: cx_9 = PHI(cx_13, cx_15)
+    uses: cx_9 = PHI((cx_13, l0C00_000B), (cx_15, l0C00_0015))
 Mem14: orig: Mem0
     def:  Mem14[ds:bx_5 + 0x0006:word16] = 0x0001
     uses: cx_15 = Mem14[ds:si:word16]
 cx_15: orig: cx
     def:  cx_15 = Mem14[ds:si:word16]
-    uses: cx_9 = PHI(cx_13, cx_15)
+    uses: cx_9 = PHI((cx_13, l0C00_000B), (cx_15, l0C00_0015))
 // fn0C00_0000
 // Return size: 0
 void fn0C00_0000(word16 bx, word16 si, selector ds)
@@ -82,7 +82,7 @@ l0C00_0015:
 	cx_15 = Mem14[ds:si:word16]
 	// succ:  l0C00_001C
 l0C00_001C:
-	cx_9 = PHI(cx_13, cx_15)
+	cx_9 = PHI((cx_13, l0C00_000B), (cx_15, l0C00_0015))
 	Mem10[ds:0x012C:word16] = cx_9
 	return
 	// succ:  fn0C00_0000_exit

@@ -48,17 +48,17 @@ wLoc02_4: orig: wLoc02
 sp_5: orig: sp
 di:di
     def:  def di
-    uses: di_10 = PHI(di, di_17)
+    uses: di_10 = PHI((di, l0C00_0008), (di_17, l0C00_0012))
 wLoc04_7: orig: wLoc04
 si_8: orig: si
     def:  si_8 = 0x0000
-    uses: si_9 = PHI(si_8, si_16)
+    uses: si_9 = PHI((si_8, l0C00_0008), (si_16, l0C00_0012))
 si_9: orig: si
-    def:  si_9 = PHI(si_8, si_16)
+    def:  si_9 = PHI((si_8, l0C00_0008), (si_16, l0C00_0012))
     uses: si_16 = si_9 + Mem0[ds:di_10:word16]
           ax_20 = si_9
 di_10: orig: di
-    def:  di_10 = PHI(di, di_17)
+    def:  di_10 = PHI((di, l0C00_0008), (di_17, l0C00_0012))
     uses: si_16 = si_9 + Mem0[ds:di_10:word16]
           di_17 = di_10 + 0x0002
 cx:cx
@@ -74,10 +74,10 @@ Mem0:Global memory
     uses: si_16 = si_9 + Mem0[ds:di_10:word16]
 si_16: orig: si
     def:  si_16 = si_9 + Mem0[ds:di_10:word16]
-    uses: si_9 = PHI(si_8, si_16)
+    uses: si_9 = PHI((si_8, l0C00_0008), (si_16, l0C00_0012))
 di_17: orig: di
     def:  di_17 = di_10 + 0x0002
-    uses: di_10 = PHI(di, di_17)
+    uses: di_10 = PHI((di, l0C00_0008), (di_17, l0C00_0012))
 SCZO_18: orig: SCZO
 Z_19: orig: Z
 ax_20: orig: ax
@@ -100,8 +100,8 @@ l0C00_0008:
 	si_8 = 0x0000
 	// succ:  l0C00_000D
 l0C00_000D:
-	si_9 = PHI(si_8, si_16)
-	di_10 = PHI(di, di_17)
+	si_9 = PHI((si_8, l0C00_0008), (si_16, l0C00_0012))
+	di_10 = PHI((di, l0C00_0008), (di_17, l0C00_0012))
 	branch cx == 0x0000 l0C00_001A
 	// succ:  l0C00_0012 l0C00_001A
 l0C00_0012:

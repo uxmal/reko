@@ -3,10 +3,10 @@ sp_1: orig: sp
 si:si
     def:  def si
     uses: ax_20 = si_8 - si
-          si_4 = PHI(si, si_8, si_8)
+          si_4 = PHI((si, l0C00_0000), (si_8, l0C00_0011), (si_8, l0C00_0016))
 bx_3: orig: bx
 si_4: orig: si
-    def:  si_4 = PHI(si, si_8, si_8)
+    def:  si_4 = PHI((si, l0C00_0000), (si_8, l0C00_0011), (si_8, l0C00_0016))
     uses: ax_7 = Mem0[ds:si_4:word16]
           si_8 = si_4 + 0x0002
 ds:ds
@@ -28,14 +28,14 @@ ax_7: orig: ax
 si_8: orig: si
     def:  si_8 = si_4 + 0x0002
     uses: ax_20 = si_8 - si
-          si_4 = PHI(si, si_8, si_8)
-          si_4 = PHI(si, si_8, si_8)
+          si_4 = PHI((si, l0C00_0000), (si_8, l0C00_0011), (si_8, l0C00_0016))
+          si_4 = PHI((si, l0C00_0000), (si_8, l0C00_0011), (si_8, l0C00_0016))
 SCZO_9: orig: SCZO
 Z_10: orig: Z
 SZO_11: orig: SZO
 C_12: orig: C
 ax_13: orig: ax
-    def:  ax_13 = PHI(ax_20, ax_32)
+    def:  ax_13 = PHI((ax_20, l0C00_0020), (ax_32, l0C00_000B))
     uses: Mem18[ds:0x0300:word16] = ax_13
 SCZO_14: orig: SCZO
 Z_15: orig: Z
@@ -46,7 +46,7 @@ Mem18: orig: Mem0
 ax_19: orig: ax
 ax_20: orig: ax
     def:  ax_20 = si_8 - si
-    uses: ax_13 = PHI(ax_20, ax_32)
+    uses: ax_13 = PHI((ax_20, l0C00_0020), (ax_32, l0C00_000B))
 SCZO_21: orig: SCZO
 Z_22: orig: Z
 SZO_23: orig: SZO
@@ -64,7 +64,7 @@ C_30: orig: C
 SCZO_31: orig: SCZO
 ax_32: orig: ax
     def:  ax_32 = 0xFFFF
-    uses: ax_13 = PHI(ax_20, ax_32)
+    uses: ax_13 = PHI((ax_20, l0C00_0020), (ax_32, l0C00_000B))
 SCZO_33: orig: SCZO
 Z_34: orig: Z
 SZO_35: orig: SZO
@@ -108,7 +108,7 @@ l0C00_0016:
 	// liveOut: si ds Mem0 di
 	// liveIn: si ds Mem0 di
 l0C00_001A:
-	si_4 = PHI(si, si_8, si_8)
+	si_4 = PHI((si, l0C00_0000), (si_8, l0C00_0011), (si_8, l0C00_0016))
 	ax_7 = Mem0[ds:si_4:word16]
 	si_8 = si_4 + 0x0002
 	branch ax_7 != 0x0020 l0C00_0005
@@ -119,7 +119,7 @@ l0C00_0020:
 	// liveOut: ds ax_20
 	// liveIn: ds
 l0C00_0024:
-	ax_13 = PHI(ax_20, ax_32)
+	ax_13 = PHI((ax_20, l0C00_0020), (ax_32, l0C00_000B))
 	Mem18[ds:0x0300:word16] = ax_13
 	return
 	// liveOut: 

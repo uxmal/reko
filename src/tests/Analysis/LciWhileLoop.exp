@@ -17,8 +17,8 @@ l0C00_000C:
 	cx_27 = ax_11
 	// succ:  l0C00_000E
 l0C00_000E:
-	bx_28 = PHI(bx_8, bx_30)
-	cx_29 = PHI(cx_27, cx_34)
+	bx_28 = PHI((bx_8, l0C00_000C), (bx_30, l0C00_000E))
+	cx_29 = PHI((cx_27, l0C00_000C), (cx_34, l0C00_000E))
 	bx_30 = bx_28 + cx_29
 	cx_34 = cx_29 - 0x0001
 	branch cx_34 != 0x0000 l0C00_000E
@@ -30,7 +30,7 @@ l0C00_0015:
 	bx_40 = -ax_11
 	// succ:  l0C00_0019
 l0C00_0019:
-	bx_18 = PHI(bx_30, bx_40)
+	bx_18 = PHI((bx_30, l0C00_0012), (bx_40, l0C00_0015))
 	Mem23[ds:0x0300:word16] = bx_18
 	return
 	// succ:  fn0C00_0000_exit

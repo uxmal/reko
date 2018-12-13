@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -435,7 +435,7 @@ namespace Reko.UnitTests.Analysis
             var r3 = m.Reg16("r3");
             m.Assign(r1, c1);
             m.Assign(r2, c2);
-            var phiStm = m.Phi(r3, r1, r2);
+            var phiStm = m.Phi(r3, (r1, "block1"), (r2, "block2"));
             RunValuePropagator();
             Assert.AreEqual("r3 = 0x4711", phiStm.Instruction.ToString());
         }
@@ -460,7 +460,11 @@ namespace Reko.UnitTests.Analysis
             m.Assign(b, m.ISub(fp, 12));
             m.Assign(c, m.ISub(y, 4));
             m.Assign(d, m.IAdd(z, 8));
-            var phiStm = m.Phi(x, a, b, c, d);
+            var phiStm = m.Phi(x, 
+                (a, "blockA"),
+                (b, "blockB"),
+                (c, "blockC"),
+                (d, "blockD"));
             RunValuePropagator();
             Assert.AreEqual("x = fp - 0x000C", phiStm.Instruction.ToString());
         }
@@ -483,7 +487,7 @@ namespace Reko.UnitTests.Analysis
             var x = m.Reg16("x");
             var y = m.Reg16("y");
             var z = m.Reg16("z");
-            m.Phi(sp, sp_1, sp_2);
+            m.Phi(sp, (sp_1, "block1"), (sp_2, "block2"));
             m.Assign(v, m.ISub(sp, 4));
             m.Assign(w, m.ISub(sp, 8));
             m.Assign(y, m.IAdd(x, 4));
@@ -492,7 +496,11 @@ namespace Reko.UnitTests.Analysis
             m.Assign(b, m.ISub(w, 4));
             m.Assign(c, m.ISub(y, 4));
             m.Assign(d, m.IAdd(z, 8));
-            var phiStm = m.Phi(x, a, b, c, d);
+            var phiStm = m.Phi(x, 
+                (a, "blockA"),
+                (b, "blockB"),
+                (c, "blockC"),
+                (d, "blockD"));
             RunValuePropagator();
             Assert.AreEqual("x = sp - 0x000C", phiStm.Instruction.ToString());
         }

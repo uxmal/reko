@@ -9058,7 +9058,7 @@ T_1822: (in C : bool)
   Class: Eq_1822
   DataType: bool
   OrigDataType: bool
-T_1823: (in PHI(b_20, b_12, b, b) : byte)
+T_1823: (in PHI((b_20, l092D_thunk_fn096E), (b_12, l092D_thunk_fn0930), (b, l092C_thunk_fn0930), (b, l092C_thunk_fn096E)) : byte)
   Class: Eq_1564
   DataType: byte
   OrigDataType: 
@@ -9074,7 +9074,7 @@ T_1826: (in b_4 : byte)
   Class: Eq_1564
   DataType: byte
   OrigDataType: byte
-T_1827: (in PHI(hl_21, hl_13, hl, hl) : word16)
+T_1827: (in PHI((hl_21, l092D_thunk_fn096E), (hl_13, l092D_thunk_fn0930), (hl, l092C_thunk_fn0930), (hl, l092C_thunk_fn096E)) : word16)
   Class: Eq_1827
   DataType: word16
   OrigDataType: 
@@ -9094,7 +9094,7 @@ T_1831: (in hl_5 : word16)
   Class: Eq_1827
   DataType: word16
   OrigDataType: word16
-T_1832: (in PHI(C_22, C_14, C, C) : bool)
+T_1832: (in PHI((C_22, l092D_thunk_fn096E), (C_14, l092D_thunk_fn0930), (C, l092C_thunk_fn0930), (C, l092C_thunk_fn096E)) : bool)
   Class: Eq_1822
   DataType: bool
   OrigDataType: 
@@ -9110,7 +9110,7 @@ T_1835: (in C_6 : bool)
   Class: Eq_1822
   DataType: bool
   OrigDataType: 
-T_1836: (in PHI(SZPC_23, SZPC_16, SZPC, SZPC) : byte)
+T_1836: (in PHI((SZPC_23, l092D_thunk_fn096E), (SZPC_16, l092D_thunk_fn0930), (SZPC, l092C_thunk_fn0930), (SZPC, l092C_thunk_fn096E)) : byte)
   Class: Eq_1836
   DataType: byte
   OrigDataType: 

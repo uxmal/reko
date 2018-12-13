@@ -519,7 +519,7 @@ Eq_12: (union "Eq_12" ((ptr32 byte) u0) ((ptr16 Eq_3937) u1))
 	T_1563 (in de : Eq_12)
 	T_1730 (in de : Eq_12)
 	T_1759 (in de : Eq_12)
-	T_1768 (in PHI(de_50, de, de, de) : word16)
+	T_1768 (in PHI((de_50, l0B51_thunk_fn0350), (de, l0B51_thunk_fn0B55), (de, l0B51_thunk_fn0B55), (de, l0B51_thunk_fn0350)) : word16)
 	T_1769 (in de_50 : word16)
 	T_1770 (in de_44 : word16)
 	T_1873 (in de : Eq_12)
@@ -547,7 +547,7 @@ Eq_14: (struct "Eq_14" (FFFFFFDA cu8 bFFFFFFDA) (FFFFFFDB cu8 bFFFFFFDB) (FFFFFF
 	T_1566 (in ix : (ptr16 Eq_14))
 	T_1732 (in ix : (ptr16 Eq_14))
 	T_1760 (in ix : (ptr16 Eq_14))
-	T_1776 (in PHI(ix_52, ix, ix, ix) : word16)
+	T_1776 (in PHI((ix_52, l0B51_thunk_fn0350), (ix, l0B51_thunk_fn0B55), (ix, l0B51_thunk_fn0B55), (ix, l0B51_thunk_fn0350)) : word16)
 	T_1777 (in ix_52 : word16)
 	T_1778 (in ix_46 : word16)
 	T_1874 (in ix : (ptr16 Eq_14))
@@ -8349,7 +8349,7 @@ T_1762: (in fn0B2C(af_15, (word16) v10_11 + 255, de, ix) : void)
   Class: Eq_1762
   DataType: void
   OrigDataType: void
-T_1763: (in PHI(bc_49, bc_12, bc, bc) : word16)
+T_1763: (in PHI((bc_49, l0B51_thunk_fn0350), (bc_12, l0B51_thunk_fn0B55), (bc, l0B51_thunk_fn0B55), (bc, l0B51_thunk_fn0350)) : word16)
   Class: Eq_1763
   DataType: word16
   OrigDataType: 
@@ -8369,7 +8369,7 @@ T_1767: (in bc_43 : word16)
   Class: Eq_1763
   DataType: word16
   OrigDataType: 
-T_1768: (in PHI(de_50, de, de, de) : word16)
+T_1768: (in PHI((de_50, l0B51_thunk_fn0350), (de, l0B51_thunk_fn0B55), (de, l0B51_thunk_fn0B55), (de, l0B51_thunk_fn0350)) : word16)
   Class: Eq_12
   DataType: Eq_12
   OrigDataType: 
@@ -8381,7 +8381,7 @@ T_1770: (in de_44 : word16)
   Class: Eq_12
   DataType: Eq_12
   OrigDataType: 
-T_1771: (in PHI(hl_51, hl_24, hl, hl) : word16)
+T_1771: (in PHI((hl_51, l0B51_thunk_fn0350), (hl_24, l0B51_thunk_fn0B55), (hl, l0B51_thunk_fn0B55), (hl, l0B51_thunk_fn0350)) : word16)
   Class: Eq_1771
   DataType: word16
   OrigDataType: 
@@ -8401,7 +8401,7 @@ T_1775: (in hl_45 : word16)
   Class: Eq_1771
   DataType: word16
   OrigDataType: 
-T_1776: (in PHI(ix_52, ix, ix, ix) : word16)
+T_1776: (in PHI((ix_52, l0B51_thunk_fn0350), (ix, l0B51_thunk_fn0B55), (ix, l0B51_thunk_fn0B55), (ix, l0B51_thunk_fn0350)) : word16)
   Class: Eq_14
   DataType: (ptr16 Eq_14)
   OrigDataType: 
@@ -8413,7 +8413,7 @@ T_1778: (in ix_46 : word16)
   Class: Eq_14
   DataType: (ptr16 Eq_14)
   OrigDataType: 
-T_1779: (in PHI(af_53, af_35, af, af) : word16)
+T_1779: (in PHI((af_53, l0B51_thunk_fn0350), (af_35, l0B51_thunk_fn0B55), (af, l0B51_thunk_fn0B55), (af, l0B51_thunk_fn0350)) : word16)
   Class: Eq_138
   DataType: word16
   OrigDataType: 

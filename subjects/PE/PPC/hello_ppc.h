@@ -106,7 +106,7 @@ Eq_2: (union "Eq_2" (Eq_6749 u0) (Eq_6750 u1))
 	T_2632 (in fn00401AB4(r2_110, r29_83, r30_84, dwLoc48, out r29_108, out r30_109) : word32)
 	T_2634 (in *r2Out : word32)
 	T_2680 (in r2 : (ptr32 Eq_2))
-	T_2840 (in PHI(r2_109, r2, r2, r2_147, r2_147) : word32)
+	T_2840 (in PHI((r2_109, l00402160), (r2, l00402220), (r2, l00402210), (r2_147, l004021D8), (r2_147, l004021F8)) : word32)
 	T_2841 (in r2_109 : word32)
 	T_2842 (in r2_147 : word32)
 	T_2843 (in r2_35 : word32)
@@ -145,7 +145,7 @@ Eq_2: (union "Eq_2" (Eq_6749 u0) (Eq_6750 u1))
 	T_3650 (in dwArg14 : (ptr32 Eq_2))
 	T_3651 (in dwLoc8C : word32)
 	T_3653 (in r2_292 : word32)
-	T_3654 (in PHI(r2_204, r2_227, r2_251, r2_112) : word32)
+	T_3654 (in PHI((r2_204, l00402844), (r2_227, l004028AC), (r2_251, l00402900), (r2_112, l00402808)) : word32)
 	T_3655 (in r2_204 : word32)
 	T_3656 (in r2_227 : word32)
 	T_3657 (in r2_251 : word32)
@@ -158,12 +158,12 @@ Eq_2: (union "Eq_2" (Eq_6749 u0) (Eq_6750 u1))
 	T_3858 (in r2 : (ptr32 Eq_2))
 	T_3859 (in dwArg14 : (ptr32 Eq_2))
 	T_3861 (in r2_319 : word32)
-	T_3862 (in PHI(r2_292, r2_319, r2) : word32)
+	T_3862 (in PHI((r2_292, l004027E0), (r2_319, l0040277C), (r2, l00402738)) : word32)
 	T_3888 (in r2_26 : (ptr32 Eq_2))
 	T_3958 (in r2 : (ptr32 Eq_2))
 	T_4022 (in dwLoc0244 : word32)
 	T_4024 (in r2_146 : word32)
-	T_4046 (in PHI(r2, r2_138) : word32)
+	T_4046 (in PHI((r2, l00402A50), (r2_138, l00402A60)) : word32)
 	T_4047 (in r2_138 : word32)
 	T_4048 (in r2_78 : word32)
 	T_4076 (in r2 : (ptr32 Eq_2))
@@ -186,7 +186,7 @@ Eq_2: (union "Eq_2" (Eq_6749 u0) (Eq_6750 u1))
 	T_4331 (in r2 : (ptr32 Eq_2))
 	T_4332 (in dwArg14 : (ptr32 Eq_2))
 	T_4334 (in r2_171 : word32)
-	T_4335 (in PHI(r2_171, r2_188, r2_124) : word32)
+	T_4335 (in PHI((r2_171, l00402B0C), (r2_188, l00402B4C), (r2_124, l00402A7C)) : word32)
 	T_4336 (in r2_43 : word32)
 	T_4345 (in r2 : (ptr32 Eq_2))
 	T_4352 (in r2 : (ptr32 Eq_2))
@@ -229,25 +229,25 @@ Eq_2: (union "Eq_2" (Eq_6749 u0) (Eq_6750 u1))
 	T_5425 (in fn00403618(r2_16, 255, r29_13, r30_14, r31_15, dwLoc30, out r29_27, out r30_28, out r31_29) : word32)
 	T_5426 (in *r2Out : word32)
 	T_5434 (in dwLoc24 : word32)
-	T_5547 (in PHI(r2, r2_99, r2_99) : word32)
+	T_5547 (in PHI((r2, l00403880), (r2_99, l00403848), (r2_99, l00403868)) : word32)
 	T_5548 (in r2_99 : word32)
 	T_5549 (in r2_31 : word32)
 	T_5697 (in r2 : (ptr32 Eq_2))
 	T_5698 (in dwArg14 : (ptr32 Eq_2))
 	T_5699 (in dwLoc0184 : word32)
 	T_5702 (in r2_93 : word32)
-	T_5706 (in PHI(r2_93, r2_147) : word32)
+	T_5706 (in PHI((r2_93, l004037E8), (r2_147, l00403830)) : word32)
 	T_5707 (in r2_147 : word32)
 	T_5761 (in r2 : (ptr32 Eq_2))
 	T_5762 (in dwArg14 : (ptr32 Eq_2))
-	T_5774 (in PHI(r2, r2_107, r2_159, r2_107) : word32)
+	T_5774 (in PHI((r2, l004039E4), (r2_107, l004039AC), (r2_159, l0040392C), (r2_107, l004039CC)) : word32)
 	T_5775 (in r2_107 : word32)
 	T_5776 (in r2_159 : word32)
 	T_5777 (in r2_43 : word32)
 	T_5890 (in r2 : (ptr32 Eq_2))
 	T_5891 (in dwArg14 : (ptr32 Eq_2))
 	T_5892 (in dwLoc84 : word32)
-	T_5902 (in PHI(r2, r2, r2_195) : word32)
+	T_5902 (in PHI((r2, l004038F8), (r2, l0040399C), (r2_195, l0040397C)) : word32)
 	T_5903 (in r2_195 : word32)
 	T_6011 (in fn00402BA0(r2, *((word32) r3 + 8), r29, r30, r3, dwLoc38, out r29_41, out r30_42, out r31_43) : word32)
 	T_6035 (in *r2Out : word32)
@@ -476,7 +476,7 @@ Eq_18: (union "Eq_18" (byte u0) ((ptr32 Eq_6751) u1) ((arr Eq_18) u2) (Eq_6752 u
 	T_3235 (in r3 : Eq_18)
 	T_3239 (in r31 : Eq_18)
 	T_3256 (in r31_59 + 32 : word32)
-	T_3483 (in PHI(r27, r27, r27_144, r27_165) : word32)
+	T_3483 (in PHI((r27, l0040271C), (r27, l00402964), (r27_144, l00402928), (r27_165, l00402948)) : word32)
 	T_3484 (in r27_144 : word32)
 	T_3485 (in r27_165 : word32)
 	T_3486 (in r27_52 : word32)
@@ -492,13 +492,13 @@ Eq_18: (union "Eq_18" (byte u0) ((ptr32 Eq_6751) u1) ((arr Eq_18) u2) (Eq_6752 u
 	T_4008 (in r28_21 : word32)
 	T_4017 (in r27_28 : word32)
 	T_4018 (in r29_31 : word32)
-	T_4052 (in PHI(r27_28, r27_134) : word32)
+	T_4052 (in PHI((r27_28, l00402A50), (r27_134, l00402A60)) : word32)
 	T_4053 (in r27_134 : word32)
 	T_4054 (in r27_80 : word32)
-	T_4055 (in PHI(r28_21, r28_135) : word32)
+	T_4055 (in PHI((r28_21, l00402A50), (r28_135, l00402A60)) : word32)
 	T_4056 (in r28_135 : word32)
 	T_4057 (in r28_81 : word32)
-	T_4058 (in PHI(r29_31, r29_136) : word32)
+	T_4058 (in PHI((r29_31, l00402A50), (r29_136, l00402A60)) : word32)
 	T_4059 (in r29_136 : word32)
 	T_4060 (in r29_82 : word32)
 	T_4069 (in r31_83 + 64 : word32)
@@ -531,7 +531,7 @@ Eq_18: (union "Eq_18" (byte u0) ((ptr32 Eq_6751) u1) ((arr Eq_18) u2) (Eq_6752 u
 	T_4288 (in r4_186 : word32)
 	T_4300 (in r31_192 : word32)
 	T_4318 (in r31_165 : word32)
-	T_4341 (in PHI(r31_165, r31_192, r31_115) : word32)
+	T_4341 (in PHI((r31_165, l00402B0C), (r31_192, l00402B4C), (r31_115, l00402A7C)) : word32)
 	T_4342 (in r31_47 : word32)
 	T_4348 (in r31 : Eq_18)
 	T_4353 (in r3 : Eq_18)
@@ -613,7 +613,7 @@ Eq_18: (union "Eq_18" (byte u0) ((ptr32 Eq_6751) u1) ((arr Eq_18) u2) (Eq_6752 u
 	T_5467 (in Mem0[r8_6 + 4 + r11_20:word32] : word32)
 	T_5472 (in Mem0[r4_48 + 0x00000000:byte] : byte)
 	T_5494 (in Mem0[r4_48 + r5_52:byte] : byte)
-	T_5558 (in PHI(r31, r31_113, r31_125) : word32)
+	T_5558 (in PHI((r31, l00403880), (r31_113, l00403848), (r31_125, l00403868)) : word32)
 	T_5559 (in r31_113 : word32)
 	T_5560 (in r31_125 : word32)
 	T_5561 (in r31_37 : word32)
@@ -826,9 +826,9 @@ Eq_237: (struct "Eq_237" (0 (ptr32 Eq_237) ptr0000) (4 ui32 dw0004))
 	T_4298 (in r30_191 : word32)
 	T_4314 (in r29_163 : word32)
 	T_4316 (in r30_164 : word32)
-	T_4337 (in PHI(r29_163, r29_190, r29_122) : word32)
+	T_4337 (in PHI((r29_163, l00402B0C), (r29_190, l00402B4C), (r29_122, l00402A7C)) : word32)
 	T_4338 (in r29_45 : word32)
-	T_4339 (in PHI(r30_164, r30_191, r30_123) : word32)
+	T_4339 (in PHI((r30_164, l00402B0C), (r30_191, l00402B4C), (r30_123, l00402A7C)) : word32)
 	T_4340 (in r30_46 : word32)
 	T_4346 (in r29 : (ptr32 Eq_237))
 	T_4347 (in r30 : (ptr32 Eq_237))
@@ -1380,7 +1380,7 @@ Eq_3033: (union "Eq_3033" (int32 u0) (ptr32 u1))
 	T_3580 (in r3_322 : word32)
 	T_3645 (in fp + -104 : word32)
 	T_3646 (in r3_287 : word32)
-	T_3660 (in PHI(r3_194, r3_221, r3_244, r3_119) : word32)
+	T_3660 (in PHI((r3_194, l00402844), (r3_221, l004028AC), (r3_244, l00402900), (r3_119, l00402808)) : word32)
 	T_3661 (in r3_194 : word32)
 	T_3662 (in r3_221 : word32)
 	T_3663 (in r3_244 : word32)
@@ -1392,11 +1392,11 @@ Eq_3033: (union "Eq_3033" (int32 u0) (ptr32 u1))
 	T_3813 (in fp + -104 : word32)
 	T_3854 (in fp + -104 : word32)
 	T_3855 (in r3_314 : word32)
-	T_3863 (in PHI(r3_287, r3_314, r3_322) : word32)
+	T_3863 (in PHI((r3_287, l004027E0), (r3_314, l0040277C), (r3_322, l00402738)) : word32)
 	T_3864 (in 0 : int32)
 	T_5693 (in fp + -96 : word32)
 	T_5694 (in r3_89 : word32)
-	T_5711 (in PHI(r3_89, r3_144) : word32)
+	T_5711 (in PHI((r3_89, l004037E8), (r3_144, l00403830)) : word32)
 	T_5712 (in r3_144 : word32)
 	T_5713 (in r3_101 : word32)
 	T_5758 (in fp + -96 : word32)
@@ -1404,7 +1404,7 @@ Eq_3033: (union "Eq_3033" (int32 u0) (ptr32 u1))
 	T_5822 (in r3_27 : word32)
 	T_5886 (in fp + -96 : word32)
 	T_5887 (in r3_151 : word32)
-	T_5907 (in PHI(r3_27, r3_27, r3_192) : word32)
+	T_5907 (in PHI((r3_27, l004038F8), (r3_27, l0040399C), (r3_192, l0040397C)) : word32)
 	T_5908 (in r3_192 : word32)
 	T_5909 (in r3_112 : word32)
 	T_5914 (in 0 : int32)
@@ -1541,7 +1541,7 @@ Eq_3984: (struct "Eq_3984" (0 word32 dw0000) (4 word32 dw0004) (8 word32 dw0008)
 Eq_4028: (struct "Eq_4028" (4C ui32 dw004C))
 	T_4028 (in Mem18[r2 + 72:word32] : word32)
 	T_4029 (in r31_69 : word32)
-	T_4061 (in PHI(r31_69, r31_137) : word32)
+	T_4061 (in PHI((r31_69, l00402A50), (r31_137, l00402A60)) : word32)
 	T_4062 (in r31_137 : word32)
 	T_4063 (in r31_83 : word32)
 	T_4097 (in r31 : (ptr32 Eq_4028))
@@ -13166,7 +13166,7 @@ T_2839: (in r0 : ui32)
   Class: Eq_2839
   DataType: ui32
   OrigDataType: word32
-T_2840: (in PHI(r2_109, r2, r2, r2_147, r2_147) : word32)
+T_2840: (in PHI((r2_109, l00402160), (r2, l00402220), (r2, l00402210), (r2_147, l004021D8), (r2_147, l004021F8)) : word32)
   Class: Eq_2
   DataType: (ptr32 Eq_2)
   OrigDataType: 
@@ -13198,7 +13198,7 @@ T_2847: (in r30_42 : word32)
   Class: Eq_2846
   DataType: word32
   OrigDataType: word32
-T_2848: (in PHI(r3_124, r3_70, r3_180, r3_160, r3_171) : word32)
+T_2848: (in PHI((r3_124, l00402160), (r3_70, l00402220), (r3_180, l00402210), (r3_160, l004021D8), (r3_171, l004021F8)) : word32)
   Class: Eq_2848
   DataType: int32
   OrigDataType: 
@@ -13526,7 +13526,7 @@ T_2929: (in ctr_87 : word32)
   Class: Eq_2928
   DataType: int32
   OrigDataType: int32
-T_2930: (in PHI(r11_85, r11_98) : word32)
+T_2930: (in PHI((r11_85, l00402100), (r11_98, l00402114)) : word32)
   Class: Eq_2926
   DataType: int32
   OrigDataType: 
@@ -13538,7 +13538,7 @@ T_2932: (in r11_89 : word32)
   Class: Eq_2926
   DataType: int32
   OrigDataType: int32
-T_2933: (in PHI(ctr_87, ctr_99) : word32)
+T_2933: (in PHI((ctr_87, l00402100), (ctr_99, l00402114)) : word32)
   Class: Eq_2928
   DataType: int32
   OrigDataType: 
@@ -13790,7 +13790,7 @@ T_2995: (in -1 : int32)
   Class: Eq_2848
   DataType: int32
   OrigDataType: int32
-T_2996: (in PHI(r11_127, r11_139) : word32)
+T_2996: (in PHI((r11_127, l00402184), (r11_139, l00402190)) : word32)
   Class: Eq_2981
   DataType: int32
   OrigDataType: 
@@ -13802,7 +13802,7 @@ T_2998: (in r11_130 : word32)
   Class: Eq_2981
   DataType: int32
   OrigDataType: int32
-T_2999: (in PHI(ctr_129, ctr_140) : word32)
+T_2999: (in PHI((ctr_129, l00402184), (ctr_140, l00402190)) : word32)
   Class: Eq_2983
   DataType: int32
   OrigDataType: 
@@ -15722,7 +15722,7 @@ T_3478: (in fn00403F10(r31_49, dwLoc34) : word32)
   Class: Eq_1971
   DataType: word32
   OrigDataType: word32
-T_3479: (in PHI(r26, r26, r26_141, r26_163) : word32)
+T_3479: (in PHI((r26, l0040271C), (r26, l00402964), (r26_141, l00402928), (r26_163, l00402948)) : word32)
   Class: Eq_17
   DataType: ptr32
   OrigDataType: 
@@ -15738,7 +15738,7 @@ T_3482: (in r26_51 : word32)
   Class: Eq_17
   DataType: ptr32
   OrigDataType: word32
-T_3483: (in PHI(r27, r27, r27_144, r27_165) : word32)
+T_3483: (in PHI((r27, l0040271C), (r27, l00402964), (r27_144, l00402928), (r27_165, l00402948)) : word32)
   Class: Eq_18
   DataType: Eq_18
   OrigDataType: 
@@ -16222,7 +16222,7 @@ T_3603: (in Mem266[r4_254 + 0x00000000:word32] : word32)
   Class: Eq_2890
   DataType: int32
   OrigDataType: word32
-T_3604: (in PHI(r11_269, r11_282) : word32)
+T_3604: (in PHI((r11_269, l004027A8), (r11_282, l004027BC)) : word32)
   Class: Eq_3589
   DataType: int32
   OrigDataType: 
@@ -16234,7 +16234,7 @@ T_3606: (in r11_273 : word32)
   Class: Eq_3589
   DataType: int32
   OrigDataType: int32
-T_3607: (in PHI(ctr_271, ctr_283) : word32)
+T_3607: (in PHI((ctr_271, l004027A8), (ctr_283, l004027BC)) : word32)
   Class: Eq_3591
   DataType: int32
   OrigDataType: 
@@ -16422,7 +16422,7 @@ T_3653: (in r2_292 : word32)
   Class: Eq_2
   DataType: (ptr32 Eq_2)
   OrigDataType: word32
-T_3654: (in PHI(r2_204, r2_227, r2_251, r2_112) : word32)
+T_3654: (in PHI((r2_204, l00402844), (r2_227, l004028AC), (r2_251, l00402900), (r2_112, l00402808)) : word32)
   Class: Eq_2
   DataType: (ptr32 Eq_2)
   OrigDataType: 
@@ -16446,7 +16446,7 @@ T_3659: (in r2_128 : word32)
   Class: Eq_2
   DataType: (ptr32 Eq_2)
   OrigDataType: word32
-T_3660: (in PHI(r3_194, r3_221, r3_244, r3_119) : word32)
+T_3660: (in PHI((r3_194, l00402844), (r3_221, l004028AC), (r3_244, l00402900), (r3_119, l00402808)) : word32)
   Class: Eq_3033
   DataType: Eq_3033
   OrigDataType: 
@@ -16494,7 +16494,7 @@ T_3671: (in ctr_179 : word32)
   Class: Eq_3670
   DataType: int32
   OrigDataType: int32
-T_3672: (in PHI(r11_177, r11_189) : word32)
+T_3672: (in PHI((r11_177, l00402810), (r11_189, l00402820)) : word32)
   Class: Eq_3668
   DataType: int32
   OrigDataType: 
@@ -16506,7 +16506,7 @@ T_3674: (in r11_180 : word32)
   Class: Eq_3668
   DataType: int32
   OrigDataType: int32
-T_3675: (in PHI(ctr_179, ctr_190) : word32)
+T_3675: (in PHI((ctr_179, l00402810), (ctr_190, l00402820)) : word32)
   Class: Eq_3670
   DataType: int32
   OrigDataType: 
@@ -16710,7 +16710,7 @@ T_3725: (in ctr_208 : word32)
   Class: Eq_3724
   DataType: int32
   OrigDataType: int32
-T_3726: (in PHI(r11_206, r11_218) : word32)
+T_3726: (in PHI((r11_206, l0040287C), (r11_218, l00402888)) : word32)
   Class: Eq_3722
   DataType: int32
   OrigDataType: 
@@ -16722,7 +16722,7 @@ T_3728: (in r11_209 : word32)
   Class: Eq_3722
   DataType: int32
   OrigDataType: int32
-T_3729: (in PHI(ctr_208, ctr_219) : word32)
+T_3729: (in PHI((ctr_208, l0040287C), (ctr_219, l00402888)) : word32)
   Class: Eq_3724
   DataType: int32
   OrigDataType: 
@@ -16910,7 +16910,7 @@ T_3775: (in ctr_231 : word32)
   Class: Eq_3774
   DataType: int32
   OrigDataType: int32
-T_3776: (in PHI(r11_229, r11_241) : word32)
+T_3776: (in PHI((r11_229, l004028D0), (r11_241, l004028DC)) : word32)
   Class: Eq_3772
   DataType: int32
   OrigDataType: 
@@ -16922,7 +16922,7 @@ T_3778: (in r11_232 : word32)
   Class: Eq_3772
   DataType: int32
   OrigDataType: int32
-T_3779: (in PHI(ctr_231, ctr_242) : word32)
+T_3779: (in PHI((ctr_231, l004028D0), (ctr_242, l004028DC)) : word32)
   Class: Eq_3774
   DataType: int32
   OrigDataType: 
@@ -17070,7 +17070,7 @@ T_3815: (in fn00404014(r2_227, dwLoc8C) : word32)
   Class: Eq_3717
   DataType: word32
   OrigDataType: word32
-T_3816: (in PHI(r11_296, r11_309) : word32)
+T_3816: (in PHI((r11_296, l00402744), (r11_309, l00402758)) : word32)
   Class: Eq_3583
   DataType: int32
   OrigDataType: 
@@ -17082,7 +17082,7 @@ T_3818: (in r11_300 : word32)
   Class: Eq_3583
   DataType: int32
   OrigDataType: int32
-T_3819: (in PHI(ctr_298, ctr_310) : word32)
+T_3819: (in PHI((ctr_298, l00402744), (ctr_310, l00402758)) : word32)
   Class: Eq_3585
   DataType: int32
   OrigDataType: 
@@ -17254,11 +17254,11 @@ T_3861: (in r2_319 : word32)
   Class: Eq_2
   DataType: (ptr32 Eq_2)
   OrigDataType: word32
-T_3862: (in PHI(r2_292, r2_319, r2) : word32)
+T_3862: (in PHI((r2_292, l004027E0), (r2_319, l0040277C), (r2, l00402738)) : word32)
   Class: Eq_2
   DataType: (ptr32 Eq_2)
   OrigDataType: 
-T_3863: (in PHI(r3_287, r3_314, r3_322) : word32)
+T_3863: (in PHI((r3_287, l004027E0), (r3_314, l0040277C), (r3_322, l00402738)) : word32)
   Class: Eq_3033
   DataType: Eq_3033
   OrigDataType: 
@@ -17966,7 +17966,7 @@ T_4039: (in (r4_70 & 0x0000010C) != 0x00000000 : bool)
   Class: Eq_4039
   DataType: bool
   OrigDataType: bool
-T_4040: (in PHI(r25, r25_132) : word32)
+T_4040: (in PHI((r25, l00402A50), (r25_132, l00402A60)) : word32)
   Class: Eq_16
   DataType: word32
   OrigDataType: 
@@ -17978,7 +17978,7 @@ T_4042: (in r25_76 : word32)
   Class: Eq_16
   DataType: word32
   OrigDataType: word32
-T_4043: (in PHI(r26, r26_133) : word32)
+T_4043: (in PHI((r26, l00402A50), (r26_133, l00402A60)) : word32)
   Class: Eq_17
   DataType: ptr32
   OrigDataType: 
@@ -17990,7 +17990,7 @@ T_4045: (in r26_77 : word32)
   Class: Eq_17
   DataType: ptr32
   OrigDataType: word32
-T_4046: (in PHI(r2, r2_138) : word32)
+T_4046: (in PHI((r2, l00402A50), (r2_138, l00402A60)) : word32)
   Class: Eq_2
   DataType: (ptr32 Eq_2)
   OrigDataType: 
@@ -18002,7 +18002,7 @@ T_4048: (in r2_78 : word32)
   Class: Eq_2
   DataType: (ptr32 Eq_2)
   OrigDataType: (ptr32 (struct (D8 T_4066 t00D8)))
-T_4049: (in PHI(r0, r0_139) : word32)
+T_4049: (in PHI((r0, l00402A50), (r0_139, l00402A60)) : word32)
   Class: Eq_3
   DataType: word32
   OrigDataType: 
@@ -18014,7 +18014,7 @@ T_4051: (in r0_79 : word32)
   Class: Eq_3
   DataType: word32
   OrigDataType: word32
-T_4052: (in PHI(r27_28, r27_134) : word32)
+T_4052: (in PHI((r27_28, l00402A50), (r27_134, l00402A60)) : word32)
   Class: Eq_18
   DataType: Eq_18
   OrigDataType: 
@@ -18026,7 +18026,7 @@ T_4054: (in r27_80 : word32)
   Class: Eq_18
   DataType: Eq_18
   OrigDataType: word32
-T_4055: (in PHI(r28_21, r28_135) : word32)
+T_4055: (in PHI((r28_21, l00402A50), (r28_135, l00402A60)) : word32)
   Class: Eq_18
   DataType: Eq_18
   OrigDataType: 
@@ -18038,7 +18038,7 @@ T_4057: (in r28_81 : word32)
   Class: Eq_18
   DataType: Eq_18
   OrigDataType: word32
-T_4058: (in PHI(r29_31, r29_136) : word32)
+T_4058: (in PHI((r29_31, l00402A50), (r29_136, l00402A60)) : word32)
   Class: Eq_18
   DataType: Eq_18
   OrigDataType: 
@@ -18050,7 +18050,7 @@ T_4060: (in r29_82 : word32)
   Class: Eq_18
   DataType: Eq_18
   OrigDataType: word32
-T_4061: (in PHI(r31_69, r31_137) : word32)
+T_4061: (in PHI((r31_69, l00402A50), (r31_137, l00402A60)) : word32)
   Class: Eq_4028
   DataType: (ptr32 Eq_4028)
   OrigDataType: 
@@ -18574,7 +18574,7 @@ T_4191: (in fn00403450(r2, (char *) r31_69 + 64, null, 4, 0, r25, r26, r3, r4, r
   Class: Eq_2
   DataType: (ptr32 Eq_2)
   OrigDataType: word32
-T_4192: (in PHI(r11, r11_200, r11_205) : word32)
+T_4192: (in PHI((r11, l00402AB0), (r11_200, l00402AE8), (r11_205, l00402AF4)) : word32)
   Class: Eq_3962
   DataType: ui32
   OrigDataType: 
@@ -19146,7 +19146,7 @@ T_4334: (in r2_171 : word32)
   Class: Eq_2
   DataType: (ptr32 Eq_2)
   OrigDataType: word32
-T_4335: (in PHI(r2_171, r2_188, r2_124) : word32)
+T_4335: (in PHI((r2_171, l00402B0C), (r2_188, l00402B4C), (r2_124, l00402A7C)) : word32)
   Class: Eq_2
   DataType: (ptr32 Eq_2)
   OrigDataType: 
@@ -19154,7 +19154,7 @@ T_4336: (in r2_43 : word32)
   Class: Eq_2
   DataType: (ptr32 Eq_2)
   OrigDataType: word32
-T_4337: (in PHI(r29_163, r29_190, r29_122) : word32)
+T_4337: (in PHI((r29_163, l00402B0C), (r29_190, l00402B4C), (r29_122, l00402A7C)) : word32)
   Class: Eq_237
   DataType: (ptr32 Eq_237)
   OrigDataType: 
@@ -19162,7 +19162,7 @@ T_4338: (in r29_45 : word32)
   Class: Eq_237
   DataType: (ptr32 Eq_237)
   OrigDataType: word32
-T_4339: (in PHI(r30_164, r30_191, r30_123) : word32)
+T_4339: (in PHI((r30_164, l00402B0C), (r30_191, l00402B4C), (r30_123, l00402A7C)) : word32)
   Class: Eq_237
   DataType: (ptr32 Eq_237)
   OrigDataType: 
@@ -19170,7 +19170,7 @@ T_4340: (in r30_46 : word32)
   Class: Eq_237
   DataType: (ptr32 Eq_237)
   OrigDataType: word32
-T_4341: (in PHI(r31_165, r31_192, r31_115) : word32)
+T_4341: (in PHI((r31_165, l00402B0C), (r31_192, l00402B4C), (r31_115, l00402A7C)) : word32)
   Class: Eq_18
   DataType: Eq_18
   OrigDataType: 
@@ -23994,7 +23994,7 @@ T_5546: (in 1 : int32)
   Class: Eq_2531
   DataType: (ptr32 Eq_2531)
   OrigDataType: int32
-T_5547: (in PHI(r2, r2_99, r2_99) : word32)
+T_5547: (in PHI((r2, l00403880), (r2_99, l00403848), (r2_99, l00403868)) : word32)
   Class: Eq_2
   DataType: (ptr32 Eq_2)
   OrigDataType: 
@@ -24006,7 +24006,7 @@ T_5549: (in r2_31 : word32)
   Class: Eq_2
   DataType: (ptr32 Eq_2)
   OrigDataType: word32
-T_5550: (in PHI(r29, r29_107, r29_121) : word32)
+T_5550: (in PHI((r29, l00403880), (r29_107, l00403848), (r29_121, l00403868)) : word32)
   Class: Eq_4905
   DataType: word32
   OrigDataType: 
@@ -24022,7 +24022,7 @@ T_5553: (in r29_35 : word32)
   Class: Eq_4905
   DataType: word32
   OrigDataType: word32
-T_5554: (in PHI(r30, r30_110, r30_123) : word32)
+T_5554: (in PHI((r30, l00403880), (r30_110, l00403848), (r30_123, l00403868)) : word32)
   Class: Eq_4858
   DataType: int32
   OrigDataType: 
@@ -24038,7 +24038,7 @@ T_5557: (in r30_36 : word32)
   Class: Eq_4858
   DataType: int32
   OrigDataType: word32
-T_5558: (in PHI(r31, r31_113, r31_125) : word32)
+T_5558: (in PHI((r31, l00403880), (r31_113, l00403848), (r31_125, l00403868)) : word32)
   Class: Eq_18
   DataType: Eq_18
   OrigDataType: 
@@ -24054,7 +24054,7 @@ T_5561: (in r31_37 : word32)
   Class: Eq_18
   DataType: Eq_18
   OrigDataType: word32
-T_5562: (in PHI(r3_53, r3_117, r3_129) : word32)
+T_5562: (in PHI((r3_53, l00403880), (r3_117, l00403848), (r3_129, l00403868)) : word32)
   Class: Eq_5562
   DataType: int32
   OrigDataType: 
@@ -24246,7 +24246,7 @@ T_5609: (in r4_58 == 0 : bool)
   Class: Eq_5609
   DataType: bool
   OrigDataType: bool
-T_5610: (in PHI(r11_59, r11_149) : word32)
+T_5610: (in PHI((r11_59, l00403760), (r11_149, l00403770)) : word32)
   Class: Eq_5606
   DataType: int32
   OrigDataType: 
@@ -24266,7 +24266,7 @@ T_5614: (in r11_62 >= 0x00000100 : bool)
   Class: Eq_5614
   DataType: bool
   OrigDataType: bool
-T_5615: (in PHI(r11_59, r11_149) : word32)
+T_5615: (in PHI((r11_59, l00403760), (r11_149, l00403770)) : word32)
   Class: Eq_5606
   DataType: int32
   OrigDataType: 
@@ -24314,7 +24314,7 @@ T_5626: (in r11_65 : word32)
   Class: Eq_5625
   DataType: int32
   OrigDataType: int32
-T_5627: (in PHI(r11_65, r11_70) : word32)
+T_5627: (in PHI((r11_65, l00403788), (r11_70, l00403790)) : word32)
   Class: Eq_5625
   DataType: int32
   OrigDataType: 
@@ -24418,7 +24418,7 @@ T_5652: (in ctr_76 : word32)
   Class: Eq_5651
   DataType: int32
   OrigDataType: int32
-T_5653: (in PHI(r11_74, r11_87) : word32)
+T_5653: (in PHI((r11_74, l004037A4), (r11_87, l004037C4)) : word32)
   Class: Eq_5649
   DataType: int32
   OrigDataType: 
@@ -24430,7 +24430,7 @@ T_5655: (in r11_78 : word32)
   Class: Eq_5649
   DataType: int32
   OrigDataType: int32
-T_5656: (in PHI(ctr_76, ctr_88) : word32)
+T_5656: (in PHI((ctr_76, l004037A4), (ctr_88, l004037C4)) : word32)
   Class: Eq_5651
   DataType: int32
   OrigDataType: 
@@ -24630,7 +24630,7 @@ T_5705: (in &fp->aFFFFFFA0->dw0000 != 0x00000000 : bool)
   Class: Eq_5705
   DataType: bool
   OrigDataType: bool
-T_5706: (in PHI(r2_93, r2_147) : word32)
+T_5706: (in PHI((r2_93, l004037E8), (r2_147, l00403830)) : word32)
   Class: Eq_2
   DataType: (ptr32 Eq_2)
   OrigDataType: 
@@ -24638,7 +24638,7 @@ T_5707: (in r2_147 : word32)
   Class: Eq_2
   DataType: (ptr32 Eq_2)
   OrigDataType: word32
-T_5708: (in PHI(r0_92, r0_146) : word32)
+T_5708: (in PHI((r0_92, l004037E8), (r0_146, l00403830)) : word32)
   Class: Eq_4906
   DataType: ui32
   OrigDataType: 
@@ -24650,7 +24650,7 @@ T_5710: (in r0_100 : word32)
   Class: Eq_4906
   DataType: ui32
   OrigDataType: ui32
-T_5711: (in PHI(r3_89, r3_144) : word32)
+T_5711: (in PHI((r3_89, l004037E8), (r3_144, l00403830)) : word32)
   Class: Eq_3033
   DataType: Eq_3033
   OrigDataType: 
@@ -24690,7 +24690,7 @@ T_5720: (in ctr_132 : word32)
   Class: Eq_5719
   DataType: int32
   OrigDataType: int32
-T_5721: (in PHI(r11_130, r11_142) : word32)
+T_5721: (in PHI((r11_130, l00403800), (r11_142, l0040380C)) : word32)
   Class: Eq_5717
   DataType: int32
   OrigDataType: 
@@ -24702,7 +24702,7 @@ T_5723: (in r11_133 : word32)
   Class: Eq_5717
   DataType: int32
   OrigDataType: int32
-T_5724: (in PHI(ctr_132, ctr_143) : word32)
+T_5724: (in PHI((ctr_132, l00403800), (ctr_143, l0040380C)) : word32)
   Class: Eq_5719
   DataType: int32
   OrigDataType: 
@@ -24902,7 +24902,7 @@ T_5773: (in -1 : int32)
   Class: Eq_5562
   DataType: int32
   OrigDataType: int32
-T_5774: (in PHI(r2, r2_107, r2_159, r2_107) : word32)
+T_5774: (in PHI((r2, l004039E4), (r2_107, l004039AC), (r2_159, l0040392C), (r2_107, l004039CC)) : word32)
   Class: Eq_2
   DataType: (ptr32 Eq_2)
   OrigDataType: 
@@ -24950,7 +24950,7 @@ T_5785: (in r31_50 : word32)
   Class: Eq_5784
   DataType: word32
   OrigDataType: word32
-T_5786: (in PHI(r3_82, r3_128, r3_174, r3_143) : word32)
+T_5786: (in PHI((r3_82, l004039E4), (r3_128, l004039AC), (r3_174, l0040392C), (r3_143, l004039CC)) : word32)
   Class: Eq_5786
   DataType: int32
   OrigDataType: 
@@ -25414,7 +25414,7 @@ T_5901: (in Mem149[r10_144 + 0x00000000:word32] : word32)
   Class: Eq_5898
   DataType: int32
   OrigDataType: word32
-T_5902: (in PHI(r2, r2, r2_195) : word32)
+T_5902: (in PHI((r2, l004038F8), (r2, l0040399C), (r2_195, l0040397C)) : word32)
   Class: Eq_2
   DataType: (ptr32 Eq_2)
   OrigDataType: 
@@ -25422,7 +25422,7 @@ T_5903: (in r2_195 : word32)
   Class: Eq_2
   DataType: (ptr32 Eq_2)
   OrigDataType: word32
-T_5904: (in PHI(r0, r0, r0_194) : word32)
+T_5904: (in PHI((r0, l004038F8), (r0, l0040399C), (r0_194, l0040397C)) : word32)
   Class: Eq_2839
   DataType: ui32
   OrigDataType: 
@@ -25434,7 +25434,7 @@ T_5906: (in r0_108 : word32)
   Class: Eq_2839
   DataType: ui32
   OrigDataType: ui32
-T_5907: (in PHI(r3_27, r3_27, r3_192) : word32)
+T_5907: (in PHI((r3_27, l004038F8), (r3_27, l0040399C), (r3_192, l0040397C)) : word32)
   Class: Eq_3033
   DataType: Eq_3033
   OrigDataType: 
@@ -25586,7 +25586,7 @@ T_5944: (in -1 : int32)
   Class: Eq_5786
   DataType: int32
   OrigDataType: int32
-T_5945: (in PHI(r11_175, r11_187) : word32)
+T_5945: (in PHI((r11_175, l0040394C), (r11_187, l00403958)) : word32)
   Class: Eq_5931
   DataType: int32
   OrigDataType: 
@@ -25598,7 +25598,7 @@ T_5947: (in r11_178 : word32)
   Class: Eq_5931
   DataType: int32
   OrigDataType: int32
-T_5948: (in PHI(ctr_177, ctr_188) : word32)
+T_5948: (in PHI((ctr_177, l0040394C), (ctr_188, l00403958)) : word32)
   Class: Eq_5933
   DataType: int32
   OrigDataType: 

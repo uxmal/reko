@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -246,7 +246,7 @@ namespace Reko.UnitTests.Analysis
 
 			Identifier id3 = m.Local32("id_3");
 			Identifier id4 = m.Local32("id_4");
-			liv.Context.PhiStatement = m.Phi(id3, id2, id4);
+			liv.Context.PhiStatement = m.Phi(id3, (id2, "block2"), (id4, "block4"));
 			liv.Context.PhiIdentifier = id3;
 			SsaId(id3, liv.Context.PhiStatement, ((PhiAssignment)liv.Context.PhiStatement.Instruction).Src, false);
 			Assert.AreEqual(4, ssaIds.Count);

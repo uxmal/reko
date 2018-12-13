@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -593,7 +593,7 @@ namespace Reko.Evaluation
             var args = pc.Arguments
                 .Select(a =>
                 {
-                    var arg = SimplifyPhiArg(a.Accept(this));
+                    var arg = SimplifyPhiArg(a.Value.Accept(this));
                     ctx.RemoveExpressionUse(arg);
                     return arg;
                 })

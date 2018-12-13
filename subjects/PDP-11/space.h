@@ -558,7 +558,7 @@ Eq_1060: (union "Eq_1060" (int16 u0) (byte u1))
 	T_1060 (in r4 : (ptr16 Eq_1060))
 	T_1065 (in r4 : (ptr16 Eq_1060))
 	T_1072 (in r4 : (ptr16 Eq_1060))
-	T_1080 (in PHI(r4_22, r4_20, r4, r4) : word16)
+	T_1080 (in PHI((r4_22, l0AF6_thunk_fn0B02), (r4_20, l0AF6_thunk_fn0AF8), (r4, l0AF6_thunk_fn0AF8), (r4, l0AF6_thunk_fn0B02)) : word16)
 	T_1081 (in r4_22 : word16)
 	T_1082 (in r4_20 : word16)
 	T_1083 (in r4_16 : word16)
@@ -583,7 +583,7 @@ Eq_1063: (fn word16 ((ptr16 Eq_1060), byte, ptr16))
 	T_1075 (in fn0AE6 : ptr16)
 Eq_1079: (union "Eq_1079" (byte u0) ((ptr16 Eq_18553) u1))
 	T_1079 (in r3 : Eq_1079)
-	T_1084 (in PHI(r3_23, r3_21, r3, r3) : word16)
+	T_1084 (in PHI((r3_23, l0AF6_thunk_fn0B02), (r3_21, l0AF6_thunk_fn0AF8), (r3, l0AF6_thunk_fn0AF8), (r3, l0AF6_thunk_fn0B02)) : word16)
 	T_1085 (in r3_23 : word16)
 	T_1086 (in r3_21 : word16)
 	T_1087 (in r3_17 : word16)
@@ -968,7 +968,7 @@ Eq_1686: (union "Eq_1686" (wchar_t u0) (int16 u1) (uint16 u2) (ptr16 u3))
 	T_2402 (in r2 : Eq_1686)
 	T_2407 (in r2 : Eq_1686)
 	T_2414 (in r2 : Eq_1686)
-	T_2424 (in PHI(r2_29, r2_26, r2, r2) : word16)
+	T_2424 (in PHI((r2_29, l0FC8_thunk_fn0FCC), (r2_26, l0FC8_thunk_fn0FCA), (r2, l0FC8_thunk_fn0FCA), (r2, l0FC8_thunk_fn0FCC)) : word16)
 	T_2425 (in r2_29 : word16)
 	T_2426 (in r2_26 : word16)
 	T_2427 (in r2_20 : word16)
@@ -1283,7 +1283,7 @@ Eq_2405: (fn word16 (Eq_1686, ptr16, ptr16))
 	T_2406 (in signature of fn0FB2 : void)
 	T_2419 (in fn0FB2 : ptr16)
 Eq_2428: (struct "Eq_2428" (0 (ptr16 Eq_2428) ptr0000) (14 cui16 w0014) (1C word16 w001C) (64 (ptr16 Eq_2428) ptr0064))
-	T_2428 (in PHI(r3_30, r3_27, r3, r3) : word16)
+	T_2428 (in PHI((r3_30, l0FC8_thunk_fn0FCC), (r3_27, l0FC8_thunk_fn0FCA), (r3, l0FC8_thunk_fn0FCA), (r3, l0FC8_thunk_fn0FCC)) : word16)
 	T_2429 (in r3_30 : word16)
 	T_2430 (in r3_27 : word16)
 	T_2431 (in r3 : word16)
@@ -6506,7 +6506,7 @@ T_1079: (in r3 : Eq_1079)
   Class: Eq_1079
   DataType: Eq_1079
   OrigDataType: word16
-T_1080: (in PHI(r4_22, r4_20, r4, r4) : word16)
+T_1080: (in PHI((r4_22, l0AF6_thunk_fn0B02), (r4_20, l0AF6_thunk_fn0AF8), (r4, l0AF6_thunk_fn0AF8), (r4, l0AF6_thunk_fn0B02)) : word16)
   Class: Eq_1060
   DataType: (ptr16 Eq_1060)
   OrigDataType: 
@@ -6522,7 +6522,7 @@ T_1083: (in r4_16 : word16)
   Class: Eq_1060
   DataType: (ptr16 Eq_1060)
   OrigDataType: word16
-T_1084: (in PHI(r3_23, r3_21, r3, r3) : word16)
+T_1084: (in PHI((r3_23, l0AF6_thunk_fn0B02), (r3_21, l0AF6_thunk_fn0AF8), (r3, l0AF6_thunk_fn0AF8), (r3, l0AF6_thunk_fn0B02)) : word16)
   Class: Eq_1079
   DataType: Eq_1079
   OrigDataType: 
@@ -11882,7 +11882,7 @@ T_2423: (in r0 : word16)
   Class: Eq_2423
   DataType: word16
   OrigDataType: word16
-T_2424: (in PHI(r2_29, r2_26, r2, r2) : word16)
+T_2424: (in PHI((r2_29, l0FC8_thunk_fn0FCC), (r2_26, l0FC8_thunk_fn0FCA), (r2, l0FC8_thunk_fn0FCA), (r2, l0FC8_thunk_fn0FCC)) : word16)
   Class: Eq_1686
   DataType: Eq_1686
   OrigDataType: 
@@ -11898,7 +11898,7 @@ T_2427: (in r2_20 : word16)
   Class: Eq_1686
   DataType: Eq_1686
   OrigDataType: word16
-T_2428: (in PHI(r3_30, r3_27, r3, r3) : word16)
+T_2428: (in PHI((r3_30, l0FC8_thunk_fn0FCC), (r3_27, l0FC8_thunk_fn0FCA), (r3, l0FC8_thunk_fn0FCA), (r3, l0FC8_thunk_fn0FCC)) : word16)
   Class: Eq_2428
   DataType: (ptr16 Eq_2428)
   OrigDataType: 
@@ -11918,7 +11918,7 @@ T_2432: (in r3_21 : word16)
   Class: Eq_2428
   DataType: (ptr16 Eq_2428)
   OrigDataType: word16
-T_2433: (in PHI(r0_31, r0_28, r0, r0) : word16)
+T_2433: (in PHI((r0_31, l0FC8_thunk_fn0FCC), (r0_28, l0FC8_thunk_fn0FCA), (r0, l0FC8_thunk_fn0FCA), (r0, l0FC8_thunk_fn0FCC)) : word16)
   Class: Eq_2423
   DataType: word16
   OrigDataType: 

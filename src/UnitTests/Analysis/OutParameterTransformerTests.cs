@@ -107,7 +107,7 @@ namespace Reko.UnitTests.Analysis
             m.Assign(foo2, Constant.Word32(2));
             Statement stmFoo2 = m.Block.Statements.Last;
             m.Label("block3");
-            Statement stmFoo3 = m.Phi(foo3, foo1, foo2);
+            Statement stmFoo3 = m.Phi(foo3, (foo1, "block1"), (foo2, "block2"));
 
 			SsaIdentifierCollection ssaIds = new SsaIdentifierCollection();
 			ssaIds.Add(foo1, new SsaIdentifier(foo1, foo, stmFoo1, null, false));
@@ -119,7 +119,7 @@ namespace Reko.UnitTests.Analysis
 
 			Assert.AreEqual("*pfoo = 0x00000001", stmFoo1.Instruction.ToString());
 			Assert.AreEqual("*pfoo = 0x00000002", stmFoo2.Instruction.ToString());
-			Assert.AreEqual("foo3 = PHI(foo1, foo2)", stmFoo3.Instruction.ToString());
+			Assert.AreEqual("foo3 = PHI((foo1, block1), (foo2, block2))", stmFoo3.Instruction.ToString());
 
 		}
 

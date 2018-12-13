@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -87,10 +87,9 @@ namespace Reko.UnitTests.Mocks
         public IProcessorArchitecture Architecture { get; private set; }
         public int InstructionSize { get; set; }
 
-        private Block BlockOf(string label)
+        protected Block BlockOf(string label)
         {
-            Block b;
-            if (!blocks.TryGetValue(label, out b))
+            if (!blocks.TryGetValue(label, out Block b))
             {
                 b = Procedure.AddBlock(label);
                 blocks.Add(label, b);
@@ -170,7 +169,6 @@ namespace Reko.UnitTests.Mocks
             unresolvedProcedures.Add(new ProcedureConstantUpdater(procedureName, ci));
             return Emit(ci);
         }
-
 
         public void Compare(string flags, Expression a, Expression b)
         {
@@ -289,6 +287,17 @@ namespace Reko.UnitTests.Mocks
         public override Frame Frame
         {
             get { return Procedure.Frame; }
+        }
+
+        public Statement Phi(Identifier idDst, params (Expression, string)[] exprs)
+        {
+            var phi = new PhiFunction(
+                idDst.DataType,
+                exprs.Select(de => new PhiArgument(
+                    BlockOf(de.Item2),
+                    de.Item1))
+                .ToArray());
+            return Emit(new PhiAssignment(idDst, phi));
         }
 
         public override Identifier Register(int i)

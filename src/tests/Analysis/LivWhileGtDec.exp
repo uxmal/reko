@@ -16,7 +16,7 @@ loop:
 	Mem3[a + i_2 * 0x00000004:word32] = 0x00000000
 	// succ:  loopHdr
 loopHdr:
-	i_1 = PHI(i_0, i_2)
+	i_1 = PHI((i_0, l1), (i_2, loop))
 	branch i_1 > 0 loop
 	goto l2
 	// succ:  l2 loop

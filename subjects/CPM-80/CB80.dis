@@ -1751,10 +1751,10 @@ l092D_thunk_fn0930:
 // SymbolicIn: sp:fp d:0xFE
 
 fn092A_exit:
-	b_4 = PHI(b_20, b_12, b, b)
-	hl_5 = PHI(hl_21, hl_13, hl, hl)
-	C_6 = PHI(C_22, C_14, C, C)
-	SZPC_7 = PHI(SZPC_23, SZPC_16, SZPC, SZPC)
+	b_4 = PHI((b_20, l092D_thunk_fn096E), (b_12, l092D_thunk_fn0930), (b, l092C_thunk_fn0930), (b, l092C_thunk_fn096E))
+	hl_5 = PHI((hl_21, l092D_thunk_fn096E), (hl_13, l092D_thunk_fn0930), (hl, l092C_thunk_fn0930), (hl, l092C_thunk_fn096E))
+	C_6 = PHI((C_22, l092D_thunk_fn096E), (C_14, l092D_thunk_fn0930), (C, l092C_thunk_fn0930), (C, l092C_thunk_fn096E))
+	SZPC_7 = PHI((SZPC_23, l092D_thunk_fn096E), (SZPC_16, l092D_thunk_fn0930), (SZPC, l092C_thunk_fn0930), (SZPC, l092C_thunk_fn096E))
 	use b_4 (=> bOut)
 	use d_2 (=> dOut)
 	use hl_5 (=> hlOut)

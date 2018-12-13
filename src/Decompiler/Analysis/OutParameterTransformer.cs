@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -128,7 +128,7 @@ namespace Reko.Analysis
 		{
 			for (int i = 0; i < phi.Src.Arguments.Length; ++i)
 			{
-				Identifier idSrc = (Identifier) phi.Src.Arguments[i];
+				Identifier idSrc = (Identifier) phi.Src.Arguments[i].Value;
 				ssaIds[idSrc].Uses.Remove(stmDef);
 				wl.Add(idSrc);
 			}

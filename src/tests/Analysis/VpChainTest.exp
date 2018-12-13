@@ -129,7 +129,7 @@ wLoc02_4: orig: wLoc02
     uses: si_19 = wLoc02_4
 si_5: orig: si
     def:  si_5 = 0x0000
-    uses: si_13 = PHI(si_5, si_21)
+    uses: si_13 = PHI((si_5, l0C00_000F), (si_21, l0C00_0015))
 SZO_6: orig: SZO
     def:  SZO_6 = cond(0x0000)
     uses: SO_7 = SZO_6 (alias)
@@ -145,15 +145,15 @@ SCZO_10: orig: SCZO
     def:  SCZO_10 = DPB(SCZO, C_8, 0) (alias)
 dx:dx
     def:  def dx
-    uses: dx_12 = PHI(dx, dx_24)
+    uses: dx_12 = PHI((dx, l0C00_000F), (dx_24, l0C00_0015))
 dx_12: orig: dx
-    def:  dx_12 = PHI(dx, dx_24)
+    def:  dx_12 = PHI((dx, l0C00_000F), (dx_24, l0C00_0015))
     uses: SCZO_14 = cond(dx_12 - 0x0000)
           si_21 = si_13 + dx_12
           dx_24 = dx_12 - 0x0001
           branch dx_12 >= 0x0000 l0C00_0015
 si_13: orig: si
-    def:  si_13 = PHI(si_5, si_21)
+    def:  si_13 = PHI((si_5, l0C00_000F), (si_21, l0C00_0015))
     uses: ax_18 = si_13
           si_21 = si_13 + dx_12
 SCZO_14: orig: SCZO
@@ -177,7 +177,7 @@ sp_20: orig: sp
 si_21: orig: si
     def:  si_21 = si_13 + dx_12
     uses: SCZO_22 = cond(si_21)
-          si_13 = PHI(si_5, si_21)
+          si_13 = PHI((si_5, l0C00_000F), (si_21, l0C00_0015))
 SCZO_22: orig: SCZO
     def:  SCZO_22 = cond(si_21)
     uses: C_23 = (bool) SCZO_22 (alias)
@@ -186,7 +186,7 @@ C_23: orig: C
 dx_24: orig: dx
     def:  dx_24 = dx_12 - 0x0001
     uses: SZO_25 = cond(dx_24)
-          dx_12 = PHI(dx, dx_24)
+          dx_12 = PHI((dx, l0C00_000F), (dx_24, l0C00_0015))
 SZO_25: orig: SZO
     def:  SZO_25 = cond(dx_24)
     uses: SCZO_26 = SZO_25 (alias)
@@ -225,8 +225,8 @@ l0C00_0015:
 	SO_27 = SZO_25 (alias)
 	// succ:  l0C00_0018
 l0C00_0018:
-	dx_12 = PHI(dx, dx_24)
-	si_13 = PHI(si_5, si_21)
+	dx_12 = PHI((dx, l0C00_000F), (dx_24, l0C00_0015))
+	si_13 = PHI((si_5, l0C00_000F), (si_21, l0C00_0015))
 	SCZO_14 = cond(dx_12 - 0x0000)
 	C_15 = (bool) SCZO_14 (alias)
 	SZO_16 = SCZO_14 (alias)
@@ -258,7 +258,7 @@ wLoc02_4: orig: wLoc02
     def:  wLoc02_4 = si
 si_5: orig: si
     def:  si_5 = 0x0000
-    uses: si_13 = PHI(si_5, si_21)
+    uses: si_13 = PHI((si_5, l0C00_000F), (si_21, l0C00_0015))
 SZO_6: orig: SZO
     def:  SZO_6 = cond(0x0000)
     uses: SO_7 = SZO_6 (alias)
@@ -273,15 +273,15 @@ SCZO_10: orig: SCZO
     def:  SCZO_10 = DPB(SCZO, false, 0) (alias)
 dx:dx
     def:  def dx
-    uses: dx_12 = PHI(dx, dx_24)
+    uses: dx_12 = PHI((dx, l0C00_000F), (dx_24, l0C00_0015))
 dx_12: orig: dx
-    def:  dx_12 = PHI(dx, dx_24)
+    def:  dx_12 = PHI((dx, l0C00_000F), (dx_24, l0C00_0015))
     uses: SCZO_14 = cond(dx_12)
           si_21 = si_13 + dx_12
           dx_24 = dx_12 - 0x0001
           branch dx_12 >= 0x0000 l0C00_0015
 si_13: orig: si
-    def:  si_13 = PHI(si_5, si_21)
+    def:  si_13 = PHI((si_5, l0C00_000F), (si_21, l0C00_0015))
     uses: ax_18 = si_13
           si_21 = si_13 + dx_12
           return si_13
@@ -305,7 +305,7 @@ sp_20: orig: sp
 si_21: orig: si
     def:  si_21 = si_13 + dx_12
     uses: SCZO_22 = cond(si_21)
-          si_13 = PHI(si_5, si_21)
+          si_13 = PHI((si_5, l0C00_000F), (si_21, l0C00_0015))
 SCZO_22: orig: SCZO
     def:  SCZO_22 = cond(si_21)
     uses: C_23 = (bool) SCZO_22 (alias)
@@ -314,7 +314,7 @@ C_23: orig: C
 dx_24: orig: dx
     def:  dx_24 = dx_12 - 0x0001
     uses: SZO_25 = cond(dx_24)
-          dx_12 = PHI(dx, dx_24)
+          dx_12 = PHI((dx, l0C00_000F), (dx_24, l0C00_0015))
 SZO_25: orig: SZO
     def:  SZO_25 = cond(dx_24)
     uses: SCZO_26 = SZO_25 (alias)
@@ -353,8 +353,8 @@ l0C00_0015:
 	SO_27 = SZO_25 (alias)
 	// succ:  l0C00_0018
 l0C00_0018:
-	dx_12 = PHI(dx, dx_24)
-	si_13 = PHI(si_5, si_21)
+	dx_12 = PHI((dx, l0C00_000F), (dx_24, l0C00_0015))
+	si_13 = PHI((si_5, l0C00_000F), (si_21, l0C00_0015))
 	SCZO_14 = cond(dx_12)
 	C_15 = (bool) SCZO_14 (alias)
 	SZO_16 = SCZO_14 (alias)

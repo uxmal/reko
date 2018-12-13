@@ -53,7 +53,7 @@ SCZO_13: orig: SCZO
 wLoc04_14: orig: wLoc04
 dx_ax_15: orig: dx_ax
 ax_16: orig: ax
-    def:  ax_16 = PHI(ax_30, ax_35)
+    def:  ax_16 = PHI((ax_30, l0C00_0018), (ax_35, l0C00_0026))
     uses: return ax_16
 dx_17: orig: dx
 SCZO_18: orig: SCZO
@@ -78,14 +78,14 @@ dx_ax_29: orig: dx_ax
     uses: ax_30 = (word16) dx_ax_29 (alias)
 ax_30: orig: ax
     def:  ax_30 = (word16) dx_ax_29 (alias)
-    uses: ax_16 = PHI(ax_30, ax_35)
+    uses: ax_16 = PHI((ax_30, l0C00_0018), (ax_35, l0C00_0026))
 dx_31: orig: dx
 SCZO_32: orig: SCZO
 SZO_33: orig: SZO
 Z_34: orig: Z
 ax_35: orig: ax
     def:  ax_35 = 0x0001
-    uses: ax_16 = PHI(ax_30, ax_35)
+    uses: ax_16 = PHI((ax_30, l0C00_0018), (ax_35, l0C00_0026))
 dx_ax_36: orig: dx_ax
 wLoc04:Local -0004
 // fn0C00_000F
@@ -111,7 +111,7 @@ l0C00_0026:
 	ax_35 = 0x0001
 	// succ:  l0C00_0029
 l0C00_0029:
-	ax_16 = PHI(ax_30, ax_35)
+	ax_16 = PHI((ax_30, l0C00_0018), (ax_35, l0C00_0026))
 	return ax_16
 	// succ:  fn0C00_000F_exit
 fn0C00_000F_exit:

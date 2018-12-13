@@ -1,8 +1,8 @@
 r0:r0
     def:  def r0
-    uses: r0_1 = PHI(r0, r0_9, r0_12)
+    uses: r0_1 = PHI((r0, ManyIncrements_entry), (r0_9, l1), (r0_12, l2))
 r0_1: orig: r0
-    def:  r0_1 = PHI(r0, r0_9, r0_12)
+    def:  r0_1 = PHI((r0, ManyIncrements_entry), (r0_9, l1), (r0_12, l2))
     uses: r1_3 = Mem0[r0_1:byte]
           r0_4 = r0_1 + 0x00000001
 Mem0:Global memory
@@ -29,13 +29,13 @@ Mem7: orig: Mem0
 r1_8: orig: r1
 r0_9: orig: r0
     def:  r0_9 = r0_4 + 0x00000002
-    uses: r0_1 = PHI(r0, r0_9, r0_12)
+    uses: r0_1 = PHI((r0, ManyIncrements_entry), (r0_9, l1), (r0_12, l2))
 Mem10: orig: Mem0
     def:  Mem10[0x33333331:word32] = Mem7[r0_4 + 0x00000001:byte]
 r1_11: orig: r1
 r0_12: orig: r0
     def:  r0_12 = r0_4 + 0x00000001
-    uses: r0_1 = PHI(r0, r0_9, r0_12)
+    uses: r0_1 = PHI((r0, ManyIncrements_entry), (r0_9, l1), (r0_12, l2))
 Mem13: orig: Mem0
     def:  Mem13[0x33333330:word32] = Mem0[r0_4:byte]
 // ManyIncrements
@@ -60,7 +60,7 @@ l2:
 	r0_12 = r0_4 + 0x00000001
 	// succ:  loopTop
 loopTop:
-	r0_1 = PHI(r0, r0_9, r0_12)
+	r0_1 = PHI((r0, ManyIncrements_entry), (r0_9, l1), (r0_12, l2))
 	r1_3 = Mem0[r0_1:byte]
 	r0_4 = r0_1 + 0x00000001
 	branch r1_3 != 1 not1

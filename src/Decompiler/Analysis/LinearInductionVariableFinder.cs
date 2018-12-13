@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -186,8 +186,8 @@ namespace Reko.Analysis
 		{
 			if (phi.Arguments.Length != 2)
 				return null;
-            var sid0 = ssaIds[(Identifier)phi.Arguments[0]];
-            var sid1 = ssaIds[(Identifier)phi.Arguments[1]];
+            var sid0 = ssaIds[(Identifier)phi.Arguments[0].Value];
+            var sid1 = ssaIds[(Identifier)phi.Arguments[1].Value];
             if (sid0.DefStatement == null || sid1.DefStatement == null)
                 return null;
             var sid = doms.DominatesStrictly(sid1.DefStatement, sid0.DefStatement)

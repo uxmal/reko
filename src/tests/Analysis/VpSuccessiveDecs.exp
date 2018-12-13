@@ -90,27 +90,27 @@ ax_3: orig: ax
 SZO_4: orig: SZO
     def:  SZO_4 = cond(ax_3)
     uses: Z_5 = (bool) SZO_4 (alias)
-          SZO_7 = PHI(SZO_4, SZO_13, SZO_17, SZO_21)
+          SZO_7 = PHI((SZO_4, l0C00_0010), (SZO_13, l0C00_0017), (SZO_17, l0C00_001E), (SZO_21, l0C00_0022))
 Z_5: orig: Z
     def:  Z_5 = (bool) SZO_4 (alias)
-    uses: Z_8 = PHI(Z_5, Z_14, Z_18, Z_22)
+    uses: Z_8 = PHI((Z_5, l0C00_0010), (Z_14, l0C00_0017), (Z_18, l0C00_001E), (Z_22, l0C00_0022))
 C_6: orig: C
     def:  C_6 = false
-    uses: C_9 = PHI(C_6, C_6, C_6, C_23)
-          C_9 = PHI(C_6, C_6, C_6, C_23)
-          C_9 = PHI(C_6, C_6, C_6, C_23)
+    uses: C_9 = PHI((C_6, l0C00_0010), (C_6, l0C00_0017), (C_6, l0C00_001E), (C_23, l0C00_0022))
+          C_9 = PHI((C_6, l0C00_0010), (C_6, l0C00_0017), (C_6, l0C00_001E), (C_23, l0C00_0022))
+          C_9 = PHI((C_6, l0C00_0010), (C_6, l0C00_0017), (C_6, l0C00_001E), (C_23, l0C00_0022))
 SZO_7: orig: SZO
-    def:  SZO_7 = PHI(SZO_4, SZO_13, SZO_17, SZO_21)
+    def:  SZO_7 = PHI((SZO_4, l0C00_0010), (SZO_13, l0C00_0017), (SZO_17, l0C00_001E), (SZO_21, l0C00_0022))
 Z_8: orig: Z
-    def:  Z_8 = PHI(Z_5, Z_14, Z_18, Z_22)
+    def:  Z_8 = PHI((Z_5, l0C00_0010), (Z_14, l0C00_0017), (Z_18, l0C00_001E), (Z_22, l0C00_0022))
 C_9: orig: C
-    def:  C_9 = PHI(C_6, C_6, C_6, C_23)
+    def:  C_9 = PHI((C_6, l0C00_0010), (C_6, l0C00_0017), (C_6, l0C00_001E), (C_23, l0C00_0022))
 ax_10: orig: ax
-    def:  ax_10 = PHI(ax_11, ax_15, ax_19, ax_20)
+    def:  ax_10 = PHI((ax_11, l0C00_0010), (ax_15, l0C00_0017), (ax_19, l0C00_001E), (ax_20, l0C00_0022))
 ax_11: orig: ax
     def:  ax_11 = 0x0123
     uses: return ax_11
-          ax_10 = PHI(ax_11, ax_15, ax_19, ax_20)
+          ax_10 = PHI((ax_11, l0C00_0010), (ax_15, l0C00_0017), (ax_19, l0C00_001E), (ax_20, l0C00_0022))
 ax_12: orig: ax
     def:  ax_12 = ax_3 - 0x0001
     uses: SZO_13 = cond(ax_12)
@@ -119,14 +119,14 @@ ax_12: orig: ax
 SZO_13: orig: SZO
     def:  SZO_13 = cond(ax_12)
     uses: Z_14 = (bool) SZO_13 (alias)
-          SZO_7 = PHI(SZO_4, SZO_13, SZO_17, SZO_21)
+          SZO_7 = PHI((SZO_4, l0C00_0010), (SZO_13, l0C00_0017), (SZO_17, l0C00_001E), (SZO_21, l0C00_0022))
 Z_14: orig: Z
     def:  Z_14 = (bool) SZO_13 (alias)
-    uses: Z_8 = PHI(Z_5, Z_14, Z_18, Z_22)
+    uses: Z_8 = PHI((Z_5, l0C00_0010), (Z_14, l0C00_0017), (Z_18, l0C00_001E), (Z_22, l0C00_0022))
 ax_15: orig: ax
     def:  ax_15 = 0x0125
     uses: return ax_15
-          ax_10 = PHI(ax_11, ax_15, ax_19, ax_20)
+          ax_10 = PHI((ax_11, l0C00_0010), (ax_15, l0C00_0017), (ax_19, l0C00_001E), (ax_20, l0C00_0022))
 ax_16: orig: ax
     def:  ax_16 = ax_12 - 0x0001
     uses: SZO_17 = cond(ax_16)
@@ -134,28 +134,28 @@ ax_16: orig: ax
 SZO_17: orig: SZO
     def:  SZO_17 = cond(ax_16)
     uses: Z_18 = (bool) SZO_17 (alias)
-          SZO_7 = PHI(SZO_4, SZO_13, SZO_17, SZO_21)
+          SZO_7 = PHI((SZO_4, l0C00_0010), (SZO_13, l0C00_0017), (SZO_17, l0C00_001E), (SZO_21, l0C00_0022))
 Z_18: orig: Z
     def:  Z_18 = (bool) SZO_17 (alias)
-    uses: Z_8 = PHI(Z_5, Z_14, Z_18, Z_22)
+    uses: Z_8 = PHI((Z_5, l0C00_0010), (Z_14, l0C00_0017), (Z_18, l0C00_001E), (Z_22, l0C00_0022))
 ax_19: orig: ax
     def:  ax_19 = 0x0127
     uses: return ax_19
-          ax_10 = PHI(ax_11, ax_15, ax_19, ax_20)
+          ax_10 = PHI((ax_11, l0C00_0010), (ax_15, l0C00_0017), (ax_19, l0C00_001E), (ax_20, l0C00_0022))
 ax_20: orig: ax
     def:  ax_20 = 0x0000
     uses: return ax_20
-          ax_10 = PHI(ax_11, ax_15, ax_19, ax_20)
+          ax_10 = PHI((ax_11, l0C00_0010), (ax_15, l0C00_0017), (ax_19, l0C00_001E), (ax_20, l0C00_0022))
 SZO_21: orig: SZO
     def:  SZO_21 = cond(0x0000)
     uses: Z_22 = (bool) SZO_21 (alias)
-          SZO_7 = PHI(SZO_4, SZO_13, SZO_17, SZO_21)
+          SZO_7 = PHI((SZO_4, l0C00_0010), (SZO_13, l0C00_0017), (SZO_17, l0C00_001E), (SZO_21, l0C00_0022))
 Z_22: orig: Z
     def:  Z_22 = (bool) SZO_21 (alias)
-    uses: Z_8 = PHI(Z_5, Z_14, Z_18, Z_22)
+    uses: Z_8 = PHI((Z_5, l0C00_0010), (Z_14, l0C00_0017), (Z_18, l0C00_001E), (Z_22, l0C00_0022))
 C_23: orig: C
     def:  C_23 = false
-    uses: C_9 = PHI(C_6, C_6, C_6, C_23)
+    uses: C_9 = PHI((C_6, l0C00_0010), (C_6, l0C00_0017), (C_6, l0C00_001E), (C_23, l0C00_0022))
 // fn0C00_000C
 // Return size: 0
 word16 fn0C00_000C(word16 ax)
@@ -203,10 +203,10 @@ l0C00_0022:
 	return ax_20
 	// succ:  fn0C00_000C_exit
 fn0C00_000C_exit:
-	SZO_7 = PHI(SZO_4, SZO_13, SZO_17, SZO_21)
-	Z_8 = PHI(Z_5, Z_14, Z_18, Z_22)
-	C_9 = PHI(C_6, C_6, C_6, C_23)
-	ax_10 = PHI(ax_11, ax_15, ax_19, ax_20)
+	SZO_7 = PHI((SZO_4, l0C00_0010), (SZO_13, l0C00_0017), (SZO_17, l0C00_001E), (SZO_21, l0C00_0022))
+	Z_8 = PHI((Z_5, l0C00_0010), (Z_14, l0C00_0017), (Z_18, l0C00_001E), (Z_22, l0C00_0022))
+	C_9 = PHI((C_6, l0C00_0010), (C_6, l0C00_0017), (C_6, l0C00_001E), (C_23, l0C00_0022))
+	ax_10 = PHI((ax_11, l0C00_0010), (ax_15, l0C00_0017), (ax_19, l0C00_001E), (ax_20, l0C00_0022))
 
 fp:fp
     def:  def fp
@@ -229,57 +229,57 @@ ax_3: orig: ax
 SZO_4: orig: SZO
     def:  SZO_4 = cond(ax)
     uses: Z_5 = (bool) SZO_4 (alias)
-          SZO_7 = PHI(SZO_4, SZO_13, SZO_17, SZO_21)
+          SZO_7 = PHI((SZO_4, l0C00_0010), (SZO_13, l0C00_0017), (SZO_17, l0C00_001E), (SZO_21, l0C00_0022))
 Z_5: orig: Z
     def:  Z_5 = (bool) SZO_4 (alias)
-    uses: Z_8 = PHI(Z_5, Z_14, Z_18, Z_22)
+    uses: Z_8 = PHI((Z_5, l0C00_0010), (Z_14, l0C00_0017), (Z_18, l0C00_001E), (Z_22, l0C00_0022))
 C_6: orig: C
     def:  C_6 = false
 SZO_7: orig: SZO
-    def:  SZO_7 = PHI(SZO_4, SZO_13, SZO_17, SZO_21)
+    def:  SZO_7 = PHI((SZO_4, l0C00_0010), (SZO_13, l0C00_0017), (SZO_17, l0C00_001E), (SZO_21, l0C00_0022))
 Z_8: orig: Z
-    def:  Z_8 = PHI(Z_5, Z_14, Z_18, Z_22)
+    def:  Z_8 = PHI((Z_5, l0C00_0010), (Z_14, l0C00_0017), (Z_18, l0C00_001E), (Z_22, l0C00_0022))
 C_9: orig: C
     def:  C_9 = false
 ax_10: orig: ax
-    def:  ax_10 = PHI(ax_11, ax_15, ax_19, ax_20)
+    def:  ax_10 = PHI((ax_11, l0C00_0010), (ax_15, l0C00_0017), (ax_19, l0C00_001E), (ax_20, l0C00_0022))
 ax_11: orig: ax
     def:  ax_11 = 0x0123
-    uses: ax_10 = PHI(ax_11, ax_15, ax_19, ax_20)
+    uses: ax_10 = PHI((ax_11, l0C00_0010), (ax_15, l0C00_0017), (ax_19, l0C00_001E), (ax_20, l0C00_0022))
 ax_12: orig: ax
     def:  ax_12 = ax - 0x0001
 SZO_13: orig: SZO
     def:  SZO_13 = cond(ax - 0x0001)
     uses: Z_14 = (bool) SZO_13 (alias)
-          SZO_7 = PHI(SZO_4, SZO_13, SZO_17, SZO_21)
+          SZO_7 = PHI((SZO_4, l0C00_0010), (SZO_13, l0C00_0017), (SZO_17, l0C00_001E), (SZO_21, l0C00_0022))
 Z_14: orig: Z
     def:  Z_14 = (bool) SZO_13 (alias)
-    uses: Z_8 = PHI(Z_5, Z_14, Z_18, Z_22)
+    uses: Z_8 = PHI((Z_5, l0C00_0010), (Z_14, l0C00_0017), (Z_18, l0C00_001E), (Z_22, l0C00_0022))
 ax_15: orig: ax
     def:  ax_15 = 0x0125
-    uses: ax_10 = PHI(ax_11, ax_15, ax_19, ax_20)
+    uses: ax_10 = PHI((ax_11, l0C00_0010), (ax_15, l0C00_0017), (ax_19, l0C00_001E), (ax_20, l0C00_0022))
 ax_16: orig: ax
     def:  ax_16 = ax - 0x0002
 SZO_17: orig: SZO
     def:  SZO_17 = cond(ax - 0x0002)
     uses: Z_18 = (bool) SZO_17 (alias)
-          SZO_7 = PHI(SZO_4, SZO_13, SZO_17, SZO_21)
+          SZO_7 = PHI((SZO_4, l0C00_0010), (SZO_13, l0C00_0017), (SZO_17, l0C00_001E), (SZO_21, l0C00_0022))
 Z_18: orig: Z
     def:  Z_18 = (bool) SZO_17 (alias)
-    uses: Z_8 = PHI(Z_5, Z_14, Z_18, Z_22)
+    uses: Z_8 = PHI((Z_5, l0C00_0010), (Z_14, l0C00_0017), (Z_18, l0C00_001E), (Z_22, l0C00_0022))
 ax_19: orig: ax
     def:  ax_19 = 0x0127
-    uses: ax_10 = PHI(ax_11, ax_15, ax_19, ax_20)
+    uses: ax_10 = PHI((ax_11, l0C00_0010), (ax_15, l0C00_0017), (ax_19, l0C00_001E), (ax_20, l0C00_0022))
 ax_20: orig: ax
     def:  ax_20 = 0x0000
-    uses: ax_10 = PHI(ax_11, ax_15, ax_19, ax_20)
+    uses: ax_10 = PHI((ax_11, l0C00_0010), (ax_15, l0C00_0017), (ax_19, l0C00_001E), (ax_20, l0C00_0022))
 SZO_21: orig: SZO
     def:  SZO_21 = cond(0x0000)
     uses: Z_22 = (bool) SZO_21 (alias)
-          SZO_7 = PHI(SZO_4, SZO_13, SZO_17, SZO_21)
+          SZO_7 = PHI((SZO_4, l0C00_0010), (SZO_13, l0C00_0017), (SZO_17, l0C00_001E), (SZO_21, l0C00_0022))
 Z_22: orig: Z
     def:  Z_22 = (bool) SZO_21 (alias)
-    uses: Z_8 = PHI(Z_5, Z_14, Z_18, Z_22)
+    uses: Z_8 = PHI((Z_5, l0C00_0010), (Z_14, l0C00_0017), (Z_18, l0C00_001E), (Z_22, l0C00_0022))
 C_23: orig: C
     def:  C_23 = false
 // fn0C00_000C
@@ -329,7 +329,7 @@ l0C00_0022:
 	return 0x0000
 	// succ:  fn0C00_000C_exit
 fn0C00_000C_exit:
-	SZO_7 = PHI(SZO_4, SZO_13, SZO_17, SZO_21)
-	Z_8 = PHI(Z_5, Z_14, Z_18, Z_22)
+	SZO_7 = PHI((SZO_4, l0C00_0010), (SZO_13, l0C00_0017), (SZO_17, l0C00_001E), (SZO_21, l0C00_0022))
+	Z_8 = PHI((Z_5, l0C00_0010), (Z_14, l0C00_0017), (Z_18, l0C00_001E), (Z_22, l0C00_0022))
 	C_9 = false
-	ax_10 = PHI(ax_11, ax_15, ax_19, ax_20)
+	ax_10 = PHI((ax_11, l0C00_0010), (ax_15, l0C00_0017), (ax_19, l0C00_001E), (ax_20, l0C00_0022))

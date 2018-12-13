@@ -103,8 +103,8 @@ l0C00_002D:
 	si_14 = si_4 + 0x0002
 	// succ:  l0C00_002E
 l0C00_002E:
-	ax_8 = PHI(ax_2, ax_13)
-	si_9 = PHI(si_4, si_14)
+	ax_8 = PHI((ax_2, l0C00_0027), (ax_13, l0C00_002D))
+	si_9 = PHI((si_4, l0C00_0027), (si_14, l0C00_002D))
 	return ax_8
 	// succ:  fn0C00_0027_exit
 fn0C00_0027_exit:
@@ -132,7 +132,7 @@ l0C00_002D:
 	*siOut = si_4 + 0x0002
 	// succ:  l0C00_002E
 l0C00_002E:
-	ax_8 = PHI(ax_2, ax_13)
+	ax_8 = PHI((ax_2, l0C00_0027), (ax_13, l0C00_002D))
 	return ax_8
 	// succ:  fn0C00_0027_exit
 fn0C00_0027_exit:

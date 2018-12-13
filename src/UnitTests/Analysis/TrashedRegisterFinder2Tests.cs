@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -184,30 +184,6 @@ Constants: ds:0x0C00,Local -0002:0x0C00
                 m.MStore(sp, m.Word16(0x0C00));
                 m.Assign(ds, m.Mem16(sp));
                 m.Assign(sp, m.IAdd(sp, 2));
-                m.Return();
-            });
-        }
-
-        [Test(Description = "Constant in one branch, not constant in the other")]
-        public void TrfConstNonConst()
-        {
-            var sExp =
-@"Preserved: ax
-Trashed: cl,cx
-";
-            RunTest(sExp, m =>
-            {
-                var ax = m.Frame.EnsureRegister(new RegisterStorage("ax", 0, 0, PrimitiveType.Word16));
-                var cl = m.Frame.EnsureRegister(new RegisterStorage("cl", 9, 0, PrimitiveType.Byte));
-                var cx = m.Frame.EnsureRegister(new RegisterStorage("cx", 1, 0, PrimitiveType.Byte));
-                m.BranchIf(m.Eq0(ax), "zero");
-
-                m.Assign(cl, 0);
-                m.Assign(cx, m.Dpb(cx, cl, 0));
-                m.Return();
-
-                m.Label("zero");
-                m.Assign(cx, m.Mem16(ax));
                 m.Return();
             });
         }
