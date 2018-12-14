@@ -2361,7 +2361,7 @@ fn291C_entry:
 l291C:
 	byte a_13 = 0x00 - (__ror(Mem0[hl - 1:byte], 0x01) <u 0x00)
 	byte a_20 = 0x00 - (__ror(a, 0x01) <u 0x00)
-	branch __rcl(a_13, 0x01, (bool) cond(__rcl(a_13 ^ a_20, 0x01, false))) >=u 0x00 l293D
+	branch __rcl(a_13, 0x01, (bool) cond((a_13 ^ a_20) << 0x01)) >=u 0x00 l293D
 // DataOut: d e h l
 // DataOut (flags): 
 // SymbolicIn: sp:fp

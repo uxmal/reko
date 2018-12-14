@@ -925,7 +925,7 @@ void fn291C(byte a, ptr16 hl)
 {
 	Eq_10 a_13 = 0x00 - (__ror(*(hl - 0x01), 0x01) < 0x00);
 	byte a_20 = 0x00 - (__ror(a, 0x01) < 0x00);
-	__rcl(a_13, 0x01, (bool) cond(__rcl(a_13 ^ a_20, 0x01, false))) >= 0x00;
+	__rcl(a_13, 0x01, (bool) cond((a_13 ^ a_20) << 0x01)) >= 0x00;
 	fn1C54();
 }
 
@@ -934,22 +934,22 @@ void fn384A(word16 ix)
 {
 }
 
-// 3E2D: void fn3E2D(Register word16 bc, Register (ptr16 Eq_3371) ix, Stack word16 wArg03, Stack word16 wArg05, Stack ptr16 wArg0D, Stack word16 wArg10)
-void fn3E2D(word16 bc, Eq_3371 * ix, word16 wArg03, word16 wArg05, ptr16 wArg0D, word16 wArg10)
+// 3E2D: void fn3E2D(Register word16 bc, Register (ptr16 Eq_3369) ix, Stack word16 wArg03, Stack word16 wArg05, Stack ptr16 wArg0D, Stack word16 wArg10)
+void fn3E2D(word16 bc, Eq_3369 * ix, word16 wArg03, word16 wArg05, ptr16 wArg0D, word16 wArg10)
 {
 	ix->bFFFFFFFC = ix->bFFFFFFF7;
 	ix->bFFFFFFFD = 0x00;
-	struct Eq_3386 * hl_34 = DPB(wArg10 + (wArg05 + 0x01), 0x00, 8) * 0x08 + DPB(wArg05 + 0x01, 0x00, 8) + bc;
+	struct Eq_3384 * hl_34 = DPB(wArg10 + (wArg05 + 0x01), 0x00, 8) * 0x08 + DPB(wArg05 + 0x01, 0x00, 8) + bc;
 	ix->bFFFFFFF8 = hl_34->b0002;
 	ix->bFFFFFFF9 = hl_34->b0003;
-	struct Eq_3411 * hl_105 = DPB(wArg10 + (wArg05 + 0x03), 0x00, 8) * 0x08 + DPB(wArg05 + 0x03, 0x00, 8) + DPB(bc, (wArg0D + DPB(bc, SLICE(DPB(wArg10 + (wArg05 + 0x02), 0x00, 8) * 0x02 + DPB(bc, 0x00, 8), byte, 8), 8))->b0001, 8);
+	struct Eq_3409 * hl_105 = DPB(wArg10 + (wArg05 + 0x03), 0x00, 8) * 0x08 + DPB(wArg05 + 0x03, 0x00, 8) + DPB(bc, (wArg0D + DPB(bc, SLICE(DPB(wArg10 + (wArg05 + 0x02), 0x00, 8) * 0x02 + DPB(bc, 0x00, 8), byte, 8), 8))->b0001, 8);
 	byte v41_114 = hl_105->b0003;
 	byte v43_124 = ix->bFFFFFFF9;
 	fn3EC2(v43_124, v41_114, ix, wArg01, hl_34, hl_105);
 }
 
-// 3EC2: void fn3EC2(Register byte a, Register byte b, Register (ptr16 Eq_3371) ix, Stack word16 wArg03, Stack (ptr16 Eq_3386) wArg05, Stack (ptr16 Eq_3411) wArg07)
-void fn3EC2(byte a, byte b, Eq_3371 * ix, word16 wArg03, Eq_3386 * wArg05, Eq_3411 * wArg07)
+// 3EC2: void fn3EC2(Register byte a, Register byte b, Register (ptr16 Eq_3369) ix, Stack word16 wArg03, Stack (ptr16 Eq_3384) wArg05, Stack (ptr16 Eq_3409) wArg07)
+void fn3EC2(byte a, byte b, Eq_3369 * ix, word16 wArg03, Eq_3384 * wArg05, Eq_3409 * wArg07)
 {
 	byte v16_21 = wArg05->b0000;
 	byte v17_24 = wArg05->b0001;
@@ -968,7 +968,7 @@ void fn59FE(word16 af, word16 bc, Eq_12 de, byte h, byte l, Eq_14 * ix, word16 w
 {
 	word16 af_187;
 	Eq_10 a_186;
-	Eq_3520 C_191;
+	Eq_3518 C_191;
 	fn0BFE();
 	byte l_19 = (byte) wArg0A;
 	byte h_20 = SLICE(wArg0A, byte, 8);
@@ -1031,16 +1031,16 @@ void fn59FE(word16 af, word16 bc, Eq_12 de, byte h, byte l, Eq_14 * ix, word16 w
 	fn0AA6(af_185, a_163, a_156, de, a_178, a_171, ix);
 }
 
-// 5A49: void fn5A49(Register word16 af, Register word16 bc, Register word16 de, Register word16 hl, Register (ptr16 Eq_14) ix, Stack word16 wArg00, Stack (ptr16 Eq_3749) wArg02, Stack (ptr16 Eq_3750) wArg06, Stack word16 wArg08)
-void fn5A49(word16 af, word16 bc, word16 de, word16 hl, Eq_14 * ix, word16 wArg00, Eq_3749 * wArg02, Eq_3750 * wArg06, word16 wArg08)
+// 5A49: void fn5A49(Register word16 af, Register word16 bc, Register word16 de, Register word16 hl, Register (ptr16 Eq_14) ix, Stack word16 wArg00, Stack (ptr16 Eq_3747) wArg02, Stack (ptr16 Eq_3748) wArg06, Stack word16 wArg08)
+void fn5A49(word16 af, word16 bc, word16 de, word16 hl, Eq_14 * ix, word16 wArg00, Eq_3747 * wArg02, Eq_3748 * wArg06, word16 wArg08)
 {
 	Eq_12 hl_12 = DPB(hl, (bool) C + (ix->bFFFFFFFD + 0x80), 8) + de;
 	byte d_16 = SLICE(hl_12, byte, 8);
-	struct Eq_3764 * hl_20 = DPB(de, d_16, 8);
+	struct Eq_3762 * hl_20 = DPB(de, d_16, 8);
 	Eq_10 v16_21 = hl_20->t0000;
 	byte v18_24 = hl_20->b0001;
 	byte a_30 = v18_24 | v16_21;
-	struct Eq_3776 * hl_27 = DPB(&hl_20->b0001, v16_21, 0);
+	struct Eq_3774 * hl_27 = DPB(&hl_20->b0001, v16_21, 0);
 	word16 af_32 = DPB(af, a_30, 8);
 	if (a_30 == 0x00)
 		fn0AA6(af_32, b, c, hl_12, v18_24, v16_21, ix);
