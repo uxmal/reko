@@ -264,6 +264,7 @@
     <Compile Include="Fragments\DpbFragment.cs" />
     <Compile Include="Fragments\FCmpFragment.cs" />
     <Compile Include="Environments\SysV\ArchSpecific\SuperHCallingConventionTests.cs" />
+    <Compile Include="Fragments\RorChainFragment.cs" />
     <Compile Include="Gui\Design\ProgramDesignerTests.cs" />
     <Compile Include="Gui\Windows\Forms\CommentFormInteractorTests.cs" />
     <Compile Include="Gui\Windows\Forms\SymbolSourceInteractorTests.cs" />
