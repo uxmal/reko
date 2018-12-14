@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -345,7 +345,7 @@ namespace Reko.Analysis
 
         public bool VisitUseInstruction(UseInstruction use)
         {
-            throw new NotImplementedException();
+            return false;
         }
 
         public bool VisitFlagGroupStorage(FlagGroupStorage grf, bool defining)

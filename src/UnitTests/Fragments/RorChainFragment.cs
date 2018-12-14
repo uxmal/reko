@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Fragments
             Assign(a, Or(a, a));
             Assign(SZC, Cond(a));
             Assign(C, Constant.False());
-            Assign(a, Fn(rorc, a, Constant.Byte(1), C));
+            Assign(a, Shr(a, Constant.Byte(1)));
             Assign(C, Cond(a));
             Assign(h, a);
             Assign(a, l);
@@ -59,10 +59,12 @@ namespace Reko.UnitTests.Fragments
             Assign(C, Cond(a));
             Assign(l, a);
             Assign(c, ISub(c, 1));
-            Assign(SZP, Cond(a));
+            Assign(SZP, Cond(c));
             BranchIf(Test(ConditionCode.NE, Z), "m1Loop");
 
             Label("m2Done");
+            MStore(Word32(0x1000), l);
+            MStore(Word32(0x1001), h);
             Return();
         }
     }
