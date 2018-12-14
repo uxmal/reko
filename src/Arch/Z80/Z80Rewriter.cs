@@ -100,13 +100,13 @@ namespace Reko.Arch.Z80
                 case Opcode.jr: RewriteJr(); break;
                 case Opcode.ld: RewriteLd();  break;
                 case Opcode.rl: RewriteRotation(PseudoProcedure.RolC, true); break;
-                case Opcode.rla: RewriteRotation(PseudoProcedure.Rol, false); break;
-                case Opcode.rlc: RewriteRotation(PseudoProcedure.RolC, false); break;
-                case Opcode.rlca: RewriteRotation(PseudoProcedure.RolC, false); break;
+                case Opcode.rla: RewriteRotation(PseudoProcedure.RolC, false); break;
+                case Opcode.rlc: RewriteRotation(PseudoProcedure.Rol, false); break;
+                case Opcode.rlca: RewriteRotation(PseudoProcedure.Rol, false); break;
                 case Opcode.rr: RewriteRotation(PseudoProcedure.RorC, true); break;
-                case Opcode.rra: RewriteRotation(PseudoProcedure.Ror, true); break;
-                case Opcode.rrc: RewriteRotation(PseudoProcedure.RorC, true); break;
-                case Opcode.rrca: RewriteRotation(PseudoProcedure.RorC, true); break;
+                case Opcode.rra: RewriteRotation(PseudoProcedure.RorC, true); break;
+                case Opcode.rrc: RewriteRotation(PseudoProcedure.Ror, true); break;
+                case Opcode.rrca: RewriteRotation(PseudoProcedure.Ror, true); break;
                 case Opcode.ldd: RewriteBlockInstruction(m.ISub, false); break;
                 case Opcode.lddr: RewriteBlockInstruction(m.ISub, true); break;
                 case Opcode.ldi: RewriteBlockInstruction(m.IAdd, false); break;
@@ -169,7 +169,7 @@ namespace Reko.Arch.Z80
             var dst = RewriteOp(dasm.Current.Op1);
             var src = RewriteOp(dasm.Current.Op2);
             m.Assign(dst, m.And(dst, src));
-            AssignCond(FlagM.ZF | FlagM.SF | FlagM.CF, dst);
+            AssignCond(FlagM.ZF | FlagM.SF, dst);
             m.Assign(FlagGroup(FlagM.CF), Constant.False());
         }
 
@@ -202,7 +202,7 @@ namespace Reko.Arch.Z80
             var dst = RewriteOp(dasm.Current.Op1);
             var src = RewriteOp(dasm.Current.Op2);
             m.Assign(dst, m.Or(dst, src));
-            AssignCond(FlagM.ZF | FlagM.SF | FlagM.CF, dst);
+            AssignCond(FlagM.ZF | FlagM.SF, dst);
             m.Assign(FlagGroup(FlagM.CF), Constant.False());
         }
 
@@ -258,7 +258,7 @@ namespace Reko.Arch.Z80
             var dst = RewriteOp(dasm.Current.Op1);
             var src = RewriteOp(dasm.Current.Op2);
             m.Assign(dst, m.Xor(dst, src));
-            AssignCond(FlagM.ZF | FlagM.SF | FlagM.CF, dst);
+            AssignCond(FlagM.ZF | FlagM.SF, dst);
             m.Assign(FlagGroup(FlagM.CF), Constant.False());
         }
 
