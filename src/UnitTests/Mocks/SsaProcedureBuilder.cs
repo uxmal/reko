@@ -25,6 +25,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Reko.UnitTests.Mocks
 {
@@ -167,9 +168,12 @@ namespace Reko.UnitTests.Mocks
             ProcessInstruction(use, stm);
         }
 
-        public void AddPhiToExitBlock(Identifier idDst, params Expression[] exprs)
+        public void AddPhiToExitBlock(Identifier idDst, params (Expression, string)[] exprs)
         {
-            var phiFunc = new PhiFunction(idDst.DataType, exprs);
+            var args = exprs
+                .Select(de => new PhiArgument(BlockOf(de.Item2), de.Item1))
+                .ToArray();
+            var phiFunc = new PhiFunction(idDst.DataType, args);
             var phi = new PhiAssignment(idDst, phiFunc);
             var stm = Procedure.ExitBlock.Statements.Add(0, phi);
             ProcessInstruction(phi, stm);

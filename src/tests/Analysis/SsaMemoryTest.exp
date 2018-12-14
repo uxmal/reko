@@ -51,15 +51,15 @@ si:si
           cx_15 = Mem14[ds:si:word16]
 cx_13: orig: cx
     def:  cx_13 = Mem11[ds:si:word16]
-    uses: cx_16 = PHI(cx_15, cx_13)
+    uses: cx_16 = PHI((cx_15, l0C00_000B), (cx_13, l0C00_0015))
 Mem14: orig: Mem0
     def:  Mem14[ds:bx_7 + 0x0006:word16] = 0x0000
     uses: cx_15 = Mem14[ds:si:word16]
 cx_15: orig: cx
     def:  cx_15 = Mem14[ds:si:word16]
-    uses: cx_16 = PHI(cx_15, cx_13)
+    uses: cx_16 = PHI((cx_15, l0C00_000B), (cx_13, l0C00_0015))
 cx_16: orig: cx
-    def:  cx_16 = PHI(cx_15, cx_13)
+    def:  cx_16 = PHI((cx_15, l0C00_000B), (cx_13, l0C00_0015))
     uses: Mem18[ds:0x012C:word16] = cx_16
           use cx_16
 Mem18: orig: Mem0
@@ -105,7 +105,7 @@ l0C00_0015:
 	cx_13 = Mem11[ds:si:word16]
 	// succ:  l0C00_001C
 l0C00_001C:
-	cx_16 = PHI(cx_15, cx_13)
+	cx_16 = PHI((cx_15, l0C00_000B), (cx_13, l0C00_0015))
 	Mem18[ds:0x012C:word16] = cx_16
 	return
 	// succ:  fn0C00_0000_exit

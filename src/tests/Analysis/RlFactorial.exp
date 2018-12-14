@@ -34,7 +34,7 @@ l0C00_0018:
 l0C00_0026:
 	ax_13 = 0x0001
 l0C00_0029:
-	ax_37 = PHI(ax_27, ax_13)
+	ax_37 = PHI((ax_27, l0C00_0018), (ax_13, l0C00_0026))
 	return
 fn0C00_000F_exit:
 	use ax_37

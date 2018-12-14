@@ -25,7 +25,7 @@ ax_7: orig: ax
 ax_8: orig: ax
     def:  ax_8 = ax_7 | ax_7
     uses: SZO_9 = cond(ax_8)
-          ax_15 = PHI(ax_8, ax_12)
+          ax_15 = PHI((ax_8, l0C00_0000), (ax_12, l0C00_0009))
 SZO_9: orig: SZO
     def:  SZO_9 = cond(ax_8)
     uses: Z_11 = SLICE(SZO_9, bool, 2) (alias)
@@ -40,9 +40,9 @@ Z_11: orig: Z
           use Z_11
 ax_12: orig: ax
     def:  ax_12 = 0xFFFF
-    uses: ax_15 = PHI(ax_8, ax_12)
+    uses: ax_15 = PHI((ax_8, l0C00_0000), (ax_12, l0C00_0009))
 ax_15: orig: ax
-    def:  ax_15 = PHI(ax_8, ax_12)
+    def:  ax_15 = PHI((ax_8, l0C00_0000), (ax_12, l0C00_0009))
     uses: use ax_15
 sp_14: orig: sp
     def:  sp_14 = bp_4
@@ -78,7 +78,7 @@ l0C00_0009:
 	ax_12 = 0xFFFF
 	// succ:  l0C00_000C
 l0C00_000C:
-	ax_15 = PHI(ax_8, ax_12)
+	ax_15 = PHI((ax_8, l0C00_0000), (ax_12, l0C00_0009))
 	sp_14 = bp_4
 	return
 	// succ:  fn0C00_0000_exit

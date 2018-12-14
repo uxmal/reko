@@ -440,10 +440,10 @@ namespace Reko.Analysis
         public bool VisitPhiAssignment(PhiAssignment phi)
         {
             Expression total = null;
-            for (int i = 0; i < phi.Src.Arguments.Length; ++i)
+            foreach (var de in phi.Src.Arguments)
             {
-                var p = block.Pred[i];
-                var phiarg = (Identifier)phi.Src.Arguments[i];
+                var p = de.Block;
+                var phiarg = (Identifier) de.Value;
                 // If phiarg hasn't been evaluated yet, it will have
                 // the value null after ctx.GetValue below. If not, we 
                 // use that value and hope all of the phi args have

@@ -8,17 +8,17 @@ Mem7: orig: Mem0
 sp_8: orig: sp
 di:di
     def:  def di
-    uses: di_25 = PHI(di, di_27)
+    uses: di_25 = PHI((di, l0C00_0008), (di_27, l0C00_0012))
 Mem10: orig: Mem0
     uses: si_26 = si_15 + Mem10[ds:di_25:word16]
 si_11: orig: si
     def:  si_11 = 0x0000
-    uses: si_15 = PHI(si_11, si_26)
+    uses: si_15 = PHI((si_11, l0C00_0008), (si_26, l0C00_0012))
 S_37: orig: S
 SCZO_13: orig: SCZO
 Z_14: orig: Z
 si_15: orig: si
-    def:  si_15 = PHI(si_11, si_26)
+    def:  si_15 = PHI((si_11, l0C00_0008), (si_26, l0C00_0012))
     uses: ax_16 = si_15
           si_26 = si_15 + Mem10[ds:di_25:word16]
 ax_16: orig: ax
@@ -33,15 +33,15 @@ si_22: orig: si
 sp_23: orig: sp
 wLoc02_31: orig: wLoc02
 di_25: orig: di
-    def:  di_25 = PHI(di, di_27)
+    def:  di_25 = PHI((di, l0C00_0008), (di_27, l0C00_0012))
     uses: si_26 = si_15 + Mem10[ds:di_25:word16]
           di_27 = di_25 + 0x0002
 si_26: orig: si
     def:  si_26 = si_15 + Mem10[ds:di_25:word16]
-    uses: si_15 = PHI(si_11, si_26)
+    uses: si_15 = PHI((si_11, l0C00_0008), (si_26, l0C00_0012))
 di_27: orig: di
     def:  di_27 = di_25 + 0x0002
-    uses: di_25 = PHI(di, di_27)
+    uses: di_25 = PHI((di, l0C00_0008), (di_27, l0C00_0012))
 SCZO_28: orig: SCZO
 cx:cx
     def:  def cx
@@ -61,8 +61,8 @@ l0C00_0008:
 	si_11 = 0x0000
 	// succ:  l0C00_000D
 l0C00_000D:
-	di_25 = PHI(di, di_27)
-	si_15 = PHI(si_11, si_26)
+	di_25 = PHI((di, l0C00_0008), (di_27, l0C00_0012))
+	si_15 = PHI((si_11, l0C00_0008), (si_26, l0C00_0012))
 	branch cx == 0x0000 l0C00_001A
 	// succ:  l0C00_0012 l0C00_001A
 l0C00_0012:

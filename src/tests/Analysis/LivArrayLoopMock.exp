@@ -16,7 +16,7 @@ l2:
 	ptr_6 = ptr_4 + 0x00000004
 	// succ:  looptest
 looptest:
-	ptr_4 = PHI(ptr_3, ptr_6)
+	ptr_4 = PHI((ptr_3, l1), (ptr_6, l2))
 	branch ptr_4 >=u 0x04001000 done
 	goto l2
 	// succ:  l2 done

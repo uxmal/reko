@@ -185,7 +185,9 @@ namespace Reko.Analysis
                 return new Identifier[] { };
             var def = ssa.Identifiers[sp].DefStatement;
             if (def?.Instruction is PhiAssignment phi)
-                return phi.Src.Arguments.OfType<Identifier>().Distinct();
+                return phi.Src.Arguments
+                    .Select(de => de.Value)
+                    .OfType<Identifier>().Distinct();
             return new Identifier[] { sp };
         }
     }

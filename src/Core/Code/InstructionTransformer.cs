@@ -92,8 +92,8 @@ namespace Reko.Core.Code
             var args = phi.Src.Arguments;
 			for (int i = 0; i < args.Length; ++i)
 			{
-                var v = args[i].Accept(this);
-                args[i] = v;
+                var value = args[i].Value.Accept(this);
+                args[i] = new PhiArgument(args[i].Block, value);
 			}
 			phi.Dst = (Identifier) phi.Dst.Accept(this);
 			return phi;
@@ -245,7 +245,10 @@ namespace Reko.Core.Code
 		{
 			for (int i = 0; i < phi.Arguments.Length; ++i)
 			{
-				phi.Arguments[i] = phi.Arguments[i].Accept(this);
+                var value = phi.Arguments[i].Value.Accept(this);
+                phi.Arguments[i] = new PhiArgument(
+                    phi.Arguments[i].Block,
+                    value);
 			}
 			return phi;
 		}

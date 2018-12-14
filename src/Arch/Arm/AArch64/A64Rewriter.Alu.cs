@@ -223,7 +223,6 @@ namespace Reko.Arch.Arm.AArch64
             {
                 var tmp = binder.CreateTemporary(ea.DataType);
                 if (offset == null || mem.PostIndex)
-                    //$DEBUG
                 {
                     m.Assign(tmp, ea);
                 }

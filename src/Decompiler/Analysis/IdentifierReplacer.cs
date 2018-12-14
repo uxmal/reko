@@ -63,8 +63,8 @@ namespace Reko.Analysis
             var args = phi.Src.Arguments;
             for (int i = 0; i < args.Length; ++i)
             {
-                var v = args[i].Accept(this);
-                args[i] = v;
+                var value = args[i].Value.Accept(this);
+                args[i] = new PhiArgument(args[i].Block, value);
             }
             if (replaceDefinitions)
             {

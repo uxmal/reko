@@ -32,12 +32,12 @@ namespace Reko.Core.Serialization
     /// </summary>
     public class ArgumentDeserializer
     {
-        private ProcedureSerializer procSer;
-        private IProcessorArchitecture arch;
-        private Frame frame;
+        private readonly ProcedureSerializer procSer;
+        private readonly IProcessorArchitecture arch;
+        private readonly Frame frame;
+        private readonly int retAddressOnStack;  // number of bytes on the stack occupied by return address
+        private readonly int stackAlignment;
         private Argument_v1 argCur;
-        private int retAddressOnStack;  // number of bytes on the stack occupied by return address
-        private int stackAlignment;
 
         public ArgumentDeserializer(
             ProcedureSerializer procSer, 

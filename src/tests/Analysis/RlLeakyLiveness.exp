@@ -42,7 +42,7 @@ l0C00_001E:
 	C_9 = true
 	return
 fn0C00_000A_exit:
-	C_18 = PHI(C_15, C_9)
-	ax_16 = PHI(ax_10, ax)
+	C_18 = PHI((C_15, l0C00_0014), (C_9, l0C00_001E))
+	ax_16 = PHI((ax_10, l0C00_0014), (ax, l0C00_001E))
 	use ax_16
 	use C_18
