@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,11 +41,13 @@ namespace Reko.UnitTests.Evaluation
         private ExpressionSimplifier simplifier;
         private Identifier foo;
         private ProcedureBuilder m;
+        private PseudoProcedure rolc_8;
 
         [SetUp]
         public void Setup()
         {
             m = new ProcedureBuilder();
+            this.rolc_8 = new PseudoProcedure(PseudoProcedure.RolC, PrimitiveType.Byte, 3);
         }
 
         private void Given_ExpressionSimplifier()
@@ -202,6 +204,14 @@ namespace Reko.UnitTests.Evaluation
             var w32 = PrimitiveType.Word32;
             var expr = m.Cast(w16, (m.Cast(w16, foo)));
             Assert.AreEqual("(word16) foo_0", expr.Accept(simplifier).ToString());
+        }
+
+        [Test]
+        public void Exs_Rolc_To_Shl()
+        {
+            Given_ExpressionSimplifier();
+            var expr = m.Fn(rolc_8, foo, m.Byte(1), Constant.False());
+            Assert.AreEqual("foo_0 << 0x01", expr.Accept(simplifier).ToString());
         }
     }
 }

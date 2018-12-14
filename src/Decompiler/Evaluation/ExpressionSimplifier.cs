@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Reko.Core.Services;
+using System.Diagnostics;
 
 namespace Reko.Evaluation 
 {
@@ -142,10 +143,40 @@ namespace Reko.Evaluation
                 var arg = appl.Arguments[i];
                 args[i] = arg.Accept(this);
             }
+            // Rotations-with-carries that rotate in a false carry 
+            // flag can be simplified to shifts.
+            if (appl.Procedure is ProcedureConstant pc && 
+                pc.Procedure is PseudoProcedure intrinsic)
+            {
+                switch (intrinsic.Name)
+                {
+                case PseudoProcedure.RolC:
+                    if (IsSingleBitRotationWithClearCarryIn(args))
+                    {
+                        return new BinaryExpression(Operator.Shl, appl.DataType, args[0], args[1]);
+                    }
+                    break;
+                case PseudoProcedure.RorC:
+                    if (IsSingleBitRotationWithClearCarryIn(args))
+                    {
+                        return new BinaryExpression(Operator.Shr, appl.DataType, args[0], args[1]);
+                    }
+                    break;
+                }
+            }
             appl = new Application(appl.Procedure.Accept(this),
                 appl.DataType,
                 args);
             return ctx.GetValue(appl);
+        }
+
+        private static bool IsSingleBitRotationWithClearCarryIn(Expression[] args)
+        {
+            Debug.Assert(args.Length == 3);
+            return args[1] is Constant sh &&
+                                    sh.ToInt32() == 1 &&
+                                    args[2] is Constant c &&
+                                    c.IsIntegerZero;
         }
 
         public virtual Expression VisitArrayAccess(ArrayAccess acc)
