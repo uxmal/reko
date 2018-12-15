@@ -333,7 +333,7 @@ namespace Reko.UnitTests.Analysis
 
         protected void RunStringTest(string sExp, ProcedureBuilder pb)
         {
-            var program = BuildProgramMock(pb);
+            var program = BuildProgram(pb);
             AssertRunOutput(program, RunTest, sExp);
         }
 

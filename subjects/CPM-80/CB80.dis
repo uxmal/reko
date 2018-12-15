@@ -116,7 +116,7 @@ l03CB:
 	sp = sp + 0x0002
 	c = b
 	a = a | c
-	SZC = cond(a)
+	SZ = cond(a)
 	C = false
 	return
 	// succ:  fn03CB_exit
@@ -135,7 +135,7 @@ l03E6:
 	hl = Mem0[0x1659:word16]
 	c = l
 	call fn03BB (retsize: 2;)
-	a = __ror(a, 0x01, C)
+	a = __rcr(a, 0x01, C)
 	C = cond(a)
 	branch Test(UGE,C) l03FB
 	// succ:  l03F5 l03FB
@@ -764,7 +764,7 @@ l0678:
 	// succ:  l0665
 l0697:
 	a = Mem0[0x167B:byte]
-	a = __ror(a, 0x01, C)
+	a = __rcr(a, 0x01, C)
 	C = cond(a)
 	branch Test(UGE,C) l06AF
 	// succ:  l069E l06AF
@@ -944,7 +944,7 @@ l077D:
 	de = 0x1685
 	call fn1353 (retsize: 2;)
 	a = a | l
-	SZC = cond(a)
+	SZ = cond(a)
 	C = false
 	branch Test(EQ,Z) l07AF
 	// succ:  l07A1 l07AF
@@ -971,7 +971,7 @@ fn07B3_entry:
 l07B3:
 	sp = fp
 	a = Mem0[0x14F9:byte]
-	a = __ror(a, 0x01, C)
+	a = __rcr(a, 0x01, C)
 	C = cond(a)
 	branch Test(UGE,C) l080E
 	// succ:  l07BA l080E
@@ -1098,9 +1098,9 @@ l082F:
 	SZP = cond(hl)
 	Mem0[hl:byte] = 0x00
 	a = Mem0[0x168D:byte]
-	a = __rcl(a, 0x01)
+	a = __rol(a, 0x01)
 	C = cond(a)
-	a = __ror(a, 0x01, C)
+	a = __rcr(a, 0x01, C)
 	C = cond(a)
 	branch Test(UGE,C) l085E
 	// succ:  l0856 l085E
@@ -1111,11 +1111,11 @@ l0856:
 	// succ:  l087E
 l085E:
 	a = Mem0[0x168D:byte]
-	a = __rcl(a, 0x01)
+	a = __rol(a, 0x01)
 	C = cond(a)
-	a = __rcl(a, 0x01)
+	a = __rol(a, 0x01)
 	C = cond(a)
-	a = __ror(a, 0x01, C)
+	a = __rcr(a, 0x01, C)
 	C = cond(a)
 	branch Test(UGE,C) l086F
 	// succ:  l0867 l086F
@@ -1126,13 +1126,13 @@ l0867:
 	// succ:  l087E
 l086F:
 	a = Mem0[0x168D:byte]
-	a = __rcl(a, 0x01)
+	a = __rol(a, 0x01)
 	C = cond(a)
-	a = __rcl(a, 0x01)
+	a = __rol(a, 0x01)
 	C = cond(a)
-	a = __rcl(a, 0x01)
+	a = __rol(a, 0x01)
 	C = cond(a)
-	a = __ror(a, 0x01, C)
+	a = __rcr(a, 0x01, C)
 	C = cond(a)
 	branch Test(UGE,C) l087E
 	// succ:  l0879 l087E
@@ -1142,15 +1142,15 @@ l0879:
 	// succ:  l087E
 l087E:
 	a = Mem0[0x168D:byte]
-	a = __rcl(a, 0x01)
+	a = __rol(a, 0x01)
 	C = cond(a)
-	a = __rcl(a, 0x01)
+	a = __rol(a, 0x01)
 	C = cond(a)
-	a = __rcl(a, 0x01)
+	a = __rol(a, 0x01)
 	C = cond(a)
-	a = __rcl(a, 0x01)
+	a = __rol(a, 0x01)
 	C = cond(a)
-	a = __ror(a, 0x01, C)
+	a = __rcr(a, 0x01, C)
 	C = cond(a)
 	branch Test(UGE,C) l088E
 	// succ:  l0889 l088E
@@ -1172,7 +1172,7 @@ l088E:
 	hl = v15
 	call fn0990 (retsize: 2;)
 	a = ~a
-	a = __ror(a, 0x01, C)
+	a = __rcr(a, 0x01, C)
 	C = cond(a)
 	branch Test(UGE,C) l08B1
 	// succ:  l08A7 l08B1
@@ -1186,7 +1186,7 @@ l08A7:
 	// succ:  l08B1
 l08B1:
 	a = Mem0[0x1690:byte]
-	a = __ror(a, 0x01, C)
+	a = __rcr(a, 0x01, C)
 	C = cond(a)
 	branch Test(UGE,C) l08DD
 	// succ:  l08B8 l08DD
@@ -1220,7 +1220,7 @@ l08DA_thunk_fn08EC:
 	// succ:  fn082F_exit
 l08DD:
 	a = Mem0[0x1691:byte]
-	a = __ror(a, 0x01, C)
+	a = __rcr(a, 0x01, C)
 	C = cond(a)
 	branch Test(UGE,C) l0900
 	// succ:  l08E4 l0900
@@ -1244,7 +1244,7 @@ l08FC_thunk_fn08EC:
 	// succ:  fn082F_exit
 l0900:
 	a = Mem0[0x168F:byte]
-	a = __ror(a, 0x01, C)
+	a = __rcr(a, 0x01, C)
 	C = cond(a)
 	branch Test(UGE,C) l0920
 	goto l0907
@@ -1356,9 +1356,9 @@ l0930:
 	a = ~a
 	hl = 0x168E
 	a = a & Mem0[hl:byte]
-	SZC = cond(a)
+	SZ = cond(a)
 	C = false
-	a = __ror(a, 0x01, C)
+	a = __rcr(a, 0x01, C)
 	C = cond(a)
 	branch Test(UGE,C) l0953
 	// succ:  l0944 l0953
@@ -1369,7 +1369,7 @@ l0944:
 	SZPC = cond(hl)
 	a = 0x80
 	a = a | Mem0[hl:byte]
-	SZC = cond(a)
+	SZ = cond(a)
 	C = false
 	hl = Mem0[0x168B:word16]
 	hl = hl + bc
@@ -1378,9 +1378,9 @@ l0944:
 	// succ:  l0953
 l0953:
 	hl = Mem0[0x168B:word16]
-	v15 = de
+	v16 = de
 	de = hl
-	hl = v15
+	hl = v16
 	c = 0x0F
 	a = F_OPEN(de)
 	SZPC = cond(a - 0xFF)
@@ -1388,9 +1388,9 @@ l0953:
 	// succ:  l0961 l096B
 l0961:
 	hl = Mem0[0x1687:word16]
-	v17 = de
+	v18 = de
 	de = hl
-	hl = v17
+	hl = v18
 	bc = 0x0236
 	call fn061B (retsize: 2;)
 	// succ:  l096B
@@ -1498,7 +1498,7 @@ l09BD:
 	sp = sp + 0x0002
 	c = b
 	a = a | c
-	SZC = cond(a)
+	SZ = cond(a)
 	C = false
 	sp = sp - 0x0002
 	Mem0[sp:word16] = af
@@ -1512,9 +1512,9 @@ l09BD:
 	sp = sp + 0x0002
 	c = b
 	a = a & c
-	SZC = cond(a)
+	SZ = cond(a)
 	C = false
-	a = __ror(a, 0x01, C)
+	a = __rcr(a, 0x01, C)
 	C = cond(a)
 	branch Test(UGE,C) l0A06
 	// succ:  l09E0 l0A06
@@ -1522,7 +1522,7 @@ l09E0:
 	hl = Mem0[0x1692:word16]
 	a = 0x1F
 	a = a & Mem0[hl:byte]
-	SZC = cond(a)
+	SZ = cond(a)
 	C = false
 	hl = Mem0[0x168B:word16]
 	Mem0[hl:byte] = a
@@ -1579,18 +1579,18 @@ l0A16:
 	sp = sp + 0x0002
 	c = b
 	a = a & c
-	SZC = cond(a)
+	SZ = cond(a)
 	C = false
-	a = __ror(a, 0x01, C)
+	a = __rcr(a, 0x01, C)
 	C = cond(a)
 	branch Test(UGE,C) l0A53
 	// succ:  l0A29 l0A53
 l0A29:
 	hl = Mem0[0x1697:word16]
 	h = 0x00
-	v18 = de
+	v19 = de
 	de = hl
-	hl = v18
+	hl = v19
 	hl = Mem0[0x1692:word16]
 	hl = hl + de
 	SZPC = cond(hl)
@@ -1601,9 +1601,9 @@ l0A29:
 	bc = 0x0001
 	hl = hl + bc
 	SZPC = cond(hl)
-	v20 = de
+	v21 = de
 	de = hl
-	hl = v20
+	hl = v21
 	hl = Mem0[0x168B:word16]
 	hl = hl + de
 	SZPC = cond(hl)
@@ -1649,9 +1649,9 @@ l0A53:
 	sp = sp + 0x0002
 	c = b
 	a = a & c
-	SZC = cond(a)
+	SZ = cond(a)
 	C = false
-	a = __ror(a, 0x01, C)
+	a = __rcr(a, 0x01, C)
 	C = cond(a)
 	branch Test(UGE,C) l0AA3
 	// succ:  l0A70 l0AA3
@@ -1672,9 +1672,9 @@ l0A7F:
 	Mem0[sp:word16] = hl
 	hl = Mem0[0x1697:word16]
 	h = 0x00
-	v23 = de
+	v24 = de
 	de = hl
-	hl = v23
+	hl = v24
 	hl = Mem0[0x1692:word16]
 	hl = hl + de
 	SZPC = cond(hl)
@@ -1684,9 +1684,9 @@ l0A7F:
 	hl = Mem0[0x168B:word16]
 	hl = hl + bc
 	SZPC = cond(hl)
-	v24 = de
+	v25 = de
 	de = hl
-	hl = v24
+	hl = v25
 	bc = Mem0[sp:word16]
 	sp = sp + 0x0002
 	hl = Mem0[sp:word16]
@@ -1716,9 +1716,9 @@ l0AA3:
 	SZPC = cond(a)
 	hl = Mem0[0x1697:word16]
 	h = 0x00
-	v21 = de
+	v22 = de
 	de = hl
-	hl = v21
+	hl = v22
 	hl = Mem0[0x1692:word16]
 	hl = hl + de
 	SZPC = cond(hl)
@@ -1735,9 +1735,9 @@ l0AA3:
 	sp = sp + 0x0002
 	c = b
 	a = a | c
-	SZC = cond(a)
+	SZ = cond(a)
 	C = false
-	a = __ror(a, 0x01, C)
+	a = __rcr(a, 0x01, C)
 	C = cond(a)
 	branch Test(UGE,C) l0AE2
 	// succ:  l0AC3 l0AE2
@@ -1755,9 +1755,9 @@ l0AC3:
 	hl = Mem0[0x168B:word16]
 	hl = hl + bc
 	SZPC = cond(hl)
-	v22 = de
+	v23 = de
 	de = hl
-	hl = v22
+	hl = v23
 	bc = Mem0[sp:word16]
 	sp = sp + 0x0002
 	hl = Mem0[sp:word16]
@@ -1813,9 +1813,9 @@ l0B0D:
 	bc = 0x0001
 	hl = hl + bc
 	SZPC = cond(hl)
-	v25 = de
+	v26 = de
 	de = hl
-	hl = v25
+	hl = v26
 	hl = Mem0[0x168B:word16]
 	hl = hl + de
 	SZPC = cond(hl)
@@ -1826,9 +1826,9 @@ l0B0D:
 	bc = 0x0001
 	hl = hl + bc
 	SZPC = cond(hl)
-	v26 = de
+	v27 = de
 	de = hl
-	hl = v26
+	hl = v27
 	hl = Mem0[0x168B:word16]
 	hl = hl + de
 	SZPC = cond(hl)
@@ -1855,9 +1855,9 @@ l0B46:
 	bc = 0x0009
 	hl = hl + bc
 	SZPC = cond(hl)
-	v27 = de
+	v28 = de
 	de = hl
-	hl = v27
+	hl = v28
 	hl = Mem0[0x168B:word16]
 	hl = hl + de
 	SZPC = cond(hl)
@@ -1868,9 +1868,9 @@ l0B46:
 	bc = 0x0009
 	hl = hl + bc
 	SZPC = cond(hl)
-	v28 = de
+	v29 = de
 	de = hl
-	hl = v28
+	hl = v29
 	hl = Mem0[0x168B:word16]
 	hl = hl + de
 	SZPC = cond(hl)
@@ -1923,7 +1923,7 @@ l0B74:
 	sp = sp + 0x0002
 	c = b
 	a = a & c
-	SZC = cond(a)
+	SZ = cond(a)
 	C = false
 	return
 	// succ:  fn0B74_exit
@@ -1989,9 +1989,9 @@ l0BE4:
 	sp = sp + 0x0002
 	c = b
 	a = a & c
-	SZC = cond(a)
+	SZ = cond(a)
 	C = false
-	a = __ror(a, 0x01, C)
+	a = __rcr(a, 0x01, C)
 	C = cond(a)
 	branch Test(UGE,C) l0C1A
 	// succ:  l0BFC l0C1A
@@ -2039,9 +2039,9 @@ l0C1A:
 	sp = sp + 0xFFFE
 	c = 0x07
 	call fn1326 (retsize: 2;)
-	v15 = de
+	v16 = de
 	de = hl
-	hl = v15
+	hl = v16
 	hl = Mem0[0x0108:word16]
 	b = h
 	c = l
@@ -2065,9 +2065,9 @@ l0C1A:
 	sp = sp + 0x0002
 	c = b
 	a = a | c
-	SZC = cond(a)
+	SZ = cond(a)
 	C = false
-	a = __ror(a, 0x01, C)
+	a = __rcr(a, 0x01, C)
 	C = cond(a)
 	branch Test(UGE,C) l0C71
 	// succ:  l0C68 l0C71
@@ -2144,9 +2144,9 @@ l0D64:
 	SZPC = cond(hl)
 	a = Mem0[hl:byte]
 	a = a | a
-	SZC = cond(a)
+	SZ = cond(a)
 	C = false
-	a = __ror(a, 0x01, C)
+	a = __rcr(a, 0x01, C)
 	C = cond(a)
 	return
 	// succ:  fn0D64_exit
@@ -2166,7 +2166,7 @@ l0D6F:
 	SZPC = cond(hl)
 	a = 0x02
 	a = a | Mem0[hl:byte]
-	SZC = cond(a)
+	SZ = cond(a)
 	C = false
 	Mem0[hl:byte] = a
 	return
@@ -2182,7 +2182,7 @@ fn0D84_entry:
 l0D84:
 	sp = fp
 	call fn0D64 (retsize: 2;)
-	a = __ror(a, 0x01, C)
+	a = __rcr(a, 0x01, C)
 	C = cond(a)
 	branch Test(UGE,C) l0D94
 	// succ:  l0D8B l0D94
@@ -2198,7 +2198,7 @@ l0D94:
 	SZPC = cond(hl)
 	a = 0x01
 	a = a | Mem0[hl:byte]
-	SZC = cond(a)
+	SZ = cond(a)
 	C = false
 	Mem0[hl:byte] = a
 	return
@@ -2220,11 +2220,11 @@ l0DB9:
 	a = Mem0[hl:byte]
 	a = a + 0xFC
 	SZPC = cond(a)
-	a = __ror(a, 0x01, C)
+	a = __rcr(a, 0x01, C)
 	C = cond(a)
-	a = __ror(a, 0x01, C)
+	a = __rcr(a, 0x01, C)
 	C = cond(a)
-	a = __ror(a, 0x01, C)
+	a = __rcr(a, 0x01, C)
 	C = cond(a)
 	return
 	// succ:  fn0DB9_exit
@@ -2244,7 +2244,7 @@ l0DCB:
 	SZPC = cond(hl)
 	a = 0x08
 	a = a | Mem0[hl:byte]
-	SZC = cond(a)
+	SZ = cond(a)
 	C = false
 	Mem0[hl:byte] = a
 	return
@@ -2283,7 +2283,7 @@ l0E79:
 	de = 0x1521
 	call fn1353 (retsize: 2;)
 	a = a | l
-	SZC = cond(a)
+	SZ = cond(a)
 	C = false
 	branch Test(EQ,Z) l0EA8
 	// succ:  l0E85 l0EA8
@@ -2299,7 +2299,7 @@ l0E85:
 	// succ:  l0E91 l0E9B
 l0E91:
 	call fn0EAB (retsize: 2;)
-	a = __ror(a, 0x01, C)
+	a = __rcr(a, 0x01, C)
 	C = cond(a)
 	branch Test(UGE,C) l0E9B
 	// succ:  l0E98 l0E9B
@@ -2434,7 +2434,7 @@ l100A:
 	sp = sp + 0x0002
 	c = b
 	a = a & c
-	SZC = cond(a)
+	SZ = cond(a)
 	C = false
 	sp = sp - 0x0002
 	Mem0[sp:word16] = af
@@ -2449,7 +2449,7 @@ l100A:
 	sp = sp + 0x0002
 	c = b
 	a = a & c
-	SZC = cond(a)
+	SZ = cond(a)
 	C = false
 	sp = sp - 0x0002
 	Mem0[sp:word16] = af
@@ -2462,9 +2462,9 @@ l100A:
 	sp = sp + 0x0002
 	c = b
 	a = a & c
-	SZC = cond(a)
+	SZ = cond(a)
 	C = false
-	a = __ror(a, 0x01, C)
+	a = __rcr(a, 0x01, C)
 	C = cond(a)
 	branch Test(UGE,C) l104D
 	// succ:  l1032 l104D
@@ -2533,9 +2533,9 @@ l106E:
 	sp = sp + 0x0002
 	c = b
 	a = a & c
-	SZC = cond(a)
+	SZ = cond(a)
 	C = false
-	a = __ror(a, 0x01, C)
+	a = __rcr(a, 0x01, C)
 	C = cond(a)
 	branch Test(UGE,C) l1075_thunk_fn1081
 	// succ:  l1075_thunk_fn1078 l1075_thunk_fn1081
@@ -2579,9 +2579,9 @@ l105E:
 	sp = sp + 0x0002
 	c = b
 	a = a & c
-	SZC = cond(a)
+	SZ = cond(a)
 	C = false
-	a = __ror(a, 0x01, C)
+	a = __rcr(a, 0x01, C)
 	C = cond(a)
 	branch Test(UGE,C) l1081
 	goto l1078
@@ -2632,9 +2632,9 @@ l1087:
 	sp = sp + 0x0002
 	c = b
 	a = a & c
-	SZC = cond(a)
+	SZ = cond(a)
 	C = false
-	a = __ror(a, 0x01, C)
+	a = __rcr(a, 0x01, C)
 	C = cond(a)
 	branch Test(UGE,C) l11FD
 	// succ:  l10A1 l11FD
@@ -3107,9 +3107,9 @@ l12F7:
 	sp = sp + 0x0002
 	c = b
 	a = a | c
-	SZC = cond(a)
+	SZ = cond(a)
 	C = false
-	a = __ror(a, 0x01, C)
+	a = __rcr(a, 0x01, C)
 	C = cond(a)
 	branch Test(UGE,C) l1311
 	// succ:  l130B_thunk_fn130E l130B_thunk_fn130E
@@ -3199,13 +3199,13 @@ l1326:
 	sp = fp
 	a = h
 	a = a | a
-	SZC = cond(a)
+	SZ = cond(a)
 	C = false
-	a = __ror(a, 0x01, C)
+	a = __rcr(a, 0x01, C)
 	C = cond(a)
 	h = a
 	a = l
-	a = __ror(a, 0x01, C)
+	a = __rcr(a, 0x01, C)
 	C = cond(a)
 	l = a
 	c = c - 0x01
@@ -3474,7 +3474,7 @@ l1686:
 	hl = v11
 	a = 0x82
 	a = a | a
-	SZC = cond(a)
+	SZ = cond(a)
 	C = false
 	C = cond(true)
 	// succ:  l1691_thunk_fn092A

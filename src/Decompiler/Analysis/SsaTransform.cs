@@ -46,6 +46,7 @@ namespace Reko.Analysis
     /// augmented with expression simplification if we can prove that the
     /// CFG graph is completed (future work).
     /// </remarks>
+    [DebuggerDisplay("{SsaState.Procedure.Name}")]
     public class SsaTransform : InstructionTransformer 
     {
         private static TraceSwitch trace = new TraceSwitch("SsaTransform", "Traces the progress of SSA analysis") { Level = TraceLevel.Info };

@@ -36,6 +36,7 @@ namespace Reko.Analysis
     /// it keeps tracks of all SSA Identifiers, which implicitly form a graph of 
     /// identifiers connected by use->def and def->use edges.
     /// </summary>
+    [DebuggerDisplay("{Procedure.Name}")]
 	public class SsaState
 	{
 		private SsaIdentifierCollection ids;

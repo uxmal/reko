@@ -109,9 +109,11 @@ namespace Reko.Analysis
         [Conditional("DEBUG")]
         public void DumpLiveOut()
         {
+            if (!trace.TraceVerbose)
+                return;
             foreach (var flow in this.dataFlow.ProcedureFlows.OrderBy(de => de.Key.Name))
             {
-                Debug.Print("== {0} ========", flow.Key.Name);
+                Debug.Print("UVR: == {0} ========", flow.Key.Name);
                 var sw = new StringWriter();
                 DataFlow.EmitRegisterValues("liveOut: ", flow.Value.LiveOut, sw);
                 Debug.Print(sw.ToString());

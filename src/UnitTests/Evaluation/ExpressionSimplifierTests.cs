@@ -241,7 +241,7 @@ namespace Reko.UnitTests.Evaluation
         {
             Given_ExpressionSimplifier();
             var expr = m.Fn(rolc_8, foo, m.Byte(1), Constant.False());
-            Assert.AreEqual("foo_0 << 0x01", expr.Accept(simplifier).ToString());
+            Assert.AreEqual("foo_1 << 0x01", expr.Accept(simplifier).ToString());
         }
     }
 }

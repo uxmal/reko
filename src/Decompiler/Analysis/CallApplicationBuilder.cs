@@ -107,7 +107,7 @@ namespace Reko.Analysis
             foreach (var de in this.map
               .Where(d => d.Value.Storage is FpuStackStorage))
             {
-                if (((FpuStackStorage)de.Value.Storage).FpuStackOffset == fpu.FpuStackOffset)
+                if (((FpuStackStorage) de.Value.Storage).FpuStackOffset == fpu.FpuStackOffset)
                     return de.Value.Expression;
             }
             throw new NotImplementedException(string.Format("Offsets not matching? SP({0})", fpu.FpuStackOffset));
@@ -153,7 +153,7 @@ namespace Reko.Analysis
             foreach (var de in this.map
                 .Where(d => d.Value.Storage is StackStorage))
             {
-                if (((StackStorage)de.Value.Storage).StackOffset == localOff)
+                if (((StackStorage) de.Value.Storage).StackOffset == localOff)
                     return de.Value.Expression;
             }
             return FallbackArgument($"stackArg{localOff}", stack.DataType);
