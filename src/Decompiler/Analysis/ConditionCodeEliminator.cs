@@ -332,12 +332,20 @@ namespace Reko.Analysis
         // 1'. a_2 = slice(tmp3,16)
         // 2'. b_2 = (cast) tmp3
         // 4.  flags_3 = cond(b_2)
+
         private Instruction TransformRorC(Application rorc, Assignment a)
         {
             var sidOrigLo = ssaIds[a.Dst];
             var sidCarry = ssaIds[(Identifier)rorc.Arguments[2]];
             if (!(sidCarry.DefExpression is ConditionOf cond))
-                return a;
+            {
+                if (!(sidCarry.DefExpression is Identifier idTmp))
+                    return a;
+                var sidT = ssaIds[idTmp];
+                if (!(sidT.DefExpression is ConditionOf cond2))
+                    return a;
+                cond = cond2;
+            }
             if (!(cond.Expression is Identifier condId))
                 return a;
             var sidOrigHi = ssaIds[condId];

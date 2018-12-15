@@ -41,11 +41,13 @@ namespace Reko.UnitTests.Evaluation
         private ExpressionSimplifier simplifier;
         private Identifier foo;
         private ProcedureBuilder m;
+        private PseudoProcedure rolc_8;
 
         [SetUp]
         public void Setup()
         {
             m = new ProcedureBuilder();
+            this.rolc_8 = new PseudoProcedure(PseudoProcedure.RolC, PrimitiveType.Byte, 3);
         }
 
         private void Given_ExpressionSimplifier()
@@ -232,6 +234,14 @@ namespace Reko.UnitTests.Evaluation
             Assert.AreEqual("foo_1 == 0x00000010", m.Eq0(m.ISubS(foo, 16))
                 .Accept(simplifier)
                 .ToString());
+        }
+
+        [Test]
+        public void Exs_Rolc_To_Shl()
+        {
+            Given_ExpressionSimplifier();
+            var expr = m.Fn(rolc_8, foo, m.Byte(1), Constant.False());
+            Assert.AreEqual("foo_0 << 0x01", expr.Accept(simplifier).ToString());
         }
     }
 }

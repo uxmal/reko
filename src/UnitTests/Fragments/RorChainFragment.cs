@@ -1,59 +1,71 @@
+#region License
+/* 
+ * Copyright (C) 1999-2018 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
 using Reko.Arch.Z80;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Fragments
 {
-    public class RorChainFragment
+    public class RorChainFragment : ProcedureBuilder
     {
-        public Procedure ShiftHlRightByC()
+        public RorChainFragment() : base(new Z80ProcessorArchitecture("z80")) { }
+
+        protected override void BuildBody()
         {
-            var arch = new Z80ProcessorArchitecture("z80");
-            var m = new ProcedureBuilder(arch);
-            var sp = m.Frame.EnsureRegister(Registers.sp);
-            var a = m.Frame.EnsureRegister(Registers.a);
-            var c = m.Frame.EnsureRegister(Registers.c);
-            var h = m.Frame.EnsureRegister(Registers.h);
-            var l = m.Frame.EnsureRegister(Registers.l);
-            var C = m.Frame.EnsureFlagGroup(Registers.C);
-            var Z = m.Frame.EnsureFlagGroup(Registers.Z);
-            var SZC = m.Frame.EnsureFlagGroup(arch.GetFlagGroup("SZC"));
-            var SZP = m.Frame.EnsureFlagGroup(arch.GetFlagGroup("SZP"));
+            var sp = Frame.EnsureRegister(Registers.sp);
+            var a = Frame.EnsureRegister(Registers.a);
+            var c = Frame.EnsureRegister(Registers.c);
+            var h = Frame.EnsureRegister(Registers.h);
+            var l = Frame.EnsureRegister(Registers.l);
+            var C = Frame.EnsureFlagGroup(Architecture.GetFlagGroup("C"));
+            var Z = Frame.EnsureFlagGroup(Architecture.GetFlagGroup("Z"));
+            var SZC = Frame.EnsureFlagGroup(Architecture.GetFlagGroup("SZC"));
+            var SZP = Frame.EnsureFlagGroup(Architecture.GetFlagGroup("SZP"));
             var rorc = new PseudoProcedure(
                 PseudoProcedure.RorC,
-                FunctionType.Func(
-                    a,
-                    a,
-                    new Identifier("", PrimitiveType.Byte, null),
-                    C));
-            m.Assign(sp, m.Frame.FramePointer);
-            m.Label("m1Loop");
-            m.Assign(a, h);
-            m.Assign(a, m.Or(a, a));
-            m.Assign(SZC, m.Cond(a));
-            m.Assign(C, Constant.False());
-            m.Assign(a, m.Fn(rorc, a, Constant.Byte(1), C));
-            m.Assign(C, m.Cond(a));
-            m.Assign(h, a);
-            m.Assign(a, l);
-            m.Assign(a, m.Fn(rorc, a, Constant.Byte(1), C));
-            m.Assign(C, m.Cond(a));
-            m.Assign(l, a);
-            m.Assign(c, m.ISub(c, 1));
-            m.Assign(SZP, m.Cond(a));
-            m.BranchIf(m.Test(ConditionCode.NE, Z), "m1Loop");
-        
-            m.Label("m2Done");
-            m.Return();
+                PrimitiveType.Byte,
+                3);
+            Assign(sp, Frame.FramePointer);
+            Label("m1Loop");
+            Assign(a, h);
+            Assign(a, Or(a, a));
+            Assign(SZC, Cond(a));
+            Assign(C, Constant.False());
+            Assign(a, Shr(a, Constant.Byte(1)));
+            Assign(C, Cond(a));
+            Assign(h, a);
+            Assign(a, l);
+            Assign(a, Fn(rorc, a, Constant.Byte(1), C));
+            Assign(C, Cond(a));
+            Assign(l, a);
+            Assign(c, ISub(c, 1));
+            Assign(SZP, Cond(c));
+            BranchIf(Test(ConditionCode.NE, Z), "m1Loop");
 
-            return m.Procedure;
+            Label("m2Done");
+            MStore(Word32(0x1000), l);
+            MStore(Word32(0x1001), h);
+            Return();
         }
     }
 }
