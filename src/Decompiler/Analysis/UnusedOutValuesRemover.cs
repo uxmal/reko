@@ -92,6 +92,10 @@ namespace Reko.Analysis
             }
         }
 
+        /// <summary>
+        /// For each procedure/SSA state, compute the variables that are live-out
+        /// (and which bit ranges are live-out) and store them in the procedure flow.
+        /// </summary>
         private void CollectLiveOutStorages()
         {
             var wl = new WorkList<SsaState>(ssaStates);
