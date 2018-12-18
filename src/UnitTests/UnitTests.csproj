@@ -137,6 +137,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Analysis\ProjectionPropagatorTests.cs" />
     <Compile Include="Analysis\ProcedureFlowTests.cs" />
     <Compile Include="Analysis\SsaMutatorTests.cs" />
     <Compile Include="Analysis\StackPointerBackpropagatorTests.cs" />
