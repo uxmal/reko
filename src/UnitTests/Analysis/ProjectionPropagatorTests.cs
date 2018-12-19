@@ -47,6 +47,7 @@ namespace Reko.UnitTests.Analysis
             var sw = new StringWriter();
             m.Ssa.Procedure.WriteBody(false, sw);
             sw.Flush();
+            m.Ssa.Dump(true);
             var sActual = sw.ToString();
             if (sActual != sExp)
             {
@@ -215,15 +216,25 @@ SsaProcedureBuilder_exit:
         }
 
         [Test]
-        [Ignore("Not implemented yet")]
         public void Prjpr_Phi_Subregisters()
         {
             var sExp =
             #region Expected
 @"SsaProcedureBuilder_entry:
-	def hl
 l1:
-	de_1 = hl
+	def h
+	def l
+	hl_1 = SEQ(h, l)
+loop:
+	hl_3 = PHI((hl_1, l1), (hl_2, loop))
+	h_4 = PHI((h, l1), (h_2, loop))
+	l_5 = PHI((l, l1), (l_3, loop))
+	hl_1 = hl_3 << 0x01
+	h_2 = SLICE(hl_1, byte, 8)
+	l_3 = (byte) hl_1
+	hl_2 = SEQ(h_2, l_3)
+	goto loop
+xit:
 	return
 SsaProcedureBuilder_exit:
 ";
@@ -247,10 +258,11 @@ SsaProcedureBuilder_exit:
                 m.Phi(h_4, (h, "l1"), (h_2, "loop"));
                 m.Phi(l_5, (l, "l1"), (l_3, "loop"));
                 m.Assign(hl_1, m.Shl(m.Seq(h_4, l_5), 1));
-                m.Assign(h_2, m.Slice(hl_1, 8, 8));
+                m.Assign(h_2, m.Slice(PrimitiveType.Byte, hl_1, 8));
                 m.Assign(l_3, m.Cast(PrimitiveType.Byte, hl_1));
                 m.Goto("loop");
 
+                m.Label("xit");
                 m.Return();
             });
         }

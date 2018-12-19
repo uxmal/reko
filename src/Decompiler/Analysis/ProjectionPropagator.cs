@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -114,21 +115,7 @@ namespace Reko.Analysis
                     return seq;
 
                 // We have a sequence of IDs. Are they from the same storage?
-                var sd = ids[0].Storage.Domain;
-                Identifier idWide;
-                if (AllSame(ids, (a, b) => a.Storage.Domain == b.Storage.Domain))
-                {
-                    var bits = ids.Aggregate(
-                        new BitRange(),
-                        (br, id) => br | id.Storage.GetBitRange());
-                    var regWide = arch.GetRegister(sd, bits);
-                    idWide = ssa.Procedure.Frame.EnsureRegister(regWide);
-                }
-                else
-                {
-                    //$BUG: EnsureSequence needs to take an arbitrary # of subregisters.
-                    idWide = ssa.Procedure.Frame.EnsureSequence(ids[0].Storage, ids[1].Storage, seq.DataType);
-                }
+                Identifier idWide = GenerateWideIdentifier(seq, sids);
 
                 var ass = sids.Select(s => s.DefStatement.Instruction as Assignment).ToArray();
                 if (ass.All(a => a != null))
@@ -149,7 +136,36 @@ namespace Reko.Analysis
                     return RewriteSeqOfDefs(sids, idWide);
                 }
 
+                var phis = sids.Select(s => s.DefStatement.Instruction as PhiAssignment).ToArray();
+                if (phis.All(a => a != null))
+                {
+                    // We have a sequence of phi functions
+                    return RewriteSeqOfPhi(sids, phis, idWide);
+                }
                 throw new NotImplementedException();
+            }
+
+            private Identifier GenerateWideIdentifier(MkSequence seq, SsaIdentifier[] sids)
+            {
+                var sd = sids[0].Identifier.Storage.Domain;
+                Identifier idWide;
+                if (AllSame(sids, (a, b) => a.Identifier.Storage.Domain == b.Identifier.Storage.Domain))
+                {
+                    var bits = sids.Aggregate(
+                        new BitRange(),
+                        (br, sid) => br | sid.Identifier.Storage.GetBitRange());
+                    var regWide = arch.GetRegister(sd, bits);
+                    idWide = ssa.Procedure.Frame.EnsureRegister(regWide);
+                }
+                else
+                {
+                    //$BUG: EnsureSequence needs to take an arbitrary # of subregisters.
+                    idWide = ssa.Procedure.Frame.EnsureSequence(
+                        sids[0].Identifier.Storage, 
+                        sids[1].Identifier.Storage, 
+                        seq.DataType);
+                }
+                return idWide;
             }
 
             private Expression RewriteSeqOfSlices(SsaIdentifier[] sids, Slice[] slices)
@@ -210,6 +226,47 @@ namespace Reko.Analysis
                     sidWide.Uses.Add(s.DefStatement);
                 }
                 return sidWide.Identifier;
+            }
+
+            private Expression RewriteSeqOfPhi(SsaIdentifier[] sids, PhiAssignment[] phis, Identifier idWide)
+            {
+                foreach (var s in sids)
+                {
+                    s.Uses.Remove(this.Statement);
+                }
+
+                var stmPhi = sids[0].DefStatement.Block.Statements.Insert(
+                    0,
+                    sids[0].DefStatement.LinearAddress,
+                    null);
+
+                // Generate fused identifiers for all phi slots.
+                var widePhiArgs = new List<PhiArgument>();
+                for (var iBlock = 0; iBlock < phis[0].Src.Arguments.Length; ++iBlock)
+                {
+                    var pred = phis[0].Src.Arguments[iBlock].Block;
+                    var stmPred = pred.Statements.Add(
+                        sids[0].DefStatement.LinearAddress,
+                        null);
+                    var sidWide = ssa.Identifiers.Add(idWide, stmPred, null, false);
+                    var phiArgs = phis.Select(p => p.Src.Arguments[iBlock].Value).ToArray();
+                    stmPred.Instruction = 
+                        new Assignment(
+                            sidWide.Identifier,
+                            new MkSequence(
+                                sidWide.Identifier.DataType,
+                                phiArgs));
+                    ssa.AddUses(stmPred);
+                    sidWide.Uses.Add(stmPhi);
+
+                    widePhiArgs.Add(new PhiArgument(pred, sidWide.Identifier));
+                }
+                var sidDst = ssa.Identifiers.Add(idWide, stmPhi, null, false);
+                stmPhi.Instruction = new PhiAssignment(
+                        sidDst.Identifier,
+                        widePhiArgs.ToArray());
+                sidDst.Uses.Add(this.Statement);
+                return sidDst.Identifier;
             }
         }
     }
