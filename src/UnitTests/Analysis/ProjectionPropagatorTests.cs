@@ -23,6 +23,8 @@ using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Arch.Z80;
 using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
@@ -54,7 +56,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         /// <summary>
-        /// Fuse together subregisters that compose into a larger register
+        /// Fuse together subregisters that compose into a larger register.
         /// </summary>
         [Test]
         public void Prjpr_Simple_Subregisters()
@@ -80,6 +82,39 @@ SsaProcedureBuilder_exit:
                 m.Def(h);
                 m.Def(l);
                 m.Assign(de_1, m.Seq(h, l));
+                m.Return();
+            });
+        }
+
+
+        /// <summary>
+        /// Fuse together a register pair.
+        /// </summary>
+        [Test]
+        public void Prjpr_Simple_RegisterPair()
+        {
+            var sExp =
+            #region Expected
+@"SsaProcedureBuilder_entry:
+	def hl_de
+l1:
+	hl_de_1 = hl_de
+	return
+SsaProcedureBuilder_exit:
+";
+            #endregion
+
+            var arch = new Z80ProcessorArchitecture("z80");
+            RunTest(sExp, arch, m =>
+            {
+                var hl = m.Reg("hl", Registers.hl);
+                var de = m.Reg("de", Registers.de);
+                var hl_de = m.Frame.EnsureSequence(hl.Storage, de.Storage, PrimitiveType.Word32);
+                var hl_de_1 = m.Ssa.Identifiers.Add(new Identifier("hl_de_1", hl_de.DataType, hl_de.Storage), null, null, false).Identifier;
+
+                m.Def(hl);
+                m.Def(de);
+                m.Assign(hl_de_1, m.Seq(hl, de));
                 m.Return();
             });
         }

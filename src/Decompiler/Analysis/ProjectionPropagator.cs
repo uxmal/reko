@@ -125,7 +125,8 @@ namespace Reko.Analysis
                 }
                 else 
                 {
-                    throw new NotImplementedException();
+                    //$BUG: EnsureSequence needs to take an arbitrary # of subregisters.
+                    idWide = ssa.Procedure.Frame.EnsureSequence(ids[0].Storage, ids[1].Storage, seq.DataType);
                 }
                 // Are all the definition defStatements?
                 if (sids.All(s => s.DefStatement.Instruction is DefInstruction))
