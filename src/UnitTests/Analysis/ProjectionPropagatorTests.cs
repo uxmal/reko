@@ -88,6 +88,42 @@ SsaProcedureBuilder_exit:
 
 
         /// <summary>
+        /// Fuse together subregisters that compose into a larger register.
+        /// </summary>
+        [Test]
+        public void Prjpr_Simple_Subregisters_slices()
+        {
+            var sExp =
+            #region Expected
+@"SsaProcedureBuilder_entry:
+l1:
+	def hl
+	l = (byte) hl
+	h = SLICE(hl, ui8, 8)
+	de_1 = hl
+	return
+SsaProcedureBuilder_exit:
+";
+            #endregion
+
+            var arch = new Z80ProcessorArchitecture("z80");
+            RunTest(sExp, arch, m =>
+            {
+                var hl = m.Reg("hl", Registers.hl);
+                var h = m.Reg("h", Registers.h);
+                var l = m.Reg("l", Registers.l);
+                var de_1 = m.Reg("de_1", Registers.de);
+
+                m.Def(hl);
+                m.Assign(l, m.Cast(PrimitiveType.Byte, hl));
+                m.Assign(h, m.Slice(hl, 8, 8));
+                m.Assign(de_1, m.Seq(h, l));
+                m.Return();
+            });
+        }
+
+
+        /// <summary>
         /// Fuse together subregisters that compose into a larger register,
         /// used in two branches.
         /// </summary>
