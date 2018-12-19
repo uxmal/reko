@@ -382,7 +382,7 @@ namespace Reko.Arch.M68k
                     }
                     else
                     {
-                        dividend = binder.EnsureSequence(dreg.Register1, dreg.Register2, di.dataWidth);
+                        dividend = binder.EnsureSequence(di.dataWidth, dreg.Register1, dreg.Register2);
                     }
                     m.Assign(rem, m.Remainder(dividend, src));
                     m.Assign(quot, op(dividend, src));

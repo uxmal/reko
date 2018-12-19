@@ -316,7 +316,7 @@ namespace Reko.Arch.Arm.AArch32
         {
             var regLo = ((RegisterOperand)instr.ops[0]).Register;
             var regHi = ((RegisterOperand)instr.ops[1]).Register;
-            var opDst = binder.EnsureSequence(regHi, regLo, PrimitiveType.Word64);
+            var opDst = binder.EnsureSequence(PrimitiveType.Word64, regHi, regLo);
             var opSrc = this.Operand(instr.ops[2]);
             m.Assign(opDst, opSrc);
             MaybePostOperand(instr.ops[2]);
@@ -338,7 +338,7 @@ namespace Reko.Arch.Arm.AArch32
         {
             var regLo = ((RegisterOperand)instr.ops[0]).Register;
             var regHi = ((RegisterOperand)instr.ops[1]).Register;
-            var opSrc = binder.EnsureSequence(regHi, regLo, PrimitiveType.Word64);
+            var opSrc = binder.EnsureSequence(PrimitiveType.Word64, regHi, regLo);
             var opDst = this.Operand(instr.ops[2]);
             m.Assign(opDst, opSrc);
             MaybePostOperand(instr.ops[2]);
@@ -531,7 +531,7 @@ namespace Reko.Arch.Arm.AArch32
             var regLo = ((RegisterOperand)instr.ops[0]).Register;
             var regHi = ((RegisterOperand)instr.ops[1]).Register;
 
-            var opDst = binder.EnsureSequence(regHi, regLo, dtResult);
+            var opDst = binder.EnsureSequence(dtResult, regHi, regLo);
             var opSrc1 = this.Operand(Src3());
             var opSrc2 = this.Operand(Src2());
             m.Assign(opDst, op(opSrc1, opSrc2));
@@ -610,7 +610,7 @@ namespace Reko.Arch.Arm.AArch32
         {
             var r1 = ((RegisterOperand)instr.ops[0]).Register;
             var r2 = ((RegisterOperand)instr.ops[1]).Register;
-            var dst = binder.EnsureSequence(r1, r2, PrimitiveType.Int64);
+            var dst = binder.EnsureSequence(PrimitiveType.Int64, r1, r2);
             var fac1 = Operand(Src2());
             var fac2 = Operand(Src3());
             m.Assign(dst, m.IAdd(m.SMul(fac1, fac2), dst));
@@ -620,7 +620,7 @@ namespace Reko.Arch.Arm.AArch32
         {
             var r1 = ((RegisterOperand)instr.ops[0]).Register;
             var r2 = ((RegisterOperand)instr.ops[1]).Register;
-            var dst = binder.EnsureSequence(r1, r2, PrimitiveType.Int64);
+            var dst = binder.EnsureSequence(PrimitiveType.Int64, r1, r2);
 
             var left = Operand(Src2());
             left = hiLeft ? m.Sar(left, m.Int32(16)) : left;
@@ -638,7 +638,7 @@ namespace Reko.Arch.Arm.AArch32
             // The ARM manual states that the double return value is in [op2,op1]
             var r1 = ((RegisterOperand)instr.ops[1]).Register;
             var r2 = ((RegisterOperand)instr.ops[0]).Register;
-            var dst = binder.EnsureSequence(r1, r2, PrimitiveType.Int64);
+            var dst = binder.EnsureSequence(PrimitiveType.Int64, r1, r2);
 
             var left = Operand(Src2());
             var right = Operand(Src3());
@@ -806,9 +806,9 @@ namespace Reko.Arch.Arm.AArch32
             var rn = Operand(Src2());
             var rm = Operand(Src3());
             var dst = binder.EnsureSequence(
+                PrimitiveType.UInt64,
                 ((RegisterOperand)Src1()).Register,
-                ((RegisterOperand)Dst()).Register,
-                PrimitiveType.UInt64);
+                ((RegisterOperand)Dst()).Register);
             m.Assign(tmp, m.UMul(rn, rm));
             m.Assign(tmp, m.IAdd(tmp, m.Cast(PrimitiveType.UInt64, hi)));
             m.Assign(dst, m.IAdd(tmp, m.Cast(PrimitiveType.UInt64, lo)));
@@ -817,9 +817,9 @@ namespace Reko.Arch.Arm.AArch32
         private void RewriteUmlal()
         {
             var dst = binder.EnsureSequence(
+                PrimitiveType.Word64,
                 ((RegisterOperand)Src1()).Register,
-                ((RegisterOperand)Dst()).Register,
-                PrimitiveType.Word64);
+                ((RegisterOperand)Dst()).Register);
             var left = this.Operand(Src2());
             var right = this.Operand(Src3());
             m.Assign(dst, m.IAdd(m.UMul(left, right), dst));

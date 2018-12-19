@@ -256,12 +256,12 @@ namespace Reko.Analysis
                    .First();
             }
 
-            public Identifier EnsureSequence(Storage head, Storage tail, DataType dt)
+            public Identifier EnsureSequence(DataType dt, Storage head, Storage tail)
             {
                 throw new NotImplementedException();
             }
 
-            public Identifier EnsureSequence(string name, Storage head, Storage tail, DataType dt)
+            public Identifier EnsureSequence(DataType dt, string name, Storage head, Storage tail)
             {
                 throw new NotImplementedException();
             }

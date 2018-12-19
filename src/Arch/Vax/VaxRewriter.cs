@@ -524,7 +524,7 @@ namespace Reko.Arch.Vax
                     if (rHi == null)
                         return null;
                     var regHi = binder.EnsureRegister(rHi);
-                    return binder.EnsureSequence(regHi.Storage, reg.Storage, width);
+                    return binder.EnsureSequence(width, regHi.Storage, reg.Storage);
                 }
                 else if (width.Size == 16)
                 {
@@ -532,9 +532,9 @@ namespace Reko.Arch.Vax
                     var regHi2 = binder.EnsureRegister(arch.GetRegister(2 + (int)reg.Storage.Domain));
                     var regHi3 = binder.EnsureRegister(arch.GetRegister(3 + (int)reg.Storage.Domain));
 
-                    var regLo = binder.EnsureSequence(regHi1.Storage, reg.Storage, PrimitiveType.Word64);
-                    var regHi = binder.EnsureSequence(regHi3.Storage, regHi2.Storage, PrimitiveType.Word64);
-                    return binder.EnsureSequence(regHi.Storage, regLo.Storage, width);
+                    var regLo = binder.EnsureSequence(PrimitiveType.Word64, regHi1.Storage, reg.Storage);
+                    var regHi = binder.EnsureSequence(PrimitiveType.Word64, regHi3.Storage, regHi2.Storage);
+                    return binder.EnsureSequence(width, regHi.Storage, regLo.Storage);
                 }
                 else
                 {
@@ -624,7 +624,7 @@ namespace Reko.Arch.Vax
                     if (rHi == null)
                         return null;
                     var regHi = binder.EnsureRegister(rHi);
-                    reg = binder.EnsureSequence(regHi.Storage, reg.Storage, width);
+                    reg = binder.EnsureSequence(width, regHi.Storage, reg.Storage);
                 }
                 else if (width.Size == 16)
                 {
@@ -632,9 +632,9 @@ namespace Reko.Arch.Vax
                     var regHi2 = binder.EnsureRegister(arch.GetRegister(2 + (int)reg.Storage.Domain));
                     var regHi3 = binder.EnsureRegister(arch.GetRegister(3 + (int)reg.Storage.Domain));
 
-                    var regLo = binder.EnsureSequence(regHi1.Storage, reg.Storage, PrimitiveType.Word64);
-                    var regHi = binder.EnsureSequence(regHi3.Storage, regHi2.Storage, PrimitiveType.Word64);
-                    reg = binder.EnsureSequence(regHi.Storage, regLo.Storage, width);
+                    var regLo = binder.EnsureSequence(PrimitiveType.Word64, regHi1.Storage, reg.Storage);
+                    var regHi = binder.EnsureSequence(PrimitiveType.Word64, regHi3.Storage, regHi2.Storage);
+                    reg = binder.EnsureSequence(width, regHi.Storage, regLo.Storage);
                 }
                 m.Assign(reg, fn(reg));
                 return reg;

@@ -69,7 +69,7 @@ namespace Reko.UnitTests.Analysis
         {
             Identifier es = binder.EnsureRegister(Registers.es);
             Identifier bx = binder.EnsureRegister(Registers.bx);
-            Identifier es_bx = binder.EnsureSequence(es.Storage, bx.Storage, PrimitiveType.Ptr32);
+            Identifier es_bx = binder.EnsureSequence(PrimitiveType.Ptr32, es.Storage, bx.Storage);
             tsh.Trash(es_bx, trash);
             Assert.AreEqual("(bx:TRASH) (es:TRASH) (Sequence es:bx:TRASH) ", Dump(tsh.TrashedRegisters));
         }

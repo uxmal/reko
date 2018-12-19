@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Mocks
             Identifier ds = m.Frame.EnsureRegister(new RegisterStorage("ds", 1, 0, PrimitiveType.SegmentSelector));
             Identifier es = m.Frame.EnsureRegister(new RegisterStorage("es", 2, 0, PrimitiveType.SegmentSelector));
             Identifier bx = m.Frame.EnsureRegister(new RegisterStorage("bx", 3, 0, PrimitiveType.Word16));
-            Identifier es_bx = m.Frame.EnsureSequence(es.Storage, bx.Storage, PrimitiveType.SegPtr32);
+            Identifier es_bx = m.Frame.EnsureSequence(PrimitiveType.SegPtr32, es.Storage, bx.Storage);
             m.SStore(ds, m.Word16(0x300), m.Word16(0x1234));
             m.SStore(ds, m.Word16(0x302), m.Word16(0x5550));
             m.Assign(es_bx, m.SegMem(PrimitiveType.SegPtr32, ds, m.Word16(0x300)));

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -99,17 +99,17 @@ namespace Reko.Core
         public int ReturnAddressSize { get; set; }
         public bool ReturnAddressKnown { get; set; }
 
-        public Identifier CreateSequence(Storage head, Storage tail, DataType dt)
+        public Identifier CreateSequence(DataType dt, Storage head, Storage tail)
         {
             Identifier id = new Identifier(string.Format("{0}_{1}", head.Name, tail.Name), dt, new
-                SequenceStorage(head, tail, dt));
+                SequenceStorage(dt, head, tail));
             identifiers.Add(id);
             return id;
         }
 
-        public Identifier CreateSequence(string name, Storage head, Storage tail, DataType dt)
+        public Identifier CreateSequence(DataType dt, string name, Storage head, Storage tail)
         {
-            var id = new Identifier(name, dt, new SequenceStorage(head, tail, dt));
+            var id = new Identifier(name, dt, new SequenceStorage(dt, head, tail));
             identifiers.Add(id);
             return id;
         }
@@ -124,11 +124,11 @@ namespace Reko.Core
                 return EnsureFlagGroup(grf);
             case SequenceStorage seq:
                 return EnsureSequence(
+                    PrimitiveType.CreateWord(
+                        (int)(seq.Head.BitSize + seq.Tail.BitSize)),
                     seq.Name,
                     seq.Head,
-                    seq.Tail,
-                    PrimitiveType.CreateWord(
-                        (int)(seq.Head.BitSize + seq.Tail.BitSize)));
+                    seq.Tail);
             case FpuStackStorage fp:
                 return EnsureFpuStackVariable(fp.FpuStackOffset, fp.DataType);
             case StackStorage st:
@@ -230,22 +230,22 @@ namespace Reko.Core
 			return idOut;
 		}
 
-		public Identifier EnsureSequence(Storage head, Storage tail, DataType dt)
-		{
+		public Identifier EnsureSequence(DataType dt, Storage head, Storage tail)
+        {
 			Identifier idSeq = FindSequence(head, tail);
 			if (idSeq == null)
 			{
-				idSeq = CreateSequence(head, tail, dt);
+				idSeq = CreateSequence(dt, head, tail);
 			}
 			return idSeq;
 		}
 
-        public Identifier EnsureSequence(string name, Storage head, Storage tail, DataType dt)
+        public Identifier EnsureSequence(DataType dt, string name, Storage head, Storage tail)
         {
             Identifier idSeq = FindSequence(head, tail);
             if (idSeq == null)
             {
-                idSeq = CreateSequence(name, head, tail, dt);
+                idSeq = CreateSequence(dt, name, head, tail);
             }
             return idSeq;
         }

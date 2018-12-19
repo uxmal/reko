@@ -219,7 +219,7 @@ namespace Reko.Arch.Mips
             }
             else
             {
-                var hilo = binder.EnsureSequence(arch.hi, arch.lo, dt);
+                var hilo = binder.EnsureSequence(dt, arch.hi, arch.lo);
                 m.Assign(hilo, ctor(op1, op2));
             }
         }

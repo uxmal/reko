@@ -163,7 +163,7 @@ namespace Reko.Arch.PowerPC
                 return;
             }
             var rDstNext = arch.GetRegister(rDst.Number + 1);
-            var regPair = binder.EnsureSequence(rDst, rDstNext, PrimitiveType.Word128);
+            var regPair = binder.EnsureSequence(PrimitiveType.Word128, rDst, rDstNext);
             var ea = EffectiveAddress_r0(instr.op2, m);
             m.Assign(regPair, m.Mem(regPair.DataType, ea));
         }

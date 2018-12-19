@@ -39,9 +39,9 @@ namespace Reko.Arch.Mips
             var freg0 = ((RegisterOperand)op).Register;
             var freg1 = arch.fpuRegs[1 + (freg0.Number & 0x1F)];
             var seq = binder.EnsureSequence(
+                PrimitiveType.Real64,
                 freg0,
-                freg1,
-                PrimitiveType.Real64);
+                freg1);
             return seq;
         }
 

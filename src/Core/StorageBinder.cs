@@ -100,7 +100,7 @@ namespace Reko.Core
             switch (stg)
             {
             case RegisterStorage reg: return EnsureRegister(reg);
-            case SequenceStorage seq: return EnsureSequence(seq.Name, seq.Head, seq.Tail, seq.DataType);
+            case SequenceStorage seq: return EnsureSequence(seq.DataType, seq.Name, seq.Head, seq.Tail);
             default: throw new NotImplementedException();
             }
         }
@@ -122,7 +122,7 @@ namespace Reko.Core
             return id;
         }
 
-        public Identifier EnsureSequence(Storage head, Storage tail, DataType dataType)
+        public Identifier EnsureSequence(DataType dataType, Storage head, Storage tail)
         {
             if (!this.seqs.TryGetValue(head, out var seqs))
             {
@@ -131,7 +131,7 @@ namespace Reko.Core
             }
             if (seqs.TryGetValue(tail, out var id))
                 return id;
-            var seq = new SequenceStorage(head, tail, dataType);
+            var seq = new SequenceStorage(dataType, head, tail);
             id = new Identifier(string.Format("{0}_{1}", head.Name, tail.Name), dataType, seq);
             seqs.Add(tail, id);
             ids.Add(id);
@@ -139,7 +139,7 @@ namespace Reko.Core
         }
 
 
-        public Identifier EnsureSequence(string name, Storage head, Storage tail, DataType dataType)
+        public Identifier EnsureSequence(DataType dataType, string name, Storage head, Storage tail)
         {
             if (!this.seqs.TryGetValue(head, out var seqs))
             {
@@ -192,7 +192,7 @@ namespace Reko.Core
 
         Identifier StorageVisitor<Identifier>.VisitSequenceStorage(SequenceStorage seq)
         {
-            return EnsureSequence(seq.Head, seq.Tail, PrimitiveType.CreateWord((int)seq.BitSize));
+            return EnsureSequence(PrimitiveType.CreateWord((int)seq.BitSize), seq.Head, seq.Tail);
         }
 
         Identifier StorageVisitor<Identifier>.VisitStackArgumentStorage(StackArgumentStorage stack)

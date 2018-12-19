@@ -63,7 +63,7 @@ namespace Reko.Arch.Pdp11
                 return;
             }
             var r1 = arch.GetRegister(r.Number + 1);
-            var dst = binder.EnsureSequence(r, r1, PrimitiveType.Word32);
+            var dst = binder.EnsureSequence(PrimitiveType.Word32, r, r1);
             var sh = RewriteSrc(instr.op1);
             if (sh == null)
             {
@@ -170,7 +170,7 @@ namespace Reko.Arch.Pdp11
         {
             var reg = ((RegisterOperand)instr.op2).Register;
             var reg1 = arch.GetRegister(reg.Number | 1);
-            var reg_reg = binder.EnsureSequence(reg, reg1, PrimitiveType.Int32);
+            var reg_reg = binder.EnsureSequence(PrimitiveType.Int32, reg, reg1);
             var dividend = binder.CreateTemporary(PrimitiveType.Int32);
             var divisor = RewriteSrc(instr.op1);
             var quotient = binder.EnsureRegister(reg);
@@ -264,7 +264,7 @@ namespace Reko.Arch.Pdp11
             if ((reg.Number & 1) == 0)
             {
                 var regLo = arch.GetRegister(reg.Number + 1);
-                dst = binder.EnsureSequence(reg, regLo, PrimitiveType.Int32);
+                dst = binder.EnsureSequence(PrimitiveType.Int32, reg, regLo);
             }
             else
             {

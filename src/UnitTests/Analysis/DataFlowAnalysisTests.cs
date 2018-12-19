@@ -363,7 +363,7 @@ ProcedureBuilder_exit:
                 var es = m.Reg16("es", 9);
                 var cx = m.Reg16("cx", 1);
                 var bx = m.Reg16("bx", 3);
-                var es_bx = m.Frame.EnsureSequence(es.Storage, bx.Storage, PrimitiveType.SegPtr32);
+                var es_bx = m.Frame.EnsureSequence(PrimitiveType.SegPtr32, es.Storage, bx.Storage);
                 var SZ = m.Flags("SZ");
                 var Z = m.Flags("Z");
 
@@ -388,7 +388,7 @@ ProcedureBuilder_exit:
             var m = new ProcedureBuilder();
             var r1 = m.Register("r1");
             var r2 = m.Register("r2");
-            var r2_r1 = m.Frame.EnsureSequence(r2.Storage, r1.Storage, PrimitiveType.Word64);
+            var r2_r1 = m.Frame.EnsureSequence(PrimitiveType.Word64, r2.Storage, r1.Storage);
             var tmp = m.Frame.CreateTemporary(r2_r1.DataType);
 
             m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);

@@ -183,7 +183,7 @@ ProcedureBuilder_exit:
                 var r1 = m.Reg32("r1", 1);
                 var r2 = m.Reg32("r2", 2);
                 var r3 = m.Reg32("r3", 3);
-                var r2_r1 = m.Frame.EnsureSequence(r2.Storage, r1.Storage, PrimitiveType.Word64);
+                var r2_r1 = m.Frame.EnsureSequence(PrimitiveType.Word64, r2.Storage, r1.Storage);
 
                 m.Assign(r2_r1, m.Mem(r2_r1.DataType, m.Word16(0x2000)));
                 m.MStore(m.IAdd(r3, 0x2000), m.Cast(r1.DataType, r2_r1));

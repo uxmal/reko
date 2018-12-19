@@ -44,7 +44,7 @@ namespace Reko.UnitTests.Evaluation
             var c = Constant.Int32((int)mult);
             var r1 = m.Reg32("r1", 1);
             var r2 = m.Reg32("r2", 2);
-            var r2_r1 = m.Frame.EnsureSequence(r2.Storage, r1.Storage, PrimitiveType.Word64);
+            var r2_r1 = m.Frame.EnsureSequence(PrimitiveType.Word64, r2.Storage, r1.Storage);
 
             var ass = m.Assign(r2_r1, m.SMul(r1, c));
             m.Alias(r2, m.Slice(PrimitiveType.Word32, r2_r1, 32));
@@ -195,7 +195,7 @@ ProcedureBuilder_exit:
                 var eax = m.Reg32("eax", 0);
                 var ecx = m.Reg32("ecx", 1);
                 var edx = m.Reg32("edx", 2);
-                var r2_r0 = m.Frame.EnsureSequence(edx.Storage, eax.Storage, PrimitiveType.Word64);
+                var r2_r0 = m.Frame.EnsureSequence(PrimitiveType.Word64, edx.Storage, eax.Storage);
                 m.Assign(edx, 0x24924925);
                 m.Assign(eax, ecx);
                 m.Assign(r2_r0, m.UMul(edx, eax));

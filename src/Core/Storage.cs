@@ -605,17 +605,14 @@ namespace Reko.Core
             writer.Write(Name);
         }
 
-        public static RegisterStorage None { get { return none; } }
-
-        private static RegisterStorage none =
-            new RegisterStorage("None")
-            {
-                Name = "None",
-                Number = -1,
-                Domain = StorageDomain.None,
-                BitAddress = 0,
-                DataType = PrimitiveType.Create(Types.Domain.Any, 0)
-            };
+        public static RegisterStorage None { get; } = new RegisterStorage("None")
+        {
+            Name = "None",
+            Number = -1,
+            Domain = StorageDomain.None,
+            BitAddress = 0,
+            DataType = PrimitiveType.Create(Types.Domain.Any, 0)
+        };
 
         public Expression GetSlice(Expression value)
         {
@@ -639,7 +636,7 @@ namespace Reko.Core
 
     public class SequenceStorage : Storage
     {
-        public SequenceStorage(Storage head, Storage tail, DataType dt)
+        public SequenceStorage(DataType dt, Storage head, Storage tail)
             : base("Sequence")
         {
             this.Head = head;

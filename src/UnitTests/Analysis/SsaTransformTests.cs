@@ -1669,7 +1669,7 @@ proc1_exit:
             {
                 var es = m.Reg16("es", 10);
                 var bx = m.Reg16("bx", 3);
-                var es_bx = m.Frame.EnsureSequence(es.Storage, bx.Storage, PrimitiveType.SegPtr32);
+                var es_bx = m.Frame.EnsureSequence(PrimitiveType.SegPtr32, es.Storage, bx.Storage);
 
                 m.Assign(es_bx, m.SegMem(PrimitiveType.Word32, es, bx));
                 m.Assign(bx, m.SegMem(PrimitiveType.Word32, es, m.IAdd(bx, 16)));
@@ -1935,7 +1935,7 @@ proc1_exit:
                 var es = m.Reg16("es", 2);
                 var cx = m.Reg16("cx", 1);
                 var cl = m.Reg8("cl", 1);
-                var es_cx = m.Frame.EnsureSequence(es.Storage, cx.Storage, PrimitiveType.SegPtr32);
+                var es_cx = m.Frame.EnsureSequence(PrimitiveType.SegPtr32, es.Storage, cx.Storage);
 
                 m.Label("m0");
                 m.Assign(cx, m.Mem16(m.Word16(0x1234)));
@@ -2333,7 +2333,7 @@ proc1_exit:
                 var c = Constant.Int32(0x55555555);
                 var r1 = m.Reg32("r1", 1);
                 var r2 = m.Reg32("r2", 2);
-                var r2_r1 = m.Frame.EnsureSequence(r2.Storage, r1.Storage, PrimitiveType.Word64);
+                var r2_r1 = m.Frame.EnsureSequence(PrimitiveType.Word64, r2.Storage, r1.Storage);
 
                 m.Assign(r2_r1, m.SMul(r1, c));
                 m.MStore(m.Word32(0x0040000), r2);

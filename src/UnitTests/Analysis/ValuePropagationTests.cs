@@ -793,7 +793,7 @@ ProcedureBuilder_exit:
             var m = new ProcedureBuilder();
             var es = m.Reg16("es", 1);
             var bx = m.Reg16("bx", 3);
-            var es_bx = m.Frame.EnsureSequence(es.Storage, bx.Storage, PrimitiveType.Word32);
+            var es_bx = m.Frame.EnsureSequence(PrimitiveType.Word32, es.Storage, bx.Storage);
 
             m.Assign(es_bx, m.SegMem(PrimitiveType.Word32, es, bx));
             m.Assign(es, m.Slice(PrimitiveType.Word16, es_bx, 16));

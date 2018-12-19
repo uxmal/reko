@@ -358,7 +358,7 @@ namespace Reko.Scanning
             var dt = this.dt;
             var hd = (Identifier) seq.Head.Accept(this);
             var tl = (Identifier) seq.Tail.Accept(this);
-            return procCalling.Frame.EnsureSequence(hd.Storage, tl.Storage, dt);
+            return procCalling.Frame.EnsureSequence(dt, hd.Storage, tl.Storage);
         }
 
         public Identifier VisitStackArgumentStorage(StackArgumentStorage stack)

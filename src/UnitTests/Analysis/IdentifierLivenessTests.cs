@@ -96,7 +96,7 @@ namespace Reko.UnitTests.Analysis
 		{
 			Identifier es = frame.EnsureRegister(Registers.es);
 			Identifier bx = frame.EnsureRegister(Registers.bx);
-			Identifier es_bx = frame.EnsureSequence(es.Storage, bx.Storage, PrimitiveType.Word32);
+			Identifier es_bx = frame.EnsureSequence(PrimitiveType.Word32, es.Storage, bx.Storage);
 			Assert.AreSame(PrimitiveType.Word32, es_bx.DataType);
 			vl.Def(es_bx);
 			Assert.AreEqual(32, vl.DefBitSize, "es_bx size");

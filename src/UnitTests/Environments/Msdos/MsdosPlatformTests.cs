@@ -119,7 +119,7 @@ namespace Reko.UnitTests.Environments.Msdos
         {
             Given_MsdosPlatform();
             Given_Procedure();
-            var dx_ax = proc.Frame.EnsureSequence(Registers.dx, Registers.ax, PrimitiveType.Word32);
+            var dx_ax = proc.Frame.EnsureSequence(PrimitiveType.Word32, Registers.dx, Registers.ax);
             var arg06 = proc.Frame.EnsureStackArgument(6, PrimitiveType.Word16);
             var sb = new SignatureBuilder(proc.Frame, arch);
             sb.AddOutParam(dx_ax);

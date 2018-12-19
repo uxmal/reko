@@ -199,9 +199,9 @@ namespace Reko.Analysis
         private Expression ReplaceMkSequence(MkSequence seq, Statement stmCur, SsaIdentifier sidHead, SsaIdentifier sidTail)
         {
             var idSeq = ssa.Procedure.Frame.EnsureSequence(
+                seq.DataType,
                 sidHead.OriginalIdentifier.Storage,
-                sidTail.OriginalIdentifier.Storage,
-                seq.DataType);
+                sidTail.OriginalIdentifier.Storage);
             SsaIdentifier sidSeq = EnsureSequenceArgument(idSeq);
             sidSeq.Uses.Add(stmCur);
             RemoveUse(sidHead);

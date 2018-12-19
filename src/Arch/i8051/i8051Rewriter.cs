@@ -290,7 +290,7 @@ namespace Reko.Arch.i8051
         {
             var a = binder.EnsureRegister(Registers.A);
             var b = binder.EnsureRegister(Registers.B);
-            var ab = binder.EnsureSequence(Registers.B, Registers.A, PrimitiveType.Word16);
+            var ab = binder.EnsureSequence(PrimitiveType.Word16, Registers.B, Registers.A);
             m.Assign(ab, m.UMul(a, b));
             m.Assign(binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.PSW, (uint)FlagM.P)), m.Cond(ab));
             m.Assign(binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.PSW, (uint)FlagM.OV)), m.Ugt(ab, m.Word16(0xFF)));
@@ -448,7 +448,7 @@ namespace Reko.Arch.i8051
                 }
                 return e;
             case SequenceOperand seq:
-                return binder.EnsureSequence(seq.Sequence.Name, seq.Sequence.Head, seq.Sequence.Tail, seq.Sequence.DataType);
+                return binder.EnsureSequence(seq.Sequence.DataType, seq.Sequence.Name, seq.Sequence.Head, seq.Sequence.Tail);
             default:
                 throw new NotImplementedException($"Not implemented {op.GetType().Name}.");
             }

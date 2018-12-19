@@ -114,7 +114,7 @@ namespace Reko.Arch.Sparc
             var r0 = binder.EnsureRegister(Registers.GetFpuRegister(dst.Register.Number));
             var r1 = binder.EnsureRegister(Registers.GetFpuRegister(dst.Register.Number + 1));
             var dt = PrimitiveType.Real64;
-            var fpDst = binder.EnsureSequence(r0.Storage, r1.Storage, dt);
+            var fpDst = binder.EnsureSequence(dt, r0.Storage, r1.Storage);
             m.Assign(fpDst, m.Cast(dt, RewriteOp(instrCur.Op1)));
         }
 

@@ -157,9 +157,9 @@ namespace Reko.Arch.X86
         private void RewriteXgetbv()
         {
             Identifier edx_eax = binder.EnsureSequence(
+                PrimitiveType.Word64,
                 Registers.edx,
-                Registers.eax,
-                PrimitiveType.Word64);
+                Registers.eax);
             m.Assign(edx_eax,
                 host.PseudoProcedure("__xgetbv", 
                 edx_eax.DataType,
@@ -169,9 +169,9 @@ namespace Reko.Arch.X86
         private void RewriteXsetbv()
         {
             var edx_eax = binder.EnsureSequence(
+                PrimitiveType.Word64,
                 Registers.edx,
-                Registers.eax,
-                PrimitiveType.Word64);
+                Registers.eax);
             m.SideEffect(
                 host.PseudoProcedure("__xsetbv",
                     VoidType.Instance,
@@ -182,9 +182,9 @@ namespace Reko.Arch.X86
         private void RewriteRdmsr()
         {
             Identifier edx_eax = binder.EnsureSequence(
+                PrimitiveType.Word64,
                 Registers.edx,
-                Registers.eax,
-                PrimitiveType.Word64);
+                Registers.eax);
             var ecx = binder.EnsureRegister(Registers.ecx);
             m.Assign(
                 edx_eax,
@@ -198,9 +198,9 @@ namespace Reko.Arch.X86
         {
             rtlc = InstrClass.System;
             Identifier edx_eax = binder.EnsureSequence(
+                PrimitiveType.Word64,
                 Registers.edx,
-                Registers.eax,
-                PrimitiveType.Word64);
+                Registers.eax);
             var ecx = binder.EnsureRegister(Registers.ecx);
             m.Assign(edx_eax,
                 host.PseudoProcedure("__rdpmc",
@@ -211,9 +211,9 @@ namespace Reko.Arch.X86
         private void RewriteRdtsc()
         {
             Identifier edx_eax = binder.EnsureSequence(
+                PrimitiveType.Word64,
                 Registers.edx,
-                Registers.eax,
-                PrimitiveType.Word64);
+                Registers.eax);
             m.Assign(edx_eax,
                 host.PseudoProcedure("__rdtsc",
                 edx_eax.DataType));
@@ -362,18 +362,18 @@ namespace Reko.Arch.X86
             if (instrCur.dataWidth == PrimitiveType.Word32)
             {
                 Identifier edx_eax = binder.EnsureSequence(
+                    PrimitiveType.Int64,
                     Registers.edx,
-                    Registers.eax,
-                    PrimitiveType.Int64);
+                    Registers.eax);
                 m.Assign(
                     edx_eax, m.Cast(edx_eax.DataType, orw.AluRegister(Registers.eax)));
             }
             else
             {
                 Identifier dx_ax = binder.EnsureSequence(
+                    PrimitiveType.Int32,
                     Registers.dx,
-                    Registers.ax,
-                    PrimitiveType.Int32);
+                    Registers.ax);
                 m.Assign(
                     dx_ax, m.Cast(dx_ax.DataType, orw.AluRegister(Registers.ax)));
             }
@@ -406,17 +406,17 @@ namespace Reko.Arch.X86
             case 2:
                 regQuotient = orw.AluRegister(Registers.ax);
                 regRemainder = orw.AluRegister(Registers.dx);
-                regDividend = binder.EnsureSequence(regRemainder.Storage, regQuotient.Storage, PrimitiveType.Word32);
+                regDividend = binder.EnsureSequence(PrimitiveType.Word32, regRemainder.Storage, regQuotient.Storage);
                 break;
             case 4:
                 regQuotient = orw.AluRegister(Registers.eax);
                 regRemainder = orw.AluRegister(Registers.edx);
-                regDividend = binder.EnsureSequence(regRemainder.Storage, regQuotient.Storage, PrimitiveType.Word64);
+                regDividend = binder.EnsureSequence(PrimitiveType.Word64, regRemainder.Storage, regQuotient.Storage);
                 break;
             case 8:
                 regQuotient = orw.AluRegister(Registers.rax);
                 regRemainder = orw.AluRegister(Registers.rdx);
-                regDividend = binder.EnsureSequence(regRemainder.Storage, regQuotient.Storage, PrimitiveType.Word128);
+                regDividend = binder.EnsureSequence(PrimitiveType.Word128, regRemainder.Storage, regQuotient.Storage);
                 break;
             default:
                 throw new ArgumentOutOfRangeException(string.Format("{0}-byte divisions not supported.", instrCur.dataWidth.Size));
@@ -520,17 +520,17 @@ namespace Reko.Arch.X86
                 case 2:
                     multiplicator = orw.AluRegister(Registers.ax);
                     product = binder.EnsureSequence(
-                        Registers.dx, multiplicator.Storage, PrimitiveType.Word32);
+PrimitiveType.Word32, Registers.dx, multiplicator.Storage);
                     break;
                 case 4:
                     multiplicator = orw.AluRegister(Registers.eax);
                     product = binder.EnsureSequence(
-                        Registers.edx, multiplicator.Storage, PrimitiveType.Word64);
+PrimitiveType.Word64, Registers.edx, multiplicator.Storage);
                     break;
                 case 8:
                     multiplicator = orw.AluRegister(Registers.rax);
                     product = binder.EnsureSequence(
-                        Registers.rdx, multiplicator.Storage, PrimitiveType.Word64);
+PrimitiveType.Word64, Registers.rdx, multiplicator.Storage);
                     break;
                 default:
                     throw new ApplicationException(string.Format("Unexpected operand size: {0}", instrCur.op1.Width));
@@ -624,8 +624,8 @@ namespace Reko.Arch.X86
             }
 
             m.Assign(
-                binder.EnsureSequence(seg, reg.Register,
-                PrimitiveType.Ptr32),
+                binder.EnsureSequence(PrimitiveType.Ptr32, seg,
+                    reg.Register),
                 SrcOp(mem, PrimitiveType.SegPtr32));
         }
 

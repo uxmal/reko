@@ -231,7 +231,7 @@ namespace Reko.Arch.Avr
         {
             var regN = ((RegisterOperand)operand).Register;
             var regN1 = arch.GetRegister(regN.Number + 1);
-            var regPair = binder.EnsureSequence(regN1, regN, PrimitiveType.Word16);
+            var regPair = binder.EnsureSequence(PrimitiveType.Word16, regN1, regN);
             return regPair;
         }
 
@@ -280,7 +280,7 @@ namespace Reko.Arch.Avr
                 throw new AddressCorrelatedException(instr.Address, "Invalid index register '{0}'", reg);
             var reglo = arch.GetRegister(ireg);
             var reghi = arch.GetRegister(ireg + 1);
-            return binder.EnsureSequence(reghi, reglo, PrimitiveType.Ptr16);
+            return binder.EnsureSequence(PrimitiveType.Ptr16, reghi, reglo);
         }
 
         private void RewriteBinOp(
@@ -546,7 +546,7 @@ namespace Reko.Arch.Avr
 
         private void RewriteMuls()
         {
-            var r1_r0 = binder.EnsureSequence(arch.ByteRegs[1], arch.ByteRegs[0], PrimitiveType.Word16);
+            var r1_r0 = binder.EnsureSequence(PrimitiveType.Word16, arch.ByteRegs[1], arch.ByteRegs[0]);
             var op0 = RewriteOp(0);
             var op1 = RewriteOp(1);
             var c = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.sreg, (uint)FlagM.CF));

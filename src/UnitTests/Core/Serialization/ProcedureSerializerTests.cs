@@ -101,7 +101,7 @@ namespace Reko.UnitTests.Core.Serialization
         public void X86ps_SerializeSequence()
         {
             Identifier seq = new Identifier("es_bx", PrimitiveType.Word32,
-                new SequenceStorage(Registers.es, Registers.bx, PrimitiveType.SegPtr32));
+                new SequenceStorage(PrimitiveType.SegPtr32, Registers.es, Registers.bx));
             Given_ProcedureSerializer("stdapi");
             mr.ReplayAll();
 

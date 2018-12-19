@@ -62,7 +62,7 @@ namespace Reko.Arch.X86
             //$TODO: this is not correct; actual function
             // depends on EAX.
             var arg = binder.EnsureRegister(Registers.eax);
-            var result = binder.EnsureSequence(Registers.edx, Registers.ebx, PrimitiveType.Word64);
+            var result = binder.EnsureSequence(PrimitiveType.Word64, Registers.edx, Registers.ebx);
             m.Assign(result, host.PseudoProcedure("__getsec", result.DataType, arg));
         }
 
@@ -128,7 +128,7 @@ namespace Reko.Arch.X86
 
         public void RewriteWrsmr()
         {
-            var edx_eax = binder.EnsureSequence(Registers.edx, Registers.eax, PrimitiveType.Word64);
+            var edx_eax = binder.EnsureSequence(PrimitiveType.Word64, Registers.edx, Registers.eax);
             var ecx = binder.EnsureRegister(Registers.ecx);
             m.SideEffect(host.PseudoProcedure("__wrmsr", VoidType.Instance, ecx, edx_eax));
         }

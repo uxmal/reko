@@ -363,7 +363,7 @@ namespace Reko.Analysis
             var idHi = expHi as Identifier;
             if (idLo != null && idHi != null)
             {
-                return ssa.Procedure.Frame.EnsureSequence(idHi.Storage, idLo.Storage, totalSize);
+                return ssa.Procedure.Frame.EnsureSequence(totalSize, idHi.Storage, idLo.Storage);
             }
             var memDstLo = expLo as MemoryAccess;
             var memDstHi = expHi as MemoryAccess;

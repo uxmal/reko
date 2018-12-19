@@ -133,7 +133,7 @@ namespace Reko.Core.Serialization
                 dt = this.argCur.Type.Accept(procSer.TypeLoader);
             else 
                 dt = PrimitiveType.CreateWord(h.DataType.BitSize + h.DataType.BitSize);
-            return frame.EnsureSequence(h, t, dt);
+            return frame.EnsureSequence(dt, h, t);
         }
 
         public Identifier Deserialize(Argument_v1 arg)

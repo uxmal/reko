@@ -196,9 +196,9 @@ namespace Reko.Arch.Tms7000
         private Identifier RegisterPair(RegisterStorage reg)
         {
             return binder.EnsureSequence(
-                        reg,
-                        arch.GpRegs[reg.Number - 1],
-                        PrimitiveType.Word16);
+                        PrimitiveType.Word16,
+                reg,
+                arch.GpRegs[reg.Number - 1]);
         }
 
         private void CNZ(Expression e)
@@ -322,7 +322,7 @@ namespace Reko.Arch.Tms7000
         {
             var hireg = ((RegisterOperand)instr.op1).Register;
             var loreg = arch.GpRegs[(hireg.Number - 1 & 0xFF)];
-            var reg = binder.EnsureSequence(hireg, loreg, PrimitiveType.Word16);
+            var reg = binder.EnsureSequence(PrimitiveType.Word16, hireg, loreg);
             m.Assign(reg, fn(reg, Constant.Word(reg.DataType.BitSize, 1)));
             CNZ(reg);
         }
@@ -406,7 +406,7 @@ namespace Reko.Arch.Tms7000
 
         private void RewriteMpy()
         {
-            var dst = binder.EnsureSequence(arch.a, arch.b, PrimitiveType.Word16);
+            var dst = binder.EnsureSequence(PrimitiveType.Word16, arch.a, arch.b);
             var left = Operand(instr.op2);
             var right = Operand(instr.op1);
             m.Assign(dst, m.IMul(left, right));

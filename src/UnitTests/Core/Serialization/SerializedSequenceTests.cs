@@ -62,7 +62,7 @@ namespace Reko.UnitTests.Core.Serialization
 		{
 			Identifier head = new Identifier(Registers.dx.Name, Registers.dx.DataType, Registers.dx);
 			Identifier tail = new Identifier(Registers.ax.Name, Registers.ax.DataType, Registers.ax);
-			Identifier seq = new Identifier("dx_ax", PrimitiveType.Word32, new SequenceStorage(head.Storage, tail.Storage, PrimitiveType.Word32));
+			Identifier seq = new Identifier("dx_ax", PrimitiveType.Word32, new SequenceStorage(PrimitiveType.Word32, head.Storage, tail.Storage));
 			SerializedSequence sq = new SerializedSequence((SequenceStorage) seq.Storage);
 			Assert.AreEqual("dx", sq.Registers[0].Name);
 			Assert.AreEqual("ax", sq.Registers[1].Name);
@@ -83,7 +83,7 @@ namespace Reko.UnitTests.Core.Serialization
             Frame f = platform.Architecture.CreateFrame();
 			Identifier head = f.EnsureRegister(Registers.dx);
 			Identifier tail = f.EnsureRegister(Registers.ax);
-			Identifier seq = f.EnsureSequence(head.Storage, tail.Storage, PrimitiveType.Word32);
+			Identifier seq = f.EnsureSequence(PrimitiveType.Word32, head.Storage, tail.Storage);
 			SerializedSequence sq = new SerializedSequence((SequenceStorage) seq.Storage);
 			Argument_v1 sa = new Argument_v1();
 			sa.Kind = sq;

@@ -205,7 +205,7 @@ SsaProcedureBuilder_exit:
             {
                 var hl = m.Reg("hl", Registers.hl);
                 var de = m.Reg("de", Registers.de);
-                var hl_de = m.Frame.EnsureSequence(hl.Storage, de.Storage, PrimitiveType.Word32);
+                var hl_de = m.Frame.EnsureSequence(PrimitiveType.Word32, hl.Storage, de.Storage);
                 var hl_de_1 = m.Ssa.Identifiers.Add(new Identifier("hl_de_1", hl_de.DataType, hl_de.Storage), null, null, false).Identifier;
 
                 m.Def(hl);

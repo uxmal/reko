@@ -298,7 +298,7 @@ namespace Reko.Arch.Sparc
             var reg = ((RegisterOperand)op).Register;
             var iReg = reg.Number - Registers.FloatRegisters[0].Number;
             var regLo = Registers.FloatRegisters[iReg + 1];
-            return binder.EnsureSequence(reg, regLo, PrimitiveType.Word64);
+            return binder.EnsureSequence(PrimitiveType.Word64, reg, regLo);
         }
 
         private Expression RewriteQuadRegister(MachineOperand op)

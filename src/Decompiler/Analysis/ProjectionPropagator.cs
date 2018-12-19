@@ -110,8 +110,7 @@ namespace Reko.Analysis
                 if (!AllSame(sids, (a, b) => a.DefStatement.Block == b.DefStatement.Block))
                     return seq;
 
-                // We have a sequence of IDs. Are they from the same storage?
-                Identifier idWide = GenerateWideIdentifier(seq, sids);
+                Identifier idWide = GenerateWideIdentifier(seq.DataType, sids);
 
                 var ass = sids.Select(s => s.DefStatement.Instruction as Assignment).ToArray();
                 if (ass.All(a => a != null))
@@ -141,7 +140,7 @@ namespace Reko.Analysis
                 throw new NotImplementedException();
             }
 
-            private Identifier GenerateWideIdentifier(MkSequence seq, SsaIdentifier[] sids)
+            private Identifier GenerateWideIdentifier(DataType dt, SsaIdentifier[] sids)
             {
                 var sd = sids[0].Identifier.Storage.Domain;
                 Identifier idWide;
@@ -157,9 +156,9 @@ namespace Reko.Analysis
                 {
                     //$BUG: EnsureSequence needs to take an arbitrary # of subregisters.
                     idWide = ssa.Procedure.Frame.EnsureSequence(
-                        sids[0].Identifier.Storage, 
-                        sids[1].Identifier.Storage, 
-                        seq.DataType);
+                        dt,
+                        sids[0].Identifier.Storage,
+                        sids[1].Identifier.Storage);
                 }
                 return idWide;
             }
@@ -195,10 +194,6 @@ namespace Reko.Analysis
 
             private Identifier RewriteSeqOfDefs(SsaIdentifier[] sids, Identifier idWide)
             {
-                // Add a def for the wide register.
-                var sidWide = ssa.EnsureSsaIdentifier(idWide, ssa.Procedure.EntryBlock);
-                sidWide.Uses.Add(this.Statement);
-
                 // We have:
                 //  def a
                 //  def b
@@ -211,6 +206,15 @@ namespace Reko.Analysis
                 // It's likely that the a = SLICE(...) statements
                 // will be dead after this transformation, which
                 // DeadCode.Eliminate will discover.
+
+                // Add a def for the wide register, placing it "above" or "before"
+                // the narrow 'defs', which will be mutated to slices.
+                var sidWide = ssa.Identifiers.Add(idWide, null, null, false);
+                sidWide.DefStatement = ssa.Procedure.EntryBlock.Statements.Insert(
+                    0,
+                    ssa.Procedure.EntryAddress.ToLinear(),
+                    new DefInstruction(sidWide.Identifier));
+                sidWide.Uses.Add(this.Statement);
 
                 // Replace uses of the individual defs.
                 foreach (var s in sids)
@@ -226,11 +230,21 @@ namespace Reko.Analysis
 
             private Expression RewriteSeqOfPhi(SsaIdentifier[] sids, PhiAssignment[] phis, Identifier idWide)
             {
+                // We have
+                //     a_3 = PHI(a_1, a_2)
+                //     b_3 = PHI(b_1, a_2)
+                //     ...SEQ(a_3,b_3)
+                // and we want 
+                //    ab_3 = PHI(ab_1, ab_2)
+                //    ...ab_3
+
                 foreach (var s in sids)
                 {
                     s.Uses.Remove(this.Statement);
                 }
 
+                // Insert a PHI statement placeholder at the beginning
+                // of the basic block.
                 var stmPhi = sids[0].DefStatement.Block.Statements.Insert(
                     0,
                     sids[0].DefStatement.LinearAddress,
@@ -240,23 +254,25 @@ namespace Reko.Analysis
                 var widePhiArgs = new List<PhiArgument>();
                 for (var iBlock = 0; iBlock < phis[0].Src.Arguments.Length; ++iBlock)
                 {
+                    // Make a fused identifier in each predecessor block and "push"
+                    // the SEQ statements into the predecessors.
                     var pred = phis[0].Src.Arguments[iBlock].Block;
                     var stmPred = pred.Statements.Add(
                         sids[0].DefStatement.LinearAddress,
                         null);
-                    var sidWide = ssa.Identifiers.Add(idWide, stmPred, null, false);
+                    var sidPred = ssa.Identifiers.Add(idWide, stmPred, null, false);
                     var phiArgs = phis.Select(p => p.Src.Arguments[iBlock].Value).ToArray();
                     stmPred.Instruction = 
                         new Assignment(
-                            sidWide.Identifier,
+                            sidPred.Identifier,
                             new MkSequence(
-                                sidWide.Identifier.DataType,
+                                sidPred.Identifier.DataType,
                                 phiArgs));
                     ssa.AddUses(stmPred);
-                    sidWide.Uses.Add(stmPhi);
+                    sidPred.Uses.Add(stmPhi);
                     this.NewStatements.Add(stmPred);
 
-                    widePhiArgs.Add(new PhiArgument(pred, sidWide.Identifier));
+                    widePhiArgs.Add(new PhiArgument(pred, sidPred.Identifier));
                 }
                 var sidDst = ssa.Identifiers.Add(idWide, stmPhi, null, false);
                 stmPhi.Instruction = new PhiAssignment(

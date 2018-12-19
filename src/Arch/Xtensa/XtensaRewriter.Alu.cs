@@ -265,9 +265,9 @@ namespace Reko.Arch.Xtensa
             var dst = RewriteOp(instr.Operands[0]);
             var sa = binder.EnsureRegister(Registers.SAR);
             var cat = binder.EnsureSequence(
-                src1.Storage, 
-                src2.Storage, 
-                PrimitiveType.CreateWord(src1.DataType.BitSize + src2.DataType.BitSize));
+                PrimitiveType.CreateWord(src1.DataType.BitSize + src2.DataType.BitSize),
+                src1.Storage,
+                src2.Storage);
             m.Assign(
                 dst,
                 m.Cast(dst.DataType, m.Shr(cat, sa)));

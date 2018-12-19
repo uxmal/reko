@@ -226,7 +226,7 @@ namespace Reko.Arch.M68k
                 {
                     Identifier h = binder.EnsureRegister(dbl.Register1);
                     Identifier l = binder.EnsureRegister(dbl.Register2);
-                    var d = binder.EnsureSequence(h.Storage, l.Storage, PrimitiveType.Word64);
+                    var d = binder.EnsureSequence(PrimitiveType.Word64, h.Storage, l.Storage);
                     var result = opGen(src, l);
                     m.Assign(d, result);
                     return d;
