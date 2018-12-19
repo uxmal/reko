@@ -61,18 +61,14 @@ namespace Reko.Analysis
         public void Transform()
         {
             var prjf = new ProjectionFilter(arch, ssa);
-            foreach (var stm in ssa.Procedure.Statements.ToArray())
+            var wl = new WorkList<Statement>(ssa.Procedure.Statements);
+            while (wl.GetWorkItem(out var stm))
             {
                 prjf.Statement = stm;
                 var instr = stm.Instruction.Accept(prjf);
                 stm.Instruction = instr;
-            }
-
-            var wl = new WorkList<Statement>();
-            while (wl.GetWorkItem(out var stm))
-            {
-                var instr = stm.Instruction.Accept(this);
-                stm.Instruction = instr;
+                wl.AddRange(prjf.NewStatements);
+                prjf.NewStatements.Clear();
             }
         }
 
@@ -85,10 +81,10 @@ namespace Reko.Analysis
             {
                 this.arch = arch;
                 this.ssa = ssa;
-                this.Projections = new HashSet<Expression>();
+                this.NewStatements = new HashSet<Statement>();
             }
 
-            public HashSet<Expression> Projections { get; }
+            public HashSet<Statement> NewStatements{ get; }
             public Statement Statement { get; set; }
 
             private static bool AllSame<T>(T[] items, Func<T, T, bool> cmp)
@@ -258,6 +254,7 @@ namespace Reko.Analysis
                                 phiArgs));
                     ssa.AddUses(stmPred);
                     sidWide.Uses.Add(stmPhi);
+                    this.NewStatements.Add(stmPred);
 
                     widePhiArgs.Add(new PhiArgument(pred, sidWide.Identifier));
                 }

@@ -221,10 +221,11 @@ SsaProcedureBuilder_exit:
             var sExp =
             #region Expected
 @"SsaProcedureBuilder_entry:
+	def hl
 l1:
-	def h
-	def l
-	hl_1 = SEQ(h, l)
+	h = SLICE(hl, byte, 8)
+	l = SLICE(hl, byte, 0)
+	hl_1 = hl
 loop:
 	hl_3 = PHI((hl_1, l1), (hl_2, loop))
 	h_4 = PHI((h, l1), (h_2, loop))
@@ -232,7 +233,7 @@ loop:
 	hl_1 = hl_3 << 0x01
 	h_2 = SLICE(hl_1, byte, 8)
 	l_3 = (byte) hl_1
-	hl_2 = SEQ(h_2, l_3)
+	hl_2 = hl_1
 	goto loop
 xit:
 	return
