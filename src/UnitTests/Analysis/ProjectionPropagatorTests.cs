@@ -88,6 +88,53 @@ SsaProcedureBuilder_exit:
 
 
         /// <summary>
+        /// Fuse together subregisters that compose into a larger register,
+        /// used in two branches.
+        /// </summary>
+        [Test]
+        [Ignore("Not implemented yet")]
+        public void Prjpr_Simple_Subregisters_TwoBranches()
+        {
+            var sExp =
+            #region Expected
+@"SsaProcedureBuilder_entry:
+	def hl
+l1:
+	de_1 = hl
+	return
+SsaProcedureBuilder_exit:
+";
+            #endregion
+
+            var arch = new Z80ProcessorArchitecture("z80");
+            RunTest(sExp, arch, m =>
+            {
+                var a = m.Reg("a", Registers.a);
+                var h = m.Reg("h", Registers.h);
+                var l = m.Reg("l", Registers.l);
+                var de_1 = m.Reg("de_1", Registers.de);
+                var de_2 = m.Reg("de_2", Registers.de);
+                var de_3 = m.Reg("de_3", Registers.de);
+
+                m.Def(h);
+                m.Def(l);
+                m.BranchIf(m.Eq0(a), "m2azero");
+
+                m.Label("m1anotzero");
+                m.Assign(de_1, m.Seq(h, l));
+                m.Goto("m3done");
+
+                m.Label("m2azero");
+                m.Assign(de_2, m.Seq(h, l));
+
+                m.Label("m3done");
+                m.Phi(de_3, (de_1, "m1anotzero"), (de_2, "m2azero"));
+                m.Return();
+            });
+        }
+
+
+        /// <summary>
         /// Fuse together a register pair.
         /// </summary>
         [Test]
