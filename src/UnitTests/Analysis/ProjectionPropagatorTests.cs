@@ -118,5 +118,46 @@ SsaProcedureBuilder_exit:
                 m.Return();
             });
         }
+
+        [Test]
+        [Ignore("Not implemented yet")]
+        public void Prjpr_Phi_Subregisters()
+        {
+            var sExp =
+            #region Expected
+@"SsaProcedureBuilder_entry:
+	def hl
+l1:
+	de_1 = hl
+	return
+SsaProcedureBuilder_exit:
+";
+            #endregion
+
+            var arch = new Z80ProcessorArchitecture("z80");
+            RunTest(sExp, arch, m =>
+            {
+                var h = m.Reg("h", Registers.h);
+                var l = m.Reg("l", Registers.l);
+                var hl_1 = m.Reg("hl_1", Registers.de);
+                var h_2 = m.Reg("h_2", Registers.h);
+                var l_3 = m.Reg("l_3", Registers.l);
+                var h_4 = m.Reg("h_4", Registers.h);
+                var l_5 = m.Reg("l_5", Registers.l);
+
+                m.Def(h);
+                m.Def(l);
+
+                m.Label("loop");
+                m.Phi(h_4, (h, "l1"), (h_2, "loop"));
+                m.Phi(l_5, (l, "l1"), (l_3, "loop"));
+                m.Assign(hl_1, m.Shl(m.Seq(h_4, l_5), 1));
+                m.Assign(h_2, m.Slice(hl_1, 8, 8));
+                m.Assign(l_3, m.Cast(PrimitiveType.Byte, hl_1));
+                m.Goto("loop");
+
+                m.Return();
+            });
+        }
     }
 }

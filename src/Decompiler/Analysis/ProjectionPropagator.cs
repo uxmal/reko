@@ -90,19 +90,19 @@ namespace Reko.Analysis
             public HashSet<Expression> Projections { get; }
             public Statement Statement { get; set; }
 
+            private static bool AllSame<T>(T[] items, Func<T, T, bool> cmp)
+            {
+                var first = items[0];
+                for (int i = 1; i < items.Length; ++i)
+                {
+                    if (!cmp(first, items[i]))
+                        return false;
+                }
+                return true;
+            }
+
             public override Expression VisitMkSequence(MkSequence seq)
             {
-                bool AllSame<T>(T[] items, Func<T, T, bool> cmp)
-                {
-                    var first = items[0];
-                    for (int i = 1; i < items.Length; ++i)
-                    {
-                        if (!cmp(first, items[i]))
-                            return false;
-                    }
-                    return true;
-                }
-
                 Debug.Assert(seq.Expressions.Length > 0);
                 var ids = seq.Expressions.Select(e => e as Identifier).ToArray();
                 if (ids.Any(i => i == null))
