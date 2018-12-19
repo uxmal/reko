@@ -66,6 +66,8 @@ namespace Reko.UnitTests.Analysis
 @"SsaProcedureBuilder_entry:
 	def hl
 l1:
+	h = SLICE(hl, byte, 8)
+	l = SLICE(hl, byte, 0)
 	de_1 = hl
 	return
 SsaProcedureBuilder_exit:
@@ -128,7 +130,6 @@ SsaProcedureBuilder_exit:
         /// used in two branches.
         /// </summary>
         [Test]
-        [Ignore("Not implemented yet")]
         public void Prjpr_Simple_Subregisters_TwoBranches()
         {
             var sExp =
@@ -136,7 +137,16 @@ SsaProcedureBuilder_exit:
 @"SsaProcedureBuilder_entry:
 	def hl
 l1:
+	h = SLICE(hl, byte, 8)
+	l = SLICE(hl, byte, 0)
+	branch a == 0x00 m2azero
+m1anotzero:
 	de_1 = hl
+	goto m3done
+m2azero:
+	de_2 = hl
+m3done:
+	de_3 = PHI((de_1, m1anotzero), (de_2, m2azero))
 	return
 SsaProcedureBuilder_exit:
 ";
@@ -181,6 +191,8 @@ SsaProcedureBuilder_exit:
 @"SsaProcedureBuilder_entry:
 	def hl_de
 l1:
+	hl = SLICE(hl_de, word16, 16)
+	de = SLICE(hl_de, word16, 0)
 	hl_de_1 = hl_de
 	return
 SsaProcedureBuilder_exit:

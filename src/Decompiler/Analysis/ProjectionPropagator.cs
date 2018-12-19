@@ -183,6 +183,10 @@ namespace Reko.Analysis
 
             private Identifier RewriteSeqOfDefs(SsaIdentifier[] sids, Identifier idWide)
             {
+                // Add a def for the wide register.
+                var sidWide = ssa.EnsureSsaIdentifier(idWide, ssa.Procedure.EntryBlock);
+                sidWide.Uses.Add(this.Statement);
+
                 // We have:
                 //  def a
                 //  def b
@@ -192,16 +196,19 @@ namespace Reko.Analysis
                 //  a = SLICE(a_b...)
                 //  b = SLICE(a_b...)
                 //  ....a_b
+                // It's likely that the a = SLICE(...) statements
+                // will be dead after this transformation, which
+                // DeadCode.Eliminate will discover.
 
-                // Remove the individual defs.
+                // Replace uses of the individual defs.
                 foreach (var s in sids)
                 {
-                    ssa.DeleteStatement(s.DefStatement);
                     s.Uses.Remove(this.Statement);
+                    s.DefStatement.Instruction = new Assignment(
+                        s.Identifier,
+                        new Slice(s.Identifier.DataType, idWide, idWide.Storage.OffsetOf(s.Identifier.Storage)));
+                    sidWide.Uses.Add(s.DefStatement);
                 }
-                // Add a def for the wide register.
-                var sidWide = ssa.EnsureSsaIdentifier(idWide, ssa.Procedure.EntryBlock);
-                sidWide.Uses.Add(this.Statement);
                 return sidWide.Identifier;
             }
         }
