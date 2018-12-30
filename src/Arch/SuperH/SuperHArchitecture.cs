@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -35,8 +35,9 @@ namespace Reko.Arch.SuperH
     // NetBSD for dreamcast? http://ftp.netbsd.org/pub/pkgsrc/packages/NetBSD/dreamcast/7.0/All/
     public abstract class SuperHArchitecture : ProcessorArchitecture
     {
-        public SuperHArchitecture(string archId) : base(archId)
+        public SuperHArchitecture(string archId, EndianServices endianness) : base(archId)
         {
+            this.Endianness = endianness;
             this.FramePointerType = PrimitiveType.Ptr32;
             this.InstructionBitSize = 16;
             this.PointerType = PrimitiveType.Ptr32;
@@ -95,7 +96,7 @@ namespace Reko.Arch.SuperH
             return (RegisterStorage)regField.GetValue(null);
         }
 
-        public override RegisterStorage GetRegister(int i)
+        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
             throw new NotImplementedException();
         }
@@ -133,75 +134,15 @@ namespace Reko.Arch.SuperH
 
     public class SuperHLeArchitecture : SuperHArchitecture
     {
-        public SuperHLeArchitecture(string archId) : base(archId)
+        public SuperHLeArchitecture(string archId) : base(archId, EndianServices.Little)
         {
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, ulong off)
-        {
-            return new LeImageReader(img, off);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
-        {
-            return new LeImageReader(img, addr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
-        {
-            return new LeImageReader(img, addrBegin, addrEnd);
-        }
-
-        public override ImageWriter CreateImageWriter()
-        {
-            return new LeImageWriter();
-        }
-
-        public override ImageWriter CreateImageWriter(MemoryArea img, Address addr)
-        {
-            return new LeImageWriter(img, addr);
-        }
-
-        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
-        {
-            return mem.TryReadLe(addr, dt, out value);
         }
     }
 
     public class SuperHBeArchitecture : SuperHArchitecture
     {
-        public SuperHBeArchitecture(string arch) : base(arch)
+        public SuperHBeArchitecture(string arch) : base(arch, EndianServices.Big)
         {
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, ulong off)
-        {
-            return new BeImageReader(img, off);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
-        {
-            return new BeImageReader(img, addr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
-        {
-            return new BeImageReader(img, addrBegin, addrEnd);
-        }
-
-        public override ImageWriter CreateImageWriter()
-        {
-            return new BeImageWriter();
-        }
-
-        public override ImageWriter CreateImageWriter(MemoryArea img, Address addr)
-        {
-            return new BeImageWriter(img, addr);
-        }
-
-        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
-        {
-            return mem.TryReadBe(addr, dt, out value);
         }
     }
 }

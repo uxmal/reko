@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -56,16 +56,15 @@ namespace Reko.Arch.Vax
                 m.Branch(
                     m.FLe(index, limit),
                     ((AddressOperand)dasm.Current.Operands[3]).Address,
-                    RtlClass.ConditionalTransfer);
+                    InstrClass.ConditionalTransfer);
             }
             else
             {
                 m.Branch(
                     m.FGe(index, limit),
                     ((AddressOperand)dasm.Current.Operands[3]).Address,
-                    RtlClass.ConditionalTransfer);
+                    InstrClass.ConditionalTransfer);
             }
-            rtlc = RtlClass.ConditionalTransfer;
         }
 
         private void RewriteAcbi(PrimitiveType width)
@@ -90,16 +89,15 @@ namespace Reko.Arch.Vax
                 m.Branch(
                           m.Le(index, limit),
                           ((AddressOperand)dasm.Current.Operands[3]).Address,
-                          RtlClass.ConditionalTransfer);
+                          InstrClass.ConditionalTransfer);
             }
             else
             {
                 m.Branch(
                     m.Ge(index, limit),
                     ((AddressOperand)dasm.Current.Operands[3]).Address,
-                    RtlClass.ConditionalTransfer);
+                    InstrClass.ConditionalTransfer);
             }
-            rtlc = RtlClass.ConditionalTransfer;
         }
 
         private void RewriteBb(bool set)
@@ -119,8 +117,7 @@ namespace Reko.Arch.Vax
             }
             m.Branch(test,
                 ((AddressOperand)dasm.Current.Operands[2]).Address,
-                RtlClass.ConditionalTransfer);
-            rtlc = RtlClass.ConditionalTransfer;
+                InstrClass.ConditionalTransfer);
         }
 
         private void RewriteBbxx(bool testBit, bool updateBit)
@@ -141,8 +138,7 @@ namespace Reko.Arch.Vax
             var t = testBit
                 ? m.Ne0(tst)
                 : m.Eq0(tst);
-            m.Branch(t, dst, RtlClass.ConditionalTransfer);
-            rtlc = RtlClass.ConditionalTransfer;
+            m.Branch(t, dst, rtlc);
         }
 
         private void RewriteBbxxi(bool testBit)
@@ -165,8 +161,7 @@ namespace Reko.Arch.Vax
             var t = testBit
                 ? m.Ne0(tst)
                 : m.Eq0(tst);
-            m.Branch(t, dst, RtlClass.ConditionalTransfer);
-            rtlc = RtlClass.ConditionalTransfer;
+            m.Branch(t, dst, rtlc);
         }
 
         private void RewriteBlb(Func<Expression,Expression> fn)
@@ -175,15 +170,13 @@ namespace Reko.Arch.Vax
             var test = fn(m.And(n, 1));
             m.Branch(test,
                     ((AddressOperand)dasm.Current.Operands[1]).Address,
-                    RtlClass.ConditionalTransfer);
-            rtlc = RtlClass.ConditionalTransfer;
+                    rtlc);
         }
 
         private void RewriteBranch()
         {
             m.Goto(
                 ((AddressOperand)dasm.Current.Operands[0]).Address);
-            rtlc = RtlClass.Transfer;
         }
 
         private void RewriteBsb()
@@ -191,7 +184,6 @@ namespace Reko.Arch.Vax
             m.Call(
                 ((AddressOperand)dasm.Current.Operands[0]).Address,
                 4);
-            rtlc = RtlClass.Transfer;
         }
 
         private void RewriteBranch(ConditionCode cc, FlagM flags)
@@ -199,8 +191,7 @@ namespace Reko.Arch.Vax
             m.Branch(
                 m.Test(cc, FlagGroup(flags)),
                 ((AddressOperand)dasm.Current.Operands[0]).Address,
-                RtlClass.ConditionalTransfer);
-            rtlc = RtlClass.ConditionalTransfer;
+                InstrClass.ConditionalTransfer);
         }
 
         private void RewriteAob(
@@ -216,8 +207,7 @@ namespace Reko.Arch.Vax
             m.Branch(
                 cmp(dst, limit),
                 ((AddressOperand)dasm.Current.Operands[2]).Address,
-                RtlClass.ConditionalTransfer);
-            rtlc = RtlClass.ConditionalTransfer;
+                rtlc);
         }
 
         private void RewriteSob(
@@ -232,26 +222,22 @@ namespace Reko.Arch.Vax
             m.Branch(
                 cmp(dst, Constant.Word32(0)),
                 ((AddressOperand)dasm.Current.Operands[1]).Address,
-                RtlClass.ConditionalTransfer);
-            rtlc = RtlClass.ConditionalTransfer;
+                InstrClass.ConditionalTransfer);
         }
 
         private void RewriteJmp()
         {
             m.Goto(RewriteSrcOp(0, PrimitiveType.Word32));
-            rtlc = RtlClass.Transfer;
         }
 
         private void RewriteJsb()
         {
             m.Call(RewriteSrcOp(0, PrimitiveType.Word32), 4);
-            rtlc = RtlClass.Transfer;
         }
 
         private void RewriteRei()
         {
             m.Return(4, 4);
-            rtlc = RtlClass.Transfer;
         }
 
         // condition handler (initially 0) <-- fp
@@ -271,13 +257,11 @@ namespace Reko.Arch.Vax
             m.Assign(fp, m.Mem32(m.IAdd(sp, 16)));
             m.Assign(ap, m.Mem32(m.IAdd(sp, 12)));
             m.Return(4, 0);
-            rtlc = RtlClass.Transfer;
         }
 
         private void RewriteRsb()
         {
             m.Return(4, 0);
-            rtlc = RtlClass.Transfer;
         }
     }
 }

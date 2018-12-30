@@ -623,9 +623,8 @@ namespace Reko.Analysis
                 return;
             var bf = flow[block];
             var fp = block.Procedure.Frame.FramePointer;
-            bf.FallbackStack[fallbackStackStm] = m.AddConstantWord(
+            bf.FallbackStack[fallbackStackStm] = m.AddSubSignedInt(
                 fp,
-                fp.DataType,
                 -offset);
         }
 

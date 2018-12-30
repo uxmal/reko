@@ -200,6 +200,10 @@
       <Project>{54944b1e-7c12-4fb1-a208-996ad6d04b80}</Project>
       <Name>M6800</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Arch\M68k\M68k.csproj">
+      <Project>{38a94634-b2b2-4a89-af02-2a2898b93343}</Project>
+      <Name>M68k</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Arch\Mips\Mips.csproj">
       <Project>{4dec7ada-e512-43c5-8312-ca076818c2a9}</Project>
       <Name>Mips</Name>
@@ -232,6 +236,10 @@
       <Project>{5E21C722-F9C6-4192-95EC-89FCEF2ACDB7}</Project>
       <Name>Decompiler</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Environments\Cpm\Cpm.csproj">
+      <Project>{a1376626-5207-41a9-a77b-11ddb9f534d1}</Project>
+      <Name>Cpm</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Environments\SysV\SysV.csproj">
       <Project>{5307665e-072f-4398-872d-6550be6fc1eb}</Project>
       <Name>SysV</Name>
@@ -251,6 +259,10 @@
     <ProjectReference Include="..\..\ImageLoaders\Elf\Elf.csproj">
       <Project>{33dcec6d-66f2-4ab7-9dd9-293dbb5414b1}</Project>
       <Name>Elf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ImageLoaders\MachO\MachO.csproj">
+      <Project>{db44d301-72ea-4f9b-8327-be8ebc5b1bc8}</Project>
+      <Name>MachO</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\ImageLoaders\MzExe\MzExe.csproj">
       <Project>{0a1b3397-06e3-4c23-a667-fccc19dc7d12}</Project>

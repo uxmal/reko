@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,6 +44,7 @@ namespace Reko.UnitTests.Analysis
         private Program program;
         private CallRewriter crw;
         private Procedure proc;
+        private SsaState ssa;
         private ProcedureFlow flow;
         ProgramBuilder pb;
         private List<SsaState> ssaStates;
@@ -55,8 +56,9 @@ namespace Reko.UnitTests.Analysis
             program.Architecture = new X86ArchitectureFlat32("x86-protected-32");
             program.Platform = new DefaultPlatform(null, program.Architecture);
             crw = new CallRewriter(program.Platform, new ProgramDataFlow(), new FakeDecompilerEventListener());
-            proc = new Procedure(program.Architecture, "foo", program.Architecture.CreateFrame());
+            proc = new Procedure(program.Architecture, "foo", Address.Ptr32(0x00123400), program.Architecture.CreateFrame());
             flow = new ProcedureFlow(proc);
+            ssa = new SsaState(proc);
             pb = new ProgramBuilder();
             ssaStates = new List<SsaState>();
         }
@@ -78,7 +80,7 @@ namespace Reko.UnitTests.Analysis
                 protected override void BuildBody()
                 {
                     base.Call("Leaf", 4);
-                    Store(Int32(0x320123), base.Register(0));
+                    Store(Int32(0x320123), base.Register("r0"));
                 }
             }
 
@@ -86,7 +88,7 @@ namespace Reko.UnitTests.Analysis
             {
                 protected override void BuildBody()
                 {
-                    Assign(Register(0), Int32(3));
+                    Assign(Register("r0"), Int32(3));
                     Return();
                 }
             }
@@ -158,12 +160,27 @@ namespace Reko.UnitTests.Analysis
             }
         }
 
-        private void When_RewriteCalls(SsaState ssa)
+        private CallRewriter When_CallRewriterCreated()
         {
             var program = pb.BuildProgram();
             var flow = new ProgramDataFlow(program);
-            var crw = new CallRewriter(program.Platform, flow, new FakeDecompilerEventListener());
+            var crw = new CallRewriter(
+                program.Platform,
+                flow,
+                new FakeDecompilerEventListener());
+            return crw;
+        }
+
+        private void When_RewriteCalls(SsaState ssa)
+        {
+            var crw = When_CallRewriterCreated();
             crw.RewriteCalls(ssa);
+        }
+
+        private void When_RewriteReturns(SsaState ssa)
+        {
+            var crw = When_CallRewriterCreated();
+            crw.RewriteReturns(ssa);
         }
 
         private void AssertExpected(string sExp, SsaState ssa)
@@ -341,7 +358,7 @@ namespace Reko.UnitTests.Analysis
         public void CrwRegisterArgument()
         {
             flow.BitsUsed.Add(Registers.eax, new BitRange(0, 32));
-            crw.EnsureSignature(proc, proc.Frame, flow);
+            crw.EnsureSignature(ssa, proc.Frame, flow);
             Assert.AreEqual("void foo(Register word32 eax)", proc.Signature.ToString(proc.Name));
         }
 
@@ -352,7 +369,7 @@ namespace Reko.UnitTests.Analysis
             Given_ExitBlockStatement(new Identifier("ebx", PrimitiveType.Word32, Registers.ebx));
             flow.LiveOut.Add(Registers.eax, BitRange.Empty);        // becomes the return value.
             flow.LiveOut.Add(Registers.ebx, BitRange.Empty);
-            crw.EnsureSignature(proc, proc.Frame, flow);
+            crw.EnsureSignature(ssa, proc.Frame, flow);
             Assert.AreEqual("Register word32 foo(Register out ptr32 ebxOut)", proc.Signature.ToString(proc.Name));
         }
 
@@ -360,7 +377,7 @@ namespace Reko.UnitTests.Analysis
         public void CrwFpuArgument()
         {
             flow.BitsUsed.Add(new FpuStackStorage(0, PrimitiveType.Real80), new BitRange(0, 80));
-            crw.EnsureSignature(proc, proc.Frame, flow);
+            crw.EnsureSignature(ssa, proc.Frame, flow);
             Assert.AreEqual("void foo(FpuStack real80 rArg0)", proc.Signature.ToString(proc.Name));
         }
 
@@ -372,7 +389,7 @@ namespace Reko.UnitTests.Analysis
             flow.LiveOut.Add(new FpuStackStorage(0, PrimitiveType.Real80), BitRange.Empty);
             flow.LiveOut.Add(new FpuStackStorage(1, PrimitiveType.Real80), BitRange.Empty);
 
-            crw.EnsureSignature(proc, proc.Frame, flow);
+            crw.EnsureSignature(ssa, proc.Frame, flow);
             Assert.AreEqual("Register word32 foo(FpuStack real80 rArg0, FpuStack out ptr32 rArg0Out, FpuStack out ptr32 rArg1Out)", proc.Signature.ToString(proc.Name));
         }
 
@@ -381,7 +398,7 @@ namespace Reko.UnitTests.Analysis
         {
             var arg = proc.Frame.EnsureStackArgument(4, PrimitiveType.Word32);
             flow.StackArguments[arg] = 16;
-            crw.EnsureSignature(proc, proc.Frame, flow);
+            crw.EnsureSignature(ssa, proc.Frame, flow);
             Assert.AreEqual("void foo(Stack uipr16 dwArg04)", proc.Signature.ToString(proc.Name));
         }
 
@@ -537,20 +554,14 @@ CrwManyPredecessorsToExitBlock_exit:
         [Test(Description = "Pops three values off FPU stack and places one back.")]
         public void CrwFpuMultiplyAdd()
         {
-            var ST = new MemoryIdentifier("ST", PrimitiveType.Ptr32, new MemoryStorage("x87Stack", StorageDomain.Register + 400));
             var dt = PrimitiveType.Real64;
-            var _top = new RegisterStorage("Top", 76, 0, PrimitiveType.Byte);
-
-            var arch = new FakeArchitecture
-            {
-                FpuStackRegister = _top,
-                FpuStackBase = ST,
-            };
+            var arch = new FakeArchitecture();
+            var ST = arch.FpuStackBase;
+            var _top = arch.FpuStackRegister;
             var pb = new ProgramBuilder(arch);
             pb.Add("main", m =>
             {
-                var Top = m.Frame.EnsureRegister(_top);
-
+                var Top = m.Frame.EnsureRegister(arch.FpuStackRegister);
                 m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
                 m.Assign(Top, 0);
                 m.Assign(Top, m.ISub(Top, 1));
@@ -782,6 +793,82 @@ body:
 	stackArg4 = <invalid>
 	fn(stackArg4)
 	return
+main_exit:
+";
+            #endregion
+            AssertProcedureCode(sExp, ssa);
+        }
+
+        [Test]
+        public void CrwRegisterArgumentNotFound()
+        {
+            var ret = new RegisterStorage("ret", 1, 0, PrimitiveType.Word32);
+            var arg = new RegisterStorage("arg", 2, 0, PrimitiveType.Word32);
+            var ssa = Given_Procedure("main", m =>
+            {
+                m.Label("body");
+                m.Call("fn", 4, new Identifier[] { }, new Identifier[] { });
+                m.Return();
+            });
+            Given_Procedure("fn", m => { });
+            Given_Signature(
+                "fn",
+                FunctionType.Func(
+                    new Identifier(
+                        "ret",
+                        PrimitiveType.Word32,
+                        ret),
+                    new Identifier(
+                        "arg",
+                        PrimitiveType.Word32,
+                        arg)));
+
+            When_RewriteCalls(ssa);
+
+            var sExp =
+            #region Expected
+@"main_entry:
+	def arg
+body:
+	fn(arg)
+	return
+main_exit:
+";
+            #endregion
+            AssertProcedureCode(sExp, ssa);
+        }
+
+        [Test]
+        public void CrwReturnRegisterNotFound()
+        {
+            var ret = new RegisterStorage("ret", 1, 0, PrimitiveType.Word32);
+            var rOut = new RegisterStorage("out", 1, 0, PrimitiveType.Word32);
+            var ssa = Given_Procedure("main", m =>
+            {
+                m.Label("body");
+                m.Return();
+            });
+            Given_Signature(
+                "main",
+                FunctionType.Func(
+                    new Identifier(
+                        "ret",
+                        PrimitiveType.Word32,
+                        ret),
+                    new Identifier(
+                        "out",
+                        PrimitiveType.Word32,
+                        new OutArgumentStorage(
+                            ssa.Procedure.Frame.EnsureRegister(rOut)))));
+
+            When_RewriteReturns(ssa);
+
+            var sExp =
+            #region Expected
+@"main_entry:
+body:
+	out = <invalid>
+	return <invalid>
 main_exit:
 ";
             #endregion

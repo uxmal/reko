@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,9 +43,9 @@ namespace Reko
     public static class AssemblyMetadata
     {
         public const string AssemblyVersion = "0.8.0.0";
-        public const string AssemblyFileVersion = "0.8.0.0";
+        public const string AssemblyFileVersion = "0.8.0.2";
         public const string Product = "Reko decompiler";
-        public const string Copyright = "Copyright © 1999-2018 John Källén";
-        public const string Company = "John Källén Konsult AB";
+        public const string Copyright = "Copyright Â© 1999-2018 John KÃ¤llÃ©n";
+        public const string Company = "John KÃ¤llÃ©n Konsult AB";
     }
 }

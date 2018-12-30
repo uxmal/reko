@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -680,16 +680,10 @@ namespace Reko.Typing
                 pt.Domain == Domain.Selector;
         }
 
-        private bool IsPointer(DataType dt)
-        {
-            if (dt is Pointer)
-                return true;
-            return dt is PrimitiveType pt && pt.Domain == Domain.Pointer;
-        }
 
         public bool VisitMkSequence(MkSequence seq, TypeVariable tv)
         {
-            if (seq.Expressions.Length == 2 && IsPointer(tv.DataType))
+            if (seq.Expressions.Length == 2 && tv.DataType.IsPointer)
             {
                 if (IsSelector(seq.Expressions[0]) || DataTypeOf(seq.Expressions[0]) is Pointer)
                 {

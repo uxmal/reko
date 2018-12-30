@@ -167,12 +167,12 @@ namespace Reko.ImageLoaders.MzExe
                     ;
                 name = Encoding.ASCII.GetString(imgLoaded.Bytes, iNameMin, j - iNameMin);
             }
-            return new ImageSymbol(addrLoad + rvaAddr)
-            {
-                Name = name,
-                ProcessorState = arch.CreateProcessorState(),
-                Type = SymbolType.Procedure,
-            };
+            return ImageSymbol.Procedure(
+                arch,
+                addrLoad + rvaAddr,
+                name,
+                new FunctionType(),
+                state: arch.CreateProcessorState());
         }
 
 		public IProcessorArchitecture CreateArchitecture(ushort peMachineType)
@@ -581,13 +581,13 @@ namespace Reko.ImageLoaders.MzExe
                     ReturnValue = Arg(null, "DWORD")
                 };
             }
-            return new ImageSymbol(addrEp)
-            {
-                Name = name,
-                ProcessorState = arch.CreateProcessorState(),
-                Signature = ssig,
-                Type = SymbolType.Procedure
-            };
+            var entrySymbol = ImageSymbol.Procedure(
+                arch,
+                addrEp,
+                name,
+                state: arch.CreateProcessorState());
+            entrySymbol.Signature = ssig;
+            return entrySymbol;
         }
 
         public void AddSectionsToImageMap(Address addrLoad, SegmentMap imageMap)
@@ -803,21 +803,18 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
                 var (impRef, bitSize) = innerLoader.ResolveImportDescriptorEntry(dllName, rdrIlt, rdrIat);
                 if (impRef == null)
                     break;
-                ImageSymbols[addrIat] = new ImageSymbol(addrIat)
-                {
-                    Name = "__imp__" + impRef.EntryName,
-                    Type = SymbolType.Data,
-                    DataType = new Pointer(new CodeType(), bitSize),
-                    Size = (uint) (bitSize + (DataType.BitsPerByte - 1)) / DataType.BitsPerByte
-                };
+                ImageSymbols[addrIat] = ImageSymbol.DataObject(
+                    arch,
+                    addrIat,
+                    "__imp__" + impRef.EntryName,
+                    new Pointer(new CodeType(), bitSize));
 
-                ImageSymbols[addrIlt] = new ImageSymbol(addrIlt)
-                {
-                    Type = SymbolType.Data,
-                    DataType = PrimitiveType.CreateWord(bitSize),
-                    Size = (uint) (bitSize + (DataType.BitsPerByte - 1)) / DataType.BitsPerByte
-                };
-            } 
+                ImageSymbols[addrIlt] = ImageSymbol.DataObject(
+                    arch,
+                    addrIlt,
+                    null,
+                    PrimitiveType.CreateWord(bitSize));
+            }
             return true;
         }
 
@@ -1094,11 +1091,8 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
 
         private void AddFunctionSymbol(Address addr, SortedList<Address, ImageSymbol> symbols)
         {
-            ImageSymbol symNew = new ImageSymbol(addr, null, new CodeType())
-            {
-                Type = SymbolType.Procedure,
-                ProcessorState = arch.CreateProcessorState()
-            };
+            var symNew = ImageSymbol.Procedure(arch, addr, null, new CodeType());
+            symNew.ProcessorState = arch.CreateProcessorState();
             if (!symbols.TryGetValue(addr, out var symOld))
             {
                 symbols.Add(addr, symNew);

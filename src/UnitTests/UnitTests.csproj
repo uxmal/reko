@@ -137,8 +137,10 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Analysis\ProjectionPropagatorTests.cs" />
     <Compile Include="Analysis\ProcedureFlowTests.cs" />
     <Compile Include="Analysis\SsaMutatorTests.cs" />
+    <Compile Include="Analysis\StackPointerBackpropagatorTests.cs" />
     <Compile Include="Arch\Alpha\AlphaDisassemblerTests.cs" />
     <Compile Include="Arch\Alpha\AlphaRewriterTests.cs" />
     <Compile Include="Arch\Arm\A64RewriterTests.cs" />
@@ -263,6 +265,7 @@
     <Compile Include="Fragments\DpbFragment.cs" />
     <Compile Include="Fragments\FCmpFragment.cs" />
     <Compile Include="Environments\SysV\ArchSpecific\SuperHCallingConventionTests.cs" />
+    <Compile Include="Fragments\RorChainFragment.cs" />
     <Compile Include="Gui\Design\ProgramDesignerTests.cs" />
     <Compile Include="Gui\Windows\Forms\CommentFormInteractorTests.cs" />
     <Compile Include="Gui\Windows\Forms\SymbolSourceInteractorTests.cs" />
@@ -673,11 +676,12 @@
     <Compile Include="Scanning\EscapedAccessRewriterTests.cs" />
     <Compile Include="Scanning\Fragments\RtlEvenOdd.cs" />
     <Compile Include="Scanning\GlobalDataWorkItemTests.cs" />
-    <Compile Include="Scanning\HeuristicProcedureScannerTests.cs" />
+    <Compile Include="Scanning\BlockConflictResolverTests.cs" />
     <Compile Include="Scanning\HeuristicTestBase.cs" />
     <Compile Include="Scanning\InstructionTrieTests.cs" />
     <Compile Include="Scanning\InterProceduralJumpTests.cs" />
     <Compile Include="Scanning\ProcedureDetectorTests.cs" />
+    <Compile Include="Scanning\ProcedurePaddingFinderTests.cs" />
     <Compile Include="Scanning\RtlBackwalkHost.cs" />
     <Compile Include="Scanning\Scanner.M68kTests.cs" />
     <Compile Include="Scanning\ScannerInLinqTests.cs" />

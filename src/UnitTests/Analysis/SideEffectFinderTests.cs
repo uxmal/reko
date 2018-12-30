@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -60,7 +60,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void SefApplication()
 		{
-			var p = new Procedure(null, "foo", null);
+			var p = new Procedure(new FakeArchitecture(), "foo", Address.Ptr32(0x00123400), null);
 			var a = new Application(
 				new ProcedureConstant(PrimitiveType.Ptr32, p), 
 				PrimitiveType.Word32,

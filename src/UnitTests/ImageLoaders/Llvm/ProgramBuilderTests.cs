@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -43,6 +43,7 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
         private Dictionary<string, Identifier> globals;
         private ServiceContainer sc;
         private IProcessorArchitecture arch;
+        private Address addrFn;
 
         [SetUp]
         public void Setup()
@@ -50,6 +51,7 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
             this.mr = new MockRepository();
             this.globals = new Dictionary<string, Identifier>();
             this.sc = new ServiceContainer();
+            this.addrFn = Address.Ptr32(0x00100000);
             this.arch = mr.Stub<IProcessorArchitecture>();
             this.arch.Stub(a => a.PointerType).Return(PrimitiveType.Ptr32);
             var cfgSvc = mr.Stub<IConfigurationService>();
@@ -70,6 +72,7 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
         {
             var program = new Program
             {
+                Architecture = arch,
                 Platform = new DefaultPlatform(sc, arch),
             };
             
@@ -83,7 +86,7 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
             {
                 pb.Globals.Add(de.Key, de.Value);
             }
-            var proc = pb.RegisterFunction(fn);
+            var proc = pb.RegisterFunction(fn, addrFn);
             pb.TranslateFunction(fn);
             return proc;
         }
@@ -288,7 +291,7 @@ l5:
 	loc6 = loc1 + 0xFFFFFFFF
 	// succ:  l7
 l7:
-	loc8 = PHI(loc4, loc6)
+	loc8 = PHI((loc4, l3), (loc6, l5))
 	return loc8
 	// succ:  foo_exit
 foo_exit:

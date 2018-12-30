@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,6 +36,7 @@ namespace Reko.Analysis
     /// it keeps tracks of all SSA Identifiers, which implicitly form a graph of 
     /// identifiers connected by use->def and def->use edges.
     /// </summary>
+    [DebuggerDisplay("{Procedure.Name}")]
 	public class SsaState
 	{
 		private SsaIdentifierCollection ids;
@@ -77,6 +78,27 @@ namespace Reko.Analysis
 
 			Procedure.ExitBlock.Statements.Clear();
 		}
+
+        /// <summary>
+        /// If there is no defined SSA identifier for <paramref name="id"/>
+        /// identifier, then create DefInstruction in the <paramref name="b"/>
+        /// block. Return existing SSA identifier otherwise
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="b"></param>
+        /// <returns>
+        /// New or existing SSA identifier for <paramref name="id"/>
+        /// </returns>
+        public SsaIdentifier EnsureSsaIdentifier(Identifier id, Block b)
+        {
+            if (Identifiers.TryGetValue(id, out var sid))
+                return sid;
+            sid = Identifiers.Add(id, null, null, false);
+            sid.DefStatement = b.Statements.Add(
+                b.Address.ToLinear(),
+                new DefInstruction(id));
+            return sid;
+        }
 
         [Conditional("DEBUG")]
 		public void Dump(bool trace)
@@ -187,14 +209,19 @@ namespace Reko.Analysis
                 var definitions = dc.CollectDefinitions(stm);
                 foreach (var defId in definitions)
                 {
-                    if (actualDefs.ContainsKey(defId))
+                    if (actualDefs.TryGetValue(defId, out var def))
+                    {
                         error(string.Format(
                             "{0}: multiple definitions for {1} ({2} and {3})",
                             Procedure.Name,
                             defId,
                             stm,
-                            actualDefs[defId]));
-                    actualDefs.Add(defId, stm);
+                            def));
+                    }
+                    else
+                    {
+                        actualDefs.Add(defId, stm);
+                    }
                 }
             }
             foreach (var sid in Identifiers)
@@ -326,7 +353,7 @@ namespace Reko.Analysis
                     .Select(phi => phi.Src.Arguments
                         .Select(a => new CallBinding(
                             phi.Dst.Storage,
-                            a)).ToArray()).ToArray();
+                            a.Value)).ToArray()).ToArray();
                 var arrs = Reko.Core.EnumerableEx.ZipMany(
                     phis,
                     ids => ids.ToArray()).ToArray();

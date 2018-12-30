@@ -244,6 +244,43 @@ namespace Reko.Core.Output
                 writer.Write("<invalid>");
                 return;
             }
+            if (c is StringConstant s)
+            {
+                writer.Write('"');
+                foreach (var ch in (string) s.GetValue())
+                {
+                    switch (ch)
+                    {
+                    case '\0': writer.Write("\\0"); break;
+                    case '\a': writer.Write("\\a"); break;
+                    case '\b': writer.Write("\\b"); break;
+                    case '\f': writer.Write("\\f"); break;
+                    case '\n': writer.Write("\\n"); break;
+                    case '\r': writer.Write("\\r"); break;
+                    case '\t': writer.Write("\\t"); break;
+                    case '\v': writer.Write("\\v"); break;
+                    case '\"': writer.Write("\\\""); break;
+                    case '\\': writer.Write("\\\\"); break;
+                    default:
+                        // The awful hack allows us to reuse .NET encodings
+                        // while encoding the original untranslateable 
+                        // code points into the Private use area.
+                        //$TODO: Clearly if the string was UTF8 or 
+                        // UTF-16 to begin with, we want to preserve the
+                        // private use area points.
+                        if (0xE000 <= ch && ch <= 0xE100)
+                            writer.Write("\\x{0:X2}", (ch - 0xE000));
+                        else if (0 <= ch && ch < ' ' || ch >= 0x7F)
+                            writer.Write("\\x{0:X2}", (int) ch);
+                        else
+                            writer.Write(ch);
+                        break;
+                    }
+                }
+                writer.Write('"');
+                return;
+            }
+
             var pt = c.DataType.ResolveAs<PrimitiveType>();
             if (pt != null)
             {
@@ -279,41 +316,6 @@ namespace Reko.Core.Output
                     writer.Write(FormatString(pt, v), v);
                 }
                 return;
-            }
-            if (c is StringConstant s)
-            {
-                writer.Write('"');
-                foreach (var ch in (string)s.GetValue())
-                {
-                    switch (ch)
-                    {
-                    case '\0': writer.Write("\\0"); break;
-                    case '\a': writer.Write("\\a"); break;
-                    case '\b': writer.Write("\\b"); break;
-                    case '\f': writer.Write("\\f"); break;
-                    case '\n': writer.Write("\\n"); break;
-                    case '\r': writer.Write("\\r"); break;
-                    case '\t': writer.Write("\\t"); break;
-                    case '\v': writer.Write("\\v"); break;
-                    case '\"': writer.Write("\\\""); break;
-                    case '\\': writer.Write("\\\\"); break;
-                    default:
-                        // The awful hack allows us to reuse .NET encodings
-                        // while encoding the original untranslateable 
-                        // code points into the Private use area.
-                        //$TODO: Clearly if the string was UTF8 or 
-                        // UTF-16 to begin with, we want to preserve the
-                        // private use area points.
-                        if (0xE000 <= ch && ch <= 0xE100)
-                            writer.Write("\\x{0:X2}", (ch - 0xE000));
-                        else if (0 <= ch && ch < ' ' || ch >= 0x7F)
-                            writer.Write("\\x{0:X2}", (int)ch);
-                        else
-                            writer.Write(ch);
-                        break;
-                    }
-                }
-                writer.Write('"');
             }
         }
 
@@ -429,10 +431,22 @@ namespace Reko.Core.Output
 		public void VisitPhiFunction(PhiFunction phi)
 		{
 			writer.WriteKeyword("PHI");
-			WriteActuals(phi.Arguments);
-		}
+            writer.Write("(");
+            var sep = "";
+            foreach (var arg in phi.Arguments)
+            {
+                writer.Write(sep);
+                sep = ", ";
+                writer.Write("(");
+                arg.Value.Accept(this);
+                writer.Write(", ");
+                writer.Write(arg.Block.Name);
+                writer.Write(")");
+            }
+            writer.Write(")");
+        }
 
-		public void VisitPointerAddition(PointerAddition pa)
+        public void VisitPointerAddition(PointerAddition pa)
 		{
             writer.Write("PTRADD(");
             WriteExpression(pa.Pointer);

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /*
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -87,7 +87,7 @@ namespace Reko.UnitTests.Arch.zSeries
             Given_MachineCode("C05000000140");
             AssertCode(     // larl	r5,00100280
                 "0|L--|00100000(6): 1 instructions",
-                "1|L--|r5 = 00100280");
+                "1|L--|r5 = DPB(r5, 0x00100280, 0)");
         }
 
         [Test]
@@ -433,6 +433,47 @@ namespace Reko.UnitTests.Arch.zSeries
             AssertCode(     // lr	r10,r1
                 "0|L--|00100000(2): 1 instructions",
                 "1|L--|r10 = DPB(r10, (word32) r1, 0)");
+        }
+
+
+        [Test]
+        public void zSeriesRw_nc()
+        {
+            Given_MachineCode("D407C038D000");
+            AssertCode(     // nc	56(8,r12),(r13)
+                "0|L--|00100000(6): 3 instructions",
+                "1|L--|v3 = Mem0[r12 + 56:byte] & Mem0[r13:byte]",
+                "2|L--|Mem0[r12 + 56:byte] = v3",
+                "3|L--|CC = cond(v3)");
+        }
+
+        [Test]
+        public void zSeriesRw_lhi()
+        {
+            Given_MachineCode("A728FFF0");
+            AssertCode(     // lhi	r2,+00000010
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r2 = 0xFFFFFFF0");
+        }
+
+
+        [Test]
+        public void zSeriesRw_lgf()
+        {
+            Given_MachineCode("E314F15C0014");
+            AssertCode(     // lgf	r1,348(r15)
+                "0|L--|00100000(6): 1 instructions",
+                "1|L--|r1 = (int64) Mem0[r15 + r4 + 348:int32]");
+        }
+
+        [Test]
+        public void zSeriesRw_mvz()
+        {
+            Given_MachineCode("D207F0B0F160");
+            AssertCode(     // mvz	176(8,r15),352(r15)
+                "0|L--|00100000(6): 2 instructions",
+                "1|L--|v3 = __move_zones(Mem0[r15 + 176:byte], Mem0[r15 + 352:byte])",
+                "2|L--|Mem0[r15 + 176:byte] = v3");
         }
     }
 }

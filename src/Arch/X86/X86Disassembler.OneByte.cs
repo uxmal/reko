@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -18,6 +18,8 @@
  */
 #endregion
 
+using Reko.Core;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +33,7 @@ namespace Reko.Arch.X86
         {
             return new OpRec[] { 
 				// 00
-				new SingleByteOpRec(Opcode.add, "Eb,Gb"),
+				new SingleByteOpRec(Opcode.add, InstrClass.Linear|InstrClass.Zero, "Eb,Gb"),
 				new SingleByteOpRec(Opcode.add, "Ev,Gv"),
 				new SingleByteOpRec(Opcode.add, "Gb,Eb"),
 				new SingleByteOpRec(Opcode.add, "Gv,Ev"),
@@ -39,10 +41,10 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.add, "av,Iz"),
 				new Alternative64OpRec(
                     new SingleByteOpRec(Opcode.push, "s0"),
-                    new SingleByteOpRec(Opcode.illegal)),
+                    s_invalid),
 				new Alternative64OpRec(
                     new SingleByteOpRec(Opcode.pop, "s0"),
-                    new SingleByteOpRec(Opcode.illegal)),
+                    s_invalid),
 
 				new SingleByteOpRec(Opcode.or, "Eb,Gb"),
 				new SingleByteOpRec(Opcode.or, "Ev,Gv"),
@@ -52,7 +54,7 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.or, "av,Iz"),
 				new Alternative64OpRec(
                     new SingleByteOpRec(Opcode.push, "s1"),
-                    new SingleByteOpRec(Opcode.illegal)),
+                    s_invalid),
 				new TwoByteOpRec(),
 
 				// 10
@@ -64,10 +66,10 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.adc, "av,Iz"),
 				new Alternative64OpRec(
                     new SingleByteOpRec(Opcode.push, "s2"),
-                    new SingleByteOpRec(Opcode.illegal)),
+                    s_invalid),
 				new Alternative64OpRec(
                     new SingleByteOpRec(Opcode.pop, "s2"),
-                    new SingleByteOpRec(Opcode.illegal)),
+                    s_invalid),
 
 				new SingleByteOpRec(Opcode.sbb, "Eb,Gb"),
 				new SingleByteOpRec(Opcode.sbb, "Ev,Gv"),
@@ -77,10 +79,10 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.sbb, "av,Iz"),
 				new Alternative64OpRec(
                     new SingleByteOpRec(Opcode.push, "s3"),
-                    new SingleByteOpRec(Opcode.illegal)),
+                    s_invalid),
 				new Alternative64OpRec(
                     new SingleByteOpRec(Opcode.pop, "s3"),
-                    new SingleByteOpRec(Opcode.illegal)),
+                    s_invalid),
 
 				// 20
 				new SingleByteOpRec(Opcode.and, "Eb,Gb"), 
@@ -92,7 +94,7 @@ namespace Reko.Arch.X86
 				new SegmentOverrideOprec(0),
 				new Alternative64OpRec(
                     new SingleByteOpRec(Opcode.daa),
-                    new SingleByteOpRec(Opcode.illegal)),
+                    s_invalid),
 
 				new SingleByteOpRec(Opcode.sub, "Eb,Gb"),
 				new SingleByteOpRec(Opcode.sub, "Ev,Gv"),
@@ -103,7 +105,7 @@ namespace Reko.Arch.X86
                 new SegmentOverrideOprec(1),
 				new Alternative64OpRec(
                     new SingleByteOpRec(Opcode.das),
-                    new SingleByteOpRec(Opcode.illegal)),
+                    s_invalid),
 
 				// 30
 				new SingleByteOpRec(Opcode.xor, "Eb,Gb"),
@@ -115,7 +117,7 @@ namespace Reko.Arch.X86
                 new SegmentOverrideOprec(2),
 				new Alternative64OpRec(
                     new SingleByteOpRec(Opcode.aaa),
-                    new SingleByteOpRec(Opcode.illegal)),
+                    s_invalid),
 
 				new SingleByteOpRec(Opcode.cmp, "Eb,Gb"),
 				new SingleByteOpRec(Opcode.cmp, "Ev,Gv"),
@@ -126,7 +128,7 @@ namespace Reko.Arch.X86
                 new SegmentOverrideOprec(3),
 				new Alternative64OpRec(
                     new SingleByteOpRec(Opcode.aas),
-                    new SingleByteOpRec(Opcode.illegal)),
+                    s_invalid),
 
 				// 40
 				new Rex_SingleByteOpRec(Opcode.inc, "rv"),
@@ -201,13 +203,13 @@ namespace Reko.Arch.X86
 				// 60
 				new Alternative64OpRec(
                     new SingleByteOpRec(Opcode.pusha),
-                    new SingleByteOpRec(Opcode.illegal)),
+                    s_invalid),
 				new Alternative64OpRec(
                     new SingleByteOpRec(Opcode.popa),
-                    new SingleByteOpRec(Opcode.illegal)),
+                    s_invalid),
 				new Alternative64OpRec(
                     new SingleByteOpRec(Opcode.bound, "Gv,Mv"),
-                    new SingleByteOpRec(Opcode.illegal)),
+                    s_invalid),
                 new Alternative64OpRec(
     				new SingleByteOpRec(Opcode.arpl, "Ew,rw"),
     				new SingleByteOpRec(Opcode.movsx, "Gv,Ed")),
@@ -226,30 +228,30 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.outs),
 
 				// 70
-				new SingleByteOpRec(Opcode.jo, "Jb"),
-				new SingleByteOpRec(Opcode.jno, "Jb"),
-				new SingleByteOpRec(Opcode.jc, "Jb"),
-				new SingleByteOpRec(Opcode.jnc, "Jb"),
-				new SingleByteOpRec(Opcode.jz, "Jb"),
-				new SingleByteOpRec(Opcode.jnz, "Jb"),
-				new SingleByteOpRec(Opcode.jbe, "Jb"),
-				new SingleByteOpRec(Opcode.ja, "Jb"),
+				new SingleByteOpRec(Opcode.jo, InstrClass.Transfer|InstrClass.Conditional, "Jb"),
+				new SingleByteOpRec(Opcode.jno, InstrClass.Transfer|InstrClass.Conditional, "Jb"),
+				new SingleByteOpRec(Opcode.jc, InstrClass.Transfer|InstrClass.Conditional, "Jb"),
+				new SingleByteOpRec(Opcode.jnc, InstrClass.Transfer|InstrClass.Conditional, "Jb"),
+				new SingleByteOpRec(Opcode.jz, InstrClass.Transfer|InstrClass.Conditional, "Jb"),
+				new SingleByteOpRec(Opcode.jnz, InstrClass.Transfer|InstrClass.Conditional, "Jb"),
+				new SingleByteOpRec(Opcode.jbe, InstrClass.Transfer|InstrClass.Conditional, "Jb"),
+				new SingleByteOpRec(Opcode.ja, InstrClass.Transfer|InstrClass.Conditional, "Jb"),
 
-				new SingleByteOpRec(Opcode.js, "Jb"),
-				new SingleByteOpRec(Opcode.jns, "Jb"),
-				new SingleByteOpRec(Opcode.jpe, "Jb"),
-				new SingleByteOpRec(Opcode.jpo, "Jb"),
-				new SingleByteOpRec(Opcode.jl, "Jb"),
-				new SingleByteOpRec(Opcode.jge, "Jb"),
-				new SingleByteOpRec(Opcode.jle, "Jb"),
-				new SingleByteOpRec(Opcode.jg, "Jb"),
+				new SingleByteOpRec(Opcode.js, InstrClass.Transfer|InstrClass.Conditional, "Jb"),
+				new SingleByteOpRec(Opcode.jns, InstrClass.Transfer|InstrClass.Conditional, "Jb"),
+				new SingleByteOpRec(Opcode.jpe, InstrClass.Transfer|InstrClass.Conditional, "Jb"),
+				new SingleByteOpRec(Opcode.jpo, InstrClass.Transfer|InstrClass.Conditional, "Jb"),
+				new SingleByteOpRec(Opcode.jl, InstrClass.Transfer|InstrClass.Conditional, "Jb"),
+				new SingleByteOpRec(Opcode.jge, InstrClass.Transfer|InstrClass.Conditional, "Jb"),
+				new SingleByteOpRec(Opcode.jle, InstrClass.Transfer|InstrClass.Conditional, "Jb"),
+				new SingleByteOpRec(Opcode.jg, InstrClass.Transfer|InstrClass.Conditional, "Jb"),
 
 				// 80
 				new GroupOpRec(1, "Eb,Ib"),
 				new GroupOpRec(1, "Ev,Iz"),
 				new Alternative64OpRec(
                     new GroupOpRec(1, "Eb,Ib"),
-                    new SingleByteOpRec(Opcode.illegal)),
+                    s_invalid),
 				new GroupOpRec(1, "Ev,Ib"),
 				new SingleByteOpRec(Opcode.test, "Eb,Gb"),
 				new SingleByteOpRec(Opcode.test, "Ev,Gv"),
@@ -269,7 +271,8 @@ namespace Reko.Arch.X86
 				new PrefixedOpRec(
                     Opcode.nop, "",
                     Opcode.nop, "",
-                    Opcode.pause, ""),
+                    Opcode.pause, "",
+                    iclass:InstrClass.Linear|InstrClass.Padding),
 				new SingleByteOpRec(Opcode.xchg, "av,rv"),
 				new SingleByteOpRec(Opcode.xchg, "av,rv"),
 				new SingleByteOpRec(Opcode.xchg, "av,rv"),
@@ -281,8 +284,8 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.cbw),
 				new SingleByteOpRec(Opcode.cwd),
 				new Alternative64OpRec(
-                    new SingleByteOpRec(Opcode.call, "Ap"),
-                    new SingleByteOpRec(Opcode.illegal)),
+                    new SingleByteOpRec(Opcode.call, InstrClass.Transfer|InstrClass.Call, "Ap"),
+                    s_invalid),
 				new SingleByteOpRec(Opcode.wait),
 				new SingleByteOpRec(Opcode.pushf),
 				new SingleByteOpRec(Opcode.popf),
@@ -330,8 +333,8 @@ namespace Reko.Arch.X86
 				// C0
 				new GroupOpRec(2, "Eb,Ib"),
 				new GroupOpRec(2, "Ev,Ib"),
-				new SingleByteOpRec(Opcode.ret,	"Iw"),
-				new SingleByteOpRec(Opcode.ret),
+				new SingleByteOpRec(Opcode.ret, InstrClass.Transfer, "Iw"),
+				new SingleByteOpRec(Opcode.ret, InstrClass.Transfer, ""),
 				new Alternative64OpRec(
                     new SingleByteOpRec(Opcode.les,	"Gv,Mp"),
                     new VexDecoder3()),
@@ -343,14 +346,14 @@ namespace Reko.Arch.X86
 
 				new SingleByteOpRec(Opcode.enter, "Iw,Ib"),
 				new SingleByteOpRec(Opcode.leave),
-				new SingleByteOpRec(Opcode.retf,	"Iw"),
-				new SingleByteOpRec(Opcode.retf,	""),
-				new SingleByteOpRec(Opcode.@int,	"3"),
-				new InterruptOpRec(Opcode.@int,	    "Ib"),
+				new SingleByteOpRec(Opcode.retf, InstrClass.Transfer, "Iw"),
+				new SingleByteOpRec(Opcode.retf, InstrClass.Transfer, ""),
+				new SingleByteOpRec(Opcode.@int, InstrClass.Linear|InstrClass.Padding, "3"),
+				new InterruptOpRec(Opcode.@int, "Ib"),
 				new Alternative64OpRec(
-                    new SingleByteOpRec(Opcode.into,	""),
-                    new SingleByteOpRec(Opcode.illegal)),
-				new SingleByteOpRec(Opcode.iret,	""),
+                    new SingleByteOpRec(Opcode.into, ""),
+                    s_invalid),
+				new SingleByteOpRec(Opcode.iret, InstrClass.Transfer, ""),
 
 				// D0
 				new GroupOpRec(2, "Eb,1"),
@@ -359,11 +362,11 @@ namespace Reko.Arch.X86
 				new GroupOpRec(2, "Ev,c"),
 				new Alternative64OpRec(
                     new SingleByteOpRec(Opcode.aam, "Ib"),
-                    new SingleByteOpRec(Opcode.illegal)),
+                    s_invalid),
 				new Alternative64OpRec(
                     new SingleByteOpRec(Opcode.aad, "Ib"),
-				    new SingleByteOpRec(Opcode.illegal)),
-				new SingleByteOpRec(Opcode.illegal),
+				    s_invalid),
+				s_invalid,
 				new SingleByteOpRec(Opcode.xlat, "b"),
 
 				new FpuOpRec(),
@@ -376,21 +379,21 @@ namespace Reko.Arch.X86
 				new FpuOpRec(),
 
 				// E0
-				new SingleByteOpRec(Opcode.loopne,"Jb"),
-				new SingleByteOpRec(Opcode.loope, "Jb"),
-				new SingleByteOpRec(Opcode.loop, "Jb"),
-				new SingleByteOpRec(Opcode.jcxz, "Jb"),
+				new SingleByteOpRec(Opcode.loopne, InstrClass.ConditionalTransfer, "Jb"),
+				new SingleByteOpRec(Opcode.loope, InstrClass.ConditionalTransfer, "Jb"),
+				new SingleByteOpRec(Opcode.loop, InstrClass.ConditionalTransfer, "Jb"),
+				new SingleByteOpRec(Opcode.jcxz, InstrClass.ConditionalTransfer, "Jb"),
 				new SingleByteOpRec(Opcode.@in, "ab,Ib"),
 				new SingleByteOpRec(Opcode.@in, "av,Ib"),
 				new SingleByteOpRec(Opcode.@out, "Ib,ab"),
 				new SingleByteOpRec(Opcode.@out, "Ib,av"),
 
-				new SingleByteOpRec(Opcode.call, "Jv"),
-				new SingleByteOpRec(Opcode.jmp, "Jv"),
+				new SingleByteOpRec(Opcode.call, InstrClass.Transfer|InstrClass.Call, "Jv"),
+				new SingleByteOpRec(Opcode.jmp, InstrClass.Transfer, "Jv"),
 				new Alternative64OpRec(
-                    new SingleByteOpRec(Opcode.jmp, "Ap"),
-                    new SingleByteOpRec(Opcode.illegal)),
-				new SingleByteOpRec(Opcode.jmp, "Jb"),
+                    new SingleByteOpRec(Opcode.jmp, InstrClass.Transfer, "Ap"),
+                    s_invalid),
+				new SingleByteOpRec(Opcode.jmp, InstrClass.Transfer, "Jb"),
 				new SingleByteOpRec(Opcode.@in, "ab,dw"),
 				new SingleByteOpRec(Opcode.@in, "av,dw"),
 				new SingleByteOpRec(Opcode.@out, "dw,ab"),
@@ -398,10 +401,10 @@ namespace Reko.Arch.X86
 
 				// F0
 				new SingleByteOpRec(Opcode.@lock),
-				new SingleByteOpRec(Opcode.illegal),
+				s_invalid,
 				new F2ByteOpRec(),
 				new F3ByteOpRec(),
-				new SingleByteOpRec(Opcode.hlt),
+				new SingleByteOpRec(Opcode.hlt, InstrClass.Terminates, ""),
 				new SingleByteOpRec(Opcode.cmc),
 				new GroupOpRec(3, "Eb"),
 				new GroupOpRec(3, "Ev"),

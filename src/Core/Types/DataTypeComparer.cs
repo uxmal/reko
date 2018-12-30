@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,25 +30,26 @@ namespace Reko.Core.Types
 	/// </summary>
 	public class DataTypeComparer : IComparer<DataType>, IDataTypeVisitor<int>, IEqualityComparer<DataType>
 	{
-        private const int Prim   = 0;
-        private const int Enum   = 1;
-        private const int Qual =   2;  
-		private const int Ptr =    3;
-        private const int MemPtr = 4;
-		private const int Fn =     5;
-		private const int Array =  6;
-        private const int String = 7;
-		private const int Struct = 8;
-		private const int Union =  9;
-        private const int TRef =   10;
-        private const int TVar =   11;
-		private const int EqClass= 12;
-        private const int Code =   13;
-        private const int Ref =    14;
-        private const int Unk =    15;
-        private const int Void =   16;
+        private const int Prim = 0;
+        private const int Enum = 1;
+        private const int Ptr = 2;
+        private const int MemPtr = 3;
+        private const int Fn = 4;
+        private const int Array = 5;
+        private const int String = 6;
+        private const int Struct = 7;
+        private const int Union = 8;
+        private const int TRef = 9;
+        private const int TVar = 10;
+        private const int EqClass = 11;
+        private const int Code = 12;
+        private const int Ref = 13;
+        private const int Unk = 14;
+        private const int Void = 15;
 
         private IDictionary<Tuple<DataType, DataType>, int> compareResult;
+
+		private static DataTypeComparer ourGlobalComparer = new DataTypeComparer();
 
         public DataTypeComparer()
         {
@@ -305,24 +306,17 @@ namespace Reko.Core.Types
 
         public int GetHashCode(DataType dt)
         {
-            var pt = dt as PrimitiveType;
-            if (pt != null)
+            switch (dt)
+            {
+            case PrimitiveType pt:
                 return pt.GetHashCode();
-            if (dt is UnknownType)
+            case UnknownType _:
                 return dt.GetType().GetHashCode();
-            var ptr = dt as Pointer;
-            if (ptr != null)
-            {
+            case Pointer ptr:                ;
                 return GetHashCode(ptr.Pointee) * 11 ^ ptr.GetType().GetHashCode();
-            }
-            var rt = dt as ReferenceTo;
-            if (rt != null)
-            {
-                return GetHashCode(ptr.Pointee) * 11 ^ ptr.GetType().GetHashCode();
-            }
-            var ft = dt as FunctionType;
-            if (ft != null)
-            {
+            case ReferenceTo rt:
+                return GetHashCode(rt.Referent) * 11 ^ rt.GetType().GetHashCode();
+            case FunctionType ft:
                 if (ft.ParametersValid)
                 {
                     int hash = 0;
@@ -401,11 +395,6 @@ namespace Reko.Core.Types
 			return Ptr;
 		}
 
-        public int VisitQualifiedType(QualifiedType qt)
-        {
-            return Qual;
-        }
-
         public int VisitReference(ReferenceTo refTo)
         {
             return Ref;
@@ -436,5 +425,9 @@ namespace Reko.Core.Types
             return Void;
         }
 		#endregion
+
+        //$REVIEW: this is thread-unsafe. We keep it because we have really deep type comparisons due to
+        // unresolved bugs in type inference. Once those are resolved, performance should improve.
+		public static DataTypeComparer Instance => ourGlobalComparer;
 	}
 }

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -313,8 +313,8 @@ Constants: cl:0x00
             // Subroutine does a small calculation in registers
             builder.Add("Addition", m =>
             {
-                var r1 = m.Register(1);
-                var r2 = m.Register(2);
+                var r1 = m.Register("r1");
+                var r2 = m.Register("r2");
                 m.Assign(
                     m.Frame.EnsureRegister(m.Architecture.StackRegister),
                     m.Frame.FramePointer);
@@ -330,8 +330,8 @@ Constants: cl:0x00
 
             builder.Add("main", m =>
             {
-                var r1 = m.Register(1);
-                var r2 = m.Register(2);
+                var r1 = m.Register("r1");
+                var r2 = m.Register("r2");
                 var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
 
                 m.Assign(sp, m.Frame.FramePointer);
@@ -358,8 +358,8 @@ Constants: cl:0x00
                 Given_PlatformTrashedRegisters();
 
                 var fp = m.Frame.FramePointer;
-                var r1 = m.Register(1);
-                var r2 = m.Register(2);
+                var r1 = m.Register("r1");
+                var r2 = m.Register("r2");
                 var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
 
                 m.Assign(sp, fp);
@@ -858,6 +858,7 @@ Constants: cl:0x00
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void TrfWideThenNarrow()
         {
             var arch = new Reko.Arch.X86.X86ArchitectureFlat32("x86-protected-32");
@@ -875,5 +876,36 @@ Constants: cl:0x00
             });
             RunTest();
         }
+
+        [Test(Description = "Tests that loops with phi nodes terminate.")]
+        [Category(Categories.UnitTests)]
+        public void TrfLoop()
+        {
+            Expect(
+                "recursive",
+                "Preserved: ",
+                "Trashed: r1,r2,r3,r63",
+                "");
+            builder.Add("recursive", m =>
+            {
+                var r1 = m.Reg32("r1", 1);
+                var r2 = m.Reg32("r2", 2);
+                var r3 = m.Reg32("r3", 3);
+                var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
+                m.Assign(r1, m.Frame.FramePointer);
+                m.Call(new ExternalProcedure("ext_code", new FunctionType()), 0);  // Hell node: indirect call forces a definition of r2
+
+                m.Label("m1_loop_body");
+                m.MStore(m.Word32(0x00123400), m.IAdd(m.Mem32(m.Word32(0x00123400)), r2));
+                m.Assign(r2, m.IAdd(r2, 1));
+                m.BranchIf(m.Lt(r2, 0x1000), "m1_loop_body");
+
+                m.Label("m3_exit");
+                m.Return();
+            });
+            RunTest();
+        }
+
+
     }
 }

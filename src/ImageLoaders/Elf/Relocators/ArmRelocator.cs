@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,8 +29,31 @@ namespace Reko.ImageLoaders.Elf.Relocators
 {
     public class ArmRelocator : ElfRelocator32
     {
+        IProcessorArchitecture archThumb;
+
         public ArmRelocator(ElfLoader32 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
         {
+        }
+
+        public override ImageSymbol AdjustImageSymbol(ImageSymbol sym)
+        {
+            if ((sym.Address.ToLinear() & 1) == 0)
+                return sym;
+            if (archThumb == null)
+            {
+                var cfgSvc = loader.Services.RequireService<IConfigurationService>();
+                this.archThumb = cfgSvc.GetArchitecture("arm-thumb");
+            }
+            var addrNew = sym.Address - 1;
+            var symNew = ImageSymbol.Create(
+                sym.Type,
+                archThumb,
+                addrNew,
+                sym.Name,
+                sym.DataType,
+                !sym.NoDecompile);
+            symNew.ProcessorState = sym.ProcessorState;
+            return symNew;
         }
 
         public override ElfSymbol RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)

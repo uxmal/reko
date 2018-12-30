@@ -6,7 +6,7 @@ LiveCopyMock_entry:
 	goto l1
 	// succ:  l1
 even:
-	reg_4 = PHI(reg_4, reg_3)
+	reg_4 = PHI((reg_4, l1), (reg_3, l2))
 	return reg_4 - reg
 	// succ:  LiveCopyMock_exit
 l1:

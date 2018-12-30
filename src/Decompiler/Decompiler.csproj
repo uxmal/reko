@@ -148,10 +148,12 @@
     <Compile Include="Analysis\InstructionUseCollector.cs" />
     <Compile Include="Analysis\InstructionUseVisitorBase.cs" />
     <Compile Include="Analysis\ProcedureGraph.cs" />
+    <Compile Include="Analysis\ProjectionPropagator.cs" />
     <Compile Include="Analysis\RegisterPreservation.cs" />
     <Compile Include="Analysis\SsaDefinitionsCollector.cs" />
     <Compile Include="Analysis\SequenceIdentifierGenerator.cs" />
     <Compile Include="Analysis\SsaMutator.cs" />
+    <Compile Include="Analysis\StackPointerBackpropagator.cs" />
     <Compile Include="Analysis\TrashedRegisterFinder3.cs" />
     <Compile Include="Analysis\UnalignedMemoryAccessFuser.cs" />
     <Compile Include="Analysis\UnusedOutValuesRemover.cs" />
@@ -218,6 +220,7 @@
     <Compile Include="Analysis\WebBuilder.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Evaluation\ComparisonConstOnLeft.cs" />
     <Compile Include="Evaluation\DistributedCastRule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -282,10 +285,12 @@
     <Compile Include="Scanning\IcfgBuilder.cs" />
     <Compile Include="Scanning\IScanner.cs" />
     <Compile Include="Scanning\IScannerQueue.cs" />
+    <Compile Include="Scanning\LinearScanner.cs" />
+    <Compile Include="Scanning\ProcedurePaddingFinder.cs" />
     <Compile Include="Scanning\RtlBlock.cs" />
     <Compile Include="Scanning\HeuristicDisassembler.cs" />
     <Compile Include="Scanning\HeuristicProcedure.cs" />
-    <Compile Include="Scanning\HeuristicProcedureScanner.cs" />
+    <Compile Include="Scanning\BlockConflictResolver.cs" />
     <Compile Include="Scanning\IdentifierRelocator.cs" />
     <Compile Include="Scanning\BlockWorkitem.cs" />
     <Compile Include="Scanning\ImageSymbolWorkItem.cs" />

@@ -3,7 +3,7 @@ sp_2: orig: sp
 Top_3: orig: Top
 ax_4: orig: ax
     def:  ax_4 = 0x0000
-    uses: ax_11 = PHI(ax_4, ax_14)
+    uses: ax_11 = PHI((ax_4, l0C00_0000), (ax_14, l0C00_0004))
 SZO_5: orig: SZO
 C_6: orig: C
 ds:ds
@@ -18,25 +18,25 @@ Mem0:Mem
     uses: cx_10 = Mem0[ds:bx:word16]
 cx_10: orig: cx
     def:  cx_10 = Mem0[ds:bx:word16]
-    uses: cx_12 = PHI(cx_10, cx_16)
+    uses: cx_12 = PHI((cx_10, l0C00_0000), (cx_16, l0C00_0004))
 ax_11: orig: ax
-    def:  ax_11 = PHI(ax_4, ax_14)
+    def:  ax_11 = PHI((ax_4, l0C00_0000), (ax_14, l0C00_0004))
     uses: ax_14 = ax_11 + cx_12 + cx_12
 cx_12: orig: cx
-    def:  cx_12 = PHI(cx_10, cx_16)
+    def:  cx_12 = PHI((cx_10, l0C00_0000), (cx_16, l0C00_0004))
     uses: ax_14 = ax_11 + cx_12 + cx_12
-          ax_14 = ax_11 + cx_12 + cx_12
           cx_16 = cx_12 - 0x0001
+          ax_14 = ax_11 + cx_12 + cx_12
 ax_13: orig: ax
 ax_14: orig: ax
     def:  ax_14 = ax_11 + cx_12 + cx_12
     uses: Mem18[ds:0x0300:word16] = ax_14
-          ax_11 = PHI(ax_4, ax_14)
+          ax_11 = PHI((ax_4, l0C00_0000), (ax_14, l0C00_0004))
 SCZO_15: orig: SCZO
 cx_16: orig: cx
     def:  cx_16 = cx_12 - 0x0001
     uses: branch cx_16 != 0x0000 l0C00_0004
-          cx_12 = PHI(cx_10, cx_16)
+          cx_12 = PHI((cx_10, l0C00_0000), (cx_16, l0C00_0004))
 C_19: orig: C
 Mem18: orig: Mem0
     def:  Mem18[ds:0x0300:word16] = ax_14
@@ -56,8 +56,8 @@ l0C00_0000:
 	cx_10 = Mem0[ds:bx:word16]
 	// succ:  l0C00_0004
 l0C00_0004:
-	cx_12 = PHI(cx_10, cx_16)
-	ax_11 = PHI(ax_4, ax_14)
+	cx_12 = PHI((cx_10, l0C00_0000), (cx_16, l0C00_0004))
+	ax_11 = PHI((ax_4, l0C00_0000), (ax_14, l0C00_0004))
 	ax_14 = ax_11 + cx_12 + cx_12
 	cx_16 = cx_12 - 0x0001
 	branch cx_16 != 0x0000 l0C00_0004

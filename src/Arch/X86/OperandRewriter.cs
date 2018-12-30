@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -230,7 +230,7 @@ namespace Reko.Arch.X86
             Expression idx = binder.EnsureRegister(Registers.Top);
             if (reg != 0)
             {
-                idx = m.IAdd(idx, reg);
+                idx = m.IAddS(idx, reg);
             }
             return new MemoryAccess(Registers.ST, idx, PrimitiveType.Real64);
         }
@@ -251,7 +251,7 @@ namespace Reko.Arch.X86
             if (mem != null && addrWidth == PrimitiveType.Word32 && mem.Base == RegisterStorage.None &&
                 mem.Index == RegisterStorage.None)
             {
-                return host.GetImportedProcedure(Address.Ptr32(mem.Offset.ToUInt32()), addrInstruction);
+                return host.GetImportedProcedure(arch, Address.Ptr32(mem.Offset.ToUInt32()), addrInstruction);
             }
             return null;
         }

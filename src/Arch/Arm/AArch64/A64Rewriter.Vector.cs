@@ -173,7 +173,7 @@ namespace Reko.Arch.Arm.AArch64
                 {
                     var vReg = binder.EnsureRegister(reg);
                     var indexed = m.ARef(dtElem, vReg, Constant.Int32(vec.Index));
-                    var eaOffset = offset == 0 ? ea : m.IAdd(ea, Constant.Int(ea.DataType, offset));
+                    var eaOffset = offset == 0 ? ea : m.IAddS(ea, offset);
                     m.Assign(m.Mem(dtElem, eaOffset), indexed);
                     offset += dtElem.Size;
                 }

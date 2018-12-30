@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -25,6 +25,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Output;
 using Reko.Core.Types;
 using Reko.Structure;
+using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -40,7 +41,7 @@ namespace Reko.UnitTests.Structure
     {
         private void RunTest(string sExp, Action<AbsynCodeEmitter> gen)
         {
-            var proc = new Procedure(null, "test", new Frame(PrimitiveType.Ptr32));
+            var proc = new Procedure(new FakeArchitecture(), "test", Address.Ptr32(0x00123400), new Frame(PrimitiveType.Ptr32));
             proc.Body = new List<AbsynStatement>();
             var m = new AbsynCodeEmitter(proc.Body);
             gen(m);
@@ -93,7 +94,7 @@ namespace Reko.UnitTests.Structure
                 m.While(m.Le(i, 42), b =>
                 {
                     b.SideEffect(b.Fn(foo, i));
-                    b.Assign(i, b.IAdd(i, 1));
+                    b.Assign(i, b.IAddS(i, 1));
                 });
             });
         }
@@ -122,7 +123,7 @@ namespace Reko.UnitTests.Structure
                 var x = Id("x", PrimitiveType.Int32);
                 var isqrt = Id("isqrt", PrimitiveType.Ptr32);
                 var limit = Id("limit", PrimitiveType.Int32);
-                m.Declare(limit, m.IAdd(m.Fn(isqrt, x), m.Int32(1)));
+                m.Declare(limit, m.IAddS(m.Fn(isqrt, x), 1));
                 m.Assign(i, m.Int32(2));
                 m.While(m.Lt(i, limit), w =>
                 {
@@ -130,7 +131,7 @@ namespace Reko.UnitTests.Structure
                     {
                         wif.Return(m.Int32(0));
                     });
-                    w.Assign(i, w.IAdd(i, w.Int32(1)));
+                    w.Assign(i, w.IAddS(i, 1));
                 });
                 m.Return(m.Int32(1));
             });
@@ -166,11 +167,11 @@ namespace Reko.UnitTests.Structure
                 var x = Id("x", PrimitiveType.Int32);
                 var isqrt = Id("isqrt", PrimitiveType.Ptr32);
                 var limit = Id("limit", PrimitiveType.Int32);
-                m.Declare(limit, m.IAdd(m.Fn(isqrt, x), m.Int32(1)));
+                m.Declare(limit, m.IAddS(m.Fn(isqrt, x), 1));
                 m.Assign(i, m.Int32(2));
                 m.While(m.Lt(i, limit), w =>
                 {
-                    w.Assign(i, w.IAdd(i, w.Int32(1)));
+                    w.Assign(i, w.IAddS(i, 1));
                     w.If(w.Eq0(m.Mod(x, i)), wif =>
                     {
                         wif.Return(m.Int32(0));
@@ -212,7 +213,7 @@ namespace Reko.UnitTests.Structure
                 m.Assign(i, m.Int32(2));
                 m.While(m.Lt(i, limit), w =>
                 {
-                    w.Assign(i, w.IAdd(i, w.Int32(1)));
+                    w.Assign(i, w.IAddS(i, 1));
                     w.Assign(sum, i);       // uses i after it was incremented.
                 });
                 m.Return(m.Int32(1));
@@ -252,7 +253,7 @@ namespace Reko.UnitTests.Structure
                 m.While(m.Lt(i, limit), w =>
                 {
                     w.SideEffect(m.Fn(foo, i));
-                    w.Assign(i, m.IAdd(i, 1));
+                    w.Assign(i, m.IAddS(i, 1));
                 });
                 m.Return(m.Int32(1));
             });
@@ -288,7 +289,7 @@ namespace Reko.UnitTests.Structure
                 m.While(m.Lt(i, limit), w =>
                 {
                     w.SideEffect(m.Fn(foo, i));
-                    w.Assign(i, m.IAdd(i, 1));
+                    w.Assign(i, m.IAddS(i, 1));
                 });
                 m.Return(m.Int32(1));
             });
@@ -319,7 +320,7 @@ namespace Reko.UnitTests.Structure
                 m.SideEffect(m.Fn(foo));
                 m.While(m.Lt(i, n), w =>
                 {
-                    w.Assign(i, w.IAdd(i, 1));
+                    w.Assign(i, w.IAddS(i, 1));
                 });
             });
             /*i = 0;
@@ -358,7 +359,7 @@ namespace Reko.UnitTests.Structure
                 m.Assign(i, m.Int32(0));
                 m.While(m.Lt(i, n), w =>
                 {
-                    w.Assign(i, w.IAdd(i, 1));
+                    w.Assign(i, w.IAddS(i, 1));
                     w.SideEffect(w.Fn(foo));
                 });
             });
@@ -391,7 +392,7 @@ namespace Reko.UnitTests.Structure
                 m.DoWhile(w =>
                     {
                         w.SideEffect(w.Fn(foo));
-                        w.Assign(i, w.IAdd(i, 1));
+                        w.Assign(i, w.IAddS(i, 1));
                     },
                     m.Lt(i, n));
             });
@@ -420,7 +421,7 @@ namespace Reko.UnitTests.Structure
                 m.DoWhile(w =>
                 {
                     w.SideEffect(w.Fn(foo));
-                    w.Assign(i, w.IAdd(i, 1));
+                    w.Assign(i, w.IAddS(i, 1));
                 },
                     m.Ne(i, m.Int32(42)));
             });
@@ -450,7 +451,7 @@ namespace Reko.UnitTests.Structure
                     t.DoWhile(d =>
                     {
                         d.SideEffect(d.Fn(foo, i));
-                        d.Assign(i, d.IAdd(i, 1));
+                        d.Assign(i, d.IAddS(i, 1));
                     },
                     t.Ne(i, n));
                 });
@@ -484,12 +485,38 @@ namespace Reko.UnitTests.Structure
                     t.DoWhile(d =>
                     {
                         d.SideEffect(d.Fn(foo, i));
-                        d.Assign(i, d.IAdd(i, 1));
+                        d.Assign(i, d.IAddS(i, 1));
                     },
                     t.Gt(complex, i));
                 });
             });
         }
 
+        [Test]
+        public void Flr_CastingLoopVariable()
+        {
+            var sExp =
+            #region Expected
+@"test()
+{
+    for (i = 0; (real32) i <= arg; i = i + 1)
+        foo(i);
+}
+";
+            #endregion
+
+            RunTest(sExp, m =>
+            {
+                var i = Id("i", PrimitiveType.Int32);
+                var arg = Id("arg", PrimitiveType.Real32);
+                var foo = Id("foo", PrimitiveType.Ptr32);
+                m.Assign(i, m.Int32(0));
+                m.While(m.Le(m.Cast(PrimitiveType.Real32, i), arg), b =>
+                {
+                    b.SideEffect(b.Fn(foo, i));
+                    b.Assign(i, b.IAddS(i, 1));
+                });
+            });
+        }
     }
 }

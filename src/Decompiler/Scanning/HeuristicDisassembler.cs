@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -73,15 +73,15 @@ namespace Reko.Scanning
         public RtlBlock Disassemble(Address addr)
         {
             var current = new RtlBlock(addr, string.Format("l{0:X}", addr));
-            var dasm = program.Architecture.CreateRewriter(
-                program.CreateImageReader(addr),
-                program.CreateProcessorState(),    //$TODO: use state from user.
+            var arch = program.Architecture;
+            var dasm = arch.CreateRewriter(
+                program.CreateImageReader(arch, addr),
+                arch.CreateProcessorState(),    //$TODO: use state from user.
                 binder,
                 host);
             foreach (var instr in dasm.TakeWhile(i => isAddrValid(i.Address)))
             {
-                RtlBlock block;
-                if (blockMap.TryGetValue(instr.Address, out block))
+                if (blockMap.TryGetValue(instr.Address, out RtlBlock block))
                 {
                     // This instruction was already disassembled before.
                     if (instr.Address.ToLinear() != block.Address.ToLinear())
@@ -112,21 +112,21 @@ namespace Reko.Scanning
                     current.Instructions.Add(instr);
                     blockMap.Add(instr.Address, current);
                     Address addrOp;
-                    switch (instr.Class)
+                    switch (instr.Class & ~(InstrClass.Padding|InstrClass.Zero))
                     {
-                    case RtlClass.Invalid:
-                    case RtlClass.None:
+                    case InstrClass.Invalid:
+                    case InstrClass.None:
                         current.IsValid = false;
                         return current;
-                    case RtlClass.Linear:
-                    case RtlClass.Linear | RtlClass.Conditional:
+                    case InstrClass.Linear:
+                    case InstrClass.Linear | InstrClass.Conditional:
                         if (FallthroughToInvalid(instr))
                         {
                             current.IsValid = false;
                             return current;
                         }
                         break;
-                    case RtlClass.Transfer | RtlClass.Call:
+                    case InstrClass.Transfer | InstrClass.Call:
                         addrOp = DestinationAddress(instr);
                         if (addrOp != null)
                         {
@@ -155,7 +155,7 @@ namespace Reko.Scanning
                         block = Disassemble(instr.Address + instr.Length);
                         AddEdge(current, block);
                         return current;
-                    case RtlClass.Transfer:
+                    case InstrClass.Transfer:
                         addrOp = DestinationAddress(instr);
                         if (addrOp != null)
                         {
@@ -174,7 +174,7 @@ namespace Reko.Scanning
                             return current;
                         }
                         return current;
-                    case RtlClass.Transfer | RtlClass.Conditional:
+                    case InstrClass.Transfer | InstrClass.Conditional:
                         FallthroughToInvalid(instr);
                         addrOp = DestinationAddress(instr);
                         if (addrOp != null && program.SegmentMap.IsValidAddress(addrOp))

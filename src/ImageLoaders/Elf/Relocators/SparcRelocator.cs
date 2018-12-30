@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -121,8 +121,9 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     "SPARC ELF relocation type {0} not implemented yet.",
                     rt));
             }
-            var relR = program.CreateImageReader(addr);
-            var relW = program.CreateImageWriter(addr);
+            var arch = program.Architecture;
+            var relR = program.CreateImageReader(arch, addr);
+            var relW = program.CreateImageWriter(arch, addr);
 
             var w = relR.ReadBeUInt32();
             w += ((uint)(B + S + A + P) >> sh) & mask;

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -425,6 +425,8 @@ namespace Reko.Core.Serialization
                     .Where(ij => ij != null)
                     .ToSortedList(k => k.Item1, v => v.Item2);
             }
+            program.User.ShowAddressesInDisassembly = sUser.ShowAddressesInDisassembly;
+            program.User.ShowBytesInDisassembly = sUser.ShowBytesInDisassembly;
         }
 
         private Annotation LoadAnnotation(Annotation_v3 annotation)

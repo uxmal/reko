@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -110,9 +110,29 @@ namespace Reko.Core
         /// Creates an <see cref="ImageWriter" /> with the preferred 
         /// endianness of the processor.
         /// </summary>
-        /// <returns>An image writer of the appropriate endianness.</returns>
+        /// <returns>An <see cref="ImageWriter"/> of the appropriate endianness.</returns>
         ImageWriter CreateImageWriter();
+
+        /// <summary>
+        /// Creates an <see cref="ImageWriter"/> with the preferred endianness
+        /// of the processor, which will write into the given <paramref name="memoryArea"/>
+        /// starting at address <paramref name="addr"/>.
+        /// </summary>
+        /// <param name="memoryArea">Memory area to write to.</param>
+        /// <param name="addr">Address to start writing at.</param>
+        /// <returns>An <see cref="ImageWriter"/> of the appropriate endianness.</returns>
         ImageWriter CreateImageWriter(MemoryArea memoryArea, Address addr);
+
+        /// <summary>
+        /// Reads a value from memory, respecting the processor's endianness. Use this
+        /// instead of ImageWriter when random access of memory is requored.
+        /// </summary>
+        /// <param name="mem">Memory area to read from</param>
+        /// <param name="addr">Address to read from</param>
+        /// <param name="dt">Data type of the data to be read</param>
+        /// <param name="value">The value read from memory, if successful.</param>
+        /// <returns>True if the read succeeded, false if the address was out of range.</returns>
+        bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value);
 
         /// <summary>
         /// Creates a comparer that compares instructions for equality. 
@@ -136,16 +156,38 @@ namespace Reko.Core
             CallSite site,
             Expression callee);
 
+        /// <summary>
+        /// Given a register <paramref name="reg"/>, retrieves all architectural
+        /// registers that overlap all or part of it.
+        /// </summary>
+        /// <param name="reg">Register whose alias we're interested in.</param>
+        /// <returns>A sequence of aliases.</returns>
         IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg);
 
         /// <summary>
-        /// Returns a list of all the available opcodes.
+        /// Returns a list of all the available opcodes as strings.
         /// </summary>
-        /// <returns></returns>
         SortedList<string, int> GetOpcodeNames();           // Returns all the processor opcode names and their internal Reko numbers.
-        int? GetOpcodeNumber(string name);                  // Returns an internal Reko opcode for an instruction, or null if none is available.
-        RegisterStorage GetRegister(int i);                 // Returns register corresponding to number i.
-        RegisterStorage GetRegister(string name);           // Returns register whose name is 'name'
+        
+        /// <summary>
+        /// Returns an internal Reko opcode for a given instruction name, or
+        /// null if none is available.
+        /// </summary>
+        int? GetOpcodeNumber(string name);
+        
+        /// <summary>
+        /// Returns regist333er whose name is 'name'
+        /// </summary>
+        RegisterStorage GetRegister(string name);
+
+        /// <summary>
+        /// Given a register, returns any sub register occupying the 
+        /// given bit range.
+        /// </summary>
+        /// <param name="reg">Register to examine</param>
+        /// <param name="offset">Bit offset of expected subregister.</param>
+        /// <param name="width">Bit size of subregister.</param>
+        /// <returns></returns>
         RegisterStorage GetRegister(StorageDomain domain, BitRange range);  
 
         RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width);
@@ -155,7 +197,11 @@ namespace Reko.Core
         /// </summary>
         /// <param name="flags"></param>
         IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags);
-        void RemoveAliases(ISet<RegisterStorage> ids, RegisterStorage reg);  // Removes any aliases of reg from the set
+
+        /// <summary>
+        /// Given a set, removes any aliases of reg from the set.
+        /// </summary>
+        void RemoveAliases(ISet<RegisterStorage> ids, RegisterStorage reg); 
 
         /// <summary>
         /// Find the widest sub-register that covers the register reg.
@@ -165,7 +211,11 @@ namespace Reko.Core
         /// <returns></returns>
         RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> regs);
 
-        RegisterStorage[] GetRegisters();                   // Returns all registers of this architecture.
+        /// <summary>
+        /// Returns all registers of this architecture.
+        /// </summary>
+        /// <returns></returns>
+        RegisterStorage[] GetRegisters(); 
         bool TryGetRegister(string name, out RegisterStorage reg); // Attempts to find a register with name <paramref>name</paramref>
         FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf);          // Returns flag group matching the bitflags.
 
@@ -228,6 +278,7 @@ namespace Reko.Core
         RegisterStorage StackRegister { get; set;  }        // Stack pointer used by this machine.
         RegisterStorage FpuStackRegister { get; }           // FPU stack pointer used by this machine, or null if none exists.
         uint CarryFlagMask { get; }                         // Used when building large adds/subs when carry flag is used.
+        EndianServices Endianness { get; }              // Use this to handle endian-specific.
 
         /// <summary>
         /// Parses an address according to the preferred base of the 
@@ -252,16 +303,6 @@ namespace Reko.Core
         /// <param name="program">The program to postprocess.</param>
         void PostprocessProgram(Program program);
         
-        /// <summary>
-        /// Reads a value from memory, respecting the processor's endianness. Use this
-        /// instead of ImageWriter when random access of memory is requored.
-        /// </summary>
-        /// <param name="mem">Memory area to read from</param>
-        /// <param name="addr">Address to read from</param>
-        /// <param name="dt">Data type of the data to be read</param>
-        /// <param name="value">The value read from memory, if successful.</param>
-        /// <returns>True if the read succeeded, false if the address was out of range.</returns>
-        bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value);
 
         /// <summary>
         /// The dictionary contains options that were loaded from the 
@@ -306,6 +347,7 @@ namespace Reko.Core
         public PrimitiveType PointerType { get; protected set; }
         public PrimitiveType WordWidth { get; protected set; }
         public int InstructionBitSize { get; protected set; }
+        public EndianServices Endianness { get; protected set; }
 
         /// <summary>
         /// The stack register used by the architecture.
@@ -334,24 +376,22 @@ namespace Reko.Core
 
         public abstract IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader);
         public Frame CreateFrame() { return new Frame(FramePointerType); }
-        public abstract EndianImageReader CreateImageReader(MemoryArea img, Address addr);
-        public abstract EndianImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd);
-        public abstract EndianImageReader CreateImageReader(MemoryArea img, ulong off);
-        public abstract ImageWriter CreateImageWriter();
-        public abstract ImageWriter CreateImageWriter(MemoryArea img, Address addr);
+        public EndianImageReader CreateImageReader(MemoryArea img, Address addr) => this.Endianness.CreateImageReader(img, addr);
+        public EndianImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd) => Endianness.CreateImageReader(img, addrBegin, addrEnd);
+        public EndianImageReader CreateImageReader(MemoryArea img, ulong off) => Endianness.CreateImageReader(img, off);
+        public ImageWriter CreateImageWriter() => Endianness.CreateImageWriter();
+        public ImageWriter CreateImageWriter(MemoryArea img, Address addr) => Endianness.CreateImageWriter(img, addr);
+        public bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value) => Endianness.TryRead(mem, addr, dt, out value);
+
         public abstract IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm);
         public abstract ProcessorState CreateProcessorState();
         public abstract IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);
         public abstract IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host);
 
         public virtual IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg) { yield return reg; }
-        public abstract RegisterStorage GetRegister(int i);
         public abstract RegisterStorage GetRegister(string name);
 
-        public virtual RegisterStorage GetRegister(StorageDomain domain, BitRange range)
-        {
-            return GetRegister(domain - StorageDomain.Register);
-        }
+        public abstract RegisterStorage GetRegister(StorageDomain domain, BitRange range);
 
         public abstract RegisterStorage[] GetRegisters();
 
@@ -406,7 +446,7 @@ namespace Reko.Core
         /// <paramref name="width"/>.
         /// </summary>
         /// <remarks>
-        /// Most architectures not have sub-registers, and will use this 
+        /// Most architectures do not have sub-registers, and will use this 
         /// default implementation. This method is overridden for 
         /// architectures like x86 and Z80, where sub-registers <code>(ah, al, etc)</code>
         /// do exist.
@@ -417,7 +457,7 @@ namespace Reko.Core
         /// <returns></returns>
         public virtual RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
         {
-            return (offset == 0 && reg.BitSize == (ulong)width) ? reg : null;
+            return reg;
         }
 
         public virtual IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
@@ -447,7 +487,6 @@ namespace Reko.Core
         public virtual Dictionary<string, object> SaveUserOptions() { return null; }
 
         public abstract bool TryParseAddress(string txtAddr, out Address addr);
-        public abstract bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value);
     }
 
 }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -197,9 +197,8 @@ namespace Reko.Core.Serialization
         }
 
         /// <summary>
-        /// If the user has specified the storage on all
-        /// parameters, and the return value, no heed is taken of any calling 
-        /// convention.
+        /// If the user has specified the storage on all parameters, and the
+        /// return value, no heed is taken of any calling convention.
         /// </summary>
         /// <param name="ss"></param>
         /// <returns></returns>
@@ -219,16 +218,17 @@ namespace Reko.Core.Serialization
         {
             if (!string.IsNullOrEmpty(name))
                 return name;
-            var stack = storage as StackStorage;
-            if (stack != null)
-                return Frame.FormatStackAccessName(dataType, "Arg", stack.StackOffset, name);
-            var seq = storage as SequenceStorage;
-            if (seq != null)
+            switch (storage)
+            {
+            case StackStorage stack:
+                return NamingPolicy.Instance.StackArgumentName(dataType, stack.StackOffset, name);
+            case SequenceStorage seq:
                 return seq.Name;
-            var reg = storage as RegisterStorage;
-            if (reg != null)
+            case RegisterStorage reg:
                 return reg.Name;
-            throw new NotImplementedException();
+            default:
+                throw new NotImplementedException();
+            }
         }
 
         public SerializedSignature Serialize(FunctionType sig)
@@ -239,7 +239,7 @@ namespace Reko.Core.Serialization
                 ssig.ParametersValid = false;
                 return ssig;
             }
-            ArgumentSerializer argSer = new ArgumentSerializer(Architecture);
+            var argSer = new ArgumentSerializer(Architecture);
             ssig.ReturnValue = argSer.Serialize(sig.ReturnValue);
             ssig.Arguments = new Argument_v1[sig.Parameters.Length];
             for (int i = 0; i < sig.Parameters.Length; ++i)

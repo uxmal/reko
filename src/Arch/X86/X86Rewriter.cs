@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -40,18 +40,18 @@ namespace Reko.Arch.X86
     /// </summary>
     public partial class X86Rewriter : IEnumerable<RtlInstructionCluster>
     {
-        private IRewriterHost host;
-        private IntelArchitecture arch;
-        private IStorageBinder binder;
-        private EndianImageReader rdr;
-        private LookaheadEnumerator<X86Instruction> dasm;
+        private readonly IntelArchitecture arch;
+        private readonly IRewriterHost host;
+        private readonly IStorageBinder binder;
+        private readonly X86State state;
+        private readonly EndianImageReader rdr;
+        private readonly LookaheadEnumerator<X86Instruction> dasm;
         private RtlEmitter m;
         private OperandRewriter orw;
         private X86Instruction instrCur;
-        private RtlClass rtlc;
+        private InstrClass rtlc;
         private int len;
         private List<RtlInstruction> rtlInstructions;
-        private X86State state;
 
         public X86Rewriter(
             IntelArchitecture arch,
@@ -64,9 +64,9 @@ namespace Reko.Arch.X86
                 throw new ArgumentNullException("host");
             this.arch = arch;
             this.host = host;
-            this.binder = binder;
             this.state = state;
             this.rdr = rdr;
+            this.binder = binder;
             this.dasm = new LookaheadEnumerator<X86Instruction>(arch.CreateDisassemblerImpl(rdr));
         }
 
@@ -81,7 +81,7 @@ namespace Reko.Arch.X86
                 instrCur = dasm.Current;
                 var addr = instrCur.Address;
                 this.rtlInstructions = new List<RtlInstruction>();
-                this.rtlc = RtlClass.Linear;
+                this.rtlc = instrCur.InstructionClass;
                 m = new RtlEmitter(rtlInstructions);
                 orw = arch.ProcessorMode.CreateOperandRewriter(arch, m, binder, host);
                 switch (instrCur.code)
@@ -93,7 +93,7 @@ namespace Reko.Arch.X86
                         "x86 instruction '{0}' is not supported yet.",
                         instrCur.code);
                     goto case Opcode.illegal;
-                case Opcode.illegal: rtlc = RtlClass.Invalid; m.Invalid(); break;
+                case Opcode.illegal: rtlc = InstrClass.Invalid; m.Invalid(); break;
                 case Opcode.aaa: RewriteAaa(); break;
                 case Opcode.aad: RewriteAad(); break;
                 case Opcode.aam: RewriteAam(); break;
@@ -485,7 +485,7 @@ namespace Reko.Arch.X86
                 case Opcode.sysret: RewriteSysret(); break;
                 case Opcode.ucomiss: RewriteComis(PrimitiveType.Real32); break;
                 case Opcode.ucomisd: RewriteComis(PrimitiveType.Real64); break;
-                case Opcode.ud2: rtlc = RtlClass.Invalid; m.Invalid(); break;
+                case Opcode.ud2: rtlc = InstrClass.Invalid; m.Invalid(); break;
                 case Opcode.unpcklpd: RewritePackedBinop("__unpcklpd", PrimitiveType.Real64); break;
                 case Opcode.unpcklps: RewritePackedBinop("__unpcklps", PrimitiveType.Real32); break;
                 case Opcode.test: RewriteTest(); break;

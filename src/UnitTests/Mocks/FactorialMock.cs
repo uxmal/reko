@@ -39,7 +39,7 @@ namespace Reko.UnitTests.Mocks
 			BranchCc(ConditionCode.EQ, "done");
 
 			Assign(acc, SMul(acc, n));
-			Assign(n, ISub(n, Int32(1)));
+			Assign(n, ISubS(n, 1));
 			Goto("test");
 
 			Label("done");

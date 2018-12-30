@@ -5,10 +5,10 @@ VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DEF8CEB8-51B6-4D65-8F5B-35C5931E30E7}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		..\.travis.yml = ..\.travis.yml
 		..\appveyor.yml = ..\appveyor.yml
 		devnotes.txt = devnotes.txt
-		Rebracer.xml = Rebracer.xml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{5C315C78-1F97-4B16-81AA-917284969DFE}"

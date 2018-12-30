@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -44,32 +44,8 @@ namespace Reko.Core.NativeInterface
 			throw new NotImplementedException();
 		}
 
-		public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
-		{
-			throw new NotImplementedException();
-		}
 
-		public override EndianImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
-		{
-			throw new NotImplementedException();
-		}
-
-		public override EndianImageReader CreateImageReader(MemoryArea img, ulong off)
-		{
-			throw new NotImplementedException();
-		}
-
-		public override ImageWriter CreateImageWriter()
-		{
-			throw new NotImplementedException();
-		}
-
-		public override ImageWriter CreateImageWriter(MemoryArea img, Address addr)
-		{
-			throw new NotImplementedException();
-		}
-
-		public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
+        public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
 		{
 			throw new NotImplementedException();
 		}
@@ -114,7 +90,7 @@ namespace Reko.Core.NativeInterface
 			throw new NotImplementedException();
 		}
 
-		public override RegisterStorage GetRegister(int i)
+		public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
 		{
 			throw new NotImplementedException();
 		}
@@ -153,10 +129,5 @@ namespace Reko.Core.NativeInterface
 		{
 			throw new NotImplementedException();
 		}
-
-        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

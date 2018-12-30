@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -97,9 +97,9 @@ namespace Reko.UnitTests.Assemblers.x86
                 {
                     var mem = segment.MemoryArea;
                     var formatter = new TextFormatter(fut.TextWriter);
-                    dumper.DumpData(program.SegmentMap, mem.BaseAddress, mem.Length, formatter);
+                    dumper.DumpData(program.SegmentMap, program.Architecture, mem.BaseAddress, mem.Length, formatter);
                     fut.TextWriter.WriteLine();
-                    dumper.DumpAssembler(program.SegmentMap, mem.BaseAddress, mem.EndAddress, formatter);
+                    dumper.DumpAssembler(program.SegmentMap, program.Architecture, mem.BaseAddress, mem.EndAddress, formatter);
                     if (program.ImportReferences.Count > 0)
                     {
                         foreach (var de in program.ImportReferences.OrderBy(d => d.Key))
@@ -140,7 +140,7 @@ hello	endp
 			{
 				var arch = new X86ArchitectureReal("x86-real-16");
 				var d = new Dumper(program);
-				d.DumpData(program.SegmentMap, segment.Address, segment.ContentSize, new TextFormatter(fut.TextWriter));
+				d.DumpData(program.SegmentMap, arch, segment.Address, segment.ContentSize, new TextFormatter(fut.TextWriter));
 				fut.AssertFilesEqual();
 			}
 		}
@@ -248,8 +248,9 @@ foo		endp
 			using (FileUnitTester fut = new FileUnitTester("Intel/AsCarryInstructions.txt"))
 			{
 				Dumper dump = new Dumper(program);
+                var arch = program.Architecture;
                 var mem = program.SegmentMap.Segments.Values.First().MemoryArea;
-				dump.DumpData(program.SegmentMap, mem.BaseAddress, mem.Length, new TextFormatter(fut.TextWriter));
+				dump.DumpData(program.SegmentMap, arch, mem.BaseAddress, mem.Length, new TextFormatter(fut.TextWriter));
 				fut.AssertFilesEqual();
 			}
 		}
@@ -383,11 +384,11 @@ foo		endp
 				Dumper dump = new Dumper(program);
                 var mem = program.SegmentMap.Segments.Values.First().MemoryArea;
                 var formatter = new TextFormatter(fut.TextWriter);
-				dump.DumpData(program.SegmentMap, mem.BaseAddress, mem.Bytes.Length, formatter);
+				dump.DumpData(program.SegmentMap, program.Architecture, mem.BaseAddress, mem.Bytes.Length, formatter);
 				fut.TextWriter.WriteLine();
 				dump.ShowAddresses = true;
 				dump.ShowCodeBytes = true;
-				dump.DumpAssembler(program.SegmentMap, mem.BaseAddress, mem.EndAddress, formatter);
+				dump.DumpAssembler(program.SegmentMap, program.Architecture, mem.BaseAddress, mem.EndAddress, formatter);
 
 				fut.AssertFilesEqual();
 			}	

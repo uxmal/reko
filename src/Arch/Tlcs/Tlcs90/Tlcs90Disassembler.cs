@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -58,14 +58,14 @@ namespace Reko.Arch.Tlcs.Tlcs90
 
             var instr = Oprecs[b].Decode(b, this);
             if (instr == null)
-                instr = new Tlcs90Instruction { Opcode = Opcode.invalid };
+                instr = new Tlcs90Instruction { Opcode = Opcode.invalid, iclass = InstrClass.Invalid };
             var len = rdr.Address - addr;
             instr.Address = addr;
             instr.Length = (int) len;
             return instr;
         }
 
-        private Tlcs90Instruction DecodeOperands(byte b, Opcode opcode, string format)
+        private Tlcs90Instruction DecodeOperands(byte b, Opcode opcode, InstrClass iclass,  string format)
         {
             int op = 0;
             var ops = new MachineOperand[2];
@@ -188,6 +188,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             return new Tlcs90Instruction
             {
                 Opcode = opcode,
+                iclass = iclass,
                 op1 = op > 0 ? ops[0] : null,
                 op2 = op > 1 ? ops[1] : null,
             };
@@ -202,29 +203,31 @@ namespace Reko.Arch.Tlcs.Tlcs90
             throw new NotImplementedException();
         }
 
-        private abstract class OpRecBase
+        private abstract class Decoder
         {
             public abstract Tlcs90Instruction Decode(byte b, Tlcs90Disassembler dasm);
         }
 
-        private class OpRec : OpRecBase
+        private class OpRec : Decoder
         {
             private Opcode opcode;
+            private InstrClass iclass;
             private string format;
 
-            public OpRec(Opcode opcode, string format)
+            public OpRec(Opcode opcode, string format, InstrClass iclass = InstrClass.Linear)
             {
                 this.opcode = opcode;
+                this.iclass = iclass;
                 this.format = format;
             }
 
             public override Tlcs90Instruction Decode(byte b, Tlcs90Disassembler dasm)
             {
-                return dasm.DecodeOperands(b, opcode, format);
+                return dasm.DecodeOperands(b, opcode, iclass, format);
             }
         }
 
-        private class RegOpRec : OpRecBase
+        private class RegOpRec : Decoder
         {
             private RegisterStorage regByte;
             private RegisterStorage regWord;
@@ -246,7 +249,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             }
         }
 
-        private class DstOpRec : OpRecBase
+        private class DstOpRec : Decoder
         {
             private string format;
 
@@ -344,7 +347,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             }
         }
 
-        private class SrcOpRec : OpRecBase
+        private class SrcOpRec : Decoder
         {
             private string format;
 
@@ -431,17 +434,31 @@ namespace Reko.Arch.Tlcs.Tlcs90
             }
         }
 
-        private static OpRecBase[] oprecs = new OpRecBase[]
+        private class InvalidDecoder : Decoder
+        {
+            public override Tlcs90Instruction Decode(byte b, Tlcs90Disassembler dasm)
+            {
+                return new Tlcs90Instruction
+                {
+                    Opcode = Opcode.invalid,
+                    iclass = InstrClass.Invalid
+                };
+            }
+        }
+
+        private static Decoder invalid = new InvalidDecoder();
+
+        private static Decoder[] oprecs = new Decoder[]
         {
             // 00
-            new OpRec(Opcode.nop, ""),
-            new OpRec(Opcode.halt, ""),
+            new OpRec(Opcode.nop, "", InstrClass.Linear|InstrClass.Padding|InstrClass.Zero),
+            new OpRec(Opcode.halt, "", InstrClass.Terminates),
             new OpRec(Opcode.di, ""),
             new OpRec(Opcode.ei, ""),
 
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, "", InstrClass.Invalid),
+            new OpRec(Opcode.invalid, "", InstrClass.Invalid),
+            new OpRec(Opcode.invalid, "", InstrClass.Invalid),
             new OpRec(Opcode.incx, "mw"),
 
             new OpRec(Opcode.ex, "D,H"),
@@ -465,15 +482,15 @@ namespace Reko.Arch.Tlcs.Tlcs90
             new OpRec(Opcode.add, "S,Iw"),
             new OpRec(Opcode.ldar, "H,jw"),
 
-            new OpRec(Opcode.djnz, "jb"),
-            new OpRec(Opcode.djnz, "B,jb"),
-            new OpRec(Opcode.jp, "Jw"),
-            new OpRec(Opcode.jr, "jw"),
+            new OpRec(Opcode.djnz, "jb" , InstrClass.ConditionalTransfer),
+            new OpRec(Opcode.djnz, "B,jb", InstrClass.ConditionalTransfer),
+            new OpRec(Opcode.jp, "Jw", InstrClass.Transfer),
+            new OpRec(Opcode.jr, "jw", InstrClass.Transfer),
 
-            new OpRec(Opcode.call, "Jw"),
-            new OpRec(Opcode.callr, "jw"),
-            new OpRec(Opcode.ret, ""),
-            new OpRec(Opcode.reti, ""), 
+            new OpRec(Opcode.call, "Jw", InstrClass.Transfer|InstrClass.Call),
+            new OpRec(Opcode.callr, "jw", InstrClass.Transfer|InstrClass.Call),
+            new OpRec(Opcode.ret, "", InstrClass.Transfer),
+            new OpRec(Opcode.reti, "", InstrClass.Transfer), 
 
             // 20
             new OpRec(Opcode.ld, "a,r"),
@@ -510,7 +527,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             new OpRec(Opcode.ld, "B,Iw"),
             new OpRec(Opcode.ld, "D,Iw"),
             new OpRec(Opcode.ld, "H,Iw"),
-            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, "", InstrClass.Invalid),
 
             new OpRec(Opcode.ld, "X,Iw"),
             new OpRec(Opcode.ld, "Y,Iw"),
@@ -521,7 +538,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             new OpRec(Opcode.ld, "H,B"),
             new OpRec(Opcode.ld, "H,D"),
             new OpRec(Opcode.ld, "H,H"),    // lolwut
-            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, "", InstrClass.Invalid),
 
             new OpRec(Opcode.ld, "H,X"),
             new OpRec(Opcode.ld, "H,Y"),
@@ -531,7 +548,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             new OpRec(Opcode.ld, "B,H"),
             new OpRec(Opcode.ld, "D,H"),
             new OpRec(Opcode.ld, "H,H"),    // lolwut
-            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, "", InstrClass.Invalid),
 
             new OpRec(Opcode.ld, "X,H"),
             new OpRec(Opcode.ld, "Y,H"),
@@ -542,22 +559,22 @@ namespace Reko.Arch.Tlcs.Tlcs90
             new OpRec(Opcode.push, "B"),
             new OpRec(Opcode.push, "D"),
             new OpRec(Opcode.push, "H"),
-            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, "", InstrClass.Invalid),
 
             new OpRec(Opcode.push, "X"),
             new OpRec(Opcode.push, "Y"),
             new OpRec(Opcode.push, "A"),
-            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, "", InstrClass.Invalid),
 
             new OpRec(Opcode.pop, "B"),
             new OpRec(Opcode.pop, "D"),
             new OpRec(Opcode.pop, "H"),
-            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, "", InstrClass.Invalid),
 
             new OpRec(Opcode.pop, "X"),
             new OpRec(Opcode.pop, "Y"),
             new OpRec(Opcode.pop, "A"),
-            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, "", InstrClass.Invalid),
 
             // 60
             new OpRec(Opcode.add, "a,mb"),
@@ -626,7 +643,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             new OpRec(Opcode.inc, "B"),
             new OpRec(Opcode.inc, "D"),
             new OpRec(Opcode.inc, "H"),
-            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, "", InstrClass.Invalid),
 
             new OpRec(Opcode.inc, "X"),
             new OpRec(Opcode.inc, "Y"),
@@ -636,7 +653,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             new OpRec(Opcode.dec, "B"),
             new OpRec(Opcode.dec, "D"),
             new OpRec(Opcode.dec, "H"),
-            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, "", InstrClass.Invalid),
 
             new OpRec(Opcode.dec, "X"),
             new OpRec(Opcode.dec, "Y"),
@@ -686,46 +703,46 @@ namespace Reko.Arch.Tlcs.Tlcs90
             new OpRec(Opcode.set, "i,mb"),
 
             // C0
-            new OpRec(Opcode.jr, "c,jb"),
-            new OpRec(Opcode.jr, "c,jb"),
-            new OpRec(Opcode.jr, "c,jb"),
-            new OpRec(Opcode.jr, "c,jb"),
+            new OpRec(Opcode.jr, "c,jb", InstrClass.ConditionalTransfer),
+            new OpRec(Opcode.jr, "c,jb", InstrClass.ConditionalTransfer),
+            new OpRec(Opcode.jr, "c,jb", InstrClass.ConditionalTransfer),
+            new OpRec(Opcode.jr, "c,jb", InstrClass.ConditionalTransfer),
 
-            new OpRec(Opcode.jr, "c,jb"),
-            new OpRec(Opcode.jr, "c,jb"),
-            new OpRec(Opcode.jr, "c,jb"),
-            new OpRec(Opcode.jr, "c,jb"),
+            new OpRec(Opcode.jr, "c,jb", InstrClass.ConditionalTransfer),
+            new OpRec(Opcode.jr, "c,jb", InstrClass.ConditionalTransfer),
+            new OpRec(Opcode.jr, "c,jb", InstrClass.ConditionalTransfer),
+            new OpRec(Opcode.jr, "c,jb", InstrClass.ConditionalTransfer),
 
-            new OpRec(Opcode.jr, "jb"),
-            new OpRec(Opcode.jr, "c,jb"),
-            new OpRec(Opcode.jr, "c,jb"),
-            new OpRec(Opcode.jr, "c,jb"),
+            new OpRec(Opcode.jr, "jb", InstrClass.Transfer),
+            new OpRec(Opcode.jr, "c,jb", InstrClass.ConditionalTransfer),
+            new OpRec(Opcode.jr, "c,jb", InstrClass.ConditionalTransfer),
+            new OpRec(Opcode.jr, "c,jb", InstrClass.ConditionalTransfer),
 
-            new OpRec(Opcode.jr, "c,jb"),
-            new OpRec(Opcode.jr, "c,jb"),
-            new OpRec(Opcode.jr, "c,jb"),
-            new OpRec(Opcode.jr, "c,jb"),
+            new OpRec(Opcode.jr, "c,jb", InstrClass.ConditionalTransfer),
+            new OpRec(Opcode.jr, "c,jb", InstrClass.ConditionalTransfer),
+            new OpRec(Opcode.jr, "c,jb", InstrClass.ConditionalTransfer),
+            new OpRec(Opcode.jr, "c,jb", InstrClass.ConditionalTransfer),
 
             // D0
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, "", InstrClass.Invalid),
+            new OpRec(Opcode.invalid, "", InstrClass.Invalid),
+            new OpRec(Opcode.invalid, "", InstrClass.Invalid),
+            new OpRec(Opcode.invalid, "", InstrClass.Invalid),
 
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, "", InstrClass.Invalid),
+            new OpRec(Opcode.invalid, "", InstrClass.Invalid),
+            new OpRec(Opcode.invalid, "", InstrClass.Invalid),
+            new OpRec(Opcode.invalid, "", InstrClass.Invalid),
 
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, "", InstrClass.Invalid),
+            new OpRec(Opcode.invalid, "", InstrClass.Invalid),
+            new OpRec(Opcode.invalid, "", InstrClass.Invalid),
+            new OpRec(Opcode.invalid, "", InstrClass.Invalid),
 
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, "", InstrClass.Invalid),
+            new OpRec(Opcode.invalid, "", InstrClass.Invalid),
+            new OpRec(Opcode.invalid, "", InstrClass.Invalid),
+            new OpRec(Opcode.invalid, "", InstrClass.Invalid),
 
             // E0
             new SrcOpRec("B"),
@@ -767,11 +784,11 @@ namespace Reko.Arch.Tlcs.Tlcs90
             new RegOpRec(Registers.h, Registers.ix),
             new RegOpRec(Registers.l, Registers.iy),
             new RegOpRec(Registers.a, Registers.sp),
-            new OpRec(Opcode.swi, ""), 
+            new OpRec(Opcode.swi, "", InstrClass.Transfer|InstrClass.Call), 
         };
         private Address addr;
 
-        private static OpRecBase[] Oprecs
+        private static Decoder[] Oprecs
         {
             get
             {

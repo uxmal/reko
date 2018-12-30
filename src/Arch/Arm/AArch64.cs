@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -45,6 +45,7 @@ namespace Reko.Arch.Arm
 
         public Arm64Architecture(string archId) : base(archId)
         {
+            this.Endianness = EndianServices.Little;
             this.InstructionBitSize = 32;
             this.FramePointerType = PrimitiveType.Ptr64;
             this.PointerType = PrimitiveType.Ptr64;
@@ -134,31 +135,6 @@ namespace Reko.Arch.Arm
             throw new NotImplementedException();
         }
 
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addr)
-        {
-            return new LeImageReader(image, addr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
-        {
-            return new LeImageReader(image, addrBegin, addrEnd);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, ulong offset)
-        {
-            return new LeImageReader(image, offset);
-        }
-
-        public override ImageWriter CreateImageWriter()
-        {
-            return new LeImageWriter();
-        }
-
-        public override ImageWriter CreateImageWriter(MemoryArea mem, Address addr)
-        {
-            return new LeImageWriter(mem, addr);
-        }
-
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
             return null;
@@ -184,7 +160,7 @@ namespace Reko.Arch.Arm
             return null;
         }
 
-        public override RegisterStorage GetRegister(int i)
+        public override RegisterStorage GetRegister(StorageDomain dom, BitRange range)
         {
             throw new NotImplementedException();
         }
@@ -258,11 +234,6 @@ namespace Reko.Arch.Arm
         public override bool TryParseAddress(string txtAddress, out Address addr)
         {
             return Address.TryParse64(txtAddress, out addr);
-        }
-
-        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
-        {
-            return mem.TryReadLe(addr, dt, out value);
         }
 
         [DllImport("ArmNative", CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl, EntryPoint = "CreateNativeArchitecture")]

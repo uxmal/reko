@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2018 Christian Hostelet.
  * inspired by work from:
@@ -50,6 +50,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         public PICArchitecture(string archId) : base(archId)
         {
             flagGroups = new Dictionary<uint, FlagGroupStorage>();
+            Endianness = EndianServices.Little;
             FramePointerType = PrimitiveType.Offset16;
             InstructionBitSize = 8;
             PointerType = PrimitiveType.Ptr32;
@@ -146,6 +147,16 @@ namespace Reko.Arch.MicrochipPIC.Common
             return GetFlagGroup(PICRegisters.STATUS, (uint)grf);
         }
 
+        public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
+        {
+            var grf = flags.FlagGroupBits;
+            if ((grf & (uint) FlagM.C) != 0) yield return GetFlagGroup(flags.FlagRegister, (uint)FlagM.C);
+            if ((grf & (uint) FlagM.Z) != 0) yield return GetFlagGroup(flags.FlagRegister, (uint)FlagM.Z);
+            if ((grf & (uint) FlagM.DC) != 0) yield return GetFlagGroup(flags.FlagRegister, (uint)FlagM.DC);
+            if ((grf & (uint) FlagM.OV) != 0) yield return GetFlagGroup(flags.FlagRegister, (uint)FlagM.OV);
+            if ((grf & (uint) FlagM.N) != 0) yield return GetFlagGroup(flags.FlagRegister, (uint)FlagM.N);
+        }
+
         public override string GrfToString(RegisterStorage flagRegister, string prefix, uint grpFlags)
         {
             var sb = new StringBuilder();
@@ -172,8 +183,8 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// The register instance or null.
         /// </returns>
-        public override RegisterStorage GetRegister(int i)
-            => PICRegisters.PeekRegisterByIdx(i);
+        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
+            => PICRegisters.PeekRegisterByIdx(domain - StorageDomain.Register);
 
         /// <summary>
         /// Gets a register given its name.
@@ -305,21 +316,6 @@ namespace Reko.Arch.MicrochipPIC.Common
             return dict;
         }
 
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addr)
-            => new LeImageReader(image, addr);
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
-            => new LeImageReader(image, addrBegin, addrEnd);
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, ulong offset)
-            => new LeImageReader(image, offset);
-
-        public override ImageWriter CreateImageWriter()
-            => new LeImageWriter();
-
-        public override ImageWriter CreateImageWriter(MemoryArea mem, Address addr)
-            => new LeImageWriter(mem, addr);
-
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
             => ProcessorModel.CreateRewriter(this, ProcessorModel.CreateDisassembler(this, rdr), (PICProcessorState)state, frame, host);
 
@@ -343,9 +339,6 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public override bool TryParseAddress(string txtAddress, out Address addr)
             => Address.TryParse32(txtAddress, out addr);
-
-        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
-            => mem.TryReadLe(addr, dt, out value);
 
         public override void PostprocessProgram(Program program)
             => ProcessorModel.PostprocessProgram(program, this);

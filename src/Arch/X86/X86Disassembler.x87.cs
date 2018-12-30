@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -18,10 +18,8 @@
  */
 #endregion
 
+using Reko.Core;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
 
 namespace Reko.Arch.X86
 {
@@ -131,12 +129,12 @@ namespace Reko.Arch.X86
             //  F2h arctangent(ST0)
             case 0xF4:
                 //  F4h ST0 = ln(ST0)
-                return new X86Instruction(Opcode.BOR_ln, dataWidth, addressWidth);
+                return new X86Instruction(Opcode.BOR_ln, InstrClass.Linear, dataWidth, addressWidth);
             // F6h    ST0 = log2(ST0)
             //  F8h ST0 = log10(ST0)
             case 0xFA:
                 // FAh    ST0 = e** ST0
-                return new X86Instruction(Opcode.BOR_exp, dataWidth, addressWidth);
+                return new X86Instruction(Opcode.BOR_exp, InstrClass.Linear, dataWidth, addressWidth);
                 //  FCh ST0 = 2 * *ST0
                 // FEh    ST0 = 10**ST0
             }
@@ -144,7 +142,7 @@ namespace Reko.Arch.X86
 
         private static OpRec[] CreateFpuOprecs()
         {
-            return new SingleByteOpRec[]  
+            return new OpRec[]  
 			{
 				// D8 /////////////////////////
 
@@ -261,32 +259,32 @@ namespace Reko.Arch.X86
 						
 				// D9 D0
 				new SingleByteOpRec(Opcode.fnop, ""),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
 						
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
 						
 				// E0
 				new SingleByteOpRec(Opcode.fchs),
 				new SingleByteOpRec(Opcode.fabs, ""),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				s_invalid,
+				s_invalid,
 				new SingleByteOpRec(Opcode.ftst),
 				new SingleByteOpRec(Opcode.fxam),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				s_invalid,
+				s_invalid,
 						
 				new SingleByteOpRec(Opcode.fld1),
 				new SingleByteOpRec(Opcode.fldl2t, ""),
@@ -295,7 +293,7 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.fldlg2, ""),
 				new SingleByteOpRec(Opcode.fldln2),
 				new SingleByteOpRec(Opcode.fldz),
-				new SingleByteOpRec(Opcode.illegal),
+				s_invalid,
 						
 				// D9 F0
 				new SingleByteOpRec(Opcode.f2xm1, "F,f"),
@@ -367,41 +365,41 @@ namespace Reko.Arch.X86
                 new SingleByteOpRec(Opcode.fcmovu, "f,F"),
 
                 // DA E0
-                new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
+                s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
 
-				new SingleByteOpRec(Opcode.illegal), 
+				s_invalid, 
 				new SingleByteOpRec(Opcode.fucompp), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
 
 				// DB ///////////////////////////
 				
@@ -409,9 +407,9 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.fisttp, "Md"),
 				new SingleByteOpRec(Opcode.fist, "Md"),
 				new SingleByteOpRec(Opcode.fistp, "Md"),
-				new SingleByteOpRec(Opcode.illegal),
+				s_invalid,
 				new SingleByteOpRec(Opcode.fld, "Mh"),
-				new SingleByteOpRec(Opcode.illegal),
+				s_invalid,
 				new SingleByteOpRec(Opcode.fstp, "Mh"),
 						
 				// DB C0, Conditional moves.
@@ -453,14 +451,14 @@ namespace Reko.Arch.X86
                 new SingleByteOpRec(Opcode.fcmovnu, "f,F"),
 
                 // DB E0
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
+				s_invalid, 
+				s_invalid, 
 				new SingleByteOpRec(Opcode.fclex), 
 				new SingleByteOpRec(Opcode.fninit), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
 
 				new SingleByteOpRec(Opcode.fucomi, "f,F"), 
 				new SingleByteOpRec(Opcode.fucomi, "f,F"), 
@@ -472,23 +470,23 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.fucomi, "f,F"), 
 
                 // DB F0
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
-				new SingleByteOpRec(Opcode.illegal), 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
+				s_invalid, 
 					
 				// DC ////////////////////
 
@@ -582,7 +580,7 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.fst, "Mg"),
 				new SingleByteOpRec(Opcode.fstp, "Mg"),
 				new SingleByteOpRec(Opcode.frstor, "Mw"),
-				new SingleByteOpRec(Opcode.illegal),
+				s_invalid,
 				new SingleByteOpRec(Opcode.fsave, "Mw"),
 				new SingleByteOpRec(Opcode.fstsw, "Mw"),
 						
@@ -597,14 +595,14 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.ffree, "F"),
 				new SingleByteOpRec(Opcode.ffree, "F"),
 						
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
 
 				// DD D0
 				new SingleByteOpRec(Opcode.fst, "F"),
@@ -645,23 +643,23 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.fucomp, "F"),
 						
 				// DD F0
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
 						
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
 						
 				// DE //////////////////////////
 
@@ -694,23 +692,23 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.fmulp, "F,f"),
 						
                 // DE D0
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
 						
-				new SingleByteOpRec(Opcode.illegal),
+				s_invalid,
 				new SingleByteOpRec(Opcode.fcompp),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
 
 				// DE E0	
 				new SingleByteOpRec(Opcode.fsubrp, "F,f"),
@@ -762,52 +760,52 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.fistp, "Mq"),
 
 				// DF C0
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
 						
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
 						
 				// DF D0
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
 						
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
 						
 				// DF E0
 				new SingleByteOpRec(Opcode.fstsw, "aw"),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
 
                 new SingleByteOpRec(Opcode.fucomip, "f,F"),
                 new SingleByteOpRec(Opcode.fucomip, "f,F"),
@@ -828,14 +826,14 @@ namespace Reko.Arch.X86
                 new SingleByteOpRec(Opcode.fcomip, "f,F"),
                 new SingleByteOpRec(Opcode.fcomip, "f,F"),
 
-                new SingleByteOpRec(Opcode.illegal),
-                new SingleByteOpRec(Opcode.illegal),
-                new SingleByteOpRec(Opcode.illegal),
-                new SingleByteOpRec(Opcode.illegal),
-                new SingleByteOpRec(Opcode.illegal),
-                new SingleByteOpRec(Opcode.illegal),
-                new SingleByteOpRec(Opcode.illegal),
-                new SingleByteOpRec(Opcode.illegal),
+                s_invalid,
+                s_invalid,
+                s_invalid,
+                s_invalid,
+                s_invalid,
+                s_invalid,
+                s_invalid,
+                s_invalid,
             };
         }
     }

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
@@ -29,25 +30,15 @@ namespace Reko.Arch.Tlcs.Tlcs900
 {
     public class Tlcs900Instruction : MachineInstruction
     {
-        public override InstructionClass InstructionClass
-        {
-            get { return InstructionClass.Linear; }
-        }
-
         public Opcode Opcode;
+        public InstrClass iclass;
         public MachineOperand op1;
         public MachineOperand op2;
         public MachineOperand op3;
 
-        public override bool IsValid 
-        {
-            get { return Opcode != Opcode.invalid; }
-        }
+        public override int OpcodeAsInteger => (int) Opcode;
 
-        public override int OpcodeAsInteger
-        {
-            get { return (int)Opcode; }
-        }
+        public override InstrClass InstructionClass => iclass;
 
         public override MachineOperand GetOperand(int i)
         {

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -55,11 +55,6 @@ namespace Reko.UnitTests
         // branch. Before merging back into "master", these must all be 
         // running again.
         public const string AnalysisDevelopment = "AnalysisDevelopment";
-
-        // Tests that are currently failing in the "explicit-x87-stack"
-        // branch. Before merging back into "master", these must all be 
-        // running again.
-        public const string ExplicitX87Stack = "ExplicitX87Stack";
 
         // Tests that may fail due to work in progress
         public const string WorkInProgress = "WIP";

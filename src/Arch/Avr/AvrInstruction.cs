@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -18,33 +18,21 @@
  */
 #endregion
 
-using System;
+using Reko.Core;
 using Reko.Core.Machine;
+using System;
 
 namespace Reko.Arch.Avr
 {
     public class AvrInstruction : MachineInstruction
     {
         public Opcode opcode;
+        public InstrClass iclass;
         public MachineOperand[] operands;
 
-        public override InstructionClass InstructionClass
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public override InstrClass InstructionClass => iclass;
 
-        public override bool IsValid
-        {
-            get { return opcode != Opcode.invalid; }
-        }
-
-        public override int OpcodeAsInteger
-        {
-            get { return (int)opcode; }
-        }
+        public override int OpcodeAsInteger => (int)opcode;
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {

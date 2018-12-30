@@ -1,32 +1,32 @@
 fp:fp
 r63_2: orig: r63
 r0_3: orig: r0
-    def:  r0_3 = PHI(r0, r0_14, r0_8)
+    def:  r0_3 = PHI((r0, l1), (r0_14, l2), (r0_8, l3))
     uses: r1_5 = Mem4[r0_3:byte]
           r0_6 = r0_3 + 0x00000001
 Mem4: orig: Mem0
-    def:  Mem4 = PHI(Mem0, Mem15, Mem9)
+    def:  Mem4 = PHI((Mem0, l1), (Mem15, l2), (Mem9, l3))
     uses: r1_5 = Mem4[r0_3:byte]
-          Mem9[0x33333330:word32] = Mem4[r0_6:byte]
           Mem12[0x33333330:word32] = Mem4[r0_6:byte]
+          Mem9[0x33333330:word32] = Mem4[r0_6:byte]
 r1_5: orig: r1
     def:  r1_5 = Mem4[r0_3:byte]
     uses: branch r1_5 != 1 not1
           branch r1_5 != 2 done
 r0_6: orig: r0
     def:  r0_6 = r0_3 + 0x00000001
-    uses: Mem9[0x33333330:word32] = Mem4[r0_6:byte]
-          r0_8 = r0_6 + 0x00000001
+    uses: r0_8 = r0_6 + 0x00000001
+          r0_14 = r0_6 + 0x00000002
           Mem12[0x33333330:word32] = Mem4[r0_6:byte]
           Mem15[0x33333331:word32] = Mem12[r0_6 + 0x00000001:byte]
-          r0_14 = r0_6 + 0x00000002
+          Mem9[0x33333330:word32] = Mem4[r0_6:byte]
 r1_7: orig: r1
 r0_8: orig: r0
     def:  r0_8 = r0_6 + 0x00000001
-    uses: r0_3 = PHI(r0, r0_14, r0_8)
+    uses: r0_3 = PHI((r0, l1), (r0_14, l2), (r0_8, l3))
 Mem9: orig: Mem0
     def:  Mem9[0x33333330:word32] = Mem4[r0_6:byte]
-    uses: Mem4 = PHI(Mem0, Mem15, Mem9)
+    uses: Mem4 = PHI((Mem0, l1), (Mem15, l2), (Mem9, l3))
 r1_10: orig: r1
 r0_11: orig: r0
 Mem12: orig: Mem0
@@ -35,16 +35,16 @@ Mem12: orig: Mem0
 r1_13: orig: r1
 r0_14: orig: r0
     def:  r0_14 = r0_6 + 0x00000002
-    uses: r0_3 = PHI(r0, r0_14, r0_8)
+    uses: r0_3 = PHI((r0, l1), (r0_14, l2), (r0_8, l3))
 Mem15: orig: Mem0
     def:  Mem15[0x33333331:word32] = Mem12[r0_6 + 0x00000001:byte]
-    uses: Mem4 = PHI(Mem0, Mem15, Mem9)
+    uses: Mem4 = PHI((Mem0, l1), (Mem15, l2), (Mem9, l3))
 r0:r0
     def:  def r0
-    uses: r0_3 = PHI(r0, r0_14, r0_8)
+    uses: r0_3 = PHI((r0, l1), (r0_14, l2), (r0_8, l3))
 Mem0:Mem
     def:  def Mem0
-    uses: Mem4 = PHI(Mem0, Mem15, Mem9)
+    uses: Mem4 = PHI((Mem0, l1), (Mem15, l2), (Mem9, l3))
 // ManyIncrements
 // Return size: 0
 define ManyIncrements
@@ -70,8 +70,8 @@ l3:
 	r0_8 = r0_6 + 0x00000001
 	// succ:  loopTop
 loopTop:
-	Mem4 = PHI(Mem0, Mem15, Mem9)
-	r0_3 = PHI(r0, r0_14, r0_8)
+	Mem4 = PHI((Mem0, l1), (Mem15, l2), (Mem9, l3))
+	r0_3 = PHI((r0, l1), (r0_14, l2), (r0_8, l3))
 	r1_5 = Mem4[r0_3:byte]
 	r0_6 = r0_3 + 0x00000001
 	branch r1_5 != 1 not1

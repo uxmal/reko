@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,7 +42,12 @@ namespace Reko.Core.Operators
 		{
 			return " < ";
 		}
-	}
+
+        public override ConditionalOperator Transpose()
+        {
+            return Operator.Gt;
+        }
+    }
 
 	public class GtOperator : SignedIntOperator
 	{
@@ -58,7 +63,12 @@ namespace Reko.Core.Operators
 		{
 			return " > ";
 		}
-	}
+
+        public override ConditionalOperator Transpose()
+        {
+            return Operator.Lt;
+        }
+    }
 
 	public class LeOperator : SignedIntOperator
 	{
@@ -74,7 +84,12 @@ namespace Reko.Core.Operators
 		{
 			return " <= ";
 		}
-	}
+
+        public override ConditionalOperator Transpose()
+        {
+            return Operator.Ge;
+        }
+    }
 
 	public class GeOperator : SignedIntOperator
 	{
@@ -90,5 +105,10 @@ namespace Reko.Core.Operators
 		{
 			return " >= ";
 		}
-	}
+
+        public override ConditionalOperator Transpose()
+        {
+            return Operator.Le;
+        }
+    }
 }

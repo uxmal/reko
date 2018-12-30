@@ -1,4 +1,4 @@
-﻿using Reko.Core;
+using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Rtl;
 using System;
@@ -13,7 +13,7 @@ namespace Reko.Arch.zSeries
     {
         private void RewriteBasr()
         {
-            this.rtlc = RtlClass.Transfer | RtlClass.Call;
+            this.rtlc = InstrClass.Transfer | InstrClass.Call;
             var lr = Reg(instr.Ops[0]);
             m.Assign(lr, instr.Address + instr.Length);
             var dst = Reg(instr.Ops[1]);
@@ -22,15 +22,15 @@ namespace Reko.Arch.zSeries
 
         private void RewriteBr()
         {
-            this.rtlc = RtlClass.Transfer;
+            this.rtlc = InstrClass.Transfer;
             var dst = Reg(instr.Ops[0]);
             m.Goto(dst);
         }
 
         private void RewriteBranch(ConditionCode condCode)
         {
-            this.rtlc = RtlClass.ConditionalTransfer;
-            this.rtlc = RtlClass.ConditionalTransfer;
+            this.rtlc = InstrClass.ConditionalTransfer;
+            this.rtlc = InstrClass.ConditionalTransfer;
             var dst = Reg(instr.Ops[0]);
             var cc = binder.EnsureFlagGroup(Registers.CC);
             m.BranchInMiddleOfInstruction(m.Test(condCode, cc).Invert(), instr.Address + instr.Length, rtlc);
@@ -39,7 +39,7 @@ namespace Reko.Arch.zSeries
 
         private void RewriteBrasl()
         {
-            this.rtlc = RtlClass.Transfer | RtlClass.Call;
+            this.rtlc = InstrClass.Transfer | InstrClass.Call;
             var dst = Reg(instr.Ops[0]);
             m.Assign(dst, instr.Address + instr.Length);
             m.Call(Addr(instr.Ops[1]), 0);
@@ -47,9 +47,9 @@ namespace Reko.Arch.zSeries
 
         private void RewriteBrctg()
         {
-            this.rtlc = RtlClass.ConditionalTransfer;
+            this.rtlc = InstrClass.ConditionalTransfer;
             var reg = Reg(instr.Ops[0]);
-            m.Assign(reg, m.ISub(reg, Constant.Int(reg.DataType, 1)));
+            m.Assign(reg, m.ISubS(reg, 1));
             var ea = EffectiveAddress(instr.Ops[1]);
             if (ea is Address addr)
             {
@@ -64,14 +64,14 @@ namespace Reko.Arch.zSeries
 
         private void RewriteJ()
         {
-            this.rtlc = RtlClass.Transfer;
+            this.rtlc = InstrClass.Transfer;
             var dst = Addr(instr.Ops[0]);
             m.Goto(dst);
         }
 
         private void RewriteJcc(ConditionCode condCode)
         {
-            this.rtlc = RtlClass.ConditionalTransfer;
+            this.rtlc = InstrClass.ConditionalTransfer;
             var dst = Addr(instr.Ops[0]);
             var cc = binder.EnsureFlagGroup(Registers.CC);
             m.Branch(m.Test(condCode, cc), dst, rtlc);

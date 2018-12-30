@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -60,7 +60,7 @@ namespace Reko.UnitTests.Analysis
 			Assert.AreEqual("branch Mem0[i_3:byte] != 0 loop", block1.Statements[2].Instruction.ToString());
 			Assert.IsTrue(sla.IsLiveOut(i_1.Identifier, block1.Statements[2]), "i_1 should be live at the end of block 1");
 			Assert.IsTrue(sla.IsLiveOut(i_3.Identifier, block1.Statements[2]),"i_3 should be live at the end of block 1");
-			Assert.AreEqual("i_1 = PHI(i, i_3)", block1.Statements[0].Instruction.ToString());
+			Assert.AreEqual("i_1 = PHI((i, LiveLoopMock_entry), (i_3, loop))", block1.Statements[0].Instruction.ToString());
 			Assert.IsFalse(sla.IsLiveOut(i_3.Identifier, block1.Statements[0]), "i_3 is dead after the phi function");
 		}
 

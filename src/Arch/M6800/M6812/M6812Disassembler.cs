@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -77,11 +77,13 @@ namespace Reko.Arch.M6800.M6812
         public class InstrDecoder : Decoder
         {
             private readonly Opcode opcode;
+            private readonly InstrClass iclass;
             private readonly Mutator[] mutators;
 
-            public InstrDecoder(Opcode opcode, params Mutator[] mutators)
+            public InstrDecoder(Opcode opcode, InstrClass iclass, params Mutator[] mutators)
             {
                 this.opcode = opcode;
+                this.iclass = iclass;
                 this.mutators = mutators;
             }
 
@@ -95,6 +97,7 @@ namespace Reko.Arch.M6800.M6812
                 return new M6812Instruction
                 {
                     Opcode = this.opcode,
+                    iclass = iclass,
                     Operands = dasm.operands.ToArray()
                 };
             }
@@ -120,13 +123,18 @@ namespace Reko.Arch.M6800.M6812
 
         private static Decoder Instr(Opcode opcode, params Mutator [] mutators)
         {
-            return new InstrDecoder(opcode, mutators);
+            return new InstrDecoder(opcode, InstrClass.Linear, mutators);
+        }
+
+        private static Decoder Instr(Opcode opcode, InstrClass iclass, params Mutator[] mutators)
+        {
+            return new InstrDecoder(opcode, iclass, mutators);
         }
 
 
         private static Decoder Nyi(string message)
         {
-            return new InstrDecoder(Opcode.invalid, NotYetImplemented);
+            return new InstrDecoder(Opcode.invalid, InstrClass.Invalid, NotYetImplemented);
         }
 
         private static bool A(byte bInstr, M6812Disassembler dasm)
@@ -423,25 +431,25 @@ namespace Reko.Arch.M6800.M6812
                 Instr(Opcode.emaxm, XB),
                 Instr(Opcode.eminm, XB),
                 // 20
-                Instr(Opcode.lbra, QR),
+                Instr(Opcode.lbra, InstrClass.Transfer, QR),
                 Instr(Opcode.lbrn, QR),
-                Instr(Opcode.lbhi, QR),
-                Instr(Opcode.lbls, QR),
+                Instr(Opcode.lbhi, InstrClass.ConditionalTransfer, QR),
+                Instr(Opcode.lbls, InstrClass.ConditionalTransfer, QR),
 
-                Instr(Opcode.lbcc, QR),
-                Instr(Opcode.lbcs, QR),
-                Instr(Opcode.lbne, QR),
-                Instr(Opcode.lbeq, QR),
+                Instr(Opcode.lbcc, InstrClass.ConditionalTransfer, QR),
+                Instr(Opcode.lbcs, InstrClass.ConditionalTransfer, QR),
+                Instr(Opcode.lbne, InstrClass.ConditionalTransfer, QR),
+                Instr(Opcode.lbeq, InstrClass.ConditionalTransfer, QR),
 
-                Instr(Opcode.lbvc, QR),
-                Instr(Opcode.lbvs, QR),
-                Instr(Opcode.lbpl, QR),
-                Instr(Opcode.lbmi, QR),
+                Instr(Opcode.lbvc, InstrClass.ConditionalTransfer, QR),
+                Instr(Opcode.lbvs, InstrClass.ConditionalTransfer, QR),
+                Instr(Opcode.lbpl, InstrClass.ConditionalTransfer, QR),
+                Instr(Opcode.lbmi, InstrClass.ConditionalTransfer, QR),
 
-                Instr(Opcode.lbge, QR),
-                Instr(Opcode.lblt, QR),
-                Instr(Opcode.lbgt, QR),
-                Instr(Opcode.lble, QR),
+                Instr(Opcode.lbge, InstrClass.ConditionalTransfer, QR),
+                Instr(Opcode.lblt, InstrClass.ConditionalTransfer, QR),
+                Instr(Opcode.lbgt, InstrClass.ConditionalTransfer, QR),
+                Instr(Opcode.lble, InstrClass.ConditionalTransfer, QR),
                 // 30
                 Instr(Opcode.trap),
                 Instr(Opcode.trap),
@@ -702,96 +710,94 @@ namespace Reko.Arch.M6800.M6812
                 Instr(Opcode.trap),
                 Instr(Opcode.trap),
                 Instr(Opcode.trap),
-
-
             };
 
             // Bit 3 is don't care
             decodersLoops = new Decoder[256]
             {
                 // 00 
-                Instr(Opcode.dbeq, A, RPlus),
-                Instr(Opcode.dbeq, B, RPlus),
+                Instr(Opcode.dbeq, InstrClass.ConditionalTransfer, A, RPlus),
+                Instr(Opcode.dbeq, InstrClass.ConditionalTransfer, B, RPlus),
                 Instr(Opcode.trap),
                 Instr(Opcode.trap),
 
-                Instr(Opcode.dbeq, D, RPlus),
-                Instr(Opcode.dbeq, X, RPlus),
-                Instr(Opcode.dbeq, Y, RPlus),
-                Instr(Opcode.dbeq, S, RPlus),
+                Instr(Opcode.dbeq, InstrClass.ConditionalTransfer, D, RPlus),
+                Instr(Opcode.dbeq, InstrClass.ConditionalTransfer, X, RPlus),
+                Instr(Opcode.dbeq, InstrClass.ConditionalTransfer, Y, RPlus),
+                Instr(Opcode.dbeq, InstrClass.ConditionalTransfer, S, RPlus),
 
-                Instr(Opcode.dbeq, A, RPlus),
-                Instr(Opcode.dbeq, B, RPlus),
+                Instr(Opcode.dbeq, InstrClass.ConditionalTransfer, A, RPlus),
+                Instr(Opcode.dbeq, InstrClass.ConditionalTransfer, B, RPlus),
                 Instr(Opcode.trap),
                 Instr(Opcode.trap),
 
-                Instr(Opcode.dbeq, D, RPlus),
-                Instr(Opcode.dbeq, X, RPlus),
-                Instr(Opcode.dbeq, Y, RPlus),
-                Instr(Opcode.dbeq, S, RPlus),
+                Instr(Opcode.dbeq, InstrClass.ConditionalTransfer, D, RPlus),
+                Instr(Opcode.dbeq, InstrClass.ConditionalTransfer, X, RPlus),
+                Instr(Opcode.dbeq, InstrClass.ConditionalTransfer, Y, RPlus),
+                Instr(Opcode.dbeq, InstrClass.ConditionalTransfer, S, RPlus),
                 // 10 
-                Instr(Opcode.dbeq, A, RMinus),
-                Instr(Opcode.dbeq, B, RMinus),
+                Instr(Opcode.dbeq, InstrClass.ConditionalTransfer, A, RMinus),
+                Instr(Opcode.dbeq, InstrClass.ConditionalTransfer, B, RMinus),
                 Instr(Opcode.trap),
                 Instr(Opcode.trap),
 
-                Instr(Opcode.dbeq, D, RMinus),
-                Instr(Opcode.dbeq, X, RMinus),
-                Instr(Opcode.dbeq, Y, RMinus),
-                Instr(Opcode.dbeq, S, RMinus),
+                Instr(Opcode.dbeq, InstrClass.ConditionalTransfer, D, RMinus),
+                Instr(Opcode.dbeq, InstrClass.ConditionalTransfer, X, RMinus),
+                Instr(Opcode.dbeq, InstrClass.ConditionalTransfer, Y, RMinus),
+                Instr(Opcode.dbeq, InstrClass.ConditionalTransfer, S, RMinus),
 
-                Instr(Opcode.dbeq, A, RMinus),
-                Instr(Opcode.dbeq, B, RMinus),
+                Instr(Opcode.dbeq, InstrClass.ConditionalTransfer, A, RMinus),
+                Instr(Opcode.dbeq, InstrClass.ConditionalTransfer, B, RMinus),
                 Instr(Opcode.trap),
                 Instr(Opcode.trap),
 
-                Instr(Opcode.dbeq, D, RMinus),
-                Instr(Opcode.dbeq, X, RMinus),
-                Instr(Opcode.dbeq, Y, RMinus),
-                Instr(Opcode.dbeq, S, RMinus),
+                Instr(Opcode.dbeq, InstrClass.ConditionalTransfer, D, RMinus),
+                Instr(Opcode.dbeq, InstrClass.ConditionalTransfer, X, RMinus),
+                Instr(Opcode.dbeq, InstrClass.ConditionalTransfer, Y, RMinus),
+                Instr(Opcode.dbeq, InstrClass.ConditionalTransfer, S, RMinus),
                 // 20 
-                Instr(Opcode.dbne, A, RPlus),
-                Instr(Opcode.dbne, B, RPlus),
+                Instr(Opcode.dbne, InstrClass.ConditionalTransfer, A, RPlus),
+                Instr(Opcode.dbne, InstrClass.ConditionalTransfer, B, RPlus),
                 Instr(Opcode.trap),
                 Instr(Opcode.trap),
 
-                Instr(Opcode.dbne, D, RPlus),
-                Instr(Opcode.dbne, X, RPlus),
-                Instr(Opcode.dbne, Y, RPlus),
-                Instr(Opcode.dbne, S, RPlus),
+                Instr(Opcode.dbne, InstrClass.ConditionalTransfer, D, RPlus),
+                Instr(Opcode.dbne, InstrClass.ConditionalTransfer, X, RPlus),
+                Instr(Opcode.dbne, InstrClass.ConditionalTransfer, Y, RPlus),
+                Instr(Opcode.dbne, InstrClass.ConditionalTransfer, S, RPlus),
 
-                Instr(Opcode.dbne, A, RPlus),
-                Instr(Opcode.dbne, B, RPlus),
+                Instr(Opcode.dbne, InstrClass.ConditionalTransfer, A, RPlus),
+                Instr(Opcode.dbne, InstrClass.ConditionalTransfer, B, RPlus),
                 Instr(Opcode.trap),
                 Instr(Opcode.trap),
 
-                Instr(Opcode.dbne, D, RPlus),
-                Instr(Opcode.dbne, X, RPlus),
-                Instr(Opcode.dbne, Y, RPlus),
-                Instr(Opcode.dbne, S, RPlus),
+                Instr(Opcode.dbne, InstrClass.ConditionalTransfer, D, RPlus),
+                Instr(Opcode.dbne, InstrClass.ConditionalTransfer, X, RPlus),
+                Instr(Opcode.dbne, InstrClass.ConditionalTransfer, Y, RPlus),
+                Instr(Opcode.dbne, InstrClass.ConditionalTransfer, S, RPlus),
                 // 30 
-                Instr(Opcode.dbne, A, RMinus),
-                Instr(Opcode.dbne, B, RMinus),
+                Instr(Opcode.dbne, InstrClass.ConditionalTransfer, A, RMinus),
+                Instr(Opcode.dbne, InstrClass.ConditionalTransfer, B, RMinus),
                 Instr(Opcode.trap),
                 Instr(Opcode.trap),
 
-                Instr(Opcode.dbne, D, RMinus),
-                Instr(Opcode.dbne, X, RMinus),
-                Instr(Opcode.dbne, Y, RMinus),
-                Instr(Opcode.dbne, S, RMinus),
+                Instr(Opcode.dbne, InstrClass.ConditionalTransfer, D, RMinus),
+                Instr(Opcode.dbne, InstrClass.ConditionalTransfer, X, RMinus),
+                Instr(Opcode.dbne, InstrClass.ConditionalTransfer, Y, RMinus),
+                Instr(Opcode.dbne, InstrClass.ConditionalTransfer, S, RMinus),
 
-                Instr(Opcode.dbne, A, RMinus),
-                Instr(Opcode.dbne, B, RMinus),
+                Instr(Opcode.dbne, InstrClass.ConditionalTransfer, A, RMinus),
+                Instr(Opcode.dbne, InstrClass.ConditionalTransfer, B, RMinus),
                 Instr(Opcode.trap),
                 Instr(Opcode.trap),
 
-                Instr(Opcode.dbne, D, RMinus),
-                Instr(Opcode.dbne, X, RMinus),
-                Instr(Opcode.dbne, Y, RMinus),
-                Instr(Opcode.dbne, S, RMinus),
+                Instr(Opcode.dbne, InstrClass.ConditionalTransfer, D, RMinus),
+                Instr(Opcode.dbne, InstrClass.ConditionalTransfer, X, RMinus),
+                Instr(Opcode.dbne, InstrClass.ConditionalTransfer, Y, RMinus),
+                Instr(Opcode.dbne, InstrClass.ConditionalTransfer, S, RMinus),
                 // 40 
-                Instr(Opcode.tbeq, A, RPlus),
-                Instr(Opcode.tbeq, B, RPlus),
+                Instr(Opcode.tbeq, InstrClass.ConditionalTransfer, A, RPlus),
+                Instr(Opcode.tbeq, InstrClass.ConditionalTransfer, B, RPlus),
                 Instr(Opcode.trap),
                 Instr(Opcode.trap),
 
@@ -870,8 +876,8 @@ namespace Reko.Arch.M6800.M6812
                 Instr(Opcode.tbne, Y, RMinus),
                 Instr(Opcode.tbne, S, RMinus),
                 // 80 
-                Instr(Opcode.ibeq, A, RPlus),
-                Instr(Opcode.ibeq, B, RPlus),
+                Instr(Opcode.ibeq, InstrClass.ConditionalTransfer, A, RPlus),
+                Instr(Opcode.ibeq, InstrClass.ConditionalTransfer, B, RPlus),
                 Instr(Opcode.trap),
                 Instr(Opcode.trap),
 
@@ -1359,20 +1365,20 @@ namespace Reko.Arch.M6800.M6812
             decoders = new Decoder[256]
             {
                 // 00
-                Instr(Opcode.bgnd),
+                Instr(Opcode.bgnd, InstrClass.Linear|InstrClass.Zero),
                 Instr(Opcode.mem),
                 Instr(Opcode.iny),
                 Instr(Opcode.dey),
 
                 new NextByteDecoder(decodersLoops),
-                Instr(Opcode.jmp, XB),
-                Instr(Opcode.jmp, HL),
-                Instr(Opcode.bsr, R),
+                Instr(Opcode.jmp, InstrClass.Transfer, XB),
+                Instr(Opcode.jmp, InstrClass.Transfer, HL),
+                Instr(Opcode.bsr, InstrClass.Transfer|InstrClass.Call, R),
 
                 Instr(Opcode.inx),
                 Instr(Opcode.dex),
-                Instr(Opcode.rtc),
-                Instr(Opcode.rti),
+                Instr(Opcode.rtc, InstrClass.Transfer),
+                Instr(Opcode.rti, InstrClass.Transfer),
 
                 Instr(Opcode.bset, XB, I),
                 Instr(Opcode.bclr, XB, I),
@@ -1385,9 +1391,9 @@ namespace Reko.Arch.M6800.M6812
                 Instr(Opcode.emul),
 
                 Instr(Opcode.orcc, I),
-                Instr(Opcode.jsr, XB),
-                Instr(Opcode.jsr, HL),
-                Instr(Opcode.jsr, Dir),
+                Instr(Opcode.jsr, InstrClass.Transfer|InstrClass.Call, XB),
+                Instr(Opcode.jsr, InstrClass.Transfer|InstrClass.Call, HL),
+                Instr(Opcode.jsr, InstrClass.Transfer|InstrClass.Call, Dir),
 
                 new NextByteDecoder(decodersSecondByte),
                 Instr(Opcode.leay, XB),
@@ -1399,25 +1405,25 @@ namespace Reko.Arch.M6800.M6812
                 Instr(Opcode.brset, HL, I, R),
                 Instr(Opcode.brclr, HL, I, R),
                 // 20
-                Instr(Opcode.bra, R),
+                Instr(Opcode.bra, InstrClass.Transfer, R),
                 Instr(Opcode.brn, R),
-                Instr(Opcode.bhi, R),
-                Instr(Opcode.bls, R),
+                Instr(Opcode.bhi, InstrClass.ConditionalTransfer, R),
+                Instr(Opcode.bls, InstrClass.ConditionalTransfer, R),
 
-                Instr(Opcode.bcc, R),
-                Instr(Opcode.bcs, R),
-                Instr(Opcode.bne, R),
-                Instr(Opcode.beq, R),
+                Instr(Opcode.bcc, InstrClass.ConditionalTransfer, R),
+                Instr(Opcode.bcs, InstrClass.ConditionalTransfer, R),
+                Instr(Opcode.bne, InstrClass.ConditionalTransfer, R),
+                Instr(Opcode.beq, InstrClass.ConditionalTransfer, R),
 
-                Instr(Opcode.bvc, R),
-                Instr(Opcode.bvs, R),
-                Instr(Opcode.bpl, R),
-                Instr(Opcode.bmi, R),
+                Instr(Opcode.bvc, InstrClass.ConditionalTransfer, R),
+                Instr(Opcode.bvs, InstrClass.ConditionalTransfer, R),
+                Instr(Opcode.bpl, InstrClass.ConditionalTransfer, R),
+                Instr(Opcode.bmi, InstrClass.ConditionalTransfer, R),
 
-                Instr(Opcode.bge, R),
-                Instr(Opcode.blt, R),
-                Instr(Opcode.bgt, R),
-                Instr(Opcode.ble, R),
+                Instr(Opcode.bge, InstrClass.ConditionalTransfer, R),
+                Instr(Opcode.blt, InstrClass.ConditionalTransfer, R),
+                Instr(Opcode.bgt, InstrClass.ConditionalTransfer, R),
+                Instr(Opcode.ble, InstrClass.ConditionalTransfer, R),
                 // 30
                 Instr(Opcode.pulx),
                 Instr(Opcode.puly),
@@ -1456,8 +1462,8 @@ namespace Reko.Arch.M6800.M6812
 
                 Instr(Opcode.bset, Dir,I),
                 Instr(Opcode.bclr, Dir,I),
-                Instr(Opcode.brset, Dir, I, R),
-                Instr(Opcode.brclr, Dir, I, R),
+                Instr(Opcode.brset, InstrClass.ConditionalTransfer, Dir, I, R),
+                Instr(Opcode.brclr, InstrClass.ConditionalTransfer, Dir, I, R),
                 // 50
                 Instr(Opcode.negb),
                 Instr(Opcode.comb),

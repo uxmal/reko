@@ -358,9 +358,12 @@ namespace Reko.Analysis
                 sst.AddUsesToExitBlock();
                 sst.RemoveDeadSsaIdentifiers();
 
+                // Backpropagate stack pointer from procedure return.
+                var spBackpropagator = new StackPointerBackpropagator(ssa);
+                spBackpropagator.BackpropagateStackPointer();
+
                 // Propagate those newly created stack-based identifiers.
                 vp.Transform();
-
                 return sst;
             }
             else

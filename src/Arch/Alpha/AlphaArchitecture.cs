@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -35,6 +35,7 @@ namespace Reko.Arch.Alpha
     {
         public AlphaArchitecture(string archId) : base(archId)
         {
+            this.Endianness = EndianServices.Little;
             this.WordWidth = PrimitiveType.Word64;
             this.PointerType = PrimitiveType.Ptr64;
             this.FramePointerType = PrimitiveType.Ptr64;
@@ -44,31 +45,6 @@ namespace Reko.Arch.Alpha
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
             return new AlphaDisassembler(this, rdr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, ulong off)
-        {
-            return new LeImageReader(img, off);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
-        {
-            return new LeImageReader(img, addr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
-        {
-            return new LeImageReader(img, addrBegin, addrEnd);
-        }
-
-        public override ImageWriter CreateImageWriter()
-        {
-            return new LeImageWriter();
-        }
-
-        public override ImageWriter CreateImageWriter(MemoryArea img, Address addr)
-        {
-            return new LeImageWriter(img, addr);
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -118,11 +94,12 @@ namespace Reko.Arch.Alpha
                 : null;
         }
 
-        public override RegisterStorage GetRegister(int i)
+        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
-            throw new NotImplementedException();
+            return Registers.ByDomain.TryGetValue(domain, out var reg)
+                ? reg
+                : null;
         }
-
         public override RegisterStorage[] GetRegisters()
         {
             return Registers.AllRegisters.Values.ToArray();
@@ -154,11 +131,6 @@ namespace Reko.Arch.Alpha
         {
             //$TODO: this should be in the platform not the architecture.
             return Address.TryParse32(txtAddr, out addr);
-        }
-
-        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
-        {
-            return mem.TryReadLe(addr, dt, out value);
         }
     }
 }

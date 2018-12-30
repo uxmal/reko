@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -50,6 +50,7 @@ namespace Reko.Arch.Arm
 
         public Arm32Architecture(string archId) : base(archId)
         {
+            Endianness = EndianServices.Little;
             InstructionBitSize = 32;
             FramePointerType = PrimitiveType.Ptr32;
             PointerType = PrimitiveType.Ptr32;
@@ -136,31 +137,6 @@ namespace Reko.Arch.Arm
 #endif
         }
 
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
-        {
-            return new LeImageReader(img, addr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
-        {
-            return new LeImageReader(img, addrBegin, addrEnd);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, ulong off)
-        {
-            return new LeImageReader(img, off);
-        }
-
-        public override ImageWriter CreateImageWriter()
-        {
-            return new LeImageWriter();
-        }
-
-        public override ImageWriter CreateImageWriter(MemoryArea img, Address addr)
-        {
-            return new LeImageWriter(img, addr);
-        }
-
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
             return null;
@@ -200,20 +176,10 @@ namespace Reko.Arch.Arm
 
         public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
-            // The Qx, Dx and Sx registers alias each other.
-            if (Registers.QRegs[0].Domain <= domain && domain <= Registers.QRegs[15].Domain)
-            {
-                throw new NotImplementedException("");
-            }
-            if (Registers.r0.Domain <= domain && domain <= Registers.pc.Domain)
-                return Registers.GpRegs[domain - Registers.r0.Domain];
-
-            throw new NotImplementedException();
-        }
-
-        public override RegisterStorage GetRegister(int i)
-        {
-            throw new NotImplementedException();
+            if (Registers.RegistersByDomain.TryGetValue(domain, out var reg))
+                return reg;
+            else
+                return null;
         }
 
         public override RegisterStorage GetRegister(string name)
@@ -232,6 +198,15 @@ namespace Reko.Arch.Arm
 #else
             return Registers.GpRegs;
 #endif
+        }
+
+        public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
+        {
+            uint grf = flags.FlagGroupBits;
+            if ((grf & (uint) FlagM.NF) != 0) yield return GetFlagGroup(flags.FlagRegister, (uint) FlagM.NF);
+            if ((grf & (uint) FlagM.ZF) != 0) yield return GetFlagGroup(flags.FlagRegister, (uint) FlagM.ZF);
+            if ((grf & (uint) FlagM.CF) != 0) yield return GetFlagGroup(flags.FlagRegister, (uint) FlagM.CF);
+            if ((grf & (uint) FlagM.VF) != 0) yield return GetFlagGroup(flags.FlagRegister, (uint) FlagM.VF);
         }
 
         public override int? GetOpcodeNumber(string name)
@@ -304,12 +279,6 @@ namespace Reko.Arch.Arm
         {
             return Address.TryParse32(txtAddress, out addr);
         }
-
-        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
-        {
-            return mem.TryReadLe(addr, dt, out value);
-        }
-
 
         [DllImport("ArmNative", CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl, EntryPoint = "CreateNativeArchitecture")]
         public static extern IntPtr CreateNativeArchitecture(

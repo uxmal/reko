@@ -51,7 +51,7 @@ namespace Reko.Core.Types
 
         public override DataType Clone(IDictionary<DataType, DataType> clonedTypes)
         {
-            return new ReferenceTo(Referent.Clone(clonedTypes));
+            return new ReferenceTo(Referent.Clone(clonedTypes)) { Qualifier = this.Qualifier };
         }
     }
 }

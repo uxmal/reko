@@ -96,6 +96,7 @@ namespace Reko.Core.Types
                 .Select(p => new Identifier(p.Name, p.DataType.Clone(clonedTypes), p.Storage))
                 .ToArray();
             var ft = new FunctionType(ret, parameters);
+            ft.Qualifier = Qualifier;
             ft.ParametersValid = ParametersValid;
             ft.IsInstanceMetod = IsInstanceMetod;
             ft.ReturnAddressOnStack = ReturnAddressOnStack;

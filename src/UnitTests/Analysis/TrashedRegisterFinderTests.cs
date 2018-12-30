@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -58,7 +58,7 @@ namespace Reko.UnitTests.Analysis
             program = new Program();
             program.Architecture = arch;
             program.SegmentMap = new SegmentMap(Address.Ptr32(0));
-            exit = new Procedure(arch, "exit", new Frame(PrimitiveType.Word32));
+            exit = new Procedure(arch, "exit", Address.Ptr32(0x00123400), new Frame(PrimitiveType.Word32));
             flow = new ProgramDataFlow();
             p = new ProgramBuilder();
             p.Program.Architecture = this.arch;
@@ -213,16 +213,16 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void TrashRegister()
         {
-            var r1 = m.Register(1);
-            var stm = m.Assign(r1, m.Int32(0));
+            var ecx = m.Register("ecx");
+            var stm = m.Assign(ecx, m.Int32(0));
 
             trf = CreateTrashedRegisterFinder();
             CreateBlockFlow(m.Block, m.Frame);
             trf.StartProcessingBlock(m.Block);
 
             stm.Accept(trf);
-            Debug.WriteLine(trf.RegisterSymbolicValues[(RegisterStorage) r1.Storage].ToString());
-            Assert.IsTrue(trf.IsTrashed(r1.Storage), "r1 should have been marked as trashed.");
+            Debug.WriteLine(trf.RegisterSymbolicValues[(RegisterStorage) ecx.Storage].ToString());
+            Assert.IsTrue(trf.IsTrashed(ecx.Storage), "ecx should have been marked as trashed.");
         }
 
         [Test]
@@ -256,56 +256,56 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void TrfCopy()
         {
-            Identifier r1 = m.Register(1);
-            Identifier r2 = m.Register(2);
-            var ass = m.Assign(r2, r1);
+            Identifier ecx = m.Register("ecx");
+            Identifier edx = m.Register("edx");
+            var ass = m.Assign(edx, ecx);
 
             trf = CreateTrashedRegisterFinder();
             CreateBlockFlow(m.Block, m.Frame);
             trf.StartProcessingBlock(m.Block);
 
             ass.Accept(trf);
-            Assert.AreEqual(r1, trf.RegisterSymbolicValues[(RegisterStorage) r2.Storage], "r2 should now be equal to r1");
+            Assert.AreEqual(ecx, trf.RegisterSymbolicValues[(RegisterStorage) edx.Storage], "edx should now be equal to ecx");
         }
 
         [Test]
         public void TrfCopyBack()
         {
             var esp = m.Frame.EnsureRegister(Registers.esp);
-            var r2 = m.Register(2);
-            var stm1 = m.MStore(m.ISub(esp, 0x10), r2);
-            var stm2 = m.Assign(r2, m.Int32(0));
-            var stm3 = m.Assign(r2, m.Mem32(m.ISub(esp, 0x10)));
+            var edx = m.Register("edx");
+            var stm1 = m.MStore(m.ISub(esp, 0x10), edx);
+            var stm2 = m.Assign(edx, m.Int32(0));
+            var stm3 = m.Assign(edx, m.Mem32(m.ISub(esp, 0x10)));
 
             trf = CreateTrashedRegisterFinder();
             var flow = CreateBlockFlow(m.Block, m.Frame);
-            flow.SymbolicIn.SetValue((Identifier)esp, (Expression)this.m.Frame.FramePointer);
+            flow.SymbolicIn.SetValue(esp, this.m.Frame.FramePointer);
             trf.StartProcessingBlock(m.Block);
 
             stm1.Instruction.Accept(trf);
             stm2.Accept(trf);
             stm3.Accept(trf);
 
-            Assert.AreEqual(r2, trf.RegisterSymbolicValues[(RegisterStorage) r2.Storage]);
+            Assert.AreEqual(edx, trf.RegisterSymbolicValues[(RegisterStorage) edx.Storage]);
         }
 
         [Test]
         public void TrfOutParameters()
         {
-            var r2 = m.Register(2);
-            var stm = m.SideEffect(m.Fn("Hello", m.AddrOf(r2)));
+            var edx = m.Register("edx");
+            var stm = m.SideEffect(m.Fn("Hello", m.AddrOf(edx)));
 
             trf = CreateTrashedRegisterFinder();
             trf.EnsureEvaluationContext(CreateBlockFlow(m.Block, m.Frame));
 
             stm.Instruction.Accept(trf);
-            Assert.AreEqual("<invalid>", trf.RegisterSymbolicValues[(RegisterStorage) r2.Storage].ToString());
+            Assert.AreEqual("<invalid>", trf.RegisterSymbolicValues[(RegisterStorage) edx.Storage].ToString());
         }
 
         [Test]
         public void TrfCallInstruction()
         {
-            var callee = new Procedure(arch, "Callee", program.Architecture.CreateFrame());
+            var callee = new Procedure(arch, "Callee", Address.Ptr32(0x00123400), program.Architecture.CreateFrame());
             m.Call(callee, 4);
             var stm = m.Block.Statements.Last;
             var pf = new ProcedureFlow(callee);
@@ -323,11 +323,11 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void TrfPropagateToSuccessorBlocks()
         {
-            Procedure proc = new Procedure(program.Architecture, "test", program.Architecture.CreateFrame());
+            Procedure proc = new Procedure(program.Architecture, "test", Address.Ptr32(0x00123400), program.Architecture.CreateFrame());
             var frame = proc.Frame;
-            Identifier ecx = m.Register(1);
-            Identifier edx = m.Register(2);
-            Identifier ebx = m.Register(3);
+            Identifier ecx = m.Register("ecx");
+            Identifier edx = m.Register("edx");
+            Identifier ebx = m.Register("ebx");
             Block b = proc.AddBlock("b");
             Block t = proc.AddBlock("t");
             Block e = proc.AddBlock("e");
@@ -364,7 +364,7 @@ namespace Reko.UnitTests.Analysis
         public void TrfPropagateStackValuesToSuccessor()
         {
             m.Label("Start");
-            Identifier ecx = m.Register(1);
+            Identifier ecx = m.Register("ecx");
             trf = CreateTrashedRegisterFinder(program);
             CreateBlockFlow(m.Block, m.Frame);
             trf.StartProcessingBlock(m.Block);
@@ -397,7 +397,7 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void TrfPropagateToProcedureSummary()
         {
-            Procedure proc = new Procedure(program.Architecture, "proc", program.Architecture.CreateFrame());
+            Procedure proc = new Procedure(program.Architecture, "proc", Address.Ptr32(0x00123400), program.Architecture.CreateFrame());
             program.CallGraph.AddProcedure(proc);
             Identifier eax = proc.Frame.EnsureRegister(Registers.eax);
             Identifier ebx = proc.Frame.EnsureRegister(Registers.ebx);
@@ -421,7 +421,7 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void TrfPropagateFlagsToProcedureSummary()
         {
-            var proc = new Procedure(program.Architecture, "proc", program.Architecture.CreateFrame());
+            var proc = new Procedure(program.Architecture, "proc", Address.Ptr32(0x00123400), program.Architecture.CreateFrame());
             program.CallGraph.AddProcedure(proc);
             var flags = program.Architecture.GetFlagGroup("SZ");
             var sz = m.Frame.EnsureFlagGroup(flags.FlagRegister, flags.FlagGroupBits, flags.Name, flags.DataType);

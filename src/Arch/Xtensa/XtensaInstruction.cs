@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using Reko.Core;
 using Reko.Core.Machine;
 using System.Collections.Generic;
 
@@ -45,22 +46,12 @@ namespace Reko.Arch.Xtensa
             { Opcodes.ueq_s, "ueq.s" }
         };
 
-        public override InstructionClass InstructionClass
-        {
-            get { return InstructionClass.Linear; }
-        }
-
-        public override bool IsValid
-        {
-            get { return Opcode != Opcodes.invalid;  }
-        }
+        public override InstrClass InstructionClass => IClass;
+        public override int OpcodeAsInteger => (int) Opcode;
 
         public Opcodes Opcode { get; set; }
 
-        public override int OpcodeAsInteger
-        {
-            get { return (int)Opcode; }
-        }
+        public InstrClass IClass { get; set; }
 
         public MachineOperand[] Operands { get; internal set; }
 

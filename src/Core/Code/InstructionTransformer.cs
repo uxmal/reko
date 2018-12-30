@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -92,8 +92,8 @@ namespace Reko.Core.Code
             var args = phi.Src.Arguments;
 			for (int i = 0; i < args.Length; ++i)
 			{
-                var v = args[i].Accept(this);
-                args[i] = v;
+                var value = args[i].Value.Accept(this);
+                args[i] = new PhiArgument(args[i].Block, value);
 			}
 			phi.Dst = (Identifier) phi.Dst.Accept(this);
 			return phi;
@@ -164,11 +164,11 @@ namespace Reko.Core.Code
             return new BinaryExpression(binExp.Operator, binExp.DataType, left, right);
 		}
 
-		public virtual Expression VisitCast(Cast cast)
-		{
-			cast.Expression = cast.Expression.Accept(this);
-			return cast;
-		}
+        public virtual Expression VisitCast(Cast cast)
+        {
+            var e = cast.Expression.Accept(this);
+            return new Cast(cast.DataType, e);
+        }
 
         public virtual Expression VisitConditionalExpression(ConditionalExpression cond)
         {
@@ -245,7 +245,10 @@ namespace Reko.Core.Code
 		{
 			for (int i = 0; i < phi.Arguments.Length; ++i)
 			{
-				phi.Arguments[i] = phi.Arguments[i].Accept(this);
+                var value = phi.Arguments[i].Value.Accept(this);
+                phi.Arguments[i] = new PhiArgument(
+                    phi.Arguments[i].Block,
+                    value);
 			}
 			return phi;
 		}

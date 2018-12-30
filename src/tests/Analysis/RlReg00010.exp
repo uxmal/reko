@@ -28,11 +28,10 @@ fn0C00_0004_entry:
 	def ax
 	def bp
 l0C00_0004:
-	bp_47 = PHI(bp, bp_48)
-	ax_29 = PHI(ax, ax_41)
-	Mem6 = PHI(Mem0, Mem35)
-	si_5 = PHI(si, si_44)
-	ds_dx_40 = SEQ(ds, 0x5427) (alias)
+	bp_47 = PHI((bp, fn0C00_0004_entry), (bp_48, l0C00_0026))
+	ax_29 = PHI((ax, fn0C00_0004_entry), (ax_41, l0C00_0026))
+	Mem6 = PHI((Mem0, fn0C00_0004_entry), (Mem35, l0C00_0026))
+	si_5 = PHI((si, fn0C00_0004_entry), (si_44, l0C00_0026))
 	al_7 = Mem6[ds:si_5:byte]
 	al_12 = (al_7 >>u 0x04) + 0x30
 	ax_30 = DPB(ax_29, al_12, 0) (alias)
@@ -40,7 +39,7 @@ l0C00_0004:
 l0C00_0014:
 	ax_31 = DPB(ax_29, al_12 + 0x07, 0) (alias)
 l0C00_0016:
-	ax_28 = PHI(ax_30, ax_31)
+	ax_28 = PHI((ax_30, l0C00_0004), (ax_31, l0C00_0014))
 	ah_20 = Mem6[ds:si_5:byte]
 	ah_22 = (ah_20 & 0x0F) + 0x30
 	ax_32 = DPB(ax_28, ah_22, 8) (alias)
@@ -48,9 +47,10 @@ l0C00_0016:
 l0C00_0023:
 	ax_33 = DPB(ax_28, ah_22 + 0x07, 8) (alias)
 l0C00_0026:
-	ax_27 = PHI(ax_32, ax_33)
+	ax_27 = PHI((ax_32, l0C00_0016), (ax_33, l0C00_0023))
 	Mem35[ds:0x5427:word16] = ax_27
 	bx_37 = Mem35[ds:0x5424:word16]
+	ds_dx_40 = SEQ(ds, 0x5427) (alias)
 	msdos_write_file(bx_37, 0x0004, ds_dx_40, out ax_41)
 	si_44 = si_5 + 0x0001
 	bp_48 = bp_47 - 0x0001

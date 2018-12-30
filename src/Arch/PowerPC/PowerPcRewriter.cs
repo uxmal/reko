@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -35,15 +35,15 @@ namespace Reko.Arch.PowerPC
 {
     public partial class PowerPcRewriter : IEnumerable<RtlInstructionCluster>
     {
-        private IStorageBinder binder;
-        private RtlEmitter m;
-        private RtlClass rtlc;
-        private List<RtlInstruction> rtlInstructions;
-        private PowerPcArchitecture arch;
-        private IEnumerator<PowerPcInstruction> dasm;
-        private IRewriterHost host;
+        private readonly PowerPcArchitecture arch;
+        private readonly IStorageBinder binder;
+        private readonly IRewriterHost host;
+        private readonly EndianImageReader rdr;
+        private readonly IEnumerator<PowerPcInstruction> dasm;
         private PowerPcInstruction instr;
-        private EndianImageReader rdr;
+        private RtlEmitter m;
+        private InstrClass rtlc;
+        private List<RtlInstruction> rtlInstructions;
 
         public PowerPcRewriter(PowerPcArchitecture arch, IEnumerable<PowerPcInstruction> instrs, IStorageBinder binder, IRewriterHost host)
         {
@@ -56,7 +56,6 @@ namespace Reko.Arch.PowerPC
         public PowerPcRewriter(PowerPcArchitecture arch, EndianImageReader rdr, IStorageBinder binder, IRewriterHost host)
         {
             this.arch = arch;
-            //this.state = ppcState;
             this.binder = binder;
             this.host = host;
             this.rdr = rdr;
@@ -70,7 +69,7 @@ namespace Reko.Arch.PowerPC
                 this.instr = dasm.Current;
                 var addr = this.instr.Address;
                 this.rtlInstructions = new List<RtlInstruction>();
-                this.rtlc = RtlClass.Linear;
+                this.rtlc = instr.InstructionClass;
                 this.m = new RtlEmitter(rtlInstructions);
                 switch (dasm.Current.Opcode)
                 {
@@ -80,7 +79,7 @@ namespace Reko.Arch.PowerPC
                         string.Format("PowerPC instruction '{0}' is not supported yet.", instr));
                     EmitUnitTest();
                     goto case Opcode.illegal;
-                case Opcode.illegal: rtlc = RtlClass.Invalid; m.Invalid(); break;
+                case Opcode.illegal: rtlc = InstrClass.Invalid; m.Invalid(); break;
                 case Opcode.addi: RewriteAddi(); break;
                 case Opcode.addc: RewriteAddc(); break;
                 case Opcode.addic: RewriteAddic(); break;

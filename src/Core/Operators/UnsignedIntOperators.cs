@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,9 +43,14 @@ namespace Reko.Core.Operators
 		{
 			return " <u ";
 		}
-	}
 
-	public class UgtOperator : UnsignedIntOperator
+        public override ConditionalOperator Transpose()
+        {
+            return Operator.Ugt;
+        }
+    }
+
+    public class UgtOperator : UnsignedIntOperator
 	{
 		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
@@ -60,9 +65,14 @@ namespace Reko.Core.Operators
 		{
 			return " >u ";
 		}
-	}
 
-	public class UleOperator : UnsignedIntOperator
+        public override ConditionalOperator Transpose()
+        {
+            return Operator.Ult;
+        }
+    }
+
+    public class UleOperator : UnsignedIntOperator
 	{
 		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
@@ -78,9 +88,15 @@ namespace Reko.Core.Operators
 		{
 			return " <=u ";
 		}
-	}
 
-	public class UgeOperator : UnsignedIntOperator
+        public override ConditionalOperator Transpose()
+        {
+            return Operator.Uge;
+        }
+
+    }
+
+    public class UgeOperator : UnsignedIntOperator
 	{
 		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
@@ -96,5 +112,11 @@ namespace Reko.Core.Operators
 		{
 			return " >=u ";
 		}
-	}
+
+        public override ConditionalOperator Transpose()
+        {
+            return Operator.Ule;
+        }
+
+    }
 }

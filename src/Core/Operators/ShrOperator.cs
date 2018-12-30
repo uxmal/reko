@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@ namespace Reko.Core.Operators
             if (!ValidArgs(c1, c2))
                 return Constant.Invalid;
             return Constant.Create(
-                PrimitiveType.Create(Domain.UnsignedInt, c1.DataType.Size),
+                PrimitiveType.Create(Domain.UnsignedInt, c1.DataType.BitSize),
                 c1.ToUInt64() >> c2.ToInt32());
 		}
 

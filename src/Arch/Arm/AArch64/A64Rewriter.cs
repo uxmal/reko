@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -42,7 +42,7 @@ namespace Reko.Arch.Arm.AArch64
         private IEnumerator<AArch64Instruction> dasm;
         private AArch64Instruction instr;
         private RtlEmitter m;
-        private RtlClass rtlc;
+        private InstrClass rtlc;
 
         public A64Rewriter(Arm64Architecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
@@ -61,7 +61,7 @@ namespace Reko.Arch.Arm.AArch64
                 this.instr = dasm.Current;
                 var cluster = new List<RtlInstruction>();
                 m = new RtlEmitter(cluster);
-                rtlc = RtlClass.Linear;
+                rtlc = instr.InstructionClass;
                 switch (instr.opcode)
                 {
                 default:
@@ -72,7 +72,7 @@ namespace Reko.Arch.Arm.AArch64
                         instr);
                     goto case Opcode.Invalid;
                 case Opcode.Invalid:
-                    rtlc = RtlClass.Invalid;
+                    rtlc = InstrClass.Invalid;
                     m.Invalid();
                     break;
                 case Opcode.add: RewriteMaybeSimdBinary(m.IAdd, "__add_{0}"); break;
@@ -211,7 +211,6 @@ namespace Reko.Arch.Arm.AArch64
                 };
             }
         }
-
 
 
         IEnumerator IEnumerable.GetEnumerator()

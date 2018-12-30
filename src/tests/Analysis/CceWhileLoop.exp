@@ -8,7 +8,7 @@ Mem7: orig: Mem0
 bp_8: orig: bp
 bx_9: orig: bx
     def:  bx_9 = 0x0000
-    uses: bx_21 = PHI(bx_9, bx_23)
+    uses: bx_21 = PHI((bx_9, l0C00_000C), (bx_23, l0C00_000E))
 SZO_10: orig: SZO
 C_11: orig: C
 ax_12: orig: ax
@@ -26,28 +26,28 @@ SCZO_17: orig: SCZO
 C_18: orig: C
 bx_19: orig: bx
     def:  bx_19 = ax_16
-    uses: bx_26 = PHI(bx_23, bx_19)
+    uses: bx_26 = PHI((bx_23, l0C00_0012), (bx_19, l0C00_0015))
 cx_20: orig: cx
     def:  cx_20 = ax_12
-    uses: cx_22 = PHI(cx_20, cx_25)
+    uses: cx_22 = PHI((cx_20, l0C00_000C), (cx_25, l0C00_000E))
 bx_21: orig: bx
-    def:  bx_21 = PHI(bx_9, bx_23)
+    def:  bx_21 = PHI((bx_9, l0C00_000C), (bx_23, l0C00_000E))
     uses: bx_23 = bx_21 + cx_22
 cx_22: orig: cx
-    def:  cx_22 = PHI(cx_20, cx_25)
+    def:  cx_22 = PHI((cx_20, l0C00_000C), (cx_25, l0C00_000E))
     uses: bx_23 = bx_21 + cx_22
           cx_25 = cx_22 - 0x0001
 bx_23: orig: bx
     def:  bx_23 = bx_21 + cx_22
-    uses: bx_21 = PHI(bx_9, bx_23)
-          bx_26 = PHI(bx_23, bx_19)
+    uses: bx_21 = PHI((bx_9, l0C00_000C), (bx_23, l0C00_000E))
+          bx_26 = PHI((bx_23, l0C00_0012), (bx_19, l0C00_0015))
 SCZO_24: orig: SCZO
 cx_25: orig: cx
     def:  cx_25 = cx_22 - 0x0001
     uses: branch cx_25 != 0x0000 l0C00_000E
-          cx_22 = PHI(cx_20, cx_25)
+          cx_22 = PHI((cx_20, l0C00_000C), (cx_25, l0C00_000E))
 bx_26: orig: bx
-    def:  bx_26 = PHI(bx_23, bx_19)
+    def:  bx_26 = PHI((bx_23, l0C00_0012), (bx_19, l0C00_0015))
     uses: Mem30[ds:0x0300:word16] = bx_26
 ds:ds
     def:  def ds
@@ -76,8 +76,8 @@ l0C00_000C:
 	cx_20 = ax_12
 	// succ:  l0C00_000E
 l0C00_000E:
-	cx_22 = PHI(cx_20, cx_25)
-	bx_21 = PHI(bx_9, bx_23)
+	cx_22 = PHI((cx_20, l0C00_000C), (cx_25, l0C00_000E))
+	bx_21 = PHI((bx_9, l0C00_000C), (bx_23, l0C00_000E))
 	bx_23 = bx_21 + cx_22
 	cx_25 = cx_22 - 0x0001
 	branch cx_25 != 0x0000 l0C00_000E
@@ -90,7 +90,7 @@ l0C00_0015:
 	bx_19 = ax_16
 	// succ:  l0C00_0019
 l0C00_0019:
-	bx_26 = PHI(bx_23, bx_19)
+	bx_26 = PHI((bx_23, l0C00_0012), (bx_19, l0C00_0015))
 	Mem30[ds:0x0300:word16] = bx_26
 	return
 	// succ:  fn0C00_0000_exit

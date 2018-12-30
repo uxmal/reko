@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -63,11 +63,12 @@ namespace Reko.Core
 			AddInParam(binder.EnsureRegister(reg));
 		}
 
-        public void AddOutParam(Identifier idOrig)
+        public Identifier AddOutParam(Identifier idOrig)
         {
-            if (ret == null)
+            if (this.ret == null)
             {
-                ret = idOrig;
+                this.ret = idOrig;
+                return ret;
             }
             else
             {
@@ -76,6 +77,7 @@ namespace Reko.Core
                 // explicitly instead of using destructive updates of this kind.
                 var arg = binder.EnsureOutArgument(idOrig, PrimitiveType.Create(Domain.Pointer, arch.FramePointerType.BitSize));
                 args.Add(arg);
+                return arg;
             }
         }
 

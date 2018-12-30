@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -42,6 +42,7 @@ namespace Reko.Arch.M68k
         public M68kArchitecture(string archId) : base(archId)
         {
             InstructionBitSize = 16;
+            Endianness = EndianServices.Big;
             FramePointerType = PrimitiveType.Ptr32;
             PointerType = PrimitiveType.Ptr32;
             WordWidth = PrimitiveType.Word32;
@@ -76,31 +77,6 @@ namespace Reko.Arch.M68k
             return new M68kPointerScanner(rdr, knownLinAddresses, flags).Select(li => Address.Ptr32(li));
         }
 
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addr)
-        {
-            return new BeImageReader(image, addr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
-        {
-            return new BeImageReader(image, addrBegin, addrEnd);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, ulong offset)
-        {
-            return new BeImageReader(image, offset);
-        }
-
-        public override ImageWriter CreateImageWriter()
-        {
-            return new BeImageWriter();
-        }
-
-        public override ImageWriter CreateImageWriter(MemoryArea mem, Address addr)
-        {
-            return new BeImageWriter(mem, addr);
-        }
-
         public override SortedList<string, int> GetOpcodeNames()
         {
             return Enum.GetValues(typeof(Opcode))
@@ -118,9 +94,9 @@ namespace Reko.Arch.M68k
             return (int)result;
         }
 
-        public override RegisterStorage GetRegister(int i)
+        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
-            return Registers.GetRegister(i);
+            return Registers.GetRegister(domain - StorageDomain.Register);
         }
 
         public override RegisterStorage GetRegister(string name)
@@ -230,11 +206,6 @@ namespace Reko.Arch.M68k
         public override bool TryParseAddress(string txtAddress, out Address addr)
         {
             return Address.TryParse32(txtAddress, out addr);
-        }
-
-        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
-        {
-            return mem.TryReadBe(addr, dt, out value);
         }
     }
 }

@@ -3,7 +3,7 @@ fp:fp
     uses: sp_2 = fp
 sp_2: orig: sp
     def:  sp_2 = fp
-    uses: sp_5 = sp_2 - 0x0002
+    uses: sp_5 = sp_2 - 2
 Top_3: orig: Top
     def:  Top_3 = 0
     uses: call fn0C00_000F (retsize: 2;)	uses: ax:ax,cx:cx_4,ds:ds,sp:sp_5,ss:ss,Top:Top_3	defs: ax:ax_12,cx:cx_9,SCZO:SCZO_14,sp:sp_8,Top:Top_13
@@ -12,7 +12,7 @@ cx_4: orig: cx
     uses: Mem7[ss:sp_5:word16] = cx_4
           call fn0C00_000F (retsize: 2;)	uses: ax:ax,cx:cx_4,ds:ds,sp:sp_5,ss:ss,Top:Top_3	defs: ax:ax_12,cx:cx_9,SCZO:SCZO_14,sp:sp_8,Top:Top_13
 sp_5: orig: sp
-    def:  sp_5 = sp_2 - 0x0002
+    def:  sp_5 = sp_2 - 2
     uses: Mem7[ss:sp_5:word16] = cx_4
           call fn0C00_000F (retsize: 2;)	uses: ax:ax,cx:cx_4,ds:ds,sp:sp_5,ss:ss,Top:Top_3	defs: ax:ax_12,cx:cx_9,SCZO:SCZO_14,sp:sp_8,Top:Top_13
 ss:ss
@@ -80,7 +80,7 @@ l0C00_0000:
 	sp_2 = fp
 	Top_3 = 0
 	cx_4 = 0x0064
-	sp_5 = sp_2 - 0x0002
+	sp_5 = sp_2 - 2
 	Mem7[ss:sp_5:word16] = cx_4
 	call fn0C00_000F (retsize: 2;)
 		uses: ax:ax,cx:cx_4,ds:ds,sp:sp_5,ss:ss,Top:Top_3
@@ -109,17 +109,17 @@ fp:fp
     uses: sp_2 = fp
 sp_2: orig: sp
     def:  sp_2 = fp
-    uses: sp_4 = sp_2 - 0x0002
+    uses: sp_4 = sp_2 - 2
 Top_3: orig: Top
     def:  Top_3 = 0
     uses: call fn0C00_000F (retsize: 2;)	uses: ax:ax_10,bp:bp_8,dx:dx,sp:sp_14,ss:ss,Top:Top_3	defs: ax:ax_17,dx:dx_19,SCZO:SCZO_21,sp:sp_16,Top:Top_20
-          Top_47 = PHI(Top_20, Top_3)
+          Top_47 = PHI((Top_20, l0C00_0018), (Top_3, l0C00_0026))
 sp_4: orig: sp
-    def:  sp_4 = sp_2 - 0x0002
+    def:  sp_4 = sp_2 - 2
     uses: Mem7[ss:sp_4:word16] = bp
           bp_8 = sp_4
-          sp_14 = sp_4 - 0x0002
-          sp_32 = PHI(sp_24, sp_4)
+          sp_14 = sp_4 - 2
+          sp_32 = PHI((sp_24, l0C00_0018), (sp_4, l0C00_0026))
 bp:bp
     def:  def bp
     uses: Mem7[ss:sp_4:word16] = bp
@@ -134,7 +134,7 @@ ss:ss
 Mem7: orig: Mem0
     def:  Mem7[ss:sp_4:word16] = bp
     uses: ax_9 = Mem7[ss:bp_8 + 0x0004:word16]
-          Mem33 = PHI(Mem15, Mem7)
+          Mem33 = PHI((Mem15, l0C00_0018), (Mem7, l0C00_0026))
 bp_8: orig: bp
     def:  bp_8 = sp_4
     uses: ax_9 = Mem7[ss:bp_8 + 0x0004:word16]
@@ -156,18 +156,18 @@ SZO_11: orig: SZO
 Z_12: orig: Z
     def:  Z_12 = SLICE(SZO_11, bool, 2) (alias)
     uses: branch Test(EQ,Z_12) l0C00_0026
-          Z_48 = PHI(Z_49, Z_12)
+          Z_48 = PHI((Z_49, l0C00_0018), (Z_12, l0C00_0026))
 ax_13: orig: ax
     def:  ax_13 = 0x0001
-    uses: ax_36 = PHI(ax_29, ax_13)
+    uses: ax_36 = PHI((ax_29, l0C00_0018), (ax_13, l0C00_0026))
 sp_14: orig: sp
-    def:  sp_14 = sp_4 - 0x0002
+    def:  sp_14 = sp_4 - 2
     uses: Mem15[ss:sp_14:word16] = ax_10
           call fn0C00_000F (retsize: 2;)	uses: ax:ax_10,bp:bp_8,dx:dx,sp:sp_14,ss:ss,Top:Top_3	defs: ax:ax_17,dx:dx_19,SCZO:SCZO_21,sp:sp_16,Top:Top_20
 Mem15: orig: Mem0
     def:  Mem15[ss:sp_14:word16] = ax_10
     uses: dx_26 = Mem15[ss:bp_8 + 0x0004:word16]
-          Mem33 = PHI(Mem15, Mem7)
+          Mem33 = PHI((Mem15, l0C00_0018), (Mem7, l0C00_0026))
 sp_16: orig: sp
     def:  call fn0C00_000F (retsize: 2;)	uses: ax:ax_10,bp:bp_8,dx:dx,sp:sp_14,ss:ss,Top:Top_3	defs: ax:ax_17,dx:dx_19,SCZO:SCZO_21,sp:sp_16,Top:Top_20
     uses: sp_22 = sp_16 + 0x0001
@@ -177,12 +177,12 @@ ax_17: orig: ax
 dx:dx
     def:  def dx
     uses: call fn0C00_000F (retsize: 2;)	uses: ax:ax_10,bp:bp_8,dx:dx,sp:sp_14,ss:ss,Top:Top_3	defs: ax:ax_17,dx:dx_19,SCZO:SCZO_21,sp:sp_16,Top:Top_20
-          dx_40 = PHI(dx_28, dx)
+          dx_40 = PHI((dx_28, l0C00_0018), (dx, l0C00_0026))
 dx_19: orig: dx
     def:  call fn0C00_000F (retsize: 2;)	uses: ax:ax_10,bp:bp_8,dx:dx,sp:sp_14,ss:ss,Top:Top_3	defs: ax:ax_17,dx:dx_19,SCZO:SCZO_21,sp:sp_16,Top:Top_20
 Top_20: orig: Top
     def:  call fn0C00_000F (retsize: 2;)	uses: ax:ax_10,bp:bp_8,dx:dx,sp:sp_14,ss:ss,Top:Top_3	defs: ax:ax_17,dx:dx_19,SCZO:SCZO_21,sp:sp_16,Top:Top_20
-    uses: Top_47 = PHI(Top_20, Top_3)
+    uses: Top_47 = PHI((Top_20, l0C00_0018), (Top_3, l0C00_0026))
 SCZO_21: orig: SCZO
     def:  call fn0C00_000F (retsize: 2;)	uses: ax:ax_10,bp:bp_8,dx:dx,sp:sp_14,ss:ss,Top:Top_3	defs: ax:ax_17,dx:dx_19,SCZO:SCZO_21,sp:sp_16,Top:Top_20
 sp_22: orig: sp
@@ -194,7 +194,7 @@ SZO_23: orig: SZO
 sp_24: orig: sp
     def:  sp_24 = sp_22 + 0x0001
     uses: SZO_25 = cond(sp_24)
-          sp_32 = PHI(sp_24, sp_4)
+          sp_32 = PHI((sp_24, l0C00_0018), (sp_4, l0C00_0026))
 SZO_25: orig: SZO
     def:  SZO_25 = cond(sp_24)
 dx_26: orig: dx
@@ -207,10 +207,10 @@ dx_ax_27: orig: dx_ax
           SCZO_30 = cond(dx_ax_27)
 dx_28: orig: dx
     def:  dx_28 = SLICE(dx_ax_27, word16, 16) (alias)
-    uses: dx_40 = PHI(dx_28, dx)
+    uses: dx_40 = PHI((dx_28, l0C00_0018), (dx, l0C00_0026))
 ax_29: orig: ax
     def:  ax_29 = (word16) dx_ax_27 (alias)
-    uses: ax_36 = PHI(ax_29, ax_13)
+    uses: ax_36 = PHI((ax_29, l0C00_0018), (ax_13, l0C00_0026))
 SCZO_30: orig: SCZO
     def:  SCZO_30 = cond(dx_ax_27)
     uses: C_38 = SLICE(SCZO_30, bool, 1) (alias)
@@ -218,60 +218,60 @@ SCZO_30: orig: SCZO
           S_45 = SLICE(SCZO_30, bool, 0) (alias)
           Z_49 = SLICE(SCZO_30, bool, 2) (alias)
 ax_36: orig: ax
-    def:  ax_36 = PHI(ax_29, ax_13)
+    def:  ax_36 = PHI((ax_29, l0C00_0018), (ax_13, l0C00_0026))
     uses: use ax_36
 sp_32: orig: sp
-    def:  sp_32 = PHI(sp_24, sp_4)
+    def:  sp_32 = PHI((sp_24, l0C00_0018), (sp_4, l0C00_0026))
     uses: bp_34 = Mem33[ss:sp_32:word16]
-          sp_35 = sp_32 + 0x0002
+          sp_35 = sp_32 + 2
 Mem33: orig: Mem0
-    def:  Mem33 = PHI(Mem15, Mem7)
+    def:  Mem33 = PHI((Mem15, l0C00_0018), (Mem7, l0C00_0026))
     uses: bp_34 = Mem33[ss:sp_32:word16]
 bp_34: orig: bp
     def:  bp_34 = Mem33[ss:sp_32:word16]
     uses: use bp_34
 sp_35: orig: sp
-    def:  sp_35 = sp_32 + 0x0002
+    def:  sp_35 = sp_32 + 2
     uses: use sp_35
 C_37: orig: C
-    def:  C_37 = PHI(C_38, C)
+    def:  C_37 = PHI((C_38, l0C00_0018), (C, l0C00_0026))
     uses: use C_37
 C_38: orig: C
     def:  C_38 = SLICE(SCZO_30, bool, 1) (alias)
-    uses: C_37 = PHI(C_38, C)
+    uses: C_37 = PHI((C_38, l0C00_0018), (C, l0C00_0026))
 C:C
     def:  def C
-    uses: C_37 = PHI(C_38, C)
+    uses: C_37 = PHI((C_38, l0C00_0018), (C, l0C00_0026))
 dx_40: orig: dx
-    def:  dx_40 = PHI(dx_28, dx)
+    def:  dx_40 = PHI((dx_28, l0C00_0018), (dx, l0C00_0026))
     uses: use dx_40
 O_41: orig: O
-    def:  O_41 = PHI(O_42, O_43)
+    def:  O_41 = PHI((O_42, l0C00_0018), (O_43, l0C00_0026))
     uses: use O_41
 O_42: orig: O
     def:  O_42 = SLICE(SCZO_30, bool, 4) (alias)
-    uses: O_41 = PHI(O_42, O_43)
+    uses: O_41 = PHI((O_42, l0C00_0018), (O_43, l0C00_0026))
 O_43: orig: O
     def:  O_43 = SLICE(SZO_11, bool, 4) (alias)
-    uses: O_41 = PHI(O_42, O_43)
+    uses: O_41 = PHI((O_42, l0C00_0018), (O_43, l0C00_0026))
 S_44: orig: S
-    def:  S_44 = PHI(S_45, S_46)
+    def:  S_44 = PHI((S_45, l0C00_0018), (S_46, l0C00_0026))
     uses: use S_44
 S_45: orig: S
     def:  S_45 = SLICE(SCZO_30, bool, 0) (alias)
-    uses: S_44 = PHI(S_45, S_46)
+    uses: S_44 = PHI((S_45, l0C00_0018), (S_46, l0C00_0026))
 S_46: orig: S
     def:  S_46 = SLICE(SZO_11, bool, 0) (alias)
-    uses: S_44 = PHI(S_45, S_46)
+    uses: S_44 = PHI((S_45, l0C00_0018), (S_46, l0C00_0026))
 Top_47: orig: Top
-    def:  Top_47 = PHI(Top_20, Top_3)
+    def:  Top_47 = PHI((Top_20, l0C00_0018), (Top_3, l0C00_0026))
     uses: use Top_47
 Z_48: orig: Z
-    def:  Z_48 = PHI(Z_49, Z_12)
+    def:  Z_48 = PHI((Z_49, l0C00_0018), (Z_12, l0C00_0026))
     uses: use Z_48
 Z_49: orig: Z
     def:  Z_49 = SLICE(SCZO_30, bool, 2) (alias)
-    uses: Z_48 = PHI(Z_49, Z_12)
+    uses: Z_48 = PHI((Z_49, l0C00_0018), (Z_12, l0C00_0026))
 // fn0C00_000F
 // Return size: 2
 define fn0C00_000F
@@ -285,7 +285,7 @@ fn0C00_000F_entry:
 l0C00_000F:
 	sp_2 = fp
 	Top_3 = 0
-	sp_4 = sp_2 - 0x0002
+	sp_4 = sp_2 - 2
 	Mem7[ss:sp_4:word16] = bp
 	bp_8 = sp_4
 	ax_9 = Mem7[ss:bp_8 + 0x0004:word16]
@@ -297,7 +297,7 @@ l0C00_000F:
 	branch Test(EQ,Z_12) l0C00_0026
 	// succ:  l0C00_0018 l0C00_0026
 l0C00_0018:
-	sp_14 = sp_4 - 0x0002
+	sp_14 = sp_4 - 2
 	Mem15[ss:sp_14:word16] = ax_10
 	call fn0C00_000F (retsize: 2;)
 		uses: ax:ax_10,bp:bp_8,dx:dx,sp:sp_14,ss:ss,Top:Top_3
@@ -321,17 +321,17 @@ l0C00_0026:
 	ax_13 = 0x0001
 	// succ:  l0C00_0029
 l0C00_0029:
-	Z_48 = PHI(Z_49, Z_12)
-	Top_47 = PHI(Top_20, Top_3)
-	S_44 = PHI(S_45, S_46)
-	O_41 = PHI(O_42, O_43)
-	dx_40 = PHI(dx_28, dx)
-	C_37 = PHI(C_38, C)
-	ax_36 = PHI(ax_29, ax_13)
-	Mem33 = PHI(Mem15, Mem7)
-	sp_32 = PHI(sp_24, sp_4)
+	Z_48 = PHI((Z_49, l0C00_0018), (Z_12, l0C00_0026))
+	Top_47 = PHI((Top_20, l0C00_0018), (Top_3, l0C00_0026))
+	S_44 = PHI((S_45, l0C00_0018), (S_46, l0C00_0026))
+	O_41 = PHI((O_42, l0C00_0018), (O_43, l0C00_0026))
+	dx_40 = PHI((dx_28, l0C00_0018), (dx, l0C00_0026))
+	C_37 = PHI((C_38, l0C00_0018), (C, l0C00_0026))
+	ax_36 = PHI((ax_29, l0C00_0018), (ax_13, l0C00_0026))
+	Mem33 = PHI((Mem15, l0C00_0018), (Mem7, l0C00_0026))
+	sp_32 = PHI((sp_24, l0C00_0018), (sp_4, l0C00_0026))
 	bp_34 = Mem33[ss:sp_32:word16]
-	sp_35 = sp_32 + 0x0002
+	sp_35 = sp_32 + 2
 	return
 	// succ:  fn0C00_000F_exit
 fn0C00_000F_exit:

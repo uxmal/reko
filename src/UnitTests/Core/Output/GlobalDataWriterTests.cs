@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -58,9 +58,10 @@ namespace Reko.UnitTests.Core.Output
 
         private void Given_ProcedureAtAddress(uint address, string name)
         {
+            var addr = Address.Ptr32(address);
             program.Procedures.Add(
-                Address.Ptr32(address),
-                new Procedure(program.Architecture, name, program.Architecture.CreateFrame())
+                addr, 
+                new Procedure(program.Architecture, name, addr, program.Architecture.CreateFrame())
             );
         }
 
@@ -357,5 +358,21 @@ struct test g_t1004 =
 };
 ");
         }
+
+        [Test]
+        public void GdwLargeBlob()
+        {
+            var blobType = PrimitiveType.CreateWord(0x50);
+            Given_Memory(0x1000)
+                .WriteBytes(Enumerable.Range(0x30, 0x0A).Select(b => (byte) b).ToArray());
+            Given_Globals(
+                Given_Field(0x1000, blobType));
+            RunTest(@"word80 g_n1000 = 
+{
+    0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 
+};
+");
+        }
+
     }
 }

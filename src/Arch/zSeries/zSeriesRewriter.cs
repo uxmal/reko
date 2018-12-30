@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -41,7 +41,7 @@ namespace Reko.Arch.zSeries
         private readonly ExpressionValueComparer cmp;
         private zSeriesInstruction instr;
         private RtlEmitter m;
-        private RtlClass rtlc;
+        private InstrClass rtlc;
 
         public zSeriesRewriter(zSeriesArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
@@ -59,7 +59,7 @@ namespace Reko.Arch.zSeries
             while (dasm.MoveNext())
             {
                 this.instr = dasm.Current;
-                this.rtlc = RtlClass.Linear;
+                this.rtlc = InstrClass.Linear;
                 var instrs = new List<RtlInstruction>();
                 this.m = new RtlEmitter(instrs);
                 switch (instr.Opcode)
@@ -68,7 +68,7 @@ namespace Reko.Arch.zSeries
                     EmitUnitTest();
                     goto case Opcode.invalid;
                 case Opcode.invalid:
-                    rtlc = RtlClass.Invalid;
+                    rtlc = InstrClass.Invalid;
                     m.Invalid();
                     break;
                 case Opcode.aghi: RewriteAhi(PrimitiveType.Word64); break;
@@ -94,13 +94,17 @@ namespace Reko.Arch.zSeries
                 case Opcode.larl: RewriteLarl(); break;
                 case Opcode.l: RewriteL(PrimitiveType.Word32); break;
                 case Opcode.lg: RewriteL(PrimitiveType.Word64); break;
+                case Opcode.lgf: RewriteLgf(); break;
                 case Opcode.lgfr: RewriteLgfr(); break;
                 case Opcode.lghi: RewriteLghi(); break;
                 case Opcode.lgr: RewriteLgr(); break;
+                case Opcode.lhi: RewriteLhi(); break;
                 case Opcode.lmg: RewriteLmg(); break;
                 case Opcode.lr: RewriteLr(); break;
                 case Opcode.ltgr: RewriteLtgr(); break;
                 case Opcode.mvi: RewriteMvi(); break;
+                case Opcode.mvz: RewriteMvz(); break;
+                case Opcode.nc: RewriteNc(); break;
                 case Opcode.ngr: RewriteNgr(); break;
                 case Opcode.nopr: m.Nop(); break;
                 case Opcode.sgr: RewriteSgr(); break;

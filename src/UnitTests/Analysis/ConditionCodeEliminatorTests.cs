@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -627,6 +627,101 @@ ProcedureBuilder_exit:
                 m.Label("mElse");
                 m.Return();
             });
+        }
+
+        [Test]
+        public void CceRorcWithIntermediateCopy()
+        {
+            var sExp =
+            #region Expected
+@"fp:fp
+sp_2: orig: sp
+h_3: orig: h
+    def:  h_3 = PHI((h, l1), (h_10, m1Loop))
+    uses: v13_27 = SEQ(h_3, l_11) >>u 0x01
+a_4: orig: a
+a_5: orig: a
+SZC_6: orig: SZC
+C_7: orig: C
+a_8: orig: a
+    def:  a_8 = SLICE(v13_27, byte, 8)
+    uses: h_10 = a_8
+          Mem21[0x00001001:byte] = a_8
+h_10: orig: h
+    def:  h_10 = a_8
+    uses: h_3 = PHI((h, l1), (h_10, m1Loop))
+l_11: orig: l
+    def:  l_11 = PHI((l, l1), (l_15, m1Loop))
+    uses: v13_27 = SEQ(h_3, l_11) >>u 0x01
+a_12: orig: a
+a_13: orig: a
+    def:  a_13 = (byte) v13_27
+    uses: l_15 = a_13
+          Mem20[0x00001000:byte] = a_13
+C_14: orig: C
+l_15: orig: l
+    def:  l_15 = a_13
+    uses: l_11 = PHI((l, l1), (l_15, m1Loop))
+c_16: orig: c
+    def:  c_16 = PHI((c, l1), (c_17, m1Loop))
+    uses: c_17 = c_16 - 0x01
+c_17: orig: c
+    def:  c_17 = c_16 - 0x01
+    uses: branch c_17 != 0x00 m1Loop
+          c_16 = PHI((c, l1), (c_17, m1Loop))
+SZP_18: orig: SZP
+Z_19: orig: Z
+Mem20: orig: Mem0
+    def:  Mem20[0x00001000:byte] = a_13
+Mem21: orig: Mem0
+    def:  Mem21[0x00001001:byte] = a_8
+h:h
+    def:  def h
+    uses: h_3 = PHI((h, l1), (h_10, m1Loop))
+l:l
+    def:  def l
+    uses: l_11 = PHI((l, l1), (l_15, m1Loop))
+c:c
+    def:  def c
+    uses: c_16 = PHI((c, l1), (c_17, m1Loop))
+v11_25: orig: v11
+v12_26: orig: v12
+v13_27: orig: v13
+    def:  v13_27 = SEQ(h_3, l_11) >>u 0x01
+    uses: a_8 = SLICE(v13_27, byte, 8)
+          a_13 = (byte) v13_27
+// RorChainFragment
+// Return size: 0
+define RorChainFragment
+RorChainFragment_entry:
+	def h
+	def l
+	def c
+	// succ:  l1
+l1:
+	// succ:  m1Loop
+m1Loop:
+	c_16 = PHI((c, l1), (c_17, m1Loop))
+	l_11 = PHI((l, l1), (l_15, m1Loop))
+	h_3 = PHI((h, l1), (h_10, m1Loop))
+	h_10 = a_8
+	v13_27 = SEQ(h_3, l_11) >>u 0x01
+	a_8 = SLICE(v13_27, byte, 8)
+	a_13 = (byte) v13_27
+	l_15 = a_13
+	c_17 = c_16 - 0x01
+	branch c_17 != 0x00 m1Loop
+	// succ:  m2Done m1Loop
+m2Done:
+	Mem20[0x00001000:byte] = a_13
+	Mem21[0x00001001:byte] = a_8
+	return
+	// succ:  RorChainFragment_exit
+RorChainFragment_exit:
+
+";
+            #endregion
+            RunStringTest(sExp, new RorChainFragment());
         }
     }
 }

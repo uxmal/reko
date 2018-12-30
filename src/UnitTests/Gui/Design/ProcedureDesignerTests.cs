@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -29,6 +29,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Reko.UnitTests.Mocks;
 
 namespace Reko.UnitTests.Gui.Design
 {
@@ -44,7 +45,10 @@ namespace Reko.UnitTests.Gui.Design
         {
             this.mr = new MockRepository();
             this.services = mr.StrictMock<IServiceProvider>();
-            this.program = new Program();
+            this.program = new Program
+            {
+                Architecture = new FakeArchitecture()
+            };
         }
 
         private void Given_Service<T>(T svc)
@@ -55,8 +59,8 @@ namespace Reko.UnitTests.Gui.Design
         [Test]
         public void ProcDesigner_DefaultAction_ShowProcedure()
         {
-            var proc = new Procedure(program.Architecture, "foo", new Frame(PrimitiveType.Ptr32));
-            var des = new ProcedureDesigner(program, proc, null, Address.Ptr32(0x001100000), false);
+            var proc = new Procedure(program.Architecture, "foo", Address.Ptr32(0x001100000),  new Frame(PrimitiveType.Ptr32));
+            var des = new ProcedureDesigner(program, proc, null, proc.EntryAddress, false);
             des.Services = services;
             var codeSvc = mr.StrictMock<ICodeViewerService>();
             Given_Service<ICodeViewerService>(codeSvc);

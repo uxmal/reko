@@ -1,0 +1,63 @@
+void foo(byte sil, word64 rdi)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  rdi:[0..63] sil:[0..7]
+// LiveOut:
+// Trashed: SCZO rax rcx
+// Preserved: rsp
+foo_entry:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000000000F9E:
+	branch ((byte) (uint64) ((word32) (uint64) Mem0[rdi:word32] >>u 0x0000000A) ^ sil) == 0x00 l0000000000000FB4
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000000000FA6_thunk_bar:
+	bar()
+	return
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000000000FAC:
+	return
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+foo_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+
+
+void bar()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SCZO rax
+// Preserved: rsp
+bar_entry:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000000000FB4:
+	return
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+bar_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+
+

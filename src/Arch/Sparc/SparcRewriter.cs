@@ -45,7 +45,7 @@ namespace Reko.Arch.Sparc
         private SparcInstruction instrCur;
         private RtlEmitter m;
         private List<RtlInstruction> rtlInstructions;
-        private RtlClass rtlc;
+        private InstrClass rtlc;
 
         public SparcRewriter(SparcArchitecture arch, EndianImageReader rdr, SparcProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
@@ -76,7 +76,7 @@ namespace Reko.Arch.Sparc
                 instrCur = dasm.Current;
                 var addr = instrCur.Address;
                 rtlInstructions = new List<RtlInstruction>();
-                rtlc = RtlClass.Linear;
+                rtlc = InstrClass.Linear;
                 m = new RtlEmitter(rtlInstructions);
                 switch (instrCur.Opcode)
                 {
@@ -88,7 +88,7 @@ namespace Reko.Arch.Sparc
                         instrCur.Opcode);
                     goto case Opcode.illegal;
                 case Opcode.illegal:
-                    rtlc = RtlClass.Invalid;
+                    rtlc = InstrClass.Invalid;
                     m.Invalid();
                     break;
                 case Opcode.add: RewriteAlu(m.IAdd, false); break;
@@ -150,6 +150,8 @@ namespace Reko.Arch.Sparc
 
 
                 case Opcode.fcmpes: RewriteFcmpes(); break;
+                case Opcode.fcmpd: RewriteFcmpd(); break;
+                case Opcode.fcmpq: RewriteFcmpq(); break;
                 case Opcode.fcmps: RewriteFcmps(); break;
                 case Opcode.fdivd: RewriteFdivs(); break;
                 case Opcode.fdivs: RewriteFdivd(); break;
@@ -290,7 +292,21 @@ namespace Reko.Arch.Sparc
         {
             return binder.EnsureRegister(((RegisterOperand)op).Register);
         }
-        
+
+        private Expression RewriteDoubleRegister(MachineOperand op)
+        {
+            var reg = ((RegisterOperand)op).Register;
+            var iReg = reg.Number - Registers.FloatRegisters[0].Number;
+            var regLo = Registers.FloatRegisters[iReg + 1];
+            return binder.EnsureSequence(reg, regLo, PrimitiveType.Word64);
+        }
+
+        private Expression RewriteQuadRegister(MachineOperand op)
+        {
+            throw new NotImplementedException("This will only work in the analys-development branch.");
+        }
+
+
         private Expression RewriteMemOp(MachineOperand op, PrimitiveType size)
         {
             var mem = op as MemoryOperand;

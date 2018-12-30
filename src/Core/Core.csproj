@@ -284,8 +284,10 @@
     <Compile Include="Dfa\PatternParser.cs" />
     <Compile Include="Dfa\State.cs" />
     <Compile Include="Dfa\TreeNode.cs" />
+    <Compile Include="DispatchProcedure.cs" />
     <Compile Include="EndianImageReader.cs" />
     <Compile Include="Endianness.cs" />
+    <Compile Include="EndianServices.cs" />
     <Compile Include="EnumerableEx.cs" />
     <Compile Include="EvaluationContext.cs" />
     <Compile Include="EventEx.cs" />
@@ -342,6 +344,7 @@
     <Compile Include="Lib\PerfectHash.cs" />
     <Compile Include="Lib\Float80.cs" />
     <Compile Include="Lib\SuffixArray.cs" />
+    <Compile Include="Lib\SuffixArray2.cs" />
     <Compile Include="Lib\UbjsonReader.cs" />
     <Compile Include="Lib\UbjsonMarker.cs" />
     <Compile Include="Lib\UbjsonWriter.cs" />
@@ -405,7 +408,7 @@
     <Compile Include="Lib\Trie.cs" />
     <Compile Include="Lib\UndirectedGraph.cs" />
     <Compile Include="Lib\UndirectedGraphImpl.cs" />
-    <Compile Include="Machine\InstructionClass.cs" />
+    <Compile Include="InstrClass.cs" />
     <Compile Include="Machine\MachineInstructionWriter.cs" />
     <Compile Include="Machine\InstructionComparer.cs" />
     <Compile Include="MetadataLoader.cs" />
@@ -457,6 +460,7 @@
     <Compile Include="Serialization\Json\JsonSymbols.cs" />
     <Compile Include="Serialization\MemberPointer_v1.cs" />
     <Compile Include="Serialization\MemoryMap_v1.cs" />
+    <Compile Include="NamingPolicy.cs" />
     <Compile Include="Serialization\ProgramOptions_v2.cs" />
     <Compile Include="Serialization\ProjectLoader.cs" />
     <Compile Include="Serialization\ProjectPersister.cs" />
@@ -466,7 +470,6 @@
     <Compile Include="Serialization\Project_v2.cs" />
     <Compile Include="Serialization\ArrayType_v1.cs" />
     <Compile Include="Serialization\Project_v4.cs" />
-    <Compile Include="Serialization\QualifiedType_v1.cs" />
     <Compile Include="Serialization\ReferenceType_v1.cs" />
     <Compile Include="Serialization\SerializedEnumType.cs" />
     <Compile Include="Serialization\SerializedProject.cs" />
@@ -755,6 +758,7 @@
     <Compile Include="TypedServiceProvider.cs" />
     <Compile Include="TypeLibraryDeserializer.cs" />
     <Compile Include="TypeLibraryLoader.cs" />
+    <Compile Include="TypeNamingPolicy.cs" />
     <Compile Include="Types\ArrayType.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -791,7 +795,7 @@
     <Compile Include="Types\PrimitiveType.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Types\QualifiedType.cs" />
+    <Compile Include="Types\Qualifier.cs" />
     <Compile Include="Types\ReferenceTo.cs" />
     <Compile Include="Types\StringType.cs" />
     <Compile Include="Types\StructureField.cs">

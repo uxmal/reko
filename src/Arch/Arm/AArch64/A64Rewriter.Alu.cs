@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -133,7 +133,7 @@ namespace Reko.Arch.Arm.AArch64
             var cond = Invert(((ConditionOperand)instr.ops[3]).Condition);
             m.Assign(tmp, this.TestCond(cond));
             m.Assign(nzcv, RewriteOp(instr.ops[2]));
-            m.BranchInMiddleOfInstruction(tmp, instr.Address + instr.Length, RtlClass.ConditionalTransfer);
+            m.BranchInMiddleOfInstruction(tmp, instr.Address + instr.Length, InstrClass.ConditionalTransfer);
             var left = RewriteOp(instr.ops[0]);
             var right = RewriteOp(instr.ops[1]);
             m.Assign(nzcv, m.Cond(m.ISub(left, right)));
@@ -179,7 +179,7 @@ namespace Reko.Arch.Arm.AArch64
             var src = RewriteOp(instr.ops[1]);
             if (rFalse.Number != 31 && rTrue == rFalse)
             {
-                m.BranchInMiddleOfInstruction(TestCond(Invert(cond)), instr.Address + instr.Length, RtlClass.ConditionalTransfer);
+                m.BranchInMiddleOfInstruction(TestCond(Invert(cond)), instr.Address + instr.Length, InstrClass.ConditionalTransfer);
                 m.Assign(dst, m.IAdd(src, 1));
                 return;
             }
@@ -223,7 +223,6 @@ namespace Reko.Arch.Arm.AArch64
             {
                 var tmp = binder.CreateTemporary(ea.DataType);
                 if (offset == null || mem.PostIndex)
-                    //$DEBUG
                 {
                     m.Assign(tmp, ea);
                 }
@@ -245,7 +244,7 @@ namespace Reko.Arch.Arm.AArch64
                 m.Assign(m.Mem(dtDst, ea), reg1);
             }
 
-            m.Assign(ea, m.IAdd(ea, Constant.Int(ea.DataType,dtDst.Size)));
+            m.Assign(ea, m.IAddS(ea, dtDst.Size));
             if (load)
             {
                 Expression e = m.Mem(dtDst, ea);

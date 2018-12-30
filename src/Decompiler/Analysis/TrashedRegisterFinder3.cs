@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -36,22 +36,22 @@ namespace Reko.Analysis
 {
     public class TrashedRegisterFinder3 : InstructionVisitor<bool>
     {
-        private static TraceSwitch trace = new TraceSwitch("TrashedRegisters", "Trashed value propagation");
+        private static TraceSwitch trace = new TraceSwitch("TrashedRegisters", "Trashed value propagation", "Verbose");
 
-        private IProcessorArchitecture arch;
-        private SegmentMap segmentMap;
-        private ProgramDataFlow flow;
-        private HashSet<SsaTransform> sccGroup;
-        private CallGraph callGraph;
-        private DecompilerEventListener listener;
-        private WorkStack<Block> worklist;
+        private readonly IProcessorArchitecture arch;
+        private readonly SegmentMap segmentMap;
+        private readonly ProgramDataFlow flow;
+        private readonly HashSet<SsaTransform> sccGroup;
+        private readonly CallGraph callGraph;
+        private readonly DecompilerEventListener listener;
+        private readonly WorkStack<Block> worklist;
+        private readonly Dictionary<Procedure, SsaState> ssas;
+        private readonly ExpressionValueComparer cmp;
+        private Block block;
         private Dictionary<Procedure, ProcedureFlow> procCtx;
         private Dictionary<Block, Context> blockCtx;
-        private Dictionary<Procedure, SsaState> ssas;
         private Context ctx;
         private ExpressionSimplifier eval;
-        private Block block;
-        private ExpressionValueComparer cmp;
         private bool propagateToCallers;
         private bool selfRecursiveCalls;
 
@@ -184,8 +184,7 @@ namespace Reko.Analysis
                 foreach (var stm in callStms)
                 {
                     var call = (CallInstruction)stm.Instruction;
-                    var proc = (call.Callee as ProcedureConstant)?.Procedure as Procedure;
-                    if (proc == null)
+                    if (!((call.Callee as ProcedureConstant)?.Procedure is Procedure proc))
                         continue;
                     if (savedSps.TryGetValue(proc, out var delta) &&
                         delta.HasValue)
@@ -256,9 +255,7 @@ namespace Reko.Analysis
         {
             this.ctx = blockCtx[block];
             this.eval = new ExpressionSimplifier(segmentMap, ctx, listener);
-
             this.block = block;
-
             this.ctx.IsDirty = false;
             foreach (var stm in block.Statements)
             {
@@ -356,12 +353,11 @@ namespace Reko.Analysis
 
         public bool VisitCallInstruction(CallInstruction ci)
         {
-            var pc = ci.Callee as ProcedureConstant;
-            if (pc == null)
+            if (!(ci.Callee is ProcedureConstant pc))
             {
                 foreach (var d in ci.Definitions)
                 {
-                    ctx.SetValue((Identifier)d.Expression, Constant.Invalid);
+                    ctx.SetValue((Identifier) d.Expression, Constant.Invalid);
                     DebugEx.PrintIf(trace.TraceVerbose, "  {0} = [{1}]", d.Expression, Constant.Invalid);
                 }
                 return true;
@@ -375,8 +371,7 @@ namespace Reko.Analysis
                 // anything, so we leave early.
                 return true;
             }
-            var callee = pc.Procedure as Procedure;
-            if (callee == null)
+            if (!(pc.Procedure is Procedure callee))
                 throw new NotImplementedException();
 
             if (sccGroup.Any(s => s.SsaState.Procedure == callee))
@@ -445,10 +440,10 @@ namespace Reko.Analysis
         public bool VisitPhiAssignment(PhiAssignment phi)
         {
             Expression total = null;
-            for (int i = 0; i < phi.Src.Arguments.Length; ++i)
+            foreach (var de in phi.Src.Arguments)
             {
-                var p = block.Pred[i];
-                var phiarg = (Identifier)phi.Src.Arguments[i];
+                var p = de.Block;
+                var phiarg = (Identifier) de.Value;
                 // If phiarg hasn't been evaluated yet, it will have
                 // the value null after ctx.GetValue below. If not, we 
                 // use that value and hope all of the phi args have
@@ -490,7 +485,10 @@ namespace Reko.Analysis
         public bool VisitStore(Store store)
         {
             var value = store.Src.Accept(eval);
-            ctx.SetValueEa(((MemoryAccess)store.Dst).EffectiveAddress, value);
+            if (store.Dst is MemoryAccess mem)
+            {
+                ctx.SetValueEa(mem.EffectiveAddress, value);
+            }
             return true;
         }
 
@@ -579,7 +577,6 @@ namespace Reko.Analysis
                     }
                     return true;
                 }
-                break;
             case FpuStackStorage fpuStg:
                 {
                     var value = ctx.GetValue(id);
@@ -701,8 +698,7 @@ namespace Reko.Analysis
                 var args = appl.Arguments;
                 for (int i = 0; i < args.Length; ++i)
                 {
-                    var outArg = args[i] as OutArgument;
-                    if (outArg == null)
+                    if (!(args[i] is OutArgument outArg))
                         continue;
                     if (outArg.Expression is Identifier outId)
                     {
@@ -746,8 +742,7 @@ namespace Reko.Analysis
                 var src = ssa.Identifiers[id].DefStatement;
                 if (src == null)
                     return false;
-                var assSrc = src.Instruction as Assignment;
-                if (assSrc == null)
+                if (!(src.Instruction is Assignment assSrc))
                     return false;
                 return ExpressionIdentifierUseFinder.Find(ssa.Identifiers, assSrc.Src)
                     .Select(c => ssa.Identifiers[c].DefStatement)
@@ -782,11 +777,13 @@ namespace Reko.Analysis
                 {
                     if (!StackState.TryGetValue(stack.StackOffset, out Expression oldValue))
                     {
+                        DebugEx.PrintIf(trace.TraceVerbose, "Trf: Stack offset {0:X4} now has value {1}", stack.StackOffset, value);
                         IsDirty = true;
                         StackState.Add(stack.StackOffset, value);
                     }
                     else if (!cmp.Equals(oldValue, value) && oldValue != Constant.Invalid)
                     {
+                        DebugEx.PrintIf(trace.TraceVerbose, "Trf: Stack offset {0:X4} now has value {1}, was {2}", stack.StackOffset, value, oldValue);
                         IsDirty = true;
                         StackState[stack.StackOffset] = Constant.Invalid;
                     }
@@ -795,13 +792,15 @@ namespace Reko.Analysis
                 {
                     if (!IdState.TryGetValue(id, out Tuple<Expression, BitRange> oldValue))
                     {
+                        DebugEx.PrintIf(trace.TraceVerbose, "Trf: id {0} now has value {1}", id, value);
                         IsDirty = true;
                         IdState.Add(id, Tuple.Create(value, range));
                     }
-                    else if (!cmp.Equals(oldValue.Item1, value))
+                    else if (!cmp.Equals(oldValue.Item1, value) && oldValue.Item1 != Constant.Invalid)
                     {
+                        DebugEx.PrintIf(trace.TraceVerbose, "Trf: id {0} now has value {1}, was {2}", id, value, oldValue);
                         IsDirty = true;
-                        IdState[id] = Tuple.Create(value, range);
+                        IdState[id] = Tuple.Create((Expression)Constant.Invalid, range);
                     }
                 }
             }
@@ -815,22 +814,22 @@ namespace Reko.Analysis
                 if (!StackState.TryGetValue(offset.Value, out Expression oldValue))
                 {
                     IsDirty = true;
+                    DebugEx.PrintIf(trace.TraceVerbose, "Trf: Stack offset {0:X4} now has value {1}", offset.Value, value);
                     StackState.Add(offset.Value, value);
                 }
                 else if (!cmp.Equals(oldValue, value))
                 {
                     IsDirty = true;
+                    DebugEx.PrintIf(trace.TraceVerbose, "Trf: Stack offset {0:X4} now has value {1}, was {2}", offset.Value, value, oldValue);
                     StackState[offset.Value] = value;
                 }
             }
 
             private int? GetFrameOffset(Expression effectiveAddress)
             {
-                var ea = effectiveAddress as BinaryExpression;
-                if (ea == null || ea.Left != FramePointer)
+                if (!(effectiveAddress is BinaryExpression ea) || ea.Left != FramePointer)
                     return null;
-                var o = ea.Right as Constant;
-                if (o == null)
+                if (!(ea.Right is Constant o))
                     return null;
                 if (ea.Operator == Operator.IAdd)
                 {

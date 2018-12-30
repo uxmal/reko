@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2017 John Källén.
  *
@@ -39,6 +39,7 @@ namespace Reko.UnitTests.Scanning
     {
         private StorageBinder binder;
         private IProcessorArchitecture arch;
+        private FakeArchitecture fakeArch;
         private RtlBackwalkHost host;
         private Program program;
         private DirectedGraph<RtlBlock> graph;
@@ -47,7 +48,8 @@ namespace Reko.UnitTests.Scanning
         [SetUp]
         public void Setup()
         {
-            arch = new FakeArchitecture();
+            fakeArch = new FakeArchitecture();
+            arch = fakeArch;
             program = new Program {
                 Architecture = arch,
                 SegmentMap = new SegmentMap(
@@ -61,12 +63,6 @@ namespace Reko.UnitTests.Scanning
             graph = new DiGraph<RtlBlock>();
             host = new RtlBackwalkHost(program, graph);
             processorState = arch.CreateProcessorState();
-        }
-
-        private Identifier Reg(int rn)
-        {
-            var reg = arch.GetRegister(rn);
-            return binder.EnsureRegister(reg);
         }
 
         private Identifier Reg(string name)
@@ -114,7 +110,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Bwslc_DetectRegister()
         {
-            var r1 = Reg(1);
+            var r1 = Reg("r1");
             var b = Given_Block(0x10);
             Given_Instrs(b, m => m.Goto(r1));
 
@@ -126,7 +122,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Bwslc_DetectNoRegister()
         {
-            var r1 = Reg(1);
+            var r1 = Reg("r1");
             var b = Given_Block(0x10);
             Given_Instrs(b, m => m.Goto(Address.Ptr32(0x00123400)));
 
@@ -138,7 +134,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Bwslc_SeedSlicer()
         {
-            var r1 = Reg(1);
+            var r1 = Reg("r1");
             var b = Given_Block(0x10);
             Given_Instrs(b, m => m.Goto(r1));
 
@@ -150,7 +146,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Bwslc_DetectAddition()
         {
-            var r1 = Reg(1);
+            var r1 = Reg("r1");
             var b = Given_Block(0x100);
             Given_Instrs(b, m => m.Goto(m.IAdd(r1, 0x00123400)));
 
@@ -164,8 +160,8 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Bwslc_KillLiveness()
         {
-            var r1 = Reg(1);
-            var r2 = Reg(2);
+            var r1 = Reg("r1");
+            var r2 = Reg("r2");
             var b = Given_Block(0x100);
             Given_Instrs(b, m => { m.Assign(r1, m.Shl(r2, 2)); });
             Given_Instrs(b, m => { m.Goto(m.IAdd(r1, 0x00123400)); });
@@ -180,8 +176,8 @@ namespace Reko.UnitTests.Scanning
         [Test(Description = "Trace across a jump")]
         public void Bwslc_AcrossJump()
         {
-            var r1 = Reg(1);
-            var r2 = Reg(2);
+            var r1 = Reg("r1");
+            var r2 = Reg("r2");
 
             var b = Given_Block(0x100);
             Given_Instrs(b, m => { m.Assign(r1, m.Shl(r2, 2)); });
@@ -205,12 +201,12 @@ namespace Reko.UnitTests.Scanning
         [Test(Description = "Trace across a branch where the branch was taken.")]
         public void Bwslc_BranchTaken()
         {
-            var r1 = Reg(1);
-            var r2 = Reg(2);
+            var r1 = Reg("r1");
+            var r2 = Reg("r2");
             var cz = Cc("CZ");
 
             var b = Given_Block(0x100);
-            Given_Instrs(b, m => { m.Branch(m.Test(ConditionCode.ULE, cz), Address.Ptr32(0x200), RtlClass.ConditionalTransfer); });
+            Given_Instrs(b, m => { m.Branch(m.Test(ConditionCode.ULE, cz), Address.Ptr32(0x200), InstrClass.ConditionalTransfer); });
 
             var b2 = Given_Block(0x200);
             Given_Instrs(b2, m => { m.Assign(r1, m.Shl(r2, 2)); });
@@ -232,13 +228,13 @@ namespace Reko.UnitTests.Scanning
         [Test(Description = "Trace until the comparison that gates the jump is encountered.")]
         public void Bwslc_RangeCheck()
         {
-            var r1 = Reg(1);
-            var r2 = Reg(2);
+            var r1 = Reg("r1");
+            var r2 = Reg("r2");
             var cz = Cc("CZ");
 
             var b = Given_Block(0x100);
             Given_Instrs(b, m => { m.Assign(cz, m.Cond(m.ISub(r2, 4))); });
-            Given_Instrs(b, m => { m.Branch(m.Test(ConditionCode.ULE, cz), Address.Ptr32(0x200), RtlClass.ConditionalTransfer); });
+            Given_Instrs(b, m => { m.Branch(m.Test(ConditionCode.ULE, cz), Address.Ptr32(0x200), InstrClass.ConditionalTransfer); });
 
             var b2 = Given_Block(0x200);
             Given_Instrs(b2, m => { m.Assign(r1, m.Shl(r2, 2)); });
@@ -263,8 +259,8 @@ namespace Reko.UnitTests.Scanning
         [Category(Categories.UnitTests)]
         public void Bwslc_BoundIndexWithAnd()
         {
-            var r1 = Reg(1);
-            var r2 = Reg(2);
+            var r1 = Reg("r1");
+            var r2 = Reg("r2");
             var cz = Cc("CZ");
 
             var b = Given_Block(0x100);
@@ -306,7 +302,7 @@ namespace Reko.UnitTests.Scanning
                 m.Assign(SCZO, m.Cond(m.ISub(bl, 2)));
             });
             Given_Instrs(b, m => {
-                m.Branch(new TestCondition(ConditionCode.UGT, SCZO), Address.Ptr16(0x120), RtlClass.ConditionalTransfer);
+                m.Branch(new TestCondition(ConditionCode.UGT, SCZO), Address.Ptr16(0x120), InstrClass.ConditionalTransfer);
             });
 
             var b2 = Given_Block(0x200);
@@ -367,11 +363,11 @@ namespace Reko.UnitTests.Scanning
             Given_Instrs(b, m => { m.Assign(ecx, m.Shr(ecx, 2)); m.Assign(SCZO, m.Cond(ecx)); });
             Given_Instrs(b, m => { m.Assign(edx, m.And(edx, 3)); m.Assign(SZO, m.Cond(edx)); m.Assign(C, Constant.False()); });
             Given_Instrs(b, m => { m.Assign(SCZO, m.Cond(m.ISub(ecx, 8))); });
-            Given_Instrs(b, m => { m.Branch(m.Test(ConditionCode.ULT, C), Address.Ptr32(0x2000), RtlClass.ConditionalTransfer); });
+            Given_Instrs(b, m => { m.Branch(m.Test(ConditionCode.ULT, C), Address.Ptr32(0x2000), InstrClass.ConditionalTransfer); });
 
             var b2 = Given_Block(0x1008);
             Given_Instrs(b2, m => {
-                m.BranchInMiddleOfInstruction(m.Eq0(ecx), Address.Ptr32(0x1010), RtlClass.ConditionalTransfer);
+                m.BranchInMiddleOfInstruction(m.Eq0(ecx), Address.Ptr32(0x1010), InstrClass.ConditionalTransfer);
                 m.Assign(tmp, m.Mem32(esi));
                 m.Assign(m.Mem32(edi), tmp);
                 m.Assign(esi, m.IAdd(esi, 4));
@@ -423,7 +419,7 @@ namespace Reko.UnitTests.Scanning
 
             var b = Given_Block(0x0C00, 0x0100);
             Given_Instrs(b, m => { m.Assign(SCZO, m.Cond(m.ISub(bx, 15))); });
-            Given_Instrs(b, m => { m.Branch(m.Test(ConditionCode.UGT, C), Address.SegPtr(0xC00, 0x200), RtlClass.ConditionalTransfer); });
+            Given_Instrs(b, m => { m.Branch(m.Test(ConditionCode.UGT, C), Address.SegPtr(0xC00, 0x200), InstrClass.ConditionalTransfer); });
 
             var b2 = Given_Block(0x0C00, 0x0108);
             Given_Instrs(b2, m => { m.Assign(bx, m.IAdd(bx, bx)); m.Assign(SCZO, m.Cond(bx)); });
@@ -459,7 +455,7 @@ namespace Reko.UnitTests.Scanning
 
             var b = Given_Block(0x001000000);
             Given_Instrs(b, m => { m.Assign(SCZO, m.Cond(m.ISub(eax, 3))); });
-            Given_Instrs(b, m => { m.Branch(m.Test(ConditionCode.UGT, C), Address.Ptr32(0x00100010), RtlClass.ConditionalTransfer); });
+            Given_Instrs(b, m => { m.Branch(m.Test(ConditionCode.UGT, C), Address.Ptr32(0x00100010), InstrClass.ConditionalTransfer); });
 
             var b2 = Given_Block(0x001000008);
             Given_Instrs(b2, m => { m.Assign(edx, m.Xor(edx, edx)); m.Assign(SZO, m.Cond(edx)); m.Assign(C, Constant.False()); });
@@ -488,7 +484,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Bwslc_SimplifySum()
         {
-            var r1 = Reg(1);
+            var r1 = Reg("r1");
             var b = Given_Block(0x100);
             Given_Instrs(b, m => m.Assign(r1, m.IAdd(r1, r1)));
             Given_Instrs(b, m => m.Goto(m.IAdd(r1, 0x00123400)));
@@ -504,7 +500,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Bwslc_SimplifySumAndProduct()
         {
-            var r1 = Reg(1);
+            var r1 = Reg("r1");
             var b = Given_Block(0x100);
             Given_Instrs(b, m => m.Assign(r1, m.IAdd(r1, r1)));
             Given_Instrs(b, m => m.Assign(r1, m.IAdd(r1, r1)));
@@ -559,7 +555,7 @@ namespace Reko.UnitTests.Scanning
             });
             Given_Instrs(b, m =>
             {
-                m.Branch(m.Test(ConditionCode.UGT, CZ), Address.Ptr32(0x00100040), RtlClass.ConditionalTransfer);
+                m.Branch(m.Test(ConditionCode.UGT, CZ), Address.Ptr32(0x00100040), InstrClass.ConditionalTransfer);
             });
 
             var b2 = Given_Block(0x00100008);
@@ -607,8 +603,8 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Bwslc_DetectUsingExpression()
         {
-            var r1 = Reg(1);
-            var r2 = Reg(2);
+            var r1 = Reg("r1");
+            var r2 = Reg("r2");
             var b = Given_Block(0x10);
             Given_Instrs(b, m => m.Assign(r1, m.Mem32(m.IAdd(r2, 8))));
             Given_Instrs(b, m => m.Goto(r1));
@@ -620,6 +616,59 @@ namespace Reko.UnitTests.Scanning
             Assert.AreEqual(2, bwslc.Live.Count);
             Assert.AreEqual("r2", bwslc.Live.First().Key.ToString());
             Assert.AreEqual(new BitRange(0, 32), bwslc.Live.First().Value.BitRange);
+        }
+
+        [Test]
+        public void Bwslc_Issue_691()
+        {
+            arch = new Reko.Arch.M68k.M68kArchitecture("m68k");
+            var d0 = Reg("d0");
+            var CVZN = Cc("CVZN");
+            var C = Cc("C");
+            var v3 = binder.CreateTemporary(PrimitiveType.Word16);
+            var v16 = binder.CreateTemporary(PrimitiveType.Word16);
+            var v17 = binder.CreateTemporary(PrimitiveType.Word16);
+            var b1 = Given_Block(0xA860);
+            Given_Instrs(b1, m =>
+            {
+                m.Assign(v3, m.ISub(m.Cast(PrimitiveType.Word16, d0), m.Word16(0x20)));
+                m.Assign(d0, m.Dpb(d0, v3, 0));
+                m.Assign(CVZN, m.Cond(v3));
+                m.Branch(m.Test(ConditionCode.UGE, C), Address.Ptr32(0xA900), InstrClass.ConditionalTransfer);
+            });
+
+            var bRet = Given_Block(0xA870);
+            Given_Instrs(bRet, m =>
+            {
+                m.Return(0, 0);
+            });
+
+            var b2 = Given_Block(0xA900);
+            Given_Instrs(b2, m =>
+            {
+                m.Assign(v16, m.IAdd(m.Cast(PrimitiveType.Word16, d0), m.Cast(PrimitiveType.Word16, d0)));
+                m.Assign(d0, m.Dpb(d0, v16, 0));
+                m.Assign(CVZN, m.Cond(v16));
+                m.Assign(v17, m.IAdd(m.Cast(PrimitiveType.Word16, d0), m.Cast(PrimitiveType.Word16, d0)));
+                m.Assign(CVZN, m.Cond(v17));
+                m.Assign(d0, m.Dpb(d0, v17, 0));
+                m.Goto(m.IAdd(m.Word32(0x0000A8B4), m.Cast(PrimitiveType.Int32, m.Cast(PrimitiveType.Int16, d0))));
+            });
+
+            graph.Nodes.Add(b1);
+            graph.Nodes.Add(bRet);
+            graph.Nodes.Add(b2);
+            graph.AddEdge(b1, bRet);
+            graph.AddEdge(b1, b2);
+
+            var bwslc = new BackwardSlicer(host, b2, processorState);
+            Assert.IsTrue(bwslc.Start(b2, 6, Target(b2)));
+            while (bwslc.Step())
+                ;
+            Assert.AreEqual("(int32) (int16) (word16) ((word16) (v3 * 0x00000002) * 0x00000002) + 0x0000A8B4", bwslc.JumpTableFormat.ToString());
+            Assert.AreEqual("v3", bwslc.JumpTableIndex.ToString());
+            Assert.AreEqual("v3", bwslc.JumpTableIndexToUse.ToString(), "Expression to use when indexing");
+            Assert.AreEqual("1[20,7FFFFFFFFFFFFFFF]", bwslc.JumpTableIndexInterval.ToString());
         }
 
         // Test cases
@@ -677,7 +726,7 @@ namespace Reko.UnitTests.Scanning
         //      m.IAdd(
         //          m.Word32(0x001066A2), 
         //          m.Cast(PrimitiveType.Int32, m.Cast(PrimitiveType.Int16, d1))),
-        //      RtlClass.Transfer);
+        //      InstrClass.Transfer);
 
         // cmp [ebp-66],1D
         // mov edx,[ebp-66]

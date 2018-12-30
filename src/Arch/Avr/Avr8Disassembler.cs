@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -60,7 +60,7 @@ namespace Reko.Arch.Avr
             return instr;
         }
 
-        public AvrInstruction Decode(ushort wInstr, Opcode opcode, string fmt)
+        public AvrInstruction Decode(ushort wInstr, Opcode opcode, InstrClass iclass, string fmt)
         {
             var ops = new List<MachineOperand>();
             int offset;
@@ -181,6 +181,7 @@ namespace Reko.Arch.Avr
             return new AvrInstruction
             {
                 opcode = opcode,
+                iclass = iclass,
                 operands = ops.ToArray(),
             };
         }
@@ -244,9 +245,10 @@ namespace Reko.Arch.Avr
 
         static Avr8Disassembler()
         {
+            var invalid = new BOpRec(Opcode.invalid, "", InstrClass.Invalid);
             var oprecs0 = new OpRec[16]
             {
-                new BOpRec(Opcode.invalid, ""),
+                new BOpRec(Opcode.invalid, "", InstrClass.Invalid|InstrClass.Zero),
                 new BOpRec(Opcode.movw, "p,P"),
                 new BOpRec(Opcode.muls, "d,r4"),
                 new BOpRec(Opcode.muls, "d,r4"),
@@ -410,20 +412,20 @@ namespace Reko.Arch.Avr
                 new BOpRec(Opcode.clt, ""),
                 new BOpRec(Opcode.cli, ""),
 
-                new BOpRec(Opcode.ret, ""),
-                new BOpRec(Opcode.reti, ""),
-                new BOpRec(Opcode.invalid, ""),
-                new BOpRec(Opcode.invalid, ""),
+                new BOpRec(Opcode.ret, "", InstrClass.Transfer),
+                new BOpRec(Opcode.reti, "", InstrClass.Transfer),
+                invalid,
+                invalid,
 
-                new BOpRec(Opcode.invalid, ""),
-                new BOpRec(Opcode.invalid, ""),
-                new BOpRec(Opcode.invalid, ""),
-                new BOpRec(Opcode.invalid, ""),
+                invalid,
+                invalid,
+                invalid,
+                invalid,
 
                 new BOpRec(Opcode.sleep, ""),
                 new BOpRec(Opcode.@break, ""),
                 new BOpRec(Opcode.wdr, ""),
-                new BOpRec(Opcode.invalid, ""),
+                invalid,
 
                 new BOpRec(Opcode.lpm, ""),
                 new BOpRec(Opcode.elpm, ""),
@@ -433,20 +435,20 @@ namespace Reko.Arch.Avr
 
             var oprecs95_8 = new OpRec[]
             {
-                new BOpRec(Opcode.ret, ""),
-                new BOpRec(Opcode.reti, ""),
-                new BOpRec(Opcode.invalid, ""),
-                new BOpRec(Opcode.invalid, ""),
+                new BOpRec(Opcode.ret, "", InstrClass.Transfer),
+                new BOpRec(Opcode.reti, "", InstrClass.Transfer),
+                invalid,
+                invalid,
 
-                new BOpRec(Opcode.invalid, ""),
-                new BOpRec(Opcode.invalid, ""),
-                new BOpRec(Opcode.invalid, ""),
-                new BOpRec(Opcode.invalid, ""),
+                invalid,
+                invalid,
+                invalid,
+                invalid,
 
                 new BOpRec(Opcode.sleep, ""),
                 new BOpRec(Opcode.@break, ""),
                 new BOpRec(Opcode.wdr, ""),
-                new BOpRec(Opcode.invalid, ""),
+                invalid,
 
                 new BOpRec(Opcode.lpm, ""),
                 new BOpRec(Opcode.elpm, ""),
@@ -456,16 +458,16 @@ namespace Reko.Arch.Avr
 
             var oprecs94_9 = new Dictionary<int, OpRec>
             {
-                { 0, new BOpRec(Opcode.ijmp, "") },
-                { 1, new BOpRec(Opcode.eijmp, "") },
-                { 16, new BOpRec(Opcode.icall, "") },
-                { 17, new BOpRec(Opcode.eicall, "") },
+                { 0, new BOpRec(Opcode.ijmp, "", InstrClass.Transfer) },
+                { 1, new BOpRec(Opcode.eijmp, "", InstrClass.Transfer) },
+                { 16, new BOpRec(Opcode.icall, "",InstrClass.Transfer|InstrClass.Call) },
+                { 17, new BOpRec(Opcode.eicall, "", InstrClass.Transfer|InstrClass.Call) },
             };
 
             var oprecs95_9 = new Dictionary<int, OpRec>
             {
-                { 0, new BOpRec(Opcode.icall, "") },
-                { 1, new BOpRec(Opcode.eicall, "") },
+                { 0, new BOpRec(Opcode.icall, "", InstrClass.Transfer|InstrClass.Call) },
+                { 1, new BOpRec(Opcode.eicall, "", InstrClass.Transfer|InstrClass.Call) },
             };
 
             var oprecs90 = new OpRec[]
@@ -473,17 +475,17 @@ namespace Reko.Arch.Avr
                 new BOpRec(Opcode.lds, "D,w"),
                 new BOpRec(Opcode.ld, "D,+Z"),
                 new BOpRec(Opcode.ld, "D,-Z"),
-                new BOpRec(Opcode.invalid, ""),
+                invalid,
 
                 new BOpRec(Opcode.lpm, "D,Z"),
                 new BOpRec(Opcode.lpm, "D,+Z"),
                 new BOpRec(Opcode.elpm, "D,Z"),
                 new BOpRec(Opcode.elpm, "D,+Z"),
 
-                new BOpRec(Opcode.invalid, ""),
+                invalid,
                 new BOpRec(Opcode.ld, "D,+Y"),
                 new BOpRec(Opcode.ld, "D,-Y"),
-                new BOpRec(Opcode.invalid, ""),
+                invalid,
 
                 new BOpRec(Opcode.ld, "D,X"),
                 new BOpRec(Opcode.ld, "D,+X"),
@@ -496,17 +498,17 @@ namespace Reko.Arch.Avr
                 new BOpRec(Opcode.sts, "w,D"),
                 new BOpRec(Opcode.st, "+Z,D"),
                 new BOpRec(Opcode.st, "-Z,D"),
-                new BOpRec(Opcode.invalid, ""),
+                invalid,
 
-                new BOpRec(Opcode.invalid, ""),
-                new BOpRec(Opcode.invalid, ""),
-                new BOpRec(Opcode.invalid, ""),
-                new BOpRec(Opcode.invalid, ""),
+                invalid,
+                invalid,
+                invalid,
+                invalid,
 
-                new BOpRec(Opcode.invalid, ""),
+                invalid,
                 new BOpRec(Opcode.st, "+y,D"),
                 new BOpRec(Opcode.st, "-y,D"),
-                new BOpRec(Opcode.invalid, ""),
+                invalid,
 
                 new BOpRec(Opcode.st, "X,D"),
                 new BOpRec(Opcode.st, "+X,D"),
@@ -521,7 +523,7 @@ namespace Reko.Arch.Avr
                 new BOpRec(Opcode.swap, "D"),
                 new BOpRec(Opcode.inc, "D"),
 
-                new BOpRec(Opcode.invalid, ""),
+                invalid,
                 new BOpRec(Opcode.asr, "D"),
                 new BOpRec(Opcode.lsr, "D"),
                 new BOpRec(Opcode.ror, "D"),
@@ -544,7 +546,7 @@ namespace Reko.Arch.Avr
                 new BOpRec(Opcode.swap, "D"),
                 new BOpRec(Opcode.inc, "D"),
 
-                new BOpRec(Opcode.invalid, ""),
+                invalid,
                 new BOpRec(Opcode.asr, "D"),
                 new BOpRec(Opcode.lsr, "D"),
                 new BOpRec(Opcode.ror, "D"),
@@ -552,7 +554,7 @@ namespace Reko.Arch.Avr
                 new GrpOpRec(4, 5, oprecs95_8),
                 new SparseOpRec(4, 5, oprecs95_9),
                 new BOpRec(Opcode.dec, "D"),
-                new BOpRec(Opcode.invalid, ""),
+                invalid,
 
                 new BOpRec(Opcode.jmp, "Q"),
                 new BOpRec(Opcode.jmp, "Q"),
@@ -573,15 +575,15 @@ namespace Reko.Arch.Avr
                 new BOpRec(Opcode.adiw, "q,s"),
                 new BOpRec(Opcode.sbiw, "q,s"),
 
-                new BOpRec(Opcode.invalid, ""),
-                new BOpRec(Opcode.invalid, ""),
-                new BOpRec(Opcode.invalid, ""),
+                invalid,
+                invalid,
+                invalid,
                 new BOpRec(Opcode.sbis, "g,h"),
 
-                new BOpRec(Opcode.invalid, ""),
-                new BOpRec(Opcode.invalid, ""),
-                new BOpRec(Opcode.invalid, ""),
-                new BOpRec(Opcode.invalid, ""),
+                invalid,
+                invalid,
+                invalid,
+                invalid,
             };
 
             var oprecsB = new OpRec[]
@@ -593,13 +595,13 @@ namespace Reko.Arch.Avr
             var decoders_sbrc = new OpRec[2]
             {
                 new BOpRec(Opcode.sbrc, "D,I"),
-                new BOpRec(Opcode.invalid, ""),
+                invalid,
             };
 
             var decoders_sbrs = new OpRec[2]
             {
                 new BOpRec(Opcode.sbrs, "D,I"),
-                new BOpRec(Opcode.invalid, ""),
+                invalid,
             };
 
             var oprecsF = new OpRec[]
@@ -614,10 +616,10 @@ namespace Reko.Arch.Avr
                 new CondOpRec(),
                 new CondOpRec(),
 
-                new BOpRec(Opcode.invalid, ""),
-                new BOpRec(Opcode.invalid, ""),
-                new BOpRec(Opcode.invalid, ""),
-                new BOpRec(Opcode.invalid, ""),
+                invalid,
+                invalid,
+                invalid,
+                invalid,
 
                 new GrpOpRec(3, 1, decoders_sbrc),
                 new GrpOpRec(3, 1, decoders_sbrc),
@@ -639,11 +641,11 @@ namespace Reko.Arch.Avr
 
                 new GrpOpRec(9, 3, oprecs8),
                 new GrpOpRec(8, 4, oprecs9),
-                new BOpRec(Opcode.invalid, ""),
+                invalid,
                 new GrpOpRec(0xB, 1, oprecsB),
 
-                new BOpRec(Opcode.rjmp, "J"),
-                new BOpRec(Opcode.rcall, "J"),
+                new BOpRec(Opcode.rjmp, "J", InstrClass.Transfer),
+                new BOpRec(Opcode.rcall, "J", InstrClass.Transfer|InstrClass.Call),
                 new BOpRec(Opcode.ldi, "d,K"),
                 new GrpOpRec(8, 4, oprecsF),
             };
@@ -656,18 +658,20 @@ namespace Reko.Arch.Avr
 
         public class BOpRec : OpRec
         {
-            private Opcode opcode;
-            private string fmt;
+            private readonly Opcode opcode;
+            private readonly InstrClass iclass;
+            private readonly string fmt;
 
-            public BOpRec(Opcode opcode, string fmt)
+            public BOpRec(Opcode opcode, string fmt, InstrClass iclass = InstrClass.Linear)
             {
                 this.opcode = opcode;
+                this.iclass = iclass;
                 this.fmt = fmt;
             }
 
             public override AvrInstruction Decode(Avr8Disassembler dasm, ushort wInstr)
             {
-                return dasm.Decode(wInstr, opcode, fmt);
+                return dasm.Decode(wInstr, opcode, iclass, fmt);
             }
         }
 
@@ -710,7 +714,7 @@ namespace Reko.Arch.Avr
                 OpRec oprec;
                 if (!oprecs.TryGetValue(slot, out oprec))
                 {
-                    return dasm.Decode(wInstr, Opcode.invalid, "");
+                    return dasm.Decode(wInstr, Opcode.invalid, InstrClass.Invalid, "");
                 }
                 return oprec.Decode(dasm, wInstr);
             }
@@ -730,7 +734,7 @@ namespace Reko.Arch.Avr
             public override AvrInstruction Decode(Avr8Disassembler dasm, ushort wInstr)
             {
                 int br = (((wInstr >> 7) & 8) | (wInstr & 7)) & 0xF;
-                return dasm.Decode(wInstr, branches[br], "o");
+                return dasm.Decode(wInstr, branches[br], InstrClass.ConditionalTransfer, "o");
             }
         }
     }

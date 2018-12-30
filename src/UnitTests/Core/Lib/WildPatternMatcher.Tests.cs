@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -29,7 +29,6 @@ using System.Text;
 namespace Reko.UnitTests.Core.Lib
 {
     [TestFixture]
-    [Obsolete]
     public class WildPatternMatcherTests
     {
         [Test]

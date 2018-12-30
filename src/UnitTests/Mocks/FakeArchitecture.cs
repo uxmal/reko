@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,10 +41,13 @@ namespace Reko.UnitTests.Mocks
     /// <remarks>
     /// Our fake architecture has 64 registers. r63 is the stack register, r62 is the return address register.
     /// </remarks>
-    public class FakeArchitecture : IProcessorArchitecture
+    public class FakeArchitecture : ProcessorArchitecture
 	{
 		private static RegisterStorage [] registers;
         private static RegisterStorage FlagRegister = new RegisterStorage("flags", 70, 0, PrimitiveType.Word32);
+        private static MemoryIdentifier ST = new MemoryIdentifier("ST", PrimitiveType.Ptr32, new MemoryStorage("x87Stack", StorageDomain.Register + 400));
+        private static RegisterStorage Top = new RegisterStorage("Top", 76, 0, PrimitiveType.Byte);
+
         private RtlTraceBuilder rewriters;
 
 		internal const int RegisterCount = 64;
@@ -52,13 +55,22 @@ namespace Reko.UnitTests.Mocks
 		private const int iReturnRegister = 62;
         private bool ignoreUnknownTraces;
 
-        public FakeArchitecture() 
-		{
+        public FakeArchitecture() : base("fake")
+        {
+            this.Endianness = EndianServices.Little;
+            this.InstructionBitSize = 32;
             this.rewriters = new RtlTraceBuilder();
             this.StackRegister = GetRegister(FakeArchitecture.iStackRegister);
-		}
+            this.FramePointerType = PrimitiveType.Ptr32;
+            this.PointerType = PrimitiveType.Ptr32;
+            this.WordWidth = PrimitiveType.Word32;
+            this.FpuStackBase = ST;
+            this.FpuStackRegister = Top;
 
-		static FakeArchitecture()
+            this.CarryFlagMask = (uint)StatusFlags.C; 
+        }
+
+        static FakeArchitecture()
 		{
 			registers = new RegisterStorage[RegisterCount];
 			for (int i = 0; i < registers.Length; ++i)
@@ -67,8 +79,11 @@ namespace Reko.UnitTests.Mocks
 			}
 		}
 
-        public string Name { get; set; }
-        public string Description { get; set; }
+        public EndianServices Test_Endianness
+        {
+            get { return this.Endianness; }
+            set { this.Endianness = value; }
+        }
 
         public IEnumerable<MachineInstruction> Test_DisassemblyStream { get; set; }
 
@@ -95,7 +110,7 @@ namespace Reko.UnitTests.Mocks
 
 		#region IProcessorArchitecture Members
 
-        public IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
             var linAddr = rdr.Address.ToLinear();
             if (!rewriters.Traces.TryGetValue(rdr.Address, out RtlTrace trace))
@@ -112,48 +127,18 @@ namespace Reko.UnitTests.Mocks
             return trace;
         }
 
-        public IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownLinAddrs, PointerScannerFlags flags)
+        public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownLinAddrs, PointerScannerFlags flags)
         {
             throw new NotImplementedException();
         }
 
-        public Expression CreateStackAccess(IStorageBinder binder, int offset, DataType dataType)
+        public override Expression CreateStackAccess(IStorageBinder binder, int offset, DataType dataType)
         {
             var sp = binder.EnsureRegister(StackRegister);
             return MemoryAccess.Create(sp, offset, dataType);
         }
 
-        public EndianImageReader CreateImageReader(MemoryArea image, Address addr)
-        {
-            return new LeImageReader(image, addr);
-        }
-
-        public EndianImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
-        {
-            return new LeImageReader(image, addrBegin, addrEnd);
-        }
-
-        public EndianImageReader CreateImageReader(MemoryArea image, ulong offset)
-        {
-            return new LeImageReader(image, offset);
-        }
-
-        public ImageWriter CreateImageWriter()
-        {
-            return new LeImageWriter();
-        }
-
-        public ImageWriter CreateImageWriter(MemoryArea mem, Address addr)
-        {
-            return new LeImageWriter(mem, addr);
-        }
-
-        public ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
-        {
-            throw new NotImplementedException();
-        }
-
-        public FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
+        public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
             var sb = new StringBuilder();
             if (((uint)grf & 0x01) != 0) sb.Append('S');
@@ -166,7 +151,7 @@ namespace Reko.UnitTests.Mocks
             return new FlagGroupStorage(flagRegister, grf, sb.ToString(), PrimitiveType.Byte);
         }
 
-		public FlagGroupStorage GetFlagGroup(string s)
+		public override FlagGroupStorage GetFlagGroup(string s)
 		{
             uint grf = 0;
             for (int i = 0; i < s.Length; ++i)
@@ -195,7 +180,7 @@ namespace Reko.UnitTests.Mocks
             return null;
         }
 
-		public RegisterStorage GetRegister(string s)
+		public override RegisterStorage GetRegister(string s)
 		{
             if (s[0] == 'r')
             {
@@ -205,12 +190,12 @@ namespace Reko.UnitTests.Mocks
             return null;
 		}
 
-        public RegisterStorage GetRegister(StorageDomain domain, BitRange range)
+        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
             return GetRegister(domain - StorageDomain.Register);
         }
 
-        public IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
+        public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
         {
             for (uint bitMask = 1; bitMask <= flags.FlagGroupBits; bitMask <<= 1)
             {
@@ -221,37 +206,35 @@ namespace Reko.UnitTests.Mocks
             }
         }
 
-        public RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
+        public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
         {
             return reg;
         }
 
-        public RegisterStorage[] GetRegisters()
+        public override RegisterStorage[] GetRegisters()
         {
             return registers;
         }
 
-        public bool TryGetRegister(string name, out RegisterStorage result)
+        public override bool TryGetRegister(string name, out RegisterStorage result)
         {
             result = null;
             return false;
         }
 
-        public int InstructionBitSize { get { return 32; } }
-
-		public IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
+		public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
 		{
             return new FakeDisassembler(rdr.Address, Test_DisassemblyStream.GetEnumerator());
 		}
 
-        public IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
+        public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
             return new Comp(norm);
         }
 
         private class Comp : EqualityComparer<MachineInstruction>
         {
-            private Normalize norm;
+            private readonly Normalize norm;
 
             public Comp(Normalize norm)
             {
@@ -269,17 +252,12 @@ namespace Reko.UnitTests.Mocks
             }
         }
 
-        public Frame CreateFrame()
-        {
-            return new Frame(FramePointerType);
-        }
-
-		public ProcessorState CreateProcessorState()
+		public override ProcessorState CreateProcessorState()
 		{
 			return new FakeProcessorState(this);
 		}
 
-		public string GrfToString(RegisterStorage flagRegister, string prefix, uint grf)
+		public override string GrfToString(RegisterStorage flagRegister, string prefix, uint grf)
 		{
             var sb = new StringBuilder();
             if ((grf & (uint) StatusFlags.S) != 0) sb.Append('S');
@@ -288,41 +266,24 @@ namespace Reko.UnitTests.Mocks
             return sb.ToString();
 		}
 
-        public PrimitiveType FramePointerType
-        {
-            get { return PrimitiveType.Ptr32; }
-        }
 
-        public PrimitiveType PointerType
-        {
-            get { return PrimitiveType.Ptr32; }
-        }
-
-		public PrimitiveType WordWidth
-		{
-			get { return PrimitiveType.Word32; }
-		}
-
-        public uint CarryFlagMask { get { return (uint) StatusFlags.C; } }
-        public RegisterStorage StackRegister { get; set; }
-        public RegisterStorage FpuStackRegister { get; set; }
         public MemoryIdentifier FpuStackBase { get; set; }
 
-        public List<RtlInstruction> InlineCall(Address addr, Address addrContinuation, EndianImageReader rdr, IStorageBinder binder)
+        public override List<RtlInstruction> InlineCall(Address addr, Address addrContinuation, EndianImageReader rdr, IStorageBinder binder)
         {
             return null;
         }
 
-        public Address MakeAddressFromConstant(Constant c)
+        public override Address MakeAddressFromConstant(Constant c)
         {
             return Address.Ptr32(c.ToUInt32());
         }
 
-        public void PostprocessProgram(Program program)
+        public override void PostprocessProgram(Program program)
         {
         }
 
-        public Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
         {
             if (size == 4)
             {
@@ -338,68 +299,64 @@ namespace Reko.UnitTests.Mocks
             throw new NotImplementedException();
         }
 
-        public bool TryParseAddress(string txtAddress, out Address addr)
+        public override bool TryParseAddress(string txtAddress, out Address addr)
         {
             return Address.TryParse32(txtAddress, out addr);
         }
 
-        public Address MakeSegmentedAddress(Constant seg, Constant offset)
+        public override Address MakeSegmentedAddress(Constant seg, Constant offset)
         {
             return Address.SegPtr(seg.ToUInt16(), offset.ToUInt16());
         }
 
-        public IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg)
+        public override IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg)
         {
             yield return reg;
         }
 
-        public RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> bits)
+        public override RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> bits)
         {
             ulong mask = bits.Where(b => b.OverlapsWith(reg)).Aggregate(0ul, (a, r) => a | r.BitMask);
             return mask != 0 ? reg : null;
         }
 
-        public void RemoveAliases(ISet<RegisterStorage> ids, RegisterStorage reg)
+        public override void RemoveAliases(ISet<RegisterStorage> ids, RegisterStorage reg)
         {
             ids.Remove(reg);
         }
 
-        public void LoadUserOptions(Dictionary<string, object> options)
+        public override void LoadUserOptions(Dictionary<string, object> options)
         {
             throw new NotImplementedException();
         }
 
-        public Dictionary<string, object> SaveUserOptions()
+        public override Dictionary<string, object> SaveUserOptions()
         {
             throw new NotImplementedException();
         }
 
-        public SortedList<string, int> GetOpcodeNames()
+        public override SortedList<string, int> GetOpcodeNames()
         {
             throw new NotImplementedException();
         }
 
-        public int? GetOpcodeNumber(string name)
+        public override int? GetOpcodeNumber(string name)
         {
             throw new NotImplementedException();
         }
 
-        public bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
-        {
-            return mem.TryReadLe(addr, dt, out value);
-        }
         public Func<
             IProcessorArchitecture, IStorageBinder, CallSite, Expression,
             FrameApplicationBuilder>
                 Test_CreateFrameApplicationBuilder =
                     (arch, binder, site, callee) =>
                     new FrameApplicationBuilder(arch, binder, site, callee, false);
-        public FrameApplicationBuilder CreateFrameApplicationBuilder(IStorageBinder binder, CallSite site, Expression callee)
+        public override FrameApplicationBuilder CreateFrameApplicationBuilder(IStorageBinder binder, CallSite site, Expression callee)
         {
             return Test_CreateFrameApplicationBuilder(this, binder, site, callee);
         }
 
-        public Expression CreateFpuStackAccess(IStorageBinder binder, int offset, DataType dataType)
+        public override Expression CreateFpuStackAccess(IStorageBinder binder, int offset, DataType dataType)
         {
             Expression e = binder.EnsureRegister(FpuStackRegister);
             if (offset != 0)

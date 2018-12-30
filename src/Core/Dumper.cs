@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,17 +37,12 @@ namespace Reko.Core
 	public class Dumper
 	{
         private Program program;
-        private IProcessorArchitecture arch;
         private string instrByteFormat;
         private PrimitiveType instrByteSize;
 
         public Dumper(Program program)
 		{
             this.program = program;
-            this.arch = program.Architecture;
-            var byteSize = (7 + this.arch.InstructionBitSize) / 8;
-            this.instrByteFormat = $"{{0:X{byteSize * 2}}} "; // each byte is two nybbles.
-            this.instrByteSize = PrimitiveType.CreateWord(arch.InstructionBitSize);
 		}
 
         public bool ShowAddresses { get; set; }
@@ -103,7 +98,8 @@ namespace Reko.Core
                     formatter.Write(":");
                     formatter.WriteLine();
                 }
-                DumpAssembler(program.SegmentMap, block.Address, block.Address + block.Size, formatter);
+                var arch = block.Block.Procedure.Architecture;
+                DumpAssembler(program.SegmentMap, arch, block.Address, block.Address + block.Size, formatter);
                 return;
             }
 
@@ -115,7 +111,7 @@ namespace Reko.Core
                 {
                     formatter.WriteLine("\t{0}", addr != null ? addr.ToString() : "-- null --");
                 }
-                DumpData(program.SegmentMap, i.Address, i.Size, formatter);
+                DumpData(program.SegmentMap, program.Architecture, i.Address, i.Size, formatter);
             }
             else
             {
@@ -125,28 +121,28 @@ namespace Reko.Core
                 if (i.DataType == null || i.DataType is UnknownType ||
                     i.DataType is CodeType)
                 {
-                    DumpData(program.SegmentMap, i.Address, size, formatter);
+                    DumpData(program.SegmentMap, program.Architecture, i.Address, size, formatter);
                 }
                 else
                 {
-                    DumpTypedData(program.SegmentMap, i, formatter);
+                    DumpTypedData(program.SegmentMap, program.Architecture, i, formatter);
                 }
             }
         }
 
-        public void DumpData(SegmentMap map, Address address, int cbBytes, Formatter stm)
+        public void DumpData(SegmentMap map, IProcessorArchitecture arch, Address address, int cbBytes, Formatter stm)
         {
             if (cbBytes < 0)
                 throw new ArgumentException("Must be a nonnegative number.", "cbBytes"); 
-            DumpData(map, address, (uint)cbBytes, stm);
+            DumpData(map, arch, address, (uint)cbBytes, stm);
         }
 
-        public void DumpData(SegmentMap map, AddressRange range, Formatter stm)
+        public void DumpData(SegmentMap map, IProcessorArchitecture arch, AddressRange range, Formatter stm)
         {
-            DumpData(map, range.Begin, (long) (range.End - range.Begin), stm);
+            DumpData(map, arch, range.Begin, (long) (range.End - range.Begin), stm);
         }
 
-		public void DumpData(SegmentMap map, Address address, long cbBytes, Formatter stm)
+		public void DumpData(SegmentMap map, IProcessorArchitecture arch, Address address, long cbBytes, Formatter stm)
 		{
             const int BytesPerLine = 16;
             var linAddr = address.ToLinear();
@@ -224,7 +220,7 @@ namespace Reko.Core
             return true;
         }
 
-        public void DumpAssembler(SegmentMap map, Address addrStart, Address addrLast, Formatter formatter)
+        public void DumpAssembler(SegmentMap map, IProcessorArchitecture arch, Address addrStart, Address addrLast, Formatter formatter)
         {
             if (!map.TryFindSegment(addrStart, out var segment))
                 return;
@@ -236,7 +232,7 @@ namespace Reko.Core
                 {
                     if (instr.Address >= addrLast)
                         break;
-                    if (!DumpAssemblerLine(segment.MemoryArea, instr, writer))
+                    if (!DumpAssemblerLine(segment.MemoryArea, arch, instr, writer))
                         break;
                 }
             }
@@ -247,14 +243,14 @@ namespace Reko.Core
             }
         }
 
-        public bool DumpAssemblerLine(MemoryArea mem, MachineInstruction instr, InstrWriter writer)
+        public bool DumpAssemblerLine(MemoryArea mem, IProcessorArchitecture arch, MachineInstruction instr, InstrWriter writer)
         {
             Address addrBegin = instr.Address;
             if (ShowAddresses)
                 writer.WriteFormat("{0} ", addrBegin);
             if (ShowCodeBytes)
             {
-                WriteByteRange(mem, instr.Address, instr.Address + instr.Length, writer);
+                WriteByteRange(mem, arch, instr.Address, instr.Address + instr.Length, writer);
                 if (instr.Length * 3 < 16)
                 {
                     writer.WriteString(new string(' ', 16 - (instr.Length * 3)));
@@ -268,7 +264,7 @@ namespace Reko.Core
             return true;
         }
 
-        private void DumpTypedData(SegmentMap map, ImageMapItem item, Formatter w)
+        private void DumpTypedData(SegmentMap map, IProcessorArchitecture arch, ImageMapItem item, Formatter w)
         {
             if (!map.TryFindSegment(item.Address, out var segment) || segment.MemoryArea == null)
                 return;
@@ -290,16 +286,20 @@ namespace Reko.Core
             }
             else
             {
-                w.Write(Block.GenerateName(addr));
+                var label = program.NamingPolicy.BlockName(addr);
+                w.Write(label);
             }
             w.Write("\t");
         }
 
-        public void WriteByteRange(MemoryArea image, Address begin, Address addrEnd, InstrWriter writer)
+        public void WriteByteRange(MemoryArea image, IProcessorArchitecture arch, Address begin, Address addrEnd, InstrWriter writer)
 		{
 			EndianImageReader rdr = arch.CreateImageReader(image, begin);
+            var byteSize = (7 + arch.InstructionBitSize) / 8;
+            this.instrByteFormat = $"{{0:X{byteSize * 2}}} "; // each byte is two nybbles.
+            this.instrByteSize = PrimitiveType.CreateWord(arch.InstructionBitSize);
 
-			while (rdr.Address < addrEnd)
+            while (rdr.Address < addrEnd)
 			{
                 var v = rdr.Read(this.instrByteSize);
                 writer.WriteFormat(this.instrByteFormat, v.ToUInt64());

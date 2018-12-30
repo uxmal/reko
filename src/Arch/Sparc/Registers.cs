@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -57,6 +57,7 @@ namespace Reko.Arch.Sparc
         public static RegisterStorage[] FloatRegisters;
 
         private static Dictionary<string, RegisterStorage> mpNameToReg;
+        private static Dictionary<StorageDomain, RegisterStorage> mpDomainToReg;
 
         static Registers()
         {
@@ -66,6 +67,7 @@ namespace Reko.Arch.Sparc
             g0 = globRegs[0];
             // outgoing parameter 0 / return value from callee
             OutRegisters = stg.RangeOfReg(8, n => n == 6 ? "sp" : $"o{n}", PrimitiveType.Word32);
+            sp = OutRegisters[6];
             o7 = OutRegisters[7];
 
             var localRegs = stg.RangeOfReg32(8, "l{0}");
@@ -87,7 +89,7 @@ namespace Reko.Arch.Sparc
             // why they can't be real32. This also forces our hand into
             // making float-point versions of add, sub, mul, div. 
 
-            FloatRegisters = stg.RangeOfReg32(32, "f{0}");
+            FloatRegisters = stg.RangeOfReg32(64, "f{0}");
 
             psr = stg.Reg32("psr");
 
@@ -104,6 +106,7 @@ namespace Reko.Arch.Sparc
             fsr = stg.Reg32("fsr");
 
             mpNameToReg = stg.NamesToRegisters;
+            mpDomainToReg = stg.DomainsToRegisters;
         }
 
         public static RegisterStorage GetRegister(uint r)
@@ -116,9 +119,14 @@ namespace Reko.Arch.Sparc
             return FloatRegisters[f];
         }
 
-        public static RegisterStorage GetRegister(string regName)
+        public static bool TryGetRegister(string regName, out RegisterStorage reg)
         {
-            if (mpNameToReg.TryGetValue(regName, out var reg))
+            return mpNameToReg.TryGetValue(regName, out reg);
+        }
+
+        public static RegisterStorage GetRegister(StorageDomain domain)
+        {
+            if (mpDomainToReg.TryGetValue(domain, out var reg))
                 return reg;
             else
                 return null;

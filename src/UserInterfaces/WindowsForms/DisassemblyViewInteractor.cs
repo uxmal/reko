@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -90,13 +90,13 @@ namespace Reko.UserInterfaces.WindowsForms
                     if (program.SegmentMap.TryFindSegment(StartAddress, out segment))
                     {
                         var formatter = new Dumper.InstrWriter(new TextFormatter(writer));
-                        var dasm = program.CreateDisassembler(StartAddress).GetEnumerator();
+                        var dasm = program.CreateDisassembler(program.Architecture, StartAddress).GetEnumerator();
                         while (dasm.MoveNext())
                         {
                             var instr = dasm.Current;
                             if (lines <= 0)
                                 break;
-                            dumper.DumpAssemblerLine(segment.MemoryArea, instr, formatter);
+                            dumper.DumpAssemblerLine(segment.MemoryArea, program.Architecture, instr, formatter);
                             --lines;
                         }
                     }

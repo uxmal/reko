@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -77,6 +77,8 @@ namespace Reko.Core.Types
             this.byteSize = (bitSize + (BitsPerByte-1)) / BitsPerByte;
 			this.Name = name;
 		}
+
+        public override bool IsPointer { get { return Domain == Domain.Pointer; } }
 
         public override void Accept(IDataTypeVisitor v)
         {
@@ -155,9 +157,9 @@ namespace Reko.Core.Types
             }
             if (!mpBitWidthToAllowableDomain.TryGetValue(bitSize, out var dom))
             {
-                dom = Domain.UnsignedInt | Domain.Integer | Domain.Pointer;
+                dom = Domain.Integer | Domain.Pointer;
             }
-			return Create(dom, (short) bitSize, name);
+			return Create(dom, bitSize, name);
 		}
 
         public static PrimitiveType CreateWord(uint bitSize)
@@ -248,7 +250,7 @@ namespace Reko.Core.Types
         /// <summary>
         /// True if the type can only be some kind of integral numeric type
         /// </summary>
-		public bool IsIntegral
+		public override bool IsIntegral
 		    => (Domain & Domain.Integer) != 0 && (Domain & ~Domain.Integer) == 0; 
 
         /// <summary>
@@ -264,38 +266,6 @@ namespace Reko.Core.Types
             if (dom == 0)
                 dom = domainMask;
             return Create(dom, BitSize);
-		}
-
-		public override string Prefix
-		{
-			get
-			{
-				switch (Domain)
-				{
-				case Domain.None:
-					return "v";
-				case Domain.Boolean:
-					return "f";
-				case Domain.Real:
-					return "r";
-				case Domain.Pointer:
-                case Domain.SegPointer:
-					return "ptr";
-				case Domain.Selector:
-					return "pseg";
-				default:
-					switch (bitSize)
-					{
-					case 8: return "b";
-					case 16: return "w";
-					case 32: return "dw";
-                    case 64: return "qw";
-                    case 128: return "ow";
-                    case 256: return "hw";
-					default: return "n";
-					}
-				}
-			}
 		}
 
         public override int BitSize

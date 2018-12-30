@@ -44,7 +44,7 @@ namespace Reko.UnitTests.Analysis
         public void Setup()
         {
             arch = new FakeArchitecture();
-            proc = new Procedure(arch, "Test", new Frame(arch.FramePointerType));
+            proc = new Procedure(arch, "Test", Address.Ptr32(0x00123400), new Frame(arch.FramePointerType));
             flow = new ProcedureFlow(proc);
             ctx = new SymbolicEvaluationContext(arch, proc.Frame);
             trs = new TrashedRegisterSummarizer(proc, flow, ctx);

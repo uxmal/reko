@@ -46,7 +46,7 @@ namespace Reko.Core.Rtl
         {
             this.Condition = condition;
             this.Instruction = instr;
-            this.Class = instr.Class | RtlClass.Conditional;
+            this.Class = instr.Class | InstrClass.Conditional;
         }
 
         public override T Accept<T>(RtlInstructionVisitor<T> visitor)

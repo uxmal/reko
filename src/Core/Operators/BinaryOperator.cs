@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,5 +50,5 @@ namespace Reko.Core.Operators
             int bitSize = Math.Max(p1.BitSize, p2.BitSize);
             return ConstantReal.Create(PrimitiveType.Create(p1.Domain & p2.Domain, bitSize), val);
         }
-	}
+    }
 }

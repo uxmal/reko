@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 1999-2018 John Källén.
+* Copyright (C) 1999-2018 John KÃ¤llÃ©n.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -173,12 +173,9 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
-        private void RewriteBic()
+        private Expression Bic(Expression a, Expression b)
         {
-            var opDst = this.Operand(Dst(), PrimitiveType.Word32, true);
-            var opSrc1 = this.Operand(Src1());
-            var opSrc2 = this.Operand(Src2());
-            m.Assign(opDst, m.And(opSrc1, m.Comp(opSrc2)));
+            return m.And(a, m.Comp(b));
         }
 
         private void RewriteClz()
@@ -208,7 +205,7 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteTableBranch(DataType elemSize)
         {
-            this.rtlClass = RtlClass.Transfer;
+            this.rtlClass = InstrClass.Transfer;
             var mem = (MemoryOperand) instr.ops[0];
             Expression tableBase;
             if (mem.BaseRegister == Registers.pc)
@@ -286,8 +283,8 @@ namespace Reko.Arch.Arm.AArch32
                     // of this procedure. That requires more advanced 
                     // analyses than Reko can manage presently.
                     rtlClass = instr.condition == ArmCondition.AL
-                        ? RtlClass.Transfer
-                        : RtlClass.ConditionalTransfer;
+                        ? InstrClass.Transfer
+                        : InstrClass.ConditionalTransfer;
                     m.Assign(baseReg, m.IAdd(baseReg, mem.Offset));
                     m.Return(0, 0);
                     return;
@@ -304,7 +301,7 @@ namespace Reko.Arch.Arm.AArch32
             }
             if (isJump)
             {
-                rtlClass = RtlClass.Transfer;
+                rtlClass = InstrClass.Transfer;
                 m.Goto(src);
             }
             else
@@ -408,13 +405,13 @@ namespace Reko.Arch.Arm.AArch32
             }
             if (writeback)
             {
-                m.Assign(dst, m.IAdd(dst, m.Int32(offset)));
+                m.Assign(dst, m.IAddS(dst, offset));
             }
             if (pcRestored)
             {
                 rtlClass = instr.condition == ArmCondition.AL
-                    ? RtlClass.Transfer
-                    : RtlClass.ConditionalTransfer;
+                    ? InstrClass.Transfer
+                    : InstrClass.ConditionalTransfer;
                 m.Return(0, 0);
             }
         }
@@ -478,7 +475,7 @@ namespace Reko.Arch.Arm.AArch32
         {
             if (Dst() is RegisterOperand rOp && rOp.Register == Registers.pc)
             {
-                rtlClass = RtlClass.Transfer;
+                rtlClass = InstrClass.Transfer;
                 if (Src1() is RegisterOperand ropSrc && ropSrc.Register == Registers.lr)
                 {
                     m.Return(0, 0);
@@ -554,13 +551,13 @@ namespace Reko.Arch.Arm.AArch32
         {
             Expression dst = Reg(Registers.sp);
             var regs = ((MultiRegisterOperand)instr.ops[0]).GetRegisters().ToArray();
-            m.Assign(dst, m.ISub(dst, m.Int32(regs.Length * 4)));
+            m.Assign(dst, m.ISubS(dst, regs.Length * 4));
 
             int offset = 0;
             foreach (var reg in regs)
             { 
                 var ea = offset != 0
-                    ? m.IAdd(dst, m.Int32(offset))
+                    ? m.IAddS(dst, offset)
                     : dst;
                 m.Assign(m.Mem32(ea), Reg(reg));
                 offset += 4;
@@ -749,7 +746,7 @@ namespace Reko.Arch.Arm.AArch32
                 var dst = Reg(r);
                 Expression ea =
                     offset != 0
-                    ? m.IAdd(rSrc, m.Int32(offset))
+                    ? m.IAddS(rSrc, offset)
                     : rSrc;
                 m.Assign(m.Mem(r.DataType, ea), dst);
                 offset += r.DataType.Size;
@@ -758,11 +755,11 @@ namespace Reko.Arch.Arm.AArch32
             {
                 if (add)
                 {
-                    m.Assign(rSrc, m.IAdd(rSrc, m.Int32(totalRegsize)));
+                    m.Assign(rSrc, m.IAddS(rSrc, totalRegsize));
                 }
                 else
                 {
-                    m.Assign(rSrc, m.ISub(rSrc, m.Int32(totalRegsize)));
+                    m.Assign(rSrc, m.ISubS(rSrc, totalRegsize));
                 }
             }
         }

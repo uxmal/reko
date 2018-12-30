@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -26,6 +26,7 @@ using Reko.Core.Operators;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
+using System.Diagnostics;
 
 namespace Reko.Typing
 {

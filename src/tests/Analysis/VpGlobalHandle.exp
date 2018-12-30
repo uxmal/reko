@@ -4,12 +4,12 @@ fp:fp
     uses: esp_2 = fp
 esp_2: orig: esp
     def:  esp_2 = fp
-    uses: esp_3 = esp_2 - 0x00000004
+    uses: esp_3 = esp_2 - 4
 esp_3: orig: esp
-    def:  esp_3 = esp_2 - 0x00000004
+    def:  esp_3 = esp_2 - 4
     uses: Mem5[esp_3:word32] = esi
           esi_6 = Mem5[esp_3 + 0x00000008:word32]
-          esp_7 = esp_3 - 0x00000004
+          esp_7 = esp_3 - 4
 esi:esi
     def:  def esi
     uses: Mem5[esp_3:word32] = esi
@@ -21,9 +21,9 @@ esi_6: orig: esi
     uses: Mem12[esp_11:word32] = esi_6
           Mem20[esp_19:word32] = esi_6
 esp_7: orig: esp
-    def:  esp_7 = esp_3 - 0x00000004
+    def:  esp_7 = esp_3 - 4
     uses: Mem9[esp_7:word32] = edi
-          esp_11 = esp_7 - 0x00000004
+          esp_11 = esp_7 - 4
 edi:edi
     def:  def edi
     uses: Mem9[esp_7:word32] = edi
@@ -32,7 +32,7 @@ Mem9: orig: Mem0
 edi_10: orig: edi
     def:  edi_10 = GlobalHandle
 esp_11: orig: esp
-    def:  esp_11 = esp_7 - 0x00000004
+    def:  esp_11 = esp_7 - 4
     uses: Mem12[esp_11:word32] = esi_6
           eax_13 = GlobalHandle(Mem12[esp_11:word32])
           esp_14 = esp_11 + 0x00000004
@@ -44,9 +44,9 @@ eax_13: orig: eax
     uses: Mem16[esp_15:word32] = eax_13
 esp_14: orig: esp
     def:  esp_14 = esp_11 + 0x00000004
-    uses: esp_15 = esp_14 - 0x00000004
+    uses: esp_15 = esp_14 - 4
 esp_15: orig: esp
-    def:  esp_15 = esp_14 - 0x00000004
+    def:  esp_15 = esp_14 - 4
     uses: Mem16[esp_15:word32] = eax_13
           eax_17 = GlobalUnlock(Mem16[esp_15:word32])
           esp_18 = esp_15 + 0x00000004
@@ -57,9 +57,9 @@ eax_17: orig: eax
     def:  eax_17 = GlobalUnlock(Mem16[esp_15:word32])
 esp_18: orig: esp
     def:  esp_18 = esp_15 + 0x00000004
-    uses: esp_19 = esp_18 - 0x00000004
+    uses: esp_19 = esp_18 - 4
 esp_19: orig: esp
-    def:  esp_19 = esp_18 - 0x00000004
+    def:  esp_19 = esp_18 - 4
     uses: Mem20[esp_19:word32] = esi_6
           eax_21 = GlobalHandle(Mem20[esp_19:word32])
           esp_22 = esp_19 + 0x00000004
@@ -71,9 +71,9 @@ eax_21: orig: eax
     uses: Mem24[esp_23:word32] = eax_21
 esp_22: orig: esp
     def:  esp_22 = esp_19 + 0x00000004
-    uses: esp_23 = esp_22 - 0x00000004
+    uses: esp_23 = esp_22 - 4
 esp_23: orig: esp
-    def:  esp_23 = esp_22 - 0x00000004
+    def:  esp_23 = esp_22 - 4
     uses: Mem24[esp_23:word32] = eax_21
           eax_25 = GlobalFree(Mem24[esp_23:word32])
           esp_26 = esp_23 + 0x00000004
@@ -87,17 +87,17 @@ eax_25: orig: eax
 esp_26: orig: esp
     def:  esp_26 = esp_23 + 0x00000004
     uses: edi_27 = Mem24[esp_26:word32]
-          esp_28 = esp_26 + 0x00000004
+          esp_28 = esp_26 + 4
 edi_27: orig: edi
     def:  edi_27 = Mem24[esp_26:word32]
 esp_28: orig: esp
-    def:  esp_28 = esp_26 + 0x00000004
+    def:  esp_28 = esp_26 + 4
     uses: esi_29 = Mem24[esp_28:word32]
-          esp_30 = esp_28 + 0x00000004
+          esp_30 = esp_28 + 4
 esi_29: orig: esi
     def:  esi_29 = Mem24[esp_28:word32]
 esp_30: orig: esp
-    def:  esp_30 = esp_28 + 0x00000004
+    def:  esp_30 = esp_28 + 4
 // fn10000000
 // Return size: 4
 define fn10000000
@@ -108,32 +108,32 @@ fn10000000_entry:
 	// succ:  l10000000
 l10000000:
 	esp_2 = fp
-	esp_3 = esp_2 - 0x00000004
+	esp_3 = esp_2 - 4
 	Mem5[esp_3:word32] = esi
 	esi_6 = Mem5[esp_3 + 0x00000008:word32]
-	esp_7 = esp_3 - 0x00000004
+	esp_7 = esp_3 - 4
 	Mem9[esp_7:word32] = edi
 	edi_10 = GlobalHandle
-	esp_11 = esp_7 - 0x00000004
+	esp_11 = esp_7 - 4
 	Mem12[esp_11:word32] = esi_6
 	eax_13 = GlobalHandle(Mem12[esp_11:word32])
 	esp_14 = esp_11 + 0x00000004
-	esp_15 = esp_14 - 0x00000004
+	esp_15 = esp_14 - 4
 	Mem16[esp_15:word32] = eax_13
 	eax_17 = GlobalUnlock(Mem16[esp_15:word32])
 	esp_18 = esp_15 + 0x00000004
-	esp_19 = esp_18 - 0x00000004
+	esp_19 = esp_18 - 4
 	Mem20[esp_19:word32] = esi_6
 	eax_21 = GlobalHandle(Mem20[esp_19:word32])
 	esp_22 = esp_19 + 0x00000004
-	esp_23 = esp_22 - 0x00000004
+	esp_23 = esp_22 - 4
 	Mem24[esp_23:word32] = eax_21
 	eax_25 = GlobalFree(Mem24[esp_23:word32])
 	esp_26 = esp_23 + 0x00000004
 	edi_27 = Mem24[esp_26:word32]
-	esp_28 = esp_26 + 0x00000004
+	esp_28 = esp_26 + 4
 	esi_29 = Mem24[esp_28:word32]
-	esp_30 = esp_28 + 0x00000004
+	esp_30 = esp_28 + 4
 	return
 	// succ:  fn10000000_exit
 fn10000000_exit:
@@ -141,9 +141,9 @@ fn10000000_exit:
 fp:fp
     def:  def fp
     uses: esp_2 = fp
-          esp_3 = fp - 0x00000004
-          esp_7 = fp - 0x00000008
-          esp_11 = fp - 0x0000000C
+          esp_3 = fp - 4
+          esp_7 = fp - 8
+          esp_11 = fp - 12
           esp_14 = fp - 0x00000008
           esp_15 = fp - 0x0000000C
           esp_18 = fp - 0x00000008
@@ -156,7 +156,7 @@ fp:fp
 esp_2: orig: esp
     def:  esp_2 = fp
 esp_3: orig: esp
-    def:  esp_3 = fp - 0x00000004
+    def:  esp_3 = fp - 4
 esi:esi
     def:  def esi
     uses: dwLoc04_31 = esi
@@ -166,7 +166,7 @@ esi_6: orig: esi
     uses: dwLoc0C_34 = esi_6
           dwLoc0C_36 = esi_6
 esp_7: orig: esp
-    def:  esp_7 = fp - 0x00000008
+    def:  esp_7 = fp - 8
 edi:edi
     def:  def edi
     uses: dwLoc08_33 = edi
@@ -174,7 +174,7 @@ Mem9: orig: Mem0
 edi_10: orig: edi
     def:  edi_10 = GlobalHandle
 esp_11: orig: esp
-    def:  esp_11 = fp - 0x0000000C
+    def:  esp_11 = fp - 12
 Mem12: orig: Mem0
 eax_13: orig: eax
     def:  eax_13 = GlobalHandle(dwLoc0C_34)
@@ -243,13 +243,13 @@ fn10000000_entry:
 	// succ:  l10000000
 l10000000:
 	esp_2 = fp
-	esp_3 = fp - 0x00000004
+	esp_3 = fp - 4
 	dwLoc04_31 = esi
 	esi_6 = dwArg04
-	esp_7 = fp - 0x00000008
+	esp_7 = fp - 8
 	dwLoc08_33 = edi
 	edi_10 = GlobalHandle
-	esp_11 = fp - 0x0000000C
+	esp_11 = fp - 12
 	dwLoc0C_34 = esi_6
 	eax_13 = GlobalHandle(dwLoc0C_34)
 	esp_14 = fp - 0x00000008

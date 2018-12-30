@@ -9,18 +9,18 @@ SCZO_5: orig: SCZO
 Z_6: orig: Z
 ax_7: orig: ax
     def:  ax_7 = 0x0000
-    uses: ax_13 = PHI(ax_12, ax_7, ax_11)
+    uses: ax_13 = PHI((ax_12, l0C00_0007), (ax_7, l0C00_0013), (ax_11, l0C00_000D))
 SZO_8: orig: SZO
 C_9: orig: C
 SZO_10: orig: SZO
 ax_11: orig: ax
     def:  ax_11 = 0x0001
-    uses: ax_13 = PHI(ax_12, ax_7, ax_11)
+    uses: ax_13 = PHI((ax_12, l0C00_0007), (ax_7, l0C00_0013), (ax_11, l0C00_000D))
 ax_12: orig: ax
     def:  ax_12 = 0xFFFF
-    uses: ax_13 = PHI(ax_12, ax_7, ax_11)
+    uses: ax_13 = PHI((ax_12, l0C00_0007), (ax_7, l0C00_0013), (ax_11, l0C00_000D))
 ax_13: orig: ax
-    def:  ax_13 = PHI(ax_12, ax_7, ax_11)
+    def:  ax_13 = PHI((ax_12, l0C00_0007), (ax_7, l0C00_0013), (ax_11, l0C00_000D))
     uses: Mem16[ds:0x0100:word16] = ax_13
 C_17: orig: C
 ds:ds
@@ -63,7 +63,7 @@ l0C00_0013:
 	ax_7 = 0x0000
 	// succ:  l0C00_0015
 l0C00_0015:
-	ax_13 = PHI(ax_12, ax_7, ax_11)
+	ax_13 = PHI((ax_12, l0C00_0007), (ax_7, l0C00_0013), (ax_11, l0C00_000D))
 	Mem16[ds:0x0100:word16] = ax_13
 	return
 	// succ:  fn0C00_0000_exit

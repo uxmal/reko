@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -26,8 +26,8 @@ namespace Reko.Scanning
     public interface IScannerQueue
     {
         void EnqueueImageSymbol(ImageSymbol sym, bool isEntryPoint);
-        void EnqueueProcedure(Address addr);
-        void EnqueueUserProcedure(Address addr, FunctionType sig, string name);
+        void EnqueueProcedure(IProcessorArchitecture arch, Address addr);
+        void EnqueueUserProcedure(IProcessorArchitecture arch, Address addr, FunctionType sig, string name);
         void EnqueueUserGlobalData(Address addr, DataType dt, string name);
 
         //$REVIEW: these methods don't belong here. 

@@ -13,7 +13,7 @@ l10000000:
 	word32 ecx_6 = Mem0[a:word32]
 	word32 eax_10
 	call Mem8[ecx_6 + 0x00000004:word32] (retsize: 4;)
-		uses: eax:a,ecx:ecx_6,esp:fp - 0x00000004,Stack +0004:0x0000000A,Stack +000C:a,Top:0
+		uses: eax:a,ecx:ecx_6,esp:fp - 4,Stack +0004:0x0000000A,Stack +000C:a,Top:0
 		defs: eax:eax_10
 	return eax_10 + 0x00000001
 	// succ:  fn10000000_exit

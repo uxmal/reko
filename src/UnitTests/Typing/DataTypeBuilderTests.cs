@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -452,7 +452,7 @@ namespace Reko.UnitTests.Typing
             pp.Add("Fn2", m =>
             {
                 Identifier arg1 = m.Local32("arg1");
-                Identifier ret = m.Register(1);
+                Identifier ret = m.Register("r1");
                 m.Procedure.Signature = FunctionType.Func(ret, arg1);
                 m.Procedure.Signature.Parameters[0] = arg1;
                 m.Assign(ret, m.IAdd(arg1, 1));

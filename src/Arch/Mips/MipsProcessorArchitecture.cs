@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -50,8 +50,9 @@ namespace Reko.Arch.Mips
         public RegisterStorage lo;
         private Dictionary<string, RegisterStorage> mpNameToReg;
 
-        public MipsProcessorArchitecture(string archId, PrimitiveType wordSize, PrimitiveType ptrSize) : base(archId)
+        public MipsProcessorArchitecture(string archId, EndianServices endianness, PrimitiveType wordSize, PrimitiveType ptrSize) : base(archId)
         {
+            this.Endianness = endianness;
             this.WordWidth = wordSize;
             this.PointerType = ptrSize;
             this.FramePointerType = ptrSize;
@@ -139,7 +140,13 @@ namespace Reko.Arch.Mips
             return (int)result;
         }
 
-        public override RegisterStorage GetRegister(int i)
+        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
+        {
+            var i = domain - StorageDomain.Register;
+            return GetRegister(i);
+        }
+
+        public RegisterStorage GetRegister(int i)
         {
             if (i >= GeneralRegs.Length)
                 return null;
@@ -248,164 +255,44 @@ namespace Reko.Arch.Mips
 
     public class MipsBe32Architecture : MipsProcessorArchitecture
     {
-        public MipsBe32Architecture(string archId) : base(archId, PrimitiveType.Word32, PrimitiveType.Ptr32) { }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addr)
-        {
-            return new BeImageReader(image, addr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, ulong offset)
-        {
-            return new BeImageReader(image, offset);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
-        {
-            return new BeImageReader(image, addrBegin, addrEnd);
-        }
-
-        public override ImageWriter CreateImageWriter()
-        {
-            return new BeImageWriter();
-        }
-
-        public override ImageWriter CreateImageWriter(MemoryArea mem, Address addr)
-        {
-            return new BeImageWriter(mem, addr);
-        }
+        public MipsBe32Architecture(string archId) : base(archId, EndianServices.Big,  PrimitiveType.Word32, PrimitiveType.Ptr32) { }
 
         public override Address MakeAddressFromConstant(Constant c)
         {
             return Address.Ptr32(c.ToUInt32());
-        }
-
-        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
-        {
-            return mem.TryReadBe(addr, dt, out value);
         }
     }
 
     public class MipsLe32Architecture : MipsProcessorArchitecture
     {
-        public MipsLe32Architecture(string archId) : base(archId, PrimitiveType.Word32, PrimitiveType.Ptr32) { }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addr)
-        {
-            return new LeImageReader(image, addr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, ulong offset)
-        {
-            return new LeImageReader(image, offset);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
-        {
-            return new LeImageReader(image, addrBegin, addrEnd);
-        }
-
-        public override ImageWriter CreateImageWriter()
-        {
-            return new LeImageWriter();
-        }
-
-        public override ImageWriter CreateImageWriter(MemoryArea mem, Address addr)
-        {
-            return new LeImageWriter(mem, addr);
-        }
+        public MipsLe32Architecture(string archId) : base(archId, EndianServices.Little, PrimitiveType.Word32, PrimitiveType.Ptr32) { }
 
         public override Address MakeAddressFromConstant(Constant c)
         {
             return Address.Ptr32(c.ToUInt32());
         }
-
-        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
-        {
-            return mem.TryReadLe(addr, dt, out value);
-        }
     }
 
     public class MipsBe64Architecture : MipsProcessorArchitecture
     {
-        public MipsBe64Architecture(string archId) : base(archId, PrimitiveType.Word64, PrimitiveType.Ptr64)
+        public MipsBe64Architecture(string archId) : base(archId, EndianServices.Big, PrimitiveType.Word64, PrimitiveType.Ptr64)
         { }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addr)
-        {
-            return new BeImageReader(image, addr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, ulong offset)
-        {
-            return new BeImageReader(image, offset);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
-        {
-            return new BeImageReader(image, addrBegin, addrEnd);
-        }
-
-        public override ImageWriter CreateImageWriter()
-        {
-            return new BeImageWriter();
-        }
-
-        public override ImageWriter CreateImageWriter(MemoryArea mem, Address addr)
-        {
-            return new BeImageWriter(mem, addr);
-        }
 
         public override Address MakeAddressFromConstant(Constant c)
         {
             return Address.Ptr64(c.ToUInt64());
-        }
-
-        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
-        {
-            return mem.TryReadBe(addr, dt, out value);
         }
     }
 
     public class MipsLe64Architecture : MipsProcessorArchitecture
     {
-        public MipsLe64Architecture(string archId) : base(archId, PrimitiveType.Word64, PrimitiveType.Ptr64)
+        public MipsLe64Architecture(string archId) : base(archId, EndianServices.Little, PrimitiveType.Word64, PrimitiveType.Ptr64)
         {
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addr)
-        {
-            return new LeImageReader(image, addr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, ulong offset)
-        {
-            return new LeImageReader(image, offset);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
-        {
-            return new LeImageReader(image, addrBegin, addrEnd);
-        }
-
-        public override ImageWriter CreateImageWriter()
-        {
-            return new LeImageWriter();
-        }
-
-        public override ImageWriter CreateImageWriter(MemoryArea mem, Address addr)
-        {
-            return new LeImageWriter(mem, addr);
         }
 
         public override Address MakeAddressFromConstant(Constant c)
         {
             return Address.Ptr64(c.ToUInt64());
-        }
-
-        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
-        {
-            return mem.TryReadLe(addr, dt, out value);
         }
     }
 }

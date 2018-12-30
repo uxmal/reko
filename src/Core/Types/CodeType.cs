@@ -49,7 +49,7 @@ namespace Reko.Core.Types
 
         public override DataType Clone(IDictionary<DataType, DataType> clonedTypes)
         {
-            return new CodeType { Size = this.Size } ;
+            return new CodeType { Size = this.Size, Qualifier = this.Qualifier } ;
         }
     }
 }

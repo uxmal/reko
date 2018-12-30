@@ -38,7 +38,7 @@ fn0C00_000A_entry:
 	// succ:  l0C00_000A
 l0C00_000A:
 	sp = fp
-	sp = sp - 0x0002
+	sp = sp - 2
 	Mem0[ss:sp:word16] = bp
 	bp = 0x0300
 	goto l0C00_0014
@@ -62,7 +62,7 @@ l0C00_001F:
 	// succ:  fn0C00_000A_exit
 l0C00_0024:
 	bp = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
+	sp = sp + 2
 	C = true
 	return
 	// succ:  fn0C00_000A_exit

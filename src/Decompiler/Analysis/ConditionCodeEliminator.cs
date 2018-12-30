@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -240,7 +240,7 @@ namespace Reko.Analysis
             var oldSid = ssaIds[(Identifier)u];
             u = UseGrfConditionally(sidGrf, ConditionCode.ULT);
             if (c != null)
-                c.Expression = u;
+                binUse.Right = new Cast(c.DataType, u);
             else
                 binUse.Right = u;
             oldSid.Uses.Remove(useStm);
@@ -332,12 +332,20 @@ namespace Reko.Analysis
         // 1'. a_2 = slice(tmp3,16)
         // 2'. b_2 = (cast) tmp3
         // 4.  flags_3 = cond(b_2)
+
         private Instruction TransformRorC(Application rorc, Assignment a)
         {
             var sidOrigLo = ssaIds[a.Dst];
             var sidCarry = ssaIds[(Identifier)rorc.Arguments[2]];
             if (!(sidCarry.DefExpression is ConditionOf cond))
-                return a;
+            {
+                if (!(sidCarry.DefExpression is Identifier idTmp))
+                    return a;
+                var sidT = ssaIds[idTmp];
+                if (!(sidT.DefExpression is ConditionOf cond2))
+                    return a;
+                cond = cond2;
+            }
             if (!(cond.Expression is Identifier condId))
                 return a;
             var sidOrigHi = ssaIds[condId];
@@ -445,7 +453,11 @@ namespace Reko.Analysis
 				return ComparisonFromOverflow(bin, isNegated);
 			case ConditionCode.NO:
 				return ComparisonFromOverflow(bin, !isNegated);
-			default: throw new NotImplementedException(string.Format("Case {0} not handled.", cc));
+            case ConditionCode.PE:
+                return ComparisonFromParity(bin, isNegated);
+            case ConditionCode.PO:
+                return ComparisonFromParity(bin, !isNegated);
+            default: throw new NotImplementedException(string.Format("Case {0} not handled.", cc));
 			}
 
 			Expression e;
@@ -456,10 +468,6 @@ namespace Reko.Analysis
             else
             {
                 var dt = bin.Left.DataType;
-                if (dt is QualifiedType qt)
-                {
-                    dt = qt.DataType;
-                }
                 var ptr = dt.ResolveAs<Pointer>();
                 Expression zero;
                 if (ptr != null)
@@ -494,8 +502,26 @@ namespace Reko.Analysis
 			}
 			return e;
 		}
-		
-		public static ConditionCode Negate(ConditionCode cc)
+
+        public Expression ComparisonFromParity(BinaryExpression bin, bool isNegated)
+        {
+            var sig = new FunctionType(
+                new Identifier("", PrimitiveType.Bool, null),
+                new Identifier("", bin.DataType, null));
+            Expression e = new Application(
+                new ProcedureConstant(
+                    platform.PointerType,
+                    new PseudoProcedure("PARITY_EVEN", sig)),
+                PrimitiveType.Bool,
+                bin);
+            if (isNegated)
+            {
+                e = m.Not(e);
+            }
+            return e;
+        }
+
+        public static ConditionCode Negate(ConditionCode cc)
 		{
 			switch (cc)
 			{

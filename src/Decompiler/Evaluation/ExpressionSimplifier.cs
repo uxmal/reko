@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Reko.Core.Services;
+using System.Diagnostics;
 
 namespace Reko.Evaluation 
 {
@@ -64,8 +65,8 @@ namespace Reko.Evaluation
         private IdProcConstRule idProcConstRule;
         private CastCastRule castCastRule;
         private DistributedCastRule distributedCast;
-        
         private MkSeqFromSlices_Rule mkSeqFromSlicesRule;
+        private ComparisonConstOnLeft constOnLeft;
 
         public ExpressionSimplifier(SegmentMap segmentMap, EvaluationContext ctx, DecompilerEventListener listener)
         {
@@ -97,6 +98,7 @@ namespace Reko.Evaluation
             this.castCastRule = new CastCastRule(ctx);
             this.distributedCast = new DistributedCastRule();
             this.mkSeqFromSlicesRule = new MkSeqFromSlices_Rule(ctx);
+            this.constOnLeft = new ComparisonConstOnLeft();
         }
 
         public bool Changed { get { return changed; } set { changed = value; } }
@@ -127,8 +129,6 @@ namespace Reko.Evaluation
         {
             var lType = (PrimitiveType)l.DataType;
             var rType = (PrimitiveType)r.DataType;
-            if ((lType.Domain & rType.Domain) == 0)
-                throw new ArgumentException(string.Format("Can't add types of disjoint domains {0} and {1}", l.DataType, r.DataType));
             return op.ApplyConstants(l, r);
         }
 
@@ -145,10 +145,40 @@ namespace Reko.Evaluation
                 var arg = appl.Arguments[i];
                 args[i] = arg.Accept(this);
             }
+            // Rotations-with-carries that rotate in a false carry 
+            // flag can be simplified to shifts.
+            if (appl.Procedure is ProcedureConstant pc && 
+                pc.Procedure is PseudoProcedure intrinsic)
+            {
+                switch (intrinsic.Name)
+                {
+                case PseudoProcedure.RolC:
+                    if (IsSingleBitRotationWithClearCarryIn(args))
+                    {
+                        return new BinaryExpression(Operator.Shl, appl.DataType, args[0], args[1]);
+                    }
+                    break;
+                case PseudoProcedure.RorC:
+                    if (IsSingleBitRotationWithClearCarryIn(args))
+                    {
+                        return new BinaryExpression(Operator.Shr, appl.DataType, args[0], args[1]);
+                    }
+                    break;
+                }
+            }
             appl = new Application(appl.Procedure.Accept(this),
                 appl.DataType,
                 args);
             return ctx.GetValue(appl);
+        }
+
+        private static bool IsSingleBitRotationWithClearCarryIn(Expression[] args)
+        {
+            Debug.Assert(args.Length == 3);
+            return args[1] is Constant sh &&
+                                    sh.ToInt32() == 1 &&
+                                    args[2] is Constant c &&
+                                    c.IsIntegerZero;
         }
 
         public virtual Expression VisitArrayAccess(ArrayAccess acc)
@@ -243,33 +273,33 @@ namespace Reko.Evaluation
             {
                 if (IsAddOrSub(binExp.Operator) && IsAddOrSub(binLeft.Operator) &&
                 !cLeftRight.IsReal && !cRight.IsReal)
-            {
-                Changed = true;
-                var binOperator = binExp.Operator;
-                Constant c;
-                if (binLeft.Operator == binOperator)
                 {
-                    c = Operator.IAdd.ApplyConstants(cLeftRight, cRight);
-                }
-                else
-                {
-                    if (Math.Abs(cRight.ToInt64()) >= Math.Abs(cLeftRight.ToInt64()))
+                    Changed = true;
+                    var binOperator = binExp.Operator;
+                    Constant c;
+                    if (binLeft.Operator == binOperator)
                     {
-                        c = Operator.ISub.ApplyConstants(cRight, cLeftRight);
+                        c = Operator.IAdd.ApplyConstants(cLeftRight, cRight);
                     }
                     else
                     {
+                        if (Math.Abs(cRight.ToInt64()) >= Math.Abs(cLeftRight.ToInt64()))
+                        {
+                            c = Operator.ISub.ApplyConstants(cRight, cLeftRight);
+                        }
+                        else
+                        {
                             binOperator =
                                 binOperator == Operator.IAdd
                                     ? Operator.ISub
                                 : Operator.IAdd;
-                        c = Operator.ISub.ApplyConstants(cLeftRight, cRight);
+                            c = Operator.ISub.ApplyConstants(cLeftRight, cRight);
+                        }
                     }
+                    if (c.IsIntegerZero)
+                        return binLeft.Left;
+                    return new BinaryExpression(binOperator, binExp.DataType, binLeft.Left, c);
                 }
-                if (c.IsIntegerZero)
-                    return binLeft.Left;
-                return new BinaryExpression(binOperator, binExp.DataType, binLeft.Left, c);
-            }
                 if (binExp.Operator == Operator.IMul && binLeft.Operator == Operator.IMul)
                 {
                     Changed = true;
@@ -309,6 +339,12 @@ namespace Reko.Evaluation
                 }
             }
 
+            // (rel C non-C) => (trans(rel) non-C C)
+            if (constOnLeft.Match(binExp))
+            {
+                Changed = true;
+                return constOnLeft.Transform();
+            }
             if (addMici.Match(binExp))
             {
                 Changed = true;
@@ -365,9 +401,11 @@ namespace Reko.Evaluation
         {
             PrimitiveType lType = (PrimitiveType) l.DataType;
             PrimitiveType rType = (PrimitiveType) r.DataType;
-            if ((lType.Domain & rType.Domain) == 0)
-                throw new ArgumentException(string.Format("Can't add types of different domains {0} and {1}", l.DataType, r.DataType));
-            return ((BinaryOperator) op).ApplyConstants(l, r);
+            if ((lType.Domain & rType.Domain) != 0)
+            {
+                return ((BinaryOperator) op).ApplyConstants(l, r);
+            }
+            throw new ArgumentException(string.Format("Can't add types of different domains {0} and {1}", l.DataType, r.DataType));
         }
 
         public virtual Expression VisitCast(Cast cast)
@@ -604,7 +642,7 @@ namespace Reko.Evaluation
             var args = pc.Arguments
                 .Select(a =>
                 {
-                    var arg = SimplifyPhiArg(a.Accept(this));
+                    var arg = SimplifyPhiArg(a.Value.Accept(this));
                     ctx.RemoveExpressionUse(arg);
                     return arg;
                 })

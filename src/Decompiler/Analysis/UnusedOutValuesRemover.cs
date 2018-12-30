@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -92,6 +92,10 @@ namespace Reko.Analysis
             }
         }
 
+        /// <summary>
+        /// For each procedure/SSA state, compute the variables that are live-out
+        /// (and which bit ranges are live-out) and store them in the procedure flow.
+        /// </summary>
         private void CollectLiveOutStorages()
         {
             var wl = new WorkList<SsaState>(ssaStates);
@@ -109,9 +113,11 @@ namespace Reko.Analysis
         [Conditional("DEBUG")]
         public void DumpLiveOut()
         {
+            if (!trace.TraceVerbose)
+                return;
             foreach (var flow in this.dataFlow.ProcedureFlows.OrderBy(de => de.Key.Name))
             {
-                Debug.Print("== {0} ========", flow.Key.Name);
+                Debug.Print("UVR: == {0} ========", flow.Key.Name);
                 var sw = new StringWriter();
                 DataFlow.EmitRegisterValues("liveOut: ", flow.Value.LiveOut, sw);
                 Debug.Print(sw.ToString());

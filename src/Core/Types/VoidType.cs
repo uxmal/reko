@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -54,11 +54,6 @@ namespace Reko.Core.Types
         public override DataType Clone(IDictionary<DataType, DataType> clonedTypes)
         {
             return this;
-        }
-
-        public override string Prefix
-        {
-            get { return "v"; }
         }
     }
 }

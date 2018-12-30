@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -39,7 +39,7 @@ namespace Reko.UnitTests.Fragments
             var pb = new ProgramBuilder();
 
             var m = new ProcedureBuilder("even");
-            var r1 = m.Register(1);
+            var r1 = m.Register("r1");
             m.BranchIf(m.Eq0(r1), "done");
             m.Assign(r1, m.ISub(r1, 1));
             m.Call("odd", 4);
@@ -52,7 +52,7 @@ namespace Reko.UnitTests.Fragments
             pb.Add(m);
 
             m = new ProcedureBuilder("odd");
-            r1 = m.Register(1);
+            r1 = m.Register("r1");
             m.BranchIf(m.Eq(r1, 1), "done");
             m.Assign(r1, m.ISub(r1, 1));
             m.Call("event", 4);

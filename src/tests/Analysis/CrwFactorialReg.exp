@@ -70,7 +70,7 @@ l0C00_001C:
 	ax_11 = 0x0001
 	// succ:  l0C00_001F
 l0C00_001F:
-	ax_32 = PHI(ax_23, ax_11)
+	ax_32 = PHI((ax_23, l0C00_0011), (ax_11, l0C00_001C))
 	return ax_32
 	// succ:  fn0C00_000B_exit
 fn0C00_000B_exit:

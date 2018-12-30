@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -35,6 +35,7 @@ namespace Reko.Arch.zSeries
     {
         public zSeriesArchitecture(string archId) : base(archId)
         {
+            this.Endianness = EndianServices.Big;
             this.InstructionBitSize = 16;
             this.WordWidth = PrimitiveType.Word32;
             this.PointerType = PrimitiveType.Ptr32;
@@ -46,31 +47,6 @@ namespace Reko.Arch.zSeries
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
             return new zSeriesDisassembler(this, imageReader);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
-        {
-            return new BeImageReader(img, addr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
-        {
-            return new BeImageReader(img, addrBegin, addrEnd);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, ulong off)
-        {
-            return new BeImageReader(img, off);
-        }
-
-        public override ImageWriter CreateImageWriter()
-        {
-            return new BeImageWriter();
-        }
-
-        public override ImageWriter CreateImageWriter(MemoryArea img, Address addr)
-        {
-            return new BeImageWriter(img, addr);
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -115,9 +91,14 @@ namespace Reko.Arch.zSeries
             throw new NotImplementedException();
         }
 
-        public override RegisterStorage GetRegister(int i)
+        public RegisterStorage GetRegister(int i)
         {
-            throw new NotImplementedException();
+            return Registers.GpRegisters[i];
+        }
+
+        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
+        {
+            return Registers.GpRegisters[domain - StorageDomain.Register];
         }
 
         public override RegisterStorage GetRegister(string name)
@@ -131,6 +112,16 @@ namespace Reko.Arch.zSeries
         public override RegisterStorage[] GetRegisters()
         {
             return Registers.GpRegisters;
+        }
+
+        public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
+        {
+            yield return Registers.CC;
+        }
+
+        public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
+        {
+            return reg;
         }
 
         public override string GrfToString(RegisterStorage flagRegister, string prefix, uint grf)
@@ -151,17 +142,12 @@ namespace Reko.Arch.zSeries
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
-            throw new NotImplementedException();
+            return Registers.RegistersByName.TryGetValue(name, out reg);
         }
 
         public override bool TryParseAddress(string txtAddr, out Address addr)
         {
             return Address.TryParse64(txtAddr, out addr);
-        }
-
-        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
-        {
-            throw new NotImplementedException();
         }
     }
 }

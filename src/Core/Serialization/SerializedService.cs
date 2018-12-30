@@ -48,35 +48,19 @@ namespace Reko.Core.Serialization
 		{
 			SystemService svc = new SystemService();
 			svc.Name = Name;
-			svc.SyscallInfo = new SyscallInfo();
-            svc.SyscallInfo.Vector = SyscallInfo != null
-                ? Convert.ToInt32(SyscallInfo.Vector, 16)
-                : this.Ordinal;
-            if (SyscallInfo != null)
+            if (this.SyscallInfo != null)
             {
-                if (SyscallInfo.RegisterValues != null)
-                {
-                    svc.SyscallInfo.RegisterValues = new RegValue[SyscallInfo.RegisterValues.Length];
-                    for (int i = 0; i < SyscallInfo.RegisterValues.Length; ++i)
-                    {
-                        svc.SyscallInfo.RegisterValues[i] = new RegValue
-                        {
-                            Register = platform.Architecture.GetRegister(SyscallInfo.RegisterValues[i].Register),
-                            Value = Convert.ToInt32(SyscallInfo.RegisterValues[i].Value, 16),
-                        };
-                    }
-                } 
-                if (SyscallInfo.StackValues != null)
-                {
-                    svc.SyscallInfo.StackValues = SyscallInfo.StackValues.Select(sv =>
-                        new StackValue
-                        {
-                            Offset = Convert.ToInt32(sv.Offset, 16),
-                            Value = Convert.ToInt32(sv.Value, 16)
-                        }).ToArray();
-                }
+                var syscallinfo = this.SyscallInfo.Build(platform);
+                svc.SyscallInfo = syscallinfo;
             }
-			if (svc.SyscallInfo.RegisterValues == null)
+            else
+            {
+                svc.SyscallInfo = new SyscallInfo
+                {
+                    Vector = this.Ordinal
+                };
+            }
+            if (svc.SyscallInfo.RegisterValues == null)
 			{
 				svc.SyscallInfo.RegisterValues = new RegValue[0];
 			}
@@ -86,7 +70,7 @@ namespace Reko.Core.Serialization
 			svc.Characteristics = Characteristics != null ? Characteristics : DefaultProcedureCharacteristics.Instance;
 			return svc;
 		}
-	}
+    }
 
 	public class SyscallInfo_v1
 	{
@@ -98,9 +82,37 @@ namespace Reko.Core.Serialization
 
         [XmlElement("stackvalue")]
         public StackValue_v1[] StackValues;
+
+        public SyscallInfo Build(IPlatform platform)
+        {
+            var syscallinfo = new SyscallInfo();
+            syscallinfo.Vector = Convert.ToInt32(this.Vector, 16);
+            if (this.RegisterValues != null)
+            {
+                syscallinfo.RegisterValues = new RegValue[this.RegisterValues.Length];
+                for (int i = 0; i < this.RegisterValues.Length; ++i)
+                {
+                    syscallinfo.RegisterValues[i] = new RegValue
+                    {
+                        Register = platform.Architecture.GetRegister(this.RegisterValues[i].Register),
+                        Value = Convert.ToInt32(this.RegisterValues[i].Value, 16),
+                    };
+                }
+            }
+            if (this.StackValues != null)
+            {
+                syscallinfo.StackValues = this.StackValues.Select(sv =>
+                    new StackValue
+                    {
+                        Offset = Convert.ToInt32(sv.Offset, 16),
+                        Value = Convert.ToInt32(sv.Value, 16)
+                    }).ToArray();
+            }
+            return syscallinfo;
+        }
     }
 
-	public class SerializedRegValue
+    public class SerializedRegValue
 	{
 		[XmlAttribute("reg")]
 		public string Register;

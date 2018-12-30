@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -94,8 +94,9 @@ namespace Reko.Core.Serialization
                         .Select(h => new Heuristic_v3 { Name = h }).ToList(),
                     Annotations = program.User.Annotations.Select(SerializeAnnotation).ToList(),
                     TextEncoding = program.User.TextEncoding != Encoding.ASCII ? program.User.TextEncoding.WebName : null,
-                    RegisterValues = SerializeRegisterValues(program.User.RegisterValues)
-
+                    RegisterValues = SerializeRegisterValues(program.User.RegisterValues),
+                    ShowAddressesInDisassembly = program.User.ShowAddressesInDisassembly,
+                    ShowBytesInDisassembly = program.User.ShowBytesInDisassembly,
                 },
                 DisassemblyFilename =  ConvertToProjectRelativePath(projectAbsPath, program.DisassemblyFilename),
                 IntermediateFilename = ConvertToProjectRelativePath(projectAbsPath, program.IntermediateFilename),

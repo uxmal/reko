@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -70,36 +70,35 @@ namespace Reko.Arch.Alpha
         public static readonly RegisterStorage r30 = new RegisterStorage("r30", 30, 0, PrimitiveType.Word64);
         public static readonly RegisterStorage zero = new RegisterStorage("zero", 31, 0, PrimitiveType.Word64);
 
-        public static readonly RegisterStorage f0 = new RegisterStorage("f0", 0, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f1 = new RegisterStorage("f1", 1, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f2 = new RegisterStorage("f2", 2, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f3 = new RegisterStorage("f3", 3, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage f0 = new RegisterStorage("f0", 32, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage f1 = new RegisterStorage("f1", 33, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage f2 = new RegisterStorage("f2", 34, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage f3 = new RegisterStorage("f3", 35, 0, PrimitiveType.Word64);
 
-        public static readonly RegisterStorage f4 = new RegisterStorage("f4", 4, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f5 = new RegisterStorage("f5", 5, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f6 = new RegisterStorage("f6", 6, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f7 = new RegisterStorage("f7", 7, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage f4 = new RegisterStorage("f4", 36, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage f5 = new RegisterStorage("f5", 37, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage f6 = new RegisterStorage("f6", 38, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage f7 = new RegisterStorage("f7", 39, 0, PrimitiveType.Word64);
 
-        public static readonly RegisterStorage f8 = new RegisterStorage("f8", 8, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f9 = new RegisterStorage("f9", 9, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f10 = new RegisterStorage("f10", 10, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f11 = new RegisterStorage("f11", 11, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage f8 = new RegisterStorage("f8", 40, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage f9 = new RegisterStorage("f9", 41, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage f10 = new RegisterStorage("f10", 42, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage f11 = new RegisterStorage("f11", 43, 0, PrimitiveType.Word64);
 
-        public static readonly RegisterStorage f12 = new RegisterStorage("f12", 12, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f13 = new RegisterStorage("f13", 13, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f14 = new RegisterStorage("f14", 14, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f15 = new RegisterStorage("f15", 15, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage f12 = new RegisterStorage("f12", 44, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage f13 = new RegisterStorage("f13", 45, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage f14 = new RegisterStorage("f14", 46, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage f15 = new RegisterStorage("f15", 47, 0, PrimitiveType.Word64);
 
-        public static readonly RegisterStorage f16 = new RegisterStorage("f16", 16, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f17 = new RegisterStorage("f17", 17, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f18 = new RegisterStorage("f18", 18, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f19 = new RegisterStorage("f19", 19, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage f16 = new RegisterStorage("f16", 48, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage f17 = new RegisterStorage("f17", 49, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage f18 = new RegisterStorage("f18", 50, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage f19 = new RegisterStorage("f19", 51, 0, PrimitiveType.Word64);
 
-        //$BUG: fix the register numbers!
-        public static readonly RegisterStorage f20 = new RegisterStorage("f20", 50, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f21 = new RegisterStorage("f21", 50, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f22 = new RegisterStorage("f22", 50, 0, PrimitiveType.Word64);
-        public static readonly RegisterStorage f23 = new RegisterStorage("f23", 50, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage f20 = new RegisterStorage("f20", 52, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage f21 = new RegisterStorage("f21", 53, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage f22 = new RegisterStorage("f22", 54, 0, PrimitiveType.Word64);
+        public static readonly RegisterStorage f23 = new RegisterStorage("f23", 55, 0, PrimitiveType.Word64);
 
         public static readonly RegisterStorage f24 = new RegisterStorage("f24", 56, 0, PrimitiveType.Word64);
         public static readonly RegisterStorage f25 = new RegisterStorage("f25", 57, 0, PrimitiveType.Word64);
@@ -118,6 +117,7 @@ namespace Reko.Arch.Alpha
 
         public static readonly RegisterStorage[] FpuRegisters;
 
+        public static readonly Dictionary<StorageDomain, RegisterStorage> ByDomain;
 
         static Registers()
         {
@@ -140,6 +140,8 @@ namespace Reko.Arch.Alpha
                 f0 , f1 , f2,  f3,  f4,  f5,  f6,  f7,  f8,  f9,  f10, f11, f12, f13, f14, f15,
                 f16, f17, f18, f19, f20, f21, f22, f23, f24, f25, f26, f27, f28, f29, f30, f31,
             };
+
+            ByDomain = AllRegisters.Values.ToDictionary(r => r.Domain);
 
         }
     }

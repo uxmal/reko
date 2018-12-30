@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -66,12 +66,13 @@ namespace Reko.Scanning
         public BlockWorkitem(
             IScanner scanner,
             Program program,
+            IProcessorArchitecture arch,
             ProcessorState state,
             Address addr) : base(addr)
         {
             this.scanner = scanner;
             this.program = program;
-            this.arch = program.Architecture;   // cached since it's used heavily.
+            this.arch = arch;
             this.state = state;
             this.eval = new ExpressionSimplifier(
                 program.SegmentMap,
@@ -98,7 +99,7 @@ namespace Reko.Scanning
             frame = blockCur.Procedure.Frame;
             this.stackReg = frame.EnsureRegister(arch.StackRegister);
             this.vaScanner = new VarargsFormatScanner(program, frame, state, scanner.Services);
-            rtlStream = scanner.GetTrace(addrStart, state, frame)
+            rtlStream = scanner.GetTrace(arch, addrStart, state, frame)
                 .GetEnumerator();
 
             while (rtlStream.MoveNext())
@@ -250,7 +251,7 @@ namespace Reko.Scanning
             // The following statements may chop up the blockCur, so hang on to the essentials.
             var proc = blockCur.Procedure;
             RtlInstructionCluster ricDelayed = null;
-            if ((b.Class & RtlClass.Delay) != 0)
+            if ((b.Class & InstrClass.Delay) != 0)
             {
                 rtlStream.MoveNext();
                 ricDelayed = rtlStream.Current;
@@ -261,7 +262,8 @@ namespace Reko.Scanning
             Block blockThen;
             if (!program.SegmentMap.IsValidAddress((Address)b.Target))
             {
-                blockThen = proc.AddBlock(this.ric.Address.GenerateName("l", "_then"));
+                var label = program.NamingPolicy.BlockName(ric.Address) + "_then";
+                blockThen = proc.AddBlock(label);
                 var jmpSite = state.OnBeforeCall(stackReg, arch.PointerType.Size);
                 GenerateCallToOutsideProcedure(jmpSite, (Address)b.Target);
                 Emit(new ReturnInstruction());
@@ -277,31 +279,30 @@ namespace Reko.Scanning
                 ? blockCur
                 : scanner.FindContainingBlock(ric.Address);
 
-            if ((b.Class & RtlClass.Delay) != 0 &&
+            if ((b.Class & InstrClass.Delay) != 0 &&
                 ricDelayed.Instructions.Length > 0)
             {
                 // Introduce stubs for the delay slot, but only
                 // if the delay slot isn't empty.
 
-                if ((b.Class & RtlClass.Annul) != 0)
+                if ((b.Class & InstrClass.Annul) != 0)
                 {
                     EnsureEdge(proc, branchingBlock, blockElse);
                 }
                 else
                 {
-                    Block blockDsF = null;
-                    blockDsF = proc.AddBlock(branchingBlock.Name + "_ds_f");
-                    blockDsF.IsSynthesized = true;
-                    blockDsF.Address = ricDelayed.Address;
+                    var blockDsF = proc.AddSyntheticBlock(
+                        ricDelayed.Address,
+                        branchingBlock.Name + "_ds_f");
                     blockCur = blockDsF;
                     ProcessRtlCluster(ricDelayed);
                     EnsureEdge(proc, blockDsF, blockElse);
                     EnsureEdge(proc, branchingBlock, blockDsF);
                 }
 
-                Block blockDsT = proc.AddBlock(branchingBlock.Name + "_ds_t");
-                blockDsT.IsSynthesized = true;
-                blockDsT.Address = ricDelayed.Address;
+                var blockDsT = proc.AddSyntheticBlock(
+                    ricDelayed.Address,
+                    branchingBlock.Name + "_ds_t");
                 blockCur = blockDsT;
                 ProcessRtlCluster(ricDelayed);
                 EnsureEdge(proc, blockDsT, blockThen);
@@ -393,7 +394,7 @@ namespace Reko.Scanning
         public bool VisitGoto(RtlGoto g)
         {
             var blockFrom = blockCur;
-            if ((g.Class & RtlClass.Delay) != 0)
+            if ((g.Class & InstrClass.Delay) != 0)
             {
                 // Get next instruction cluster, which should be the delay slot.
                 //$TODO: some architectures, curse it, have more than one delay slot...
@@ -404,7 +405,7 @@ namespace Reko.Scanning
             scanner.TerminateBlock(blockCur, rtlStream.Current.Address + ric.Length);
             if (g.Target is Address addrTarget)
             {
-                var impProc = scanner.GetImportedProcedure(addrTarget, this.ric.Address);
+                var impProc = scanner.GetImportedProcedure(this.arch, addrTarget, this.ric.Address);
                 if (impProc != null)
                 {
                     site = state.OnBeforeCall(stackReg, arch.PointerType.Size);
@@ -425,10 +426,14 @@ namespace Reko.Scanning
                     blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
                     return false;
                 }
-                var trampoline = scanner.GetTrampoline(addrTarget);
+                var trampoline = scanner.GetTrampoline(blockCur.Procedure.Architecture, addrTarget);
                 if (trampoline != null)
                 {
                     var jmpSite = state.OnBeforeCall(stackReg, arch.PointerType.Size);
+                    if (trampoline is DispatchProcedure disp)
+                    {
+                        trampoline = ResolveDispatchProcedureCall(disp, state);
+                    }
                     var sig = trampoline.Signature;
                     var chr = trampoline.Characteristics;
                     // Adjust stack to "hide" any pushed return value since
@@ -513,7 +518,7 @@ namespace Reko.Scanning
 
         public bool VisitCall(RtlCall call)
         {
-            if ((call.Class & RtlClass.Delay) != 0)
+            if ((call.Class & InstrClass.Delay) != 0)
             {
                 // Get delay slot instruction cluster.
                 rtlStream.MoveNext();
@@ -527,7 +532,7 @@ namespace Reko.Scanning
             {
                 // Some image loaders generate import symbols at addresses
                 // outside of the program image. 
-                var impProc = scanner.GetImportedProcedure(addr, this.ric.Address);
+                var impProc = scanner.GetImportedProcedure(arch, addr, this.ric.Address);
                 if (impProc != null)
                 {
                     sig = impProc.Signature;
@@ -550,7 +555,11 @@ namespace Reko.Scanning
                     return true;
                 }
 
-                var callee = scanner.ScanProcedure(addr, null, state);
+                var callee = scanner.ScanProcedure(blockCur.Procedure.Architecture, addr, null, state);
+                if (callee is DispatchProcedure disp)
+                {
+                    callee = ResolveDispatchProcedureCall(disp, state);
+                }
                 var pcCallee = CreateProcedureConstant(callee);
                 sig = callee.Signature;
                 chr = callee.Characteristics;
@@ -622,7 +631,7 @@ namespace Reko.Scanning
         /// <returns>True if the call was successfully inlined, false if not.</returns>
         private bool InlineCall(Address addCallee)
         {
-            var rdr = program.CreateImageReader(addCallee);
+            var rdr = program.CreateImageReader(this.arch, addCallee);
             List<RtlInstruction> inlinedInstructions = arch.InlineCall(addCallee, ric.Address + ric.Length, rdr, frame);
             if (inlinedInstructions == null)
                 return false;
@@ -660,9 +669,9 @@ namespace Reko.Scanning
             scanner.Warn(ric.Address, "Call target address {0} is invalid.", addr);
             var sig = new FunctionType();
             ProcedureCharacteristics chr = null;
+            var name = NamingPolicy.Instance.ProcedureName(addr);
             EmitCall(
-                CreateProcedureConstant(
-                    new ExternalProcedure(Procedure.GenerateName(addr), sig)),
+                CreateProcedureConstant(new ExternalProcedure(name, sig)),
                 sig,
                 chr,
                 site);
@@ -798,7 +807,7 @@ namespace Reko.Scanning
 
         public bool VisitReturn(RtlReturn ret)
         {
-            if ((ret.Class & RtlClass.Delay) != 0)
+            if ((ret.Class & InstrClass.Delay) != 0)
             {
                 // Get next instruction cluster from the delay slot.
                 rtlStream.MoveNext();
@@ -1036,7 +1045,7 @@ namespace Reko.Scanning
                 if (!program.SegmentMap.IsValidAddress(addr))
                     continue;
                 var st = state.Clone();
-                var pbase = scanner.ScanProcedure(addr, null, st);
+                var pbase = scanner.ScanProcedure(blockCur.Procedure.Architecture, addr, null, st);
                 if (pbase is Procedure pcallee)
                 {
                     program.CallGraph.AddEdge(blockCur.Statements.Last, pcallee);
@@ -1085,13 +1094,9 @@ namespace Reko.Scanning
 
         private Block AddIntraStatementBlock(Procedure proc)
         {
-            var label = ric.Address.GenerateName("l", string.Format("_{0}", ++extraLabels));
-            var fallthru = new Block(proc, label)
-            {
-                IsSynthesized = true
-            };
-            proc.ControlGraph.Blocks.Add(fallthru);
-            return fallthru;
+            ++extraLabels;
+            var label = program.NamingPolicy.BlockName(ric.Address);
+            return proc.AddSyntheticBlock(ric.Address, $"{label}_{extraLabels}");
         }
 
         /// <summary>
@@ -1175,7 +1180,7 @@ namespace Reko.Scanning
                     return null;
                 addrTarget = program.Platform.MakeAddressFromConstant(offset);
             }
-            var impEp = scanner.GetImportedProcedure(addrTarget, ric.Address);
+            var impEp = scanner.GetImportedProcedure(this.arch, addrTarget, ric.Address);
             //if (impEp != null)
                 return impEp;
             //return scanner.GetInterceptedCall(addrTarget);
@@ -1211,6 +1216,22 @@ namespace Reko.Scanning
                 TrashVariable(seq.Tail);
                 break;
             }
+        }
+
+        /// <summary>
+        /// Attempt to resolve call to to dispatch procedure
+        /// into one of its sub-services. We do this by looking at 
+        /// the procedure state at the time of the call. If we can't 
+        /// resolve it, fall back on the dispatch procedure 
+        /// directly.
+        /// </summary>
+        private ProcedureBase ResolveDispatchProcedureCall(DispatchProcedure disp, ProcessorState state)
+        {
+            var callable = disp.FindService(state);
+            if (callable is null)
+                return disp;
+            else
+                return callable;
         }
 
         private SystemService MatchSyscallToService(RtlSideEffect side)

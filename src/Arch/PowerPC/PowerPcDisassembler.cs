@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -65,7 +65,7 @@ namespace Reko.Arch.PowerPC
             return instrCur;
         }
 
-        private PowerPcInstruction DecodeOperands(Opcode opcode, uint wInstr, string opFmt)
+        private PowerPcInstruction DecodeOperands(Opcode opcode, InstrClass iclass, uint wInstr, string opFmt)
         {
             var ops = new List<MachineOperand>();
             bool setsCR0 = (wInstr & 1) != 0;
@@ -209,6 +209,7 @@ namespace Reko.Arch.PowerPC
             return new PowerPcInstruction(opcode)
             {
                 Address = addr,
+                iclass = iclass,
                 Length = 4,
                 op1 = ops.Count > 0 ? ops[0] : null,
                 op2 = ops.Count > 1 ? ops[1] : null,

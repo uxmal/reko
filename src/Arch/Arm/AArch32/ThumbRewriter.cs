@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -42,6 +42,16 @@ namespace Reko.Arch.Arm.AArch32
             base(arch, rdr, host, binder, new T32Disassembler(arch, rdr).GetEnumerator())
         {
             base.pcValueOffset = 4;
+        }
+
+        public override Address ComputePcRelativeOffset(MemoryOperand mop)
+        {
+            var dst = (int) instr.Address.ToLinear() + 2;
+            if (mop.Offset != null)
+            {
+                dst += mop.Offset.ToInt32();
+            }
+            return Address.Ptr32((uint) dst).Align(4);
         }
 
         protected override void ConditionalSkip(bool force)

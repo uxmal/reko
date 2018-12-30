@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -62,7 +62,8 @@ namespace Reko.Arch.Vax
 
         public VaxArchitecture(string name) : base(name)
         {
-            InstructionBitSize = 8;
+            this.Endianness = EndianServices.Little;
+            this.InstructionBitSize = 8;
             this.FramePointerType = PrimitiveType.Ptr32;
             this.WordWidth = PrimitiveType.Word32;
             this.PointerType = PrimitiveType.Ptr32;
@@ -72,31 +73,6 @@ namespace Reko.Arch.Vax
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
             return new VaxDisassembler(this, imageReader);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, ulong off)
-        {
-            return new LeImageReader(img, off);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
-        {
-            return new LeImageReader(img, addr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
-        {
-            return new LeImageReader(img, addrBegin, addrEnd);
-        }
-
-        public override ImageWriter CreateImageWriter()
-        {
-            return new LeImageWriter();
-        }
-
-        public override ImageWriter CreateImageWriter(MemoryArea mem, Address addr)
-        {
-            return new LeImageWriter(mem, addr);
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -156,10 +132,16 @@ namespace Reko.Arch.Vax
             throw new NotImplementedException();
         }
 
-        public override RegisterStorage GetRegister(int i)
+        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
+        {
+            int i = domain - StorageDomain.Register;
+            return GetRegister(i);
+        }
+
+        public RegisterStorage GetRegister(int i)
         {
             if (0 <= i && i < regs.Length)
-            return regs[i];
+                return regs[i];
             else
                 return null;
         }
@@ -215,11 +197,6 @@ namespace Reko.Arch.Vax
                 addr = Address.Ptr32(uAddr);
                 return true;
             }
-        }
-
-        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
-        {
-            return mem.TryReadLe(addr, dt, out value);
         }
     }
 }

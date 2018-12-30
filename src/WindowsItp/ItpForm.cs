@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -293,6 +293,14 @@ namespace Reko.WindowsItp
         private void rewriterToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (var dlg = new RewriterPerformanceDialog())
+            {
+                dlg.ShowDialog(this);
+            }
+        }
+
+        private void suffixArrayToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new SuffixArrayPerformanceDialog())
             {
                 dlg.ShowDialog(this);
             }

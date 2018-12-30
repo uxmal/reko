@@ -61,7 +61,7 @@ l0C00_000F:
 	dx_7 = dx - 0x0001
 	// succ:  l0C00_0010
 l0C00_0010:
-	dx_15 = PHI(dx_10, dx_7)
+	dx_15 = PHI((dx_10, l0C00_0009), (dx_7, l0C00_000F))
 	ax_16 = dx_15
 	dxOut = dx_15
 	return ax_16
@@ -103,7 +103,7 @@ l0C00_001F:
 	ax_12 = fn0C00_0004(dx - 0x000A, out dx_10)
 	// succ:  l0C00_0025
 l0C00_0025:
-	dx_28 = PHI(dx_18, dx_10)
+	dx_28 = PHI((dx_18, l0C00_0018), (dx_10, l0C00_001F))
 	return dx_28
 	// succ:  fn0C00_0013_exit
 fn0C00_0013_exit:

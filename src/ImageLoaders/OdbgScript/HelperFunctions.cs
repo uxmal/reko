@@ -427,17 +427,6 @@ namespace Reko.ImageLoaders.OdbgScript
             return @out;
         }
 
-		[Obsolete("Use Path.GetDirectoryName", true)]
-        public static string folderfrompath(string path)
-        {
-            int p = path.LastIndexOf('\\');
-
-            if (p < 0 || p == path.Length - 1)
-                return path;
-            else
-                return path.Substring(0, p + 1);
-        }
-
         public static string filefrompath(string path)
         {
             string @out = path;

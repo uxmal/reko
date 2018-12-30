@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -45,11 +45,6 @@ namespace Reko.Core.Output
         public void Indent(int indentAmount)
         {
             indentColumn += indentAmount;
-        }
-
-        public void Outdent(int outdentAmount)
-        {
-            indentColumn -= outdentAmount;
         }
 
         public bool MustSplitLine

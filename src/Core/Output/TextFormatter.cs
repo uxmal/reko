@@ -29,7 +29,7 @@ using System.Text;
 namespace Reko.Core.Output
 {
     /// <summary>
-    /// Foratter that writes to a TextWriter.
+    /// Formatter that writes to a TextWriter.
     /// </summary>
     /// <remarks>
     /// Useful when writing decompiler output to a text file.

@@ -60,7 +60,7 @@ namespace Reko.UnitTests.Core.Machine
                     ops.Add(Op(b));
             }
 
-            return new X86Instruction(op, PrimitiveType.Word32, PrimitiveType.Word32, ops.ToArray());
+            return new X86Instruction(op, InstrClass.Linear, PrimitiveType.Word32, PrimitiveType.Word32, ops.ToArray());
         }
 
         private MachineOperand Mem32(RegisterStorage baseReg)

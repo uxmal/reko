@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -93,7 +93,7 @@ namespace Reko.Analysis
                 var proc = sst.SsaState.Procedure;
 				ProcedureFlow flow = crw.mpprocflow[proc];
                 flow.Dump(platform.Architecture);
-				crw.EnsureSignature(proc, proc.Frame, flow);
+				crw.EnsureSignature(sst.SsaState, proc.Frame, flow);
 			}
 
 			foreach (SsaTransform sst in ssts)
@@ -111,8 +111,9 @@ namespace Reko.Analysis
         /// modified in the exit block, and ensures that all the registers
         /// accessed by the procedure are in the procedure Frame.
 		/// </summary>
-		public void EnsureSignature(Procedure proc, IStorageBinder frame, ProcedureFlow flow)
+		public void EnsureSignature(SsaState ssa, IStorageBinder frame, ProcedureFlow flow)
 		{
+            var proc = ssa.Procedure;
             // If we already have a signature, we don't need to do this work.
 			if (proc.Signature.ParametersValid)
 				return;
@@ -178,7 +179,12 @@ namespace Reko.Analysis
 			{
 				if (!IsSubRegisterOfRegisters(r.Key, liveOut))
 				{
-					sb.AddOutParam(frame.EnsureRegister(r.Key));
+                    var regOut = sb.AddOutParam(frame.EnsureRegister(r.Key));
+                    if (regOut.Storage is OutArgumentStorage && 
+                        !ssa.Identifiers.TryGetValue(regOut, out var sidOut))
+                    {
+                        ssa.Identifiers.Add(regOut, null, null, false);
+                    }
 				}
 			}
 
@@ -345,11 +351,13 @@ namespace Reko.Analysis
                 if (idRet != null && !(idRet.DataType is VoidType))
                 {
                     var idStg = reachingBlock.Value
-                        .Where(cb => cb.Storage.Covers(idRet.Storage)).First();
+                        .Where(cb => cb.Storage.Covers(idRet.Storage))
+                        .FirstOrDefault();
                     SetReturnExpression(
+                        ssa,
                         block,
                         idRet,
-                        ssa.Identifiers[(Identifier)idStg.Expression]);
+                        idStg?.Expression ?? Constant.Invalid);
                 }
                 int insertPos = block.Statements.FindIndex(s => s.Instruction is ReturnInstruction);
                 Debug.Assert(insertPos >= 0);
@@ -357,38 +365,52 @@ namespace Reko.Analysis
                 {
                     var outStg = (OutArgumentStorage)p.Storage;
                     var idStg = reachingBlock.Value
-                        .Where(cb => cb.Storage == outStg.OriginalIdentifier.Storage).First();
-                    var sid = ssa.Identifiers[(Identifier)idStg.Expression];
-                    InsertOutArgumentAssignment(p, sid, block, insertPos);
+                        .Where(cb => cb.Storage == outStg.OriginalIdentifier.Storage)
+                        .FirstOrDefault();
+                    InsertOutArgumentAssignment(
+                        ssa,
+                        p,
+                        idStg?.Expression ?? Constant.Invalid,
+                        block,
+                        insertPos);
                     ++insertPos;
                 }
             }
         }
 
-        private void SetReturnExpression(Block block, Identifier idRet, SsaIdentifier sid)
+        private void SetReturnExpression(
+            SsaState ssa,
+            Block block,
+            Identifier idRet,
+            Expression e)
         {
             for (int i = block.Statements.Count-1; i >=0; --i)
             {
                 var stm = block.Statements[i];
                 if (stm.Instruction is ReturnInstruction ret)
                 {
-                    Expression e = sid.Identifier;
                     if (idRet.DataType.BitSize < e.DataType.BitSize)
                     {
                         e = new Cast(idRet.DataType, e);
                     }
                     ret.Expression = e;
-                    sid.Uses.Add(stm);
+                    ssa.AddUses(stm);
                 }
             }
         }
 
-        private void InsertOutArgumentAssignment(Identifier parameter, SsaIdentifier sid, Block block, int insertPos)
+        private void InsertOutArgumentAssignment(
+            SsaState ssa,
+            Identifier parameter,
+            Expression e,
+            Block block,
+            int insertPos)
         {
+            var iAddr = block.Statements[insertPos].LinearAddress;
             var stm = block.Statements.Insert(
-                insertPos, 0, 
-                new Store(parameter, sid.Identifier));
-            sid.Uses.Add(stm);
+                insertPos, iAddr, 
+                new Store(parameter, e));
+            ssa.AddUses(stm);
         }
     }
 }

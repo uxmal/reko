@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -31,7 +31,7 @@ namespace Reko.UnitTests.Arch.Avr
     [TestFixture]
     public class Avr8DisassemblerTests : DisassemblerTestBase<AvrInstruction>
     {
-        private Avr8Architecture arch;
+        private readonly Avr8Architecture arch;
 
         public Avr8DisassemblerTests()
         {

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -38,7 +38,7 @@ namespace Reko.Arch.Z80
         private IStorageBinder binder;
         private IRewriterHost host;
         private IEnumerator<Z80Instruction> dasm;
-        private RtlClass rtlc;
+        private InstrClass rtlc;
         private List<RtlInstruction> rtlInstructions;
         private RtlEmitter m;
 
@@ -56,7 +56,7 @@ namespace Reko.Arch.Z80
             {
                 var addr = dasm.Current.Address;
                 var len = dasm.Current.Length;
-                this.rtlc = RtlClass.Linear;
+                this.rtlc = dasm.Current.IClass;
                 this.rtlInstructions = new List<RtlInstruction>();
                 m = new RtlEmitter(rtlInstructions);
                 switch (dasm.Current.Code)
@@ -100,13 +100,13 @@ namespace Reko.Arch.Z80
                 case Opcode.jr: RewriteJr(); break;
                 case Opcode.ld: RewriteLd();  break;
                 case Opcode.rl: RewriteRotation(PseudoProcedure.RolC, true); break;
-                case Opcode.rla: RewriteRotation(PseudoProcedure.Rol, false); break;
-                case Opcode.rlc: RewriteRotation(PseudoProcedure.RolC, false); break;
-                case Opcode.rlca: RewriteRotation(PseudoProcedure.RolC, false); break;
+                case Opcode.rla: RewriteRotation(PseudoProcedure.RolC, false); break;
+                case Opcode.rlc: RewriteRotation(PseudoProcedure.Rol, false); break;
+                case Opcode.rlca: RewriteRotation(PseudoProcedure.Rol, false); break;
                 case Opcode.rr: RewriteRotation(PseudoProcedure.RorC, true); break;
-                case Opcode.rra: RewriteRotation(PseudoProcedure.Ror, true); break;
-                case Opcode.rrc: RewriteRotation(PseudoProcedure.RorC, true); break;
-                case Opcode.rrca: RewriteRotation(PseudoProcedure.RorC, true); break;
+                case Opcode.rra: RewriteRotation(PseudoProcedure.RorC, true); break;
+                case Opcode.rrc: RewriteRotation(PseudoProcedure.Ror, true); break;
+                case Opcode.rrca: RewriteRotation(PseudoProcedure.Ror, true); break;
                 case Opcode.ldd: RewriteBlockInstruction(m.ISub, false); break;
                 case Opcode.lddr: RewriteBlockInstruction(m.ISub, true); break;
                 case Opcode.ldi: RewriteBlockInstruction(m.IAdd, false); break;
@@ -169,7 +169,7 @@ namespace Reko.Arch.Z80
             var dst = RewriteOp(dasm.Current.Op1);
             var src = RewriteOp(dasm.Current.Op2);
             m.Assign(dst, m.And(dst, src));
-            AssignCond(FlagM.ZF | FlagM.SF | FlagM.CF, dst);
+            AssignCond(FlagM.ZF | FlagM.SF, dst);
             m.Assign(FlagGroup(FlagM.CF), Constant.False());
         }
 
@@ -185,7 +185,7 @@ namespace Reko.Arch.Z80
             m.Assign(bc, m.ISub(bc, 1));
             if (repeat)
             {
-                m.BranchInMiddleOfInstruction(m.Ne0(bc), dasm.Current.Address, RtlClass.Transfer);
+                m.BranchInMiddleOfInstruction(m.Ne0(bc), dasm.Current.Address, InstrClass.Transfer);
             }
             m.Assign(V, m.Const(PrimitiveType.Bool, 0));
         }
@@ -202,7 +202,7 @@ namespace Reko.Arch.Z80
             var dst = RewriteOp(dasm.Current.Op1);
             var src = RewriteOp(dasm.Current.Op2);
             m.Assign(dst, m.Or(dst, src));
-            AssignCond(FlagM.ZF | FlagM.SF | FlagM.CF, dst);
+            AssignCond(FlagM.ZF | FlagM.SF, dst);
             m.Assign(FlagGroup(FlagM.CF), Constant.False());
         }
 
@@ -258,7 +258,7 @@ namespace Reko.Arch.Z80
             var dst = RewriteOp(dasm.Current.Op1);
             var src = RewriteOp(dasm.Current.Op2);
             m.Assign(dst, m.Xor(dst, src));
-            AssignCond(FlagM.ZF | FlagM.SF | FlagM.CF, dst);
+            AssignCond(FlagM.ZF | FlagM.SF, dst);
             m.Assign(FlagGroup(FlagM.CF), Constant.False());
         }
 
@@ -279,11 +279,10 @@ namespace Reko.Arch.Z80
 
         private void EmitBranch(ConditionOperand cOp, Address dst)
         {
-            rtlc = RtlClass.ConditionalTransfer;
             m.Branch(
                 GenerateTestExpression(cOp, false),
                 dst,
-                RtlClass.ConditionalTransfer);
+                InstrClass.ConditionalTransfer);
         }
 
         private TestCondition GenerateTestExpression(ConditionOperand cOp, bool invert)
@@ -308,13 +307,12 @@ namespace Reko.Arch.Z80
 
         private void RewriteCall(Z80Instruction instr)
         {
-            rtlc = RtlClass.Transfer | RtlClass.Call;
             if (instr.Op1 is ConditionOperand cOp)
             {
                 m.BranchInMiddleOfInstruction(
                     GenerateTestExpression(cOp, true),
                     instr.Address + instr.Length,
-                    RtlClass.ConditionalTransfer);
+                    InstrClass.ConditionalTransfer);
                 m.Call(((AddressOperand)instr.Op2).Address, 2);
             }
             else
@@ -346,11 +344,11 @@ namespace Reko.Arch.Z80
             var z = FlagGroup(FlagM.ZF);
             m.Assign(z, m.Cond(m.ISub(a, m.Mem8(hl))));
             m.Assign(hl, incDec(hl, m.Int16(1)));
-            m.Assign(bc, m.ISub(bc, m.Int16(1)));
+            m.Assign(bc, m.ISubS(bc, 1));
             if (repeat)
             {
-                m.BranchInMiddleOfInstruction(m.Eq0(bc), addr + dasm.Current.Length, RtlClass.ConditionalTransfer);
-                m.Branch(m.Test(ConditionCode.NE, z), addr, RtlClass.ConditionalTransfer);
+                m.BranchInMiddleOfInstruction(m.Eq0(bc), addr + dasm.Current.Length, InstrClass.ConditionalTransfer);
+                m.Branch(m.Test(ConditionCode.NE, z), addr, InstrClass.ConditionalTransfer);
             }
         }
 
@@ -379,10 +377,9 @@ namespace Reko.Arch.Z80
 
         private void RewriteDjnz(MachineOperand dst)
         {
-            rtlc = RtlClass.Linear;
             var b = binder.EnsureRegister(Registers.b);
             m.Assign(b, m.ISub(b, 1));
-            m.Branch(m.Ne0(b), ((AddressOperand)dst).Address, RtlClass.Transfer);
+            m.Branch(m.Ne0(b), ((AddressOperand)dst).Address, InstrClass.Transfer);
         }
 
         private void RewriteDi()
@@ -428,7 +425,6 @@ namespace Reko.Arch.Z80
 
         private void RewriteHlt()
         {
-            rtlc = RtlClass.Terminates;
             m.SideEffect(host.PseudoProcedure("__hlt", VoidType.Instance));
         }
 
@@ -442,14 +438,12 @@ namespace Reko.Arch.Z80
  
         private void RewriteJp(Z80Instruction instr)
         {
-            rtlc = RtlClass.Transfer;
             switch (instr.Op1)
             {
             case ConditionOperand cOp:
                 EmitBranch(cOp, ((AddressOperand)instr.Op2).Address);
                 break;
             case AddressOperand target:
-                    rtlc = RtlClass.Transfer;
                     m.Goto(target.Address);
                 break;
             case MemoryOperand mTarget:
@@ -460,7 +454,6 @@ namespace Reko.Arch.Z80
 
         private void RewriteJr()
         {
-            rtlc = RtlClass.Transfer;
             var op = dasm.Current.Op1;
             var cop = op as ConditionOperand;
             if (cop != null)
@@ -482,10 +475,10 @@ namespace Reko.Arch.Z80
                 }
                 m.Branch(
                     m.Test(
-                        cc, 
+                        cc,
                         binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.f, (uint)cr))),
-                    target.Address, 
-                    RtlClass.ConditionalTransfer);
+                    target.Address,
+                    rtlc);
             }
             else
             {
@@ -564,7 +557,7 @@ namespace Reko.Arch.Z80
             m.Assign(Z, m.Cond(b));
             if (repeat)
             {
-                m.Branch(m.Ne0(b), dasm.Current.Address, RtlClass.ConditionalTransfer);
+                m.Branch(m.Ne0(b), dasm.Current.Address, InstrClass.ConditionalTransfer);
             }
         }
 
@@ -616,7 +609,6 @@ namespace Reko.Arch.Z80
 
         private void RewriteRet()
         {
-            rtlc = RtlClass.Transfer;
             m.Return(2, 0);
         }
 

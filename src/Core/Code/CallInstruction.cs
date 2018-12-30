@@ -30,7 +30,7 @@ namespace Reko.Core.Code
     /// Models a low-level call instruction.
     /// </summary>
     /// <remarks>CallInstructions only exist right after scanning. Subsequent
-    /// decompiler phases will replace them with <code>Application</code> 
+    /// decompiler phases will replace them with <cref>Application</cref> instances.
     /// expressions.
     /// </remarks>
     public class CallInstruction : Instruction

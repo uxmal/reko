@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -18,14 +18,10 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
-using Reko.Core.Rtl;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Arch.Arm.AArch64
 {
@@ -33,11 +29,10 @@ namespace Reko.Arch.Arm.AArch64
     {
         private void RewriteB()
         {
-            rtlc = RtlClass.Transfer;
             if (instr.ops[0] is ConditionOperand cop)
             {
                 var cc = cop.Condition;
-                m.Branch(TestCond(cc), ((AddressOperand)instr.ops[1]).Address, RtlClass.ConditionalTransfer);
+                m.Branch(TestCond(cc), ((AddressOperand) instr.ops[1]).Address, rtlc);
             }
             else
             {
@@ -47,32 +42,27 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteBl()
         {
-            rtlc = RtlClass.Transfer | RtlClass.Call;
             m.Call(RewriteOp(instr.ops[0]), 0);
         }
 
         private void RewriteBlr()
         {
-            rtlc = RtlClass.Transfer | RtlClass.Call;
             m.Call(RewriteOp(instr.ops[0]), 0);
         }
 
         private void RewriteBr()
         {
-            rtlc = RtlClass.Transfer;
             m.Goto(RewriteOp(instr.ops[0]));
         }
 
         private void RewriteCb(Func<Expression, Expression> fn)
         {
-            rtlc = RtlClass.ConditionalTransfer;
             var reg = binder.EnsureRegister(((RegisterOperand)instr.ops[0]).Register);
             m.Branch(fn(reg), ((AddressOperand)instr.ops[1]).Address, rtlc);
         }
 
         private void RewriteRet()
         {
-            rtlc = RtlClass.Transfer;
             var reg = ((RegisterOperand)instr.ops[0]).Register;
             if (reg == Registers.GpRegs64[30])
             {
@@ -87,12 +77,11 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteTb(Func<Expression,Expression> fn)
         {
-            rtlc = RtlClass.ConditionalTransfer;
             var reg = RewriteOp(instr.ops[0]);
             int sh = ((ImmediateOperand)instr.ops[1]).Value.ToInt32();
             var mask = Constant.Create(reg.DataType, 1ul << sh);
             var dst = ((AddressOperand)instr.ops[2]).Address;
-            m.Branch(fn(m.And(reg, mask)), dst, RtlClass.ConditionalTransfer);
+            m.Branch(fn(m.And(reg, mask)), dst, instr.InstructionClass);
         }
     }
 }

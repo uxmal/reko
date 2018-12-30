@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 Pavel Tomin.
  *
@@ -312,13 +312,6 @@ namespace Reko.UnitTests.Analysis
             m.Ssa.Validate(s => Assert.Fail(s));
         }
 
-        private void When_FpuStackRegisterSet(string name)
-        {
-            var top = m.RegisterStorage(name, PrimitiveType.Byte);
-            var arch = (FakeArchitecture)m.Architecture;
-            arch.FpuStackRegister = top;
-        }
-
         private void Given_ApplicationBuilder(
             Func<IStorageBinder, (Identifier, Expression)> returnBinder)
         {
@@ -428,7 +421,6 @@ trash = <invalid>
         [Test]
         public void Icrw_FPUStackReturn()
         {
-            When_FpuStackRegisterSet("FakeTop");
             var top = m.Architecture.FpuStackRegister;
             var top_1 = m.Reg("FakeTop_1", top);
             var top_2 = m.Reg("FakeTop_2", top);
@@ -453,7 +445,7 @@ trash = <invalid>
             var expected =
 @"
 FakeST_3[FakeTop_1] = fn()
-FakeTop_2 = FakeTop_1 - 0x05
+FakeTop_2 = FakeTop_1 - 5
 ";
             AssertProcedureCode(expected);
         }

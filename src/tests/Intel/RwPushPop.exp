@@ -46,9 +46,9 @@ fn0C00_0008_entry:
 l0C00_0008:
 	sp = fp
 	Top = 0
-	sp = sp - 0x0002
+	sp = sp - 2
 	Mem0[ss:sp:word16] = si
-	sp = sp - 0x0002
+	sp = sp - 2
 	Mem0[ss:sp:word16] = di
 	si = 0x0000
 	// succ:  l0C00_000D
@@ -66,9 +66,9 @@ l0C00_0012:
 l0C00_001A:
 	ax = si
 	di = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
+	sp = sp + 2
 	si = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
+	sp = sp + 2
 	return
 	// succ:  fn0C00_0008_exit
 fn0C00_0008_exit:

@@ -16,7 +16,7 @@ loop:
 	i_5 = i_2 + 0x00000001
 	// succ:  loopHdr
 loopHdr:
-	i_2 = PHI(i_1, i_5)
+	i_2 = PHI((i_1, l1), (i_5, loop))
 	branch i_2 < 0x00000064 loop
 	goto l2
 	// succ:  l2 loop

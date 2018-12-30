@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,9 @@ namespace Reko.Core.Operators
         public static readonly BinaryOperator UMul = new UMulOperator();
         public static readonly BinaryOperator SDiv = new SDivOperator();
         public static readonly BinaryOperator UDiv = new UDivOperator();
-		public static readonly BinaryOperator IMod = new IModOperator();
+
+
+        public static readonly BinaryOperator IMod = new IModOperator();
 
         public static readonly BinaryOperator FAdd = new FAddOperator();
         public static readonly BinaryOperator FSub = new FSubOperator();
@@ -52,25 +54,25 @@ namespace Reko.Core.Operators
 		public static readonly BinaryOperator Cand = new CandOperator();
 		public static readonly BinaryOperator Cor = new CorOperator();
 
-		public static readonly BinaryOperator Lt = new LtOperator();
-		public static readonly BinaryOperator Gt = new GtOperator();
-		public static readonly BinaryOperator Le = new LeOperator();
-		public static readonly BinaryOperator Ge = new GeOperator();
+		public static readonly ConditionalOperator Lt = new LtOperator();
+		public static readonly ConditionalOperator Gt = new GtOperator();
+		public static readonly ConditionalOperator Le = new LeOperator();
+		public static readonly ConditionalOperator Ge = new GeOperator();
 
-        public static readonly BinaryOperator Feq= new ReqOperator();
-        public static readonly BinaryOperator Fne = new RneOperator();
-        public static readonly BinaryOperator Flt = new RltOperator();
-		public static readonly BinaryOperator Fgt = new RgtOperator();
-		public static readonly BinaryOperator Fle = new RleOperator();
-		public static readonly BinaryOperator Fge = new RgeOperator();
+        public static readonly ConditionalOperator Feq = new ReqOperator();
+        public static readonly ConditionalOperator Fne = new RneOperator();
+        public static readonly ConditionalOperator Flt = new RltOperator();
+		public static readonly ConditionalOperator Fgt = new RgtOperator();
+		public static readonly ConditionalOperator Fle = new RleOperator();
+		public static readonly ConditionalOperator Fge = new RgeOperator();
 
-		public static readonly BinaryOperator Ult = new UltOperator();
-		public static readonly BinaryOperator Ugt = new UgtOperator();
-		public static readonly BinaryOperator Ule = new UleOperator();
-		public static readonly BinaryOperator Uge = new UgeOperator();
+		public static readonly ConditionalOperator Ult = new UltOperator();
+		public static readonly ConditionalOperator Ugt = new UgtOperator();
+		public static readonly ConditionalOperator Ule = new UleOperator();
+		public static readonly ConditionalOperator Uge = new UgeOperator();
 
-		public static readonly BinaryOperator Eq = new EqOperator();
-		public static readonly BinaryOperator Ne = new NeOperator();
+		public static readonly ConditionalOperator Eq = new EqOperator();
+		public static readonly ConditionalOperator Ne = new NeOperator();
 
 		public static readonly UnaryOperator Not = new NotOperator();
 		public static readonly UnaryOperator Neg = new NegateOperator();
@@ -93,7 +95,5 @@ namespace Reko.Core.Operators
 		{
 			throw new NotImplementedException();
 		}
-
-
     }
 }

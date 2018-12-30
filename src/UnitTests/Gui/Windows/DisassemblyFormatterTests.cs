@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -27,6 +27,7 @@ using System.Linq;
 using System.Text;
 using Reko.UserInterfaces.WindowsForms.Controls;
 using Reko.UserInterfaces.WindowsForms;
+using Reko.UnitTests.Mocks;
 
 namespace Reko.UnitTests.Gui
 {
@@ -38,14 +39,17 @@ namespace Reko.UnitTests.Gui
         [SetUp]
         public void Setup()
         {
-            program = new Program();
+            program = new Program
+            {
+                Architecture = new FakeArchitecture()
+            };
         }
 
         [Test]
         public void Df_FormatString()
         {
             var list = new List<TextSpan>();
-            var df = new DisassemblyFormatter(program, null, list);
+            var df = new DisassemblyFormatter(program, program.Architecture, null, list);
             df.WriteString("Hello");
             df.NewLine();
 
@@ -56,7 +60,7 @@ namespace Reko.UnitTests.Gui
         public void Df_FormatAddress()
         {
             var list = new List<TextSpan>();
-            var df = new DisassemblyFormatter(program, null, list);
+            var df = new DisassemblyFormatter(program, program.Architecture, null, list);
             df.WriteAddress("foo", Address.Ptr32(0x1234));
             df.NewLine();
 
@@ -68,8 +72,9 @@ namespace Reko.UnitTests.Gui
         public void Df_FormatAddress_ScannedProcedure()
         {
             var list = new List<TextSpan>();
-            program.Procedures.Add(Address.Ptr32(0x1234), new Procedure(program.Architecture, "fn_renamed", new Frame(PrimitiveType.Word32)));
-            var df = new DisassemblyFormatter(program, null, list);
+            var addr = Address.Ptr32(0x1234);
+            program.Procedures.Add(addr, new Procedure(program.Architecture, "fn_renamed", addr, new Frame(PrimitiveType.Word32)));
+            var df = new DisassemblyFormatter(program, program.Architecture,  null, list);
             df.WriteAddress("foo", Address.Ptr32(0x1234));
             df.NewLine();
 

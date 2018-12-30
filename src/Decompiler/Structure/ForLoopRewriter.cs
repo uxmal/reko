@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -189,8 +189,8 @@ namespace Reko.Structure
         {
             List<AbsynAssignment> updates;
             Identifier loopVariable;
-            var idLeft = cmp.Left as Identifier;
-            var idRight = cmp.Right as Identifier;
+            var idLeft = FindLoopExpressionUse(cmp.Left);
+            var idRight = FindLoopExpressionUse(cmp.Right);
             var leftUpdates = FindUpdateAssignments(idLeft, loopBody);
             var rightUpdates = FindUpdateAssignments(idRight, loopBody);
             if (leftUpdates.Count == 1)
@@ -208,6 +208,15 @@ namespace Reko.Structure
             else
                 return (null, null);
             return (loopVariable, updates[0]);
+        }
+
+        private Identifier FindLoopExpressionUse(Expression exp)
+        {
+            if (exp is Identifier id)
+                return id;
+            if (exp is Cast c && c.Expression is Identifier castId)
+                return castId;
+            return null;
         }
 
         private AbsynAssignment FindInitializer(Identifier loopVariable, List<AbsynStatement> stmts, int i)

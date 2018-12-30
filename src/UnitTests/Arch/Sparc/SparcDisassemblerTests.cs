@@ -220,5 +220,11 @@ namespace Reko.UnitTests.Arch.Sparc
         {
             AssertInstruction(0xC12D0000, "stfsr\t%fsr,[%l4+%g0]");
         }
+
+        [Test]
+        public void SparcDis_fcmpd()
+        {
+            AssertInstruction(0x81A90A47, "fcmpd\t%f4,%f38");
+        }
     }
 }

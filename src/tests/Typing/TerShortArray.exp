@@ -46,7 +46,7 @@ T_6: (in dwArg04[dwArg08 * 0x00000002] : int16)
   Class: Eq_6
   DataType: int16
   OrigDataType: int16
-T_7: (in (int32) dwArg04[dwArg08] : int32)
+T_7: (in (int32) dwArg04[dwArg08 * 0x00000002] : int32)
   Class: Eq_7
   DataType: int32
   OrigDataType: int32

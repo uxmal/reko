@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -44,13 +44,13 @@ namespace Reko.Arch.Alpha
         public override AlphaInstruction DisassembleInstruction()
         {
             var addr = rdr.Address;
-            uint uInstr;
-            if (!rdr.TryReadUInt32(out uInstr))
+            if (!rdr.TryReadUInt32(out uint uInstr))
                 return null;
             var op = uInstr >> 26;
             var instr = decoders[op].Decode(uInstr, this);
             instr.Address = addr;
             instr.Length = 4;
+            instr.iclass |= uInstr == 0 ? InstrClass.Zero : 0;
             return instr;
         }
 
@@ -66,7 +66,7 @@ namespace Reko.Arch.Alpha
 
         private AlphaInstruction Invalid()
         {
-            return new AlphaInstruction { Opcode = Opcode.invalid };
+            return new AlphaInstruction { Opcode = Opcode.invalid, iclass = InstrClass.Invalid };
         }
 
         private AlphaInstruction Nyi(uint uInstr)
@@ -121,6 +121,7 @@ namespace Reko.Arch.Alpha
                 return new AlphaInstruction
                 {
                     Opcode = this.opcode,
+                    iclass = InstrClass.Linear,
                     op1 = dasm.AluRegister(uInstr >> 21),
                     op2 = new MemoryOperand(
                         PrimitiveType.Word32,    // Dummy value
@@ -144,6 +145,7 @@ namespace Reko.Arch.Alpha
                 return new AlphaInstruction
                 {
                     Opcode = this.opcode,
+                    iclass = InstrClass.Linear,
                     op1 = dasm.FpuRegister(uInstr >> 21),
                     op2 = new MemoryOperand(
                         PrimitiveType.Word32,    // Dummy value
@@ -159,6 +161,14 @@ namespace Reko.Arch.Alpha
                 Opcode.jmp, Opcode.jsr, Opcode.ret, Opcode.jsr_coroutine
             };
 
+            private readonly static InstrClass[] iclasses =
+            {
+                InstrClass.Transfer,
+                InstrClass.Transfer|InstrClass.Call,
+                InstrClass.Transfer,
+                InstrClass.Transfer|InstrClass.Call,
+            };
+
             public JMemOpRec()
             {
             }
@@ -168,6 +178,7 @@ namespace Reko.Arch.Alpha
                 return new AlphaInstruction
                 {
                     Opcode = opcodes[(uInstr >> 14) & 0x3],
+                    iclass = iclasses[(uInstr>> 14) & 0x3],
                     op1 = dasm.AluRegister(uInstr >> 21),
                     op2 = dasm.AluRegister(uInstr >> 16)
                 };
@@ -200,6 +211,7 @@ namespace Reko.Arch.Alpha
                 return new AlphaInstruction
                 {
                     Opcode = this.opcode,
+                    iclass = InstrClass.ConditionalTransfer,
                     op1 = op1,
                     op2 = op2,
                 };
@@ -223,6 +235,7 @@ namespace Reko.Arch.Alpha
                 return new AlphaInstruction
                 {
                     Opcode = this.opcode,
+                    iclass = InstrClass.ConditionalTransfer,
                     op1 = op1,
                     op2 = op2,
                 };
@@ -250,6 +263,7 @@ namespace Reko.Arch.Alpha
                 return new AlphaInstruction
                 {
                     Opcode = this.opcode,
+                    iclass = InstrClass.Linear,
                     op1 = op1,
                     op2 = op2,
                     op3 = op3,
@@ -311,6 +325,7 @@ namespace Reko.Arch.Alpha
                 return new AlphaInstruction
                 {
                     Opcode = this.opcode,
+                    iclass = InstrClass.Linear,
                     op1 = op1,
                     op2 = op2,
                     op3 = op3,
@@ -320,19 +335,21 @@ namespace Reko.Arch.Alpha
 
         private class PalOpRec : Decoder
         {
-            private Dictionary<uint, Opcode> opcodes;
+            private Dictionary<uint, (Opcode,InstrClass)> opcodes;
 
-            public PalOpRec(Dictionary<uint, Opcode> opcodes)
+            public PalOpRec(Dictionary<uint, (Opcode,InstrClass)> opcodes)
             {
                 this.opcodes = opcodes;
             }
 
             public override AlphaInstruction Decode(uint uInstr, AlphaDisassembler dasm)
             {
-                Opcode opcode;
-                if (!opcodes.TryGetValue(uInstr & 0x0000FFFF, out opcode))
+                if (!opcodes.TryGetValue(uInstr & 0x0000FFFF, out var opcode))
                     return dasm.Invalid();
-                return new AlphaInstruction { Opcode = opcode };
+                return new AlphaInstruction {
+                    Opcode = opcode.Item1,
+                    iclass = opcode.Item2
+                };
             }
         }
 
@@ -351,6 +368,7 @@ namespace Reko.Arch.Alpha
                 return new AlphaInstruction
                 {
                     Opcode = this.opcode,
+                    iclass = InstrClass.Linear,
                     op1 = op1,
                     op2 = op2,
                 };
@@ -376,9 +394,9 @@ namespace Reko.Arch.Alpha
         private static Decoder[] decoders = new Decoder[64]
         {
             // 00
-            new PalOpRec(new Dictionary<uint, Opcode>
+            new PalOpRec(new Dictionary<uint, (Opcode, InstrClass)>
             {       //$REVIEW: these palcodes are OS-dependent....
-                { 0, Opcode.halt }
+                { 0, (Opcode.halt,InstrClass.System|InstrClass.Terminates) }
             }),
             new InvalidOpRec(),
             new InvalidOpRec(),
@@ -865,21 +883,21 @@ namespace Reko.Arch.Alpha
                   { 0x530, new CvtOpRec(Opcode.cvtql_sv) },
             }),
 
-            new PalOpRec(new Dictionary<uint, Opcode> // 18
+            new PalOpRec(new Dictionary<uint, (Opcode,InstrClass)> // 18
             {
-                { 0x0000, Opcode.trapb }
+                { 0x0000, (Opcode.trapb,InstrClass.Transfer|InstrClass.Call) }
             }),
-            new PalOpRec(new Dictionary<uint, Opcode> // 19 
+            new PalOpRec(new Dictionary<uint, (Opcode,InstrClass)> // 19 
             {
             }),
             new JMemOpRec(),
-            new PalOpRec(new Dictionary<uint, Opcode> // 1B 
+            new PalOpRec(new Dictionary<uint, (Opcode,InstrClass)> // 1B 
             {
             }),
 
             new NyiOpRec(),
             new NyiOpRec(),
-            new PalOpRec(new Dictionary<uint, Opcode>
+            new PalOpRec(new Dictionary<uint, (Opcode,InstrClass)>
             {       //$REVIEW: these palcodes are OS-dependent....
             }),
             new NyiOpRec(),

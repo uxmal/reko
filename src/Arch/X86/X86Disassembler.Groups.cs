@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -18,10 +18,7 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Reko.Core;
 
 namespace Reko.Arch.X86
 {
@@ -64,28 +61,28 @@ namespace Reko.Arch.X86
 				// group 4
 				new SingleByteOpRec(Opcode.inc, "Eb"),
 				new SingleByteOpRec(Opcode.dec, "Eb"),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal), 
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid, 
 
 				// group 5
 				new SingleByteOpRec(Opcode.inc, "Ev"),
 				new SingleByteOpRec(Opcode.dec, "Ev"),
 				new Alternative64OpRec(
-                    new SingleByteOpRec(Opcode.call, "Ev"),
-                    new SingleByteOpRec(Opcode.call, "Eq")),
-                new SingleByteOpRec(Opcode.call, "Ep"),
+                    new SingleByteOpRec(Opcode.call, InstrClass.Transfer|InstrClass.Call, "Ev"),
+                    new SingleByteOpRec(Opcode.call, InstrClass.Transfer|InstrClass.Call, "Eq")),
+                new SingleByteOpRec(Opcode.call, InstrClass.Transfer|InstrClass.Call, "Ep"),
                 new Alternative64OpRec(
-				    new SingleByteOpRec(Opcode.jmp, "Ev"),
-				    new SingleByteOpRec(Opcode.jmp, "Eq")),
-				new SingleByteOpRec(Opcode.jmp, "Ep"),
+				    new SingleByteOpRec(Opcode.jmp, InstrClass.Transfer, "Ev"),
+				    new SingleByteOpRec(Opcode.jmp, InstrClass.Transfer, "Eq")),
+				new SingleByteOpRec(Opcode.jmp, InstrClass.Transfer, "Ep"),
                 new Alternative64OpRec(
 				    new SingleByteOpRec(Opcode.push, "Ev"),
 				    new SingleByteOpRec(Opcode.push, "Eq")),
-                new SingleByteOpRec(Opcode.illegal),
+                s_invalid,
 
 				// group 6
 				new SingleByteOpRec(Opcode.sldt, "Ew"),
@@ -94,106 +91,106 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.ltr, "Ew"),
 				new SingleByteOpRec(Opcode.verr, "Ew"),
 				new SingleByteOpRec(Opcode.verw, "Ew"),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				s_invalid,
+				s_invalid,
 
 				// group 7
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				s_invalid,
+				s_invalid,
 				new Group7OpRec(
-                    new SingleByteOpRec(Opcode.illegal),
+                    s_invalid,
 
                     new SingleByteOpRec(Opcode.xgetbv),
                     new SingleByteOpRec(Opcode.xsetbv),
-                    new SingleByteOpRec(Opcode.illegal),
-                    new SingleByteOpRec(Opcode.illegal),
+                    s_invalid,
+                    s_invalid,
 
                     new SingleByteOpRec(Opcode.vmfunc),
                     new SingleByteOpRec(Opcode.xend),
                     new SingleByteOpRec(Opcode.xtest),
-                    new SingleByteOpRec(Opcode.illegal)),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+                    s_invalid),
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
 
 				// group 8
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
 				new SingleByteOpRec(Opcode.bt),
 				new SingleByteOpRec(Opcode.bts),
 				new SingleByteOpRec(Opcode.btr),
 				new SingleByteOpRec(Opcode.btc),
 
 				// group 9
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
 
 				// group 10
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
 
 				// group 11
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
 
 				// group 12
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
 
 				// group 13
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
 
 				// group 14
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
 
 				// group 15
 				new Group7OpRec(new SingleByteOpRec(Opcode.fxsave)),
 				new Group7OpRec(new SingleByteOpRec(Opcode.fxrstor)),
 				new SingleByteOpRec(Opcode.ldmxcsr, "Md"),
 				new SingleByteOpRec(Opcode.stmxcsr, "Md"),
-				new SingleByteOpRec(Opcode.illegal),
+				s_invalid,
 				new Group7OpRec(
                     new SingleByteOpRec(Opcode.xrstor, "Md"),
 
@@ -237,20 +234,20 @@ namespace Reko.Arch.X86
 				new SingleByteOpRec(Opcode.prefetcht0, "Mb"),
 				new SingleByteOpRec(Opcode.prefetcht1, "Mb"),
 				new SingleByteOpRec(Opcode.prefetcht2, "Mb"),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
 
 				// group 17
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.illegal),
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
+				s_invalid,
 			};
         }
     }

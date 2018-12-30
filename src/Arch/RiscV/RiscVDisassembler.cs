@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -50,15 +50,18 @@ namespace Reko.Arch.RiscV
         public override RiscVInstruction DisassembleInstruction()
         {
             this.addrInstr = rdr.Address;
-            ushort hInstr;
-            if (!rdr.TryReadLeUInt16(out hInstr))
+            if (!rdr.TryReadLeUInt16(out ushort hInstr))
             {
                 return null;
             }
-            return opRecs[hInstr & 0x3].Decode(this, hInstr);
+            var instr = opRecs[hInstr & 0x3].Decode(this, hInstr);
+            instr.Address = addrInstr;
+            instr.Length = (int) (rdr.Address - addrInstr);
+            instr.iclass |= hInstr == 0 ? InstrClass.Zero : 0;
+            return instr;
         }
 
-        private RiscVInstruction DecodeCompressedOperands(Opcode opcode, string fmt, uint wInstr)
+        private RiscVInstruction DecodeCompressedOperands(Opcode opcode, InstrClass iclass, string fmt, uint wInstr)
         {
             var ops = new List<MachineOperand>();
             for (int i = 0; i < fmt.Length; ++i)
@@ -73,15 +76,16 @@ namespace Reko.Arch.RiscV
                 }
                 ops.Add(op);
             }
-            return BuildInstruction(opcode, ops);
+            return BuildInstruction(opcode, iclass, ops);
         }
 
-        private RiscVInstruction BuildInstruction(Opcode opcode, List<MachineOperand> ops)
-        {
+        private RiscVInstruction BuildInstruction(Opcode opcode, InstrClass iclass, List<MachineOperand> ops)
+        { 
             var instr = new RiscVInstruction
             {
                 Address = this.addrInstr,
                 opcode = opcode,
+                iclass = iclass,
                 Length = (int)(this.rdr.Address - addrInstr)
             };
             if (ops.Count > 0)
@@ -104,7 +108,7 @@ namespace Reko.Arch.RiscV
             return instr;
         }
 
-        private RiscVInstruction DecodeWideOperands(Opcode opcode, string fmt, uint wInstr)
+        private RiscVInstruction DecodeWideOperands(Opcode opcode, InstrClass iclass, string fmt, uint wInstr)
         {
             var ops = new List<MachineOperand>();
             for (int i = 0; i < fmt.Length; ++i)
@@ -131,7 +135,7 @@ namespace Reko.Arch.RiscV
                 }
                 ops.Add(op);
             }
-            return BuildInstruction(opcode, ops);
+            return BuildInstruction(opcode, iclass, ops);
         }
 
         private RegisterOperand GetRegister(uint wInstr, int bitPos)
@@ -237,7 +241,7 @@ namespace Reko.Arch.RiscV
 
             public override RiscVInstruction Decode(RiscVDisassembler dasm, uint wInstr)
             {
-                return dasm.DecodeCompressedOperands(opcode, fmt, wInstr);
+                return dasm.DecodeCompressedOperands(opcode, InstrClass.Linear, fmt, wInstr);
             }
         }
 
@@ -245,17 +249,24 @@ namespace Reko.Arch.RiscV
         public class WOpRec : OpRec
         {
             private Opcode opcode;
+            private InstrClass iclass;
             private string fmt;
 
-            public WOpRec(Opcode opcode, string fmt)
+            public WOpRec(Opcode opcode, string fmt) : this(opcode, InstrClass.Linear, fmt)
+            {
+            }
+
+            public WOpRec(Opcode opcode, InstrClass iclass, string fmt)
             {
                 this.opcode = opcode;
+                this.iclass = iclass;
                 this.fmt = fmt;
             }
 
+
             public override RiscVInstruction Decode(RiscVDisassembler dasm, uint wInstr)
             {
-                return dasm.DecodeWideOperands(opcode, fmt, wInstr);
+                return dasm.DecodeWideOperands(opcode, iclass, fmt, wInstr);
             }
         }
 
@@ -272,7 +283,7 @@ namespace Reko.Arch.RiscV
 
             public override RiscVInstruction Decode(RiscVDisassembler dasm, uint wInstr)
             {
-                return dasm.DecodeWideOperands(opcode, fmt, wInstr);
+                return dasm.DecodeWideOperands(opcode, InstrClass.Linear, fmt, wInstr);
             }
         }
 
@@ -359,7 +370,7 @@ namespace Reko.Arch.RiscV
             public override RiscVInstruction Decode(RiscVDisassembler dasm, uint wInstr)
             {
                 var opcode = rl_ra[bit(wInstr, 30) ? 1 : 0];
-                return dasm.DecodeWideOperands(opcode, fmt, wInstr);
+                return dasm.DecodeWideOperands(opcode, InstrClass.Linear, fmt, wInstr);
             }
         }
 
@@ -473,15 +484,15 @@ namespace Reko.Arch.RiscV
 
             var branches = new OpRec[]
             {
-                new WOpRec(Opcode.beq, "1,2,B"),
-                new WOpRec(Opcode.bne, "1,2,B"),
+                new WOpRec(Opcode.beq, InstrClass.ConditionalTransfer, "1,2,B"),
+                new WOpRec(Opcode.bne, InstrClass.ConditionalTransfer, "1,2,B"),
                 new WOpRec(Opcode.invalid, ""),
                 new WOpRec(Opcode.invalid, ""),
 
-                new WOpRec(Opcode.blt, "1,2,B"),
-                new WOpRec(Opcode.bge, "1,2,B"),
-                new WOpRec(Opcode.bltu, "1,2,B"),
-                new WOpRec(Opcode.bgeu, "1,2,B"),
+                new WOpRec(Opcode.blt, InstrClass.ConditionalTransfer, "1,2,B"),
+                new WOpRec(Opcode.bge, InstrClass.ConditionalTransfer, "1,2,B"),
+                new WOpRec(Opcode.bltu, InstrClass.ConditionalTransfer, "1,2,B"),
+                new WOpRec(Opcode.bgeu, InstrClass.ConditionalTransfer, "1,2,B"),
             };
 
             wideOpRecs = new OpRec[]
@@ -519,9 +530,9 @@ namespace Reko.Arch.RiscV
                 new WOpRec(Opcode.invalid, ""),
 
                 new MaskOpRec(12, 7, branches),
-                new WOpRec(Opcode.jalr, "d,1,i"),
+                new WOpRec(Opcode.jalr, InstrClass.Transfer, "d,1,i"),
                 new WOpRec(Opcode.invalid, ""),
-                new WOpRec(Opcode.jal, "d,J"),
+                new WOpRec(Opcode.jal, InstrClass.Transfer|InstrClass.Call, "d,J"),
 
                 new WOpRec(Opcode.invalid, ""),
                 new WOpRec(Opcode.invalid, ""),

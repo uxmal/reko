@@ -645,7 +645,7 @@ namespace Reko.ImageLoaders.Xex
             var segmentMap = new SegmentMap(addrLoad, segments.ToArray());
 
             var entryPointAddress = new Address32(xexData.exe_entry_point);
-            var entryPoint = new ImageSymbol(entryPointAddress) { Type = SymbolType.Procedure };
+            var entryPoint = ImageSymbol.Procedure(arch, entryPointAddress);
 
             var program = new Program(
                 segmentMap,

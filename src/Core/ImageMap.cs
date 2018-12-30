@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,9 +39,7 @@ namespace Reko.Core
 
         public ImageMap(Address addrBase)
         {
-            if (addrBase == null)
-                throw new ArgumentNullException("addrBase");
-            this.BaseAddress = addrBase;
+            this.BaseAddress = addrBase ?? throw new ArgumentNullException(nameof(addrBase));
             this.Items = new SortedList<Address, ImageMapItem>(new ItemComparer());
         }
 
@@ -58,8 +56,7 @@ namespace Reko.Core
         public ImageMapItem AddItem(Address addr, ImageMapItem itemNew)
 		{
 			itemNew.Address = addr;
-			ImageMapItem item;
-            if (!TryFindItem(addr, out item))
+            if (!TryFindItem(addr, out ImageMapItem item))
             {
                 // Outside of range.
                 Items.Add(itemNew.Address, itemNew);
@@ -112,13 +109,17 @@ namespace Reko.Core
             }
 		}
 
+	    public bool EventHandlerPaused { get; set; }
+
         public void AddItemWithSize(Address addr, ImageMapItem itemNew)
         {
-            ImageMapItem item;
-            if (!TryFindItem(addr, out item))
+            if (!TryFindItem(addr, out var item))
             {
                 throw new ArgumentException(string.Format("Address {0} is not within the image range.", addr));
             }
+            // Do not split items with known data.
+            if (!(item.DataType is UnknownType || item.DataType is CodeType))
+                return;
             long delta = addr - item.Address;
             Debug.Assert(delta >= 0, "Should have found an item at the supplied address.");
             if (delta > 0)
@@ -206,8 +207,7 @@ namespace Reko.Core
 
         public void RemoveItem(Address addr)
         {
-            ImageMapItem item;
-            if (!TryFindItemExact(addr, out item))
+            if (!TryFindItemExact(addr, out ImageMapItem item))
                 return;
 
             item.DataType = new UnknownType();
@@ -215,8 +215,7 @@ namespace Reko.Core
             ImageMapItem mergedItem = item;
 
             // Merge with previous item
-            ImageMapItem prevItem;
-            if (Items.TryGetLowerBound((addr - 1), out prevItem) &&
+            if (Items.TryGetLowerBound((addr - 1), out ImageMapItem prevItem) &&
                 prevItem.DataType is UnknownType &&
                 prevItem.EndAddress.Equals(item.Address))
             {
@@ -227,8 +226,8 @@ namespace Reko.Core
             }
 
             // Merge with next item
-            ImageMapItem nextItem;
-            if (Items.TryGetUpperBound((addr + 1), out nextItem) &&
+            
+            if (Items.TryGetUpperBound((addr + 1), out ImageMapItem nextItem) &&
                 nextItem.DataType is UnknownType &&
                 mergedItem.EndAddress.Equals(nextItem.Address))
             {

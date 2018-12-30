@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -93,14 +93,14 @@ namespace Reko.Arch.M68k
             a6 = new AddressRegister("a6", 14, PrimitiveType.Word32);
             a7 = new AddressRegister("a7", 15, PrimitiveType.Word32);
 
-            fp0 = new FpRegister("fp0", 16, PrimitiveType.Real80);
-            fp1 = new FpRegister("fp1", 17, PrimitiveType.Real80);
-            fp2 = new FpRegister("fp2", 18, PrimitiveType.Real80);
-            fp3 = new FpRegister("fp3", 19, PrimitiveType.Real80);
-            fp4 = new FpRegister("fp4", 20, PrimitiveType.Real80);
-            fp5 = new FpRegister("fp5", 21, PrimitiveType.Real80);
-            fp6 = new FpRegister("fp6", 22, PrimitiveType.Real80);
-            fp7 = new FpRegister("fp7", 23, PrimitiveType.Real80);
+            fp0 = new FpRegister("fp0", 16, PrimitiveType.Real96);
+            fp1 = new FpRegister("fp1", 17, PrimitiveType.Real96);
+            fp2 = new FpRegister("fp2", 18, PrimitiveType.Real96);
+            fp3 = new FpRegister("fp3", 19, PrimitiveType.Real96);
+            fp4 = new FpRegister("fp4", 20, PrimitiveType.Real96);
+            fp5 = new FpRegister("fp5", 21, PrimitiveType.Real96);
+            fp6 = new FpRegister("fp6", 22, PrimitiveType.Real96);
+            fp7 = new FpRegister("fp7", 23, PrimitiveType.Real96);
 
             ccr = new RegisterStorage("ccr", 24, 0, PrimitiveType.Byte);
             sr = new RegisterStorage("sr", 25, 0, PrimitiveType.Word16);

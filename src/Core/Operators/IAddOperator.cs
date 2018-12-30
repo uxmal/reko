@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Expressions;
+using Reko.Core.Types;
 using System;
 
 namespace Reko.Core.Operators
@@ -36,8 +37,28 @@ namespace Reko.Core.Operators
 		{
             if (!ValidArgs(c1, c2))
                 return Constant.Invalid;
+            if (c1.DataType.IsPointer && c2.DataType.IsIntegral)
+            {
+                var dt = PrimitiveType.Create(Domain.Pointer, c1.DataType.BitSize);
+                return Constant.Create(dt, c1.ToUInt64() + c2.ToUInt64());
+            }
+            else if (c2.DataType.IsPointer && c1.DataType.IsIntegral)
+            {
+                var dt = PrimitiveType.Create(Domain.Pointer, c2.DataType.BitSize);
+                return Constant.Create(dt, c1.ToUInt64() + c2.ToUInt64());
+            }
+            else
+            {
+                var p1 = c1.DataType as PrimitiveType;
+                var p2 = c1.DataType as PrimitiveType;
+                if ((p1.Domain & p2.Domain) == 0 && 
+                    (p1.Domain | p2.Domain) != Domain.Integer)
+                    throw new ArgumentException(string.Format("Can't add types of disjoint domains {0} and {1}", c1.DataType, c2.DataType));
+            }
             return BuildConstant(c1.DataType, c2.DataType, c1.ToInt64() + c2.ToInt64());
 		}
+
+
 
         public override string AsCompound()
         {

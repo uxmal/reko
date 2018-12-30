@@ -123,13 +123,6 @@ namespace Reko.Core.Output
                restrict                              -- C99
                __restrict__                          -- GNU C
                volatile    */
-        [Flags]
-        enum type_qual
-        {
-            CONST = 1,
-            VOLATILE = 2,
-            RESTRICT = 4
-        }
 
         //$REVIEW: we don't do cv-qualifiers... yet?
         void TypeQualifierList(DataType t)
@@ -154,11 +147,11 @@ namespace Reko.Core.Output
 
         void Pointer(Pointer t)
         {
-            var ptPointee = t.Pointee as Pointer;
-            if (ptPointee != null)
+            if (t.Pointee is Pointer ptPointee)
                 Pointer(ptPointee);
             WriteSpace();
             fmt.Write('*');
+            TypeFormatter.WriteQualifier(t.Qualifier, fmt);
             TypeQualifierList(t);
         }
 
@@ -208,6 +201,7 @@ namespace Reko.Core.Output
 
         void TypeSpecifier(DataType t)
         {
+            TypeFormatter.WriteQualifier(t.Qualifier, fmt);
             if (t is UnknownType)
             {
                 fmt.Write("<type-error>");

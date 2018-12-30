@@ -67,21 +67,21 @@ C_17: orig: C
 al_28: orig: al
 al_19: orig: al
     def:  al_19 = al - 0x30
-    uses: al_30 = PHI(al_19, al_22, al_25)
+    uses: al_30 = PHI((al_19, l0C00_0022), (al_22, l0C00_0028), (al_25, l0C00_002E))
 SCZO_20: orig: SCZO
 C_21: orig: C
 al_22: orig: al
     def:  al_22 = al - 0x37
-    uses: al_30 = PHI(al_19, al_22, al_25)
+    uses: al_30 = PHI((al_19, l0C00_0022), (al_22, l0C00_0028), (al_25, l0C00_002E))
 SCZO_23: orig: SCZO
 C_24: orig: C
 al_25: orig: al
     def:  al_25 = al - 0x57
-    uses: al_30 = PHI(al_19, al_22, al_25)
+    uses: al_30 = PHI((al_19, l0C00_0022), (al_22, l0C00_0028), (al_25, l0C00_002E))
 SCZO_26: orig: SCZO
 C_27: orig: C
 al_30: orig: al
-    def:  al_30 = PHI(al_19, al_22, al_25)
+    def:  al_30 = PHI((al_19, l0C00_0022), (al_22, l0C00_0028), (al_25, l0C00_002E))
     uses: alOut = al_30
 C_31: orig: C
 O_32: orig: O
@@ -104,6 +104,7 @@ S_48: orig: S
 S_49: orig: S
 S_50: orig: S
 S_51: orig: S
+alOut:Out:al
 Z_60: orig: Z
 Z_61: orig: Z
 Z_62: orig: Z
@@ -150,7 +151,7 @@ l0C00_002E:
 	al_25 = al - 0x57
 	// succ:  l0C00_0030
 l0C00_0030:
-	al_30 = PHI(al_19, al_22, al_25)
+	al_30 = PHI((al_19, l0C00_0022), (al_22, l0C00_0028), (al_25, l0C00_002E))
 	alOut = al_30
 	return false
 	// succ:  fn0C00_000A_exit

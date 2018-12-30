@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -38,6 +38,7 @@ namespace Reko.Arch.Z80
 
         public Z80ProcessorArchitecture(string archId) : base(archId)
         {
+            this.Endianness = EndianServices.Little;
             this.InstructionBitSize = 8;
             this.FramePointerType = PrimitiveType.Ptr16;
             this.PointerType = PrimitiveType.Ptr16;
@@ -50,31 +51,6 @@ namespace Reko.Arch.Z80
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
             return new Z80Disassembler(imageReader);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addr)
-        {
-            return new LeImageReader(image, addr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
-        {
-            return new LeImageReader(image, addrBegin, addrEnd);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, ulong offset)
-        {
-            return new LeImageReader(image, offset);
-        }
-
-        public override ImageWriter CreateImageWriter()
-        {
-            return new LeImageWriter();
-        }
-
-        public override ImageWriter CreateImageWriter(MemoryArea mem, Address addr)
-        {
-            return new LeImageWriter(mem, addr);
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -116,11 +92,6 @@ namespace Reko.Arch.Z80
             return (int)result;
         }
 
-        public override RegisterStorage GetRegister(int i)
-        {
-            throw new NotImplementedException();
-        }
-
         public override RegisterStorage GetRegister(string name)
         {
             return Registers.GetRegister(name);
@@ -155,14 +126,15 @@ namespace Reko.Arch.Z80
         {
             if (offset == 0 && reg.BitSize == (ulong)width)
                 return reg;
-            //Dictionary<uint, RegisterStorage> dict;
-            //if (!Registers. SubRegisters.TryGetValue(reg.Domain, out dict))
-            //    return null;
-            //RegisterStorage subReg;
-            //if (!dict.TryGetValue((uint)(offset + width * 16), out subReg))
-            //    return null;
-            throw new NotImplementedException();
-            //return subReg;
+            var subregs = Registers.SubRegisters[reg.Domain];
+            var mask = ((1ul << width) - 1) << offset;
+            var result = reg;
+            foreach (var subreg in subregs)
+            {
+                if ((mask & ~subreg.BitMask) == 0)
+                    result = subreg;
+            }
+            return result;
         }
 
         public override RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> regs)
@@ -209,6 +181,9 @@ namespace Reko.Arch.Z80
                 switch (c)
                 {
                 case 'Z': flags |= FlagM.ZF; break;
+                case 'S': flags |= FlagM.SF; break;
+                case 'C': flags |= FlagM.CF; break;
+                case 'P': flags |= FlagM.PF; break;
                 default: throw new ArgumentException("name");
                 }
             }
@@ -248,11 +223,6 @@ namespace Reko.Arch.Z80
         public override bool TryParseAddress(string txtAddress, out Address addr)
         {
             return Address.TryParse16(txtAddress, out addr);
-        }
-
-        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
-        {
-            return mem.TryReadLe(addr, dt, out value);
         }
     }
 
@@ -341,6 +311,9 @@ namespace Reko.Arch.Z80
                 RegisterStorage[]>
             {
                 {
+                    af.Domain, new [] { Registers.a, Registers.f }
+                },
+                {
                     bc.Domain, new [] { Registers.c, Registers.b }
                 },
                 {
@@ -364,9 +337,11 @@ namespace Reko.Arch.Z80
 
         internal static RegisterStorage GetRegister(StorageDomain domain, ulong mask)
         {
-            RegisterStorage[] subregs;
-            RegisterStorage regBest = regsByStorage[domain - StorageDomain.Register];
-            if (SubRegisters.TryGetValue(domain, out subregs))
+            var iReg = domain - StorageDomain.Register;
+            if (iReg < 0 || iReg >= regsByStorage.Length)
+                return null;
+            RegisterStorage regBest = regsByStorage[iReg];
+            if (SubRegisters.TryGetValue(domain, out var subregs))
             {
                 for (int i = 0; i < subregs.Length; ++i)
                 {

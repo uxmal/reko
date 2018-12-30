@@ -81,7 +81,10 @@ namespace Reko.Analysis
 						return;
 					}
 				}
-				dominator.Statements.Insert(0, 0, new Declaration(web.Identifier, null));
+				dominator.Statements.Insert(
+                    0,
+                    dominator.Address.ToLinear(),
+                    new Declaration(web.Identifier, null));
 			}
 		}
 	}

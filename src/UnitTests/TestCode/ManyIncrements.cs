@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -32,8 +32,8 @@ namespace Reko.UnitTests.TestCode
     {
         protected override void BuildBody()
         {
-            Identifier r0 = Register(0);
-            Identifier r1 = Register(1);
+            Identifier r0 = Register("r0");
+            Identifier r1 = Register("r1");
 
             Assign(Frame.EnsureRegister(Architecture.StackRegister), Frame.FramePointer);
 

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -41,6 +41,7 @@ namespace Reko.Analysis
         private readonly Dictionary<StorageDomain, CallBinding> defs;
         private readonly Dictionary<StorageDomain, CallBinding> uses;
         private Dictionary<StorageDomain, CallBinding> map;
+        private bool bindUses;
 
         public CallApplicationBuilder(SsaState ssaCaller, Statement stmCall, CallInstruction call, Expression callee) : base(call.CallSite, callee)
         {
@@ -59,18 +60,30 @@ namespace Reko.Analysis
 
         public override Expression Bind(Identifier id)
         {
-            return With(uses, id.Storage);
+            return WithUses(id.Storage);
         }
 
         public override OutArgument BindOutArg(Identifier id)
         {
-            var exp = With(defs, id.Storage);
+            var exp = WithDefinitions(id.Storage);
             return new OutArgument(arch.FramePointerType, exp);
         }
 
         public override Expression BindReturnValue(Identifier id)
         {
-            return With(defs, id.Storage);
+            return WithDefinitions(id.Storage);
+        }
+
+        private Expression WithUses(Storage stg)
+        {
+            this.bindUses = true;
+            return With(uses, stg);
+        }
+
+        private Expression WithDefinitions(Storage stg)
+        {
+            this.bindUses = false;
+            return With(defs, stg);
         }
 
         private Expression With(Dictionary<StorageDomain, CallBinding> map, Storage stg)
@@ -83,7 +96,10 @@ namespace Reko.Analysis
 
         public Expression VisitFlagGroupStorage(FlagGroupStorage grf)
         {
-            return map[grf.Domain].Expression;
+            if (!map.TryGetValue(grf.Domain, out var cb))
+                return null;
+            else
+                return cb.Expression;
         }
 
         public Expression VisitFpuStackStorage(FpuStackStorage fpu)
@@ -91,7 +107,7 @@ namespace Reko.Analysis
             foreach (var de in this.map
               .Where(d => d.Value.Storage is FpuStackStorage))
             {
-                if (((FpuStackStorage)de.Value.Storage).FpuStackOffset == fpu.FpuStackOffset)
+                if (((FpuStackStorage) de.Value.Storage).FpuStackOffset == fpu.FpuStackOffset)
                     return de.Value.Expression;
             }
             throw new NotImplementedException(string.Format("Offsets not matching? SP({0})", fpu.FpuStackOffset));
@@ -119,9 +135,11 @@ namespace Reko.Analysis
 
         public Expression VisitRegisterStorage(RegisterStorage reg)
         {
-            return map.TryGetValue(reg.Domain, out CallBinding cb)
-                ? cb.Expression
-                : null;
+            if (map.TryGetValue(reg.Domain, out CallBinding cb))
+                return cb.Expression;
+            if (bindUses)
+                return EnsureRegister(reg);
+            return null;
         }
 
         public Expression VisitSequenceStorage(SequenceStorage seq)
@@ -135,7 +153,7 @@ namespace Reko.Analysis
             foreach (var de in this.map
                 .Where(d => d.Value.Storage is StackStorage))
             {
-                if (((StackStorage)de.Value.Storage).StackOffset == localOff)
+                if (((StackStorage) de.Value.Storage).StackOffset == localOff)
                     return de.Value.Expression;
             }
             return FallbackArgument($"stackArg{localOff}", stack.DataType);
@@ -197,6 +215,15 @@ Please report this issue at https://github.com/uxmal/reko";
             var iPos = block.Statements.IndexOf(stmBefore);
             var linAddr = stmBefore.LinearAddress;
             return block.Statements.Insert(iPos, linAddr, instr);
+        }
+
+        private Identifier EnsureRegister(RegisterStorage reg)
+        {
+            var id = ssaCaller.Procedure.Frame.EnsureRegister(reg);
+            var entryBlock = ssaCaller.Procedure.EntryBlock;
+            var sid = ssaCaller.EnsureSsaIdentifier(id, entryBlock);
+            sid.Uses.Add(stmCall);
+            return sid.Identifier;
         }
     }
 }

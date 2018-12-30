@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -109,7 +109,7 @@ namespace Reko.UnitTests.Analysis
             var pb = new ProgramBuilder(new FakeArchitecture());
             pb.Add("test", m =>
             {
-                var r1 = m.Register(1);
+                var r1 = m.Register("r1");
                 m.Assign(r1, 3);
                 m.Return();
             });
@@ -144,7 +144,7 @@ test:
             var pb = new ProgramBuilder(new FakeArchitecture());
             pb.Add("test", m =>
             {
-                var r1 = m.Register(1);
+                var r1 = m.Register("r1");
                 m.Assign(r1, m.Mem32(m.Word32(0x3000)));
                 m.Return();
             });
@@ -180,7 +180,7 @@ test:
             var pb = new ProgramBuilder(new FakeArchitecture());
             pb.Add("test", m =>
             {
-                var r1 = m.Register(1);
+                var r1 = m.Register("r1");
                 m.BranchIf(m.Ge(r1, 0), "m_ge");
 
                 m.Label("m_lt");
@@ -205,7 +205,7 @@ l1:
 	goto m_lt
 	// succ:  m_lt m_ge
 m_ge:
-	r1_3 = PHI(r1, r1_2)
+	r1_3 = PHI((r1, l1), (r1_2, m_lt))
 	return
 	// succ:  test_exit
 m_lt:
@@ -233,8 +233,8 @@ test:
             var pb = new ProgramBuilder(new FakeArchitecture());
             pb.Add("test", m =>
             {
-                var r1 = m.Register(1);
-                var r2 = m.Register(2);
+                var r1 = m.Register("r1");
+                var r2 = m.Register("r2");
                 m.Assign(r2, r1);
                 m.BranchIf(m.Ge(r1, 0), "m_ge");
 
@@ -265,7 +265,7 @@ l1:
 	goto m_lt
 	// succ:  m_lt m_ge
 m_done:
-	r1_5 = PHI(r1_4, r1_3)
+	r1_5 = PHI((r1_4, m_lt), (r1_3, m_ge))
 	return
 	// succ:  test_exit
 m_ge:
@@ -294,9 +294,9 @@ test:
             var pb = new ProgramBuilder(new FakeArchitecture());
             pb.Add("test", m =>
             {
-                var r1 = m.Register(1);
-                var r2 = m.Register(2);
-                var r3 = m.Register(3);
+                var r1 = m.Register("r1");
+                var r2 = m.Register("r2");
+                var r3 = m.Register("r3");
                 m.Assign(r2, r1);
                 m.Assign(r3, r2);
                 m.Assign(r1, 10);
@@ -330,8 +330,8 @@ l1:
 	r1_4 = 0x0000000A
 	// succ:  m_loopHead
 m_loopHead:
-	r2_9 = PHI(r2_2, r2_8)
-	r1_5 = PHI(r1_4, r1_6)
+	r2_9 = PHI((r2_2, l1), (r2_8, m_loopStatements))
+	r1_5 = PHI((r1_4, l1), (r1_6, m_loopStatements))
 	branch r1_5 >= 0x00000000 m_loopStatements
 	goto m_xit
 	// succ:  m_xit m_loopStatements
@@ -393,11 +393,11 @@ l2:
 	r1_18 = r1_11 * r2_16
 	// succ:  m_done
 m_done:
-	r63_23 = PHI(r63_2, r63_17)
-	r3_22 = PHI(r3, r3_14)
-	r2_21 = PHI(r2_4, r2_16)
-	r1_20 = PHI(r1_5, r1_18)
-	cc_19 = PHI(cc_6, cc_15)
+	r63_23 = PHI((r63_2, l1), (r63_17, l2))
+	r3_22 = PHI((r3, l1), (r3_14, l2))
+	r2_21 = PHI((r2_4, l1), (r2_16, l2))
+	r1_20 = PHI((r1_5, l1), (r1_18, l2))
+	cc_19 = PHI((cc_6, l1), (cc_15, l2))
 	return
 	// succ:  fact_exit
 fact_exit:

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -59,7 +59,7 @@ namespace Reko.UnitTests.Mocks
             return Emit(ass);
         }
 
-        public RtlInstruction Branch(Expression cond, Address target, RtlClass rtlClass)
+        public RtlInstruction Branch(Expression cond, Address target, InstrClass rtlClass)
         {
             var br = new RtlBranch(cond, target, rtlClass);
             return Emit(br);
@@ -67,14 +67,14 @@ namespace Reko.UnitTests.Mocks
 
         public RtlInstruction Call(Expression target)
         {
-            var call = new RtlCall(target, 4, RtlClass.Transfer);
+            var call = new RtlCall(target, 4, InstrClass.Transfer);
             return Emit(call);
         }
 
         // Delayed call (for SPARC / MIPS)
         public RtlInstruction CallD(Expression target)
         {
-            var call = new RtlCall(target, 4, RtlClass.Transfer|RtlClass.Delay);
+            var call = new RtlCall(target, 4, InstrClass.Transfer|InstrClass.Delay);
             return Emit(call);
         }
 
@@ -86,24 +86,19 @@ namespace Reko.UnitTests.Mocks
 
         public RtlInstruction Goto(uint target)
         {
-            var g = new RtlGoto(Address.Ptr32(target), RtlClass.Transfer);
+            var g = new RtlGoto(Address.Ptr32(target), InstrClass.Transfer);
             return Emit(g);
-        }
-
-        public Identifier Register(int iReg)
-        {
-            return binder.EnsureRegister(arch.GetRegister(iReg));
         }
 
         public RtlInstruction Return()
         {
-            var ret = new RtlReturn(0, 0, RtlClass.Transfer);
+            var ret = new RtlReturn(0, 0, InstrClass.Transfer);
             return Emit(ret);
         }
 
         public RtlInstruction ReturnD()
         {
-            var ret = new RtlReturn(0, 0, RtlClass.Transfer|RtlClass.Delay);
+            var ret = new RtlReturn(0, 0, InstrClass.Transfer|InstrClass.Delay);
             return Emit(ret);
         }
 

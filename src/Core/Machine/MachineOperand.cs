@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -190,6 +190,11 @@ namespace Reko.Core.Machine
         public static ImmediateOperand Word64(long value)
         {
             return new ImmediateOperand(Constant.Word64(value));
+        }
+
+        public static ImmediateOperand Word128(ulong value)
+        {
+            return new ImmediateOperand(new ConstantUInt128(PrimitiveType.Word128, value));
         }
 
         public static ImmediateOperand Int32(int value)

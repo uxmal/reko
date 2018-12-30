@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -60,7 +60,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
         public static readonly RegisterStorage f = new RegisterStorage("f", 8, 0, PrimitiveType.Byte);
 
         internal static RegisterStorage[] regs;
-        internal static Dictionary<RegisterStorage, Dictionary<int, RegisterStorage>> Subregisters;
+        internal static Dictionary<StorageDomain, Dictionary<int, RegisterStorage>> Subregisters;
 
         public static readonly FlagGroupStorage S = new FlagGroupStorage(sr, 32, "S", PrimitiveType.Bool);
         public static readonly FlagGroupStorage Z = new FlagGroupStorage(sr, 16, "Z", PrimitiveType.Bool);
@@ -106,98 +106,70 @@ namespace Reko.Arch.Tlcs.Tlcs900
                     l,
             };
 
-            Subregisters = new Dictionary<RegisterStorage, Dictionary<int, RegisterStorage>>()
+            Subregisters = new Dictionary<StorageDomain, Dictionary<int, RegisterStorage>>()
             {
                 {
-                    xwa, new Dictionary<int, RegisterStorage>
+                    xwa.Domain, new Dictionary<int, RegisterStorage>
                     {
                         { 0x200, xwa },
                         { 0x100, wa },
-                        { 0x080, a  },
+                        { 0x080, a },
                         { 0x088, w }
                     }
                 },
                 {
-                    xbc, new Dictionary<int, RegisterStorage>
+                    xbc.Domain, new Dictionary<int, RegisterStorage>
                     {
                         { 0x200, xbc },
                         { 0x100, bc },
-                        { 0x080, c  },
+                        { 0x080, c },
                         { 0x088, b }
                     }
                 },
                 {
-                    xde, new Dictionary<int, RegisterStorage>
+                    xde.Domain, new Dictionary<int, RegisterStorage>
                     {
                         { 0x200, xde },
                         { 0x100, de },
-                        { 0x080, e  },
+                        { 0x080, e },
                         { 0x088, d }
                     }
                 },
                 {
-                    xhl, new Dictionary<int, RegisterStorage>
+                    xhl.Domain, new Dictionary<int, RegisterStorage>
                     {
                         { 0x200, xhl },
                         { 0x100, hl },
-                        { 0x080, l  },
+                        { 0x080, l },
                         { 0x088, h }
                     }
                 },
                 {
-                    xix, new Dictionary<int, RegisterStorage>
+                    xix.Domain, new Dictionary<int, RegisterStorage>
                     {
                         { 0x200, xix },
                         { 0x100, ix },
                     }
                 },
                 {
-                    xiy, new Dictionary<int, RegisterStorage>
+                    xiy.Domain, new Dictionary<int, RegisterStorage>
                     {
                         { 0x200, xiy },
                         { 0x100, iy },
                     }
                 },
                 {
-                    xiz, new Dictionary<int, RegisterStorage>
+                    xiz.Domain, new Dictionary<int, RegisterStorage>
                     {
                         { 0x200, xiz },
                         { 0x100, iz },
                     }
                 },
                 {
-                    xsp, new Dictionary<int, RegisterStorage>
+                    xsp.Domain, new Dictionary<int, RegisterStorage>
                     {
                         { 0x200, xsp },
                         { 0x100, sp },
-                    }
-                },
-                {
-                    wa, new Dictionary<int, RegisterStorage>
-                    {
-                        { 0x080, a  },
-                        { 0x088, w }
-                    }
-                },
-                {
-                    bc, new Dictionary<int, RegisterStorage>
-                    {
-                        { 0x080, c  },
-                        { 0x088, b }
-                    }
-                },
-                {
-                    de, new Dictionary<int, RegisterStorage>
-                    {
-                        { 0x080, e  },
-                        { 0x088, d }
-                    }
-                },
-                {
-                    hl, new Dictionary<int, RegisterStorage>
-                    {
-                        { 0x080, l  },
-                        { 0x088, h }
                     }
                 },
             };

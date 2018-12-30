@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -36,9 +36,9 @@ namespace Reko.UnitTests.TestCode
             pb.Add("fact", m =>
             {
                 var sp = m.Register(m.Architecture.StackRegister);
-                var r1 = m.Register(1);
-                var r2 = m.Register(2);
-                var r3 = m.Register(3);
+                var r1 = m.Register("r1");
+                var r2 = m.Register("r2");
+                var r3 = m.Register("r3");
                 var cc = m.Flags("cc");
                 m.Assign(sp, m.Frame.FramePointer);
                 m.Assign(r2, r1);
@@ -59,7 +59,7 @@ namespace Reko.UnitTests.TestCode
             });
             pb.Add("main", m =>
             {
-                var r1 = m.Register(1);
+                var r1 = m.Register("r1");
                 m.Assign(r1, 10);
                 m.Call("fact", 0);
                 m.MStore(m.Word32(0x400000), r1);

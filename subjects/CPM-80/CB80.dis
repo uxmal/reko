@@ -1,4480 +1,3487 @@
-void fn0105()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved: sp
-l0105:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
-fn0105_entry:
-// DataOut: b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
-l0105:
-	word16 sp_2
-	call fn1729 (retsize: 2; depth: 2)
-		uses: sp_1
-		defs: sp_2
-	return
-// DataOut: b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
-fn0105_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
-
-
-void fn020A()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved: sp
-l020A:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
-fn020A_entry:
-// DataOut: b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
-l020A:
-	word16 sp_2
-	call fn172D (retsize: 2; depth: 2)
-		uses: sp_1
-		defs: sp_2
-	return
-// DataOut: b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
-fn020A_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
-
-
-void fn0221()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fn0221_exit:
-// DataOut:
-// DataOut (flags): ZC
-// SymbolicIn:
-
-fn0221_entry:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
-l0221:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
-l0005:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
-
-
-word16 fn0387(ptr16 & spOut)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut: hl sp
-// Trashed: hl sp
-// Preserved:
+// fn0387
+// Return size: 0
+define fn0387
 fn0387_entry:
-// DataOut: a af b bc c d e h l
-// DataOut (flags): C
-// SymbolicIn: sp:fp
-// LocalsOut: fp(16)
-
+	// succ:  l0387
 l0387:
-	word16 hl_6 = Mem0[0x1648:word16]
-	word16 sp_7
-	word16 hl_8
-	call hl_6 (retsize: 2; depth: 4)
-		uses: hl_6,sp_3,wLoc02_4
-		defs: hl_8,sp_7
-	return hl_8
-// DataOut: a af b bc c d e h hl l sp
-// DataOut (flags): C
-// SymbolicIn: sp:fp
-
+	sp = fp
+	hl = 0x038F
+	sp = sp - 0x0002
+	Mem0[sp:word16] = hl
+	hl = Mem0[0x1648:word16]
+	call hl (retsize: 2;)
+	return
+	// succ:  fn0387_exit
 fn0387_exit:
-// DataOut: hl sp
-// DataOut (flags): C
-// SymbolicIn: sp:fp - 0x0002 hl:<invalid> -2(fp):0x038F
 
 
-
-word16 fn0390(byte c, byte b, byte e, word16 wArg00, word16 wArg02)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  b c e
-// LiveOut: sp
-// Trashed: SZPC a bc de hl sp
-// Preserved:
+// fn0390
+// Return size: 2
+define fn0390
 fn0390_entry:
-// DataOut: af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-// LocalsOut: fp(16)
-
+	// succ:  l0390
 l0390:
-	Mem4[0x1656:byte] = e
-	Mem7[0x1655:byte] = b
-	Mem10[0x1654:byte] = c
-	Mem22[0x1653:byte] = (byte) wArg02
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	sp = fp
+	hl = 0x1656
+	Mem0[hl:byte] = e
+	hl = hl - 0x0001
+	SZP = cond(hl)
+	Mem0[hl:byte] = b
+	hl = hl - 0x0001
+	SZP = cond(hl)
+	Mem0[hl:byte] = c
+	hl = hl - 0x0001
+	SZP = cond(hl)
+	de = Mem0[sp:word16]
+	sp = sp + 0x0002
+	bc = Mem0[sp:word16]
+	sp = sp + 0x0002
+	Mem0[hl:byte] = c
+	sp = sp - 0x0002
+	Mem0[sp:word16] = de
+	// succ:  l039D
 l039D:
-	byte a_27 = Mem22[0x1653:byte]
-	Mem29[0x1653:byte] = a_27 - 0x01
-	branch a_27 == 0x00 l03BA
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:fp + 0x0002 hl:<invalid> de:<invalid> bc:<invalid> a:<invalid> 2(fp):<invalid>
-
-l03BA:
-	return fp + 0x0002
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:fp + 0x0002 hl:<invalid> de:<invalid> bc:<invalid> a:<invalid> 2(fp):<invalid>
-
-fn0390_exit:
-// DataOut: sp
-// DataOut (flags): 
-// SymbolicIn: sp:fp + 0x0002 hl:<invalid> de:<invalid> bc:<invalid> a:<invalid> 2(fp):<invalid>
-
+	a = Mem0[0x1653:byte]
+	a = a - 0x01
+	SZP = cond(a)
+	Mem0[0x1653:byte] = a
+	SZPC = cond(a - 0xFF)
+	branch Test(EQ,Z) l03BA
+	// succ:  l03A9 l03BA
 l03A9:
-	Mem34[Mem29[0x1654:word16]:byte] = Mem29[0x1656:byte]
-	Mem38[0x1654:word16] = Mem34[0x1654:word16] + 0x0001
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:fp + 0x0002 hl:<invalid> de:<invalid> bc:<invalid> a:<invalid> 2(fp):<invalid>
+	hl = Mem0[0x1654:word16]
+	a = Mem0[0x1656:byte]
+	Mem0[hl:byte] = a
+	hl = Mem0[0x1654:word16]
+	hl = hl + 0x0001
+	SZP = cond(hl)
+	Mem0[0x1654:word16] = hl
+	goto l039D
+	// succ:  l039D
+l03BA:
+	return
+	// succ:  fn0390_exit
+fn0390_exit:
 
 
-
-bool fn03BB(byte c, ptr16 & aOut, ptr16 & cOut)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  c
-// LiveOut: C a c
-// Trashed: SZPC a c hl
-// Preserved: sp
+// fn03BB
+// Return size: 2
+define fn03BB
 fn03BB_entry:
-// DataOut: af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  l03BB
 l03BB:
-	Mem4[0x1657:byte] = c
-	byte a_5 = Mem4[0x1657:byte]
-	byte a_12 = 0x00 - (0x1A - (a_5 - 0x61) <u 0x00)
-	byte c_7
-	*cOut = a_5 - 0x61
-	byte a_16
-	*aOut = ~a_12
-	return (bool) cond(a_12)
-// DataOut: a af b c d e h l
-// DataOut (flags): C
-// SymbolicIn: sp:fp
-
+	sp = fp
+	hl = 0x1657
+	Mem0[hl:byte] = c
+	a = Mem0[0x1657:byte]
+	a = a - 0x61
+	SZC = cond(a)
+	c = a
+	a = 0x1A
+	a = a - c
+	SZC = cond(a)
+	a = a - a - C
+	SZPC = cond(a)
+	a = ~a
+	return
+	// succ:  fn03BB_exit
 fn03BB_exit:
-// DataOut: a c
-// DataOut (flags): C
-// SymbolicIn: sp:fp hl:0x1657 a:<invalid> c:<invalid>
 
 
-
-void fn03CB(byte c, byte b, byte l)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  b c l
-// LiveOut:
-// Trashed: SZPC a bc c hl
-// Preserved: sp
+// fn03CB
+// Return size: 2
+define fn03CB
 fn03CB_entry:
-// DataOut: af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-// LocalsOut: fp(16)
-
+	// succ:  l03CB
 l03CB:
-	Mem4[0x1658:byte] = c
-	byte a_22
-	byte c_23
-	fn03BB((byte) Mem4[0x1658:word16], out a_22, out c_23)
+	sp = fp
+	hl = 0x1658
+	Mem0[hl:byte] = c
+	a = Mem0[0x1658:byte]
+	a = a - 0x41
+	SZC = cond(a)
+	c = a
+	a = 0x19
+	a = a - c
+	SZC = cond(a)
+	a = a - a - C
+	SZPC = cond(a)
+	a = ~a
+	sp = sp - 0x0002
+	Mem0[sp:word16] = af
+	hl = Mem0[0x1658:word16]
+	c = l
+	call fn03BB (retsize: 2;)
+	bc = Mem0[sp:word16]
+	sp = sp + 0x0002
+	c = b
+	a = a | c
+	SZ = cond(a)
+	C = false
 	return
-// DataOut: af b d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  fn03CB_exit
 fn03CB_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:<invalid> a:<invalid> c:b bc:<invalid> -2(fp):af
 
 
-
-byte fn03E6(byte c, byte l, ptr16 & cOut)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  c l
-// LiveOut: a c
-// Trashed: SZPC a c hl
-// Preserved: sp
+// fn03E6
+// Return size: 2
+define fn03E6
 fn03E6_entry:
-// DataOut: af b c d e l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  l03E6
 l03E6:
-	Mem4[0x1659:byte] = c
-	byte a_8
-	byte c_9
-	bool C_10 = fn03BB((byte) Mem4[0x1659:word16], out a_8, out c_9)
-	branch __ror(a_8, 0x01, C_10) >=u 0x00 l03FB
-// DataOut: af b c d e l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
-l03FB:
-	return Mem4[0x1659:byte]
-// DataOut: a af b c d e l
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:<invalid> c:<invalid> a:<invalid>
-
+	sp = fp
+	hl = 0x1659
+	Mem0[hl:byte] = c
+	hl = Mem0[0x1659:word16]
+	c = l
+	call fn03BB (retsize: 2;)
+	a = __rcr(a, 0x01, C)
+	C = cond(a)
+	branch Test(UGE,C) l03FB
+	// succ:  l03F5 l03FB
 l03F5:
-	return Mem4[0x1659:byte] + 0x5F
-// DataOut: a af b c d e l
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:<invalid> c:<invalid> a:<invalid>
-
+	a = Mem0[0x1659:byte]
+	a = a + 0x5F
+	SZPC = cond(a)
+	return
+	// succ:  fn03E6_exit
+l03FB:
+	a = Mem0[0x1659:byte]
+	return
+	// succ:  fn03E6_exit
 fn03E6_exit:
-// DataOut: a c
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:<invalid> c:<invalid> a:<invalid>
 
 
-
-void fn0400()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed: hl
-// Preserved: sp
+// fn0400
+// Return size: 2
+define fn0400
 fn0400_entry:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  l0400
 l0400:
-	Mem4[0x1640:word16] = Mem0[0x0006:word16]
-	Mem6[0x164E:word16] = 0x0080
+	sp = fp
+	hl = Mem0[0x0006:word16]
+	Mem0[0x1640:word16] = hl
+	hl = 0x0080
+	Mem0[0x164E:word16] = hl
 	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  fn0400_exit
 fn0400_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:0x0080
 
 
-
-word16 fn040D(byte c, byte b, byte e, word16 wArg00, word16 wArg02)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  b c e
-// LiveOut: sp
-// Trashed: SZPC a bc de hl sp
-// Preserved:
+// fn040D
+// Return size: 2
+define fn040D
 fn040D_entry:
-// DataOut: af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-// LocalsOut: fp(16)
-
+	// succ:  l040D
 l040D:
-	Mem4[0x165E:byte] = e
-	Mem7[0x165D:byte] = b
-	Mem10[0x165C:byte] = c
-	Mem21[0x165B:byte] = SLICE(wArg02, byte, 8)
-	Mem24[0x165A:byte] = (byte) wArg02
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	sp = fp
+	hl = 0x165E
+	Mem0[hl:byte] = e
+	hl = hl - 0x0001
+	SZP = cond(hl)
+	Mem0[hl:byte] = b
+	hl = hl - 0x0001
+	SZP = cond(hl)
+	Mem0[hl:byte] = c
+	hl = hl - 0x0001
+	SZP = cond(hl)
+	de = Mem0[sp:word16]
+	sp = sp + 0x0002
+	bc = Mem0[sp:word16]
+	sp = sp + 0x0002
+	Mem0[hl:byte] = b
+	hl = hl - 0x0001
+	SZP = cond(hl)
+	Mem0[hl:byte] = c
+	sp = sp - 0x0002
+	Mem0[sp:word16] = de
+	// succ:  l041C
 l041C:
-	branch 0x00 >=u Mem24[0x165E:byte] l045A
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:fp + 0x0002 hl:<invalid> de:<invalid> bc:<invalid> 2(fp):<invalid>
-
-l045A:
-	return fp + 0x0002
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:fp + 0x0002 hl:0x165E de:<invalid> bc:<invalid> a:0x00 2(fp):<invalid>
-
-fn040D_exit:
-// DataOut: sp
-// DataOut (flags): 
-// SymbolicIn: sp:fp + 0x0002 hl:0x165E de:<invalid> bc:<invalid> a:0x00 2(fp):<invalid>
-
+	a = 0x00
+	hl = 0x165E
+	SZPC = cond(a - Mem0[hl:byte])
+	branch Test(UGE,C) l045A
+	// succ:  l0425 l045A
 l0425:
-	fn0221()
-	fn0221()
-	branch false l044D
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:fp + 0x0002 hl:0x165E de:<invalid> bc:<invalid> a:0x00 2(fp):<invalid>
-// Terminates process
-
-l044D:
-	Mem67[Mem24[0x165C:word16]:byte] = 0x1A
-	Mem69[0x165E:byte] = 0x00
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: 2(fp):<invalid>
-
+	hl = Mem0[0x165C:word16]
+	v13 = de
+	de = hl
+	hl = v13
+	c = 0x1A
+	F_DMAOFF(de)
+	hl = Mem0[0x165A:word16]
+	v14 = de
+	de = hl
+	hl = v14
+	c = 0x14
+	a = F_READ(de)
+	SZPC = cond(a - 0x00)
+	branch Test(NE,Z) l044D
+	// succ:  l043C l044D
 l043C:
-	Mem58[0x165E:byte] = Mem24[0x165E:byte] - 0x01
-	Mem65[0x165C:word16] = Mem58[0x165C:word16] + 0x0080
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: 2(fp):<invalid>
-
+	hl = 0x165E
+	Mem0[hl:byte] = Mem0[hl:byte] - 0x01
+	SZP = cond(Mem0[hl:byte])
+	de = 0x0080
+	hl = Mem0[0x165C:word16]
+	hl = hl + de
+	SZPC = cond(hl)
+	Mem0[0x165C:word16] = hl
+	goto l0457
+	// succ:  l0457
+l044D:
+	hl = Mem0[0x165C:word16]
+	Mem0[hl:byte] = 0x1A
+	hl = 0x165E
+	Mem0[hl:byte] = 0x00
+	// succ:  l0457
 l0457:
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: hl:<invalid> de:0x0080 2(fp):<invalid>
+	goto l041C
+	// succ:  l041C
+l045A:
+	return
+	// succ:  fn040D_exit
+fn040D_exit:
 
 
-
-byte fn045B()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut: a
-// Trashed: SZPC a hl
-// Preserved: sp
+// fn045B
+// Return size: 2
+define fn045B
 fn045B_entry:
-// DataOut: af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  l045B
 l045B:
-	branch Mem0[0x0080:byte] != 0x00 l0466
-// DataOut: af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
-l0466:
-	Mem13[0x0080:byte] = Mem0[0x0080:byte] - 0x01
-	word16 hl_15 = Mem13[0x164E:word16]
-	Mem18[0x164E:word16] = hl_15 + 0x0001
-	return Mem18[hl_15 + 0x0001:byte]
-// DataOut: a af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp a:<invalid>
-
+	sp = fp
+	a = Mem0[0x0080:byte]
+	SZPC = cond(a - 0x00)
+	branch Test(NE,Z) l0466
+	// succ:  l0463 l0466
 l0463:
-	return 0x00
-// DataOut: a af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp a:<invalid>
-
+	a = 0x00
+	return
+	// succ:  fn045B_exit
+l0466:
+	hl = 0x0080
+	Mem0[hl:byte] = Mem0[hl:byte] - 0x01
+	SZP = cond(Mem0[hl:byte])
+	hl = Mem0[0x164E:word16]
+	hl = hl + 0x0001
+	SZP = cond(hl)
+	Mem0[0x164E:word16] = hl
+	a = Mem0[hl:byte]
+	return
+	// succ:  fn045B_exit
 fn045B_exit:
-// DataOut: a
-// DataOut (flags): 
-// SymbolicIn: sp:fp a:<invalid> hl:<invalid>
 
 
-
-void fn0473(byte c)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  c
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
+// fn0473
+// Return size: 2
+define fn0473
 fn0473_entry:
-// DataOut: af b bc c d e l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  l0473
 l0473:
-	Mem4[0x165F:byte] = c
-	fn0221()
+	sp = fp
+	hl = 0x165F
+	Mem0[hl:byte] = c
+	hl = Mem0[0x165F:word16]
+	h = 0x00
+	v6 = de
+	de = hl
+	hl = v6
+	c = 0x02
+	C_WRITE(e)
 	return
-// DataOut: af b bc c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-// Terminates process
-
+	// succ:  fn0473_exit
 fn0473_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp
 
 
-
-word16 fn0483(byte c, byte b, byte e, byte d, byte l, byte h, word16 wArg00, word16 wArg02, ptr16 & lOut, ptr16 & hOut)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  b c d e h l
-// LiveOut: bc c h l
-// Trashed: SZPC a bc c de h hl l sp
-// Preserved:
-// Stack args: Stack +0002(16)
+// fn0483
+// Return size: 2
+define fn0483
 fn0483_entry:
-// DataOut: af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-// LocalsOut: fp(16) Stack +0002(16)
-
+	// succ:  l0483
 l0483:
-	Mem4[0x1665:byte] = d
-	Mem7[0x1664:byte] = e
-	Mem10[0x1663:byte] = b
-	Mem13[0x1662:byte] = c
-	Mem23[0x1661:byte] = SLICE(wArg02, byte, 8)
-	Mem25[0x1660:byte] = (byte) wArg02
-	word16 hl_29 = Mem25[0x1664:word16]
-	byte l_37
-	byte h_38
-	word16 bc_111 = DPB(wArg02, fn1326(0x07, (byte) (hl_29 + 0x007F), SLICE(hl_29 + 0x007F, byte, 8), out l_37, out h_38), 0)
-	Mem48[0x1667:byte] = (byte) (hl_29 + 0x007F)
-// DataOut: af b bc c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	sp = fp
+	hl = 0x1665
+	Mem0[hl:byte] = d
+	hl = hl - 0x0001
+	SZP = cond(hl)
+	Mem0[hl:byte] = e
+	hl = hl - 0x0001
+	SZP = cond(hl)
+	Mem0[hl:byte] = b
+	hl = hl - 0x0001
+	SZP = cond(hl)
+	Mem0[hl:byte] = c
+	hl = hl - 0x0001
+	SZP = cond(hl)
+	de = Mem0[sp:word16]
+	sp = sp + 0x0002
+	bc = Mem0[sp:word16]
+	sp = sp + 0x0002
+	Mem0[hl:byte] = b
+	hl = hl - 0x0001
+	SZP = cond(hl)
+	Mem0[hl:byte] = c
+	sp = sp - 0x0002
+	Mem0[sp:word16] = de
+	de = 0x0080
+	hl = Mem0[0x1664:word16]
+	hl = hl + de
+	SZPC = cond(hl)
+	hl = hl - 0x0001
+	SZP = cond(hl)
+	c = 0x07
+	call fn1326 (retsize: 2;)
+	v12 = de
+	de = hl
+	hl = v12
+	hl = 0x1667
+	Mem0[hl:byte] = e
+	// succ:  l04A6
 l04A6:
-	byte l_60
-	*lOut = 0x67
-	byte h_61
-	*hOut = 0x16
-	branch 0x00 >=u Mem48[0x1667:byte] l0523
-// DataOut: af b bc c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> hl:<invalid> de:<invalid> bc:<invalid> c:<invalid> a:<invalid> h:0x16 l:0x67 2(fp):<invalid>
-
-l0523:
-	return bc_111
-// DataOut: af b bc c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> hl:0x1667 de:<invalid> bc:<invalid> c:<invalid> a:0x00 h:0x16 l:0x67 2(fp):<invalid>
-
-fn0483_exit:
-// DataOut: bc c h l
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> hl:0x1667 de:<invalid> bc:<invalid> c:<invalid> a:0x00 h:0x16 l:0x67 2(fp):<invalid>
-
+	a = 0x00
+	hl = 0x1667
+	SZPC = cond(a - Mem0[hl:byte])
+	branch Test(UGE,C) l0523
+	// succ:  l04AF l0523
 l04AF:
-	fn0221()
-	fn0221()
-	bc_111 = DPB(bc_111, 0x15, 0) (alias)
-	branch false l04D7
-// DataOut: af b bc c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> hl:0x1667 de:<invalid> bc:<invalid> c:<invalid> a:0x00 h:0x16 l:0x67 2(fp):<invalid>
-// Terminates process
-
-l04D7:
-	Mem109[0x1668:word16] = 0x02A3
-// DataOut: af b bc d e h l
-// DataOut (flags): 
-// SymbolicIn: 2(fp):<invalid>
-
-l04DD:
-	branch Mem109[Mem109[0x1668:word16]:byte] == 0x24 l04F7
-// DataOut: af b bc d e h l
-// DataOut (flags): 
-// SymbolicIn: hl:<invalid> 2(fp):<invalid>
-
-l04F7:
-	byte a_131 = Mem109[Mem109[0x1660:word16]:byte]
-	branch a_131 != 0x00 l050D
-// DataOut: a af b bc d e h l
-// DataOut (flags): 
-// SymbolicIn: hl:<invalid> a:<invalid> 2(fp):<invalid>
-
-l0500:
-	fn0221()
-	Mem161[Mem109[0x1660:word16]:byte] = a_131 + 0x01
-	bc_111 = DPB(bc_111, 0x19, 0) (alias)
-// DataOut: af b bc d e h l
-// DataOut (flags): 
-// SymbolicIn: hl:<invalid> a:<invalid> 2(fp):<invalid>
-
-l050D:
-	fn0473(Mem109[Mem109[0x1660:word16]:byte] + 0x60)
-	fn0473(0x3A)
-	word16 sp_147
-	fn0387(out sp_147)
-	bc_111 = DPB(bc_111, 0x3A, 0) (alias)
-// DataOut: af b bc c d e h l
-// DataOut (flags): 
-// SymbolicIn: hl:<invalid> a:<invalid> 2(fp):<invalid>
-// Terminates process
-
-l04E6:
-	byte c_120 = Mem109[Mem109[0x1668:word16]:byte]
-	fn0473(c_120)
-	Mem127[0x1668:word16] = Mem109[0x1668:word16] + 0x0001
-	bc_111 = DPB(bc_111, c_120, 0) (alias)
-// DataOut: af b bc d e h l
-// DataOut (flags): 
-// SymbolicIn: hl:<invalid> a:<invalid> 2(fp):<invalid>
-
+	hl = Mem0[0x1662:word16]
+	v15 = de
+	de = hl
+	hl = v15
+	c = 0x1A
+	F_DMAOFF(de)
+	hl = Mem0[0x1660:word16]
+	v16 = de
+	de = hl
+	hl = v16
+	c = 0x15
+	a = F_WRITE(de)
+	SZPC = cond(a - 0x00)
+	branch Test(NE,Z) l04D7
+	// succ:  l04C6 l04D7
 l04C6:
-	Mem95[0x1667:byte] = Mem48[0x1667:byte] - 0x01
-	Mem105[0x1662:word16] = Mem95[0x1662:word16] + 0x0080
-// DataOut: af b bc c d e h l
-// DataOut (flags): 
-// SymbolicIn: 2(fp):<invalid>
-
+	hl = 0x1667
+	Mem0[hl:byte] = Mem0[hl:byte] - 0x01
+	SZP = cond(Mem0[hl:byte])
+	de = 0x0080
+	hl = Mem0[0x1662:word16]
+	hl = hl + de
+	SZPC = cond(hl)
+	Mem0[0x1662:word16] = hl
+	goto l0520
+	// succ:  l0520
+l04D7:
+	hl = 0x02A3
+	Mem0[0x1668:word16] = hl
+	// succ:  l04DD
+l04DD:
+	hl = Mem0[0x1668:word16]
+	a = Mem0[hl:byte]
+	SZPC = cond(a - 0x24)
+	branch Test(EQ,Z) l04F7
+	// succ:  l04E6 l04F7
+l04E6:
+	hl = Mem0[0x1668:word16]
+	c = Mem0[hl:byte]
+	call fn0473 (retsize: 2;)
+	hl = Mem0[0x1668:word16]
+	hl = hl + 0x0001
+	SZP = cond(hl)
+	Mem0[0x1668:word16] = hl
+	goto l04DD
+	// succ:  l04DD
+l04F7:
+	hl = Mem0[0x1660:word16]
+	a = Mem0[hl:byte]
+	SZPC = cond(a - 0x00)
+	branch Test(NE,Z) l050D
+	// succ:  l0500 l050D
+l0500:
+	de = 0x0000
+	c = 0x19
+	a = DRV_GET()
+	a = a + 0x01
+	SZP = cond(a)
+	hl = Mem0[0x1660:word16]
+	Mem0[hl:byte] = a
+	// succ:  l050D
+l050D:
+	hl = Mem0[0x1660:word16]
+	a = 0x61
+	a = a + Mem0[hl:byte]
+	SZPC = cond(a)
+	a = a - 0x01
+	SZP = cond(a)
+	c = a
+	call fn0473 (retsize: 2;)
+	c = 0x3A
+	call fn0473 (retsize: 2;)
+	call fn0387 (retsize: 2;)
+	// succ:  l0520
 l0520:
-// DataOut: af b bc c d e h l
-// DataOut (flags): 
-// SymbolicIn: hl:<invalid> de:0x0080 sp:<invalid> 2(fp):<invalid>
-
-
-
-void fn0524(byte c)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  c
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fn0524_entry:
-// DataOut: af b bc c d e l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
-l0524:
-	Mem4[0x166A:byte] = c
-	fn0221()
+	goto l04A6
+	// succ:  l04A6
+l0523:
 	return
-// DataOut: af b bc c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-// Terminates process
+	// succ:  fn0483_exit
+fn0483_exit:
 
+
+// fn0524
+// Return size: 2
+define fn0524
+fn0524_entry:
+	// succ:  l0524
+l0524:
+	sp = fp
+	hl = 0x166A
+	Mem0[hl:byte] = c
+	hl = Mem0[0x166A:word16]
+	h = 0x00
+	v6 = de
+	de = hl
+	hl = v6
+	c = 0x05
+	L_WRITE(e)
+	return
+	// succ:  fn0524_exit
 fn0524_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp
 
 
-
-word16 fn0534(byte c, byte e, byte d, byte l, byte h, ptr16 & lOut, ptr16 & hOut)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  c d e h l
-// LiveOut: b bc c h l
-// Trashed: SZPC a b bc c de h hl l
-// Preserved: sp
+// fn0534
+// Return size: 2
+define fn0534
 fn0534_entry:
-// DataOut: af b bc c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-// LocalsOut: fp(16)
-
+	// succ:  l0534
 l0534:
-	Mem4[0x166B:byte] = c
-	Mem13[Mem4[0x14BC:word16] + Mem4[0x14BE:word16]:byte] = Mem4[0x166B:byte]
-	word16 hl_14 = Mem13[0x14BE:word16]
-	Mem17[0x14BE:word16] = hl_14 + 0x0001
-	byte l_25
-	byte h_26
-	branch fn1335(SLICE(hl_14 + 0x0001, byte, 8), (byte) (hl_14 + 0x0001), 0x02, 0x00, out l_25, out h_26) l056A
-// DataOut: af b bc c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-// LocalsOut: fp(16)
-
+	sp = fp
+	hl = 0x166B
+	Mem0[hl:byte] = c
+	hl = Mem0[0x14BE:word16]
+	v5 = de
+	de = hl
+	hl = v5
+	hl = Mem0[0x14BC:word16]
+	hl = hl + de
+	SZPC = cond(hl)
+	a = Mem0[0x166B:byte]
+	Mem0[hl:byte] = a
+	hl = Mem0[0x14BE:word16]
+	hl = hl + 0x0001
+	SZP = cond(hl)
+	Mem0[0x14BE:word16] = hl
+	v10 = de
+	de = hl
+	hl = v10
+	hl = 0x0200
+	call fn1335 (retsize: 2;)
+	branch Test(ULT,C) l056A
+	// succ:  l0555 l056A
 l0555:
-	word16 hl_47 = Mem17[0x14BC:word16]
-	byte l_48 = (byte) hl_47
-	byte h_49 = SLICE(hl_47, byte, 8)
-	byte l_56
-	byte h_57
-	bc = fn0483(l_48, h_49, 0x00, 0x02, l_48, h_49, wLoc04, 0x14C0, out l_56, out h_57)
-	Mem64[0x14BE:word16] = 0x0000
-	byte l_62
-	*lOut = 0x00
-	byte h_63
-	*hOut = 0x00
-// DataOut: af b bc c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:0x0200 de:<invalid> a:<invalid> l:<invalid> h:<invalid>
-
+	bc = 0x14C0
+	sp = sp - 0x0002
+	Mem0[sp:word16] = bc
+	hl = Mem0[0x14BC:word16]
+	b = h
+	c = l
+	de = 0x0200
+	call fn0483 (retsize: 2;)
+	hl = 0x0000
+	Mem0[0x14BE:word16] = hl
+	// succ:  l056A
 l056A:
-	return bc
-// DataOut: af b bc c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> hl:<invalid> de:<invalid> a:<invalid> bc:<invalid> b:<invalid> c:<invalid> l:<invalid> h:<invalid> -2(fp):0x14C0
-
+	return
+	// succ:  fn0534_exit
 fn0534_exit:
-// DataOut: b bc c h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:<invalid> de:<invalid> a:<invalid> bc:<invalid> b:<invalid> c:<invalid> l:<invalid> h:<invalid> -2(fp):0x14C0
 
 
-
-bool fn056B(byte c, byte e, byte d, byte l, byte h, ptr16 & aOut, ptr16 & bcOut, ptr16 & lOut, ptr16 & hOut)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  c d e h l
-// LiveOut: C a b bc c h l
-// Trashed: SZPC a b bc c de h hl l
-// Preserved: sp
+// fn056B
+// Return size: 2
+define fn056B
 fn056B_entry:
-	*bcOut = bc
-// DataOut: af b bc c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  l056B
 l056B:
-	Mem6[0x166C:byte] = c
-	byte l_3
-	*lOut = 0x6C
-	byte h_4
-	*hOut = 0x16
-	branch Mem6[0x14F3:byte] != 0x01 l0581
-// DataOut: af b bc c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
-l0581:
-	branch Mem6[0x14F3:byte] != 0x02 l0593
-// DataOut: af b bc c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:0x166C a:<invalid>
-
-l0593:
-	branch Mem6[0x14F3:byte] != 0x04 l05A2
-// DataOut: af b bc c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:0x166C a:<invalid>
-
-l059B:
-	word16 hl_83 = Mem6[0x166C:word16]
-	byte l_84 = (byte) hl_83
-	byte l_89
-	byte h_90
-	word16 bc_91
-	*bcOut = fn0534(l_84, e, d, l_84, SLICE(hl_83, byte, 8), out l_89, out h_90)
-// DataOut: af b bc c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:0x166C a:<invalid>
-
-l0589:
-	word16 hl_75 = Mem6[0x166C:word16]
-	byte l_76 = (byte) hl_75
-	*lOut = l_76
-	fn0473(l_76)
-	byte h_77
-	*hOut = SLICE(hl_75, byte, 8)
-	word16 bc_79
-	*bcOut = DPB(bc, l_76, 0)
-// DataOut: af b bc c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:0x166C a:<invalid>
-
+	sp = fp
+	hl = 0x166C
+	Mem0[hl:byte] = c
+	a = Mem0[0x14F3:byte]
+	SZPC = cond(a - 0x01)
+	branch Test(NE,Z) l0581
+	// succ:  l0577 l0581
 l0577:
-	word16 hl_66 = Mem6[0x166C:word16]
-	byte l_67 = (byte) hl_66
-	*lOut = l_67
-	fn0524(l_67)
-	byte h_68
-	*hOut = SLICE(hl_66, byte, 8)
-	word16 bc_71
-	*bcOut = DPB(bc, l_67, 0)
-// DataOut: af b bc c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:0x166C a:<invalid>
-
+	hl = Mem0[0x166C:word16]
+	c = l
+	call fn0524 (retsize: 2;)
+	goto l05A2
+	// succ:  l05A2
+l0581:
+	a = Mem0[0x14F3:byte]
+	SZPC = cond(a - 0x02)
+	branch Test(NE,Z) l0593
+	// succ:  l0589 l0593
+l0589:
+	hl = Mem0[0x166C:word16]
+	c = l
+	call fn0473 (retsize: 2;)
+	goto l05A2
+	// succ:  l05A2
+l0593:
+	a = Mem0[0x14F3:byte]
+	SZPC = cond(a - 0x04)
+	branch Test(NE,Z) l05A2
+	// succ:  l059B l05A2
+l059B:
+	hl = Mem0[0x166C:word16]
+	c = l
+	call fn0534 (retsize: 2;)
+	// succ:  l05A2
 l05A2:
-	byte a_15 = Mem6[0x166C:byte]
-	*aOut = a_15
-	bool C_19 = (bool) cond(a_15 - 0x0D)
-	branch a_15 != 0x0D l05B2
-// DataOut: a af b bc c d e h l
-// DataOut (flags): C
-// SymbolicIn: sp:fp hl:<invalid> a:<invalid> c:<invalid> de:<invalid> bc:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l05B2:
-	byte a_36 = Mem6[0x166C:byte]
-	*aOut = a_36
-	C_19 = (bool) cond(a_36 - 0x0A) (alias)
-	branch a_36 != 0x0A l05C9
-// DataOut: a af b bc c d e h l
-// DataOut (flags): C
-// SymbolicIn: sp:fp hl:<invalid> a:<invalid> c:<invalid> de:<invalid> bc:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l05C9:
-	Mem62[0x14F6:byte] = Mem6[0x14F6:byte] + 0x01
-	byte l_60
-	*lOut = 0xF6
-	byte h_61
-	*hOut = 0x14
-// DataOut: a af b bc c d e h l
-// DataOut (flags): C
-// SymbolicIn: sp:fp hl:<invalid> a:<invalid> c:<invalid> de:<invalid> bc:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l05BA:
-	byte a_41 = Mem6[0x14F3:byte]
-	*aOut = a_41
-	C_19 = (bool) cond(a_41) (alias)
-	branch a_41 == 0x00 l05C6
-// DataOut: a af b bc c d e h l
-// DataOut (flags): C
-// SymbolicIn: sp:fp hl:<invalid> a:<invalid> c:<invalid> de:<invalid> bc:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l05C2:
-	Mem55[0x14FD:byte] = Mem6[0x14FD:byte] + 0x01
-	byte l_53
-	*lOut = 0xFD
-	byte h_54
-	*hOut = 0x14
-// DataOut: a af b bc c d e h l
-// DataOut (flags): C
-// SymbolicIn: sp:fp hl:<invalid> a:<invalid> c:<invalid> de:<invalid> bc:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l05C6:
-// DataOut: a af b bc c d e h l
-// DataOut (flags): C
-// SymbolicIn: sp:fp hl:<invalid> a:<invalid> c:<invalid> de:<invalid> bc:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
+	a = Mem0[0x166C:byte]
+	SZPC = cond(a - 0x0D)
+	branch Test(NE,Z) l05B2
+	// succ:  l05AA l05B2
 l05AA:
-	Mem35[0x14F6:byte] = 0x01
-	byte l_33
-	*lOut = 0xF6
-	byte h_34
-	*hOut = 0x14
-// DataOut: a af b bc c d e h l
-// DataOut (flags): C
-// SymbolicIn: sp:fp hl:<invalid> a:<invalid> c:<invalid> de:<invalid> bc:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
+	hl = 0x14F6
+	Mem0[hl:byte] = 0x01
+	goto l05CD
+	// succ:  l05CD
+l05B2:
+	a = Mem0[0x166C:byte]
+	SZPC = cond(a - 0x0A)
+	branch Test(NE,Z) l05C9
+	// succ:  l05BA l05C9
+l05BA:
+	a = Mem0[0x14F3:byte]
+	SZPC = cond(a - 0x00)
+	branch Test(EQ,Z) l05C6
+	// succ:  l05C2 l05C6
+l05C2:
+	hl = 0x14FD
+	Mem0[hl:byte] = Mem0[hl:byte] + 0x01
+	SZP = cond(Mem0[hl:byte])
+	// succ:  l05C6
+l05C6:
+	goto l05CD
+	// succ:  l05CD
+l05C9:
+	hl = 0x14F6
+	Mem0[hl:byte] = Mem0[hl:byte] + 0x01
+	SZP = cond(Mem0[hl:byte])
+	// succ:  l05CD
 l05CD:
-	return C_19
-// DataOut: a af b bc c d e h l
-// DataOut (flags): C
-// SymbolicIn: sp:fp hl:<invalid> a:<invalid> c:<invalid> de:<invalid> bc:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
+	return
+	// succ:  fn056B_exit
 fn056B_exit:
-// DataOut: a b bc c h l
-// DataOut (flags): C
-// SymbolicIn: sp:fp hl:<invalid> a:<invalid> c:<invalid> de:<invalid> bc:<invalid> b:<invalid> l:<invalid> h:<invalid>
 
 
-
-word16 fn05CE(byte c, byte b, byte e, byte d, byte l, byte h, ptr16 & lOut, ptr16 & hOut)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  b c d e h l
-// LiveOut: b bc c h l
-// Trashed: SZPC a b bc c de h hl l
-// Preserved: sp
+// fn05CE
+// Return size: 2
+define fn05CE
 fn05CE_entry:
-// DataOut: af b bc c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  l05CE
 l05CE:
-	Mem4[0x166E:byte] = b
-	Mem10[0x166D:byte] = c
-// DataOut: af b bc c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	sp = fp
+	hl = 0x166E
+	Mem0[hl:byte] = b
+	hl = hl - 0x0001
+	SZP = cond(hl)
+	Mem0[hl:byte] = c
+	// succ:  l05D4
 l05D4:
-	word16 hl_17 = Mem10[0x166D:word16]
-	byte l_18
-	*lOut = (byte) hl_17
-	byte h_19
-	*hOut = SLICE(hl_17, byte, 8)
-	branch Mem10[hl_17:byte] == 0x24 l05EE
-// DataOut: af b bc c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:<invalid> a:<invalid> c:<invalid> de:<invalid> bc:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l05EE:
-	return bc
-// DataOut: af b bc c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:<invalid> a:<invalid> c:<invalid> de:<invalid> bc:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-fn05CE_exit:
-// DataOut: b bc c h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:<invalid> a:<invalid> c:<invalid> de:<invalid> bc:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
+	hl = Mem0[0x166D:word16]
+	a = Mem0[hl:byte]
+	SZPC = cond(a - 0x24)
+	branch Test(EQ,Z) l05EE
+	// succ:  l05DD l05EE
 l05DD:
-	word16 hl_23 = Mem10[0x166D:word16]
-	byte a_30
-	byte l_32
-	byte h_33
-	fn056B(Mem10[hl_23:byte], e, d, (byte) hl_23, SLICE(hl_23, byte, 8), out a_30, out bc, out l_32, out h_33)
-	Mem40[0x166D:word16] = Mem10[0x166D:word16] + 0x0001
-// DataOut: af b bc c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:<invalid> a:<invalid> c:<invalid> de:<invalid> bc:<invalid> b:<invalid> l:<invalid> h:<invalid>
+	hl = Mem0[0x166D:word16]
+	c = Mem0[hl:byte]
+	call fn056B (retsize: 2;)
+	hl = Mem0[0x166D:word16]
+	hl = hl + 0x0001
+	SZP = cond(hl)
+	Mem0[0x166D:word16] = hl
+	goto l05D4
+	// succ:  l05D4
+l05EE:
+	return
+	// succ:  fn05CE_exit
+fn05CE_exit:
 
 
-
-bool fn05EF(byte c, byte b, byte e, byte d, byte l, ptr16 & aOut, ptr16 & cOut, ptr16 & bOut, ptr16 & lOut, ptr16 & hOut)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  b c d e l
-// LiveOut: C a b c h l
-// Trashed: SZPC a b bc c de h hl l
-// Preserved: sp
+// fn05EF
+// Return size: 2
+define fn05EF
 fn05EF_entry:
-	*bOut = b
-	*cOut = c
-// DataOut: af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  l05EF
 l05EF:
-	Mem4[0x1670:byte] = b
-	Mem8[0x166F:byte] = c
-	Mem12[0x1671:byte] = 0x01
-// DataOut: af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	sp = fp
+	hl = 0x1670
+	Mem0[hl:byte] = b
+	hl = hl - 0x0001
+	SZP = cond(hl)
+	Mem0[hl:byte] = c
+	hl = 0x1671
+	Mem0[hl:byte] = 0x01
+	// succ:  l05FA
 l05FA:
-	byte a_23 = Mem12[Mem12[0x166F:word16]:byte]
-	*aOut = a_23
-	bool C_30 = (bool) cond(a_23 - Mem12[0x1671:byte])
-	branch a_23 <u Mem12[0x1671:byte] l061A
-// DataOut: a af b c d e h l
-// DataOut (flags): C
-// SymbolicIn: sp:fp hl:0x1671 a:<invalid> h:0x16 de:<invalid> c:<invalid> bc:<invalid> b:<invalid> l:0x71
-
+	hl = Mem0[0x166F:word16]
+	a = Mem0[hl:byte]
+	hl = 0x1671
+	SZPC = cond(a - Mem0[hl:byte])
+	branch Test(ULT,C) l061A
+	// succ:  l0605 l061A
 l0605:
-	word16 hl_51 = DPB(Mem12[0x1671:word16], 0x00, 8)
-	word16 hl_57 = Mem12[0x166F:word16] + hl_51
-	byte c_61 = Mem12[hl_57:byte]
-	*cOut = c_61
-	byte a_63
-	word16 bc_64
-	byte l_65
-	byte h_66
-	C_30 = fn056B(c_61, (byte) hl_51, SLICE(hl_51, byte, 8), (byte) hl_57, SLICE(hl_57, byte, 8), out a_63, out bc_64, out l_65, out h_66)
-	Mem71[0x1671:byte] = Mem12[0x1671:byte] + 0x01
-	branch Mem71[0x1671:byte] != 0x00 l05FA
-// DataOut: a af b c d e h l
-// DataOut (flags): C
-// SymbolicIn: sp:fp hl:0x1671 a:<invalid> h:0x16 de:<invalid> c:<invalid> bc:<invalid> b:<invalid> l:0x71
-
+	hl = Mem0[0x1671:word16]
+	h = 0x00
+	v11 = de
+	de = hl
+	hl = v11
+	hl = Mem0[0x166F:word16]
+	hl = hl + de
+	SZPC = cond(hl)
+	c = Mem0[hl:byte]
+	call fn056B (retsize: 2;)
+	hl = 0x1671
+	Mem0[hl:byte] = Mem0[hl:byte] + 0x01
+	SZP = cond(Mem0[hl:byte])
+	branch Test(NE,Z) l05FA
+	// succ:  l061A l05FA
 l061A:
-	byte l_39
-	*lOut = 0x71
-	byte h_40
-	*hOut = 0x16
-	return C_30
-// DataOut: a af b c d e h l
-// DataOut (flags): C
-// SymbolicIn: sp:fp hl:0x1671 a:<invalid> h:0x16 de:<invalid> c:<invalid> bc:<invalid> b:<invalid> l:0x71
-
+	return
+	// succ:  fn05EF_exit
 fn05EF_exit:
-// DataOut: a b c h l
-// DataOut (flags): C
-// SymbolicIn: sp:fp hl:0x1671 a:<invalid> h:0x16 de:<invalid> c:<invalid> bc:<invalid> b:<invalid> l:0x71
 
 
-
-bool fn061B(byte c, byte b, byte e, byte d, byte l, byte h, ptr16 & aOut, ptr16 & bOut, ptr16 & hlOut)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  b c d e h l
-// LiveOut: C a b h hl l
-// Trashed: SZPC a b bc c de h hl l sp
-// Preserved: sp
+// fn061B
+// Return size: 2
+define fn061B
 fn061B_entry:
-// DataOut: af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  l061B
 l061B:
-	Mem4[0x1675:byte] = d
-	Mem7[0x1674:byte] = e
-	Mem10[0x1673:byte] = b
-	Mem14[0x1672:byte] = c
-	Mem16[0x14F3:byte] = 0x02
-	word16 hl_17 = Mem16[0x1672:word16]
-	byte l_18 = (byte) hl_17
-	byte h_19 = SLICE(hl_17, byte, 8)
-	byte l_22
-	byte h_23
-	fn05CE(l_18, h_19, e, d, l_18, h_19, out l_22, out h_23)
-	word16 hl_25 = Mem16[0x1674:word16]
-	byte l_26 = (byte) hl_25
-	byte a_31
-	byte c_32
-	byte b_33
-	byte l_34
-	byte h_35
-	bool C_36 = fn05EF(l_26, SLICE(hl_25, byte, 8), e, d, l_26, out a_31, out c_32, out b_33, out l_34, out h_35)
-	word16 sp_37
-	word16 hl_38
-	*hlOut = fn0387(out sp_37)
-	return C_36
-// DataOut: a af b d e h hl l
-// DataOut (flags): C
-// SymbolicIn: sp:fp
-
+	sp = fp
+	hl = 0x1675
+	Mem0[hl:byte] = d
+	hl = hl - 0x0001
+	SZP = cond(hl)
+	Mem0[hl:byte] = e
+	hl = hl - 0x0001
+	SZP = cond(hl)
+	Mem0[hl:byte] = b
+	hl = hl - 0x0001
+	SZP = cond(hl)
+	Mem0[hl:byte] = c
+	hl = 0x14F3
+	Mem0[hl:byte] = 0x02
+	hl = Mem0[0x1672:word16]
+	b = h
+	c = l
+	call fn05CE (retsize: 2;)
+	hl = Mem0[0x1674:word16]
+	b = h
+	c = l
+	call fn05EF (retsize: 2;)
+	call fn0387 (retsize: 2;)
+	return
+	// succ:  fn061B_exit
 fn061B_exit:
-// DataOut: a b h hl l
-// DataOut (flags): C
-// SymbolicIn: sp:<invalid> hl:<invalid> b:<invalid> c:<invalid> a:<invalid> h:0x16 de:<invalid> bc:<invalid> l:0x71
 
 
-
-byte fn063E(word16 bc, byte e, byte d, ptr16 & bOut, ptr16 & lOut)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  b bc c d e
-// LiveOut: b c l
-// Trashed: SZPC a b bc c de h hl l
-// Preserved: sp
+// fn063E
+// Return size: 2
+define fn063E
 fn063E_entry:
-// DataOut: af b bc c d e l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-// LocalsOut: fp(16)
-
+	// succ:  l063E
 l063E:
-	Mem4[0x1679:byte] = d
-	Mem7[0x1678:byte] = e
-	Mem10[0x1677:byte] = b
-	Mem14[0x1676:byte] = c
-	Mem16[0x167B:byte] = 0x00
-	Mem18[Mem16[0x1678:word16]:byte] = 0x00
-	Mem21[0x167A:byte] = 0x00
-// DataOut: af bc d e l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-// LocalsOut: fp(16)
-
+	sp = fp
+	hl = 0x1679
+	Mem0[hl:byte] = d
+	hl = hl - 0x0001
+	SZP = cond(hl)
+	Mem0[hl:byte] = e
+	hl = hl - 0x0001
+	SZP = cond(hl)
+	Mem0[hl:byte] = b
+	hl = hl - 0x0001
+	SZP = cond(hl)
+	Mem0[hl:byte] = c
+	hl = 0x167B
+	Mem0[hl:byte] = 0x00
+	hl = Mem0[0x1678:word16]
+	Mem0[hl:byte] = 0x00
+	hl = 0x167A
+	Mem0[hl:byte] = 0x00
+	// succ:  l0657
 l0657:
-	branch 0x03 <u Mem21[0x167A:byte] l06B6
-// DataOut: af bc d e l
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:0x167A a:<invalid> h:0x16 bc:<invalid> de:<invalid> c:<invalid> b:<invalid> l:0x7A
-// LocalsOut: fp(16)
-
+	a = 0x03
+	hl = 0x167A
+	SZPC = cond(a - Mem0[hl:byte])
+	branch Test(ULT,C) l06B6
+	// succ:  l0660 l06B6
 l0660:
-	Mem71[0x167C:byte] = 0x30
-// DataOut: af d e
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:0x167A a:0x03 h:0x16 bc:<invalid> de:<invalid> c:<invalid> b:<invalid> l:0x7A
-// LocalsOut: fp(16)
-
+	hl = 0x167C
+	Mem0[hl:byte] = 0x30
+	// succ:  l0665
 l0665:
+	hl = Mem0[0x167A:word16]
+	h = 0x00
 	bc = 0x0227
-	word16 de_88
-	byte l_89
-	byte h_90
-	bool C_91 = fn1348(0x1676, DPB(Mem71[0x167A:word16], 0x00, 8) * 0x0002 + 0x0227, out de_88, out l_89, out h_90)
-	branch C_91 l0697
-// DataOut: af bc d e l
-// DataOut (flags): C
-// SymbolicIn: sp:fp hl:0x167C a:<invalid> h:0x16 bc:<invalid> de:<invalid> c:<invalid> b:<invalid> l:0x7C
-// LocalsOut: fp(16)
-
-l0697:
-	branch __ror(Mem71[0x167B:byte], 0x01, C_91) >=u 0x00 l06AF
-// DataOut: af bc d e l
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:<invalid> a:<invalid> h:<invalid> bc:0x0227 de:<invalid> c:<invalid> b:<invalid> l:<invalid>
-// LocalsOut: fp(16)
-
-l069E:
-	word16 hl_134 = Mem71[0x1678:word16]
-	Mem137[hl_134:byte] = Mem71[hl_134:byte] + 0x01
-	Mem146[Mem137[0x1678:word16] + 0x0027:byte] = Mem137[0x167C:byte]
-	bc = 0x0027 (alias)
-// DataOut: af bc d e l
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:<invalid> a:<invalid> h:<invalid> bc:0x0227 de:<invalid> c:<invalid> b:<invalid> l:<invalid>
-// LocalsOut: fp(16)
-
-l06AF:
-	Mem131[0x167A:byte] = Mem71[0x167A:byte] + 0x01
-	branch Mem131[0x167A:byte] != 0x00 l0657
-// DataOut: af bc d e l
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:<invalid> a:<invalid> h:<invalid> bc:<invalid> de:<invalid> c:<invalid> b:<invalid> l:<invalid>
-// LocalsOut: fp(16)
-
-l06B6:
-	word16 hl_52 = Mem21[0x1678:word16]
-	word16 hl_48 = Mem21[0x1676:word16]
-	Mem55[hl_52:byte] = Mem21[hl_52:byte] + 0x01
-	word16 hl_60 = Mem55[0x1678:word16] + DPB(bc, 0x00, 8)
-	byte c_65 = (byte) (hl_48 + 0x0030)
-	Mem67[hl_60:byte] = c_65
-	byte l_61
-	*lOut = (byte) hl_60
-	byte b_64
-	*bOut = SLICE(hl_48 + 0x0030, byte, 8)
-	return c_65
-// DataOut: af b c d e l
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:0x167A a:<invalid> h:0x16 bc:<invalid> de:<invalid> c:<invalid> b:<invalid> l:0x7A
-
-fn063E_exit:
-// DataOut: b c l
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:<invalid> a:<invalid> de:0x0030 c:<invalid> b:<invalid> bc:<invalid> h:<invalid> l:<invalid> -2(fp):<invalid>
-
+	hl = hl + hl
+	SZPC = cond(hl)
+	hl = hl + bc
+	SZPC = cond(hl)
+	de = 0x1676
+	call fn1348 (retsize: 2;)
+	branch Test(ULT,C) l0697
+	// succ:  l0678 l0697
 l0678:
-	word16 hl_98 = DPB(Mem71[0x167A:word16], 0x00, 8) * 0x0002 + 0x0227
-	word16 de_103
-	byte l_104
-	byte h_105
-	fn1348(0x1676, hl_98, out de_103, out l_104, out h_105)
-	Mem113[de_103 - 0x0001:byte] = (byte) hl_98
-	Mem115[de_103:byte] = SLICE(hl_98, byte, 8)
-	Mem117[0x167B:byte] = 0x01
-	Mem119[0x167C:byte] = Mem117[0x167C:byte] + 0x01
-// DataOut: af d e
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:<invalid> a:<invalid> h:<invalid> bc:0x0227 de:<invalid> c:<invalid> b:<invalid> l:<invalid>
-// LocalsOut: fp(16)
+	hl = Mem0[0x167A:word16]
+	h = 0x00
+	bc = 0x0227
+	hl = hl + hl
+	SZPC = cond(hl)
+	hl = hl + bc
+	SZPC = cond(hl)
+	de = 0x1676
+	call fn1348 (retsize: 2;)
+	v15 = de
+	de = hl
+	hl = v15
+	hl = hl - 0x0001
+	SZP = cond(hl)
+	Mem0[hl:byte] = e
+	hl = hl + 0x0001
+	SZP = cond(hl)
+	Mem0[hl:byte] = d
+	hl = 0x167B
+	Mem0[hl:byte] = 0x01
+	hl = hl + 0x0001
+	SZP = cond(hl)
+	Mem0[hl:byte] = Mem0[hl:byte] + 0x01
+	SZP = cond(Mem0[hl:byte])
+	goto l0665
+	// succ:  l0665
+l0697:
+	a = Mem0[0x167B:byte]
+	a = __rcr(a, 0x01, C)
+	C = cond(a)
+	branch Test(UGE,C) l06AF
+	// succ:  l069E l06AF
+l069E:
+	hl = Mem0[0x1678:word16]
+	a = Mem0[hl:byte]
+	a = a + 0x01
+	SZP = cond(a)
+	Mem0[hl:byte] = a
+	c = a
+	b = 0x00
+	hl = Mem0[0x1678:word16]
+	hl = hl + bc
+	SZPC = cond(hl)
+	a = Mem0[0x167C:byte]
+	Mem0[hl:byte] = a
+	// succ:  l06AF
+l06AF:
+	hl = 0x167A
+	Mem0[hl:byte] = Mem0[hl:byte] + 0x01
+	SZP = cond(Mem0[hl:byte])
+	branch Test(NE,Z) l0657
+	// succ:  l06B6 l0657
+l06B6:
+	de = 0x0030
+	hl = Mem0[0x1676:word16]
+	hl = hl + de
+	SZPC = cond(hl)
+	sp = sp - 0x0002
+	Mem0[sp:word16] = hl
+	hl = Mem0[0x1678:word16]
+	a = Mem0[hl:byte]
+	a = a + 0x01
+	SZP = cond(a)
+	Mem0[hl:byte] = a
+	c = a
+	b = 0x00
+	hl = Mem0[0x1678:word16]
+	hl = hl + bc
+	SZPC = cond(hl)
+	bc = Mem0[sp:word16]
+	sp = sp + 0x0002
+	Mem0[hl:byte] = c
+	return
+	// succ:  fn063E_exit
+fn063E_exit:
 
 
-
-byte fn06CE(word16 bc, byte e, byte d, byte l, byte h, ptr16 & bOut, ptr16 & lOut, ptr16 & hOut)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  b bc c d e h l
-// LiveOut: b c h l
-// Trashed: SZPC a b bc c de h hl l
-// Preserved: sp
+// fn06CE
+// Return size: 2
+define fn06CE
 fn06CE_entry:
-// DataOut: af b bc c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  l06CE
 l06CE:
-	Mem4[0x167E:byte] = b
-	Mem8[0x167D:byte] = c
-	byte b_19
-	byte l_20
-	fn063E(DPB(bc, (byte) Mem8[0x167D:word16], 0), 0x2C, 0x16, out b_19, out l_20)
-	byte a_25
-	byte c_26
-	byte b_27
-	byte l_28
-	byte h_29
-	fn05EF(0x2C, 0x16, 0x2C, 0x16, l_20, out a_25, out c_26, out b_27, out l_28, out h_29)
-	return c_26
-// DataOut: af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	sp = fp
+	hl = 0x167E
+	Mem0[hl:byte] = b
+	hl = hl - 0x0001
+	SZP = cond(hl)
+	Mem0[hl:byte] = c
+	hl = Mem0[0x167D:word16]
+	b = h
+	c = l
+	de = 0x162C
+	call fn063E (retsize: 2;)
+	bc = 0x162C
+	call fn05EF (retsize: 2;)
+	return
+	// succ:  fn06CE_exit
 fn06CE_exit:
-// DataOut: b c h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:<invalid> b:<invalid> c:<invalid> de:<invalid> bc:<invalid> a:<invalid> h:0x16 l:<invalid>
 
 
-
-void fn0722(byte c, byte e, byte d, byte l, byte h)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  c d e h l
-// LiveOut:
-// Trashed: SZPC a b bc c de h hl l
-// Preserved: sp
+// fn0722
+// Return size: 2
+define fn0722
 fn0722_entry:
-// DataOut: c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  l0722
 l0722:
-	Mem4[0x1681:byte] = c
-	branch 0x09 >=u Mem4[0x1681:byte] l073B
-// DataOut: d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
-l073B:
-	byte a_36
-	word16 bc_37
-	byte l_38
-	byte h_39
-	fn056B(Mem4[0x1681:byte] + 0x30, e, d, 0x81, 0x16, out a_36, out bc_37, out l_38, out h_39)
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:0x1681 a:0x09
-
+	sp = fp
+	hl = 0x1681
+	Mem0[hl:byte] = c
+	a = 0x09
+	hl = 0x1681
+	SZPC = cond(a - Mem0[hl:byte])
+	branch Test(UGE,C) l073B
+	// succ:  l072F l073B
 l072F:
-	byte a_26
-	word16 bc_27
-	byte l_28
-	byte h_29
-	fn056B(Mem4[0x1681:byte] + 0x57, e, d, 0x81, 0x16, out a_26, out bc_27, out l_28, out h_29)
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:0x1681 a:0x09
-
+	a = Mem0[0x1681:byte]
+	a = a + 0x57
+	SZPC = cond(a)
+	c = a
+	call fn056B (retsize: 2;)
+	goto l0744
+	// succ:  l0744
+l073B:
+	a = Mem0[0x1681:byte]
+	a = a + 0x30
+	SZPC = cond(a)
+	c = a
+	call fn056B (retsize: 2;)
+	// succ:  l0744
 l0744:
 	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:<invalid> a:<invalid> c:<invalid> de:<invalid> bc:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
+	// succ:  fn0722_exit
 fn0722_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:<invalid> a:<invalid> c:<invalid> de:<invalid> bc:<invalid> b:<invalid> l:<invalid> h:<invalid>
 
 
-
-byte fn0745(byte c, byte e, byte d, byte l, byte h, ptr16 & bOut, ptr16 & lOut, ptr16 & hOut)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  c d e h l
-// LiveOut: b c h l
-// Trashed: SZPC a b bc c de h hl l
-// Preserved: sp
+// fn0745
+// Return size: 2
+define fn0745
 fn0745_entry:
-	*bOut = b
-// DataOut: af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  l0745
 l0745:
-	Mem6[0x1682:byte] = c
-// DataOut: af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	sp = fp
+	hl = 0x1682
+	Mem0[hl:byte] = c
+	// succ:  l0749
 l0749:
-	byte l_11
-	*lOut = 0x82
-	byte h_12
-	*hOut = 0x16
-	branch Mem6[0x14F6:byte] >=u Mem6[0x1682:byte] l075B
-// DataOut: af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:<invalid> a:<invalid> c:<invalid> de:<invalid> bc:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l075B:
-	return c
-// DataOut: af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:0x1682 a:<invalid> c:<invalid> de:<invalid> bc:<invalid> b:<invalid> l:0x82 h:0x16
-
-fn0745_exit:
-// DataOut: b c h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:0x1682 a:<invalid> c:<invalid> de:<invalid> bc:<invalid> b:<invalid> l:0x82 h:0x16
-
+	hl = 0x1682
+	a = Mem0[0x14F6:byte]
+	SZPC = cond(a - Mem0[hl:byte])
+	branch Test(UGE,C) l075B
+	// succ:  l0753 l075B
 l0753:
-	byte a_20
-	word16 bc_21
-	byte l_22
-	byte h_23
-	fn056B(0x20, e, d, 0x82, 0x16, out a_20, out bc_21, out l_22, out h_23)
 	c = 0x20
-// DataOut: af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:0x1682 a:<invalid> c:<invalid> de:<invalid> bc:<invalid> b:<invalid> l:0x82 h:0x16
+	call fn056B (retsize: 2;)
+	goto l0749
+	// succ:  l0749
+l075B:
+	return
+	// succ:  fn0745_exit
+fn0745_exit:
 
 
-
-byte fn075C(byte c, byte b, byte e, byte d, byte l, byte h, ptr16 & bOut, ptr16 & lOut, ptr16 & hOut, ptr16 & spOut)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  b c d e h l
-// LiveOut: b c h l sp
-// Trashed: SZPC a b bc c de h hl l sp
-// Preserved:
+// fn075C
+// Return size: 2
+define fn075C
 fn075C_entry:
-// DataOut: b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  l075C
 l075C:
-	Mem4[0x1686:byte] = d
-	Mem7[0x1685:byte] = e
-	Mem10[0x1684:byte] = b
-	Mem13[0x1683:byte] = c
-	Mem17[0x14F3:byte] = 0x02
-	byte l_105 = 0xF3
-	byte h_106 = 0x14
-	branch Mem17[0x14F6:byte] == 0x01 l077D
-// DataOut: b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	sp = fp
+	hl = 0x1686
+	Mem0[hl:byte] = d
+	hl = hl - 0x0001
+	SZP = cond(hl)
+	Mem0[hl:byte] = e
+	hl = hl - 0x0001
+	SZP = cond(hl)
+	Mem0[hl:byte] = b
+	hl = hl - 0x0001
+	SZP = cond(hl)
+	Mem0[hl:byte] = c
+	hl = 0x14F3
+	Mem0[hl:byte] = 0x02
+	a = Mem0[0x14F6:byte]
+	SZPC = cond(a - 0x01)
+	branch Test(EQ,Z) l077D
+	// succ:  l0773 l077D
 l0773:
-	byte a_96
-	word16 bc_97
-	byte l_98
-	byte h_99
-	fn056B(0x0D, e, d, 0xF3, 0x14, out a_96, out bc_97, out l_98, out h_99)
-	byte a_103
-	word16 bc_104
-	fn056B(0x0A, e, d, l_98, h_99, out a_103, out bc_104, out l_105, out h_106)
-// DataOut: b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:0x14F3 a:<invalid>
-
+	c = 0x0D
+	call fn056B (retsize: 2;)
+	c = 0x0A
+	call fn056B (retsize: 2;)
+	// succ:  l077D
 l077D:
-	byte l_26
-	byte h_27
-	word16 bc_28 = fn05CE(0x60, 0x02, e, d, l_105, h_106, out l_26, out h_27)
-	word16 hl_29 = Mem17[0x1683:word16]
-	byte l_30 = (byte) hl_29
-	byte b_35
-	byte l_36
-	byte h_37
-	fn06CE(DPB(bc_28, l_30, 0), e, d, l_30, SLICE(hl_29, byte, 8), out b_35, out l_36, out h_37)
-	byte a_41
-	word16 bc_42
-	byte l_43
-	byte h_44
-	fn056B(0x0D, e, d, l_36, h_37, out a_41, out bc_42, out l_43, out h_44)
-	byte a_48
-	word16 bc_49
-	byte l_50
-	byte h_51
-	fn056B(0x0A, e, d, l_43, h_44, out a_48, out bc_49, out l_50, out h_51)
-	word16 de_57
-	byte l_58
-	byte h_59
-	byte a_60 = fn1353(0x00, 0x1685, out de_57, out l_58, out h_59)
-	byte c_46 = 0x0A
-	branch (a_60 | l_58) == 0x00 l07AF
-// DataOut: b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:<invalid> a:<invalid> c:<invalid> de:<invalid> bc:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
+	bc = 0x0260
+	call fn05CE (retsize: 2;)
+	hl = Mem0[0x1683:word16]
+	b = h
+	c = l
+	call fn06CE (retsize: 2;)
+	c = 0x0D
+	call fn056B (retsize: 2;)
+	c = 0x0A
+	call fn056B (retsize: 2;)
+	a = 0x00
+	de = 0x1685
+	call fn1353 (retsize: 2;)
+	a = a | l
+	SZ = cond(a)
+	C = false
+	branch Test(EQ,Z) l07AF
+	// succ:  l07A1 l07AF
 l07A1:
-	byte l_79
-	byte h_80
-	word16 bc_81 = fn05CE(0x4E, 0x03, 0x85, 0x16, l_58, h_59, out l_79, out h_80)
-	word16 hl_82 = Mem17[0x1685:word16]
-	byte l_83 = (byte) hl_82
-	byte b_88
-	byte l_89
-	byte h_90
-	c_46 = fn06CE(DPB(bc_81, l_83, 0), 0x85, 0x16, l_83, SLICE(hl_82, byte, 8), out b_88, out l_89, out h_90)
-// DataOut: b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:<invalid> a:<invalid> c:<invalid> bc:<invalid> b:<invalid> de:<invalid> l:<invalid> h:<invalid>
-
+	bc = 0x034E
+	call fn05CE (retsize: 2;)
+	hl = Mem0[0x1685:word16]
+	b = h
+	c = l
+	call fn06CE (retsize: 2;)
+	// succ:  l07AF
 l07AF:
-	word16 sp_68
-	word16 hl_69 = fn0387(out sp_68)
-	byte l_70
-	*lOut = (byte) hl_69
-	byte h_71
-	*hOut = SLICE(hl_69, byte, 8)
-	return c_46
-// DataOut: b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:<invalid> a:<invalid> c:<invalid> bc:<invalid> b:<invalid> de:<invalid> l:<invalid> h:<invalid>
-
+	call fn0387 (retsize: 2;)
+	return
+	// succ:  fn075C_exit
 fn075C_exit:
-// DataOut: b c h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> hl:<invalid> a:<invalid> c:<invalid> bc:<invalid> b:<invalid> de:<invalid> l:<invalid> h:<invalid>
 
 
-
-byte fn07B3(byte e, byte d, byte l, byte h, ptr16 & bOut, ptr16 & lOut, ptr16 & hOut)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  C d e h l
-// LiveOut: b c h l
-// Trashed: SZPC a b bc c de h hl l
-// Preserved: sp
+// fn07B3
+// Return size: 2
+define fn07B3
 fn07B3_entry:
-	*bOut = b
-// DataOut: af b c d e h l
-// DataOut (flags): C
-// SymbolicIn: sp:fp
-
+	// succ:  l07B3
 l07B3:
-	branch __ror(Mem0[0x14F9:byte], 0x01, C) >=u 0x00 l080E
-// DataOut: af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	sp = fp
+	a = Mem0[0x14F9:byte]
+	a = __rcr(a, 0x01, C)
+	C = cond(a)
+	branch Test(UGE,C) l080E
+	// succ:  l07BA l080E
 l07BA:
-	byte a_34
-	word16 bc_35
-	byte l_36
-	byte h_37
-	fn056B(0x0D, e, d, l, h, out a_34, out bc_35, out l_36, out h_37)
-// DataOut: af d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp a:<invalid>
-
+	c = 0x0D
+	call fn056B (retsize: 2;)
+	// succ:  l07BF
 l07BF:
-	branch Mem0[0x14FD:byte] >=u Mem0[0x14F7:byte] l07D6
-// DataOut: af d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp a:<invalid> c:<invalid> hl:<invalid> de:<invalid> bc:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l07D6:
-	byte a_63
-	word16 bc_64
-	byte l_65
-	byte h_66
-	fn056B(0x0D, e, d, 0xF7, 0x14, out a_63, out bc_64, out l_65, out h_66)
-	byte a_70
-	word16 bc_71
-	byte l_72
-	byte h_73
-	fn056B(0x0A, e, d, l_65, h_66, out a_70, out bc_71, out l_72, out h_73)
-	byte l_78
-	byte h_79
-	fn05CE(0xB7, 0x02, e, d, l_72, h_73, out l_78, out h_79)
-	byte a_84
-	byte c_85
-	byte b_86
-	byte l_87
-	byte h_88
-	fn05EF(0xFF, 0x14, e, d, l_78, out a_84, out c_85, out b_86, out l_87, out h_88)
-	byte b_94
-	byte l_95
-	byte h_96
-	fn0745(Mem0[0x14F8:byte] - 0x0A, e, d, l_87, h_88, out b_94, out l_95, out h_96)
-	byte l_101
-	byte h_102
-	word16 bc_103 = fn05CE(0xFC, 0x02, e, d, l_95, h_96, out l_101, out h_102)
-	word16 hl_104 = Mem0[0x14FE:word16]
-	byte b_110
-	byte l_111
-	byte h_112
-	fn06CE(DPB(bc_103, 0x00, 8), e, d, (byte) hl_104, SLICE(hl_104, byte, 8), out b_110, out l_111, out h_112)
-	Mem117[0x14FE:byte] = Mem0[0x14FE:byte] + 0x01
-	byte a_122
-	byte b_124
-	byte l_125
-	byte h_126
-	fn05EF(0x82, 0x03, e, d, 0xFE, out a_122, out c, out b_124, out l_125, out h_126)
-// DataOut: af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp a:<invalid> c:<invalid> hl:0x14F7 de:<invalid> bc:<invalid> b:<invalid> l:0xF7 h:0x14
-
-l080E:
-	Mem24[0x14FD:byte] = 0x03
-	byte l_22
-	*lOut = 0xFD
-	byte h_23
-	*hOut = 0x14
-	return c
-// DataOut: af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp a:<invalid> c:<invalid> hl:0x1671 bc:<invalid> h:0x16 de:<invalid> b:<invalid> l:<invalid>
-
-fn07B3_exit:
-// DataOut: b c h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp a:<invalid> hl:0x14FD c:<invalid> bc:<invalid> h:0x14 de:<invalid> b:<invalid> l:0xFD
-
+	hl = 0x14F7
+	a = Mem0[0x14FD:byte]
+	SZPC = cond(a - Mem0[hl:byte])
+	branch Test(UGE,C) l07D6
+	// succ:  l07C9 l07D6
 l07C9:
-	byte a_49
-	word16 bc_50
-	byte l_51
-	byte h_52
-	fn056B(0x0D, e, d, 0xF7, 0x14, out a_49, out bc_50, out l_51, out h_52)
-	byte a_56
-	word16 bc_57
-	byte l_58
-	byte h_59
-	fn056B(0x0A, e, d, l_51, h_52, out a_56, out bc_57, out l_58, out h_59)
-// DataOut: af d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp a:<invalid> c:<invalid> hl:0x14F7 de:<invalid> bc:<invalid> b:<invalid> l:0xF7 h:0x14
+	c = 0x0D
+	call fn056B (retsize: 2;)
+	c = 0x0A
+	call fn056B (retsize: 2;)
+	goto l07BF
+	// succ:  l07BF
+l07D6:
+	c = 0x0D
+	call fn056B (retsize: 2;)
+	c = 0x0A
+	call fn056B (retsize: 2;)
+	bc = 0x02B7
+	call fn05CE (retsize: 2;)
+	bc = 0x14FF
+	call fn05EF (retsize: 2;)
+	a = Mem0[0x14F8:byte]
+	a = a - 0x0A
+	SZC = cond(a)
+	c = a
+	call fn0745 (retsize: 2;)
+	bc = 0x02FC
+	call fn05CE (retsize: 2;)
+	hl = Mem0[0x14FE:word16]
+	c = l
+	b = 0x00
+	call fn06CE (retsize: 2;)
+	hl = 0x14FE
+	Mem0[hl:byte] = Mem0[hl:byte] + 0x01
+	SZP = cond(Mem0[hl:byte])
+	bc = 0x0382
+	call fn05EF (retsize: 2;)
+	// succ:  l080E
+l080E:
+	hl = 0x14FD
+	Mem0[hl:byte] = 0x03
+	return
+	// succ:  fn07B3_exit
+fn07B3_exit:
 
 
-
-byte fn0814(byte e, byte d, byte l, byte h, ptr16 & bOut, ptr16 & lOut, ptr16 & hOut)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  d e h l
-// LiveOut: b c h l
-// Trashed: SZPC a b bc c de h hl l
-// Preserved: sp
+// fn0814
+// Return size: 2
+define fn0814
 fn0814_entry:
-	*bOut = b
-// DataOut: af d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  l0814
 l0814:
-	byte a_9
-	word16 bc_10
-	byte l_11
-	byte h_12
-	fn056B(0x0D, e, d, l, h, out a_9, out bc_10, out l_11, out h_12)
-	byte a_16
-	word16 bc_17
-	byte l_18
-	byte h_19
-	fn056B(0x0A, e, d, l_11, h_12, out a_16, out bc_17, out l_18, out h_19)
-	byte a_22 = Mem0[0x14F7:byte]
-	byte c_24 = a_22 - 0x03
-	branch Mem0[0x14FD:byte] <u a_22 - 0x03 l082E
-// DataOut: af b c d e h l
-// DataOut (flags): C
-// SymbolicIn: sp:fp
-
+	sp = fp
+	c = 0x0D
+	call fn056B (retsize: 2;)
+	c = 0x0A
+	call fn056B (retsize: 2;)
+	a = Mem0[0x14F7:byte]
+	a = a - 0x03
+	SZC = cond(a)
+	c = a
+	a = Mem0[0x14FD:byte]
+	SZPC = cond(a - c)
+	branch Test(ULT,C) l082E
+	// succ:  l082B l082E
 l082B:
-	byte b_39
-	byte l_40
-	byte h_41
-	c_24 = fn07B3(e, d, l_18, h_19, out b_39, out l_40, out h_41)
-// DataOut: af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp c:<invalid> a:<invalid> hl:<invalid> de:<invalid> bc:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
+	call fn07B3 (retsize: 2;)
+	// succ:  l082E
 l082E:
-	return c_24
-// DataOut: af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp c:<invalid> a:<invalid> hl:<invalid> bc:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid>
-
+	return
+	// succ:  fn0814_exit
 fn0814_exit:
-// DataOut: b c h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp c:<invalid> a:<invalid> hl:<invalid> bc:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid>
 
 
-
-void fn082F(word16 af, byte c, byte b, byte e, byte d, byte h, byte l, word16 wArg00, word16 wArg02, word16 wArg04)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  af b c d e h l
-// LiveOut:
-// Trashed:
-// Preserved:
-// Stack args: Stack +0004(16)
-// Terminates process
+// fn082F
+// Return size: 2
+define fn082F
 fn082F_entry:
-// DataOut: af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-// LocalsOut: fp(16) Stack +0004(16)
-
+	// succ:  l082F
 l082F:
-	Mem4[0x168D:byte] = e
-	Mem7[0x168C:byte] = b
-	Mem10[0x168B:byte] = c
-	Mem22[0x168A:byte] = SLICE(wArg02, byte, 8)
-	Mem24[0x1689:byte] = (byte) wArg02
-	Mem31[0x1688:byte] = SLICE(wArg04, byte, 8)
-	Mem33[0x1687:byte] = (byte) wArg04
-	Mem37[0x168F:byte] = 0x00
-	Mem39[0x1690:byte] = 0x00
-	Mem44[0x1691:byte] = 0x00
-	byte a_46 = __rcl(Mem44[0x168D:byte], 0x01)
-	byte a_48 = __ror(a_46, 0x01, cond(a_46))
-	word16 af_223 = DPB(af, a_48, 0)
-	branch a_48 >=u 0x00 l085E
-// DataOut: af bc d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
-l085E:
-	byte a_220 = __rcl(__rcl(Mem44[0x168D:byte], 0x01), 0x01)
-	byte a_222 = __ror(a_220, 0x01, cond(a_220))
-	af_223 = DPB(af, a_222, 0) (alias)
-	branch a_222 >=u 0x00 l086F
-// DataOut: af bc d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp + 0x0004 hl:0x1691 de:<invalid> bc:<invalid> a:<invalid> 4(fp):<invalid>
-
-l086F:
-	byte a_232 = __rcl(__rcl(__rcl(Mem44[0x168D:byte], 0x01), 0x01), 0x01)
-	byte a_234 = __ror(a_232, 0x01, cond(a_232))
-	af_223 = DPB(af, a_234, 0) (alias)
-	branch a_234 >=u 0x00 l087E
-// DataOut: af bc d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp + 0x0004 hl:0x1691 de:<invalid> bc:<invalid> a:<invalid> 4(fp):<invalid>
-
-l0879:
-	Mem240[0x168F:byte] = 0x01
-// DataOut: af bc d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp + 0x0004 hl:0x1691 de:<invalid> bc:<invalid> a:<invalid> 4(fp):<invalid>
-
-l0867:
-	Mem228[0x1691:byte] = 0x01
-// DataOut: af bc d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp + 0x0004 hl:0x1691 de:<invalid> bc:<invalid> a:<invalid> 4(fp):<invalid>
-
+	sp = fp
+	hl = 0x168D
+	Mem0[hl:byte] = e
+	hl = hl - 0x0001
+	SZP = cond(hl)
+	Mem0[hl:byte] = b
+	hl = hl - 0x0001
+	SZP = cond(hl)
+	Mem0[hl:byte] = c
+	hl = hl - 0x0001
+	SZP = cond(hl)
+	de = Mem0[sp:word16]
+	sp = sp + 0x0002
+	bc = Mem0[sp:word16]
+	sp = sp + 0x0002
+	Mem0[hl:byte] = b
+	hl = hl - 0x0001
+	SZP = cond(hl)
+	Mem0[hl:byte] = c
+	hl = hl - 0x0001
+	SZP = cond(hl)
+	bc = Mem0[sp:word16]
+	sp = sp + 0x0002
+	Mem0[hl:byte] = b
+	hl = hl - 0x0001
+	SZP = cond(hl)
+	Mem0[hl:byte] = c
+	sp = sp - 0x0002
+	Mem0[sp:word16] = de
+	hl = 0x168F
+	Mem0[hl:byte] = 0x00
+	hl = hl + 0x0001
+	SZP = cond(hl)
+	Mem0[hl:byte] = 0x00
+	hl = hl + 0x0001
+	SZP = cond(hl)
+	Mem0[hl:byte] = 0x00
+	a = Mem0[0x168D:byte]
+	a = __rol(a, 0x01)
+	C = cond(a)
+	a = __rcr(a, 0x01, C)
+	C = cond(a)
+	branch Test(UGE,C) l085E
+	// succ:  l0856 l085E
 l0856:
-	Mem217[0x1690:byte] = 0x01
-// DataOut: af bc d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp + 0x0004 hl:0x1691 de:<invalid> bc:<invalid> a:<invalid> 4(fp):<invalid>
-
+	hl = 0x1690
+	Mem0[hl:byte] = 0x01
+	goto l087E
+	// succ:  l087E
+l085E:
+	a = Mem0[0x168D:byte]
+	a = __rol(a, 0x01)
+	C = cond(a)
+	a = __rol(a, 0x01)
+	C = cond(a)
+	a = __rcr(a, 0x01, C)
+	C = cond(a)
+	branch Test(UGE,C) l086F
+	// succ:  l0867 l086F
+l0867:
+	hl = 0x1691
+	Mem0[hl:byte] = 0x01
+	goto l087E
+	// succ:  l087E
+l086F:
+	a = Mem0[0x168D:byte]
+	a = __rol(a, 0x01)
+	C = cond(a)
+	a = __rol(a, 0x01)
+	C = cond(a)
+	a = __rol(a, 0x01)
+	C = cond(a)
+	a = __rcr(a, 0x01, C)
+	C = cond(a)
+	branch Test(UGE,C) l087E
+	// succ:  l0879 l087E
+l0879:
+	hl = 0x168F
+	Mem0[hl:byte] = 0x01
+	// succ:  l087E
 l087E:
-	byte a_60 = __rcl(__rcl(__rcl(__rcl(Mem44[0x168D:byte], 0x01), 0x01), 0x01), 0x01)
-	branch __ror(a_60, 0x01, cond(a_60)) >=u 0x00 l088E
-// DataOut: af bc d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp + 0x0004 hl:<invalid> de:<invalid> bc:<invalid> a:<invalid> 4(fp):<invalid>
-
+	a = Mem0[0x168D:byte]
+	a = __rol(a, 0x01)
+	C = cond(a)
+	a = __rol(a, 0x01)
+	C = cond(a)
+	a = __rol(a, 0x01)
+	C = cond(a)
+	a = __rol(a, 0x01)
+	C = cond(a)
+	a = __rcr(a, 0x01, C)
+	C = cond(a)
+	branch Test(UGE,C) l088E
+	// succ:  l0889 l088E
 l0889:
-	Mem213[0x168E:byte] = 0x01
-// DataOut: af bc d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp + 0x0004 hl:<invalid> de:<invalid> bc:<invalid> a:<invalid> 4(fp):<invalid>
-
+	hl = 0x168E
+	Mem0[hl:byte] = 0x01
+	// succ:  l088E
 l088E:
-	byte a_65 = Mem44[0x168D:byte]
-	Mem71[0x168D:byte] = a_65 + 0x0F
-	word16 hl_78 = Mem71[0x1689:word16]
-	byte l_110 = (byte) wArg00
-	byte h_111 = SLICE(wArg00, byte, 8)
-	byte a_86
-	byte c_87
-	word16 hl_90
-	word16 sp_91
-	byte e_101
-	byte b_105
-	byte a_94 = __ror(~a_86, 0x01, fn0990(DPB(af_223, a_65 + 0x0F, 0), DPB(wArg04, (byte) Mem71[0x1687:word16], 0), (byte) hl_78, SLICE(hl_78, byte, 8), h_111, l_110, out a_86, out c_87, out b_105, out e_101, out hl_90, out sp_91))
-	bool C_107 = cond(a_94)
-	branch a_94 >=u 0x00 l08B1
-// DataOut: af b c d e h hl l sp
-// DataOut (flags): C
-// SymbolicIn: sp:fp + 0x0004 hl:<invalid> de:<invalid> bc:<invalid> a:<invalid> 4(fp):<invalid>
-
+	a = Mem0[0x168D:byte]
+	a = a + 0x0F
+	SZPC = cond(a)
+	Mem0[0x168D:byte] = a
+	hl = Mem0[0x1687:word16]
+	b = h
+	c = l
+	hl = Mem0[0x1689:word16]
+	v15 = de
+	de = hl
+	hl = v15
+	call fn0990 (retsize: 2;)
+	a = ~a
+	a = __rcr(a, 0x01, C)
+	C = cond(a)
+	branch Test(UGE,C) l08B1
+	// succ:  l08A7 l08B1
 l08A7:
-	word16 hl_193 = Mem71[0x1687:word16]
-	e_101 = (byte) hl_193 (alias)
-	l_110 = (byte) hl_78 (alias)
-	h_111 = SLICE(hl_78, byte, 8) (alias)
-	byte a_204
-	word16 hl_206
-	C_107 = fn061B(0x4C, 0x02, e_101, SLICE(hl_193, byte, 8), l_110, h_111, out a_204, out b_105, out hl_206)
-// DataOut: af b d e h hl l sp
-// DataOut (flags): C
-// SymbolicIn: sp:<invalid> hl:<invalid> de:<invalid> bc:<invalid> a:<invalid> b:<invalid> c:<invalid> e:<invalid> h:<invalid> l:<invalid> 4(fp):<invalid>
-
+	hl = Mem0[0x1687:word16]
+	v16 = de
+	de = hl
+	hl = v16
+	bc = 0x024C
+	call fn061B (retsize: 2;)
+	// succ:  l08B1
 l08B1:
-	byte a_113 = __ror(Mem71[0x1690:byte], 0x01, C_107)
-	bool C_115 = cond(a_113)
-	branch a_113 >=u 0x00 l08DD
-// DataOut: af b d e h hl l sp
-// DataOut (flags): C
-// SymbolicIn: sp:<invalid> hl:<invalid> de:<invalid> bc:<invalid> a:<invalid> b:<invalid> c:<invalid> e:<invalid> h:<invalid> l:<invalid> 4(fp):<invalid>
-
-l08DD:
-	byte a_158 = __ror(Mem71[0x1691:byte], 0x01, C_115)
-	bool C_160 = cond(a_158)
-	branch a_158 >=u 0x00 l0900
-// DataOut: af b d e h hl l sp
-// DataOut (flags): C
-// SymbolicIn: sp:<invalid> hl:<invalid> de:<invalid> bc:<invalid> a:<invalid> b:<invalid> c:<invalid> e:<invalid> h:<invalid> l:<invalid> 4(fp):<invalid>
-
-l0900:
-	branch __ror(Mem71[0x168F:byte], 0x01, C_160) >=u 0x00 l0920
-// DataOut: af b d e h hl l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> hl:<invalid> de:<invalid> bc:<invalid> a:<invalid> b:<invalid> c:<invalid> e:<invalid> h:<invalid> l:<invalid> 4(fp):<invalid>
-
-l0904_thunk_fn08EC:
-	fn08EC(b_105, e_101, l_110, h_111)
-	return
-// DataOut: af d e hl sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> hl:<invalid> de:<invalid> bc:<invalid> a:<invalid> b:<invalid> c:<invalid> e:<invalid> h:<invalid> l:<invalid> 4(fp):<invalid>
-// Terminates process
-
-l0907:
-	branch Mem71[0x1520:byte] == 0x00 l0919
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> hl:<invalid> de:<invalid> bc:<invalid> a:<invalid> b:<invalid> c:<invalid> e:<invalid> h:<invalid> l:<invalid> 4(fp):<invalid>
-
-l0919:
-	word16 hl_187 = Mem71[0x168B:word16]
-	Mem192[hl_187:byte] = Mem71[0x151F:byte]
-	byte l_188 = (byte) hl_187
-	byte h_189 = SLICE(hl_187, byte, 8)
-// DataOut: af b d e h hl l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> hl:<invalid> de:<invalid> bc:<invalid> a:<invalid> b:<invalid> c:<invalid> e:<invalid> h:<invalid> l:<invalid> 4(fp):<invalid>
-
-l091F_thunk_fn08EC:
-	fn08EC(b_105, e_101, l_188, h_189)
-	return
-// DataOut: af d e hl sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> hl:<invalid> de:<invalid> bc:<invalid> a:<invalid> b:<invalid> c:<invalid> e:<invalid> h:<invalid> l:<invalid> 4(fp):<invalid>
-// Terminates process
-
-l090F:
-	word16 hl_181 = Mem71[0x168B:word16]
-	Mem186[hl_181:byte] = Mem71[0x1520:byte]
-	byte l_182 = (byte) hl_181
-	byte h_183 = SLICE(hl_181, byte, 8)
-// DataOut: af b d e h hl l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> hl:<invalid> de:<invalid> bc:<invalid> a:<invalid> b:<invalid> c:<invalid> e:<invalid> h:<invalid> l:<invalid> 4(fp):<invalid>
-
-l0916_thunk_fn08EC:
-	fn08EC(b_105, e_101, l_182, h_183)
-	return
-// DataOut: af d e hl sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> hl:<invalid> de:<invalid> bc:<invalid> a:<invalid> b:<invalid> c:<invalid> e:<invalid> h:<invalid> l:<invalid> 4(fp):<invalid>
-// Terminates process
-
-l08E4:
-	branch Mem71[0x151E:byte] == 0x00 l08F6
-// DataOut: af b d e h hl l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> hl:<invalid> de:<invalid> bc:<invalid> a:<invalid> b:<invalid> c:<invalid> e:<invalid> h:<invalid> l:<invalid> 4(fp):<invalid>
-
-l08F6:
-	word16 hl_167 = Mem71[0x168B:word16]
-	Mem172[hl_167:byte] = Mem71[0x151F:byte]
-	byte l_168 = (byte) hl_167
-	byte h_169 = SLICE(hl_167, byte, 8)
-// DataOut: af b d e h hl l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> hl:<invalid> de:<invalid> bc:<invalid> a:<invalid> b:<invalid> c:<invalid> e:<invalid> h:<invalid> l:<invalid> 4(fp):<invalid>
-
-l08FC_thunk_fn08EC:
-	fn08EC(b_105, e_101, l_168, h_169)
-	return
-// DataOut: af d e hl sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> hl:<invalid> de:<invalid> bc:<invalid> a:<invalid> b:<invalid> c:<invalid> e:<invalid> h:<invalid> l:<invalid> 4(fp):<invalid>
-// Terminates process
-
-l08E9_thunk_fn08EC:
-	fn08EC(b_105, e_101, l_110, h_111)
-	return
-// DataOut: af d e hl sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> hl:<invalid> de:<invalid> bc:<invalid> a:<invalid> b:<invalid> c:<invalid> e:<invalid> h:<invalid> l:<invalid> 4(fp):<invalid>
-// Terminates process
-
+	a = Mem0[0x1690:byte]
+	a = __rcr(a, 0x01, C)
+	C = cond(a)
+	branch Test(UGE,C) l08DD
+	// succ:  l08B8 l08DD
 l08B8:
-	word16 hl_127 = Mem71[0x168B:word16]
-	byte l_128 = (byte) hl_127
-	byte h_129 = SLICE(hl_127, byte, 8)
-	branch Mem71[hl_127:byte] != 0x00 l08DA
-// DataOut: af b d e h hl l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> hl:<invalid> de:<invalid> bc:<invalid> a:<invalid> b:<invalid> c:<invalid> e:<invalid> h:<invalid> l:<invalid> 4(fp):<invalid>
-
+	hl = Mem0[0x168B:word16]
+	a = Mem0[hl:byte]
+	SZPC = cond(a - 0x00)
+	branch Test(NE,Z) l08DA
+	// succ:  l08C1 l08DA
 l08C1:
-	branch Mem71[0x151D:byte] != 0x00 l08D3
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> hl:<invalid> de:<invalid> bc:<invalid> a:<invalid> b:<invalid> c:<invalid> e:<invalid> h:<invalid> l:<invalid> 4(fp):<invalid>
-
-l08D3:
-	word16 hl_151 = Mem71[0x168B:word16]
-	Mem156[hl_151:byte] = Mem71[0x151D:byte]
-	l_128 = (byte) hl_151 (alias)
-	h_129 = SLICE(hl_151, byte, 8) (alias)
-// DataOut: af b d e h hl l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> hl:<invalid> de:<invalid> bc:<invalid> a:<invalid> b:<invalid> c:<invalid> e:<invalid> h:<invalid> l:<invalid> 4(fp):<invalid>
-
+	a = Mem0[0x151D:byte]
+	SZPC = cond(a - 0x00)
+	branch Test(NE,Z) l08D3
+	// succ:  l08C9 l08D3
 l08C9:
-	word16 hl_145 = Mem71[0x168B:word16]
-	Mem150[hl_145:byte] = Mem71[0x151F:byte]
-	l_128 = (byte) hl_145 (alias)
-	h_129 = SLICE(hl_145, byte, 8) (alias)
-// DataOut: af b d e h hl l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> hl:<invalid> de:<invalid> bc:<invalid> a:<invalid> b:<invalid> c:<invalid> e:<invalid> h:<invalid> l:<invalid> 4(fp):<invalid>
-
+	hl = Mem0[0x168B:word16]
+	a = Mem0[0x151F:byte]
+	Mem0[hl:byte] = a
+	goto l08DA
+	// succ:  l08DA
+l08D3:
+	hl = Mem0[0x168B:word16]
+	a = Mem0[0x151D:byte]
+	Mem0[hl:byte] = a
+	// succ:  l08DA
 l08DA:
-// DataOut: af b d e h hl l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> hl:<invalid> de:<invalid> bc:<invalid> a:<invalid> b:<invalid> c:<invalid> e:<invalid> h:<invalid> l:<invalid> 4(fp):<invalid>
-
+	// succ:  l08DA_thunk_fn08EC
 l08DA_thunk_fn08EC:
-	fn08EC(b_105, e_101, l_128, h_129)
+	call fn08EC (retsize: 0;)
 	return
-// DataOut: af d e hl sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> hl:<invalid> de:<invalid> bc:<invalid> a:<invalid> b:<invalid> c:<invalid> e:<invalid> h:<invalid> l:<invalid> 4(fp):<invalid>
-// Terminates process
-
+	// succ:  fn082F_exit
+l08DD:
+	a = Mem0[0x1691:byte]
+	a = __rcr(a, 0x01, C)
+	C = cond(a)
+	branch Test(UGE,C) l0900
+	// succ:  l08E4 l0900
+l08E4:
+	a = Mem0[0x151E:byte]
+	SZPC = cond(a - 0x00)
+	branch Test(EQ,Z) l08F6
+	// succ:  l08E9_thunk_fn08EC l08F6
+l08E9_thunk_fn08EC:
+	call fn08EC (retsize: 0;)
+	return
+	// succ:  fn082F_exit
+l08F6:
+	hl = Mem0[0x168B:word16]
+	a = Mem0[0x151F:byte]
+	Mem0[hl:byte] = a
+	// succ:  l08FC_thunk_fn08EC
+l08FC_thunk_fn08EC:
+	call fn08EC (retsize: 0;)
+	return
+	// succ:  fn082F_exit
+l0900:
+	a = Mem0[0x168F:byte]
+	a = __rcr(a, 0x01, C)
+	C = cond(a)
+	branch Test(UGE,C) l0920
+	goto l0907
+	// succ:  l0907 l0904_thunk_fn08EC
+l0904_thunk_fn08EC:
+	call fn08EC (retsize: 0;)
+	return
+	// succ:  fn082F_exit
+l0907:
+	a = Mem0[0x1520:byte]
+	SZPC = cond(a - 0x00)
+	branch Test(EQ,Z) l0919
+	// succ:  l090F l0919
+l090F:
+	hl = Mem0[0x168B:word16]
+	a = Mem0[0x1520:byte]
+	Mem0[hl:byte] = a
+	// succ:  l0916_thunk_fn08EC
+l0916_thunk_fn08EC:
+	call fn08EC (retsize: 0;)
+	return
+	// succ:  fn082F_exit
+l0919:
+	hl = Mem0[0x168B:word16]
+	a = Mem0[0x151F:byte]
+	Mem0[hl:byte] = a
+	// succ:  l091F_thunk_fn08EC
+l091F_thunk_fn08EC:
+	call fn08EC (retsize: 0;)
+	return
+	// succ:  fn082F_exit
 fn082F_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp 4(fp):<invalid>
 
 
-
-void fn08EC(byte b, byte e, byte l, byte h)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  b e h l
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
+// fn08EC
+// Return size: 0
+define fn08EC
 fn08EC_entry:
-// DataOut: af b d e h l
-// DataOut (flags): C
-// SymbolicIn: sp:fp
-// LocalsOut: fp(16)
-
+	// succ:  l08EC
 l08EC:
-	word16 hl_3 = Mem0[0x168B:word16]
-	Mem7[hl_3:byte] = Mem0[0x151E:byte]
-	byte l_4 = (byte) hl_3
-	byte h_5 = SLICE(hl_3, byte, 8)
-// DataOut: af b d e h hl l sp
-// DataOut (flags): C
-// SymbolicIn: sp:fp
-
-l08F3_thunk_fn08FD:
-	fn08FD(b, e, l_4, h_5)
-	return
-// DataOut: af b d e h hl l sp
-// DataOut (flags): C
-// SymbolicIn: sp:fp hl:<invalid> a:<invalid>
-// Terminates process
-
-fn08EC_exit:
-// DataOut:
-// DataOut (flags): C
-// SymbolicIn: sp:fp
-
-
-
-void fn08FD(byte b, byte e, byte l, byte h)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  b e h l
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fn08FD_entry:
-// DataOut: af b d e h hl l
-// DataOut (flags): C
-// SymbolicIn: sp:fp
-// LocalsOut: fp(16)
-
+	sp = fp
+	hl = Mem0[0x168B:word16]
+	a = Mem0[0x151E:byte]
+	Mem0[hl:byte] = a
+	// succ:  l08FD
 l08FD:
-// DataOut: af b d e h hl l sp
-// DataOut (flags): C
-// SymbolicIn: sp:fp
-
-l08FD_thunk_fn0920:
-	fn0920(b, e, l, h)
-	return
-// DataOut: af b d e h hl l sp
-// DataOut (flags): C
-// SymbolicIn: sp:fp
-// Terminates process
-
-fn08FD_exit:
-// DataOut:
-// DataOut (flags): C
-// SymbolicIn: sp:fp
-
-
-
-void fn0920(byte b, byte e, byte l, byte h)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  b e h l
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fn0920_entry:
-// DataOut: af b d e h hl l
-// DataOut (flags): ZC
-// SymbolicIn: sp:fp
-// LocalsOut: fp(16)
-
+	// succ:  l0920
 l0920:
-	fn0221()
-	byte a_6 = Mem0[0x168D:byte]
-// DataOut: a af b d e h hl l sp
-// DataOut (flags): ZC
-// SymbolicIn: sp:fp
-
+	de = 0x0080
+	c = 0x1A
+	F_DMAOFF(de)
+	a = Mem0[0x168D:byte]
+	// succ:  l0928_thunk_fn092A
 l0928_thunk_fn092A:
-	fn092A(a_6, b, 0x80, l, h)
+	call fn092A (retsize: 0;)
 	return
-// DataOut: af b d e h hl l sp
-// DataOut (flags): C
-// SymbolicIn: a:<invalid>
-// Terminates process
-
-fn0920_exit:
-// DataOut:
-// DataOut (flags): C
-// SymbolicIn: sp:fp
+	// succ:  fn08EC_exit
+fn08EC_exit:
 
 
-
-void fn092A(byte a, byte b, byte e, byte l, byte h)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  Z a b e h l
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
+// fn092A
+// Return size: 0
+define fn092A
+fn092A_entry:
+	// succ:  l092A
+l092A:
+	sp = fp
+	d = 0xFE
+	branch Test(NE,Z) l092D_thunk_fn096E
+	goto l092D_thunk_fn0930
+	// succ:  l092D_thunk_fn0930 l092D_thunk_fn096E
 l092A:
 	SZPC = cond(a - 0x00)
-	Z = (bool) SZPC (alias)
 	branch Test(NE,Z) l096E
-// DataOut: a af b d e h hl l sp
-// DataOut (flags): C
-// SymbolicIn:
-
-l092C_thunk_fn096E:
-	fn096E(a, b, e, d, l, h)
-	return
-// DataOut: af b d e h hl l sp
-// DataOut (flags): C
-// SymbolicIn:
-// Terminates process
-
+	// succ:  l092C_thunk_fn0930 l092C_thunk_fn096E
 l092C_thunk_fn0930:
-	fn0930(a, b, e, d, l, h)
+	call fn0930 (retsize: 0;)
 	return
-// DataOut: af b d e h hl l sp
-// DataOut (flags): C
-// SymbolicIn:
-// Terminates process
-
-fn092A_entry:
-	def fp
-	def Z
-	def a
-	def b
-	def e
-	def l
-	def h
-// DataOut: a af b e h hl l
-// DataOut (flags): ZC
-// SymbolicIn: sp:fp
-// LocalsOut: fp(16)
-
-l092A:
-	sp_1 = fp
-	d_2 = 0xFE
-	branch Z l092D_thunk_fn096E
-// DataOut: a af b d e h hl l sp
-// DataOut (flags): C
-// SymbolicIn: sp:fp
-
-l092D_thunk_fn096E:
-	fn096E(a, b, e, d_2, l, h)
+	// succ:  fn092A_exit
+l092C_thunk_fn096E:
+	call fn096E (retsize: 0;)
 	return
-// DataOut: af b d e h hl l sp
-// DataOut (flags): C
-// SymbolicIn: sp:fp d:0xFE
-// Terminates process
-
+	// succ:  fn092A_exit
 l092D_thunk_fn0930:
-	fn0930(a, b, e, d_2, l, h)
+	call fn0930 (retsize: 0;)
 	return
-// DataOut: af b d e h hl l sp
-// DataOut (flags): C
-// SymbolicIn: sp:fp d:0xFE
-// Terminates process
-
+	// succ:  fn092A_exit
+l092D_thunk_fn096E:
+	call fn096E (retsize: 0;)
+	return
+	// succ:  fn092A_exit
 fn092A_exit:
-// DataOut:
-// DataOut (flags): C
-// SymbolicIn: sp:fp
 
 
-
-void fn0930(byte a, byte b, byte e, byte d, byte l, byte h)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  a b d e h l
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
+// fn0930
+// Return size: 0
+define fn0930
 fn0930_entry:
-// DataOut: a af b d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-// LocalsOut: v3(16)
-
+	// succ:  l0930
 l0930:
-	fn0221()
-	byte a_22 = __ror(~(0x00 - (a <u 0x30)) & Mem0[0x168E:byte], 0x01, false)
-	branch a_22 >=u 0x00 l0953
-// DataOut: a af b d de e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	sp = v3
+	de = 0x0000
+	c = 0x0C
+	S_BDOSVER(out b, out h, out a, out l)
+	a = a - 0x30
+	SZC = cond(a)
+	a = a - a - C
+	SZPC = cond(a)
+	a = ~a
+	hl = 0x168E
+	a = a & Mem0[hl:byte]
+	SZ = cond(a)
+	C = false
+	a = __rcr(a, 0x01, C)
+	C = cond(a)
+	branch Test(UGE,C) l0953
+	// succ:  l0944 l0953
 l0944:
-	a_22 = Mem0[Mem0[0x168B:word16] + 0x0007:byte] | 0x80
-	Mem83[Mem0[0x168B:word16] + 0x0007:byte] = a_22
-	b = 0x00 (alias)
-// DataOut: a af b d de e h l sp
-// DataOut (flags): 
-// SymbolicIn: a:<invalid> hl:0x168E
-
+	bc = 0x0007
+	hl = Mem0[0x168B:word16]
+	hl = hl + bc
+	SZPC = cond(hl)
+	a = 0x80
+	a = a | Mem0[hl:byte]
+	SZ = cond(a)
+	C = false
+	hl = Mem0[0x168B:word16]
+	hl = hl + bc
+	SZPC = cond(hl)
+	Mem0[hl:byte] = a
+	// succ:  l0953
 l0953:
-	word16 hl_28 = Mem0[0x168B:word16]
-	fn0221()
-	byte e_31 = (byte) hl_28
-	byte d_32 = SLICE(hl_28, byte, 8)
-	byte l_34 = 0x00
-	byte h_35 = 0x00
-	branch a_22 != 0xFF l096B
-// DataOut: a af b c d e h hl l sp
-// DataOut (flags): C
-// SymbolicIn: a:<invalid> hl:<invalid> bc:0x0007
-
+	hl = Mem0[0x168B:word16]
+	v16 = de
+	de = hl
+	hl = v16
+	c = 0x0F
+	a = F_OPEN(de)
+	SZPC = cond(a - 0xFF)
+	branch Test(NE,Z) l096B
+	// succ:  l0961 l096B
 l0961:
-	word16 hl_55 = Mem0[0x1687:word16]
-	e_31 = (byte) hl_55 (alias)
-	d_32 = SLICE(hl_55, byte, 8) (alias)
-	l_34 = (byte) hl_28 (alias)
-	h_35 = SLICE(hl_28, byte, 8) (alias)
-	word16 hl_68
-	fn061B(0x36, 0x02, e_31, d_32, l_34, h_35, out a_22, out b, out hl_68)
-// DataOut: a af b d e h hl l sp
-// DataOut (flags): C
-// SymbolicIn:
-
+	hl = Mem0[0x1687:word16]
+	v18 = de
+	de = hl
+	hl = v18
+	bc = 0x0236
+	call fn061B (retsize: 2;)
+	// succ:  l096B
 l096B:
-// DataOut: a af b d e h hl l sp
-// DataOut (flags): C
-// SymbolicIn: hl:<invalid> de:<invalid> bc:<invalid> b:<invalid> c:<invalid> sp:<invalid> a:<invalid> h:0x16 l:0x71
-
+	// succ:  l096B_thunk_fn096E
 l096B_thunk_fn096E:
-	fn096E(a_22, b, e_31, d_32, l_34, h_35)
+	call fn096E (retsize: 0;)
 	return
-// DataOut: af b d e h hl l sp
-// DataOut (flags): C
-// SymbolicIn: hl:<invalid> de:<invalid> bc:<invalid> b:<invalid> c:<invalid> sp:<invalid> a:<invalid> h:0x16 l:0x71
-// Terminates process
-
+	// succ:  fn0930_exit
 fn0930_exit:
-// DataOut:
-// DataOut (flags): C
-// SymbolicIn: sp:fp
 
 
-
-void fn096E(byte a, byte b, byte e, byte d, byte l, byte h)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  a b d e h l
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
+// fn096E
+// Return size: 0
+define fn096E
 fn096E_entry:
-// DataOut: a af b d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-// LocalsOut: v3(16)
-
+	// succ:  l096E
 l096E:
-	fn0221()
-	word16 hl_9 = Mem0[0x168B:word16]
-	fn0221()
-	branch a != 0xFF l098F
-// DataOut: af b c d e h hl l sp
-// DataOut (flags): C
-// SymbolicIn: sp:fp
-// Terminates process
-
+	sp = v3
+	hl = Mem0[0x168B:word16]
+	v6 = de
+	de = hl
+	hl = v6
+	c = 0x13
+	a = F_DELETE(de)
+	hl = Mem0[0x168B:word16]
+	v9 = de
+	de = hl
+	hl = v9
+	c = 0x16
+	a = F_MAKE(de)
+	SZPC = cond(a - 0xFF)
+	branch Test(NE,Z) l098F
+	// succ:  l0985 l098F
 l0985:
-	word16 hl_37 = Mem0[0x1687:word16]
-	byte a_48
-	byte b_49
-	word16 hl_50
-	fn061B(0x87, 0x02, (byte) hl_37, SLICE(hl_37, byte, 8), (byte) hl_9, SLICE(hl_9, byte, 8), out a_48, out b_49, out hl_50)
-// DataOut: af b d e h hl l sp
-// DataOut (flags): C
-// SymbolicIn:
-
+	hl = Mem0[0x1687:word16]
+	v12 = de
+	de = hl
+	hl = v12
+	bc = 0x0287
+	call fn061B (retsize: 2;)
+	// succ:  l098F
 l098F:
 	return
-// DataOut: af b d e h hl l sp
-// DataOut (flags): C
-// SymbolicIn: hl:<invalid> de:<invalid> bc:<invalid> b:<invalid> c:<invalid> sp:<invalid> a:<invalid> h:0x16 l:0x71
-
+	// succ:  fn096E_exit
 fn096E_exit:
-// DataOut:
-// DataOut (flags): C
-// SymbolicIn: hl:<invalid> de:<invalid> bc:<invalid> b:<invalid> c:<invalid> sp:fp a:<invalid> h:0x16 l:0x71
 
 
-
-bool fn0990(word16 af, word16 bc, byte e, byte d, byte h, byte l, ptr16 & aOut, ptr16 & cOut, ptr16 & bOut, ptr16 & eOut, ptr16 & hlOut, ptr16 & spOut)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  af b bc c d e h l
-// LiveOut: C a b c e h hl l sp
-// Trashed: SZPC a b bc c de e h hl l sp
-// Preserved:
+// fn0990
+// Return size: 2
+define fn0990
 fn0990_entry:
-// DataOut: af b bc c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-// LocalsOut: fp(16)
-
+	// succ:  l0990
 l0990:
-	Mem4[0x1695:byte] = d
-	Mem7[0x1694:byte] = e
-	Mem10[0x1693:byte] = b
-	Mem13[0x1692:byte] = c
-	word16 hl_19 = Mem13[0x168B:word16]
-	byte h_22 = SLICE(hl_19 + 0x0001, byte, 8)
-	word16 bc_16 = DPB(bc, 0x0B, 0)
-	word16 sp_31 = fn0390((byte) (hl_19 + 0x0001), h_22, 0x20, wLoc04, bc_16)
-	Mem34[0x1696:byte] = Mem13[Mem13[0x1692:word16]:byte]
-	word16 hl_35 = Mem34[0x1692:word16]
-	Mem37[0x1692:word16] = hl_35 + 0x0001
-	byte a_41 = Mem37[hl_35 + 0x0002:byte]
-	byte b_131 = h_22
-	byte e_27 = 0x20
-	*eOut = e_27
-	word16 af_145 = DPB(af, a_41, 0)
-	branch a_41 != 0x3A l0A0C
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-// LocalsOut: Local -0002(16)
-
-l0A0C:
-	Mem588[Mem37[0x168B:word16]:byte] = 0x00
-// DataOut: af b d e l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> hl:<invalid> c:l b:h e:0x20 a:<invalid> de:<invalid> bc:<invalid> -2(fp):bc
-// LocalsOut: Local -0002(16)
-
+	sp = fp
+	hl = 0x1695
+	Mem0[hl:byte] = d
+	hl = hl - 0x0001
+	SZP = cond(hl)
+	Mem0[hl:byte] = e
+	hl = hl - 0x0001
+	SZP = cond(hl)
+	Mem0[hl:byte] = b
+	hl = hl - 0x0001
+	SZP = cond(hl)
+	Mem0[hl:byte] = c
+	c = 0x0B
+	sp = sp - 0x0002
+	Mem0[sp:word16] = bc
+	hl = Mem0[0x168B:word16]
+	hl = hl + 0x0001
+	SZP = cond(hl)
+	b = h
+	c = l
+	e = 0x20
+	call fn0390 (retsize: 2;)
+	hl = Mem0[0x1692:word16]
+	a = Mem0[hl:byte]
+	Mem0[0x1696:byte] = a
+	hl = Mem0[0x1692:word16]
+	hl = hl + 0x0001
+	SZP = cond(hl)
+	Mem0[0x1692:word16] = hl
+	hl = hl + 0x0001
+	SZP = cond(hl)
+	a = Mem0[hl:byte]
+	SZPC = cond(a - 0x3A)
+	branch Test(NE,Z) l0A0C
+	// succ:  l09BD l0A0C
 l09BD:
-	word16 hl_513 = Mem37[0x1692:word16]
-	fn03CB(Mem37[hl_513:byte], h_22, (byte) hl_513)
-	word16 hl_516 = Mem37[0x1692:word16]
-	Mem518[sp_31 - 0x0002:word16] = af_145
-	Mem532[sp_31 - 0x0002:word16] = DPB(af, 0x00 - (Mem518[hl_516:byte] <u 0x41) | Mem518[sp_31 + 0x0003:byte], 0)
-	b_131 = Mem532[sp_31 + 0x0003:byte] (alias)
-	*bOut = b_131
-	byte a_552 = __ror(0x00 - (0x02 - Mem532[0x1696:byte] <u 0x00) & b_131, 0x01, false)
-	word16 hl_534
-	*hlOut = 0x1696
-	word16 sp_544
-	*spOut = sp_31
-	byte c_545
-	*cOut = b_131
-	bool C_554 = cond(a_552)
-	branch a_552 >=u 0x00 l0A06
-// DataOut: af b c d e h hl l sp
-// DataOut (flags): C
-// SymbolicIn: sp:<invalid> hl:<invalid> c:l b:h e:0x20 a:<invalid> de:<invalid> bc:<invalid> -2(fp):bc
-// LocalsOut: Local -0002(16)
-
-l0A06:
-	byte a_584
-	*aOut = 0x00
-	return C_554
-// DataOut: a af b c d e h hl l sp
-// DataOut (flags): C
-// SymbolicIn: sp:<invalid> hl:0x1696 c:<invalid> b:<invalid> e:0x20 a:<invalid> bc:<invalid> de:<invalid> -4(fp):af -2(fp):bc
-
+	hl = Mem0[0x1692:word16]
+	c = Mem0[hl:byte]
+	call fn03CB (retsize: 2;)
+	hl = Mem0[0x1692:word16]
+	sp = sp - 0x0002
+	Mem0[sp:word16] = af
+	a = Mem0[hl:byte]
+	a = a - 0x40
+	SZC = cond(a)
+	a = a - 0x01
+	SZC = cond(a)
+	a = a - a - C
+	SZPC = cond(a)
+	bc = Mem0[sp:word16]
+	sp = sp + 0x0002
+	c = b
+	a = a | c
+	SZ = cond(a)
+	C = false
+	sp = sp - 0x0002
+	Mem0[sp:word16] = af
+	a = 0x02
+	hl = 0x1696
+	a = a - Mem0[hl:byte]
+	SZC = cond(a)
+	a = a - a - C
+	SZPC = cond(a)
+	bc = Mem0[sp:word16]
+	sp = sp + 0x0002
+	c = b
+	a = a & c
+	SZ = cond(a)
+	C = false
+	a = __rcr(a, 0x01, C)
+	C = cond(a)
+	branch Test(UGE,C) l0A06
+	// succ:  l09E0 l0A06
 l09E0:
-	Mem561[Mem532[0x168B:word16]:byte] = Mem532[Mem532[0x1692:word16]:byte] & 0x1F
-	word16 hl_562 = Mem561[0x168B:word16]
-	*hlOut = hl_562
-	af_145 = DPB(af, 0x10, 0) (alias)
-	bool C_571 = (bool) cond(0x10 - Mem561[hl_562:byte])
-	branch 0x10 >=u Mem561[hl_562:byte] l09F6
-// DataOut: af b c d e h hl l sp
-// DataOut (flags): C
-// SymbolicIn: sp:<invalid> hl:0x1696 c:<invalid> b:<invalid> e:0x20 a:<invalid> bc:<invalid> de:<invalid> -4(fp):af -2(fp):bc
-// LocalsOut: Local -0002(16)
-
-l09F6:
-	Mem577[0x1692:word16] = Mem561[0x1692:word16] + 0x0002
-	Mem580[0x1696:byte] = Mem577[0x1696:byte] - 0x01
-	Mem582[0x1696:byte] = Mem580[0x1696:byte] - 0x01
-// DataOut: af b d e l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> hl:<invalid> c:<invalid> b:<invalid> e:0x20 a:0x10 bc:<invalid> de:<invalid> -4(fp):af -2(fp):bc
-// LocalsOut: Local -0002(16)
-
-l0A09:
-// DataOut: af b d e l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> hl:0x1696 c:<invalid> b:<invalid> e:0x20 a:0x10 bc:<invalid> de:<invalid> -4(fp):af -2(fp):bc
-// LocalsOut: Local -0002(16)
-
-l0A11:
-	Mem83[0x1697:byte] = 0x00
-// DataOut: af b d e l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> hl:<invalid> c:<invalid> b:<invalid> e:0x20 a:<invalid> bc:<invalid> de:<invalid> -4(fp):af -2(fp):bc
-// LocalsOut: Local -0002(16)
-
-l0A16:
-	Mem104[sp_31 - 0x0002:word16] = DPB(af_145, ~(0x00 - (0x07 - Mem83[0x1697:byte] <u 0x00)), 0)
-	byte h_105
-	byte a_106 = fn0B74(b_131, out h_105)
-	word16 bc_107 = Mem104[sp_31 - 0x0002:word16]
-	byte b_108 = SLICE(bc_107, byte, 8)
-	word16 bc_111 = DPB(bc_107, b_108, 0)
-	branch __ror(a_106 & b_108, 0x01, false) >=u 0x00 l0A53
-// DataOut: af b bc c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> hl:<invalid> c:<invalid> b:<invalid> e:<invalid> a:<invalid> bc:<invalid> de:<invalid> h:<invalid> -4(fp):<invalid> -2(fp):bc
-// LocalsOut: Local -0002(16)
-
-l0A53:
-	word16 bc_189
-	word16 hl_166 = Mem104[0x1692:word16] + DPB(bc_111, 0x00, 8)
-	Mem170[sp_31 - 0x0002:word16] = DPB(af_145, 0x00 - (0x01 - Mem104[0x1696:byte] <u 0x00), 0)
-	byte b_179 = Mem170[sp_31 + 0x0003:byte]
-	*bOut = b_179
-	word16 sp_180
-	*spOut = sp_31
-	byte c_181
-	*cOut = b_179
-	branch __ror(0x00 - (Mem170[hl_166:byte] <u 0x2F) & b_179, 0x01, false) >=u 0x00 l0AA3
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> hl:<invalid> c:<invalid> b:<invalid> e:<invalid> a:<invalid> h:<invalid> de:<invalid> bc:<invalid> -4(fp):<invalid> -2(fp):bc
-// LocalsOut: Local -0002(16)
-
-l0AA3:
-	word16 hl_435 = DPB(Mem170[0x1697:word16], 0x00, 8)
-	word16 hl_441 = Mem170[0x1692:word16] + hl_435
-	*hlOut = hl_441
-	Mem445[sp_31 - 0x0002:word16] = DPB(af_145, 0x00 - (Mem170[0x1696:byte] <u 0x01), 0)
-	byte b_454 = Mem445[sp_31 + 0x0003:byte]
-	*bOut = b_454
-	byte a_463 = __ror(0x00 - (Mem445[hl_441:byte] <u 0x2F) | b_454, 0x01, false)
-	byte e_439
-	*eOut = (byte) hl_435
-	word16 sp_455
-	*spOut = sp_31
-	byte c_456
-	*cOut = b_454
-	bool C_465 = cond(a_463)
-	branch a_463 >=u 0x00 l0AE2
-// DataOut: af b c d e h hl l sp
-// DataOut (flags): C
-// SymbolicIn: sp:<invalid> hl:<invalid> c:<invalid> b:<invalid> e:<invalid> a:<invalid> h:<invalid> de:<invalid> bc:<invalid> -4(fp):<invalid> -2(fp):bc
-// LocalsOut: Local -0002(16)
-
-l0AE2:
-	byte a_511
-	*aOut = 0x00
-	return C_465
-// DataOut: a af b c d e h hl l sp
-// DataOut (flags): C
-// SymbolicIn: sp:<invalid> hl:<invalid> c:<invalid> b:<invalid> e:<invalid> a:<invalid> h:<invalid> de:<invalid> bc:<invalid> -4(fp):<invalid> -2(fp):bc
-
-l0AC3:
-	word16 hl_468 = Mem445[0x1694:word16]
-	Mem472[sp_31 - 0x0002:word16] = DPB(hl_468, Mem445[hl_468:byte], 0)
-	Mem477[sp_31 - 0x0004:word16] = Mem472[0x1694:word16] + 0x0001
-	word16 de_482 = Mem477[0x168B:word16] + 0x0009
-	bc_189 = Mem477[sp_31 - 0x0004:word16]
-	byte l_490 = (byte) Mem477[sp_31 - 0x0002:word16]
-// DataOut: af bc d de h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> hl:<invalid> c:<invalid> b:<invalid> e:<invalid> a:<invalid> h:<invalid> de:<invalid> bc:<invalid> -4(fp):<invalid> -2(fp):bc
-// LocalsOut: Local -0002(16)
-
-l0AD7:
-	Mem500[de_482:byte] = Mem477[bc_189:byte]
-	bc_189 = bc_189 + 0x0001
-	de_482 = de_482 + 0x0001
-	l_490 = l_490 - 0x01
-	branch l_490 != 0x00 l0AD7
-// DataOut: af bc d de h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> hl:<invalid> c:<invalid> b:<invalid> e:<invalid> a:<invalid> h:<invalid> de:<invalid> bc:<invalid> l:<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bc
-// LocalsOut: Local -0002(16)
-
-l0ADF:
-// DataOut: af bc d h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> hl:<invalid> c:<invalid> b:<invalid> e:<invalid> a:<invalid> h:<invalid> de:<invalid> bc:<invalid> l:<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bc
-// LocalsOut: Local -0002(16)
-
-l0A70:
-	fn0B91()
-	word16 hl_370
-	*hlOut = 0x1696
-	bool C_377 = (bool) cond(0x03 - Mem170[0x1696:byte])
-	branch 0x03 >=u Mem170[0x1696:byte] l0A7F
-// DataOut: af b c d e h hl l sp
-// DataOut (flags): C
-// SymbolicIn: sp:<invalid> hl:<invalid> c:<invalid> b:<invalid> e:<invalid> a:<invalid> h:<invalid> de:<invalid> bc:<invalid> -4(fp):<invalid> -2(fp):bc
-// LocalsOut: Local -0002(16)
-
-l0A7F:
-	Mem382[sp_31 - 0x0002:word16] = Mem170[0x1696:word16]
-	Mem392[sp_31 - 0x0004:word16] = Mem382[0x1692:word16] + DPB(Mem382[0x1697:word16], 0x00, 8)
-	word16 de_397 = Mem392[0x168B:word16] + 0x0009
-	bc_189 = Mem392[sp_31 - 0x0004:word16]
-	byte l_405 = (byte) Mem392[sp_31 - 0x0002:word16]
-// DataOut: af bc d de h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> hl:0x1696 c:<invalid> b:<invalid> e:<invalid> a:0x03 h:0x16 de:<invalid> bc:<invalid> -4(fp):<invalid> -2(fp):bc
-// LocalsOut: Local -0002(16)
-
-l0A98:
-	Mem415[de_397:byte] = Mem392[bc_189:byte]
-	bc_189 = bc_189 + 0x0001
-	de_397 = de_397 + 0x0001
-	l_405 = l_405 - 0x01
-	branch l_405 != 0x00 l0A98
-// DataOut: af bc d de h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> hl:<invalid> c:<invalid> b:<invalid> e:<invalid> a:<invalid> h:<invalid> de:<invalid> bc:<invalid> l:<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bc
-// LocalsOut: Local -0002(16)
-
-l0AA0:
-// DataOut: af bc d h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> hl:<invalid> c:<invalid> b:<invalid> e:<invalid> a:<invalid> h:<invalid> de:<invalid> bc:<invalid> l:<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bc
-// LocalsOut: Local -0002(16)
-
-l0AE5:
-	Mem202[sp_31 - 0x0002:word16] = DPB(bc_189, 0x03, 0)
-	word16 hl_204 = Mem202[0x168B:word16]
-	word16 sp_214
-	*spOut = fn0390((byte) (hl_204 + 0x000C), SLICE(hl_204 + 0x000C, byte, 8), 0x00, bc_16, wArg00)
-	Mem221[Mem202[0x168B:word16] + 0x0020:byte] = 0x00
-	Mem225[0x1697:byte] = 0x00
-	byte e_211
-	*eOut = 0x00
-	byte c_217
-	*cOut = 0x20
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> hl:<invalid> c:<invalid> b:<invalid> e:<invalid> a:<invalid> h:<invalid> de:<invalid> bc:<invalid> l:<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bc
-
-l0B04:
-	branch 0x07 <u Mem225[0x1697:byte] l0B38
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> hl:<invalid> c:<invalid> b:0x00 e:<invalid> a:<invalid> h:<invalid> de:<invalid> bc:<invalid> l:<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bc
-
-l0B0D:
-	word16 hl_339 = Mem225[0x168B:word16] + (DPB(Mem225[0x1697:word16], 0x00, 8) + 0x0001)
-	byte c_343
-	byte a_344 = fn03E6(Mem225[hl_339:byte], (byte) hl_339, out c_343)
-	word16 hl_347 = DPB(Mem225[0x1697:word16], 0x00, 8)
-	Mem361[Mem225[0x168B:word16] + (hl_347 + 0x0001):byte] = a_344
-	byte a_362 = Mem361[0x1697:byte]
-	Mem367[0x1697:byte] = a_362 + 0x01
-	byte c_350
-	*cOut = 0x01
-	byte e_355
-	*eOut = (byte) (hl_347 + 0x0001)
-	branch a_362 != 0x01 l0B04
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> hl:0x1697 c:<invalid> b:0x00 e:<invalid> a:0x07 h:0x16 de:<invalid> bc:<invalid> l:0x97 -6(fp):<invalid> -4(fp):<invalid> -2(fp):bc
-
-l0B38:
-	Mem256[0x1697:byte] = 0x00
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> hl:<invalid> c:<invalid> b:0x00 e:<invalid> a:<invalid> h:<invalid> de:<invalid> bc:<invalid> l:<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bc
-
-l0B3D:
-	word16 hl_266
-	*hlOut = 0x1697
-	bool C_273 = (bool) cond(0x02 - Mem256[0x1697:byte])
-	branch 0x02 <u Mem256[0x1697:byte] l0B71
-// DataOut: af b c d e h hl l sp
-// DataOut (flags): C
-// SymbolicIn: sp:<invalid> hl:<invalid> c:<invalid> b:0x00 e:<invalid> a:<invalid> h:<invalid> de:<invalid> bc:<invalid> l:<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bc
-
-l0B46:
-	word16 hl_299 = Mem256[0x168B:word16] + (DPB(Mem256[0x1697:word16], 0x00, 8) + 0x0009)
-	byte c_303
-	byte a_304 = fn03E6(Mem256[hl_299:byte], (byte) hl_299, out c_303)
-	word16 hl_307 = DPB(Mem256[0x1697:word16], 0x00, 8)
-	word16 hl_317 = Mem256[0x168B:word16] + (hl_307 + 0x0009)
-	*hlOut = hl_317
-	Mem322[hl_317:byte] = a_304
-	byte a_323 = Mem322[0x1697:byte]
-	Mem330[0x1697:byte] = a_323 + 0x01
-	byte c_310
-	*cOut = 0x09
-	byte e_315
-	*eOut = (byte) (hl_307 + 0x0009)
-	C_273 = (bool) cond(hl_317) (alias)
-	branch a_323 != 0x01 l0B3D
-// DataOut: af b c d e h hl l sp
-// DataOut (flags): C
-// SymbolicIn: sp:<invalid> hl:0x1697 c:<invalid> b:0x00 e:<invalid> a:0x02 h:0x16 de:<invalid> bc:<invalid> l:0x97 -6(fp):<invalid> -4(fp):<invalid> -2(fp):bc
-
-l0B71:
-	byte b_275
-	*bOut = 0x00
-	byte a_289
-	*aOut = 0x01
-	return C_273
-// DataOut: a af b c d e h hl l sp
-// DataOut (flags): C
-// SymbolicIn: sp:<invalid> hl:<invalid> c:<invalid> b:0x00 e:<invalid> a:<invalid> h:<invalid> de:<invalid> bc:<invalid> l:<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bc
-
-l0A7C:
-	byte a_378
-	*aOut = 0x00
-	return C_377
-// DataOut: a af b c d e h hl l sp
-// DataOut (flags): C
-// SymbolicIn: sp:<invalid> hl:0x1696 c:<invalid> b:<invalid> e:<invalid> a:0x03 h:0x16 de:<invalid> bc:<invalid> -4(fp):<invalid> -2(fp):bc
-
-l0A29:
-	Mem126[sp_31 - 0x0002:word16] = Mem104[0x1692:word16] + DPB(Mem104[0x1697:word16], 0x00, 8)
-	word16 de_140 = Mem126[sp_31 - 0x0002:word16]
-	byte a_144 = Mem126[de_140:byte]
-	word16 hl_137 = Mem126[0x168B:word16] + (DPB(Mem126[0x1697:word16], 0x00, 8) + 0x0001)
-	*hlOut = hl_137
-	Mem146[hl_137:byte] = a_144
-	b_131 = 0x00 (alias)
-	*bOut = b_131
-	byte c_132
-	*cOut = 0x01
-	byte e_142 = (byte) de_140
-	*eOut = e_142
-	word16 sp_143
-	*spOut = sp_31
-	af_145 = DPB(af_145, a_144, 0) (alias)
-	bool C_151 = (bool) cond(a_144 - 0x2A)
-	branch a_144 != 0x2A l0A4D
-// DataOut: af b c d e h hl l sp
-// DataOut (flags): C
-// SymbolicIn: sp:<invalid> hl:<invalid> c:<invalid> b:<invalid> e:<invalid> a:<invalid> h:<invalid> de:<invalid> bc:<invalid> -4(fp):<invalid> -2(fp):bc
-// LocalsOut: Local -0002(16)
-
-l0A4D:
-	fn0B91()
-// DataOut: af b d e l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> hl:<invalid> c:0x01 b:0x00 e:<invalid> a:<invalid> h:<invalid> de:<invalid> bc:0x0001 -4(fp):<invalid> -2(fp):bc
-// LocalsOut: Local -0002(16)
-
-l0A4A:
-	byte a_152
-	*aOut = 0x00
-	return C_151
-// DataOut: a af b c d e h hl l sp
-// DataOut (flags): C
-// SymbolicIn: sp:<invalid> hl:<invalid> c:0x01 b:0x00 e:<invalid> a:<invalid> h:<invalid> de:<invalid> bc:0x0001 -4(fp):<invalid> -2(fp):bc
-
+	hl = Mem0[0x1692:word16]
+	a = 0x1F
+	a = a & Mem0[hl:byte]
+	SZ = cond(a)
+	C = false
+	hl = Mem0[0x168B:word16]
+	Mem0[hl:byte] = a
+	hl = Mem0[0x168B:word16]
+	a = 0x10
+	SZPC = cond(a - Mem0[hl:byte])
+	branch Test(UGE,C) l09F6
+	// succ:  l09F3 l09F6
 l09F3:
-	byte a_572
-	*aOut = 0x00
-	return C_571
-// DataOut: a af b c d e h hl l sp
-// DataOut (flags): C
-// SymbolicIn: sp:<invalid> hl:<invalid> c:<invalid> b:<invalid> e:0x20 a:0x10 bc:<invalid> de:<invalid> -4(fp):af -2(fp):bc
-
-fn0990_exit:
-// DataOut: a b c e h hl l sp
-// DataOut (flags): C
-// SymbolicIn: sp:<invalid> hl:<invalid> c:<invalid> b:<invalid> e:<invalid> a:<invalid> bc:<invalid> h:<invalid> de:<invalid> l:<invalid> -6(fp):<invalid> -4(fp):<invalid> -2(fp):bc
-
-
-
-byte fn0B74(byte b, ptr16 & hOut)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  b
-// LiveOut: a h
-// Trashed: SZPC a bc c de h hl
-// Preserved: sp
-fn0B74_entry:
-// DataOut: af b d e l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-// LocalsOut: fp(16)
-
-l0B74:
-	word16 hl_10 = Mem0[0x1692:word16] + DPB(Mem0[0x1697:word16], 0x00, 8)
-	byte h_11
-	*hOut = SLICE(hl_10, byte, 8)
-	return 0x00 - (Mem0[0x1696:byte] <u 0xFF) & SLICE(DPB(af, 0x00 - (Mem0[hl_10:byte] <u 0x2F), 0), byte, 8)
-// DataOut: a af b d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
-fn0B74_exit:
-// DataOut: a h
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:<invalid> h:<invalid> de:<invalid> a:<invalid> bc:<invalid> c:b -2(fp):af
-
-
-
-void fn0B91()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed: SZP hl
-// Preserved: sp
-fn0B91_entry:
-// DataOut: af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
-l0B91:
-	Mem4[0x1697:byte] = Mem0[0x1697:byte] + 0x01
-	Mem7[0x1696:byte] = Mem4[0x1696:byte] - 0x01
+	a = 0x00
 	return
-// DataOut: af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
+	// succ:  fn0990_exit
+l09F6:
+	hl = Mem0[0x1692:word16]
+	hl = hl + 0x0001
+	SZP = cond(hl)
+	hl = hl + 0x0001
+	SZP = cond(hl)
+	Mem0[0x1692:word16] = hl
+	hl = 0x1696
+	Mem0[hl:byte] = Mem0[hl:byte] - 0x01
+	SZP = cond(Mem0[hl:byte])
+	Mem0[hl:byte] = Mem0[hl:byte] - 0x01
+	SZP = cond(Mem0[hl:byte])
+	goto l0A09
+	// succ:  l0A09
+l0A06:
+	a = 0x00
+	return
+	// succ:  fn0990_exit
+l0A09:
+	goto l0A11
+	// succ:  l0A11
+l0A0C:
+	hl = Mem0[0x168B:word16]
+	Mem0[hl:byte] = 0x00
+	// succ:  l0A11
+l0A11:
+	hl = 0x1697
+	Mem0[hl:byte] = 0x00
+	// succ:  l0A16
+l0A16:
+	a = 0x07
+	hl = 0x1697
+	a = a - Mem0[hl:byte]
+	SZC = cond(a)
+	a = a - a - C
+	SZPC = cond(a)
+	a = ~a
+	sp = sp - 0x0002
+	Mem0[sp:word16] = af
+	call fn0B74 (retsize: 2;)
+	bc = Mem0[sp:word16]
+	sp = sp + 0x0002
+	c = b
+	a = a & c
+	SZ = cond(a)
+	C = false
+	a = __rcr(a, 0x01, C)
+	C = cond(a)
+	branch Test(UGE,C) l0A53
+	// succ:  l0A29 l0A53
+l0A29:
+	hl = Mem0[0x1697:word16]
+	h = 0x00
+	v19 = de
+	de = hl
+	hl = v19
+	hl = Mem0[0x1692:word16]
+	hl = hl + de
+	SZPC = cond(hl)
+	sp = sp - 0x0002
+	Mem0[sp:word16] = hl
+	hl = Mem0[0x1697:word16]
+	h = 0x00
+	bc = 0x0001
+	hl = hl + bc
+	SZPC = cond(hl)
+	v21 = de
+	de = hl
+	hl = v21
+	hl = Mem0[0x168B:word16]
+	hl = hl + de
+	SZPC = cond(hl)
+	de = Mem0[sp:word16]
+	sp = sp + 0x0002
+	a = Mem0[de:byte]
+	Mem0[hl:byte] = a
+	SZPC = cond(a - 0x2A)
+	branch Test(NE,Z) l0A4D
+	// succ:  l0A4A l0A4D
+l0A4A:
+	a = 0x00
+	return
+	// succ:  fn0990_exit
+l0A4D:
+	call fn0B91 (retsize: 2;)
+	goto l0A16
+	// succ:  l0A16
+l0A53:
+	a = 0x01
+	hl = 0x1696
+	a = a - Mem0[hl:byte]
+	SZC = cond(a)
+	a = a - a - C
+	SZPC = cond(a)
+	hl = hl + 0x0001
+	SZP = cond(hl)
+	c = Mem0[hl:byte]
+	b = 0x00
+	hl = Mem0[0x1692:word16]
+	hl = hl + bc
+	SZPC = cond(hl)
+	sp = sp - 0x0002
+	Mem0[sp:word16] = af
+	a = Mem0[hl:byte]
+	a = a - 0x2E
+	SZC = cond(a)
+	a = a - 0x01
+	SZC = cond(a)
+	a = a - a - C
+	SZPC = cond(a)
+	bc = Mem0[sp:word16]
+	sp = sp + 0x0002
+	c = b
+	a = a & c
+	SZ = cond(a)
+	C = false
+	a = __rcr(a, 0x01, C)
+	C = cond(a)
+	branch Test(UGE,C) l0AA3
+	// succ:  l0A70 l0AA3
+l0A70:
+	call fn0B91 (retsize: 2;)
+	a = 0x03
+	hl = 0x1696
+	SZPC = cond(a - Mem0[hl:byte])
+	branch Test(UGE,C) l0A7F
+	// succ:  l0A7C l0A7F
+l0A7C:
+	a = 0x00
+	return
+	// succ:  fn0990_exit
+l0A7F:
+	hl = Mem0[0x1696:word16]
+	sp = sp - 0x0002
+	Mem0[sp:word16] = hl
+	hl = Mem0[0x1697:word16]
+	h = 0x00
+	v24 = de
+	de = hl
+	hl = v24
+	hl = Mem0[0x1692:word16]
+	hl = hl + de
+	SZPC = cond(hl)
+	bc = 0x0009
+	sp = sp - 0x0002
+	Mem0[sp:word16] = hl
+	hl = Mem0[0x168B:word16]
+	hl = hl + bc
+	SZPC = cond(hl)
+	v25 = de
+	de = hl
+	hl = v25
+	bc = Mem0[sp:word16]
+	sp = sp + 0x0002
+	hl = Mem0[sp:word16]
+	sp = sp + 0x0002
+	// succ:  l0A98
+l0A98:
+	a = Mem0[bc:byte]
+	Mem0[de:byte] = a
+	bc = bc + 0x0001
+	SZP = cond(bc)
+	de = de + 0x0001
+	SZP = cond(de)
+	l = l - 0x01
+	SZP = cond(l)
+	branch Test(NE,Z) l0A98
+	// succ:  l0AA0 l0A98
+l0AA0:
+	goto l0AE5
+	// succ:  l0AE5
+l0AA3:
+	a = Mem0[0x1696:byte]
+	a = a - 0x00
+	SZC = cond(a)
+	a = a - 0x01
+	SZC = cond(a)
+	a = a - a - C
+	SZPC = cond(a)
+	hl = Mem0[0x1697:word16]
+	h = 0x00
+	v22 = de
+	de = hl
+	hl = v22
+	hl = Mem0[0x1692:word16]
+	hl = hl + de
+	SZPC = cond(hl)
+	sp = sp - 0x0002
+	Mem0[sp:word16] = af
+	a = Mem0[hl:byte]
+	a = a - 0x2E
+	SZC = cond(a)
+	a = a - 0x01
+	SZC = cond(a)
+	a = a - a - C
+	SZPC = cond(a)
+	bc = Mem0[sp:word16]
+	sp = sp + 0x0002
+	c = b
+	a = a | c
+	SZ = cond(a)
+	C = false
+	a = __rcr(a, 0x01, C)
+	C = cond(a)
+	branch Test(UGE,C) l0AE2
+	// succ:  l0AC3 l0AE2
+l0AC3:
+	hl = Mem0[0x1694:word16]
+	l = Mem0[hl:byte]
+	sp = sp - 0x0002
+	Mem0[sp:word16] = hl
+	hl = Mem0[0x1694:word16]
+	hl = hl + 0x0001
+	SZP = cond(hl)
+	bc = 0x0009
+	sp = sp - 0x0002
+	Mem0[sp:word16] = hl
+	hl = Mem0[0x168B:word16]
+	hl = hl + bc
+	SZPC = cond(hl)
+	v23 = de
+	de = hl
+	hl = v23
+	bc = Mem0[sp:word16]
+	sp = sp + 0x0002
+	hl = Mem0[sp:word16]
+	sp = sp + 0x0002
+	// succ:  l0AD7
+l0AD7:
+	a = Mem0[bc:byte]
+	Mem0[de:byte] = a
+	bc = bc + 0x0001
+	SZP = cond(bc)
+	de = de + 0x0001
+	SZP = cond(de)
+	l = l - 0x01
+	SZP = cond(l)
+	branch Test(NE,Z) l0AD7
+	// succ:  l0ADF l0AD7
+l0ADF:
+	goto l0AE5
+	// succ:  l0AE5
+l0AE2:
+	a = 0x00
+	return
+	// succ:  fn0990_exit
+l0AE5:
+	c = 0x03
+	sp = sp - 0x0002
+	Mem0[sp:word16] = bc
+	bc = 0x000C
+	hl = Mem0[0x168B:word16]
+	hl = hl + bc
+	SZPC = cond(hl)
+	b = h
+	c = l
+	e = 0x00
+	call fn0390 (retsize: 2;)
+	bc = 0x0020
+	hl = Mem0[0x168B:word16]
+	hl = hl + bc
+	SZPC = cond(hl)
+	Mem0[hl:byte] = 0x00
+	hl = 0x1697
+	Mem0[hl:byte] = 0x00
+	// succ:  l0B04
+l0B04:
+	a = 0x07
+	hl = 0x1697
+	SZPC = cond(a - Mem0[hl:byte])
+	branch Test(ULT,C) l0B38
+	// succ:  l0B0D l0B38
+l0B0D:
+	hl = Mem0[0x1697:word16]
+	h = 0x00
+	bc = 0x0001
+	hl = hl + bc
+	SZPC = cond(hl)
+	v26 = de
+	de = hl
+	hl = v26
+	hl = Mem0[0x168B:word16]
+	hl = hl + de
+	SZPC = cond(hl)
+	c = Mem0[hl:byte]
+	call fn03E6 (retsize: 2;)
+	hl = Mem0[0x1697:word16]
+	h = 0x00
+	bc = 0x0001
+	hl = hl + bc
+	SZPC = cond(hl)
+	v27 = de
+	de = hl
+	hl = v27
+	hl = Mem0[0x168B:word16]
+	hl = hl + de
+	SZPC = cond(hl)
+	Mem0[hl:byte] = a
+	a = Mem0[0x1697:byte]
+	a = a + 0x01
+	SZP = cond(a)
+	Mem0[0x1697:byte] = a
+	branch Test(NE,Z) l0B04
+	// succ:  l0B38 l0B04
+l0B38:
+	hl = 0x1697
+	Mem0[hl:byte] = 0x00
+	// succ:  l0B3D
+l0B3D:
+	a = 0x02
+	hl = 0x1697
+	SZPC = cond(a - Mem0[hl:byte])
+	branch Test(ULT,C) l0B71
+	// succ:  l0B46 l0B71
+l0B46:
+	hl = Mem0[0x1697:word16]
+	h = 0x00
+	bc = 0x0009
+	hl = hl + bc
+	SZPC = cond(hl)
+	v28 = de
+	de = hl
+	hl = v28
+	hl = Mem0[0x168B:word16]
+	hl = hl + de
+	SZPC = cond(hl)
+	c = Mem0[hl:byte]
+	call fn03E6 (retsize: 2;)
+	hl = Mem0[0x1697:word16]
+	h = 0x00
+	bc = 0x0009
+	hl = hl + bc
+	SZPC = cond(hl)
+	v29 = de
+	de = hl
+	hl = v29
+	hl = Mem0[0x168B:word16]
+	hl = hl + de
+	SZPC = cond(hl)
+	Mem0[hl:byte] = a
+	a = Mem0[0x1697:byte]
+	a = a + 0x01
+	SZP = cond(a)
+	Mem0[0x1697:byte] = a
+	branch Test(NE,Z) l0B3D
+	// succ:  l0B71 l0B3D
+l0B71:
+	a = 0x01
+	return
+	// succ:  fn0990_exit
+fn0990_exit:
 
+
+// fn0B74
+// Return size: 2
+define fn0B74
+fn0B74_entry:
+	// succ:  l0B74
+l0B74:
+	sp = fp
+	hl = Mem0[0x1697:word16]
+	h = 0x00
+	v5 = de
+	de = hl
+	hl = v5
+	hl = Mem0[0x1692:word16]
+	hl = hl + de
+	SZPC = cond(hl)
+	a = Mem0[hl:byte]
+	a = a - 0x2E
+	SZC = cond(a)
+	a = a + 0xFF
+	SZPC = cond(a)
+	a = a - a - C
+	SZPC = cond(a)
+	sp = sp - 0x0002
+	Mem0[sp:word16] = af
+	a = Mem0[0x1696:byte]
+	a = a - 0x00
+	SZC = cond(a)
+	a = a + 0xFF
+	SZPC = cond(a)
+	a = a - a - C
+	SZPC = cond(a)
+	bc = Mem0[sp:word16]
+	sp = sp + 0x0002
+	c = b
+	a = a & c
+	SZ = cond(a)
+	C = false
+	return
+	// succ:  fn0B74_exit
+fn0B74_exit:
+
+
+// fn0B91
+// Return size: 2
+define fn0B91
+fn0B91_entry:
+	// succ:  l0B91
+l0B91:
+	sp = fp
+	hl = 0x1697
+	Mem0[hl:byte] = Mem0[hl:byte] + 0x01
+	SZP = cond(Mem0[hl:byte])
+	hl = hl - 0x0001
+	SZP = cond(hl)
+	Mem0[hl:byte] = Mem0[hl:byte] - 0x01
+	SZP = cond(Mem0[hl:byte])
+	return
+	// succ:  fn0B91_exit
 fn0B91_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:0x1696
 
 
-
-void fn0BE4(word16 af, byte b, byte d, byte e, byte h, byte l)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  af b d e h l
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
+// fn0BE4
+// Return size: 2
+define fn0BE4
 fn0BE4_entry:
-// DataOut: af b d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-// LocalsOut: fp(16)
-
+	goto l0BE4
+	// succ:  l0BE4
+l0105:
+	call fn1729 (retsize: 2;)
+	return
+	// succ:  fn0BE4_exit
+l020A:
+	call fn172D (retsize: 2;)
+	return
+	// succ:  fn0BE4_exit
+l0224:
+	call fn177D (retsize: 2;)
+	return
+	// succ:  fn0BE4_exit
 l0BE4:
-	word16 af_10 = DPB(af, 0x00 - (Mem0[0x138A:byte] <u 0xFE), 0)
-	byte a_28 = __ror(0x00 - (Mem0[0x14F3:byte] <u 0x03) & SLICE(af_10, byte, 8), 0x01, false)
-	word16 af_190 = DPB(af, a_28, 0)
-	branch a_28 >=u 0x00 l0C1A
-// DataOut: af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-// LocalsOut: Local -0002(16)
-
+	sp = fp
+	a = Mem0[0x138A:byte]
+	a = a - 0x01
+	SZC = cond(a)
+	a = a + 0xFF
+	SZPC = cond(a)
+	a = a - a - C
+	SZPC = cond(a)
+	sp = sp - 0x0002
+	Mem0[sp:word16] = af
+	a = Mem0[0x14F3:byte]
+	a = a - 0x02
+	SZC = cond(a)
+	a = a - 0x01
+	SZC = cond(a)
+	a = a - a - C
+	SZPC = cond(a)
+	bc = Mem0[sp:word16]
+	sp = sp + 0x0002
+	c = b
+	a = a & c
+	SZ = cond(a)
+	C = false
+	a = __rcr(a, 0x01, C)
+	C = cond(a)
+	branch Test(UGE,C) l0C1A
+	// succ:  l0BFC l0C1A
 l0BFC:
-	branch Mem0[0x14F6:byte] == 0x01 l0C07
-// DataOut: af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp a:<invalid> bc:<invalid> c:b -2(fp):af
-// LocalsOut: Local -0002(16)
-
+	a = Mem0[0x14F6:byte]
+	SZPC = cond(a - 0x01)
+	branch Test(EQ,Z) l0C07
+	// succ:  l0C04 l0C07
 l0C04:
-	byte b_204
-	fn0814(e, d, l, h, out b_204, out l, out h)
-// DataOut: af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp a:<invalid> bc:<invalid> c:b -2(fp):af
-// LocalsOut: Local -0002(16)
-
+	call fn0814 (retsize: 2;)
+	// succ:  l0C07
 l0C07:
-	byte l_185
-	byte h_186
-	word16 bc_187 = fn05CE(0x96, 0x02, e, d, l, h, out l_185, out h_186)
-	af_190 = DPB(af, Mem0[0x138A:byte] - 0x01, 0) (alias)
-	byte b_195
-	byte l_196
-	byte h_197
-	fn06CE(DPB(bc_187, 0x00, 8), e, d, l_185, h_186, out b_195, out l_196, out h_197)
-	byte b_199
-	byte l_200
-	byte h_201
-	fn0814(e, d, l_196, h_197, out b_199, out l_200, out h_201)
-// DataOut: af b c d h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid> -2(fp):af
-// LocalsOut: Local -0002(16)
-
+	bc = 0x0296
+	call fn05CE (retsize: 2;)
+	a = Mem0[0x138A:byte]
+	a = a - 0x01
+	SZP = cond(a)
+	c = a
+	b = 0x00
+	call fn06CE (retsize: 2;)
+	call fn0814 (retsize: 2;)
+	// succ:  l0C1A
 l0C1A:
-	word16 hl_36 = Mem0[0x1388:word16]
-	byte a_40 = Mem0[0x138A:byte]
-	Mem44[0x1645:byte] = a_40 + 0x30
-	Mem47[hl_36 - 0x0002:word16] = 0x0231
-	Mem50[hl_36 - 0x0004:word16] = 0x1642
-	fn082F(DPB(af_190, a_40 + 0x30, 0), 0x5C, 0x00, 0x10, d, SLICE(hl_36, byte, 8), (byte) hl_36, af_10, wArg00, wArg02)
-	Mem60[hl_36 - 0x0006:word16] = 0x005C
-	byte h_63
-	byte l_64 = fn1346(0x0103, hl_36, out h_63)
-	byte l_68
-	byte h_69
-	fn1326(0x07, l_64, h_63, out l_68, out h_69)
-	word16 hl_75 = Mem60[0x0108:word16]
-	word16 sp_80 = fn040D((byte) hl_75, SLICE(hl_75, byte, 8), l_64, af_10, wArg00)
-	word16 af_87 = DPB(af_190, 0x00 - (Mem60[0x138A:byte] <u 0x01), 0)
-	Mem89[sp_80 - 0x0002:word16] = af_87
-	branch __ror(0x00 - (0x03 - Mem89[0x138A:byte] <u 0x00) | Mem89[sp_80 + 0x0003:byte], 0x01, false) >=u 0x00 l0C71
-// DataOut: b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:fp a:<invalid> bc:<invalid> c:<invalid> b:<invalid> hl:<invalid> de:<invalid> h:<invalid> l:<invalid> -2(fp):af
-// Terminates process
-
+	hl = Mem0[0x1388:word16]
+	sp = hl
+	a = Mem0[0x138A:byte]
+	a = a + 0x30
+	SZPC = cond(a)
+	Mem0[0x1645:byte] = a
+	bc = 0x0231
+	sp = sp - 0x0002
+	Mem0[sp:word16] = bc
+	bc = 0x1642
+	sp = sp - 0x0002
+	Mem0[sp:word16] = bc
+	e = 0x10
+	bc = 0x005C
+	call fn082F (retsize: 2;)
+	bc = 0x005C
+	sp = sp - 0x0002
+	Mem0[sp:word16] = bc
+	bc = 0x0108
+	de = 0x0103
+	call fn1346 (retsize: 2;)
+	sp = sp + 0xFFFE
+	c = 0x07
+	call fn1326 (retsize: 2;)
+	v16 = de
+	de = hl
+	hl = v16
+	hl = Mem0[0x0108:word16]
+	b = h
+	c = l
+	call fn040D (retsize: 2;)
+	a = Mem0[0x138A:byte]
+	a = a - 0x00
+	SZC = cond(a)
+	a = a - 0x01
+	SZC = cond(a)
+	a = a - a - C
+	SZPC = cond(a)
+	sp = sp - 0x0002
+	Mem0[sp:word16] = af
+	a = 0x03
+	hl = 0x138A
+	a = a - Mem0[hl:byte]
+	SZC = cond(a)
+	a = a - a - C
+	SZPC = cond(a)
+	bc = Mem0[sp:word16]
+	sp = sp + 0x0002
+	c = b
+	a = a | c
+	SZ = cond(a)
+	C = false
+	a = __rcr(a, 0x01, C)
+	C = cond(a)
+	branch Test(UGE,C) l0C71
+	// succ:  l0C68 l0C71
 l0C68:
-	byte b_167
-	byte l_168
-	byte h_169
-	word16 sp_170
-	fn075C(0x01, 0x00, 0x00, 0x00, 0x8A, 0x13, out b_167, out l_168, out h_169, out sp_170)
-// DataOut: b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: bc:<invalid> sp:<invalid> de:<invalid> c:<invalid> hl:0x138A b:<invalid> a:<invalid> l:0x8A h:0x13 -2(fp):af
-
+	de = 0x0000
+	bc = 0x0001
+	call fn075C (retsize: 2;)
+	// succ:  l0C71
 l0C71:
-	branch Mem89[0x138A:byte] != 0x01 l0C7C
-// DataOut: b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: bc:<invalid> sp:<invalid> de:<invalid> c:<invalid> hl:<invalid> b:<invalid> a:<invalid> l:<invalid> h:<invalid> -2(fp):af
-
+	a = Mem0[0x138A:byte]
+	SZPC = cond(a - 0x01)
+	branch Test(NE,Z) l0C7C
+	// succ:  l0C79 l0C7C
+l0C79:
+	goto l020A
+	// succ:  l020A
 l0C7C:
-	byte a_138 = Mem89[0x138A:byte]
-	branch a_138 != 0x02 l0C87
-// DataOut: b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: bc:<invalid> sp:<invalid> de:<invalid> c:<invalid> hl:<invalid> b:<invalid> a:<invalid> l:<invalid> h:<invalid> -2(fp):af
-
+	a = Mem0[0x138A:byte]
+	SZPC = cond(a - 0x02)
+	branch Test(NE,Z) l0C87
+	// succ:  l0C84 l0C87
+l0C84:
+	goto l0224
+	// succ:  l0224
 l0C87:
-	branch Mem89[0x138A:byte] != 0x03 l0C92
-// DataOut: b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: bc:<invalid> sp:<invalid> de:<invalid> c:<invalid> hl:<invalid> b:<invalid> a:<invalid> l:<invalid> h:<invalid> -2(fp):af
-
+	a = Mem0[0x138A:byte]
+	SZPC = cond(a - 0x03)
+	branch Test(NE,Z) l0C92
+	// succ:  l0C8F l0C92
+l0C8F:
+	goto l0105
+	// succ:  l0105
 l0C92:
 	return
-// DataOut: b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: bc:<invalid> sp:<invalid> de:<invalid> c:<invalid> hl:<invalid> b:<invalid> a:<invalid> l:<invalid> h:<invalid> -2(fp):af
-
-l0C8F:
-// DataOut: b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: bc:<invalid> sp:<invalid> de:<invalid> c:<invalid> hl:<invalid> b:<invalid> a:<invalid> l:<invalid> h:<invalid> -2(fp):af
-
-l0C8F_thunk_fn0105:
-	fn0105()
-	return
-// DataOut: b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: bc:<invalid> sp:<invalid> de:<invalid> c:<invalid> hl:<invalid> b:<invalid> a:<invalid> l:<invalid> h:<invalid> -2(fp):af
-
-l0C84:
-// DataOut: b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: bc:<invalid> sp:<invalid> de:<invalid> c:<invalid> hl:<invalid> b:<invalid> a:<invalid> l:<invalid> h:<invalid> -2(fp):af
-
-l0224:
-	word16 sp_141
-	byte a_142
-	byte SZC_143
-	byte SZPC_144
-	bool C_145
-	word16 af_146
-	word16 bc_147
-	byte c_148
-	byte b_149
-	bool Z_150
-	word16 hl_151
-	byte e_152
-	word16 de_153
-	byte h_154
-	byte l_155
-	byte SZP_156
-	byte d_157
-	call fn177D (retsize: 2; depth: 2)
-		uses: a_138,af_87,b_114,bc_116,C_108,c_115,d_109,de_112,e_113,h_111,hl_91,l_110,sp_117,SZC_105,SZP_33,SZPC_139,wLoc02_12,Z_140
-		defs: a_142,af_146,b_149,bc_147,C_145,c_148,d_157,de_153,e_152,h_154,hl_151,l_155,sp_141,SZC_143,SZP_156,SZPC_144,Z_150
-	return
-// DataOut: b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: bc:<invalid> sp:<invalid> de:<invalid> c:<invalid> hl:<invalid> b:<invalid> a:<invalid> l:<invalid> h:<invalid> -2(fp):af
-
-l0C79:
-// DataOut: b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: bc:<invalid> sp:<invalid> de:<invalid> c:<invalid> hl:<invalid> b:<invalid> a:<invalid> l:<invalid> h:<invalid> -2(fp):af
-
-l0C79_thunk_fn020A:
-	fn020A()
-	return
-// DataOut: b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: bc:<invalid> sp:<invalid> de:<invalid> c:<invalid> hl:<invalid> b:<invalid> a:<invalid> l:<invalid> h:<invalid> -2(fp):af
-
+	// succ:  fn0BE4_exit
 fn0BE4_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: bc:<invalid> sp:<invalid> de:<invalid> c:<invalid> hl:<invalid> b:<invalid> a:<invalid> l:<invalid> h:<invalid> -2(fp):af
 
 
-
-void fn0C93(word16 bc)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  bc
-// LiveOut:
-// Trashed: SZPC a b c hl
-// Preserved: sp
+// fn0C93
+// Return size: 2
+define fn0C93
 fn0C93_entry:
-// DataOut: bc de
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  l0C93
 l0C93:
+	sp = fp
+	a = Mem0[0x138D:byte]
+	hl = 0x138C
+	a = a + Mem0[hl:byte]
+	SZPC = cond(a)
+	c = Mem0[hl:byte]
+	b = 0x00
+	hl = 0x138C
+	hl = hl + bc
+	SZPC = cond(hl)
+	a = a + Mem0[hl:byte]
+	SZPC = cond(a)
+	a = a + 0x7F
+	SZPC = cond(a)
 	return
-// DataOut: bc de
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  fn0C93_exit
 fn0C93_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp a:<invalid> hl:bc + 0x138C c:<invalid> b:0x00
 
 
-
-bool fn0D64(ptr16 & aOut)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut: C a
-// Trashed: SZPC a bc hl
-// Preserved: sp
+// fn0D64
+// Return size: 2
+define fn0D64
 fn0D64_entry:
-// DataOut: b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  l0D64
 l0D64:
-	byte a_11 = __ror(Mem0[Mem0[0x1521:word16] + 0x0009:byte], 0x01, false)
-	*aOut = a_11
-	return cond(a_11)
-// DataOut: a b c d e h l
-// DataOut (flags): C
-// SymbolicIn: sp:fp
-
+	sp = fp
+	bc = 0x0009
+	hl = Mem0[0x1521:word16]
+	hl = hl + bc
+	SZPC = cond(hl)
+	a = Mem0[hl:byte]
+	a = a | a
+	SZ = cond(a)
+	C = false
+	a = __rcr(a, 0x01, C)
+	C = cond(a)
+	return
+	// succ:  fn0D64_exit
 fn0D64_exit:
-// DataOut: a
-// DataOut (flags): C
-// SymbolicIn: sp:fp bc:0x0009 hl:<invalid> a:<invalid>
 
 
-
-void fn0D6F()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed: SZPC a bc hl
-// Preserved: sp
+// fn0D6F
+// Return size: 2
+define fn0D6F
 fn0D6F_entry:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  l0D6F
 l0D6F:
-	word16 hl_4 = Mem0[0x1521:word16]
-	Mem11[hl_4 + 0x0009:byte] = Mem0[hl_4 + 0x0009:byte] | 0x02
+	sp = fp
+	bc = 0x0009
+	hl = Mem0[0x1521:word16]
+	hl = hl + bc
+	SZPC = cond(hl)
+	a = 0x02
+	a = a | Mem0[hl:byte]
+	SZ = cond(a)
+	C = false
+	Mem0[hl:byte] = a
 	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  fn0D6F_exit
 fn0D6F_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp bc:0x0009 hl:<invalid> a:<invalid>
 
 
-
-void fn0D84(byte c, byte b, byte e, byte d, byte l, byte h)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  b c d e h l
-// LiveOut:
-// Trashed: SZPC a b bc c de h hl l
-// Preserved: sp
+// fn0D84
+// Return size: 2
+define fn0D84
 fn0D84_entry:
-// DataOut: b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  l0D84
 l0D84:
-	byte a_2
-	bool C_3 = fn0D64(out a_2)
-	branch __ror(a_2, 0x01, C_3) >=u 0x00 l0D94
-// DataOut: b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	sp = fp
+	call fn0D64 (retsize: 2;)
+	a = __rcr(a, 0x01, C)
+	C = cond(a)
+	branch Test(UGE,C) l0D94
+	// succ:  l0D8B l0D94
 l0D8B:
-	byte b_37
-	byte l_38
-	byte h_39
-	word16 sp_40
-	fn075C(0x02, 0x00, 0x00, 0x00, l, h, out b_37, out l_38, out h_39, out sp_40)
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp a:<invalid> bc:0x0009 hl:<invalid>
-
+	de = 0x0000
+	bc = 0x0002
+	call fn075C (retsize: 2;)
+	// succ:  l0D94
 l0D94:
-	word16 hl_23 = Mem0[0x1521:word16]
-	Mem30[hl_23 + 0x0009:byte] = Mem0[hl_23 + 0x0009:byte] | 0x01
+	bc = 0x0009
+	hl = Mem0[0x1521:word16]
+	hl = hl + bc
+	SZPC = cond(hl)
+	a = 0x01
+	a = a | Mem0[hl:byte]
+	SZ = cond(a)
+	C = false
+	Mem0[hl:byte] = a
 	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> de:<invalid> bc:<invalid> hl:<invalid> c:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
+	// succ:  fn0D84_exit
 fn0D84_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp a:<invalid> de:<invalid> bc:0x0009 hl:<invalid> c:0x09 b:0x00 l:<invalid> h:<invalid>
 
 
-
-void fn0DB9()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed: SZPC a bc hl
-// Preserved: sp
+// fn0DB9
+// Return size: 2
+define fn0DB9
 fn0DB9_entry:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  l0DB9
 l0DB9:
-	byte a_6 = Mem0[Mem0[0x1521:word16] + 0x0009:byte]
-	byte a_10 = __ror(a_6 + 0xFC, 0x01, (bool) cond(a_6 + 0xFC))
-	byte a_12 = __ror(a_10, 0x01, cond(a_10))
-	__ror(a_12, 0x01, cond(a_12))
+	sp = fp
+	bc = 0x0009
+	hl = Mem0[0x1521:word16]
+	hl = hl + bc
+	SZPC = cond(hl)
+	a = Mem0[hl:byte]
+	a = a + 0xFC
+	SZPC = cond(a)
+	a = __rcr(a, 0x01, C)
+	C = cond(a)
+	a = __rcr(a, 0x01, C)
+	C = cond(a)
+	a = __rcr(a, 0x01, C)
+	C = cond(a)
 	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  fn0DB9_exit
 fn0DB9_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp bc:0x0009 hl:<invalid> a:<invalid>
 
 
-
-void fn0DCB()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed: SZPC a bc hl
-// Preserved: sp
+// fn0DCB
+// Return size: 2
+define fn0DCB
 fn0DCB_entry:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  l0DCB
 l0DCB:
-	word16 hl_4 = Mem0[0x1521:word16]
-	Mem11[hl_4 + 0x0009:byte] = Mem0[hl_4 + 0x0009:byte] | 0x08
+	sp = fp
+	bc = 0x0009
+	hl = Mem0[0x1521:word16]
+	hl = hl + bc
+	SZPC = cond(hl)
+	a = 0x08
+	a = a | Mem0[hl:byte]
+	SZ = cond(a)
+	C = false
+	Mem0[hl:byte] = a
 	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  fn0DCB_exit
 fn0DCB_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp bc:0x0009 hl:<invalid> a:<invalid>
 
 
-
-void fn0E63(word16 bc, word16 de)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  bc c de
-// LiveOut:
-// Trashed: SZPC a b bc c d de e h hl l
-// Preserved: sp
+// fn0E63
+// Return size: 2
+define fn0E63
 fn0E63_entry:
-// DataOut: bc c de
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  l0E63
 l0E63:
-	Mem4[0x16A6:byte] = c
-	fn0C93(bc)
-	word16 bc_9 = DPB(bc, 0x00, 8)
-	Mem23[0x1521:word16] = DPB(de, Mem4[bc_9 + 0x152C + bc_9 + 0x0001:byte], 8)
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	sp = fp
+	hl = 0x16A6
+	Mem0[hl:byte] = c
+	call fn0C93 (retsize: 2;)
+	c = a
+	b = 0x00
+	hl = 0x152C
+	hl = hl + bc
+	SZPC = cond(hl)
+	hl = hl + bc
+	SZPC = cond(hl)
+	e = Mem0[hl:byte]
+	hl = hl + 0x0001
+	SZP = cond(hl)
+	d = Mem0[hl:byte]
+	v12 = de
+	de = hl
+	hl = v12
+	Mem0[0x1521:word16] = hl
+	// succ:  l0E79
 l0E79:
-	byte l_32
-	byte h_33
-	word16 de_31
-	byte a_34 = fn1353(0x00, 0x1521, out de_31, out l_32, out h_33)
-	branch (a_34 | l_32) == 0x00 l0EA8
-// DataOut: de
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:<invalid> c:<invalid> b:0x00 e:<invalid> d:<invalid> de:<invalid> a:<invalid> l:<invalid> h:<invalid> bc:0x138C
-
-l0EA8:
-	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:<invalid> c:<invalid> b:0x00 e:0x21 d:0x15 de:<invalid> a:<invalid> l:<invalid> h:<invalid> bc:0x138C
-
+	a = 0x00
+	de = 0x1521
+	call fn1353 (retsize: 2;)
+	a = a | l
+	SZ = cond(a)
+	C = false
+	branch Test(EQ,Z) l0EA8
+	// succ:  l0E85 l0EA8
 l0E85:
-	branch Mem23[0x16A6:byte] != Mem23[Mem23[0x1521:word16] + 0x0002:byte] l0E9B
-// DataOut: de
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:<invalid> c:<invalid> b:0x00 e:0x21 d:0x15 de:<invalid> a:<invalid> l:<invalid> h:<invalid> bc:0x138C
-
+	hl = Mem0[0x1521:word16]
+	hl = hl + 0x0001
+	SZP = cond(hl)
+	hl = hl + 0x0001
+	SZP = cond(hl)
+	a = Mem0[0x16A6:byte]
+	SZPC = cond(a - Mem0[hl:byte])
+	branch Test(NE,Z) l0E9B
+	// succ:  l0E91 l0E9B
 l0E91:
-	byte a_64
-	bool C_66 = fn0EAB(out a_64, out de_31)
-	branch __ror(a_64, 0x01, C_66) >=u 0x00 l0E9B
-// DataOut: de
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:<invalid> c:<invalid> b:0x00 e:0x21 d:0x15 de:<invalid> a:<invalid> l:<invalid> h:<invalid> bc:0x138C
-
-l0E9B:
-	Mem63[0x1521:word16] = DPB(de_31, Mem23[Mem23[0x1521:word16] + 0x0001:byte], 8)
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:<invalid> c:<invalid> b:0x00 e:0x21 d:0x15 de:<invalid> a:<invalid> l:<invalid> h:<invalid> bc:0x138C
-
+	call fn0EAB (retsize: 2;)
+	a = __rcr(a, 0x01, C)
+	C = cond(a)
+	branch Test(UGE,C) l0E9B
+	// succ:  l0E98 l0E9B
 l0E98:
+	a = 0x01
 	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:<invalid> c:<invalid> b:0x00 e:0x21 d:0x15 de:<invalid> a:<invalid> l:<invalid> h:<invalid> bc:0x138C
-
+	// succ:  fn0E63_exit
+l0E9B:
+	hl = Mem0[0x1521:word16]
+	e = Mem0[hl:byte]
+	hl = hl + 0x0001
+	SZP = cond(hl)
+	d = Mem0[hl:byte]
+	v18 = de
+	de = hl
+	hl = v18
+	Mem0[0x1521:word16] = hl
+	goto l0E79
+	// succ:  l0E79
+l0EA8:
+	a = 0x00
+	return
+	// succ:  fn0E63_exit
 fn0E63_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:<invalid> c:<invalid> b:0x00 e:0x21 d:0x15 de:<invalid> a:<invalid> l:<invalid> h:<invalid> bc:0x138C
 
 
-
-bool fn0EAB(ptr16 & aOut, ptr16 & deOut)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut: C a de
-// Trashed: SZPC a bc de h hl
-// Preserved: sp
+// fn0EAB
+// Return size: 2
+define fn0EAB
 fn0EAB_entry:
-	*deOut = de
-// DataOut: de
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-// LocalsOut: fp(16)
-
+	// succ:  l0EAB
 l0EAB:
-	Mem3[0x16A7:byte] = 0x00
-// DataOut: de
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-// LocalsOut: fp(16)
-
+	sp = fp
+	hl = 0x16A7
+	Mem0[hl:byte] = 0x00
+	// succ:  l0EB0
 l0EB0:
-	byte a_13 = Mem3[0x138C:byte]
-	bool C_17 = (bool) cond(a_13 - Mem3[0x16A7:byte])
-	branch a_13 <u Mem3[0x16A7:byte] l0EE2
-// DataOut: de
-// DataOut (flags): C
-// SymbolicIn: sp:fp hl:0x16A7 a:<invalid> h:0x16 bc:0x138C de:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16)
-
-l0EE2:
-	byte a_59
-	*aOut = 0x01
-	return C_17
-// DataOut: a de
-// DataOut (flags): C
-// SymbolicIn: sp:fp hl:0x16A7 a:<invalid> h:0x16 bc:0x138C de:<invalid> -2(fp):<invalid>
-
+	a = Mem0[0x138C:byte]
+	hl = 0x16A7
+	SZPC = cond(a - Mem0[hl:byte])
+	branch Test(ULT,C) l0EE2
+	// succ:  l0EBA l0EE2
 l0EBA:
-	word16 hl_40 = Mem3[0x1521:word16] + (DPB(Mem3[0x16A7:word16], 0x00, 8) + 0x000A)
-	word16 hl_45 = DPB(Mem3[0x16A7:word16], 0x00, 8)
-	byte a_50 = Mem3[hl_40:byte]
-	word16 de_48 = hl_40
-	*deOut = de_48
-	bool C_53 = (bool) cond(a_50 - Mem3[hl_45 + 0x138C:byte])
-	branch a_50 == Mem3[hl_45 + 0x138C:byte] l0EDB
-// DataOut: de
-// DataOut (flags): C
-// SymbolicIn: sp:fp hl:0x16A7 a:<invalid> h:0x16 bc:0x138C de:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16)
-
-l0EDB:
-	Mem57[0x16A7:byte] = Mem3[0x16A7:byte] + 0x01
-// DataOut: de
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:<invalid> a:<invalid> h:<invalid> bc:0x138C de:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16)
-
+	hl = Mem0[0x16A7:word16]
+	h = 0x00
+	bc = 0x000A
+	hl = hl + bc
+	SZPC = cond(hl)
+	v9 = de
+	de = hl
+	hl = v9
+	hl = Mem0[0x1521:word16]
+	hl = hl + de
+	SZPC = cond(hl)
+	sp = sp - 0x0002
+	Mem0[sp:word16] = hl
+	hl = Mem0[0x16A7:word16]
+	h = 0x00
+	bc = 0x138C
+	hl = hl + bc
+	SZPC = cond(hl)
+	de = Mem0[sp:word16]
+	sp = sp + 0x0002
+	a = Mem0[de:byte]
+	SZPC = cond(a - Mem0[hl:byte])
+	branch Test(EQ,Z) l0EDB
+	// succ:  l0ED8 l0EDB
 l0ED8:
-	byte a_55
-	*aOut = 0x00
-	return C_53
-// DataOut: a de
-// DataOut (flags): C
-// SymbolicIn: sp:fp hl:<invalid> a:<invalid> h:<invalid> bc:0x138C de:<invalid> -2(fp):<invalid>
-
+	a = 0x00
+	return
+	// succ:  fn0EAB_exit
+l0EDB:
+	hl = 0x16A7
+	Mem0[hl:byte] = Mem0[hl:byte] + 0x01
+	SZP = cond(Mem0[hl:byte])
+	goto l0EB0
+	// succ:  l0EB0
+l0EE2:
+	a = 0x01
+	return
+	// succ:  fn0EAB_exit
 fn0EAB_exit:
-// DataOut: a de
-// DataOut (flags): C
-// SymbolicIn: sp:fp hl:<invalid> a:<invalid> h:<invalid> bc:0x138C de:<invalid> -2(fp):<invalid>
 
 
-
-void fn0FB8()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed: SZPC a bc h hl
-// Preserved: sp
+// fn0FB8
+// Return size: 2
+define fn0FB8
 fn0FB8_entry:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  l0FB8
 l0FB8:
+	sp = fp
+	hl = Mem0[0x138C:word16]
+	h = 0x00
+	bc = 0x000B
+	hl = hl + bc
+	SZPC = cond(hl)
+	a = l
 	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  fn0FB8_exit
 fn0FB8_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:<invalid> h:<invalid> bc:0x000B a:l
 
 
-
-void fn100A(word16 af, byte b, byte e, byte d, byte l, byte h)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  af b d e h l
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
+// fn100A
+// Return size: 2
+define fn100A
 fn100A_entry:
-// DataOut: af b d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-// LocalsOut: fp(16)
-
-l100A:
-	byte b_49 = SLICE(DPB(af, 0x00 - (Mem0[0x16A8:byte] <u 0xFF) & SLICE(DPB(af, 0x00 - (Mem0[0x16A8:byte] <u 0x03) & SLICE(af, byte, 8), 0), byte, 8), 0), byte, 8)
-	word16 bc_52 = DPB(af, b_49, 0)
-	branch __ror(0x00 - (Mem0[0x14FF:byte] <u 0x0E) & b_49, 0x01, false) >=u 0x00 l104D
-// DataOut: af b bc c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp a:<invalid> bc:<invalid> c:<invalid> b:0x00 hl:<invalid> -2(fp):af
-// LocalsOut: fp(16)
-
-l104D:
-	byte a_83 = Mem0[0x14FF:byte]
-	word16 af_84 = DPB(af, a_83, 0)
-	branch a_83 != 0x00 l105E
-// DataOut: af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp a:<invalid> bc:<invalid> c:<invalid> b:<invalid> hl:<invalid> -2(fp):af
-
-l1052_thunk_fn1055:
-	fn1055(af_84, b_49, b_49, e, d, l, h)
-	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp a:<invalid> bc:<invalid> c:<invalid> b:<invalid> hl:<invalid> -2(fp):af
-// Terminates process
-
-l1052_thunk_fn1055:
-	fn1055(af_84, b_49, b_49, e, d, l, h)
-	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp a:<invalid> bc:<invalid> c:<invalid> b:<invalid> hl:<invalid> -2(fp):af
-// Terminates process
-
-fn100A_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp -2(fp):af
-
-l1032:
-	Mem61[0x14FF:byte] = Mem0[0x14FF:byte] + 0x01
-	word16 bc_64 = DPB(bc_52, 0x00, 8)
-	Mem71[bc_64 + 0x14FF:byte] = Mem61[0x16A8:byte]
-	Mem74[0x16A8:byte] = fn045B()
-	l = (byte) (bc_64 + 0x14FF) (alias)
-	h = SLICE(bc_64 + 0x14FF, byte, 8) (alias)
-// DataOut: af b d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp a:<invalid> bc:<invalid> c:<invalid> b:<invalid> hl:<invalid> -2(fp):af
-// LocalsOut: fp(16)
-
+	goto l100A
+	// succ:  l100A
 l1002:
-	af = DPB(af, 0x00 - (Mem74[0x16A8:byte] <u 0x21), 0) (alias)
-// DataOut: af b d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp a:<invalid> bc:<invalid> c:<invalid> b:0x00 hl:<invalid> -2(fp):af
-// LocalsOut: fp(16)
+	a = Mem0[0x16A8:byte]
+	a = a - 0x20
+	SZC = cond(a)
+	a = a + 0xFF
+	SZPC = cond(a)
+	a = a - a - C
+	SZPC = cond(a)
+	// succ:  l100A
+l100A:
+	sp = fp
+	sp = sp - 0x0002
+	Mem0[sp:word16] = af
+	a = Mem0[0x16A8:byte]
+	a = a + 0x5F
+	SZPC = cond(a)
+	a = a - 0x5B
+	SZC = cond(a)
+	a = a + 0xFF
+	SZPC = cond(a)
+	a = a - a - C
+	SZPC = cond(a)
+	bc = Mem0[sp:word16]
+	sp = sp + 0x0002
+	c = b
+	a = a & c
+	SZ = cond(a)
+	C = false
+	sp = sp - 0x0002
+	Mem0[sp:word16] = af
+	a = Mem0[0x16A8:byte]
+	a = a - 0x00
+	SZC = cond(a)
+	a = a + 0xFF
+	SZPC = cond(a)
+	a = a - a - C
+	SZPC = cond(a)
+	bc = Mem0[sp:word16]
+	sp = sp + 0x0002
+	c = b
+	a = a & c
+	SZ = cond(a)
+	C = false
+	sp = sp - 0x0002
+	Mem0[sp:word16] = af
+	a = Mem0[0x14FF:byte]
+	a = a - 0x0E
+	SZC = cond(a)
+	a = a - a - C
+	SZPC = cond(a)
+	bc = Mem0[sp:word16]
+	sp = sp + 0x0002
+	c = b
+	a = a & c
+	SZ = cond(a)
+	C = false
+	a = __rcr(a, 0x01, C)
+	C = cond(a)
+	branch Test(UGE,C) l104D
+	// succ:  l1032 l104D
+l1032:
+	a = Mem0[0x14FF:byte]
+	a = a + 0x01
+	SZP = cond(a)
+	Mem0[0x14FF:byte] = a
+	c = a
+	b = 0x00
+	hl = 0x14FF
+	hl = hl + bc
+	SZPC = cond(hl)
+	a = Mem0[0x16A8:byte]
+	Mem0[hl:byte] = a
+	call fn045B (retsize: 2;)
+	Mem0[0x16A8:byte] = a
+	goto l1002
+	// succ:  l1002
+l104D:
+	a = Mem0[0x14FF:byte]
+	SZPC = cond(a - 0x00)
+	branch Test(NE,Z) l105E
+	// succ:  l1052_thunk_fn1055 l1052_thunk_fn1055
+l1052_thunk_fn1055:
+	call fn1055 (retsize: 0;)
+	return
+	// succ:  fn100A_exit
+l1052_thunk_fn1055:
+	call fn1055 (retsize: 0;)
+	return
+	// succ:  fn100A_exit
+fn100A_exit:
 
 
-
-void fn1055(word16 af, byte c, byte b, byte e, byte d, byte l, byte h)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  af b c d e h l
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
+// fn1055
+// Return size: 0
+define fn1055
 fn1055_entry:
-// DataOut: af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  l1055
 l1055:
-	byte l_9
-	byte h_10
-	byte b_12 = SLICE(fn05CE(0x69, 0x03, e, d, l, h, out l_9, out h_10), byte, 8)
-	word16 sp_13
-	word16 hl_14 = fn0387(out sp_13)
-	byte l_15 = (byte) hl_14
-	byte h_16 = SLICE(hl_14, byte, 8)
-// DataOut: af b d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	sp = fp
+	bc = 0x0369
+	call fn05CE (retsize: 2;)
+	call fn0387 (retsize: 2;)
+	// succ:  l105B_thunk_fn1078
 l105B_thunk_fn1078:
-	fn1078(af, b_12, d, e, l_15, h_16)
+	call fn1078 (retsize: 0;)
 	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> bc:<invalid> hl:<invalid> a:<invalid> c:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-// Terminates process
-
+	// succ:  fn1055_exit
 fn1055_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp
 
 
-
-void fn106E(word16 af, byte b, byte d, byte e, byte l, byte h, word16 wArg00)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  a af b d e h l
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
+// fn106E
+// Return size: 0
+define fn106E
 fn106E_entry:
-// DataOut: a af b d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-// LocalsOut: fp(16)
-
+	// succ:  l106E
 l106E:
-	byte b_10 = SLICE(wArg00, byte, 8)
-	byte a_17 = __ror(0x00 - (a <u 0xFF) & b_10, 0x01, false)
-	word16 af_19 = DPB(af, a_17, 0)
-	branch a_17 >=u 0x00 l1075_thunk_fn1081
-// DataOut: af b d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
-l1075_thunk_fn1081:
-	fn1081(af_19, b_10, d, e, l, h)
-	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp + 0x0002 a:<invalid> bc:<invalid> c:b
-// Terminates process
-
+	sp = fp
+	a = a + 0xFF
+	SZPC = cond(a)
+	a = a - a - C
+	SZPC = cond(a)
+	bc = Mem0[sp:word16]
+	sp = sp + 0x0002
+	c = b
+	a = a & c
+	SZ = cond(a)
+	C = false
+	a = __rcr(a, 0x01, C)
+	C = cond(a)
+	branch Test(UGE,C) l1075_thunk_fn1081
+	// succ:  l1075_thunk_fn1078 l1075_thunk_fn1081
 l1075_thunk_fn1078:
-	fn1078(af_19, b_10, d, e, l, h)
+	call fn1078 (retsize: 0;)
 	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp + 0x0002 a:<invalid> bc:<invalid> c:b
-// Terminates process
-
-fn106E_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
-
-
-void fn1078(word16 af, byte b, byte d, byte e, byte l, byte h)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  af b d e h l
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fn1078_entry:
-// DataOut: af b d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-// LocalsOut: v3(16)
-
-l1078:
-	Mem18[0x16A8:byte] = fn045B()
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:b hl:<invalid>
-// LocalsOut: v3(16)
-
-l105E:
-	Mem28[v3 - 0x0002:word16] = DPB(af, 0x00 - (Mem18[0x16A8:byte] <u 0x03), 0)
-	byte b_37 = Mem28[v3 + 0x0003:byte]
-	byte a_44 = __ror(0x00 - (Mem28[0x16A8:byte] <u 0xFF) & b_37, 0x01, false)
-	af = DPB(af, a_44, 0) (alias)
-	branch a_44 >=u 0x00 l1081
-// DataOut: af b d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:v3 a:<invalid> bc:<invalid> c:b hl:<invalid>
-// LocalsOut: v3(16)
-
+	// succ:  fn106E_exit
 l1075_thunk_fn1081:
-	fn1081(af, b_37, d, e, l, h)
+	call fn1081 (retsize: 0;)
 	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:v3 a:<invalid> bc:<invalid> c:b hl:<invalid>
-// Terminates process
+	// succ:  fn106E_exit
+fn106E_exit:
 
+
+// fn1078
+// Return size: 0
+define fn1078
+fn1078_entry:
+	goto l1078
+	// succ:  l1078
+l105E:
+	a = Mem0[0x16A8:byte]
+	a = a + 0x5F
+	SZPC = cond(a)
+	a = a - 0x5B
+	SZC = cond(a)
+	a = a + 0xFF
+	SZPC = cond(a)
+	a = a - a - C
+	SZPC = cond(a)
+	sp = sp - 0x0002
+	Mem0[sp:word16] = af
+	a = Mem0[0x16A8:byte]
+	a = a - 0x00
+	SZC = cond(a)
+	a = a + 0xFF
+	SZPC = cond(a)
+	a = a - a - C
+	SZPC = cond(a)
+	bc = Mem0[sp:word16]
+	sp = sp + 0x0002
+	c = b
+	a = a & c
+	SZ = cond(a)
+	C = false
+	a = __rcr(a, 0x01, C)
+	C = cond(a)
+	branch Test(UGE,C) l1081
+	goto l1078
+	// succ:  l1078 l1075_thunk_fn1081
+l1075_thunk_fn1081:
+	call fn1081 (retsize: 0;)
+	return
+	// succ:  fn1078_exit
+l1078:
+	sp = v3
+	call fn045B (retsize: 2;)
+	Mem0[0x16A8:byte] = a
+	goto l105E
+	// succ:  l105E
 fn1078_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp
 
 
-
-void fn1081(word16 af, byte b, byte d, byte e, byte l, byte h)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  af b d e h l
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
+// fn1081
+// Return size: 0
+define fn1081
 fn1081_entry:
-// DataOut: af b d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-// LocalsOut: v3(16)
-
+	// succ:  l1081
 l1081:
-	byte a_2 = fn045B()
-	Mem5[0x16A8:byte] = a_2
-	word16 sp_1 = v3
-	word16 af_15 = DPB(af, a_2, 0)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	sp = v3
+	call fn045B (retsize: 2;)
+	Mem0[0x16A8:byte] = a
+	// succ:  l1087
 l1087:
-	word16 sp_24 = sp_1 - 0x0002
-	Mem25[sp_24:word16] = DPB(af_15, 0x00 - (Mem5[0x16A8:byte] <u 0x01), 0)
-	byte b_34 = Mem25[sp_24 + 0x0001:byte]
-	sp_1 = sp_24 + 0x0002
-	branch __ror(0x00 - (Mem25[0x16A8:byte] <u 0xFF) & b_34, 0x01, false) >=u 0x00 l11FD
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> hl:<invalid> bc:<invalid> c:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
+	a = Mem0[0x16A8:byte]
+	a = a + 0x5F
+	SZPC = cond(a)
+	a = a - 0x5D
+	SZC = cond(a)
+	a = a + 0xFF
+	SZPC = cond(a)
+	a = a - a - C
+	SZPC = cond(a)
+	sp = sp - 0x0002
+	Mem0[sp:word16] = af
+	a = Mem0[0x16A8:byte]
+	a = a - 0x00
+	SZC = cond(a)
+	a = a + 0xFF
+	SZPC = cond(a)
+	a = a - a - C
+	SZPC = cond(a)
+	bc = Mem0[sp:word16]
+	sp = sp + 0x0002
+	c = b
+	a = a & c
+	SZ = cond(a)
+	C = false
+	a = __rcr(a, 0x01, C)
+	C = cond(a)
+	branch Test(UGE,C) l11FD
+	// succ:  l10A1 l11FD
+l10A1:
+	a = Mem0[0x16A8:byte]
+	SZPC = cond(a - 0x20)
+	branch Test(NE,Z) l10AC
+	// succ:  l10A9 l10AC
+l10A9:
+	call fn1262 (retsize: 2;)
+	// succ:  l10AC
+l10AC:
+	a = Mem0[0x16A8:byte]
+	SZPC = cond(a - 0x42)
+	branch Test(NE,Z) l10BC
+	// succ:  l10B4 l10BC
+l10B4:
+	hl = 0x14F3
+	Mem0[hl:byte] = 0x00
+	goto l11B5
+	// succ:  l11B5
+l10BC:
+	a = Mem0[0x16A8:byte]
+	SZPC = cond(a - 0x43)
+	branch Test(NE,Z) l10CD
+	// succ:  l10C4 l10CD
+l10C4:
+	call fn12D8 (retsize: 2;)
+	Mem0[0x151D:byte] = a
+	goto l11B5
+	// succ:  l11B5
+l10CD:
+	a = Mem0[0x16A8:byte]
+	SZPC = cond(a - 0x44)
+	branch Test(NE,Z) l10DE
+	// succ:  l10D5 l10DE
+l10D5:
+	call fn1279 (retsize: 2;)
+	Mem0[0x138B:byte] = a
+	goto l11B5
+	// succ:  l11B5
+l10DE:
+	a = Mem0[0x16A8:byte]
+	SZPC = cond(a - 0x46)
+	branch Test(NE,Z) l10EE
+	// succ:  l10E6 l10EE
+l10E6:
+	hl = 0x14F3
+	Mem0[hl:byte] = 0x04
+	goto l11B5
+	// succ:  l11B5
+l10EE:
+	a = Mem0[0x16A8:byte]
+	SZPC = cond(a - 0x49)
+	branch Test(NE,Z) l10FE
+	// succ:  l10F6 l10FE
+l10F6:
+	hl = 0x14FA
+	Mem0[hl:byte] = 0x01
+	goto l11B5
+	// succ:  l11B5
+l10FE:
+	a = Mem0[0x16A8:byte]
+	SZPC = cond(a - 0x4C)
+	branch Test(NE,Z) l110F
+	// succ:  l1106 l110F
+l1106:
+	call fn1279 (retsize: 2;)
+	Mem0[0x14F7:byte] = a
+	goto l11B5
+	// succ:  l11B5
+l110F:
+	a = Mem0[0x16A8:byte]
+	SZPC = cond(a - 0x4E)
+	branch Test(NE,Z) l111F
+	// succ:  l1117 l111F
+l1117:
+	hl = 0x14FB
+	Mem0[hl:byte] = 0x01
+	goto l11B5
+	// succ:  l11B5
+l111F:
+	a = Mem0[0x16A8:byte]
+	SZPC = cond(a - 0x4F)
+	branch Test(NE,Z) l112F
+	// succ:  l1127 l112F
+l1127:
+	hl = 0x14EF
+	Mem0[hl:byte] = 0x00
+	goto l11B5
+	// succ:  l11B5
+l112F:
+	a = Mem0[0x16A8:byte]
+	SZPC = cond(a - 0x50)
+	branch Test(NE,Z) l113F
+	// succ:  l1137 l113F
+l1137:
+	hl = 0x14F3
+	Mem0[hl:byte] = 0x01
+	goto l11B5
+	// succ:  l11B5
+l113F:
+	a = Mem0[0x16A8:byte]
+	SZPC = cond(a - 0x52)
+	branch Test(NE,Z) l1150
+	// succ:  l1147 l1150
+l1147:
+	call fn12D8 (retsize: 2;)
+	Mem0[0x1520:byte] = a
+	goto l11B5
+	// succ:  l11B5
+l1150:
+	a = Mem0[0x16A8:byte]
+	SZPC = cond(a - 0x53)
+	branch Test(NE,Z) l1160
+	// succ:  l1158 l1160
+l1158:
+	hl = 0x14F0
+	Mem0[hl:byte] = 0x01
+	goto l11B5
+	// succ:  l11B5
+l1160:
+	a = Mem0[0x16A8:byte]
+	SZPC = cond(a - 0x54)
+	branch Test(NE,Z) l1170
+	// succ:  l1168 l1170
+l1168:
+	hl = 0x14F5
+	Mem0[hl:byte] = 0x01
+	goto l11B5
+	// succ:  l11B5
+l1170:
+	a = Mem0[0x16A8:byte]
+	SZPC = cond(a - 0x55)
+	branch Test(NE,Z) l1180
+	// succ:  l1178 l1180
+l1178:
+	hl = 0x1529
+	Mem0[hl:byte] = 0x01
+	goto l11B5
+	// succ:  l11B5
+l1180:
+	a = Mem0[0x16A8:byte]
+	SZPC = cond(a - 0x56)
+	branch Test(NE,Z) l1190
+	// succ:  l1188 l1190
+l1188:
+	hl = 0x14FC
+	Mem0[hl:byte] = 0x01
+	goto l11B5
+	// succ:  l11B5
+l1190:
+	a = Mem0[0x16A8:byte]
+	SZPC = cond(a - 0x57)
+	branch Test(NE,Z) l11A1
+	// succ:  l1198 l11A1
+l1198:
+	call fn1279 (retsize: 2;)
+	Mem0[0x14F8:byte] = a
+	goto l11B5
+	// succ:  l11B5
+l11A1:
+	a = Mem0[0x16A8:byte]
+	SZPC = cond(a - 0x58)
+	branch Test(NE,Z) l11B2
+	// succ:  l11A9 l11B2
+l11A9:
+	call fn12D8 (retsize: 2;)
+	Mem0[0x151E:byte] = a
+	goto l11B5
+	// succ:  l11B5
+l11B2:
+	call fn1229 (retsize: 2;)
+	// succ:  l11B5
+l11B5:
+	call fn045B (retsize: 2;)
+	Mem0[0x16A8:byte] = a
+	call fn1262 (retsize: 2;)
+	a = Mem0[0x16A8:byte]
+	SZPC = cond(a - 0x2C)
+	branch Test(NE,Z) l11CF
+	// succ:  l11C6 l11CF
+l11C6:
+	call fn045B (retsize: 2;)
+	Mem0[0x16A8:byte] = a
+	goto l11FA
+	// succ:  l11FA
+l11CF:
+	a = Mem0[0x16A8:byte]
+	a = a + 0x5F
+	SZPC = cond(a)
+	SZPC = cond(a - 0x5D)
+	branch Test(NE,Z) l11FA
+	// succ:  l11D9 l11FA
+l11D9:
+	call fn045B (retsize: 2;)
+	Mem0[0x16A8:byte] = a
+	call fn1262 (retsize: 2;)
+	a = Mem0[0x16A8:byte]
+	a = a + 0x5F
+	SZPC = cond(a)
+	SZPC = cond(a - 0x5B)
+	branch Test(EQ,Z) l11F4
+	// succ:  l11EC l11F4
+l11EC:
+	hl = 0x16A8
+	Mem0[hl:byte] = 0x5D
+	goto l11FA
+	// succ:  l11FA
+l11F4:
+	call fn045B (retsize: 2;)
+	Mem0[0x16A8:byte] = a
+	// succ:  l11FA
+l11FA:
+	goto l1087
+	// succ:  l1087
 l11FD:
-	branch Mem25[0x14F3:byte] != 0x01 l120F
-// DataOut: af d e h l sp
-// DataOut (flags): C
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
+	a = Mem0[0x14F3:byte]
+	SZPC = cond(a - 0x01)
+	branch Test(NE,Z) l120F
+	// succ:  l1205 l120F
 l1205:
-	byte a_292
-	word16 bc_293
-	byte l_294
-	byte h_295
-	fn056B(0x0C, e, d, l, h, out a_292, out bc_293, out l_294, out h_295)
-	Mem302[0x14F9:byte] = 0x01
-// DataOut: af d e h l sp
-// DataOut (flags): C
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
+	c = 0x0C
+	call fn056B (retsize: 2;)
+	hl = 0x14F9
+	Mem0[hl:byte] = 0x01
+	// succ:  l120F
 l120F:
-	Mem250[0x14F4:byte] = Mem25[0x14F3:byte]
-	byte a_251 = Mem250[0x14F7:byte]
-	Mem255[0x14FD:byte] = a_251 + 0x01
-	Mem259[0x138A:byte] = 0x01
-	byte b_260
-	byte l_261
-	byte h_262
-	fn07B3(e, d, 0x8A, 0x13, out b_260, out l_261, out h_262)
-	fn0BE4(DPB(af_15, a_251 + 0x01, 0), b_260, d, e, h_262, l_261)
+	a = Mem0[0x14F3:byte]
+	Mem0[0x14F4:byte] = a
+	a = Mem0[0x14F7:byte]
+	a = a + 0x01
+	SZP = cond(a)
+	Mem0[0x14FD:byte] = a
+	hl = 0x138A
+	Mem0[hl:byte] = 0x01
+	call fn07B3 (retsize: 2;)
+	call fn0BE4 (retsize: 2;)
 	__ei()
 	__hlt()
-	Mem268[0x14F3:byte] = 0x02
-	byte l_272
-	byte h_273
-	fn05CE(0xD1, 0x02, e, d, 0xF3, 0x14, out l_272, out h_273)
-	branch Mem268[0x16A8:byte] == 0x00 l125E
-// DataOut: d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-// Terminates process
-
+	hl = 0x14F3
+	Mem0[hl:byte] = 0x02
+	bc = 0x02D1
+	call fn05CE (retsize: 2;)
+	a = Mem0[0x16A8:byte]
+	SZPC = cond(a - 0x00)
+	branch Test(EQ,Z) l125E
+	// succ:  l1239_thunk_fn123C l1239_thunk_fn123C
 l1239_thunk_fn123C:
-	byte l_286
-	byte h_287
-	word16 sp_288
-	fn123C(e, d, l_272, h_273, out l_286, out h_287, out sp_288)
+	call fn123C (retsize: 0;)
 	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:sp + 0x0002 hl:<invalid> bc:<invalid> a:<invalid> c:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
+	// succ:  fn1081_exit
 l1239_thunk_fn123C:
-	byte l_282
-	byte h_283
-	word16 sp_284
-	fn123C(e, d, l_272, h_273, out l_282, out h_283, out sp_284)
+	call fn123C (retsize: 0;)
 	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:sp + 0x0002 hl:<invalid> bc:<invalid> a:<invalid> c:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
+	// succ:  fn1081_exit
 fn1081_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> hl:<invalid> bc:<invalid> a:<invalid> c:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l10A1:
-	branch Mem25[0x16A8:byte] != 0x20 l10AC
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l10A9:
-	fn1262()
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l10AC:
-	byte a_48 = Mem25[0x16A8:byte]
-	word16 af_109 = DPB(af_15, a_48, 0)
-	branch a_48 != 0x42 l10BC
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l10BC:
-	byte a_98 = Mem25[0x16A8:byte]
-	word16 af_99 = DPB(af_15, a_98, 0)
-	branch a_98 != 0x43 l10CD
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l10CD:
-	byte a_111 = Mem25[0x16A8:byte]
-	word16 af_112 = DPB(af_15, a_111, 0)
-	branch a_111 != 0x44 l10DE
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l10DE:
-	byte a_121 = Mem25[0x16A8:byte]
-	af_109 = DPB(af_15, a_121, 0) (alias)
-	branch a_121 != 0x46 l10EE
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l10EE:
-	byte a_129 = Mem25[0x16A8:byte]
-	af_109 = DPB(af_15, a_129, 0) (alias)
-	branch a_129 != 0x49 l10FE
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l10FE:
-	byte a_137 = Mem25[0x16A8:byte]
-	word16 af_138 = DPB(af_15, a_137, 0)
-	branch a_137 != 0x4C l110F
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l110F:
-	byte a_147 = Mem25[0x16A8:byte]
-	af_109 = DPB(af_15, a_147, 0) (alias)
-	branch a_147 != 0x4E l111F
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l111F:
-	byte a_155 = Mem25[0x16A8:byte]
-	af_109 = DPB(af_15, a_155, 0) (alias)
-	branch a_155 != 0x4F l112F
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l112F:
-	byte a_163 = Mem25[0x16A8:byte]
-	af_109 = DPB(af_15, a_163, 0) (alias)
-	branch a_163 != 0x50 l113F
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l113F:
-	byte a_171 = Mem25[0x16A8:byte]
-	word16 af_172 = DPB(af_15, a_171, 0)
-	branch a_171 != 0x52 l1150
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l1150:
-	byte a_182 = Mem25[0x16A8:byte]
-	af_109 = DPB(af_15, a_182, 0) (alias)
-	branch a_182 != 0x53 l1160
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l1160:
-	byte a_190 = Mem25[0x16A8:byte]
-	af_109 = DPB(af_15, a_190, 0) (alias)
-	branch a_190 != 0x54 l1170
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l1170:
-	byte a_198 = Mem25[0x16A8:byte]
-	af_109 = DPB(af_15, a_198, 0) (alias)
-	branch a_198 != 0x55 l1180
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l1180:
-	byte a_206 = Mem25[0x16A8:byte]
-	af_109 = DPB(af_15, a_206, 0) (alias)
-	branch a_206 != 0x56 l1190
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l1190:
-	byte a_214 = Mem25[0x16A8:byte]
-	word16 af_215 = DPB(af_15, a_214, 0)
-	branch a_214 != 0x57 l11A1
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l11A1:
-	byte a_224 = Mem25[0x16A8:byte]
-	af_109 = DPB(af_15, a_224, 0) (alias)
-	branch a_224 != 0x58 l11B2
-// DataOut: af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l11B2:
-	fn1229(b_34, b_34, e, d, l, h, out l, out h, out sp_1)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l11A9:
-	byte b_228
-	byte a_232 = fn12D8(af_109, b_34, b_34, e, d, l, h, out b_228, out l, out h, out sp_1)
-	Mem234[0x151E:byte] = a_232
-	af_109 = DPB(af_15, a_232, 0) (alias)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l1198:
-	byte b_218
-	byte a_221 = fn1279(af_215, b_34, b_34, e, d, l, h, out b_218, out l, out h)
-	Mem223[0x14F8:byte] = a_221
-	af_109 = DPB(af_15, a_221, 0) (alias)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l1188:
-	Mem213[0x14FC:byte] = 0x01
-	l = 0xFC (alias)
-	h = 0x14 (alias)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l1178:
-	Mem205[0x1529:byte] = 0x01
-	l = 0x29 (alias)
-	h = 0x15 (alias)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l1168:
-	Mem197[0x14F5:byte] = 0x01
-	l = 0xF5 (alias)
-	h = 0x14 (alias)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l1158:
-	Mem189[0x14F0:byte] = 0x01
-	l = 0xF0 (alias)
-	h = 0x14 (alias)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l1147:
-	byte b_175
-	byte a_179 = fn12D8(af_172, b_34, b_34, e, d, l, h, out b_175, out l, out h, out sp_1)
-	Mem181[0x1520:byte] = a_179
-	af_109 = DPB(af_15, a_179, 0) (alias)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l1137:
-	Mem170[0x14F3:byte] = 0x01
-	l = 0xF3 (alias)
-	h = 0x14 (alias)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l1127:
-	Mem162[0x14EF:byte] = 0x00
-	l = 0xEF (alias)
-	h = 0x14 (alias)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l1117:
-	Mem154[0x14FB:byte] = 0x01
-	l = 0xFB (alias)
-	h = 0x14 (alias)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l1106:
-	byte b_141
-	byte a_144 = fn1279(af_138, b_34, b_34, e, d, l, h, out b_141, out l, out h)
-	Mem146[0x14F7:byte] = a_144
-	af_109 = DPB(af_15, a_144, 0) (alias)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l10F6:
-	Mem136[0x14FA:byte] = 0x01
-	l = 0xFA (alias)
-	h = 0x14 (alias)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l10E6:
-	Mem128[0x14F3:byte] = 0x04
-	l = 0xF3 (alias)
-	h = 0x14 (alias)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l10D5:
-	byte b_115
-	byte a_118 = fn1279(af_112, b_34, b_34, e, d, l, h, out b_115, out l, out h)
-	Mem120[0x138B:byte] = a_118
-	af_109 = DPB(af_15, a_118, 0) (alias)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l10C4:
-	byte b_104
-	byte a_108 = fn12D8(af_99, b_34, b_34, e, d, l, h, out b_104, out l, out h, out sp_1)
-	Mem110[0x151D:byte] = a_108
-	af_109 = DPB(af_15, a_108, 0) (alias)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l10B4:
-	Mem97[0x14F3:byte] = 0x00
-	l = 0xF3 (alias)
-	h = 0x14 (alias)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l11B5:
-	Mem60[0x16A8:byte] = fn045B()
-	fn1262()
-	branch Mem60[0x16A8:byte] != 0x2C l11CF
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l11CF:
-	byte a_75 = Mem60[0x16A8:byte]
-	af_15 = DPB(af_109, a_75 + 0x5F, 0) (alias)
-	branch a_75 != 0x02 l11FA
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l11D9:
-	Mem81[0x16A8:byte] = fn045B()
-	fn1262()
-	byte a_82 = Mem81[0x16A8:byte]
-	af_15 = DPB(af_109, a_82 + 0x5F, 0) (alias)
-	branch a_82 == 0x04 l11F4
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l11F4:
-	byte a_91 = fn045B()
-	Mem93[0x16A8:byte] = a_91
-	af_15 = DPB(af_109, a_91, 0) (alias)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l11EC:
-	Mem90[0x16A8:byte] = 0x5D
-	l = 0xA8 (alias)
-	h = 0x16 (alias)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l11C6:
-	byte a_72 = fn045B()
-	Mem74[0x16A8:byte] = a_72
-	af_15 = DPB(af_109, a_72, 0) (alias)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l11FA:
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> bc:<invalid> c:<invalid> hl:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
 
 
-
-byte fn1229(byte c, byte b, byte e, byte d, byte l, byte h, ptr16 & lOut, ptr16 & hOut, ptr16 & spOut)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  b c d e h l
-// LiveOut: b h l sp
-// Trashed: SZPC a b bc c de h hl l sp
-// Preserved:
+// fn1229
+// Return size: 0
+define fn1229
 fn1229_entry:
-// DataOut: af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  l1229
 l1229:
-	Mem5[0x14F3:byte] = 0x02
-	byte l_11
-	byte h_12
-	byte b_14 = SLICE(fn05CE(0xD1, 0x02, e, d, 0xF3, 0x14, out l_11, out h_12), byte, 8)
-	branch Mem5[0x16A8:byte] == 0x00 l125E_in_fn1229
-// DataOut: af b d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
-l125E_in_fn1229:
-	word16 sp_32
-	word16 hl_33 = fn0387(out sp_32)
-	byte l_34
-	*lOut = (byte) hl_33
-	byte h_35
-	*hOut = SLICE(hl_33, byte, 8)
-	return b_14
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:<invalid> bc:<invalid> a:<invalid> c:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
+	sp = fp
+	hl = 0x14F3
+	Mem0[hl:byte] = 0x02
+	bc = 0x02D1
+	call fn05CE (retsize: 2;)
+	a = Mem0[0x16A8:byte]
+	SZPC = cond(a - 0x00)
+	branch Test(EQ,Z) l125E_in_fn1229
+	// succ:  l1239_thunk_fn123C l125E_in_fn1229
 l1239_thunk_fn123C:
-	byte l_27
-	byte h_28
-	word16 sp_29
-	return fn123C(e, d, l_11, h_12, out l_27, out h_28, out sp_29)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:fp hl:<invalid> bc:<invalid> a:<invalid> c:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
+	call fn123C (retsize: 0;)
+	return
+	// succ:  fn1229_exit
+l125E_in_fn1229:
+	call fn0387 (retsize: 2;)
+	return
+	// succ:  fn1229_exit
 fn1229_exit:
-// DataOut: b h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> hl:<invalid> bc:<invalid> a:<invalid> c:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
 
 
-
-byte fn123C(byte e, byte d, byte l, byte h, ptr16 & lOut, ptr16 & hOut, ptr16 & spOut)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  d e h l
-// LiveOut: b h l sp
-// Trashed: SZPC a b bc c de h hl l sp
-// Preserved:
+// fn123C
+// Return size: 0
+define fn123C
 fn123C_entry:
-// DataOut: af d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  l123C
 l123C:
-	byte a_9
-	word16 bc_10
-	byte l_11
-	byte h_12
-	fn056B(0x3E, e, d, l, h, out a_9, out bc_10, out l_11, out h_12)
-	byte a_16
-	word16 bc_17
-	byte l_18
-	byte h_19
-	fn056B(0x20, e, d, l_11, h_12, out a_16, out bc_17, out l_18, out h_19)
-// DataOut: af b d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	sp = v3
+	c = 0x3E
+	call fn056B (retsize: 2;)
+	c = 0x20
+	call fn056B (retsize: 2;)
+	// succ:  l1246
 l1246:
-	branch Mem0[0x16A8:byte] == 0x00 l125E
-// DataOut: af b d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:v3 c:<invalid> a:<invalid> hl:<invalid> de:<invalid> bc:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-l125E:
-	word16 sp_44
-	word16 hl_45 = fn0387(out sp_44)
-	byte l_46
-	*lOut = (byte) hl_45
-	byte h_47
-	*hOut = SLICE(hl_45, byte, 8)
-	return b
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:v3 c:<invalid> a:<invalid> hl:<invalid> de:<invalid> bc:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
-fn123C_exit:
-// DataOut: b h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> c:<invalid> a:<invalid> hl:<invalid> de:<invalid> bc:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
+	a = Mem0[0x16A8:byte]
+	SZPC = cond(a - 0x00)
+	branch Test(EQ,Z) l125E
+	// succ:  l124E l125E
 l124E:
-	word16 hl_32 = Mem0[0x16A8:word16]
-	byte l_33 = (byte) hl_32
-	byte a_37
-	word16 bc_38
-	byte l_39
-	byte h_40
-	fn056B(l_33, e, d, l_33, SLICE(hl_32, byte, 8), out a_37, out bc_38, out l_39, out h_40)
-	Mem43[0x16A8:byte] = fn045B()
-// DataOut: af b d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:v3 c:<invalid> a:<invalid> hl:<invalid> de:<invalid> bc:<invalid> b:<invalid> l:<invalid> h:<invalid>
+	hl = Mem0[0x16A8:word16]
+	c = l
+	call fn056B (retsize: 2;)
+	call fn045B (retsize: 2;)
+	Mem0[0x16A8:byte] = a
+	goto l1246
+	// succ:  l1246
+l125E:
+	call fn0387 (retsize: 2;)
+	return
+	// succ:  fn123C_exit
+fn123C_exit:
 
 
-
-void fn1262()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed: SZPC a hl
-// Preserved: sp
+// fn1262
+// Return size: 2
+define fn1262
 fn1262_entry:
-// DataOut: af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  l1262
 l1262:
-	branch Mem0[0x16A8:byte] != 0x20 l1278
-// DataOut: af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	sp = fp
+	a = Mem0[0x16A8:byte]
+	SZPC = cond(a - 0x20)
+	branch Test(NE,Z) l1278
+	// succ:  l126A l1278
 l126A:
-	byte a_9 = fn045B()
-	Mem10[0x16A8:byte] = a_9
-	branch a_9 != 0x20 l1278
-// DataOut: af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp a:<invalid> hl:<invalid>
-
+	call fn045B (retsize: 2;)
+	Mem0[0x16A8:byte] = a
+	SZPC = cond(a - 0x20)
+	branch Test(NE,Z) l1278
+	// succ:  l1275 l1278
+l1275:
+	goto l126A
+	// succ:  l126A
 l1278:
 	return
-// DataOut: af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp a:<invalid> hl:<invalid>
-
+	// succ:  fn1262_exit
 fn1262_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp a:<invalid> hl:<invalid>
-
-l1275:
-// DataOut: af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp a:<invalid> hl:<invalid>
 
 
-
-byte fn1279(word16 af, byte b, byte c, byte e, byte d, byte l, byte h, ptr16 & bOut, ptr16 & lOut, ptr16 & hOut)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  af b c d e h l
-// LiveOut: a b h l
-// Trashed: SZPC a b bc c de h hl l
-// Preserved: sp
+// fn1279
+// Return size: 2
+define fn1279
 fn1279_entry:
-	*bOut = b
-// DataOut: af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-// LocalsOut: fp(16)
-
+	// succ:  l1279
 l1279:
-	Mem3[0x16A8:byte] = fn045B()
-	fn1262()
-	byte a_4 = Mem3[0x16A8:byte]
-	word16 sp_1 = fp
-	word16 af_21 = DPB(af, a_4, 0)
-	branch a_4 == 0x28 l128D
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	sp = fp
+	call fn045B (retsize: 2;)
+	Mem0[0x16A8:byte] = a
+	call fn1262 (retsize: 2;)
+	a = Mem0[0x16A8:byte]
+	SZPC = cond(a - 0x28)
+	branch Test(EQ,Z) l128D
+	// succ:  l128A l128D
 l128A:
-	byte l_87
-	byte h_88
-	*bOut = fn1229(c, b, e, d, l, h, out l_87, out h_88, out sp_1)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:fp a:<invalid> hl:<invalid>
-
+	call fn1229 (retsize: 2;)
+	// succ:  l128D
 l128D:
-	Mem17[0x16AA:byte] = 0x00
-	byte l_15
-	*lOut = 0xAA
-	byte h_16
-	*hOut = 0x16
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> hl:<invalid> bc:<invalid> c:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
+	hl = 0x16AA
+	Mem0[hl:byte] = 0x00
+	// succ:  l1292
 l1292:
-	byte a_22 = fn045B()
-	Mem23[0x16A9:byte] = a_22
-	branch 0x09 <u a_22 - 0x30 l12BE
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> hl:<invalid> c:<invalid> bc:<invalid> de:<invalid> b:<invalid> l:0xAA h:0x16 -2(fp):af
-
-l12BE:
-	branch Mem23[0x16A9:byte] != 0x20 l12C9
-// DataOut: af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:0x09 hl:<invalid> c:<invalid> bc:<invalid> de:<invalid> b:<invalid> l:0xAA h:0x16 -2(fp):af
-
-l12C6:
-	fn1262()
-// DataOut: af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> hl:<invalid> c:<invalid> bc:<invalid> de:<invalid> b:<invalid> l:0xAA h:0x16 -2(fp):af
-
-l12C9:
-	branch Mem23[0x16A9:byte] == 0x29 l12D4
-// DataOut: af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> hl:<invalid> c:<invalid> bc:<invalid> de:<invalid> b:<invalid> l:0xAA h:0x16 -2(fp):af
-
-l12D1:
-	byte l_79
-	byte h_80
-	word16 sp_81
-	byte b_82
-	*bOut = fn1229(a_22 - 0x30, b, e, d, 0xAA, 0x16, out l_79, out h_80, out sp_81)
-// DataOut: af b d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> hl:<invalid> c:<invalid> bc:<invalid> de:<invalid> b:<invalid> l:0xAA h:0x16 -2(fp):af
-
-l12D4:
-	return Mem23[0x16AA:byte]
-// DataOut: a af b d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> hl:<invalid> c:<invalid> bc:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid> -2(fp):af
-
-fn1279_exit:
-// DataOut: a b h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp a:<invalid> hl:<invalid> c:<invalid> bc:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid> -2(fp):af
-
+	call fn045B (retsize: 2;)
+	Mem0[0x16A9:byte] = a
+	a = a - 0x30
+	SZC = cond(a)
+	c = a
+	a = 0x09
+	SZPC = cond(a - c)
+	branch Test(ULT,C) l12BE
+	// succ:  l12A1 l12BE
 l12A1:
-	word16 sp_36 = sp_1 - 0x0002
-	Mem37[sp_36:word16] = DPB(af_21, Mem23[0x16AA:byte] * 0x08, 0)
-	Mem47[sp_36:word16] = DPB(af_21, Mem37[0x16AA:byte] * 0x02 + Mem37[sp_36 + 0x0001:byte], 0)
-	b = Mem47[sp_36 + 0x0001:byte] (alias)
-	*bOut = b
-	byte a_55 = Mem47[0x16A9:byte] + 0x0F + b
-	Mem58[0x16AA:byte] = a_55
-	af_21 = DPB(af_21, a_55, 0) (alias)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:0x09 hl:<invalid> c:<invalid> bc:<invalid> de:<invalid> b:<invalid> l:0xAA h:0x16 -2(fp):af
+	a = Mem0[0x16AA:byte]
+	a = a + a
+	SZPC = cond(a)
+	a = a + a
+	SZPC = cond(a)
+	a = a + a
+	SZPC = cond(a)
+	sp = sp - 0x0002
+	Mem0[sp:word16] = af
+	a = Mem0[0x16AA:byte]
+	a = a + a
+	SZPC = cond(a)
+	bc = Mem0[sp:word16]
+	sp = sp + 0x0002
+	c = b
+	a = a + c
+	SZPC = cond(a)
+	sp = sp - 0x0002
+	Mem0[sp:word16] = af
+	a = Mem0[0x16A9:byte]
+	a = a + 0x0F
+	SZPC = cond(a)
+	bc = Mem0[sp:word16]
+	sp = sp + 0x0002
+	c = b
+	a = a + c
+	SZPC = cond(a)
+	Mem0[0x16AA:byte] = a
+	goto l1292
+	// succ:  l1292
+l12BE:
+	a = Mem0[0x16A9:byte]
+	SZPC = cond(a - 0x20)
+	branch Test(NE,Z) l12C9
+	// succ:  l12C6 l12C9
+l12C6:
+	call fn1262 (retsize: 2;)
+	// succ:  l12C9
+l12C9:
+	a = Mem0[0x16A9:byte]
+	SZPC = cond(a - 0x29)
+	branch Test(EQ,Z) l12D4
+	// succ:  l12D1 l12D4
+l12D1:
+	call fn1229 (retsize: 2;)
+	// succ:  l12D4
+l12D4:
+	a = Mem0[0x16AA:byte]
+	return
+	// succ:  fn1279_exit
+fn1279_exit:
 
 
-
-byte fn12D8(word16 af, byte b, byte c, byte e, byte d, byte l, byte h, ptr16 & bOut, ptr16 & lOut, ptr16 & hOut, ptr16 & spOut)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  af b c d e h l
-// LiveOut: a b h l sp
-// Trashed: SZPC a b bc c de h hl l sp
-// Preserved:
+// fn12D8
+// Return size: 2
+define fn12D8
 fn12D8_entry:
-// DataOut: af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-// LocalsOut: fp(16)
-
+	// succ:  l12D8
 l12D8:
-	Mem3[0x16A8:byte] = fn045B()
-	fn1262()
-	byte a_4 = Mem3[0x16A8:byte]
-	word16 sp_1 = fp
-	word16 af_10 = DPB(af, a_4, 0)
-	branch a_4 != 0x28 l12F4
-// DataOut: af b c d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
-l12F4:
-	byte l_73
-	byte h_74
-	fn1229(c, b, e, d, l, h, out l_73, out h_74, out sp_1)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:fp a:<invalid> hl:<invalid>
-
+	sp = fp
+	call fn045B (retsize: 2;)
+	Mem0[0x16A8:byte] = a
+	call fn1262 (retsize: 2;)
+	a = Mem0[0x16A8:byte]
+	SZPC = cond(a - 0x28)
+	branch Test(NE,Z) l12F4
+	// succ:  l12E9 l12F4
 l12E9:
-	byte a_64 = fn045B()
-	Mem68[0x16AB:byte] = a_64 + 0x1F
-	af_10 = DPB(af, a_64 + 0x1F, 0) (alias)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:fp a:<invalid> hl:<invalid>
-
+	call fn045B (retsize: 2;)
+	a = a + 0x1F
+	SZPC = cond(a)
+	Mem0[0x16AB:byte] = a
+	goto l12F7
+	// succ:  l12F7
+l12F4:
+	call fn1229 (retsize: 2;)
+	// succ:  l12F7
 l12F7:
-	word16 sp_18 = sp_1 - 0x0002
-	Mem19[sp_18:word16] = DPB(af_10, 0x00 - (fn045B() <u 0x2A), 0)
-	byte b_30 = Mem19[sp_18 + 0x0001:byte]
-	branch __ror(0x00 - (0x10 - Mem19[0x16AB:byte] <u 0x00) | b_30, 0x01, false) >=u 0x00 l1311
-// DataOut: af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> hl:<invalid> bc:<invalid> c:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
+	call fn045B (retsize: 2;)
+	a = a - 0x29
+	SZC = cond(a)
+	a = a + 0xFF
+	SZPC = cond(a)
+	a = a - a - C
+	SZPC = cond(a)
+	sp = sp - 0x0002
+	Mem0[sp:word16] = af
+	a = 0x10
+	hl = 0x16AB
+	a = a - Mem0[hl:byte]
+	SZC = cond(a)
+	a = a - a - C
+	SZPC = cond(a)
+	bc = Mem0[sp:word16]
+	sp = sp + 0x0002
+	c = b
+	a = a | c
+	SZ = cond(a)
+	C = false
+	a = __rcr(a, 0x01, C)
+	C = cond(a)
+	branch Test(UGE,C) l1311
+	// succ:  l130B_thunk_fn130E l130B_thunk_fn130E
 l130B_thunk_fn130E:
-	byte b_58
-	byte l_59
-	byte h_60
-	word16 sp_61
-	return fn130E(b_30, b_30, e, d, 0xAB, 0x16, out b_58, out l_59, out h_60, out sp_61)
-// DataOut: a af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> hl:0x16AB bc:<invalid> c:<invalid> de:<invalid> b:<invalid> l:0xAB h:0x16 -2(fp):af
-
+	call fn130E (retsize: 0;)
+	return
+	// succ:  fn12D8_exit
 l130B_thunk_fn130E:
-	byte b_52
-	byte l_53
-	byte h_54
-	word16 sp_55
-	return fn130E(b_30, b_30, e, d, 0xAB, 0x16, out b_52, out l_53, out h_54, out sp_55)
-// DataOut: a af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> hl:0x16AB bc:<invalid> c:<invalid> de:<invalid> b:<invalid> l:0xAB h:0x16 -2(fp):af
-
+	call fn130E (retsize: 0;)
+	return
+	// succ:  fn12D8_exit
 fn12D8_exit:
-// DataOut: a b h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> hl:<invalid> bc:<invalid> c:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid> -2(fp):af
 
 
-
-void fn130B(byte c, byte b, byte e, byte d, byte l, byte h)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  C b c d e h l
-// LiveOut:
-// Trashed: SZPC a b bc c de h hl l sp
-// Preserved: sp
+// fn130B
+// Return size: 0
+define fn130B
 fn130B_entry:
-// DataOut: b c d e h l
-// DataOut (flags): C
-// SymbolicIn: sp:fp
-
+	// succ:  l130B
 l130B:
-	branch C l1311_in_fn130B
-// DataOut: b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
-l1311_in_fn130B:
-	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	sp = fp
+	branch Test(UGE,C) l1311_in_fn130B
+	// succ:  l130B_thunk_fn130E l1311_in_fn130B
 l130B_thunk_fn130E:
-	byte b_14
-	byte l_15
-	byte h_16
-	word16 sp_17
-	fn130E(c, b, e, d, l, h, out b_14, out l_15, out h_16, out sp_17)
+	call fn130E (retsize: 0;)
 	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  fn130B_exit
+l1311_in_fn130B:
+	a = Mem0[0x16AB:byte]
+	return
+	// succ:  fn130B_exit
 fn130B_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> hl:<invalid> bc:<invalid> c:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
 
 
-
-byte fn130E(byte c, byte b, byte e, byte d, byte l, byte h, ptr16 & bOut, ptr16 & lOut, ptr16 & hOut, ptr16 & spOut)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  b c d e h l
-// LiveOut: a b h l sp
-// Trashed: SZPC a b bc c de h hl l sp
-// Preserved:
+// fn130E
+// Return size: 0
+define fn130E
 fn130E_entry:
-// DataOut: af b c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  l130E
 l130E:
-	byte l_8
-	byte h_9
-	word16 sp_10
-	byte b_11
-	*bOut = fn1229(c, b, e, d, l, h, out l_8, out h_9, out sp_10)
-// DataOut: af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	sp = v3
+	call fn1229 (retsize: 2;)
+	// succ:  l1311
 l1311:
-	return Mem0[0x16AB:byte]
-// DataOut: a af b d e h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> hl:<invalid> bc:<invalid> a:<invalid> c:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
-
+	a = Mem0[0x16AB:byte]
+	return
+	// succ:  fn130E_exit
 fn130E_exit:
-// DataOut: a b h l sp
-// DataOut (flags): 
-// SymbolicIn: sp:<invalid> a:<invalid> hl:<invalid> bc:<invalid> c:<invalid> de:<invalid> b:<invalid> l:<invalid> h:<invalid>
 
 
-
-void fn1315(word16 de, byte h, byte l)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  de h l
-// LiveOut:
-// Trashed: SZPC a d de e h hl l
-// Preserved: sp
+// fn1315
+// Return size: 2
+define fn1315
 fn1315_entry:
-// DataOut: de h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  l1315
 l1315:
+	sp = fp
+	v3 = de
+	de = hl
+	hl = v3
+	e = a
+	d = 0x00
+	v9 = de
+	de = hl
+	hl = v9
+	a = Mem0[de:byte]
+	a = a + l
+	SZPC = cond(a)
+	l = a
+	de = de + 0x0001
+	SZP = cond(de)
+	a = Mem0[de:byte]
+	a = a + h + C
+	SZPC = cond(a)
+	h = a
 	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  fn1315_exit
 fn1315_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp de:hl + 0x0001 hl:<invalid> e:<invalid> d:<invalid> a:<invalid> l:<invalid> h:<invalid>
 
 
-
-byte fn1326(byte c, byte l, byte h, ptr16 & lOut, ptr16 & hOut)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  c h l
-// LiveOut: c h l
-// Trashed: SZPC a c h l
-// Preserved: sp
+// fn1326
+// Return size: 2
+define fn1326
 fn1326_entry:
-// DataOut: af b bc c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  l1326
 l1326:
-	byte a_11 = __ror(h, 0x01, false)
-	h = a_11
-	*hOut = h
-	l = __ror(l, 0x01, cond(a_11))
-	*lOut = l
+	sp = fp
+	a = h
+	a = a | a
+	SZ = cond(a)
+	C = false
+	a = __rcr(a, 0x01, C)
+	C = cond(a)
+	h = a
+	a = l
+	a = __rcr(a, 0x01, C)
+	C = cond(a)
+	l = a
 	c = c - 0x01
-	branch c != 0x00 l1326
-// DataOut: af b bc c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp a:<invalid> h:<invalid> l:<invalid> c:<invalid>
-
+	SZP = cond(c)
+	branch Test(NE,Z) l1326
+	// succ:  l1331 l1326
 l1331:
-	return c
-// DataOut: af b bc c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp a:<invalid> h:<invalid> l:<invalid> c:<invalid>
-
+	return
+	// succ:  fn1326_exit
 fn1326_exit:
-// DataOut: c h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp a:<invalid> h:<invalid> l:<invalid> c:<invalid>
 
 
-
-bool fn1335(byte d, byte e, byte h, byte l, ptr16 & lOut, ptr16 & hOut)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  d e h l
-// LiveOut: C h l
-// Trashed: SZPC a h l
-// Preserved: sp
+// fn1335
+// Return size: 2
+define fn1335
 fn1335_entry:
-// DataOut: af b bc c d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  l1335
 l1335:
-	byte a_5 = e - l
-	ui16 a_a_13 = SEQ(d, d) - SEQ(h, a_5)
-	byte l_7
-	*lOut = a_5
-	byte h_18
-	*hOut = (byte) a_a_13
-	return (bool) cond(a_a_13)
-// DataOut: af b bc c d e h l
-// DataOut (flags): C
-// SymbolicIn: sp:fp
-
+	sp = fp
+	a = e
+	a = a - l
+	SZC = cond(a)
+	l = a
+	a = d
+	a = a - h - C
+	SZPC = cond(a)
+	h = a
+	return
+	// succ:  fn1335_exit
 fn1335_exit:
-// DataOut: h l
-// DataOut (flags): C
-// SymbolicIn: sp:fp a:<invalid> l:e - l h:<invalid>
 
 
-
-void fn133C(byte a, byte d, byte e)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  a d e
-// LiveOut:
-// Trashed: SZPC a b c h l
-// Preserved: sp
+// fn133C
+// Return size: 2
+define fn133C
 fn133C_entry:
-// DataOut: a d e
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  l133C
 l133C:
+	sp = fp
+	c = a
+	b = 0x00
+	a = e
+	a = a - c
+	SZC = cond(a)
+	l = a
+	a = d
+	a = a - b - C
+	SZPC = cond(a)
+	h = a
 	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  fn133C_exit
 fn133C_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp c:a b:0x00 a:<invalid> l:0x00 h:<invalid>
 
 
-
-byte fn1346(word16 de, word16 hl, ptr16 & hOut)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  de hl
-// LiveOut: h l
-// Trashed: SZPC a b c de h hl l
-// Preserved: sp
+// fn1346
+// Return size: 2
+define fn1346
 fn1346_entry:
-// DataOut: af d de e hl
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  l1346
 l1346:
-	word16 hl_7 = DPB(hl, b, 8)
-// DataOut: af d de e hl
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	sp = fp
+	l = c
+	h = b
+	// succ:  l1347_thunk_fn1348
 l1347_thunk_fn1348:
-	word16 de_9
-	byte l_10
-	byte h_11
-	fn1348(de, hl_7, out de_9, out l_10, out h_11)
-	return l_10
-// DataOut: af d e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp l:c h:b
-
+	call fn1348 (retsize: 0;)
+	return
+	// succ:  fn1346_exit
 fn1346_exit:
-// DataOut: h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp l:<invalid> h:<invalid> c:<invalid> hl:<invalid> b:<invalid> a:<invalid> de:<invalid>
 
 
-
-bool fn1348(word16 de, word16 hl, ptr16 & deOut, ptr16 & lOut, ptr16 & hOut)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  de hl
-// LiveOut: C de h l
-// Trashed: SZPC a b c de h hl l
-// Preserved: sp
+// fn1348
+// Return size: 2
+define fn1348
 fn1348_entry:
-// DataOut: af bc d de e hl
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  l1348
 l1348:
-	byte c_4 = Mem0[hl:byte]
-	byte a_14 = Mem0[de + 0x0001:byte]
-	ui16 a_a_16 = SEQ(a_14, a_14) - SEQ(Mem0[hl + 0x0001:byte], c_4)
-	byte l_12
-	*lOut = Mem0[de:byte] - c_4
-	word16 de_13
-	*deOut = de + 0x0001
-	byte h_22
-	*hOut = (byte) a_a_16
-	return (bool) cond(a_a_16)
-// DataOut: af bc d de e h l
-// DataOut (flags): C
-// SymbolicIn: sp:fp
-
+	sp = fp
+	c = Mem0[hl:byte]
+	hl = hl + 0x0001
+	SZP = cond(hl)
+	b = Mem0[hl:byte]
+	a = Mem0[de:byte]
+	a = a - c
+	SZC = cond(a)
+	l = a
+	de = de + 0x0001
+	SZP = cond(de)
+	a = Mem0[de:byte]
+	a = a - b - C
+	SZPC = cond(a)
+	h = a
+	return
+	// succ:  fn1348_exit
 fn1348_exit:
-// DataOut: de h l
-// DataOut (flags): C
-// SymbolicIn: sp:fp c:<invalid> hl:<invalid> b:<invalid> a:<invalid> l:<invalid> de:de + 0x0001 h:<invalid>
 
 
-
-byte fn1353(byte a, word16 de, ptr16 & deOut, ptr16 & lOut, ptr16 & hOut)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  a de
-// LiveOut: a de h l
-// Trashed: SZPC a de h l
-// Preserved: sp
+// fn1353
+// Return size: 2
+define fn1353
 fn1353_entry:
-// DataOut: a b c d de e
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  l1353
 l1353:
-	byte a_8 = Mem0[de:byte] - a
-	byte a_14 = Mem0[de + 0x0001:byte] - (a_8 <u 0x00)
-	byte l_11
-	*lOut = a_8
-	word16 de_12
-	*deOut = de + 0x0001
-	byte h_17
-	*hOut = a_14
-	return a_14
-// DataOut: a b c d de e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	sp = fp
+	l = a
+	h = 0x00
+	a = Mem0[de:byte]
+	a = a - l
+	SZC = cond(a)
+	l = a
+	de = de + 0x0001
+	SZP = cond(de)
+	a = Mem0[de:byte]
+	a = a - h - C
+	SZPC = cond(a)
+	h = a
+	return
+	// succ:  fn1353_exit
 fn1353_exit:
-// DataOut: a de h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp l:<invalid> h:<invalid> a:<invalid> de:de + 0x0001
 
 
-
-void fn1356(word16 de, byte h, byte l)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  de h l
-// LiveOut:
-// Trashed: SZPC a de h l
-// Preserved: sp
+// fn1356
+// Return size: 2
+define fn1356
 fn1356_entry:
-// DataOut: de h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  l1356
 l1356:
+	sp = fp
+	a = Mem0[de:byte]
+	a = a - l
+	SZC = cond(a)
+	l = a
+	de = de + 0x0001
+	SZP = cond(de)
+	a = Mem0[de:byte]
+	a = a - h - C
+	SZPC = cond(a)
+	h = a
 	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  fn1356_exit
 fn1356_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp a:<invalid> l:<invalid> de:de + 0x0001 h:<invalid>
 
 
-
-void fn140B()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
+// fn140B
+// Return size: 0
+define fn140B
 fn140B_entry:
-// DataOut: b e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  l140B
 l140B:
-// DataOut: b e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	sp = fp
+	// succ:  l1493_thunk_fn1494
 l1493_thunk_fn1494:
-	fn1494()
+	call fn1494 (retsize: 0;)
 	return
-// DataOut: b e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-// Terminates process
-
+	// succ:  fn140B_exit
 fn140B_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp
 
 
-
-void fn1494()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fn1494_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
+// fn1494
+// Return size: 0
+define fn1494
 fn1494_entry:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
+	// succ:  l1494
 l1494:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp
+	sp = v3
+fn1494_exit:
 
 
-
-void fn156F(byte a, word16 bc, word16 de, byte h)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  a b bc de e h
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
+// fn156F
+// Return size: 0
+define fn156F
 fn156F_entry:
-// DataOut: a b bc de e h
-// DataOut (flags): C
-// SymbolicIn: sp:fp
-
+	// succ:  l156F
 l156F:
-// DataOut: a b bc de e h
-// DataOut (flags): C
-// SymbolicIn: sp:fp
-
+	sp = fp
+	// succ:  l15AF_thunk_fn15B0
 l15AF_thunk_fn15B0:
-	fn15B0(a, bc, de, h)
+	call fn15B0 (retsize: 0;)
 	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-// Terminates process
-
+	// succ:  fn156F_exit
 fn156F_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp
 
 
-
-void fn15B0(byte a, word16 bc, word16 de, byte h)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  C a b bc de e h
-// LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
+// fn15B0
+// Return size: 0
+define fn15B0
 fn15B0_entry:
-// DataOut: a b bc de e h
-// DataOut (flags): C
-// SymbolicIn: sp:fp
-// LocalsOut: fp(16)
-
+	// succ:  l15B0
 l15B0:
+	sp = fp
+	bc = bc + 0x0001
+	SZP = cond(bc)
+	l = a
 	__hlt()
-	byte b_4 = SLICE(bc + 0x0001, byte, 8)
-	branch C l164C
-// DataOut: b de e h l
-// DataOut (flags): C
-// SymbolicIn: sp:fp
-// LocalsOut: fp(16)
-
+	branch Test(UGE,C) l164C
+	// succ:  l1647 l164C
 l1647:
-// DataOut: b de e h l
-// DataOut (flags): C
-// SymbolicIn: sp:fp bc:bc + 0x0001 l:a
-// LocalsOut: fp(16)
-
+	// succ:  l164C
 l164C:
-	fn08EC(b_4 - 0x01, e, a, h)
-	branch C l1494
-// DataOut: b e h l
-// DataOut (flags): 
-// SymbolicIn: sp:fp bc:bc + 0x0001 l:a
-
+	b = b - 0x01
+	SZP = cond(b)
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	a = Mem0[de:byte]
+	call fn08EC (retsize: 2;)
+	sp = sp + 0x0002
+	branch Test(ULT,C) l1494
+	goto l1686
+	// succ:  l1686 l1683_thunk_fn1494
 l1683_thunk_fn1494:
-	fn1494()
+	call fn1494 (retsize: 0;)
 	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:sp + 0x0002
-// Terminates process
-
+	// succ:  fn15B0_exit
 l1686:
-	fn140B()
-	byte e_82 = (byte) Mem0[0x1752:word16]
-	byte l_84 = (byte) de
-	byte h_85 = SLICE(de, byte, 8)
-// DataOut: a b e h l
-// DataOut (flags): Z
-// SymbolicIn: sp:sp + 0x0002
-
+	call fn140B (retsize: 2;)
+	hl = Mem0[0x1752:word16]
+	v11 = de
+	de = hl
+	hl = v11
+	a = 0x82
+	a = a | a
+	SZ = cond(a)
+	C = false
+	C = cond(true)
+	// succ:  l1691_thunk_fn092A
 l1691_thunk_fn092A:
-	fn092A(0x82, b_4 - 0x01, e_82, l_84, h_85)
+	call fn092A (retsize: 0;)
 	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: hl:de de:<invalid> a:0x82
-// Terminates process
-
+	// succ:  fn15B0_exit
 fn15B0_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-
 
 

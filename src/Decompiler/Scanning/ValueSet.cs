@@ -54,6 +54,7 @@ namespace Reko.Scanning
         public abstract ValueSet Add(Constant right);
         public abstract ValueSet And(Constant cRight);
         public abstract ValueSet IMul(Constant cRight);
+        public abstract ValueSet Sub(Constant cRight);
         public abstract ValueSet Shl(Constant cRight);
         public abstract ValueSet SignExtend(DataType dataType);
         public abstract ValueSet Truncate(DataType dt);
@@ -170,6 +171,23 @@ namespace Reko.Scanning
         public override ValueSet SignExtend(DataType dataType)
         {
             return new IntervalValueSet(dataType, this.SI);
+        }
+
+        public override ValueSet Sub(Constant right)
+        {
+            if (SI.Stride < 0)
+            {
+                return new IntervalValueSet(
+                    this.DataType,
+                    StridedInterval.Empty);
+            }
+            long v = right.ToInt64();
+            return new IntervalValueSet(
+                this.DataType,
+                StridedInterval.Create(
+                    SI.Stride,
+                    SI.Low - v,
+                    SI.High - v));
         }
 
         /// <summary>
@@ -299,6 +317,23 @@ namespace Reko.Scanning
             {
                 int bits = this.DataType.BitSize;
                 return Constant.Create(dt, Bits.SignExtend(v.ToUInt64(), bits));
+            }
+            throw new NotImplementedException();
+        }
+
+        public override ValueSet Sub(Constant cRight)
+        {
+            return Map(DataType, v => SubValue(v, cRight));
+        }
+
+        private Expression SubValue(Expression eLeft, Constant cRight)
+        {
+            if (eLeft is Constant cLeft)
+            {
+                if (cLeft.IsValid)
+                    return Operator.ISub.ApplyConstants(cLeft, cRight);
+                else
+                    return cLeft;
             }
             throw new NotImplementedException();
         }

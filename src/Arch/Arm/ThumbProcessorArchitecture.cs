@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -37,13 +37,16 @@ namespace Reko.Arch.Arm
 {
     public class ThumbArchitecture : ProcessorArchitecture
     {
+#if NATIVE
         private INativeArchitecture native;
+#endif
         private Dictionary<string, RegisterStorage> regsByName;
         private Dictionary<int, RegisterStorage> regsByNumber;
         private Dictionary<uint, FlagGroupStorage> flagGroups;
 
         public ThumbArchitecture(string archId) : base(archId)
         {
+            this.Endianness = EndianServices.Little;
             this.FramePointerType = PrimitiveType.Ptr32;
             this.PointerType = PrimitiveType.Ptr32;
             this.WordWidth = PrimitiveType.Word32;
@@ -62,6 +65,7 @@ namespace Reko.Arch.Arm
             StackRegister = regsByName["sp"];
         }
 
+#if NATIVE
         private void GetRegistersFromNative()
         {
             int cRegs;
@@ -89,6 +93,7 @@ namespace Reko.Arch.Arm
                 --cRegs;
             }
         }
+#endif
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
@@ -130,31 +135,6 @@ namespace Reko.Arch.Arm
             //return new ThumbRewriterRetired(regsByNumber, this.native, rdr, (ArmProcessorState)state, binder, host);
         }
 
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
-        {
-            return new LeImageReader(img, addr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
-        {
-            return new LeImageReader(image, addrBegin, addrEnd);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, ulong off)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override ImageWriter CreateImageWriter()
-        {
-            return new LeImageWriter();
-        }
-
-        public override ImageWriter CreateImageWriter(MemoryArea mem, Address addr)
-        {
-            return new LeImageWriter(mem, addr);
-        }
-
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
             throw new NotImplementedException();
@@ -181,10 +161,10 @@ namespace Reko.Arch.Arm
                 return null;
         }
 
-        public override RegisterStorage GetRegister(int i)
+        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
-            RegisterStorage reg;
-            if (regsByNumber.TryGetValue(i, out reg))
+            int i = domain - StorageDomain.Register;
+            if (regsByNumber.TryGetValue(i, out RegisterStorage reg))
                 return reg;
             else
                 return null;
@@ -192,8 +172,7 @@ namespace Reko.Arch.Arm
 
         public override RegisterStorage GetRegister(string name)
         {
-            RegisterStorage reg;
-            if (regsByName.TryGetValue(name, out reg))
+            if (regsByName.TryGetValue(name, out RegisterStorage reg))
                 return reg;
             else
                 return null;
@@ -222,7 +201,7 @@ namespace Reko.Arch.Arm
             }
 
             var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
-            var fl = new FlagGroupStorage(regsByName["CPSRQQQQ"], grf, GrfToString(flagRegister, "", grf), dt);
+            var fl = new FlagGroupStorage(flagRegister, grf, GrfToString(flagRegister, "", grf), dt);
             flagGroups.Add(grf, fl);
             return fl;
         }
@@ -254,12 +233,9 @@ namespace Reko.Arch.Arm
 
         public override Address MakeAddressFromConstant(Constant c)
         {
-            throw new NotImplementedException();
-        }
-
-        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
-        {
-            return mem.TryReadLe(addr, dt, out value);
+            //$REVIEW: this strips the LSB, do we want to return this fact?
+            // or should the caller be doing the stripping?
+            return Address.Ptr32(c.ToUInt32() >> 1 << 1);
         }
 
         [DllImport("ArmNative", CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl, EntryPoint = "CreateNativeArchitecture")]

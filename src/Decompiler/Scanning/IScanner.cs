@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -42,16 +42,38 @@ namespace Reko.Scanning
     {
         IServiceProvider Services { get; }
 
+        /// <summary>
+        /// Scans the image, locating blobs of data and procedures.
+        /// After completion, the program.ImageMap is populated with
+        /// chunks of data, and the program.Procedures dictionary contains
+        /// all procedures to decompile.
+        /// </summary>
         void ScanImage();
 
-        ProcedureBase ScanProcedure(Address addr, string procedureName, ProcessorState state);
+        /// <summary>
+        /// Performs a scan of the blocks that constitute a procedure, optionally named 
+        /// <paramref name="procedureName"/>
+        /// </summary>
+        /// <param name="arch">Processor architecture the procedure is written in.</param>
+        /// <param name="addr">Address of the code from which we will start scanning.</param>
+        /// <param name="procedureName"></param>
+        /// <param name="state"></param>
+        /// <returns></returns>
+        ProcedureBase ScanProcedure(IProcessorArchitecture arch, Address addr, string procedureName, ProcessorState state);
+
+/// <summary>
+/// Performs a scan starting at the address of the given image symbol
+/// </summary>
+/// <param name="sym"></param>
+/// <param name="isEntryPoint"></param>
+        void ScanImageSymbol(ImageSymbol sym, bool isEntryPoint);
 
         Block EnqueueJumpTarget(Address addrSrc, Address addrDst, Procedure proc, ProcessorState state);
-        Address EnqueueUserProcedure(Procedure_v1 sp);
+        Address EnqueueUserProcedure(IProcessorArchitecture arch, Procedure_v1 sp);
 
-        ExternalProcedure GetImportedProcedure(Address addrImportThunk, Address addrInstruction);
+        ExternalProcedure GetImportedProcedure(IProcessorArchitecture arch, Address addrImportThunk, Address addrInstruction);
 
-        ProcedureBase GetTrampoline(Address addr);
+        ProcedureBase GetTrampoline(IProcessorArchitecture arch, Address addr);
 
         void TerminateBlock(Block block, Address addrEnd);
 
@@ -68,7 +90,6 @@ namespace Reko.Scanning
         Block CreateCallRetThunk(Address addrFrom, Procedure procOld, Procedure procNew);
         void SetProcedureReturnAddressBytes(Procedure proc, int returnAddressBytes, Address address);
 
-        IEnumerable<RtlInstructionCluster> GetTrace(Address addrStart, ProcessorState state, IStorageBinder binder);
-        void ScanImageSymbol(Program program, ImageSymbol sym, bool isEntryPoint);
+        IEnumerable<RtlInstructionCluster> GetTrace(IProcessorArchitecture arch, Address addrStart, ProcessorState state, IStorageBinder binder);
     }
 }

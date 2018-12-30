@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2018 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -62,8 +62,9 @@ namespace Reko.Arch.PowerPC
         /// Creates an instance of PowerPcArchitecture.
         /// </summary>
         /// <param name="wordWidth">Supplies the word width of the PowerPC architecture.</param>
-        public PowerPcArchitecture(string archId, PrimitiveType wordWidth, PrimitiveType signedWord) : base(archId)
+        public PowerPcArchitecture(string archId, EndianServices endianness, PrimitiveType wordWidth, PrimitiveType signedWord) : base(archId)
         {
+            Endianness = endianness;
             WordWidth = wordWidth;
             SignedWord = signedWord;
             PointerType = PrimitiveType.Create(Domain.Pointer, wordWidth.BitSize);
@@ -228,10 +229,10 @@ namespace Reko.Arch.PowerPC
             // We saw a thunk! now try to resolve it.
 
             var addr = Address.Ptr32(uAddr);
-            var ep = host.GetImportedProcedure(addr, addrInstr);
+            var ep = host.GetImportedProcedure(this, addr, addrInstr);
             if (ep != null)
                 return ep;
-            return host.GetInterceptedCall(addr);
+            return host.GetInterceptedCall(this, addr);
         }
 
         public override ProcessorState CreateProcessorState()
@@ -264,12 +265,17 @@ namespace Reko.Arch.PowerPC
             return (int)result;
         }
 
-        public override RegisterStorage GetRegister(int i)
+        public RegisterStorage GetRegister(int i)
         {
             if (0 <= i && i < regs.Count)
                 return regs[i];
             else
                 return null;
+        }
+
+        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
+        {
+            return GetRegister(domain - StorageDomain.Register);
         }
 
         public override RegisterStorage GetRegister(string name)
@@ -284,7 +290,8 @@ namespace Reko.Arch.PowerPC
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
-            throw new NotImplementedException();
+            reg = GetRegister(name);
+            return reg != null;
         }
 
         public FlagGroupStorage GetCcFieldAsFlagGroup(RegisterStorage reg)
@@ -320,6 +327,12 @@ namespace Reko.Arch.PowerPC
                 return reg;
             else
                 return null;
+        }
+
+        public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
+        {
+            return ccFlagGroups.Values
+                .Where(cc => cc.OverlapsWith(flags));
         }
 
         public override string GrfToString(RegisterStorage flagregister, string prefix, uint grf)
@@ -364,19 +377,12 @@ namespace Reko.Arch.PowerPC
             throw new NotImplementedException();
         }
 
-        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
-        {
-            //$TODO: PPC is bi-endian
-            return mem.TryReadLe(addr, dt, out value);
-        }
-
-
         #endregion
     }
 
     public class PowerPcBe32Architecture : PowerPcArchitecture
     {
-        public PowerPcBe32Architecture(string archId) : base(archId, PrimitiveType.Word32, PrimitiveType.Int32)
+        public PowerPcBe32Architecture(string archId) : base(archId, EndianServices.Big, PrimitiveType.Word32, PrimitiveType.Int32)
         { }
 
         public override IEnumerable<Address> CreatePointerScanner(
@@ -397,31 +403,6 @@ namespace Reko.Arch.PowerPC
             return Address.Ptr32(c.ToUInt32());
         }
 
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addr)
-        {
-            return new BeImageReader(image, addr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
-        {
-            return new BeImageReader(image, addrBegin, addrEnd);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, ulong offset)
-        {
-            return new BeImageReader(image, offset);
-        }
-
-        public override ImageWriter CreateImageWriter()
-        {
-            return new BeImageWriter();
-        }
-
-        public override ImageWriter CreateImageWriter(MemoryArea mem, Address addr)
-        {
-            return new BeImageWriter(mem, addr);
-        }
-
         public override bool TryParseAddress(string txtAddress, out Address addr)
         {
             return Address.TryParse32(txtAddress, out addr);
@@ -430,7 +411,7 @@ namespace Reko.Arch.PowerPC
 
     public class PowerPcLe32Architecture : PowerPcArchitecture
     {
-        public PowerPcLe32Architecture(string archId) : base(archId, PrimitiveType.Word32, PrimitiveType.Int32)
+        public PowerPcLe32Architecture(string archId) : base(archId, EndianServices.Little, PrimitiveType.Word32, PrimitiveType.Int32)
         {
 
         }
@@ -438,31 +419,6 @@ namespace Reko.Arch.PowerPC
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> addrs, PointerScannerFlags flags)
         {
             throw new NotImplementedException();
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addr)
-        {
-            return new LeImageReader(image, addr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
-        {
-            return new LeImageReader(image, addrBegin, addrEnd);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, ulong offset)
-        {
-            return new LeImageReader(image, offset);
-        }
-
-        public override ImageWriter CreateImageWriter()
-        {
-            return new LeImageWriter();
-        }
-
-        public override ImageWriter CreateImageWriter(MemoryArea mem, Address addr)
-        {
-            return new LeImageWriter(mem, addr);
         }
 
         public override Address MakeAddressFromConstant(Constant c)
@@ -479,7 +435,7 @@ namespace Reko.Arch.PowerPC
     public class PowerPcBe64Architecture : PowerPcArchitecture
     {
         public PowerPcBe64Architecture(string archId)
-            : base(archId, PrimitiveType.Word64, PrimitiveType.Int64)
+            : base(archId, EndianServices.Big, PrimitiveType.Word64, PrimitiveType.Int64)
         { }
 
         public override IEnumerable<Address> CreatePointerScanner(
@@ -500,42 +456,9 @@ namespace Reko.Arch.PowerPC
             return Address.Ptr64(c.ToUInt64());
         }
 
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addr)
-        {
-            //$TODO: PowerPC is bi-endian.
-            return new BeImageReader(image, addr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
-        {
-            //$TODO: PowerPC is bi-endian.
-            return new BeImageReader(image, addrBegin, addrEnd);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea image, ulong offset)
-        {
-            //$TODO: PowerPC is bi-endian.
-            return new BeImageReader(image, offset);
-        }
-
-        public override ImageWriter CreateImageWriter()
-        {
-            //$TODO: PowerPC is bi-endian.
-            return new BeImageWriter();
-        }
-
-        public override ImageWriter CreateImageWriter(MemoryArea mem, Address addr)
-        {
-            //$TODO: PowerPC is bi-endian.
-            return new BeImageWriter(mem, addr);
-        }
-
         public override bool TryParseAddress(string txtAddress, out Address addr)
         {
             return Address.TryParse64(txtAddress, out addr);
         }
-
-
     }
 }

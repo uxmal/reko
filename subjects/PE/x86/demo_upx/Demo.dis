@@ -8,20 +8,19 @@ void fn00401000()
 // Terminates process
 fn00401000_exit:
 // DataOut:
-// DataOut (flags): 
+// DataOut (flags):
 // SymbolicIn:
 
 fn00401000_entry:
 // DataOut:
-// DataOut (flags): 
-// SymbolicIn: esp:fp
-// LocalsOut: fp(32)
+// DataOut (flags):
+// SymbolicIn:
 
 l00401000:
 	ExitProcess(MessageBoxA(0x00000000, 0x00403000, 0x00403007, 0x00000000))
 // DataOut:
-// DataOut (flags): 
-// SymbolicIn: esp:fp
+// DataOut (flags):
+// SymbolicIn:
 
 
 

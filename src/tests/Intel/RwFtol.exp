@@ -14,9 +14,9 @@ l10000000:
 	esp = fp
 	Top = 0
 	edi = 0x10001212
-	Top = Top - 0x01
+	Top = Top - 1
 	ST[Top:real64] = Mem0[edi + 0x00000004:real64]
-	Top = Top - 0x01
+	Top = Top - 1
 	ST[Top:real64] = Mem0[edi + 0x0000000C:real64]
 	eax = _ftol(ST[Top:real64])
 	Top = Top + 1
