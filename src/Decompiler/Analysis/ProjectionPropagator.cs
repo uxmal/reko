@@ -111,6 +111,7 @@ namespace Reko.Analysis
                 {
                     if (lsbLast != slices[i].Offset + slices[i].DataType.BitSize)
                         return false;
+                    lsbLast = slices[i].Offset;
                 }
                 return true;
             }
@@ -135,13 +136,16 @@ namespace Reko.Analysis
                 {
                     // All assignments. Are they all slices?
                     var slices = ass.Select(AsSlice).ToArray();
-                    if (slices.All(s => s != null) &&
-                        AllSame(slices, (a, b) => a.Expression == b.Expression) &&
-                        AllAdjacent(slices))
+                    if (slices.All(s => s != null))
                     {
-                        return RewriteSeqOfSlices(sids, slices);
+                        if (AllSame(slices, (a, b) => a.Expression == b.Expression) &&
+                            AllAdjacent(slices))
+                        {
+                            return RewriteSeqOfSlices(seq.DataType, sids, slices);
+                        }
+                        return seq;
                     }
-                    return seq;
+                    throw new NotImplementedException();
                 }
 
                 if (sids.All(s => s.DefStatement.Instruction is DefInstruction))
@@ -189,7 +193,7 @@ namespace Reko.Analysis
             /// <param name="sids"></param>
             /// <param name="slices"></param>
             /// <returns></returns>
-            private Expression RewriteSeqOfSlices(SsaIdentifier[] sids, Slice[] slices)
+            private Expression RewriteSeqOfSlices(DataType dtSequence, SsaIdentifier[] sids, Slice[] slices)
             {
                 // We have:
                 //  sid_1 = SLICE(sid_0,...)
@@ -216,8 +220,7 @@ namespace Reko.Analysis
                 }
                 else
                 {
-                    var sliceType = PrimitiveType.CreateWord(totalSliceSize);
-                    return new Slice(sliceType, idWide, totalSliceOffset);
+                    return new Slice(dtSequence, idWide, totalSliceOffset);
                 }
             }
 

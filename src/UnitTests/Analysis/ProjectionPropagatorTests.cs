@@ -290,7 +290,7 @@ l1:
 	def rcx
 	t1 = SLICE(rcx, byte, 12)
 	t2 = SLICE(rcx, byte, 4)
-	cx_3 = SLICE(rcx, word16, 4)
+	cx_3 = SLICE(rcx, cui16, 4)
 	return
 SsaProcedureBuilder_exit:
 ";
@@ -307,6 +307,45 @@ SsaProcedureBuilder_exit:
                 m.Assign(t1, m.Slice(PrimitiveType.Byte, rcx, 12));
                 m.Assign(t2, m.Slice(PrimitiveType.Byte, rcx, 4));
                 m.Assign(cx_3, m.Seq(t1, t2));
+                m.Return();
+            });
+        }
+
+        // Only fuse slices if they are adjacent. If the fused slices
+        // don't cover the underlying storage, we must emit a new slice.
+        [Test]
+        public void Prjpr_4_adjacent_Slices()
+        {
+            var sExp =
+            #region Expected
+@"SsaProcedureBuilder_entry:
+l1:
+	def rcx
+	t1 = SLICE(rcx, byte, 28)
+	t2 = SLICE(rcx, byte, 20)
+	t3 = SLICE(rcx, byte, 12)
+	t4 = SLICE(rcx, byte, 4)
+	ecx_3 = SLICE(rcx, word32, 4)
+	return
+SsaProcedureBuilder_exit:
+";
+            #endregion
+            Given_X86_64_Arch();
+            RunTest(sExp, arch, m =>
+            {
+                var rcx = m.Reg("rcx", X86Registers.rcx);
+                var ecx_3 = m.Reg("ecx_3", X86Registers.cx);
+                var t1 = m.Temp("t1", new TemporaryStorage("t1", 2, PrimitiveType.Byte));
+                var t2 = m.Temp("t2", new TemporaryStorage("t2", 2, PrimitiveType.Byte));
+                var t3 = m.Temp("t3", new TemporaryStorage("t3", 2, PrimitiveType.Byte));
+                var t4 = m.Temp("t4", new TemporaryStorage("t4", 2, PrimitiveType.Byte));
+                m.Def(rcx);
+                // The slices below are adjacent.
+                m.Assign(t1, m.Slice(PrimitiveType.Byte, rcx, 28));
+                m.Assign(t2, m.Slice(PrimitiveType.Byte, rcx, 20));
+                m.Assign(t3, m.Slice(PrimitiveType.Byte, rcx, 12));
+                m.Assign(t4, m.Slice(PrimitiveType.Byte, rcx, 4));
+                m.Assign(ecx_3, m.Seq(t1, t2, t3, t4));
                 m.Return();
             });
         }
