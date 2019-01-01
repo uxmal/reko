@@ -33,6 +33,7 @@ using System.Linq;
 using System.Text;
 using Rhino.Mocks;
 using Reko.Core.Code;
+using Reko.Arch.X86;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -44,7 +45,7 @@ namespace Reko.UnitTests.Analysis
     [Category("UnitTests")]
     public class SsaTransformTests
     {
-        private FakeArchitecture arch;
+        private IProcessorArchitecture arch;
         private ProgramBuilder pb;
         private Dictionary<Address, ImportReference> importReferences;
         private ProgramDataFlow programFlow;
@@ -60,9 +61,8 @@ namespace Reko.UnitTests.Analysis
         [SetUp]
         public void Setup()
         {
-            this.arch = new FakeArchitecture();
-            this.pb = new ProgramBuilder(this.arch);
-            this.importReferences = pb.Program.ImportReferences;
+            Given_Architecture(new FakeArchitecture());
+ 
             this.addUseInstructions = false;
             this.importResolver = MockRepository.GenerateStub<IImportResolver>();
             this.r1 = new Identifier("r1", PrimitiveType.Word32, new RegisterStorage("r1", 1, 0, PrimitiveType.Word32));
@@ -72,9 +72,11 @@ namespace Reko.UnitTests.Analysis
             this.programFlow = new ProgramDataFlow();
         }
 
-        private void Given_Endianness(EndianServices endianness)
+        private void Given_Architecture(IProcessorArchitecture arch)
         {
-            this.arch.Test_Endianness = endianness;
+            this.arch = arch;
+            this.pb = new ProgramBuilder(this.arch);
+            this.importReferences = pb.Program.ImportReferences;
         }
 
         private void RunTest(string sExp, Action<ProcedureBuilder> builder)
@@ -3669,7 +3671,10 @@ proc_exit:
         [Test]
         public void Ssa96BitStackLocal()
         {
-            Given_Endianness(EndianServices.Big);
+            Given_Architecture(new FakeArchitecture
+            {
+                Test_Endianness = EndianServices.Big
+            });
             var proc = Given_Procedure(nameof(Ssa96BitStackLocal), m =>
             {
                 var r1 = m.Reg32("r1", 1);
@@ -3710,6 +3715,42 @@ l1:
 	fp0_11 = nLoc0C_15
 	return
 Ssa96BitStackLocal_exit:
+";
+            #endregion
+            AssertProcedureCode(expected);
+        }
+
+        [Test]
+        public void SsaDpb()
+        {
+            Given_Architecture(new X86ArchitectureFlat32("x86-real-16"));
+            var proc = Given_Procedure(nameof(SsaDpb), m =>
+            {
+                var bx = m.Register(Registers.bx);
+                var bl = m.Register(Registers.bl);
+                var bh = m.Register(Registers.bh);
+
+                m.Assign(bl, m.Mem8(Address.Ptr16(0x1234)));
+                m.Assign(bh, m.Mem8(Address.Ptr16(0x1235)));
+                m.MStore(bx, m.Word16(0x0042)); 
+                m.Return();
+            });
+
+            When_RunSsaTransform();
+
+            var expected =
+            #region Expected
+@"SsaDpb_entry:
+	def Mem0
+	def bx
+l1:
+	bl_2 = Mem0[0x1234:byte]
+	bx_5 = DPB(bx, bl_2, 0) (alias)
+	bh_3 = Mem0[0x1235:byte]
+	bx_6 = DPB(bx_5, bh_3, 8) (alias)
+	Mem7[bx_6:word16] = 0x0042
+	return
+SsaDpb_exit:
 ";
             #endregion
             AssertProcedureCode(expected);
