@@ -98,6 +98,24 @@ namespace Reko.Analysis
                 return true;
             }
 
+            /// <summary>
+            /// Returns true if all the slices are slicing the same storage and 
+            /// all the slices are bitwise adjacent.
+            /// </summary>
+            /// <param name="slices"></param>
+            /// <returns></returns>
+            private static bool AllAdjacent(Slice[] slices)
+            {
+                int lsbLast = slices[0].Offset;
+                for (int i = 1; i < slices.Length; ++i)
+                {
+                    if (lsbLast != slices[i].Offset + slices[i].DataType.BitSize)
+                        return false;
+                    lsbLast = slices[i].Offset;
+                }
+                return true;
+            }
+
             public override Expression VisitMkSequence(MkSequence seq)
             {
                 Debug.Assert(seq.Expressions.Length > 0);
@@ -117,10 +135,14 @@ namespace Reko.Analysis
                 {
                     // All assignments. Are they all slices?
                     var slices = ass.Select(AsSlice).ToArray();
-                    if (slices.All(s => s != null) &&
-                        AllSame(slices, (a, b) => a.Expression == b.Expression))
+                    if (slices.All(s => s != null))
                     {
-                        return RewriteSeqOfSlices(sids, slices);
+                        if (AllSame(slices, (a, b) => a.Expression == b.Expression) &&
+                            AllAdjacent(slices))
+                        {
+                            return RewriteSeqOfSlices(seq.DataType, sids, slices);
+                        }
+                        return seq;
                     }
                     throw new NotImplementedException();
                 }
@@ -163,7 +185,14 @@ namespace Reko.Analysis
                 return idWide;
             }
 
-            private Expression RewriteSeqOfSlices(SsaIdentifier[] sids, Slice[] slices)
+            /// <summary>
+            /// Given an sequence of adjacent slices, rewrite the sequence a single
+            /// slice. If the slice is a no-op, just return the underlying storage.
+            /// </summary>
+            /// <param name="sids"></param>
+            /// <param name="slices"></param>
+            /// <returns></returns>
+            private Expression RewriteSeqOfSlices(DataType dtSequence, SsaIdentifier[] sids, Slice[] slices)
             {
                 // We have:
                 //  sid_1 = SLICE(sid_0,...)
@@ -171,15 +200,27 @@ namespace Reko.Analysis
                 //  ...
                 //  ...SEQ(sid_1, sid_2)
                 // We want:
+                // ...SLICE(sid_0, ...)
+                // and ideally
                 // ...sid_0
                 foreach (var sid in sids)
                 {
                     sid.Uses.Remove(this.Statement);
                 }
+                var totalSliceSize = slices.Sum(s => s.DataType.BitSize);
+                var totalSliceOffset = slices[slices.Length - 1].Offset;
                 var idWide = (Identifier) slices[0].Expression;
                 var sidWide = ssa.Identifiers[idWide];
                 sidWide.Uses.Add(this.Statement);
-                return idWide;
+                if ((int) idWide.Storage.BitAddress == totalSliceOffset &&
+                    (int) idWide.Storage.BitSize == totalSliceSize)
+                {
+                    return idWide;
+                }
+                else
+                {
+                    return new Slice(dtSequence, idWide, totalSliceOffset);
+                }
             }
 
             private Slice AsSlice(Assignment ass)
