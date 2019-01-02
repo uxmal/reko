@@ -1,4 +1,4 @@
-﻿/*
+/*
  * The contents of this file are subject to the terms of the Common Development
  * and Distribution License (the License), or the GPL v2. 
  * You may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * John Källén
  * 
  * Portions Copyrighted 2011 by Jason Wolfe.
- * Portions Copyrighted 2017-2018 by John Källén.
+ * Portions Copyrighted 2017-2019 by John Källén.
  * 
  */
 
