@@ -41,7 +41,7 @@ namespace Reko.UnitTests.Analysis
     [TestFixture]
     public class ProjectionPropagatorTests
     {
-        private X86ArchitectureFlat64 arch;
+        private IProcessorArchitecture arch;
 
         private void RunTest(string sExp, IProcessorArchitecture arch, Action<SsaProcedureBuilder> builder)
         {
@@ -66,6 +66,11 @@ namespace Reko.UnitTests.Analysis
             this.arch = new Reko.Arch.X86.X86ArchitectureFlat64("x86-protected-64");
         }
 
+        private void Given_Z80_Arch()
+        {
+            this.arch = new Z80ProcessorArchitecture("z80");
+        }
+
         /// <summary>
         /// Fuse together subregisters that compose into a larger register.
         /// </summary>
@@ -85,7 +90,7 @@ SsaProcedureBuilder_exit:
 ";
             #endregion
 
-            var arch = new Z80ProcessorArchitecture("z80");
+            Given_Z80_Arch();
             RunTest(sExp, arch, m =>
             {
                 var h = m.Reg("h", Z80Registers.h); 
@@ -119,7 +124,7 @@ SsaProcedureBuilder_exit:
 ";
             #endregion
 
-            var arch = new Z80ProcessorArchitecture("z80");
+            Given_Z80_Arch();
             RunTest(sExp, arch, m =>
             {
                 var hl = m.Reg("hl", Z80Registers.hl);
@@ -163,7 +168,7 @@ SsaProcedureBuilder_exit:
 ";
             #endregion
 
-            var arch = new Z80ProcessorArchitecture("z80");
+            Given_Z80_Arch();
             RunTest(sExp, arch, m =>
             {
                 var a = m.Reg("a", Z80Registers.a);
@@ -210,7 +215,7 @@ SsaProcedureBuilder_exit:
 ";
             #endregion
 
-            var arch = new Z80ProcessorArchitecture("z80");
+            Given_Z80_Arch();
             RunTest(sExp, arch, m =>
             {
                 var hl = m.Reg("hl", Z80Registers.hl);
@@ -251,7 +256,7 @@ SsaProcedureBuilder_exit:
 ";
             #endregion
 
-            var arch = new Z80ProcessorArchitecture("z80");
+            Given_Z80_Arch();
             RunTest(sExp, arch, m =>
             {
                 var h = m.Reg("h", Z80Registers.h);
@@ -378,6 +383,34 @@ SsaProcedureBuilder_exit:
                 m.Assign(t1, m.Slice(PrimitiveType.Byte, rcx, 32));
                 m.Assign(t2, m.Slice(PrimitiveType.Byte, rcx, 0));
                 m.Assign(cx_3, m.Seq(t1, t2));
+                m.Return();
+            });
+        }
+
+        [Test]
+        public void Prjpr_Call_To_Sequence()
+        {
+            var sExp =
+            #region Expected
+@"SsaProcedureBuilder_entry:
+l1:
+	call <invalid> (retsize: 2;)
+		defs: hl:hl_1
+	Mem2[0x1234:cui16] = hl_1
+	return
+SsaProcedureBuilder_exit:
+";
+            #endregion
+
+            Given_Z80_Arch();
+            RunTest(sExp, arch, m =>
+            {
+                var h_1 = m.Reg("h_1", Z80Registers.h);
+                var l_2 = m.Reg("l_2", Z80Registers.l);
+                m.Call("dont_care", 2,
+                    new Identifier[0],
+                    new[] { h_1, l_2 });
+                m.MStore(m.Word16(0x1234), m.Seq(h_1, l_2));
                 m.Return();
             });
         }

@@ -159,6 +159,12 @@ namespace Reko.Analysis
                     // We have a sequence of phi functions
                     return RewriteSeqOfPhi(sids, phis, idWide);
                 }
+                if (sids[0].DefStatement.Instruction is CallInstruction call && 
+                    sids.All(s => s.DefStatement == sids[0].DefStatement))
+                {
+                    // All of the identifiers in the sequence were defined by the same call.
+                    return RewriteSeqDefinedByCall(sids, call, idWide);
+                }
                 throw new NotImplementedException();
             }
 
@@ -320,6 +326,32 @@ namespace Reko.Analysis
                         sidDst.Identifier,
                         widePhiArgs.ToArray());
                 sidDst.Uses.Add(this.Statement);
+                return sidDst.Identifier;
+            }
+
+            private Expression RewriteSeqDefinedByCall(SsaIdentifier [] sids, CallInstruction call, Identifier idWide)
+            {
+                // We have:
+                // call
+                //    def: a_1, b_2
+                // ...
+                // ...SEQ(a_1, b_2)
+                // We want 
+                // call
+                //    def: a_b_3
+                // ...
+                // ...a_b_3
+                foreach (var s in sids)
+                {
+                    s.Uses.Remove(this.Statement);
+                }
+
+                var sidDst = ssa.Identifiers.Add(idWide, sids[0].DefStatement, null, false);
+                foreach (var sid in sids)
+                {
+                    call.Definitions.RemoveWhere(cb => cb.Expression == sid.Identifier);
+                }
+                call.Definitions.Add(new CallBinding(sidDst.Identifier.Storage, sidDst.Identifier));
                 return sidDst.Identifier;
             }
         }
