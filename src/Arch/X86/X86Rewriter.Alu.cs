@@ -624,8 +624,7 @@ PrimitiveType.Word64, Registers.rdx, multiplicator.Storage);
             }
 
             m.Assign(
-                binder.EnsureSequence(PrimitiveType.Ptr32, seg,
-                    reg.Register),
+                binder.EnsureSequence(PrimitiveType.Ptr32, seg, reg.Register),
                 SrcOp(mem, PrimitiveType.SegPtr32));
         }
 

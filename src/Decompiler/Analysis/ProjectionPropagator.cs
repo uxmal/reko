@@ -116,20 +116,80 @@ namespace Reko.Analysis
                 return true;
             }
 
+            public override Expression VisitSegmentedAccess(SegmentedAccess access)
+            {
+                var e = base.VisitSegmentedAccess(access);
+                if (!(e is SegmentedAccess accessNew))
+                    return e;
+
+                if (!(accessNew.BasePointer is Identifier idSeg))
+                    return null;
+                var sidSeg = ssa.Identifiers[idSeg];
+                if (accessNew.EffectiveAddress is Identifier idEa)
+                {
+                    var sidEa = ssa.Identifiers[idEa];
+                    var sids = new[] { sidSeg, sidEa };
+                    e = FuseIdentifiers(sids);
+                    if (e != null)
+                        return new MemoryAccess(accessNew.MemoryId, e, accessNew.DataType);
+                }
+                else if (accessNew.EffectiveAddress is BinaryExpression binEa)
+                {
+                    if (binEa.Left is Identifier idLeft)
+                    {
+                        var sidLeft = ssa.Identifiers[idLeft];
+                        e = FuseIdentifiers(sidSeg, sidLeft);
+                        if (e != null)
+                            return new MemoryAccess(
+                                accessNew.MemoryId,
+                                new BinaryExpression(
+                                    binEa.Operator,
+                                    e.DataType,
+                                    e,
+                                    binEa.Right),
+                                accessNew.DataType);
+                    }
+                    if (binEa.Right is Identifier idRight)
+                    {
+                        var sidRight = ssa.Identifiers[idRight];
+                        e = FuseIdentifiers(sidSeg, sidRight);
+                        if (e != null)
+                            return new MemoryAccess(
+                                accessNew.MemoryId,
+                                new BinaryExpression(
+                                    binEa.Operator,
+                                    e.DataType,
+                                    binEa.Left,
+                                    e),
+                                accessNew.DataType);
+                    }
+                }
+                return accessNew;
+            }
+
             public override Expression VisitMkSequence(MkSequence seq)
             {
                 Debug.Assert(seq.Expressions.Length > 0);
                 var ids = seq.Expressions.Select(e => e as Identifier).ToArray();
                 if (ids.Any(i => i == null))
                     return seq;
+                var sids = ids.Select(i => ssa.Identifiers[i]).ToArray();
+
+                var expFused = FuseIdentifiers(sids);
+                return expFused ?? seq;
+            }
+
+
+            private Expression FuseIdentifiers(params SsaIdentifier[] sids)
+            {
                 // Are all the definitions of the ids in the same basic block? If they're
                 // not, we give up.
-                var sids = ids.Select(i => ssa.Identifiers[i]).ToArray();
-                if (!AllSame(sids, (a, b) => a.DefStatement.Block == b.DefStatement.Block))
-                    return seq;
 
-                var dtWide = PrimitiveType.CreateWord(seq.DataType.BitSize);
-                Identifier idWide = GenerateWideIdentifier(seq.DataType, sids);
+                if (!AllSame(sids, (a, b) => a.DefStatement.Block == b.DefStatement.Block))
+                    return null;
+
+                var dtWide = PrimitiveType.CreateWord(sids.Sum(s => s.Identifier.DataType.BitSize));
+                Identifier idWide = GenerateWideIdentifier(dtWide, sids);
 
                 var ass = sids.Select(s => s.DefStatement.Instruction as Assignment).ToArray();
                 if (ass.All(a => a != null))
@@ -143,7 +203,7 @@ namespace Reko.Analysis
                         {
                             return RewriteSeqOfSlices(dtWide, sids, slices);
                         }
-                        return seq;
+                        return null;
                     }
                     throw new NotImplementedException();
                 }
@@ -160,7 +220,7 @@ namespace Reko.Analysis
                     // We have a sequence of phi functions
                     return RewriteSeqOfPhi(sids, phis, idWide);
                 }
-                if (sids[0].DefStatement.Instruction is CallInstruction call && 
+                if (sids[0].DefStatement.Instruction is CallInstruction call &&
                     sids.All(s => s.DefStatement == sids[0].DefStatement))
                 {
                     // All of the identifiers in the sequence were defined by the same call.

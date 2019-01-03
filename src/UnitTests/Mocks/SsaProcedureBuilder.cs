@@ -68,6 +68,15 @@ namespace Reko.UnitTests.Mocks
             return Reg(name, RegisterStorage(name, pt));
         }
 
+        public Identifier SeqId(string name, DataType dt, params Storage[] storages)
+        {
+            //$TODO: SequenceStorage should deal with arbitrary # of sub-storages
+            var id = new Identifier(name, dt, new SequenceStorage(dt, storages[0], storages[1]));
+            var sid = new SsaIdentifier(id, id, null, null, false);
+            Ssa.Identifiers.Add(id, sid);
+            return sid.Identifier;
+        }
+
         public override Identifier Local32(string name, int offset)
         {
             var local = base.Local32(name, offset);

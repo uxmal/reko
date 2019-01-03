@@ -638,6 +638,7 @@ namespace Reko.Core
         {
             this.Head = head;
             this.Tail = tail;
+            this.BitSize = (ulong) dt.BitSize;
             this.Name = $"{head.Name}:{tail.Name}";
         }
 
@@ -646,6 +647,7 @@ namespace Reko.Core
         {
             this.Head = head;
             this.Tail = tail;
+            this.BitSize = (ulong) dt.BitSize;
             this.Name = name;
         }
 

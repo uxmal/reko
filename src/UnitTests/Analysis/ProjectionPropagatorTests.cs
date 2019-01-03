@@ -61,6 +61,11 @@ namespace Reko.UnitTests.Analysis
             m.Ssa.Validate(s => Assert.Fail(s));
         }
 
+        private void Given_X86_16_Arch()
+        {
+            this.arch = new Reko.Arch.X86.X86ArchitectureReal("x86-real-16");
+        }
+
         private void Given_X86_64_Arch()
         {
             this.arch = new Reko.Arch.X86.X86ArchitectureFlat64("x86-protected-64");
@@ -449,5 +454,39 @@ SsaProcedureBuilder_exit:
             });
         }
 
+        [Test]
+        public void Prjpr_Fuse_RegisterSequence()
+        {
+            var sExp =
+            #region Expected
+@"SsaProcedureBuilder_entry:
+l1:
+	def ds
+	es_bx_1 = Mem5[ds:0x1234:ptr32]
+	es_2 = SLICE(es_bx_1, selector, 16) (alias)
+	bx_3 = SLICE(es_bx_1, word16, 0) (alias)
+	Mem6[es_bx_1 + 4:byte] = 0x03
+	return
+SsaProcedureBuilder_exit:
+";
+            #endregion
+
+            Given_X86_16_Arch();
+            RunTest(sExp, arch, m =>
+            {
+                var ds = m.Reg("ds", X86Registers.ds);
+                var es_bx_1 = m.SeqId("es_bx_1", PrimitiveType.Ptr32, X86Registers.es, X86Registers.bx);
+                var es_2 = m.Reg("es_2", X86Registers.es);
+                var bx_3 = m.Reg("bx_3", X86Registers.bx);
+                var ax_4 = m.Reg("ax_4", X86Registers.ax);
+
+                m.Def(ds);
+                m.Assign(es_bx_1, m.SegMem(PrimitiveType.Ptr32, ds, m.Word16(0x1234)));
+                m.Alias(es_2, m.Slice(es_2.DataType, es_bx_1, 16));
+                m.Alias(bx_3, m.Slice(bx_3.DataType, es_bx_1, 0));
+                m.SStore(es_2, m.IAddS(bx_3, 4), m.Byte(3));
+                m.Return();
+            });
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -1178,7 +1178,7 @@ namespace Reko.Core.Expressions
         /// <summary>
         /// Convenience method to generate an integer subtraction expression. 
         /// The subtrahend is converted to a signed integer Constant of the same 
-        /// size as the augend.
+        /// size as the minuend.
         /// </summary>
         /// <param name="left">Minuend.</param>
         /// <param name="right">Subtrahend</param>
@@ -1189,7 +1189,7 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
-        /// Generates a bit-slice of type <paramref name="primitiveType"/> of 
+        /// Generates a bit-slice of type <paramref name="dataType"/> of 
         /// an expression <paramref name="value"/>, starting at bit position
         /// <paramref name="bitOffset"/>.
         /// </summary>
@@ -1197,9 +1197,9 @@ namespace Reko.Core.Expressions
         /// <param name="value">The value being sliced</param>
         /// <param name="bitOffset">Slice offset from least significant bit.</param>
         /// <returns>A bit-slice expression.</returns>
-        public Slice Slice(PrimitiveType primitiveType, Expression value, int bitOffset)
+        public Slice Slice(DataType dataType, Expression value, int bitOffset)
         {
-            return new Slice(primitiveType, value, bitOffset);
+            return new Slice(dataType, value, bitOffset);
         }
 
         /// <summary>
