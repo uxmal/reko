@@ -84,7 +84,7 @@ namespace Reko.UnitTests.Mocks
             return sid.Identifier;
         }
 
-        public new Identifier Reg32(string name)
+        public Identifier Reg32(string name)
         {
             return Reg(name, PrimitiveType.Word32);
         }

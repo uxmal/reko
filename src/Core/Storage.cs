@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,15 +35,21 @@ namespace Reko.Core
     /// </summary>
     public abstract class Storage
     {
-        public Storage(string storageKind)
+        public Storage(string storageKind, DataType dataType)
         {
             this.Kind = storageKind;
+            this.DataType = dataType;
         }
 
         public string Kind { get; private set; }
         public StorageDomain Domain { get; set; }
         public ulong BitAddress { get; set; }
         public virtual ulong BitSize { get; set; }
+        /// <summary>
+        /// The size and domain of the storage.
+        /// </summary>
+        public DataType DataType { get; }
+
         public string Name { get; protected set; }
 
         public abstract int OffsetOf(Storage storage);
@@ -81,18 +87,16 @@ namespace Reko.Core
     /// </summary>
 	public class FlagGroupStorage : Storage
     {
-        public FlagGroupStorage(RegisterStorage freg, uint grfMask, string name, DataType dataType) : base("FlagGroup")
+        public FlagGroupStorage(RegisterStorage freg, uint grfMask, string name, DataType dataType) : base("FlagGroup", dataType)
         {
             this.FlagRegister = freg;
             this.FlagGroupBits = grfMask;
             this.Domain = freg.Domain;
             this.Name = name;
-            this.DataType = dataType;
         }
 
         public RegisterStorage FlagRegister { get; private set; }
         public uint FlagGroupBits { get; private set; }
-        public DataType DataType { get; private set; }
 
         public override T Accept<T>(StorageVisitor<T> visitor)
         {
@@ -136,13 +140,11 @@ namespace Reko.Core
 
     public class FpuStackStorage : Storage
     {
-        public FpuStackStorage(int depth, DataType dataType) : base("FpuStack")
+        public FpuStackStorage(int depth, DataType dataType) : base("FpuStack", dataType)
         {
             this.FpuStackOffset = depth;
-            this.DataType = dataType;
         }
 
-        public DataType DataType { get; private set; }
         public int FpuStackOffset { get; private set; }
 
         public override T Accept<T>(StorageVisitor<T> visitor)
@@ -183,7 +185,7 @@ namespace Reko.Core
     /// </summary>
     public class MemoryStorage : Storage
     {
-        public MemoryStorage() : base("Global")
+        public MemoryStorage() : base("Global", null)
         {
             this.Domain = StorageDomain.Memory;
         }
@@ -214,7 +216,7 @@ namespace Reko.Core
     /// </summary>
     public class OutArgumentStorage : Storage
     {
-        public OutArgumentStorage(Identifier originalId) : base("out")
+        public OutArgumentStorage(Identifier originalId) : base("out", originalId.DataType)
         {
             this.OriginalIdentifier = originalId;
         }
@@ -265,18 +267,13 @@ namespace Reko.Core
     /// </summary>
 	public class RegisterStorage : Storage
     {
-        private RegisterStorage(string kind) : base(kind)
-        {
-        }
-
-        public RegisterStorage(string regName, int number, uint bitAddress, PrimitiveType dt) : base("Register")
+        public RegisterStorage(string regName, int number, uint bitAddress, PrimitiveType dataType) : base("Register", dataType)
         {
             this.Name = regName;
             this.Number = number;
             this.BitAddress = bitAddress;
-            this.DataType = dt;
             this.Domain = (StorageDomain)(number + (int)StorageDomain.Register);
-            int bitSize = dt.BitSize;
+            int bitSize = dataType.BitSize;
             if (bitSize == 64)
             {
                 BitMask = ~0ul;
@@ -318,12 +315,7 @@ namespace Reko.Core
         /// </summary>
         public ulong BitMask { get; private set; }
 
-        /// <summary>
-        /// The size and domain of the register.
-        /// </summary>
-        /// <remarks>
-        /// General-purpose registers can use the Domain.Word </remarks>
-        public PrimitiveType DataType { get; private set; }
+        public new PrimitiveType DataType => (PrimitiveType) base.DataType;
 
         public int Number { get; private set; }
 
@@ -421,16 +413,12 @@ namespace Reko.Core
             writer.Write(Name);
         }
 
-        public static RegisterStorage None { get { return none; } }
+        public static RegisterStorage None => none;
 
         private static RegisterStorage none =
-            new RegisterStorage("None")
+            new RegisterStorage("None", -1, 0, PrimitiveType.Create(Types.Domain.Any, 0))
             {
-                Name = "None",
-                Number = -1,
                 Domain = StorageDomain.None,
-                BitAddress = 0,
-                DataType = PrimitiveType.Create(Types.Domain.Any, 0)
             };
 
         public Expression GetSlice(Expression value)
@@ -448,26 +436,23 @@ namespace Reko.Core
     public class SequenceStorage : Storage
     {
         public SequenceStorage(Storage head, Storage tail, DataType dt)
-            : base("Sequence")
+            : base("Sequence", dt)
         {
             this.Head = head;
             this.Tail = tail;
             this.Name = $"{head.Name}:{tail.Name}";
-            this.DataType = dt;
         }
 
         public SequenceStorage(string name, Storage head, Storage tail, DataType dt)
-            : base("Sequence")
+            : base("Sequence", dt)
         {
             this.Head = head;
             this.Tail = tail;
             this.Name = name;
-            this.DataType = dt;
         }
 
         public Storage Head { get; private set; }
         public Storage Tail { get; private set; }
-        public DataType DataType { get; private set; }
 
         public override T Accept<T>(StorageVisitor<T> visitor)
         {
@@ -515,8 +500,8 @@ namespace Reko.Core
 
     public abstract class StackStorage : Storage
     {
-        public StackStorage(string kind)
-            : base(kind)
+        public StackStorage(string kind, DataType dt)
+            : base(kind, dt)
         {
         }
 
@@ -530,16 +515,14 @@ namespace Reko.Core
         /// direction the stack grows, there may be negative stack offsets for parameters, although most popular
         /// general purpose processors (x86, PPC, m68K) grown their stacks down toward lower memory addresses.
         /// </remarks>
-        public DataType DataType { get; protected set; }
         public int StackOffset { get; protected set; }
     }
 
     public class StackArgumentStorage : StackStorage
     {
-        public StackArgumentStorage(int cbOffset, DataType dataType) : base("Stack")
+        public StackArgumentStorage(int cbOffset, DataType dataType) : base("Stack", dataType)
         {
             this.StackOffset = cbOffset;
-            this.DataType = dataType;
         }
 
         public override T Accept<T>(StorageVisitor<T> visitor)
@@ -587,10 +570,9 @@ namespace Reko.Core
     public class StackLocalStorage : StackStorage
     {
         public StackLocalStorage(int cbOffset, DataType dataType)
-            : base("Local")
+            : base("Local", dataType)
         {
             this.StackOffset = cbOffset;
-            this.DataType = dataType;
         }
 
         public override T Accept<T>(StorageVisitor<T> visitor)
@@ -614,7 +596,6 @@ namespace Reko.Core
         {
             return GetType().GetHashCode() ^ StackOffset;
         }
-
 
         public override int OffsetOf(Storage stgSub)
         {
@@ -647,19 +628,16 @@ namespace Reko.Core
 	public class TemporaryStorage : Storage
     {
         protected TemporaryStorage(string name, StorageDomain domain, DataType dt)
-            : base("Temporary")
+            : base("Temporary", dt)
         {
             Domain = domain;
             Name = name;
-            DataType = dt;
         }
 
         public TemporaryStorage(string name, int number, DataType dt)
             : this(name, StorageDomain.Temporary + number, dt)
         {
         }
-
-        public DataType DataType { get; private set; }
 
         public override T Accept<T>(StorageVisitor<T> visitor)
         {
