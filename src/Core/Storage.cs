@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,15 +35,22 @@ namespace Reko.Core
     /// </summary>
     public abstract class Storage
     {
-        public Storage(string storageKind)
+        public Storage(string storageKind, DataType dataType)
         {
             this.Kind = storageKind;
+            this.DataType = dataType;
         }
 
         public string Kind { get; private set; }
         public StorageDomain Domain { get; set; }
         public ulong BitAddress { get; set; }
         public virtual ulong BitSize { get; set; }
+
+        /// <summary>
+        /// The size and domain of the storage.
+        /// </summary>
+        public DataType DataType { get; }
+
         public string Name { get; protected set; }
         public int Number { get; protected set; }
 
@@ -132,14 +139,13 @@ namespace Reko.Core
     /// </summary>
 	public class FlagGroupStorage : Storage
     {
-        public FlagGroupStorage(RegisterStorage freg, uint grfMask, string name, DataType dataType) : base("FlagGroup")
+        public FlagGroupStorage(RegisterStorage freg, uint grfMask, string name, DataType dataType) : base("FlagGroup", dataType)
         {
             this.Domain = freg.Domain;
             this.FlagRegister = freg;
             this.FlagGroupBits = grfMask;
             this.Domain = freg.Domain;
             this.Name = name;
-            this.DataType = dataType;
             this.BitSize = (uint)dataType.BitSize;
         }
 
@@ -147,8 +153,8 @@ namespace Reko.Core
         /// The register in which bits of the flag group are located.
         /// </summary>
         public RegisterStorage FlagRegister { get; private set; }
+
         public uint FlagGroupBits { get; private set; }
-        public DataType DataType { get; private set; }
 
         public override T Accept<T>(StorageVisitor<T> visitor)
         {
@@ -230,10 +236,9 @@ namespace Reko.Core
     /// </summary>
     public class FpuStackStorage : Storage
     {
-        public FpuStackStorage(int depth, DataType dataType) : base("FpuStack")
+        public FpuStackStorage(int depth, DataType dataType) : base("FpuStack", dataType)
         {
             this.FpuStackOffset = depth;
-            this.DataType = dataType;
             this.Domain = (StorageDomain)(StorageDomain.FpuStack + depth);
             if (FpuStackOffset >= 0)
             {
@@ -246,7 +251,7 @@ namespace Reko.Core
         }
 
         public override ulong BitSize { get { return (ulong)DataType.BitSize; } }
-        public DataType DataType { get; private set; }
+
         public int FpuStackOffset { get; private set; }
 
         public override T Accept<T>(StorageVisitor<T> visitor)
@@ -312,7 +317,7 @@ namespace Reko.Core
     /// </summary>
     public class MemoryStorage : Storage
     {
-        public MemoryStorage(string name, StorageDomain domain) : base(name)
+        public MemoryStorage(string name, StorageDomain domain) : base(name, null)
         {
             this.Name = name;
             this.Domain = domain;
@@ -366,7 +371,7 @@ namespace Reko.Core
     /// </summary>
     public class OutArgumentStorage : Storage
     {
-        public OutArgumentStorage(Identifier originalId) : base("out")
+        public OutArgumentStorage(Identifier originalId) : base("out", originalId.DataType)
         {
             this.OriginalIdentifier = originalId;
         }
@@ -427,18 +432,13 @@ namespace Reko.Core
     /// </summary>
 	public class RegisterStorage : Storage, IComparable<RegisterStorage>
     {
-        private RegisterStorage(string kind) : base(kind)
-        {
-        }
-
-        public RegisterStorage(string regName, int number, uint bitAddress, PrimitiveType dt) : base("Register")
+        public RegisterStorage(string regName, int number, uint bitAddress, PrimitiveType dataType) : base("Register", dataType)
         {
             this.Name = regName;
             this.Number = number;
             this.BitAddress = bitAddress;
-            this.DataType = dt;
             this.Domain = (StorageDomain)(number + (int)StorageDomain.Register);
-            int bitSize = dt.BitSize;
+            int bitSize = dataType.BitSize;
             if (bitSize == 64)
             {
                 BitMask = ~0ul;
@@ -485,7 +485,7 @@ namespace Reko.Core
         /// </summary>
         /// <remarks>
         /// General-purpose registers can use the Domain.Word </remarks>
-        public PrimitiveType DataType { get; private set; }
+        public new PrimitiveType DataType => (PrimitiveType) base.DataType;
 
         public override T Accept<T>(StorageVisitor<T> visitor)
         {
@@ -605,14 +605,11 @@ namespace Reko.Core
             writer.Write(Name);
         }
 
-        public static RegisterStorage None { get; } = new RegisterStorage("None")
-        {
-            Name = "None",
-            Number = -1,
-            Domain = StorageDomain.None,
-            BitAddress = 0,
-            DataType = PrimitiveType.Create(Types.Domain.Any, 0)
-        };
+        public static RegisterStorage None { get; } =
+            new RegisterStorage("None", -1, 0, PrimitiveType.Create(Types.Domain.Any, 0))
+            {
+                Domain = StorageDomain.None,
+            };
 
         public Expression GetSlice(Expression value)
         {
@@ -637,26 +634,23 @@ namespace Reko.Core
     public class SequenceStorage : Storage
     {
         public SequenceStorage(DataType dt, Storage head, Storage tail)
-            : base("Sequence")
+            : base("Sequence", dt)
         {
             this.Head = head;
             this.Tail = tail;
             this.Name = $"{head.Name}:{tail.Name}";
-            this.DataType = dt;
         }
 
         public SequenceStorage(string name, Storage head, Storage tail, DataType dt)
-            : base("Sequence")
+            : base("Sequence", dt)
         {
             this.Head = head;
             this.Tail = tail;
             this.Name = name;
-            this.DataType = dt;
         }
 
         public Storage Head { get; private set; }
         public Storage Tail { get; private set; }
-        public DataType DataType { get; private set; }
 
         public override T Accept<T>(StorageVisitor<T> visitor)
         {
@@ -750,15 +744,12 @@ namespace Reko.Core
     public abstract class StackStorage : Storage
     {
         public StackStorage(string kind, int cbOffset, DataType dt)
-            : base(kind)
+            : base(kind, dt)
         {
             this.StackOffset = cbOffset;
-            this.DataType = dt;
             this.BitSize = (uint)dt.BitSize;
             this.Domain = StorageDomain.Stack + cbOffset;
         }
-
-        public DataType DataType { get; private set; }
 
         /// <summary>
         /// Offset from stack pointer as it was when the procedure was entered.
@@ -872,7 +863,6 @@ namespace Reko.Core
             return GetType().GetHashCode() ^ StackOffset;
         }
 
-
         public override int OffsetOf(Storage stgSub)
         {
             if (!(stgSub is StackLocalStorage that))
@@ -904,11 +894,10 @@ namespace Reko.Core
 	public class TemporaryStorage : Storage
     {
         protected TemporaryStorage(string name, StorageDomain domain, DataType dt)
-            : base("Temporary")
+            : base("Temporary", dt)
         {
             Domain = domain;
             Name = name;
-            DataType = dt;
             BitSize = (uint)dt.BitSize;
         }
 
@@ -916,8 +905,6 @@ namespace Reko.Core
             : this(name, StorageDomain.Temporary + number, dt)
         {
         }
-
-        public DataType DataType { get; private set; }
 
         public override T Accept<T>(StorageVisitor<T> visitor)
         {

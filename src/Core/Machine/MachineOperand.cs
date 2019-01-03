@@ -33,12 +33,11 @@ namespace Reko.Core.Machine
     /// </summary>
 	public abstract class MachineOperand
 	{
-        public PrimitiveType Width { get { return width; } set { width = value; } }
-        private PrimitiveType width;
+        public PrimitiveType Width { get; set; }
 
 		protected MachineOperand(PrimitiveType width)
 		{
-			this.width = width;
+			this.Width = width;
 		}
 
         public sealed override string ToString()
