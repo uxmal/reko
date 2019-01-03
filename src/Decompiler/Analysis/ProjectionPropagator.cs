@@ -128,6 +128,7 @@ namespace Reko.Analysis
                 if (!AllSame(sids, (a, b) => a.DefStatement.Block == b.DefStatement.Block))
                     return seq;
 
+                var dtWide = PrimitiveType.CreateWord(seq.DataType.BitSize);
                 Identifier idWide = GenerateWideIdentifier(seq.DataType, sids);
 
                 var ass = sids.Select(s => s.DefStatement.Instruction as Assignment).ToArray();
@@ -140,7 +141,7 @@ namespace Reko.Analysis
                         if (AllSame(slices, (a, b) => a.Expression == b.Expression) &&
                             AllAdjacent(slices))
                         {
-                            return RewriteSeqOfSlices(seq.DataType, sids, slices);
+                            return RewriteSeqOfSlices(dtWide, sids, slices);
                         }
                         return seq;
                     }
@@ -339,19 +340,41 @@ namespace Reko.Analysis
                 // We want 
                 // call
                 //    def: a_b_3
+                // a_1 = SLICE(a_b_3, ...)
+                // b_2 = SLICE(a_b_3, ...)
                 // ...
                 // ...a_b_3
+                var callStm = sids[0].DefStatement;
                 foreach (var s in sids)
                 {
                     s.Uses.Remove(this.Statement);
                 }
 
-                var sidDst = ssa.Identifiers.Add(idWide, sids[0].DefStatement, null, false);
+                // Create an SSA ID for the fused identifier and replace the
+                // definitions of its parts with a single definition of the fused identifier
+                var sidDst = ssa.Identifiers.Add(idWide, callStm, null, false);
                 foreach (var sid in sids)
                 {
                     call.Definitions.RemoveWhere(cb => cb.Expression == sid.Identifier);
                 }
                 call.Definitions.Add(new CallBinding(sidDst.Identifier.Storage, sidDst.Identifier));
+                sidDst.Uses.Add(this.Statement);
+
+                // Add alias assignments for the sub-identifiers after the call statement.
+                var block = callStm.Block;
+                int iStm = block.Statements.IndexOf(callStm) + 1;
+                foreach (var s in sids)
+                {
+                    var stmAss = block.Statements.Insert(
+                        iStm,
+                        callStm.LinearAddress,
+                        new AliasAssignment(
+                            s.Identifier,
+                            new Slice(s.Identifier.DataType, sidDst.Identifier, idWide.Storage.OffsetOf(s.Identifier.Storage))));
+                    sidDst.Uses.Add(stmAss);
+                    s.DefStatement = stmAss;
+                    ++iStm;
+                }
                 return sidDst.Identifier;
             }
         }

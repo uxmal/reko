@@ -295,7 +295,7 @@ l1:
 	def rcx
 	t1 = SLICE(rcx, byte, 12)
 	t2 = SLICE(rcx, byte, 4)
-	cx_3 = SLICE(rcx, cui16, 4)
+	cx_3 = SLICE(rcx, word16, 4)
 	return
 SsaProcedureBuilder_exit:
 ";
@@ -396,6 +396,8 @@ SsaProcedureBuilder_exit:
 l1:
 	call <invalid> (retsize: 2;)
 		defs: hl:hl_1
+	h_1 = SLICE(hl_1, byte, 8) (alias)
+	l_2 = SLICE(hl_1, byte, 0) (alias)
 	Mem2[0x1234:cui16] = hl_1
 	return
 SsaProcedureBuilder_exit:
@@ -414,5 +416,38 @@ SsaProcedureBuilder_exit:
                 m.Return();
             });
         }
+
+        [Test]
+        public void Prjpr_Call_To_Sequence_Multiple_Uses()
+        {
+            var sExp =
+            #region Expected
+@"SsaProcedureBuilder_entry:
+l1:
+	call <invalid> (retsize: 2;)
+		defs: hl:hl_1
+	h_1 = SLICE(hl_1, byte, 8) (alias)
+	l_2 = SLICE(hl_1, byte, 0) (alias)
+	Mem2[0x1234:cui16] = hl_1
+	Mem3[0x1236:cui16] = hl_1
+	return
+SsaProcedureBuilder_exit:
+";
+            #endregion
+
+            Given_Z80_Arch();
+            RunTest(sExp, arch, m =>
+            {
+                var h_1 = m.Reg("h_1", Z80Registers.h);
+                var l_2 = m.Reg("l_2", Z80Registers.l);
+                m.Call("dont_care", 2,
+                    new Identifier[0],
+                    new[] { h_1, l_2 });
+                m.MStore(m.Word16(0x1234), m.Seq(h_1, l_2));
+                m.MStore(m.Word16(0x1236), m.Seq(h_1, l_2));
+                m.Return();
+            });
+        }
+
     }
 }
