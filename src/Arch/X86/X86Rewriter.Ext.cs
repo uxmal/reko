@@ -94,6 +94,16 @@ namespace Reko.Arch.X86
                     SrcOp(instrCur.op2)));
         }
 
+        private void RewriteSldt()
+        {
+            rtlc = InstrClass.System;
+            m.Assign(
+                SrcOp(instrCur.op1),
+                host.PseudoProcedure(
+                    "__sldt",
+                    instrCur.op1.Width));
+        }
+
         public void RewriteLfence()
         {
             m.SideEffect(host.PseudoProcedure("__lfence", VoidType.Instance));

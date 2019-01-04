@@ -27,30 +27,29 @@ namespace Reko.Arch.X86
 {
     public partial class X86Disassembler
     {
-        private static OpRec[] Create0F3AOprecs()
+        private static Decoder[] Create0F3AOprecs()
         {
-            return new OpRec[] {
+            return new Decoder[] {
 
                 // 00
-                new PrefixedOpRec(
-                    Opcode.illegal, "",
-                    Opcode.vpermq, "Vqq,Wqq,Ib"),
-                s_invalid,
-                s_invalid,
-                s_invalid,
-                s_invalid,
-                s_invalid,
-                s_invalid,
+                new PrefixedDecoder(dec66: Instr(Opcode.vpermq, "Vqq,Wqq,Ib")),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpermpd, "Vqq,Wqq,Ib")),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpblendd, "Vx,Hx,Wx,Ib")),
                 s_invalid,
 
+                new PrefixedDecoder(dec66: Instr(Opcode.vpermilps, "Vx,Wx,Ib")),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpermilpd, "Vx,Wx,Ib")),
+                new PrefixedDecoder(dec66: Instr(Opcode.vperm2f128, "Vqq,Hqq,Wqq,Ib")),
                 s_invalid,
-                s_invalid,
-                s_invalid,
-                s_invalid,
-                s_invalid,
-                s_invalid,
-                s_invalid,
-                new PrefixedOpRec(
+
+                s_nyi,
+                s_nyi,
+                s_nyi,
+                s_nyi,
+                s_nyi,
+                s_nyi,
+                s_nyi,
+                new PrefixedDecoder(
                     Opcode.palignr, "Pq,Qq,Ib",
                     Opcode.palignr, "Vx,Wx,Ib"),
 
@@ -59,17 +58,17 @@ namespace Reko.Arch.X86
                 s_invalid,
                 s_invalid,
                 s_invalid,
-                s_invalid,
-                s_invalid,
-                s_invalid,
-                s_invalid,
+                s_nyi,
+                s_nyi,
+                s_nyi,
+                s_nyi,
 
+                s_nyi,
+                s_nyi,
                 s_invalid,
                 s_invalid,
                 s_invalid,
-                s_invalid,
-                s_invalid,
-                s_invalid,
+                s_nyi,
                 s_invalid,
                 s_invalid,
 
@@ -79,9 +78,9 @@ namespace Reko.Arch.X86
                 s_invalid,
                 s_invalid,
                 s_invalid,
-                s_invalid,
-                s_invalid,
-                s_invalid,
+                s_nyi,
+                s_nyi,
+                s_nyi,
 
                 s_invalid,
                 s_invalid,
@@ -102,8 +101,8 @@ namespace Reko.Arch.X86
                 s_invalid,
                 s_invalid,
 
-                s_invalid,
-                s_invalid,
+                s_nyi,
+                s_nyi,
                 s_invalid,
                 s_invalid,
                 s_invalid,
@@ -112,20 +111,20 @@ namespace Reko.Arch.X86
                 s_invalid,
 
                 // 40
+                s_nyi,
+                s_nyi,
+                s_nyi,
                 s_invalid,
+                s_nyi,
                 s_invalid,
-                s_invalid,
-                s_invalid,
-                s_invalid,
-                s_invalid,
-                s_invalid,
+                s_nyi,
                 s_invalid,
 
                 s_invalid,
                 s_invalid,
-                s_invalid,
-                s_invalid,
-                s_invalid,
+                Instr(Opcode.vblendvpsv, "Vx,Hx,Wx,Lx"),
+                Instr(Opcode.vblendvpdv, "Vx,Hx,Wx,Lx"),
+                s_nyi,
                 s_invalid,
                 s_invalid,
                 s_invalid,
@@ -150,10 +149,10 @@ namespace Reko.Arch.X86
                 s_invalid,
 
                 // 60
-                s_invalid,
-                s_invalid,
-                s_invalid,
-                new PrefixedOpRec(
+                s_nyi,
+                s_nyi,
+                s_nyi,
+                new PrefixedDecoder(
                     dec66: Instr(Opcode.pcmpistri, "Vx,Wx,Ib")),
                 s_invalid,
                 s_invalid,
@@ -245,7 +244,6 @@ namespace Reko.Arch.X86
                 s_invalid,
                 s_invalid,
 
-
                 // B0
                 s_invalid,
                 s_invalid,
@@ -301,7 +299,7 @@ namespace Reko.Arch.X86
                 s_invalid,
                 s_invalid,
                 s_invalid,
-                s_invalid,
+                s_nyi,
 
                 // E0
                 s_invalid,
@@ -323,16 +321,7 @@ namespace Reko.Arch.X86
                 s_invalid,
 
                 // F0
-                s_invalid,
-                s_invalid,
-                s_invalid,
-                s_invalid,
-                s_invalid,
-                s_invalid,
-                s_invalid,
-                s_invalid,
-
-                s_invalid,
+                s_nyi,
                 s_invalid,
                 s_invalid,
                 s_invalid,
@@ -341,6 +330,14 @@ namespace Reko.Arch.X86
                 s_invalid,
                 s_invalid,
 
+                s_invalid,
+                s_invalid,
+                s_invalid,
+                s_invalid,
+                s_invalid,
+                s_invalid,
+                s_invalid,
+                s_invalid,
             };
         }
     }

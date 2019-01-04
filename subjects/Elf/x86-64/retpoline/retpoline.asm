@@ -274,13 +274,13 @@ main proc
 	mov	[rbp-18],rsi
 	mov	[rbp-28],rax
 	mov	rax,[rbp-28]
-	mov	r11,[r8]
+	mov	r11,[rax]
 	mov	edi,00000001
 	mov	esi,00000005
 	call	00000000004006F0
 	mov	[rbp-30],rax
 	mov	rax,[rbp-28]
-	mov	r11,[r8+08]
+	mov	r11,[rax+08]
 	mov	rdi,[rbp-30]
 	mov	esi,00000078
 	call	00000000004006F0

@@ -169,10 +169,13 @@ namespace Reko.CmdLine
                     decompiler.Project.Programs[0].User.ShowBytesInDisassembly = true;
                 }
                 decompiler.ScanPrograms();
-                decompiler.AnalyzeDataFlow();
-                decompiler.ReconstructTypes();
-                decompiler.StructureProgram();
-                decompiler.WriteDecompilerProducts();
+                if (!pArgs.ContainsKey("scan-only"))
+                {
+                    decompiler.AnalyzeDataFlow();
+                    decompiler.ReconstructTypes();
+                    decompiler.StructureProgram();
+                    decompiler.WriteDecompilerProducts();
+                }
             }
             catch (Exception ex)
             {
@@ -352,6 +355,10 @@ namespace Reko.CmdLine
                 {
                     parsedArgs["dasm-bytes"] = true;
                 }
+                else if (args[i] == "--scan-only")
+                {
+                    parsedArgs["scan-only"] = true;
+                }
                 else if (arg.StartsWith("-"))
                 {
                     w.WriteLine("error: unrecognized option {0}", arg);
@@ -432,6 +439,8 @@ namespace Reko.CmdLine
             w.WriteLine("                          the binary:");
             w.WriteLine("    shingle               Use shingle assembler to discard data ");
             w.WriteLine(" --metadata <filename>    Use the file <filename> as a source of metadata");
+            w.WriteLine(" --scan-only              Only scans the binary to find instructios, forgoing");
+            w.WriteLine("                          full decompilation.");
             w.WriteLine(" --time-limit <s>         Limit execution time to s seconds");
             //           01234567890123456789012345678901234567890123456789012345678901234567890123456789
         }

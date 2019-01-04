@@ -189,9 +189,9 @@ foo:
 
             CreateDisassembler16(program.SegmentMap.Segments.Values.First().MemoryArea);
             X86Instruction[] instrs = dasm.Take(3).ToArray();
-            Assert.AreEqual(Registers.ss, ((MemoryOperand)instrs[0].op2).DefaultSegment);
-            Assert.AreEqual(Registers.ds, ((MemoryOperand)instrs[1].op2).DefaultSegment);
-            Assert.AreEqual(Registers.cs, ((MemoryOperand)instrs[2].op2).DefaultSegment);
+            Assert.AreEqual(Registers.ss, ((MemoryOperand) instrs[0].op2).DefaultSegment);
+            Assert.AreEqual(Registers.ds, ((MemoryOperand) instrs[1].op2).DefaultSegment);
+            Assert.AreEqual(Registers.cs, ((MemoryOperand) instrs[2].op2).DefaultSegment);
         }
 
         [Test]
@@ -301,7 +301,7 @@ movzx	ax,byte ptr [bp+04]
 ");
             CreateDisassembler32(program.SegmentMap.Segments.Values.First().MemoryArea);
             var instr = dasm.First();
-            MemoryOperand mem = (MemoryOperand)instr.op2;
+            MemoryOperand mem = (MemoryOperand) instr.op2;
             Assert.AreEqual(2, mem.Scale);
             Assert.AreEqual(RegisterStorage.None, mem.Base);
             Assert.AreEqual(Registers.edi, mem.Index);
@@ -562,7 +562,7 @@ movzx	ax,byte ptr [bp+04]
         public void Dis_x86_Call32()
         {
             var instr = Disassemble32(0xE9, 0x78, 0x56, 0x34, 012);
-            var addrOp = (AddressOperand)instr.op1;
+            var addrOp = (AddressOperand) instr.op1;
             Assert.AreEqual("0C35567D", addrOp.ToString());
         }
 
@@ -570,7 +570,7 @@ movzx	ax,byte ptr [bp+04]
         public void Dis_x86_Call16()
         {
             var instr = Disassemble16(0xE9, 0x78, 0x56);
-            var addrOp = (ImmediateOperand)instr.op1;
+            var addrOp = (ImmediateOperand) instr.op1;
             Assert.AreEqual("567B", addrOp.ToString());
         }
 
@@ -579,7 +579,7 @@ movzx	ax,byte ptr [bp+04]
         {
             var instr = Disassemble32(0x8B, 0x15, 0x22, 0x33, 0x44, 0x55, 0x66);
             Assert.AreEqual("mov\tedx,[55443322]", instr.ToString());
-            var memOp = (MemoryOperand)instr.op2;
+            var memOp = (MemoryOperand) instr.op2;
             Assert.AreEqual("ptr32", memOp.Offset.DataType.ToString());
         }
 
@@ -588,7 +588,7 @@ movzx	ax,byte ptr [bp+04]
         {
             var instr = Disassemble16(0x8B, 0x16, 0x22, 0x33, 0x44);
             Assert.AreEqual("mov\tdx,[3322]", instr.ToString());
-            var memOp = (MemoryOperand)instr.op2;
+            var memOp = (MemoryOperand) instr.op2;
             Assert.AreEqual("word16", memOp.Offset.DataType.ToString());
         }
 
@@ -1211,7 +1211,7 @@ movzx	ax,byte ptr [bp+04]
         public void X86dis_vpmovsxbw()
         {
             AssertCode32("illegal", 0x0F, 0x38, 0x30, 0x42, 0x42);
-            AssertCode32("vpmovsxbw\txmm0,qword ptr [edx+42]", 0x66, 0x0F, 0x38, 0x30, 0x42, 0x42);
+            AssertCode32("vpmovzxbw\txmm0,qword ptr [edx+42]", 0x66, 0x0F, 0x38, 0x30, 0x42, 0x42);
         }
 
 
@@ -1355,7 +1355,6 @@ movzx	ax,byte ptr [bp+04]
             AssertCode32("emms", 0x0F, 0x77);
         }
 
-        // /v
         [Test]
         public void X86dis_vmread()
         {
@@ -1740,8 +1739,1004 @@ movzx	ax,byte ptr [bp+04]
             AssertCode32("fcomip\tst(0),st(2)", 0xDF, 0xF2);
         }
 
-        //0x0F, 0xC7,       // grp9
-        //0x0F, 0xD0, 
+
+        [Test]
+        public void X86Dis_vaddsubpd_c531d04401c8()
+        {
+            var instr = Disassemble64(0xc5, 0x31, 0xd0, 0x44, 0x01, 0xc8);
+            Assert.AreEqual("vaddsubpd\txmm8,xmm9,[rcx+rax-38]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_sldt_0f00c1()
+        {
+            var instr = Disassemble64(0x0f, 0x00, 0xc1);
+            Assert.AreEqual("sldt\tecx", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_sgdt()
+        {
+            var instr = Disassemble64(0x0f, 0x01, 0x00);
+            Assert.AreEqual("sgdt\t[rax]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vmcall()
+        {
+            var instr = Disassemble64(0x0f, 0x01, 0xC1);
+            Assert.AreEqual("vmcall", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_sidt()
+        {
+            var instr = Disassemble64(0x0f, 0x01, 0x0d, 0xd6, 0xd7, 0x0a, 0x01);
+            Assert.AreEqual("sidt\t[rip+010AD7D6]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_lgdt()
+        {
+            var instr = Disassemble64(0x0f, 0x01, 0x14, 0x0f);
+            Assert.AreEqual("lgdt\t[rdi+rcx]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_mwait()
+        {
+            var instr = Disassemble64(0x0f, 0x01, 0xC9);
+            Assert.AreEqual("mwait", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_invalid_0f6c()
+        {
+            var instr = Disassemble64(0x0f, 0x6c);
+            Assert.AreEqual("illegal", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vpunpcklqdq()
+        {
+            var instr = Disassemble64(0x66, 0x0f, 0x6c, 0xC3);
+            Assert.AreEqual("vpunpcklqdq\txmm0,xmm3", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_invalid_0f6d()
+        {
+            var instr = Disassemble64(0x0f, 0x6d);
+            Assert.AreEqual("illegal", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_ud0_0fffff()
+        {
+            var instr = Disassemble64(0x0f, 0xff, 0xff);
+            Assert.AreEqual("ud0\tedi,edi", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_bt_imm()
+        {
+            var instr = Disassemble64(0x0F, 0xBA, 0xE3, 0x04);
+            Assert.AreEqual("bt\tebx,04", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_rdrand()
+        {
+            var instr = Disassemble64(0x0f, 0xc7, 0xF3);
+            Assert.AreEqual("rdrand\tebx", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_fcomi()
+        {
+            var instr = Disassemble64(0xdb, 0xf1);
+            Assert.AreEqual("fcomi\tst(0),st(1)", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vaddsubpd()
+        {
+            var instr = Disassemble64(0xc5, 0xe9, 0xd0, 0xfe);
+            Assert.AreEqual("vaddsubpd\txmm7,xmm2,xmm6", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vblendvpdv()
+        {
+            AssertCode32("vblendvpdv\txmm0,xmm2,xmm4", 0x0F, 0x3A, 0x4B, 0xC2, 0x42);
+        }
+
+        [Test]
+        public void X86Dis_phsubsw()
+        {
+            AssertCode32("phsubsw\tmm0,mm2", 0x0F, 0x38, 0x07, 0xC2);
+        }
+
+
+        [Test]
+        public void X86Dis_vcvttpd2dq()
+        {
+            var instr = Disassemble64(0xc5, 0xe9, 0xe6, 0xf5);
+            Assert.AreEqual("vcvttpd2dq\txmm6,xmm5", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_nop_0f19c0()
+        {
+            var instr = Disassemble64(0x0f, 0x19, 0xc0);
+            Assert.AreEqual("nop\teax", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_nop_0f19c1()
+        {
+            var instr = Disassemble64(0x0f, 0x19, 0xc0);
+            Assert.AreEqual("nop\teax", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_lidt()
+        {
+            var instr = Disassemble64(0x0f, 0x01, 0x1f);
+            Assert.AreEqual("lidt\t[rdi]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_smsw()
+        {
+            var instr = Disassemble64(0x0f, 0x01, 0x61, 0x40);
+            Assert.AreEqual("smsw\tword ptr [rcx+40]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_lmsw()
+        {
+            var instr = Disassemble64(0x0f, 0x01, 0x74, 0x45, 0x48);
+            Assert.AreEqual("lmsw\tword ptr [rbp+rax*2+48]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_invlpg()
+        {
+            var instr = Disassemble64(0x0f, 0x01, 0x78, 0x16);
+            Assert.AreEqual("invlpg\tbyte ptr [rax+16]", instr.ToString());
+        }
+
+
+        [Test]
+        public void X86Dis_vmresume_0f01c3()
+        {
+            var instr = Disassemble64(0x0f, 0x01, 0xc3);
+            Assert.AreEqual("vmresume", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vmxoff_0f01c4()
+        {
+            var instr = Disassemble64(0x0f, 0x01, 0xc4);
+            Assert.AreEqual("vmxoff", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_monitor()
+        {
+            var instr = Disassemble64(0x0f, 0x01, 0xc8);
+            Assert.AreEqual("monitor", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_smsw_0f01e6()
+        {
+            var instr = Disassemble64(0x0f, 0x01, 0xe6);
+            Assert.AreEqual("smsw\tesi", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_rdpkru_0f01ee()
+        {
+            var instr = Disassemble64(0x0f, 0x01, 0xee);
+            Assert.AreEqual("rdpkru", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_wrpkru()
+        {
+            var instr = Disassemble64(0x0f, 0x01, 0xef);
+            Assert.AreEqual("wrpkru", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_lmsw_0f01f0()
+        {
+            var instr = Disassemble64(0x0f, 0x01, 0xf0);
+            Assert.AreEqual("lmsw\tax", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_lmsw_0f01f3()
+        {
+            var instr = Disassemble64(0x0f, 0x01, 0xf3);
+            Assert.AreEqual("lmsw\tbx", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_lmsw_0f01f6()
+        {
+            var instr = Disassemble64(0x0f, 0x01, 0xf6);
+            Assert.AreEqual("lmsw\tsi", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_lmsw_0f01f7()
+        {
+            var instr = Disassemble64(0x0f, 0x01, 0xf7);
+            Assert.AreEqual("lmsw\tdi", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_swapgs()
+        {
+            var instr = Disassemble64(0x0f, 0x01, 0xf8);
+            Assert.AreEqual("swapgs", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_monitorx()
+        {
+            var instr = Disassemble64(0x0f, 0x01, 0xfa);
+            Assert.AreEqual("monitorx", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_mwaitx()
+        {
+            var instr = Disassemble64(0x0f, 0x01, 0xfb);
+            Assert.AreEqual("mwaitx", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_unpckhps_0f1500()
+        {
+            var instr = Disassemble64(0x0f, 0x15, 0x00);
+            Assert.AreEqual("unpckhps\txmm0,[rax]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_cldemote_0f1c00()
+        {
+            var instr = Disassemble64(0x0f, 0x1c, 0x00);
+            Assert.AreEqual("cldemote\tbyte ptr [rax]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_pshufb_0f38004154()
+        {
+            var instr = Disassemble64(0x0f, 0x38, 0x00, 0x41, 0x54);
+            Assert.AreEqual("pshufb\tmm0,[rcx+54]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_sha1msg2()
+        {
+            var instr = Disassemble64(0x0f, 0x38, 0xca, 0x74, 0x0b, 0x48);
+            Assert.AreEqual("sha1msg2\txmm6,[rbx+rcx+48]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_packsswb_0f63dd()
+        {
+            var instr = Disassemble64(0x0f, 0x63, 0xdd);
+            Assert.AreEqual("packsswb\tmm3,mm5", instr.ToString());
+        }
+
+
+        [Test]
+        public void X86Dis_psrld()
+        {
+            var instr = Disassemble64(0x0f, 0x72, 0xD3, 0x0B);
+            Assert.AreEqual("psrld\tmm3,0B", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_psrlq()
+        {
+            var instr = Disassemble64(0x0f, 0x73, 0xD3, 0x02);
+            Assert.AreEqual("psrlq\tmm3,02", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vhaddpd()
+        {
+            var instr = Disassemble64(0x66, 0x0f, 0x7c, 0xC3);
+            Assert.AreEqual("vhaddpd\txmm0,xmm3", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vhaddps()
+        {
+            var instr = Disassemble64(0xF2, 0x0f, 0x7c, 0xC3);
+            Assert.AreEqual("vhaddps\txmm0,xmm3", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vhsubpd()
+        {
+            var instr = Disassemble64(0x66, 0x0f, 0x7d, 0xD4);
+            Assert.AreEqual("vhsubpd\txmm2,xmm4", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_rsm()
+        {
+            var instr = Disassemble64(0x0f, 0xaa);
+            Assert.AreEqual("rsm", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_xsave()
+        {
+            var instr = Disassemble32(0x0f, 0xae, 0x27);
+            Assert.AreEqual("xsave\tbyte ptr [edi]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_btr()
+        {
+            var instr = Disassemble64(0x0f, 0xb3, 0x44, 0x24, 0x30);
+            Assert.AreEqual("btr\t[rsp+30],eax", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_jmpe()
+        {
+            var instr = Disassemble64(0x0f, 0xb8);
+            Assert.AreEqual("jmpe", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_ud1()
+        {
+            var instr = Disassemble64(0x0f, 0xb9, 0xa0, 0x01, 0x00, 0x00, 0x0f);
+            Assert.AreEqual("ud1\tesp,[rax+0F000001]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_addsubpd()
+        {
+            var instr = Disassemble64(0x66, 0x0f, 0xd0, 0xD3);
+            Assert.AreEqual("addsubpd\txmm2,xmm3", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_cvtdq2pd()
+        {
+            var instr = Disassemble64(0xF3, 0x0F, 0xE6, 0xC4);
+            Assert.AreEqual("cvtdq2pd\txmm0,xmm4", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_sldt()
+        {
+            var instr = Disassemble64(0x26, 0x0f, 0x00, 0x41, 0x83);
+            Assert.AreEqual("sldt\tword ptr es:[rcx-7D]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_str()
+        {
+            var instr = Disassemble64(0x2e, 0x0f, 0x00, 0x48, 0x85);
+            Assert.AreEqual("str\tword ptr cs:[rax-7B]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_xsave64_480fae27()
+        {
+            var instr = Disassemble64(0x48, 0x0f, 0xae, 0x27);
+            Assert.AreEqual("xsave64\tbyte ptr [rdi]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_btr_rax()
+        {
+            var instr = Disassemble64(0x48, 0x0f, 0xb3, 0x44, 0x24, 0x30);
+            Assert.AreEqual("btr\t[rsp+30],rax", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_cmpxchg16b()
+        {
+            var instr = Disassemble64(0x0f, 0xc7, 0x4c, 0x24, 0x20);
+            Assert.AreEqual("cmpxchg16b\txmmword ptr [rsp+20]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_invpcid()
+        {
+            var instr = Disassemble64(0x66, 0x0f, 0x38, 0x82, 0x01);
+            Assert.AreEqual("invpcid\teax,xmmword ptr [rcx]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vpacksswb_c4014963cc()
+        {
+            var instr = Disassemble64(0xc4, 0x01, 0x49, 0x63, 0xcc);
+            Assert.AreEqual("vpacksswb\txmm9,xmm6,xmm12", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vpacksswb_c40175634183()
+        {
+            var instr = Disassemble64(0xc4, 0x01, 0x75, 0x63, 0x41, 0x83);
+            Assert.AreEqual("vpacksswb\tymm8,ymm1,[r9-7D]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vpunpckhqdq()
+        {
+            var instr = Disassemble64(0xc4, 0x01, 0x75, 0x6d, 0x48, 0x89);
+            Assert.AreEqual("vpunpckhqdq\tymm9,ymm1,[r8-77]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vpshufb()
+        {
+            var instr = Disassemble64(0xc4, 0x02, 0x41, 0x00, 0x48, 0x8b);
+            Assert.AreEqual("vpshufb\txmm9,xmm7,[r8-75]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vfnmsub231ps_c40241beff()
+        {
+            var instr = Disassemble64(0xc4, 0x02, 0x41, 0xbe, 0xff);
+            Assert.AreEqual("vfnmsub231ps\txmm15,xmm7,xmm15", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vtestpd_c402450fb63424()
+        {
+            var instr = Disassemble64(0xc4, 0x02, 0x45, 0x0f, 0xb6, 0x34, 0x24, 0x00, 0x00);
+            Assert.AreEqual("vtestpd\tymm14,[r14+00002434]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_phaddsw()
+        {
+            var instr = Disassemble64(0xc4, 0x02, 0x74, 0x03, 0xC3);
+            Assert.AreEqual("phaddsw\tmm0,mm3", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_phsubw()
+        {
+            var instr = Disassemble64(0xc4, 0x02, 0x74, 0x05, 0xC3);
+            Assert.AreEqual("phsubw\tmm0,mm3", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_psignb()
+        {
+            var instr = Disassemble64(0xc4, 0x02, 0x74, 0x08, 0xC3);
+            Assert.AreEqual("psignb\tmm0,mm3", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vphaddd_c4027502f3()
+        {
+            var instr = Disassemble64(0xc4, 0x02, 0x75, 0x02, 0xf3);
+            Assert.AreEqual("vphaddd\tymm14,ymm1,ymm11", instr.ToString());
+        }
+        [Test]
+        public void X86Dis_vphaddsw()
+        {
+            var instr = Disassemble64(0xc4, 0x02, 0x75, 0x03, 0x31);
+            Assert.AreEqual("vphaddsw\tymm14,ymm1,[r9]", instr.ToString());
+        }
+        [Test]
+        public void X86Dis_vphsubw()
+        {
+            var instr = Disassemble64(0xc4, 0x02, 0x75, 0x05, 0x5b, 0x5d);
+            Assert.AreEqual("vphsubw\tymm11,ymm1,[r11+5D]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vphsubsw_c4027507f0()
+        {
+            var instr = Disassemble64(0xc4, 0x02, 0x75, 0x07, 0xf0);
+            Assert.AreEqual("vphsubsw\tymm14,ymm1,ymm8", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vpsignb()
+        {
+            var instr = Disassemble64(0xc4, 0x02, 0x75, 0x08, 0x41, 0xf6);
+            Assert.AreEqual("vpsignb\tymm8,ymm1,[r9-0A]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vpmulhrsw_c402750b4883()
+        {
+            var instr = Disassemble64(0xc4, 0x02, 0x75, 0x0b, 0x48, 0x83);
+            Assert.AreEqual("vpmulhrsw\tymm9,ymm1,[r8-7D]", instr.ToString());
+        }
+
+
+        [Test]
+        public void X86Dis_vpermps()
+        {
+            var instr = Disassemble64(0xc4, 0x02, 0x75, 0x16, 0x48, 0x89);
+            Assert.AreEqual("vpermps\tymm9,ymm1,[r8-77]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vptest()
+        {
+            var instr = Disassemble64(0xc4, 0x02, 0x75, 0x17, 0x31);
+            Assert.AreEqual("vptest\tymm14,[r9]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vpabsd()
+        {
+            var instr = Disassemble64(0xc4, 0x02, 0x75, 0x1e, 0x48, 0x8b);
+            Assert.AreEqual("vpabsd\tymm9,[r8-75]", instr.ToString());
+        }
+        [Test]
+        [Ignore("addressing mode is off")]
+        public void X86Dis_vpmovsxbw()
+        {
+            var instr = Disassemble64(0xc4, 0x02, 0x75, 0x20, 0x49, 0x83);
+            Assert.AreEqual("vpmovsxbw\tymm9,qword ptr [r9-7d]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vpmovsxbd()
+        {
+            var instr = Disassemble64(0xc4, 0x02, 0x75, 0x21, 0x65, 0x8b);
+            Assert.AreEqual("vpmovsxbd\tymm12,qword ptr [r13-75]", instr.ToString());
+        }
+
+        [Test]
+        [Ignore("addressing mode is off")]
+
+        public void X86Dis_vpmovsxbq()
+        {
+            var instr = Disassemble64(0xc4, 0x02, 0x75, 0x22, 0x41, 0x8b);
+            Assert.AreEqual("vpmovsxbq\tymm8,[r9-75]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vpmovsxwq()
+        {
+            var instr = Disassemble64(0xc4, 0x02, 0x75, 0x24, 0x48, 0x39);
+            Assert.AreEqual("vpmovsxwq\tymm9,qword ptr [r8+39]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vpmuldq()
+        {
+            var instr = Disassemble64(0xc4, 0x02, 0x75, 0x28, 0x31);
+            Assert.AreEqual("vpmuldq\tymm14,ymm1,[r9]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vpcmpeqq()
+        {
+            var instr = Disassemble64(0xc4, 0x02, 0x75, 0x29, 0x4b, 0x15);
+            Assert.AreEqual("vpcmpeqq\tymm9,ymm1,[r11+15]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vmaskmovpd_toreg()
+        {
+            var instr = Disassemble64(0xc4, 0x02, 0x75, 0x2d, 0x5b, 0x48);
+            Assert.AreEqual("vmaskmovpd\tymm11,ymm1,[r11+48]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vmaskmovps_tomem()
+        {
+            var instr = Disassemble64(0xc4, 0x02, 0x75, 0x2e, 0x80, 0x00, 0x34, 0x12, 0x00);
+            Assert.AreEqual("vmaskmovps\t[r8+00123400],ymm1,ymm8", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vmaskmovpd_tomem()
+        {
+            var instr = Disassemble64(0xc4, 0x02, 0x75, 0x2f, 0x4b, 0x43);
+            Assert.AreEqual("vmaskmovpd\t[r11+43],ymm1,ymm9", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vpmovzxbd()
+        {
+            var instr = Disassemble64(0xc4, 0x02, 0x75, 0x31, 0x41, 0x83);
+            Assert.AreEqual("vpmovzxbd\tymm8,qword ptr [r9-7D]", instr.ToString());
+        }
+
+        [Test]
+        [Ignore("addressing mode is off")]
+        public void X86Dis_vpmovzxbq()
+        {
+            var instr = Disassemble64(0xc4, 0x02, 0x75, 0x32, 0x4b, 0x7b);
+            Assert.AreEqual("vpmovzxbq\tymm9,DWORD PTR [r11+7B]", instr.ToString());
+        }
+        [Test]
+        public void X86Dis_vpminuw()
+        {
+            var instr = Disassemble64(0xc4, 0x02, 0x75, 0x3a, 0xf6);
+            Assert.AreEqual("vpminuw\tymm14,ymm1,ymm14", instr.ToString());
+        }
+        [Test]
+        public void X86Dis_vpmaxuw()
+        {
+            var instr = Disassemble64(0xc4, 0x02, 0x75, 0x3e, 0x40, 0x70);
+            Assert.AreEqual("vpmaxuw\tymm8,ymm1,[r8+70]", instr.ToString());
+        }
+        [Test]
+        public void X86Dis_vpmaxud()
+        {
+            var instr = Disassemble64(0xc4, 0x02, 0x75, 0x3f, 0x49, 0x8b);
+            Assert.AreEqual("vpmaxud\tymm9,ymm1,[r9-75]", instr.ToString());
+        }
+        [Test]
+        public void X86Dis_vpsllvd()
+        {
+            var instr = Disassemble64(0xc4, 0x02, 0x75, 0x47, 0x0f);
+            Assert.AreEqual("vpsllvd\tymm9,ymm1,[r15]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vbroadcastb()
+        {
+            var instr = Disassemble64(0xc4, 0x02, 0x75, 0x78, 0x4c, 0x89, 0xe7);
+            Assert.AreEqual("vbroadcastb\tymm9,byte ptr [r9+r9*4-19]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vfmadd213ps()
+        {
+            var instr = Disassemble64(0xc4, 0x02, 0x75, 0xa8, 0x48, 0x63);
+            Assert.AreEqual("vfmadd213ps\tymm9,ymm1,[r8+63]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vaesenc()
+        {
+            var instr = Disassemble64(0xc4, 0x02, 0x75, 0xdc, 0x43, 0xe0, 0xf7, 0x00);
+            Assert.AreEqual("vaesenc\txmm8,xmm1,[r11-20]", instr.ToString());
+        }
+
+        [Test]
+        [Ignore("addressing mode is off")]
+        public void X86Dis_vpgatherqq_c402e99100()
+        {
+            var instr = Disassemble64(0xc4, 0x02, 0xe9, 0x91, 0x00);
+            Assert.AreEqual("vpgatherqq\txmm8,QWORD PTR [r8],xmm2", instr.ToString());
+        }
+        [Test]
+        public void X86Dis_vpshufb_ymm()
+        {
+            var instr = Disassemble64(0xc4, 0x22, 0x2d, 0x00, 0x48, 0x8b);
+            Assert.AreEqual("vpshufb\tymm9,ymm10,[rax-75]", instr.ToString());
+        }
+        [Test]
+        public void X86Dis_vphaddw()
+        {
+            var instr = Disassemble64(0xc4, 0x62, 0x05, 0x01, 0x0f);
+            Assert.AreEqual("vphaddw\tymm9,ymm15,[rdi]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vpunpckhqdq_sib()
+        {
+            var instr = Disassemble64(0xc4, 0x81, 0x3d, 0x6d, 0xb4, 0x0d, 0x01, 0x1, 0x01, 0x01);
+            Assert.AreEqual("vpunpckhqdq\tymm6,ymm8,[r13+r9+01010101]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vpermpd()
+        {
+            var instr = Disassemble64(0xc4, 0x83, 0xc5, 0x01, 0xeb, 0xae);
+            Assert.AreEqual("vpermpd\tymm5,ymm11,AE", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_femms()
+        {
+            var instr = Disassemble64(0xc4, 0xc1, 0xc0, 0x0e);
+            Assert.AreEqual("femms", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vaddsubpd_c509d0e8()
+        {
+            var instr = Disassemble64(0xc5, 0x09, 0xd0, 0xe8);
+            Assert.AreEqual("vaddsubpd\txmm13,xmm14,xmm0", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vaddsubps_c537d0ff()
+        {
+            var instr = Disassemble64(0xc5, 0x37, 0xd0, 0xff);
+            Assert.AreEqual("vaddsubps\tymm15,ymm9,ymm7", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vcvtdq2pd()
+        {
+            var instr = Disassemble64(0xc5, 0x3a, 0xe6, 0x81, 0x5b, 0x5d, 0x41, 0x5C);
+            Assert.AreEqual("vcvtdq2pd\txmm8,[rcx+5C415D5B]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vaddsubpd_c541d0ed()
+        {
+            var instr = Disassemble64(0xc5, 0x41, 0xd0, 0xed);
+            Assert.AreEqual("vaddsubpd\txmm13,xmm7,xmm5", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vpacksswb()
+        {
+            var instr = Disassemble64(0xc5, 0x49, 0x63, 0x44, 0x24, 0x04);
+            Assert.AreEqual("vpacksswb\txmm8,xmm6,[rsp+04]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vpacksswb_c54d63f5()
+        {
+            var instr = Disassemble64(0xc5, 0x4d, 0x63, 0xf5);
+            Assert.AreEqual("vpacksswb\tymm14,ymm6,ymm5", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vmovlps()
+        {
+            var instr = Disassemble64(0xc5, 0x50, 0x13, 0x00);
+            Assert.AreEqual("vmovlps\tqword ptr [rax],xmm8", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vcvttpd2dq_c551e6ff()
+        {
+            var instr = Disassemble64(0xc5, 0x51, 0xe6, 0xff);
+            Assert.AreEqual("vcvttpd2dq\txmm15,xmm7", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vunpckhps_c56015ca()
+        {
+            var instr = Disassemble64(0xc5, 0x60, 0x15, 0xca);
+            Assert.AreEqual("vunpckhps\txmm9,xmm3,xmm2", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vunpckhps()
+        {
+            var instr = Disassemble64(0xc5, 0x74, 0x15, 0x4b, 0x50);
+            Assert.AreEqual("vunpckhps\tymm9,ymm1,[rbx+50]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vpunpckhqdq_ymm()
+        {
+            var instr = Disassemble64(0xc5, 0x75, 0x6d, 0x31);
+            Assert.AreEqual("vpunpckhqdq\tymm14,ymm1,[rcx]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vhaddpd_ymm()
+        {
+            var instr = Disassemble64(0xc5, 0x75, 0x7c, 0x48, 0x8b);
+            Assert.AreEqual("vhaddpd\tymm9,ymm1,[rax-75]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vhsubpd_ymm()
+        {
+            var instr = Disassemble64(0xc5, 0x75, 0x7d, 0x4c, 0x8d, 0xa3);
+            Assert.AreEqual("vhsubpd\tymm9,ymm1,[rbp+rcx*4-5D]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vcvttpd2dq_mem()
+        {
+            var instr = Disassemble64(0xc5, 0x75, 0xe6, 0x31);
+            Assert.AreEqual("vcvttpd2dq\txmm14,ymmword ptr [rcx]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vhaddps_c5777cf7()
+        {
+            var instr = Disassemble64(0xc5, 0x77, 0x7c, 0xf7);
+            Assert.AreEqual("vhaddps\tymm14,ymm1,ymm7", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vaddsubps()
+        {
+            var instr = Disassemble64(0xc5, 0x77, 0xd0, 0x48, 0x89);
+            Assert.AreEqual("vaddsubps\tymm9,ymm1,[rax-77]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vpunpcklqdq_ymm()
+        {
+            var instr = Disassemble64(0xc5, 0x7d, 0x6c, 0x45, 0x31);
+            Assert.AreEqual("vpunpcklqdq\tymm8,ymm0,[rbp+31]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vmovlps_memdst()
+        {
+            var instr = Disassemble64(0xc5, 0x80, 0x13, 0x02);
+            Assert.AreEqual("vmovlps\tqword ptr [rdx],xmm0", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vunpckhps_c58015c4()
+        {
+            var instr = Disassemble64(0xc5, 0x80, 0x15, 0xc4);
+            Assert.AreEqual("vunpckhps\txmm0,xmm15,xmm4", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vcvtpd2dq()
+        {
+            var instr = Disassemble64(0xc5, 0x83, 0xe6, 0x04, 0x74);
+            Assert.AreEqual("vcvtpd2dq\txmm0,[rsp+rsi*2]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vlddqu_c583f001()
+        {
+            var instr = Disassemble64(0xc5, 0x83, 0xf0, 0x01);
+            Assert.AreEqual("vlddqu\txmm0,[rcx]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vunpckhps_ymm()
+        {
+            var instr = Disassemble64(0xc5, 0x8c, 0x15, 0x00);
+            Assert.AreEqual("vunpckhps\tymm0,ymm14,[rax]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vpunpcklqdq_rip()
+        {
+            var instr = Disassemble64(0xc5, 0x8d, 0x6c, 0x2d, 0xff, 0x89, 0xe8, 0x4C);
+            Assert.AreEqual("vpunpcklqdq\tymm5,ymm14,[rip+4CE889FF]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vcvtpd2dq_c59fe6ff()
+        {
+            var instr = Disassemble64(0xc5, 0x9f, 0xe6, 0xff);
+            Assert.AreEqual("vcvtpd2dq\txmm7,ymm7", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vpunpckhqdq_c5b96deb()
+        {
+            var instr = Disassemble64(0xc5, 0xb9, 0x6d, 0xeb);
+            Assert.AreEqual("vpunpckhqdq\txmm5,xmm8,xmm3", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vunpckhps_c5c015c0()
+        {
+            var instr = Disassemble64(0xc5, 0xc0, 0x15, 0xc0);
+            Assert.AreEqual("vunpckhps\txmm0,xmm7,xmm0", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vunpckhps_c5e015c4()
+        {
+            var instr = Disassemble64(0xc5, 0xe0, 0x15, 0xc4);
+            Assert.AreEqual("vunpckhps\txmm0,xmm3,xmm4", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vpacksswb_xmm()
+        {
+            var instr = Disassemble64(0xc5, 0xe1, 0x63, 0x00);
+            Assert.AreEqual("vpacksswb\txmm0,xmm3,[rax]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vunpckhps_xmm()
+        {
+            var instr = Disassemble64(0xc5, 0xe8, 0x15, 0x17);
+            Assert.AreEqual("vunpckhps\txmm2,xmm2,[rdi]", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vunpckhpd_c5e915ff()
+        {
+            var instr = Disassemble64(0xc5, 0xe9, 0x15, 0xff);
+            Assert.AreEqual("vunpckhpd\txmm7,xmm2,xmm7", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vpacksswb_c5e963ff()
+        {
+            var instr = Disassemble64(0xc5, 0xe9, 0x63, 0xff);
+            Assert.AreEqual("vpacksswb\txmm7,xmm2,xmm7", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vpunpcklqdq_c5e96cfb()
+        {
+            var instr = Disassemble64(0xc5, 0xe9, 0x6c, 0xfb);
+            Assert.AreEqual("vpunpcklqdq\txmm7,xmm2,xmm3", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vpunpckhqdq_c5e96dfe()
+        {
+            var instr = Disassemble64(0xc5, 0xe9, 0x6d, 0xfe);
+            Assert.AreEqual("vpunpckhqdq\txmm7,xmm2,xmm6", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vpslld_c5e972f2ff()
+        {
+            var instr = Disassemble64(0xc5, 0xe9, 0x72, 0xf2, 0xff);
+            Assert.AreEqual("vpslld\txmm2,xmm2,FF", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vhaddpd_c5e97cfd()
+        {
+            var instr = Disassemble64(0xc5, 0xe9, 0x7c, 0xfd);
+            Assert.AreEqual("vhaddpd\txmm7,xmm2,xmm5", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_vaddsubps_c5efd0ff()
+        {
+            var instr = Disassemble64(0xc5, 0xef, 0xd0, 0xff);
+            Assert.AreEqual("vaddsubps\tymm7,ymm2,ymm7", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_fneni()
+        {
+            var instr = Disassemble64(0xdb, 0xe0);
+            Assert.AreEqual("fneni", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_fndisi()
+        {
+            var instr = Disassemble64(0xdb, 0xe1);
+            Assert.AreEqual("fndisi", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_fnsetpm_287_dbe4()
+        {
+            var instr = Disassemble64(0xdb, 0xe4);
+            Assert.AreEqual("fnsetpm", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_frstpm_287_dbe5()
+        {
+            var instr = Disassemble64(0xdb, 0xe5);
+            Assert.AreEqual("frstpm", instr.ToString());
+        }
+
+        [Test]
+        public void X86Dis_ffreep_dfc1()
+        {
+            var instr = Disassemble64(0xdf, 0xc1);
+            Assert.AreEqual("ffreep\tst(1)", instr.ToString());
+        }
     }
 }
-

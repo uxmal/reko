@@ -29,11 +29,9 @@ namespace Reko.Arch.Alpha
 {
     public class AlphaDisassembler : DisassemblerBase<AlphaInstruction>
     {
-#if DEBUG
-        private static HashSet<string> seen = new HashSet<string>();
-#endif
-        private AlphaArchitecture arch;
-        private EndianImageReader rdr;
+        private readonly AlphaArchitecture arch;
+        private readonly EndianImageReader rdr;
+        private Address addr;
 
         public AlphaDisassembler(AlphaArchitecture arch, EndianImageReader rdr)
         {
@@ -43,7 +41,7 @@ namespace Reko.Arch.Alpha
 
         public override AlphaInstruction DisassembleInstruction()
         {
-            var addr = rdr.Address;
+            this.addr = rdr.Address;
             if (!rdr.TryReadUInt32(out uint uInstr))
                 return null;
             var op = uInstr >> 26;
@@ -81,24 +79,14 @@ namespace Reko.Arch.Alpha
 
         // The correct decoder for this instruction has _n_ot _y_et been
         // _i_mplemented, so fall back on generating an Invalid instruction.
-        private AlphaInstruction Nyi(uint uInstr, string pattern)
+        private AlphaInstruction Nyi(uint uInstr, string message)
         {
-#if DEBUG
-            // Emit the text of a unit test that can be pasted into the unit tests 
-            // for this disassembler.
-            if (false && !seen.Contains(pattern))
+            var instrHex = $"{0:X8}";
+            base.EmitUnitTest("Alpha", instrHex, message, "AlphaDis", this.addr, w =>
             {
-                seen.Add(pattern);
-                Debug.Print(
-@"        [Test]
-        public void AlphaDis_{1}()
-        {{
-            var instr = DisassembleWord(0x{0:X8});
-            AssertCode(""AlphaDis_{1}"", 0x{0:X8}, ""@@@"", instr.ToString());
-        }}
-", uInstr, pattern);
-            }
-#endif
+                w.WriteLine("    var instr = DisassembleWord(0x{0:X8});", uInstr);
+                w.WriteLine("    AssertCode(\"AlphaDis_{1}\", 0x{0:X8}, \"@@@\", instr.ToString());", uInstr, instrHex);
+            });
             return Invalid();
         }
 
