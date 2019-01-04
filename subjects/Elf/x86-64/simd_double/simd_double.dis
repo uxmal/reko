@@ -348,13 +348,13 @@ _mm_free_exit:
 
 
 
-void vec_add(word64 rdi)
+void vec_add(word64 rdi, word64 qwArg00)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  rdi:[0..63]
 // LiveOut:
-// Trashed: SCZO r10 rax rcx rdx rsp
-// Preserved: rbp
+// Trashed: SCZO r10 rax rcx rdx
+// Preserved: rbp rsp
 vec_add_entry:
 // DataOut:
 // DataOut (flags):
@@ -407,121 +407,124 @@ l0000000000000898:
 	word64 rax_14 = _mm_malloc(fp - 8, 0x0000000000000020, 0x0000000000002000)
 	word64 rax_26 = _mm_malloc(fp - 8, 0x0000000000000020, 0x0000000000002000)
 	word64 rax_38 = _mm_malloc(fp - 8, 0x0000000000000020, 0x0000000000002000)
-	word64 qwLoc10_199 = 0x0000000000000000
+	word64 qwLoc10_198 = 0x0000000000000000
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000000000093F:
-	branch qwLoc10_199 <u 0x0000000000000400 l00000000000008FD
+	branch qwLoc10_198 <u 0x0000000000000400 l00000000000008FD
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00000000000008FD:
-	word64 rcx_54 = qwLoc10_199 * 0x0000000000000008 + rax_14
-	word32 eax_61 = (word32) qwLoc10_199
-	branch qwLoc10_199 < 0x0000000000000000 l0000000000000921
+	word64 rcx_54 = qwLoc10_198 * 0x0000000000000008 + rax_14
+	word32 eax_61 = (word32) qwLoc10_198
+	branch qwLoc10_198 < 0x0000000000000000 l0000000000000921
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000000921:
-	real64 v26_66 = (real64) (qwLoc10_199 >>u 0x0000000000000001 | (uint64) (eax_61 & 0x00000001))
+	real64 v26_66 = (real64) (qwLoc10_198 >>u 0x0000000000000001 | (uint64) (eax_61 & 0x00000001))
 	xmm0 = DPB(xmm0, v26_66 + v26_66, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000000000091A:
-	xmm0 = DPB(xmm0, (real64) qwLoc10_199, 0)
+	xmm0 = DPB(xmm0, (real64) qwLoc10_198, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000000936:
 	Mem75[rcx_54:real64] = (real64) xmm0
-	qwLoc10_199 = qwLoc10_199 + 0x0000000000000001
+	qwLoc10_198 = qwLoc10_198 + 0x0000000000000001
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000000949:
-	word64 qwLoc18_205 = 0x0000000000000000
+	word64 qwLoc18_204 = 0x0000000000000000
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000000998:
-	branch qwLoc18_205 <u 0x0000000000000400 l0000000000000953
+	branch qwLoc18_204 <u 0x0000000000000400 l0000000000000953
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000000953:
-	word32 eax_97 = (word32) (qwLoc18_205 + 0x0000000000000001)
-	word64 rcx_91 = qwLoc18_205 * 0x0000000000000008 + rax_26
-	branch qwLoc18_205 < 0x0000000000000001 l000000000000097A
+	word32 eax_97 = (word32) (qwLoc18_204 + 0x0000000000000001)
+	word64 rcx_91 = qwLoc18_204 * 0x0000000000000008 + rax_26
+	branch qwLoc18_204 < 0x0000000000000001 l000000000000097A
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000000000097A:
-	real64 v19_102 = (real64) (qwLoc18_205 + 0x0000000000000001 >>u 0x0000000000000001 | (uint64) (eax_97 & 0x00000001))
+	real64 v19_102 = (real64) (qwLoc18_204 + 0x0000000000000001 >>u 0x0000000000000001 | (uint64) (eax_97 & 0x00000001))
 	xmm0 = DPB(xmm0, v19_102 + v19_102, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000000973:
-	xmm0 = DPB(xmm0, (real64) (qwLoc18_205 + 0x0000000000000001), 0)
+	xmm0 = DPB(xmm0, (real64) (qwLoc18_204 + 0x0000000000000001), 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000000000098F:
 	Mem111[rcx_91:real64] = (real64) xmm0
-	qwLoc18_205 = qwLoc18_205 + 0x0000000000000001
+	qwLoc18_204 = qwLoc18_204 + 0x0000000000000001
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00000000000009A2:
-	word64 qwLoc20_211 = 0x0000000000000000
+	word64 qwLoc20_210 = 0x0000000000000000
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00000000000009CC:
-	branch qwLoc20_211 <u 0x0000000000000400 l00000000000009AC
+	branch qwLoc20_210 <u 0x0000000000000400 l00000000000009AC
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00000000000009AC:
 	xmm0 = __xorpd(xmm0, xmm0)
-	Mem130[rax_38 + qwLoc20_211 * 0x0000000000000008:real64] = (real64) xmm0
-	qwLoc20_211 = qwLoc20_211 + 0x0000000000000001
+	Mem130[rax_38 + qwLoc20_210 * 0x0000000000000008:real64] = (real64) xmm0
+	qwLoc20_210 = qwLoc20_210 + 0x0000000000000001
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00000000000009D6:
-	vec_add(0x0000000000000400)
-	word64 qwLoc28_220 = 0x0000000000000000
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	word64 stackArg0 = <invalid>
+	vec_add(0x0000000000000400, stackArg0)
+	word64 qwLoc28_219 = 0x0000000000000000
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000000000A2D:
-	branch qwLoc28_220 <u 0x0000000000000400 l00000000000009F8
+	branch qwLoc28_219 <u 0x0000000000000400 l00000000000009F8
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00000000000009F8:
 	printf(0x0000000000000AF8, 0x00000000)
-	qwLoc28_220 = qwLoc28_220 + 0x0000000000000001
+	qwLoc28_219 = qwLoc28_219 + 0x0000000000000001
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

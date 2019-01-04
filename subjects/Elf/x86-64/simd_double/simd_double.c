@@ -89,8 +89,8 @@ void _mm_free(real64 (* rdi)[])
 	free(rdi);
 }
 
-// 00000000000007A8: void vec_add(Register word64 rdi)
-void vec_add(word64 rdi)
+// 00000000000007A8: void vec_add(Register word64 rdi, Stack word64 qwArg00)
+void vec_add(word64 rdi, word64 qwArg00)
 {
 	__align(fp);
 	uint64 rax_29 = (uint64) ((uint128) (uint64) rdi /u globals->qw0B00);
@@ -98,51 +98,54 @@ void vec_add(word64 rdi)
 		;
 }
 
-// 0000000000000898: void main(Register Eq_134 xmm0)
-void main(Eq_134 xmm0)
+// 0000000000000898: void main(Register Eq_135 xmm0)
+void main(Eq_135 xmm0)
 {
 	real64 rax_14[] = _mm_malloc(fp - 0x08, 0x20, 0x2000);
 	real64 rax_26[] = _mm_malloc(fp - 0x08, 0x20, 0x2000);
 	real64 rax_38[] = _mm_malloc(fp - 0x08, 0x20, 0x2000);
-	Eq_156 qwLoc10_199 = 0x00;
-	while (qwLoc10_199 < 0x0400)
+	Eq_157 qwLoc10_198 = 0x00;
+	while (qwLoc10_198 < 0x0400)
 	{
-		real64 * rcx_54 = rax_14 + qwLoc10_199;
-		ui32 eax_61 = (word32) qwLoc10_199;
-		if (qwLoc10_199 >= 0x00)
-			xmm0 = DPB(xmm0, (real64) qwLoc10_199, 0);
+		real64 * rcx_54 = rax_14 + qwLoc10_198;
+		ui32 eax_61 = (word32) qwLoc10_198;
+		if (qwLoc10_198 >= 0x00)
+			xmm0 = DPB(xmm0, (real64) qwLoc10_198, 0);
 		else
 		{
-			real64 v26_66 = (real64) (qwLoc10_199 >> 0x01 | (uint64) (eax_61 & 0x01));
+			real64 v26_66 = (real64) (qwLoc10_198 >> 0x01 | (uint64) (eax_61 & 0x01));
 			xmm0 = DPB(xmm0, v26_66 + v26_66, 0);
 		}
 		*rcx_54 = (real64) xmm0;
-		qwLoc10_199 = (word64) qwLoc10_199 + 0x01;
+		qwLoc10_198 = (word64) qwLoc10_198 + 0x01;
 	}
-	Eq_168 qwLoc18_205 = 0x00;
-	while (qwLoc18_205 < 0x0400)
+	Eq_169 qwLoc18_204 = 0x00;
+	while (qwLoc18_204 < 0x0400)
 	{
-		ui32 eax_97 = (word32) ((word64) qwLoc18_205 + 0x01);
-		real64 * rcx_91 = rax_26 + qwLoc18_205;
-		if (qwLoc18_205 >= 0x01)
-			xmm0 = DPB(xmm0, (real64) ((word64) qwLoc18_205 + 0x01), 0);
+		ui32 eax_97 = (word32) ((word64) qwLoc18_204 + 0x01);
+		real64 * rcx_91 = rax_26 + qwLoc18_204;
+		if (qwLoc18_204 >= 0x01)
+			xmm0 = DPB(xmm0, (real64) ((word64) qwLoc18_204 + 0x01), 0);
 		else
 		{
-			real64 v19_102 = (real64) ((word64) qwLoc18_205 + 0x01 >> 0x01 | (uint64) (eax_97 & 0x01));
+			real64 v19_102 = (real64) ((word64) qwLoc18_204 + 0x01 >> 0x01 | (uint64) (eax_97 & 0x01));
 			xmm0 = DPB(xmm0, v19_102 + v19_102, 0);
 		}
 		*rcx_91 = (real64) xmm0;
-		qwLoc18_205 = (word64) qwLoc18_205 + 0x01;
+		qwLoc18_204 = (word64) qwLoc18_204 + 0x01;
 	}
-	uint64 qwLoc20_211;
-	for (qwLoc20_211 = 0x00; qwLoc20_211 < 0x0400; ++qwLoc20_211)
+	uint64 qwLoc20_210;
+	for (qwLoc20_210 = 0x00; qwLoc20_210 < 0x0400; ++qwLoc20_210)
 	{
 		xmm0 = __xorpd(xmm0, xmm0);
-		rax_38[qwLoc20_211] = (real64) xmm0;
+		rax_38[qwLoc20_210] = (real64) xmm0;
 	}
-	vec_add(0x0400);
-	up64 qwLoc28_220;
-	for (qwLoc28_220 = 0x00; qwLoc28_220 < 0x0400; ++qwLoc28_220)
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	word64 stackArg0 = <invalid>;
+	vec_add(0x0400, stackArg0);
+	up64 qwLoc28_219;
+	for (qwLoc28_219 = 0x00; qwLoc28_219 < 0x0400; ++qwLoc28_219)
 		printf("%g\n", 0x00);
 	_mm_free(rax_14);
 	_mm_free(rax_26);
@@ -159,7 +162,7 @@ void __libc_csu_init(word64 rdx, word64 rbx, word64 rbp, word64 rsi, word32 edi,
 	word64 rax_33 = _init();
 	if (rbp_29 >> 0x03 != 0x00)
 	{
-		Eq_286 rbx_41 = 0x00;
+		Eq_289 rbx_41 = 0x00;
 		do
 		{
 			r15_55 = DPB(r15_55, r15d_83, 0);

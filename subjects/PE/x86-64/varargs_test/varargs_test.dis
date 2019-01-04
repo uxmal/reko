@@ -427,7 +427,7 @@ l000000014000137F:
 	r8 = (uint64) (r8d ^ r8d)
 	SZO = cond(r8d)
 	C = false
-	edx = rax + 0x0000000000000002
+	edx = r8 + 0x0000000000000002
 	rcx = (uint64) (ecx ^ ecx)
 	SZO = cond(ecx)
 	C = false
@@ -852,16 +852,16 @@ l0000000140001698:
 	r8 = r8 ^ rdx
 	SZO = cond(r8)
 	C = false
-	Mem0[r13 - 0x0000000000000020:word64] = r8
-	Mem0[r13 - 0x0000000000000018:word64] = r8
+	Mem0[rbp - 0x0000000000000020:word64] = r8
+	Mem0[rbp - 0x0000000000000018:word64] = r8
 	xmm0 = Mem0[rbp - 0x0000000000000020:word128]
-	Mem0[r13 - 0x0000000000000010:word64] = r8
+	Mem0[rbp - 0x0000000000000010:word64] = r8
 	xmm1 = DPB(xmm1, Mem0[rbp - 0x0000000000000010:real64], 0)
 	Mem0[0x00000001400035C0:word128] = xmm0
-	Mem0[r13 - 0x0000000000000020:word64] = r8
-	Mem0[r13 - 0x0000000000000018:word64] = r8
+	Mem0[rbp - 0x0000000000000020:word64] = r8
+	Mem0[rbp - 0x0000000000000018:word64] = r8
 	xmm0 = Mem0[rbp - 0x0000000000000020:word128]
-	Mem0[r13 - 0x0000000000000010:word64] = r8
+	Mem0[rbp - 0x0000000000000010:word64] = r8
 	Mem0[0x00000001400035D0:real64] = (real64) xmm1
 	xmm1 = DPB(xmm1, Mem0[rbp - 0x0000000000000010:real64], 0)
 	Mem0[0x00000001400035D8:word128] = xmm0
@@ -1791,7 +1791,7 @@ l0000000140001BFC:
 	__cpuid(eax, ecx, &eax, &ebx, &ecx, &edx)
 	Mem0[rbp - 0x0000000000000010:word32] = eax
 	r9 = (uint64) ecx
-	Mem0[r13 - 0x0000000000000008:word32] = r9d
+	Mem0[rbp - 0x0000000000000008:word32] = r9d
 	rcx = (uint64) eax
 	Mem0[rbp - 0x000000000000000C:word32] = ebx
 	Mem0[rbp - 0x0000000000000004:word32] = edx
@@ -1800,8 +1800,8 @@ l0000000140001BFC:
 	branch Test(NE,Z) l0000000140001CE9
 	// succ:  l0000000140001C97 l0000000140001CE9
 l0000000140001C97:
-	v28 = Mem0[0x0000000140003020:word64] | 0xFFFFFFFFFFFFFFFF
-	Mem0[0x0000000140003020:word64] = v28
+	v27 = Mem0[0x0000000140003020:word64] | 0xFFFFFFFFFFFFFFFF
+	Mem0[0x0000000140003020:word64] = v27
 	SZO = cond(Mem0[0x0000000140003020:word64])
 	C = false
 	r8 = (uint64) (r8d | 0x00000004)
@@ -1860,7 +1860,7 @@ l0000000140001CFC:
 l0000000140001D07:
 	rax = (uint64) 0x00000007
 	Mem0[rbp - 0x0000000000000020:word32] = edx
-	Mem0[r13 - 0x000000000000001C:word32] = r9d
+	Mem0[rbp - 0x000000000000001C:word32] = r9d
 	SCZO = cond(edi - eax)
 	branch Test(LT,SO) l0000000140001D3B
 	// succ:  l0000000140001D17 l0000000140001D3B
@@ -2014,13 +2014,13 @@ l0000000140001E9C:
 	SZO = cond(r11d)
 	C = false
 	r9 = rcx
-	SZO = cond(Mem0[rax:byte] & 0x04)
+	SZO = cond(Mem0[r8:byte] & 0x04)
 	C = false
 	r10 = rcx
 	branch Test(EQ,Z) l0000000140001EC7
 	// succ:  l0000000140001EB4 l0000000140001EC7
 l0000000140001EB4:
-	rax = (uint64) Mem0[rax + 0x0000000000000008:word32]
+	rax = (uint64) Mem0[r8 + 0x0000000000000008:word32]
 	r10 = (int64) Mem0[r8 + 0x0000000000000004:word32]
 	rax = (uint64) -eax
 	SCZO = cond(eax)

@@ -212,7 +212,7 @@ l0000000000400DC6:
 	Mem0[rbp - 0x000000000000001C:word32] = esi
 	Mem0[rbp - 0x0000000000000020:word32] = edx
 	Mem0[rbp - 0x0000000000000024:word32] = ecx
-	Mem0[r13 - 0x0000000000000028:word32] = r8d
+	Mem0[rbp - 0x0000000000000028:word32] = r8d
 	rax = (uint64) Mem0[rbp - 0x000000000000001C:word32]
 	rax = (uint64) (eax >>u 0x00000006)
 	SCZO = cond(eax)
@@ -237,18 +237,18 @@ l0000000000400DC6:
 	rax = (uint64) Mem0[rbp - 0x0000000000000008:word32]
 	rax = rax << 0x0000000000000003
 	SCZO = cond(rax)
-	v16 = Mem0[rbp - 0x0000000000000018:word64] + rax
-	Mem0[rbp - 0x0000000000000018:word64] = v16
-	SCZO = cond(v16)
+	v15 = Mem0[rbp - 0x0000000000000018:word64] + rax
+	Mem0[rbp - 0x0000000000000018:word64] = v15
+	SCZO = cond(v15)
 	rax = (uint64) Mem0[rbp - 0x0000000000000004:word32]
 	rax = (uint64) (eax >>u 0x00000003)
 	SCZO = cond(eax)
 	rax = (uint64) eax
-	v17 = Mem0[rbp - 0x0000000000000018:word64] + rax
-	Mem0[rbp - 0x0000000000000018:word64] = v17
-	SCZO = cond(v17)
-	v18 = Mem0[rbp - 0x0000000000000004:word32] & 0x00000007
-	Mem0[rbp - 0x0000000000000004:word32] = v18
+	v16 = Mem0[rbp - 0x0000000000000018:word64] + rax
+	Mem0[rbp - 0x0000000000000018:word64] = v16
+	SCZO = cond(v16)
+	v17 = Mem0[rbp - 0x0000000000000004:word32] & 0x00000007
+	Mem0[rbp - 0x0000000000000004:word32] = v17
 	SZO = cond(Mem0[rbp - 0x0000000000000004:word32])
 	C = false
 	SCZO = cond(Mem0[rbp - 0x0000000000000024:word32] - 0x00000010)
@@ -516,7 +516,7 @@ l0000000000401068:
 	SCZO = cond(rax)
 	eax = (word32) Mem0[rax + 0x0000000000000001:byte]
 	ecx = (word32) al
-	r8 = Mem0[r13 - 0x0000000000000038:word64]
+	r8 = Mem0[rbp - 0x0000000000000038:word64]
 	rdx = (uint64) Mem0[rbp - 0x000000000000003C:word32]
 	rax = rdx
 	rax = rax + rax
@@ -823,8 +823,8 @@ l00000000004013E4:
 	Mem0[rbp - 0x0000000000000010:word64] = rax
 	rsi = Mem0[rbp - 0x0000000000000030:word64]
 	rax = Mem0[rbp - 0x0000000000000038:word64]
-	r9 = r13 - 0x0000000000000074
-	r8 = r13 - 0x0000000000000078
+	r9 = rbp - 0x0000000000000074
+	r8 = rbp - 0x0000000000000078
 	rcx = rbp - 0x000000000000007C
 	rdx = rbp - 0x0000000000000080
 	rsp = rsp - 0x0000000000000008
@@ -1086,12 +1086,12 @@ l0000000000401633:
 	// succ:  l000000000040167F
 l000000000040164C:
 	rax = (uint64) Mem0[rbp - 0x0000000000000050:word32]
-	v27 = Mem0[rbp - 0x0000000000000048:word32] + eax
-	Mem0[rbp - 0x0000000000000048:word32] = v27
+	v26 = Mem0[rbp - 0x0000000000000048:word32] + eax
+	Mem0[rbp - 0x0000000000000048:word32] = v26
+	SCZO = cond(v26)
+	v27 = Mem0[rbp - 0x0000000000000044:word32] + 0x00000001
+	Mem0[rbp - 0x0000000000000044:word32] = v27
 	SCZO = cond(v27)
-	v28 = Mem0[rbp - 0x0000000000000044:word32] + 0x00000001
-	Mem0[rbp - 0x0000000000000044:word32] = v28
-	SCZO = cond(v28)
 	// succ:  l0000000000401656
 l0000000000401656:
 	rax = (uint64) Mem0[rbp - 0x0000000000000080:word32]
@@ -1100,9 +1100,9 @@ l0000000000401656:
 	// succ:  l000000000040165E l000000000040162A
 l000000000040165E:
 	rax = (uint64) Mem0[rbp - 0x0000000000000054:word32]
-	v26 = Mem0[rbp - 0x000000000000004C:word32] + eax
-	Mem0[rbp - 0x000000000000004C:word32] = v26
-	SCZO = cond(v26)
+	v25 = Mem0[rbp - 0x000000000000004C:word32] + eax
+	Mem0[rbp - 0x000000000000004C:word32] = v25
+	SCZO = cond(v25)
 	// succ:  l0000000000401664
 l0000000000401664:
 	rax = (uint64) Mem0[rbp - 0x000000000000007C:word32]
@@ -1115,9 +1115,9 @@ l000000000040166C:
 l000000000040166E:
 	// succ:  l000000000040166F
 l000000000040166F:
-	v25 = Mem0[rbp - 0x0000000000000060:word32] + 0x00000001
-	Mem0[rbp - 0x0000000000000060:word32] = v25
-	SCZO = cond(v25)
+	v24 = Mem0[rbp - 0x0000000000000060:word32] + 0x00000001
+	Mem0[rbp - 0x0000000000000060:word32] = v24
+	SCZO = cond(v24)
 	// succ:  l0000000000401673
 l0000000000401673:
 	rax = (uint64) Mem0[rbp - 0x0000000000000060:word32]
