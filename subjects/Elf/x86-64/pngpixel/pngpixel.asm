@@ -313,7 +313,7 @@ component proc
 	mov	[rbp-1C],esi
 	mov	[rbp-20],edx
 	mov	[rbp-24],ecx
-	mov	[r13-28],r8d
+	mov	[rbp-28],r8d
 	mov	eax,[rbp-1C]
 	shr	eax,06
 	imul	eax,[rbp-28]
@@ -552,7 +552,7 @@ l0000000000401068:
 	add	rax,rcx
 	movzx	eax,byte ptr [rax+01]
 	movzx	ecx,al
-	mov	r8,[r13-38]
+	mov	r8,[rbp-38]
 	mov	edx,[rbp-3C]
 	mov	rax,rdx
 	add	rax,rax
@@ -824,8 +824,8 @@ l00000000004013E4:
 	mov	[rbp-10],rax
 	mov	rsi,[rbp-30]
 	mov	rax,[rbp-38]
-	lea	r9,[r13-74]
-	lea	r8,[r13-78]
+	lea	r9,[rbp-74]
+	lea	r8,[rbp-78]
 	lea	rcx,[rbp-7C]
 	lea	rdx,[rbp-80]
 	sub	rsp,08

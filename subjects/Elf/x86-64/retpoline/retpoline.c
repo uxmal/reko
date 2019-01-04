@@ -98,8 +98,8 @@ void branches(int32 esi, int32 edi)
 		free(my1((word32) (uint64) esi, (word32) (uint64) edi));
 }
 
-// 0000000000400660: void main(Register word64 r8)
-void main(word64 r8)
+// 0000000000400660: void main()
+void main()
 {
 	__llvm_retpoline_r11();
 	__llvm_retpoline_r11();

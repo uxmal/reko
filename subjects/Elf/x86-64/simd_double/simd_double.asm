@@ -253,7 +253,7 @@ _mm_free proc
 vec_add proc
 	lea	r10,[rsp+08]
 	and	rsp,E0
-	push	qword ptr [rdx-08]
+	push	qword ptr [r10-08]
 	push	rbp
 	mov	rbp,rsp
 	push	r10
@@ -311,7 +311,7 @@ l000000000000088B:
 	add	rsp,30
 	pop	r10
 	pop	rbp
-	lea	rsp,[rdx-08]
+	lea	rsp,[r10-08]
 	ret
 
 ;; main: 0000000000000898

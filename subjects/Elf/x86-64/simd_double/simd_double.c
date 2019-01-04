@@ -129,68 +129,65 @@ void _mm_free(real64 * rdi[])
 	free(rdi);
 }
 
-// 00000000000007A8: Register uint64 vec_add(Register (ptr64 (arr real64)) rcx, Register (ptr64 (arr real64)) rdx, Register (ptr64 (arr real64)) rsi, Register word64 rdi)
-uint64 vec_add(real64 * rcx[], real64 * rdx[], real64 * rsi[], word64 rdi)
+// 00000000000007A8: void vec_add(Register (ptr64 (arr real64)) rcx, Register (ptr64 (arr real64)) rdx, Register (ptr64 (arr real64)) rsi, Register word64 rdi, Stack word64 qwArg00)
+void vec_add(real64 * rcx[], real64 * rdx[], real64 * rsi[], word64 rdi, word64 qwArg00)
 {
 	__align(fp);
-	uint64 rcx_22 = globals->qw0B00;
-	uint128 rdx_rax_25 = (uint128) (uint64) rdi;
-	uint64 rdx_27 = (uint64) (rdx_rax_25 % rcx_22);
-	uint64 rax_29 = (uint64) (rdx_rax_25 /u rcx_22);
+	uint64 rax_29 = (uint64) ((uint128) (uint64) rdi /u globals->qw0B00);
 	if (0x00 >= rax_29)
-		return rdx_27 - 0x08;
+		;
 }
 
-// 0000000000000898: void main(Register Eq_184 xmm0)
-void main(Eq_184 xmm0)
+// 0000000000000898: void main(Register Eq_177 xmm0)
+void main(Eq_177 xmm0)
 {
 	real64 rax_13[] = _mm_malloc(0x20, 0x2000);
 	real64 rax_20[] = _mm_malloc(0x20, 0x2000);
 	real64 rax_27[] = _mm_malloc(0x20, 0x2000);
-	Eq_201 qwLoc10_163 = 0x00;
-	while (qwLoc10_163 < 0x0400)
+	Eq_194 qwLoc10_164 = 0x00;
+	while (qwLoc10_164 < 0x0400)
 	{
-		real64 * rcx_150 = rax_13 + qwLoc10_163;
-		ui32 eax_152 = (word32) qwLoc10_163;
-		if (qwLoc10_163 >= 0x00)
-			xmm0 = DPB(xmm0, (real64) qwLoc10_163, 0);
+		real64 * rcx_151 = rax_13 + qwLoc10_164;
+		ui32 eax_153 = (word32) qwLoc10_164;
+		if (qwLoc10_164 >= 0x00)
+			xmm0 = DPB(xmm0, (real64) qwLoc10_164, 0);
 		else
 		{
-			real64 v26_173 = (real64) (qwLoc10_163 >> 0x01 | (uint64) (eax_152 & 0x01));
-			xmm0 = DPB(xmm0, v26_173 + v26_173, 0);
+			real64 v26_174 = (real64) (qwLoc10_164 >> 0x01 | (uint64) (eax_153 & 0x01));
+			xmm0 = DPB(xmm0, v26_174 + v26_174, 0);
 		}
-		*rcx_150 = (real64) xmm0;
-		qwLoc10_163 = (word64) qwLoc10_163 + 0x01;
+		*rcx_151 = (real64) xmm0;
+		qwLoc10_164 = (word64) qwLoc10_164 + 0x01;
 	}
-	Eq_201 qwLoc18_133 = 0x00;
-	while (qwLoc18_133 < 0x0400)
+	Eq_194 qwLoc18_134 = 0x00;
+	while (qwLoc18_134 < 0x0400)
 	{
-		Eq_234 rax_117 = (word64) qwLoc18_133.u1 + 0x01;
-		ui32 eax_118 = (word32) rax_117;
-		real64 * rcx_122 = rax_20 + qwLoc18_133;
-		if (rax_117 >= 0x00)
-			xmm0 = DPB(xmm0, (real64) rax_117, 0);
+		Eq_227 rax_118 = (word64) qwLoc18_134.u1 + 0x01;
+		ui32 eax_119 = (word32) rax_118;
+		real64 * rcx_123 = rax_20 + qwLoc18_134;
+		if (rax_118 >= 0x00)
+			xmm0 = DPB(xmm0, (real64) rax_118, 0);
 		else
 		{
-			real64 v19_143 = (real64) (rax_117 >> 0x01 | (uint64) (eax_118 & 0x01));
-			xmm0 = DPB(xmm0, v19_143 + v19_143, 0);
+			real64 v19_144 = (real64) (rax_118 >> 0x01 | (uint64) (eax_119 & 0x01));
+			xmm0 = DPB(xmm0, v19_144 + v19_144, 0);
 		}
-		*rcx_122 = (real64) xmm0;
-		qwLoc18_133 = (word64) qwLoc18_133.u1 + 0x01;
+		*rcx_123 = (real64) xmm0;
+		qwLoc18_134 = (word64) qwLoc18_134.u1 + 0x01;
 	}
-	Eq_201 qwLoc20_114 = 0x00;
-	while (qwLoc20_114 < 0x0400)
+	Eq_194 qwLoc20_115 = 0x00;
+	while (qwLoc20_115 < 0x0400)
 	{
 		xmm0 = __xorpd(xmm0, xmm0);
-		rax_27[qwLoc20_114] = (real64) xmm0;
-		qwLoc20_114 = (word64) qwLoc20_114.u1 + 0x01;
+		rax_27[qwLoc20_115] = (real64) xmm0;
+		qwLoc20_115 = (word64) qwLoc20_115.u1 + 0x01;
 	}
-	struct Eq_277 * rsp_69 = vec_add(rax_20, rax_13, rax_27, 0x0400);
-	Eq_201 qwLoc28_103 = 0x00;
-	while (qwLoc28_103 < 0x0400)
+	vec_add(rax_20, rax_13, rax_27, 0x0400, qwLoc60);
+	Eq_194 qwLoc28_104 = 0x00;
+	while (qwLoc28_104 < 0x0400)
 	{
-		printf("%g\n", rsp_69->tFFFFFFF8);
-		qwLoc28_103 = (word64) qwLoc28_103 + 0x01;
+		printf("%g\n", tLoc60);
+		qwLoc28_104 = (word64) qwLoc28_104 + 0x01;
 	}
 	_mm_free(rax_13);
 	_mm_free(rax_20);

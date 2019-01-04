@@ -389,16 +389,16 @@ branches_exit:
 
 
 
-void main(word64 r8)
+void main()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r8
+// MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved:
 // Terminates process
 main_entry:
-// DataOut: r8
+// DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
 // LocalsOut: fp(64)
