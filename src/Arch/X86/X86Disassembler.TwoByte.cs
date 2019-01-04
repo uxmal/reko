@@ -34,25 +34,25 @@ namespace Reko.Arch.X86
             return new Decoder[]
             {
 				// 0F 00
-				new GroupOpRec(6, ""),
+				new GroupDecoder(6, ""),
                 new GroupDecoder(7, ""),
-                new InstructionDecoder(Opcode.lar, InstrClass.System, "Gv,Ew"),
-                new InstructionDecoder(Opcode.lsl, InstrClass.System, "Gv,Ew"),
+                Instr(Opcode.lar, InstrClass.System, "Gv,Ew"),
+                Instr(Opcode.lsl, InstrClass.System, "Gv,Ew"),
                 s_invalid,
                 new Alternative64Decoder(
                     s_invalid,
-                    new InstructionDecoder(Opcode.syscall, InstrClass.Transfer|InstrClass.Call, "")),
-                new InstructionDecoder(Opcode.clts),
+                    Instr(Opcode.syscall, InstrClass.Transfer|InstrClass.Call, "")),
+                Instr(Opcode.clts),
                 new Alternative64Decoder(
                     s_invalid,
-                    new InstructionDecoder(Opcode.sysret, InstrClass.Transfer, "")),
+                    Instr(Opcode.sysret, InstrClass.Transfer, "")),
 
-                new InstructionDecoder(Opcode.invd, InstrClass.System, ""),
-                new InstructionDecoder(Opcode.wbinvd, InstrClass.System, ""),
+                Instr(Opcode.invd, InstrClass.System, ""),
+                Instr(Opcode.wbinvd, InstrClass.System, ""),
                 s_invalid,
-                new InstructionDecoder(Opcode.ud2),
+                Instr(Opcode.ud2),
                 s_invalid,
-                new InstructionDecoder(Opcode.prefetchw, "Ev"),
+                Instr(Opcode.prefetchw, "Ev"),
                 Instr(Opcode.femms),    // AMD-specific
                 s_invalid, // nyi("AMD 3D-Now instructions"), //$TODO: this requires adding separate processor model for AMD
 
@@ -77,7 +77,8 @@ namespace Reko.Arch.X86
                 new PrefixedDecoder(
 					Opcode.vmovlps, "Mq,Vq",
 					Opcode.vmovlpd, "Mq,Vq"),
-                new PrefixedOpRec(
+
+                new PrefixedDecoder(
                     Opcode.unpcklps, "Vx,Hx,Wx",
                     Opcode.unpcklpd, "Vx,Hx,Wx"),
                 new PrefixedDecoder(
@@ -92,19 +93,19 @@ namespace Reko.Arch.X86
                     Opcode.movhpd, "Mq,Vq"),
 
                 new GroupDecoder(16, ""),
-                new InstructionDecoder(Opcode.nop, InstrClass.Linear|InstrClass.Padding, "Ev"),
-                new InstructionDecoder(Opcode.nop, InstrClass.Linear|InstrClass.Padding, "Ev"),
-                new InstructionDecoder(Opcode.nop, InstrClass.Linear|InstrClass.Padding, "Ev"),
+                Instr(Opcode.nop, InstrClass.Linear|InstrClass.Padding, "Ev"),
+                Instr(Opcode.nop, InstrClass.Linear|InstrClass.Padding, "Ev"),
+                Instr(Opcode.nop, InstrClass.Linear|InstrClass.Padding, "Ev"),
                 Instr(Opcode.cldemote, "Eb"),
-                new InstructionDecoder(Opcode.nop, InstrClass.Linear|InstrClass.Padding, "Ev"),
-                new InstructionDecoder(Opcode.nop, InstrClass.Linear|InstrClass.Padding, "Ev"),
-                new InstructionDecoder(Opcode.nop, InstrClass.Linear|InstrClass.Padding, "Ev"),
+                Instr(Opcode.nop, InstrClass.Linear|InstrClass.Padding, "Ev"),
+                Instr(Opcode.nop, InstrClass.Linear|InstrClass.Padding, "Ev"),
+                Instr(Opcode.nop, InstrClass.Linear|InstrClass.Padding, "Ev"),
 
 				// 0F 20
-				new InstructionDecoder(Opcode.mov, "Rv,Cd"),
-                new InstructionDecoder(Opcode.mov, "Rv,Dd"),
-                new InstructionDecoder(Opcode.mov, "Cd,Rv"),
-                new InstructionDecoder(Opcode.mov, "Dd,Rv"),
+				Instr(Opcode.mov, "Rv,Cd"),
+                Instr(Opcode.mov, "Rv,Dd"),
+                Instr(Opcode.mov, "Cd,Rv"),
+                Instr(Opcode.mov, "Dd,Rv"),
 				s_invalid,
                 s_invalid,
                 s_invalid,
@@ -142,14 +143,14 @@ namespace Reko.Arch.X86
                     Opcode.comisd, "Vsd,Wsd"),
 
 				// 0F 30
-				new InstructionDecoder(Opcode.wrmsr, InstrClass.System, ""),
-                new InstructionDecoder(Opcode.rdtsc),
-                new InstructionDecoder(Opcode.rdmsr, InstrClass.System, ""),
-                new InstructionDecoder(Opcode.rdpmc),
-                new InstructionDecoder(Opcode.sysenter),
-                new InstructionDecoder(Opcode.sysexit, InstrClass.Transfer, ""),
+				Instr(Opcode.wrmsr, InstrClass.System, ""),
+                Instr(Opcode.rdtsc),
+                Instr(Opcode.rdmsr, InstrClass.System, ""),
+                Instr(Opcode.rdpmc),
+                Instr(Opcode.sysenter),
+                Instr(Opcode.sysexit, InstrClass.Transfer, ""),
                 s_invalid,
-                new InstructionDecoder(Opcode.getsec, InstrClass.System, ""),
+                Instr(Opcode.getsec, InstrClass.System, ""),
 
                 new ThreeByteOpRec(), // 0F 38
                 s_invalid,
@@ -161,23 +162,23 @@ namespace Reko.Arch.X86
                 s_invalid,
 
 				// 0F 40
-				new InstructionDecoder(Opcode.cmovo,  InstrClass.Linear|InstrClass.Conditional, "Gv,Ev"),
-                new InstructionDecoder(Opcode.cmovno, InstrClass.Linear|InstrClass.Conditional, "Gv,Ev"),
-                new InstructionDecoder(Opcode.cmovc,  InstrClass.Linear|InstrClass.Conditional, "Gv,Ev"),
-                new InstructionDecoder(Opcode.cmovnc, InstrClass.Linear|InstrClass.Conditional, "Gv,Ev"),
-                new InstructionDecoder(Opcode.cmovz,  InstrClass.Linear|InstrClass.Conditional, "Gv,Ev"),
-                new InstructionDecoder(Opcode.cmovnz, InstrClass.Linear|InstrClass.Conditional, "Gv,Ev"),
-                new InstructionDecoder(Opcode.cmovbe, InstrClass.Linear|InstrClass.Conditional, "Gv,Ev"),
-                new InstructionDecoder(Opcode.cmova,  InstrClass.Linear|InstrClass.Conditional, "Gv,Ev"),
+				Instr(Opcode.cmovo,  InstrClass.Linear|InstrClass.Conditional, "Gv,Ev"),
+                Instr(Opcode.cmovno, InstrClass.Linear|InstrClass.Conditional, "Gv,Ev"),
+                Instr(Opcode.cmovc,  InstrClass.Linear|InstrClass.Conditional, "Gv,Ev"),
+                Instr(Opcode.cmovnc, InstrClass.Linear|InstrClass.Conditional, "Gv,Ev"),
+                Instr(Opcode.cmovz,  InstrClass.Linear|InstrClass.Conditional, "Gv,Ev"),
+                Instr(Opcode.cmovnz, InstrClass.Linear|InstrClass.Conditional, "Gv,Ev"),
+                Instr(Opcode.cmovbe, InstrClass.Linear|InstrClass.Conditional, "Gv,Ev"),
+                Instr(Opcode.cmova,  InstrClass.Linear|InstrClass.Conditional, "Gv,Ev"),
 
-                new InstructionDecoder(Opcode.cmovs,  InstrClass.Linear|InstrClass.Conditional, "Gv,Ev"),
-                new InstructionDecoder(Opcode.cmovns, InstrClass.Linear|InstrClass.Conditional, "Gv,Ev"),
-                new InstructionDecoder(Opcode.cmovpe, InstrClass.Linear|InstrClass.Conditional, "Gv,Ev"),
-                new InstructionDecoder(Opcode.cmovpo, InstrClass.Linear|InstrClass.Conditional, "Gv,Ev"),
-                new InstructionDecoder(Opcode.cmovl,  InstrClass.Linear|InstrClass.Conditional, "Gv,Ev"),
-                new InstructionDecoder(Opcode.cmovge, InstrClass.Linear|InstrClass.Conditional, "Gv,Ev"),
-                new InstructionDecoder(Opcode.cmovle, InstrClass.Linear|InstrClass.Conditional, "Gv,Ev"),
-                new InstructionDecoder(Opcode.cmovg,  InstrClass.Linear|InstrClass.Conditional, "Gv,Ev"),
+                Instr(Opcode.cmovs,  InstrClass.Linear|InstrClass.Conditional, "Gv,Ev"),
+                Instr(Opcode.cmovns, InstrClass.Linear|InstrClass.Conditional, "Gv,Ev"),
+                Instr(Opcode.cmovpe, InstrClass.Linear|InstrClass.Conditional, "Gv,Ev"),
+                Instr(Opcode.cmovpo, InstrClass.Linear|InstrClass.Conditional, "Gv,Ev"),
+                Instr(Opcode.cmovl,  InstrClass.Linear|InstrClass.Conditional, "Gv,Ev"),
+                Instr(Opcode.cmovge, InstrClass.Linear|InstrClass.Conditional, "Gv,Ev"),
+                Instr(Opcode.cmovle, InstrClass.Linear|InstrClass.Conditional, "Gv,Ev"),
+                Instr(Opcode.cmovg,  InstrClass.Linear|InstrClass.Conditional, "Gv,Ev"),
 
 				// 0F 50
                 new PrefixedDecoder(
@@ -291,14 +292,15 @@ namespace Reko.Arch.X86
                 new PrefixedDecoder(
                     Opcode.packssdw, "Pq,Qd",
                     Opcode.vpackssdw, "Vx,Hx,Wx"),
+
                  new PrefixedDecoder(
                     Opcode.illegal, "",
                     Opcode.vpunpcklqdq, "Vx,Hx,Wx"),
                  new PrefixedDecoder(
                     Opcode.illegal, "",
                     Opcode.vpunpckhqdq, "Vx,Hx,Wx"),
-                new InstructionDecoder(Opcode.movd, "Vy,Ey"),
-				new InstructionDecoder(Opcode.movdqa, "Vx,Wx"),
+                Instr(Opcode.movd, "Vy,Ey"),
+				Instr(Opcode.movdqa, "Vx,Wx"),
 
 				// 0F 70
 				new PrefixedDecoder(
@@ -306,13 +308,10 @@ namespace Reko.Arch.X86
                     Opcode.pshufd, "Vx,Wx,Ib",
                     Opcode.pshufhw, "Vx,Wx,Ib",
                     Opcode.pshuflw, "Vx,Wx,Ib"),
-                new PrefixedDecoder(
-                    new GroupDecoder(12, ""),
-                    new GroupDecoder(12, "")),
-                new PrefixedDecoder(
-                    new GroupDecoder(13, ""),
-                    new GroupDecoder(13, "")),
+                new GroupDecoder(12, ""),
+                new GroupDecoder(13, ""),
                 new GroupDecoder(14, ""),
+
 				new PrefixedDecoder(
                     Opcode.pcmpeqb, "Pq,Qq",
                     Opcode.pcmpeqb, "Vx,Wx"),
@@ -322,12 +321,13 @@ namespace Reko.Arch.X86
                 new PrefixedDecoder(
                     Opcode.pcmpeqd, "Pq,Qq",
                     Opcode.pcmpeqd, "Vx,Wx"),
-                new InstructionDecoder(Opcode.emms, InstrClass.System, ""),
+                Instr(Opcode.emms, InstrClass.System, ""),
 
-				new InstructionDecoder(Opcode.vmread, "Ey,Gy"),
-				new InstructionDecoder(Opcode.vmwrite, "Gy,Ey"),
+				Instr(Opcode.vmread, "Ey,Gy"),
+				Instr(Opcode.vmwrite, "Gy,Ey"),
 				s_invalid,
 				s_invalid,
+
                 new PrefixedDecoder(
                     Opcode.illegal, "",
                     Opcode.vhaddpd, "Vpd,Hpd,Wpd",
@@ -340,89 +340,98 @@ namespace Reko.Arch.X86
                     dec: Instr(Opcode.movd, "Ey,Pd"), decWide: Instr(Opcode.movq, "Ey,Pd"),
                     dec66: Instr(Opcode.movd, "Ey,Vy"), dec66Wide: Instr(Opcode.movq, "Ey,Vy"),
                     decF3: Instr(Opcode.movq, "Vy,Wy")),
-				new InstructionDecoder(Opcode.movdqa, "Wx,Vx"),
+				new PrefixedDecoder(
+                    Opcode.movq, "Qq,Pq",
+                    Opcode.movdqa, "Wx,Vx",
+                    Opcode.movdqu, "Wx,Vx"),
 
 				// 0F 80
-				new InstructionDecoder(Opcode.jo,	InstrClass.ConditionalTransfer, "Jv"),
-				new InstructionDecoder(Opcode.jno, InstrClass.ConditionalTransfer, "Jv"),
-				new InstructionDecoder(Opcode.jc,	InstrClass.ConditionalTransfer, "Jv"),
-				new InstructionDecoder(Opcode.jnc,	InstrClass.ConditionalTransfer, "Jv"),
-				new InstructionDecoder(Opcode.jz,	InstrClass.ConditionalTransfer, "Jv"),
-				new InstructionDecoder(Opcode.jnz, InstrClass.ConditionalTransfer, "Jv"),
-				new InstructionDecoder(Opcode.jbe, InstrClass.ConditionalTransfer, "Jv"),
-				new InstructionDecoder(Opcode.ja,  InstrClass.ConditionalTransfer, "Jv"),
+				Instr(Opcode.jo,	InstrClass.ConditionalTransfer, "Jv"),
+				Instr(Opcode.jno, InstrClass.ConditionalTransfer, "Jv"),
+				Instr(Opcode.jc,	InstrClass.ConditionalTransfer, "Jv"),
+				Instr(Opcode.jnc,	InstrClass.ConditionalTransfer, "Jv"),
+				Instr(Opcode.jz,	InstrClass.ConditionalTransfer, "Jv"),
+				Instr(Opcode.jnz, InstrClass.ConditionalTransfer, "Jv"),
+				Instr(Opcode.jbe, InstrClass.ConditionalTransfer, "Jv"),
+				Instr(Opcode.ja,  InstrClass.ConditionalTransfer, "Jv"),
 
-				new InstructionDecoder(Opcode.js,  InstrClass.ConditionalTransfer, "Jv"),
-				new InstructionDecoder(Opcode.jns, InstrClass.ConditionalTransfer, "Jv"),
-				new InstructionDecoder(Opcode.jpe, InstrClass.ConditionalTransfer, "Jv"),
-				new InstructionDecoder(Opcode.jpo, InstrClass.ConditionalTransfer, "Jv"),
-				new InstructionDecoder(Opcode.jl,  InstrClass.ConditionalTransfer, "Jv"),
-				new InstructionDecoder(Opcode.jge, InstrClass.ConditionalTransfer, "Jv"),
-				new InstructionDecoder(Opcode.jle, InstrClass.ConditionalTransfer, "Jv"),
-				new InstructionDecoder(Opcode.jg,  InstrClass.ConditionalTransfer, "Jv"),
+				Instr(Opcode.js,  InstrClass.ConditionalTransfer, "Jv"),
+				Instr(Opcode.jns, InstrClass.ConditionalTransfer, "Jv"),
+				Instr(Opcode.jpe, InstrClass.ConditionalTransfer, "Jv"),
+				Instr(Opcode.jpo, InstrClass.ConditionalTransfer, "Jv"),
+				Instr(Opcode.jl,  InstrClass.ConditionalTransfer, "Jv"),
+				Instr(Opcode.jge, InstrClass.ConditionalTransfer, "Jv"),
+				Instr(Opcode.jle, InstrClass.ConditionalTransfer, "Jv"),
+				Instr(Opcode.jg,  InstrClass.ConditionalTransfer, "Jv"),
 
 				// 0F 90
-				new InstructionDecoder(Opcode.seto, "Eb"),
-				new InstructionDecoder(Opcode.setno,"Eb"),
-				new InstructionDecoder(Opcode.setc, "Eb"),
-				new InstructionDecoder(Opcode.setnc,"Eb"),
-				new InstructionDecoder(Opcode.setz, "Eb"),
-				new InstructionDecoder(Opcode.setnz,"Eb"),
-				new InstructionDecoder(Opcode.setbe,"Eb"),
-				new InstructionDecoder(Opcode.seta, "Eb"),
+				Instr(Opcode.seto, "Eb"),
+				Instr(Opcode.setno,"Eb"),
+				Instr(Opcode.setc, "Eb"),
+				Instr(Opcode.setnc,"Eb"),
+				Instr(Opcode.setz, "Eb"),
+				Instr(Opcode.setnz,"Eb"),
+				Instr(Opcode.setbe,"Eb"),
+				Instr(Opcode.seta, "Eb"),
 
-				new InstructionDecoder(Opcode.sets,  "Eb"),
-				new InstructionDecoder(Opcode.setns, "Eb"),
-				new InstructionDecoder(Opcode.setpe, "Eb"),
-				new InstructionDecoder(Opcode.setpo, "Eb"),
-				new InstructionDecoder(Opcode.setl,  "Eb"),
-				new InstructionDecoder(Opcode.setge, "Eb"),
-				new InstructionDecoder(Opcode.setle, "Eb"),
-				new InstructionDecoder(Opcode.setg,  "Eb"),
+				Instr(Opcode.sets,  "Eb"),
+				Instr(Opcode.setns, "Eb"),
+				Instr(Opcode.setpe, "Eb"),
+				Instr(Opcode.setpo, "Eb"),
+				Instr(Opcode.setl,  "Eb"),
+				Instr(Opcode.setge, "Eb"),
+				Instr(Opcode.setle, "Eb"),
+				Instr(Opcode.setg,  "Eb"),
 
 				// 0F A0
-				new InstructionDecoder(Opcode.push, "s4"),
-				new InstructionDecoder(Opcode.pop, "s4"),
-				new InstructionDecoder(Opcode.cpuid, ""),
-				new InstructionDecoder(Opcode.bt, "Ev,Gv"),
-				new InstructionDecoder(Opcode.shld, "Ev,Gv,Ib"),
-				new InstructionDecoder(Opcode.shld, "Ev,Gv,c"),
+				Instr(Opcode.push, "s4"),
+				Instr(Opcode.pop, "s4"),
+				Instr(Opcode.cpuid, ""),
+				Instr(Opcode.bt, "Ev,Gv"),
+				Instr(Opcode.shld, "Ev,Gv,Ib"),
+				Instr(Opcode.shld, "Ev,Gv,c"),
 				s_invalid,
                 s_invalid,
 
-				new InstructionDecoder(Opcode.push, "s5"),
-				new InstructionDecoder(Opcode.pop, "s5"),
-				new InstructionDecoder(Opcode.rsm, ""),
-                new InstructionDecoder(Opcode.bts, "Ev,Gv"),
-				new InstructionDecoder(Opcode.shrd, "Ev,Gv,Ib"),
-				new InstructionDecoder(Opcode.shrd, "Ev,Gv,c"),
+				Instr(Opcode.push, "s5"),
+				Instr(Opcode.pop, "s5"),
+				Instr(Opcode.rsm, ""),
+                Instr(Opcode.bts, "Ev,Gv"),
+				Instr(Opcode.shrd, "Ev,Gv,Ib"),
+				Instr(Opcode.shrd, "Ev,Gv,c"),
 				new GroupDecoder(15, ""),
-				new InstructionDecoder(Opcode.imul, "Gv,Ev"),
+				Instr(Opcode.imul, "Gv,Ev"),
 
 				// 0F B0
-				new InstructionDecoder(Opcode.cmpxchg, "Eb,Gb"),
-				new InstructionDecoder(Opcode.cmpxchg, "Ev,Gv"),
-				new InstructionDecoder(Opcode.lss, "Gv,Mp"),
-				new InstructionDecoder(Opcode.btr, "Ev,Gv"),
-                new InstructionDecoder(Opcode.lfs, "Gv,Mp"),
-				new InstructionDecoder(Opcode.lgs, "Gv,Mp"),
-				new InstructionDecoder(Opcode.movzx, "Gv,Eb"),
-				new InstructionDecoder(Opcode.movzx, "Gv,Ew"),
+				Instr(Opcode.cmpxchg, "Eb,Gb"),
+				Instr(Opcode.cmpxchg, "Ev,Gv"),
+				Instr(Opcode.lss, "Gv,Mp"),
+				Instr(Opcode.btr, "Ev,Gv"),
+                Instr(Opcode.lfs, "Gv,Mp"),
+				Instr(Opcode.lgs, "Gv,Mp"),
+				Instr(Opcode.movzx, "Gv,Eb"),
+				Instr(Opcode.movzx, "Gv,Ew"),
 
 				new PrefixedDecoder(
                     Opcode.jmpe, "",
                     opF3:Opcode.popcnt, opF3Fmt: "Gv,Ev"),
 				Instr(Opcode.ud1, "Gv,Ev"),
 				new GroupDecoder(8, "Ev,Ib"),
-				new InstructionDecoder(Opcode.btc, "Gv,Ev"),
-				new InstructionDecoder(Opcode.bsf, "Gv,Ev"),
-				new InstructionDecoder(Opcode.bsr, "Gv,Ev"),
-				new InstructionDecoder(Opcode.movsx, "Gv,Eb"),
-				new InstructionDecoder(Opcode.movsx, "Gv,Ew"),
+				Instr(Opcode.btc, "Gv,Ev"),
+
+                new PrefixedDecoder(
+                    Opcode.bsf, "Gv,Ev",
+                    opF3:Opcode.tzcnt, opF3Fmt:"Gv,Ev"),
+                new PrefixedDecoder(
+                    dec: Instr(Opcode.bsr, "Gv,Ev"),
+                    dec66: Instr(Opcode.bsr, "Gv,Ev"),
+                    decF3: Instr(Opcode.lzcnt, "Gv,Ev")),
+				Instr(Opcode.movsx, "Gv,Eb"),
+				Instr(Opcode.movsx, "Gv,Ew"),
 
 				// 0F C0
-				new InstructionDecoder(Opcode.xadd, "Eb,Gb"),
-				new InstructionDecoder(Opcode.xadd, "Ev,Gv"),
+				Instr(Opcode.xadd, "Eb,Gb"),
+				Instr(Opcode.xadd, "Ev,Gv"),
 				new PrefixedDecoder(
                     Opcode.cmpps, "Vps,Hps,Wps,Ib",
                     Opcode.cmppd, "Vpd,Hpd,Wpd,Ib",
@@ -442,14 +451,14 @@ namespace Reko.Arch.X86
                     Opcode.vshufpd, "Vpd,Hpd,Wpd,Ib"),
 				new GroupDecoder(9, ""),
 
-				new InstructionDecoder(Opcode.bswap, "rv"),
-				new InstructionDecoder(Opcode.bswap, "rv"),
-				new InstructionDecoder(Opcode.bswap, "rv"),
-				new InstructionDecoder(Opcode.bswap, "rv"),
-				new InstructionDecoder(Opcode.bswap, "rv"),
-				new InstructionDecoder(Opcode.bswap, "rv"),
-				new InstructionDecoder(Opcode.bswap, "rv"),
-				new InstructionDecoder(Opcode.bswap, "rv"),
+				Instr(Opcode.bswap, "rv"),
+				Instr(Opcode.bswap, "rv"),
+				Instr(Opcode.bswap, "rv"),
+				Instr(Opcode.bswap, "rv"),
+				Instr(Opcode.bswap, "rv"),
+				Instr(Opcode.bswap, "rv"),
+				Instr(Opcode.bswap, "rv"),
+				Instr(Opcode.bswap, "rv"),
 
 				// 0F D0
 				new PrefixedDecoder(
@@ -457,7 +466,7 @@ namespace Reko.Arch.X86
 					Opcode.addsubpd, "Vpd,Hpd,Wpd",
 					Opcode.illegal, "",
 					Opcode.addsubps, "Vps,Hps,Wps"),
-				new PrefixedOpRec(
+				new PrefixedDecoder(
                     Opcode.psrlw, "Pq,Qq",
                     Opcode.vpsrlw, "Vx,Hx,Wx"),
                 new PrefixedDecoder(
@@ -472,7 +481,7 @@ namespace Reko.Arch.X86
                 new PrefixedDecoder(
                     Opcode.pmullw, "Pq,Qq",
                     Opcode.vpmullw, "Vx,Hx,Wx"),
-				new InstructionDecoder(Opcode.movq, "Wx,Vx"),
+				Instr(Opcode.movq, "Wx,Vx"),
                 new PrefixedDecoder(
                     Opcode.pmovmskb, "Gd,Nq",
                     Opcode.vpmovmskb, "Gd,Ux"),
@@ -524,9 +533,9 @@ namespace Reko.Arch.X86
                     Opcode.vpmulhw, "Vx,Hx,Wx"),
                 new PrefixedDecoder(
                     Opcode.illegal, "",
-                    Opcode.cvttpd2dq, "Vx,Wpd",
+                    Opcode.cvttpd2dq, "Vdq,Wpd",
                     Opcode.cvtdq2pd, "Vx,Wpd",
-                    Opcode.cvtpd2dq, "Vx,Wpd"),
+                    Opcode.cvtpd2dq, "Vdq,Wpd"),
                 new PrefixedDecoder(
                     Opcode.movntq, "Mq,Pq",
                     Opcode.vmovntq, "Mx,Vx"),

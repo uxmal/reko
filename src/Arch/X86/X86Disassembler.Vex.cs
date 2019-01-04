@@ -32,8 +32,11 @@ namespace Reko.Arch.X86
         {
             return new Dictionary<Opcode, Opcode>
             {
+                { Opcode.illegal, Opcode.illegal },
                 { Opcode.addsd, Opcode.vaddsd },
                 { Opcode.addpd, Opcode.vaddpd },
+                { Opcode.addsubpd, Opcode.vaddsubpd },
+                { Opcode.addsubps, Opcode.vaddsubps },
                 { Opcode.cvtsi2sd, Opcode.vcvtsi2sd },
                 { Opcode.cvtsi2ss, Opcode.vcvtsi2ss },
                 { Opcode.cvttpd2dq, Opcode.vcvttpd2dq },
@@ -41,13 +44,26 @@ namespace Reko.Arch.X86
                 { Opcode.cvtpd2dq, Opcode.vcvtpd2dq },
                 { Opcode.movapd, Opcode.vmovapd },
                 { Opcode.movaps, Opcode.vmovaps },
+                { Opcode.movlps, Opcode.vmovlps },
+                { Opcode.movlpd, Opcode.vmovlpd },
                 { Opcode.movsd, Opcode.vmovsd },
                 { Opcode.movss, Opcode.vmovss },
                 { Opcode.xorpd, Opcode.vxorpd },
                 { Opcode.xorps, Opcode.vxorps },
-				{ Opcode.movlps, Opcode.vmovlps },
-				{ Opcode.movlpd, Opcode.vmovlpd },
-				{ Opcode.addsubpd, Opcode.vaddsubpd }
+                { Opcode.unpckhpd, Opcode.vunpckhpd },
+                { Opcode.unpckhps, Opcode.vunpckhps },
+
+                //$TODO: should be in the decoder.
+                { Opcode.vhaddpd, Opcode.vhaddpd },
+                { Opcode.vhaddps, Opcode.vhaddps },
+                { Opcode.vhsubpd, Opcode.vhsubpd },
+                { Opcode.vhsubps, Opcode.vhsubps },
+                { Opcode.vlddqu, Opcode.vlddqu }, 
+                { Opcode.vmovlps, Opcode.vmovlps},
+                { Opcode.vpacksswb, Opcode.vpacksswb },
+                { Opcode.vpslld, Opcode.vpslld },
+                { Opcode.vpunpckhqdq, Opcode.vpunpckhqdq },
+                { Opcode.vpunpcklqdq, Opcode.vpunpcklqdq },
             };
         }
     }

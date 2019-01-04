@@ -32,15 +32,14 @@ namespace Reko.Arch.X86
             return new Decoder[] {
 
                 // 00
-                new PrefixedDecoder(
-                    Opcode.illegal, "",
-                    Opcode.vpermq, "Vqq,Wqq,Ib"),
-                s_nyi,
-                s_nyi,
+                new PrefixedDecoder(dec66: Instr(Opcode.vpermq, "Vqq,Wqq,Ib")),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpermpd, "Vqq,Wqq,Ib")),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpblendd, "Vx,Hx,Wx,Ib")),
                 s_invalid,
-                s_nyi,
-                s_nyi,
-                s_nyi,
+
+                new PrefixedDecoder(dec66: Instr(Opcode.vpermilps, "Vx,Wx,Ib")),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpermilpd, "Vx,Wx,Ib")),
+                new PrefixedDecoder(dec66: Instr(Opcode.vperm2f128, "Vqq,Hqq,Wqq,Ib")),
                 s_invalid,
 
                 s_nyi,

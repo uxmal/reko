@@ -71,6 +71,11 @@ namespace Reko.Arch.X86
             {
                 return disasm.DecodeOperands(opcode, op, opFormat + format, iclass);
             }
+
+            public override string ToString()
+            {
+                return $"{iclass}:{opcode}";
+            }
         }
 
         /// <summary>
@@ -326,12 +331,14 @@ namespace Reko.Arch.X86
         {
             public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
+                var ctx = disasm.currentDecodingContext;
+                if (ctx.SizeOverridePrefix | ctx.F2Prefix | ctx.F3Prefix)
+                    return null;
                 if (!disasm.rdr.TryReadByte(out op))
                     return null;
-                var r = (~op >> 2) & 4;
+                var r = (~op >> 5) & 4;
                 var vvvv = (~op >> 3) & 0xF;
                 var pp = op & 3;
-                var ctx = disasm.currentDecodingContext;
                 ctx.IsVex = true;
                 ctx.VexRegister = (byte) vvvv;
                 ctx.RegisterExtensionPrefixByte = (byte) r;
@@ -340,6 +347,8 @@ namespace Reko.Arch.X86
                 ctx.F3Prefix = pp == 2;
                 ctx.SizeOverridePrefix = pp == 1;
                 if (!disasm.rdr.TryReadByte(out op))
+                    return null;
+                if (op == 0x38 || op == 0x3A)
                     return null;
                 var instr = s_aOpRec0F[op].Decode(disasm, op, opFormat);
                 if (instr == null)
@@ -508,7 +517,7 @@ namespace Reko.Arch.X86
                 this.decoderBase = dec ?? s_invalid;
                 this.decoderWide = decWide ?? s_invalid;
                 this.decoder66 = dec66 ?? s_invalid;
-                this.decoder66Wide = dec66Wide ?? s_invalid;
+                this.decoder66Wide = dec66Wide ?? decoder66;
                 this.decoderF3 = decF3 ?? s_invalid;
                 this.decoderF2 = decF2 ?? s_invalid;
             }

@@ -1859,7 +1859,7 @@ namespace Reko.UnitTests.Arch.Intel
             Run64bitTest(0x41, 0x0F, 0x18, 0x08); // prefetch
             AssertCode(
                 "0|L--|0000000140000000(4): 1 instructions",
-                "1|L--|__prefetcht0(Mem0[rax:byte])");
+                "1|L--|__prefetcht0(Mem0[r8:byte])");
         }
 
         [Test]

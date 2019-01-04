@@ -108,77 +108,80 @@ namespace Reko.Arch.X86
                     Opcode.illegal, "",
                     Opcode.vptest, "Vx,Wx"),
 
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
+                new PrefixedDecoder(
+                    dec66: Instr(Opcode.vbroadcastss, "Vx,Wd")),
+                new PrefixedDecoder(
+                    dec66: Instr(Opcode.vbroadcastsd, "Vqq,Wq")),
+                new PrefixedDecoder(
+                    dec66: Instr(Opcode.vbroadcastf128, "Vqq,Mdq")),
+                s_invalid,
+
+                new PrefixedDecoder(
+                    dec: Instr(Opcode.pabsb, "Pq,Qq"),
+                    dec66: Instr(Opcode.vpabsb, "Vx,Wx")),
+                new PrefixedDecoder(
+                    dec: Instr(Opcode.pabsw, "Pq,Qq"),
+                    dec66: Instr(Opcode.vpabsw, "Vx,Wx")),
+                new PrefixedDecoder(
+                    dec: Instr(Opcode.pabsd, "Pq,Qq"),
+                    dec66: Instr(Opcode.vpabsd, "Vx,Wx")),
+                s_invalid,
 
                 // 0F 38 20
-                new PrefixedDecoder(
-                    Opcode.illegal, "",
-                    Opcode.pblendvdb, "Vdq,Wdq"),
-                new PrefixedDecoder(
-                    Opcode.illegal, "",
-                    Opcode.vpmovsxbd, "Vx,Wx,Ib"),
-                new PrefixedDecoder(
-                    Opcode.illegal, "",
-                    Opcode.vpmovsxbq, "Vx,Wx,Ib"),
-                new PrefixedDecoder(
-                    Opcode.illegal, "",
-                    Opcode.vpmovsxwd, "Vx,Wx,Ib"),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpmovsxbw, "Vx,Mq")),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpmovsxbd, "Vx,Mq")),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpmovsxbq, "Vx,Mq")),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpmovsxwd, "Vx,Mq")),
 
-                new PrefixedDecoder(
-                    Opcode.illegal, "",
-                    Opcode.blendvps, "Vdq,Wdq"),
-                new PrefixedDecoder(
-                    Opcode.illegal, "",
-                    Opcode.blendvpd, "Vdq,Wdq"),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpmovsxwq, "Vx,Mq")),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpmovsxdq, "Vx,Mq")),
                 s_invalid,
                 s_invalid,
 
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
+                new PrefixedDecoder(dec66: Instr(Opcode.vpmuldq, "Vx,Hx,Wx")),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpcmpeqq, "Vx,Hx,Wx")),
+                new PrefixedDecoder(dec66: Instr(Opcode.vmovntdqa, "Vx,Mx,Wx")),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpackusdw, "Vx,Hx,Wx")),
+
+                new PrefixedDecoder(dec66: Instr(Opcode.vmaskmovps, "Vx,Hx,Mx")),
+                new PrefixedDecoder(dec66: Instr(Opcode.vmaskmovpd, "Vx,Hx,Mx")),
+                new PrefixedDecoder(dec66: Instr(Opcode.vmaskmovps, "Mx,Hx,Vx")),
+                new PrefixedDecoder(dec66: Instr(Opcode.vmaskmovpd, "Mx,Hx,Vx")),
 
                 // 30
-                new PrefixedDecoder(
-                    Opcode.illegal, "",
-                    Opcode.vpmovsxbw, "Vx,Mq"),
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
+                new PrefixedDecoder(dec66: Instr(Opcode.vpmovzxbw, "Vx,Mq")),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpmovzxbd, "Vx,Mq")),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpmovzxbq, "Vx,Mq")),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpmovzxwd, "Vx,Mq")),
 
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
+                new PrefixedDecoder(dec66: Instr(Opcode.vpmovzxwq, "Vx,Mq")),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpmovzxdq, "Vx,Mq")),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpermd, "Vqq,Hqq,Wqq")),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpcmpgtq, "Vx,Hx,Wx")),
+
+                new PrefixedDecoder(dec66: Instr(Opcode.vpminsb, "Vx,Hx,Wx")),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpminsd, "Vx,Hx,Wx")),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpminuw, "Vx,Hx,Wx")),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpminud, "Vx,Hx,Wx")),
+
+                new PrefixedDecoder(dec66: Instr(Opcode.vpmaxsb, "Vx,Hx,Wx")),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpmaxsd, "Vx,Hx,Wx")),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpmaxuw, "Vx,Hx,Wx")),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpmaxud, "Vx,Hx,Wx")),
 
                 // 40
-                s_nyi,
-                s_nyi,
+                new PrefixedDecoder(dec66: Instr(Opcode.vpmulld, "Vx,Hx,Wx")),
+                new PrefixedDecoder(dec66: Instr(Opcode.vphminposuw, "Vdq,Wdq")),
                 s_invalid,
                 s_invalid,
                 s_invalid,
-                s_nyi,
-                s_nyi,
-                s_nyi,
+                new PrefixedDecoder(
+                    dec66: Instr(Opcode.vpsrlvd, "Vx,Hx,Wx"),
+                    dec66Wide: Instr(Opcode.vpsrlvq, "Vx,Hx,Wx")),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpsravd, "Vx,Hx,Wx")),
+                new PrefixedDecoder(
+                    dec66: Instr(Opcode.vpsllvd, "Vx,Hx,Wx"),
+                    dec66Wide: Instr(Opcode.vpsllvq, "Vx,Hx,Wx")),
 
                 s_invalid,
                 s_invalid,
@@ -237,8 +240,8 @@ namespace Reko.Arch.X86
                 s_invalid,
                 s_invalid,
 
-                s_nyi,
-                s_nyi,
+                new PrefixedDecoder(dec66: Instr(Opcode.vbroadcastb, "Vx,Eb")),
+                new PrefixedDecoder(dec66: Instr(Opcode.vbroadcastw, "Vx,Wx")),
                 s_invalid,
                 s_invalid,
                 s_invalid,
@@ -272,14 +275,27 @@ namespace Reko.Arch.X86
                 s_invalid,
 
                 // 90
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
+                new PrefixedDecoder(
+                    dec66: Instr(Opcode.vgatherdd, "Vx,Hx,Wx"),
+                    dec66Wide: Instr(Opcode.vgatherdq, "Vx,Hx,Wx")),
+                new PrefixedDecoder(
+                    dec66: Instr(Opcode.vgatherqd, "Vx,Hx,Wx"),
+                    dec66Wide: Instr(Opcode.vgatherqq, "Vx,Hx,Wx")),
+                new PrefixedDecoder(
+                    dec66: Instr(Opcode.vgatherdps, "Vx,Hx,Wx"),
+                    dec66Wide: Instr(Opcode.vgatherdpd, "Vx,Hx,Wx")),
+                new PrefixedDecoder(
+                    dec66: Instr(Opcode.vgatherqps, "Vx,Hx,Wx"),
+                    dec66Wide: Instr(Opcode.vgatherqpd, "Vx,Hx,Wx")),
+
+                s_invalid,
+                s_invalid,
+                new PrefixedDecoder(
+                    dec66: Instr(Opcode.vfmaddsub132ps, "Vx,Hx,Wx"),
+                    dec66Wide: Instr(Opcode.vfmaddsub132pd, "Vx,Hx,Wx")),
+                new PrefixedDecoder(
+                    dec66: Instr(Opcode.vfmsubadd132ps, "Vx,Hx,Wx"),
+                    dec66Wide: Instr(Opcode.vfmsubadd132pd, "Vx,Hx,Wx")),
 
                 s_nyi,
                 s_nyi,
@@ -300,10 +316,13 @@ namespace Reko.Arch.X86
                 s_nyi,
                 s_nyi,
 
+                new PrefixedDecoder(
+                    dec66: Instr(Opcode.vfmadd213ps, "Vx,Hx,Wx"),
+                    dec66Wide: Instr(Opcode.vfmadd213pd, "Vx,Hx,Wx")),
                 s_nyi,
                 s_nyi,
                 s_nyi,
-                s_nyi,
+
                 s_nyi,
                 s_nyi,
                 s_nyi,
