@@ -49,8 +49,8 @@ namespace Reko.Arch.X86
                 Instr(Opcode.sar),
 
 				// group 3
-				Instr(Opcode.test, ",Ix"),
-                Instr(Opcode.test, ",Ix"),
+				Instr(Opcode.test, Ix),
+                Instr(Opcode.test, Ix),
                 Instr(Opcode.not),
                 Instr(Opcode.neg),
                 Instr(Opcode.mul),
@@ -59,8 +59,8 @@ namespace Reko.Arch.X86
                 Instr(Opcode.idiv),
 				
 				// group 4
-				Instr(Opcode.inc, "Eb"),
-                Instr(Opcode.dec, "Eb"),
+				Instr(Opcode.inc, Eb),
+                Instr(Opcode.dec, Eb),
                 s_invalid,
                 s_invalid,
                 s_invalid,
@@ -69,19 +69,19 @@ namespace Reko.Arch.X86
                 s_invalid, 
 
 				// group 5
-				Instr(Opcode.inc, "Ev"),
-                Instr(Opcode.dec, "Ev"),
+				Instr(Opcode.inc, Ev),
+                Instr(Opcode.dec, Ev),
                 new Alternative64Decoder(
-                    Instr(Opcode.call, InstrClass.Transfer|InstrClass.Call, "Ev"),
-                    Instr(Opcode.call, InstrClass.Transfer|InstrClass.Call, "Eq")),
-                Instr(Opcode.call, InstrClass.Transfer|InstrClass.Call, "Ep"),
+                    Instr(Opcode.call, InstrClass.Transfer|InstrClass.Call, Ev),
+                    Instr(Opcode.call, InstrClass.Transfer|InstrClass.Call, Eq)),
+                Instr(Opcode.call, InstrClass.Transfer|InstrClass.Call, Ep),
                 new Alternative64Decoder(
-                    Instr(Opcode.jmp, InstrClass.Transfer, "Ev"),
-                    Instr(Opcode.jmp, InstrClass.Transfer, "Eq")),
-                Instr(Opcode.jmp, InstrClass.Transfer, "Ep"),
+                    Instr(Opcode.jmp, InstrClass.Transfer, Ev),
+                    Instr(Opcode.jmp, InstrClass.Transfer, Eq)),
+                Instr(Opcode.jmp, InstrClass.Transfer, Ep),
                 new Alternative64Decoder(
-                    Instr(Opcode.push, "Ev"),
-                    Instr(Opcode.push, "Eq")),
+                    Instr(Opcode.push, Ev),
+                    Instr(Opcode.push, Eq)),
                 s_invalid,
 
 				// group 6
@@ -100,7 +100,7 @@ namespace Reko.Arch.X86
 
 				// group 7
 				new Group7Decoder(
-                    Instr(Opcode.sgdt, "Ms"),
+                    Instr(Opcode.sgdt, Ms),
                     s_invalid,
                     Instr(Opcode.vmcall),
                     Instr(Opcode.vmlaunch),
@@ -110,7 +110,7 @@ namespace Reko.Arch.X86
                     s_invalid,
                     s_invalid),
                 new Group7Decoder(
-                    Instr(Opcode.sidt, "Ms"),
+                    Instr(Opcode.sidt, Ms),
                     Instr(Opcode.monitor),
                     Instr(Opcode.mwait),
                     Instr(Opcode.clac),
@@ -136,8 +136,8 @@ namespace Reko.Arch.X86
                     s_invalid),
 
                 new Group6Decoder(
-                    Instr(Opcode.smsw, "Ew"),
-                    Instr(Opcode.smsw, "Rv")),
+                    Instr(Opcode.smsw, Ew),
+                    Instr(Opcode.smsw, Rv)),
                 new Group7Decoder(
                     s_invalid,
 
@@ -149,9 +149,9 @@ namespace Reko.Arch.X86
                     s_invalid,
                     Instr(Opcode.rdpkru),
                     Instr(Opcode.wrpkru)),
-                Instr(Opcode.lmsw, "Ew"),
+                Instr(Opcode.lmsw, Ew),
                 new Group7Decoder(
-                    Instr(Opcode.invlpg, "Mb"),
+                    Instr(Opcode.invlpg, Mb),
 
                     Instr(Opcode.swapgs),
                     Instr(Opcode.rdtscp),
@@ -178,8 +178,8 @@ namespace Reko.Arch.X86
                 new Group6Decoder(
                     new PrefixedDecoder(
                         new Alternative64Decoder(
-                            Instr(Opcode.cmpxchg8b, "Mq"),
-                            Instr(Opcode.cmpxchg16b, "Mdq"))),
+                            Instr(Opcode.cmpxchg8b, Mq),
+                            Instr(Opcode.cmpxchg16b, Mdq))),
                     s_invalid),
                 s_invalid,
                 s_invalid,
@@ -188,15 +188,15 @@ namespace Reko.Arch.X86
                 s_invalid,
                 new Group6Decoder(
                     new PrefixedDecoder(
-                        Opcode.vmptrld, "Mq",
-                        Opcode.vmclear, "Mq",
-                        opF3:Opcode.vmxon, opF3Fmt:"Mq"),
-                    Instr(Opcode.rdrand, "Rv")),
+                        Instr(Opcode.vmptrld, Mq),
+                        dec66:Instr(Opcode.vmclear, Mq),
+                        decF3:Instr(Opcode.vmxon, Mq)),
+                    Instr(Opcode.rdrand, Rv)),
                 new Group6Decoder(
                     new PrefixedDecoder(
-                        Opcode.vmptrst, "Mq",
-                        opF3:Opcode.vmptrst, opF3Fmt: "Mq"),
-                    Instr(Opcode.rdseed, "Rv")),
+                        dec:Instr(Opcode.vmptrst, Mq),
+                        decF3:Instr(Opcode.vmptrst, Mq)),
+                    Instr(Opcode.rdseed, Rv)),
 
 				// group 10
 				s_nyi,
@@ -222,105 +222,105 @@ namespace Reko.Arch.X86
 				s_invalid,
                 s_invalid,
                 new PrefixedDecoder(
-                    Opcode.psrlw, "Nq,Ib",
-                    Opcode.vpsrlw, "Hx,Ux,Ib"),
+                    Instr(Opcode.psrlw, Nq,Ib),
+                    Instr(Opcode.vpsrlw, Hx,Ux,Ib)),
                 s_invalid,
                 new PrefixedDecoder(
-                    Opcode.psraw, "Nq,Ib",
-                    Opcode.vpsraw, "Hx,Ux,Ib"),
+                    Instr(Opcode.psraw, Nq,Ib),
+                    Instr(Opcode.vpsraw, Hx,Ux,Ib)),
                 s_invalid,
                 new PrefixedDecoder(
-                    Opcode.psllw, "Nq,Ib",
-                    Opcode.vpsllw, "Hx,Ux,Ib"),
+                    Instr(Opcode.psllw, Nq,Ib),
+                    Instr(Opcode.vpsllw, Hx,Ux,Ib)),
                 s_invalid,
 
 				// group 13
 				s_invalid,
                 s_invalid,
                 new PrefixedDecoder(
-                    Opcode.psrld, "Nq,Ib",
-                    Opcode.vpsrld, "Hx,Ux,Ib"),
+                    Instr(Opcode.psrld, Nq,Ib),
+                    Instr(Opcode.vpsrld, Hx,Ux,Ib)),
                 s_invalid,
 
                 new PrefixedDecoder(
-                    Opcode.psrad, "Nq,Ib",
-                    Opcode.vpsrad, "Hx,Ux,Ib"),
+                    Instr(Opcode.psrad, Nq,Ib),
+                    Instr(Opcode.vpsrad, Hx,Ux,Ib)),
                 s_invalid,
                 new PrefixedDecoder(
-                    Opcode.pslld, "Nq,Ib",
-                    Opcode.vpslld, "Hx,Ux,Ib"),
+                    Instr(Opcode.pslld, Nq,Ib),
+                    Instr(Opcode.vpslld, Hx,Ux,Ib)),
                 s_invalid,
 
 				// group 14
 				s_invalid,
                 s_invalid,
                 new PrefixedDecoder(
-                    Opcode.psrlq, "Nq,Ib",
-                    Opcode.vpsrlq, "Hx,Ux,Ib"),
+                    Instr(Opcode.psrlq, Nq,Ib),
+                    Instr(Opcode.vpsrlq, Hx,Ux,Ib)),
                 new PrefixedDecoder(
-                    Opcode.illegal, "",
-                    Opcode.vpsrldq, "Hx,Ux,Ib"),
+                    s_invalid,
+                    Instr(Opcode.vpsrldq, Hx,Ux,Ib)),
 
                 s_invalid,
                 s_invalid,
                 new PrefixedDecoder(
-                    Opcode.psllq, "Nq,Ib",
-                    Opcode.vpsllq, "Hx,Ux,Ib"),
+                    Instr(Opcode.psllq, Nq,Ib),
+                    Instr(Opcode.vpsllq, Hx,Ux,Ib)),
                 new PrefixedDecoder(
-                    Opcode.illegal, "",
-                    Opcode.vpslldq, "Hx,Ux,Ib"),
+                    s_invalid,
+                    Instr(Opcode.vpslldq, Hx,Ux,Ib)),
 
 				// group 15
 				new Group7Decoder(Instr(Opcode.fxsave)),
                 new Group7Decoder(Instr(Opcode.fxrstor)),
-                Instr(Opcode.ldmxcsr, "Md"),
-                Instr(Opcode.stmxcsr, "Md"),
+                Instr(Opcode.ldmxcsr, Md),
+                Instr(Opcode.stmxcsr, Md),
 
                 new Alternative64Decoder(
-                    Instr(Opcode.xsave, "Mb"),
-                    Instr(Opcode.xsave64, "Mb")),
+                    Instr(Opcode.xsave, Mb),
+                    Instr(Opcode.xsave64, Mb)),
 				new Group7Decoder(
-                    Instr(Opcode.xrstor, "Md"),
+                    Instr(Opcode.xrstor, Md),
 
-                    Instr(Opcode.lfence, ""),
-                    Instr(Opcode.lfence, ""),
-                    Instr(Opcode.lfence, ""),
-                    Instr(Opcode.lfence, ""),
+                    Instr(Opcode.lfence),
+                    Instr(Opcode.lfence),
+                    Instr(Opcode.lfence),
+                    Instr(Opcode.lfence),
 
-                    Instr(Opcode.lfence, ""),
-                    Instr(Opcode.lfence, ""),
-                    Instr(Opcode.lfence, ""),
-                    Instr(Opcode.lfence, "")),
+                    Instr(Opcode.lfence),
+                    Instr(Opcode.lfence),
+                    Instr(Opcode.lfence),
+                    Instr(Opcode.lfence)),
                 new Group7Decoder(
-                    Instr(Opcode.xsaveopt, "Md"),
+                    Instr(Opcode.xsaveopt, Md),
 
-                    Instr(Opcode.mfence, ""),
-                    Instr(Opcode.mfence, ""),
-                    Instr(Opcode.mfence, ""),
-                    Instr(Opcode.mfence, ""),
+                    Instr(Opcode.mfence),
+                    Instr(Opcode.mfence),
+                    Instr(Opcode.mfence),
+                    Instr(Opcode.mfence),
 
-                    Instr(Opcode.mfence, ""),
-                    Instr(Opcode.mfence, ""),
-                    Instr(Opcode.mfence, ""),
-                    Instr(Opcode.mfence, "")),
+                    Instr(Opcode.mfence),
+                    Instr(Opcode.mfence),
+                    Instr(Opcode.mfence),
+                    Instr(Opcode.mfence)),
                 new Group7Decoder(
-                    Instr(Opcode.clflush, "Md"),
+                    Instr(Opcode.clflush, Md),
 
-                    Instr(Opcode.sfence, ""),
-                    Instr(Opcode.sfence, ""),
-                    Instr(Opcode.sfence, ""),
-                    Instr(Opcode.sfence, ""),
+                    Instr(Opcode.sfence),
+                    Instr(Opcode.sfence),
+                    Instr(Opcode.sfence),
+                    Instr(Opcode.sfence),
 
-                    Instr(Opcode.sfence, ""),
-                    Instr(Opcode.sfence, ""),
-                    Instr(Opcode.sfence, ""),
-                    Instr(Opcode.sfence, "")),
+                    Instr(Opcode.sfence),
+                    Instr(Opcode.sfence),
+                    Instr(Opcode.sfence),
+                    Instr(Opcode.sfence)),
 
 				// group 16
-				Instr(Opcode.prefetchnta, "Mb"),
-				Instr(Opcode.prefetcht0, "Mb"),
-				Instr(Opcode.prefetcht1, "Mb"),
-				Instr(Opcode.prefetcht2, "Mb"),
+				Instr(Opcode.prefetchnta, Mb),
+				Instr(Opcode.prefetcht0, Mb),
+				Instr(Opcode.prefetcht1, Mb),
+				Instr(Opcode.prefetcht2, Mb),
                 s_invalid,
                 s_invalid,
                 s_invalid,

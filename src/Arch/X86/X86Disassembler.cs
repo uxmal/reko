@@ -134,9 +134,12 @@ namespace Reko.Arch.X86
             bool isRegisterExtensionActive;
             X86LegacyCodeRegisterExtension registerExtension;
 
+            public List<MachineOperand> ops;
+
             internal X86InstructionDecodeInfo()
             {
                 this.registerExtension = new X86LegacyCodeRegisterExtension(0);
+                this.ops = new List<MachineOperand>();
                 this.Reset();
             }
 
@@ -158,6 +161,8 @@ namespace Reko.Arch.X86
                 this.IsVex = false;
                 this.VexRegister = 0;
                 this.VexLong = false;
+
+                this.ops.Clear();
             }
 
             internal bool IsSegmentOverrideActive()
@@ -239,20 +244,20 @@ namespace Reko.Arch.X86
         }
 
         private ProcessorMode mode;
-        private X86Instruction instrCur;
         private Address addr;
         private PrimitiveType dataWidth;
 		private PrimitiveType addressWidth;
 		private PrimitiveType defaultDataWidth;
 		private PrimitiveType defaultAddressWidth;
-		private EndianImageReader	rdr;
+		private EndianImageReader rdr;
 
-        bool isRegisterExtensionEnabled;
+        private bool isRegisterExtensionEnabled;
 
         private X86InstructionDecodeInfo currentDecodingContext;
 
 		/// <summary>
-		/// Creates a disassembler that uses the specified reader to fetch bytes from the program image.
+		/// Creates a disassembler that uses the specified reader to fetch bytes
+        /// from the program image.
         /// </summary>
 		/// <param name="width">Default address and data widths. PrimitiveType.Word16 for 
         /// 16-bit operation, PrimitiveType.Word32 for 32-bit operation.</param>
@@ -293,13 +298,14 @@ namespace Reko.Arch.X86
             this.currentDecodingContext.Reset();
             if (!rdr.TryReadByte(out byte op))
                 return null;
+
+            X86Instruction instrCur = null;
             try
             {
                 instrCur = s_aOpRec[op].Decode(this, op, "");
             }
             catch
             {
-                instrCur = Illegal();
             }
             if (instrCur == null)
             {
@@ -540,19 +546,124 @@ namespace Reko.Arch.X86
 			throw new ArgumentOutOfRangeException("bits", string.Format("{0} doesn't correspond to a segment register.", bits));
 		}
 
+        // Operand decoders //////
+
+        public static readonly Mutator Ap = () => "Ap";
+        public static readonly Mutator Cd = () => "Cd";
+        public static readonly Mutator Dd = () => "Dd";
+        public static readonly Mutator Eb = () => "Eb";
+        public static readonly Mutator Ed = () => "Ed";
+        public static readonly Mutator Ep = () => "Ep";
+        public static readonly Mutator Eq = () => "Eq";
+        public static readonly Mutator Ev = () => "Ev";
+        public static readonly Mutator Ey = () => "Ey";
+        public static readonly Mutator Ew = () => "Ew";
+        public static readonly Mutator F = () => "F";
+        public static readonly Mutator Gb = () => "Gb";
+        public static readonly Mutator Gd = () => "Gd";
+        public static readonly Mutator Gv = () => "Gv";
+        public static readonly Mutator Gy = () => "Gy";
+        public static readonly Mutator Hdq = () => "Hdq";
+        public static readonly Mutator Hpd = () => "Hpd";
+        public static readonly Mutator Hps = () => "Hps";
+        public static readonly Mutator Hqq = () => "Hqq";
+        public static readonly Mutator Hsd = () => "Hsd";
+        public static readonly Mutator Hss = () => "Hss";
+        public static readonly Mutator Hq = () => "Hq";
+        public static readonly Mutator Hx = () => "Hx";
+        public static readonly Mutator Ib = () => "Ib";
+        public static readonly Mutator Iv = () => "Iv";
+        public static readonly Mutator Iw = () => "Iw";
+        public static readonly Mutator Ix = () => "Ix";
+        public static readonly Mutator Iz = () => "Iz";
+        public static readonly Mutator Jb = () => "Jb";
+        public static readonly Mutator Jv = () => "Jv";
+        public static readonly Mutator Lx = () => "Lx";
+        public static readonly Mutator MB = () => "MB";
+        public static readonly Mutator Mb = () => "Mb";
+        public static readonly Mutator Md = () => "Md";
+        public static readonly Mutator Mdq = () => "Mdq";
+        public static readonly Mutator Mf = () => "Mf";
+        public static readonly Mutator Mg = () => "Mg";
+        public static readonly Mutator Mh = () => "Mh";
+        public static readonly Mutator Mp = () => "Mp";
+        public static readonly Mutator Mpd = () => "Mpd";
+        public static readonly Mutator Mps = () => "Mps";
+        public static readonly Mutator Mq = () => "Mq";
+        public static readonly Mutator Ms = () => "Ms";
+        public static readonly Mutator Mv = () => "Mv";
+        public static readonly Mutator Mw = () => "Mw";
+        public static readonly Mutator Mx = () => "Mx";
+        public static readonly Mutator My = () => "My";
+        public static readonly Mutator Nq = () => "Nq";
+        public static readonly Mutator Ob = () => "Ob";
+        public static readonly Mutator Ov = () => "Ov";
+        public static readonly Mutator Pd = () => "Pd";
+        public static readonly Mutator Ppi = () => "Ppi";
+        public static readonly Mutator Pq = () => "Pq";
+        public static readonly Mutator Qd = () => "Qd";
+        public static readonly Mutator Qpi = () => "Qpi";
+        public static readonly Mutator Qq = () => "Qq";
+        public static readonly Mutator Rv = () => "Rv";
+        public static readonly Mutator Ry = () => "Ry";
+        public static readonly Mutator Udq = () => "Udq";
+        public static readonly Mutator Upd = () => "Upd";
+        public static readonly Mutator Ups = () => "Ups";
+        public static readonly Mutator Ux = () => "Ux";
+        public static readonly Mutator Vdq = () => "Vdq";
+        public static readonly Mutator Vpd = () => "Vpd";
+        public static readonly Mutator Vps = () => "Vps";
+        public static readonly Mutator Vsd = () => "Vsd";
+        public static readonly Mutator Vss = () => "Vss";
+        public static readonly Mutator Vq = () => "Vq";
+        public static readonly Mutator Vqq = () => "Vqq";
+        public static readonly Mutator Vx = () => "Vx";
+        public static readonly Mutator Vy = () => "Vy";
+        public static readonly Mutator Wd = () => "Wd";
+        public static readonly Mutator Wdq = () => "Wdq";
+        public static readonly Mutator Wpd = () => "Wpd";
+        public static readonly Mutator Wpq = () => "Wpq";
+        public static readonly Mutator Wps = () => "Wps";
+        public static readonly Mutator Wq = () => "Wq";
+        public static readonly Mutator Wqq = () => "Wqq";
+        public static readonly Mutator Wsd = () => "Wsd";
+        public static readonly Mutator Wss = () => "Wss";
+        public static readonly Mutator Wx = () => "Wx";
+        public static readonly Mutator Wy = () => "Wy";
+        public static readonly Mutator Sw = () => "Sw";
+        public static readonly Mutator ab = () => "ab";
+        public static readonly Mutator av = () => "av";
+        public static readonly Mutator aw = () => "aw";
+        public static readonly Mutator b = () => "b";
+        public static readonly Mutator c = () => "c";
+        public static readonly Mutator f = () => "f";
+        public static readonly Mutator dw = () => "dw";
+        public static readonly Mutator n1 = () => "1";
+        public static readonly Mutator n3 = () => "3";
+        public static readonly Mutator rb = () => "rb";
+        public static readonly Mutator rq = () => "rq";
+        public static readonly Mutator rv = () => "rv";
+        public static readonly Mutator rw = () => "rw";
+        public static readonly Mutator s0 = () => "s0";
+        public static readonly Mutator s1 = () => "s1";
+        public static readonly Mutator s2 = () => "s2";
+        public static readonly Mutator s3 = () => "s3";
+        public static readonly Mutator s4 = () => "s4";
+        public static readonly Mutator s5 = () => "s5";
+
         public static InstructionDecoder Instr(Opcode op)
         {
-            return new InstructionDecoder(op, InstrClass.Linear, "");
+            return new InstructionDecoder(op, InstrClass.Linear);
         }
 
-        public static InstructionDecoder Instr(Opcode op, string format)
+        public static InstructionDecoder Instr(Opcode op, params Mutator [] mutators)
         {
-            return new InstructionDecoder(op, InstrClass.Linear, format);
+            return new InstructionDecoder(op, InstrClass.Linear, mutators);
         }
 
-        public static InstructionDecoder Instr(Opcode op, InstrClass iclass, string format)
+        public static InstructionDecoder Instr(Opcode op, InstrClass iclass, params Mutator [] mutators)
         {
-            return new InstructionDecoder(op, iclass, format);
+            return new InstructionDecoder(op, iclass, mutators);
         }
 
         public static PrefixedDecoder Prefixed(Opcode op, string format)
@@ -592,7 +703,6 @@ namespace Reko.Arch.X86
             PrimitiveType width = null;
             PrimitiveType iWidth = dataWidth;
             byte modRm;
-            List<MachineOperand> ops = new List<MachineOperand>();
             int i = 0;
             while (i != strFormat.Length)
             {
@@ -811,10 +921,10 @@ namespace Reko.Arch.X86
                 }
                 if (pOperand != null)
                 {
-                    ops.Add(pOperand);
+                    this.currentDecodingContext.ops.Add(pOperand);
                 }
             }
-            return new X86Instruction(opcode, iclass, iWidth, addressWidth, ops.ToArray())
+            return new X86Instruction(opcode, iclass, iWidth, addressWidth, currentDecodingContext.ops.ToArray())
             {
                 repPrefix = this.currentDecodingContext.F2Prefix ? 2 :
                             this.currentDecodingContext.F3Prefix ? 3 : 0
@@ -1122,7 +1232,7 @@ namespace Reko.Arch.X86
 
         static X86Disassembler()
 		{
-            s_invalid = new InstructionDecoder(Opcode.illegal, InstrClass.Invalid, "");
+            s_invalid = Instr(Opcode.illegal, InstrClass.Invalid);
             s_nyi = nyi("This could be invalid or it could be not yet implemented");
             s_aOpRec = CreateOnebyteOprecs();
             s_aOpRec0F = CreateTwobyteOprecs();
@@ -1134,5 +1244,9 @@ namespace Reko.Arch.X86
             s_mpVex = CreateVexMapping();
             Debug.Assert(s_aFpOpRec.Length == 8 * 0x48);
 		}
-	}
+
+        public delegate string Mutator();
+
+    }
+
 }	

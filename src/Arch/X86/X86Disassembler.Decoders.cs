@@ -52,18 +52,10 @@ namespace Reko.Arch.X86
             public string format;       // mini language for decoding operands to this instruction
             public InstrClass iclass;
 
-            public InstructionDecoder(Opcode op) : this(op, InstrClass.Linear, "")
-            {
-            }
-
-            public InstructionDecoder(Opcode op, string fmt) : this(op, InstrClass.Linear, fmt)
-            {
-            }
-
-            public InstructionDecoder(Opcode op, InstrClass icl, string fmt)
+            public InstructionDecoder(Opcode op, InstrClass icl, params Mutator [] mutators)
             {
                 opcode = op;
-                format = fmt;
+                format = string.Join(",", mutators.Select(m => m()));
                 iclass = icl;
             }
 
@@ -108,8 +100,8 @@ namespace Reko.Arch.X86
         /// </summary>
         public class Rex_or_InstructionDecoder : InstructionDecoder
         {
-            public Rex_or_InstructionDecoder(Opcode op, string fmt)
-                : base(op, fmt)
+            public Rex_or_InstructionDecoder(Opcode op, Mutator mutator)
+                : base(op, InstrClass.Linear, mutator)
             {
             }
 
@@ -160,10 +152,10 @@ namespace Reko.Arch.X86
             public readonly int Group;
             public readonly string format;
 
-            public GroupDecoder(int group, string format)
+            public GroupDecoder(int group, params Mutator [] mutators)
             {
                 this.Group = group;
-                this.format = format;
+                this.format = string.Join(",", mutators.Select(m => m()));
             }
 
             public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
@@ -483,39 +475,16 @@ namespace Reko.Arch.X86
             private readonly Decoder decoderF2;
 
             public PrefixedDecoder(
-                Opcode op,
-                string opFmt,
-                Opcode op66 = Opcode.illegal,
-                string op66Fmt = null,
-                Opcode opF3 = Opcode.illegal,
-                string opF3Fmt = null,
-                Opcode opF2 = Opcode.illegal,
-                string opF2Fmt = null,
+                Decoder dec = null,
+                Decoder dec66 = null,
+                Decoder decF3 = null,
+                Decoder decF2 = null,
+                Decoder decWide = null,
+                Decoder dec66Wide = null,
                 InstrClass iclass = InstrClass.Linear)
             {
-                Decoder MakeDecoder(Opcode opc, string format)
-                {
-                    return opc != Opcode.illegal
-                        ? new InstructionDecoder(opc, iclass, format)
-                        : s_invalid;
-                }
-
-                this.decoderBase = this.decoderWide = MakeDecoder(op, opFmt);
-                this.decoder66 = this.decoder66Wide = MakeDecoder(op66, op66Fmt);
-                this.decoderF3 = MakeDecoder(opF3, opF3Fmt);
-                this.decoderF2 = MakeDecoder(opF2, opF2Fmt);
-            }
-
-            public PrefixedDecoder(
-                Decoder dec = null,
-                Decoder decWide = null,
-                Decoder dec66 = null,
-                Decoder dec66Wide = null,
-                Decoder decF3 = null,
-                Decoder decF2 = null)
-            {
                 this.decoderBase = dec ?? s_invalid;
-                this.decoderWide = decWide ?? s_invalid;
+                this.decoderWide = decWide ?? decoderBase;
                 this.decoder66 = dec66 ?? s_invalid;
                 this.decoder66Wide = dec66Wide ?? decoder66;
                 this.decoderF3 = decF3 ?? s_invalid;
@@ -559,7 +528,7 @@ namespace Reko.Arch.X86
         /// </summary>
         public class InterruptDecoder : InstructionDecoder
         {
-            public InterruptDecoder(Opcode op, string fmt) : base(op, fmt)
+            public InterruptDecoder(Opcode op, Mutator mutator) : base(op, InstrClass.Linear, mutator)
             {
             }
 
