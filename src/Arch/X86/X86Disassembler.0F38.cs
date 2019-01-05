@@ -202,9 +202,9 @@ namespace Reko.Arch.X86
                 s_invalid,
                 s_invalid,
 
-                new PrefixedDecoder(dec66:Instr(Opcode.vpbroadcastd, "Vx,Wx")),
-                new PrefixedDecoder(dec66:Instr(Opcode.vpbroadcastq, "Vx,Wx")),
-                new PrefixedDecoder(dec66:Instr(Opcode.vpbroadcasti128, "Vqq,Mdq")),
+                new PrefixedDecoder(dec66:Instr(Opcode.vpbroadcastd, Vx,Wx)),
+                new PrefixedDecoder(dec66:Instr(Opcode.vpbroadcastq, Vx,Wx)),
+                new PrefixedDecoder(dec66:Instr(Opcode.vpbroadcasti128, Vqq,Mdq)),
                 s_invalid,
                 s_invalid,
                 s_invalid,

@@ -86,15 +86,15 @@ namespace Reko.Arch.X86
 
 				// group 6
 				new Group6Decoder(
-                    Instr(Opcode.sldt, InstrClass.System, "Ew"),
-                    Instr(Opcode.sldt, InstrClass.System, "Rv")),
+                    Instr(Opcode.sldt, InstrClass.System, Ew),
+                    Instr(Opcode.sldt, InstrClass.System, Rv)),
                 new Group6Decoder(
-                    Instr(Opcode.str, "Ew"),
-                    Instr(Opcode.str, "Rv")),
-                Instr(Opcode.lldt, InstrClass.System, "Ms"),
-                Instr(Opcode.ltr, "Ew"),
-                Instr(Opcode.verr, "Ew"),
-                Instr(Opcode.verw, "Ew"),
+                    Instr(Opcode.str, Ew),
+                    Instr(Opcode.str, Rv)),
+                Instr(Opcode.lldt, InstrClass.System, Ms),
+                Instr(Opcode.ltr, Ew),
+                Instr(Opcode.verr, Ew),
+                Instr(Opcode.verw, Ew),
                 s_invalid,
                 s_invalid,
 
@@ -120,7 +120,7 @@ namespace Reko.Arch.X86
                     s_invalid,
                     s_invalid),
                 new Group7Decoder(
-                    Instr(Opcode.lgdt, InstrClass.System, "Ms"),
+                    Instr(Opcode.lgdt, InstrClass.System, Ms),
 
                     Instr(Opcode.xgetbv),
                     Instr(Opcode.xsetbv),
@@ -132,7 +132,7 @@ namespace Reko.Arch.X86
                     Instr(Opcode.xtest),
                     s_invalid),
                 new Group6Decoder(
-                    Instr(Opcode.lidt, InstrClass.System, "Ms"),
+                    Instr(Opcode.lidt, InstrClass.System, Ms),
                     s_invalid),
 
                 new Group6Decoder(

@@ -32,6 +32,7 @@ namespace Reko.Arch.X86
 
         private X86Instruction RewriteEmulated8087Instruction(byte vectorNumber)
         {
+            //$TODO: check for nulls.
             switch (vectorNumber)
             {
             case 0x34: return Patchx87Instruction(0xD8);
@@ -125,16 +126,16 @@ namespace Reko.Arch.X86
             //  F0h tangent(ST0)
             //  F2h arctangent(ST0)
             default:
-                return this.NotYetImplemented("Emulated x87");
-
+                this.NotYetImplemented("Emulated x87");
+                return null;
             case 0xF4:
                 //  F4h ST0 = ln(ST0)
-                return new X86Instruction(Opcode.BOR_ln, InstrClass.Linear, dataWidth, addressWidth);
+                return new X86Instruction(Opcode.BOR_ln, InstrClass.Linear, this.decodingContext.dataWidth, this.decodingContext.addressWidth);
             //  F6h ST0 = log2(ST0)
             //  F8h ST0 = log10(ST0)
             case 0xFA:
                 // FAh    ST0 = e** ST0
-                return new X86Instruction(Opcode.BOR_exp, InstrClass.Linear, dataWidth, addressWidth);
+                return new X86Instruction(Opcode.BOR_exp, InstrClass.Linear, this.decodingContext.dataWidth, this.decodingContext.addressWidth);
                 // FCh    ST0 = 2 * *ST0
                 // FEh    ST0 = 10**ST0
             }
