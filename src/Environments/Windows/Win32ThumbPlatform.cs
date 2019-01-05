@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -18,19 +18,17 @@
  */
 #endregion
 
-using Reko.Arch.Arm;
 using Reko.Core;
 using Reko.Core.CLanguage;
-using Reko.Core.Lib;
 using Reko.Core.Serialization;
-using Reko.Core.Types;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Reko.Environments.Windows
 {
+    // https://stackoverflow.com/questions/16375355/what-is-the-windows-rt-on-arm-native-code-calling-convention
     public class Win32ThumbPlatform : Platform
     {
         private Dictionary<int, SystemService> systemServices;
@@ -114,7 +112,7 @@ namespace Reko.Environments.Windows
 
         public override string DefaultCallingConvention
         {
-            get { throw new NotImplementedException(); }
+            get { return ""; } 
         }
 
         public override Address AdjustProcedureAddress(Address addr)
@@ -138,6 +136,13 @@ namespace Reko.Environments.Windows
         public override CallingConvention GetCallingConvention(string ccName)
         {
             throw new NotImplementedException();
+        }
+
+        public override ImageSymbol FindMainProcedure(Program program, Address addrStart)
+        {
+            Services.RequireService<DecompilerEventListener>().Warn(new NullCodeLocation(program.Name),
+                           "Win32 ARM main procedure finder not implemented yet.");
+            return null;
         }
 
         public override SystemService FindService(int vector, ProcessorState state)
