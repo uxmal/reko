@@ -20,11 +20,11 @@ The decompiler engine then proceeds to analyze the input binary.
 <table>
     <tr>
         <td>
-            <a href="img/mem-map-full.png"><img src="img/mem-map-640.png" border="0" /></a><br />
+            <a href="blob/master/doc/img/mem-map-full.png"><img src="blob/master/doc/img/mem-map-640.png" border="0" /></a><br />
             Byte map view of a loaded ARM binary executable
         </td>
         <td>
-            <a href="img/structure-full.png"><img src="img/structure-640.png" border="0" /></a><br />
+            <a href="blob/master/doc/img/structure-full.png"><img src="blob/master/doc/img/structure-640.png" border="0" /></a><br />
             Decompiled view of a loaded ARM binary executable
         </td>
     </tr>
