@@ -59,6 +59,12 @@ After installing mono, you can proceed by either downloading binaries directly
 from the integration build server, or by building Reko from sources (see `Hacking` 
 below).
 
+## Documentation
+
+To get acquainted with Reko's various features, you can read the 
+[user's guide](guide/reko.md). If you're interested in the internal workings
+of the project, see the wiki.
+
 ## Getting support
 
 You can report any issues you encounter or ask any Reko-related question

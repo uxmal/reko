@@ -1,15 +1,72 @@
-Reko user's guide
-==
-Reko is a decompiler that takes one or more input binaries and decompiles them into
-a high-level language.
+# Reko user's guide
 
+Reko is a binary executable decompiler. It takes one or more input binary executable files and
+decompiles them into a high-level language. It can be used interactively with a GUI shell, 
+as a command line program, or as a .NET library in your own program.
 
-The decompilation process
-==
-Reko decompiles binaries using the following stages. 
+This tutorial assumes you have at least some familiarity with the machine code or
+assembly language of the binary you're working with. For popular CPU architectures
+the internet has plenty of tutorials. You will also have some working familiarity with
+how compilers work; perhaps you've turned on the `-S` or `/FA` switch on your compiler and
+looked at the resulting assembly language. 
 
-Loading
-===
+## Installation
+On Windows machines, you can download a published installer from https://github.com/uxmal/reko/releases. 
+Just run the MSI installer appropriate for your machine; currently 32-bit and 64-bit x86 Windows 
+are supported. The installer will install both the GUI and the command line clients. The software will
+be installed under `$(Program Files)\jklSoft\Reko`. If you want to use the command line client, it will
+be convenient for you if you put `$(Program Files)\jklSoft\Reko` in your PATH environment variable.
+
+On non-Windows machines, we recommend downloading the output of the AppVeyor continuous integration
+(CI) build https://ci.appveyor.com/project/uxmal/reko/build/artifacts. The zip file for the GUI client
+is called `WindowsDecompiler-xxxxx.zip` while the CLI client is called `CmdLine-xxxx.zip`. Unpack either 
+of these zip files in a directory on your machine. No further installation or configuration is 
+necessary, provided you have Mono 5.10 or later installed. It may be convenient for you to add the
+directory into which you installed Reko into your PATH environment variable.
+
+If you wish to build Reko yourself, git clone https://github.com/uxmal/reko and follow the 
+[build instructions](../build.md).
+
+## Running the GUI client
+On Windows, the installer will place a "Reko decompiler" shortcut in your start menu, from where you can 
+launch the GUI client.
+
+On non-Windows systems, you will need to execute the program `WindowsDecompiler.exe` 
+as follows:
+```
+mono WindowsDecompiler.exe
+```
+Once the GUI client is running you can [start working with it](gui.md).
+
+## Running the command line client
+On Windows, assuming the Reko installation directory is in your PATH variable, you 
+can run the Reko command line client as follows:
+```
+decompile some_binary_file.exe
+```
+On non-Windows machines, assuming the Reko installation directory is in your PATH
+variable you need to prefix the command line above with `mono`:
+```
+mono decompile some_binary_file.exe
+```
+The command line client has many options, which may be displayed by running the
+program with the `--help` switch. Working with the command line client is
+[detailed here](cli.md).
+
+## Quick start
+Now that you're installed, it's time to learn what Reko is about. 
+Try the [quick start](quickstart.md) if you're impatient, or read on to gain
+a deeper understanding of what is going on.
+
+## The decompilation process
+Compilation is inherently a lossy process. Information such as complex
+data types and comments are lost when transforming a high level source code 
+program to a low level machine code executable binary. A useful decompilation
+usually requires assistance from a user. Users can supply type information that
+was discarded by the compiler, and add comments or give friendly names to
+procedures. 
+
+### Loading
 The first stage is loading the binary into memory. Reko identifies the binary file format by
 looking for "magic numbers" in the binary file header and/or by looking at the file extension.
 Each different binary file format requires a different loader. Some binaries may in addition 
@@ -25,8 +82,7 @@ The loader, when finished, provides Reko with:
 * Image segments, which associate addresses with memory areas.
 * Symbolic metadata. Symbols associate addresses with names and possibly data types.
 
-Scanning
-===
+### Scanning
 After loading the binary the **scanning** stage begins. The scanner extracts the parts of the
 binary that correspond to executable machine code, discovers cross-references between source
 instructions and target instructions, and are assembled into the program's control flow graph.
