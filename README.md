@@ -62,7 +62,7 @@ below).
 ## Documentation
 
 To get acquainted with Reko's various features, you can read the 
-[user's guide](guide/reko.md). If you're interested in the internal workings
+[user's guide](doc/guide/reko.md). If you're interested in the internal workings
 of the project, see the wiki.
 
 ## Getting support
