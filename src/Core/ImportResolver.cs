@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -47,9 +47,9 @@ namespace Reko.Core
     /// </summary>
     public class ImportResolver : IImportResolver
     {
-        private Project project;
-        private Program program;
-        private DecompilerEventListener eventListener;
+        private readonly Project project;
+        private readonly Program program;
+        private readonly DecompilerEventListener eventListener;
 
         public ImportResolver(Project project, Program program, DecompilerEventListener eventListener)
         {
@@ -62,8 +62,7 @@ namespace Reko.Core
         {
             if (svc.Signature == null)
             {
-                FunctionType fnc;
-                if (program.EnvironmentMetadata.Signatures.TryGetValue(svc.Name, out fnc)) {
+                if (program.EnvironmentMetadata.Signatures.TryGetValue(svc.Name, out var fnc)) {
                     svc.Signature = fnc;
                 }
             }
@@ -101,12 +100,8 @@ namespace Reko.Core
             {
                 foreach (var program in project.Programs)
                 {
-                    ModuleDescriptor mod;
-                    if (!program.EnvironmentMetadata.Modules.TryGetValue(moduleName, out mod))
-                        continue;
-
-                    SystemService svc;
-                    if (mod.ServicesByName.TryGetValue(importName, out svc))
+                    if (program.EnvironmentMetadata.Modules.TryGetValue(moduleName, out var mod) &&
+                        mod.ServicesByName.TryGetValue(importName, out var svc))
                     {
                         return new ExternalProcedure(svc.Name, svc.Signature, svc.Characteristics);
                     }
@@ -115,8 +110,7 @@ namespace Reko.Core
 
             foreach (var program in project.Programs)
             {
-                FunctionType sig;
-                if (program.EnvironmentMetadata.Signatures.TryGetValue(importName, out sig))
+                if (program.EnvironmentMetadata.Signatures.TryGetValue(importName, out var sig))
                 {
                     var chr = platform.LookupCharacteristicsByName(importName);
                     if (chr != null)
@@ -167,27 +161,30 @@ namespace Reko.Core
 
         private Expression LookupImport(string moduleName, string name, IPlatform platform)
         {
-            foreach (var program in project.Programs)
+            if (!string.IsNullOrEmpty(moduleName))
             {
-                if (!program.EnvironmentMetadata.Modules.TryGetValue(moduleName, out ModuleDescriptor mod))
-                    continue;
-
-                if (mod.ServicesByName.TryGetValue(name, out SystemService svc))
+                foreach (var program in project.Programs)
                 {
-                    var ep = new ExternalProcedure(svc.Name, svc.Signature, svc.Characteristics);
-                    return new ProcedureConstant(platform.PointerType, ep);
-                }
+                    // Try to find the imported procedure based on module + name.
+                    if (!program.EnvironmentMetadata.Modules.TryGetValue(moduleName, out ModuleDescriptor mod))
+                        continue;
 
-                if (mod.GlobalsByName.TryGetValue(name, out ImageSymbol sym))
-                {
-                    return CreateReferenceToImport(sym);
+                    if (mod.ServicesByName.TryGetValue(name, out SystemService svc))
+                    {
+                        var ep = new ExternalProcedure(svc.Name, svc.Signature, svc.Characteristics);
+                        return new ProcedureConstant(platform.PointerType, ep);
+                    }
+
+                    if (mod.GlobalsByName.TryGetValue(name, out ImageSymbol sym))
+                    {
+                        return CreateReferenceToImport(sym);
+                    }
                 }
             }
 
             foreach (var program in project.Programs)
             {
-                DataType dt;
-                if (program.EnvironmentMetadata.Globals.TryGetValue(name, out dt))
+                if (program.EnvironmentMetadata.Globals.TryGetValue(name, out var dt))
                 {
                     return Identifier.Global(name, dt);
                 }
@@ -199,20 +196,17 @@ namespace Reko.Core
         {
             foreach (var program in project.Programs)
             {
-                ModuleDescriptor mod;
-                if (!program.EnvironmentMetadata.Modules.TryGetValue(moduleName, out mod))
+                if (!program.EnvironmentMetadata.Modules.TryGetValue(moduleName, out var  mod))
                     continue;
 
-                SystemService svc;
-                if (mod.ServicesByOrdinal.TryGetValue(ordinal, out svc))
+                if (mod.ServicesByOrdinal.TryGetValue(ordinal, out var svc))
                 {
                     EnsureSignature(program, svc);
                     var ep = new ExternalProcedure(svc.Name, svc.Signature, svc.Characteristics);
                     return new ProcedureConstant(platform.PointerType, ep);
                 }
 
-                ImageSymbol sym;
-                if (mod.GlobalsByOrdinal.TryGetValue(ordinal, out sym))
+                if (mod.GlobalsByOrdinal.TryGetValue(ordinal, out var sym))
                 {
                     return CreateReferenceToImport(sym);
                 }
@@ -242,8 +236,7 @@ namespace Reko.Core
         {
             var addrInstruction = program.SegmentMap.MapLinearAddressToAddress(stm.LinearAddress);
             var addrImportThunk = program.Platform.MakeAddressFromConstant(c);
-            ImportReference impref;
-            if (!program.ImportReferences.TryGetValue(addrImportThunk, out impref))
+            if (!program.ImportReferences.TryGetValue(addrImportThunk, out var impref))
                 return null;
 
             var extProc = impref.ResolveImportedProcedure(
