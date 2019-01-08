@@ -34,25 +34,16 @@ void indirect_call_test3(cdecl_class * c)
 // 004010D0: void test4()
 void test4()
 {
-	<anonymous> *** ecx_10 = globals->gbl_c;
-	<anonymous> ** edx_11 = *ecx_10;
-	<anonymous> * eax_12 = *edx_11;
-	word32 esp_13;
-	word32 ebp_14;
-	word32 eax_15;
-	word32 ecx_16;
-	word32 edx_17;
-	byte SCZO_18;
-	eax_12();
+	globals->gbl_c->vtbl->method00(globals->gbl_c);
 }
 
 // 004010F0: void test5()
 void test5()
 {
-	(*((char *) *globals->gbl_c + 0x04))(globals->gbl_c, 999, globals->r4020EC);
+	globals->gbl_c->vtbl->method04(globals->gbl_c, 999, globals->r4020EC);
 }
 
-// 00401120: void test6(Stack (ptr32 Eq_104) c, Stack int32 a, Stack int32 b)
+// 00401120: void test6(Stack (ptr32 Eq_100) c, Stack int32 a, Stack int32 b)
 void test6(cdecl_class * c, int32 a, int32 b)
 {
 	c->vtbl->method04(c, c->vtbl->sum(c, a, b));
@@ -61,111 +52,27 @@ void test6(cdecl_class * c, int32 a, int32 b)
 // 00401160: void test7(Stack real64 rArg04)
 void test7(real64 rArg04)
 {
-	ptr32 esp_12 = fp - 0x04;
 	if (1.0 < rArg04)
-	{
-		<anonymous> ** edx_39 = *globals->gbl_thiscall;
-		<anonymous> * eax_41 = *edx_39;
-		word32 ebp_43;
-		real64 rLoc1_44;
-		bool FPUF_45;
-		byte SCZO_46;
-		word32 eax_47;
-		word32 edx_48;
-		word32 ecx_49;
-		eax_41();
-	}
-	real64 * esp_13 = esp_12 - 0x08;
-	*esp_13 = rArg04;
-	*(esp_13 - 0x04) = 0x0D;
-	struct Eq_143 * edx_20 = *globals->gbl_thiscall;
-	<anonymous> * eax_22 = edx_20->ptr0004;
-	word32 esp_23;
-	word32 ebp_24;
-	real64 rLoc1_25;
-	bool FPUF_26;
-	byte SCZO_27;
-	word32 eax_28;
-	word32 edx_29;
-	word32 ecx_30;
-	eax_22();
+		globals->gbl_thiscall->vtbl->set_double(globals->gbl_thiscall, rArg04);
+	globals->gbl_thiscall->vtbl->modify_double(globals->gbl_thiscall, 0x0D, rArg04);
 }
 
 // 004011B0: void nested_if_blocks_test8(Stack real64 rArg04, FpuStack real64 rArg0)
 void nested_if_blocks_test8(real64 rArg04, real64 rArg0)
 {
-	struct Eq_184 * edx_15 = *globals->gbl_thiscall;
-	<anonymous> * eax_17 = edx_15->ptr0004;
-	word32 ebp_19;
-	byte SCZO_20;
-	real64 rLoc1_21;
-	word32 eax_22;
-	word32 edx_23;
-	word32 ecx_24;
-	real64 rArg0_25;
-	bool FPUF_26;
-	ptr32 esp_18;
-	eax_17();
+	globals->gbl_thiscall->vtbl->modify_double(globals->gbl_thiscall, ~0x00, rArg04);
 	if (globals->r4020F8 != rArg04 && globals->r4020F0 > rArg04)
-	{
-		*(esp_18 - 0x08) = rArg04;
-		<anonymous> ** edx_56 = *globals->gbl_thiscall;
-		<anonymous> * eax_58 = *edx_56;
-		word32 ebp_60;
-		byte SCZO_61;
-		real64 rLoc1_62;
-		word32 eax_63;
-		word32 edx_64;
-		word32 ecx_65;
-		real64 rArg0_66;
-		bool FPUF_67;
-		eax_58();
-	}
-	int32 * esp_37 = esp_18 - 0x04;
-	*esp_37 = 0x07;
-	*(esp_37 - 0x04) = 0x06;
-	*(esp_37 - 0x08) = globals->gbl_c;
-	test6(*(esp_37 - 0x08), *(esp_37 - 0x04), *esp_37);
+		globals->gbl_thiscall->vtbl->set_double(globals->gbl_thiscall, rArg04);
+	test6(globals->gbl_c, 0x06, 0x07);
 }
 
 // 00401230: void loop_test9(Stack real32 rArg04, FpuStack real64 rArg0)
 void loop_test9(real32 rArg04, real64 rArg0)
 {
-	ptr32 esp_45 = fp - 0x10;
 	word32 dwLoc08_10 = 0x00;
-	while (true)
+	while (globals->gbl_thiscall->vtbl->modify_double(globals->gbl_thiscall, dwLoc08_10, (real64) rArg04) > (real64) dwLoc08_10)
 	{
-		real64 * esp_14 = esp_45 - 0x08;
-		*esp_14 = (real64) rArg04;
-		*(esp_14 - 0x04) = dwLoc08_10;
-		struct Eq_297 * eax_21 = *globals->gbl_thiscall;
-		<anonymous> * edx_23 = eax_21->ptr0004;
-		ptr32 esp_25;
-		word32 ebp_26;
-		byte SCZO_27;
-		real64 rLoc1_28;
-		real64 rLoc2_29;
-		word32 ecx_30;
-		word32 edx_31;
-		word32 eax_32;
-		real64 rArg0_33;
-		bool FPUF_34;
-		edx_23();
-		if (rArg0_33 <= (real64) dwLoc08_10)
-			break;
-		*(esp_25 - 0x08) = (real64) rArg04;
-		<anonymous> ** edx_42 = *globals->gbl_thiscall;
-		<anonymous> * eax_44 = *edx_42;
-		word32 ebp_46;
-		byte SCZO_47;
-		real64 rLoc1_48;
-		real64 rLoc2_49;
-		word32 ecx_50;
-		word32 edx_51;
-		word32 eax_52;
-		real64 rArg0_53;
-		bool FPUF_54;
-		eax_44();
+		globals->gbl_thiscall->vtbl->set_double(globals->gbl_thiscall, (real64) rArg04);
 		++dwLoc08_10;
 	}
 }
@@ -200,7 +107,7 @@ void loop_test11(real64 rArg04)
 	}
 }
 
-// 00401330: void nested_structs_test12(Stack (ptr32 Eq_395) dwArg04)
+// 00401330: void nested_structs_test12(Stack (ptr32 Eq_291) dwArg04)
 void nested_structs_test12(nested_structs_type * dwArg04)
 {
 	dwArg04->a = 0x01;
@@ -209,7 +116,7 @@ void nested_structs_test12(nested_structs_type * dwArg04)
 	dwArg04->d = 0x04;
 }
 
-// 00401360: void nested_structs_test13(Stack (ptr32 Eq_412) str)
+// 00401360: void nested_structs_test13(Stack (ptr32 Eq_308) str)
 void nested_structs_test13(nested_structs_type * str)
 {
 	nested_structs_test12(str);
