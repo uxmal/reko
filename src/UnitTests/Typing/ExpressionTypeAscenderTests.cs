@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -221,5 +221,15 @@ namespace Reko.UnitTests.Typing
             RunTest(m.Conditional(PrimitiveType.Word32, id, id1, id2),
                 "Typing/ExaConditional.txt");
         }
+
+        [Test(Description = "Pointers should be processed as globals")]
+        public void ExaUsrGlobals_Addr32()
+        {
+            Given_GlobalVariable(
+                Address.Ptr32(0x10001200), PrimitiveType.Real32);
+            RunTest(Address.Ptr32(0x10001200),
+                "Typing/ExaUsrGlobals_Addr32.txt");
+        }
+
     }
 }
