@@ -12,25 +12,24 @@ _init_entry:
 // LocalsOut: fp(64)
 
 l00000000000005A0:
-	word64 rax_4 = Mem0[0x0000000000200FE8:word64]
-	branch rax_4 == 0x0000000000000000 l00000000000005B2
+	branch __gmon_start__ == 0x0000000000000000 l00000000000005B2
 // DataOut: r15d rbp
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
 
 l00000000000005B0:
-	word64 rsp_15
-	byte SCZO_16
-	word64 rax_17
-	byte SZO_18
-	bool C_19
-	bool Z_20
+	word64 rsp_14
+	byte SCZO_15
+	word64 rax_16
+	byte SZO_17
+	bool C_18
+	bool Z_19
 	call __gmon_start__ (retsize: 8; depth: 16)
-		uses: C_7,rax_4,rsp_2,SCZO,SZO_5,Z_6
-		defs: C_19,rax_17,rsp_15,SCZO_16,SZO_18,Z_20
+		uses: C_6,rax_3,rsp_2,SCZO,SZO_4,Z_5
+		defs: C_18,rax_16,rsp_14,SCZO_15,SZO_17,Z_19
 // DataOut: r15d rbp
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000008 rax:<invalid>
+// SymbolicIn: rsp:fp - 0x0000000000000008 rax:__gmon_start__
 
 l00000000000005B2:
 	return
@@ -95,8 +94,7 @@ l0000000000000650:
 // SymbolicIn: rsp:fp
 
 l0000000000000667:
-	word64 rax_27 = Mem0[0x0000000000200FD8:word64]
-	branch rax_27 == 0x0000000000000000 l0000000000000680
+	branch _ITM_deregisterTMCloneTable == 0x0000000000000000 l0000000000000680
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 8 rdi:0000000000201048 rax:0000000000201048 rbp:fp - 8 -8(fp):rbp
@@ -108,21 +106,21 @@ l0000000000000680:
 // SymbolicIn: rsp:fp - 8 rdi:0000000000201048 rax:<invalid> rbp:fp - 8 -8(fp):rbp
 
 l0000000000000673:
-	word64 rsp_33
-	word64 rdi_34
-	word64 rbp_35
-	word64 rax_36
-	byte SCZO_37
-	bool Z_38
-	byte SZO_39
-	bool C_40
-	call rax_27 (retsize: 8; depth: 8)
-		uses: C_30,qwLoc08_5,rax_27,rbp_31,rdi_2,rsp_32,SCZO_7,SZO_28,Z_29
-		defs: C_40,rax_36,rbp_35,rdi_34,rsp_33,SCZO_37,SZO_39,Z_38
+	word64 rsp_32
+	word64 rdi_33
+	word64 rbp_34
+	word64 rax_35
+	byte SCZO_36
+	bool Z_37
+	byte SZO_38
+	bool C_39
+	call _ITM_deregisterTMCloneTable (retsize: 8; depth: 8)
+		uses: C_29,qwLoc08_5,rax_26,rbp_30,rdi_2,rsp_31,SCZO_7,SZO_27,Z_28
+		defs: C_39,rax_35,rbp_34,rdi_33,rsp_32,SCZO_36,SZO_38,Z_37
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 8 rdi:0000000000201048 rax:<invalid> rbp:fp - 8 -8(fp):rbp
+// SymbolicIn: rsp:fp - 8 rdi:0000000000201048 rax:_ITM_deregisterTMCloneTable rbp:fp - 8 -8(fp):rbp
 
 deregister_tm_clones_exit:
 // DataOut:
@@ -152,8 +150,7 @@ l0000000000000690:
 // SymbolicIn: rsp:fp
 
 l00000000000006B8:
-	word64 rax_34 = Mem0[0x0000000000200FF0:word64]
-	branch rax_34 == 0x0000000000000000 l00000000000006D0
+	branch _ITM_registerTMCloneTable == 0x0000000000000000 l00000000000006D0
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 8 rdi:0000000000201048 rsi:(0x0000000000201048 - 0x0000000000201048 >> 0x0000000000000003) + ((0x0000000000201048 - 0x0000000000201048 >> 0x0000000000000003) >>u 0x000000000000003F) >> 0x0000000000000001 rbp:fp - 8 rax:0x0000000000201048 - 0x0000000000201048 >> 0x0000000000000003 >>u 0x000000000000003F -8(fp):rbp
@@ -165,22 +162,22 @@ l00000000000006D0:
 // SymbolicIn: rsp:fp - 8 rdi:0000000000201048 rsi:(0x0000000000201048 - 0x0000000000201048 >> 0x0000000000000003) + ((0x0000000000201048 - 0x0000000000201048 >> 0x0000000000000003) >>u 0x000000000000003F) >> 0x0000000000000001 rbp:fp - 8 rax:<invalid> -8(fp):rbp
 
 l00000000000006C4:
-	word64 rsp_40
-	word64 rdi_41
-	word64 rsi_42
-	word64 rbp_43
-	byte SCZO_44
-	word64 rax_45
-	bool Z_46
-	byte SZO_47
-	bool C_48
-	call rax_34 (retsize: 8; depth: 8)
-		uses: C_37,qwLoc08_6,rax_34,rbp_38,rdi_2,rsi_13,rsp_39,SCZO_14,SZO_35,Z_36
-		defs: C_48,rax_45,rbp_43,rdi_41,rsi_42,rsp_40,SCZO_44,SZO_47,Z_46
+	word64 rsp_39
+	word64 rdi_40
+	word64 rsi_41
+	word64 rbp_42
+	byte SCZO_43
+	word64 rax_44
+	bool Z_45
+	byte SZO_46
+	bool C_47
+	call _ITM_registerTMCloneTable (retsize: 8; depth: 8)
+		uses: C_36,qwLoc08_6,rax_33,rbp_37,rdi_2,rsi_13,rsp_38,SCZO_14,SZO_34,Z_35
+		defs: C_47,rax_44,rbp_42,rdi_40,rsi_41,rsp_39,SCZO_43,SZO_46,Z_45
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 8 rdi:0000000000201048 rsi:(0x0000000000201048 - 0x0000000000201048 >> 0x0000000000000003) + ((0x0000000000201048 - 0x0000000000201048 >> 0x0000000000000003) >>u 0x000000000000003F) >> 0x0000000000000001 rbp:fp - 8 rax:<invalid> -8(fp):rbp
+// SymbolicIn: rsp:fp - 8 rdi:0000000000201048 rsi:(0x0000000000201048 - 0x0000000000201048 >> 0x0000000000000003) + ((0x0000000000201048 - 0x0000000000201048 >> 0x0000000000000003) >>u 0x000000000000003F) >> 0x0000000000000001 rbp:fp - 8 rax:_ITM_registerTMCloneTable -8(fp):rbp
 
 register_tm_clones_exit:
 // DataOut:
@@ -216,7 +213,7 @@ l0000000000000718:
 // SymbolicIn: rsp:fp
 
 l00000000000006E9:
-	branch Mem0[0x0000000000200FF8:word64] == 0x0000000000000000 l0000000000000703
+	branch __cxa_finalize == 0x0000000000000000 l0000000000000703
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp

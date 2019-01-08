@@ -15,6 +15,5 @@ char g_str4006F0[] = "Correct! that is the secret key!";
 char g_str400718[] = "I'm sorry, that's the wrong secret key!";
 <anonymous> * g_ptr600DF8 = frame_dummy;
 word64 g_qw600E08 = 0x0000000000000000;
-word64 g_qw600FE0 = 0x0000000000000000;
 byte g_b601038 = 0x00;
 

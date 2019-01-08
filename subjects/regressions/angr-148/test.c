@@ -7,21 +7,20 @@
 // 00000000004003E0: void _init()
 void _init()
 {
-	word64 rax_4 = globals->qw600FF8;
-	if (rax_4 != 0x00)
+	if (__gmon_start__ != 0x00)
 	{
-		word64 rsp_15;
-		byte SCZO_16;
-		word64 rax_17;
-		byte SZO_18;
-		bool C_19;
-		bool Z_20;
+		word64 rsp_14;
+		byte SCZO_15;
+		word64 rax_16;
+		byte SZO_17;
+		bool C_18;
+		bool Z_19;
 		__gmon_start__();
 	}
 }
 
-// 0000000000400440: void _start(Register (ptr64 Eq_17) rdx, Stack Eq_18 qwArg00)
-void _start( * rdx, Eq_18 qwArg00)
+// 0000000000400440: void _start(Register (ptr64 Eq_14) rdx, Stack Eq_15 qwArg00)
+void _start( * rdx, Eq_15 qwArg00)
 {
 	__align((char *) fp + 0x08);
 	__libc_start_main(&globals->t40053D, qwArg00, (char *) fp + 0x08, &globals->t400550, &globals->t4005C0, rdx, fp);

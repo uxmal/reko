@@ -5,15 +5,15 @@
 #include "pySample.h"
 
 word32 g_dwFFFFFFFF;
-Eq_922 g_t10000000 = 
+Eq_980 g_t10000000 = 
 	{
 		0x5A4D,
 		0x000000F0,
 	};
-Eq_283 g_t10002098 = null;
-Eq_284 g_t1000209C = null;
-Eq_228 g_t100020A0 = null;
-Eq_229 g_t100020A8 = null;
+Eq_304 g_t10002098 = null;
+Eq_305 g_t1000209C = null;
+Eq_245 g_t100020A0 = null;
+Eq_246 g_t100020A8 = null;
 word32 g_dw100020CC = 0x00000000;
 char g_str100020E0[] = "fdiv(a, b) = a / b";
 char g_str100020F4[] = "fdiv";
@@ -36,9 +36,9 @@ struct HINSTANCE__ g_t10002230 =
 	{
 		-2,
 	};
-ui32 g_dw10003000 = 0xBB40E64E;
+word32 g_dw10003000 = 0xBB40E64E;
 ui32 g_dw10003004 = 0x44BF19B1;
-Eq_197 g_t10003008 = 0xFFFFFFFF;
+DWORD g_t10003008 = 0xFFFFFFFF;
 PyMethodDef g_methods[5] = 
 	{
 		
@@ -80,8 +80,8 @@ PyMethodDef g_methods[5] =
 int32 g_dw10003070 = 0;
 word32 g_dw100033A4 = 0x00000000;
 word32 g_dw100033A8 = 0x00000000;
-Eq_174 g_t100033AC = 0;
+Eq_183 g_t100033AC = 0;
 void * g_ptr100033B0 = null;
 void * g_ptr100033B4 = null;
-<anonymous> * g_ptr100033B8 = null;
+word32 g_dw100033B8 = 0x00000000;
 

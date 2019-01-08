@@ -125,7 +125,9 @@ Parameter name: index
 000000000040D69A: warning: Procedure fn000000000040D690 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000000000406A75: warning: Procedure fn0000000000406A30 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 000000000040D43E: warning: Procedure fn000000000040D420 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+000000000040216C: warning: Unable to resolve imported reference __gmon_start__.
 0000000000402178: warning: Unable to resolve imported reference __gmon_start__.
+00000000004025B0: warning: Unable to resolve imported reference __gmon_start__.
 00000000004061A2: error: An error occurred while processing instruction at address 00000000004061A2.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -207,7 +209,7 @@ Parameter name: bitOffset
    at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 160
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
 000000000040401D: error: An error occurred while processing the statement word64 rax_1497 = Mem1495[rax_1474 - 0x0000000000000008 + 0x0000000000000000:word64].
-    Not handling (ptr64 (struct (0 T_2787 t0000))) and (union (int64 u0) (ptr64 u1)) yet
+    Not handling (ptr64 (struct (0 T_2784 t0000))) and (union (int64 u0) (ptr64 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -218,7 +220,7 @@ Parameter name: bitOffset
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 84
 0000000000406158: error: An error occurred while processing the statement branch Mem0[rax_141 - 0x0000000000000018 + 0x0000000000000000:byte] != 0x00 l0000000000406164.
-    Not handling (ptr64 (struct (0 T_6550 t0000))) and (union (ui64 u0) (ptr64 u1)) yet
+    Not handling (ptr64 (struct (0 T_6547 t0000))) and (union (ui64 u0) (ptr64 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -231,7 +233,7 @@ Parameter name: bitOffset
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 84
 0000000000406C64: error: An error occurred while processing the statement Mem0[rdx - 0x0000000000000001 + 0x0000000000000000:byte] = 0x20.
-    Not handling (ptr64 (struct (0 T_7747 t0000))) and (union (uint64 u0) (ptr64 u1)) yet
+    Not handling (ptr64 (struct (0 T_7744 t0000))) and (union (uint64 u0) (ptr64 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -258,7 +260,7 @@ Parameter name: bitOffset
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 84
 000000000040A2DA: error: An error occurred while processing the statement branch Mem0[rax_20 - 0x0000000000000001 + 0x0000000000000000:byte] == 0x2F l000000000040A2EE.
-    Not handling (ptr64 (struct (0 T_12129 t0000))) and (union (ui64 u0) (ptr64 u1)) yet
+    Not handling (ptr64 (struct (0 T_12126 t0000))) and (union (ui64 u0) (ptr64 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -272,7 +274,7 @@ Parameter name: bitOffset
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 84
 l000000000040BE0A: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
 000000000040DBC3: error: An error occurred while processing the statement word64 rdx_432 = qwLoc98_1503 - rbx_1486.
-    Pulling difference (ptr64 (struct (0 T_19899 t0000))) and (union (int64 u1) (uint64 u0))
+    Pulling difference (ptr64 (struct (0 T_19896 t0000))) and (union (int64 u1) (uint64 u0))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 260
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -467,9 +469,28 @@ fn000000000040E450: warning: Structure analysis stopped making progress, quittin
 0000000000400FD1: warning: Unable to resolve imported reference png_get_PLTE.
 0000000000401021: warning: Unable to resolve imported reference png_get_tRNS.
 0000000000400DBE: warning: Call target address 0000000000000000 is invalid.
+0000000000400AEC: warning: Unable to resolve imported reference __gmon_start__.
 0000000000400CC0: warning: Unable to resolve imported reference __gmon_start__.
 0000000000400DAB: warning: Procedure frame_dummy previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000000000400DC1: warning: Procedure frame_dummy previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+0000000000400B30: warning: Unable to resolve imported reference png_get_bit_depth.
+0000000000400B50: warning: Unable to resolve imported reference png_error.
+0000000000400B60: warning: Unable to resolve imported reference png_start_read_image.
+0000000000400B80: warning: Unable to resolve imported reference png_get_tRNS.
+0000000000400B90: warning: Unable to resolve imported reference png_destroy_read_struct.
+0000000000400BA0: warning: Unable to resolve imported reference png_free.
+0000000000400BB0: warning: Unable to resolve imported reference png_get_color_type.
+0000000000400BD0: warning: Unable to resolve imported reference png_create_read_struct.
+0000000000400BE0: warning: Unable to resolve imported reference png_get_rowbytes.
+0000000000400C00: warning: Unable to resolve imported reference png_read_row.
+0000000000400C10: warning: Unable to resolve imported reference png_read_info.
+0000000000400C20: warning: Unable to resolve imported reference png_malloc.
+0000000000400C50: warning: Unable to resolve imported reference png_get_IHDR.
+0000000000400C60: warning: Unable to resolve imported reference png_destroy_info_struct.
+0000000000400C90: warning: Unable to resolve imported reference png_init_io.
+0000000000400CA0: warning: Unable to resolve imported reference png_create_info_struct.
+0000000000400CB0: warning: Unable to resolve imported reference png_get_PLTE.
+0000000000400CC0: warning: Unable to resolve imported reference __gmon_start__.
 l0000000000400E2D: warning: Non-integral switch expression
 00401958: warning: Expected sizes of arrays to have been determined by now
 00401958: warning: Expected sizes of arrays to have been determined by now
@@ -1293,31 +1314,17 @@ fn004020BC_exit: warning: Phi functions will be ignored by type analysis. This m
 === PE\m68k\hello_m68k.dcproject
 === PE\x86-64\varargs_test\varargs_test.exe
 *** PE\x86-64\varargs_test\varargs_test.exe
-0000000140001898: warning: Call target address 0000000000002D96 is invalid.
-00000001400018A6: warning: Call target address 0000000000002D80 is invalid.
-00000001400018B2: warning: Call target address 0000000000002D6A is invalid.
-00000001400018C2: warning: Call target address 0000000000002D50 is invalid.
-00000001400019B9: warning: Call target address 0000000000002C90 is invalid.
-00000001400019D3: warning: Call target address 0000000000002CA4 is invalid.
-0000000140001A14: warning: Call target address 0000000000002CBE is invalid.
-0000000140001A68: warning: Call target address 0000000000002DC6 is invalid.
-0000000140001A89: warning: Call target address 0000000000002CEE is invalid.
-0000000140001A94: warning: Call target address 0000000000002CD2 is invalid.
+varargs_test.exe: warning: Win32 X86-64 main procedure finder not implemented yet.
+0000000140001A14: warning: Unable to resolve imported reference KERNEL32.dll!RtlVirtualUnwind.
 0000000140001E46: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_register_thread_local_exe_atexit_callback.
 0000000140001E34: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!__p___argv.
 0000000140001E2E: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!__p___argc.
 0000000140001E0A: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_get_initial_narrow_environment.
-0000000140001168: warning: Call target address 00000000000029F4 is invalid.
-0000000140001187: warning: Call target address 0000000000002A06 is invalid.
-00000001400010F5: warning: Call target address 00000000000029F4 is invalid.
-0000000140001114: warning: Call target address 0000000000002A20 is invalid.
-000000014000155B: warning: Call target address 0000000000002C90 is invalid.
-0000000140001575: warning: Call target address 0000000000002CA4 is invalid.
-00000001400015AC: warning: Call target address 0000000000002CBE is invalid.
-0000000140001453: warning: Call target address 0000000000002CEE is invalid.
-000000014000145C: warning: Call target address 0000000000002CD2 is invalid.
-0000000140001462: warning: Call target address 0000000000002D0C is invalid.
-0000000140001AC6: warning: Call target address 0000000000002DDA is invalid.
+0000000140001168: warning: Unable to guess parameters of api-ms-win-crt-stdio-l1-1-0.dll!__acrt_iob_func.
+0000000140001187: warning: Unable to guess parameters of api-ms-win-crt-stdio-l1-1-0.dll!__stdio_common_vfprintf.
+00000001400010F5: warning: Unable to guess parameters of api-ms-win-crt-stdio-l1-1-0.dll!__acrt_iob_func.
+0000000140001114: warning: Unable to guess parameters of api-ms-win-crt-stdio-l1-1-0.dll!__stdio_common_vfscanf.
+00000001400015AC: warning: Unable to resolve imported reference KERNEL32.dll!RtlVirtualUnwind.
 0000000140001E3A: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_cexit.
 0000000140001E52: warning: Unable to guess parameters of api-ms-win-crt-heap-l1-1-0.dll!_set_new_mode.
 0000000140001E5E: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_initialize_onexit_table.
@@ -1332,7 +1339,23 @@ fn004020BC_exit: warning: Phi functions will be ignored by type analysis. This m
 0000000140001DFE: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_configure_narrow_argv.
 0000000140001E4C: warning: Unable to guess parameters of api-ms-win-crt-locale-l1-1-0.dll!_configthreadlocale.
 0000000140001E04: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_initialize_narrow_environment.
+0000000140001DE0: warning: Unable to guess parameters of VCRUNTIME140.dll!__C_specific_handler.
+0000000140001DEC: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_seh_filter_exe.
+0000000140001DF2: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_set_app_type.
+0000000140001DFE: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_configure_narrow_argv.
+0000000140001E04: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_initialize_narrow_environment.
+0000000140001E0A: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_get_initial_narrow_environment.
+0000000140001E2E: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!__p___argc.
+0000000140001E34: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!__p___argv.
+0000000140001E3A: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_cexit.
 0000000140001E40: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_c_exit.
+0000000140001E46: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_register_thread_local_exe_atexit_callback.
+0000000140001E4C: warning: Unable to guess parameters of api-ms-win-crt-locale-l1-1-0.dll!_configthreadlocale.
+0000000140001E52: warning: Unable to guess parameters of api-ms-win-crt-heap-l1-1-0.dll!_set_new_mode.
+0000000140001E5E: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_initialize_onexit_table.
+0000000140001E64: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_register_onexit_function.
+0000000140001E6A: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_crt_atexit.
+0000000140001E70: warning: Unable to resolve imported reference api-ms-win-crt-runtime-l1-1-0.dll!terminate.
 00000001400010B0: error: An error occurred while processing the statement return fn00000001400011B0(rax_5 ^ fp - 200).
     Pulling difference ptr64 and (union (int32 u0) (ui64 u1))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 260
@@ -1677,4 +1700,4 @@ l0800_906A: warning: Non-integral switch expression
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 55 binaries in 70.51 seconds ---
+Decompiled 55 binaries in 91.42 seconds ---

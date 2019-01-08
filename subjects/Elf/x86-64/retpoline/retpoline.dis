@@ -12,25 +12,24 @@ _init_entry:
 // LocalsOut: fp(64)
 
 l0000000000400428:
-	word64 rax_4 = Mem0[0x0000000000600FF8:word64]
-	branch rax_4 == 0x0000000000000000 l000000000040043A
+	branch __gmon_start__ == 0x0000000000000000 l000000000040043A
 // DataOut: r15d rbp
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
 
 l0000000000400438:
-	word64 rsp_15
-	byte SCZO_16
-	word64 rax_17
-	byte SZO_18
-	bool C_19
-	bool Z_20
+	word64 rsp_14
+	byte SCZO_15
+	word64 rax_16
+	byte SZO_17
+	bool C_18
+	bool Z_19
 	call __gmon_start__ (retsize: 8; depth: 16)
-		uses: C_7,rax_4,rsp_2,SCZO,SZO_5,Z_6
-		defs: C_19,rax_17,rsp_15,SCZO_16,SZO_18,Z_20
+		uses: C_6,rax_3,rsp_2,SCZO,SZO_4,Z_5
+		defs: C_18,rax_16,rsp_14,SCZO_15,SZO_17,Z_19
 // DataOut: r15d rbp
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000008 rax:<invalid>
+// SymbolicIn: rsp:fp - 0x0000000000000008 rax:__gmon_start__
 
 l000000000040043A:
 	return

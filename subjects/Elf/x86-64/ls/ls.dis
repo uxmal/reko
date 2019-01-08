@@ -12,25 +12,24 @@ _init_entry:
 // LocalsOut: fp(64)
 
 l0000000000402168:
-	word64 rax_4 = Mem0[0x0000000000619FF8:word64]
-	branch rax_4 == 0x0000000000000000 l000000000040217D
+	branch __gmon_start__ == 0x0000000000000000 l000000000040217D
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
 
 l0000000000402178:
-	word64 rsp_15
-	byte SCZO_16
-	word64 rax_17
-	byte SZO_18
-	bool C_19
-	bool Z_20
+	word64 rsp_14
+	byte SCZO_15
+	word64 rax_16
+	byte SZO_17
+	bool C_18
+	bool Z_19
 	call __gmon_start__ (retsize: 8; depth: 16)
-		uses: C_7,rax_4,rsp_2,SCZO,SZO_5,Z_6
-		defs: C_19,rax_17,rsp_15,SCZO_16,SZO_18,Z_20
+		uses: C_6,rax_3,rsp_2,SCZO,SZO_4,Z_5
+		defs: C_18,rax_16,rsp_14,SCZO_15,SZO_17,Z_19
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000008 rax:<invalid>
+// SymbolicIn: rsp:fp - 0x0000000000000008 rax:__gmon_start__
 
 l000000000040217D:
 	return
@@ -21730,7 +21729,7 @@ l00000000004106BE:
 	word32 r8d_128
 	byte CZ_129
 	word64 r10_130
-	call Mem0[0x00416B48:word64] (retsize: 8; depth: 144)
+	call Mem0[0x0000000000416B48:word64] (retsize: 8; depth: 144)
 		uses: C_31,CZ_54,eax_52,edi,edx,esi,qwLoc08_4,qwLoc10_7,qwLoc18_10,qwLoc20_13,qwLoc28_18,qwLoc30_23,qwLoc40,qwLoc48,qwLoc50,qwLoc58,qwLoc60,qwLoc68,qwLoc70,qwLoc78,qwLoc80,qwLoc88,r10,r12_15,r13,r14,r15,r8_38,r8d,r9_33,rax_49,rbp_20,rbx_25,rcx_39,rdi_51,rdx_47,rsi_50,rsp_26,SCZO_53,SZO_32,tLoc90,Z_29
 		defs: C_119,CZ_129,eax_125,edi_127,edx_123,esi_124,r10_130,r12_110,r13_109,r14_108,r15_107,r8_115,r8d_128,r9_111,rax_126,rbp_112,rbx_114,rcx_121,rdi_113,rdx_122,rsi_117,rsp_106,SCZO_116,SZO_118,Z_120
 	return rsp_106
