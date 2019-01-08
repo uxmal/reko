@@ -1,3 +1,4 @@
+using Reko.Core;
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
@@ -21,9 +22,7 @@ namespace Reko.WindowsItp.Decoders
         public MachineOperand Op2;
         public MachineOperand Op3;
 #endif
-        public override InstructionClass InstructionClass { get;  }
-
-        public override bool IsValid { get; }
+        public override InstrClass InstructionClass { get;  }
 
         public override int OpcodeAsInteger => (int) Opcode;
 

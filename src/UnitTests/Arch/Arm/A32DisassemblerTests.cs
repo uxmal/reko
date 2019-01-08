@@ -1360,10 +1360,6 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("@@@");
         }
 
-        /// If you're bored and want something to do, why not implement a 
-        /// A32 decoder or 10? :)
-#if BORED
-        // An AArch64 decoder for the instruction 5F03C0A8 (A8C0035F) - (AdvancedSimdScalar_x_IdxElem - opcode=1100 U=0) has not been implemented yet.
         [Test]
         public void ArmDasm_wfe_eq()
         {
