@@ -130,7 +130,7 @@ namespace Reko.UnitTests.Arch.Intel
 
             public RewriterHost(Dictionary<Address, ImportReference> importThunks)
             {
-                this.importThunks = importThunks;
+                this.importThunks = importThunks ?? new Dictionary<Address, ImportReference>();
                 this.ppp = new Dictionary<string, PseudoProcedure>();
             }
 
@@ -169,7 +169,7 @@ namespace Reko.UnitTests.Arch.Intel
 
             public Expression GetImport(Address addrThunk, Address addrInstruction)
             {
-                throw new NotImplementedException();
+                return null;
             }
 
             public ExternalProcedure GetImportedProcedure(IProcessorArchitecture arch, Address addrThunk, Address addrInstruction)

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -72,7 +72,7 @@ namespace Reko.Scanning
 
         public ValueSet VisitApplication(Application appl)
         {
-            throw new NotImplementedException();
+            return IntervalValueSet.Any;
         }
 
         public ValueSet VisitArrayAccess(ArrayAccess acc)
