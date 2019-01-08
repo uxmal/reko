@@ -86,7 +86,7 @@ l00000001400010D0:
 	rcx = (uint64) (ecx ^ ecx)
 	SZO = cond(ecx)
 	C = false
-	call fn00000000000029F4 (retsize: 8;)
+	call _acrt_iob_func (retsize: 8;)
 	rbx = rax
 	call fn00000001400010C0 (retsize: 8;)
 	r9 = (uint64) (r9d ^ r9d)
@@ -96,7 +96,7 @@ l00000001400010D0:
 	r8 = rdi
 	rdx = rbx
 	rcx = Mem0[rax:word64]
-	call fn0000000000002A20 (retsize: 8;)
+	call _stdio_common_vfscanf (retsize: 8;)
 	rsp = rsp + 0x0000000000000030
 	SCZO = cond(rsp)
 	rdi = Mem0[rsp:word64]
@@ -145,7 +145,7 @@ l0000000140001140:
 	rdi = rcx
 	rsi = rsp + 0x0000000000000058
 	rcx = (uint64) 0x00000001
-	call fn00000000000029F4 (retsize: 8;)
+	call _acrt_iob_func (retsize: 8;)
 	rbx = rax
 	call fn0000000140001130 (retsize: 8;)
 	r9 = (uint64) (r9d ^ r9d)
@@ -155,7 +155,7 @@ l0000000140001140:
 	r8 = rdi
 	rdx = rbx
 	rcx = Mem0[rax:word64]
-	call fn0000000000002A06 (retsize: 8;)
+	call _stdio_common_vfprintf (retsize: 8;)
 	rsp = rsp + 0x0000000000000030
 	SCZO = cond(rsp)
 	rdi = Mem0[rsp:word64]
@@ -532,17 +532,17 @@ l0000000140001448:
 	rcx = (uint64) (ecx ^ ecx)
 	SZO = cond(ecx)
 	C = false
-	call fn0000000000002CEE (retsize: 8;)
+	eax = SetUnhandledExceptionFilter(Mem0[rsp:LPTOP_LEVEL_EXCEPTION_FILTER])
 	rcx = rbx
-	call fn0000000000002CD2 (retsize: 8;)
-	call fn0000000000002D0C (retsize: 8;)
+	eax = UnhandledExceptionFilter(Mem0[rsp:(ptr64 (struct "_EXCEPTION_POINTERS"))])
+	eax = GetCurrentProcess()
 	rcx = rax
 	rdx = (uint64) 0xC0000409
 	rsp = rsp + 0x0000000000000020
 	SCZO = cond(rsp)
 	rbx = Mem0[rsp:word64]
 	rsp = rsp + 8
-	call Mem0[0x0000000140002058:word64] (retsize: 8;)
+	call TerminateProcess (retsize: 8;)
 	return
 	// succ:  fn0000000140001448_exit
 fn0000000140001448_exit:
@@ -623,7 +623,7 @@ l0000000140001550:
 	rsp = rsp - 0x0000000000000040
 	SCZO = cond(rsp)
 	rbx = rcx
-	call fn0000000000002C90 (retsize: 8;)
+	RtlCaptureContext(Mem0[rsp:PCONTEXT])
 	rsi = Mem0[rbx + 0x00000000000000F8:word64]
 	rdi = (uint64) (edi ^ edi)
 	SZO = cond(edi)
@@ -635,7 +635,7 @@ l000000014000156A:
 	C = false
 	rdx = rsp + 0x0000000000000060
 	rcx = rsi
-	call fn0000000000002CA4 (retsize: 8;)
+	rax = RtlLookupFunctionEntry(rcx, rdx, r8)
 	SZO = cond(rax & rax)
 	C = false
 	branch Test(EQ,Z) l00000001400015B9
@@ -656,7 +656,7 @@ l0000000140001580:
 	SZO = cond(ecx)
 	C = false
 	Mem0[rsp + 0x0000000000000020:word64] = rbx
-	call fn0000000000002CBE (retsize: 8;)
+	call KERNEL32.dll!RtlVirtualUnwind (retsize: 8;)
 	rdi = (uint64) (edi + 0x00000001)
 	SZO = cond(edi)
 	SCZO = cond(edi - 0x00000002)
@@ -1178,23 +1178,23 @@ l000000014000186C:
 	// succ:  l0000000140001894 l0000000140001903
 l0000000140001894:
 	rcx = rbp + 0x0000000000000018
-	call fn0000000000002D96 (retsize: 8;)
+	GetSystemTimeAsFileTime(Mem0[rsp:LPFILETIME])
 	rax = Mem0[rbp + 0x0000000000000018:word64]
 	Mem0[rbp + 0x0000000000000010:word64] = rax
-	call fn0000000000002D80 (retsize: 8;)
+	eax = GetCurrentThreadId()
 	rax = (uint64) eax
 	v13 = Mem0[rbp + 0x0000000000000010:word64] ^ rax
 	Mem0[rbp + 0x0000000000000010:word64] = v13
 	SZO = cond(Mem0[rbp + 0x0000000000000010:word64])
 	C = false
-	call fn0000000000002D6A (retsize: 8;)
+	eax = GetCurrentProcessId()
 	rax = (uint64) eax
 	rcx = rbp + 0x0000000000000020
 	v14 = Mem0[rbp + 0x0000000000000010:word64] ^ rax
 	Mem0[rbp + 0x0000000000000010:word64] = v14
 	SZO = cond(Mem0[rbp + 0x0000000000000010:word64])
 	C = false
-	call fn0000000000002D50 (retsize: 8;)
+	eax = QueryPerformanceCounter(Mem0[rsp:(ptr64 LARGE_INTEGER)])
 	rax = (uint64) Mem0[rbp + 0x0000000000000020:word32]
 	rcx = rbp + 0x0000000000000010
 	rax = rax << 0x0000000000000020
@@ -1269,7 +1269,7 @@ fn0000000140001928_entry:
 l0000000140001928:
 	rsp = fp
 	rcx = 0x0000000140003600
-	call Mem0[0x0000000140002028:word64] (retsize: 8;)
+	call InitializeSListHead (retsize: 8;)
 	return
 	// succ:  fn0000000140001928_exit
 fn0000000140001928_exit:
@@ -1392,14 +1392,14 @@ l000000014000199D:
 	r8 = (uint64) 0x000004D0
 	eax = memset(Mem0[rsp:(ptr64 void)], Mem0[rsp + 8:int32], Mem0[rsp + 16:size_t])
 	rcx = rbp - 0x0000000000000010
-	call fn0000000000002C90 (retsize: 8;)
+	RtlCaptureContext(Mem0[rsp:PCONTEXT])
 	rbx = Mem0[rbp + 0x00000000000000E8:word64]
 	rdx = rbp + 0x00000000000004D8
 	rcx = rbx
 	r8 = (uint64) (r8d ^ r8d)
 	SZO = cond(r8d)
 	C = false
-	call fn0000000000002CA4 (retsize: 8;)
+	rax = RtlLookupFunctionEntry(rcx, rdx, r8)
 	SZO = cond(rax & rax)
 	C = false
 	branch Test(EQ,Z) l0000000140001A1A
@@ -1421,7 +1421,7 @@ l00000001400019DE:
 	rcx = (uint64) (ecx ^ ecx)
 	SZO = cond(ecx)
 	C = false
-	call fn0000000000002CBE (retsize: 8;)
+	call KERNEL32.dll!RtlVirtualUnwind (retsize: 8;)
 	// succ:  l0000000140001A1A
 l0000000140001A1A:
 	rax = Mem0[rbp + 0x00000000000004C8:word64]
@@ -1440,7 +1440,7 @@ l0000000140001A1A:
 	Mem0[rsp + 0x0000000000000060:word64] = rax
 	Mem0[rsp + 0x0000000000000050:word32] = 0x40000015
 	Mem0[rsp + 0x0000000000000054:word32] = 0x00000001
-	call fn0000000000002DC6 (retsize: 8;)
+	eax = IsDebuggerPresent()
 	SCZO = cond(eax - 0x00000001)
 	rax = rsp + 0x0000000000000050
 	Mem0[rsp + 0x0000000000000040:word64] = rax
@@ -1450,9 +1450,9 @@ l0000000140001A1A:
 	rcx = (uint64) (ecx ^ ecx)
 	SZO = cond(ecx)
 	C = false
-	call fn0000000000002CEE (retsize: 8;)
+	eax = SetUnhandledExceptionFilter(Mem0[rsp:LPTOP_LEVEL_EXCEPTION_FILTER])
 	rcx = rsp + 0x0000000000000040
-	call fn0000000000002CD2 (retsize: 8;)
+	eax = UnhandledExceptionFilter(Mem0[rsp:(ptr64 (struct "_EXCEPTION_POINTERS"))])
 	SZO = cond(eax & eax)
 	C = false
 	branch Test(NE,Z) l0000000140001AA8
@@ -1506,7 +1506,7 @@ l0000000140001AC0:
 	rcx = (uint64) (ecx ^ ecx)
 	SZO = cond(ecx)
 	C = false
-	call fn0000000000002DDA (retsize: 8;)
+	eax = GetModuleHandleW(Mem0[rsp:LPCWSTR])
 	rcx = rax
 	SZO = cond(rax & rax)
 	C = false
@@ -1559,7 +1559,7 @@ fn0000000140001B14_entry:
 l0000000140001B14:
 	rsp = fp
 	rcx = 0x0000000140001B24
-	call Mem0[0x0000000140002068:word64] (retsize: 8;)
+	call SetUnhandledExceptionFilter (retsize: 8;)
 	return
 	// succ:  fn0000000140001B14_exit
 fn0000000140001B14_exit:

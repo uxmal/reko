@@ -4,17 +4,17 @@
 
 #include "simd_double.h"
 
-// 00000000000005A0: Register word64 _init()
-word64 _init()
+// 00000000000005A0: Register ptr64 _init()
+ptr64 _init()
 {
-	word64 rax_16 = globals->qw200FE8;
-	if (rax_16 != 0x00)
+	ptr64 rax_15 = __gmon_start__;
+	if (__gmon_start__ != 0x00)
 		__gmon_start__();
-	return rax_16;
+	return rax_15;
 }
 
-// 0000000000000620: void _start(Register (ptr64 Eq_10) rdx, Stack Eq_11 qwArg00)
-void _start(void (* rdx)(), Eq_11 qwArg00)
+// 0000000000000620: void _start(Register (ptr64 Eq_9) rdx, Stack Eq_10 qwArg00)
+void _start(void (* rdx)(), Eq_10 qwArg00)
 {
 	__align((char *) fp + 0x08);
 	__libc_start_main(&globals->t0898, qwArg00, (char *) fp + 0x08, &globals->t0A70, &globals->t0AE0, rdx, fp);
@@ -24,25 +24,19 @@ void _start(void (* rdx)(), Eq_11 qwArg00)
 // 0000000000000650: void deregister_tm_clones(Register ptr64 rbp)
 void deregister_tm_clones(ptr64 rbp)
 {
-	if (2101320 == 2101320)
+	if (2101320 == 2101320 || _ITM_deregisterTMCloneTable == null)
 		return;
-	<anonymous> * rax_11 = globals->ptr200FD8;
-	if (rax_11 == null)
-		return;
-	rax_11();
+	_ITM_deregisterTMCloneTable();
 }
 
 // 0000000000000690: void register_tm_clones(Register word64 rbp)
 void register_tm_clones(word64 rbp)
 {
 	int64 rsi_8 = 2101320 - 2101320;
-	Eq_50 rsi_13 = (rsi_8 >> 0x03) + ((rsi_8 >> 0x03) >> 0x3F);
-	if (rsi_13 >> 0x01 == 0x00)
+	Eq_48 rsi_13 = (rsi_8 >> 0x03) + ((rsi_8 >> 0x03) >> 0x3F);
+	if (rsi_13 >> 0x01 == 0x00 || _ITM_registerTMCloneTable == null)
 		return;
-	<anonymous> * rax_17 = globals->ptr200FF0;
-	if (rax_17 == null)
-		return;
-	rax_17();
+	_ITM_registerTMCloneTable();
 }
 
 // 00000000000006E0: void __do_global_dtors_aux(Register word64 rax, Register word64 rbp)
@@ -50,7 +44,7 @@ void __do_global_dtors_aux(word64 rax, word64 rbp)
 {
 	if (globals->b201048 != 0x00)
 		return;
-	if (globals->qw200FF8 != 0x00)
+	if (__cxa_finalize != 0x00)
 		__cxa_finalize();
 	deregister_tm_clones(fp - 0x08);
 	globals->b201048 = 0x01;
@@ -62,8 +56,8 @@ void frame_dummy(word64 rbp)
 	register_tm_clones(rbp);
 }
 
-// 000000000000072A: Register (ptr64 void) _mm_malloc(Register ptr64 rbp, Register uint64 rsi, Register Eq_94 rdi)
-void * _mm_malloc(ptr64 rbp, uint64 rsi, Eq_94 rdi)
+// 000000000000072A: Register (ptr64 void) _mm_malloc(Register ptr64 rbp, Register uint64 rsi, Register Eq_91 rdi)
+void * _mm_malloc(ptr64 rbp, uint64 rsi, Eq_91 rdi)
 {
 	void * rax_39;
 	uint64 qwLoc28_51 = rsi;
@@ -98,13 +92,13 @@ void vec_add(word64 rdi, word64 qwArg00)
 		;
 }
 
-// 0000000000000898: void main(Register Eq_135 xmm0)
-void main(Eq_135 xmm0)
+// 0000000000000898: void main(Register Eq_132 xmm0)
+void main(Eq_132 xmm0)
 {
 	real64 rax_14[] = _mm_malloc(fp - 0x08, 0x20, 0x2000);
 	real64 rax_26[] = _mm_malloc(fp - 0x08, 0x20, 0x2000);
 	real64 rax_38[] = _mm_malloc(fp - 0x08, 0x20, 0x2000);
-	Eq_157 qwLoc10_198 = 0x00;
+	Eq_154 qwLoc10_198 = 0x00;
 	while (qwLoc10_198 < 0x0400)
 	{
 		real64 * rcx_54 = rax_14 + qwLoc10_198;
@@ -119,7 +113,7 @@ void main(Eq_135 xmm0)
 		*rcx_54 = (real64) xmm0;
 		qwLoc10_198 = (word64) qwLoc10_198 + 0x01;
 	}
-	Eq_169 qwLoc18_204 = 0x00;
+	Eq_166 qwLoc18_204 = 0x00;
 	while (qwLoc18_204 < 0x0400)
 	{
 		ui32 eax_97 = (word32) ((word64) qwLoc18_204 + 0x01);
@@ -162,7 +156,7 @@ void __libc_csu_init(word64 rdx, word64 rbx, word64 rbp, word64 rsi, word32 edi,
 	word64 rax_33 = _init();
 	if (rbp_29 >> 0x03 != 0x00)
 	{
-		Eq_289 rbx_41 = 0x00;
+		Eq_286 rbx_41 = 0x00;
 		do
 		{
 			r15_55 = DPB(r15_55, r15d_83, 0);

@@ -4,17 +4,17 @@
 
 #include "retpoline.h"
 
-// 0000000000400428: Register word64 _init()
-word64 _init()
+// 0000000000400428: Register ptr64 _init()
+ptr64 _init()
 {
-	word64 rax_16 = globals->qw600FF8;
-	if (rax_16 != 0x00)
+	ptr64 rax_15 = __gmon_start__;
+	if (__gmon_start__ != 0x00)
 		__gmon_start__();
-	return rax_16;
+	return rax_15;
 }
 
-// 0000000000400480: void _start(Register (ptr64 Eq_10) rdx, Stack Eq_11 qwArg00)
-void _start(void (* rdx)(), Eq_11 qwArg00)
+// 0000000000400480: void _start(Register (ptr64 Eq_9) rdx, Stack Eq_10 qwArg00)
+void _start(void (* rdx)(), Eq_10 qwArg00)
 {
 	__align((char *) fp + 0x08);
 	__libc_start_main(&globals->t400660, qwArg00, (char *) fp + 0x08, &globals->t400710, &globals->t400780, rdx, fp);
@@ -110,7 +110,7 @@ void __libc_csu_init(word64 rdx, word64 rbx, word64 rbp, word64 rsi, word32 edi,
 	word64 rax_33 = _init();
 	if (rbp_29 >> 0x03 != 0x00)
 	{
-		Eq_197 rbx_41 = 0x00;
+		Eq_196 rbx_41 = 0x00;
 		do
 		{
 			r15_55 = DPB(r15_55, r15d_83, 0);

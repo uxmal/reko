@@ -518,8 +518,8 @@ void fn00401774(ptr32 dwArg00, word32 dwArg04)
 		__fastfail(dwArg04);
 }
 
-// 0040188F: Register Eq_1113 fn0040188F(Register out Eq_446 ecxOut)
-Eq_1113 fn0040188F(HMODULE & ecxOut)
+// 0040188F: Register Eq_1114 fn0040188F(Register out Eq_446 ecxOut)
+Eq_1114 fn0040188F(HMODULE & ecxOut)
 {
 	Eq_446 eax_12 = GetModuleHandleW(null);
 	Eq_446 ecx_20 = eax_12;
@@ -534,7 +534,7 @@ Eq_1113 fn0040188F(HMODULE & ecxOut)
 				ecx_20 = (struct HINSTANCE__ *) 0x010B;
 				if ((&eax_12->unused)[0x06] == 0x010B && (&eax_12->unused)[0x001D] > 0x0E)
 				{
-					Eq_1113 eax_38 = DPB(eax_12, (&eax_12->unused)[0x003A] != 0x00, 0);
+					Eq_1114 eax_38 = DPB(eax_12, (&eax_12->unused)[0x003A] != 0x00, 0);
 					ecxOut = (struct HINSTANCE__ *) 0x010B;
 					return eax_38;
 				}
@@ -615,7 +615,7 @@ void fn004019FE(word32 edx)
 		globals->dw40336C = 0x01;
 		__cpuid(0x00, 0x00, &0x00, &0x01, &0x00, &edx);
 		__cpuid(0x01, 0x00, &0x01, &0x01, &0x00, &edx);
-		Eq_1297 bLoc14_258 = dwLoc14 & 0x00;
+		Eq_1301 bLoc14_258 = dwLoc14 & 0x00;
 		if ((edx ^ 0x49656E69 | 1818588270 | 0x756E6546) == 0x00 && (0x00 == 0x000106C0 || (0x00 == 0x00020660 || (0x00 == 0x00020670 || (0x00 == 0x00030650 || (0x00 == 0x00030660 || false))))))
 		{
 			ui32 edi_100 = globals->dw403370;

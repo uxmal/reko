@@ -104,6 +104,8 @@ namespace Reko.Environments.Windows
 
         public override ImageSymbol FindMainProcedure(Program program, Address addrStart)
         {
+            Services.RequireService<DecompilerEventListener>().Warn(new NullCodeLocation(program.Name),
+                           "Win32 X86-64 main procedure finder not implemented yet.");
             return null;
         }
 

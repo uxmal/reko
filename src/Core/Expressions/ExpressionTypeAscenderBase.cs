@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -52,9 +52,10 @@ namespace Reko.Core.Expressions
 
         public DataType VisitAddress(Address addr)
         {
-            return RecordDataType(
-                PrimitiveType.Create(Domain.Pointer, addr.DataType.BitSize),
-                addr);
+            var c = addr.ToConstant();
+            c.DataType = PrimitiveType.Create(Domain.Pointer, addr.DataType.BitSize);
+            var dt = ExistingGlobalField(c) ?? addr.DataType;
+            return RecordDataType(dt, addr);
         }
 
         public DataType VisitApplication(Application appl)

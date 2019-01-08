@@ -11,22 +11,22 @@ _init_entry:
 // SymbolicIn:
 
 l00000000004003E0:
-	word64 rax_16 = Mem0[0x0000000000600FF8:word64]
-	branch rax_16 == 0x0000000000000000 l00000000004003F5
+	word64 rax_15 = __gmon_start__
+	branch __gmon_start__ == 0x0000000000000000 l00000000004003F5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00000000004003F0:
 	call __gmon_start__ (retsize: 8;)
-		uses: rax:rax_5,rsp:fp - 0x0000000000000008
-		defs: rax:rax_9
+		uses: rax:__gmon_start__,rsp:fp - 0x0000000000000008
+		defs: rax:rax_8
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00000000004003F5:
-	return rax_16
+	return rax_15
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

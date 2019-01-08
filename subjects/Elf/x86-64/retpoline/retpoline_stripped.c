@@ -7,13 +7,12 @@
 // 0000000000400428: void fn0000000000400428()
 void fn0000000000400428()
 {
-	word64 rax_5 = globals->qw600FF8;
-	if (rax_5 != 0x00)
+	if (__gmon_start__ != 0x00)
 		__gmon_start__();
 }
 
-// 0000000000400480: void fn0000000000400480(Register (ptr64 Eq_9) rdx, Stack Eq_10 qwArg00)
-void fn0000000000400480(void (* rdx)(), Eq_10 qwArg00)
+// 0000000000400480: void fn0000000000400480(Register (ptr64 Eq_7) rdx, Stack Eq_8 qwArg00)
+void fn0000000000400480(void (* rdx)(), Eq_8 qwArg00)
 {
 	__align((char *) fp + 0x08);
 	__libc_start_main(&globals->t400660, qwArg00, (char *) fp + 0x08, &globals->t400710, &globals->t400780, rdx, fp);

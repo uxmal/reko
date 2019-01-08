@@ -4,13 +4,13 @@
 
 #include "test.h"
 
-// 00000000004003E0: Register word64 _init()
-word64 _init()
+// 00000000004003E0: Register ptr64 _init()
+ptr64 _init()
 {
-	word64 rax_16 = globals->qw600FF8;
-	if (rax_16 != 0x00)
+	ptr64 rax_15 = __gmon_start__;
+	if (__gmon_start__ != 0x00)
 		__gmon_start__();
-	return rax_16;
+	return rax_15;
 }
 
 // 0000000000400440: void _start(Register (ptr64 Eq_10) rdx, Stack Eq_11 qwArg00)

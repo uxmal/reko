@@ -7,7 +7,7 @@ l0000000000402168:
 	rsp = fp
 	rsp = rsp - 0x0000000000000008
 	SCZO = cond(rsp)
-	rax = Mem0[0x0000000000619FF8:word64]
+	rax = __gmon_start__
 	SZO = cond(rax & rax)
 	C = false
 	branch Test(EQ,Z) l000000000040217D
@@ -17909,7 +17909,7 @@ l000000000041066A:
 	branch Test(UGT,CZ) l0000000000410A50
 	// succ:  l00000000004106BE l0000000000410A50
 l00000000004106BE:
-	call Mem0[0x00416B48:word64] (retsize: 8;)
+	call Mem0[0x0000000000416B48:word64] (retsize: 8;)
 	return
 	// succ:  fn0000000000410630_exit
 l00000000004107A1:

@@ -83,7 +83,7 @@ T_7: (in eax : word32)
   Class: Eq_7
   DataType: word32
   OrigDataType: word32
-T_8: (in 0x0040208B : ptr32)
+T_8: (in 0040208B : ptr32)
   Class: Eq_8
   DataType: (ptr32 uint32)
   OrigDataType: (ptr32 (struct (0 T_9 t0000)))
@@ -103,7 +103,7 @@ T_12: (in v5_7 : uint32)
   Class: Eq_9
   DataType: uint32
   OrigDataType: word32
-T_13: (in 0x0040208B : ptr32)
+T_13: (in 0040208B : ptr32)
   Class: Eq_13
   DataType: (ptr32 uint32)
   OrigDataType: (ptr32 (struct (0 T_14 t0000)))
@@ -299,7 +299,7 @@ T_61: (in HeapFree(*(esp_10 - 12), *(esp_10 - 8), *(esp_10 - 4)) : BOOL)
   Class: Eq_41
   DataType: Eq_41
   OrigDataType: BOOL
-T_62: (in 0x0040208B : ptr32)
+T_62: (in 0040208B : ptr32)
   Class: Eq_62
   DataType: (ptr32 uint32)
   OrigDataType: (ptr32 (struct (0 T_63 t0000)))
@@ -351,7 +351,7 @@ T_74: (in Mem0[fs:0x002C:word32] : word32)
   Class: Eq_74
   DataType: (ptr32 (arr word32))
   OrigDataType: (ptr32 (struct (0 (arr T_161) a0000)))
-T_75: (in 0x0040208B : ptr32)
+T_75: (in 0040208B : ptr32)
   Class: Eq_75
   DataType: (ptr32 uint32)
   OrigDataType: (ptr32 (struct (0 T_76 t0000)))
@@ -655,7 +655,7 @@ T_150: (in fn00401158() + 0x0000001C : word32)
   Class: Eq_150
   DataType: word32
   OrigDataType: word32
-T_151: (in 0x004020F8 : ptr32)
+T_151: (in 004020F8 : ptr32)
   Class: Eq_151
   DataType: (ptr32 word32)
   OrigDataType: (ptr32 (struct (0 T_152 t0000)))

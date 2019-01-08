@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,6 +37,7 @@ namespace Reko.ImageLoaders.MzExe
 {
     /// <summary>
     /// Loads Windows NT PE images.
+    /// http://geos.icc.ru:8080/scripts/wwwbinv.dll/ShowR?coff.rfi
     /// </summary>
 	public class PeImageLoader : ImageLoader
 	{
@@ -45,9 +46,9 @@ namespace Reko.ImageLoaders.MzExe
         private const ushort MACHINE_UNKNOWN = 0x0;         // The contents of this field are assumed to be applicable to any machine type
         private const ushort MACHINE_AM33 = 0x1d3;          // Matsushita AM33
         private const ushort MACHINE_AMD64 = (ushort) 0x8664;    // x64
-        private const ushort MACHINE_ARM = 0x01c0;          // ARM little endian
+        private const ushort MACHINE_ARM = 0x01c0;          // ARM little endian -- "Modern" Windows
         private const ushort MACHINE_ARM64 = 0xAA64;        // ARM64 little endian
-        private const ushort MACHINE_ARMNT = 0x01C4;        // ARM Thumb-2 little endian
+        private const ushort MACHINE_ARMNT = 0x01C4;        // ARM Thumb-2 little endian -- WinCE
         private const ushort MACHINE_EBC =  0x0ebc;         // EFI byte code
         private const ushort MACHINE_I386 = 0x014c;         // Intel 386 or later processors and compatible processors
         private const ushort MACHINE_IA64 = 0x0200;         // Intel Itanium processor family
@@ -182,6 +183,7 @@ namespace Reko.ImageLoaders.MzExe
 			switch (peMachineType)
 			{
             case MACHINE_ALPHA: arch = "alpha"; break;
+            case MACHINE_ARM: arch = "arm"; break;
             case MACHINE_ARM64: arch = "arm-64"; break;
             case MACHINE_ARMNT: arch = "arm-thumb"; break;
             case MACHINE_I386: arch = "x86-protected-32"; break;
@@ -202,6 +204,7 @@ namespace Reko.ImageLoaders.MzExe
             switch (peMachineType)
             {
             case MACHINE_ALPHA: env = "winAlpha"; break;
+            case MACHINE_ARM: env = "winArm"; break;
             case MACHINE_ARM64: env = "winArm64"; break;
             case MACHINE_ARMNT: env= "winArm"; break;
             case MACHINE_I386: env = "win32"; break;
@@ -223,6 +226,7 @@ namespace Reko.ImageLoaders.MzExe
             switch (peMachineType)
             {
             case MACHINE_ALPHA:
+            case MACHINE_ARM:
             case MACHINE_ARMNT:
             case MACHINE_I386:
             case MACHINE_m68k:
@@ -234,7 +238,7 @@ namespace Reko.ImageLoaders.MzExe
             case MACHINE_x86_64:
             case MACHINE_ARM64:
                 return new Pe64Loader(this);
-            default: throw new ArgumentException(string.Format("Unsupported machine type 0x:{0:X4} in PE hader.", peMachineType));
+            default: throw new ArgumentException(string.Format("Unsupported machine type 0x:{0:X4} in PE header.", peMachineType));
             }
         }
 
@@ -243,6 +247,7 @@ namespace Reko.ImageLoaders.MzExe
             switch (peMachineType)
             {
             case MACHINE_ALPHA: return new AlphaRelocator(Services, program);
+            case MACHINE_ARM: return new ArmRelocator(program);
             case MACHINE_ARM64: return new Arm64Relocator(program);
             case MACHINE_ARMNT: return new ArmRelocator(program);
             case MACHINE_I386: return new i386Relocator(Services, program);
@@ -262,6 +267,7 @@ namespace Reko.ImageLoaders.MzExe
             switch (peMachineType)
             {
             case MACHINE_ALPHA:
+            case MACHINE_ARM:
             case MACHINE_ARMNT:
             case MACHINE_I386:
 			case MACHINE_m68k:

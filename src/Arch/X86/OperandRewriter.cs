@@ -49,22 +49,15 @@ namespace Reko.Arch.X86
 
         public Expression Transform(X86Instruction instr, MachineOperand op, DataType opWidth, X86State state)
         {
-            var reg = op as RegisterOperand;
-            if (reg != null)
-                return AluRegister(reg);
-            var mem = op as MemoryOperand;
-            if (mem != null)
-                return CreateMemoryAccess(instr, mem, opWidth, state);
-            var imm = op as ImmediateOperand;
-            if (imm != null)
-                return CreateConstant(imm, (PrimitiveType) opWidth);
-            var fpu = op as FpuOperand;
-            if (fpu != null)
-                return FpuRegister(fpu.StNumber, state);
-            var addr = op as AddressOperand;
-            if (addr != null)
-                return addr.Address;
-            throw new NotImplementedException(string.Format("Operand {0}", op));
+            switch (op)
+            {
+            case RegisterOperand reg: return AluRegister(reg);
+            case MemoryOperand mem: return CreateMemoryAccess(instr, mem, opWidth, state);
+            case ImmediateOperand imm: return CreateConstant(imm, (PrimitiveType) opWidth);
+            case FpuOperand fpu: return FpuRegister(fpu.StNumber, state);
+            case AddressOperand addr: return addr.Address;
+            default: throw new NotImplementedException(string.Format("Operand {0}", op));
+            }
         }
 
         public Identifier AluRegister(RegisterOperand reg)
@@ -92,21 +85,25 @@ namespace Reko.Arch.X86
 
         public Expression CreateMemoryAccess(X86Instruction instr, MemoryOperand mem, DataType dt, X86State state)
         {
-            var exg = ImportedGlobal(instr.Address, mem.Width, mem);
-            if (exg is ProcedureConstant)
-            {
-                return exg;
-            }
-            else if (exg != null)
-            {
-                return new UnaryExpression(Operator.AddrOf, dt, exg);
-            }
-            var exp = ImportedProcedure(instr.Address, mem.Width, mem);
-            if (exp != null)
-            {
-                return new ProcedureConstant(arch.PointerType, exp);
-            }
             Expression expr = EffectiveAddressExpression(instr, mem, state);
+            //$REVIEW: perhaps the code below could be moved to Scanner since it is arch-independent?
+            if (expr is Address addrThunk)
+            {
+                var exg = host.GetImport(addrThunk, instr.Address);
+                if (exg is ProcedureConstant)
+                {
+                    return exg;
+                }
+                else if (exg != null)
+                {
+                    return new UnaryExpression(Operator.AddrOf, dt, exg);
+                }
+                var exp = host.GetImportedProcedure(arch, addrThunk, instr.Address);
+                if (exp != null)
+                {
+                    return new ProcedureConstant(arch.PointerType, exp);
+                }
+            }
             if (IsSegmentedAccessRequired ||
                 (mem.DefaultSegment != Registers.cs &&
                  mem.DefaultSegment != Registers.ds && 
@@ -142,11 +139,9 @@ namespace Reko.Arch.X86
         }
 
         /// <summary>
-        /// Memory accesses are translated into expressions.
+        /// Memory accesses are translated into expressions, performing simplifications
+        /// where possible.
         /// </summary>
-        /// <param name="mem"></param>
-        /// <param name="state"></param>
-        /// <returns></returns>
         public Expression EffectiveAddressExpression(X86Instruction instr, MemoryOperand mem, X86State state)
         {
             Expression eIndex = null;
@@ -209,6 +204,10 @@ namespace Reko.Arch.X86
                 }
                 expr = m.IAdd(expr, eIndex);
             }
+            if (!IsSegmentedAccessRequired && expr is Constant c && mem.SegOverride == RegisterStorage.None)
+            {
+                return arch.MakeAddressFromConstant(c);
+            }
             return expr;
         }
 
@@ -235,6 +234,7 @@ namespace Reko.Arch.X86
             return new MemoryAccess(Registers.ST, idx, PrimitiveType.Real64);
         }
 
+        [Obsolete("Retire these?")]
         public Expression ImportedGlobal(Address addrInstruction, PrimitiveType addrWidth, MemoryOperand mem)
         {
             if (mem != null && addrWidth == PrimitiveType.Word32 && mem.Base == RegisterStorage.None &&
@@ -246,6 +246,7 @@ namespace Reko.Arch.X86
             return null;
         }
 
+        [Obsolete("Retire these?")]
         public ExternalProcedure ImportedProcedure(Address addrInstruction, PrimitiveType addrWidth, MemoryOperand mem)
         {
             if (mem != null && addrWidth == PrimitiveType.Word32 && mem.Base == RegisterStorage.None &&

@@ -14,6 +14,5 @@ Eq_25 g_t4005C0 = Unexpected function type (fn void ())
 	{
 	};
 word64 g_qw600E20 = 0x0000000000000000;
-word64 g_qw600FF8 = 0x0000000000000000;
 byte g_b601040 = 0x00;
 

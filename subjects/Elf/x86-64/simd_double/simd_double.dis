@@ -11,22 +11,22 @@ _init_entry:
 // SymbolicIn:
 
 l00000000000005A0:
-	word64 rax_16 = Mem0[0x0000000000200FE8:word64]
-	branch rax_16 == 0x0000000000000000 l00000000000005B2
+	word64 rax_15 = __gmon_start__
+	branch __gmon_start__ == 0x0000000000000000 l00000000000005B2
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00000000000005B0:
 	call __gmon_start__ (retsize: 8;)
-		uses: rax:rax_5,rsp:fp - 0x0000000000000008
-		defs: rax:rax_9
+		uses: rax:__gmon_start__,rsp:fp - 0x0000000000000008
+		defs: rax:rax_8
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00000000000005B2:
-	return rax_16
+	return rax_15
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -85,8 +85,7 @@ l0000000000000650:
 // SymbolicIn:
 
 l0000000000000667:
-	word64 rax_11 = Mem6[0x0000000000200FD8:word64]
-	branch rax_11 == 0x0000000000000000 l0000000000000680
+	branch _ITM_deregisterTMCloneTable == 0x0000000000000000 l0000000000000680
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -98,8 +97,8 @@ l0000000000000680:
 // SymbolicIn:
 
 l0000000000000673:
-	call rax_11 (retsize: 8;)
-		uses: rax:rax_11,rbp:rbp,rdi:0x0000000000201048,rsp:fp,Stack +0000:rbp
+	call _ITM_deregisterTMCloneTable (retsize: 8;)
+		uses: rax:_ITM_deregisterTMCloneTable,rbp:rbp,rdi:0x0000000000201048,rsp:fp,Stack +0000:rbp
 	return
 // DataOut:
 // DataOut (flags):
@@ -133,8 +132,7 @@ l0000000000000690:
 // SymbolicIn:
 
 l00000000000006B8:
-	word64 rax_17 = Mem7[0x0000000000200FF0:word64]
-	branch rax_17 == 0x0000000000000000 l00000000000006D0
+	branch _ITM_registerTMCloneTable == 0x0000000000000000 l00000000000006D0
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -146,8 +144,8 @@ l00000000000006D0:
 // SymbolicIn:
 
 l00000000000006C4:
-	call rax_17 (retsize: 8;)
-		uses: rax:rax_17,rbp:rbp,rdi:0x0000000000201048,rsi:rsi_13 >> 0x0000000000000001,rsp:fp,Stack +0000:rbp
+	call _ITM_registerTMCloneTable (retsize: 8;)
+		uses: rax:_ITM_registerTMCloneTable,rbp:rbp,rdi:0x0000000000201048,rsi:rsi_13 >> 0x0000000000000001,rsp:fp,Stack +0000:rbp
 	return
 // DataOut:
 // DataOut (flags):
@@ -185,7 +183,7 @@ l0000000000000718:
 // SymbolicIn:
 
 l00000000000006E9:
-	branch Mem0[0x0000000000200FF8:word64] == 0x0000000000000000 l0000000000000703
+	branch __cxa_finalize == 0x0000000000000000 l0000000000000703
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

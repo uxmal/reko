@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (40053D Eq_21 t40053D) (400550 Eq_24 t400550) (4005C0 Eq_25 t4005C0) (600E10 (arr (ptr64 code)) a600E10) (600E20 word64 qw600E20) (600FF8 word64 qw600FF8) (601040 byte b601040))
+Eq_1: (struct "Globals" (40053D Eq_21 t40053D) (400550 Eq_24 t400550) (4005C0 Eq_25 t4005C0) (600E10 (arr (ptr64 code)) a600E10) (600E20 word64 qw600E20) (601040 byte b601040))
 	globals_t (in globals : (ptr64 (struct "Globals")))
 Eq_10: (fn void ())
 	T_10 (in rdx : (ptr64 Eq_10))
@@ -63,27 +63,27 @@ globals_t: (in globals : (ptr64 (struct "Globals")))
   Class: Eq_1
   DataType: (ptr64 Eq_1)
   OrigDataType: (ptr64 (struct "Globals"))
-T_2: (in rax : word64)
+T_2: (in rax : ptr64)
   Class: Eq_2
-  DataType: word64
+  DataType: ptr64
   OrigDataType: word64
-T_3: (in rax_16 : word64)
+T_3: (in rax_15 : ptr64)
   Class: Eq_2
-  DataType: word64
-  OrigDataType: word64
-T_4: (in 0000000000600FF8 : ptr64)
-  Class: Eq_4
-  DataType: (ptr64 word64)
-  OrigDataType: (ptr64 (struct (0 T_5 t0000)))
-T_5: (in Mem0[0x0000000000600FF8:word64] : word64)
+  DataType: ptr64
+  OrigDataType: ptr64
+T_4: (in __gmon_start__ : ptr64)
   Class: Eq_2
-  DataType: word64
-  OrigDataType: word64
+  DataType: ptr64
+  OrigDataType: ptr64
+T_5: (in signature of __gmon_start__ : void)
+  Class: Eq_5
+  DataType: Eq_5
+  OrigDataType: 
 T_6: (in 0x0000000000000000 : word64)
   Class: Eq_2
-  DataType: word64
+  DataType: ptr64
   OrigDataType: word64
-T_7: (in rax_16 == 0x0000000000000000 : bool)
+T_7: (in __gmon_start__ == 0x0000000000000000 : bool)
   Class: Eq_7
   DataType: bool
   OrigDataType: bool
@@ -586,7 +586,6 @@ typedef struct Globals {
 	Eq_25 t4005C0;	// 4005C0
 	<anonymous> * a600E10[];	// 600E10
 	word64 qw600E20;	// 600E20
-	word64 qw600FF8;	// 600FF8
 	byte b601040;	// 601040
 } Eq_1;
 

@@ -4,15 +4,14 @@
 
 #include "retpoline.h"
 
-Eq_21 g_t400660 = Unexpected function type (fn int32 (int32, (ptr64 (ptr64 char)), (ptr64 (ptr64 char))))
+Eq_20 g_t400660 = Unexpected function type (fn int32 (int32, (ptr64 (ptr64 char)), (ptr64 (ptr64 char))))
 ;
-Eq_24 g_t400710 = Unexpected function type (fn void ())
+Eq_23 g_t400710 = Unexpected function type (fn void ())
 ;
-Eq_25 g_t400780 = Unexpected function type (fn void ())
+Eq_24 g_t400780 = Unexpected function type (fn void ())
 ;
 <anonymous> * g_a600E10[] = 
 	{
 	};
-word64 g_qw600FF8 = 0x0000000000000000;
 byte g_b601040 = 0x00;
 
