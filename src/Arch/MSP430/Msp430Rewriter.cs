@@ -27,17 +27,18 @@ using System.Diagnostics;
 using System.Linq;
 using Reko.Core.Machine;
 using Reko.Core.Expressions;
+using Reko.Core.Types;
 
 namespace Reko.Arch.Msp430
 {
     internal class Msp430Rewriter : IEnumerable<RtlInstructionCluster>
     {
-        private IStorageBinder binder;
-        private IRewriterHost host;
-        private Msp430Architecture arch;
-        private ProcessorState state;
-        private EndianImageReader rdr;
-        private IEnumerator<Msp430Instruction> dasm;
+        private readonly IStorageBinder binder;
+        private readonly IRewriterHost host;
+        private readonly Msp430Architecture arch;
+        private readonly ProcessorState state;
+        private readonly EndianImageReader rdr;
+        private readonly IEnumerator<Msp430Instruction> dasm;
         private Msp430Instruction instr;
         private RtlEmitter m;
         private InstrClass rtlc;
@@ -64,6 +65,7 @@ namespace Reko.Arch.Msp430
                 {
                 case Opcode.invalid: Invalid(); break;
                 default:
+                    EmitUnitTest();
                     Invalid();
                     break;
                 case Opcode.addc: RewriteAdcSbc(m.IAdd); break;
@@ -87,13 +89,17 @@ namespace Reko.Arch.Msp430
 
                 case Opcode.mov: RewriteBinop((a, b) => b, ""); break;
                 case Opcode.popm: RewritePopm(); break;
+                case Opcode.push: RewritePush(); break;
                 case Opcode.pushm: RewritePushm(); break;
+                case Opcode.reti: RewriteReti(); break;
                 case Opcode.rra: RewriteRra(  "0-----NZC"); break;
                 case Opcode.rrax: RewriteRrax("0-----NZC"); break;
                 case Opcode.rrc: RewriteRrc(  "0-----NZC"); break;
                 case Opcode.rrum: RewriteRrum("0-----NZC"); break;
                 case Opcode.sub: RewriteBinop(m.ISub, "V-----NZC"); break;
                 case Opcode.subc: RewriteAdcSbc(m.ISub); break;
+                case Opcode.swpb: RewriteSwpb(); break;
+                case Opcode.sxt: RewriteSxt("0-----NZC"); break;
                 case Opcode.xor: RewriteBinop(m.Xor,  "V-----NZC"); break;
                 }
                 var rtlc = new RtlInstructionCluster(instr.Address, instr.Length, instrs.ToArray())
@@ -124,40 +130,32 @@ namespace Reko.Arch.Msp430
             switch (op)
             {
             case RegisterOperand rop:
-                {
-                    return binder.EnsureRegister(rop.Register);
-                }
+                return binder.EnsureRegister(rop.Register);
             case MemoryOperand mop:
+                Expression ea = binder.EnsureRegister(mop.Base);
+                if (mop.PostIncrement)
                 {
-                    Expression ea = binder.EnsureRegister(mop.Base);
-                    if (mop.PostIncrement)
-                    {
-                        var tmp = binder.CreateTemporary(op.Width);
-                        m.Assign(tmp, m.Mem(op.Width, ea));
-                        m.Assign(ea, m.IAdd(ea, m.Int16((short) op.Width.Size)));
-                        return tmp;
-                    }
-                    else if (mop.Offset != 0)
-                    {
-                        var tmp = binder.CreateTemporary(op.Width);
-                        m.Assign(tmp, m.Mem(op.Width, m.IAdd(ea, m.Int16(mop.Offset))));
-                        return tmp;
-                    }
-                    else
-                    {
-                        var tmp = binder.CreateTemporary(op.Width);
-                        m.Assign(tmp, m.Mem(op.Width, ea));
-                        return tmp;
-                    }
+                    var tmp = binder.CreateTemporary(op.Width);
+                    m.Assign(tmp, m.Mem(op.Width, ea));
+                    m.Assign(ea, m.IAdd(ea, m.Int16((short) op.Width.Size)));
+                    return tmp;
+                }
+                else if (mop.Offset != 0)
+                {
+                    var tmp = binder.CreateTemporary(op.Width);
+                    m.Assign(tmp, m.Mem(op.Width, m.IAdd(ea, m.Int16(mop.Offset))));
+                    return tmp;
+                }
+                else
+                {
+                    var tmp = binder.CreateTemporary(op.Width);
+                    m.Assign(tmp, m.Mem(op.Width, ea));
+                    return tmp;
                 }
             case ImmediateOperand iop:
-                {
-                    return iop.Value;
-                }
+                return iop.Value;
             case AddressOperand aop:
-                {
-                    return aop.Address;
-                }
+                return aop.Address;
             }
             throw new NotImplementedException(op.ToString());
         }
@@ -167,30 +165,24 @@ namespace Reko.Arch.Msp430
             switch (op)
             {
             case RegisterOperand rop:
-                {
-                    var dst = binder.EnsureRegister(rop.Register);
-                    m.Assign(dst, fn(dst, src));
-                    return dst;
-                }
+                var dst = binder.EnsureRegister(rop.Register);
+                m.Assign(dst, fn(dst, src));
+                return dst;
             case MemoryOperand mop:
+                Expression ea = binder.EnsureRegister(mop.Base);
+                if (mop.Offset != 0)
                 {
-                    Expression ea = binder.EnsureRegister(mop.Base);
-                    if (mop.Offset != 0)
-                    {
-                        ea = m.IAdd(ea, m.Int16(mop.Offset));
-                    }
-                    var tmp = binder.CreateTemporary(mop.Width);
-                    m.Assign(tmp, m.Mem(tmp.DataType, ea));
-                    m.Assign(tmp, fn(tmp, src));
-                    m.Assign(m.Mem(tmp.DataType, ea.CloneExpression()), tmp);
-                    return tmp;
+                    ea = m.IAdd(ea, m.Int16(mop.Offset));
                 }
+                var tmp = binder.CreateTemporary(mop.Width);
+                m.Assign(tmp, m.Mem(tmp.DataType, ea));
+                m.Assign(tmp, fn(tmp, src));
+                m.Assign(m.Mem(tmp.DataType, ea.CloneExpression()), tmp);
+                return tmp;
             case AddressOperand aop:
-                {
-                    var mem = m.Mem(op.Width, aop.Address);
-                    m.Assign(mem, fn(mem, src));
-                    return mem;
-                }
+                var mem = m.Mem(op.Width, aop.Address);
+                m.Assign(mem, fn(mem, src));
+                return mem;
             }
             throw new NotImplementedException(op.ToString());
         }
@@ -316,6 +308,14 @@ namespace Reko.Arch.Msp430
             }
         }
 
+        private void RewritePush()
+        {
+            var src = RewriteOp(instr.op1);
+            var sp = binder.EnsureRegister(Registers.sp);
+            m.Assign(sp, m.ISub(sp, m.Int32(2)));
+            m.Assign(m.Mem16(sp), src);
+        }
+
         private void RewritePushm()
         {
             int c = ((ImmediateOperand)instr.op1).Value.ToInt32();
@@ -335,6 +335,11 @@ namespace Reko.Arch.Msp430
             }
         }
 
+        private void RewriteReti()
+        {
+            m.Return(2, 0);
+        }
+
         private void RewriteRra(string flags)
         {
             var src = RewriteOp(instr.op1);
@@ -352,7 +357,15 @@ namespace Reko.Arch.Msp430
         private void RewriteRrc(string flags)
         {
             var src = RewriteOp(instr.op1);
-            var dst = RewriteDst(instr.op1, src, (a, b) => host.PseudoProcedure(PseudoProcedure.RorC, a.DataType, a, m.Byte(1)));
+            var dst = RewriteDst(
+                instr.op1,
+                src, 
+                (a, b) => host.PseudoProcedure(
+                    PseudoProcedure.RorC, 
+                    a.DataType, 
+                    a, 
+                    m.Byte(1),
+                    binder.EnsureFlagGroup(this.arch.GetFlagGroup((uint) FlagM.CF))));
             EmitCc(dst, flags);
         }
 
@@ -375,6 +388,26 @@ namespace Reko.Arch.Msp430
             EmitCc(dst, flags);
         }
 
+        private void RewriteSwpb()
+        {
+            var src = RewriteOp(instr.op1);
+            var dst = RewriteDst(instr.op1,
+                src,
+                (a, b) => host.PseudoProcedure(
+                    "__swpb",
+                    PrimitiveType.Word16,
+                    b));
+        }
+
+        private void RewriteSxt(string flags)
+        {
+            var src = RewriteOp(instr.op1);
+            var tmp = binder.CreateTemporary(PrimitiveType.Byte);
+            m.Assign(tmp, m.Slice(PrimitiveType.Byte, src, 0));
+            var dst = RewriteDst(instr.op1, tmp, (a, b) => m.Cast(PrimitiveType.Int16, b));
+            EmitCc(dst, flags);
+        }
+
         private void Invalid()
         {
             m.Invalid();
@@ -393,19 +426,19 @@ namespace Reko.Arch.Msp430
             var r2 = rdr.Clone();
             r2.Offset -= dasm.Current.Length;
             var bytes = r2.ReadBytes(dasm.Current.Length);
-            Debug.WriteLine("        [Test]");
-            Debug.WriteLine("        public void Msp430Rw_" + instr.opcode + "()");
-            Debug.WriteLine("        {");
-            Debug.Write("            BuildTest(");
-            Debug.Write(string.Join(
+            Console.WriteLine("        [Test]");
+            Console.WriteLine("        public void Msp430Rw_" + instr.opcode + "()");
+            Console.WriteLine("        {");
+            Console.Write("            BuildTest(");
+            Console.Write(string.Join(
                 ", ",
                 bytes.Select(b => string.Format("0x{0:X2}", (int)b))));
-            Debug.WriteLine(");\t// " + dasm.Current.ToString());
-            Debug.WriteLine("            AssertCode(");
-            Debug.WriteLine("                \"0|L--|0100(2): 1 instructions\",");
-            Debug.WriteLine("                \"1|L--|@@@\");");
-            Debug.WriteLine("        }");
-            Debug.WriteLine("");
+            Console.WriteLine(");\t// " + dasm.Current.ToString());
+            Console.WriteLine("            AssertCode(");
+            Console.WriteLine("                \"0|L--|0100(2): 1 instructions\",");
+            Console.WriteLine("                \"1|L--|@@@\");");
+            Console.WriteLine("        }");
+            Console.WriteLine("");
         }
 #endif
     }

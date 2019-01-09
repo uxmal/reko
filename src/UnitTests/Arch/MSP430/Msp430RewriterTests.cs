@@ -320,7 +320,7 @@ namespace Reko.UnitTests.Arch.Msp430
             BuildTest(0x00, 0x10);	// rrc.w	pc
             AssertCode(
                 "0|L--|0100(2): 3 instructions",
-                "1|L--|pc = __rcr(pc, 0x01)",
+                "1|L--|pc = __rcr(pc, 0x01, C)",
                 "2|L--|V = false",
                 "3|L--|NZC = cond(pc)");
         }
@@ -346,6 +346,27 @@ namespace Reko.UnitTests.Arch.Msp430
             AssertCode(
                 "0|T--|0100(2): 1 instructions",
                 "1|T--|if (Test(SG,N)) branch 03E6");
+        }
+
+        [Test]
+        public void Msp430Rw_sxt()
+        {
+            BuildTest(0x8F, 0x11);	// sxt.w	r15
+            AssertCode(
+                "0|L--|0100(2): 4 instructions",
+                "1|L--|v3 = SLICE(r15, byte, 0)",
+                "2|L--|r15 = (int16) v3",
+                "3|L--|V = false",
+                "4|L--|NZC = cond(r15)");
+        }
+
+        [Test]
+        public void Msp430Rw_swpb()
+        {
+            BuildTest(0x8F, 0x10);	// swpb	r15
+            AssertCode(
+                "0|L--|0100(2): 1 instructions",
+                "1|L--|r15 = __swpb(r15)");
         }
     }
 }
