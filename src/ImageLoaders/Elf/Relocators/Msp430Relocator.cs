@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -33,9 +33,9 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
         }
 
-        public override void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, Elf32_Rela rela)
+        public override ElfSymbol RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
         {
-            return;
+            return symbol;
         }
 
         public override string RelocationTypeToString(uint type)

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -34,9 +34,7 @@ namespace Reko.Arch.Msp430
 {
     public class Msp430Architecture : ProcessorArchitecture
     {
-        //$TODO: Reko doesn't handle data types that aren't 1, 2, 4, 8 bytes long.
-        // At some future point we want to handle arbitrary bit sizes
-        public readonly static PrimitiveType Word20 = PrimitiveType.Word32;
+        public readonly static PrimitiveType Word20 = PrimitiveType.CreateWord(20);
         private Dictionary<uint, FlagGroupStorage> flagGroups;
 
         public Msp430Architecture(string archName) : base(archName)

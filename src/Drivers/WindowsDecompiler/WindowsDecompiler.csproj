@@ -216,6 +216,10 @@
       <Project>{a959c1a2-a622-4600-81ad-29e08545b2f7}</Project>
       <Name>MicrochipPIC</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Arch\MSP430\MSP430.csproj">
+      <Project>{ff9e9894-f7e2-464d-b288-4157b864d053}</Project>
+      <Name>MSP430</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\arch\PowerPC.Design\PowerPC.Design.csproj">
       <Project>{16550df3-0916-4bdd-aa7a-7e1bad7aba3b}</Project>
       <Name>PowerPC.Design</Name>

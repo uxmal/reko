@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -32,8 +32,8 @@ namespace Reko.Arch.Msp430
 {
     public class Msp430Disassembler : DisassemblerBase<Msp430Instruction>
     {
-        private EndianImageReader rdr;
-        private Msp430Architecture arch;
+        private readonly EndianImageReader rdr;
+        private readonly Msp430Architecture arch;
         private ushort uExtension;
 
         public Msp430Disassembler(Msp430Architecture arch, EndianImageReader rdr)
@@ -207,8 +207,7 @@ namespace Reko.Arch.Msp430
         {
             if (reg == Registers.pc)
             {
-                short offset;
-                if (!rdr.TryReadLeInt16(out offset))
+                if (!rdr.TryReadLeInt16(out short offset))
                     return null;
                 return ImmediateOperand.Word16((ushort)offset);
             }
@@ -225,8 +224,7 @@ namespace Reko.Arch.Msp430
 
         private MachineOperand Indexed(RegisterStorage reg, PrimitiveType dataWidth)
         {
-            short offset;
-            if (!rdr.TryReadLeInt16(out offset))
+            if (!rdr.TryReadLeInt16(out short offset))
                 return null;
             if (reg.Number == 2)
             {
@@ -254,8 +252,8 @@ namespace Reko.Arch.Msp430
 
         private class OpRec : OpRecBase
         {
-            private string fmt;
-            private Opcode opcode;
+            private readonly string fmt;
+            private readonly Opcode opcode;
 
             public OpRec(Opcode opcode, string fmt)
             {
@@ -280,8 +278,8 @@ namespace Reko.Arch.Msp430
         private class SubOpRec : OpRecBase
         {
             private Dictionary<int, OpRecBase> decoders;
-            private ushort mask;
-            private int sh;
+            private readonly ushort mask;
+            private readonly int sh;
 
             public SubOpRec(int sh, ushort mask, Dictionary<int, OpRecBase> decoders)
             {
@@ -292,9 +290,8 @@ namespace Reko.Arch.Msp430
 
             public override Msp430Instruction Decode(Msp430Disassembler dasm, ushort uInstr)
             {
-                OpRecBase oprec;
                 var key = (uInstr >> sh) & mask;
-                if (!decoders.TryGetValue(key, out oprec))
+                if (!decoders.TryGetValue(key, out OpRecBase oprec))
                     return dasm.Invalid();
                 return oprec.Decode(dasm, uInstr);
             }
@@ -304,8 +301,7 @@ namespace Reko.Arch.Msp430
         {
             public override Msp430Instruction Decode(Msp430Disassembler dasm, ushort uInstr)
             {
-                ushort u;
-                if (!dasm.rdr.TryReadLeUInt16(out u))
+                if (!dasm.rdr.TryReadLeUInt16(out ushort u))
                     return dasm.Invalid();
                 dasm.uExtension = uInstr;
                 uInstr = u;
@@ -313,14 +309,14 @@ namespace Reko.Arch.Msp430
             }
         }
 
-        private static ExtOpRec extOpRec = new ExtOpRec();
+        private static readonly ExtOpRec extOpRec = new ExtOpRec();
 
-        private static SubOpRec rotations = new SubOpRec(8, 0x03, new Dictionary<int, OpRecBase>
+        private static readonly SubOpRec rotations = new SubOpRec(8, 0x03, new Dictionary<int, OpRecBase>
         {
             { 0x03, new OpRec(Opcode.rrum, "ar") },
         });
 
-        private static OpRecBase[] s_decoders = new OpRecBase[16]
+        private static readonly OpRecBase[] s_decoders = new OpRecBase[16]
         {
             new SubOpRec(0x4, 0x0F, new Dictionary<int, OpRecBase>
             {
@@ -420,7 +416,7 @@ namespace Reko.Arch.Msp430
             new OpRec(Opcode.and, "wSD"),
         };
 
-        private static OpRecBase[] extDecoders = new OpRecBase[16]
+        private static readonly OpRecBase[] extDecoders = new OpRecBase[16]
         {
             new OpRec(Opcode.invalid, ""),
             new SubOpRec(6, 0x3F, new Dictionary<int, OpRecBase> {
@@ -456,7 +452,7 @@ namespace Reko.Arch.Msp430
             new OpRec(Opcode.invalid, ""),
         };
 
-        private static Opcode[] jmps = new Opcode[8]
+        private static readonly Opcode[] jmps = new Opcode[8]
         {
             Opcode.jnz,
             Opcode.jz,

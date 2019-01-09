@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -29,17 +29,17 @@ namespace Reko.Arch.Msp430
 {
     public class Msp430Instruction : MachineInstruction
     {
-        private static Dictionary<Opcode, InstructionClass> classes = new Dictionary<Opcode, InstructionClass>
+        private static Dictionary<Opcode, InstrClass> classes = new Dictionary<Opcode, InstrClass>
         {
-            { Opcode.call, InstructionClass.Call | InstructionClass.Transfer },
-            { Opcode.jc, InstructionClass.Conditional | InstructionClass.Transfer },
-            { Opcode.jge, InstructionClass.Conditional | InstructionClass.Transfer },
-            { Opcode.jl, InstructionClass.Conditional | InstructionClass.Transfer },
-            { Opcode.jmp, InstructionClass.Transfer },
-            { Opcode.jn, InstructionClass.Conditional | InstructionClass.Transfer },
-            { Opcode.jnc, InstructionClass.Conditional | InstructionClass.Transfer },
-            { Opcode.jnz, InstructionClass.Conditional | InstructionClass.Transfer },
-            { Opcode.jz, InstructionClass.Conditional | InstructionClass.Transfer },
+            { Opcode.call, InstrClass.Call | InstrClass.Transfer },
+            { Opcode.jc, InstrClass.Conditional | InstrClass.Transfer },
+            { Opcode.jge, InstrClass.Conditional | InstrClass.Transfer },
+            { Opcode.jl, InstrClass.Conditional | InstrClass.Transfer },
+            { Opcode.jmp, InstrClass.Transfer },
+            { Opcode.jn, InstrClass.Conditional | InstrClass.Transfer },
+            { Opcode.jnc, InstrClass.Conditional | InstrClass.Transfer },
+            { Opcode.jnz, InstrClass.Conditional | InstrClass.Transfer },
+            { Opcode.jz, InstrClass.Conditional | InstrClass.Transfer },
         };
 
         public Opcode opcode;
@@ -49,20 +49,15 @@ namespace Reko.Arch.Msp430
         public int repeatImm;
         public RegisterStorage repeatReg;
 
-        public override InstructionClass InstructionClass
+        public override InstrClass InstructionClass
         {
             get
             {
-                InstructionClass c;
+                InstrClass c;
                 if (!classes.TryGetValue(opcode, out c))
-                    return InstructionClass.Linear;
+                    return InstrClass.Linear;
                 return c;
             }
-        }
-
-        public override bool IsValid
-        {
-            get { return opcode != Opcode.invalid; }
         }
 
         public override int OpcodeAsInteger
@@ -117,7 +112,7 @@ namespace Reko.Arch.Msp430
 
         private void Write(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            if (op is AddressOperand && (InstructionClass & InstructionClass.Transfer) == 0)
+            if (op is AddressOperand && (InstructionClass & InstrClass.Transfer) == 0)
             {
                 writer.WriteString("&");
             }

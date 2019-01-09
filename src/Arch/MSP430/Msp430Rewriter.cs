@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -40,7 +40,7 @@ namespace Reko.Arch.Msp430
         private IEnumerator<Msp430Instruction> dasm;
         private Msp430Instruction instr;
         private RtlEmitter m;
-        private RtlClass rtlc;
+        private InstrClass rtlc;
 
         public Msp430Rewriter(Msp430Architecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
@@ -59,7 +59,7 @@ namespace Reko.Arch.Msp430
                 this.instr = dasm.Current;
                 var instrs = new List<RtlInstruction>();
                 this.m = new RtlEmitter(instrs);
-                this.rtlc = RtlClass.Linear;
+                this.rtlc = InstrClass.Linear;
                 switch (instr.opcode)
                 {
                 case Opcode.invalid: Invalid(); break;
@@ -88,6 +88,7 @@ namespace Reko.Arch.Msp430
                 case Opcode.mov: RewriteBinop((a, b) => b, ""); break;
                 case Opcode.popm: RewritePopm(); break;
                 case Opcode.pushm: RewritePushm(); break;
+                case Opcode.rrum: RewriteRrum(); break;
                 case Opcode.sub: RewriteBinop(m.ISub, "V-----NZC"); break;
                 case Opcode.subc: RewriteAdcSbc(m.ISub); break;
                 case Opcode.xor: RewriteBinop(m.Xor,  "V-----NZC"); break;
@@ -117,77 +118,76 @@ namespace Reko.Arch.Msp430
 
         private Expression RewriteOp(MachineOperand op)
         {
-            var rop = op as RegisterOperand;
-            if (rop != null)
+            switch (op)
             {
-                return binder.EnsureRegister(rop.Register);
-            }
-            var mop = op as MemoryOperand;
-            if (mop != null)
-            {
-                Expression ea = binder.EnsureRegister(mop.Base);
-                if (mop.PostIncrement)
+            case RegisterOperand rop:
                 {
-                    var tmp = binder.CreateTemporary(op.Width);
-                    m.Assign(tmp, m.Mem(op.Width, ea));
-                    m.Assign(ea, m.IAdd(ea, m.Int16((short)op.Width.Size)));
-                    return tmp;
+                    return binder.EnsureRegister(rop.Register);
                 }
-                else if (mop.Offset != 0)
+            case MemoryOperand mop:
                 {
-                    var tmp = binder.CreateTemporary(op.Width);
-                    m.Assign(tmp, m.Mem(op.Width, m.IAdd(ea, m.Int16(mop.Offset))));
-                    return tmp;
+                    Expression ea = binder.EnsureRegister(mop.Base);
+                    if (mop.PostIncrement)
+                    {
+                        var tmp = binder.CreateTemporary(op.Width);
+                        m.Assign(tmp, m.Mem(op.Width, ea));
+                        m.Assign(ea, m.IAdd(ea, m.Int16((short) op.Width.Size)));
+                        return tmp;
+                    }
+                    else if (mop.Offset != 0)
+                    {
+                        var tmp = binder.CreateTemporary(op.Width);
+                        m.Assign(tmp, m.Mem(op.Width, m.IAdd(ea, m.Int16(mop.Offset))));
+                        return tmp;
+                    }
+                    else
+                    {
+                        var tmp = binder.CreateTemporary(op.Width);
+                        m.Assign(tmp, m.Mem(op.Width, ea));
+                        return tmp;
+                    }
                 }
-                else
+            case ImmediateOperand iop:
                 {
-                    var tmp = binder.CreateTemporary(op.Width);
-                    m.Assign(tmp, m.Mem(op.Width, ea));
-                    return tmp;
+                    return iop.Value;
                 }
-            }
-            var iop = op as ImmediateOperand;
-            if (iop != null)
-            {
-                return iop.Value;
-            }
-            var aop = op as AddressOperand;
-            if (aop != null)
-            {
-                return aop.Address;
+            case AddressOperand aop:
+                {
+                    return aop.Address;
+                }
             }
             throw new NotImplementedException(op.ToString());
         }
 
         private Expression RewriteDst(MachineOperand op, Expression src, Func<Expression,Expression,Expression> fn)
         {
-            var rop = op as RegisterOperand;
-            if (rop != null)
+            switch (op)
             {
-                var dst = binder.EnsureRegister(rop.Register);
-                m.Assign(dst, fn(dst, src));
-                return dst;
-            }
-            var mop = op as MemoryOperand;
-            if (mop != null)
-            {
-                Expression ea = binder.EnsureRegister(mop.Base);
-                if (mop.Offset != 0)
+            case RegisterOperand rop:
                 {
-                    ea = m.IAdd(ea, m.Int16(mop.Offset));
+                    var dst = binder.EnsureRegister(rop.Register);
+                    m.Assign(dst, fn(dst, src));
+                    return dst;
                 }
-                var tmp = binder.CreateTemporary(mop.Width);
-                m.Assign(tmp, m.Mem(tmp.DataType, ea));
-                m.Assign(tmp, fn(tmp, src));
-                m.Assign(m.Mem(tmp.DataType, ea.CloneExpression()), tmp);
-                return tmp;
-            }
-            var aop = op as AddressOperand;
-            if (aop != null)
-            {
-                var mem = m.Mem(op.Width, aop.Address);
-                m.Assign(mem, fn(mem, src));
-                return mem;
+            case MemoryOperand mop:
+                {
+                    Expression ea = binder.EnsureRegister(mop.Base);
+                    if (mop.Offset != 0)
+                    {
+                        ea = m.IAdd(ea, m.Int16(mop.Offset));
+                    }
+                    var tmp = binder.CreateTemporary(mop.Width);
+                    m.Assign(tmp, m.Mem(tmp.DataType, ea));
+                    m.Assign(tmp, fn(tmp, src));
+                    m.Assign(m.Mem(tmp.DataType, ea.CloneExpression()), tmp);
+                    return tmp;
+                }
+            case AddressOperand aop:
+                {
+                    var mem = m.Mem(op.Width, aop.Address);
+                    m.Assign(mem, fn(mem, src));
+                    return mem;
+                }
             }
             throw new NotImplementedException(op.ToString());
         }
@@ -239,11 +239,12 @@ namespace Reko.Arch.Msp430
         private void RewriteBinop(Func<Expression,Expression,Expression> fn, string vnzc)
         {
             var src = RewriteOp(instr.op1);
-            var rop = instr.op2 as RegisterOperand;
-            if (rop != null && rop.Register == Registers.pc)
+            if (instr.op2 is RegisterOperand rop &&
+                rop.Register == Registers.pc)
             {
-                var mop = instr.op1 as MemoryOperand;
-                if (mop != null && mop.PostIncrement && mop.Base == Registers.sp)
+                if (instr.op1 is MemoryOperand mop &&
+                    mop.PostIncrement &&
+                    mop.Base == Registers.sp)
                 {
                     m.Return(2, 0);
                     return;
@@ -269,14 +270,14 @@ namespace Reko.Arch.Msp430
 
         private void RewriteBranch(ConditionCode cc, FlagM flags)
         {
-            rtlc = RtlClass.ConditionalTransfer;
+            rtlc = InstrClass.ConditionalTransfer;
             var grf = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)flags));
-            m.Branch(m.Test(cc, grf), ((AddressOperand)instr.op1).Address, RtlClass.ConditionalTransfer);
+            m.Branch(m.Test(cc, grf), ((AddressOperand)instr.op1).Address, InstrClass.ConditionalTransfer);
         }
 
         private void RewriteCall()
         {
-            rtlc = RtlClass.Transfer | RtlClass.Call;
+            rtlc = InstrClass.Transfer | InstrClass.Call;
             m.Call(RewriteOp(instr.op1), 2);
         }
 
@@ -289,7 +290,7 @@ namespace Reko.Arch.Msp430
 
         private void RewriteGoto()
         {
-            rtlc = RtlClass.Transfer;
+            rtlc = InstrClass.Transfer;
             m.Goto(RewriteOp(instr.op1));
         }
 
@@ -331,10 +332,15 @@ namespace Reko.Arch.Msp430
             }
         }
 
+        private void RewriteRrum()
+        {
+            throw new NotImplementedException();
+        }
+
         private void Invalid()
         {
             m.Invalid();
-            rtlc = RtlClass.Invalid;
+            rtlc = InstrClass.Invalid;
         }
 
 #if DEBUG
