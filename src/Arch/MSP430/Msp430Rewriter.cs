@@ -88,6 +88,7 @@ namespace Reko.Arch.Msp430
                 case Opcode.jz:  RewriteBranch(ConditionCode.EQ, FlagM.ZF); break;
 
                 case Opcode.mov: RewriteBinop((a, b) => b, ""); break;
+                case Opcode.mova: RewriteBinop((a, b) => b, ""); break;
                 case Opcode.popm: RewritePopm(); break;
                 case Opcode.push: RewritePush(); break;
                 case Opcode.pushm: RewritePushm(); break;

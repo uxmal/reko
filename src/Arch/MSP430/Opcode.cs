@@ -62,5 +62,9 @@ namespace Reko.Arch.Msp430
         rrcm,
         rram,
         rrum,
+        mova,
+        cmpa,
+        adda,
+        suba,
     }
 }

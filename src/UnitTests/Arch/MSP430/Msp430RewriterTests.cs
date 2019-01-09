@@ -368,5 +368,15 @@ namespace Reko.UnitTests.Arch.Msp430
                 "0|L--|0100(2): 1 instructions",
                 "1|L--|r15 = __swpb(r15)");
         }
+
+        [Test]
+        public void Msp430Rw_mova()
+        {
+            BuildTest(0x05, 0x04);	// mova.a	@r4,r5
+            AssertCode(
+                "0|L--|0100(2): 2 instructions",
+                "1|L--|v3 = Mem0[r4:word20]",
+                "2|L--|r5 = v3");
+        }
     }
 }

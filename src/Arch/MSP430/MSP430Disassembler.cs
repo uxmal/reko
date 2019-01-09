@@ -74,6 +74,9 @@ namespace Reko.Arch.Msp430
                 case 'x':
                     dataWidth = (uExtension != 0) && (uExtension & 0x40) == 0 ? Msp430Architecture.Word20 : PrimitiveType.Word16;
                     break;
+                case 'p':
+                    dataWidth = Msp430Architecture.Word20;
+                    break;
                 case 'W': // b/w/a combined from the op and the extension
                     var w = ((this.uExtension & 0x40) >> 5) | (uInstr & 0x040) >> 6;
                     switch (w)
@@ -126,6 +129,37 @@ namespace Reko.Arch.Msp430
                     n = 1 + ((uInstr >> 10) & 3);
                     op1 = ImmediateOperand.Byte((byte) n);
                     break;
+                case '@':
+                    iReg = (uInstr >> 8) & 0x0F;
+                    var reg = Registers.GpRegisters[iReg];
+                    op1 = new MemoryOperand(Msp430Architecture.Word20)
+                    {
+                        Base = reg,
+                    };
+                    break;
+                case '+':
+                    iReg = (uInstr >> 8) & 0x0F;
+                    reg = Registers.GpRegisters[iReg];
+                    op1 = PostInc(reg, Msp430Architecture.Word20);
+                    break;
+                case '&':
+                    if (!rdr.TryReadLeUInt16(out var lo16))
+                        return Invalid();
+                    var hi4 = (uint)(uInstr >> 8) & 0x0F;
+                    //$TODO: 20-bit address?
+                    op1 = AddressOperand.Ptr32((hi4 << 16) | lo16);
+                    break;
+                case 'x':
+                    if (!rdr.TryReadLeInt16(out var idxOffset))
+                        return Invalid();
+                    iReg = (uInstr >> 8) & 0x0F;
+                    reg = Registers.GpRegisters[iReg];
+                    op1 = new MemoryOperand(Msp430Architecture.Word20)
+                    {
+                        Base = reg,
+                        Offset = idxOffset
+                    };
+                    break;
                 default:
                     --i;
                     break;
@@ -145,7 +179,7 @@ namespace Reko.Arch.Msp430
                     var reg = Registers.GpRegisters[iReg];
                     if (aD == 0)
                     {
-                        if (iReg == 2 || iReg == 3)
+                        if (iReg == 3)
                             return Invalid();
                         op2 = new RegisterOperand(reg);
                     }
@@ -299,13 +333,13 @@ namespace Reko.Arch.Msp430
             public override Msp430Instruction Decode(Msp430Disassembler dasm, ushort uInstr)
             {
                 var key = (uInstr >> sh) & mask;
-                if (!decoders.TryGetValue(key, out Decoder oprec))
+                if (!decoders.TryGetValue(key, out Decoder decoder))
                     return dasm.Invalid();
-                return oprec.Decode(dasm, uInstr);
+                return decoder.Decode(dasm, uInstr);
             }
         }
 
-        private class ExtOpRec : Decoder
+        private class ExtDecoder : Decoder
         {
             public override Msp430Instruction Decode(Msp430Disassembler dasm, ushort uInstr)
             {
@@ -317,9 +351,42 @@ namespace Reko.Arch.Msp430
             }
         }
 
-        private static readonly ExtOpRec extDecoder = new ExtOpRec();
+        private class NyiDecoder : Decoder
+        {
+            private readonly Opcode opcode;
+            private readonly string msg;
 
-        private static readonly Decoder invalid = Instr(Opcode.invalid, "");
+            public NyiDecoder()
+            {
+                this.opcode = Opcode.invalid;
+                this.msg = "";
+            }
+
+            public NyiDecoder(Opcode opcode, string msg)
+            {
+                this.opcode = opcode;
+                this.msg = msg;
+            }
+
+            public override Msp430Instruction Decode(Msp430Disassembler dasm, ushort uInstr)
+            {
+                var hexBytes = $"{(byte) uInstr:X2}{uInstr >> 2:X2}";
+                var msg = opcode != Opcode.invalid
+                    ? $"{opcode} - {this.msg}"
+                    : this.msg;
+                dasm.EmitUnitTest("MSP430", hexBytes, "", "MSP430Dis", Address.Ptr16(0x4000), w =>
+                    {
+                        w.WriteLine($"    AssertCode(\"@@@\", \"{hexBytes}\");");
+                    });
+                return dasm.Invalid();
+            }
+        }
+
+        private static readonly ExtDecoder extDecoder = new ExtDecoder();
+
+        private static readonly Decoder invalid = new InstrDecoder(Opcode.invalid, "");
+
+        private static readonly Decoder nyi = new NyiDecoder();
 
         private static readonly SubDecoder rotations = new SubDecoder(8, 0x03, new Dictionary<int, Decoder>
         {
@@ -333,8 +400,25 @@ namespace Reko.Arch.Msp430
         {
             new SubDecoder(0x4, 0x0F, new Dictionary<int, Decoder>
             {
+                { 0x00, Instr(Opcode.mova, "p@r") }, 
+                { 0x01, Instr(Opcode.mova, "p+r") }, 
+                { 0x02, Instr(Opcode.mova, "p&r") }, 
+                { 0x03, Instr(Opcode.mova, "pxr") }, 
+
                 { 0x04, rotations },
                 { 0x05, rotations },
+                { 0x06, Instr(Opcode.mova, "pr&") },
+                { 0x07, Instr(Opcode.mova, "prx") },
+
+                { 0x08, Instr(Opcode.mova, "pYr") },
+                { 0x09, Instr(Opcode.cmpa, "pYr") },
+                { 0x0A, Instr(Opcode.adda, "pYr") },
+                { 0x0B, Instr(Opcode.suba, "pYr") },
+
+                { 0x0C, Instr(Opcode.mova, "prr") },
+                { 0x0D, Instr(Opcode.cmpa, "prr") },
+                { 0x0E, Instr(Opcode.adda, "prr") },
+                { 0x0F, Instr(Opcode.suba, "prr") },
             }),
             new SubDecoder(6, 0x3F, new Dictionary<int, Decoder> {
                 { 0x00, Instr(Opcode.rrc, "ws") },
@@ -431,17 +515,17 @@ namespace Reko.Arch.Msp430
 
         private static readonly Decoder[] extDecoders = new Decoder[16]
         {
-            invalid,
+            nyi,
             new SubDecoder(6, 0x3F, new Dictionary<int, Decoder> {
-                { 0x00, invalid },
-                { 0x01, invalid },
-                { 0x02, invalid },
+                { 0x00, nyi },
+                { 0x01, nyi },
+                { 0x02, nyi },
                 { 0x04, Instr(Opcode.rrax, "Ws") },
                 { 0x05, Instr(Opcode.rrax, "Ws") },
-                { 0x06, invalid },
-                { 0x08, invalid },
-                { 0x09, invalid },
-                { 0x0A, invalid },
+                { 0x06, nyi },
+                { 0x08, nyi },
+                { 0x09, nyi },
+                { 0x0A, nyi },
                 { 0x0C, new SubDecoder(0, 0x3F, new Dictionary<int, Decoder> {
                     { 0x00, Instr(Opcode.reti, "") }
                 } ) }

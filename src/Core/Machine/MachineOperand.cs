@@ -108,14 +108,10 @@ namespace Reko.Core.Machine
 
 		private static string FormatString(DataType dt)
 		{
-			switch (dt.Size)
-			{
-			case 1: return "X2";
-			case 2: return "X4";
-			case 4: return "X8";
-			case 8: return "X8";
-			default: throw new InvalidOperationException();
-			}
+            if (dt.Size < 8)
+                return $"X{dt.Size * 2}";
+            else
+                return "X8";
 		}
 
 		public static string FormatUnsignedValue(Constant c, string format = "{0}{1}")

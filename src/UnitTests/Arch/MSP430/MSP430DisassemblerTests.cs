@@ -152,5 +152,45 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             AssertCode("popm.w\t#01,r10", "0A17");
         }
+
+        // New decoders.
+
+        [Test]
+        public void MSP430Dis_mova_indir()
+        {
+            AssertCode("mova.a\t@sp,pc", "0001");
+        }
+
+        [Test]
+        public void MSP430Dis_rrc()
+        {
+            AssertCode("rrc.w\tpc", "0010");
+        }
+
+        [Test]
+        public void MSP430Dis_mova_postinc()
+        {
+            AssertCode("mova.a\t@r4+,pc", "1004");
+        }
+        
+     
+
+        [Test]
+        public void MSP430Dis_sub_w()
+        {
+            AssertCode("sub.w\t-0040(r5),r4", "1485C0FF");
+        }
+
+        [Test]
+        public void MSP430Dis_mova_idx()
+        {
+            AssertCode("mova.a\t-0040(r12),sr", "320CC0FF");
+        }
+
+        [Test]
+        public void MSP430Dis_bic()
+        {
+            AssertCode("bic.w\t#0008,sr", "32C2");
+        }
     }
 }
