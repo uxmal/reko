@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2019 Christian Hostelet.
  *
@@ -85,7 +85,7 @@ namespace Reko.Libraries.Microchip
             string path = Path.Combine(sDir, LocalDBFilename);
             if (!File.Exists(path))
             {
-                sDir = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
+                var appDir = AppDomain.CurrentDomain.BaseDirectory;
                 path = Path.Combine(sDir, LocalDBFilename);
             }
             return path;

@@ -99,7 +99,7 @@ namespace Reko.Scanning
             this.cinj = new CommentInjector(program.User.Annotations);
             this.sr = new ScanResults
             {
-                KnownProcedures = program.User.Procedures.Keys.ToHashSet(),
+                KnownProcedures = program.User.Procedures.Keys.ToSet(),
                 KnownAddresses = program.ImageSymbols.ToDictionary(de => de.Key, de => de.Value),
                 ICFG = new DiGraph<RtlBlock>(),
             };
@@ -961,7 +961,7 @@ namespace Reko.Scanning
             var noDecompiles = Program.User.Procedures
                 .Where(de => !de.Value.Decompile)
                 .Select(de => de.Key)
-                .ToHashSet();
+                .ToSet();
             foreach (var de in Program.User.Procedures)
             {
                 if (noDecompiles.Contains(de.Key))

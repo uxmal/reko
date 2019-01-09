@@ -396,7 +396,7 @@ namespace Reko.Arch.PowerPC
         {
             var knownLinAddresses = knownAddresses
                 .Select(a => a.ToUInt32())
-                .ToHashSet();
+                .ToSet();
             return new PowerPcPointerScanner32(rdr, knownLinAddresses, flags)
                 .Select(u => Address.Ptr32(u));
         }
@@ -455,7 +455,7 @@ namespace Reko.Arch.PowerPC
         {
             var knownLinAddresses = knownAddresses
                 .Select(a => a.ToLinear())
-                .ToHashSet();
+                .ToSet();
             return new PowerPcPointerScanner64(rdr, knownLinAddresses, flags)
                 .Select(u => Address.Ptr64(u));
         }

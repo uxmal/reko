@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -18,7 +18,6 @@
  */
 #endregion
 
-using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Configuration;
 using System;
