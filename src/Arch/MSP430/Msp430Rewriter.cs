@@ -415,8 +415,8 @@ namespace Reko.Arch.Msp430
             rtlc = InstrClass.Invalid;
         }
 
-#if DEBUG
         private static HashSet<Opcode> seen = new HashSet<Opcode>();
+
         [Conditional("DEBUG")]
         private void EmitUnitTest()
         {
@@ -441,6 +441,5 @@ namespace Reko.Arch.Msp430
             Console.WriteLine("        }");
             Console.WriteLine("");
         }
-#endif
     }
 }
