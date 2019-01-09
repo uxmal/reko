@@ -149,7 +149,7 @@ namespace Reko.Arch.Arm
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
-            var knownLinAddresses = knownAddresses.Select(a => a.ToUInt32()).ToHashSet();
+            var knownLinAddresses = knownAddresses.Select(a => a.ToUInt32()).ToSet();
             if (flags != PointerScannerFlags.Calls)
                 throw new NotImplementedException(string.Format("Haven't implemented support for scanning for {0} yet.", flags));
             while (rdr.IsValid)

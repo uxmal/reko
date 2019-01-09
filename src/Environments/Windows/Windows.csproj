@@ -1,185 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4A298321-9855-43DE-AA9C-79E4EFA0AE56}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Reko.Environments.Windows</RootNamespace>
-    <AssemblyName>Reko.Environments.Windows</AssemblyName>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <UseVSHostingProcess>true</UseVSHostingProcess>
-    <LangVersion>7</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnixRelease|AnyCPU'">
-    <OutputPath>bin\UnixRelease\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <WarningLevel>4</WarningLevel>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Configuration" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="AArch64CallingConvention.cs" />
-    <Compile Include="AlphaCallingConvention.cs" />
-    <Compile Include="BorlandMangledNamedParser.cs" />
-    <Compile Include="M68kCallingConvention.cs" />
-    <Compile Include="MipsCallingConvention.cs" />
-    <Compile Include="ModuleDefinitionLoader.cs" />
-    <Compile Include="MsAPrintfFormatParser.cs" />
-    <Compile Include="MsMangledNameParser.cs" />
-    <Compile Include="MsPrintfFormatParser.cs" />
-    <Compile Include="MsWprintfFormatParser.cs" />
-    <Compile Include="PowerPcCallingConvention.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SignatureGuesser.cs" />
-    <Compile Include="Win16Platform.cs" />
-    <Compile Include="Win32Emulator.cs" />
-    <Compile Include="Win32M68kPlatform.cs" />
-    <Compile Include="Win32PpcPlatform.cs" />
-    <Compile Include="Win32MipsPlatform.cs" />
-    <Compile Include="Win32Platform.cs" />
-    <Compile Include="Win32ThumbPlatform.cs" />
-    <Compile Include="WinAArch64Platform.cs" />
-    <Compile Include="WinAlphaPlatform.cs" />
-    <Compile Include="WineSpecFileLoader.cs" />
-    <Compile Include="Win_x86_64_Platform.cs" />
-    <Compile Include="X86StartFinder.cs" />
-    <Compile Include="X86_64CallingConvention.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
-    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="advapi32.xml" />
-    <Content Include="comdlg32.xml" />
-    <Content Include="commctrl.xml">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="gdi32.xml" />
-    <Content Include="kernel32.xml">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="ntoskrnl.inc" />
-    <Content Include="ntoskrnl.xml" />
-    <Content Include="oleaut32.def" />
-    <Content Include="shell32.xml" />
-    <Content Include="user32.xml" />
-    <Content Include="win64characteristics.xml" />
-    <Content Include="win32characteristics.xml" />
-    <Content Include="wince.inc" />
-    <Content Include="windows64.xml">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="windows32.xml">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="windows_CE.xml" />
-    <Content Include="wsock32.xml" />
-    <Content Include="wininet.xml" />
-    <Content Include="oleaut32.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Arch\Arm\Arm.csproj">
-      <Project>{32F09304-51BE-4797-A86A-C0BEFED2422B}</Project>
-      <Name>Arm</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Arch\PowerPC\PowerPC.csproj">
-      <Project>{B7DC39DD-6693-4F71-AE7F-007C5C62CBAA}</Project>
-      <Name>PowerPC</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Arch\X86\X86.csproj">
-      <Project>{0942ACB2-EBA0-4E2B-B363-205DF72A77B2}</Project>
-      <Name>X86</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Core\Core.csproj">
-      <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
-      <Name>Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\Libc\Libc.csproj">
-      <Project>{FDAF4CA9-085C-473E-BCB5-0D2A4354A949}</Project>
-      <Name>Libc</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\tools\c2xml\C2Xml.csproj">
-      <Project>{500C7C4B-5B7A-40E0-BEED-75DDF1BA78D5}</Project>
-      <Name>C2Xml</Name>
-      <ReferenceOutputAssembly>False</ReferenceOutputAssembly>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
+    <ProjectReference Include="..\..\Arch\X86\X86.csproj" />
+    <ProjectReference Include="..\..\Core\Core.csproj" />
+    <ProjectReference Include="..\..\Libraries\Libc\Libc.csproj" />
   </ItemGroup>
   <ItemGroup>
     <TranslateHeader Include="msvcrt.inc" />
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Target Name="BeforeBuild">
-  </Target>
   <Target Name="AfterBuild">
     <Copy SourceFiles="$(ProjectDir)$(OutDir)Reko.Environments.Windows.dll" DestinationFolder="$(SolutionDir)tools" />
     <Copy SourceFiles="$(SolutionDir)Arch\X86\$(OutDir)Reko.Arch.X86.dll" DestinationFolder="$(SolutionDir)tools" />

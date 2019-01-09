@@ -18,13 +18,13 @@
  */
 #endregion
 
-using Decompiler.Core;
-using Decompiler.Core.Expressions;
-using Decompiler.Core.Operators;
-using Decompiler.Core.Types;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Operators;
+using Reko.Core.Types;
 using System;
 
-namespace Decompiler.Arch.X86
+namespace Reko.Arch.X86
 {
 	/// <summary>
 	/// Assists in rewriting X86 string instructions.
@@ -35,7 +35,7 @@ namespace Decompiler.Arch.X86
 		private OperandRewriter orw;
 		private IntelArchitecture arch;
 
-		private IntelInstruction instrCur;
+		private X86Instruction instrCur;
 
 		public StringInstructionRewriter(IntelArchitecture arch, OperandRewriter orw)
 		{
@@ -44,7 +44,7 @@ namespace Decompiler.Arch.X86
 		}
 
 
-		public void EmitStringInstruction(IntelInstruction instr, CodeEmitterOld emitter)
+		public void EmitStringInstruction(X86Instruction instr, CodeEmitter emitter)
 		{
             this.emitter = emitter;
 
@@ -58,9 +58,9 @@ namespace Decompiler.Arch.X86
 				case Opcode.cmps:
 				case Opcode.cmpsb:
 					emitter.Assign(
-						orw.FlagGroup(IntelInstruction.DefCc(Opcode.cmp)),
+						orw.FlagGroup(X86Instruction.DefCc(Opcode.cmp)),
 						new ConditionOf(
-						new BinaryExpression(Operator.Sub, instrCur.dataWidth, MemSi(), MemDi())));
+						new BinaryExpression(Operator.ISub, instrCur.dataWidth, MemSi(), MemDi())));
 					incSi = true;
 					incDi = true;
 					break;
@@ -72,7 +72,7 @@ namespace Decompiler.Arch.X86
 				case Opcode.movs:
 				case Opcode.movsb:
 				{
-					Identifier tmp = frame.CreateTemporary(instrCur.dataWidth);
+					Identifier tmp = emitter.Frame.CreateTemporary(instrCur.dataWidth);
 					emitter.Assign(tmp, MemSi());
 					emitter.Store(MemDi(), tmp);
 					incSi = true;
@@ -83,7 +83,7 @@ namespace Decompiler.Arch.X86
 				case Opcode.insb:
 				{
 					Identifier regDX = orw.AluRegister(Registers.edx, instrCur.addrWidth);
-					emitter.Store(MemDi(), emitter.PseudoProc("__in", instrCur.dataWidth, regDX));
+					emitter.Store(MemDi(), host.PseudoProc("__in", instrCur.dataWidth, regDX));
 					incDi = true;
 					break;
 				}

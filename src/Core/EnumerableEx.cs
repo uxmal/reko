@@ -83,13 +83,11 @@ namespace Reko.Core
             return list;
         }
 
-#if  NETSTANDARD2_0
-        public static HashSet<TElement> ToHashSet<TElement>(
+        public static HashSet<TElement> ToSet<TElement>(
             this IEnumerable<TElement> source)
         {
             return new HashSet<TElement>(source);
         }
-#endif
 
         public static SortedSet<TElement> ToSortedSet<TElement>(
             this IEnumerable<TElement> source)

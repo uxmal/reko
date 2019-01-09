@@ -569,7 +569,7 @@ all other cases, together they constitute a Switch[].
         {
             this.postDoms = BuildPostDoms();
             var immPDom = this.postDoms.ImmediateDominator(n);
-            var caseNodes = regionGraph.Successors(n).ToHashSet();
+            var caseNodes = regionGraph.Successors(n).ToSet();
             if (caseNodes.Any(s => regionGraph.Successors(s).Contains(immPDom)))
                 return immPDom;
 
@@ -596,7 +596,7 @@ all other cases, together they constitute a Switch[].
             Region n, Region follow)
         {
             var caseNodesMap = new Dictionary<Region, ISet<Region>>();
-            var caseEntries = regionGraph.Successors(n).ToHashSet();
+            var caseEntries = regionGraph.Successors(n).ToSet();
             foreach (var c in caseEntries)
             {
                 var caseSet = new HashSet<Region>() { c };
@@ -750,7 +750,7 @@ all other cases, together they constitute a Switch[].
         /// </returns>
         private bool RefinePredecessor(Region n, Region s)
         {
-            ISet<Region> unstructuredPreds = regionGraph.Predecessors(s).Where(p => p != n).ToHashSet();
+            ISet<Region> unstructuredPreds = new HashSet<Region>(regionGraph.Predecessors(s).Where(p => p != n));
             if (unstructuredPreds.Count == 0)
                 return false;
             return true;

@@ -1,192 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="$(SolutionDir)Drivers\Common.items" />
   <PropertyGroup>
-    <ProjectType>Local</ProjectType>
-    <ProjectGuid>{1C5DAC93-1202-4704-ABD5-3E49ADCF0E81}</ProjectGuid>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ApplicationIcon>App.ico</ApplicationIcon>
-    <AssemblyKeyContainerName>
-    </AssemblyKeyContainerName>
-    <AssemblyName>WindowsDecompiler</AssemblyName>
-    <DefaultClientScript>JScript</DefaultClientScript>
-    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
-    <DefaultTargetSchema>IE50</DefaultTargetSchema>
-    <DelaySign>false</DelaySign>
-    <OutputType>WinExe</OutputType>
-    <RootNamespace>WindowsDecompiler</RootNamespace>
-    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseMSBuildEngine>True</UseMSBuildEngine>
-    <TargetFrameworkProfile />
-    <ProductVersion>12.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFramework>net472</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>bin\Debug\</OutputPath>
-    <BaseAddress>285212672</BaseAddress>
-    <ConfigurationOverrideFile>
-    </ConfigurationOverrideFile>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugSymbols>true</DebugSymbols>
-    <FileAlignment>4096</FileAlignment>
-    <Optimize>false</Optimize>
-    <RegisterForComInterop>false</RegisterForComInterop>
-    <RemoveIntegerChecks>false</RemoveIntegerChecks>
-    <WarningLevel>4</WarningLevel>
-    <DebugType>full</DebugType>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <UseVSHostingProcess>true</UseVSHostingProcess>
-    <PlatformTarget>x86</PlatformTarget>
-    <LangVersion>7</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>bin\Release\</OutputPath>
-    <BaseAddress>285212672</BaseAddress>
-    <ConfigurationOverrideFile>
-    </ConfigurationOverrideFile>
-    <DefineConstants>TRACE</DefineConstants>
-    <FileAlignment>4096</FileAlignment>
-    <Optimize>true</Optimize>
-    <RegisterForComInterop>false</RegisterForComInterop>
-    <RemoveIntegerChecks>false</RemoveIntegerChecks>
-    <WarningLevel>4</WarningLevel>
-    <DebugType>none</DebugType>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <PlatformTarget>x86</PlatformTarget>
-  </PropertyGroup>
-  <PropertyGroup />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnixRelease|AnyCPU'">
-    <OutputPath>bin\UnixRelease\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <BaseAddress>285212672</BaseAddress>
-    <Optimize>true</Optimize>
-    <FileAlignment>4096</FileAlignment>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <BaseAddress>285212672</BaseAddress>
-    <FileAlignment>4096</FileAlignment>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <BaseAddress>285212672</BaseAddress>
-    <Optimize>true</Optimize>
-    <FileAlignment>4096</FileAlignment>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnixRelease|x86'">
-    <OutputPath>bin\x86\UnixRelease\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <BaseAddress>285212672</BaseAddress>
-    <Optimize>true</Optimize>
-    <FileAlignment>4096</FileAlignment>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <BaseAddress>285212672</BaseAddress>
-    <FileAlignment>4096</FileAlignment>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <BaseAddress>285212672</BaseAddress>
-    <Optimize>true</Optimize>
-    <FileAlignment>4096</FileAlignment>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnixRelease|x64'">
-    <OutputPath>bin\x64\UnixRelease\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <BaseAddress>285212672</BaseAddress>
-    <Optimize>true</Optimize>
-    <FileAlignment>4096</FileAlignment>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
+
+  <Target Name="GenerateCsFiles" BeforeTargets="CoreCompile">
+    <Exec Condition=" '$(OS)' == 'Unix' And Exists('$(ProjectDir)../../tools/xslt.exe')" Command="mono $(ProjectDir)../../tools/xslt.exe $(ProjectDir)Forms/decompiler-menus.xslt $(ProjectDir)../../Gui/decompiler-menus.xml $(ProjectDir)Forms/DecompilerMenus.cs" />
+    <Exec Condition=" '$(OS)' != 'Unix' And Exists('$(ProjectDir)../../tools/xslt.exe')" Command="&quot;$(SolutionDir)tools\xslt.exe&quot; &quot;$(ProjectDir)Forms\decompiler-menus.xslt&quot; &quot;$(ProjectDir)..\..\Gui\decompiler-menus.xml&quot; &quot;$(ProjectDir)Forms\DecompilerMenus.cs&quot;" />
+  </Target>
   <ItemGroup>
-    <Reference Include="System">
-      <Name>System</Name>
-    </Reference>
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Windows.Forms">
-      <Name>System.Windows.Forms</Name>
-    </Reference>
-    <Reference Include="System.Xml" />
+    <ProjectReference Include="..\..\Core\Core.csproj" />
+    <ProjectReference Include="..\..\Gui\Gui.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="App.ico" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Driver.cs">
-      <SubType>Code</SubType>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
-  </ItemGroup>
+  
   <ItemGroup>
     <ProjectReference Include="..\..\Arch\Alpha\Alpha.csproj">
       <Project>{c4c56725-bfd0-405a-802c-2c66fcd0ef06}</Project>
@@ -197,8 +27,6 @@
       <Name>Arc</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Arch\Arm\Arm.csproj">
-      <Project>{32f09304-51be-4797-a86a-c0befed2422b}</Project>
-      <Name>Arm</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Arch\Avr\Avr.csproj">
       <Project>{5e75d702-3032-41fe-8d09-86428555a8ed}</Project>
@@ -217,32 +45,20 @@
       <Name>Cray</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Arch\i8051\i8051.csproj">
-      <Project>{ab5ddeb2-87c0-42c7-8cd3-72cb2b1282fb}</Project>
-      <Name>i8051</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Arch\M6800\M6800.csproj">
-      <Project>{54944b1e-7c12-4fb1-a208-996ad6d04b80}</Project>
-      <Name>M6800</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Arch\M68k\M68k.csproj">
-      <Project>{38a94634-b2b2-4a89-af02-2a2898b93343}</Project>
-      <Name>M68k</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Arch\MicroBlaze\MicroBlaze.csproj">
       <Project>{9e952b82-a52f-4221-bc4a-dd9d8b9f7854}</Project>
       <Name>MicroBlaze</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Arch\Mips\Mips.csproj">
-      <Project>{4dec7ada-e512-43c5-8312-ca076818c2a9}</Project>
-      <Name>Mips</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Arch\MicrochipPIC.Design\MicrochipPIC.Design.csproj">
-      <Project>{e75c3be2-0f98-48cd-943d-198159b57dc7}</Project>
-      <Name>MicrochipPIC.Design</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Arch\Microchip\MicrochipPIC.csproj">
-      <Project>{a959c1a2-a622-4600-81ad-29e08545b2f7}</Project>
-      <Name>MicrochipPIC</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Arch\MSP430\MSP430.csproj">
       <Project>{ff9e9894-f7e2-464d-b288-4157b864d053}</Project>
@@ -257,28 +73,18 @@
       <Name>PaRisc</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Arch\PowerPC.Design\PowerPC.Design.csproj">
-      <Project>{16550df3-0916-4bdd-aa7a-7e1bad7aba3b}</Project>
-      <Name>PowerPC.Design</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Arch\Rl78\Rl78.csproj">
       <Project>{54029784-c8a6-43f5-9d00-62ec8da04fa1}</Project>
       <Name>Rl78</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Arch\SuperH\SuperH.csproj">
-      <Project>{fc3aa408-b2b1-4b40-b29d-9ebb46aa8b33}</Project>
-      <Name>SuperH</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Arch\zSeries\zSeries.csproj">
-      <Project>{33ce0d6a-8762-4505-975f-ee61c355fd04}</Project>
-      <Name>zSeries</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Core\Core.csproj">
-      <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
-      <Name>Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Decompiler\Decompiler.csproj">
-      <Project>{5E21C722-F9C6-4192-95EC-89FCEF2ACDB7}</Project>
-      <Name>Decompiler</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Environments\AmigaOS.Design\AmigaOS.Design.csproj">
       <Project>{1ee2f083-625e-49fc-8601-d3c58c713028}</Project>
@@ -297,8 +103,6 @@
       <Name>C64</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Environments\Cpm\Cpm.csproj">
-      <Project>{a1376626-5207-41a9-a77b-11ddb9f534d1}</Project>
-      <Name>Cpm</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Environments\Dreamcast\Dreamcast.csproj">
       <Project>{908b208a-becc-42ad-8253-a167ec40b20b}</Project>
@@ -313,20 +117,14 @@
       <Name>Switch</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Environments\SysV\SysV.csproj">
-      <Project>{5307665e-072f-4398-872d-6550be6fc1eb}</Project>
-      <Name>SysV</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Environments\Windows\Windows.csproj">
       <Project>{4a298321-9855-43de-aa9c-79e4efa0ae56}</Project>
       <Name>Windows</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Environments\Xbox360\Xbox360.csproj">
-      <Project>{e45b5b79-17ed-4b74-a68b-ce9119c51677}</Project>
-      <Name>Xbox360</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Gui\Gui.csproj">
-      <Project>{1CA14C64-92E8-452E-A380-637F3DBB4D28}</Project>
-      <Name>Gui</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\ImageLoaders\BinHex\BinHex.csproj">
       <Project>{3f73b4eb-4ee6-45df-aa07-06ecdefa5bd9}</Project>
@@ -337,12 +135,8 @@
       <Name>Coff</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\ImageLoaders\Dol\Dol.csproj">
-      <Project>{5b6da2ca-5ca1-4a84-8084-9d6780f64bcf}</Project>
-      <Name>Dol</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\ImageLoaders\Elf\Elf.csproj">
-      <Project>{33dcec6d-66f2-4ab7-9dd9-293dbb5414b1}</Project>
-      <Name>Elf</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\ImageLoaders\HpSom\HpSom.csproj">
       <Project>{6faa0b0c-f6c2-4091-9cc8-1dc2cf708bc2}</Project>
@@ -353,57 +147,21 @@
       <Name>IntelHex</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\ImageLoaders\MachO\MachO.csproj">
-      <Project>{db44d301-72ea-4f9b-8327-be8ebc5b1bc8}</Project>
-      <Name>MachO</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\ImageLoaders\MzExe\MzExe.csproj">
-      <Project>{0a1b3397-06e3-4c23-a667-fccc19dc7d12}</Project>
-      <Name>MzExe</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\ImageLoaders\Nro\Nro.csproj">
       <Project>{0ab0aab7-292e-4827-a480-a32561b07fd7}</Project>
       <Name>Nro</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\ImageLoaders\Omf\Omf.csproj">
-      <Project>{0e00ed86-372c-4497-85bb-428bdd1c5ccf}</Project>
-      <Name>Omf</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\ImageLoaders\XexLoader\Xex.csproj">
-      <Project>{e6d43750-9abc-407d-b247-c91593c77062}</Project>
-      <Name>Xex</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Native\NativeProxy.csproj">
-      <Project>{1dba55a8-6c67-4d16-8137-912b79715973}</Project>
-      <Name>NativeProxy</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\UserInterfaces\WindowsForms\WindowsForms.csproj">
-      <Project>{60cc0c65-e629-4923-9112-2a46371c90af}</Project>
-      <Name>WindowsForms</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)Drivers\PreBuild.targets" />
-  <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
 </Project>
