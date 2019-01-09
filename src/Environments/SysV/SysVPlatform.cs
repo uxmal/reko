@@ -89,6 +89,8 @@ namespace Reko.Environments.SysV
                 return new M68kCallingConvention(Architecture);
             case "avr8":
                 return new Avr8CallingConvention(Architecture);
+            case "msp430":
+                return new Msp430CallingConvention(Architecture);
             case "risc-v":
                 if (this.ccRiscV == null)
                 {
@@ -104,7 +106,7 @@ namespace Reko.Environments.SysV
             case "zSeries":
                 return new zSeriesCallingConvention(Architecture);
             default:
-                throw new NotImplementedException(string.Format("Calling convention for {0} not implemented yet.", Architecture.Description));
+                throw new NotImplementedException(string.Format("ELF calling convention for {0} not implemented yet.", Architecture.Description));
             }
         }
 

@@ -55,6 +55,7 @@
     <Compile Include="ArchSpecific\Avr8CallingConvention.cs" />
     <Compile Include="ArchSpecific\M68kCallingConvention.cs" />
     <Compile Include="ArchSpecific\MipsCallingConvention.cs" />
+    <Compile Include="ArchSpecific\Msp430CallingConvention.cs" />
     <Compile Include="ArchSpecific\PowerPcCallingConvention.cs" />
     <Compile Include="ArchSpecific\SparcCallingConvention.cs" />
     <Compile Include="ArchSpecific\SuperHCallingConvention.cs" />

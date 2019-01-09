@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -48,7 +48,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;ARRAY_OPERANDS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
@@ -86,6 +86,17 @@
     <Compile Include="ByteMapDialog.Designer.cs">
       <DependentUpon>ByteMapDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="DecoderPerformanceDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DecoderPerformanceDialog.Designer.cs">
+      <DependentUpon>DecoderPerformanceDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Decoders\Decoder.cs" />
+    <Compile Include="Decoders\DecoderBuilder.cs" />
+    <Compile Include="Decoders\Disassembler.cs" />
+    <Compile Include="Decoders\Opcode.cs" />
+    <Compile Include="Decoders\TestInstruction.cs" />
     <Compile Include="DisassemblyControlForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -130,6 +141,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="ActiveControlForm.resx">
       <DependentUpon>ActiveControlForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DecoderPerformanceDialog.resx">
+      <DependentUpon>DecoderPerformanceDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DisassemblyControlForm.resx">
       <DependentUpon>DisassemblyControlForm.cs</DependentUpon>

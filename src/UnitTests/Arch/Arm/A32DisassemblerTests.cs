@@ -1353,6 +1353,14 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        [Ignore("Make this work")]
+        public void ArmDasm_f2c14e3e()
+        {
+            Disassemble32(0xF2C14E3E);
+            Expect_Code("@@@");
+        }
+
+        [Test]
         public void ArmDasm_wfe_eq()
         {
             Disassemble32(0x03200002);

@@ -22,7 +22,7 @@ namespace Reko.WindowsItp
             InitializeComponent();
         }
 
-        private class RewriterHost : IRewriterHost
+        public class RewriterHost : IRewriterHost
         {
             private Dictionary<string, PseudoProcedure> ppp;
             private Dictionary<Address, ImportReference> importThunks;
