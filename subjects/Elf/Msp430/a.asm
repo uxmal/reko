@@ -175,7 +175,7 @@ xHeap		; 02A6
 
 ;; __write_char: 09B2
 __write_char proc
-	invalid
+	mova.a	@pc,pc
 ;;; Segment .text (00004000)
 
 ;; fn00004000: 00004000
@@ -392,21 +392,27 @@ msp430_compute_modulator_bits proc
 	mov.w	r14,r12
 	mov.w	r15,r13
 	push.w	sr
-	invalid
+	bic.w	#0008,sr
 	call	5ADC
-	invalid
+	mov.w	@sp+,sr
 	mov.w	r14,r8
 	mov.w	r15,r9
 	sub.w	r6,r8
 	subc.w	r7,r9
 	cmp.w	#0000,@sp
 	jz	4274
+
+l426C:
 	mov.w	@sp,r15
 	mov.w	0002(sp),@r15
+
+l4274:
 	mov.b	#00,r7
 	mov.w	#0000,r10
 	mov.w	#0000,r11
 	mov.b	#00,r6
+
+l427C:
 	add.w	r8,r10
 	addc.w	r9,r11
 	mov.w	r4,r14
@@ -422,19 +428,29 @@ msp430_compute_modulator_bits proc
 	sub.w	r14,r12
 	subc.w	r15,r13
 	jge	42AE
+
+l429A:
 	add.w	r4,r10
 	addc.w	r5,r11
 	mov.w	#0001,r15
 	mov.b	r6,r14
 	cmp.w	#0000,r14
 	jz	42AC
+
+l42A6:
 	add.w	r15,r15
 	sub.w	#0001,r14
 	jnz	42A6
+
+l42AC:
 	bis.b	r15,r7
+
+l42AE:
 	add.b	#01,r6
 	cmp.b	#08,r6
 	jnc	427C
+
+l42B4:
 	mov.b	r7,r15
 	add.w	#0006,sp
 	mov.w	@sp+,r4
@@ -467,7 +483,7 @@ init_uart_isr proc
 	mov.w	@r12+,r10
 	sub.w	#0004,r12
 	mov.b	0004(r12),r15
-	invalid
+	bic.w	#0008,sr
 	add.w	#0001,&0218
 	mov.w	r15,r11
 	mov.w	#0001,r14
@@ -501,9 +517,15 @@ init_uart_isr proc
 	add.w	#0002,sp
 	cmp.w	#0000,&0218
 	jz	436E
+
+l4366:
 	add.w	#FFFF,&0218
 	jnz	436E
-	invalid
+
+l436C:
+	bis.w	#0008,sr
+
+l436E:
 	add.w	#0002,sp
 	mov.w	@sp+,r4
 	mov.w	@sp+,r6
@@ -608,30 +630,46 @@ x_putchar proc
 	sub.w	#0002,sp
 	mov.b	r15,@sp
 	mov.w	r14,r13
-	invalid
+	bic.w	#0008,sr
 	add.w	#0001,&0218
 	cmp.w	#0001,&0220
 	jz	00004440
+
+l00004410:
 	mov.w	sp,r14
 	mov.w	&021E,r15
 	call	4D7E
 	cmp.w	#0001,&0220
 	jz	00004430
+
+l00004420:
 	cmp.w	#0000,&0218
 	jz	0000444A
+
+l00004426:
 	add.w	#FFFF,&0218
 	jnz	0000444A
-	invalid
+
+l0000442C:
+	bis.w	#0008,sr
 	jmp	0000444A
+
+l00004430:
 	cmp.w	#0001,r15
 	jnz	00004420
+
+l00004434:
 	mov.w	#0000,r13
 	mov.w	sp,r14
 	mov.w	&021E,r15
 	call	4EF0
+
+l00004440:
 	mov.w	#0000,&0220
 	mov.b	@sp,&007F
 	jmp	00004420
+
+l0000444A:
 	mov.w	#0001,r15
 	add.w	#0002,sp
 	mov.w	@sp+,pc
@@ -728,28 +766,44 @@ l000044E2:
 	mov.w	r6,r14
 	call	519A
 	mov.w	r15,@r11
-	invalid
+	bic.w	#0008,sr
 	add.w	#0001,&0218
 	add.w	#0001,&0206
 	cmp.w	#0001,&0206
 	jz	00004596
+
+l00004514:
 	cmp.w	#0000,&020E
 	jnz	0000452A
+
+l0000451A:
 	mov.w	&0202,r15
 	mov.w	0006(r15),r15
 	cmp.w	r15,r8
 	jnc	0000452A
+
+l00004526:
 	mov.w	r11,&0202
+
+l0000452A:
 	mov.w	0006(r11),r15
 	cmp.w	r15,&020A
 	jc	00004538
+
+l00004534:
 	mov.w	r15,&020A
+
+l00004538:
 	mov.w	&0214,0004(r11)
 	add.w	#0001,&0214
 	mov.w	#0000,0008(r11)
 	cmp.w	r15,&020C
 	jc	00004550
+
+l0000454C:
 	mov.w	r15,&020C
+
+l00004550:
 	mov.w	r11,r14
 	add.w	#0008,r14
 	add.w	r15,r15
@@ -761,9 +815,13 @@ l000044E2:
 	mov.w	#0001,r10
 	cmp.w	#0000,&0218
 	jz	00004574
+
+l0000456C:
 	add.w	#FFFF,&0218
 	jnz	00004574
-	invalid
+
+l00004572:
+	bis.w	#0008,sr
 
 l00004574:
 	cmp.w	#0001,r10
@@ -788,7 +846,11 @@ l00004586:
 l00004590:
 	call	523A
 	jmp	000045A4
-00004596                   82 4B 02 02 B0 12 12 4A C5 3F       .K.....J.?
+
+l00004596:
+	mov.w	r11,&0202
+	call	4A12
+	jmp	0000452A
 
 l000045A0:
 	mov.w	#FFFF,r10
@@ -811,36 +873,54 @@ vTaskDelete proc
 	push.w	r10
 	push.w	r9
 	mov.w	r15,r9
-	invalid
+	bic.w	#0008,sr
 	add.w	#0001,&0218
 	mov.w	r15,r11
 	cmp.w	#0000,r15
 	jz	460C
+
+l45CA:
 	mov.w	r11,r10
 	add.w	#0008,r10
 	mov.w	r10,r15
 	call	4C98
 	cmp.w	#0000,001A(r11)
 	jnz	4600
+
+l45DA:
 	mov.w	r10,r14
 	mov.w	#0296,r15
 	call	4C06
 	add.w	#0001,&0204
 	cmp.w	#0000,&0218
 	jz	45F6
+
+l45EE:
 	add.w	#FFFF,&0218
 	jnz	45F6
-	invalid
+
+l45F4:
+	bis.w	#0008,sr
+
+l45F6:
 	cmp.w	#0000,r9
 	jnz	4612
+
+l45FA:
 	call	523A
 	jmp	4612
+
+l4600:
 	add.w	#0012,r11
 	mov.w	r11,r15
 	call	4C98
 	jmp	45DA
+
+l460C:
 	mov.w	&0202,r11
 	jmp	45CA
+
+l4612:
 	mov.w	@sp+,r9
 	mov.w	@sp+,r10
 	mov.w	@sp+,r11
@@ -998,7 +1078,7 @@ l470A:
 	jnz	4708
 
 l4726:
-	invalid
+	bic.w	#0008,sr
 	mov.w	#0001,&020E
 	mov.w	#0000,&0208
 	call	520A
@@ -1006,21 +1086,27 @@ l4726:
 
 ;; vTaskEndScheduler: 4736
 vTaskEndScheduler proc
-	invalid
+	bic.w	#0008,sr
 	mov.w	#0000,&020E
 	call	5238
 	mov.w	@sp+,pc
 
 ;; vTaskSuspendAll: 00004742
 vTaskSuspendAll proc
-	invalid
+	bic.w	#0008,sr
 	add.w	#0001,&0218
 	add.w	#0001,&0210
 	cmp.w	#0000,&0218
 	jz	0000475A
+
+l00004752:
 	add.w	#FFFF,&0218
 	jnz	0000475A
-	invalid
+
+l00004758:
+	bis.w	#0008,sr
+
+l0000475A:
 	mov.w	@sp+,pc
 
 ;; xTaskResumeAll: 0000475C
@@ -1030,20 +1116,32 @@ xTaskResumeAll proc
 	push.w	r9
 	push.w	r8
 	mov.w	#0000,r8
-	invalid
+	bic.w	#0008,sr
 	add.w	#0001,&0218
 	add.w	#FFFF,&0210
 	jnz	000047EA
+
+l00004772:
 	cmp.w	#0000,&0206
 	jz	000047EA
+
+l00004778:
 	mov.w	#0000,r9
+
+l0000477A:
 	cmp.w	#0000,&0286
 	jz	0000480E
+
+l00004780:
 	mov.w	&0288,r15
 	mov.w	0002(r15),r15
 	mov.w	0006(r15),r11
+
+l0000478C:
 	cmp.w	#0000,r11
 	jz	000047D8
+
+l00004790:
 	mov.w	r11,r15
 	add.w	#0012,r15
 	call	4C98
@@ -1055,7 +1153,11 @@ xTaskResumeAll proc
 	mov.w	0006(r11),r15
 	cmp.w	r15,&020C
 	jc	000047B6
+
+l000047B2:
 	mov.w	r15,&020C
+
+l000047B6:
 	add.w	r15,r15
 	add.w	r15,r15
 	add.w	r15,r15
@@ -1066,30 +1168,56 @@ xTaskResumeAll proc
 	mov.w	&0202,r15
 	cmp.w	0006(r11),0006(r15)
 	jc	0000477A
+
+l000047D4:
 	mov.w	#0001,r9
 	jmp	0000477A
+
+l000047D8:
 	cmp.w	#0000,&0212
 	jz	000047E6
+
+l000047DE:
 	cmp.w	#0000,&0212
 	jnz	00004802
+
+l000047E4:
 	mov.w	#0001,r9
+
+l000047E6:
 	cmp.w	#0001,r9
 	jz	000047FA
+
+l000047EA:
 	cmp.w	#0000,&0218
 	jz	00004812
+
+l000047F0:
 	add.w	#FFFF,&0218
 	jnz	00004812
-	invalid
+
+l000047F6:
+	bis.w	#0008,sr
 	jmp	00004812
+
+l000047FA:
 	mov.w	#0001,r8
 	call	523A
 	jmp	000047EA
+
+l00004802:
 	call	484A
 	add.w	#FFFF,&0212
 	jnz	00004802
+
+l0000480C:
 	jmp	000047E4
+
+l0000480E:
 	mov.w	#0000,r11
 	jmp	0000478C
+
+l00004812:
 	mov.w	r8,r15
 	mov.w	@sp+,r8
 	mov.w	@sp+,r9
@@ -1099,24 +1227,36 @@ xTaskResumeAll proc
 
 ;; xTaskGetTickCount: 0000481E
 xTaskGetTickCount proc
-	invalid
+	bic.w	#0008,sr
 	add.w	#0001,&0218
 	mov.w	&0208,r15
 	jz	00004832
+
+l0000482A:
 	add.w	#FFFF,&0218
 	jnz	00004832
-	invalid
+
+l00004830:
+	bis.w	#0008,sr
+
+l00004832:
 	mov.w	@sp+,pc
 
 ;; uxTaskGetNumberOfTasks: 4834
 uxTaskGetNumberOfTasks proc
-	invalid
+	bic.w	#0008,sr
 	add.w	#0001,&0218
 	mov.w	&0206,r15
 	jz	4848
+
+l4840:
 	add.w	#FFFF,&0218
 	jnz	4848
-	invalid
+
+l4846:
+	bis.w	#0008,sr
+
+l4848:
 	mov.w	@sp+,pc
 
 ;; vTaskIncrementTick: 0000484A
@@ -1198,7 +1338,7 @@ l000048D4:
 	mov.w	@sp+,r11
 	mov.w	@sp+,pc
 
-;; vTaskPlaceOnEventList: 48DA
+;; vTaskPlaceOnEventList: 000048DA
 vTaskPlaceOnEventList proc
 	push.w	r11
 	mov.w	r15,r13
@@ -1216,22 +1356,22 @@ vTaskPlaceOnEventList proc
 	mov.w	r11,0008(r15)
 	mov.w	&0208,r15
 	cmp.w	r15,r11
-	jc	491C
+	jc	0000491C
 
-l490E:
+l0000490E:
 	mov.w	&0202,r15
 	add.w	#0008,r15
 	mov.w	r15,r14
 	mov.w	&0284,r15
-	jmp	4928
+	jmp	00004928
 
-l491C:
+l0000491C:
 	mov.w	&0202,r15
 	add.w	#0008,r15
 	mov.w	r15,r14
 	mov.w	&0282,r15
 
-l4928:
+l00004928:
 	call	4C32
 	mov.w	@sp+,r11
 	mov.w	@sp+,pc
@@ -1404,13 +1544,17 @@ l4A74:
 	jnz	4ABE
 
 l4A7C:
-	invalid
+	bic.w	#0008,sr
 	add.w	#0001,&0218
 	cmp.w	#0000,&0296
 	jz	4ABA
+
+l4A88:
 	mov.w	&0298,r15
 	mov.w	0002(r15),r15
 	mov.w	0006(r15),r11
+
+l4A94:
 	mov.w	r11,r15
 	add.w	#0008,r15
 	call	4C98
@@ -1418,12 +1562,20 @@ l4A7C:
 	add.w	#FFFF,&0204
 	cmp.w	#0000,&0218
 	jz	4AB2
+
+l4AAA:
 	add.w	#FFFF,&0218
 	jnz	4AB2
-	invalid
+
+l4AB0:
+	bis.w	#0008,sr
+
+l4AB2:
 	mov.w	r11,r15
 	call	4B02
 	jmp	4ABE
+
+l4ABA:
 	mov.w	#0000,r11
 	jmp	4A94
 
@@ -1687,24 +1839,24 @@ l4CD6:
 
 l4CE4:
 	push.w	sr
-	invalid
+	bic.w	#0008,sr
 	invalid
 	mov.w	r10,&0132
 	mov.w	r9,&0138
 	mov.w	&013A,r15
-	invalid
+	mov.w	@sp+,sr
 	add.w	#0001,r15
 	call	5156
 	mov.w	r15,@r11
 	cmp.w	#0000,r15
 	jz	4D6E
 	push.w	sr
-	invalid
+	bic.w	#0008,sr
 	invalid
 	mov.w	r10,&0132
 	mov.w	r9,&0138
 	mov.w	&013A,r15
-	invalid
+	mov.w	@sp+,sr
 	mov.w	@r11,r14
 	add.w	r14,r15
 	mov.w	r15,0002(r11)
@@ -1712,13 +1864,13 @@ l4CE4:
 	mov.w	r14,0004(r11)
 	add.w	#FFFF,r10
 	push.w	sr
-	invalid
+	bic.w	#0008,sr
 	invalid
 	mov.w	r10,&0132
 	add.w	#0001,r10
 	mov.w	r9,&0138
 	mov.w	&013A,r15
-	invalid
+	mov.w	@sp+,sr
 	add.w	@r11,r15
 	mov.w	r15,0006(r11)
 	mov.w	r10,002A(r11)
@@ -1743,7 +1895,7 @@ l4D76:
 	mov.w	@sp+,r11
 	mov.w	@sp+,pc
 
-;; xQueueSend: 4D7E
+;; xQueueSend: 00004D7E
 xQueueSend proc
 	push.w	r11
 	push.w	r10
@@ -1752,42 +1904,70 @@ xQueueSend proc
 	mov.w	r14,r9
 	mov.w	r13,r10
 	call	4742
-	invalid
+	bic.w	#0008,sr
 	add.w	#0001,&0218
 	add.w	#0001,002E(r11)
 	add.w	#0001,0030(r11)
 	cmp.w	#0000,&0218
-	jz	4DAA
+	jz	00004DAA
+
+l00004DA2:
 	add.w	#FFFF,&0218
-	jnz	4DAA
-	invalid
+	jnz	00004DAA
+
+l00004DA8:
+	bis.w	#0008,sr
+
+l00004DAA:
 	mov.w	r11,r15
 	call	512E
 	cmp.w	#0000,r15
-	jz	4DB8
+	jz	00004DB8
+
+l00004DB4:
 	cmp.w	#0000,r10
-	jnz	4E26
-	invalid
+	jnz	00004E26
+
+l00004DB8:
+	bic.w	#0008,sr
 	add.w	#0001,&0218
 	cmp.w	002A(r11),0028(r11)
-	jnc	4DF6
+	jnc	00004DF6
+
+l00004DC6:
 	mov.w	#FFFD,r10
+
+l00004DCA:
 	cmp.w	#0000,&0218
-	jz	4DD8
+	jz	00004DD8
+
+l00004DD0:
 	add.w	#FFFF,&0218
-	jnz	4DD8
-	invalid
+	jnz	00004DD8
+
+l00004DD6:
+	bis.w	#0008,sr
+
+l00004DD8:
 	mov.w	r11,r15
 	call	5092
 	cmp.w	#0000,r15
-	jz	4DF0
+	jz	00004DF0
+
+l00004DE2:
 	call	475C
 	cmp.w	#0000,r15
-	jnz	4E7A
+	jnz	00004E7A
+
+l00004DEA:
 	call	523A
-	jmp	4E7A
+	jmp	00004E7A
+
+l00004DF0:
 	call	475C
-	jmp	4E7A
+	jmp	00004E7A
+
+l00004DF6:
 	mov.w	0004(r11),r15
 	mov.w	002C(r11),r13
 	mov.w	r9,r14
@@ -1797,40 +1977,62 @@ xQueueSend proc
 	add.w	002C(r11),r15
 	mov.w	r15,0004(r11)
 	cmp.w	0002(r11),r15
-	jnc	4E1E
+	jnc	00004E1E
+
+l00004E1A:
 	mov.w	@r11,0004(r11)
+
+l00004E1E:
 	mov.w	#0001,r10
 	add.w	#0001,0030(r11)
-	jmp	4DCA
+	jmp	00004DCA
+
+l00004E26:
 	mov.w	r11,r15
 	add.w	#0008,r15
 	mov.w	r10,r14
 	call	48DA
-	invalid
+	bic.w	#0008,sr
 	add.w	#0001,&0218
 	mov.w	r11,r15
 	call	5092
 	call	475C
 	cmp.w	#0000,r15
-	jz	4E74
+	jz	00004E74
+
+l00004E44:
 	call	4742
-	invalid
+	bic.w	#0008,sr
 	add.w	#0001,&0218
 	add.w	#0001,002E(r11)
 	add.w	#0001,0030(r11)
 	cmp.w	#0000,&0218
-	jz	4E64
+	jz	00004E64
+
+l00004E5C:
 	add.w	#FFFF,&0218
-	jnz	4E64
-	invalid
+	jnz	00004E64
+
+l00004E62:
+	bis.w	#0008,sr
+
+l00004E64:
 	cmp.w	#0000,&0218
-	jz	4DB8
+	jz	00004DB8
+
+l00004E6A:
 	add.w	#FFFF,&0218
-	jnz	4DB8
-	invalid
-	jmp	4DB8
+	jnz	00004DB8
+
+l00004E70:
+	bis.w	#0008,sr
+	jmp	00004DB8
+
+l00004E74:
 	call	523A
-	jmp	4E44
+	jmp	00004E44
+
+l00004E7A:
 	mov.w	r10,r15
 	mov.w	@sp+,r9
 	mov.w	@sp+,r10
@@ -1898,7 +2100,7 @@ l4EE8:
 	mov.w	@sp+,r11
 	mov.w	@sp+,pc
 
-;; xQueueReceive: 4EF0
+;; xQueueReceive: 00004EF0
 xQueueReceive proc
 	push.w	r11
 	push.w	r10
@@ -1907,33 +2109,49 @@ xQueueReceive proc
 	mov.w	r14,r9
 	mov.w	r13,r10
 	call	4742
-	invalid
+	bic.w	#0008,sr
 	add.w	#0001,&0218
 	add.w	#0001,002E(r11)
 	add.w	#0001,0030(r11)
 	cmp.w	#0000,&0218
-	jz	4F1C
+	jz	00004F1C
+
+l00004F14:
 	add.w	#FFFF,&0218
-	jnz	4F1C
-	invalid
+	jnz	00004F1C
+
+l00004F1A:
+	bis.w	#0008,sr
+
+l00004F1C:
 	mov.w	r11,r15
 	call	510C
 	cmp.w	#0000,r15
-	jz	4F2A
+	jz	00004F2A
+
+l00004F26:
 	cmp.w	#0000,r10
-	jnz	4F96
-	invalid
+	jnz	00004F96
+
+l00004F2A:
+	bic.w	#0008,sr
 	add.w	#0001,&0218
 	mov.w	0028(r11),r14
 	cmp.w	#0000,r14
-	jz	4F92
+	jz	00004F92
+
+l00004F38:
 	mov.w	002C(r11),r13
 	mov.w	0006(r11),r15
 	add.w	r13,r15
 	mov.w	r15,0006(r11)
 	cmp.w	0002(r11),r15
-	jnc	4F50
+	jnc	00004F50
+
+l00004F4C:
 	mov.w	@r11,0006(r11)
+
+l00004F50:
 	add.w	#FFFF,r14
 	mov.w	r14,0028(r11)
 	mov.w	0006(r11),r14
@@ -1941,53 +2159,87 @@ xQueueReceive proc
 	call	5994
 	add.w	#0001,002E(r11)
 	mov.w	#0001,r10
+
+l00004F66:
 	cmp.w	#0000,&0218
-	jz	4F74
+	jz	00004F74
+
+l00004F6C:
 	add.w	#FFFF,&0218
-	jnz	4F74
-	invalid
+	jnz	00004F74
+
+l00004F72:
+	bis.w	#0008,sr
+
+l00004F74:
 	mov.w	r11,r15
 	call	5092
 	cmp.w	#0000,r15
-	jz	4F8C
+	jz	00004F8C
+
+l00004F7E:
 	call	475C
 	cmp.w	#0000,r15
-	jnz	4FEC
+	jnz	00004FEC
+
+l00004F86:
 	call	523A
-	jmp	4FEC
+	jmp	00004FEC
+
+l00004F8C:
 	call	475C
-	jmp	4FEC
+	jmp	00004FEC
+
+l00004F92:
 	mov.w	#0000,r10
-	jmp	4F66
+	jmp	00004F66
+
+l00004F96:
 	mov.w	r11,r15
 	add.w	#0018,r15
 	mov.w	r10,r14
 	call	48DA
-	invalid
+	bic.w	#0008,sr
 	add.w	#0001,&0218
 	mov.w	r11,r15
 	call	5092
 	call	475C
 	cmp.w	#0000,r15
-	jz	4FE6
+	jz	00004FE6
+
+l00004FB6:
 	call	4742
-	invalid
+	bic.w	#0008,sr
 	add.w	#0001,&0218
 	add.w	#0001,002E(r11)
 	add.w	#0001,0030(r11)
 	cmp.w	#0000,&0218
-	jz	4FD6
+	jz	00004FD6
+
+l00004FCE:
 	add.w	#FFFF,&0218
-	jnz	4FD6
-	invalid
+	jnz	00004FD6
+
+l00004FD4:
+	bis.w	#0008,sr
+
+l00004FD6:
 	cmp.w	#0000,&0218
-	jz	4F2A
+	jz	00004F2A
+
+l00004FDC:
 	add.w	#FFFF,&0218
-	jnz	4F2A
-	invalid
-	jmp	4F2A
+	jnz	00004F2A
+
+l00004FE2:
+	bis.w	#0008,sr
+	jmp	00004F2A
+
+l00004FE6:
 	call	523A
-	jmp	4FB6
+	jmp	00004FB6
+
+l00004FEC:
 	mov.w	r10,r15
 	mov.w	@sp+,r9
 	mov.w	@sp+,r10
@@ -2063,13 +2315,19 @@ l00005062:
 
 ;; uxQueueMessagesWaiting: 5068
 uxQueueMessagesWaiting proc
-	invalid
+	bic.w	#0008,sr
 	add.w	#0001,&0218
 	mov.w	0028(r15),r15
 	jz	507C
+
+l5074:
 	add.w	#FFFF,&0218
 	jnz	507C
-	invalid
+
+l507A:
+	bis.w	#0008,sr
+
+l507C:
 	mov.w	@sp+,pc
 
 ;; vQueueDelete: 507E
@@ -2083,86 +2341,134 @@ vQueueDelete proc
 	mov.w	@sp+,r11
 	mov.w	@sp+,pc
 
-;; prvUnlockQueue: 5092
+;; prvUnlockQueue: 00005092
 prvUnlockQueue proc
 	push.w	r11
 	push.w	r10
 	mov.w	r15,r11
 	mov.w	#0000,r10
-	invalid
+	bic.w	#0008,sr
 	add.w	#0001,&0218
 	add.w	#FFFF,0030(r15)
-	jn	50B0
+	jn	000050B0
+
+l000050A6:
 	mov.w	#FFFF,0030(r15)
 	cmp.w	#0000,0018(r15)
-	jnz	50F4
+	jnz	000050F4
+
+l000050B0:
 	cmp.w	#0000,&0218
-	jz	50BE
+	jz	000050BE
+
+l000050B6:
 	add.w	#FFFF,&0218
-	jnz	50BE
-	invalid
-	invalid
+	jnz	000050BE
+
+l000050BC:
+	bis.w	#0008,sr
+
+l000050BE:
+	bic.w	#0008,sr
 	add.w	#0001,&0218
 	add.w	#FFFF,002E(r11)
-	jn	50D4
+	jn	000050D4
+
+l000050CA:
 	mov.w	#FFFF,002E(r11)
 	cmp.w	#0000,0008(r11)
-	jnz	50E4
+	jnz	000050E4
+
+l000050D4:
 	cmp.w	#0000,&0218
-	jz	5104
+	jz	00005104
+
+l000050DA:
 	add.w	#FFFF,&0218
-	jnz	5104
-	invalid
-	jmp	5104
+	jnz	00005104
+
+l000050E0:
+	bis.w	#0008,sr
+	jmp	00005104
+
+l000050E4:
 	add.w	#0008,r11
 	mov.w	r11,r15
 	call	4930
 	cmp.w	#0000,r15
-	jz	50D4
+	jz	000050D4
+
+l000050F0:
 	mov.w	#0001,r10
-	jmp	50D4
+	jmp	000050D4
+
+l000050F4:
 	add.w	#0018,r15
 	call	4930
 	cmp.w	#0000,r15
-	jz	50B0
+	jz	000050B0
+
+l00005100:
 	mov.w	#0001,r10
-	jmp	50B0
+	jmp	000050B0
+
+l00005104:
 	mov.w	r10,r15
 	mov.w	@sp+,r10
 	mov.w	@sp+,r11
 	mov.w	@sp+,pc
 
-;; prvIsQueueEmpty: 510C
+;; prvIsQueueEmpty: 0000510C
 prvIsQueueEmpty proc
-	invalid
+	bic.w	#0008,sr
 	add.w	#0001,&0218
 	mov.w	#0000,r14
 	cmp.w	#0000,0028(r15)
-	jnz	511C
+	jnz	0000511C
+
+l0000511A:
 	mov.w	#0001,r14
+
+l0000511C:
 	cmp.w	#0000,&0218
-	jz	512A
+	jz	0000512A
+
+l00005122:
 	add.w	#FFFF,&0218
-	jnz	512A
-	invalid
+	jnz	0000512A
+
+l00005128:
+	bis.w	#0008,sr
+
+l0000512A:
 	mov.w	r14,r15
 	mov.w	@sp+,pc
 
-;; prvIsQueueFull: 512E
+;; prvIsQueueFull: 0000512E
 prvIsQueueFull proc
-	invalid
+	bic.w	#0008,sr
 	add.w	#0001,&0218
 	mov.w	#0000,r14
 	cmp.w	002A(r15),0028(r15)
-	jz	514E
+	jz	0000514E
+
+l0000513E:
 	cmp.w	#0000,&0218
-	jz	5152
+	jz	00005152
+
+l00005144:
 	add.w	#FFFF,&0218
-	jnz	5152
-	invalid
-	jmp	5152
+	jnz	00005152
+
+l0000514A:
+	bis.w	#0008,sr
+	jmp	00005152
+
+l0000514E:
 	mov.w	#0001,r14
-	jmp	513E
+	jmp	0000513E
+
+l00005152:
 	mov.w	r14,r15
 	mov.w	@sp+,pc
 
@@ -2274,7 +2580,7 @@ vPortEndScheduler proc
 ;; vPortYield: 0000523A
 vPortYield proc
 	push.w	sr
-	invalid
+	bic.w	#0008,sr
 	push.w	r4
 	push.w	r5
 	push.w	r6
@@ -3315,22 +3621,30 @@ l000059C4:
 
 l000059D0:
 	mov.w	r11,r14
-	invalid
+	bic.w	#0001,sr
 	rrc.w	r14
 	cmp.w	#0000,r14
 	jz	000059E4
+
+l000059DA:
 	mov.w	@r12+,@r13
 	add.w	#0002,r13
 	add.w	#FFFF,r14
 	jnz	000059DA
+
+l000059E4:
 	mov.w	r11,r14
 	and.w	#0001,r14
 	jz	00005A60
+
+l000059EA:
 	mov.b	@r12,@r13
 	add.w	#0001,r12
 	add.w	#0001,r13
 	add.w	#FFFF,r14
 	jnz	000059EA
+
+l000059F6:
 	jmp	00005A60
 
 l000059F8:
@@ -3375,23 +3689,31 @@ l00005A24:
 
 l00005A30:
 	mov.w	r11,r14
-	invalid
+	bic.w	#0001,sr
 	rrc.w	r14
 	cmp.w	#0000,r14
 	jz	00005A46
+
+l00005A3A:
 	sub.w	#0002,r12
 	sub.w	#0002,r13
 	mov.w	@r12,@r13
 	add.w	#FFFF,r14
 	jnz	00005A3A
+
+l00005A46:
 	mov.w	r11,r14
 	and.w	#0001,r14
 	jz	00005A60
+
+l00005A4C:
 	add.w	#FFFF,r13
 	add.w	#FFFF,r12
 	mov.b	@r12,@r13
 	add.w	#FFFF,r14
 	jnz	00005A4C
+
+l00005A58:
 	jmp	00005A60
 
 l00005A5A:
@@ -3458,15 +3780,21 @@ l5AA4:
 
 l5AAE:
 	mov.w	r13,r12
-	invalid
+	bic.w	#0001,sr
 	rrc.w	r12
+
+l5AB4:
 	mov.w	r11,@r14
 	add.w	#0002,r14
 	add.w	#FFFF,r12
 	jnz	5AB4
+
+l5ABE:
 	mov.w	r13,r12
 	and.w	#0001,r12
 	jz	5ACE
+
+l5AC4:
 	mov.b	r10,@r14
 	add.w	#0001,r14
 	add.w	#FFFF,r12
@@ -3478,10 +3806,20 @@ l5ACE:
 	mov.w	@sp+,r10
 	mov.w	@sp+,r11
 	mov.w	@sp+,pc
-5AD8                         02 DF FE 3F 82 4C 30 01         ...?.L0.
-5AE0 82 4A 38 01 82 4C 34 01 1E 42 3A 01 92 42 3C 01 .J8..L4..B:..B<.
-5AF0 3A 01 82 4B 38 01 82 4D 34 01 82 4A 38 01 1F 42 :..K8..M4..J8..B
-5B00 3A 01 30 41                                     :.0A           
+5AD8                         02 DF FE 3F                     ...?   
+
+;; fn00005ADC: 00005ADC
+fn00005ADC proc
+	mov.w	r12,&0130
+	mov.w	r10,&0138
+	mov.w	r12,&0134
+	mov.w	&013A,r14
+	mov.w	&013C,&013A
+	mov.w	r11,&0138
+	mov.w	r13,&0134
+	mov.w	r10,&0138
+	mov.w	&013A,r15
+	mov.w	@sp+,pc
 
 ;; fn00005B04: 00005B04
 fn00005B04 proc
