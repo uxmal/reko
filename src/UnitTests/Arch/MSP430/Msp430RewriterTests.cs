@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -126,8 +126,10 @@ namespace Reko.UnitTests.Arch.Msp430
         {
             BuildTest(0x0D, 0x11);	// rra.w	r13
             AssertCode(
-                "0|L--|0100(2): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|0100(2): 3 instructions",
+                "1|L--|r13 = r13 >> 0x01",
+                "2|L--|V = false",
+                "3|L--|NZC = cond(r13)");
         }
 
         [Test]
@@ -135,8 +137,10 @@ namespace Reko.UnitTests.Arch.Msp430
         {
             BuildTest(0x5C, 0x03);	// rrum.w	r12
             AssertCode(
-                "0|L--|0100(2): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|0100(2): 3 instructions",
+                "1|L--|r12 = r12 >>u 0x01",
+                "2|L--|V = false",
+                "3|L--|NZC = cond(r12)");
         }
 
         [Test]
@@ -144,8 +148,10 @@ namespace Reko.UnitTests.Arch.Msp430
         {
             BuildTest(0x4D, 0x18, 0x0C, 0x11);	// rpt #14 rrax.w	r12
             AssertCode(
-                "0|L--|0100(4): 2 instructions",
-                "1|L--|@@@");
+                "0|L--|0100(4): 3 instructions",
+                "1|L--|r12 = r12 >> 0x0E",
+                "2|L--|V = false",
+                "3|L--|NZC = cond(r12)");
         }
 
         [Test]
@@ -313,8 +319,10 @@ namespace Reko.UnitTests.Arch.Msp430
         {
             BuildTest(0x00, 0x10);	// rrc.w	pc
             AssertCode(
-                "0|L--|0100(2): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|0100(2): 3 instructions",
+                "1|L--|pc = __rcr(pc, 0x01)",
+                "2|L--|V = false",
+                "3|L--|NZC = cond(pc)");
         }
 
         [Test]

@@ -219,10 +219,10 @@ namespace Reko.Core.Machine
     {
         public Address Address;
 
-        protected AddressOperand(Address a, PrimitiveType type)
+        protected AddressOperand(Address addr, PrimitiveType type)
             : base(type)
         {
-            Address = a ?? throw new ArgumentNullException("a");
+            Address = addr ?? throw new ArgumentNullException(nameof(addr));
         }
 
         public static AddressOperand Create(Address addr)

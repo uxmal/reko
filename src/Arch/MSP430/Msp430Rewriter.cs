@@ -88,7 +88,10 @@ namespace Reko.Arch.Msp430
                 case Opcode.mov: RewriteBinop((a, b) => b, ""); break;
                 case Opcode.popm: RewritePopm(); break;
                 case Opcode.pushm: RewritePushm(); break;
-                case Opcode.rrum: RewriteRrum(); break;
+                case Opcode.rra: RewriteRra(  "0-----NZC"); break;
+                case Opcode.rrax: RewriteRrax("0-----NZC"); break;
+                case Opcode.rrc: RewriteRrc(  "0-----NZC"); break;
+                case Opcode.rrum: RewriteRrum("0-----NZC"); break;
                 case Opcode.sub: RewriteBinop(m.ISub, "V-----NZC"); break;
                 case Opcode.subc: RewriteAdcSbc(m.ISub); break;
                 case Opcode.xor: RewriteBinop(m.Xor,  "V-----NZC"); break;
@@ -332,9 +335,44 @@ namespace Reko.Arch.Msp430
             }
         }
 
-        private void RewriteRrum()
+        private void RewriteRra(string flags)
         {
-            throw new NotImplementedException();
+            var src = RewriteOp(instr.op1);
+            var dst = RewriteDst(instr.op1, src, (a, b) => m.Sar(a, m.Byte(1)));
+            EmitCc(dst, flags);
+        }
+
+        private void RewriteRrax(string flags)
+        {
+            var src = RewriteOp(instr.op1);
+            var dst = RewriteDst(instr.op1, src, (a, b) => m.Sar(a, Repeat()));
+            EmitCc(dst, flags);
+        }
+
+        private void RewriteRrc(string flags)
+        {
+            var src = RewriteOp(instr.op1);
+            var dst = RewriteDst(instr.op1, src, (a, b) => host.PseudoProcedure(PseudoProcedure.RorC, a.DataType, a, m.Byte(1)));
+            EmitCc(dst, flags);
+        }
+
+        private Expression Repeat()
+        {
+            if (instr.repeatImm != 0)
+            {
+                return Constant.Byte((byte)instr.repeatImm);
+            }
+            else
+            {
+                return binder.EnsureRegister(instr.repeatReg);
+            }
+        }
+
+        private void RewriteRrum(string flags)
+        {
+            var src = RewriteOp(instr.op1);
+            var dst = RewriteDst(instr.op2, src, (a, b) => m.Shr(a, b));
+            EmitCc(dst, flags);
         }
 
         private void Invalid()

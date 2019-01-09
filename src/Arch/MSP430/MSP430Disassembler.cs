@@ -44,9 +44,8 @@ namespace Reko.Arch.Msp430
 
         public override Msp430Instruction DisassembleInstruction()
         {
-            ushort uInstr;
             var addr = rdr.Address;
-            if (!rdr.TryReadLeUInt16(out uInstr))
+            if (!rdr.TryReadLeUInt16(out ushort uInstr))
                 return null;
             uExtension = 0;
             var instr = s_decoders[uInstr >> 12].Decode(this, uInstr);
@@ -123,6 +122,10 @@ namespace Reko.Arch.Msp430
                     int n = 1 + ((uInstr >> 4) & 0x0F);
                     op1 = ImmediateOperand.Byte((byte)n);
                     break;
+                case 'N':
+                    n = 1 + ((uInstr >> 10) & 3);
+                    op1 = ImmediateOperand.Byte((byte) n);
+                    break;
                 default:
                     --i;
                     break;
@@ -158,7 +161,7 @@ namespace Reko.Arch.Msp430
                     break;
                 }
             }
-                int rep = (uExtension & 0x0F);
+            int rep = (uExtension & 0x0F);
             return new Msp430Instruction
             {
                 opcode = opcode,
@@ -245,17 +248,22 @@ namespace Reko.Arch.Msp430
             return new Msp430Instruction { opcode = Opcode.invalid };
         }
 
-        private abstract class OpRecBase
+        private static InstrDecoder Instr(Opcode opcode, string fmt)
+        {
+            return new InstrDecoder(opcode, fmt);
+        }
+
+        private abstract class Decoder
         {
             public abstract Msp430Instruction Decode(Msp430Disassembler dasm, ushort uInstr);
         }
 
-        private class OpRec : OpRecBase
+        private class InstrDecoder : Decoder
         {
             private readonly string fmt;
             private readonly Opcode opcode;
 
-            public OpRec(Opcode opcode, string fmt)
+            public InstrDecoder(Opcode opcode, string fmt)
             {
                 this.opcode = opcode;
                 this.fmt = fmt;
@@ -267,7 +275,7 @@ namespace Reko.Arch.Msp430
             }
         }
 
-        private class JmpOpRec : OpRecBase
+        private class JmpDecoder : Decoder
         {
             public override Msp430Instruction Decode(Msp430Disassembler dasm, ushort uInstr)
             {
@@ -275,13 +283,13 @@ namespace Reko.Arch.Msp430
             }
         }
 
-        private class SubOpRec : OpRecBase
+        private class SubDecoder : Decoder
         {
-            private Dictionary<int, OpRecBase> decoders;
+            private Dictionary<int, Decoder> decoders;
             private readonly ushort mask;
             private readonly int sh;
 
-            public SubOpRec(int sh, ushort mask, Dictionary<int, OpRecBase> decoders)
+            public SubDecoder(int sh, ushort mask, Dictionary<int, Decoder> decoders)
             {
                 this.sh = sh;
                 this.mask = mask;
@@ -291,13 +299,13 @@ namespace Reko.Arch.Msp430
             public override Msp430Instruction Decode(Msp430Disassembler dasm, ushort uInstr)
             {
                 var key = (uInstr >> sh) & mask;
-                if (!decoders.TryGetValue(key, out OpRecBase oprec))
+                if (!decoders.TryGetValue(key, out Decoder oprec))
                     return dasm.Invalid();
                 return oprec.Decode(dasm, uInstr);
             }
         }
 
-        private class ExtOpRec : OpRecBase
+        private class ExtOpRec : Decoder
         {
             public override Msp430Instruction Decode(Msp430Disassembler dasm, ushort uInstr)
             {
@@ -309,147 +317,152 @@ namespace Reko.Arch.Msp430
             }
         }
 
-        private static readonly ExtOpRec extOpRec = new ExtOpRec();
+        private static readonly ExtOpRec extDecoder = new ExtOpRec();
 
-        private static readonly SubOpRec rotations = new SubOpRec(8, 0x03, new Dictionary<int, OpRecBase>
+        private static readonly Decoder invalid = Instr(Opcode.invalid, "");
+
+        private static readonly SubDecoder rotations = new SubDecoder(8, 0x03, new Dictionary<int, Decoder>
         {
-            { 0x03, new OpRec(Opcode.rrum, "ar") },
+            { 0x00, Instr(Opcode.rrcm, "aNr") },
+            { 0x01, Instr(Opcode.rram, "aNr") },
+            { 0x02, Instr(Opcode.rlam, "aNr") },
+            { 0x03, Instr(Opcode.rrum, "aNr") },
         });
 
-        private static readonly OpRecBase[] s_decoders = new OpRecBase[16]
+        private static readonly Decoder[] s_decoders = new Decoder[16]
         {
-            new SubOpRec(0x4, 0x0F, new Dictionary<int, OpRecBase>
+            new SubDecoder(0x4, 0x0F, new Dictionary<int, Decoder>
             {
                 { 0x04, rotations },
                 { 0x05, rotations },
             }),
-            new SubOpRec(6, 0x3F, new Dictionary<int, OpRecBase> {
-                { 0x00, new OpRec(Opcode.rrc, "ws") },
-                { 0x01, new OpRec(Opcode.rrc, "ws") },
-                { 0x02, new OpRec(Opcode.swpb, "s") },
-                { 0x04, new OpRec(Opcode.rra, "ws") },
-                { 0x05, new OpRec(Opcode.rra, "ws") },
-                { 0x06, new OpRec(Opcode.sxt, "ws") },
-                { 0x08, new OpRec(Opcode.push, "ws") },
-                { 0x09, new OpRec(Opcode.push, "ws") },
-                { 0x0A, new OpRec(Opcode.call, "s") },
-                { 0x0C, new SubOpRec(0, 0x3F, new Dictionary<int, OpRecBase> {
-                    { 0x00, new OpRec(Opcode.reti, "") }
+            new SubDecoder(6, 0x3F, new Dictionary<int, Decoder> {
+                { 0x00, Instr(Opcode.rrc, "ws") },
+                { 0x01, Instr(Opcode.rrc, "ws") },
+                { 0x02, Instr(Opcode.swpb, "s") },
+                { 0x04, Instr(Opcode.rra, "ws") },
+                { 0x05, Instr(Opcode.rra, "ws") },
+                { 0x06, Instr(Opcode.sxt, "ws") },
+                { 0x08, Instr(Opcode.push, "ws") },
+                { 0x09, Instr(Opcode.push, "ws") },
+                { 0x0A, Instr(Opcode.call, "s") },
+                { 0x0C, new SubDecoder(0, 0x3F, new Dictionary<int, Decoder> {
+                    { 0x00, Instr(Opcode.reti, "") }
                 } ) },
 
-                { 0x10, new OpRec(Opcode.pushm, "xnr") },
-                { 0x11, new OpRec(Opcode.pushm, "xnr") },
-                { 0x12, new OpRec(Opcode.pushm, "xnr") },
-                { 0x13, new OpRec(Opcode.pushm, "xnr") },
+                { 0x10, Instr(Opcode.pushm, "xnr") },
+                { 0x11, Instr(Opcode.pushm, "xnr") },
+                { 0x12, Instr(Opcode.pushm, "xnr") },
+                { 0x13, Instr(Opcode.pushm, "xnr") },
 
-                { 0x14, new OpRec(Opcode.pushm, "xnr") },
-                { 0x15, new OpRec(Opcode.pushm, "xnr") },
-                { 0x16, new OpRec(Opcode.pushm, "xnr") },
-                { 0x17, new OpRec(Opcode.pushm, "xnr") },
+                { 0x14, Instr(Opcode.pushm, "xnr") },
+                { 0x15, Instr(Opcode.pushm, "xnr") },
+                { 0x16, Instr(Opcode.pushm, "xnr") },
+                { 0x17, Instr(Opcode.pushm, "xnr") },
 
-                { 0x18, new OpRec(Opcode.popm, "xnr") },
-                { 0x19, new OpRec(Opcode.popm, "xnr") },
-                { 0x1A, new OpRec(Opcode.popm, "xnr") },
-                { 0x1B, new OpRec(Opcode.popm, "xnr") },
+                { 0x18, Instr(Opcode.popm, "xnr") },
+                { 0x19, Instr(Opcode.popm, "xnr") },
+                { 0x1A, Instr(Opcode.popm, "xnr") },
+                { 0x1B, Instr(Opcode.popm, "xnr") },
 
-                { 0x1C, new OpRec(Opcode.popm, "xnr") },
-                { 0x1D, new OpRec(Opcode.popm, "xnr") },
-                { 0x1E, new OpRec(Opcode.popm, "xnr") },
-                { 0x1F, new OpRec(Opcode.popm, "xnr") },
+                { 0x1C, Instr(Opcode.popm, "xnr") },
+                { 0x1D, Instr(Opcode.popm, "xnr") },
+                { 0x1E, Instr(Opcode.popm, "xnr") },
+                { 0x1F, Instr(Opcode.popm, "xnr") },
 
-                { 0x20, extOpRec },
-                { 0x21, extOpRec },
-                { 0x22, extOpRec },
-                { 0x23, extOpRec },
+                { 0x20, extDecoder },
+                { 0x21, extDecoder },
+                { 0x22, extDecoder },
+                { 0x23, extDecoder },
 
-                { 0x24, extOpRec },
-                { 0x25, extOpRec },
-                { 0x26, extOpRec },
-                { 0x27, extOpRec },
+                { 0x24, extDecoder },
+                { 0x25, extDecoder },
+                { 0x26, extDecoder },
+                { 0x27, extDecoder },
 
-                { 0x28, extOpRec },
-                { 0x29, extOpRec },
-                { 0x2A, extOpRec },
-                { 0x2B, extOpRec },
+                { 0x28, extDecoder },
+                { 0x29, extDecoder },
+                { 0x2A, extDecoder },
+                { 0x2B, extDecoder },
 
-                { 0x2C, extOpRec },
-                { 0x2D, extOpRec },
-                { 0x2E, extOpRec },
-                { 0x2F, extOpRec },
+                { 0x2C, extDecoder },
+                { 0x2D, extDecoder },
+                { 0x2E, extDecoder },
+                { 0x2F, extDecoder },
 
-                { 0x30, extOpRec },
-                { 0x31, extOpRec },
-                { 0x32, extOpRec },
-                { 0x33, extOpRec },
+                { 0x30, extDecoder },
+                { 0x31, extDecoder },
+                { 0x32, extDecoder },
+                { 0x33, extDecoder },
 
-                { 0x34, extOpRec },
-                { 0x35, extOpRec },
-                { 0x36, extOpRec },
-                { 0x37, extOpRec },
+                { 0x34, extDecoder },
+                { 0x35, extDecoder },
+                { 0x36, extDecoder },
+                { 0x37, extDecoder },
 
-                { 0x38, extOpRec },
-                { 0x39, extOpRec },
-                { 0x3A, extOpRec },
-                { 0x3B, extOpRec },
+                { 0x38, extDecoder },
+                { 0x39, extDecoder },
+                { 0x3A, extDecoder },
+                { 0x3B, extDecoder },
 
-                { 0x3C, extOpRec },
-                { 0x3D, extOpRec },
-                { 0x3E, extOpRec },
-                { 0x3F, extOpRec },
+                { 0x3C, extDecoder },
+                { 0x3D, extDecoder },
+                { 0x3E, extDecoder },
+                { 0x3F, extDecoder },
             }),
-            new JmpOpRec(),
-            new JmpOpRec(),
+            new JmpDecoder(),
+            new JmpDecoder(),
 
-            new OpRec(Opcode.mov, "wSD"),
-            new OpRec(Opcode.add, "wSD"),
-            new OpRec(Opcode.addc, "wSD"),
-            new OpRec(Opcode.subc, "wSD"),
+            Instr(Opcode.mov, "wSD"),
+            Instr(Opcode.add, "wSD"),
+            Instr(Opcode.addc, "wSD"),
+            Instr(Opcode.subc, "wSD"),
 
-            new OpRec(Opcode.sub, "wSD"),
-            new OpRec(Opcode.cmp, "wSD"),
-            new OpRec(Opcode.dadd, "wSD"),
-            new OpRec(Opcode.bit, "wSD"),
+            Instr(Opcode.sub, "wSD"),
+            Instr(Opcode.cmp, "wSD"),
+            Instr(Opcode.dadd, "wSD"),
+            Instr(Opcode.bit, "wSD"),
 
-            new OpRec(Opcode.bic, "wSD"),
-            new OpRec(Opcode.bis, "wSD"),
-            new OpRec(Opcode.xor, "wSD"),
-            new OpRec(Opcode.and, "wSD"),
+            Instr(Opcode.bic, "wSD"),
+            Instr(Opcode.bis, "wSD"),
+            Instr(Opcode.xor, "wSD"),
+            Instr(Opcode.and, "wSD"),
         };
 
-        private static readonly OpRecBase[] extDecoders = new OpRecBase[16]
+        private static readonly Decoder[] extDecoders = new Decoder[16]
         {
-            new OpRec(Opcode.invalid, ""),
-            new SubOpRec(6, 0x3F, new Dictionary<int, OpRecBase> {
-                { 0x00, new OpRec(Opcode.invalid, "") },
-                { 0x01, new OpRec(Opcode.invalid, "") },
-                { 0x02, new OpRec(Opcode.invalid, "") },
-                { 0x04, new OpRec(Opcode.rrax, "Ws") },
-                { 0x05, new OpRec(Opcode.rrax, "Ws") },
-                { 0x06, new OpRec(Opcode.invalid, "") },
-                { 0x08, new OpRec(Opcode.invalid, "") },
-                { 0x09, new OpRec(Opcode.invalid, "") },
-                { 0x0A, new OpRec(Opcode.invalid, "") },
-                { 0x0C, new SubOpRec(0, 0x3F, new Dictionary<int, OpRecBase> {
-                    { 0x00, new OpRec(Opcode.reti, "") }
+            invalid,
+            new SubDecoder(6, 0x3F, new Dictionary<int, Decoder> {
+                { 0x00, invalid },
+                { 0x01, invalid },
+                { 0x02, invalid },
+                { 0x04, Instr(Opcode.rrax, "Ws") },
+                { 0x05, Instr(Opcode.rrax, "Ws") },
+                { 0x06, invalid },
+                { 0x08, invalid },
+                { 0x09, invalid },
+                { 0x0A, invalid },
+                { 0x0C, new SubDecoder(0, 0x3F, new Dictionary<int, Decoder> {
+                    { 0x00, Instr(Opcode.reti, "") }
                 } ) }
             }),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            invalid,
+            invalid,
 
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            invalid,
+            invalid,
+            invalid,
+            invalid,
 
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            invalid,
+            invalid,
+            invalid,
+            invalid,
 
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            invalid,
+            invalid,
+            invalid,
+            invalid,
         };
 
         private static readonly Opcode[] jmps = new Opcode[8]

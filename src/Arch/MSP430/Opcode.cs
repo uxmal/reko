@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -56,8 +56,11 @@ namespace Reko.Arch.Msp430
 
         // 430X
         rrax,
-        rrum,
+        rlam,
         popm,
         pushm,
+        rrcm,
+        rram,
+        rrum,
     }
 }

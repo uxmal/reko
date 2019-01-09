@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2018 John Källén.
  *
@@ -137,7 +137,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void MSP430Dis_rrum()
         {
-            AssertCode("rrum.w\tr12", "5C03");
+            AssertCode("rrum.w\t#01,r12", "5C03");
         }
 
         [Test]
