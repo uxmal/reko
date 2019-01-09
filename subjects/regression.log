@@ -129,7 +129,7 @@ fn092A_exit: warning: Phi functions will be ignored by type analysis. This may b
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
-000049B6: error: An error occurred while processing instruction at address 000049B6.
+000044E8: error: An error occurred while processing instruction at address 000044E8.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
@@ -137,6 +137,1147 @@ fn092A_exit: warning: Phi functions will be ignored by type analysis. This may b
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+000044FC: error: An error occurred while processing instruction at address 000044FC.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00004590: error: An error occurred while processing instruction at address 00004590.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00004650: error: An error occurred while processing instruction at address 00004650.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+0000465C: error: An error occurred while processing instruction at address 0000465C.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00004A74: error: An error occurred while processing instruction at address 00004A74.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00004ADA: error: An error occurred while processing instruction at address 00004ADA.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00004AE8: error: An error occurred while processing instruction at address 00004AE8.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00004AF6: error: An error occurred while processing instruction at address 00004AF6.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00005186: error: An error occurred while processing instruction at address 00005186.
+    The given key was not present in the dictionary.
+       at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00005208: error: An error occurred while processing the statement return r15 - 0x001C.
+    Pulling difference (ptr20 (struct (0 T_1594 t0000))) and (union (ui20 u1) (word16 u0))
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 261
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 98
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Typing.TypeCollector.VisitReturnInstruction(ReturnInstruction ret) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 210
+   at Reko.Core.Code.ReturnInstruction.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 134
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 84
+00005526: error: An error occurred while processing the statement word20 r13_399 = (int16) (Mem98[sp_198 + 0x0002F:byte] - SLICE(r11_219, byte, 0)).
+    Object reference not set to an instance of an object.
+       at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 227
+   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
+   at Reko.Typing.ExpressionTypeDescender.VisitCast(Cast cast, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 426
+   at Reko.Core.Expressions.Cast.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\Cast.cs:line 47
+   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 170
+   at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 84
+000055CE: error: An error occurred while processing the statement word20 r13_344 = (int16) (Mem98[sp_198 + 0x0002F:byte] - SLICE(r11_219, byte, 0)).
+    Object reference not set to an instance of an object.
+       at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 227
+   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
+   at Reko.Typing.ExpressionTypeDescender.VisitCast(Cast cast, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 426
+   at Reko.Core.Expressions.Cast.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\Cast.cs:line 47
+   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 170
+   at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 84
+000055AE: error: An error occurred while processing the statement word20 r13_326 = (int16) (Mem98[sp_198 + 0x0002F:byte] - SLICE(r11_308, byte, 0)).
+    Object reference not set to an instance of an object.
+       at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 227
+   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
+   at Reko.Typing.ExpressionTypeDescender.VisitCast(Cast cast, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 426
+   at Reko.Core.Expressions.Cast.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\Cast.cs:line 47
+   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 170
+   at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 84
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: error: Error when reconstructing types.
+    Way too deep
+       at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 76
+   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 62
+   at Reko.Core.Types.Unifier.IsCompatibleWithPointer(Pointer ptrA, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 171
+   at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 111
+   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 62
+   at Reko.Core.Types.Unifier.IsCompatibleWithPointer(Pointer ptrA, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 171
+   at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 111
+   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 62
+   at Reko.Core.Types.Unifier.IsCompatibleWithPointer(Pointer ptrA, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 171
+   at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 111
+   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 62
+   at Reko.Core.Types.Unifier.IsCompatibleWithPointer(Pointer ptrA, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 171
+   at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 111
+   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 62
+   at Reko.Core.Types.Unifier.IsCompatibleWithPointer(Pointer ptrA, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 171
+   at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 111
+   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 62
+   at Reko.Core.Types.Unifier.IsCompatibleWithPointer(Pointer ptrA, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 171
+   at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 111
+   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 62
+   at Reko.Core.Types.Unifier.IsCompatibleWithPointer(Pointer ptrA, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 171
+   at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 111
+   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 62
+   at Reko.Core.Types.Unifier.IsCompatibleWithPointer(Pointer ptrA, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 171
+   at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 111
+   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 62
+   at Reko.Core.Types.Unifier.IsCompatibleWithPointer(Pointer ptrA, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 171
+   at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 111
+   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 62
+   at Reko.Core.Types.Unifier.IsCompatibleWithPointer(Pointer ptrA, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 171
+   at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 111
+   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 62
+   at Reko.Core.Types.Unifier.IsCompatibleWithPointer(Pointer ptrA, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 171
+   at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 111
+   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 62
+   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 50
+   at Reko.Core.Types.Unifier.UnifyIntoUnion(UnionType u, DataType dt) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 464
+   at Reko.Core.Types.Unifier.UnifyUnions(UnionType u1, UnionType u2) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 740
+   at Reko.Core.Types.Unifier.UnifyInternal(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 248
+   at Reko.Core.Types.Unifier.Unify(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 219
+   at Reko.Core.Types.Unifier.UnifyStructures(StructureType a, StructureType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 570
+   at Reko.Core.Types.Unifier.UnifyInternal(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 390
+   at Reko.Core.Types.Unifier.UnifyInternal(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 317
+   at Reko.Core.Types.Unifier.Unify(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 219
+   at Reko.Core.Types.Unifier.UnifyIntoUnion(UnionType u, DataType dt) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 466
+   at Reko.Core.Types.Unifier.UnifyUnions(UnionType u1, UnionType u2) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 740
+   at Reko.Core.Types.Unifier.UnifyInternal(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 248
+   at Reko.Core.Types.Unifier.Unify(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 219
+   at Reko.Core.Types.Unifier.UnifyStructures(StructureType a, StructureType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 570
+   at Reko.Core.Types.Unifier.UnifyInternal(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 390
+   at Reko.Core.Types.Unifier.UnifyInternal(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 317
+   at Reko.Core.Types.Unifier.Unify(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 219
+   at Reko.Core.Types.Unifier.UnifyIntoUnion(UnionType u, DataType dt) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 466
+   at Reko.Core.Types.Unifier.UnifyUnions(UnionType u1, UnionType u2) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 740
+   at Reko.Core.Types.Unifier.UnifyInternal(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 248
+   at Reko.Core.Types.Unifier.Unify(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 219
+   at Reko.Core.Types.Unifier.UnifyStructures(StructureType a, StructureType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 570
+   at Reko.Core.Types.Unifier.UnifyInternal(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 390
+   at Reko.Core.Types.Unifier.UnifyInternal(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 317
+   at Reko.Core.Types.Unifier.Unify(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 219
+   at Reko.Core.Types.Unifier.UnifyIntoUnion(UnionType u, DataType dt) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 466
+   at Reko.Core.Types.Unifier.UnifyUnions(UnionType u1, UnionType u2) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 740
+   at Reko.Core.Types.Unifier.UnifyInternal(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 248
+   at Reko.Core.Types.Unifier.Unify(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 219
+   at Reko.Core.Types.Unifier.UnifyIntoUnion(UnionType u, DataType dt) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 466
+   at Reko.Typing.TypeTransformer.FactorDuplicateAlternatives(UnionType u) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 430
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 50
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 257
+   at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 97
+   at Reko.DecompilerDriver.ReconstructTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 307
 00000200: warning: Expected sizes of arrays to have been determined by now
 0000021C: warning: Expected sizes of arrays to have been determined by now
 00000222: warning: Expected sizes of arrays to have been determined by now
@@ -1766,4 +2907,4 @@ l0800_906A: warning: Non-integral switch expression
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 56 binaries in 84.53 seconds ---
+Decompiled 56 binaries in 72.17 seconds ---
