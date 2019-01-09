@@ -1187,11 +1187,11 @@ namespace Reko.Analysis
             public SsaIdentifier ReadVariableRecursive(SsaBlockState bs)
             {
                 SsaIdentifier val;
-                if (false)  // !sealedBlocks.Contains(b))
+                if (bs.Block.Pred.Any(p => !blockstates[p].Visited))
                 {
                     // Incomplete CFG
-                    //val = NewPhi(id, bs.Block);
-                    //incompletePhis[b][id.Storage] = val;
+                    val = NewPhi(id, bs.Block);
+                    outer.incompletePhis.Add(val);
                 }
                 else if (bs.Block.Pred.Count == 0)
                 {
@@ -1319,18 +1319,18 @@ namespace Reko.Analysis
                 // Determine operands from predecessors.
                 var preds = phi.DefStatement.Block.Pred;
 
-                if (preds.Any(p => !blockstates[p].Visited))
-                {
-                    // Haven't visited some of the predecessors yet,
-                    // so we can't backwalk... yet. 
-                    ((PhiAssignment) phi.DefStatement.Instruction).Src =
-                        new PhiFunction(
-                            phi.Identifier.DataType,
-                            preds.Select(p => new PhiArgument(p, null)).
-                                ToArray());
-                    outer.incompletePhis.Add(phi);
-                    return phi;
-                }
+                //if (preds.Any(p => !blockstates[p].Visited))
+                //{
+                //    // Haven't visited some of the predecessors yet,
+                //    // so we can't backwalk... yet. 
+                //    ((PhiAssignment) phi.DefStatement.Instruction).Src =
+                //        new PhiFunction(
+                //            phi.Identifier.DataType,
+                //            preds.Select(p => new PhiArgument(p, null)).
+                //                ToArray());
+                //    outer.incompletePhis.Add(phi);
+                //    return phi;
+                //}
                 return AddPhiOperandsCore(phi);
             }
 

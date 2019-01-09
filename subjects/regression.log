@@ -243,6 +243,7 @@ Parameter name: key
    at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 128
    at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 174
 === Elf\MIPS\swlswr\test
+=== Elf\Msp430\a.out
 === Elf\RiscV\ipcalc\ipcalc.dcproject
 === Elf\Sparc\from_boomerang\subject.exe
 === Elf\Sparc\rtems\sparc-rtems-unprotoize
@@ -801,4 +802,4 @@ error: An error occurred during decompilation. System.NullReferenceException: Ob
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 55 binaries in 58.46 seconds ---
+Decompiled 56 binaries in 84.76 seconds ---
