@@ -52,8 +52,8 @@
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TravisRelease|AnyCPU'">
-    <OutputPath>bin\TravisRelease\</OutputPath>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnixRelease|AnyCPU'">
+    <OutputPath>bin\UnixRelease\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -69,19 +69,48 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AArch64\A64Rewriter.Alu.cs" />
+    <Compile Include="AArch64\A64Rewriter.cs" />
+    <Compile Include="AArch32\A32Disassembler.cs" />
+    <Compile Include="AArch32\BarrierOperand.cs" />
+    <Compile Include="AArch32\T32Disassembler.Decoder.cs" />
     <Compile Include="AArch64.cs" />
-    <Compile Include="AArch64Instruction.cs" />
+    <Compile Include="AArch64\A64Rewriter.Vector.cs" />
+    <Compile Include="AArch64\AArch64Disassembler.cs" />
+    <Compile Include="AArch64\AArch64Disassembler.Decoders.cs" />
+    <Compile Include="AArch64\AArch64Instruction.cs" />
+    <Compile Include="AArch64\Arm64State.cs" />
+    <Compile Include="AArch64\A64Rewriter.Fpu.cs" />
+    <Compile Include="AArch64\ConditionOperand.cs" />
+    <Compile Include="AArch64\FlagM.cs" />
+    <Compile Include="AArch64\MemoryOperand.cs" />
+    <Compile Include="AArch64\Opcode.cs" />
+    <Compile Include="AArch64\Registers.cs" />
+    <Compile Include="AArch64\VectorData.cs" />
+    <Compile Include="AArch64\VectorMultipleRegisterOperand.cs" />
+    <Compile Include="AArch64\VectorRegisterOperand.cs" />
     <Compile Include="Arm32Architecture.cs" />
-    <Compile Include="Arm64State.cs" />
+    <Compile Include="AArch32\AArch32Instruction.cs" />
+    <Compile Include="AArch32\AArch32Operand.cs" />
+    <Compile Include="ArmCondition.cs" />
     <Compile Include="ArmNativeRewriterHost.cs" />
-    <Compile Include="ArmRewriter.cs" />
-    <Compile Include="Arm32Instruction.cs" />
-    <Compile Include="Arm32InstructionComparer.cs" />
-    <Compile Include="ArmProcessorState.cs" />
-    <Compile Include="FlagM.cs" />
+    <Compile Include="AArch32\ArmRewriter.Alu.cs" />
+    <Compile Include="AArch32\ArmRewriter.cs" />
+    <Compile Include="AArch32\Arm32Instruction.cs" />
+    <Compile Include="AArch32\Arm32InstructionComparer.cs" />
+    <Compile Include="AArch32\AArch32ProcessorState.cs" />
+    <Compile Include="AArch32\ArmRewriter.System.cs" />
+    <Compile Include="AArch32\ArmRewriter.Vector.cs" />
+    <Compile Include="AArch32\ArmShiftType.cs" />
+    <Compile Include="AArch32\ArmVectorData.cs" />
+    <Compile Include="AArch32\FlagM.cs" />
+    <Compile Include="AArch32\MultiRegisterOperand.cs" />
+    <Compile Include="AArch32\Opcode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="AArch32\Registers.cs" />
+    <Compile Include="AArch32\T32Disassembler.cs" />
     <Compile Include="ThumbProcessorArchitecture.cs" />
-    <Compile Include="ThumbRewriter.cs" />
+    <Compile Include="AArch32\ThumbRewriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">
@@ -105,6 +134,12 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AArch32\A32Disassembler.Decoders.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AArch64\A64Rewriter.Control.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Fragments
             Identifier x = Local32("x");
             Identifier i = Local32("i");
             LoadId(x, IAdd(p, SMul(i, 8)));
-            LoadId(x, IAdd(p, IAdd(SMul(i, 8), 4)));
+            LoadId(x, IAdd(p, IAddS(SMul(i, 8), 4)));
         }
     }
 }

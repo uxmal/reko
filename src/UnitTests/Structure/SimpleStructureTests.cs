@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -308,16 +308,16 @@ word32 fn0010000C(word32 dwArg04, word32 dwArg08)
 	word32 ecx_12 = Mem0[dwArg04 + 0x0000003C:word32] + dwArg04;
 	word32 esi_20 = (word32) Mem0[ecx_12 + 0x00000006:word16];
 	word32 edx_21 = 0x00000000;
-	word32 eax_24 = (word32) Mem0[ecx_12 + 0x00000014:word16] + 0x00000012 + ecx_12 + 0x0000000C;
-	if (true)
+	word32 eax_24 = (word32) Mem0[ecx_12 + 0x00000014:word16] + 0x00000012 + ecx_12;
+	if (!DPB(CZ, false, 0))
 	{
 		do
 		{
-			word32 ecx_56 = Mem0[eax_24 + 0x00000000:word32];
-			if (dwArg08 >=u ecx_56 && dwArg08 <u Mem0[eax_24 + 0x00000008:word32] + ecx_56)
+			word32 ecx_57 = Mem0[eax_24 + 0x0000000C:word32];
+			if (dwArg08 >=u ecx_57 && dwArg08 <u Mem0[eax_24 + 0x00000008:word32] + ecx_57)
 				return eax_24;
-			edx_21 = edx_21 + 0x00000001;
-			eax_24 = eax_24 + 0x00000028;
+			++edx_21;
+			eax_24 += 0x00000028;
 		} while (edx_21 <u esi_20);
 	}
 	eax_24 = 0x00000000;
@@ -346,6 +346,15 @@ word32 fn0010000C(word32 dwArg04, word32 dwArg08)
 ===
 ";
             RunTest(sExp, pm.Program);
+        }
+
+        [Test]
+        [Ignore(Categories.FailedTests)]
+        public void StrReg00568()
+        {
+            // We are generating a redundant check in the complex instruction.
+            // It will probably need value set analysis to be properly resolved.
+            RunTest("Fragments/regressions/r00568.asm", "Structure/StrReg00568.txt");
         }
     }
 }

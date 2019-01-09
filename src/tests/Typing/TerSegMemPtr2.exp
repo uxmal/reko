@@ -22,23 +22,23 @@ SegmentedMemoryPointerMock2_exit:
 
 // Equivalence classes ////////////
 Eq_1: (struct "Globals")
-	globals_t (in globals : (ptr (struct "Globals")))
+	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_2: (segment "Eq_2")
 	T_2 (in ds : selector)
 Eq_3: (struct "Eq_3" (0 word16 w0000) (4 word16 w0004))
 	T_3 (in bx : word16)
 // Type Variables ////////////
-globals_t: (in globals : (ptr (struct "Globals")))
+globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
-  DataType: (ptr Eq_1)
-  OrigDataType: (ptr (struct "Globals"))
+  DataType: (ptr32 Eq_1)
+  OrigDataType: (ptr32 (struct "Globals"))
 T_2: (in ds : selector)
   Class: Eq_2
-  DataType: (ptr Eq_2)
-  OrigDataType: (ptr (segment))
+  DataType: (ptr16 Eq_2)
+  OrigDataType: (ptr16 (segment))
 T_3: (in bx : word16)
   Class: Eq_3
-  DataType: (memptr (ptr Eq_2) Eq_3)
+  DataType: (memptr (ptr16 Eq_2) Eq_3)
   OrigDataType: (memptr T_2 (struct (0 T_6 t0000) (4 T_10 t0004)))
 T_4: (in 0x0000 : word16)
   Class: Eq_4
@@ -62,7 +62,7 @@ T_8: (in 0x0004 : word16)
   OrigDataType: word16
 T_9: (in bx + 0x0004 : word16)
   Class: Eq_9
-  DataType: (memptr (ptr Eq_2) word16)
+  DataType: (memptr (ptr16 Eq_2) word16)
   OrigDataType: (memptr T_2 (struct (0 T_6 t0000)))
 T_10: (in Mem0[ds:bx + 0x0004:word16] : word16)
   Class: Eq_6

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,6 +44,7 @@ namespace Reko.Arch.Mips
         public RegisterStorage[] GeneralRegs;
         public RegisterStorage[] fpuRegs;
         public RegisterStorage[] ccRegs;
+        public RegisterStorage[] fpuCcRegs;
         public RegisterStorage LinkRegister;
         public RegisterStorage hi;
         public RegisterStorage lo;
@@ -64,6 +65,7 @@ namespace Reko.Arch.Mips
             this.fpuRegs = CreateFpuRegisters();
             this.FCSR = RegisterStorage.Reg32("FCSR", 0x201F);
             this.ccRegs = CreateCcRegs();
+            this.fpuCcRegs = CreateFpuCcRegs();
             this.fpuCtrlRegs = new Dictionary<uint, RegisterStorage>
             {
                 { 0x1F, FCSR }
@@ -108,6 +110,7 @@ namespace Reko.Arch.Mips
         {
             return new MipsRewriter(
                 this,
+                rdr,
                 new MipsDisassembler(this, rdr, IsVersion6OrLater),
                 binder,
                 host);
@@ -168,12 +171,6 @@ namespace Reko.Arch.Mips
             throw new NotImplementedException();
         }
 
-        public override Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
-        {
-            var esp = binder.EnsureRegister(this.StackRegister);
-            return MemoryAccess.Create(esp, cbOffset, dataType);
-        }
-
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
         {
             if (rdr.TryReadUInt32(out var uaddr))
@@ -231,6 +228,17 @@ namespace Reko.Arch.Mips
             return Enumerable.Range(0, 8)
                 .Select(i => new RegisterStorage(
                     string.Format("cc{0}", i),
+                    0x3000,
+                    0,
+                    PrimitiveType.Bool))
+                .ToArray();
+        }
+
+        private RegisterStorage[] CreateFpuCcRegs()
+        {
+            return Enumerable.Range(0, 8)
+                .Select(i => new RegisterStorage(
+                    string.Format("fcc{0}", i),
                     0x3000,
                     0,
                     PrimitiveType.Bool))

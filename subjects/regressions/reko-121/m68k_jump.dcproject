@@ -11,6 +11,7 @@
     <global-vars>m68k_jump.globals.c</global-vars>
     <user>
       <address>0000C02A</address>
+      <loader>raw</loader>
       <processor name="m68k" />
       <platform name="sega-genesis" />
     </user>

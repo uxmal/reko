@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,11 +35,11 @@ namespace Reko.ImageLoaders.LLVM
     /// </summary>
     public class TypeTranslator : LLVMTypeVisitor<DataType>
     {
-        private int ptrByteSize;
+        private readonly int ptrBitSize;
 
-        public TypeTranslator(int pointerByteSize)
+        public TypeTranslator(int pointerBitSize)
         {
-            this.ptrByteSize = pointerByteSize;
+            this.ptrBitSize = pointerBitSize;
         }
 
         public DataType VisitArray(LLVMArrayType a)
@@ -56,9 +56,9 @@ namespace Reko.ImageLoaders.LLVM
                 if (b.BitSize == 1)
                     return PrimitiveType.Bool;
                 else 
-                    return PrimitiveType.CreateWord(b.BitSize / 8);
+                    return PrimitiveType.CreateWord(b.BitSize);
             case Domain.Real:
-                return PrimitiveType.Create(Core.Types.Domain.Real, b.BitSize / 8);
+                return PrimitiveType.Create(Core.Types.Domain.Real, b.BitSize);
             case Domain.Void:
                 return VoidType.Instance;
             }
@@ -96,7 +96,7 @@ namespace Reko.ImageLoaders.LLVM
         public DataType VisitPointer(LLVMPointer p)
         {
             var pointee = p.Pointee.Accept(this);
-            return new Pointer(pointee, ptrByteSize);
+            return new Pointer(pointee, ptrBitSize);
         }
 
         public DataType VisitStructure(StructureType s)

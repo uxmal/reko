@@ -12,32 +12,32 @@ fn10000000_entry:
 	// succ:  l10000000
 l10000000:
 	esp = fp
-	esp = esp - 0x00000004
+	esp = esp - 4
 	Mem0[esp:word32] = esi
 	esi = Mem0[esp + 0x00000008:word32]
-	esp = esp - 0x00000004
+	esp = esp - 4
 	Mem0[esp:word32] = edi
 	edi = GlobalHandle
-	esp = esp - 0x00000004
+	esp = esp - 4
 	Mem0[esp:word32] = esi
 	eax = GlobalHandle(Mem0[esp:LPCVOID])
 	esp = esp + 0x00000004
-	esp = esp - 0x00000004
+	esp = esp - 4
 	Mem0[esp:word32] = eax
 	eax = GlobalUnlock(Mem0[esp:HGLOBAL])
 	esp = esp + 0x00000004
-	esp = esp - 0x00000004
+	esp = esp - 4
 	Mem0[esp:word32] = esi
 	eax = GlobalHandle(Mem0[esp:LPCVOID])
 	esp = esp + 0x00000004
-	esp = esp - 0x00000004
+	esp = esp - 4
 	Mem0[esp:word32] = eax
 	eax = GlobalFree(Mem0[esp:HGLOBAL])
 	esp = esp + 0x00000004
 	edi = Mem0[esp:word32]
-	esp = esp + 0x00000004
+	esp = esp + 4
 	esi = Mem0[esp:word32]
-	esp = esp + 0x00000004
+	esp = esp + 4
 	return
 	// succ:  fn10000000_exit
 fn10000000_exit:

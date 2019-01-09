@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,15 +40,15 @@ namespace Reko.Arch.M68k
         private static Dictionary<int, double> fpuRomConstants;
 
         // These fields are internal so that the OperandRewriter can use them.
-        internal M68kArchitecture arch;
-        internal IStorageBinder binder;
+        internal readonly M68kArchitecture arch;
+        internal readonly IStorageBinder binder;
+        private readonly M68kState state;
+        private readonly IRewriterHost host;
+        private readonly IEnumerator<M68kInstruction> dasm;
         internal M68kInstruction di;
         internal RtlEmitter m;
-        private M68kState state;
-        private IRewriterHost host;
-        private IEnumerator<M68kInstruction> dasm;
-        private RtlClass rtlc;
         private List<RtlInstruction> rtlInstructions;
+        private InstrClass rtlc;
         private OperandRewriter orw;
 
         public Rewriter(M68kArchitecture m68kArchitecture, EndianImageReader rdr, M68kState m68kState, IStorageBinder binder, IRewriterHost host)
@@ -68,7 +68,7 @@ namespace Reko.Arch.M68k
                 var addr = di.Address;
                 var len = di.Length;
                 rtlInstructions = new List<RtlInstruction>();
-                rtlc = RtlClass.Linear;
+                rtlc = di.iclass;
                 m = new RtlEmitter(rtlInstructions);
                 orw = new OperandRewriter(arch, this.m, this.binder, di.dataWidth);
                 switch (di.code)
@@ -76,7 +76,7 @@ namespace Reko.Arch.M68k
                 default:
                     host.Warn(
                         di.Address,
-                        "Rewriting M68k opcode '{0}' is not supported yet.",
+                        "M68k instruction '{0}' is not supported yet.",
                         di.code);
                     m.Invalid();
                     break;
@@ -286,7 +286,7 @@ VS Overflow Set 1001 V
         private void EmitInvalid()
         {
             rtlInstructions.Clear();
-            rtlc = RtlClass.Invalid;
+            rtlc = InstrClass.Invalid;
             m.Invalid();
         }
 

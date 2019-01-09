@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 Pavel Tomin.
+ * Copyright (C) 1999-2019 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -61,15 +61,15 @@ namespace Reko.Libraries.Python
             this.ArgumentTypes = new List<DataType>();
             this.format = format;
             var platform = program.Platform;
-            this.pointerSize = platform.PointerType.Size;
+            this.pointerSize = platform.PointerType.BitSize;
 
-            var wordSize = platform.Architecture.WordWidth.Size;
+            var wordSize = platform.Architecture.WordWidth.BitSize;
             var longSize = platform.GetByteSizeFromCBasicType(
-                CBasicType.Long);
+                CBasicType.Long) * DataType.BitsPerByte;
             var longLongSize = platform.GetByteSizeFromCBasicType(
-                CBasicType.LongLong);
+                CBasicType.LongLong) * DataType.BitsPerByte;
             var doubleSize = platform.GetByteSizeFromCBasicType(
-                CBasicType.Double);
+                CBasicType.Double) * DataType.BitsPerByte;
 
             dtInt = Integer(wordSize);
             dtUInt = UInteger(wordSize);

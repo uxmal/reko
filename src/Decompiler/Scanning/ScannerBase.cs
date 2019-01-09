@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,48 +45,6 @@ namespace Reko.Scanning
 
         public Program Program { get; private set; }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="addr"></param>
-        /// <param name="procedureName"></param>
-        /// <returns></returns>
-        protected Procedure EnsureProcedure(Address addr, string procedureName)
-        {
-            if (Program.Procedures.TryGetValue(addr, out Procedure proc))
-                return proc;
-
-            proc = Procedure.Create(Program.Architecture, procedureName, addr, Program.Architecture.CreateFrame());
-            if (procedureName == null && Program.ImageSymbols.TryGetValue(addr, out ImageSymbol sym))
-            {
-                procedureName = sym.Name;
-                if (sym.Signature != null)
-                {
-                    var sser = Program.CreateProcedureSerializer();
-                    proc.Signature = sser.Deserialize(sym.Signature, proc.Frame);
-                }
-            }
-            if (procedureName != null)
-            {
-                var sProc = Program.Platform.SignatureFromName(procedureName);
-                if (sProc != null)
-                {
-                    var loader = Program.CreateTypeLibraryDeserializer();
-                    var exp = loader.LoadExternalProcedure(sProc);
-                    proc.Name = exp.Name;
-                    proc.Signature = exp.Signature;
-                    proc.EnclosingType = exp.EnclosingType;
-                }
-                else
-                {
-                    proc.Name = procedureName;
-                }
-            }
-            Program.Procedures.Add(addr, proc);
-            Program.CallGraph.AddProcedure(proc);
-            return proc;
-        }
-
         private bool TryGetNoDecompiledProcedure(Address addr, out Procedure_v1 sProc)
         {
             if (!Program.User.Procedures.TryGetValue(addr, out sProc) ||
@@ -105,8 +63,7 @@ namespace Reko.Scanning
 
         private bool TryGetNoDecompiledParsedProcedure(Address addr, out Procedure_v1 parsedProc)
         {
-            Procedure_v1 sProc;
-            if (!TryGetNoDecompiledProcedure(addr, out sProc))
+            if (!TryGetNoDecompiledProcedure(addr, out Procedure_v1 sProc))
             {
                 parsedProc = null;
                 return false;

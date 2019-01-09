@@ -9,7 +9,6 @@ fn0128_entry:
 // DataOut: pc r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: v11(16)
 
 l0128:
 	__wait()
@@ -18,7 +17,6 @@ l0128:
 // DataOut: pc r0 r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: v11(16)
 
 l0130:
 	Mem11[0x006C:word16] = 0x0000
@@ -59,7 +57,7 @@ fn0242_entry:
 // DataOut: r0 r1
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: fp(16) v14(16) v32(16)
+// LocalsOut: fp(16)
 
 l0242:
 	Mem6[0x0080:word16] = 0x0000
@@ -70,7 +68,7 @@ l0242:
 // DataOut: r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: fp(16) v32(16)
+// LocalsOut: fp(16)
 
 l0254:
 	word16 wLoc02_26 = 0x0000
@@ -79,7 +77,7 @@ l0254:
 // DataOut: r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r4:<invalid> r5:<invalid> pc:<invalid> r0:<invalid> r2:<invalid> r1:<invalid> r3:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) Local -0002(16) v32(16)
+// LocalsOut: fp(16) Local -0002(16)
 
 l027A:
 	word16 r2_35 = r2_33 - Mem9[0x0080:word16]
@@ -87,7 +85,7 @@ l027A:
 // DataOut: r0 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0002 r4:<invalid> r5:<invalid> pc:<invalid> r0:<invalid> r1:<invalid> r2:<invalid> r3:<invalid> -2(fp):0x0000
-// LocalsOut: fp(16) Local -0002(16) v32(16)
+// LocalsOut: fp(16) Local -0002(16)
 
 l0282:
 	r2_35 = -r2_35
@@ -95,7 +93,7 @@ l0282:
 // DataOut: r0 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0002 r4:<invalid> r5:<invalid> pc:<invalid> r0:<invalid> r2:<invalid> r1:<invalid> r3:<invalid> -2(fp):0x0000
-// LocalsOut: fp(16) Local -0002(16) v32(16)
+// LocalsOut: fp(16) Local -0002(16)
 
 l0288:
 	word16 r2_43 = __swab(r2_35 & ~0xFFC0)
@@ -106,7 +104,7 @@ l0288:
 // DataOut: r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0002 r4:<invalid> r5:<invalid> pc:<invalid> r0:<invalid> r2:<invalid> r1:<invalid> r3:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) Local -0002(16) v32(16)
+// LocalsOut: fp(16) Local -0002(16)
 
 l029C:
 	r3_47 = -r3_47
@@ -114,7 +112,7 @@ l029C:
 // DataOut: r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0002 r4:<invalid> r5:<invalid> pc:<invalid> r0:<invalid> r2:<invalid> r1:<invalid> r3:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) Local -0002(16) v32(16)
+// LocalsOut: fp(16) Local -0002(16)
 
 l02A2:
 	Mem55[0x0082:word16] = r3_31
@@ -123,14 +121,14 @@ l02A2:
 // DataOut: r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0002 r4:<invalid> r5:<invalid> pc:<invalid> r0:<invalid> r2:<invalid> r1:<invalid> r3:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) Local -0002(16) v32(16)
+// LocalsOut: fp(16) Local -0002(16)
 
 l02B0:
 	Mem68[0x0086:word16] = r3_31
 // DataOut: r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0002 r4:<invalid> r5:<invalid> pc:<invalid> r0:<invalid> r2:<invalid> r1:<invalid> r3:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) Local -0002(16) v32(16)
+// LocalsOut: fp(16) Local -0002(16)
 
 l02B4:
 	Mem64[r5_20:word16] = r3_54 | r2_44 | wLoc02_26
@@ -138,7 +136,7 @@ l02B4:
 // DataOut: r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0002 r4:<invalid> r5:<invalid> pc:<invalid> r0:<invalid> r2:<invalid> r1:<invalid> r3:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) v32(16)
+// LocalsOut: fp(16)
 
 
 
@@ -195,14 +193,12 @@ fn0300_entry:
 // DataOut: pc r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: v22(16) v30(16) v46(16)
 
 l0300:
 	branch Mem0[0x0068:word16] == 0x0000 l03A8
 // DataOut: pc r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: v22(16) v30(16) v46(16)
 
 l03A8:
 	Mem120[0x25C0:word16] = 0xF700
@@ -235,7 +231,6 @@ l0306:
 // DataOut: pc r3 r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: v22(16) v46(16)
 
 l0340:
 	r3_104 = -r3_45
@@ -243,14 +238,12 @@ l0340:
 // DataOut: pc r3 r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp r0:0x05DC r1:<invalid> r3:<invalid> r2:<invalid>
-// LocalsOut: v46(16)
 
 l0348:
 	branch 0x07D0 - r3_104 >= 0x0000 l0358
 // DataOut: pc r3 r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp r0:0x05DC r1:<invalid> r3:<invalid> r2:<invalid>
-// LocalsOut: v46(16)
 
 l034E:
 	Mem114[0x25C0:word16] = 0x0000
@@ -258,7 +251,6 @@ l034E:
 // DataOut: pc r3 r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp r0:0x05DC r1:<invalid> r3:<invalid> r2:<invalid>
-// LocalsOut: v46(16)
 
 l0336:
 	Mem99[0x25C0:word16] = 0xF700
@@ -266,7 +258,6 @@ l0336:
 // DataOut: pc r3 r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp r0:0x05DC r1:<invalid> r3:<invalid> r2:<invalid>
-// LocalsOut: v46(16)
 
 l0358:
 	Mem51[0x0068:word16] = r3_104
@@ -352,7 +343,7 @@ l0414:
 l0440_thunk_fn0242:
 	fn0242(0x27A2, r0)
 	return
-// DataOut: pc r0 sp
+// DataOut: pc sp
 // DataOut (flags): 
 // SymbolicIn: sp:fp r1:r0 r4:<invalid> r2:<invalid> r3:<invalid> r5:<invalid> r0:0x27A2
 // Terminates process
@@ -360,7 +351,7 @@ l0440_thunk_fn0242:
 fn03CE_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
@@ -375,7 +366,7 @@ fn0444_entry:
 // DataOut: pc r1 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: v12(16) v18(16)
+// LocalsOut: v12(16)
 
 l0444:
 	word16 r0_15 = Mem0[0x0046:word16]
@@ -383,14 +374,14 @@ l0444:
 // DataOut: pc r0 r1 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: v12(16) v18(16)
+// LocalsOut: v12(16)
 
 l0458:
 	branch 0x00B4 - r0_15 <= 0x0000 l0464
 // DataOut: pc r0 r1 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r0:<invalid>
-// LocalsOut: v12(16) v18(16)
+// LocalsOut: v12(16)
 
 l045E:
 	r0_15 = r0_15 - 0x0168
@@ -398,14 +389,14 @@ l045E:
 // DataOut: pc r0 r1 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r0:<invalid>
-// LocalsOut: v12(16) v18(16)
+// LocalsOut: v12(16)
 
 l044A:
 	branch 0xFF4C - r0_15 > 0x0000 l0464
 // DataOut: pc r0 r1 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r0:<invalid>
-// LocalsOut: v12(16) v18(16)
+// LocalsOut: v12(16)
 
 l0450:
 	r0_15 = r0_15 + 0x0168
@@ -413,7 +404,7 @@ l0450:
 // DataOut: pc r0 r1 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r0:<invalid>
-// LocalsOut: v12(16) v18(16)
+// LocalsOut: v12(16)
 
 l0464:
 	Mem10[0x0046:word16] = r0_15
@@ -421,14 +412,12 @@ l0464:
 // DataOut: pc r0 r1 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r0:<invalid>
-// LocalsOut: v18(16)
 
 l046A:
 	r0_15 = r0_15 + 0x0168
 // DataOut: pc r0 r1 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r0:<invalid>
-// LocalsOut: v18(16)
 
 l046E:
 	word16 r0_16 = r0_15 << 1
@@ -437,14 +426,12 @@ l046E:
 // DataOut: pc r0 r1 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r0:<invalid>
-// LocalsOut: v18(16)
 
 l047C:
 	r0_16 = r0_16 - 0x02D0
 // DataOut: pc r0 r1 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r0:<invalid>
-// LocalsOut: v18(16)
 
 l0480:
 	Mem23[0x004C:word16] = Mem17[r0_16 + 0x3290:word16]
@@ -462,7 +449,7 @@ l0456:
 // DataOut: pc r0 r1 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r0:<invalid>
-// LocalsOut: v12(16) v18(16)
+// LocalsOut: v12(16)
 
 
 
@@ -477,7 +464,7 @@ fn0488_entry:
 // DataOut: pc
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: fp(16) v46(16)
+// LocalsOut: fp(16)
 
 l0488:
 	word16 r1_155 = Mem0[0x0050:word16]
@@ -485,14 +472,14 @@ l0488:
 // DataOut: pc r1
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: fp(16) v46(16)
+// LocalsOut: fp(16)
 
 l048E:
 	r1_155 = -r1_155
 // DataOut: pc r1
 // DataOut (flags): 
 // SymbolicIn: sp:fp r1:<invalid>
-// LocalsOut: fp(16) v46(16)
+// LocalsOut: fp(16)
 
 l0490:
 	word16 r2_13
@@ -504,14 +491,14 @@ l0490:
 // DataOut: pc r3
 // DataOut (flags): 
 // SymbolicIn: sp:fp r1:<invalid>
-// LocalsOut: fp(16) v46(16)
+// LocalsOut: fp(16)
 
 l04A6:
 	r3_153 = -r3_153
 // DataOut: pc r3
 // DataOut (flags): 
 // SymbolicIn: sp:fp r1:<invalid> r0:0x0BB8 r3:<invalid> r2:<invalid>
-// LocalsOut: fp(16) v46(16)
+// LocalsOut: fp(16)
 
 l04A8:
 	word16 r3_31 = (r3_153 >> 1) + Mem0[0x0054:word16]
@@ -521,14 +508,14 @@ l04A8:
 // DataOut: pc r1
 // DataOut (flags): 
 // SymbolicIn: sp:fp r1:<invalid> r0:0x0BB8 r3:<invalid> r2:<invalid>
-// LocalsOut: fp(16) Local -0002(16) v46(16)
+// LocalsOut: fp(16) Local -0002(16)
 
 l04BA:
 	r1_151 = -r3_31
 // DataOut: pc r1
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0002 r1:<invalid> r0:0x0BB8 r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) Local -0002(16) v46(16)
+// LocalsOut: fp(16) Local -0002(16)
 
 l04BC:
 	word16 r2_46
@@ -541,14 +528,14 @@ l04BC:
 // DataOut: pc r2 r3
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0002 r1:<invalid> r0:0x0BB8 r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) v46(16)
+// LocalsOut: fp(16)
 
 l04D6:
 	r3_149 = -r3_149
 // DataOut: pc r2 r3
 // DataOut (flags): 
 // SymbolicIn: sp:fp r1:<invalid> r0:0x0258 r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) v46(16)
+// LocalsOut: fp(16)
 
 l04D8:
 	Mem68[0x005C:word16] = Mem33[0x005C:word16] + r3_149
@@ -558,14 +545,14 @@ l04D8:
 // DataOut: pc r1
 // DataOut (flags): 
 // SymbolicIn: sp:fp r1:<invalid> r0:0x0258 r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) v46(16)
+// LocalsOut: fp(16)
 
 l04E6:
 	r1_147 = -r1_147
 // DataOut: pc r1
 // DataOut (flags): 
 // SymbolicIn: sp:fp r1:<invalid> r0:0x0258 r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) v46(16)
+// LocalsOut: fp(16)
 
 l04E8:
 	word16 r2_80
@@ -577,14 +564,14 @@ l04E8:
 // DataOut: pc r3
 // DataOut (flags): 
 // SymbolicIn: sp:fp r1:<invalid> r0:0x0258 r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) v46(16)
+// LocalsOut: fp(16)
 
 l04FE:
 	r3_145 = -r3_145
 // DataOut: pc r3
 // DataOut (flags): 
 // SymbolicIn: sp:fp r1:<invalid> r0:0x0BB8 r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) v46(16)
+// LocalsOut: fp(16)
 
 l0500:
 	word16 r3_98 = (r3_145 >> 1) + Mem70[0x0058:word16]
@@ -594,14 +581,14 @@ l0500:
 // DataOut: pc r1
 // DataOut (flags): 
 // SymbolicIn: sp:fp r1:<invalid> r0:0x0BB8 r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(16) v46(16)
+// LocalsOut: Local -0002(16)
 
 l0512:
 	r1_104 = -r3_98
 // DataOut: pc r1
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0002 r1:<invalid> r0:0x0BB8 r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(16) v46(16)
+// LocalsOut: Local -0002(16)
 
 l0514:
 	word16 r2_113
@@ -614,14 +601,12 @@ l0514:
 // DataOut: pc r2 r3
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0002 r1:<invalid> r0:0x0BB8 r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: v46(16)
 
 l052E:
 	r3_122 = -r3_122
 // DataOut: pc r2 r3
 // DataOut (flags): 
 // SymbolicIn: sp:fp r1:<invalid> r0:0x0258 r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: v46(16)
 
 l0530:
 	Mem135[0x005E:word16] = Mem100[0x005E:word16] + r3_122
@@ -650,7 +635,7 @@ fn053A_entry:
 // DataOut: pc r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: fp(16) v107(16) v117(16) v24(16) v29(16) v36(16) v50(16) v69(16) v78(16) v85(16)
+// LocalsOut: fp(16)
 
 l053A:
 	Mem18[0x0084:word16] = 0xFFC0
@@ -662,14 +647,15 @@ l053A:
 // DataOut: pc r0 r1 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r4:<invalid> r5:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) v107(16) v117(16) v24(16) v29(16) v36(16) v50(16) v69(16) v78(16) v85(16)
+// LocalsOut: fp(16)
 
 l0550:
 	r1_23 = -r5_19
+	NZV = cond(r1_23)
 // DataOut: pc r0 r1 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r5:<invalid> r0:<invalid> r1:<invalid> r4:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) v107(16) v117(16) v24(16) v29(16) v36(16) v50(16) v69(16) v78(16) v85(16)
+// LocalsOut: fp(16)
 
 l0552:
 	word16 r2_29
@@ -682,292 +668,295 @@ l0552:
 // DataOut: pc r2 r3 r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp r5:<invalid> r0:<invalid> r1:<invalid> r4:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) v107(16) v117(16) v24(16) v29(16) v36(16) v50(16) v69(16) v78(16) v85(16)
+// LocalsOut: fp(16)
 
 l0568:
 	r3_38 = -r3_38
+	NZV = cond(r3_38)
 // DataOut: pc r2 r3 r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp r5:<invalid> r0:0x003C r1:<invalid> r3:<invalid> r2:<invalid> r4:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) v107(16) v117(16) v24(16) v29(16) v36(16) v50(16) v69(16) v78(16) v85(16)
+// LocalsOut: fp(16)
 
 l056A:
-	Mem48[0x0046:word16] = Mem20[0x0046:word16] + r3_38
-	Mem50[0x0048:word16] = r2_39
+	Mem49[0x0046:word16] = Mem20[0x0046:word16] + r3_38
+	Mem51[0x0048:word16] = r2_39
 	fn0444()
-	Mem55[0x0092:word16] = Mem50[0x0092:word16] + 0x0002
-	word16 r1_59 = Mem55[(Mem55[0x0092:word16] & ~0xFFFD) + 0x34AC:word16]
-	fn0242(0x26D8, r1_59)
-	Mem68[0x34BA:word16] = r1_59
-	Mem69[0x0088:word16] = Mem68[0x0086:word16]
-	Mem70[0x0064:word16] = Mem69[0x0060:word16]
+	Mem56[0x0092:word16] = Mem51[0x0092:word16] + 0x0002
+	word16 r1_60 = Mem56[(Mem56[0x0092:word16] & ~0xFFFD) + 0x34AC:word16]
+	fn0242(0x26D8, r1_60)
+	Mem69[0x34BA:word16] = r1_60
+	Mem70[0x0088:word16] = Mem69[0x0086:word16]
+	Mem71[0x0064:word16] = Mem70[0x0060:word16]
 	fn0300(r4)
 	fn0488()
-	word16 r4_76 = Mem70[0x005C:word16] + 0x5780 >> 1
-	Mem81[0x0072:word16] = r4_76 >> 4
-	word16 r4_83 = r4_76 >> 4 << 1
-	word16 r0_88 = Mem81[r4_83 + 0x28F0:word16] + Mem81[r4_83 + 0x28F2:word16]
-	Mem90[0x007C:word16] = r0_88 >> 1
-	word16 r0_102 = Mem90[0x005E:word16] - (r0_88 >> 1)
-	Mem93[0x007E:word16] = r0_102
-	branch false l05F2
-// DataOut: pc r0 sp
+	word16 r4_77 = Mem71[0x005C:word16] + 0x5780 >> 1
+	Mem82[0x0072:word16] = r4_77 >> 4
+	word16 r4_84 = r4_77 >> 4 << 1
+	word16 r0_89 = Mem82[r4_84 + 0x28F0:word16] + Mem82[r4_84 + 0x28F2:word16]
+	Mem91[0x007C:word16] = r0_89 >> 1
+	Mem94[0x007E:word16] = Mem91[0x005E:word16] - (r0_89 >> 1)
+	NZV = DPB(NZV, false, 0) (alias)
+	branch NZV l05F2
+// DataOut: pc sp
 // DataOut (flags): 
 // SymbolicIn: sp:fp r5:<invalid> r0:0x003C r1:<invalid> r3:<invalid> r2:<invalid> r4:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) Local -0002(16) v107(16) v117(16) v24(16) v29(16) v36(16) v50(16) v69(16) v78(16) v85(16)
+// LocalsOut: fp(16) Local -0002(16)
 // Terminates process
 
 l05F2:
-	Mem394[0x34C2:word16] = 0x0000
-// DataOut: pc r0 sp
-// DataOut (flags): 
-// SymbolicIn: sp:sp + 0x0002 r4:<invalid> r5:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) Local -0002(16) v107(16) v117(16) v24(16) v29(16) v36(16) v50(16) v69(16) v78(16) v85(16)
-
-l05E2:
-	fn03CE(0x3588)
-	Mem390[0x34C2:word16] = 0x3588
-	r0_102 = 0x3588
-// DataOut: pc r0 sp
-// DataOut (flags): 
-// SymbolicIn: sp:sp + 0x0002 r4:<invalid> r5:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) Local -0002(16) v107(16) v117(16) v24(16) v29(16) v36(16) v50(16) v69(16) v78(16) v85(16)
-// Terminates process
-
-l05F6:
-	word16 r0_113
-	word16 r1_109
-	r4 = Mem93[0x0072:word16]
-	branch r4 < 0x0000 l0668
-// DataOut: pc r0 r4 sp
-// DataOut (flags): 
-// SymbolicIn: sp:sp + 0x0002 r4:<invalid> r5:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) Local -0002(16) v107(16) v117(16) v24(16) v29(16) v36(16) v50(16) v69(16) v78(16) v85(16)
-
-l05FC:
-	branch 0x000A - r4 <= 0x0000 l0668
-// DataOut: pc r0 r4 sp
-// DataOut (flags): 
-// SymbolicIn: sp:sp + 0x0002 r4:<invalid> r5:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) Local -0002(16) v107(16) v117(16) v24(16) v29(16) v36(16) v50(16) v69(16) v78(16) v85(16)
-
-l0668:
-	r0_113 = 0x000D
-	r1_109 = 0x1FFC
-// DataOut: pc r0 r1 r4
-// DataOut (flags): 
-// SymbolicIn: sp:sp + 0x0002 r4:<invalid> r5:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) v107(16) v117(16) v24(16) v29(16) v36(16) v50(16) v69(16) v78(16) v85(16)
-
-l0602:
-	branch 0x037A - r4 >= 0x0000 l0672
-// DataOut: pc r0 r4 sp
-// DataOut (flags): 
-// SymbolicIn: sp:sp + 0x0002 r4:<invalid> r5:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) Local -0002(16) v107(16) v117(16) v24(16) v29(16) v36(16) v50(16) v69(16) v78(16) v85(16)
-
-l0672:
-	r0_113 = 0x0377
-	r1_109 = 0x201C
-// DataOut: pc r0 r1 r4
-// DataOut (flags): 
-// SymbolicIn: sp:sp + 0x0002 r4:<invalid> r5:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) v107(16) v117(16) v24(16) v29(16) v36(16) v50(16) v69(16) v78(16) v85(16)
-
-l0608:
-	r4 = Mem93[0x005E:word16]
-	branch r4 < 0x0000 l06B4
-// DataOut: pc r0 r4 sp
-// DataOut (flags): 
-// SymbolicIn: sp:sp + 0x0002 r4:<invalid> r5:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) Local -0002(16) v107(16) v117(16) v24(16) v29(16) v36(16) v50(16) v69(16) v78(16) v85(16)
-
-l060E:
-	branch 0x61A8 - r4 >= 0x0000 l067C
-// DataOut: pc r0 r4 sp
-// DataOut (flags): 
-// SymbolicIn: sp:sp + 0x0002 r4:<invalid> r5:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) Local -0002(16) v107(16) v117(16) v24(16) v29(16) v36(16) v50(16) v69(16) v78(16) v85(16)
-
-l067C:
-	r0_113 = r4
-	r1_109 = 0x2062
-// DataOut: pc r0 r1 r4
-// DataOut (flags): 
-// SymbolicIn: sp:sp + 0x0002 r4:<invalid> r5:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) v107(16) v117(16) v24(16) v29(16) v36(16) v50(16) v69(16) v78(16) v85(16)
-
-l0682:
-	Mem120[0x005C:word16] = (r0_113 << 5) - 0x5780
-	Mem121[0x34CA:word16] = r1_109
-	Mem122[0x0068:word16] = 0x0000
-	Mem123[0x0054:word16] = 0x0000
-	word16 r3_124 = Mem123[0x005E:word16]
-	word16 r3_126 = r3_124 >> 2
-	branch r3_124 >> 2 < 0x0000 l06AC
-// DataOut: pc r3 r4
-// DataOut (flags): 
-// SymbolicIn: sp:sp + 0x0002 r4:<invalid> r5:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) v107(16) v117(16) v24(16) v29(16) v36(16) v50(16) v69(16) v78(16) v85(16)
-
-l06AA:
-	r3_126 = -(r3_124 >> 2)
-// DataOut: pc r3 r4
-// DataOut (flags): 
-// SymbolicIn: sp:sp + 0x0002 r4:<invalid> r5:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) v107(16) v117(16) v24(16) v29(16) v36(16) v50(16) v69(16) v78(16) v85(16)
-
-l06AC:
-	Mem131[0x0058:word16] = r3_126
-// DataOut: pc r4
-// DataOut (flags): 
-// SymbolicIn: sp:sp + 0x0002 r4:<invalid> r5:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) v107(16) v117(16) v24(16) v29(16) v36(16) v50(16) v69(16) v78(16) v85(16)
-
-l0614:
-	branch 0x01C2 - r4 <= 0x0000 l06B4
-// DataOut: pc r0 r4 sp
-// DataOut (flags): 
-// SymbolicIn: sp:sp + 0x0002 r4:<invalid> r5:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(16) v107(16) v117(16) v69(16) v85(16)
-
-l06B4:
-	word16 r0_284
-	word16 r0_175
-	branch Mem93[fp:word16] - Mem93[0x009E:word16] == 0x0000 l0792
+	Mem395[0x34C2:word16] = 0x0000
 // DataOut: pc sp
 // DataOut (flags): 
 // SymbolicIn: sp:sp + 0x0002 r4:<invalid> r5:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(16) v107(16) v117(16) v85(16)
+// LocalsOut: fp(16) Local -0002(16)
+
+l05E2:
+	fn03CE(0x3588)
+	Mem391[0x34C2:word16] = 0x3588
+// DataOut: pc sp
+// DataOut (flags): 
+// SymbolicIn: sp:sp + 0x0002 r4:<invalid> r5:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
+// LocalsOut: fp(16) Local -0002(16)
+// Terminates process
+
+l05F6:
+	word16 r0_114
+	word16 r1_110
+	r4 = Mem94[0x0072:word16]
+	branch r4 < 0x0000 l0668
+// DataOut: pc r4 sp
+// DataOut (flags): 
+// SymbolicIn: sp:sp + 0x0002 r4:<invalid> r5:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
+// LocalsOut: fp(16) Local -0002(16)
+
+l05FC:
+	word16 v53_144 = 0x000A - r4
+	NZV = cond(v53_144) (alias)
+	branch v53_144 <= 0x0000 l0668
+// DataOut: pc r4 sp
+// DataOut (flags): 
+// SymbolicIn: sp:sp + 0x0002 r4:<invalid> r5:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
+// LocalsOut: fp(16) Local -0002(16)
+
+l0668:
+	r0_114 = 0x000D
+	r1_110 = 0x1FFC
+// DataOut: pc r0 r1 r4
+// DataOut (flags): 
+// SymbolicIn: sp:sp + 0x0002 r4:<invalid> r5:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
+// LocalsOut: fp(16)
+
+l0602:
+	branch 0x037A - r4 >= 0x0000 l0672
+// DataOut: pc r4 sp
+// DataOut (flags): 
+// SymbolicIn: sp:sp + 0x0002 r4:<invalid> r5:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
+// LocalsOut: fp(16) Local -0002(16)
+
+l0672:
+	r0_114 = 0x0377
+	r1_110 = 0x201C
+// DataOut: pc r0 r1 r4
+// DataOut (flags): 
+// SymbolicIn: sp:sp + 0x0002 r4:<invalid> r5:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
+// LocalsOut: fp(16)
+
+l0608:
+	r4 = Mem94[0x005E:word16]
+	branch r4 < 0x0000 l06B4
+// DataOut: pc r4 sp
+// DataOut (flags): 
+// SymbolicIn: sp:sp + 0x0002 r4:<invalid> r5:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
+// LocalsOut: fp(16) Local -0002(16)
+
+l060E:
+	branch 0x61A8 - r4 >= 0x0000 l067C
+// DataOut: pc r4 sp
+// DataOut (flags): 
+// SymbolicIn: sp:sp + 0x0002 r4:<invalid> r5:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
+// LocalsOut: fp(16) Local -0002(16)
+
+l067C:
+	r0_114 = r4
+	r1_110 = 0x2062
+// DataOut: pc r0 r1 r4
+// DataOut (flags): 
+// SymbolicIn: sp:sp + 0x0002 r4:<invalid> r5:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
+// LocalsOut: fp(16)
+
+l0682:
+	Mem121[0x005C:word16] = (r0_114 << 5) - 0x5780
+	Mem122[0x34CA:word16] = r1_110
+	Mem123[0x0068:word16] = 0x0000
+	Mem124[0x0054:word16] = 0x0000
+	word16 r3_125 = Mem124[0x005E:word16]
+	word16 r3_127 = r3_125 >> 2
+	branch r3_125 >> 2 < 0x0000 l06AC
+// DataOut: pc r3 r4
+// DataOut (flags): 
+// SymbolicIn: sp:sp + 0x0002 r4:<invalid> r5:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
+// LocalsOut: fp(16)
+
+l06AA:
+	r3_127 = -(r3_125 >> 2)
+	NZV = cond(r3_127)
+// DataOut: pc r3 r4
+// DataOut (flags): 
+// SymbolicIn: sp:sp + 0x0002 r4:<invalid> r5:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
+// LocalsOut: fp(16)
+
+l06AC:
+	Mem132[0x0058:word16] = r3_127
+// DataOut: pc r4
+// DataOut (flags): 
+// SymbolicIn: sp:sp + 0x0002 r4:<invalid> r5:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
+// LocalsOut: fp(16)
+
+l0614:
+	branch 0x01C2 - r4 <= 0x0000 l06B4
+// DataOut: pc r4 sp
+// DataOut (flags): 
+// SymbolicIn: sp:sp + 0x0002 r4:<invalid> r5:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
+// LocalsOut: Local -0002(16)
+
+l06B4:
+	word16 r0_285
+	word16 r0_176
+	branch Mem94[fp:word16] - Mem94[0x009E:word16] == 0x0000 l0792
+// DataOut: pc sp
+// DataOut (flags): 
+// SymbolicIn: sp:sp + 0x0002 r4:<invalid> r5:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
+// LocalsOut: Local -0002(16)
 
 l0792:
-	r0_175 = Mem93[0x005C:word16] - Mem93[0x0076:word16]
-	branch 0x001E - r0_175 <= 0x0000 l07AE
+	r0_176 = Mem94[0x005C:word16] - Mem94[0x0076:word16]
+	branch 0x001E - r0_176 <= 0x0000 l07AE
 // DataOut: pc r0 sp
 // DataOut (flags): 
 // SymbolicIn: sp:sp + 0x0002 r4:<invalid> r5:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(16) v107(16) v117(16) v85(16)
+// LocalsOut: Local -0002(16)
 
 l07AE:
-	r0_284 = Mem93[0x0072:word16] - 0x0011
+	r0_285 = Mem94[0x0072:word16] - 0x0011
 // DataOut: pc r0 sp
 // DataOut (flags): 
 // SymbolicIn: sp:sp + 0x0002 r4:<invalid> r5:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(16) v107(16) v117(16) v85(16)
+// LocalsOut: Local -0002(16)
 
 l07A0:
-	branch 0x0244 - r0_175 < 0x0000 l06E8
+	branch 0x0244 - r0_176 < 0x0000 l06E8
 // DataOut: pc r0 sp
 // DataOut (flags): 
 // SymbolicIn: sp:sp + 0x0002 r4:<invalid> r5:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(16) v107(16) v117(16) v85(16)
+// LocalsOut: Local -0002(16)
 
 l07A6:
-	r0_284 = Mem93[0x0072:word16] - 0x0001
+	r0_285 = Mem94[0x0072:word16] - 0x0001
 // DataOut: pc r0 sp
 // DataOut (flags): 
 // SymbolicIn: sp:sp + 0x0002 r4:<invalid> r5:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(16) v107(16) v117(16) v85(16)
+// LocalsOut: Local -0002(16)
 
 l06BA:
-	r0_284 = Mem93[0x0072:word16] - 0x0009
+	r0_285 = Mem94[0x0072:word16] - 0x0009
 // DataOut: pc r0 sp
 // DataOut (flags): 
 // SymbolicIn: sp:sp + 0x0002 r4:<invalid> r5:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(16) v107(16) v117(16) v85(16)
+// LocalsOut: Local -0002(16)
 
 l06C2:
-	Mem285[0x0074:word16] = r0_284
-	Mem293[0x0076:word16] = (r0_284 << 5) - 0x5780
+	Mem286[0x0074:word16] = r0_285
+	Mem294[0x0076:word16] = (r0_285 << 5) - 0x5780
 	fn0F04()
-	Mem297[0x009E:word16] = Mem293[fp:word16]
-	r0_175 = Mem297[0x005C:word16] - Mem297[0x0076:word16]
+	Mem298[0x009E:word16] = Mem294[fp:word16]
+	r0_176 = Mem298[0x005C:word16] - Mem298[0x0076:word16]
 // DataOut: pc r0 sp
 // DataOut (flags): 
 // SymbolicIn: sp:sp + 0x0002 r4:<invalid> r5:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(16) v107(16) v117(16)
+// LocalsOut: Local -0002(16)
 // Terminates process
 
 l06E8:
-	word16 r3_220
-	word16 r3_178 = r0_175 * 0x0003
-	Mem180[0x34B4:word16] = r3_178 >> 1
-	word16 r3_186
-	word16 r2_187 = fn126C(0x0030, 0x0000, r3_178 >> 1, out r3_186)
-	word16 r3_188 = r3_186 + Mem180[0x0074:word16]
-	Mem189[0x0078:word16] = r3_188
-	word16 r2_199
-	word16 r3_200
-	fn123A(0x0030 - r2_187, Mem189[(r3_188 << 1) + 0x28F0:word16], out r2_199, out r3_200)
-	Mem203[fp - 0x0002:word16] = r3_200
-	word16 r2_208
-	word16 r3_209
-	fn123A(r2_187, Mem203[(r3_188 << 1) + 0x28F2:word16], out r2_208, out r3_209)
-	word16 r3_215 = r3_209 + Mem203[fp - 0x0002:word16]
-	branch r3_215 > 0x0000 l073A
+	word16 r3_221
+	word16 r3_179 = r0_176 * 0x0003
+	Mem181[0x34B4:word16] = r3_179 >> 1
+	word16 r3_187
+	word16 r2_188 = fn126C(0x0030, 0x0000, r3_179 >> 1, out r3_187)
+	word16 r3_189 = r3_187 + Mem181[0x0074:word16]
+	Mem190[0x0078:word16] = r3_189
+	word16 r2_200
+	word16 r3_201
+	fn123A(0x0030 - r2_188, Mem190[(r3_189 << 1) + 0x28F0:word16], out r2_200, out r3_201)
+	Mem204[fp - 0x0002:word16] = r3_201
+	word16 r2_209
+	word16 r3_210
+	fn123A(r2_188, Mem204[(r3_189 << 1) + 0x28F2:word16], out r2_209, out r3_210)
+	word16 r3_216 = r3_210 + Mem204[fp - 0x0002:word16]
+	branch r3_216 > 0x0000 l073A
 // DataOut: pc r0 r2 r3
 // DataOut (flags): 
 // SymbolicIn: r0:<invalid> sp:sp + 0x0002 r4:<invalid> r5:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(16) v107(16) v117(16)
+// LocalsOut: Local -0002(16)
 
 l073A:
-	fn126C(0x0030, 0x0000, r3_215, out r3_220)
+	fn126C(0x0030, 0x0000, r3_216, out r3_221)
 // DataOut: pc r3
 // DataOut (flags): 
 // SymbolicIn: r0:0x0030 sp:sp + 0x0006 r4:<invalid> r5:<invalid> r3:<invalid> r2:0x0000 r1:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(16) v107(16) v117(16)
+// LocalsOut: Local -0002(16)
 
 l0730:
-	word16 r3_276
-	fn126C(0x0030, 0x0000, -r3_215, out r3_276)
-	r3_220 = -r3_276
+	word16 r3_277
+	fn126C(0x0030, 0x0000, -r3_216, out r3_277)
+	r3_221 = -r3_277
 // DataOut: pc r3
 // DataOut (flags): 
 // SymbolicIn: r0:0x0030 sp:sp + 0x0006 r4:<invalid> r5:<invalid> r3:<invalid> r2:0x0000 r1:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(16) v107(16) v117(16)
+// LocalsOut: Local -0002(16)
 
 l073E:
-	word16 r3_247
-	Mem225[0x007C:word16] = r3_220 >> 2
-	word16 r4_229 = fn100C(r3_220)
-	Mem230[0x007A:word16] = r4_229
-	word16 r3_235 = Mem230[0x005E:word16] * 0x0003 >> 1
-	Mem237[0x34B6:word16] = r3_235 + 0x0017
-	Mem239[0x34B6:word16] = Mem237[0x34B6:word16] + 0x0018
-	word16 r3_240 = r3_235 + 0x0017 - r4_229
-	r3_247 = r3_240
-	branch r3_240 > 0x0000 l0772
+	word16 r3_248
+	Mem226[0x007C:word16] = r3_221 >> 2
+	word16 r4_230 = fn100C(r3_221)
+	Mem231[0x007A:word16] = r4_230
+	word16 r3_236 = Mem231[0x005E:word16] * 0x0003 >> 1
+	Mem238[0x34B6:word16] = r3_236 + 0x0017
+	Mem240[0x34B6:word16] = Mem238[0x34B6:word16] + 0x0018
+	word16 r3_241 = r3_236 + 0x0017 - r4_230
+	r3_248 = r3_241
+	branch r3_241 > 0x0000 l0772
 // DataOut: pc r3 r4
 // DataOut (flags): 
 // SymbolicIn: r0:0x0030 sp:sp + 0x0006 r4:<invalid> r5:<invalid> r3:<invalid> r2:<invalid> r1:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(16) v117(16)
+// LocalsOut: Local -0002(16)
 
 l0770:
-	r3_247 = -r3_240
+	r3_248 = -r3_241
 // DataOut: pc r3 r4
 // DataOut (flags): 
 // SymbolicIn: r0:<invalid> sp:sp + 0x0006 r4:<invalid> r5:<invalid> r3:<invalid> r2:<invalid> r1:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(16) v117(16)
+// LocalsOut: Local -0002(16)
 
 l0772:
-	word16 r3_252
-	fn126C(0x0003, 0x0000, r3_247 << 1, out r3_252)
-	branch r3_240 > 0x0000 l0784
-// DataOut: pc r0 r3
+	word16 r3_253
+	fn126C(0x0003, 0x0000, r3_248 << 1, out r3_253)
+	branch r3_241 > 0x0000 l0784
+// DataOut: pc r3
 // DataOut (flags): 
 // SymbolicIn: r0:<invalid> sp:sp + 0x0006 r4:<invalid> r5:<invalid> r3:<invalid> r2:<invalid> r1:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(16) v117(16)
+// LocalsOut: Local -0002(16)
 
 l0782:
-	r3_252 = -r3_252
-// DataOut: pc r0 r3
+	r3_253 = -r3_253
+// DataOut: pc r3
 // DataOut (flags): 
 // SymbolicIn: r0:0x0003 sp:sp + 0x0006 r4:<invalid> r5:<invalid> r3:<invalid> r2:<invalid> r1:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(16) v117(16)
+// LocalsOut: Local -0002(16)
 
 l0784:
-	Mem262[0x007E:word16] = r3_252
-	fn0856(0x0003, r3_252, pc, r1_59)
+	Mem263[0x007E:word16] = r3_253
+	fn0856(r3_253, pc, r1_60)
 	fn0A0A()
 // DataOut: pc r4
 // DataOut (flags): 
@@ -981,41 +970,38 @@ l078C_thunk_fn0790:
 // SymbolicIn: r0:<invalid> sp:<invalid> r4:<invalid> r5:<invalid> r3:<invalid> r2:<invalid> r1:<invalid> -2(fp):<invalid>
 
 l061A:
-	Mem324[0x34B4:word16] = Mem93[0x0072:word16]
-	Mem331[0x34B6:word16] = (r4 >> 5) + 0x002B
-	branch Mem331[0x009E:word16] == 0x0000 l0640
-// DataOut: pc r0
+	Mem325[0x34B4:word16] = Mem94[0x0072:word16]
+	Mem332[0x34B6:word16] = (r4 >> 5) + 0x002B
+	branch Mem332[0x009E:word16] == 0x0000 l0640
+// DataOut: pc
 // DataOut (flags): 
 // SymbolicIn: sp:sp + 0x0002 r4:<invalid> r5:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: v69(16)
 
 l0638:
 	fn0CEC()
-	Mem374[0x009E:word16] = 0x0000
-// DataOut: pc r0
+	Mem375[0x009E:word16] = 0x0000
+// DataOut: pc
 // DataOut (flags): 
 // SymbolicIn: sp:sp + 0x0002 r4:<invalid> r5:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: v69(16)
 // Terminates process
 
 l0640:
-	word16 r4_341
-	fn1578(r0_102, pc, out r4_341)
-	branch Mem331[0x007E:word16] > 0x0010 l0666
+	word16 r4_342
+	fn1578(pc, out r4_342)
+	branch Mem332[0x007E:word16] > 0x0010 l0666
 // DataOut: pc r4
 // DataOut (flags): 
 // SymbolicIn: sp:sp + 0x0002 r4:<invalid> r5:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: v69(16)
 
 l064E:
 	fn0E06(0x0280)
-	Mem360[0x009E:word16] = fp
+	Mem361[0x009E:word16] = fp
 	fn0CEC()
-	Mem364[0x009E:word16] = 0x0000
-	word16 r3_369
-	word16 r4_370
-	word16 r5_371
-	fn0E32(pc, out r3_369, out r4_370, out r5_371)
+	Mem365[0x009E:word16] = 0x0000
+	word16 r3_370
+	word16 r4_371
+	word16 r5_372
+	fn0E32(pc, out r3_370, out r4_371, out r5_372)
 // DataOut: pc r4
 // DataOut (flags): 
 // SymbolicIn: sp:sp + 0x0002 r4:<invalid> r5:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
@@ -1030,7 +1016,7 @@ l0666:
 fn053A_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> r4:<invalid> r5:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
+// SymbolicIn: sp:fp r4:<invalid> r5:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
 
 
 
@@ -1064,120 +1050,120 @@ fn0790_exit:
 
 
 
-void fn0856(word16 r0, word16 r3, word16 pc, word16 wArg00)
+void fn0856(word16 r3, word16 pc, word16 wArg00)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  pc r0 r3
+// MayUse:  pc r3
 // LiveOut:
 // Trashed: NZVC r0 r1 r2 r3 r4 r5 sp
 // Preserved: sp
 // Stack args: Stack +0000(16)
 fn0856_entry:
-// DataOut: pc r0 r3
+// DataOut: pc r3
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: fp(16) Local -0002(0) Local -0004(16) Stack +0000(16) v104(16) v111(16) v113(16) v114(16) v65(16) v72(16) v76(16) v87(16) v96(16) v98(16)
+// LocalsOut: fp(16) Local -0002(0) Local -0004(16) Stack +0000(16)
 
 l0856:
 	word16 r0_203
 	word16 r4_19
-	fn1578(r0, pc, out r4_19)
+	fn1578(pc, out r4_19)
 	word16 sp_144 = fp
 	word16 r5_202 = Mem0[0x007E:word16]
 	branch r5_202 < 0x0000 l08B2
 // DataOut: pc r3 r4 r5 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r5:<invalid> r4:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) Local -0002(0) Local -0004(16) Stack +0000(16) v104(16) v111(16) v113(16) v114(16) v65(16) v72(16) v76(16) v87(16) v96(16) v98(16)
+// LocalsOut: fp(16) Local -0002(0) Local -0004(16) Stack +0000(16)
 
 l08B2:
 	branch 0xFFF6 - r5_202 <= 0x0000 l0904
 // DataOut: pc r3 r4 r5 sp
 // DataOut (flags): 
 // SymbolicIn: sp:fp r5:<invalid> r4:<invalid> r1:<invalid> r0:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) Local -0002(0) Local -0004(16) Stack +0000(16) v104(16) v111(16) v113(16) v114(16) v65(16) v72(16) v76(16) v87(16) v96(16) v98(16)
+// LocalsOut: fp(16) Local -0002(0) Local -0004(16) Stack +0000(16)
 
 l0860:
 	branch 0x0003 - r5_202 <= 0x0000 l08B8
 // DataOut: pc r3 r4 r5 sp
 // DataOut (flags): 
 // SymbolicIn: sp:fp r5:<invalid> r4:<invalid> r1:<invalid> r0:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) Local -0002(0) Local -0004(16) Stack +0000(16) v104(16) v111(16) v113(16) v114(16) v65(16) v72(16) v76(16) v87(16) v96(16) v98(16)
+// LocalsOut: fp(16) Local -0002(0) Local -0004(16) Stack +0000(16)
 
 l08B8:
-	Mem307[0x0060:word16] = 0x0000
-	Mem308[0x25AA:word16] = 0x01C2
-	Mem309[0x34C2:word16] = 0x0000
-	Mem310[0x34D2:word16] = 0x0000
+	Mem309[0x0060:word16] = 0x0000
+	Mem310[0x25AA:word16] = 0x01C2
+	Mem311[0x34C2:word16] = 0x0000
+	Mem312[0x34D2:word16] = 0x0000
 	branch r5_202 == 0x0000 l08D0
 // DataOut: pc r3 r4 r5 sp
 // DataOut (flags): N
 // SymbolicIn: sp:fp r5:<invalid> r4:<invalid> r1:<invalid> r0:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) Local -0002(0) Local -0004(16) Stack +0000(16) v104(16) v111(16) v113(16) v114(16) v65(16) v72(16) v76(16) v87(16) v96(16) v98(16)
+// LocalsOut: fp(16) Local -0002(0) Local -0004(16) Stack +0000(16)
 
 l08CE:
 	branch r5_202 > 0x0000 l0888
 // DataOut: pc r3 r4 r5 sp
 // DataOut (flags): 
 // SymbolicIn: sp:fp r5:<invalid> r4:<invalid> r1:<invalid> r0:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) Local -0002(0) Local -0004(16) Stack +0000(16) v104(16) v111(16) v113(16) v114(16) v65(16) v72(16) v76(16) v87(16) v96(16) v98(16)
+// LocalsOut: fp(16) Local -0002(0) Local -0004(16) Stack +0000(16)
 
 l08D0:
-	word16 r4_321 = Mem310[0x0058:word16]
-	branch 0xFDA8 - r4_321 <= 0x0000 l0904
+	word16 r4_323 = Mem312[0x0058:word16]
+	branch 0xFDA8 - r4_323 <= 0x0000 l0904
 // DataOut: pc r3 r4 r5 sp
 // DataOut (flags): 
 // SymbolicIn: sp:fp r5:<invalid> r4:<invalid> r1:<invalid> r0:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(0) v104(16) v65(16)
+// LocalsOut: Local -0002(0)
 
 l08DA:
-	branch 0xFED4 - r4_321 <= 0x0000 l08FE
+	branch 0xFED4 - r4_323 <= 0x0000 l08FE
 // DataOut: pc r3 r4 r5 sp
 // DataOut (flags): 
 // SymbolicIn: sp:fp r5:<invalid> r4:<invalid> r1:<invalid> r0:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(0) v104(16) v65(16)
+// LocalsOut: Local -0002(0)
 
 l08FE:
 	r0_203 = 0x21CE
 // DataOut: pc r0 r3 r5 sp
 // DataOut (flags): 
 // SymbolicIn: sp:fp r5:<invalid> r4:<invalid> r1:<invalid> r0:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(0) v104(16) v65(16)
+// LocalsOut: Local -0002(0)
 
 l08E0:
-	branch 0xFF6A - r4_321 <= 0x0000 l08F8
+	branch 0xFF6A - r4_323 <= 0x0000 l08F8
 // DataOut: pc r3 r4 r5 sp
 // DataOut (flags): 
 // SymbolicIn: sp:fp r5:<invalid> r4:<invalid> r1:<invalid> r0:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(0) v104(16) v65(16)
+// LocalsOut: Local -0002(0)
 
 l08F8:
 	r0_203 = 0x21A4
 // DataOut: pc r0 r3 r5 sp
 // DataOut (flags): 
 // SymbolicIn: sp:fp r5:<invalid> r4:<invalid> r1:<invalid> r0:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(0) v104(16) v65(16)
+// LocalsOut: Local -0002(0)
 
 l08E6:
-	branch 0xFFB0 - r4_321 <= 0x0000 l08F2
+	branch 0xFFB0 - r4_323 <= 0x0000 l08F2
 // DataOut: pc r3 r5 sp
 // DataOut (flags): 
 // SymbolicIn: sp:fp r5:<invalid> r4:<invalid> r1:<invalid> r0:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(0) v104(16) v65(16)
+// LocalsOut: Local -0002(0)
 
 l08F2:
 	r0_203 = 0x2176
 // DataOut: pc r0 r3 r5 sp
 // DataOut (flags): 
 // SymbolicIn: sp:fp r5:<invalid> r4:<invalid> r1:<invalid> r0:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(0) v104(16) v65(16)
+// LocalsOut: Local -0002(0)
 
 l08EC:
 	r0_203 = 0x214E
 // DataOut: pc r0 r3 r5 sp
 // DataOut (flags): 
 // SymbolicIn: sp:fp r5:<invalid> r4:<invalid> r1:<invalid> r0:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(0) v104(16) v65(16)
+// LocalsOut: Local -0002(0)
 
 l0866:
 	r4_19 = Mem0[0x0058:word16]
@@ -1185,73 +1171,73 @@ l0866:
 // DataOut: pc r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r5:<invalid> r4:<invalid> r1:<invalid> r0:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) Local -0004(16) Stack +0000(16) v104(16) v111(16) v113(16) v114(16) v65(16) v72(16) v76(16) v87(16) v96(16) v98(16)
+// LocalsOut: fp(16) Local -0004(16) Stack +0000(16)
 
 l089A:
-	Mem375[0x34CA:word16] = 0x20AC
+	Mem377[0x34CA:word16] = 0x20AC
 // DataOut: pc r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r5:<invalid> r4:<invalid> r1:<invalid> r0:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) Local -0004(16) Stack +0000(16) v104(16) v111(16) v113(16) v114(16) v65(16) v72(16) v76(16) v87(16) v96(16) v98(16)
+// LocalsOut: fp(16) Local -0004(16) Stack +0000(16)
 
 l0870:
 	branch 0xFED4 - r4_19 < 0x0000 l08A2
 // DataOut: pc r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r5:<invalid> r4:<invalid> r1:<invalid> r0:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) Local -0004(16) Stack +0000(16) v104(16) v111(16) v113(16) v114(16) v65(16) v72(16) v76(16) v87(16) v96(16) v98(16)
+// LocalsOut: fp(16) Local -0004(16) Stack +0000(16)
 
 l08A2:
-	Mem371[0x34CA:word16] = 0x20D8
+	Mem373[0x34CA:word16] = 0x20D8
 // DataOut: pc r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r5:<invalid> r4:<invalid> r1:<invalid> r0:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) Local -0004(16) Stack +0000(16) v104(16) v111(16) v113(16) v114(16) v65(16) v72(16) v76(16) v87(16) v96(16) v98(16)
+// LocalsOut: fp(16) Local -0004(16) Stack +0000(16)
 
 l0876:
 	branch 0xFF6A - r4_19 < 0x0000 l08AA
 // DataOut: pc r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r5:<invalid> r4:<invalid> r1:<invalid> r0:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) Local -0004(16) Stack +0000(16) v104(16) v111(16) v113(16) v114(16) v65(16) v72(16) v76(16) v87(16) v96(16) v98(16)
+// LocalsOut: fp(16) Local -0004(16) Stack +0000(16)
 
 l08AA:
-	Mem367[0x34CA:word16] = 0x210A
+	Mem369[0x34CA:word16] = 0x210A
 // DataOut: pc r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r5:<invalid> r4:<invalid> r1:<invalid> r0:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) Local -0004(16) Stack +0000(16) v104(16) v111(16) v113(16) v114(16) v65(16) v72(16) v76(16) v87(16) v96(16) v98(16)
+// LocalsOut: fp(16) Local -0004(16) Stack +0000(16)
 
 l087C:
 	branch 0x210A - Mem0[0x34CA:word16] != 0x0000 l0888
 // DataOut: pc r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r5:<invalid> r4:<invalid> r1:<invalid> r0:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) Local -0004(16) Stack +0000(16) v104(16) v111(16) v113(16) v114(16) v65(16) v72(16) v76(16) v87(16) v96(16) v98(16)
+// LocalsOut: fp(16) Local -0004(16) Stack +0000(16)
 
 l0884:
-	Mem362[0x34CA:word16] = 0x0000
+	Mem364[0x34CA:word16] = 0x0000
 // DataOut: pc r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r5:<invalid> r4:<invalid> r1:<invalid> r0:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) Local -0004(16) Stack +0000(16) v104(16) v111(16) v113(16) v114(16) v65(16) v72(16) v76(16) v87(16) v96(16) v98(16)
+// LocalsOut: fp(16) Local -0004(16) Stack +0000(16)
 
 l0888:
 	word16 r0_211 = Mem0[0x0078:word16]
-	fn0CCA(r4_19, r0_211)
+	fn0CCA(r0_211)
 	wLoc02 = r0_211
 	switch (wArg00) { l0896_thunk_fn0790 l07EE }
 // DataOut: pc r0 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r5:<invalid> r4:<invalid> r1:<invalid> r0:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) Local -0002(0) Local -0004(16) Stack +0000(16) v104(16) v111(16) v113(16) v114(16) v65(16) v72(16) v76(16) v87(16) v96(16) v98(16)
+// LocalsOut: fp(16) Local -0002(0) Local -0004(16) Stack +0000(16)
 
 l07EE:
 	branch 0x001A - r5_202 > 0x0000 l07F2_thunk_fn0790
 // DataOut: pc r0 r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp r5:<invalid> r4:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) Local -0002(0) Local -0004(16) Stack +0000(16) v104(16) v111(16) v113(16) v114(16) v65(16) v72(16) v76(16) v87(16) v96(16) v98(16)
+// LocalsOut: fp(16) Local -0002(0) Local -0004(16) Stack +0000(16)
 
 l07F2_thunk_fn0790:
 	fn0790()
@@ -1266,14 +1252,14 @@ l07F4:
 // DataOut: pc r0
 // DataOut (flags): NZV
 // SymbolicIn: sp:fp r5:<invalid> r4:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) Local -0002(0) Local -0004(16) Stack +0000(16) v104(16) v111(16) v113(16) v114(16) v65(16) v72(16) v76(16) v87(16) v96(16) v98(16)
+// LocalsOut: fp(16) Local -0002(0) Local -0004(16) Stack +0000(16)
 
 l084A:
 	branch v79_241 <= 0x0000 l0904
 // DataOut: pc
 // DataOut (flags): 
 // SymbolicIn: sp:fp r5:<invalid> r4:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) Local -0002(0) Local -0004(16) Stack +0000(16) v104(16) v111(16) v113(16) v114(16) v65(16) v72(16) v76(16) v87(16) v96(16) v98(16)
+// LocalsOut: fp(16) Local -0002(0) Local -0004(16) Stack +0000(16)
 
 l0904:
 	Mem191[0x34CA:word16] = 0x2212
@@ -1286,7 +1272,7 @@ l0904:
 // DataOut: pc r0 r3 r5 sp
 // DataOut (flags): 
 // SymbolicIn: sp:fp r5:<invalid> r4:<invalid> r1:<invalid> r0:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(0) v104(16) v65(16)
+// LocalsOut: Local -0002(0)
 
 l091E:
 	word16 r0_145
@@ -1297,28 +1283,28 @@ l091E:
 // DataOut: pc r3 r5 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r5:<invalid> r4:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(0) v104(16) v65(16)
+// LocalsOut: Local -0002(0)
 
 l092E:
 	branch 0xFF9C - Mem40[0x0054:word16] < 0x0000 l0964
 // DataOut: pc r3 r5 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r5:<invalid> r4:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(0) v104(16) v65(16)
+// LocalsOut: Local -0002(0)
 
 l0936:
 	branch 0xFFF1 - Mem40[0x0046:word16] < 0x0000 l096E
 // DataOut: pc r3 r5 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r5:<invalid> r4:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(0) v104(16) v65(16)
+// LocalsOut: Local -0002(0)
 
 l093E:
 	branch 0x000F - Mem40[0x0046:word16] > 0x0000 l096E
 // DataOut: pc r3 r5 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r5:<invalid> r4:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(0) v104(16) v65(16)
+// LocalsOut: Local -0002(0)
 
 l096E:
 	r0_145 = Mem40[0x0046:word16]
@@ -1326,7 +1312,7 @@ l096E:
 // DataOut: pc r0 r1 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r5:<invalid> r4:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(0) v104(16) v65(16)
+// LocalsOut: Local -0002(0)
 
 l0946:
 	word16 r1_164 = Mem40[0x0078:word16]
@@ -1336,28 +1322,28 @@ l0946:
 // DataOut: pc r0 r2 r3 r5 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r5:<invalid> r4:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(0) v104(16) v65(16)
+// LocalsOut: Local -0002(0)
 
 l0958:
 	r2_169 = -r0_145
 // DataOut: pc r0 r2 r3 r5 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r1:<invalid> r0:<invalid> r2:<invalid> r5:<invalid> r4:<invalid> r3:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(0) v104(16) v65(16)
+// LocalsOut: Local -0002(0)
 
 l095A:
 	branch 0x0030 - r2_169 >= 0x0000 l0978
 // DataOut: pc r0 r3 r5 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r1:<invalid> r0:<invalid> r2:<invalid> r5:<invalid> r4:<invalid> r3:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(0) v104(16) v65(16)
+// LocalsOut: Local -0002(0)
 
 l0978:
 	r1_146 = 0x2314
 // DataOut: pc r0 r1 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r1:<invalid> r0:<invalid> r2:<invalid> r5:<invalid> r4:<invalid> r3:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(0) v104(16) v65(16)
+// LocalsOut: Local -0002(0)
 
 l0960:
 	pc = fn0B06(r3, r5_202, pc)
@@ -1365,7 +1351,7 @@ l0960:
 // DataOut: pc sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r1:<invalid> r0:<invalid> r2:<invalid> r5:<invalid> r4:<invalid> r3:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(0) v104(16) v65(16)
+// LocalsOut: Local -0002(0)
 
 l0964:
 	r0_145 = Mem40[0x0054:word16]
@@ -1373,7 +1359,7 @@ l0964:
 // DataOut: pc r0 r1 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r5:<invalid> r4:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> pc:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(0) v104(16) v65(16)
+// LocalsOut: Local -0002(0)
 
 l097C:
 	Mem53[0x34C2:word16] = r1_146
@@ -1384,14 +1370,14 @@ l097C:
 // DataOut: pc r0 r1 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r0:<invalid> r1:<invalid> r5:<invalid> r4:<invalid> r2:<invalid> r3:<invalid> pc:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(0) v104(16) v65(16)
+// LocalsOut: Local -0002(0)
 
 l098C:
 	Mem136[sp_55:word16] = Mem56[sp_55:word16] + 0x0001
 // DataOut: pc r0 r1 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r0:<invalid> r1:<invalid> r5:<invalid> r4:<invalid> r2:<invalid> r3:<invalid> pc:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(0) v104(16) v65(16)
+// LocalsOut: Local -0002(0)
 
 l098E:
 	Mem65[sp_55 - 0x0002:word16] = r1_54
@@ -1403,35 +1389,35 @@ l098E:
 // DataOut: pc r0 r2 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r0:<invalid> r1:<invalid> r5:<invalid> r4:<invalid> r2:<invalid> r3:<invalid> pc:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(0) v104(16)
+// LocalsOut: Local -0002(0)
 
 l09BE:
 	branch 0x002D - r2_126 <= 0x0000 l09C8
 // DataOut: pc r0 r2 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r0:<invalid> r1:<invalid> r2:<invalid> r3:<invalid> r5:<invalid> r4:<invalid> pc:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(0) v104(16)
+// LocalsOut: Local -0002(0)
 
 l09C4:
 	r2_126 = 0x002D
 // DataOut: pc r0 r2 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r0:<invalid> r1:<invalid> r2:<invalid> r3:<invalid> r5:<invalid> r4:<invalid> pc:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(0) v104(16)
+// LocalsOut: Local -0002(0)
 
 l09B2:
 	branch 0xFFD3 - r2_126 >= 0x0000 l09C8
 // DataOut: pc r0 r2 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r0:<invalid> r1:<invalid> r2:<invalid> r3:<invalid> r5:<invalid> r4:<invalid> pc:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(0) v104(16)
+// LocalsOut: Local -0002(0)
 
 l09B8:
 	r2_126 = 0xFFD3
 // DataOut: pc r0 r2 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r0:<invalid> r1:<invalid> r2:<invalid> r3:<invalid> r5:<invalid> r4:<invalid> pc:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(0) v104(16)
+// LocalsOut: Local -0002(0)
 
 l09C8:
 	word16 r3_121 = 0x005A
@@ -1439,14 +1425,14 @@ l09C8:
 // DataOut: pc r2 r3 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r0:<invalid> r1:<invalid> r2:<invalid> r3:<invalid> r5:<invalid> r4:<invalid> pc:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(0) v104(16)
+// LocalsOut: Local -0002(0)
 
 l09D0:
 	r3_121 = -0x005A
 // DataOut: pc r2 r3 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r0:<invalid> r1:<invalid> r2:<invalid> r3:0x005A r5:<invalid> r4:<invalid> pc:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(0) v104(16)
+// LocalsOut: Local -0002(0)
 
 l09D2:
 	Mem99[0x0046:word16] = r2_126 + r3_121
@@ -1467,11 +1453,11 @@ l084C:
 	Mem298[0x34CA:word16] = 0x23FE
 	word16 r4_303
 	word16 r5_304
-	r0 = fn0E32(pc, out r3, out r4_303, out r5_304)
-// DataOut: pc r0 r3
+	fn0E32(pc, out r3, out r4_303, out r5_304)
+// DataOut: pc r3
 // DataOut (flags): 
 // SymbolicIn: sp:fp r5:<invalid> r4:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) Local -0002(0) Local -0004(16) Stack +0000(16) v104(16) v111(16) v113(16) v114(16) v65(16) v72(16) v76(16) v87(16) v96(16) v98(16)
+// LocalsOut: fp(16) Local -0002(0) Local -0004(16) Stack +0000(16)
 
 l07FA:
 	Mem250[0x34CA:word16] = 0x237E
@@ -1480,14 +1466,14 @@ l07FA:
 // DataOut: pc r0
 // DataOut (flags): 
 // SymbolicIn: sp:fp r5:<invalid> r4:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) Local -0002(0) v87(16) v96(16) v98(16)
+// LocalsOut: fp(16) Local -0002(0)
 
 l080A:
 	wLoc02_252 = 0x0004
 // DataOut: pc r0
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0002 r5:<invalid> r4:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):0x0003
-// LocalsOut: fp(16) Local -0002(0) v87(16) v96(16) v98(16)
+// LocalsOut: fp(16) Local -0002(0)
 
 l080C:
 	fn0C90(wLoc06, r0_211, wLoc02_252)
@@ -1501,7 +1487,7 @@ l080C:
 // DataOut: pc r0 sp
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0002 r5:<invalid> r4:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(16) v96(16) v98(16)
+// LocalsOut: Local -0002(16)
 // Terminates process
 
 l0824_thunk_fn0790:
@@ -1516,7 +1502,7 @@ l0826:
 // DataOut: pc r0 sp
 // DataOut (flags): 
 // SymbolicIn: r5:<invalid> r4:<invalid> r0:<invalid> r1:<invalid> r3:<invalid> r2:<invalid> sp:sp + 0xFFFE -4(fp):<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(16) v96(16) v98(16)
+// LocalsOut: Local -0002(16)
 
 l082A_thunk_fn0790:
 	fn0790()
@@ -1712,14 +1698,14 @@ fn0A94_entry:
 // DataOut: pc r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: fp(16) v32(16)
+// LocalsOut: fp(16)
 
 l0A94:
 	branch r3 >> 1 == 0x0000 l0B00
 // DataOut: pc r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: fp(16) v32(16)
+// LocalsOut: fp(16)
 
 l0B00:
 	Mem84[0x34D2:word16] = 0x0000
@@ -1734,21 +1720,21 @@ l0A98:
 // DataOut: pc r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:r3 >> 1
-// LocalsOut: Local -0002(16) v32(16)
+// LocalsOut: Local -0002(16)
 
 l0AA6:
 	wLoc02_22 = 0x0258
 // DataOut: pc r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0002 r3:r3 >> 1 r2:0x0258 -2(fp):r3 >> 2
-// LocalsOut: Local -0002(16) v32(16)
+// LocalsOut: Local -0002(16)
 
 l0AA8:
 	word16 r2_31 = Mem0[0x00B0:word16]
 // DataOut: pc r2 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0002 r3:r3 >> 1 r2:0x0258 -2(fp):<invalid>
-// LocalsOut: Local -0002(16) v32(16)
+// LocalsOut: Local -0002(16)
 
 l0AB0:
 	word16 r2_43 = r2_31 + Mem0[0x0070:word16] + 0x0001 & ~0xFFC0
@@ -1767,7 +1753,7 @@ l0AB0:
 // DataOut: pc r2 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0002 r3:0xFFC0 r2:<invalid> r0:<invalid> r4:<invalid> r1:<invalid> r5:<invalid> -2(fp):<invalid>
-// LocalsOut: Local -0002(16) v32(16)
+// LocalsOut: Local -0002(16)
 
 l0AEC:
 	Mem70[r5_59 + 0x0002:word16] = 0xF700
@@ -1811,7 +1797,6 @@ l0AF6:
 // DataOut: pc r4
 // DataOut (flags): 
 // SymbolicIn:
-// LocalsOut: v11(16)
 
 l0AF8:
 	Mem0[0x34D2:word16] = 0x35CA
@@ -1829,7 +1814,7 @@ fn0AF6_entry:
 // DataOut: pc r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: fp(16) Stack +0000(16) v35(16)
+// LocalsOut: fp(16) Stack +0000(16)
 
 l0AF6:
 	sp_1 = fp
@@ -1843,7 +1828,6 @@ l0AF6:
 // DataOut: pc r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: v35(16)
 
 l0AF8_in_fn0AF6:
 	Mem10[0x34D2:word16] = 0x35CA
@@ -1855,8 +1839,8 @@ l0AF8_in_fn0AF6:
 // SymbolicIn: sp:fp + 0x0002
 
 fn0AF6_exit:
-	NZ_14 = PHI(NZ_12, NZ)
-	V_15 = PHI(V_13, V)
+	NZ_14 = PHI((NZ_12, l0AF8_in_fn0AF6), (NZ, l0AF8))
+	V_15 = PHI((V_13, l0AF8_in_fn0AF6), (V, l0AF8))
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + 0x0002
@@ -1874,7 +1858,7 @@ fn0B06_entry:
 // DataOut: pc r3 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: fp(16) v11(16) v24(16) v28(16) v35(16) v38(16) v50(16) v6(16) v65(16) v67(16) v77(16)
+// LocalsOut: fp(16) v24(16)
 
 l0B06:
 	word16 r4_4 = fn13AA(pc, ptrLoc02)
@@ -1883,7 +1867,7 @@ l0B06:
 // DataOut: pc r3 r4 r5 sp
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: v11(16) v24(16) v28(16) v35(16) v38(16) v50(16) v6(16) v65(16) v67(16) v77(16)
+// LocalsOut: v24(16)
 
 l0B0A_thunk_fn0A94:
 	fn0A94(r3, r4_4, r5)
@@ -1897,7 +1881,7 @@ l0B0C:
 // DataOut: pc sp
 // DataOut (flags): 
 // SymbolicIn: sp:fp pc:pc - 0x0001 r0:<invalid> r1:<invalid> r2:<invalid> r4:<invalid>
-// LocalsOut: v11(16) v24(16) v28(16) v35(16) v38(16) v50(16) v65(16) v67(16) v77(16)
+// LocalsOut: v24(16)
 
 l0B12:
 	Mem40[0x267C:word16] = Mem19[0x34B6:word16]
@@ -1906,7 +1890,7 @@ l0B12:
 // DataOut: pc sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> pc:pc - 0x0001 r0:<invalid> r1:<invalid> r2:<invalid> r3:<invalid> r4:<invalid> -4(fp):<invalid> -2(fp):<invalid>
-// LocalsOut: v11(16) v24(16) v28(16) v35(16) v38(16) v50(16) v65(16) v67(16) v77(16)
+// LocalsOut: v24(16)
 
 l0B1E:
 	word16 v12_45 = Mem41[0x0070:word16] & 0x007F
@@ -1915,14 +1899,14 @@ l0B1E:
 // DataOut: pc sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> pc:pc - 0x0001 r0:<invalid> r1:<invalid> r2:<invalid> r3:<invalid> r4:<invalid> -4(fp):<invalid> -2(fp):<invalid>
-// LocalsOut: v11(16) v24(16) v28(16) v35(16) v38(16) v50(16) v65(16) v67(16) v77(16)
+// LocalsOut: v24(16)
 
 l0B26:
 	branch Mem46[0x07BA:word16] == 0x0000 l0BD0
 // DataOut: pc sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> pc:pc - 0x0001 r0:<invalid> r1:<invalid> r2:<invalid> r3:<invalid> r4:<invalid> -4(fp):<invalid> -2(fp):<invalid>
-// LocalsOut: v11(16) v24(16) v28(16) v35(16) v38(16) v50(16) v65(16) v67(16) v77(16)
+// LocalsOut: v24(16)
 
 l0B2C:
 	word16 r3_116 = Mem46[0x2610:word16] - Mem46[0x34B4:word16]
@@ -1932,14 +1916,14 @@ l0B2C:
 // DataOut: pc r2 r3 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> pc:pc - 0x0001 r0:<invalid> r1:<invalid> r2:<invalid> r3:<invalid> r4:<invalid> -4(fp):<invalid> -2(fp):<invalid>
-// LocalsOut: v11(16) v24(16) v28(16) v35(16) v38(16) v50(16) v65(16) v67(16) v77(16)
+// LocalsOut: v24(16)
 
 l0B44:
 	fn0C36(r2_118 + 0x0003, r3_116, pc_168)
 // DataOut: pc sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> pc:pc - 0x0001 r3:<invalid> r2:<invalid> r0:<invalid> r1:<invalid> r4:<invalid> -4(fp):<invalid> -2(fp):<invalid>
-// LocalsOut: v11(16) v24(16) v28(16) v35(16) v38(16) v50(16) v65(16) v67(16) v77(16)
+// LocalsOut: v24(16)
 
 l0B48:
 	word16 r3_128 = Mem122[0x2610:word16] - Mem122[0x267A:word16]
@@ -1952,7 +1936,7 @@ l0B48:
 // DataOut: pc sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> pc:pc - 0x0001 r3:<invalid> r2:<invalid> r0:<invalid> r1:<invalid> r4:<invalid> -4(fp):<invalid> -2(fp):<invalid>
-// LocalsOut: v11(16) v24(16) v28(16) v35(16) v38(16) v50(16) v65(16) v67(16) v77(16)
+// LocalsOut: v24(16)
 // Terminates process
 
 l0AF8_in_fn0B06:
@@ -1969,7 +1953,7 @@ l0B68:
 // DataOut: pc sp
 // DataOut (flags): 
 // SymbolicIn: r0:<invalid> r1:<invalid> r2:<invalid> pc:pc - 0x0001 r4:<invalid> -4(fp):<invalid> -2(fp):<invalid>
-// LocalsOut: v11(16) v24(16) v28(16) v35(16) v38(16) v50(16) v65(16) v67(16) v77(16)
+// LocalsOut: v24(16)
 
 l0B70_thunk_fn0AF6:
 	fn0AF6(wArg00)
@@ -1992,14 +1976,14 @@ l0B72:
 // DataOut: pc r2 r3 sp
 // DataOut (flags): 
 // SymbolicIn: r0:<invalid> r1:<invalid> r2:<invalid> pc:pc - 0x0003 r4:<invalid> -4(fp):<invalid> -2(fp):<invalid>
-// LocalsOut: v11(16) v24(16) v28(16) v35(16) v38(16) v50(16) v65(16) v67(16) v77(16)
+// LocalsOut: v24(16)
 
 l0B84:
 	fn0C36(r2_164, v47_158, pc_142 - 0x0001)
 // DataOut: pc sp
 // DataOut (flags): 
 // SymbolicIn: sp:sp + 0x0006 r3:<invalid> r2:<invalid> -4(fp):<invalid> -2(fp):<invalid>
-// LocalsOut: v11(16) v24(16) v28(16) v35(16) v38(16) v50(16) v65(16) v67(16) v77(16)
+// LocalsOut: v24(16)
 
 l0B88:
 	word16 r4_167 = fn13AA(pc_142 - 0x0001, ptrLoc02)
@@ -2008,7 +1992,7 @@ l0B88:
 // DataOut: pc r4 sp
 // DataOut (flags): 
 // SymbolicIn: sp:sp + 0x0006 r3:<invalid> r2:<invalid> -4(fp):<invalid> -2(fp):<invalid>
-// LocalsOut: v11(16) v24(16) v28(16) v35(16) v38(16) v50(16) v65(16) v67(16) v77(16)
+// LocalsOut: v24(16)
 
 l0B8E:
 	Mem170[0x005E:word16] = Mem151[0x005E:word16] + 0x0004
@@ -2019,7 +2003,6 @@ l0B8E:
 // DataOut: pc r4 sp
 // DataOut (flags): 
 // SymbolicIn: sp:sp + 0x0006 r3:<invalid> r2:<invalid> r0:<invalid> r1:<invalid> r4:<invalid> pc:pc - 0x0001 -4(fp):<invalid> -2(fp):<invalid>
-// LocalsOut: v28(16) v50(16) v65(16) v67(16) v77(16)
 
 l0BA6:
 	Mem179[0x34CA:word16] = 0x0000
@@ -2031,7 +2014,6 @@ l0BA6:
 // DataOut: pc r4 sp
 // DataOut (flags): 
 // SymbolicIn: sp:0x3FFE r3:<invalid> r2:<invalid> r0:<invalid> r1:<invalid> r4:<invalid> pc:pc - 0x0001 -4(fp):<invalid> -2(fp):<invalid>
-// LocalsOut: v28(16) v50(16) v65(16) v67(16) v77(16)
 
 l0BC2:
 	Mem193[0x34BA:word16] = 0x0000
@@ -2041,7 +2023,6 @@ l0BC2:
 // DataOut: pc sp
 // DataOut (flags): 
 // SymbolicIn: sp:0x3FFE r3:<invalid> r2:<invalid> r0:<invalid> r1:<invalid> r4:<invalid> pc:pc - 0x0001 -4(fp):<invalid> -2(fp):<invalid>
-// LocalsOut: v28(16) v50(16) v65(16) v67(16)
 
 l0BD0:
 	word16 sp_62 = sp_176 - 0x0002
@@ -2054,14 +2035,12 @@ l0BD0:
 // DataOut: pc r2 r3 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> pc:pc - 0x0001 r0:<invalid> r1:<invalid> r2:<invalid> r3:<invalid> r4:<invalid> -4(fp):<invalid> -2(fp):<invalid>
-// LocalsOut: v50(16) v65(16) v67(16)
 
 l0BEC:
 	r3_113 = -0x0030
 // DataOut: pc r2 r3 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> pc:pc - 0x0001 r2:0xFFE8 r3:0x0030 r5:<invalid> r0:<invalid> r1:<invalid> r4:<invalid> -4(fp):<invalid> -2(fp):<invalid>
-// LocalsOut: v50(16) v65(16) v67(16)
 
 l0BEE:
 	Mem80[sp_62 - 0x0004:word16] = r3_113
@@ -2146,7 +2125,7 @@ l0C5C:
 	fn0C72()
 	Mem31[0x267A:word16] = r0_27
 	Mem33[0x267C:word16] = Mem31[0x267C:word16] + r5_15
-	fn0C76(r0_27, pc)
+	fn0C76(pc)
 	r3 = r3 - 0x0001
 	branch r3 > 0x0000 l0C5C
 // DataOut: pc r0 r3 r5 sp
@@ -2163,7 +2142,7 @@ l0C70:
 fn0C36_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: r3:r3 - 0x0001 r4:<invalid> r1:<invalid>
+// SymbolicIn: r3:r3 - 0x0001 sp:fp r4:<invalid> r1:<invalid>
 
 
 
@@ -2193,10 +2172,10 @@ l0C72:
 
 
 
-void fn0C76(word16 r0, word16 pc)
+void fn0C76(word16 pc)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  pc r0
+// MayUse:  pc
 // LiveOut:
 // Trashed: NZVC r1 r4
 // Preserved: sp
@@ -2214,23 +2193,23 @@ l0C76:
 // SymbolicIn: sp:fp
 
 l0C7E:
-	word16 r4_10
-	fn1578(r0, pc, out r4_10)
+	word16 r4_9
+	fn1578(pc, out r4_9)
 // DataOut: pc r0 r3 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
 l0C82:
-	word16 v8_12 = Mem4[0x0070:word16] & 0x0007
-	Mem13[0x0070:word16] = v8_12
-	branch v8_12 != 0x0000 l0C82
+	word16 v8_11 = Mem4[0x0070:word16] & 0x0007
+	Mem12[0x0070:word16] = v8_11
+	branch v8_11 != 0x0000 l0C82
 // DataOut: pc r0 r3 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r4:<invalid> r1:<invalid>
 
 l0C8A:
-	word16 r4_17
-	fn1578(r0, pc, out r4_17)
+	word16 r4_16
+	fn1578(pc, out r4_16)
 	return
 // DataOut: pc r0 r3 r5
 // DataOut (flags): 
@@ -2293,16 +2272,16 @@ fn0C90_exit:
 
 
 
-void fn0CCA(word16 r4, word16 wArg02)
+void fn0CCA(word16 wArg02)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r4
+// MayUse: 
 // LiveOut:
 // Trashed: NZVC
 // Preserved: r4 sp
 // Stack args: Stack +0002(16)
 fn0CCA_entry:
-// DataOut: pc r0 r4 r5
+// DataOut: pc r0 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 // LocalsOut: fp(16) Stack +0002(16)
@@ -2312,13 +2291,11 @@ l0CCA:
 // DataOut: pc r0 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: Local -0002(16)
 
 l0CD8:
 // DataOut: pc r0 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0002 r4:<invalid> -2(fp):r4
-// LocalsOut: Local -0002(16)
 
 l0CE0:
 	return
@@ -2426,12 +2403,11 @@ void fn0D66(word16 wArg00, word16 wArg02, word16 wArg04, word16 wArg06, word16 w
 // LiveOut:
 // Trashed: NZV r0 r1 r2 r3 r4 sp
 // Preserved:
-// Stack args: Stack +000A(16)
 fn0D66_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: fp(16) Stack +000A(16)
+// LocalsOut: fp(16)
 
 l0D66:
 	return
@@ -2589,7 +2565,7 @@ fn0E06_entry:
 // DataOut: pc r0
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: fp(16) v18(16)
+// LocalsOut: fp(16)
 
 l0E06:
 	word16 r1_3 = Mem0[0x0072:word16]
@@ -2601,14 +2577,14 @@ l0E06:
 // DataOut: pc r0 r1 r3 r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: fp(16) Local -0002(0) v18(16)
+// LocalsOut: fp(16) Local -0002(0)
 
 l0E1E:
 	wLoc02_17 = 0x0004
 // DataOut: pc r0 r1 r3 r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0002 r1:<invalid> r4:<invalid> r5:<invalid> r3:<invalid> -2(fp):0x0003
-// LocalsOut: fp(16) Local -0002(0) v18(16)
+// LocalsOut: fp(16) Local -0002(0)
 
 l0E20:
 	fn0C90(wLoc06, r1_3, wLoc02_17)
@@ -2719,7 +2695,7 @@ fn0E98_entry:
 // DataOut: pc r3 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: fp(16) Local -0008(16) v6(16)
+// LocalsOut: fp(16) Local -0008(16)
 
 l0E98:
 	Mem2[0x0046:word16] = 0xFFE2
@@ -2830,7 +2806,6 @@ fn0F04_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: v39(16) v42(16) v44(16)
 
 l0F04:
 	fn0D3C(ptrLoc02)
@@ -2841,28 +2816,24 @@ l0F04:
 // DataOut: r0 r4 sp
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: v39(16) v42(16) v44(16)
 
 l0F24:
 	branch 0x0400 - r4_11 <u 0x0000 l0F2E
 // DataOut: r0 r4 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r0:<invalid> r4:<invalid> r5:0x1830
-// LocalsOut: v39(16) v42(16) v44(16)
 
 l0F2A:
 	r4_11 = 0x03FF
 // DataOut: r0 r4 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r0:<invalid> r4:<invalid> r5:0x1830
-// LocalsOut: v39(16) v42(16) v44(16)
 
 l0F20:
 	r4_11 = 0x0000
 // DataOut: r0 r4 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r0:<invalid> r4:<invalid> r5:0x1830
-// LocalsOut: v39(16) v42(16) v44(16)
 
 l0F2E:
 	Mem24[0x1830:word16] = r4_11
@@ -2872,7 +2843,6 @@ l0F2E:
 // DataOut: r0 r4 r5 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r0:<invalid> r4:<invalid> r5:0x1830
-// LocalsOut: v39(16) v42(16) v44(16)
 
 l0F38:
 	word16 r3_116
@@ -2886,14 +2856,12 @@ l0F38:
 // DataOut: r0 r1 r2 r4 r5 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r0:<invalid> r4:<invalid> r5:<invalid> r1:<invalid> r2:<invalid> r3:<invalid> -2(fp):<invalid>
-// LocalsOut: v39(16) v42(16) v44(16)
 
 l0F60:
 	fn126C(0x000C, 0x0000, r1_58 + 0x0006, out r3_116)
 // DataOut: r3 r4 r5 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r0:0x000C r4:<invalid> r5:<invalid> r1:<invalid> r2:0x0000 r3:<invalid> -2(fp):<invalid>
-// LocalsOut: v39(16) v42(16) v44(16)
 
 l0F50:
 	word16 r3_114
@@ -2902,7 +2870,6 @@ l0F50:
 // DataOut: r3 r4 r5 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r0:0x000C r4:<invalid> r5:<invalid> r1:<invalid> r2:0x0000 r3:<invalid> -2(fp):<invalid>
-// LocalsOut: v39(16) v42(16) v44(16)
 
 l0F6A:
 	word16 r2_65 = 0x000C
@@ -2910,7 +2877,6 @@ l0F6A:
 // DataOut: r0 r1 r2 r4 r5 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r0:0x000C r4:<invalid> r5:<invalid> r1:<invalid> r2:<invalid> r3:<invalid> -2(fp):<invalid>
-// LocalsOut: v39(16) v42(16) v44(16)
 
 l0F70:
 	Mem78[0x00AA:word16] = Mem56[0x00AA:word16] + 0x0001
@@ -2918,28 +2884,24 @@ l0F70:
 // DataOut: r0 r1 r2 r4 r5 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r0:<invalid> r4:<invalid> r5:<invalid> r1:<invalid> r2:<invalid> r3:<invalid> -2(fp):<invalid>
-// LocalsOut: v39(16) v42(16) v44(16)
 
 l0F84:
 	branch 0xFFFD - Mem78[0x00AA:word16] > 0x0000 l0F92
 // DataOut: r0 r1 r2 r4 r5 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r0:<invalid> r4:<invalid> r5:<invalid> r1:<invalid> r2:<invalid> r3:<invalid> -2(fp):<invalid>
-// LocalsOut: v39(16) v42(16) v44(16)
 
 l0F8C:
 	Mem104[0x0F70:word16] = 0x0A9F
 // DataOut: r0 r1 r2 r4 r5 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r0:<invalid> r4:<invalid> r5:<invalid> r1:<invalid> r2:<invalid> r3:<invalid> -2(fp):<invalid>
-// LocalsOut: v39(16) v42(16) v44(16)
 
 l0F7C:
 	Mem97[0x0F70:word16] = 0x0ADF
 // DataOut: r0 r1 r2 r4 r5 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r0:<invalid> r4:<invalid> r5:<invalid> r1:<invalid> r2:<invalid> r3:<invalid> -2(fp):<invalid>
-// LocalsOut: v39(16) v42(16) v44(16)
 
 l0F92:
 	word16 r4_84 = r4_11 + Mem78[0x00AA:word16] + r3_116
@@ -2948,7 +2910,6 @@ l0F92:
 // DataOut: r0 r1 r2 r5 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r0:<invalid> r4:<invalid> r5:<invalid> r1:<invalid> r2:<invalid> r3:<invalid> -2(fp):<invalid>
-// LocalsOut: v39(16) v42(16) v44(16)
 
 l0FA2:
 	r4_11 = Mem87[fp - 0x0002:word16]
@@ -2957,13 +2918,11 @@ l0FA2:
 // DataOut: r0 r1 r2 r4 r5 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r0:<invalid> r4:<invalid> r5:<invalid> r1:<invalid> r2:<invalid> r3:<invalid> -2(fp):<invalid>
-// LocalsOut: v39(16) v42(16) v44(16)
 
 l0FA8:
 // DataOut: r0 r4 r5 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> r0:<invalid> r4:<invalid> r5:<invalid> r1:<invalid> r2:<invalid> r3:<invalid> -2(fp):<invalid>
-// LocalsOut: v39(16) v42(16) v44(16)
 
 
 
@@ -2998,21 +2957,21 @@ void fn103C(word16 r0, word16 r3, word16 r5, word16 wArg00)
 
 // MayUse:  r0 r3 r5
 // LiveOut:
-// Trashed: NZVC r0 r1 r2 r3 r4 r5 sp
+// Trashed: NZVC r0 r1 r2 r3 r4 r5
 // Preserved: sp
 // Stack args: Stack +0000(16)
 fn103C_entry:
 // DataOut: r0 r3 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: fp(16) Stack +0000(16) v50(16)
+// LocalsOut: fp(16) Stack +0000(16)
 
 l103C:
 	branch 0x1F96 - r5 >u 0x0000 l10B6
 // DataOut: r0 r3 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: fp(16) Stack +0000(16) v50(16)
+// LocalsOut: fp(16) Stack +0000(16)
 
 l1042:
 	Mem57[r5:word16] = 0x9800
@@ -3028,28 +2987,28 @@ l1042:
 // DataOut: r5
 // DataOut (flags): ZC
 // SymbolicIn: sp:fp
-// LocalsOut: fp(16) Local -000C(16) Stack +0000(16) v50(16)
+// LocalsOut: fp(16) Local -000C(16) Stack +0000(16)
 
 l1080:
 	branch v39_88 >u 0x0000 l108A
 // DataOut: r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x000C r0:<invalid> r5:r5 + 0x000E r4:<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):r0 -8(fp):r4 -6(fp):r3 -4(fp):r2 -2(fp):r1
-// LocalsOut: fp(16) Local -000C(16) Stack +0000(16) v50(16)
+// LocalsOut: fp(16) Local -000C(16) Stack +0000(16)
 
 l108A:
 	Mem138[0x0046:word16] = Mem86[0x0046:word16] + 0x0016
 // DataOut: r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x000C r0:<invalid> r5:r5 + 0x000E r4:<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):r0 -8(fp):r4 -6(fp):r3 -4(fp):r2 -2(fp):r1
-// LocalsOut: fp(16) Local -000C(16) Stack +0000(16) v50(16)
+// LocalsOut: fp(16) Local -000C(16) Stack +0000(16)
 
 l1082:
 	Mem135[0x0046:word16] = Mem86[0x0046:word16] + 0xFFEA
 // DataOut: r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x000C r0:<invalid> r5:r5 + 0x000E r4:<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):r0 -8(fp):r4 -6(fp):r3 -4(fp):r2 -2(fp):r1
-// LocalsOut: fp(16) Local -000C(16) Stack +0000(16) v50(16)
+// LocalsOut: fp(16) Local -000C(16) Stack +0000(16)
 
 l1090:
 	fn0444()
@@ -3072,7 +3031,7 @@ l10B6:
 fn103C_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> r5:r5 - 0x0006 r0:<invalid> r4:<invalid> r3:<invalid> r2:<invalid> r1:<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):r0 -8(fp):r4 -6(fp):r3 -4(fp):r2 -2(fp):r1
+// SymbolicIn: sp:fp r5:r5 - 0x0006 r0:<invalid> r4:<invalid> r3:<invalid> r2:<invalid> r1:<invalid> -14(fp):<invalid> -12(fp):<invalid> -10(fp):r0 -8(fp):r4 -6(fp):r3 -4(fp):r2 -2(fp):r1
 
 
 
@@ -3093,7 +3052,7 @@ l114A:
 	word16 v10_5 = r0 - r1
 	word16 r3_103 = 0x0000
 	*r3Out = r3_103
-	bool C_25 = cond(v10_5)
+	bool C_25 = (bool) cond(v10_5)
 	branch v10_5 >=u 0x0000 l115A
 // DataOut: pc r0 r1 r3 r4 r5
 // DataOut (flags): C
@@ -3455,7 +3414,7 @@ l122E:
 	*r2Out = r2_44
 	word16 r3_43 = r3_103 << 1
 	*r3Out = r3_43
-	bool C_46 = cond(r2_44)
+	bool C_46 = (bool) cond(r2_44)
 	branch r2_44 >=u 0x0000 l1238
 // DataOut: pc r0 r1 r2 r3 r4 r5
 // DataOut (flags): C
@@ -3466,7 +3425,7 @@ l1234:
 	*r3Out = r3_59
 	word16 r2_62 = r2_44 + (r3_59 <u 0x0000)
 	*r2Out = r2_62
-	C_46 = cond(r2_62) (alias)
+	C_46 = (bool) cond(r2_62) (alias)
 // DataOut: pc r0 r2 r3 r4 r5
 // DataOut (flags): C
 // SymbolicIn: sp:fp r3:<invalid> r2:<invalid> r1:r0
@@ -3899,19 +3858,19 @@ l12E4:
 l1386:
 	word16 r3_26
 	*r3Out = r3_23 + 0x0001
-// DataOut: pc r0 r1 r2 r3 r4 r5
+// DataOut: pc r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:<invalid> r2:<invalid>
 
 l1388:
 	return r2_18
-// DataOut: pc r0 r1 r2 r3 r4 r5
+// DataOut: pc r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:<invalid> r2:<invalid>
 
 l12EC:
 	return r2_18 + r0
-// DataOut: pc r0 r1 r2 r3 r4 r5
+// DataOut: pc r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:<invalid> r2:<invalid>
 
@@ -3965,8 +3924,8 @@ l13BE:
 l13C6:
 	__wait()
 	word16 r4_17
-	branch Mem2[0x0070:word16] - fn1578(r0_11, pc, out r4_17) >u 0x0000 l13C6
-// DataOut: pc r0 r2 r3 r4 r5
+	branch Mem2[0x0070:word16] - fn1578(pc, out r4_17) >u 0x0000 l13C6
+// DataOut: pc r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp r0:<invalid> r1:<invalid> r2:<invalid> r4:<invalid>
 // LocalsOut: Stack +0000(16)
@@ -4060,25 +4019,25 @@ l011E:
 
 
 
-word16 fn1578(word16 r0, word16 pc, ptr16 & r4Out)
+word16 fn1578(word16 pc, ptr16 & r4Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  pc r0
+// MayUse:  pc
 // LiveOut: r1 r4
 // Trashed: NZVC r1 r4
 // Preserved: r0 r2 r3 r5 sp
 fn1578_entry:
-// DataOut: pc r0 r1 r4
+// DataOut: pc r1 r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: fp(16) v32(16)
+// LocalsOut: fp(16)
 
 l1578:
 	word16 r4_20 = 0x0000
 // DataOut: pc r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: fp(16) Local -0002(16) Local -0004(16) Local -000A(16) v32(16)
+// LocalsOut: fp(16) Local -0004(16) Local -000A(16)
 
 l1586:
 	word16 r5_37 = Mem0[r4_20 + 0x168C:word16]
@@ -4086,14 +4045,14 @@ l1586:
 // DataOut: pc r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x000C r4:<invalid> r5:<invalid> r1:<invalid> r3:<invalid> r0:<invalid> r2:<invalid> -12(fp):r5 -10(fp):r4 -8(fp):r3 -6(fp):r2 -4(fp):r1 -2(fp):r0
-// LocalsOut: fp(16) Local -0002(16) Local -0004(16) Local -000A(16) v32(16)
+// LocalsOut: fp(16) Local -0004(16) Local -000A(16)
 
 l15CC:
 	branch Mem0[0x0062:word16] - Mem0[0x0060:word16] == 0x0000 l15E4
 // DataOut: pc
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x000C r4:<invalid> r5:<invalid> r1:<invalid> r3:<invalid> r0:<invalid> r2:<invalid> -12(fp):r5 -10(fp):r4 -8(fp):r3 -6(fp):r2 -4(fp):r1 -2(fp):r0
-// LocalsOut: fp(16) Local -0002(16) Local -0004(16) Local -000A(16) v32(16)
+// LocalsOut: fp(16) Local -0004(16) Local -000A(16)
 
 l15D4:
 	word16 r0_119 = Mem0[0x0060:word16]
@@ -4102,7 +4061,7 @@ l15D4:
 // DataOut: pc
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x000C r4:<invalid> r5:<invalid> r1:<invalid> r3:<invalid> r0:<invalid> r2:<invalid> -12(fp):r5 -10(fp):r4 -8(fp):r3 -6(fp):r2 -4(fp):r1 -2(fp):r0
-// LocalsOut: fp(16) Local -0002(16) Local -0004(16) Local -000A(16)
+// LocalsOut: fp(16) Local -0004(16) Local -000A(16)
 
 l15E4:
 	word16 r4_102
@@ -4125,21 +4084,21 @@ l158C:
 // DataOut: pc r0 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x000C r4:<invalid> r5:<invalid> r1:<invalid> r3:<invalid> r0:<invalid> r2:<invalid> -12(fp):r5 -10(fp):r4 -8(fp):r3 -6(fp):r2 -4(fp):r1 -2(fp):r0
-// LocalsOut: fp(16) Local -0002(16) Local -0004(16) Local -000A(16) v32(16)
+// LocalsOut: fp(16) Local -0004(16) Local -000A(16)
 
 l15A4:
 	branch r3_46 > 0x0000 l15AA
 // DataOut: pc r0 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x000C r4:<invalid> r5:<invalid> r1:<invalid> r3:<invalid> r0:<invalid> r2:<invalid> -12(fp):r5 -10(fp):r4 -8(fp):r3 -6(fp):r2 -4(fp):r1 -2(fp):r0
-// LocalsOut: fp(16) Local -0002(16) Local -0004(16) Local -000A(16) v32(16)
+// LocalsOut: fp(16) Local -0004(16) Local -000A(16)
 
 l15A8:
 	r3_46 = -r3_46
 // DataOut: pc r0 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x000C r4:<invalid> r5:<invalid> r1:<invalid> r3:<invalid> r0:<invalid> r2:<invalid> -12(fp):r5 -10(fp):r4 -8(fp):r3 -6(fp):r2 -4(fp):r1 -2(fp):r0
-// LocalsOut: fp(16) Local -0002(16) Local -0004(16) Local -000A(16) v32(16)
+// LocalsOut: fp(16) Local -0004(16) Local -000A(16)
 
 l15AA:
 	fn126C(r0_47, 0x0000, r3_46, out r3_46)
@@ -4147,14 +4106,14 @@ l15AA:
 // DataOut: pc r3 r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x000C r4:<invalid> r5:<invalid> r1:<invalid> r3:<invalid> r0:<invalid> r2:<invalid> -12(fp):r5 -10(fp):r4 -8(fp):r3 -6(fp):r2 -4(fp):r1 -2(fp):r0
-// LocalsOut: fp(16) Local -0002(16) Local -0004(16) Local -000A(16) v32(16)
+// LocalsOut: fp(16) Local -0004(16) Local -000A(16)
 
 l15B6:
 	r3_46 = -r3_46
 // DataOut: pc r3 r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x000C r4:<invalid> r5:<invalid> r1:<invalid> r3:<invalid> r0:<invalid> r2:<invalid> -12(fp):r5 -10(fp):r4 -8(fp):r3 -6(fp):r2 -4(fp):r1 -2(fp):r0
-// LocalsOut: fp(16) Local -0002(16) Local -0004(16) Local -000A(16) v32(16)
+// LocalsOut: fp(16) Local -0004(16) Local -000A(16)
 
 l15B8:
 	fn1674(r3_46, Mem45[r4_20 + 0x1696:word16] + 0x000A, pc)
@@ -4162,7 +4121,7 @@ l15B8:
 // DataOut: pc r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x000C r4:<invalid> r5:<invalid> r1:<invalid> r3:<invalid> r0:<invalid> r2:<invalid> -12(fp):r5 -10(fp):r4 -8(fp):r3 -6(fp):r2 -4(fp):r1 -2(fp):r0
-// LocalsOut: fp(16) Local -0002(16) Local -0004(16) Local -000A(16) v32(16)
+// LocalsOut: fp(16) Local -0004(16) Local -000A(16)
 
 
 
@@ -4199,14 +4158,14 @@ l163A:
 // DataOut: pc r0 r1 r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp r1:r1 + 0x0001
-// LocalsOut: fp(16) Local -0002(16)
+// LocalsOut: Local -0002(16)
 
 l1640:
 	branch 0x2710 - r0 <u 0x0000 l1602
 // DataOut: pc r0 r1 r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0002 r1:r1 + 0x0003 r0:<invalid> -2(fp):pc
-// LocalsOut: fp(16) Local -0002(16)
+// LocalsOut: Local -0002(16)
 
 l1646:
 	Mem83[r1 + 0x0001:byte] = Mem73[r1 + 0x0001:byte] + 0x01
@@ -4214,7 +4173,7 @@ l1646:
 // DataOut: pc r0 r1 r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0002 r1:r1 + 0x0003 r0:<invalid> -2(fp):pc
-// LocalsOut: fp(16) Local -0002(16)
+// LocalsOut: Local -0002(16)
 
 l15FC:
 	Mem61[r1 + 0x0001:byte] = 0x20
@@ -4222,7 +4181,7 @@ l15FC:
 // DataOut: pc r0 r1 r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp r1:r1 + 0x0001
-// LocalsOut: fp(16) Local -0002(16)
+// LocalsOut: Local -0002(16)
 
 l1602:
 	word16 r3_25
@@ -4231,7 +4190,7 @@ l1602:
 // DataOut: pc r0 r1 r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0002 r1:r1 + 0x0003 r0:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) Local -0002(16)
+// LocalsOut: Local -0002(16)
 
 l1650:
 	r2_24 = r0
@@ -4239,7 +4198,7 @@ l1650:
 // DataOut: pc r1 r2 r3 r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0002 r1:r1 + 0x0003 r0:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) Local -0002(16)
+// LocalsOut: Local -0002(16)
 
 l1608:
 	word16 r3_51
@@ -4248,7 +4207,7 @@ l1608:
 // DataOut: pc r1 r2 r3 r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0002 r1:r1 + 0x0003 r0:<invalid> -2(fp):<invalid>
-// LocalsOut: fp(16) Local -0002(16)
+// LocalsOut: Local -0002(16)
 
 l161A:
 	word16 r3_26
@@ -4281,21 +4240,19 @@ fn1658_entry:
 // DataOut: pc r1 r2 r3 r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: Stack +0002(16) v18(16)
+// LocalsOut: Stack +0002(16)
 
 l1658:
 	branch wArg02 != 0x0000 l1670
 // DataOut: pc r1 r2 r3 r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: v18(16)
 
 l165E:
 	branch 0x0030 - Mem0[r3:word16] != 0x0000 l166C
 // DataOut: pc r1 r2 r3 r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: v18(16)
 
 l166C:
 // DataOut: pc r1 r2 r3 r4
@@ -4392,7 +4349,6 @@ fn34E0_entry:
 // DataOut: pc
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: v15(16) v17(16) v19(16) v21(16) v23(16) v25(16) v28(16)
 
 l34E0:
 	__reset()
@@ -4420,7 +4376,6 @@ l34E0:
 // DataOut: pc
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: v28(16)
 
 l3548:
 	Mem35[0xFF66:word16] = 0x0040

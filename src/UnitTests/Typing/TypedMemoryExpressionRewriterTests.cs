@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -79,7 +79,7 @@ namespace Reko.UnitTests.Typing
 		public void Tmer_PointerToSingleItem()
 		{
             var ptr = new Identifier("ptr", PrimitiveType.Word32, null);
-            CreateTv(ptr, new Pointer(point, 4), new Pointer(point, 4));
+            CreateTv(ptr, new Pointer(point, 32), new Pointer(point, 32));
             var tmer = new TypedExpressionRewriter(program, null);
             var access = CreateTv(m.Mem32(m.IAdd(ptr, 0)));
             Expression e = access.Accept(tmer);
@@ -93,8 +93,8 @@ namespace Reko.UnitTests.Typing
 			store.EnsureExpressionTypeVariable(factory, ptr);
 			EquivalenceClass eqPtr = new EquivalenceClass(ptr.TypeVariable);
 			eqPtr.DataType = point;
-			ptr.TypeVariable.OriginalDataType = new Pointer(point, 4);
-			ptr.TypeVariable.DataType = new Pointer(eqPtr, 4);
+			ptr.TypeVariable.OriginalDataType = new Pointer(point, 32);
+			ptr.TypeVariable.DataType = new Pointer(eqPtr, 32);
 
 			var c = CreateTv(Constant.Word32(4));
 			var bin = CreateTv(new BinaryExpression(BinaryOperator.IAdd, PrimitiveType.Word32, ptr, c));

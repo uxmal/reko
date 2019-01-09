@@ -8,7 +8,7 @@ l1:
 	Mem0[0x0800:0x0066:word16] = Mem0[0x0800:0x5420:word16]
 SegMem3Mock_exit:
 
-globals_t (in globals : (ptr (struct)))
+globals_t (in globals : (ptr32 (struct)))
 	trait_primitive(ptr32)
 	trait_mem(T_2, 8000)
 	trait_mem(T_3, 17960)

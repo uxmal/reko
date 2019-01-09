@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 1999-2018 John Källén.
+* Copyright (C) 1999-2019 John Källén.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -246,7 +246,7 @@ void ArmRewriter::RewriteLdr(BaseType dtDst, BaseType dtSrc)
 	}
 	if (isJump)
 	{
-		rtlClass = RtlClass::Transfer;
+		rtlClass = InstrClass::Transfer;
 		m.Goto(src);
 	}
 	else
@@ -362,8 +362,8 @@ void ArmRewriter::RewriteLdm(HExpr dst, int skip, int offset, BinOpEmitter op, b
 	if (pcRestored)
 	{
 		rtlClass = instr->detail->arm.cc == ARM_CC_AL
-			? RtlClass::Transfer
-			: RtlClass::ConditionalTransfer;
+			? InstrClass::Transfer
+			: InstrClass::ConditionalTransfer;
 		m.Return(0, 0);
 	}
 }
@@ -406,7 +406,7 @@ void ArmRewriter::RewriteMov()
 {
 	if (Dst().type == ARM_OP_REG && Dst().reg == ARM_REG_PC)
 	{
-		rtlClass = RtlClass::Transfer;
+		rtlClass = InstrClass::Transfer;
 		if (Src1().type == ARM_OP_REG && Src1().reg == ARM_REG_LR)
 		{
 			m.Return(0, 0);
@@ -415,7 +415,7 @@ void ArmRewriter::RewriteMov()
 		{
 			m.Goto(Operand(Src1()));
 		}
-		m.FinishCluster(RtlClass::Transfer, address, instr->size);
+		m.FinishCluster(InstrClass::Transfer, address, instr->size);
 		return;
 	}
 	auto opDst = Operand(Dst(), BaseType::Word32, true);

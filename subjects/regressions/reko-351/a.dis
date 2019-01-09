@@ -32,11 +32,11 @@ l800000A0:
 	byte CVZN_42
 	byte CVZNX_43
 	word32 d1_44
-	byte C_45
+	bool C_45
 	word32 a0_46
 	byte ZN_47
-	byte V_48
-	byte Z_49
+	bool V_48
+	bool Z_49
 	call null (retsize: 4; depth: 12)
 		uses: a0_32,a6_5,a7_37,C_35,CVZN_12,CVZNX_9,d0_8,d1_10,dwLoc04_4,dwLoc08_38,V_36,Z_34,ZN_33
 		defs: a0_46,a6_40,a7_39,C_45,CVZN_42,CVZNX_43,d0_41,d1_44,V_48,Z_49,ZN_47
@@ -89,14 +89,14 @@ l800000C4:
 l800000C6:
 	word32 d0_15 = d0_11 >> 0x00000001
 	branch d0_15 == 0x00000000 l800000E0
-// DataOut: d0
+// DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000004 a6:fp - 0x00000004 d0:<invalid> -4(fp):a6
 // LocalsOut: fp(32)
 
 l800000CA:
 	branch null == 0x00000000 l800000E0
-// DataOut: d0
+// DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000004 a6:fp - 0x00000004 d0:<invalid> -4(fp):a6
 // LocalsOut: fp(32)
@@ -107,12 +107,12 @@ l800000D4:
 	word32 d0_51
 	byte CVZN_52
 	byte CVZNX_53
-	byte N_54
-	byte Z_55
+	bool N_54
+	bool Z_55
 	word32 a0_56
 	byte ZN_57
-	byte C_58
-	byte V_59
+	bool C_58
+	bool V_59
 	call null (retsize: 4; depth: 16)
 		uses: a0_38,a6_5,a7_47,C_41,CVZN_46,CVZNX_16,d0_15,dwLoc04_4,dwLoc08_45,dwLoc0C_48,N_13,V_42,Z_40,ZN_39
 		defs: a0_56,a6_50,a7_49,C_58,CVZN_52,CVZNX_53,d0_51,N_54,V_59,Z_55,ZN_57
@@ -134,15 +134,15 @@ register_tm_clones_exit:
 
 
 
-void __do_global_dtors_aux(word32 d2)
+void __do_global_dtors_aux()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  d2
+// MayUse: 
 // LiveOut:
 // Trashed: CVZNX a0 d0 d1
 // Preserved: a2 a6 a7 d2
 __do_global_dtors_aux_entry:
-// DataOut: d2
+// DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp
 // LocalsOut: fp(32)
@@ -152,7 +152,7 @@ l800000E4:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp
-// LocalsOut: fp(32) Local -000C(32)
+// LocalsOut: fp(32)
 
 l800000F4:
 	word32 d0_100 = Mem0[0x80002726:word32]
@@ -161,7 +161,7 @@ l800000F4:
 // DataOut: a2 d0
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x0000000C a6:fp - 0x00000004 -12(fp):d2 -8(fp):a2 -4(fp):a6
-// LocalsOut: fp(32) Local -000C(32)
+// LocalsOut: fp(32)
 
 l80000114:
 	word32 d0_102 = d0_100 + 0x00000001
@@ -172,9 +172,9 @@ l80000114:
 	byte CVZN_111
 	word32 d2_112
 	byte ZN_113
-	byte C_114
-	byte V_115
-	byte Z_116
+	bool C_114
+	bool V_115
+	bool Z_116
 	word32 d0_117
 	byte CVZNX_118
 	byte VZ_119
@@ -188,7 +188,7 @@ l80000114:
 // DataOut: a2 d0
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x0000000C a6:fp - 0x00000004 a2:80002714 d0:<invalid> d2:0x00000000 a0:<invalid> -12(fp):d2 -8(fp):a2 -4(fp):a6
-// LocalsOut: fp(32) Local -000C(32)
+// LocalsOut: fp(32)
 
 l8000012C:
 	deregister_tm_clones()
@@ -196,7 +196,7 @@ l8000012C:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x0000000C a6:fp - 0x00000004 a2:80002714 d0:<invalid> d2:0x00000000 a0:<invalid> -12(fp):d2 -8(fp):a2 -4(fp):a6
-// LocalsOut: fp(32) Local -000C(32)
+// LocalsOut: fp(32)
 
 l8000013A:
 	word32 a7_85
@@ -205,9 +205,9 @@ l8000013A:
 	byte CVZN_88
 	word32 d2_89
 	byte ZN_90
-	byte C_91
-	byte V_92
-	byte Z_93
+	bool C_91
+	bool V_92
+	bool Z_93
 	word32 d0_94
 	byte CVZNX_95
 	byte VZ_96
@@ -219,14 +219,14 @@ l8000013A:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x0000000C a6:fp - 0x00000004 a2:80002714 d0:0x00000003 d2:0x00000000 a0:00000000 d1:6 -12(fp):d2 -8(fp):a2 -4(fp):a6
-// LocalsOut: fp(32) Local -000C(32)
+// LocalsOut: fp(32)
 
 l80000144:
 	Mem81[0x80002724:byte] = 0x01
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x0000000C a6:fp - 0x00000004 a2:80002714 d0:0x00000003 d2:0x00000000 a0:00000000 d1:6 -16(fp):8000065C -12(fp):d2 -8(fp):a2 -4(fp):a6
-// LocalsOut: fp(32) Local -000C(32)
+// LocalsOut: fp(32)
 
 l8000014C:
 	return
@@ -292,14 +292,14 @@ l8000016E:
 	word32 a6_84
 	word32 a0_85
 	byte ZN_86
-	byte C_87
-	byte V_88
-	byte Z_89
+	bool C_87
+	bool V_88
+	bool Z_89
 	word32 a1_90
 	byte CVZN_91
 	word32 d0_92
 	byte CVZNX_93
-	byte N_94
+	bool N_94
 	call null (retsize: 4; depth: 16)
 		uses: a0_7,a1,a6_5,a7_81,C_10,CVZN,CVZNX,d0,dwLoc04_4,dwLoc08_80,dwLoc0C_82,N,V_11,Z_9,ZN_8
 		defs: a0_85,a1_90,a6_84,a7_83,C_87,CVZN_91,CVZNX_93,d0_92,N_94,V_88,Z_89,ZN_86
@@ -310,14 +310,14 @@ l8000016E:
 
 l8000017E:
 	branch Mem0[0x8000271C:word32] != 0x00000000 l8000018E
-// DataOut: a0
+// DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000004 a6:fp - 0x00000004 a0:00000000 -12(fp):8000065C -8(fp):8000272A -4(fp):a6
 // LocalsOut: fp(32)
 
 l8000018E:
 	branch null == 0x00000000 l80000188
-// DataOut: a0
+// DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000004 a6:fp - 0x00000004 a0:8000271C -12(fp):8000065C -8(fp):8000272A -4(fp):a6
 // LocalsOut: fp(32)
@@ -327,14 +327,14 @@ l80000198:
 	word32 a6_65
 	word32 a0_66
 	byte ZN_67
-	byte C_68
-	byte V_69
-	byte Z_70
+	bool C_68
+	bool V_69
+	bool Z_70
 	word32 a1_71
 	byte CVZN_72
 	word32 d0_73
 	byte CVZNX_74
-	byte N_75
+	bool N_75
 	call null (retsize: 4; depth: 12)
 		uses: a0_28,a1_55,a6_26,a7_60,C_58,CVZN_63,CVZNX_22,d0_23,dwLoc04_4,dwLoc08_62,dwLoc0C_19,N_21,V_59,Z_57,ZN_56
 		defs: a0_66,a1_71,a6_65,a7_64,C_68,CVZN_72,CVZNX_74,d0_73,N_75,V_69,Z_70,ZN_67
@@ -703,7 +703,7 @@ l8000063C:
 	byte CVZN_29
 	word32 a0_30
 	word32 d0_31
-	byte Z_32
+	bool Z_32
 	call a0_12 (retsize: 4; depth: 12)
 		uses: a0_12,a2_13,a6_5,a7_7,CVZN_16,d0_14,dwLoc04_4,dwLoc08_10,Z_17
 		defs: a0_30,a2_28,a6_27,a7_26,CVZN_29,d0_31,Z_32

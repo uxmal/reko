@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,7 +50,8 @@ namespace Reko.Core.Expressions
 		void VisitProcedureConstant(ProcedureConstant pc);
 		void VisitScopeResolution(ScopeResolution scopeResolution);
 		void VisitSegmentedAccess(SegmentedAccess access);
-		void VisitSlice(Slice slice);
+
+        void VisitSlice(Slice slice);
 		void VisitTestCondition(TestCondition tc);
 		void VisitUnaryExpression(UnaryExpression unary);
     }
@@ -208,9 +209,9 @@ namespace Reko.Core.Expressions
 
 		public void VisitPhiFunction(PhiFunction phi)
 		{
-			for (int i = 0; i < phi.Arguments.Length; ++i)
+			foreach (var arg in phi.Arguments)
 			{
-				phi.Arguments[i].Accept(this);
+				arg.Value.Accept(this);
 			}
 		}
 
@@ -228,14 +229,14 @@ namespace Reko.Core.Expressions
 			tc.Expression.Accept(this);
 		}
 
-		public void VisitSegmentedAccess(SegmentedAccess access)
-		{
-			access.MemoryId.Accept(this);
-			access.BasePointer.Accept(this);
-			access.EffectiveAddress.Accept(this);
-		}
+        public void VisitSegmentedAccess(SegmentedAccess access)
+        {
+            access.MemoryId.Accept(this);
+            access.BasePointer.Accept(this);
+            access.EffectiveAddress.Accept(this);
+        }
 
-		public void VisitScopeResolution(ScopeResolution scope)
+        public void VisitScopeResolution(ScopeResolution scope)
 		{
 		}
 

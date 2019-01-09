@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -121,11 +121,7 @@ namespace Reko.ImageLoaders.MzExe
                 AccessMode.ReadWriteExecute));
             DumpSegments(imageMap);
 
-            var ep = new ImageSymbol(addrStart)
-            {
-                Type = SymbolType.Procedure,
-                ProcessorState = arch.CreateProcessorState()
-            };
+            var ep = ImageSymbol.Procedure(arch, addrStart, state: arch.CreateProcessorState());
             var sym = platform.FindMainProcedure(program, addrStart);
             var results = new RelocationResults(
                 new List<ImageSymbol> { ep },
@@ -157,7 +153,7 @@ namespace Reko.ImageLoaders.MzExe
             // We don't want to load every registered symbol provider, though. Perhaps
             // load symbols in a separate AppDomain, marshal all the symbols across,
             // then discard the appdomain?
-            var borsymLdr = new Borland.SymbolLoader(exe, RawImage, addrLoad);
+            var borsymLdr = new Borland.SymbolLoader(arch, exe, RawImage, addrLoad);
             if (borsymLdr.LoadDebugHeader())
             {
                 var syms = borsymLdr.LoadSymbols();

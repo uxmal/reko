@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,24 +19,23 @@
 #endregion
 
 using NUnit.Framework;
+using Reko.Arch.M68k;
 using Reko.Core;
-using Reko.Environments.MacOS;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Reko.Environments.MacOS.Classic;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Environments.MacOS
 {
     class MacsBugSymbolScannerTests
     {
         private BeImageWriter w;
+        private M68kArchitecture arch;
 
         [SetUp]
         public void Setup()
         {
             this.w = new BeImageWriter();
+            this.arch = new M68kArchitecture("m68k");
         }
 
         private void Given_Link(int amount)
@@ -105,7 +104,7 @@ namespace Reko.UnitTests.Environments.MacOS
             Given_ProgramData(0);
 
             var mem = new MemoryArea(Address.Ptr32(0x00100000), w.ToArray());
-            var scan = new MacsBugSymbolScanner(mem);
+            var scan = new MacsBugSymbolScanner(arch, mem);
             var symbols = scan.ScanForSymbols();
 
             Assert.AreEqual(1, symbols.Count);

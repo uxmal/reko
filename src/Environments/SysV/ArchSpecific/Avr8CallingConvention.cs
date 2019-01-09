@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -84,8 +84,8 @@ char - just clr r25). Arguments to functions with variable argument lists
 */
     public class Avr8CallingConvention : CallingConvention
     {
-        private IProcessorArchitecture arch;
-        private RegisterStorage[] argRegs;
+        private readonly IProcessorArchitecture arch;
+        private readonly RegisterStorage[] argRegs;
 
         public Avr8CallingConvention(IProcessorArchitecture arch)
         {
@@ -158,11 +158,11 @@ Arguments of varargs functions are passed on the stack. This applies even to the
                         var regNext = argRegs[r - 8];
                         if (seq != null)
                         {
-                            seq = new SequenceStorage(regNext, seq, PrimitiveType.CreateWord(regNext.DataType.Size + seq.DataType.Size));
+                            seq = new SequenceStorage(regNext, seq, PrimitiveType.CreateWord(regNext.DataType.BitSize + seq.DataType.BitSize));
                         }
                         else
                         {
-                            seq = new SequenceStorage(regNext, reg, PrimitiveType.CreateWord(regNext.DataType.Size + reg.DataType.Size));
+                            seq = new SequenceStorage(regNext, reg, PrimitiveType.CreateWord(regNext.DataType.BitSize + reg.DataType.BitSize));
                         }
                     }
                     ccr.SequenceParam(seq);

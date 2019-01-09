@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Text;
+using Reko.UnitTests.Mocks;
 
 namespace Reko.UnitTests.Gui
 {
@@ -44,7 +45,7 @@ namespace Reko.UnitTests.Gui
             mr = new MockRepository();
             sc = new ServiceContainer();
             procs = new List<ProcedureSearchHit>();
-            program = new Program { Name = "Proggie" };
+            program = new Program { Name = "Proggie", Architecture = new FakeArchitecture() };
         }
 
         [Test]
@@ -52,8 +53,11 @@ namespace Reko.UnitTests.Gui
         {
             var psr = new ProcedureSearchResult(mr.Stub<IServiceProvider>(), procs);
 
-            procs.Add(new ProcedureSearchHit(program,  Address.Ptr32(0x00001), new Procedure(program.Architecture, "foo", new Frame(PrimitiveType.Word32))));
-            procs.Add(new ProcedureSearchHit(program, Address.Ptr32(0x00002), new Procedure(program.Architecture, "bar", new Frame(PrimitiveType.Word32))));
+            var addr1 = Address.Ptr32(0x00001);
+            var addr2 = Address.Ptr32(0x00002);
+
+            procs.Add(new ProcedureSearchHit(program, addr1, new Procedure(program.Architecture, "foo", addr1, new Frame(PrimitiveType.Word32))));
+            procs.Add(new ProcedureSearchHit(program, addr2, new Procedure(program.Architecture, "bar", addr2, new Frame(PrimitiveType.Word32))));
 
             var view = mr.StrictMock<ISearchResultView>();
             view.Expect(s => view.AddColumn(
@@ -78,8 +82,11 @@ namespace Reko.UnitTests.Gui
         public void GetItemData()
         {
             ISearchResult psr = new ProcedureSearchResult(mr.Stub<IServiceProvider>(), procs);
-            procs.Add(new ProcedureSearchHit(program, Address.Ptr32(0x00001), new Procedure(program.Architecture, "foo", new Frame(PrimitiveType.Word32))));
-            procs.Add(new ProcedureSearchHit(program, Address.Ptr32(0x00002), new Procedure(program.Architecture, "bar", new Frame(PrimitiveType.Word32))));
+
+            var addr1 = Address.Ptr32(0x00001);
+            var addr2 = Address.Ptr32(0x00002);
+            procs.Add(new ProcedureSearchHit(program, addr1, new Procedure(program.Architecture, "foo", addr1, new Frame(PrimitiveType.Word32))));
+            procs.Add(new ProcedureSearchHit(program, addr2, new Procedure(program.Architecture, "bar", addr2, new Frame(PrimitiveType.Word32))));
 
             Assert.AreEqual(-1, psr.GetItem(0).ImageIndex);
             string [] str = psr.GetItem(0).Items;
@@ -114,9 +121,10 @@ namespace Reko.UnitTests.Gui
             mr.ReplayAll();
 
             ISearchResult psr = new ProcedureSearchResult(sc, procs);
+            var addr = Address.Ptr32(0x4234);
             procs.Add(new ProcedureSearchHit(
-                program, Address.Ptr32(0x4234),
-                new Procedure(program.Architecture, "foo", new Frame(PrimitiveType.Word32))));
+                program, addr,
+                new Procedure(program.Architecture, "foo", addr, new Frame(PrimitiveType.Word32))));
             psr.NavigateTo(0);
             mr.VerifyAll();
         }

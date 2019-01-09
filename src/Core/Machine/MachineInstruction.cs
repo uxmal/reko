@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,15 +41,19 @@ namespace Reko.Core.Machine
         public int Length;
 
         /// <summary>
-        /// The kind of instruction
+        /// The kind of instruction.
         /// </summary>
-        public abstract InstructionClass InstructionClass { get; }
+        public abstract InstrClass InstructionClass { get; }
 
         /// <summary>
         /// Returns true if the instruction is valid.
         /// </summary>
-        public abstract bool IsValid { get; }
+        public bool IsValid => InstructionClass != InstrClass.Invalid;
 
+        /// <summary>
+        /// Returns true if <paramref name="addr"/> is contained
+        /// inside the instruction.
+        /// </summary>
         public bool Contains(Address addr)
         {
             ulong ulInstr = Address.ToLinear();

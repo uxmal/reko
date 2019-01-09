@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -118,7 +118,7 @@ namespace Reko.Analysis
         {
             var totalSize = PrimitiveType.Create(
                 Domain.SignedInt | Domain.UnsignedInt,
-                loCandidate.Dst.DataType.Size + loCandidate.Dst.DataType.Size);
+                loCandidate.Dst.DataType.BitSize + loCandidate.Dst.DataType.BitSize);
             var left = CreateCandidate(loCandidate.Left, hiCandidate.Left, totalSize);
             var right = CreateCandidate(loCandidate.Right, hiCandidate.Right, totalSize);
             this.dst = CreateCandidate(loCandidate.Dst, hiCandidate.Dst, totalSize);
@@ -127,8 +127,7 @@ namespace Reko.Analysis
                 return null;
         
             var expSum = new BinaryExpression(loCandidate.Op, left.DataType, left, right);
-            var idDst = dst as Identifier;
-            if (idDst != null)
+            if (dst is Identifier idDst)
             {
                 return new Assignment(idDst, expSum);
             }
@@ -197,8 +196,7 @@ namespace Reko.Analysis
                     asc.StatementIndex = i;
                     return asc;
                 }
-                var ass = stms[i].Instruction as Assignment;
-                if (ass == null)
+                if (!(stms[i].Instruction is Assignment ass))
                     continue;
                 if (IsCarryFlag(ass.Dst))
                     return null;
@@ -210,11 +208,9 @@ namespace Reko.Analysis
         {
             for (++i; i < stms.Count; ++i)
             {
-                var ass = stms[i].Instruction as Assignment;
-                if (ass == null)
+                if (!(stms[i].Instruction is Assignment ass))
                     continue;
-                var bin = ass.Src as BinaryExpression;
-                if (bin == null)
+                if (!(ass.Src is BinaryExpression bin))
                     continue;
                 if (bin.Operator == next)
                     return i;
@@ -226,11 +222,9 @@ namespace Reko.Analysis
 
         public bool IsCarryFlag(Expression exp)
         {
-            var cf = exp as Identifier;
-            if (cf == null)
+            if (!(exp is Identifier cf))
                 return false;
-            var grf = cf.Storage as FlagGroupStorage;
-            if (grf == null)
+            if (!(cf.Storage is FlagGroupStorage grf))
                 return false;
             return (arch.CarryFlagMask & grf.FlagGroupBits) != 0;
         }
@@ -283,8 +277,7 @@ namespace Reko.Analysis
 
         private Expression CreateMemoryAccess(MemoryAccess mem, DataType totalSize)
         {
-            var segmem = mem as SegmentedAccess;
-            if (segmem != null)
+            if (mem is SegmentedAccess segmem)
             {
                 return new SegmentedAccess(segmem.MemoryId, segmem.BasePointer, segmem.EffectiveAddress, totalSize);
             }

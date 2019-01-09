@@ -25,7 +25,7 @@ fn10000000_entry:
 	// succ:  l10000000
 l10000000:
 	esp = fp
-	esp = fp - 0x00000004
+	esp = fp - 4
 	dwLoc04 = esi
 	esi = dwArg04
 	SCZO = cond(esi - 0x00000001)
@@ -39,14 +39,14 @@ l1000000A:
 	// succ:  fn10000000_exit
 l10000011:
 	eax = esi - 0x00000002
-	esp = fp - 0x00000008
+	esp = fp - 8
 	dwLoc08 = edi
-	esp = fp - 0x0000000C
+	esp = fp - 12
 	dwLoc0C = eax
 	eax = fn10000000(dwLoc0C)
 	esi = esi - 0x00000001
 	SZO = cond(esi)
-	esp = fp - 0x00000010
+	esp = fp - 16
 	dwLoc10 = esi
 	edi = eax
 	eax = fn10000000(dwLoc10)

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,8 +44,8 @@ namespace Reko.UnitTests.Typing
 			t2.Class = c2;
 
 			UnionType u = new UnionType(null, null);
-			u.Alternatives.Add(new Pointer(c1, 4));
-			u.Alternatives.Add(new Pointer(c2, 4));
+			u.Alternatives.Add(new Pointer(c1, 32));
+			u.Alternatives.Add(new Pointer(c2, 32));
 
 			UnionPointersStructuresMatcher upsm = new UnionPointersStructuresMatcher();
 			Assert.IsTrue(upsm.Match(u));
@@ -66,8 +66,8 @@ namespace Reko.UnitTests.Typing
 			t2.Class = c2;
 
 			UnionType u = new UnionType(null, null);
-			u.Alternatives.Add(new Pointer(c1, 4));
-			u.Alternatives.Add(new Pointer(PrimitiveType.Word16, 4));
+			u.Alternatives.Add(new Pointer(c1, 32));
+			u.Alternatives.Add(new Pointer(PrimitiveType.Word16, 32));
 
 			UnionPointersStructuresMatcher upsm = new UnionPointersStructuresMatcher();
 			Assert.IsFalse(upsm.Match(u));

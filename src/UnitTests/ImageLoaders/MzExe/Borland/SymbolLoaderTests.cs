@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 #endregion
 
 using NUnit.Framework;
+using Reko.Arch.X86;
 using Reko.Core;
 using Reko.ImageLoaders.MzExe;
 using Reko.ImageLoaders.MzExe.Borland;
@@ -36,6 +37,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe.Borland
         private LeImageWriter writer;
         private ExeImageLoader exeLoader;
         private int offNames;
+        private X86ArchitectureReal arch;
 
         [SetUp]
         public void Setup()
@@ -43,6 +45,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe.Borland
             this.writer = null;
             this.exeLoader = null;
             this.offNames = -1;
+            this.arch = new X86ArchitectureReal("x86-real-16");
         }
 
         private void Given_MzExeProgram(uint size)
@@ -141,7 +144,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe.Borland
 
             Given_ExeLoader();
 
-            var borsymldr = new SymbolLoader(exeLoader, writer.ToArray(), Address.SegPtr(0x800, 0));
+            var borsymldr = new SymbolLoader(arch, exeLoader, writer.ToArray(), Address.SegPtr(0x800, 0));
             Assert.IsFalse(borsymldr.LoadDebugHeader());
         }
 
@@ -152,7 +155,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe.Borland
             Given_DebugHeader(0, 0);
             Given_ExeLoader();
 
-            var borsymldr = new SymbolLoader(exeLoader, writer.ToArray(), Address.SegPtr(0x800, 0));
+            var borsymldr = new SymbolLoader(arch, exeLoader, writer.ToArray(), Address.SegPtr(0x800, 0));
             Assert.IsTrue(borsymldr.LoadDebugHeader());
         }
 
@@ -166,7 +169,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe.Borland
             Given_Names("fn1", "Function2");
             Given_ExeLoader();
 
-            var borsymldr = new SymbolLoader(exeLoader, writer.ToArray(), Address.SegPtr(0x800, 0));
+            var borsymldr = new SymbolLoader(arch, exeLoader, writer.ToArray(), Address.SegPtr(0x800, 0));
             Assert.IsTrue(borsymldr.LoadDebugHeader());
             var syms = borsymldr.LoadSymbols().Values.OrderBy(s => s.Address).ToArray();
             Assert.AreEqual(2, syms.Length);
@@ -186,7 +189,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe.Borland
             Given_Names("fn1", "Function2");
             Given_ExeLoader();
 
-            var borsymldr = new SymbolLoader(exeLoader, writer.ToArray(), Address.SegPtr(0x800, 0));
+            var borsymldr = new SymbolLoader(arch, exeLoader, writer.ToArray(), Address.SegPtr(0x800, 0));
             Assert.IsTrue(borsymldr.LoadDebugHeader());
             var syms = borsymldr.LoadSymbols().Values.OrderBy(s => s.Address).ToArray();
             Assert.AreEqual(2, syms.Length);

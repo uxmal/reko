@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -48,13 +48,13 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;ARRAY_OPERANDS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TravisRelease|AnyCPU'">
-    <OutputPath>bin\TravisRelease\</OutputPath>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnixRelease|AnyCPU'">
+    <OutputPath>bin\UnixRelease\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -86,6 +86,17 @@
     <Compile Include="ByteMapDialog.Designer.cs">
       <DependentUpon>ByteMapDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="DecoderPerformanceDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DecoderPerformanceDialog.Designer.cs">
+      <DependentUpon>DecoderPerformanceDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Decoders\Decoder.cs" />
+    <Compile Include="Decoders\DecoderBuilder.cs" />
+    <Compile Include="Decoders\Disassembler.cs" />
+    <Compile Include="Decoders\Opcode.cs" />
+    <Compile Include="Decoders\TestInstruction.cs" />
     <Compile Include="DisassemblyControlForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -108,6 +119,12 @@
     <Compile Include="MemoryControlDialog.Designer.cs">
       <DependentUpon>MemoryControlDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProcedureOptionsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProcedureOptionsDialog.Designer.cs">
+      <DependentUpon>ProcedureOptionsDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProcedurePropertiesDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -125,6 +142,9 @@
     <EmbeddedResource Include="ActiveControlForm.resx">
       <DependentUpon>ActiveControlForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="DecoderPerformanceDialog.resx">
+      <DependentUpon>DecoderPerformanceDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DisassemblyControlForm.resx">
       <DependentUpon>DisassemblyControlForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -135,6 +155,9 @@
     <EmbeddedResource Include="MemoryControlDialog.resx">
       <DependentUpon>MemoryControlDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProcedureOptionsDialog.resx">
+      <DependentUpon>ProcedureOptionsDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ProcedurePropertiesDialog.resx">
       <DependentUpon>ProcedurePropertiesDialog.cs</DependentUpon>
@@ -147,9 +170,15 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="RewriterPerformanceDialog.resx">
+      <DependentUpon>RewriterPerformanceDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="RtfDialog.resx">
       <DependentUpon>RtfDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SuffixArrayPerformanceDialog.resx">
+      <DependentUpon>SuffixArrayPerformanceDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TextViewDialog.resx">
       <DependentUpon>TextViewDialog.cs</DependentUpon>
@@ -176,11 +205,23 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="RewriterPerformanceDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RewriterPerformanceDialog.Designer.cs">
+      <DependentUpon>RewriterPerformanceDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="RtfDialog.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="RtfDialog.Designer.cs">
       <DependentUpon>RtfDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SuffixArrayPerformanceDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SuffixArrayPerformanceDialog.Designer.cs">
+      <DependentUpon>SuffixArrayPerformanceDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="TextViewDialog.cs">
       <SubType>Form</SubType>
@@ -202,6 +243,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Arch\Arm\Arm.csproj">
+      <Project>{32f09304-51be-4797-a86a-c0befed2422b}</Project>
+      <Name>Arm</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Arch\PowerPC\PowerPC.csproj">
       <Project>{B7DC39DD-6693-4F71-AE7F-007C5C62CBAA}</Project>
       <Name>PowerPC</Name>

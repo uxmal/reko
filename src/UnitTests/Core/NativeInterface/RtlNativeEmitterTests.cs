@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -83,7 +83,7 @@ namespace Reko.UnitTests.Core.NativeInterface
         }
 
         [Test]
-        public void Rtlne_Assign_ForgotSetRtlClass()
+        public void Rtlne_Assign_ForgotSetInstrClass()
         {
             var hDst = m.Mem16(m.Ptr32(0x00123400));
             var hSrc = m.UInt16(0x5678);
@@ -91,7 +91,7 @@ namespace Reko.UnitTests.Core.NativeInterface
             try
             {
                 var rtlc = m.ExtractCluster();
-                Assert.Fail("Expected an exception because we forgot to set the RtlClass of the expression");
+                Assert.Fail("Expected an exception because we forgot to set the InstrClass of the expression");
             }
             catch (InvalidOperationException)
             {
@@ -105,7 +105,7 @@ namespace Reko.UnitTests.Core.NativeInterface
             var hDst = m.Mem16(m.Ptr32(0x00123400));
             var hSrc = m.UInt16(0x5678);
             m.Assign(hDst, hSrc);
-            m.FinishCluster(RtlClass.Linear, 0x00111100, 4);
+            m.FinishCluster(InstrClass.Linear, 0x00111100, 4);
             var rtlc = m.ExtractCluster();
             var sExp = 
 @"00111100(4):
@@ -121,7 +121,7 @@ Mem0[0x00123400:word16] = 0x5678
             var hLeft = m.Mem16(m.Ptr32(0x00123400));
             var hRight = m.UInt16(0x5678);
             m.Assign(hDst, m.IAdd(hLeft,hRight));
-            m.FinishCluster(RtlClass.Linear, 0x00111100, 4);
+            m.FinishCluster(InstrClass.Linear, 0x00111100, 4);
             var rtlc = m.ExtractCluster();
             var sExp =
 @"00111100(4):
@@ -146,7 +146,7 @@ Mem0[0x00123400:word16] = Mem0[0x00123400:word16] + 0x5678
             m.AddArg(hArg3);
             m.SideEffect(m.Fn(fn));
 
-            m.FinishCluster(RtlClass.Linear, 0x00111100, 4);
+            m.FinishCluster(InstrClass.Linear, 0x00111100, 4);
             var rtlc = m.ExtractCluster();
             var sExp =
 @"00111100(4):

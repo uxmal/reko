@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -73,11 +73,7 @@ namespace Reko.Environments.SegaGenesis
             var eps = new List<ImageSymbol>();
             if (program.SegmentMap.IsValidAddress(addrReset))
             {
-                var sym = new ImageSymbol(addrReset)
-                {
-                    Name = "Reset",
-                    ProcessorState = program.Architecture.CreateProcessorState()
-                };
+                var sym = ImageSymbol.Procedure(program.Architecture, addrReset, "Reset", state: program.Architecture.CreateProcessorState());
                 syms.Add(sym.Address, sym);
                 eps.Add(sym);
             }

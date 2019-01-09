@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
@@ -44,15 +45,23 @@ namespace Reko.Arch.M68k
             }
             else if (cc == ConditionCode.ALWAYS)
             {
-                rtlc = RtlClass.Transfer;
+                rtlc = InstrClass.Transfer;
                 m.Goto(addr);
             }
             else
             {
-                rtlc = RtlClass.ConditionalTransfer;
+                rtlc = InstrClass.ConditionalTransfer;
                 var test = m.Test(cc, FpuFlagGroup());
                 m.Branch(test, addr, rtlc);
             }
+        }
+        private void RewriteFbcc(Func<Expression, Expression> fnTest)
+        {
+            rtlc = InstrClass.ConditionalTransfer;
+            m.Branch(fnTest(
+                binder.EnsureRegister(Registers.fpsr)),
+                ((M68kAddressOperand)di.op1).Address,
+                InstrClass.ConditionalTransfer);
         }
 
         private void RewriteFBinOp(Func<Expression, Expression, Expression> binOpGen)

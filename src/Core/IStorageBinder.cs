@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ namespace Reko.Core
     public interface IStorageBinder
     {
         Identifier EnsureIdentifier(Storage stgForeign);
-        Identifier EnsureRegister(RegisterStorage stgForeign);
+        Identifier EnsureRegister(RegisterStorage reg);
         Identifier EnsureFlagGroup(FlagGroupStorage grf);
         Identifier EnsureFlagGroup(RegisterStorage flagRegister, uint flagGroupBits, string name, DataType dataType);
         Identifier EnsureFpuStackVariable(int v, DataType dataType);

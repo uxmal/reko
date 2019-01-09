@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -169,8 +169,7 @@ namespace Reko.Core
 
         private Expression GetMemoryValue(Address addr, DataType dt, SegmentMap segmentMap)
         {
-            var pt = dt as PrimitiveType;
-            if (pt == null)
+            if (!(dt is PrimitiveType pt))
                 return Constant.Invalid;
             else if (pt.Domain == Domain.Real && pt.BitSize > 80)
             {

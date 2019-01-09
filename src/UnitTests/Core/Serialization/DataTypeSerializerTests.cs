@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,14 +41,14 @@ namespace Reko.UnitTests.Core.Serialization
         [Test]
         public void DTS_ptr_foo()
         {
-            var pt = new Pointer(PrimitiveType.Int32, 4).Accept(new DataTypeSerializer());
+            var pt = new Pointer(PrimitiveType.Int32, 32).Accept(new DataTypeSerializer());
             Assert.AreEqual("ptr(prim(SignedInt,4))", pt.ToString());
         }
 
         [Test]
         public void DTS_array_ptr_code()
         {
-            var pt = new ArrayType(new Pointer(new CodeType(), 4), 3).Accept(new DataTypeSerializer());
+            var pt = new ArrayType(new Pointer(new CodeType(), 32), 3).Accept(new DataTypeSerializer());
             Assert.AreEqual("arr(ptr(code),3)", pt.ToString());
         }
 
@@ -57,7 +57,7 @@ namespace Reko.UnitTests.Core.Serialization
         {
             // This recursive structure shoudn't blow up the stack.
             var str = new StructureType("foo", 0);
-            str.Fields.Add(0, new Pointer(str, 4), "bar");
+            str.Fields.Add(0, new Pointer(str, 32), "bar");
             var sStr = str.Accept(new DataTypeSerializer());
             Assert.AreEqual("struct(foo, (0, bar, ptr(struct(foo, ))))", sStr.ToString());
         }

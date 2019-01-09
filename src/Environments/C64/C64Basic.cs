@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -71,9 +71,9 @@ namespace Reko.Environments.C64
             return new LeImageReader(image, addrBegin, addrEnd);
         }
 
-        public override EndianImageReader CreateImageReader(MemoryArea img, ulong off)
+        public override EndianImageReader CreateImageReader(MemoryArea mem, ulong off)
         {
-            throw new NotImplementedException();
+            return new LeImageReader(mem, off);
         }
 
         public override ImageWriter CreateImageWriter()
@@ -160,7 +160,7 @@ namespace Reko.Environments.C64
 
         public override Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException("Basic doesn't have the notion of a parameter stack.");
         }
 
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)

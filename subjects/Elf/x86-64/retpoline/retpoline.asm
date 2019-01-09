@@ -274,13 +274,13 @@ main proc
 	mov	[rbp-18],rsi
 	mov	[rbp-28],rax
 	mov	rax,[rbp-28]
-	mov	r11,[r8]
+	mov	r11,[rax]
 	mov	edi,00000001
 	mov	esi,00000005
 	call	00000000004006F0
 	mov	[rbp-30],rax
 	mov	rax,[rbp-28]
-	mov	r11,[r8+08]
+	mov	r11,[rax+08]
 	mov	rdi,[rbp-30]
 	mov	esi,00000078
 	call	00000000004006F0
@@ -367,7 +367,8 @@ _fini proc
 	add	rsp,08
 	ret
 ;;; Segment .rodata (0000000000400790)
-0000000000400790 01 00 02 00                                     ....           
+_IO_stdin_used		; 0000000000400790
+	dd	0x00020001
 0000000000400794             00 00 00 00 60 05 40 00 00 00 00 00     ....`.@.....
 00000000004007A0 90 05 40 00 00 00 00 00 64 6F 6E 65 0A 00       ..@.....done.. 
 ;;; Segment .eh_frame_hdr (00000000004007B0)
@@ -422,9 +423,9 @@ _fini proc
 ; DT_RELA         00000000004003B0
 ; DT_RELASZ                     48
 ; DT_RELAENT                    24
-; 6FFFFFFE        0000000000400390
-; 6FFFFFFF        0000000000000001
-; 6FFFFFF0        0000000000400382
+; DT_VERNEED      0000000000400390
+; DT_VERNEEDNUM                  1
+; DT_VERSYM       0000000000400382
 ;;; Segment .got (0000000000600FF0)
 __libc_start_main_GOT		; 0000000000600FF0
 	dq	0x0000000000000000

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -277,11 +277,7 @@ l01C8:
 			state.SetRegister(Registers.si, Constant.Word16(0));
 			state.SetRegister(Registers.di, Constant.Word16(0));
 
-            var sym = new ImageSymbol(Address.SegPtr(pklCs, pklIp))
-            {
-                Type = SymbolType.Procedure,
-                ProcessorState = state
-            };
+            var sym = ImageSymbol.Procedure(arch, Address.SegPtr(pklCs, pklIp), state: state);
             return new RelocationResults(
                 new List<ImageSymbol> { sym },
                 new SortedList<Address, ImageSymbol> { { sym.Address, sym } });

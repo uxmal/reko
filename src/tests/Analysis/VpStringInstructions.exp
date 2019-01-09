@@ -230,44 +230,44 @@ Mem0:Global memory
           branch 0x00 != Mem0[es:di_11:byte] l0C00_0030
 cx_4: orig: cx
     def:  cx_4 = Mem0[ds:0x0400:word16]
-    uses: cx_12 = PHI(cx_4, cx_22)
+    uses: cx_12 = PHI((cx_4, l0C00_0026), (cx_22, l0C00_0030_1))
 al_5: orig: al
     def:  al_5 = 0x00
 di_6: orig: di
     def:  di_6 = Mem0[ds:0x0402:word16]
-    uses: di_11 = PHI(di_6, di_21)
+    uses: di_11 = PHI((di_6, l0C00_0026), (di_21, l0C00_0030_1))
 SCZO:Flags
     def:  def SCZO
-    uses: SCZO_9 = PHI(SCZO, SCZO_19)
+    uses: SCZO_9 = PHI((SCZO, l0C00_0026), (SCZO_19, l0C00_0030_1))
 Z:Flags
     def:  def Z
-    uses: Z_10 = PHI(Z, Z_20)
+    uses: Z_10 = PHI((Z, l0C00_0026), (Z_20, l0C00_0030_1))
 SCZO_9: orig: SCZO
-    def:  SCZO_9 = PHI(SCZO, SCZO_19)
-    uses: SCZO_13 = PHI(SCZO_9, SCZO_19)
+    def:  SCZO_9 = PHI((SCZO, l0C00_0026), (SCZO_19, l0C00_0030_1))
+    uses: SCZO_13 = PHI((SCZO_9, l0C00_0030), (SCZO_19, l0C00_0030_1))
 Z_10: orig: Z
-    def:  Z_10 = PHI(Z, Z_20)
-    uses: Z_14 = PHI(Z_10, Z_20)
+    def:  Z_10 = PHI((Z, l0C00_0026), (Z_20, l0C00_0030_1))
+    uses: Z_14 = PHI((Z_10, l0C00_0030), (Z_20, l0C00_0030_1))
 di_11: orig: di
-    def:  di_11 = PHI(di_6, di_21)
-    uses: di_15 = PHI(di_11, di_21)
+    def:  di_11 = PHI((di_6, l0C00_0026), (di_21, l0C00_0030_1))
+    uses: di_15 = PHI((di_11, l0C00_0030), (di_21, l0C00_0030_1))
           SCZO_19 = cond(0x00 - Mem0[es:di_11:byte])
           di_21 = di_11 + 0x0001
           branch 0x00 != Mem0[es:di_11:byte] l0C00_0030
 cx_12: orig: cx
-    def:  cx_12 = PHI(cx_4, cx_22)
+    def:  cx_12 = PHI((cx_4, l0C00_0026), (cx_22, l0C00_0030_1))
     uses: branch cx_12 == 0x0000 l0C00_0032
-          cx_16 = PHI(cx_12, cx_22)
+          cx_16 = PHI((cx_12, l0C00_0030), (cx_22, l0C00_0030_1))
           cx_22 = cx_12 - 0x0001
 SCZO_13: orig: SCZO
-    def:  SCZO_13 = PHI(SCZO_9, SCZO_19)
+    def:  SCZO_13 = PHI((SCZO_9, l0C00_0030), (SCZO_19, l0C00_0030_1))
 Z_14: orig: Z
-    def:  Z_14 = PHI(Z_10, Z_20)
+    def:  Z_14 = PHI((Z_10, l0C00_0030), (Z_20, l0C00_0030_1))
 di_15: orig: di
-    def:  di_15 = PHI(di_11, di_21)
+    def:  di_15 = PHI((di_11, l0C00_0030), (di_21, l0C00_0030_1))
     uses: Mem17[ds:0x0404:word16] = di_15
 cx_16: orig: cx
-    def:  cx_16 = PHI(cx_12, cx_22)
+    def:  cx_16 = PHI((cx_12, l0C00_0030), (cx_22, l0C00_0030_1))
 Mem17: orig: Mem0
     def:  Mem17[ds:0x0404:word16] = di_15
 es:es
@@ -276,21 +276,21 @@ es:es
           branch 0x00 != Mem0[es:di_11:byte] l0C00_0030
 SCZO_19: orig: SCZO
     def:  SCZO_19 = cond(0x00 - Mem0[es:di_11:byte])
-    uses: Z_20 = SCZO_19 (alias)
-          SCZO_13 = PHI(SCZO_9, SCZO_19)
-          SCZO_9 = PHI(SCZO, SCZO_19)
+    uses: Z_20 = (bool) SCZO_19 (alias)
+          SCZO_13 = PHI((SCZO_9, l0C00_0030), (SCZO_19, l0C00_0030_1))
+          SCZO_9 = PHI((SCZO, l0C00_0026), (SCZO_19, l0C00_0030_1))
 Z_20: orig: Z
-    def:  Z_20 = SCZO_19 (alias)
-    uses: Z_14 = PHI(Z_10, Z_20)
-          Z_10 = PHI(Z, Z_20)
+    def:  Z_20 = (bool) SCZO_19 (alias)
+    uses: Z_14 = PHI((Z_10, l0C00_0030), (Z_20, l0C00_0030_1))
+          Z_10 = PHI((Z, l0C00_0026), (Z_20, l0C00_0030_1))
 di_21: orig: di
     def:  di_21 = di_11 + 0x0001
-    uses: di_15 = PHI(di_11, di_21)
-          di_11 = PHI(di_6, di_21)
+    uses: di_15 = PHI((di_11, l0C00_0030), (di_21, l0C00_0030_1))
+          di_11 = PHI((di_6, l0C00_0026), (di_21, l0C00_0030_1))
 cx_22: orig: cx
     def:  cx_22 = cx_12 - 0x0001
-    uses: cx_16 = PHI(cx_12, cx_22)
-          cx_12 = PHI(cx_4, cx_22)
+    uses: cx_16 = PHI((cx_12, l0C00_0030), (cx_22, l0C00_0030_1))
+          cx_12 = PHI((cx_4, l0C00_0026), (cx_22, l0C00_0030_1))
 // fn0C00_0026
 // Return size: 0
 void fn0C00_0026(selector es, selector ds)
@@ -309,24 +309,24 @@ l0C00_0026:
 	di_6 = Mem0[ds:0x0402:word16]
 	// succ:  l0C00_0030
 l0C00_0030:
-	SCZO_9 = PHI(SCZO, SCZO_19)
-	Z_10 = PHI(Z, Z_20)
-	di_11 = PHI(di_6, di_21)
-	cx_12 = PHI(cx_4, cx_22)
+	SCZO_9 = PHI((SCZO, l0C00_0026), (SCZO_19, l0C00_0030_1))
+	Z_10 = PHI((Z, l0C00_0026), (Z_20, l0C00_0030_1))
+	di_11 = PHI((di_6, l0C00_0026), (di_21, l0C00_0030_1))
+	cx_12 = PHI((cx_4, l0C00_0026), (cx_22, l0C00_0030_1))
 	branch cx_12 == 0x0000 l0C00_0032
 	// succ:  l0C00_0030_1 l0C00_0032
 l0C00_0030_1:
 	SCZO_19 = cond(0x00 - Mem0[es:di_11:byte])
-	Z_20 = SCZO_19 (alias)
+	Z_20 = (bool) SCZO_19 (alias)
 	di_21 = di_11 + 0x0001
 	cx_22 = cx_12 - 0x0001
 	branch 0x00 != Mem0[es:di_11:byte] l0C00_0030
 	// succ:  l0C00_0032 l0C00_0030
 l0C00_0032:
-	SCZO_13 = PHI(SCZO_9, SCZO_19)
-	Z_14 = PHI(Z_10, Z_20)
-	di_15 = PHI(di_11, di_21)
-	cx_16 = PHI(cx_12, cx_22)
+	SCZO_13 = PHI((SCZO_9, l0C00_0030), (SCZO_19, l0C00_0030_1))
+	Z_14 = PHI((Z_10, l0C00_0030), (Z_20, l0C00_0030_1))
+	di_15 = PHI((di_11, l0C00_0030), (di_21, l0C00_0030_1))
+	cx_16 = PHI((cx_12, l0C00_0030), (cx_22, l0C00_0030_1))
 	Mem17[ds:0x0404:word16] = di_15
 	return
 	// succ:  fn0C00_0026_exit
@@ -350,44 +350,44 @@ Mem0:Global memory
           branch 0x00 != Mem0[es:di_11:byte] l0C00_0030
 cx_4: orig: cx
     def:  cx_4 = Mem0[ds:0x0400:word16]
-    uses: cx_12 = PHI(cx_4, cx_22)
+    uses: cx_12 = PHI((cx_4, l0C00_0026), (cx_22, l0C00_0030_1))
 al_5: orig: al
     def:  al_5 = 0x00
 di_6: orig: di
     def:  di_6 = Mem0[ds:0x0402:word16]
-    uses: di_11 = PHI(di_6, di_21)
+    uses: di_11 = PHI((di_6, l0C00_0026), (di_21, l0C00_0030_1))
 SCZO:Flags
     def:  def SCZO
-    uses: SCZO_9 = PHI(SCZO, SCZO_19)
+    uses: SCZO_9 = PHI((SCZO, l0C00_0026), (SCZO_19, l0C00_0030_1))
 Z:Flags
     def:  def Z
-    uses: Z_10 = PHI(Z, Z_20)
+    uses: Z_10 = PHI((Z, l0C00_0026), (Z_20, l0C00_0030_1))
 SCZO_9: orig: SCZO
-    def:  SCZO_9 = PHI(SCZO, SCZO_19)
-    uses: SCZO_13 = PHI(SCZO_9, SCZO_19)
+    def:  SCZO_9 = PHI((SCZO, l0C00_0026), (SCZO_19, l0C00_0030_1))
+    uses: SCZO_13 = PHI((SCZO_9, l0C00_0030), (SCZO_19, l0C00_0030_1))
 Z_10: orig: Z
-    def:  Z_10 = PHI(Z, Z_20)
-    uses: Z_14 = PHI(Z_10, Z_20)
+    def:  Z_10 = PHI((Z, l0C00_0026), (Z_20, l0C00_0030_1))
+    uses: Z_14 = PHI((Z_10, l0C00_0030), (Z_20, l0C00_0030_1))
 di_11: orig: di
-    def:  di_11 = PHI(di_6, di_21)
+    def:  di_11 = PHI((di_6, l0C00_0026), (di_21, l0C00_0030_1))
     uses: SCZO_19 = cond(0x00 - Mem0[es:di_11:byte])
           di_21 = di_11 + 0x0001
           branch 0x00 != Mem0[es:di_11:byte] l0C00_0030
-          di_15 = PHI(di_11, di_21)
+          di_15 = PHI((di_11, l0C00_0030), (di_21, l0C00_0030_1))
 cx_12: orig: cx
-    def:  cx_12 = PHI(cx_4, cx_22)
+    def:  cx_12 = PHI((cx_4, l0C00_0026), (cx_22, l0C00_0030_1))
     uses: branch cx_12 == 0x0000 l0C00_0032
           cx_22 = cx_12 - 0x0001
-          cx_16 = PHI(cx_12, cx_22)
+          cx_16 = PHI((cx_12, l0C00_0030), (cx_22, l0C00_0030_1))
 SCZO_13: orig: SCZO
-    def:  SCZO_13 = PHI(SCZO_9, SCZO_19)
+    def:  SCZO_13 = PHI((SCZO_9, l0C00_0030), (SCZO_19, l0C00_0030_1))
 Z_14: orig: Z
-    def:  Z_14 = PHI(Z_10, Z_20)
+    def:  Z_14 = PHI((Z_10, l0C00_0030), (Z_20, l0C00_0030_1))
 di_15: orig: di
-    def:  di_15 = PHI(di_11, di_21)
+    def:  di_15 = PHI((di_11, l0C00_0030), (di_21, l0C00_0030_1))
     uses: Mem17[ds:0x0404:word16] = di_15
 cx_16: orig: cx
-    def:  cx_16 = PHI(cx_12, cx_22)
+    def:  cx_16 = PHI((cx_12, l0C00_0030), (cx_22, l0C00_0030_1))
 Mem17: orig: Mem0
     def:  Mem17[ds:0x0404:word16] = di_15
 es:es
@@ -396,21 +396,21 @@ es:es
           branch 0x00 != Mem0[es:di_11:byte] l0C00_0030
 SCZO_19: orig: SCZO
     def:  SCZO_19 = cond(0x00 - Mem0[es:di_11:byte])
-    uses: Z_20 = SCZO_19 (alias)
-          SCZO_13 = PHI(SCZO_9, SCZO_19)
-          SCZO_9 = PHI(SCZO, SCZO_19)
+    uses: Z_20 = (bool) SCZO_19 (alias)
+          SCZO_13 = PHI((SCZO_9, l0C00_0030), (SCZO_19, l0C00_0030_1))
+          SCZO_9 = PHI((SCZO, l0C00_0026), (SCZO_19, l0C00_0030_1))
 Z_20: orig: Z
-    def:  Z_20 = SCZO_19 (alias)
-    uses: Z_14 = PHI(Z_10, Z_20)
-          Z_10 = PHI(Z, Z_20)
+    def:  Z_20 = (bool) SCZO_19 (alias)
+    uses: Z_14 = PHI((Z_10, l0C00_0030), (Z_20, l0C00_0030_1))
+          Z_10 = PHI((Z, l0C00_0026), (Z_20, l0C00_0030_1))
 di_21: orig: di
     def:  di_21 = di_11 + 0x0001
-    uses: di_15 = PHI(di_11, di_21)
-          di_11 = PHI(di_6, di_21)
+    uses: di_15 = PHI((di_11, l0C00_0030), (di_21, l0C00_0030_1))
+          di_11 = PHI((di_6, l0C00_0026), (di_21, l0C00_0030_1))
 cx_22: orig: cx
     def:  cx_22 = cx_12 - 0x0001
-    uses: cx_16 = PHI(cx_12, cx_22)
-          cx_12 = PHI(cx_4, cx_22)
+    uses: cx_16 = PHI((cx_12, l0C00_0030), (cx_22, l0C00_0030_1))
+          cx_12 = PHI((cx_4, l0C00_0026), (cx_22, l0C00_0030_1))
 // fn0C00_0026
 // Return size: 0
 void fn0C00_0026(selector es, selector ds)
@@ -429,24 +429,24 @@ l0C00_0026:
 	di_6 = Mem0[ds:0x0402:word16]
 	// succ:  l0C00_0030
 l0C00_0030:
-	SCZO_9 = PHI(SCZO, SCZO_19)
-	Z_10 = PHI(Z, Z_20)
-	di_11 = PHI(di_6, di_21)
-	cx_12 = PHI(cx_4, cx_22)
+	SCZO_9 = PHI((SCZO, l0C00_0026), (SCZO_19, l0C00_0030_1))
+	Z_10 = PHI((Z, l0C00_0026), (Z_20, l0C00_0030_1))
+	di_11 = PHI((di_6, l0C00_0026), (di_21, l0C00_0030_1))
+	cx_12 = PHI((cx_4, l0C00_0026), (cx_22, l0C00_0030_1))
 	branch cx_12 == 0x0000 l0C00_0032
 	// succ:  l0C00_0030_1 l0C00_0032
 l0C00_0030_1:
 	SCZO_19 = cond(0x00 - Mem0[es:di_11:byte])
-	Z_20 = SCZO_19 (alias)
+	Z_20 = (bool) SCZO_19 (alias)
 	di_21 = di_11 + 0x0001
 	cx_22 = cx_12 - 0x0001
 	branch 0x00 != Mem0[es:di_11:byte] l0C00_0030
 	// succ:  l0C00_0032 l0C00_0030
 l0C00_0032:
-	SCZO_13 = PHI(SCZO_9, SCZO_19)
-	Z_14 = PHI(Z_10, Z_20)
-	di_15 = PHI(di_11, di_21)
-	cx_16 = PHI(cx_12, cx_22)
+	SCZO_13 = PHI((SCZO_9, l0C00_0030), (SCZO_19, l0C00_0030_1))
+	Z_14 = PHI((Z_10, l0C00_0030), (Z_20, l0C00_0030_1))
+	di_15 = PHI((di_11, l0C00_0030), (di_21, l0C00_0030_1))
+	cx_16 = PHI((cx_12, l0C00_0030), (cx_22, l0C00_0030_1))
 	Mem17[ds:0x0404:word16] = di_15
 	return
 	// succ:  fn0C00_0026_exit

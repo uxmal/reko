@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 1999-2018 John Källén.
+* Copyright (C) 1999-2019 John Källén.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -94,15 +94,15 @@ void ThumbRewriter::ConditionalSkip(bool force)
 {
 	if (this->itStateCondition != ARM_CC_AL)
 	{
-		auto rtlc = static_cast<int>(rtlClass) | static_cast<int>(RtlClass::Conditional);
-		rtlClass = static_cast<RtlClass>(rtlc);
+		auto rtlc = static_cast<int>(rtlClass) | static_cast<int>(InstrClass::Conditional);
+		rtlClass = static_cast<InstrClass>(rtlc);
 		auto cc = itStateCondition;
 		if (itState & 0x10)
 			cc = Invert(cc);
 		m.BranchInMiddleOfInstruction(
 			TestCond(cc),
 			m.Ptr32(static_cast<uint32_t>(instr->address) + instr->size),
-			RtlClass::ConditionalTransfer);
+			InstrClass::ConditionalTransfer);
 	}
 }
 

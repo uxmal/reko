@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
+using Reko.Core.Operators;
 
 namespace Reko.Arch.RiscV
 {
@@ -122,11 +123,6 @@ namespace Reko.Arch.RiscV
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
             return new RiscVRewriter(this, rdr, state, binder, host);
-        }
-
-        public override Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
-        {
-            throw new NotImplementedException();
         }
 
         public override FlagGroupStorage GetFlagGroup(string name)

@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,6 +43,7 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
         private Dictionary<string, Identifier> globals;
         private ServiceContainer sc;
         private IProcessorArchitecture arch;
+        private Address addrFn;
 
         [SetUp]
         public void Setup()
@@ -50,6 +51,7 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
             this.mr = new MockRepository();
             this.globals = new Dictionary<string, Identifier>();
             this.sc = new ServiceContainer();
+            this.addrFn = Address.Ptr32(0x00100000);
             this.arch = mr.Stub<IProcessorArchitecture>();
             this.arch.Stub(a => a.PointerType).Return(PrimitiveType.Ptr32);
             var cfgSvc = mr.Stub<IConfigurationService>();
@@ -63,13 +65,14 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
 
         public void Global(string name, DataType dt)
         {
-            globals.Add(name, new Identifier(name, dt, new MemoryStorage()));
+            globals.Add(name, Identifier.Global(name, dt));
         }
 
         private Procedure RunFuncTest(params string[] lines)
         {
             var program = new Program
             {
+                Architecture = arch,
                 Platform = new DefaultPlatform(sc, arch),
             };
             
@@ -83,7 +86,7 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
             {
                 pb.Globals.Add(de.Key, de.Value);
             }
-            var proc = pb.RegisterFunction(fn);
+            var proc = pb.RegisterFunction(fn, addrFn);
             pb.TranslateFunction(fn);
             return proc;
         }
@@ -229,7 +232,7 @@ next_char_exit:
         public void LLPB_GetElementPtr()
         {
             Global("puts", PrimitiveType.Ptr32);
-            Global("msg", new Pointer(new ArrayType(PrimitiveType.Char, 13), 4));
+            Global("msg", new Pointer(new ArrayType(PrimitiveType.Char, 13), 32));
             var proc = RunFuncTest( 
 @"define i32 @foo() { 
   ; Convert [13 x i8]* to i8  *...
@@ -288,29 +291,12 @@ l5:
 	loc6 = loc1 + 0xFFFFFFFF
 	// succ:  l7
 l7:
-	loc8 = PHI(loc4, loc6)
+	loc8 = PHI((loc4, l3), (loc6, l5))
 	return loc8
 	// succ:  foo_exit
 foo_exit:
 ";
             AssertProc(sExp, proc);
-        }
-
-        [Ignore("Only works on @uxmal's machine right now")]
-        [Test]
-        public void LLPB_File()
-        {
-            using (var rdr = File.OpenText(@"D:\dev\uxmal\reko\LLVM\more_llvm\more_llvm\c4\c4.ll"))
-            {
-
-                var parser = new LLVMParser(new LLVMLexer(rdr));
-                var module = parser.ParseModule();
-                var program = new Program();
-                mr.ReplayAll();
-
-                var pb = new ProgramBuilder(sc, program);
-                program = pb.BuildProgram(module);
-            }
         }
     }
 }

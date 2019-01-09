@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,18 +40,18 @@ namespace Reko.Arch.X86
     /// </summary>
     public partial class X86Rewriter : IEnumerable<RtlInstructionCluster>
     {
-        private IRewriterHost host;
-        private IntelArchitecture arch;
-        private IStorageBinder binder;
-        private EndianImageReader rdr;
-        private LookaheadEnumerator<X86Instruction> dasm;
+        private readonly IntelArchitecture arch;
+        private readonly IRewriterHost host;
+        private readonly IStorageBinder binder;
+        private readonly X86State state;
+        private readonly EndianImageReader rdr;
+        private readonly LookaheadEnumerator<X86Instruction> dasm;
         private RtlEmitter m;
         private OperandRewriter orw;
         private X86Instruction instrCur;
-        private RtlClass rtlc;
+        private InstrClass rtlc;
         private int len;
         private List<RtlInstruction> rtlInstructions;
-        private X86State state;
 
         public X86Rewriter(
             IntelArchitecture arch,
@@ -64,9 +64,9 @@ namespace Reko.Arch.X86
                 throw new ArgumentNullException("host");
             this.arch = arch;
             this.host = host;
-            this.binder = binder;
             this.state = state;
             this.rdr = rdr;
+            this.binder = binder;
             this.dasm = new LookaheadEnumerator<X86Instruction>(arch.CreateDisassemblerImpl(rdr));
         }
 
@@ -80,9 +80,8 @@ namespace Reko.Arch.X86
             {
                 instrCur = dasm.Current;
                 var addr = instrCur.Address;
-                this.len = instrCur.Length;
                 this.rtlInstructions = new List<RtlInstruction>();
-                this.rtlc = RtlClass.Linear;
+                this.rtlc = instrCur.InstructionClass;
                 m = new RtlEmitter(rtlInstructions);
                 orw = arch.ProcessorMode.CreateOperandRewriter(arch, m, binder, host);
                 switch (instrCur.code)
@@ -91,10 +90,10 @@ namespace Reko.Arch.X86
                     EmitUnitTest();
                     host.Warn(
                         dasm.Current.Address,
-                        "Rewriting x86 opcode '{0}' is not supported yet.",
+                        "x86 instruction '{0}' is not supported yet.",
                         instrCur.code);
                     goto case Opcode.illegal;
-                case Opcode.illegal: rtlc = RtlClass.Invalid; m.Invalid(); break;
+                case Opcode.illegal: rtlc = InstrClass.Invalid; m.Invalid(); break;
                 case Opcode.aaa: RewriteAaa(); break;
                 case Opcode.aad: RewriteAad(); break;
                 case Opcode.aam: RewriteAam(); break;
@@ -315,6 +314,8 @@ namespace Reko.Arch.X86
                 case Opcode.maskmovq: RewriteMaskmovq(); break;
                 case Opcode.maxps: RewritePackedBinop("__maxps", PrimitiveType.Real32); break;
                 case Opcode.mfence: RewriteMfence(); break;
+                case Opcode.minpd: RewritePackedBinop("__minpd", PrimitiveType.Real64); break;
+                case Opcode.minps: RewritePackedBinop("__minps", PrimitiveType.Real32); break;
                 case Opcode.mov: RewriteMov(); break;
                 case Opcode.movapd:
                 case Opcode.movaps:
@@ -339,7 +340,6 @@ namespace Reko.Arch.X86
                 case Opcode.vmovsd: RewriteMovssd(PrimitiveType.Real64); break;
                 case Opcode.movss:
                 case Opcode.vmovss: RewriteMovssd(PrimitiveType.Real32); break;
-                case Opcode.minps: RewritePackedBinop("__minps", PrimitiveType.Real32); break;
                 case Opcode.movsx: RewriteMovsx(); break;
                 case Opcode.movups: RewriteMov(); break;
                 case Opcode.movupd: RewriteMov(); break;
@@ -468,6 +468,7 @@ namespace Reko.Arch.X86
                 case Opcode.shr: RewriteBinOp(BinaryOperator.Shr); break;
                 case Opcode.shrd: RewriteShxd("__shrd"); break;
                 case Opcode.vshufps: RewritePackedTernaryop("__vshufps", PrimitiveType.Real32); break;
+                case Opcode.sldt: RewriteSldt(); break;
                 case Opcode.sqrtps: RewritePackedUnaryop("__sqrtps", PrimitiveType.Real32); break;
                 case Opcode.sqrtsd: RewriteSqrtsd(); break;
                 case Opcode.stc: RewriteSetFlag(FlagM.CF, Constant.True()); break;
@@ -486,7 +487,7 @@ namespace Reko.Arch.X86
                 case Opcode.sysret: RewriteSysret(); break;
                 case Opcode.ucomiss: RewriteComis(PrimitiveType.Real32); break;
                 case Opcode.ucomisd: RewriteComis(PrimitiveType.Real64); break;
-                case Opcode.ud2: rtlc = RtlClass.Invalid; m.Invalid(); break;
+                case Opcode.ud2: rtlc = InstrClass.Invalid; m.Invalid(); break;
                 case Opcode.unpcklpd: RewritePackedBinop("__unpcklpd", PrimitiveType.Real64); break;
                 case Opcode.unpcklps: RewritePackedBinop("__unpcklps", PrimitiveType.Real32); break;
                 case Opcode.test: RewriteTest(); break;
@@ -506,6 +507,7 @@ namespace Reko.Arch.X86
                 case Opcode.BOR_exp: RewriteFUnary("exp"); break;
                 case Opcode.BOR_ln: RewriteFUnary("log"); break;
                 }
+                var len = (int)(dasm.Current.Address - addr) + dasm.Current.Length;
                 yield return new RtlInstructionCluster(addr, len, rtlInstructions.ToArray())
                 {
                     Class = rtlc

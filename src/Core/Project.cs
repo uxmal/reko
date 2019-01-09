@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,8 +43,20 @@ namespace Reko.Core
             LoadedMetadata = new TypeLibrary();
         }
 
+        /// <summary>
+        /// A list of binaries that are to be decompiled.
+        /// </summary>
         public ObservableRangeCollection<Program> Programs { get; private set; }
+        /// <summary>
+        /// A list of user-provided metadata files that aid in the process
+        /// of decompilation.
+        /// </summary>
         public ObservableRangeCollection<MetadataFile> MetadataFiles { get; private set; }
+
+        /// <summary>
+        /// All the metadata collected from both platforms and user-provided metadata
+        /// files.
+        /// </summary>
         public TypeLibrary LoadedMetadata { get; set; }
     }
 }

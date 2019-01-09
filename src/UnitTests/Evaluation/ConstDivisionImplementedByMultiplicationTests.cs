@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -58,7 +58,7 @@ namespace Reko.UnitTests.Evaluation
                 null,
                 proc.CreateBlockDominatorGraph(),
                 new HashSet<RegisterStorage>()).Transform();
-            var ctx = new SsaEvaluationContext(null, ssa.Identifiers);
+            var ctx = new SsaEvaluationContext(null, ssa.Identifiers, null);
             var rule = new ConstDivisionImplementedByMultiplication(ssa);
             ctx.Statement = proc.EntryBlock.Succ[0].Statements[0];
             Assert.IsTrue(rule.Match(ass));
@@ -80,7 +80,7 @@ namespace Reko.UnitTests.Evaluation
                 proc.CreateBlockDominatorGraph(),
                 new HashSet<RegisterStorage>()).Transform();
             var segmentMap = new SegmentMap(Address.Ptr32(0));
-            var vp = new ValuePropagator(segmentMap, ssa, null);
+            var vp = new ValuePropagator(segmentMap, ssa, null, null);
             vp.Transform();
             var rule = new ConstDivisionImplementedByMultiplication(ssa);
             rule.Transform();

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,12 +33,11 @@ namespace Reko.Core.Machine
     /// </summary>
 	public abstract class MachineOperand
 	{
-        public PrimitiveType Width { get { return width; } set { width = value; } }
-        private PrimitiveType width;
+        public PrimitiveType Width { get; set; }
 
 		protected MachineOperand(PrimitiveType width)
 		{
-			this.width = width;
+			this.Width = width;
 		}
 
         public sealed override string ToString()
@@ -192,6 +191,11 @@ namespace Reko.Core.Machine
             return new ImmediateOperand(Constant.Word64(value));
         }
 
+        public static ImmediateOperand Word128(ulong value)
+        {
+            return new ImmediateOperand(new ConstantUInt128(PrimitiveType.Word128, value));
+        }
+
         public static ImmediateOperand Int32(int value)
         {
             return new ImmediateOperand(Constant.Int32(value));
@@ -218,16 +222,14 @@ namespace Reko.Core.Machine
         protected AddressOperand(Address a, PrimitiveType type)
             : base(type)
         {
-            if (a == null)
-                throw new ArgumentNullException("a");
-            Address = a;
+            Address = a ?? throw new ArgumentNullException("a");
         }
 
         public static AddressOperand Create(Address addr)
         {
             return new AddressOperand(
                 addr,
-                PrimitiveType.Create(Domain.Pointer, addr.DataType.Size));
+                PrimitiveType.Create(Domain.Pointer, addr.DataType.BitSize));
         }
 
         public static AddressOperand Ptr16(ushort a)
@@ -256,7 +258,7 @@ namespace Reko.Core.Machine
     /// </summary>
 	public class FpuOperand : MachineOperand
 	{
-		private int fpuReg;
+		private readonly int fpuReg;
 
 		public FpuOperand(int f) : base(PrimitiveType.Real64)
 		{

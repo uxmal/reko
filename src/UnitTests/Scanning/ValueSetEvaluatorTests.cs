@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -83,7 +83,7 @@ namespace Reko.UnitTests.Scanning
 
         private void Given_UInt32Array(uint uAddr, uint[] uints)
         {
-            var w = program.CreateImageWriter(Address.Ptr32(uAddr));
+            var w = program.CreateImageWriter(program.Architecture, Address.Ptr32(uAddr));
             foreach (uint u in uints)
             {
                 w.WriteUInt32(u);
@@ -92,7 +92,7 @@ namespace Reko.UnitTests.Scanning
 
         private void Given_UInt16Array(Address addr, ushort[] ushorts)
         {
-            var w = program.CreateImageWriter(addr);
+            var w = program.CreateImageWriter(program.Architecture, addr);
             foreach (ushort u in ushorts)
             {
                 w.WriteUInt16(u);

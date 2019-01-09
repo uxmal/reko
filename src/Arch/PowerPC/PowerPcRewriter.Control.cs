@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,24 +56,22 @@ namespace Reko.Arch.PowerPC
             if (addrDst != null && instr.Address.ToLinear() + 4 == addrDst.ToLinear())
             {
                 // PowerPC idiom to get the current instruction pointer in the lr register
+                rtlc = InstrClass.Linear;
                 m.Assign(binder.EnsureRegister(arch.lr), addrDst);
             }
             else
             {
-                rtlc = RtlClass.Transfer | RtlClass.Call;
                 m.Call(dst, 0);
             }
         }
 
         private void RewriteBlr()
         {
-            rtlc = RtlClass.Transfer;
             m.Return(0, 0);
         }
 
         private void RewriteBranch(bool updateLinkregister, bool toLinkRegister, ConditionCode cc)
         {
-            rtlc = RtlClass.ConditionalTransfer;
             var ccrOp = instr.op1 as RegisterOperand;
             Expression cr;
             if (ccrOp != null)
@@ -82,18 +80,17 @@ namespace Reko.Arch.PowerPC
             }
             else 
             {
-                cr = binder.EnsureRegister(arch.CrRegisters[0]);
+                cr = binder.EnsureFlagGroup(arch.GetCcFieldAsFlagGroup(arch.CrRegisters[0]));
             }
             if (toLinkRegister)
             {
                 m.BranchInMiddleOfInstruction(
                     m.Test(cc, cr).Invert(),
                     instr.Address + instr.Length,
-                    RtlClass.ConditionalTransfer);
+                    InstrClass.ConditionalTransfer);
                 var dst = binder.EnsureRegister(arch.lr);
                 if (updateLinkregister)
                 {
-                    rtlc |= RtlClass.Call;
                     m.Call(dst, 0);
                 }
                 else
@@ -106,16 +103,15 @@ namespace Reko.Arch.PowerPC
                 var dst = RewriteOperand(ccrOp != null ? instr.op2 : instr.op1);
                 if (updateLinkregister)
                 {
-                    rtlc |= RtlClass.Call;
                     m.BranchInMiddleOfInstruction(
                         m.Test(cc, cr).Invert(),
                         instr.Address + instr.Length,
-                        RtlClass.ConditionalTransfer);
+                        InstrClass.ConditionalTransfer);
                     m.Call(dst, 0);
                 }
                 else
                 {
-                    m.Branch(m.Test(cc, cr), (Address)dst, RtlClass.ConditionalTransfer);
+                    m.Branch(m.Test(cc, cr), (Address)dst, InstrClass.ConditionalTransfer);
                 }
             }
         }
@@ -139,14 +135,12 @@ namespace Reko.Arch.PowerPC
         
         private void RewriteCtrBranch(bool updateLinkRegister, bool toLinkRegister, Func<Expression,Expression,Expression> decOp, bool ifSet)
         {
-            rtlc = RtlClass.ConditionalTransfer;
             var ctr = binder.EnsureRegister(arch.ctr);
-            var ccOp = instr.op1 as ConditionOperand;
             Expression dest;
 
             Expression cond = decOp(ctr, Constant.Zero(ctr.DataType));
 
-            if (ccOp != null)
+            if (instr.op1 is ConditionOperand ccOp)
             {
                 Expression test = m.Test(
                     CcFromOperand(ccOp),
@@ -164,11 +158,10 @@ namespace Reko.Arch.PowerPC
             m.Assign(ctr, m.ISub(ctr, 1));
             if (updateLinkRegister)
             {
-                rtlc |= RtlClass.Call;
                 m.BranchInMiddleOfInstruction(
                     cond.Invert(),
                     instr.Address + instr.Length,
-                    RtlClass.ConditionalTransfer);
+                    InstrClass.ConditionalTransfer);
                 m.Call(dest, 0);
             }
             else
@@ -176,13 +169,12 @@ namespace Reko.Arch.PowerPC
                 m.Branch(
                     cond,
                     (Address)dest,
-                    RtlClass.ConditionalTransfer);
+                    InstrClass.ConditionalTransfer);
             }
         }
 
         private void RewriteBranch(bool linkRegister, Expression destination)
         {
-            rtlc = RtlClass.ConditionalTransfer;
             var ctr = binder.EnsureRegister(arch.ctr);
             var bo = ((Constant)RewriteOperand(instr.op1)).ToByte();
             switch (bo)

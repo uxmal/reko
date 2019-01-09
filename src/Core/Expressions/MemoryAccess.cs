@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -58,8 +58,8 @@ namespace Reko.Core.Expressions
             this.EffectiveAddress = ea;
         }
 
-        public MemoryIdentifier MemoryId { get; set; }
-        public Expression EffectiveAddress { get; set; }
+        public readonly MemoryIdentifier MemoryId;
+        public readonly Expression EffectiveAddress;
 
         public override IEnumerable<Expression> Children
         {
@@ -99,21 +99,21 @@ namespace Reko.Core.Expressions
                 return new BinaryExpression(Operators.Operator.IAdd,
                     baseRegister.DataType,
                     baseRegister,
-                    Constant.Create(PrimitiveType.Create(Domain.SignedInt, baseRegister.DataType.Size), offset));
+                    Constant.Create(PrimitiveType.Create(Domain.SignedInt, baseRegister.DataType.BitSize), offset));
         }
     }
 
-	/// <summary>
-	/// Segmented memory access that models x86 segmented memory addressing.
-	/// </summary>
-	public class SegmentedAccess : MemoryAccess
-	{
-		public SegmentedAccess(MemoryIdentifier id, Expression basePtr, Expression ea, DataType dt) : base(id, ea, dt)
-		{
-			this.BasePointer = basePtr;
-		}
+    /// <summary>
+    /// Segmented memory access that models x86 segmented memory addressing.
+    /// </summary>
+    public class SegmentedAccess : MemoryAccess
+    {
+        public SegmentedAccess(MemoryIdentifier id, Expression basePtr, Expression ea, DataType dt) : base(id, ea, dt)
+        {
+            this.BasePointer = basePtr;
+        }
 
-        public Expression BasePointer { get; set; }         // Segment selector
+        public readonly Expression BasePointer;         // Segment selector
 
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
         {
@@ -125,19 +125,20 @@ namespace Reko.Core.Expressions
             return visit.VisitSegmentedAccess(this);
         }
 
-		public override void Accept(IExpressionVisitor visit)
-		{
-			visit.VisitSegmentedAccess(this);
-		}
+        public override void Accept(IExpressionVisitor visit)
+        {
+            visit.VisitSegmentedAccess(this);
+        }
 
-		public override Expression CloneExpression()
-		{
-			return new SegmentedAccess(MemoryId, BasePointer.CloneExpression(), EffectiveAddress.CloneExpression(), DataType);
-		}
+        public override Expression CloneExpression()
+        {
+            return new SegmentedAccess(MemoryId, BasePointer.CloneExpression(), EffectiveAddress.CloneExpression(), DataType);
+        }
 
         public static SegmentedAccess Create(Expression segRegister, Expression baseRegister, int offset, DataType dt)
         {
             return new SegmentedAccess(MemoryIdentifier.GlobalMemory, segRegister, CreateEffectiveAddress(baseRegister, offset), dt);
         }
-	}
+    }
+
 }

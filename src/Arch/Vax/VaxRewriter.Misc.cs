@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
@@ -46,7 +47,6 @@ namespace Reko.Arch.Vax
 
         private void RewriteHalt()
         {
-            rtlc = RtlClass.Terminates;
             m.SideEffect(host.PseudoProcedure("__halt", VoidType.Instance));
         }
 

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,14 +52,13 @@ namespace Reko.Typing
 		{
 			if (b.Operator == Operator.SMul || b.Operator == Operator.UMul || b.Operator == Operator.IMul)
 			{
-				Constant c = b.Left as Constant;
-				Expression e = b.Right;
-				if (c == null)
-				{
-					c = b.Right as Constant;
-					e = b.Left;
-				}
-				if (c != null)
+                Expression e = b.Right;
+                if (!(b.Left is Constant c))
+                {
+                    c = b.Right as Constant;
+                    e = b.Left;
+                }
+                if (c != null)
 				{
 					elemSize = c;
 					Index = e;
@@ -68,14 +67,13 @@ namespace Reko.Typing
 			}
 			if (b.Operator == Operator.Shl)
 			{
-				Constant c = b.Right as Constant;
-				if (c != null)
-				{
-					elemSize = b.Operator.ApplyConstants(Constant.Create(b.Left.DataType, 1), c);
-					Index = b.Left;
-					return true;
-				}
-			}
+                if (b.Right is Constant c)
+                {
+                    elemSize = b.Operator.ApplyConstants(Constant.Create(b.Left.DataType, 1), c);
+                    Index = b.Left;
+                    return true;
+                }
+            }
 			return false;
 		}
 
@@ -85,9 +83,8 @@ namespace Reko.Typing
 			Index = null;
 			ArrayPointer = null;
 
-			BinaryExpression b = e as BinaryExpression;
-			if (b == null)
-				return false;
+            if (!(e is BinaryExpression b))
+                return false;
             if (MatchMul(b))
             {
                 ArrayPointer = Constant.Zero(b.DataType);
@@ -97,17 +94,16 @@ namespace Reko.Typing
 			// (+ x y)
 			if (b.Operator == Operator.IAdd)
 			{
-				BinaryExpression bInner = b.Left as BinaryExpression;
-				if (bInner != null)
-				{
-					if (MatchMul(bInner))
-					{
-						// (+ (* i c) ptr)
-						ArrayPointer = b.Right;
-						return true;
-					}
-				}
-				bInner = b.Right as BinaryExpression;
+                if (b.Left is BinaryExpression bInner)
+                {
+                    if (MatchMul(bInner))
+                    {
+                        // (+ (* i c) ptr)
+                        ArrayPointer = b.Right;
+                        return true;
+                    }
+                }
+                bInner = b.Right as BinaryExpression;
 				if (bInner != null)
 				{
 					if (MatchMul(bInner))
@@ -127,7 +123,7 @@ namespace Reko.Typing
 
                             this.ArrayPointer = new BinaryExpression(
                                 Operator.IAdd,
-                                PrimitiveType.Create(Domain.Pointer, b.Left.DataType.Size),
+                                PrimitiveType.Create(Domain.Pointer, b.Left.DataType.BitSize),
                                 b.Left,
                                 bInner.Right);
                             return true;

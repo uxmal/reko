@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,11 +51,11 @@ namespace Reko.UnitTests.Typing
                 fut = new FileUnitTester(outputFile);
                 var factory = program.TypeFactory;
                 var store = program.TypeStore;
-
+                var listener = new FakeDecompilerEventListener();
                 var aen = new ExpressionNormalizer(program.Platform.PointerType);
-                var eqb = new EquivalenceClassBuilder(factory, store);
+                var eqb = new EquivalenceClassBuilder(factory, store, listener);
 
-                var tyco = new TypeCollector(factory, store, program, new FakeDecompilerEventListener());
+                var tyco = new TypeCollector(factory, store, program, listener);
 
                 aen.Transform(program);
                 eqb.Build(program);
@@ -88,15 +88,15 @@ namespace Reko.UnitTests.Typing
             RunTest(program, outputFile);
         }
 
-        private void DumpProgAndStore(Program prog, FileUnitTester fut)
+        private void DumpProgAndStore(Program program, FileUnitTester fut)
         {
-            foreach (Procedure proc in prog.Procedures.Values)
+            foreach (Procedure proc in program.Procedures.Values)
             {
                 proc.Write(false, fut.TextWriter);
                 fut.TextWriter.WriteLine();
             }
 
-            prog.TypeStore.Write(fut.TextWriter);
+            program.TypeStore.Write(fut.TextWriter);
             fut.AssertFilesEqual();
         }
 
@@ -139,11 +139,11 @@ namespace Reko.UnitTests.Typing
                 var str = new StructureType("str", 8, true)
                 {
                     Fields = {
-                        { 0, new Pointer(strInner, 4), "strAttr00" },
+                        { 0, new Pointer(strInner, 32), "strAttr00" },
                         { 4, PrimitiveType.Int32, "strAttr04" },
                     }
                 };
-                var v = m.Frame.EnsureStackArgument(4, new Pointer(str, 4));
+                var v = m.Frame.EnsureStackArgument(4, new Pointer(str, 32));
                 m.Declare(eax, m.Mem(PrimitiveType.Word32, v));
                 m.Declare(ecx, m.Mem(PrimitiveType.Word32, eax));
             }, "Typing/TycoNestedStructsPtr.txt");
@@ -154,7 +154,7 @@ namespace Reko.UnitTests.Typing
         {
             RunTest(m =>
             {
-                var foo = new Identifier("foo", new UnknownType(), new MemoryStorage());
+                var foo = Identifier.Global("foo", new UnknownType());
                 var r1 = m.Reg32("r1", 1);
                 m.Assign(r1, m.AddrOf(foo));
                 m.MStore(r1, m.Word16(0x1234));
@@ -175,7 +175,7 @@ namespace Reko.UnitTests.Typing
                         { 4, PrimitiveType.Byte, "byte004"}
                     }
                 });
-                var foo = new Identifier("foo", str, new MemoryStorage());
+                var foo = Identifier.Global("foo", str);
                 var r1 = m.Reg32("r1", 1);
                 m.Assign(r1, m.AddrOf(foo));
                 m.MStore(r1, m.Word16(0x1234));

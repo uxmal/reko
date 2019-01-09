@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -66,7 +66,7 @@ namespace Reko.Scanning
 			}
 			PrimitiveType p = (PrimitiveType) fp.DataType;
 			Expression ea = new BinaryExpression(op, fp.DataType,
-				fp, Constant.Create(PrimitiveType.Create(Domain.SignedInt, p.Size), offset));
+				fp, Constant.Create(PrimitiveType.Create(Domain.SignedInt, p.BitSize), offset));
 			return ea;
 		}
 

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,7 +56,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             var eh = Elf32_EHdr.Load(new BeImageReader(rawBytes, ElfImageLoader.HEADER_OFFSET));
             var el = new ElfLoader32(eil, eh, rawBytes, big_endian ? ElfLoader.ELFDATA2MSB : ElfLoader.ELFDATA2LSB);
             el.LoadSectionHeaders();
-            el.LoadSymbols();
+            el.LoadSymbolsFromSections();
             this.linker = new ElfObjectLinker32(el, arch, rawBytes);
         }
 

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,8 +22,6 @@ using Reko.Gui;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 
 namespace Reko.Environments.AmigaOS.Design
 {
@@ -52,15 +50,19 @@ namespace Reko.Environments.AmigaOS.Design
         public object CreateControl()
         {
             Control = new AmigaOSProperties();
-            this.Control.KickstartVersionList.DataSource =
-                platform.MapKickstartToListOfLibraries
-                .Select(kv => new ListOption
-                {
-                    Text = string.Format("Kickstart {0}", kv.Key),
-                    Value = kv.Value
-                })
-                .ToList();
-            this.Control.KickstartVersionList.SelectedIndex = 0;
+            var mapKickstartToListOfLibraries = platform.MapKickstartToListOfLibraries;
+            if (mapKickstartToListOfLibraries != null)
+            {
+                this.Control.KickstartVersionList.DataSource =
+                    mapKickstartToListOfLibraries
+                    .Select(kv => new ListOption
+                    {
+                        Text = string.Format("Kickstart {0}", kv.Key),
+                        Value = kv.Value
+                    })
+                    .ToList();
+                this.Control.KickstartVersionList.SelectedIndex = 0;
+            }
             PopulateLoadedLibraryList();
 
             this.Control.KickstartVersionList.SelectedIndexChanged += KickstartVersionList_SelectedIndexChanged;
@@ -87,11 +89,11 @@ namespace Reko.Environments.AmigaOS.Design
             var listOption = (ListOption)Control.KickstartVersionList.SelectedValue;
             if (listOption != null)
             {
-                var libList = (List<string>)listOption.Value;
+                var libList = (List<object>)listOption.Value;
                 Control.LoadedLibraryList.Items.Clear();
-                foreach (string lib in libList)
+                foreach (object lib in libList)
                 {
-                    Control.LoadedLibraryList.Items.Add(lib); //$TODO: mark available library definition files ?
+                    Control.LoadedLibraryList.Items.Add(lib.ToString()); //$TODO: mark available library definition files ?
                 }
             }
         }

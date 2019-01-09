@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Reko.Core.Expressions;
+using Reko.UnitTests.Mocks;
 
 namespace Reko.UnitTests.Core
 {
@@ -122,7 +123,7 @@ namespace Reko.UnitTests.Core
             };
             var lib = tlLdr.Load(slib);
 
-            Assert.AreEqual("(ptr int32)", lib.LookupType("pint").ToString());
+            Assert.AreEqual("(ptr32 int32)", lib.LookupType("pint").ToString());
         }
 
         [Test]
@@ -333,6 +334,7 @@ namespace Reko.UnitTests.Core
             var typelib = new TypeLibrary();
             platform = mr.Stub<IPlatform>();
             platform.Stub(p => p.DefaultCallingConvention).Return("__cdecl");
+            platform.Stub(p => p.Architecture).Return(new FakeArchitecture());
             platform.Replay();
             var tlldr = new TypeLibraryDeserializer(platform, true, typelib);
             tlldr.Load(new SerializedLibrary

@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -142,8 +142,8 @@ namespace Reko.Core.Serialization
         // Avoid reflection by using the visitor pattern.
         class Deserializer : ISerializedProjectVisitor<Project>
         {
-            private ProjectLoader outer;
-            private string filename;
+            private readonly ProjectLoader outer;
+            private readonly string filename;
 
             public Deserializer(ProjectLoader outer, string filename)
             {
@@ -232,19 +232,21 @@ namespace Reko.Core.Serialization
         {
             var binAbsPath = ConvertToAbsolutePath(projectFilePath, sInput.Filename);
             var bytes = loader.LoadImageBytes(ConvertToAbsolutePath(projectFilePath, sInput.Filename), 0);
-            var sUser = sInput.User;
+            var sUser = sInput.User ?? new UserData_v4();
             var address = LoadAddress(sUser, this.arch);
+            var archOptions = XmlOptions.LoadIntoDictionary(sUser.Processor?.Options, StringComparer.OrdinalIgnoreCase);
             Program program;
-            if (address != null && 
-                sUser.Processor != null &&
-                (sUser.PlatformOptions == null || sUser.PlatformOptions.Name != null))
+            if (!string.IsNullOrEmpty(sUser.Loader))
             {
+                // The presence of an explicit loader name prompts us to
+                // use the LoadRawImage path.
                 var arch = sUser.Processor.Name;
                 var platform = sUser.PlatformOptions?.Name;
                 program = loader.LoadRawImage(binAbsPath, bytes, address, new LoadDetails
                 {
                     LoaderName = sUser.Loader,
                     ArchitectureName = arch,
+                    ArchitectureOptions = archOptions,
                     PlatformName = platform,
                     LoadAddress = sUser.LoadAddress,
                 });
@@ -253,6 +255,7 @@ namespace Reko.Core.Serialization
             {
                 program = loader.LoadExecutable(binAbsPath, bytes, sUser.Loader, address);
             }
+            LoadUserData(sUser, program, program.User);
             program.Filename = binAbsPath;
             program.DisassemblyFilename = ConvertToAbsolutePath(projectFilePath, sInput.DisassemblyFilename);
             program.IntermediateFilename = ConvertToAbsolutePath(projectFilePath, sInput.IntermediateFilename);
@@ -260,7 +263,6 @@ namespace Reko.Core.Serialization
             program.TypesFilename = ConvertToAbsolutePath(projectFilePath, sInput.TypesFilename);
             program.GlobalsFilename = ConvertToAbsolutePath(projectFilePath, sInput.GlobalsFilename);
             program.EnsureFilenames(program.Filename);
-            LoadUserData(sUser, program, program.User);
             program.User.LoadAddress = address;
             ProgramLoaded.Fire(this, new ProgramEventArgs(program));
             return program;
@@ -324,6 +326,12 @@ namespace Reko.Core.Serialization
             return addr;
         }
 
+        /// <summary>
+        /// Loads 
+        /// </summary>
+        /// <param name="sUser"></param>
+        /// <param name="program"></param>
+        /// <param name="user"></param>
         public void LoadUserData(UserData_v4 sUser, Program program, UserData user)
         {
             if (sUser == null)
@@ -331,12 +339,17 @@ namespace Reko.Core.Serialization
             user.OnLoadedScript = sUser.OnLoadedScript;
             if (sUser.Processor != null)
             {
-                program.User.Processor = sUser.Processor.Name;
-                if (program.Architecture == null && !string.IsNullOrEmpty(program.User.Processor))
+                user.Processor = sUser.Processor.Name;
+                if (program.Architecture == null && !string.IsNullOrEmpty(user.Processor))
                 {
-                    program.Architecture = Services.RequireService<IConfigurationService>().GetArchitecture(program.User.Processor);
+                    program.Architecture = Services.RequireService<IConfigurationService>().GetArchitecture(user.Processor);
                 }
-                program.Architecture.LoadUserOptions(XmlOptions.LoadIntoDictionary(sUser.Processor.Options));
+                program.Architecture.LoadUserOptions(XmlOptions.LoadIntoDictionary(sUser.Processor.Options, StringComparer.OrdinalIgnoreCase));
+            }
+            if (sUser.PlatformOptions != null)
+            {
+                user.Environment = sUser.PlatformOptions.Name;
+                program.Platform.LoadUserOptions(XmlOptions.LoadIntoDictionary(sUser.PlatformOptions.Options, StringComparer.OrdinalIgnoreCase));
             }
             if (sUser.Procedures != null)
             {
@@ -344,12 +357,6 @@ namespace Reko.Core.Serialization
                     .Select(sup => LoadUserProcedure_v1(program, sup))
                     .Where(kv => kv.Key != null)
                     .ToSortedList(kv => kv.Key, kv => kv.Value);
-            }
-
-            if (sUser.PlatformOptions != null)
-            {
-                program.User.Environment = sUser.PlatformOptions.Name;
-                program.Platform.LoadUserOptions(XmlOptions.LoadIntoDictionary(sUser.PlatformOptions.Options));
             }
             if (sUser.GlobalData != null)
             {
@@ -417,6 +424,8 @@ namespace Reko.Core.Serialization
                     .Where(ij => ij != null)
                     .ToSortedList(k => k.Item1, v => v.Item2);
             }
+            program.User.ShowAddressesInDisassembly = sUser.ShowAddressesInDisassembly;
+            program.User.ShowBytesInDisassembly = sUser.ShowBytesInDisassembly;
         }
 
         private Annotation LoadAnnotation(Annotation_v3 annotation)
@@ -433,7 +442,7 @@ namespace Reko.Core.Serialization
             {
                 if (sRegValue != null && platform.TryParseAddress(sRegValue.Address, out Address addr))
                 {
-                    if (!allLists.TryGetValue(addr, out List<UserRegisterValue> list))
+                    if (!allLists.TryGetValue(addr, out var list))
                     {
                         list = new List<UserRegisterValue>();
                         allLists.Add(addr, list);
@@ -495,7 +504,7 @@ namespace Reko.Core.Serialization
                 return null;
             if (!platform.TryParseAddress(indirJump.TableAddress, out Address addrTable))
                 return null;
-            if (!program.User.JumpTables.TryGetValue(addrTable, out ImageMapVectorTable table))
+            if (!program.User.JumpTables.TryGetValue(addrTable, out var table))
                 return null;
             var reg = program.Architecture.GetRegister(indirJump.IndexRegister);
             if (reg == null)
@@ -533,7 +542,7 @@ namespace Reko.Core.Serialization
             if (sUser.PlatformOptions != null)
             {
                 program.User.Environment = sUser.PlatformOptions.Name;
-                program.Platform.LoadUserOptions(XmlOptions.LoadIntoDictionary(sUser.PlatformOptions.Options));
+                program.Platform.LoadUserOptions(XmlOptions.LoadIntoDictionary(sUser.PlatformOptions.Options, StringComparer.OrdinalIgnoreCase));
             }
             if (sUser.GlobalData != null)
             {

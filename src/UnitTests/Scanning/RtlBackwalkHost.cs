@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,7 +42,10 @@ namespace Reko.UnitTests.Scanning
             this.graph = graph;
         }
 
+        public IProcessorArchitecture Architecture => program.Architecture;
+        public Program Program => program;
         public SegmentMap SegmentMap => program.SegmentMap;
+
         public Tuple<Expression, Expression> AsAssignment(RtlInstruction instr)
         {
             throw new NotImplementedException();
@@ -56,6 +59,11 @@ namespace Reko.UnitTests.Scanning
         public Address GetBlockStartAddress(Address addr)
         {
             throw new NotImplementedException();
+        }
+
+        public int BlockInstructionCount(RtlBlock block)
+        {
+            return block.Instructions.Sum(b => b.Instructions.Length);
         }
 
         public IEnumerable<RtlInstruction> GetBlockInstructions(RtlBlock block)

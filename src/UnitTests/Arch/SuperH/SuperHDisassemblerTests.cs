@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -303,9 +303,9 @@ namespace Reko.UnitTests.Arch.Tlcs
         }
 
         [Test]
-        public void SHDis_flds()
+        public void SHDis_flds_dr()
         {
-            AssertCode("flds\tfr8,fpul", "1DF8");
+            AssertCode("flds\tdr8,fpul", "1DF8");
         }
 
         [Test]
@@ -511,6 +511,306 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             AssertCode("fcmp/eq\tfr5,fr9", "﻿54F9");
         }
+
+        [Test]
+        public void SHDis_lds_pr()
+        {
+            AssertCode("lds\tr3,pr", "2A43");
+        }
+
+        /////////////////////////////////////////////
+
+        [Test]
+        public void ShDis_ocbi()
+        {
+            AssertCode("ocbi\t@r0", "9300");
+        }
+
+        [Test]
+        public void ShDis_stc_gbr_r1()
+        {
+            AssertCode("stc\tgbr,r1", "1201");
+        }
+
+        [Test]
+        public void ShDis_stc_spc_reg()
+        {
+            AssertCode("stc\tspc,r4", "4204");
+        }
+
+        [Test]
+        public void ShDis_stc_mod()
+        {
+            AssertCode("stc\tmod,r0", "5200");
+        }
+
+        [Test]
+        public void ShDis_stc_rs()
+        {
+            AssertCode("stc\trs,r6", "6206");
+        }
+
+        [Test]
+        public void ShDis_sts_dsr()
+        {
+            AssertCode("sts\tdsr,r6", "6A06");
+        }
+
+        [Test]
+        public void ShDis_stc_r0bank()
+        {
+            AssertCode("stc\tr0_bank,r0", "8200");
+        }
+
+        [Test]
+        public void ShDis_ocbp()
+        {
+            AssertCode("ocbp\t@r14", "A30E");
+        }
+
+        [Test]
+        public void ShDis_std_dbr()
+        {
+            AssertCode("stc\tdbr,r10", "FA0A");
+        }
+
+        [Test]
+        public void ShDis_stc_ssr()
+        {
+            AssertCode("stc\tssr,r1", "3201");
+        }
+
+        [Test]
+        public void ShDis_sts_pr()
+        {
+            AssertCode("sts\tpr,r1", "2A01");
+        }
+
+        [Test]
+        public void ShDis_movco_l()
+        {
+            AssertCode("movco.l\tr0,@r1", "7301");
+        }
+
+        [Test]
+        public void ShDis_movca_l()
+        {
+            AssertCode("movca.l\tr0,@r1", "C301");
+        }
+
+
+
+        [Test]
+        public void ShDis_shal()
+        {
+            AssertCode("shal\tr2", "2042");
+        }
+
+        [Test]
+        public void ShDis_ldc_sgr()
+        {
+            AssertCode("ldc.l\t@r2+,sgr", "3642");
+        }
+
+        [Test]
+        public void ShDis_tas_b()
+        {
+            AssertCode("tas.b\t@r3", "1B43");
+        }
+
+        [Test]
+        public void ShDis_divs()
+        {
+            AssertCode("divs\tr0,r3", "9443");
+        }
+
+        [Test]
+        public void ShDis_stc_gbr()
+        {
+            AssertCode("stc.l\tgbr,@-r4", "1344");
+        }
+
+ 
+
+        [Test]
+        public void ShDis_sts_fpul()
+        {
+            AssertCode("sts\tfpul,r1", "5A01");
+        }
+
+        [Test]
+        public void ShDis_lds_fpul()
+        {
+            AssertCode("lds\tr4,fpul", "5A44");
+        }
+
+        [Test]
+        public void ShDis_mulr()
+        {
+            AssertCode("mulr\tr0,r6", "8046");
+        }
+
+        [Test]
+        public void ShDis_ldc_tbr()
+        {
+            AssertCode("ldc\tr10,tbr", "4A4A");
+        }
+
+        [Test]
+        public void ShDis_movmu_l_to_regs()
+        {
+            AssertCode("movmu.l\t@r15+,r8", "F448");
+        }
+
+        [Test]
+        public void ShDis_movmu_l()
+        {
+            AssertCode("movmu.l\tr1,@-r15", "F041");
+        }
+
+        [Test]
+        public void ShDis_stc_l_bank()
+        {
+            AssertCode("stc.l\tr5_bank,r13", "D34D");
+        }
+
+        [Test]
+        public void ShDis_mac_w()
+        {
+            AssertCode("mac.w\t@r3+,@r10+", "3F4A");
+        }
+
+        [Test]
+        public void ShDis_ldc_l_bank()
+        {
+            AssertCode("ldc.l\t@r10+,r2_bank", "A74A");
+        }
+
+        [Test]
+        public void ShDis_lds_l_dsr_post()
+        {
+            AssertCode("lds.l\t@r12+,dsr", "664C");
+        }
+
+        [Test]
+        public void ShDis_lds_l_dsr_reg()
+        {
+            AssertCode("lds\tr12,dsr", "6A4C");
+        }
+
+        [Test]
+        public void ShDis_fsub()
+        {
+            AssertCode("fsub\tfr0,fr1", "01F1");
+        }
+
+        [Test]
+        public void ShDis_fmov_d()
+        {
+            AssertCode("fmov\tdr2,dr0", "2CF0");
+        }
+
+        [Test]
+        public void ShDis_fmov_d_idx()
+        {
+            AssertCode("fmov.d\t@(r0,r1),dr4", "46F1");
+        }
+
+        [Test]
+        public void ShDis_fadd_dr()
+        {
+            AssertCode("fadd\tdr0,dr0", "10F0");
+        }
+
+        [Test]
+        public void ShDis_fmov_d_ind()
+        {
+            AssertCode("fmov.d\t@r0,dr4", "48F0");
+        }
+
+        [Test]
+        public void ShDis_pref()
+        {
+            AssertCode("pref\t@r10", "830A");
+        }
+
+        [Test]
+        public void ShDis_fmul()
+        {
+            AssertCode("fmul\tfr11,fr0", "B2F0");
+        }
+
+        [Test]
+        public void ShDis_mac_l()
+        {
+            AssertCode("mac.l\t@r15+,@r0+", "FF00");
+        }
+
+        // A SuperH decoder for the instruction FFFE has not been implemented yet.
+        [Test]
+        public void ShDis_fmac()
+        {
+            AssertCode("fmac\tfr0,fr15,fr15", "FEFF");
+        }
+
+
+        // A SuperH decoder for the instruction 400E has not been implemented yet.
+        [Test]
+        public void ShDis_ldc_sr()
+        {
+            AssertCode("ldc\tr0,sr", "0E40");
+        }
+
+        // A SuperH decoder for the instruction 0138 has not been implemented yet.
+        [Test]
+        public void ShDis_ldtlb()
+        {
+            AssertCode("ldtlb", "3800");
+        }
+
+        [Test]
+        public void ShDis_ldc_vbr()
+        {
+            AssertCode("ldc\tr1,vbr", "2E41");
+        }
+
+        [Test]
+        public void ShDis_lds_l_mach()
+        {
+            AssertCode("lds.l\t@r0+,mach", "0640");
+        }
+
+        [Test]
+        public void ShDis_ftrc()
+        {
+            AssertCode("ftrc\tdr2,fpul", "3DF2");
+        }
+
+#if NYI
+        //$TODO: DSP instructions
+        [Test]
+        public void ShDis_008A()
+        {
+        AssertCode("@@@", "8A00");
+        }
+        [Test]
+        public void ShDis_009A()
+        {
+            AssertCode("@@@", "9A00");
+        }
+         A SuperH decoder for the instruction 01BA has not been implemented yet.
+        [Test]
+        public void ShDis_01BA()
+        {
+            AssertCode("@@@", "BA01");
+        }
+              // A SuperH decoder for the instruction 4A14 has not been implemented yet.
+        [Test]
+        public void ShDis_4A14()
+        {
+            AssertCode("@@@", "144A");
+        }
+#endif
     }
 }
 

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,8 +31,8 @@ namespace Reko.UnitTests.Core
         [Test]
         public void CmpPtrIntPtrInt()
         {
-            Pointer p1 = new Pointer(PrimitiveType.Int32, 4);
-            Pointer p2 = new Pointer(PrimitiveType.Int32, 4);
+            Pointer p1 = new Pointer(PrimitiveType.Int32, 32);
+            Pointer p2 = new Pointer(PrimitiveType.Int32, 32);
             DataTypeComparer c = new DataTypeComparer();
             Assert.AreEqual(0, c.Compare(p1, p2));
         }
@@ -58,8 +58,8 @@ namespace Reko.UnitTests.Core
             // struct str1{struct *str2} == struct str2{struct *str1}
             StructureType s1 = new StructureType();
             StructureType s2 = new StructureType();
-            s1.Fields.Add(0, new Pointer(s2, 4));
-            s2.Fields.Add(0, new Pointer(s1, 4));
+            s1.Fields.Add(0, new Pointer(s2, 32));
+            s2.Fields.Add(0, new Pointer(s1, 32));
             DataTypeComparer c = new DataTypeComparer();
             Assert.AreEqual(0, c.Compare(s1, s2));
         }
@@ -72,9 +72,9 @@ namespace Reko.UnitTests.Core
             DataType r32 = PrimitiveType.Real32;
             StructureType s1 = new StructureType();
             StructureType s2 = new StructureType();
-            s1.Fields.Add(0, new Pointer(s2, 4));
+            s1.Fields.Add(0, new Pointer(s2, 32));
             s1.Fields.Add(4, u32);
-            s2.Fields.Add(0, new Pointer(s1, 4));
+            s2.Fields.Add(0, new Pointer(s1, 32));
             s2.Fields.Add(4, r32);
             DataTypeComparer c = new DataTypeComparer();
             Assert.AreNotEqual(0, c.Compare(s1, s2));

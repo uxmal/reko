@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -137,11 +137,11 @@ namespace Reko.Core.Serialization
             }
             else
             {
-                var dtRet = ss.ReturnValue != null
+                var dtRet = ss.ReturnValue != null && ss.ReturnValue.Type != null
                     ? ss.ReturnValue.Type.Accept(TypeLoader)
                     : null;
                 var dtThis = ss.EnclosingType != null
-                    ? new Pointer(ss.EnclosingType.Accept(TypeLoader), Architecture.PointerType.Size)
+                    ? new Pointer(ss.EnclosingType.Accept(TypeLoader), Architecture.PointerType.BitSize)
                     : null;
                 var dtParameters = ss.Arguments != null
                     ? ss.Arguments
@@ -221,7 +221,7 @@ namespace Reko.Core.Serialization
                 return name;
             var stack = storage as StackStorage;
             if (stack != null)
-                return Frame.FormatStackAccessName(dataType, "Arg", stack.StackOffset, name);
+                return NamingPolicy.Instance.StackArgumentName(dataType, stack.StackOffset, name);
             var seq = storage as SequenceStorage;
             if (seq != null)
                 return seq.Name;
@@ -254,11 +254,12 @@ namespace Reko.Core.Serialization
 
         public Procedure_v1 Serialize(Procedure proc, Address addr)
         {
-            Procedure_v1 sproc = new Procedure_v1();
-            sproc.Address = addr.ToString();
-            sproc.Name = proc.Name;
-            if (proc.Signature != null)
-                sproc.Signature = Serialize(proc.Signature);
+            var sproc = new Procedure_v1
+            {
+                Address = addr.ToString(),
+                Name = proc.Name,
+                Signature = Serialize(proc.Signature),
+            };
             return sproc;
         }
 

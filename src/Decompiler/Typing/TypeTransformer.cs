@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -342,12 +342,6 @@ namespace Reko.Typing
             return ptr;
         }
 
-        public DataType VisitQualifiedType(QualifiedType qt)
-        {
-            qt.DataType = qt.DataType.Accept(this);
-            return qt;
-        }
-
         public DataType VisitReference(ReferenceTo refTo)
         {
             refTo.Referent = refTo.Referent.Accept(this);
@@ -430,7 +424,7 @@ namespace Reko.Typing
 				StructureMerger sm = new StructureMerger(upsm.Structures, upsm.EquivalenceClasses);
 				sm.Merge();
 				Changed = true;
-				return new Pointer(sm.MergedClass, upsm.PointerSize);
+				return new Pointer(sm.MergedClass, upsm.PointerBitSize);
 			}
 
 			UnionType utNew = FactorDuplicateAlternatives(ut);

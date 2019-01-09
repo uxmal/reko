@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -122,6 +122,8 @@ namespace Reko.UnitTests.Gui.Windows
             public event DragEventHandler DragDrop;
             public event EventHandler DragLeave;
             public event MouseEventHandler MouseWheel;
+            public event EventHandler GotFocus;
+            public event EventHandler LostFocus;
 
             public FakeTreeView()
             {
@@ -203,6 +205,16 @@ namespace Reko.UnitTests.Gui.Windows
             public void PerformMouseWheel(MouseEventArgs e)
             {
                 MouseWheel(this, e);
+            }
+
+            public void PerformGotFocus(EventArgs e)
+            {
+                GotFocus(this, e);
+            }
+
+            public void PerformLostFocus(EventArgs e)
+            {
+                LostFocus(this, e);
             }
 
             public void Invoke(Action action)

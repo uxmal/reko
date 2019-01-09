@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,28 +32,25 @@ namespace Reko.Arch.Mips
 {
     public class MipsDisassembler : DisassemblerBase<MipsInstruction>
     {
-        internal MipsProcessorArchitecture arch;
-        internal bool isVersion6OrLater;
+        internal readonly MipsProcessorArchitecture arch;
+        internal readonly bool isVersion6OrLater;
         private MipsInstruction instrCur;
         private Address addr;
-        private EndianImageReader rdr;
-        private PrimitiveType signedWord;
+        private readonly EndianImageReader rdr;
+        private readonly PrimitiveType signedWord;
 
         public MipsDisassembler(MipsProcessorArchitecture arch, EndianImageReader imageReader, bool isVersion6OrLater)
         {
             this.arch = arch;
             this.rdr = imageReader;
             this.isVersion6OrLater = isVersion6OrLater;
-            this.signedWord = PrimitiveType.Create(Domain.SignedInt, arch.WordWidth.Size);
+            this.signedWord = PrimitiveType.Create(Domain.SignedInt, arch.WordWidth.BitSize);
         }
 
         public override MipsInstruction DisassembleInstruction()
         {
-            if (!rdr.IsValid)
-                return null; 
             this.addr = rdr.Address;
-            uint wInstr;
-            if (!rdr.TryReadUInt32(out wInstr))
+            if (!rdr.TryReadUInt32(out uint wInstr))
             {
                 return null;
             }
@@ -73,9 +70,25 @@ namespace Reko.Arch.Mips
             {
                 instrCur = new MipsInstruction { opcode = Opcode.illegal };
             }
+            EmitUnitTest(wInstr, instrCur);
             instrCur.Address = this.addr;
             instrCur.Length = 4;
             return instrCur;
+        }
+
+        [Conditional("DEBUG")]
+        public void EmitUnitTest(uint wInstr, MipsInstruction instr)
+        {
+            if (instr.opcode != Opcode.illegal)
+                return;
+            var op = (wInstr >> 26);
+            if (op == 0 || op == 1)
+                return;
+            var instrHex = $"{wInstr:X8}";
+            base.EmitUnitTest("MIPS", instrHex, "", "MipsDis", this.addr, w =>
+            {
+                w.WriteLine("    AssertCode(\"@@@\", \"0x{0:X8}\"", wInstr);
+            });
         }
 
         private static OpRec[] opRecs;
@@ -386,6 +399,15 @@ namespace Reko.Arch.Mips
                 new AOpRec(Opcode.illegal, ""),
                 new AOpRec(Opcode.illegal, ""));
 
+            var cop0_C0_decoder = new SparseMaskDecoder(0, 0x3F, new Dictionary<uint, OpRec>
+            {
+                { 0x01, new AOpRec(Opcode.tlbr , "") },
+                { 0x02, new AOpRec(Opcode.tlbwi, "") },
+                { 0x06, new AOpRec(Opcode.tlbwr, "") },
+                { 0x08, new AOpRec(Opcode.tlbp , "") },
+                { 0x18, new AOpRec(Opcode.eret , "") },
+                { 0x20, new AOpRec(Opcode.wait , "") },
+            });
             var cop1 = new CoprocessorOpRec(
                 new AOpRec(Opcode.mfc1, "R2,F3"),
                 new A64OpRec(Opcode.dmfc1, "R2,F3"),
@@ -423,6 +445,13 @@ namespace Reko.Arch.Mips
                 new AOpRec(Opcode.illegal, ""),
                 new AOpRec(Opcode.illegal, ""));
 
+            var special2 = new SparseMaskDecoder(0, 0x3F, new Dictionary<uint, OpRec>
+            {
+                { 0x2, new Version6OpRec(
+                    new AOpRec(Opcode.mul, "R3,R1,R2"),
+                    new AOpRec(Opcode.illegal, ""))
+                }
+            });
             opRecs = new OpRec[]
             {
                 new SpecialOpRec(),
@@ -446,20 +475,11 @@ namespace Reko.Arch.Mips
                 // 10
                 new CoprocessorOpRec(
                     new AOpRec(Opcode.mfc0, "R2,R3"),
-                    new AOpRec(Opcode.illegal, ""),
+                    new AOpRec(Opcode.dmfc0, "R2,R3"),
                     new AOpRec(Opcode.illegal, ""),
                     new AOpRec(Opcode.illegal, ""),
                     new AOpRec(Opcode.mtc0, "R2,R3"),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
+                    new AOpRec(Opcode.dmtc0, "R2,R3"),
                     new AOpRec(Opcode.illegal, ""),
                     new AOpRec(Opcode.illegal, ""),
 
@@ -472,18 +492,27 @@ namespace Reko.Arch.Mips
                     new AOpRec(Opcode.illegal, ""),
                     new AOpRec(Opcode.illegal, ""),
 
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, "")),
-                // 11: COP1 encodings
+                    cop0_C0_decoder,
+                    cop0_C0_decoder,
+                    cop0_C0_decoder,
+                    cop0_C0_decoder,
+                    cop0_C0_decoder,
+                    cop0_C0_decoder,
+                    cop0_C0_decoder,
+                    cop0_C0_decoder,
+
+                    cop0_C0_decoder,
+                    cop0_C0_decoder,
+                    cop0_C0_decoder,
+                    cop0_C0_decoder,
+                    cop0_C0_decoder,
+                    cop0_C0_decoder,
+                    cop0_C0_decoder,
+                    cop0_C0_decoder),
+               // 11: COP1 encodings
                 cop1,
 
-               new CoprocessorOpRec(
+               new CoprocessorOpRec(  // 12: COP2 
                     new AOpRec(Opcode.illegal, ""),
                     new AOpRec(Opcode.illegal, ""),
                     new AOpRec(Opcode.illegal, ""),
@@ -519,7 +548,7 @@ namespace Reko.Arch.Mips
                     new AOpRec(Opcode.illegal, ""),
                     new AOpRec(Opcode.illegal, ""),
                     new AOpRec(Opcode.illegal, "")),
-                null,
+                null,   // COP1X
                 new AOpRec(Opcode.beql, "R1,R2,j"),
                 new AOpRec(Opcode.bnel, "R1,R2,j"),
                 new AOpRec(Opcode.blezl, "R1,j"),
@@ -529,7 +558,8 @@ namespace Reko.Arch.Mips
                 new A64OpRec(Opcode.daddiu, "R2,R1,I"),
                 new A64OpRec(Opcode.ldl, "R2,El"),
                 new A64OpRec(Opcode.ldr, "R2,El"),
-                null,
+
+                special2,
                 null,
                 null,
                 new Special3OpRec(), 
@@ -582,13 +612,11 @@ namespace Reko.Arch.Mips
                     new AOpRec(Opcode.illegal, "")),
                 new A64OpRec(Opcode.sdc1, "F2,El"),
                 null,
-                new Version6OpRec(
-                    new A64OpRec(Opcode.sd, "R2,El"),
-                    new AOpRec(Opcode.illegal, ""))
+                new A64OpRec(Opcode.sd, "R2,El")
             };
         }
 
-        public MipsInstruction DecodeOperands(Opcode opcode, uint wInstr, string opFmt)
+        public MipsInstruction DecodeOperands(uint wInstr, Opcode opcode, InstrClass iclass, string opFmt)
         {
             var ops = new List<MachineOperand>();
             MachineOperand op = null;
@@ -663,6 +691,9 @@ namespace Reko.Arch.Mips
                 case 'c':   // condition code
                     op = CCodeFlag(wInstr, opFmt, ref i);
                     break;
+                case 'C': // FPU condition code
+                    op = FpuCCodeFlag(wInstr, opFmt, ref i);
+                    break;
                 case 'H':   // hardware register, see instruction rdhwr
                     op = ImmediateOperand.Byte((byte)((wInstr >> 11) & 0x1f));
                     break;
@@ -672,6 +703,7 @@ namespace Reko.Arch.Mips
             return new MipsInstruction
             {
                 opcode = opcode,
+                iclass = iclass,
                 Address = addr,
                 Length = 4,
                 op1 = ops.Count > 0 ? ops[0] : null,
@@ -716,6 +748,20 @@ namespace Reko.Arch.Mips
             return new RegisterOperand(arch.ccRegs[regNo]);
         }
 
+        private RegisterOperand FpuCCodeFlag(uint wInstr, string fmt, ref int i)
+        {
+            int pos = 0;
+            ++i;
+            while (i < fmt.Length && Char.IsDigit(fmt[i]))
+            {
+                pos = pos * 10 + fmt[i] - '0';
+                ++i;
+            }
+            var regNo = (wInstr >> pos) & 0x7;
+            --i;
+            return new RegisterOperand(arch.fpuCcRegs[regNo]);
+        }
+
         private AddressOperand RelativeBranch(uint wInstr)
         {
             int off = (short) wInstr;
@@ -749,5 +795,41 @@ namespace Reko.Arch.Mips
             var baseReg = arch.GetRegister((int)(wInstr >> shift) & 0x1F);
             return new IndirectOperand(dataWidth, offset, baseReg);
         }
+
+        /*
+         *    classOf = new Dictionary<Opcode, InstrClass>
+            {
+                { Opcode.illegal, InstrClass.Invalid },
+
+                { Opcode.beq,     CondTransfer },
+                { Opcode.beql,    LinkCondTransfer },
+                { Opcode.bgez,    CondTransfer },
+                { Opcode.bgezal,  LinkCondTransfer },
+                { Opcode.bgezall, LinkCondTransfer },
+                { Opcode.bgezl,   LinkCondTransfer },
+                { Opcode.bgtz,    CondTransfer },
+                { Opcode.bgtzl,   LinkCondTransfer },
+                { Opcode.blez,    CondTransfer },
+                { Opcode.blezl,   LinkCondTransfer },
+                { Opcode.bltz,    CondTransfer },
+                { Opcode.bltzal,  LinkCondTransfer },
+                { Opcode.bltzall, LinkCondTransfer },
+                { Opcode.bltzl,   CondTransfer },
+                { Opcode.bne,     CondTransfer },
+                { Opcode.bnel,    LinkCondTransfer },
+                { Opcode.@break,  Transfer },
+                { Opcode.j,       Transfer },
+                { Opcode.jal,     LinkTransfer },
+                { Opcode.jalr,    LinkTransfer },
+                { Opcode.jr,      Transfer },
+                { Opcode.syscall, LinkTransfer },
+                { Opcode.teq,     LinkCondTransfer },
+                { Opcode.tlt,     LinkCondTransfer },
+                { Opcode.tltu,    LinkCondTransfer },
+                { Opcode.tge,     LinkCondTransfer },
+                { Opcode.tgeu,    LinkCondTransfer },
+                { Opcode.tne,     LinkCondTransfer },
+            };
+        */
     }
 }

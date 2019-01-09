@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,8 +48,11 @@ namespace Reko.Core.Types
             this.Offset = offset; this.DataType = type; this.name = name;
 		}
 
-        public override string Name { get { if (name == null) return GenerateDefaultName(); return name; }
-            set { name = value; } }
+        public override string Name
+        {
+            get { if (name == null) return DefaultName(); return name; }
+            set { name = value; }
+        }
 
         public bool IsNameSet { get { return name != null; } }
 
@@ -62,9 +65,9 @@ namespace Reko.Core.Types
 			return new StructureField(Offset, DataType.Clone(clonedTypes), name);
 		}
 
-        private string GenerateDefaultName()
+        private string DefaultName()
         {
-            return string.Format("{0}{1:X4}", DataType.Prefix, Offset);         //$Naming should be given at a different level.
+            return NamingPolicy.Instance.Types.StructureFieldName(this, this.name);
         }
 
         public static int ToOffset(Constant offset)

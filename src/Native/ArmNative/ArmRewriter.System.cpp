@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 1999-2018 John Källén.
+* Copyright (C) 1999-2019 John Källén.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -128,7 +128,7 @@ void ArmRewriter::RewriteStc(const char * name)
 
 void ArmRewriter::RewriteSvc()
 {
-	this->rtlClass = RtlClass::Transfer | RtlClass::Call;
+	this->rtlClass = InstrClass::Transfer | InstrClass::Call;
 	auto intrinsic = host->EnsurePseudoProcedure("__syscall", BaseType::Void, 1);
 	m.AddArg(Operand(Dst()));
 	m.SideEffect(m.Fn(intrinsic));

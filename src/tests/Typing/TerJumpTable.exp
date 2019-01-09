@@ -21,8 +21,8 @@ l1:
 IndirectCallFragment_exit:
 
 // Equivalence classes ////////////
-Eq_1: (struct "Eq_1" (27000 (ptr Eq_2) ptr27000))
-	globals_t (in globals : (ptr (struct)))
+Eq_1: (struct "Eq_1" (27000 (ptr32 Eq_2) ptr27000))
+	globals_t (in globals : (ptr32 (struct)))
 Eq_2: (segment "Eq_2")
 	T_2 (in 0x2700 : selector)
 Eq_5: (struct "Eq_5" (2040 word16 w2040))
@@ -30,14 +30,14 @@ Eq_5: (struct "Eq_5" (2040 word16 w2040))
 Eq_9: (union "Eq_9" (ptr32 u0) (pfn32 u1))
 	T_9 (in SEQ(0x2700, Mem0[ds:di + di + 0x2040:word16]) : ptr32)
 // Type Variables ////////////
-globals_t: (in globals : (ptr (struct)))
+globals_t: (in globals : (ptr32 (struct)))
   Class: Eq_1
-  DataType: (ptr Eq_1)
-  OrigDataType: (ptr (struct (27000 T_2 t27000)))
+  DataType: (ptr32 Eq_1)
+  OrigDataType: (ptr32 (struct (27000 T_2 t27000)))
 T_2: (in 0x2700 : selector)
   Class: Eq_2
-  DataType: (ptr Eq_2)
-  OrigDataType: (ptr (segment))
+  DataType: (ptr32 Eq_2)
+  OrigDataType: (ptr32 (segment))
 T_3: (in ds : word16)
   Class: Eq_3
   DataType: word16

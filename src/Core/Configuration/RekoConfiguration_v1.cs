@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -73,6 +73,47 @@ namespace Reko.Core.Configuration
 
         [XmlAttribute("Type")]
         public string Type;
+
+        [XmlArray("Options")]
+        [XmlArrayItem("Option")]
+        public PropertyOption_v1[] Options;
+    }
+
+    [Serializable]
+    public partial class PropertyOption_v1
+    {
+        [XmlAttribute("Name")]
+        public string Name;
+
+        [XmlAttribute("Text")]
+        public string Text;
+
+        [XmlAttribute("Description")]
+        public string Description;
+
+        [XmlAttribute("Type")]
+        public string TypeName;
+
+        [XmlAttribute("Required")]
+        [DefaultValue(false)]
+        public bool Required;
+
+        [XmlElement("Choice", typeof(ListOption_v1))]
+        public ListOption_v1 [] Choices;
+    }
+
+    public class ListOption_v1
+    {
+        [XmlAttribute("Text")]
+        public string Text;
+
+        [XmlAttribute("Value")]
+        public string Value;
+
+        public override string ToString()
+        {
+            return Text;
+        }
     }
 
     [Serializable]

@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,17 +42,20 @@ namespace Reko.Arch.Vax
 
         public override VaxInstruction DisassembleInstruction()
         {
-            byte op;
             var addr = rdr.Address;
-            if (!rdr.TryReadByte(out op))
+            if (!rdr.TryReadByte(out byte op))
                 return null;
             VaxInstruction instr;
             try
             {
                 instr = oneByteInstructions[op].Decode(this);
-            } catch
+            }
+            catch
             {
-                instr = new VaxInstruction { Opcode = Opcode.Invalid, Operands = new MachineOperand[0] };
+                instr = new VaxInstruction {
+                    Opcode = Opcode.Invalid,
+                    IClass = InstrClass.Invalid,
+                    Operands = new MachineOperand[0] };
             }
             if (instr == null)
                 return null;
@@ -61,7 +64,7 @@ namespace Reko.Arch.Vax
             return instr;
         }
 
-        private VaxInstruction DecodeOperands(Opcode opcode, string format)
+        private VaxInstruction DecodeOperands(Opcode opcode, InstrClass iclass, string format)
         {
             var ops = new List<MachineOperand>();
             MachineOperand op;
@@ -105,6 +108,7 @@ namespace Reko.Arch.Vax
                     return new VaxInstruction
                     {
                         Opcode = Opcode.Invalid,
+                        IClass = InstrClass.Invalid,
                         Operands = new MachineOperand[0],
                     };
                 }
@@ -113,6 +117,7 @@ namespace Reko.Arch.Vax
             return new VaxInstruction
             {
                 Opcode = opcode,
+                IClass = iclass,
                 Operands = ops.ToArray()
             };
         }
@@ -140,11 +145,7 @@ namespace Reko.Arch.Vax
         private bool TryDecodeOperand(PrimitiveType width, out MachineOperand op)
         {
             op = null;
-            byte b;
-            byte bSpecifier;
-            ushort w;
-            uint dw;
-            if (!rdr.TryReadByte(out bSpecifier))
+            if (!rdr.TryReadByte(out byte bSpecifier))
             {
                 return false;
             }
@@ -200,19 +201,19 @@ namespace Reko.Arch.Vax
                 break;
             case 0xA: // Displacement mode
             case 0xD:
-                if (!rdr.TryReadByte(out b))
+                if (!rdr.TryReadByte(out byte b))
                     return false;
                 op = DisplacementOperand(width, reg, Constant.SByte((sbyte)b), bSpecifier);
                 break;
             case 0xB:
             case 0xE:
-                if (!rdr.TryReadUInt16(out w))
+                if (!rdr.TryReadUInt16(out ushort w))
                     return false;
                 op = DisplacementOperand(width, reg, Constant.Int16((short)w), bSpecifier);
                 break;
             case 0xC:
             case 0xF:
-                if (!rdr.TryReadUInt32(out dw))
+                if (!rdr.TryReadUInt32(out uint dw))
                     return false;
                 op = DisplacementOperand(width, reg, Constant.Word32(dw), bSpecifier);
                 break;
@@ -224,19 +225,16 @@ namespace Reko.Arch.Vax
 
         private MachineOperand ImmediateOperand(PrimitiveType width)
         {
-            Constant imm;
-            if (!rdr.TryRead(width, out imm))
+            if (!rdr.TryRead(width, out Constant imm))
                 return null;
             return new ImmediateOperand(imm);
         }
 
         private MachineOperand IndexOperand(PrimitiveType width, RegisterStorage reg)
         {
-            MachineOperand op;
-            if (!TryDecodeOperand(width, out op))
+            if (!TryDecodeOperand(width, out MachineOperand op))
                 return null;
-            var aOp = op as MemoryOperand;
-            if (aOp == null)
+            if (!(op is MemoryOperand aOp))
                 return null;
             aOp.Index = reg;
             return aOp;
@@ -287,18 +285,20 @@ namespace Reko.Arch.Vax
             throw new NotImplementedException();
         }
 
-        public class OpRec
+        public class Decoder
         {
-            private Opcode op;
-            private string format;
+            private readonly Opcode op;
+            private readonly InstrClass iclass;
+            private readonly string format;
 
-            public OpRec(Opcode op, string format)
+            public Decoder(Opcode op, string format, InstrClass iclass = InstrClass.Linear)
             {
                 this.op = op;
+                this.iclass = iclass;
                 this.format = format;
             }
 
-            public OpRec(Opcode op, int args)
+            public Decoder(Opcode op, int args)
             {
                 this.op = op;
                 this.format = "";
@@ -306,7 +306,7 @@ namespace Reko.Arch.Vax
 
             public virtual VaxInstruction Decode(VaxDisassembler dasm)
             {
-                return dasm.DecodeOperands(op, format);
+                return dasm.DecodeOperands(op, iclass, format);
             }
         }
     }

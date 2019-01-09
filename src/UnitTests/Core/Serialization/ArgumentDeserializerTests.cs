@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -89,7 +89,7 @@ namespace Reko.UnitTests.Core.Serialization
             };
             var id = argser.Deserialize(arg);
             Assert.AreEqual("eax", id.Name);
-            Assert.AreEqual("(ptr char)", id.DataType.ToString());
+            Assert.AreEqual("(ptr32 char)", id.DataType.ToString());
         }
 
         [Test]
@@ -102,7 +102,7 @@ namespace Reko.UnitTests.Core.Serialization
             };
             var id = argser.Deserialize(arg);
             Assert.AreEqual("ptrArg0D", id.Name);
-            Assert.AreEqual("(ptr char)", id.DataType.ToString());
+            Assert.AreEqual("(ptr32 char)", id.DataType.ToString());
             Assert.AreEqual("Stack +000D", id.Storage.ToString());
         }
 

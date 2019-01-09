@@ -253,7 +253,7 @@ _mm_free proc
 vec_add proc
 	lea	r10,[rsp+08]
 	and	rsp,E0
-	push	qword ptr [rdx-08]
+	push	qword ptr [r10-08]
 	push	rbp
 	mov	rbp,rsp
 	push	r10
@@ -311,7 +311,7 @@ l000000000000088B:
 	add	rsp,30
 	pop	r10
 	pop	rbp
-	lea	rsp,[rdx-08]
+	lea	rsp,[r10-08]
 	ret
 
 ;; main: 0000000000000898
@@ -522,9 +522,11 @@ _fini proc
 	add	rsp,08
 	ret
 ;;; Segment .rodata (0000000000000AF0)
-0000000000000AF0 01 00 02 00                                     ....           
+_IO_stdin_used		; 0000000000000AF0
+	dd	0x00020001
 0000000000000AF4             00 00 00 00 25 67 0A 00 00 00 00 00     ....%g......
-0000000000000B00 04 00 00 00 00 00 00 00                         ........       
+double_size.21529		; 0000000000000B00
+	dq	0x0000000000000004
 ;;; Segment .eh_frame_hdr (0000000000000B08)
 0000000000000B08                         01 1B 03 3B 54 00 00 00         ...;T...
 0000000000000B10 09 00 00 00 B8 FA FF FF A0 00 00 00 08 FB FF FF ................
@@ -569,7 +571,7 @@ _fini proc
 ; DT_INIT_ARRAYSZ 0000000000000008
 ; DT_FINI_ARRAY   0000000000200DF0
 ; DT_FINI_ARRAYSZ 0000000000000008
-; 6FFFFEF5        0000000000000298
+; DT_GNU_HASH     0000000000000298
 ; DT_STRTAB       00000000000003A8
 ; DT_SYMTAB       00000000000002B8
 ; DT_STRSZ        000000000000009F
@@ -582,11 +584,11 @@ _fini proc
 ; DT_RELA         0000000000000480
 ; DT_RELASZ                    192
 ; DT_RELAENT                    24
-; 6FFFFFFB        0000000008000000
-; 6FFFFFFE        0000000000000460
-; 6FFFFFFF        0000000000000001
-; 6FFFFFF0        0000000000000448
-; 6FFFFFF9        0000000000000003
+; DT_FLAGS_1      0000000008000000
+; DT_VERNEED      0000000000000460
+; DT_VERNEEDNUM                  1
+; DT_VERSYM       0000000000000448
+; DT_RELACOUNT                   3
 ;;; Segment .got (0000000000200FD8)
 _ITM_deregisterTMCloneTable_GOT		; 0000000000200FD8
 	dq	0x0000000000000000

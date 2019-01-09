@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -83,7 +83,7 @@ namespace Reko.Analysis
                     var fuser = new UnalignedMemoryAccessFuser(ssa);
                     fuser.Transform();
 
-                    var vp = new ValuePropagator(program.SegmentMap, ssa, eventListener);
+                    var vp = new ValuePropagator(program.SegmentMap, ssa, importResolver, eventListener);
 
                     sst.RenameFrameAccesses = true;
                     var icrw = new IndirectCallRewriter(program, ssa, eventListener);
@@ -180,10 +180,8 @@ namespace Reko.Analysis
                 TextFormatter f = new TextFormatter(output);
 				if (pf.Signature != null)
 					pf.Signature.Emit(proc.Name, FunctionType.EmitFlags.None, f);
-				else if (proc.Signature != null)
-					proc.Signature.Emit(proc.Name, FunctionType.EmitFlags.None, f);
 				else
-					output.Write("Warning: no signature found for {0}", proc.Name);
+					proc.Signature.Emit(proc.Name, FunctionType.EmitFlags.None, f);
 				output.WriteLine();
 				pf.Emit(proc.Architecture, output);
 
@@ -283,7 +281,7 @@ namespace Reko.Analysis
                 // are propagated to the corresponding call sites.
                 var cce = new ConditionCodeEliminator(ssa, program.Platform);
                 cce.Transform();
-                var vp = new ValuePropagator(program.SegmentMap, ssa, eventListener);
+                var vp = new ValuePropagator(program.SegmentMap, ssa, importResolver, eventListener);
                 vp.Transform();
 
                 // Now compute SSA for the stack-based variables as well. That is:

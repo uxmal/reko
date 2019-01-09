@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -105,7 +105,7 @@ namespace Reko.Typing
                 var baseType = ptrSeg.Pointee.ResolveAs<StructureType>();
                 var dt = addr.TypeVariable.DataType.ResolveAs<Pointer>();
                 this.c = Constant.Create(
-                    PrimitiveType.CreateWord(addr.DataType.Size - ptrSeg.Size),
+                    PrimitiveType.CreateWord(addr.DataType.BitSize - ptrSeg.BitSize),
                     addr.Offset);
 
                 var f = EnsureFieldAtOffset(baseType, dt.Pointee, c.ToInt32());
@@ -137,8 +137,7 @@ namespace Reko.Typing
             {
                 if (globals != null && globals.TypeVariable != null)
                 {
-                    var pGlob = globals.TypeVariable.DataType as Pointer;
-                    if (pGlob != null)
+                    if (globals.TypeVariable.DataType is Pointer pGlob)
                     {
                         return pGlob.Pointee.ResolveAs<StructureType>();
                     }
@@ -262,13 +261,14 @@ namespace Reko.Typing
                 }
                 
                 var dt = ptr.Pointee.ResolveAs<DataType>();
-                if (IsCharPtrToReadonlySection(c, dt))
+                var charType = MaybeCharType(dt);
+                if (charType != null && IsPtrToReadonlySection(c, dt))
                 {
-                    PromoteToCString(c, dt);
-                    return ReadNullTerminatedString(c, dt);
+                    PromoteToCString(c, charType);
+                    return ReadNullTerminatedString(c, charType);
                 }
                 StructureField f = EnsureFieldAtOffset(GlobalVars, dt, c.ToInt32());
-                var ptrGlobals = new Pointer(GlobalVars, platform.PointerType.Size);
+                var ptrGlobals = new Pointer(GlobalVars, platform.PointerType.BitSize);
                 e = new FieldAccess(ptr.Pointee, new Dereference(ptrGlobals, globals), f);
                 if (dereferenced)
                 {
@@ -281,7 +281,7 @@ namespace Reko.Typing
                     {
                         e.DataType = program.TypeFactory.CreatePointer(
                             array.ElementType, 
-                            platform.PointerType.Size);
+                            platform.PointerType.BitSize);
                     }
                     else
                     {
@@ -292,9 +292,23 @@ namespace Reko.Typing
 			return e;
 		}
 
-        public Expression VisitQualifiedType(QualifiedType qt)
+        /// <summary>
+        /// Drill into dt to see if it could be the beginning of a character string.
+        /// </summary>
+        private PrimitiveType MaybeCharType(DataType dt)
         {
-            return qt.DataType.Accept(this);
+            var pr = dt as PrimitiveType;
+            if (pr == null)
+            {
+                if (!(dt is ArrayType at))
+                    return null;
+                pr = at.ElementType as PrimitiveType;
+                if (pr == null)
+                    return null;
+            }
+            if (pr.Domain != Domain.Character)
+                return null;
+            return pr;
         }
 
         public Expression VisitReference(ReferenceTo refTo)
@@ -302,23 +316,19 @@ namespace Reko.Typing
             throw new NotImplementedException();
         }
 
-        private bool IsCharPtrToReadonlySection(Constant c, DataType dt)
+        private bool IsPtrToReadonlySection(Constant c, DataType dt)
         {
-            var pr = dt as PrimitiveType;
-            if (pr == null || pr.Domain != Domain.Character)
-                return false;
             var addr = platform.MakeAddressFromConstant(c);
             if (addr == null)
                 return false;
-            ImageSegment seg;
-            if (!program.SegmentMap.TryFindSegment(addr, out seg))
+            if (!program.SegmentMap.TryFindSegment(addr, out ImageSegment seg))
                 return false;
             return (seg.Access & AccessMode.ReadWrite) == AccessMode.Read;
         }
 
         private Expression ReadNullTerminatedString(Constant c, DataType dt)
         {
-            var rdr = program.CreateImageReader(platform.MakeAddressFromConstant(c));
+            var rdr = program.CreateImageReader(program.Architecture, platform.MakeAddressFromConstant(c));
             return rdr.ReadCString(dt, program.TextEncoding);
         }
 

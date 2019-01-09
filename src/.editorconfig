@@ -1,0 +1,20 @@
+[*]
+# Some unit tests contain CR-LF (on Windows) and depend on it.
+# Git should magically translate these to LF on non-Windows platforms.
+end_of_line = crlf
+
+[*.xml]
+indent_style = space
+charset = utf-8
+
+[*.cs]
+charset = utf-8
+csharp_new_line_before_open_brace = all
+csharp_space_after_cast = true
+csharp_indent_case_contents = true
+csharp_indent_switch_labels = false
+indent_size = 4
+indent_style = space
+
+
+

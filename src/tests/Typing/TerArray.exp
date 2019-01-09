@@ -20,26 +20,26 @@ proc1_exit:
 
 // Equivalence classes ////////////
 Eq_1: (struct "Globals" (10000 int32 dw10000))
-	globals_t (in globals : (ptr (struct "Globals")))
+	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_2: (struct "Eq_2" (64 (arr int16) a0064))
 	T_2 (in ecx : word32)
 // Type Variables ////////////
-globals_t: (in globals : (ptr (struct "Globals")))
+globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
-  DataType: (ptr Eq_1)
-  OrigDataType: (ptr (struct "Globals"))
+  DataType: (ptr32 Eq_1)
+  OrigDataType: (ptr32 (struct "Globals"))
 T_2: (in ecx : word32)
   Class: Eq_2
-  DataType: (ptr Eq_2)
-  OrigDataType: (ptr (struct (64 (arr T_12) a0064)))
+  DataType: (ptr32 Eq_2)
+  OrigDataType: (ptr32 (struct (64 (arr T_12) a0064)))
 T_3: (in 0x00000064 : word32)
   Class: Eq_3
   DataType: int32
   OrigDataType: int32
 T_4: (in ecx + 0x00000064 : ptr32)
   Class: Eq_4
-  DataType: (ptr int16)
-  OrigDataType: (ptr T_12)
+  DataType: (ptr32 int16)
+  OrigDataType: (ptr32 T_12)
 T_5: (in eax : word32)
   Class: Eq_5
   DataType: ui32
@@ -56,14 +56,14 @@ T_8: (in (ecx + 0x00000064)[eax * 0x00000002] : int16)
   Class: Eq_8
   DataType: int16
   OrigDataType: int16
-T_9: (in (int32) ecx->a0064[eax] : int32)
+T_9: (in (int32) (ecx + 0x00000064)[eax * 0x00000002] : int32)
   Class: Eq_9
   DataType: int32
   OrigDataType: int32
 T_10: (in 0x00010000 : word32)
   Class: Eq_10
-  DataType: (ptr int32)
-  OrigDataType: (ptr (struct (0 T_11 t0000)))
+  DataType: (ptr32 int32)
+  OrigDataType: (ptr32 (struct (0 T_11 t0000)))
 T_11: (in Mem4[0x00010000:word32] : word32)
   Class: Eq_9
   DataType: int32

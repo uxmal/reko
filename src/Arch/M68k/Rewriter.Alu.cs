@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -431,7 +431,7 @@ namespace Reko.Arch.M68k
                     this.m.Assign(t, opSrc);
                     opSrc = t;
                 }
-                this.m.Assign(reg, this.m.ISub(reg, this.m.Int32(this.di.dataWidth.Size)));
+                this.m.Assign(reg, this.m.ISubS(reg, this.di.dataWidth.Size));
                 var op = this.m.Mem(this.di.dataWidth, reg);
                 m(opSrc, op);
                 return op;
@@ -447,7 +447,7 @@ namespace Reko.Arch.M68k
                     opSrc = t;
                 }
                 m(opSrc, this.m.Mem(this.di.dataWidth, reg));
-                this.m.Assign(reg, this.m.IAdd(reg, this.m.Int32(this.di.dataWidth.Size)));
+                this.m.Assign(reg, this.m.IAddS(reg, this.di.dataWidth.Size));
                 return t;
             }
             return orw.RewriteSrc(mop, di.Address);
@@ -490,14 +490,14 @@ namespace Reko.Arch.M68k
                     var addr = di.Address + c.ToInt32();
                     return addr;
                 }
-                Expression ea = orw.Combine(indop.Base, indop.base_reg);
+                Expression ea = orw.Combine(indop.Base, indop.base_reg, di.Address);
                 if (indop.postindex)
                 {
                     ea = m.Mem32(ea);
                 }
                 if (indop.index_reg != null)
                 {
-                    var idx = orw.Combine(null, indop.index_reg);
+                    var idx = orw.Combine(null, indop.index_reg, di.Address);
                     if (indop.index_reg_width.BitSize != 32)
                         idx = m.Cast(PrimitiveType.Word32, m.Cast(PrimitiveType.Int16, idx));
                     if (indop.index_scale > 1)
@@ -653,7 +653,7 @@ namespace Reko.Arch.M68k
                 foreach (var reg in RegisterMaskIncreasing(dstRegs.Width.Domain, dstRegs.BitSet, regGenerator))
                 {
                     m.Assign(reg, m.Mem(di.dataWidth, srcReg));
-                    m.Assign(srcReg, m.IAdd(srcReg, m.Int32(di.dataWidth.Size)));
+                    m.Assign(srcReg, m.IAddS(srcReg, di.dataWidth.Size));
                 }
                 return;
             }
@@ -666,7 +666,7 @@ namespace Reko.Arch.M68k
                     var dstReg = binder.EnsureRegister(preDec.Register);
                     foreach (var reg in RegisterMaskDecreasing(dstRegs.Width.Domain, dstRegs.BitSet, regGenerator))
                     {
-                        m.Assign(dstReg, m.ISub(dstReg, m.Int32(di.dataWidth.Size)));
+                        m.Assign(dstReg, m.ISubS(dstReg, di.dataWidth.Size));
                         m.Assign(m.Mem(di.dataWidth, dstReg), reg);
                     }
                 }

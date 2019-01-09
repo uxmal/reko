@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,6 +36,7 @@ namespace Reko.Core.Configuration
 
         string Label { get; set; }
         string Argument { get; set; }
+        string Description { get; set; }
     }
 
     public class LoaderElementImpl : LoaderConfiguration
@@ -75,5 +76,10 @@ namespace Reko.Core.Configuration
         /// A format string that can be used to pass parameters to a loader implemented as an executable.
         /// </summary>
         public string Argument { get; set; }
+
+        /// <summary>
+        /// Text to display in user interfaces when browsing loaders.
+        /// </summary>
+        public string Description { get; set; }
     }
 }

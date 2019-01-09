@@ -47,7 +47,7 @@ fn0C00_000B_entry:
 	// succ:  l0C00_000B
 l0C00_000B:
 	sp = fp
-	sp = fp - 0x0002
+	sp = fp - 2
 	wLoc02 = si
 	SCZO = cond(cx - 0x0001)
 	branch Test(LE,SZO) l0C00_001C

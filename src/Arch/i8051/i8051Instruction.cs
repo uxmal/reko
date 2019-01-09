@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
@@ -29,15 +30,7 @@ namespace Reko.Arch.i8051
 {
     public class i8051Instruction : MachineInstruction
     {
-        public override InstructionClass InstructionClass
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public override bool IsValid
+        public override InstrClass InstructionClass
         {
             get
             {

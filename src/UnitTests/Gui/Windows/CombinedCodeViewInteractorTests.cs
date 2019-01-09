@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 Pavel Tomin.
+ * Copyright (C) 1999-2019 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -127,7 +127,7 @@ namespace Reko.UnitTests.Gui.Windows
         private void Given_StubProcedure(uint addr, uint size)
         {
             var address = Address32.Ptr32(addr);
-            var m = new ProcedureBuilder("fnTest");
+            var m = new ProcedureBuilder(program.Architecture, "fnTest");
             m.Return();
             this.proc = m.Procedure;
             this.program.Procedures[address] = proc;

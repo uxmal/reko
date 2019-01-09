@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,7 +36,8 @@ namespace Reko.Core
     /// </summary>
     public class XmlOptions
     {
-        private static object ReadItem(XmlElement element)
+        private static object ReadItem(XmlElement element,
+            StringComparer comparer)
         {
             if (element.Name == "item")
             {
@@ -46,29 +47,31 @@ namespace Reko.Core
             {
                 return element.ChildNodes
                     .OfType<XmlElement>()
-                    .Select(e => ReadItem(e))
+                    .Select(e => ReadItem(e, comparer))
                     .ToList();
             }
             else if (element.Name == "dict")
             {
-                return ReadDictionaryElements(
-                    element.ChildNodes.OfType<XmlElement>());
+                return ReadDictionaryElements(element.ChildNodes.OfType<XmlElement>(), comparer);
             }
             throw new NotSupportedException(element.Name);
         }
 
-        private static Dictionary<string, object> ReadDictionaryElements(IEnumerable<XmlElement> elements)
+        private static Dictionary<string, object> ReadDictionaryElements(
+            IEnumerable<XmlElement> elements,
+            StringComparer comparer)
         {
             return elements.ToDictionary(
-                e => e.Attributes["key"] != null ? e.Attributes["key"].Value : null,
-                e => ReadItem(e));
+                e => e.Attributes["key"]?.Value,
+                e => ReadItem(e, comparer),
+                comparer);
         }
 
-        public static Dictionary<string, object> LoadIntoDictionary(XmlElement[] options)
+        public static Dictionary<string, object> LoadIntoDictionary(XmlElement[] options, StringComparer comparer)
         {
             if (options == null)
-                return new Dictionary<string, object>();
-            return ReadDictionaryElements(options);
+                return new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+            return ReadDictionaryElements(options, comparer);
         }
     }
 }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,7 +57,7 @@ namespace Reko.UnitTests.Typing
             Identifier p = m.Local32("p");
             Identifier i = m.Local32("i");
             Expression e = m.Mem(PrimitiveType.Int32,
-                m.IAdd(p, m.IAdd(m.SMul(i, 8), 4)));
+            m.IAdd(p, m.IAddS(m.SMul(i, 8), 4)));
             e = e.Accept(aen);
             Assert.AreEqual("(p + 4)[i * 0x00000008]", e.ToString());
         }

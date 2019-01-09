@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,8 +18,10 @@
  */
 #endregion
 
-using System;
+using Reko.Core;
 using Reko.Core.Machine;
+
+using System;
 using System.Collections.Generic;
 
 namespace Reko.Arch.RiscV
@@ -27,9 +29,10 @@ namespace Reko.Arch.RiscV
     public class RiscVInstruction : MachineInstruction
     {
         private static Dictionary<Opcode, string> opcodeNames;
-        private static Dictionary<Opcode, InstructionClass> instrClasses;
+        private static Dictionary<Opcode, InstrClass> instrClasses;
 
         internal Opcode opcode;
+        internal InstrClass iclass;
         internal MachineOperand op1;
         internal MachineOperand op2;
         internal MachineOperand op3;
@@ -48,33 +51,9 @@ namespace Reko.Arch.RiscV
                 { Opcode.fmv_d_x, "fmv.d.x" },
                 { Opcode.fmv_s_x, "fmv.s.x" },
             };
-
-            instrClasses = new Dictionary<Opcode, InstructionClass>
-            {
-                { Opcode.jal, InstructionClass.Transfer },
-                { Opcode.jalr, InstructionClass.Transfer },
-                { Opcode.beq, InstructionClass.Transfer | InstructionClass.Conditional },
-                { Opcode.bne, InstructionClass.Transfer | InstructionClass.Conditional },
-                { Opcode.blt, InstructionClass.Transfer | InstructionClass.Conditional },
-                { Opcode.bltu, InstructionClass.Transfer | InstructionClass.Conditional },
-                { Opcode.bge, InstructionClass.Transfer | InstructionClass.Conditional },
-                { Opcode.bgeu, InstructionClass.Transfer | InstructionClass.Conditional },
-            };
         }
 
-        public override InstructionClass InstructionClass
-        {
-            get {
-                InstructionClass c;
-                if (!instrClasses.TryGetValue(opcode, out c))
-                {
-                    return InstructionClass.Linear;
-                }
-                return c;
-            }
-        }
-
-        public override bool IsValid { get { return opcode != Opcode.invalid; } }
+        public override InstrClass InstructionClass => iclass;
 
         public override int OpcodeAsInteger { get { return (int)opcode; } }
 
@@ -93,8 +72,7 @@ namespace Reko.Arch.RiscV
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            string name;
-            if (!opcodeNames.TryGetValue(opcode, out name))
+            if (!opcodeNames.TryGetValue(opcode, out string name))
             {
                 name = opcode.ToString();
             }

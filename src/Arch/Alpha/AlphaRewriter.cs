@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,13 +34,13 @@ namespace Reko.Arch.Alpha
 {
     public partial class AlphaRewriter : IEnumerable<RtlInstructionCluster>
     {
-        private AlphaArchitecture arch;
-        private IStorageBinder binder;
-        private EndianImageReader rdr;
-        private IEnumerator<AlphaInstruction> dasm;
-        private IRewriterHost host;
+        private readonly AlphaArchitecture arch;
+        private readonly IStorageBinder binder;
+        private readonly EndianImageReader rdr;
+        private readonly IRewriterHost host;
+        private readonly IEnumerator<AlphaInstruction> dasm;
         private AlphaInstruction instr;
-        private RtlClass rtlc;
+        private InstrClass rtlc;
         private RtlEmitter m;
 
         public AlphaRewriter(AlphaArchitecture arch, EndianImageReader rdr, IStorageBinder binder, IRewriterHost host)
@@ -59,12 +59,18 @@ namespace Reko.Arch.Alpha
                 this.instr = dasm.Current;
                 var instrs = new List<RtlInstruction>();
                 this.m = new RtlEmitter(instrs);
-                this.rtlc = RtlClass.Linear;
+                this.rtlc = instr.iclass;
                 switch (instr.Opcode)
                 {
                 default:
                     EmitUnitTest();
                     Invalid();
+                    host.Warn(
+                       instr.Address,
+                       string.Format(
+                           "Alpha AXP instruction '{0}' not supported yet.",
+                           instr.Opcode));
+
                     break;
                 case Opcode.invalid:
                     Invalid();
@@ -253,13 +259,14 @@ namespace Reko.Arch.Alpha
         private void Invalid()
         {
             m.Invalid();
-            rtlc = RtlClass.Invalid;
+            rtlc = InstrClass.Invalid;
         }
 
         private Expression Rewrite(MachineOperand op, bool highWord = false)
         {
-            var rop = op as RegisterOperand;
-            if (rop != null)
+            switch (op)
+            {
+            case RegisterOperand rop:
             {
                 if (rop.Register.Number == 31)
                     return Constant.Word64(0);
@@ -268,24 +275,16 @@ namespace Reko.Arch.Alpha
                 else
                     return this.binder.EnsureRegister(rop.Register);
             }
-            var imm = op as ImmediateOperand;
-            if (imm != null)
-            {
+            case ImmediateOperand imm:
                 return imm.Value;
-            }
-            var addr = op as AddressOperand;
-            if (addr != null)
-            {
+            case AddressOperand addr:
                 return addr.Address;
-            }
-            var mop = op as MemoryOperand;
-            if (mop != null)
-            {
+            case MemoryOperand mop:
                 int offset = highWord ? (int)mop.Offset << 16 : mop.Offset;
                 Expression ea;
                 if (mop.Base.Number == ZeroRegister)
                 {
-                    var dt = PrimitiveType.Create(Domain.Integer, arch.PointerType.Size);
+                    var dt = PrimitiveType.Create(Domain.Integer, arch.PointerType.BitSize);
                     ea = Constant.Create(dt, offset); //$TODO should be platform size.
                 }
                 else 

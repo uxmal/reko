@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -233,9 +233,9 @@ namespace Reko.Core.Code
 
 		public virtual void VisitPhiFunction(PhiFunction phi)
 		{
-			for (int i = 0; i < phi.Arguments.Length; ++i)
+			foreach (var arg in phi.Arguments)
 			{
-				phi.Arguments[i].Accept(this);
+				arg.Value.Accept(this);
 			}
 		}
 
@@ -253,14 +253,14 @@ namespace Reko.Core.Code
 			tc.Expression.Accept(this);
 		}
 
-		public virtual void VisitSegmentedAccess(SegmentedAccess access)
-		{
-			access.MemoryId.Accept(this);
-			access.BasePointer.Accept(this);
-			access.EffectiveAddress.Accept(this);
-		}
+        public virtual void VisitSegmentedAccess(SegmentedAccess access)
+        {
+            access.MemoryId.Accept(this);
+            access.BasePointer.Accept(this);
+            access.EffectiveAddress.Accept(this);
+        }
 
-		public virtual void VisitScopeResolution(ScopeResolution scope)
+        public virtual void VisitScopeResolution(ScopeResolution scope)
 		{
 		}
 

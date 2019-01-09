@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -93,7 +93,7 @@ namespace Reko.UnitTests.Loading
         {
             Given_MsDosRawFileFormat();
             cfgSvc.Stub(d => d.GetImageLoaders()).Return(new List<LoaderConfiguration>());
-
+            x86arch.Stub(x => x.PostprocessProgram(null)).IgnoreArguments();
             var testImage = new byte[] { 42, 42, 42, 42, };
             mr.ReplayAll();
             Loader ldr = mr.PartialMock<Loader>(sc);
@@ -239,8 +239,13 @@ namespace Reko.UnitTests.Loading
             var openv = mr.Stub<OperatingEnvironment>();
             cfgSvc.Stub(s => s.GetArchitecture("mmix")).Return(arch);
             cfgSvc.Stub(s => s.GetEnvironment(null)).Return(openv);
+            cfgSvc.Stub(s => s.GetImageLoader("zlorgo")).Return(new LoaderElementImpl {
+                TypeName = typeof(NullImageLoader).FullName,
+            });
             openv.Stub(o => o.Load(null, null)).IgnoreArguments().Return(new DefaultPlatform(sc, arch));
+            arch.Stub(a => a.LoadUserOptions(null)).IgnoreArguments();
             arch.Stub(a => a.Name).Return("mmix");
+            arch.Stub(a => a.PostprocessProgram(null)).IgnoreArguments();
             arch.Stub(a => a.TryParseAddress(
                 Arg<string>.Is.Equal("00123500"),
                 out Arg<Address>.Out(Address.Ptr32(0x00123500)).Dummy)).Return(true);
@@ -250,32 +255,12 @@ namespace Reko.UnitTests.Loading
             var program = ldr.LoadRawImage("foo.bin", new byte[0], Address.Ptr32(0x00123400), new LoadDetails
             {
                 ArchitectureName = "mmix",
-                EntryPoint = new EntryPointElement {  Address = "00123500" }
+                EntryPoint = new EntryPointElement {  Address = "00123500" },
+                LoaderName = "zlorgo",
             });
 
             Assert.AreEqual(1, program.EntryPoints.Count);
             Assert.AreEqual(SymbolType.Procedure, program.EntryPoints[Address.Ptr32(0x00123500)].Type);
-            mr.VerifyAll();
-        }
-
-        [Test]
-        public void Ldr_MemoryMap()
-        {
-            var mmap = new SegmentMap(
-                Address.Ptr16(0x0000),
-                new ImageSegment("low_memory_area", new MemoryArea(Address.Ptr16(0x0000), new byte[0x100]), AccessMode.ReadWriteExecute));
-            var arch = mr.Stub<IProcessorArchitecture>();
-            var platform = mr.Stub<IPlatform>();
-            platform.Stub(p => p.CreateAbsoluteMemoryMap()).Return(mmap);
-            mr.ReplayAll();
-
-            var ldr = new Loader(sc);
-            var segMap = ldr.CreatePlatformSegmentMap(platform, Address.Ptr16(0x0100), new byte[] { 0x50 });
-            Assert.AreEqual(2, segMap.Segments.Count);
-            var memProg = segMap.Segments.Values.ElementAt(1).MemoryArea;
-            Assert.AreEqual(1, memProg.Length);
-            Assert.AreEqual((byte)0x50, memProg.Bytes[0]);
-
             mr.VerifyAll();
         }
 	}

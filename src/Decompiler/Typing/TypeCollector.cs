@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ using Reko.Core.Operators;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
+using System.Diagnostics;
 
 namespace Reko.Typing
 {
@@ -41,6 +42,8 @@ namespace Reko.Typing
         private ExpressionTypeAscender asc;
         private ExpressionTypeDescender desc;
         private DecompilerEventListener eventListener;
+        private Statement stmCur;
+        private bool seenPhi;
 
         public TypeCollector(
             TypeFactory factory, 
@@ -62,10 +65,13 @@ namespace Reko.Typing
         {
             desc.MeetDataType(program.Globals, factory.CreatePointer(
                 factory.CreateStructureType(),
-                program.Platform.PointerType.Size));
+                program.Platform.PointerType.BitSize));
             CollectSegmentTypes();
+            int cProc = program.Procedures.Count;
+            int i = 0;
             foreach (Procedure p in program.Procedures.Values)
             {
+                eventListener.ShowProgress("Collecting data types.", i++, cProc);
                 proc = p;
                 CollectProcedureSignature(p);
                 foreach (Statement stm in p.Statements)
@@ -74,7 +80,8 @@ namespace Reko.Typing
                         return;
                     try
                     {
-                       stm.Instruction.Accept(this);
+                        this.stmCur = stm;
+                        stm.Instruction.Accept(this);
                     }
                     catch (Exception ex)
                     {
@@ -95,7 +102,7 @@ namespace Reko.Typing
                 if (seg.Identifier != null)
                     desc.MeetDataType(seg.Identifier, factory.CreatePointer(
                         factory.CreateStructureType(),
-                        seg.Identifier.DataType.Size));
+                        seg.Identifier.DataType.BitSize));
             }
         }
 
@@ -144,7 +151,7 @@ namespace Reko.Typing
                           call.Callee,
                           new Pointer(
                               new CodeType(),
-                              program.Platform.PointerType.Size));
+                              program.Platform.PointerType.BitSize));
             call.Callee.Accept(desc, call.Callee.TypeVariable);
         }
 
@@ -186,7 +193,14 @@ namespace Reko.Typing
 
         public void VisitPhiAssignment(PhiAssignment phi)
         {
-            throw new NotImplementedException();
+            if (!seenPhi)
+            {
+                seenPhi = true;
+                eventListener.Warn(
+                    eventListener.CreateBlockNavigator(this.program, stmCur.Block),
+                    "Phi functions will be ignored by type analysis. " +
+                    "This may be caused by a failure in a previous stage of the decompilation.");
+            }
         }
 
         public void VisitReturnInstruction(ReturnInstruction ret)

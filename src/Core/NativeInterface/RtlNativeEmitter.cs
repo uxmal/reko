@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,7 +51,7 @@ namespace Reko.Core.NativeInterface
         private List<Expression> handles;
         private List<Expression> args;
         private Address address;
-        private RtlClass rtlClass;
+        private InstrClass rtlClass;
         private int instrLength;
 
         public NativeRtlEmitter(RtlEmitter m, NativeTypeFactory ntf, IRewriterHost host)
@@ -62,7 +62,7 @@ namespace Reko.Core.NativeInterface
             this.handles = new List<Expression>();
             this.args = new List<Expression>();
             this.address = null;
-            this.rtlClass = RtlClass.Invalid;
+            this.rtlClass = InstrClass.Invalid;
             this.instrLength = 0;
         }
 
@@ -116,12 +116,12 @@ namespace Reko.Core.NativeInterface
             m.Assign(GetExpression(dst), GetExpression(src));
         }
 
-        public void Branch(HExpr exp, HExpr dst, RtlClass rtlClass)
+        public void Branch(HExpr exp, HExpr dst, InstrClass rtlClass)
         {
             m.Branch(GetExpression(exp), (Address)GetExpression(dst), rtlClass);
         }
 
-        public void BranchInMiddleOfInstruction(HExpr exp, HExpr dst, RtlClass rtlClass)
+        public void BranchInMiddleOfInstruction(HExpr exp, HExpr dst, InstrClass rtlClass)
         {
             m.BranchInMiddleOfInstruction(GetExpression(exp), (Address)GetExpression(dst), rtlClass);
         }
@@ -156,7 +156,7 @@ namespace Reko.Core.NativeInterface
             m.SideEffect(GetExpression(exp));
         }
 
-        public void FinishCluster(RtlClass rtlClass, ulong address, int mcLength)
+        public void FinishCluster(InstrClass rtlClass, ulong address, int mcLength)
         {
             this.address = CreateAddress(address);
             this.rtlClass = rtlClass;

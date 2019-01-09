@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,8 +43,8 @@ namespace Reko.ImageLoaders.MzExe.Pe
 		{
 			ushort fixup = rdr.ReadLeUInt16();
 			Address offset = baseOfImage + page + (fixup & 0x0FFFu);
-            var imgR = program.CreateImageReader(offset);
-            var imgW = program.CreateImageWriter(offset);
+            var imgR = program.CreateImageReader(program.Architecture, offset);
+            var imgW = program.CreateImageWriter(program.Architecture, offset);
             switch (fixup >> 12)
 			{
 			case RelocationAbsolute:

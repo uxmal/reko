@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,8 @@
  */
 #endregion
 
+using Reko.Core;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,393 +29,394 @@ namespace Reko.Arch.X86
 {
     public partial class X86Disassembler
     {
-        private static OpRec[] CreateOnebyteOprecs()
+        private static Decoder[] CreateOnebyteOprecs()
         {
-            return new OpRec[] { 
+            return new Decoder[] { 
 				// 00
-				new SingleByteOpRec(Opcode.add, "Eb,Gb"),
-				new SingleByteOpRec(Opcode.add, "Ev,Gv"),
-				new SingleByteOpRec(Opcode.add, "Gb,Eb"),
-				new SingleByteOpRec(Opcode.add, "Gv,Ev"),
-				new SingleByteOpRec(Opcode.add, "ab,Ib"),
-				new SingleByteOpRec(Opcode.add, "av,Iz"),
-				new Alternative64OpRec(
-                    new SingleByteOpRec(Opcode.push, "s0"),
-                    new SingleByteOpRec(Opcode.illegal)),
-				new Alternative64OpRec(
-                    new SingleByteOpRec(Opcode.pop, "s0"),
-                    new SingleByteOpRec(Opcode.illegal)),
+				Instr(Opcode.add, InstrClass.Linear|InstrClass.Zero, "Eb,Gb"),
+				Instr(Opcode.add, "Ev,Gv"),
+				Instr(Opcode.add, "Gb,Eb"),
+				Instr(Opcode.add, "Gv,Ev"),
+				Instr(Opcode.add, "ab,Ib"),
+				Instr(Opcode.add, "av,Iz"),
+				new Alternative64Decoder(
+                    Instr(Opcode.push, "s0"),
+                    s_invalid),
+				new Alternative64Decoder(
+                    Instr(Opcode.pop, "s0"),
+                    s_invalid),
 
-				new SingleByteOpRec(Opcode.or, "Eb,Gb"),
-				new SingleByteOpRec(Opcode.or, "Ev,Gv"),
-				new SingleByteOpRec(Opcode.or, "Gb,Eb"),
-				new SingleByteOpRec(Opcode.or, "Gv,Ev"),
-				new SingleByteOpRec(Opcode.or, "ab,Ib"),
-				new SingleByteOpRec(Opcode.or, "av,Iz"),
-				new Alternative64OpRec(
-                    new SingleByteOpRec(Opcode.push, "s1"),
-                    new SingleByteOpRec(Opcode.illegal)),
-				new TwoByteOpRec(),
+				Instr(Opcode.or, "Eb,Gb"),
+				Instr(Opcode.or, "Ev,Gv"),
+				Instr(Opcode.or, "Gb,Eb"),
+				Instr(Opcode.or, "Gv,Ev"),
+				Instr(Opcode.or, "ab,Ib"),
+				Instr(Opcode.or, "av,Iz"),
+				new Alternative64Decoder(
+                    Instr(Opcode.push, "s1"),
+                    s_invalid),
+				new AdditionalByteDecoder(),
 
 				// 10
-				new SingleByteOpRec(Opcode.adc, "Eb,Gb"),
-				new SingleByteOpRec(Opcode.adc, "Ev,Gv"),
-				new SingleByteOpRec(Opcode.adc, "Gb,Eb"),
-				new SingleByteOpRec(Opcode.adc, "Gv,Ev"),
-				new SingleByteOpRec(Opcode.adc, "ab,Ib"),
-				new SingleByteOpRec(Opcode.adc, "av,Iz"),
-				new Alternative64OpRec(
-                    new SingleByteOpRec(Opcode.push, "s2"),
-                    new SingleByteOpRec(Opcode.illegal)),
-				new Alternative64OpRec(
-                    new SingleByteOpRec(Opcode.pop, "s2"),
-                    new SingleByteOpRec(Opcode.illegal)),
+				Instr(Opcode.adc, "Eb,Gb"),
+				Instr(Opcode.adc, "Ev,Gv"),
+				Instr(Opcode.adc, "Gb,Eb"),
+				Instr(Opcode.adc, "Gv,Ev"),
+				Instr(Opcode.adc, "ab,Ib"),
+				Instr(Opcode.adc, "av,Iz"),
+				new Alternative64Decoder(
+                    Instr(Opcode.push, "s2"),
+                    s_invalid),
+				new Alternative64Decoder(
+                    Instr(Opcode.pop, "s2"),
+                    s_invalid),
 
-				new SingleByteOpRec(Opcode.sbb, "Eb,Gb"),
-				new SingleByteOpRec(Opcode.sbb, "Ev,Gv"),
-				new SingleByteOpRec(Opcode.sbb, "Gb,Eb"),
-				new SingleByteOpRec(Opcode.sbb, "Gv,Ev"),
-				new SingleByteOpRec(Opcode.sbb, "ab,Ib"),
-				new SingleByteOpRec(Opcode.sbb, "av,Iz"),
-				new Alternative64OpRec(
-                    new SingleByteOpRec(Opcode.push, "s3"),
-                    new SingleByteOpRec(Opcode.illegal)),
-				new Alternative64OpRec(
-                    new SingleByteOpRec(Opcode.pop, "s3"),
-                    new SingleByteOpRec(Opcode.illegal)),
+				Instr(Opcode.sbb, "Eb,Gb"),
+				Instr(Opcode.sbb, "Ev,Gv"),
+				Instr(Opcode.sbb, "Gb,Eb"),
+				Instr(Opcode.sbb, "Gv,Ev"),
+				Instr(Opcode.sbb, "ab,Ib"),
+				Instr(Opcode.sbb, "av,Iz"),
+				new Alternative64Decoder(
+                    Instr(Opcode.push, "s3"),
+                    s_invalid),
+				new Alternative64Decoder(
+                    Instr(Opcode.pop, "s3"),
+                    s_invalid),
 
 				// 20
-				new SingleByteOpRec(Opcode.and, "Eb,Gb"), 
-				new SingleByteOpRec(Opcode.and, "Ev,Gv"),
-				new SingleByteOpRec(Opcode.and, "Gb,Eb"),
-				new SingleByteOpRec(Opcode.and, "Gv,Ev"),
-				new SingleByteOpRec(Opcode.and, "ab,Ib"),
-				new SingleByteOpRec(Opcode.and, "av,Iz"),
-				new SegmentOverrideOprec(0),
-				new Alternative64OpRec(
-                    new SingleByteOpRec(Opcode.daa),
-                    new SingleByteOpRec(Opcode.illegal)),
+				Instr(Opcode.and, "Eb,Gb"), 
+				Instr(Opcode.and, "Ev,Gv"),
+				Instr(Opcode.and, "Gb,Eb"),
+				Instr(Opcode.and, "Gv,Ev"),
+				Instr(Opcode.and, "ab,Ib"),
+				Instr(Opcode.and, "av,Iz"),
+				new SegmentOverrideDecoder(0),
+				new Alternative64Decoder(
+                    Instr(Opcode.daa),
+                    s_invalid),
 
-				new SingleByteOpRec(Opcode.sub, "Eb,Gb"),
-				new SingleByteOpRec(Opcode.sub, "Ev,Gv"),
-				new SingleByteOpRec(Opcode.sub, "Gb,Eb"),
-				new SingleByteOpRec(Opcode.sub, "Gv,Ev"),
-				new SingleByteOpRec(Opcode.sub, "ab,Ib"),
-				new SingleByteOpRec(Opcode.sub, "av,Iz"),
-                new SegmentOverrideOprec(1),
-				new Alternative64OpRec(
-                    new SingleByteOpRec(Opcode.das),
-                    new SingleByteOpRec(Opcode.illegal)),
+				Instr(Opcode.sub, "Eb,Gb"),
+				Instr(Opcode.sub, "Ev,Gv"),
+				Instr(Opcode.sub, "Gb,Eb"),
+				Instr(Opcode.sub, "Gv,Ev"),
+				Instr(Opcode.sub, "ab,Ib"),
+				Instr(Opcode.sub, "av,Iz"),
+                new SegmentOverrideDecoder(1),
+				new Alternative64Decoder(
+                    Instr(Opcode.das),
+                    s_invalid),
 
 				// 30
-				new SingleByteOpRec(Opcode.xor, "Eb,Gb"),
-				new SingleByteOpRec(Opcode.xor, "Ev,Gv"),
-				new SingleByteOpRec(Opcode.xor, "Gb,Eb"),
-				new SingleByteOpRec(Opcode.xor, "Gv,Ev"),
-				new SingleByteOpRec(Opcode.xor, "ab,Ib"),
-				new SingleByteOpRec(Opcode.xor, "av,Iz"),
-                new SegmentOverrideOprec(2),
-				new Alternative64OpRec(
-                    new SingleByteOpRec(Opcode.aaa),
-                    new SingleByteOpRec(Opcode.illegal)),
+				Instr(Opcode.xor, "Eb,Gb"),
+				Instr(Opcode.xor, "Ev,Gv"),
+				Instr(Opcode.xor, "Gb,Eb"),
+				Instr(Opcode.xor, "Gv,Ev"),
+				Instr(Opcode.xor, "ab,Ib"),
+				Instr(Opcode.xor, "av,Iz"),
+                new SegmentOverrideDecoder(2),
+				new Alternative64Decoder(
+                    Instr(Opcode.aaa),
+                    s_invalid),
 
-				new SingleByteOpRec(Opcode.cmp, "Eb,Gb"),
-				new SingleByteOpRec(Opcode.cmp, "Ev,Gv"),
-				new SingleByteOpRec(Opcode.cmp, "Gb,Eb"),
-				new SingleByteOpRec(Opcode.cmp, "Gv,Ev"),
-				new SingleByteOpRec(Opcode.cmp, "ab,Ib"),
-				new SingleByteOpRec(Opcode.cmp, "av,Iz"),
-                new SegmentOverrideOprec(3),
-				new Alternative64OpRec(
-                    new SingleByteOpRec(Opcode.aas),
-                    new SingleByteOpRec(Opcode.illegal)),
+				Instr(Opcode.cmp, "Eb,Gb"),
+				Instr(Opcode.cmp, "Ev,Gv"),
+				Instr(Opcode.cmp, "Gb,Eb"),
+				Instr(Opcode.cmp, "Gv,Ev"),
+				Instr(Opcode.cmp, "ab,Ib"),
+				Instr(Opcode.cmp, "av,Iz"),
+                new SegmentOverrideDecoder(3),
+				new Alternative64Decoder(
+                    Instr(Opcode.aas),
+                    s_invalid),
 
 				// 40
-				new Rex_SingleByteOpRec(Opcode.inc, "rv"),
-				new Rex_SingleByteOpRec(Opcode.inc, "rv"),
-				new Rex_SingleByteOpRec(Opcode.inc, "rv"),
-				new Rex_SingleByteOpRec(Opcode.inc, "rv"),
-				new Rex_SingleByteOpRec(Opcode.inc, "rv"),
-				new Rex_SingleByteOpRec(Opcode.inc, "rv"),
-				new Rex_SingleByteOpRec(Opcode.inc, "rv"),
-				new Rex_SingleByteOpRec(Opcode.inc, "rv"),
+				new Rex_or_InstructionDecoder(Opcode.inc, "rv"),
+				new Rex_or_InstructionDecoder(Opcode.inc, "rv"),
+				new Rex_or_InstructionDecoder(Opcode.inc, "rv"),
+				new Rex_or_InstructionDecoder(Opcode.inc, "rv"),
+				new Rex_or_InstructionDecoder(Opcode.inc, "rv"),
+				new Rex_or_InstructionDecoder(Opcode.inc, "rv"),
+				new Rex_or_InstructionDecoder(Opcode.inc, "rv"),
+				new Rex_or_InstructionDecoder(Opcode.inc, "rv"),
 
-				new Rex_SingleByteOpRec(Opcode.dec, "rv"),
-				new Rex_SingleByteOpRec(Opcode.dec, "rv"),
-				new Rex_SingleByteOpRec(Opcode.dec, "rv"),
-				new Rex_SingleByteOpRec(Opcode.dec, "rv"),
-				new Rex_SingleByteOpRec(Opcode.dec, "rv"),
-				new Rex_SingleByteOpRec(Opcode.dec, "rv"),
-				new Rex_SingleByteOpRec(Opcode.dec, "rv"),
-				new Rex_SingleByteOpRec(Opcode.dec, "rv"),
+				new Rex_or_InstructionDecoder(Opcode.dec, "rv"),
+				new Rex_or_InstructionDecoder(Opcode.dec, "rv"),
+				new Rex_or_InstructionDecoder(Opcode.dec, "rv"),
+				new Rex_or_InstructionDecoder(Opcode.dec, "rv"),
+				new Rex_or_InstructionDecoder(Opcode.dec, "rv"),
+				new Rex_or_InstructionDecoder(Opcode.dec, "rv"),
+				new Rex_or_InstructionDecoder(Opcode.dec, "rv"),
+				new Rex_or_InstructionDecoder(Opcode.dec, "rv"),
 
 				// 50
-				new Alternative64OpRec(
-                    new SingleByteOpRec(Opcode.push, "rv"),
-                    new SingleByteOpRec(Opcode.push, "rq")),
-				new Alternative64OpRec(
-                    new SingleByteOpRec(Opcode.push, "rv"),
-                    new SingleByteOpRec(Opcode.push, "rq")),
-				new Alternative64OpRec(
-                    new SingleByteOpRec(Opcode.push, "rv"),
-                    new SingleByteOpRec(Opcode.push, "rq")),
-				new Alternative64OpRec(
-                    new SingleByteOpRec(Opcode.push, "rv"),
-                    new SingleByteOpRec(Opcode.push, "rq")),
-				new Alternative64OpRec(
-                    new SingleByteOpRec(Opcode.push, "rv"),
-                    new SingleByteOpRec(Opcode.push, "rq")),
-				new Alternative64OpRec(
-                    new SingleByteOpRec(Opcode.push, "rv"),
-                    new SingleByteOpRec(Opcode.push, "rq")),
-				new Alternative64OpRec(
-                    new SingleByteOpRec(Opcode.push, "rv"),
-                    new SingleByteOpRec(Opcode.push, "rq")),
-				new Alternative64OpRec(
-                    new SingleByteOpRec(Opcode.push, "rv"),
-                    new SingleByteOpRec(Opcode.push, "rq")),
+				new Alternative64Decoder(
+                    Instr(Opcode.push, "rv"),
+                    Instr(Opcode.push, "rq")),
+				new Alternative64Decoder(
+                    Instr(Opcode.push, "rv"),
+                    Instr(Opcode.push, "rq")),
+				new Alternative64Decoder(
+                    Instr(Opcode.push, "rv"),
+                    Instr(Opcode.push, "rq")),
+				new Alternative64Decoder(
+                    Instr(Opcode.push, "rv"),
+                    Instr(Opcode.push, "rq")),
+				new Alternative64Decoder(
+                    Instr(Opcode.push, "rv"),
+                    Instr(Opcode.push, "rq")),
+				new Alternative64Decoder(
+                    Instr(Opcode.push, "rv"),
+                    Instr(Opcode.push, "rq")),
+				new Alternative64Decoder(
+                    Instr(Opcode.push, "rv"),
+                    Instr(Opcode.push, "rq")),
+				new Alternative64Decoder(
+                    Instr(Opcode.push, "rv"),
+                    Instr(Opcode.push, "rq")),
 
-				new Alternative64OpRec(
-                    new SingleByteOpRec(Opcode.pop, "rv"),
-                    new SingleByteOpRec(Opcode.pop, "rq")),
-				new Alternative64OpRec(
-                    new SingleByteOpRec(Opcode.pop, "rv"),
-                    new SingleByteOpRec(Opcode.pop, "rq")),
-				new Alternative64OpRec(
-                    new SingleByteOpRec(Opcode.pop, "rv"),
-                    new SingleByteOpRec(Opcode.pop, "rq")),
-				new Alternative64OpRec(
-                    new SingleByteOpRec(Opcode.pop, "rv"),
-                    new SingleByteOpRec(Opcode.pop, "rq")),
-				new Alternative64OpRec(
-                    new SingleByteOpRec(Opcode.pop, "rv"),
-                    new SingleByteOpRec(Opcode.pop, "rq")),
-				new Alternative64OpRec(
-                    new SingleByteOpRec(Opcode.pop, "rv"),
-                    new SingleByteOpRec(Opcode.pop, "rq")),
-				new Alternative64OpRec(
-                    new SingleByteOpRec(Opcode.pop, "rv"),
-                    new SingleByteOpRec(Opcode.pop, "rq")),
-				new Alternative64OpRec(
-                    new SingleByteOpRec(Opcode.pop, "rv"),
-                    new SingleByteOpRec(Opcode.pop, "rq")),
+				new Alternative64Decoder(
+                    Instr(Opcode.pop, "rv"),
+                    Instr(Opcode.pop, "rq")),
+				new Alternative64Decoder(
+                    Instr(Opcode.pop, "rv"),
+                    Instr(Opcode.pop, "rq")),
+				new Alternative64Decoder(
+                    Instr(Opcode.pop, "rv"),
+                    Instr(Opcode.pop, "rq")),
+				new Alternative64Decoder(
+                    Instr(Opcode.pop, "rv"),
+                    Instr(Opcode.pop, "rq")),
+				new Alternative64Decoder(
+                    Instr(Opcode.pop, "rv"),
+                    Instr(Opcode.pop, "rq")),
+				new Alternative64Decoder(
+                    Instr(Opcode.pop, "rv"),
+                    Instr(Opcode.pop, "rq")),
+				new Alternative64Decoder(
+                    Instr(Opcode.pop, "rv"),
+                    Instr(Opcode.pop, "rq")),
+				new Alternative64Decoder(
+                    Instr(Opcode.pop, "rv"),
+                    Instr(Opcode.pop, "rq")),
 
 				// 60
-				new Alternative64OpRec(
-                    new SingleByteOpRec(Opcode.pusha),
-                    new SingleByteOpRec(Opcode.illegal)),
-				new Alternative64OpRec(
-                    new SingleByteOpRec(Opcode.popa),
-                    new SingleByteOpRec(Opcode.illegal)),
-				new Alternative64OpRec(
-                    new SingleByteOpRec(Opcode.bound, "Gv,Mv"),
-                    new SingleByteOpRec(Opcode.illegal)),
-                new Alternative64OpRec(
-    				new SingleByteOpRec(Opcode.arpl, "Ew,rw"),
-    				new SingleByteOpRec(Opcode.movsx, "Gv,Ed")),
-				new SegmentOverrideOprec(4),
-				new SegmentOverrideOprec(5),
+				new Alternative64Decoder(
+                    Instr(Opcode.pusha),
+                    s_invalid),
+				new Alternative64Decoder(
+                    Instr(Opcode.popa),
+                    s_invalid),
+				new Alternative64Decoder(
+                    Instr(Opcode.bound, "Gv,Mv"),
+                    s_invalid),
+                new Alternative64Decoder(
+    				Instr(Opcode.arpl, "Ew,rw"),
+    				Instr(Opcode.movsx, "Gv,Ed")),
+				new SegmentOverrideDecoder(4),
+				new SegmentOverrideDecoder(5),
 				new ChangeDataWidth(),
 				new ChangeAddressWidth(),
 
-				new SingleByteOpRec(Opcode.push, "Iz"),
-				new SingleByteOpRec(Opcode.imul, "Gv,Ev,Iz"),
-				new SingleByteOpRec(Opcode.push, "Ib"),
-				new SingleByteOpRec(Opcode.imul, "Gv,Ev,Ib"),
-				new SingleByteOpRec(Opcode.insb, "b"),
-				new SingleByteOpRec(Opcode.ins,  ""),
-				new SingleByteOpRec(Opcode.outsb, "b"),
-				new SingleByteOpRec(Opcode.outs),
+				Instr(Opcode.push, "Iz"),
+				Instr(Opcode.imul, "Gv,Ev,Iz"),
+				Instr(Opcode.push, "Ib"),
+				Instr(Opcode.imul, "Gv,Ev,Ib"),
+				Instr(Opcode.insb, "b"),
+				Instr(Opcode.ins,  ""),
+				Instr(Opcode.outsb, "b"),
+				Instr(Opcode.outs),
 
 				// 70
-				new SingleByteOpRec(Opcode.jo, "Jb"),
-				new SingleByteOpRec(Opcode.jno, "Jb"),
-				new SingleByteOpRec(Opcode.jc, "Jb"),
-				new SingleByteOpRec(Opcode.jnc, "Jb"),
-				new SingleByteOpRec(Opcode.jz, "Jb"),
-				new SingleByteOpRec(Opcode.jnz, "Jb"),
-				new SingleByteOpRec(Opcode.jbe, "Jb"),
-				new SingleByteOpRec(Opcode.ja, "Jb"),
+				Instr(Opcode.jo, InstrClass.Transfer|InstrClass.Conditional, "Jb"),
+				Instr(Opcode.jno, InstrClass.Transfer|InstrClass.Conditional, "Jb"),
+				Instr(Opcode.jc, InstrClass.Transfer|InstrClass.Conditional, "Jb"),
+				Instr(Opcode.jnc, InstrClass.Transfer|InstrClass.Conditional, "Jb"),
+				Instr(Opcode.jz, InstrClass.Transfer|InstrClass.Conditional, "Jb"),
+				Instr(Opcode.jnz, InstrClass.Transfer|InstrClass.Conditional, "Jb"),
+				Instr(Opcode.jbe, InstrClass.Transfer|InstrClass.Conditional, "Jb"),
+				Instr(Opcode.ja, InstrClass.Transfer|InstrClass.Conditional, "Jb"),
 
-				new SingleByteOpRec(Opcode.js, "Jb"),
-				new SingleByteOpRec(Opcode.jns, "Jb"),
-				new SingleByteOpRec(Opcode.jpe, "Jb"),
-				new SingleByteOpRec(Opcode.jpo, "Jb"),
-				new SingleByteOpRec(Opcode.jl, "Jb"),
-				new SingleByteOpRec(Opcode.jge, "Jb"),
-				new SingleByteOpRec(Opcode.jle, "Jb"),
-				new SingleByteOpRec(Opcode.jg, "Jb"),
+				Instr(Opcode.js, InstrClass.Transfer|InstrClass.Conditional, "Jb"),
+				Instr(Opcode.jns, InstrClass.Transfer|InstrClass.Conditional, "Jb"),
+				Instr(Opcode.jpe, InstrClass.Transfer|InstrClass.Conditional, "Jb"),
+				Instr(Opcode.jpo, InstrClass.Transfer|InstrClass.Conditional, "Jb"),
+				Instr(Opcode.jl, InstrClass.Transfer|InstrClass.Conditional, "Jb"),
+				Instr(Opcode.jge, InstrClass.Transfer|InstrClass.Conditional, "Jb"),
+				Instr(Opcode.jle, InstrClass.Transfer|InstrClass.Conditional, "Jb"),
+				Instr(Opcode.jg, InstrClass.Transfer|InstrClass.Conditional, "Jb"),
 
 				// 80
-				new GroupOpRec(1, "Eb,Ib"),
-				new GroupOpRec(1, "Ev,Iz"),
-				new Alternative64OpRec(
-                    new GroupOpRec(1, "Eb,Ib"),
-                    new SingleByteOpRec(Opcode.illegal)),
-				new GroupOpRec(1, "Ev,Ib"),
-				new SingleByteOpRec(Opcode.test, "Eb,Gb"),
-				new SingleByteOpRec(Opcode.test, "Ev,Gv"),
-				new SingleByteOpRec(Opcode.xchg, "Eb,Gb"),
-				new SingleByteOpRec(Opcode.xchg, "Ev,Gv"),
+				new GroupDecoder(1, "Eb,Ib"),
+				new GroupDecoder(1, "Ev,Iz"),
+				new Alternative64Decoder(
+                    new GroupDecoder(1, "Eb,Ib"),
+                    s_invalid),
+				new GroupDecoder(1, "Ev,Ib"),
+				Instr(Opcode.test, "Eb,Gb"),
+				Instr(Opcode.test, "Ev,Gv"),
+				Instr(Opcode.xchg, "Eb,Gb"),
+				Instr(Opcode.xchg, "Ev,Gv"),
 
-				new SingleByteOpRec(Opcode.mov, "Eb,Gb"),
-				new SingleByteOpRec(Opcode.mov, "Ev,Gv"),
-				new SingleByteOpRec(Opcode.mov, "Gb,Eb"),
-				new SingleByteOpRec(Opcode.mov, "Gv,Ev"),
-				new SingleByteOpRec(Opcode.mov, "Ew,Sw"),
-				new SingleByteOpRec(Opcode.lea, "Gv,Mv"),
-				new SingleByteOpRec(Opcode.mov, "Sw,Ew"),
-				new SingleByteOpRec(Opcode.pop, "Ev"),
+				Instr(Opcode.mov, "Eb,Gb"),
+				Instr(Opcode.mov, "Ev,Gv"),
+				Instr(Opcode.mov, "Gb,Eb"),
+				Instr(Opcode.mov, "Gv,Ev"),
+				Instr(Opcode.mov, "Ew,Sw"),
+				Instr(Opcode.lea, "Gv,Mv"),
+				Instr(Opcode.mov, "Sw,Ew"),
+				Instr(Opcode.pop, "Ev"),
 
 				// 90
-				new PrefixedOpRec(
+				new PrefixedDecoder(
                     Opcode.nop, "",
                     Opcode.nop, "",
-                    Opcode.pause, ""),
-				new SingleByteOpRec(Opcode.xchg, "av,rv"),
-				new SingleByteOpRec(Opcode.xchg, "av,rv"),
-				new SingleByteOpRec(Opcode.xchg, "av,rv"),
-				new SingleByteOpRec(Opcode.xchg, "av,rv"),
-				new SingleByteOpRec(Opcode.xchg, "av,rv"),
-				new SingleByteOpRec(Opcode.xchg, "av,rv"),
-				new SingleByteOpRec(Opcode.xchg, "av,rv"),
+                    Opcode.pause, "",
+                    iclass:InstrClass.Linear|InstrClass.Padding),
+				Instr(Opcode.xchg, "av,rv"),
+				Instr(Opcode.xchg, "av,rv"),
+				Instr(Opcode.xchg, "av,rv"),
+				Instr(Opcode.xchg, "av,rv"),
+				Instr(Opcode.xchg, "av,rv"),
+				Instr(Opcode.xchg, "av,rv"),
+				Instr(Opcode.xchg, "av,rv"),
 
-				new SingleByteOpRec(Opcode.cbw),
-				new SingleByteOpRec(Opcode.cwd),
-				new Alternative64OpRec(
-                    new SingleByteOpRec(Opcode.call, "Ap"),
-                    new SingleByteOpRec(Opcode.illegal)),
-				new SingleByteOpRec(Opcode.wait),
-				new SingleByteOpRec(Opcode.pushf),
-				new SingleByteOpRec(Opcode.popf),
-				new SingleByteOpRec(Opcode.sahf),
-				new SingleByteOpRec(Opcode.lahf),
+				Instr(Opcode.cbw),
+				Instr(Opcode.cwd),
+				new Alternative64Decoder(
+                    Instr(Opcode.call, InstrClass.Transfer|InstrClass.Call, "Ap"),
+                    s_invalid),
+				Instr(Opcode.wait),
+				Instr(Opcode.pushf),
+				Instr(Opcode.popf),
+				Instr(Opcode.sahf),
+				Instr(Opcode.lahf),
 
 				// A0
-				new SingleByteOpRec(Opcode.mov, "ab,Ob"),
-				new SingleByteOpRec(Opcode.mov, "av,Ov"),
-				new SingleByteOpRec(Opcode.mov, "Ob,ab"),
-				new SingleByteOpRec(Opcode.mov, "Ov,av"),
-				new SingleByteOpRec(Opcode.movsb, "b"),
-				new SingleByteOpRec(Opcode.movs),
-				new SingleByteOpRec(Opcode.cmpsb, "b"),
-				new SingleByteOpRec(Opcode.cmps),
+				Instr(Opcode.mov, "ab,Ob"),
+				Instr(Opcode.mov, "av,Ov"),
+				Instr(Opcode.mov, "Ob,ab"),
+				Instr(Opcode.mov, "Ov,av"),
+				Instr(Opcode.movsb, "b"),
+				Instr(Opcode.movs),
+				Instr(Opcode.cmpsb, "b"),
+				Instr(Opcode.cmps),
 
-				new SingleByteOpRec(Opcode.test, "ab,Ib"),
-				new SingleByteOpRec(Opcode.test, "av,Iz"),
-				new SingleByteOpRec(Opcode.stosb, "b"),
-				new SingleByteOpRec(Opcode.stos),
-				new SingleByteOpRec(Opcode.lodsb, "b"),
-				new SingleByteOpRec(Opcode.lods),
-				new SingleByteOpRec(Opcode.scasb, "b"),
-				new SingleByteOpRec(Opcode.scas),
+				Instr(Opcode.test, "ab,Ib"),
+				Instr(Opcode.test, "av,Iz"),
+				Instr(Opcode.stosb, "b"),
+				Instr(Opcode.stos),
+				Instr(Opcode.lodsb, "b"),
+				Instr(Opcode.lods),
+				Instr(Opcode.scasb, "b"),
+				Instr(Opcode.scas),
 
 				// B0
-				new SingleByteOpRec(Opcode.mov, "rb,Ib"),
-				new SingleByteOpRec(Opcode.mov, "rb,Ib"),
-				new SingleByteOpRec(Opcode.mov, "rb,Ib"),
-				new SingleByteOpRec(Opcode.mov, "rb,Ib"),
-				new SingleByteOpRec(Opcode.mov, "rb,Ib"),
-				new SingleByteOpRec(Opcode.mov, "rb,Ib"),
-				new SingleByteOpRec(Opcode.mov, "rb,Ib"),
-				new SingleByteOpRec(Opcode.mov, "rb,Ib"),
+				Instr(Opcode.mov, "rb,Ib"),
+				Instr(Opcode.mov, "rb,Ib"),
+				Instr(Opcode.mov, "rb,Ib"),
+				Instr(Opcode.mov, "rb,Ib"),
+				Instr(Opcode.mov, "rb,Ib"),
+				Instr(Opcode.mov, "rb,Ib"),
+				Instr(Opcode.mov, "rb,Ib"),
+				Instr(Opcode.mov, "rb,Ib"),
 
-				new SingleByteOpRec(Opcode.mov, "rv,Iv"),
-				new SingleByteOpRec(Opcode.mov, "rv,Iv"),
-				new SingleByteOpRec(Opcode.mov, "rv,Iv"),
-				new SingleByteOpRec(Opcode.mov, "rv,Iv"),
-				new SingleByteOpRec(Opcode.mov, "rv,Iv"),
-				new SingleByteOpRec(Opcode.mov, "rv,Iv"),
-				new SingleByteOpRec(Opcode.mov, "rv,Iv"),
-				new SingleByteOpRec(Opcode.mov, "rv,Iv"),
+				Instr(Opcode.mov, "rv,Iv"),
+				Instr(Opcode.mov, "rv,Iv"),
+				Instr(Opcode.mov, "rv,Iv"),
+				Instr(Opcode.mov, "rv,Iv"),
+				Instr(Opcode.mov, "rv,Iv"),
+				Instr(Opcode.mov, "rv,Iv"),
+				Instr(Opcode.mov, "rv,Iv"),
+				Instr(Opcode.mov, "rv,Iv"),
 
 				// C0
-				new GroupOpRec(2, "Eb,Ib"),
-				new GroupOpRec(2, "Ev,Ib"),
-				new SingleByteOpRec(Opcode.ret,	"Iw"),
-				new SingleByteOpRec(Opcode.ret),
-				new Alternative64OpRec(
-                    new SingleByteOpRec(Opcode.les,	"Gv,Mp"),
+				new GroupDecoder(2, "Eb,Ib"),
+				new GroupDecoder(2, "Ev,Ib"),
+				Instr(Opcode.ret, InstrClass.Transfer, "Iw"),
+				Instr(Opcode.ret, InstrClass.Transfer, ""),
+				new Alternative64Decoder(
+                    Instr(Opcode.les,	"Gv,Mp"),
                     new VexDecoder3()),
-				new Alternative64OpRec(
-                    new SingleByteOpRec(Opcode.lds,	"Gv,Mp"),
+				new Alternative64Decoder(
+                    Instr(Opcode.lds,	"Gv,Mp"),
                     new VexDecoder2()),
-                new SingleByteOpRec(Opcode.mov,	"Eb,Ib"),
-				new SingleByteOpRec(Opcode.mov,	"Ev,Iz"),
+                Instr(Opcode.mov,	"Eb,Ib"),
+				Instr(Opcode.mov,	"Ev,Iz"),
 
-				new SingleByteOpRec(Opcode.enter, "Iw,Ib"),
-				new SingleByteOpRec(Opcode.leave),
-				new SingleByteOpRec(Opcode.retf,	"Iw"),
-				new SingleByteOpRec(Opcode.retf,	""),
-				new SingleByteOpRec(Opcode.@int,	"3"),
-				new InterruptOpRec(Opcode.@int,	    "Ib"),
-				new Alternative64OpRec(
-                    new SingleByteOpRec(Opcode.into,	""),
-                    new SingleByteOpRec(Opcode.illegal)),
-				new SingleByteOpRec(Opcode.iret,	""),
+				Instr(Opcode.enter, "Iw,Ib"),
+				Instr(Opcode.leave),
+				Instr(Opcode.retf, InstrClass.Transfer, "Iw"),
+				Instr(Opcode.retf, InstrClass.Transfer, ""),
+				Instr(Opcode.@int, InstrClass.Linear|InstrClass.Padding, "3"),
+				new InterruptDecoder(Opcode.@int, "Ib"),
+				new Alternative64Decoder(
+                    Instr(Opcode.into, ""),
+                    s_invalid),
+				Instr(Opcode.iret, InstrClass.Transfer, ""),
 
 				// D0
-				new GroupOpRec(2, "Eb,1"),
-				new GroupOpRec(2, "Ev,1"),
-				new GroupOpRec(2, "Eb,c"),
-				new GroupOpRec(2, "Ev,c"),
-				new Alternative64OpRec(
-                    new SingleByteOpRec(Opcode.aam, "Ib"),
-                    new SingleByteOpRec(Opcode.illegal)),
-				new Alternative64OpRec(
-                    new SingleByteOpRec(Opcode.aad, "Ib"),
-				    new SingleByteOpRec(Opcode.illegal)),
-				new SingleByteOpRec(Opcode.illegal),
-				new SingleByteOpRec(Opcode.xlat, "b"),
+				new GroupDecoder(2, "Eb,1"),
+				new GroupDecoder(2, "Ev,1"),
+				new GroupDecoder(2, "Eb,c"),
+				new GroupDecoder(2, "Ev,c"),
+				new Alternative64Decoder(
+                    Instr(Opcode.aam, "Ib"),
+                    s_invalid),
+				new Alternative64Decoder(
+                    Instr(Opcode.aad, "Ib"),
+				    s_invalid),
+				s_invalid,
+				Instr(Opcode.xlat, "b"),
 
-				new FpuOpRec(),
-				new FpuOpRec(),
-				new FpuOpRec(),
-				new FpuOpRec(),
-				new FpuOpRec(),
-				new FpuOpRec(),
-				new FpuOpRec(),
-				new FpuOpRec(),
+				new X87Decoder(),
+				new X87Decoder(),
+				new X87Decoder(),
+				new X87Decoder(),
+				new X87Decoder(),
+				new X87Decoder(),
+				new X87Decoder(),
+				new X87Decoder(),
 
 				// E0
-				new SingleByteOpRec(Opcode.loopne,"Jb"),
-				new SingleByteOpRec(Opcode.loope, "Jb"),
-				new SingleByteOpRec(Opcode.loop, "Jb"),
-				new SingleByteOpRec(Opcode.jcxz, "Jb"),
-				new SingleByteOpRec(Opcode.@in, "ab,Ib"),
-				new SingleByteOpRec(Opcode.@in, "av,Ib"),
-				new SingleByteOpRec(Opcode.@out, "Ib,ab"),
-				new SingleByteOpRec(Opcode.@out, "Ib,av"),
+				Instr(Opcode.loopne, InstrClass.ConditionalTransfer, "Jb"),
+				Instr(Opcode.loope, InstrClass.ConditionalTransfer, "Jb"),
+				Instr(Opcode.loop, InstrClass.ConditionalTransfer, "Jb"),
+				Instr(Opcode.jcxz, InstrClass.ConditionalTransfer, "Jb"),
+				Instr(Opcode.@in, "ab,Ib"),
+				Instr(Opcode.@in, "av,Ib"),
+				Instr(Opcode.@out, "Ib,ab"),
+				Instr(Opcode.@out, "Ib,av"),
 
-				new SingleByteOpRec(Opcode.call, "Jv"),
-				new SingleByteOpRec(Opcode.jmp, "Jv"),
-				new Alternative64OpRec(
-                    new SingleByteOpRec(Opcode.jmp, "Ap"),
-                    new SingleByteOpRec(Opcode.illegal)),
-				new SingleByteOpRec(Opcode.jmp, "Jb"),
-				new SingleByteOpRec(Opcode.@in, "ab,dw"),
-				new SingleByteOpRec(Opcode.@in, "av,dw"),
-				new SingleByteOpRec(Opcode.@out, "dw,ab"),
-				new SingleByteOpRec(Opcode.@out, "dw,av"),
+				Instr(Opcode.call, InstrClass.Transfer|InstrClass.Call, "Jv"),
+				Instr(Opcode.jmp, InstrClass.Transfer, "Jv"),
+				new Alternative64Decoder(
+                    Instr(Opcode.jmp, InstrClass.Transfer, "Ap"),
+                    s_invalid),
+				Instr(Opcode.jmp, InstrClass.Transfer, "Jb"),
+				Instr(Opcode.@in, "ab,dw"),
+				Instr(Opcode.@in, "av,dw"),
+				Instr(Opcode.@out, "dw,ab"),
+				Instr(Opcode.@out, "dw,av"),
 
 				// F0
-				new SingleByteOpRec(Opcode.@lock),
-				new SingleByteOpRec(Opcode.illegal),
-				new F2ByteOpRec(),
-				new F3ByteOpRec(),
-				new SingleByteOpRec(Opcode.hlt),
-				new SingleByteOpRec(Opcode.cmc),
-				new GroupOpRec(3, "Eb"),
-				new GroupOpRec(3, "Ev"),
+				Instr(Opcode.@lock),
+				s_invalid,
+				new F2PrefixDecoder(),
+				new F3PrefixDecoder(),
+				Instr(Opcode.hlt, InstrClass.Terminates, ""),
+				Instr(Opcode.cmc),
+				new GroupDecoder(3, "Eb"),
+				new GroupDecoder(3, "Ev"),
 
-				new SingleByteOpRec(Opcode.clc),
-				new SingleByteOpRec(Opcode.stc),
-				new SingleByteOpRec(Opcode.cli),
-				new SingleByteOpRec(Opcode.sti),
-				new SingleByteOpRec(Opcode.cld),
-				new SingleByteOpRec(Opcode.std),
-				new GroupOpRec(4, ""),
-				new GroupOpRec(5, "")
+				Instr(Opcode.clc),
+				Instr(Opcode.stc),
+				Instr(Opcode.cli),
+				Instr(Opcode.sti),
+				Instr(Opcode.cld),
+				Instr(Opcode.std),
+				new GroupDecoder(4, ""),
+				new GroupDecoder(5, "")
 			};
         }
     }

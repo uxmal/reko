@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -60,7 +60,11 @@ namespace Reko.Evaluation
 
         public Expression VisitArrayAccess(ArrayAccess acc)
         {
-            throw new NotImplementedException();
+            var arr = acc.Array.Accept(this);
+            var idx = acc.Index.Accept(this);
+            if (arr == Constant.Invalid || idx == Constant.Invalid)
+                return Constant.Invalid;
+            return new ArrayAccess(acc.DataType, arr, idx);
         }
 
         public Expression VisitBinaryExpression(BinaryExpression binExp)

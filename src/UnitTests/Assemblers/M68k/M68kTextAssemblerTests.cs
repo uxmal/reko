@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -68,9 +68,9 @@ namespace Reko.UnitTests.Assemblers.M68k
                 dumper.ShowCodeBytes = true;
                 var mem = program.SegmentMap.Segments.Values.First().MemoryArea;
                 var formatter = new TextFormatter(fut.TextWriter);
-                dumper.DumpData(program.SegmentMap, mem.BaseAddress, mem.Bytes.Length, formatter);
+                dumper.DumpData(program.SegmentMap, program.Architecture, mem.BaseAddress, mem.Bytes.Length, formatter);
                 fut.TextWriter.WriteLine();
-                dumper.DumpAssembler(program.SegmentMap, mem.BaseAddress, mem.EndAddress, formatter);
+                dumper.DumpAssembler(program.SegmentMap, program.Architecture, mem.BaseAddress, mem.EndAddress, formatter);
                 if (program.ImportReferences.Count > 0)
                 {
                     var list = new SortedList<Address, ImportReference>(program.ImportReferences);

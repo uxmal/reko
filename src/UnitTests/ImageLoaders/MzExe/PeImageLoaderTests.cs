@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -471,7 +471,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             {
                 sb.AppendFormat("{0:X} {1:X4} {2} {3}",
                     item.Address,
-                    item.Size,
+                    item.DataType.Size,
                     item.Type,
                     item.DataType);
                 sb.AppendLine();
@@ -510,9 +510,9 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
 @"00102000 0004 Data word32
 00102004 0004 Data word32
 00102008 0004 Data word32
-0010202A 0004 Data (ptr code)
-0010202E 0004 Data (ptr code)
-00102032 0004 Data (ptr code)
+0010202A 0004 Data (ptr32 code)
+0010202E 0004 Data (ptr32 code)
+00102032 0004 Data (ptr32 code)
 ";
             AssertImageSymbols(sExp);
         }

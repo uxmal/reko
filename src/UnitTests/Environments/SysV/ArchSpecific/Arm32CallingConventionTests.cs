@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
 
         private Pointer Ptr(DataType dt)
         {
-            return new Pointer(dt, 4);
+            return new Pointer(dt, 32);
         }
 
         private void Given_CallingConvention()

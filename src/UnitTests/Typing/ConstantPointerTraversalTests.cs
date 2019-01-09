@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,7 +57,7 @@ namespace Reko.UnitTests.Typing
             StructureType str = new StructureType
             {
                 Fields = {
-                    { 0, new Pointer(eqLink, 4)},
+                    { 0, new Pointer(eqLink, 32)},
                     { 4, PrimitiveType.Int32 }
                 }
             };
@@ -111,7 +111,7 @@ namespace Reko.UnitTests.Typing
                 .WriteLeUInt32('b')
                 .WriteLeUInt32('c')
                 .WriteLeUInt32('d');
-            Root(0x01000, new ArrayType(new Pointer(PrimitiveType.Char, 4), 4));
+            Root(0x01000, new ArrayType(new Pointer(PrimitiveType.Char, 32), 4));
             var cpt = new ConstantPointerTraversal(arch, globalStruct, imageMap);
             cpt.Traverse();
 
@@ -144,8 +144,8 @@ namespace Reko.UnitTests.Typing
             {
                 Fields = {
                     { 0, PrimitiveType.UInt32 },
-                    { 4, new Pointer(eqTreeNode, 4) },  // Left
-                    { 8, new Pointer(eqTreeNode, 4) },  // Right
+                    { 4, new Pointer(eqTreeNode, 32) },  // Left
+                    { 8, new Pointer(eqTreeNode, 32) },  // Right
                 }
             };
             eqTreeNode.DataType = str;

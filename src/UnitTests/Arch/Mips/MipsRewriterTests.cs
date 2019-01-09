@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,6 +34,7 @@ namespace Reko.UnitTests.Arch.Mips
     public class MipsRewriterTests : RewriterTestBase
     {
         private MipsProcessorArchitecture arch = new MipsBe32Architecture("mips-be-32");
+        private BeImageReader rdr;
         private MipsDisassembler dasm;
 
         public override IProcessorArchitecture Architecture { get { return arch; } }
@@ -78,13 +79,14 @@ namespace Reko.UnitTests.Arch.Mips
                 (byte) w
             }).ToArray();
             var image = new MemoryArea(LoadAddress, bytes);
-            dasm = new MipsDisassembler(arch, image.CreateBeReader(LoadAddress), false);
+            this.rdr = image.CreateBeReader(LoadAddress);
+            dasm = new MipsDisassembler(arch, rdr, false);
             return image;
         }
 
         protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
         {
-            return new MipsRewriter(arch, dasm, binder, host);
+            return new MipsRewriter(arch, rdr, dasm, binder, host);
         }
 
         [Test]
@@ -392,11 +394,19 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
-        public void MipsRw_mul()
+        public void MipsRw_mult()
         {
             AssertCode(0x02F00018, // mult s7,s0
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|hi_lo = r23 *s r16");
+        }
+
+        [Test]
+        public void MipsRw_mul()
+        {
+            AssertCode(0x70621002,  // mul r2, r3, r2
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r2 = r3 *s r2");
         }
 
         [Test]
@@ -714,6 +724,161 @@ namespace Reko.UnitTests.Arch.Mips
             AssertCode(0x46001046, // mov.s $f1,$f2
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|f1 = f2");
+        }
+
+        [Test]
+        public void MipsRw_mtc0()
+        {
+            AssertCode(0x40826000,   // mtc0	r2,r12
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__cp12 = r2");
+        }
+
+        [Test]
+        public void MipsRw_pref()
+        {
+            AssertCode(0xCC5E0000,   // pref	r30,0000(r2)
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__prefetch(r2)");
+        }
+
+        [Test]
+        public void MipsRw_add_s()
+        {
+            AssertCode(0x46000000,   // add.s	f0,f0,f0
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f0 = f0 + f0");
+        }
+
+        [Test]
+        public void MipsRw_movt()
+        {
+            AssertCode(0x00212901,   // movt	r1,r1,fcc0
+                "0|L--|00100000(4): 2 instructions",
+                "1|T--|if (!fcc0) branch 00100004",
+                "2|L--|r1 = r1");
+        }
+
+        [Test]
+        public void MipsRw_tnei()
+        {
+            AssertCode(0x060E1701,   // tnei	r16,+00001701
+                "0|T--|00100000(4): 2 instructions",
+                "1|T--|if (r16 == 5889) branch 00100004",
+                "2|L--|__trap()");
+        }
+
+        [Test]
+        public void MipsRw_movf()
+        {
+            AssertCode(0x00000001,   // movf	r0,r0,fcc0
+                "0|L--|00100000(4): 2 instructions",
+                "1|T--|if (fcc0) branch 00100004",
+                "2|L--|r0 = r0");
+        }
+
+        [Test]
+        public void MipsRw_tlti()
+        {
+            AssertCode(0x06CA6351,   // tlti	r22,+00006351
+                "0|T--|00100000(4): 2 instructions",
+                "1|T--|if (r22 >= 25425) branch 00100004",
+                "2|L--|__trap()");
+        }
+
+        [Test]
+        public void MipsRw_tgeiu()
+        {
+            AssertCode(0x06096086,   // tgeiu	r16,+00006086
+                "0|T--|00100000(4): 2 instructions",
+                "1|T--|if (r16 <u 24710) branch 00100004",
+                "2|L--|__trap()");
+        }
+
+        [Test]
+        public void MipsRw_dmtc0()
+        {
+            Given_Mips64_Architecture();
+            AssertCode(0x40A04800,   // dmtc0	r0,r9
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__counter__ = 0x0000000000000000");
+        }
+
+        [Test]
+        public void MipsRw_tlbp()
+        {
+            AssertCode(0x42000008,   // tlbp
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__tlbp()");
+        }
+
+        [Test]
+        public void MipsRw_tlbwi()
+        {
+            AssertCode(0x42000002,   // tlbwi
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__tlbwi()");
+        }
+
+        [Test]
+        public void MipsRw_dmfc0()
+        {
+            AssertCode(0x40224807,   // dmfc0	r2,r9
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r2 = __counter__");
+        }
+
+        public void MipsRw_tlbwr()
+        {
+            AssertCode(0x43444546,   // tlbwr
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void MipsRw_eret()
+        {
+            AssertCode(0x43564D58,   // eret
+                "0|L--|00100000(4): 1 instructions",
+                "1|T--|return (0,0)");
+        }
+
+        [Test]
+        public void MipsRw_wait()
+        {
+            AssertCode(0x43415320,   // wait
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__wait()");
+        }
+
+        [Test]
+        public void MipsRw_tlbr()
+        {
+            AssertCode(0x43415041,   // tlbr
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__tlbr()");
+        }
+
+        [Test]
+        public void MipsRw_bgezal_is_bal()
+        {
+            // The MIPS docs specify that bgezal r0,XXXX
+            // is interpreted by the processor as bal XXXX.
+            // It's a silicon hack, but we have to deal
+            // with it....
+            AssertCode(0x0411FF66,      // bgezal   r0,xxxx
+                "0|T--|00100000(4): 1 instructions",
+                "1|TD-|call 000FFD9C (0)");
+        }
+
+        [Test]
+        public void MipsRw_bgezal_idiom()
+        {
+            // This idiom is used to capture the address of the 
+            // called destination in the la register.
+            AssertCode(0x04110001,      // skip the delay slot.
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|ra = 00100008");
         }
     }
 }

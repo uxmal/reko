@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,6 +30,11 @@ namespace Reko.Core.Operators
             if (!ValidArgs(c1, c2))
                 return Constant.Invalid;
             return BuildConstant(c1.DataType, c2.DataType, c1.ToReal64() / c2.ToReal64());
+        }
+
+        public override string AsCompound()
+        {
+            return " /= ";
         }
 
         public override string ToString()

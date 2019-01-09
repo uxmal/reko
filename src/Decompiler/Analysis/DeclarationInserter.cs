@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -81,7 +81,10 @@ namespace Reko.Analysis
 						return;
 					}
 				}
-				dominator.Statements.Insert(0, 0, new Declaration(web.Identifier, null));
+				dominator.Statements.Insert(
+                    0,
+                    dominator.Address.ToLinear(),
+                    new Declaration(web.Identifier, null));
 			}
 		}
 	}

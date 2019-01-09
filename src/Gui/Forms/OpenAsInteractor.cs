@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,10 +22,8 @@ using Reko.Core;
 using Reko.Core.Configuration;
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
+
 
 namespace Reko.Gui.Forms
 {
@@ -40,7 +38,15 @@ namespace Reko.Gui.Forms
             dlg.BrowseButton.Click += BrowseButton_Click;
             dlg.AddressTextBox.TextChanged += AddressTextBox_TextChanged;
             dlg.RawFileTypes.TextChanged += RawFileTypes_TextChanged;
+            dlg.Architectures.TextChanged += Architectures_TextChanged;
+
+            dlg.AddressTextBox.GotFocus += AddressTextBox_GotFocus;
+            dlg.RawFileTypes.GotFocus += RawFileTypes_GotFocus;
+            dlg.Platforms.GotFocus += Platforms_GotFocus;
+            dlg.Architectures.GotFocus += Architectures_GotFocus;
         }
+
+  
 
         private void dlg_Load(object sender, EventArgs e)
         {
@@ -55,6 +61,7 @@ namespace Reko.Gui.Forms
         private void EnableControls()
         {
             var rawfile = ((ListOption)dlg.RawFileTypes.SelectedValue).Value as RawFileElement;
+            var arch = ((ListOption)dlg.Architectures.SelectedValue)?.Value as string;
             var unknownRawFileFormat = rawfile == null;
             bool platformRequired = unknownRawFileFormat;
             bool archRequired= unknownRawFileFormat;
@@ -68,6 +75,7 @@ namespace Reko.Gui.Forms
             dlg.Platforms.Enabled = platformRequired;
             dlg.Architectures.Enabled = archRequired;
             dlg.AddressTextBox.Enabled = addrRequired;
+            dlg.PropertyGrid.Enabled = dlg.PropertyGrid.SelectedObject != null;
             dlg.OkButton.Enabled = dlg.FileName.Text.Length > 0 || !unknownRawFileFormat;
         }
 
@@ -90,18 +98,11 @@ namespace Reko.Gui.Forms
 
         private void PopulateRawFiles(IConfigurationService dcCfg)
         {
-            var unknownOption = new ListOption
-            {
-                Text = "(Unknown)",
-                Value = null,
-            };
-            var rawFiles = new ListOption[] { unknownOption }
-                .Concat(
-                    dcCfg.GetRawFiles()
+            var rawFiles = dcCfg.GetRawFiles()
                     .OfType<RawFileElement>()
                     .OrderBy(p => p.Description)
                     .Where(p => !string.IsNullOrEmpty(p.Name))
-                    .Select(p => new ListOption { Text = p.Description, Value = p }));
+                    .Select(p => new ListOption { Text = p.Description, Value = p });
             dlg.RawFileTypes.DataSource = new ArrayList(rawFiles.ToArray());
         }
 
@@ -110,7 +111,7 @@ namespace Reko.Gui.Forms
             var archs = dcCfg.GetArchitectures()
                 .OfType<Architecture>()
                 .OrderBy(a => a.Description)
-                .Select(a => new ListOption { Text = a.Description, Value = a.Name });
+                .Select(a => new ListOption { Text = a.Description, Value = a });
             dlg.Architectures.DataSource = new ArrayList(archs.ToArray());
         }
 
@@ -131,6 +132,48 @@ namespace Reko.Gui.Forms
         }
 
         private void RawFileTypes_TextChanged(object sender, EventArgs e)
+        {
+            EnableControls();
+        }
+
+        private void Architectures_TextChanged(object sender, EventArgs e)
+        {
+            OnArchitectureChanged();
+            EnableControls();
+        }
+
+        private void Architectures_GotFocus(object sender, EventArgs e)
+        {
+            OnArchitectureChanged();
+            EnableControls();
+        }
+
+        private void OnArchitectureChanged()
+        {
+            var arch = dlg.GetSelectedArchitecture();
+            if (arch != null && arch.Options?.Count > 0)
+            {
+                dlg.SetPropertyGrid(dlg.ArchitectureOptions, arch.Options);
+            }
+            else
+            {
+                dlg.PropertyGrid.SelectedObject = null;
+            }
+        }
+
+        private void Platforms_GotFocus(object sender, EventArgs e)
+        {
+            dlg.PropertyGrid.SelectedObject = null;
+            EnableControls();
+        }
+
+        private void RawFileTypes_GotFocus(object sender, EventArgs e)
+        {
+            dlg.PropertyGrid.SelectedObject = null;
+            EnableControls();
+        }
+
+        private void AddressTextBox_GotFocus(object sender, EventArgs e)
         {
             EnableControls();
         }

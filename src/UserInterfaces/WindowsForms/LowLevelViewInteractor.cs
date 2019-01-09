@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@ using Reko.Core.Output;
 using Reko.Core.Types;
 using Reko.Gui;
 using Reko.Gui.Forms;
+using Reko.Gui.Visualizers;
 using Reko.UserInterfaces.WindowsForms.Controls;
 using System;
 using System.ComponentModel.Design;
@@ -78,7 +79,7 @@ namespace Reko.UserInterfaces.WindowsForms
                 control.ImageMapView.ImageMap = value.ImageMap;
                 control.ImageMapView.SegmentMap = value.SegmentMap;
                 control.ImageMapView.Granularity = value.SegmentMap.GetExtent();
-                control.ByteMapView.SegmentMap = value.SegmentMap;
+                control.VisualizerControl.Program = value;
             }
             return;
         }
@@ -111,6 +112,11 @@ namespace Reko.UserInterfaces.WindowsForms
             this.Control.DisassemblyView.Services = this.services;
             this.Control.DisassemblyView.Navigate += DisassemblyControl_Navigate;
 
+            this.Control.VisualizerControl.Services = services;
+            PopulateVisualizers();
+            this.Control.VisualizerList.SelectedIndexChanged += VisualizerList_SelectedIndexChanged;
+            this.control.VisualizerList.SelectedIndex = 0;
+
             this.Control.ToolBarGoButton.Click += ToolBarGoButton_Click;
             this.Control.ToolBarAddressTextbox.KeyDown += ToolBarAddressTextbox_KeyDown;
 
@@ -121,6 +127,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
             return control;
         }
+
 
         public void SetSite(IServiceProvider sp)
         {
@@ -133,13 +140,29 @@ namespace Reko.UserInterfaces.WindowsForms
 
         private void NavigateToToolbarAddress()
         {
-            Address addr;
-            var txtAddr = Control.ToolBarAddressTextbox.Text.Trim();
+            var txtAddr = Control.ToolBarAddressTextbox.Text;
+            if (txtAddr[0] == 0xFEFF)
+            {
+                // Get rid of UTF-16 BOM Windows insists on prepending
+                 txtAddr = txtAddr.Substring(1);
+            }
+            txtAddr = txtAddr.Trim();
             if (txtAddr.StartsWith("0x", StringComparison.InvariantCultureIgnoreCase))
                 txtAddr = txtAddr.Substring(2);
-            if (!program.Architecture.TryParseAddress(txtAddr, out addr))
+            if (!program.Architecture.TryParseAddress(txtAddr, out Address addr))
                 return;
             UserNavigateToAddress(Control.MemoryView.TopAddress, addr);
+        }
+
+        private void PopulateVisualizers()
+        {
+            //$REVIEW: load the visualizers from a config file?
+            this.Control.VisualizerList.Items.Add(
+                new ListOption { Text = "ASCII strings", Value = new AsciiStringVisualizer() });
+            this.control.VisualizerList.Items.Add(
+                new ListOption { Text = "Code and data", Value = new CodeDataVisualizer() });
+            this.Control.VisualizerList.Items.Add(
+                new ListOption { Text = "Heat map", Value = new HeatmapVisualizer() });
         }
 
         private void UserNavigateToAddress(Address addrFrom, Address addrTo)
@@ -196,7 +219,7 @@ namespace Reko.UserInterfaces.WindowsForms
                     case CmdIds.ActionCallTerminates:
                         if (instr != null)
                         {
-                            if ((instr.InstructionClass &  InstructionClass.Call) != 0)
+                            if ((instr.InstructionClass &  InstrClass.Call) != 0)
                             {
                                 status.Status = MenuStatus.Visible | MenuStatus.Enabled;
                             }
@@ -271,7 +294,7 @@ namespace Reko.UserInterfaces.WindowsForms
             AddressRange addrRange = GetSelectedAddressRange();
             if (addrRange == null)
                 return;
-            var rdr = program.CreateImageReader(addrRange.Begin);
+            var rdr = program.CreateImageReader(program.Architecture, addrRange.Begin);
             var addrDst = rdr.Read(program.Platform.PointerType);
             var txt = control.ToolBarAddressTextbox;
             txt.Text = addrDst.ToString();
@@ -286,8 +309,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public void MarkAndScanProcedure()
         {
-            AddressRange addrRange;
-            if (!TryGetSelectedAddressRange(out addrRange))
+            if (!TryGetSelectedAddressRange(out var addrRange))
                 return;
             var address = new ProgramAddress(program, addrRange.Begin);
             services.RequireService<ICommandFactory>().MarkProcedure(address).Do();
@@ -319,16 +341,19 @@ namespace Reko.UserInterfaces.WindowsForms
         /// <returns></returns>
         private bool CopySelectionToClipboard()
         {
-            AddressRange range;
-            if (!TryGetSelectedAddressRange(out range))
+            if (!TryGetSelectedAddressRange(out var range))
                 return true;
             if (control.MemoryView.Focused)
             {
                 var decompiler = services.GetService<IDecompilerService>().Decompiler;
                 var dumper = new Dumper(decompiler.Project.Programs.First());
                 var sb = new StringWriter();
-                dumper.DumpData(control.MemoryView.SegmentMap, range, new TextFormatter(sb));
-                Clipboard.SetText(sb.ToString());       //$TODO: abstract this.
+                dumper.DumpData(control.MemoryView.SegmentMap, program.Architecture, range, new TextFormatter(sb));
+                var text = sb.ToString();
+                if (text.Length > 0)
+                {
+                    Clipboard.SetText(text);       //$TODO: abstract this.
+                }
             }
             return true;
         }
@@ -385,8 +410,7 @@ namespace Reko.UserInterfaces.WindowsForms
             var dataType = parser.Parse(userText);
             if (dataType == null)
                 return null;
-            var arr = dataType as ArrayType;
-            if (arr != null && arr.ElementType.Size != 0)
+            if (dataType is ArrayType arr && arr.ElementType.Size != 0)
             {
                 var range = control.MemoryView.GetAddressRange();
                 if (range.IsValid)
@@ -396,7 +420,8 @@ namespace Reko.UserInterfaces.WindowsForms
                     arr.Length = nElems;
                 }
             }
-            var item = program.AddUserGlobalItem(address, dataType);
+            var arch = program.Architecture;
+            var item = program.AddUserGlobalItem(arch, address, dataType);
             control.MemoryView.Invalidate();
             return item;
         }
@@ -491,8 +516,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         private UserCallData GetUserCallDataFromAddress(Address addr)
         {
-            UserCallData ucd;
-            if (!program.User.Calls.TryGetValue(addr, out ucd))
+            if (!program.User.Calls.TryGetValue(addr, out UserCallData ucd))
             {
                 ucd = new UserCallData { Address = addr };
             }
@@ -507,7 +531,7 @@ namespace Reko.UserInterfaces.WindowsForms
         private string SelectionToHex(AddressRange addr)
         {
             var sb = new StringBuilder();
-            var rdr = program.CreateImageReader(addr.Begin);
+            var rdr = program.CreateImageReader(program.Architecture, addr.Begin);
             var sep = "";
             while (rdr.Address <= addr.End)
             {
@@ -527,10 +551,9 @@ namespace Reko.UserInterfaces.WindowsForms
             this.Control.MemoryView.SelectedAddress = addr;
             this.Control.MemoryView.TopAddress = addr;
 
-            ImageSegment seg;
-            if (program.SegmentMap.TryFindSegment(addr, out seg))
+            if (program.SegmentMap.TryFindSegment(addr, out ImageSegment seg))
             {
-                this.Control.DisassemblyView.Model  = new DisassemblyTextModel(program, seg);
+                this.Control.DisassemblyView.Model = new DisassemblyTextModel(program, seg);
                 this.Control.DisassemblyView.SelectedObject = addr;
                 this.control.DisassemblyView.TopAddress = addr;
             }
@@ -598,5 +621,14 @@ namespace Reko.UserInterfaces.WindowsForms
                 return;
             UserNavigateToAddress(Control.DisassemblyView.TopAddress, addr);
         }
+
+        private void VisualizerList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var item = (ListOption) this.control.VisualizerList.SelectedItem;
+            if (item == null)
+                return;
+            this.Control.VisualizerControl.Visualizer = (Visualizer)item.Value;
+        }
+
     }
 }

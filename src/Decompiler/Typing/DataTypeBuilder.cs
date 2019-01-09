@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -101,7 +101,7 @@ namespace Reko.Typing
 			{
 				StructureType seg = factory.CreateStructureType(null, 0);
 				seg.IsSegment = true;
-				Pointer ptr = factory.CreatePointer(seg, dt.Size);
+				Pointer ptr = factory.CreatePointer(seg, dt.BitSize);
 				dt = ptr;
 			}
 			MergeIntoDataType(dt, type);
@@ -113,7 +113,7 @@ namespace Reko.Typing
             {
                 var seg = factory.CreateStructureType(null, 0);
                 seg.IsSegment = true;
-                var ptr = factory.CreatePointer(seg, dt.Size);
+                var ptr = factory.CreatePointer(seg, dt.BitSize);
                 dt = ptr;
             }
             return MergeIntoDataType(exp, dt);
@@ -128,7 +128,7 @@ namespace Reko.Typing
 		{
             Identifier[] adt = actuals.Select(a => new Identifier("", a, null)).ToArray();
 			var fn = factory.CreateFunctionType(new Identifier("", ret, null), adt);
-			var pfn = factory.CreatePointer(fn, funcPtrSize);
+			var pfn = factory.CreatePointer(fn, funcPtrSize * DataType.BitsPerByte);
 			return MergeIntoDataType(function, pfn);
 		}
 
@@ -165,7 +165,7 @@ namespace Reko.Typing
 
             var pointer = tBase != null
                 ? (DataType)factory.CreateMemberPointer(tBase.TypeVariable, s, structPtrSize)
-                : (DataType)factory.CreatePointer(s, structPtrSize);
+                : (DataType)factory.CreatePointer(s, structPtrSize * DataType.BitsPerByte);
             return MergeIntoDataType(tStruct, pointer);
         }
 
@@ -176,13 +176,13 @@ namespace Reko.Typing
 			var s = factory.CreateStructureType(null, size);
 			var ptr = tBase != null
                 ? (DataType)factory.CreateMemberPointer(tBase.TypeVariable, s, platform.FramePointerType.Size)
-				: (DataType)factory.CreatePointer(s, platform.PointerType.Size);
+				: (DataType)factory.CreatePointer(s, platform.PointerType.BitSize);
 			return MergeIntoDataType(tStruct, ptr);
 		}
 
 		public DataType PointerTrait(Expression ptrExp, int ptrSize, Expression tPointee)
 		{
-			var ptr = factory.CreatePointer(store.GetDataTypeOf(tPointee), ptrSize);
+			var ptr = factory.CreatePointer(store.GetDataTypeOf(tPointee), ptrSize * DataType.BitsPerByte);
             return MergeIntoDataType(ptrExp, ptr);
 		}
 		#endregion

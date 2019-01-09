@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -258,7 +258,11 @@ namespace Reko.Environments.Windows
 
         public class SimulatedProc : ExternalProcedure
         {
-            public SimulatedProc(string name, Action<IProcessorEmulator> emulator) : base(name, null) { Emulator = emulator; }
+            public SimulatedProc(string name, Action<IProcessorEmulator> emulator)
+                : base(name, new FunctionType())
+            {
+                Emulator = emulator;
+            }
 
             public TWord uFakedAddress;
             public Action<IProcessorEmulator> Emulator;

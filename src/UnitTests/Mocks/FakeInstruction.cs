@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
@@ -29,27 +30,26 @@ namespace Reko.UnitTests.Mocks
     {
         private Operation operation;
         private MachineOperand[] ops;
-        private InstructionClass iClass;
+        private InstrClass iClass;
 
         public FakeInstruction(Operation operation, params MachineOperand[] ops)
         {
             this.operation = operation;
             this.ops = ops;
-            this.iClass = InstructionClass.Invalid;
+            this.iClass = InstrClass.Invalid;
         }
 
-        public FakeInstruction(InstructionClass iClass, Operation operation, params MachineOperand[] ops)
+        public FakeInstruction(InstrClass iClass, Operation operation, params MachineOperand[] ops)
         {
             this.iClass = iClass;
             this.operation = operation;
             this.ops = ops;
         }
 
-        public override bool IsValid { get { return operation != Operation.Invalid; } }
         public override int OpcodeAsInteger { get { return (int)operation; } }
         public Operation Operation { get { return operation; } }
         public MachineOperand[] Operands { get { return ops; } }
-        public override InstructionClass InstructionClass { get { return iClass; } }
+        public override InstrClass InstructionClass { get { return iClass; } }
 
         public override MachineOperand GetOperand(int i)
         {

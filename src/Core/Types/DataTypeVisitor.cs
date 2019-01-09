@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,7 +36,6 @@ namespace Reko.Core.Types
         T VisitPrimitive(PrimitiveType pt);
         T VisitMemberPointer(MemberPointer memptr);
         T VisitPointer(Pointer ptr);
-        T VisitQualifiedType(QualifiedType qt);
         T VisitReference(ReferenceTo refTo);
         T VisitString(StringType str);
         T VisitStructure(StructureType str);
@@ -58,7 +57,6 @@ namespace Reko.Core.Types
         void VisitPrimitive(PrimitiveType pt);
         void VisitMemberPointer(MemberPointer memptr);
         void VisitPointer(Pointer ptr);
-        void VisitQualifiedType(QualifiedType qt);
         void VisitReference(ReferenceTo refTo);
 
         void VisitString(StringType str);

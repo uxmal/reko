@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -60,6 +60,11 @@ namespace Reko.UserInterfaces.WindowsForms
             remove { textbox.TextChanged -= value; }
         }
 
+        public event EventHandler GotFocus
+        {
+            add { textbox.GotFocus += value; }
+            remove { textbox.GotFocus -= value; }
+        }
         public event EventHandler LostFocus
         {
             add { textbox.LostFocus += value; }

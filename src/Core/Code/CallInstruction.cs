@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ namespace Reko.Core.Code
     /// Models a low-level call instruction.
     /// </summary>
     /// <remarks>CallInstructions only exist right after scanning. Subsequent
-    /// decompiler phases will replace them with <code>Application</code> 
+    /// decompiler phases will replace them with <cref>Application</cref> instances.
     /// expressions.
     /// </remarks>
     public class CallInstruction : Instruction

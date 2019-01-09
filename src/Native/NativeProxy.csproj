@@ -22,6 +22,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CmakeCompiler>Visual Studio 15 2017</CmakeCompiler>
+    <LangVersion>7</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -61,6 +62,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <CmakeCompiler>Visual Studio 15 2017</CmakeCompiler>
+    <LangVersion>7</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -72,8 +74,8 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <CmakeCompiler>Visual Studio 15 2017</CmakeCompiler>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TravisRelease|AnyCPU'">
-    <OutputPath>bin\TravisRelease\</OutputPath>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnixRelease|AnyCPU'">
+    <OutputPath>bin\UnixRelease\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -82,8 +84,8 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <CmakeCompiler>Visual Studio 15 2017</CmakeCompiler>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TravisRelease|x64'">
-    <OutputPath>bin\x64\TravisRelease\</OutputPath>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnixRelease|x64'">
+    <OutputPath>bin\x64\UnixRelease\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -92,8 +94,8 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <CmakeCompiler>Visual Studio 15 2017 Win64</CmakeCompiler>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TravisRelease|x86'">
-    <OutputPath>bin\x86\TravisRelease\</OutputPath>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnixRelease|x86'">
+    <OutputPath>bin\x86\UnixRelease\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -123,15 +125,15 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="CleanCMake" AfterTargets="Clean">
-    <Exec Condition=" '$(OS)' != 'Unix' AND $(Platform) != 'AnyCPU'" Command="cmake.exe -DACTION=clean -DREKO_PATH=$(SolutionDir)../ -DREKO_COMPILER=&quot;$(CmakeCompiler)&quot; -DREKO_PLATFORM=$(Platform) -DCMAKE_BUILD_TYPE=$(Configuration) -DIS_MSYS=FALSE -P $(SolutionDir)Native\reko.cmake" WorkingDirectory="$(SolutionDir)Native" />
-    <Exec Condition=" '$(OS)' == 'Unix' AND $(Platform) != 'AnyCPU'" Command="cmake -DACTION=clean -DREKO_PATH=$(SolutionDir)../ -DCMAKE_BUILD_TYPE=$(Configuration) -DREKO_PLATFORM=$(Platform) -P $(SolutionDir)Native\reko.cmake" WorkingDirectory="$(SolutionDir)Native" />
+    <Exec Condition=" '$(OS)' != 'Unix' AND $(Platform) != 'AnyCPU'" Command="cmake.exe -DACTION=clean -DREKO_PATH=&quot;$(SolutionDir)../&quot; -DREKO_COMPILER=&quot;$(CmakeCompiler)&quot; -DREKO_PLATFORM=$(Platform) -DCMAKE_BUILD_TYPE=$(Configuration) -DIS_MSYS=FALSE -P &quot;$(SolutionDir)Native\reko.cmake&quot;" WorkingDirectory="$(SolutionDir)Native" />
+    <Exec Condition=" '$(OS)' == 'Unix' AND $(Platform) != 'AnyCPU'" Command="cmake -DACTION=clean -DREKO_PATH=&quot;$(SolutionDir)../&quot; -DCMAKE_BUILD_TYPE=$(Configuration) -DREKO_PLATFORM=$(Platform) -P &quot;$(SolutionDir)Native\reko.cmake&quot;" WorkingDirectory="$(SolutionDir)Native" />
   </Target>
   <Target Name="AfterBuild">
     <!-- Start building the native shared libraries using CMake -->
     <Exec Condition=" '$(OS)' != 'Unix' AND $(Platform) != 'AnyCPU'" Command="..\tools\hdrgen\bin\$(Configuration)\hdrgen.exe &quot;$(SolutionDir)Core\bin\$(Configuration)\Reko.Core.dll&quot; &quot;$(ProjectDir)include\reko.h&quot;" WorkingDirectory="$(ProjectDir)" />
     <Exec Condition=" '$(OS)' == 'Unix' AND $(Platform) != 'AnyCPU'" Command="../tools/hdrgen/bin/$(Configuration)/hdrgen.exe $(SolutionDir)Core/bin/$(Configuration)/Reko.Core.dll $(ProjectDir)include/reko.h" WorkingDirectory="$(ProjectDir)" />
     <!-- FIXME: not all C# configurations are valid CMake configurations -->
-    <Exec Condition=" '$(OS)' != 'Unix' AND $(Platform) != 'AnyCPU'" Command="cmake.exe -DREKO_PATH=$(SolutionDir)../ -DREKO_COMPILER=&quot;$(CmakeCompiler)&quot; -DREKO_PLATFORM=$(Platform) -DCMAKE_BUILD_TYPE=$(Configuration) -DIS_MSYS=FALSE -P $(SolutionDir)Native\reko.cmake" WorkingDirectory="$(SolutionDir)Native" />
-    <Exec Condition=" '$(OS)' == 'Unix' AND $(Platform) != 'AnyCPU'" Command="cmake -DREKO_PATH=$(SolutionDir)../ -DCMAKE_BUILD_TYPE=$(Configuration) -DREKO_PLATFORM=$(Platform) -P $(SolutionDir)Native\reko.cmake" WorkingDirectory="$(SolutionDir)Native" />
+    <Exec Condition=" '$(OS)' != 'Unix' AND $(Platform) != 'AnyCPU'" Command="cmake.exe -DREKO_PATH=&quot;$(SolutionDir)../&quot; -DREKO_COMPILER=&quot;$(CmakeCompiler)&quot; -DREKO_PLATFORM=$(Platform) -DCMAKE_BUILD_TYPE=$(Configuration) -DIS_MSYS=FALSE -P &quot;$(SolutionDir)Native\reko.cmake&quot;" WorkingDirectory="$(SolutionDir)Native" />
+    <Exec Condition=" '$(OS)' == 'Unix' AND $(Platform) != 'AnyCPU'" Command="cmake -DREKO_PATH=&quot;$(SolutionDir)../&quot; -DCMAKE_BUILD_TYPE=$(Configuration) -DREKO_PLATFORM=$(Platform) -P &quot;$(SolutionDir)Native\reko.cmake&quot;" WorkingDirectory="$(SolutionDir)Native" />
   </Target>
 </Project>

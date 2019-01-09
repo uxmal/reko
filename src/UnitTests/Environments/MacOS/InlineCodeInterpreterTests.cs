@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,17 +19,14 @@
 #endregion
 
 using NUnit.Framework;
-using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Pascal;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
-using Reko.Environments.MacOS;
+using Reko.Environments.MacOS.Classic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Environments.MacOS
 {

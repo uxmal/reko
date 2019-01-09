@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 Pavel Tomin.
+ * Copyright (C) 1999-2019 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -68,19 +68,19 @@ namespace Reko.Libraries.Python
             this.ArgumentTypes = new List<DataType>();
             this.format = format;
             var platform = program.Platform;
-            this.pointerSize = platform.PointerType.Size;
+            this.pointerSize = platform.PointerType.BitSize;
 
-            var wordSize = platform.Architecture.WordWidth.Size;
+            var wordSize = platform.Architecture.WordWidth.BitSize;
             var shortSize = platform.GetByteSizeFromCBasicType(
-                CBasicType.Short);
+                CBasicType.Short) * DataType.BitsPerByte;
             var longSize = platform.GetByteSizeFromCBasicType(
-                CBasicType.Long);
+                CBasicType.Long) * DataType.BitsPerByte;
             var longLongSize = platform.GetByteSizeFromCBasicType(
-                CBasicType.LongLong);
+                CBasicType.LongLong) * DataType.BitsPerByte;
             var floatSize = platform.GetByteSizeFromCBasicType(
-                CBasicType.Float);
+                CBasicType.Float) * DataType.BitsPerByte;
             var doubleSize = platform.GetByteSizeFromCBasicType(
-                CBasicType.Double);
+                CBasicType.Double) * DataType.BitsPerByte;
 
             dtInt = Integer(wordSize);
             dtUInt = UInteger(wordSize);
@@ -117,19 +117,19 @@ namespace Reko.Libraries.Python
             return new TypeReference(name, new UnknownType());
         }
 
-        private DataType Integer(int size)
+        private DataType Integer(int bitSize)
         {
-            return PrimitiveType.Create(Domain.SignedInt, size);
+            return PrimitiveType.Create(Domain.SignedInt, bitSize);
         }
 
-        private DataType UInteger(int size)
+        private DataType UInteger(int bitSize)
         {
-            return PrimitiveType.Create(Domain.UnsignedInt, size);
+            return PrimitiveType.Create(Domain.UnsignedInt, bitSize);
         }
 
-        private DataType Real(int size)
+        private DataType Real(int bitSize)
         {
-            return PrimitiveType.Create(Domain.Real, size);
+            return PrimitiveType.Create(Domain.Real, bitSize);
         }
 
         public void Parse()

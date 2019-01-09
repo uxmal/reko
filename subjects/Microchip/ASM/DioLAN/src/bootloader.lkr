@@ -1,0 +1,43 @@
+//////////////////////////////////////////////////////////////////////////////
+//  BootLoader.                                                             //
+//  Copyright (C) 2007 Diolan ( http://www.diolan.com )                     //
+//                                                                          //
+//  This program is free software: you can redistribute it and/or modify    //
+//  it under the terms of the GNU General Public License as published by    //
+//  the Free Software Foundation, either version 3 of the License, or       //
+//  (at your option) any later version.                                     //
+//                                                                          //
+//  This program is distributed in the hope that it will be useful,         //
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of          //
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           //
+//  GNU General Public License for more details.                            //
+//                                                                          //
+//  You should have received a copy of the GNU General Public License       //
+//  along with this program.  If not, see <http://www.gnu.org/licenses/>    //
+//////////////////////////////////////////////////////////////////////////////
+//  Linker script for BootLoader                                            //
+//////////////////////////////////////////////////////////////////////////////
+
+LIBPATH .
+
+CODEPAGE   NAME=vectors    START=0x0            END=0x1B         PROTECTED
+//CODEPAGE   NAME=bootldr    START=0x1C           END=0x0AFF
+CODEPAGE   NAME=bootldr    START=0x1C           END=0x07FF
+//CODEPAGE   NAME=apppage    START=0x0B00         END=0x0B01
+CODEPAGE   NAME=apppage    START=0x0800         END=0x0801
+CODEPAGE   NAME=idlocs     START=0x200000       END=0x200007       PROTECTED
+CODEPAGE   NAME=config     START=0x300000       END=0x30000D       PROTECTED
+CODEPAGE   NAME=devid      START=0x3FFFFE       END=0x3FFFFF       PROTECTED
+CODEPAGE   NAME=eedata     START=0xF00000       END=0xF000FF       PROTECTED
+
+DATABANK   NAME=gpr0       START=0x0            END=0x0FF
+//DATABANK   NAME=gpr1       START=0x100          END=0x1FF
+//DATABANK   NAME=gpr2       START=0x200          END=0x2FF
+//DATABANK   NAME=gpr3       START=0x300          END=0x3FF
+DATABANK   NAME=usb4       START=0x400          END=0x490          PROTECTED
+DATABANK   NAME=usb5       START=0x500          END=0x580          PROTECTED
+//DATABANK   NAME=usb4       START=0x400          END=0x4FF          PROTECTED
+//DATABANK   NAME=usb5       START=0x500          END=0x5FF          PROTECTED
+//DATABANK   NAME=usb6       START=0x600          END=0x6FF          PROTECTED
+//DATABANK   NAME=usb7       START=0x700          END=0x7FF          PROTECTED
+ACCESSBANK NAME=accesssfr  START=0xF60          END=0xFFF          PROTECTED

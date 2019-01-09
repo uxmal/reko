@@ -1,5 +1,5 @@
 // Equivalence classes ////////////
-Eq_1: (ptr (struct (4 T_4 t0004)))
+Eq_1: (ptr32 (struct (4 T_4 t0004)))
 	T_1 (in foo : word32)
 Eq_2: word32
 	T_2 (in 0x00000004 : word32)
@@ -17,8 +17,8 @@ Eq_7: word32
 // Type Variables ////////////
 T_1: (in foo : word32)
   Class: Eq_1
-  DataType: (ptr (struct (4 T_4 t0004)))
-  OrigDataType: (ptr (struct (4 T_4 t0004)))
+  DataType: (ptr32 (struct (4 T_4 t0004)))
+  OrigDataType: (ptr32 (struct (4 T_4 t0004)))
 T_2: (in 0x00000004 : word32)
   Class: Eq_2
   DataType: word32

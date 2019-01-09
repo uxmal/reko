@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,6 +45,7 @@ namespace Reko.Environments.Msdos
         const byte WILD = 0xF4;
 
         private IServiceProvider services;
+        private IProcessorArchitecture arch;
         private Program program;
         private Address start;
         private ProcessorState state;
@@ -53,6 +54,7 @@ namespace Reko.Environments.Msdos
         {
             this.services = services;
             this.program = program;
+            this.arch = program.Architecture;
             this.start = addrStart;
             this.state = program.Architecture.CreateProcessorState();
         }
@@ -80,8 +82,7 @@ namespace Reko.Environments.Msdos
             char chVersion = 'x';
             char[] temp = new char[4];
 
-            ImageSegment segment;
-            program.SegmentMap.TryFindSegment(start, out segment);
+            program.SegmentMap.TryFindSegment(start, out ImageSegment segment);
             var image = segment.MemoryArea;
             var startOff = (uint)(start - image.BaseAddress);   // Offset into the Image of the initial CS:IP
 
@@ -259,12 +260,7 @@ namespace Reko.Environments.Msdos
             //        chVersion, /* Add version */
             //        chModel); /* Add model */
             //Debug.Print("Signature file: {0}", sSigName);
-            return new ImageSymbol(addrEntry)
-            { 
-                Name ="main",
-                ProcessorState = this.state,
-                Type = SymbolType.Procedure,
-            };
+            return ImageSymbol.Procedure(arch, addrEntry, "main", state: this.state);
         }
 
         private Address ReadSegPtr(MemoryArea mem, uint offset)

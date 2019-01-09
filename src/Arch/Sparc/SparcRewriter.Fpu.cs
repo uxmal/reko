@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -65,6 +65,38 @@ namespace Reko.Arch.Sparc
             m.Assign(grf, m.Cond(m.FSub(f1, f2)));
         }
 
+        private void RewriteFcmpd()
+        {
+            var r1 = RewriteDoubleRegister(instrCur.Op1);
+            var r2 = RewriteDoubleRegister(instrCur.Op2);
+            var grf = binder.EnsureFlagGroup(arch.GetFlagGroup("ELGU"));
+            m.Assign(grf, m.Cond(m.FSub(r2, r1)));
+        }
+
+        private void RewriteFcmpq()
+        {
+            var r1 = RewriteQuadRegister(instrCur.Op1);
+            var r2 = RewriteQuadRegister(instrCur.Op2);
+            var grf = binder.EnsureFlagGroup(arch.GetFlagGroup("ELGU"));
+            m.Assign(grf, m.Cond(m.FSub(r2, r1)));
+        }
+
+        private void RewriteFcmps()
+        {
+            var r1 = RewriteRegister(instrCur.Op1);
+            var r2 = RewriteRegister(instrCur.Op2);
+            var grf = binder.EnsureFlagGroup(arch.GetFlagGroup("ELGU"));
+            m.Assign(grf, m.Cond(m.FSub(r2, r1)));
+        }
+
+        private void RewriteFdivd()
+        {
+            var fdst = RewriteDoubleRegister(instrCur.Op3);
+            var fsrc1 = RewriteDoubleRegister(instrCur.Op1);
+            var fsrc2 = RewriteDoubleRegister(instrCur.Op2);
+            m.Assign(fdst, m.FDiv(fsrc1, fsrc2));
+        }
+
         private void RewriteFdivs()
         {
             var dst = (RegisterOperand)instrCur.Op3;
@@ -86,6 +118,21 @@ namespace Reko.Arch.Sparc
             m.Assign(fpDst, m.Cast(dt, RewriteOp(instrCur.Op1)));
         }
 
+        private void RewriteFdtos()
+        {
+            var fpDst = RewriteOp(instrCur.Op2);
+            var dt = PrimitiveType.Real32;
+            m.Assign(fpDst, m.Cast(dt, RewriteOp(instrCur.Op1)));
+        }
+
+        private void RewriteFstod()
+        {
+            var fpDst = RewriteOp(instrCur.Op2);
+            var dt = PrimitiveType.Real64;
+            m.Assign(fpDst, m.Cast(dt, RewriteOp(instrCur.Op1)));
+        }
+
+
         private void RewriteFitoq()
         {
             throw new NotSupportedException("Sequences don't work well with multiple segments");
@@ -100,7 +147,7 @@ namespace Reko.Arch.Sparc
         private void RewriteFitos()
         {
             var dst = (RegisterOperand) instrCur.Op2;
-            var fpDst = binder.EnsureRegister(Registers.GetFpuRegister(dst.Register.Number));
+            var fpDst = binder.EnsureRegister(dst.Register);
             var dt = PrimitiveType.Real32;
             m.Assign(fpDst, m.Cast(dt, RewriteOp(instrCur.Op1)));
         }

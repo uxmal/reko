@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
@@ -46,7 +47,7 @@ namespace Reko.Arch.Mips
 
         internal override MipsInstruction Decode(uint wInstr, MipsDisassembler dasm)
         {
-            return dasm.DecodeOperands(opcode, wInstr, format);
+            return dasm.DecodeOperands(wInstr, opcode, InstrClass.Linear, format);
         }
     }
 
@@ -67,9 +68,9 @@ namespace Reko.Arch.Mips
         internal override MipsInstruction Decode(uint wInstr, MipsDisassembler dasm)
         {
             if (dasm.arch.PointerType.Size == 8)
-                return dasm.DecodeOperands(opcode, wInstr, format);
+                return dasm.DecodeOperands(wInstr, opcode, InstrClass.Linear, format);
             else
-                return dasm.DecodeOperands(Opcode.illegal, wInstr, "");
+                return dasm.DecodeOperands(wInstr, Opcode.illegal, InstrClass.Invalid, "");
         }
     }
 
@@ -91,12 +92,56 @@ namespace Reko.Arch.Mips
         }
     }
 
+    class MaskDecoder : OpRec
+    {
+        private int shift;
+        private uint mask;
+        private OpRec[] decoders;
+
+        public MaskDecoder(int shift, uint mask, params OpRec[] decoders)
+        {
+            this.shift = shift;
+            this.mask = mask;
+            this.decoders = decoders;
+        }
+
+        internal override MipsInstruction Decode(uint wInstr, MipsDisassembler dasm)
+        {
+            int iDecoder = (int)((wInstr >> shift) & mask);
+            return decoders[iDecoder].Decode(wInstr, dasm);
+        }
+    }
+
+    class SparseMaskDecoder : OpRec
+    {
+        private int shift;
+        private uint mask;
+        private Dictionary<uint, OpRec> decoders;
+
+        public SparseMaskDecoder(int shift, uint mask, Dictionary<uint, OpRec> decoders)
+        {
+            this.shift = shift;
+            this.mask = mask;
+            this.decoders = decoders;
+        }
+
+        internal override MipsInstruction Decode(uint wInstr, MipsDisassembler dasm)
+        {
+            uint iDecoder = (wInstr >> shift) & mask;
+            if (decoders.TryGetValue(iDecoder, out var decoder))
+                return decoder.Decode(wInstr, dasm);
+            else
+                return new MipsInstruction { opcode = Opcode.illegal };
+        }
+    }
     class SpecialOpRec : OpRec
     {
         private static OpRec[] specialOpRecs = new OpRec[] 
         {
             new SllOprec(Opcode.sll, "R3,R2,s"),
-            new AOpRec(Opcode.illegal, ""),         //$TODO: requires special OpRec
+            new MaskDecoder(16, 1, 
+                new AOpRec(Opcode.movf, "R2,R1,C18"),
+                new AOpRec(Opcode.movt, "R2,R1,C18")),
             new AOpRec(Opcode.srl, "R3,R2,s"),
             new AOpRec(Opcode.sra, "R3,R2,s"),
  
@@ -171,9 +216,9 @@ namespace Reko.Arch.Mips
         internal override MipsInstruction Decode(uint wInstr, MipsDisassembler dasm)
         {
             Debug.Assert(specialOpRecs.Length == 64, specialOpRecs.Length.ToString());
-            var opRec = specialOpRecs[wInstr & 0x3F];
+            var decoder = specialOpRecs[wInstr & 0x3F];
             // Debug.Print("  SpecialOpRec {0:X8} => oprec {1} {2}", wInstr, wInstr & 0x3F, opRec == null ? "(null!)" : "");
-            return opRec.Decode(wInstr, dasm);
+            return decoder.Decode(wInstr, dasm);
         }
     }
 
@@ -266,61 +311,61 @@ namespace Reko.Arch.Mips
         internal override MipsInstruction Decode(uint wInstr, MipsDisassembler dasm)
         {
             Debug.Assert(specialOpRecs.Length == 64, specialOpRecs.Length.ToString());
-            var opRec = specialOpRecs[wInstr & 0x3F];
+            var decoder = specialOpRecs[wInstr & 0x3F];
             // Debug.Print("  Special3OpRec {0:X8} => oprec {1} {2}", wInstr, wInstr & 0x3F, opRec == null ? "(null!)" : "");
-            return opRec.Decode(wInstr, dasm);
+            return decoder.Decode(wInstr, dasm);
         }
     }
 
     class CondOpRec : OpRec
     {
-        static Opcode[] opcodes = 
+        static OpRec[] decoders = 
         {
-            Opcode.bltz,
-            Opcode.bgez,
-            Opcode.bltzl,
-            Opcode.bgezl,
+            new AOpRec(Opcode.bltz,    "R1,j"),
+            new AOpRec(Opcode.bgez,    "R1,j"),
+            new AOpRec(Opcode.bltzl,   "R1,j"),
+            new AOpRec(Opcode.bgezl,   "R1,j"),
 
-            Opcode.illegal,
-            Opcode.illegal,
-            Opcode.illegal,
-            Opcode.illegal,
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
 
-            Opcode.illegal,
-            Opcode.illegal,
-            Opcode.illegal,
-            Opcode.illegal,
+            new AOpRec(Opcode.tgei,    "R1,I"),
+            new AOpRec(Opcode.tgeiu,   "R1,I"),
+            new AOpRec(Opcode.tlti,    "R1,I"),
+            new AOpRec(Opcode.tltiu,   "R1,I"),
 
-            Opcode.illegal,
-            Opcode.illegal,
-            Opcode.illegal,
-            Opcode.illegal,
+            new AOpRec(Opcode.teqi,     "R1,I"),
+            new AOpRec(Opcode.illegal,  ""),
+            new AOpRec(Opcode.tnei,     "R1,I"),
+            new AOpRec(Opcode.illegal,  ""),
+            
+            new AOpRec(Opcode.bltzal,  "R1,j"),
+            new AOpRec(Opcode.bgezal,  "R1,j"),
+            new AOpRec(Opcode.bltzall, "R1,j"),
+            new AOpRec(Opcode.bgezall, "R1,j"),
 
-            Opcode.bltzal,
-            Opcode.bgezal,
-            Opcode.bltzall,
-            Opcode.bgezall,
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
 
-            Opcode.illegal,
-            Opcode.illegal,
-            Opcode.illegal,
-            Opcode.illegal,
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
 
-            Opcode.illegal,
-            Opcode.illegal,
-            Opcode.illegal,
-            Opcode.illegal,
-
-            Opcode.illegal,
-            Opcode.illegal,
-            Opcode.illegal,
-            Opcode.illegal,
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
         };
 
         internal override MipsInstruction Decode(uint wInstr, MipsDisassembler dasm)
         {
-            var opcode = opcodes[(wInstr >> 16) & 0x1F];
-            return dasm.DecodeOperands(opcode, wInstr, "R1,j");
+            var decoder = decoders[(wInstr >> 16) & 0x1F];
+            return decoder.Decode(wInstr, dasm);
         }
     }
 
@@ -370,7 +415,7 @@ namespace Reko.Arch.Mips
         internal override MipsInstruction Decode(uint wInstr, MipsDisassembler dasm)
         {
             var opcode = ((wInstr & (1u << 16)) != 0) ? opTrue : opFalse;
-            return dasm.DecodeOperands(opcode, wInstr, "c18,j");
+            return dasm.DecodeOperands(wInstr, opcode, InstrClass.ConditionalTransfer|InstrClass.Delay, "c18,j");
         }
     }
 

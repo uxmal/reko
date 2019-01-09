@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,7 +46,7 @@ namespace Reko.Core.Expressions
         }
 
         public Operator Operator { get; private set; } 
-        public Expression Left { get; set; }
+        public Expression Left { get; private set; }
         public Expression Right { get; set; }
 
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)

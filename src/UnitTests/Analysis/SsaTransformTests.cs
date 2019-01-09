@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -100,7 +100,7 @@ namespace Reko.UnitTests.Analysis
             //   esp_2 = fp - 4
             //   mov [fp - 8],eax
 
-            var vp = new ValuePropagator(this.pb.Program.SegmentMap, ssa.SsaState, listener);
+            var vp = new ValuePropagator(this.pb.Program.SegmentMap, ssa.SsaState, importResolver, listener);
             vp.Transform();
 
             ssa.RenameFrameAccesses = true;
@@ -226,7 +226,7 @@ ProcedureBuilder_entry:
 	goto l1
 	// succ:  l1
 done:
-	r1_7 = PHI(r1_10, r1_11)
+	r1_7 = PHI((r1_10, l2), (r1_11, ge3))
 	bp_8 = dwLoc04_12
 	r63_9 = fp
 	return
@@ -296,8 +296,8 @@ ProcedureBuilder_entry:
 	goto l1
 	// succ:  l1
 done:
-	wArg04_16 = PHI(wArg04_17, wArg04_18)
-	r1_7 = PHI(r1, r1_13)
+	wArg04_16 = PHI((wArg04_17, l2), (wArg04_18, ge3))
+	r1_7 = PHI((r1, l2), (r1_13, ge3))
 	bp_8 = dwLoc04_14
 	r63_9 = fp
 	return
@@ -412,7 +412,7 @@ ProcedureBuilder_entry:
 	goto l1
 	// succ:  l1
 done:
-	dwLoc0C_17 = PHI(dwLoc0C_18, dwLoc0C_19)
+	dwLoc0C_17 = PHI((dwLoc0C_18, l2), (dwLoc0C_19, ge3))
 	r1_8 = dwLoc0C_17
 	bp_9 = dwLoc04_14
 	r63_10 = fp
@@ -486,7 +486,7 @@ l1:
 	SZ_1 = cond(esi)
 	C_2 = false
 	CZ_3 = false (alias)
-	al_4 = Test(ULE,false)
+	al_4 = Test(ULE,CZ_3)
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
@@ -621,7 +621,7 @@ m_1:
 	b_1 = 0xFFFFFFFF
 	// succ:  m_2
 m_2:
-	b_2 = PHI(b, b_1)
+	b_2 = PHI((b, l1), (b_1, m_1))
 	return b_2
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:

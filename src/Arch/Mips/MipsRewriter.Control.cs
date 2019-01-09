@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,6 +33,31 @@ namespace Reko.Arch.Mips
 {
     public partial class MipsRewriter
     {
+        private void RewriteBgezal(MipsInstruction instr)
+        {
+            // The bgezal r0,XXXX instruction is aliased to bal (branch and link, or fn call)
+            // We handle that case here explicitly.
+            if (((RegisterOperand)instr.op1).Register.Number == 0)
+            {
+                // A special case is when we call to the location after
+                // the delay slot. This is an idiom to capture the 
+                // program counter in the la register.
+                var dst = ((AddressOperand)instr.op2).Address;
+                if (instr.Address.ToLinear() + 8 == dst.ToLinear())
+                {
+                    var ra = binder.EnsureRegister(arch.LinkRegister);
+                    m.Assign(ra, dst);
+                }
+                else
+                {
+                    rtlc = InstrClass.Transfer;
+                    m.CallD(dst, 0);
+                }
+                return;
+            }
+            RewriteBranch0(instr, m.Ge, false);
+        }
+
         private void RewriteBranch(MipsInstruction instr, Func<Expression, Expression, Expression> condOp, bool link)
         {
             if (!link)
@@ -45,19 +70,19 @@ namespace Reko.Arch.Mips
                     ((RegisterOperand)instr.op1).Register ==
                     ((RegisterOperand)instr.op2).Register)
                 {
-                    rtlc = RtlClass.Transfer | RtlClass.Delay;
+                    rtlc = InstrClass.Transfer | InstrClass.Delay;
                     m.GotoD(addr);
                 }
                 else
                 {
-                    rtlc = RtlClass.ConditionalTransfer | RtlClass.Delay;
-                    m.Branch(cond, addr, RtlClass.ConditionalTransfer | RtlClass.Delay);
+                    rtlc = InstrClass.ConditionalTransfer | InstrClass.Delay;
+                    m.Branch(cond, addr, InstrClass.ConditionalTransfer | InstrClass.Delay);
                 }
             }
             else
             {
                 throw new NotImplementedException("Linked branches not implemented yet.");
-        }
+            }
         }
 
         private void RewriteBranch0(MipsInstruction instr, Func<Expression, Expression, Expression> condOp, bool link)
@@ -79,8 +104,8 @@ namespace Reko.Arch.Mips
                 }
             }
             var cond = condOp(reg, Constant.Zero(reg.DataType));
-            rtlc = RtlClass.ConditionalTransfer;
-            m.Branch(cond, addr, RtlClass.ConditionalTransfer | RtlClass.Delay);
+            rtlc = InstrClass.ConditionalTransfer;
+            m.Branch(cond, addr, InstrClass.ConditionalTransfer | InstrClass.Delay);
         }
 
         private void RewriteBranchLikely(MipsInstruction instr, Func<Expression, Expression, Expression> condOp)
@@ -93,13 +118,13 @@ namespace Reko.Arch.Mips
                 ((RegisterOperand)instr.op1).Register ==
                 ((RegisterOperand)instr.op2).Register)
             {
-                rtlc = RtlClass.Transfer | RtlClass.Delay;
+                rtlc = InstrClass.Transfer | InstrClass.Delay;
                 m.GotoD(addr);
             }
             else
             {
-                rtlc = RtlClass.ConditionalTransfer | RtlClass.Delay;
-                m.Branch(cond, addr, RtlClass.ConditionalTransfer | RtlClass.Delay);
+                rtlc = InstrClass.ConditionalTransfer | InstrClass.Delay;
+                m.Branch(cond, addr, InstrClass.ConditionalTransfer | InstrClass.Delay);
             }
         }
 
@@ -109,8 +134,16 @@ namespace Reko.Arch.Mips
             if (!opTrue)
                 cond = m.Not(cond);
             var addr = (Address)RewriteOperand0(instr.op2);
-            rtlc = RtlClass.ConditionalTransfer | RtlClass.Delay;
+            rtlc = InstrClass.ConditionalTransfer | InstrClass.Delay;
             m.Branch(cond, addr, rtlc);
+        }
+
+        private void RewriteEret(MipsInstruction instr)
+        {
+            // Return from exception doesn't seem to modify any 
+            // GPRs (as well it shouldn't).
+            // MIPS manual says it does _not_ have a delay slot.
+            m.Return(0, 0);
         }
 
         private void RewriteJal(MipsInstruction instr)
@@ -118,7 +151,7 @@ namespace Reko.Arch.Mips
             //$TODO: if we want explicit representation of the continuation of call
             // use the line below
             //emitter.Assign( frame.EnsureRegister(Registers.ra), instr.Address + 8);
-            rtlc = RtlClass.Transfer;
+            rtlc = InstrClass.Transfer;
             m.CallD(RewriteOperand0(instr.op1), 0);
         }
 
@@ -127,7 +160,7 @@ namespace Reko.Arch.Mips
             //$TODO: if we want explicit representation of the continuation of call
             // use the line below
             //emitter.Assign( frame.EnsureRegister(Registers.ra), instr.Address + 8);
-            rtlc = RtlClass.Transfer;
+            rtlc = InstrClass.Transfer;
             var dst = RewriteOperand0(instr.op2);
             var lr = ((RegisterOperand)instr.op1).Register;
             if (lr == arch.LinkRegister)
@@ -144,7 +177,7 @@ namespace Reko.Arch.Mips
 
         private void RewriteJr(MipsInstruction instr)
         {
-            rtlc = RtlClass.Transfer;
+            rtlc = InstrClass.Transfer;
             var dst = RewriteOperand(instr.op1);
 
             var reg = (RegisterStorage)((Identifier)dst).Storage;
@@ -161,7 +194,7 @@ namespace Reko.Arch.Mips
         private void RewriteJump(MipsInstruction instr)
         {
             var dst = RewriteOperand0(instr.op1);
-            rtlc = RtlClass.Transfer;
+            rtlc = InstrClass.Transfer;
             m.GotoD(dst);
         }
     }

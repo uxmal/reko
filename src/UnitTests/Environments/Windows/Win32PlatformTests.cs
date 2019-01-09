@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -180,9 +180,9 @@ namespace Reko.UnitTests.Environments.Windows
         {
             var types = new Dictionary<string, DataType>()
             {
-                { "TESTTYPE1", PrimitiveType.Create( PrimitiveType.Byte.Domain, 1 ) },
-                { "TESTTYPE2", PrimitiveType.Create( PrimitiveType.Int16.Domain, 2 ) },
-                { "TESTTYPE3", PrimitiveType.Create( PrimitiveType.Int32.Domain, 4 ) },
+                { "TESTTYPE1", PrimitiveType.Create( PrimitiveType.Byte.Domain, 8 ) },
+                { "TESTTYPE2", PrimitiveType.Create( PrimitiveType.Int16.Domain, 16 ) },
+                { "TESTTYPE3", PrimitiveType.Create( PrimitiveType.Int32.Domain, 32 ) },
             };
             Given_TypeLibraryLoaderService();
             Expect_TypeLibraryLoaderService_LoadLibrary("windows.xml", types);

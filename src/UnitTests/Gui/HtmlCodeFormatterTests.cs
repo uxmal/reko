@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -54,9 +54,10 @@ namespace Reko.UnitTests.Gui
         [Test]
         public void WriteProcedureConstant()
         {
-            var proc = new Procedure(arch, "proc", new Frame(PrimitiveType.Word32));
+            var addr = Address.Ptr32(0x42);
+            var proc = new Procedure(arch, "proc", addr, new Frame(PrimitiveType.Word32));
             var pc = new ProcedureConstant(PrimitiveType.Word32, proc);
-            map.Add(Address.Ptr32(0x42), proc);
+            map.Add(addr, proc);
 
             pc.Accept(hcf);
 

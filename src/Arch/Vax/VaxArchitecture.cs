@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +29,7 @@ using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System.Globalization;
+using Reko.Core.Lib;
 
 namespace Reko.Arch.Vax
 {
@@ -57,6 +58,8 @@ namespace Reko.Arch.Vax
             Registers.pc,
         };
 
+        private Dictionary<uint, FlagGroupStorage> flagGroups;
+
         public VaxArchitecture(string name) : base(name)
         {
             var x = Registers.r0;
@@ -64,6 +67,7 @@ namespace Reko.Arch.Vax
             this.FramePointerType = PrimitiveType.Ptr32;
             this.WordWidth = PrimitiveType.Word32;
             this.PointerType = PrimitiveType.Ptr32;
+            this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
@@ -116,11 +120,6 @@ namespace Reko.Arch.Vax
             return new VaxRewriter(this, rdr, state, binder, host);
         }
 
-        public override Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
-        {
-            throw new NotImplementedException();
-        }
-
         public override FlagGroupStorage GetFlagGroup(string name)
         {
             throw new NotImplementedException();
@@ -128,7 +127,15 @@ namespace Reko.Arch.Vax
 
         public override FlagGroupStorage GetFlagGroup(uint grf)
         {
-            throw new NotImplementedException();
+            if (flagGroups.TryGetValue(grf, out var f))
+            {
+                return f;
+            }
+
+            PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+            var fl = new FlagGroupStorage(Registers.psw, grf, GrfToString(grf), dt);
+            flagGroups.Add(grf, fl);
+            return fl;
         }
 
         public override SortedList<string, int> GetOpcodeNames()

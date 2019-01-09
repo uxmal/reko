@@ -53,8 +53,8 @@
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TravisRelease|AnyCPU'">
-    <OutputPath>bin\TravisRelease\</OutputPath>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnixRelease|AnyCPU'">
+    <OutputPath>bin\UnixRelease\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -79,6 +79,7 @@
     <Compile Include="NeImageLoader.cs" />
     <Compile Include="PeImageLoader.cs" />
     <Compile Include="Pe\AlphaRelocator.cs" />
+    <Compile Include="Pe\Arm64Relocator.cs" />
     <Compile Include="Pe\M68kRelocator.cs" />
     <Compile Include="Pe\PowerPcRelocator.cs" />
     <Compile Include="Pe\ResourceLoader.cs" />

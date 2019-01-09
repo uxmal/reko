@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ using System.Xml;
 namespace Reko.Gui.Forms
 {
     /// <summary>
-    /// Provices a component Container implementation, and specifically handles interactions 
+    /// Provides a component Container implementation, and specifically handles interactions 
     /// with the MainForm. This decouples platform-specific code from the user interaction 
     /// code. This will make it easier to port to other GUI platforms.
     /// </summary>
@@ -198,6 +198,9 @@ namespace Reko.Gui.Forms
 
             var symLdrSvc = svcFactory.CreateSymbolLoadingService();
             sc.AddService<ISymbolLoadingService>(symLdrSvc);
+
+            var selSvc = svcFactory.CreateSelectionService();
+            sc.AddService<ISelectionService>(selSvc);
         }
 
         public virtual TextWriter CreateTextWriter(string filename)
@@ -319,6 +322,7 @@ namespace Reko.Gui.Forms
             {
                 dlg = dlgFactory.CreateOpenAsDialog();
                 dlg.Services = sc;
+                dlg.ArchitectureOptions = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
                 if (uiSvc.ShowModalDialog(dlg) != DialogResult.OK)
                     return true;
 
@@ -328,32 +332,31 @@ namespace Reko.Gui.Forms
                 string sAddr = null;
                 string loader = null;
                 EntryPointElement entry = null;
-
                 if (rawFileOption != null && rawFileOption.Value != null)
                 {
-                    RawFileElement raw = null;
-                    raw = (RawFileElement)rawFileOption.Value;
+                    var raw = (RawFileElement)rawFileOption.Value;
                     loader = raw.Loader;
                     archName = raw.Architecture;
                     envName = raw.Environment;
                     sAddr = raw.BaseAddress;
                     entry = raw.EntryPoint;
                 }
-                archName = archName ?? (string) ((ListOption)dlg.Architectures.SelectedValue).Value;
-                var envOption = (OperatingEnvironment)((ListOption)dlg.Platforms.SelectedValue).Value;
-                envName =  envName ?? (envOption?.Name);
+                Architecture archOption = dlg.GetSelectedArchitecture();
+                OperatingEnvironment envOption = dlg.GetSelectedEnvironment();
+                archName = archName ?? archOption?.Name;
+                envName = envName ?? envOption?.Name;
                 sAddr = sAddr ?? dlg.AddressTextBox.Text.Trim();
-
                 arch = config.GetArchitecture(archName);
                 if (arch == null)
                     throw new InvalidOperationException(string.Format("Unable to load {0} architecture.", archName));
+                arch.LoadUserOptions(dlg.ArchitectureOptions);
                 if (!arch.TryParseAddress(sAddr, out var addrBase))
                     throw new ApplicationException(string.Format("'{0}' doesn't appear to be a valid address.", sAddr));
-
                 var details = new LoadDetails
                 {
                     LoaderName = loader,
                     ArchitectureName = archName,
+                    ArchitectureOptions = dlg.ArchitectureOptions,
                     PlatformName = envName,
                     LoadAddress = sAddr,
                     EntryPoint = entry,

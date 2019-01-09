@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -210,9 +210,19 @@ namespace Reko.UnitTests.Core
                 throw new NotImplementedException();
             }
 
+            public List<RtlInstruction> InlineCall(Address addr, Address addrContinuation, EndianImageReader rdr, IStorageBinder binder)
+            {
+                throw new NotImplementedException();
+            }
+
             public Address MakeAddressFromConstant(Constant c)
             {
                 return Address.Ptr32(c.ToUInt32());
+            }
+
+            public void PostprocessProgram(Program program)
+            {
+                throw new NotImplementedException();
             }
 
             public Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)

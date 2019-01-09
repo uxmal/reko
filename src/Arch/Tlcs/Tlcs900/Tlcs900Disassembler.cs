@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -66,11 +66,12 @@ namespace Reko.Arch.Tlcs.Tlcs900
             return instr;
         }
 
-        private Tlcs900Instruction Decode(byte b, Opcode opcode, string fmt)
+        private Tlcs900Instruction Decode(byte b, Opcode opcode, InstrClass iclass, string fmt)
         {
             var instr = new Tlcs900Instruction
             {
                 Opcode = opcode,
+                iclass = iclass,
                 Address = this.addr,
             };
             var ops = new List<MachineOperand>();
@@ -132,7 +133,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
                     break;
                 }
                 if (op == null)
-                    return Decode(b, Opcode.invalid, "");
+                    return Decode(b, Opcode.invalid, InstrClass.Invalid, "");
                 ops.Add(op);
             }
             if (ops.Count > 0)
@@ -401,18 +402,24 @@ namespace Reko.Arch.Tlcs.Tlcs900
 
         public class OpRec : OpRecBase
         {
-            private Opcode opcode;
-            private string fmt;
+            private readonly Opcode opcode;
+            private readonly InstrClass iclass;
+            private readonly string fmt;
 
-            public OpRec(Opcode opcode, string fmt)
+            public OpRec(Opcode opcode, string fmt) : this(opcode, InstrClass.Linear, fmt)
+            {
+            }
+
+            public OpRec(Opcode opcode, InstrClass iclass, string fmt)
             {
                 this.opcode = opcode;
+                this.iclass = iclass;
                 this.fmt = fmt;
             }
 
             public override Tlcs900Instruction Decode(byte b, Tlcs900Disassembler dasm)
             {
-                return dasm.Decode(b, opcode, fmt);
+                return dasm.Decode(b, opcode, iclass, fmt);
             }
         }
 
@@ -429,7 +436,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             {
                 dasm.opSrc = dasm.DecodeOperand(b, this.fmt);
                 if (dasm.opSrc == null || !dasm.rdr.TryReadByte(out b))
-                    return dasm.Decode(b, Opcode.invalid, "");
+                    return dasm.Decode(b, Opcode.invalid, InstrClass.Invalid, "");
                 return regOpRecs[b].Decode(b, dasm);
             }
         }
@@ -470,7 +477,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             {
                 dasm.opSrc = dasm.DecodeOperand(b, this.fmt);
                 if (dasm.opSrc == null || !dasm.rdr.TryReadByte(out b))
-                    return dasm.Decode(b, Opcode.invalid, "");
+                    return dasm.Decode(b, Opcode.invalid, InstrClass.Invalid, "");
                 return memOpRecs[b].Decode(b, dasm);
             }
         }
@@ -488,7 +495,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             {
                 dasm.opSrc = dasm.DecodeOperand(b, this.fmt);
                 if (dasm.opSrc == null || !dasm.rdr.TryReadByte(out b))
-                    return dasm.Decode(b, Opcode.invalid, "");
+                    return dasm.Decode(b, Opcode.invalid, InstrClass.Invalid, "");
                 var instr = dstOpRecs[b].Decode(b, dasm);
                 if (instr.op1 != null && instr.op2 != null)
                 {
@@ -541,7 +548,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 {
                     dasm.opDst = dasm.DecodeOperand(b, this.fmt);
                     if (dasm.opDst == null)
-                        return dasm.Decode(b, Opcode.invalid, "");
+                        return dasm.Decode(b, Opcode.invalid, InstrClass.Invalid, "");
                     return new Tlcs900Instruction
                     {
                         Opcode = this.opcode,
@@ -569,7 +576,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             {
                 dasm.opDst = dasm.DecodeOperand(b, this.fmt);
                 if (dasm.opDst == null)
-                    return dasm.Decode(b, Opcode.invalid, "");
+                    return dasm.Decode(b, Opcode.invalid, InstrClass.Invalid, "");
                 return new Tlcs900Instruction
                 {
                     Opcode = this.opcode,
@@ -585,9 +592,9 @@ namespace Reko.Arch.Tlcs.Tlcs900
             public override Tlcs900Instruction Decode(byte b, Tlcs900Disassembler dasm)
             {
                 if (dasm.opSize == 'w')
-                    return dasm.Decode(b, Opcode.ldirw, "");
+                    return dasm.Decode(b, Opcode.ldirw, InstrClass.Linear, "");
                 else 
-                    return dasm.Decode(b, Opcode.ldir, "");
+                    return dasm.Decode(b, Opcode.ldir, InstrClass.Linear, "");
             }
         }
 
@@ -603,7 +610,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
 
         private static OpRecBase[] opRecs = {
             // 00
-            new OpRec(Opcode.nop, ""),    
+            new OpRec(Opcode.nop, InstrClass.Padding|InstrClass.Zero, ""),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.push, "Sw"),
             new OpRec(Opcode.pop, "Sw"),

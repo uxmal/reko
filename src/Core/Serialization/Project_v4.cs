@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ using System.Xml.Serialization;
 namespace Reko.Core.Serialization
 {
     /// <summary>
-    /// Seralization format for decompiler projects.
+    /// Serialization format for decompiler projects.
     /// </summary>
     /// <remarks>
     /// Note that you may safely *add* attributes and elements to the serialization
@@ -151,6 +151,14 @@ namespace Reko.Core.Serialization
         [XmlArray("registerValues")]
         [XmlArrayItem("assume")]
         public RegisterValue_v2[] RegisterValues;
+
+        [XmlElement("dasmAddress")]
+        [DefaultValue(false)]
+        public bool ShowAddressesInDisassembly;
+
+        [XmlElement("dasmBytes")]
+        [DefaultValue(false)]
+        public bool ShowBytesInDisassembly;
     }
 
     public class PlatformOptions_v4

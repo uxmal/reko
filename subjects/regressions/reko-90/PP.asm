@@ -27355,1166 +27355,162 @@ l1483_110D:
 1483:1150 85 C4 4D 43 36 38 BA C5 32 2E 48 E7 7B FF FF 41 ..MC68..2.H.{..A
 1483:1160 FA 02 30 4F EF FE 80 24 4F 20 18 47 E8 00 0A 4B ..0O...$O .G...K
 1483:1170 FA FF EA 4D F5 AA 18 0D 49 F3 05 70 00 03 10 2B ...M....I..p...+
-1483:1180 FF FE 41 F6 87 0F 08 08 56 05 E1                ..A.....V..    
+1483:1180 FF FE 41 F6 87 0F 08 08 56 05 E1 67 02 52 48 22 ..A.....V..g.RH"
+1483:1190 48 B1 CC 63 2C 20 0C 41 0F 04 52 4C BD 11 04 1B H..c, .A..RL....
+1483:11A0 72 49 EC FF E0 4C D4 00 FF 48 E0 FF 00 B9 CB 62 rI...L...H.....b
+1483:11B0 F0 97 CC D7 C8 C0 63 00 12 2F 09 30 06 3C 00 38 ......c../.0.<.8
+1483:11C0 22 D8 01 17 51 C8 FF 1C FA 4E 75 7E 00 1C 2B 00 "...Q....Nu~..+.
+1483:11D0 01 E1 5E 1C 13 72 02 61 3C A6 38 20 4A 05 D0 0E ..^..r.a<.8 J...
+1483:11E0 41 EA 00 80 61 07 31 EA 01 00 C7 07 C0 00 03 88 A...a.1.........
+1483:11F0 53 40 38 00 60 43 1C 19 03 8D 61 42 44 80 43 28 S@8.`C....aBD.C(
+1483:1200 9D FF 1F 36 37 1A D9 01 1C 4D FC 3B 60 2A 25 6B ...67....M.;`*%k
+1483:1210 1A 1A DB 82 0D 10 17 57 3D 58 10 13 EF A8 72 01 .......W=X....r.
+1483:1220 EF 69 53 41 CC 81 8C 80 51 CC FF C0 BB CE 65 9A .iSA....Q.....e.
+1483:1230 60 4F 71 F4 30 18 C0 46 90 58 66 F8 12 28 00 3C `Oq.0..F.Xf..(.<
+1483:1240 9E 01 6C C1 7D 34 E2 AE 10 8C 0B 3D B0 9F 02 1D ..l.}4.....=....
+1483:1250 6D 16 53 51 33 14 00 30 9A 0F 3E 25 8C 1D 16 1D m.SQ3..0..>%....
+1483:1260 05 60 C0 AF 70 FF 72 10 99 11 04 B0 11 0F DE 01 .`..p.r.........
+1483:1270 EE 01 AE 48 46 58 4B 1C 23 C6 C3 23 09 0D 92 07 ...HFXK.#..#....
+1483:1280 7E 10 1D 80 17 72 03 E1 88 10 18 20 51 C9 E3 70 ~....r..... Q..p
+1483:1290 07 1F 72 05 61 CA 05 99 7C 34 00 CF 36 00 4F EF ..r.a...|4..6.O.
+1483:12A0 FF F0 22 4F 70 0F 72 04 61 B6 12 C0 51 CA FF F6 .."Op.r.a...Q...
+1483:12B0 70 01 E2 98 17 A3 74 00 6C 48 E7 07 00 38 03 43 p.....t.lH...8.C
+1483:12C0 EF 00 0C B2 19 66 3A 7A 01 E3 6D 53 45 30 C5 2A .....f:z..mSE0.*
+1483:12D0 02 48 45 3E 01 53 47 E3 55 E2 56 51 CF 4F 7A 00 .HE>.SG.U.VQ.Oz.
+1483:12E0 10 9A 01 EA 6E 30 C6 11 60 41 B7 1A 03 9A 04 33 ....n0..`A.....3
+1483:12F0 11 45 B3 7C 00 1F 05 EB 6E 53 46 31 46 CA AF D4 .E.|....nSF1F...
+1483:1300 03 E5 E2 88 52 01 B2 00 C9 11 66 AE 4C DF 00 E0 ....R.....f.L...
+1483:1310 C6 73 00 10 87 03 20 3A 00 4C 9B C0 1D 0B 01 80 .s.... :.L......
+1483:1320 81 89 3A 70 0A 3F 20 1B 27 98 0B 08 08 90 30 8E ..:p.? .'.....0.
+1483:1330 DB 07 26 4E D7 81 1D 2E 81 8C 33 FF FF 2F 42 40 ..&N......3../B@
+1483:1340 1E 1F 2F 4D 00 00 52 4C EF 7F FF 00 16 E3 45 52 ../M..RL......ER
+1483:1350 47 15 65 05 13 3E F5 C9 3E 38 3F 7C 3C 61 3E 3F G.e..>..>8?|<a>?
+1483:1360 3A 11 1C 3F B2 03 6A AA E6 84 45 D6 E1 45 CE 38 :..?..j...E..E.8
+1483:1370 45 71 C6 03 8E F0 05 45 48 F8 03 45 7C 3C 03 3B Eq.....EH..E|<.;
+1483:1380 45 30 03 AB 20 1A DB BB 2D 70 D7 11 F8 E2 7C 5D E0.. ...-p....|]
+1483:1390 0F 3A 4B BA 1F 4B 94 F7 1F 4B 40 12 4B A0 92 02 .:K..K...K@.K...
+1483:13A0 90 9C 3A 4C 8E 1F 4C 00 0E 00 4C 22 4B 61 00 01 ..:L..L...L"Ka..
+1483:13B0 06 DE 72 FF B4 6B 50 67 66 31 3A C3 47 5C 42 E0 ..r..kPgf1:.G\B.
+1483:13C0 86 5C 01 2A F8 EB 5C 17 4A 76 00 08 22 03 74 07 .\.*..\.Jv..".t.
+1483:13D0 E2 49 64 04 0A 41 A0 01 01 7B 30 C1 52 03 66 EA .Id..A...{0.R.f.
+1483:13E0 85 7B 12 19 B3 C3 02 32 02 02 42 00 FF D4 42 34 .{.....2..B...B4
+1483:13F0 32 20 30 32 49 0F 53 80 66 54 E8 0B 92 58 9B C0 2 02I.S.fT...X..
+1483:1400 86 22 4D 61 C0 72 FE B4 7A 00 54 66 1E 4D 3E 02 ."Ma.r..z.Tf.M>.
+1483:1410 00 14 37 9E 1D C4 20 9E E1 9D 84 38 9D 7C 82 17 ..7... ....8.|..
+1483:1420 3E 9D D2 01 1F 9D 2E 47 0F 9D 40 7A FF 3A C7 F7 >......G..@z.:..
+1483:1430 91 C1 79 91 53 54 6A 47 B9 BC 60 1A 1F 0F 7C 0C ..y.STjG..`...|.
+1483:1440 CE A7 42 9C 3F AA 9E 61 EF 95 46 F7 A7 D5 FE 72 ..B.?..a..F....r
+1483:1450 89 BA 97 C0 89 24 6F 00 44 22 0D 60 30 0F A4 66 .....$o.D".`0..f
+1483:1460 2E 20 01 4D 43 FA 00 8C D1 D9 C0 01 E9 00 04 2C . .MC..........,
+1483:1470 07 48 20 18 67 1A 6E 5B C6 F3 D3 91 C1 0E 67 0E .H .g.n[......g.
+1483:1480 D3 C0 C1 11 01 66 F2 43 87 1D FD 60 EE 61 C3 60 .....f.C...`.a.`
+1483:1490 25 58 B8 A1 03 14 E1 03 1C 25 87 85 08 D2 AA 33 %X.......%.....3
+1483:14A0 0F 07 10 8E 07 14 38 07 18 23 3C F8 03 B6 44 4F ......8..#<...DO
+1483:14B0 7F B6 04 C6 E3 3F 00 3F 51 1F 4C 4E 41 12 1F B8 .....?.?Q.LNA...
+1483:14C0 06 11 9F 13 C6 B1 41 C8 F0 1B C7 AA F8 61 C7 7D ......A......a.}
+1483:14D0 47 F7 9F 5D F7 1F D3 39 12 D3 A0 2B 03 1A A8 D4 G..]...9...+....
+1483:14E0 7C 8C 15 3E D4 FC 21 C7 E5 94 C3 47 E4 50 EC F7 |..>..!....G.P..
+1483:14F0 E5 FA B4 1F 53 C6 03 40 53 C2 66 78 8A 3E 35 6E ....S..@S.fx.>5n
+1483:1500 6D 26 47 AD CC 2C 26 E5 25 0E F2 1B 25 F0 FB 21 m&G..,&.%...%..!
+1483:1510 5F 6D 88 47 2F 25 4E F7 B7 6D E7 F7 19 E4 6A 19 _m.G/%N..m....j.
+1483:1520 41 4D FF 01 18 6B A4 0F 03 E9 E0 14 A6 48 7A 3A AM...k.......Hz:
+1483:1530 02 92 52 09 FE 9C 05 0D FF 03 EC 2A 57 4A 95 67 ..R........*WJ.g
+1483:1540 03 21 62 2A 55 DB CD 01 01 2E 8D 58 4D 41 ED 8C .!b*U......XMA..
+1483:1550 9B 0C 98 52 43 C9 BD E2 4F 27 C8 07 23 CA 20 2B ...RC...O'..#. +
+1483:1560 03 FF FA 72 FF B0 42 A4 25 3A 48 66 40 97 2F 0F ...r..B.%:Hf@./.
+1483:1570 7C F2 03 FC 2D 0D FC 1D 0C 87 1B 28 4D D9 D4 CA |...-......(M...
+1483:1580 07 0B C2 A5 0B E0 39 0B 4E D8 5C 0B D0 03 7C A4 ......9.N.\...|.
+1483:1590 05 BE 0B 5E 03 5F 0B 52 03 29 0B 46 76 2B 72 0B ...^._.R.).Fv+r.
+1483:15A0 02 DF 9D 05 23 11 A9 53 81 FA 04 2B 20 56 1F E3 ....#..S...+ V..
+1483:15B0 CE 5B F8 CC E5 5F CD 01 70 6C DD 22 60 1F 00 FE .[..._..pl."`...
+1483:15C0 EC 56 35 27 28 1B D6 91 1B 36 00 38 F2 04 1B C2 .V5'(....6.8....
+1483:15D0 E9 1B 11 CB FF F6 36 13 93 1F 36 04 E4 25 1B 04 ......6...6..%..
+1483:15E0 9A 7C 03 0B BE 1B CB 44 4E 1B 0C 94 80 4D EC 66 .|.....DN....M.f
+1483:15F0 2C 42 06 9C 22 14 67 F2 05 30 20 14 03 41 FA FD ,B..".g..0 ..A..
+1483:1600 06 A2 20 50 D1 C8 01 8F 84 A1 24 08 58 82 00 15 .. P......$.X...
+1483:1610 D5 B5 08 00 53 81 08 66 F4 60 D6 92 51 FD 80 E1 ....S..f.`..Q...
+1483:1620 E5 88 58 80 2F 40 02 40 22 2F 02 04 D0 D7 04 88 ..X./@.@"/......
+1483:1630 D7 25 7F FF 04 BB 03 F2 44 AF ED C4 4E 54 1D AF .%......D...NT..
+1483:1640 92 09 AF 44 C3 AF 80 E1 05 AF 14 F1 1E AF F1 43 ...D...........C
+1483:1650 99 17 8F 4E B8 84 CB D8 E1 9F D0 38 9F 71 C8 03 ...N.......8.q..
+1483:1660 9C F0 05 9F 56 F8 03 9F 7C 4A 03 3B 9F 3E 3E F5 ....V...|J.;.>>.
+1483:1670 26 07 8F CB 12 87 A5 B4 42 A5 8E 23 A5 86 5F EC &.......B..#.._.
+1483:1680 60 A2 7F 04 00 E3 DE 97 E1 0F 61 F0 F0 19 61 CE `.........a...a.
+1483:1690 94 01 61 01 C0 22 2F 01 84 D6 BE 7A 84 02 27 61 ..a.."/....z..'a
+1483:16A0 13 5F BA 10 B0 70 60 A9 E8 60 7D 9E 0D DF 10 6E ._...p`..`}....n
+1483:16B0 23 77 10 D6 DD 03 10 46 F7 47 10 45 CE B3 2A 84 #w.....F.G.E..*.
+1483:16C0 76 E6 E1 76 DE 38 76 45 D6 BF 5E 05 0F 76 64 03 v..v.8vE..^..vd.
+1483:16D0 87 76 58 C3 03 76 4C E3 2E 76 EE 0D 1C E0 FB F7 .vX..vL..v......
+1483:16E0 FD 1C 2C DF 1C 96 19 0F BA 74 1A BC 1C A1 BA 48 ..,......t.....H
+1483:16F0 38 BA 74 8F 3E BA 38 0D EF 1B 08 69 BA 1B B4 A1 8.t.>.8....i....
+1483:1700 9E D2 38 9E 4E CA 1C 9E C2 03 7C 96 05 3E 9E 50 ..8.N.....|..>.P
+1483:1710 03 1F 9E 44 03 0F 9E 38 28 FC B5 EE 0F 10 FB F5 ...D...8(.......
+1483:1720 BE 0F FC 19 1F 54 DA 14 70 0F 43 4F 4D 5F 54 32 .....T..p.COM_T2
+1483:1730 00 53 01 46 BE 4A 02 FC E8 CC 75 05 0A 8B 00 C8 .S.F.J....u.....
+1483:1740 E8 34 00 8B D0 03 C6 32 05 06 06 F8 E1 83 C6 04 .4.....2........
+1483:1750 AD 32 E4 8B EE 8B F7 03 C1 8B 0D 3B FE 9E 76 0D .2.........;..v.
+1483:1760 FD 57 4E 4F 8B CA F3 A4 47 8B EF 5E FC 8B FE 56 .WNO....G..^...V
+1483:1770 BE 4C 01 B9 FA 00 0F 18 C3 E8 02 2F D8 AD B8 61 .L........./...a
+1483:1780 86 E0 C3 8B F5 F9 AC 12 C0 02 C0 BF 4C E9 8B 00 ............L...
+1483:1790 C2 0A EB 31 08 04 32 20 04 33 04 3B 80 04 06 B1 ...1..2 .3.;....
+1483:17A0 04 D7 22 1E 74 F5 12 FF E2 F8 B1 03 02 CF 02 C9 ..".t...........
+1483:17B0 F3 A5 EB 5E 1C 18 72 6E 16 1C CA 12 C9 05 1C C9 ...^..rn........
+1483:17C0 73 0D 05 18 C8 FE C9 0D 80 F9 1C 09 74 CE 0C 18 s...........t...
+1483:17D0 C0 73 21 05 75 03 E6 27 38 98 08 72 57 03 0A FF .s!.u..'8..rW...
+1483:17E0 75 0B FE C7 C2 01 17 8A 1C 46 00 B0 4E 2B F3 FA u........F..N+..
+1483:17F0 F3 1B 26 A4 FB 8E 40 6B 26 0C A4 C7 21 72 05 00 ..&...@k&...!r..
+1483:1800 04 73 F6 74 EF B1 02 70 2A 3F 74 8F 38 73 92 05 .s.t...p*?t.8s..
+1483:1810 2D 0E 73 CC FE C1 0B 07 2A 73 9D 87 8A 0C 46 0A -.s.....*s....F.
+1483:1820 C9 74 26 80 C1 08 EB 91 85 01 50 80 CF 04 82 6B .t&.......P....k
+1483:1830 A3 EB 98 08 BC CE 2C 04 D1 14 30 A7 BE E9 33 C0 ......,...0...3.
+1483:1840 FF 2B E6 90 4B 51 A1 61 01 A8 BE AC D9 52 3E 3C .+..KQ.a.....R><
+1483:1850 52 36 FC 02 52 E8 0F 2A 00 53 50 18 C0 54 4E 01 R6..R..*.SP..TN.
+1483:1860 B9 5A 01 FD 06 54 83 1F 5A E8 FE 00 F3 02 5A 8A .Z...T..Z.....Z.
+1483:1870 F3 0C 5A 3A F3 10 5A 5D F2 08 5A 0C 32 5A 49 59 ..Z:..Z]..Z.2ZIY
+1483:1880 59 CF C7 0B C1 E6 3F 59 B9 B1 FC 03 5A 2C 1F 73 Y.....?Y....Z,.s
+1483:1890 CB 41 05 9F 59 83 17 9F 59 CF 09 83 59 8B CF 2B .A..Y...Y...Y..+
+1483:18A0 CE 11 F9 04 00 8B 61 56 81 A6 EC 00 02 8B FC 51 ......aV.......Q
+1483:18B0 33 DB 8B C3 B9 08 00 D1 E8 73 03 35 01 A0 E2 F7 3........s.5....
+1483:18C0 AB FE C3 75 ED 59 18 00 AC 32 D8 8A C7 32 FF D1 ...u.Y...2...2..
+1483:18D0 18 E3 8B 19 09 E2 F1 30 81 C4 2D 5E 3B DA B8 E0 .......0..-^;...
+1483:18E0 74 1A E8 00 00 5A 83 C2 0D B4 09 CD 21 B8 FF 4C t....Z......!..L
+1483:18F0 04 42 61 64 20 01 43 52 43 0D 0A 24 C3 2D B4 2B .Bad .CRC..$.-.+
+1483:1900 03 77 01 6A BE 6E E4 34 07 1E 01 F9 0C 07 13 B9 .w.j.n.4........
+1483:1910 10 00 04 CF 13 D2 E2 F5 65 BA 9B 64 BA 3C 10 04 ........e..d.<..
+1483:1920 3D 04 41 3E 04 45 F8 0D BA A5 26 1C 30 55 FF 03 =.A>.E....&.0U..
+1483:1930 60 FE 39 D1 CA EB 63 8C 14 7A E2 21 BF B2 C5 BE `.9...c..z.!....
+1483:1940 B2 C5 BD 79 C5 C4 C7 0B B6 E7 0B C5 63 E4 19 C5 ...y........c...
+1483:1950 0C 08 26 18 A4 6E 6A 64 CF CB 0B 01 05 0A 73 EA ..&..njd......s.
+1483:1960 74 E3 B0 D1 83 73 86 AC D1 BF 96 D1 7E 91 03 D1 t....s......~...
+1483:1970 7E 85 0C D1 1F 97 EB 8C 0A 9F D1 A1 05 33 2B A4 ~............3+.
+1483:1980 8E 01 CC 3E BE D0 36 5F 2C 7E 0B 27 2C 23 01 EF ...>..6_,~.',#..
+1483:1990 F7 7F 10 DF 7F 57 22 51 45 58 45 D7 05 05 03 25 .....W"QEXE....%
+1483:19A0 4D 5A 00 12 00 02 51 06 00 16 EF 03 0B 0E 00 00 MZ....Q.........
+1483:19B0 0E 8C D3 8E C3 8C CA 0C 8E DA 8B 0E 93 8B 18 F1 ................
+1483:19C0 83 EE A2 FE D1 B8 60 E9 FD F3 A5 53 B8 3D 00 50 ......`....S.=.P
+1483:19D0 8B 2E 0A 59 16 0C 00 CB 03 B8 00 10 3B C5 76 00 ...Y........;.v.
+1483:19E0 1B C5 2B E8 2B D0 2B D8 D8 2E 34 B1 03 B8 65 D3 ..+.+.+...4...e.
+1483:19F0 E0 8B C8 D1 E0 48 48 8B F0 8B F8 30 0B CB ED 75 .....HH....0...u
+1483:1A00 D9 FC 07 8E DB 2E C7 06 12 00 3E 00 2E 8C 0E 14 ..........>.....
+1483:1A10 00 1E 30 37 30 B1 3C 03 72 03 67 8C C0 2C 10 8E ..070.<.r.g..,..
+1483:1A20 00 37 1E 2C 00 33 F6 AC 0A 10 C0 75 FB 04 00 F6 .7.,.3.....u....
+1483:1A30 83 C6 02 2E 89 36 12 E3 2C 1E 06 2C 8B D6 B4 3D .....6..,..,...=
+1483:1A40 2C 00 8B D8 B4 3F B9 20 00 06 18 1F 33 D2 0C 72 ,....?. ....3..r
+1483:1A50 29 1C 81 3E 14 C5 0E 75 21 83 3E 00 CB 75 1A 2E )..>...u!.>..u..
+1483:1A60 A1 0E 00 39 63 06 E2 75 10 38 09 10 09 04 C3 09 ...9c..u.8......
+1483:1A70 06 B4 3E 00 28 EB 06 BA E6 02 E9 D1 18 01 1F BE ..>.(...........
+1483:1A80 11 E8 10 06 02 50 53 E8 0B AC 00 C8 8B D3 E8 04 .....PS.........
+1483:1A90 02 53 BE C3 5F E8 63 01 82 05 33 FF 06 51 A7 F7 .S.._.c...3..Q..
+1483:1AA0 D5 D1 00 50 8B DF 83 E7 0F 81 C7 35 00 80 CA C7 ...P.......5....
+1483:1AB0 D3 EB 8C C0 03 C3 2D 00 08 8E C0 8B DE 83 E6 0F ......-.........
+1483:1AC0 8C 0F D8 0F 8E 2C D8 58 39 2E 82 1F 38 58 5A 59 .....,.X9...8XZY
+1483:1AD0 33 F6 E8 43 00 8C DA 0E 1F 32 ED BE 05 16 8A C8 3..C.....2......
+1483:1AE0 06 E3 13 AD 03 C2 32 2E 33 FF 78 32 E4 AC 03 F8 ......2.3.x2....
+1483:1AF0 26 01 15 E2 F8 EB E8 8B 36 04 00 8B 3E 06 00 03 &.......6...>...
+1483:1B00 FA 01 16 A7 83 EA 31 10 8E 22 DA 33 85 24 DB FA ......1..".3.$..
+1483:1B10 8B C3 E6                                        ...            
 
-;; fn1483_118B: 1483:118B
-fn1483_118B proc
-	add	dl,[edx+48]
-	and	cl,[bx+si-4F]
-	int	03
-	arpl	[si],bx
-	and	[si],cl
-	inc	cx
-	illegal
-	push	dx
-	dec	sp
-	mov	bp,0411
-	sbb	si,[bp+si+49]
-	in	al,dx
-	jmp	ax
-	dec	sp
-	aam	00
-	dec	word ptr [bx+si-20]
-	inc	word ptr [bx+si]
-	mov	cx,62CB
-	lock
-	xchg	ax,di
-	int	03
-	xlat
-	enter	63C0,00
-	adc	ch,[bx]
-	or	[bx+si],si
-	push	es
-	cmp	al,00
-	cmp	[bp+si],ah
-	fadd	dword ptr [bx+di]
-	pop	ss
-	push	cx
-	enter	1CFF,FA
-	dec	si
-	jnz	124A
-	add	[si],bl
-	sub	ax,[bx+si]
-	add	cx,sp
-	pop	si
-	sbb	al,13
-	jc	11D9
-	popa
-	cmp	al,A6
-	cmp	[bx+si],ah
-	dec	dx
-	add	ax,0ED0
-	inc	cx
-	jmp	far 0761:8000
-	xor	dx,bp
-	add	[bx+si],ax
-	mov	word ptr [bx],00C0
-	add	cx,[bx+si+4053]
-	cmp	[bx+si],al
-	pusha
-	inc	bx
-	sbb	al,19
-	add	cx,[di+4261]
-	inc	sp
-	add	byte ptr [bp+di+28],9D
-	call	dword ptr [bx]
-	aaa
-	sbb	bl,cl
-	add	[si],bx
-	dec	bp
-	cld
-	cmp	sp,[bx+si+2A]
-	and	ax,1A6B
-	sbb	bl,bl
-	or	byte ptr [di],10
-	pop	ss
-	push	di
-	cmp	ax,1058
-	adc	bp,di
-	test	al,72
-	add	di,bp
-	imul	dx,[bp+di+41],81CC
-	mov	[bx+si+CC51],es
-	inc	ax
-	mov	bx,65CE
-	call	far F471:4F60
-	xor	[bx+si],bl
-	rol	byte ptr [bp-70],58
-	clc
-	adc	ch,[bx+si]
-	add	[si],bh
-	sahf
-	add	[si-3F],bp
-	jge	127A
-	loop	11F6
-	adc	[si+3D0B],cl
-	mov	al,9F
-	add	bl,[di]
-	insw
-	push	ss
-	push	bx
-	push	cx
-	xor	dx,[si]
-	add	[bx+si],dh
-	call	far 8C25:3E0F
-	sbb	ax,1D16
-	add	ax,C060
-	scasw
-	jo	1265
-	jc	1278
-	cwd
-	adc	[si],ax
-	mov	al,11
-	pmaxub	mm0,[bx+di]
-	out	dx,al
-	add	[bp+4648],bp
-	pop	ax
-	dec	bx
-	sbb	al,23
-	mov	bl,23
-	or	[di],cx
-	xchg	ax,dx
-	pop	es
-	jle	1292
-	sbb	ax,1780
-	jc	128A
-	loope	1211
-	adc	[bx+si],bl
-	and	[bx+di-37],dl
-	jcxz	1300
-	pop	es
-	pop	ds
-	jc	1299
-	popa
-	retf	9905
-	jl	12CE
-	add	bh,cl
-	add	ss:[bx-11],cl
-	push	ax
-	and	cl,[bx+70]
-	illegal
-	add	al,61
-	mov	dh,12
-	rcl	byte ptr [bx+di-36],FF
-	div	byte ptr [bx+si+01]
-	loop	124C
-	pop	ss
-	mov	[0074],ax
-	insb
-	dec	ax
-	out	07,al
-	add	[bx+si],bh
-	add	ax,[bp+di-11]
-	add	[si],cl
-	mov	dl,19
-	cmp	bh,[bp+si+01]
-	jcxz	1338
-	push	bx
-	inc	bp
-	xor	ch,al
-	sub	al,[bp+si]
-	dec	ax
-	inc	bp
-	add	ds:[bp+di+47],dx
-	jcxz	132E
-	loop	1331
-	push	cx
-	iret
-	dec	di
-	jpe	12E0
-	adc	[bp+si+EA01],bl
-	outsb
-	xor	dh,al
-	adc	[bx+si+41],sp
-	mov	bh,1A
-	add	bx,[bp+si+3304]
-	adc	[di-4D],ax
-	jl	12F5
-	pop	ds
-	add	ax,6EEB
-	push	bx
-	inc	si
-	xor	[bp-36],ax
-	scasw
-	aam	03
-	in	ax,E2
-	mov	[bp+si+01],dl
-	mov	dl,00
-	leave
-	adc	[bp-52],sp
-	dec	sp
-	fild	word ptr [bx+si]
-	loopne	12D7
-	jnc	1313
-	adc	[bx+2003],al
-	cmp	al,[bx+si]
-	dec	sp
-	wait
-	rcr	byte ptr [di],0B
-	add	[bx+si+8981],ax
-	cmp	dh,[bx+si+0A]
-	aas
-	and	[bp+di],bl
-	daa
-	cbw
-	or	cx,[bx+si]
-	or	[bx+si+8E30],dl
-	fild	dword ptr [bx]
-	dec	si
-	xlat
-	sbb	word ptr [di],812E
-	mov	[bp+di],ss
-	illegal
-	das
-	inc	dx
-	inc	ax
-	push	ds
-	pop	ds
-	das
-	dec	bp
-	add	[bx+si],al
-	push	dx
-	dec	sp
-	out	dx,ax
-	jg	134A
-	add	[45E3],dl
-	push	dx
-	inc	di
-	adc	ax,0565
-	adc	di,[C9F5]
-	cmp	ds:[bx],bh
-	jl	1399
-	popa
-	aas
-	cmp	dl,[bx+di]
-	sbb	al,3F
-	mov	dl,03
-	push	AA
-	out	84,al
-	inc	bp
-	illegal
-	loope	13B3
-	into
-	cmp	[di+71],al
-	mov	byte ptr [bp+di],8E
-	lock
-	add	ax,4845
-	clc
-	add	ax,[di+7C]
-	cmp	al,03
-	cmp	ax,[di+30]
-	add	bp,[bp+di+1A20]
-	fstp	tword ptr [bp+di+702D]
-	xlat
-	adc	ax,di
-	loop	140B
-	pop	bp
-	illegal
-	mov	dx,4B1F
-	xchg	ax,sp
-	neg	word ptr [bx]
-	dec	bx
-	inc	ax
-	adc	cl,[bp+di-60]
-	xchg	ax,dx
-	add	dl,[bx+si+3A9C]
-	dec	sp
-	mov	ds,[bx]
-	dec	sp
-	add	[4C00],cl
-	and	cl,[bp+di+61]
-	add	[bx+di],al
-	push	es
-	fidiv	word ptr [bp+si-01]
-	mov	ah,6B
-	push	ax
-	xor	[edx],edi
-	ret
-	inc	di
-	pop	sp
-	inc	dx
-	loopne	1347
-	pop	sp
-	add	[bp+si],bp
-	clc
-	jmp	1423
-	pop	ss
-	dec	dx
-	jbe	13CB
-	or	[bp+si],ah
-	add	si,[si+07]
-	loop	141B
-	add	al,0A
-	inc	cx
-	mov	al,[0101]
-	jpo	140B
-	rcl	word ptr [bp+si+03],66
-	jmp	far 1912:7B85
-	mov	bl,C3
-	add	dh,[bp+si]
-	add	al,[bp+si]
-	inc	dx
-	add	bh,bh
-	aam	42
-	xor	al,32
-	and	[bx+si],dh
-	xor	cl,[bx+di+0F]
-	push	bx
-	and	byte ptr [bp+54],E8
-	or	dx,[bp+si+9B58]
-	rol	byte ptr [bp+4D22],61
-	shl	byte ptr [bp+si-02],B4
-	jpe	140A
-	push	sp
-	push	ds
-	dec	bp
-	add	al,ds:[bx+si]
-	adc	al,37
-	sahf
-	sbb	ax,20C4
-	sahf
-	loope	13B7
-	test	[bx+si],bh
-	popf
-	jl	13A1
-	pop	ss
-	popf
-	rol	[bx+di],cl
-	pop	ds
-	popf
-	inc	di
-	setge	byte ptr [bx+si+7A]
-	illegal
-	mov	di,C191
-	jns	13C5
-	push	bx
-	push	sp
-	push	47
-	mov	cx,60BC
-	sbb	bl,[bx]
-	illegal
-	or	al,CE
-	cmpsw
-	inc	dx
-	pushf
-	aas
-	stosb
-	sahf
-	popa
-	out	dx,ax
-	xchg	ax,bp
-	inc	si
-	mul	word ptr [bx+FED5]
-	jc	13DA
-	mov	dx,C097
-	mov	[si],sp
-	outsw
-	add	[si+22],al
-	or	ax,3060
-	shld	[bp+2E],sp,20
-	add	[di+43],cx
-	cli
-	add	[si+D9D1],cl
-	rol	byte ptr [bx+di],E9
-	add	[si],al
-	sub	al,07
-	dec	ax
-	and	[bx+si],bl
-	sbb	ch,[esi+5B]
-	mov	bl,D3
-	xchg	ax,cx
-	ror	word ptr [0E67],D3
-	rol	cl,11
-	add	[bp-0E],sp
-	inc	bx
-	xchg	[di],bx
-	std
-	pusha
-	out	dx,al
-	popa
-	ret
-	pusha
-	and	ax,B858
-	mov	ax,[1403]
-	loope	149B
-	sbb	al,25
-	xchg	[di+D208],ax
-	stosb
-	xor	cx,[bx]
-	pop	es
-	adc	[bp+1407],cl
-	cmp	[bx],al
-	sbb	[bp+di],ah
-	cmp	al,F8
-	add	si,[bp+4F44]
-	jg	1468
-	add	al,C6
-	jcxz	14F5
-	add	[bx],bh
-	push	cx
-	pop	ds
-	dec	sp
-	dec	si
-	inc	cx
-	adc	bl,[bx]
-	mov	ax,1106
-	lahf
-	adc	ax,si
-	mov	cl,41
-	enter	1BF0,C7
-	stosb
-	clc
-	popa
-	mov	word ptr [di+47],9FF7
-	pop	bp
-	neg	word ptr [bx]
-	sar	word ptr [bx+di],cl
-	adc	dl,bl
-	mov	al,[032B]
-	sbb	ch,[bx+si+7CD4]
-	mov	[di],ss
-	aam	FC
-	and	di,ax
-	in	ax,94
-	ret
-	inc	di
-	in	al,50
-	in	al,dx
-	mul	bp
-	cli
-	mov	ah,1F
-	push	bx
-	mov	byte ptr [bp+di],40
-	push	bx
-	ret	7866
-	mov	bh,[6E35]
-	insw
-	inc	di
-	lodsw
-	int	03
-	sub	al,26
-	in	ax,25
-	push	cs
-	repne sbb	sp,[di]
-	lock
-	sti
-	and	[bx+6D],bx
-	mov	[bx+2F],al
-	and	ax,F74E
-	mov	bh,6D
-	out	F7,al
-	sbb	sp,sp
-	push	19
-	inc	cx
-	dec	bp
-	inc	word ptr [bx+di]
-	sbb	[bp+di-5C],ch
-	lsl	bp,cx
-	loopne	1540
-	cmpsb
-	dec	ax
-	jpe	156A
-	add	dl,[bp+si+0952]
-	illegal
-	add	ax,FF0D
-	add	bp,sp
-	sub	dl,[bx+4A]
-	xchg	ax,bp
-	add	sp,[ecx]
-	bound	bp,[bp+si]
-	push	bp
-	fcmovne	st(0),st(5)
-	add	[bx+di],ax
-	lea	bx,cs:[bx+si+4D]
-	inc	cx
-	in	ax,dx
-	mov	[bp+di+980C],ds
-	push	dx
-	inc	bx
-	leave
-	mov	bp,4FE2
-	daa
-	enter	2307,CA
-	and	[bp+di],ch
-	add	di,di
-	cli
-	jc	1564
-	mov	al,42
-	movsb
-	and	ax,483A
-	inc	eax
-	xchg	ax,di
-	das
-	illegal
-	repne add	di,sp
-	sub	ax,FC0D
-	sbb	ax,870C
-	sbb	bp,[bx+si]
-	dec	bp
-	illegal
-	retf	0B07
-	ret	0BA5
-	loopne	15C0
-	or	cx,[bp-28]
-	pop	sp
-	or	dx,ax
-	add	di,[si-5C]
-	add	ax,0BBE
-	pop	si
-	add	bx,[bx+0B]
-	push	dx
-	add	bp,[bx+di]
-	or	ax,[bp+76]
-	sub	si,[bp+si+0B]
-	add	bl,bh
-	popf
-	add	ax,1123
-	test	ax,8153
-	cli
-	add	al,2B
-	and	[bp+1F],dl
-	jcxz	157F
-	pop	bx
-	clc
-	int	03
-	in	ax,5F
-	int	01
-	jo	1626
-	frstor	word ptr [bp+si]
-	pusha
-	pop	ds
-	add	dh,bh
-	in	al,dx
-	push	si
-	xor	ax,2827
-	sbb	dx,si
-	xchg	ax,cx
-	sbb	si,[3800]
-	repne add	al,1B
-	ret	1BE9
-	adc	bx,cx
-	push	si
-	adc	dx,ss:[bp+di+361F]
-	add	al,E4
-	and	ax,041B
-	call	far BE0B:037C
-	sbb	cx,bx
-	inc	sp
-	dec	si
-	sbb	cx,[si]
-	xchg	ax,sp
-	or	byte ptr [di-14],66
-	sub	al,42
-	push	es
-	pushf
-	and	dl,[si]
-	repne add	ax,2030
-	adc	al,03
-	inc	cx
-	cli
-	std
-	push	es
-	mov	[5020],al
-	ror	ax,01
-	add	[bx+A184],cx
-	and	al,08
-	pop	ax
-	add	byte ptr [bx+si],15
-	aad	B5
-	or	[bx+si],al
-	push	bx
-	or	word ptr [bx+si],F466
-	pusha
-	illegal
-	xchg	ax,dx
-	push	cx
-	std
-	and	cl,E5
-	mov	[bx+si-80],bl
-	das
-	inc	ax
-	add	al,[bx+si+22]
-	das
-	add	al,[si]
-	rcl	bh,01
-	add	al,88
-	xlat
-	and	ax,FF7F
-	add	al,BB
-	add	si,dx
-	inc	sp
-	scasw
-	in	ax,dx
-	les	cx,[bp+54]
-	sbb	ax,92AF
-	or	[bx+C344],bp
-	scasw
-	and	cl,05
-	scasw
-	adc	al,F1
-	push	ds
-	scasw
-	illegal
-	inc	bx
-	cwd
-	pop	ss
-	pop	word ptr [bp-48]
-	test	bl,cl
-	fsub	st(0),st(1)
-	lahf
-	sar	byte ptr [bx+si],01
-	lahf
-	jno	1627
-	add	bx,[si+05F0]
-	lahf
-	push	si
-	clc
-	add	bx,[bx+4A7C]
-	add	di,[bp+di]
-	lahf
-	cmc
-	pop	es
-	pop	bx
-	adc	al,[bx+B4A5]
-	inc	dx
-	movsw
-	mov	fs,[bp+di]
-	movsw
-	xchg	[bx-14],bl
-	pusha
-	mov	[047F],al
-	add	bl,ah
-	ficom	word ptr [bx+0FE1]
-	popa
-	lock
-	lock
-	sbb	[bx+di-32],sp
-	xchg	ax,sp
-	add	[bx+di+01],sp
-	shl	byte ptr [bp+si],2F
-	add	[si+BED6],ax
-	jpe	1621
-	add	ah,[bx]
-	popa
-	adc	bx,[bx-46]
-	adc	[bx+si+6070],dh
-	test	ax,60E8
-	jge	164A
-	or	ax,10DF
-	outsb
-	and	si,[bx+10]
-	illegal
-	fld	double ptr [bp+di]
-	adc	[bp-09],al
-	inc	di
-	adc	[di-32],al
-	mov	bl,2A
-	test	[bp-1A],dh
-	loope	173A
-	fidivr	word ptr [bx+si]
-	jbe	170D
-	illegal
-	mov	di,055E
-	pcmpeqd	mm4,[si+03]
-	xchg	[bp+58],si
-	ret
-	add	si,[bp+4C]
-	jcxz	1707
-	jbe	16C9
-	or	ax,E01C
-	sti
-	idiv	bp
-	sbb	al,2C
-	fistp	word ptr [si]
-	xchg	ax,si
-	sbb	[bx],cx
-	mov	dx,1A74
-	mov	sp,A11C
-	mov	dx,3848
-	mov	dx,8F74
-	mov	dx,0D38
-	out	dx,ax
-	sbb	cx,[bx+si]
-	imul	di,[bp+si+B41B],9EA1
-	sar	[bx+si],cl
-	sahf
-	dec	si
-	retf	9E1C
-	ret	7C03
-	xchg	ax,si
-	add	ax,9E3E
-	push	ax
-	add	bx,[bx]
-	sahf
-	inc	sp
-	add	cx,[bx]
-	sahf
-	cmp	[bx+si],ch
-	cld
-	mov	ch,EE
-	movups	xmm7,xmm3
-	cmc
-	mov	si,FC0F
-	sbb	[bx],bx
-	push	sp
-	ficom	dword ptr [si]
-	jo	1739
-	inc	bx
-	dec	di
-	dec	bp
-	pop	di
-	push	sp
-	xor	al,[bx+si]
-	push	bx
-	add	[bp-42],ax
-	dec	dx
-	add	bh,ah
-	call	8D07
-	add	ax,8B0A
-	add	al,cl
-	call	1777
-	mov	dx,ax
-	add	ax,si
-	xor	al,[di]
-	push	es
-	push	es
-	clc
-	loope	16D1
-	mov	byte ptr [si],AD
-	xor	ah,ah
-	mov	bp,si
-	mov	si,di
-	add	ax,cx
-	mov	cx,[di]
-	cmp	di,si
-	sahf
-	jbe	176D
-	std
-	push	di
-	dec	si
-	dec	di
-	mov	cx,dx
-	rep movsb
-	inc	di
-	mov	bp,di
-	pop	si
-	cld
-	mov	di,si
-	push	si
-	mov	si,014C
-	mov	cx,00FA
-	illegal
-	call	467E
-	fsubr	dword ptr [di+61B8]
-	xchg	al,ah
-	ret
-	mov	si,bp
-	stc
-	lodsb
-	adc	al,al
-	add	al,al
-	mov	di,E94C
-	mov	ax,[bx+si]
-	ret	EB0A
-	xor	[bx+si],cx
-	add	al,32
-	and	[si],al
-	xor	ax,[si]
-	cmp	ax,[bx+si+0604]
-	mov	cl,04
-	xlat
-	and	bl,[F574]
-	adc	bh,bh
-	loop	17A2
-	mov	cl,03
-	add	cl,bh
-	add	cl,cl
-	rep movsw
-	jmp	1812
-	sbb	al,18
-	jc	1826
-	push	ss
-	sbb	al,CA
-	adc	cl,cl
-	add	ax,C91C
-	jnc	17CF
-	add	ax,C818
-	dec	cl
-	or	ax,F980
-	sbb	al,09
-	jz	179C
-	or	al,18
-	shl	byte ptr [bp+di+21],05
-	jnz	17D9
-	out	27,al
-	cmp	[bx+si+7208],bl
-	push	di
-	add	cx,[bp+si]
-	push	word ptr [di+0B]
-	inc	bh
-	ret	1701
-	mov	bl,[si]
-	inc	si
-	add	[bx+si+2B4E],dh
-	rep cli
-	rep sbb	sp,[FBA4]
-	mov	es,[bx+si+6B]
-	or	al,A4
-	mov	word ptr [bx+di],0572
-	add	[si],al
-	jnc	17F9
-	jz	17F4
-	mov	cl,02
-	jo	1833
-	aas
-	jz	179B
-	cmp	[bp+di-6E],dh
-	add	ax,0E2D
-	jnc	17E0
-	inc	cl
-	or	ax,[bx]
-	sub	dh,[bp+di-63]
-	xchg	[bp+si+460C],cx
-	or	cl,cl
-	jz	1849
-	add	cl,08
-	jmp	17B9
-	test	[bx+di],ax
-	push	ax
-	or	bh,04
-	sub	byte ptr [bp+di-5D],EB
-	cbw
-	or	[si+2CCE],bh
-	add	al,D1
-	adc	al,30
-	cmpsw
-	mov	si,33E9
-	sar	bh,2B
-	out	90,al
-	dec	bx
-	push	cx
-	mov	ax,[0161]
-	test	al,BE
-	lodsb
-	fst	dword ptr [bp+si+3E]
-	cmp	al,52
-	cld
-	add	dl,[bp+si-18]
-	cvtpi2ps	xmm0,[bx+si]
-	push	bx
-	push	ax
-	sbb	al,al
-	push	sp
-	dec	si
-	add	[bx+di+015A],di
-	std
-	push	es
-	push	sp
-	sbb	word ptr [bx],5A
-	call	196A
-	rep add	bl,[bp+si-76]
-	rep or	al,5A
-	cmp	dh,bl
-	adc	[bp+si+5D],bl
-	repne or	[bp+si+0C],bl
-	xor	bl,[bp+si+49]
-	pop	cx
-	pop	cx
-	iret
-	mov	word ptr [bp+di],E6C1
-	aas
-	pop	cx
-	mov	cx,FCB1
-	add	bx,[bp+si+2C]
-	pop	ds
-	jnc	185C
-	inc	cx
-	add	ax,599F
-	adc	word ptr [bx],9F
-	pop	cx
-	iret
-	or	[bp+di+8B59],ax
-	iret
-	sub	cx,si
-	adc	cx,di
-	add	al,00
-	mov	sp,[bx+di+56]
-	and	word ptr [bp+00EC],8B02
-	cld
-	push	cx
-	xor	bx,bx
-	mov	ax,bx
-	mov	cx,0008
-	shr	ax,01
-	jnc	18BE
-	xor	ax,A001
-	loop	18B7
-	stosw
-	inc	bl
-	jnz	18B2
-	pop	cx
-	sbb	[bx+si],al
-	lodsb
-	xor	bl,al
-	mov	al,bh
-	xor	bh,bh
-	rcr	word ptr [bx+si],01
-	jcxz	185E
-	sbb	[bx+di],cx
-	loop	18C8
-	xor	[bx+di+2DC4],al
-	pop	si
-	cmp	bx,dx
-	mov	ax,74E0
-	sbb	ch,al
-	add	[bx+si],al
-	pop	dx
-	add	dx,0D
-	mov	ah,09
-	int	21
-	mov	ax,4CFF
-	add	al,42
-	popa
-	and	fs:[bx+di],al
-	inc	bx
-	push	dx
-	inc	bx
-	or	ax,240A
-	ret
-	sub	ax,2BB4
-	add	si,[bx+01]
-	push	BE
-	outsb
-	in	al,34
-	pop	es
-	push	ds
-	add	cx,di
-	or	al,07
-	adc	di,[bx+di+0010]
-	add	al,CF
-	adc	dx,dx
-	loop	190D
-	mov	dx,649B
-	mov	dx,103C
-	add	al,3D
-	add	al,41
-	add	al,45
-	clc
-	or	ax,A5BA
-	sbb	al,30
-	push	bp
-	inc	word ptr [bp+di]
-	pusha
-	illegal
-	ror	dx,01
-	jmp	199A
-	mov	[si],ss
-	jpe	191D
-	and	[bx+C5B2],di
-	mov	si,C5B2
-	mov	bp,C579
-	illegal
-	or	si,[bp+0BE7]
-	lds	sp,[bp+di-1C]
-	sbb	bp,ax
-	or	al,08
-	sbb	es:[si+6A6E],ah
-	iret
-	retf
-	or	ax,[bx+di]
-	add	ax,730A
-	jmp	far D1B0:E374
-	xor	word ptr [bp+di-7A],AC
-	sar	word ptr [bx+D196],01
-	jle	18FF
-	add	dx,cx
-	jle	18F7
-	or	al,D1
-	pop	ds
-	xchg	ax,di
-	jmp	1904
-	or	bl,[bx+A1D1]
-	add	ax,2B33
-	movsb
-	mov	es,[bx+di]
-	int	03
-	mov	si,36D0
-	pop	di
-	sub	al,7E
-	or	sp,[bx]
-	sub	al,23
-	add	di,bp
-	idiv	word ptr [bx+10]
-	fistp	qword ptr [bx+57]
-	and	dl,[bx+di+45]
-	pop	ax
-	inc	bp
-	xlat
-	add	ax,0305
-	and	ax,5A4D
-	add	[bp+si],dl
-	add	[bp+si],al
-	push	cx
-	push	es
-	add	[03EF],dl
-	or	cx,[0000]
-	push	cs
-	mov	bx,ss
-	mov	es,bx
-	mov	dx,cs
-	or	al,8E
-	fimul	dword ptr [bp+di+930E]
-	mov	bx,[bx+si]
-	illegal
-	sub	si,A2
-	illegal
-	mov	ax,E960
-	std
-	rep movsw
-	push	bx
-	mov	ax,003D
-	push	ax
-	mov	bp,[590A]
-	push	ss
-	or	al,00
-	retf
-	add	di,[bx+si+1000]
-	cmp	ax,bp
-	jbe	19E0
-	sbb	ax,bp
-	sub	bp,ax
-	sub	dx,ax
-	sub	bx,ax
-	fsubr	dword ptr [B134]
-	add	di,[bx+si+D365]
-	loopne	197D
-	enter	E0D1,48
-	dec	ax
-	mov	si,ax
-	mov	di,ax
-	xor	[bp+di],cl
-	retf
-	in	ax,dx
-	jnz	19DA
-	cld
-	pop	es
-	mov	ds,bx
-	mov	word ptr cs:[0012],003E
-	mov	cs:[0014],cs
-	push	ds
-	xor	[bx],dh
-	xor	[bx+di+033C],dh
-	jc	1A1D
-	mov	ax,es
-	sub	al,10
-	mov	es,[bx+si]
-	aaa
-	push	ds
-	sub	al,00
-	xor	si,si
-	lodsb
-	or	dl,[bx+si]
-	shl	byte ptr [di-05],04
-	add	dh,dh
-	add	si,02
-	mov	cs:[E312],si
-	sub	al,1E
-	push	es
-	sub	al,8B
-	illegal
-	mov	ah,3D
-	sub	al,00
-	mov	bx,ax
-	mov	ah,3F
-	mov	cx,0020
-	push	es
-	sbb	[bx],bl
-	xor	dx,dx
-	or	al,72
-	sub	[si],bx
-	cmp	word ptr [C514],750E
-	and	[bp+di+003E],ax
-	retf
-	jnz	1A79
-	mov	ax,cs:[000E]
-	cmp	[bp+di+06],sp
-	loop	1ADD
-	adc	[bx+si],bh
-	or	[bx+si],dx
-	or	[si],ax
-	ret
-	or	[3EB4],ax
-	add	[bx+si],ch
-	jmp	1A7D
-	mov	dx,02E6
-	jmp	334E
-	add	[bx],bx
-	mov	si,E811
-	adc	[5002],al
-	push	bx
-	call	C695
-	add	al,cl
-	mov	dx,bx
-	call	1C95
-	push	bx
-	mov	si,5FC3
-	call	1BFB
-	add	byte ptr [di],33
-	inc	word ptr [A751]
-	not	bp
-	rol	word ptr [bx+si],01
-	push	ax
-	mov	bx,di
-	and	di,0F
-	add	di,0035
-	or	dl,C7
-	shr	bx,cl
-	mov	ax,es
-	add	ax,bx
-	sub	ax,0800
-	mov	es,ax
-	mov	bx,si
-	and	si,0F
-	mov	[bx],cs
-	fmul	dword ptr [bx]
-	mov	gs,[si]
-	fcomp	dword ptr [bx+si+39]
-	sbb	byte ptr cs:[bx],38
-	pop	ax
-	pop	dx
-	pop	cx
-	xor	si,si
-	call	1B18
-	mov	dx,ds
-	push	cs
-	pop	ds
-	xor	ch,ch
-	mov	si,1605
-	mov	cl,al
-	push	es
-	jcxz	1AF6
-	lodsw
-	add	ax,dx
-	xor	ch,[FF33]
-	js	1B1E
-	in	al,AC
-	add	di,ax
-	add	es:[di],dx
-	loop	1AED
-	jmp	1ADF
-	mov	si,[0004]
-	mov	di,[0006]
-	add	di,dx
-	add	[83A7],dx
-	jmp	far 228E:1031
-	fidiv	dword ptr [bp+di]
-	test	[si],sp
-	illegal
-	mov	ax,bx
-	out	8E,al
-
-;; fn1483_1B13: 1483:1B13
-fn1483_1B13 proc
+l1483_1B13:
 	mov	ss,di
 	sti
 	jmp	dword ptr cs:[bx]
@@ -28522,8 +27518,7 @@ fn1483_1B13 proc
 1483:1B20 E5 E3 01 7C 42 01 22 E8 26 01 E9 83 FE 00 75 07 ...|B.".&.....u.
 1483:1B30 8E 95 80 C4 80 1E E2 E4                         ........       
 
-;; fn1483_1B38: 1483:1B38
-fn1483_1B38 proc
+l1483_1B38:
 	dec	dx
 	jnz	1B7F
 
@@ -28621,19 +27616,25 @@ fn1483_1BB9 proc
 l1483_1BBC:
 	jmp	1B38
 
-;; fn1483_1BBD: 1483:1BBD
-fn1483_1BBD proc
-	jns	1BBE
-
-l1483_1BBE:
-	jmp	word ptr [bx+di+E10D]
-
-;; fn1483_1BBF: 1483:1BBF
-fn1483_1BBF proc
+l1483_1BBF:
 	mov	ax,[E10D]
-1483:1BC2       F1 39 0D 3F BF 25 4D F7 E0 25 BA 0E 03 E9   .9.?.%M..%....
-1483:1BD0 F9 97 D1 25 38 F4 25 33 BE 25 2C 97 CF 25 8B 01 ...%8.%3.%,..%..
-1483:1BE0 F7 8F AD 38 8F AD 08 FB                         ...8....       
+	illegal
+	cmp	[di],cx
+	aas
+	mov	di,4D25
+	mul	ax
+	and	ax,0EBA
+	add	bp,cx
+	stc
+	xchg	ax,di
+	shl	word ptr [di],01
+	cmp	ah,dh
+	and	ax,BE33
+	and	ax,972C
+	iret
+	and	ax,018B
+	test	word ptr [bx+38AD],AD8F
+	or	bl,bh
 
 l1483_1BE8:
 	dec	bp

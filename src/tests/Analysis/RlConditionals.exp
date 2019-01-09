@@ -84,20 +84,20 @@ l0C00_0038:
 
 // SymbolicIn: sp:fp ax:<invalid>
 l0C00_003D:
-	sp = fp - 0x0002
+	sp = fp - 2
 	wLoc02 = 0x0003
 	call fn0C00_0069 (retsize: 2; depth: 4)
 	branch Test(UGE,C) l0C00_0049
 // DataOut: bp ds ss
 // DataOut (flags): 
 
-// SymbolicIn: sp:fp - 0x0002 ax:<invalid> -2(fp):0x0003
+// SymbolicIn: sp:fp - 2 ax:<invalid> -2(fp):0x0003
 l0C00_0044:
 	Mem0[ds:0x0F04:byte] = 0x01
 // DataOut: bp ds ss
 // DataOut (flags): 
 
-// SymbolicIn: sp:fp - 0x0002 ax:<invalid> -2(fp):0x0003
+// SymbolicIn: sp:fp - 2 ax:<invalid> -2(fp):0x0003
 l0C00_0049:
 	SZO = cond(Mem0[ds:0x010E:word16] & 0x01FF)
 	C = false
@@ -105,13 +105,13 @@ l0C00_0049:
 // DataOut: bp ds ss
 // DataOut (flags): 
 
-// SymbolicIn: sp:fp - 0x0002 ax:<invalid> -2(fp):0x0003
+// SymbolicIn: sp:fp - 2 ax:<invalid> -2(fp):0x0003
 l0C00_0051:
 	Mem0[ds:0x0F05:byte] = 0x01
 // DataOut: bp ds ss
 // DataOut (flags): 
 
-// SymbolicIn: sp:fp - 0x0002 ax:<invalid> -2(fp):0x0003
+// SymbolicIn: sp:fp - 2 ax:<invalid> -2(fp):0x0003
 l0C00_0056:
 	bp = bp - 0x0010
 	SCZO = cond(bp)
@@ -119,13 +119,13 @@ l0C00_0056:
 // DataOut: bp ds ss
 // DataOut (flags): 
 
-// SymbolicIn: sp:fp - 0x0002 ax:<invalid> bp:bp - 0x0010 -2(fp):0x0003
+// SymbolicIn: sp:fp - 2 ax:<invalid> bp:bp - 0x0010 -2(fp):0x0003
 l0C00_005B:
 	Mem0[ss:bp + 0x0006:byte] = 0x01
 // DataOut: bp ds
 // DataOut (flags): 
 
-// SymbolicIn: sp:fp - 0x0002 ax:<invalid> bp:bp - 0x0010 -2(fp):0x0003
+// SymbolicIn: sp:fp - 2 ax:<invalid> bp:bp - 0x0010 -2(fp):0x0003
 l0C00_005F:
 	bp = bp + bp
 	SCZO = cond(bp)
@@ -133,19 +133,19 @@ l0C00_005F:
 // DataOut: ds
 // DataOut (flags): 
 
-// SymbolicIn: sp:fp - 0x0002 ax:<invalid> bp:bp - 0x0020 + (bp - 0x0020) -2(fp):0x0003
+// SymbolicIn: sp:fp - 2 ax:<invalid> bp:bp - 0x0020 + (bp - 0x0020) -2(fp):0x0003
 l0C00_0063:
 	Mem0[ds:0x0F07:byte] = 0x01
 // DataOut:
 // DataOut (flags): 
 
-// SymbolicIn: sp:fp - 0x0002 ax:<invalid> bp:bp - 0x0020 + (bp - 0x0020) -2(fp):0x0003
+// SymbolicIn: sp:fp - 2 ax:<invalid> bp:bp - 0x0020 + (bp - 0x0020) -2(fp):0x0003
 l0C00_0068:
 	return
 // DataOut:
 // DataOut (flags): 
 
-// SymbolicIn: sp:fp - 0x0002 ax:<invalid> bp:bp - 0x0020 + (bp - 0x0020) -2(fp):0x0003
+// SymbolicIn: sp:fp - 2 ax:<invalid> bp:bp - 0x0020 + (bp - 0x0020) -2(fp):0x0003
 fn0C00_0000_exit:
 // DataOut:
 // DataOut (flags): 
@@ -167,9 +167,9 @@ fn0C00_0069_entry:
 // SymbolicIn: sp:fp
 l0C00_0069:
 	sp = fp
-	sp = fp - 0x0002
+	sp = fp - 2
 	wLoc02 = bp
-	bp = fp - 0x0002
+	bp = fp - 2
 	SCZO = cond(wArg02 - 0x0000)
 	bp = wLoc02
 	sp = fp

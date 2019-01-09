@@ -17,6 +17,19 @@ project files contain additional information about a binary file,
 helpful to the decompilation process or for formatting the output.
 The decompiler engine then proceeds to analyze the input binary.
 
+<table>
+    <tr>
+        <td>
+            <a href="doc/img/mem-map-full.png"><img src="doc/img/mem-map-640.png" border="0" /></a><br />
+            Byte map view of a loaded ARM binary executable
+        </td>
+        <td>
+            <a href="doc/img/structure-full.png"><img src="doc/img/structure-640.png" border="0" /></a><br />
+            Decompiled view of a loaded ARM binary executable
+        </td>
+    </tr>
+</table>
+
 Reko has the ambition of supporting decompilation of various 
 processor architectures and executable file formats with minimal user
 intervention. For a complete list, see the
@@ -36,6 +49,34 @@ Users who can't or won't build Reko themselves can download the output
 of the [AppVeyor integration builder](https://ci.appveyor.com/project/uxmal/reko/build/artifacts).
 Naturally you can build the project from the sources: see "Hacking" 
 below.
+
+## Installing Reko
+
+### Windows users
+
+The following prerequisite software must be installed on your machine first:
+* .NET Framework 4.7.2 (https://www.microsoft.com/net/download/dotnet-framework-runtime)
+
+Download an MSI file from one of the places mentioned above, then simply run
+the installer.
+
+### Non-Windows users
+
+The following prerequisite software must be installed on your machine first:
+* mono version 5.14.0 (https://download.mono-project.com/archive/5.14.0/)
+
+**Note**: we've been unable to test Reko with the most recent version of mono, 5.16.0, because
+a bug in said version makes it impossible to build. This has been reported in mono/mono#11663.
+
+After installing mono, you can proceed by either downloading binaries directly
+from the integration build server, or by building Reko from sources (see `Hacking` 
+below).
+
+## Documentation
+
+To get acquainted with Reko's various features, you can read the 
+[user's guide](doc/guide/reko.md). If you're interested in the internal workings
+of the project, see the wiki.
 
 ## Getting support
 

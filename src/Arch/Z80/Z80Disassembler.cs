@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,8 +52,7 @@ namespace Reko.Arch.Z80
             {
                 Address = addr,
             };
-            byte op;
-            if (!rdr.TryReadByte(out op))
+            if (!rdr.TryReadByte(out byte op))
                 return Invalid(addr);
             
             var opRef = oprecs[op];
@@ -62,6 +61,7 @@ namespace Reko.Arch.Z80
             if (instr == null)
                 return Invalid(addr);
             instr.Address = addr;
+            instr.IClass |= op == 0 ? InstrClass.Zero : 0;
             instr.Length = (int)(rdr.Address - addr);
             return instr;
         }
@@ -75,7 +75,7 @@ namespace Reko.Arch.Z80
             };
         }
 
-        public Z80Instruction DecodeOperands(Opcode opcode, byte op, string fmt)
+        public Z80Instruction DecodeOperands(Opcode opcode, InstrClass iclass, byte op, string fmt)
         {
             var ops = new MachineOperand[2];
             var iOp = 0;
@@ -158,6 +158,7 @@ namespace Reko.Arch.Z80
                 }
             }
             instr.Code = opcode;
+            instr.IClass = iclass;
             instr.Length = (int)(rdr.Address - instr.Address);
             instr.Op1 = ops[0];
             instr.Op2 = ops[1];
@@ -264,20 +265,22 @@ namespace Reko.Arch.Z80
 
         private class SingleByteOpRec : OpRec
         {
-            public Opcode i8080Opcode;
-            public Opcode Z80Opcode;
-            public string Format;
+            public readonly Opcode i8080Opcode;
+            public readonly Opcode Z80Opcode;
+            public readonly InstrClass IClass;
+            public readonly string Format;
 
-            public SingleByteOpRec(Opcode i8080, Opcode z80, string format)
+            public SingleByteOpRec(Opcode i8080, Opcode z80, string format, InstrClass iclass = InstrClass.Linear)
             {
                 this.i8080Opcode = i8080;
                 this.Z80Opcode = z80;
+                this.IClass = iclass;
                 this.Format = format;
             }
 
             public override Z80Instruction Decode(Z80Disassembler disasm, byte op, string opFormat)
             {
-                return disasm.DecodeOperands(Z80Opcode, op, Format);
+                return disasm.DecodeOperands(Z80Opcode, IClass, op, Format);
             }
         }
 
@@ -333,7 +336,7 @@ namespace Reko.Arch.Z80
 
         private class CbPrefixOpRec : OpRec
         {
-            static Opcode[] cbOpcodes = new Opcode[] {
+            static readonly Opcode[] cbOpcodes = new Opcode[] {
                 Opcode.rlc,
                 Opcode.rrc,
                 Opcode.rl,
@@ -344,7 +347,7 @@ namespace Reko.Arch.Z80
                 Opcode.srl,
             };
 
-            static string[] cbFormats = new string[] {
+            static readonly string[] cbFormats = new string[] {
                 "R", "R", "R", "R", "R", "R", "Mb", "R", 
             };
 
@@ -359,6 +362,7 @@ namespace Reko.Arch.Z80
                 case 0:
                     return disasm.DecodeOperands(
                         cbOpcodes[(op >> 3) & 0x07],
+                        InstrClass.Linear,
                         op,
                         cbFormats[op & 0x07]);
                 case 1:
@@ -409,10 +413,10 @@ namespace Reko.Arch.Z80
         /// http://wikiti.brandonw.net/index.php?title=Z80_Instruction_Set
         /// http://www.zophar.net/fileuploads/2/10807fvllz/z80-1.txt
         /// </summary>
-        private static OpRec [] oprecs = new OpRec[] 
+        private static readonly OpRec [] oprecs = new OpRec[] 
         {
             // 00
-            new SingleByteOpRec(Opcode.nop, Opcode.nop, ""),
+            new SingleByteOpRec(Opcode.nop, Opcode.nop, "", InstrClass.Zero|InstrClass.Linear|InstrClass.Padding),
             new SingleByteOpRec(Opcode.lxi, Opcode.ld, "Wb,Iw"),
             new SingleByteOpRec(Opcode.stax, Opcode.ld, "B,a"),
             new SingleByteOpRec(Opcode.inx, Opcode.inc, "Wb"),
@@ -431,7 +435,7 @@ namespace Reko.Arch.Z80
             new SingleByteOpRec(Opcode.illegal, Opcode.rrca, ""),
 
             // 10
-            new SingleByteOpRec(Opcode.illegal, Opcode.djnz, "Jb"),
+            new SingleByteOpRec(Opcode.illegal, Opcode.djnz, "Jb", InstrClass.ConditionalTransfer),
             new SingleByteOpRec(Opcode.lxi, Opcode.ld, "Wd,Iw"),
             new SingleByteOpRec(Opcode.stax, Opcode.ld, "D,a"),
             new SingleByteOpRec(Opcode.inx, Opcode.inc, "Wd"),
@@ -440,7 +444,7 @@ namespace Reko.Arch.Z80
             new SingleByteOpRec(Opcode.mvi, Opcode.ld, "r,Ib"),
             new SingleByteOpRec(Opcode.illegal, Opcode.rla, ""),
 
-            new SingleByteOpRec(Opcode.illegal, Opcode.jr, "Jb"),
+            new SingleByteOpRec(Opcode.illegal, Opcode.jr, "Jb", InstrClass.Transfer),
             new SingleByteOpRec(Opcode.dad, Opcode.add, "Wh,Wd"),
             new SingleByteOpRec(Opcode.ldax, Opcode.ld, "a,D"),
             new SingleByteOpRec(Opcode.dcx, Opcode.dec, "Wd"),
@@ -450,7 +454,7 @@ namespace Reko.Arch.Z80
             new SingleByteOpRec(Opcode.illegal, Opcode.rra, ""),
 
             // 20
-            new SingleByteOpRec(Opcode.illegal, Opcode.jr, "Q,Jb"),
+            new SingleByteOpRec(Opcode.illegal, Opcode.jr, "Q,Jb", InstrClass.ConditionalTransfer),
             new SingleByteOpRec(Opcode.lxi, Opcode.ld, "Wh,Iw"),
             new SingleByteOpRec(Opcode.shld, Opcode.ld, "Ow,Wh"),
             new SingleByteOpRec(Opcode.inx, Opcode.inc, "Wh"),
@@ -459,7 +463,7 @@ namespace Reko.Arch.Z80
             new SingleByteOpRec(Opcode.mvi, Opcode.ld, "r,Ib"),
             new SingleByteOpRec(Opcode.daa, Opcode.daa, ""),
 
-            new SingleByteOpRec(Opcode.illegal, Opcode.jr, "Q,Jb"),
+            new SingleByteOpRec(Opcode.illegal, Opcode.jr, "Q,Jb", InstrClass.ConditionalTransfer),
             new SingleByteOpRec(Opcode.dad, Opcode.add, "Wh,Wh"),
             new SingleByteOpRec(Opcode.lhld, Opcode.ld, "Wh,Ow"),
             new SingleByteOpRec(Opcode.dcx, Opcode.dec, "Wh"),
@@ -469,7 +473,7 @@ namespace Reko.Arch.Z80
             new SingleByteOpRec(Opcode.cma, Opcode.cpl, ""),
 
             // 30
-            new SingleByteOpRec(Opcode.illegal, Opcode.jr, "Q,Jb"),
+            new SingleByteOpRec(Opcode.illegal, Opcode.jr, "Q,Jb", InstrClass.ConditionalTransfer),
             new SingleByteOpRec(Opcode.lxi, Opcode.ld, "Ws,Iw"),
             new SingleByteOpRec(Opcode.sta, Opcode.ld, "Ob,a"),
             new SingleByteOpRec(Opcode.inx, Opcode.inc, "Ws"),
@@ -551,7 +555,7 @@ namespace Reko.Arch.Z80
             new SingleByteOpRec(Opcode.mov, Opcode.ld, "Mb,R"),
             new SingleByteOpRec(Opcode.mov, Opcode.ld, "Mb,R"),
             new SingleByteOpRec(Opcode.mov, Opcode.ld, "Mb,R"),
-            new SingleByteOpRec(Opcode.hlt, Opcode.hlt, ""),
+            new SingleByteOpRec(Opcode.hlt, Opcode.hlt, "", InstrClass.Terminates),
             new SingleByteOpRec(Opcode.mov, Opcode.ld, "Mb,R"),
 
             new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
@@ -640,83 +644,83 @@ namespace Reko.Arch.Z80
             new SingleByteOpRec(Opcode.cmp, Opcode.cp, "a,R"),
 
             // C0
-            new SingleByteOpRec(Opcode.illegal, Opcode.ret, "C"),
+            new SingleByteOpRec(Opcode.illegal, Opcode.ret, "C", InstrClass.ConditionalTransfer),
             new SingleByteOpRec(Opcode.illegal, Opcode.pop, "Wb"),
-            new SingleByteOpRec(Opcode.jnz, Opcode.jp, "C,A"),
-            new SingleByteOpRec(Opcode.jmp, Opcode.jp, "A"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.call, "C,A"),
+            new SingleByteOpRec(Opcode.jnz, Opcode.jp, "C,A", InstrClass.ConditionalTransfer),
+            new SingleByteOpRec(Opcode.jmp, Opcode.jp, "A", InstrClass.Transfer),
+            new SingleByteOpRec(Opcode.illegal, Opcode.call, "C,A", InstrClass.ConditionalTransfer|InstrClass.Call),
             new SingleByteOpRec(Opcode.illegal, Opcode.push, "Wb"),
             new SingleByteOpRec(Opcode.adi, Opcode.add, "a,Ib"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.rst, "x00"),
+            new SingleByteOpRec(Opcode.illegal, Opcode.rst, "x00", InstrClass.Transfer|InstrClass.Call),
 
-            new SingleByteOpRec(Opcode.illegal, Opcode.ret, "C"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.ret, ""),
+            new SingleByteOpRec(Opcode.illegal, Opcode.ret, "C", InstrClass.ConditionalTransfer),
+            new SingleByteOpRec(Opcode.illegal, Opcode.ret, "", InstrClass.Transfer),
             new SingleByteOpRec(Opcode.jz, Opcode.jp, "C,A"),
             new CbPrefixOpRec(),
-            new SingleByteOpRec(Opcode.illegal, Opcode.call, "C,A"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.call, "A"),
+            new SingleByteOpRec(Opcode.illegal, Opcode.call, "C,A", InstrClass.ConditionalTransfer|InstrClass.Call),
+            new SingleByteOpRec(Opcode.illegal, Opcode.call, "A", InstrClass.Transfer|InstrClass.Call),
             new SingleByteOpRec(Opcode.aci, Opcode.adc, "a,Ib"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.rst, "x08"),
+            new SingleByteOpRec(Opcode.illegal, Opcode.rst, "x08", InstrClass.Transfer|InstrClass.Call),
 
             // D0
-            new SingleByteOpRec(Opcode.illegal, Opcode.ret, "C"),
+            new SingleByteOpRec(Opcode.illegal, Opcode.ret, "C", InstrClass.ConditionalTransfer),
             new SingleByteOpRec(Opcode.illegal, Opcode.pop, "Wd"),
-            new SingleByteOpRec(Opcode.jnc, Opcode.jp, "C,A"),
+            new SingleByteOpRec(Opcode.jnc, Opcode.jp, "C,A", InstrClass.ConditionalTransfer),
             new SingleByteOpRec(Opcode.illegal, Opcode.@out, "ob,a"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.call, "C,A"),
+            new SingleByteOpRec(Opcode.illegal, Opcode.call, "C,A", InstrClass.ConditionalTransfer|InstrClass.Call),
             new SingleByteOpRec(Opcode.illegal, Opcode.push, "Wd"),
             new SingleByteOpRec(Opcode.sui, Opcode.sub, "a,Ib"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.rst, "x10"),
+            new SingleByteOpRec(Opcode.illegal, Opcode.rst, "x10", InstrClass.Transfer|InstrClass.Call),
 
-            new SingleByteOpRec(Opcode.illegal, Opcode.ret, "C"),
+            new SingleByteOpRec(Opcode.illegal, Opcode.ret, "C", InstrClass.ConditionalTransfer),
             new SingleByteOpRec(Opcode.illegal, Opcode.exx, ""),
-            new SingleByteOpRec(Opcode.jc, Opcode.jp, "C,A"),
+            new SingleByteOpRec(Opcode.jc, Opcode.jp, "C,A", InstrClass.ConditionalTransfer),
             new SingleByteOpRec(Opcode.illegal, Opcode.@in, "a,ob"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.call, "C,A"),
+            new SingleByteOpRec(Opcode.illegal, Opcode.call, "C,A", InstrClass.ConditionalTransfer|InstrClass.Call),
             new IndexPrefixOpRec(Registers.ix),
             new SingleByteOpRec(Opcode.sbi, Opcode.sbc, "a,Ib"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.rst, "x18"),
+            new SingleByteOpRec(Opcode.illegal, Opcode.rst, "x18", InstrClass.Transfer|InstrClass.Call),
 
             // E0
-            new SingleByteOpRec(Opcode.illegal, Opcode.ret, "C"),
+            new SingleByteOpRec(Opcode.illegal, Opcode.ret, "C", InstrClass.ConditionalTransfer),
             new SingleByteOpRec(Opcode.illegal, Opcode.pop, "Wh"),
-            new SingleByteOpRec(Opcode.jpo, Opcode.jp, "C,A"),
+            new SingleByteOpRec(Opcode.jpo, Opcode.jp, "C,A", InstrClass.ConditionalTransfer),
             new SingleByteOpRec(Opcode.illegal, Opcode.ex, "Sw,Wh"),
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
             new SingleByteOpRec(Opcode.illegal, Opcode.push, "Wh"),
             new SingleByteOpRec(Opcode.illegal, Opcode.add, "a,Ib"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.rst, "x20"),
+            new SingleByteOpRec(Opcode.illegal, Opcode.rst, "x20", InstrClass.Transfer|InstrClass.Call),
 
             new SingleByteOpRec(Opcode.illegal, Opcode.add, "Ws,D"),
-            new SingleByteOpRec(Opcode.pchl, Opcode.jp, "Mw"),
-            new SingleByteOpRec(Opcode.jpe, Opcode.jp, "C,A"),
+            new SingleByteOpRec(Opcode.pchl, Opcode.jp, "Mw", InstrClass.Transfer),
+            new SingleByteOpRec(Opcode.jpe, Opcode.jp, "C,A", InstrClass.ConditionalTransfer),
             new SingleByteOpRec(Opcode.illegal, Opcode.ex, "Wd,Wh"),
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
             new EdPrefixOpRec(),
             new SingleByteOpRec(Opcode.illegal, Opcode.xor, "a,Ib"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.rst, "x28"),
+            new SingleByteOpRec(Opcode.illegal, Opcode.rst, "x28", InstrClass.Transfer|InstrClass.Call),
 
             // F0
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
             new SingleByteOpRec(Opcode.illegal, Opcode.pop, "Wa"),
-            new SingleByteOpRec(Opcode.jp, Opcode.jp, "C,A"),
+            new SingleByteOpRec(Opcode.jp, Opcode.jp, "C,A", InstrClass.ConditionalTransfer),
             new SingleByteOpRec(Opcode.di, Opcode.di, ""),
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
             new SingleByteOpRec(Opcode.illegal, Opcode.push, "Wa"),
             new SingleByteOpRec(Opcode.illegal, Opcode.or, "a,Ib"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.rst, "x30"),
+            new SingleByteOpRec(Opcode.illegal, Opcode.rst, "x30", InstrClass.Transfer|InstrClass.Call),
 
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
             new SingleByteOpRec(Opcode.sphl, Opcode.ld, "Ws,Wh"),
-            new SingleByteOpRec(Opcode.jm, Opcode.jp, "C,A"),
+            new SingleByteOpRec(Opcode.jm, Opcode.jp, "C,A", InstrClass.ConditionalTransfer),
             new SingleByteOpRec(Opcode.ei, Opcode.ei, ""),
             new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
             new IndexPrefixOpRec(Registers.iy),
             new SingleByteOpRec(Opcode.illegal, Opcode.cp, "a,Ib"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.rst, "x38"),
+            new SingleByteOpRec(Opcode.illegal, Opcode.rst, "x38", InstrClass.Transfer|InstrClass.Call),
         };
 
-        private static OpRec[] edOprecs = new OpRec[] 
+        private static readonly OpRec[] edOprecs = new OpRec[] 
         {
             // 40
             new SingleByteOpRec(Opcode.illegal, Opcode.@in, "r,[c"), 

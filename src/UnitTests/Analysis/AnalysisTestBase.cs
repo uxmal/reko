@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -213,12 +213,12 @@ namespace Reko.UnitTests.Analysis
                 new ImportResolver(project, program, eventListener),
                 sc);
 
-            scan.EnqueueImageSymbol(new ImageSymbol(asm.StartAddress), true);
+            scan.EnqueueImageSymbol(ImageSymbol.Procedure(program.Architecture, asm.StartAddress), true);
             foreach (var f in project.Programs)
             {
                 foreach (var sp in f.User.Procedures.Values)
                 {
-                    scan.EnqueueUserProcedure(sp);
+                    scan.EnqueueUserProcedure(program.Architecture, sp);
                 }
             }
             scan.ScanImage();
@@ -250,7 +250,13 @@ namespace Reko.UnitTests.Analysis
             AssertRunOutput(program, RunTest, sExp);
         }
 
-		protected void RunFileTest(string sourceFile, string configFile, string outputFile)
+        protected void RunStringTest(string sExp, ProcedureBuilder pb)
+        {
+            var program = BuildProgramMock(pb);
+            AssertRunOutput(program, RunTest, sExp);
+        }
+
+        protected void RunFileTest(string sourceFile, string configFile, string outputFile)
 		{
 			Program prog = RewriteMsdosAssembler(sourceFile, configFile);
             SaveRunOutput(prog, RunTest, outputFile);
@@ -361,6 +367,8 @@ namespace Reko.UnitTests.Analysis
             platform.Stub(p => p.MakeAddressFromLinear(0ul))
                 .IgnoreArguments()
                 .Do(new Func<ulong, Address>(ul => Address.Ptr32((uint) ul)));
+            platform.Stub(p => p.CreateTrashedRegisters())
+                .Return(new HashSet<RegisterStorage>());
             Given_Platform(platform);
         }
 	}

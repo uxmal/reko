@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -192,15 +192,15 @@ namespace Reko.ImageLoaders.LLVM
                 e = m.Cast(dstType, src);
                 break;
             case TokenType.inttoptr:
-                dstType = PrimitiveType.Create(IrDomain.Pointer, srcType.Size);
+                dstType = PrimitiveType.Create(IrDomain.Pointer, srcType.BitSize);
                 e = m.Cast(dstType, src);
                 break;
             case TokenType.sext:
-                dstType = PrimitiveType.Create(IrDomain.SignedInt, dstType.Size);
+                dstType = PrimitiveType.Create(IrDomain.SignedInt, dstType.BitSize);
                 e = m.Cast(dstType, src);
                 break;
             case TokenType.zext:
-                dstType = PrimitiveType.Create(IrDomain.UnsignedInt, dstType.Size);
+                dstType = PrimitiveType.Create(IrDomain.UnsignedInt, dstType.BitSize);
                 e = m.Cast(dstType, src);
                 break;
             case TokenType.ptrtoint:
@@ -288,7 +288,7 @@ namespace Reko.ImageLoaders.LLVM
             m.EnsureBlock(null);
             var dstType = builder.TranslateType(phi.Type);
             var dst = m.CreateLocalId("loc", dstType);
-            var stm = m.Phi(dst);
+            var stm = m.Emit(new PhiAssignment(dst));
             unresolvedPhis.Add(stm, phi);
             return 0;
         }
@@ -297,16 +297,18 @@ namespace Reko.ImageLoaders.LLVM
         {
             foreach (var de in unresolvedPhis)
             {
-                var args = new Expression[de.Value.Arguments.Count];
+                var args = new List<PhiArgument>(de.Value.Arguments.Count);
                 var block = de.Key.Block;
                 var type = builder.TranslateType(de.Value.Type);
                 foreach (var arg in de.Value.Arguments)
                 {
                     var val = MakeValueExpression(arg.Item1, type);
-                    args[block.Pred.IndexOf(m.BlockOf(arg.Item2.Name, false))] = val;
+                    args.Add(new PhiArgument(
+                        m.BlockOf(arg.Item2.Name, false),
+                        val));
                 }
                 var phi = (PhiAssignment)de.Key.Instruction;
-                phi.Src = new PhiFunction(type, args);
+                phi.Src = new PhiFunction(type, args.ToArray());
             }
         }
 
@@ -370,7 +372,7 @@ namespace Reko.ImageLoaders.LLVM
             case Constant c:
                 if (c.Value == null)
                 {
-                    var w = PrimitiveType.CreateWord(dt.Size);
+                    var w = PrimitiveType.CreateWord(dt.BitSize);
                     var v = IrConstant.Create(w, 0);
                     v.DataType = w;
                     return v;

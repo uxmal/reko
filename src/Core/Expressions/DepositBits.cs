@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,8 @@
  */
 #endregion
 
+using Reko.Core.Operators;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -81,7 +83,12 @@ namespace Reko.Core.Expressions
 			return new DepositBits(src.CloneExpression(), bits.CloneExpression(), bitPos);
 		}
 
-		public Expression Source
+        public override Expression Invert()
+        {
+            return new UnaryExpression(Operator.Not, PrimitiveType.Bool, this);
+        }
+
+        public Expression Source
 		{
 			get { return src; }
 			set { src = value; }

@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -141,7 +141,7 @@ namespace Reko.Gui.Design
             if (resultSvc == null)
                 return;
             var arch = procedure.Architecture;
-            var rdr = program.CreateImageReader(program.ImageMap.BaseAddress);
+            var rdr = program.CreateImageReader(arch, program.ImageMap.BaseAddress);
             var addrControl = arch.CreatePointerScanner(
                 program.SegmentMap,
                 rdr,

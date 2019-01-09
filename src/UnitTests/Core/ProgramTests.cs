@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -104,7 +104,7 @@ namespace Reko.UnitTests.Core
             Given_Image(0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
             mr.ReplayAll();
 
-            var gbl1 = program.ModifyUserGlobal(addrBase, new PrimitiveType_v1 { Domain = Domain.Real, ByteSize = 8 }, "dValue");
+            var gbl1 = program.ModifyUserGlobal(arch, addrBase, new PrimitiveType_v1 { Domain = Domain.Real, ByteSize = 8 }, "dValue");
             Assert.IsNotNull(gbl1);
             Assert.AreEqual("dValue", gbl1.Name);
             Assert.AreEqual(addrBase.ToString(), gbl1.Address.ToString());
@@ -118,7 +118,7 @@ namespace Reko.UnitTests.Core
             Assert.AreEqual("00010000", item.Address.ToString());
             Assert.AreEqual(8, item.Size);
 
-            var gbl2 = program.ModifyUserGlobal(addrBase, new PrimitiveType_v1 { Domain = Domain.Real, ByteSize = 4 }, "fValue");
+            var gbl2 = program.ModifyUserGlobal(arch, addrBase, new PrimitiveType_v1 { Domain = Domain.Real, ByteSize = 4 }, "fValue");
             Assert.IsNotNull(gbl2);
             Assert.AreSame(gbl1, gbl2);
             Assert.AreEqual("fValue", gbl2.Name);
@@ -155,6 +155,7 @@ namespace Reko.UnitTests.Core
             mr.ReplayAll();
 
             var gbl = program.ModifyUserGlobal(
+                arch,
                 addrBase,
                 new PrimitiveType_v1
                 {
@@ -215,7 +216,7 @@ namespace Reko.UnitTests.Core
             Given_Image(0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x00, 0x00);
             mr.ReplayAll();
 
-            Assert.AreEqual(4u, program.GetDataSize(addrBase, PrimitiveType.Int32));
+            Assert.AreEqual(4u, program.GetDataSize(program.Architecture, addrBase, PrimitiveType.Int32));
         }
 
 
@@ -227,7 +228,7 @@ namespace Reko.UnitTests.Core
             mr.ReplayAll();
 
             var dt = StringType.NullTerminated(PrimitiveType.Char);
-            Assert.AreEqual(6u, program.GetDataSize(addrBase, dt), "5 bytes for 'hello' and 1 for the terminating null'");
+            Assert.AreEqual(6u, program.GetDataSize(program.Architecture, addrBase, dt), "5 bytes for 'hello' and 1 for the terminating null'");
         }
 	}
 }

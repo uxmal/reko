@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -58,11 +58,6 @@ namespace Reko.Core.CLanguage
         public int VisitPointer(PointerType_v1 pointer)
         {
             return 4;           //$BUGBUG: architecture dependent
-        }
-
-        public int VisitQualifiedType(QualifiedType_v1 qt)
-        {
-            return qt.DataType.Accept(this);
         }
 
         public int VisitReference(ReferenceType_v1 pointer)

@@ -1,0 +1,269 @@
+---  E:\3.46\pic18-lt\cxx-framework\src\extended\proc\p18f1230.asm  ------------------------------
+   11A    0E00     MOVLW 0
+   11C    6EF3     MOVWF PRODL, ACCESS
+   11E    EE00     LFSR 0, 0
+   120    F000     NOP
+   122    0E01     MOVLW 0x1
+   124    D801     RCALL zero_block
+   126    0012     RETURN 0
+   128    60EA     CPFSLT FSR0H, ACCESS
+   12A    D002     BRA compare_l
+   12C    6AEE     CLRF POSTINC0, ACCESS
+   12E    D7FC     BRA zero_block
+   130    50F3     MOVF PRODL, W, ACCESS
+   132    60E9     CPFSLT FSR0L, ACCESS
+   134    0012     RETURN 0
+   136    6AEE     CLRF POSTINC0, ACCESS
+   138    D7FC     BRA loop_l
+---  E:\3.46\pic18-lt\cxx-framework\src\extended\startup\c018i_e.c  ------------------------------
+   000    EF9D     GOTO _startup
+   002    F000     NOP
+   004    0012     RETURN 0
+   13A    EE10     LFSR 0x1, 0x80
+   13C    F080     NOP
+   13E    EE20     LFSR 0x2, 0x80
+   140    F080     NOP
+   142    6AF8     CLRF TBLPTRU, ACCESS
+   144    EC07     CALL _do_cinit, 0
+   146    F000     NOP
+   148    ECAA     CALL __init, 0
+   14A    F000     NOP
+   14C    EC56     CALL main, 0
+   14E    F000     NOP
+   150    D7FB     BRA 0x148
+   152    0012     RETURN 0
+   00E    0E06     MOVLW 0x6
+   010    6EF6     MOVWF TBLPTRL, ACCESS
+   012    0E00     MOVLW 0
+   014    6EF7     MOVWF TBLPTRH, ACCESS
+   016    0E00     MOVLW 0
+   018    6EF8     MOVWF TBLPTRU, ACCESS
+   01A    0100     MOVLB 0
+   01C    0009     TBLRD*+
+   01E    50F5     MOVF TABLAT, W, ACCESS
+   020    6FC5     MOVWF curr_entry, BANKED
+   022    0009     TBLRD*+
+   024    50F5     MOVF TABLAT, W, ACCESS
+   026    6FC6     MOVWF 0xc6, BANKED
+   028    E103     BNZ 0x30
+   02A    67C5     TSTFSZ curr_entry, BANKED
+   02C    D001     BRA 0x30
+   02E    D03D     BRA 0xaa
+   030    0009     TBLRD*+
+   032    50F5     MOVF TABLAT, W, ACCESS
+   034    6FC0     MOVWF prom, BANKED
+   036    0009     TBLRD*+
+   038    50F5     MOVF TABLAT, W, ACCESS
+   03A    6FC1     MOVWF 0xc1, BANKED
+   03C    0009     TBLRD*+
+   03E    50F5     MOVF TABLAT, W, ACCESS
+   040    6FC2     MOVWF 0xc2, BANKED
+   042    0009     TBLRD*+
+   044    0009     TBLRD*+
+   046    50F5     MOVF TABLAT, W, ACCESS
+   048    6EE9     MOVWF FSR0L, ACCESS
+   04A    0009     TBLRD*+
+   04C    50F5     MOVF TABLAT, W, ACCESS
+   04E    6EEA     MOVWF FSR0H, ACCESS
+   050    0009     TBLRD*+
+   052    0009     TBLRD*+
+   054    0009     TBLRD*+
+   056    50F5     MOVF TABLAT, W, ACCESS
+   058    6FC3     MOVWF curr_byte, BANKED
+   05A    0009     TBLRD*+
+   05C    50F5     MOVF TABLAT, W, ACCESS
+   05E    6FC4     MOVWF 0xc4, BANKED
+   060    0009     TBLRD*+
+   062    0009     TBLRD*+
+   064    CFF6     MOVFF TBLPTRL, data_ptr
+   066    F0C7     NOP
+   068    CFF7     MOVFF TBLPTRH, 0xc8
+   06A    F0C8     NOP
+   06C    CFF8     MOVFF TBLPTRU, 0xc9
+   06E    F0C9     NOP
+   070    C0C0     MOVFF prom, TBLPTRL
+   072    FFF6     NOP
+   074    C0C1     MOVFF 0xc1, TBLPTRH
+   076    FFF7     NOP
+   078    C0C2     MOVFF 0xc2, TBLPTRU
+   07A    FFF8     NOP
+   07C    0100     MOVLB 0
+   07E    53C3     MOVF curr_byte, F, BANKED
+   080    E102     BNZ 0x86
+   082    53C4     MOVF 0xc4, F, BANKED
+   084    E007     BZ 0x94
+   086    0009     TBLRD*+
+   088    50F5     MOVF TABLAT, W, ACCESS
+   08A    6EEE     MOVWF POSTINC0, ACCESS
+   08C    07C3     DECF curr_byte, F, BANKED
+   08E    E2F8     BC 0x80
+   090    07C4     DECF 0xc4, F, BANKED
+   092    D7F9     BRA 0x86
+   094    C0C7     MOVFF data_ptr, TBLPTRL
+   096    FFF6     NOP
+   098    C0C8     MOVFF 0xc8, TBLPTRH
+   09A    FFF7     NOP
+   09C    C0C9     MOVFF 0xc9, TBLPTRU
+   09E    FFF8     NOP
+   0A0    0100     MOVLB 0
+   0A2    07C5     DECF curr_entry, F, BANKED
+   0A4    0E00     MOVLW 0
+   0A6    5BC6     SUBWFB 0xc6, F, BANKED
+   0A8    D7BF     BRA 0x28
+   0AA    0012     RETURN 0
+---  E:\3.46\pic18-lt\cxx-framework\src\extended\stdclib\__init.c  -------------------------------
+   154    0012     RETURN 0
+---  L:\Microchip\PIC\Projects\Reko\PIC18Extd\main.c  --------------------------------------------
+1:                 //=============================================================================
+2:                 // Filename: MAIN.C
+3:                 //=============================================================================
+4:                 //=============================================================================
+5:                 // Compiled using MPLAB-C18 V3.47
+6:                 // Target processor: PIC18F1230
+7:                 //=============================================================================
+8:                 //
+9:                 // Example code to generate a TMR0 interrupt and toggle LEDs on pins RB0 and
+10:                // RB7. Toggles RB0 in the interrupt routine and sets RB7 to match RB0 in the
+11:                // main routine. This demonstrates that code is executing in both routines.
+12:                //
+13:                //=============================================================================
+14:                
+15:                //----------------------------------------------------------------------------
+16:                
+17:                #include <p18cxxx.h>
+18:                
+19:                #pragma config OSC = HS
+20:                #pragma config XINST = ON
+21:                
+22:                //----------------------------------------------------------------------------
+23:                
+24:                void main (void);
+25:                void doloop (char flag);
+26:                void InterruptHandlerHigh (void);
+27:                
+28:                union
+29:                {
+30:                  struct
+31:                  {
+32:                    unsigned Timeout:1;         // flag to indicate a TMR0 timeout
+33:                    unsigned None:7;
+34:                  } Bit;
+35:                  unsigned char Byte;
+36:                } Flags;
+37:                
+38:                //----------------------------------------------------------------------------
+39:                // Main routine
+40:                
+41:                void main ()
+42:                {
+43:                  Flags.Byte = 0;
+   0AC    0100     MOVLB 0
+   0AE    6BCA     CLRF Flags, BANKED
+44:                  INTCON = 0x20;                //disable global and enable TMR0 interrupt
+   0B0    0E20     MOVLW 0x20
+   0B2    6EF2     MOVWF INTCON, ACCESS
+45:                  INTCON2 = 0x84;               //TMR0 high priority
+   0B4    0E84     MOVLW 0x84
+   0B6    6EF1     MOVWF INTCON2, ACCESS
+46:                  RCONbits.IPEN = 1;            //enable priority levels
+   0B8    8ED0     BSF RCON, 0x7, ACCESS
+47:                  TMR0H = 0;                    //clear timer
+   0BA    6AD7     CLRF TMR0H, ACCESS
+48:                  TMR0L = 0;                    //clear timer
+   0BC    6AD6     CLRF TMR0L, ACCESS
+49:                  T0CON = 0x82;                 //set up timer0 - prescaler 1:8
+   0BE    0E82     MOVLW 0x82
+   0C0    6ED5     MOVWF T0CON, ACCESS
+50:                  INTCONbits.GIEH = 1;          //enable interrupts
+   0C2    8EF2     BSF INTCON, 0x7, ACCESS
+51:                  TRISB = 0;
+   0C4    6A93     CLRF TRISB, ACCESS
+52:                
+53:                  doloop(1);
+   0C6    0E01     MOVLW 0x1
+   0C8    6EE6     MOVWF POSTINC1, ACCESS
+   0CA    D802     RCALL doloop
+   0CC    E941     SUBFSR FSR1, 0x1
+54:                
+55:                }
+   0CE    0012     RETURN 0
+56:                
+57:                void doloop(char loop)
+   0D0    CFD9     MOVFF FSR2L, POSTINC1
+   0D2    FFE6     NOP
+   0D4    CFE1     MOVFF FSR1L, FSR2L
+   0D6    FFD9     NOP
+   0D8    E982     SUBFSR FSR2, 0x2
+58:                {
+59:                while (loop)
+   0DA    5000     MOVF [0], W
+   0DC    E00B     BZ 0xf4
+   0F2    D7F3     BRA 0xda
+60:                    {
+61:                      if (Flags.Bit.Timeout == 1)
+   0DE    0100     MOVLB 0
+   0E0    A1CA     BTFSS Flags, 0, BANKED
+   0E2    D007     BRA 0xf2
+62:                        {                                  //timeout?
+63:                          Flags.Bit.Timeout = 0;           //clear timeout indicor
+   0E4    91CA     BCF Flags, 0, BANKED
+64:                          LATBbits.LATB7 = LATBbits.LATB0; //copy LED state from RB0 to RB7
+   0E6    508A     MOVF LATB, W, ACCESS
+   0E8    0B01     ANDLW 0x1
+   0EA    E002     BZ 0xf0
+   0EC    8E8A     BSF LATB, 0x7, ACCESS
+   0EE    D001     BRA 0xf2
+   0F0    9E8A     BCF LATB, 0x7, ACCESS
+65:                        }
+66:                    }
+67:                
+68:                }
+   0F4    E941     SUBFSR FSR1, 0x1
+   0F6    CFE7     MOVFF INDF1, FSR2L
+   0F8    FFD9     NOP
+   0FA    0012     RETURN 0
+69:                
+70:                //----------------------------------------------------------------------------
+71:                // High priority interrupt vector
+72:                
+73:                #pragma code InterruptVectorHigh = 0x08
+74:                void InterruptVectorHigh (void)
+75:                {
+76:                  _asm
+77:                    goto InterruptHandlerHigh //jump to interrupt routine
+   008    EF7E     GOTO InterruptHandlerHigh
+   00A    F000     NOP
+78:                  _endasm
+79:                }
+   00C    0012     RETURN 0
+80:                
+81:                //----------------------------------------------------------------------------
+82:                // High priority interrupt routine
+83:                
+84:                #pragma code
+85:                #pragma interrupt InterruptHandlerHigh
+86:                
+87:                void InterruptHandlerHigh ()
+   0FC    CFDA     MOVFF FSR2H, PREINC1
+   0FE    FFE4     NOP
+   100    CFE2     MOVFF FSR1H, FSR2H
+   102    FFDA     NOP
+   104    52E6     MOVF POSTINC1, F, ACCESS
+88:                {
+89:                  if (INTCONbits.TMR0IF)
+   106    A4F2     BTFSS INTCON, 0x2, ACCESS
+   108    D004     BRA 0x112
+90:                    {                                   //check for TMR0 overflow
+91:                      INTCONbits.TMR0IF = 0;            //clear interrupt flag
+   10A    94F2     BCF INTCON, 0x2, ACCESS
+92:                      Flags.Bit.Timeout = 1;            //indicate timeout
+   10C    0100     MOVLB 0
+   10E    81CA     BSF Flags, 0, BANKED
+93:                      LATBbits.LATB0 = !LATBbits.LATB0; //toggle LED on RB0
+   110    708A     BTG LATB, 0, ACCESS
+94:                    }
+95:                }
+   112    52E5     MOVF POSTDEC1, F, ACCESS
+   114    CFE5     MOVFF POSTDEC1, FSR2H
+   116    FFDA     NOP
+   118    0011     RETFIE 0x1

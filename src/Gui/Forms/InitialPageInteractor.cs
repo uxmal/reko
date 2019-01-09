@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -137,8 +137,15 @@ namespace Reko.Gui.Forms
                 Program program = Decompiler.LoadRawImage(file, details);
             });
             var browserSvc = Services.RequireService<IProjectBrowserService>();
-            browserSvc.Load(Decompiler.Project);
-            ShowLowLevelWindow();
+            if (Decompiler.Project != null)
+            {
+                browserSvc.Load(Decompiler.Project);
+                ShowLowLevelWindow();
+            }
+            else
+            {
+                browserSvc.Clear();
+            }
             return false;   // We never open projects this way.
         }
 

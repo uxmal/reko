@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -266,6 +266,11 @@ namespace Reko.Arch.X86
         public override RegisterStorage[] GetRegisters()
         {
             return Registers.All.Where(a => a != null).ToArray();
+        }
+
+        public override List<RtlInstruction> InlineCall(Address addrCallee, Address addrContinuation, EndianImageReader rdr, IStorageBinder binder)
+        {
+            return this.mode.InlineCall(addrCallee, addrContinuation, rdr, binder);
         }
 
         public override void LoadUserOptions(Dictionary<string, object> options)

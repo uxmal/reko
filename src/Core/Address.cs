@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -240,8 +240,6 @@ namespace Reko.Core
             {
                 try
                 {
-                    if (s[0] == 0xFEFF)
-                        s = s.Substring(1);
                     result = Ptr32(Convert.ToUInt32(s, 16));
                     return true;
                 }

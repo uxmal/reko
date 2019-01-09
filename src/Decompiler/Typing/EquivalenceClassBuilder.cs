@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -36,14 +37,16 @@ namespace Reko.Typing
 	{
 		private TypeFactory factory;
 		private TypeStore store;
+        private DecompilerEventListener listener;
 		private FunctionType signature;
         private Dictionary<ushort, TypeVariable> segTypevars;
         private Dictionary<string, EquivalenceClass> typeReferenceClasses;
 
-		public EquivalenceClassBuilder(TypeFactory factory, TypeStore store)
+		public EquivalenceClassBuilder(TypeFactory factory, TypeStore store, DecompilerEventListener listener)
         {
 			this.factory = factory;
 			this.store = store;
+            this.listener = listener;
 			this.signature = null;
             this.segTypevars = new Dictionary<ushort, TypeVariable>();
             this.typeReferenceClasses = new Dictionary<string, EquivalenceClass>();
@@ -57,8 +60,13 @@ namespace Reko.Typing
             tvGlobals.OriginalDataType = program.Globals.DataType;
 
             EnsureSegmentTypeVariables(program.SegmentMap.Segments.Values);
+            int cProc = program.Procedures.Count;
+            int i = 0;
             foreach (Procedure proc in program.Procedures.Values)
             {
+                if (listener.IsCanceled())
+                    return;
+                listener.ShowProgress("Gathering primitive datatypes from instructions.", i++, cProc);
                 this.signature = proc.Signature;
                 EnsureSignatureTypeVariables(this.signature);
                 
@@ -71,7 +79,6 @@ namespace Reko.Typing
 
         public void EnsureSegmentTypeVariables(IEnumerable<ImageSegment> segments)
         {
-
             foreach (var segment in segments.Where(s => s.Identifier != null))
             {
                 var selector = segment.Address.Selector;
@@ -317,10 +324,10 @@ namespace Reko.Typing
 		public override void VisitPhiFunction(PhiFunction phi)
 		{
 			TypeVariable tPhi = EnsureTypeVariable(phi);
-			for (int i = 0; i < phi.Arguments.Length; ++i)
+			foreach (var arg in phi.Arguments)
 			{
-				phi.Arguments[i].Accept(this);
-				store.MergeClasses(tPhi, phi.Arguments[i].TypeVariable);
+				arg.Value.Accept(this);
+				store.MergeClasses(tPhi, arg.Value.TypeVariable);
 			}
 		}
 
@@ -328,7 +335,7 @@ namespace Reko.Typing
 		{
 			EnsureTypeVariable(pc);
 			VisitProcedure(pc.Procedure);
-			if (pc.Procedure.Signature != null)
+			if (pc.Procedure.Signature.ParametersValid)
 			{
 				store.MergeClasses(pc.TypeVariable, pc.Procedure.Signature.TypeVariable);
 				signature = pc.Procedure.Signature;
@@ -337,24 +344,21 @@ namespace Reko.Typing
 
 		public void VisitProcedure(ProcedureBase proc)
 		{
-			if (proc.Signature != null)
+			if (proc.Signature.TypeVariable == null)
 			{
-				if (proc.Signature.TypeVariable == null)
-				{
-					proc.Signature.TypeVariable = store.EnsureExpressionTypeVariable(
-						factory,
-                        new Identifier("signature of " + proc.Name, VoidType.Instance, null),
-						null);
-				}
-				if (proc.Signature.Parameters != null)
-				{
-					foreach (Identifier id in proc.Signature.Parameters)
-					{
-						id.Accept(this);
-					}
-				}
-				//$REVIEW: return type?
+				proc.Signature.TypeVariable = store.EnsureExpressionTypeVariable(
+					factory,
+                    new Identifier("signature of " + proc.Name, VoidType.Instance, null),
+					null);
 			}
+			if (proc.Signature.Parameters != null)
+			{
+				foreach (Identifier id in proc.Signature.Parameters)
+				{
+					id.Accept(this);
+				}
+			}
+			//$REVIEW: return type?
 		}
 
 		public override void VisitSlice(Slice slice)

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -118,7 +118,7 @@ namespace Reko.Scanning
             // by the processor. Starting with known "roots", try to
             // remove as many invalid blocks as possible.
 
-            var hsc = new HeuristicProcedureScanner(
+            var hsc = new BlockConflictResolver(
                 program,
                 sr,
                 program.SegmentMap.IsValidAddress,
@@ -196,7 +196,8 @@ namespace Reko.Scanning
 
         private void AddBlocks(HeuristicProcedure hproc)
         {
-            var proc = Procedure.Create(program.Architecture, hproc.BeginAddress, hproc.Frame);
+            var name = program.NamingPolicy.ProcedureName(hproc.BeginAddress);
+            var proc = new Procedure(program.Architecture, name, hproc.BeginAddress, hproc.Frame);
             foreach (var block in hproc.Cfg.Nodes.Where(bb => bb.Instructions.Count > 0))
             {
                 var last = block.Instructions.Last();
@@ -229,8 +230,7 @@ namespace Reko.Scanning
 
         private Tuple<MemoryArea, Address, Address> CreateUnscannedArea(KeyValuePair<Address, ImageMapItem> de)
         {
-            ImageSegment seg;
-            if (!this.program.SegmentMap.TryFindSegment(de.Key, out seg))
+            if (!this.program.SegmentMap.TryFindSegment(de.Key, out var seg))
                 return null;
             if (!seg.IsExecutable)
                 return null;
@@ -381,7 +381,7 @@ namespace Reko.Scanning
             {
                 var addrEnd = block.GetEndAddress();
                 var sb = new StringBuilder();
-                var rdr = program.CreateImageReader(block.Address);
+                var rdr = program.CreateImageReader(program.Architecture, block.Address);
                 sb.AppendFormat("{0} - {1} ", block.Address, addrEnd);
                 while (rdr.Address < addrEnd)
                 {

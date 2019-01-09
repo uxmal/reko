@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -114,10 +114,7 @@ namespace Reko.ImageLoaders.OdbgScript
             var syms = new SortedList<Address, ImageSymbol>();
             if (OriginalEntryPoint != null)
             {
-                var sym = new ImageSymbol(OriginalEntryPoint)
-                {
-                    ProcessorState = Architecture.CreateProcessorState()
-                };
+                var sym = ImageSymbol.Procedure(program.Architecture, OriginalEntryPoint, state:Architecture.CreateProcessorState());
                 syms.Add(sym.Address, sym);
                 eps.Add(sym);
             }

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -82,7 +82,7 @@ namespace Reko.UnitTests.Environments.Windows
                 null,
                 new List<DataType> {
                     PrimitiveType.Char,
-                    new Pointer(PrimitiveType.Int32, 8),
+                    new Pointer(PrimitiveType.Int32, 64),
                     PrimitiveType.UInt32,
                     PrimitiveType.Int32,
                     PrimitiveType.Int16,
@@ -101,12 +101,12 @@ namespace Reko.UnitTests.Environments.Windows
                 null,
                 new List<DataType> {
                     PrimitiveType.Char,
-                    new Pointer(PrimitiveType.Int32, 8),
+                    new Pointer(PrimitiveType.Int32, 64),
                     PrimitiveType.UInt32,
                     PrimitiveType.Int32,
                     PrimitiveType.Int16,
                     PrimitiveType.WChar,
-                    new Pointer(PrimitiveType.Int32, 8),
+                    new Pointer(PrimitiveType.Int32, 64),
                 });
             var sExp = "Stk: 0 void (r16, r17, r18, r19, r20, r21, Stack +0000)";
             AssertEqual(sExp, ccr);
@@ -127,7 +127,7 @@ namespace Reko.UnitTests.Environments.Windows
 
         private Pointer Ptr(DataType dt)
         {
-            return new Pointer(dt, 8);
+            return new Pointer(dt, 64);
         }
 
         [Test]

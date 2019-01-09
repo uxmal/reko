@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -138,7 +138,7 @@ namespace Reko.UnitTests.Arch.Z80
         {
             BuildTest(0x10, 0xFE);
             AssertCode(
-                "0|L--|0100(2): 2 instructions",
+                "0|T--|0100(2): 2 instructions",
                 "1|L--|b = b - 0x01",
                 "2|T--|if (b != 0x00) branch 0100");
         }

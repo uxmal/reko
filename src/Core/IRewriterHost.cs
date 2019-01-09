@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,13 @@ namespace Reko.Core
     public interface IRewriterHost 
     {
         PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity);
+        /// <summary>
+        /// Generates a call to an intrinsic procedure named <paramref name="name"/>.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="returnType"></param>
+        /// <param name="args"></param>
+        /// <returns>An Application expression.</returns>
         Expression PseudoProcedure(string name, DataType returnType, params Expression [] args);
         Expression PseudoProcedure(string name, ProcedureCharacteristics c, DataType returnType, params Expression [] args);
 
@@ -39,8 +46,8 @@ namespace Reko.Core
         /// <param name="addrInstr"></param>
         /// <returns></returns>
         Expression GetImport(Address addrThunk, Address addrInstr);
-        ExternalProcedure GetImportedProcedure(Address addrThunk, Address addrInstr);
-        ExternalProcedure GetInterceptedCall(Address addrImportThunk);
+        ExternalProcedure GetImportedProcedure(IProcessorArchitecture arch, Address addrThunk, Address addrInstr);
+        ExternalProcedure GetInterceptedCall(IProcessorArchitecture arch, Address addrImportThunk);
 
         void Error(Address address, string format, params object[] args);
         void Warn(Address address, string format, params object[] args);

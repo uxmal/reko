@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -113,11 +113,6 @@ namespace Reko.Typing
         public bool VisitPrimitive(PrimitiveType pt)
         {
             return false;
-        }
-
-        public bool VisitQualifiedType(QualifiedType qt)
-        {
-            return Find(qt.DataType);
         }
 
         public bool VisitReference(ReferenceTo refTo)

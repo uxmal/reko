@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,14 +33,14 @@ namespace Reko.Core
     /// </summary>
 	public class ExternalProcedure : ProcedureBase
 	{
-		public ExternalProcedure(string name, FunctionType signature) : base(name)
-		{
-			this.Signature = signature;
-		}
+        public ExternalProcedure(string name, FunctionType signature) : base(name)
+        {
+            this.Signature = signature ?? throw new ArgumentNullException(nameof(signature), $"External procedure {name} must have a signature.");
+        }
 
         public ExternalProcedure(string name, FunctionType signature, ProcedureCharacteristics chars) : base(name)
         {
-            this.Signature = signature;
+            this.Signature = signature ?? throw new ArgumentNullException(nameof(signature));
             this.Characteristics = chars;
         }
 

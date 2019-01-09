@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -203,7 +203,7 @@ namespace Reko.UnitTests.Environments.Windows
             var mod = lib.Modules["FOO.DLL"];
             var _DebugOutput = mod.ServicesByOrdinal[328];
             Assert.AreEqual(
-                "void _DebugOutput(Stack word16 wArg04, Stack (ptr char) ptrArg06, Stack <unknown> ...)" + nl +
+                "void _DebugOutput(Stack word16 wArg04, Stack (ptr32 char) ptrArg06, Stack <unknown> ...)" + nl +
                 "// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1" + nl,
                 _DebugOutput.Signature.ToString("_DebugOutput", FunctionType.EmitFlags.AllDetails));
         }

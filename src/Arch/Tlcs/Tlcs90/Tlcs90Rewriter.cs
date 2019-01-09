@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,7 +42,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
         private Tlcs90Architecture arch;
         private IEnumerator<Tlcs90Instruction> dasm;
         private Tlcs90Instruction instr;
-        private RtlClass rtlc;
+        private InstrClass rtlc;
         private RtlEmitter m;
 
         public Tlcs90Rewriter(Tlcs90Architecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
@@ -60,7 +60,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             while (dasm.MoveNext())
             {
                 this.instr = dasm.Current;
-                rtlc = RtlClass.Linear;
+                rtlc = instr.InstructionClass;
                 var instrs = new List<RtlInstruction>();
                 this.m = new RtlEmitter(instrs);
                 switch (instr.Opcode)
@@ -68,8 +68,14 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 default:
                     EmitUnitTest();
                     Invalid();
+                    host.Warn(
+                       instr.Address,
+                       string.Format(
+                           "TLCS-90 instruction '{0}' not supported yet.",
+                           instr.Opcode));
+
                     break;
-                case Opcode.invalid: rtlc = RtlClass.Invalid; m.Invalid(); break;
+                case Opcode.invalid: m.Invalid(); break;
                 case Opcode.adc: RewriteAdcSbc(m.IAdd, "**-**V0*"); break;
                 case Opcode.add: RewriteBinOp(m.IAdd, "**-***0*"); break;
                 case Opcode.and: RewriteBinOp(m.And,  "**-10*00"); break;
@@ -143,7 +149,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                string.Format(
                    "Rewriting of TLCS-90 instruction '{0}' not implemented yet.",
                    instr.Opcode));
-            rtlc = RtlClass.Invalid;
+            rtlc = InstrClass.Invalid;
             m.Invalid();
         }
 

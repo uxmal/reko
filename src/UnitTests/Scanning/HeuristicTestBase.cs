@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -105,7 +105,7 @@ namespace Reko.UnitTests.Scanning
         {
             var bytes = HexStringToBytes(sBytes);
             var addr = Address.Ptr32(uAddr);
-            var w = program.CreateImageWriter(addr);
+            var w = program.CreateImageWriter(program.Architecture, addr);
             w.WriteBytes(bytes);
             program.ImageMap.AddItemWithSize(
                 addr,
@@ -117,7 +117,7 @@ namespace Reko.UnitTests.Scanning
 
         protected void Given_NoImportedProcedures()
         {
-            host.Stub(h => h.GetImportedProcedure(null, null))
+            host.Stub(h => h.GetImportedProcedure(null, null, null))
                 .IgnoreArguments()
                 .Return(null);
             host.Stub(h => h.GetImport(null, null))

@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,6 +52,44 @@ namespace Reko.UnitTests.Core.Lib
             Assert.IsFalse(Bits.IsEvenPowerOfTwo(3), "3 isn't power of two");
             Assert.IsFalse(Bits.IsEvenPowerOfTwo(7), "7 isn't power of two");
             Assert.IsFalse(Bits.IsEvenPowerOfTwo(127), "127 isn't power of two");
+        }
+
+        [Test]
+        public void Bits_RotateR_8bit()
+        {
+            Assert.AreEqual(0x12, Bits.RotateR(8, 0x12, 0));
+            Assert.AreEqual(0x09, Bits.RotateR(8, 0x12, 1));
+            Assert.AreEqual(0x84, Bits.RotateR(8, 0x12, 2));
+        }
+
+        [Test]
+        public void Bits_CountLeadingZeros_0()
+        {
+            Assert.AreEqual(64, Bits.CountLeadingZeros(64, 0));
+        }
+
+        [Test]
+        public void Bits_CountLeadingZeros_1()
+        {
+            Assert.AreEqual(63, Bits.CountLeadingZeros(64, 1));
+        }
+
+        [Test]
+        public void Bits_CountLeadingZeros_1_16bitWord()
+        {
+            Assert.AreEqual(15, Bits.CountLeadingZeros(16, 1));
+        }
+
+        [Test]
+        public void Bits_CountLeadingZeros_0x7F_7bitWord()
+        {
+            Assert.AreEqual(0, Bits.CountLeadingZeros(7, 0x7F));
+        }
+
+        [Test]
+        public void Bits_Replicate_1_bit_pattern()
+        {
+            Assert.AreEqual(0b11111ul, Bits.Replicate64(3, 1, 5));
         }
     }
 }

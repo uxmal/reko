@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -91,7 +91,7 @@ namespace Reko.UnitTests.Core.Analysis
         {
             ParseChar32("Total: %d");
             Assert.AreEqual(1, parser.ArgumentTypes.Count);
-            Assert.AreEqual("(ptr int32)", parser.ArgumentTypes[0].ToString());
+            Assert.AreEqual("(ptr32 int32)", parser.ArgumentTypes[0].ToString());
         }
 
         [Test]
@@ -99,7 +99,7 @@ namespace Reko.UnitTests.Core.Analysis
         {
             ParseChar32("'%c'");
             Assert.AreEqual(1, parser.ArgumentTypes.Count);
-            Assert.AreEqual("(ptr char)", parser.ArgumentTypes[0].ToString());
+            Assert.AreEqual("(ptr32 char)", parser.ArgumentTypes[0].ToString());
         }
 
         [Test]
@@ -107,8 +107,8 @@ namespace Reko.UnitTests.Core.Analysis
         {
             ParseChar32("%c%x");
             Assert.AreEqual(2, parser.ArgumentTypes.Count);
-            Assert.AreEqual("(ptr char)", parser.ArgumentTypes[0].ToString());
-            Assert.AreEqual("(ptr uint32)", parser.ArgumentTypes[1].ToString());
+            Assert.AreEqual("(ptr32 char)", parser.ArgumentTypes[0].ToString());
+            Assert.AreEqual("(ptr32 uint32)", parser.ArgumentTypes[1].ToString());
         }
 
         [Test]
@@ -116,7 +116,7 @@ namespace Reko.UnitTests.Core.Analysis
         {
             ParseChar32("%hd");
             Assert.AreEqual(1, parser.ArgumentTypes.Count);
-            Assert.AreEqual("(ptr int16)", parser.ArgumentTypes[0].ToString());
+            Assert.AreEqual("(ptr32 int16)", parser.ArgumentTypes[0].ToString());
         }
 
         [Test]
@@ -140,7 +140,7 @@ namespace Reko.UnitTests.Core.Analysis
         {
             ParseChar32("%lli");
             Assert.AreEqual(1, parser.ArgumentTypes.Count);
-            Assert.AreEqual("(ptr int64)", parser.ArgumentTypes[0].ToString());
+            Assert.AreEqual("(ptr32 int64)", parser.ArgumentTypes[0].ToString());
         }
 
         [Test]
@@ -148,7 +148,7 @@ namespace Reko.UnitTests.Core.Analysis
         {
             ParseChar32("%08p");
             Assert.AreEqual(1, parser.ArgumentTypes.Count);
-            Assert.AreEqual("(ptr ptr32)", parser.ArgumentTypes[0].ToString());
+            Assert.AreEqual("(ptr32 ptr32)", parser.ArgumentTypes[0].ToString());
         }
 
         [Test]
@@ -156,7 +156,7 @@ namespace Reko.UnitTests.Core.Analysis
         {
             ParseChar32("%08s");
             Assert.AreEqual(1, parser.ArgumentTypes.Count);
-            Assert.AreEqual("(ptr char)", parser.ArgumentTypes[0].ToString());
+            Assert.AreEqual("(ptr32 char)", parser.ArgumentTypes[0].ToString());
         }
     }
 }

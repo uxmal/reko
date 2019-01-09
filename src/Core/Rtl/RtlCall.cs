@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,9 +30,9 @@ namespace Reko.Core.Rtl
 {
     public class RtlCall : RtlTransfer
     {
-        public RtlCall(Expression target, byte stackPushedReturnAddressSize, RtlClass rtlClass) : base(target, rtlClass)
+        public RtlCall(Expression target, byte stackPushedReturnAddressSize, InstrClass rtlClass) : base(target, rtlClass)
         {
-            Debug.Assert((rtlClass & (RtlClass.Call | RtlClass.Transfer)) != 0);
+            Debug.Assert((rtlClass & (InstrClass.Call | InstrClass.Transfer)) != 0);
             this.ReturnAddressSize = stackPushedReturnAddressSize;
         }
 

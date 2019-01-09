@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,6 +37,7 @@ namespace Reko.ImageLoaders.MzExe
 {
     /// <summary>
     /// Loads Windows NT PE images.
+    /// http://geos.icc.ru:8080/scripts/wwwbinv.dll/ShowR?coff.rfi
     /// </summary>
 	public class PeImageLoader : ImageLoader
 	{
@@ -45,9 +46,9 @@ namespace Reko.ImageLoaders.MzExe
         private const ushort MACHINE_UNKNOWN = 0x0;         // The contents of this field are assumed to be applicable to any machine type
         private const ushort MACHINE_AM33 = 0x1d3;          // Matsushita AM33
         private const ushort MACHINE_AMD64 = (ushort) 0x8664;    // x64
-        private const ushort MACHINE_ARM = 0x01c0;          // ARM little endian
+        private const ushort MACHINE_ARM = 0x01c0;          // ARM little endian -- "Modern" Windows
         private const ushort MACHINE_ARM64 = 0xAA64;        // ARM64 little endian
-        private const ushort MACHINE_ARMNT = 0x01C4;        // ARM Thumb-2 little endian
+        private const ushort MACHINE_ARMNT = 0x01C4;        // ARM Thumb-2 little endian -- WinCE
         private const ushort MACHINE_EBC =  0x0ebc;         // EFI byte code
         private const ushort MACHINE_I386 = 0x014c;         // Intel 386 or later processors and compatible processors
         private const ushort MACHINE_IA64 = 0x0200;         // Intel Itanium processor family
@@ -58,6 +59,7 @@ namespace Reko.ImageLoaders.MzExe
         private const ushort MACHINE_POWERPC = 0x01f0;      // Power PC little endian
         private const ushort MACHINE_POWERPCFP = 0x01f1;    // Power PC with floating point support
         private const ushort MACHINE_POWERPC_BE = (ushort) 0x0601;       // Big-endian PC: intended for PowerMac (!)
+        private const ushort MACHINE_XBOX360 = 0x01F2;         // Xbox 360
         private const ushort MACHINE_R4000 = 0x0166;        // MIPS little endian
         private const ushort MACHINE_RISCV32 = 0x5032;      // RISC-V 32-bit address space
         private const ushort MACHINE_RISCV64 = 0x5064;      // RISC-V 64-bit address space
@@ -166,12 +168,12 @@ namespace Reko.ImageLoaders.MzExe
                     ;
                 name = Encoding.ASCII.GetString(imgLoaded.Bytes, iNameMin, j - iNameMin);
             }
-            return new ImageSymbol(addrLoad + rvaAddr)
-            {
-                Name = name,
-                ProcessorState = arch.CreateProcessorState(),
-                Type = SymbolType.Procedure,
-            };
+            return ImageSymbol.Procedure(
+                arch,
+                addrLoad + rvaAddr,
+                name,
+                new FunctionType(),
+                state: arch.CreateProcessorState());
         }
 
 		public IProcessorArchitecture CreateArchitecture(ushort peMachineType)
@@ -181,6 +183,8 @@ namespace Reko.ImageLoaders.MzExe
 			switch (peMachineType)
 			{
             case MACHINE_ALPHA: arch = "alpha"; break;
+            case MACHINE_ARM: arch = "arm"; break;
+            case MACHINE_ARM64: arch = "arm-64"; break;
             case MACHINE_ARMNT: arch = "arm-thumb"; break;
             case MACHINE_I386: arch = "x86-protected-32"; break;
             case MACHINE_x86_64: arch = "x86-protected-64"; break;
@@ -188,6 +192,7 @@ namespace Reko.ImageLoaders.MzExe
             case MACHINE_R4000: arch = "mips-le-32"; break;
             case MACHINE_POWERPC: arch = "ppc-le-32"; break;
             case MACHINE_POWERPC_BE: arch = "ppc-be-32"; break;
+            case MACHINE_XBOX360: arch = "ppc-be-64"; break;
 			default: throw new ArgumentException(string.Format("Unsupported machine type 0x{0:X4} in PE header.", peMachineType));
 			}
             return cfgSvc.GetArchitecture(arch);
@@ -199,6 +204,8 @@ namespace Reko.ImageLoaders.MzExe
             switch (peMachineType)
             {
             case MACHINE_ALPHA: env = "winAlpha"; break;
+            case MACHINE_ARM: env = "winArm"; break;
+            case MACHINE_ARM64: env = "winArm64"; break;
             case MACHINE_ARMNT: env= "winArm"; break;
             case MACHINE_I386: env = "win32"; break;
             case MACHINE_x86_64: env = "win64"; break;
@@ -206,6 +213,7 @@ namespace Reko.ImageLoaders.MzExe
             case MACHINE_R4000: env = "winMips"; break;
             case MACHINE_POWERPC: env = "winPpc32"; break;
             case MACHINE_POWERPC_BE: env = "winPpc32"; break;   //$REVIEW: this probably should be macOS-ppc
+            case MACHINE_XBOX360: env = "xbox360"; break;
             default: throw new ArgumentException(string.Format("Unsupported machine type 0x:{0:X4} in PE hader.", peMachineType));
             }
             return Services.RequireService<IConfigurationService>()
@@ -218,16 +226,19 @@ namespace Reko.ImageLoaders.MzExe
             switch (peMachineType)
             {
             case MACHINE_ALPHA:
+            case MACHINE_ARM:
             case MACHINE_ARMNT:
             case MACHINE_I386:
             case MACHINE_m68k:
             case MACHINE_R4000:
             case MACHINE_POWERPC:
             case MACHINE_POWERPC_BE:
+            case MACHINE_XBOX360:
                 return new Pe32Loader(this);
             case MACHINE_x86_64:
+            case MACHINE_ARM64:
                 return new Pe64Loader(this);
-            default: throw new ArgumentException(string.Format("Unsupported machine type 0x:{0:X4} in PE hader.", peMachineType));
+            default: throw new ArgumentException(string.Format("Unsupported machine type 0x:{0:X4} in PE header.", peMachineType));
             }
         }
 
@@ -236,6 +247,8 @@ namespace Reko.ImageLoaders.MzExe
             switch (peMachineType)
             {
             case MACHINE_ALPHA: return new AlphaRelocator(Services, program);
+            case MACHINE_ARM: return new ArmRelocator(program);
+            case MACHINE_ARM64: return new Arm64Relocator(program);
             case MACHINE_ARMNT: return new ArmRelocator(program);
             case MACHINE_I386: return new i386Relocator(Services, program);
             case MACHINE_R4000: return new MipsRelocator(Services, program);
@@ -243,6 +256,7 @@ namespace Reko.ImageLoaders.MzExe
 			case MACHINE_m68k: return new M68kRelocator(Services, program);
             case MACHINE_POWERPC: return new PowerPcRelocator(Services, program);
             case MACHINE_POWERPC_BE: return new PowerPcRelocator(Services, program);    //$REVIEW do we need a big-endian version of this?
+            case MACHINE_XBOX360: return new PowerPcRelocator(Services, program);       //$REVIEW do we need a big-endian version of this?
 
             default: throw new ArgumentException(string.Format("Unsupported machine type 0x:{0:X4} in PE hader.", peMachineType));
             }
@@ -253,14 +267,17 @@ namespace Reko.ImageLoaders.MzExe
             switch (peMachineType)
             {
             case MACHINE_ALPHA:
+            case MACHINE_ARM:
             case MACHINE_ARMNT:
             case MACHINE_I386:
 			case MACHINE_m68k:
             case MACHINE_R4000:
             case MACHINE_POWERPC:
             case MACHINE_POWERPC_BE:
+            case MACHINE_XBOX360:
                 return 0x010B;
             case MACHINE_x86_64:
+            case MACHINE_ARM64:
                 return 0x020B;
 			default: throw new ArgumentException(string.Format("Unsupported machine type 0x{0:X4} in PE header.", peMachineType));
 			}
@@ -575,13 +592,13 @@ namespace Reko.ImageLoaders.MzExe
                     ReturnValue = Arg(null, "DWORD")
                 };
             }
-            return new ImageSymbol(addrEp)
-            {
-                Name = name,
-                ProcessorState = arch.CreateProcessorState(),
-                Signature = ssig,
-                Type = SymbolType.Procedure
-            };
+            var entrySymbol = ImageSymbol.Procedure(
+                arch,
+                addrEp,
+                name,
+                state: arch.CreateProcessorState());
+            entrySymbol.Signature = ssig;
+            return entrySymbol;
         }
 
         public void AddSectionsToImageMap(Address addrLoad, SegmentMap imageMap)
@@ -794,24 +811,21 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
                 var addrIat = rdrIat.Address;
                 var addrIlt = rdrIlt.Address;
 
-                var iatEntry = innerLoader.ResolveImportDescriptorEntry(dllName, rdrIlt, rdrIat);
-                if (iatEntry == null)
+                var (impRef, bitSize) = innerLoader.ResolveImportDescriptorEntry(dllName, rdrIlt, rdrIat);
+                if (impRef == null)
                     break;
-                ImageSymbols[addrIat] = new ImageSymbol(addrIat)
-                {
-                    Name = "__imp__" + iatEntry.Item1.EntryName,
-                    Type = SymbolType.Data,
-                    DataType = new Pointer(new CodeType(), iatEntry.Item2),
-                    Size = (uint) iatEntry.Item2
-                };
+                ImageSymbols[addrIat] = ImageSymbol.DataObject(
+                    arch,
+                    addrIat,
+                    "__imp__" + impRef.EntryName,
+                    new Pointer(new CodeType(), bitSize));
 
-                ImageSymbols[addrIlt] = new ImageSymbol(addrIlt)
-                {
-                    Type = SymbolType.Data,
-                    DataType = PrimitiveType.CreateWord(iatEntry.Item2),
-                    Size = (uint)iatEntry.Item2
-                };
-            } 
+                ImageSymbols[addrIlt] = ImageSymbol.DataObject(
+                    arch,
+                    addrIlt,
+                    null,
+                    PrimitiveType.CreateWord(bitSize));
+            }
             return true;
         }
 
@@ -824,7 +838,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
                 this.outer = outer;
             }
 
-            public abstract Tuple<ImportReference,int> ResolveImportDescriptorEntry(string dllName, EndianImageReader rdrIlt, EndianImageReader rdrIat);
+            public abstract (ImportReference, int) ResolveImportDescriptorEntry(string dllName, EndianImageReader rdrIlt, EndianImageReader rdrIat);
 
             public abstract bool ImportedFunctionNameSpecified(ulong rvaEntry);
 
@@ -867,18 +881,18 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
                 return rdr.ReadInt32();
             }
 
-            public override Tuple<ImportReference,int> ResolveImportDescriptorEntry(string dllName, EndianImageReader rdrIlt, EndianImageReader rdrIat)
+            public override (ImportReference, int) ResolveImportDescriptorEntry(string dllName, EndianImageReader rdrIlt, EndianImageReader rdrIat)
             {
                 Address addrThunk = rdrIat.Address;
                 uint iatEntry = rdrIat.ReadLeUInt32();
                 uint iltEntry = rdrIlt.ReadLeUInt32();
                 if (iltEntry == 0)
-                    return null;
+                    return (null, 0);
 
                 var impRef = CreateImportReference(dllName, iltEntry, addrThunk);
                 outer.importReferences.Add(addrThunk, impRef);
 
-                return Tuple.Create(impRef, 4);
+                return (impRef, 32);
             }
         }
 
@@ -901,16 +915,16 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
                 return rdr.ReadInt64();
             }
 
-            public override Tuple<ImportReference,int> ResolveImportDescriptorEntry(string dllName, EndianImageReader rdrIlt, EndianImageReader rdrIat)
+            public override (ImportReference, int) ResolveImportDescriptorEntry(string dllName, EndianImageReader rdrIlt, EndianImageReader rdrIat)
             {
                 Address addrThunk = rdrIat.Address;
                 ulong iatEntry = rdrIat.ReadLeUInt64();
                 ulong iltEntry = rdrIlt.ReadLeUInt64();
                 if (iltEntry == 0)
-                    return null;
+                    return (null, 0);
                 var impRef = CreateImportReference(dllName, iltEntry, addrThunk);
                 outer.importReferences.Add(addrThunk, impRef);
-                return Tuple.Create(impRef, 8);
+                return (impRef, 64);
             }
         }
 
@@ -1088,11 +1102,8 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
 
         private void AddFunctionSymbol(Address addr, SortedList<Address, ImageSymbol> symbols)
         {
-            ImageSymbol symNew = new ImageSymbol(addr, null, new CodeType())
-            {
-                Type = SymbolType.Procedure,
-                ProcessorState = arch.CreateProcessorState()
-            };
+            var symNew = ImageSymbol.Procedure(arch, addr, null, new CodeType());
+            symNew.ProcessorState = arch.CreateProcessorState();
             if (!symbols.TryGetValue(addr, out var symOld))
             {
                 symbols.Add(addr, symNew);

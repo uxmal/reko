@@ -4,10 +4,10 @@ fp:fp
 r63_1: orig: r63
     def:  r63_1 = fp
     uses: r1_3 = Mem0[r63_1 + 0x00000004:word32]
-          r63_4 = PHI(r63_1, r63_18)
-          r63_11 = PHI(r63_1, r63_1, r63_1, r63_24)
-          r63_11 = PHI(r63_1, r63_1, r63_1, r63_24)
-          r63_11 = PHI(r63_1, r63_1, r63_1, r63_24)
+          r63_4 = PHI((r63_1, l1), (r63_18, m3))
+          r63_11 = PHI((r63_1, m1), (r63_1, m1), (r63_1, m1), (r63_24, m2))
+          r63_11 = PHI((r63_1, m1), (r63_1, m1), (r63_1, m1), (r63_24, m2))
+          r63_11 = PHI((r63_1, m1), (r63_1, m1), (r63_1, m1), (r63_24, m2))
           r63_19 = r63_1 - 0x00000004
 Mem0:Global memory
     def:  def Mem0
@@ -20,7 +20,7 @@ r1_3: orig: r1
           call foo (retsize: 4;)	uses: r1_3,r2,r63_12	defs: r1_16,r2_17,r63_15
           call foo (retsize: 4;)	uses: r1_3,r2,r63_19	defs: r1_22,r2_23,r63_21
 r63_4: orig: r63
-    def:  r63_4 = PHI(r63_1, r63_18)
+    def:  r63_4 = PHI((r63_1, l1), (r63_18, m3))
     uses: r63_5 = r63_4 - 0x00000004
 r63_5: orig: r63
     def:  r63_5 = r63_4 - 0x00000004
@@ -38,7 +38,7 @@ r2_9: orig: r2
 r63_10: orig: r63
     def:  r63_10 = r63_7 + 0x00000004
 r63_11: orig: r63
-    def:  r63_11 = PHI(r63_1, r63_1, r63_1, r63_24)
+    def:  r63_11 = PHI((r63_1, m1), (r63_1, m1), (r63_1, m1), (r63_24, m2))
     uses: r63_12 = r63_11 - 0x00000004
 r63_12: orig: r63
     def:  r63_12 = r63_11 - 0x00000004
@@ -59,7 +59,7 @@ r2_17: orig: r2
     def:  call foo (retsize: 4;)	uses: r1_3,r2,r63_12	defs: r1_16,r2_17,r63_15
 r63_18: orig: r63
     def:  r63_18 = r63_15 + 0x00000004
-    uses: r63_4 = PHI(r63_1, r63_18)
+    uses: r63_4 = PHI((r63_1, l1), (r63_18, m3))
 r63_19: orig: r63
     def:  r63_19 = r63_1 - 0x00000004
     uses: Mem20[r63_19:word32] = 0x00000042
@@ -75,7 +75,7 @@ r2_23: orig: r2
     def:  call foo (retsize: 4;)	uses: r1_3,r2,r63_19	defs: r1_22,r2_23,r63_21
 r63_24: orig: r63
     def:  r63_24 = r63_21 + 0x00000004
-    uses: r63_11 = PHI(r63_1, r63_1, r63_1, r63_24)
+    uses: r63_11 = PHI((r63_1, m1), (r63_1, m1), (r63_1, m1), (r63_24, m2))
 // SsaSwitchWithSharedBranches
 // Return size: 0
 void SsaSwitchWithSharedBranches()
@@ -101,7 +101,7 @@ m2:
 	r63_24 = r63_21 + 0x00000004
 	// succ:  m3
 m3:
-	r63_11 = PHI(r63_1, r63_1, r63_1, r63_24)
+	r63_11 = PHI((r63_1, m1), (r63_1, m1), (r63_1, m1), (r63_24, m2))
 	r63_12 = r63_11 - 0x00000004
 	Mem13[r63_12:word32] = 0x0000002A
 	call foo (retsize: 4;)
@@ -110,7 +110,7 @@ m3:
 	r63_18 = r63_15 + 0x00000004
 	// succ:  m4_default
 m4_default:
-	r63_4 = PHI(r63_1, r63_18)
+	r63_4 = PHI((r63_1, l1), (r63_18, m3))
 	r63_5 = r63_4 - 0x00000004
 	Mem6[r63_5:word32] = 0x00000000
 	call foo (retsize: 4;)

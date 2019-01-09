@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,6 +47,12 @@ namespace Reko.Core.Expressions
         {
             var tmp = new TemporaryStorage(name, 0, dt);
             return new Identifier(name, dt, tmp);
+        }
+
+        public static Identifier Global(string name, DataType dt)
+        {
+            var globalStorage = new GlobalStorage(name, dt);
+            return new Identifier(name, dt, globalStorage);
         }
 
         public string Name { get; private set; }

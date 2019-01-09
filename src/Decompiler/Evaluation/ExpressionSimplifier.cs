@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Reko.Core.Services;
+using System.Diagnostics;
 
 namespace Reko.Evaluation 
 {
@@ -37,7 +38,7 @@ namespace Reko.Evaluation
     /// </summary>
     public class ExpressionSimplifier : ExpressionVisitor<Expression>
     {
-        private SegmentMap segmentMap;
+        private readonly SegmentMap segmentMap;
         private EvaluationContext ctx;
 
         private AddTwoIdsRule add2ids;
@@ -142,10 +143,40 @@ namespace Reko.Evaluation
                 var arg = appl.Arguments[i];
                 args[i] = arg.Accept(this);
             }
+            // Rotations-with-carries that rotate in a false carry 
+            // flag can be simplified to shifts.
+            if (appl.Procedure is ProcedureConstant pc && 
+                pc.Procedure is PseudoProcedure intrinsic)
+            {
+                switch (intrinsic.Name)
+                {
+                case PseudoProcedure.RolC:
+                    if (IsSingleBitRotationWithClearCarryIn(args))
+                    {
+                        return new BinaryExpression(Operator.Shl, appl.DataType, args[0], args[1]);
+                    }
+                    break;
+                case PseudoProcedure.RorC:
+                    if (IsSingleBitRotationWithClearCarryIn(args))
+                    {
+                        return new BinaryExpression(Operator.Shr, appl.DataType, args[0], args[1]);
+                    }
+                    break;
+                }
+            }
             appl = new Application(appl.Procedure.Accept(this),
                 appl.DataType,
                 args);
             return ctx.GetValue(appl);
+        }
+
+        private static bool IsSingleBitRotationWithClearCarryIn(Expression[] args)
+        {
+            Debug.Assert(args.Length == 3);
+            return args[1] is Constant sh &&
+                                    sh.ToInt32() == 1 &&
+                                    args[2] is Constant c &&
+                                    c.IsIntegerZero;
         }
 
         public virtual Expression VisitArrayAccess(ArrayAccess acc)
@@ -554,12 +585,12 @@ namespace Reko.Evaluation
                 Changed = true;
                 if (tHead.Domain == Domain.Selector)			//$REVIEW: seems to require Address, SegmentedAddress?
                 {
-                    t = PrimitiveType.Create(Domain.Pointer, tHead.Size + tTail.Size);
+                    t = PrimitiveType.Create(Domain.Pointer, tHead.BitSize + tTail.BitSize);
                     return ctx.MakeSegmentedAddress(c1, c2);
                 }
                 else
                 {
-                    t = PrimitiveType.Create(tHead.Domain, tHead.Size + tTail.Size);
+                    t = PrimitiveType.Create(tHead.Domain, tHead.BitSize + tTail.BitSize);
                     return Constant.Create(t, c1.ToInt32() << tHead.BitSize | c2.ToInt32());
                 }
             }
@@ -569,9 +600,9 @@ namespace Reko.Evaluation
                 var tail = newSeq.Last();
                 // leading zeros imply a conversion to unsigned.
                 return new Cast(
-                    PrimitiveType.Create(Domain.UnsignedInt, seq.DataType.Size),
+                    PrimitiveType.Create(Domain.UnsignedInt, seq.DataType.BitSize),
                     new Cast(
-                        PrimitiveType.Create(Domain.UnsignedInt, tail.DataType.Size),
+                        PrimitiveType.Create(Domain.UnsignedInt, tail.DataType.BitSize),
                         tail));
             }
             return new MkSequence(seq.DataType, newSeq);
@@ -593,7 +624,7 @@ namespace Reko.Evaluation
             var args = pc.Arguments
                 .Select(a =>
                 {
-                    var arg = SimplifyPhiArg(a.Accept(this));
+                    var arg = SimplifyPhiArg(a.Value.Accept(this));
                     ctx.RemoveExpressionUse(arg);
                     return arg;
                 })

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.CLanguage;
 using Reko.Core.Lib;
+using Reko.Core.Rtl;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
@@ -32,14 +33,26 @@ namespace Reko.Environments.Cpm
 {
     public class CpmPlatform : Platform
     {
+        private const ushort CPM_VECTOR = 5;
+
+        private Dictionary<Address, DispatchProcedure> dispatchProcedures;
+
         public CpmPlatform(IServiceProvider services, IProcessorArchitecture arch)
             : base(services, arch, "cpm")
         {
+            this.dispatchProcedures = new Dictionary<Address, DispatchProcedure>();
+            EnsureTypeLibraries(this.PlatformIdentifier);
         }
 
         public override string DefaultCallingConvention
         {
             get { return ""; }
+        }
+
+        public override MemoryMap_v1 MemoryMap
+        {
+            get { return base.MemoryMap; }
+            set { base.MemoryMap = value; OnMemoryMapChanged(); }
         }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
@@ -83,6 +96,52 @@ namespace Reko.Environments.Cpm
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
             throw new NotImplementedException();
+        }
+
+        public override ProcedureBase GetTrampolineDestination(IEnumerable<RtlInstructionCluster> instrs, IRewriterHost host)
+        {
+            var e = instrs.GetEnumerator();
+            if (!e.MoveNext())
+                return null;
+            if (e.Current.Instructions[0] is RtlGoto g &&
+                g.Target is Address addr &&
+                this.dispatchProcedures.TryGetValue(addr, out var disp))
+            {
+                return disp;
+            }
+            return null;
+        }
+
+        private void OnMemoryMapChanged()
+        {
+            //var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
+            var tser = new TypeLibraryDeserializer(this, true, Metadata);
+            var sser = new ProcedureSerializer(this, tser, DefaultCallingConvention);
+            var disps = new Dictionary<Address, DispatchProcedure>();
+            foreach (var callable in this.MemoryMap.Segments.SelectMany(s => s.Procedures))
+            {
+                if (callable is DispatchProcedure_v1 sDisp)
+                {
+                    if (sDisp.Services == null)
+                        continue;
+                    var svcs = sDisp.Services
+                        .Where(s => s.SyscallInfo != null)
+                        .Select(s => (
+                            s.SyscallInfo.Build(this),
+                            new ExternalProcedure(
+                                s.Name,
+                                sser.Deserialize(s.Signature, Architecture.CreateFrame()))))
+                        .ToList();
+                    if (Architecture.TryParseAddress(sDisp.Address, out var addr))
+                    {
+                        var disp = new DispatchProcedure(
+                            sDisp.Name,
+                            svcs);
+                        disps.Add(addr, disp);
+                    }
+                }
+            }
+            this.dispatchProcedures = disps;
         }
     }
 }

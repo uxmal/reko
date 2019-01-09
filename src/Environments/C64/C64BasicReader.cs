@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ using System.Text;
 namespace Reko.Environments.C64
 {
     /// <summary>
-    /// Parses a stream of bytes into Commoder BASIC instructions.
+    /// Parses a stream of bytes into Commodore BASIC instructions.
     /// </summary>
     public class C64BasicReader : IEnumerable<C64BasicInstruction>
     {

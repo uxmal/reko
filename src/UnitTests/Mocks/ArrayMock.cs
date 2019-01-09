@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -59,7 +59,7 @@ namespace Reko.UnitTests.Mocks
 			Goto("loopHdr");
 			
 			Label("loop");
-			Assign(i, ISub(i, Int32(1)));
+			Assign(i, ISubS(i, 1));
 			MStore(IAdd(a, IMul(i, 4)), Word32(0));
 			Label("loopHdr");
 			BranchIf(Gt(i, 0), "loop");

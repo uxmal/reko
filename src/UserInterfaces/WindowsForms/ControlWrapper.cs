@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,6 +35,18 @@ namespace Reko.UserInterfaces.WindowsForms
         public ControlWrapper(Control ctrl)
         {
             this.ctrl = ctrl;
+        }
+
+        public event EventHandler GotFocus
+        {
+            add { this.ctrl.GotFocus += value; }
+            remove { this.ctrl.GotFocus -= value; }
+        }
+
+        public event EventHandler LostFocus
+        {
+            add { this.ctrl.LostFocus += value; }
+            remove { this.ctrl.LostFocus -= value; }
         }
 
         public Color BackColor { get { return ctrl.BackColor; } set { ctrl.BackColor = value; } }

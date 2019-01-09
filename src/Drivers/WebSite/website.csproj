@@ -165,7 +165,7 @@
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TravisRelease|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnixRelease|AnyCPU'">
     <OutputPath>bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <BaseAddress>285212672</BaseAddress>
@@ -196,7 +196,7 @@
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\win64characteristics.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\wince.inc" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\AmigaOS\exec.funcs" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\MacOS\Mac MPW Interfaces 1991 PASCAL.pas" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\MacOS\Classic\Mac MPW Interfaces 1991 PASCAL.pas" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\NeoGeo\NeoGeoPocket.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\RT11\rt11_*.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\SegaGenesis\SegaGenesis.xml" />
@@ -208,6 +208,7 @@
     <DecompilerMetadata Include="$(SolutionDir)..\external\reactos\coredll.def" />
     <DecompilerMetadata Include="$(SolutionDir)Decompiler\Loading\Signatures\*.xml" />
     <DecompilerMetadata Include="$(SolutionDir)..\external\wine\*.spec" />
+    <DecompilerMetadata Include="$(SolutionDir)tools\genPICdb\picdb.zip" />
     <OdbgScripts Include="$(SolutionDir)ImageLoaders\OdbgScript\*.osc" />
     <Architectures Include="$(SolutionDir)Arch\Alpha\$(OutDir)Reko.Arch.Alpha.*" />
     <Architectures Include="$(SolutionDir)Arch\Arm\$(OutDir)Reko.Arch.Arm.*" />
@@ -215,6 +216,7 @@
     <Architectures Include="$(SolutionDir)Arch\M68k\$(OutDir)Reko.Arch.M68k.*" />
     <Architectures Include="$(SolutionDir)Arch\M68k.Design\$(OutDir)Reko.Arch.M68k.Design.*" />
     <Architectures Include="$(SolutionDir)Arch\Mips\$(OutDir)Reko.Arch.Mips.*" />
+    <Architectures Include="$(SolutionDir)Arch\Microchip\$(OutDir)Reko.Arch.MicrochipPIC.*" />
     <Architectures Include="$(SolutionDir)Arch\Mos6502\$(OutDir)Reko.Arch.Mos6502.*" />
     <Architectures Include="$(SolutionDir)Arch\Msp430\$(OutDir)Reko.Arch.Msp430.*" />
     <Architectures Include="$(SolutionDir)Arch\Pdp11\$(OutDir)Reko.Arch.Pdp11.*" />
@@ -235,6 +237,7 @@
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\Dol\$(OutDir)Reko.ImageLoaders.Dol.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\Elf\$(OutDir)Reko.ImageLoaders.Elf.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\Hunk\$(OutDir)Reko.ImageLoaders.Hunk.*" />
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\IHex32\$(OutDir)Reko.ImageLoaders.IntelHex32.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\IntelHex\$(OutDir)Reko.ImageLoaders.IntelHex.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\Llvm\$(OutDir)Reko.ImageLoaders.LLVM.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\MachO\$(OutDir)Reko.ImageLoaders.MachO.*" />
@@ -259,6 +262,7 @@
     <Environments Include="$(SolutionDir)Environments\Windows\$(OutDir)Reko.Environments.Windows.*" />
     <Environments Include="$(SolutionDir)Environments\ZX81\$(OutDir)Reko.Environments.ZX81.*" />
     <Libraries Include="$(SolutionDir)Libraries\Libc\$(OutDir)Reko.Libraries.Libc.*" />
+    <Libraries Include="$(SolutionDir)Libraries\Microchip\Utils\$(OutDir)Reko.Libraries.Microchip.Utils.*" />
     <Libraries Include="$(SolutionDir)Libraries\Python\$(OutDir)Reko.Libraries.Python.*" />
     <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.dll" />
     <ConfigurationFiles Include="$(SolutionDir)Drivers\reko.config" />
@@ -273,7 +277,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>0</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:52534/</IISUrl>
+          <IISUrl>http://localhost:52524/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,17 +19,11 @@
 #endregion
 
 using Reko.Core.Output;
-using Reko.Core.Serialization;
-using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Xml;
-using System.Xml.Serialization;
 
 namespace Reko.Core
 {
@@ -63,11 +57,13 @@ namespace Reko.Core
 
         public TypeLibrary Clone()
         {
-            var clone = new TypeLibrary();
-            clone.Types = new Dictionary<string, DataType>(this.Types);
-            clone.Signatures = new Dictionary<string, FunctionType>(this.Signatures);
-            clone.Globals = new Dictionary<string, DataType>(this.Globals);
-            clone.Modules = this.Modules.ToDictionary(k => k.Key, v => v.Value.Clone(), StringComparer.InvariantCultureIgnoreCase);
+            var clone = new TypeLibrary
+            {
+                Types = new Dictionary<string, DataType>(this.Types),
+                Signatures = new Dictionary<string, FunctionType>(this.Signatures),
+                Globals = new Dictionary<string, DataType>(this.Globals),
+                Modules = this.Modules.ToDictionary(k => k.Key, v => v.Value.Clone(), StringComparer.InvariantCultureIgnoreCase)
+            };
             return clone;
         }
 
@@ -90,16 +86,14 @@ namespace Reko.Core
 
 		public FunctionType Lookup(string procedureName)
 		{
-			FunctionType sig;
-            if (!Signatures.TryGetValue(procedureName, out sig))
+            if (!Signatures.TryGetValue(procedureName, out FunctionType sig))
                 return null;
 			return sig;
 		}
 
         public DataType LookupType(string typedefName)
         {
-            DataType dt;
-            if (!Types.TryGetValue(typedefName, out dt))
+            if (!Types.TryGetValue(typedefName, out DataType dt))
                 return null;
             return dt;
         }

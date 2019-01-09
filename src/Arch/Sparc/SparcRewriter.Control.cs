@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
@@ -38,15 +39,13 @@ namespace Reko.Arch.Sparc
                 Registers.psr,
                 (uint) grf, 
                 arch.GrfToString((uint) grf),
-                (grf & (grf - 1)) != 0 ? PrimitiveType.Byte : PrimitiveType.Bool);
+                Bits.IsSingleBitSet((uint)grf) ? PrimitiveType.Byte : PrimitiveType.Bool);
         }
 
         private void RewriteBranch(Expression cond)
         {
             // SPARC architecture always has delay slot.
-            var rtlClass = RtlClass.ConditionalTransfer | RtlClass.Delay;
-            if (instrCur.Annul)
-                rtlClass |= RtlClass.Annul;
+            var rtlClass = instrCur.IClass;
             this.rtlc = rtlClass;
             if (cond is Constant c && c.ToBoolean())
             {
@@ -60,13 +59,13 @@ namespace Reko.Arch.Sparc
 
         private void RewriteCall()
         {
-            rtlc = RtlClass.Transfer | RtlClass.Call;
+            rtlc = InstrClass.Transfer | InstrClass.Call;
             m.CallD(((AddressOperand)instrCur.Op1).Address, 0);
         }
 
         private void RewriteJmpl()
         {
-            rtlc = RtlClass.Transfer;
+            rtlc = InstrClass.Transfer;
             var rDst = instrCur.Op3 as RegisterOperand;
             var src1 = RewriteOp(instrCur.Op1);
             var src2 = RewriteOp(instrCur.Op2);
@@ -102,7 +101,7 @@ namespace Reko.Arch.Sparc
             m.BranchInMiddleOfInstruction(
                 cond.Invert(),
                 instrCur.Address + instrCur.Length,
-                RtlClass.ConditionalTransfer);
+                InstrClass.ConditionalTransfer);
             m.SideEffect(
                     host.PseudoProcedure(
                         PseudoProcedure.Syscall, 

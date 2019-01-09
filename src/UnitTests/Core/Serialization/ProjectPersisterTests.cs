@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,7 +52,6 @@ namespace Reko.UnitTests.Core.Serialization
             var s = pp.ConvertToProjectRelativePath("/home/bob/projects/foo/foo.dcproj", "/home/bob/projects/reko/foo.c");
             Assert.AreEqual("../reko/foo.c", s);
         }
-
 
         [Test]
         public void Prp_ToRelative3()

@@ -35,7 +35,7 @@ void fn0C00_0000(selector ds)
 		if (Mem19[ds:bx_10:word16] == 0xFFFF)
 			break;
 		bx_10 = Mem19[ds:bx_10 + 0x0004:word16];
-		ax_11 = ax_11 + 0x0001;
+		++ax_11;
 	}
 	Mem18[ds:0x0300:word16] = ax_11;
 }

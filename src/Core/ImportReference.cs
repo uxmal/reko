@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -68,14 +68,26 @@ namespace Reko.Core
             {
                 return this.GetType().FullName.CompareTo(this.GetType().FullName);
             }
-            int cmp = this.ModuleName.CompareTo(that.ModuleName);
-            if (cmp != 0)
-                return cmp;
-            cmp = string.Compare(
+            if (this.ModuleName == null)
+            {
+                if (that.ModuleName != null)
+                    return -1;
+            }
+            else if (this.ModuleName != null)
+            {
+                if (that.ModuleName == null)
+                    return 1;
+            }
+            else
+            {
+                int cmp = this.ModuleName.CompareTo(that.ModuleName);
+                if (cmp != 0)
+                    return cmp;
+            }
+            return string.Compare(
                 this.ImportName,
                 ((NamedImportReference)that).ImportName,
                 StringComparison.InvariantCulture);
-            return cmp;
         }
 
         public override Expression ResolveImport(
@@ -101,13 +113,13 @@ namespace Reko.Core
                 return ep;
             }
             ctx.Warn("Unable to resolve imported reference {0}.", this);
-            return new ExternalProcedure(this.ToString(), null);
+            return new ExternalProcedure(this.ToString(), new FunctionType());
         }
 
         public override string ToString()
         {
             return string.Format(
-                ModuleName != null ? "{0}!{1}" : "{1}",
+                string.IsNullOrEmpty(ModuleName) ? "{1}" : "{0}!{1}",
                 ModuleName, 
                 ImportName);
         }
@@ -155,7 +167,7 @@ namespace Reko.Core
             if (ep != null)
                 return ep;
             ctx.Warn("Unable to resolve imported reference {0}.", this);
-            return new ExternalProcedure(this.ToString(), null);
+            return new ExternalProcedure(this.ToString(), new FunctionType());
         }
 
         public override string ToString()

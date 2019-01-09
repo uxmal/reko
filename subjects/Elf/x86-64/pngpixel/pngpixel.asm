@@ -313,7 +313,7 @@ component proc
 	mov	[rbp-1C],esi
 	mov	[rbp-20],edx
 	mov	[rbp-24],ecx
-	mov	[r13-28],r8d
+	mov	[rbp-28],r8d
 	mov	eax,[rbp-1C]
 	shr	eax,06
 	imul	eax,[rbp-28]
@@ -552,7 +552,7 @@ l0000000000401068:
 	add	rax,rcx
 	movzx	eax,byte ptr [rax+01]
 	movzx	ecx,al
-	mov	r8,[r13-38]
+	mov	r8,[rbp-38]
 	mov	edx,[rbp-3C]
 	mov	rax,rdx
 	add	rax,rax
@@ -824,8 +824,8 @@ l00000000004013E4:
 	mov	[rbp-10],rax
 	mov	rsi,[rbp-30]
 	mov	rax,[rbp-38]
-	lea	r9,[r13-74]
-	lea	r8,[r13-78]
+	lea	r9,[rbp-74]
+	lea	r8,[rbp-78]
 	lea	rcx,[rbp-7C]
 	lea	rdx,[rbp-80]
 	sub	rsp,08
@@ -1204,7 +1204,8 @@ _fini proc
 	add	rsp,08
 	ret
 ;;; Segment .rodata (0000000000401800)
-0000000000401800 01 00 02 00                                     ....           
+_IO_stdin_used		; 0000000000401800
+	dd	0x00020001
 0000000000401804             00 00 00 00 70 6E 67 70 69 78 65 6C     ....pngpixel
 0000000000401810 3A 20 69 6E 76 61 6C 69 64 20 62 69 74 20 64 65 : invalid bit de
 0000000000401820 70 74 68 20 25 75 0A 00                         pth %u..       
@@ -1302,7 +1303,7 @@ l0000000000401988	dq	0x000000000040122A
 ; DT_INIT_ARRAYSZ 0000000000000008
 ; DT_FINI_ARRAY   0000000000601E08
 ; DT_FINI_ARRAYSZ 0000000000000008
-; 6FFFFEF5        0000000000400298
+; DT_GNU_HASH     0000000000400298
 ; DT_STRTAB       00000000004005C0
 ; DT_SYMTAB       00000000004002C0
 ; DT_STRSZ        00000000000001F3
@@ -1315,9 +1316,9 @@ l0000000000401988	dq	0x000000000040122A
 ; DT_RELA         0000000000400848
 ; DT_RELASZ                     48
 ; DT_RELAENT                    24
-; 6FFFFFFE        00000000004007F8
-; 6FFFFFFF        0000000000000002
-; 6FFFFFF0        00000000004007B4
+; DT_VERNEED      00000000004007F8
+; DT_VERNEEDNUM                  2
+; DT_VERSYM       00000000004007B4
 ;;; Segment .got (0000000000601FF8)
 __gmon_start___GOT		; 0000000000601FF8
 	dq	0x0000000000000000
@@ -1380,6 +1381,8 @@ png_get_PLTE_GOT		; 00000000006020E0
 00000000006020E8                         00 00 00 00 00 00 00 00         ........
 ; ...
 ;;; Segment .bss (0000000000602100)
-0000000000602100 00 00 00 00 00 00 00 00                         ........       
-0000000000602108                         00                              .      
+stderr		; 0000000000602100
+	dq	0x0000000000C04200
+completed.7585		; 0000000000602108
+	db	0x00
 0000000000602109                            00 00 00 00 00 00 00          .......

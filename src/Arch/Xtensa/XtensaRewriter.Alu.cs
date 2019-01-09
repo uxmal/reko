@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
@@ -200,7 +201,7 @@ namespace Reko.Arch.Xtensa
             m.BranchInMiddleOfInstruction(
                 fn(cond, Constant.Zero(cond.DataType)).Invert(),
                 instr.Address + instr.Length,
-                RtlClass.ConditionalTransfer);
+                InstrClass.ConditionalTransfer);
             m.Assign(dst, src);
         }
 
@@ -217,8 +218,8 @@ namespace Reko.Arch.Xtensa
             var src1 = RewriteOp(instr.Operands[1]);
             var src2 = RewriteOp(instr.Operands[2]);
             var dst = RewriteOp(instr.Operands[0]);
-            var tmp1 = binder.CreateTemporary(PrimitiveType.Create(dom, 2));
-            var tmp2 = binder.CreateTemporary(PrimitiveType.Create(dom, 2));
+            var tmp1 = binder.CreateTemporary(PrimitiveType.Create(dom, 16));
+            var tmp2 = binder.CreateTemporary(PrimitiveType.Create(dom, 16));
             m.Assign(tmp1, m.Cast(tmp1.DataType, src1));
             m.Assign(tmp2, m.Cast(tmp2.DataType, src2));
             m.Assign(dst, mul(tmp1, tmp2));
@@ -266,7 +267,7 @@ namespace Reko.Arch.Xtensa
             var cat = binder.EnsureSequence(
                 src1.Storage, 
                 src2.Storage, 
-                PrimitiveType.CreateWord(src1.DataType.Size + src2.DataType.Size));
+                PrimitiveType.CreateWord(src1.DataType.BitSize + src2.DataType.BitSize));
             m.Assign(
                 dst,
                 m.Cast(dst.DataType, m.Shr(cat, sa)));

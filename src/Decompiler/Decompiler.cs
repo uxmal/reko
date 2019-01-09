@@ -1,5 +1,5 @@
 #region License
-/* Copyright (C) 1999-2018 John Källén.
+/* Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,26 +17,21 @@
  */
 #endregion
 
+using Reko.Analysis;
 using Reko.Core;
+using Reko.Core.Assemblers;
 using Reko.Core.Lib;
 using Reko.Core.Output;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Scanning;
-using Reko.Loading;
-using Reko.Analysis;
 using Reko.Structure;
 using Reko.Typing;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Xml;
-using Reko.Core.Assemblers;
-using System.Threading;
-using Reko.Core.Configuration;
-using System.Diagnostics;
 
 namespace Reko
 {
@@ -138,7 +133,11 @@ namespace Reko
         {
             if (wr == null || program.Architecture == null)
                 return;
-            Dumper dump = new Dumper(program);
+            Dumper dump = new Dumper(program)
+            {
+                ShowAddresses = program.User.ShowAddressesInDisassembly,
+                ShowCodeBytes = program.User.ShowBytesInDisassembly
+            };
             dump.Dump(wr);
         }
 
@@ -154,10 +153,8 @@ namespace Reko
                     TextFormatter f = new TextFormatter(output);
                     if (flow.Signature != null)
                         flow.Signature.Emit(proc.Name, FunctionType.EmitFlags.LowLevelInfo, f);
-                    else if (proc.Signature != null)
-                        proc.Signature.Emit(proc.Name, FunctionType.EmitFlags.LowLevelInfo, f);
                     else
-                        output.Write("Warning: no signature found for {0}", proc.Name);
+                        proc.Signature.Emit(proc.Name, FunctionType.EmitFlags.LowLevelInfo, f);
                     output.WriteLine();
                     flow.Emit(program.Architecture, output);
                     foreach (Block block in new DfsIterator<Block>(proc.ControlGraph).PostOrder().Reverse())
@@ -390,6 +387,7 @@ namespace Reko
             var procName = program.User.Procedures.TryGetValue(
                 paddr.Address, out var sProc) ? sProc.Name : null;
             return scanner.ScanProcedure(
+                program.Architecture,       //$TODO: make this user-selectable.
                 paddr.Address,
                 procName, 
                 program.Architecture.CreateProcessorState());

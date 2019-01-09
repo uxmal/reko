@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,29 +29,23 @@ using System.Text;
 
 namespace Reko.Arch.PowerPC
 {
+    //$TODO: for @uxmal: just implement this as a 
+    // dictionary [RegisterStorage -> Constant]
     public class PowerPcState : ProcessorState
     {
         private PowerPcArchitecture arch;
-        private ulong[] regs;
-        private ulong[] valid;
+        private Dictionary<RegisterStorage, Constant> regs;
 
         public PowerPcState(PowerPcArchitecture arch)
         {
             this.arch = arch;
-            this.regs = new ulong[0x80];
-            this.valid = new ulong[0x80];
+            this.regs = new Dictionary<RegisterStorage, Constant>();
         }
 
         public PowerPcState(PowerPcState other) : base(other)
         {
             this.arch = other.arch;
-            this.regs = new ulong[other.regs.Length];
-            this.valid = new ulong[other.valid.Length];
-            for (int i = 0; i < other.regs.Length; ++i)
-            {
-                this.regs[i] = other.regs[i];
-                this.valid[i] = other.valid[i];
-            }
+            this.regs = new Dictionary<RegisterStorage, Constant>(other.regs);
         }
 
         public override IProcessorArchitecture Architecture
@@ -66,10 +60,9 @@ namespace Reko.Arch.PowerPC
 
         public override Constant GetRegister(RegisterStorage reg)
         {
-            if (reg.Number < valid.Length &&  (valid[reg.Number] & reg.BitMask) == reg.BitMask)
+            if (regs.TryGetValue(reg, out Constant value))
             {
-                var val = (regs[reg.Number] & reg.BitMask) >> (int)reg.BitAddress;
-                return Constant.Create(reg.DataType, val);
+                return value;
             }
             else
                 return Constant.Invalid;
@@ -77,16 +70,8 @@ namespace Reko.Arch.PowerPC
 
         public override void SetRegister(RegisterStorage reg, Constant c)
         {
-            if (c == null || !c.IsValid)
-            {
-                valid[reg.Number] &= ~reg.BitMask;
-            }
-            else
-            {
-                valid[reg.Number] |= reg.BitMask;
-                var val = (regs[reg.Number] & ~reg.BitMask) | (c.ToUInt64() & reg.BitMask);
-                regs[reg.Number] = val;
-            }
+            c = c ?? Constant.Invalid;
+            regs[reg] = c;
         }
 
         public override void SetInstructionPointer(Address addr)

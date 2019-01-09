@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -124,10 +124,30 @@ namespace Reko.Analysis
         }
 
         /// <summary>
+        /// Check if there are uses which is not in the procedure statements
+        /// list
+        /// </summary>
+        private void ValidateDeadUses(Action<string> error)
+        {
+            var deadUses = Identifiers
+                .SelectMany(
+                    sid => sid.Uses
+                    .Except(Procedure.Statements)
+                    .Select(u => (sid, u)));
+            foreach (var (sid, use) in deadUses)
+            {
+                error(
+                    $"{Procedure.Name}: there is no {sid.Identifier} use " +
+                    $"({use}) in procedure statements list");
+            }
+        }
+
+        /// <summary>
         /// Compare uses stored in SsaState with actual ones
         /// </summary>
         public void ValidateUses(Action<string> error)
         {
+            ValidateDeadUses(error);
             var uc = new InstructionUseCollector();
             foreach (var stm in Procedure.Statements)
             {
@@ -186,14 +206,19 @@ namespace Reko.Analysis
                 var definitions = dc.CollectDefinitions(stm);
                 foreach (var defId in definitions)
                 {
-                    if (actualDefs.ContainsKey(defId))
+                    if (actualDefs.TryGetValue(defId, out var def))
+                    {
                         error(string.Format(
                             "{0}: multiple definitions for {1} ({2} and {3})",
                             Procedure.Name,
                             defId,
                             stm,
-                            actualDefs[defId]));
-                    actualDefs.Add(defId, stm);
+                            def));
+                    }
+                    else
+                    {
+                        actualDefs.Add(defId, stm);
+                    }
                 }
             }
             foreach (var sid in Identifiers)

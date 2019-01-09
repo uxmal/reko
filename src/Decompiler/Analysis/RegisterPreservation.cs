@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -126,9 +126,9 @@ namespace Reko.Analysis
 
         private void ProcessPhi(PhiAssignment phi, Queue<Identifier> worklist)
         {
-            foreach (Identifier id in phi.Src.Arguments)
+            foreach (var de in phi.Src.Arguments)
             {
-                worklist.Enqueue(id);
+                worklist.Enqueue((Identifier)de.Value);
             }
         }
 

@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 Pavel Tomin.
+ * Copyright (C) 1999-2019 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Reko.UnitTests.Mocks
 {
@@ -40,7 +41,11 @@ namespace Reko.UnitTests.Mocks
     {
         public SsaState Ssa { get; private set; }
 
-        public SsaProcedureBuilder() : base()
+        public SsaProcedureBuilder() : this("SsaProcedureBuilder")
+        {
+        }
+
+        public SsaProcedureBuilder(string name) : base(name)
         {
             this.Ssa = new SsaState(Procedure, null);
         }
@@ -71,6 +76,14 @@ namespace Reko.UnitTests.Mocks
             return sid.Identifier;
         }
 
+        public Identifier Temp(string name, TemporaryStorage stg)
+        {
+            var id = new Identifier(stg.Name, stg.DataType, stg);
+            var sid = new SsaIdentifier(id, id, null, null, false);
+            Ssa.Identifiers.Add(id, sid);
+            return sid.Identifier;
+        }
+
         public Identifier Reg32(string name)
         {
             return Reg(name, PrimitiveType.Word32);
@@ -90,6 +103,12 @@ namespace Reko.UnitTests.Mocks
         public override Statement Emit(Instruction instr)
         {
             var stm = base.Emit(instr);
+            ProcessInstruction(instr, stm);
+            return stm;
+        }
+
+        private Statement ProcessInstruction(Instruction instr, Statement stm)
+        {
             switch (instr)
             {
             case Assignment ass:
@@ -103,36 +122,93 @@ namespace Reko.UnitTests.Mocks
             case Store store:
                 if (store.Dst is MemoryAccess access)
                 {
-                    Ssa.Identifiers[access.MemoryId].DefStatement = stm;
-                    Ssa.Identifiers[access.MemoryId].DefExpression = null;
+                    var memId = AddMemIdToSsa(access.MemoryId);
+                    Ssa.Identifiers[memId].DefStatement = stm;
+                    Ssa.Identifiers[memId].DefExpression = null;
+                    var ea = access.EffectiveAddress;
+                    var dt = access.DataType;
+                    if (store.Dst is SegmentedAccess sa)
+                    {
+                        var basePtr = sa.BasePointer;
+                        store.Dst = new SegmentedAccess(memId, basePtr, ea, dt);
+                    }
+                    else
+                    {
+                        store.Dst = new MemoryAccess(memId, ea, dt);
+                    }
                 }
+                break;
+            case CallInstruction call:
+                foreach (var def in call.Definitions)
+                {
+                    var id = def.Identifier;
+                    Ssa.Identifiers[id].DefStatement = stm;
+                    Ssa.Identifiers[id].DefExpression = call.Callee;
+                }
+                break;
+            case DefInstruction def:
+                Ssa.Identifiers[def.Identifier].DefStatement = stm;
+                Ssa.Identifiers[def.Identifier].DefExpression = null;
                 break;
             }
             Ssa.AddUses(stm);
             return stm;
         }
 
-        private void AddMemIdToSsa(MemoryAccess access)
+        public void AddDefToEntryBlock(Identifier id)
         {
-            var idOld = access.MemoryId;
+            var def = new DefInstruction(id);
+            var stm = Procedure.EntryBlock.Statements.Add(0, def);
+            ProcessInstruction(def, stm);
+        }
+
+        public new void AddUseToExitBlock(Identifier id)
+        {
+            var use = new UseInstruction(id);
+            var stm = Procedure.ExitBlock.Statements.Add(0, use);
+            ProcessInstruction(use, stm);
+        }
+
+        public void AddPhiToExitBlock(Identifier idDst, params (Expression, string)[] exprs)
+        {
+            var args = exprs
+                .Select(de => new PhiArgument(BlockOf(de.Item2), de.Item1))
+                .ToArray();
+            var phiFunc = new PhiFunction(idDst.DataType, args);
+            var phi = new PhiAssignment(idDst, phiFunc);
+            var stm = Procedure.ExitBlock.Statements.Add(0, phi);
+            ProcessInstruction(phi, stm);
+        }
+
+        private MemoryIdentifier AddMemIdToSsa(MemoryIdentifier idOld)
+        {
+            if (Ssa.Identifiers.Contains(idOld))
+                return idOld;
             var idNew = new MemoryIdentifier(Ssa.Identifiers.Count, idOld.DataType);
-            access.MemoryId = idNew;
             var sid = new SsaIdentifier(idNew, idOld, null, null, false);
             Ssa.Identifiers.Add(idNew, sid);
+            return idNew;
         }
 
         public override MemoryAccess Mem32(Expression ea)
         {
             var access = base.Mem32(ea);
-            AddMemIdToSsa(access);
-            return access;
+            var memId = AddMemIdToSsa(access.MemoryId);
+            return new MemoryAccess(
+                memId,
+                access.EffectiveAddress,
+                access.DataType);
         }
 
         public override SegmentedAccess SegMem(DataType dt, Expression basePtr, Expression ptr)
         {
             var access = base.SegMem(dt, basePtr, ptr);
-            AddMemIdToSsa(access);
-            return access;
+            var memId = AddMemIdToSsa(access.MemoryId);
+            return new SegmentedAccess(
+                memId,
+                access.BasePointer,
+                access.EffectiveAddress,
+                access.DataType);
         }
     }
 }

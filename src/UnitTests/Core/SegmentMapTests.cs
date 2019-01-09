@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -97,6 +97,35 @@ namespace Reko.UnitTests.Core
             segmentMap.AddOverlappingSegment("0C00", mem, Address.SegPtr(0xC00, 0), AccessMode.ReadWrite);
             ImageSegment s = segmentMap.Segments.Values[1];
             Assert.AreEqual(0x1000, s.Size);
+        }
+
+        [Test]
+        public void Sm_MapLinearAddress()
+        {
+            var mem = new MemoryArea(Address.Ptr32(0x20), new byte[0x2000]);
+            var segmentMap = new SegmentMap(mem.BaseAddress,
+                new ImageSegment("base", mem, AccessMode.ReadWriteExecute));
+
+            var addr = segmentMap.MapLinearAddressToAddress(0x30);
+
+            Assert.AreEqual("00000030", addr.ToString());
+        }
+
+        [Test]
+        public void Sm_MapZeroLinearAddress()
+        {
+            var mem = new MemoryArea(Address.Ptr32(0x20), new byte[0x2000]);
+            var segmentMap = new SegmentMap(mem.BaseAddress,
+                new ImageSegment("base", mem, AccessMode.ReadWriteExecute));
+
+            try
+            {
+                var addr = segmentMap.MapLinearAddressToAddress(0);
+                Assert.Fail("Should have thrown an ArgumentOutOfRangeException");
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+            }
         }
     }
 }

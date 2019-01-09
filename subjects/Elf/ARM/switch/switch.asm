@@ -51,27 +51,15 @@
 
 ;; _init: 000082F0
 _init proc
-	str	lr,[sp,-#4]!
+	push	lr
 	bl	$0000836C
 	bl	$00008404
 	bl	$0000870C
-	pop	{pc}
+	pop	pc
 ;;; Segment .plt (00008304)
 00008304             04 E0 2D E5 10 E0 9F E5 0E E0 8F E0     ..-.........
-00008310 08 F0 BE E5                                     ....           
-
-;; abort: 00008314
-abort proc
-	ldr	ip,[pc,#4]                                             ; 00008320
-	add	ip,pc,ip
-	ldr	pc,[ip]
-00008320 34 85 00 00                                     4...           
-
-;; __libc_start_main: 00008324
-__libc_start_main proc
-	ldr	ip,[pc,#4]                                             ; 00008330
-	add	ip,pc,ip
-	ldr	pc,[ip]
+00008310 08 F0 BE E5 04 C0 9F E5 0C C0 8F E0 00 F0 9C E5 ................
+00008320 34 85 00 00 04 C0 9F E5 0C C0 8F E0 00 F0 9C E5 4...............
 00008330 28 85 00 00                                     (...           
 ;;; Segment .text (00008334)
 
@@ -79,22 +67,16 @@ __libc_start_main proc
 _start proc
 	ldr	ip,[pc,#&24]                                           ; 00008360
 	mov	fp,#0
-	pop	{r1}
+	pop	r1
 	mov	r2,sp
-	str	r2,[sp,-#4]!
-	str	r0,[sp,-#4]!
+	push	r2
+	push	r0
 	ldr	r0,[pc,#&10]                                           ; 00008364
 	ldr	r3,[pc,#&10]                                           ; 00008368
-	str	ip,[sp,-#4]!
+	push	ip
 	bl	$00008324
 	bl	$00008314
-	strheq	r8,[r0],-r0
-
-l00008364:
-	andeq	r8,r0,ip,asr r5
-
-l00008368:
-	andeq	r8,r0,r4,asr r6
+00008360 B0 86 00 00 5C 85 00 00 54 86 00 00             ....\...T...   
 
 ;; call_gmon_start: 0000836C
 call_gmon_start proc
@@ -143,8 +125,8 @@ l000083E8:
 
 ;; call___do_global_dtors_aux: 000083FC
 call___do_global_dtors_aux proc
-	str	lr,[sp,-#4]!
-	pop	{pc}
+	push	lr
+	pop	pc
 
 ;; frame_dummy: 00008404
 frame_dummy proc
@@ -164,8 +146,8 @@ l00008420:
 
 ;; call_frame_dummy: 0000842C
 call_frame_dummy proc
-	str	lr,[sp,-#4]!
-	pop	{pc}
+	push	lr
+	pop	pc
 
 ;; frobulate: 00008434
 frobulate proc
@@ -183,7 +165,7 @@ frobulate proc
 	bl	$00008588
 	mov	r3,r0
 	mov	r0,r3
-	ldmdb	fp,fp,sp,pc
+	ldmdb	fp,{fp,sp,pc}
 
 ;; bazulate: 00008470
 bazulate proc
@@ -211,7 +193,7 @@ bazulate proc
 	bl	$00008588
 	mov	r3,r0
 	mov	r0,r3
-	ldmdb	fp,r4,fp,sp
+	ldmdb	fp,{r4,fp,sp,pc}
 
 ;; switcheroo: 000084D4
 switcheroo proc
@@ -260,7 +242,7 @@ l0000854C:
 	ldr	r3,[fp,-#&10]
 	add	r3,r3,#1
 	mov	r0,r3
-	ldmdb	fp,fp,sp,pc
+	ldmdb	fp,{fp,sp,pc}
 
 ;; main: 0000855C
 main proc
@@ -274,7 +256,7 @@ main proc
 	bl	$000084D4
 	mov	r3,#0
 	mov	r0,r3
-	ldmdb	fp,fp,sp,pc
+	ldmdb	fp,{fp,sp,pc}
 
 ;; __divsi3: 00008588
 __divsi3 proc
@@ -296,14 +278,14 @@ l000085A8:
 	blo	$00008618
 
 l000085B0:
-	cmp	r1,#1<<28
+	cmp	r1,#&10000000
 	cmplo	r1,r0
 
 l000085B8:
-	lsllo	r1,r1,lsl #4
+	lsllo	r1,r1,#4
 
 l000085BC:
-	lsllo	r3,r3,lsl #4
+	lsllo	r3,r3,#4
 
 l000085C0:
 	blo	$000085B0
@@ -313,10 +295,10 @@ l000085C4:
 	cmplo	r1,r0
 
 l000085CC:
-	lsllo	r1,r1,lsl #1
+	lsllo	r1,r1,#1
 
 l000085D0:
-	lsllo	r3,r3,lsl #1
+	lsllo	r3,r3,#1
 
 l000085D4:
 	blo	$000085C4
@@ -351,10 +333,10 @@ l00008604:
 
 l00008608:
 	cmp	r0,#0
-	lsrsne	r3,r3,lsr #4
+	lsrsne	r3,r3,#4
 
 l00008610:
-	lsrne	r1,r1,lsr #4
+	lsrne	r1,r1,#4
 
 l00008614:
 	bne	$000085D8
@@ -368,10 +350,10 @@ l00008624:
 	mov	pc,lr
 
 l00008628:
-	str	lr,[sp,-#4]!
+	push	lr
 	bl	$00008638
 	mov	r0,#0
-	pop	{pc}
+	pop	pc
 
 ;; __div0: 00008638
 __div0 proc
@@ -418,7 +400,7 @@ __libc_csu_fini proc
 	ldr	r1,[r10,r3]
 	ldr	r3,[r10,r2]
 	rsb	r3,r1,r3
-	asr	r4,r3,asr #2
+	asr	r4,r3,#2
 	cmp	r4,#0
 	sub	r4,r4,#1
 	beq	$000086F8
@@ -439,7 +421,7 @@ l000086F8:
 __do_global_ctors_aux proc
 	push	{r4,lr}
 	ldr	r3,[pc,#&28]                                           ; 00008740
-	ldr	r2,[r3,-#4]
+	ldr	r2,[r3,-#&4]
 	cmn	r2,#1
 	sub	r4,r3,#4
 	popeq	{r4,pc}
@@ -453,17 +435,18 @@ l00008724:
 
 ;; call___do_global_ctors_aux: 00008744
 call___do_global_ctors_aux proc
-	str	lr,[sp,-#4]!
-	pop	{pc}
+	push	lr
+	pop	pc
 ;;; Segment .fini (0000874C)
 
 ;; _fini: 0000874C
 _fini proc
-	str	lr,[sp,-#4]!
+	push	lr
 	bl	$0000839C
-	pop	{pc}
+	pop	pc
 ;;; Segment .rodata (00008758)
-00008758                         01 00 02 00                     ....   
+_IO_stdin_used		; 00008758
+	dd	0x00020001
 ;;; Segment .data (0001075C)
 0001075C                                     00 00 00 00             ....
 00010760 00 00 00 00 40 08 01 00                         ....@...       
@@ -486,9 +469,9 @@ _fini proc
 ; DT_REL               000082B8
 ; DT_RELSZ                   40
 ; DT_RELENT                   8
-; 6FFFFFFE             00008298
-; 6FFFFFFF             00000001
-; 6FFFFFF0             00008284
+; DT_VERNEED           00008298
+; DT_VERNEEDNUM               1
+; DT_VERSYM            00008284
 ;;; Segment .ctors (00010834)
 00010834             FF FF FF FF 00 00 00 00                 ........   
 ;;; Segment .dtors (0001083C)
@@ -501,5 +484,6 @@ _fini proc
 00010850 00 00 00 00 04 83 00 00 04 83 00 00 00 00 00 00 ................
 00010860 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
 ;;; Segment .sbss (00010870)
-00010870 00                                              .              
+completed.1		; 00010870
+	db	0x00
 00010871    00 00 00                                      ...           

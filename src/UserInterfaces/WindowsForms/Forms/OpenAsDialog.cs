@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,8 @@
  */
 #endregion
 
+using Reko.Core.Configuration;
+using Reko.Gui;
 using Reko.Gui.Controls;
 using Reko.Gui.Forms;
 using System;
@@ -42,6 +44,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             Architectures = new ComboBoxWrapper(ddlArchitectures);
             Platforms = new ComboBoxWrapper(ddlEnvironments);
             FileName = new TextBoxWrapper(textBox1);
+            PropertyGrid = new PropertyGridWrapper(propertyGrid);
             BrowseButton = new ButtonWrapper(btnBrowse);
             OkButton = new ButtonWrapper(btnOk);
 
@@ -56,7 +59,32 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         public IComboBox RawFileTypes { get; private set; }
         public IComboBox Architectures { get; private set; }
         public IComboBox Platforms { get; private set; }
+        public IPropertyGrid PropertyGrid { get; private set; }
         public IButton BrowseButton { get; private set; }
         public IButton OkButton { get; private set; }
+
+        public Dictionary<string, object> ArchitectureOptions { get; set; }
+
+        public Architecture GetSelectedArchitecture()
+        {
+            return (Architecture)((ListOption)Architectures.SelectedValue).Value;
+        }
+
+        public OperatingEnvironment GetSelectedEnvironment()
+        {
+            return (OperatingEnvironment)((ListOption)Platforms.SelectedValue).Value;
+        }
+
+        public void SetPropertyGrid(Dictionary<string, object> architectureOptions, List<PropertyOption> options)
+        {
+            if (architectureOptions != null && options != null)
+            {
+                PropertyGrid.SelectedObject = new PropertyOptionsGridAdapter(architectureOptions, options);
+            }
+            else
+            {
+                PropertyGrid.SelectedObject = null;
+            }
+        }
     }
 }

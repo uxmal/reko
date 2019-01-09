@@ -53,8 +53,8 @@
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TravisRelease|AnyCPU'">
-    <OutputPath>bin\TravisRelease\</OutputPath>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnixRelease|AnyCPU'">
+    <OutputPath>bin\UnixRelease\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -81,8 +81,8 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TravisRelease|x86'">
-    <OutputPath>bin\x86\TravisRelease\</OutputPath>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnixRelease|x86'">
+    <OutputPath>bin\x86\UnixRelease\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -108,8 +108,8 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TravisRelease|x64'">
-    <OutputPath>bin\x64\TravisRelease\</OutputPath>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnixRelease|x64'">
+    <OutputPath>bin\x64\UnixRelease\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -140,9 +140,66 @@
     <Compile Include="Analysis\SsaMutatorTests.cs" />
     <Compile Include="Arch\Alpha\AlphaDisassemblerTests.cs" />
     <Compile Include="Arch\Alpha\AlphaRewriterTests.cs" />
+    <Compile Include="Arch\Arm\A64RewriterTests.cs" />
     <Compile Include="Arch\i8051\i8051DisassemblerTests.cs" />
     <Compile Include="Arch\i8051\i8051RewriterTests.cs" />
     <Compile Include="Arch\Intel\FastcallConventionTests.cs" />
+    <Compile Include="Arch\M6800\M6812DisassemblerTests.cs" />
+    <Compile Include="Arch\M6800\M6812RewriterTests.cs" />
+    <Compile Include="Arch\Pdp11\Pdp11ArchitectureTests.cs" />
+    <Compile Include="Arch\PowerPC\PowerPcDisassemblerTests.750.cs" />
+    <Compile Include="Arch\Sparc\SparcDisassemblerTests.cs" />
+    <Compile Include="Arch\Tms7000\Tms7000DisassemblerTests.cs" />
+    <Compile Include="Arch\Tms7000\Tms7000RewriterTests.cs" />
+    <Compile Include="Arch\zSeries\zSeriesDisassemblerTests.cs" />
+    <Compile Include="Arch\zSeries\zSeriesRewriterTests.cs" />
+    <Compile Include="Core\CriticalInstructionTests.cs" />
+    <Compile Include="Arch\Microchip\BitsFieldsTest.cs" />
+    <Compile Include="Arch\Microchip\Common\ExpectedDisasmResult.cs" />
+    <Compile Include="Arch\Microchip\Common\MemoryMapTests.cs" />
+    <Compile Include="Arch\Microchip\Common\DeviceConfigDefsTests.cs" />
+    <Compile Include="Arch\Microchip\Common\PICRegisterAccessTests.cs" />
+    <Compile Include="Arch\Microchip\Common\PICRegisterContentTests.cs" />
+    <Compile Include="Arch\Microchip\Common\PICRegistersTestsBase.cs" />
+    <Compile Include="Arch\Microchip\Common\PICRegisterTraitsTests.cs" />
+    <Compile Include="Arch\Microchip\Common\SamplePICNames.cs" />
+    <Compile Include="Arch\Microchip\ConvUtilsTests.cs" />
+    <Compile Include="Arch\Microchip\CrownkingTests.cs" />
+    <Compile Include="Arch\Microchip\Object2XElementTest.cs" />
+    <Compile Include="Arch\Microchip\PIC16\PIC16ArchitectureTests.cs" />
+    <Compile Include="Arch\Microchip\PIC16\PIC16Basic_RewriterTests.cs" />
+    <Compile Include="Arch\Microchip\PIC16\PIC16Enh_RewriterTests.cs" />
+    <Compile Include="Arch\Microchip\PIC16\PIC16Full_DisassemblerTests.cs" />
+    <Compile Include="Arch\Microchip\PIC16\PIC16Enh_DisassemblerTests.cs" />
+    <Compile Include="Arch\Microchip\PIC16\PIC16All_RegistersTests.cs" />
+    <Compile Include="Arch\Microchip\PIC16\PIC16Basic_RegistersTests.cs" />
+    <Compile Include="Arch\Microchip\PIC16\PIC16Enh_RegistersTests.cs" />
+    <Compile Include="Arch\Microchip\PIC16\PIC16Full_RegistersTests.cs" />
+    <Compile Include="Arch\Microchip\Common\DisassemblerTestsBase.cs" />
+    <Compile Include="Arch\Microchip\PIC16\PIC16Basic_DisassemblerTests.cs" />
+    <Compile Include="Arch\Microchip\PIC16\PIC16Full_RewriterTests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18ArchitectureTests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18EnhdExtd_DisassemblerTests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18EnhdTrad_DisassemblerTests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18EggExtd_DisassemblerTests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18EggTrad_DisassemblerTests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18LgcyExtd_DisassemblerTests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18LgcyTrad_DisassemblerTests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18EggExtd_RegistersTests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18EnhdExtd_RegistersTests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18LgcyExtd_RegistersTests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18EnhdTrad_RegistersTests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18EggTrad_RegistersTests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18LgcyTrad_RegistersTests.cs" />
+    <Compile Include="Arch\Microchip\Common\PICRewriterTestsBase.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18EnhdExtd_RewriterTests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18EnhdTrad_RewriterTests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18EggExtd_RewriterTests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18EggTrad_RewriterTests.cs" />
+    <Compile Include="Arch\Microchip\PIC18\PIC18LgcyTrad_RewriterTests.cs" />
+    <Compile Include="Core\ImportReferenceTests.cs" />
+    <Compile Include="Core\Lib\BitfieldTests.cs" />
+    <Compile Include="Core\Lib\Float16Tests.cs" />
     <Compile Include="Core\Pascal\PascalLexerTests.cs" />
     <Compile Include="Core\Pascal\PascalParserTests.cs" />
     <Compile Include="Arch\Msp430\Msp430DisassemblerTests.cs" />
@@ -196,10 +253,13 @@
     <Compile Include="Environments\Windows\X86_64ProcedureSerializerTests.cs" />
     <Compile Include="Fragments\FCmpFragment.cs" />
     <Compile Include="Environments\SysV\ArchSpecific\SuperHCallingConventionTests.cs" />
+    <Compile Include="Fragments\RorChainFragment.cs" />
     <Compile Include="Gui\Design\ProgramDesignerTests.cs" />
     <Compile Include="Gui\Windows\Forms\CommentFormInteractorTests.cs" />
     <Compile Include="Gui\Windows\Forms\SymbolSourceInteractorTests.cs" />
+    <Compile Include="ImageLoaders\Elf\Relocators\x86RelocatorTests.cs" />
     <Compile Include="ImageLoaders\IntelHex\HexLoaderTests.cs" />
+    <Compile Include="Loading\NullImageLoaderTests.cs" />
     <Compile Include="Loading\SymbolLoadingServiceTests.cs" />
     <Compile Include="ImageLoaders\Llvm\LlvmLexerTests.cs" />
     <Compile Include="ImageLoaders\Llvm\LlvmParserTests.cs" />
@@ -220,7 +280,6 @@
     <Compile Include="Analysis\CallRewriterTests.cs" />
     <Compile Include="Analysis\CoalescerTests.cs" />
     <Compile Include="Analysis\ConditionCodeEliminatorTests.cs" />
-    <Compile Include="Analysis\CriticalInstructionTests.cs" />
     <Compile Include="Analysis\DataFlowAnalysisTests.cs" />
     <Compile Include="Analysis\DataFlowAnalysisTests2.cs" />
     <Compile Include="Analysis\DeadCodeTests.cs" />
@@ -303,10 +362,10 @@
     <Compile Include="Arch\ArchTestBase.cs" />
     <Compile Include="Arch\Arm\AArch64DisassemblerTests.cs" />
     <Compile Include="Arch\Arm\ArmArchitectureTests.cs" />
-    <Compile Include="Arch\Arm\ArmDisassemblerTests.cs" />
+    <Compile Include="Arch\Arm\A32DisassemblerTests.cs" />
     <Compile Include="Arch\Arm\ArmRewriterTests.cs" />
-    <Compile Include="Arch\Arm\ThumbDisassemblerTests.cs" />
-    <Compile Include="Arch\Arm\ThumbRewriterTests.cs" />
+    <Compile Include="Arch\Arm\T32DisassemblerTests.cs" />
+    <Compile Include="Arch\Arm\T32RewriterTests.cs" />
     <Compile Include="Arch\Cil\CilDisassemblerTests.cs" />
     <Compile Include="Arch\DisassemblerTestBase.cs" />
     <Compile Include="Arch\Intel\AssemblerFragment.cs" />
@@ -329,7 +388,6 @@
     <Compile Include="Arch\PowerPC\PowerPcRewriterTests.cs" />
     <Compile Include="Arch\RewriterTestBase.cs" />
     <Compile Include="Arch\Sparc\RtlTranslator.cs" />
-    <Compile Include="Arch\Sparc\SparcDisassemblerTests.cs" />
     <Compile Include="Arch\Sparc\SparcRewriterTests.cs" />
     <Compile Include="Arch\Z80\DisassemblerTests.cs" />
     <Compile Include="Arch\Z80\RewriterTests.cs" />
@@ -609,11 +667,12 @@
     <Compile Include="Scanning\EscapedAccessRewriterTests.cs" />
     <Compile Include="Scanning\Fragments\RtlEvenOdd.cs" />
     <Compile Include="Scanning\GlobalDataWorkItemTests.cs" />
-    <Compile Include="Scanning\HeuristicProcedureScannerTests.cs" />
+    <Compile Include="Scanning\BlockConflictResolverTests.cs" />
     <Compile Include="Scanning\HeuristicTestBase.cs" />
     <Compile Include="Scanning\InstructionTrieTests.cs" />
     <Compile Include="Scanning\InterProceduralJumpTests.cs" />
     <Compile Include="Scanning\ProcedureDetectorTests.cs" />
+    <Compile Include="Scanning\ProcedurePaddingFinderTests.cs" />
     <Compile Include="Scanning\RtlBackwalkHost.cs" />
     <Compile Include="Scanning\Scanner.M68kTests.cs" />
     <Compile Include="Scanning\ScannerInLinqTests.cs" />
@@ -628,6 +687,7 @@
     <Compile Include="Structure\AbsynCodeEmitter.cs" />
     <Compile Include="Structure\AbsynCodeGeneratorTests.cs" />
     <Compile Include="Structure\AbsynStatementEmitterTests.cs" />
+    <Compile Include="Structure\ForLoopRewriterTests.cs" />
     <Compile Include="Structure\MockCaseJumpsBack.cs" />
     <Compile Include="Structure\MockCaseStatement.cs" />
     <Compile Include="Structure\MockInfiniteLoop.cs" />
@@ -713,6 +773,10 @@
       <Project>{AB5DDEB2-87C0-42C7-8CD3-72CB2B1282FB}</Project>
       <Name>i8051</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Arch\M6800\M6800.csproj">
+      <Project>{54944B1E-7C12-4FB1-A208-996AD6D04B80}</Project>
+      <Name>M6800</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Arch\M68k.Design\M68k.Design.csproj">
       <Project>{90b83ec1-915b-471b-8f86-6a71b17db6a1}</Project>
       <Name>M68k.Design</Name>
@@ -720,6 +784,10 @@
     <ProjectReference Include="..\Arch\M68k\M68k.csproj">
       <Project>{38A94634-B2B2-4A89-AF02-2A2898B93343}</Project>
       <Name>M68k</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arch\Microchip\MicrochipPIC.csproj">
+      <Project>{a959c1a2-a622-4600-81ad-29e08545b2f7}</Project>
+      <Name>MicrochipPIC</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\Mips\Mips.csproj">
       <Project>{4DEC7ADA-E512-43C5-8312-CA076818C2A9}</Project>
@@ -776,6 +844,10 @@
     <ProjectReference Include="..\Arch\Z80\Z80.csproj">
       <Project>{66A00AB2-6964-4815-9140-F28FEE48E6D6}</Project>
       <Name>Z80</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arch\zSeries\zSeries.csproj">
+      <Project>{33CE0D6A-8762-4505-975F-EE61C355FD04}</Project>
+      <Name>zSeries</Name>
     </ProjectReference>
     <ProjectReference Include="..\Assemblers\M68k\M68kAssembler.csproj">
       <Project>{FD6AD906-BED1-4AC1-A7C5-0A04CCA2D7DC}</Project>
@@ -933,9 +1005,17 @@
       <Project>{FDAF4CA9-085C-473E-BCB5-0D2A4354A949}</Project>
       <Name>Libc</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Libraries\Microchip\Utils\Microchip.Utils.csproj">
+      <Project>{45e095e9-d7c2-40aa-913b-ab77582afbb4}</Project>
+      <Name>Microchip.Utils</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Libraries\Python\Python.csproj">
       <Project>{C278CA2F-7D7C-47C3-B560-7BC63E1FAD96}</Project>
       <Name>Python</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arch\Tms7000\Tms7000.csproj">
+      <Project>{E453FF63-48CF-4C94-ACED-D8F836EBE884}</Project>
+      <Name>Tms7000</Name>
     </ProjectReference>
     <ProjectReference Include="..\UserInterfaces\WindowsForms\WindowsForms.csproj">
       <Project>{60CC0C65-E629-4923-9112-2A46371C90AF}</Project>
@@ -991,6 +1071,7 @@
   <ItemGroup>
     <DecompilerMetadata Include="$(SolutionDir)Environments\Msdos\*.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\*.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)tools\genPICdb\picdb.zip" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Lib\Bits.Tests.cs" />
@@ -1000,17 +1081,21 @@
     <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.pdb" />
   </ItemGroup>
   <!-- TODO: Duplicated in Common.items -->
-  <ItemGroup Condition=" '$(OS)' == 'Windows_NT' AND '$(Platform)' != 'AnyCPU' ">
+  <ItemGroup Condition=" '$(OS)|$(Platform)' == 'Windows_NT|x86'">
     <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\ArmNative.dll" />
     <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\ArmNative.pdb" />
     <ExternalComponents Include="$(SolutionDir)..\external\Capstone\X86\capstone*.dll" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(OS)|$(Platform)' == 'Windows_NT|x64'">
+    <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\ArmNative.dll" />
+    <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\ArmNative.pdb" />
+    <ExternalComponents Include="$(SolutionDir)..\external\Capstone\X64\capstone.dll" />
   </ItemGroup>
   <ItemGroup Condition=" '$(OS)' == 'Unix'">
     <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\libArmNative.so" />
   </ItemGroup>
   <Target Name="AfterBuild">
     <Message Importance="normal" Text="Copying Decompiler metadata files to $(TargetDir)" />
-    <Message Importance="high" Text="External components @(ExternalComponents)" />
     <Copy SourceFiles="@(Architectures)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(DecompilerMetadata)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(ExternalComponents)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />

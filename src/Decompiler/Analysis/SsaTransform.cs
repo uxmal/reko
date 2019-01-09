@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@ using Reko.Core.Types;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using System.Diagnostics;
 
 namespace Reko.Analysis
 {
@@ -92,8 +93,10 @@ namespace Reko.Analysis
 		private Statement InsertPhiStatement(Block b, Identifier v)
 		{
 			var stm = new Statement(
-                0,
-				new PhiAssignment(v, b.Pred.Count),
+                b.Address.ToLinear(),
+				new PhiAssignment(v, b.Pred
+                    .Select(p => new PhiArgument(p, v))
+                    .ToArray()),
 				b);
 			b.Statements.Insert(0, stm);
 			return stm;
@@ -293,23 +296,32 @@ namespace Reko.Analysis
 
 			public override void VisitStore(Store store)
 			{
-				var access = (MemoryAccess) store.Dst;
-                var iBlock = ssa.RpoNumber(block);
-                byte grf;
-                defVars[iBlock].TryGetValue(access.MemoryId, out grf);
-				grf = (byte)((grf & ~BitDeadIn) | BitDefined);
-				defVars[iBlock][access.MemoryId] = grf;
+                switch (store.Dst)
+                {
+                case MemoryAccess access:
+                    var iBlock = ssa.RpoNumber(block);
+                    byte grf;
+                    defVars[iBlock].TryGetValue(access.MemoryId, out grf);
+                    grf = (byte)((grf & ~BitDeadIn) | BitDefined);
+                    defVars[iBlock][access.MemoryId] = grf;
 
-                if (this.frameVariables && IsFrameAccess(proc, access.EffectiveAddress))
-                {
-                    var idFrame = EnsureStackVariable(proc, access.EffectiveAddress, access.DataType);
-                    MarkDefined(idFrame);
+                    if (this.frameVariables && IsFrameAccess(proc, access.EffectiveAddress))
+                    {
+                        var idFrame = EnsureStackVariable(proc, access.EffectiveAddress, access.DataType);
+                        MarkDefined(idFrame);
+                    }
+                    else
+                    {
+                        store.Dst.Accept(this);
+                    }
+                    store.Src.Accept(this);
+                    break;
+                case ArrayAccess aaccess:
+                    aaccess.Array.Accept(this);
+                    aaccess.Index.Accept(this);
+                    store.Src.Accept(this);
+                    break;
                 }
-                else
-                {
-                    store.Dst.Accept(this);
-                }
-				store.Src.Accept(this);
 			}
 
 			public override void VisitApplication(Application app)
@@ -413,6 +425,7 @@ namespace Reko.Analysis
             private IImportResolver importResolver;
             private HashSet<Identifier> existingDefs;
             private HashSet<Statement> newPhiStatements;
+            private int recursionGuard;
 
             /// <summary>
             /// Walks the dominator tree, renaming the different definitions of variables
@@ -456,7 +469,10 @@ namespace Reko.Analysis
                 if (!existingDefs.Contains(id))
                 {
                     var sid = this.ssa.Identifiers.Add(id, null, null, false);
-                    sid.DefStatement = new Statement(0, new DefInstruction(id), entryBlock);
+                    sid.DefStatement = new Statement(
+                        proc.EntryAddress.ToLinear(),
+                        new DefInstruction(id),
+                        entryBlock);
                     entryBlock.Statements.Add(sid.DefStatement);
                     existingDefs.Add(id);
                     return sid;
@@ -473,6 +489,12 @@ namespace Reko.Analysis
 			/// <param name="n">Block to rename</param>
 			public void RenameBlock(Block n)
 			{
+                if (this.recursionGuard > 1000)
+                {
+                    Debug.Print("Stopping recursion in SsaTransform.RenameBlock");
+                    return;
+                }
+                ++this.recursionGuard;
 				var wasonentry = new Dictionary<Identifier, Identifier>(rename);
 
 				// Rename variables in all blocks except the starting block which
@@ -501,15 +523,15 @@ namespace Reko.Analysis
 
 							foreach (Statement stm in y.Statements.Where(s => s.Instruction is PhiAssignment))
 							{
-
                                 var newPhi = newPhiStatements.Contains(stm);
 								stmCur = stm;
 								PhiAssignment phi = (PhiAssignment) stmCur.Instruction;
 								PhiFunction p = phi.Src;
-								// replace 'n's slot with the renamed name of the variable.
-								p.Arguments[j] = 
-									NewUse((Identifier)p.Arguments[j], stm, newPhi
-                                    );
+                                // replace 'n's slot with the renamed name of the variable.
+                                var value = NewUse((Identifier) p.Arguments[j].Value, stm, newPhi);
+                                p.Arguments[j] = new PhiArgument(
+                                    p.Arguments[j].Block,
+									value);
 							}
 						}
 					}
@@ -520,6 +542,7 @@ namespace Reko.Analysis
 						RenameBlock(c);
 				}
 				rename = wasonentry;
+                --this.recursionGuard;
 			}
 
             /// <summary>
@@ -541,7 +564,9 @@ namespace Reko.Analysis
                     .Where(id => !existing.Contains(id) &&
                                  !(id.Storage is StackArgumentStorage))
                     .OrderBy(id => id.Name)     // Sort them for stability; unit test are sensitive to shifting order 
-                    .Select(id => new Statement(0, new UseInstruction(id), block))
+                    .Select(id => new Statement(
+                        block.Address.ToLinear(),
+                        new UseInstruction(id), block))
                     .ToList();
                 block.Statements.AddRange(stms);
                 stms.ForEach(u =>
@@ -769,14 +794,12 @@ namespace Reko.Analysis
 
                 if (c != null)
                 {
-                    access.EffectiveAddress = c;
                     var e = importResolver.ResolveToImportedProcedureConstant(stmCur, c);
                     if (e != null)
                         return e;
                 }
-                access.MemoryId = (MemoryIdentifier)access.MemoryId.Accept(this);
-                access.EffectiveAddress = ea;
-                return access;
+                var memId = (MemoryIdentifier)access.MemoryId.Accept(this);
+                return new MemoryAccess(memId, ea, access.DataType);
             }
 
             public override Expression VisitSegmentedAccess(SegmentedAccess access)
@@ -805,11 +828,21 @@ namespace Reko.Analysis
                         var idDst = NewDef(idFrame, store.Src, false);
                         return new Assignment(idDst, store.Src);
                     }
-					acc.MemoryId = (MemoryIdentifier) NewDef(acc.MemoryId, store.Src, false);
-                    SegmentedAccess sa = acc as SegmentedAccess;
-					if (sa != null)
-						sa.BasePointer = sa.BasePointer.Accept(this);
-					acc.EffectiveAddress = acc.EffectiveAddress.Accept(this);
+                    var memId = (MemoryIdentifier) NewDef(acc.MemoryId, store.Src, false);
+                    Expression basePtr = null;
+                    if (acc is SegmentedAccess sa)
+                    {
+                        basePtr = sa.BasePointer.Accept(this);
+                    }
+                    var ea = acc.EffectiveAddress.Accept(this);
+                    if (basePtr != null)
+                    {
+                        store.Dst = new SegmentedAccess(memId, basePtr, ea, acc.DataType);
+                    }
+                    else
+                    {
+                        store.Dst = new MemoryAccess(memId, ea, acc.DataType);
+                    }
 				}
 				else
 				{
@@ -1032,8 +1065,11 @@ namespace Reko.Analysis
         /// <returns>The inserted phi Assignment</returns>
         private SsaIdentifier NewPhi( Identifier id, Block b)
         {
-            var phiAss = new PhiAssignment(id, 0);
-            var stm = new Statement(0, phiAss, b);
+            var phiAss = new PhiAssignment(id);
+            var stm = new Statement(
+                b.Address.ToLinear(),
+                phiAss,
+                b);
             b.Statements.Insert(0, stm);
 
             var sid = ssa.Identifiers.Add(phiAss.Dst, stm, phiAss.Src, false);
@@ -1047,7 +1083,11 @@ namespace Reko.Analysis
             ((PhiAssignment)phi.DefStatement.Instruction).Src =
                 new PhiFunction(
                     id.DataType,
-                    phi.DefStatement.Block.Pred.Select(p => ReadVariable(id, p).Identifier).ToArray());
+                    phi.DefStatement.Block.Pred.
+                        Select(p => new PhiArgument(
+                            p,
+                            ReadVariable(id, p).Identifier))
+                        .ToArray());
             return TryRemoveTrivial(phi);
         }
 
@@ -1059,8 +1099,9 @@ namespace Reko.Analysis
         private SsaIdentifier TryRemoveTrivial(SsaIdentifier phi)
         {
             Identifier same = null;
-            foreach (Identifier op in ((PhiAssignment)phi.DefStatement.Instruction).Src.Arguments)
+            foreach (var arg in ((PhiAssignment)phi.DefStatement.Instruction).Src.Arguments)
             {
+                var op = (Identifier) arg.Value;
                 if (op == same || op == phi.Identifier)
                 {
                     // Unique value or self-reference
@@ -1105,7 +1146,9 @@ namespace Reko.Analysis
         private SsaIdentifier NewDef(Identifier id, Block b)
         {
             var sid = ssa.Identifiers.Add(id, null, null, false);
-            sid.DefStatement = new Statement(0, new DefInstruction(id), b);
+            sid.DefStatement = new Statement(
+                b.Address.ToLinear(),
+                new DefInstruction(id), b);
             b.Statements.Add(sid.DefStatement);
             return sid;
         }

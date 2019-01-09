@@ -21,7 +21,6 @@ v8_10: orig: v8
     def:  v8_10 = SEQ(r1, r2) >>u 0x01
     uses: r1_1 = SLICE(v8_10, word32, 32)
           r2_4 = (word32) v8_10
-          C_2 = cond(v8_10)
 // main
 // Return size: 0
 void main(word32 r1, word32 r2)

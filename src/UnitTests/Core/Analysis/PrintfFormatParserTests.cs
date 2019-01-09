@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -158,7 +158,7 @@ namespace Reko.UnitTests.Core.Analysis
         {
             ParseChar32("%08s");
             Assert.AreEqual(1, parser.ArgumentTypes.Count);
-            Assert.AreEqual("(ptr char)", parser.ArgumentTypes[0].ToString());
+            Assert.AreEqual("(ptr32 char)", parser.ArgumentTypes[0].ToString());
         }
 
         [Test]

@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -84,14 +84,10 @@ namespace Reko.Arch.Xtensa
 
         public override XtensaInstruction DisassembleInstruction()
         {
-            byte b0;
-            byte b1;
-            byte b2;
-            this.state = new State();
             state.addr = this.rdr.Address;
-            if (!this.rdr.TryReadByte(out b0)) return null;
-            if (!this.rdr.TryReadByte(out b1)) return null;
-            if (!this.rdr.TryReadByte(out b2)) return null;
+            if (!this.rdr.TryReadByte(out byte b0)) return null;
+            if (!this.rdr.TryReadByte(out byte b1)) return null;
+            if (!this.rdr.TryReadByte(out byte b2)) return null;
 
             // Extract little endian pieces.
             state.op0 = (byte)(b0 & 0x0F);
@@ -386,6 +382,7 @@ namespace Reko.Arch.Xtensa
         public class OpRec : OpRecBase
         {
             private Opcodes opcode;
+            private InstrClass iclass;
             private string fmt;
             private bool twoByte;
 
@@ -394,6 +391,14 @@ namespace Reko.Arch.Xtensa
                 this.opcode = opcode;
                 this.fmt = fmt;
             }
+
+            public OpRec(Opcodes opcode, InstrClass iclass, string fmt)
+            {
+                this.opcode = opcode;
+                this.iclass = iclass;
+                this.fmt = fmt;
+            }
+
             public OpRec(Opcodes opcode, string fmt, bool twoByte)
             {
                 this.opcode = opcode;
@@ -665,7 +670,7 @@ namespace Reko.Arch.Xtensa
                 new OpRec(Opcodes.callx12, "Rs"));
 
             var oprecSNM0 = new m_Rec(
-                new OpRec(Opcodes.ill, ""),
+                new OpRec(Opcodes.ill, InstrClass.Invalid|InstrClass.Zero, ""),
                 null,
                 oprecJR,
                 oprecCALLX);

@@ -9,8 +9,8 @@ l1:
 	// succ:  IndirectCallFragment_exit
 IndirectCallFragment_exit:
 
-globals_t (in globals : (ptr (struct "Globals")))
-	trait_primitive((ptr (struct "Globals")))
+globals_t (in globals : (ptr32 (struct "Globals")))
+	trait_primitive((ptr32 (struct "Globals")))
 	trait_mem(T_2, 27000)
 T_2 (in 0x2700 : selector)
 	trait_primitive(selector)
@@ -32,5 +32,5 @@ T_8 (in di * 0x0002 : word16)
 T_9 (in SEQ(ds, 0x2040)[di * 0x0002] : word16)
 	trait_primitive(word16)
 T_10 (in SEQ(0x2700, SEQ(ds, 0x2040)[di * 0x0002]) : ptr32)
-	trait_primitive((ptr code))
+	trait_primitive((ptr32 code))
 	trait_primitive(ptr32)

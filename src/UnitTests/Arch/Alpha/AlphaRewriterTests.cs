@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -842,7 +842,7 @@ namespace Reko.UnitTests.Arch.Mips
                 "0|L--|00100000(4): 3 instructions",
                 "1|L--|r6 = r0 + r9",
                 "2|T--|if (!OV(r6)) branch 00100004",
-                "3|L--|__trap_overflow()");
+                "3|T--|__trap_overflow()");
         }
 
         [Test]
@@ -898,7 +898,7 @@ namespace Reko.UnitTests.Arch.Mips
                 "0|L--|00100000(4): 3 instructions",
                 "1|L--|r11 = r0 - 0x13",
                 "2|T--|if (!OV(r11)) branch 00100004",
-                "3|L--|__trap_overflow()");
+                "3|T--|__trap_overflow()");
         }
 
         [Test]
@@ -909,7 +909,7 @@ namespace Reko.UnitTests.Arch.Mips
                 "0|L--|00100000(4): 3 instructions",
                 "1|L--|r27 = (word64) SLICE(r0 - r5, int32, 0)",
                 "2|T--|if (!OV(r27)) branch 00100004",
-                "3|L--|__trap_overflow()");
+                "3|T--|__trap_overflow()");
         }
 
         [Test]
@@ -920,7 +920,7 @@ namespace Reko.UnitTests.Arch.Mips
                 "0|L--|00100000(4): 3 instructions",
                 "1|L--|r4 = (word64) SLICE(r3 + 0x4D, int32, 0)",
                 "2|T--|if (!OV(r4)) branch 00100004",
-                "3|L--|__trap_overflow()");
+                "3|T--|__trap_overflow()");
         }
 
         [Test]
@@ -928,8 +928,8 @@ namespace Reko.UnitTests.Arch.Mips
         {
             RewriteCode("0000FF63");    // trapb
             AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|__trap_barrier()");
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|__trap_barrier()");
         }
 
         [Test]

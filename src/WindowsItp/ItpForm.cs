@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ using Reko.Core.Configuration;
 using Reko.Core.Services;
 using Reko.Environments.Windows;
 using Reko.Gui;
+using Reko.Gui.Visualizers;
 using Reko.ImageLoaders.MzExe;
 using Reko.ImageLoaders.OdbgScript;
 using Reko.UserInterfaces.WindowsForms.Controls;
@@ -33,6 +34,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -42,6 +44,7 @@ namespace Reko.WindowsItp
     public partial class ItpForm : Form
     {
         private ProcedurePropertiesDialog procDlg;
+        private Form propOptionsDlg;
 
         public ItpForm()
         {
@@ -174,17 +177,17 @@ namespace Reko.WindowsItp
             var fs = new FileStream(@"D:\dev\jkl\dec\halsten\decompiler_paq\upx\demo.exe", FileMode.Open);
             var size = fs.Length;
             var abImage = new byte[size];
-            fs.Read(abImage, 0, (int) size);
+            fs.Read(abImage, 0, (int)size);
             var exe = new ExeImageLoader(sc, "foolexe", abImage);
-            var peLdr = new PeImageLoader(sc, "foo.exe" ,abImage, exe.e_lfanew); 
+            var peLdr = new PeImageLoader(sc, "foo.exe", abImage, exe.e_lfanew);
             var addr = peLdr.PreferredBaseAddress;
             var program = peLdr.Load(addr);
             var rr = peLdr.Relocate(program, addr);
             var win32 = new Win32Emulator(program.SegmentMap, program.Platform, program.ImportReferences);
-            var emu = new X86Emulator((IntelArchitecture) program.Architecture, program.SegmentMap, win32);
+            var emu = new X86Emulator((IntelArchitecture)program.Architecture, program.SegmentMap, win32);
             emu.InstructionPointer = rr.EntryPoints[0].Address;
             emu.ExceptionRaised += delegate { throw new Exception(); };
-            emu.WriteRegister(Registers.esp, (uint) peLdr.PreferredBaseAddress.ToLinear() + 0x0FFC);
+            emu.WriteRegister(Registers.esp, (uint)peLdr.PreferredBaseAddress.ToLinear() + 0x0FFC);
             emu.Start();
         }
 
@@ -275,6 +278,40 @@ namespace Reko.WindowsItp
             var dlg = new SymbolSourceDialog();
             dlg.Services = sc;
             dlg.ShowDialog(this);
+        }
+
+        private void propertyOptionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (this.propOptionsDlg == null)
+            {
+                this.propOptionsDlg = new ProcedureOptionsDialog();
+                this.propOptionsDlg.FormClosed += delegate { this.procDlg = null; };
+            }
+            this.propOptionsDlg.Show();
+        }
+
+        private void rewriterToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new RewriterPerformanceDialog())
+            {
+                dlg.ShowDialog(this);
+            }
+        }
+
+        private void suffixArrayToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new SuffixArrayPerformanceDialog())
+            {
+                dlg.ShowDialog(this);
+            }
+        }
+
+        private void decoderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new DecoderPerformanceDialog())
+            {
+                dlg.ShowDialog(this);
+            }
         }
     }
 }

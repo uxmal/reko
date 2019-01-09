@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -54,9 +54,8 @@ namespace Reko.Arch.RiscV
         {
             var dst = RewriteOp(instr.op1);
             var src1 = RewriteOp(instr.op2);
-            var imm2 = instr.op3 as ImmediateOperand;
             Expression src2;
-            if (imm2 != null)
+            if (instr.op3 is ImmediateOperand imm2)
             {
                 src2 = Constant.Int32(imm2.Value.ToInt32());
             }
@@ -64,7 +63,7 @@ namespace Reko.Arch.RiscV
             {
                 src2 = RewriteOp(instr.op3);
             }
-                    
+
             Expression src;
             if (src1.IsZero)
             {
@@ -111,7 +110,7 @@ namespace Reko.Arch.RiscV
         {
             var dst = RewriteOp(instr.op1);
             var ui = ((ImmediateOperand)instr.op2).Value;
-            m.Assign(dst, Constant.Word(dst.DataType.Size, ui.ToUInt32() << 12));
+            m.Assign(dst, Constant.Word(dst.DataType.BitSize, ui.ToUInt32() << 12));
         }
 
         private void RewriteOr()

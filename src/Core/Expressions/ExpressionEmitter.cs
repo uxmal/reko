@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -54,31 +54,46 @@ namespace Reko.Core.Expressions
         /// <returns>A binary expression for the sum.</returns>
         public BinaryExpression IAdd(Expression left, Expression right)
         {
-            var size = left.DataType.Size;
-            var dtResult = size > 0 ? PrimitiveType.CreateWord(size) : (DataType) new UnknownType();
+            var bitSize = left.DataType.BitSize;
+            var dtResult = bitSize > 0 ? PrimitiveType.CreateWord(bitSize) : (DataType) new UnknownType();
             return new BinaryExpression(Operator.IAdd, dtResult, left, right);
         }
 
         /// <summary>
-        /// Convenience method for addition. The addend is converted to a Constant.
+        /// Convenience method for addition. The addend is converted to a Constant
+        /// of the same size as the augend.
         /// </summary>
         /// <param name="left">Augend</param>
         /// <param name="right">Addend</param>
         /// <returns>A binary expression for the sum.</returns>
         public BinaryExpression IAdd(Expression left, int right)
         {
-            return new BinaryExpression(Operator.IAdd, left.DataType, left, Constant.Create(left.DataType, right));
+            return IAdd(left, Word(left.DataType.BitSize, right));
+        }
+
+        /// <summary>
+        /// Convenience method for addition. The addend is converted to a
+        /// signed integer Constant of the same size as the augend.
+        /// </summary>
+        /// <param name="left">Augend</param>
+        /// <param name="right">Addend</param>
+        /// <returns>A binary expression for the sum.</returns>
+        public BinaryExpression IAddS(Expression left, int right)
+        {
+            return IAdd(left, Constant.Int(left.DataType, right));
         }
 
         /// <summary>
         /// Creates an offset sum of <paramref name="e"/> and the
-        /// signed integer <paramref name="c"/> interpreted as a word.
+        /// signed integer <paramref name="c"/>
         /// </summary>
         /// <param name="e">Expression forming the base of offset sum.</param>
-        /// <param name="size">Used only to determine the size of the constant to add.</param>
         /// <param name="c">Signed offset</param>
-        /// <returns></returns>
-        public Expression AddConstantWord(Expression e, DataType size, long c)
+        /// <returns>
+        /// Return addition if <paramref name="c"/> is positive
+        /// Return subtraction if <paramref name="c"/> is negative
+        /// </returns>
+        public Expression AddSubSignedInt(Expression e, int c)
         {
             if (c == 0)
             {
@@ -86,11 +101,11 @@ namespace Reko.Core.Expressions
             }
             else if (c > 0)
             {
-                return IAdd(e, Constant.Word(size.Size, c));
+                return IAddS(e, c);
             }
             else
             {
-                return ISub(e, Constant.Word(size.Size, -c));
+                return ISubS(e, -c);
             }
         }
 
@@ -288,7 +303,7 @@ namespace Reko.Core.Expressions
         /// <returns>A floating point sum expression.</returns>
         public Expression FAdd(Expression a, Expression b)
         {
-            var dtSum = PrimitiveType.Create(Domain.Real, a.DataType.Size);
+            var dtSum = PrimitiveType.Create(Domain.Real, a.DataType.BitSize);
             return new BinaryExpression(Operator.FAdd, dtSum, a, b);
         }
 
@@ -300,7 +315,7 @@ namespace Reko.Core.Expressions
         /// <returns>A floating point division expression.</returns>
         public Expression FDiv(Expression a, Expression b)
         {
-            var dtSum = PrimitiveType.Create(Domain.Real, a.DataType.Size);
+            var dtSum = PrimitiveType.Create(Domain.Real, a.DataType.BitSize);
             return new BinaryExpression(Operator.FDiv, dtSum, a, b);
         }
 
@@ -312,7 +327,7 @@ namespace Reko.Core.Expressions
         /// <returns>A floating point multiplication expression.</returns>
         public Expression FMul(Expression a, Expression b)
         {
-            var dtSum = PrimitiveType.Create(Domain.Real, a.DataType.Size);
+            var dtSum = PrimitiveType.Create(Domain.Real, a.DataType.BitSize);
             return new BinaryExpression(Operator.FMul, dtSum, a, b);
         }
 
@@ -395,7 +410,7 @@ namespace Reko.Core.Expressions
         /// <returns>A floating point subtraction expression.</returns>
         public BinaryExpression FSub(Expression a, Expression b)
         {
-            var dtSum = PrimitiveType.Create(Domain.Real, a.DataType.Size);
+            var dtSum = PrimitiveType.Create(Domain.Real, a.DataType.BitSize);
             return new BinaryExpression(Operator.FSub, dtSum, a, b);
         }
 
@@ -515,8 +530,7 @@ namespace Reko.Core.Expressions
         /// ('>' in the C language family).
         /// </summary>
         /// <returns>Signed integer comparison.</returns>
-
-        public Expression Gt(Expression a, Expression b)
+        public BinaryExpression Gt(Expression a, Expression b)
         {
             return new BinaryExpression(Operator.Gt, PrimitiveType.Bool, a, b);
         }
@@ -527,7 +541,7 @@ namespace Reko.Core.Expressions
         /// to a Constant.
         /// </summary>
         /// <returns>Signed integer comparison.</returns>
-        public Expression Gt(Expression a, int b)
+        public BinaryExpression Gt(Expression a, int b)
         {
             return Gt(a, Int32(b));
         }
@@ -583,10 +597,10 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
-        /// Generates a signed 16-bit integer constant.
+        /// Generates a signed 32-bit integer constant.
         /// </summary>
-        /// <param name="n">16-bit signed integer.</param>
-        /// <returns>Constant representing a signed 16-bit integer.</returns>
+        /// <param name="n">32-bit signed integer.</param>
+        /// <returns>Constant representing a signed 32-bit integer.</returns>
         public Constant Int32(int n)
         {
             return Constant.Int32(n);
@@ -840,11 +854,11 @@ namespace Reko.Core.Expressions
         /// <returns>A value sequence.</returns>
         public MkSequence Seq(Expression head, Expression tail)
         {
-            int totalSize = head.DataType.Size + tail.DataType.Size;
+            int totalBitSize = head.DataType.BitSize + tail.DataType.BitSize;
             Domain dom = (head.DataType == PrimitiveType.SegmentSelector)
                 ? Domain.Pointer
                 : ((PrimitiveType)head.DataType).Domain;
-            return new MkSequence(PrimitiveType.Create(dom, totalSize), new[] { head, tail });
+            return new MkSequence(PrimitiveType.Create(dom, totalBitSize), new[] { head, tail });
         }
 
         /// <summary>
@@ -856,8 +870,8 @@ namespace Reko.Core.Expressions
         /// combined sizes of the expressions.</returns>
         public MkSequence Seq(params Expression [] exprs)
         {
-            int totalSize = exprs.Sum(e => e.DataType.Size);
-            var dt = PrimitiveType.CreateWord(totalSize);
+            int totalBitSize = exprs.Sum(e => e.DataType.BitSize);
+            var dt = PrimitiveType.CreateWord(totalBitSize);
             return new MkSequence(dt, exprs);
         }
 
@@ -941,7 +955,10 @@ namespace Reko.Core.Expressions
         /// <returns>A signed integer multiplication expression</returns>
         public Expression SMul(Expression left, Expression right)
         {
-            return new BinaryExpression(Operator.SMul, PrimitiveType.Create(Domain.SignedInt, left.DataType.Size), left, right);
+            return new BinaryExpression(
+                Operator.SMul, 
+                PrimitiveType.Create(Domain.SignedInt, left.DataType.BitSize), 
+                left, right);
         }
 
         /// <summary>
@@ -953,7 +970,10 @@ namespace Reko.Core.Expressions
         /// <returns>A signed integer multiplication expression</returns>
         public Expression SMul(Expression left, int c)
         {
-            return new BinaryExpression(Operator.SMul, PrimitiveType.Create(Domain.SignedInt, left.DataType.Size), left, Constant.Create(left.DataType, c));
+            return new BinaryExpression(
+                Operator.SMul, 
+                PrimitiveType.Create(Domain.SignedInt, left.DataType.BitSize), 
+                left, Constant.Create(left.DataType, c));
         }
 
         /// <summary>
@@ -977,7 +997,10 @@ namespace Reko.Core.Expressions
         /// <returns>An unsigned integer multiplication expression</returns>
         public Expression UMul(Expression left, int c)
         {
-            return new BinaryExpression(Operator.UMul, PrimitiveType.Create(Domain.UnsignedInt, left.DataType.Size), left, Constant.Create(left.DataType, c));
+            return new BinaryExpression(
+                Operator.UMul, 
+                PrimitiveType.Create(Domain.UnsignedInt, left.DataType.BitSize),
+                left, Constant.Create(left.DataType, c));
         }
 
         /// <summary>
@@ -1131,14 +1154,27 @@ namespace Reko.Core.Expressions
 
         /// <summary>
         /// Convenience method to generate an integer subtraction expression. 
-        /// The subtrahend is converted to a Constant.
+        /// The subtrahend is converted to a Constant of the same size as the augend.
         /// </summary>
         /// <param name="left">Minuend.</param>
         /// <param name="right">Subtrahend</param>
         /// <returns>An integer subtraction expression.</returns>
         public BinaryExpression ISub(Expression left, int right)
         {
-            return ISub(left, Word(left.DataType.Size, right));
+            return ISub(left, Word(left.DataType.BitSize, right));
+        }
+
+        /// <summary>
+        /// Convenience method to generate an integer subtraction expression. 
+        /// The subtrahend is converted to a signed integer Constant of the same 
+        /// size as the augend.
+        /// </summary>
+        /// <param name="left">Minuend.</param>
+        /// <param name="right">Subtrahend</param>
+        /// <returns>An integer subtraction expression.</returns>
+        public BinaryExpression ISubS(Expression left, int right)
+        {
+            return ISub(left, Constant.Int(left.DataType, right));
         }
 
         /// <summary>
@@ -1263,7 +1299,7 @@ namespace Reko.Core.Expressions
         /// <returns>An unsigned integer point inequality comparison.</returns>
         public Expression Ult(Expression a, int b)
         {
-            return Ult(a, Word(a.DataType.Size, b));
+            return Ult(a, Word(a.DataType.BitSize, b));
         }
 
         /// <summary>
@@ -1327,14 +1363,14 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
-        /// Generates an bit-vector of length <paramref name="byteSize"> bytes 
+        /// Generates an bit-vector of length <paramref name="bitSize"> bits
         /// from the bit patter <pararef name="n"/>.
         /// </summary>
         /// <param name="b">32 bits</param>
         /// <returns>Bit vector constant</returns>
-        public Constant Word(int byteSize, long n)
+        public Constant Word(int bitSize, long n)
         {
-            return Constant.Word(byteSize, n);
+            return Constant.Word(bitSize, n);
         }
 
         /// <summary>

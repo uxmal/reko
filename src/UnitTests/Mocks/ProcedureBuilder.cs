@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,36 +43,36 @@ namespace Reko.UnitTests.Mocks
 
         public ProcedureBuilder()
         {
-            Init(new FakeArchitecture(), this.GetType().Name, null);
+            Init(new FakeArchitecture(), this.GetType().Name, Address.Ptr32(0x00123400), null);
         }
 
         public ProcedureBuilder(string name)
         {
-            Init(new FakeArchitecture(), name, null);
+            Init(new FakeArchitecture(), name, Address.Ptr32(0x00123400), null);
         }
 
         public ProcedureBuilder(IProcessorArchitecture arch)
         {
-            Init(arch, this.GetType().Name, null);
+            Init(arch, this.GetType().Name, Address.Ptr32(0x00123400), null);
         }
 
         public ProcedureBuilder(IProcessorArchitecture arch, string name)
         {
-            Init(arch,name,null);
+            Init(arch,name, Address.Ptr32(0x00123400), null);
         }
 
         public ProcedureBuilder(IProcessorArchitecture arch, string name, Dictionary<string, Block> blocks)
         {
-            Init(arch, name, blocks);
+            Init(arch, name, Address.Ptr32(0x00123400), blocks);
         }
 
-        private void Init(IProcessorArchitecture arch, string name, Dictionary<string, Block> blocks)
+        private void Init(IProcessorArchitecture arch, string name, Address addr, Dictionary<string, Block> blocks)
         {
             if (arch == null)
                 throw new ArgumentNullException("arch");
             this.InstructionSize = 1;
             this.Architecture = arch;
-            this.Procedure = new Procedure(arch, name, arch.CreateFrame());
+            this.Procedure = new Procedure(arch, name, addr, arch.CreateFrame());
             this.blocks = blocks ?? new Dictionary<string, Block>();
             this.unresolvedProcedures = new List<ProcUpdater>();
             BuildBody();
@@ -87,10 +87,9 @@ namespace Reko.UnitTests.Mocks
         public IProcessorArchitecture Architecture { get; private set; }
         public int InstructionSize { get; set; }
 
-        private Block BlockOf(string label)
+        protected Block BlockOf(string label)
         {
-            Block b;
-            if (!blocks.TryGetValue(label, out b))
+            if (!blocks.TryGetValue(label, out Block b))
             {
                 b = Procedure.AddBlock(label);
                 blocks.Add(label, b);
@@ -116,9 +115,9 @@ namespace Reko.UnitTests.Mocks
         {
             Block b = EnsureBlock(null);
             branchBlock = BlockOf(label);
-            TerminateBlock();
 
-            b.Statements.Add(LinearAddress++, new Branch(expr, branchBlock));
+            Emit(new Branch(expr, branchBlock));
+            TerminateBlock();
             return b.Statements.Last;
         }
 
@@ -171,7 +170,6 @@ namespace Reko.UnitTests.Mocks
             return Emit(ci);
         }
 
-
         public void Compare(string flags, Expression a, Expression b)
         {
             Assign(Flags(flags), new ConditionOf(ISub(a, b)));
@@ -205,6 +203,11 @@ namespace Reko.UnitTests.Mocks
             Block.Statements.Add(LinearAddress , instr);
             LinearAddress += (uint)InstructionSize;
             return Block.Statements.Last;
+        }
+
+        public void AddUseToExitBlock(Identifier id)
+        {
+            Procedure.ExitBlock.Statements.Add(0, new UseInstruction(id));
         }
 
         public Identifier Flags(string s)
@@ -247,6 +250,7 @@ namespace Reko.UnitTests.Mocks
                 name = string.Format("l{0}", ++numBlock);
             }
             Block = BlockOf(name);
+            Block.Address = Address.Ptr32(LinearAddress);
             if (Procedure.EntryBlock.Succ.Count == 0)
             {
                 Procedure.ControlGraph.AddEdge(Procedure.EntryBlock, Block);
@@ -283,6 +287,17 @@ namespace Reko.UnitTests.Mocks
         public override Frame Frame
         {
             get { return Procedure.Frame; }
+        }
+
+        public Statement Phi(Identifier idDst, params (Expression, string)[] exprs)
+        {
+            var phi = new PhiFunction(
+                idDst.DataType,
+                exprs.Select(de => new PhiArgument(
+                    BlockOf(de.Item2),
+                    de.Item1))
+                .ToArray());
+            return Emit(new PhiAssignment(idDst, phi));
         }
 
         public override Identifier Register(int i)

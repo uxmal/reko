@@ -187,7 +187,7 @@ wLoc02_4: orig: wLoc02
 bp_5: orig: bp
 wArg02:Stack +0002
     def:  def wArg02
-    uses: return cond(wArg02)
+    uses: return (bool) cond(wArg02)
 SCZO_7: orig: SCZO
 C_8: orig: C
 bp_9: orig: bp
@@ -199,7 +199,7 @@ fn0C00_0069_entry:
 	def wArg02
 	// succ:  l0C00_0069
 l0C00_0069:
-	return cond(wArg02)
+	return (bool) cond(wArg02)
 	// succ:  fn0C00_0069_exit
 fn0C00_0069_exit:
 

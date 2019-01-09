@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -59,7 +59,7 @@ namespace Reko.UnitTests.Arch.Intel
         private void Given_32bit_CallingConvention(string cConvention)
         {
             this.ccr = new CallingConventionEmitter();
-            this.deserializer = new FakeTypeDeserializer(4);
+            this.deserializer = new FakeTypeDeserializer(32);
             X86CallingConvention cc;
             switch (cConvention)
             {
@@ -82,7 +82,7 @@ namespace Reko.UnitTests.Arch.Intel
         private void Given_16bit_CallingConvention(string cConvention)
         {
             this.ccr = new CallingConventionEmitter();
-            this.deserializer = new FakeTypeDeserializer(4);
+            this.deserializer = new FakeTypeDeserializer(32);
             X86CallingConvention cc;
             switch (cConvention)
             {
@@ -216,7 +216,7 @@ namespace Reko.UnitTests.Arch.Intel
 
             var sig = cc.Generate(ssig, arch.CreateFrame());
             var sExp =
-@"void memfn(Register (ptr (struct ""CWindow"")) this, Stack int32 XX, Stack int16 arg1)
+@"void memfn(Register (ptr32 (struct ""CWindow"")) this, Stack int32 XX, Stack int16 arg1)
 // stackDelta: 12; fpuStackDelta: 0; fpuMaxParam: -1
 ";
             Assert.AreEqual(sExp, sig.ToString("memfn", FunctionType.EmitFlags.AllDetails));

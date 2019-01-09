@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -102,7 +102,7 @@ namespace Reko.ImageLoaders.Dol
 		public override Program Load(Address addrLoad) {
 			var cfgSvc = Services.RequireService<IConfigurationService>();
 			var arch = cfgSvc.GetArchitecture("ppc-32-be");
-			var platform = new WiiPlatform(Services, arch);
+			var platform = cfgSvc.GetEnvironment("wii").Load(Services, arch);
 			return Load(addrLoad, arch, platform);
 		}
 
@@ -154,7 +154,7 @@ namespace Reko.ImageLoaders.Dol
 
 			var segmentMap = new SegmentMap(addrLoad, segments.ToArray());
 
-			var entryPoint = new ImageSymbol(this.hdr.entrypoint) { Type = SymbolType.Procedure };
+            var entryPoint = ImageSymbol.Procedure(arch, this.hdr.entrypoint);
 			var program = new Program(
 				segmentMap,
 				arch,

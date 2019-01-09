@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -210,7 +210,7 @@ l1:
 	goto m_lt
 	// succ:  m_lt m_ge
 m_ge:
-	r1_1 = PHI(r1, r1_2)
+	r1_1 = PHI((r1, l1), (r1_2, m_lt))
 	return
 	// succ:  test_exit
 m_lt:
@@ -270,7 +270,7 @@ l1:
 	goto m_lt
 	// succ:  m_lt m_ge
 m_done:
-	r1_2 = PHI(r1_3, r1_4)
+	r1_2 = PHI((r1_3, m_lt), (r1_4, m_ge))
 	return
 	// succ:  test_exit
 m_ge:
@@ -336,8 +336,8 @@ l1:
 	r1_3 = 0x0000000A
 	// succ:  m_loopHead
 m_loopHead:
-	r2_4 = PHI(r2_1, r2_8)
-	r1_5 = PHI(r1_3, r1_7)
+	r2_4 = PHI((r2_1, l1), (r2_8, m_loopStatements))
+	r1_5 = PHI((r1_3, l1), (r1_7, m_loopStatements))
 	branch r1_5 >= 0x00000000 m_loopStatements
 	goto m_xit
 	// succ:  m_xit m_loopStatements

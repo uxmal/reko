@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -67,7 +67,7 @@ namespace Reko.Analysis
 					PrimtiveType pt = id.DataType as PrimtiveType;
 					if (pt != null)
 					{
-						id.DataType = PrimtiveType.Create(pt.Domain, bitWidth/8);
+						id.DataType = PrimtiveType.Create(pt.Domain, bitWidth);
 					}
 				}
 			}
@@ -85,7 +85,9 @@ namespace Reko.Analysis
 				if (r == null)
 					continue;
 
-				proc.ExitBlock.Statements.Add(0, new UseInstruction(os.OriginalIdentifier, id));
+                proc.ExitBlock.Statements.Add(
+                    proc.ExitBlock.Address.ToLinear(),
+                    new UseInstruction(os.OriginalIdentifier, id));
 			}
 		}
 
@@ -136,7 +138,7 @@ namespace Reko.Analysis
 		/// </summary>
 		public void EnsureSignature(Procedure proc, ProcedureFlow flow)
 		{
-			if (proc.Signature != null && proc.Signature.ParametersValid)
+			if (proc.Signature.ParametersValid)
 				return;
 
 			var sb = new SignatureBuilder(proc.Frame, proc.Architecture);

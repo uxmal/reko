@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 Pavel Tomin.
+ * Copyright (C) 1999-2019 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -91,7 +91,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         private void Given_ProcedureName(uint addr, string name)
         {
             var address = Address32.Ptr32(addr);
-            var proc = new Procedure(program.Architecture, name, null);
+            var proc = new Procedure(program.Architecture, name, address, null);
             program.Procedures[address] = proc;
         }
 
@@ -122,7 +122,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             {
                 var program = pa.Program;
                 var addr = pa.Address;
-                program.Procedures[addr] = new Procedure(program.Architecture, "<unnamed>", null);
+                program.Procedures[addr] = new Procedure(program.Architecture, "<unnamed>", addr, null);
                 return markProcedureCmd;
             }));
 
@@ -277,7 +277,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         {
             program.EnvironmentMetadata.Types.Add(
                     "BYTE",
-                    PrimitiveType.Create(PrimitiveType.Byte.Domain, 1));
+                    PrimitiveType.Create(PrimitiveType.Byte.Domain, 8));
             Given_ProcedureName(0x17, "fnTest");
 
             When_DeclarationFormCreated(0x17);
@@ -342,5 +342,5 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Assert.AreEqual(1, program.User.Procedures.Count);
             Assert.AreEqual(1, program.Procedures.Count);
         }
-    }
+            }
 }

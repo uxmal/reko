@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
     {
         private MockRepository mr;
         private byte[] bytes;
-        private List<Elf32_PHdr> programHeaders;
+        private List<ElfSegment> programHeaders;
         private List<ElfSection> sections;
         private IPlatform platform;
         private ElfLoader32 el32;
@@ -52,7 +52,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         public void Setup()
         {
             mr = new MockRepository();
-            programHeaders = new List<Elf32_PHdr>();
+            programHeaders = new List<ElfSegment>();
             sections = new List<ElfSection>();
             platform = mr.Stub<IPlatform>();
             this.sc = new ServiceContainer();
@@ -78,7 +78,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             uint fileSize,
             uint loadedSize)
         {
-            programHeaders.Add(new Elf32_PHdr
+            programHeaders.Add(new ElfSegment
             {
                 p_type = type,
                 p_offset = imageOffset,
@@ -139,7 +139,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         {
             this.eil = new ElfImageLoader(sc, "foo", this.bytes);
             this.el32 = new ElfLoader32(eil, eih, this.bytes, big_endian ? ElfLoader.ELFDATA2MSB : ElfLoader.ELFDATA2LSB);
-            el32.ProgramHeaders.AddRange(programHeaders);
+            el32.Segments.AddRange(programHeaders);
             el32.Sections.AddRange(sections);
         }
 
@@ -232,8 +232,8 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         {
             var syms = new ImageSymbol[]
             {
-                new ImageSymbol(Address.Ptr32(0x04000000)) { Name = "strcpy", Type = SymbolType.ExternalProcedure },
-                new ImageSymbol(Address.Ptr32(0x04000010)) { Name = "strcmp", Type = SymbolType.ExternalProcedure },
+                ImageSymbol.ExternalProcedure(arch, Address.Ptr32(0x04000000), "strcpy"),
+                ImageSymbol.ExternalProcedure(arch, Address.Ptr32(0x04000010), "strcmp"),
             }.ToSortedList(k => k.Address);
             Given_ImageHeader(ElfMachine.EM_MIPS);
             Given_Program();

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1699,9 +1699,9 @@ string filename;
                     }
                     return true;
                 }
-                */
                 variables["$RESULT"] = Var.Create(0);
                 return true;
+                */
             }
             return false;
         }

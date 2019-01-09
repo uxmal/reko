@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 using Reko.Core.Types;
 using System;
 using System.ComponentModel;
+using System.Text;
 using System.Xml.Serialization;
 
 namespace Reko.Core.Serialization
@@ -52,10 +53,12 @@ namespace Reko.Core.Serialization
         }
 
 		public override string ToString()
-		{
-			return string.Format("ptr({0})", DataType);
-		}
-
-      
+        {
+            var sb = new StringBuilder();
+            sb.AppendFormat("ptr({0}", DataType);
+            WriteQualifier(Qualifier, sb);
+            sb.Append(")");
+            return sb.ToString();
+        }
     }
 }

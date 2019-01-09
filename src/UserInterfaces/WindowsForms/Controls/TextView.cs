@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -599,7 +599,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         {
             var frac = model.GetPositionAsFraction();
             this.ignoreScroll = true;
-            vScroll.Value = (int)(Math.BigMul(frac.Item1, vScroll.Maximum) / frac.Item2);
+            if(frac.Item2 != 0)
+                vScroll.Value = (int)(Math.BigMul(frac.Item1, vScroll.Maximum) / frac.Item2);
             this.ignoreScroll = false;
         }
 

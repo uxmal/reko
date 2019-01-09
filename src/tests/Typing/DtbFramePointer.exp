@@ -11,7 +11,7 @@ l1:		// block 1, pred: 0
 // Equivalence classes ////////////
 Eq_2: (struct "frame_t")
 	T_2 (in frame_4 : (struct "frame_t"))
-Eq_3: (ptr (struct (0 T_2 t0000) (4 T_10 t0004) (8 T_7 t0008)))
+Eq_3: (ptr32 (struct (0 T_2 t0000) (4 T_10 t0004) (8 T_7 t0008)))
 	T_3 (in fp_5 : word32)
 	T_4 (in &frame_4 : ptr0)
 Eq_5: word32
@@ -36,12 +36,12 @@ T_2:(in frame_4)
   OrigDataType: (struct "frame_t")
 T_3:(in fp_5)
   Class: Eq_3
-  DataType: (ptr (struct (0 T_2 t0000) (4 T_10 t0004) (8 T_7 t0008)))
-  OrigDataType: (ptr (struct (4 T_10 t0004) (8 T_7 t0008)))
+  DataType: (ptr32 (struct (0 T_2 t0000) (4 T_10 t0004) (8 T_7 t0008)))
+  OrigDataType: (ptr32 (struct (4 T_10 t0004) (8 T_7 t0008)))
 T_4:(in &frame_4)
   Class: Eq_3
-  DataType: (ptr (struct (0 T_2 t0000) (4 T_10 t0004) (8 T_7 t0008)))
-  OrigDataType: (ptr T_2)
+  DataType: (ptr32 (struct (0 T_2 t0000) (4 T_10 t0004) (8 T_7 t0008)))
+  OrigDataType: (ptr32 T_2)
 T_5:(in 0x00000008)
   Class: Eq_5
   DataType: word32

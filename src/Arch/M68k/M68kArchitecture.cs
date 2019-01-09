@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -176,14 +176,6 @@ namespace Reko.Arch.M68k
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
             return new Rewriter(this, rdr, (M68kState)state, binder, host);
-        }
-
-        public override Expression CreateStackAccess(IStorageBinder binder, int offset, DataType dataType)
-        {
-            return new MemoryAccess(new BinaryExpression(
-                Operator.IAdd, FramePointerType,
-                binder.EnsureRegister(StackRegister), Constant.Word32(offset)),
-                dataType);
         }
 
         public override Address MakeAddressFromConstant(Constant c)

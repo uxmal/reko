@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Reko.Core
 {
@@ -68,6 +69,11 @@ namespace Reko.Core
             Emit(new CodeComment(comment));
         }
 
+        public void Def(Identifier id)
+        {
+            Emit(new DefInstruction(id));
+        }
+
         public GotoInstruction Goto(Expression dest)
         {
             var gi = new GotoInstruction(dest);
@@ -85,11 +91,6 @@ namespace Reko.Core
         public void LoadId(Identifier reg, Expression ea)
         {
             Assign(reg, new MemoryAccess(MemoryIdentifier.GlobalMemory, ea, reg.DataType));
-        }
-
-        public Statement Phi(Identifier idDst, params Expression[] exprs)
-        {
-            return Emit(new PhiAssignment(idDst, new PhiFunction(idDst.DataType, exprs)));
         }
 
         public virtual void Return()

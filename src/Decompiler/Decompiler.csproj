@@ -72,8 +72,8 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TravisRelease|AnyCPU'">
-    <OutputPath>bin\TravisRelease\</OutputPath>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnixRelease|AnyCPU'">
+    <OutputPath>bin\UnixRelease\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <BaseAddress>285212672</BaseAddress>
     <Optimize>true</Optimize>
@@ -117,9 +117,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Analysis\ConstDivisionImplementedByMultiplication.cs" />
-    <Compile Include="Analysis\CriticalInstruction.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Analysis\DataFlow.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -288,10 +285,12 @@
     <Compile Include="Scanning\IcfgBuilder.cs" />
     <Compile Include="Scanning\IScanner.cs" />
     <Compile Include="Scanning\IScannerQueue.cs" />
+    <Compile Include="Scanning\LinearScanner.cs" />
+    <Compile Include="Scanning\ProcedurePaddingFinder.cs" />
     <Compile Include="Scanning\RtlBlock.cs" />
     <Compile Include="Scanning\HeuristicDisassembler.cs" />
     <Compile Include="Scanning\HeuristicProcedure.cs" />
-    <Compile Include="Scanning\HeuristicProcedureScanner.cs" />
+    <Compile Include="Scanning\BlockConflictResolver.cs" />
     <Compile Include="Scanning\IdentifierReplacer.cs" />
     <Compile Include="Scanning\BlockWorkitem.cs" />
     <Compile Include="Scanning\ImageSymbolWorkItem.cs" />
@@ -339,6 +338,7 @@
     </Compile>
     <Compile Include="Analysis\StrengthReduction.cs" />
     <Compile Include="Structure\AbsynStatementEmitter.cs" />
+    <Compile Include="Structure\ForLoopRewriter.cs" />
     <Compile Include="Structure\IStructureAnalysis.cs" />
     <Compile Include="Structure\CompoundConditionCoalescer.cs">
       <SubType>Code</SubType>

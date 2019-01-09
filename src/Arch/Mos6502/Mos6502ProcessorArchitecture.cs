@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -148,6 +148,7 @@ namespace Reko.Arch.Mos6502
 
         public override Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
         {
+            //$TODO: the M6502 stack pointer is an 8-bit offset into the fixed memory area $0100-$01FF.
             throw new NotImplementedException();
         }
 

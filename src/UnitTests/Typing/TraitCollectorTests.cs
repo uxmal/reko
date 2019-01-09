@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -109,12 +109,12 @@ namespace Reko.UnitTests.Typing
 		{
 			ProgramBuilder mock = new ProgramBuilder();
 			mock.Add(new CmpMock());
-			Program prog = mock.BuildProgram();
-            coll = CreateCollector(prog);
-            eqb.Build(prog);
-			coll.CollectProgramTraits(prog);
+			Program program = mock.BuildProgram();
+            coll = CreateCollector(program);
+            eqb.Build(program);
+			coll.CollectProgramTraits(program);
 
-			Verify(prog, "Typing/TrcoCmpMock.txt");
+			Verify(program, "Typing/TrcoCmpMock.txt");
 		}
 
 		[Test]
@@ -122,14 +122,14 @@ namespace Reko.UnitTests.Typing
 		{
 			ProgramBuilder mock = new ProgramBuilder();
 			mock.Add(new StaggeredArraysFragment());
-			Program prog = mock.BuildProgram();
-            coll = CreateCollector(prog);
+			Program program = mock.BuildProgram();
+            coll = CreateCollector(program);
 
-			en.Transform(prog);
-			eqb.Build(prog);
-			coll.CollectProgramTraits(prog);
+			en.Transform(program);
+			eqb.Build(program);
+			coll.CollectProgramTraits(program);
 
-			Verify(prog, "Typing/TrcoStaggeredArraysMock.txt");
+			Verify(program, "Typing/TrcoStaggeredArraysMock.txt");
 		}
 
 		[Test]
@@ -172,15 +172,15 @@ namespace Reko.UnitTests.Typing
 				Constant.Word32(0x0010040),
                 false);
 
-            Program prog = CreateProgram();
-			prog.InductionVariables.Add(i, iv);
-			prog.InductionVariables.Add(i2, iv2);
+            Program program = CreateProgram();
+			program.InductionVariables.Add(i, iv);
+			program.InductionVariables.Add(i2, iv2);
 
-            coll = CreateCollector(prog);
-			prog.Globals.Accept(eqb);
+            coll = CreateCollector(program);
+			program.Globals.Accept(eqb);
 			load.Accept(eqb);
 			ld2.Accept(eqb);
-			prog.Globals.Accept(coll);
+			program.Globals.Accept(coll);
 			load.Accept(coll);
 			ld2.Accept(coll);
 			Verify(null, "Typing/TrcoInductionVariable.txt");
@@ -190,13 +190,13 @@ namespace Reko.UnitTests.Typing
         [Ignore("FIXME")]
 		public void TrcoGlobalArray()
 		{
-            Program prog = CreateProgram();
+            Program program = CreateProgram();
             ProcedureBuilder m = new ProcedureBuilder();
             Identifier i = m.Local32("i");
-            Expression ea = m.IAdd(prog.Globals, m.IAdd(m.Shl(i, 2), 0x3000));
+            Expression ea = m.IAdd(program.Globals, m.IAdd(m.Shl(i, 2), 0x3000));
             Expression e = m.Mem(PrimitiveType.Int32, ea);
 
-            coll = CreateCollector(prog);
+            coll = CreateCollector(program);
 			e = e.Accept(en);
 			e.Accept(eqb);
 			e.Accept(coll);
@@ -238,14 +238,14 @@ namespace Reko.UnitTests.Typing
 		[Test]
 		public void TrcoSegmentedDirectAddress()
 		{
-            Program prog = CreateProgram();
-			prog.TypeStore.EnsureExpressionTypeVariable(prog.TypeFactory, prog.Globals);
+            Program program = CreateProgram();
+			program.TypeStore.EnsureExpressionTypeVariable(program.TypeFactory, program.Globals);
 
             ProcedureBuilder m = new ProcedureBuilder();
             Identifier ds = m.Local16("ds");
 			Expression e = m.SegMem(PrimitiveType.Byte, ds, m.Word16(0x0200));
 
-            coll = CreateCollector(prog);
+            coll = CreateCollector(program);
 			e = e.Accept(en);
 			e.Accept(eqb);
 			e.Accept(coll);
@@ -255,12 +255,12 @@ namespace Reko.UnitTests.Typing
         [Test]
         public void TrcoMultiplication()
         {
-            var prog = CreateProgram();
+            var program = CreateProgram();
             var m = new ProcedureBuilder();
             var id = m.Local32("id");
             var e = m.IMul(id, id);
 
-            coll = CreateCollector(prog);
+            coll = CreateCollector(program);
             e = e.Accept(en);
             e.Accept(eqb);
             e.Accept(coll);
@@ -326,10 +326,10 @@ namespace Reko.UnitTests.Typing
 		{
 			ProgramBuilder m = new ProgramBuilder();
 			m.Add(new IntelIndexedAddressingMode());
-			Program prog = m.BuildProgram();
-			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, null, new FakeDecompilerEventListener());
+			Program program = m.BuildProgram();
+			DataFlowAnalysis dfa = new DataFlowAnalysis(program, null, new FakeDecompilerEventListener());
 			dfa.AnalyzeProgram();
-			RunTest(prog, "Typing/TrcoIntelIndexedAddressingMode.txt");
+			RunTest(program, "Typing/TrcoIntelIndexedAddressingMode.txt");
 		}
 
 		[Test]
@@ -337,10 +337,10 @@ namespace Reko.UnitTests.Typing
 		{
 			ProgramBuilder m = new ProgramBuilder();
 			m.Add(new TreeFindMock());
-			Program prog = m.BuildProgram();
-			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, null, new FakeDecompilerEventListener());
+			Program program = m.BuildProgram();
+			DataFlowAnalysis dfa = new DataFlowAnalysis(program, null, new FakeDecompilerEventListener());
 			dfa.AnalyzeProgram();
-			RunTest(prog, "Typing/TrcoTreeFind.txt");
+			RunTest(program, "Typing/TrcoTreeFind.txt");
 		}
 
 		[Test]
@@ -393,7 +393,7 @@ namespace Reko.UnitTests.Typing
                 "\ttrait_primitive(word32)" + nl +
                 "\ttrait_mem(T_2, 0)" + nl +
                 "T_2 (in Mem0[pfn:word32] : word32)" + nl +
-                "\ttrait_primitive((ptr code))" + nl +
+                "\ttrait_primitive((ptr32 code))" + nl +
                 "\ttrait_primitive(word32)" + nl;
 			Assert.AreEqual(exp, sw.ToString());
 		}
@@ -500,12 +500,12 @@ namespace Reko.UnitTests.Typing
             return CreateCollector(CreateProgram());
         }
 
-        private TraitCollector CreateCollector(Program prog)
+        private TraitCollector CreateCollector(Program program)
         {
-            en = new ExpressionNormalizer(prog.Architecture.PointerType);
-            eqb = new EquivalenceClassBuilder(prog.TypeFactory, prog.TypeStore);
-            handler = new TestTraitHandler(prog.TypeStore);
-            return new TraitCollector(prog.TypeFactory, prog.TypeStore, handler, prog);
+            en = new ExpressionNormalizer(program.Architecture.PointerType);
+            eqb = new EquivalenceClassBuilder(program.TypeFactory, program.TypeStore, new FakeDecompilerEventListener());
+            handler = new TestTraitHandler(program.TypeStore);
+            return new TraitCollector(program.TypeFactory, program.TypeStore, handler, program);
         }
 
         private ITraitHandler CreateHandler(TypeStore store)
@@ -513,16 +513,16 @@ namespace Reko.UnitTests.Typing
             return new TestTraitHandler(store);
         }
 
-        protected override void RunTest(Program prog, string outFile)
+        protected override void RunTest(Program program, string outFile)
 		{
-            coll = CreateCollector(prog);
-            en.Transform(prog);
-            eqb.Build(prog);
-			coll.CollectProgramTraits(prog);
+            coll = CreateCollector(program);
+            en.Transform(program);
+            eqb.Build(program);
+			coll.CollectProgramTraits(program);
 
 			using (FileUnitTester fut = new FileUnitTester(outFile))
 			{
-				foreach (Procedure proc in prog.Procedures.Values)
+				foreach (Procedure proc in program.Procedures.Values)
 				{
 					proc.Write(false, fut.TextWriter);
 					fut.TextWriter.WriteLine();
@@ -532,13 +532,13 @@ namespace Reko.UnitTests.Typing
 			}
 		}
 
-		private void Verify(Program prog, string outputFilename)
+		private void Verify(Program program, string outputFilename)
 		{
 			using (FileUnitTester fut = new FileUnitTester(outputFilename))
 			{
-				if (prog != null)
+				if (program != null)
 				{
-					foreach (Procedure proc in prog.Procedures.Values)
+					foreach (Procedure proc in program.Procedures.Values)
 					{
 						proc.Write(false, fut.TextWriter);
 						fut.TextWriter.WriteLine();

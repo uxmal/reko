@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 Pavel Tomin.
+ * Copyright (C) 1999-2019 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -89,7 +89,7 @@ namespace Reko.UnitTests.Core
             Assert.AreEqual(1, lib.Types.Count);
             Assert.AreEqual(1, lib.Signatures.Count);
             var sExp =
-@"Register size_t strlen(Stack (ptr char) ptrArg04)
+@"Register size_t strlen(Stack (ptr32 char) ptrArg04)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 ";
             Assert.AreEqual(sExp, lib.Signatures["strlen"].ToString("strlen", FunctionType.EmitFlags.AllDetails)
@@ -131,7 +131,7 @@ namespace Reko.UnitTests.Core
             Assert.AreEqual(1, lib.Signatures.Count);
             Assert.AreEqual("(struct \"foo\" (0 int32 x))", lib.Types["FOO"].ToString());
             var sExp =
-@"Register int32 bar(Stack (ptr FOO) pfoo)
+@"Register int32 bar(Stack (ptr32 FOO) pfoo)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 ";
             Assert.AreEqual(sExp, lib.Signatures["bar"].ToString("bar", FunctionType.EmitFlags.AllDetails)

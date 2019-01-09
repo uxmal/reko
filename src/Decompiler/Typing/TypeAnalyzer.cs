@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -71,7 +71,7 @@ namespace Reko.Typing
             store = program.TypeStore;
 
             aen = new ExpressionNormalizer(program.Platform.PointerType);
-            eqb = new EquivalenceClassBuilder(factory, store);
+            eqb = new EquivalenceClassBuilder(factory, store, eventListener);
             tyco = new TypeCollector(
                 program.TypeFactory, program.TypeStore, program,
                 eventListener);
@@ -82,11 +82,9 @@ namespace Reko.Typing
             ter = new TypedExpressionRewriter(program, eventListener);
 
             // RestrictProcedures(program, 0, 60, true); // Re-enable this for debugging
-            eventListener.ShowStatus("Gathering primitive datatypes from instructions.");
 			aen.Transform(program);
             eqb.Build(program);
 
-            eventListener.ShowStatus("Collecting data types");
             tyco.CollectTypes();
             store.BuildEquivalenceClassDataTypes(factory);
             //dpa.FollowConstantPointers(prog);
@@ -98,7 +96,6 @@ namespace Reko.Typing
 
 			trans.Transform();
 			ctn.RenameAllTypes(store);
-            eventListener.ShowStatus("Rewriting expressions.");
 			ter.RewriteProgram(program);
 		}
 

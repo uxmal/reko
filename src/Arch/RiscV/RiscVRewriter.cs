@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ namespace Reko.Arch.RiscV
         private IRewriterHost host;
         private RiscVInstruction instr;
         private List<RtlInstruction> rtlInstructions;
-        private RtlClass rtlc;
+        private InstrClass rtlc;
         private ProcessorState state;
 
         public RiscVRewriter(RiscVArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
@@ -58,7 +58,7 @@ namespace Reko.Arch.RiscV
                 var addr = dasm.Current.Address;
                 var len = dasm.Current.Length;
                 this.rtlInstructions = new List<RtlInstruction>();
-                this.rtlc = RtlClass.Linear;
+                this.rtlc = InstrClass.Linear;
                 this.m = new RtlEmitter(rtlInstructions);
 
                 switch (instr.opcode)
@@ -66,12 +66,12 @@ namespace Reko.Arch.RiscV
                 default:
                     host.Warn(
                         instr.Address, 
-                        "Rewriting of Risc-V instruction '{0}' not implemented yet.",
+                        "Risc-V instruction '{0}' not supported yet.",
                         instr.opcode);
-                    rtlc = RtlClass.Invalid;
+                    rtlc = InstrClass.Invalid;
                     m.Invalid();
                     break;
-                case Opcode.invalid: rtlc = RtlClass.Invalid; m.Invalid(); break;
+                case Opcode.invalid: rtlc = InstrClass.Invalid; m.Invalid(); break;
                 case Opcode.add: RewriteAdd(); break;
                 case Opcode.addi: RewriteAdd(); break;
                 case Opcode.addiw: RewriteAddw(); break;

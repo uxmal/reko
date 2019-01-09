@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -83,12 +83,6 @@ namespace Reko.Core.CLanguage
         {
             y = ((PointerType_v1) y).DataType;
             return pX.DataType.Accept(this);
-        }
-
-        public bool VisitQualifiedType(QualifiedType_v1 qX)
-        {
-            y = ((QualifiedType_v1)y).DataType;
-            return qX.DataType.Accept(this);
         }
 
         public bool VisitReference(ReferenceType_v1 rX)

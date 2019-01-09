@@ -9,9 +9,9 @@ l1:
 proc1_exit:
 
 // Equivalence classes ////////////
-Eq_1: (ptr (struct "Globals"))
-	globals_t (in globals : (ptr (struct "Globals")))
-Eq_2: (ptr (struct (0 Eq_3 t0000)))
+Eq_1: (ptr32 (struct "Globals"))
+	globals_t (in globals : (ptr32 (struct "Globals")))
+Eq_2: (ptr32 (struct (0 Eq_3 t0000)))
 	T_2 (in 0x00123400 : word32)
 Eq_3: word32
 	T_3 (in Mem0[0x00123400:word32] : word32)
@@ -22,23 +22,23 @@ Eq_3: word32
 	T_13 (in Mem0[0x00123400:word32] : word32)
 Eq_4: word32
 	T_4 (in 0x00000001 : word32)
-Eq_6: (ptr (struct (0 Eq_3 t0000)))
+Eq_6: (ptr32 (struct (0 Eq_3 t0000)))
 	T_6 (in 0x00123400 : word32)
-Eq_8: (ptr (struct (0 Eq_3 t0000)))
+Eq_8: (ptr32 (struct (0 Eq_3 t0000)))
 	T_8 (in 0x00123400 : word32)
 Eq_10: word32
 	T_10 (in 0x00000001 : word32)
-Eq_12: (ptr (struct (0 Eq_3 t0000)))
+Eq_12: (ptr32 (struct (0 Eq_3 t0000)))
 	T_12 (in 0x00123400 : word32)
 // Type Variables ////////////
-globals_t: (in globals : (ptr (struct "Globals")))
+globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
   DataType: Eq_1
-  OrigDataType: (ptr (struct "Globals"))
+  OrigDataType: (ptr32 (struct "Globals"))
 T_2: (in 0x00123400 : word32)
   Class: Eq_2
   DataType: Eq_2
-  OrigDataType: (ptr (struct (0 T_3 t0000)))
+  OrigDataType: (ptr32 (struct (0 T_3 t0000)))
 T_3: (in Mem0[0x00123400:word32] : word32)
   Class: Eq_3
   DataType: Eq_3
@@ -54,7 +54,7 @@ T_5: (in Mem0[0x00123400:word32] + 0x00000001 : word32)
 T_6: (in 0x00123400 : word32)
   Class: Eq_6
   DataType: Eq_6
-  OrigDataType: (ptr (struct (0 T_7 t0000)))
+  OrigDataType: (ptr32 (struct (0 T_7 t0000)))
 T_7: (in Mem0[0x00123400:word32] : word32)
   Class: Eq_3
   DataType: Eq_3
@@ -62,7 +62,7 @@ T_7: (in Mem0[0x00123400:word32] : word32)
 T_8: (in 0x00123400 : word32)
   Class: Eq_8
   DataType: Eq_8
-  OrigDataType: (ptr (struct (0 T_9 t0000)))
+  OrigDataType: (ptr32 (struct (0 T_9 t0000)))
 T_9: (in Mem0[0x00123400:word32] : word32)
   Class: Eq_3
   DataType: Eq_3
@@ -78,7 +78,7 @@ T_11: (in Mem0[0x00123400:word32] + 0x00000001 : word32)
 T_12: (in 0x00123400 : word32)
   Class: Eq_12
   DataType: Eq_12
-  OrigDataType: (ptr (struct (0 T_13 t0000)))
+  OrigDataType: (ptr32 (struct (0 T_13 t0000)))
 T_13: (in Mem0[0x00123400:word32] : word32)
   Class: Eq_3
   DataType: Eq_3

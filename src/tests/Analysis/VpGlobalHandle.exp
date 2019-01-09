@@ -2,9 +2,9 @@
 fp:fp
     def:  def fp
     uses: esp_1 = fp
-          esp_2 = fp - 0x00000004
-          esp_7 = fp - 0x00000008
-          esp_11 = fp - 0x0000000C
+          esp_2 = fp - 4
+          esp_7 = fp - 8
+          esp_11 = fp - 12
           esp_14 = fp - 0x00000008
           esp_15 = fp - 0x0000000C
           esp_18 = fp - 0x00000008
@@ -17,7 +17,7 @@ fp:fp
 esp_1: orig: esp
     def:  esp_1 = fp
 esp_2: orig: esp
-    def:  esp_2 = fp - 0x00000004
+    def:  esp_2 = fp - 4
 esi:esi
     def:  def esi
     uses: dwLoc04_4 = esi
@@ -32,7 +32,7 @@ esi_6: orig: esi
     uses: dwLoc0C_12 = esi_6
           dwLoc0C_20 = esi_6
 esp_7: orig: esp
-    def:  esp_7 = fp - 0x00000008
+    def:  esp_7 = fp - 8
 edi:edi
     def:  def edi
     uses: dwLoc08_9 = edi
@@ -42,7 +42,7 @@ dwLoc08_9: orig: dwLoc08
 edi_10: orig: edi
     def:  edi_10 = GlobalHandle
 esp_11: orig: esp
-    def:  esp_11 = fp - 0x0000000C
+    def:  esp_11 = fp - 12
 dwLoc0C_12: orig: dwLoc0C
     def:  dwLoc0C_12 = esi_6
     uses: eax_13 = GlobalHandle(dwLoc0C_12)
@@ -98,13 +98,13 @@ fn10000000_entry:
 	// succ:  l10000000
 l10000000:
 	esp_1 = fp
-	esp_2 = fp - 0x00000004
+	esp_2 = fp - 4
 	dwLoc04_4 = esi
 	esi_6 = dwArg04
-	esp_7 = fp - 0x00000008
+	esp_7 = fp - 8
 	dwLoc08_9 = edi
 	edi_10 = GlobalHandle
-	esp_11 = fp - 0x0000000C
+	esp_11 = fp - 12
 	dwLoc0C_12 = esi_6
 	eax_13 = GlobalHandle(dwLoc0C_12)
 	esp_14 = fp - 0x00000008
@@ -131,9 +131,9 @@ fn10000000_exit:
 fp:fp
     def:  def fp
     uses: esp_1 = fp
-          esp_2 = fp - 0x00000004
-          esp_7 = fp - 0x00000008
-          esp_11 = fp - 0x0000000C
+          esp_2 = fp - 4
+          esp_7 = fp - 8
+          esp_11 = fp - 12
           esp_14 = fp - 0x00000008
           esp_15 = fp - 0x0000000C
           esp_18 = fp - 0x00000008
@@ -146,7 +146,7 @@ fp:fp
 esp_1: orig: esp
     def:  esp_1 = fp
 esp_2: orig: esp
-    def:  esp_2 = fp - 0x00000004
+    def:  esp_2 = fp - 4
 esi:esi
     def:  def esi
     uses: dwLoc04_4 = esi
@@ -163,7 +163,7 @@ dwArg04:Stack +0004
 esi_6: orig: esi
     def:  esi_6 = dwArg04
 esp_7: orig: esp
-    def:  esp_7 = fp - 0x00000008
+    def:  esp_7 = fp - 8
 edi:edi
     def:  def edi
     uses: dwLoc08_9 = edi
@@ -173,7 +173,7 @@ dwLoc08_9: orig: dwLoc08
 edi_10: orig: edi
     def:  edi_10 = GlobalHandle
 esp_11: orig: esp
-    def:  esp_11 = fp - 0x0000000C
+    def:  esp_11 = fp - 12
 dwLoc0C_12: orig: dwLoc0C
     def:  dwLoc0C_12 = dwArg04
 eax_13: orig: eax
@@ -227,13 +227,13 @@ fn10000000_entry:
 	// succ:  l10000000
 l10000000:
 	esp_1 = fp
-	esp_2 = fp - 0x00000004
+	esp_2 = fp - 4
 	dwLoc04_4 = esi
 	esi_6 = dwArg04
-	esp_7 = fp - 0x00000008
+	esp_7 = fp - 8
 	dwLoc08_9 = edi
 	edi_10 = GlobalHandle
-	esp_11 = fp - 0x0000000C
+	esp_11 = fp - 12
 	dwLoc0C_12 = dwArg04
 	eax_13 = GlobalHandle(dwArg04)
 	esp_14 = fp - 0x00000008

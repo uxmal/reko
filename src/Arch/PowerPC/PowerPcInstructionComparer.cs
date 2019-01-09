@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -83,6 +83,12 @@ namespace Reko.Arch.PowerPC
                 return CompareRegisters(memA.BaseRegister, memB.BaseRegister) &&
                     CompareValues(memB.Offset, memB.Offset);
             }
+            var cA = opA as ConditionOperand;
+            if (cA != null)
+            {
+                var cB = (ConditionOperand)opB;
+                return cA.condition == cB.condition;
+            }
             throw new NotImplementedException(string.Format("PowerPC operand type {0} not implemented.", opA.GetType().Name));
         }
 
@@ -130,6 +136,12 @@ namespace Reko.Arch.PowerPC
                     h ^= GetRegisterHash(mem.BaseRegister);
                 if (!NormalizeConstants)
                     h ^= GetConstantHash(mem.Offset);
+                return h;
+            }
+            var c = op as ConditionOperand;
+            if (c != null)
+            {
+                h ^= c.condition.GetHashCode();
                 return h;
             }
             throw new NotImplementedException(string.Format("PowerPC operand type {0} not implemented.", op.GetType().Name));

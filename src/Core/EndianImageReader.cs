@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -66,11 +66,16 @@ namespace Reko.Core
 		}
 
 
-		/// <summary>
-		/// </summary>
-		/// <param name="charType"></param>
-		/// <returns></returns>
-		public bool ReadNullCharTerminator(DataType charType)
+        public T ReadAt<T>(long offset, Func<EndianImageReader, T> action)
+        {
+            return base.ReadAt(offset, rdr => action.Invoke((EndianImageReader)rdr));
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="charType"></param>
+        /// <returns></returns>
+        public bool ReadNullCharTerminator(DataType charType)
 		{
 			switch (charType.Size)
 			{
@@ -130,13 +135,13 @@ namespace Reko.Core
 		public abstract ulong ReadUInt64();
 		public abstract bool TryReadUInt64(out ulong ui64);
 
-		public abstract short ReadInt16(uint offset);
-		public abstract int ReadInt32(uint offset);
-		public abstract long ReadInt64(uint offset);
+		public abstract short ReadInt16(int offset);
+		public abstract int ReadInt32(int offset);
+		public abstract long ReadInt64(int offset);
 
-		public abstract ushort ReadUInt16(uint offset);
-		public abstract uint ReadUInt32(uint offset);
-		public abstract ulong ReadUInt64(uint offset);
+		public abstract ushort ReadUInt16(int offset);
+		public abstract uint ReadUInt32(int offset);
+		public abstract ulong ReadUInt64(int offset);
 
 		public abstract Constant Read(PrimitiveType dataType);
 		public abstract bool TryRead(PrimitiveType dataType, out Constant c);
@@ -166,7 +171,12 @@ namespace Reko.Core
 			return new LeImageReader(image, (uint)(addr - image.BaseAddress));
 		}
 
-		public override short ReadInt16() { return ReadLeInt16(); }
+        public T ReadAt<T>(long offset, Func<LeImageReader, T> action)
+        {
+            return base.ReadAt(offset, rdr => action.Invoke((LeImageReader)rdr));
+        }
+
+        public override short ReadInt16() { return ReadLeInt16(); }
 		public override int ReadInt32() { return ReadLeInt32(); }
 		public override long ReadInt64() { return ReadLeInt64(); }
 		public override ushort ReadUInt16() { return ReadLeUInt16(); }
@@ -180,12 +190,12 @@ namespace Reko.Core
 		public override bool TryReadUInt32(out uint ui32) { return TryReadLeUInt32(out ui32); }
 		public override bool TryReadUInt64(out ulong ui64) { return TryReadLeUInt64(out ui64); }
 
-		public override short ReadInt16(uint offset) { return PeekLeInt16(offset); }
-		public override int ReadInt32(uint offset) { return PeekLeInt32(offset); }
-		public override long ReadInt64(uint offset) { return PeekLeInt64(offset); }
-		public override ushort ReadUInt16(uint offset) { return PeekLeUInt16(offset); }
-		public override uint ReadUInt32(uint offset) { return PeekLeUInt32(offset); }
-		public override ulong ReadUInt64(uint offset) { return PeekLeUInt64(offset); }
+		public override short ReadInt16(int offset) { return PeekLeInt16(offset); }
+		public override int ReadInt32(int offset) { return PeekLeInt32(offset); }
+		public override long ReadInt64(int offset) { return PeekLeInt64(offset); }
+		public override ushort ReadUInt16(int offset) { return PeekLeUInt16(offset); }
+		public override uint ReadUInt32(int offset) { return PeekLeUInt32(offset); }
+		public override ulong ReadUInt64(int offset) { return PeekLeUInt64(offset); }
 
 		public override Constant Read(PrimitiveType dataType) { return ReadLe(dataType); }
 		public override bool TryRead(PrimitiveType dataType, out Constant c) { return TryReadLe(dataType, out c); }
@@ -214,7 +224,12 @@ namespace Reko.Core
 			return new BeImageReader(image, (uint)(addr - image.BaseAddress));
 		}
 
-		public override short ReadInt16() { return ReadBeInt16(); }
+        public T ReadAt<T>(long offset, Func<BeImageReader, T> action)
+        {
+            return base.ReadAt<T>(offset, rdr => action.Invoke((BeImageReader)rdr));
+        }
+
+        public override short ReadInt16() { return ReadBeInt16(); }
 		public override int ReadInt32() { return ReadBeInt32(); }
 		public override long ReadInt64() { return ReadBeInt64(); }
 		public override ushort ReadUInt16() { return ReadBeUInt16(); }
@@ -227,12 +242,12 @@ namespace Reko.Core
 		public override bool TryReadUInt32(out uint ui32) { return TryReadBeUInt32(out ui32); }
 		public override bool TryReadUInt64(out ulong ui64) { return TryReadBeUInt64(out ui64); }
 
-		public override short ReadInt16(uint offset) { return PeekBeInt16(offset); }
-		public override int ReadInt32(uint offset) { return PeekBeInt32(offset); }
-		public override long ReadInt64(uint offset) { return PeekBeInt64(offset); }
-		public override ushort ReadUInt16(uint offset) { return PeekBeUInt16(offset); }
-		public override uint ReadUInt32(uint offset) { return PeekBeUInt32(offset); }
-		public override ulong ReadUInt64(uint offset) { return PeekBeUInt64(offset); }
+		public override short ReadInt16(int offset) { return PeekBeInt16(offset); }
+		public override int ReadInt32(int offset) { return PeekBeInt32(offset); }
+		public override long ReadInt64(int offset) { return PeekBeInt64(offset); }
+		public override ushort ReadUInt16(int offset) { return PeekBeUInt16(offset); }
+		public override uint ReadUInt32(int offset) { return PeekBeUInt32(offset); }
+		public override ulong ReadUInt64(int offset) { return PeekBeUInt64(offset); }
 
 		public override Constant Read(PrimitiveType dataType) { return ReadBe(dataType); }
 		public override bool TryRead(PrimitiveType dataType, out Constant c) { return TryReadBe(dataType, out c); }

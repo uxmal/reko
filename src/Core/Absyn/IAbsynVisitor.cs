@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,13 +28,15 @@ namespace Reko.Core.Absyn
 	public interface IAbsynVisitor
 	{
 		void VisitAssignment(AbsynAssignment ass);
-		void VisitBreak(AbsynBreak brk);
+        void VisitCompoundAssignment(AbsynCompoundAssignment compound);
+        void VisitBreak(AbsynBreak brk);
         void VisitCase(AbsynCase absynCase);
 		void VisitContinue(AbsynContinue cont);
         void VisitDeclaration(AbsynDeclaration decl);
         void VisitDefault(AbsynDefault decl);
 		void VisitDoWhile(AbsynDoWhile loop);
-		void VisitGoto(AbsynGoto gotoStm);
+        void VisitFor(AbsynFor forLoop);
+        void VisitGoto(AbsynGoto gotoStm);
 		void VisitIf(AbsynIf ifStm);
 		void VisitLabel(AbsynLabel lbl);
         void VisitLineComment(AbsynLineComment comment);
@@ -49,10 +51,12 @@ namespace Reko.Core.Absyn
         T VisitAssignment(AbsynAssignment ass);
         T VisitBreak(AbsynBreak brk);
         T VisitCase(AbsynCase absynCase);
+        T VisitCompoundAssignment(AbsynCompoundAssignment compound);
         T VisitContinue(AbsynContinue cont);
         T VisitDeclaration(AbsynDeclaration decl);
         T VisitDefault(AbsynDefault decl);
         T VisitDoWhile(AbsynDoWhile loop);
+        T VisitFor(AbsynFor forLoop);
         T VisitGoto(AbsynGoto gotoStm);
         T VisitIf(AbsynIf ifStm);
         T VisitLabel(AbsynLabel lbl);

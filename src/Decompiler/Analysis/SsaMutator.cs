@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -98,7 +98,7 @@ namespace Reko.Analysis
 
             // Generate an instruction that adjusts the register according to
             // the specified delta.
-            var src = m.AddConstantWord(usedRegExp, register.DataType, delta);
+            var src = m.AddSubSignedInt(usedRegExp, delta);
             var ass = new Assignment(defRegId, src);
             var defSid = ssa.Identifiers[defRegId];
 

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,6 +47,10 @@ namespace Reko.Core.Output
         //$TODO: move this to a language-specific class.
 		private static Dictionary<Operator,int> precedences;
         private static HashSet<Type> singleStatements;
+        /// <summary>
+        /// Maps # of nybbles to an appropriate format string.
+        /// </summary>
+        private static string[] unsignedConstantFormatStrings; 
 
         private const int PrecedenceApplication = 1;
 		private const int PrecedenceArrayAccess = 1;
@@ -125,11 +129,16 @@ namespace Reko.Core.Output
                 typeof(AbsynBreak),
                 typeof(AbsynContinue),
                 typeof(AbsynAssignment),
+                typeof(AbsynCompoundAssignment),
                 typeof(AbsynSideEffect)
             };
+
+            unsignedConstantFormatStrings = Enumerable.Range(0, 17)
+                .Select(n => $"0x{{0:X{n}}}")
+                .ToArray();
         }
 
-		private void ResetPresedence(int precedenceOld)
+        private void ResetPresedence(int precedenceOld)
 		{
 			if (precedenceOld < precedenceCur ||
                 (forceParensIfSamePrecedence && precedenceCur == precedenceOld))
@@ -397,18 +406,18 @@ namespace Reko.Core.Output
 			writer.Write("]");
 		}
 
-		public void VisitSegmentedAccess(SegmentedAccess access)
-		{
-			access.MemoryId.Accept(this);
-			writer.Write("[");
-			WriteExpression(access.BasePointer);
-			writer.Write(":");
-			WriteExpression(access.EffectiveAddress);
-			writer.Write(":");
-			Debug.Assert(access.DataType != null);
+        public void VisitSegmentedAccess(SegmentedAccess access)
+        {
+            access.MemoryId.Accept(this);
+            writer.Write("[");
+            WriteExpression(access.BasePointer);
+            writer.Write(":");
+            WriteExpression(access.EffectiveAddress);
+            writer.Write(":");
+            Debug.Assert(access.DataType != null);
             writer.Write(access.DataType.ToString());
-			writer.Write("]");
-		}
+            writer.Write("]");
+        }
 
         public void VisitOutArgument(OutArgument outArg)
         {
@@ -420,10 +429,22 @@ namespace Reko.Core.Output
 		public void VisitPhiFunction(PhiFunction phi)
 		{
 			writer.WriteKeyword("PHI");
-			WriteActuals(phi.Arguments);
-		}
+            writer.Write("(");
+            var sep = "";
+            foreach (var arg in phi.Arguments)
+            {
+                writer.Write(sep);
+                sep = ", ";
+                writer.Write("(");
+                arg.Value.Accept(this);
+                writer.Write(", ");
+                writer.Write(arg.Block.Name);
+                writer.Write(")");
+            }
+            writer.Write(")");
+        }
 
-		public void VisitPointerAddition(PointerAddition pa)
+        public void VisitPointerAddition(PointerAddition pa)
 		{
             writer.Write("PTRADD(");
             WriteExpression(pa.Pointer);
@@ -530,7 +551,41 @@ namespace Reko.Core.Output
             }
         }
 
-		public void VisitDeclaration(Declaration decl)
+        /// <summary>
+        /// //$REVIEW: naturally for non-C++ like languages, this needs to be 
+        /// done differently. 
+        /// </summary>
+        /// <param name="compound"></param>
+        public void VisitCompoundAssignment(AbsynCompoundAssignment compound)
+        {
+            writer.Indent();
+            WriteCompoundAssignment(compound);
+            writer.Terminate(";");
+        }
+
+        public void WriteCompoundAssignment(AbsynCompoundAssignment compound)
+        { 
+            if (compound.Src.Right is Constant c &&
+                !c.IsReal && c.ToInt64() == 1)
+            {
+                if (compound.Src.Operator == Operator.IAdd)
+                {
+                    writer.Write("++");
+                    compound.Dst.Accept(this);
+                    return;
+                } else if (compound.Src.Operator == Operator.ISub)
+                {
+                    writer.Write("--");
+                    compound.Dst.Accept(this);
+                    return;
+                }
+            }
+            compound.Dst.Accept(this);
+            writer.Write(compound.Src.Operator.AsCompound());
+            compound.Src.Right.Accept(this);
+        }
+
+        public void VisitDeclaration(Declaration decl)
 		{
 			writer.Indent();
             Debug.Assert(decl.Identifier.DataType != null, "The DataType property can't ever be null");
@@ -639,18 +694,23 @@ namespace Reko.Core.Output
 			}
 			writer.Terminate();
 		}
-#endregion
+        #endregion
 
 
-		#region IAbsynStatementVisitor //////////////////////
+        #region IAbsynStatementVisitor //////////////////////
 
-		public void VisitAssignment(AbsynAssignment a)
-		{
-			writer.Indent();
+        public void VisitAssignment(AbsynAssignment a)
+        {
+            writer.Indent();
+            WriteAssignment(a);
+			writer.Terminate(";");
+        }
+
+        private void WriteAssignment(AbsynAssignment a)
+        { 
 			a.Dst.Accept(this);
 			writer.Write(" = ");
 			a.Src.Accept(this);
-			writer.Terminate(";");
 		}
 
 		public void VisitBreak(AbsynBreak brk)
@@ -724,7 +784,37 @@ namespace Reko.Core.Output
 			writer.Terminate(");");
 		}
 
-		public void VisitGoto(AbsynGoto g)
+        public void VisitFor(AbsynFor forLoop)
+        {
+            writer.Indent();
+            writer.WriteKeyword("for");
+            writer.Write(" (");
+            MaybeWriteAssignment(forLoop.Initialization);
+            writer.Write("; ");
+            forLoop.Condition.Accept(this);
+            writer.Write("; ");
+            MaybeWriteAssignment(forLoop.Iteration);
+            writer.Terminate(")");
+
+            WriteIndentedStatements(forLoop.Body, false);
+        }
+
+        private void MaybeWriteAssignment(AbsynAssignment ass)
+        {
+            if (ass != null)
+            {
+                if (ass is AbsynCompoundAssignment cass)
+                {
+                    WriteCompoundAssignment(cass);
+                }
+                else
+                {
+                    WriteAssignment(ass);
+                }
+            }
+        }
+
+        public void VisitGoto(AbsynGoto g)
 		{
 			writer.Indent();
 			writer.WriteKeyword("goto");
@@ -768,15 +858,16 @@ namespace Reko.Core.Output
 
         protected virtual string UnsignedFormatString(PrimitiveType type, ulong value)
         {
-            switch (type.Size)
-            {
-            case 1: return "0x{0:X2}";
-            case 2: return "0x{0:X4}";
-            case 4: return "0x{0:X8}";
-            case 8: return "0x{0:X16}";
-            case 16: return "0x{0:X16}";
-            default: throw new ArgumentOutOfRangeException("type", type.Size, string.Format("Integral types of size {0} bytes are not supported.", type.Size));
-            }
+            var nybbles = Nybbles(type.BitSize);
+            if (nybbles < unsignedConstantFormatStrings.Length)
+                return unsignedConstantFormatStrings[nybbles];
+            else
+                return "0x{0:X16}";
+        }
+
+        private static int Nybbles(int bitSize)
+        {
+            return (bitSize + 3) / 4;
         }
 
         private string FormatString(PrimitiveType type, object value)

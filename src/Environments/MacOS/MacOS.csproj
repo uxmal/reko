@@ -52,8 +52,8 @@
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TravisRelease|AnyCPU'">
-    <OutputPath>bin\TravisRelease\</OutputPath>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnixRelease|AnyCPU'">
+    <OutputPath>bin\UnixRelease\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -70,16 +70,17 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConstantEvaluator.cs" />
-    <Compile Include="InlineCodeInterpreter.cs" />
-    <Compile Include="MacOSClassic.cs" />
-    <Compile Include="MacOsRomanEncoding.cs" />
-    <Compile Include="MacsBugSymbolScanner.cs" />
-    <Compile Include="MpwPascalInterfaceLoader.cs" />
+    <Compile Include="Classic\ConstantEvaluator.cs" />
+    <Compile Include="Classic\InlineCodeInterpreter.cs" />
+    <Compile Include="Classic\MacOSClassic.cs" />
+    <Compile Include="Classic\MacOsRomanEncoding.cs" />
+    <Compile Include="OSX\MacOSXPlatform.cs" />
+    <Compile Include="Classic\MacsBugSymbolScanner.cs" />
+    <Compile Include="Classic\MpwPascalInterfaceLoader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResourceFork.cs" />
-    <Compile Include="PascalCallingConvention.cs" />
-    <Compile Include="TypeImporter.cs" />
+    <Compile Include="Classic\ResourceFork.cs" />
+    <Compile Include="Classic\PascalCallingConvention.cs" />
+    <Compile Include="Classic\TypeImporter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Arch\M68k\M68k.csproj">
@@ -109,12 +110,12 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="macos_classic.xml">
+    <Content Include="Classic\macos_classic.xml">
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Mac MPW Interfaces 1991 PASCAL.pas" />
+    <None Include="Classic\Mac MPW Interfaces 1991 PASCAL.pas" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

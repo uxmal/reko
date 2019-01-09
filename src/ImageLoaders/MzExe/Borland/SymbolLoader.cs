@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,6 +37,7 @@ namespace Reko.ImageLoaders.MzExe.Borland
 
         private static TraceSwitch trace = new TraceSwitch("BorlandDebugSymbols", "Traces the loading of Borland debug symbols");
 
+        private IProcessorArchitecture arch;
         private ExeImageLoader exeLoader;
         private byte[] rawImage;
         private debug_header header;
@@ -47,8 +48,9 @@ namespace Reko.ImageLoaders.MzExe.Borland
         private Dictionary<ushort, BorlandType> types;
         private Dictionary<ImageSymbol, ushort> symbolTypes;
 
-        public SymbolLoader(ExeImageLoader exeLoader, byte[] rawImage, Address addrLoad)
+        public SymbolLoader(IProcessorArchitecture arch, ExeImageLoader exeLoader, byte[] rawImage, Address addrLoad)
         {
+            this.arch = arch;
             this.exeLoader = exeLoader;
             this.rawImage = rawImage;
             this.addrLoad = addrLoad;
@@ -783,10 +785,11 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
                 sym.symbol_segment += addrLoad.Selector.Value;
                 if (!name.Contains('@'))
                 {
-                    var imgSymbol = new ImageSymbol(Address.SegPtr(sym.symbol_segment, sym.symbol_offset))
-                    {
-                        Name = name,
-                    };
+                    var imgSymbol = ImageSymbol.Create(
+                        SymbolType.Unknown,
+                        arch,
+                        Address.SegPtr(sym.symbol_segment, sym.symbol_offset),
+                        name);
                     this.imgSymbols[imgSymbol.Address] = imgSymbol;
                     this.symbolTypes[imgSymbol] = sym.symbol_type;
                 }

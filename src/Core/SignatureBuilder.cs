@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -75,7 +75,7 @@ namespace Reko.Core
                 //$REVIEW: out arguments are weird, as they are synthetic. It's possible that 
                 // future versions of reko will opt to model multiple values return from functions
                 // explicitly instead of using destructive updates of this kind.
-                var arg = binder.EnsureOutArgument(idOrig, PrimitiveType.Create(Domain.Pointer, arch.FramePointerType.Size));
+                var arg = binder.EnsureOutArgument(idOrig, PrimitiveType.Create(Domain.Pointer, arch.FramePointerType.BitSize));
                 args.Add(arg);
             }
         }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,7 +47,7 @@ namespace Reko.Core.Types
 
         public override DataType Clone(IDictionary<DataType, DataType> clonedTypes)
 		{
-			return new ArrayType(ElementType, Length);
+            return new ArrayType(ElementType, Length) { Qualifier = this.Qualifier };
 		}
 
 		/// <summary>
@@ -63,8 +63,6 @@ namespace Reko.Core.Types
 		public int Length { get; set; }
 
 		public override bool IsComplex { get { return true; } }
-
-		public override string Prefix { get { return "a"; } }
 
 		public override int Size
 		{

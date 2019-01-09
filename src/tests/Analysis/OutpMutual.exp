@@ -35,7 +35,7 @@ fn0C00_0004_entry:
 l0C00_0004:
 	sp_1 = fp
 	SCZO_3 = cond(dx - 0x001E)
-	Z_4 = SCZO_3 (alias)
+	Z_4 = (bool) SCZO_3 (alias)
 	SZO_5 = SCZO_3 (alias)
 	branch Test(NE,Z_4) l0C00_000F
 	// succ:  l0C00_0009 l0C00_000F
@@ -47,13 +47,13 @@ l0C00_000F:
 	dx_13 = dx - 0x0001
 	SZO_14 = cond(dx_13)
 	SCZO_15 = SZO_14 (alias)
-	Z_16 = SZO_14 (alias)
+	Z_16 = (bool) SZO_14 (alias)
 	// succ:  l0C00_0010
 l0C00_0010:
-	SZO_6 = PHI(SZO_5, SZO_14)
-	SCZO_7 = PHI(SCZO_3, SCZO_15)
-	Z_8 = PHI(Z_4, Z_16)
-	dx_9 = PHI(dx_12, dx_13)
+	SZO_6 = PHI((SZO_5, l0C00_0009), (SZO_14, l0C00_000F))
+	SCZO_7 = PHI((SCZO_3, l0C00_0009), (SCZO_15, l0C00_000F))
+	Z_8 = PHI((Z_4, l0C00_0009), (Z_16, l0C00_000F))
+	dx_9 = PHI((dx_12, l0C00_0009), (dx_13, l0C00_000F))
 	ax_10 = dx_9
 	return ax_10
 	// succ:  fn0C00_0004_exit
@@ -69,7 +69,7 @@ fn0C00_0004_entry:
 	// succ:  l0C00_0004
 l0C00_0004:
 	SCZO_3 = cond(dx - 0x001E)
-	Z_4 = SCZO_3 (alias)
+	Z_4 = (bool) SCZO_3 (alias)
 	branch Test(NE,Z_4) l0C00_000F
 	// succ:  l0C00_0009 l0C00_000F
 l0C00_0009:
@@ -81,7 +81,7 @@ l0C00_000F:
 	*dxOut = dx_13
 	// succ:  l0C00_0010
 l0C00_0010:
-	dx_9 = PHI(dx_12, dx_13)
+	dx_9 = PHI((dx_12, l0C00_0009), (dx_13, l0C00_000F))
 	ax_10 = dx_9
 	return ax_10
 	// succ:  fn0C00_0004_exit
@@ -117,8 +117,8 @@ l0C00_001F:
 	ax_23 = fn0C00_0004(dx_18, out dx_22)
 	// succ:  l0C00_0025
 l0C00_0025:
-	dx_6 = PHI(dx_16, dx_22)
-	ax_7 = PHI(ax_17, ax_23)
+	dx_6 = PHI((dx_16, l0C00_0018), (dx_22, l0C00_001F))
+	ax_7 = PHI((ax_17, l0C00_0018), (ax_23, l0C00_001F))
 	ax_8 = ax_7 + 0x0001
 	SZO_9 = cond(ax_8)
 	SCZO_10 = SZO_9 (alias)
@@ -148,7 +148,7 @@ l0C00_001F:
 	fn0C00_0004(dx_18, out dx_22)
 	// succ:  l0C00_0025
 l0C00_0025:
-	dx_6 = PHI(dx_16, dx_22)
+	dx_6 = PHI((dx_16, l0C00_0018), (dx_22, l0C00_001F))
 	return dx_6
 	// succ:  fn0C00_0013_exit
 fn0C00_0013_exit:

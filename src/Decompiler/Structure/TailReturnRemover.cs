@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -65,6 +65,11 @@ namespace Reko.Structure
             return false;
         }
 
+        public bool VisitCompoundAssignment(AbsynCompoundAssignment compound)
+        {
+            return false;
+        }
+
         public bool VisitContinue(AbsynContinue cont)
         {
             return false;
@@ -81,6 +86,11 @@ namespace Reko.Structure
         }
 
         public bool VisitDoWhile(AbsynDoWhile loop)
+        {
+            return false;
+        }
+
+        public bool VisitFor(AbsynFor forLoop)
         {
             return false;
         }

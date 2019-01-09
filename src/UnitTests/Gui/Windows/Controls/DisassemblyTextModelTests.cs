@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -198,17 +198,9 @@ namespace Reko.UnitTests.Gui.Windows.Controls
                 writer.WriteOpcode("opcode.l");
             }
 
-            public override InstructionClass InstructionClass
+            public override InstrClass InstructionClass
             {
-                get { return InstructionClass.Invalid; } 
-            }
-
-            public override bool IsValid
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
+                get { return InstrClass.Invalid; } 
             }
         }
 

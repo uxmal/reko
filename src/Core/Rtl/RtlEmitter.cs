@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -75,7 +75,7 @@ namespace Reko.Core.Rtl
         /// <param name="target">Control goes to this address if condition is true</param>
         /// <param name="rtlClass">Describes details the branch instruction</param>
         /// <returns>A reference to this RtlEmitter.</returns>
-        public RtlEmitter Branch(Expression condition, Address target, RtlClass rtlClass)
+        public RtlEmitter Branch(Expression condition, Address target, InstrClass rtlClass)
         {
             Instructions.Add(new RtlBranch(condition, target, rtlClass));
             return this;
@@ -90,7 +90,7 @@ namespace Reko.Core.Rtl
         /// <param name="target">Control goes to this address if condition is true</param>
         /// <param name="rtlClass">Describes details the branch instruction</param>
         /// <returns>A reference to this RtlEmitter.</returns>
-        public RtlBranch BranchInMiddleOfInstruction(Expression condition, Address target, RtlClass rtlClass)
+        public RtlBranch BranchInMiddleOfInstruction(Expression condition, Address target, InstrClass rtlClass)
         {
             var branch = new RtlBranch(condition, target, rtlClass);
             branch.NextStatementRequiresLabel = true;
@@ -108,7 +108,7 @@ namespace Reko.Core.Rtl
         /// <returns>A reference to this RtlEmitter.</returns>
         public RtlEmitter Call(Expression target, byte retSize)
         {
-            Instructions.Add(new RtlCall(target, retSize, RtlClass.Transfer | RtlClass.Call));
+            Instructions.Add(new RtlCall(target, retSize, InstrClass.Transfer | InstrClass.Call));
             return this;
         }
 
@@ -123,7 +123,7 @@ namespace Reko.Core.Rtl
         /// <returns>A reference to this RtlEmitter.</returns>
         public RtlEmitter CallD(Expression target, byte retSize)
         {
-            Instructions.Add(new RtlCall(target, retSize, RtlClass.Transfer | RtlClass.Call | RtlClass.Delay));
+            Instructions.Add(new RtlCall(target, retSize, InstrClass.Transfer | InstrClass.Call | InstrClass.Delay));
             return this;
         }
 
@@ -144,7 +144,7 @@ namespace Reko.Core.Rtl
         /// <returns>A reference to this RtlEmitter.</returns>
         public RtlEmitter Goto(Expression target)
         {
-            Instructions.Add(new RtlGoto(target, RtlClass.Transfer));
+            Instructions.Add(new RtlGoto(target, InstrClass.Transfer));
             return this;
         }
 
@@ -154,7 +154,7 @@ namespace Reko.Core.Rtl
         /// <param name="target">Destination of the goto</param>
         /// <param name="rtlClass">Details of the goto instruction</param>
         /// <returns>A reference to this RtlEmitter.</returns>
-        public RtlEmitter Goto(Expression target, RtlClass rtlClass)
+        public RtlEmitter Goto(Expression target, InstrClass rtlClass)
         {
             Instructions.Add(new RtlGoto(target, rtlClass));
             return this;
@@ -167,7 +167,7 @@ namespace Reko.Core.Rtl
         /// <returns>A reference to this RtlEmitter.</returns>
         public RtlEmitter GotoD(Expression target)
         {
-            Instructions.Add(new RtlGoto(target, RtlClass.Transfer|RtlClass.Delay));
+            Instructions.Add(new RtlGoto(target, InstrClass.Transfer|InstrClass.Delay));
             return this;
         }
 
@@ -188,7 +188,7 @@ namespace Reko.Core.Rtl
         /// <returns>A reference to this RtlEmitter.</returns>
         public RtlEmitter Nop()
         {
-            Instructions.Add(new RtlNop { Class = RtlClass.Linear });
+            Instructions.Add(new RtlNop { Class = InstrClass.Linear });
             return this;
         }
 
@@ -203,7 +203,7 @@ namespace Reko.Core.Rtl
             int returnAddressBytes,
             int extraBytesPopped)
         {
-            Instructions.Add(new RtlReturn(returnAddressBytes, extraBytesPopped, RtlClass.Transfer));
+            Instructions.Add(new RtlReturn(returnAddressBytes, extraBytesPopped, InstrClass.Transfer));
             return this;
         }
 
@@ -218,7 +218,7 @@ namespace Reko.Core.Rtl
             int returnAddressBytes,
             int extraBytesPopped)
         {
-            var ret = new RtlReturn(returnAddressBytes, extraBytesPopped, RtlClass.Transfer | RtlClass.Delay);
+            var ret = new RtlReturn(returnAddressBytes, extraBytesPopped, InstrClass.Transfer | InstrClass.Delay);
             Instructions.Add(ret);
             return this;
         }
@@ -231,7 +231,7 @@ namespace Reko.Core.Rtl
         /// <param name="sideEffect">Expression which when evaluated causes the side effect.</param>
         /// <param name="rtlc"></param>
         /// <returns>A reference to this RtlEmitter.</returns>
-        public RtlEmitter SideEffect(Expression sideEffect, RtlClass rtlc = RtlClass.Linear)
+        public RtlEmitter SideEffect(Expression sideEffect, InstrClass rtlc = InstrClass.Linear)
         {
             var se = new RtlSideEffect(sideEffect);
             se.Class = rtlc;

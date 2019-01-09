@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,20 +30,15 @@ using System.Collections;
 
 namespace Reko.UserInterfaces.WindowsForms
 {
-    public class ListViewWrapper : IListView
+    public class ListViewWrapper : ControlWrapper, IListView
     {
         private ListView list;
 
-        public ListViewWrapper(ListView list)
+        public ListViewWrapper(ListView list) : base(list)
         {
             this.list = list;
         }
 
-        public Color BackColor { get { return list.BackColor; } set { list.BackColor = value;  } }
-
-        public bool Enabled { get { return list.Enabled; } set { list.Enabled = value; } }
-
-        public Color ForeColor { get { return list.ForeColor; } set { list.ForeColor = value; } }
 
         public object DataSource
         {

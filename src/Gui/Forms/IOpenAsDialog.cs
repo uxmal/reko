@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Configuration;
 using Reko.Gui.Controls;
 using System;
 using System.Collections.Generic;
@@ -36,7 +37,14 @@ namespace Reko.Gui.Forms
         IComboBox RawFileTypes { get; }
         IComboBox Architectures { get; }
         IComboBox Platforms { get; }
+        IPropertyGrid PropertyGrid { get; }
         IButton BrowseButton { get; }
         IButton OkButton { get; }
+
+        Dictionary<string, object> ArchitectureOptions { get; set; }
+
+        Architecture GetSelectedArchitecture();
+        OperatingEnvironment GetSelectedEnvironment();
+        void SetPropertyGrid(Dictionary<string, object> architectureOptions, List<PropertyOption> options);
     }
 }

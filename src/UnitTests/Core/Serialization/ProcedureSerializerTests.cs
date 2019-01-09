@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -68,7 +68,7 @@ namespace Reko.UnitTests.Core.Serialization
         }
         private void Given_ProcedureSerializer(string cConvention)
         {
-            this.deserializer = new FakeTypeDeserializer(4);
+            this.deserializer = new FakeTypeDeserializer(32);
             this.ser = new ProcedureSerializer(platform, deserializer, cConvention);
         }
 
@@ -113,8 +113,8 @@ namespace Reko.UnitTests.Core.Serialization
         [Category(Categories.UnitTests)]
         public void X86ps_SerializeProcedure()
         {
-            Procedure proc = new Procedure(arch, "foo", arch.CreateFrame());
             Address addr = Address.Ptr32(0x12345);
+            Procedure proc = new Procedure(arch, "foo",  addr, arch.CreateFrame());
             Given_ProcedureSerializer("stdapi");
             mr.ReplayAll();
 
@@ -127,7 +127,8 @@ namespace Reko.UnitTests.Core.Serialization
         [Category(Categories.UnitTests)]
         public void X86ps_ProcedureWithSignature()
         {
-            Procedure proc = new Procedure(arch, "foo", arch.CreateFrame())
+            Address addr = Address.Ptr32(0x567A0C);
+            Procedure proc = new Procedure(arch, "foo", addr, arch.CreateFrame())
             {
                 Signature = new FunctionType(
                     new Identifier("eax", PrimitiveType.Word32, Registers.eax),
@@ -136,7 +137,6 @@ namespace Reko.UnitTests.Core.Serialization
                     })
             };
 
-            Address addr = Address.Ptr32(0x567A0C);
             Given_ProcedureSerializer("stdapi");
             mr.ReplayAll();
 
@@ -271,7 +271,7 @@ namespace Reko.UnitTests.Core.Serialization
 
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             var sExp =
-@"void foo(Register (ptr int32) self, Stack (ptr int32) arg1)
+@"void foo(Register (ptr32 int32) self, Stack (ptr32 int32) arg1)
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 ";
             Assert.AreEqual(sExp, sig.ToString("foo", FunctionType.EmitFlags.AllDetails));
@@ -303,7 +303,7 @@ namespace Reko.UnitTests.Core.Serialization
 
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             var sExp =
-@"void foo(Register (ptr bob) this, Stack (ptr int32) arg0, Stack (ptr int32) arg1)
+@"void foo(Register (ptr32 bob) this, Stack (ptr32 int32) arg0, Stack (ptr32 int32) arg1)
 // stackDelta: 12; fpuStackDelta: 0; fpuMaxParam: -1
 ";
             Assert.AreEqual(sExp, sig.ToString("foo", FunctionType.EmitFlags.AllDetails));
@@ -324,7 +324,7 @@ namespace Reko.UnitTests.Core.Serialization
 
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             var sExp =
-@"void foo(Register (ptr bob) this)
+@"void foo(Register (ptr32 bob) this)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 ";
             Assert.AreEqual(sExp, sig.ToString("foo", FunctionType.EmitFlags.AllDetails));

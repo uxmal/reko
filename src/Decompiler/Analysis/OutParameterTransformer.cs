@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -99,7 +99,10 @@ namespace Reko.Analysis
 				}
 				else
 				{
-					var stm = stmDef.Block.Statements.Insert(iStmDef + 1, 0, new Store(Dereference(idOut, a.Dst.DataType), a.Dst));
+					var stm = stmDef.Block.Statements.Insert(
+                        iStmDef + 1,
+                        stmDef.LinearAddress,
+                        new Store(Dereference(idOut, a.Dst.DataType), a.Dst));
                     ssa.Uses.Add(stm);
 				}
 			}
@@ -113,7 +116,10 @@ namespace Reko.Analysis
 
 		public override Instruction TransformDefInstruction(DefInstruction def)
 		{
-            var stm = stmDef.Block.Statements.Insert(iStmDef + 1, 0, new Store(Dereference(idOut, def.Identifier.DataType), def.Identifier));
+            var stm = stmDef.Block.Statements.Insert(
+                iStmDef + 1,
+                stmDef.LinearAddress,
+                new Store(Dereference(idOut, def.Identifier.DataType), def.Identifier));
             ssa.Uses.Add(stm);
             return def;
 		}
@@ -122,7 +128,7 @@ namespace Reko.Analysis
 		{
 			for (int i = 0; i < phi.Src.Arguments.Length; ++i)
 			{
-				Identifier idSrc = (Identifier) phi.Src.Arguments[i];
+				Identifier idSrc = (Identifier) phi.Src.Arguments[i].Value;
 				ssaIds[idSrc].Uses.Remove(stmDef);
 				wl.Add(idSrc);
 			}

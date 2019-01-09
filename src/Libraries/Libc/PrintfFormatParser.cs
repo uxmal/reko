@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,15 +33,15 @@ namespace Reko.Libraries.Libc
     /// </summary>
     public class PrintfFormatParser : IVarargsFormatParser
     {
-        protected Program program;
-        protected Address addr;
+        protected readonly Program program;
+        protected readonly Address addr;
         protected int i;
-        protected string format;
-        protected readonly int wordSize;
+        protected readonly string format;
+        protected readonly int wordBitSize;
         protected readonly int longSize;
         protected readonly int doubleSize;
         protected readonly int pointerSize;
-        private IServiceProvider services;
+        private readonly IServiceProvider services;
 
         public PrintfFormatParser(
             Program program,
@@ -55,10 +55,11 @@ namespace Reko.Libraries.Libc
             this.format = format;
             var platform = program.Platform;
 
-            this.wordSize = platform.Architecture.WordWidth.Size;
-            this.longSize = platform.GetByteSizeFromCBasicType(CBasicType.Long);
-            this.doubleSize = platform.GetByteSizeFromCBasicType(CBasicType.Double);
-            this.pointerSize = platform.PointerType.Size;
+            this.wordBitSize = platform.Architecture.WordWidth.BitSize;
+            //$TODO: this should be GetBitSizeFrom...
+            this.longSize = platform.GetByteSizeFromCBasicType(CBasicType.Long) * DataType.BitsPerByte;
+            this.doubleSize = platform.GetByteSizeFromCBasicType(CBasicType.Double) * DataType.BitsPerByte;
+            this.pointerSize = platform.PointerType.BitSize;
             this.services = services;
         }
 
@@ -108,7 +109,7 @@ namespace Reko.Libraries.Libc
         protected virtual DataType MakeDataType(PrintfSize size, char cDomain)
         {
             Domain domain = Domain.None;
-            int byteSize = this.wordSize;
+            int bitSize = this.wordBitSize;
             switch (cDomain)
             {
             case 'c':
@@ -125,12 +126,12 @@ namespace Reko.Libraries.Libc
             case 'X':
                 switch (size)
                 {
-                case PrintfSize.HalfHalf: byteSize = 1; break;
-                case PrintfSize.Half: byteSize = 2; break;
-                case PrintfSize.Long: byteSize = this.longSize; break;
-                case PrintfSize.LongLong: byteSize = 8; break;
-                case PrintfSize.I32: byteSize = 4; break;
-                case PrintfSize.I64: byteSize = 8; break;
+                case PrintfSize.HalfHalf: bitSize = 8; break;
+                case PrintfSize.Half: bitSize = 16; break;
+                case PrintfSize.Long: bitSize = this.longSize; break;
+                case PrintfSize.LongLong: bitSize = 64; break;
+                case PrintfSize.I32: bitSize = 32; break;
+                case PrintfSize.I64: bitSize = 64; break;
                 }
                 domain = Domain.UnsignedInt;
                 break;
@@ -138,12 +139,12 @@ namespace Reko.Libraries.Libc
             case 'i':
                 switch (size)
                 {
-                case PrintfSize.HalfHalf: byteSize = 1; break;
-                case PrintfSize.Half: byteSize = 2; break;
-                case PrintfSize.Long: byteSize = this.longSize; break;
-                case PrintfSize.LongLong: byteSize = 8; break;
-                case PrintfSize.I32: byteSize = 4; break;
-                case PrintfSize.I64: byteSize = 8; break;
+                case PrintfSize.HalfHalf: bitSize = 8; break;
+                case PrintfSize.Half: bitSize = 16; break;
+                case PrintfSize.Long: bitSize = this.longSize; break;
+                case PrintfSize.LongLong: bitSize = 64; break;
+                case PrintfSize.I32: bitSize = 32; break;
+                case PrintfSize.I64: bitSize = 64; break;
                 }
                 domain = Domain.SignedInt;
                 break;
@@ -155,11 +156,11 @@ namespace Reko.Libraries.Libc
             case 'F':
             case 'g':
             case 'G':
-                byteSize = this.doubleSize;
+                bitSize = this.doubleSize;
                 domain = Domain.Real;
                 break;
             case 'p':
-                byteSize = this.pointerSize;
+                bitSize = this.pointerSize;
                 domain = Domain.Pointer;
                 break;
             case 's':
@@ -173,7 +174,7 @@ namespace Reko.Libraries.Libc
                     "The format specifier '%{0}' passed to *printf is not known.", cDomain);
                 return new UnknownType();
             }
-            return PrimitiveType.Create(domain, byteSize);
+            return PrimitiveType.Create(domain, bitSize);
         }
 
         private char CollectDataType()

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void TfacCreation()
 		{
-			PrimitiveType it = factory.CreatePrimitiveType(Domain.UnsignedInt, 4);
+			PrimitiveType it = factory.CreatePrimitiveType(Domain.UnsignedInt, 32);
 			Assert.AreEqual(4, it.Size);
 
 			StructureType str = factory.CreateStructureType("niz", 30);
@@ -55,8 +55,8 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void TfacIdenticalPrimitives()
 		{
-			object o1 = factory.CreatePrimitiveType(Domain.SignedInt, 2);
-			object o2 = factory.CreatePrimitiveType(Domain.SignedInt, 2);
+			object o1 = factory.CreatePrimitiveType(Domain.SignedInt, 16);
+			object o2 = factory.CreatePrimitiveType(Domain.SignedInt, 16);
 			Assert.AreSame(o1, o2);
 		}
 	}

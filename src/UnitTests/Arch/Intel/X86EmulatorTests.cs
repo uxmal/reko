@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ using Reko.Arch.X86;
 using Reko.Assemblers.x86;
 using Reko.Core;
 using Reko.Core.Services;
+using Reko.Core.Types;
 using Reko.Environments.Windows;
 using Rhino.Mocks;
 using System;
@@ -79,7 +80,8 @@ namespace Reko.UnitTests.Arch.Intel
         private void Given_Platform()
         {
             platform = mr.Stub<IPlatform>();
-            platform.Stub(p => p.LookupProcedureByName("", "")).IgnoreArguments().Return(new ExternalProcedure("", null));
+            platform.Stub(p => p.LookupProcedureByName("", "")).IgnoreArguments()
+                .Return(new ExternalProcedure("", new FunctionType()));
             platform.Replay();
         }
 

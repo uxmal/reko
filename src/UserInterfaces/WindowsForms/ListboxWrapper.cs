@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,11 +29,11 @@ using System.Drawing;
 
 namespace Reko.UserInterfaces.WindowsForms
 {
-    public class ListboxWrapper : IListBox
+    public class ListboxWrapper : ControlWrapper, IListBox
     {
         private ListBox lbx;
 
-        public ListboxWrapper(ListBox lbx)
+        public ListboxWrapper(ListBox lbx) : base(lbx)
         {
             this.lbx = lbx;
         }
@@ -49,10 +49,6 @@ namespace Reko.UserInterfaces.WindowsForms
         public ICollection SelectedItems { get { return lbx.SelectedItems; } }
         public int SelectedIndex { get { return lbx.SelectedIndex; } set { lbx.SelectedIndex = value; } }
         public object SelectedItem { get { return lbx.SelectedItem; } set { lbx.SelectedItem = value; } }
-
-        public Color ForeColor { get { return lbx.ForeColor; } set { lbx.ForeColor = value; } }
-        public Color BackColor { get { return lbx.BackColor; } set { lbx.BackColor = value; } }
-        public bool Enabled { get { return lbx.Enabled; } set { lbx.Enabled = value; } }
 
         public void AddItems(IEnumerable items)
         {

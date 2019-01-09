@@ -12,27 +12,24 @@ _init_entry:
 // LocalsOut: fp(64)
 
 l00000000004003E0:
-	word64 rax_4 = Mem0[0x0000000000600FF8:word64]
-	branch rax_4 == 0x0000000000000000 l00000000004003F5
+	branch __gmon_start__ == 0x0000000000000000 l00000000004003F5
 // DataOut: r15d rbp rbx
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
-// LocalsOut: fp(64)
 
 l00000000004003F0:
-	word64 rsp_15
-	byte SCZO_16
-	word64 rax_17
-	byte SZO_18
-	byte C_19
-	byte Z_20
+	word64 rsp_14
+	byte SCZO_15
+	word64 rax_16
+	byte SZO_17
+	bool C_18
+	bool Z_19
 	call __gmon_start__ (retsize: 8; depth: 16)
-		uses: C_7,rax_4,rsp_2,SCZO,SZO_5,Z_6
-		defs: C_19,rax_17,rsp_15,SCZO_16,SZO_18,Z_20
+		uses: C_6,rax_3,rsp_2,SCZO,SZO_4,Z_5
+		defs: C_18,rax_16,rsp_14,SCZO_15,SZO_17,Z_19
 // DataOut: r15d rbp rbx
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000008 rax:<invalid>
-// LocalsOut: fp(64)
+// SymbolicIn: rsp:fp - 0x0000000000000008 rax:__gmon_start__
 
 l00000000004003F5:
 	return
@@ -68,8 +65,8 @@ _start_entry:
 // LocalsOut: fp(64) Stack +0000(64)
 
 l0000000000400440:
-	__align(fp + 0x0000000000000008)
-	__libc_start_main(0x000000000040053D, qwArg00, fp + 0x0000000000000008, 0x0000000000400550, 0x00000000004005C0, rdx, fp)
+	__align(fp + 8)
+	__libc_start_main(0x000000000040053D, qwArg00, fp + 8, 0x0000000000400550, 0x00000000004005C0, rdx, fp)
 	__hlt()
 // DataOut:
 // DataOut (flags): 
@@ -100,7 +97,7 @@ l0000000000400487:
 	branch 0x0000000000000000 == 0x0000000000000000 l0000000000400485
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000008 rax:0x0000000000601047 r8:r8 - 6295616 rbp:fp - 0x0000000000000008 -8(fp):rbp
+// SymbolicIn: rsp:fp - 8 rax:0x0000000000601047 r8:r8 - 6295616 rbp:fp - 8 -8(fp):rbp
 
 l0000000000400491:
 	word64 rsp_42
@@ -111,8 +108,8 @@ l0000000000400491:
 	byte SCZO_47
 	byte CZ_48
 	byte SZO_49
-	byte C_50
-	byte Z_51
+	bool C_50
+	bool Z_51
 	word32 edi_52
 	word64 rdi_53
 	call 0x0000000000000000 (retsize: 8; depth: 8)
@@ -121,13 +118,13 @@ l0000000000400491:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000008 rax:0x0000000000000000 r8:r8 - 6295616 rbp:fp - 0x0000000000000008 -8(fp):rbp
+// SymbolicIn: rsp:fp - 8 rax:0x0000000000000000 r8:r8 - 6295616 rbp:fp - 8 -8(fp):rbp
 
 l0000000000400485:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000008 rax:<invalid> r8:r8 - 6295616 rbp:fp - 0x0000000000000008 -8(fp):rbp
+// SymbolicIn: rsp:fp - 8 rax:<invalid> r8:r8 - 6295616 rbp:fp - 8 -8(fp):rbp
 
 deregister_tm_clones_exit:
 // DataOut:
@@ -159,7 +156,7 @@ l00000000004004C4:
 	branch 0x0000000000000000 == 0x0000000000000000 l00000000004004C2
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000008 rax:0x0000000000060104 r8:r8 - 6295616 rbp:fp - 0x0000000000000008 rdx:0x0000000000000000 -8(fp):rbp
+// SymbolicIn: rsp:fp - 8 rax:0x0000000000060104 r8:r8 - 6295616 rbp:fp - 8 rdx:0x0000000000000000 -8(fp):rbp
 
 l00000000004004CE:
 	word64 rsp_45
@@ -168,9 +165,9 @@ l00000000004004CE:
 	word64 r8_48
 	byte SCZO_49
 	word64 rdx_50
-	byte Z_51
+	bool Z_51
 	byte SZO_52
-	byte C_53
+	bool C_53
 	word64 rsi_54
 	word64 rdi_55
 	call 0x0000000000000000 (retsize: 8; depth: 8)
@@ -179,13 +176,13 @@ l00000000004004CE:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000008 rax:0x0000000000060104 r8:r8 - 6295616 rbp:fp - 0x0000000000000008 rdx:0x0000000000000000 -8(fp):rbp
+// SymbolicIn: rsp:fp - 8 rax:0x0000000000060104 r8:r8 - 6295616 rbp:fp - 8 rdx:0x0000000000000000 -8(fp):rbp
 
 l00000000004004C2:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000008 rax:0x0000000000060104 r8:r8 - 6295616 rbp:fp - 0x0000000000000008 rdx:0x0000000000000000 -8(fp):rbp
+// SymbolicIn: rsp:fp - 8 rax:0x0000000000060104 r8:r8 - 6295616 rbp:fp - 8 rdx:0x0000000000000000 -8(fp):rbp
 
 register_tm_clones_exit:
 // DataOut:
@@ -276,11 +273,11 @@ l0000000000400528_thunk_register_tm_clones:
 l0000000000400514:
 	word64 rsp_44
 	byte SCZO_45
-	byte Z_46
+	bool Z_46
 	word32 eax_47
 	word64 rax_48
 	byte SZO_49
-	byte C_50
+	bool C_50
 	word64 rbp_51
 	word32 edi_52
 	word64 rdi_53
@@ -405,8 +402,8 @@ l0000000000400590:
 	byte SCZO_80
 	word32 ebx_81
 	byte SZO_82
-	byte C_83
-	byte Z_84
+	bool C_83
+	bool Z_84
 	word64 rdi_85
 	call Mem0[0x0000000000600E10:word64] (retsize: 8; depth: 64)
 		uses: C_37,ebx_31,edi,qwLoc08_4,qwLoc10_10,qwLoc18_15,qwLoc20_20,qwLoc28_24,qwLoc30_28,r12_21,r13_63,r14_64,r15_6,r15d_62,rbp_32,rbx_30,rdi_67,rdx_65,rsi_66,rsp_33,SCZO_34,SZO_35,Z_36

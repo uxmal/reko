@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,6 @@ namespace Reko.Core.Serialization
     {
         T VisitPrimitive(PrimitiveType_v1 primitive);
         T VisitPointer(PointerType_v1 pointer);
-        T VisitQualifiedType(QualifiedType_v1 qt);
         T VisitReference(ReferenceType_v1 referenceType_v1);
         T VisitCode(CodeType_v1 code);
         T VisitMemberPointer(MemberPointer_v1 memptr);

@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,9 @@
  */
 #endregion
 
-using Reko.Core.Rtl;
+using Reko.Core;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Arch.Alpha
 {
@@ -33,14 +28,13 @@ namespace Reko.Arch.Alpha
     {
         private void RewriteHalt()
         {
-            rtlc = RtlClass.Terminates;
             var c = new ProcedureCharacteristics
             {
                 Terminates = true,
             };
             m.SideEffect(
                 host.PseudoProcedure("__halt", c, VoidType.Instance), 
-                RtlClass.Terminates);
+                InstrClass.Terminates);
         }
     }
 }

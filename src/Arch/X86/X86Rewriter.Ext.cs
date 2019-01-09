@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,20 +47,18 @@ namespace Reko.Arch.X86
 
         public void RewriteClts()
         {
-            rtlc = RtlClass.System;
+            rtlc = InstrClass.System;
             var cr0 = binder.EnsureRegister(arch.GetControlRegister(0));
             m.Assign(cr0, host.PseudoProcedure("__clts", cr0.DataType, cr0));
         }
 
         public void RewriteEmms()
         {
-            rtlc = RtlClass.System;
             m.SideEffect(host.PseudoProcedure("__emms", VoidType.Instance));
         }
 
         private void RewriteGetsec()
         {
-            rtlc = RtlClass.System;
             //$TODO: this is not correct; actual function
             // depends on EAX.
             var arg = binder.EnsureRegister(Registers.eax);
@@ -70,13 +68,11 @@ namespace Reko.Arch.X86
 
         private void RewriteInvd()
         {
-            rtlc = RtlClass.System;
             m.SideEffect(host.PseudoProcedure("__invd", VoidType.Instance));
         }
 
         private void RewriteLar()
         {
-            rtlc = RtlClass.System;
             m.Assign(
                 SrcOp(instrCur.op1),
                 host.PseudoProcedure(
@@ -90,13 +86,22 @@ namespace Reko.Arch.X86
 
         private void RewriteLsl()
         {
-            rtlc = RtlClass.System;
             m.Assign(
                 SrcOp(instrCur.op1),
                 host.PseudoProcedure(
                     "__lsl",
                     instrCur.op1.Width,
                     SrcOp(instrCur.op2)));
+        }
+
+        private void RewriteSldt()
+        {
+            rtlc = InstrClass.System;
+            m.Assign(
+                SrcOp(instrCur.op1),
+                host.PseudoProcedure(
+                    "__sldt",
+                    instrCur.op1.Width));
         }
 
         public void RewriteLfence()
@@ -127,13 +132,12 @@ namespace Reko.Arch.X86
 
         private void RewriteWbinvd()
         {
-            rtlc = RtlClass.System;
+            rtlc = InstrClass.System;
             m.SideEffect(host.PseudoProcedure("__wbinvd", VoidType.Instance));
         }
 
         public void RewriteWrsmr()
         {
-            rtlc = RtlClass.System;
             var edx_eax = binder.EnsureSequence(Registers.edx, Registers.eax, PrimitiveType.Word64);
             var ecx = binder.EnsureRegister(Registers.ecx);
             m.SideEffect(host.PseudoProcedure("__wrmsr", VoidType.Instance, ecx, edx_eax));

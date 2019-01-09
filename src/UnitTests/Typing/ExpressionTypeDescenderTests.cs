@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -61,7 +61,7 @@ namespace Reko.UnitTests.Typing
 
         private Pointer PointerTo(DataType dt)
         {
-            return new Pointer(dt, arch.PointerType.Size);
+            return new Pointer(dt, arch.PointerType.BitSize);
         }
 
         private static Identifier Id(string name, DataType dt)
@@ -78,24 +78,25 @@ namespace Reko.UnitTests.Typing
             }
         }
 
-        private void RunTest(Expression e, DataType dt)
+        private void RunTest(Expression e, DataType dt, string outputFileName)
         {
-            var eq = new EquivalenceClassBuilder(factory, store);
+            var listener = new FakeDecompilerEventListener();
+            var eq = new EquivalenceClassBuilder(factory, store, listener);
             e.Accept(eq);
 
             e.Accept(exa);
             exd.MeetDataType(e, dt);
             e.Accept(exd, e.TypeVariable);
 
-            var outputFileName = string.Format("Typing/{0}.txt", new StackTrace().GetFrame(1).GetMethod().Name);
             Verify(outputFileName);
         }
 
-        private void RunTest(params Tuple<Expression, DataType>[] tests)
+        private void RunTest(string outputFileName, params Tuple<Expression, DataType>[] tests)
         {
+            var listener = new FakeDecompilerEventListener();
             foreach (var t in tests)
             {
-                var eq = new EquivalenceClassBuilder(factory, store);
+                var eq = new EquivalenceClassBuilder(factory, store, listener);
                 t.Item1.Accept(eq);
             }
 
@@ -105,7 +106,6 @@ namespace Reko.UnitTests.Typing
                 exd.MeetDataType(t.Item1, t.Item2);
                 t.Item1.Accept(exd, t.Item1.TypeVariable);
             }
-            var outputFileName = string.Format("Typing/{0}.txt", new StackTrace().GetFrame(1).GetMethod().Name);
             Verify(outputFileName);
         }
 
@@ -117,13 +117,16 @@ namespace Reko.UnitTests.Typing
         [Test]
         public void ExdConstant()
         {
-            RunTest(Constant.Word32(3), PrimitiveType.Int32);
+            RunTest(
+                Constant.Word32(3),
+                PrimitiveType.Int32,
+                "Typing/ExdConstant.txt");
         }
 
         [Test]
         public void ExdIdentifier()
         {
-            RunTest(Id("x", PrimitiveType.Byte), PrimitiveType.Char);
+            RunTest(Id("x", PrimitiveType.Byte), PrimitiveType.Char, "Typing/ExdIdentifier.txt");
         }
 
         [Test]
@@ -133,7 +136,8 @@ namespace Reko.UnitTests.Typing
                 m.And(
                     Id("x", PrimitiveType.Byte),
                     3),
-                PrimitiveType.Char);
+                PrimitiveType.Char,
+                "Typing/ExdAnd.txt");
         }
 
         [Test]
@@ -142,7 +146,8 @@ namespace Reko.UnitTests.Typing
             RunTest(
                 m.Mem16(
                     Id("x", PrimitiveType.Word32)),
-                PrimitiveType.WChar);
+                PrimitiveType.WChar,
+                "Typing/ExdMem.txt");
         }
 
         [Test]
@@ -152,7 +157,8 @@ namespace Reko.UnitTests.Typing
                 m.IAdd(
                     Id("p", PrimitiveType.Word32),
                     Constant.Word32(4)),
-                PrimitiveType.Ptr32);
+                PrimitiveType.Ptr32,
+                "Typing/ExdAddPtrInt.txt");
         }
 
         [Test]
@@ -163,7 +169,8 @@ namespace Reko.UnitTests.Typing
                     m.IAdd(
                         Id("p", PrimitiveType.Word32),
                         Constant.Word32(4))),
-                PrimitiveType.Word32);
+                PrimitiveType.Word32,
+                "Typing/ExdFieldAccess.txt");
         }
 
         [Test]
@@ -173,7 +180,8 @@ namespace Reko.UnitTests.Typing
                 m.Seq(
                     Id("ds", PrimitiveType.SegmentSelector),
                     Constant.Word16(4)),
-                PointerTo(store.CreateTypeVariable(factory)));
+                PointerTo(store.CreateTypeVariable(factory)),
+                "Typing/ExdSeqWithSelector.txt");
         }
 
         [Test]
@@ -184,7 +192,8 @@ namespace Reko.UnitTests.Typing
                     PrimitiveType.Byte,
                     Id("ds", PrimitiveType.SegmentSelector),
                     Constant.Word16(0x123)),
-                PrimitiveType.Byte);
+                PrimitiveType.Byte,
+                "Typing/ExdSegmem.txt");
         }
 
         [Test]
@@ -192,6 +201,7 @@ namespace Reko.UnitTests.Typing
         {
             var p = Id("p", PrimitiveType.Word32);
             RunTest(
+                "Typing/ExdTwoFieldAccesses.txt",
                 Test(m.Mem32(m.IAdd(p, 8)), PrimitiveType.Int32),
                 Test(m.Mem32(m.IAdd(p, 12)), PrimitiveType.Real32));
         }
@@ -201,6 +211,7 @@ namespace Reko.UnitTests.Typing
         {
             var p = Id("p", PrimitiveType.Word32);
             RunTest(
+                "Typing/ExdUnion.txt",
                 Test(m.Mem32(m.IAdd(p, 12)), PrimitiveType.Int32),
                 Test(m.Mem32(m.IAdd(p, 12)), PrimitiveType.Real32));
         }
@@ -210,6 +221,7 @@ namespace Reko.UnitTests.Typing
         {
             var p = Id("p", PrimitiveType.Word32);
             RunTest(
+                "Typing/ExdFloatCmp.txt",
                 Test(m.FGe(p, Constant.Real32(-5.5F)), PrimitiveType.Bool));
         }
 
@@ -218,6 +230,7 @@ namespace Reko.UnitTests.Typing
         {
             var p = Id("p", PrimitiveType.Word32);
             RunTest(
+                "Typing/ExdFloatSub.txt",
                 Test(m.FSub(p, Constant.Real32(-5.5F)), PrimitiveType.Real32));
         }
 
@@ -227,6 +240,7 @@ namespace Reko.UnitTests.Typing
             var sig = FunctionType.Action(new[] { Id("r", PrimitiveType.Real32) });
             var ep = new ExternalProcedure("test", sig);
             RunTest(
+                "Typing/ExdApplication.txt",
                 Test(m.Fn(ep, m.Mem(PrimitiveType.Word32, m.Word32(0x0300400))), VoidType.Instance));
         }
 
@@ -239,6 +253,7 @@ namespace Reko.UnitTests.Typing
             p.TypeVariable.OriginalDataType = PointerTo(sig);
             p.TypeVariable.DataType = PointerTo(sig);
             RunTest(
+                "Typing/ExdIndirectCall.txt",
                 Test(
                     m.Fn(
                         p,
@@ -255,7 +270,8 @@ namespace Reko.UnitTests.Typing
                 m.Mem(
                     PrimitiveType.Word32,
                     m.IAdd(m.ISub(p, m.Word32(4)), m.Word32(0))),
-                PrimitiveType.Word32);
+                PrimitiveType.Word32,
+                "Typing/ExdSubtraction.txt");
         }
 
         [Test]
@@ -271,7 +287,8 @@ namespace Reko.UnitTests.Typing
                 m.Mem(
                     PrimitiveType.Word32,
                     m.IAdd(p, m.Word32(4))),
-                PrimitiveType.Word32);
+                PrimitiveType.Word32,
+                "Typing/ExdReferenceToUnknown.txt");
             var ptr = p.TypeVariable.OriginalDataType as Pointer;
             Assert.IsNotNull(ptr, "Should be pointer");
             var tRef = ptr.Pointee as TypeReference;
@@ -285,7 +302,10 @@ namespace Reko.UnitTests.Typing
             var id = Id("id", PrimitiveType.Bool);
             var id1 = Id("id1", PrimitiveType.Int32);
             var id2 = Id("id2", PrimitiveType.Int32);
-            RunTest(m.Conditional(PrimitiveType.Word32, id, id1, id2), PrimitiveType.Word32);
+            RunTest(
+                m.Conditional(PrimitiveType.Word32, id, id1, id2),
+                PrimitiveType.Word32,
+                "Typing/ExdConditional.txt");
         }
     }
 }

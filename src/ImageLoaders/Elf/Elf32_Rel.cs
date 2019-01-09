@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,6 +49,8 @@ namespace Reko.ImageLoaders.Elf
         public uint r_info;
         public int r_addend;
 
+        public int SymbolIndex => (int)(r_info >> 8);
+
         public static Elf32_Rela Read(EndianImageReader rdr)
         {
             var o = rdr.ReadUInt32();
@@ -69,6 +71,8 @@ namespace Reko.ImageLoaders.Elf
         public ulong r_offset;
         public ulong r_info;
         public long r_addend;
+
+        public ulong SymbolIndex => r_info >> 8;
 
         public static Elf64_Rela Read(EndianImageReader rdr)
         {

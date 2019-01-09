@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ using Reko.Core.Types;
 using Reko.Typing;
 using NUnit.Framework;
 using System;
+using Reko.UnitTests.Mocks;
 
 namespace Reko.UnitTests.Typing
 {
@@ -34,13 +35,15 @@ namespace Reko.UnitTests.Typing
 		private TypeFactory factory;
 		private TypeStore store;
 		private EquivalenceClassBuilder eqb;
+        private FakeDecompilerEventListener listener;
 
-		[SetUp]
+        [SetUp]
 		public void Setup()
 		{
 			factory = new TypeFactory();
 			store = new TypeStore();
-			eqb = new EquivalenceClassBuilder(factory, store);
+            listener = new FakeDecompilerEventListener();
+			eqb = new EquivalenceClassBuilder(factory, store, listener);
 		}
 
 		[Test]
@@ -48,7 +51,7 @@ namespace Reko.UnitTests.Typing
 		{
 			TypeFactory factory = new TypeFactory();
 			TypeStore store = new TypeStore();
-			EquivalenceClassBuilder eqb = new EquivalenceClassBuilder(factory, store);
+			EquivalenceClassBuilder eqb = new EquivalenceClassBuilder(factory, store, listener);
 			Identifier id1 = new Identifier("id2", PrimitiveType.Word32, null);
 			Identifier id2 = new Identifier("id2", PrimitiveType.Word32, null);
 			Assignment ass = new Assignment(id1, id2);

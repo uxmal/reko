@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -60,13 +60,14 @@ namespace Reko.UnitTests.Typing
             sc.AddService<DecompilerHost>(new FakeDecompilerHost());
             sc.AddService<DecompilerEventListener>(eventListener);
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
+            var arch = new X86ArchitectureReal("x86-real-16");
             ILoader ldr = new Loader(sc);
             var program = ldr.AssembleExecutable(
                 FileUnitTester.MapTestPath(relativePath),
-                new X86TextAssembler(sc, new X86ArchitectureReal("x86-real-16")),
+                new X86TextAssembler(sc, arch),
                 addrBase);
             program.Platform = new DefaultPlatform(sc, program.Architecture);
-            var ep = new ImageSymbol(program.SegmentMap.BaseAddress);
+            var ep = ImageSymbol.Procedure(arch, program.SegmentMap.BaseAddress);
             var project = new Project { Programs = { program } };
             var scan = new Scanner(
                 program,
@@ -93,7 +94,7 @@ namespace Reko.UnitTests.Typing
             var imgLoader = new DchexLoader(FileUnitTester.MapTestPath( hexFile), svc, null);
             var program = imgLoader.Load(null);
             var project = new Project { Programs = { program } };
-            var ep = new ImageSymbol(program.ImageMap.BaseAddress);
+            var ep = ImageSymbol.Procedure(program.Architecture, program.ImageMap.BaseAddress);
             var importResolver = new ImportResolver(project, program, eventListener);
             var scan = new Scanner(program, importResolver, svc);
             scan.EnqueueImageSymbol(ep, true);
@@ -128,32 +129,12 @@ namespace Reko.UnitTests.Typing
         {
             ProcedureBuilder m = new ProcedureBuilder();
             pg(m);
-            ProgramBuilder prog = new ProgramBuilder();
-            prog.Add(m);
-            RunTest(prog, outputFile);
+            ProgramBuilder program = new ProgramBuilder();
+            program.Add(m);
+            RunTest(program, outputFile);
         }
 
-        protected void RunTest(Program prog)
-        {
-            var testName = GetTestNameFromCallStack(new StackTrace());
-            var outputFileName = string.Format("Typing/{0}.txt", testName);
-            RunTest(prog, outputFileName);
-        }
-
-        private string GetTestNameFromCallStack(StackTrace stackTrace)
-        {
-            for (int i = 0; i < stackTrace.FrameCount; ++i)
-            {
-                var method = stackTrace.GetFrame(i).GetMethod();
-                var u = method.GetCustomAttributes(typeof(TestAttribute), true);
-                if (u != null && u.Length > 0)
-                    return method.Name;
-            }
-            throw new InvalidOperationException(
-                string.Format("Unable to determine the unit test name from the call stack. {0}.", stackTrace));
-        }
-
-        protected abstract void RunTest(Program prog, string outputFile);
+        protected abstract void RunTest(Program program, string outputFile);
 
 		protected void DumpSsaInfo(Procedure proc, SsaState ssa, TextWriter writer)
 		{

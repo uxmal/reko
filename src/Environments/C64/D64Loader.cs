@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -202,10 +202,7 @@ namespace Reko.Environments.C64
                     new ImageSegment("code", image, AccessMode.ReadWriteExecute)),
                 arch,
                 new C64Platform(Services, null));
-            var sym = new ImageSymbol(image.BaseAddress)
-            {
-                ProcessorState = program.CreateProcessorState(),
-            };
+            var sym = ImageSymbol.Procedure(arch, image.BaseAddress, state: arch.CreateProcessorState());
             program.EntryPoints.Add(sym.Address, sym);
             return program;
         }

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
         private IStorageBinder binder;
         private IRewriterHost host;
         private IEnumerator<Tlcs900Instruction> dasm;
-        private RtlClass rtlc;
+        private InstrClass rtlc;
         private RtlEmitter m;
         private Tlcs900Instruction instr;
 
@@ -59,17 +59,17 @@ namespace Reko.Arch.Tlcs.Tlcs900
         {
             while (dasm.MoveNext())
             {
-                rtlc = RtlClass.Linear;
+                rtlc = InstrClass.Linear;
                 var instrs = new List<RtlInstruction>();
                 m = new RtlEmitter(instrs);
                 this.instr = dasm.Current;
                 switch (instr.Opcode)
                 {
                 default:
-                    host.Error(
+                    host.Warn(
                        instr.Address,
                        string.Format(
-                           "Rewriting of TLCS-900 instruction '{0}' not implemented yet.",
+                           "TLCS-900 instruction '{0}' not supported yet.",
                            instr.Opcode));
                     EmitUnitTest();
                     Invalid();
@@ -142,7 +142,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
 
         private void Invalid()
         {
-            rtlc = RtlClass.Invalid;
+            rtlc = InstrClass.Invalid;
             m.Invalid();
         }
 

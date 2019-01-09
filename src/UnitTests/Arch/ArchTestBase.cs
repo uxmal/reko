@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ namespace Reko.UnitTests.Arch
 
         public abstract Address LoadAddress { get; }
 
-        protected virtual IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
+        protected virtual IEnumerable<RtlInstructionCluster>GetInstructionStream(IStorageBinder binder, IRewriterHost host)
         {
             yield break;
         }
@@ -64,7 +64,7 @@ namespace Reko.UnitTests.Arch
                 return null;
             }
 
-            public ExternalProcedure GetImportedProcedure(Address addrThunk, Address addrInstr)
+            public ExternalProcedure GetImportedProcedure(IProcessorArchitecture arch, Address addrThunk, Address addrInstr)
             {
                 throw new NotImplementedException();
             }
@@ -83,7 +83,7 @@ namespace Reko.UnitTests.Arch
                     args);
             }
 
-            public ExternalProcedure GetInterceptedCall(Address addrImportThunk)
+            public ExternalProcedure GetInterceptedCall(IProcessorArchitecture arch, Address addrImportThunk)
             {
                 throw new NotImplementedException();
             }

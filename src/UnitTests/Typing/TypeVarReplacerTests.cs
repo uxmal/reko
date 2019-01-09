@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -82,7 +82,7 @@ namespace Reko.UnitTests.Typing
 		{
 			factory = new TypeFactory();
 			store = new TypeStore();
-			eqb = new EquivalenceClassBuilder(factory, store);
+			eqb = new EquivalenceClassBuilder(factory, store, new FakeDecompilerEventListener());
             var platform = new DefaultPlatform(null, new FakeArchitecture());
 			dtb = new DataTypeBuilder(factory, store, platform);
 		}

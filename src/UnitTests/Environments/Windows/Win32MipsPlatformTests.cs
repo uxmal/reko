@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -63,6 +63,7 @@ namespace Reko.UnitTests.Environments.Windows
             var addr = Address.Ptr32(0x00031234);
             arch.Stub(a => a.MakeAddressFromConstant(Arg<Constant>.Is.NotNull)).Return(addr);
             host.Stub(h => h.GetImportedProcedure(
+                Arg<IProcessorArchitecture>.Is.NotNull,
                 Arg<Address>.Is.Equal(addr),
                 Arg<Address>.Is.NotNull)).Return(new ExternalProcedure("foo", new FunctionType()));
             mr.ReplayAll();

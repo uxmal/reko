@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -59,7 +59,7 @@ namespace Reko.Environments.AmigaOS
                         ExpressionMatcher.AnyId("addrReg"),
                         ExpressionMatcher.AnyConstant("offset")),
                     4,
-                    RtlClass.Transfer));
+                    InstrClass.Transfer));
         }
 
         public Dictionary<string, object> MapKickstartToListOfLibraries
@@ -77,7 +77,11 @@ namespace Reko.Environments.AmigaOS
 
             var cfgSvc = Services.RequireService<IConfigurationService>();
             var env = cfgSvc.GetEnvironment(this.PlatformIdentifier);
-            mapKickstartToListOfLibraries = (Dictionary<string,object>)env.Options["versionDependentLibraries"];
+            object option;
+            if (env.Options.TryGetValue("versionDependentLibraries", out option))
+            {
+                mapKickstartToListOfLibraries = (Dictionary<string, object>)option;
+            }
             return mapKickstartToListOfLibraries;
         }
 

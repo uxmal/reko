@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -76,6 +76,16 @@ namespace Reko.Core
         /// Users can set register values at any location.
         /// </summary>
         public SortedList<Address, List<UserRegisterValue>> RegisterValues { get; set; }
+
+        /// <summary>
+        /// If set, display addresses in the written disassembly file.
+        /// </summary>
+        public bool ShowAddressesInDisassembly { get; set; }
+
+        /// <summary>
+        /// If set, display bytes in the written disassembly file.
+        /// </summary>
+        public bool ShowBytesInDisassembly { get; set; }
     }
 
     public class Annotation

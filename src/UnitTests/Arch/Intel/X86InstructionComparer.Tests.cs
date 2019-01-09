@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -60,7 +60,7 @@ namespace Reko.UnitTests.Core.Machine
                     ops.Add(Op(b));
             }
 
-            return new X86Instruction(op, PrimitiveType.Word32, PrimitiveType.Word32, ops.ToArray());
+            return new X86Instruction(op, InstrClass.Linear, PrimitiveType.Word32, PrimitiveType.Word32, ops.ToArray());
         }
 
         private MachineOperand Mem32(RegisterStorage baseReg)

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -61,7 +61,7 @@ namespace Reko.UnitTests.Evaluation
             ((SideEffect)use.Instruction).Expression = sid_ds.Identifier;
 			sid_ds.Uses.Add(use);
 
-			IdConstant ic = new IdConstant(new SsaEvaluationContext(null, ssa), new Unifier(null), listener);
+			IdConstant ic = new IdConstant(new SsaEvaluationContext(null, ssa, null), new Unifier(null), listener);
             Assert.IsTrue(ic.Match(sid_ds.Identifier));
 			Expression e = ic.Transform();
 			Assert.AreEqual("selector", e.DataType.ToString());
@@ -86,7 +86,7 @@ namespace Reko.UnitTests.Evaluation
         [Test]
         public void Idc_ConstantReferencePointerToInt()
         {
-            var intptr = new TypeReference("INTPTR", new Pointer(PrimitiveType.Int32, 4));
+            var intptr = new TypeReference("INTPTR", new Pointer(PrimitiveType.Int32, 32));
             Identifier edx = new Identifier("edx", intptr, Registers.edx);
 
             var ctx = new SymbolicEvaluationContext(null, null);
@@ -96,13 +96,13 @@ namespace Reko.UnitTests.Evaluation
             Assert.IsTrue(ic.Match(edx));
             Expression e = ic.Transform();
             Assert.AreEqual("00000567", e.ToString());
-            Assert.AreEqual("(ptr int32)", e.DataType.ToString());
+            Assert.AreEqual("(ptr32 int32)", e.DataType.ToString());
         }
 
         [Test]
         public void Idc_ConstantAddress()
         {
-            var intptr = new TypeReference("INTPTR", new Pointer(PrimitiveType.Int32, 4));
+            var intptr = new TypeReference("INTPTR", new Pointer(PrimitiveType.Int32, 32));
             Identifier edx = new Identifier("edx", intptr, Registers.edx);
 
             var ctx = new SymbolicEvaluationContext(null, null);
@@ -112,7 +112,7 @@ namespace Reko.UnitTests.Evaluation
             Assert.IsTrue(ic.Match(edx));
             Expression e = ic.Transform();
             Assert.AreEqual("00123400", e.ToString());
-            Assert.AreEqual("(ptr int32)", e.DataType.ToString());
+            Assert.AreEqual("(ptr32 int32)", e.DataType.ToString());
         }
     }
 }

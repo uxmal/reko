@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,9 +47,10 @@ namespace Reko.UnitTests.Typing
 
         protected override void RunTest(Program program, string outputFileName)
         {
+            var listener = new FakeDecompilerEventListener();
             ExpressionNormalizer aen = new ExpressionNormalizer(program.Architecture.PointerType);
             aen.Transform(program);
-            EquivalenceClassBuilder eq = new EquivalenceClassBuilder(factory, store);
+            EquivalenceClassBuilder eq = new EquivalenceClassBuilder(factory, store, listener);
             eq.Build(program);
 #if OLD
 			DataTypeBuilder dtb = new DataTypeBuilder(factory, store, program.Architecture);
@@ -57,7 +58,7 @@ namespace Reko.UnitTests.Typing
 			coll.CollectProgramTraits(program);
 			sktore.BuildEquivalenceClassDataTypes(factory);
 #else
-            TypeCollector coll = new TypeCollector(factory, store, program, new FakeDecompilerEventListener());
+            TypeCollector coll = new TypeCollector(factory, store, program, listener);
             coll.CollectTypes();
 
             store.BuildEquivalenceClassDataTypes(factory);
@@ -202,11 +203,11 @@ namespace Reko.UnitTests.Typing
         public void TtranSimplify()
         {
             UnionType u = new UnionType(null, null);
-            u.Alternatives.Add(new Pointer(PrimitiveType.Real32, 4));
-            u.Alternatives.Add(new Pointer(PrimitiveType.Real32, 4));
+            u.Alternatives.Add(new Pointer(PrimitiveType.Real32, 32));
+            u.Alternatives.Add(new Pointer(PrimitiveType.Real32, 32));
             TypeTransformer trans = new TypeTransformer(factory, store, null);
             DataType dt = u.Accept(trans);
-            Assert.AreEqual("(ptr real32)", dt.ToString());
+            Assert.AreEqual("(ptr32 real32)", dt.ToString());
         }
 
         [Test]
@@ -214,10 +215,10 @@ namespace Reko.UnitTests.Typing
         {
             UnionType u = new UnionType(null, null);
             u.Alternatives.Add(PrimitiveType.Word32);
-            u.Alternatives.Add(new Pointer(PrimitiveType.Real32, 4));
+            u.Alternatives.Add(new Pointer(PrimitiveType.Real32, 32));
             TypeTransformer trans = new TypeTransformer(factory, store, null);
             DataType dt = u.Accept(trans);
-            Assert.AreEqual("(ptr real32)", dt.ToString());
+            Assert.AreEqual("(ptr32 real32)", dt.ToString());
         }
 
         [Test]
@@ -260,8 +261,8 @@ namespace Reko.UnitTests.Typing
             };
             var eq1 = new EquivalenceClass(factory.CreateTypeVariable(), str1);
             var eq2 = new EquivalenceClass(factory.CreateTypeVariable(), str2);
-            ut.AddAlternative(new Pointer(eq1, 4));
-            ut.AddAlternative(new Pointer(eq2, 4));
+            ut.AddAlternative(new Pointer(eq1, 32));
+            ut.AddAlternative(new Pointer(eq2, 32));
             var trans = new TypeTransformer(factory, null, null);
             var ptr = (Pointer)ut.Accept(trans);
             var eq = (EquivalenceClass)ptr.Pointee;
@@ -292,12 +293,12 @@ namespace Reko.UnitTests.Typing
             };
             var eq1 = new EquivalenceClass(factory.CreateTypeVariable(), str1);
             var eq2 = new EquivalenceClass(factory.CreateTypeVariable(), str2);
-            ut.AddAlternative(new Pointer(eq1, 4));
-            ut.AddAlternative(new Pointer(eq2, 4));
+            ut.AddAlternative(new Pointer(eq1, 32));
+            ut.AddAlternative(new Pointer(eq2, 32));
             var trans = new TypeTransformer(factory, null, null);
             var dt = ut.Accept(trans);
             Assert.AreEqual(
-                "(union \"foo\" ((ptr Eq_1) u0) ((ptr Eq_2) u1))",
+                "(union \"foo\" ((ptr32 Eq_1) u0) ((ptr32 Eq_2) u1))",
                 dt.ToString());
         }
 
@@ -437,7 +438,7 @@ namespace Reko.UnitTests.Typing
                         ds,
                         m.IAdd(m.IMul(bx, 2), m.Word16(0x5388))));
             });
-            RunTest(pb.BuildProgram());
+            RunTest(pb.BuildProgram(), "Typing/TtranSegmentedArray.txt");
         }
 
         [Test]
@@ -478,14 +479,14 @@ namespace Reko.UnitTests.Typing
             var pb = new ProgramBuilder();
             pb.Add("AddressOf", m =>
             {
-                var foo = new Identifier("foo", new UnknownType(), new MemoryStorage());
+                var foo = Identifier.Global("foo", new UnknownType());
                 var r1 = m.Reg32("r1", 1);
                 m.Declare(r1, m.AddrOf(foo));
                 m.MStore(r1, m.Word16(0x1234));
                 m.MStore(m.IAdd(r1, 4), m.Byte(0x0A));
                 m.Return();
             });
-            RunTest(pb.BuildProgram());
+            RunTest(pb.BuildProgram(), "Typing/TtranAddressOf.txt");
         }
 
         [Test]
@@ -501,14 +502,14 @@ namespace Reko.UnitTests.Typing
                         { 4, PrimitiveType.Byte, "byte004"}
                     }
                 });
-                var foo = new Identifier("foo", str, new MemoryStorage());
+                var foo = Identifier.Global("foo", str);
                 var r1 = m.Reg32("r1", 1);
                 m.Declare(r1, m.AddrOf(foo));
                 m.MStore(r1, m.Word16(0x1234));
                 m.MStore(m.IAdd(r1, 4), m.Byte(0x0A));
                 m.Return();
             });
-            RunTest(pb.BuildProgram());
+            RunTest(pb.BuildProgram(), "Typing/TtranTypedAddressOf.txt");
         }
 
         [Test]
@@ -523,7 +524,7 @@ namespace Reko.UnitTests.Typing
                 m.MStore(m.IAdd(a4, m.Shl(d0, 2)), a4);
                 m.Return();
             });
-            RunTest(pb.BuildProgram());
+            RunTest(pb.BuildProgram(), "Typing/TtranSelfArray.txt");
         }
 
         [Test]
@@ -537,7 +538,7 @@ namespace Reko.UnitTests.Typing
                 m.MStore(a4, a4);
                 m.Return();
             });
-            RunTest(pb.BuildProgram());
+            RunTest(pb.BuildProgram(), "Typing/TtranSelfRef.txt");
         }
     }
 }

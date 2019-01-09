@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -54,6 +54,7 @@ namespace Reko.UnitTests
 
         public StringBuilder VisitPrimitive(PrimitiveType_v1 primitive)
         {
+            WriteQualifier(primitive.Qualifier, true);
             switch (primitive.Domain)
             {
             case Domain.None:
@@ -108,37 +109,41 @@ namespace Reko.UnitTests
             name = null;
             pointer.DataType.Accept(this);
             sb.AppendFormat(" *");
+            WriteQualifier(pointer.Qualifier, false);
             name = n;
             if (name != null)
                 sb.AppendFormat(" {0}", name);
             return sb;
         }
 
-        public StringBuilder VisitQualifiedType(QualifiedType_v1 qt)
+        private void WriteQualifier(Qualifier q, bool padAfter)
         {
-            var isPtrLike = (qt.DataType is PointerType_v1 || qt.DataType is ReferenceType_v1);
-            if (isPtrLike)
+            if (padAfter)
             {
-                qt.DataType.Accept(this);
-                switch (qt.Qualifier)
-                {
-                case Qualifier.Const: sb.Append(" const"); break;
-                case Qualifier.Volatile: sb.Append(" volatile"); break;
-                case Qualifier.Restricted: sb.Append(" restrict"); break;
-                }
+                if ((q & Qualifier.Const) != 0)
+                    sb.Append("const ");
+                if ((q & Qualifier.Volatile) != 0)
+                    sb.Append("volatile ");
+                if ((q & Qualifier.Restricted) != 0)
+                    sb.Append("restricted ");
             }
             else
             {
-                switch (qt.Qualifier)
-                {
-                case Qualifier.Const: sb.Append("const "); break;
-                case Qualifier.Volatile: sb.Append("volatile "); break;
-                case Qualifier.Restricted: sb.Append("restrict "); break;
-                }
-                qt.DataType.Accept(this);
+                if ((q & Qualifier.Const) != 0)
+                    sb.Append(" const");
+                if ((q & Qualifier.Volatile) != 0)
+                    sb.Append(" volatile");
+                if ((q & Qualifier.Restricted) != 0)
+                    sb.Append(" restricted");
             }
-            return sb;
         }
+
+        //switch (qt.Qualifier)
+        //{
+        //case Qualifier.Const: sb.Append("const "); break;
+        //case Qualifier.Volatile: sb.Append("volatile "); break;
+        //case Qualifier.Restricted: sb.Append("restrict "); break;
+        //}
 
         public StringBuilder VisitReference(ReferenceType_v1 reference)
         {
@@ -215,6 +220,7 @@ namespace Reko.UnitTests
 
         public StringBuilder VisitTypeReference(TypeReference_v1 typeReference)
         {
+            WriteQualifier(typeReference.Qualifier, true);
             sb.Append(typeReference.TypeName);
             if (name != null)
                 sb.AppendFormat(" {0}", name);

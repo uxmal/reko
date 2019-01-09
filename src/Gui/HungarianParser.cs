@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -154,30 +154,30 @@ Some examples:
                 if (i + 2 <= str.Length && str[i] == 'f' && str[i + 1] == 'n')
                 {
                     i += 2;
-                    return new Pointer(new CodeType(), 4);
+                    return new Pointer(new CodeType(), 32);
                 }
                 var pointee = Parse(PrimitiveType.Char);
                 if (pointee is UnknownType)
                     return PrimitiveType.Ptr32;     //$ARch-dependent?
                 else
-                    return new Pointer(pointee, 4);     //$ARCH-dependent!
+                    return new Pointer(pointee, 32);     //$ARCH-dependent!
             case 'i':
                 bitSize = ParseBitSize();
                 if (bitSize == 0)
                     return PrimitiveType.Int32;         // Convenient for 2015... most ints are 32 in C code.
-                return PrimitiveType.Create(Domain.SignedInt, bitSize / 8);
+                return PrimitiveType.Create(Domain.SignedInt, bitSize);
             case 'u':
                 bitSize = ParseBitSize();
                 if (bitSize == 0)
                 {
                     return PrimitiveType.UInt32;            //$REVIEW: arch word size?
                 }
-                return PrimitiveType.Create(Domain.UnsignedInt, bitSize / 8);
+                return PrimitiveType.Create(Domain.UnsignedInt, bitSize);
             case 'r':
                 bitSize = ParseBitSize();
                 if (bitSize == 0)
                     return new UnknownType();
-                return PrimitiveType.Create(Domain.Real, bitSize / 8);
+                return PrimitiveType.Create(Domain.Real, bitSize);
             case 'f':
                 return PrimitiveType.Bool;
             case 'c':
@@ -276,7 +276,7 @@ Some examples:
                 return new StructureType
                 {
                     Fields = {
-                        new StructureField(0, PrimitiveType.Create(Domain.SignedInt, length / 8), "length"),
+                        new StructureField(0, PrimitiveType.Create(Domain.SignedInt, length), "length"),
                         new StructureField(1, new ArrayType(PrimitiveType.Char, 0), "chars"),
                     }
                 };

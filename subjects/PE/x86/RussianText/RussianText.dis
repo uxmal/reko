@@ -51,7 +51,7 @@ l00401084:
 fn00401084_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:fp - 0x00000028 ebx:0xBCB05000 -40(fp):0x00000BAD -36(fp):0xBCB05000 -32(fp):edi -28(fp):esi -24(fp):ebp -20(fp):fp -16(fp):ebx -12(fp):edx -8(fp):ecx -4(fp):eax
+// SymbolicIn: esp:fp - 40 ebx:0xBCB05000 -40(fp):0x00000BAD -36(fp):0xBCB05000 -32(fp):edi -28(fp):esi -24(fp):ebp -20(fp):fp -16(fp):ebx -12(fp):edx -8(fp):ecx -4(fp):eax
 
 
 
@@ -60,8 +60,8 @@ void fn0040110B(word32 eax)
 
 // MayUse:  eax
 // LiveOut:
-// Trashed: SCZO ah al ax eax esp rax rsp sp spl
-// Preserved: eax
+// Trashed: SCZO ah al ax eax rax
+// Preserved: eax esp
 fn0040110B_entry:
 // DataOut: eax
 // DataOut (flags): 
@@ -78,10 +78,10 @@ l0040110B:
 l00401114:
 	word32 esp_19
 	byte SCZO_20
-	byte C_21
+	bool C_21
 	word32 eax_22
 	byte SZO_23
-	byte Z_24
+	bool Z_24
 	call __CRTL_TLS_GetValue (retsize: 4; depth: 8)
 		uses: C_4,dwLoc04_18,eax,esp_17,SCZO_3,SZO,Z
 		defs: C_21,eax_22,esp_19,SCZO_20,SZO_23,Z_24
@@ -91,17 +91,17 @@ l00401114:
 // SymbolicIn: esp:fp
 
 l00401123:
-	Mem30[esp_19 - 0x00000004:word32] = eax_22
-	Mem32[esp_19 - 0x00000008:word32] = 0x00000008
-	Mem35[esp_19 - 0x0000000C:word32] = GetProcessHeap()
-	word32 eax_36 = HeapFree(Mem35[esp_19 - 0x0000000C:HANDLE], Mem35[esp_19 - 0x00000008:DWORD], Mem35[esp_19 - 0x00000004:LPVOID])
-	Mem40[esp_19 - 0x00000004:word32] = Mem35[0x0040208B:word32]
+	Mem30[esp_19 - 4:word32] = eax_22
+	Mem32[esp_19 - 8:word32] = 0x00000008
+	Mem35[esp_19 - 12:word32] = GetProcessHeap()
+	word32 eax_36 = HeapFree(Mem35[esp_19 - 12:HANDLE], Mem35[esp_19 - 8:DWORD], Mem35[esp_19 - 4:LPVOID])
+	Mem40[esp_19 - 4:word32] = Mem35[0x0040208B:word32]
 	word32 esp_41
 	byte SCZO_42
-	byte C_43
+	bool C_43
 	word32 eax_44
 	byte SZO_45
-	byte Z_46
+	bool Z_46
 	call __CRTL_TLS_ExitThread (retsize: 4; depth: 4)
 		uses: C_28,dwLoc04_18,eax_36,esp_39,SCZO_20,SZO_26,Z_27
 		defs: C_43,eax_44,esp_41,SCZO_42,SZO_45,Z_46
@@ -118,7 +118,7 @@ l0040113C:
 fn0040110B_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:<invalid> eax:<invalid> -4(fp):<invalid>
+// SymbolicIn: esp:fp eax:<invalid> -4(fp):<invalid>
 
 
 
@@ -229,7 +229,7 @@ void fn004011B0(word32 dwArg04)
 
 // MayUse:  fs
 // LiveOut:
-// Trashed: SCZO ah al ax bh bl bp bpl bx ch cl cx dh dl dx eax ebp ebx ecx edx esp rax rbp rbx rcx rdx rsp sp spl
+// Trashed: SCZO ah al ax ch cl cx dh dl dx eax ecx edx rax rcx rdx
 // Preserved: ebp ebx esp
 // Stack args: Stack +0004(32)
 fn004011B0_entry:
@@ -251,7 +251,7 @@ l004011C6:
 	branch dwArg04 != 0x00000000 l004011D7
 // DataOut: ebx esp fs
 // DataOut (flags): 
-// SymbolicIn: esp:fp + 0xFFFFFFF0 ebp:fp - 0x00000004 ebx:<invalid> al:<invalid> eax:eax & 0x00000001 -16(fp):ebx -4(fp):ebp
+// SymbolicIn: esp:fp + 0xFFFFFFF0 ebp:fp - 4 ebx:<invalid> al:<invalid> eax:eax & 0x00000001 -16(fp):ebx -4(fp):ebp
 // LocalsOut: fp(32) Local -0008(32)
 
 l004011CA:
@@ -260,24 +260,24 @@ l004011CA:
 	ebx_11 = dwLoc08
 // DataOut: ebx esp fs
 // DataOut (flags): 
-// SymbolicIn: esp:fp + 0xFFFFFFF0 ebp:fp - 0x00000004 ebx:<invalid> al:<invalid> eax:eax & 0x00000001 -16(fp):ebx -4(fp):ebp
+// SymbolicIn: esp:fp + 0xFFFFFFF0 ebp:fp - 4 ebx:<invalid> al:<invalid> eax:eax & 0x00000001 -16(fp):ebx -4(fp):ebp
 
 l004011D7:
-	word32 esp_30 = esp_29 - 0x00000004
+	word32 esp_30 = esp_29 - 4
 	Mem31[esp_30:word32] = 0x0000009C
-	Mem33[esp_30 - 0x00000004:word32] = ebx_11
-	Mem37[esp_30 - 0x00000008:word32] = fn00401158()
-	memcpy(Mem37[esp_30 - 0x00000008:(ptr void)], Mem37[esp_30 - 0x00000004:(ptr void)], Mem37[esp_30:size_t])
+	Mem33[esp_30 - 4:word32] = ebx_11
+	Mem37[esp_30 - 8:word32] = fn00401158()
+	memcpy(Mem37[esp_30 - 8:(ptr32 void)], Mem37[esp_30 - 4:(ptr32 void)], Mem37[esp_30:size_t])
 	_InitTermAndUnexPtrs()
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:<invalid> ebp:fp - 0x00000004 ebx:<invalid> al:<invalid> eax:<invalid> edx:<invalid> ecx:ebx -20(fp):fp - 0x0000000C -16(fp):ebx -4(fp):ebp
+// SymbolicIn: esp:<invalid> ebp:fp - 4 ebx:<invalid> al:<invalid> eax:<invalid> edx:<invalid> ecx:ebx -20(fp):fp - 0x0000000C -16(fp):ebx -4(fp):ebp
 
 fn004011B0_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:<invalid> ebp:<invalid> ebx:<invalid> al:<invalid> eax:<invalid> edx:<invalid> ecx:<invalid> -28(fp):<invalid> -24(fp):<invalid> -20(fp):<invalid> -16(fp):ebx -4(fp):ebp
+// SymbolicIn: esp:fp ebp:ebp ebx:ebx al:<invalid> eax:<invalid> edx:<invalid> ecx:<invalid> -28(fp):<invalid> -24(fp):<invalid> -20(fp):0x0000009C -16(fp):ebx -4(fp):ebp
 
 
 

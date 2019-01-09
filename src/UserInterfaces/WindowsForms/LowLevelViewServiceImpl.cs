@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,16 +21,13 @@
 using Reko.Core;
 using Reko.Gui;
 using System;
-using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
 namespace Reko.UserInterfaces.WindowsForms
 {
     public class LowLevelViewServiceImpl : ViewService, ILowLevelViewService
     {
-
-        private LowLevelViewInteractor mvi;
 
         public const string ViewWindowType = "memoryViewWindow";
 
@@ -40,53 +37,40 @@ namespace Reko.UserInterfaces.WindowsForms
 
         #region IMemoryViewService Members
 
-        public void InvalidateWindow()
-        {
-            mvi.InvalidateControl();
-        }
 
         public void ViewImage(Program program)
         {
-            ShowWindow(program);
-            mvi.Program = program;
-            if (program != null)
+            Debug.Assert(program != null);
+            var llvi = ShowWindowImpl(program);
+            var addr = program.SegmentMap.Segments.Values
+                .Where(s => s.MemoryArea != null)
+                .Select(s => Address.Max(s.Address, s.MemoryArea.BaseAddress))
+                .FirstOrDefault();
+            if (addr != null)
             {
-                var addr = program.SegmentMap.Segments.Values
-                    .Where(s => s.MemoryArea != null)
-                    .Select(s => Address.Max(s.Address, s.MemoryArea.BaseAddress))
-                    .FirstOrDefault();
-                if (addr != null)
-                {
-                    mvi.SelectedAddress = addr;
-                }
+                llvi.SelectedAddress = addr;
             }
-        }
-
-        public void ShowMemoryAtAddress(Program program, Address addr)
-        {
-            if (mvi == null || mvi.Program != program)
-            {
-                ViewImage(program);
-            } else
-            {
-                ShowWindow(program);
-            }
-            mvi.SelectedAddress = addr;
-        }
-
-        public AddressRange GetSelectedAddressRange()
-        {
-            return mvi.GetSelectedAddressRange();
         }
 
         public void ShowWindow(Program program)
         {
-            if (mvi == null)
-            {
-                mvi = CreateMemoryViewInteractor();
-                mvi.SelectionChanged += new EventHandler<SelectionChangedEventArgs>(mvi_SelectionChanged);
-            }
-            ShowWindow(ViewWindowType, "Memory View", program, mvi);
+            ShowWindowImpl(program);
+        }
+
+        public void ShowMemoryAtAddress(Program program, Address addr)
+        {
+            var llvi = ShowWindowImpl(program);
+            llvi.SelectedAddress = addr;
+        }
+
+        private LowLevelViewInteractor ShowWindowImpl(Program program)
+        {
+            var llvi = CreateMemoryViewInteractor();
+            llvi.SelectionChanged += new EventHandler<SelectionChangedEventArgs>(mvi_SelectionChanged);
+            var frame = base.ShowWindow(ViewWindowType, "Memory View", program, llvi);
+            llvi = (LowLevelViewInteractor)frame.Pane ?? llvi;
+            llvi.Program = program;
+            return llvi;
         }
 
         #endregion

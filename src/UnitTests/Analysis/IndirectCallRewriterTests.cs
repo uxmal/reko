@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 Pavel Tomin.
+ * Copyright (C) 1999-2019 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -59,7 +59,7 @@ namespace Reko.UnitTests.Analysis
 
         private DataType Ptr32(DataType pointee)
         {
-            return new Pointer(pointee, 4);
+            return new Pointer(pointee, 32);
         }
 
         private DataType Int32()

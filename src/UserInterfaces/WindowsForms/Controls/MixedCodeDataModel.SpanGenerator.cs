@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -126,7 +126,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             SpanGenerator sp;
             if (item is ImageMapBlock b)
             {
-                sp = new AsmSpanifyer(program, instructions[b], pos);
+                sp = new AsmSpanifyer(program, b.Block.Procedure.Architecture, instructions[b], pos);
             }
             else
             {
@@ -155,16 +155,19 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         private class AsmSpanifyer : SpanGenerator
         {
             private Program program;
+            private IProcessorArchitecture arch;
             private MachineInstruction[] instrs;
             private int offset;
             private ModelPosition position;
 
             public AsmSpanifyer(
                 Program program,
+                IProcessorArchitecture arch,
                 MachineInstruction[] instrs,
                 ModelPosition pos)
             {
                 this.instrs = instrs;
+                this.arch = arch;
                 var addr = pos.Address;
                 this.offset = FindIndexOfInstructionAddress(instrs, addr);
                 this.position = pos;
@@ -180,6 +183,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 var asmLine = DisassemblyTextModel.RenderAsmLine(
                     position,
                     program,
+                    arch,
                     instr,
                     MachineInstructionWriterOptions.ResolvePcRelativeAddress);
                 if (offset == instrs.Length)
@@ -232,7 +236,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                     line.Add(new MemoryTextSpan(new string(' ', 3 * (int)cbFiller), UiStyles.MemoryWindow));
                 }
 
-                var rdr = program.CreateImageReader(addr);
+                var rdr = program.CreateImageReader(program.Architecture, addr);
                 while (rdr.Address.ToLinear() < linEnd)
                 {
                     if (rdr.IsValid)

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -86,15 +86,44 @@ namespace Reko.Arch.SuperH
         public static RegisterStorage fv12 = new RegisterStorage("fv12", 16, 0x000, PrimitiveType.Word128);
 
         public static RegisterStorage fpul = new RegisterStorage("fpul", 17, 0, PrimitiveType.Word32);
-        public static RegisterStorage pr = new RegisterStorage("pr", 18, 0, PrimitiveType.Word32);
-        public static RegisterStorage gbr = new RegisterStorage("gbr", 19, 0, PrimitiveType.Word32);
-        public static RegisterStorage mac = new RegisterStorage("mac", 20, 0, PrimitiveType.Word64);
-        public static RegisterStorage macl = new RegisterStorage("macl", 20, 0, PrimitiveType.Word32);
-        public static RegisterStorage mach = new RegisterStorage("mach", 20, 32, PrimitiveType.Word32);
+        public static RegisterStorage fpscr = new RegisterStorage("fpscr", 18, 0, PrimitiveType.Word32);
+        public static RegisterStorage pr = new RegisterStorage("pr", 19, 0, PrimitiveType.Word32);
+        public static RegisterStorage gbr = new RegisterStorage("gbr", 20, 0, PrimitiveType.Word32);
+        public static RegisterStorage mac = new RegisterStorage("mac", 21, 0, PrimitiveType.Word64);
+        public static RegisterStorage macl = new RegisterStorage("macl", 21, 0, PrimitiveType.Word32);
+        public static RegisterStorage mach = new RegisterStorage("mach", 21, 32, PrimitiveType.Word32);
+        public static RegisterStorage sr = new RegisterStorage("sr", 22, 0, PrimitiveType.Word32);
+        public static RegisterStorage tbr = new RegisterStorage("tbr", 23, 0, PrimitiveType.Word32);
+        public static RegisterStorage vbr = new RegisterStorage("vbr", 24, 0, PrimitiveType.Word32);
+        public static RegisterStorage spc = new RegisterStorage("spc", 25, 0, PrimitiveType.Word32);
+        public static RegisterStorage mod = new RegisterStorage("mod", 26, 0, PrimitiveType.Word32);
+        public static RegisterStorage rs = new RegisterStorage("rs", 27, 0, PrimitiveType.Word32);
+        public static RegisterStorage dsr = new RegisterStorage("dsr", 28, 0, PrimitiveType.Word32);
+        public static RegisterStorage dbr = new RegisterStorage("dbr", 29, 0, PrimitiveType.Word32);
+        public static RegisterStorage ssr = new RegisterStorage("ssr", 30, 0, PrimitiveType.Word32);
+        public static RegisterStorage sgr = new RegisterStorage("sgr", 31, 0, PrimitiveType.Word32);
 
-        public static RegisterStorage sr = new RegisterStorage("sr", 21, 0, PrimitiveType.Word32);
+        public static RegisterStorage r0_bank = new RegisterStorage("r0_bank", 32, 0, PrimitiveType.Word32);
+        public static RegisterStorage r1_bank = new RegisterStorage("r1_bank", 33, 0, PrimitiveType.Word32);
+        public static RegisterStorage r2_bank = new RegisterStorage("r2_bank", 34, 0, PrimitiveType.Word32);
+        public static RegisterStorage r3_bank = new RegisterStorage("r3_bank", 35, 0, PrimitiveType.Word32);
+        public static RegisterStorage r4_bank = new RegisterStorage("r4_bank", 36, 0, PrimitiveType.Word32);
+        public static RegisterStorage r5_bank = new RegisterStorage("r5_bank", 37, 0, PrimitiveType.Word32);
+        public static RegisterStorage r6_bank = new RegisterStorage("r6_bank", 38, 0, PrimitiveType.Word32);
+        public static RegisterStorage r7_bank = new RegisterStorage("r7_bank", 39, 0, PrimitiveType.Word32);
+        public static RegisterStorage r8_bank = new RegisterStorage("r8_bank", 40, 0, PrimitiveType.Word32);
+        public static RegisterStorage r9_bank = new RegisterStorage("r9_bank", 41, 0, PrimitiveType.Word32);
+        public static RegisterStorage r10_bank = new RegisterStorage("r10_bank", 42, 0, PrimitiveType.Word32);
+        public static RegisterStorage r11_bank = new RegisterStorage("r11_bank", 43, 0, PrimitiveType.Word32);
+        public static RegisterStorage r12_bank = new RegisterStorage("r12_bank", 44, 0, PrimitiveType.Word32);
+        public static RegisterStorage r13_bank = new RegisterStorage("r13_bank", 45, 0, PrimitiveType.Word32);
+        public static RegisterStorage r14_bank = new RegisterStorage("r14_bank", 46, 0, PrimitiveType.Word32);
+        public static RegisterStorage r15_bank = new RegisterStorage("r15_bank", 47, 0, PrimitiveType.Word32);
+
+        public static RegisterStorage xmtrx = new RegisterStorage("xmtrx", 48, 0, PrimitiveType.CreateWord(512));
 
         public static FlagGroupStorage T = new FlagGroupStorage(sr, 1, "T", PrimitiveType.Bool);
+        public static FlagGroupStorage S = new FlagGroupStorage(sr, 2, "S", PrimitiveType.Bool);
 
         public static RegisterStorage[] gpregs = new[]
         {
@@ -118,6 +147,30 @@ namespace Reko.Arch.SuperH
              r14 ,
              r15 ,
         };
+
+        public static RegisterStorage[] rbank = new[]
+        {
+             r0_bank,
+             r1_bank,
+             r2_bank,
+             r3_bank,
+
+             r4_bank,
+             r5_bank,
+             r6_bank,
+             r7_bank,
+
+             r8_bank,
+             r9_bank,
+             r10_bank,
+             r11_bank,
+
+             r12_bank,
+             r13_bank,
+             r14_bank,
+             r15_bank,
+        };
+
 
         public static RegisterStorage[] fpregs = new[]
         {

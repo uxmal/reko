@@ -84,11 +84,12 @@ ecx_23: orig: ecx
     def:  ecx_23 = DPB(ecx_13, cx_22, 0) (alias)
 SCZO_24: orig: SCZO
     def:  SCZO_24 = cond(cx_22)
+    uses: SCZO_26 = DPB(SCZO_24, C_25, 0) (alias)
 C_25: orig: C
     def:  C_25 = cx_22 == 0x0000
-    uses: SCZO_26 = C_25 (alias)
+    uses: SCZO_26 = DPB(SCZO_24, C_25, 0) (alias)
 SCZO_26: orig: SCZO
-    def:  SCZO_26 = C_25 (alias)
+    def:  SCZO_26 = DPB(SCZO_24, C_25, 0) (alias)
 Mem27: orig: Mem0
     def:  Mem27[ds:0x0306:word16] = cx_22
 // fn0C00_0000
@@ -123,7 +124,7 @@ l0C00_0000:
 	ecx_23 = DPB(ecx_13, cx_22, 0) (alias)
 	SCZO_24 = cond(cx_22)
 	C_25 = cx_22 == 0x0000
-	SCZO_26 = C_25 (alias)
+	SCZO_26 = DPB(SCZO_24, C_25, 0) (alias)
 	Mem27[ds:0x0306:word16] = cx_22
 	return
 	// succ:  fn0C00_0000_exit
@@ -210,15 +211,16 @@ cx_22: orig: cx
           SCZO_24 = cond(cx_22)
           C_25 = cx_22 == 0x0000
           Mem27[ds:0x0306:word16] = cx_22
-          SCZO_26 = cx_22 == 0x0000 (alias)
+          SCZO_26 = DPB(SCZO_24, cx_22 == 0x0000, 0) (alias)
 ecx_23: orig: ecx
     def:  ecx_23 = DPB(ecx_13, cx_22, 0) (alias)
 SCZO_24: orig: SCZO
     def:  SCZO_24 = cond(cx_22)
+    uses: SCZO_26 = DPB(SCZO_24, cx_22 == 0x0000, 0) (alias)
 C_25: orig: C
     def:  C_25 = cx_22 == 0x0000
 SCZO_26: orig: SCZO
-    def:  SCZO_26 = cx_22 == 0x0000 (alias)
+    def:  SCZO_26 = DPB(SCZO_24, cx_22 == 0x0000, 0) (alias)
 Mem27: orig: Mem0
     def:  Mem27[ds:0x0306:word16] = cx_22
 // fn0C00_0000
@@ -253,7 +255,7 @@ l0C00_0000:
 	ecx_23 = DPB(ecx_13, cx_22, 0) (alias)
 	SCZO_24 = cond(cx_22)
 	C_25 = cx_22 == 0x0000
-	SCZO_26 = cx_22 == 0x0000 (alias)
+	SCZO_26 = DPB(SCZO_24, cx_22 == 0x0000, 0) (alias)
 	Mem27[ds:0x0306:word16] = cx_22
 	return
 	// succ:  fn0C00_0000_exit

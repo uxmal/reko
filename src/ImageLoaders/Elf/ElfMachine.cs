@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,7 +46,9 @@ namespace Reko.ImageLoaders.Elf
         EM_960 = 19,            // Intel 80960 
         EM_PPC = 20,            // PowerPC 
         EM_PPC64 = 21,          // 64-bit PowerPC 
-                                //RESERVED 22-35 Reserved for future use 
+        EM_S390 = 22,           // IBM System/390
+        EM_SPU = 23,            // IBM SPU/SPC
+                                //RESERVED 24-35 Reserved for future use 
         EM_V800 = 36,           // NEC V800 
         EM_FR20 = 37,           // Fujitsu FR20 
         EM_RH32 = 38,           // TRW RH-32 

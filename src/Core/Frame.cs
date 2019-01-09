@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -65,6 +65,7 @@ namespace Reko.Core
 	public class Frame : IStorageBinder
 	{
 		private List<Identifier> identifiers;	// Identifiers for each access.
+        private NamingPolicy namingPolicy;
 		
         /// <summary>
         /// Creates a Frame instance for maintaining the local variables and arguments.
@@ -74,6 +75,7 @@ namespace Reko.Core
 		public Frame(PrimitiveType framePointerSize)
 		{
 			identifiers = new List<Identifier>();
+            this.namingPolicy = NamingPolicy.Instance;
 
 			// There is always a "variable" for the global memory and the frame
 			// pointer.
@@ -114,29 +116,26 @@ namespace Reko.Core
 
         public Identifier EnsureIdentifier(Storage stgForeign)
         {
-            var reg = stgForeign as RegisterStorage;
-            if (reg != null)
+            switch (stgForeign)
+            {
+            case RegisterStorage reg:
                 return EnsureRegister(reg);
-            var grf = stgForeign as FlagGroupStorage;
-            if (grf != null)
+            case FlagGroupStorage grf:
                 return EnsureFlagGroup(grf);
-            var seq = stgForeign as SequenceStorage;
-            if (seq != null)
+            case SequenceStorage seq:
                 return EnsureSequence(
                     seq.Name,
-                    seq.Head, 
-                    seq.Tail, 
+                    seq.Head,
+                    seq.Tail,
                     PrimitiveType.CreateWord(
-                        (int)(seq.Head.BitSize + seq.Tail.BitSize)/DataType.BitsPerByte));
-            var fp = stgForeign as FpuStackStorage;
-            if (fp != null)
+                        (int)(seq.Head.BitSize + seq.Tail.BitSize)));
+            case FpuStackStorage fp:
                 return EnsureFpuStackVariable(fp.FpuStackOffset, fp.DataType);
-            var st = stgForeign as StackStorage;
-            if (st != null)
+            case StackStorage st:
                 return EnsureStackVariable(st.StackOffset, st.DataType);
-            var tmp = stgForeign as TemporaryStorage;
-            if (tmp != null)
+            case TemporaryStorage tmp:
                 return CreateTemporary(tmp.Name, tmp.DataType);
+            }
             throw new NotImplementedException(string.Format(
                 "Unsupported storage {0}.",
                 stgForeign != null ? stgForeign.ToString() : "(null)"));
@@ -267,7 +266,7 @@ namespace Reko.Core
 			Identifier id = FindStackLocal(cbOffset, type.Size);
 			if (id == null)
 			{
-				id = new Identifier(FormatStackAccessName(type, "Loc", cbOffset, name), type, new StackLocalStorage(cbOffset, type));
+				id = new Identifier(namingPolicy.StackLocalName(type, cbOffset, name), type, new StackLocalStorage(cbOffset, type));
 				identifiers.Add(id);
 			}
 			return id;
@@ -284,7 +283,7 @@ namespace Reko.Core
 			if (id == null)
 			{
 				id = new Identifier(
-					FormatStackAccessName(type, "Arg", cbOffset, argName), 
+					namingPolicy.StackArgumentName(type, cbOffset, argName), 
 					type, 
 					new StackArgumentStorage(cbOffset, type));
 				identifiers.Add(id);
@@ -340,20 +339,6 @@ namespace Reko.Core
 					return id;
 			}
 			return null;
-		}
-
-		public static string FormatStackAccessName(DataType type, string prefix, int cbOffset)
-		{
-			cbOffset = Math.Abs(cbOffset);
-			string fmt = (cbOffset > 0xFF) ? "{0}{1}{2:X4}" : "{0}{1}{2:X2}";
-			return string.Format(fmt, type.Prefix, prefix, cbOffset);
-		}
-
-		public static string FormatStackAccessName(DataType type, string prefix, int cbOffset, string nameOverride)
-		{
-			if (nameOverride != null)
-				return nameOverride;
-			else return FormatStackAccessName(type, prefix, cbOffset);
 		}
 
 		/// <summary>

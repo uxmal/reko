@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,6 +32,8 @@ namespace Reko.Core.Configuration
         string Description { get; }
 
         string TypeName { get; }
+
+        List<PropertyOption> Options { get; set; }
     }
 
     public class ArchitectureElement : Architecture
@@ -50,5 +52,10 @@ namespace Reko.Core.Configuration
         /// .NET type name for the architecture.
         /// </summary>
         public string TypeName { get; set; }
+
+        /// <summary>
+        /// Available property options.
+        /// </summary>
+        public List<PropertyOption> Options{ get; set; }
     }
 }

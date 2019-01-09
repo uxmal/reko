@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -134,7 +134,7 @@ namespace Reko.Arch.X86
             m.BranchInMiddleOfInstruction(
                 m.Test(cc, orw.FlagGroup(flag)),
                 instrCur.Address + instrCur.Length,
-                RtlClass.ConditionalTransfer);
+                InstrClass.ConditionalTransfer);
 
             var dst = SrcOp(instrCur.op1);
             var src = SrcOp(instrCur.op2);
@@ -190,7 +190,7 @@ namespace Reko.Arch.X86
         private void RewriteFild()
         {
             state.GrowFpuStack(instrCur.Address);
-            var iType = PrimitiveType.Create(Domain.SignedInt, instrCur.op1.Width.Size);
+            var iType = PrimitiveType.Create(Domain.SignedInt, instrCur.op1.Width.BitSize);
             m.Assign(
                 orw.FpuRegister(0, state),
                 m.Cast(PrimitiveType.Real64, SrcOp(instrCur.op1, iType)));
@@ -205,7 +205,7 @@ namespace Reko.Arch.X86
 
         private void RewriteFist(bool pop)
         {
-            instrCur.op1.Width = PrimitiveType.Create(Domain.SignedInt, instrCur.op1.Width.Size);
+            instrCur.op1.Width = PrimitiveType.Create(Domain.SignedInt, instrCur.op1.Width.BitSize);
             m.Assign(SrcOp(instrCur.op1), m.Cast(instrCur.op1.Width, orw.FpuRegister(0, state)));
             if (pop)
                 state.ShrinkFpuStack(1);
@@ -213,7 +213,7 @@ namespace Reko.Arch.X86
 
         private void RewriteFistt(bool pop)
         {
-            instrCur.op1.Width = PrimitiveType.Create(Domain.SignedInt, instrCur.op1.Width.Size);
+            instrCur.op1.Width = PrimitiveType.Create(Domain.SignedInt, instrCur.op1.Width.BitSize);
             var fpuReg = orw.FpuRegister(0, state);
             var trunc = host.PseudoProcedure("trunc", fpuReg.DataType, fpuReg);
             m.Assign(SrcOp(instrCur.op1), m.Cast(instrCur.op1.Width, trunc));
@@ -229,7 +229,7 @@ namespace Reko.Arch.X86
             if (src.DataType.Size != dst.DataType.Size)
             {
                 src = m.Cast(
-                    PrimitiveType.Create(Domain.Real, dst.DataType.Size),
+                    PrimitiveType.Create(Domain.Real, dst.DataType.BitSize),
                     src);
             }
             m.Assign(dst, src);
@@ -326,7 +326,7 @@ namespace Reko.Arch.X86
             if (src.DataType.Size != dst.DataType.Size)
             {
                 src = m.Cast(
-                    PrimitiveType.Create(Domain.Real, dst.DataType.Size),
+                    PrimitiveType.Create(Domain.Real, dst.DataType.BitSize),
                     src);
             }
             m.Assign(dst, src);
@@ -486,7 +486,7 @@ namespace Reko.Arch.X86
 
         private void Branch(ConditionCode code, MachineOperand op)
         {
-            m.Branch(m.Test(code, orw.FlagGroup(FlagM.FPUF)), OperandAsCodeAddress( op), RtlClass.ConditionalTransfer);
+            m.Branch(m.Test(code, orw.FlagGroup(FlagM.FPUF)), OperandAsCodeAddress( op), InstrClass.ConditionalTransfer);
         }
 
         private void RewriteFtst()

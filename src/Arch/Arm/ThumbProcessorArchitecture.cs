@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Arch.Arm.AArch32;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
@@ -36,8 +37,9 @@ namespace Reko.Arch.Arm
 {
     public class ThumbArchitecture : ProcessorArchitecture
     {
-
+#if NATIVE
         private INativeArchitecture native;
+#endif
         private Dictionary<string, RegisterStorage> regsByName;
         private Dictionary<int, RegisterStorage> regsByNumber;
         private Dictionary<uint, FlagGroupStorage> flagGroups;
@@ -50,14 +52,19 @@ namespace Reko.Arch.Arm
             this.InstructionBitSize = 16;
 
             this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
+#if NATIVE
 
             var unk = CreateNativeArchitecture("arm-thumb");
             this.native = (INativeArchitecture)Marshal.GetObjectForIUnknown(unk);
-
             GetRegistersFromNative();
+#else
+            this.regsByNumber = Registers.GpRegs.ToDictionary(r => r.Number);
+            this.regsByName = regsByNumber.ToDictionary(r => r.Value.Name, r => r.Value);
+#endif
             StackRegister = regsByName["sp"];
         }
 
+#if NATIVE
         private void GetRegistersFromNative()
         {
             int cRegs;
@@ -77,7 +84,7 @@ namespace Reko.Arch.Arm
                     var n = nReg.Name;
                     var i = nReg.Number;
                     var b = nReg.BitSize;
-                    var reg = new RegisterStorage(n, i, 0, PrimitiveType.CreateWord(b / 8));
+                    var reg = new RegisterStorage(n, i, 0, PrimitiveType.CreateWord(b));
                     regsByName.Add(reg.Name, reg);
                     regsByNumber.Add(reg.Number, reg);
         }
@@ -85,9 +92,12 @@ namespace Reko.Arch.Arm
                 --cRegs;
             }
         }
+#endif
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
+            return new T32Disassembler(this, rdr);
+            /*
             var bytes = rdr.Bytes;
             ulong uAddr = rdr.Address.ToLinear();
             var hBytes = GCHandle.Alloc(bytes, GCHandleType.Pinned);
@@ -115,12 +125,13 @@ namespace Reko.Arch.Arm
                 {
                     hBytes.Free();
                 }
-            }
+            }*/
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            return new ThumbRewriterNew(regsByNumber, this.native, rdr, (ArmProcessorState)state, binder, host);
+            return new ThumbRewriter(this, rdr, host, binder);
+            //return new ThumbRewriterRetired(regsByNumber, this.native, rdr, (ArmProcessorState)state, binder, host);
         }
 
         public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
@@ -160,7 +171,7 @@ namespace Reko.Arch.Arm
 
         public override ProcessorState CreateProcessorState()
         {
-            return new ArmProcessorState(this);
+            return new AArch32ProcessorState(this);
         }
  
 
@@ -176,8 +187,7 @@ namespace Reko.Arch.Arm
 
         public override RegisterStorage GetRegister(int i)
         {
-            RegisterStorage reg;
-            if (regsByNumber.TryGetValue(i, out reg))
+            if (regsByNumber.TryGetValue(i, out RegisterStorage reg))
                 return reg;
             else
                 return null;
@@ -185,8 +195,7 @@ namespace Reko.Arch.Arm
 
         public override RegisterStorage GetRegister(string name)
         {
-            RegisterStorage reg;
-            if (regsByName.TryGetValue(name, out reg))
+            if (regsByName.TryGetValue(name, out RegisterStorage reg))
                 return reg;
             else
                 return null;
@@ -209,24 +218,18 @@ namespace Reko.Arch.Arm
 
         public override FlagGroupStorage GetFlagGroup(uint grf)
         {
-            FlagGroupStorage f;
-            if (flagGroups.TryGetValue(grf, out f))
+            if (flagGroups.TryGetValue(grf, out FlagGroupStorage f))
             {
                 return f;
             }
 
             var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
-            var fl = new FlagGroupStorage(regsByName["CPSRQQQQ"], grf, GrfToString(grf), dt);
+            var fl = new FlagGroupStorage(Registers.cpsr, grf, GrfToString(grf), dt);
             flagGroups.Add(grf, fl);
             return fl;
         }
 
         public override FlagGroupStorage GetFlagGroup(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Expression CreateStackAccess(IStorageBinder frame, int cbOffset, DataType dataType)
         {
             throw new NotImplementedException();
         }

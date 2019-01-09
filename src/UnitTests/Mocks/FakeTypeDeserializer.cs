@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 Pavel Tomin.
+ * Copyright (C) 1999-2019 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,11 +29,11 @@ namespace Reko.UnitTests.Mocks
 {
     public class FakeTypeDeserializer : ISerializedTypeVisitor<DataType>
     {
-        private int ptrSize;
+        private int ptrBitSize;
 
-        public FakeTypeDeserializer(int ptrSize)
+        public FakeTypeDeserializer(int ptrBitSize)
         {
-            this.ptrSize = ptrSize;
+            this.ptrBitSize = ptrBitSize;
         }
 
         public DataType VisitArray(ArrayType_v1 array)
@@ -58,22 +58,22 @@ namespace Reko.UnitTests.Mocks
 
         public DataType VisitPointer(PointerType_v1 pointer)
         {
-            return new Pointer(pointer.DataType.Accept(this), ptrSize);
+            return new Pointer(pointer.DataType.Accept(this), ptrBitSize)
+            {
+                Qualifier = pointer.Qualifier
+            };
+        }
+
+        public DataType VisitPrimitive(PrimitiveType_v1 primitive)
+        {
+            var pt = PrimitiveType.Create(primitive.Domain, primitive.ByteSize * DataType.BitsPerByte);
+            pt.Qualifier = primitive.Qualifier;
+            return pt;
         }
 
         public DataType VisitReference(ReferenceType_v1 refTo)
         {
             return new ReferenceTo(refTo.Referent.Accept(this));
-        }
-
-        public DataType VisitQualifiedType(QualifiedType_v1 qt)
-        {
-            return new QualifiedType(qt.DataType.Accept(this), qt.Qualifier);
-        }
-
-        public DataType VisitPrimitive(PrimitiveType_v1 primitive)
-        {
-            return PrimitiveType.Create(primitive.Domain, primitive.ByteSize);
         }
 
         public DataType VisitSignature(SerializedSignature signature)

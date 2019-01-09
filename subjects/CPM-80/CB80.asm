@@ -1,263 +1,10 @@
 ;;; Segment lma (0000)
-0000 00 00 00 00 00                                  .....          
-
-l0005:
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
+0000 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+; ...
 ;;; Segment code (0100)
 0100 C3 E1 0F 00 5A                                  ....Z          
 
-;; fn0105: 0105
-fn0105 proc
+l0105:
 	jp	1729
 0108                         00 17 2D 2D 2D 2D 2D 2D         ..------
 0110 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D ----------------
@@ -277,16 +24,11 @@ fn0105 proc
 01F0 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D ----------------
 0200 2D 2D 2D 2D 2D 2D 2D 0D 0A 24                   -------..$     
 
-;; fn020A: 020A
-fn020A proc
+l020A:
 	jp	172D
 020D                                        00 00 00              ...
 0210 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
-0220 00                                              .              
-
-;; fn0221: 0221
-fn0221 proc
-	jp	0005
+0220 00 C3 05 00                                     ....           
 
 l0224:
 	jp	177D
@@ -1222,8 +964,7 @@ l08F6:
 	ld	a,(151F)
 	ld	(hl),a
 
-;; fn08FD: 08FD
-fn08FD proc
+l08FD:
 	jp	0920
 
 l0900:
@@ -1247,8 +988,7 @@ l0919:
 	ld	a,(151F)
 	ld	(hl),a
 
-;; fn0920: 0920
-fn0920 proc
+l0920:
 	ld	de,0080
 	ld	c,1A
 	call	0221

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -55,7 +55,10 @@ namespace Reko.Core.Types
 
         public override DataType Clone(IDictionary<DataType, DataType> clonedTypes)
 		{
-			return new MemberPointer(BasePointer.Clone(clonedTypes), Pointee.Clone(clonedTypes), byteSize);
+            return new MemberPointer(BasePointer.Clone(clonedTypes), Pointee.Clone(clonedTypes), byteSize)
+            {
+                Qualifier = this.Qualifier
+            };
 		}
 
 		public override bool IsComplex
@@ -74,11 +77,6 @@ namespace Reko.Core.Types
 				if (value == null) throw new ArgumentNullException("Pointee mustn't be null");
 				pointee = value; 
 			}
-		}
-
-		public override string Prefix
-		{
-			get { return "ptr"; }
 		}
 
 		public override int Size

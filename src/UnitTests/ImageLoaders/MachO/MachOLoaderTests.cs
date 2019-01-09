@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -75,7 +75,7 @@ namespace Reko.UnitTests.ImageLoaders.MachO
         [Test]
         public void Moldr_LoadEmptyLe64()
         {
-            Given_Le64Header(MachOLoader.CPU_TYPE_X86_64, 1);
+            Given_Le64Header(Parser.CPU_TYPE_X86_64, 1);
             Given_x86Arch();
 
             mr.ReplayAll();

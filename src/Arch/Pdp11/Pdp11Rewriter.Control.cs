@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,29 +35,29 @@ namespace Reko.Arch.Pdp11
     {
         private void RewriteBpt()
         {
-            this.rtlc = RtlClass.Call | RtlClass.Transfer;
+            this.rtlc = InstrClass.Call | InstrClass.Transfer;
             var grf = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)(FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF)));
             m.Assign(grf, host.PseudoProcedure("__bpt", PrimitiveType.Byte)); 
         }
 
         private void RewriteBr()
         {
-            this.rtlc = RtlClass.Transfer;
+            this.rtlc = InstrClass.Transfer;
             m.Goto(((AddressOperand)instr.op1).Address);
         }
 
         private void RewriteBxx(ConditionCode cc, FlagM flags)
         {
-            this.rtlc = RtlClass.Transfer;
+            this.rtlc = InstrClass.Transfer;
             m.Branch(
                 m.Test(cc, binder.EnsureFlagGroup(arch.GetFlagGroup((uint)flags))),
                 ((AddressOperand)instr.op1).Address,
-                RtlClass.ConditionalTransfer);
+                InstrClass.ConditionalTransfer);
         }
 
         private void RewriteEmt()
         {
-            this.rtlc = RtlClass.Transfer;
+            this.rtlc = InstrClass.Transfer;
             var imm = ((ImmediateOperand)instr.op1).Value.ToByte();
             var svc = m.Word16((ushort)(0x8800 | imm));
             m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, svc));
@@ -65,7 +65,7 @@ namespace Reko.Arch.Pdp11
 
         private void RewriteHalt()
         {
-            rtlc = RtlClass.Terminates;
+            rtlc = InstrClass.Terminates;
             var c = new ProcedureCharacteristics
             {
                 Terminates = true,
@@ -75,7 +75,7 @@ namespace Reko.Arch.Pdp11
 
         private void RewriteIot()
         {
-            this.rtlc = RtlClass.Call | RtlClass.Transfer;
+            this.rtlc = InstrClass.Call | InstrClass.Transfer;
             var grf = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)(FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF)));
             m.Assign(grf, host.PseudoProcedure("__bpt", PrimitiveType.Byte));
         }
@@ -85,7 +85,7 @@ namespace Reko.Arch.Pdp11
             var jmpDst = RewriteJmpSrc(instr.op1);
             if (jmpDst != null)
             {
-                this.rtlc = RtlClass.Transfer;
+                this.rtlc = InstrClass.Transfer;
                 m.Goto(jmpDst);
             }
             else
@@ -101,7 +101,7 @@ namespace Reko.Arch.Pdp11
             var callDst = RewriteJmpSrc(instr.op2);
             if (callDst != null)
             {
-                this.rtlc = RtlClass.Transfer|RtlClass.Call;
+                this.rtlc = InstrClass.Transfer| InstrClass.Call;
                 m.Call(callDst, 2);
             }
             else
@@ -112,7 +112,7 @@ namespace Reko.Arch.Pdp11
 
         private void RewriteMark()
         {
-            rtlc = RtlClass.Transfer;
+            rtlc = InstrClass.Transfer;
             var sp = binder.EnsureRegister(Registers.sp);
             var pc = binder.EnsureRegister(Registers.pc);
             var tmp = binder.CreateTemporary(PrimitiveType.Word16);
@@ -133,13 +133,13 @@ namespace Reko.Arch.Pdp11
 
         private void RewriteRti()
         {
-            this.rtlc = RtlClass.Transfer;
+            this.rtlc = InstrClass.Transfer;
             m.Return(2, 2);
         }
 
         private void RewriteRts()
         {
-            this.rtlc = RtlClass.Transfer;
+            this.rtlc = InstrClass.Transfer;
             var regLink = (RegisterOperand)instr.op1;
             if (regLink.Register == Registers.pc)
             {
@@ -161,13 +161,13 @@ namespace Reko.Arch.Pdp11
 
         private void RewriteRtt()
         {
-            this.rtlc = RtlClass.Transfer;
+            this.rtlc = InstrClass.Transfer;
             m.Return(2, 2);
         }
 
         private void RewriteSob()
         {
-            this.rtlc = RtlClass.ConditionalTransfer;
+            this.rtlc = InstrClass.ConditionalTransfer;
             var reg = RewriteSrc(instr.op1);
             if (reg == null)
             {
@@ -182,7 +182,7 @@ namespace Reko.Arch.Pdp11
 
         private void RewriteTrap()
         {
-            this.rtlc = RtlClass.Transfer;
+            this.rtlc = InstrClass.Transfer;
             var imm = ((ImmediateOperand)instr.op1).Value.ToByte();
             var svc = m.Word16((ushort)(0x8900 | imm));
             m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, svc));

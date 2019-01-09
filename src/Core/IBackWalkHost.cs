@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,10 +29,13 @@ namespace Reko.Core
 	/// </summary>
 	public interface IBackWalkHost<TBlock, TInstr>
 	{
+        IProcessorArchitecture Architecture { get; }
+        Program Program { get; }
         SegmentMap SegmentMap { get; }
 
 		AddressRange GetSinglePredecessorAddressRange(Address block);
-		Address GetBlockStartAddress(Address addr);
+        int BlockInstructionCount(TBlock rtlBlock);
+        Address GetBlockStartAddress(Address addr);
         Address MakeAddressFromConstant(Constant c);
         Address MakeSegmentedAddress(Constant selector, Constant offset);
 

@@ -32,7 +32,7 @@ fn0C00_000C_entry:
 	// succ:  l0C00_000C
 l0C00_000C:
 	sp = fp
-	sp = fp - 0x0002
+	sp = fp - 2
 	wLoc02 = ax
 	al = Mem0[ds:0x0104:byte]
 	Mem0[ds:0x0105:byte] = al

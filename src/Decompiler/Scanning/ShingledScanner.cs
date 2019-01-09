@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,23 +47,22 @@ namespace Reko.Scanning
         private const byte MaybeCode = 1;
         private const byte Data = 0;
 
-        private const RtlClass L = RtlClass.Linear;
-        private const RtlClass T = RtlClass.Transfer;
+        private const InstrClass L = InstrClass.Linear;
+        private const InstrClass T = InstrClass.Transfer;
         
-        private const RtlClass CL = RtlClass.Linear | RtlClass.Conditional;
-        private const RtlClass CT = RtlClass.Transfer | RtlClass.Conditional;
+        private const InstrClass CL = InstrClass.Linear | InstrClass.Conditional;
+        private const InstrClass CT = InstrClass.Transfer | InstrClass.Conditional;
         
-        private const RtlClass DT = RtlClass.Transfer | RtlClass.Delay;
-        private const RtlClass DCT = RtlClass.Transfer | RtlClass.Conditional | RtlClass.Delay;
+        private const InstrClass DT = InstrClass.Transfer | InstrClass.Delay;
+        private const InstrClass DCT = InstrClass.Transfer | InstrClass.Conditional | InstrClass.Delay;
 
         public readonly Address Bad;
 
-        private Program program;
-        private ScanResults sr;
-        private IRewriterHost host;
-        private IStorageBinder storageBinder;
-        private DecompilerEventListener eventListener;
-        private DiGraph<Address> G;
+        private readonly Program program;
+        private readonly ScanResults sr;
+        private readonly IRewriterHost host;
+        private readonly IStorageBinder storageBinder;
+        private readonly DecompilerEventListener eventListener;
 
         public ShingledScanner(Program program, IRewriterHost host, IStorageBinder storageBinder, ScanResults sr, DecompilerEventListener eventListener)
         {
@@ -72,14 +71,7 @@ namespace Reko.Scanning
             this.storageBinder = storageBinder;
             this.sr = sr;
             this.eventListener = eventListener;
-            this.sr.TransferTargets = new HashSet<Address>();
-            this.sr.DirectlyCalledAddresses = new Dictionary<Address,int>();
-            this.sr.Instructions = new SortedList<Address, RtlInstructionCluster>();
-            this.sr.FlatInstructions = new SortedList<Address, ScanResults.instr>();
-            this.sr.FlatEdges = new List<ScanResults.link>();
-            this.G = new DiGraph<Address>();
             this.Bad = program.Platform.MakeAddressFromLinear(~0ul);
-            G.AddNode(Bad);
         }
 
         /// <summary>
@@ -175,26 +167,27 @@ namespace Reko.Scanning
             var y = new byte[cbAlloc];
             // Advance by the instruction granularity.
             var step = program.Architecture.InstructionBitSize / 8;
-            var delaySlot = RtlClass.None;
-            var rewriterPool = new Dictionary<Address, IEnumerator<RtlInstructionCluster>>();
+            var delaySlot = InstrClass.None;
+            var rewriterCache = new Dictionary<Address, IEnumerator<RtlInstructionCluster>>();
             for (var a = 0; a < y.Length; a += step)
             {
                 y[a] = MaybeCode;
                 var addr = addrStart + a;
-                var dasm = GetRewriter(addr, rewriterPool);
+                var dasm = GetRewriter(addr, rewriterCache);
                 if (!dasm.MoveNext())
                 {
-                    AddEdge(G, Bad, addr);
+                    sr.Invalid.Add(addr);
+                    AddEdge(Bad, addr);
                     continue;
                 }
                 var i = dasm.Current;
-
                 if (IsInvalid(mem, i))
                 {
-                    AddEdge(G, Bad, i.Address);
-                    i.Class = RtlClass.Invalid;
+                    sr.Invalid.Add(addr);
+                    AddEdge(Bad, i.Address);
+                    i.Class = InstrClass.Invalid;
                     AddInstruction(i);
-                    delaySlot = RtlClass.None;
+                    delaySlot = InstrClass.None;
                     y[a] = Data;
                 }
                 else
@@ -206,19 +199,19 @@ namespace Reko.Scanning
                             if (a + i.Length < y.Length)
                             {
                                 // Still inside the segment.
-                                AddEdge(G, i.Address + i.Length, i.Address);
+                                AddEdge(i.Address + i.Length, i.Address);
                             }
                             else
                             {
                                 // Fell off segment, i must be a bad instruction.
-                                AddEdge(G, Bad, i.Address);
-                                i.Class = RtlClass.Invalid;
+                                AddEdge(Bad, i.Address);
+                                i.Class = InstrClass.Invalid;
                                 AddInstruction(i);
                                 y[a] = Data;
                             }
                         }
                     }
-                    if ((i.Class & RtlClass.Transfer) != 0)
+                    if ((i.Class & InstrClass.Transfer) != 0)
                     {
                         var addrDest = DestinationAddress(i);
                         if (addrDest != null)
@@ -226,7 +219,7 @@ namespace Reko.Scanning
                             if (IsExecutable(addrDest))
                             {
                                 // call / jump destination is executable
-                                if ((i.Class & RtlClass.Call) != 0)
+                                if ((i.Class & InstrClass.Call) != 0)
                                 {
                                     // Don't add edges to other procedures.
                                     if (!this.sr.DirectlyCalledAddresses.TryGetValue(addrDest, out int callTally))
@@ -235,21 +228,21 @@ namespace Reko.Scanning
                                 }
                                 else
                                 {
-                                    AddEdge(G, addrDest, i.Address);
+                                    AddEdge(addrDest, i.Address);
                                 }
                             }
                             else
                             {
                                 // Jump to data / hyperspace.
-                                AddEdge(G, Bad, i.Address);
-                                i.Class = RtlClass.Invalid;
+                                AddEdge(Bad, i.Address);
+                                i.Class = InstrClass.Invalid;
                                 AddInstruction(i);
                                 y[a] = Data;
                             }
                         }
                         else
                         {
-                            if ((i.Class & RtlClass.Call) != 0)
+                            if ((i.Class & InstrClass.Call) != 0)
                             {
                                 this.sr.IndirectCalls.Add(i.Address);
                             }
@@ -268,6 +261,7 @@ namespace Reko.Scanning
                 {
                     AddInstruction(i);
                 }
+                SaveRewriter(addr + i.Length, dasm, rewriterCache);
                 eventListener.ShowProgress("Shingle scanning", sr.Instructions.Count, (int)workToDo);
             }
             return y;
@@ -275,7 +269,6 @@ namespace Reko.Scanning
 
         public void AddInstruction(RtlInstructionCluster i)
         {
-            //sr.Instructions.Add(i.Address, i);
             sr.FlatInstructions.Add(i.Address, new ScanResults.instr
             {
                 addr = i.Address,
@@ -289,9 +282,8 @@ namespace Reko.Scanning
         }
 
 
-        public void AddEdge(DiGraph<Address> g, Address from, Address to)
+        public void AddEdge(Address from, Address to)
         {
-#if !not_LinQ
             if (from == Bad)
                 return;
             sr.FlatEdges.Add(new ScanResults.link
@@ -299,12 +291,7 @@ namespace Reko.Scanning
                 first = to,
                 second = from,
             });
-#else
-        g.AddNode(from);
-        g.AddNode(to);
-        g.AddEdge(from, to);
-#endif
-    }
+        }
 
         // Remove blocks that fall off the end of the segment
         // or into data.
@@ -328,13 +315,14 @@ namespace Reko.Scanning
             // Find all places that are reachable from "bad" addresses.
             // By transitivity, they must also be be bad.
             var deadNodes = new HashSet<Address>();
-            foreach (var a in new DfsIterator<Address>(G).PreOrder(Bad))
-            {
-                if (a != Bad)
-                {
-                    deadNodes.Add(a);
-                }
-            }
+            throw new NotImplementedException();
+            //foreach (var a in new DfsIterator<Address>(G).PreOrder(Bad))
+            //{
+            //    if (a != Bad)
+            //    {
+            //        deadNodes.Add(a);
+            //    }
+            //}
 
             var oldinstrs = sr.Instructions;
             sr.Instructions = oldinstrs
@@ -351,8 +339,8 @@ namespace Reko.Scanning
 
         /// <summary>
         /// Get a rewriter for the specified address. If a rewriter is already
-        /// available from the rewriter pool, remove it and use it, otherwise
-        /// create a new one.
+        /// available from the rewriter pool, remove it from the pool and use it,
+        /// otherwise create a new one.
         /// </summary>
         /// <param name="addr"></param>
         /// <returns></returns>
@@ -360,22 +348,42 @@ namespace Reko.Scanning
             Address addr, 
             IDictionary<Address, IEnumerator<RtlInstructionCluster>> pool)
         {
-            var rdr = program.CreateImageReader(addr);
-            var arch = program.Architecture;
-            var rw = arch.CreateRewriter(
-                program.CreateImageReader(addr), 
-                arch.CreateProcessorState(),
-                storageBinder,
-                this.host);
-            return rw.GetEnumerator();
+            if (!pool.TryGetValue(addr, out var e))
+            {
+                var arch = program.Architecture;
+                var rdr = program.CreateImageReader(arch, addr);
+                var rw = arch.CreateRewriter(
+                    program.CreateImageReader(arch, addr),
+                    arch.CreateProcessorState(),
+                    storageBinder,
+                    this.host);
+                return rw.GetEnumerator();
+            }
+            else
+            {
+                pool.Remove(addr);
+                return e;
+            }
+        }
+
+        private void SaveRewriter(
+            Address addr,
+            IEnumerator<RtlInstructionCluster> e,
+            IDictionary<Address, IEnumerator<RtlInstructionCluster>> pool)
+        {
+            if (!pool.ContainsKey(addr))
+            {
+                pool.Add(addr, e);
+            }
         }
 
         public DiGraph<RtlBlock> BuildIcfg(HashSet<Address> deadNodes)
         {
-            var icb = BuildBlocks(G);
-            BuildEdges(icb);
-            sr.ICFG = icb.Blocks;
-            return sr.ICFG;
+            throw new NotImplementedException();
+            //var icb = BuildBlocks(G);
+            //BuildEdges(icb);
+            //sr.ICFG = icb.Blocks;
+            //return sr.ICFG;
         }
 
         /// <summary>
@@ -400,7 +408,8 @@ namespace Reko.Scanning
                 wl.Remove(addr);
 
                 var instr = sr.Instructions[addr];
-                var block = new RtlBlock(addr, addr.GenerateName("l", ""));
+                var label = program.NamingPolicy.BlockName(addr);
+                var block = new RtlBlock(addr, label);
                 block.Instructions.Add(instr);
                 allBlocks.AddNode(block);
                 mpBlocks.Add(addr, block);
@@ -419,7 +428,7 @@ namespace Reko.Scanning
                             addFallthroughEdgeDeferred = (instr.Class & DT) == DT;
                         }
                         var addrDst = DestinationAddress(instr);
-                        if (addrDst != null && (instr.Class & RtlClass.Call) == 0)
+                        if (addrDst != null && (instr.Class & InstrClass.Call) == 0)
                         {
                             edges.Add(Tuple.Create(block, addrDst));
                         }
@@ -433,7 +442,7 @@ namespace Reko.Scanning
                             endBlockNow = true;
                         }
                     }
-                    else if (instr.Class == RtlClass.Terminates)
+                    else if (instr.Class == InstrClass.Terminates)
                     {
                         endBlockNow = true;
                         addFallthroughEdge = false;
@@ -515,7 +524,7 @@ namespace Reko.Scanning
 
         private bool IsInvalid(MemoryArea mem, RtlInstructionCluster instr)
         {
-            if (instr.Class == RtlClass.Invalid)
+            if (instr.Class == InstrClass.Invalid)
                 return true;
             // If an instruction straddles a relocation, it can't be 
             // a real instruction.
@@ -532,12 +541,12 @@ namespace Reko.Scanning
         private bool MayFallThrough(RtlInstructionCluster i)
         {
             return 
-                (i.Class & RtlClass.Terminates) == 0
+                (i.Class & InstrClass.Terminates) == 0
                 &&
                 (i.Class &
-                  (RtlClass.Linear 
-                   | RtlClass.Conditional 
-                   | RtlClass.Call)) != 0;        //$REVIEW: what if you call a terminating function?
+                  (InstrClass.Linear 
+                   | InstrClass.Conditional 
+                   | InstrClass.Call)) != 0;        //$REVIEW: what if you call a terminating function?
         }
 
         private bool IsTransfer(RtlInstructionCluster i, RtlInstruction r)
@@ -560,8 +569,7 @@ namespace Reko.Scanning
             {
                 foreach (var pointer in GetPossiblePointers(seg))
                 {
-                    ImageSegment segPointee;
-                    if (program.SegmentMap.TryFindSegment(pointer, out segPointee) &&
+                    if (program.SegmentMap.TryFindSegment(pointer, out var segPointee) &&
                         segPointee.IsInRange(pointer))
                     {
                         int segOffset = (int)(pointer - segPointee.Address);
@@ -586,19 +594,17 @@ namespace Reko.Scanning
         {
             //$TODO: this assumes pointers must be aligned. Not the case for older machines.
             uint ptrSize = (uint)program.Platform.PointerType.Size;
-            var rdr = program.CreateImageReader(seg.Address);
-            Constant c;
-            while (rdr.TryRead(program.Platform.PointerType, out c))
+            var arch = program.Architecture;
+            var rdr = program.CreateImageReader(arch, seg.Address);
+            while (rdr.TryRead(program.Platform.PointerType, out Constant c))
             {
                 yield return program.Architecture.MakeAddressFromConstant(c);
             }
         }
 
-
         private bool IsExecutable(Address address)
         {
-            ImageSegment seg;
-            if (!program.SegmentMap.TryFindSegment(address, out seg))
+            if (!program.SegmentMap.TryFindSegment(address, out ImageSegment seg))
                 return false;
             return seg.IsExecutable;
         }
@@ -613,13 +619,11 @@ namespace Reko.Scanning
             var rtl = i.Instructions[i.Instructions.Length - 1];
             for (;;)
             {
-                var rif = rtl as RtlIf;
-                if (rif == null)
+                if (!(rtl is RtlIf rif))
                     break;
                 rtl = rif.Instruction;
             }
-            var xfer = rtl as RtlTransfer;
-            if (xfer != null)
+            if (rtl is RtlTransfer xfer)
             {
                 return xfer.Target as Address;
             }
@@ -637,7 +641,7 @@ namespace Reko.Scanning
             var addr = segment.Address + a;
             if (!segment.IsInRange(addr) || !segment.MemoryArea.IsValidAddress(addr))
                 return null;
-            var dasm = program.CreateDisassembler(addr);
+            var dasm = program.CreateDisassembler(program.Architecture, addr);
             return dasm.FirstOrDefault();
         }
 
@@ -655,8 +659,7 @@ namespace Reko.Scanning
             Address addr, 
             IDictionary<ImageSegment, byte[]> map)
         {
-            ImageSegment seg;
-            if (!program.SegmentMap.TryFindSegment(addr, out seg))
+            if (!program.SegmentMap.TryFindSegment(addr, out ImageSegment seg))
                 throw new InvalidOperationException(string.Format("Address {0} doesn't belong to any segment.", addr));
             return map[seg][addr - seg.Address] == MaybeCode;
         }

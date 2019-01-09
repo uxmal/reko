@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -117,14 +117,13 @@ namespace Reko.Typing
             var e = CreateAddressOf(expComplex);
             DataType dt;
             if (enclosingPtr != null)
-                dt = new Pointer(PrimitiveType.Char, enclosingPtr.Size);
+                dt = new Pointer(PrimitiveType.Char, enclosingPtr.BitSize);
             else
-                dt = PrimitiveType.CreateWord(e.DataType.Size);
+                dt = PrimitiveType.CreateWord(e.DataType.BitSize);
             e = new Cast(dt, e);
             var eOffset = CreateOffsetExpression(offset, index);
             var op = Operator.IAdd;
-            var cOffset = eOffset as Constant;
-            if (cOffset != null && cOffset.IsNegative)
+            if (eOffset is Constant cOffset && cOffset.IsNegative)
             {
                 op = Operator.ISub;
                 eOffset = cOffset.Negate();
@@ -259,11 +258,6 @@ namespace Reko.Typing
                 }
             }
             return FallbackExpression();
-        }
-
-        public Expression VisitQualifiedType(QualifiedType qt)
-        {
-            return qt.DataType.Accept(this);
         }
 
         public Expression VisitReference(ReferenceTo refTo)
@@ -416,7 +410,7 @@ namespace Reko.Typing
                 }
                 return new UnaryExpression(
                     Operator.AddrOf,
-                    new Pointer(dt, 4),         //$BUG: hardwired '4'.
+                    new Pointer(dt, 32),         //$BUG: hardwired '4'.
                     mps);
             }
             else if (e != null)

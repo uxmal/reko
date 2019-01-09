@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -114,49 +114,49 @@ namespace Reko.Environments.Windows
         {
             if (ccName == null)
                 return new X86CallingConvention(
-                                    Architecture.PointerType.Size,
-                                    Architecture.WordWidth.Size,
-                                    Architecture.PointerType.Size,
-                                    true,
-                                    false);
+                    Architecture.PointerType.Size,
+                    Architecture.WordWidth.Size,
+                    Architecture.PointerType.Size,
+                    true,
+                    false);
             switch (ccName)
             {
             case "":
             case "cdecl":
             case "__cdecl":
                 return new X86CallingConvention(
-                                    Architecture.PointerType.Size,
-                                    Architecture.WordWidth.Size,
-                                    Architecture.PointerType.Size,
-                                    true,
-                                    false);
+                    Architecture.PointerType.Size,
+                    Architecture.WordWidth.Size,
+                    Architecture.PointerType.Size,
+                    true,
+                    false);
             case "stdcall":
             case "__stdcall":
             case "stdapi":
                 return new X86CallingConvention(
-                                Architecture.PointerType.Size,
-                                Architecture.WordWidth.Size,
-                                Architecture.PointerType.Size,
-                                false,
-                                false);
+                    Architecture.PointerType.Size,
+                    Architecture.WordWidth.Size,
+                    Architecture.PointerType.Size,
+                    false,
+                    false);
             case "pascal":
                 return new X86CallingConvention(
-                                Architecture.PointerType.Size,
-                                Architecture.WordWidth.Size,
-                                Architecture.PointerType.Size,
-                                false,
-                                true);
+                    Architecture.PointerType.Size,
+                    Architecture.WordWidth.Size,
+                    Architecture.PointerType.Size,
+                    false,
+                    true);
             case "__thiscall":
                 return new ThisCallConvention(
-                                Registers.ecx,
-                                Architecture.WordWidth.Size,
-                                Architecture.PointerType.Size);
+                    Registers.ecx,
+                    Architecture.WordWidth.Size,
+                    Architecture.PointerType.Size);
             case "__fastcall":
                 return new FastcallConvention(
-                                Registers.ecx,
-                                Registers.edx,
-                                Architecture.WordWidth.Size,
-                                Architecture.PointerType.Size);
+                    Registers.ecx,
+                    Registers.edx,
+                    Architecture.WordWidth.Size,
+                    Architecture.PointerType.Size);
             }
             throw new ArgumentOutOfRangeException(string.Format("Unknown calling convention '{0}'.", ccName));
         }
@@ -254,10 +254,10 @@ namespace Reko.Environments.Windows
                 }
                 addrTarget = MakeAddressFromConstant(wAddr);
             }
-            ProcedureBase proc = host.GetImportedProcedure(addrTarget, rtlc.Address);
+            ProcedureBase proc = host.GetImportedProcedure(this.Architecture, addrTarget, rtlc.Address);
             if (proc != null)
                 return proc;
-            return host.GetInterceptedCall(addrTarget);
+            return host.GetInterceptedCall(this.Architecture, addrTarget);
         }
 
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)

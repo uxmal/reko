@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,13 +31,12 @@ namespace Reko.Core.Expressions
 	{
 		public ArrayAccess(DataType elementType, Expression array, Expression index) : base(elementType)
 		{
-            if (array == null) throw new ArgumentNullException("array");
-            if (index == null) throw new ArgumentNullException("index");
-			this.Array = array; this.Index = index;
+            Array = array ?? throw new ArgumentNullException(nameof(array));
+            Index = index ?? throw new ArgumentNullException(nameof(index));
 		}
 
-        public Expression Array { get; private set; }
-        public Expression Index { get; private set; }
+        public Expression Array { get; }
+        public Expression Index { get; }
 
         public override IEnumerable<Expression> Children
         {

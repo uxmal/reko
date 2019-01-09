@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -211,19 +211,18 @@ namespace Reko.UnitTests.Core
                 {
                     {
                         "bar",
-                        new ImageSymbol
-                        {
-                            Name = "bar",
-                            Type = SymbolType.Data,
-                            DataType = new StructureType
+                        ImageSymbol.DataObject(
+                            program.Architecture,
+                            null,
+                            "bar",
+                            new StructureType
                             {
                                 Fields =
                                 {
-                                    { 0, new Pointer(PrimitiveType.Char, 4), "name" },
+                                    { 0, new Pointer(PrimitiveType.Char, 32), "name" },
                                     { 4, PrimitiveType.Int32, "age" }
                                 }
-                            }
-                        }
+                            })
                     }
                 }
             };

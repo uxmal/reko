@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -263,7 +263,10 @@ namespace Reko.Analysis
 
         public Result VisitArrayAccess(ArrayAccess acc)
         {
-            throw new NotImplementedException();
+            var a = acc.Array.Accept(this).PropagatedExpression;
+            var i = acc.Index.Accept(this).PropagatedExpression;
+            var newAcc = new ArrayAccess(acc.DataType, a, i);
+            return SimplifyExpression(newAcc);
         }
 
         public Result VisitBinaryExpression(BinaryExpression binExp)

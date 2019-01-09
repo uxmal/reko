@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Types;
 using NUnit.Framework;
 using System;
+using Reko.Core.Machine;
 
 namespace Reko.UnitTests.Arch.Intel
 {
@@ -55,7 +56,7 @@ namespace Reko.UnitTests.Arch.Intel
                 arch,
                 new DefaultPlatform(null, arch));
 			var procAddress = Address.Ptr32(0x10000000);
-            instr = new X86Instruction(Opcode.nop, PrimitiveType.Word16, PrimitiveType.Word16)
+            instr = new X86Instruction(Opcode.nop, InstrClass.Linear, PrimitiveType.Word16, PrimitiveType.Word16)
             {
                 Address = procAddress,
             };

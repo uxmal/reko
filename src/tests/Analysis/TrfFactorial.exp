@@ -8,8 +8,8 @@ fn0C00_000F SCZO ah al ax dh dl dx eax edx rax rdx
 const ax:<invalid> dx:<invalid> Sequence dx:ax:<invalid>
     fn0C00_000F_entry sp:fp
     l0C00_000F sp:fp
-    l0C00_0018 ax:<invalid> bp:fp - 0x0002 sp:fp - 0x0002
-    l0C00_0026 ax:<invalid> bp:fp - 0x0002 sp:fp - 0x0002
-    l0C00_0029 ax:<invalid> bp:fp - 0x0002 dx:<invalid> Sequence dx:ax:<invalid> sp:fp - 0x0002
+    l0C00_0018 ax:<invalid> bp:fp - 2 sp:fp - 2
+    l0C00_0026 ax:<invalid> bp:fp - 2 sp:fp - 2
+    l0C00_0029 ax:<invalid> bp:fp - 2 dx:<invalid> Sequence dx:ax:<invalid> sp:fp - 0x0002
     fn0C00_000F_exit ax:<invalid> bp:bp dx:<invalid> Sequence dx:ax:<invalid> sp:fp
 

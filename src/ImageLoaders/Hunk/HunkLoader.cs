@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -628,12 +628,7 @@ print arg_mem
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
-            var sym = new ImageSymbol(addrLoad)
-            {
-                Type = SymbolType.Procedure,
-                ProcessorState = arch.CreateProcessorState()
-            };
-
+            var sym = ImageSymbol.Procedure(program.Architecture, addrLoad, state: arch.CreateProcessorState());
             var entries = new List<ImageSymbol>
             {
                 //$TODO: what are the registers on entry?

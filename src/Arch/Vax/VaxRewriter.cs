@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ namespace Reko.Arch.Vax
         private EndianImageReader rdr;
         private ProcessorState state;
         private VaxArchitecture arch;
-        private RtlClass rtlc;
+        private InstrClass rtlc;
         private List<RtlInstruction> rtlInstructions;
         private RtlEmitter m;
         private IEnumerator<VaxInstruction> dasm;
@@ -61,7 +61,7 @@ namespace Reko.Arch.Vax
                 var addr = dasm.Current.Address;
                 var len = dasm.Current.Length;
                 rtlInstructions = new List<RtlInstruction>();
-                rtlc = RtlClass.Linear;
+                rtlc = dasm.Current.IClass;
                 m = new RtlEmitter(rtlInstructions);
                 switch (dasm.Current.Opcode)
                 {
@@ -70,10 +70,10 @@ namespace Reko.Arch.Vax
                     //emitter.SideEffect(Constant.String(
                     //    dasm.Current.ToString(),
                     //    StringType.NullTerminated(PrimitiveType.Char)));
-                    //host.Warn(
-                    //    dasm.Current.Address,
-                    //    "Rewriting of VAX instruction {0} not implemented yet.",
-                    //    dasm.Current.Opcode);
+                    host.Warn(
+                        dasm.Current.Address,
+                        "VAX instruction {0} not supported yet.",
+                        dasm.Current.Opcode);
                     m.Invalid();
                     break;
                 case Opcode.Invalid: m.Invalid(); break;
@@ -685,7 +685,7 @@ namespace Reko.Arch.Vax
 
         private Identifier FlagGroup(FlagM flags)
         {
-            return binder.EnsureFlagGroup(Registers.psw, (uint)flags, arch.GrfToString((uint)flags), PrimitiveType.Byte);
+            return binder.EnsureFlagGroup(arch.GetFlagGroup((uint)flags));
         }
 
         private bool AllFlags(Expression dst)
@@ -745,7 +745,7 @@ namespace Reko.Arch.Vax
         private void EmitInvalid()
         {
             rtlInstructions.Clear();
-            rtlc = RtlClass.Invalid;
+            rtlc = InstrClass.Invalid;
             m.Invalid();
         }
     }

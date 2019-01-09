@@ -1,17 +1,17 @@
-void fn80000000(word32 d2)
+void fn80000000()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  d2
+// MayUse: 
 // LiveOut:
 // Trashed: FPUFLAGS d0 d1 fp0 fp1 fp2
 // Preserved: a7
 fn80000000_entry:
-// DataOut: d2
+// DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp
 
 l80000000:
-	fn800003CC(d2)
+	fn800003CC()
 	return
 // DataOut:
 // DataOut (flags): 
@@ -24,16 +24,16 @@ fn80000000_exit:
 
 
 
-real80 fn80000132(word32 d2, real96 rArg04, real96 rArg10)
+real80 fn80000132(real96 rArg04, real96 rArg10)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  d2
+// MayUse: 
 // LiveOut: fp0
 // Trashed: FPUFLAGS d0 d1 fp0
 // Preserved: a6 a7 d2
 // Stack args: Stack +0004(96) Stack +0010(96)
 fn80000132_entry:
-// DataOut: d2
+// DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp
 // LocalsOut: fp(32) Stack +0004(96) Stack +0010(96)
@@ -43,14 +43,14 @@ l80000132:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp
-// LocalsOut: fp(32) Local -0010(32) Local -0014(80) Local -0018(32) Stack +0004(96) Stack +0010(96)
+// LocalsOut: fp(32) Local -0010(32) Local -0014(80) Stack +0004(96) Stack +0010(96)
 
 l8000014A:
 	branch (real96) (real80) dwLoc14_16 >= rArg10 l80000172
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000018 a6:fp - 0x00000004 fp0:<invalid> -24(fp):d2 -20(fp):<invalid> -16(fp):<invalid> -4(fp):a6
-// LocalsOut: fp(32) Local -0010(32) Local -0014(32) Local -0018(32) Stack +0004(96) Stack +0010(96)
+// LocalsOut: fp(32) Local -0010(32) Local -0014(32) Stack +0004(96) Stack +0010(96)
 
 l80000172:
 	return (real80) DPB(rLoc24, dwLoc10, 0)
@@ -68,20 +68,20 @@ l8000015A:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000018 a6:fp - 0x00000004 fp0:<invalid> -24(fp):d2 -20(fp):<invalid> -16(fp):<invalid> -4(fp):a6
-// LocalsOut: fp(32) Local -0010(32) Local -0014(80) Local -0018(32) Stack +0004(96) Stack +0010(96)
+// LocalsOut: fp(32) Local -0010(32) Local -0014(80) Stack +0004(96) Stack +0010(96)
 
 
 
-real80 fn8000018E(word32 d2, real96 rArg04)
+real80 fn8000018E(real96 rArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  d2
+// MayUse: 
 // LiveOut: fp0
 // Trashed: FPUFLAGS d0 d1 fp0 fp1
 // Preserved: a6 a7 d2
 // Stack args: Stack +0004(96)
 fn8000018E_entry:
-// DataOut: d2 fp2
+// DataOut: fp2
 // DataOut (flags): 
 // SymbolicIn: a7:fp
 // LocalsOut: fp(32) Stack +0004(96)
@@ -91,14 +91,14 @@ l8000018E:
 // DataOut: fp2
 // DataOut (flags): 
 // SymbolicIn: a7:fp
-// LocalsOut: fp(32) Local -0010(32) Local -0014(80) Local -0018(32) Stack +0004(96)
+// LocalsOut: fp(32) Local -0010(32) Local -0014(80) Stack +0004(96)
 
 l800001A8:
 	branch (real96) (real80) dwLoc14_18 > rArg04 l800001D4
 // DataOut: fp2
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000018 a6:fp - 0x00000004 fp0:<invalid> d0:1 fp1:<invalid> -24(fp):d2 -20(fp):<invalid> -16(fp):<invalid> -4(fp):a6
-// LocalsOut: fp(32) Local -0010(32) Local -0014(80) Local -0018(32) Stack +0004(96)
+// LocalsOut: fp(32) Local -0010(32) Local -0014(80) Stack +0004(96)
 
 l800001D4:
 	return (real80) DPB(rLoc24, dwLoc10, 0)
@@ -116,37 +116,37 @@ l800001B8:
 // DataOut: fp2
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000018 a6:fp - 0x00000004 fp0:<invalid> d0:1 fp1:<invalid> -24(fp):d2 -20(fp):<invalid> -16(fp):<invalid> -4(fp):a6
-// LocalsOut: fp(32) Local -0010(32) Local -0014(80) Local -0018(32) Stack +0004(96)
+// LocalsOut: fp(32) Local -0010(32) Local -0014(80) Stack +0004(96)
 
 
 
-void fn800001F2(word32 d2, real96 rArg04)
+void fn800001F2(real96 rArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  d2
+// MayUse: 
 // LiveOut:
 // Trashed: FPUFLAGS d0 d1 fp0 fp1 fp2
 // Preserved: a6 a7 d2
 // Stack args: Stack +0004(80)
 fn800001F2_entry:
-// DataOut: d2
+// DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp
 // LocalsOut: fp(32) Local -0034(32) Local -0038(32) Stack +0004(80)
 
 l800001F2:
 	word32 dwLoc20_25 = 3
-// DataOut: a6 d2
+// DataOut: a6
 // DataOut (flags): 
 // SymbolicIn: a7:fp
-// LocalsOut: fp(80) Local -0010(32) Local -001C(0) Local -0020(80) Local -0030(32) Local -0034(32) Local -0038(32) Stack +0004(80)
+// LocalsOut: fp(80) Local -0010(32) Local -001C(0) Local -0020(80) Local -0034(32) Local -0038(32) Stack +0004(80)
 
 l8000021C:
 	branch 100 - dwLoc20_25 < 0x00000000 l8000028A
-// DataOut: a6 d2
+// DataOut: a6
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000030 a6:fp - 0x00000004 fp0:<invalid> fp1:<invalid> d0:<invalid> fp2:<invalid> d1:<invalid> -72(fp):<invalid> -60(fp):<invalid> -48(fp):d2 -44(fp):fp2 -32(fp):<invalid> -28(fp):<invalid> -16(fp):<invalid> -4(fp):a6
-// LocalsOut: fp(80) Local -0010(32) Local -001C(0) Local -0020(80) Local -0030(32) Local -0034(32) Local -0038(32) Stack +0004(80)
+// LocalsOut: fp(80) Local -0010(32) Local -001C(0) Local -0020(80) Local -0034(32) Local -0038(32) Stack +0004(80)
 
 l8000028A:
 	return
@@ -160,43 +160,43 @@ fn800001F2_exit:
 // SymbolicIn: a7:fp a6:a6 fp0:<invalid> fp1:<invalid> d0:<invalid> d1:<invalid> d2:d2 fp2:<invalid> -72(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):d2 -44(fp):fp2 -32(fp):<invalid> -28(fp):<invalid> -16(fp):<invalid> -4(fp):a6
 
 l80000224:
-	fn80000132(d2, (real96) (real80) rArg04, (real96) (real80) dwLoc20_25)
-	fn8000018E(d2, (real96) (real80) dwLoc20_25)
+	fn80000132((real96) (real80) rArg04, (real96) (real80) dwLoc20_25)
+	fn8000018E((real96) (real80) dwLoc20_25)
 	dwLoc20_25 = dwLoc20_25 + 0x00000002
-// DataOut: a6 d2
+// DataOut: a6
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000030 a6:fp - 0x00000004 fp0:<invalid> fp1:<invalid> d0:100 fp2:<invalid> d1:<invalid> -72(fp):<invalid> -60(fp):<invalid> -48(fp):d2 -44(fp):fp2 -32(fp):<invalid> -28(fp):<invalid> -16(fp):<invalid> -4(fp):a6
-// LocalsOut: fp(80) Local -0010(32) Local -001C(0) Local -0020(80) Local -0030(32) Local -0034(32) Local -0038(32) Stack +0004(80)
+// LocalsOut: fp(80) Local -0010(32) Local -001C(0) Local -0020(80) Local -0034(32) Local -0038(32) Stack +0004(80)
 
 
 
-real80 fn800002AE(word32 d2, real96 rArg04, ptr32 & fp2Out)
+real80 fn800002AE(real96 rArg04, ptr32 & fp2Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  d2
+// MayUse: 
 // LiveOut: fp0 fp2
 // Trashed: FPUFLAGS d0 d1 fp0 fp1 fp2
 // Preserved: a6 a7 d2
 // Stack args: Stack +0004(80)
 fn800002AE_entry:
-// DataOut: d2 fp2
+// DataOut: fp2
 // DataOut (flags): 
 // SymbolicIn: a7:fp
 // LocalsOut: fp(32) Local -0034(32) Local -0038(32) Stack +0004(80)
 
 l800002AE:
 	word32 dwLoc20_24 = 2
-// DataOut: a6 d2
+// DataOut: a6
 // DataOut (flags): 
 // SymbolicIn: a7:fp
-// LocalsOut: fp(80) Local -0010(32) Local -001C(0) Local -0020(80) Local -002C(80) Local -0030(32) Local -0034(32) Local -0038(32) Stack +0004(80)
+// LocalsOut: fp(80) Local -0010(32) Local -001C(0) Local -0020(80) Local -002C(80) Local -0034(32) Local -0038(32) Stack +0004(80)
 
 l800002DA:
 	branch 100 - dwLoc20_24 < 0x00000000 l80000348
-// DataOut: a6 d2
+// DataOut: a6
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000030 a6:fp - 0x00000004 fp0:<invalid> fp1:<invalid> d0:<invalid> fp2:<invalid> d1:<invalid> -72(fp):<invalid> -60(fp):<invalid> -48(fp):d2 -44(fp):fp2 -32(fp):<invalid> -28(fp):<invalid> -16(fp):<invalid> -4(fp):a6
-// LocalsOut: fp(80) Local -0010(32) Local -001C(0) Local -0020(80) Local -002C(80) Local -0030(32) Local -0034(32) Local -0038(32) Stack +0004(80)
+// LocalsOut: fp(80) Local -0010(32) Local -001C(0) Local -0020(80) Local -002C(80) Local -0034(32) Local -0038(32) Stack +0004(80)
 
 l80000348:
 	real80 fp2_102
@@ -212,36 +212,36 @@ fn800002AE_exit:
 // SymbolicIn: a7:fp a6:a6 fp0:<invalid> fp1:<invalid> d0:<invalid> d1:<invalid> d2:d2 fp2:<invalid> -72(fp):<invalid> -60(fp):<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):d2 -44(fp):fp2 -32(fp):<invalid> -28(fp):<invalid> -16(fp):<invalid> -4(fp):a6
 
 l800002E2:
-	fn80000132(d2, (real96) (real80) rArg04, (real96) (real80) dwLoc20_24)
+	fn80000132((real96) (real80) rArg04, (real96) (real80) dwLoc20_24)
 	real96 v19_59 = (real96) (real80) dwLoc20_24
-	fn8000018E(d2, v19_59)
+	fn8000018E(v19_59)
 	rLoc3C = v19_59
 	dwLoc20_24 = dwLoc20_24 + 0x00000002
-// DataOut: a6 d2
+// DataOut: a6
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000030 a6:fp - 0x00000004 fp0:<invalid> fp1:<invalid> d0:100 fp2:<invalid> d1:<invalid> -72(fp):<invalid> -60(fp):<invalid> -48(fp):d2 -44(fp):fp2 -32(fp):<invalid> -28(fp):<invalid> -16(fp):<invalid> -4(fp):a6
-// LocalsOut: fp(80) Local -0010(32) Local -001C(0) Local -0020(80) Local -002C(80) Local -0030(32) Local -0034(32) Local -0038(32) Stack +0004(80)
+// LocalsOut: fp(80) Local -0010(32) Local -001C(0) Local -0020(80) Local -002C(80) Local -0034(32) Local -0038(32) Stack +0004(80)
 
 
 
-void fn8000036C(word32 d2, real96 rArg04)
+void fn8000036C(real96 rArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  d2
+// MayUse: 
 // LiveOut:
 // Trashed: FPUFLAGS d0 d1 fp0 fp1 fp2
 // Preserved: a6 a7 d2
 // Stack args: Stack +0004(80)
 fn8000036C_entry:
-// DataOut: d2
+// DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp
 // LocalsOut: fp(80) Local -0018(32) Local -001C(32) Stack +0004(80)
 
 l8000036C:
-	fn800001F2(d2, (real96) (real80) rArg04)
+	fn800001F2((real96) (real80) rArg04)
 	real80 fp2_28
-	fn800002AE(d2, (real96) (real80) rArg04, out fp2_28)
+	fn800002AE((real96) (real80) rArg04, out fp2_28)
 	return
 // DataOut:
 // DataOut (flags): 
@@ -254,27 +254,27 @@ fn8000036C_exit:
 
 
 
-void fn800003CC(word32 d2)
+void fn800003CC()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  d2
+// MayUse: 
 // LiveOut:
 // Trashed: FPUFLAGS d0 d1 fp0 fp1 fp2
 // Preserved: a6 a7
 fn800003CC_entry:
-// DataOut: d2
+// DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp
 // LocalsOut: fp(32)
 
 l800003CC:
 	real96 v6_9 = (real96) (real80) Mem0[0x80000538:real96]
-	fn80000132(d2, (real96) (real80) v6_9, (real96) (real80) v6_9)
-	fn8000018E(d2, (real96) (real80) v6_9)
-	fn800001F2(d2, (real96) (real80) v6_9)
-	real80 fp2_41
-	fn800002AE(d2, (real96) (real80) v6_9, out fp2_41)
-	fn8000036C(d2, (real96) (real80) v6_9)
+	fn80000132((real96) (real80) v6_9, (real96) (real80) v6_9)
+	fn8000018E((real96) (real80) v6_9)
+	fn800001F2((real96) (real80) v6_9)
+	real80 fp2_40
+	fn800002AE((real96) (real80) v6_9, out fp2_40)
+	fn8000036C((real96) (real80) v6_9)
 	return
 // DataOut:
 // DataOut (flags): 

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,7 +57,7 @@ namespace Reko.UnitTests.Analysis
 			f = proc.Frame;
 			mpprocflow = new ProgramDataFlow();
             terminates = new HashSet<Procedure>();
-			rl = new RegisterLiveness(program, mpprocflow, null);
+			rl = new RegisterLiveness(program, mpprocflow, new FakeDecompilerEventListener());
 			rl.Procedure = proc;
             rl.IdentifierLiveness.Identifiers = new HashSet<RegisterStorage>();
 		}
@@ -219,7 +219,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void Rl_CallToProcedureWithValidSignature()
 		{
-			Procedure callee = new Procedure(program.Architecture, "callee", null);
+			Procedure callee = new Procedure(program.Architecture, "callee", Address.Ptr32(0x00123400), null);
 			callee.Signature = new FunctionType(
 				f.EnsureRegister(Registers.eax),
 				new Identifier[] {
@@ -240,7 +240,7 @@ namespace Reko.UnitTests.Analysis
         [Ignore("Won't be needed when class obsoleted")]
 		public void Rl_CallToProcedureWithStackArgs()
 		{
-			Procedure callee = new Procedure(program.Architecture, "callee", null);
+			Procedure callee = new Procedure(program.Architecture, "callee", Address.Ptr32(0x00123400), null);
 			callee.Signature = new FunctionType(
 				f.EnsureRegister(Registers.eax),
 				new Identifier[] {
@@ -265,7 +265,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void Rl_MarkLiveStackParameters()
 		{
-            var callee = new Procedure(program.Architecture, "callee", program.Architecture.CreateFrame());
+            var callee = new Procedure(program.Architecture, "callee", Address.Ptr32(0x00123400), program.Architecture.CreateFrame());
 			callee.Frame.ReturnAddressSize = 4;
             callee.Frame.ReturnAddressKnown = true;
 			callee.Frame.EnsureStackArgument(0, PrimitiveType.Word32);
@@ -289,7 +289,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void Rl_PredefinedSignature()
 		{
-			Procedure callee = new Procedure(program.Architecture, "callee", null);
+			Procedure callee = new Procedure(program.Architecture, "callee", Address.Ptr32(0x00123400), null);
 			Identifier edx = new Identifier("edx", PrimitiveType.Word32, Registers.edx);
 			callee.Signature = new FunctionType(
 				new Identifier("eax", PrimitiveType.Word32, Registers.eax),
@@ -314,7 +314,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void Rl_ProcedureWithTrashedAndPreservedRegisters()
 		{
-            var proc = new Procedure(program.Architecture, "test", program.Architecture.CreateFrame());
+            var proc = new Procedure(program.Architecture, "test", Address.Ptr32(0x00123400), program.Architecture.CreateFrame());
 			var pf = new ProcedureFlow(proc, program.Architecture);
 			mpprocflow[proc] = pf;
 			pf.TrashedRegisters.Add(Registers.eax);
@@ -349,5 +349,46 @@ namespace Reko.UnitTests.Analysis
 			}
 			return sw.ToString();
 		}	
-	}
+
+        [Test]
+        public void Rl_DepositBytes()
+        {
+            Identifier edx = f.EnsureRegister(Registers.edx);
+            Identifier al = f.EnsureRegister(Registers.al);
+            m.Assign(edx, m.Dpb(edx, al, 0)).Accept(rl);
+            Assert.AreEqual(" al", Dump(rl.IdentifierLiveness));
+        }
+
+        [Test]
+        public void Rl_FlagGroup_keep_cond_alive()
+        {
+            var grf = f.EnsureFlagGroup(program.Architecture.GetFlagGroup(0x7));
+            var edx = f.EnsureRegister(Registers.edx);
+            rl.IdentifierLiveness.Grf = 0x7;
+            // grf is live, forcing the cond(edx) to be live as well
+            m.Assign(grf, m.Cond(edx)).Accept(rl);
+            Assert.AreEqual(" edx", Dump(rl.IdentifierLiveness));
+        }
+
+        [Test]
+        public void Rl_FlagGroup_dead_cond()
+        {
+            var grf = f.EnsureFlagGroup(program.Architecture.GetFlagGroup(0x7));
+            var edx = f.EnsureRegister(Registers.edx);
+            rl.IdentifierLiveness.Grf = 0x0;
+            // grf is _not_ live, so cond(edx) is dead.
+            m.Assign(grf, m.Cond(edx)).Accept(rl);
+            Assert.AreEqual("", Dump(rl.IdentifierLiveness));
+        }
+
+        [Test(Description = "Test conditions should use the flag groups they're testing")]
+        public void Rl_TestFlags()
+        {
+            var grf = f.EnsureFlagGroup(program.Architecture.GetFlagGroup(0x7));
+            var edx = f.EnsureRegister(Registers.edx);
+            var tmp = f.CreateTemporary("tmp", PrimitiveType.Bool);
+            m.BranchIf(m.Test(ConditionCode.EQ, grf), "somewhere").Instruction.Accept(rl);
+            Assert.AreEqual(" SCZ", Dump(rl.IdentifierLiveness));
+        }
+    }
 }

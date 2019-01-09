@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -105,6 +105,7 @@ namespace Reko.UnitTests.Scanning
 		{
             X86Instruction inst = new X86Instruction(
                 Opcode.mov,
+                InstrClass.Linear,
                 PrimitiveType.Word16,
                 PrimitiveType.Word16,
                 new RegisterOperand(regDst),
@@ -116,6 +117,7 @@ namespace Reko.UnitTests.Scanning
 		{
             X86Instruction inst = new X86Instruction(
                 Opcode.push,
+                InstrClass.Linear,
                 reg.DataType,
                 reg.DataType,
                 new RegisterOperand(reg));

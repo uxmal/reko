@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 Pavel Tomin.
+ * Copyright (C) 1999-2019 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,9 +51,9 @@ namespace Reko.UnitTests.Mocks
         /// Create a deserializer that doesn't depend on TypeLibrary.
         /// </summary>
         /// <returns></returns>
-        public ISerializedTypeVisitor<DataType> CreateDeserializer(int ptrSize)
+        public ISerializedTypeVisitor<DataType> CreateDeserializer(int ptrBitSize)
         {
-            return new FakeTypeDeserializer(ptrSize);
+            return new FakeTypeDeserializer(ptrBitSize);
         }
 
         public IPlatform CreatePlatform()

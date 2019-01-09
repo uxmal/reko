@@ -71,8 +71,8 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TravisRelease|AnyCPU'">
-    <OutputPath>bin\TravisRelease\</OutputPath>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnixRelease|AnyCPU'">
+    <OutputPath>bin\UnixRelease\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <BaseAddress>285212672</BaseAddress>
     <Optimize>true</Optimize>
@@ -102,6 +102,7 @@
     <Compile Include="X86CallingConvention.cs" />
     <Compile Include="X86Disassembler.0F38.cs" />
     <Compile Include="X86Disassembler.0F3A.cs" />
+    <Compile Include="X86Disassembler.Decoders.cs" />
     <Compile Include="X86Disassembler.Vex.cs" />
     <Compile Include="X86Emulator.cs" />
     <Compile Include="X86Options.cs" />

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -88,7 +88,7 @@ namespace Reko.UnitTests.Structure
             program.Platform = new DefaultPlatform(null, program.Architecture);
             program.EntryPoints.Add(
                 addrBase,
-                new ImageSymbol(addrBase));
+                ImageSymbol.Procedure(program.Architecture,addrBase));
             return RewriteProgram();
         }
 
@@ -96,12 +96,13 @@ namespace Reko.UnitTests.Structure
         {
             sc = new ServiceContainer();
             sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
-            var asm = new X86TextAssembler(sc, new X86ArchitectureFlat32("x86-protected-32"));
+            var arch = new X86ArchitectureFlat32("x86-protected-32");
+            var asm = new X86TextAssembler(sc, arch);
             program = asm.AssembleFragment(addrBase, asmFragment);
             program.Platform = new DefaultPlatform(null, program.Architecture);
             program.EntryPoints.Add(
                 addrBase,
-                new ImageSymbol(addrBase));
+                ImageSymbol.Procedure(arch, addrBase));
             return RewriteProgram();
         }
 

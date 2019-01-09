@@ -16,5 +16,5 @@ T_3:
   OrigDataType: 
 T_4:
   Class: Eq_4
-  DataType: (ptr Eq_4)
+  DataType: (ptr32 Eq_4)
   OrigDataType: 

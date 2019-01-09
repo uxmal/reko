@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -64,9 +64,9 @@ namespace Reko.Core.Types
 			return new FunctionType(returnType, parameters);
 		}
 
-		public PrimitiveType CreatePrimitiveType(Domain dom, int size)
+		public PrimitiveType CreatePrimitiveType(Domain dom, int bitSize)
 		{
-			return PrimitiveType.Create(dom, size);
+			return PrimitiveType.Create(dom, bitSize);
 		}
 
         public DataType CreateStructureType()
@@ -89,9 +89,9 @@ namespace Reko.Core.Types
 			return new MemberPointer(basePointer, pointee, byteSize);
 		}
 
-		public Pointer CreatePointer(DataType pointee, int byteSize)
+		public Pointer CreatePointer(DataType pointee, int bitSize)
 		{
-			return new Pointer(pointee, byteSize);
+			return new Pointer(pointee, bitSize);
 		}
 
 		public TypeVariable CreateTypeVariable()

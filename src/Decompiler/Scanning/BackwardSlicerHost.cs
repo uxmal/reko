@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,17 +32,22 @@ namespace Reko.Scanning
 {
     public class BackwardSlicerHost : IBackWalkHost<RtlBlock, RtlInstruction>
     {
+        private Program program;
         private Dictionary<Block, RtlBlock> cache;
         private Dictionary<RtlBlock, Block> invCache;
 
-        public BackwardSlicerHost(SegmentMap segmentMap)
+        public BackwardSlicerHost(Program program)
         {
-            this.SegmentMap = segmentMap;
+            this.program = program;
             this.cache = new Dictionary<Block, RtlBlock>();
             this.invCache = new Dictionary<RtlBlock, Block>();
         }
 
-        public SegmentMap SegmentMap { get; }
+        public IProcessorArchitecture Architecture => program.Architecture;
+
+        public Program Program => program;
+
+        public SegmentMap SegmentMap => program.SegmentMap;
 
         public Tuple<Expression, Expression> AsAssignment(RtlInstruction instr)
         {
@@ -64,6 +69,12 @@ namespace Reko.Scanning
             return invCache[block].Pred
                 .Select(p => this.GetRtlBlock(p))
                 .ToList();
+        }
+
+        public int BlockInstructionCount(RtlBlock rtlBlock)
+        {
+            var block = invCache[rtlBlock];
+            return block.Statements.Count;
         }
 
         public IEnumerable<RtlInstruction> GetBlockInstructions(RtlBlock rtlBlock)
@@ -94,16 +105,16 @@ namespace Reko.Scanning
                     // after conversion from "raw" RTL.
                     if (branch.Target.Address == null)
                         yield break;
-                    yield return new RtlBranch(branch.Condition, branch.Target.Address, RtlClass.ConditionalTransfer);
+                    yield return new RtlBranch(branch.Condition, branch.Target.Address, InstrClass.ConditionalTransfer);
                     break;
                 case CallInstruction call:
-                    yield return new RtlCall(call.Callee, (byte)call.CallSite.SizeOfReturnAddressOnStack, RtlClass.Call);
+                    yield return new RtlCall(call.Callee, (byte)call.CallSite.SizeOfReturnAddressOnStack, InstrClass.Call);
                     break;
                 case SideEffect side:
                     yield return new RtlSideEffect(side.Expression);
                     break;
                 case GotoInstruction go:
-                    yield return new RtlGoto(go.Target, RtlClass.Transfer);
+                    yield return new RtlGoto(go.Target, InstrClass.Transfer);
                     break;
                 default:
                     throw new NotImplementedException($"Translation needed for {stm.Instruction}.");

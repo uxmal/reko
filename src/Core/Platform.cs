@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -193,7 +193,7 @@ namespace Reko.Core
         public string Description { get; set; }
         public PlatformHeuristics Heuristics { get; set; }
         public string Name { get; set; }
-        public MemoryMap_v1 MemoryMap { get; set; }
+        public virtual MemoryMap_v1 MemoryMap { get; set; }
         public virtual PrimitiveType FramePointerType { get { return Architecture.FramePointerType; } }
         public virtual PrimitiveType PointerType { get { return Architecture.PointerType; } }
 

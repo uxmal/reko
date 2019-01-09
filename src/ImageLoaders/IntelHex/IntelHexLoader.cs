@@ -1,8 +1,8 @@
 ﻿#region License
 /* 
- * Copyright (C) 2017-2018 Christian Hostelet.
+ * Copyright (C) 2017-2019 Christian Hostelet.
  * inspired by work of:
- * Copyright (C) 1999-2017 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -220,10 +220,12 @@ namespace Reko.ImageLoaders.IntelHex
                 segs.AddSegment(seg);
             }
 
-            var prog = new Program() { SegmentMap = segs, Architecture = arch, Platform = platform };
+            var program = new Program(segs, arch, platform);
             if (addrEp != null)
-                prog.EntryPoints.Add(addrEp, new Core.ImageSymbol(addrEp) { Type = SymbolType.Procedure });
-            return prog;
+            {
+                program.EntryPoints.Add(addrEp, ImageSymbol.Procedure(arch, addrEp));
+            }
+            return program;
 
         }
 

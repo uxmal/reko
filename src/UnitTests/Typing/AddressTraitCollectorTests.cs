@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -154,26 +154,27 @@ namespace Reko.UnitTests.Typing
 		[SetUp]
 		public void Setup()
 		{
+            var listener = new FakeDecompilerEventListener();
             program = new Program();
             program.Architecture = new FakeArchitecture();
             program.Platform = new DefaultPlatform(null, program.Architecture);
 			factory = program.TypeFactory;
 			store = program.TypeStore;
 			handler = new TestTraitHandler(store);
-			eqb = new EquivalenceClassBuilder(factory, store);
+			eqb = new EquivalenceClassBuilder(factory, store, listener);
 			store.EnsureExpressionTypeVariable(factory, program.Globals);
 			
 			atrco = new AddressTraitCollector(factory, store, handler, program);
 			m = new ProcedureBuilder();
 		}
 
-		private void Verify(Program prog, string outputFilename)
+		private void Verify(Program program, string outputFilename)
 		{
 			using (FileUnitTester fut = new FileUnitTester(outputFilename))
 			{
-				if (prog != null)
+				if (program != null)
 				{
-					foreach (Procedure proc in prog.Procedures.Values)
+					foreach (Procedure proc in program.Procedures.Values)
 					{
 						proc.Write(false, fut.TextWriter);
 						fut.TextWriter.WriteLine();

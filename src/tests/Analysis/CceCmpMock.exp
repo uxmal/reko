@@ -2,10 +2,10 @@ r0:r0
     def:  def r0
     uses: r0_5 = r0 + r1
           branch r0 == 0 skip
-          r0_2 = PHI(r0, r0_5)
+          r0_2 = PHI((r0, l1), (r0_5, l2))
 Z_1: orig: Z
 r0_2: orig: r0
-    def:  r0_2 = PHI(r0, r0_5)
+    def:  r0_2 = PHI((r0, l1), (r0_5, l2))
     uses: Mem3[0x10003000:word32] = r0_2
 Mem3: orig: Mem0
     def:  Mem3[0x10003000:word32] = r0_2
@@ -14,7 +14,7 @@ r1:r1
     uses: r0_5 = r0 + r1
 r0_5: orig: r0
     def:  r0_5 = r0 + r1
-    uses: r0_2 = PHI(r0, r0_5)
+    uses: r0_2 = PHI((r0, l1), (r0_5, l2))
 // CmpMock
 // Return size: 0
 void CmpMock(word32 r0, word32 r1)
@@ -29,7 +29,7 @@ l2:
 	r0_5 = r0 + r1
 	// succ:  skip
 skip:
-	r0_2 = PHI(r0, r0_5)
+	r0_2 = PHI((r0, l1), (r0_5, l2))
 	Mem3[0x10003000:word32] = r0_2
 	return
 	// succ:  CmpMock_exit

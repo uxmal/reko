@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,8 +34,8 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void TeqInts()
 		{
-			PrimitiveType p1 = PrimitiveType.Create(Domain.SignedInt, 2);
-			PrimitiveType p2 = PrimitiveType.Create(Domain.SignedInt, 2);
+			PrimitiveType p1 = PrimitiveType.Create(Domain.SignedInt, 16);
+			PrimitiveType p2 = PrimitiveType.Create(Domain.SignedInt, 16);
 			Assert.IsTrue(Object.Equals(p1, p2));
 		}
 

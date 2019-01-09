@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -182,7 +182,7 @@ namespace Reko.Core
             this.Parameters.Add(new SequenceStorage(
                 stgHi,
                 stgLo,
-                PrimitiveType.CreateWord(stgHi.DataType.Size + stgLo.DataType.Size)));
+                PrimitiveType.CreateWord(stgHi.DataType.BitSize + stgLo.DataType.BitSize)));
         }
 
         public void SequenceParam(SequenceStorage seq)
@@ -195,7 +195,7 @@ namespace Reko.Core
             this.Return = new SequenceStorage(
                 stgHi, 
                 stgLo,
-                PrimitiveType.CreateWord(stgHi.DataType.Size + stgLo.DataType.Size));
+                PrimitiveType.CreateWord(stgHi.DataType.BitSize + stgLo.DataType.BitSize));
         }
 
         public void SequenceReturn(SequenceStorage seq)

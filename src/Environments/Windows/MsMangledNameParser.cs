@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -649,24 +649,16 @@ namespace Reko.Environments.Windows
             {
                 DataType = type,
                 PointerSize = size,
+                Qualifier = q,
             };
-            if (q != Qualifier.None)
-            {
-                pType = new QualifiedType_v1
-                {
-                    DataType = pType,
-                    Qualifier = q,
-                };
-            }
             compoundArgs.Add(new Argument_v1 { Type = pType });
             return pType;
         }
 
         private SerializedType Qualify(SerializedType t, Qualifier q)
         {
-            if (q == Qualifier.None)
-                return t;
-            return new QualifiedType_v1 { DataType = t, Qualifier = q };
+            t.Qualifier = q;
+            return t;
         }
 
         public TypeReference_v1 ParseStructure(List<Argument_v1> compoundArgs)

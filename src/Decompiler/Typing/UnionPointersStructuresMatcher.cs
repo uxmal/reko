@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@ namespace Reko.Typing
 	{
 		private List<EquivalenceClass> eqClasses;
 		private List<StructureType> strs;
-        private int pointerSize;
+        private int pointerBitSize;
 
 
 		public UnionPointersStructuresMatcher()
@@ -49,9 +49,9 @@ namespace Reko.Typing
 				if (p == null)
 					return false;
 
-                if (pointerSize == 0)
-                    pointerSize = p.Size;
-                else if (pointerSize != p.Size)
+                if (pointerBitSize == 0)
+                    pointerBitSize = p.BitSize;
+                else if (pointerBitSize != p.BitSize)
                     return false;
 
 				EquivalenceClass eq = p.Pointee as EquivalenceClass;
@@ -73,9 +73,9 @@ namespace Reko.Typing
 			return true;
 		}
 
-        public int PointerSize
+        public int PointerBitSize
         {
-            get { return pointerSize; }
+            get { return pointerBitSize; }
         }
 
 		public ICollection<StructureType> Structures 

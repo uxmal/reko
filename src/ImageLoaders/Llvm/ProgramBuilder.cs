@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -124,32 +124,23 @@ namespace Reko.ImageLoaders.LLVM
 
         public Address RegisterEntry(ModuleEntry entry, Address addr)
         {
-            var global = entry as GlobalDefinition;
-            if (global != null)
+            switch (entry)
             {
+            case GlobalDefinition global:
                 var glob = RegisterGlobal(global);
                 program.GlobalFields.Fields.Add((int)addr.ToLinear(), glob.DataType, glob.Name);
                 return addr + 1;
-            }
-            var fn = entry as FunctionDefinition;
-            if (fn != null)
-            {
-                var proc = RegisterFunction(fn);
+            case FunctionDefinition fn:
+                var proc = RegisterFunction(fn, addr);
                 program.Procedures.Add(addr, proc);
                 this.Globals[fn.FunctionName] = new Core.Expressions.ProcedureConstant(
-                    new Pointer(proc.Signature, program.Platform.PointerType.Size),
+                    new Pointer(proc.Signature, program.Platform.PointerType.BitSize),
                     proc);
                 return addr + 1;
-            }
-            var tydec = entry as TypeDefinition;
-            if (fn != null)
-            {
+            case TypeDefinition tydec:
                 RegisterTypeDefinition(tydec);
                 return addr;
-            }
-            var decl = entry as Declaration;
-            if (decl != null)
-            {
+            case Declaration decl:
                 RegisterDeclaration(decl);
                 return addr;
             }
@@ -159,7 +150,7 @@ namespace Reko.ImageLoaders.LLVM
         public Identifier RegisterGlobal(GlobalDefinition global)
         {
             var dt = TranslateType(global.Type);
-            var id = new Identifier(global.Name, dt, new MemoryStorage());
+            var id = Identifier.Global(global.Name, dt);
             this.Globals.Add(global.Name, id);
             return id;
         }
@@ -167,13 +158,13 @@ namespace Reko.ImageLoaders.LLVM
         public void RegisterDeclaration(Declaration decl)
         {
             var dt = TranslateType(decl.Type);
-            var id = new Identifier(decl.Name, dt, new MemoryStorage());
+            var id = Identifier.Global(decl.Name, dt);
             this.Globals.Add(id.Name, id);
         }
         
-        public Procedure RegisterFunction(FunctionDefinition fn)
+        public Procedure RegisterFunction(FunctionDefinition fn, Address addr)
         {
-            var proc = new Procedure(program.Architecture, fn.FunctionName, new Frame(program.Platform.PointerType));
+            var proc = new Procedure(program.Architecture, fn.FunctionName, addr, new Frame(program.Platform.PointerType));
             var builder = new ProcedureBuilder(proc);
             Functions.Add(fn, builder);
             return proc;
@@ -181,22 +172,19 @@ namespace Reko.ImageLoaders.LLVM
 
         public void RegisterTypeDefinition(TypeDefinition tydef)
         {
-            Types.Add(tydef.Name, tydef.Type.Accept(new TypeTranslator(program.Platform.PointerType.Size)));
+            Types.Add(tydef.Name, tydef.Type.Accept(new TypeTranslator(program.Platform.PointerType.BitSize)));
         }
 
         public void TranslateEntry(ModuleEntry entry)
         {
-            if (entry is GlobalDefinition)
-                return;
-            var fn = entry as FunctionDefinition;
-            if (fn != null)
+            switch (entry)
             {
+            case GlobalDefinition _:
+                return;
+            case FunctionDefinition fn:
                 TranslateFunction(fn);
                 return;
-            }
-            var decl = entry as Declaration;
-            if (decl != null)
-            {
+            case Declaration decl:
                 //$TODO
                 return;
             }
@@ -231,7 +219,7 @@ namespace Reko.ImageLoaders.LLVM
 
         public DataType TranslateType(LLVMType type)
         {
-            var xlat = new TypeTranslator(program.Platform.PointerType.Size);
+            var xlat = new TypeTranslator(program.Platform.PointerType.BitSize);
             return type.Accept(xlat);
         }
 

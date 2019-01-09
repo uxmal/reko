@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,12 +23,7 @@ using Reko.Arch.M68k;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Rtl;
-using Reko.Environments.MacOS;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Reko.Environments.MacOS.Classic;
 
 namespace Reko.UnitTests.Environments.MacOS
 {
@@ -51,7 +46,7 @@ namespace Reko.UnitTests.Environments.MacOS
             w.WriteBeUInt32(uAddrDirect);
 
             var m = new RtlEmitter(null);
-            var instr = new RtlCall(m.IAdd(a5, jumpTableOffset), 4, RtlClass.Call);
+            var instr = new RtlCall(m.IAdd(a5, jumpTableOffset), 4, InstrClass.Call);
             var addr =  macOS.ResolveIndirectCall(instr);
 
             Assert.AreEqual(uAddrDirect, addr.ToUInt32());

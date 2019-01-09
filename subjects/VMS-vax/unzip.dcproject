@@ -10,6 +10,7 @@
     <global-vars>unzip.globals.c</global-vars>
     <user>
       <address>00001000</address>
+      <loader>raw</loader>
       <processor name="vax" />
     </user>
   </input>

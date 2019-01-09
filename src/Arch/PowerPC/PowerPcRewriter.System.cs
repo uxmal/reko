@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
@@ -80,7 +81,7 @@ namespace Reko.Arch.PowerPC
                 host.PseudoProcedure("__read_spr", PrimitiveType.Word32, spr));
         }
 
-        private void RewriteMtmsr()
+        private void RewriteMtmsr(PrimitiveType dt)
         {
             var src = RewriteOperand(instr.op1);
             m.SideEffect(host.PseudoProcedure("__write_msr", VoidType.Instance, src));
@@ -95,7 +96,6 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteRfi()
         {
-            this.rtlc = RtlClass.Transfer;
             var srr0 = binder.EnsureRegister(arch.SpRegisters[26]);
             var srr1 = binder.EnsureRegister(arch.SpRegisters[27]);
             m.SideEffect(host.PseudoProcedure("__write_msr", PrimitiveType.Word32, srr1));

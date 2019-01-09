@@ -52,8 +52,8 @@
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TravisRelease|AnyCPU'">
-    <OutputPath>bin\TravisRelease\</OutputPath>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnixRelease|AnyCPU'">
+    <OutputPath>bin\UnixRelease\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -75,13 +75,16 @@
     <Compile Include="Elf32_EHdr.cs" />
     <Compile Include="Elf32_PHdr.cs" />
     <Compile Include="Elf32_Rel.cs" />
+    <Compile Include="ElfDynamicEntry.cs" />
     <Compile Include="ElfLoader.cs" />
+    <Compile Include="ElfRelocation.cs" />
     <Compile Include="ElfSection.cs" />
     <Compile Include="Elf32_Sym.cs" />
     <Compile Include="ElfHeaderRenderer.cs" />
     <Compile Include="ElfImageLoader.cs" />
     <Compile Include="ElfMachine.cs" />
     <Compile Include="ElfObjectLinker.cs" />
+    <Compile Include="ElfSegment.cs" />
     <Compile Include="ElfSymbol.cs" />
     <Compile Include="ProgramHeaderType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -101,6 +104,7 @@
     <Compile Include="Relocators\x86Relocator.cs" />
     <Compile Include="Relocators\x86_64Relocator.cs" />
     <Compile Include="Relocators\XtensaRelocator.cs" />
+    <Compile Include="Relocators\zSeriesRelocator.cs" />
     <Compile Include="RelSegmentRenderer.cs" />
     <Compile Include="SectionHeaderType.cs" />
     <Compile Include="SymtabSegmentRenderer.cs" />

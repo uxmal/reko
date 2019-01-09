@@ -1,6 +1,6 @@
 #pragma once
 /*
-* Copyright (C) 1999-2018 John Källén.
+* Copyright (C) 1999-2019 John Källén.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -157,7 +157,7 @@ private:
 	const uint8_t * rawBytes;
 	size_t available;			// Available bytes left past rawBytes
 	uint64_t address;
-	RtlClass rtlClass;
+	InstrClass rtlClass;
 
 	static const BaseType register_types[];
 	static const int type_sizes[];

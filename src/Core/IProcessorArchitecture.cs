@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -82,7 +82,7 @@ namespace Reko.Core
         /// </summary>
         /// <param name="img">Program image to read</param>
         /// <param name="addr">Address at which to start</param>
-        /// <returns>An imagereader of the appropriate endianness</returns>
+        /// <returns>An <seealso cref="ImageReader"/> of the appropriate endianness</returns>
         EndianImageReader CreateImageReader(MemoryArea img, Address addr);
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace Reko.Core
         /// </summary>
         /// <param name="img">Program image to read</param>
         /// <param name="addr">Address at which to start</param>
-        /// <returns>An imagereader of the appropriate endianness</returns>
+        /// <returns>An <seealso cref="ImageReader"/> of the appropriate endianness</returns>
         EndianImageReader CreateImageReader(MemoryArea memoryArea, Address addrBegin, Address addrEnd);
 
         /// <summary>
@@ -100,52 +100,124 @@ namespace Reko.Core
         /// </summary>
         /// <param name="img">Program image to read</param>
         /// <param name="addr">offset from the start of the image</param>
-        /// <returns>An imagereader of the appropriate endianness</returns>
+        /// <returns>An <seealso cref="ImageReader"/> of the appropriate endianness</returns>
         EndianImageReader CreateImageReader(MemoryArea img, ulong off);
 
         /// <summary>
         /// Creates an <see cref="ImageWriter" /> with the preferred 
         /// endianness of the processor.
         /// </summary>
-        /// <returns>An image writer of the appropriate endianness.</returns>
+        /// <returns>An <see cref="ImageWriter"/> of the appropriate endianness.</returns>
         ImageWriter CreateImageWriter();
+
+        /// <summary>
+        /// Creates an <see cref="ImageWriter"/> with the preferred endianness
+        /// of the processor, which will write into the given <paramref name="memoryArea"/>
+        /// starting at address <paramref name="addr"/>.
+        /// </summary>
+        /// <param name="memoryArea">Memory area to write to.</param>
+        /// <param name="addr">Address to start writing at.</param>
+        /// <returns>An <see cref="ImageWriter"/> of the appropriate endianness.</returns>
         ImageWriter CreateImageWriter(MemoryArea memoryArea, Address addr);
 
         /// <summary>
         /// Creates a comparer that compares instructions for equality. 
         /// Normalization means some attributes of the instruction are 
-        /// trated as wildcards.
+        /// treated as wildcards.
         /// </summary>
         /// <param name="norm"></param>
         /// <returns></returns>
         IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm);
 
+        /// <summary>
+        /// Given a register <paramref name="reg"/>, retrieves all architectural
+        /// registers that overlap all or part of it.
+        /// </summary>
+        /// <param name="reg">Register whose alias we're interested in.</param>
+        /// <returns>A sequence of aliases.</returns>
         IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg);
 
         /// <summary>
-        /// Returns a list of all the available opcodes.
+        /// Returns a list of all the available opcodes as strings.
         /// </summary>
-        /// <returns></returns>
         SortedList<string, int> GetOpcodeNames();           // Returns all the processor opcode names and their internal Reko numbers.
-        int? GetOpcodeNumber(string name);                  // Returns an internal Reko opcode for an instruction, or null if none is available.
-        RegisterStorage GetRegister(int i);                 // Returns register corresponding to number i.
-        RegisterStorage GetRegister(string name);           // Returns register whose name is 'name'
-        RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width);
-        void RemoveAliases(ISet<RegisterStorage> ids, RegisterStorage reg);  // Removes any aliases of reg from the set
+        
+        /// <summary>
+        /// Returns an internal Reko opcode for a given instruction name, or
+        /// null if none is available.
+        /// </summary>
+        int? GetOpcodeNumber(string name);
+        
+        /// <summary>
+        /// Returns register corresponding to number i, or null if there is no
+        /// such register.
+        /// </summary>
+        RegisterStorage GetRegister(int i);
 
         /// <summary>
-        /// Find the widest subregister that covers the register reg.
+        /// Returns register whose name is 'name'
+        /// </summary>
+        RegisterStorage GetRegister(string name);
+
+        /// <summary>
+        /// Given a register, returns any sub register occupying the 
+        /// given bit range.
+        /// </summary>
+        /// <param name="reg">Register to examine</param>
+        /// <param name="offset">Bit offset of expected subregister.</param>
+        /// <param name="width">Bit size of subregister.</param>
+        /// <returns></returns>
+        RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width);
+        
+        /// <summary>
+        /// Given a set, removes any aliases of reg from the set.
+        /// </summary>
+        void RemoveAliases(ISet<RegisterStorage> ids, RegisterStorage reg); 
+
+        /// <summary>
+        /// Find the widest sub-register that covers the register reg.
         /// </summary>
         /// <param name="reg"></param>
         /// <param name="bits"></param>
         /// <returns></returns>
         RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> regs);
 
-        RegisterStorage[] GetRegisters();                   // Returns all registers of this architecture.
+        /// <summary>
+        /// Returns all registers of this architecture.
+        /// </summary>
+        /// <returns></returns>
+        RegisterStorage[] GetRegisters(); 
         bool TryGetRegister(string name, out RegisterStorage reg); // Attempts to find a register with name <paramref>name</paramref>
-        FlagGroupStorage GetFlagGroup(uint grf);		    // Returns flag group matching the bitflags.
+        FlagGroupStorage GetFlagGroup(uint grf);		    // Returns flag group matching the bit flags.
 		FlagGroupStorage GetFlagGroup(string name);
         Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType);
+
+        /// <summary>
+        /// Attempt to inline the instructions at <paramref name="addrCallee"/>. If the instructions
+        /// can be inlined, return them as a list of RtlInstructions.
+        /// </summary>
+        /// <remarks>
+        /// This call is used to inline very short procedures. A specific application
+        /// is to handle idioms like:
+        /// <code>
+        /// call foo
+        /// ...
+        /// foo proc
+        ///    mov ebx,[esp+0]
+        ///    ret
+        /// </code>
+        /// whose purpose is to collect the return address into a register. This idiom is 
+        /// commonly used in position independent (PIC) code.
+        /// </remarks>
+        /// <param name="addrCallee">Address of a procedure that might need inlining.</param>
+        /// <param name="addrContinuation">The address at which control should resume after 
+        /// the call.</param>
+        /// <param name="rdr">Image reader primed to start at <paramref name="addrCallee"/>.
+        /// </param>
+        /// <returns>null if no inlining was performed, otherwise a list of the inlined
+        /// instructions.</returns>
+        List<RtlInstruction> InlineCall(Address addrCallee, Address addrContinuation, EndianImageReader rdr, IStorageBinder binder);
+
         Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state);
         Address MakeSegmentedAddress(Constant seg, Constant offset);
 
@@ -175,6 +247,13 @@ namespace Reko.Core
         /// <returns>An address.</returns>
         Address MakeAddressFromConstant(Constant c);
 
+        /// <summary>
+        /// After the program has been loaded, the architecture is given a final
+        /// chance to mutate the SegmentMap or any other property.
+        /// </summary>
+        /// <param name="program">The program to postprocess.</param>
+        void PostprocessProgram(Program program);
+        
         /// <summary>
         /// Reads a value from memory, respecting the processor's endianness. Use this
         /// instead of ImageWriter when random access of memory is requored.
@@ -209,7 +288,8 @@ namespace Reko.Core
     }
 
     /// <summary>
-    /// Abstract base class from which most IProcessorArchitecture derive.
+    /// Abstract base class from which most IProcessorArchitecture 
+    /// implementations derive.
     /// </summary>
     [Designer("Reko.Gui.Design.ArchitectureDesigner,Reko.Gui")]
     public abstract class ProcessorArchitecture : IProcessorArchitecture
@@ -222,7 +302,7 @@ namespace Reko.Core
         }
 
         public string Name { get; }
-        public string Description {get; set; }
+        public string Description { get; set; }
         public PrimitiveType FramePointerType { get; protected set; }
         public PrimitiveType PointerType { get; protected set; }
         public PrimitiveType WordWidth { get; protected set; }
@@ -263,12 +343,30 @@ namespace Reko.Core
         public abstract ProcessorState CreateProcessorState();
         public abstract IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);
         public abstract IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host);
-        public abstract Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType);
 
         public virtual IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg) { yield return reg; }
         public abstract RegisterStorage GetRegister(int i);
         public abstract RegisterStorage GetRegister(string name);
         public abstract RegisterStorage[] GetRegisters();
+
+        /// <summary>
+        /// Create a stack access to a variable offset by <paramref name="cbOffsets"/>
+        /// from the stack pointer
+        /// </summary>
+        /// <remarks>
+        /// This method is the same for all _sane_ architectures. The crazy madness
+        /// of x86 segmented memory accesses is dealt with in that processor's 
+        /// implementation of this method.
+        /// </remarks>
+        /// <param name="bindRegister"></param>
+        /// <param name="cbOffset"></param>
+        /// <param name="dataType"></param>
+        /// <returns></returns>
+        public virtual Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
+        {
+            var sp = binder.EnsureRegister(StackRegister);
+            return MemoryAccess.Create(sp, cbOffset, dataType);
+        }
 
         /// <summary>
         /// For a particular opcode name, returns its internal (Reko) number.
@@ -283,14 +381,14 @@ namespace Reko.Core
         public abstract SortedList<string, int> GetOpcodeNames();
 
         /// <summary>
-        /// Get the improper subregister of <paramref name="reg"/> that starts
+        /// Get the improper sub-register of <paramref name="reg"/> that starts
         /// at offset <paramref name="offset"/> and is of size 
         /// <paramref name="width"/>.
         /// </summary>
         /// <remarks>
-        /// Most architectures not have subregisters, and will use this 
+        /// Most architectures not have sub-registers, and will use this 
         /// default implementation. This method is overridden for 
-        /// architectures like x86 and Z80, where subregisters (ah al etc)
+        /// architectures like x86 and Z80, where sub-registers <code>(ah, al, etc)</code>
         /// do exist.
         /// </remarks>
         /// <param name="reg"></param>
@@ -309,13 +407,21 @@ namespace Reko.Core
         public abstract FlagGroupStorage GetFlagGroup(uint grf);
         public abstract FlagGroupStorage GetFlagGroup(string name);
         public abstract string GrfToString(uint grf);
+
+        public virtual List<RtlInstruction> InlineCall(Address addrCallee, Address addrContinuation, EndianImageReader rdr, IStorageBinder binder)
+        {
+            return null;
+        }
+
         public virtual void LoadUserOptions(Dictionary<string, object> options) { }
         public abstract Address MakeAddressFromConstant(Constant c);
         public virtual Address MakeSegmentedAddress(Constant seg, Constant offset) { throw new NotSupportedException("This architecture doesn't support segmented addresses."); }
+        public virtual void PostprocessProgram(Program program) { }
         public abstract Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state);
         public virtual Dictionary<string, object> SaveUserOptions() { return null; }
 
         public abstract bool TryParseAddress(string txtAddr, out Address addr);
         public abstract bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value);
     }
+
 }

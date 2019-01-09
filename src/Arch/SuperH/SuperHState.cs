@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
@@ -29,15 +30,18 @@ namespace Reko.Arch.SuperH
     public class SuperHState : ProcessorState
     {
         private SuperHArchitecture arch;
+        private Dictionary<StorageDomain, Constant> regValues;
 
         public SuperHState(SuperHArchitecture arch)
         {
             this.arch = arch;
+            this.regValues = new Dictionary<StorageDomain, Constant>();
         }
 
         public SuperHState(SuperHState that) : base(that)
         {
             this.arch = that.arch;
+            this.regValues = new Dictionary<StorageDomain, Constant>(that.regValues);
         }
 
         public override IProcessorArchitecture Architecture
@@ -52,6 +56,8 @@ namespace Reko.Arch.SuperH
 
         public override Constant GetRegister(RegisterStorage r)
         {
+            if (regValues.TryGetValue(r.Domain, out var constant))
+                return constant;
             return Constant.Invalid;
         }
 
@@ -78,6 +84,7 @@ namespace Reko.Arch.SuperH
 
         public override void SetRegister(RegisterStorage r, Constant v)
         {
+            regValues[r.Domain] = v;
         }
     }
 }

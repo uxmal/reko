@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 1999-2018 John Källén.
+* Copyright (C) 1999-2019 John Källén.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -64,8 +64,7 @@ STDMETHODIMP ArmRewriter::QueryInterface(REFIID riid, void ** ppvOut)
 
 STDMETHODIMP_(int32_t) ArmRewriter::Next()
 {
-	Dump("Next: %08x", this);
-	if (available == 0)
+	if (available <= 0)
 		return S_FALSE;			// No more work to do.
 	auto addrInstr = address;
 	bool f = cs_disasm_iter(hcapstone, &rawBytes, &available, &address, instr);
@@ -73,11 +72,13 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	{
 		// Failed to disassemble the instruction because it was invalid.
 		m.Invalid();
-		m.FinishCluster(RtlClass::Invalid, addrInstr, 4);
+		address += 4;
+		available -= 4;
+		m.FinishCluster(InstrClass::Invalid, addrInstr, 4);
 		return S_OK;
 	}
 	// Most instructions are linear.
-	rtlClass = RtlClass::Linear;
+	rtlClass = InstrClass::Linear;
 	
 	// Most instructions have a conditional mode of operation.
 	//$TODO: make sure non-conditional instructions are handled correctly here.
@@ -137,8 +138,6 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_RFEDB:
 	case ARM_INS_RFEIA:
 	case ARM_INS_RFEIB:
-	case ARM_INS_SADD16:
-	case ARM_INS_SADD8:
 	case ARM_INS_SASX:
 	case ARM_INS_SEL:
 	case ARM_INS_SETEND:
@@ -178,8 +177,6 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_SSAT:
 	case ARM_INS_SSAT16:
 	case ARM_INS_SSAX:
-	case ARM_INS_SSUB16:
-	case ARM_INS_SSUB8:
 	case ARM_INS_STL:
 	case ARM_INS_STLB:
 	case ARM_INS_STLEX:
@@ -192,8 +189,6 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_STREXH:
 	case ARM_INS_SXTAB16:
 	case ARM_INS_SXTB16:
-	case ARM_INS_UADD16:
-	case ARM_INS_UADD8:
 	case ARM_INS_UASX:
 	case ARM_INS_UHADD16:
 	case ARM_INS_UHADD8:
@@ -212,8 +207,6 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_USAT:
 	case ARM_INS_USAT16:
 	case ARM_INS_USAX:
-	case ARM_INS_USUB16:
-	case ARM_INS_USUB8:
 	case ARM_INS_UXTAB16:
 	case ARM_INS_UXTB16:
 	case ARM_INS_VABAL:
@@ -413,6 +406,8 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_REV: RewriteRev(); break;
 	case ARM_INS_RSB: RewriteRevBinOp(&INativeRtlEmitter::ISub, instr->detail->arm.update_flags); break;
 	case ARM_INS_RSC: RewriteAdcSbc(&INativeRtlEmitter::ISub, true); break;
+	case ARM_INS_SADD16: RewriteVectorBinOp("__sadd16", ARM_VECTORDATA_S16); break;
+	case ARM_INS_SADD8: RewriteVectorBinOp("__sadd8", ARM_VECTORDATA_S8); break;
 	case ARM_INS_SBC: RewriteAdcSbc(&INativeRtlEmitter::ISub, false); break;
 	case ARM_INS_SBFX: RewriteSbfx(); break;
 	case ARM_INS_SDIV: RewriteDiv(&INativeRtlEmitter::SDiv); break;
@@ -438,6 +433,8 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_SMULTB: RewriteMulbb(true, false, BaseType::Int16, &INativeRtlEmitter::SMul); break;
 	case ARM_INS_SMULTT: RewriteMulbb(true, true, BaseType::Int16, &INativeRtlEmitter::SMul); break;
 	case ARM_INS_SMULL: RewriteMull(BaseType::Int64, &INativeRtlEmitter::SMul); break;
+	case ARM_INS_SSUB16: RewriteVectorBinOp("__ssub16", ARM_VECTORDATA_S16); break;
+	case ARM_INS_SSUB8: RewriteVectorBinOp("__ssub8", ARM_VECTORDATA_S8); break;
 	case ARM_INS_STC2L: RewriteStc("__stc2l"); break;
 	case ARM_INS_STC2: RewriteStc("__stc2"); break;
 	case ARM_INS_STC: RewriteStc("__stc"); break;
@@ -466,12 +463,16 @@ STDMETHODIMP_(int32_t) ArmRewriter::Next()
 	case ARM_INS_TEQ: RewriteTeq(); break;
 	case ARM_INS_TRAP: RewriteTrap(); break;
 	case ARM_INS_TST: RewriteTst(); break;
+	case ARM_INS_UADD16: RewriteVectorBinOp("__uadd16", ARM_VECTORDATA_I16); break;
+	case ARM_INS_UADD8: RewriteVectorBinOp("__uadd8", ARM_VECTORDATA_I8); break;
 	case ARM_INS_UBFX: RewriteUbfx(); break;
 	case ARM_INS_UDF: RewriteUdf(); break;
 	case ARM_INS_UDIV: RewriteDiv(&INativeRtlEmitter::UDiv); break;
 	case ARM_INS_UMAAL: RewriteUmaal(); break;
 	case ARM_INS_UMLAL: RewriteUmlal(); break;
 	case ARM_INS_UMULL: RewriteMull(BaseType::UInt64, &INativeRtlEmitter::UMul); break;
+	case ARM_INS_USUB16: RewriteVectorBinOp("__usub16", ARM_VECTORDATA_I16); break;
+	case ARM_INS_USUB8: RewriteVectorBinOp("__usub8", ARM_VECTORDATA_I8); break;
 	case ARM_INS_UXTAB: RewriteXtab(BaseType::Byte); break;
 	case ARM_INS_UXTAH: RewriteXtab(BaseType::UInt16); break;
 	case ARM_INS_UXTB: RewriteXtb(BaseType::Byte, BaseType::UInt32); break;
@@ -578,14 +579,14 @@ void ArmRewriter::RewriteB(bool link)
 	}
 	if (link)
 	{
-		rtlClass = RtlClass::Transfer;
+		rtlClass = (InstrClass)((int)InstrClass::Transfer | (int)InstrClass::Call);
 		if (instr->detail->arm.cc == ARM_CC_AL)
 		{
 			m.Call(dst, 0);
 		}
 		else
 		{
-			rtlClass = RtlClass::ConditionalTransfer;
+			rtlClass = InstrClass::ConditionalTransfer;
 			ConditionalSkip(true);
 			m.Call(dst, 0);
 		}
@@ -594,15 +595,15 @@ void ArmRewriter::RewriteB(bool link)
 	{
 		if (instr->detail->arm.cc == ARM_CC_AL)
 		{
-			rtlClass = RtlClass::Transfer;
+			rtlClass = InstrClass::Transfer;
 			m.Goto(dst);
 		}
 		else
 		{
-			rtlClass = RtlClass::ConditionalTransfer;
+			rtlClass = InstrClass::ConditionalTransfer;
 			if (dstIsAddress)
 			{
-				m.Branch(TestCond(instr->detail->arm.cc), dst, RtlClass::ConditionalTransfer);
+				m.Branch(TestCond(instr->detail->arm.cc), dst, InstrClass::ConditionalTransfer);
 			}
 			else
 			{
@@ -615,11 +616,11 @@ void ArmRewriter::RewriteB(bool link)
 
 void ArmRewriter::RewriteCbnz(HExpr(*ctor)(INativeRtlEmitter & m, HExpr e))
 {
-	rtlClass = RtlClass::ConditionalTransfer;
+	rtlClass = InstrClass::ConditionalTransfer;
 	auto cond = Operand(Dst(), BaseType::Word32, true);
 	m.Branch(ctor(m, Operand(Dst())),
 		m.Ptr32((uint32_t)Src1().imm),
-		RtlClass::ConditionalTransfer);
+		InstrClass::ConditionalTransfer);
 }
 
 // If a conditional ARM instruction is encountered, generate an IL
@@ -643,7 +644,7 @@ void ArmRewriter::ConditionalSkip(bool force)
 	m.BranchInMiddleOfInstruction(
 		TestCond(Invert(cc)),
 		m.Ptr32(static_cast<uint32_t>(instr->address) + 4),
-		RtlClass::ConditionalTransfer);
+		InstrClass::ConditionalTransfer);
 }
 
 HExpr ArmRewriter::EffectiveAddress(const arm_op_mem & mem)

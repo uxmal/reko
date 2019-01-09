@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -72,7 +72,7 @@ namespace Reko.Scanning
 
         public ValueSet VisitApplication(Application appl)
         {
-            throw new NotImplementedException();
+            return IntervalValueSet.Any;
         }
 
         public ValueSet VisitArrayAccess(ArrayAccess acc)
@@ -119,6 +119,10 @@ namespace Reko.Scanning
                 {
                     return left.IMul(cRight);
                 }
+                else if (binExp.Operator == Operator.ISub)
+                {
+                    return left.Sub(cRight);
+                }
             }
             if (cRight == null && cLeft != null)
             {
@@ -145,7 +149,9 @@ namespace Reko.Scanning
 
         public ValueSet VisitCast(Cast cast)
         {
-            var vs = cast.Expression.Accept(this);
+            if (this.context.TryGetValue(cast, out ValueSet vs))
+                return vs;
+            vs = cast.Expression.Accept(this);
             if (cast.DataType.BitSize == cast.Expression.DataType.BitSize)
             {
                 // no-op!

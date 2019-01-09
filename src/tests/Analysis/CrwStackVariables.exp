@@ -30,13 +30,13 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	sp = fp
-	sp = fp - 0x0002
+	sp = fp - 2
 	wLoc02 = bp
-	bp = fp - 0x0002
+	bp = fp - 2
 	es_bx = ptrArg04
-	sp = fp - 0x0004
+	sp = fp - 4
 	wLoc04 = es
-	sp = fp - 0x0006
+	sp = fp - 6
 	wLoc06 = bx
 	ax = fn0C00_0020(ptrLoc06)
 	sp = fp - 0x0002
@@ -82,12 +82,12 @@ fn0C00_0020_entry:
 	// succ:  l0C00_0020
 l0C00_0020:
 	sp = fp
-	sp = fp - 0x0002
+	sp = fp - 2
 	wLoc02 = bp
-	bp = fp - 0x0002
+	bp = fp - 2
 	es_bx = ptrArg02
 	ax = Mem0[es:bx + 0x0004:word16]
-	sp = fp - 0x0002
+	sp = fp - 2
 	bp = wLoc02
 	sp = fp
 	return ax
@@ -120,14 +120,14 @@ fn0C00_002E_entry:
 	// succ:  l0C00_002E
 l0C00_002E:
 	sp = fp
-	sp = fp - 0x0002
+	sp = fp - 2
 	wLoc02 = bp
-	bp = fp - 0x0002
+	bp = fp - 2
 	es_bx = ptrArg02
 	ax = wArg06
 	ax = ax + Mem0[es:bx + 0x0006:word16]
 	SCZO = cond(ax)
-	sp = fp - 0x0002
+	sp = fp - 2
 	bp = wLoc02
 	sp = fp
 	return ax

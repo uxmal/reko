@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -159,18 +159,16 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             BuildAddressTable();
         }
 
-
-
         private void Entries_SelectedIndexChanged(object sender, EventArgs e)
         {
             var addr = (Address)dlg.Entries.SelectedItem;
             string text;
             if (addr != null)
             {
-                var dasm = dlg.Program.CreateDisassembler(addr);
+                var dasm = dlg.Program.CreateDisassembler(dlg.Program.Architecture, addr);
                 text = string.Join(
                     Environment.NewLine,
-                    dasm.TakeWhile(i => (i.InstructionClass & InstructionClass.Transfer) == 0)
+                    dasm.TakeWhile(i => (i.InstructionClass & InstrClass.Transfer) == 0)
                         .Select(i => i.ToString()));
             }
             else

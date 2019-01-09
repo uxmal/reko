@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -58,7 +58,7 @@ namespace Reko.UnitTests.Analysis
             program = new Program();
             program.Architecture = arch;
             program.SegmentMap = new SegmentMap(Address.Ptr32(0));
-            exit = new Procedure(arch, "exit", new Frame(PrimitiveType.Word32));
+            exit = new Procedure(arch, "exit", Address.Ptr32(0x00123400), new Frame(PrimitiveType.Word32));
             flow = new ProgramDataFlow();
             p = new ProgramBuilder();
             p.Program.Architecture = this.arch;
@@ -76,8 +76,9 @@ namespace Reko.UnitTests.Analysis
             return bflow;
         }
 
-        private TrashedRegisterFinder CreateTrashedRegisterFinder()
+        private TrashedRegisterFinder CreateTrashedRegisterFinder(bool createFlow = false)
         {
+            this.flow = createFlow ? new ProgramDataFlow(program) : this.flow;
             return new TrashedRegisterFinder(program, program.Procedures.Values, this.flow, new FakeDecompilerEventListener());
         }
 
@@ -176,6 +177,39 @@ namespace Reko.UnitTests.Analysis
             return o.ToString();
         }
 
+        private void Given_TrashedRegisters(params Identifier[] regs)
+        {
+            program.Platform = new FakePlatform(null, arch)
+            {
+                Test_CreateTrashedRegisters =
+                    () => regs
+                        .Select(id => (RegisterStorage)id.Storage)
+                        .ToHashSet()
+            };
+        }
+
+        private void Given_Procedure(Action<ProcedureBuilder> generator)
+        {
+            generator(m);
+            program.Procedures.Add(Address.Ptr32(0x10000), m.Procedure);
+            program.CallGraph.AddProcedure(m.Procedure);
+        }
+
+        private void AssertPreservedRegisters(string expected)
+        {
+            var pf = flow[m.Procedure];
+            var actual = pf.EmitRegisters(
+                program.Architecture,
+                "",
+                pf.PreservedRegisters);
+            expected = " " + expected;
+            if (expected != actual)
+            {
+                Debug.Print(actual);
+                Assert.AreEqual(expected, actual);
+            }
+        }
+
         [Test]
         public void TrashRegister()
         {
@@ -271,7 +305,7 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void TrfCallInstruction()
         {
-            var callee = new Procedure(arch, "Callee", program.Architecture.CreateFrame());
+            var callee = new Procedure(arch, "Callee", Address.Ptr32(0x00123400), program.Architecture.CreateFrame());
             var stm = m.Call(callee, 4);
             var pf = new ProcedureFlow(callee, program.Architecture);
             pf.TrashedRegisters.Add(Registers.ebx);
@@ -288,7 +322,7 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void TrfPropagateToSuccessorBlocks()
         {
-            Procedure proc = new Procedure(program.Architecture, "test", program.Architecture.CreateFrame());
+            Procedure proc = new Procedure(program.Architecture, "test", Address.Ptr32(0x00123400), program.Architecture.CreateFrame());
             var frame = proc.Frame;
             Identifier ecx = m.Register(1);
             Identifier edx = m.Register(2);
@@ -362,7 +396,7 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void TrfPropagateToProcedureSummary()
         {
-            Procedure proc = new Procedure(program.Architecture, "proc", program.Architecture.CreateFrame());
+            Procedure proc = new Procedure(program.Architecture, "proc", Address.Ptr32(0x00123400), program.Architecture.CreateFrame());
             program.CallGraph.AddProcedure(proc);
             Identifier eax = proc.Frame.EnsureRegister(Registers.eax);
             Identifier ebx = proc.Frame.EnsureRegister(Registers.ebx);
@@ -386,7 +420,7 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void TrfPropagateFlagsToProcedureSummary()
         {
-            var proc = new Procedure(program.Architecture, "proc", program.Architecture.CreateFrame());
+            var proc = new Procedure(program.Architecture, "proc", Address.Ptr32(0x00123400), program.Architecture.CreateFrame());
             program.CallGraph.AddProcedure(proc);
             var flags = program.Architecture.GetFlagGroup("SZ");
             var sz = m.Frame.EnsureFlagGroup(flags.FlagRegister, flags.FlagGroupBits, flags.Name, flags.DataType);
@@ -419,6 +453,33 @@ namespace Reko.UnitTests.Analysis
             trf.Compute();
             ProcedureFlow pf = flow[proc];
             Assert.AreEqual(" ebp esp", pf.EmitRegisters(program.Architecture, "", pf.PreservedRegisters), "ebp should have been preserved");
+        }
+
+        [Test(Description = "Indirect call should not prevent detection of preserved registers")]
+        public void TrfBackpropagateStackPointer()
+        {
+            var esp = m.Frame.EnsureRegister(Registers.esp);
+            var ebp = m.Frame.EnsureRegister(Registers.ebp);
+            var esi = m.Frame.EnsureRegister(Registers.esi);
+            Given_TrashedRegisters(esp, esi, ebp);
+            Given_Procedure(m =>
+            {
+                m.Assign(esp, m.ISub(esp, 4));
+                m.MStore(esp, ebp);
+                m.Assign(esp, m.ISub(esp, 4));
+                m.MStore(esp, esi);
+                m.Call(esi, 4);
+                m.Assign(esi, m.Mem32(esp));
+                m.Assign(esp, m.IAdd(esp, 4));
+                m.Assign(ebp, m.Mem32(esp));
+                m.Assign(esp, m.IAdd(esp, 4));
+                m.Return();
+            });
+
+            trf = CreateTrashedRegisterFinder(true);
+            trf.Compute();
+
+            AssertPreservedRegisters("ebp esi esp");
         }
 
         [Test]

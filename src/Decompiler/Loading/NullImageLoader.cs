@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -54,18 +54,36 @@ namespace Reko.Loading
         {
             if (addrLoad == null)
                 addrLoad = PreferredBaseAddress;
-            var mem = new MemoryArea(addrLoad, imageBytes);
-            return new Program(
-                new SegmentMap(
-                    mem.BaseAddress,
-                    new ImageSegment("code", mem, AccessMode.ReadWriteExecute)),
-                Architecture,
-                Platform ?? new DefaultPlatform(Services, Architecture));
+            var platform = Platform ?? new DefaultPlatform(Services, Architecture);
+            return Load(addrLoad, Architecture, platform);
+        }
+
+        public override Program Load(Address addrLoad, IProcessorArchitecture arch, IPlatform platform)
+        {
+            var segmentMap = CreatePlatformSegmentMap(platform, addrLoad, imageBytes);
+            var program = new Program(
+                segmentMap,
+                arch,
+                platform);
+            return program;
         }
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
             return new RelocationResults(EntryPoints, new SortedList<Address, ImageSymbol>());
         }
+
+        public SegmentMap CreatePlatformSegmentMap(IPlatform platform, Address loadAddr, byte[] rawBytes)
+        {
+            var segmentMap = platform.CreateAbsoluteMemoryMap();
+            if (segmentMap == null)
+            {
+                segmentMap = new SegmentMap(loadAddr);
+            }
+            var mem = new MemoryArea(loadAddr, rawBytes);
+            segmentMap.AddSegment(mem, "code", AccessMode.ReadWriteExecute);
+            return segmentMap;
+        }
+
     }
 }

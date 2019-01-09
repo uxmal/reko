@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 Pavel Tomin.
+ * Copyright (C) 1999-2019 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -235,7 +235,10 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             {
                 program.User.Procedures.Remove(address);
                 program.ModifyUserGlobal(
-                    address, parsedGlobal.DataType, parsedGlobal.Name
+                    program.Architecture,
+                    address,
+                    parsedGlobal.DataType, 
+                    parsedGlobal.Name
                 );
             }
 

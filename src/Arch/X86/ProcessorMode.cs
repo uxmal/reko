@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Operators;
+using Reko.Core.Rtl;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
@@ -98,6 +99,11 @@ namespace Reko.Arch.X86
                 return debugRegs[n];
             else
                 return null;
+        }
+
+        public virtual List<RtlInstruction> InlineCall(Address addrCallee, Address addrContinuation, EndianImageReader rdr, IStorageBinder binder)
+        {
+            return null;
         }
 
         public abstract Address MakeAddressFromConstant(Constant c);
@@ -253,6 +259,45 @@ namespace Reko.Arch.X86
         public override RegisterStorage StackRegister
         {
             get { return Registers.esp; }
+        }
+
+        public override List<RtlInstruction> InlineCall(
+            Address addrCallee, 
+            Address addrContinuation, 
+            EndianImageReader rdr,
+            IStorageBinder binder)
+        {
+            var dasm = CreateDisassembler(rdr, new X86Options());
+            var instrs = dasm.Take(2).ToArray();
+            if (instrs.Length < 2)
+                return null;
+            // Detect the pattern
+            //   mov <reg>,[esp+0]
+            //   ret
+            // which is used by i386 ELF binaries to capture
+            // the value in the EIP register.
+
+            if (instrs[0].code == Opcode.mov && 
+                instrs[1].code == Opcode.ret)
+            {
+                if (!(instrs[0].op2 is MemoryOperand mop))
+                    return null;
+                if (mop.Base != StackRegister)
+                    return null;
+                if (mop.Offset != null && mop.Offset.IsValid && !mop.Offset.IsIntegerZero)
+                    return null;
+                if (mop.Index != null && mop.Index != RegisterStorage.None)
+                    return null;
+
+                if (instrs[1].op1 != null)
+                    return null; 
+                var reg = binder.EnsureRegister(((RegisterOperand)instrs[0].op1).Register);
+                var rtls = new List<RtlInstruction>();
+                var m = new RtlEmitter(rtls);
+                m.Assign(reg, addrContinuation);
+                return rtls;
+            }
+            return null;
         }
 
         public override Address MakeAddressFromConstant(Constant c)

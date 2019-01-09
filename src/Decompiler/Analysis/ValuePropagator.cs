@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,13 +53,14 @@ namespace Reko.Analysis
         public ValuePropagator(
             SegmentMap segmentMap,
             SsaState ssa,
+            IImportResolver importResolver,
             DecompilerEventListener eventListener)
         {
             this.ssa = ssa;
             this.arch = ssa.Procedure.Architecture;
             this.eventListener = eventListener;
             this.ssaIdTransformer = new SsaIdentifierTransformer(ssa);
-            this.evalCtx = new SsaEvaluationContext(arch, ssa.Identifiers);
+            this.evalCtx = new SsaEvaluationContext(arch, ssa.Identifiers, importResolver);
             this.eval = new ExpressionSimplifier(segmentMap, evalCtx, eventListener);
         }
 
@@ -104,7 +105,6 @@ namespace Reko.Analysis
         {
             ci.Callee = ci.Callee.Accept(eval);
             if (ci.Callee is ProcedureConstant pc &&
-                pc.Procedure.Signature != null &&
                 pc.Procedure.Signature.ParametersValid)
             {
                 var ab = new ApplicationBuilder(

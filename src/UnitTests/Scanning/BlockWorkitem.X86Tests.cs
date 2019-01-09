@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -138,7 +138,7 @@ namespace Reko.UnitTests.Scanning
                 return null;
             }
 
-            public ExternalProcedure GetImportedProcedure(Address addrThunk, Address addrInstr)
+            public ExternalProcedure GetImportedProcedure(IProcessorArchitecture arch, Address addrThunk, Address addrInstr)
             {
                 ImportReference p;
                 if (importThunks.TryGetValue(addrThunk, out p))
@@ -171,7 +171,7 @@ namespace Reko.UnitTests.Scanning
                 throw new NotImplementedException();
             }
 
-            public ExternalProcedure GetInterceptedCall(Address addrImportThunk)
+            public ExternalProcedure GetInterceptedCall(IProcessorArchitecture arch, Address addrImportThunk)
             {
                 throw new NotImplementedException();
             }
@@ -194,7 +194,7 @@ namespace Reko.UnitTests.Scanning
 
         private void BuildTest(IntelArchitecture arch, Address addr, IPlatform platform, Action<X86Assembler> m)
         {
-            proc = new Procedure(arch, "test", arch.CreateFrame());
+            proc = new Procedure(arch, "test", addr, arch.CreateFrame());
             block = proc.AddBlock("testblock");
             var asm = new X86Assembler(sc, new DefaultPlatform(sc, arch), addr, new List<ImageSymbol>());
             scanner = mr.StrictMock<IScanner>();
@@ -209,15 +209,15 @@ namespace Reko.UnitTests.Scanning
                     {
                         "GetDC",
                         new FunctionType(
-                            new Identifier("", new Pointer(VoidType.Instance, 4), new RegisterStorage("eax", 0, 0, PrimitiveType.Word32)),
+                            new Identifier("", new Pointer(VoidType.Instance, 32), new RegisterStorage("eax", 0, 0, PrimitiveType.Word32)),
                             new [] {
                                 new Identifier("arg",
                                     new TypeReference(
                                         "HWND",
-                                        new Pointer(VoidType.Instance, 4)),
+                                        new Pointer(VoidType.Instance, 32)),
                                     new StackArgumentStorage(4, new TypeReference(
                                         "HWND",
-                                        new Pointer(VoidType.Instance, 4))))
+                                        new Pointer(VoidType.Instance, 32))))
                             })
                         {
                             StackDelta = 4,
@@ -240,10 +240,10 @@ namespace Reko.UnitTests.Scanning
             using (mr.Record())
             {
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Is.Anything)).Return(block);
-                scanner.Stub(x => x.GetTrace(null, null, null)).IgnoreArguments().Return(rw);
+                scanner.Stub(x => x.GetTrace(null, null, null, null)).IgnoreArguments().Return(rw);
                 scanner.Stub(x => x.Services).Return(sc);
             }
-            wi = new BlockWorkitem(scanner, program, state, addr);
+            wi = new BlockWorkitem(scanner, program, arch, state, addr);
         }
 
 
@@ -446,7 +446,7 @@ namespace Reko.UnitTests.Scanning
                 m.Movsw();
                 m.Mov(m.bx, m.dx);
 
-                scanner.Stub(f => f.GetImportedProcedure(null, null)).IgnoreArguments().Return(null);
+                scanner.Stub(f => f.GetImportedProcedure(null, null, null)).IgnoreArguments().Return(null);
 
                 scanner.Expect(x => x.EnqueueJumpTarget(
                     Arg<Address>.Is.NotNull,
@@ -466,7 +466,7 @@ namespace Reko.UnitTests.Scanning
                 scanner.Expect(x => x.TerminateBlock(
                     Arg<Block>.Is.Anything,
                     Arg<Address>.Is.Anything));
-                scanner.Stub(s => s.GetTrampoline(null)).IgnoreArguments().Return(null);
+                scanner.Stub(s => s.GetTrampoline(null, null)).IgnoreArguments().Return(null);
             });
             follow.Procedure = proc;
             wi.Process();
@@ -493,8 +493,8 @@ namespace Reko.UnitTests.Scanning
                     Arg<Block>.Is.Anything,
                     Arg<Address>.Is.Anything));
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Is.Anything)).Return(block);
-                scanner.Stub(f => f.GetImportedProcedure(null, null)).IgnoreArguments().Return(null);
-                scanner.Stub(s => s.GetTrampoline(null)).IgnoreArguments().Return(null);
+                scanner.Stub(f => f.GetImportedProcedure(null, null, null)).IgnoreArguments().Return(null);
+                scanner.Stub(s => s.GetTrampoline(null, null)).IgnoreArguments().Return(null);
             });
             wi.Process();
             var sExp =

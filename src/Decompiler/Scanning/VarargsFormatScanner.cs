@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 Pavel Tomin.
+ * Copyright (C) 1999-2019 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -164,7 +164,7 @@ namespace Reko.Scanning
             if (!program.SegmentMap.IsValidAddress(addr))
                 throw new ApplicationException(
                     string.Format("Varargs: invalid address: {0}", addr));
-            var rdr = program.CreateImageReader(addr);
+            var rdr = program.CreateImageReader(program.Architecture, addr);
             var c = rdr.ReadCString(PrimitiveType.Char, program.TextEncoding);
             return c.ToString();
         }

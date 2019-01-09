@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -177,7 +177,7 @@ namespace Reko.Typing
             {
                 changed = true;
                 DataType pointee = eq;
-                return factory.CreatePointer(pointee, ptr.Size);
+                return factory.CreatePointer(pointee, ptr.BitSize);
             }
             MemberPointer mp = dt as MemberPointer;
             if (mp != null)
