@@ -205,12 +205,12 @@ namespace Reko.Arch.Msp430
                     break;
                 case '0':
                     m.Assign(
-                        binder.EnsureFlagGroup(arch.GetFlagGroup(mask)),
+                        binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.sr, mask)),
                         Constant.False());
                     break;
                 case '1':
                     m.Assign(
-                        binder.EnsureFlagGroup(arch.GetFlagGroup(mask)),
+                        binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.sr, mask)),
                         Constant.True());
                     break;
                 }
@@ -219,14 +219,14 @@ namespace Reko.Arch.Msp430
             if (grf != 0)
             {
                 m.Assign(
-                    binder.EnsureFlagGroup(arch.GetFlagGroup(grf)),
+                    binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.sr, grf)),
                     m.Cond(exp));
             }
         }
 
         private void RewriteAdcSbc(Func<Expression, Expression, Expression> fn)
         {
-            var c = binder.EnsureFlagGroup(this.arch.GetFlagGroup((uint)FlagM.CF));
+            var c = binder.EnsureFlagGroup(this.arch.GetFlagGroup(Registers.sr, (uint)FlagM.CF));
             var src = RewriteOp(instr.op1);
             var dst = RewriteDst(instr.op2, src, (a, b) => fn(fn(a, b), c));
             EmitCc(dst, "V-----NZC");
@@ -255,9 +255,9 @@ namespace Reko.Arch.Msp430
             var left = RewriteOp(instr.op2);
             var right = RewriteOp(instr.op1);
             var tmp = binder.CreateTemporary(instr.op1.Width);
-            var grf = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)(FlagM.NF | FlagM.ZF)));
-            var c = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)FlagM.CF));
-            var v = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)FlagM.VF));
+            var grf = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.sr, (uint)(FlagM.NF | FlagM.ZF)));
+            var c = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.sr, (uint)FlagM.CF));
+            var v = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.sr, (uint)FlagM.VF));
             m.Assign(tmp, m.And(left, right));
             m.Assign(grf, m.Cond(tmp));
             m.Assign(c, m.Test(ConditionCode.NE, tmp));
@@ -267,7 +267,7 @@ namespace Reko.Arch.Msp430
         private void RewriteBranch(ConditionCode cc, FlagM flags)
         {
             rtlc = InstrClass.ConditionalTransfer;
-            var grf = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)flags));
+            var grf = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.sr, (uint)flags));
             m.Branch(m.Test(cc, grf), ((AddressOperand)instr.op1).Address, InstrClass.ConditionalTransfer);
         }
 
@@ -366,7 +366,7 @@ namespace Reko.Arch.Msp430
                     a.DataType, 
                     a, 
                     m.Byte(1),
-                    binder.EnsureFlagGroup(this.arch.GetFlagGroup((uint) FlagM.CF))));
+                    binder.EnsureFlagGroup(this.arch.GetFlagGroup(Registers.sr, (uint) FlagM.CF))));
             EmitCc(dst, flags);
         }
 

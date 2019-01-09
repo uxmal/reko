@@ -44,37 +44,13 @@ namespace Reko.Arch.Msp430
             this.WordWidth = PrimitiveType.Word16;
             this.PointerType = PrimitiveType.Word16;
             this.FramePointerType = PrimitiveType.Word16;
+            this.Endianness = EndianServices.Little;
             this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
             return new Msp430Disassembler(this, imageReader);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea mem, ulong off)
-        {
-            return new LeImageReader(mem, off);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
-        {
-            return new LeImageReader(img, addr);
-        }
-
-        public override EndianImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override ImageWriter CreateImageWriter()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override ImageWriter CreateImageWriter(MemoryArea img, Address addr)
-        {
-            throw new NotImplementedException();
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -107,15 +83,15 @@ namespace Reko.Arch.Msp430
             throw new NotImplementedException();
         }
 
-        public override FlagGroupStorage GetFlagGroup(uint grf)
+
+        public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
-            FlagGroupStorage f;
-            if (flagGroups.TryGetValue(grf, out f))
+            if (flagGroups.TryGetValue(grf, out var f))
             {
                 return f;
             }
             var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
-            var fl = new FlagGroupStorage(Registers.sr, grf, GrfToString(grf), dt);
+            var fl = new FlagGroupStorage(Registers.sr, grf, GrfToString(flagRegister, "", grf), dt);
             flagGroups.Add(grf, fl);
             return fl;
         }
@@ -132,15 +108,15 @@ namespace Reko.Arch.Msp430
 
         public override RegisterStorage GetRegister(string name)
         {
-            RegisterStorage reg;
-            return Registers.ByName.TryGetValue(name, out reg)
+            return Registers.ByName.TryGetValue(name, out var reg)
                 ? reg
                 : null;
         }
 
-        public override RegisterStorage GetRegister(int i)
+
+        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
-            throw new NotImplementedException();
+            return Registers.GpRegisters[(int) domain];
         }
 
         public override RegisterStorage[] GetRegisters()
@@ -148,7 +124,16 @@ namespace Reko.Arch.Msp430
             return Registers.GpRegisters;
         }
 
-        public override string GrfToString(uint grf)
+        public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
+        {
+            uint grf = flags.FlagGroupBits;
+            if ((grf & (uint) FlagM.NF) != 0) yield return GetFlagGroup(flags.FlagRegister, (uint) FlagM.NF);
+            if ((grf & (uint) FlagM.ZF) != 0) yield return GetFlagGroup(flags.FlagRegister, (uint) FlagM.ZF);
+            if ((grf & (uint) FlagM.CF) != 0) yield return GetFlagGroup(flags.FlagRegister, (uint) FlagM.CF);
+            if ((grf & (uint) FlagM.VF) != 0) yield return GetFlagGroup(flags.FlagRegister, (uint) FlagM.VF);
+        }
+
+        public override string GrfToString(RegisterStorage flagRegister, string prefix, uint grf)
         {
             StringBuilder s = new StringBuilder();
             if ((grf & (uint)FlagM.VF) != 0) s.Append('V');
@@ -170,17 +155,12 @@ namespace Reko.Arch.Msp430
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
-            throw new NotImplementedException();
+            return Registers.ByName.TryGetValue(name, out reg);
         }
 
         public override bool TryParseAddress(string txtAddr, out Address addr)
         {
             return Address.TryParse16(txtAddr, out addr);
-        }
-
-        public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
-        {
-            return mem.TryReadLe(addr, dt, out value);
         }
     }
 }
