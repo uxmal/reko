@@ -167,7 +167,15 @@ namespace Reko.Arch.Msp430
             {
             case RegisterOperand rop:
                 var dst = binder.EnsureRegister(rop.Register);
-                m.Assign(dst, fn(dst, src));
+                var ev = fn(dst, src);
+                if (dst.Storage == Registers.sp && ev is Constant)
+                {
+                    m.SideEffect(host.PseudoProcedure("__set_stackpointer", VoidType.Instance, src));
+                }
+                else
+                {
+                    m.Assign(dst, ev);
+                }
                 return dst;
             case MemoryOperand mop:
                 Expression ea = binder.EnsureRegister(mop.Base);

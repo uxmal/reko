@@ -378,5 +378,15 @@ namespace Reko.UnitTests.Arch.Msp430
                 "1|L--|v3 = Mem0[r4:word20]",
                 "2|L--|r5 = v3");
         }
+
+        [Test]
+        public void Msp430Rw_sub_sp()
+        {
+            BuildTest(0x21, 0x83); // sub.w #0002,sp
+            AssertCode(
+                "0|L--|0100(2): 2 instructions",
+                "1|L--|sp = sp - 0x0002",
+                "2|L--|VNZC = cond(sp)");
+        }
     }
 }
