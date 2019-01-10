@@ -269,34 +269,32 @@ void main(word20 pc, word20 sr)
 // MayUse:  pc sr
 // LiveOut:
 // Trashed: VNZC pc r10 r11 r12 r13 r14 r15 r4 r5 r6 r7 r8 r9 sp sr
-// Preserved:
+// Preserved: sp
 main_entry:
 // DataOut: pc sr
 // DataOut (flags): 
 // SymbolicIn: sp:fp
+// LocalsOut: fp(20)
 
 l414C:
-	Mem1[0x0120:ptr16] = 0x5A80
-	Mem2[0x0056:ptr16] = 0xFFE0
-	Mem3[0x0057:ptr16] = 0x0007
-	Mem4[0x0032:ptr16] = 0x0007
-	Mem5[0x0031:ptr16] = 0x0007
-	word20 sp_0 = 0x0A00
-	Mem7[sp_0 - 2:word16] = 0x0010
-	Mem9[sp_0 - 4:word16] = 0x0000
-	Mem11[sp_0 - 6:word16] = 0x8000
-	word20 r8_17
-	word20 r11_18
-	word20 sr_19 = init_uart_isr(pc, sr, out r8_17, out r11_18)
-	word20 sp_22 = uart_putchar_isr_mode(0x00, wLoc02)
+	__set_stackpointer(0x0A00)
+	Mem2[0x0120:ptr16] = 0x5A80
+	Mem3[0x0056:ptr16] = 0xFFE0
+	Mem4[0x0057:ptr16] = 0x0007
+	Mem5[0x0032:ptr16] = 0x0007
+	Mem6[0x0031:ptr16] = 0x0007
+	word20 r8_18
+	word20 r11_19
+	word20 sr_20 = init_uart_isr(pc, sr, out r8_18, out r11_19)
+	word20 sp_22 = uart_putchar_isr_mode(0x00, 0x0010)
 	Mem24[sp_22 - 2:word16] = 0x4108
 	Mem26[sp_22 - 4:word16] = 0x4111
 	Mem28[sp_22 - 6:word16] = 0x411D
 	word20 sp_29
 	word20 r8_30
 	word20 r11_31
-	word20 pc_32 = printf(pc, r8_17, r11_18, wLoc02, out sp_29, out r8_30, out r11_31)
-	word20 sp_34 = uart_putchar_isr_mode(0x01, wLoc02)
+	word20 pc_32 = printf(pc, r8_18, r11_19, 0x0010, out sp_29, out r8_30, out r11_31)
+	word20 sp_34 = uart_putchar_isr_mode(0x01, 0x0010)
 	Mem36[sp_34 - 2:word16] = 0x0000
 	Mem38[sp_34 - 4:word16] = 0x0003
 	word20 sr_43
@@ -305,7 +303,7 @@ l414C:
 	word20 r13_46
 	word20 r14_47
 	word20 r15_48
-	word20 sp_49 = xTaskCreate(pc_32, sr_19, r11_31, out sr_43, out r11_44, out r12_45, out r13_46, out r14_47, out r15_48)
+	word20 sp_49 = xTaskCreate(pc_32, sr_20, r11_31, out sr_43, out r11_44, out r12_45, out r13_46, out r14_47, out r15_48)
 	Mem51[sp_49 - 2:word16] = 0x0000
 	Mem53[sp_49 - 4:word16] = 0x0003
 	word20 sr_58
@@ -352,12 +350,12 @@ l420A_thunk_msp430_compute_modulator_bits:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> r13:<invalid> r14:<invalid> r15:0x0000 r12:<invalid> pc:0x5AD8 r4:<invalid> r6:<invalid> r7:<invalid> r8:<invalid> r9:<invalid> r10:<invalid> sr:<invalid> r11:<invalid> r5:<invalid>
+// SymbolicIn: sp:<invalid> r13:<invalid> r14:<invalid> r15:0x0000 r12:<invalid> pc:0x5AD8 r4:<invalid> r6:<invalid> r7:<invalid> r8:<invalid> r9:<invalid> r10:<invalid> sr:<invalid> r11:<invalid> r5:<invalid> -28(fp):0x0000 -26(fp):0x0000 -24(fp):0x0003 -22(fp):0x0000 -20(fp):0x0003 -18(fp):0x0000 -16(fp):0x0003 -14(fp):0x0000 -12(fp):0x411D -10(fp):0x4111 -8(fp):0x4108 -6(fp):0x8000 -4(fp):0x0000 -2(fp):0x0010
 
 main_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> r13:<invalid> r14:<invalid> r15:<invalid> r12:<invalid> pc:0x5AD8 r4:<invalid> r6:<invalid> r7:<invalid> r8:<invalid> r9:<invalid> r10:<invalid> sr:<invalid> r11:<invalid> r5:<invalid>
+// SymbolicIn: sp:<invalid> r13:<invalid> r14:<invalid> r15:<invalid> r12:<invalid> pc:0x5AD8 r4:<invalid> r6:<invalid> r7:<invalid> r8:<invalid> r9:<invalid> r10:<invalid> sr:<invalid> r11:<invalid> r5:<invalid> -28(fp):0x0000 -26(fp):0x0000 -24(fp):0x0003 -22(fp):0x0000 -20(fp):0x0003 -18(fp):0x0000 -16(fp):0x0003 -14(fp):0x0000 -12(fp):0x411D -10(fp):0x4111 -8(fp):0x4108 -6(fp):0x8000 -4(fp):0x0000 -2(fp):0x0010
 
 
 

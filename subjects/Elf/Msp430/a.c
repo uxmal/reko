@@ -116,27 +116,24 @@ void task_3(word20 pc, word20 sr, word20 r11)
 // 414C: void main(Register word20 pc, Register word20 sr)
 void main(word20 pc, word20 sr)
 {
-	Mem1[0x0120 + 0x00:ptr16] = 0x5A80;
-	Mem2[0x0056 + 0x00:ptr16] = ~0x1F;
-	Mem3[0x0057 + 0x00:ptr16] = 0x07;
-	Mem4[0x0032 + 0x00:ptr16] = 0x07;
-	Mem5[0x0031 + 0x00:ptr16] = 0x07;
-	word20 sp_0 = 0x0A00;
-	Mem7[sp_0 - 0x02 + 0x00:word16] = 0x10;
-	Mem9[sp_0 - 0x04 + 0x00:word16] = 0x00;
-	Mem11[sp_0 - 0x06 + 0x00:word16] = 0x8000;
-	word20 r8_17;
-	word20 r11_18;
-	word20 sr_19 = init_uart_isr(pc, sr, out r8_17, out r11_18);
-	word20 sp_22 = uart_putchar_isr_mode(0x00, wLoc02);
+	__set_stackpointer(0x0A00);
+	Mem2[0x0120 + 0x00:ptr16] = 0x5A80;
+	Mem3[0x0056 + 0x00:ptr16] = ~0x1F;
+	Mem4[0x0057 + 0x00:ptr16] = 0x07;
+	Mem5[0x0032 + 0x00:ptr16] = 0x07;
+	Mem6[0x0031 + 0x00:ptr16] = 0x07;
+	word20 r8_18;
+	word20 r11_19;
+	word20 sr_20 = init_uart_isr(pc, sr, out r8_18, out r11_19);
+	word20 sp_22 = uart_putchar_isr_mode(0x00, 0x10);
 	Mem24[sp_22 - 0x02 + 0x00:word16] = 0x4108;
 	Mem26[sp_22 - 0x04 + 0x00:word16] = 0x4111;
 	Mem28[sp_22 - 0x06 + 0x00:word16] = 16669;
 	word20 sp_29;
 	word20 r8_30;
 	word20 r11_31;
-	word20 pc_32 = printf(pc, r8_17, r11_18, wLoc02, out sp_29, out r8_30, out r11_31);
-	word20 sp_34 = uart_putchar_isr_mode(0x01, wLoc02);
+	word20 pc_32 = printf(pc, r8_18, r11_19, 0x10, out sp_29, out r8_30, out r11_31);
+	word20 sp_34 = uart_putchar_isr_mode(0x01, 0x10);
 	Mem36[sp_34 - 0x02 + 0x00:word16] = 0x00;
 	Mem38[sp_34 - 0x04 + 0x00:word16] = 0x03;
 	word20 sr_43;
@@ -145,7 +142,7 @@ void main(word20 pc, word20 sr)
 	word20 r13_46;
 	word20 r14_47;
 	word20 r15_48;
-	word20 sp_49 = xTaskCreate(pc_32, sr_19, r11_31, out sr_43, out r11_44, out r12_45, out r13_46, out r14_47, out r15_48);
+	word20 sp_49 = xTaskCreate(pc_32, sr_20, r11_31, out sr_43, out r11_44, out r12_45, out r13_46, out r14_47, out r15_48);
 	Mem51[sp_49 - 0x02 + 0x00:word16] = 0x00;
 	Mem53[sp_49 - 0x04 + 0x00:word16] = 0x03;
 	word20 sr_58;
