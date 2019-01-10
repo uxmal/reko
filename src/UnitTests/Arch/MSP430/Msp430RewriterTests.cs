@@ -385,8 +385,8 @@ namespace Reko.UnitTests.Arch.Msp430
             BuildTest(0x21, 0x83); // sub.w #0002,sp
             AssertCode(
                 "0|L--|0100(2): 2 instructions",
-                "1|L--|sp = sp - 2",
-                "2|L--|C = cond(sp)");
+                "1|L--|sp = sp - 0x0002",
+                "2|L--|VNZC = cond(sp)");
         }
     }
 }

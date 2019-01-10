@@ -1396,7 +1396,6 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("Invalid");
         }
 
-
         [Test]
         public void ArmDasm_shsub8_vs()
         {
