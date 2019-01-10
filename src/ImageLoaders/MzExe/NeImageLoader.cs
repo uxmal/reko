@@ -65,7 +65,18 @@ namespace Reko.ImageLoaders.MzExe
         }
 
         // Segment table flags
-        const ushort NE_STFLAGS_RELOCATIONS       =0x0100;
+        const ushort NE_STFLAGS_DATA = 0x0001;
+        const ushort NE_STFLAGS_REALMODE = 0x0004;
+        const ushort NE_STFLAGS_ITERATED = 0x0008;
+        const ushort NE_STFLAGS_MOVEABLE = 0x0010;
+        const ushort NE_STFLAGS_SHAREABLE = 0x0020;
+        const ushort NE_STFLAGS_PRELOAD = 0x0040;
+        const ushort NE_STFLAGS_EXECUTE = 0x00080;
+        const ushort NE_STFLAGS_RELOCATIONS = 0x0100;
+        const ushort NE_STFLAGS_DEBUG_INFO = 0x0200;
+        const ushort NE_STFLAGS_DPL = 0x0C00;
+        const ushort NE_STFLAGS_DISCARDABLE = 0x1000;
+        const ushort NE_STFLAGS_DISCARD_PRIORITY = 0xE000;
 
         // Resource types
         const ushort NE_RSCTYPE_CURSOR            =0x8001;
@@ -97,6 +108,7 @@ namespace Reko.ImageLoaders.MzExe
         private ushort offImportedNamesTable;
         private ushort offEntryTable;
         private ushort offResidentNameTable;
+        private uint offNonResidentNameTable;
         private ushort offRsrcTable;
         private Address addrImportStubs;
         private Dictionary<uint, Tuple<Address, ImportReference>> importStubs;
@@ -165,7 +177,7 @@ namespace Reko.ImageLoaders.MzExe
                 return false;
             if (!rdr.TryReadUInt16(out offImportedNamesTable))
                 return false;
-            if (!rdr.TryReadUInt32(out uint offNonResidentNameTable))
+            if (!rdr.TryReadUInt32(out this.offNonResidentNameTable))
                 return false;
             if (!rdr.TryReadUInt16(out ushort cMoveableEntryPoints))
                 return false;
@@ -408,18 +420,35 @@ namespace Reko.ImageLoaders.MzExe
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
-            var entryNames = LoadEntryNames(this.lfaNew + this.offResidentNameTable);
-            var entryPoints = LoadEntryPoints(this.lfaNew + this.offEntryTable, entryNames);
+            var names = new Dictionary<int, string>();
+            LoadEntryNames(this.lfaNew + this.offResidentNameTable, names);
+            LoadNonresidentNames(this.offNonResidentNameTable, names);
+            var entryPoints = LoadEntryPoints(this.lfaNew + this.offEntryTable, names);
             entryPoints.Add(ImageSymbol.Procedure(program.Architecture, addrEntry));
             return new RelocationResults(
                 entryPoints,
                 imageSymbols);
         }
 
-        public Dictionary<int, string> LoadEntryNames(uint offset)
+        private Dictionary<int,string> LoadNonresidentNames(uint offNonResidentNameTable, Dictionary<int,string> dict)
+        {
+            var rdr = new LeImageReader(RawImage, offNonResidentNameTable);
+            while (rdr.TryReadByte(out byte nameLen))
+            {
+                if (nameLen == 0)
+                    break;
+                var abName = rdr.ReadBytes(nameLen);
+                var name = Encoding.ASCII.GetString(abName);
+                if (!rdr.TryReadLeInt16(out short ordinal))
+                    break;
+                dict[ordinal] = name;
+            }
+            return dict;
+        }
+
+        public Dictionary<int, string> LoadEntryNames(uint offset, Dictionary<int, string> dict)
         {
             var rdr = new LeImageReader(RawImage, offset);
-            var dict = new Dictionary<int, string>();
             for (;;)
             {
                 var cChar = rdr.ReadByte();
@@ -457,33 +486,39 @@ namespace Reko.ImageLoaders.MzExe
                     break;
                 nextbundleOrdinal = bundleOrdinal + cBundleEntries;
                 var segNum = rdr.ReadByte();
-                for (int i = 0; i < cBundleEntries; ++i)
+                if (segNum != 0)
                 {
-                    byte flags = rdr.ReadByte();
-                    if (flags == 0)
-                        break;
-                    (byte iSeg, ushort offset) entry;
-                    if (segNum == 0xFF)
+                    // If segNum had been 0, it would have 
+                    // meant that all we want to do is allocate 
+                    // (skip) some ordinal numbers. Since it wasn't 0,
+                    // we proceed to generate entry points.
+                    for (int i = 0; i < cBundleEntries; ++i)
                     {
-                        entry = ReadMovableSegmentEntry(rdr);
+                        byte flags = rdr.ReadByte();
+                        if (flags == 0)
+                            break;
+                        (byte iSeg, ushort offset) entry;
+                        if (segNum == 0xFF)
+                        {
+                            entry = ReadMovableSegmentEntry(rdr);
+                        }
+                        else
+                        {
+                            entry = ReadFixedSegmentEntry(rdr, segNum);
+                        }
+                        var seg = segments[entry.iSeg - 1];
+                        var addr = seg.Address + entry.offset;
+                        var ep = ImageSymbol.Procedure(arch, addr);
+                        if (names.TryGetValue(bundleOrdinal + i, out string name))
+                        {
+                            ep.Name = name;
+                        }
+                        ep.Type = SymbolType.Procedure;
+                        ep.ProcessorState = arch.CreateProcessorState();
+                        imageSymbols[ep.Address] = ep;
+                        entries.Add(ep);
+                        DebugEx.PrintIf(trace.TraceVerbose, "   {0:X2} {1} {2} - {3}", segNum, ep.Address, ep.Name, bundleOrdinal + i);
                     }
-                    else
-                    {
-                        entry = ReadFixedSegmentEntry(rdr, segNum);
-                    }
-                    var state = arch.CreateProcessorState();
-                    var seg = segments[entry.iSeg-1];
-                    var addr = seg.Address + entry.offset;
-                    ImageSymbol ep = ImageSymbol.Procedure(arch, addr);
-                    if (names.TryGetValue(bundleOrdinal + i, out string name))
-                    {
-                        ep.Name = name;
-                    }
-                    ep.Type = SymbolType.Procedure;
-                    ep.ProcessorState = state;
-                    imageSymbols[ep.Address] = ep;
-                    entries.Add(ep);
-                    DebugEx.PrintIf(trace.TraceVerbose, "   {0}", ep);
                 }
                 bundleOrdinal = nextbundleOrdinal;
             }
@@ -698,12 +733,14 @@ namespace Reko.ImageLoaders.MzExe
             public ushort target2;              // Target specification
         }
 
-        // Apply relocations to a segment.
+        /// <summary>
+        /// Apply relocations to a segment.
+        /// </summary>
         bool ApplyRelocations(EndianImageReader rdr, int cRelocations, NeSegment seg)
         {
             Address address = null;
             NeRelocationEntry rep = null;
-            Debug.Print("Relocating segment {0}", seg.Address);
+            Debug.Print("== Relocating segment {0}", seg.Address);
             for (int i = 0; i < cRelocations; i++)
             {
                 rep = new NeRelocationEntry
