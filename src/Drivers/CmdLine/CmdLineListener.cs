@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -115,6 +115,10 @@ namespace Reko.CmdLine
         }
 
         public void ShowProgress(string caption, int numerator, int denominator)
+        {
+        }
+
+        public void Advance(int count)
         {
         }
 
