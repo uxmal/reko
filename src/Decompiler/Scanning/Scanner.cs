@@ -562,7 +562,7 @@ namespace Reko.Scanning
             st.SetInstructionPointer(addr);
             st.OnProcedureEntered();
             var sp = proc.Frame.EnsureRegister(Program.Architecture.StackRegister);
-            st.SetValue((Identifier)sp, (Expression)proc.Frame.FramePointer);
+            st.SetValue(sp, proc.Frame.FramePointer);
             SetAssumedRegisterValues(addr, st);
         }
 

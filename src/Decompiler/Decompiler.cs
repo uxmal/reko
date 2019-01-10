@@ -118,13 +118,14 @@ namespace Reko
             {
                 if (eventListener.IsCanceled())
                     return;
-                eventListener.ShowStatus("Performing interprocedural analysis.");
                 var ir = new ImportResolver(project, program, eventListener);
                 var dfa = new DataFlowAnalysis(program, ir, eventListener);
                 if (program.NeedsSsaTransform)
                 {
+                    eventListener.ShowStatus("Performing interprocedural analysis.");
                     dfa.UntangleProcedures();
                 }
+                eventListener.ShowStatus("Building complex expressions.");
                 dfa.BuildExpressionTrees();
                 host.WriteIntermediateCode(program, writer => { EmitProgram(program, dfa, writer); });
             }

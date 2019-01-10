@@ -113,6 +113,8 @@ namespace Reko.Analysis
         /// </summary>
         public List<SsaTransform> UntangleProcedures()
         {
+            eventListener.ShowProgress("Rewriting procedures.", 0, program.Procedures.Count);
+
             var usb = new UserSignatureBuilder(program);
             usb.BuildSignatures(eventListener);
                 
@@ -191,6 +193,7 @@ namespace Reko.Analysis
                 var procFlow = flow[ssa.Procedure];
                 RemoveDeadArgumentsFromCalls(ssa.Procedure, procFlow, ssts);
             }
+            eventListener.Advance(procs.Count);
         }
 
         /// <summary>
@@ -256,6 +259,7 @@ namespace Reko.Analysis
         /// <param name="rl"></param>
         public void BuildExpressionTrees()
         {
+            eventListener.ShowProgress("Building expressions.", 0, program.Procedures.Count);
             foreach (var sst in this.ssts)
             {
                 var ssa = sst.SsaState;
@@ -296,8 +300,11 @@ namespace Reko.Analysis
                 var web = new WebBuilder(ssa, program.InductionVariables);
                 web.Transform();
                 ssa.ConvertBack(false);
+
+                eventListener.Advance(1);
             }
         }
+
         /// <summary>
         /// Converts all registers and stack accesses to SSA variables.
         /// </summary>
@@ -352,6 +359,9 @@ namespace Reko.Analysis
                     sst.RenameFrameAccesses = true;
                     sst.Transform();
                 }
+
+                if (ssa.Procedure.Name == "main")
+                    ssa.ToString(); //$DEBUG
 
                 // By placing use statements in the exit block, we will collect
                 // reaching definitions in the use statements.
