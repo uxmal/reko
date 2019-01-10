@@ -39,12 +39,13 @@ namespace Reko.Core
 
         public static Address Create(DataType size, ulong bitPattern)
         {
-            switch (size.Size)
+            switch (size.BitSize)
             {
             default: throw new ArgumentException("size");
-            case 2: return Ptr16((ushort)bitPattern);
-            case 4: return Ptr32((uint)bitPattern);
-            case 8: return Ptr64(bitPattern);
+            case 16: return Ptr16((ushort)bitPattern);
+            case 32: return Ptr32((uint)bitPattern);
+            case 64: return Ptr64(bitPattern);
+            case 20: return Ptr32((uint) bitPattern);
             }
         }
 
