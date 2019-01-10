@@ -4,67 +4,48 @@
 
 #include "a.h"
 
-// 09B2: define __write_char
-define __write_char
+// 09B2: void __write_char()
+void __write_char()
 {
 }
 
-// 00004000: define fn00004000
-define fn00004000
+// 00004000: void fn00004000()
+void fn00004000()
 {
 	(ptr16 *) 288 = 0x5A80;
-	r15_4.u0 = 0x5B78;
-	r14_5.u0 = 0x0200;
-	r13_6.u0 = 0x021C;
-	if (r13_6 != r14_5)
+	byte * r15_12 = (byte *) 0x5B78;
+	Eq_7 r14_13 = 0x0200;
+	Eq_7 r13_6 = 0x021C;
+	if (r13_6 != r14_13)
 	{
 		do
 		{
-			r14_13 = ϕ(r14_5, r14_17);
-			Mem10 = ϕ(Mem3, Mem16);
-			r15_9 = ϕ(r15_4, r15_12);
-			v8_11 = (byte) *r15_9;
-			r15_12 = (word20) r15_9 + 0x01;
-			*r14_13 = v8_11;
-			r14_17 = (word20) r14_13 + 0x01;
-		} while (r14_17 >= r13_6);
+			*r14_13 = *r15_12;
+			++r15_12;
+			++r14_13;
+		} while (r14_13 >= r13_6);
 	}
-	r14_43 = ϕ(r14_5, r14_17);
-	r15_21.u0 = 0x021C;
-	r13_22.u0 = 2484;
-	VNZC_23 = cond(r13_22 - r15_21);
-	Z_24 = SLICE(VNZC_23, bool, 1);
-	C_37 = SLICE(VNZC_23, bool, 0);
-	N_39 = SLICE(VNZC_23, bool, 2);
-	V_51 = SLICE(VNZC_23, bool, 8);
+	Eq_12 r15_21 = 0x021C;
+	Eq_12 r13_22 = 2484;
 	if (r13_22 != r15_21)
 	{
 		do
 		{
-			r15_25 = ϕ(r15_21, r15_30);
-			*r15_25 = 0x00;
-			r15_30 = (word20) r15_25 + 0x01;
-			VNZC_32 = cond(r15_30 - r13_22);
-			C_33 = SLICE(VNZC_32, bool, 0);
-			N_40 = SLICE(VNZC_32, bool, 2);
-			V_52 = SLICE(VNZC_32, bool, 8);
-			Z_54 = SLICE(VNZC_32, bool, 1);
-		} while (r15_30 >= r13_22);
+			*r15_21 = 0x00;
+			++r15_21;
+		} while (r15_21 >= r13_22);
 	}
-	Z_53 = ϕ(Z_24, Z_54);
-	V_50 = ϕ(V_51, V_52);
-	r15_45 = ϕ(r15_21, r15_30);
-	N_38 = ϕ(N_39, N_40);
-	C_36 = ϕ(C_37, C_33);
-	pc_34.u1 = 16446;
 }
 
-// 4048: define task_idle
-define task_idle
+// 4048: void task_idle(Register ui20 sr, Register Eq_36 r8)
+void task_idle(ui20 sr, Eq_36 r8)
 {
-	word20 sr;
-	word20 r8;
-	xTaskGetTickCount();
+	ui20 sr;
+	Eq_36 r8;
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg0 = <invalid>;
+	xTaskGetTickCount(sr, stackArg0, out sr_15, out r15_13);
 	r10_21 = r15_13 + 1000;
 	r9_23.u1 = 0x00;
 	while (true)
@@ -74,196 +55,154 @@ define task_idle
 		sr_27 = ϕ(sr_15, sr_30);
 		r9_24 = ϕ(r9_23, r9_64);
 		r9_25.u0 = (word20) r9_24.u0 + 0x01;
-		xTaskGetTickCount();
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		stackArg0 = <invalid>;
+		sp_29 = xTaskGetTickCount(sr_27, stackArg0, out sr_30, out r15_28);
 		r15_38 = r10_36 - r15_28;
 		if (r15_38 >= 0x01)
 			break;
-		*(sp_29 - 0x02) = (union Eq_93 *) r9_25;
+		*(sp_29 - 0x02) = (union Eq_55 *) r9_25;
 		*(sp_29 - 0x04) = 0x4040;
-		printf();
+		r8_56 = printf(r8_46, out r11_48);
 		r10_63 = r11_48 + 1000;
 		r9_64.u1 = 0x00;
 	}
 }
 
-// 4096: define task_1
-define task_1
+// 4096: void task_1(Register (ptr20 Eq_102) pc, Register ui20 sr)
+void task_1(struct Eq_102 * pc, ui20 sr)
 {
-	word20 sr;
-	word20 pc;
-	xTaskGetTickCount();
-	*sp_7 = (union Eq_135 *) r15_6;
+	ui20 sr;
+	struct Eq_102 * pc;
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg0 = <invalid>;
+	sp_7 = xTaskGetTickCount(sr, stackArg0, out sr_8, out r15_6);
+	*sp_7 = (union Eq_108 *) r15_6;
 	while (true)
 	{
 		sr_21 = ϕ(sr_8, sr_56);
 		Mem17 = ϕ(Mem16, Mem18);
-		(union Eq_149 *) 0x31 = (union Eq_149 *) ((union Eq_149 *) 0x31 ^ 0x01);
-		r15_20.u1 = 88;
-		putchar();
+		(union Eq_123 *) 0x31 = (union Eq_123 *) ((union Eq_123 *) 0x31 ^ 0x01);
+		r15_20.u0 = 88;
+		sp_35 = putchar(pc, sr_21, r15_20, out sr_36, out r11_63);
 		r14_41.u1 = 500;
-		vTaskDelayUntil();
+		sr_56 = vTaskDelayUntil(pc, sr_36, r14_41, sp_35);
 	}
 }
 
-// 40BC: define task_2
-define task_2
+// 40BC: void task_2(Register (ptr20 Eq_102) pc, Register ui20 sr)
+void task_2(struct Eq_102 * pc, ui20 sr)
 {
-	word20 sr;
-	word20 pc;
-	xTaskGetTickCount();
-	*sp_7 = (union Eq_162 *) r15_6;
+	ui20 sr;
+	struct Eq_102 * pc;
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg0 = <invalid>;
+	sp_7 = xTaskGetTickCount(sr, stackArg0, out sr_8, out r15_6);
+	*sp_7 = (union Eq_108 *) r15_6;
 	while (true)
 	{
 		sr_21 = ϕ(sr_8, sr_56);
 		Mem17 = ϕ(Mem16, Mem18);
-		(union Eq_149 *) 0x31 = (union Eq_149 *) ((union Eq_149 *) 0x31 ^ 0x02);
-		r15_20.u1 = 0x59;
-		putchar();
+		(union Eq_123 *) 0x31 = (union Eq_123 *) ((union Eq_123 *) 0x31 ^ 0x02);
+		r15_20.u0 = 0x59;
+		sp_35 = putchar(pc, sr_21, r15_20, out sr_36, out r11_63);
 		r14_41.u1 = 0xFA;
-		vTaskDelayUntil();
+		sr_56 = vTaskDelayUntil(pc, sr_36, r14_41, sp_35);
 	}
 }
 
-// 40E2: define task_3
-define task_3
+// 40E2: void task_3(Register (ptr20 Eq_102) pc, Register ui20 sr)
+void task_3(struct Eq_102 * pc, ui20 sr)
 {
-	word20 sr;
-	word20 pc;
-	xTaskGetTickCount();
-	*sp_7 = (union Eq_187 *) r15_6;
+	ui20 sr;
+	struct Eq_102 * pc;
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg0 = <invalid>;
+	sp_7 = xTaskGetTickCount(sr, stackArg0, out sr_8, out r15_6);
+	*sp_7 = (union Eq_108 *) r15_6;
 	while (true)
 	{
 		sr_21 = ϕ(sr_8, sr_56);
 		Mem17 = ϕ(Mem16, Mem18);
-		(union Eq_149 *) 0x31 = (union Eq_149 *) ((union Eq_149 *) 0x31 ^ 0x04);
-		r15_20.u1 = 0x5A;
-		putchar();
+		(union Eq_123 *) 0x31 = (union Eq_123 *) ((union Eq_123 *) 0x31 ^ 0x04);
+		r15_20.u0 = 0x5A;
+		sp_35 = putchar(pc, sr_21, r15_20, out sr_36, out r11_63);
 		r14_41.u1 = 0x19;
-		vTaskDelayUntil();
+		sr_56 = vTaskDelayUntil(pc, sr_36, r14_41, sp_35);
 	}
 }
 
-// 414C: define main
-define main
+// 414C: void main(Register (ptr20 Eq_102) pc, Register ui20 sr)
+void main(struct Eq_102 * pc, ui20 sr)
 {
-	word20 sr;
-	word20 pc;
-	sp_1.u1 = 0x0A00;
+	ui20 sr;
+	struct Eq_102 * pc;
+	__set_stackpointer(0x0A00);
 	(ptr16 *) 288 = 0x5A80;
 	(ptr16 *) 0x56 = ~0x1F;
 	(ptr16 *) 0x57 = 0x07;
 	(ptr16 *) 0x32 = 0x07;
-	(union Eq_149 *) 0x31 = 0x07;
-	sp_7 = sp_1 - 0x02;
-	(sp_1 - 0x02)->u1 = 0x10;
-	sp_9 = sp_1 - 0x04;
-	(sp_1 - 0x04)->u1 = 0x00;
-	sp_11 = sp_1 - 0x06;
-	(sp_1 - 0x06)->u1 = 0x8000;
-	r13_13.u1 = 9600;
-	r14_14.u1 = 0x00;
-	r15_15.u1 = 0x10;
-	init_uart_isr();
-	r15_35.u0 = 0x00;
-	uart_putchar_isr_mode();
-	sp_37 = sp_36 - 0x02;
-	*(sp_36 - 0x02) = 0x4108;
-	sp_39 = sp_36 - 0x04;
-	*(sp_36 - 0x04) = 0x4111;
-	sp_41 = sp_36 - 0x06;
-	*(sp_36 - 0x06) = 16669;
-	printf();
-	r15_58.u0 = 0x01;
-	uart_putchar_isr_mode();
-	sp_60 = sp_59 - 0x02;
-	*(sp_59 - 0x02) = 0x00;
-	sp_62 = sp_59 - 0x04;
-	*(sp_59 - 0x04) = 0x03;
-	r12_64.u1 = 0x00;
-	r13_65.u1 = 0x32;
-	r14_66.u1 = 0x414B;
-	r15_67.u1 = 0x4096;
-	xTaskCreate();
-	sp_86 = sp_80 - 0x02;
-	*(sp_80 - 0x02) = 0x00;
-	sp_88 = sp_80 - 0x04;
-	*(sp_80 - 0x04) = 0x03;
-	r12_90.u1 = 0x00;
-	r13_91.u1 = 0x32;
-	r14_92.u1 = 0x414B;
-	r15_93.u1 = 0x40BC;
-	xTaskCreate();
-	sp_112 = sp_106 - 0x02;
-	*(sp_106 - 0x02) = 0x00;
-	sp_114 = sp_106 - 0x04;
-	*(sp_106 - 0x04) = 0x03;
-	r12_116.u1 = 0x00;
-	r13_117.u1 = 0x32;
-	r14_118.u1 = 0x414B;
-	r15_119.u1 = 16610;
-	xTaskCreate();
-	sp_138 = sp_132 - 0x02;
-	*(sp_132 - 0x02) = 0x00;
-	sp_140 = sp_132 - 0x04;
-	*(sp_132 - 0x04) = 0x00;
-	r12_142.u1 = 0x00;
-	r13_143.u1 = 0x96;
-	r14_144.u1 = 0x414B;
-	r15_145.u1 = 0x4048;
-	xTaskCreate();
-	sp_158 = fp - 0x001C;
-	vTaskStartScheduler();
-	sp_181.u0 = (word20) sp_158 + 0x001C;
-	VNZC_182 = cond((word20) sp_158 + 0x001C);
-	r15_183.u1 = 0x00;
-	pc_184.u1 = 23256;
-	msp430_compute_modulator_bits();
+	(union Eq_123 *) 0x31 = 0x07;
+	sr_31 = init_uart_isr(pc, sr, out r8_29);
+	r15_36.u0 = 0x00;
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg0 = <invalid>;
+	sp_37 = uart_putchar_isr_mode(r15_36, stackArg0);
+	*(sp_37 - 0x02) = 0x4108;
+	*(sp_37 - 0x04) = 0x4111;
+	*(sp_37 - 0x06) = 16669;
+	printf(r8_29, out r11_207);
+	r15_59.u0 = 0x01;
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg0 = <invalid>;
+	sp_60 = uart_putchar_isr_mode(r15_59, stackArg0);
+	*(sp_60 - 0x02) = 0x00;
+	*(sp_60 - 0x04) = 0x03;
+	sp_81 = xTaskCreate(pc, sr_31, out sr_82, out r12_209, out r13_210, out r14_211, out r15_212);
+	*(sp_81 - 0x02) = 0x00;
+	*(sp_81 - 0x04) = 0x03;
+	sp_107 = xTaskCreate(pc, sr_82, out sr_108, out r12_213, out r13_214, out r14_215, out r15_216);
+	*(sp_107 - 0x02) = 0x00;
+	*(sp_107 - 0x04) = 0x03;
+	sp_133 = xTaskCreate(pc, sr_108, out sr_134, out r12_217, out r13_218, out r14_219, out r15_220);
+	*(sp_133 - 0x02) = 0x00;
+	*(sp_133 - 0x04) = 0x00;
+	xTaskCreate(pc, sr_134, out sr_160, out r12_221, out r13_222, out r14_223, out r15_224);
+	sr_177 = vTaskStartScheduler(pc, sr_160, out r12_167, out r13_168, out r14_169);
+	r15_184.u0 = 0x00;
+	msp430_compute_modulator_bits(sr_177, r12_167, r13_168, r14_169, r15_184, out r4_225, out r15_226);
 }
 
-// 420E: define msp430_compute_modulator_bits
-define msp430_compute_modulator_bits
+// 420E: Register Eq_136 msp430_compute_modulator_bits(Register Eq_136 sr, Register Eq_409 r12, Register Eq_409 r13, Register Eq_413 r14, Register Eq_413 r15, Register out Eq_426 r4Out, Register out Eq_427 r15Out)
+Eq_136 msp430_compute_modulator_bits(Eq_136 sr, Eq_409 r12, Eq_409 r13, Eq_413 r14, Eq_413 r15, union Eq_426 & r4Out, union Eq_427 & r15Out)
 {
 	word16 fp;
-	word20 r10;
-	word20 r9;
-	word20 r8;
-	word20 r7;
-	word20 r6;
-	word20 r5;
-	word20 r4;
-	word20 r14;
-	word20 r15;
-	word20 r12;
-	word20 r13;
-	word20 sr;
+	Eq_413 r14;
+	Eq_413 r15;
+	Eq_409 r12;
+	Eq_409 r13;
+	Eq_136 sr;
 	word16 wLoc1A;
-	wLoc04_217 = r10;
-	wLoc06_218 = r9;
-	wLoc08_219 = r8;
-	wLoc0A_220 = r7;
-	wLoc0C_221 = r6;
-	wLoc0E_222 = r5;
-	wLoc10_223 = r4;
 	r11_28.u1 = 0x18;
 	r11_29 = r11_28 + (fp - 22);
 	v16_39 = (word16) *r11_29;
-	wLoc16_225 = v16_39;
-	fn00005B04();
-	wLoc12_229 = r13_46;
-	r15_64.u1 = 0x00;
-	wLoc18_230 = sr;
-	fn00005ADC();
-	v22_76 = wLoc1A;
-	sr_78 = v22_76;
+	r12_45 = fn00005B04(r14, r15, r12, r13, out r13_46);
+	r15_64.u0 = 0x00;
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg0 = <invalid>;
+	r14_73 = fn00005ADC(r14, r15, r12_45, r15_64, stackArg0, out r15_74);
+	sr_78 = wLoc1A;
 	r8_81 = r14_73 - r12;
 	r9_84 = r15_74 - r13 - (r8_81 < 0x00);
-	v24_85 = wLoc18_230;
-	if (v24_85 != 0x00)
-	{
-		v26_88 = wLoc18_230;
-		v27_90 = wLoc16_225;
-		v26_88->u0 = v27_90;
-	}
+	if (sr != 0x00)
+		*sr = v16_39;
 	r7_94.u1 = 0x00;
 	r10_95.u1 = 0x00;
 	r11_96.u1 = 0x00;
@@ -283,8 +222,8 @@ define msp430_compute_modulator_bits
 		r13_125 = r13_121 - r15_115 - (r12_122 < 0x00);
 		if (r13_125 < 0x00)
 		{
-			r10_128 = (word20) r10_100.u0 + r14;
-			r11_131 = (bool) (r10_128 < 0x00) + ((word20) r11_105.u0 + r15);
+			r10_128 = r10_100 + r14;
+			r11_131 = r11_105 + r15 + (r10_128 <u 0x00);
 			r15_132.u1 = 0x01;
 			r14_134 = r6_133;
 			if (r6_133 != 0x00)
@@ -297,86 +236,59 @@ define msp430_compute_modulator_bits
 					r14_140 = r14_139 - 0x01;
 				} while (r14_140 != 0x00);
 			}
-			r14_240 = ϕ(r14_134, r14_140);
 			r15_146 = ϕ(r15_132, r15_138);
 			r7_147 = r7_144 | r15_146;
 		}
-		r14_239 = ϕ(r14_240, r14_112);
 		r11_201 = ϕ(r11_131, r11_105);
 		r10_194 = ϕ(r10_128, r10_100);
 		r7_154 = ϕ(r7_147, r7_144);
-		r6_151 = (word20) r6_133 + 0x01;
+		r6_151.u1 = (word20) r6_133.u1 + 0x01;
 	} while (r6_151 >= 0x08);
 	r15_155 = r7_154;
-	VNZC_162 = cond(fp - 0x12);
-	C_231 = SLICE(VNZC_162, bool, 0);
-	N_232 = SLICE(VNZC_162, bool, 2);
-	V_246 = SLICE(VNZC_162, bool, 8);
-	Z_247 = SLICE(VNZC_162, bool, 1);
-	v30_168 = wLoc12_229;
-	r4_170 = v30_168;
-	v31_171 = wLoc10_223;
-	r5_173 = v31_171;
-	v32_174 = wLoc0E_222;
-	r6_176 = v32_174;
-	v33_177 = wLoc0C_221;
-	r7_179 = v33_177;
-	v34_180 = wLoc0A_220;
-	r8_182 = v34_180;
-	v35_183 = wLoc08_219;
-	r9_185 = v35_183;
-	v36_186 = wLoc06_218;
-	r10_188 = v36_186;
-	v37_189 = wLoc04_217;
-	r11_191 = v37_189;
+	r4_170 = r13_46;
+	r4Out = r4_170;
+	r15Out = r15_155;
+	return sr_78;
 }
 
-// 42CC: define init_uart_isr
-define init_uart_isr
+// 42CC: Register ui20 init_uart_isr(Register (ptr20 Eq_102) pc, Register ui20 sr, Register out Eq_253 r8Out)
+ui20 init_uart_isr(struct Eq_102 * pc, ui20 sr, union Eq_253 & r8Out)
 {
 	word16 fp;
-	word20 r10;
-	word20 r9;
-	word20 r8;
 	word20 r7;
-	word20 r6;
-	word20 r4;
-	word20 sr;
-	word20 pc;
-	word16 wLoc10;
-	wLoc04_161 = r10;
-	wLoc06_162 = r9;
-	wLoc08_163 = r8;
-	wLoc0A_164 = r7;
-	wLoc0C_165 = r6;
-	wLoc0E_166 = r4;
+	ui20 sr;
+	struct Eq_102 * pc;
 	r12_26.u1 = 0x12;
 	r12_27 = r12_26 + (fp - 0x10);
-	v15_34 = (word16) *r12_27;
-	v16_37 = (word16) *((word20) r12_27 + 0x02);
-	v17_41 = (byte) *((word20) r12_27 + 0x04);
+	v15_34 = *r12_27;
+	v16_37 = *((word20) r12_27 + 0x02);
+	v17_41 = *((word20) r12_27 + 0x04);
 	sr_44 = sr & ~0x08;
 	++globals->ptr0218;
-	xQueueCreate();
-	globals->t021C = r15_53;
-	xQueueCreate();
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg0 = <invalid>;
+	sr_60 = xQueueCreate(pc, sr_44, v17_41, stackArg0, out r6_189, out r7_190, out r8_191, out r15_53);
+	globals->a021C = r15_53;
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg0 = <invalid>;
+	sr_78 = xQueueCreate(pc, sr_60, v17_41, stackArg0, out r6_74, out r7_75, out r8_76, out r15_71);
 	globals->t021E = r15_71;
-	(union Eq_684 *) 0x78 = (union Eq_684 *) 0x01;
-	(union Eq_684 *) 0x78 = (union Eq_684 *) ((union Eq_684 *) 0x78 | 0x10);
-	(union Eq_694 *) 121 = (union Eq_694 *) (r6_74 & 0x30);
-	msp430_compute_modulator_bits();
-	r14_113 = r15_101;
+	(union Eq_642 *) 0x78 = (union Eq_642 *) 0x01;
+	(union Eq_642 *) 0x78 = (union Eq_642 *) ((union Eq_642 *) 0x78 | 0x10);
+	(union Eq_651 *) 121 = (union Eq_651 *) (r6_74 & 0x30);
+	sr_108 = msp430_compute_modulator_bits(sr_78, v15_34, v16_37, r7_75, r8_76, out r4_102, out r15_101);
 	v21_114 = *r4_102;
-	(union Eq_702 *) 0x7C = (union Eq_702 *) v21_114;
+	(union Eq_663 *) 0x7C = (union Eq_663 *) v21_114;
 	v22_116 = *r4_102;
 	r15_118 = __swpb(v22_116);
-	r15_119 = r15_118 & ~0x00;
-	(union Eq_717 *) 0x7D = (union Eq_717 *) (r15_118 & ~0x00);
-	(union Eq_623 *) 0x7B = (union Eq_623 *) r15_101;
-	(union Eq_723 *) 0x05 = (union Eq_723 *) ((union Eq_723 *) 0x05 | 0x30);
-	(union Eq_684 *) 0x78 = 0x10;
-	(union Eq_731 *) 0x1B = (union Eq_731 *) ((union Eq_731 *) 0x1B | ~0x3F);
-	(union Eq_736 *) 0x01 = (union Eq_736 *) ((union Eq_736 *) 0x01 | 0x30);
+	(union Eq_677 *) 0x7D = (union Eq_677 *) (r15_118 & ~0x00);
+	(union Eq_657 *) 0x7B = (union Eq_657 *) r15_101;
+	(union Eq_683 *) 0x05 = (union Eq_683 *) ((union Eq_683 *) 0x05 | 0x30);
+	(union Eq_642 *) 0x78 = 0x10;
+	(union Eq_691 *) 0x1B = (union Eq_691 *) ((union Eq_691 *) 0x1B | ~0x3F);
+	(union Eq_696 *) 0x01 = (union Eq_696 *) ((union Eq_696 *) 0x01 | 0x30);
 	if (0x0218 != 0x00)
 	{
 		globals->ptr0218 += ~0x00;
@@ -384,98 +296,45 @@ define init_uart_isr
 			sr_132 = sr_108 | 0x08;
 	}
 	sr_174 = ϕ(sr_108, sr_108, sr_132);
-	VNZC_135 = cond(fp - 0x10);
-	C_167 = SLICE(VNZC_135, bool, 0);
-	N_168 = SLICE(VNZC_135, bool, 2);
-	V_175 = SLICE(VNZC_135, bool, 8);
-	Z_176 = SLICE(VNZC_135, bool, 1);
-	v24_137 = wLoc10;
-	r4_139 = v24_137;
-	v25_140 = wLoc0E_166;
-	r6_142 = v25_140;
-	v26_143 = wLoc0C_165;
-	r7_145 = v26_143;
-	v27_146 = wLoc0A_164;
-	r8_148 = v27_146;
-	v28_149 = wLoc08_163;
-	r9_151 = v28_149;
-	v29_152 = wLoc06_162;
-	r10_154 = v29_152;
-	v30_155 = wLoc04_161;
-	r11_157 = v30_155;
+	r8_148 = r7;
+	r8Out = r8_148;
+	return sr_174;
 }
 
-// 4380: define getchar
-define getchar
-{
-	sp = fp;
-	sp -= 0x02;
-	VNZC = cond(sp);
-	r14.u1 = 100;
-	r15 = sp;
-	x_getchar();
-	VNZC = cond(r15 - 0x00);
-	if (Test(NE,Z))
-	{
-		v7 = *sp;
-		r15 = v7;
-		v8 = SLICE(r15, byte, 0);
-		r15.u0 = (int16) v8;
-		V = false;
-		NZC = cond(r15);
-	}
-	else
-		r15.u0 = ~0x00;
-	sp = (word20) sp + 0x02;
-	VNZC = cond(sp);
-	v11 = *sp;
-	sp = (word20) sp + 0x02;
-}
-
-// 439C: define uart_putchar_isr_mode
-define uart_putchar_isr_mode
+// 4380: void getchar(Register (ptr20 Eq_102) pc, Register Eq_136 sr, Stack word16 wArg00)
+void getchar(struct Eq_102 * pc, Eq_136 sr, word16 wArg00)
 {
 	word16 fp;
-	word20 r15;
-	globals->t0200 = r15;
+	Eq_136 sr;
+	struct Eq_102 * pc;
+	r14_5.u1 = 100;
+	r15_14 = x_getchar(pc, sr, r14_5, fp - 0x02);
+}
+
+// 439C: Register Eq_736 uart_putchar_isr_mode(Register Eq_258 r15, Stack word16 wArg00)
+Eq_736 uart_putchar_isr_mode(Eq_258 r15, word16 wArg00)
+{
+	word16 fp;
+	Eq_258 r15;
+	globals->a0200 = r15;
 	sp_6 = fp + 0x02;
+	return sp_6;
 }
 
-// 43A2: define putchar
-define putchar
+// 43A2: Register ptr20 putchar(Register (ptr20 Eq_102) pc, Register Eq_106 sr, Register Eq_127 r15, Register out Eq_106 srOut, Register out Eq_135 r11Out)
+ptr20 putchar(struct Eq_102 * pc, Eq_106 sr, Eq_127 r15, union Eq_106 & srOut, union Eq_135 & r11Out)
 {
 	word16 fp;
-	word20 r11;
-	word20 r15;
-	word20 r14;
-	word20 sr;
-	word20 pc;
-	word20 r13;
-	word20 r10;
-	word20 r12;
-	word20 r4;
-	word20 r5;
-	word20 r6;
-	word20 r7;
-	word20 r8;
-	word20 r9;
+	Eq_127 r15;
+	Eq_106 sr;
+	struct Eq_102 * pc;
 	sp_3 = fp - 0x02;
 	r11_7 = r15;
 	if (r15 == 0x0A)
 	{
-		r15_10.u1 = 0x0D;
-		putchar();
+		r15_10.u0 = 0x0D;
+		sp_11 = putchar(pc, sr, r15_10, out sr_147, out r11_12);
 	}
-	r9_138 = ϕ(r9, r9_90);
-	r8_134 = ϕ(r8, r8_88);
-	r7_130 = ϕ(r7, r7_86);
-	r6_126 = ϕ(r6, r6_84);
-	r5_122 = ϕ(r5, r5_82);
-	r4_118 = ϕ(r4, r4_80);
-	r14_113 = ϕ(r14, r14_15);
-	r13_109 = ϕ(r13, r13_74);
-	r12_105 = ϕ(r12, r12_78);
-	r10_101 = ϕ(r10, r10_76);
 	sp_61 = ϕ(sp_3, sp_11);
 	r11_20 = ϕ(r11_7, r11_12);
 	if (0x0200 == 0x00)
@@ -483,106 +342,65 @@ define putchar
 		do
 			v7_44 = 121 & 0x01;
 		while (v7_44 == 0x00);
-		(union Eq_824 *) 0x7F = (union Eq_824 *) r11_20;
+		(union Eq_127 *) 0x7F = (union Eq_127 *) r11_20;
 		r15_51.u1 = 0x01;
 	}
 	else
 	{
 		r14_19.u1 = 100;
-		x_putchar();
+		sp_28 = x_putchar(pc, sr, r14_19, out sr_29, out r15_27);
 	}
 	sr_140 = ϕ(sr, sr_29);
-	r9_136 = ϕ(r9_138, r9_39);
-	r8_132 = ϕ(r8_134, r8_38);
-	r7_128 = ϕ(r7_130, r7_37);
-	r6_124 = ϕ(r6_126, r6_36);
-	r5_120 = ϕ(r5_122, r5_35);
-	r4_116 = ϕ(r4_118, r4_34);
-	r14_111 = ϕ(r14_113, r14_33);
-	r13_107 = ϕ(r13_109, r13_26);
-	r12_103 = ϕ(r12_105, r12_32);
-	r10_99 = ϕ(r10_101, r10_30);
 	Mem63 = ϕ(Mem50, Mem5);
 	sp_59 = ϕ(sp_61, sp_28);
-	r11_56 = ϕ(r11_20, r11_31);
 	r15_52 = ϕ(r15_51, r15_27);
-	VNZC_53 = cond(r15_52);
-	Z_54 = SLICE(VNZC_53, bool, 1);
-	C_92 = SLICE(VNZC_53, bool, 0);
-	N_94 = SLICE(VNZC_53, bool, 2);
-	V_143 = SLICE(VNZC_53, bool, 8);
-	if (r15_52 != 0x00)
-		r15_57 = r11_56;
-	else
-		r15_55.u0 = ~0x00;
-	r15_114 = ϕ(r15_57, r15_55);
 	v11_65 = *sp_59;
 	sp_66 = (word20) sp_59 + 0x02;
 	r11_67 = v11_65;
 	sp_69 = sp_66 + 0x02;
+	srOut = sr_140;
+	r11Out = r11_67;
+	return sp_69;
 }
 
-// 43E4: define x_getchar
-define x_getchar
+// 43E4: Register Eq_728 x_getchar(Register (ptr20 Eq_102) pc, Register Eq_136 sr, Register Eq_721 r14, Register Eq_728 r15)
+Eq_728 x_getchar(struct Eq_102 * pc, Eq_136 sr, Eq_721 r14, Eq_728 r15)
 {
-	sp = fp;
-	r13 = r14;
-	r14 = r15;
-	r15.u0 = 0x021C;
-	xQueueReceive();
-	VNZC = cond(r15 - 0x00);
-	if (Test(EQ,Z))
+	Eq_721 r14;
+	Eq_728 r15;
+	Eq_136 sr;
+	struct Eq_102 * pc;
+	r15_7.u0 = 0x021C;
+	xQueueReceive(pc, sr, r14, r15, r15_7, out sr_59, out r15_15);
+	if (r15_15 == 0x00)
 	{
-		r15.u0 = 0x00;
-		v9 = (word16) *sp;
-		sp = (word20) sp + 0x02;
+		r15_30.u0 = 0x00;
+		return r15_30;
 	}
 	else
 	{
-		r15.u0 = 0x01;
-		v8 = (word16) *sp;
-		sp = (word20) sp + 0x02;
+		r15_34.u0 = 0x01;
+		return r15_34;
 	}
 }
 
-// 43FC: define x_putchar
-define x_putchar
+// 43FC: Register word20 x_putchar(Register (ptr20 Eq_102) pc, Register Eq_106 sr, Register Eq_721 r14, Register out Eq_136 srOut, Register out Eq_775 r15Out)
+word20 x_putchar(struct Eq_102 * pc, Eq_106 sr, Eq_721 r14, union Eq_136 & srOut, union Eq_775 & r15Out)
 {
 	word16 fp;
-	word20 r14;
-	word20 sr;
-	word20 pc;
-	word20 r10;
-	word20 r11;
-	word20 r12;
-	word20 r4;
-	word20 r5;
-	word20 r6;
-	word20 r7;
-	word20 r8;
-	word20 r9;
+	Eq_721 r14;
+	Eq_106 sr;
+	struct Eq_102 * pc;
 	sp_3 = fp - 0x02;
-	r13_10 = r14;
 	sr_12 = sr & ~0x08;
 	++globals->ptr0218;
 	if (0x0221 != 0x00)
 	{
 		r15_18.u0 = 0x021E;
-		xQueueSend();
+		sp_32 = xQueueSend(pc, sr_12, r14, fp - 0x02, r15_18, out sr_33, out r15_25);
 		if (0x0221 != 0x00 || r15_25 != 0x01)
 		{
 l00004420:
-			r9_127 = ϕ(r9_31, r9_128, r9_31);
-			r8_123 = ϕ(r8_30, r8_124, r8_30);
-			r7_119 = ϕ(r7_29, r7_120, r7_29);
-			r6_115 = ϕ(r6_28, r6_116, r6_28);
-			r5_111 = ϕ(r5_27, r5_112, r5_27);
-			r4_107 = ϕ(r4_26, r4_108, r4_26);
-			r14_104 = ϕ(r14_24, r14_105, r14_24);
-			r13_101 = ϕ(r13_23, r13_102, r13_23);
-			r12_97 = ϕ(r12_22, r12_98, r12_22);
-			r11_93 = ϕ(r11_21, r11_94, r11_21);
-			r10_89 = ϕ(r10_20, r10_90, r10_20);
 			sp_78 = ϕ(sp_32, sp_64, sp_32);
 			sr_73 = ϕ(sr_33, sr_74, sr_33);
 			Mem69 = ϕ(Mem13, Mem66, Mem13);
@@ -593,136 +411,69 @@ l00004420:
 					sr_75 = sr_73 | 0x08;
 			}
 			sr_130 = ϕ(sr_73, sr_73, sr_75);
-			r15_76.u1 = 0x01;
+			r15_76.u0 = 0x01;
 			sp_79 = (word20) sp_78 + 0x02;
-			VNZC_80 = cond(sp_79);
-			C_86 = SLICE(VNZC_80, bool, 0);
-			N_87 = SLICE(VNZC_80, bool, 2);
-			V_131 = SLICE(VNZC_80, bool, 8);
-			Z_132 = SLICE(VNZC_80, bool, 1);
 			sp_83 = sp_79 + 0x02;
-			return;
+			srOut = sr_130;
+			r15Out = r15_76;
+			return sp_83;
 		}
 		r13_42.u1 = 0x00;
 		r15_44.u0 = 0x021E;
-		xQueueReceive();
+		sp_57 = xQueueReceive(pc, sr_33, r13_42, sp_32, r15_44, out sr_58, out r15_135);
 	}
-	r9_128 = ϕ(r9, r9_56);
-	r8_124 = ϕ(r8, r8_55);
-	r7_120 = ϕ(r7, r7_54);
-	r6_116 = ϕ(r6, r6_53);
-	r5_112 = ϕ(r5, r5_52);
-	r4_108 = ϕ(r4, r4_51);
-	r14_105 = ϕ(r14, r14_49);
-	r13_102 = ϕ(r13_10, r13_48);
-	r12_98 = ϕ(r12, r12_47);
-	r11_94 = ϕ(r11, r11_46);
-	r10_90 = ϕ(r10, r10_45);
 	sr_74 = ϕ(sr_12, sr_58);
 	sp_64 = ϕ(sp_3, sp_57);
 	globals->ptr0220 = 0x00;
 	v10_65 = *sp_64;
-	(union Eq_824 *) 0x7F = (union Eq_824 *) v10_65;
+	(union Eq_127 *) 0x7F = (union Eq_127 *) v10_65;
 	goto l00004420;
 }
 
-// 4450: define vRxISR
-define vRxISR
+// 4450: void vRxISR(Register (ptr20 Eq_102) pc, Register Eq_934 sr)
+void vRxISR(struct Eq_102 * pc, Eq_934 sr)
 {
-	sp = fp;
-	sp -= 0x02;
-	*sp = r15;
-	sp -= 0x02;
-	*sp = r14;
-	sp -= 0x02;
-	*sp = r13;
-	sp -= 0x02;
-	*sp = r12;
-	sp -= 0x02;
-	VNZC = cond(sp);
-	v8 = *sp;
-	v8.u2 = 0x7E;
-	*sp = v8;
-	r13.u0 = 0x00;
-	r14 = sp;
-	r15.u2 = 0x021C;
-	xQueueSendFromISR();
-	VNZC = cond(r15 - 0x00);
-	if (Test(NE,Z))
-		vPortYield();
-	sp.u3 = (word20) sp + 0x02;
-	VNZC = cond(sp);
-	v10 = *sp.u3;
-	sp.u3 = (word20) sp.u3 + 0x02;
-	r12 = v10;
-	v11 = *sp.u3;
-	sp.u3 = (word20) sp.u3 + 0x02;
-	r13 = v11;
-	v12 = *sp.u3;
-	sp.u3 = (word20) sp.u3 + 0x02;
-	r14 = v12;
-	v13 = *sp.u3;
-	sp.u3 = (word20) sp.u3 + 0x02;
-	r15 = v13;
+	word16 fp;
+	Eq_934 sr;
+	struct Eq_102 * pc;
+	r13_20.u0 = 0x00;
+	r15_22.u0 = 0x021C;
+	sp_30 = xQueueSendFromISR(sr, r13_20, fp - 0x0A, r15_22, out sr_31, out r15_29);
+	if (r15_29 != 0x00)
+		vPortYield(pc, sr_31, out sr_98, out r5_99, out r6_100, out r7_101, out r8_102, out r9_103, out r10_104, out r11_105, out r12_106, out r13_107, out r14_108);
 }
 
-// 4480: define vTxISR
-define vTxISR
+// 4480: void vTxISR(Register Eq_934 sr)
+void vTxISR(Eq_934 sr)
 {
-	sp = fp;
-	sp -= 0x02;
-	*sp = r15;
-	sp -= 0x02;
-	*sp = r14;
-	sp -= 0x02;
-	*sp = r13;
-	sp -= 0x02;
-	*sp = r12;
-	sp -= 0x04;
-	r13 = sp;
-	r14 = sp;
-	r14.u2 = (word20) r14 + 0x02;
-	VNZC = cond(r14);
-	r15.u1 = 0x021E;
-	xQueueReceiveFromISR();
-	VNZC = cond(r15 - 0x01);
-	if (Test(NE,Z))
+	word16 fp;
+	Eq_934 sr;
+	byte bLoc0A;
+	r15_20.u0 = 0x021E;
+	r15_25 = xQueueReceiveFromISR(sr, fp - 0x0C, fp - 0x0A, r15_20);
+	if (r15_25 != 0x01)
 		globals->ptr0220 = 0x01;
 	else
-	{
-		v9 = *((word20) sp + 0x02);
-		(union Eq_824 *) 0x7F = (union Eq_824 *) v9;
-	}
-	sp.u2 = (word20) sp + 0x04;
-	VNZC = cond(sp);
-	v10 = *sp.u2;
-	sp.u2 = (word20) sp.u2 + 0x02;
-	r12 = v10;
-	v11 = *sp.u2;
-	sp.u2 = (word20) sp.u2 + 0x02;
-	r13 = v11;
-	v12 = *sp.u2;
-	sp.u2 = (word20) sp.u2 + 0x02;
-	r14 = v12;
-	v13 = *sp.u2;
-	sp.u2 = (word20) sp.u2 + 0x02;
-	r15 = v13;
+		(union Eq_127 *) 0x7F = (union Eq_127 *) bLoc0A;
 }
 
-// 44B4: define xTaskCreate
-define xTaskCreate
+// 44B4: Register word20 xTaskCreate(Register (ptr20 Eq_102) pc, Register Eq_136 sr, Register out Eq_136 srOut, Register out Eq_312 r12Out, Register out Eq_313 r13Out, Register out Eq_314 r14Out, Register out Eq_315 r15Out)
+word20 xTaskCreate(struct Eq_102 * pc, Eq_136 sr, union Eq_136 & srOut, union Eq_312 & r12Out, union Eq_313 & r13Out, union Eq_314 & r14Out, union Eq_315 & r15Out)
 {
-	word20 sr;
-	word20 pc;
-	prvAllocateTCBAndStack();
+	Eq_136 sr;
+	struct Eq_102 * pc;
+	sp_52 = prvAllocateTCBAndStack(pc, sr, out sr_53, out r5_47, out r6_48, out r7_49, out r8_50, out r9_51, out r10_54, out r12_43, out r13_44, out r14_45, out r15_55);
 	r11_60 = r15_55;
 	if (r15_55 != 0x00)
 	{
-		prvInitialiseTCBVariables();
-		v18_77 = (ui16) *((word20) r11_68 + 0x0024);
+		r11_68 = prvInitialiseTCBVariables(r8_50, r9_51, r10_54, r15_55);
+		v18_77 = *((word20) r11_68 + 0x0024);
 		v19_80 = (word16) *((word20) r11_68 + 0x02);
 		r15_81 = v18_77 * 0x02 + v19_80;
-		pxPortInitialiseStack();
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		stackArg0 = <invalid>;
+		r15_86 = pxPortInitialiseStack(r7_49, r6_48, r15_81 - 0x02, stackArg0);
 		*r11_68 = r15_86;
 		sr_95 = sr_53 & ~0x08;
 		++globals->ptr0218;
@@ -740,7 +491,10 @@ define xTaskCreate
 		else
 		{
 			globals->t0202 = r11_68;
-			prvInitialiseTaskLists();
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			stackArg0 = <invalid>;
+			prvInitialiseTaskLists(stackArg0);
 		}
 		Mem118 = ϕ(Mem98, Mem98, Mem116, Mem102);
 		v25_119 = *((word20) r11_68 + 0x06);
@@ -754,8 +508,11 @@ define xTaskCreate
 		Mem159 = ϕ(Mem133, Mem137);
 		r14_140 = (word20) r11_68 + 0x08;
 		r15_146 = v25_119 * 0x10 + 0x0222;
-		vListInsertEnd();
-		r10_156.u1 = 0x01;
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		stackArg0 = <invalid>;
+		sp_151 = vListInsertEnd((word20) r11_68 + 0x08, r15_146, stackArg0, out r12_148, out r13_149);
+		r10_156.u0 = 0x01;
 		if (0x0218 != 0x00)
 		{
 			globals->ptr0218 += ~0x00;
@@ -764,7 +521,7 @@ define xTaskCreate
 		}
 	}
 	else
-		r10_63.u1 = ~0x00;
+		r10_63.u0 = ~0x00;
 	r14_269 = ϕ(r14_45, r14_140, r14_140, r14_140);
 	r13_266 = ϕ(r13_44, r13_149, r13_149, r13_149);
 	r12_263 = ϕ(r12_43, r12_148, r12_148, r12_148);
@@ -773,137 +530,93 @@ define xTaskCreate
 	r11_178 = ϕ(r11_60, r11_68, r11_68, r11_68);
 	Mem176 = ϕ(Mem23, Mem159, Mem160, Mem160);
 	r10_167 = ϕ(r10_63, r10_156, r10_156, r10_156);
-	VNZC_168 = cond(r10_167 - 0x01);
-	Z_169 = SLICE(VNZC_168, bool, 1);
-	C_256 = SLICE(VNZC_168, bool, 0);
-	N_259 = SLICE(VNZC_168, bool, 2);
-	V_279 = SLICE(VNZC_168, bool, 8);
 	if (r10_167 == 0x01)
 	{
-		if (r5_47 != 0x00)
-			*r5_47 = (union Eq_1334 *) r11_178;
+		if (r5_47 != null)
+			*r5_47 = (union Eq_1056 *) r11_178;
 		Mem184 = ϕ(Mem176, Mem180);
-		VNZC_181 = cond(0x020E);
-		Z_182 = SLICE(VNZC_181, bool, 1);
-		C_257 = SLICE(VNZC_181, bool, 0);
-		N_260 = SLICE(VNZC_181, bool, 2);
-		V_280 = SLICE(VNZC_181, bool, 8);
 		if (0x020E != 0x00)
 		{
 			r15_183.u0 = 0x0202;
 			v34_185 = *((word16) r15_183.u0 + 0x06);
-			VNZC_191 = cond(v34_185 - r8_50);
-			C_192 = SLICE(VNZC_191, bool, 0);
-			N_261 = SLICE(VNZC_191, bool, 2);
-			V_281 = SLICE(VNZC_191, bool, 8);
-			Z_283 = SLICE(VNZC_191, bool, 1);
 			if (v34_185 >= r8_50)
-				vPortYield();
+				sp_212 = vPortYield(pc, sr_194, out sr_213, out r5_291, out r6_292, out r7_293, out r8_294, out r9_295, out r10_200, out r11_296, out r12_202, out r13_203, out r14_204);
 		}
 	}
-	Z_282 = ϕ(Z_169, Z_182, Z_283, Z_215);
-	V_278 = ϕ(V_279, V_280, V_281, V_217);
 	sr_277 = ϕ(sr_194, sr_194, sr_194, sr_213);
-	r4_271 = ϕ(r4_46, r4_46, r4_46, r4_206);
 	r14_268 = ϕ(r14_269, r14_269, r14_269, r14_204);
 	r13_265 = ϕ(r13_266, r13_266, r13_266, r13_203);
 	r12_262 = ϕ(r12_263, r12_263, r12_263, r12_202);
-	N_258 = ϕ(N_259, N_260, N_261, N_214);
-	C_255 = ϕ(C_256, C_257, C_192, C_216);
-	Mem224 = ϕ(Mem176, Mem184, Mem184, Mem184);
 	sp_221 = ϕ(sp_222, sp_222, sp_222, sp_212);
 	r10_218 = ϕ(r10_167, r10_167, r10_167, r10_200);
 	r15_220 = r10_218;
-	v26_225 = *sp_221;
-	sp_226 = (struct Eq_1490 *) ((char *) sp_221 + 0x02);
-	r5_227 = v26_225;
-	v27_228 = sp_226->t0000;
-	r6_230 = v27_228;
-	v28_231 = sp_226->t0002;
-	r7_233 = v28_231;
-	v29_234 = sp_226->t0004;
-	r8_236 = v29_234;
-	v30_237 = sp_226->t0006;
-	r9_239 = v30_237;
-	v31_240 = sp_226->t0008;
-	r10_242 = v31_240;
-	v32_243 = sp_226->t000A;
-	r11_245 = v32_243;
-	sp_247 = (char *) &sp_226->t000A + 0x04;
+	sp_226 = (word20) sp_221 + 0x02;
+	sp_247 = sp_226 + 0x0E;
+	srOut = sr_277;
+	r12Out = r12_262;
+	r13Out = r13_265;
+	r14Out = r14_268;3
+	r15Out = r15_220;
+	return sp_247;
 }
 
-// 45B6: define vTaskDelete
-define vTaskDelete
+// 45B6: void vTaskDelete(Register (ptr20 Eq_102) pc, Register ui20 sr, Register Eq_1292 r15)
+void vTaskDelete(struct Eq_102 * pc, ui20 sr, Eq_1292 r15)
 {
-	sp = fp;
-	sp -= 0x02;
-	*sp = r11;
-	sp -= 0x02;
-	*sp = r10;
-	sp -= 0x02;
-	*sp = r9;
-	r9 = r15;
-	sr &= ~0x08;
+	Eq_1292 r15;
+	ui20 sr;
+	struct Eq_102 * pc;
+	sr_15 = sr & ~0x08;
 	++globals->ptr0218;
-	VNZC = cond(globals->ptr0218);
-	r11 = r15;
-	VNZC = cond(r15 - 0x00);
-	if (Test(EQ,Z))
-		r11.u0 = 0x0202;
-	r10 = r11;
-	r10 = (word20) r10 + 0x08;
-	VNZC = cond(r10);
-	r15 = r10;
-	vListRemove();
-	v10 = (word16) *((word16) r11.u0 + 0x001A);
-	VNZC = cond(v10 - 0x00);
-	if (Test(NE,Z))
+	r11_18 = r15;
+	if (r15 == 0x00)
+		r11_21.u0 = 0x0202;
+	r11_22 = ϕ(r11_18, r11_21);
+	r10_24 = (word20) r11_22 + 0x08;
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg0 = <invalid>;
+	vListRemove(r10_24, stackArg0);
+	v10_36 = (word16) *((word20) r11_22 + 0x001A);
+	if (v10_36 != 0x00)
 	{
-		r11 = (word16) r11.u0 + 0x0012;
-		VNZC = cond(r11);
-		r15 = r11;
-		vListRemove();
+		r11_39 = (word20) r11_22 + 0x0012;
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		stackArg0 = <invalid>;
+		vListRemove(r11_39, stackArg0);
 	}
-	r14 = r10;
-	r15.u0 = 662;
-	vListInsertEnd();
+	r15_52 = &globals->t0296;
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg0 = <invalid>;
+	sp_56 = vListInsertEnd(r10_24, r15_52, stackArg0, out r12_53, out r13_54);
 	++globals->ptr0204;
-	VNZC = cond(globals->ptr0204);
-	VNZC = cond(0x0218 - 0x00);
-	if (Test(NE,Z))
+	if (0x0218 != 0x00)
 	{
 		globals->ptr0218 += ~0x00;
-		VNZC = cond(globals->ptr0218);
-		if (Test(EQ,Z))
-			sr |= 0x08;
+		if (globals->ptr0218 == 0x00)
+			sr_71 = sr_15 | 0x08;
 	}
-	VNZC = cond(r9 - 0x00);
-	if (Test(EQ,Z))
-		vPortYield();
-	v12 = *sp;
-	sp.u1 = (word20) sp + 0x02;
-	r9 = v12;
-	v13 = *sp.u1;
-	sp.u1 = (word20) sp.u1 + 0x02;
-	r10 = v13;
-	v14 = *sp.u1;
-	sp.u1 = (word20) sp.u1 + 0x02;
-	r11 = v14;
-	v15 = *sp.u1;
-	sp.u1 = (word20) sp.u1 + 0x02;
+	sr_77 = ϕ(sr_15, sr_15, sr_71);
+	if (r15 == 0x00)
+		vPortYield(pc, sr_77, out sr_162, out r5_163, out r6_164, out r7_165, out r8_166, out r9_167, out r10_168, out r11_169, out r12_170, out r13_171, out r14_172);
 }
 
-// 461A: define vTaskDelayUntil
-define vTaskDelayUntil
+// 461A: Register Eq_136 vTaskDelayUntil(Register (ptr20 Eq_102) pc, Register Eq_136 sr, Register Eq_142 r14, Register Eq_140 r15)
+Eq_136 vTaskDelayUntil(struct Eq_102 * pc, Eq_136 sr, Eq_142 r14, Eq_140 r15)
 {
-	word20 r15;
-	word20 r14;
-	word20 sr;
-	word20 pc;
+	Eq_140 r15;
+	Eq_142 r14;
+	Eq_136 sr;
+	struct Eq_102 * pc;
 	r10_16.u1 = 0x00;
-	vTaskSuspendAll();
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg0 = <invalid>;
+	sr_19 = vTaskSuspendAll(sr, stackArg0);
 	v8_24 = *r15;
-	r11_26 = (word16) v8_24 + r14;
+	r11_26 = r14 + v8_24;
 	if (0x0208 >= v8_24)
 	{
 		if (r11_26 < v8_24)
@@ -917,232 +630,162 @@ l0000463E:
 	r10_36.u1 = 0x01;
 l00004640:
 	r10_48 = ϕ(r10_16, r10_16, r10_36);
-	*r15 = (union Eq_1730 *) r11_26;
+	*r15 = r11_26;
 	if (r10_48 != 0x00)
 	{
 		r15_52.u0 = 0x0202;
-		vListRemove();
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		stackArg0 = <invalid>;
+		vListRemove((word16) r15_52.u0 + 0x08, stackArg0);
 		r15_63.u0 = 0x0202;
 		*((word16) r15_63.u0 + 0x08) = r11_26;
 		r15_67.u0 = 0x0208;
 		if (r11_26 >= r15_67)
 		{
 			r15_75.u0 = 0x0202;
-			r14_78 = (word16) r15_75.u0 + 0x08;
+			r14_78 = (struct Eq_1505 *) ((word16) r15_75.u0 + 0x08);
 			r15_79.u0 = 644;
 		}
 		else
 		{
 			r15_70.u0 = 0x0202;
-			r14_73 = (word16) r15_70.u0 + 0x08;
+			r14_73 = (struct Eq_1505 *) ((word16) r15_70.u0 + 0x08);
 			r15_74.u0 = 0x0282;
 		}
 		r14_81 = ϕ(r14_78, r14_73);
 		r15_80 = ϕ(r15_79, r15_74);
-		vListInsert();
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		stackArg0 = <invalid>;
+		vListInsert(r14_81, r15_80, stackArg0);
 	}
-	Mem141 = ϕ(Mem47, Mem66);
-	xTaskResumeAll();
-	VNZC_119 = cond(r15_103);
-	Z_120 = SLICE(VNZC_119, bool, 1);
-	C_158 = SLICE(VNZC_119, bool, 0);
-	N_160 = SLICE(VNZC_119, bool, 2);
-	V_172 = SLICE(VNZC_119, bool, 8);
+	sp_105 = xTaskResumeAll(pc, sr_19, out sr_106, out r5_111, out r6_112, out r7_113, out r8_114, out r9_176, out r10_177, out r11_178, out r12_107, out r13_108, out r14_109, out r15_103);
 	if (r15_103 == 0x00)
-		vPortYield();
-	Z_173 = ϕ(Z_120, Z_136);
-	V_171 = ϕ(V_172, V_138);
+		vPortYield(pc, sr_106, out sr_134, out r5_179, out r6_180, out r7_181, out r8_182, out r9_183, out r10_184, out r11_185, out r12_186, out r13_187, out r14_188);
 	sr_170 = ϕ(sr_106, sr_134);
-	r8_169 = ϕ(r8_114, r8_131);
-	r7_168 = ϕ(r7_113, r7_130);
-	r6_167 = ϕ(r6_112, r6_129);
-	r5_166 = ϕ(r5_111, r5_128);
-	r4_165 = ϕ(r4_110, r4_127);
-	r15_164 = ϕ(r15_103, r15_126);
-	r14_163 = ϕ(r14_109, r14_125);
-	r13_162 = ϕ(r13_108, r13_124);
-	r12_161 = ϕ(r12_107, r12_123);
-	N_159 = ϕ(N_160, N_135);
-	C_157 = ϕ(C_158, C_137);
-	sp_139 = ϕ(sp_105, sp_133);
-	v14_143 = *sp_139;
-	sp_144 = (struct Eq_1826 *) ((char *) sp_139 + 0x02);
-	r9_145 = v14_143;
-	v15_146 = sp_144->t0000;
-	r10_148 = v15_146;
-	v16_149 = sp_144->t0002;
-	r11_151 = v16_149;
-	sp_153 = (char *) &sp_144->t0002 + 0x04;
+	return sr_170;
 }
 
-// 469E: define vTaskDelay
-define vTaskDelay
+// 469E: void vTaskDelay(Register (ptr20 Eq_102) pc, Register Eq_136 sr, Register word20 r15)
+void vTaskDelay(struct Eq_102 * pc, Eq_136 sr, word20 r15)
 {
-	sp = fp;
-	sp -= 0x02;
-	*sp = r11;
-	r11 = r15;
-	r15.u0 = 0x00;
-	VNZC = cond(r11 - 0x00);
-	if (Test(NE,Z))
+	word20 r15;
+	Eq_136 sr;
+	struct Eq_102 * pc;
+	r15_8.u1 = 0x00;
+	if (r15 != 0x00)
 	{
-		vTaskSuspendAll();
-		r11 = (word20) r11 + 0x0208;
-		r15.u0 = 0x0202;
-		r15 = (word16) r15.u0 + 0x08;
-		VNZC = cond(r15);
-		vListRemove();
-		r15.u0 = 0x0202;
-		v7 = *((word16) r15.u0 + 0x08);
-		v7 = r11;
-		*((word16) r15.u0 + 0x08) = v7;
-		r15.u0 = 0x0208;
-		VNZC = cond(r11 - r15);
-		if (Test(UGE,C))
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		stackArg0 = <invalid>;
+		sr_13 = vTaskSuspendAll(sr, stackArg0);
+		r11_18 = r15 + 0x0208;
+		r15_19.u0 = 0x0202;
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		stackArg0 = <invalid>;
+		vListRemove((word16) r15_19.u0 + 0x08, stackArg0);
+		r15_30.u0 = 0x0202;
+		*((word16) r15_30.u0 + 0x08) = r11_18;
+		r15_34.u0 = 0x0208;
+		if (r11_18 >= r15_34)
 		{
-			r15.u0 = 0x0202;
-			r15 = (word16) r15.u0 + 0x08;
-			VNZC = cond(r15);
-			r14 = r15;
-			r15.u0 = 644;
+			r15_42.u0 = 0x0202;
+			r14_45 = (struct Eq_1505 *) ((word16) r15_42.u0 + 0x08);
+			r15_46.u0 = 644;
 		}
 		else
 		{
-			r15.u0 = 0x0202;
-			r15 = (word16) r15.u0 + 0x08;
-			VNZC = cond(r15);
-			r14 = r15;
-			r15.u0 = 0x0282;
+			r15_37.u0 = 0x0202;
+			r14_40 = (struct Eq_1505 *) ((word16) r15_37.u0 + 0x08);
+			r15_41.u0 = 0x0282;
 		}
-		vListInsert();
-		xTaskResumeAll();
+		r14_48 = ϕ(r14_45, r14_40);
+		r15_47 = ϕ(r15_46, r15_41);
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		stackArg0 = <invalid>;
+		vListInsert(r14_48, r15_47, stackArg0);
+		xTaskResumeAll(pc, sr_13, out sr_65, out r5_165, out r6_166, out r7_167, out r8_168, out r9_169, out r10_170, out r11_171, out r12_172, out r13_173, out r14_174, out r15_62);
 	}
-	VNZC = cond(r15 - 0x00);
-	if (Test(EQ,Z))
-		vPortYield();
-	v10 = *sp;
-	sp.u1 = (word20) sp + 0x02;
-	r11 = v10;
-	v11 = *sp.u1;
-	sp.u1 = (word20) sp.u1 + 0x02;
+	sr_81 = ϕ(sr, sr_65);
+	r15_78 = ϕ(r15_8, r15_62);
+	if (r15_78 == 0x00)
+		vPortYield(pc, sr_81, out sr_153, out r5_154, out r6_155, out r7_156, out r8_157, out r9_158, out r10_159, out r11_160, out r12_161, out r13_162, out r14_163);
 }
 
-// 4702: define vTaskStartScheduler
-define vTaskStartScheduler
+// 4702: Register Eq_136 vTaskStartScheduler(Register (ptr20 Eq_102) pc, Register Eq_136 sr, Register out Eq_406 r12Out, Register out Eq_407 r13Out, Register out Eq_408 r14Out)
+Eq_136 vTaskStartScheduler(struct Eq_102 * pc, Eq_136 sr, union Eq_406 & r12Out, union Eq_407 & r13Out, union Eq_408 & r14Out)
 {
-	word20 sr;
-	word20 pc;
-	word20 r10;
-	word20 r11;
+	Eq_136 sr;
+	struct Eq_102 * pc;
 	word20 r12;
 	word20 r13;
 	word20 r14;
-	word20 r15;
-	word20 r4;
-	word20 r5;
-	word20 r6;
-	word20 r7;
-	word20 r8;
-	word20 r9;
-	VNZC_3 = cond(0x0202);
-	Z_4 = SLICE(VNZC_3, bool, 1);
-	C_60 = SLICE(VNZC_3, bool, 0);
-	N_63 = SLICE(VNZC_3, bool, 2);
-	V_91 = SLICE(VNZC_3, bool, 8);
 	if (0x0202 != 0x00)
 	{
-		xTaskCreate();
-		VNZC_34 = cond(r15_20 - 0x01);
-		Z_35 = SLICE(VNZC_34, bool, 1);
-		C_61 = SLICE(VNZC_34, bool, 0);
-		N_64 = SLICE(VNZC_34, bool, 2);
-		V_92 = SLICE(VNZC_34, bool, 8);
+		xTaskCreate(pc, sr, out sr_28, out r12_17, out r13_18, out r14_19, out r15_20);
 		if (r15_20 == 0x01)
 		{
 			sr_36 = sr_28 & ~0x08;
 			globals->ptr020E = 0x01;
 			globals->ptr0208 = 0x00;
-			xPortStartScheduler();
+			r12_41 = xPortStartScheduler(pc, out r13_42, out r14_43);
 		}
 	}
-	Z_93 = ϕ(Z_4, Z_35, Z_35);
-	V_90 = ϕ(V_91, V_92, V_92);
 	sr_89 = ϕ(sr, sr_28, sr_36);
-	r9_87 = ϕ(r9, r9_26, r9_50);
-	r8_85 = ϕ(r8, r8_25, r8_49);
-	r7_83 = ϕ(r7, r7_24, r7_48);
-	r6_81 = ϕ(r6, r6_23, r6_47);
-	r5_79 = ϕ(r5, r5_22, r5_46);
-	r4_77 = ϕ(r4, r4_21, r4_45);
-	r15_75 = ϕ(r15, r15_20, r15_44);
 	r14_73 = ϕ(r14, r14_19, r14_43);
 	r13_71 = ϕ(r13, r13_18, r13_42);
 	r12_69 = ϕ(r12, r12_17, r12_41);
-	r11_67 = ϕ(r11, r11_16, r11_40);
-	r10_65 = ϕ(r10, r10_15, r10_39);
-	N_62 = ϕ(N_63, N_64, N_64);
-	C_59 = ϕ(C_60, C_61, C_61);
+	r12Out = r12_69;
+	r13Out = r13_71;
+	r14Out = r14_73;
+	return sr_89;
 }
 
-// 4736: define vTaskEndScheduler
-define vTaskEndScheduler
+// 4736: void vTaskEndScheduler(Register word20 sr)
+void vTaskEndScheduler(word20 sr)
 {
-	sp = fp;
-	sr &= ~0x08;
 	globals->ptr020E = 0x00;
-	vPortEndScheduler();
-	v4 = (word16) *sp;
-	sp = (word20) sp + 0x02;
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg0 = <invalid>;
+	vPortEndScheduler(stackArg0);
 }
 
-// 4742: define vTaskSuspendAll
-define vTaskSuspendAll
+// 4742: Register Eq_136 vTaskSuspendAll(Register Eq_136 sr, Stack word16 wArg00)
+Eq_136 vTaskSuspendAll(Eq_136 sr, word16 wArg00)
 {
-	word16 fp;
-	word20 sr;
+	Eq_136 sr;
 	<type-error> Mem0;
 	sr_4 = sr & ~0x08;
 	++globals->ptr0218;
 	++globals->ptr0210;
-	VNZC_10 = cond(0x0218);
-	Z_11 = SLICE(VNZC_10, bool, 1);
-	C_23 = SLICE(VNZC_10, bool, 0);
-	N_26 = SLICE(VNZC_10, bool, 2);
-	V_30 = SLICE(VNZC_10, bool, 8);
 	if (0x0218 != 0x00)
 	{
 		globals->ptr0218 += ~0x00;
-		VNZC_13 = cond(globals->ptr0218);
-		Z_14 = SLICE(VNZC_13, bool, 1);
-		C_24 = SLICE(VNZC_13, bool, 0);
-		N_27 = SLICE(VNZC_13, bool, 2);
-		V_31 = SLICE(VNZC_13, bool, 8);
 		if (globals->ptr0218 == 0x00)
 			sr_15 = sr_4 | 0x08;
 	}
-	Z_32 = ϕ(Z_11, Z_14, Z_14);
-	V_29 = ϕ(V_30, V_31, V_31);
 	sr_28 = ϕ(sr_4, sr_4, sr_15);
-	N_25 = ϕ(N_26, N_27, N_27);
-	C_22 = ϕ(C_23, C_24, C_24);
-	sp_19 = fp + 0x02;
+	return sr_28;
 }
 
-// 475C: define xTaskResumeAll
-define xTaskResumeAll
+// 475C: Register ptr20 xTaskResumeAll(Register (ptr20 Eq_102) pc, Register ui20 sr, Register out Eq_136 srOut, Register out Eq_1437 r5Out, Register out Eq_1438 r6Out, Register out Eq_1439 r7Out, Register out Eq_1440 r8Out, Register out Eq_1441 r9Out, Register out Eq_1442 r10Out, Register out Eq_1443 r11Out, Register out Eq_1444 r12Out, Register out Eq_1445 r13Out, Register out Eq_1265 r14Out, Register out Eq_1447 r15Out)
+ptr20 xTaskResumeAll(struct Eq_102 * pc, ui20 sr, union Eq_136 & srOut, union Eq_1437 & r5Out, union Eq_1438 & r6Out, union Eq_1439 & r7Out, union Eq_1440 & r8Out, union Eq_1441 & r9Out, union Eq_1442 & r10Out, union Eq_1443 & r11Out, union Eq_1444 & r12Out, union Eq_1445 & r13Out, union Eq_1265 & r14Out, union Eq_1447 & r15Out)
 {
 	word16 fp;
-	word20 sr;
-	word20 pc;
+	ui20 sr;
+	struct Eq_102 * pc;
 	word20 r12;
 	word20 r13;
 	word20 r14;
-	word20 r4;
 	word20 r5;
 	word20 r6;
 	word20 r7;
 	sp_12 = fp - 0x08;
-	r8_15.u1 = 0x00;
+	r8_15.u0 = 0x00;
 	sr_17 = sr & ~0x08;
 	++globals->ptr0218;
 	globals->ptr0210 += ~0x00;
@@ -1160,7 +803,7 @@ define xTaskResumeAll
 			if (646 != 0x00)
 			{
 				r15_29.u0 = 0x0288;
-				v11_31 = (struct Eq_2222 *) *((word16) r15_29.u0 + 0x02);
+				v11_31 = (struct Eq_1800 *) *((word16) r15_29.u0 + 0x02);
 				v12_33 = v11_31->t0006;
 				r11_34 = v12_33;
 			}
@@ -1170,9 +813,15 @@ define xTaskResumeAll
 			if (r11_35 == 0x00)
 				break;
 			r15_133 = (word20) r11_35 + 0x0012;
-			vListRemove();
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			stackArg0 = <invalid>;
+			vListRemove(r15_133, stackArg0);
 			r10_144 = (word20) r11_35 + 0x08;
-			vListRemove();
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			stackArg0 = <invalid>;
+			vListRemove(r10_144, stackArg0);
 			((word20) r11_35 + 0x08)->u0 = 0x00;
 			v14_158 = *((word20) r11_35 + 0x06);
 			if (0x020C >= v14_158)
@@ -1180,7 +829,10 @@ define xTaskResumeAll
 			Mem182 = ϕ(Mem157, Mem162);
 			r15_168 = v14_158 * 0x10 + 0x0222;
 			r14_171 = r10_144;
-			vListInsertEnd();
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			stackArg0 = <invalid>;
+			sp_175 = vListInsertEnd(r10_144, r15_168, stackArg0, out r12_172, out r13_173);
 			r15_180.u0 = 0x0202;
 			v17_183 = *((word20) r11_35 + 0x06);
 			v18_184 = *((word16) r15_180.u0 + 0x06);
@@ -1194,7 +846,7 @@ define xTaskResumeAll
 				do
 				{
 					Mem53 = ϕ(Mem30, Mem54);
-					vTaskIncrementTick();
+					sp_43 = vTaskIncrementTick(out r12_46, out r13_47, out r14_48);
 					globals->ptr0212 += ~0x00;
 				} while (globals->ptr0212 != 0x00);
 			}
@@ -1212,12 +864,11 @@ define xTaskResumeAll
 		Mem95 = ϕ(Mem30, Mem97);
 		r9_58 = ϕ(r9_60, r9_57);
 		if (r9_58 == 0x01)
-			vPortYield();
+			sp_86 = vPortYield(pc, sr_17, out sr_87, out r5_81, out r6_82, out r7_83, out r8_84, out r9_280, out r10_281, out r11_282, out r12_76, out r13_77, out r14_78);
 	}
 	r7_252 = ϕ(r7, r7, r7, r7_83);
 	r6_243 = ϕ(r6, r6, r6, r6_82);
 	r5_234 = ϕ(r5, r5, r5, r5_81);
-	r4_225 = ϕ(r4, r4, r4, r4_80);
 	r14_218 = ϕ(r14, r14, r14_220, r14_78);
 	r13_211 = ϕ(r13, r13, r13_213, r13_77);
 	r12_204 = ϕ(r12, r12, r12_206, r12_76);
@@ -1225,27 +876,13 @@ define xTaskResumeAll
 	r8_104 = ϕ(r8_15, r8_15, r8_15, r8_84);
 	sr_101 = ϕ(sr_17, sr_17, sr_17, sr_87);
 	Mem94 = ϕ(Mem20, Mem20, Mem95, Mem95);
-	VNZC_92 = cond(0x0218);
-	Z_93 = SLICE(VNZC_92, bool, 1);
-	C_198 = SLICE(VNZC_92, bool, 0);
-	N_201 = SLICE(VNZC_92, bool, 2);
-	V_262 = SLICE(VNZC_92, bool, 8);
 	if (0x0218 != 0x00)
 	{
 		globals->ptr0218 += ~0x00;
-		VNZC_99 = cond(globals->ptr0218);
-		Z_100 = SLICE(VNZC_99, bool, 1);
-		C_199 = SLICE(VNZC_99, bool, 0);
-		N_202 = SLICE(VNZC_99, bool, 2);
-		V_263 = SLICE(VNZC_99, bool, 8);
 		if (globals->ptr0218 == 0x00)
 			sr_102 = sr_101 | 0x08;
 	}
-	Z_264 = ϕ(Z_93, Z_100, Z_100);
-	V_261 = ϕ(V_262, V_263, V_263);
 	sr_260 = ϕ(sr_101, sr_101, sr_102);
-	N_200 = ϕ(N_201, N_202, N_202);
-	C_197 = ϕ(C_198, C_199, C_199);
 	Mem117 = ϕ(Mem94, Mem98, Mem98);
 	r15_110 = r8_104;
 	v19_118 = *sp_112;
@@ -1258,68 +895,57 @@ define xTaskResumeAll
 	v22_127 = sp_119->t0004;
 	r11_129 = v22_127;
 	sp_131 = (char *) &sp_119->t0004 + 0x04;
+	srOut = sr_260;
+	r5Out = r5_234;
+	r6Out = r6_243;
+	r7Out = r7_252;
+	r8Out = r8_120;
+	r9Out = r9_123;
+	r10Out = r10_126;
+	r11Out = r11_129;
+	r12Out = r12_204;
+	r13Out = r13_211;
+	r14Out = r14_218;
+	r15Out = r15_110;
+	return sp_131;
 }
 
-// 481E: define xTaskGetTickCount
-define xTaskGetTickCount
+// 481E: Register Eq_1991 xTaskGetTickCount(Register ui20 sr, Stack word16 wArg00, Register out Eq_43 srOut, Register out Eq_44 r15Out)
+Eq_1991 xTaskGetTickCount(ui20 sr, word16 wArg00, union Eq_43 & srOut, union Eq_44 & r15Out)
 {
-	word16 fp;
-	word20 sr;
-	<type-error> Mem0;
-	sr_4 = sr & ~0x08;
 	++globals->ptr0218;
-	VNZC_7 = cond(globals->ptr0218);
-	Z_9 = SLICE(VNZC_7, bool, 1);
-	C_21 = SLICE(VNZC_7, bool, 0);
-	N_24 = SLICE(VNZC_7, bool, 2);
-	V_29 = SLICE(VNZC_7, bool, 8);
-	r15_8.u0 = 0x0208;
+	Eq_43 sr_13 = sr & ~0x08;
+	Eq_44 r15_8 = 0x0208;
 	if (globals->ptr0218 != 0x00)
 	{
 		globals->ptr0218 += ~0x00;
-		VNZC_11 = cond(globals->ptr0218);
-		Z_12 = SLICE(VNZC_11, bool, 1);
-		C_22 = SLICE(VNZC_11, bool, 0);
-		N_25 = SLICE(VNZC_11, bool, 2);
-		V_30 = SLICE(VNZC_11, bool, 8);
 		if (globals->ptr0218 == 0x00)
-			sr_13 = sr_4 | 0x08;
+			sr_13 |= 0x08;
 	}
-	Z_31 = ϕ(Z_9, Z_12, Z_12);
-	V_28 = ϕ(V_29, V_30, V_30);
-	sr_27 = ϕ(sr_4, sr_4, sr_13);
-	N_23 = ϕ(N_24, N_25, N_25);
-	C_20 = ϕ(C_21, C_22, C_22);
-	sp_17 = fp + 0x02;
+	srOut = sr_13;
+	r15Out = r15_8;
+	return fp + 0x02;
 }
 
-// 4834: define uxTaskGetNumberOfTasks
-define uxTaskGetNumberOfTasks
+// 4834: void uxTaskGetNumberOfTasks(Register word20 sr, Stack word16 wArg00)
+void uxTaskGetNumberOfTasks(word20 sr, word16 wArg00)
 {
-	sp = fp;
-	sr &= ~0x08;
+	<type-error> Mem0;
 	++globals->ptr0218;
-	VNZC = cond(globals->ptr0218);
-	r15.u0 = 0x0206;
-	if (Test(NE,Z))
+	if (globals->ptr0218 != 0x00)
 	{
 		globals->ptr0218 += ~0x00;
-		VNZC = cond(globals->ptr0218);
-		if (Test(EQ,Z))
-			sr |= 0x08;
+		globals->ptr0218 != 0x00;
 	}
-	v7 = (word16) *sp;
-	sp = (word20) sp + 0x02;
 }
 
-// 484A: define vTaskIncrementTick
-define vTaskIncrementTick
+// 484A: Register word20 vTaskIncrementTick(Register out Eq_1950 r12Out, Register out Eq_1951 r13Out, Register out Eq_1265 r14Out)
+word20 vTaskIncrementTick(union Eq_1950 & r12Out, union Eq_1951 & r13Out, union Eq_1265 & r14Out)
 {
 	word16 fp;
 	word20 r12;
 	word20 r13;
 	word20 r14;
-	word20 r15;
 	sp_6 = fp - 0x04;
 	if (0x0210 == 0x00)
 	{
@@ -1337,42 +963,36 @@ define vTaskIncrementTick
 			r12_117 = ϕ(r12, r12, r12_96);
 			sp_40 = ϕ(sp_6, sp_6, sp_99);
 			Mem20 = ϕ(Mem13, Mem18, Mem104);
-			r15_19 = &globals->ptr0282;
-			v11_21 = r15_19->w0000;
+			r15_19.u0 = 0x0282;
+			v11_21 = (word16) *r15_19.u0;
 			if (v11_21 != 0x00)
 			{
-				v12_25 = r15_19->ptr0002;
+				v12_25 = (struct Eq_2097 *) *((word16) r15_19.u0 + 0x02);
 				v13_27 = v12_25->ptr0002;
-				r15_28 = v13_27;
 				v14_29 = v13_27->t0006;
 				r11_30 = v14_29;
 			}
 			else
 				r11_24.u0 = 0x00;
-			r15_128 = ϕ(r15_28, r15_19);
 			r11_31 = ϕ(r11_30, r11_24);
-			VNZC_32 = cond(r11_31);
-			Z_33 = SLICE(VNZC_32, bool, 1);
-			C_109 = SLICE(VNZC_32, bool, 0);
-			N_113 = SLICE(VNZC_32, bool, 2);
-			V_132 = SLICE(VNZC_32, bool, 8);
 			if (r11_31 == 0x00)
 				break;
-			v15_35 = *((word20) r11_31 + 0x08);
-			VNZC_36 = cond(0x0208 - v15_35);
-			C_37 = SLICE(VNZC_36, bool, 0);
-			N_112 = SLICE(VNZC_36, bool, 2);
-			V_131 = SLICE(VNZC_36, bool, 8);
-			Z_135 = SLICE(VNZC_36, bool, 1);
+			v15_35 = (ptr16) *((word20) r11_31 + 0x08);
 			if (0x0208 >= v15_35)
 				break;
 			r10_51 = (word20) r11_31 + 0x08;
-			vListRemove();
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			stackArg0 = <invalid>;
+			vListRemove(r10_51, stackArg0);
 			v17_62 = (word16) *((word20) r11_31 + 0x001A);
 			if (v17_62 != 0x00)
 			{
 				r15_66 = (word20) r11_31 + 0x0012;
-				vListRemove();
+				// Failed to bind call argument.
+				// Please report this issue at https://github.com/uxmal/reko
+				stackArg0 = <invalid>;
+				vListRemove(r15_66, stackArg0);
 			}
 			*((word20) r11_31 + 0x08) = 0x00;
 			v19_81 = *((word20) r11_31 + 0x06);
@@ -1381,77 +1001,75 @@ define vTaskIncrementTick
 			Mem104 = ϕ(Mem80, Mem85);
 			r15_91 = v19_81 * 0x10 + 0x0222;
 			r14_95 = r10_51;
-			vListInsertEnd();
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			stackArg0 = <invalid>;
+			sp_99 = vListInsertEnd(r10_51, r15_91, stackArg0, out r12_96, out r13_97);
 		}
 	}
 	else
-	{
 		++globals->ptr0212;
-		VNZC_12 = cond(globals->ptr0212);
-		C_108 = SLICE(VNZC_12, bool, 0);
-		N_111 = SLICE(VNZC_12, bool, 2);
-		V_130 = SLICE(VNZC_12, bool, 8);
-		Z_134 = SLICE(VNZC_12, bool, 1);
-	}
-	Z_133 = ϕ(Z_134, Z_135, Z_33);
-	V_129 = ϕ(V_130, V_131, V_132);
-	r15_126 = ϕ(r15, r15_128, r15_128);
 	r14_122 = ϕ(r14, r14_125, r14_125);
 	r13_118 = ϕ(r13, r13_121, r13_121);
 	r12_114 = ϕ(r12, r12_117, r12_117);
-	N_110 = ϕ(N_111, N_112, N_113);
-	C_107 = ϕ(C_108, C_37, C_109);
-	Mem41 = ϕ(Mem11, Mem20, Mem20);
 	sp_38 = ϕ(sp_6, sp_40, sp_40);
-	v8_42 = *sp_38;
 	sp_43 = (word20) sp_38 + 0x02;
-	r10_44 = v8_42;
-	v9_45 = *sp_43;
-	r11_47 = v9_45;
-	sp_49 = (char *) sp_43 + 0x04;
+	sp_49 = sp_43 + 0x04;
+	r12Out = r12_114;
+	r13Out = r13_118;
+	r14Out = r14_122;
+	return sp_49;
 }
 
-// 48DA: define vTaskPlaceOnEventList
-define vTaskPlaceOnEventList
+// 48DA: Register Eq_2175 vTaskPlaceOnEventList(Register Eq_721 r14, Register Eq_1507 r15)
+Eq_2175 vTaskPlaceOnEventList(Eq_721 r14, Eq_1507 r15)
 {
-	word20 r15;
-	word20 r14;
+	Eq_1507 r15;
+	Eq_721 r14;
 	word16 wLoc04;
 	r15_10.u0 = 0x0202;
-	vListInsert();
-	r11_23 = r14 + 0x0208;
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg0 = <invalid>;
+	vListInsert((word16) r15_10.u0 + 0x0012, r15, stackArg0);
+	r11_23.u1 = (word20) r14.u0 + 0x0208;
 	r15_24.u0 = 0x0202;
-	vListRemove();
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg0 = <invalid>;
+	vListRemove((word16) r15_24.u0 + 0x08, stackArg0);
 	r15_35.u0 = 0x0202;
 	*((word16) r15_35.u0 + 0x08) = r11_23;
 	r15_39.u0 = 0x0208;
 	if (r11_23 >= r15_39)
 	{
 		r15_47.u0 = 0x0202;
-		r14_50 = (word16) r15_47.u0 + 0x08;
+		r14_50 = (struct Eq_1505 *) ((word16) r15_47.u0 + 0x08);
 		r15_51.u0 = 644;
 	}
 	else
 	{
 		r15_42.u0 = 0x0202;
-		r14_45 = (word16) r15_42.u0 + 0x08;
+		r14_45 = (struct Eq_1505 *) ((word16) r15_42.u0 + 0x08);
 		r15_46.u0 = 0x0282;
 	}
 	r14_53 = ϕ(r14_50, r14_45);
 	r15_52 = ϕ(r15_51, r15_46);
-	vListInsert();
-	v10_63 = wLoc04;
-	r11_65 = v10_63;
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg0 = <invalid>;
+	vListInsert(r14_53, r15_52, stackArg0);
+	r11_65 = wLoc04;
+	return r11_65;
 }
 
-// 4930: define xTaskRemoveFromEventList
-define xTaskRemoveFromEventList
+// 4930: Register Eq_2226 xTaskRemoveFromEventList(Register (ptr20 Eq_2227) r15, Register out Eq_2226 r11Out, Register out Eq_2229 r15Out)
+Eq_2226 xTaskRemoveFromEventList(struct Eq_2227 * r15, union Eq_2226 & r11Out, union Eq_2229 & r15Out)
 {
-	word20 r10;
-	word20 r15;
+	Eq_2226 r10;
+	struct Eq_2227 * r15;
 	word16 wLoc06;
-	wLoc04_98 = r10;
-	v6_10 = r15->w0000;
+	v6_10 = (word16) r15->t0000;
 	if (v6_10 != 0x00)
 	{
 		v9_14 = r15->ptr0002;
@@ -1463,10 +1081,16 @@ define xTaskRemoveFromEventList
 		r10_13.u0 = 0x00;
 	r10_20 = ϕ(r10_19, r10_13);
 	r11_22 = (word20) r10_20 + 0x0012;
-	vListRemove();
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg0 = <invalid>;
+	vListRemove(r11_22, stackArg0);
 	if (0x0210 == 0x00)
 	{
-		vListRemove();
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		stackArg0 = <invalid>;
+		vListRemove((word20) r10_20 + 0x08, stackArg0);
 		((word20) r10_20 + 0x08)->u0 = 0x00;
 		v13_52 = *((word20) r10_20 + 0x06);
 		if (0x020C >= v13_52)
@@ -1478,215 +1102,192 @@ define xTaskRemoveFromEventList
 	else
 	{
 		r14_35 = (word20) r10_20 + 0x0012;
-		r15_36.u1 = 646;
+		r15_36 = &globals->t0286;
 	}
 	Mem79 = ϕ(Mem80, Mem8);
 	r14_67 = ϕ(r14_65, r14_35);
 	r15_66 = ϕ(r15_62, r15_36);
-	vListInsertEnd();
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg0 = <invalid>;
+	vListInsertEnd(r14_67, r15_66, stackArg0, out r12_128, out r13_129);
 	r15_76.u0 = 0x0202;
 	v16_81 = *((word20) r10_20 + 0x06);
 	v17_82 = *((word16) r15_76.u0 + 0x06);
-	VNZC_83 = cond(v17_82 - v16_81);
-	C_84 = SLICE(VNZC_83, bool, 0);
-	N_101 = SLICE(VNZC_83, bool, 2);
-	V_107 = SLICE(VNZC_83, bool, 8);
-	Z_109 = SLICE(VNZC_83, bool, 1);
 	if (v17_82 >= v16_81)
-		r15_86.u1 = 0x01;
+		r15_86.u0 = 0x01;
 	else
-		r15_85.u1 = 0x00;
+		r15_85.u0 = 0x00;
 	r15_105 = ϕ(r15_86, r15_85);
-	v18_89 = wLoc06;
-	r10_91 = v18_89;
-	v19_92 = wLoc04_98;
-	r11_94 = v19_92;
+	r10_91 = wLoc06;
+	r11_94 = r10;
+	r11Out = r11_94;
+	r15Out = r15_105;
+	return r10_91;
 }
 
-// 49AC: define prvIdleTask
-define prvIdleTask
+// 49AC: void prvIdleTask(Register (ptr20 Eq_102) pc, Register Eq_136 sr)
+void prvIdleTask(struct Eq_102 * pc, Eq_136 sr)
 {
+	Eq_136 sr;
+	struct Eq_102 * pc;
 	while (true)
 	{
-		sp = fp;
-		prvCheckTasksWaitingTermination();
-		VNZC = cond(0x0222 - 0x02);
-		if (Test(ULT,C))
-			vPortYield();
+		sr_3 = ϕ(sr, sr_18, sr_38);
+		sr_18 = prvCheckTasksWaitingTermination(pc, sr_3);
+		if (0x0224 < 0x00)
+			vPortYield(pc, sr_18, out sr_38, out r5_46, out r6_47, out r7_48, out r8_49, out r9_50, out r10_51, out r11_52, out r12_53, out r13_54, out r14_55);
 	}
 }
 
-// 49BE: define prvInitialiseTCBVariables
-define prvInitialiseTCBVariables
+// 49BE: Register word20 prvInitialiseTCBVariables(Register Eq_1044 r12, Register (ptr20 byte) r13, Register Eq_1048 r14, Register Eq_1056 r15)
+word20 prvInitialiseTCBVariables(Eq_1044 r12, byte * r13, Eq_1048 r14, Eq_1056 r15)
 {
 	word20 r10;
-	word20 r15;
-	word20 r14;
-	word20 r13;
-	word20 r12;
-	word16 wLoc06;
-	wLoc04_73 = r10;
+	Eq_1056 r15;
+	Eq_1048 r14;
+	byte * r13;
+	Eq_1044 r12;
 	r10_16 = r12;
-	*((word20) r15 + 0x0024) = r14;
+	*((word24) r15 + 0x0024) = r14;
 	r13_23.u1 = 0x08;
-	strncpy();
-	*((word20) r15 + 0x0023) = 0x00;
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg0 = <invalid>;
+	strncpy(r13_23, r13, (word24) r15 + 0x001C, stackArg0);
+	*((word24) r15 + 0x0023) = 0x00;
 	if (r12 < 0x04)
 		r10_37.u0 = 0x03;
 	r10_41 = ϕ(r10_16, r10_37);
-	*((word20) r15 + 0x06) = r10_41;
-	vListInitialiseItem();
-	vListInitialiseItem();
-	*((word20) r15 + 0x0E) = r15;
+	*((word24) r15 + 0x06) = r10_41;
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg0 = <invalid>;
+	vListInitialiseItem((word24) r15 + 0x08, stackArg0);
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg0 = <invalid>;
+	vListInitialiseItem((word24) r15 + 0x0012, stackArg0);
+	*((word24) r15 + 0x0E) = r15;
 	r15_55.u1 = 0x04;
 	r15_56 = r15_55 - r10_41;
-	VNZC_57 = cond(r15_56);
-	C_74 = SLICE(VNZC_57, bool, 0);
-	N_75 = SLICE(VNZC_57, bool, 2);
-	V_79 = SLICE(VNZC_57, bool, 8);
-	Z_80 = SLICE(VNZC_57, bool, 1);
-	*((word20) r15 + 0x0012) = r15_56;
-	*((word20) r15 + 0x0018) = r15;
-	v17_64 = wLoc06;
-	r10_66 = v17_64;
-	v18_67 = wLoc04_73;
-	r11_69 = v18_67;
+	*((word24) r15 + 0x0012) = r15_56;
+	*((word24) r15 + 0x0018) = r15;
+	r11_69 = r10;
+	return r11_69;
 }
 
-// 4A12: define prvInitialiseTaskLists
-define prvInitialiseTaskLists
+// 4A12: void prvInitialiseTaskLists(Stack word16 wArg00)
+void prvInitialiseTaskLists(word16 wArg00)
 {
-	word16 fp;
 	r11_6.u1 = 0x00;
 	do
 	{
 		r11_7 = ϕ(r11_6, r11_21);
 		r15_9 = r11_7 * 0x02;
 		r15_13 = r15_9 * 0x08 + 0x0222;
-		vListInitialise();
+		r11_15 = vListInitialise(r15_13);
 		r11_21 = (word20) r11_15 + 0x01;
 	} while (r11_15 >= 0x03);
-	r15_24.u1 = 0x0262;
-	vListInitialise();
-	r15_31.u1 = 0x0272;
-	vListInitialise();
-	r15_38.u1 = 646;
-	vListInitialise();
-	r15_45.u1 = 662;
-	vListInitialise();
+	r15_24.u0 = 0x0262;
+	vListInitialise(r15_24);
+	r15_31.u0 = 0x0272;
+	vListInitialise(r15_31);
+	r15_38.u0 = 646;
+	vListInitialise(r15_38);
+	r15_45.u0 = 662;
+	vListInitialise(r15_45);
 	globals->ptr0282 = 0x0262;
 	globals->t0284.u0 = 0x0272;
-	sp_59 = fp + 0x02;
 }
 
-// 4A5E: define prvCheckTasksWaitingTermination
-define prvCheckTasksWaitingTermination
+// 4A5E: Register Eq_136 prvCheckTasksWaitingTermination(Register (ptr20 Eq_102) pc, Register Eq_136 sr)
+Eq_136 prvCheckTasksWaitingTermination(struct Eq_102 * pc, Eq_136 sr)
 {
-	sp = fp;
-	sp -= 0x02;
-	*sp = r11;
-	VNZC = cond(0x0204 - 0x00);
-	if (Test(NE,Z))
+	Eq_136 sr;
+	struct Eq_102 * pc;
+	if (0x0204 != 0x00)
 	{
-		vTaskSuspendAll();
-		r11.u0 = 0x00;
-		VNZC = cond(662 - 0x00);
-		if (Test(EQ,Z))
-			r11.u0 = 0x01;
-		xTaskResumeAll();
-		VNZC = cond(r11 - 0x00);
-		if (Test(EQ,Z))
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		stackArg0 = <invalid>;
+		sr_10 = vTaskSuspendAll(sr, stackArg0);
+		xTaskResumeAll(pc, sr_10, out sr_27, out r5_154, out r6_155, out r7_156, out r8_157, out r9_158, out r10_159, out r11_23, out r12_160, out r13_161, out r14_162, out r15_163);
+		if (r11_23 == 0x00)
 		{
-			sr &= ~0x08;
+			sr_42 = sr_27 & ~0x08;
 			++globals->ptr0218;
-			VNZC = cond(globals->ptr0218);
-			VNZC = cond(662 - 0x00);
-			if (Test(NE,Z))
+			if (662 != 0x00)
 			{
-				r15.u0 = 664;
-				v10 = *((word16) r15.u0 + 0x02);
-				r15 = v10;
-				v11 = *((word16) r15.u0 + 0x06);
-				r11 = v11;
+				r15_49.u0 = 664;
+				v10_50 = (struct Eq_2526 *) *((word16) r15_49.u0 + 0x02);
+				v11_52 = v10_50->t0006;
+				r11_53 = v11_52;
 			}
 			else
-				r11.u0 = 0x00;
-			r15 = r11;
-			r15 = (word16) r15.u0 + 0x08;
-			VNZC = cond(r15);
-			vListRemove();
+				r11_48.u1 = 0x00;
+			r11_54 = ϕ(r11_53, r11_48);
+			r15_56 = (word20) r11_54.u0 + 0x08;
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			stackArg0 = <invalid>;
+			vListRemove(r15_56, stackArg0);
 			globals->ptr0206 += ~0x00;
-			VNZC = cond(globals->ptr0206);
 			globals->ptr0204 += ~0x00;
-			VNZC = cond(globals->ptr0204);
-			VNZC = cond(0x0218 - 0x00);
-			if (Test(NE,Z))
+			if (0x0218 != 0x00)
 			{
 				globals->ptr0218 += ~0x00;
-				VNZC = cond(globals->ptr0218);
-				if (Test(EQ,Z))
-					sr |= 0x08;
+				if (globals->ptr0218 == 0x00)
+					sr_77 = sr_42 | 0x08;
 			}
-			r15 = r11;
+			sr_144 = ϕ(sr_42, sr_77, sr_42);
 			prvDeleteTCB();
 		}
 	}
-	v6 = *sp;
-	sp.u1 = (word20) sp + 0x02;
-	r11 = v6;
-	v7 = *sp.u1;
-	sp.u1 = (word20) sp.u1 + 0x02;
+	sr_143 = ϕ(sr, sr_27, sr_144);
+	return sr_143;
 }
 
-// 4AC2: define prvAllocateTCBAndStack
-define prvAllocateTCBAndStack
+// 4AC2: Register ptr20 prvAllocateTCBAndStack(Register (ptr20 Eq_102) pc, Register Eq_136 sr, Register out Eq_136 srOut, Register out Eq_1026 r5Out, Register out Eq_1027 r6Out, Register out Eq_1028 r7Out, Register out Eq_1029 r8Out, Register out Eq_1030 r9Out, Register out Eq_1031 r10Out, Register out Eq_1032 r12Out, Register out Eq_1033 r13Out, Register out Eq_1034 r14Out, Register out Eq_1035 r15Out)
+ptr20 prvAllocateTCBAndStack(struct Eq_102 * pc, Eq_136 sr, union Eq_136 & srOut, union Eq_1026 & r5Out, union Eq_1027 & r6Out, union Eq_1028 & r7Out, union Eq_1029 & r8Out, union Eq_1030 & r9Out, union Eq_1031 & r10Out, union Eq_1032 & r12Out, union Eq_1033 & r13Out, union Eq_1034 & r14Out, union Eq_1035 & r15Out)
 {
 	word16 fp;
-	word20 sr;
-	word20 pc;
+	Eq_136 sr;
+	struct Eq_102 * pc;
 	sp_6 = fp - 0x04;
-	r15_11.u1 = 0x26;
-	pvPortMalloc();
+	r15_11.u0 = 0x26;
+	sr_26 = pvPortMalloc(pc, sr, r15_11, out r5_21, out r6_22, out r7_23, out r8_24, out r9_25, out r10_14, out r11_118, out r12_16, out r13_17, out r14_18, out r15_19);
 	r11_31 = r15_19;
-	VNZC_32 = cond(r15_19);
-	Z_33 = SLICE(VNZC_32, bool, 1);
-	C_88 = SLICE(VNZC_32, bool, 0);
-	N_91 = SLICE(VNZC_32, bool, 2);
-	V_104 = SLICE(VNZC_32, bool, 8);
 	if (r15_19 != 0x00)
 	{
-		pvPortMalloc();
+		sr_49 = pvPortMalloc(pc, sr_26, r10_14 * 0x02, out r5_44, out r6_45, out r7_46, out r8_47, out r9_48, out r10_37, out r11_38, out r12_39, out r13_40, out r14_41, out r15_42);
 		*((word20) r11_38 + 0x02) = r15_42;
-		VNZC_57 = cond(r15_42);
-		Z_58 = SLICE(VNZC_57, bool, 1);
-		C_89 = SLICE(VNZC_57, bool, 0);
-		N_92 = SLICE(VNZC_57, bool, 2);
-		V_105 = SLICE(VNZC_57, bool, 8);
 		if (r15_42 == 0x00)
 		{
-			vPortFree();
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			stackArg0 = <invalid>;
+			sp_71 = vPortFree(stackArg0);
 			r11_72.u0 = 0x00;
 		}
 		else
 		{
-			r14_60.u1 = 0xA5;
-			memset();
+			r14_60.u0 = 0xA5;
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			stackArg0 = <invalid>;
+			sp_63 = memset(sr_49, r10_37, r14_60, r15_42, stackArg0, out sr_64, out r12_61, out r13_65, out r14_62);
 		}
 	}
-	Z_106 = ϕ(Z_33, Z_58, Z_67);
-	V_103 = ϕ(V_104, V_105, V_69);
 	sr_102 = ϕ(sr_26, sr_49, sr_64);
 	r9_101 = ϕ(r9_25, r9_48, r9_48);
 	r8_100 = ϕ(r8_24, r8_47, r8_47);
 	r7_99 = ϕ(r7_23, r7_46, r7_46);
 	r6_98 = ϕ(r6_22, r6_45, r6_45);
 	r5_97 = ϕ(r5_21, r5_44, r5_44);
-	r4_96 = ϕ(r4_20, r4_43, r4_43);
 	r14_95 = ϕ(r14_18, r14_41, r14_62);
 	r13_94 = ϕ(r13_17, r13_40, r13_65);
 	r12_93 = ϕ(r12_16, r12_39, r12_61);
-	N_90 = ϕ(N_91, N_92, N_66);
-	C_87 = ϕ(C_88, C_89, C_68);
 	Mem76 = ϕ(Mem8, Mem56, Mem56);
 	sp_75 = ϕ(sp_6, sp_71, sp_63);
 	r11_73 = ϕ(r11_31, r11_72, r11_38);
@@ -1694,43 +1295,38 @@ define prvAllocateTCBAndStack
 	v9_77 = *sp_75;
 	sp_78 = (word20) sp_75 + 0x02;
 	r10_79 = v9_77;
-	v10_80 = *sp_78;
-	r11_82 = v10_80;
-	sp_84 = (char *) sp_78 + 0x04;
+	sp_84 = sp_78 + 0x04;
+	srOut = sr_102;
+	r5Out = r5_97;
+	r6Out = r6_98;
+	r7Out = r7_99;
+	r8Out = r8_100;
+	r9Out = r9_101;
+	r10Out = r10_79;
+	r12Out = r12_93;
+	r13Out = r13_94;
+	r14Out = r14_95;
+	r15Out = r15_74;
+	return sp_84;
 }
 
-// 4B02: define prvDeleteTCB
-define prvDeleteTCB
+// 4B02: void prvDeleteTCB()
+void prvDeleteTCB()
 {
-	sp = fp;
-	sp -= 0x02;
-	*sp = r11;
-	r11 = r15;
-	v5 = *((word20) r15 + 0x02);
-	r15 = v5;
-	vPortFree();
-	r15 = r11;
-	vPortFree();
-	v6 = *sp;
-	sp.u1 = (word20) sp + 0x02;
-	r11 = v6;
-	v7 = *sp.u1;
-	sp.u1 = (word20) sp.u1 + 0x02;
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg0 = <invalid>;
+	vPortFree(stackArg0);
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg0 = <invalid>;
+	vPortFree(stackArg0);
 }
 
-// 4B18: define vTaskSwitchContext
-define vTaskSwitchContext
+// 4B18: void vTaskSwitchContext(Stack word16 wArg00)
+void vTaskSwitchContext(word16 wArg00)
 {
-	word16 fp;
 	<type-error> Mem0;
-	word20 r13;
-	word20 r14;
-	word20 r15;
-	VNZC_3 = cond(0x0210);
-	Z_4 = SLICE(VNZC_3, bool, 1);
-	C_104 = SLICE(VNZC_3, bool, 0);
-	N_107 = SLICE(VNZC_3, bool, 2);
-	V_118 = SLICE(VNZC_3, bool, 8);
 	if (0x0210 == 0x00)
 	{
 		r15_5.u0 = 0x020C;
@@ -1740,7 +1336,7 @@ define vTaskSwitchContext
 			do
 			{
 				Mem14 = ϕ(Mem0, Mem15);
-				globals->t020C = (word16) globals->t020C + 0x0000FFFF;
+				globals->t020C = (word24) globals->t020C + 0x0000FFFF;
 				r15_17.u0 = 0x020C;
 				v7_22 = (word16) globals->a0222[r15_17];
 			} while (v7_22 == 0x00);
@@ -1748,271 +1344,212 @@ define vTaskSwitchContext
 		Mem38 = ϕ(Mem0, Mem15);
 		r13_25.u1 = 0x0222;
 		r14_26.u0 = 0x020C;
-		r14_31 = (struct Eq_3265 *) ((word16) r13_25.u1 + r14_26 * 0x10);
+		r14_31 = (struct Eq_2750 *) ((word16) r13_25.u1 + r14_26 * 0x10);
 		r15_32.u0 = 0x020C;
-		r15_37 = (struct Eq_3271 *) ((word16) r13_25.u1 + r15_32 * 0x10);
+		r15_37 = (struct Eq_2756 *) ((word16) r13_25.u1 + r15_32 * 0x10);
 		v10_39 = r15_37->ptr0004;
 		v11_41 = v10_39->w0002;
 		r14_31->w0004 = v11_41;
 		r14_45.u0 = 0x020C;
-		r14_50 = (struct Eq_3288 *) ((word16) r13_25.u1 + r14_45 * 0x10);
+		r14_50 = (struct Eq_2773 *) ((word16) r13_25.u1 + r14_45 * 0x10);
 		r15_51.u0 = 0x020C;
-		r15_56 = (struct Eq_3294 *) ((word16) r13_25.u1 + r15_51 * 0x10);
-		v13_57 = r14_50->t0004;
-		r14_58 = v13_57;
-		v14_59 = r15_56->t0002;
+		r15_56 = (struct Eq_2779 *) ((word16) r13_25.u1 + r15_51 * 0x10);
+		v13_57 = r14_50->w0004;
+		v14_59 = r15_56->w0002;
 		if (v13_57 == v14_59)
 		{
 			r15_63.u0 = 0x020C;
 			r14_68.u0 = 0x020C;
-			v18_74 = globals->a0226[r14_68];
-			r14_75 = v18_74;
-			v19_76 = (word16) *((word16) v18_74 + 0x02);
-			globals->a0226[r15_63] = (struct Eq_8269) v19_76;
+			v18_74 = (struct Eq_2813 *) globals->a0226[r14_68];
+			v19_76 = v18_74->w0002;
+			globals->a0226[r15_63] = (struct Eq_6909) v19_76;
 		}
-		r14_114 = ϕ(r14_58, r14_75);
 		Mem86 = ϕ(Mem44, Mem79);
-		r15_80.u1 = 0x020C;
-		VNZC_85 = cond(r15_80 * 0x10);
-		C_105 = SLICE(VNZC_85, bool, 0);
-		N_108 = SLICE(VNZC_85, bool, 2);
-		V_119 = SLICE(VNZC_85, bool, 8);
-		Z_121 = SLICE(VNZC_85, bool, 1);
-		v15_87 = globals->a0226[r15_80];
-		r15_88 = v15_87;
-		v16_89 = *((word16) v15_87 + 0x06);
+		r15_80.u0 = 0x020C;
+		v15_87 = (struct Eq_2832 *) globals->a0226[r15_80];
+		v16_89 = v15_87->t0006;
 		globals->t0202 = v16_89;
 	}
-	Z_120 = ϕ(Z_4, Z_121);
-	V_117 = ϕ(V_118, V_119);
-	r15_115 = ϕ(r15, r15_88);
-	r14_112 = ϕ(r14, r14_114);
-	r13_109 = ϕ(r13, r13_25);
-	N_106 = ϕ(N_107, N_108);
-	C_103 = ϕ(C_104, C_105);
-	sp_97 = fp + 0x02;
 }
 
-// 4BD4: define vListInitialise
-define vListInitialise
+// 4BD4: Register Eq_2840 vListInitialise(Register Eq_2434 r15)
+Eq_2840 vListInitialise(Eq_2434 r15)
 {
-	word20 r15;
+	Eq_2434 r15;
 	word16 wLoc04;
-	r15_8 = &r15->w0006;
-	VNZC_9 = cond(&r15->w0006);
-	C_38 = SLICE(VNZC_9, bool, 0);
-	N_39 = SLICE(VNZC_9, bool, 2);
-	V_40 = SLICE(VNZC_9, bool, 8);
-	Z_41 = SLICE(VNZC_9, bool, 1);
-	r15->t0002 = &r15->w0006;
-	r15->t0004 = &r15->w0006;
-	r15->w0006 = ~0x00;
-	r15->t0008 = &r15->w0006;
-	r15->t000A = &r15->w0006;
-	r15->w000C = 0x00;
-	vListInitialiseItem();
-	r15->w0000 = 0x00;
-	v13_32 = wLoc04;
-	r11_34 = v13_32;
+	*((word24) r15 + 0x02) = (word24) r15 + 0x06;
+	*((word24) r15 + 0x04) = (word24) r15 + 0x06;
+	((word24) r15 + 0x06)->u0 = ~0x00;
+	*((word24) r15 + 0x08) = (word24) r15 + 0x06;
+	*((word24) r15 + 0x0A) = (word24) r15 + 0x06;
+	((word24) r15 + 0x0C)->u0 = 0x00;
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg0 = <invalid>;
+	vListInitialiseItem((word24) r15 + 0x06, stackArg0);
+	r15->u0 = 0x00;
+	r11_34 = wLoc04;
+	return r11_34;
 }
 
-// 4C00: define vListInitialiseItem
-define vListInitialiseItem
+// 4C00: void vListInitialiseItem(Register (ptr20 Eq_2397) r15, Stack word16 wArg00)
+void vListInitialiseItem(struct Eq_2397 * r15, word16 wArg00)
 {
-	word16 fp;
-	word20 r15;
+	struct Eq_2397 * r15;
 	r15->w0008 = 0x00;
-	sp_9 = fp + 0x02;
 }
 
-// 4C06: define vListInsertEnd
-define vListInsertEnd
+// 4C06: Register Eq_2880 vListInsertEnd(Register Eq_1265 r14, Register (ptr20 Eq_1260) r15, Stack word16 wArg00, Register out (ptr20 Eq_1260) r12Out, Register out Eq_1265 r13Out)
+Eq_2880 vListInsertEnd(Eq_1265 r14, struct Eq_1260 * r15, word16 wArg00, struct Eq_1260 & r12Out, union Eq_1265 & r13Out)
 {
 	word16 fp;
-	word20 r15;
+	struct Eq_1260 * r15;
 	<type-error> Mem0;
-	word20 r14;
+	Eq_1265 r14;
 	r12_4 = r15;
-	v5_6 = *((word20) r15 + 0x04);
+	v5_6 = r15->t0004;
 	r13_7 = v5_6;
 	v7_8 = *((word16) v5_6 + 0x02);
-	*((word20) r14 + 0x02) = v7_8;
-	v10_13 = *((word20) r15 + 0x04);
-	*((word20) r14 + 0x04) = v10_13;
+	*((word24) r14 + 0x02) = v7_8;
+	v10_13 = r15->t0004;
+	*((word24) r14 + 0x04) = v10_13;
 	v12_17 = *((word16) v5_6 + 0x02);
-	r15_18 = v12_17;
 	*((word16) v12_17 + 0x04) = r14;
 	*((word16) v5_6 + 0x02) = r14;
-	*((word20) r15 + 0x04) = r14;
-	*((word20) r14 + 0x08) = r15;
-	v17_31 = (word16) *r15;
-	r15->u0 = v17_31 + 0x01;
-	VNZC_34 = cond(v17_31 + 0x01);
-	C_38 = SLICE(VNZC_34, bool, 0);
-	N_39 = SLICE(VNZC_34, bool, 2);
-	V_40 = SLICE(VNZC_34, bool, 8);
-	Z_41 = SLICE(VNZC_34, bool, 1);
+	r15->t0004 = r14;
+	*((word24) r14 + 0x08) = r15;
+	v17_31 = r15->w0000;
+	r15->w0000 = v17_31 + 0x01;
 	sp_36 = fp + 0x02;
+	r12Out = r12_4;
+	r13Out = r13_7;
+	return sp_36;
 }
 
-// 4C32: define vListInsert
-define vListInsert
+// 4C32: void vListInsert(Register (ptr20 Eq_1505) r14, Register Eq_1507 r15, Stack word16 wArg00)
+void vListInsert(struct Eq_1505 * r14, Eq_1507 r15, word16 wArg00)
 {
-	word16 fp;
-	word20 r15;
-	word20 r14;
-	v6_9 = *r14;
-	r12_10 = v6_9;
+	Eq_1507 r15;
+	struct Eq_1505 * r14;
+	v6_9 = r14->w0000;
 	if (v6_9 != ~0x00)
 	{
-		v10_30 = *((word20) r15 + 0x02);
+		v10_30 = (struct Eq_1505 *) *((word24) r15 + 0x02);
 		r13_31 = v10_30;
-		v12_32 = *((word16) v10_30 + 0x02);
-		v13_34 = *v12_32;
+		v12_32 = (struct Eq_1505 *) v10_30->t0002;
+		v13_34 = v12_32->w0000;
 		if (v6_9 < v13_34)
 		{
 			do
 			{
 				r13_38 = ϕ(r13_31, r13_41);
-				v15_40 = *((word20) r13_38 + 0x02);
+				v15_40 = (struct Eq_1505 *) r13_38->t0002;
 				r13_41 = v15_40;
-				v16_42 = *((word16) v15_40 + 0x02);
-				v17_44 = *v16_42;
+				v16_42 = (struct Eq_1505 *) v15_40->t0002;
+				v17_44 = v16_42->w0000;
 			} while (v6_9 < v17_44);
 		}
 	}
 	else
 	{
-		v18_13 = *((word20) r15 + 0x02);
+		v18_13 = (struct Eq_1505 *) *((word24) r15 + 0x02);
 		r13_14 = v18_13;
-		v19_15 = *((word16) v18_13 + 0x02);
-		v20_17 = *v19_15;
+		v19_15 = (struct Eq_1505 *) v18_13->t0002;
+		v20_17 = v19_15->w0000;
 		if (v20_17 >= ~0x00)
 		{
 			do
 			{
 				r13_20 = ϕ(r13_14, r13_23);
-				v21_22 = *((word20) r13_20 + 0x02);
+				v21_22 = (struct Eq_1505 *) r13_20->t0002;
 				r13_23 = v21_22;
-				v22_24 = *((word16) v21_22 + 0x02);
+				v22_24 = (cup16 *) v21_22->t0002;
 				v23_26 = *v22_24;
 			} while (v23_26 >= v6_9);
 		}
 	}
 	r13_49 = ϕ(r13_31, r13_41, r13_14, r13_23);
-	v24_51 = *((word20) r13_49 + 0x02);
-	*((word20) r14 + 0x02) = v24_51;
-	v26_58 = *((word20) r14 + 0x02);
-	r15_59 = v26_58;
-	*((word16) v26_58 + 0x04) = r14;
-	*((word20) r14 + 0x04) = r13_49;
-	*((word20) r13_49 + 0x02) = r14;
-	*((word20) r14 + 0x08) = r15;
+	v24_51 = (struct Eq_1505 *) r13_49->t0002;
+	r14->t0002 = v24_51;
+	v26_58 = (struct Eq_1505 *) r14->t0002;
+	v26_58->ptr0004 = r14;
+	r14->ptr0004 = r13_49;
+	r13_49->t0002 = r14;
+	r14->t0008 = r15;
 	v31_75 = (word16) *r15;
-	r15->u0 = v31_75 + 0x01;
-	VNZC_78 = cond(v31_75 + 0x01);
-	C_95 = SLICE(VNZC_78, bool, 0);
-	N_96 = SLICE(VNZC_78, bool, 2);
-	V_98 = SLICE(VNZC_78, bool, 8);
-	Z_99 = SLICE(VNZC_78, bool, 1);
-	sp_86 = fp + 0x02;
+	*r15 = v31_75 + 0x01;
 }
 
-// 4C98: define vListRemove
-define vListRemove
+// 4C98: Register Eq_3031 vListRemove(Register Eq_1265 r15, Stack word16 wArg00)
+Eq_3031 vListRemove(Eq_1265 r15, word16 wArg00)
 {
 	word16 fp;
-	word20 r15;
+	Eq_1265 r15;
 	<type-error> Mem0;
-	r14_4 = r15;
-	v5_6 = (struct Eq_3615 *) *((word20) r15 + 0x02);
-	v6_8 = *((word20) r15 + 0x04);
-	v5_6->t0004 = v6_8;
-	v8_12 = *((word20) r15 + 0x04);
-	r13_13 = v8_12;
+	v5_6 = *((word24) r15 + 0x02);
+	v6_8 = *((word24) r15 + 0x04);
+	*((word16) v5_6 + 0x04) = v6_8;
+	v8_12 = *((word24) r15 + 0x04);
 	*((word16) v8_12 + 0x02) = v5_6;
-	v11_17 = *((word20) r15 + 0x08);
-	r15_18 = v11_17;
-	v12_19 = *((word16) v11_17 + 0x04);
+	v11_17 = (struct Eq_1260 *) *((word24) r15 + 0x08);
+	v12_19 = v11_17->t0004;
 	if (v12_19 == r15)
-		*((word16) v11_17 + 0x04) = v8_12;
-	*((word20) r15 + 0x08) = 0x00;
-	v17_31 = (word16) *v11_17;
-	*v11_17 = v17_31 + ~0x00;
-	VNZC_34 = cond(v17_31 + ~0x00);
-	C_40 = SLICE(VNZC_34, bool, 0);
-	N_41 = SLICE(VNZC_34, bool, 2);
-	V_43 = SLICE(VNZC_34, bool, 8);
-	Z_44 = SLICE(VNZC_34, bool, 1);
+		v11_17->t0004 = v8_12;
+	*((word24) r15 + 0x08) = null;
+	v17_31 = v11_17->w0000;
+	v11_17->w0000 = v17_31 + ~0x00;
 	sp_37 = fp + 0x02;
+	return sp_37;
 }
 
-// 4CC4: define xQueueCreate
-define xQueueCreate
+// 4CC4: Register Eq_136 xQueueCreate(Register (ptr20 Eq_102) pc, Register Eq_136 sr, Register Eq_594 r15, Stack word16 wArg00, Register out Eq_612 r6Out, Register out Eq_613 r7Out, Register out Eq_614 r8Out, Register out Eq_615 r15Out)
+Eq_136 xQueueCreate(struct Eq_102 * pc, Eq_136 sr, Eq_594 r15, word16 wArg00, union Eq_612 & r6Out, union Eq_613 & r7Out, union Eq_614 & r8Out, union Eq_615 & r15Out)
 {
-	word16 fp;
-	word20 r15;
-	word20 r14;
-	word20 sr;
-	word20 pc;
-	word20 r12;
-	word20 r13;
-	word20 r4;
-	word20 r5;
+	Eq_594 r15;
+	Eq_136 sr;
+	struct Eq_102 * pc;
 	word20 r6;
 	word20 r7;
 	word20 r8;
-	VNZC_16 = cond(r15);
-	Z_17 = SLICE(VNZC_16, bool, 1);
-	C_68 = SLICE(VNZC_16, bool, 0);
-	N_71 = SLICE(VNZC_16, bool, 2);
-	V_90 = SLICE(VNZC_16, bool, 8);
 	if (r15 != 0x00)
 	{
-		r15_18.u1 = 0x32;
-		pvPortMalloc();
-		VNZC_39 = cond(r15_26);
-		Z_40 = SLICE(VNZC_39, bool, 1);
-		C_69 = SLICE(VNZC_39, bool, 0);
-		N_72 = SLICE(VNZC_39, bool, 2);
-		V_91 = SLICE(VNZC_39, bool, 8);
+		r15_18.u0 = 0x32;
+		sr_33 = pvPortMalloc(pc, sr, r15_18, out r5_28, out r6_29, out r7_30, out r8_31, out r9_97, out r10_98, out r11_99, out r12_23, out r13_24, out r14_25, out r15_26);
 		if (r15_26 != 0x00)
 			;
 	}
-	Z_92 = ϕ(Z_17, Z_40);
-	V_89 = ϕ(V_90, V_91);
 	sr_88 = ϕ(sr, sr_33);
 	r8_86 = ϕ(r8, r8_31);
 	r7_84 = ϕ(r7, r7_30);
 	r6_82 = ϕ(r6, r6_29);
-	r5_80 = ϕ(r5, r5_28);
-	r4_78 = ϕ(r4, r4_27);
-	r14_77 = ϕ(r14, r14_25);
-	r13_75 = ϕ(r13, r13_24);
-	r12_73 = ϕ(r12, r12_23);
-	N_70 = ϕ(N_71, N_72);
-	C_67 = ϕ(C_68, C_69);
-	r15_44.u1 = 0x00;
-	sp_57 = fp + 0x02;
+	r15_44.u0 = 0x00;
+	r6Out = r6_82;
+	r7Out = r7_84;
+	r8Out = r8_86;
+	r15Out = r15_44;
+	return sr_88;
 }
 
-// 4D7E: define xQueueSend
-define xQueueSend
+// 4D7E: Register word20 xQueueSend(Register (ptr20 Eq_102) pc, Register Eq_136 sr, Register Eq_721 r13, Register Eq_728 r14, Register Eq_815 r15, Register out Eq_136 srOut, Register out Eq_879 r15Out)
+word20 xQueueSend(struct Eq_102 * pc, Eq_136 sr, Eq_721 r13, Eq_728 r14, Eq_815 r15, union Eq_136 & srOut, union Eq_879 & r15Out)
 {
-	word20 r15;
-	word20 r14;
-	word20 r13;
-	word20 sr;
-	word20 pc;
+	Eq_815 r15;
+	Eq_728 r14;
+	Eq_721 r13;
+	Eq_136 sr;
+	struct Eq_102 * pc;
 	r11_13 = r15;
 	r9_15 = r14;
-	vTaskSuspendAll();
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg0 = <invalid>;
+	sr_20 = vTaskSuspendAll(sr, stackArg0);
 	sr_25 = sr_20 & ~0x08;
 	++globals->ptr0218;
-	v11_28 = r15->w002E;
-	r15->w002E = v11_28 + 0x01;
-	v12_31 = r15->w0030;
-	r15->w0030 = v12_31 + 0x01;
+	v11_28 = (ci16) *((word24) r15 + 0x002E);
+	*((word24) r15 + 0x002E) = v11_28 + 0x01;
+	v12_31 = (ci16) *((word24) r15 + 0x0030);
+	*((word24) r15 + 0x0030) = v12_31 + 0x01;
 	if (0x0218 != 0x00)
 	{
 		globals->ptr0218 += ~0x00;
@@ -2021,26 +1558,35 @@ define xQueueSend
 	}
 	Mem70 = ϕ(Mem33, Mem36, Mem36);
 	sr_42 = ϕ(sr_25, sr_25, sr_39);
-	prvIsQueueFull();
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg0 = <invalid>;
+	sr_46 = prvIsQueueFull(sr_42, r15, stackArg0, out r15_44);
 	if (r15_44 != 0x00 && r13 != 0x00)
 	{
-		vTaskPlaceOnEventList();
+		r11_60 = vTaskPlaceOnEventList(r13, (word24) r15 + 0x08);
 		sr_69 = sr_46 & ~0x08;
 		++globals->ptr0218;
-		prvUnlockQueue();
-		xTaskResumeAll();
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		stackArg0 = <invalid>;
+		sr_76 = prvUnlockQueue(sr_69, r11_60, stackArg0, out r15_331);
+		xTaskResumeAll(pc, sr_76, out sr_88, out r5_332, out r6_333, out r7_334, out r8_335, out r9_86, out r10_336, out r11_84, out r12_337, out r13_338, out r14_339, out r15_85);
 		if (r15_85 == 0x00)
-			vPortYield();
+			vPortYield(pc, sr_88, out sr_116, out r5_356, out r6_357, out r7_358, out r8_359, out r9_114, out r10_360, out r11_104, out r12_361, out r13_362, out r14_363);
 		r9_171 = ϕ(r9_86, r9_114);
 		r11_132 = ϕ(r11_84, r11_104);
 		sr_121 = ϕ(sr_88, sr_116);
-		vTaskSuspendAll();
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		stackArg0 = <invalid>;
+		sr_123 = vTaskSuspendAll(sr_121, stackArg0);
 		sr_128 = sr_123 & ~0x08;
 		++globals->ptr0218;
-		v30_133 = r11_132->w002E;
-		r11_132->w002E = v30_133 + 0x01;
-		v31_136 = r11_132->w0030;
-		r11_132->w0030 = v31_136 + 0x01;
+		v30_133 = (ci16) *((word20) r11_132 + 0x002E);
+		*((word20) r11_132 + 0x002E) = v30_133 + 0x01;
+		v31_136 = (ci16) *((word20) r11_132 + 0x0030);
+		*((word20) r11_132 + 0x0030) = v31_136 + 0x01;
 		if (0x0218 != 0x00)
 		{
 			globals->ptr0218 += ~0x00;
@@ -2062,28 +1608,31 @@ define xQueueSend
 	sr_153 = ϕ(sr_46, sr_46, sr_151, sr_151, sr_152);
 	sr_154 = sr_153 & ~0x08;
 	++globals->ptr0218;
-	v14_160 = r11_158->w002A;
-	v15_161 = r11_158->w0028;
+	v14_160 = (cup16) *((word20) r11_158 + 0x002A);
+	v15_161 = (cup16) *((word20) r11_158 + 0x0028);
 	if (v15_161 >= v14_160)
 	{
-		v21_164 = r11_158->t0004;
-		v22_166 = r11_158->w002C;
-		memcpy();
-		v23_182 = r11_158->w0028;
-		r11_158->w0028 = v23_182 + 0x01;
-		v24_185 = r11_158->t0004;
-		v25_187 = r11_158->w002C;
-		r15_188 = (word16) v24_185 + v25_187;
-		r11_158->t0004 = r15_188;
-		v27_192 = r11_158->t0002;
+		v21_164 = *((word20) r11_158 + 0x04);
+		v22_166 = *((word20) r11_158 + 44);
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		stackArg0 = <invalid>;
+		memcpy(sr_154, v22_166, r9_168, v21_164, stackArg0, out sr_177);
+		v23_182 = (cup16) *((word20) r11_158 + 0x0028);
+		*((word20) r11_158 + 0x0028) = v23_182 + 0x01;
+		v24_185 = *((word20) r11_158 + 0x04);
+		v25_187 = *((word20) r11_158 + 44);
+		r15_188 = v24_185 + v25_187;
+		*((word20) r11_158 + 0x04) = r15_188;
+		v27_192 = *((word20) r11_158 + 0x02);
 		if (r15_188 < v27_192)
 		{
-			v28_195 = r11_158->t0000;
-			r11_158->t0004 = v28_195;
+			v28_195 = *r11_158;
+			*((word20) r11_158 + 0x04) = v28_195;
 		}
 		Mem201 = ϕ(Mem191, Mem198);
-		v32_202 = r11_158->w0030;
-		r11_158->w0030 = v32_202 + 0x01;
+		v32_202 = (ci16) *((word20) r11_158 + 0x0030);
+		*((word20) r11_158 + 0x0030) = v32_202 + 0x01;
 	}
 	sr_213 = ϕ(sr_154, sr_177);
 	Mem209 = ϕ(Mem156, Mem204);
@@ -2093,152 +1642,116 @@ define xQueueSend
 		if (globals->ptr0218 == 0x00)
 			sr_215 = sr_213 | 0x08;
 	}
-	Mem295 = ϕ(Mem210, Mem210, Mem209);
 	sr_219 = ϕ(sr_213, sr_215, sr_213);
-	prvUnlockQueue();
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg0 = <invalid>;
+	sr_222 = prvUnlockQueue(sr_219, r11_158, stackArg0, out r15_220);
 	if (r15_220 != 0x00)
 	{
-		xTaskResumeAll();
-		VNZC_271 = cond(r15_255);
-		Z_272 = SLICE(VNZC_271, bool, 1);
-		C_311 = SLICE(VNZC_271, bool, 0);
-		N_313 = SLICE(VNZC_271, bool, 2);
-		V_324 = SLICE(VNZC_271, bool, 8);
+		sp_257 = xTaskResumeAll(pc, sr_222, out sr_258, out r5_263, out r6_264, out r7_265, out r8_266, out r9_345, out r10_253, out r11_346, out r12_259, out r13_260, out r14_261, out r15_255);
 		if (r15_255 == 0x00)
-			vPortYield();
+			sp_285 = vPortYield(pc, sr_258, out sr_286, out r5_347, out r6_348, out r7_349, out r8_350, out r9_351, out r10_273, out r11_352, out r12_353, out r13_354, out r14_355);
 	}
 	else
-		xTaskResumeAll();
-	Z_325 = ϕ(Z_272, Z_288, Z_250);
-	V_323 = ϕ(V_324, V_290, V_252);
+		sp_239 = xTaskResumeAll(pc, sr_222, out sr_240, out r5_245, out r6_246, out r7_247, out r8_248, out r9_342, out r10_235, out r11_343, out r12_241, out r13_242, out r14_243, out r15_344);
 	sr_322 = ϕ(sr_258, sr_286, sr_240);
-	r8_321 = ϕ(r8_266, r8_283, r8_248);
-	r7_320 = ϕ(r7_265, r7_282, r7_247);
-	r6_319 = ϕ(r6_264, r6_281, r6_246);
-	r5_318 = ϕ(r5_263, r5_280, r5_245);
-	r4_317 = ϕ(r4_262, r4_279, r4_244);
-	r14_316 = ϕ(r14_261, r14_277, r14_243);
-	r13_315 = ϕ(r13_260, r13_276, r13_242);
-	r12_314 = ϕ(r12_259, r12_275, r12_241);
-	N_312 = ϕ(N_313, N_287, N_249);
-	C_310 = ϕ(C_311, C_289, C_251);
 	sp_293 = ϕ(sp_257, sp_285, sp_239);
 	r10_291 = ϕ(r10_253, r10_273, r10_235);
 	r15_292 = r10_291;
-	v17_296 = *sp_293;
-	sp_297 = (struct Eq_4011 *) ((char *) sp_293 + 0x02);
-	r9_298 = v17_296;
-	v18_299 = sp_297->t0000;
-	r10_301 = v18_299;
-	v19_302 = sp_297->t0002;
-	r11_304 = v19_302;
-	sp_306 = (char *) &sp_297->t0002 + 0x04;
+	sp_297 = (word20) sp_293 + 0x02;
+	sp_306 = sp_297 + 0x06;
+	srOut = sr_322;
+	r15Out = r15_292;
+	return sp_306;
 }
 
-// 4E84: define xQueueSendFromISR
-define xQueueSendFromISR
+// 4E84: Register word20 xQueueSendFromISR(Register Eq_934 sr, Register Eq_935 r13, Register Eq_728 r14, Register Eq_937 r15, Register out Eq_934 srOut, Register out Eq_935 r15Out)
+word20 xQueueSendFromISR(Eq_934 sr, Eq_935 r13, Eq_728 r14, Eq_937 r15, union Eq_934 & srOut, union Eq_935 & r15Out)
 {
-	sp = fp;
-	sp -= 0x02;
-	*sp = r11;
-	sp -= 0x02;
-	*sp = r10;
-	r11 = r15;
-	r10 = r13;
-	v7 = (word16) *((word20) r15 + 0x002A);
-	v8 = (word16) *((word20) r15 + 0x0028);
-	VNZC = cond(v8 - v7);
-	if (Test(UGE,C))
+	word16 fp;
+	Eq_937 r15;
+	Eq_935 r13;
+	Eq_728 r14;
+	Eq_934 sr;
+	sp_6 = fp - 0x04;
+	r10_12 = r13;
+	v7_13 = (cup16) *((word24) r15 + 0x002A);
+	v8_14 = (cup16) *((word24) r15 + 0x0028);
+	if (v8_14 >= v7_13)
 	{
-		v11 = *((word20) r15 + 0x04);
-		r15 = v11;
-		v12 = *((word20) r11 + 44);
-		r13 = v12;
-		memcpy();
-		v13 = (word16) *((word20) r11 + 0x0028);
-		++v13;
-		((word20) r11 + 0x0028)->u0 = v13;
-		v14 = *((word20) r11 + 0x04);
-		r15 = v14;
-		v15 = *((word20) r11 + 44);
-		r15 += v15;
-		v16 = *((word20) r11 + 0x04);
-		v16 = r15;
-		*((word20) r11 + 0x04) = v16;
-		v17 = *((word20) r11 + 0x02);
-		VNZC = cond(r15 - v17);
-		if (Test(ULT,C))
+		v11_17 = *((word24) r15 + 0x04);
+		v12_19 = *((word24) r15 + 44);
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		stackArg0 = <invalid>;
+		sp_25 = memcpy(sr, v12_19, r14, v11_17, stackArg0, out sr_27);
+		v13_32 = (cup16) *((word24) r15 + 0x0028);
+		*((word24) r15 + 0x0028) = v13_32 + 0x01;
+		v14_35 = *((word24) r15 + 0x04);
+		v15_37 = *((word24) r15 + 44);
+		r15_38 = v14_35 + v15_37;
+		*((word24) r15 + 0x04) = r15_38;
+		v17_42 = *((word24) r15 + 0x02);
+		if (r15_38 < v17_42)
 		{
-			v18 = *r11;
-			v19 = *((word20) r11 + 0x04);
-			v19 = v18;
-			*((word20) r11 + 0x04) = v19;
+			v18_45 = *r15;
+			*((word24) r15 + 0x04) = v18_45;
 		}
-		v23 = *((word20) r11 + 0x0030);
-		r15 = v23;
-		VNZC = cond(r15 - ~0x00);
-		if (Test(NE,Z))
+		Mem50 = ϕ(Mem41, Mem48);
+		v23_51 = (word16) *((word24) r15 + 0x0030);
+		if (v23_51 != ~0x00)
+			*((word24) r15 + 0x0030) = v23_51 + 0x01;
+		else if (r13 == 0x00)
 		{
-			r15 = (word20) r15 + 0x01;
-			VNZC = cond(r15);
-			v25 = *((word20) r11 + 0x0030);
-			v25 = r15;
-			*((word20) r11 + 0x0030) = v25;
-		}
-		else
-		{
-			VNZC = cond(r10 - 0x00);
-			if (Test(EQ,Z))
+			v26_58 = (word16) *((word24) r15 + 0x0018);
+			if (v26_58 != 0x00)
 			{
-				v26 = (word16) *((word20) r11 + 0x0018);
-				VNZC = cond(v26 - 0x00);
-				if (Test(NE,Z))
+				r10_64 = xTaskRemoveFromEventList((word24) r15 + 0x0018, out r11_138, out r15_69);
+				if (r15_69 != 0x00)
 				{
-					r11 = (word20) r11 + 0x0018;
-					VNZC = cond(r11);
-					r15 = r11;
-					xTaskRemoveFromEventList();
-					VNZC = cond(r15 - 0x00);
-					if (Test(NE,Z))
-					{
-						r13.u0 = 0x01;
+					r13_76.u0 = 0x01;
 l4EE8:
-						r15 = r13;
-						v20 = *sp;
-						sp.u1 = (word20) sp + 0x02;
-						r10 = v20;
-						v21 = *sp.u1;
-						sp.u1 = (word20) sp.u1 + 0x02;
-						r11 = v21;
-						v22 = *sp.u1;
-						sp.u1 = (word20) sp.u1 + 0x02;
-						return;
-					}
+					sr_121 = ϕ(sr_122, sr_27);
+					sp_86 = ϕ(sp_87, sp_25);
+					r13_84 = ϕ(r13_83, r13_76);
+					r15_85 = r13_84;
+					sp_92 = (word20) sp_86.u0 + 0x02;
+					sp_98 = sp_92 + 0x04;
+					srOut = sr_121;
+					r15Out = r15_85;
+					return sp_98;
 				}
 			}
 		}
 	}
-	r13 = r10;
+	sr_122 = ϕ(sr, sr_27, sr_27, sr_27, sr_27);
+	sp_87 = ϕ(sp_6, sp_25, sp_25, sp_25, sp_25);
+	r10_82 = ϕ(r10_12, r10_12, r10_12, r10_12, r10_64);
+	r13_83 = r10_82;
 	goto l4EE8;
 }
 
-// 4EF0: define xQueueReceive
-define xQueueReceive
+// 4EF0: Register word20 xQueueReceive(Register (ptr20 Eq_102) pc, Register Eq_136 sr, Register Eq_721 r13, Register Eq_728 r14, Register Eq_815 r15, Register out Eq_136 srOut, Register out Eq_825 r15Out)
+word20 xQueueReceive(struct Eq_102 * pc, Eq_136 sr, Eq_721 r13, Eq_728 r14, Eq_815 r15, union Eq_136 & srOut, union Eq_825 & r15Out)
 {
-	word20 r15;
-	word20 r14;
-	word20 r13;
-	word20 sr;
-	word20 pc;
+	Eq_815 r15;
+	Eq_728 r14;
+	Eq_721 r13;
+	Eq_136 sr;
+	struct Eq_102 * pc;
 	r11_13 = r15;
 	r9_15 = r14;
-	vTaskSuspendAll();
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg0 = <invalid>;
+	sr_20 = vTaskSuspendAll(sr, stackArg0);
 	sr_25 = sr_20 & ~0x08;
 	++globals->ptr0218;
-	v11_28 = r15->w002E;
-	r15->w002E = v11_28 + 0x01;
-	v12_31 = r15->w0030;
-	r15->w0030 = v12_31 + 0x01;
+	v11_28 = (ci16) *((word24) r15 + 0x002E);
+	*((word24) r15 + 0x002E) = v11_28 + 0x01;
+	v12_31 = (ci16) *((word24) r15 + 0x0030);
+	*((word24) r15 + 0x0030) = v12_31 + 0x01;
 	if (0x0218 != 0x00)
 	{
 		globals->ptr0218 += ~0x00;
@@ -2247,26 +1760,35 @@ define xQueueReceive
 	}
 	Mem70 = ϕ(Mem33, Mem36, Mem36);
 	sr_42 = ϕ(sr_25, sr_25, sr_39);
-	prvIsQueueEmpty();
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg0 = <invalid>;
+	sr_46 = prvIsQueueEmpty(sr_42, r15, stackArg0, out r15_44);
 	if (r15_44 != 0x00 && r13 != 0x00)
 	{
-		vTaskPlaceOnEventList();
+		r11_60 = vTaskPlaceOnEventList(r13, (word24) r15 + 0x0018);
 		sr_69 = sr_46 & ~0x08;
 		++globals->ptr0218;
-		prvUnlockQueue();
-		xTaskResumeAll();
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		stackArg0 = <invalid>;
+		sr_76 = prvUnlockQueue(sr_69, r11_60, stackArg0, out r15_335);
+		xTaskResumeAll(pc, sr_76, out sr_88, out r5_336, out r6_337, out r7_338, out r8_339, out r9_86, out r10_340, out r11_84, out r12_341, out r13_342, out r14_343, out r15_85);
 		if (r15_85 == 0x00)
-			vPortYield();
+			vPortYield(pc, sr_88, out sr_116, out r5_360, out r6_361, out r7_362, out r8_363, out r9_114, out r10_364, out r11_104, out r12_365, out r13_366, out r14_367);
 		r9_194 = ϕ(r9_86, r9_114);
 		r11_132 = ϕ(r11_84, r11_104);
 		sr_121 = ϕ(sr_88, sr_116);
-		vTaskSuspendAll();
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		stackArg0 = <invalid>;
+		sr_123 = vTaskSuspendAll(sr_121, stackArg0);
 		sr_128 = sr_123 & ~0x08;
 		++globals->ptr0218;
-		v25_133 = r11_132->w002E;
-		r11_132->w002E = v25_133 + 0x01;
-		v26_136 = r11_132->w0030;
-		r11_132->w0030 = v26_136 + 0x01;
+		v25_133 = (ci16) *((word20) r11_132 + 0x002E);
+		*((word20) r11_132 + 0x002E) = v25_133 + 0x01;
+		v26_136 = (ci16) *((word20) r11_132 + 0x0030);
+		*((word20) r11_132 + 0x0030) = v26_136 + 0x01;
 		if (0x0218 != 0x00)
 		{
 			globals->ptr0218 += ~0x00;
@@ -2288,24 +1810,27 @@ define xQueueReceive
 	sr_153 = ϕ(sr_46, sr_46, sr_151, sr_151, sr_152);
 	sr_154 = sr_153 & ~0x08;
 	++globals->ptr0218;
-	v14_160 = r11_158->w0028;
+	v14_160 = (cup16) *((word20) r11_158 + 0x0028);
 	if (v14_160 != 0x00)
 	{
-		v15_165 = r11_158->w002C;
-		v16_167 = r11_158->t0006;
-		r15_169 = (word16) v16_167 + v15_165;
-		r11_158->t0006 = r15_169;
-		v18_173 = r11_158->t0002;
+		v15_165 = *((word20) r11_158 + 44);
+		v16_167 = *((word20) r11_158 + 0x06);
+		r15_169 = v16_167 + v15_165;
+		*((word20) r11_158 + 0x06) = r15_169;
+		v18_173 = *((word20) r11_158 + 0x02);
 		if (r15_169 < v18_173)
 		{
-			v20_176 = r11_158->t0000;
-			r11_158->t0006 = v20_176;
+			v20_176 = *r11_158;
+			*((word20) r11_158 + 0x06) = v20_176;
 		}
-		r11_158->w0028 = v14_160 + ~0x00;
-		v23_188 = r11_158->t0006;
-		memcpy();
-		v24_207 = r11_158->w002E;
-		r11_158->w002E = v24_207 + 0x01;
+		*((word20) r11_158 + 0x0028) = v14_160 + ~0x00;
+		v23_188 = *((word20) r11_158 + 0x06);
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		stackArg0 = <invalid>;
+		memcpy(sr_154, v15_165, v23_188, r9_191, stackArg0, out sr_202);
+		v24_207 = (ci16) *((word20) r11_158 + 0x002E);
+		*((word20) r11_158 + 0x002E) = v24_207 + 0x01;
 	}
 	sr_218 = ϕ(sr_202, sr_154);
 	Mem214 = ϕ(Mem209, Mem156);
@@ -2315,199 +1840,126 @@ define xQueueReceive
 		if (globals->ptr0218 == 0x00)
 			sr_219 = sr_218 | 0x08;
 	}
-	Mem299 = ϕ(Mem215, Mem215, Mem214);
 	sr_223 = ϕ(sr_218, sr_219, sr_218);
-	prvUnlockQueue();
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg0 = <invalid>;
+	sr_226 = prvUnlockQueue(sr_223, r11_158, stackArg0, out r15_224);
 	if (r15_224 != 0x00)
 	{
-		xTaskResumeAll();
-		VNZC_275 = cond(r15_259);
-		Z_276 = SLICE(VNZC_275, bool, 1);
-		C_315 = SLICE(VNZC_275, bool, 0);
-		N_317 = SLICE(VNZC_275, bool, 2);
-		V_328 = SLICE(VNZC_275, bool, 8);
+		sp_261 = xTaskResumeAll(pc, sr_226, out sr_262, out r5_267, out r6_268, out r7_269, out r8_270, out r9_349, out r10_257, out r11_350, out r12_263, out r13_264, out r14_265, out r15_259);
 		if (r15_259 == 0x00)
-			vPortYield();
+			sp_289 = vPortYield(pc, sr_262, out sr_290, out r5_351, out r6_352, out r7_353, out r8_354, out r9_355, out r10_277, out r11_356, out r12_357, out r13_358, out r14_359);
 	}
 	else
-		xTaskResumeAll();
-	Z_329 = ϕ(Z_276, Z_292, Z_254);
-	V_327 = ϕ(V_328, V_294, V_256);
+		sp_243 = xTaskResumeAll(pc, sr_226, out sr_244, out r5_249, out r6_250, out r7_251, out r8_252, out r9_346, out r10_239, out r11_347, out r12_245, out r13_246, out r14_247, out r15_348);
 	sr_326 = ϕ(sr_262, sr_290, sr_244);
-	r8_325 = ϕ(r8_270, r8_287, r8_252);
-	r7_324 = ϕ(r7_269, r7_286, r7_251);
-	r6_323 = ϕ(r6_268, r6_285, r6_250);
-	r5_322 = ϕ(r5_267, r5_284, r5_249);
-	r4_321 = ϕ(r4_266, r4_283, r4_248);
-	r14_320 = ϕ(r14_265, r14_281, r14_247);
-	r13_319 = ϕ(r13_264, r13_280, r13_246);
-	r12_318 = ϕ(r12_263, r12_279, r12_245);
-	N_316 = ϕ(N_317, N_291, N_253);
-	C_314 = ϕ(C_315, C_293, C_255);
 	sp_297 = ϕ(sp_261, sp_289, sp_243);
 	r10_295 = ϕ(r10_257, r10_277, r10_239);
 	r15_296 = r10_295;
-	v27_300 = *sp_297;
-	sp_301 = (struct Eq_4539 *) ((char *) sp_297 + 0x02);
-	r9_302 = v27_300;
-	v28_303 = sp_301->t0000;
-	r10_305 = v28_303;
-	v29_306 = sp_301->t0002;
-	r11_308 = v29_306;
-	sp_310 = (char *) &sp_301->t0002 + 0x04;
+	sp_301 = (word20) sp_297 + 0x02;
+	sp_310 = sp_301 + 0x06;
+	srOut = sr_326;
+	r15Out = r15_296;
+	return sp_310;
 }
 
-// 4FF6: define xQueueReceiveFromISR
-define xQueueReceiveFromISR
+// 4FF6: Register Eq_997 xQueueReceiveFromISR(Register Eq_934 sr, Register Eq_1002 r13, Register Eq_728 r14, Register Eq_997 r15)
+Eq_997 xQueueReceiveFromISR(Eq_934 sr, Eq_1002 r13, Eq_728 r14, Eq_997 r15)
 {
-	sp = fp;
-	sp -= 0x02;
-	*sp = r11;
-	sp -= 0x02;
-	*sp = r10;
-	r11 = r15;
-	r12 = r14;
-	r10 = r13;
-	v9 = *((word20) r15 + 0x0028);
-	r14 = v9;
-	VNZC = cond(r14 - 0x00);
-	if (Test(NE,Z))
+	Eq_997 r15;
+	Eq_728 r14;
+	Eq_1002 r13;
+	Eq_934 sr;
+	v9_15 = (word16) *((word24) r15 + 0x0028);
+	if (v9_15 != 0x00)
 	{
-		v12 = *((word16) r15.u0 + 44);
-		r13 = v12;
-		v13 = *((word16) r15.u0 + 0x06);
-		r15 = v13;
-		r15 += r13;
-		v14 = *((word20) r11 + 0x06);
-		v14 = r15;
-		*((word20) r11 + 0x06) = v14;
-		v15 = *((word20) r11 + 0x02);
-		VNZC = cond(r15 - v15);
-		if (Test(ULT,C))
+		v12_20 = *((word24) r15 + 44);
+		v13_22 = *((word24) r15 + 0x06);
+		r15_24 = v13_22 + v12_20;
+		*((word24) r15 + 0x06) = r15_24;
+		v15_28 = *((word24) r15 + 0x02);
+		if (r15_24 < v15_28)
 		{
-			v17 = *r11;
-			v18 = *((word20) r11 + 0x06);
-			v18 = v17;
-			*((word20) r11 + 0x06) = v18;
+			v17_31 = *r15;
+			*((word24) r15 + 0x06) = v17_31;
 		}
-		r14 = (word20) r14 + 0x0000FFFF;
-		VNZC = cond(r14);
-		v22 = *((word20) r11 + 0x0028);
-		v22 = r14;
-		*((word20) r11 + 0x0028) = v22;
-		v23 = *((word20) r11 + 0x06);
-		r14 = v23;
-		r15 = r12;
-		memcpy();
-		v24 = *((word20) r11 + 0x002E);
-		r15 = v24;
-		VNZC = cond(r15 - ~0x00);
-		if (Test(NE,Z))
-		{
-			r15.u0 = (word16) r15.u0 + 0x01;
-			VNZC = cond(r15);
-			v25 = *((word20) r11 + 0x002E);
-			v25 = r15;
-			*((word20) r11 + 0x002E) = v25;
-		}
+		*((word24) r15 + 0x0028) = v9_15 + ~0x00;
+		v23_43 = *((word24) r15 + 0x06);
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		stackArg0 = <invalid>;
+		sp_52 = memcpy(sr, v12_20, v23_43, r14, stackArg0, out sr_54);
+		v24_59 = (word16) *((word24) r15 + 0x002E);
+		if (v24_59 != ~0x00)
+			*((word24) r15 + 0x002E) = v24_59 + 0x01;
 		else
 		{
-			v26 = *r10;
-			VNZC = cond(v26 - 0x00);
-			if (Test(EQ,Z))
+			v26_64 = (word16) *r13;
+			if (v26_64 == 0x00)
 			{
-				v27 = (word16) *((word20) r11 + 0x08);
-				VNZC = cond(v27 - 0x00);
-				if (Test(NE,Z))
+				v27_67 = *((word24) r15 + 0x08);
+				if (v27_67 != 0x00)
 				{
-					r11 = (word20) r11 + 0x08;
-					VNZC = cond(r11);
-					r15 = r11;
-					xTaskRemoveFromEventList();
-					VNZC = cond(r15 - 0x00);
-					if (Test(NE,Z))
-					{
-						v28 = *r10;
-						v28.u0 = 0x01;
-						*r10 = v28;
-					}
+					r10_73 = xTaskRemoveFromEventList((word24) r15 + 0x08, out r11_142, out r15_78);
+					if (r15_78 != 0x00)
+						*r10_73 = 0x01;
 				}
 			}
 		}
-		r15.u0 = 0x01;
+		r15_93.u0 = 0x01;
 	}
 	else
-		r15.u0 = 0x00;
-	v19 = *sp;
-	sp.u1 = (word20) sp + 0x02;
-	r10 = v19;
-	v20 = *sp.u1;
-	sp.u1 = (word20) sp.u1 + 0x02;
-	r11 = v20;
-	v21 = *sp.u1;
-	sp.u1 = (word20) sp.u1 + 0x02;
+		r15_19.u0 = 0x00;
+	r15_128 = ϕ(r15_19, r15_93);
+	return r15_128;
 }
 
-// 5068: define uxQueueMessagesWaiting
-define uxQueueMessagesWaiting
+// 5068: void uxQueueMessagesWaiting(Register word20 sr, Register word20 r15, Stack word16 wArg00)
+void uxQueueMessagesWaiting(word20 sr, word20 r15, word16 wArg00)
 {
-	sp = fp;
-	sr &= ~0x08;
+	<type-error> Mem0;
 	++globals->ptr0218;
-	VNZC = cond(globals->ptr0218);
-	v6 = *((word20) r15 + 0x0028);
-	r15 = v6;
-	if (Test(NE,Z))
+	if (globals->ptr0218 != 0x00)
 	{
 		globals->ptr0218 += ~0x00;
-		VNZC = cond(globals->ptr0218);
-		if (Test(EQ,Z))
-			sr |= 0x08;
+		globals->ptr0218 != 0x00;
 	}
-	v8 = (word16) *sp;
-	sp = (word20) sp + 0x02;
 }
 
-// 507E: define vQueueDelete
-define vQueueDelete
+// 507E: void vQueueDelete()
+void vQueueDelete()
 {
-	sp = fp;
-	sp -= 0x02;
-	*sp = r11;
-	r11 = r15;
-	v5 = *r15;
-	r15 = v5;
-	vPortFree();
-	r15 = r11;
-	vPortFree();
-	v6 = *sp;
-	sp.u1 = (word20) sp + 0x02;
-	r11 = v6;
-	v7 = *sp.u1;
-	sp.u1 = (word20) sp.u1 + 0x02;
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg0 = <invalid>;
+	vPortFree(stackArg0);
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg0 = <invalid>;
+	vPortFree(stackArg0);
 }
 
-// 5092: define prvUnlockQueue
-define prvUnlockQueue
+// 5092: Register Eq_934 prvUnlockQueue(Register Eq_934 sr, Register Eq_815 r15, Stack word16 wArg00, Register out Eq_935 r15Out)
+Eq_934 prvUnlockQueue(Eq_934 sr, Eq_815 r15, word16 wArg00, union Eq_935 & r15Out)
 {
-	word16 fp;
-	word20 r15;
-	word20 sr;
+	Eq_815 r15;
+	Eq_934 sr;
 	r11_10 = r15;
-	r10_11.u1 = 0x00;
+	r10_11.u0 = 0x00;
 	sr_13 = sr & ~0x08;
 	++globals->ptr0218;
-	v8_16 = r15->w0030;
-	r15->w0030 = v8_16 + ~0x00;
+	v8_16 = (ci16) *((word24) r15 + 0x0030);
+	*((word24) r15 + 0x0030) = v8_16 + ~0x00;
 	if (v8_16 >= ~0x00)
 	{
-		r15->w0030 = ~0x00;
-		v11_24 = r15->w0018;
+		*((word24) r15 + 0x0030) = ~0x00;
+		v11_24 = (word16) *((word24) r15 + 0x0018);
 		if (v11_24 != 0x00)
 		{
-			xTaskRemoveFromEventList();
+			r10_29 = xTaskRemoveFromEventList((word24) r15 + 0x0018, out r11_30, out r15_34);
 			if (r15_34 != 0x00)
-				r10_41.u1 = 0x01;
+				r10_41.u0 = 0x01;
 		}
 	}
 	r10_95 = ϕ(r10_11, r10_11, r10_29, r10_41);
@@ -2523,135 +1975,93 @@ define prvUnlockQueue
 	sr_50 = ϕ(sr_13, sr_13, sr_49);
 	sr_51 = sr_50 & ~0x08;
 	++globals->ptr0218;
-	v13_57 = r11_56->w002E;
-	r11_56->w002E = v13_57 + ~0x00;
+	v13_57 = (ci16) *((word20) r11_56 + 0x002E);
+	*((word20) r11_56 + 0x002E) = v13_57 + ~0x00;
 	if (v13_57 >= ~0x00)
 	{
-		r11_56->w002E = ~0x00;
-		v15_65 = r11_56->w0008;
+		*((word20) r11_56 + 0x002E) = ~0x00;
+		v15_65 = (word16) *((word20) r11_56 + 0x08);
 		if (v15_65 != 0x00)
 		{
-			r11_68 = (word16 *) &r11_56->w0008;
-			xTaskRemoveFromEventList();
+			r11_68 = (word20) r11_56 + 0x08;
+			r10_71 = xTaskRemoveFromEventList(r11_68, out r11_152, out r15_76);
 			if (r15_76 != 0x00)
-				r10_83.u1 = 0x01;
+				r10_83.u0 = 0x01;
 		}
 	}
 	r10_93 = ϕ(r10_95, r10_95, r10_71, r10_83);
 	Mem86 = ϕ(Mem59, Mem64, Mem64, Mem64);
-	VNZC_84 = cond(0x0218);
-	Z_85 = SLICE(VNZC_84, bool, 1);
-	C_126 = SLICE(VNZC_84, bool, 0);
-	N_129 = SLICE(VNZC_84, bool, 2);
-	V_148 = SLICE(VNZC_84, bool, 8);
 	if (0x0218 != 0x00)
 	{
 		globals->ptr0218 += ~0x00;
-		VNZC_88 = cond(globals->ptr0218);
-		Z_89 = SLICE(VNZC_88, bool, 1);
-		C_127 = SLICE(VNZC_88, bool, 0);
-		N_130 = SLICE(VNZC_88, bool, 2);
-		V_149 = SLICE(VNZC_88, bool, 8);
 		if (globals->ptr0218 == 0x00)
 			sr_91 = sr_51 | 0x08;
 	}
-	Z_150 = ϕ(Z_85, Z_89, Z_89);
-	V_147 = ϕ(V_148, V_149, V_149);
 	sr_146 = ϕ(sr_51, sr_51, sr_91);
-	N_128 = ϕ(N_129, N_130, N_130);
-	C_125 = ϕ(C_126, C_127, C_127);
 	r15_96 = r10_93;
-	sp_109 = fp + 0x02;
+	r15Out = r15_96;
+	return sr_146;
 }
 
-// 510C: define prvIsQueueEmpty
-define prvIsQueueEmpty
+// 510C: Register ui20 prvIsQueueEmpty(Register ui20 sr, Register Eq_815 r15, Stack word16 wArg00, Register out Eq_3729 r15Out)
+ui20 prvIsQueueEmpty(ui20 sr, Eq_815 r15, word16 wArg00, union Eq_3729 & r15Out)
 {
-	word16 fp;
-	word20 sr;
+	ui20 sr;
 	<type-error> Mem0;
-	word20 r15;
+	Eq_815 r15;
 	sr_4 = sr & ~0x08;
 	++globals->ptr0218;
-	r14_8.u1 = 0x00;
-	v7_10 = r15->w0028;
+	r14_8.u0 = 0x00;
+	v7_10 = (cup16) *((word24) r15 + 0x0028);
 	if (v7_10 == 0x00)
-		r14_13.u1 = 0x01;
+		r14_13.u0 = 0x01;
 	r14_23 = ϕ(r14_8, r14_13);
-	VNZC_14 = cond(0x0218);
-	Z_15 = SLICE(VNZC_14, bool, 1);
-	C_34 = SLICE(VNZC_14, bool, 0);
-	N_37 = SLICE(VNZC_14, bool, 2);
-	V_41 = SLICE(VNZC_14, bool, 8);
 	if (0x0218 != 0x00)
 	{
 		globals->ptr0218 += ~0x00;
-		VNZC_18 = cond(globals->ptr0218);
-		Z_19 = SLICE(VNZC_18, bool, 1);
-		C_35 = SLICE(VNZC_18, bool, 0);
-		N_38 = SLICE(VNZC_18, bool, 2);
-		V_42 = SLICE(VNZC_18, bool, 8);
 		if (globals->ptr0218 == 0x00)
 			sr_21 = sr_4 | 0x08;
 	}
-	Z_43 = ϕ(Z_15, Z_19, Z_19);
-	V_40 = ϕ(V_41, V_42, V_42);
 	sr_39 = ϕ(sr_4, sr_4, sr_21);
-	N_36 = ϕ(N_37, N_38, N_38);
-	C_33 = ϕ(C_34, C_35, C_35);
 	r15_24 = r14_23;
-	sp_29 = fp + 0x02;
+	r15Out = r15_24;
+	return sr_39;
 }
 
-// 512E: define prvIsQueueFull
-define prvIsQueueFull
+// 512E: Register ui20 prvIsQueueFull(Register ui20 sr, Register Eq_815 r15, Stack word16 wArg00, Register out Eq_3173 r15Out)
+ui20 prvIsQueueFull(ui20 sr, Eq_815 r15, word16 wArg00, union Eq_3173 & r15Out)
 {
-	word16 fp;
-	word20 sr;
+	ui20 sr;
 	<type-error> Mem0;
-	word20 r15;
+	Eq_815 r15;
 	sr_4 = sr & ~0x08;
 	++globals->ptr0218;
-	r14_8.u1 = 0x00;
-	v7_10 = r15->w002A;
-	v8_11 = r15->w0028;
+	r14_8.u0 = 0x00;
+	v7_10 = (cup16) *((word24) r15 + 0x002A);
+	v8_11 = (cup16) *((word24) r15 + 0x0028);
 	if (v8_11 == v7_10)
-		r14_14.u1 = 0x01;
+		r14_14.u0 = 0x01;
 	r14_24 = ϕ(r14_8, r14_14);
-	VNZC_15 = cond(0x0218);
-	Z_16 = SLICE(VNZC_15, bool, 1);
-	C_35 = SLICE(VNZC_15, bool, 0);
-	N_38 = SLICE(VNZC_15, bool, 2);
-	V_42 = SLICE(VNZC_15, bool, 8);
 	if (0x0218 != 0x00)
 	{
 		globals->ptr0218 += ~0x00;
-		VNZC_19 = cond(globals->ptr0218);
-		Z_20 = SLICE(VNZC_19, bool, 1);
-		C_36 = SLICE(VNZC_19, bool, 0);
-		N_39 = SLICE(VNZC_19, bool, 2);
-		V_43 = SLICE(VNZC_19, bool, 8);
 		if (globals->ptr0218 == 0x00)
 			sr_22 = sr_4 | 0x08;
 	}
-	Z_44 = ϕ(Z_16, Z_20, Z_20);
-	V_41 = ϕ(V_42, V_43, V_43);
 	sr_40 = ϕ(sr_4, sr_4, sr_22);
-	N_37 = ϕ(N_38, N_39, N_39);
-	C_34 = ϕ(C_35, C_36, C_36);
 	r15_25 = r14_24;
-	sp_30 = fp + 0x02;
+	r15Out = r15_25;
+	return sr_40;
 }
 
-// 5156: define pvPortMalloc
-define pvPortMalloc
+// 5156: Register Eq_136 pvPortMalloc(Register (ptr20 Eq_102) pc, Register Eq_136 sr, Register Eq_2574 r15, Register out Eq_2581 r5Out, Register out Eq_2582 r6Out, Register out Eq_2583 r7Out, Register out Eq_2584 r8Out, Register out Eq_2585 r9Out, Register out Eq_2586 r10Out, Register out Eq_2587 r11Out, Register out Eq_2588 r12Out, Register out Eq_2589 r13Out, Register out Eq_2590 r14Out, Register out Eq_2591 r15Out)
+Eq_136 pvPortMalloc(struct Eq_102 * pc, Eq_136 sr, Eq_2574 r15, union Eq_2581 & r5Out, union Eq_2582 & r6Out, union Eq_2583 & r7Out, union Eq_2584 & r8Out, union Eq_2585 & r9Out, union Eq_2586 & r10Out, union Eq_2587 & r11Out, union Eq_2588 & r12Out, union Eq_2589 & r13Out, union Eq_2590 & r14Out, union Eq_2591 & r15Out)
 {
 	word20 r10;
-	word20 r15;
-	word20 sr;
-	word20 pc;
+	Eq_2574 r15;
+	Eq_136 sr;
+	struct Eq_102 * pc;
 	word16 wLoc06;
-	wLoc04_73 = r10;
 	r11_10 = r15;
 	if ((r15 & 0x01) != 0x00)
 	{
@@ -2659,43 +2069,53 @@ define pvPortMalloc
 		r11_17 = r11_16 + 0x02;
 	}
 	r11_29 = ϕ(r11_10, r11_17);
-	vTaskSuspendAll();
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg0 = <invalid>;
+	sr_22 = vTaskSuspendAll(sr, stackArg0);
 	r14_27.u0 = 0x0216;
 	r15_30 = r14_27 + r11_29;
 	if (r15_30 >= 0x0708 && r14_27 >= r15_30)
 		globals->t0216 = r15_30;
-	xTaskResumeAll();
+	xTaskResumeAll(pc, sr_22, out sr_48, out r5_53, out r6_54, out r7_55, out r8_56, out r9_46, out r10_43, out r11_93, out r12_49, out r13_50, out r14_51, out r15_94);
 	r15_61 = r10_43;
-	v12_64 = wLoc06;
-	r10_66 = v12_64;
-	v13_67 = wLoc04_73;
-	r11_69 = v13_67;
+	r10_66 = wLoc06;
+	r11_69 = r10;
+	r5Out = r5_53;
+	r6Out = r6_54;
+	r7Out = r7_55;
+	r8Out = r8_56;
+	r9Out = r9_46;
+	r10Out = r10_66;
+	r11Out = r11_69;
+	r12Out = r12_49;
+	r13Out = r13_50;
+	r14Out = r14_51;
+	r15Out = r15_61;
+	return sr_48;
 }
 
-// 5192: define vPortFree
-define vPortFree
+// 5192: Register Eq_4478 vPortFree(Stack word16 wArg00)
+Eq_4478 vPortFree(word16 wArg00)
 {
 	word16 fp;
 	sp_5 = fp + 0x02;
+	return sp_5;
 }
 
-// 5194: define vPortInitialiseBlocks
-define vPortInitialiseBlocks
+// 5194: void vPortInitialiseBlocks(Stack word16 wArg00)
+void vPortInitialiseBlocks(word16 wArg00)
 {
-	sp = fp;
 	globals->t0216.u0 = 0x00;
-	v3 = (word16) *sp;
-	sp = (word20) sp + 0x02;
 }
 
-// 519A: define pxPortInitialiseStack
-define pxPortInitialiseStack
+// 519A: Register (ptr20 Eq_1040) pxPortInitialiseStack(Register Eq_1042 r13, Register Eq_1040 r14, Register (ptr20 Eq_1040) r15, Stack word16 wArg00)
+union Eq_1040 * pxPortInitialiseStack(Eq_1042 r13, Eq_1040 r14, union Eq_1040 * r15, word16 wArg00)
 {
-	word16 fp;
-	word20 r15;
-	word20 r14;
-	word20 r13;
-	*r15 = (union Eq_5219 *) r14;
+	union Eq_1040 * r15;
+	Eq_1040 r14;
+	Eq_1042 r13;
+	*r15 = (union Eq_1040 *) r14;
 	*(r15 - 0x02) = 0x08;
 	*(r15 - 0x04) = 0x4444;
 	*(r15 - 0x06) = 0x5555;
@@ -2708,78 +2128,58 @@ define pxPortInitialiseStack
 	*(r15 - 0x14) = 0xCCCC;
 	*(r15 - 22) = ~0x2222;
 	*(r15 - 0x18) = ~0x1111;
-	*(r15 - 0x1A) = (union Eq_5296 *) r13;
+	*(r15 - 0x1A) = (union Eq_1042 *) r13;
 	r15_62 = r15 - 0x1C;
-	VNZC_63 = cond(r15 - 0x1C);
-	C_70 = SLICE(VNZC_63, bool, 0);
-	N_71 = SLICE(VNZC_63, bool, 2);
-	V_72 = SLICE(VNZC_63, bool, 8);
-	Z_73 = SLICE(VNZC_63, bool, 1);
 	Mem66[r15 - 0x1C + 0x00:word16] = 0x00;
-	sp_68 = fp + 0x02;
+	return r15_62;
 }
 
-// 520A: define xPortStartScheduler
-define xPortStartScheduler
+// 520A: Register Eq_4575 xPortStartScheduler(Register (ptr20 Eq_102) pc, Register out Eq_1677 r13Out, Register out Eq_1678 r14Out)
+Eq_4575 xPortStartScheduler(struct Eq_102 * pc, union Eq_1677 & r13Out, union Eq_1678 & r14Out)
 {
-	word20 pc;
+	struct Eq_102 * pc;
 	<type-error> Mem0;
-	prvSetupTimerInterrupt();
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg0 = <invalid>;
+	prvSetupTimerInterrupt(stackArg0);
 	v4_6 = pc->ptrFFFFAFF2;
-	v6_8 = (struct Eq_5341 *) *v4_6;
+	v6_8 = (struct Eq_4587 *) *v4_6;
 	v7_10 = v6_8->w0000;
 	pc->wFFFFB000 = v7_10;
-	v10_16 = v6_8->t0002;
-	r15_18 = v10_16;
 	v11_19 = v6_8->t0004;
 	r14_21 = v11_19;
 	v13_22 = v6_8->t0006;
 	r13_24 = v13_22;
 	v15_25 = v6_8->t0008;
 	r12_27 = v15_25;
-	v16_28 = v6_8->t000A;
-	r11_30 = v16_28;
-	v18_31 = v6_8->t000C;
-	r10_33 = v18_31;
-	v20_34 = v6_8->t000E;
-	r9_36 = v20_34;
-	v22_37 = v6_8->t0010;
-	r8_39 = v22_37;
-	v24_40 = v6_8->t0012;
-	r7_42 = v24_40;
-	v26_43 = v6_8->t0014;
-	r6_45 = v26_43;
-	v28_46 = v6_8->t0016;
-	r5_48 = v28_46;
-	v30_49 = v6_8->t0018;
-	sp_50 = (char *) &v6_8->t0018 + 0x02;
-	r4_51 = v30_49;
+	r13Out = r13_24;
+	r14Out = r14_21;
+	return r12_27;
 }
 
-// 5238: define vPortEndScheduler
-define vPortEndScheduler
+// 5238: void vPortEndScheduler(Stack word16 wArg00)
+void vPortEndScheduler(word16 wArg00)
 {
-	sp = fp;
-	v3 = (word16) *sp;
-	sp = (word20) sp + 0x02;
 }
 
-// 523A: define vPortYield
-define vPortYield
+// 523A: Register Eq_4611 vPortYield(Register (ptr20 Eq_102) pc, Register Eq_136 sr, Register out Eq_962 srOut, Register out Eq_963 r5Out, Register out Eq_964 r6Out, Register out Eq_965 r7Out, Register out Eq_966 r8Out, Register out Eq_967 r9Out, Register out Eq_968 r10Out, Register out Eq_969 r11Out, Register out Eq_970 r12Out, Register out Eq_971 r13Out, Register out Eq_972 r14Out)
+Eq_4611 vPortYield(struct Eq_102 * pc, Eq_136 sr, union Eq_962 & srOut, union Eq_963 & r5Out, union Eq_964 & r6Out, union Eq_965 & r7Out, union Eq_966 & r8Out, union Eq_967 & r9Out, union Eq_968 & r10Out, union Eq_969 & r11Out, union Eq_970 & r12Out, union Eq_971 & r13Out, union Eq_972 & r14Out)
 {
 	word16 fp;
-	word20 sr;
-	word20 pc;
+	Eq_136 sr;
+	struct Eq_102 * pc;
 	sr_6 = sr & ~0x08;
 	v18_48 = pc->ptrFFFFAFA4;
 	*v18_48 = fp - 0x001C;
-	vTaskSwitchContext();
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg0 = <invalid>;
+	vTaskSwitchContext(stackArg0);
 	v20_61 = pc->ptrFFFFAF98;
-	v21_63 = (struct Eq_5449 *) *v20_61;
+	v21_63 = (struct Eq_4636 *) *v20_61;
 	v22_65 = v21_63->w0000;
 	pc->wFFFFAFA6 = v22_65;
-	v24_71 = v21_63->t0002;
-	r15_73 = v24_71;
 	v25_74 = v21_63->t0004;
 	r14_76 = v25_74;
 	v26_77 = v21_63->t0006;
@@ -2800,213 +2200,131 @@ define vPortYield
 	r6_100 = v33_98;
 	v34_101 = v21_63->t0016;
 	r5_103 = v34_101;
-	v35_104 = v21_63->t0018;
-	sp_105 = (char *) &v21_63->t0018 + 0x02;
-	r4_106 = v35_104;
+	sp_105 = (char *) &v21_63->t0016 + 0x04;
+	srOut = sr_6;
+	r5Out = r5_103;
+	r6Out = r6_100;
+	r7Out = r7_97;
+	r8Out = r8_94;
+	r9Out = r9_91;
+	r10Out = r10_88;
+	r11Out = r11_85;
+	r12Out = r12_82;
+	r13Out = r13_79;
+	r14Out = r14_76;
+	return sp_105;
 }
 
-// 528E: define prvSetupTimerInterrupt
-define prvSetupTimerInterrupt
+// 528E: void prvSetupTimerInterrupt(Stack word16 wArg00)
+void prvSetupTimerInterrupt(word16 wArg00)
 {
-	word16 fp;
-	(union Eq_5509 *) 0x0160 = 0x00;
-	(union Eq_5509 *) 0x0160 = 0x0100;
-	(union Eq_5509 *) 0x0160 = (union Eq_5509 *) ((union Eq_5509 *) 0x0160 | 0x04);
+	(union Eq_4698 *) 0x0160 = 0x00;
+	(union Eq_4698 *) 0x0160 = 0x0100;
+	(union Eq_4698 *) 0x0160 = (union Eq_4698 *) ((union Eq_4698 *) 0x0160 | 0x04);
 	(ptr16 *) 0x0172 = 0x20;
 	(ptr16 *) 0x0162 = 0x10;
-	(union Eq_5509 *) 0x0160 = (union Eq_5509 *) ((union Eq_5509 *) 0x0160 | 0x04);
-	(union Eq_5509 *) 0x0160 = (union Eq_5509 *) ((union Eq_5509 *) 0x0160 | 0x10);
-	sp_11 = fp + 0x02;
+	(union Eq_4698 *) 0x0160 = (union Eq_4698 *) ((union Eq_4698 *) 0x0160 | 0x04);
+	(union Eq_4698 *) 0x0160 = (union Eq_4698 *) ((union Eq_4698 *) 0x0160 | 0x10);
 }
 
-// 52B4: define prvTickISR
-define prvTickISR
+// 52B4: void prvTickISR(Register (ptr20 Eq_4725) pc)
+void prvTickISR(struct Eq_4725 * pc)
 {
-	sp = fp;
-	sp -= 0x02;
-	*sp = r4;
-	sp -= 0x02;
-	*sp = r5;
-	sp -= 0x02;
-	*sp = r6;
-	sp -= 0x02;
-	*sp = r7;
-	sp -= 0x02;
-	*sp = r8;
-	sp -= 0x02;
-	*sp = r9;
-	sp -= 0x02;
-	*sp = r10;
-	sp -= 0x02;
-	*sp = r11;
-	sp -= 0x02;
-	*sp = r12;
-	sp -= 0x02;
-	*sp = r13;
-	sp -= 0x02;
-	*sp = r14;
-	sp -= 0x02;
-	*sp = r15;
-	v16 = pc->tFFFFAF4A;
-	r14 = v16;
-	sp -= 0x02;
-	*sp = r14;
-	v17 = pc->tFFFFAF2E;
-	r12 = v17;
-	v18 = *r12;
-	v18 = sp;
-	*r12 = v18;
-	vTaskIncrementTick();
-	vTaskSwitchContext();
-	v19 = pc->tFFFFAF1E;
-	r12 = v19;
-	v20 = *r12;
-	sp = v20;
-	v21 = *sp;
-	sp.u1 = (word20) sp + 0x02;
-	r15 = v21;
-	v22 = pc->tFFFFAF2C;
-	v22 = r15;
-	pc->tFFFFAF2C = v22;
-	v23 = *sp.u1;
-	sp.u1 = (word20) sp.u1 + 0x02;
-	r15 = v23;
-	v24 = *sp.u1;
-	sp.u1 = (word20) sp.u1 + 0x02;
-	r14 = v24;
-	v25 = *sp.u1;
-	sp.u1 = (word20) sp.u1 + 0x02;
-	r13 = v25;
-	v26 = *sp.u1;
-	sp.u1 = (word20) sp.u1 + 0x02;
-	r12 = v26;
-	v27 = *sp.u1;
-	sp.u1 = (word20) sp.u1 + 0x02;
-	r11 = v27;
-	v28 = *sp.u1;
-	sp.u1 = (word20) sp.u1 + 0x02;
-	r10 = v28;
-	v29 = *sp.u1;
-	sp.u1 = (word20) sp.u1 + 0x02;
-	r9 = v29;
-	v30 = *sp.u1;
-	sp.u1 = (word20) sp.u1 + 0x02;
-	r8 = v30;
-	v31 = *sp.u1;
-	sp.u1 = (word20) sp.u1 + 0x02;
-	r7 = v31;
-	v32 = *sp.u1;
-	sp.u1 = (word20) sp.u1 + 0x02;
-	r6 = v32;
-	v33 = *sp.u1;
-	sp.u1 = (word20) sp.u1 + 0x02;
-	r5 = v33;
-	v34 = *sp.u1;
-	sp.u1 = (word20) sp.u1 + 0x02;
-	r4 = v34;
+	word16 fp;
+	struct Eq_4725 * pc;
+	v17_44 = pc->ptrFFFFAF2E;
+	*v17_44 = fp - 0x001A;
+	vTaskIncrementTick(out r12_127, out r13_128, out r14_129);
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg0 = <invalid>;
+	vTaskSwitchContext(stackArg0);
+	v19_68 = pc->ptrFFFFAF1E;
+	v20_70 = *v19_68;
+	v21_72 = *v20_70;
+	pc->wFFFFAF2C = v21_72;
 }
 
-// 5308: define printf
-define printf
+// 5308: Register Eq_36 printf(Register Eq_36 r8, Register out Eq_71 r11Out)
+Eq_36 printf(Eq_36 r8, union Eq_71 & r11Out)
 {
 	word16 fp;
 	<type-error> Mem0;
-	word20 r8;
+	Eq_36 r8;
 	r15_3.u1 = 0x02;
 	r15_4 = r15_3 + fp;
-	v5_7 = (word16) *r15_4;
-	r15_11.u1 = 17314;
-	vuprintf();
+	v5_7 = *r15_4;
+	r15_11.u0 = 17314;
+	r8_22 = vuprintf(r8, (word20) r15_4 + 0x02, v5_7, r15_11, out r11_14);
+	r11Out = r11_14;
+	return r8_22;
 }
 
-// 531A: define PRINT
-define PRINT
+// 531A: Register Eq_4786 PRINT(Register Eq_4787 r11, Register Eq_4788 r14, Register out Eq_4789 r11Out, Register out Eq_4790 r15Out)
+Eq_4786 PRINT(Eq_4787 r11, Eq_4788 r14, union Eq_4789 & r11Out, union Eq_4790 & r15Out)
 {
 	word16 fp;
-	word20 r11;
-	word20 r14;
+	Eq_4787 r11;
+	Eq_4788 r14;
 	sp_6 = fp - 0x04;
-	VNZC_13 = cond(r14);
-	Z_14 = SLICE(VNZC_13, bool, 1);
-	C_48 = SLICE(VNZC_13, bool, 0);
-	N_53 = SLICE(VNZC_13, bool, 2);
-	V_59 = SLICE(VNZC_13, bool, 8);
 	if (r14 != 0x00)
 		__write_char();
 	else
 	{
-		Z_63 = ϕ(Z_14, Z_29);
-		V_58 = ϕ(V_59, V_60);
-		N_52 = ϕ(N_53, N_54);
-		C_47 = ϕ(C_48, C_49);
 		Mem35 = ϕ(Mem8, Mem25);
 		sp_32 = ϕ(sp_6, sp);
-		r15_30.u1 = 0x01;
-		Z_62 = ϕ(Z_63, Z);
-		V_57 = ϕ(V_58, V);
+		r15_30.u0 = 0x01;
 		r15_56 = ϕ(r15_30, r15_23);
-		N_51 = ϕ(N_52, N);
-		C_46 = ϕ(C_47, C);
 		Mem34 = ϕ(Mem35, Mem0);
 		sp_31 = ϕ(sp_32, sp);
-		sp_37 = (word20) sp_31.u0 + 0x02;
+		sp_37 = (word20) sp_31 + 0x02;
 		v15_39 = *sp_37;
 		r11_41 = v15_39;
 		sp_43 = (char *) sp_37 + 0x04;
+		r11Out = r11_41;
+		r15Out = r15_56;
+		return sp_43;
 	}
 }
 
-// 534A: define __write_pad
-define __write_pad
+// 534A: Register Eq_4834 __write_pad(Register Eq_4787 r11, Register Eq_4836 r14, Register out Eq_4837 r10Out, Register out Eq_4838 r11Out, Register out Eq_4839 r15Out)
+Eq_4834 __write_pad(Eq_4787 r11, Eq_4836 r14, union Eq_4837 & r10Out, union Eq_4838 & r11Out, union Eq_4839 & r15Out)
 {
 	word16 fp;
-	word20 r11;
+	Eq_4787 r11;
 	word20 r9;
 	word20 r15;
-	word20 r14;
+	Eq_4836 r14;
 	sp_9 = fp - 0x06;
 	r9_13 = r15;
-	VNZC_16 = cond(r14 - 0x01);
-	C_55 = SLICE(VNZC_16, bool, 0);
-	N_60 = SLICE(VNZC_16, bool, 2);
-	V_66 = SLICE(VNZC_16, bool, 8);
-	Z_71 = SLICE(VNZC_16, bool, 1);
 	if (r14 < 0x01)
 	{
-		Z_70 = ϕ(Z_71, Z_72);
-		V_65 = ϕ(V_66, V_67);
-		N_59 = ϕ(N_60, N_61);
-		C_54 = ϕ(C_55, C_56);
 		Mem38 = ϕ(Mem11, Mem27);
 		sp_35 = ϕ(sp_9, sp);
 		r9_32 = ϕ(r9_13, r9);
 		r15_33 = r9_32;
-		Z_69 = ϕ(Z_70, Z);
-		V_64 = ϕ(V_65, V);
 		r15_63 = ϕ(r15_33, r15_25);
-		N_58 = ϕ(N_59, N);
-		C_53 = ϕ(C_54, C);
 		Mem37 = ϕ(Mem38, Mem0);
 		sp_34 = ϕ(sp_35, sp);
-		sp_40 = (word20) sp_34.u0 + 0x02;
-		v14_42 = sp_40->t0000;
-		r10_44 = v14_42;
-		v15_45 = sp_40->t0002;
-		r11_47 = v15_45;
-		sp_49 = (char *) &sp_40->t0002 + 0x04;
+		struct Eq_4875 * sp_40 = (word20) sp_34 + 0x02;
+		Eq_4838 r11_47 = sp_40->t0002;
+		r10Out = sp_40->t0000;
+		r11Out = r11_47;
+		r15Out = r15_63;
+		return (char *) &sp_40->t0002 + 0x04;
 	}
 	else
 		__write_char();
 }
 
-// 537E: define vuprintf
-define vuprintf
+// 537E: Register Eq_36 vuprintf(Register Eq_36 r8, Register Eq_4776 r13, Register Eq_409 r14, Register Eq_4771 r15, Register out Eq_4779 r11Out)
+Eq_36 vuprintf(Eq_36 r8, Eq_4776 r13, Eq_409 r14, Eq_4771 r15, union Eq_4779 & r11Out)
 {
 	word16 fp;
-	word20 r8;
-	word20 r13;
-	word20 r15;
-	word20 r14;
+	Eq_36 r8;
+	Eq_4776 r13;
+	Eq_4771 r15;
+	Eq_409 r14;
 	sp_27 = fp - 0x4C;
 	r5_30 = r13;
 	globals->ptr021A = 0x00;
@@ -3025,7 +2343,7 @@ l53A6:
 		do
 		{
 			r6_51 = ϕ(r6_42, r6_52);
-			r6_52 = (union Eq_5943 *) ((char *) r6_51 + 0x01);
+			r6_52 = (word20) r6_51 + 0x01;
 			v19_54 = *r6_52;
 			r7_55 = v19_54;
 		} while (v19_54 != 0x00 && v19_54 != 0x25);
@@ -3033,23 +2351,21 @@ l53A6:
 	r7_69 = ϕ(r7_46, r7_55, r7_55, r7_46);
 	r6_60 = ϕ(r6_42, r6_52, r6_52, r6_42);
 	r13_64 = r6_60 - r6_42;
-	r6_75 = (union Eq_5943 *) ((char *) r6_60 + 0x01);
-	((word20) sp_80 + 0x002E)->u0 = 0x00;
-	((word20) sp_80 + 0x0035)->u0 = 0x00;
+	r6_75 = (word20) r6_60 + 0x01;
+	((word20) sp_80 + 0x002E)->u1 = 0x00;
+	((word20) sp_80 + 0x0035)->u1 = 0x00;
 	*((word20) sp_80 + 0x002F) = 0x00;
 	r11_94.u1 = ~0x00;
-	((word20) sp_80 + 0x0028)->u0 = 0x00;
+	((word20) sp_80 + 0x0028)->u1 = 0x00;
 	while (true)
 	{
-		r13_1294 = ϕ(r13_64, r13_1293);
 		Mem99 = ϕ(Mem97, Mem1034);
 		r6_98 = ϕ(r6_75, r6_196);
 		v25_100 = *r6_98;
 		r7_101 = v25_100;
-		r6_102 = (union Eq_5943 *) ((char *) r6_98 + 0x01);
+		r6_102 = (word20) r6_98 + 0x01;
 		while (true)
 		{
-			r13_1293 = ϕ(r13_1051, r13_1294);
 			r6_196 = ϕ(r6_1056, r6_102);
 			Mem168 = ϕ(Mem1064, Mem99);
 			r7_104 = ϕ(r7_1055, r7_101);
@@ -3073,7 +2389,7 @@ l53A6:
 				r13_1051 = r13_1050 + ~0x2F;
 				v30_1054 = *r6_1052;
 				r7_1055 = v30_1054;
-				r6_1056 = (union Eq_5943 *) ((char *) r6_1052 + 0x01);
+				r6_1056 = (word20) r6_1052 + 0x01;
 			} while (v30_1054 >= ~0x39);
 			*((word20) sp_80 + 0x002F) = r13_1050 + ~0x2F;
 		}
@@ -3084,7 +2400,7 @@ l53A6:
 			if (r7_104 == 99)
 			{
 				*((word20) sp_80 + 44) = sp_80;
-				r5_315 = (union Eq_5943 *) ((char *) r5_1100 + 0x02);
+				r5_315 = (word20) r5_1100 + 0x02;
 				v38_317 = *r5_1100;
 				*sp_80 = v38_317;
 				goto l54F6;
@@ -3092,22 +2408,22 @@ l53A6:
 			if (r7_104 == 0x44)
 			{
 				v184_323 = (byte) *((word20) sp_80 + 0x002E);
-				((word20) sp_80 + 0x002E)->u0 = v184_323 | 0x01;
+				((word20) sp_80 + 0x002E)->u1 = v184_323 | 0x01;
 l57AE:
 				Mem331 = ϕ(Mem168, Mem168, Mem325);
 				v40_332 = (byte) *((word20) sp_80 + 0x002E);
 				if ((v40_332 & 0x01) != 0x00)
 				{
-					r5_364 = (union Eq_5943 *) ((char *) r5_1100 + 0x04);
+					r5_364 = (word20) r5_1100 + 0x04;
 					v42_366 = *r5_1100;
-					r15_367 = (union Eq_5943 *) ((char *) r5_1100 + 0x02);
+					r15_367 = (word20) r5_1100 + 0x02;
 					*((word20) sp_80 + 0x0030) = v42_366;
 					v44_371 = *r15_367;
 					*((word20) sp_80 + 0x0032) = v44_371;
 				}
 				else
 				{
-					r5_340 = (union Eq_5943 *) ((char *) r5_1100 + 0x02);
+					r5_340 = (word20) r5_1100 + 0x02;
 					v66_341 = *r5_1100;
 					*((word20) sp_80 + 0x0030) = v66_341;
 					v68_345 = *((word20) sp_80 + 0x0030);
@@ -3133,14 +2449,14 @@ l57AE:
 					v62_384 = *((word20) sp_80 + 0x0032);
 					*((word20) sp_80 + 0x0032) = v62_384 ^ ~0x00;
 					v63_387 = *((word20) sp_80 + 0x0030);
-					((word20) sp_80 + 0x0030)->u1 = (word16) v63_387 + 0x01;
+					*((word20) sp_80 + 0x0030) = (word16) v63_387 + 0x01;
 					v64_391 = *((word20) sp_80 + 0x0032);
 					v64_393 = v64_391 + (v63_387 <u 0x01);
 					*((word20) sp_80 + 0x0032) = v64_393;
 					v65_397.u2 = 0x2D;
 					*((word20) sp_80 + 0x0028) = v65_397;
 				}
-				v48_402.u1 = 0x0A;
+				v48_402.u0 = 0x0A;
 				*((word20) sp_80 + 0x0034) = v48_402;
 				goto l5620;
 			}
@@ -3149,36 +2465,36 @@ l57AE:
 			if (r7_104 == 0x4F)
 			{
 				v183_406 = (byte) *((word20) sp_80 + 0x002E);
-				((word20) sp_80 + 0x002E)->u0 = v183_406 | 0x01;
+				((word20) sp_80 + 0x002E)->u1 = v183_406 | 0x01;
 l57A2:
-				((word20) sp_80 + 0x0034)->u0 = 0x08;
+				((word20) sp_80 + 0x0034)->u1 = 0x08;
 				goto l561C;
 			}
 			if (r7_104 == 111)
 				goto l57A2;
 			if (r7_104 == 0x70)
 			{
-				r5_419 = (union Eq_5943 *) ((char *) r5_1100 + 0x02);
+				r5_419 = (word20) r5_1100 + 0x02;
 				v164_421 = *r5_1100;
 				*((word20) sp_80 + 0x0030) = v164_421;
-				((word20) sp_80 + 0x0032)->u1 = 0x00;
-				v167_429.u1 = 0x10;
+				((word20) sp_80 + 0x0032)->u0 = 0x00;
+				v167_429.u0 = 0x10;
 				*((word20) sp_80 + 0x0034) = v167_429;
 				v168_431 = (byte) *((word20) sp_80 + 0x002E);
-				((word20) sp_80 + 0x002E)->u0 = v168_431 | 0x40;
-				r7_434.u1 = 0x78;
+				((word20) sp_80 + 0x002E)->u1 = v168_431 | 0x40;
+				r7_434.u0 = 0x78;
 				goto l561C;
 			}
 			if (r7_104 == 115)
 			{
-				r5_438 = (union Eq_5943 *) ((char *) r5_1100 + 0x02);
+				r5_438 = (word20) r5_1100 + 0x02;
 				v152_439 = *r5_1100;
 				*((word20) sp_80 + 44) = v152_439;
 				v154_443 = *((word20) sp_80 + 44);
 				if (v154_443 == 0x00)
 				{
 					*((word20) sp_80 + 44) = sp_80;
-					v175_450.u1 = 0x28;
+					v175_450.u0 = 0x28;
 					*sp_80 = v175_450;
 					v176_453.u1 = 110;
 					*((word20) sp_80 + 0x01) = v176_453;
@@ -3190,7 +2506,7 @@ l57A2:
 					*((word20) sp_80 + 0x04) = v179_462;
 					v180_465.u1 = 0x29;
 					*((word20) sp_80 + 0x05) = v180_465;
-					((word20) sp_80 + 0x06)->u0 = 0x00;
+					((word20) sp_80 + 0x06)->u1 = 0x00;
 				}
 				Mem484 = ϕ(Mem442, Mem469);
 				if (r11_94 < 0x00)
@@ -3209,12 +2525,15 @@ l57A2:
 				}
 				v155_501 = SLICE(r11_94, byte, 0);
 				r15_502.u0 = (int16) v155_501;
-				r14_506.u1 = 0x00;
+				r14_506.u2 = 0x00;
 				v156_507 = *((word20) sp_80 + 44);
-				memchr();
+				// Failed to bind call argument.
+				// Please report this issue at https://github.com/uxmal/reko
+				stackArg0 = <invalid>;
+				sp_511 = memchr(r15_502, r14_506, v156_507, stackArg0, out r15_510);
 				if (r15_510 != 0x00)
 				{
-					v157_521 = sp_511.u3->t002C;
+					v157_521 = *((word20) sp_511 + 44);
 					r9_522 = r15_510 - v157_521;
 					if (r11_94 < r9_522)
 						goto l573C;
@@ -3225,19 +2544,18 @@ l573C:
 					r9_526 = r11_94;
 				}
 l54F8:
-				r13_1302 = ϕ(r13_1293, r13_513, r13_513, r13_1293);
 				r5_1121 = ϕ(r5_1122, r5_438, r5_438, r5_438);
 				r9_766 = ϕ(r9_755, r9_522, r9_526, r9_498);
 				sp_756 = ϕ(sp_80, sp_511, sp_511, sp_80);
-				((word20) sp_756 + 0x0028)->u0 = 0x00;
+				((word20) sp_756 + 0x0028)->u1 = 0x00;
 				goto l54FC;
 			}
 			if (r7_104 == 0x55)
 			{
 				v151_529 = (byte) *((word20) sp_80 + 0x002E);
-				((word20) sp_80 + 0x002E)->u0 = v151_529 | 0x01;
+				((word20) sp_80 + 0x002E)->u1 = v151_529 | 0x01;
 l56FE:
-				v148_537.u1 = 0x0A;
+				v148_537.u0 = 0x0A;
 				*((word20) sp_80 + 0x0034) = v148_537;
 				goto l561C;
 			}
@@ -3252,7 +2570,7 @@ l54F6:
 				r9_755.u1 = 0x01;
 				goto l54F8;
 			}
-			v142_546.u1 = 0x10;
+			v142_546.u0 = 0x10;
 			*((word20) sp_80 + 0x0034) = v142_546;
 			v143_548 = (byte) *((word20) sp_80 + 0x002E);
 			if ((v143_548 & 0x08) != 0x00)
@@ -3268,13 +2586,13 @@ l54F6:
 				{
 l5616:
 					v147_562 = (byte) *((word20) sp_80 + 0x002E);
-					((word20) sp_80 + 0x002E)->u0 = v147_562 | 0x40;
+					((word20) sp_80 + 0x002E)->u1 = v147_562 | 0x40;
 				}
 			}
 l561C:
 			r5_1112 = ϕ(r5_1100, r5_1100, r5_1100, r5_1100, r5_419, r5_1100);
 			r7_866 = ϕ(r7_104, r7_104, r7_104, r7_104, r7_434, r7_104);
-			((word20) sp_80 + 0x0028)->u0 = 0x00;
+			((word20) sp_80 + 0x0028)->u1 = 0x00;
 l5620:
 			r5_1109 = ϕ(r5_1111, r5_1112);
 			r7_862 = ϕ(r7_104, r7_866);
@@ -3282,7 +2600,7 @@ l5620:
 			if (r11_94 >= 0x00)
 			{
 				v60_586 = (byte) *((word20) sp_80 + 0x002E);
-				((word20) sp_80 + 0x002E)->u0 = v60_586 & ~0x20;
+				((word20) sp_80 + 0x002E)->u1 = v60_586 & ~0x20;
 			}
 			r15_593 = (word20) sp_80 + 0x0028;
 			*((word20) sp_80 + 44) = r15_593;
@@ -3301,27 +2619,30 @@ l5620:
 l564A:
 				v79_609 = *((word20) sp_80 + 0x0034);
 				*((word20) sp_80 + 0x0038) = v79_609;
-				((word20) sp_80 + 0x0039)->u0 = 0x00;
-				((word20) sp_80 + 0x003A)->u1 = 0x00;
+				((word20) sp_80 + 0x0039)->u1 = 0x00;
+				*((word20) sp_80 + 0x003A) = 0x00;
 				do
 				{
 					r8_650 = ϕ(r8_1155, r8_700);
 					sp_619 = ϕ(sp_80, sp_702);
-					((word20) sp_619 + 0x0036)->u0 = 0x00;
+					((word20) sp_619 + 0x0036)->u1 = 0x00;
 					v84_624 = *((word20) sp_619 + 0x0030);
 					v85_626 = *((word20) sp_619 + 0x0032);
 					v86_628 = *((word20) sp_619 + 0x0038);
 					r14_629 = v84_624 - v86_628;
-					v87_631 = (word16) *((word20) sp_619 + 0x003A);
+					v87_631 = *((word20) sp_619 + 0x003A);
 					r15_633 = v85_626 - v87_631 - (r14_629 < 0x00);
 					if (r15_633 < 0x00)
-						((word20) sp_619 + 0x0036)->u0 = 0x01;
+						((word20) sp_619 + 0x0036)->u1 = 0x01;
 					Mem640 = ϕ(Mem638, Mem623);
 					v95_641 = *((word20) sp_619 + 0x0030);
 					v97_643 = *((word20) sp_619 + 0x0032);
 					v98_645 = *((word20) sp_619 + 0x0038);
-					v99_647 = (word16) *((word20) sp_619 + 0x003A);
-					fn00005B4E();
+					v99_647 = *((word20) sp_619 + 0x003A);
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					stackArg0 = <invalid>;
+					fn00005B4E(r8_650, v98_645, v99_647, v95_641, v97_643, stackArg0, out sp_657, out r8_655, out r12_1314, out r13_1315, out r14_653, out r15_1316);
 					if (r14_653 >= 0x0A)
 						r4_673 = (word20) r14_653 + 0x0030;
 					else
@@ -3332,14 +2653,17 @@ l564A:
 					}
 					r4_684 = ϕ(r4_673, r4_665, r4_670);
 					v100_677 = sp_657->ptr002C;
-					sp_657->ptr002C = (union Eq_6674 *) ((char *) v100_677 + 0x0000FFFF);
+					sp_657->ptr002C = (union Eq_5623 *) ((char *) v100_677 + 0x0000FFFF);
 					v101_681 = sp_657->ptr002C;
-					*v101_681 = (union Eq_6674 *) r4_684;
-					v103_687 = sp_657->w0030;
-					v104_689 = sp_657->w0032;
-					v105_691 = sp_657->w0038;
-					v106_693 = sp_657->w003A;
-					fn00005B4E();
+					*v101_681 = (union Eq_5623 *) r4_684;
+					v103_687 = sp_657->t0030;
+					v104_689 = sp_657->t0032;
+					v105_691 = sp_657->t0038;
+					v106_693 = sp_657->t003A;
+					// Failed to bind call argument.
+					// Please report this issue at https://github.com/uxmal/reko
+					stackArg0 = <invalid>;
+					fn00005B4E(r8_655, v105_691, v106_693, v103_687, v104_689, stackArg0, out sp_702, out r8_700, out r12_696, out r13_697, out r14_1321, out r15_1322);
 					*((word20) sp_702 + 0x0030) = r12_696;
 					*((word20) sp_702 + 0x0032) = r13_697;
 					v109_713 = (byte) *((word20) sp_702 + 0x0036);
@@ -3351,21 +2675,19 @@ l564A:
 					if ((v119_719 & 0x08) != 0x00 && r4_684 != 0x30)
 					{
 						v121_727 = *((word20) sp_702 + 44);
-						((word20) sp_702 + 44)->u1 = (word16) v121_727.u1 + 0x0000FFFF;
+						*((word20) sp_702 + 44) = (word16) v121_727 + 0x0000FFFF;
 						v122_731 = *((word20) sp_702 + 44);
-						v123_734.u1 = 0x30;
+						v123_734.u0 = 0x30;
 						*v122_731 = v123_734;
 					}
 				}
 			}
-			r13_1278 = ϕ(r13_1293, r13_697, r13_697, r13_697, r13_697);
 			Mem738 = ϕ(Mem597, Mem712, Mem712, Mem712, Mem735);
 			sp_736 = ϕ(sp_80, sp_702, sp_702, sp_702, sp_702);
 			v111_739 = *((word20) sp_736 + 44);
 			r9_740 = sp_736 - v111_739;
 			r9_741 = r9_740 + 0x28;
 l54FC:
-			r13_1277 = ϕ(r13_1278, r13_1302);
 			r5_1106 = ϕ(r5_1109, r5_1121);
 			r7_859 = ϕ(r7_862, r7_104);
 			Mem769 = ϕ(Mem738, Mem764);
@@ -3401,12 +2723,11 @@ l54FC:
 				r13_812 = r13_808 - r15_811;
 				if (r13_812 >= 0x01)
 				{
-					__write_pad();
+					sp_820 = __write_pad(r11_796, r13_812, out r10_817, out r11_818, out r15_819);
 					v89_830 = *((word20) sp_820 + 0x0028);
 					r14_831 = v89_830;
 				}
 			}
-			r13_1273 = ϕ(r13_812, r13_812, r13_1277);
 			r10_932 = ϕ(r10_795, r10_817, r10_795);
 			r11_885 = ϕ(r11_796, r11_818, r11_796);
 			sp_837 = ϕ(sp_768, sp_820, sp_768);
@@ -3420,13 +2741,13 @@ l54FC:
 				r15_851 = v92_848 & 0xFF00 | 0x30;
 				*((word20) sp_837 + 0x002A) = r15_851;
 				*((word20) sp_837 + 0x002B) = r7_859;
-				r14_880.u1 = 0x02;
+				r14_880.u0 = 0x02;
 			}
 			else
-				r14_836.u1 = 0x01;
+				r14_836.u0 = 0x01;
 			Mem906 = ϕ(Mem879, Mem769);
 			r14_887 = ϕ(r14_880, r14_836);
-			PRINT();
+			sp_890 = PRINT(r11_885, r14_887, out r11_888, out r15_889);
 l5576:
 			r11_911 = ϕ(r11_885, r11_888, r11_888);
 			Mem905 = ϕ(Mem769, Mem906, Mem906);
@@ -3441,53 +2762,29 @@ l5576:
 				r13_915 = r13_910 - r15_914;
 				if (r13_915 >= 0x01)
 				{
-					r14_918 = r13_915;
-					__write_pad();
+					sp_923 = __write_pad(r11_911, r13_915, out r10_920, out r11_921, out r15_922);
 					if (r15_922 < 0x00)
 					{
 l5924:
-						r14_1309 = ϕ(r14_935, r14_960, r14_989, r14_918);
-						r13_1270 = ϕ(r13_1271, r13_1271, r13_986, r13_915);
 						sp_1002 = ϕ(sp_941, sp_966, sp_994, sp_923);
-						r15_1001.u0 = 0x021A;
 						sp_1003 = (word20) sp_1002 + 0x003C;
-						VNZC_1004 = cond(sp_1003);
-						C_1176 = SLICE(VNZC_1004, bool, 0);
-						N_1177 = SLICE(VNZC_1004, bool, 2);
-						V_1310 = SLICE(VNZC_1004, bool, 8);
-						Z_1311 = SLICE(VNZC_1004, bool, 1);
-						v124_1006 = sp_1003->t0000;
-						r4_1008 = v124_1006;
-						v125_1009 = sp_1003->t0002;
-						r5_1011 = v125_1009;
-						v126_1012 = sp_1003->t0004;
-						r6_1014 = v126_1012;
-						v127_1015 = sp_1003->t0006;
-						r7_1017 = v127_1015;
 						v128_1018 = sp_1003->t0008;
 						r8_1020 = v128_1018;
-						v129_1021 = sp_1003->t000A;
-						r9_1023 = v129_1021;
-						v130_1024 = sp_1003->t000C;
-						r10_1026 = v130_1024;
 						v131_1027 = sp_1003->t000E;
 						r11_1029 = v131_1027;
-						sp_1031 = (char *) &sp_1003->t000E + 0x04;
-						return;
+						r11Out = r11_1029;
+						return r8_1020;
 					}
 				}
 			}
-			r13_1271 = ϕ(r13_1273, r13_915, r13_915);
 			r11_937 = ϕ(r11_911, r11_911, r11_921);
 			r10_930 = ϕ(r10_932, r10_932, r10_920);
-			r14_935 = r10_930;
-			__write_pad();
+			sp_941 = __write_pad(r11_937, r10_930, out r10_1317, out r11_939, out r15_940);
 			if (r15_940 >= 0x00)
 			{
 				v112_956 = SLICE(r9_765, byte, 0);
-				r15_957 = (int16) v112_956;
-				r14_960 = r15_957;
-				PRINT();
+				r15_957.u0 = (int16) v112_956;
+				sp_966 = PRINT(r11_939, r15_957, out r11_964, out r15_965);
 				if (r15_965 >= 0x00)
 				{
 					v114_973 = (byte) *((word20) sp_966 + 0x002E);
@@ -3501,8 +2798,7 @@ l5924:
 					r13_986 = r13_982 - r15_985;
 					if (r13_986 < 0x01)
 						goto l53A6;
-					r14_989 = r13_986;
-					__write_pad();
+					sp_994 = __write_pad(r11_964, r13_986, out r10_1318, out r11_1319, out r15_993);
 					if (r15_993 >= 0x00)
 						goto l53A6;
 				}
@@ -3510,15 +2806,15 @@ l5924:
 			goto l5924;
 		}
 		v32_1032 = (byte) *((word20) sp_80 + 0x002E);
-		((word20) sp_80 + 0x002E)->u0 = v32_1032 | 0x01;
+		((word20) sp_80 + 0x002E)->u1 = v32_1032 | 0x01;
 	}
 	v33_169 = (byte) *((word20) sp_80 + 0x002E);
-	((word20) sp_80 + 0x002E)->u0 = v33_169 | 0x04;
+	((word20) sp_80 + 0x002E)->u1 = v33_169 | 0x04;
 	v34_173 = (byte) *((word20) sp_80 + 0x002E);
 	v138_182 = (byte) *((word20) sp_80 + 0x002E);
-	((word20) sp_80 + 0x002E)->u0 = v138_182 | 0x20;
+	((word20) sp_80 + 0x002E)->u1 = v138_182 | 0x20;
 	v139_197 = *r6_196;
-	r6_199 = (union Eq_7030 *) ((char *) r6_196 + 0x01);
+	r6_199 = (word20) r6_196 + 0x01;
 	if (v139_197 != 0x2A)
 	{
 		r13_202.u0 = 0x00;
@@ -3538,12 +2834,12 @@ l5924:
 				r13_221 = (ui20) ((word16) r15_220.u0 + r13_216);
 				r13_222 = r13_221 + ~0x2F;
 				v141_225 = *r6_223;
-				r6_227 = (union Eq_7030 *) ((char *) r6_223 + 0x01);
+				r6_227 = (union Eq_5968 *) ((char *) r6_223 + 0x01);
 			} while (v141_225 >= ~0x39);
 		}
 		r13_232 = ϕ(r13_202, r13_222);
 	}
-	r5_256 = (union Eq_6010 *) ((char *) r5_1100 + 0x02);
+	r5_256 = (word20) r5_1100 + 0x02;
 	v150_260 = *r5_1100;
 	v158_275.u2 = 0x2B;
 	*((word20) sp_80 + 0x0028) = v158_275;
@@ -3552,33 +2848,27 @@ l5924:
 		r5_287 = ϕ(r5_256, r5_289);
 		Mem279 = ϕ(Mem276, Mem305);
 		v159_280 = (byte) *((word20) sp_80 + 0x002E);
-		((word20) sp_80 + 0x002E)->u0 = v159_280 | 0x10;
+		((word20) sp_80 + 0x002E)->u1 = v159_280 | 0x10;
 		v160_283 = (byte) *((word20) sp_80 + 0x002E);
-		((word20) sp_80 + 0x002E)->u0 = v160_283 & ~0x20;
-		r5_289 = (union Eq_6010 *) ((char *) r5_287 + 0x02);
+		((word20) sp_80 + 0x002E)->u1 = v160_283 & ~0x20;
+		r5_289 = (union Eq_4939 *) ((char *) r5_287 + 0x02);
 		v161_290 = *r5_287;
 		*((word20) sp_80 + 0x002F) = v161_290;
 		v163_294 = *((word20) sp_80 + 0x002F);
 		v172_300 = *((word20) sp_80 + 0x002F);
 		*((word20) sp_80 + 0x002F) = v172_300 ^ ~0x00;
 		v173_303 = *((word20) sp_80 + 0x002F);
-		((word20) sp_80 + 0x002F)->u0 = (byte) v173_303 + 0x01;
+		((word20) sp_80 + 0x002F)->u1 = (byte) v173_303 + 0x01;
 	}
 }
 
-// 593E: define memchr
-define memchr
+// 593E: Register Eq_6170 memchr(Register Eq_6058 r13, Register Eq_6060 r14, Register Eq_409 r15, Stack word16 wArg00, Register out Eq_6073 r15Out)
+Eq_6170 memchr(Eq_6058 r13, Eq_6060 r14, Eq_409 r15, word16 wArg00, union Eq_6073 & r15Out)
 {
 	word16 fp;
-	word20 r15;
-	word20 r14;
-	word20 r13;
-	r12_9 = r14;
-	VNZC_11 = cond(r13);
-	Z_12 = SLICE(VNZC_11, bool, 1);
-	C_50 = SLICE(VNZC_11, bool, 0);
-	N_55 = SLICE(VNZC_11, bool, 2);
-	V_67 = SLICE(VNZC_11, bool, 8);
+	Eq_409 r15;
+	Eq_6060 r14;
+	Eq_6058 r13;
 	if (r13 != 0x00)
 	{
 		r14_13 = r15;
@@ -3590,53 +2880,26 @@ define memchr
 			r14_18 = (word20) r14_14 + 0x01;
 			if (v10_16 == r14)
 			{
-				r15_23.u0 = (word20) r14_18 + 0x0000FFFF;
-				VNZC_24 = cond((word20) r14_18 + 0x0000FFFF);
-				C_52 = SLICE(VNZC_24, bool, 0);
-				N_57 = SLICE(VNZC_24, bool, 2);
-				V_69 = SLICE(VNZC_24, bool, 8);
-				Z_72 = SLICE(VNZC_24, bool, 1);
+				r15_23.u1 = (word20) r14_18 + 0x0000FFFF;
 				goto l0000595E;
 			}
-			r13_26 = r13_25 + ~0x00;
-			VNZC_27 = cond(r13_26);
-			Z_28 = SLICE(VNZC_27, bool, 1);
-			C_51 = SLICE(VNZC_27, bool, 0);
-			N_56 = SLICE(VNZC_27, bool, 2);
-			V_68 = SLICE(VNZC_27, bool, 8);
+			r13_26.u1 = (word20) r13_25.u1 + 0x0000FFFF;
 		} while (r13_26 != 0x00);
 	}
-	Z_71 = ϕ(Z_12, Z_28);
-	V_66 = ϕ(V_67, V_68);
-	r14_63 = ϕ(r14, r14_18);
-	r13_61 = ϕ(r13, r13_26);
-	N_54 = ϕ(N_55, N_56);
-	C_49 = ϕ(C_50, C_51);
-	r15_29.u1 = 0x00;
+	r15_29.u0 = 0x00;
 l0000595E:
-	Z_70 = ϕ(Z_71, Z_72);
-	V_65 = ϕ(V_66, V_69);
 	r15_64 = ϕ(r15_29, r15_23);
-	r14_62 = ϕ(r14_63, r14_18);
-	r13_60 = ϕ(r13_61, r13_25);
-	N_53 = ϕ(N_54, N_57);
-	C_48 = ϕ(C_49, C_52);
 	sp_39 = fp + 0x02;
+	r15Out = r15_64;
+	return sp_39;
 }
 
-// 5962: define strncpy
-define strncpy
+// 5962: void strncpy(Register Eq_2370 r13, Register (ptr20 byte) r14, Register (ptr20 byte) r15, Stack word16 wArg00)
+void strncpy(Eq_2370 r13, byte * r14, byte * r15, word16 wArg00)
 {
-	word16 fp;
-	word20 r15;
-	word20 r13;
-	word20 r14;
-	word20 r12;
-	VNZC_9 = cond(r13);
-	Z_10 = SLICE(VNZC_9, bool, 1);
-	C_65 = SLICE(VNZC_9, bool, 0);
-	N_70 = SLICE(VNZC_9, bool, 2);
-	V_80 = SLICE(VNZC_9, bool, 8);
+	byte * r15;
+	Eq_2370 r13;
+	byte * r14;
 	if (r13 != 0x00)
 	{
 		r12_11 = r15;
@@ -3653,12 +2916,7 @@ define strncpy
 			r12_22 = r12_15 + 0x01;
 			if (v12_19 == 0x00)
 			{
-				r13_26 = r13_25 + ~0x00;
-				VNZC_27 = cond(r13_26);
-				Z_28 = SLICE(VNZC_27, bool, 1);
-				C_67 = SLICE(VNZC_27, bool, 0);
-				N_72 = SLICE(VNZC_27, bool, 2);
-				V_82 = SLICE(VNZC_27, bool, 8);
+				r13_26 = (word20) r13_25.u0 + 0x0000FFFF;
 				if (r13_26 != 0x00)
 				{
 					do
@@ -3668,269 +2926,203 @@ define strncpy
 						*r12_29 = 0x00;
 						r12_34 = r12_29 + 0x01;
 						r13_36 = r13_35 + ~0x00;
-						VNZC_37 = cond(r13_36);
-						Z_38 = SLICE(VNZC_37, bool, 1);
-						C_68 = SLICE(VNZC_37, bool, 0);
-						N_73 = SLICE(VNZC_37, bool, 2);
-						V_83 = SLICE(VNZC_37, bool, 8);
 					} while (r13_36 != 0x00);
 				}
-				break;
+				return;
 			}
-			r13_39 = r13_25 + ~0x00;
-			VNZC_40 = cond(r13_39);
-			Z_41 = SLICE(VNZC_40, bool, 1);
-			C_66 = SLICE(VNZC_40, bool, 0);
-			N_71 = SLICE(VNZC_40, bool, 2);
-			V_81 = SLICE(VNZC_40, bool, 8);
+			r13_39.u0 = (word20) r13_25.u0 + 0x0000FFFF;
 		} while (r13_39 != 0x00);
 	}
-	Z_84 = ϕ(Z_10, Z_41, Z_28, Z_38);
-	V_79 = ϕ(V_80, V_81, V_82, V_83);
-	r14_77 = ϕ(r14, r14_21, r14_21, r14_21);
-	r13_76 = ϕ(r13, r13_39, r13_26, r13_36);
-	r12_74 = ϕ(r12, r12_22, r12_22, r12_34);
-	N_69 = ϕ(N_70, N_71, N_72, N_73);
-	C_64 = ϕ(C_65, C_66, C_67, C_68);
-	sp_54 = fp + 0x02;
 }
 
-// 5994: define memcpy
-define memcpy
+// 5994: Register Eq_6260 memcpy(Register Eq_934 sr, Register Eq_2682 r13, Register Eq_728 r14, Register Eq_728 r15, Stack word16 wArg00, Register out Eq_934 srOut)
+Eq_6260 memcpy(Eq_934 sr, Eq_2682 r13, Eq_728 r14, Eq_728 r15, word16 wArg00, union Eq_934 & srOut)
 {
 	word16 fp;
-	word20 r15;
-	word20 r13;
-	word20 r14;
-	word20 sr;
+	Eq_728 r15;
+	Eq_2682 r13;
+	Eq_728 r14;
+	Eq_934 sr;
 	r11_12 = r13;
 	r13_13 = r15;
 	r12_15 = r14;
-	VNZC_16 = cond(r13);
-	Z_17 = SLICE(VNZC_16, bool, 1);
-	C_309 = SLICE(VNZC_16, bool, 0);
-	N_316 = SLICE(VNZC_16, bool, 2);
-	V_333 = SLICE(VNZC_16, bool, 8);
-	if (r13 != 0x00)
+	if (r13 != 0x00 && r15 != r14)
 	{
-		VNZC_18 = cond(r15 - r14);
-		Z_19 = SLICE(VNZC_18, bool, 1);
-		C_310 = SLICE(VNZC_18, bool, 0);
-		N_317 = SLICE(VNZC_18, bool, 2);
-		V_334 = SLICE(VNZC_18, bool, 8);
-		if (r15 != r14)
+		if (r15 >= r14)
 		{
-			if (r15 >= r14)
+			r15_112 = r14 | r15;
+			NZC_115 = cond(r15_112 & 0x01);
+			C_158 = SLICE(NZC_115, bool, 0);
+			if ((r15_112 & 0x01) != 0x00)
 			{
-				r15_112 = r14 | r15;
-				NZC_115 = cond(r15_112 & 0x01);
-				C_158 = SLICE(NZC_115, bool, 0);
-				if ((r15_112 & 0x01) != 0x00)
+				r15_118 = r14 ^ r15;
+				if ((r15_118 & 0x01) == 0x00 && r13 < 0x02)
 				{
-					r15_118 = r14 ^ r15;
-					if ((r15_118 & 0x01) == 0x00 && r13 < 0x02)
-					{
-						r14_127.u1 = 0x02;
-						r14_128 = r14_127 - (r14 & 0x01);
-					}
-					else
-						r14_131 = r13;
-					r14_133 = ϕ(r14_131, r14_128);
-					r11_134 = r13 - r14_133;
-					do
-					{
-						r14_145 = ϕ(r14_146, r14_133);
-						r13_139 = ϕ(r13_144, r13_13);
-						Mem137 = ϕ(Mem142, Mem8);
-						r12_136 = ϕ(r12_143, r12_15);
-						v14_138 = *r12_136;
-						*r13_139 = (union Eq_7600 *) v14_138;
-						r12_143 = (union Eq_7600 *) ((char *) r12_136 + 0x01);
-						r13_144 = (union Eq_7600 *) ((char *) r13_139 + 0x01);
-						r14_146 = (word20) r14_145 + 0x0000FFFF;
-						VNZC_147 = cond(r14_146);
-						C_159 = SLICE(VNZC_147, bool, 0);
-					} while (r14_146 != 0x00);
+					r14_127.u1 = 0x02;
+					r14_128 = r14_127 - (r14 & 0x01);
 				}
-				r13_257 = ϕ(r13_13, r13_144);
-				r12_256 = ϕ(r12_15, r12_143);
-				Mem229 = ϕ(Mem8, Mem142);
-				C_157 = ϕ(C_158, C_159);
-				r11_149 = ϕ(r11_12, r11_134);
-				sr_156 = sr & ~0x01;
-				r14_160 = __rcr(r11_149, 0x01, C_157);
-				if (r14_160 != 0x00)
+				else
+					r14_131 = r13;
+				r14_133 = ϕ(r14_131, r14_128);
+				r11_134 = r13 - r14_133;
+				do
 				{
-					do
-					{
-						r14_172 = ϕ(r14_160, r14_173);
-						r13_167 = ϕ(r13_257, r13_171);
-						Mem164 = ϕ(Mem229, Mem170);
-						r12_163 = ϕ(r12_256, r12_166);
-						v17_165 = *r12_163;
-						r12_166 = (union Eq_7600 *) ((char *) r12_163 + 0x02);
-						*r13_167 = (union Eq_7600 *) v17_165;
-						r13_171 = (union Eq_7600 *) ((char *) r13_167 + 0x02);
-						r14_173 = r14_172 + ~0x00;
-					} while (r14_173 != 0x00);
-				}
-				r13_259 = ϕ(r13_257, r13_171);
-				r12_258 = ϕ(r12_256, r12_166);
-				Mem228 = ϕ(Mem229, Mem170);
-				r14_179 = r11_149 & 0x01;
-				V_180 = false;
-				NZC_181 = cond(r14_179);
-				Z_182 = SLICE(NZC_181, bool, 1);
-				C_311 = SLICE(NZC_181, bool, 0);
-				N_318 = SLICE(NZC_181, bool, 2);
-				if (r14_179 != 0x00)
-				{
-					do
-					{
-						r14_192 = ϕ(r14_179, r14_193);
-						r13_186 = ϕ(r13_259, r13_191);
-						Mem184 = ϕ(Mem228, Mem189);
-						r12_183 = ϕ(r12_258, r12_190);
-						v19_185 = *r12_183;
-						*r13_186 = (union Eq_7600 *) v19_185;
-						r12_190 = (union Eq_7600 *) ((char *) r12_183 + 0x01);
-						r13_191 = (union Eq_7600 *) ((char *) r13_186 + 0x01);
-						r14_193 = (union Eq_7600 *) ((char *) r14_192 + 0x0000FFFF);
-						VNZC_194 = cond(r14_193);
-						Z_195 = SLICE(VNZC_194, bool, 1);
-						C_312 = SLICE(VNZC_194, bool, 0);
-						N_319 = SLICE(VNZC_194, bool, 2);
-						V_335 = SLICE(VNZC_194, bool, 8);
-					} while (r14_193 != 0x00);
-				}
+					r14_145 = ϕ(r14_146, r14_133);
+					r13_139 = ϕ(r13_144, r13_13);
+					Mem137 = ϕ(Mem142, Mem8);
+					r12_136 = ϕ(r12_143, r12_15);
+					v14_138 = *r12_136;
+					*r13_139 = v14_138;
+					r12_143 = (word20) r12_136 + 0x01;
+					r13_144 = (word20) r13_139 + 0x01;
+					r14_146 = (word20) r14_145 + 0x0000FFFF;
+					VNZC_147 = cond(r14_146);
+					C_159 = SLICE(VNZC_147, bool, 0);
+				} while (r14_146 != 0x00);
 			}
-			else
+			r13_257 = ϕ(r13_13, r13_144);
+			r12_256 = ϕ(r12_15, r12_143);
+			Mem229 = ϕ(Mem8, Mem142);
+			C_157 = ϕ(C_158, C_159);
+			r11_149 = ϕ(r11_12, r11_134);
+			sr_156 = sr & ~0x01;
+			r14_160 = __rcr(r11_149, 0x01, C_157);
+			if (r14_160 != 0x00)
 			{
-				r12_23 = r14 + r13;
-				r13_25 = r15 + r13;
-				r15_27 = r12_23 | r13_25;
-				NZC_30 = cond(r15_27 & 0x01);
-				C_73 = SLICE(NZC_30, bool, 0);
-				if ((r15_27 & 0x01) != 0x00)
+				do
 				{
-					r15_33 = r12_23 ^ r13_25;
-					if ((r15_33 & 0x01) == 0x00 && r13 < 0x03)
-						r14_41 = r12_23 & 0x01;
-					else
-						r14_45 = r13;
-					r14_47 = ϕ(r14_45, r14_41);
-					r11_48 = r13 - r14_47;
-					do
-					{
-						r14_59 = ϕ(r14_60, r14_47);
-						Mem54 = ϕ(Mem58, Mem8);
-						r12_52 = ϕ(r12_53, r12_23);
-						r13_50 = ϕ(r13_51, r13_25);
-						r13_51 = (union Eq_7600 *) ((char *) r13_50 + 0x0000FFFF);
-						r12_53 = (union Eq_7600 *) ((char *) r12_52 + 0x0000FFFF);
-						v24_55 = *r12_53;
-						*r13_51 = (union Eq_7600 *) v24_55;
-						r14_60 = (word20) r14_59 + 0x0000FFFF;
-						VNZC_61 = cond(r14_60);
-						C_74 = SLICE(VNZC_61, bool, 0);
-					} while (r14_60 != 0x00);
-				}
-				r13_247 = ϕ(r13_25, r13_51);
-				r12_246 = ϕ(r12_23, r12_53);
-				Mem231 = ϕ(Mem8, Mem58);
-				C_72 = ϕ(C_73, C_74);
-				r11_63 = ϕ(r11_12, r11_48);
-				sr_71 = sr & ~0x01;
-				r14_75 = __rcr(r11_63, 0x01, C_72);
-				if (r14_75 != 0x00)
+					r14_172 = ϕ(r14_160, r14_173);
+					r13_167 = ϕ(r13_257, r13_171);
+					Mem164 = ϕ(Mem229, Mem170);
+					r12_163 = ϕ(r12_256, r12_166);
+					v17_165 = *r12_163;
+					r12_166 = (word20) r12_163 + 0x02;
+					*r13_167 = v17_165;
+					r13_171 = (word20) r13_167 + 0x02;
+					r14_173 = (word20) r14_172 + 0x0000FFFF;
+				} while (r14_173 != 0x00);
+			}
+			r13_259 = ϕ(r13_257, r13_171);
+			r12_258 = ϕ(r12_256, r12_166);
+			Mem228 = ϕ(Mem229, Mem170);
+			r14_179 = r11_149 & 0x01;
+			if (r14_179 != 0x00)
+			{
+				do
 				{
-					do
-					{
-						r14_87 = ϕ(r14_75, r14_88);
-						Mem82 = ϕ(Mem231, Mem86);
-						r13_80 = ϕ(r13_247, r13_81);
-						r12_78 = ϕ(r12_246, r12_79);
-						r12_79 = r12_78 - 0x02;
-						r13_81 = r13_80 - 0x02;
-						v26_83 = *r12_79;
-						*r13_81 = (union Eq_7600 *) v26_83;
-						r14_88 = r14_87 + ~0x00;
-					} while (r14_88 != 0x00);
-				}
-				r12_249 = ϕ(r12_246, r12_79);
-				r13_248 = ϕ(r13_247, r13_81);
-				Mem230 = ϕ(Mem231, Mem86);
-				r14_94 = r11_63 & 0x01;
-				V_95 = false;
-				NZC_96 = cond(r14_94);
-				Z_97 = SLICE(NZC_96, bool, 1);
-				C_313 = SLICE(NZC_96, bool, 0);
-				N_320 = SLICE(NZC_96, bool, 2);
-				if (r14_94 != 0x00)
+					r14_192 = ϕ(r14_179, r14_193);
+					r13_186 = ϕ(r13_259, r13_191);
+					Mem184 = ϕ(Mem228, Mem189);
+					r12_183 = ϕ(r12_258, r12_190);
+					v19_185 = *r12_183;
+					*r13_186 = v19_185;
+					r12_190 = (word20) r12_183 + 0x01;
+					r13_191 = (word20) r13_186 + 0x01;
+					r14_193 = r14_192 + ~0x00;
+				} while (r14_193 != 0x00);
+			}
+		}
+		else
+		{
+			r12_23 = r14 + r13;
+			r13_25 = r15 + r13;
+			r15_27 = r12_23 | r13_25;
+			NZC_30 = cond(r15_27 & 0x01);
+			C_73 = SLICE(NZC_30, bool, 0);
+			if ((r15_27 & 0x01) != 0x00)
+			{
+				r15_33 = r12_23 ^ r13_25;
+				if ((r15_33 & 0x01) == 0x00 && r13 < 0x03)
+					r14_41 = r12_23 & 0x01;
+				else
+					r14_45 = r13;
+				r14_47 = ϕ(r14_45, r14_41);
+				r11_48 = r13 - r14_47;
+				do
 				{
-					do
-					{
-						r14_107 = ϕ(r14_94, r14_108);
-						Mem102 = ϕ(Mem230, Mem106);
-						r12_100 = ϕ(r12_249, r12_101);
-						r13_98 = ϕ(r13_248, r13_99);
-						r13_99 = (union Eq_7600 *) ((char *) r13_98 + 0x0000FFFF);
-						r12_101 = (union Eq_7600 *) ((char *) r12_100 + 0x0000FFFF);
-						v28_103 = *r12_101;
-						*r13_99 = (union Eq_7600 *) v28_103;
-						r14_108 = (union Eq_7600 *) ((char *) r14_107 + 0x0000FFFF);
-						VNZC_109 = cond(r14_108);
-						Z_110 = SLICE(VNZC_109, bool, 1);
-						C_314 = SLICE(VNZC_109, bool, 0);
-						N_321 = SLICE(VNZC_109, bool, 2);
-						V_336 = SLICE(VNZC_109, bool, 8);
-					} while (r14_108 != 0x00);
-				}
+					r14_59 = ϕ(r14_60, r14_47);
+					Mem54 = ϕ(Mem58, Mem8);
+					r12_52 = ϕ(r12_53, r12_23);
+					r13_50 = ϕ(r13_51, r13_25);
+					r13_51 = (union Eq_6491 *) ((char *) r13_50 + 0x0000FFFF);
+					r12_53 = (union Eq_6491 *) ((char *) r12_52 + 0x0000FFFF);
+					v24_55 = *r12_53;
+					*r13_51 = (union Eq_6491 *) v24_55;
+					r14_60 = (word20) r14_59 + 0x0000FFFF;
+					VNZC_61 = cond(r14_60);
+					C_74 = SLICE(VNZC_61, bool, 0);
+				} while (r14_60 != 0x00);
+			}
+			r13_247 = ϕ(r13_25, r13_51);
+			r12_246 = ϕ(r12_23, r12_53);
+			Mem231 = ϕ(Mem8, Mem58);
+			C_72 = ϕ(C_73, C_74);
+			r11_63 = ϕ(r11_12, r11_48);
+			sr_71 = sr & ~0x01;
+			r14_75 = __rcr(r11_63, 0x01, C_72);
+			if (r14_75 != 0x00)
+			{
+				do
+				{
+					r14_87 = ϕ(r14_75, r14_88);
+					Mem82 = ϕ(Mem231, Mem86);
+					r13_80 = ϕ(r13_247, r13_81);
+					r12_78 = ϕ(r12_246, r12_79);
+					r12_79 = r12_78 - 0x02;
+					r13_81 = r13_80 - 0x02;
+					v26_83 = *r12_79;
+					*r13_81 = (union Eq_6491 *) v26_83;
+					r14_88 = (word20) r14_87 + 0x0000FFFF;
+				} while (r14_88 != 0x00);
+			}
+			r12_249 = ϕ(r12_246, r12_79);
+			r13_248 = ϕ(r13_247, r13_81);
+			Mem230 = ϕ(Mem231, Mem86);
+			r14_94 = r11_63 & 0x01;
+			if (r14_94 != 0x00)
+			{
+				do
+				{
+					r14_107 = ϕ(r14_94, r14_108);
+					Mem102 = ϕ(Mem230, Mem106);
+					r12_100 = ϕ(r12_249, r12_101);
+					r13_98 = ϕ(r13_248, r13_99);
+					r13_99 = (union Eq_6491 *) ((char *) r13_98 + 0x0000FFFF);
+					r12_101 = (union Eq_6491 *) ((char *) r12_100 + 0x0000FFFF);
+					v28_103 = *r12_101;
+					*r13_99 = (union Eq_6491 *) v28_103;
+					r14_108 = r14_107 + ~0x00;
+				} while (r14_108 != 0x00);
 			}
 		}
 	}
-	Z_337 = ϕ(Z_17, Z_19, Z_182, Z_195, Z_97, Z_110);
-	V_332 = ϕ(V_333, V_334, V_180, V_335, V_95, V_336);
 	sr_325 = ϕ(sr, sr, sr_156, sr_156, sr_71, sr_71);
-	r14_324 = ϕ(r14, r14, r14_179, r14_193, r14_94, r14_108);
-	r13_323 = ϕ(r13_13, r13_13, r13_259, r13_191, r13_248, r13_99);
-	r12_322 = ϕ(r12_15, r12_15, r12_258, r12_190, r12_249, r12_101);
-	N_315 = ϕ(N_316, N_317, N_318, N_319, N_320, N_321);
-	C_308 = ϕ(C_309, C_310, C_311, C_312, C_313, C_314);
 	sp_239 = fp + 0x02;
+	srOut = sr_325;
+	return sp_239;
 }
 
-// 5A68: define memset
-define memset
+// 5A68: Register Eq_6572 memset(Register Eq_136 sr, Register Eq_2682 r13, Register Eq_663 r14, Register Eq_2688 r15, Stack word16 wArg00, Register out Eq_136 srOut, Register out Eq_2707 r12Out, Register out Eq_2682 r13Out, Register out Eq_2688 r14Out)
+Eq_6572 memset(Eq_136 sr, Eq_2682 r13, Eq_663 r14, Eq_2688 r15, word16 wArg00, union Eq_136 & srOut, union Eq_2707 & r12Out, union Eq_2682 & r13Out, union Eq_2688 & r14Out)
 {
 	word16 fp;
-	word20 r15;
-	word20 r14;
-	word20 r13;
-	word20 sr;
+	Eq_2688 r15;
+	Eq_663 r14;
+	Eq_2682 r13;
+	Eq_136 sr;
 	word20 r12;
 	r14_16 = r15;
 	if (r13 >= 0x06)
 	{
-		VNZC_91 = cond(r13);
-		Z_92 = SLICE(VNZC_91, bool, 1);
-		C_173 = SLICE(VNZC_91, bool, 0);
-		N_178 = SLICE(VNZC_91, bool, 2);
-		V_193 = SLICE(VNZC_91, bool, 8);
 		if (r13 != 0x00)
 		{
 			do
 			{
 				r13_100 = ϕ(r13, r13_101);
 				r14_93 = ϕ(r14_16, r14_99);
-				*r14_93 = (union Eq_702 *) r14;
-				r14_99 = (union Eq_702 *) ((char *) r14_93 + 0x01);
+				*r14_93 = r14;
+				r14_99 = (word20) r14_93 + 0x01;
 				r13_101 = (word20) r13_100 + 0x0000FFFF;
-				VNZC_102 = cond(r13_101);
-				Z_103 = SLICE(VNZC_102, bool, 1);
-				C_174 = SLICE(VNZC_102, bool, 0);
-				N_179 = SLICE(VNZC_102, bool, 2);
-				V_194 = SLICE(VNZC_102, bool, 8);
 			} while (r13_101 != 0x00);
 		}
 	}
@@ -3955,8 +3147,8 @@ define memset
 			{
 				r12_45 = ϕ(r12_34, r12_46);
 				r14_38 = ϕ(r14_16, r14_44);
-				*r14_38 = (union Eq_702 *) r14;
-				r14_44 = (union Eq_702 *) ((char *) r14_38 + 0x01);
+				*r14_38 = r14;
+				r14_44 = (word20) r14_38 + 0x01;
 				r12_46 = (word20) r12_45 + 0x0000FFFF;
 				VNZC_47 = cond(r12_46);
 				C_59 = SLICE(VNZC_47, bool, 0);
@@ -3971,72 +3163,63 @@ define memset
 		{
 			r12_70 = ϕ(r12_60, r12_71);
 			r14_63 = ϕ(r14_133, r14_69);
-			*r14_63 = (union Eq_702 *) r11_136;
-			r14_69 = (union Eq_702 *) ((char *) r14_63 + 0x02);
-			r12_71 = r12_70 + ~0x00;
+			*r14_63 = r11_136;
+			r14_69 = (word20) r14_63 + 0x02;
+			r12_71 = (word20) r12_70 + 0x0000FFFF;
 		} while (r12_71 != 0x00);
 		r12_76 = r13_49 & 0x01;
-		V_77 = false;
-		NZC_78 = cond(r12_76);
-		Z_79 = SLICE(NZC_78, bool, 1);
-		C_175 = SLICE(NZC_78, bool, 0);
-		N_180 = SLICE(NZC_78, bool, 2);
 		if (r12_76 != 0x00)
 		{
 			do
 			{
 				r12_87 = ϕ(r12_76, r12_88);
 				r14_80 = ϕ(r14_69, r14_86);
-				*r14_80 = (union Eq_702 *) r14;
-				r14_86 = (union Eq_702 *) ((char *) r14_80 + 0x01);
-				r12_88 = r12_87 + ~0x00;
-				VNZC_89 = cond(r12_88);
-				Z_90 = SLICE(VNZC_89, bool, 1);
-				C_176 = SLICE(VNZC_89, bool, 0);
-				N_181 = SLICE(VNZC_89, bool, 2);
-				V_195 = SLICE(VNZC_89, bool, 8);
+				*r14_80 = r14;
+				r14_86 = (word20) r14_80 + 0x01;
+				r12_88 = (word20) r12_87 + 0x0000FFFF;
 			} while (r12_88 != 0x00);
 		}
 	}
-	Z_196 = ϕ(Z_92, Z_103, Z_79, Z_90);
-	V_192 = ϕ(V_193, V_194, V_77, V_195);
 	sr_188 = ϕ(sr, sr, sr_56, sr_56);
 	r14_187 = ϕ(r14_16, r14_99, r14_69, r14_86);
 	r13_185 = ϕ(r13, r13_101, r13_49, r13_49);
 	r12_182 = ϕ(r12, r12, r12_76, r12_88);
-	N_177 = ϕ(N_178, N_179, N_180, N_181);
-	C_172 = ϕ(C_173, C_174, C_175, C_176);
 	sp_129 = fp + 0x02;
+	srOut = sr_188;
+	r12Out = r12_182;
+	r13Out = r13_185;
+	r14Out = r14_187;
+	return sp_129;
 }
 
-// 00005ADC: define fn00005ADC
-define fn00005ADC
+// 00005ADC: Register Eq_6701 fn00005ADC(Register Eq_413 r10, Register Eq_413 r11, Register Eq_453 r12, Register Eq_453 r13, Stack word16 wArg00, Register out Eq_465 r15Out)
+Eq_6701 fn00005ADC(Eq_413 r10, Eq_413 r11, Eq_453 r12, Eq_453 r13, word16 wArg00, union Eq_465 & r15Out)
 {
-	word16 fp;
-	word20 r12;
-	word20 r10;
-	word20 r11;
-	word20 r13;
-	(union Eq_8009 *) 0x0130 = (union Eq_8009 *) r12;
-	(union Eq_8012 *) 0x0138 = (union Eq_8012 *) r10;
-	(union Eq_8009 *) 0x0134 = (union Eq_8009 *) r12;
+	Eq_453 r12;
+	Eq_413 r10;
+	Eq_413 r11;
+	Eq_453 r13;
+	(union Eq_453 *) 0x0130 = (union Eq_453 *) r12;
+	(union Eq_413 *) 0x0138 = (union Eq_413 *) r10;
+	(union Eq_453 *) 0x0134 = (union Eq_453 *) r12;
 	r14_8.u0 = 0x013A;
 	(ptr16 *) 0x013A = 0x013C;
-	(union Eq_8012 *) 0x0138 = (union Eq_8012 *) r11;
-	(union Eq_8009 *) 0x0134 = (union Eq_8009 *) r13;
-	(union Eq_8012 *) 0x0138 = (union Eq_8012 *) r10;
+	(union Eq_413 *) 0x0138 = (union Eq_413 *) r11;
+	(union Eq_453 *) 0x0134 = (union Eq_453 *) r13;
+	(union Eq_413 *) 0x0138 = (union Eq_413 *) r10;
 	r15_15.u0 = 0x013A;
-	sp_17 = fp + 0x02;
+	r15Out = r15_15;
+	return r14_8;
 }
 
-// 00005B04: define fn00005B04
-define fn00005B04
+// 00005B04: Register Eq_409 fn00005B04(Register Eq_413 r10, Register Eq_413 r11, Register Eq_409 r12, Register Eq_409 r13, Register out Eq_450 r13Out)
+Eq_409 fn00005B04(Eq_413 r10, Eq_413 r11, Eq_409 r12, Eq_409 r13, union Eq_450 & r13Out)
 {
-	word20 r13;
-	word20 r12;
-	word20 r11;
-	word20 r10;
-	r8_3.u1 = 0x00;
+	Eq_409 r13;
+	Eq_409 r12;
+	Eq_413 r11;
+	Eq_413 r10;
+	r8_3.u2 = 0x00;
 	if ((r13 & 0x8000) != 0x00)
 	{
 		r12_13 = (r12 ^ ~0x00) + 0x01;
@@ -4055,55 +3238,42 @@ define fn00005B04
 	r10_43 = ϕ(r10, r10_30);
 	r11_42 = ϕ(r11, r11_33);
 	r8_41 = ϕ(r8_35, r8_36);
-	fn00005B4E();
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	stackArg0 = <invalid>;
+	C_53 = fn00005B4E(r8_41, r10_43, r11_42, r12_38, r13_40, stackArg0, out sp_127, out r8_48, out r12_44, out r13_45, out r14_46, out r15_47);
 	r8_55 = __rcr(r8_48, 0x01, C_53);
 	if ((r8_55 & 0x04) != 0x00)
 	{
-		r14_63 = (r14_46 ^ ~0x00) + 0x01;
-		r15_66 = (r15_47 ^ ~0x00) + (r14_63 < 0x00);
 		r12_69 = (r12_44 ^ ~0x00) + 0x01;
 		r13_72 = (r13_45 ^ ~0x00) + (r12_69 < 0x00);
 	}
-	r15_112 = ϕ(r15_47, r15_66);
-	r14_110 = ϕ(r14_46, r14_63);
 	r13_82 = ϕ(r13_45, r13_72);
 	r12_80 = ϕ(r12_44, r12_69);
-	NZ_76 = cond(r8_55 & 0x08);
-	Z_79 = SLICE(NZ_76, bool, 1);
-	N_101 = SLICE(NZ_76, bool, 2);
-	C_77 = Test(NE,r8_55 & 0x08);
-	V_78 = false;
 	if ((r8_55 & 0x08) != 0x00)
 	{
 		r12_81 = r12_80 ^ ~0x00;
 		r13_83 = r13_82 ^ ~0x00;
 		r12_84 = r12_81 + 0x01;
 		r13_87 = r13_83 + (r12_81 < 0x01);
-		VNZC_88 = cond(r13_87);
-		C_99 = SLICE(VNZC_88, bool, 0);
-		N_102 = SLICE(VNZC_88, bool, 2);
-		V_117 = SLICE(VNZC_88, bool, 8);
-		Z_119 = SLICE(VNZC_88, bool, 1);
 	}
-	Z_118 = ϕ(Z_79, Z_119);
-	V_116 = ϕ(V_78, V_117);
 	r13_108 = ϕ(r13_82, r13_87);
 	r12_107 = ϕ(r12_80, r12_84);
-	N_100 = ϕ(N_101, N_102);
-	C_98 = ϕ(C_77, C_99);
+	r13Out = r13_108;
+	return r12_107;
 }
 
-// 00005B4E: define fn00005B4E
-define fn00005B4E
+// 00005B4E: FlagGroup bool fn00005B4E(Register Eq_36 r8, Register Eq_413 r10, Register Eq_413 r11, Register Eq_409 r12, Register Eq_409 r13, Stack word16 wArg00, Register out Eq_5553 spOut, Register out Eq_2682 r8Out, Register out Eq_409 r12Out, Register out Eq_409 r13Out, Register out Eq_413 r14Out, Register out Eq_413 r15Out)
+bool fn00005B4E(Eq_36 r8, Eq_413 r10, Eq_413 r11, Eq_409 r12, Eq_409 r13, word16 wArg00, union Eq_5553 & spOut, union Eq_2682 & r8Out, union Eq_409 & r12Out, union Eq_409 & r13Out, union Eq_413 & r14Out, union Eq_413 & r15Out)
 {
 	word16 fp;
-	word20 r12;
-	word20 r13;
-	word20 r8;
-	word20 r11;
-	word20 r10;
-	r15_3 = 0x00;
-	r14_4 = 0x00;
+	Eq_409 r12;
+	Eq_409 r13;
+	Eq_36 r8;
+	Eq_413 r11;
+	Eq_413 r10;
+	r15_3.u0 = 0x00;
+	r14_4.u0 = 0x00;
 	r9_6.u1 = 33;
 	while (true)
 	{
@@ -4118,10 +3288,7 @@ define fn00005B4E
 		r8_17 = r8_15 * 0x02 + (r13_13 < 0x00);
 		r9_19 = r9_18 - 0x01;
 		VNZC_20 = cond(r9_19);
-		Z_21 = SLICE(VNZC_20, bool, 1);
 		C_22 = SLICE(VNZC_20, bool, 0);
-		N_69 = SLICE(VNZC_20, bool, 2);
-		V_70 = SLICE(VNZC_20, bool, 8);
 		if (r9_19 == 0x00)
 			break;
 		r8_23 = __rcr(r8_17, 0x01, C_22);
@@ -4134,5 +3301,12 @@ define fn00005B4E
 		}
 	}
 	sp_54 = fp + 0x02;
+	spOut = sp_54;
+	r8Out = r8_17;
+	r12Out = r12_9;
+	r13Out = r13_13;
+	r14Out = r14_25;
+	r15Out = r15_29;
+	return C_22;
 }
 

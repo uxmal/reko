@@ -195,7 +195,7 @@ main_entry:
 	// succ:  l414C
 l414C:
 	sp = fp
-	sp = 0x0A00
+	__set_stackpointer(0x0A00)
 	Mem0[0x0120:ptr16] = 0x5A80
 	Mem0[0x0056:ptr16] = 0xFFE0
 	Mem0[0x0057:ptr16] = 0x0007
