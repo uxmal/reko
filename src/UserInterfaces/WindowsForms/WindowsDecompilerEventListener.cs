@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -46,6 +46,8 @@ namespace Reko.UserInterfaces.WindowsForms
         private const int STATUS_UPDATE_ONLY = -4711;
         private CancellationTokenSource cancellationSvc;
         private bool isCanceled;
+        private int position;
+        private int total;
 
         public WindowsDecompilerEventListener(IServiceProvider sp)
         {
@@ -269,10 +271,24 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             if (dlg == null)
                 return;
+            this.position = numerator;
+            this.total = denominator;
             System.Threading.Interlocked.Exchange<string>(ref status, caption);
             var percentDone = Math.Min(
                 100,
                 (int)((numerator * 100L) / denominator));
+            dlg.Worker.ReportProgress(percentDone);
+        }
+
+        void DecompilerEventListener.Advance(int count)
+        {
+            if (dlg == null)
+                return;
+            this.position += count;
+            var percentDone = Math.Min(
+                100,
+                (int) ((position * 100L) / total));
+                        dlg.Worker.ReportProgress(percentDone);
             dlg.Worker.ReportProgress(percentDone);
         }
 

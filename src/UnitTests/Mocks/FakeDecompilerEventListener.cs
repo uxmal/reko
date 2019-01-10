@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -96,6 +96,10 @@ namespace Reko.UnitTests.Mocks
         public void ShowProgress(string caption, int numerator, int denominator)
         {
             lastProgress = string.Format("{0}: {1}%", caption, (numerator * 100) / denominator);
+        }
+
+        public void Advance(int count)
+        {
         }
 
         public void ShowStatus(string status)
