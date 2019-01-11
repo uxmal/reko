@@ -205,8 +205,8 @@
     <Compile Include="Core\Lib\Float16Tests.cs" />
     <Compile Include="Core\Pascal\PascalLexerTests.cs" />
     <Compile Include="Core\Pascal\PascalParserTests.cs" />
-    <Compile Include="Arch\Msp430\Msp430DisassemblerTests.cs" />
-    <Compile Include="Arch\Msp430\Msp430RewriterTests.cs" />
+    <Compile Include="Arch\MSP430\MSP430DisassemblerTests.cs" />
+    <Compile Include="Arch\MSP430\Msp430RewriterTests.cs" />
     <Compile Include="Core\Serialization\Json\JsonProjectSerializerTests.cs" />
     <Compile Include="Analysis\TrashedRegisterFinder3Tests.cs" />
     <Compile Include="Analysis\UnalignedMemoryAccessFuserTests.cs" />
