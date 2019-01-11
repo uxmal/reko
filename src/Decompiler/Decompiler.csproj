@@ -103,10 +103,6 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Analysis\Aliases.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Analysis\AliasState.cs" />
     <Compile Include="Analysis\BlockFlow.cs">
       <SubType>Code</SubType>
     </Compile>

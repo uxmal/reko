@@ -288,7 +288,6 @@
     <Compile Include="Mocks\SsaProcedureBuilder.cs" />
     <Compile Include="Mocks\XmlnsHidingWriter.cs" />
     <Compile Include="OsPath.cs" />
-    <Compile Include="Analysis\AliasStateTests.cs" />
     <Compile Include="Analysis\AnalysisTestBase.cs" />
     <Compile Include="Analysis\CallRewriterTests.cs" />
     <Compile Include="Analysis\CoalescerTests.cs" />
