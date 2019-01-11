@@ -45,9 +45,9 @@ namespace Reko.UnitTests.Analysis
 
         private void RunTest(string sExp, IProcessorArchitecture arch, Action<SsaProcedureBuilder> builder)
         {
-            var m = new SsaProcedureBuilder();
+            var m = new SsaProcedureBuilder(arch);
             builder(m);
-            var prpr = new ProjectionPropagator(arch, m.Ssa);
+            var prpr = new ProjectionPropagator(m.Ssa);
             prpr.Transform();
             var sw = new StringWriter();
             m.Ssa.Procedure.WriteBody(false, sw);
@@ -485,6 +485,48 @@ SsaProcedureBuilder_exit:
                 m.Alias(es_2, m.Slice(es_2.DataType, es_bx_1, 16));
                 m.Alias(bx_3, m.Slice(bx_3.DataType, es_bx_1, 0));
                 m.SStore(es_2, m.IAddS(bx_3, 4), m.Byte(3));
+                m.Return();
+            });
+        }
+
+        /// <summary>
+        /// We must be careful not to fuse register sequences if they're used elsewhere.
+        /// </summary>
+        [Test]
+        [Ignore("Needs more thought and possibly a deeper analysis")]
+        public void Prjpr_Defs_UsedElsewhere()
+        {
+
+            var sExp =
+            #region Expected
+@"SsaProcedureBuilder_entry:
+l1:
+	def ds
+	def si
+	def di
+	ax_1 = Mem5[ds:0x1234:ptr32]
+	es_2 = SLICE(es_bx_1, selector, 16) (alias)
+	bx_3 = SLICE(es_bx_1, word16, 0) (alias)
+	Mem6[es_bx_1 + 4:byte] = 0x03
+	return
+SsaProcedureBuilder_exit:
+";
+            #endregion
+
+            Given_X86_16_Arch();
+            RunTest(sExp, arch, m =>
+            {
+                var ds = m.Reg("ds", X86Registers.ds);
+                var si = m.Reg("si", X86Registers.si);
+                var di = m.Reg("di", X86Registers.di);
+                var ax_1 = m.Reg("ax_1", X86Registers.di);
+                var bx_2 = m.Reg("bx_2", X86Registers.di);
+
+                m.Def(ds);
+                m.Def(si);
+                m.Def(di);
+                m.Assign(ax_1, m.SegMem16(ds, si));
+                m.Assign(bx_2, m.SegMem16(ds, di));
                 m.Return();
             });
         }

@@ -49,13 +49,15 @@ namespace Reko.Analysis
     /// </summary>
     public class ProjectionPropagator : InstructionTransformer
     {
-        private IProcessorArchitecture arch;
-        private SsaState ssa;
+        private static readonly TraceSwitch trace = new TraceSwitch("ProjectionPropagator", "Traces projection propagator", "Warning");
 
-        public ProjectionPropagator(IProcessorArchitecture arch, SsaState ssa)
+        private readonly IProcessorArchitecture arch;
+        private readonly SsaState ssa;
+
+        public ProjectionPropagator(SsaState ssa)
         {
-            this.arch = arch;
             this.ssa = ssa;
+            this.arch = ssa.Procedure.Architecture;
         }
 
         public void Transform()
@@ -203,9 +205,10 @@ namespace Reko.Analysis
                         {
                             return RewriteSeqOfSlices(dtWide, sids, slices);
                         }
-                        return null;
                     }
-                    throw new NotImplementedException();
+                    DebugEx.PrintIf(trace.TraceWarning, "Prpr: Couldn't fuse assignments in {0}", ssa.Procedure.Name);
+                    DebugEx.PrintIf(trace.TraceWarning, "{0}", string.Join(Environment.NewLine, ass.Select(a => $"    {a}")));
+                    return null;
                 }
 
                 if (sids.All(s => s.DefStatement.Instruction is DefInstruction))
@@ -226,7 +229,9 @@ namespace Reko.Analysis
                     // All of the identifiers in the sequence were defined by the same call.
                     return RewriteSeqDefinedByCall(sids, call, idWide);
                 }
-                throw new NotImplementedException();
+                DebugEx.PrintIf(trace.TraceWarning, "Prpr: Couldn't fuse statements in {0}", ssa.Procedure.Name);
+                DebugEx.PrintIf(trace.TraceWarning, "{0}", string.Join(Environment.NewLine, sids.Select(s => $"    {s.DefStatement}")));
+                return null;
             }
 
             private Identifier GenerateWideIdentifier(DataType dt, SsaIdentifier[] sids)
