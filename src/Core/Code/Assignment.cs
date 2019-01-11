@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,10 +30,8 @@ namespace Reko.Core.Code
 	{
 		public Assignment(Identifier dst, Expression src)
 		{
-			if (dst == null)
-				throw new ArgumentNullException("dst", "Argument must have a non-null value.");
-			this.Dst = dst;
-			this.Src = src;
+            this.Dst = dst ?? throw new ArgumentNullException(nameof(dst));
+			this.Src = src ?? throw new ArgumentNullException(nameof(src));
 		}
 
         public Identifier Dst { get; set; }

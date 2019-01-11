@@ -920,7 +920,7 @@ namespace Reko.Core.Expressions
         /// <returns>A segmented memory access expression.</returns>
         public SegmentedAccess SegMem8(Expression basePtr, Expression ptr)
         {
-            return new SegmentedAccess(MemoryIdentifier.GlobalMemory, basePtr, ptr, PrimitiveType.Byte);
+            return SegMem(PrimitiveType.Byte, basePtr, ptr);
         }
 
         /// <summary>
@@ -932,7 +932,7 @@ namespace Reko.Core.Expressions
         /// <returns>A segmented memory access expression.</returns>
         public SegmentedAccess SegMem16(Expression basePtr, Expression ptr)
         {
-            return new SegmentedAccess(MemoryIdentifier.GlobalMemory, basePtr, ptr, PrimitiveType.Word16);
+            return SegMem(PrimitiveType.Word16, basePtr, ptr);
         }
 
         /// <summary>

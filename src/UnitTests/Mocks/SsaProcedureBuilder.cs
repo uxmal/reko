@@ -41,13 +41,14 @@ namespace Reko.UnitTests.Mocks
     {
         public SsaState Ssa { get; private set; }
 
-        public SsaProcedureBuilder() : this("SsaProcedureBuilder")
-        {
-        }
-
-        public SsaProcedureBuilder(string name) : base(name)
+        public SsaProcedureBuilder(IProcessorArchitecture arch = null, string name = nameof(SsaProcedureBuilder)) 
+            : base(arch ?? new FakeArchitecture(), name)
         {
             this.Ssa = new SsaState(Procedure);
+        }
+
+        public SsaProcedureBuilder(string name) : this(null, name)
+        {
         }
 
         public RegisterStorage RegisterStorage(string name, PrimitiveType pt)
