@@ -74,6 +74,7 @@ namespace Reko.Arch.Msp430
                 case Opcode.bic: RewriteBinop(Bis,    "---------"); break;
                 case Opcode.bis: RewriteBinop(m.Or,   "---------"); break;
                 case Opcode.bit: RewriteBit(); break;
+                case Opcode.br: RewriteBr(); break;
                 case Opcode.call: RewriteCall(); break;
                 case Opcode.cmp: RewriteCmp(); break;
                 case Opcode.dadd: RewriteBinop(Dadd,  "------NZC"); break;
@@ -92,6 +93,7 @@ namespace Reko.Arch.Msp430
                 case Opcode.popm: RewritePopm(); break;
                 case Opcode.push: RewritePush(); break;
                 case Opcode.pushm: RewritePushm(); break;
+                case Opcode.ret: RewriteRet(); break;
                 case Opcode.reti: RewriteReti(); break;
                 case Opcode.rra: RewriteRra(  "0-----NZC"); break;
                 case Opcode.rrax: RewriteRrax("0-----NZC"); break;
@@ -272,6 +274,12 @@ namespace Reko.Arch.Msp430
             m.Assign(v, Constant.Bool(false));
         }
 
+        private void RewriteBr()
+        {
+            rtlc = InstrClass.Transfer;
+            m.Goto(RewriteOp(instr.op1));
+        }
+
         private void RewriteBranch(ConditionCode cc, FlagM flags)
         {
             rtlc = InstrClass.ConditionalTransfer;
@@ -344,8 +352,15 @@ namespace Reko.Arch.Msp430
             }
         }
 
+        private void RewriteRet()
+        {
+            rtlc = InstrClass.Transfer;
+            m.Return(2, 0);
+        }
+
         private void RewriteReti()
         {
+            rtlc = InstrClass.Transfer;
             m.Return(2, 0);
         }
 

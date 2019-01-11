@@ -196,7 +196,7 @@ namespace Reko.Arch.Msp430
                 }
             }
             int rep = (uExtension & 0x0F);
-            return new Msp430Instruction
+            var instr = new Msp430Instruction
             {
                 opcode = opcode,
                 dataWidth = dataWidth,
@@ -205,6 +205,39 @@ namespace Reko.Arch.Msp430
                 repeatImm = (uExtension & 0x80) != 0 ? 0 : rep + 1,
                 repeatReg = (uExtension & 0x80) != 0 ? Registers.GpRegisters[rep] : null,
             };
+            instr = SpecialCase(instr);
+            return instr;
+        }
+
+        private Msp430Instruction SpecialCase(Msp430Instruction instr)
+        {
+            if (instr.opcode == Opcode.mov)
+            {
+                if (instr.op2 is RegisterOperand dst &&
+                    dst.Register == Registers.pc)
+                {
+                    if (instr.op1 is MemoryOperand mem &&
+                        mem.PostIncrement &&
+                        mem.Base == Registers.sp)
+                    {
+                        instr.opcode = Opcode.ret;
+                        instr.op1 = null;
+                        instr.op2 = null;
+                    }
+                    else
+                    {
+                        instr.opcode = Opcode.br;
+                        instr.op2 = null;
+                        if (instr.op1 is ImmediateOperand imm)
+                        {
+                            var uAddr = imm.Value.ToUInt16();
+                            instr.op1 = AddressOperand.Ptr16(uAddr);
+                        }
+                    }
+                    return instr;
+                }
+            }
+            return instr;
         }
 
         private MachineOperand SourceOperand(int aS, int iReg, PrimitiveType dataWidth)

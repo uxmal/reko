@@ -4,17 +4,59 @@
 
 #include "a.h"
 
-Eq_6366 g_a0200[] = 
+struct Eq_4252 g_tFFFFFFFF;
+byte g_a0200[] = 
 	{
 	};
-Eq_6367 g_a021C[] = 
+union Eq_745 g_u0202 = 
+	{
+		0x0000
+	};
+ptr16 g_ptr0204 = 0x0000;
+ptr16 g_ptr0206 = 0x0000;
+union Eq_742 g_u0208 = 
+	{
+		0x0000
+	};
+union Eq_831 g_u020A = 
+	{
+		0x0000
+	};
+union Eq_831 g_u020C = 
+	{
+		0x0000
+	};
+ptr16 g_ptr020E = 0x0000;
+ptr16 g_ptr0210 = 0x0000;
+ptr16 g_ptr0212 = 0x0000;
+ptr16 g_ptr0214 = 0x0000;
+union Eq_3395 g_u0216 = 
+	{
+		0x0000
+	};
+ptr16 g_ptr0218 = 0x000A;
+ptr16 g_ptr021A = 0x0000;
+byte g_a021C[] = 
 	{
 	};
-Eq_2694 g_t0222 = 
+union Eq_405 g_u021E = 
+	{
+		0x0000
+	};
+ptr16 g_ptr0220 = 0x0000;
+Eq_4853 g_a0222[] = 
 	{
 	};
-Eq_2751 g_t0226 = 
+Eq_4855 g_a0226[] = 
 	{
 	};
-Eq_6365 g_a5B78[];
+ptr16 g_ptr0282 = 0x0000;
+ptr16 g_ptr0284 = 0x0000;
+struct Eq_1303 * g_ptr028A = null;
+struct Eq_1839 * g_ptr029A = null;
+union Eq_3689 g_u09B2 = 
+	{
+		0x0000
+	};
+byte g_a5B78[];
 

@@ -131,7 +131,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void MSP430Dis_ret()
         {
-            AssertCode("mov.w\t@sp+,pc", "3041");
+            AssertCode("ret.w", "3041");
         }
 
         [Test]
@@ -172,8 +172,6 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             AssertCode("mova.a\t@r4+,pc", "1004");
         }
-        
-     
 
         [Test]
         public void MSP430Dis_sub_w()
@@ -191,6 +189,12 @@ namespace Reko.UnitTests.Arch.Tlcs
         public void MSP430Dis_bic()
         {
             AssertCode("bic.w\t#0008,sr", "32C2");
+        }
+
+        [Test]
+        public void MSP430Dis_goto()
+        {
+            AssertCode("br.w\t414C", "30404C41");
         }
     }
 }

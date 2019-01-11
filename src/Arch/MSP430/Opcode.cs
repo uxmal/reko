@@ -66,5 +66,7 @@ namespace Reko.Arch.Msp430
         cmpa,
         adda,
         suba,
+        ret,
+        br,
     }
 }
