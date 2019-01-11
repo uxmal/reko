@@ -183,7 +183,7 @@ namespace Reko.Analysis
                 sst.Transform();
             }
 
-            var uid = new UsedRegisterFinder(program.Architecture, flow, ssts, this.eventListener);
+            var uid = new UsedRegisterFinder(program.Architecture, flow, procs, this.eventListener);
             foreach (var sst in ssts)
             {
                 var ssa = sst.SsaState;

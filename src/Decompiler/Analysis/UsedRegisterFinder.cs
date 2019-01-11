@@ -31,7 +31,7 @@ using System.Diagnostics;
 namespace Reko.Analysis
 {
     /// <summary>
-    /// This class determines what identifier are live-in to a
+    /// This class determines what identifiers are live-in to a
     /// procedure.
     /// </summary>
     /// <remarks>
@@ -48,7 +48,7 @@ namespace Reko.Analysis
         private IProcessorArchitecture arch;
         private DecompilerEventListener eventListener;
         private ProgramDataFlow flow;
-        private HashSet<Procedure> ssts;
+        private HashSet<Procedure> scc;
         private Identifier idCur;
         private ProcedureFlow procFlow;
         private SsaState ssa;
@@ -58,12 +58,12 @@ namespace Reko.Analysis
         public UsedRegisterFinder(
             IProcessorArchitecture arch,
             ProgramDataFlow flow,
-            SsaTransform[] ssts,
+            IEnumerable<Procedure> scc,
             DecompilerEventListener eventListener)
         {
             this.arch = arch;
             this.flow = flow;
-            this.ssts = ssts.Select(s => s.SsaState.Procedure).ToHashSet();
+            this.scc = scc.ToHashSet();
             this.eventListener = eventListener;
             this.visited = new Dictionary<PhiAssignment, BitRange>();
         }
@@ -89,7 +89,8 @@ namespace Reko.Analysis
                 var sid = ssa.Identifiers[def.Identifier];
                 if ((sid.Identifier.Storage is RegisterStorage ||
                      sid.Identifier.Storage is StackArgumentStorage ||
-                     sid.Identifier.Storage is FpuStackStorage))
+                     sid.Identifier.Storage is FpuStackStorage ||
+                     sid.Identifier.Storage is SequenceStorage))
                      //$REVIEW: flag groups could theoretically be live in
                      // although it's uncommon.
                 {
@@ -115,7 +116,8 @@ namespace Reko.Analysis
             if (storage is RegisterStorage ||
                 storage is StackArgumentStorage ||
                 storage is FpuStackStorage ||
-                storage is FlagGroupStorage)
+                storage is FlagGroupStorage ||
+                storage is SequenceStorage)
             {
                 var n = Classify(sid);
                 return n;
@@ -184,7 +186,7 @@ namespace Reko.Analysis
         {
             if (ci.Callee is ProcedureConstant pc &&
                 pc.Procedure is Procedure procCallee &&
-                ssts.Contains(procCallee))
+                scc.Contains(procCallee))
             {
                 // calls to self will force "loop" of live
                 // variables.

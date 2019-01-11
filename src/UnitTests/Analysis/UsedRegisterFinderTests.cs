@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -93,12 +93,13 @@ namespace Reko.UnitTests.Analysis
             progBuilder.Program.Platform = platform;
 
             var sst = new SsaTransform(
-                progBuilder.Program, 
-                proc, 
+                progBuilder.Program,
+                proc,
                 new HashSet<Procedure>(),
-                importResolver, 
+                importResolver,
                 new ProgramDataFlow());
             sst.Transform();
+
             var vp = new ValuePropagator(segmentMap, sst.SsaState, importResolver, NullDecompilerEventListener.Instance);
             vp.Transform();
 
@@ -109,24 +110,36 @@ namespace Reko.UnitTests.Analysis
 
             vp.Transform();
 
-            pf.ProcedureFlows[proc] = new ProcedureFlow(proc);
+            return RunTest(sExp, sst.SsaState);
+        }
+
+        private Procedure RunSsaTest(string sExp, Action<SsaProcedureBuilder> builder)
+        {
+            var m = new SsaProcedureBuilder();
+            builder(m);
+            return RunTest(sExp, m.Ssa);
+        }
+
+        private Procedure RunTest(string sExp, SsaState ssa)
+        {
+            pf.ProcedureFlows[ssa.Procedure] = new ProcedureFlow(ssa.Procedure);
             var urf = new UsedRegisterFinder(
-                arch, 
+                ssa.Procedure.Architecture,
                 pf,
-                new SsaTransform[] { sst },
+                new Procedure[] { ssa.Procedure },
                 NullDecompilerEventListener.Instance);
-            var flow = urf.ComputeLiveIn(sst.SsaState, true);
+            var flow = urf.ComputeLiveIn(ssa, true);
             var sw = new StringWriter();
             sw.Write("Used: ");
             sw.Write(string.Join(",", flow.BitsUsed.OrderBy(p => p.Key.ToString())));
             var sActual = sw.ToString();
             if (sActual != sExp)
             {
-                proc.Dump(true);
+                ssa.Procedure.Dump(true);
                 Debug.WriteLine(sActual);
                 Assert.AreEqual(sExp, sActual);
             }
-            return proc;
+            return ssa.Procedure;
         }
 
         [Test]
@@ -318,6 +331,21 @@ namespace Reko.UnitTests.Analysis
                 m.Assign(bx, m.ISub(bx, 1));
                 m.BranchIf(m.Ne0(bx), "m1Loop");
                 m.Label("m2Done");
+                m.Return();
+            });
+        }
+
+        [Test]
+        public void UrfSequence2()
+        {
+            var sExp = "Used: [Sequence r1:r2, [32..63]]";
+            RunSsaTest(sExp, m =>
+            {
+                var r1 = m.Reg32("r1");
+                var r2 = m.Reg32("r2");
+                var r1_r2 = m.SeqId("r1_r2", PrimitiveType.Word64, r1.Storage, r2.Storage);
+                m.AddDefToEntryBlock(r1_r2);
+                m.MStore(m.Word32(0x00123400), m.Slice(r2.DataType, r1_r2, 32));
                 m.Return();
             });
         }
