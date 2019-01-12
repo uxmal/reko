@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -196,7 +196,7 @@ namespace Reko.Arch.Msp430
                 }
             }
             int rep = (uExtension & 0x0F);
-            return new Msp430Instruction
+            var instr = new Msp430Instruction
             {
                 opcode = opcode,
                 dataWidth = dataWidth,
@@ -205,6 +205,39 @@ namespace Reko.Arch.Msp430
                 repeatImm = (uExtension & 0x80) != 0 ? 0 : rep + 1,
                 repeatReg = (uExtension & 0x80) != 0 ? Registers.GpRegisters[rep] : null,
             };
+            instr = SpecialCase(instr);
+            return instr;
+        }
+
+        private Msp430Instruction SpecialCase(Msp430Instruction instr)
+        {
+            if (instr.opcode == Opcode.mov)
+            {
+                if (instr.op2 is RegisterOperand dst &&
+                    dst.Register == Registers.pc)
+                {
+                    if (instr.op1 is MemoryOperand mem &&
+                        mem.PostIncrement &&
+                        mem.Base == Registers.sp)
+                    {
+                        instr.opcode = Opcode.ret;
+                        instr.op1 = null;
+                        instr.op2 = null;
+                    }
+                    else
+                    {
+                        instr.opcode = Opcode.br;
+                        instr.op2 = null;
+                        if (instr.op1 is ImmediateOperand imm)
+                        {
+                            var uAddr = imm.Value.ToUInt16();
+                            instr.op1 = AddressOperand.Ptr16(uAddr);
+                        }
+                    }
+                    return instr;
+                }
+            }
+            return instr;
         }
 
         private MachineOperand SourceOperand(int aS, int iReg, PrimitiveType dataWidth)
@@ -287,6 +320,11 @@ namespace Reko.Arch.Msp430
             return new InstrDecoder(opcode, fmt);
         }
 
+        private static ConditionalDecoder Cond(Predicate<ushort> fn, Decoder t, Decoder f)
+        {
+            return new ConditionalDecoder(fn, t, f);
+        }
+
         private abstract class Decoder
         {
             public abstract Msp430Instruction Decode(Msp430Disassembler dasm, ushort uInstr);
@@ -339,15 +377,44 @@ namespace Reko.Arch.Msp430
             }
         }
 
+        private class ConditionalDecoder : Decoder
+        {
+            private readonly Predicate<ushort> pred;
+            private readonly Decoder trueDecoder;
+            private readonly Decoder falseDecoder;
+
+            public ConditionalDecoder(Predicate<ushort> pred, Decoder trueDecoder, Decoder falseDecoder)
+            {
+                this.pred = pred;
+                this.trueDecoder = trueDecoder;
+                this.falseDecoder = falseDecoder;
+            }
+
+            public override Msp430Instruction Decode(Msp430Disassembler dasm, ushort uInstr)
+            {
+                if (pred(uInstr))
+                    return trueDecoder.Decode(dasm, uInstr);
+                else
+                    return falseDecoder.Decode(dasm, uInstr);
+            }
+        }
+
         private class ExtDecoder : Decoder
         {
+            private readonly Decoder[] decoders;
+
+            public ExtDecoder(Decoder[] decoders)
+            {
+                this.decoders = decoders;
+            }
+
             public override Msp430Instruction Decode(Msp430Disassembler dasm, ushort uInstr)
             {
                 if (!dasm.rdr.TryReadLeUInt16(out ushort u))
                     return dasm.Invalid();
                 dasm.uExtension = uInstr;
                 uInstr = u;
-                return extDecoders[uInstr >> 12].Decode(dasm, uInstr);
+                return this.decoders[uInstr >> 12].Decode(dasm, uInstr);
             }
         }
 
@@ -382,7 +449,43 @@ namespace Reko.Arch.Msp430
             }
         }
 
-        private static readonly ExtDecoder extDecoder = new ExtDecoder();
+        private static readonly Decoder[] extDecoders = new Decoder[16]
+        {
+            nyi,
+            new SubDecoder(6, 0x3F, new Dictionary<int, Decoder> {
+                { 0x00, nyi },
+                { 0x01, nyi },
+                { 0x02, nyi },
+                { 0x04, Instr(Opcode.rrax, "Ws") },
+                { 0x05, Instr(Opcode.rrax, "Ws") },
+                { 0x06, nyi },
+                { 0x08, nyi },
+                { 0x09, nyi },
+                { 0x0A, nyi },
+                { 0x0C, new SubDecoder(0, 0x3F, new Dictionary<int, Decoder> {
+                    { 0x00, Instr(Opcode.reti, "") }
+                } ) }
+            }),
+            invalid,
+            invalid,
+
+            invalid,
+            invalid,
+            invalid,
+            invalid,
+
+            invalid,
+            invalid,
+            invalid,
+            invalid,
+
+            invalid,
+            invalid,
+            invalid,
+            invalid,
+        };
+
+        private static readonly ExtDecoder extDecoder = new ExtDecoder(extDecoders);
 
         private static readonly Decoder invalid = new InstrDecoder(Opcode.invalid, "");
 
@@ -511,42 +614,6 @@ namespace Reko.Arch.Msp430
             Instr(Opcode.bis, "wSD"),
             Instr(Opcode.xor, "wSD"),
             Instr(Opcode.and, "wSD"),
-        };
-
-        private static readonly Decoder[] extDecoders = new Decoder[16]
-        {
-            nyi,
-            new SubDecoder(6, 0x3F, new Dictionary<int, Decoder> {
-                { 0x00, nyi },
-                { 0x01, nyi },
-                { 0x02, nyi },
-                { 0x04, Instr(Opcode.rrax, "Ws") },
-                { 0x05, Instr(Opcode.rrax, "Ws") },
-                { 0x06, nyi },
-                { 0x08, nyi },
-                { 0x09, nyi },
-                { 0x0A, nyi },
-                { 0x0C, new SubDecoder(0, 0x3F, new Dictionary<int, Decoder> {
-                    { 0x00, Instr(Opcode.reti, "") }
-                } ) }
-            }),
-            invalid,
-            invalid,
-
-            invalid,
-            invalid,
-            invalid,
-            invalid,
-
-            invalid,
-            invalid,
-            invalid,
-            invalid,
-
-            invalid,
-            invalid,
-            invalid,
-            invalid,
         };
 
         private static readonly Opcode[] jmps = new Opcode[8]

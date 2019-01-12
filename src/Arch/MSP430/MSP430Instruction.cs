@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,6 +31,7 @@ namespace Reko.Arch.Msp430
     {
         private static Dictionary<Opcode, InstrClass> classes = new Dictionary<Opcode, InstrClass>
         {
+            { Opcode.br, InstrClass.Transfer },
             { Opcode.call, InstrClass.Call | InstrClass.Transfer },
             { Opcode.jc, InstrClass.Conditional | InstrClass.Transfer },
             { Opcode.jge, InstrClass.Conditional | InstrClass.Transfer },
@@ -40,6 +41,7 @@ namespace Reko.Arch.Msp430
             { Opcode.jnc, InstrClass.Conditional | InstrClass.Transfer },
             { Opcode.jnz, InstrClass.Conditional | InstrClass.Transfer },
             { Opcode.jz, InstrClass.Conditional | InstrClass.Transfer },
+            { Opcode.ret, InstrClass.Transfer  }
         };
 
         public Opcode opcode;
@@ -53,8 +55,7 @@ namespace Reko.Arch.Msp430
         {
             get
             {
-                InstrClass c;
-                if (!classes.TryGetValue(opcode, out c))
+                if (!classes.TryGetValue(opcode, out var c))
                     return InstrClass.Linear;
                 return c;
             }
