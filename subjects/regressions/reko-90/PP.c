@@ -17450,27 +17450,3 @@ void fn1483_1C50(Eq_45082 dx)
 	ax_5();
 }
 
-// 1483:261E: void fn1483_261E(Register word16 ax, Register byte cl, Register (memptr (ptr16 Eq_47466) Eq_47584) bp, Register int16 si, Stack (ptr16 Eq_47466) psegArg00)
-void fn1483_261E(word16 ax, byte cl, Eq_47584 Eq_47466::*bp, int16 si, Eq_47466 * psegArg00)
-{
-	uint32 al_ax_5 = SEQ(al, ax + 0x1414);
-	cu8 al_11 = (bool) (al_ax_5 < 0x00141414) + ((byte) (al_ax_5 + 0x00141414) + 0x14);
-	cu8 al_14 = (bool) (al_11 < 0x00) + (al_11 + 0x14);
-	__invd();
-	cu8 al_17 = (bool) (al_14 < 0x00) + (al_14 + 0x14);
-	cu8 al_20 = (bool) (al_17 < 0x00) + (al_17 + 0x0F);
-	cu8 al_26 = (bool) (al_20 < 0x00) + (al_20 + 0x14);
-	cu8 al_29 = (bool) (al_26 < 0x00) + (al_26 + 0x07);
-	cu8 al_32 = (bool) (al_29 < 0x00) + (al_29 + 22);
-	cu8 al_35 = (bool) (al_32 < 0x00) + (al_32 + 0x14);
-	cu8 al_38 = (bool) (al_35 < 0x00) + (al_35 + 0x14);
-	cu8 al_41 = (bool) (al_38 < 0x00) + (al_38 + 0x14);
-	cu8 al_44 = (bool) (al_41 < 0x00) + (al_41 + 0x14);
-	cu8 al_47 = (bool) (al_44 < 0x00) + (al_44 + 0x0D);
-	cu8 al_50 = (bool) (al_47 < 0x00) + (al_47 + 0x14);
-	cu8 al_53 = (bool) (al_50 < 0x00) + (al_50 + 0x14);
-	cu8 al_56 = (bool) (al_53 < 0x00) + (al_53 + 0x14);
-	cu8 al_59 = (bool) (al_56 < 0x00) + (al_56 + 0x14);
-	bp[si] = (Eq_47584) ((bool) ((bool) (al_59 < 0x00) + (al_59 + 0x14) < 0x00) + (bp[si] + cl));
-}
-
