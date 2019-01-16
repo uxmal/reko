@@ -3442,5 +3442,70 @@ namespace Reko.UnitTests.Arch.Intel
                 "2|L--|v5 = Mem0[rdx + 0x0000000000000042:word128]",
                 "3|L--|xmm0 = __minpd(v4, v5)");
         }
+
+        [Test]
+        public void X86Rw_sgdt()
+        {
+            Run32bitTest(0x0F, 0x01, 0x00);	// sgdt	[eax]
+            AssertCode(
+                "0|S--|10000000(3): 1 instructions",
+                "1|L--|Mem0[eax:word48] = __sgdt()");
+        }
+
+        [Test]
+        public void X86Rw_sidt()
+        {
+            Run32bitTest(0x0F, 0x01, 0x8A, 0x86, 0x04, 0x05, 0x00);	// sidt	[edx+00050486]
+            AssertCode(
+                "0|S--|10000000(7): 1 instructions",
+                "1|L--|Mem0[edx + 0x00050486:word48] = __sidt()");
+        }
+
+        [Test]
+        public void X86Rw_lldt()
+        {
+            Run32bitTest(0x0F, 0x00, 0x55, 0x8D);	// lldt	word ptr [ebp-73]
+            AssertCode(
+                "0|S--|10000000(4): 1 instructions",
+                "1|L--|__lldt(Mem0[ebp - 0x00000073:word48])");
+        }
+
+        [Test]
+        public void X86Rw_ud0()
+        {
+            Run32bitTest(0x0F, 0xFF, 0xFF);	// ud0	edi,edi
+            AssertCode(
+                "0|---|10000000(3): 1 instructions",
+                "1|---|<invalid>");
+        }
+
+        [Test]
+        public void X86Rw_ud1()
+        {
+            Run32bitTest(0x0F, 0xB9, 0x00);	// ud1	eax,[eax]
+            AssertCode(
+                "0|---|10000000(3): 1 instructions",
+                "1|---|<invalid>");
+        }
+
+        [Test]
+        public void X86Rw_lidt()
+        {
+            Run32bitTest(0x0F, 0x01, 0x1B);	// lidt	[ebx]
+            AssertCode(
+                "0|S--|10000000(3): 1 instructions",
+                "1|L--|__lidt(Mem0[ebx:word48])");
+        }
+
+        [Test]
+        public void X86Rw_sha1msg2()
+        {
+            Run32bitTest(0x0F, 0x38, 0xCA, 0x75, 0xE8);	// sha1msg2	xmm6,[ebp-18]
+            AssertCode(
+                "0|L--|10000000(5): 3 instructions",
+                "1|L--|v4 = Mem0[ebp - 0x00000018:word128]",
+                "2|L--|v5 = xmm6",
+                "3|L--|xmm6 = __sha1msg2(v5, v4)");
+        }
     }
 }

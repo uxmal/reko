@@ -86,12 +86,12 @@ namespace Reko.Arch.X86
 
 				// group 6
 				new Group6Decoder(
-                    Instr(Opcode.sldt, "Ew"),
-                    Instr(Opcode.sldt, "Rv")),
+                    Instr(Opcode.sldt, InstrClass.System, "Ew"),
+                    Instr(Opcode.sldt, InstrClass.System, "Rv")),
                 new Group6Decoder(
                     Instr(Opcode.str, "Ew"),
                     Instr(Opcode.str, "Rv")),
-                Instr(Opcode.lldt, "Ew"),
+                Instr(Opcode.lldt, InstrClass.System, "Ms"),
                 Instr(Opcode.ltr, "Ew"),
                 Instr(Opcode.verr, "Ew"),
                 Instr(Opcode.verw, "Ew"),
@@ -120,7 +120,7 @@ namespace Reko.Arch.X86
                     s_invalid,
                     s_invalid),
                 new Group7Decoder(
-                    Instr(Opcode.lgdt, "Ms"),
+                    Instr(Opcode.lgdt, InstrClass.System, "Ms"),
 
                     Instr(Opcode.xgetbv),
                     Instr(Opcode.xsetbv),
@@ -132,20 +132,21 @@ namespace Reko.Arch.X86
                     Instr(Opcode.xtest),
                     s_invalid),
                 new Group6Decoder(
-                    Instr(Opcode.lidt, "Ms"),
+                    Instr(Opcode.lidt, InstrClass.System, "Ms"),
                     s_invalid),
+
                 new Group6Decoder(
                     Instr(Opcode.smsw, "Ew"),
                     Instr(Opcode.smsw, "Rv")),
                 new Group7Decoder(
-                    s_nyi,
+                    s_invalid,
 
-                    s_nyi,
-                    s_nyi,
-                    s_nyi,
-                    s_nyi,
-                    s_nyi,
-                    s_nyi,
+                    s_invalid,
+                    s_invalid,
+                    s_invalid,
+                    s_invalid,
+                    s_invalid,
+                    s_invalid,
                     Instr(Opcode.rdpkru),
                     Instr(Opcode.wrpkru)),
                 Instr(Opcode.lmsw, "Ew"),
