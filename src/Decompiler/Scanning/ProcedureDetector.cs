@@ -267,19 +267,18 @@ namespace Reko.Scanning
         private List<RtlProcedure> BuildProcedures(IEnumerable<Cluster> clusters)
         {
             var procs = new List<RtlProcedure>();
+            listener.ShowProgress("Building procedures", 0, clusters.Count());
             foreach (var cluster in clusters)
             {
                 if (listener.IsCanceled())
                     break;
                 FuseLinearBlocks(cluster);
                 // cluster.Dump(sr.ICFG);
-                sr.BreakOnWatchedAddress(cluster.Blocks.Select(b => b.Address));
-                var bcr = new BlockConflictResolver(null, sr, a => true, null);
-                bcr.ResolveBlockConflicts(new Address[0]);
                 if (FindClusterEntries(cluster))
                 {
                     procs.AddRange(PostProcessCluster(cluster));
                 }
+                listener.Advance(1);
             }
             return procs;
         }
