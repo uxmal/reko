@@ -105,6 +105,7 @@
         <File Source="$(var.AtariTOS.TargetPath)" />
         <File Source="$(var.AtariTOS.ProjectDir)atariTOS.xml" />
         <File Source="$(var.C64.TargetPath)" />
+        <File Source="$(var.C64.TargetPath)C64.xml" />
         <File Source="$(var.Cpm.TargetPath)" />
         <File Source="$(var.Cpm.ProjectDir)cpm_map.xml" />
         <File Source="$(var.Dreamcast.TargetPath)" />
