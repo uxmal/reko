@@ -137,20 +137,16 @@ namespace Reko.Arch.Mos6502
 
         public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
         {
-            throw new NotImplementedException();
+            return reg;
         }
 
         public override FlagGroupStorage GetFlagGroup(uint grf)
         {
             if (flagGroups.TryGetValue(grf, out var fstg))
                 return fstg;
-            var sb = new StringBuilder();
-            foreach (var flag in Registers.Flags)
-            {
-                if ((grf & flag.FlagGroupBits) != 0)
-                    sb.Append(flag.Name);
-        }
-            fstg = new FlagGroupStorage(Registers.p, grf, sb.ToString(), PrimitiveType.Byte);
+            var sb = GrfToString(grf);
+            fstg = new FlagGroupStorage(Registers.p, grf, sb.ToString(), 
+                Bits.IsSingleBitSet(grf)? PrimitiveType.Bool: PrimitiveType.Byte);
             this.flagGroups.Add(grf, fstg);
             return fstg;
         }
@@ -190,7 +186,13 @@ namespace Reko.Arch.Mos6502
 
         public override string GrfToString(uint grf)
         {
-            throw new NotImplementedException();
+            var sb = new StringBuilder();
+            foreach (var flag in Registers.Flags)
+            {
+                if ((flag.FlagGroupBits & grf) != 0)
+                    sb.Append(flag.Name);
+            }
+            return sb.ToString();
         }
 
         public override bool TryParseAddress(string txtAddress, out Address addr)
