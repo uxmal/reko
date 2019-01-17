@@ -128,7 +128,7 @@ namespace Reko.Analysis
                     DeadCode.Eliminate(proc, ssa);
 
                     // Definitions with multiple uses and variables joined by PHI functions become webs.
-                    var web = new WebBuilder(proc, ssa.Identifiers, program.InductionVariables);
+                    var web = new WebBuilder(program, proc, ssa.Identifiers, program.InductionVariables, eventListener);
                     web.Transform();
                     ssa.ConvertBack(false);
                 }
@@ -325,7 +325,7 @@ namespace Reko.Analysis
                 DeadCode.Eliminate(proc, ssa);
 
                 // Definitions with multiple uses and variables joined by PHI functions become webs.
-                var web = new WebBuilder(proc, ssa.Identifiers, program.InductionVariables);
+                var web = new WebBuilder(program, proc, ssa.Identifiers, program.InductionVariables, eventListener);
                 web.Transform();
                 ssa.ConvertBack(false);
             }
