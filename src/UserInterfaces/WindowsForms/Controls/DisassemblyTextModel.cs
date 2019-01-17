@@ -153,7 +153,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             var addr = addrInitial;
             if (addr < addrStart)
                 addr = addrStart;
-            if (addr >= addrEnd)
+            if (addrEnd.ToLinear() != 0 && addr >= addrEnd)
                 addr = addrEnd-1;
             this.position = addr;
             return (int)(addr - addrInitial);
@@ -174,7 +174,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             if (offset < 0)
                 offset = 0;
             var addr = addrStart + offset;
-            if (addr >= addrEnd)
+            if (addrEnd.ToLinear() != 0 && addr >= addrEnd)
                 addr = addrEnd-1;
             this.position = addr;
         }
@@ -187,6 +187,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         /// <returns></returns>
         private int GetPositionEstimate(long byteOffset)
         {
+            if (addrEnd.ToLinear() == 0)
+                byteOffset = Math.Abs(byteOffset);
             int bitSize = program.Architecture != null
                 ? program.Architecture.InstructionBitSize
                 : 8;
