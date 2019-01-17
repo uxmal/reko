@@ -61,7 +61,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         private Address addrSelected;
         private Address addrAnchor;
         private Address addrMin;
-        private Address addrMax;
+        private ulong memSize;
 
         private int cRows;              // total number of rows.
         private int yTopRow;            // index of topmost visible row
@@ -417,7 +417,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             if (mem != null)
             {
                 this.addrMin = Address.Max(mem.BaseAddress, seg.Address);
-                this.addrMax = Address.Min(mem.EndAddress, seg.Address + seg.Size);
+                this.memSize = Math.Min((ulong) mem.Length, seg.Size);
                 TopAddress = addrMin;
                 UpdateScroll();
             }
@@ -534,7 +534,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             }
 
             vscroller.Enabled = true;
-            cRows = (int) (((addrMax - addrMin) + cbRow - 1) / (int)cbRow);
+            cRows = (int) ((memSize + cbRow - 1) / cbRow);
             int nChunks = (int)(cbRow / wordSize);      // number of chunks per line.
 
             vscroller.Minimum = 0;
@@ -625,7 +625,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                     return null;
                 // Enumerate all segments visible on screen.
 
-                ulong laEnd = ctrl.addrMax.ToLinear();
+                ulong laEnd = ctrl.addrMin.ToLinear() + ctrl.memSize;
                 if (ctrl.addrTopVisible.ToLinear() >= laEnd)
                     return null;
                 EndianImageReader rdr = ctrl.arch.CreateImageReader(ctrl.mem, ctrl.addrTopVisible);
@@ -634,7 +634,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 rc.Height = cell.Height;
 
                 ulong laSegEnd = 0;
-                while (rc.Top < ctrl.Height && rdr.Address.ToLinear() < laEnd)
+                while (rc.Top < ctrl.Height && (laEnd == 0 || rdr.Address.ToLinear() < laEnd))
                 {
                     ImageSegment seg;
                     if (ctrl.SegmentMap.TryFindSegment(ctrl.addrTopVisible, out seg))
