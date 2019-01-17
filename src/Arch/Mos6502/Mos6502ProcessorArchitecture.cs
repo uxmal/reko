@@ -113,7 +113,7 @@ namespace Reko.Arch.Mos6502
 
         public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
         {
-            throw new NotImplementedException();
+            return reg;
         }
 
         public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
@@ -175,7 +175,13 @@ namespace Reko.Arch.Mos6502
 
         public override string GrfToString(RegisterStorage flagregister, string prefix, uint grf)
         {
-            throw new NotImplementedException();
+            var sb = new StringBuilder();
+            foreach (var flag in Registers.Flags)
+            {
+                if ((flag.FlagGroupBits & grf) != 0)
+                    sb.Append(flag.Name);
+            }
+            return sb.ToString();
         }
 
         public override bool TryParseAddress(string txtAddress, out Address addr)

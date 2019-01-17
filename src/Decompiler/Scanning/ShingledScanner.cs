@@ -261,12 +261,12 @@ namespace Reko.Scanning
                     AddInstruction(i);
                 }
                 SaveRewriter(addr + i.Length, dasm, rewriterCache);
-                eventListener.ShowProgress("Shingle scanning", sr.Instructions.Count, (int)workToDo);
+                eventListener.ShowProgress("Shingle scanning", sr.FlatInstructions.Count, (int)workToDo);
             }
             return y;
         }
 
-        public void AddInstruction(RtlInstructionCluster i)
+        private void AddInstruction(RtlInstructionCluster i)
         {
             sr.FlatInstructions.Add(i.Address, new ScanResults.instr
             {
@@ -544,6 +544,7 @@ namespace Reko.Scanning
                 &&
                 (i.Class &
                   (InstrClass.Linear 
+                   | InstrClass.System
                    | InstrClass.Conditional 
                    | InstrClass.Call)) != 0;        //$REVIEW: what if you call a terminating function?
         }

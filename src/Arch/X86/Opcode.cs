@@ -729,5 +729,8 @@ namespace Reko.Arch.X86
         vpermpd,
         vpblendd,
         vperm2f128,
+        vpbroadcastd,
+        vpbroadcastq,
+        vpbroadcasti128,
     }
 }

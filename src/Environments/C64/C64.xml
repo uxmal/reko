@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <memory xmlns="http://schemata.jklnet.org/Reko/v4">
-
+  <!-- References:
+    https://www.c64-wiki.com/wiki/Memory_Map 
+    http://unusedino.de/ec64/technical/aay/c64/
+    http://www.zimmers.net/anonftp/pub/cbm/c64/manuals/mapping-c64.txt.gz
+    -->
   <segment name="zero_page" addr="0000" size="0100">
     <description>Z80 Address Space</description>
     <global name="IO_port_direction">

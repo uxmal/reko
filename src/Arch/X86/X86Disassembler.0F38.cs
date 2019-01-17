@@ -202,9 +202,9 @@ namespace Reko.Arch.X86
                 s_invalid,
                 s_invalid,
 
-                s_nyi,
-                s_nyi,
-                s_nyi,
+                new PrefixedDecoder(dec66:Instr(Opcode.vpbroadcastd, "Vx,Wx")),
+                new PrefixedDecoder(dec66:Instr(Opcode.vpbroadcastq, "Vx,Wx")),
+                new PrefixedDecoder(dec66:Instr(Opcode.vpbroadcasti128, "Vqq,Mdq")),
                 s_invalid,
                 s_invalid,
                 s_invalid,
@@ -301,10 +301,10 @@ namespace Reko.Arch.X86
                 s_nyi,
                 s_nyi,
                 s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
+                s_invalid,
+                s_invalid,
+                new PrefixedDecoder(dec66:nyi("vfmaddsub132ps/dv")),
+                new PrefixedDecoder(dec66:nyi("vfmsubadd132ps/dv")),
 
                 // A0
                 s_invalid,
