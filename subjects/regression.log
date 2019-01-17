@@ -37,7 +37,7 @@ error: An error occurred during decompilation. System.ArgumentException: An item
    at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 496
    at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
    at Reko.Typing.TypeCollector.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 227
-   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
+   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 88
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 84
 0000A284: warning: Expected sizes of arrays to have been determined by now
 20000000: warning: Expected sizes of arrays to have been determined by now
@@ -229,35 +229,487 @@ error: An error occurred during decompilation. System.ArgumentException: An item
 0040935C: warning: Unable to resolve imported reference __unpack_d.
 00409384: warning: Unable to resolve imported reference __make_fp.
 00409648: warning: Unable to resolve imported reference __pack_f.
-error: An error occurred during decompilation. System.ArgumentNullException: Value cannot be null.
+main: error: An error occurred while renaming variables.
+    Value cannot be null.
 Parameter name: key
-   at System.ThrowHelper.ThrowArgumentNullException(ExceptionArgument argument)
+       at System.ThrowHelper.ThrowArgumentNullException(ExceptionArgument argument)
    at System.Collections.Generic.Dictionary`2.FindEntry(TKey key)
    at System.Collections.Generic.Dictionary`2.TryGetValue(TKey key, TValue& value)
    at Reko.Core.Lib.DominatorGraph`1.ImmediateDominator(T node) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 128
    at Reko.Core.Lib.DominatorGraph`1.CommonDominator(IEnumerable`1 blocks) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 100
    at Reko.Analysis.DeclarationInserter.InsertDeclaration(Web web) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeclarationInserter.cs:line 60
-   at Reko.Analysis.WebBuilder.InsertDeclarations() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 84
-   at Reko.Analysis.WebBuilder.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 100
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 301
-   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 129
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 174
+   at Reko.Analysis.WebBuilder.InsertDeclarations() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 89
+   at Reko.Analysis.WebBuilder.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 107
+100007E0: warning: Expected sizes of arrays to have been determined by now
+1000002C: warning: Expected sizes of arrays to have been determined by now
+1000002C: warning: Expected sizes of arrays to have been determined by now
+100007E0: warning: Expected sizes of arrays to have been determined by now
 === Elf\MIPS\swlswr\test
 === Elf\Msp430\a.out
 *** Elf\Msp430\a.out
-error: An error occurred during decompilation. System.ArgumentNullException: Value cannot be null.
+PRINT: error: An error occurred while renaming variables.
+    Value cannot be null.
 Parameter name: key
-   at System.ThrowHelper.ThrowArgumentNullException(ExceptionArgument argument)
+       at System.ThrowHelper.ThrowArgumentNullException(ExceptionArgument argument)
    at System.Collections.Generic.Dictionary`2.FindEntry(TKey key)
    at System.Collections.Generic.Dictionary`2.TryGetValue(TKey key, TValue& value)
    at Reko.Core.Lib.DominatorGraph`1.ImmediateDominator(T node) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 128
    at Reko.Core.Lib.DominatorGraph`1.CommonDominator(IEnumerable`1 blocks) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 100
    at Reko.Analysis.DeclarationInserter.InsertDeclaration(Web web) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeclarationInserter.cs:line 60
-   at Reko.Analysis.WebBuilder.InsertDeclarations() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 84
-   at Reko.Analysis.WebBuilder.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 100
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 301
-   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 129
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 174
+   at Reko.Analysis.WebBuilder.InsertDeclarations() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 89
+   at Reko.Analysis.WebBuilder.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 107
+__write_pad: error: An error occurred while renaming variables.
+    Value cannot be null.
+Parameter name: key
+       at System.ThrowHelper.ThrowArgumentNullException(ExceptionArgument argument)
+   at System.Collections.Generic.Dictionary`2.FindEntry(TKey key)
+   at System.Collections.Generic.Dictionary`2.TryGetValue(TKey key, TValue& value)
+   at Reko.Core.Lib.DominatorGraph`1.ImmediateDominator(T node) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 128
+   at Reko.Core.Lib.DominatorGraph`1.CommonDominator(IEnumerable`1 blocks) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 100
+   at Reko.Analysis.DeclarationInserter.InsertDeclaration(Web web) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeclarationInserter.cs:line 60
+   at Reko.Analysis.WebBuilder.InsertDeclarations() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 89
+   at Reko.Analysis.WebBuilder.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 107
+00005208: error: An error occurred while processing the statement return r15 - 0x001C.
+    Pulling difference (ptr20 (struct (0 T_3124 t0000))) and (union (ui20 u1) (word16 u0))
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 109
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
+   at Reko.Typing.TypeCollector.VisitReturnInstruction(ReturnInstruction ret) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 210
+   at Reko.Core.Code.ReturnInstruction.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 135
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 84
+00005526: error: An error occurred while processing the statement word20 r13_673 = (int16) (Mem630[sp_27 + 0x0002F:byte] - SLICE(r11_657, byte, 0)).
+    Object reference not set to an instance of an object.
+       at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 227
+   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
+   at Reko.Typing.ExpressionTypeDescender.VisitCast(Cast cast, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 426
+   at Reko.Core.Expressions.Cast.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\Cast.cs:line 47
+   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 170
+   at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 84
+000055CE: error: An error occurred while processing the statement word20 r13_769 = (int16) (Mem759[sp_27 + 0x0002F:byte] - SLICE(r11_657, byte, 0)).
+    Object reference not set to an instance of an object.
+       at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 227
+   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
+   at Reko.Typing.ExpressionTypeDescender.VisitCast(Cast cast, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 426
+   at Reko.Core.Expressions.Cast.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\Cast.cs:line 47
+   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 170
+   at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 84
+000055AE: error: An error occurred while processing the statement word20 r13_838 = (int16) (Mem759[sp_27 + 0x0002F:byte] - SLICE(r11, byte, 0)).
+    Object reference not set to an instance of an object.
+       at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 227
+   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
+   at Reko.Typing.ExpressionTypeDescender.VisitCast(Cast cast, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 426
+   at Reko.Core.Expressions.Cast.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\Cast.cs:line 47
+   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 170
+   at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 84
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: warning: Recursion too deep in PtrPrimitiveReplacer
+: error: Error when reconstructing types.
+    Way too deep
+       at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 76
+   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 62
+   at Reko.Core.Types.Unifier.IsCompatibleWithPointer(Pointer ptrA, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 171
+   at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 111
+   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 62
+   at Reko.Core.Types.Unifier.IsCompatibleWithPointer(Pointer ptrA, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 171
+   at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 111
+   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 62
+   at Reko.Core.Types.Unifier.IsCompatibleWithPointer(Pointer ptrA, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 171
+   at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 111
+   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 62
+   at Reko.Core.Types.Unifier.IsCompatibleWithPointer(Pointer ptrA, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 171
+   at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 111
+   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 62
+   at Reko.Core.Types.Unifier.IsCompatibleWithPointer(Pointer ptrA, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 171
+   at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 111
+   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 62
+   at Reko.Core.Types.Unifier.IsCompatibleWithPointer(Pointer ptrA, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 171
+   at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 111
+   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 62
+   at Reko.Core.Types.Unifier.IsCompatibleWithPointer(Pointer ptrA, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 171
+   at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 111
+   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 62
+   at Reko.Core.Types.Unifier.IsCompatibleWithPointer(Pointer ptrA, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 171
+   at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 111
+   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 62
+   at Reko.Core.Types.Unifier.IsCompatibleWithPointer(Pointer ptrA, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 171
+   at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 111
+   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 62
+   at Reko.Core.Types.Unifier.IsCompatibleWithPointer(Pointer ptrA, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 171
+   at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 111
+   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 62
+   at Reko.Core.Types.Unifier.IsCompatibleWithPointer(Pointer ptrA, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 171
+   at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 111
+   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 62
+   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 50
+   at Reko.Core.Types.Unifier.UnifyIntoUnion(UnionType u, DataType dt) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 464
+   at Reko.Typing.TypeTransformer.FactorDuplicateAlternatives(UnionType u) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 430
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 52
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 52
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 52
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 418
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Typing.TypeTransformer.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 257
+   at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 97
+   at Reko.DecompilerDriver.ReconstructTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 310
+00000200: warning: Expected sizes of arrays to have been determined by now
+0000021C: warning: Expected sizes of arrays to have been determined by now
+00000222: warning: Expected sizes of arrays to have been determined by now
+00000226: warning: Expected sizes of arrays to have been determined by now
+00000200: warning: Expected sizes of arrays to have been determined by now
+0000021C: warning: Expected sizes of arrays to have been determined by now
+00000222: warning: Expected sizes of arrays to have been determined by now
+00000226: warning: Expected sizes of arrays to have been determined by now
 === Elf\RiscV\ipcalc\ipcalc.dcproject
 === Elf\Sparc\from_boomerang\subject.exe
 === Elf\Sparc\rtems\sparc-rtems-unprotoize
@@ -615,10 +1067,10 @@ error: An error occurred during decompilation. System.NotSupportedException: Con
    at Reko.Evaluation.ExpressionSimplifier.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.cs:line 608
    at Reko.Core.Expressions.MkSequence.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MkSequence.cs:line 53
    at Reko.Analysis.ValuePropagator.VisitAssignment(Assignment a) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 97
-   at Reko.Core.Code.Assignment.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 51
+   at Reko.Core.Code.Assignment.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 49
    at Reko.Analysis.ValuePropagator.Transform(Statement stm) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 89
    at Reko.Analysis.ValuePropagator.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 80
-   at Reko.Analysis.DataFlowAnalysis.ConvertToSsa(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 379
+   at Reko.Analysis.DataFlowAnalysis.ConvertToSsa(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 373
    at System.Linq.Enumerable.WhereSelectListIterator`2.MoveNext()
    at System.Linq.Buffer`1..ctor(IEnumerable`1 source)
    at System.Linq.Enumerable.ToArray[TSource](IEnumerable`1 source)
@@ -809,4 +1261,4 @@ error: An error occurred during decompilation. System.ArgumentException: An item
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 56 binaries in 85.83 seconds ---
+Decompiled 56 binaries in 78.03 seconds ---

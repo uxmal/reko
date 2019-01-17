@@ -4,42 +4,45 @@
 
 #include "a.h"
 
-Eq_696 g_t0001;
-Eq_683 g_t0005;
-Eq_691 g_t001B;
-Eq_123 g_t0031;
+Eq_526 g_t0001;
+Eq_513 g_t0005;
+Eq_521 g_t001B;
+Eq_114 g_t0031;
 ptr16 g_ptr0032;
 ptr16 g_ptr0056;
 ptr16 g_ptr0057;
-Eq_642 g_t0078;
-Eq_651 g_t0079;
-Eq_657 g_t007B;
-Eq_663 g_t007C;
-Eq_677 g_t007D;
-Eq_127 g_t007F;
+Eq_478 g_t0078;
+Eq_487 g_t0079;
+Eq_490 g_t007B;
+Eq_496 g_t007C;
+Eq_507 g_t007D;
+Eq_129 g_t007F;
 ptr16 g_ptr0120;
-Eq_453 g_t0130;
-Eq_453 g_t0134;
-Eq_413 g_t0138;
+Eq_328 g_t0130;
+Eq_328 g_t0134;
+Eq_319 g_t0138;
 ptr16 g_ptr013A;
-Eq_4698 g_t0160;
+Eq_3287 g_t0160;
 ptr16 g_ptr0162;
 ptr16 g_ptr0172;
-Eq_258 g_a0200[] = 
+Eq_216 g_a0200[] = 
 	{
 	};
-Eq_1056 g_t0202 = 
+Eq_761 g_t0202 = 
 	{
 		0x0000
 	};
 ptr16 g_ptr0204 = 0x0000;
 ptr16 g_ptr0206 = 0x0000;
-ptr16 g_ptr0208 = 0x0000;
-Eq_1044 g_t020A = 
+Eq_759 g_t0208 = 
 	{
 		0x0000
 	};
-Eq_1044 g_t020C = 
+Eq_759 g_t020A = 
+	{
+		0x0000
+	};
+Eq_759 g_t020C = 
 	{
 		0x0000
 	};
@@ -47,50 +50,33 @@ ptr16 g_ptr020E = 0x0000;
 ptr16 g_ptr0210 = 0x0000;
 ptr16 g_ptr0212 = 0x0000;
 ptr16 g_ptr0214 = 0x0000;
-Eq_4433 g_t0216 = 
+Eq_3081 g_t0216 = 
 	{
 		0x0000
 	};
 ptr16 g_ptr0218 = 0x000A;
 ptr16 g_ptr021A = 0x0000;
-Eq_622 g_a021C[] = 
+Eq_436 g_a021C[] = 
 	{
 	};
-Eq_636 g_t021E = 
+Eq_463 g_t021E = 
 	{
 		0x0000
 	};
 ptr16 g_ptr0220 = 0x0000;
-Eq_6907 g_a0222[] = 
+Eq_1832 g_t0222 = 
 	{
 	};
-Eq_6909 g_a0226[] = 
+Eq_1885 g_t0226 = 
 	{
 	};
 ptr16 g_ptr0282 = 0x0000;
-Eq_2086 g_t0284 = 
+ptr16 g_ptr0284 = 0x0000;
+struct <anonymous> * g_ptr028A = null;
+struct <anonymous> * g_ptr029A = null;
+Eq_3350 g_t09B2 = 
 	{
 		0x0000
 	};
-struct Eq_1260 g_t0286 = 
-	{
-		0x0000,
-		
-		{
-			0x0000
-		},
-	};
-struct Eq_1260 g_t0296 = 
-	{
-		0x0000,
-		
-		{
-			0x0000
-		},
-	};
-Eq_4771 g_t09B2 = 
-	{
-		0x0000
-	};
-byte g_a5B78[];
+Eq_4885 g_a5B78[];
 
