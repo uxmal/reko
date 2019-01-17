@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -40,8 +41,10 @@ namespace Reko.Analysis
     /// </remarks>
 	public class WebBuilder
 	{
+        private readonly Program program;
 		private SsaState ssa;
 		private SsaIdentifierCollection ssaIds;
+        private readonly DecompilerEventListener listener;
 		private SsaLivenessAnalysis sla;
 		private BlockDominatorGraph doms;
 		private Dictionary<Identifier,LinearInductionVariable>ivs;
@@ -49,11 +52,13 @@ namespace Reko.Analysis
 		private List<Web> webs;
 		private Statement stmCur;
 
-        public WebBuilder(SsaState ssa, Dictionary<Identifier,LinearInductionVariable> ivs)
+        public WebBuilder(Program program, SsaState ssa, Dictionary<Identifier,LinearInductionVariable> ivs,DecompilerEventListener listener)
         {
+            this.program = program;
             this.ssa = ssa;
             this.ssaIds = ssa.Identifiers;
             this.ivs = ivs;
+            this.listener = listener;
             this.sla = new SsaLivenessAnalysis(ssa);
             this.doms = ssa.Procedure.CreateBlockDominatorGraph();
             this.webs = new List<Web>();
@@ -88,38 +93,48 @@ namespace Reko.Analysis
 
 		public void Transform()
 		{
-			new LiveCopyInserter(ssa).Transform();
-			BuildWebOf();
+            try
+            {
+                new LiveCopyInserter(ssa).Transform();
+                BuildWebOf();
 
-			foreach (SsaIdentifier id in ssaIds)
-			{
-				if (id.DefStatement != null && !(id.Identifier is MemoryIdentifier))
-					VisitStatement(id.DefStatement);
-			}
+                foreach (SsaIdentifier id in ssaIds)
+                {
+                    if (id.DefStatement != null && !(id.Identifier is MemoryIdentifier))
+                        VisitStatement(id.DefStatement);
+                }
 
-			InsertDeclarations();
+                InsertDeclarations();
 
-			WebReplacer replacer = new WebReplacer(this);
-			foreach (Block bl in ssa.Procedure.ControlGraph.Blocks)
-			{
-				for (int i = bl.Statements.Count - 1; i >= 0; --i)
-				{
-					Statement stm = bl.Statements[i];
-					stm.Instruction = stm.Instruction.Accept(replacer);
-					if (stm.Instruction == null)
-					{
-						bl.Statements.RemoveAt(i);
-					}
-				}
-			}
+                WebReplacer replacer = new WebReplacer(this);
+                foreach (Block bl in ssa.Procedure.ControlGraph.Blocks)
+                {
+                    for (int i = bl.Statements.Count - 1; i >= 0; --i)
+                    {
+                        Statement stm = bl.Statements[i];
+                        stm.Instruction = stm.Instruction.Accept(replacer);
+                        if (stm.Instruction == null)
+                        {
+                            bl.Statements.RemoveAt(i);
+                        }
+                    }
+                }
 
-			foreach (Web w in webs)
-			{
-				if (w.InductionVariable != null)
-				{
-					ivs.Add(w.Identifier, w.InductionVariable);
-				}
-			}
+                foreach (Web w in webs)
+                {
+                    if (w.InductionVariable != null)
+                    {
+                        ivs.Add(w.Identifier, w.InductionVariable);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                listener.Error(
+                    listener.CreateProcedureNavigator(program, ssa.Procedure),
+                    ex,
+                    "An error occurred while renaming variables.");
+            }
 		}
 
 		private void Merge(Web a, Web b)

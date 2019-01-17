@@ -297,7 +297,7 @@ namespace Reko.Analysis
                 DeadCode.Eliminate(ssa);
 
                 // Definitions with multiple uses and variables joined by PHI functions become webs.
-                var web = new WebBuilder(ssa, program.InductionVariables);
+                var web = new WebBuilder(program, ssa, program.InductionVariables, eventListener);
                 web.Transform();
                 ssa.ConvertBack(false);
 
