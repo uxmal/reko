@@ -29,11 +29,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Reko.Core.Serialization;
+using Reko.Core.Operators;
 
 namespace Reko.Arch.Mos6502
 {
     public class Mos6502ProcessorArchitecture : ProcessorArchitecture
     {
+        private Dictionary<uint, FlagGroupStorage> flagGroups;
+
         public Mos6502ProcessorArchitecture(string archId) : base(archId)
         {
             CarryFlagMask = (uint)FlagM.CF;
@@ -43,6 +46,7 @@ namespace Reko.Arch.Mos6502
             PointerType = PrimitiveType.Ptr16;
             StackRegister = Registers.s;
             WordWidth = PrimitiveType.Byte;       // 8-bit, baby!
+            flagGroups = new Dictionary<uint, FlagGroupStorage>();
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
@@ -89,7 +93,7 @@ namespace Reko.Arch.Mos6502
 
         public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
-            throw new NotImplementedException();
+            return Registers.All[(int) domain];
         }
 
         public override RegisterStorage GetRegister(string name)
@@ -112,9 +116,28 @@ namespace Reko.Arch.Mos6502
             throw new NotImplementedException();
         }
 
+        public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
+        {
+            foreach (var flag in Registers.Flags)
+            {
+                if ((flags.FlagGroupBits & flag.FlagGroupBits) != 0)
+                    yield return flag;
+            }
+        }
+
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
-            throw new NotImplementedException();
+            if (flagGroups.TryGetValue(grf, out var fstg))
+                return fstg;
+            var sb = new StringBuilder();
+            foreach (var flag in Registers.Flags)
+            {
+                if ((grf & flag.FlagGroupBits) != 0)
+                    sb.Append(flag.Name);
+            }
+            fstg = new FlagGroupStorage(flagRegister, grf, sb.ToString(), PrimitiveType.Byte);
+            this.flagGroups.Add(grf, fstg);
+            return fstg;
         }
 
         public override FlagGroupStorage GetFlagGroup(string name)
@@ -125,7 +148,12 @@ namespace Reko.Arch.Mos6502
         public override Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
         {
             //$TODO: the M6502 stack pointer is an 8-bit offset into the fixed memory area $0100-$01FF.
-            throw new NotImplementedException();
+            return new MemoryAccess(new BinaryExpression(
+                Operator.IAdd,
+                PrimitiveType.Ptr16,
+                binder.EnsureRegister(Registers.s),
+                Constant.Int16((short) cbOffset)),
+                dataType);
         }
 
         public override Address MakeAddressFromConstant(Constant c)
@@ -156,7 +184,7 @@ namespace Reko.Arch.Mos6502
         }
     }
 
-    public  static class Registers
+    public static class Registers
     {
         public static readonly RegisterStorage a = RegisterStorage.Reg8("a", 0);
         public static readonly RegisterStorage x = RegisterStorage.Reg8("x", 1);
@@ -165,14 +193,16 @@ namespace Reko.Arch.Mos6502
 
         public static readonly RegisterStorage p = new RegisterStorage("p", 10, 0, PrimitiveType.Byte);
 
-        public static readonly RegisterStorage N = new RegisterStorage("N", 4, 0, PrimitiveType.Byte);
-        public static readonly RegisterStorage V = new RegisterStorage("V", 5, 0, PrimitiveType.Byte);
-        public static readonly RegisterStorage C = new RegisterStorage("C", 6, 0, PrimitiveType.Byte);
-        public static readonly RegisterStorage Z = new RegisterStorage("Z", 7, 0, PrimitiveType.Byte);
-        public static readonly RegisterStorage I = new RegisterStorage("I", 8, 0, PrimitiveType.Byte);
-        public static readonly RegisterStorage D = new RegisterStorage("D", 9, 0, PrimitiveType.Byte);
-        
+        public static readonly FlagGroupStorage N = new FlagGroupStorage(p, (uint)FlagM.NF, "N", PrimitiveType.Bool);
+        public static readonly FlagGroupStorage V = new FlagGroupStorage(p, (uint)FlagM.VF, "V", PrimitiveType.Bool);
+        public static readonly FlagGroupStorage I = new FlagGroupStorage(p, (uint)FlagM.IF, "I", PrimitiveType.Bool);
+        public static readonly FlagGroupStorage D = new FlagGroupStorage(p, (uint)FlagM.DF, "D", PrimitiveType.Bool);
+        public static readonly FlagGroupStorage Z = new FlagGroupStorage(p, (uint)FlagM.ZF, "Z", PrimitiveType.Bool);
+        public static readonly FlagGroupStorage C = new FlagGroupStorage(p, (uint)FlagM.CF, "C", PrimitiveType.Bool);
+
         internal static RegisterStorage[] All;
+
+        internal static FlagGroupStorage[] Flags;
 
         public static RegisterStorage GetRegister(int reg)
         {
@@ -187,13 +217,15 @@ namespace Reko.Arch.Mos6502
                 x,
                 y,
                 s,
-
+            };
+            Flags = new FlagGroupStorage[]
+            {
                 N,
                 V,
-                C,
-                Z,
                 I,
                 D,
+                Z,
+                C,
             };
         }
     }

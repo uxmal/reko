@@ -635,6 +635,6 @@ namespace Reko.Arch.X86
             Debug.WriteLine("                \"1|L--|@@@\");");
             Debug.WriteLine("        }");
             Debug.WriteLine("");
-    }
+        }
     }
 }
