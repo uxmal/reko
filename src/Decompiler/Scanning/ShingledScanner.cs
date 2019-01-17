@@ -140,7 +140,7 @@ namespace Reko.Scanning
             foreach (var segment in program.SegmentMap.Segments.Values
                 .Where(s => s.IsExecutable))
             {
-                var sc = ScanRange(segment.MemoryArea, segment.Address, segment.EndAddress, workToDo);
+                var sc = ScanRange(segment.MemoryArea, segment.Address, segment.Size, workToDo);
                 map.Add(segment, sc);
             }
             return map;
@@ -161,9 +161,8 @@ namespace Reko.Scanning
         /// <param name="segment"></param>
         /// <returns>An array of bytes classifying each byte as code or data.
         /// </returns>
-        public byte[] ScanRange(MemoryArea mem, Address addrStart, Address addrEnd, ulong workToDo)
+        public byte[] ScanRange(MemoryArea mem, Address addrStart, uint cbAlloc, ulong workToDo)
         {
-            var cbAlloc = addrEnd - addrStart;
             var y = new byte[cbAlloc];
             // Advance by the instruction granularity.
             var step = program.Architecture.InstructionBitSize / 8;

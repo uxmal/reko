@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -72,6 +72,7 @@ namespace Reko.Scanning
                 return blockNew;
             }
             blockNew = new Block(procCalling, blockOrig.Name + "_in_" + procCalling.Name);
+            blockNew.Address = blockOrig.Address;
             mpBlocks.Add(blockOrig, blockNew);
             var succ = blockOrig.Succ.Count > 0 ? CloneBlock(blockOrig.Succ[0]) : null;
             foreach (var stm in blockOrig.Statements)
