@@ -39,13 +39,13 @@ namespace Reko.Analysis
     {
         public static TraceSwitch trace = new TraceSwitch(typeof(UnusedOutValuesRemover).Name, "Trace removal of unused out values");
 
-        private IEnumerable<SsaState> ssaStates;
-        private WorkList<SsaState> wl;
-        private Program program;
-        private Dictionary<Procedure, SsaState> procToSsa;
-        private ProgramDataFlow dataFlow;
-        private IImportResolver importResolver;
-        private DecompilerEventListener eventListener;
+        private readonly IEnumerable<SsaState> ssaStates;
+        private readonly WorkList<SsaState> wl;
+        private readonly Program program;
+        private readonly Dictionary<Procedure, SsaState> procToSsa;
+        private readonly ProgramDataFlow dataFlow;
+        private readonly IImportResolver importResolver;
+        private readonly DecompilerEventListener eventListener;
 
         public UnusedOutValuesRemover(
             Program program,
@@ -59,6 +59,7 @@ namespace Reko.Analysis
             this.ssaStates = ssaStates;
             this.importResolver = importResolver;
             this.eventListener = eventListener;
+            this.wl = new WorkList<SsaState>();
             this.procToSsa = ssaStates
                 .ToDictionary(s => s.Procedure);
         }
@@ -73,7 +74,7 @@ namespace Reko.Analysis
                 if (eventListener.IsCanceled())
                     return;
                 change = false;
-                this.wl = new WorkList<SsaState>(ssaStates);
+                this.wl.AddRange(ssaStates);
                 while (wl.GetWorkItem(out SsaState ssa))
                 {
                     if (this.eventListener.IsCanceled())
@@ -201,8 +202,7 @@ namespace Reko.Analysis
                 DeadCode.Eliminate(ssa);
                 foreach (Statement stm in program.CallGraph.CallerStatements(ssa.Procedure))
                 {
-                    var ci = stm.Instruction as CallInstruction;
-                    if (ci == null)
+                    if (!(stm.Instruction is CallInstruction ci))
                         continue;
                     var ssaCaller = this.procToSsa[stm.Block.Procedure];
                     if (RemoveDeadCallDefinitions(ssaCaller, ci, deadStgs))
@@ -222,8 +222,7 @@ namespace Reko.Analysis
         {
             foreach (var stm in ssa.Procedure.ExitBlock.Statements)
             {
-                var use = stm.Instruction as UseInstruction;
-                if (use == null)
+                if (!(stm.Instruction is UseInstruction use))
                     continue;
                 var ids = ExpressionIdentifierUseFinder.Find(ssa.Identifiers, use.Expression);
                 foreach (var id in ids)
@@ -268,15 +267,13 @@ namespace Reko.Analysis
                 var urf = new UsedRegisterFinder(program.Architecture, dataFlow, new Procedure[0], eventListener);
                 foreach (Statement stm in program.CallGraph.CallerStatements(procCallee))
                 {
-                    var ci = stm.Instruction as CallInstruction;
-                    if (ci == null)
+                    if (!(stm.Instruction is CallInstruction ci))
                         continue;
                     DebugEx.PrintIf(trace.TraceVerbose, "  {0}", ci);
                     var ssaCaller = this.procToSsa[stm.Block.Procedure];
                     foreach (var def in ci.Definitions)
                     {
-                        var id = def.Expression as Identifier;
-                        if (id == null)
+                        if (!(def.Expression is Identifier id))
                             continue;
                         var sid = ssaCaller.Identifiers[id];
                         if (sid.Uses.Count > 0)

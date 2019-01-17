@@ -360,9 +360,6 @@ namespace Reko.Analysis
                     sst.Transform();
                 }
 
-                if (ssa.Procedure.Name == "main")
-                    ssa.ToString(); //$DEBUG
-
                 // By placing use statements in the exit block, we will collect
                 // reaching definitions in the use statements.
                 sst.AddUsesToExitBlock();

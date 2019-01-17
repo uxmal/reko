@@ -923,8 +923,7 @@ namespace Reko.Analysis
         {
             if (e == proc.Frame.FramePointer)
                 return true;
-            var bin = e as BinaryExpression;
-            if (bin == null)
+            if (!(e is BinaryExpression bin))
                 return false;
             if (bin.Left != proc.Frame.FramePointer)
                 return false;
@@ -1242,7 +1241,8 @@ namespace Reko.Analysis
                 if (stgFrom.Covers(stgTo))
                 {
                     // Defined identifer is "wider" than the storage
-                    // being read.
+                    // being read. The reader gets a slice of the 
+                    // defined identifier.
                     int offset = stgFrom.OffsetOf(stgTo);
                     if (offset > 0)
                         e = new Slice(id.DataType, sidFrom.Identifier, offset);
