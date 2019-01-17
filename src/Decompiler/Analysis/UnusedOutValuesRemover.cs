@@ -88,7 +88,7 @@ namespace Reko.Analysis
             {
                 var liveOut = CollectLiveOutStorages(proc);
                 var flow = this.dataFlow[proc];
-                flow.LiveOut = SummarizeStorageBitranges(flow.LiveOut.Concat(liveOut));
+                flow.BitsLiveOut = SummarizeStorageBitranges(flow.BitsLiveOut.Concat(liveOut));
                 flow.grfLiveOut = SummarizeFlagGroups(liveOut);
             }
         }
@@ -120,7 +120,7 @@ namespace Reko.Analysis
             {
                 Debug.Print("UVR: == {0} ========", flow.Key.Name);
                 var sw = new StringWriter();
-                DataFlow.EmitRegisterValues("liveOut: ", flow.Value.LiveOut, sw);
+                DataFlow.EmitRegisterValues("liveOut: ", flow.Value.BitsLiveOut, sw);
                 Debug.Print(sw.ToString());
             }
         }
@@ -183,7 +183,7 @@ namespace Reko.Analysis
         {
             bool change = false;
             DebugEx.PrintIf(trace.TraceVerbose, "UVR: {0}", ssa.Procedure.Name);
-            var liveOutStorages = this.dataFlow[ssa.Procedure].LiveOut;
+            var liveOutStorages = this.dataFlow[ssa.Procedure].BitsLiveOut;
             var deadStms = new HashSet<Statement>();
             var deadStgs = new HashSet<Storage>();
             FindDeadStatementsInExitBlock(ssa, liveOutStorages, deadStms, deadStgs);
@@ -301,19 +301,19 @@ namespace Reko.Analysis
             bool change = false;
             foreach (var de in newLiveOut)
             {
-                if (flow.LiveOut.TryGetValue(de.Key, out BitRange oldRange))
+                if (flow.BitsLiveOut.TryGetValue(de.Key, out BitRange oldRange))
                 {
                     var range = oldRange | de.Value;
                     if (range != oldRange)
                     {
-                        flow.LiveOut[de.Key] = range;
+                        flow.BitsLiveOut[de.Key] = range;
                         change = true;
                     }
                 }
                 else
                 {
                     var range = de.Value;
-                    flow.LiveOut[de.Key] = range;
+                    flow.BitsLiveOut[de.Key] = range;
                     change = true;
                 }
             }

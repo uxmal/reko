@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -367,8 +367,8 @@ namespace Reko.UnitTests.Analysis
         {
             Given_ExitBlockStatement(new Identifier("eax", PrimitiveType.Word32, Registers.eax));
             Given_ExitBlockStatement(new Identifier("ebx", PrimitiveType.Word32, Registers.ebx));
-            flow.LiveOut.Add(Registers.eax, BitRange.Empty);        // becomes the return value.
-            flow.LiveOut.Add(Registers.ebx, BitRange.Empty);
+            flow.BitsLiveOut.Add(Registers.eax, BitRange.Empty);        // becomes the return value.
+            flow.BitsLiveOut.Add(Registers.ebx, BitRange.Empty);
             crw.EnsureSignature(ssa, proc.Frame, flow);
             Assert.AreEqual("Register word32 foo(Register out ptr32 ebxOut)", proc.Signature.ToString(proc.Name));
         }
@@ -385,9 +385,9 @@ namespace Reko.UnitTests.Analysis
         public void CrwFpuOutArgument()
         {
             flow.BitsUsed.Add(new FpuStackStorage(0, PrimitiveType.Real80), new BitRange(0, 80));
-            flow.LiveOut.Add(Registers.eax, BitRange.Empty);
-            flow.LiveOut.Add(new FpuStackStorage(0, PrimitiveType.Real80), BitRange.Empty);
-            flow.LiveOut.Add(new FpuStackStorage(1, PrimitiveType.Real80), BitRange.Empty);
+            flow.BitsLiveOut.Add(Registers.eax, BitRange.Empty);
+            flow.BitsLiveOut.Add(new FpuStackStorage(0, PrimitiveType.Real80), BitRange.Empty);
+            flow.BitsLiveOut.Add(new FpuStackStorage(1, PrimitiveType.Real80), BitRange.Empty);
 
             crw.EnsureSignature(ssa, proc.Frame, flow);
             Assert.AreEqual("Register word32 foo(FpuStack real80 rArg0, FpuStack out ptr32 rArg0Out, FpuStack out ptr32 rArg1Out)", proc.Signature.ToString(proc.Name));

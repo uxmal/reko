@@ -118,7 +118,7 @@ namespace Reko.Analysis
 			if (proc.Signature.ParametersValid)
 				return;
 
-            var allLiveOut = flow.LiveOut;
+            var allLiveOut = flow.BitsLiveOut;
 			var sb = new SignatureBuilder(frame, platform.Architecture);
             var implicitRegs = platform.CreateImplicitArgumentRegisters();
 
@@ -167,7 +167,7 @@ namespace Reko.Analysis
                     return de.Key is RegisterStorage reg
                         && !implicitRegs.Contains(reg);
                 })
-                 .ToDictionary(
+                .ToDictionary(
                     de => platform.Architecture.GetSubregister(
                         (RegisterStorage)de.Key,
                         de.Value.Lsb,

@@ -63,7 +63,7 @@ namespace Reko.UnitTests.Analysis
 			{
 				w.WriteLine("// {0} /////////////////////", proc.Name);
 				ProcedureFlow flow = dfa.ProgramDataFlow[proc];
-				DataFlow.EmitRegisters(program.Architecture, "\tLiveOut:  ", flow.grfLiveOut, flow.LiveOut, w);
+				DataFlow.EmitRegisters(program.Architecture, "\tLiveOut:  ", flow.grfLiveOut, flow.BitsLiveOut, w);
 				w.WriteLine();
 				DataFlow.EmitRegisterValues("\tBitsUsed: ", flow.BitsUsed, w);
 				w.WriteLine();

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -139,7 +139,7 @@ namespace Reko.Analysis
 				ProcedureFlow pi = mpprocData[proc];
 
 				BlockFlow bi = mpprocData[proc.ExitBlock];
-                pi.LiveOut = bi.DataOut.ToDictionary(k => k, v => BitRange.Empty);
+                pi.BitsLiveOut = bi.DataOut.ToDictionary(k => k, v => BitRange.Empty);
 				pi.grfLiveOut = bi.grfOut;
 
                 // Remove unneeded data. Done for performance (and to give GC something to do).

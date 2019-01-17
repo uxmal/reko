@@ -253,7 +253,7 @@ namespace Reko.Analysis
             if (useLiveness)
             {
                 var stg = ((Identifier)use.Expression).Storage;
-                if (!procFlow.LiveOut.TryGetValue(stg, out BitRange br))
+                if (!procFlow.BitsLiveOut.TryGetValue(stg, out BitRange br))
                     return BitRange.Empty;
                 return br;
             }

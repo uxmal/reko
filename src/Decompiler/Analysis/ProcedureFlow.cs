@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,7 +38,31 @@ namespace Reko.Analysis
 	/// </summary>
 	public class ProcedureFlow : DataFlow
 	{
-        public Procedure Procedure { get; private set; }
+        public Procedure Procedure { get; }
+
+        /// <summary>
+        /// A collection of all each storage that is live-in to the procedure,
+        /// and the bits that are live in.
+        /// </summary>
+        public Dictionary<Storage, BitRange> BitsUsed;
+
+        /// <summary>
+        /// A collection of all storages that are live-out after the procedure 
+        /// is called.
+        /// </summary>
+        /// <remarks>
+        /// For instance, in the code fragment:
+        /// <code>
+        /// call foo
+        /// Mem0[0x00123400:word16] = r3
+        /// </code>
+        /// (at least) the 16 least significant bits of r3 will be 
+        /// live-out.
+        /// </remarks>
+        public Dictionary<Storage, BitRange> BitsLiveOut;
+
+        public Dictionary<RegisterStorage, uint> grfLiveOut;
+
 
         public HashSet<Storage> Preserved;			// Registers explicitly preserved by the procedure.
 		public Dictionary<RegisterStorage, uint> grfPreserved;
@@ -61,11 +85,8 @@ namespace Reko.Analysis
 
 		public Hashtable StackArguments;		//$REFACTOR: make this a strongly typed dictionary (Var -> PrimitiveType)
 
-		public Dictionary<Storage, BitRange> LiveOut;       //$TODO: rename to BitsUsedOut.
-		public Dictionary<RegisterStorage, uint> grfLiveOut;
 
 		public FunctionType Signature;
-        public Dictionary<Storage, BitRange> BitsUsed;  // the bits of each live-in storage
 
         // True if calling this procedure terminates the thread/process. This implies
         // that no code path reached the exit block without first terminating the process.
@@ -88,7 +109,7 @@ namespace Reko.Analysis
 
             ByPass = new HashSet<Storage>();
             MayUse = new HashSet<Storage>();
-            LiveOut = new Dictionary<Storage, BitRange>();
+            BitsLiveOut = new Dictionary<Storage, BitRange>();
 
             StackArguments = new Hashtable();
             this.BitsUsed = new Dictionary<Storage, BitRange>();
@@ -106,7 +127,7 @@ namespace Reko.Analysis
 		{
 			EmitRegisterValues("// MayUse: ", BitsUsed, writer);
 			writer.WriteLine();
-			EmitRegisters(arch, "// LiveOut:", grfLiveOut, LiveOut.Keys, writer);
+			EmitRegisters(arch, "// LiveOut:", grfLiveOut, BitsLiveOut.Keys, writer);
 			writer.WriteLine();
 			EmitRegisters(arch, "// Trashed:", grfTrashed, Trashed, writer);
 			writer.WriteLine();
@@ -147,7 +168,7 @@ namespace Reko.Analysis
 			}
 			if (id.Storage is RegisterStorage reg)
 			{
-                return LiveOut.ContainsKey(reg);
+                return BitsLiveOut.ContainsKey(reg);
 			}
 			return false;
 		}
