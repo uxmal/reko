@@ -4,19 +4,21 @@ This file contains the definitions of all files required for a
 complete Reko distribution. The ItemGroups defined here are consumed
 by the PreBuild.targets file.
 -->
-<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <IsMac>$([MSBuild]::IsOSPlatform(OSX))</IsMac>
     <UnixDllExt Condition="$(IsMac)">dylib</UnixDllExt>
     <UnixDllExt Condition="!$(IsMac)">so</UnixDllExt>
+    <!-- Use this for assemblies that are targetting the  .NET Standard profile -->
+    <StandardOutputDir>$(Configuration)\netstandard2.0</StandardOutputDir>
   </PropertyGroup>
   <ItemGroup>
     <ConfigurationFiles Include="$(SolutionDir)Drivers\reko.config" />
 
-    <Architectures Include="$(SolutionDir)Arch\Alpha\bin\$(Configuration)\Reko.Arch.Alpha.*" />
+    <Architectures Include="$(SolutionDir)Arch\Alpha\bin\$(StandardOutputDir)\Reko.Arch.Alpha.*" />
     <Architectures Include="$(SolutionDir)Arch\Arc\bin\$(Configuration)\Reko.Arch.Arc.*" />
     <Architectures Include="$(SolutionDir)Arch\Arm\bin\$(Configuration)\Reko.Arch.Arm.*" />
-    <Architectures Include="$(SolutionDir)Arch\Avr\bin\$(Configuration)\Reko.Arch.Avr.*" />
+    <Architectures Include="$(SolutionDir)Arch\Avr\bin\$(StandardOutputDir)\Reko.Arch.Avr.*" />
     <Architectures Include="$(SolutionDir)Arch\Blackfin\bin\$(Configuration)\Reko.Arch.Blackfin.*" />
     <Architectures Include="$(SolutionDir)Arch\Cray\bin\$(Configuration)\Reko.Arch.Cray.*" />
     <Architectures Include="$(SolutionDir)Arch\i8051\bin\$(Configuration)\Reko.Arch.i8051.*" />

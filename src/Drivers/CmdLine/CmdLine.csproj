@@ -5,10 +5,10 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+    <ApplicationIcon />
+    <OutputType>Exe</OutputType>
+    <StartupObject />
   </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Core\Core.csproj" />
-  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Arch\Alpha\Alpha.csproj">
       <Project>{c4c56725-bfd0-405a-802c-2c66fcd0ef06}</Project>
@@ -61,8 +61,6 @@
       <Name>Mos6502</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Arch\MSP430\MSP430.csproj">
-      <Project>{ff9e9894-f7e2-464d-b288-4157b864d053}</Project>
-      <Name>MSP430</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Arch\OpenRISC\OpenRISC.csproj">
       <Project>{a2d0eb22-6807-4c6f-9974-3b9721980f06}</Project>
@@ -283,6 +281,7 @@
       <Name>LGSymLoader</Name>
     </ProjectReference>
   </ItemGroup>
+  <Import Project="$(SolutionDir)Drivers\Common.items" />
   <Import Project="$(SolutionDir)Drivers\PreBuild.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.-->
