@@ -33,7 +33,7 @@ using Reko.Core;
 using System.ComponentModel.Design;
 using Reko.Core.Configuration;
 
-namespace hunktool
+namespace Reko.Tools.HunkTool
 {
     public class Program
     {

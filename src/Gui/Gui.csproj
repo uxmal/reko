@@ -1,23 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net472</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
   <RootNamespace>Reko.Gui</RootNamespace><AssemblyName>Reko.Gui</AssemblyName></PropertyGroup>
   <ItemGroup>
-    <Compile Remove="Windows\Forms\CmdIds.cs"/>
+    <Compile Remove="Windows\Forms\CmdIds.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Core\Core.csproj"/>
-    <ProjectReference Include="..\Decompiler\Decompiler.csproj"/>
+    <None Remove=".gitignore" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System.Windows.Forms"/>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Windows\Forms\"/>
+    <ProjectReference Include="..\Core\Core.csproj" />
+    <ProjectReference Include="..\Decompiler\Decompiler.csproj" />
   </ItemGroup>
 </Project>
   <Target Name="GenerateCsFiles" BeforeTargets="CoreCompile">

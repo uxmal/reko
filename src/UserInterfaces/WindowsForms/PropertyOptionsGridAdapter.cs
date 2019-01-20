@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -31,7 +31,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 
-namespace Reko.Gui
+namespace Reko.UserInterfaces.WindowsForms
 {
     /// <summary>
     /// Generates property descriptors that obey the restrictions specified in the 

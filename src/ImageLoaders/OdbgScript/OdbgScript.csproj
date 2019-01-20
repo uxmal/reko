@@ -1,24 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net472</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
   <RootNamespace>Reko.ImageLoaders.OdbgScript</RootNamespace>
   <AssemblyName>Reko.ImageLoaders.OdbgScript</AssemblyName></PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Arch\X86\X86.csproj"/>
-    <ProjectReference Include="..\..\Core\Core.csproj"/>
-    <ProjectReference Include="..\..\Environments\Windows\Windows.csproj"/>
-    <ProjectReference Include="..\MzExe\MzExe.csproj"/>
+    <ProjectReference Include="..\..\Arch\X86\X86.csproj" />
+    <ProjectReference Include="..\..\Core\Core.csproj" />
+    <ProjectReference Include="..\..\Environments\Windows\Windows.csproj" />
+    <ProjectReference Include="..\..\Gui\Gui.csproj" />
+    <ProjectReference Include="..\MzExe\MzExe.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Rhino.Mocks">
       <HintPath>..\..\..\..\..\..\idocx\Build\External\Rhino.Mocks.dll</HintPath>
     </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Windows.Forms"/>
   </ItemGroup>
 </Project>

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -28,6 +28,6 @@ namespace Reko.Gui.Forms
 {
     public interface IResourceEditor : IDisposable
     {
-        Image Image { get; set; }
+        object Image { get; set; }
     }
 }
