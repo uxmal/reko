@@ -1,4 +1,4 @@
-﻿using Reko.Arch.M68k;
+using Reko.Arch.M68k;
 using Reko.Core;
 using Reko.ImageLoaders.Hunk;
 using System;
@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace hunktool
+namespace Reko.Tools.HunkTool
 {
     public class HunkShow
     {

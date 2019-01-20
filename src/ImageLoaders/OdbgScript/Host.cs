@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -22,13 +22,13 @@ using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Services;
+using Reko.Gui;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Reko.ImageLoaders.OdbgScript
 {

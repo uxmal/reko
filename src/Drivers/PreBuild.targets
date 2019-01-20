@@ -3,7 +3,7 @@
 Custom target that copies outputs from Reko projects that are always
 loaded dynamically (using the services provided by IConfigurationService).
 -->
-<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <!-- //$BUG: We're getting a "blank" $(TargetFramework) when building this project in VStudio 17.
        We see three frameworks being built: core app 2.0, .NET Framework 4.7.2 (both of which are

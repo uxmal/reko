@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="$(SolutionDir)Drivers\Common.items"/>
   <Import Project="..\packages\NUnit3TestAdapter.3.13.0\build\net35\NUnit3TestAdapter.props" Condition="Exists('..\packages\NUnit3TestAdapter.3.13.0\build\net35\NUnit3TestAdapter.props')" />
   <Import Project="..\packages\NUnit.3.11.0\build\NUnit.props" Condition="Exists('..\packages\NUnit.3.11.0\build\NUnit.props')" />
   <PropertyGroup>
-    <TargetFramework>net472</TargetFramework>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
-  <RootNamespace>Reko.UnitTests</RootNamespace>
-  <AssemblyName>Reko.UnitTests</AssemblyName></PropertyGroup>
-
+    <RootNamespace>Reko.UnitTests</RootNamespace>
+    <AssemblyName>Reko.UnitTests</AssemblyName>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Arch\Alpha\Alpha.csproj">
     </ProjectReference>
@@ -24,8 +24,6 @@
     </ProjectReference>
     <ProjectReference Include="..\Arch\M6800\M6800.csproj">
     </ProjectReference>
-    <ProjectReference Include="..\Arch\M68k.Design\M68k.Design.csproj">
-    </ProjectReference>
     <ProjectReference Include="..\Arch\M68k\M68k.csproj">
     </ProjectReference>
     <ProjectReference Include="..\Arch\Microchip\MicrochipPIC.csproj">
@@ -35,8 +33,6 @@
     <ProjectReference Include="..\Arch\Mos6502\Mos6502.csproj">
     </ProjectReference>
     <ProjectReference Include="..\Arch\MSP430\MSP430.csproj">
-      <Project>{ff9e9894-f7e2-464d-b288-4157b864d053}</Project>
-      <Name>MSP430</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\PaRisc\PaRisc.csproj">
       <Project>{C57B1AD7-336A-4CE6-8A8C-836760029EBB}</Project>
@@ -60,8 +56,6 @@
     </ProjectReference>
     <ProjectReference Include="..\Arch\Vax\Vax.csproj">
     </ProjectReference>
-    <ProjectReference Include="..\Arch\X86.Design\X86.Design.csproj">
-    </ProjectReference>
     <ProjectReference Include="..\Arch\X86\X86.csproj">
     </ProjectReference>
     <ProjectReference Include="..\Arch\Xtensa\Xtensa.csproj">
@@ -80,10 +74,6 @@
     </ProjectReference>
     <ProjectReference Include="..\Decompiler\Decompiler.csproj">
     </ProjectReference>
-    <ProjectReference Include="..\Drivers\CmdLine\CmdLine.csproj">
-    </ProjectReference>
-    <ProjectReference Include="..\Environments\AmigaOS.Design\AmigaOS.Design.csproj">
-    </ProjectReference>
     <ProjectReference Include="..\Environments\AmigaOS\AmigaOS.csproj">
     </ProjectReference>
     <ProjectReference Include="..\Environments\AtariTOS\AtariTOS.csproj">
@@ -95,8 +85,6 @@
     <ProjectReference Include="..\Environments\Dreamcast\Dreamcast.csproj">
     </ProjectReference>
     <ProjectReference Include="..\Environments\MacOS\MacOS.csproj">
-    </ProjectReference>
-    <ProjectReference Include="..\Environments\Msdos.Design\Msdos.Design.csproj">
     </ProjectReference>
     <ProjectReference Include="..\Environments\Msdos\Msdos.csproj">
     </ProjectReference>
@@ -154,45 +142,54 @@
     </ProjectReference>
     <ProjectReference Include="..\Arch\Tms7000\Tms7000.csproj">
     </ProjectReference>
-    <ProjectReference Include="..\UserInterfaces\WindowsForms\WindowsForms.csproj">
-    </ProjectReference>
     <ProjectReference Include="..\Native\NativeProxy.csproj">
     </ProjectReference>
     <ProjectReference Include="..\Symbols\LGSymLoader\LGSymLoader.csproj">
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Msdos\*.xml"/>
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\*.xml"/>
-    <DecompilerMetadata Include="$(SolutionDir)tools\genPICdb\picdb.zip"/>
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Msdos\*.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\*.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)tools\genPICdb\picdb.zip" />
   </ItemGroup>
   <ItemGroup>
-    <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.dll"/>
-    <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.pdb"/>
+    <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.dll" />
+    <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.pdb" />
   </ItemGroup>
+  <Import Project="$(SolutionDir)Drivers\Common.items" />
+
   <!-- TODO: Duplicated in Common.items -->
   <ItemGroup Condition=" '$(OS)|$(Platform)' == 'Windows_NT|x86'">
-    <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\ArmNative.dll"/>
-    <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\ArmNative.pdb"/>
-    <ExternalComponents Include="$(SolutionDir)..\external\Capstone\X86\capstone*.dll"/>
+    <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\ArmNative.dll" />
+    <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\ArmNative.pdb" />
+    <ExternalComponents Include="$(SolutionDir)..\external\Capstone\X86\capstone*.dll" />
   </ItemGroup>
   <ItemGroup Condition=" '$(OS)|$(Platform)' == 'Windows_NT|x64'">
-    <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\ArmNative.dll"/>
-    <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\ArmNative.pdb"/>
-    <ExternalComponents Include="$(SolutionDir)..\external\Capstone\X64\capstone.dll"/>
+    <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\ArmNative.dll" />
+    <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\ArmNative.pdb" />
+    <ExternalComponents Include="$(SolutionDir)..\external\Capstone\X64\capstone.dll" />
   </ItemGroup>
   <ItemGroup Condition=" '$(OS)' == 'Unix'">
-    <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\libArmNative.so"/>
+    <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\libArmNative.so" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
+    <Compile Remove="WindowsForms\**" />
+    <Content Remove="WindowsForms\**" />
+    <EmbeddedResource Remove="WindowsForms\**" />
+    <None Remove="WindowsForms\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="nunit.framework">
+      <HintPath>..\..\external\NUnit-2.6.3\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Rhino.Mocks">
+      <HintPath>..\..\..\..\..\idocx\Build\External\Rhino.Mocks.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Target Name="AfterBuild">
-    <Message Importance="normal" Text="Copying Decompiler metadata files to $(TargetDir)"/>
-    <Copy SourceFiles="@(Architectures)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true"/>
-    <Copy SourceFiles="@(DecompilerMetadata)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true"/>
-    <Copy SourceFiles="@(ExternalComponents)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true"/>
+    <Message Importance="normal" Text="Copying Decompiler metadata files to $(TargetDir)" />
+    <Copy SourceFiles="@(Architectures)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(DecompilerMetadata)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(ExternalComponents)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
   </Target>
 </Project>
