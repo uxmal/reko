@@ -245,18 +245,18 @@ namespace Reko.UserInterfaces.WindowsForms
             return cursor;
         }
 
-        private string SaveFont(Font font)
+        private string SaveFont(object oFont)
         {
-            if (font == null)
+            if (!(oFont is Font font))
                 return null;
             return string.Format(CultureInfo.InvariantCulture, "{0}, {1}pt", font.Name, font.Size);
         }
 
-        private string SaveBrush(SolidBrush brush)
+        private string SaveBrush(object brush)
         {
             if (brush == null)
                 return null;
-            return string.Format(CultureInfo.InvariantCulture, "#{0:X6}", brush.Color.ToArgb() & 0xFFFFFF);
+            return string.Format(CultureInfo.InvariantCulture, "#{0:X6}", ((SolidBrush)brush).Color.ToArgb() & 0xFFFFFF);
         }
 
         private void AddStyle(Gui.UiStyle s)
@@ -352,11 +352,11 @@ namespace Reko.UserInterfaces.WindowsForms
             {
                 if (style.Background != null)
                 {
-                    ctrl.BackColor = style.Background.Color;
+                    ctrl.BackColor = ((SolidBrush)style.Background).Color;
                 }
                 if (style.Foreground != null)
                 {
-                    ctrl.ForeColor = style.Foreground.Color;
+                    ctrl.ForeColor = ((SolidBrush)style.Foreground).Color;
                 }
             }
         }
@@ -369,11 +369,11 @@ namespace Reko.UserInterfaces.WindowsForms
             {
                 if (style.Background != null)
                 {
-                    ctrl.BackColor = style.Background.Color;
+                    ctrl.BackColor = ((SolidBrush)style.Background).Color;
                 }
                 if (style.Foreground != null)
                 {
-                    ctrl.ForeColor = style.Foreground.Color;
+                    ctrl.ForeColor = ((SolidBrush)style.Foreground).Color;
                 }
             }
         }

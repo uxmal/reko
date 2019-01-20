@@ -5,7 +5,9 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
-  <RootNamespace>Reko.UserInterfaces.WindowsForms</RootNamespace><AssemblyName>Reko.UserInterfaces.WindowsForms</AssemblyName></PropertyGroup>
+    <RootNamespace>Reko.UserInterfaces.WindowsForms</RootNamespace>
+    <AssemblyName>Reko.UserInterfaces.WindowsForms</AssemblyName>
+  </PropertyGroup>
 
   <Target Name="GenerateCsFiles" BeforeTargets="CoreCompile">
     <Exec Condition=" '$(OS)' == 'Unix' And Exists('$(ProjectDir)../../tools/xslt.exe')" Command="mono $(ProjectDir)../../tools/xslt.exe $(ProjectDir)Forms/decompiler-menus.xslt $(ProjectDir)../../Gui/decompiler-menus.xml $(ProjectDir)Forms/DecompilerMenus.cs" />

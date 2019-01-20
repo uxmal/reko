@@ -1,4 +1,4 @@
-﻿using Reko.Core;
+using Reko.Core;
 using Reko.Gui;
 using System;
 using System.Collections.Generic;
@@ -106,7 +106,7 @@ namespace Reko.WindowsItp
 
         }
 
-        public void UpdateControlStyle(string list, Control ctrl)
+        public void UpdateControlStyle(string list, object ctrl)
         {
             throw new NotImplementedException();
         }

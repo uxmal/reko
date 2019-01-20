@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -92,7 +92,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             for (int i = stack.Count - 1; i >= 0; --i)
             {
                 var styles = GetStyles(stack[i]);
-                var ff = styles.Select(s => s.Foreground).LastOrDefault(f => f != null);
+                var ff = (SolidBrush) styles.Select(s => s.Foreground).LastOrDefault(f => f != null);
                 if (ff != null)
                     return ff;
             }
@@ -105,7 +105,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             for (int i = stack.Count - 1; i>=0; --i)
             {
                 var styles = GetStyles(stack[i]);
-                cu = styles.Select(s => s.Cursor).LastOrDefault(c => c != null);
+                cu = (Cursor)styles.Select(s => s.Cursor).LastOrDefault(c => c != null);
                 if (cu != null)
                     return cu;
             }
@@ -119,7 +119,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 var styles = GetStyles(stack[i]);
                 var fg = styles.Select(s => s.Foreground).LastOrDefault(f => f != null);
                 if (fg != null)
-                    return fg.Color;
+                    return ((SolidBrush) fg).Color;
             }
             return fgColor;
         }
@@ -131,7 +131,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 var styles = GetStyles(stack[i]);
                 var back = styles.Select(s => s.Background).LastOrDefault(b => b != null);
                 if (back != null)
-                    return back;
+                    return (SolidBrush) back;
             }
             return CacheBrush(ref bg, new SolidBrush(bgColor));
         }
@@ -143,7 +143,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 var styles = GetStyles(stack[i]);
                 var font = styles.Select(s => s.Font).LastOrDefault(f => f != null);
                 if (font != null)
-                    return font;
+                    return (Font)font;
             }
             return defaultFont;
         }

@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+using Reko;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -8,9 +9,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Windows.Forms unit tests")]
 [assembly: AssemblyDescription("Unit tests for Windows Forms GUI client")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany(AssemblyMetadata.AssemblyCompany)]
-[assembly: AssemblyProduct(AssemblyMetadata.AssemblyProduct)]
-[assembly: AssemblyCopyright(AssemblyMetadata.AssemblyCopyright)]
+[assembly: AssemblyCompany(AssemblyMetadata.Company)]
+[assembly: AssemblyProduct(AssemblyMetadata.Product)]
+[assembly: AssemblyCopyright(AssemblyMetadata.Copyright)]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
