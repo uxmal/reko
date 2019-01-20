@@ -63,7 +63,7 @@ namespace Reko.UnitTests.Gui.Commands
             sc.AddService<IDecompilerService>(dcSvc.Object);
             sc.AddService<IProjectBrowserService>(brSvc.Object);
             sc.AddService<IProcedureListService>(procSvc.Object);
-            sc.AddService<IDecompilerShellUiService>(new FakeShellUiService());
+            sc.AddService<IDecompilerShellUiService>(uiSvc);
             dc.Setup(d => d. ScanProcedure(
                 It.IsAny<ProgramAddress>(),
                 It.IsAny<IProcessorArchitecture>())

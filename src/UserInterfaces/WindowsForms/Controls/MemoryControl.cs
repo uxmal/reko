@@ -660,9 +660,9 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 var code = uiPrefs.Styles[UiStyles.MemoryCode];
                 var data = uiPrefs.Styles[UiStyles.MemoryData];
                 var heur = uiPrefs.Styles[UiStyles.MemoryHeuristic];
-                codeTheme = new BrushTheme { Background = code.Background, Foreground = code.Foreground ?? SystemBrushes.ControlText, StartMarker = Brushes.Red };
-                dataTheme = new BrushTheme { Background = data.Background, Foreground = data.Foreground ?? SystemBrushes.ControlText, StartMarker = Brushes.Blue };
-                defaultTheme = new BrushTheme { Background = wind.Background ?? SystemBrushes.Window, Foreground = wind.Foreground ?? SystemBrushes.ControlText };
+                codeTheme = new BrushTheme { Background = (Brush)code.Background, Foreground = (Brush)code.Foreground ?? SystemBrushes.ControlText, StartMarker = Brushes.Red };
+                dataTheme = new BrushTheme { Background = (Brush) data.Background, Foreground = (Brush) data.Foreground ?? SystemBrushes.ControlText, StartMarker = Brushes.Blue };
+                defaultTheme = new BrushTheme { Background = (Brush) wind.Background ?? SystemBrushes.Window, Foreground = (Brush) wind.Foreground ?? SystemBrushes.ControlText };
                 selectTheme = new BrushTheme { Background = SystemBrushes.Highlight, Foreground = SystemBrushes.HighlightText };
             }
 

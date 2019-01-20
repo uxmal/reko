@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -276,7 +276,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         #endregion
 
-        void documentTabs_MouseUp(object sender, MouseEventArgs e)
+        void documentTabs_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             Debug.Print("Mouse up at: {0,1}", e.Location);
             for (int i = 0; i < form.DocumentTabs.TabPages.Count; ++i)

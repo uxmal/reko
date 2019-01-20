@@ -104,7 +104,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             DragDrop?.Invoke(this, e);
         }
 
-        void treeView_DragOver(object sender, DragEventArgs e)
+        void treeView_DragOver(object sender, System.Windows.Forms.DragEventArgs e)
         {
             DragOver?.Invoke(this, e);
         }
@@ -114,17 +114,17 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             DragLeave?.Invoke(this, e);
         }
 
-        void treeView_DragEnter(object sender, DragEventArgs e)
+        void treeView_DragEnter(object sender, System.Windows.Forms.DragEventArgs e)
         {
             DragEnter?.Invoke(this, e);
         }
 
-        void treeView_MouseWheel(object sender, MouseEventArgs e)
+        void treeView_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             MouseWheel?.Invoke(this, e);
         }
 
-        private void TreeView_MouseDown(object sender, MouseEventArgs e)
+        private void TreeView_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             var pt = new Point(e.X, e.Y);
             var hit = treeView.HitTest(pt);
@@ -284,6 +284,27 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             {
                 return GetEnumerator();
             }
+        }
+
+        public static Gui.Controls.DragEventArgs Convert(System.Windows.Forms.DragEventArgs e)
+        {
+            return new Gui.Controls.DragEventArgs(
+                e.Data,
+                e.KeyState,
+                e.X,
+                e.Y,
+                (Gui.Controls.DragDropEffects) (int)e.AllowedEffect,
+                (Gui.Controls.DragDropEffects) (int)e.Effect);
+        }
+
+        public static Gui.Controls.MouseEventArgs Convert(System.Windows.Forms.MouseEventArgs e)
+        {
+            return new Gui.Controls.MouseEventArgs(
+                (Gui.Controls.MouseButtons) (int)e.Button,
+                e.Clicks,
+                e.X,
+                e.Y,
+                e.Delta);
         }
     }
 }

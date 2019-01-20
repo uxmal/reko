@@ -122,7 +122,7 @@ namespace Reko.UnitTests.Gui.Windows
             public event DragEventHandler DragOver;
             public event DragEventHandler DragDrop;
             public event EventHandler DragLeave;
-            public event MouseEventHandler MouseWheel;
+            public event Reko.Gui.Controls.MouseEventHandler MouseWheel;
             public event EventHandler GotFocus;
             public event EventHandler LostFocus;
 
@@ -193,12 +193,12 @@ namespace Reko.UnitTests.Gui.Windows
                 DragEnter(this, e);
             }
 
-            public void PerformDragOver(DragEventArgs e)
+            public void PerformDragOver(Reko.Gui.Controls.DragEventArgs e)
             {
                 DragOver(this, e);
             }
 
-            public void PerformDragDrop(DragEventArgs e)
+            public void PerformDragDrop(Reko.Gui.Controls.DragEventArgs e)
             {
                 DragDrop(this, e);
             }
@@ -208,7 +208,7 @@ namespace Reko.UnitTests.Gui.Windows
                 DragLeave(this, e);
             }
 
-            public void PerformMouseWheel(MouseEventArgs e)
+            public void PerformMouseWheel(Reko.Gui.Controls.MouseEventArgs e)
             {
                 MouseWheel(this, e);
             }
@@ -694,7 +694,7 @@ namespace Reko.UnitTests.Gui.Windows
 
             var project = new Project();
             pbs.Load(project);
-            mockTree.PerformDragEnter(e);
+            mockTree.PerformDragEnter(TreeViewWrapper.Convert(e));
             Assert.AreEqual(DragDropEffects.None, e.Effect);
         }
 
@@ -713,16 +713,16 @@ namespace Reko.UnitTests.Gui.Windows
             Assert.AreEqual("/home/bob/foo.exe", filename);
         }
 
-        private DragEventArgs Given_DraggedFile()
+        private Reko.Gui.Controls.DragEventArgs Given_DraggedFile()
         {
             var dObject = new DataObject(
                 DataFormats.FileDrop,
                 "/home/bob/foo.exe");
 
-            return new DragEventArgs(
+            return new Reko.Gui.Controls.DragEventArgs(
                     dObject, 0, 40, 40,
-                    DragDropEffects.All,
-                    DragDropEffects.All);
+                    Reko.Gui.Controls.DragDropEffects.All,
+                    Reko.Gui.Controls.DragDropEffects.All);
         }
 
         private DragEventArgs Given_DraggedText()

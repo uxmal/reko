@@ -9,7 +9,6 @@
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
     <RootNamespace>Reko.UnitTests</RootNamespace>
     <AssemblyName>Reko.UnitTests</AssemblyName>
-    <OutputType>Library</OutputType>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Arch\Alpha\Alpha.csproj">
@@ -138,25 +137,20 @@
     </ProjectReference>
     <ProjectReference Include="..\Libraries\Microchip\Utils\Microchip.Utils.csproj">
     </ProjectReference>
-    <ProjectReference Include="..\Libraries\Python\Python.csproj">
-    </ProjectReference>
-    <ProjectReference Include="..\Arch\Tms7000\Tms7000.csproj">
-    </ProjectReference>
-    <ProjectReference Include="..\Native\NativeProxy.csproj">
-    </ProjectReference>
-    <ProjectReference Include="..\Symbols\LGSymLoader\LGSymLoader.csproj">
-    </ProjectReference>
+    <ProjectReference Include="..\Libraries\Python\Python.csproj" />
+    <ProjectReference Include="..\Arch\Tms7000\Tms7000.csproj" />
+    <ProjectReference Include="..\Native\NativeProxy.csproj" />
+    <ProjectReference Include="..\Symbols\LGSymLoader\LGSymLoader.csproj" />
   </ItemGroup>
   <ItemGroup>
     <DecompilerMetadata Include="$(SolutionDir)Environments\Msdos\*.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\*.xml" />
     <DecompilerMetadata Include="$(SolutionDir)tools\genPICdb\picdb.zip" />
-  </ItemGroup>
-  <ItemGroup>
     <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.dll" />
     <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.pdb" />
   </ItemGroup>
-  <Import Project="$(SolutionDir)Drivers\Common.items" />
+  
+  <!-- <Import Project="$(SolutionDir)Drivers\Common.items" /> -->
 
   <!-- TODO: Duplicated in Common.items -->
   <ItemGroup Condition=" '$(OS)|$(Platform)' == 'Windows_NT|x86'">
@@ -173,9 +167,13 @@
     <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\libArmNative.so" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Remove="CmdLine\**" />
     <Compile Remove="WindowsForms\**" />
+    <Content Remove="CmdLine\**" />
     <Content Remove="WindowsForms\**" />
+    <EmbeddedResource Remove="CmdLine\**" />
     <EmbeddedResource Remove="WindowsForms\**" />
+    <None Remove="CmdLine\**" />
     <None Remove="WindowsForms\**" />
   </ItemGroup>
   <ItemGroup>
