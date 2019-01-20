@@ -1,17 +1,17 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>net472</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
-  </PropertyGroup>
+  <RootNamespace>Reko.Arch.M68k.Design</RootNamespace><AssemblyName>Reko.Arch.M68k.Design</AssemblyName></PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Core.csproj" />
-    <ProjectReference Include="..\..\Gui\Gui.csproj" />
-    <ProjectReference Include="..\M68k\M68k.csproj" />
+    <ProjectReference Include="..\..\Core\Core.csproj"/>
+    <ProjectReference Include="..\..\Gui\Gui.csproj"/>
+    <ProjectReference Include="..\M68k\M68k.csproj"/>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Forms"/>
   </ItemGroup>
 </Project>

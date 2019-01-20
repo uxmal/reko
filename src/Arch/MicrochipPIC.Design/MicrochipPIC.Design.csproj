@@ -5,15 +5,15 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
-  </PropertyGroup>
+  <RootNamespace>Reko.Arch.MicrochipPIC.Design</RootNamespace><AssemblyName>Reko.Arch.MicrochipPIC.Design</AssemblyName></PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Core.csproj" />
-    <ProjectReference Include="..\..\Gui\Gui.csproj" />
-    <ProjectReference Include="..\M68k\M68k.csproj" />
-    <ProjectReference Include="..\..\Libraries\Microchip\Utils\Microchip.Utils.csproj" />
-    <ProjectReference Include="..\Microchip\MicrochipPIC.csproj" />
+    <ProjectReference Include="..\..\Core\Core.csproj"/>
+    <ProjectReference Include="..\..\Gui\Gui.csproj"/>
+    <ProjectReference Include="..\M68k\M68k.csproj"/>
+    <ProjectReference Include="..\..\Libraries\Microchip\Utils\Microchip.Utils.csproj"/>
+    <ProjectReference Include="..\Microchip\MicrochipPIC.csproj"/>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Forms"/>
   </ItemGroup>
 </Project>

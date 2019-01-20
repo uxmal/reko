@@ -6,19 +6,19 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
-  </PropertyGroup>
+  <RootNamespace>Reko.Core</RootNamespace><AssemblyName>Reko.Core</AssemblyName></PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Serialization\DecompilerDiscoveries.cs" />
-    <Compile Remove="Serialization\EnumType_v1.cs" />
-    <Compile Remove="Serialization\SignatureSerializer.cs" />
+    <Compile Remove="Serialization\DecompilerDiscoveries.cs"/>
+    <Compile Remove="Serialization\EnumType_v1.cs"/>
+    <Compile Remove="Serialization\SignatureSerializer.cs"/>
   </ItemGroup>
   <ItemGroup>
-    <None Remove="Serialization\Serialization.xsd" />
-    <None Remove="Serialization\Serialization.xsx" />
+    <None Remove="Serialization\Serialization.xsd"/>
+    <None Remove="Serialization\Serialization.xsx"/>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0"/>
   </ItemGroup>
 
 </Project>

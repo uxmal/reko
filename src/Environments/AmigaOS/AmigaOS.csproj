@@ -1,13 +1,13 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
-  </PropertyGroup>
+  <RootNamespace>Reko.Environments.AmigaOS</RootNamespace><AssemblyName>Reko.Environments.AmigaOS</AssemblyName></PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Arch\M68k\M68k.csproj" />
-    <ProjectReference Include="..\..\Core\Core.csproj" />
+    <ProjectReference Include="..\..\Arch\M68k\M68k.csproj"/>
+    <ProjectReference Include="..\..\Core\Core.csproj"/>
   </ItemGroup>
 </Project>

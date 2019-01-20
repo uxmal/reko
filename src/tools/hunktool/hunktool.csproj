@@ -5,9 +5,8 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-  </PropertyGroup>
+  <RootNamespace>hunktool</RootNamespace>
+  <AssemblyName>hunktool</AssemblyName></PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Arch\M68k\M68k.csproj">
     </ProjectReference>

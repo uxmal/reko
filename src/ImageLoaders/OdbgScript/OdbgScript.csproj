@@ -5,14 +5,13 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-  </PropertyGroup>
+  <RootNamespace>Reko.ImageLoaders.OdbgScript</RootNamespace>
+  <AssemblyName>Reko.ImageLoaders.OdbgScript</AssemblyName></PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Arch\X86\X86.csproj" />
-    <ProjectReference Include="..\..\Core\Core.csproj" />
-    <ProjectReference Include="..\..\Environments\Windows\Windows.csproj" />
-    <ProjectReference Include="..\MzExe\MzExe.csproj" />
+    <ProjectReference Include="..\..\Arch\X86\X86.csproj"/>
+    <ProjectReference Include="..\..\Core\Core.csproj"/>
+    <ProjectReference Include="..\..\Environments\Windows\Windows.csproj"/>
+    <ProjectReference Include="..\MzExe\MzExe.csproj"/>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Rhino.Mocks">
@@ -20,6 +19,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Forms"/>
   </ItemGroup>
 </Project>
