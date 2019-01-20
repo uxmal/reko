@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="$(SolutionDir)Drivers\Common.items" />
+  <Import Project="$(SolutionDir)Drivers\Common.items"/>
   <Import Project="..\packages\NUnit3TestAdapter.3.13.0\build\net35\NUnit3TestAdapter.props" Condition="Exists('..\packages\NUnit3TestAdapter.3.13.0\build\net35\NUnit3TestAdapter.props')" />
   <Import Project="..\packages\NUnit.3.11.0\build\NUnit.props" Condition="Exists('..\packages\NUnit.3.11.0\build\NUnit.props')" />
   <PropertyGroup>
@@ -8,9 +8,8 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-  </PropertyGroup>
+  <RootNamespace>Reko.UnitTests</RootNamespace>
+  <AssemblyName>Reko.UnitTests</AssemblyName></PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Arch\Alpha\Alpha.csproj">
@@ -163,27 +162,27 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Msdos\*.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\*.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)tools\genPICdb\picdb.zip" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Msdos\*.xml"/>
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\*.xml"/>
+    <DecompilerMetadata Include="$(SolutionDir)tools\genPICdb\picdb.zip"/>
   </ItemGroup>
   <ItemGroup>
-    <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.dll" />
-    <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.pdb" />
+    <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.dll"/>
+    <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.pdb"/>
   </ItemGroup>
   <!-- TODO: Duplicated in Common.items -->
   <ItemGroup Condition=" '$(OS)|$(Platform)' == 'Windows_NT|x86'">
-    <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\ArmNative.dll" />
-    <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\ArmNative.pdb" />
-    <ExternalComponents Include="$(SolutionDir)..\external\Capstone\X86\capstone*.dll" />
+    <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\ArmNative.dll"/>
+    <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\ArmNative.pdb"/>
+    <ExternalComponents Include="$(SolutionDir)..\external\Capstone\X86\capstone*.dll"/>
   </ItemGroup>
   <ItemGroup Condition=" '$(OS)|$(Platform)' == 'Windows_NT|x64'">
-    <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\ArmNative.dll" />
-    <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\ArmNative.pdb" />
-    <ExternalComponents Include="$(SolutionDir)..\external\Capstone\X64\capstone.dll" />
+    <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\ArmNative.dll"/>
+    <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\ArmNative.pdb"/>
+    <ExternalComponents Include="$(SolutionDir)..\external\Capstone\X64\capstone.dll"/>
   </ItemGroup>
   <ItemGroup Condition=" '$(OS)' == 'Unix'">
-    <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\libArmNative.so" />
+    <Architectures Include="$(SolutionDir)Native\build\$(Platform)\$(Configuration)\ArmNative\libArmNative.so"/>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
@@ -191,16 +190,9 @@
     </None>
   </ItemGroup>
   <Target Name="AfterBuild">
-    <Message Importance="normal" Text="Copying Decompiler metadata files to $(TargetDir)" />
-    <Copy SourceFiles="@(Architectures)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
-    <Copy SourceFiles="@(DecompilerMetadata)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
-    <Copy SourceFiles="@(ExternalComponents)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
-  </Target>
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\NUnit.3.11.0\build\NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NUnit.3.11.0\build\NUnit.props'))" />
-    <Error Condition="!Exists('..\packages\NUnit3TestAdapter.3.13.0\build\net35\NUnit3TestAdapter.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NUnit3TestAdapter.3.13.0\build\net35\NUnit3TestAdapter.props'))" />
+    <Message Importance="normal" Text="Copying Decompiler metadata files to $(TargetDir)"/>
+    <Copy SourceFiles="@(Architectures)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true"/>
+    <Copy SourceFiles="@(DecompilerMetadata)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true"/>
+    <Copy SourceFiles="@(ExternalComponents)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true"/>
   </Target>
 </Project>

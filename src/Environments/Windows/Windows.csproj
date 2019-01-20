@@ -5,11 +5,11 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
-  </PropertyGroup>
+  <RootNamespace>Reko.Environments.Windows</RootNamespace><AssemblyName>Reko.Environments.Windows</AssemblyName></PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Arch\X86\X86.csproj" />
-    <ProjectReference Include="..\..\Core\Core.csproj" />
-    <ProjectReference Include="..\..\Libraries\Libc\Libc.csproj" />
+    <ProjectReference Include="..\..\Arch\X86\X86.csproj"/>
+    <ProjectReference Include="..\..\Core\Core.csproj"/>
+    <ProjectReference Include="..\..\Libraries\Libc\Libc.csproj"/>
   </ItemGroup>
   <ItemGroup>
     <TranslateHeader Include="msvcrt.inc" />

@@ -5,12 +5,11 @@
   <PropertyGroup>
     <TargetFrameworks>net472</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <ApplicationIcon />
+    <ApplicationIcon/>
     <OutputType>Exe</OutputType>
-    <StartupObject />
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-  </PropertyGroup>
+    <StartupObject/>
+  <RootNamespace>Decompiler.Tools.C2Xml</RootNamespace>
+  <AssemblyName>c2xml</AssemblyName></PropertyGroup>
 
   <ItemGroup>
     <ConfigurationFiles Include="$(SolutionDir)\Drivers\reko.config" />
@@ -18,16 +17,16 @@
   <Target Name="BeforeBuild">
   </Target>
   <Target Name="AfterBuild">
-    <Message Text="Copy $(ProjectDir)$(OutDir)$(TargetFileName) to $(SolutionDir)tools" Importance="High" />
-    <Copy SourceFiles="$(ProjectDir)$(OutDir)$(TargetFileName)" DestinationFolder="$(SolutionDir)tools" />
-    <Copy SourceFiles="$(ProjectDir)$(OutDir)$(TargetFileName).config" DestinationFolder="$(SolutionDir)tools" />
-    <Copy SourceFiles="$(ProjectDir)$(OutDir)Reko.Core.dll" DestinationFolder="$(SolutionDir)tools" />
-    <Copy SourceFiles="$(SolutionDir)..\external\docopt.net-0.6.1.4\DocoptNet.dll" DestinationFolder="$(SolutionDir)tools" />
-    <Copy SourceFiles="@(ConfigurationFiles)" DestinationFolder="$(SolutionDir)tools" SkipUnchangedFiles="true" />
+    <Message Text="Copy $(ProjectDir)$(OutDir)$(TargetFileName) to $(SolutionDir)tools" Importance="High"/>
+    <Copy SourceFiles="$(ProjectDir)$(OutDir)$(TargetFileName)" DestinationFolder="$(SolutionDir)tools"/>
+    <Copy SourceFiles="$(ProjectDir)$(OutDir)$(TargetFileName).config" DestinationFolder="$(SolutionDir)tools"/>
+    <Copy SourceFiles="$(ProjectDir)$(OutDir)Reko.Core.dll" DestinationFolder="$(SolutionDir)tools"/>
+    <Copy SourceFiles="$(SolutionDir)..\external\docopt.net-0.6.1.4\DocoptNet.dll" DestinationFolder="$(SolutionDir)tools"/>
+    <Copy SourceFiles="@(ConfigurationFiles)" DestinationFolder="$(SolutionDir)tools" SkipUnchangedFiles="true"/>
   </Target>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Core.csproj" />
+    <ProjectReference Include="..\..\Core\Core.csproj"/>
   </ItemGroup>
 
   <ItemGroup>
@@ -38,10 +37,4 @@
       <HintPath>..\..\..\external\NUnit-2.6.3\nunit.framework.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\..\packages\NUnit.3.11.0\build\NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\NUnit.3.11.0\build\NUnit.props'))" />
-  </Target>
 </Project>

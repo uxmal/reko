@@ -5,15 +5,15 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
-  </PropertyGroup>
+  <RootNamespace>Reko.UserInterfaces.WindowsForms</RootNamespace><AssemblyName>Reko.UserInterfaces.WindowsForms</AssemblyName></PropertyGroup>
 
   <Target Name="GenerateCsFiles" BeforeTargets="CoreCompile">
-    <Exec Condition=" '$(OS)' == 'Unix' And Exists('$(ProjectDir)../../tools/xslt.exe')" Command="mono $(ProjectDir)../../tools/xslt.exe $(ProjectDir)Forms/decompiler-menus.xslt $(ProjectDir)../../Gui/decompiler-menus.xml $(ProjectDir)Forms/DecompilerMenus.cs" />
-    <Exec Condition=" '$(OS)' != 'Unix' And Exists('$(ProjectDir)../../tools/xslt.exe')" Command="&quot;$(SolutionDir)tools\xslt.exe&quot; &quot;$(ProjectDir)Forms\decompiler-menus.xslt&quot; &quot;$(ProjectDir)..\..\Gui\decompiler-menus.xml&quot; &quot;$(ProjectDir)Forms\DecompilerMenus.cs&quot;" />
+    <Exec Condition=" '$(OS)' == 'Unix' And Exists('$(ProjectDir)../../tools/xslt.exe')" Command="mono $(ProjectDir)../../tools/xslt.exe $(ProjectDir)Forms/decompiler-menus.xslt $(ProjectDir)../../Gui/decompiler-menus.xml $(ProjectDir)Forms/DecompilerMenus.cs"/>
+    <Exec Condition=" '$(OS)' != 'Unix' And Exists('$(ProjectDir)../../tools/xslt.exe')" Command="&quot;$(SolutionDir)tools\xslt.exe&quot; &quot;$(ProjectDir)Forms\decompiler-menus.xslt&quot; &quot;$(ProjectDir)..\..\Gui\decompiler-menus.xml&quot; &quot;$(ProjectDir)Forms\DecompilerMenus.cs&quot;"/>
   </Target>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Core.csproj" />
-    <ProjectReference Include="..\..\Gui\Gui.csproj" />
+    <ProjectReference Include="..\..\Core\Core.csproj"/>
+    <ProjectReference Include="..\..\Gui\Gui.csproj"/>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Msagl">
@@ -25,6 +25,6 @@
     <Reference Include="Microsoft.Msagl.GraphViewerGdi">
       <HintPath>..\..\..\external\Msagl\Microsoft.Msagl.GraphViewerGdi.dll</HintPath>
     </Reference>
-    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Forms"/>
   </ItemGroup>
 </Project>

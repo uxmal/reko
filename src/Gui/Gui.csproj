@@ -5,19 +5,19 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
-  </PropertyGroup>
+  <RootNamespace>Reko.Gui</RootNamespace><AssemblyName>Reko.Gui</AssemblyName></PropertyGroup>
   <ItemGroup>
-    <Compile Remove="Windows\Forms\CmdIds.cs" />
+    <Compile Remove="Windows\Forms\CmdIds.cs"/>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Core\Core.csproj" />
-    <ProjectReference Include="..\Decompiler\Decompiler.csproj" />
+    <ProjectReference Include="..\Core\Core.csproj"/>
+    <ProjectReference Include="..\Decompiler\Decompiler.csproj"/>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Forms"/>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Windows\Forms\" />
+    <Folder Include="Windows\Forms\"/>
   </ItemGroup>
 </Project>
   <Target Name="GenerateCsFiles" BeforeTargets="CoreCompile">

@@ -5,20 +5,20 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
-  </PropertyGroup>
+  <RootNamespace>Reko.WindowsItp</RootNamespace><AssemblyName>Reko.WindowsItp</AssemblyName></PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Arch\Arm\Arm.csproj" />
-    <ProjectReference Include="..\Arch\PowerPC\PowerPC.csproj" />
-    <ProjectReference Include="..\Arch\X86\X86.csproj" />
-    <ProjectReference Include="..\Core\Core.csproj" />
-    <ProjectReference Include="..\Decompiler\Decompiler.csproj" />
-    <ProjectReference Include="..\Environments\Windows\Windows.csproj" />
-    <ProjectReference Include="..\Gui\Gui.csproj" />
-    <ProjectReference Include="..\ImageLoaders\MzExe\MzExe.csproj" />
-    <ProjectReference Include="..\ImageLoaders\OdbgScript\OdbgScript.csproj" />
-    <ProjectReference Include="..\UserInterfaces\WindowsForms\WindowsForms.csproj" />
+    <ProjectReference Include="..\Arch\Arm\Arm.csproj"/>
+    <ProjectReference Include="..\Arch\PowerPC\PowerPC.csproj"/>
+    <ProjectReference Include="..\Arch\X86\X86.csproj"/>
+    <ProjectReference Include="..\Core\Core.csproj"/>
+    <ProjectReference Include="..\Decompiler\Decompiler.csproj"/>
+    <ProjectReference Include="..\Environments\Windows\Windows.csproj"/>
+    <ProjectReference Include="..\Gui\Gui.csproj"/>
+    <ProjectReference Include="..\ImageLoaders\MzExe\MzExe.csproj"/>
+    <ProjectReference Include="..\ImageLoaders\OdbgScript\OdbgScript.csproj"/>
+    <ProjectReference Include="..\UserInterfaces\WindowsForms\WindowsForms.csproj"/>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Forms"/>
   </ItemGroup>
 </Project>
