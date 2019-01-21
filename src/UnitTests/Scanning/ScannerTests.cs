@@ -674,6 +674,7 @@ fn00001000_exit:
         public void Scanner_NoDecompiledProcedureFromUserGlobal()
         {
             Given_Program(Address.Ptr32(0x12314), new byte[20]);
+            fakeArch.Test_IgnoreAllUnkownTraces();
             program.User.Procedures.Add(
                 Address.Ptr32(0x12314),
                 new Procedure_v1()
@@ -693,6 +694,8 @@ fn00001000_exit:
                 Address.Ptr32(0x12324),
                 FunctionType.Action(),
                 null);
+            mr.ReplayAll();
+
             sc.ScanImage();
 
             Assert.AreEqual(1, program.Procedures.Count);
