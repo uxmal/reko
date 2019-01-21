@@ -4,7 +4,7 @@ This file contains the definitions of all files required for a
 complete Reko distribution. The ItemGroups defined here are consumed
 by the PreBuild.targets file.
 -->
-<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project>
   <PropertyGroup>
     <IsMac>$([MSBuild]::IsOSPlatform(OSX))</IsMac>
     <UnixDllExt Condition="$(IsMac)">dylib</UnixDllExt>
