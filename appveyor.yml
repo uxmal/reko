@@ -42,8 +42,8 @@ after_build:
         mv $filePath $newPath;
 
 test_script:
-  - cmd: nunit-console3.exe ./src/tools/c2xml/bin/%CONFIGURATION%/c2xml.exe -exclude=FailedTests /framework:net-4.7
-  - cmd: nunit-console3.exe ./src/UnitTests/bin/%PLATFORM%/%CONFIGURATION%/Reko.UnitTests.dll -exclude=FailedTests /framework:net-4.7
+  - cmd: nunit3-console.exe ./src/tools/c2xml/bin/%CONFIGURATION%/c2xml.exe -exclude=FailedTests /framework:net-4.7
+  - cmd: nunit3-console.exe ./src/UnitTests/bin/%PLATFORM%/%CONFIGURATION%/Reko.UnitTests.dll -exclude=FailedTests /framework:net-4.7
   - cmd: python ./subjects/regressionTests.py --check-output --configuration=%CONFIGURATION% --platform=%PLATFORM%
 
 artifacts:
