@@ -35,7 +35,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
     [TestFixture]
     public class PIC18LgcyTrad_RewriterTests : PICRewriterTestsBase
     {
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void OneSetup()
         {
             SetPICModel(PIC18LegacyName, PICExecMode.Traditional);

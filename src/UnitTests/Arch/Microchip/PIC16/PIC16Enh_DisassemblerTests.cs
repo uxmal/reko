@@ -40,7 +40,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Disasm
     public class PIC16Enhd_DisassemblerTests : DisassemblerTestsBase
     {
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void OneSetup()
         {
             SetPICModel(PIC16EnhancedName);

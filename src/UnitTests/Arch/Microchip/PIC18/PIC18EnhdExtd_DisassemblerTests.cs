@@ -38,7 +38,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
     [TestFixture]
     public class PIC18EnhdExtd_DisassemblerTests : DisassemblerTestsBase
     {
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void OneSetup()
         {
             SetPICModel(PIC18EnhancedName, PICExecMode.Extended);

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2019 Christian Hostelet.
  * inspired by work of:
@@ -33,8 +33,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Registers
     [TestFixture]
     public class PIC18LgcyTrad_RegistersTests : PICRegistersTestsBase
     {
-
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void OneSetup()
         {
             SetPICModel(PIC18LegacyName, PICExecMode.Traditional);

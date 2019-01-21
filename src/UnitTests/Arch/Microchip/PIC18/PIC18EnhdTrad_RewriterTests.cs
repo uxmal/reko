@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2019 Christian Hostelet.
  * inspired by work of:
@@ -34,7 +34,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
     [TestFixture]
     public class PIC18EnhdTrad_RewriterTests : PICRewriterTestsBase
     {
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void OneSetup()
         {
             SetPICModel(PIC18EnhancedName, PICExecMode.Traditional);
