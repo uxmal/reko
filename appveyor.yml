@@ -10,6 +10,9 @@ platform: x64
 
 configuration: Release
 
+before_build:
+ - nuget restore
+
 # If you want more build spew, change the verbosity below
 build:
   project: src/Reko-decompiler.sln
