@@ -4,13 +4,7 @@ Custom target that copies outputs from Reko projects that are always
 loaded dynamically (using the services provided by IConfigurationService).
 -->
 <Project>
-
-  <!-- //$BUG: We're getting a "blank" $(TargetFramework) when building this project in VStudio 17.
-       We see three frameworks being built: core app 2.0, .NET Framework 4.7.2 (both of which are
-       expected) and a third framework build with no identifiers, and in which all properties are
-       blank. The `Condition` below was added to make that error stop happening, but is a hack
-       and should be resolved. -->
-  <Target Name="CopyAllTheFiles" AfterTargets="Build" Condition="'$(TargetFramework)' != ''">
+  <Target Name="CopyAllTheFiles" AfterTargets="Build">
     <Message Importance="high" Text="=== HEURKAPETE Configuration $(Configuration) @@ $(TargetDir) @@ $(TargetFramework)" />
     <Message Importance="high" Text="Copying Decompiler metadata files to $(TargetDir)" />
     <Copy SourceFiles="@(DecompilerMetadata)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
