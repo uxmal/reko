@@ -6,7 +6,12 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
-  <RootNamespace>WindowsDecompiler</RootNamespace><AssemblyName>WindowsDecompiler</AssemblyName></PropertyGroup>
+    <RootNamespace>WindowsDecompiler</RootNamespace>
+    <AssemblyName>WindowsDecompiler</AssemblyName>
+    <ApplicationIcon />
+    <OutputType>WinExe</OutputType>
+    <StartupObject />
+  </PropertyGroup>
 
   <Target Name="GenerateCsFiles" BeforeTargets="CoreCompile">
     <Exec Condition=" '$(OS)' == 'Unix' And Exists('$(ProjectDir)../../tools/xslt.exe')" Command="mono $(ProjectDir)../../tools/xslt.exe $(ProjectDir)Forms/decompiler-menus.xslt $(ProjectDir)../../Gui/decompiler-menus.xml $(ProjectDir)Forms/DecompilerMenus.cs" />
@@ -37,14 +42,9 @@
     </ProjectReference>
     <ProjectReference Include="..\..\Arch\Mips\Mips.csproj">
     </ProjectReference>
-    <ProjectReference Include="..\..\Arch\MicrochipPIC.Design\MicrochipPIC.Design.csproj">
-    </ProjectReference>
-    <ProjectReference Include="..\..\Arch\Microchip\MicrochipPIC.csproj">
-    </ProjectReference>
-    <ProjectReference Include="..\..\Arch\MSP430\MSP430.csproj">
-      <Project>{ff9e9894-f7e2-464d-b288-4157b864d053}</Project>
-      <Name>MSP430</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\..\Arch\MicrochipPIC.Design\MicrochipPIC.Design.csproj" />
+    <ProjectReference Include="..\..\Arch\Microchip\MicrochipPIC.csproj" />
+    <ProjectReference Include="..\..\Arch\MSP430\MSP430.csproj" />
     <ProjectReference Include="..\..\Arch\OpenRISC\OpenRISC.csproj">
       <Project>{a2d0eb22-6807-4c6f-9974-3b9721980f06}</Project>
       <Name>OpenRISC</Name>
@@ -63,26 +63,12 @@
     </ProjectReference>
     <ProjectReference Include="..\..\Arch\zSeries\zSeries.csproj">
     </ProjectReference>
-    <ProjectReference Include="..\..\Core\Core.csproj">
-    </ProjectReference>
-    <ProjectReference Include="..\..\Decompiler\Decompiler.csproj">
-    </ProjectReference>
-    <ProjectReference Include="..\..\Environments\Cpm\Cpm.csproj">
-    </ProjectReference>
-    <ProjectReference Include="..\..\Environments\Hpux\Hpux.csproj">
-      <Project>{3488c24e-187c-4477-a310-d2292892d257}</Project>
-      <Name>Hpux</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Environments\SysV\SysV.csproj">
-    </ProjectReference>
-    <ProjectReference Include="..\..\Environments\Windows\Windows.csproj">
-      <Project>{4a298321-9855-43de-aa9c-79e4efa0ae56}</Project>
-      <Name>Windows</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Environments\Xbox360\Xbox360.csproj">
-    </ProjectReference>
-    <ProjectReference Include="..\..\Gui\Gui.csproj">
-    </ProjectReference>
+    <ProjectReference Include="..\..\Core\Core.csproj" />
+    <ProjectReference Include="..\..\Decompiler\Decompiler.csproj" />
+    <ProjectReference Include="..\..\Environments\Cpm\Cpm.csproj" />
+    <ProjectReference Include="..\..\Environments\SysV\SysV.csproj" />
+    <ProjectReference Include="..\..\Environments\Xbox360\Xbox360.csproj" />
+    <ProjectReference Include="..\..\Gui\Gui.csproj" />
     <ProjectReference Include="..\..\ImageLoaders\Dol\Dol.csproj">
     </ProjectReference>
     <ProjectReference Include="..\..\ImageLoaders\Elf\Elf.csproj">
