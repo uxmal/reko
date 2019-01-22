@@ -34,7 +34,7 @@ namespace Reko.Arch.RiscV
     public class RiscVDisassembler : DisassemblerBase<RiscVInstruction>
     {
         private static readonly Decoder[] opRecs;
-        private static readonly Decoder[] wideOpRecs;
+        private static readonly Decoder[] w32decoders;
         private static readonly Decoder[] compressed0;
         private static readonly Decoder[] compressed1;
         private static readonly Decoder[] compressed2;
@@ -407,23 +407,22 @@ namespace Reko.Arch.RiscV
             }
         }
 
-        public class WideOpRec : Decoder
+        public class W32Decoder : Decoder
         {
-            public WideOpRec()
+            public W32Decoder()
             {
             }
 
             public override RiscVInstruction Decode(RiscVDisassembler dasm, uint hInstr)
             {
-                ushort hiword;
-                if (!dasm.rdr.TryReadUInt16(out hiword))
+                if (!dasm.rdr.TryReadUInt16(out ushort hiword))
                 {
-                    return new RiscVInstruction { opcode = Opcode.invalid, Address = dasm.addrInstr };
+                    return dasm.MakeInvalid();
                 }
                 uint wInstr = (uint)hiword << 16;
                 wInstr |= hInstr;
                 var slot = (wInstr >> 2) & 0x1F;
-                return wideOpRecs[slot].Decode(dasm, wInstr);
+                return w32decoders[slot].Decode(dasm, wInstr);
             }
         }
 
@@ -559,6 +558,19 @@ namespace Reko.Arch.RiscV
             };
         }
 
+        // Floating point register
+        private static Mutator F(int bitPos)
+        {
+            var regMask = new Bitfield(bitPos, 5);
+            return (u, d) =>
+            {
+                var iReg = (int) regMask.Read(u);
+                var reg = new RegisterOperand(d.arch.FpRegs[iReg]);
+                d.state.ops.Add(reg);
+                return true;
+            };
+        }
+
         // Compressed format register (r')
         private static Mutator Rc(int bitPos)
         {
@@ -567,6 +579,19 @@ namespace Reko.Arch.RiscV
             {
                 var iReg = compressedRegs[regMask.Read(u)];
                 var reg = new RegisterOperand(d.arch.GetRegister(iReg));
+                d.state.ops.Add(reg);
+                return true;
+            };
+        }
+
+        // Compressed format floating point register (fr')
+        private static Mutator Fc(int bitPos)
+        {
+            var regMask = new Bitfield(bitPos, 3);
+            return (u, d) =>
+            {
+                var iReg = compressedRegs[regMask.Read(u)];
+                var reg = new RegisterOperand(d.arch.FpRegs[iReg]);
                 d.state.ops.Add(reg);
                 return true;
             };
@@ -829,7 +854,7 @@ namespace Reko.Arch.RiscV
                 new WInstrDecoder(Opcode.bgeu, InstrClass.ConditionalTransfer, "1,2,B"),
             };
 
-            wideOpRecs = new Decoder[]
+            w32decoders = new Decoder[]
             {
                 // 00
                 new MaskDecoder(12, 7, loads),
@@ -881,19 +906,29 @@ namespace Reko.Arch.RiscV
 
             compressed0 = new Decoder[8]
             {
-                //nzuimm[5:4|9:6|2|3]
-                //        11   7 6 5
-                CInstr(Opcode.c_addi4spn, Rc(2), Imm((7,4), (11,2), (5, 1),(6, 1), (0,2))),
-                Nyi("fld / lq"),
-                Nyi("lw"),
-                Nyi("flw / ld"),
+                Cond(0, 16, u => u != 0,
+                    CInstr(Opcode.c_addi4spn, Rc(2), Imm((7,4), (11,2), (5, 1),(6, 1), (0,2))),
+                    CInstr(InstrClass.Invalid|InstrClass.Zero, Opcode.invalid)),
+                WordSize(
+                    rv32: CInstr(Opcode.c_fld, Fc(7), Memc(PrimitiveType.Word64, 2, (5,2), (10, 3))),
+                    rv64: CInstr(Opcode.c_fld, Fc(7), Memc(PrimitiveType.Word64, 2, (5,2), (10, 3))),
+                    rv128: Nyi("lq")),
+                CInstr(Opcode.c_lw, Rc(7), Memc(PrimitiveType.Word32, 2, (5,1), (10,3), (6,1))),
+                WordSize(
+                    rv32: CInstr(Opcode.c_flw, Fc(7), Memc(PrimitiveType.Word32, 2, (5,1), (10,3), (6,1))),
+                    rv64: CInstr(Opcode.c_ld, Rc(7), Memc(PrimitiveType.Word64, 2, (5,2), (10, 3))),
+                    rv128: CInstr(Opcode.c_ld, Rc(7), Memc(PrimitiveType.Word64, 2, (5,2), (10, 3)))),
 
                 Nyi("reserved"),
-                Nyi("fsd / sq"),
-                Nyi("sw"),
                 WordSize(
-                    Nyi("fsw"),
-                    CInstr(Opcode.c_sd, Rc(7), Memc(PrimitiveType.Word64, 2, (5,2), (10, 3)))),
+                    rv32: Nyi("fsd"),
+                    rv64: Nyi("fsd"),
+                    rv128: Nyi("sq")),
+                CInstr(Opcode.c_sw, Rc(7), Memc(PrimitiveType.Word32, 2, (5,1), (10,3), (6,1))),
+                WordSize(
+                    rv32: Nyi("fsw"),
+                    rv64: CInstr(Opcode.c_sd, Rc(7), Memc(PrimitiveType.Word64, 2, (5,2), (10, 3))),
+                    rv128: CInstr(Opcode.c_sd, Rc(7), Memc(PrimitiveType.Word64, 2, (5,2), (10, 3)))),
             };
 
             compressed1 = new Decoder[8]
@@ -908,8 +943,29 @@ namespace Reko.Arch.RiscV
                     CInstr(Opcode.c_addi16sp, ImmShS(4, (12,1), (3,2), (5,1), (2,1), (6, 1))),
                     CInstr(Opcode.c_lui, R(7), ImmShS(12, (12,1), (2, 5)))),
 
-                Nyi("misc-alu"),
-                Nyi("j"),
+                new MaskDecoder(10, 3, 
+                    CInstr(Opcode.c_srli, Rc(7), Imm((12,1), (2,5))),
+                    CInstr(Opcode.c_srai, Rc(7), Imm((12,1), (2,5))),
+                    CInstr(Opcode.c_andi, Rc(7), ImmS((12,1), (2,5))),
+                    new MaskDecoder(12, 1,
+                        new MaskDecoder(5, 3,
+                            CInstr(Opcode.c_sub, Rc(7), Rc(2)),
+                            CInstr(Opcode.c_xor, Rc(7), Rc(2)),
+                            CInstr(Opcode.c_or, Rc(7), Rc(2)),
+                            CInstr(Opcode.c_and, Rc(7), Rc(2))),
+                        new MaskDecoder(5, 3,
+                            WordSize(
+                                rv64: CInstr(Opcode.c_subw, Rc(7),Rc(2)),
+                                rv128: CInstr(Opcode.c_subw, Rc(7),Rc(2))),
+                            WordSize(
+                                rv64: CInstr(Opcode.c_addw, Rc(7),Rc(2)),
+                                rv128: CInstr(Opcode.c_addw, Rc(7),Rc(2))),
+                            invalid,
+                            invalid))),
+
+// imm[11|4|9:8|10|6|7|3:1|5]
+     //11 10  9  8 7 6   3 2
+                CInstr(Opcode.c_j, PcRel(1, (11,1), (8,1), (9,2), (6,1), (7,1), (2,1), (10,1), (3,2))),
                 CInstr(Opcode.c_beqz, Rc(7), PcRel(1, (12,1), (5,2), (2,1), (10,2), (3, 2))),
                 CInstr(Opcode.c_bnez, Rc(7), PcRel(1, (12,1), (5,2), (2,1), (10,2), (3, 2))),
             };
@@ -917,17 +973,23 @@ namespace Reko.Arch.RiscV
             compressed2 = new Decoder[8]
             {
                 CInstr(Opcode.c_slli, R(7), ImmB((12, 1), (2, 5))),
-                Nyi("fldsp"),
-                Nyi("lwsp"),
-                Nyi("ldsp"),
+                WordSize(
+                    rv32: CInstr(Opcode.c_fldsp, F(2), ImmSh(3, (12,1),(7,3),(10,3))),
+                    rv64: CInstr(Opcode.c_fldsp, F(2), ImmSh(3, (12,1),(7,3),(10,3)))),
+                CInstr(Opcode.c_lwsp, R(2), ImmSh(2, (12,1),(7,3),(10,3))),
+                CInstr(Opcode.c_ldsp, R(2), ImmSh(3, (12,1),(7,3),(10,3))),
 
                 new MaskDecoder(12, 1, 
                     Cond(2, 5, u => u == 0,
-                        Nyi("c.jr"),
+                        CInstr(Opcode.c_jr, R(7)),
                         CInstr(Opcode.c_mv, R(7), R(2))),
-                    Nyi("c.jalr")),
+                    Cond(2, 5, u => u == 0,
+                        Cond(7, 5, u => u == 0,
+                            Nyi("c.ebreak"),
+                            CInstr(Opcode.c_jalr, R(7))),
+                        CInstr(Opcode.c_add, R(7), R(2)))),
                 Nyi("fsdsp"),
-                Nyi("swsp"),
+                CInstr(Opcode.c_swsp, R(2), ImmSh(2, (7,3),(10,3))),
                 CInstr(Opcode.c_sdsp, R(2), ImmSh(3, (7,3),(10,3))),
             };
 
@@ -936,7 +998,7 @@ namespace Reko.Arch.RiscV
                 new MaskDecoder(13, 7, compressed0),
                 new MaskDecoder(13, 7, compressed1),
                 new MaskDecoder(13, 7, compressed2),
-                new WideOpRec()
+                new W32Decoder()
             };
         }
     }
