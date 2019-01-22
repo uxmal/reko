@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -91,7 +91,18 @@ namespace Reko.Arch.RiscV
         fmadd_s,
         lwu,
         fsw,
+        c_addi,
+        c_addi16sp,
         c_addi4spn,
+        c_addiw,
+        c_beqz,
+        c_bnez,
+        c_jalr,
+        c_li,
+        c_lui,
+        c_mv,
+        c_sd,
+        c_sdsp,
         c_slli,
     }
 }

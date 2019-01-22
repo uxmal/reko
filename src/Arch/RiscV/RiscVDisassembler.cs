@@ -39,6 +39,7 @@ namespace Reko.Arch.RiscV
         private static readonly Decoder[] compressed1;
         private static readonly Decoder[] compressed2;
         private static readonly int[] compressedRegs;
+        private static readonly Decoder invalid;
 
         private RiscVArchitecture arch;
         private EndianImageReader rdr;
@@ -276,7 +277,8 @@ namespace Reko.Arch.RiscV
 
         public class NyiDecoder : Decoder
         {
-            private string message; 
+            private readonly string message; 
+
             public NyiDecoder(string message)
             {
                 this.message = message;
@@ -317,9 +319,9 @@ namespace Reko.Arch.RiscV
 
         public class WInstrDecoder : Decoder
         {
-            private Opcode opcode;
-            private InstrClass iclass;
-            private string fmt;
+            private readonly Opcode opcode;
+            private readonly InstrClass iclass;
+            private readonly string fmt;
 
             public WInstrDecoder(Opcode opcode, string fmt) : this(opcode, InstrClass.Linear, fmt)
             {
@@ -362,7 +364,7 @@ namespace Reko.Arch.RiscV
             private readonly int shift;
             private readonly Decoder[] subcodes;
 
-            public MaskDecoder(int shift, int mask, Decoder[] subcodes)
+            public MaskDecoder(int shift, int mask, params Decoder[] subcodes)
             {
                 this.mask = mask;
                 this.shift = shift;
@@ -443,6 +445,62 @@ namespace Reko.Arch.RiscV
             }
         }
 
+        public class CondDecoder : Decoder
+        {
+            private readonly Bitfield mask;
+            private readonly Func<uint, bool> predicate;
+            private readonly Decoder trueDecoder;
+            private readonly Decoder falseDecoder;
+
+            public CondDecoder(int bitPos, int len, Func<uint, bool> pred, Decoder trueDecoder, Decoder falseDecoder)
+            {
+                this.mask = new Bitfield(bitPos, len);
+                this.predicate = pred;
+                this.trueDecoder = trueDecoder;
+                this.falseDecoder = falseDecoder;
+            }
+
+            public override RiscVInstruction Decode(RiscVDisassembler dasm, uint hInstr)
+            {
+                var value = mask.Read(hInstr);
+                if (predicate(value))
+                    return trueDecoder.Decode(dasm, hInstr);
+                else
+                    return falseDecoder.Decode(dasm, hInstr);
+            }
+        }
+
+        /// <summary>
+        /// Handle instructions that are encoded differently depending on the word size
+        /// of the CPU architecture.
+        /// </summary>
+        internal class WordSizeDecoder : Decoder
+        {
+            private readonly Decoder rv32;
+            private readonly Decoder rv64;
+            private readonly Decoder rv128;
+
+            public WordSizeDecoder(
+                Decoder rv32 = null,
+                Decoder rv64 = null,
+                Decoder rv128 = null)
+            {
+                this.rv32 = rv32 ?? invalid;
+                this.rv64 = rv64 ?? invalid;
+                this.rv128 = rv128 ?? invalid;
+            }
+            public override RiscVInstruction Decode(RiscVDisassembler dasm, uint hInstr)
+            {
+                switch (dasm.arch.WordWidth.Size)
+                {
+                case 4: return rv32.Decode(dasm, hInstr);
+                case 8: return rv64.Decode(dasm, hInstr);
+                case 16: return rv128.Decode(dasm, hInstr);
+                }
+                throw new NotSupportedException($"{dasm.arch.WordWidth.Size}-bit Risc-V instructions not supported.");
+            }
+        }
+
         #endregion
 
         private static WInstrDecoder Instr(Opcode opcode, string format)
@@ -467,6 +525,20 @@ namespace Reko.Arch.RiscV
             return new CDecoder(iclass, opcode, mutator);
         }
 
+        // Conditional decoder
+
+        private static CondDecoder Cond(int bitPos, int length, Func<uint, bool> predicate, Decoder t, Decoder f)
+        {
+            return new CondDecoder(bitPos, length, predicate, t, f);
+        }
+
+        private static WordSizeDecoder WordSize(
+            Decoder rv32 = null,
+            Decoder rv64 = null,
+            Decoder rv128 = null)
+        {
+            return new WordSizeDecoder(rv32, rv64, rv128);
+        }
 
         private static NyiDecoder Nyi(string message)
         {
@@ -526,6 +598,21 @@ namespace Reko.Arch.RiscV
             };
         }
 
+        // Immediate with a shift
+        private static Mutator ImmSh(int sh, params (int pos, int len)[] fields)
+        {
+            var masks = fields
+                .Select(field => new Bitfield(field.pos, field.len))
+                .ToArray();
+            return (u, d) =>
+            {
+                var uImm = Bitfield.ReadFields(masks, u) << sh;
+                d.state.ops.Add(new ImmediateOperand(
+                    Constant.Create(d.arch.WordWidth, uImm)));
+                return true;
+            };
+        }
+
         private static Mutator ImmB(params (int pos, int len)[] fields)
         {
             var masks = fields
@@ -540,11 +627,75 @@ namespace Reko.Arch.RiscV
             };
         }
 
+        private static Mutator ImmS(params (int pos, int len)[] fields)
+        {
+            var masks = fields
+                .Select(field => new Bitfield(field.pos, field.len))
+                .ToArray();
+            return (u, d) =>
+            {
+                var sImm = Bitfield.ReadSignedFields(masks, u);
+                d.state.ops.Add(new ImmediateOperand(
+                    Constant.Create(d.arch.WordWidth, sImm)));
+                return true;
+            };
+        }
+
+        // Signed immediate with a shift
+        private static Mutator ImmShS(int sh, params (int pos, int len)[] fields)
+        {
+            var masks = fields
+                .Select(field => new Bitfield(field.pos, field.len))
+                .ToArray();
+            return (u, d) =>
+            {
+                var uImm = Bitfield.ReadSignedFields(masks, u) << sh;
+                d.state.ops.Add(new ImmediateOperand(
+                    Constant.Create(d.arch.WordWidth, uImm)));
+                return true;
+            };
+        }
+
+        // PC-relative displacement with shift.
+        private static Mutator PcRel(int sh, params (int pos, int len)[] fields)
+        {
+            var masks = fields
+                .Select(field => new Bitfield(field.pos, field.len))
+                .ToArray();
+            return (u, d) =>
+            {
+                var sImm = Bitfield.ReadSignedFields(masks, u) << sh;
+                var addr = d.addrInstr + sImm;
+                d.state.ops.Add(AddressOperand.Create(addr));
+                return true;
+            };
+        }
+
+        // Memory operand format used for compressed instructions
+        private static Mutator Memc(PrimitiveType dt, int regOffset, params (int pos, int len)[] fields)
+        {
+            var baseRegMask = new Bitfield(regOffset, 3);
+            var masks = fields
+                .Select(field => new Bitfield(field.pos, field.len))
+                .ToArray();
+            return (u, d) =>
+            {
+                var uOffset = (int) Bitfield.ReadFields(masks, u) * dt.Size;
+                var iBase = compressedRegs[baseRegMask.Read(u)];
+
+                d.state.ops.Add(new MemoryOperand(dt)
+                {
+                    Base = d.arch.GetRegister(iBase),
+                    Offset = uOffset
+                });
+                return true;
+            };
+        }
         #endregion
 
         static RiscVDisassembler()
         {
-            var invalid = new WInstrDecoder(Opcode.invalid, "");
+            invalid = new WInstrDecoder(Opcode.invalid, "");
 
             var loads = new Decoder[]
             {
@@ -728,17 +879,6 @@ namespace Reko.Arch.RiscV
                 8, 9, 10, 11, 12, 13, 14, 15
             };
 
-            /*
-            return ((inst << 51) >> 62) << 4 |
-      ((inst << 53) >> 60) << 6 |
-      ((inst << 57) >> 63) << 2 |
-      ((inst << 58) >> 63) << 3;
-
-            return ((inst << 3) >> 14) << 4 |
-              ((inst << 5) >> 12) << 6 |
-              ((inst << 9) >> 15) << 2 |
-              ((inst << 10) >> 15) << 3;  
-              */
             compressed0 = new Decoder[8]
             {
                 //nzuimm[5:4|9:6|2|3]
@@ -751,20 +891,27 @@ namespace Reko.Arch.RiscV
                 Nyi("reserved"),
                 Nyi("fsd / sq"),
                 Nyi("sw"),
-                Nyi("fsw / sd"),
+                WordSize(
+                    Nyi("fsw"),
+                    CInstr(Opcode.c_sd, Rc(7), Memc(PrimitiveType.Word64, 2, (5,2), (10, 3)))),
             };
 
-            compressed1 = new Decoder[]
+            compressed1 = new Decoder[8]
             {
-                Nyi("c.addi"),
-                Nyi("jal / addiw"),
-                Nyi("li"),
-                Nyi("lui"),
+                CInstr(Opcode.c_addi, R(7), ImmS((12, 1), (2, 5))),
+                WordSize(
+                    rv32: Nyi("c.jal"),
+                    rv64: CInstr(Opcode.c_addiw, R(7), ImmS((12, 1), (2, 5))),
+                    rv128: CInstr(Opcode.c_addiw, R(7), ImmS((12, 1), (2, 5)))),
+                CInstr(Opcode.c_li, R(7), ImmS((12,1), (2, 5))),
+                Cond(7, 5, u => u == 2,
+                    CInstr(Opcode.c_addi16sp, ImmShS(4, (12,1), (3,2), (5,1), (2,1), (6, 1))),
+                    CInstr(Opcode.c_lui, R(7), ImmShS(12, (12,1), (2, 5)))),
 
                 Nyi("misc-alu"),
                 Nyi("j"),
-                Nyi("beqz"),
-                Nyi("bnez"),
+                CInstr(Opcode.c_beqz, Rc(7), PcRel(1, (12,1), (5,2), (2,1), (10,2), (3, 2))),
+                CInstr(Opcode.c_bnez, Rc(7), PcRel(1, (12,1), (5,2), (2,1), (10,2), (3, 2))),
             };
 
             compressed2 = new Decoder[8]
@@ -774,17 +921,21 @@ namespace Reko.Arch.RiscV
                 Nyi("lwsp"),
                 Nyi("ldsp"),
 
-                Nyi("jalr"),
+                new MaskDecoder(12, 1, 
+                    Cond(2, 5, u => u == 0,
+                        Nyi("c.jr"),
+                        CInstr(Opcode.c_mv, R(7), R(2))),
+                    Nyi("c.jalr")),
                 Nyi("fsdsp"),
                 Nyi("swsp"),
-                Nyi("sdsp"),
+                CInstr(Opcode.c_sdsp, R(2), ImmSh(3, (7,3),(10,3))),
             };
 
             opRecs = new Decoder[] 
             {
-                new MaskDecoder(0x13, 7, compressed0),
-                new MaskDecoder(0x13, 7, compressed1),
-                new MaskDecoder(0x13, 7, compressed2),
+                new MaskDecoder(13, 7, compressed0),
+                new MaskDecoder(13, 7, compressed1),
+                new MaskDecoder(13, 7, compressed2),
                 new WideOpRec()
             };
         }

@@ -41,7 +41,16 @@ namespace Reko.Arch.RiscV
         {
             opcodeNames = new Dictionary<Opcode, string>
             {
+                { Opcode.c_addi, "c.addi" },
+                { Opcode.c_addiw, "c.addiw" },
+                { Opcode.c_beqz,  "c.beqz" },
+                { Opcode.c_bnez,  "c.bnez" },
+                { Opcode.c_addi16sp, "c.addi16sp" },
                 { Opcode.c_addi4spn, "c.addi4spn" },
+                { Opcode.c_jalr, "c.jalr" },
+                { Opcode.c_li, "c.li" },
+                { Opcode.c_mv, "c.mv" },
+                { Opcode.c_sdsp, "c.sdsp" },
                 { Opcode.c_slli, "c.slli" },
                 { Opcode.fadd_s, "fadd.s" },
                 { Opcode.fadd_d, "fadd.d" },
@@ -81,22 +90,22 @@ namespace Reko.Arch.RiscV
             if (op1 == null)
                 return;
             writer.Tab();
-            WriteOp(op1, writer);
+            WriteOp(op1, writer, options);
             if (op2 == null)
                 return;
             writer.WriteChar(',');
-            WriteOp(op2, writer);
+            WriteOp(op2, writer, options);
             if (op3 == null)
                 return;
             writer.WriteChar(',');
-            WriteOp(op3, writer);
+            WriteOp(op3, writer, options);
             if (op4 == null)
                 return;
             writer.WriteChar(',');
-            WriteOp(op4, writer);
+            WriteOp(op4, writer, options);
         }
 
-        private void WriteOp(MachineOperand op, MachineInstructionWriter writer)
+        private void WriteOp(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
             switch (op)
             {
@@ -104,11 +113,14 @@ namespace Reko.Arch.RiscV
                 writer.WriteString(rop.Register.Name);
                 return;
             case ImmediateOperand immop:
-                writer.WriteString(immop.Value.ToString());
+                immop.Write(writer, options);
                 return;
             case AddressOperand addrop:
                 //$TODO: 32-bit?
                 writer.WriteAddress(string.Format("{0:X16}", addrop.Address.ToLinear()), addrop.Address);
+                return;
+            case MemoryOperand memop:
+                memop.Write(writer, options);
                 return;
             }
             throw new NotImplementedException($"Risc-V operand type {op.GetType().Name} not implemented yet.");
