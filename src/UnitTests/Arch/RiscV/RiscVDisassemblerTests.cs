@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -222,6 +222,18 @@ namespace Reko.UnitTests.Arch.RiscV
         public void RiscV_dasm_fmadd()
         {
             AssertCode("fmadd.s\tfs10,ft7,fs1,fa6", 0x8293FD43);
+        }
+
+        [Test]
+        public void RiscV_dasm_c_addi4spn()
+        {
+            AssertCode("c.addi4spn\ta1,0x000000000000009C", 0x696C);
+        }
+
+        [Test]
+        public void RiscV_dasm_c_slli()
+        {
+            AssertCode("c.slli\ta0,0x3B", 0x756E);
         }
     }
 }

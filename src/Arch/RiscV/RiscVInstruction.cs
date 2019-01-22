@@ -29,7 +29,6 @@ namespace Reko.Arch.RiscV
     public class RiscVInstruction : MachineInstruction
     {
         private static Dictionary<Opcode, string> opcodeNames;
-        private static Dictionary<Opcode, InstrClass> instrClasses;
 
         internal Opcode opcode;
         internal InstrClass iclass;
@@ -42,6 +41,8 @@ namespace Reko.Arch.RiscV
         {
             opcodeNames = new Dictionary<Opcode, string>
             {
+                { Opcode.c_addi4spn, "c.addi4spn" },
+                { Opcode.c_slli, "c.slli" },
                 { Opcode.fadd_s, "fadd.s" },
                 { Opcode.fadd_d, "fadd.d" },
                 { Opcode.fcvt_d_s, "fcvt.d.s" },
@@ -97,26 +98,20 @@ namespace Reko.Arch.RiscV
 
         private void WriteOp(MachineOperand op, MachineInstructionWriter writer)
         {
-            var rop = op as RegisterOperand;
-            if (rop != null)
+            switch (op)
             {
+            case RegisterOperand rop:
                 writer.WriteString(rop.Register.Name);
                 return;
-            }
-            var immop = op as ImmediateOperand;
-            if (immop != null)
-            {
+            case ImmediateOperand immop:
                 writer.WriteString(immop.Value.ToString());
                 return;
-            }
-            var addrop = op as AddressOperand;
-            if (addrop != null)
-            {
+            case AddressOperand addrop:
                 //$TODO: 32-bit?
                 writer.WriteAddress(string.Format("{0:X16}", addrop.Address.ToLinear()), addrop.Address);
                 return;
             }
-            throw new NotImplementedException();
+            throw new NotImplementedException($"Risc-V operand type {op.GetType().Name} not implemented yet.");
         }
     }
 }

@@ -26,25 +26,30 @@ using System.Text;
 using System.Collections;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Types;
 
 namespace Reko.Arch.RiscV
 {
     public class RiscVDisassembler : DisassemblerBase<RiscVInstruction>
     {
-        private static OpRec[] opRecs;
-        private static OpRec[] wideOpRecs;
-        private static OpRec[] compressed0;
-        private static OpRec[] compressed1;
-        private static OpRec[] compressed2;
+        private static readonly Decoder[] opRecs;
+        private static readonly Decoder[] wideOpRecs;
+        private static readonly Decoder[] compressed0;
+        private static readonly Decoder[] compressed1;
+        private static readonly Decoder[] compressed2;
+        private static readonly int[] compressedRegs;
 
         private RiscVArchitecture arch;
         private EndianImageReader rdr;
         private Address addrInstr;
+        private State state;
 
         public RiscVDisassembler(RiscVArchitecture arch, EndianImageReader rdr)
         {
             this.arch = arch;
             this.rdr = rdr;
+            this.state = new State();
         }
 
         public override RiscVInstruction DisassembleInstruction()
@@ -59,24 +64,6 @@ namespace Reko.Arch.RiscV
             instr.Length = (int) (rdr.Address - addrInstr);
             instr.iclass |= hInstr == 0 ? InstrClass.Zero : 0;
             return instr;
-        }
-
-        private RiscVInstruction DecodeCompressedOperands(Opcode opcode, InstrClass iclass, string fmt, uint wInstr)
-        {
-            var ops = new List<MachineOperand>();
-            for (int i = 0; i < fmt.Length; ++i)
-            {
-                MachineOperand op;
-                switch (fmt[i++])
-                {
-                default: throw new InvalidOperationException(string.Format("Unsupported operand code {0}", fmt[i - 1]));
-                case ',': continue;
-                case 'd': op = GetRegister(wInstr, 7); break;
-                case 'I': op = GetImmediate(wInstr, 12, fmt[i++]); break;
-                }
-                ops.Add(op);
-            }
-            return BuildInstruction(opcode, iclass, ops);
         }
 
         private RiscVInstruction BuildInstruction(Opcode opcode, InstrClass iclass, List<MachineOperand> ops)
@@ -223,40 +210,122 @@ namespace Reko.Arch.RiscV
             return ImmediateOperand.Int32(offset);
         }
 
-        public abstract class OpRec
+        private static HashSet<uint> seen = new HashSet<uint>();
+
+        private RiscVInstruction NotYetImplemented(uint instr, string message)
+        {
+            if (!seen.Contains(instr))
+            {
+                seen.Add(instr);
+                base.EmitUnitTest("RiscV", instr.ToString("X8"), message, "RiscV_dasm", Address.Ptr32(0x00100000), w =>
+                {
+                    w.WriteLine("    AssertCode(\"@@@\", 0x{0:X8});", instr);
+                });
+            }
+            return MakeInvalid();
+        }
+
+        public RiscVInstruction MakeInstruction()
+        {
+            var i = state.instr;
+            i.Address = this.addrInstr;
+            var ops = this.state.ops;
+            if (ops.Count > 0)
+            {
+                i.op1 = ops[0];
+                if (ops.Count > 1)
+                {
+                    i.op2 = ops[1];
+                    if (ops.Count > 2)
+                    {
+                        i.op3 = ops[2];
+                        if (ops.Count > 3)
+                        {
+                            i.op4 = ops[4];
+                        }
+                    }
+                }
+            }
+            state.instr = new RiscVInstruction();
+            return i;
+        }
+
+        internal RiscVInstruction MakeInvalid()
+        {
+            return new RiscVInstruction
+            {
+                Address = addrInstr,
+                iclass = InstrClass.Invalid,
+                opcode = Opcode.invalid,
+            };
+        }
+
+
+        internal class State
+        {
+            public RiscVInstruction instr = new RiscVInstruction();
+            public List<MachineOperand> ops = new List<MachineOperand>();
+        }
+
+        #region Decoders
+
+        public abstract class Decoder
         {
             public abstract RiscVInstruction Decode(RiscVDisassembler dasm, uint hInstr);
         }
 
-        public class COpRec : OpRec
+        public class NyiDecoder : Decoder
         {
-            private Opcode opcode;
-            private string fmt;
-
-            public COpRec(Opcode opcode, string fmt)
+            private string message; 
+            public NyiDecoder(string message)
             {
+                this.message = message;
+            }
+
+            public override RiscVInstruction Decode(RiscVDisassembler dasm, uint hInstr)
+            {
+                return dasm.NotYetImplemented(hInstr, message);
+            }
+        }
+
+        public class CDecoder : Decoder
+        {
+            private readonly InstrClass iclass;
+            private readonly Opcode opcode;
+            private readonly Mutator[] mutators;
+
+            internal CDecoder(InstrClass iclass, Opcode opcode, params Mutator[] mutators)
+            {
+                this.iclass = iclass;
                 this.opcode = opcode;
-                this.fmt = fmt;
+                this.mutators = mutators;
             }
 
             public override RiscVInstruction Decode(RiscVDisassembler dasm, uint wInstr)
             {
-                return dasm.DecodeCompressedOperands(opcode, InstrClass.Linear, fmt, wInstr);
+                dasm.state.ops.Clear();
+                dasm.state.instr.opcode = opcode;
+                foreach (var m in mutators)
+                {
+                    if (!m(wInstr, dasm))
+                        return dasm.MakeInvalid();
+                }
+                return dasm.MakeInstruction();
             }
         }
 
 
-        public class WOpRec : OpRec
+        public class WInstrDecoder : Decoder
         {
             private Opcode opcode;
             private InstrClass iclass;
             private string fmt;
 
-            public WOpRec(Opcode opcode, string fmt) : this(opcode, InstrClass.Linear, fmt)
+            public WInstrDecoder(Opcode opcode, string fmt) : this(opcode, InstrClass.Linear, fmt)
             {
             }
 
-            public WOpRec(Opcode opcode, InstrClass iclass, string fmt)
+            public WInstrDecoder(Opcode opcode, InstrClass iclass, string fmt)
             {
                 this.opcode = opcode;
                 this.iclass = iclass;
@@ -270,7 +339,7 @@ namespace Reko.Arch.RiscV
             }
         }
 
-        public class FpuOpRec : OpRec
+        public class FpuOpRec : Decoder
         {
             private string fmt;
             private Opcode opcode;
@@ -287,13 +356,13 @@ namespace Reko.Arch.RiscV
             }
         }
 
-        public class MaskOpRec : OpRec
+        public class MaskDecoder : Decoder
         {
             private readonly int mask;
             private readonly int shift;
-            private readonly OpRec[] subcodes;
+            private readonly Decoder[] subcodes;
 
-            public MaskOpRec(int shift, int mask, OpRec[] subcodes)
+            public MaskDecoder(int shift, int mask, Decoder[] subcodes)
             {
                 this.mask = mask;
                 this.shift = shift;
@@ -307,13 +376,13 @@ namespace Reko.Arch.RiscV
             }
         }
 
-        public class SparseMaskOpRec : OpRec
+        public class SparseMaskOpRec : Decoder
         {
             private readonly int mask;
             private readonly int shift;
-            private readonly Dictionary<int, OpRec> subcodes;
+            private readonly Dictionary<int, Decoder> subcodes;
 
-            public SparseMaskOpRec(int shift, int mask, Dictionary<int, OpRec> subcodes)
+            public SparseMaskOpRec(int shift, int mask, Dictionary<int, Decoder> subcodes)
             {
                 this.mask = mask;
                 this.shift = shift;
@@ -323,7 +392,7 @@ namespace Reko.Arch.RiscV
             public override RiscVInstruction Decode(RiscVDisassembler dasm, uint wInstr)
             {
                 var slot = (int)((wInstr >> shift) & mask);
-                OpRec oprec;
+                Decoder oprec;
                 if (!subcodes.TryGetValue(slot, out oprec))
                 {
                     return new RiscVInstruction
@@ -336,7 +405,7 @@ namespace Reko.Arch.RiscV
             }
         }
 
-        public class WideOpRec : OpRec
+        public class WideOpRec : Decoder
         {
             public WideOpRec()
             {
@@ -356,7 +425,7 @@ namespace Reko.Arch.RiscV
             }
         }
 
-        public class ShiftOpRec : OpRec
+        public class ShiftOpRec : Decoder
         {
             private Opcode[] rl_ra;
             private string fmt;
@@ -374,218 +443,352 @@ namespace Reko.Arch.RiscV
             }
         }
 
+        #endregion
+
+        private static WInstrDecoder Instr(Opcode opcode, string format)
+        {
+            return new WInstrDecoder(opcode, InstrClass.Linear, format);
+        }
+
+        private static WInstrDecoder Instr(InstrClass iclass, Opcode opcode, string format)
+        {
+            return new WInstrDecoder(opcode, iclass, format);
+        }
+
+        // Compact instruction decoder
+
+        private static CDecoder CInstr(Opcode opcode, params Mutator[] mutators)
+        {
+            return new CDecoder(InstrClass.Linear, opcode, mutators);
+        }
+
+        private static CDecoder CInstr(InstrClass iclass, Opcode opcode, params Mutator[] mutator)
+        {
+            return new CDecoder(iclass, opcode, mutator);
+        }
+
+
+        private static NyiDecoder Nyi(string message)
+        {
+            return new NyiDecoder(message);
+        }
+
+        #region Mutators
+        // Integer register
+        private static Mutator R(int bitPos)
+        {
+            var regMask = new Bitfield(bitPos, 5);
+            return (u, d) =>
+            {
+                var iReg = (int) regMask.Read(u);
+                var reg = new RegisterOperand(d.arch.GetRegister(iReg));
+                d.state.ops.Add(reg);
+                return true;
+            };
+        }
+
+        // Compressed format register (r')
+        private static Mutator Rc(int bitPos)
+        {
+            var regMask = new Bitfield(bitPos, 3);
+            return (u, d) =>
+            {
+                var iReg = compressedRegs[regMask.Read(u)];
+                var reg = new RegisterOperand(d.arch.GetRegister(iReg));
+                d.state.ops.Add(reg);
+                return true;
+            };
+        }
+
+        // Unsigned immediate
+        private static Mutator Imm(int bitPos1, int length1)
+        {
+            var mask = new Bitfield(bitPos1, length1);
+            return (u, d) =>
+            {
+                var imm = Constant.Create(d.arch.WordWidth, mask.Read(u));
+                d.state.ops.Add(new ImmediateOperand(imm));
+                return true;
+            };
+        }
+
+        private static Mutator Imm(params (int pos, int len) [] fields)
+        {
+            var masks = fields
+                .Select(field => new Bitfield(field.pos, field.len))
+                .ToArray();
+            return (u, d) =>
+            {
+                var uImm = Bitfield.ReadFields(masks, u);
+                d.state.ops.Add(new ImmediateOperand(
+                    Constant.Create(d.arch.WordWidth, uImm)));
+                return true;
+            };
+        }
+
+        private static Mutator ImmB(params (int pos, int len)[] fields)
+        {
+            var masks = fields
+                .Select(field => new Bitfield(field.pos, field.len))
+                .ToArray();
+            return (u, d) =>
+            {
+                var uImm = Bitfield.ReadFields(masks, u);
+                d.state.ops.Add(new ImmediateOperand(
+                    Constant.Create(PrimitiveType.Byte, uImm)));
+                return true;
+            };
+        }
+
+        #endregion
 
         static RiscVDisassembler()
         {
-            var loads = new OpRec[]
-            {
-                new WOpRec(Opcode.lb, "d,1,Ls"),
-                new WOpRec(Opcode.lh, "d,1,Ls"),
-                new WOpRec(Opcode.lw, "d,1,Ls"),
-                new WOpRec(Opcode.ld, "d,1,Ls"),
+            var invalid = new WInstrDecoder(Opcode.invalid, "");
 
-                new WOpRec(Opcode.lbu, "d,1,Ls"),
-                new WOpRec(Opcode.lhu, "d,1,Ls"),
-                new WOpRec(Opcode.lwu, "d,1,Ls"),
-                new WOpRec(Opcode.invalid, ""),
+            var loads = new Decoder[]
+            {
+                new WInstrDecoder(Opcode.lb, "d,1,Ls"),
+                new WInstrDecoder(Opcode.lh, "d,1,Ls"),
+                new WInstrDecoder(Opcode.lw, "d,1,Ls"),
+                new WInstrDecoder(Opcode.ld, "d,1,Ls"),
+
+                new WInstrDecoder(Opcode.lbu, "d,1,Ls"),
+                new WInstrDecoder(Opcode.lhu, "d,1,Ls"),
+                new WInstrDecoder(Opcode.lwu, "d,1,Ls"),    // 64
+                Nyi(""),
             };
 
-            var fploads = new OpRec[]
+            var fploads = new Decoder[]
             {
-                new WOpRec(Opcode.invalid, ""),
-                new WOpRec(Opcode.invalid, ""),
-                new WOpRec(Opcode.flw, "Fd,1,Ls"),
-                new WOpRec(Opcode.invalid, ""),
+                invalid,
+                invalid,
+                new WInstrDecoder(Opcode.flw, "Fd,1,Ls"),
+                invalid,
 
-                new WOpRec(Opcode.invalid, ""),
-                new WOpRec(Opcode.invalid, ""),
-                new WOpRec(Opcode.invalid, ""),
-                new WOpRec(Opcode.invalid, ""),
+                invalid,
+                invalid,
+                invalid,
+                invalid,
             };
 
-            var stores = new OpRec[]
+            var stores = new Decoder[]
             {
-                new WOpRec(Opcode.sb, "2,1,Ss"),
-                new WOpRec(Opcode.sh, "2,1,Ss"),
-                new WOpRec(Opcode.sw, "2,1,Ss"),
-                new WOpRec(Opcode.sd, "2,1,Ss"),
+                new WInstrDecoder(Opcode.sb, "2,1,Ss"),
+                new WInstrDecoder(Opcode.sh, "2,1,Ss"),
+                new WInstrDecoder(Opcode.sw, "2,1,Ss"),
+                new WInstrDecoder(Opcode.sd, "2,1,Ss"),
 
-                new WOpRec(Opcode.invalid, ""),
-                new WOpRec(Opcode.invalid, ""),
-                new WOpRec(Opcode.invalid, ""),
-                new WOpRec(Opcode.invalid, ""),
+                invalid,
+                invalid,
+                invalid,
+                invalid,
             };
 
-            var op = new OpRec[]
+            var fpstores = new Decoder[]
+            {
+                invalid,
+                invalid,
+                new WInstrDecoder(Opcode.fsw, "Fd,1,Ls"),
+                invalid,
+
+                invalid,
+                invalid,
+                invalid,
+                invalid,
+            };
+
+
+            var op = new Decoder[]
             {
                 new ShiftOpRec( "d,1,2", Opcode.add, Opcode.sub),
-                new WOpRec(Opcode.sll, "d,1,2"),
-                new WOpRec(Opcode.slt, "d,1,2"),
-                new WOpRec(Opcode.sltu, "d,1,2"),
+                new WInstrDecoder(Opcode.sll, "d,1,2"),
+                new WInstrDecoder(Opcode.slt, "d,1,2"),
+                new WInstrDecoder(Opcode.sltu, "d,1,2"),
 
-                new WOpRec(Opcode.xor, "d,1,2"),
+                new WInstrDecoder(Opcode.xor, "d,1,2"),
                 new ShiftOpRec("d,1,2", Opcode.srl, Opcode.sra),
-                new WOpRec(Opcode.or, "d,1,2"),
-                new WOpRec(Opcode.and, "d,1,2"),
+                new WInstrDecoder(Opcode.or, "d,1,2"),
+                new WInstrDecoder(Opcode.and, "d,1,2"),
             };
 
-            var opimm = new OpRec[]
+            var opimm = new Decoder[]
             {
-                new WOpRec(Opcode.addi, "d,1,i"),
+                new WInstrDecoder(Opcode.addi, "d,1,i"),
                 new ShiftOpRec("d,1,z", Opcode.slli, Opcode.invalid),
-                new WOpRec(Opcode.slti, "d,1,i"),
-                new WOpRec(Opcode.sltiu, "d,1,i"),
+                new WInstrDecoder(Opcode.slti, "d,1,i"),
+                new WInstrDecoder(Opcode.sltiu, "d,1,i"),
 
-                new WOpRec(Opcode.xori, "d,1,i"),
+                new WInstrDecoder(Opcode.xori, "d,1,i"),
                 new ShiftOpRec("d,1,z", Opcode.srli, Opcode.srai),
-                new WOpRec(Opcode.ori, "d,1,i"),
-                new WOpRec(Opcode.andi, "d,1,i"),
+                new WInstrDecoder(Opcode.ori, "d,1,i"),
+                new WInstrDecoder(Opcode.andi, "d,1,i"),
             };
 
-            var opimm32 = new OpRec[]
+            var opimm32 = new Decoder[]
             {
-                new WOpRec(Opcode.addiw, "d,1,i"),
+                new WInstrDecoder(Opcode.addiw, "d,1,i"),
                 new ShiftOpRec("d,1,Z", Opcode.slliw, Opcode.invalid),
-                new WOpRec(Opcode.invalid, ""),
-                new WOpRec(Opcode.invalid, ""),
+                Nyi(""),
+                Nyi(""),
                                            
-                new WOpRec(Opcode.invalid, ""),
+                Nyi(""),
                 new ShiftOpRec("d,1,Z", Opcode.srliw, Opcode.sraiw),
-                new WOpRec(Opcode.invalid, ""),
-                new WOpRec(Opcode.invalid, ""),
+                Nyi(""),
+                Nyi(""),
             };
 
-            var op32 = new OpRec[]
+            var op32 = new Decoder[]
             {
                 new ShiftOpRec("d,1,2", Opcode.addw, Opcode.subw),
                 new ShiftOpRec("d,1,2", Opcode.sllw, Opcode.invalid),
-                new WOpRec(Opcode.invalid, ""),
-                new WOpRec(Opcode.invalid, ""),
+                Nyi(""),
+                Nyi(""),
 
-                new WOpRec(Opcode.invalid, ""),
+                Nyi(""),
                 new ShiftOpRec("d,1,2", Opcode.srlw, Opcode.sraw),
-                new WOpRec(Opcode.invalid, ""),
-                new WOpRec(Opcode.invalid, ""),
+                Nyi(""),
+                Nyi(""),
             };
 
-            var opfp = new Dictionary<int, OpRec>
+            var opfp = new Dictionary<int, Decoder>
             {
                 { 0x00, new FpuOpRec(Opcode.fadd_s, "Fd,F1,F2") },
                 { 0x01, new FpuOpRec(Opcode.fadd_d, "Fd,F1,F2") },
                 { 0x21, new FpuOpRec(Opcode.fcvt_d_s, "Fd,F1") },
-                { 0x50, new SparseMaskOpRec(12, 7, new Dictionary<int, OpRec>
+                { 0x50, new SparseMaskOpRec(12, 7, new Dictionary<int, Decoder>
                     {
-                        { 2, new WOpRec(Opcode.feq_s, "d,F1,F2") }
+                        { 2, new WInstrDecoder(Opcode.feq_s, "d,F1,F2") }
                     })
                 },
                 { 0x71, new FpuOpRec(Opcode.fmv_d_x, "Fd,1") },
                 { 0x78, new FpuOpRec(Opcode.fmv_s_x, "Fd,1") },
             };
 
-            var branches = new OpRec[]
+            var branches = new Decoder[]
             {
-                new WOpRec(Opcode.beq, InstrClass.ConditionalTransfer, "1,2,B"),
-                new WOpRec(Opcode.bne, InstrClass.ConditionalTransfer, "1,2,B"),
-                new WOpRec(Opcode.invalid, ""),
-                new WOpRec(Opcode.invalid, ""),
+                new WInstrDecoder(Opcode.beq, InstrClass.ConditionalTransfer, "1,2,B"),
+                new WInstrDecoder(Opcode.bne, InstrClass.ConditionalTransfer, "1,2,B"),
+                Nyi(""),
+                Nyi(""),
 
-                new WOpRec(Opcode.blt, InstrClass.ConditionalTransfer, "1,2,B"),
-                new WOpRec(Opcode.bge, InstrClass.ConditionalTransfer, "1,2,B"),
-                new WOpRec(Opcode.bltu, InstrClass.ConditionalTransfer, "1,2,B"),
-                new WOpRec(Opcode.bgeu, InstrClass.ConditionalTransfer, "1,2,B"),
+                new WInstrDecoder(Opcode.blt, InstrClass.ConditionalTransfer, "1,2,B"),
+                new WInstrDecoder(Opcode.bge, InstrClass.ConditionalTransfer, "1,2,B"),
+                new WInstrDecoder(Opcode.bltu, InstrClass.ConditionalTransfer, "1,2,B"),
+                new WInstrDecoder(Opcode.bgeu, InstrClass.ConditionalTransfer, "1,2,B"),
             };
 
-            wideOpRecs = new OpRec[]
+            wideOpRecs = new Decoder[]
             {
                 // 00
-                new MaskOpRec(12, 7, loads),
-                new MaskOpRec(12, 7, fploads),
-                new WOpRec(Opcode.invalid, ""),
-                new WOpRec(Opcode.invalid, ""),
+                new MaskDecoder(12, 7, loads),
+                new MaskDecoder(12, 7, fploads),
+                Nyi("custom-0"),
+                Nyi("misc-mem"),
 
-                new MaskOpRec(12, 7, opimm),
-                new WOpRec(Opcode.auipc, "d,Iu"),
-                new MaskOpRec(12, 7, opimm32),
-                new WOpRec(Opcode.invalid, ""),
+                new MaskDecoder(12, 7, opimm),
+                new WInstrDecoder(Opcode.auipc, "d,Iu"),
+                new MaskDecoder(12, 7, opimm32),
+                Nyi("48-bit instruction"),
 
-                new MaskOpRec(12, 7, stores),
-                new WOpRec(Opcode.invalid, ""),
-                new WOpRec(Opcode.invalid, ""),
-                new WOpRec(Opcode.invalid, ""),
+                new MaskDecoder(12, 7, stores),
+                Nyi("fp-stores"),
+                Nyi("custom-1"),
+                Nyi("amo"),
 
-                new MaskOpRec(12, 7, op),
-                new WOpRec(Opcode.lui, "d,Iu"),
-                new MaskOpRec(12, 7, op32),
-                new WOpRec(Opcode.invalid, ""),
+                new MaskDecoder(12, 7, op),
+                new WInstrDecoder(Opcode.lui, "d,Iu"),
+                new MaskDecoder(12, 7, op32),
+                Nyi("64-bit instruction"),
 
                 // 10
                 new FpuOpRec(Opcode.fmadd_s, "Fd,F1,F2,F3"),
-                new WOpRec(Opcode.invalid, ""),
-                new WOpRec(Opcode.invalid, ""),
-                new WOpRec(Opcode.invalid, ""),
+                Nyi("msub"),
+                Nyi("nmsub"),
+                Nyi("nmadd"),
 
                 new SparseMaskOpRec(25, 0x7F, opfp),
-                new WOpRec(Opcode.invalid, ""),
-                new WOpRec(Opcode.invalid, ""),
-                new WOpRec(Opcode.invalid, ""),
+                Nyi("Reserved"),
+                Nyi("custom-2"),
+                Nyi("48-bit instruction"),
 
-                new MaskOpRec(12, 7, branches),
-                new WOpRec(Opcode.jalr, InstrClass.Transfer, "d,1,i"),
-                new WOpRec(Opcode.invalid, ""),
-                new WOpRec(Opcode.jal, InstrClass.Transfer|InstrClass.Call, "d,J"),
+                new MaskDecoder(12, 7, branches),
+                new WInstrDecoder(Opcode.jalr, InstrClass.Transfer, "d,1,i"),
+                Nyi("Reserved"),
+                new WInstrDecoder(Opcode.jal, InstrClass.Transfer|InstrClass.Call, "d,J"),
 
-                new WOpRec(Opcode.invalid, ""),
-                new WOpRec(Opcode.invalid, ""),
-                new WOpRec(Opcode.invalid, ""),
-                new WOpRec(Opcode.invalid, ""),
+                Nyi("system"),
+                Nyi("Reserved"),
+                Nyi("custom-3"),
+                Nyi(">= 80-bit instruction"),
             };
 
-            compressed0 = new OpRec[]
+            compressedRegs = new int[8]
             {
-                new COpRec(Opcode.invalid, ""),
-                new COpRec(Opcode.invalid, ""),
-                new COpRec(Opcode.invalid, ""),
-                new COpRec(Opcode.invalid, ""),
-
-                new COpRec(Opcode.invalid, ""),
-                new COpRec(Opcode.invalid, ""),
-                new COpRec(Opcode.invalid, ""),
-                new COpRec(Opcode.invalid, ""),
+                8, 9, 10, 11, 12, 13, 14, 15
             };
 
-            compressed1 = new OpRec[]
-            {
-                new COpRec(Opcode.invalid, ""),
-                new COpRec(Opcode.invalid, ""),
-                new COpRec(Opcode.invalid, ""),
-                new COpRec(Opcode.invalid, ""),
+            /*
+            return ((inst << 51) >> 62) << 4 |
+      ((inst << 53) >> 60) << 6 |
+      ((inst << 57) >> 63) << 2 |
+      ((inst << 58) >> 63) << 3;
 
-                new COpRec(Opcode.invalid, ""),
-                new COpRec(Opcode.invalid, ""),
-                new COpRec(Opcode.invalid, ""),
-                new COpRec(Opcode.invalid, ""),
+            return ((inst << 3) >> 14) << 4 |
+              ((inst << 5) >> 12) << 6 |
+              ((inst << 9) >> 15) << 2 |
+              ((inst << 10) >> 15) << 3;  
+              */
+            compressed0 = new Decoder[8]
+            {
+                //nzuimm[5:4|9:6|2|3]
+                //        11   7 6 5
+                CInstr(Opcode.c_addi4spn, Rc(2), Imm((7,4), (11,2), (5, 1),(6, 1), (0,2))),
+                Nyi("fld / lq"),
+                Nyi("lw"),
+                Nyi("flw / ld"),
+
+                Nyi("reserved"),
+                Nyi("fsd / sq"),
+                Nyi("sw"),
+                Nyi("fsw / sd"),
             };
 
-            compressed2 = new OpRec[]
+            compressed1 = new Decoder[]
             {
-                new COpRec(Opcode.invalid, ""),
-                new COpRec(Opcode.invalid, ""),
-                new COpRec(Opcode.invalid, ""),
-                new COpRec(Opcode.invalid, ""),
+                Nyi("c.addi"),
+                Nyi("jal / addiw"),
+                Nyi("li"),
+                Nyi("lui"),
 
-                new COpRec(Opcode.invalid, ""),
-                new COpRec(Opcode.invalid, ""),
-                new COpRec(Opcode.invalid, ""),
-                new COpRec(Opcode.invalid, ""),
+                Nyi("misc-alu"),
+                Nyi("j"),
+                Nyi("beqz"),
+                Nyi("bnez"),
             };
 
-            opRecs = new OpRec[] 
+            compressed2 = new Decoder[8]
             {
-                new MaskOpRec(0x13, 7, compressed0),
-                new MaskOpRec(0x13, 7, compressed1),
-                new MaskOpRec(0x13, 7, compressed2),
+                CInstr(Opcode.c_slli, R(7), ImmB((12, 1), (2, 5))),
+                Nyi("fldsp"),
+                Nyi("lwsp"),
+                Nyi("ldsp"),
+
+                Nyi("jalr"),
+                Nyi("fsdsp"),
+                Nyi("swsp"),
+                Nyi("sdsp"),
+            };
+
+            opRecs = new Decoder[] 
+            {
+                new MaskDecoder(0x13, 7, compressed0),
+                new MaskDecoder(0x13, 7, compressed1),
+                new MaskDecoder(0x13, 7, compressed2),
                 new WideOpRec()
             };
         }
     }
+
+    internal delegate bool Mutator(uint wInstr, RiscVDisassembler dasm);
 }

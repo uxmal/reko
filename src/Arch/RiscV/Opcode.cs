@@ -90,5 +90,8 @@ namespace Reko.Arch.RiscV
         fmv_s_x,
         fmadd_s,
         lwu,
+        fsw,
+        c_addi4spn,
+        c_slli,
     }
 }
