@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2019 Christian Hostelet.
  * inspired by work of:
@@ -40,7 +40,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Disasm
     public class PIC18LgcyExtd_DisassemblerTests : DisassemblerTestsBase
     {
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void OneSetup()
         {
             SetPICModel(PIC18LegacyName, PICExecMode.Extended);
