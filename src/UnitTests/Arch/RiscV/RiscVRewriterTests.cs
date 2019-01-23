@@ -774,5 +774,116 @@ namespace Reko.UnitTests.Arch.RiscV
                 "1|L--|s1 = (word64) (s1 <u 1)");
         }
 
+        [Test]
+        public void RiscV_rw_fsw()
+        {
+            Rewrite(0x8963A3A7);	// fsw	fs6,8732(a5)
+            AssertCode(
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|Mem0[a5 + 8732:real32] = (real32) fs6");
+        }
+
+        [Test]
+        public void RiscV_rw_srl()
+        {
+            Rewrite(0x02B6D6B3);	// srl	a3,a3,a1
+            AssertCode(
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a3 = a3 >>u a1");
+        }
+
+        [Test]
+        public void RiscV_rw_fsd()
+        {
+            Rewrite(0x639435A7);    // fsd	fs9,12632(s0)
+            AssertCode(
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|Mem0[s0 + 12632:real64] = fs9");
+        }
+
+
+        [Test]
+        public void RiscV_rw_sltu()
+        {
+            Rewrite(0x00A03533);    // sltu\ta0,zero,a0
+            AssertCode(
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a0 = (word64) (a0 != 0x0000000000000000)");
+        }
+
+        [Test]
+        public void RiscV_rw_slt()
+        {
+            Rewrite(0x00A7A533);    // slt\ta0,a5,a0
+            AssertCode(
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a0 = (word64) (a5 < a0)");
+        }
+
+        [Test]
+        public void RiscV_rw_remw()
+        {
+            Rewrite(0x02D7E6BB);    // remw\ta3,a5,a3
+            AssertCode(
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a3 = (int64) (word32) (a5 % a3)");
+        }
+
+        [Test]
+        [Ignore("Not ready for fma stuff")]
+        public void RiscV_rw_fmsub_s()
+        {
+            Rewrite(0x6318B5C7);    // fmsub.s\tfa1,fa7,fa7,fa2
+            AssertCode(
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore("Not ready for fma stuff")]
+        public void RiscV_rw_fnmsub_s()
+        {
+            Rewrite(0x4789004B);    // fnmsub.s\tft0,fs2,fs8,fs0
+            AssertCode(
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore("Not ready for fma stuff")]
+        public void RiscV_rw_fnmadd_s()
+        {
+            Rewrite(0x04B3FDCF);    // fnmadd.s\tfs11,ft7,fa1,ft0
+            AssertCode(
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void RiscV_rw_divuw()
+        {
+            Rewrite(0x02C857BB);    // divuw\ta5,a6,a2
+            AssertCode(
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a5 = (int64) (word32) (a6 /u a2)");
+        }
+
+        [Test]
+        public void RiscV_rw_c_fsd()
+        {
+            Rewrite(0x0000A604);    // c.fsd\tfa2,8(s1)
+            AssertCode(
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|Mem0[s1 + 8:real64] = fa2");
+        }
+
+        [Test]
+        public void RiscV_rw_c_fsdsp()
+        {
+            Rewrite(0xA7E6);        // c.fsdsp\tfs9,000001C8
+            AssertCode(
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|Mem0[sp + 456:real64] = fs9");
+        }
     }
 }

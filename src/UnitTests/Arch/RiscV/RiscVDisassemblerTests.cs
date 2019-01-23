@@ -118,7 +118,7 @@ namespace Reko.UnitTests.Arch.RiscV
         [Test]
         public void RiscV_dasm_addiw()
         {
-            AssertCode("addiw\ta5,a5,+00000008", 0x0087879Bu);
+            AssertCode("addiw\ta5,a5,00000008", 0x0087879Bu);
         }
 
         [Test]
@@ -515,28 +515,6 @@ namespace Reko.UnitTests.Arch.RiscV
             AssertCode("sll\ta5,s6,s0", 0x008B17B3);
         }
 
-        // Reko: a decoder for RiscV instruction A98352F7 at address 00100000 has not been implemented. (Reserved)
-        [Test]
-        public void RiscV_dasm_A98352F7()
-        {
-            AssertCode("@@@", 0xA98352F7);
-        }
-
-        // Reko: a decoder for RiscV instruction AB0349A7 at address 00100000 has not been implemented. (fp-stores)
-        [Test]
-        public void RiscV_dasm_AB0349A7()
-        {
-            AssertCode("@@@", 0xAB0349A7);
-        }
-
-        // Reko: a decoder for RiscV instruction 87AAAF1F at address 00100000 has not been implemented. (48-bit instruction)
-        [Test]
-        public void RiscV_dasm_87AAAF1F()
-        {
-            AssertCode("@@@", 0x87AAAF1F);
-        }
-
-
         [Test]
         public void RiscV_dasm_sltu()
         {
@@ -547,6 +525,50 @@ namespace Reko.UnitTests.Arch.RiscV
         public void RiscV_dasm_slt()
         {
             AssertCode("slt\ta0,a5,a0", 0x00A7A533);
+        }
+
+        [Test]
+        public void RiscV_dasm_remw()
+        {
+            AssertCode("remw\ta3,a5,a3", 0x02D7E6BB);
+        }
+
+        [Test]
+        public void RiscV_dasm_fmsub_s()
+        {
+            AssertCode("fmsub.s\tfa1,fa7,fa7,fa2", 0x6318B5C7);
+        }
+
+        [Test]
+        public void RiscV_dasm_fnmsub_s()
+        {
+            AssertCode("fnmsub.s\tft0,fs2,fs8,fs0", 0x4789004B);
+        }
+
+
+        [Test]
+        public void RiscV_dasm_fnmadd_s()
+        {
+            AssertCode("fnmadd.s\tfs11,ft7,fa1,ft0", 0x04B3FDCF);
+        }
+
+        [Test]
+        public void RiscV_dasm_divuw()
+        {
+            AssertCode("divuw\ta5,a6,a2", 0x02C857BB);
+        }
+
+
+        [Test]
+        public void RiscV_dasm_c_fsd()
+        {
+            AssertCode("c.fsd\tfa2,8(s1)", 0x0000A604);
+        }
+
+        [Test]
+        public void RiscV_dasm_c_fsdsp()
+        {
+            AssertCode("c.fsdsp\tfs9,000001C8", 0xA7E6);
         }
     }
 }

@@ -242,7 +242,7 @@ namespace Reko.Arch.RiscV
                         i.op3 = ops[2];
                         if (ops.Count > 3)
                         {
-                            i.op4 = ops[4];
+                            i.op4 = ops[3];
                         }
                     }
                 }
@@ -851,8 +851,8 @@ namespace Reko.Arch.RiscV
 
             var opimm32 = new Decoder[]
             {
-                new WInstrDecoderOld(Opcode.addiw, "d,1,i"),
-                new ShiftOpRec("d,1,Z", Opcode.slliw, Opcode.invalid),
+                CInstr(Opcode.addiw, Rd,R1,I20s),
+                CInstr(Opcode.slliw, Rd,R1,Imm(20, 5)),
                 Nyi(""),
                 Nyi(""),
                                            
@@ -951,8 +951,8 @@ namespace Reko.Arch.RiscV
                         invalid,
                         
                         CInstr(Opcode.divw, Rd,R1,R2),
-                        Nyi("divuw"),
-                        Nyi("remw"),
+                        CInstr(Opcode.divuw, Rd,R1,R2),
+                        CInstr(Opcode.remw, Rd,R1,R2),
                         CInstr(Opcode.remuw, Rd,R1,R2))
                     },
                     { 0x20, new MaskDecoder(12, 7,
@@ -969,10 +969,10 @@ namespace Reko.Arch.RiscV
                 Nyi("64-bit instruction"),
 
                 // 10
-                new FpuOpRec(Opcode.fmadd_s, "Fd,F1,F2,F3"),
-                Nyi("msub"),
-                Nyi("nmsub"),
-                Nyi("nmadd"),
+                CInstr(Opcode.fmadd_s,  Fd,F1,F2,F3),
+                CInstr(Opcode.fmsub_s , Fd,F1,F2,F3),
+                CInstr(Opcode.fnmsub_s, Fd,F1,F2,F3),
+                CInstr(Opcode.fnmadd_s, Fd,F1,F2,F3),
 
                 new SparseMaskOpRec(25, 0x7F, opfp),
                 Nyi("Reserved"),
@@ -1001,25 +1001,25 @@ namespace Reko.Arch.RiscV
                     CInstr(Opcode.c_addi4spn, Rc(2), Imm((7,4), (11,2), (5, 1),(6, 1), (0,2))),
                     CInstr(InstrClass.Invalid|InstrClass.Zero, Opcode.invalid)),
                 WordSize(
-                    rv32: CInstr(Opcode.c_fld, Fc(7), Memc(PrimitiveType.Word64, 2, (5,2), (10, 3))),
-                    rv64: CInstr(Opcode.c_fld, Fc(7), Memc(PrimitiveType.Word64, 2, (5,2), (10, 3))),
+                    rv32: CInstr(Opcode.c_fld, Fc(7), Memc(PrimitiveType.Real64, 2, (5,2), (10, 3))),
+                    rv64: CInstr(Opcode.c_fld, Fc(7), Memc(PrimitiveType.Real64, 2, (5,2), (10, 3))),
                     rv128: Nyi("lq")),
                 CInstr(Opcode.c_lw, Rc(7), Memc(PrimitiveType.Word32, 2, (5,1), (10,3), (6,1))),
                 WordSize(
-                    rv32: CInstr(Opcode.c_flw, Fc(7), Memc(PrimitiveType.Word32, 2, (5,1), (10,3), (6,1))),
+                    rv32: CInstr(Opcode.c_flw, Fc(7), Memc(PrimitiveType.Real32, 2, (5,1), (10,3), (6,1))),
                     rv64: CInstr(Opcode.c_ld, Rc(7), Memc(PrimitiveType.Word64, 2, (5,2), (10, 3))),
                     rv128: CInstr(Opcode.c_ld, Rc(7), Memc(PrimitiveType.Word64, 2, (5,2), (10, 3)))),
 
                 Nyi("reserved"),
                 WordSize(
-                    rv32: Nyi("fsd"),
-                    rv64: Nyi("fsd"),
+                    rv32: CInstr(Opcode.c_fsd, Fc(7), Memc(PrimitiveType.Real64, 2, (5,2), (10, 3))),
+                    rv64: CInstr(Opcode.c_fsd, Fc(7), Memc(PrimitiveType.Real64, 2, (5,2), (10, 3))),
                     rv128: Nyi("sq")),
                 CInstr(Opcode.c_sw, Rc(7), Memc(PrimitiveType.Word32, 2, (5,1), (10,3), (6,1))),
                 WordSize(
                     rv32: Nyi("fsw"),
-                    rv64: CInstr(Opcode.c_sd, Rc(7), Memc(PrimitiveType.Word64, 2, (5,2), (10, 3))),
-                    rv128: CInstr(Opcode.c_sd, Rc(7), Memc(PrimitiveType.Word64, 2, (5,2), (10, 3)))),
+                    rv64: CInstr(Opcode.c_sd, Rc(7), Memc(PrimitiveType.Real64, 2, (5,2), (10, 3))),
+                    rv128: CInstr(Opcode.c_sd, Rc(7), Memc(PrimitiveType.Real64, 2, (5,2), (10, 3)))),
             };
 
             compressed1 = new Decoder[8]
@@ -1079,7 +1079,10 @@ namespace Reko.Arch.RiscV
                             Nyi("c.ebreak"),
                             CInstr(InstrClass.Transfer, Opcode.c_jalr, R(7))),
                         CInstr(Opcode.c_add, R(7), R(2)))),
-                Nyi("fsdsp"),
+                WordSize(
+                    rv32: CInstr(Opcode.c_fsdsp, F(2), ImmSh(3, (7,3), (10,3))),
+                    rv64: CInstr(Opcode.c_fsdsp, F(2), ImmSh(3, (7,3), (10,3))),
+                    rv128:Nyi("sqsp")),
                 CInstr(Opcode.c_swsp, R(2), ImmSh(2, (7,3),(10,3))),
                 CInstr(Opcode.c_sdsp, R(2), ImmSh(3, (7,3),(10,3))),
             };

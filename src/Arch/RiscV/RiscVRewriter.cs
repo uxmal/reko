@@ -101,6 +101,8 @@ namespace Reko.Arch.RiscV
                 case Opcode.c_bnez: RewriteCompressedBranch(m.Ne); break;
                 case Opcode.c_fld: RewriteFload(PrimitiveType.Real64); break;
                 case Opcode.c_fldsp: RewriteLxsp(PrimitiveType.Real64); break;
+                case Opcode.c_fsd: RewriteStore(PrimitiveType.Real64); break;
+                case Opcode.c_fsdsp: RewriteSxsp(PrimitiveType.Real64); break;
                 case Opcode.c_j: RewriteCompressedJ(); break;
                 case Opcode.c_jalr: RewriteCompressedJalr(); break;
                 case Opcode.c_jr: RewriteCompressedJr(); break;
@@ -122,6 +124,7 @@ namespace Reko.Arch.RiscV
                 case Opcode.c_sw: RewriteStore(PrimitiveType.Word32); break;
                 case Opcode.c_swsp: RewriteSxsp(PrimitiveType.Word32); break;
                 case Opcode.c_xor: RewriteCompressedBinOp(m.Xor); break;
+                case Opcode.divuw: RewriteBinOp(m.UDiv, PrimitiveType.Word32); break;
                 case Opcode.divw: RewriteBinOp(m.SDiv, PrimitiveType.Word32); break;
                 case Opcode.fcvt_d_s: RewriteFcvt(PrimitiveType.Real64); break;
                 case Opcode.feq_s: RewriteFcmp(PrimitiveType.Real32, m.FEq); break;
@@ -130,6 +133,8 @@ namespace Reko.Arch.RiscV
                 case Opcode.fmv_s_x: RewriteFcvt(PrimitiveType.Real32); break;
                 case Opcode.fld: RewriteFload(PrimitiveType.Real64); break;
                 case Opcode.flw: RewriteFload(PrimitiveType.Real32); break;
+                case Opcode.fsd: RewriteStore(PrimitiveType.Real64); break;
+                case Opcode.fsw: RewriteStore(PrimitiveType.Real32); break;
                 case Opcode.jal: RewriteJal(); break;
                 case Opcode.jalr: RewriteJalr(); break;
                 case Opcode.lb: RewriteLoad(PrimitiveType.SByte); break;
@@ -143,7 +148,9 @@ namespace Reko.Arch.RiscV
                 case Opcode.mulw: RewriteBinOp(m.IMul, PrimitiveType.Word32); break;
                 case Opcode.or: RewriteOr(); break;
                 case Opcode.ori: RewriteOr(); break;
+                    //$TODO: Reko has no unsigned modulus operator
                 case Opcode.remuw: RewriteBinOp(m.Mod, PrimitiveType.Word32); break;
+                case Opcode.remw: RewriteBinOp(m.Mod, PrimitiveType.Word32); break;
                 case Opcode.sb: RewriteStore(PrimitiveType.Byte); break;
                 case Opcode.sd: RewriteStore(PrimitiveType.Word64); break;
                 case Opcode.sh: RewriteStore(PrimitiveType.Word16); break;
@@ -157,6 +164,7 @@ namespace Reko.Arch.RiscV
                 case Opcode.sltu: RewriteSlt(true); break;
                 case Opcode.srai: RewriteShift(m.Sar); break;
                 case Opcode.sraiw: RewriteShiftw(m.Sar); break;
+                case Opcode.srl: RewriteBinOp(m.Shr); break;
                 case Opcode.srli: RewriteShift(m.Shr); break;
                 case Opcode.srliw: RewriteShiftw(SrlI); break;
                 case Opcode.sub: RewriteSub(); break;

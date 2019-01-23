@@ -55,6 +55,8 @@ namespace Reko.Arch.RiscV
                 { Opcode.c_fldsp, "c.fldsp" },
                 { Opcode.c_flw, "c.flw" },
                 { Opcode.c_flwsp, "c.flwsp" },
+                { Opcode.c_fsd, "c.fsd" },
+                { Opcode.c_fsdsp, "c.fsdsp" },
                 { Opcode.c_j, "c.j" },
                 { Opcode.c_jr, "c.jr" },
                 { Opcode.c_jalr, "c.jalr" },
@@ -82,6 +84,9 @@ namespace Reko.Arch.RiscV
                 { Opcode.fcvt_s_d, "fcvt.s.d" },
                 { Opcode.feq_s, "feq.s" },
                 { Opcode.fmadd_s, "fmadd.s" },
+                { Opcode.fmsub_s,  "fmsub.s" },
+                { Opcode.fnmsub_s, "fnmsub.s" },
+                { Opcode.fnmadd_s, "fnmadd.s" },
                 { Opcode.fmv_d_x, "fmv.d.x" },
                 { Opcode.fmv_s_x, "fmv.s.x" },
             };

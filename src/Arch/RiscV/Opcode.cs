@@ -126,6 +126,9 @@ namespace Reko.Arch.RiscV
         fmv_d_x,
         fmv_s_x,
         fmadd_s,
+        fmsub_s,
+        fnmsub_s,
+        fnmadd_s,
         lwu,
         fsw,
 
@@ -134,5 +137,9 @@ namespace Reko.Arch.RiscV
         remuw,
         fld,
         fsd,
+        c_fsdsp,
+        c_fsd,
+        remw,
+        divuw,
     }
 }
