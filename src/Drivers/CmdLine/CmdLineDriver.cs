@@ -35,12 +35,12 @@ namespace Reko.CmdLine
 {
     public class CmdLineDriver
     {
-        private IServiceProvider services;
-        private ILoader ldr;
-        private IDecompiler decompiler;
-        private IConfigurationService config;
-        private IDiagnosticsService diagnosticSvc;
-        private CmdLineListener listener;
+        private readonly IServiceProvider services;
+        private readonly ILoader ldr;
+        private readonly IDecompiler decompiler;
+        private readonly IConfigurationService config;
+        private readonly IDiagnosticsService diagnosticSvc;
+        private readonly CmdLineListener listener;
         private Timer timer;
 
         public static void Main(string[] args)

@@ -765,6 +765,21 @@ namespace Reko.Arch.RiscV
                 return true;
             };
         }
+
+        private static readonly Bitfield[] j_bitfields = new[]
+        {
+            new Bitfield(31, 1),
+            new Bitfield(12, 8),
+            new Bitfield(20, 1),
+            new Bitfield(21, 10)
+        };
+        private static bool J(uint u, RiscVDisassembler d) 
+        {
+            var offset = Bitfield.ReadSignedFields(j_bitfields, u) << 1;
+            d.state.ops.Add(AddressOperand.Create(d.addrInstr + offset));
+            return true;
+        }
+
         #endregion
 
         static RiscVDisassembler()
@@ -982,7 +997,7 @@ namespace Reko.Arch.RiscV
                 new MaskDecoder(12, 7, branches),
                 new WInstrDecoderOld(Opcode.jalr, InstrClass.Transfer, "d,1,i"),
                 Nyi("Reserved"),
-                new WInstrDecoderOld(Opcode.jal, InstrClass.Transfer|InstrClass.Call, "d,J"),
+                CInstr(InstrClass.Transfer|InstrClass.Call, Opcode.jal, Rd,J),
 
                 Nyi("system"),
                 Nyi("Reserved"),

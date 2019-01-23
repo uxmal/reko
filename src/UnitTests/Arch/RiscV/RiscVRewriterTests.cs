@@ -801,7 +801,6 @@ namespace Reko.UnitTests.Arch.RiscV
                 "1|L--|Mem0[s0 + 12632:real64] = fs9");
         }
 
-
         [Test]
         public void RiscV_rw_sltu()
         {
