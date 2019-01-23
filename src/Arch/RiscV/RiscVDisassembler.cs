@@ -305,8 +305,9 @@ namespace Reko.Arch.RiscV
 
             public override RiscVInstruction Decode(RiscVDisassembler dasm, uint wInstr)
             {
-                dasm.state.ops.Clear();
+                dasm.state.instr.iclass = this.iclass;
                 dasm.state.instr.opcode = opcode;
+                dasm.state.ops.Clear();
                 foreach (var m in mutators)
                 {
                     if (!m(wInstr, dasm))
@@ -785,7 +786,7 @@ namespace Reko.Arch.RiscV
                 new WInstrDecoderOld(Opcode.xor, "d,1,2"),
                 new ShiftOpRec("d,1,2", Opcode.srl, Opcode.sra),
                 new WInstrDecoderOld(Opcode.or, "d,1,2"),
-                new WInstrDecoderOld(Opcode.and, "d,1,2"),
+                CInstr(Opcode.and, Rd,R1,R2),
             };
 
             var opimm = new Decoder[]

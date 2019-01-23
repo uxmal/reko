@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -82,10 +82,17 @@ namespace Reko.Arch.RiscV
 
         private void RewriteAnd()
         {
-            var dst = RewriteOp(instr.op1);
             var src1 = RewriteOp(instr.op2);
             var src2 = RewriteOp(instr.op3);
+            var dst = RewriteOp(instr.op1);
             m.Assign(dst, m.And(src1, src2));
+        }
+
+        private void RewriteCompressedBinOp(Func<Expression, Expression, Expression> op)
+        {
+            var src1 = RewriteOp(instr.op2);
+            var dst = RewriteOp(instr.op1);
+            m.Assign(dst, op(dst, src1));
         }
 
         private void RewriteLoad(DataType dt)
@@ -111,6 +118,13 @@ namespace Reko.Arch.RiscV
             var dst = RewriteOp(instr.op1);
             var ui = ((ImmediateOperand)instr.op2).Value;
             m.Assign(dst, Constant.Word(dst.DataType.BitSize, ui.ToUInt32() << 12));
+        }
+
+        private void RewriteCompressedMv()
+        {
+            var src = RewriteOp(instr.op2);
+            var dst = RewriteOp(instr.op1);
+            m.Assign(dst, src);
         }
 
         private void RewriteOr()

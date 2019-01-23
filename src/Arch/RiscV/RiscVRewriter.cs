@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -57,8 +57,8 @@ namespace Reko.Arch.RiscV
                 this.instr = dasm.Current;
                 var addr = dasm.Current.Address;
                 var len = dasm.Current.Length;
-                this.rtlInstructions = new List<RtlInstruction>();
-                this.rtlc = InstrClass.Linear;
+                var rtlInstructions = new List<RtlInstruction>();
+                this.rtlc = this.instr.iclass;
                 this.m = new RtlEmitter(rtlInstructions);
 
                 switch (instr.opcode)
@@ -85,6 +85,12 @@ namespace Reko.Arch.RiscV
                 case Opcode.blt: RewriteBranch(m.Lt); break;
                 case Opcode.bltu: RewriteBranch(m.Ult); break;
                 case Opcode.bne: RewriteBranch(m.Ne); break;
+                case Opcode.c_add: RewriteCompressedBinOp(m.IAdd); break;
+                case Opcode.c_addi: RewriteCompressedBinOp(m.IAdd); break;
+                case Opcode.c_and: RewriteCompressedBinOp(m.And); break;
+                case Opcode.c_andi: RewriteCompressedBinOp(m.And); break;
+                case Opcode.c_j: RewriteCompressedJ(); break;
+                case Opcode.c_mv: RewriteCompressedMv(); break;
                 case Opcode.fcvt_d_s: RewriteFcvt(PrimitiveType.Real64); break;
                 case Opcode.feq_s: RewriteFcmp(PrimitiveType.Real32, m.FEq); break;
                 case Opcode.fmadd_s: RewriteFmadd(PrimitiveType.Real32, m.FAdd); break;

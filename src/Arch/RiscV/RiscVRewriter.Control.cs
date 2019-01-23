@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -43,11 +43,15 @@ namespace Reko.Arch.RiscV
         {
             var opLeft = RewriteOp(instr.op1);
             var opRight = RewriteOp(instr.op2);
-            rtlc = InstrClass.ConditionalTransfer;
             m.Branch(
                 fn(opLeft, opRight),
                 ((AddressOperand)instr.op3).Address,
                 InstrClass.ConditionalTransfer);
+        }
+
+        private void RewriteCompressedJ()
+        {
+            m.Goto(RewriteOp(instr.op1));
         }
 
         private void RewriteJal()
