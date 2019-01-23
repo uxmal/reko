@@ -68,9 +68,6 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
-    <Reference Include="nunit.framework">
-      <HintPath>..\..\..\external\NUnit-2.6.3\nunit.framework.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AArch64CallingConvention.cs" />

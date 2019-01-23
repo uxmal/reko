@@ -45,10 +45,7 @@ namespace Reko.UnitTests.Arch.Intel
 		{
 		}
 
-        // Once the project has been ported to use NUnit 3.0, remove this comment and uncomment the line containing "[OneTimeSetup]" and remove the line containing "[TestFixtureSetUp]".
-        // 
-        // [OneTimeSetUp]
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
 		public void GlobalSetup()
 		{
 			arch = new X86ArchitectureFlat32("x86-protected-32");

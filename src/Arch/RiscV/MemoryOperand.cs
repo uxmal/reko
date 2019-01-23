@@ -18,28 +18,29 @@
  */
 #endregion
 
+using Reko.Core;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Reko.Core;
+using System.Threading.Tasks;
 
-namespace Reko.ImageLoaders.Elf.Relocators
+namespace Reko.Arch.RiscV
 {
-    public class M68kRelocator : ElfRelocator32
+    public class MemoryOperand : MachineOperand
     {
-        public M68kRelocator(ElfLoader32 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
+        public RegisterStorage Base;
+        public int Offset;
+
+        public MemoryOperand(PrimitiveType width) : base(width)
         {
         }
 
-        public override ElfSymbol RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            return symbol;
-        }
-
-        public override string RelocationTypeToString(uint type)
-        {
-            return type.ToString();
+            writer.WriteFormat("{0}({1})", Offset, Base);
         }
     }
 }

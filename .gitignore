@@ -40,3 +40,4 @@ TestResults
 /src/Native/build
 /src/Native/include/reko.h
 /src/WixInstaller/*.user
+/src/packages/NUnit.3.11.0

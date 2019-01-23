@@ -10,6 +10,9 @@ platform: x64
 
 configuration: Release
 
+before_build:
+- nuget restore src/Reko-decompiler.sln
+
 # If you want more build spew, change the verbosity below
 build:
   project: src/Reko-decompiler.sln
@@ -39,8 +42,7 @@ after_build:
         mv $filePath $newPath;
 
 test_script:
-  - cmd: nunit-console.exe ./src/tools/c2xml/bin/%CONFIGURATION%/c2xml.exe -exclude=FailedTests /framework:net-4.5
-  - cmd: nunit-console.exe ./src/UnitTests/bin/%PLATFORM%/%CONFIGURATION%/Reko.UnitTests.dll -exclude=FailedTests /framework:net-4.5
+  - cmd: nunit3-console.exe ./src/UnitTests/bin/%PLATFORM%/%CONFIGURATION%/Reko.UnitTests.dll --where="cat != FailedTests" --framework:net-4.5
   - cmd: python ./subjects/regressionTests.py --check-output --configuration=%CONFIGURATION% --platform=%PLATFORM%
 
 artifacts:

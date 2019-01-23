@@ -48,6 +48,9 @@ namespace Reko.Arch.RiscV
         };
 
         private RegisterStorage[] regs;
+        internal readonly RegisterStorage[] FpRegs;
+        internal readonly RegisterStorage LinkRegister;
+        internal readonly PrimitiveType NaturalSignedInteger;
         private Dictionary<string, RegisterStorage> regsByName;
 
         public RiscVArchitecture(string archId) : base(archId)
@@ -58,21 +61,25 @@ namespace Reko.Arch.RiscV
             this.PointerType = PrimitiveType.Ptr64;
             this.WordWidth = PrimitiveType.Word64;
             this.FramePointerType = PrimitiveType.Ptr64;
+            this.NaturalSignedInteger = PrimitiveType.Int64;
+
+            this.FpRegs = fpuregnames
+                .Select((n, i) => new RegisterStorage(
+                    n,
+                    i + 32,
+                    0,
+                    PrimitiveType.Word64))
+                .ToArray();
             this.regs = regnames
                 .Select((n, i) => new RegisterStorage(
                     n,
                     i,
                     0,
                     PrimitiveType.Word64)) //$TODO: setting!
-                .Concat(
-                    fpuregnames
-                    .Select((n, i) => new RegisterStorage(
-                        n,
-                        i + 32,
-                        0,
-                        PrimitiveType.Word64)))
+                .Concat(FpRegs)
                 .ToArray();
             this.regsByName = regs.ToDictionary(r => r.Name);
+            this.LinkRegister = regs[1];        // ra
             this.StackRegister = regs[2];       // sp
         }
 
