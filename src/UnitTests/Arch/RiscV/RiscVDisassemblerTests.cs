@@ -152,7 +152,7 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
-        public void RiscV_dasm_add()
+        public void RiscV_dasm_and()
         {
             AssertCode("and\ta5,s0,a5", 0x00F477B3u);
         }
@@ -184,7 +184,7 @@ namespace Reko.UnitTests.Arch.RiscV
         [Test]
         public void RiscV_dasm_flw()
         {
-            AssertCode("flw\tfa4,s2,+00000034", 0x03492707u);
+            AssertCode("flw\tfa4,52(s2)", 0x03492707u);
         }
 
         [Test]
@@ -507,6 +507,46 @@ namespace Reko.UnitTests.Arch.RiscV
         public void RiscV_dasm_c_fld()
         {
             AssertCode("c.fld\tfa2,216(s1)", 0x00002E64);
+        }
+
+        [Test]
+        public void RiscV_dasm_sll()
+        {
+            AssertCode("sll\ta5,s6,s0", 0x008B17B3);
+        }
+
+        // Reko: a decoder for RiscV instruction A98352F7 at address 00100000 has not been implemented. (Reserved)
+        [Test]
+        public void RiscV_dasm_A98352F7()
+        {
+            AssertCode("@@@", 0xA98352F7);
+        }
+
+        // Reko: a decoder for RiscV instruction AB0349A7 at address 00100000 has not been implemented. (fp-stores)
+        [Test]
+        public void RiscV_dasm_AB0349A7()
+        {
+            AssertCode("@@@", 0xAB0349A7);
+        }
+
+        // Reko: a decoder for RiscV instruction 87AAAF1F at address 00100000 has not been implemented. (48-bit instruction)
+        [Test]
+        public void RiscV_dasm_87AAAF1F()
+        {
+            AssertCode("@@@", 0x87AAAF1F);
+        }
+
+
+        [Test]
+        public void RiscV_dasm_sltu()
+        {
+            AssertCode("sltu\ta0,zero,a0", 0x00A03533);
+        }
+
+        [Test]
+        public void RiscV_dasm_slt()
+        {
+            AssertCode("slt\ta0,a5,a0", 0x00A7A533);
         }
     }
 }

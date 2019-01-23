@@ -497,7 +497,7 @@ namespace Reko.ImageLoaders.Elf
         /// <param name="gotStart"></param>
         /// <param name="gotEnd"></param>
         public void ConstructGotEntries(Program program, SortedList<Address, ImageSymbol> symbols, Address gotStart, Address gotEnd)
-            {
+        {
             Debug.Print("== Constructing GOT entries ==");
             var rdr = program.CreateImageReader(program.Architecture, gotStart);
             while (rdr.Address < gotEnd)
@@ -513,7 +513,7 @@ namespace Reko.ImageLoaders.Elf
                     {
                         ImageSymbol gotSym = CreateGotSymbol(addrGot, symbol.Name);
                         symbols[addrGot] = gotSym;
-                        Debug.Print("{0}+{1:X4}: Found GOT entry {2}, referring to symbol at {3}", 
+                        DebugEx.PrintIf(ElfImageLoader.trace.TraceVerbose, "{0}+{1:X4}: Found GOT entry {2}, referring to symbol at {3}", 
                             gotStart, addrGot-gotStart, gotSym, symbol);
                             program.ImportReferences.Add(addrGot, new NamedImportReference(addrGot, null, symbol.Name));
                         }

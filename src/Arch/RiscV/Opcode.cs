@@ -132,5 +132,7 @@ namespace Reko.Arch.RiscV
         mulw,
         divw,
         remuw,
+        fld,
+        fsd,
     }
 }

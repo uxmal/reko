@@ -44,7 +44,7 @@ namespace Reko.UnitTests.Arch.RiscV
         protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
         {
             var segMap = new SegmentMap(baseAddr, new ImageSegment("code", image, AccessMode.ReadExecute));
-            var state = (RiscVState)arch.CreateProcessorState();
+            var state = (RiscVState) arch.CreateProcessorState();
             return new RiscVRewriter(arch, new LeImageReader(image, 0), state, new Frame(arch.WordWidth), host);
         }
 
@@ -100,7 +100,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Rewrite(0x87010183u);
             AssertCode(
                "0|L--|0000000000010000(4): 1 instructions",
-               "1|L--|gp = (word64) Mem0[sp + -1936:int8]");
+               "1|L--|gp = (int64) Mem0[sp + -1936:int8]");
         }
 
         [Test]
@@ -172,7 +172,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Rewrite(0x03131083u);   // lh
             AssertCode(
                  "0|L--|0000000000010000(4): 1 instructions",
-                 "1|L--|ra = (word64) Mem0[t1 + 49:int16]");
+                 "1|L--|ra = (int64) Mem0[t1 + 49:int16]");
         }
 
         [Test]
@@ -189,8 +189,8 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             Rewrite(0x9F4FF06F);    // jal\tzero,00000000000FF1F4
             AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|T--|0000000000010000(4): 1 instructions",
+                "1|T--|goto 000000000000F1F4");
         }
 
         [Test]
@@ -207,17 +207,8 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             Rewrite(0x12E50463u);    // beq\ta0,a4,0000000000100128
             AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
-        public void RiscV_rw_x4()
-        {
-            // Rewrite(0x02079793u);    // @@@
-            AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|T--|0000000000010000(4): 1 instructions",
+                "1|T--|if (a0 == a4) branch 0000000000010128");
         }
 
         [Test]
@@ -225,8 +216,8 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             Rewrite(0x00078067u);    // jalr\tzero,a5,+00000000
             AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|T--|0000000000010000(4): 1 instructions",
+                "1|T--|goto a5");
         }
 
         [Test]
@@ -235,16 +226,16 @@ namespace Reko.UnitTests.Arch.RiscV
             Rewrite(0x01846433u);    // or\ts0,s0,s8
             AssertCode(
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|s0 = s0 | s8");
         }
 
         [Test]
-        public void RiscV_rw_aa()
+        public void RiscV_rw_add()
         {
             Rewrite(0x00E787B3u);    // add\ta5,a5,a4
             AssertCode(
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|a5 = a5 + a4");
         }
 
         [Test]
@@ -262,7 +253,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Rewrite(0x40F686BBu);    // subw\ta3,a3,a5
             AssertCode(
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|a3 = 4 = (int64) (int32) (a5 >>u 0x000@@@");
+                "1|L--|a3 = (int64) (word32) (a3 - a5)");
         }
 
         [Test]
@@ -271,7 +262,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Rewrite(0x0017D71Bu);    // srliw\ta4,a5,00000001
             AssertCode(
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|a4 = (int64) (word32) (a5 >>u 1)");
         }
 
         [Test]
@@ -280,7 +271,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Rewrite(0x00094703u);    // lbu\ta4,s2,+00000000
             AssertCode(
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|a4 = (int64) Mem0[s2:byte]");
         }
 
         [Test]
@@ -298,7 +289,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Rewrite(0x03492707u);    // flw\tfa4,s2,+00000034
             AssertCode(
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|fa4 = Mem0[s2 + 52:real32]");
         }
 
         [Test]
@@ -307,7 +298,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Rewrite(0xF00007D3u);    // fmv.s.x\tfa5,zero
             AssertCode(
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|fa5 = (real32) 0x0000000000000000");
         }
 
         [Test]
@@ -316,7 +307,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Rewrite(0xE2070753u);    // fmv.d.x\tfa4,a4
             AssertCode(
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|fa4 = (real64) a4");
         }
 
         [Test]
@@ -325,7 +316,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Rewrite(0x00446703u);    // lwu\ta4,s0,+00000004
             AssertCode(
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|a4 = (int64) Mem0[s0 + 4:uint32]");
         }
 
         [Test]
@@ -334,7 +325,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Rewrite(0x42070753u);    // fcvt.d.s\tfa4,fa4
             AssertCode(
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|fa4 = (real64) fa4");
         }
 
         [Test]
@@ -344,7 +335,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Rewrite(0xA0F727D3u);    // feq.s\ta5,fa4,fa5
             AssertCode(
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|a5 = (word64) ((real32) fa4 == (real32) fa5)");
         }
 
 
@@ -353,8 +344,8 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             Rewrite(0x0000347D);    // c.addiw\ts0,FFFFFFFFFFFFFFFF
             AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|s0 = (int64) (word32) (s0 + 0xFFFFFFFFFFFFFFFF)");
         }
 
         [Test]
@@ -362,8 +353,8 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             Rewrite(0xC29C);    // c.sw\ta3,0(a5)
             AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|Mem0[a5:word32] = (word32) a3");
         }
 
         [Test]
@@ -371,8 +362,8 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             Rewrite(0xE4CE);    // c.sdsp\ts3,00000048
             AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|Mem0[sp + 72:word64] = s3");
         }
 
         [Test]
@@ -380,8 +371,8 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             Rewrite(0x0000C121);    // c.beqz\ta0,0000000000100040
             AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|T--|0000000000010000(2): 1 instructions",
+                "1|T--|if (a0 == 0x0000000000000000) branch 0000000000010040");
         }
 
         [Test]
@@ -389,17 +380,8 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             Rewrite(0x00006585);    // c.lui\ta1,00001000
             AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
-        public void RiscV_rw_negative_3()
-        {
-            Rewrite(0x34F5);    // c.addiw\ts1,FFFFFFFFFFFFFFFD
-            AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|a1 = 0x0000000001000000");
         }
 
         [Test]
@@ -407,8 +389,8 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             Rewrite(0x00006568);    // c.ld\ta0,200(a0)
             AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|a0 = Mem0[a0 + 200:word64]");
         }
 
         [Test]
@@ -416,8 +398,8 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             Rewrite(0x0000EF09);    // c.bnez\ta4,000000000010001A
             AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|T--|0000000000010000(2): 1 instructions",
+                "1|T--|if (a4 != 0x0000000000000000) branch 000000000001001A");
         }
 
         [Test]
@@ -426,7 +408,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Rewrite(0x02C8783B);    // remuw\ta6,a6,a2
             AssertCode(
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|a6 = (int64) (word32) (a6 % a2)");
         }
 
         [Test]
@@ -434,8 +416,18 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             Rewrite(0x00004521);    // c.li\ta0,00000008
             AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|a0 = 0x0000000000000008");
+        }
+
+
+        [Test]
+        public void RiscV_rw_c_li_minus3()
+        {
+            Rewrite(0x00005775);    // c.li\ta4,FFFFFFFFFFFFFFFD
+            AssertCode(
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|a4 = 0xFFFFFFFFFFFFFFFD");
         }
 
         [Test]
@@ -443,17 +435,8 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             Rewrite(0xC22A);    // c.swsp\ta0,00000080
             AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
-        public void RiscV_rw_c_li_minus3()
-        {
-            Rewrite(0x00005775);    // c.li\ta4,FFFFFFFFFFFFFFFD
-            AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|Mem0[sp + 128:word32] = (word32) a0");
         }
 
         [Test]
@@ -461,8 +444,8 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             Rewrite(0x00004512);    // c.lwsp\ttp,00000044
             AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|tp = (int64) Mem0[sp + 68:word32]");
         }
 
         [Test]
@@ -479,8 +462,8 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             Rewrite(0x000043F4);    // c.lw\ta5,68(a3)
             AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|a5 = (int64) Mem0[a3 + 68:word32]");
         }
 
         [Test]
@@ -489,7 +472,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Rewrite(0x02B4443B);    // divw\ts0,s0,a1
             AssertCode(
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|s0 = (int64) (word32) (s0 / a1)");
         }
 
         [Test]
@@ -497,26 +480,19 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             Rewrite(0x6169);    // c.addi16sp\t000000D0
             AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|sp = sp + 208");
         }
 
-        [Test]
-        public void RiscV_rw_beqz_backward()
-        {
-            Rewrite(0xD399);    // c.beqz\ta5,00000000000FFF06
-            AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
-        }
+
 
         [Test]
         public void RiscV_rw_addiw_sign_extend()
         {
             Rewrite(0x00002301);    // c.addiw\tt1,00000000
             AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|t1 = (int64) (word32) t1");
         }
 
         [Test]
@@ -524,17 +500,26 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             Rewrite(0x00004385);    // c.li\tt2,00000001
             AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|t2 = 0x0000000000000001");
         }
 
         [Test]
-        public void RiscV_rw_beqz_0000C3F1()
+        public void RiscV_rw_beqz()
         {
-            Rewrite(0x0000C3F1);    // c.beqz\ta5,00000000001000C4
+            Rewrite(0xC3F1);    // c.beqz\ta5,00000000001000C4
             AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|T--|0000000000010000(2): 1 instructions",
+                "1|T--|if (a5 == 0x0000000000000000) branch 00000000000100C4");
+        }
+
+        [Test]
+        public void RiscV_rw_beqz_backward()
+        {
+            Rewrite(0xD399);    // c.beqz\ta5,00000000000FFF06
+            AssertCode(
+                "0|T--|0000000000010000(2): 1 instructions",
+                "1|T--|if (a5 == 0x0000000000000000) branch 000000000000FF06");
         }
 
         [Test]
@@ -542,8 +527,8 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             Rewrite(0xFB05);    // c.bnez\ta4,00000000000FFF30
             AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|T--|0000000000010000(2): 1 instructions",
+                "1|T--|if (a4 != 0x0000000000000000) branch 000000000000FF30");
         }
 
         [Test]
@@ -551,8 +536,8 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             Rewrite(0x00002405);    // c.addiw\ts0,00000001
             AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|s0 = (int64) (word32) (s0 + 0x0000000000000001)");
         }
 
         // Reko: a decoder for RiscV instruction 62696C2F at address 00100000 has not been implemented. (amo)
@@ -594,8 +579,8 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             Rewrite(0x00003436);    // c.fldsp\tfa3,00000228
             AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|fa3 = Mem0[sp + 552:real64]");
         }
 
         // Reko: a decoder for RiscV instruction 312E6F73 at address 00100000 has not been implemented. (system)
@@ -614,17 +599,17 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             Rewrite(0x00000000);    // invalid
             AssertCode(
-                "0|L--|0000000000010000(2): 1 instructions",
-                "1|L--|invalid");
+                "0|---|0000000000010000(2): 1 instructions",
+                "1|---|<invalid>");
         }
 
         [Test]
         public void RiscV_rw_jr_ra()
         {
-            Rewrite(0x00008082);    // c.jr\tra
+            Rewrite(0x8082);    // c.jr\tra
             AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|T--|0000000000010000(2): 1 instructions",
+                "1|T--|return (0,0)");
         }
 
         [Test]
@@ -650,8 +635,8 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             Rewrite(0x0000B7D5);    // c.j\t00000000001003FC
             AssertCode(
-                "0|L--|0000000000010000(2): 1 instructions",
-                "1|L--|goto 00000000001003FC");
+                "0|T--|0000000000010000(2): 1 instructions",
+                "1|T--|goto 00000000000103FC");
         }
 
         [Test]
@@ -659,8 +644,8 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             Rewrite(0x8D89);    // c.sub\ta1,a0
             AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|a1 = a1 - a0");
         }
 
         [Test]
@@ -668,8 +653,8 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             Rewrite(0x0000BF1D);    // c.j\t00000000000FFF9E
             AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|T--|0000000000010000(2): 1 instructions",
+                "1|T--|goto 000000000000FF9E");
         }
 
         [Test]
@@ -677,8 +662,8 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             Rewrite(0x0000101C);    // c.addi4spn\ta5,00000020
             AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|a5 = sp + 32");
         }
 
         [Test]
@@ -686,8 +671,8 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             Rewrite(0x00008782);    // c.jr\ta5
             AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|T--|0000000000010000(2): 1 instructions",
+                "1|T--|goto a5");
         }
 
         [Test]
@@ -695,8 +680,8 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             Rewrite(0x00009D1D);    // c.subw\ta0,a5
             AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|a0 = (int64) (word32) (a0 - a5)");
         }
 
         [Test]
@@ -705,7 +690,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Rewrite(0x00000785);    // c.addi\ta5,00000001
             AssertCode(
                 "0|L--|0000000000010000(2): 1 instructions",
-                "1|L--|a5 = a5 + 1");
+                "1|L--|a5 = a5 + 0x0000000000000001");
         }
 
         [Test]
@@ -713,8 +698,17 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             Rewrite(0x00009FB5);    // c.addw\ta5,a3
             AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|a5 = (int64) (int32) a5 + a3");
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|a5 = (int64) (word32) (a5 + a3)");
+        }
+
+        [Test]
+        public void RiscV_rw_c_slli()
+        {
+            Rewrite(0x0000040E);    // c.slli\ts0,03
+            AssertCode(
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|s0 = s0 << 3");
         }
 
         [Test]
@@ -722,8 +716,8 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             Rewrite(0x000083A9);    // c.srli\ta5,0000000A
             AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|a5 = a5 >>u 10");
         }
 
         [Test]
@@ -731,8 +725,8 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             Rewrite(0x0000977D);    // c.srai\ta4,0000003F
             AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|a4 = a4 >> 63");
         }
 
         [Test]
@@ -741,7 +735,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Rewrite(0x00008A61);    // c.andi\ta2,00000018
             AssertCode(
                 "0|L--|0000000000010000(2): 1 instructions",
-                "1|L--|a2 = a2 & 0x0000000018");
+                "1|L--|a2 = a2 & 0x0000000000000018");
         }
 
         [Test]
@@ -749,17 +743,8 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             Rewrite(0x00006BA2);    // c.ldsp\ts0,000001D0
             AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
-        public void RiscV_rw_c_slli()
-        {
-            Rewrite(0x0000040E);    // c.slli\ts0,03
-            AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|s0 = Mem0[sp + 464:word64]");
         }
 
         [Test]
@@ -767,8 +752,27 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             Rewrite(0x00002E64);    // c.fld\tfa2,216(s1)
             AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|0000000000010000(2): 1 instructions",
+                "1|L--|fa2 = Mem0[s1 + 216:real64]");
         }
+
+        [Test]
+        public void RiscV_jal_ra()
+        {
+            Rewrite(0x02C000EF);    // jal ra,0000B6A4
+            AssertCode(
+                "0|T--|0000000000010000(4): 1 instructions",
+                "1|T--|call 000000000001002C (0)");
+        }
+
+        [Test]
+        public void RiscV_rw_sltiu()
+        {
+            Rewrite(0x0014B493);	// sltiu	s1,s1,+00000001
+            AssertCode(
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s1 = (word64) (s1 <u 1)");
+        }
+
     }
 }

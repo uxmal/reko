@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -40,7 +40,6 @@ namespace Reko.ImageLoaders.Elf.Relocators
         public override string RelocationTypeToString(uint type)
         {
             return type.ToString();
-            throw new NotImplementedException();
         }
     }
 }

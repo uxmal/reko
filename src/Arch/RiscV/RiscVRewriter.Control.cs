@@ -49,9 +49,34 @@ namespace Reko.Arch.RiscV
                 InstrClass.ConditionalTransfer);
         }
 
+        private void RewriteCompressedBranch(Func<Expression, Expression, Expression> fn)
+        {
+            var op = RewriteOp(instr.op1);
+            var zero = Constant.Zero(op.DataType);
+            m.Branch(
+                fn(op, zero),
+                ((AddressOperand) instr.op2).Address,
+                InstrClass.ConditionalTransfer);
+        }
+
         private void RewriteCompressedJ()
         {
             m.Goto(RewriteOp(instr.op1));
+        }
+
+
+        private void RewriteCompressedJalr()
+        {
+            m.Call(RewriteOp(instr.op1), 0);
+        }
+
+        private void RewriteCompressedJr()
+        {
+            var reg = (RegisterOperand) instr.op1;
+            if (reg.Register == arch.LinkRegister)
+                m.Return(0, 0);
+            else 
+                m.Goto(RewriteOp(instr.op1));
         }
 
         private void RewriteJal()
