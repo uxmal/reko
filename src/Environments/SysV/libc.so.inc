@@ -170,6 +170,7 @@ int strcmp(char *,char *);
 int strcoll ( const char * str1, const char * str2 );
 char * strcpy(char * dst, char * src);
 char * strdup(const char *);
+char * __strdup(const char *);
 size_t strlen(char *);
 int strncasecmp(char *, char *, int n);
 char * strncat(char * destination, const char * source, size_t num );
