@@ -272,25 +272,10 @@ namespace Reko.UnitTests.Arch.RiscV
             AssertCode("c.bnez\ta4,000000000010001A", 0x0000EF09);
         }
 
-        // Reko: a decoder for RiscV instruction 02C8783B at address 00100000 has not been implemented.
         [Test]
-        public void RiscV_dasm_02C8783B()
+        public void RiscV_dasm_remuw()
         {
-            AssertCode("@@@", 0x02C8783B);
-        }
-
-        // Reko: a decoder for RiscV instruction 0317F83B at address 00100000 has not been implemented.
-        [Test]
-        public void RiscV_dasm_0317F83B()
-        {
-            AssertCode("@@@", 0x0317F83B);
-        }
-
-        // Reko: a decoder for RiscV instruction 02E7F7BB at address 00100000 has not been implemented.
-        [Test]
-        public void RiscV_dasm_02E7F7BB()
-        {
-            AssertCode("@@@", 0x02E7F7BB);
+            AssertCode("remuw\ta6,a6,a2", 0x02C8783B);
         }
 
         [Test]
@@ -317,13 +302,6 @@ namespace Reko.UnitTests.Arch.RiscV
             AssertCode("c.lwsp\ttp,00000044", 0x00004512);
         }
 
-        // Reko: a decoder for RiscV instruction 02D8783B at address 00100000 has not been implemented.
-        [Test]
-        public void RiscV_dasm_02D8783B()
-        {
-            AssertCode("@@@", 0x02D8783B);
-        }
-
         [Test]
         public void RiscV_dasm_c_mv()
         {
@@ -337,9 +315,9 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
-        public void RiscV_dasm_02B4443B()
+        public void RiscV_dasm_divw()
         {
-            AssertCode("@@@", 0x02B4443B);
+            AssertCode("divw\ts0,s0,a1", 0x02B4443B);
         }
 
         [Test]
@@ -386,6 +364,7 @@ namespace Reko.UnitTests.Arch.RiscV
 
         // Reko: a decoder for RiscV instruction 62696C2F at address 00100000 has not been implemented. (amo)
         [Test]
+        [Ignore("ASCII code decoded as text")]
         public void RiscV_dasm_62696C2F()
         {
             AssertCode("@@@", 0x62696C2F);
@@ -393,6 +372,8 @@ namespace Reko.UnitTests.Arch.RiscV
 
         // Reko: a decoder for RiscV instruction 2D646C2F at address 00100000 has not been implemented. (amo)
         [Test]
+        [Ignore("ASCII code decoded as text")]
+
         public void RiscV_dasm_2D646C2F()
         {
             AssertCode("@@@", 0x2D646C2F);
@@ -400,6 +381,7 @@ namespace Reko.UnitTests.Arch.RiscV
 
         // Reko: a decoder for RiscV instruction 36766373 at address 00100000 has not been implemented. (system)
         [Test]
+        [Ignore("ASCII code decoded as text")]
         public void RiscV_dasm_36766373()
         {
             AssertCode("@@@", 0x36766373);
@@ -413,6 +395,7 @@ namespace Reko.UnitTests.Arch.RiscV
 
         // Reko: a decoder for RiscV instruction 312E6F73 at address 00100000 has not been implemented. (system)
         [Test]
+        [Ignore("ASCII code decoded as text")]
         public void RiscV_dasm_312E6F73()
         {
             AssertCode("@@@", 0x312E6F73);

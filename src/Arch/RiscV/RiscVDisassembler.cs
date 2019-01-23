@@ -316,18 +316,17 @@ namespace Reko.Arch.RiscV
             }
         }
 
-
-        public class WInstrDecoder : Decoder
+        public class WInstrDecoderOld : Decoder
         {
             private readonly Opcode opcode;
             private readonly InstrClass iclass;
             private readonly string fmt;
 
-            public WInstrDecoder(Opcode opcode, string fmt) : this(opcode, InstrClass.Linear, fmt)
+            public WInstrDecoderOld(Opcode opcode, string fmt) : this(opcode, InstrClass.Linear, fmt)
             {
             }
 
-            public WInstrDecoder(Opcode opcode, InstrClass iclass, string fmt)
+            public WInstrDecoderOld(Opcode opcode, InstrClass iclass, string fmt)
             {
                 this.opcode = opcode;
                 this.iclass = iclass;
@@ -343,8 +342,8 @@ namespace Reko.Arch.RiscV
 
         public class FpuOpRec : Decoder
         {
-            private string fmt;
-            private Opcode opcode;
+            private readonly string fmt;
+            private readonly Opcode opcode;
 
             public FpuOpRec(Opcode opcode, string fmt)
             {
@@ -394,16 +393,11 @@ namespace Reko.Arch.RiscV
             public override RiscVInstruction Decode(RiscVDisassembler dasm, uint wInstr)
             {
                 var slot = (int)((wInstr >> shift) & mask);
-                Decoder oprec;
-                if (!subcodes.TryGetValue(slot, out oprec))
+                if (!subcodes.TryGetValue(slot, out Decoder decoder))
                 {
-                    return new RiscVInstruction
-                    {
-                        Address = dasm.addrInstr,
-                        opcode = Opcode.invalid
-                    };
+                    return dasm.MakeInvalid();
                 }
-                return oprec.Decode(dasm, wInstr);
+                return decoder.Decode(dasm, wInstr);
             }
         }
 
@@ -428,8 +422,8 @@ namespace Reko.Arch.RiscV
 
         public class ShiftOpRec : Decoder
         {
-            private Opcode[] rl_ra;
-            private string fmt;
+            private readonly Opcode[] rl_ra;
+            private readonly string fmt;
 
             public ShiftOpRec(string fmt, params Opcode[] rl_ra)
             {
@@ -502,14 +496,14 @@ namespace Reko.Arch.RiscV
 
         #endregion
 
-        private static WInstrDecoder Instr(Opcode opcode, string format)
+        private static WInstrDecoderOld Instr(Opcode opcode, string format)
         {
-            return new WInstrDecoder(opcode, InstrClass.Linear, format);
+            return new WInstrDecoderOld(opcode, InstrClass.Linear, format);
         }
 
-        private static WInstrDecoder Instr(InstrClass iclass, Opcode opcode, string format)
+        private static WInstrDecoderOld Instr(InstrClass iclass, Opcode opcode, string format)
         {
-            return new WInstrDecoder(opcode, iclass, format);
+            return new WInstrDecoderOld(opcode, iclass, format);
         }
 
         // Compact instruction decoder
@@ -557,6 +551,12 @@ namespace Reko.Arch.RiscV
                 return true;
             };
         }
+
+        // Registers specified at fixed positions.
+
+        private static readonly Mutator Rd = R(7);
+        private static readonly Mutator R1 = R(15);
+        private static readonly Mutator R2 = R(20);
 
         // Floating point register
         private static Mutator F(int bitPos)
@@ -720,18 +720,18 @@ namespace Reko.Arch.RiscV
 
         static RiscVDisassembler()
         {
-            invalid = new WInstrDecoder(Opcode.invalid, "");
+            invalid = new WInstrDecoderOld(Opcode.invalid, "");
 
             var loads = new Decoder[]
             {
-                new WInstrDecoder(Opcode.lb, "d,1,Ls"),
-                new WInstrDecoder(Opcode.lh, "d,1,Ls"),
-                new WInstrDecoder(Opcode.lw, "d,1,Ls"),
-                new WInstrDecoder(Opcode.ld, "d,1,Ls"),
+                new WInstrDecoderOld(Opcode.lb, "d,1,Ls"),
+                new WInstrDecoderOld(Opcode.lh, "d,1,Ls"),
+                new WInstrDecoderOld(Opcode.lw, "d,1,Ls"),
+                new WInstrDecoderOld(Opcode.ld, "d,1,Ls"),
 
-                new WInstrDecoder(Opcode.lbu, "d,1,Ls"),
-                new WInstrDecoder(Opcode.lhu, "d,1,Ls"),
-                new WInstrDecoder(Opcode.lwu, "d,1,Ls"),    // 64
+                new WInstrDecoderOld(Opcode.lbu, "d,1,Ls"),
+                new WInstrDecoderOld(Opcode.lhu, "d,1,Ls"),
+                new WInstrDecoderOld(Opcode.lwu, "d,1,Ls"),    // 64
                 Nyi(""),
             };
 
@@ -739,7 +739,7 @@ namespace Reko.Arch.RiscV
             {
                 invalid,
                 invalid,
-                new WInstrDecoder(Opcode.flw, "Fd,1,Ls"),
+                new WInstrDecoderOld(Opcode.flw, "Fd,1,Ls"),
                 invalid,
 
                 invalid,
@@ -750,10 +750,10 @@ namespace Reko.Arch.RiscV
 
             var stores = new Decoder[]
             {
-                new WInstrDecoder(Opcode.sb, "2,1,Ss"),
-                new WInstrDecoder(Opcode.sh, "2,1,Ss"),
-                new WInstrDecoder(Opcode.sw, "2,1,Ss"),
-                new WInstrDecoder(Opcode.sd, "2,1,Ss"),
+                new WInstrDecoderOld(Opcode.sb, "2,1,Ss"),
+                new WInstrDecoderOld(Opcode.sh, "2,1,Ss"),
+                new WInstrDecoderOld(Opcode.sw, "2,1,Ss"),
+                new WInstrDecoderOld(Opcode.sd, "2,1,Ss"),
 
                 invalid,
                 invalid,
@@ -765,7 +765,7 @@ namespace Reko.Arch.RiscV
             {
                 invalid,
                 invalid,
-                new WInstrDecoder(Opcode.fsw, "Fd,1,Ls"),
+                new WInstrDecoderOld(Opcode.fsw, "Fd,1,Ls"),
                 invalid,
 
                 invalid,
@@ -778,32 +778,32 @@ namespace Reko.Arch.RiscV
             var op = new Decoder[]
             {
                 new ShiftOpRec( "d,1,2", Opcode.add, Opcode.sub),
-                new WInstrDecoder(Opcode.sll, "d,1,2"),
-                new WInstrDecoder(Opcode.slt, "d,1,2"),
-                new WInstrDecoder(Opcode.sltu, "d,1,2"),
+                new WInstrDecoderOld(Opcode.sll, "d,1,2"),
+                new WInstrDecoderOld(Opcode.slt, "d,1,2"),
+                new WInstrDecoderOld(Opcode.sltu, "d,1,2"),
 
-                new WInstrDecoder(Opcode.xor, "d,1,2"),
+                new WInstrDecoderOld(Opcode.xor, "d,1,2"),
                 new ShiftOpRec("d,1,2", Opcode.srl, Opcode.sra),
-                new WInstrDecoder(Opcode.or, "d,1,2"),
-                new WInstrDecoder(Opcode.and, "d,1,2"),
+                new WInstrDecoderOld(Opcode.or, "d,1,2"),
+                new WInstrDecoderOld(Opcode.and, "d,1,2"),
             };
 
             var opimm = new Decoder[]
             {
-                new WInstrDecoder(Opcode.addi, "d,1,i"),
+                new WInstrDecoderOld(Opcode.addi, "d,1,i"),
                 new ShiftOpRec("d,1,z", Opcode.slli, Opcode.invalid),
-                new WInstrDecoder(Opcode.slti, "d,1,i"),
-                new WInstrDecoder(Opcode.sltiu, "d,1,i"),
+                new WInstrDecoderOld(Opcode.slti, "d,1,i"),
+                new WInstrDecoderOld(Opcode.sltiu, "d,1,i"),
 
-                new WInstrDecoder(Opcode.xori, "d,1,i"),
+                new WInstrDecoderOld(Opcode.xori, "d,1,i"),
                 new ShiftOpRec("d,1,z", Opcode.srli, Opcode.srai),
-                new WInstrDecoder(Opcode.ori, "d,1,i"),
-                new WInstrDecoder(Opcode.andi, "d,1,i"),
+                new WInstrDecoderOld(Opcode.ori, "d,1,i"),
+                new WInstrDecoderOld(Opcode.andi, "d,1,i"),
             };
 
             var opimm32 = new Decoder[]
             {
-                new WInstrDecoder(Opcode.addiw, "d,1,i"),
+                new WInstrDecoderOld(Opcode.addiw, "d,1,i"),
                 new ShiftOpRec("d,1,Z", Opcode.slliw, Opcode.invalid),
                 Nyi(""),
                 Nyi(""),
@@ -834,7 +834,7 @@ namespace Reko.Arch.RiscV
                 { 0x21, new FpuOpRec(Opcode.fcvt_d_s, "Fd,F1") },
                 { 0x50, new SparseMaskOpRec(12, 7, new Dictionary<int, Decoder>
                     {
-                        { 2, new WInstrDecoder(Opcode.feq_s, "d,F1,F2") }
+                        { 2, new WInstrDecoderOld(Opcode.feq_s, "d,F1,F2") }
                     })
                 },
                 { 0x71, new FpuOpRec(Opcode.fmv_d_x, "Fd,1") },
@@ -843,15 +843,15 @@ namespace Reko.Arch.RiscV
 
             var branches = new Decoder[]
             {
-                new WInstrDecoder(Opcode.beq, InstrClass.ConditionalTransfer, "1,2,B"),
-                new WInstrDecoder(Opcode.bne, InstrClass.ConditionalTransfer, "1,2,B"),
+                new WInstrDecoderOld(Opcode.beq, InstrClass.ConditionalTransfer, "1,2,B"),
+                new WInstrDecoderOld(Opcode.bne, InstrClass.ConditionalTransfer, "1,2,B"),
                 Nyi(""),
                 Nyi(""),
 
-                new WInstrDecoder(Opcode.blt, InstrClass.ConditionalTransfer, "1,2,B"),
-                new WInstrDecoder(Opcode.bge, InstrClass.ConditionalTransfer, "1,2,B"),
-                new WInstrDecoder(Opcode.bltu, InstrClass.ConditionalTransfer, "1,2,B"),
-                new WInstrDecoder(Opcode.bgeu, InstrClass.ConditionalTransfer, "1,2,B"),
+                new WInstrDecoderOld(Opcode.blt, InstrClass.ConditionalTransfer, "1,2,B"),
+                new WInstrDecoderOld(Opcode.bge, InstrClass.ConditionalTransfer, "1,2,B"),
+                new WInstrDecoderOld(Opcode.bltu, InstrClass.ConditionalTransfer, "1,2,B"),
+                new WInstrDecoderOld(Opcode.bgeu, InstrClass.ConditionalTransfer, "1,2,B"),
             };
 
             w32decoders = new Decoder[]
@@ -863,7 +863,7 @@ namespace Reko.Arch.RiscV
                 Nyi("misc-mem"),
 
                 new MaskDecoder(12, 7, opimm),
-                new WInstrDecoder(Opcode.auipc, "d,Iu"),
+                new WInstrDecoderOld(Opcode.auipc, "d,Iu"),
                 new MaskDecoder(12, 7, opimm32),
                 Nyi("48-bit instruction"),
 
@@ -873,8 +873,31 @@ namespace Reko.Arch.RiscV
                 Nyi("amo"),
 
                 new MaskDecoder(12, 7, op),
-                new WInstrDecoder(Opcode.lui, "d,Iu"),
-                new MaskDecoder(12, 7, op32),
+                new WInstrDecoderOld(Opcode.lui, "d,Iu"),
+                new SparseMaskOpRec(25, 0x7F, new Dictionary<int, Decoder>
+                {
+                    { 1, new MaskDecoder(12, 7,
+                        CInstr(Opcode.mulw, Rd,R1,R2),
+                        invalid,
+                        invalid,
+                        invalid,
+                        
+                        CInstr(Opcode.divw, Rd,R1,R2),
+                        Nyi("divuw"),
+                        Nyi("remw"),
+                        CInstr(Opcode.remuw, Rd,R1,R2))
+                    },
+                    { 0x20, new MaskDecoder(12, 7,
+                        CInstr(Opcode.subw, Rd,R1,R2),
+                        Nyi("20 - 001"),
+                        Nyi("20 - 010"),
+                        Nyi("20 - 011"),
+
+                        Nyi("20 - 100"),
+                        Nyi("20 - 101"),
+                        Nyi("20 - 110"),
+                        Nyi("20 - 111"))}
+                }),
                 Nyi("64-bit instruction"),
 
                 // 10
@@ -889,9 +912,9 @@ namespace Reko.Arch.RiscV
                 Nyi("48-bit instruction"),
 
                 new MaskDecoder(12, 7, branches),
-                new WInstrDecoder(Opcode.jalr, InstrClass.Transfer, "d,1,i"),
+                new WInstrDecoderOld(Opcode.jalr, InstrClass.Transfer, "d,1,i"),
                 Nyi("Reserved"),
-                new WInstrDecoder(Opcode.jal, InstrClass.Transfer|InstrClass.Call, "d,J"),
+                new WInstrDecoderOld(Opcode.jal, InstrClass.Transfer|InstrClass.Call, "d,J"),
 
                 Nyi("system"),
                 Nyi("Reserved"),
