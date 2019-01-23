@@ -911,62 +911,62 @@ optind		; 0000000000012CD8
 
 ;; fn0000000000015180: 0000000000015180
 fn0000000000015180 proc
-	addi	sp,sp,-448
-	sd	s5,sp,392
-	ld	a5,gp,-1936
-	sd	s1,sp,424
-	lui	s1,0x00000011
-	sd	a5,sp,328
-	lui	a5,0x00000010
-	addiw	a5,a5,8
-	sd	s0,sp,432
-	sd	s2,sp,416
-	sd	s3,sp,408
-	sd	s4,sp,400
-	sd	s6,sp,384
-	sd	s7,sp,376
-	sd	s8,sp,368
-	sd	s9,sp,360
-	sd	s10,sp,352
-	sd	s11,sp,344
-	sd	ra,sp,440
-	lui	s8,0x00000001
-	addi	s3,a0,0
-	addi	s2,a1,0
-	sw	zero,sp,28
-	addi	s0,zero,0
-	addi	s6,zero,0
-	addi	s9,zero,0
-	addi	s10,zero,0
-	sw	zero,sp,0
-	addi	s1,s1,-1824
-	lui	s4,0x00000012
-	addi	s7,zero,1
-	sw	a5,sp,8
+	addi	sp,sp,-000001C0
+	sd	s5,sp,+00000188
+	ld	a5,gp,-00000790
+	sd	s1,sp,+000001A8
+	lui	s1,00000011
+	sd	a5,sp,+00000148
+	lui	a5,00000010
+	addiw	a5,a5,00000008
+	sd	s0,sp,+000001B0
+	sd	s2,sp,+000001A0
+	sd	s3,sp,+00000198
+	sd	s4,sp,+00000190
+	sd	s6,sp,+00000180
+	sd	s7,sp,+00000178
+	sd	s8,sp,+00000170
+	sd	s9,sp,+00000168
+	sd	s10,sp,+00000160
+	sd	s11,sp,+00000158
+	sd	ra,sp,+000001B8
+	lui	s8,00000001
+	addi	s3,a0,+00000000
+	addi	s2,a1,+00000000
+	sw	zero,sp,+0000001C
+	addi	s0,zero,+00000000
+	addi	s6,zero,+00000000
+	addi	s9,zero,+00000000
+	addi	s10,zero,+00000000
+	sw	zero,sp,+00000000
+	addi	s1,s1,-00000720
+	lui	s4,00000012
+	addi	s7,zero,+00000001
+	sw	a5,sp,+00000008
 
 l0000000000015200:
-	addi	a4,zero,0
-	addi	a3,s1,0
-	addi	a2,s4,-1624
-	addi	a1,s2,0
-	addi	a0,s3,0
+	addi	a4,zero,+00000000
+	addi	a3,s1,+00000000
+	addi	a2,s4,-00000658
+	addi	a1,s2,+00000000
+	addi	a0,s3,+00000000
 	jal	ra,0000000000014FF0
-	addi	a4,zero,-1
-	addi	a5,a0,0
+	addi	a4,zero,-00000001
+	addi	a5,a0,+00000000
 	beq	a0,a4,0000000000015348
 
 l0000000000015224:
-	addi	a4,zero,118
+	addi	a4,zero,+00000076
 	bltu	a4,a0,0000000000015200
 
 l000000000001522C:
-	slli	a5,a5,0x00000000
-	lui	a4,0x00000010
-	srli	a5,a5,0x0000001E
-	addi	a4,a4,672
+	slli	a5,a5,00000000
+	lui	a4,00000010
+	srli	a5,a5,0000001E
+	addi	a4,a4,+000002A0
 	add	a5,a5,a4
-	lw	a5,a5,0
-	jalr	zero,a5,0
+	lw	a5,a5,+00000000
+	jalr	zero,a5,+00000000
 0000000000015248                         23 20 71 01 6F F0 5F FB         # q.o._.
 0000000000015250 B7 07 04 00 33 64 F4 00 6F F0 9F FA B7 07 02 00 ....3d..o.......
 0000000000015260 33 64 F4 00 6F F0 DF F9 13 05 00 00 EF 00 10 56 3d..o..........V
@@ -986,568 +986,568 @@ l000000000001522C:
 0000000000015340 23 2E 71 01 6F F0 DF EB                         #.q.o...       
 
 l0000000000015348:
-	lw	a4,gp,-1904
+	lw	a4,gp,-00000770
 	bge	a4,s3,0000000000015428
 
 l0000000000015350:
-	addiw	a1,a4,1
-	slli	a3,a4,0x00000003
+	addiw	a1,a4,00000001
+	slli	a3,a4,00000003
 	add	s2,s2,a3
-	sw	a1,gp,2192
-	ld	s1,s2,0
-	addi	s4,zero,0
+	sw	a1,gp,+00000890
+	ld	s1,s2,+00000000
+	addi	s4,zero,+00000000
 	bge	a1,s3,0000000000015378
 
 l000000000001536C:
-	ld	s4,s2,8
-	addiw	a4,a4,2
-	sw	a4,gp,2192
+	ld	s4,s2,+00000008
+	addiw	a4,a4,00000002
+	sw	a4,gp,+00000890
 
 l0000000000015378:
 	bne	s6,zero,0000000000015588
 
 l000000000001537C:
-	lw	a4,sp,28
+	lw	a4,sp,+0000001C
 	beq	a4,zero,00000000000153B4
 
 l0000000000015384:
-	lw	a4,sp,0
+	lw	a4,sp,+00000000
 	beq	a4,zero,00000000000153B4
 
 l000000000001538C:
-	lw	a5,gp,-2028
+	lw	a5,gp,-000007EC
 	bne	a5,zero,00000000000153D8
 
 l0000000000015394:
-	ld	a3,gp,-1920
-	lui	a0,0x00000012
-	addi	a2,zero,46
-	addi	a1,zero,1
-	addi	a0,a0,-1576
+	ld	a3,gp,-00000780
+	lui	a0,00000012
+	addi	a2,zero,+0000002E
+	addi	a1,zero,+00000001
+	addi	a0,a0,-00000628
 	jal	ra,0000000000015090
-	lw	s6,sp,0
+	lw	s6,sp,+00000000
 	jal	zero,00000000000153DC
 
 l00000000000153B4:
-	sd	a5,sp,8
+	sd	a5,sp,+00000008
 	beq	s9,zero,0000000000015924
 
 l00000000000153BC:
 	jal	ra,0000000000017924
-	ori	s2,s0,2
-	ld	a5,sp,8
+	ori	s2,s0,+00000002
+	ld	a5,sp,+00000008
 	beq	a0,zero,0000000000015434
 
 l00000000000153CC:
 	beq	s10,zero,00000000000155A8
 
 l00000000000153D0:
-	lw	a5,gp,-2028
+	lw	a5,gp,-000007EC
 	beq	a5,zero,000000000001556C
 
 l00000000000153D8:
-	addi	s6,zero,1
+	addi	s6,zero,+00000001
 
 l00000000000153DC:
-	ld	a4,sp,328
-	ld	a5,gp,-1936
-	addi	a0,s6,0
+	ld	a4,sp,+00000148
+	ld	a5,gp,-00000790
+	addi	a0,s6,+00000000
 	bne	a4,a5,0000000000015E8C
 
 l00000000000153EC:
-	ld	ra,sp,440
-	ld	s0,sp,432
-	ld	s1,sp,424
-	ld	s2,sp,416
-	ld	s3,sp,408
-	ld	s4,sp,400
-	ld	s5,sp,392
-	ld	s6,sp,384
-	ld	s7,sp,376
-	ld	s8,sp,368
-	ld	s9,sp,360
-	ld	s10,sp,352
-	ld	s11,sp,344
-	addi	sp,sp,448
-	jalr	zero,ra,0
+	ld	ra,sp,+000001B8
+	ld	s0,sp,+000001B0
+	ld	s1,sp,+000001A8
+	ld	s2,sp,+000001A0
+	ld	s3,sp,+00000198
+	ld	s4,sp,+00000190
+	ld	s5,sp,+00000188
+	ld	s6,sp,+00000180
+	ld	s7,sp,+00000178
+	ld	s8,sp,+00000170
+	ld	s9,sp,+00000168
+	ld	s10,sp,+00000160
+	ld	s11,sp,+00000158
+	addi	sp,sp,+000001C0
+	jalr	zero,ra,+00000000
 
 l0000000000015428:
-	addi	s4,zero,0
-	addi	s1,zero,0
+	addi	s4,zero,+00000000
+	addi	s1,zero,+00000000
 	jal	zero,0000000000015378
 
 l0000000000015434:
-	lui	a4,0x00000010
-	addiw	a4,a4,8
+	lui	a4,00000010
+	addiw	a4,a4,00000008
 	and	s0,s0,a4
 	bne	s0,a4,00000000000153CC
 
 l0000000000015444:
-	addi	s0,s2,0
+	addi	s0,s2,+00000000
 
 l0000000000015448:
-	lui	s2,0x00000004
+	lui	s2,00000004
 	or	s2,s0,s2
 	bne	s9,zero,00000000000153CC
 
 l0000000000015454:
-	addi	s0,s2,0
+	addi	s0,s2,+00000000
 
 l0000000000015458:
 	beq	s10,zero,0000000000015CE4
 
 l000000000001545C:
-	addi	a2,zero,1
-	addi	a1,s10,0
-	addi	a0,sp,28
+	addi	a2,zero,+00000001
+	addi	a1,s10,+00000000
+	addi	a0,sp,+0000001C
 	jal	ra,00000000000166F4
-	addi	a5,a0,0
+	addi	a5,a0,+00000000
 	blt	a0,zero,0000000000015BC8
 
 l0000000000015474:
-	addi	a1,sp,40
-	addi	a0,zero,2
-	sd	a5,sp,8
-	lw	s1,sp,28
-	sd	zero,sp,32
+	addi	a1,sp,+00000028
+	addi	a0,zero,+00000002
+	sd	a5,sp,+00000008
+	lw	s1,sp,+0000001C
+	sd	zero,sp,+00000020
 	jal	ra,0000000000014F40
-	ld	a5,sp,8
+	ld	a5,sp,+00000008
 	blt	a0,zero,0000000000015CB0
 
 l0000000000015494:
 	beq	s1,zero,0000000000015C48
 
 l0000000000015498:
-	ld	a4,sp,48
-	addi	a1,zero,15
-	addi	a0,sp,57
-	andi	a4,a4,1
-	ori	a4,a4,-4
-	sb	a4,sp,56
+	ld	a4,sp,+00000030
+	addi	a1,zero,+0000000F
+	addi	a0,sp,+00000039
+	andi	a4,a4,+00000001
+	ori	a4,a4,-00000004
+	sb	a4,sp,+00000038
 	jal	ra,00000000000164D0
-	ld	a5,sp,8
+	ld	a5,sp,+00000008
 	blt	a0,zero,0000000000015CB0
 
 l00000000000154BC:
-	addi	s1,sp,264
-	addi	a3,zero,64
-	addi	a2,s1,0
-	addi	a1,sp,56
-	addi	a0,zero,10
+	addi	s1,sp,+00000108
+	addi	a3,zero,+00000040
+	addi	a2,s1,+00000000
+	addi	a1,sp,+00000038
+	addi	a0,zero,+0000000A
 	jal	ra,0000000000014F70
-	ld	a5,sp,8
+	ld	a5,sp,+00000008
 	beq	a0,zero,0000000000015CB0
 
 l00000000000154DC:
-	lui	a2,0x00000012
-	addi	a4,a5,0
-	addi	a3,s1,0
-	addi	a2,a2,-1392
-	addi	a1,zero,1
-	addi	a0,sp,32
-	sd	a5,sp,8
+	lui	a2,00000012
+	addi	a4,a5,+00000000
+	addi	a3,s1,+00000000
+	addi	a2,a2,-00000570
+	addi	a1,zero,+00000001
+	addi	a0,sp,+00000020
+	sd	a5,sp,+00000008
 	jal	ra,0000000000015010
-	addi	a4,zero,-1
-	ld	a5,sp,8
+	addi	a4,zero,-00000001
+	ld	a5,sp,+00000008
 	beq	a0,a4,0000000000015CB0
 
 l0000000000015508:
-	ld	s1,sp,32
+	ld	s1,sp,+00000020
 	beq	s1,zero,0000000000015CB0
 
 l0000000000015510:
-	lw	a4,sp,0
+	lw	a4,sp,+00000000
 	bne	a4,zero,00000000000155D8
 
 l0000000000015518:
-	addi	a1,zero,58
-	addi	a0,s1,0
-	sd	a5,sp,0
+	addi	a1,zero,+0000003A
+	addi	a0,s1,+00000000
+	sd	a5,sp,+00000000
 	jal	ra,0000000000015140
-	ld	a5,sp,0
+	ld	a5,sp,+00000000
 	beq	a0,zero,00000000000155D8
 
 l0000000000015530:
-	addi	a4,zero,1
-	sw	a4,sp,28
+	addi	a4,zero,+00000001
+	sw	a4,sp,+0000001C
 	beq	s4,zero,0000000000015BEC
 
 l000000000001553C:
-	lw	a5,gp,-2028
+	lw	a5,gp,-000007EC
 	bne	a5,zero,00000000000153D8
 
 l0000000000015544:
-	ld	a0,gp,-1920
-	lui	a2,0x00000012
-	addi	a3,s4,0
-	addi	a2,a2,-1328
-	addi	a1,zero,1
+	ld	a0,gp,-00000780
+	lui	a2,00000012
+	addi	a3,s4,+00000000
+	addi	a2,a2,-00000530
+	addi	a1,zero,+00000001
 	jal	ra,00000000000150D0
-	addi	a0,zero,1
+	addi	a0,zero,+00000001
 	jal	ra,0000000000015FCC
-	addi	s6,zero,1
+	addi	s6,zero,+00000001
 	jal	zero,00000000000153DC
 
 l000000000001556C:
-	ld	a3,gp,-1920
-	lui	a0,0x00000012
-	addi	a2,zero,37
-	addi	a1,zero,1
-	addi	a0,a0,-1528
+	ld	a3,gp,-00000780
+	lui	a0,00000012
+	addi	a2,zero,+00000025
+	addi	a1,zero,+00000001
+	addi	a0,a0,-000005F8
 	jal	ra,0000000000015090
 	jal	zero,00000000000153D8
 
 l0000000000015588:
-	lui	a2,0x00000012
-	lui	a1,0x00000012
-	addi	a2,a2,-1600
-	addi	a1,a1,-1592
-	addi	a0,zero,1
+	lui	a2,00000012
+	lui	a1,00000012
+	addi	a2,a2,-00000640
+	addi	a1,a1,-00000638
+	addi	a0,zero,+00000001
 	jal	ra,0000000000015070
-	addi	s6,zero,0
+	addi	s6,zero,+00000000
 	jal	zero,00000000000153DC
 
 l00000000000155A8:
-	lw	a4,sp,28
+	lw	a4,sp,+0000001C
 	bne	a4,zero,0000000000015944
 
 l00000000000155B0:
-	lw	a4,sp,0
+	lw	a4,sp,+00000000
 	beq	a4,zero,000000000001598C
 
 l00000000000155B8:
-	addi	a1,s9,0
-	addi	a0,zero,2
-	sd	a5,sp,0
+	addi	a1,s9,+00000000
+	addi	a0,zero,+00000002
+	sd	a5,sp,+00000000
 	jal	ra,00000000000169D8
-	addi	s1,a0,0
+	addi	s1,a0,+00000000
 	beq	a0,zero,0000000000015964
 
 l00000000000155D0:
-	ld	a5,sp,0
-	addi	s0,s2,0
+	ld	a5,sp,+00000000
+	addi	s0,s2,+00000000
 
 l00000000000155D8:
 	beq	s4,zero,0000000000015BA0
 
 l00000000000155DC:
-	lw	a5,sp,28
+	lw	a5,sp,+0000001C
 	bne	a5,zero,000000000001553C
 
 l00000000000155E4:
-	addi	a2,zero,0
-	addi	a1,s4,0
-	addi	a0,sp,28
+	addi	a2,zero,+00000000
+	addi	a1,s4,+00000000
+	addi	a0,sp,+0000001C
 	jal	ra,00000000000166F4
-	addi	a5,a0,0
+	addi	a5,a0,+00000000
 	blt	a0,zero,0000000000015B6C
 
 l00000000000155FC:
-	lw	a4,sp,28
+	lw	a4,sp,+0000001C
 	beq	a4,zero,00000000000159B0
 
 l0000000000015604:
-	addi	a3,s0,0
-	addi	a2,sp,56
-	addi	a1,a5,0
-	addi	a0,s1,0
+	addi	a3,s0,+00000000
+	addi	a2,sp,+00000038
+	addi	a1,a5,+00000000
+	addi	a0,s1,+00000000
 	jal	ra,00000000000175BC
 
 l0000000000015618:
 	blt	a0,zero,00000000000153D8
 
 l000000000001561C:
-	lui	a5,0x000FFFAC
-	addiw	a5,a5,-1
+	lui	a5,000FFFAC
+	addiw	a5,a5,FFFFFFFFFFFFFFFF
 	and	a5,s0,a5
 	bne	a5,zero,0000000000015630
 
 l000000000001562C:
-	ori	s0,s0,8
+	ori	s0,s0,+00000008
 
 l0000000000015630:
-	addi	a0,zero,1
+	addi	a0,zero,+00000001
 	jal	ra,00000000000150C0
 	beq	a0,zero,0000000000015644
 
 l000000000001563C:
-	addi	a4,zero,1
-	sw	a4,gp,2064
+	addi	a4,zero,+00000001
+	sw	a4,gp,+00000810
 
 l0000000000015644:
-	andi	a5,s0,8
+	andi	a5,s0,+00000008
 	beq	a5,zero,00000000000159C8
 
 l000000000001564C:
-	lw	a5,sp,28
-	lw	s2,sp,216
+	lw	a5,sp,+0000001C
+	lw	s2,sp,+000000D8
 	bne	a5,zero,000000000001590C
 
 l0000000000015658:
-	addi	a5,zero,32
+	addi	a5,zero,+00000020
 	beq	s2,a5,0000000000015914
 
 l0000000000015660:
 	beq	s10,zero,0000000000015860
 
 l0000000000015664:
-	lui	s1,0x00000012
+	lui	s1,00000012
 
 l0000000000015668:
-	ld	a3,sp,72
-	lui	s3,0x00000012
+	ld	a3,sp,+00000048
+	lui	s3,00000012
 	beq	a3,zero,0000000000015690
 
 l0000000000015674:
-	lui	a1,0x00000012
-	addi	a4,s2,0
-	addi	a2,s3,-1248
-	addi	a1,a1,-1240
-	addi	a0,s1,-1272
+	lui	a1,00000012
+	addi	a4,s2,+00000000
+	addi	a2,s3,-000004E0
+	addi	a1,a1,-000004D8
+	addi	a0,s1,-000004F8
 	jal	ra,000000000001654C
-	lw	s2,sp,216
+	lw	s2,sp,+000000D8
 
 l0000000000015690:
-	ld	a3,sp,88
-	lui	a1,0x00000012
-	addi	a4,s2,0
-	addi	a2,s3,-1248
-	addi	a1,a1,-1224
-	addi	a0,s1,-1272
+	ld	a3,sp,+00000058
+	lui	a1,00000012
+	addi	a4,s2,+00000000
+	addi	a2,s3,-000004E0
+	addi	a1,a1,-000004C8
+	addi	a0,s1,-000004F8
 	jal	ra,000000000001654C
-	ld	a3,sp,104
-	lw	a4,sp,216
-	lui	a2,0x00000012
-	lui	a1,0x00000012
-	addi	a2,a2,-1208
-	addi	a1,a1,-1192
-	addi	a0,s1,-1272
+	ld	a3,sp,+00000068
+	lw	a4,sp,+000000D8
+	lui	a2,00000012
+	lui	a1,00000012
+	addi	a2,a2,-000004B8
+	addi	a1,a1,-000004A8
+	addi	a0,s1,-000004F8
 	jal	ra,000000000001654C
-	ld	a3,sp,96
+	ld	a3,sp,+00000060
 	beq	a3,zero,00000000000156EC
 
 l00000000000156D4:
-	lui	s2,0x00000012
-	lui	a1,0x00000012
-	addi	a2,s2,-928
-	addi	a1,a1,-1176
-	addi	a0,s1,-1272
+	lui	s2,00000012
+	lui	a1,00000012
+	addi	a2,s2,-000003A0
+	addi	a1,a1,-00000498
+	addi	a0,s1,-000004F8
 	jal	ra,000000000001654C
 
 l00000000000156EC:
-	lui	a5,0x00000010
-	addiw	a5,a5,8
+	lui	a5,00000010
+	addiw	a5,a5,00000008
 	and	s0,s0,a5
 	beq	s0,a5,0000000000015C1C
 
 l00000000000156FC:
-	addi	a0,zero,10
+	addi	a0,zero,+0000000A
 	jal	ra,00000000000150F0
-	ld	a3,sp,240
+	ld	a3,sp,+000000F0
 	beq	a3,zero,0000000000015728
 
 l000000000001570C:
-	lui	a2,0x00000012
-	lui	a1,0x00000012
-	lui	a0,0x00000012
-	addi	a2,a2,-928
-	addi	a1,a1,-1144
-	addi	a0,a0,-1128
+	lui	a2,00000012
+	lui	a1,00000012
+	lui	a0,00000012
+	addi	a2,a2,-000003A0
+	addi	a1,a1,-00000478
+	addi	a0,a0,-00000468
 	jal	ra,000000000001654C
 
 l0000000000015728:
-	ld	a3,sp,248
+	ld	a3,sp,+000000F8
 	beq	a3,zero,000000000001574C
 
 l0000000000015730:
-	lui	a2,0x00000012
-	lui	a1,0x00000012
-	lui	a0,0x00000012
-	addi	a2,a2,-928
-	addi	a1,a1,-1120
-	addi	a0,a0,-1128
+	lui	a2,00000012
+	lui	a1,00000012
+	lui	a0,00000012
+	addi	a2,a2,-000003A0
+	addi	a1,a1,-00000460
+	addi	a0,a0,-00000468
 	jal	ra,000000000001654C
 
 l000000000001574C:
-	ld	a3,sp,224
+	ld	a3,sp,+000000E0
 	beq	a3,zero,000000000001576C
 
 l0000000000015754:
-	lui	a2,0x00000012
-	lui	a1,0x00000012
-	addi	a2,a2,-928
-	addi	a1,a1,-1104
-	addi	a0,s1,-1272
+	lui	a2,00000012
+	lui	a1,00000012
+	addi	a2,a2,-000003A0
+	addi	a1,a1,-00000450
+	addi	a0,s1,-000004F8
 	jal	ra,000000000001654C
 
 l000000000001576C:
-	ld	a3,sp,232
+	ld	a3,sp,+000000E8
 	beq	a3,zero,000000000001578C
 
 l0000000000015774:
-	lui	a2,0x00000012
-	lui	a1,0x00000012
-	addi	a2,a2,-928
-	addi	a1,a1,-1088
-	addi	a0,s1,-1272
+	lui	a2,00000012
+	lui	a1,00000012
+	addi	a2,a2,-000003A0
+	addi	a1,a1,-00000440
+	addi	a0,s1,-000004F8
 	jal	ra,000000000001654C
 
 l000000000001578C:
-	lw	a5,sp,28
+	lw	a5,sp,+0000001C
 	beq	a5,zero,00000000000157A0
 
 l0000000000015794:
-	lw	a5,sp,216
-	addi	a4,zero,111
+	lw	a5,sp,+000000D8
+	addi	a4,zero,+0000006F
 	bgeu	a4,a5,0000000000015E3C
 
 l00000000000157A0:
-	lui	a2,0x00000012
-	lui	a1,0x00000012
-	addi	a3,sp,152
-	addi	a2,a2,-928
-	addi	a1,a1,-1056
-	addi	a0,s1,-1272
+	lui	a2,00000012
+	lui	a1,00000012
+	addi	a3,sp,+00000098
+	addi	a2,a2,-000003A0
+	addi	a1,a1,-00000420
+	addi	a0,s1,-000004F8
 	jal	ra,000000000001654C
 
 l00000000000157BC:
-	ld	a5,sp,120
+	ld	a5,sp,+00000078
 	beq	a5,zero,0000000000015C08
 
 l00000000000157C4:
-	addi	a0,zero,10
+	addi	a0,zero,+0000000A
 	jal	ra,00000000000150F0
-	ld	a3,sp,128
+	ld	a3,sp,+00000080
 	beq	a3,zero,00000000000157F0
 
 l00000000000157D4:
-	lui	a2,0x00000012
-	lui	a1,0x00000012
-	lui	a0,0x00000012
-	addi	a2,a2,-928
-	addi	a1,a1,-1040
-	addi	a0,a0,-1128
+	lui	a2,00000012
+	lui	a1,00000012
+	lui	a0,00000012
+	addi	a2,a2,-000003A0
+	addi	a1,a1,-00000410
+	addi	a0,a0,-00000468
 	jal	ra,000000000001654C
 
 l00000000000157F0:
-	ld	a3,sp,120
+	ld	a3,sp,+00000078
 	beq	a3,zero,0000000000015814
 
 l00000000000157F8:
-	lui	a2,0x00000012
-	lui	a1,0x00000012
-	lui	a0,0x00000012
-	addi	a2,a2,-928
-	addi	a1,a1,-1024
-	addi	a0,a0,-1128
+	lui	a2,00000012
+	lui	a1,00000012
+	lui	a0,00000012
+	addi	a2,a2,-000003A0
+	addi	a1,a1,-00000400
+	addi	a0,a0,-00000468
 	jal	ra,000000000001654C
 
 l0000000000015814:
-	ld	a3,sp,136
+	ld	a3,sp,+00000088
 	beq	a3,zero,0000000000015838
 
 l000000000001581C:
-	lui	a2,0x00000012
-	lui	a1,0x00000012
-	lui	a0,0x00000012
-	addi	a2,a2,-928
-	addi	a1,a1,-1008
-	addi	a0,a0,-1128
+	lui	a2,00000012
+	lui	a1,00000012
+	lui	a0,00000012
+	addi	a2,a2,-000003A0
+	addi	a1,a1,-000003F0
+	addi	a0,a0,-00000468
 	jal	ra,000000000001654C
 
 l0000000000015838:
-	ld	a3,sp,144
+	ld	a3,sp,+00000090
 	beq	a3,zero,00000000000153DC
 
 l0000000000015840:
-	lui	a2,0x00000012
-	lui	a1,0x00000012
-	lui	a0,0x00000012
-	addi	a2,a2,-928
-	addi	a1,a1,-1000
-	addi	a0,a0,-1128
+	lui	a2,00000012
+	lui	a1,00000012
+	lui	a0,00000012
+	addi	a2,a2,-000003A0
+	addi	a1,a1,-000003E8
+	addi	a0,a0,-00000468
 	jal	ra,000000000001654C
 	jal	zero,00000000000153DC
 
 l0000000000015860:
-	ld	s3,sp,56
-	ld	a0,sp,88
-	addi	a1,s3,0
+	ld	s3,sp,+00000038
+	ld	a0,sp,+00000058
+	addi	a1,s3,+00000000
 	jal	ra,0000000000015050
 	beq	a0,zero,0000000000015664
 
 l0000000000015874:
-	ld	a3,sp,64
-	addi	s4,zero,0
+	ld	a3,sp,+00000040
+	addi	s4,zero,+00000000
 	beq	a3,zero,0000000000015E14
 
 l0000000000015880:
-	lui	s2,0x00000012
-	lui	s1,0x00000012
-	lui	a1,0x00000012
-	addi	a2,s2,-928
-	addi	a1,a1,-1288
-	addi	a0,s1,-1272
+	lui	s2,00000012
+	lui	s1,00000012
+	lui	a1,00000012
+	addi	a2,s2,-000003A0
+	addi	a1,a1,-00000508
+	addi	a0,s1,-000004F8
 	jal	ra,000000000001654C
-	ld	a3,sp,56
-	lui	a1,0x00000012
-	addi	a2,s2,-928
-	addi	a1,a1,-1264
-	addi	a0,s1,-1272
+	ld	a3,sp,+00000038
+	lui	a1,00000012
+	addi	a2,s2,-000003A0
+	addi	a1,a1,-000004F0
+	addi	a0,s1,-000004F8
 	jal	ra,000000000001654C
 	beq	s4,zero,0000000000015E74
 
 l00000000000158B8:
-	lui	a5,0x00000010
-	addiw	a5,a5,8
+	lui	a5,00000010
+	addiw	a5,a5,00000008
 	and	s0,s0,a5
 	beq	s0,a5,0000000000015E64
 
 l00000000000158C8:
-	ld	a3,sp,240
+	ld	a3,sp,+000000F0
 	beq	a3,zero,00000000000158E8
 
 l00000000000158D0:
-	lui	a1,0x00000012
-	lui	a0,0x00000012
-	addi	a2,s2,-928
-	addi	a1,a1,-1144
-	addi	a0,a0,-1128
+	lui	a1,00000012
+	lui	a0,00000012
+	addi	a2,s2,-000003A0
+	addi	a1,a1,-00000478
+	addi	a0,a0,-00000468
 	jal	ra,000000000001654C
 
 l00000000000158E8:
-	ld	a3,sp,248
+	ld	a3,sp,+000000F8
 	beq	a3,zero,00000000000157BC
 
 l00000000000158F0:
-	lui	a1,0x00000012
-	lui	a0,0x00000012
-	addi	a2,s2,-928
-	addi	a1,a1,-1120
-	addi	a0,a0,-1128
+	lui	a1,00000012
+	lui	a0,00000012
+	addi	a2,s2,-000003A0
+	addi	a1,a1,-00000460
+	addi	a0,a0,-00000468
 	jal	ra,000000000001654C
 	jal	zero,00000000000157BC
 
 l000000000001590C:
-	addi	a5,zero,128
+	addi	a5,zero,+00000080
 	bne	s2,a5,0000000000015660
 
 l0000000000015914:
-	ld	a3,sp,64
+	ld	a3,sp,+00000040
 	beq	a3,zero,0000000000015DDC
 
 l000000000001591C:
-	addi	s4,zero,1
+	addi	s4,zero,+00000001
 	jal	zero,0000000000015880
 
 l0000000000015924:
 	jal	ra,0000000000017924
-	ld	a5,sp,8
+	ld	a5,sp,+00000008
 	bne	a0,zero,0000000000015458
 
 l0000000000015930:
-	lui	a4,0x00000010
-	addiw	a4,a4,8
+	lui	a4,00000010
+	addiw	a4,a4,00000008
 	and	a3,s0,a4
 	bne	a3,a4,0000000000015458
 
@@ -1555,314 +1555,314 @@ l0000000000015940:
 	jal	zero,0000000000015448
 
 l0000000000015944:
-	addi	a1,s9,0
-	addi	a0,zero,10
-	sd	a5,sp,8
+	addi	a1,s9,+00000000
+	addi	a0,zero,+0000000A
+	sd	a5,sp,+00000008
 	jal	ra,00000000000169D8
-	addi	s1,a0,0
-	addi	s0,s2,0
-	ld	a5,sp,8
+	addi	s1,a0,+00000000
+	addi	s0,s2,+00000000
+	ld	a5,sp,+00000008
 	bne	a0,zero,0000000000015510
 
 l0000000000015964:
-	lw	a5,gp,-2028
+	lw	a5,gp,-000007EC
 	bne	a5,zero,00000000000153D8
 
 l000000000001596C:
-	ld	a0,gp,-1920
-	lui	a2,0x00000012
-	addi	a3,s9,0
-	addi	a2,a2,-1456
-	addi	a1,zero,1
+	ld	a0,gp,-00000780
+	lui	a2,00000012
+	addi	a3,s9,+00000000
+	addi	a2,a2,-000005B0
+	addi	a1,zero,+00000001
 	jal	ra,00000000000150D0
-	addi	s6,zero,1
+	addi	s6,zero,+00000001
 	jal	zero,00000000000153DC
 
 l000000000001598C:
-	addi	a1,s9,0
-	addi	a0,zero,0
-	sd	a5,sp,0
+	addi	a1,s9,+00000000
+	addi	a0,zero,+00000000
+	sd	a5,sp,+00000000
 	jal	ra,00000000000169D8
-	addi	s1,a0,0
+	addi	s1,a0,+00000000
 	beq	a0,zero,0000000000015964
 
 l00000000000159A4:
-	addi	s0,s2,0
-	ld	a5,sp,0
+	addi	s0,s2,+00000000
+	ld	a5,sp,+00000000
 	jal	zero,0000000000015518
 
 l00000000000159B0:
-	addi	a3,s0,0
-	addi	a2,sp,56
-	addi	a1,a5,0
-	addi	a0,s1,0
+	addi	a3,s0,+00000000
+	addi	a2,sp,+00000038
+	addi	a1,a5,+00000000
+	addi	a0,s1,+00000000
 	jal	ra,0000000000016D74
 	jal	zero,0000000000015618
 
 l00000000000159C8:
-	andi	a5,s0,128
+	andi	a5,s0,+00000080
 	bne	a5,zero,0000000000015D18
 
 l00000000000159D0:
-	andi	a5,s0,512
+	andi	a5,s0,+00000200
 	bne	a5,zero,0000000000015D48
 
 l00000000000159D8:
-	andi	a5,s0,64
+	andi	a5,s0,+00000040
 	beq	a5,zero,00000000000159FC
 
 l00000000000159E0:
-	lw	a5,sp,28
+	lw	a5,sp,+0000001C
 	bne	a5,zero,00000000000159FC
 
 l00000000000159E8:
-	ld	a2,sp,96
-	lui	a1,0x00000012
-	addi	a1,a1,-952
-	addi	a0,zero,1
+	ld	a2,sp,+00000060
+	lui	a1,00000012
+	addi	a1,a1,-000003B8
+	addi	a0,zero,+00000001
 	jal	ra,0000000000015070
 
 l00000000000159FC:
-	andi	a5,s0,256
+	andi	a5,s0,+00000100
 	bne	a5,zero,0000000000015D30
 
 l0000000000015A04:
-	slli	a5,s0,0x0000000E
+	slli	a5,s0,0000000E
 	blt	a5,zero,0000000000015D78
 
 l0000000000015A0C:
-	andi	a5,s0,1024
+	andi	a5,s0,+00000400
 	beq	a5,zero,0000000000015A2C
 
 l0000000000015A14:
-	ld	a2,sp,224
+	ld	a2,sp,+000000E0
 	beq	a2,zero,0000000000015A2C
 
 l0000000000015A1C:
-	lui	a1,0x00000012
-	addi	a1,a1,-904
-	addi	a0,zero,1
+	lui	a1,00000012
+	addi	a1,a1,-00000388
+	addi	a0,zero,+00000001
 	jal	ra,0000000000015070
 
 l0000000000015A2C:
-	slli	a5,s0,0x00000014
+	slli	a5,s0,00000014
 	bge	a5,zero,0000000000015A4C
 
 l0000000000015A34:
-	ld	a2,sp,232
+	ld	a2,sp,+000000E8
 	beq	a2,zero,0000000000015A4C
 
 l0000000000015A3C:
-	lui	a1,0x00000012
-	addi	a1,a1,-888
-	addi	a0,zero,1
+	lui	a1,00000012
+	addi	a1,a1,-00000378
+	addi	a0,zero,+00000001
 	jal	ra,0000000000015070
 
 l0000000000015A4C:
-	slli	a5,s0,0x00000012
+	slli	a5,s0,00000012
 	bge	a5,zero,0000000000015A80
 
 l0000000000015A54:
-	ld	s2,sp,240
+	ld	s2,sp,+000000F0
 	beq	s2,zero,0000000000015A80
 
 l0000000000015A5C:
-	addi	a1,zero,32
-	addi	a0,s2,0
+	addi	a1,zero,+00000020
+	addi	a0,s2,+00000000
 	jal	ra,0000000000015140
-	addi	a2,s2,0
+	addi	a2,s2,+00000000
 	beq	a0,zero,0000000000015DA4
 
 l0000000000015A70:
-	lui	a1,0x00000012
-	addi	a1,a1,-872
-	addi	a0,zero,1
+	lui	a1,00000012
+	addi	a1,a1,-00000368
+	addi	a0,zero,+00000001
 	jal	ra,0000000000015070
 
 l0000000000015A80:
-	slli	a5,s0,0x00000013
+	slli	a5,s0,00000013
 	bge	a5,zero,0000000000015AAC
 
 l0000000000015A88:
-	addi	a1,zero,32
-	addi	a0,sp,152
+	addi	a1,zero,+00000020
+	addi	a0,sp,+00000098
 	jal	ra,0000000000015140
-	addi	a2,sp,152
+	addi	a2,sp,+00000098
 	beq	a0,zero,0000000000015D90
 
 l0000000000015A9C:
-	lui	a1,0x00000012
-	addi	a1,a1,-840
-	addi	a0,zero,1
+	lui	a1,00000012
+	addi	a1,a1,-00000348
+	addi	a0,zero,+00000001
 	jal	ra,0000000000015070
 
 l0000000000015AAC:
-	andi	a5,s0,1
+	andi	a5,s0,+00000001
 	beq	a5,zero,0000000000015ACC
 
 l0000000000015AB4:
-	ld	a2,sp,112
+	ld	a2,sp,+00000070
 	beq	a2,zero,0000000000015ACC
 
 l0000000000015ABC:
-	lui	a1,0x00000012
-	addi	a1,a1,-808
-	addi	a0,zero,1
+	lui	a1,00000012
+	addi	a1,a1,-00000328
+	addi	a0,zero,+00000001
 	jal	ra,0000000000015070
 
 l0000000000015ACC:
-	andi	a5,s0,2
+	andi	a5,s0,+00000002
 	bne	a5,zero,0000000000015D60
 
 l0000000000015AD4:
-	lui	a5,0x0000000C
+	lui	a5,0000000C
 	and	s0,s0,a5
 	bne	s0,a5,00000000000153DC
 
 l0000000000015AE0:
-	ld	a2,sp,128
+	ld	a2,sp,+00000080
 	beq	a2,zero,0000000000015AF8
 
 l0000000000015AE8:
-	lui	a1,0x00000012
-	addi	a1,a1,-776
-	addi	a0,zero,1
+	lui	a1,00000012
+	addi	a1,a1,-00000308
+	addi	a0,zero,+00000001
 	jal	ra,0000000000015070
 
 l0000000000015AF8:
-	ld	s0,sp,120
+	ld	s0,sp,+00000078
 	beq	s0,zero,0000000000015B24
 
 l0000000000015B00:
-	addi	a1,zero,32
-	addi	a0,s0,0
+	addi	a1,zero,+00000020
+	addi	a0,s0,+00000000
 	jal	ra,0000000000015140
-	addi	a2,s0,0
+	addi	a2,s0,+00000000
 	beq	a0,zero,0000000000015E90
 
 l0000000000015B14:
-	lui	a1,0x00000012
-	addi	a1,a1,-760
-	addi	a0,zero,1
+	lui	a1,00000012
+	addi	a1,a1,-000002F8
+	addi	a0,zero,+00000001
 	jal	ra,0000000000015070
 
 l0000000000015B24:
-	ld	s0,sp,136
+	ld	s0,sp,+00000088
 	beq	s0,zero,0000000000015B50
 
 l0000000000015B2C:
-	addi	a1,zero,32
-	addi	a0,s0,0
+	addi	a1,zero,+00000020
+	addi	a0,s0,+00000000
 	jal	ra,0000000000015140
-	addi	a2,s0,0
+	addi	a2,s0,+00000000
 	beq	a0,zero,0000000000015EA4
 
 l0000000000015B40:
-	lui	a1,0x00000012
-	addi	a1,a1,-728
-	addi	a0,zero,1
+	lui	a1,00000012
+	addi	a1,a1,-000002D8
+	addi	a0,zero,+00000001
 	jal	ra,0000000000015070
 
 l0000000000015B50:
-	ld	a2,sp,144
+	ld	a2,sp,+00000090
 	beq	a2,zero,00000000000153DC
 
 l0000000000015B58:
-	lui	a1,0x00000012
-	addi	a1,a1,-696
-	addi	a0,zero,1
+	lui	a1,00000012
+	addi	a1,a1,-000002B8
+	addi	a0,zero,+00000001
 	jal	ra,0000000000015070
 	jal	zero,00000000000153DC
 
 l0000000000015B6C:
-	lw	a5,gp,-2028
+	lw	a5,gp,-000007EC
 	bne	a5,zero,00000000000153D8
 
 l0000000000015B74:
-	lw	a5,sp,28
-	ld	a0,gp,-1920
+	lw	a5,sp,+0000001C
+	ld	a0,gp,-00000780
 	bne	a5,zero,0000000000015CD8
 
 l0000000000015B80:
-	lui	a3,0x00000012
-	addi	a3,a3,-1632
+	lui	a3,00000012
+	addi	a3,a3,-00000660
 
 l0000000000015B88:
-	addi	a4,s4,0
+	addi	a4,s4,+00000000
 
 l0000000000015B8C:
-	lui	a2,0x00000012
-	addi	a2,a2,-1424
-	addi	a1,zero,1
+	lui	a2,00000012
+	addi	a2,a2,-00000590
+	addi	a1,zero,+00000001
 	jal	ra,00000000000150D0
 	jal	zero,00000000000153D8
 
 l0000000000015BA0:
-	addi	a1,zero,47
-	addi	a0,s1,0
-	sd	a5,sp,0
+	addi	a1,zero,+0000002F
+	addi	a0,s1,+00000000
+	sd	a5,sp,+00000000
 	jal	ra,0000000000015140
-	ld	a5,sp,0
+	ld	a5,sp,+00000000
 	beq	a0,zero,00000000000155FC
 
 l0000000000015BB8:
-	sb	zero,a0,0
-	addi	s4,a0,1
+	sb	zero,a0,+00000000
+	addi	s4,a0,+00000001
 	beq	s4,zero,00000000000155FC
 
 l0000000000015BC4:
 	jal	zero,00000000000155E4
 
 l0000000000015BC8:
-	lw	a5,gp,-2028
+	lw	a5,gp,-000007EC
 	bne	a5,zero,00000000000153D8
 
 l0000000000015BD0:
-	lw	a5,sp,28
-	ld	a0,gp,-1920
+	lw	a5,sp,+0000001C
+	ld	a0,gp,-00000780
 	bne	a5,zero,0000000000015E7C
 
 l0000000000015BDC:
-	lui	a3,0x00000012
-	addi	a3,a3,-1632
-	addi	a4,s10,0
+	lui	a3,00000012
+	addi	a3,a3,-00000660
+	addi	a4,s10,+00000000
 	jal	zero,0000000000015B8C
 
 l0000000000015BEC:
-	addi	a1,zero,47
-	addi	a0,s1,0
-	sd	a5,sp,0
+	addi	a1,zero,+0000002F
+	addi	a0,s1,+00000000
+	sd	a5,sp,+00000000
 	jal	ra,0000000000015140
-	ld	a5,sp,0
+	ld	a5,sp,+00000000
 	bne	a0,zero,0000000000015BB8
 
 l0000000000015C04:
 	jal	zero,0000000000015604
 
 l0000000000015C08:
-	ld	a5,sp,136
+	ld	a5,sp,+00000088
 	bne	a5,zero,00000000000157C4
 
 l0000000000015C10:
-	ld	a5,sp,144
+	ld	a5,sp,+00000090
 	bne	a5,zero,00000000000157C4
 
 l0000000000015C18:
 	jal	zero,00000000000153DC
 
 l0000000000015C1C:
-	ld	a3,sp,80
+	ld	a3,sp,+00000050
 	beq	a3,zero,00000000000156FC
 
 l0000000000015C24:
-	addi	s0,zero,0
-	lui	s2,0x00000012
+	addi	s0,zero,+00000000
+	lui	s2,00000012
 
 l0000000000015C2C:
-	lui	a1,0x00000012
-	addi	a2,s2,-928
-	addi	a1,a1,-1160
-	addi	a0,s1,-1272
+	lui	a1,00000012
+	addi	a2,s2,-000003A0
+	addi	a1,a1,-00000488
+	addi	a0,s1,-000004F8
 	jal	ra,000000000001654C
 	bne	s0,zero,00000000000158C8
 
@@ -1870,130 +1870,130 @@ l0000000000015C44:
 	jal	zero,00000000000156FC
 
 l0000000000015C48:
-	addi	a1,zero,4
-	addi	a0,sp,256
-	sd	a5,sp,8
-	ld	s1,sp,48
+	addi	a1,zero,+00000004
+	addi	a0,sp,+00000100
+	sd	a5,sp,+00000008
+	ld	s1,sp,+00000030
 	jal	ra,00000000000164D0
-	ld	a5,sp,8
+	ld	a5,sp,+00000008
 	blt	a0,zero,0000000000015CB0
 
 l0000000000015C64:
-	addi	a4,zero,15
+	addi	a4,zero,+0000000F
 	bge	a4,a5,0000000000015C7C
 
 l0000000000015C6C:
-	addi	a4,zero,4
+	addi	a4,zero,+00000004
 	or	a4,s1,a4
-	addi	a3,zero,1
+	addi	a3,zero,+00000001
 	bgeu	a3,a4,0000000000015DB8
 
 l0000000000015C7C:
-	addi	a4,zero,10
-	sb	a4,sp,256
+	addi	a4,zero,+0000000A
+	sb	a4,sp,+00000100
 
 l0000000000015C84:
-	lw	a4,sp,256
-	addi	s1,sp,264
-	addi	a3,zero,64
-	addi	a2,s1,0
-	addi	a1,sp,24
-	addi	a0,zero,2
-	sd	a5,sp,8
-	sw	a4,sp,24
+	lw	a4,sp,+00000100
+	addi	s1,sp,+00000108
+	addi	a3,zero,+00000040
+	addi	a2,s1,+00000000
+	addi	a1,sp,+00000018
+	addi	a0,zero,+00000002
+	sd	a5,sp,+00000008
+	sw	a4,sp,+00000018
 	jal	ra,0000000000014F70
-	ld	a5,sp,8
+	ld	a5,sp,+00000008
 	bne	a0,zero,00000000000154DC
 
 l0000000000015CB0:
-	lw	a4,gp,-2028
+	lw	a4,gp,-000007EC
 	bne	a4,zero,00000000000153D8
 
 l0000000000015CB8:
-	ld	a0,gp,-1920
-	lui	a2,0x00000012
-	addi	a3,a5,0
-	addi	a2,a2,-1384
-	addi	a1,zero,1
+	ld	a0,gp,-00000780
+	lui	a2,00000012
+	addi	a3,a5,+00000000
+	addi	a2,a2,-00000568
+	addi	a1,zero,+00000001
 	jal	ra,00000000000150D0
-	addi	s6,zero,1
+	addi	s6,zero,+00000001
 	jal	zero,00000000000153DC
 
 l0000000000015CD8:
-	lui	a3,0x00000012
-	addi	a3,a3,-1640
+	lui	a3,00000012
+	addi	a3,a3,-00000668
 	jal	zero,0000000000015B88
 
 l0000000000015CE4:
 	bne	s1,zero,0000000000015510
 
 l0000000000015CE8:
-	lw	a5,gp,-2028
+	lw	a5,gp,-000007EC
 	bne	a5,zero,00000000000153D8
 
 l0000000000015CF0:
-	ld	a3,gp,-1920
-	lui	a0,0x00000012
-	addi	a2,zero,28
-	addi	a1,zero,1
-	addi	a0,a0,-1488
+	ld	a3,gp,-00000780
+	lui	a0,00000012
+	addi	a2,zero,+0000001C
+	addi	a1,zero,+00000001
+	addi	a0,a0,-000005D0
 	jal	ra,0000000000015090
-	addi	a0,zero,1
+	addi	a0,zero,+00000001
 	jal	ra,0000000000015FCC
-	addi	s6,zero,1
+	addi	s6,zero,+00000001
 	jal	zero,00000000000153DC
 
 l0000000000015D18:
-	ld	a2,sp,104
-	lui	a1,0x00000012
-	addi	a1,a1,-984
-	addi	a0,zero,1
+	ld	a2,sp,+00000068
+	lui	a1,00000012
+	addi	a1,a1,-000003D8
+	addi	a0,zero,+00000001
 	jal	ra,0000000000015070
 	jal	zero,00000000000159D0
 
 l0000000000015D30:
-	ld	a2,sp,88
-	lui	a1,0x00000012
-	addi	a1,a1,-936
-	addi	a0,zero,1
+	ld	a2,sp,+00000058
+	lui	a1,00000012
+	addi	a1,a1,-000003A8
+	addi	a0,zero,+00000001
 	jal	ra,0000000000015070
 	jal	zero,0000000000015A04
 
 l0000000000015D48:
-	lw	a2,sp,216
-	lui	a1,0x00000012
-	addi	a1,a1,-968
-	addi	a0,zero,1
+	lw	a2,sp,+000000D8
+	lui	a1,00000012
+	addi	a1,a1,-000003C8
+	addi	a0,zero,+00000001
 	jal	ra,0000000000015070
 	jal	zero,00000000000159D8
 
 l0000000000015D60:
-	lui	a1,0x00000012
-	addi	a2,s1,0
-	addi	a1,a1,-792
-	addi	a0,zero,1
+	lui	a1,00000012
+	addi	a2,s1,+00000000
+	addi	a1,a1,-00000318
+	addi	a0,zero,+00000001
 	jal	ra,0000000000015070
 	jal	zero,0000000000015AD4
 
 l0000000000015D78:
-	ld	a2,sp,80
-	lui	a1,0x00000012
-	addi	a1,a1,-920
-	addi	a0,zero,1
+	ld	a2,sp,+00000050
+	lui	a1,00000012
+	addi	a1,a1,-00000398
+	addi	a0,zero,+00000001
 	jal	ra,0000000000015070
 	jal	zero,0000000000015A0C
 
 l0000000000015D90:
-	lui	a1,0x00000012
-	addi	a1,a1,-824
-	addi	a0,zero,1
+	lui	a1,00000012
+	addi	a1,a1,-00000338
+	addi	a0,zero,+00000001
 	jal	ra,0000000000015070
 	jal	zero,0000000000015AAC
 
 l0000000000015DA4:
-	lui	a1,0x00000012
-	addi	a1,a1,-856
-	addi	a0,zero,1
+	lui	a1,00000012
+	addi	a1,a1,-00000358
+	addi	a0,zero,+00000001
 	jal	ra,0000000000015070
 	jal	zero,0000000000015A80
 
@@ -2001,542 +2001,542 @@ l0000000000015DB8:
 	beq	a4,a3,0000000000015E00
 
 l0000000000015DBC:
-	addi	a4,zero,-84
-	sb	a4,sp,256
-	ld	a4,sp,48
-	srai	a4,a4,0x00000004
-	andi	a4,a4,15
-	ori	a4,a4,16
-	sb	a4,sp,257
+	addi	a4,zero,-00000054
+	sb	a4,sp,+00000100
+	ld	a4,sp,+00000030
+	srai	a4,a4,00000004
+	andi	a4,a4,+0000000F
+	ori	a4,a4,+00000010
+	sb	a4,sp,+00000101
 	jal	zero,0000000000015C84
 
 l0000000000015DDC:
-	ld	a3,sp,56
-	lui	s2,0x00000012
-	lui	s1,0x00000012
-	lui	a1,0x00000012
-	addi	a2,s2,-928
-	addi	a1,a1,-1264
-	addi	a0,s1,-1272
+	ld	a3,sp,+00000038
+	lui	s2,00000012
+	lui	s1,00000012
+	lui	a1,00000012
+	addi	a2,s2,-000003A0
+	addi	a1,a1,-000004F0
+	addi	a0,s1,-000004F8
 	jal	ra,000000000001654C
 	jal	zero,00000000000158B8
 
 l0000000000015E00:
-	addi	a4,zero,-64
-	sb	a4,sp,256
-	addi	a4,zero,-88
-	sb	a4,sp,257
+	addi	a4,zero,-00000040
+	sb	a4,sp,+00000100
+	addi	a4,zero,-00000058
+	sb	a4,sp,+00000101
 	jal	zero,0000000000015C84
 
 l0000000000015E14:
-	lui	s2,0x00000012
-	lui	s1,0x00000012
-	lui	a1,0x00000012
-	addi	a2,s2,-928
-	addi	a3,s3,0
-	addi	a1,a1,-1264
-	addi	a0,s1,-1272
+	lui	s2,00000012
+	lui	s1,00000012
+	lui	a1,00000012
+	addi	a2,s2,-000003A0
+	addi	a3,s3,+00000000
+	addi	a1,a1,-000004F0
+	addi	a0,s1,-000004F8
 	jal	ra,000000000001654C
-	lw	s2,sp,216
+	lw	s2,sp,+000000D8
 	jal	zero,0000000000015668
 
 l0000000000015E3C:
-	addi	a3,zero,128
-	lui	a2,0x00000012
-	lui	a1,0x00000012
-	addi	a4,sp,152
+	addi	a3,zero,+00000080
+	lui	a2,00000012
+	lui	a1,00000012
+	addi	a4,sp,+00000098
 	subw	a3,a3,a5
-	addi	a2,a2,-1072
-	addi	a1,a1,-1056
-	addi	a0,s1,-1272
+	addi	a2,a2,-00000430
+	addi	a1,a1,-00000420
+	addi	a0,s1,-000004F8
 	jal	ra,000000000001654C
 	jal	zero,00000000000157BC
 
 l0000000000015E64:
-	ld	a3,sp,80
-	addi	s0,zero,1
+	ld	a3,sp,+00000050
+	addi	s0,zero,+00000001
 	bne	a3,zero,0000000000015C2C
 
 l0000000000015E70:
 	jal	zero,00000000000158C8
 
 l0000000000015E74:
-	lw	s2,sp,216
+	lw	s2,sp,+000000D8
 	jal	zero,0000000000015668
 
 l0000000000015E7C:
-	lui	a3,0x00000012
-	addi	a3,a3,-1640
-	addi	a4,s10,0
+	lui	a3,00000012
+	addi	a3,a3,-00000668
+	addi	a4,s10,+00000000
 	jal	zero,0000000000015B8C
 
 l0000000000015E8C:
 	jal	ra,0000000000015110
 
 l0000000000015E90:
-	lui	a1,0x00000012
-	addi	a1,a1,-744
-	addi	a0,zero,1
+	lui	a1,00000012
+	addi	a1,a1,-000002E8
+	addi	a0,zero,+00000001
 	jal	ra,0000000000015070
 	jal	zero,0000000000015B24
 
 l0000000000015EA4:
-	lui	a1,0x00000012
-	addi	a1,a1,-712
-	addi	a0,zero,1
+	lui	a1,00000012
+	addi	a1,a1,-000002C8
+	addi	a0,zero,+00000001
 	jal	ra,0000000000015070
 	jal	zero,0000000000015B50
 
 ;; fn0000000000015EB8: 0000000000015EB8
 fn0000000000015EB8 proc
-	auipc	gp,0x000FFFFD
-	addi	gp,gp,1424
-	addi	a5,a0,0
-	auipc	a0,0x000FFFFF
-	addi	a0,a0,700
-	ld	a1,sp,0
-	addi	a2,sp,8
-	andi	sp,sp,-16
-	auipc	a3,0x00000002
-	addi	a3,a3,1040
-	auipc	a4,0x00000002
-	addi	a4,a4,1176
-	addi	a6,sp,0
+	auipc	gp,000FFFFD
+	addi	gp,gp,+00000590
+	addi	a5,a0,+00000000
+	auipc	a0,000FFFFF
+	addi	a0,a0,+000002BC
+	ld	a1,sp,+00000000
+	addi	a2,sp,+00000008
+	andi	sp,sp,-00000010
+	auipc	a3,00000002
+	addi	a3,a3,+00000410
+	auipc	a4,00000002
+	addi	a4,a4,+00000498
+	addi	a6,sp,+00000000
 	jal	zero,00000000000150E0
 
 ;; fn0000000000015EF0: 0000000000015EF0
 fn0000000000015EF0 proc
-	lui	a0,0x00000010
-	lui	a5,0x00000010
-	addi	a4,a0,672
-	addi	a5,a5,679
+	lui	a0,00000010
+	lui	a5,00000010
+	addi	a4,a0,+000002A0
+	addi	a5,a5,+000002A7
 	sub	a5,a5,a4
-	addi	a4,zero,14
+	addi	a4,zero,+0000000E
 	bgeu	a4,a5,0000000000015F20
 
 l0000000000015F0C:
-	lui	t1,0x00000000
-	addi	t1,t1,0
+	lui	t1,00000000
+	addi	t1,t1,+00000000
 	beq	t1,zero,0000000000015F20
 
 l0000000000015F18:
-	addi	a0,a0,672
-	jalr	zero,t1,0
+	addi	a0,a0,+000002A0
+	jalr	zero,t1,+00000000
 
 l0000000000015F20:
-	jalr	zero,ra,0
+	jalr	zero,ra,+00000000
 
 ;; fn0000000000015F24: 0000000000015F24
 fn0000000000015F24 proc
-	lui	a0,0x00000010
-	lui	a5,0x00000010
-	addi	a1,a0,672
-	addi	a5,a5,672
+	lui	a0,00000010
+	lui	a5,00000010
+	addi	a1,a0,+000002A0
+	addi	a5,a5,+000002A0
 	sub	a5,a5,a1
-	srai	a5,a5,0x00000003
-	srli	a1,a5,0x0000001F
+	srai	a5,a5,00000003
+	srli	a1,a5,0000001F
 	add	a1,a1,a5
-	srai	a1,a1,0x00000001
+	srai	a1,a1,00000001
 	beq	a1,zero,0000000000015F60
 
 l0000000000015F4C:
-	lui	t1,0x00000000
-	addi	t1,t1,0
+	lui	t1,00000000
+	addi	t1,t1,+00000000
 	beq	t1,zero,0000000000015F60
 
 l0000000000015F58:
-	addi	a0,a0,672
-	jalr	zero,t1,0
+	addi	a0,a0,+000002A0
+	jalr	zero,t1,+00000000
 
 l0000000000015F60:
-	jalr	zero,ra,0
+	jalr	zero,ra,+00000000
 
 ;; fn0000000000015F64: 0000000000015F64
 fn0000000000015F64 proc
-	addi	sp,sp,-16
-	sd	s0,sp,0
-	lbu	a5,gp,-1900
-	sd	ra,sp,8
+	addi	sp,sp,-00000010
+	sd	s0,sp,+00000000
+	lbu	a5,gp,-0000076C
+	sd	ra,sp,+00000008
 	bne	a5,zero,0000000000015F84
 
 l0000000000015F78:
 	jal	ra,0000000000015EF0
-	addi	a5,zero,1
-	sb	a5,gp,2196
+	addi	a5,zero,+00000001
+	sb	a5,gp,+00000894
 
 l0000000000015F84:
-	ld	ra,sp,8
-	ld	s0,sp,0
-	addi	sp,sp,16
-	jalr	zero,ra,0
+	ld	ra,sp,+00000008
+	ld	s0,sp,+00000000
+	addi	sp,sp,+00000010
+	jalr	zero,ra,+00000000
 
 ;; fn0000000000015F94: 0000000000015F94
 fn0000000000015F94 proc
-	lui	a5,0x0000001A
-	addi	a0,a5,-472
-	ld	a5,a0,0
+	lui	a5,0000001A
+	addi	a0,a5,-000001D8
+	ld	a5,a0,+00000000
 	bne	a5,zero,0000000000015FA8
 
 l0000000000015FA4:
 	jal	zero,0000000000015F24
 
 l0000000000015FA8:
-	lui	a5,0x00000000
-	addi	a5,a5,0
+	lui	a5,00000000
+	addi	a5,a5,+00000000
 	beq	a5,zero,0000000000015FA4
 
 l0000000000015FB4:
-	addi	sp,sp,-16
-	sd	ra,sp,8
-	jalr	ra,a5,0
-	ld	ra,sp,8
-	addi	sp,sp,16
+	addi	sp,sp,-00000010
+	sd	ra,sp,+00000008
+	jalr	ra,a5,+00000000
+	ld	ra,sp,+00000008
+	addi	sp,sp,+00000010
 	jal	zero,0000000000015F24
 
 ;; fn0000000000015FCC: 0000000000015FCC
 fn0000000000015FCC proc
-	addi	sp,sp,-16
-	sd	s0,sp,0
-	sd	ra,sp,8
-	ld	a3,gp,-1920
+	addi	sp,sp,-00000010
+	sd	s0,sp,+00000000
+	sd	ra,sp,+00000008
+	ld	a3,gp,-00000780
 	bne	a0,zero,0000000000016090
 
 l0000000000015FE0:
-	lui	a0,0x00000011
-	addi	a2,zero,77
-	addi	a1,zero,1
-	addi	a0,a0,1032
+	lui	a0,00000011
+	addi	a2,zero,+0000004D
+	addi	a1,zero,+00000001
+	addi	a0,a0,+00000408
 	jal	ra,0000000000015090
-	ld	a3,gp,-1920
-	lui	a0,0x00000011
-	addi	a2,zero,62
-	addi	a1,zero,1
-	addi	a0,a0,1112
+	ld	a3,gp,-00000780
+	lui	a0,00000011
+	addi	a2,zero,+0000003E
+	addi	a1,zero,+00000001
+	addi	a0,a0,+00000458
 	jal	ra,0000000000015090
-	ld	a3,gp,-1920
-	lui	a0,0x00000011
-	addi	a2,zero,65
-	addi	a1,zero,1
-	addi	a0,a0,1176
+	ld	a3,gp,-00000780
+	lui	a0,00000011
+	addi	a2,zero,+00000041
+	addi	a1,zero,+00000001
+	addi	a0,a0,+00000498
 	jal	ra,0000000000015090
-	ld	a3,gp,-1920
-	lui	a0,0x00000011
-	addi	a2,zero,76
-	addi	a1,zero,1
-	addi	a0,a0,1248
+	ld	a3,gp,-00000780
+	lui	a0,00000011
+	addi	a2,zero,+0000004C
+	addi	a1,zero,+00000001
+	addi	a0,a0,+000004E0
 	jal	ra,0000000000015090
-	ld	a3,gp,-1920
-	lui	a0,0x00000011
-	addi	a2,zero,65
-	addi	a1,zero,1
-	addi	a0,a0,1328
+	ld	a3,gp,-00000780
+	lui	a0,00000011
+	addi	a2,zero,+00000041
+	addi	a1,zero,+00000001
+	addi	a0,a0,+00000530
 	jal	ra,0000000000015090
-	ld	a3,gp,-1920
-	lui	a0,0x00000011
-	addi	a2,zero,41
-	addi	a1,zero,1
-	addi	a0,a0,1400
+	ld	a3,gp,-00000780
+	lui	a0,00000011
+	addi	a2,zero,+00000029
+	addi	a1,zero,+00000001
+	addi	a0,a0,+00000578
 	jal	ra,0000000000015090
-	ld	a3,gp,-1920
-	ld	ra,sp,8
-	ld	s0,sp,0
-	lui	a0,0x00000011
-	addi	a2,zero,30
-	addi	a1,zero,1
-	addi	a0,a0,1448
-	addi	sp,sp,16
+	ld	a3,gp,-00000780
+	ld	ra,sp,+00000008
+	ld	s0,sp,+00000000
+	lui	a0,00000011
+	addi	a2,zero,+0000001E
+	addi	a1,zero,+00000001
+	addi	a0,a0,+000005A8
+	addi	sp,sp,+00000010
 	jal	zero,0000000000015090
 
 l0000000000016090:
-	lui	a0,0x00000011
-	addi	a2,zero,26
-	addi	a1,zero,1
-	addi	a0,a0,-1056
+	lui	a0,00000011
+	addi	a2,zero,+0000001A
+	addi	a1,zero,+00000001
+	addi	a0,a0,-00000420
 	jal	ra,0000000000015090
-	ld	a3,gp,-1920
-	lui	a0,0x00000011
-	addi	a2,zero,54
-	addi	a1,zero,1
-	addi	a0,a0,-1024
+	ld	a3,gp,-00000780
+	lui	a0,00000011
+	addi	a2,zero,+00000036
+	addi	a1,zero,+00000001
+	addi	a0,a0,-00000400
 	jal	ra,0000000000015090
-	ld	a3,gp,-1920
-	lui	a0,0x00000011
-	addi	a2,zero,77
-	addi	a1,zero,1
-	addi	a0,a0,-968
+	ld	a3,gp,-00000780
+	lui	a0,00000011
+	addi	a2,zero,+0000004D
+	addi	a1,zero,+00000001
+	addi	a0,a0,-000003C8
 	jal	ra,0000000000015090
-	ld	a3,gp,-1920
-	lui	a0,0x00000011
-	addi	a2,zero,62
-	addi	a1,zero,1
-	addi	a0,a0,-888
+	ld	a3,gp,-00000780
+	lui	a0,00000011
+	addi	a2,zero,+0000003E
+	addi	a1,zero,+00000001
+	addi	a0,a0,-00000378
 	jal	ra,0000000000015090
-	ld	a3,gp,-1920
-	lui	a0,0x00000011
-	addi	a2,zero,79
-	addi	a1,zero,1
-	addi	a0,a0,-824
+	ld	a3,gp,-00000780
+	lui	a0,00000011
+	addi	a2,zero,+0000004F
+	addi	a1,zero,+00000001
+	addi	a0,a0,-00000338
 	jal	ra,0000000000015090
-	ld	a3,gp,-1920
-	lui	a0,0x00000011
-	addi	a2,zero,79
-	addi	a1,zero,1
-	addi	a0,a0,-744
+	ld	a3,gp,-00000780
+	lui	a0,00000011
+	addi	a2,zero,+0000004F
+	addi	a1,zero,+00000001
+	addi	a0,a0,-000002E8
 	jal	ra,0000000000015090
-	ld	a3,gp,-1920
-	lui	a0,0x00000011
-	addi	a2,zero,42
-	addi	a1,zero,1
-	addi	a0,a0,-664
+	ld	a3,gp,-00000780
+	lui	a0,00000011
+	addi	a2,zero,+0000002A
+	addi	a1,zero,+00000001
+	addi	a0,a0,-00000298
 	jal	ra,0000000000015090
-	ld	a3,gp,-1920
-	lui	a0,0x00000011
-	addi	a2,zero,76
-	addi	a1,zero,1
-	addi	a0,a0,-616
+	ld	a3,gp,-00000780
+	lui	a0,00000011
+	addi	a2,zero,+0000004C
+	addi	a1,zero,+00000001
+	addi	a0,a0,-00000268
 	jal	ra,0000000000015090
-	ld	a3,gp,-1920
-	lui	a0,0x00000011
-	addi	a2,zero,77
-	addi	a1,zero,1
-	addi	a0,a0,-536
+	ld	a3,gp,-00000780
+	lui	a0,00000011
+	addi	a2,zero,+0000004D
+	addi	a1,zero,+00000001
+	addi	a0,a0,-00000218
 	jal	ra,0000000000015090
-	ld	a3,gp,-1920
-	lui	a0,0x00000011
-	addi	a2,zero,77
-	addi	a1,zero,1
-	addi	a0,a0,-456
+	ld	a3,gp,-00000780
+	lui	a0,00000011
+	addi	a2,zero,+0000004D
+	addi	a1,zero,+00000001
+	addi	a0,a0,-000001C8
 	jal	ra,0000000000015090
-	ld	a1,gp,-1920
-	addi	a0,zero,10
+	ld	a1,gp,-00000780
+	addi	a0,zero,+0000000A
 	jal	ra,0000000000015100
-	ld	a3,gp,-1920
-	lui	a0,0x00000011
-	addi	a2,zero,23
-	addi	a1,zero,1
-	addi	a0,a0,-376
+	ld	a3,gp,-00000780
+	lui	a0,00000011
+	addi	a2,zero,+00000017
+	addi	a1,zero,+00000001
+	addi	a0,a0,-00000178
 	jal	ra,0000000000015090
-	ld	a3,gp,-1920
-	lui	a0,0x00000011
-	addi	a2,zero,71
-	addi	a1,zero,1
-	addi	a0,a0,-352
+	ld	a3,gp,-00000780
+	lui	a0,00000011
+	addi	a2,zero,+00000047
+	addi	a1,zero,+00000001
+	addi	a0,a0,-00000160
 	jal	ra,0000000000015090
-	ld	a3,gp,-1920
-	lui	a0,0x00000011
-	addi	a2,zero,57
-	addi	a1,zero,1
-	addi	a0,a0,-280
+	ld	a3,gp,-00000780
+	lui	a0,00000011
+	addi	a2,zero,+00000039
+	addi	a1,zero,+00000001
+	addi	a0,a0,-00000118
 	jal	ra,0000000000015090
-	ld	a3,gp,-1920
-	lui	a0,0x00000011
-	addi	a2,zero,58
-	addi	a1,zero,1
-	addi	a0,a0,-216
+	ld	a3,gp,-00000780
+	lui	a0,00000011
+	addi	a2,zero,+0000003A
+	addi	a1,zero,+00000001
+	addi	a0,a0,-000000D8
 	jal	ra,0000000000015090
-	ld	a3,gp,-1920
-	lui	a0,0x00000011
-	addi	a2,zero,57
-	addi	a1,zero,1
-	addi	a0,a0,-152
+	ld	a3,gp,-00000780
+	lui	a0,00000011
+	addi	a2,zero,+00000039
+	addi	a1,zero,+00000001
+	addi	a0,a0,-00000098
 	jal	ra,0000000000015090
-	ld	a3,gp,-1920
-	lui	a0,0x00000011
-	addi	a2,zero,77
-	addi	a1,zero,1
-	addi	a0,a0,-88
+	ld	a3,gp,-00000780
+	lui	a0,00000011
+	addi	a2,zero,+0000004D
+	addi	a1,zero,+00000001
+	addi	a0,a0,-00000058
 	jal	ra,0000000000015090
-	ld	a3,gp,-1920
-	lui	a0,0x00000011
-	addi	a2,zero,77
-	addi	a1,zero,1
-	addi	a0,a0,-8
+	ld	a3,gp,-00000780
+	lui	a0,00000011
+	addi	a2,zero,+0000004D
+	addi	a1,zero,+00000001
+	addi	a0,a0,-00000008
 	jal	ra,0000000000015090
-	ld	a3,gp,-1920
-	lui	a0,0x00000011
-	addi	a2,zero,77
-	addi	a1,zero,1
-	addi	a0,a0,72
+	ld	a3,gp,-00000780
+	lui	a0,00000011
+	addi	a2,zero,+0000004D
+	addi	a1,zero,+00000001
+	addi	a0,a0,+00000048
 	jal	ra,0000000000015090
-	ld	a3,gp,-1920
-	lui	a0,0x00000011
-	addi	a2,zero,46
-	addi	a1,zero,1
-	addi	a0,a0,152
+	ld	a3,gp,-00000780
+	lui	a0,00000011
+	addi	a2,zero,+0000002E
+	addi	a1,zero,+00000001
+	addi	a0,a0,+00000098
 	jal	ra,0000000000015090
-	ld	a3,gp,-1920
-	lui	a0,0x00000011
-	addi	a2,zero,72
-	addi	a1,zero,1
-	addi	a0,a0,200
+	ld	a3,gp,-00000780
+	lui	a0,00000011
+	addi	a2,zero,+00000048
+	addi	a1,zero,+00000001
+	addi	a0,a0,+000000C8
 	jal	ra,0000000000015090
-	ld	a3,gp,-1920
-	lui	a0,0x00000011
-	addi	a2,zero,45
-	addi	a1,zero,1
-	addi	a0,a0,280
+	ld	a3,gp,-00000780
+	lui	a0,00000011
+	addi	a2,zero,+0000002D
+	addi	a1,zero,+00000001
+	addi	a0,a0,+00000118
 	jal	ra,0000000000015090
-	ld	a3,gp,-1920
-	lui	a0,0x00000011
-	addi	a2,zero,67
-	addi	a1,zero,1
-	addi	a0,a0,328
+	ld	a3,gp,-00000780
+	lui	a0,00000011
+	addi	a2,zero,+00000043
+	addi	a1,zero,+00000001
+	addi	a0,a0,+00000148
 	jal	ra,0000000000015090
-	ld	a3,gp,-1920
-	lui	a0,0x00000011
-	addi	a2,zero,64
-	addi	a1,zero,1
-	addi	a0,a0,400
+	ld	a3,gp,-00000780
+	lui	a0,00000011
+	addi	a2,zero,+00000040
+	addi	a1,zero,+00000001
+	addi	a0,a0,+00000190
 	jal	ra,0000000000015090
-	ld	a3,gp,-1920
-	lui	a0,0x00000011
-	addi	a2,zero,72
-	addi	a1,zero,1
-	addi	a0,a0,472
+	ld	a3,gp,-00000780
+	lui	a0,00000011
+	addi	a2,zero,+00000048
+	addi	a1,zero,+00000001
+	addi	a0,a0,+000001D8
 	jal	ra,0000000000015090
-	ld	a3,gp,-1920
-	lui	a0,0x00000011
-	addi	a2,zero,46
-	addi	a1,zero,1
-	addi	a0,a0,552
+	ld	a3,gp,-00000780
+	lui	a0,00000011
+	addi	a2,zero,+0000002E
+	addi	a1,zero,+00000001
+	addi	a0,a0,+00000228
 	jal	ra,0000000000015090
-	ld	a1,gp,-1920
-	addi	a0,zero,10
+	ld	a1,gp,-00000780
+	addi	a0,zero,+0000000A
 	jal	ra,0000000000015100
-	ld	a3,gp,-1920
-	lui	a0,0x00000011
-	addi	a2,zero,15
-	addi	a1,zero,1
-	addi	a0,a0,600
+	ld	a3,gp,-00000780
+	lui	a0,00000011
+	addi	a2,zero,+0000000F
+	addi	a1,zero,+00000001
+	addi	a0,a0,+00000258
 	jal	ra,0000000000015090
-	ld	a3,gp,-1920
-	lui	a0,0x00000011
-	addi	a2,zero,87
-	addi	a1,zero,1
-	addi	a0,a0,616
+	ld	a3,gp,-00000780
+	lui	a0,00000011
+	addi	a2,zero,+00000057
+	addi	a1,zero,+00000001
+	addi	a0,a0,+00000268
 	jal	ra,0000000000015090
-	ld	a3,gp,-1920
-	lui	a0,0x00000011
-	addi	a2,zero,60
-	addi	a1,zero,1
-	addi	a0,a0,704
+	ld	a3,gp,-00000780
+	lui	a0,00000011
+	addi	a2,zero,+0000003C
+	addi	a1,zero,+00000001
+	addi	a0,a0,+000002C0
 	jal	ra,0000000000015090
-	ld	a3,gp,-1920
-	lui	a0,0x00000011
-	addi	a2,zero,68
-	addi	a1,zero,1
-	addi	a0,a0,768
+	ld	a3,gp,-00000780
+	lui	a0,00000011
+	addi	a2,zero,+00000044
+	addi	a1,zero,+00000001
+	addi	a0,a0,+00000300
 	jal	ra,0000000000015090
-	ld	a3,gp,-1920
-	lui	a0,0x00000011
-	addi	a2,zero,58
-	addi	a1,zero,1
-	addi	a0,a0,840
+	ld	a3,gp,-00000780
+	lui	a0,00000011
+	addi	a2,zero,+0000003A
+	addi	a1,zero,+00000001
+	addi	a0,a0,+00000348
 	jal	ra,0000000000015090
-	ld	a3,gp,-1920
-	lui	a0,0x00000011
-	addi	a2,zero,57
-	addi	a1,zero,1
-	addi	a0,a0,904
+	ld	a3,gp,-00000780
+	lui	a0,00000011
+	addi	a2,zero,+00000039
+	addi	a1,zero,+00000001
+	addi	a0,a0,+00000388
 	jal	ra,0000000000015090
-	ld	a3,gp,-1920
-	ld	ra,sp,8
-	ld	s0,sp,0
-	lui	a0,0x00000011
-	addi	a2,zero,62
-	addi	a1,zero,1
-	addi	a0,a0,968
-	addi	sp,sp,16
+	ld	a3,gp,-00000780
+	ld	ra,sp,+00000008
+	ld	s0,sp,+00000000
+	lui	a0,00000011
+	addi	a2,zero,+0000003E
+	addi	a1,zero,+00000001
+	addi	a0,a0,+000003C8
+	addi	sp,sp,+00000010
 	jal	zero,0000000000015090
 
 ;; fn00000000000163B0: 00000000000163B0
 fn00000000000163B0 proc
-	addi	sp,sp,-240
-	sd	s0,sp,224
-	sd	s1,sp,216
-	sd	s2,sp,208
-	sd	s3,sp,200
-	sd	s4,sp,192
-	sd	s5,sp,184
-	sd	s6,sp,176
-	sd	s7,sp,168
-	sd	s8,sp,160
-	sd	s9,sp,152
-	sd	ra,sp,232
-	ld	a5,gp,-1936
-	lbu	a4,a0,0
-	lui	s4,0x00000011
-	addi	s0,zero,0
-	addi	s2,a0,0
-	addi	a3,s4,1480
-	addi	a2,zero,128
-	addi	a1,zero,1
-	addi	a0,sp,8
-	addi	s3,zero,16
-	addiw	s0,s0,1
-	sd	a5,sp,136
-	addi	s2,s2,1
+	addi	sp,sp,-000000F0
+	sd	s0,sp,+000000E0
+	sd	s1,sp,+000000D8
+	sd	s2,sp,+000000D0
+	sd	s3,sp,+000000C8
+	sd	s4,sp,+000000C0
+	sd	s5,sp,+000000B8
+	sd	s6,sp,+000000B0
+	sd	s7,sp,+000000A8
+	sd	s8,sp,+000000A0
+	sd	s9,sp,+00000098
+	sd	ra,sp,+000000E8
+	ld	a5,gp,-00000790
+	lbu	a4,a0,+00000000
+	lui	s4,00000011
+	addi	s0,zero,+00000000
+	addi	s2,a0,+00000000
+	addi	a3,s4,+000005C8
+	addi	a2,zero,+00000080
+	addi	a1,zero,+00000001
+	addi	a0,sp,+00000008
+	addi	s3,zero,+00000010
+	addiw	s0,s0,00000001
+	sd	a5,sp,+00000088
+	addi	s2,s2,+00000001
 	jal	ra,0000000000015080
-	addi	s1,sp,10
-	addi	s6,zero,128
-	addi	s5,zero,1
-	addi	s9,zero,15
-	addi	s7,zero,58
+	addi	s1,sp,+0000000A
+	addi	s6,zero,+00000080
+	addi	s5,zero,+00000001
+	addi	s9,zero,+0000000F
+	addi	s7,zero,+0000003A
 	beq	s0,s3,000000000001646C
 
 l0000000000016430:
-	lbu	a4,s2,0
-	addi	a3,s4,1480
-	addi	a2,s6,0
-	addi	a1,s5,0
-	addi	a0,s1,0
+	lbu	a4,s2,+00000000
+	addi	a3,s4,+000005C8
+	addi	a2,s6,+00000000
+	addi	a1,s5,+00000000
+	addi	a0,s1,+00000000
 	jal	ra,0000000000015080
-	andi	a5,s0,1
-	addi	a4,s1,2
+	andi	a5,s0,+00000001
+	addi	a4,s1,+00000002
 	beq	a5,zero,00000000000164B8
 
 l0000000000016454:
 	beq	s0,s9,00000000000164C4
 
 l0000000000016458:
-	sb	s7,s1,2
-	addi	s2,s2,1
-	addi	s1,s1,3
+	sb	s7,s1,+00000002
+	addi	s2,s2,+00000001
+	addi	s1,s1,+00000003
 
 l0000000000016464:
-	addiw	s0,s0,1
+	addiw	s0,s0,00000001
 	bne	s0,s3,0000000000016430
 
 l000000000001646C:
-	sb	zero,s1,0
-	addi	a0,sp,8
+	sb	zero,s1,+00000000
+	addi	a0,sp,+00000008
 	jal	ra,0000000000014F30
-	ld	a4,sp,136
-	ld	a5,gp,-1936
+	ld	a4,sp,+00000088
+	ld	a5,gp,-00000790
 	bne	a4,a5,00000000000164CC
 
 l0000000000016484:
-	ld	ra,sp,232
-	ld	s0,sp,224
-	ld	s1,sp,216
-	ld	s2,sp,208
-	ld	s3,sp,200
-	ld	s4,sp,192
-	ld	s5,sp,184
-	ld	s6,sp,176
-	ld	s7,sp,168
-	ld	s8,sp,160
-	ld	s9,sp,152
-	addi	sp,sp,240
-	jalr	zero,ra,0
+	ld	ra,sp,+000000E8
+	ld	s0,sp,+000000E0
+	ld	s1,sp,+000000D8
+	ld	s2,sp,+000000D0
+	ld	s3,sp,+000000C8
+	ld	s4,sp,+000000C0
+	ld	s5,sp,+000000B8
+	ld	s6,sp,+000000B0
+	ld	s7,sp,+000000A8
+	ld	s8,sp,+000000A0
+	ld	s9,sp,+00000098
+	addi	sp,sp,+000000F0
+	jalr	zero,ra,+00000000
 
 l00000000000164B8:
-	addi	s1,a4,0
-	addi	s2,s2,1
+	addi	s1,a4,+00000000
+	addi	s2,s2,+00000001
 	jal	zero,0000000000016464
 
 l00000000000164C4:
-	addi	s1,a4,0
+	addi	s1,a4,+00000000
 	jal	zero,000000000001646C
 
 l00000000000164CC:
@@ -2544,114 +2544,114 @@ l00000000000164CC:
 
 ;; fn00000000000164D0: 00000000000164D0
 fn00000000000164D0 proc
-	addi	sp,sp,-32
-	sd	s0,sp,16
-	addi	s0,a0,0
-	lui	a0,0x00000011
-	sd	s2,sp,0
-	addi	a0,a0,1488
-	addi	s2,a1,0
-	addi	a1,zero,0
-	sd	ra,sp,24
-	sd	s1,sp,8
+	addi	sp,sp,-00000020
+	sd	s0,sp,+00000010
+	addi	s0,a0,+00000000
+	lui	a0,00000011
+	sd	s2,sp,+00000000
+	addi	a0,a0,+000005D0
+	addi	s2,a1,+00000000
+	addi	a1,zero,+00000000
+	sd	ra,sp,+00000018
+	sd	s1,sp,+00000008
 	jal	ra,0000000000014FB0
 	blt	a0,zero,0000000000016544
 
 l0000000000016500:
-	slli	a2,s2,0x00000000
-	addi	a1,s0,0
-	srli	a2,a2,0x00000000
-	addi	s1,a0,0
+	slli	a2,s2,00000000
+	addi	a1,s0,+00000000
+	srli	a2,a2,00000000
+	addi	s1,a0,+00000000
 	jal	ra,0000000000014F60
-	addi	s0,a0,0
-	addi	a0,s1,0
+	addi	s0,a0,+00000000
+	addi	a0,s1,+00000000
 	jal	ra,0000000000014F50
 	subw	a0,s0,s2
 	sltu	a0,zero,a0
 	subw	a0,zero,a0
 
 l000000000001652C:
-	ld	ra,sp,24
-	ld	s0,sp,16
-	ld	s1,sp,8
-	ld	s2,sp,0
-	addi	sp,sp,32
-	jalr	zero,ra,0
+	ld	ra,sp,+00000018
+	ld	s0,sp,+00000010
+	ld	s1,sp,+00000008
+	ld	s2,sp,+00000000
+	addi	sp,sp,+00000020
+	jalr	zero,ra,+00000000
 
 l0000000000016544:
-	addi	a0,zero,-1
+	addi	a0,zero,-00000001
 	jal	zero,000000000001652C
 
 ;; fn000000000001654C: 000000000001654C
 fn000000000001654C proc
-	addi	sp,sp,-128
-	sd	s0,sp,64
-	ld	t3,gp,-1936
-	addi	t1,sp,88
-	sd	s2,sp,48
-	sd	s3,sp,40
-	addi	s2,a1,0
-	addi	s3,a0,0
-	sd	a3,sp,88
-	addi	a1,zero,1
-	addi	a3,t1,0
-	addi	a0,sp,16
-	sd	ra,sp,72
-	sd	s1,sp,56
-	sd	a4,sp,96
-	sd	a5,sp,104
-	sd	a6,sp,112
-	sd	a7,sp,120
-	sd	t3,sp,24
-	sd	zero,sp,16
-	sd	t1,sp,8
+	addi	sp,sp,-00000080
+	sd	s0,sp,+00000040
+	ld	t3,gp,-00000790
+	addi	t1,sp,+00000058
+	sd	s2,sp,+00000030
+	sd	s3,sp,+00000028
+	addi	s2,a1,+00000000
+	addi	s3,a0,+00000000
+	sd	a3,sp,+00000058
+	addi	a1,zero,+00000001
+	addi	a3,t1,+00000000
+	addi	a0,sp,+00000010
+	sd	ra,sp,+00000048
+	sd	s1,sp,+00000038
+	sd	a4,sp,+00000060
+	sd	a5,sp,+00000068
+	sd	a6,sp,+00000070
+	sd	a7,sp,+00000078
+	sd	t3,sp,+00000018
+	sd	zero,sp,+00000010
+	sd	t1,sp,+00000008
 	jal	ra,0000000000015000
 	blt	a0,zero,00000000000165D8
 
 l00000000000165A8:
-	ld	a1,gp,-1912
-	addi	a0,s2,0
+	ld	a1,gp,-00000778
+	addi	a0,s2,+00000000
 	jal	ra,00000000000150B0
-	lw	a5,gp,-2032
+	lw	a5,gp,-000007F0
 	bne	a5,zero,000000000001661C
 
 l00000000000165BC:
-	ld	a1,gp,-1912
-	ld	a0,sp,16
+	ld	a1,gp,-00000778
+	ld	a0,sp,+00000010
 	jal	ra,00000000000150B0
-	lw	a5,gp,-2032
+	lw	a5,gp,-000007F0
 	bne	a5,zero,0000000000016600
 
 l00000000000165D0:
-	ld	a0,sp,16
+	ld	a0,sp,+00000010
 	jal	ra,0000000000015060
 
 l00000000000165D8:
-	ld	a4,sp,24
-	ld	a5,gp,-1936
+	ld	a4,sp,+00000018
+	ld	a5,gp,-00000790
 	bne	a4,a5,000000000001662C
 
 l00000000000165E4:
-	ld	ra,sp,72
-	ld	s0,sp,64
-	ld	s1,sp,56
-	ld	s2,sp,48
-	ld	s3,sp,40
-	addi	sp,sp,128
-	jalr	zero,ra,0
+	ld	ra,sp,+00000048
+	ld	s0,sp,+00000040
+	ld	s1,sp,+00000038
+	ld	s2,sp,+00000030
+	ld	s3,sp,+00000028
+	addi	sp,sp,+00000080
+	jalr	zero,ra,+00000000
 
 l0000000000016600:
-	ld	a3,gp,-1912
-	lui	a0,0x00000011
-	addi	a2,zero,4
-	addi	a1,zero,1
-	addi	a0,a0,1504
+	ld	a3,gp,-00000778
+	lui	a0,00000011
+	addi	a2,zero,+00000004
+	addi	a1,zero,+00000001
+	addi	a0,a0,+000005E0
 	jal	ra,0000000000015090
 	jal	zero,00000000000165D0
 
 l000000000001661C:
-	ld	a1,gp,-1912
-	addi	a0,s3,0
+	ld	a1,gp,-00000778
+	addi	a0,s3,+00000000
 	jal	ra,00000000000150B0
 	jal	zero,00000000000165BC
 
@@ -2660,36 +2660,36 @@ l000000000001662C:
 
 ;; fn0000000000016630: 0000000000016630
 fn0000000000016630 proc
-	addi	sp,sp,-64
-	sd	s0,sp,48
-	ld	a5,gp,-1936
-	sd	ra,sp,56
-	sd	s1,sp,40
-	sd	a5,sp,8
-	sd	s2,sp,32
-	sd	s3,sp,24
-	addi	s2,a0,0
-	addi	s3,a1,0
-	sd	zero,sp,0
+	addi	sp,sp,-00000040
+	sd	s0,sp,+00000030
+	ld	a5,gp,-00000790
+	sd	ra,sp,+00000038
+	sd	s1,sp,+00000028
+	sd	a5,sp,+00000008
+	sd	s2,sp,+00000020
+	sd	s3,sp,+00000018
+	addi	s2,a0,+00000000
+	addi	s3,a1,+00000000
+	sd	zero,sp,+00000000
 	jal	ra,0000000000015120
-	sw	zero,a0,0
-	addi	s1,a0,0
-	addi	a2,zero,0
-	addi	a1,sp,0
-	addi	a0,s2,0
+	sw	zero,a0,+00000000
+	addi	s1,a0,+00000000
+	addi	a2,zero,+00000000
+	addi	a1,sp,+00000000
+	addi	a0,s2,+00000000
 	jal	ra,0000000000015130
-	ld	a5,sp,0
+	ld	a5,sp,+00000000
 	beq	a5,zero,000000000001668C
 
 l0000000000016680:
 	beq	s2,a5,000000000001668C
 
 l0000000000016684:
-	lbu	a5,a5,0
+	lbu	a5,a5,+00000000
 	beq	a5,zero,00000000000166C4
 
 l000000000001668C:
-	lw	a5,s1,0
+	lw	a5,s1,+00000000
 
 l0000000000016690:
 	bge	zero,a5,00000000000166E8
@@ -2698,39 +2698,39 @@ l0000000000016694:
 	subw	a5,zero,a5
 
 l0000000000016698:
-	ld	a3,sp,8
-	ld	a4,gp,-1936
-	addi	a0,a5,0
+	ld	a3,sp,+00000008
+	ld	a4,gp,-00000790
+	addi	a0,a5,+00000000
 	bne	a3,a4,00000000000166F0
 
 l00000000000166A8:
-	ld	ra,sp,56
-	ld	s0,sp,48
-	ld	s1,sp,40
-	ld	s2,sp,32
-	ld	s3,sp,24
-	addi	sp,sp,64
-	jalr	zero,ra,0
+	ld	ra,sp,+00000038
+	ld	s0,sp,+00000030
+	ld	s1,sp,+00000028
+	ld	s2,sp,+00000020
+	ld	s3,sp,+00000018
+	addi	sp,sp,+00000040
+	jalr	zero,ra,+00000000
 
 l00000000000166C4:
-	lw	a5,s1,0
+	lw	a5,s1,+00000000
 	bne	a5,zero,0000000000016690
 
 l00000000000166CC:
-	addiw	a4,a0,0
-	addi	a3,a4,0
+	addiw	a4,a0,00000000
+	addi	a3,a4,+00000000
 	bne	a0,a3,00000000000166E0
 
 l00000000000166D8:
-	sw	a4,s3,0
+	sw	a4,s3,+00000000
 	jal	zero,0000000000016698
 
 l00000000000166E0:
-	addi	a5,zero,-34
+	addi	a5,zero,-00000022
 	jal	zero,0000000000016698
 
 l00000000000166E8:
-	addi	a5,zero,-22
+	addi	a5,zero,-00000016
 	jal	zero,0000000000016698
 
 l00000000000166F0:
@@ -2738,97 +2738,97 @@ l00000000000166F0:
 
 ;; fn00000000000166F4: 00000000000166F4
 fn00000000000166F4 proc
-	addi	sp,sp,-64
-	sd	s2,sp,32
-	ld	a5,gp,-1936
-	sd	s0,sp,48
-	lw	s0,a0,0
-	sd	s1,sp,40
-	sd	s3,sp,24
-	sd	s4,sp,16
-	sd	ra,sp,56
-	sd	a5,sp,8
-	addi	s1,a0,0
-	addi	s3,a1,0
-	addi	s4,a2,0
+	addi	sp,sp,-00000040
+	sd	s2,sp,+00000020
+	ld	a5,gp,-00000790
+	sd	s0,sp,+00000030
+	lw	s0,a0,+00000000
+	sd	s1,sp,+00000028
+	sd	s3,sp,+00000018
+	sd	s4,sp,+00000010
+	sd	ra,sp,+00000038
+	sd	a5,sp,+00000008
+	addi	s1,a0,+00000000
+	addi	s3,a1,+00000000
+	addi	s4,a2,+00000000
 	bne	s0,zero,00000000000167C8
 
 l000000000001672C:
-	addi	a1,zero,46
-	addi	a0,s3,0
+	addi	a1,zero,+0000002E
+	addi	a0,s3,+00000000
 	jal	ra,0000000000015140
 	beq	a0,zero,00000000000167C8
 
 l000000000001673C:
-	addi	a2,sp,0
-	addi	a1,s3,0
-	addi	a0,zero,2
+	addi	a2,sp,+00000000
+	addi	a1,s3,+00000000
+	addi	a0,zero,+00000002
 	jal	ra,0000000000015040
 	beq	a0,zero,000000000001678C
 
 l0000000000016750:
-	lw	a0,sp,0
+	lw	a0,sp,+00000000
 	jal	ra,00000000000182B4
 	beq	a0,zero,0000000000016790
 
 l000000000001675C:
-	andi	a5,a0,1
+	andi	a5,a0,+00000001
 	bne	a5,zero,0000000000016778
 
 l0000000000016764:
-	srliw	a5,a0,0x00000001
+	srliw	a5,a0,00000001
 	beq	a5,zero,0000000000016790
 
 l000000000001676C:
-	andi	a4,a5,1
+	andi	a4,a5,+00000001
 	beq	a4,zero,0000000000016820
 
 l0000000000016774:
-	addi	a0,a5,0
+	addi	a0,a5,+00000000
 
 l0000000000016778:
-	srliw	a0,a0,0x00000001
-	addiw	s0,s0,1
+	srliw	a0,a0,00000001
+	addiw	s0,s0,00000001
 	beq	a0,zero,0000000000016790
 
 l0000000000016784:
-	andi	a5,a0,1
+	andi	a5,a0,+00000001
 	bne	a5,zero,0000000000016778
 
 l000000000001678C:
-	addi	s0,zero,-1
+	addi	s0,zero,-00000001
 
 l0000000000016790:
-	sw	s0,sp,0
+	sw	s0,sp,+00000000
 
 l0000000000016794:
-	lw	a5,sp,0
+	lw	a5,sp,+00000000
 	beq	s4,zero,00000000000167DC
 
 l000000000001679C:
-	addi	a4,zero,32
-	addi	a0,a5,0
+	addi	a4,zero,+00000020
+	addi	a0,a5,+00000000
 	bge	a4,a5,00000000000167DC
 
 l00000000000167A8:
-	lw	a4,s1,0
+	lw	a4,s1,+00000000
 	bne	a4,zero,00000000000167B8
 
 l00000000000167B0:
-	addi	a4,zero,1
-	sw	a4,s1,0
+	addi	a4,zero,+00000001
+	sw	a4,s1,+00000000
 
 l00000000000167B8:
-	addi	a4,zero,128
+	addi	a4,zero,+00000080
 	bge	a4,a5,00000000000167F4
 
 l00000000000167C0:
-	addi	a0,zero,-1
+	addi	a0,zero,-00000001
 	jal	zero,00000000000167F4
 
 l00000000000167C8:
-	addi	a1,sp,0
-	addi	a0,s3,0
+	addi	a1,sp,+00000000
+	addi	a0,s3,+00000000
 	jal	ra,0000000000016630
 	beq	a0,zero,0000000000016794
 
@@ -2836,34 +2836,34 @@ l00000000000167D8:
 	jal	zero,00000000000167C0
 
 l00000000000167DC:
-	addi	a0,a5,0
+	addi	a0,a5,+00000000
 	blt	a5,zero,00000000000167C0
 
 l00000000000167E4:
-	lw	a4,s1,0
+	lw	a4,s1,+00000000
 	bne	a4,zero,00000000000167B8
 
 l00000000000167EC:
-	addi	a5,zero,32
+	addi	a5,zero,+00000020
 	blt	a5,a0,00000000000167C0
 
 l00000000000167F4:
-	ld	a4,sp,8
-	ld	a5,gp,-1936
+	ld	a4,sp,+00000008
+	ld	a5,gp,-00000790
 	bne	a4,a5,000000000001682C
 
 l0000000000016800:
-	ld	ra,sp,56
-	ld	s0,sp,48
-	ld	s1,sp,40
-	ld	s2,sp,32
-	ld	s3,sp,24
-	ld	s4,sp,16
-	addi	sp,sp,64
-	jalr	zero,ra,0
+	ld	ra,sp,+00000038
+	ld	s0,sp,+00000030
+	ld	s1,sp,+00000028
+	ld	s2,sp,+00000020
+	ld	s3,sp,+00000018
+	ld	s4,sp,+00000010
+	addi	sp,sp,+00000040
+	jalr	zero,ra,+00000000
 
 l0000000000016820:
-	srliw	a0,a0,0x00000002
+	srliw	a0,a0,00000002
 	bne	a0,zero,000000000001675C
 
 l0000000000016828:
@@ -2874,33 +2874,33 @@ l000000000001682C:
 
 ;; fn0000000000016830: 0000000000016830
 fn0000000000016830 proc
-	addi	sp,sp,-32
-	sd	s0,sp,16
-	ld	a5,gp,-1936
-	sd	ra,sp,24
-	sw	zero,sp,0
-	sd	a5,sp,8
+	addi	sp,sp,-00000020
+	sd	s0,sp,+00000010
+	ld	a5,gp,-00000790
+	sd	ra,sp,+00000018
+	sw	zero,sp,+00000000
+	sd	a5,sp,+00000008
 	beq	a0,zero,0000000000016864
 
 l000000000001684C:
-	addi	a5,zero,32
+	addi	a5,zero,+00000020
 	subw	a0,a5,a0
-	addi	a5,zero,-1
-	sllw	a0,a5,a0
+	addi	a5,zero,-00000001
+	invalid
 	jal	ra,00000000000182B4
-	sw	a0,sp,0
+	sw	a0,sp,+00000000
 
 l0000000000016864:
-	ld	a4,sp,8
-	ld	a5,gp,-1936
-	lw	a0,sp,0
+	ld	a4,sp,+00000008
+	ld	a5,gp,-00000790
+	lw	a0,sp,+00000000
 	bne	a4,a5,0000000000016884
 
 l0000000000016874:
-	ld	ra,sp,24
-	ld	s0,sp,16
-	addi	sp,sp,32
-	jalr	zero,ra,0
+	ld	ra,sp,+00000018
+	ld	s0,sp,+00000010
+	addi	sp,sp,+00000020
+	jalr	zero,ra,+00000000
 
 l0000000000016884:
 	jal	ra,0000000000015110
@@ -2911,94 +2911,94 @@ l0000000000016884:
 
 ;; fn00000000000168B8: 00000000000168B8
 fn00000000000168B8 proc
-	addi	sp,sp,-16
-	sd	s0,sp,0
-	addi	s0,a0,0
-	addi	a0,a1,0
-	sd	ra,sp,8
+	addi	sp,sp,-00000010
+	sd	s0,sp,+00000000
+	addi	s0,a0,+00000000
+	addi	a0,a1,+00000000
+	sd	ra,sp,+00000008
 	jal	ra,0000000000016830
-	ld	ra,sp,8
+	ld	ra,sp,+00000008
 	and	a0,s0,a0
-	ld	s0,sp,0
-	addi	sp,sp,16
-	jalr	zero,ra,0
+	ld	s0,sp,+00000000
+	addi	sp,sp,+00000010
+	jalr	zero,ra,+00000000
 
 ;; fn00000000000168E4: 00000000000168E4
 fn00000000000168E4 proc
-	addi	sp,sp,-96
-	sd	s0,sp,80
-	ld	a4,gp,-1936
-	sd	ra,sp,88
-	sd	s1,sp,72
-	addi	a5,zero,2
-	sd	a4,sp,56
-	addi	a7,a0,0
+	addi	sp,sp,-00000060
+	sd	s0,sp,+00000050
+	ld	a4,gp,-00000790
+	sd	ra,sp,+00000058
+	sd	s1,sp,+00000048
+	addi	a5,zero,+00000002
+	sd	a4,sp,+00000038
+	addi	a7,a0,+00000000
 	beq	a0,a5,0000000000016984
 
 l0000000000016908:
-	addi	a5,zero,10
+	addi	a5,zero,+0000000A
 	beq	a0,a5,0000000000016934
 
 l0000000000016910:
-	addi	a0,zero,0
+	addi	a0,zero,+00000000
 
 l0000000000016914:
-	ld	a4,sp,56
-	ld	a5,gp,-1936
+	ld	a4,sp,+00000038
+	ld	a5,gp,-00000790
 	bne	a4,a5,00000000000169D4
 
 l0000000000016920:
-	ld	ra,sp,88
-	ld	s0,sp,80
-	ld	s1,sp,72
-	addi	sp,sp,96
-	jalr	zero,ra,0
+	ld	ra,sp,+00000058
+	ld	s0,sp,+00000050
+	ld	s1,sp,+00000048
+	addi	sp,sp,+00000060
+	jalr	zero,ra,+00000000
 
 l0000000000016934:
-	sd	zero,sp,24
-	addi	a2,zero,16
-	addi	a0,sp,32
-	sd	zero,sp,32
-	sd	zero,sp,40
-	sw	zero,sp,48
-	sh	a7,sp,24
+	sd	zero,sp,+00000018
+	addi	a2,zero,+00000010
+	addi	a0,sp,+00000020
+	sd	zero,sp,+00000020
+	sd	zero,sp,+00000028
+	sw	zero,sp,+00000030
+	sh	a7,sp,+00000018
 	jal	ra,0000000000015150
-	addi	a6,zero,0
-	addi	a5,zero,0
-	addi	a4,zero,0
-	addi	a3,zero,1025
-	addi	a2,gp,-1896
-	addi	a1,zero,28
-	addi	a0,sp,24
+	addi	a6,zero,+00000000
+	addi	a5,zero,+00000000
+	addi	a4,zero,+00000000
+	addi	a3,zero,+00000401
+	addi	a2,gp,-00000768
+	addi	a1,zero,+0000001C
+	addi	a0,sp,+00000018
 	jal	ra,0000000000015020
 
 l0000000000016974:
 	bne	a0,zero,0000000000016910
 
 l0000000000016978:
-	addi	a0,gp,-1896
+	addi	a0,gp,-00000768
 	jal	ra,0000000000014F30
 	jal	zero,0000000000016914
 
 l0000000000016984:
-	lbu	t5,a1,0
-	lbu	t4,a1,1
-	lbu	t3,a1,2
-	lbu	t1,a1,3
-	sd	zero,sp,8
-	addi	a6,zero,0
-	addi	a5,zero,0
-	addi	a4,zero,0
-	addi	a3,zero,1025
-	addi	a2,gp,-1896
-	addi	a1,zero,16
-	addi	a0,sp,8
-	sd	zero,sp,16
-	sh	a7,sp,8
-	sb	t5,sp,12
-	sb	t4,sp,13
-	sb	t3,sp,14
-	sb	t1,sp,15
+	lbu	t5,a1,+00000000
+	lbu	t4,a1,+00000001
+	lbu	t3,a1,+00000002
+	lbu	t1,a1,+00000003
+	sd	zero,sp,+00000008
+	addi	a6,zero,+00000000
+	addi	a5,zero,+00000000
+	addi	a4,zero,+00000000
+	addi	a3,zero,+00000401
+	addi	a2,gp,-00000768
+	addi	a1,zero,+00000010
+	addi	a0,sp,+00000008
+	sd	zero,sp,+00000010
+	sh	a7,sp,+00000008
+	sb	t5,sp,+0000000C
+	sb	t4,sp,+0000000D
+	sb	t3,sp,+0000000E
+	sb	t1,sp,+0000000F
 	jal	ra,0000000000015020
 	jal	zero,0000000000016974
 
@@ -3007,95 +3007,95 @@ l00000000000169D4:
 
 ;; fn00000000000169D8: 00000000000169D8
 fn00000000000169D8 proc
-	addi	sp,sp,-112
-	sd	s4,sp,64
-	ld	a5,gp,-1936
-	addi	a4,a1,0
-	sd	zero,sp,8
-	sw	a0,sp,12
-	addi	a3,sp,0
-	addi	a2,sp,8
-	addi	a1,zero,0
-	addi	a0,a4,0
-	sd	ra,sp,104
-	sd	s0,sp,96
-	sd	s1,sp,88
-	sd	s2,sp,80
-	sd	s3,sp,72
-	sd	a5,sp,56
-	sd	zero,sp,16
-	sd	zero,sp,24
-	sd	zero,sp,32
-	sd	zero,sp,40
-	sd	zero,sp,48
+	addi	sp,sp,-00000070
+	sd	s4,sp,+00000040
+	ld	a5,gp,-00000790
+	addi	a4,a1,+00000000
+	sd	zero,sp,+00000008
+	sw	a0,sp,+0000000C
+	addi	a3,sp,+00000000
+	addi	a2,sp,+00000008
+	addi	a1,zero,+00000000
+	addi	a0,a4,+00000000
+	sd	ra,sp,+00000068
+	sd	s0,sp,+00000060
+	sd	s1,sp,+00000058
+	sd	s2,sp,+00000050
+	sd	s3,sp,+00000048
+	sd	a5,sp,+00000038
+	sd	zero,sp,+00000010
+	sd	zero,sp,+00000018
+	sd	zero,sp,+00000020
+	sd	zero,sp,+00000028
+	sd	zero,sp,+00000030
 	jal	ra,0000000000014F90
 	bne	a0,zero,0000000000016AD8
 
 l0000000000016A34:
-	ld	s0,sp,0
+	ld	s0,sp,+00000000
 	beq	s0,zero,0000000000016AA0
 
 l0000000000016A3C:
-	addi	s1,gp,-864
-	addi	s3,zero,2
-	addi	s2,zero,64
+	addi	s1,gp,-00000360
+	addi	s3,zero,+00000002
+	addi	s2,zero,+00000040
 	jal	zero,0000000000016A68
 
 l0000000000016A4C:
-	addi	a1,a1,8
-	addi	a3,s2,0
-	addi	a2,s1,0
+	addi	a1,a1,+00000008
+	addi	a3,s2,+00000000
+	addi	a2,s1,+00000000
 	jal	ra,0000000000014F70
 	bne	a0,zero,0000000000016A88
 
 l0000000000016A60:
-	ld	s0,s0,40
+	ld	s0,s0,+00000028
 	beq	s0,zero,0000000000016A9C
 
 l0000000000016A68:
-	lw	a0,s0,4
-	ld	a1,s0,24
+	lw	a0,s0,+00000004
+	ld	a1,s0,+00000018
 	bne	a0,s3,0000000000016A4C
 
 l0000000000016A74:
-	addi	a1,a1,4
-	addi	a3,s2,0
-	addi	a2,s1,0
+	addi	a1,a1,+00000004
+	addi	a3,s2,+00000000
+	addi	a2,s1,+00000000
 	jal	ra,0000000000014F70
 	beq	a0,zero,0000000000016A60
 
 l0000000000016A88:
-	ld	a0,sp,0
+	ld	a0,sp,+00000000
 	jal	ra,0000000000015170
-	addi	a0,s1,0
+	addi	a0,s1,+00000000
 	jal	ra,0000000000014F30
 	jal	zero,0000000000016AAC
 
 l0000000000016A9C:
-	ld	s0,sp,0
+	ld	s0,sp,+00000000
 
 l0000000000016AA0:
-	addi	a0,s0,0
+	addi	a0,s0,+00000000
 	jal	ra,0000000000015170
-	addi	a0,zero,0
+	addi	a0,zero,+00000000
 
 l0000000000016AAC:
-	ld	a4,sp,56
-	ld	a5,gp,-1936
+	ld	a4,sp,+00000038
+	ld	a5,gp,-00000790
 	bne	a4,a5,0000000000016AE0
 
 l0000000000016AB8:
-	ld	ra,sp,104
-	ld	s0,sp,96
-	ld	s1,sp,88
-	ld	s2,sp,80
-	ld	s3,sp,72
-	ld	s4,sp,64
-	addi	sp,sp,112
-	jalr	zero,ra,0
+	ld	ra,sp,+00000068
+	ld	s0,sp,+00000060
+	ld	s1,sp,+00000058
+	ld	s2,sp,+00000050
+	ld	s3,sp,+00000048
+	ld	s4,sp,+00000040
+	addi	sp,sp,+00000070
+	jalr	zero,ra,+00000000
 
 l0000000000016AD8:
-	addi	a0,zero,0
+	addi	a0,zero,+00000000
 	jal	zero,0000000000016AAC
 
 l0000000000016AE0:
@@ -3109,224 +3109,224 @@ l0000000000016AE0:
 
 ;; fn0000000000016B38: 0000000000016B38
 fn0000000000016B38 proc
-	addi	a5,zero,127
+	addi	a5,zero,+0000007F
 	bltu	a5,a0,0000000000016B5C
 
 l0000000000016B40:
-	slli	a0,a0,0x00000000
-	lui	a5,0x00000010
-	addi	a5,a5,1152
-	srli	a0,a0,0x0000001D
+	slli	a0,a0,00000000
+	lui	a5,00000010
+	addi	a5,a5,+00000480
+	srli	a0,a0,0000001D
 	add	a0,a5,a0
-	ld	a0,a0,0
-	jalr	zero,ra,0
+	ld	a0,a0,+00000000
+	jalr	zero,ra,+00000000
 
 l0000000000016B5C:
-	lui	a0,0x00000011
-	addi	a0,a0,464
-	jalr	zero,ra,0
+	lui	a0,00000011
+	addi	a0,a0,+000001D0
+	jalr	zero,ra,+00000000
 
 ;; fn0000000000016B68: 0000000000016B68
 fn0000000000016B68 proc
-	addi	sp,sp,-16
-	sd	ra,sp,8
+	addi	sp,sp,-00000010
+	sd	ra,sp,+00000008
 	jal	ra,00000000000182B4
-	srliw	a5,a0,0x00000018
+	srliw	a5,a0,00000018
 	beq	a5,zero,0000000000016BD8
 
 l0000000000016B7C:
-	addi	a4,zero,10
+	addi	a4,zero,+0000000A
 	beq	a5,a4,0000000000016C2C
 
 l0000000000016B84:
-	addi	a3,zero,100
-	srliw	a4,a0,0x00000010
+	addi	a3,zero,+00000064
+	srliw	a4,a0,00000010
 	beq	a5,a3,0000000000016C58
 
 l0000000000016B90:
-	addi	a3,zero,127
+	addi	a3,zero,+0000007F
 	beq	a5,a3,0000000000016C70
 
 l0000000000016B98:
-	srliw	a2,a0,0x00000008
-	addi	a1,zero,169
-	andi	a3,a4,255
-	andi	a6,a2,255
+	srliw	a2,a0,00000008
+	addi	a1,zero,+000000A9
+	andi	a3,a4,+000000FF
+	andi	a6,a2,+000000FF
 	beq	a5,a1,0000000000016C44
 
 l0000000000016BAC:
-	addi	a1,zero,172
+	addi	a1,zero,+000000AC
 	bne	a5,a1,0000000000016BF0
 
 l0000000000016BB4:
-	andi	a4,a4,240
-	addi	a3,zero,16
+	andi	a4,a4,+000000F0
+	addi	a3,zero,+00000010
 	beq	a4,a3,0000000000016C2C
 
 l0000000000016BC0:
-	addiw	a4,a5,-224
-	addi	a3,zero,15
+	addiw	a4,a5,FFFFFFFFFFFFFF20
+	addi	a3,zero,+0000000F
 	bltu	a3,a4,0000000000016CB8
 
 l0000000000016BCC:
-	lui	a4,0x00000011
-	addi	a4,a4,1864
+	lui	a4,00000011
+	addi	a4,a4,+00000748
 	jal	zero,0000000000016BE0
 
 l0000000000016BD8:
-	lui	a4,0x00000011
-	addi	a4,a4,1512
+	lui	a4,00000011
+	addi	a4,a4,+000005E8
 
 l0000000000016BE0:
-	ld	ra,sp,8
-	addi	a0,a4,0
-	addi	sp,sp,16
-	jalr	zero,ra,0
+	ld	ra,sp,+00000008
+	addi	a0,a4,+00000000
+	addi	sp,sp,+00000010
+	jalr	zero,ra,+00000000
 
 l0000000000016BF0:
-	addi	a1,zero,192
+	addi	a1,zero,+000000C0
 	bne	a5,a1,0000000000016C7C
 
 l0000000000016BF8:
 	or	a4,a4,a2
-	andi	a4,a4,255
+	andi	a4,a4,+000000FF
 	beq	a4,zero,0000000000016CD0
 
 l0000000000016C04:
-	addi	a4,zero,2
+	addi	a4,zero,+00000002
 	beq	a3,a4,0000000000016CDC
 
 l0000000000016C0C:
-	addi	a4,zero,51
+	addi	a4,zero,+00000033
 	beq	a3,a4,0000000000016C9C
 
 l0000000000016C14:
-	addi	a4,zero,88
+	addi	a4,zero,+00000058
 	beq	a3,a4,0000000000016CB0
 
 l0000000000016C1C:
-	addi	a4,zero,52
+	addi	a4,zero,+00000034
 	beq	a3,a4,0000000000016CEC
 
 l0000000000016C24:
-	addi	a4,zero,168
+	addi	a4,zero,+000000A8
 	bne	a3,a4,0000000000016BC0
 
 l0000000000016C2C:
-	ld	ra,sp,8
-	lui	a4,0x00000011
-	addi	a4,a4,1544
-	addi	a0,a4,0
-	addi	sp,sp,16
-	jalr	zero,ra,0
+	ld	ra,sp,+00000008
+	lui	a4,00000011
+	addi	a4,a4,+00000608
+	addi	a0,a4,+00000000
+	addi	sp,sp,+00000010
+	jalr	zero,ra,+00000000
 
 l0000000000016C44:
-	addi	a4,zero,254
+	addi	a4,zero,+000000FE
 	bne	a3,a4,0000000000016BC0
 
 l0000000000016C4C:
-	lui	a4,0x00000011
-	addi	a4,a4,1600
+	lui	a4,00000011
+	addi	a4,a4,+00000640
 	jal	zero,0000000000016BE0
 
 l0000000000016C58:
-	andi	a4,a4,192
-	addi	a3,zero,64
+	andi	a4,a4,+000000C0
+	addi	a3,zero,+00000040
 	bne	a4,a3,0000000000016BC0
 
 l0000000000016C64:
-	lui	a4,0x00000011
-	addi	a4,a4,1560
+	lui	a4,00000011
+	addi	a4,a4,+00000618
 	jal	zero,0000000000016BE0
 
 l0000000000016C70:
-	lui	a4,0x00000011
-	addi	a4,a4,1584
+	lui	a4,00000011
+	addi	a4,a4,+00000630
 	jal	zero,0000000000016BE0
 
 l0000000000016C7C:
-	addi	a2,zero,203
+	addi	a2,zero,+000000CB
 	bne	a5,a2,0000000000016D18
 
 l0000000000016C84:
 	bne	a3,zero,0000000000016BC0
 
 l0000000000016C88:
-	addi	a4,zero,113
+	addi	a4,zero,+00000071
 	bne	a6,a4,0000000000016BC0
 
 l0000000000016C90:
-	lui	a4,0x00000011
-	addi	a4,a4,1728
+	lui	a4,00000011
+	addi	a4,a4,+000006C0
 	jal	zero,0000000000016BE0
 
 l0000000000016C9C:
-	addi	a4,zero,100
+	addi	a4,zero,+00000064
 	bne	a6,a4,0000000000016BC0
 
 l0000000000016CA4:
-	lui	a4,0x00000011
-	addi	a4,a4,1696
+	lui	a4,00000011
+	addi	a4,a4,+000006A0
 	jal	zero,0000000000016BE0
 
 l0000000000016CB0:
-	addi	a4,zero,99
+	addi	a4,zero,+00000063
 	beq	a6,a4,0000000000016D00
 
 l0000000000016CB8:
-	andi	a5,a5,240
-	addi	a4,zero,240
+	andi	a5,a5,+000000F0
+	addi	a4,zero,+000000F0
 	beq	a5,a4,0000000000016D0C
 
 l0000000000016CC4:
-	lui	a4,0x00000011
-	addi	a4,a4,1616
+	lui	a4,00000011
+	addi	a4,a4,+00000650
 	jal	zero,0000000000016BE0
 
 l0000000000016CD0:
-	lui	a4,0x00000011
-	addi	a4,a4,1632
+	lui	a4,00000011
+	addi	a4,a4,+00000660
 	jal	zero,0000000000016BE0
 
 l0000000000016CDC:
 	bne	a6,zero,0000000000016BC0
 
 l0000000000016CE0:
-	lui	a4,0x00000011
-	addi	a4,a4,1664
+	lui	a4,00000011
+	addi	a4,a4,+00000680
 	jal	zero,0000000000016BE0
 
 l0000000000016CEC:
-	addi	a4,zero,193
+	addi	a4,zero,+000000C1
 	bne	a6,a4,0000000000016BC0
 
 l0000000000016CF4:
-	lui	a4,0x00000011
-	addi	a4,a4,1800
+	lui	a4,00000011
+	addi	a4,a4,+00000708
 	jal	zero,0000000000016BE0
 
 l0000000000016D00:
-	lui	a4,0x00000011
-	addi	a4,a4,1760
+	lui	a4,00000011
+	addi	a4,a4,+000006E0
 	jal	zero,0000000000016BE0
 
 l0000000000016D0C:
-	lui	a4,0x00000011
-	addi	a4,a4,1808
+	lui	a4,00000011
+	addi	a4,a4,+00000710
 	jal	zero,0000000000016BE0
 
 l0000000000016D18:
-	addi	a2,zero,255
+	addi	a2,zero,+000000FF
 	bne	a5,a2,0000000000016D4C
 
 l0000000000016D20:
-	lui	a4,0x00000011
-	addi	a4,a4,1808
+	lui	a4,00000011
+	addi	a4,a4,+00000710
 	bne	a3,a5,0000000000016BE0
 
 l0000000000016D2C:
-	lui	a4,0x00000011
-	addi	a4,a4,1808
+	lui	a4,00000011
+	addi	a4,a4,+00000710
 	bne	a6,a2,0000000000016BE0
 
 l0000000000016D38:
@@ -3334,52 +3334,52 @@ l0000000000016D38:
 	bne	a0,a6,0000000000016BE0
 
 l0000000000016D40:
-	lui	a4,0x00000011
-	addi	a4,a4,1824
+	lui	a4,00000011
+	addi	a4,a4,+00000720
 	jal	zero,0000000000016BE0
 
 l0000000000016D4C:
-	addi	a3,zero,198
+	addi	a3,zero,+000000C6
 	bne	a5,a3,0000000000016BC0
 
 l0000000000016D54:
-	andi	a5,a4,254
-	addi	a3,zero,18
-	lui	a4,0x00000011
-	addi	a4,a4,1616
+	andi	a5,a4,+000000FE
+	addi	a3,zero,+00000012
+	lui	a4,00000011
+	addi	a4,a4,+00000650
 	bne	a5,a3,0000000000016BE0
 
 l0000000000016D68:
-	lui	a4,0x00000011
-	addi	a4,a4,1848
+	lui	a4,00000011
+	addi	a4,a4,+00000738
 	jal	zero,0000000000016BE0
 
 ;; fn0000000000016D74: 0000000000016D74
 fn0000000000016D74 proc
-	addi	sp,sp,-448
-	sd	s7,sp,376
-	ld	a5,gp,-1936
-	sd	s6,sp,384
-	addi	s6,a2,0
-	sd	s1,sp,424
-	sd	s5,sp,392
-	addi	s1,a0,0
-	addi	a2,zero,200
-	addi	s5,a1,0
-	addi	a0,s6,0
-	addi	a1,zero,0
-	sd	s8,sp,368
-	sd	ra,sp,440
-	sd	s0,sp,432
-	sd	s2,sp,416
-	sd	s3,sp,408
-	sd	s4,sp,400
-	addi	s8,a3,0
-	sd	a5,sp,360
+	addi	sp,sp,-000001C0
+	sd	s7,sp,+00000178
+	ld	a5,gp,-00000790
+	sd	s6,sp,+00000180
+	addi	s6,a2,+00000000
+	sd	s1,sp,+000001A8
+	sd	s5,sp,+00000188
+	addi	s1,a0,+00000000
+	addi	a2,zero,+000000C8
+	addi	s5,a1,+00000000
+	addi	a0,s6,+00000000
+	addi	a1,zero,+00000000
+	sd	s8,sp,+00000170
+	sd	ra,sp,+000001B8
+	sd	s0,sp,+000001B0
+	sd	s2,sp,+000001A0
+	sd	s3,sp,+00000198
+	sd	s4,sp,+00000190
+	addi	s8,a3,+00000000
+	sd	a5,sp,+00000168
 	jal	ra,0000000000015030
-	addi	a2,sp,8
-	addi	a1,s1,0
-	addi	a0,zero,2
+	addi	a2,sp,+00000008
+	addi	a1,s1,+00000000
+	addi	a0,zero,+00000002
 	jal	ra,0000000000015040
 	bge	zero,a0,0000000000016E60
 
@@ -3387,426 +3387,424 @@ l0000000000016DDC:
 	blt	s5,zero,0000000000016E88
 
 l0000000000016DE0:
-	sd	s1,sp,48
-	addi	a0,s1,0
-	addi	s0,zero,3
-	addi	s2,zero,46
+	sd	s1,sp,+00000030
+	addi	a0,s1,+00000000
+	addi	s0,zero,+00000003
+	addi	s2,zero,+0000002E
 
 l0000000000016DF0:
-	addi	a1,s2,0
+	addi	a1,s2,+00000000
 	jal	ra,0000000000015140
-	sd	a0,sp,48
+	sd	a0,sp,+00000030
 	beq	a0,zero,0000000000017194
 
 l0000000000016E00:
-	addi	a0,a0,1
-	sd	a0,sp,48
-	addiw	s0,s0,-1
+	addi	a0,a0,+00000001
+	sd	a0,sp,+00000030
+	addiw	s0,s0,FFFFFFFFFFFFFFFF
 	bne	s0,zero,0000000000016DF0
 
 l0000000000016E10:
-	addi	a5,zero,32
+	addi	a5,zero,+00000020
 	bge	a5,s5,0000000000016EBC
 
 l0000000000016E18:
-	lw	a5,gp,-2028
+	lw	a5,gp,-000007EC
 	beq	a5,zero,0000000000017054
 
 l0000000000016E20:
-	addi	a0,zero,-1
+	addi	a0,zero,-00000001
 
 l0000000000016E24:
-	ld	a4,sp,360
-	ld	a5,gp,-1936
+	ld	a4,sp,+00000168
+	ld	a5,gp,-00000790
 	bne	a4,a5,00000000000172D8
 
 l0000000000016E30:
-	ld	ra,sp,440
-	ld	s0,sp,432
-	ld	s1,sp,424
-	ld	s2,sp,416
-	ld	s3,sp,408
-	ld	s4,sp,400
-	ld	s5,sp,392
-	ld	s6,sp,384
-	ld	s7,sp,376
-	ld	s8,sp,368
-	addi	sp,sp,448
-	jalr	zero,ra,0
+	ld	ra,sp,+000001B8
+	ld	s0,sp,+000001B0
+	ld	s1,sp,+000001A8
+	ld	s2,sp,+000001A0
+	ld	s3,sp,+00000198
+	ld	s4,sp,+00000190
+	ld	s5,sp,+00000188
+	ld	s6,sp,+00000180
+	ld	s7,sp,+00000178
+	ld	s8,sp,+00000170
+	addi	sp,sp,+000001C0
+	jalr	zero,ra,+00000000
 
 l0000000000016E60:
-	lw	a5,gp,-2028
+	lw	a5,gp,-000007EC
 	bne	a5,zero,0000000000016E20
 
 l0000000000016E68:
-	ld	a0,gp,-1920
-	lui	a2,0x00000011
-	addi	a3,s1,0
-	addi	a2,a2,1928
-	addi	a1,zero,1
+	ld	a0,gp,-00000780
+	lui	a2,00000011
+	addi	a3,s1,+00000000
+	addi	a2,a2,+00000788
+	addi	a1,zero,+00000001
 	jal	ra,00000000000150D0
-	addi	a0,zero,-1
+	addi	a0,zero,-00000001
 	jal	zero,0000000000016E24
 
 l0000000000016E88:
-	slli	a5,s8,0x0000000D
-	addi	s5,zero,32
+	slli	a5,s8,0000000D
+	addi	s5,zero,+00000020
 	bge	a5,zero,0000000000016EBC
 
 l0000000000016E94:
-	lw	a0,sp,8
-	addi	s5,zero,8
+	lw	a0,sp,+00000008
+	addi	s5,zero,+00000008
 	jal	ra,00000000000182B4
-	srliw	a5,a0,0x00000018
+	srliw	a5,a0,00000018
 	bge	a0,zero,0000000000016EBC
 
 l0000000000016EA8:
-	addiw	a5,a5,-128
-	addi	a4,zero,63
-	addi	s5,zero,24
+	addiw	a5,a5,FFFFFFFFFFFFFF80
+	addi	a4,zero,+0000003F
+	addi	s5,zero,+00000018
 	bltu	a4,a5,0000000000016EBC
 
 l0000000000016EB8:
-	addi	s5,zero,16
+	addi	s5,zero,+00000010
 
 l0000000000016EBC:
-	addi	a3,zero,47
-	addi	a2,sp,56
-	addi	a1,sp,8
-	addi	a0,zero,2
+	addi	a3,zero,+0000002F
+	addi	a2,sp,+00000038
+	addi	a1,sp,+00000008
+	addi	a0,zero,+00000002
 	jal	ra,0000000000014F70
 	beq	a0,zero,0000000000017074
 
 l0000000000016ED4:
-	addi	a0,sp,56
+	addi	a0,sp,+00000038
 	jal	ra,0000000000014F30
-	sd	a0,s6,0
-	addi	a0,s5,0
+	sd	a0,s6,+00000000
+	addi	a0,s5,+00000000
 	jal	ra,0000000000016830
-	sw	a0,sp,16
-	addi	a3,zero,16
-	addi	a2,sp,56
-	addi	a1,sp,16
-	addi	a0,zero,2
-	sd	zero,sp,56
-	sd	zero,sp,64
-	sd	zero,sp,72
-	sd	zero,sp,80
-	sd	zero,sp,88
-	sw	zero,sp,96
-	sh	zero,sp,100
-	sb	zero,sp,102
+	sw	a0,sp,+00000010
+	addi	a3,zero,+00000010
+	addi	a2,sp,+00000038
+	addi	a1,sp,+00000010
+	addi	a0,zero,+00000002
+	sd	zero,sp,+00000038
+	sd	zero,sp,+00000040
+	sd	zero,sp,+00000048
+	sd	zero,sp,+00000050
+	sd	zero,sp,+00000058
+	sw	zero,sp,+00000060
+	sh	zero,sp,+00000064
+	sb	zero,sp,+00000066
 	jal	ra,0000000000014F70
 	beq	a0,zero,0000000000017300
 
 l0000000000016F24:
-	addi	a0,sp,56
+	addi	a0,sp,+00000038
 	jal	ra,0000000000014F30
-	sd	a0,s6,48
-	lw	s0,sp,8
-	sw	s5,s6,160
-	addi	a0,s5,0
+	sd	a0,s6,+00000030
+	lw	s0,sp,+00000008
+	sw	s5,s6,+000000A0
+	addi	a0,s5,+00000000
 	jal	ra,0000000000016830
-	xori	a5,a0,-1
+	xori	a5,a0,-00000001
 	or	a5,a5,s0
-	addi	a3,zero,16
-	addi	a2,sp,56
-	addi	a1,sp,32
-	addi	a0,zero,2
-	sw	a5,sp,32
-	sd	zero,sp,56
-	sd	zero,sp,64
-	sd	zero,sp,72
-	sd	zero,sp,80
-	sd	zero,sp,88
-	sw	zero,sp,96
-	sh	zero,sp,100
-	sb	zero,sp,102
+	addi	a3,zero,+00000010
+	addi	a2,sp,+00000038
+	addi	a1,sp,+00000020
+	addi	a0,zero,+00000002
+	sw	a5,sp,+00000020
+	sd	zero,sp,+00000038
+	sd	zero,sp,+00000040
+	sd	zero,sp,+00000048
+	sd	zero,sp,+00000050
+	sd	zero,sp,+00000058
+	sw	zero,sp,+00000060
+	sh	zero,sp,+00000064
+	sb	zero,sp,+00000066
 	jal	ra,0000000000014F70
 	beq	a0,zero,00000000000172F4
 
 l0000000000016F84:
-	addi	a0,sp,56
+	addi	a0,sp,+00000038
 	jal	ra,0000000000014F30
-	sd	a0,s6,40
-	lw	s0,sp,8
-	addi	a0,s5,0
+	sd	a0,s6,+00000028
+	lw	s0,sp,+00000008
+	addi	a0,s5,+00000000
 	jal	ra,0000000000016830
-	lw	a3,sp,32
+	lw	a3,sp,+00000020
 	and	s0,a0,s0
-	addi	a2,s0,0
-	addi	a1,s5,0
-	addi	a0,s0,0
-	sw	s0,sp,24
+	addi	a2,s0,+00000000
+	addi	a1,s5,+00000000
+	addi	a0,s0,+00000000
+	sw	s0,sp,+00000018
 	jal	ra,0000000000017F04
-	sd	a0,s6,24
-	addi	a3,zero,16
-	addi	a2,sp,56
-	addi	a1,sp,24
-	addi	a0,zero,2
-	sd	zero,sp,56
-	sd	zero,sp,64
-	sd	zero,sp,72
-	sd	zero,sp,80
-	sd	zero,sp,88
-	sw	zero,sp,96
-	sh	zero,sp,100
-	sb	zero,sp,102
+	sd	a0,s6,+00000018
+	addi	a3,zero,+00000010
+	addi	a2,sp,+00000038
+	addi	a1,sp,+00000018
+	addi	a0,zero,+00000002
+	sd	zero,sp,+00000038
+	sd	zero,sp,+00000040
+	sd	zero,sp,+00000048
+	sd	zero,sp,+00000050
+	sd	zero,sp,+00000058
+	sw	zero,sp,+00000060
+	sh	zero,sp,+00000064
+	sb	zero,sp,+00000066
 	jal	ra,0000000000014F70
 	beq	a0,zero,00000000000172DC
 
 l0000000000016FF4:
-	addi	a0,sp,56
+	addi	a0,sp,+00000038
 	jal	ra,0000000000014F30
-	lw	s0,sp,24
-	sd	a0,s6,32
-	addi	s3,a0,0
-	addi	a0,s0,0
+	lw	s0,sp,+00000018
+	sd	a0,s6,+00000020
+	addi	s3,a0,+00000000
+	addi	a0,s0,+00000000
 	jal	ra,0000000000016B68
-	sd	a0,s6,184
-	addi	a0,s0,0
+	sd	a0,s6,+000000B8
+	addi	a0,s0,+00000000
 	jal	ra,00000000000182B4
-	srliw	a5,a0,0x00000018
+	srliw	a5,a0,00000018
 	bge	a0,zero,0000000000017098
 
 l0000000000017024:
-	addiw	a4,a5,-128
-	addi	a3,zero,63
+	addiw	a4,a5,FFFFFFFFFFFFFF80
+	addi	a3,zero,+0000003F
 	bgeu	a3,a4,000000000001727C
 
 l0000000000017030:
-	addiw	a4,a5,-192
-	addi	a3,zero,31
+	addiw	a4,a5,FFFFFFFFFFFFFF40
+	addi	a3,zero,+0000001F
 	bgeu	a3,a4,00000000000172A4
 
 l000000000001703C:
-	addiw	a5,a5,-224
-	addi	a4,zero,14
+	addiw	a5,a5,FFFFFFFFFFFFFF20
+	addi	a4,zero,+0000000E
 	bltu	a4,a5,00000000000172B0
 
 l0000000000017048:
-	lui	a5,0x00000011
-	addi	a5,a5,1904
+	lui	a5,00000011
+	addi	a5,a5,+00000770
 	jal	zero,00000000000170A0
 
 l0000000000017054:
-	ld	a0,gp,-1920
-	lui	a2,0x00000011
-	addi	a3,s5,0
-	addi	a2,a2,2008
-	addi	a1,zero,1
+	ld	a0,gp,-00000780
+	lui	a2,00000011
+	addi	a3,s5,+00000000
+	addi	a2,a2,+000007D8
+	addi	a1,zero,+00000001
 	jal	ra,00000000000150D0
-	addi	a0,zero,-1
+	addi	a0,zero,-00000001
 	jal	zero,0000000000016E24
 
 l0000000000017074:
-	lw	a5,gp,-2028
+	lw	a5,gp,-000007EC
 	bne	a5,zero,0000000000016E20
 
 l000000000001707C:
-	ld	a3,gp,-1920
-	lui	a0,0x00000011
-	addi	a2,zero,43
-	addi	a1,zero,1
-	addi	a0,a0,2040
+	ld	a3,gp,-00000780
+	lui	a0,00000011
+	addi	a2,zero,+0000002B
+	addi	a1,zero,+00000001
+	addi	a0,a0,+000007F8
 	jal	ra,0000000000015090
 	jal	zero,0000000000016E20
 
 l0000000000017098:
-	lui	a5,0x00000011
-	addi	a5,a5,1880
+	lui	a5,00000011
+	addi	a5,a5,+00000758
 
 l00000000000170A0:
-	sd	a5,s6,192
-	addi	s2,zero,32
+	sd	a5,s6,+000000C0
+	addi	s2,zero,+00000020
 	beq	s5,s2,0000000000017158
 
 l00000000000170AC:
-	sw	s0,sp,40
-	addi	a5,zero,31
+	sw	s0,sp,+00000028
+	addi	a5,zero,+0000001F
 	beq	s5,a5,0000000000017210
 
 l00000000000170B8:
-	lui	a5,0x00001000
+	lui	a5,00001000
 	or	s0,s0,a5
-	addi	a3,zero,16
-	addi	a2,sp,56
-	addi	a1,sp,40
-	addi	a0,zero,2
-	sw	s0,sp,40
+	addi	a3,zero,+00000010
+	addi	a2,sp,+00000038
+	addi	a1,sp,+00000028
+	addi	a0,zero,+00000002
+	sw	s0,sp,+00000028
 	jal	ra,0000000000014F70
 	beq	a0,zero,00000000000172E8
 
 l00000000000170DC:
-	addi	a0,sp,56
+	addi	a0,sp,+00000038
 	jal	ra,0000000000014F30
-	lw	a5,sp,16
-	sd	a0,s6,168
-	lw	a0,sp,24
-	xori	a5,a5,-1
+	lw	a5,sp,+00000010
+	sd	a0,s6,+000000A8
+	lw	a0,sp,+00000018
+	xori	a5,a5,-00000001
 	or	a0,a5,a0
 	jal	ra,00000000000182B4
-	addiw	a0,a0,-1
+	addiw	a0,a0,FFFFFFFFFFFFFFFF
 	jal	ra,00000000000182B4
-	sw	a0,sp,48
-	addi	a3,zero,47
-	addi	a2,sp,56
-	addi	a1,sp,48
-	addi	a0,zero,2
+	sw	a0,sp,+00000030
+	addi	a3,zero,+0000002F
+	addi	a2,sp,+00000038
+	addi	a1,sp,+00000030
+	addi	a0,zero,+00000002
 	jal	ra,0000000000014F70
 	beq	a0,zero,0000000000017074
 
 l0000000000017120:
-	addi	a0,sp,56
+	addi	a0,sp,+00000038
 	jal	ra,0000000000014F30
-	addi	a2,zero,1
+	addi	a2,zero,+00000001
 	subw	a5,s2,s5
-	sllw	a5,a2,a5
-	addi	a3,zero,64
-	lui	a4,0x00000012
-	sd	a0,s6,176
-	addiw	a5,a5,-2
-	addi	a4,a4,-2008
-	addi	a1,a3,0
-	addi	a0,s6,96
+	invalid
+	addi	a3,zero,+00000040
+	lui	a4,00000012
+	sd	a0,s6,+000000B0
+	addiw	a5,a5,FFFFFFFFFFFFFFFE
+	addi	a4,a4,-000007D8
+	addi	a1,a3,+00000000
+	addi	a0,s6,+00000060
 	jal	ra,0000000000014FC0
 	jal	zero,000000000001717C
 
 l0000000000017158:
-	lui	a5,0x00000011
-	sd	s3,s6,168
-	sd	s3,s6,176
-	addi	a4,s6,96
-	addi	a5,a5,1920
+	lui	a5,00000011
+	sd	s3,s6,+000000A8
+	sd	s3,s6,+000000B0
+	addi	a4,s6,+00000060
+	addi	a5,a5,+00000780
 
 l000000000001716C:
-	lbu	a3,a5,0
-	sb	a3,a4,0
-	lbu	a5,a5,1
-	sb	a5,a4,1
-
-l000000000001717C:
-	slli	a5,s8,0x00000011
+	lbu	a3,a5,+00000000
+	sb	a3,a4,+00000000
+	lbu	a5,a5,+00000001
+	sb	a5,a4,+00000001
+	slli	a5,s8,00000011
 	blt	a5,zero,0000000000017288
 
 l0000000000017184:
-	andi	s8,s8,1
+	andi	s8,s8,+00000001
 	bne	s8,zero,00000000000171C8
 
 l000000000001718C:
-	addi	a0,zero,0
+	addi	a0,zero,+00000000
 	jal	zero,0000000000016E24
 
 l0000000000017194:
-	lui	s4,0x00000011
-	addi	s3,zero,1
-	addi	s2,zero,-1
+	lui	s4,00000011
+	addi	s3,zero,+00000001
+	addi	s2,zero,-00000001
 
 l00000000000171A0:
-	addi	a3,s1,0
-	addi	a2,s4,1960
-	addi	a1,s3,0
-	addi	a0,sp,48
+	addi	a3,s1,+00000000
+	addi	a2,s4,+000007A8
+	addi	a1,s3,+00000000
+	addi	a0,sp,+00000030
 	jal	ra,0000000000015010
 	beq	a0,s2,00000000000172BC
 
 l00000000000171B8:
-	addiw	s0,s0,-1
-	ld	s1,sp,48
+	addiw	s0,s0,FFFFFFFFFFFFFFFF
+	ld	s1,sp,+00000030
 	bne	s0,zero,00000000000171A0
 
 l00000000000171C4:
 	jal	zero,0000000000016E10
 
 l00000000000171C8:
-	addi	a1,sp,8
-	addi	a0,zero,2
+	addi	a1,sp,+00000008
+	addi	a0,zero,+00000002
 	jal	ra,00000000000168E4
-	sd	a0,s6,56
+	sd	a0,s6,+00000038
 	bne	a0,zero,000000000001718C
 
 l00000000000171DC:
-	lw	a5,gp,-2028
+	lw	a5,gp,-000007EC
 	bne	a5,zero,0000000000016E20
 
 l00000000000171E4:
-	lui	a3,0x00000012
-	addi	a4,s1,0
-	addi	a3,a3,-2000
-	addi	a2,zero,250
-	addi	a1,zero,1
-	addi	a0,sp,104
+	lui	a3,00000012
+	addi	a4,s1,+00000000
+	addi	a3,a3,-000007D0
+	addi	a2,zero,+000000FA
+	addi	a1,zero,+00000001
+	addi	a0,sp,+00000068
 	jal	ra,0000000000015080
-	addi	a0,sp,104
+	addi	a0,sp,+00000068
 	jal	ra,0000000000014F20
-	addi	a0,zero,-1
+	addi	a0,zero,-00000001
 	jal	zero,0000000000016E24
 
 l0000000000017210:
-	addi	a3,zero,16
-	addi	a2,sp,56
-	addi	a1,sp,40
-	addi	a0,zero,2
+	addi	a3,zero,+00000010
+	addi	a2,sp,+00000038
+	addi	a1,sp,+00000028
+	addi	a0,zero,+00000002
 	jal	ra,0000000000014F70
 	beq	a0,zero,00000000000172E8
 
 l0000000000017228:
-	addi	a0,sp,56
+	addi	a0,sp,+00000038
 	jal	ra,0000000000014F30
-	lw	a5,sp,16
-	lw	a4,sp,24
-	sd	a0,s6,168
-	xori	a5,a5,-1
+	lw	a5,sp,+00000010
+	lw	a4,sp,+00000018
+	sd	a0,s6,+000000A8
+	xori	a5,a5,-00000001
 	or	a5,a5,a4
-	addi	a3,zero,47
-	addi	a2,sp,56
-	addi	a1,sp,48
-	addi	a0,zero,2
-	sw	a5,sp,48
+	addi	a3,zero,+0000002F
+	addi	a2,sp,+00000038
+	addi	a1,sp,+00000030
+	addi	a0,zero,+00000002
+	sw	a5,sp,+00000030
 	jal	ra,0000000000014F70
 	beq	a0,zero,0000000000017074
 
 l0000000000017260:
-	addi	a0,sp,56
+	addi	a0,sp,+00000038
 	jal	ra,0000000000014F30
-	lui	a5,0x00000012
-	sd	a0,s6,176
-	addi	a4,s6,96
-	addi	a5,a5,1632
+	lui	a5,00000012
+	sd	a0,s6,+000000B0
+	addi	a4,s6,+00000060
+	addi	a5,a5,+00000660
 	jal	zero,000000000001716C
 
 l000000000001727C:
-	lui	a5,0x00000011
-	addi	a5,a5,1888
+	lui	a5,00000011
+	addi	a5,a5,+00000760
 	jal	zero,00000000000170A0
 
 l0000000000017288:
-	lw	a0,sp,8
-	addi	a4,s6,88
-	addi	a3,s6,80
-	addi	a2,s6,72
-	addi	a1,s6,64
+	lw	a0,sp,+00000008
+	addi	a4,s6,+00000058
+	addi	a3,s6,+00000050
+	addi	a2,s6,+00000048
+	addi	a1,s6,+00000040
 	jal	ra,0000000000017B40
 	jal	zero,0000000000017184
 
 l00000000000172A4:
-	lui	a5,0x00000011
-	addi	a5,a5,1896
+	lui	a5,00000011
+	addi	a5,a5,+00000768
 	jal	zero,00000000000170A0
 
 l00000000000172B0:
-	lui	a5,0x00000011
-	addi	a5,a5,1912
+	lui	a5,00000011
+	addi	a5,a5,+00000778
 	jal	zero,00000000000170A0
 
 l00000000000172BC:
-	ld	a0,gp,-1920
-	addi	a3,zero,613
+	ld	a0,gp,-00000780
+	addi	a3,zero,+00000265
 
 l00000000000172C4:
-	lui	a2,0x00000011
-	addi	a2,a2,1968
-	addi	a1,zero,1
+	lui	a2,00000011
+	addi	a2,a2,+000007B0
+	addi	a1,zero,+00000001
 	jal	ra,00000000000150D0
 	jal	ra,0000000000015160
 
@@ -3814,95 +3812,93 @@ l00000000000172D8:
 	jal	ra,0000000000015110
 
 l00000000000172DC:
-	ld	a0,gp,-1920
-	addi	a3,zero,667
+	ld	a0,gp,-00000780
+	addi	a3,zero,+0000029B
 	jal	zero,00000000000172C4
 
 l00000000000172E8:
-	ld	a0,gp,-1920
-	addi	a3,zero,684
+	ld	a0,gp,-00000780
+	addi	a3,zero,+000002AC
 	jal	zero,00000000000172C4
 
 l00000000000172F4:
-	ld	a0,gp,-1920
-	addi	a3,zero,655
+	ld	a0,gp,-00000780
+	addi	a3,zero,+0000028F
 	jal	zero,00000000000172C4
 
 l0000000000017300:
-	ld	a0,gp,-1920
-	addi	a3,zero,644
+	ld	a0,gp,-00000780
+	addi	a3,zero,+00000284
 	jal	zero,00000000000172C4
 
 ;; fn000000000001730C: 000000000001730C
 fn000000000001730C proc
-	addi	sp,sp,-192
-	sd	s0,sp,176
-	ld	a4,gp,-1936
-	sd	ra,sp,184
-	sd	s1,sp,168
-	addi	a5,zero,128
-	sd	a4,sp,152
+	addi	sp,sp,-000000C0
+	sd	s0,sp,+000000B0
+	ld	a4,gp,-00000790
+	sd	ra,sp,+000000B8
+	sd	s1,sp,+000000A8
+	addi	a5,zero,+00000080
+	sd	a4,sp,+00000098
 	bltu	a5,a0,00000000000173BC
 
 l000000000001732C:
-	addi	a4,zero,8
-	sd	zero,sp,8
-	sd	zero,sp,16
-	addi	s1,a1,0
-	addi	a5,sp,8
+	addi	a4,zero,+00000008
+	sd	zero,sp,+00000008
+	sd	zero,sp,+00000010
+	addi	s1,a1,+00000000
+	addi	a5,sp,+00000008
 	subw	a4,a4,a0
-	addi	a3,zero,7
-	addi	a2,zero,-1
-	addi	a1,zero,255
+	addi	a3,zero,+00000007
+	addi	a2,zero,-00000001
+	addi	a1,zero,+000000FF
 	beq	a0,zero,000000000001736C
 
 l0000000000017354:
 	bge	a3,a0,00000000000173C4
 
 l0000000000017358:
-	sb	a2,a5,0
-
-l000000000001735C:
-	addiw	a0,a0,-8
-	addi	a5,a5,1
-	addiw	a4,a4,8
+	sb	a2,a5,+00000000
+	addiw	a0,a0,FFFFFFFFFFFFFFF8
+	addi	a5,a5,+00000001
+	addiw	a4,a4,00000008
 	blt	zero,a0,0000000000017354
 
 l000000000001736C:
-	addi	a3,zero,128
-	addi	a2,sp,24
-	addi	a1,sp,8
-	addi	a0,zero,10
+	addi	a3,zero,+00000080
+	addi	a2,sp,+00000018
+	addi	a1,sp,+00000008
+	addi	a0,zero,+0000000A
 	jal	ra,0000000000014F70
 	beq	a0,zero,00000000000173BC
 
 l0000000000017384:
-	addi	a2,zero,16
-	addi	a1,sp,8
-	addi	a0,s1,0
+	addi	a2,zero,+00000010
+	addi	a1,sp,+00000008
+	addi	a0,s1,+00000000
 	jal	ra,0000000000015150
-	addi	a0,sp,24
+	addi	a0,sp,+00000018
 	jal	ra,0000000000014F30
 
 l000000000001739C:
-	ld	a4,sp,152
-	ld	a5,gp,-1936
+	ld	a4,sp,+00000098
+	ld	a5,gp,-00000790
 	bne	a4,a5,00000000000173D0
 
 l00000000000173A8:
-	ld	ra,sp,184
-	ld	s0,sp,176
-	ld	s1,sp,168
-	addi	sp,sp,192
-	jalr	zero,ra,0
+	ld	ra,sp,+000000B8
+	ld	s0,sp,+000000B0
+	ld	s1,sp,+000000A8
+	addi	sp,sp,+000000C0
+	jalr	zero,ra,+00000000
 
 l00000000000173BC:
-	addi	a0,zero,0
+	addi	a0,zero,+00000000
 	jal	zero,000000000001739C
 
 l00000000000173C4:
-	sllw	a6,a1,a4
-	sb	a6,a5,0
+	invalid
+	sb	a6,a5,+00000000
 	jal	zero,000000000001735C
 
 l00000000000173D0:
@@ -3910,463 +3906,463 @@ l00000000000173D0:
 
 ;; fn00000000000173D4: 00000000000173D4
 fn00000000000173D4 proc
-	addi	sp,sp,-48
-	sd	s0,sp,32
-	sd	ra,sp,40
-	sd	s1,sp,24
-	sd	s2,sp,16
-	sd	s3,sp,8
-	addi	a5,zero,128
-	addi	s0,a0,0
-	lbu	s2,a0,0
-	lbu	s3,a0,1
+	addi	sp,sp,-00000030
+	sd	s0,sp,+00000020
+	sd	ra,sp,+00000028
+	sd	s1,sp,+00000018
+	sd	s2,sp,+00000010
+	sd	s3,sp,+00000008
+	addi	a5,zero,+00000080
+	addi	s0,a0,+00000000
+	lbu	s2,a0,+00000000
+	lbu	s3,a0,+00000001
 	beq	a1,a5,00000000000174DC
 
 l0000000000017400:
-	addi	a5,zero,95
+	addi	a5,zero,+0000005F
 	blt	a5,a1,0000000000017474
 
 l0000000000017408:
-	slli	a5,s2,0x00000008
+	slli	a5,s2,00000008
 	or	a5,a5,s3
-	lui	a4,0x000FFFFE
+	lui	a4,000FFFFE
 	and	a4,a4,a5
-	lui	a3,0x00000002
+	lui	a3,00000002
 	beq	a4,a3,0000000000017580
 
 l0000000000017420:
-	andi	a4,s2,254
-	addi	a2,zero,252
+	andi	a4,s2,+000000FE
+	addi	a2,zero,+000000FC
 	beq	a4,a2,000000000001758C
 
 l000000000001742C:
-	lui	a4,0x00000010
-	andi	a2,a5,-64
-	addiw	a4,a4,-384
+	lui	a4,00000010
+	andi	a2,a5,-00000040
+	addiw	a4,a4,FFFFFFFFFFFFFE80
 	beq	a2,a4,0000000000017598
 
 l000000000001743C:
-	addi	a4,zero,255
+	addi	a4,zero,+000000FF
 	beq	s2,a4,00000000000175A4
 
 l0000000000017444:
-	lui	a0,0x00000011
-	andi	a5,a5,-2
-	addiw	a3,a3,2
-	addi	a0,a0,1808
+	lui	a0,00000011
+	andi	a5,a5,-00000002
+	addiw	a3,a3,00000002
+	addi	a0,a0,+00000710
 	beq	a5,a3,00000000000175B0
 
 l0000000000017458:
-	ld	ra,sp,40
-	ld	s0,sp,32
-	ld	s1,sp,24
-	ld	s2,sp,16
-	ld	s3,sp,8
-	addi	sp,sp,48
-	jalr	zero,ra,0
+	ld	ra,sp,+00000028
+	ld	s0,sp,+00000020
+	ld	s1,sp,+00000018
+	ld	s2,sp,+00000010
+	ld	s3,sp,+00000008
+	addi	sp,sp,+00000030
+	jalr	zero,ra,+00000000
 
 l0000000000017474:
-	lui	s1,0x00000010
-	addi	s1,s1,1152
+	lui	s1,00000010
+	addi	s1,s1,+00000480
 
 l000000000001747C:
-	addi	a2,zero,12
-	addi	a1,s1,1072
-	addi	a0,s0,0
+	addi	a2,zero,+0000000C
+	addi	a1,s1,+00000430
+	addi	a0,s0,+00000000
 	jal	ra,00000000000150A0
 	beq	a0,zero,000000000001755C
 
 l0000000000017490:
-	addi	a2,zero,12
-	addi	a1,s1,1088
-	addi	a0,s0,0
+	addi	a2,zero,+0000000C
+	addi	a1,s1,+00000440
+	addi	a0,s0,+00000000
 	jal	ra,00000000000150A0
 	beq	a0,zero,0000000000017514
 
 l00000000000174A4:
-	addi	a2,zero,12
-	addi	a1,s1,1104
-	addi	a0,s0,0
+	addi	a2,zero,+0000000C
+	addi	a1,s1,+00000450
+	addi	a0,s0,+00000000
 	jal	ra,00000000000150A0
 	bne	a0,zero,0000000000017408
 
 l00000000000174B8:
-	ld	ra,sp,40
-	lui	a0,0x00000012
-	addi	a0,a0,-1864
-	ld	s0,sp,32
-	ld	s1,sp,24
-	ld	s2,sp,16
-	ld	s3,sp,8
-	addi	sp,sp,48
-	jalr	zero,ra,0
+	ld	ra,sp,+00000028
+	lui	a0,00000012
+	addi	a0,a0,-00000748
+	ld	s0,sp,+00000020
+	ld	s1,sp,+00000018
+	ld	s2,sp,+00000010
+	ld	s3,sp,+00000008
+	addi	sp,sp,+00000030
+	jalr	zero,ra,+00000000
 
 l00000000000174DC:
-	lui	s1,0x00000010
-	addi	s1,s1,1152
-	addi	a2,zero,16
-	addi	a1,s1,1024
+	lui	s1,00000010
+	addi	s1,s1,+00000480
+	addi	a2,zero,+00000010
+	addi	a1,s1,+00000400
 	jal	ra,00000000000150A0
 	beq	a0,zero,0000000000017538
 
 l00000000000174F4:
-	addi	a2,zero,16
-	addi	a1,s1,1048
-	addi	a0,s0,0
+	addi	a2,zero,+00000010
+	addi	a1,s1,+00000418
+	addi	a0,s0,+00000000
 	jal	ra,00000000000150A0
 	bne	a0,zero,000000000001747C
 
 l0000000000017508:
-	lui	a0,0x00000012
-	addi	a0,a0,-1936
+	lui	a0,00000012
+	addi	a0,a0,-00000790
 	jal	zero,0000000000017458
 
 l0000000000017514:
-	ld	ra,sp,40
-	lui	a0,0x00000012
-	addi	a0,a0,-1888
-	ld	s0,sp,32
-	ld	s1,sp,24
-	ld	s2,sp,16
-	ld	s3,sp,8
-	addi	sp,sp,48
-	jalr	zero,ra,0
+	ld	ra,sp,+00000028
+	lui	a0,00000012
+	addi	a0,a0,-00000760
+	ld	s0,sp,+00000020
+	ld	s1,sp,+00000018
+	ld	s2,sp,+00000010
+	ld	s3,sp,+00000008
+	addi	sp,sp,+00000030
+	jalr	zero,ra,+00000000
 
 l0000000000017538:
-	ld	ra,sp,40
-	lui	a0,0x00000012
-	addi	a0,a0,-1960
-	ld	s0,sp,32
-	ld	s1,sp,24
-	ld	s2,sp,16
-	ld	s3,sp,8
-	addi	sp,sp,48
-	jalr	zero,ra,0
+	ld	ra,sp,+00000028
+	lui	a0,00000012
+	addi	a0,a0,-000007A8
+	ld	s0,sp,+00000020
+	ld	s1,sp,+00000018
+	ld	s2,sp,+00000010
+	ld	s3,sp,+00000008
+	addi	sp,sp,+00000030
+	jalr	zero,ra,+00000000
 
 l000000000001755C:
-	ld	ra,sp,40
-	lui	a0,0x00000012
-	addi	a0,a0,-1912
-	ld	s0,sp,32
-	ld	s1,sp,24
-	ld	s2,sp,16
-	ld	s3,sp,8
-	addi	sp,sp,48
-	jalr	zero,ra,0
+	ld	ra,sp,+00000028
+	lui	a0,00000012
+	addi	a0,a0,-00000778
+	ld	s0,sp,+00000020
+	ld	s1,sp,+00000018
+	ld	s2,sp,+00000010
+	ld	s3,sp,+00000008
+	addi	sp,sp,+00000030
+	jalr	zero,ra,+00000000
 
 l0000000000017580:
-	lui	a0,0x00000012
-	addi	a0,a0,-1832
+	lui	a0,00000012
+	addi	a0,a0,-00000728
 	jal	zero,0000000000017458
 
 l000000000001758C:
-	lui	a0,0x00000012
-	addi	a0,a0,-1816
+	lui	a0,00000012
+	addi	a0,a0,-00000718
 	jal	zero,0000000000017458
 
 l0000000000017598:
-	lui	a0,0x00000012
-	addi	a0,a0,-1792
+	lui	a0,00000012
+	addi	a0,a0,-00000700
 	jal	zero,0000000000017458
 
 l00000000000175A4:
-	lui	a0,0x00000011
-	addi	a0,a0,1864
+	lui	a0,00000011
+	addi	a0,a0,+00000748
 	jal	zero,0000000000017458
 
 l00000000000175B0:
-	lui	a0,0x00000012
-	addi	a0,a0,-1768
+	lui	a0,00000012
+	addi	a0,a0,-000006E8
 	jal	zero,0000000000017458
 
 ;; fn00000000000175BC: 00000000000175BC
 fn00000000000175BC proc
-	addi	sp,sp,-416
-	sd	s1,sp,392
-	ld	a5,gp,-1936
-	sd	s0,sp,400
-	addi	s0,a2,0
-	sd	s2,sp,384
-	sd	s4,sp,368
-	addi	a2,zero,200
-	addi	s4,a0,0
-	addi	s2,a1,0
-	addi	a0,s0,0
-	addi	a1,zero,0
-	sd	s6,sp,352
-	sd	ra,sp,408
-	sd	s3,sp,376
-	sd	s5,sp,360
-	sd	s7,sp,344
-	sd	s8,sp,336
-	sd	s9,sp,328
-	addi	s6,a3,0
-	sd	a5,sp,312
+	addi	sp,sp,-000001A0
+	sd	s1,sp,+00000188
+	ld	a5,gp,-00000790
+	sd	s0,sp,+00000190
+	addi	s0,a2,+00000000
+	sd	s2,sp,+00000180
+	sd	s4,sp,+00000170
+	addi	a2,zero,+000000C8
+	addi	s4,a0,+00000000
+	addi	s2,a1,+00000000
+	addi	a0,s0,+00000000
+	addi	a1,zero,+00000000
+	sd	s6,sp,+00000160
+	sd	ra,sp,+00000198
+	sd	s3,sp,+00000178
+	sd	s5,sp,+00000168
+	sd	s7,sp,+00000158
+	sd	s8,sp,+00000150
+	sd	s9,sp,+00000148
+	addi	s6,a3,+00000000
+	sd	a5,sp,+00000138
 	jal	ra,0000000000015030
-	addi	a2,sp,8
-	addi	a1,s4,0
-	addi	a0,zero,10
+	addi	a2,sp,+00000008
+	addi	a1,s4,+00000000
+	addi	a0,zero,+0000000A
 	jal	ra,0000000000015040
 	bge	zero,a0,00000000000177B4
 
 l0000000000017628:
-	addi	a0,sp,8
+	addi	a0,sp,+00000008
 	jal	ra,00000000000163B0
-	addi	s3,sp,56
-	sd	a0,s0,8
-	addi	a3,zero,250
-	addi	a2,s3,0
-	addi	a1,sp,8
-	addi	a0,zero,10
+	addi	s3,sp,+00000038
+	sd	a0,s0,+00000008
+	addi	a3,zero,+000000FA
+	addi	a2,s3,+00000000
+	addi	a1,sp,+00000008
+	addi	a0,zero,+0000000A
 	jal	ra,0000000000014F70
 	beq	a0,zero,0000000000017768
 
 l0000000000017650:
-	addi	a0,s3,0
+	addi	a0,s3,+00000000
 	jal	ra,0000000000014F30
-	sd	a0,s0,0
-	addi	s5,zero,128
+	sd	a0,s0,+00000000
+	addi	s5,zero,+00000080
 	blt	s5,s2,00000000000177DC
 
 l0000000000017664:
 	blt	s2,zero,0000000000017868
 
 l0000000000017668:
-	addi	s5,s2,0
+	addi	s5,s2,+00000000
 
 l000000000001766C:
-	addi	s7,sp,24
-	sw	s5,s0,160
-	addi	a1,s7,0
-	addi	a0,s5,0
+	addi	s7,sp,+00000018
+	sw	s5,s0,+000000A0
+	addi	a1,s7,+00000000
+	addi	a0,s5,+00000000
 	jal	ra,000000000001730C
-	sd	a0,s0,48
+	sd	a0,s0,+00000030
 	beq	a0,zero,00000000000178F8
 
 l0000000000017688:
-	addi	s8,sp,40
-	addi	a5,sp,8
-	addi	s9,s7,0
-	addi	a2,s8,0
-	addi	a3,s7,0
+	addi	s8,sp,+00000028
+	addi	a5,sp,+00000008
+	addi	s9,s7,+00000000
+	addi	a2,s8,+00000000
+	addi	a3,s7,+00000000
 
 l000000000001769C:
-	lbu	a4,a5,0
-	lbu	a1,a3,0
-	addi	a5,a5,1
-	addi	a3,a3,1
+	lbu	a4,a5,+00000000
+	lbu	a1,a3,+00000000
+	addi	a5,a5,+00000001
+	addi	a3,a3,+00000001
 	and	a4,a4,a1
-	sb	a4,a2,0
-	addi	a2,a2,1
+	sb	a4,a2,+00000000
+	addi	a2,a2,+00000001
 	bne	s7,a5,000000000001769C
 
 l00000000000176BC:
-	addi	a3,zero,250
-	addi	a2,s3,0
-	addi	a1,sp,40
-	addi	a0,zero,10
+	addi	a3,zero,+000000FA
+	addi	a2,s3,+00000000
+	addi	a1,sp,+00000028
+	addi	a0,zero,+0000000A
 	jal	ra,0000000000014F70
 	beq	a0,zero,0000000000017768
 
 l00000000000176D4:
-	addi	a0,s3,0
+	addi	a0,s3,+00000000
 	jal	ra,0000000000014F30
-	sd	a0,s0,32
-	addi	a0,sp,40
+	sd	a0,s0,+00000020
+	addi	a0,sp,+00000028
 	jal	ra,00000000000163B0
-	sd	a0,s0,16
-	addi	a1,s2,0
-	addi	a0,sp,40
+	sd	a0,s0,+00000010
+	addi	a1,s2,+00000000
+	addi	a0,sp,+00000028
 	jal	ra,00000000000173D4
-	sd	a0,s0,184
-	addi	a1,s5,0
-	addi	a0,sp,40
+	sd	a0,s0,+000000B8
+	addi	a1,s5,+00000000
+	addi	a0,sp,+00000028
 	jal	ra,0000000000018118
-	sd	a0,s0,24
-	addi	a5,zero,128
+	sd	a0,s0,+00000018
+	addi	a5,zero,+00000080
 	bne	s2,a5,0000000000017870
 
 l0000000000017714:
-	ld	a5,s0,32
-	addi	a0,s0,96
-	addi	s2,zero,0
-	sd	a5,s0,168
-	sd	a5,s0,176
+	ld	a5,s0,+00000020
+	addi	a0,s0,+00000060
+	addi	s2,zero,+00000000
+	sd	a5,s0,+000000A8
+	sd	a5,s0,+000000B0
 
 l0000000000017728:
-	slli	s2,s2,0x00000000
-	lui	a5,0x00000010
-	srli	s2,s2,0x0000001D
-	addi	a5,a5,1152
+	slli	s2,s2,00000000
+	lui	a5,00000010
+	srli	s2,s2,0000001D
+	addi	a5,a5,+00000480
 	add	s2,a5,s2
-	ld	a3,s2,0
+	ld	a3,s2,+00000000
 
 l0000000000017740:
-	lui	a2,0x00000012
-	addi	a2,a2,-1648
-	addi	a1,zero,64
+	lui	a2,00000012
+	addi	a2,a2,-00000670
+	addi	a1,zero,+00000040
 	jal	ra,0000000000014F80
-	slli	a5,s6,0x00000011
+	slli	a5,s6,00000011
 	blt	a5,zero,00000000000178DC
 
 l0000000000017758:
-	andi	s6,s6,1
+	andi	s6,s6,+00000001
 	bne	s6,zero,0000000000017824
 
 l0000000000017760:
-	addi	a0,zero,0
+	addi	a0,zero,+00000000
 	jal	zero,0000000000017774
 
 l0000000000017768:
-	lw	a5,gp,-2028
+	lw	a5,gp,-000007EC
 	beq	a5,zero,0000000000017804
 
 l0000000000017770:
-	addi	a0,zero,-1
+	addi	a0,zero,-00000001
 
 l0000000000017774:
-	ld	a4,sp,312
-	ld	a5,gp,-1936
+	ld	a4,sp,+00000138
+	ld	a5,gp,-00000790
 	bne	a4,a5,0000000000017920
 
 l0000000000017780:
-	ld	ra,sp,408
-	ld	s0,sp,400
-	ld	s1,sp,392
-	ld	s2,sp,384
-	ld	s3,sp,376
-	ld	s4,sp,368
-	ld	s5,sp,360
-	ld	s6,sp,352
-	ld	s7,sp,344
-	ld	s8,sp,336
-	ld	s9,sp,328
-	addi	sp,sp,416
-	jalr	zero,ra,0
+	ld	ra,sp,+00000198
+	ld	s0,sp,+00000190
+	ld	s1,sp,+00000188
+	ld	s2,sp,+00000180
+	ld	s3,sp,+00000178
+	ld	s4,sp,+00000170
+	ld	s5,sp,+00000168
+	ld	s6,sp,+00000160
+	ld	s7,sp,+00000158
+	ld	s8,sp,+00000150
+	ld	s9,sp,+00000148
+	addi	sp,sp,+000001A0
+	jalr	zero,ra,+00000000
 
 l00000000000177B4:
-	lw	a5,gp,-2028
+	lw	a5,gp,-000007EC
 	bne	a5,zero,0000000000017770
 
 l00000000000177BC:
-	ld	a0,gp,-1920
-	lui	a2,0x00000012
-	addi	a3,s4,0
-	addi	a2,a2,-1760
-	addi	a1,zero,1
+	ld	a0,gp,-00000780
+	lui	a2,00000012
+	addi	a3,s4,+00000000
+	addi	a2,a2,-000006E0
+	addi	a1,zero,+00000001
 	jal	ra,00000000000150D0
-	addi	a0,zero,-1
+	addi	a0,zero,-00000001
 	jal	zero,0000000000017774
 
 l00000000000177DC:
-	lw	a5,gp,-2028
+	lw	a5,gp,-000007EC
 	bne	a5,zero,0000000000017770
 
 l00000000000177E4:
-	ld	a0,gp,-1920
-	lui	a2,0x00000012
-	addi	a3,s2,0
-	addi	a2,a2,-1728
-	addi	a1,zero,1
+	ld	a0,gp,-00000780
+	lui	a2,00000012
+	addi	a3,s2,+00000000
+	addi	a2,a2,-000006C0
+	addi	a1,zero,+00000001
 	jal	ra,00000000000150D0
-	addi	a0,zero,-1
+	addi	a0,zero,-00000001
 	jal	zero,0000000000017774
 
 l0000000000017804:
-	ld	a3,gp,-1920
-	lui	a0,0x00000011
-	addi	a2,zero,43
-	addi	a1,zero,1
-	addi	a0,a0,2040
+	ld	a3,gp,-00000780
+	lui	a0,00000011
+	addi	a2,zero,+0000002B
+	addi	a1,zero,+00000001
+	addi	a0,a0,+000007F8
 	jal	ra,0000000000015090
-	addi	a0,zero,-1
+	addi	a0,zero,-00000001
 	jal	zero,0000000000017774
 
 l0000000000017824:
-	addi	a1,sp,8
-	addi	a0,zero,10
+	addi	a1,sp,+00000008
+	addi	a0,zero,+0000000A
 	jal	ra,00000000000168E4
-	sd	a0,s0,56
+	sd	a0,s0,+00000038
 	bne	a0,zero,0000000000017760
 
 l0000000000017838:
-	lw	a5,gp,-2028
+	lw	a5,gp,-000007EC
 	bne	a5,zero,0000000000017770
 
 l0000000000017840:
-	lui	a3,0x00000012
-	addi	a4,s4,0
-	addi	a3,a3,-2000
-	addi	a2,zero,250
-	addi	a1,zero,1
-	addi	a0,s3,0
+	lui	a3,00000012
+	addi	a4,s4,+00000000
+	addi	a3,a3,-000007D0
+	addi	a2,zero,+000000FA
+	addi	a1,zero,+00000001
+	addi	a0,s3,+00000000
 	jal	ra,0000000000015080
-	addi	a0,s3,0
+	addi	a0,s3,+00000000
 	jal	ra,0000000000014F20
 	jal	zero,0000000000017770
 
 l0000000000017868:
-	addi	s2,s5,0
+	addi	s2,s5,+00000000
 	jal	zero,000000000001766C
 
 l0000000000017870:
-	addi	a0,s3,0
+	addi	a0,s3,+00000000
 	jal	ra,0000000000014F30
-	sd	a0,s0,168
+	sd	a0,s0,+000000A8
 
 l000000000001787C:
-	lbu	a5,s9,0
-	lbu	a4,s8,0
-	addi	s8,s8,1
-	xori	a5,a5,-1
+	lbu	a5,s9,+00000000
+	lbu	a4,s8,+00000000
+	addi	s8,s8,+00000001
+	xori	a5,a5,-00000001
 	or	a5,a5,a4
-	sb	a5,s8,4095
-	addi	s9,s9,1
+	sb	a5,s8,+00000FFF
+	addi	s9,s9,+00000001
 	bne	s3,s8,000000000001787C
 
 l000000000001789C:
-	addi	a3,zero,250
-	addi	a2,s3,0
-	addi	a1,sp,40
-	addi	a0,zero,10
+	addi	a3,zero,+000000FA
+	addi	a2,s3,+00000000
+	addi	a1,sp,+00000028
+	addi	a0,zero,+0000000A
 	jal	ra,0000000000014F70
 	beq	a0,zero,0000000000017768
 
 l00000000000178B4:
-	addi	a0,s3,0
+	addi	a0,s3,+00000000
 	jal	ra,0000000000014F30
-	addi	a5,zero,128
-	sd	a0,s0,176
+	addi	a5,zero,+00000080
+	sd	a0,s0,+000000B0
 	subw	s2,a5,s2
-	addi	a0,s0,96
+	addi	a0,s0,+00000060
 	bne	s2,a5,0000000000017728
 
 l00000000000178D0:
-	lui	a3,0x00000011
-	addi	a3,a3,464
+	lui	a3,00000011
+	addi	a3,a3,+000001D0
 	jal	zero,0000000000017740
 
 l00000000000178DC:
-	addi	a4,s0,88
-	addi	a3,s0,80
-	addi	a2,s0,72
-	addi	a1,s0,64
-	addi	a0,sp,8
+	addi	a4,s0,+00000058
+	addi	a3,s0,+00000050
+	addi	a2,s0,+00000048
+	addi	a1,s0,+00000040
+	addi	a0,sp,+00000008
 	jal	ra,0000000000017D10
 	jal	zero,0000000000017758
 
 l00000000000178F8:
-	lw	a5,gp,-2028
+	lw	a5,gp,-000007EC
 	bne	a5,zero,0000000000017770
 
 l0000000000017900:
-	ld	a0,gp,-1920
-	lui	a2,0x00000012
-	addi	a3,s2,0
-	addi	a2,a2,-1696
-	addi	a1,zero,1
+	ld	a0,gp,-00000780
+	lui	a2,00000012
+	addi	a3,s2,+00000000
+	addi	a2,a2,-000006A0
+	addi	a1,zero,+00000001
 	jal	ra,00000000000150D0
-	addi	a0,zero,-1
+	addi	a0,zero,-00000001
 	jal	zero,0000000000017774
 
 l0000000000017920:
@@ -4374,119 +4370,119 @@ l0000000000017920:
 
 ;; fn0000000000017924: 0000000000017924
 fn0000000000017924 proc
-	addi	sp,sp,-96
-	sd	s2,sp,64
-	ld	a5,gp,-2016
-	sd	s1,sp,72
-	sd	ra,sp,88
-	sd	s0,sp,80
-	sd	s3,sp,56
-	sd	s4,sp,48
-	sd	s5,sp,40
-	sd	s6,sp,32
-	sd	s7,sp,24
-	sd	s8,sp,16
-	sd	s9,sp,8
+	addi	sp,sp,-00000060
+	sd	s2,sp,+00000040
+	ld	a5,gp,-000007E0
+	sd	s1,sp,+00000048
+	sd	ra,sp,+00000058
+	sd	s0,sp,+00000050
+	sd	s3,sp,+00000038
+	sd	s4,sp,+00000030
+	sd	s5,sp,+00000028
+	sd	s6,sp,+00000020
+	sd	s7,sp,+00000018
+	sd	s8,sp,+00000010
+	sd	s9,sp,+00000008
 	beq	a5,zero,00000000000179B8
 
 l000000000001795C:
-	lw	a5,gp,-2028
+	lw	a5,gp,-000007EC
 	bne	a5,zero,000000000001796C
 
 l0000000000017964:
-	lbu	a5,gp,-800
+	lbu	a5,gp,-00000320
 	bne	a5,zero,00000000000179A8
 
 l000000000001796C:
-	lw	s0,gp,-2024
+	lw	s0,gp,-000007E8
 
 l0000000000017970:
-	ld	ra,sp,88
-	addi	a0,s0,0
-	ld	s1,sp,72
-	ld	s0,sp,80
-	ld	s2,sp,64
-	ld	s3,sp,56
-	ld	s4,sp,48
-	ld	s5,sp,40
-	ld	s6,sp,32
-	ld	s7,sp,24
-	ld	s8,sp,16
-	ld	s9,sp,8
-	addi	sp,sp,96
-	jalr	zero,ra,0
+	ld	ra,sp,+00000058
+	addi	a0,s0,+00000000
+	ld	s1,sp,+00000048
+	ld	s0,sp,+00000050
+	ld	s2,sp,+00000040
+	ld	s3,sp,+00000038
+	ld	s4,sp,+00000030
+	ld	s5,sp,+00000028
+	ld	s6,sp,+00000020
+	ld	s7,sp,+00000018
+	ld	s8,sp,+00000010
+	ld	s9,sp,+00000008
+	addi	sp,sp,+00000060
+	jalr	zero,ra,+00000000
 
 l00000000000179A8:
-	ld	a1,gp,-1920
-	addi	a0,gp,-800
+	ld	a1,gp,-00000780
+	addi	a0,gp,-00000320
 	jal	ra,00000000000150B0
 	jal	zero,000000000001796C
 
 l00000000000179B8:
-	lw	s0,gp,-2024
+	lw	s0,gp,-000007E8
 	bne	s0,zero,000000000001795C
 
 l00000000000179C0:
-	lui	s4,0x00000013
-	addi	a1,zero,1
-	addi	a0,s4,-1480
+	lui	s4,00000013
+	addi	a1,zero,+00000001
+	addi	a0,s4,-000005C8
 	jal	ra,0000000000014FA0
-	sd	a0,gp,2080
-	addi	s3,a0,0
+	sd	a0,gp,+00000820
+	addi	s3,a0,+00000000
 	beq	a0,zero,0000000000017B14
 
 l00000000000179DC:
-	lui	a1,0x00000013
-	addi	a1,a1,-1416
+	lui	a1,00000013
+	addi	a1,a1,-00000588
 	jal	ra,0000000000014FD0
-	lui	a1,0x00000013
-	sd	a0,gp,2152
-	addi	a1,a1,-1392
-	addi	a0,s3,0
+	lui	a1,00000013
+	sd	a0,gp,+00000868
+	addi	a1,a1,-00000570
+	addi	a0,s3,+00000000
 	jal	ra,0000000000014FD0
-	lui	a1,0x00000013
-	addi	s2,a0,0
-	addi	a1,a1,-1376
-	addi	a0,s3,0
-	sd	s2,gp,2144
+	lui	a1,00000013
+	addi	s2,a0,+00000000
+	addi	a1,a1,-00000560
+	addi	a0,s3,+00000000
+	sd	s2,gp,+00000860
 	jal	ra,0000000000014FD0
-	lui	a1,0x00000013
-	addi	s4,a0,0
-	addi	a1,a1,-1344
-	addi	a0,s3,0
-	sd	s4,gp,2136
+	lui	a1,00000013
+	addi	s4,a0,+00000000
+	addi	a1,a1,-00000540
+	addi	a0,s3,+00000000
+	sd	s4,gp,+00000858
 	jal	ra,0000000000014FD0
-	lui	a1,0x00000013
-	addi	s5,a0,0
-	addi	a1,a1,-1328
-	addi	a0,s3,0
-	sd	s5,gp,2120
+	lui	a1,00000013
+	addi	s5,a0,+00000000
+	addi	a1,a1,-00000530
+	addi	a0,s3,+00000000
+	sd	s5,gp,+00000848
 	jal	ra,0000000000014FD0
-	lui	a1,0x00000013
-	addi	s6,a0,0
-	addi	a1,a1,-1304
-	addi	a0,s3,0
-	sd	s6,gp,2112
+	lui	a1,00000013
+	addi	s6,a0,+00000000
+	addi	a1,a1,-00000518
+	addi	a0,s3,+00000000
+	sd	s6,gp,+00000840
 	jal	ra,0000000000014FD0
-	lui	a1,0x00000013
-	addi	s7,a0,0
-	addi	a1,a1,-1280
-	addi	a0,s3,0
-	sd	s7,gp,2104
+	lui	a1,00000013
+	addi	s7,a0,+00000000
+	addi	a1,a1,-00000500
+	addi	a0,s3,+00000000
+	sd	s7,gp,+00000838
 	jal	ra,0000000000014FD0
-	lui	a1,0x00000013
-	addi	s8,a0,0
-	addi	a1,a1,-1256
-	addi	a0,s3,0
-	sd	s8,gp,2096
+	lui	a1,00000013
+	addi	s8,a0,+00000000
+	addi	a1,a1,-000004E8
+	addi	a0,s3,+00000000
+	sd	s8,gp,+00000830
 	jal	ra,0000000000014FD0
-	lui	a1,0x00000013
-	addi	s9,a0,0
-	addi	a1,a1,-1224
-	addi	a0,s3,0
-	sd	s9,gp,2088
+	lui	a1,00000013
+	addi	s9,a0,+00000000
+	addi	a1,a1,-000004C8
+	addi	a0,s3,+00000000
+	sd	s9,gp,+00000828
 	jal	ra,0000000000014FD0
-	sd	a0,gp,2128
+	sd	a0,gp,+00000850
 	beq	s2,zero,0000000000017ACC
 
 l0000000000017AAC:
@@ -4508,190 +4504,190 @@ l0000000000017AC0:
 	beq	s9,zero,0000000000017ACC
 
 l0000000000017AC4:
-	sw	zero,gp,2072
+	sw	zero,gp,+00000818
 	jal	zero,0000000000017970
 
 l0000000000017ACC:
-	lui	a4,0x00000013
-	addi	a5,a4,-1200
-	ld	a6,a4,-1200
-	ld	a0,a5,8
-	ld	a1,a5,16
-	ld	a2,a5,24
-	ld	a3,a5,32
-	lw	a4,a5,40
-	addi	a5,gp,-800
-	addi	s0,zero,-1
-	sd	a6,a5,0
-	sd	a0,a5,8
-	sd	a1,a5,16
-	sd	a2,a5,24
-	sd	a3,a5,32
-	sw	a4,a5,40
-	sw	s0,gp,2072
+	lui	a4,00000013
+	addi	a5,a4,-000004B0
+	ld	a6,a4,-000004B0
+	ld	a0,a5,+00000008
+	ld	a1,a5,+00000010
+	ld	a2,a5,+00000018
+	ld	a3,a5,+00000020
+	lw	a4,a5,+00000028
+	addi	a5,gp,-00000320
+	addi	s0,zero,-00000001
+	sd	a6,a5,+00000000
+	sd	a0,a5,+00000008
+	sd	a1,a5,+00000010
+	sd	a2,a5,+00000018
+	sd	a3,a5,+00000020
+	sw	a4,a5,+00000028
+	sw	s0,gp,+00000818
 	jal	zero,0000000000017970
 
 l0000000000017B14:
-	addi	a3,zero,256
-	lui	a4,0x00000013
-	addi	a5,s4,-1480
-	addi	a4,a4,-1448
-	addi	a2,zero,1
-	addi	a1,a3,0
-	addi	a0,gp,-800
-	addi	s0,zero,-1
+	addi	a3,zero,+00000100
+	lui	a4,00000013
+	addi	a5,s4,-000005C8
+	addi	a4,a4,-000005A8
+	addi	a2,zero,+00000001
+	addi	a1,a3,+00000000
+	addi	a0,gp,-00000320
+	addi	s0,zero,-00000001
 	jal	ra,0000000000014FC0
-	sw	s0,gp,2072
+	sw	s0,gp,+00000818
 	jal	zero,0000000000017970
 
 ;; fn0000000000017B40: 0000000000017B40
 fn0000000000017B40 proc
-	addi	sp,sp,-80
-	sd	s0,sp,64
-	sd	s1,sp,56
-	sd	s2,sp,48
-	sd	s3,sp,40
-	sd	s4,sp,32
-	sd	ra,sp,72
-	sd	s5,sp,24
-	sd	s6,sp,16
-	sd	s7,sp,8
-	addi	s0,a0,0
-	addi	s3,a1,0
-	addi	s2,a2,0
-	addi	s1,a3,0
-	addi	s4,a4,0
+	addi	sp,sp,-00000050
+	sd	s0,sp,+00000040
+	sd	s1,sp,+00000038
+	sd	s2,sp,+00000030
+	sd	s3,sp,+00000028
+	sd	s4,sp,+00000020
+	sd	ra,sp,+00000048
+	sd	s5,sp,+00000018
+	sd	s6,sp,+00000010
+	sd	s7,sp,+00000008
+	addi	s0,a0,+00000000
+	addi	s3,a1,+00000000
+	addi	s2,a2,+00000000
+	addi	s1,a3,+00000000
+	addi	s4,a4,+00000000
 	jal	ra,0000000000017924
 	beq	a0,zero,0000000000017BB0
 
 l0000000000017B84:
-	ld	ra,sp,72
-	ld	s0,sp,64
-	ld	s1,sp,56
-	ld	s2,sp,48
-	ld	s3,sp,40
-	ld	s4,sp,32
-	ld	s5,sp,24
-	ld	s6,sp,16
-	ld	s7,sp,8
-	addi	sp,sp,80
-	jalr	zero,ra,0
+	ld	ra,sp,+00000048
+	ld	s0,sp,+00000040
+	ld	s1,sp,+00000038
+	ld	s2,sp,+00000030
+	ld	s3,sp,+00000028
+	ld	s4,sp,+00000020
+	ld	s5,sp,+00000018
+	ld	s6,sp,+00000010
+	ld	s7,sp,+00000008
+	addi	sp,sp,+00000050
+	jalr	zero,ra,+00000000
 
 l0000000000017BB0:
-	addi	a0,s0,0
+	addi	a0,s0,+00000000
 	jal	ra,00000000000182B4
-	ld	a5,gp,-1944
-	addi	s7,a0,0
-	jalr	ra,a5,0
-	ld	a5,gp,-1952
-	addi	a1,zero,16
-	addi	a0,zero,1
-	jalr	ra,a5,0
-	addi	s0,a0,0
+	ld	a5,gp,-00000798
+	addi	s7,a0,+00000000
+	jalr	ra,a5,+00000000
+	ld	a5,gp,-000007A0
+	addi	a1,zero,+00000010
+	addi	a0,zero,+00000001
+	jalr	ra,a5,+00000000
+	addi	s0,a0,+00000000
 	beq	a0,zero,0000000000017C3C
 
 l0000000000017BDC:
-	ld	a5,gp,-1992
-	addi	a4,zero,1
-	slli	a1,s7,0x00000000
-	sw	a4,a0,76
-	srli	a1,a1,0x00000000
-	jalr	ra,a5,0
-	addi	s6,a0,0
+	ld	a5,gp,-000007C8
+	addi	a4,zero,+00000001
+	slli	a1,s7,00000000
+	sw	a4,a0,+0000004C
+	srli	a1,a1,00000000
+	jalr	ra,a5,+00000000
+	addi	s6,a0,+00000000
 	blt	a0,zero,0000000000017B84
 
 l0000000000017BFC:
-	ld	a5,gp,-1960
-	addi	a1,a0,0
-	addi	a0,s0,0
-	jalr	ra,a5,0
+	ld	a5,gp,-000007A8
+	addi	a1,a0,+00000000
+	addi	a0,s0,+00000000
+	jalr	ra,a5,+00000000
 	beq	a0,zero,0000000000017C18
 
 l0000000000017C10:
 	jal	ra,0000000000014F30
-	sd	a0,s3,0
+	sd	a0,s3,+00000000
 
 l0000000000017C18:
-	ld	a5,gp,-1968
-	addi	a0,s6,0
-	jalr	ra,a5,0
+	ld	a5,gp,-000007B0
+	addi	a0,s6,+00000000
+	jalr	ra,a5,+00000000
 	beq	a0,zero,0000000000017C30
 
 l0000000000017C28:
 	jal	ra,0000000000014F30
-	sd	a0,s2,0
+	sd	a0,s2,+00000000
 
 l0000000000017C30:
-	ld	a5,gp,-1976
-	addi	a0,s0,0
-	jalr	ra,a5,0
+	ld	a5,gp,-000007B8
+	addi	a0,s0,+00000000
+	jalr	ra,a5,+00000000
 
 l0000000000017C3C:
-	ld	a5,gp,-1952
-	addi	a1,zero,16
-	addi	a0,zero,2
-	jalr	ra,a5,0
-	addi	s0,a0,0
+	ld	a5,gp,-000007A0
+	addi	a1,zero,+00000010
+	addi	a0,zero,+00000002
+	jalr	ra,a5,+00000000
+	addi	s0,a0,+00000000
 	beq	a0,zero,0000000000017CF4
 
 l0000000000017C54:
-	ld	a5,gp,-1984
-	addi	a4,zero,1
-	slli	a1,s7,0x00000000
-	sw	a4,s0,76
-	srli	a1,a1,0x00000000
-	jalr	ra,a5,0
-	addi	s2,a0,0
+	ld	a5,gp,-000007C0
+	addi	a4,zero,+00000001
+	slli	a1,s7,00000000
+	sw	a4,s0,+0000004C
+	srli	a1,a1,00000000
+	jalr	ra,a5,+00000000
+	addi	s2,a0,+00000000
 	beq	a0,zero,0000000000017C94
 
 l0000000000017C74:
-	ld	a0,a0,32
+	ld	a0,a0,+00000020
 	beq	a0,zero,0000000000017C84
 
 l0000000000017C7C:
 	jal	ra,0000000000014F30
-	sd	a0,s1,0
+	sd	a0,s1,+00000000
 
 l0000000000017C84:
-	flw	fa4,s2,52
+	flw	fa4,52(s2)
 	fmv.s.x	fa5,zero
 	feq.s	a5,fa4,fa5
 	beq	a5,zero,0000000000017CC8
 
 l0000000000017C94:
-	addi	a0,s0,0
-	ld	ra,sp,72
-	ld	s0,sp,64
-	ld	s1,sp,56
-	ld	s2,sp,48
-	ld	s3,sp,40
-	ld	s4,sp,32
-	ld	s5,sp,24
-	ld	s6,sp,16
-	ld	s7,sp,8
-	ld	t1,gp,-1976
-	addi	sp,sp,80
-	jalr	zero,t1,0
+	addi	a0,s0,+00000000
+	ld	ra,sp,+00000048
+	ld	s0,sp,+00000040
+	ld	s1,sp,+00000038
+	ld	s2,sp,+00000030
+	ld	s3,sp,+00000028
+	ld	s4,sp,+00000020
+	ld	s5,sp,+00000018
+	ld	s6,sp,+00000010
+	ld	s7,sp,+00000008
+	ld	t1,gp,-000007B8
+	addi	sp,sp,+00000050
+	jalr	zero,t1,+00000000
 
 l0000000000017CC8:
-	flw	fa5,s2,48
+	flw	fa5,48(s2)
 	fcvt.d.s	fa4,fa4
-	lui	a2,0x00000013
+	lui	a2,00000013
 	fcvt.d.s	fa5,fa5
 	fmv.d.x	fa4,a4
-	addi	a2,a2,-1152
+	addi	a2,a2,-00000480
 	fmv.d.x	fa3,a5
-	addi	a1,zero,1
-	addi	a0,s4,0
+	addi	a1,zero,+00000001
+	addi	a0,s4,+00000000
 	jal	ra,0000000000015010
 	jal	zero,0000000000017C94
 
 l0000000000017CF4:
-	ld	a5,gp,-1952
-	addi	a1,zero,16
-	addi	a0,zero,6
-	jalr	ra,a5,0
-	addi	s0,a0,0
+	ld	a5,gp,-000007A0
+	addi	a1,zero,+00000010
+	addi	a0,zero,+00000006
+	jalr	ra,a5,+00000000
+	addi	s0,a0,+00000000
 	bne	a0,zero,0000000000017C54
 
 l0000000000017D0C:
@@ -4699,161 +4695,161 @@ l0000000000017D0C:
 
 ;; fn0000000000017D10: 0000000000017D10
 fn0000000000017D10 proc
-	addi	sp,sp,-80
-	sd	s0,sp,64
-	sd	s2,sp,48
-	sd	s3,sp,40
-	sd	s4,sp,32
-	sd	s5,sp,24
-	sd	ra,sp,72
-	sd	s1,sp,56
-	sd	s6,sp,16
-	sd	s7,sp,8
-	addi	s0,a0,0
-	addi	s4,a1,0
-	addi	s3,a2,0
-	addi	s2,a3,0
-	addi	s5,a4,0
+	addi	sp,sp,-00000050
+	sd	s0,sp,+00000040
+	sd	s2,sp,+00000030
+	sd	s3,sp,+00000028
+	sd	s4,sp,+00000020
+	sd	s5,sp,+00000018
+	sd	ra,sp,+00000048
+	sd	s1,sp,+00000038
+	sd	s6,sp,+00000010
+	sd	s7,sp,+00000008
+	addi	s0,a0,+00000000
+	addi	s4,a1,+00000000
+	addi	s3,a2,+00000000
+	addi	s2,a3,+00000000
+	addi	s5,a4,+00000000
 	jal	ra,0000000000017924
 	beq	a0,zero,0000000000017D80
 
 l0000000000017D54:
-	ld	ra,sp,72
-	ld	s0,sp,64
-	ld	s1,sp,56
-	ld	s2,sp,48
-	ld	s3,sp,40
-	ld	s4,sp,32
-	ld	s5,sp,24
-	ld	s6,sp,16
-	ld	s7,sp,8
-	addi	sp,sp,80
-	jalr	zero,ra,0
+	ld	ra,sp,+00000048
+	ld	s0,sp,+00000040
+	ld	s1,sp,+00000038
+	ld	s2,sp,+00000030
+	ld	s3,sp,+00000028
+	ld	s4,sp,+00000020
+	ld	s5,sp,+00000018
+	ld	s6,sp,+00000010
+	ld	s7,sp,+00000008
+	addi	sp,sp,+00000050
+	jalr	zero,ra,+00000000
 
 l0000000000017D80:
-	ld	a5,gp,-1944
-	jalr	ra,a5,0
-	ld	a5,gp,-1952
-	addi	a1,zero,16
-	addi	a0,zero,12
-	jalr	ra,a5,0
-	addi	s1,a0,0
+	ld	a5,gp,-00000798
+	jalr	ra,a5,+00000000
+	ld	a5,gp,-000007A0
+	addi	a1,zero,+00000010
+	addi	a0,zero,+0000000C
+	jalr	ra,a5,+00000000
+	addi	s1,a0,+00000000
 	beq	a0,zero,0000000000017E18
 
 l0000000000017DA0:
-	lwu	a4,s0,4
-	lwu	a5,s0,12
-	lwu	a1,s0,0
-	lwu	a2,s0,8
-	ld	a3,gp,-2000
-	slli	a4,a4,0x00000000
-	slli	a5,a5,0x00000000
-	addi	a6,zero,1
-	sw	a6,a0,76
+	lwu	a4,s0,+00000004
+	lwu	a5,s0,+0000000C
+	lwu	a1,s0,+00000000
+	lwu	a2,s0,+00000008
+	ld	a3,gp,-000007D0
+	slli	a4,a4,00000000
+	slli	a5,a5,00000000
+	addi	a6,zero,+00000001
+	sw	a6,a0,+0000004C
 	or	a1,a4,a1
 	or	a2,a5,a2
-	jalr	ra,a3,0
-	addi	s7,a0,0
+	jalr	ra,a3,+00000000
+	addi	s7,a0,+00000000
 	blt	a0,zero,0000000000017D54
 
 l0000000000017DD8:
-	ld	a5,gp,-1960
-	addi	a1,a0,0
-	addi	a0,s1,0
-	jalr	ra,a5,0
+	ld	a5,gp,-000007A8
+	addi	a1,a0,+00000000
+	addi	a0,s1,+00000000
+	jalr	ra,a5,+00000000
 	beq	a0,zero,0000000000017DF4
 
 l0000000000017DEC:
 	jal	ra,0000000000014F30
-	sd	a0,s4,0
+	sd	a0,s4,+00000000
 
 l0000000000017DF4:
-	ld	a5,gp,-1968
-	addi	a0,s7,0
-	jalr	ra,a5,0
+	ld	a5,gp,-000007B0
+	addi	a0,s7,+00000000
+	jalr	ra,a5,+00000000
 	beq	a0,zero,0000000000017E0C
 
 l0000000000017E04:
 	jal	ra,0000000000014F30
-	sd	a0,s3,0
+	sd	a0,s3,+00000000
 
 l0000000000017E0C:
-	ld	a5,gp,-1976
-	addi	a0,s1,0
-	jalr	ra,a5,0
+	ld	a5,gp,-000007B8
+	addi	a0,s1,+00000000
+	jalr	ra,a5,+00000000
 
 l0000000000017E18:
-	ld	a5,gp,-1952
-	addi	a1,zero,16
-	addi	a0,zero,30
-	jalr	ra,a5,0
-	addi	s1,a0,0
+	ld	a5,gp,-000007A0
+	addi	a1,zero,+00000010
+	addi	a0,zero,+0000001E
+	jalr	ra,a5,+00000000
+	addi	s1,a0,+00000000
 	beq	a0,zero,0000000000017EE8
 
 l0000000000017E30:
-	lwu	a4,s0,4
-	lwu	a5,s0,12
-	lwu	a1,s0,0
-	lwu	a2,s0,8
-	ld	a3,gp,-2008
-	slli	a4,a4,0x00000000
-	slli	a5,a5,0x00000000
-	addi	a6,zero,1
-	sw	a6,s1,76
+	lwu	a4,s0,+00000004
+	lwu	a5,s0,+0000000C
+	lwu	a1,s0,+00000000
+	lwu	a2,s0,+00000008
+	ld	a3,gp,-000007D8
+	slli	a4,a4,00000000
+	slli	a5,a5,00000000
+	addi	a6,zero,+00000001
+	sw	a6,s1,+0000004C
 	or	a1,a4,a1
 	or	a2,a5,a2
-	jalr	ra,a3,0
-	addi	s0,a0,0
+	jalr	ra,a3,+00000000
+	addi	s0,a0,+00000000
 	beq	a0,zero,0000000000017E88
 
 l0000000000017E68:
-	ld	a0,a0,32
+	ld	a0,a0,+00000020
 	beq	a0,zero,0000000000017E78
 
 l0000000000017E70:
 	jal	ra,0000000000014F30
-	sd	a0,s2,0
+	sd	a0,s2,+00000000
 
 l0000000000017E78:
-	flw	fa4,s0,52
+	flw	fa4,52(s0)
 	fmv.s.x	fa5,zero
 	feq.s	a5,fa4,fa5
 	beq	a5,zero,0000000000017EBC
 
 l0000000000017E88:
-	addi	a0,s1,0
-	ld	ra,sp,72
-	ld	s0,sp,64
-	ld	s1,sp,56
-	ld	s2,sp,48
-	ld	s3,sp,40
-	ld	s4,sp,32
-	ld	s5,sp,24
-	ld	s6,sp,16
-	ld	s7,sp,8
-	ld	t1,gp,-1976
-	addi	sp,sp,80
-	jalr	zero,t1,0
+	addi	a0,s1,+00000000
+	ld	ra,sp,+00000048
+	ld	s0,sp,+00000040
+	ld	s1,sp,+00000038
+	ld	s2,sp,+00000030
+	ld	s3,sp,+00000028
+	ld	s4,sp,+00000020
+	ld	s5,sp,+00000018
+	ld	s6,sp,+00000010
+	ld	s7,sp,+00000008
+	ld	t1,gp,-000007B8
+	addi	sp,sp,+00000050
+	jalr	zero,t1,+00000000
 
 l0000000000017EBC:
-	flw	fa5,s0,48
+	flw	fa5,48(s0)
 	fcvt.d.s	fa4,fa4
-	lui	a2,0x00000013
+	lui	a2,00000013
 	fcvt.d.s	fa5,fa5
 	fmv.d.x	fa4,a4
-	addi	a2,a2,-1152
+	addi	a2,a2,-00000480
 	fmv.d.x	fa3,a5
-	addi	a1,zero,1
-	addi	a0,s5,0
+	addi	a1,zero,+00000001
+	addi	a0,s5,+00000000
 	jal	ra,0000000000015010
 	jal	zero,0000000000017E88
 
 l0000000000017EE8:
-	ld	a5,gp,-1952
-	addi	a1,zero,16
-	addi	a0,zero,31
-	jalr	ra,a5,0
-	addi	s1,a0,0
+	ld	a5,gp,-000007A0
+	addi	a1,zero,+00000010
+	addi	a0,zero,+0000001F
+	jalr	ra,a5,+00000000
+	addi	s1,a0,+00000000
 	bne	a0,zero,0000000000017E30
 
 l0000000000017F00:
@@ -4861,40 +4857,40 @@ l0000000000017F00:
 
 ;; fn0000000000017F04: 0000000000017F04
 fn0000000000017F04 proc
-	addi	sp,sp,-80
-	sd	s3,sp,40
-	ld	a5,gp,-1936
-	sd	s0,sp,64
-	sd	s1,sp,56
-	sd	s2,sp,48
-	sd	s4,sp,32
-	sd	s5,sp,24
-	sd	s6,sp,16
-	addi	s0,a1,0
-	sd	ra,sp,72
-	addi	s5,a2,0
-	addi	s4,a3,0
-	sd	a5,sp,8
-	sd	zero,sp,0
+	addi	sp,sp,-00000050
+	sd	s3,sp,+00000028
+	ld	a5,gp,-00000790
+	sd	s0,sp,+00000040
+	sd	s1,sp,+00000038
+	sd	s2,sp,+00000030
+	sd	s4,sp,+00000020
+	sd	s5,sp,+00000018
+	sd	s6,sp,+00000010
+	addi	s0,a1,+00000000
+	sd	ra,sp,+00000048
+	addi	s5,a2,+00000000
+	addi	s4,a3,+00000000
+	sd	a5,sp,+00000008
+	sd	zero,sp,+00000000
 	jal	ra,00000000000182B4
-	srliw	a1,a0,0x00000010
-	srliw	t1,a0,0x00000008
-	addi	t3,zero,32
-	srliw	s6,a0,0x00000018
-	andi	s1,a1,255
-	andi	s2,t1,255
+	srliw	a1,a0,00000010
+	srliw	t1,a0,00000008
+	addi	t3,zero,+00000020
+	srliw	s6,a0,00000018
+	andi	s1,a1,+000000FF
+	andi	s2,t1,+000000FF
 	beq	s0,t3,0000000000018048
 
 l0000000000017F60:
-	addi	a1,zero,24
+	addi	a1,zero,+00000018
 	beq	s0,a1,0000000000018070
 
 l0000000000017F68:
-	addi	a0,zero,16
+	addi	a0,zero,+00000010
 	beq	s0,a0,00000000000180D8
 
 l0000000000017F70:
-	addi	a5,zero,8
+	addi	a5,zero,+00000008
 	beq	s0,a5,00000000000180F8
 
 l0000000000017F78:
@@ -4907,126 +4903,126 @@ l0000000000017F80:
 	bltu	a5,s0,0000000000018008
 
 l0000000000017F84:
-	addi	a0,zero,0
+	addi	a0,zero,+00000000
 
 l0000000000017F88:
-	ld	a4,sp,8
-	ld	a5,gp,-1936
+	ld	a4,sp,+00000008
+	ld	a5,gp,-00000790
 	bne	a4,a5,0000000000018114
 
 l0000000000017F94:
-	ld	ra,sp,72
-	ld	s0,sp,64
-	ld	s1,sp,56
-	ld	s2,sp,48
-	ld	s3,sp,40
-	ld	s4,sp,32
-	ld	s5,sp,24
-	ld	s6,sp,16
-	addi	sp,sp,80
-	jalr	zero,ra,0
+	ld	ra,sp,+00000048
+	ld	s0,sp,+00000040
+	ld	s1,sp,+00000038
+	ld	s2,sp,+00000030
+	ld	s3,sp,+00000028
+	ld	s4,sp,+00000020
+	ld	s5,sp,+00000018
+	ld	s6,sp,+00000010
+	addi	sp,sp,+00000050
+	jalr	zero,ra,+00000000
 
 l0000000000017FBC:
-	addi	a0,s5,0
+	addi	a0,s5,+00000000
 	jal	ra,00000000000182B4
-	addi	s0,a0,0
-	addi	a0,s4,0
+	addi	s0,a0,+00000000
+	addi	a0,s4,+00000000
 	jal	ra,00000000000182B4
-	lui	a2,0x00000013
-	andi	a4,a0,255
-	addi	a7,s6,0
-	addi	a6,s1,0
-	addi	a5,s2,0
-	andi	a3,s0,255
-	addi	a2,a2,-1040
-	addi	a1,zero,1
-	addi	a0,sp,0
+	lui	a2,00000013
+	andi	a4,a0,+000000FF
+	addi	a7,s6,+00000000
+	addi	a6,s1,+00000000
+	addi	a5,s2,+00000000
+	andi	a3,s0,+000000FF
+	addi	a2,a2,-00000410
+	addi	a1,zero,+00000001
+	addi	a0,sp,+00000000
 	jal	ra,0000000000015010
 
 l0000000000017FF8:
-	addi	a5,zero,-1
+	addi	a5,zero,-00000001
 	beq	a0,a5,0000000000017F84
 
 l0000000000018000:
-	ld	a0,sp,0
+	ld	a0,sp,+00000000
 	jal	zero,0000000000017F88
 
 l0000000000018008:
-	addi	a0,s5,0
+	addi	a0,s5,+00000000
 	jal	ra,00000000000182B4
-	addi	s0,a0,0
-	addi	a0,s4,0
+	addi	s0,a0,+00000000
+	addi	a0,s4,+00000000
 	jal	ra,00000000000182B4
-	srliw	a4,a0,0x00000010
-	srliw	a3,s0,0x00000010
-	lui	a2,0x00000013
-	addi	a5,s6,0
-	andi	a4,a4,255
-	andi	a3,a3,255
-	addi	a2,a2,-976
-	addi	a1,zero,1
-	addi	a0,sp,0
+	srliw	a4,a0,00000010
+	srliw	a3,s0,00000010
+	lui	a2,00000013
+	addi	a5,s6,+00000000
+	andi	a4,a4,+000000FF
+	andi	a3,a3,+000000FF
+	addi	a2,a2,-000003D0
+	addi	a1,zero,+00000001
+	addi	a0,sp,+00000000
 	jal	ra,0000000000015010
 	jal	zero,0000000000017FF8
 
 l0000000000018048:
-	lui	a2,0x00000013
-	andi	a3,a0,255
-	addi	a6,s6,0
-	addi	a5,s1,0
-	addi	a4,s2,0
-	addi	a2,a2,-1144
-	addi	a1,zero,1
-	addi	a0,sp,0
+	lui	a2,00000013
+	andi	a3,a0,+000000FF
+	addi	a6,s6,+00000000
+	addi	a5,s1,+00000000
+	addi	a4,s2,+00000000
+	addi	a2,a2,-00000478
+	addi	a1,zero,+00000001
+	addi	a0,sp,+00000000
 	jal	ra,0000000000015010
 	jal	zero,0000000000017FF8
 
 l0000000000018070:
-	lui	a2,0x00000013
-	addi	a5,s6,0
-	addi	a4,s1,0
-	addi	a3,s2,0
-	addi	a2,a2,-1112
-	addi	a1,zero,1
-	addi	a0,sp,0
+	lui	a2,00000013
+	addi	a5,s6,+00000000
+	addi	a4,s1,+00000000
+	addi	a3,s2,+00000000
+	addi	a2,a2,-00000458
+	addi	a1,zero,+00000001
+	addi	a0,sp,+00000000
 	jal	ra,0000000000015010
 	jal	zero,0000000000017FF8
 
 l0000000000018094:
-	addi	a0,s5,0
+	addi	a0,s5,+00000000
 	jal	ra,00000000000182B4
-	addi	s0,a0,0
-	addi	a0,s4,0
+	addi	s0,a0,+00000000
+	addi	a0,s4,+00000000
 	jal	ra,00000000000182B4
-	srliw	a4,a0,0x00000008
-	srliw	a3,s0,0x00000008
-	lui	a2,0x00000013
-	addi	a6,s6,0
-	addi	a5,s1,0
-	andi	a4,a4,255
-	andi	a3,a3,255
-	addi	a2,a2,-1008
-	addi	a1,zero,1
-	addi	a0,sp,0
+	srliw	a4,a0,00000008
+	srliw	a3,s0,00000008
+	lui	a2,00000013
+	addi	a6,s6,+00000000
+	addi	a5,s1,+00000000
+	andi	a4,a4,+000000FF
+	andi	a3,a3,+000000FF
+	addi	a2,a2,-000003F0
+	addi	a1,zero,+00000001
+	addi	a0,sp,+00000000
 	jal	ra,0000000000015010
 	jal	zero,0000000000017FF8
 
 l00000000000180D8:
-	lui	a2,0x00000013
-	addi	a4,s6,0
-	addi	a3,s1,0
-	addi	a2,a2,-1088
-	addi	a1,zero,1
-	addi	a0,sp,0
+	lui	a2,00000013
+	addi	a4,s6,+00000000
+	addi	a3,s1,+00000000
+	addi	a2,a2,-00000440
+	addi	a1,zero,+00000001
+	addi	a0,sp,+00000000
 	jal	ra,0000000000015010
 	jal	zero,0000000000017FF8
 
 l00000000000180F8:
-	lui	a2,0x00000013
-	addi	a3,s6,0
-	addi	a2,a2,-1064
-	addi	a1,zero,1
-	addi	a0,sp,0
+	lui	a2,00000013
+	addi	a3,s6,+00000000
+	addi	a2,a2,-00000428
+	addi	a1,zero,+00000001
+	addi	a0,sp,+00000000
 	jal	ra,0000000000015010
 	jal	zero,0000000000017FF8
 
@@ -5035,139 +5031,135 @@ l0000000000018114:
 
 ;; fn0000000000018118: 0000000000018118
 fn0000000000018118 proc
-	addi	sp,sp,-288
-	sd	s0,sp,272
-	ld	a5,gp,-1936
-	sd	ra,sp,280
-	andi	t4,a1,3
-	sd	a5,sp,264
+	addi	sp,sp,-00000120
+	sd	s0,sp,+00000110
+	ld	a5,gp,-00000790
+	sd	ra,sp,+00000118
+	andi	t4,a1,+00000003
+	sd	a5,sp,+00000108
 	bne	t4,zero,00000000000182A8
 
 l0000000000018134:
-	andi	a5,a1,7
-	addi	a4,zero,4
-	srliw	t5,a1,0x00000003
+	andi	a5,a1,+00000007
+	addi	a4,zero,+00000004
+	srliw	t5,a1,00000003
 	beq	a5,a4,0000000000018264
 
 l0000000000018144:
 	beq	t5,zero,00000000000181FC
 
 l0000000000018148:
-	addiw	a1,t5,-1
-	addi	a4,t4,0
-	addi	t1,zero,9
-	addi	a7,zero,46
-	addi	t3,zero,-1
+	addiw	a1,t5,FFFFFFFFFFFFFFFF
+	addi	a4,t4,+00000000
+	addi	t1,zero,+00000009
+	addi	a7,zero,+0000002E
+	addi	t3,zero,-00000001
 	jal	zero,0000000000018190
 
 l0000000000018160:
-	slli	a2,a2,0x00000000
-	addi	a5,sp,272
-	srli	a2,a2,0x00000000
-	slli	a3,a3,0x00000000
+	slli	a2,a2,00000000
+	addi	a5,sp,+00000110
+	srli	a2,a2,00000000
+	slli	a3,a3,00000000
 	add	a2,a5,a2
-	srli	a3,a3,0x00000000
-	sb	a6,a2,3832
+	srli	a3,a3,00000000
+	sb	a6,a2,+00000EF8
 	add	a3,a5,a3
-	sb	a7,a3,3832
-	addiw	a1,a1,-1
-	addiw	a4,a4,4
+	sb	a7,a3,+00000EF8
+	addiw	a1,a1,FFFFFFFFFFFFFFFF
+	addiw	a4,a4,00000004
 	beq	a1,t3,00000000000181F4
 
 l0000000000018190:
-	slli	a5,a1,0x00000000
-	srli	a5,a5,0x00000000
+	slli	a5,a1,00000000
+	srli	a5,a5,00000000
 	add	a5,a0,a5
-	lbu	a5,a5,0
-	addiw	a3,a4,1
-	andi	a2,a5,15
-	addi	a6,a2,87
+	lbu	a5,a5,+00000000
+	addiw	a3,a4,00000001
+	andi	a2,a5,+0000000F
+	addi	a6,a2,+00000057
 	bltu	t1,a2,00000000000181B4
 
 l00000000000181B0:
-	addi	a6,a2,48
+	addi	a6,a2,+00000030
 
 l00000000000181B4:
-	slli	a2,a4,0x00000000
-	addi	t6,sp,272
-	srli	a2,a2,0x00000000
-	slli	a3,a3,0x00000000
+	slli	a2,a4,00000000
+	addi	t6,sp,+00000110
+	srli	a2,a2,00000000
+	slli	a3,a3,00000000
 	add	a2,t6,a2
-	srli	a3,a3,0x00000000
-	sb	a6,a2,3832
+	srli	a3,a3,00000000
+	sb	a6,a2,+00000EF8
 	add	a3,t6,a3
-	srli	a5,a5,0x00000004
-	sb	a7,a3,3832
-	addiw	a2,a4,2
-	addiw	a3,a4,3
-	addi	a6,a5,48
+	srli	a5,a5,00000004
+	sb	a7,a3,+00000EF8
+	addiw	a2,a4,00000002
+	addiw	a3,a4,00000003
+	addi	a6,a5,+00000030
 	bgeu	t1,a5,0000000000018160
 
 l00000000000181EC:
-	addi	a6,a5,87
+	addi	a6,a5,+00000057
 	jal	zero,0000000000018160
 
 l00000000000181F4:
-	slliw	t5,t5,0x00000002
-	addw	t4,t4,t5
+	slliw	t5,t5,00000002
+	invalid
 
 l00000000000181FC:
-	slli	t4,t4,0x00000000
-	lui	a5,0x00000007
-	addi	a4,sp,8
-	srli	t4,t4,0x00000000
+	slli	t4,t4,00000000
+	lui	a5,00000007
+	addi	a4,sp,+00000008
+	srli	t4,t4,00000000
 	add	t4,a4,t4
-	addiw	a4,a5,105
-	addiw	a5,a5,609
-	sh	a5,t4,4
-	lui	a5,0x00000006
-	addiw	a5,a5,368
-	sh	a4,t4,0
-	lui	a4,0x00000003
-	addiw	a4,a4,-458
-	sh	a5,t4,6
-	addi	a5,zero,46
-	addi	a0,sp,8
-	sh	a4,t4,2
-	sh	a5,t4,8
+	addiw	a4,a5,00000069
+	addiw	a5,a5,00000261
+	sh	a5,t4,+00000004
+	lui	a5,00000006
+	addiw	a5,a5,00000170
+	sh	a4,t4,+00000000
+	lui	a4,00000003
+	addiw	a4,a4,FFFFFFFFFFFFFE36
+	sh	a5,t4,+00000006
+	addi	a5,zero,+0000002E
+	addi	a0,sp,+00000008
+	sh	a4,t4,+00000002
+	sh	a5,t4,+00000008
 	jal	ra,0000000000014F30
 
 l0000000000018248:
-	ld	a4,sp,264
-	ld	a5,gp,-1936
+	ld	a4,sp,+00000108
+	ld	a5,gp,-00000790
 	bne	a4,a5,00000000000182B0
 
 l0000000000018254:
-	ld	ra,sp,280
-	ld	s0,sp,272
-	addi	sp,sp,288
-	jalr	zero,ra,0
+	ld	ra,sp,+00000118
+	ld	s0,sp,+00000110
+	addi	sp,sp,+00000120
+	jalr	zero,ra,+00000000
 
 l0000000000018264:
-	addw	a5,a1,a4
-	srliw	a5,a5,0x00000003
-	addiw	a5,a5,-1
-	slli	a5,a5,0x00000000
-	srli	a5,a5,0x00000000
+	invalid
+	srliw	a5,a5,00000003
+	addiw	a5,a5,FFFFFFFFFFFFFFFF
+	slli	a5,a5,00000000
+	srli	a5,a5,00000000
 	add	a5,a0,a5
-	lbu	a5,a5,0
-	addi	a3,zero,9
-	srli	a5,a5,0x00000004
-	addi	a4,a5,87
+	lbu	a5,a5,+00000000
+	addi	a3,zero,+00000009
+	srli	a5,a5,00000004
+	addi	a4,a5,+00000057
 	bltu	a3,a5,0000000000018294
-
-l0000000000018290:
-	addi	a4,a5,48
-
-l0000000000018294:
-	addi	a5,zero,46
-	sb	a4,sp,8
-	sb	a5,sp,9
-	addi	t4,zero,2
+	addi	a4,a5,+00000030
+	addi	a5,zero,+0000002E
+	sb	a4,sp,+00000008
+	sb	a5,sp,+00000009
+	addi	t4,zero,+00000002
 	jal	zero,0000000000018144
 
 l00000000000182A8:
-	addi	a0,zero,0
+	addi	a0,zero,+00000000
 	jal	zero,0000000000018248
 
 l00000000000182B0:
@@ -5175,68 +5167,68 @@ l00000000000182B0:
 
 ;; fn00000000000182B4: 00000000000182B4
 fn00000000000182B4 proc
-	slliw	a5,a0,0x00000018
-	srliw	a3,a0,0x00000018
+	slliw	a5,a0,00000018
+	srliw	a3,a0,00000018
 	or	a3,a3,a5
-	lui	a4,0x00000FF0
-	lui	a5,0x00000010
+	lui	a4,00000FF0
+	lui	a5,00000010
 	and	a4,a0,a4
-	addiw	a5,a5,-256
-	sraiw	a4,a4,0x00000008
+	addiw	a5,a5,FFFFFFFFFFFFFF00
+	sraiw	a4,a4,00000008
 	and	a0,a0,a5
-	slliw	a0,a0,0x00000008
+	slliw	a0,a0,00000008
 	or	a5,a3,a4
 	or	a0,a5,a0
-	jalr	zero,ra,0
+	jalr	zero,ra,+00000000
 
 ;; fn00000000000182E8: 00000000000182E8
 fn00000000000182E8 proc
-	addi	sp,sp,-64
-	sd	s0,sp,48
-	sd	s2,sp,32
-	auipc	s0,0x00000002
-	addi	s0,s0,-1244
-	auipc	s2,0x00000002
-	addi	s2,s2,-1244
+	addi	sp,sp,-00000040
+	sd	s0,sp,+00000030
+	sd	s2,sp,+00000020
+	auipc	s0,00000002
+	addi	s0,s0,-000004DC
+	auipc	s2,00000002
+	addi	s2,s2,-000004DC
 	sub	s2,s2,s0
-	sd	ra,sp,56
-	sd	s1,sp,40
-	sd	s3,sp,24
-	sd	s4,sp,16
-	sd	s5,sp,8
-	srai	s2,s2,0x00000003
+	sd	ra,sp,+00000038
+	sd	s1,sp,+00000028
+	sd	s3,sp,+00000018
+	sd	s4,sp,+00000010
+	sd	s5,sp,+00000008
+	srai	s2,s2,00000003
 	beq	s2,zero,0000000000018354
 
 l0000000000018324:
-	addi	s5,a0,0
-	addi	s4,a1,0
-	addi	s3,a2,0
-	addi	s1,zero,0
+	addi	s5,a0,+00000000
+	addi	s4,a1,+00000000
+	addi	s3,a2,+00000000
+	addi	s1,zero,+00000000
 
 l0000000000018334:
-	ld	a5,s0,0
-	addi	a2,s3,0
-	addi	a1,s4,0
-	addi	a0,s5,0
-	addi	s1,s1,1
-	jalr	ra,a5,0
-	addi	s0,s0,8
+	ld	a5,s0,+00000000
+	addi	a2,s3,+00000000
+	addi	a1,s4,+00000000
+	addi	a0,s5,+00000000
+	addi	s1,s1,+00000001
+	jalr	ra,a5,+00000000
+	addi	s0,s0,+00000008
 	bne	s2,s1,0000000000018334
 
 l0000000000018354:
-	ld	ra,sp,56
-	ld	s0,sp,48
-	ld	s1,sp,40
-	ld	s2,sp,32
-	ld	s3,sp,24
-	ld	s4,sp,16
-	ld	s5,sp,8
-	addi	sp,sp,64
-	jalr	zero,ra,0
+	ld	ra,sp,+00000038
+	ld	s0,sp,+00000030
+	ld	s1,sp,+00000028
+	ld	s2,sp,+00000020
+	ld	s3,sp,+00000018
+	ld	s4,sp,+00000010
+	ld	s5,sp,+00000008
+	addi	sp,sp,+00000040
+	jalr	zero,ra,+00000000
 
 ;; fn0000000000018378: 0000000000018378
 fn0000000000018378 proc
-	jalr	zero,ra,0
+	jalr	zero,ra,+00000000
 ;;; Segment .eh_frame_hdr (000000000001837C)
 000000000001837C                                     01 1B 03 3B             ...;
 0000000000018380 E8 00 00 00 1C 00 00 00 04 CE FF FF 8C 03 00 00 ................
@@ -5353,23 +5345,23 @@ fn0000000000018378 proc
 ; DT_VERSYM       0000000000014A34
 ;;; Segment .got (000000000001A000)
 000000000001A000 FF FF FF FF FF FF FF FF 00 00 00 00 00 00 00 00 ................
-000000000001A010 00 4F 01 00 00 00 00 00 00 4F 01 00 00 00 00 00 .O.......O......
-000000000001A020 00 4F 01 00 00 00 00 00 00 4F 01 00 00 00 00 00 .O.......O......
-000000000001A030 00 4F 01 00 00 00 00 00 00 4F 01 00 00 00 00 00 .O.......O......
-000000000001A040 00 4F 01 00 00 00 00 00 00 4F 01 00 00 00 00 00 .O.......O......
-000000000001A050 00 4F 01 00 00 00 00 00 00 4F 01 00 00 00 00 00 .O.......O......
-000000000001A060 00 4F 01 00 00 00 00 00 00 4F 01 00 00 00 00 00 .O.......O......
-000000000001A070 00 4F 01 00 00 00 00 00 00 4F 01 00 00 00 00 00 .O.......O......
-000000000001A080 00 4F 01 00 00 00 00 00 00 4F 01 00 00 00 00 00 .O.......O......
-000000000001A090 00 4F 01 00 00 00 00 00 00 4F 01 00 00 00 00 00 .O.......O......
-000000000001A0A0 00 4F 01 00 00 00 00 00 00 4F 01 00 00 00 00 00 .O.......O......
-000000000001A0B0 00 4F 01 00 00 00 00 00 00 4F 01 00 00 00 00 00 .O.......O......
-000000000001A0C0 00 4F 01 00 00 00 00 00 00 4F 01 00 00 00 00 00 .O.......O......
-000000000001A0D0 00 4F 01 00 00 00 00 00 00 4F 01 00 00 00 00 00 .O.......O......
-000000000001A0E0 00 4F 01 00 00 00 00 00 00 4F 01 00 00 00 00 00 .O.......O......
-000000000001A0F0 00 4F 01 00 00 00 00 00 00 4F 01 00 00 00 00 00 .O.......O......
-000000000001A100 00 4F 01 00 00 00 00 00 00 4F 01 00 00 00 00 00 .O.......O......
-000000000001A110 00 4F 01 00 00 00 00 00 00 4F 01 00 00 00 00 00 .O.......O......
-000000000001A120 00 4F 01 00 00 00 00 00 00 4F 01 00 00 00 00 00 .O.......O......
-000000000001A130 00 4F 01 00 00 00 00 00 00 4F 01 00 00 00 00 00 .O.......O......
+000000000001A010 40 ED 03 00 00 00 00 00 60 ED 03 00 00 00 00 00 @.......`.......
+000000000001A020 80 ED 03 00 00 00 00 00 A0 ED 03 00 00 00 00 00 ................
+000000000001A030 C0 ED 03 00 00 00 00 00 E0 ED 03 00 00 00 00 00 ................
+000000000001A040 00 EE 03 00 00 00 00 00 20 EE 03 00 00 00 00 00 ........ .......
+000000000001A050 40 EE 03 00 00 00 00 00 60 EE 03 00 00 00 00 00 @.......`.......
+000000000001A060 80 EE 03 00 00 00 00 00 A0 EE 03 00 00 00 00 00 ................
+000000000001A070 C0 EE 03 00 00 00 00 00 E0 EE 03 00 00 00 00 00 ................
+000000000001A080 00 EF 03 00 00 00 00 00 20 EF 03 00 00 00 00 00 ........ .......
+000000000001A090 40 EF 03 00 00 00 00 00 60 EF 03 00 00 00 00 00 @.......`.......
+000000000001A0A0 80 EF 03 00 00 00 00 00 A0 EF 03 00 00 00 00 00 ................
+000000000001A0B0 C0 EF 03 00 00 00 00 00 E0 EF 03 00 00 00 00 00 ................
+000000000001A0C0 00 F0 03 00 00 00 00 00 20 F0 03 00 00 00 00 00 ........ .......
+000000000001A0D0 40 F0 03 00 00 00 00 00 60 F0 03 00 00 00 00 00 @.......`.......
+000000000001A0E0 80 F0 03 00 00 00 00 00 A0 F0 03 00 00 00 00 00 ................
+000000000001A0F0 C0 F0 03 00 00 00 00 00 E0 F0 03 00 00 00 00 00 ................
+000000000001A100 00 F1 03 00 00 00 00 00 20 F1 03 00 00 00 00 00 ........ .......
+000000000001A110 40 F1 03 00 00 00 00 00 60 F1 03 00 00 00 00 00 @.......`.......
+000000000001A120 80 F1 03 00 00 00 00 00 A0 F1 03 00 00 00 00 00 ................
+000000000001A130 C0 F1 03 00 00 00 00 00 E0 F1 03 00 00 00 00 00 ................
 000000000001A140 30 9E 01 00 00 00 00 00                         0.......       
