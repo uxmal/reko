@@ -819,7 +819,17 @@ namespace Reko.Arch.X86
         // Offset of the operand is encoded directly after the opcode.
         public static Mutator O(string sWidth)
         {
-            return (u, d) => throw new NotImplementedException();
+            return (u, d) =>
+            {
+                int i = 0;
+                var width = d.OperandWidth(sWidth, ref i);
+                if (!d.rdr.TryReadLe(d.decodingContext.addressWidth, out var offset))
+                    return false;
+                var memOp = new MemoryOperand(width, offset);
+                memOp.SegOverride = d.decodingContext.SegmentOverride;
+                d.decodingContext.ops.Add(memOp);
+                return true;
+            };
         }
 
         private static readonly Mutator Ob = O("b");
