@@ -34,13 +34,15 @@ namespace Reko.Arch.Z80
     /// </summary>
     public class Z80Disassembler : DisassemblerBase<Z80Instruction>
     {
-        private EndianImageReader rdr;
-        private RegisterStorage IndexRegister;
+        private readonly EndianImageReader rdr;
+        private readonly List<MachineOperand> ops;
         private Z80Instruction instr;
+        private RegisterStorage IndexRegister;
 
         public Z80Disassembler(EndianImageReader rdr)
         {
             this.rdr = rdr;
+            this.ops = new List<MachineOperand>();
         }
 
         public override Z80Instruction DisassembleInstruction()
@@ -53,288 +55,140 @@ namespace Reko.Arch.Z80
                 Address = addr,
             };
             if (!rdr.TryReadByte(out byte op))
-                return Invalid(addr);
-            
-            var opRef = oprecs[op];
+                return Invalid();
+
+            this.ops.Clear();
             this.IndexRegister = null;
-            instr = opRef.Decode(this, op, "");
+            var decoder = oprecs[op];
+            instr = decoder.Decode(this, op);
             if (instr == null)
-                return Invalid(addr);
-            instr.Address = addr;
-            instr.IClass |= op == 0 ? InstrClass.Zero : 0;
+                return Invalid();
             instr.Length = (int)(rdr.Address - addr);
             return instr;
         }
 
-        private Z80Instruction Invalid(Address addr)
+        private Z80Instruction Invalid()
         {
             return new Z80Instruction
             {
-                Address = addr,
+                IClass = InstrClass.Invalid,
                 Code = Opcode.illegal,
             };
         }
 
-        public Z80Instruction DecodeOperands(Opcode opcode, InstrClass iclass, byte op, string fmt)
+        private static CondCode[] ConditionCode =
         {
-            var ops = new MachineOperand[2];
-            var iOp = 0;
-            ushort us;
-            for (int i = 0; i < fmt.Length; ++i)
-            {
-                if (fmt[i] == ',')
-                    ++i;
-                switch (fmt[i++])
-                {
-                default:
-                    throw new NotSupportedException(string.Format("Unknown format specifier {0}.", fmt[i - 1]));
-                case 'a':       // the 'A' register
-                    ops[iOp++] = new RegisterOperand(Registers.a);
-                    break;
-                case 'A':       // Absolute memory address.
-                    if (!rdr.TryReadLeUInt16(out us))
-                        return null;
-                    ops[iOp++] = AddressOperand.Ptr16(us);
-                    break;
-                case 'R':       // register encoded in bits 0..2 of op.
-                    ops[iOp++] = new RegisterOperand(ByteRegister(op));
-                    break;
-                case 'r':        // register encoded in bits 3..5 of op
-                    ops[iOp++] = new RegisterOperand(ByteRegister(op >> 3));
-                    break;
-                case 'M':       // memory fetch from HL (or IX,IY)
-                    ops[iOp++] = MemOperand(fmt[i++]);
-                    break;
-                case 'B':       // memory access using BC 
-                    ops[iOp++] = new MemoryOperand(Registers.bc, PrimitiveType.Byte);
-                    break;
-                case 'D':       // memory access using DE 
-                    ops[iOp++] = new MemoryOperand(Registers.de, PrimitiveType.Byte);
-                    break;
-                case 'H':       // memory access using HL
-                    ops[iOp++] = new MemoryOperand(IndexRegister != null ? IndexRegister : Registers.hl, PrimitiveType.Byte);
-                    break;
-                case 'S':       // memory access using SP
-                    ops[iOp++] = new MemoryOperand(Registers.sp, OperandSize(fmt[i++]));
-                    break;
-                case 'O':       // direct operand
-                    ops[iOp++] = DirectOperand(PrimitiveType.Word16, OperandSize(fmt[i++]));
-                    break;
-                case 'o':       // direct operand (byte sized)
-                    ops[iOp++] = DirectOperand(PrimitiveType.Byte, OperandSize(fmt[i++]));
-                    break;
-                case 'I':
-                    Constant imm;
-                    if (!rdr.TryReadLe(OperandSize(fmt[i++]), out imm))
-                        return null;
-                    ops[iOp++] = new ImmediateOperand(imm);
-                    break;
-                case 'W':
-                    ops[iOp++] = new RegisterOperand(WordRegister(fmt[i++]));
-                    break;
-                case 'C':
-                    ops[iOp++] = new ConditionOperand(ConditionCode(op >> 3));
-                    break;
-                case 'Q':
-                    ops[iOp++] = new ConditionOperand(ConditionCode((op >> 3) & 3));
-                    break;
-                case 'J':       // Relative jump
-                    var width = OperandSize(fmt[i++]);
-                    int ipOffset = (int) rdr.ReadLeSigned(width);
-                    ops[iOp++] = AddressOperand.Ptr16((ushort)(rdr.Address.ToUInt16() + ipOffset));
-                    break;
-                case 'x':       // 2-digit Inline hexadecimal byte
-                    int val = (Hex(fmt[i++]) << 4);
-                    val |= Hex(fmt[i++]);
-                    ops[iOp++] = new ImmediateOperand(Constant.Byte((byte) val));
-                    break;
-                case '[':
-                    ++i;
-                    ops[iOp++] = new MemoryOperand(Registers.c, PrimitiveType.Byte);
-                    break;
-                case 'L':
-                    ops[iOp++] = new RegisterOperand(LiteralRegister(fmt[i++]));
-                    break;
-                }
-            }
-            instr.Code = opcode;
-            instr.IClass = iclass;
-            instr.Length = (int)(rdr.Address - instr.Address);
-            instr.Op1 = ops[0];
-            instr.Op2 = ops[1];
-            return instr;
+            CondCode.nz,
+            CondCode.z,
+            CondCode.nc,
+            CondCode.c,
+            CondCode.po,
+            CondCode.pe,
+            CondCode.p,
+            CondCode.m,
+        };
+
+        private static RegisterStorage[] ByteRegister =
+        {
+            Registers.b,
+            Registers.c,
+            Registers.d,
+            Registers.e,
+            Registers.h,
+            Registers.l,
+            RegisterStorage.None,
+            Registers.a
+        };
+
+        private abstract class Decoder
+        {
+            public abstract Z80Instruction Decode(Z80Disassembler disasm, byte op);
         }
 
-        private MemoryOperand MemOperand(char chWidth)
+        private class InstrDecoder : Decoder
         {
-            RegisterStorage baseReg = Registers.hl;
-            sbyte offset = 0;
-            if (IndexRegister != null)
-            {
-                baseReg = IndexRegister;
-                offset = (sbyte) rdr.ReadByte();
-            }
-            var pop = new MemoryOperand(baseReg, offset, OperandSize(chWidth));
-            return pop;
-        }
-
-        private MachineOperand DirectOperand(PrimitiveType addrSize, PrimitiveType dataSize)
-        {
-            return new MemoryOperand(rdr.ReadLe(addrSize), dataSize);
-        }
-
-        private static int Hex(char c)
-        {
-            if ('0' <= c && c <= '9')
-                return c - '0';
-            if ('a' <= c && c <= 'f')
-                return 10 + c - 'a';
-            if ('A' <= c && c <= 'F')
-                return 10 + c - 'A';
-            throw new FormatException();
-        }
-
-        private CondCode ConditionCode(int bits)
-        {
-            switch (bits & 7)
-            {
-            default: throw new NotImplementedException();
-            case 0: return CondCode.nz;
-            case 1: return CondCode.z;
-            case 2: return CondCode.nc;
-            case 3: return CondCode.c;
-            case 4: return CondCode.po;
-            case 5: return CondCode.pe;
-            case 6: return CondCode.p;
-            case 7: return CondCode.m;
-            }
-        }
-
-        private RegisterStorage ByteRegister(int bits)
-        {
-            switch (bits & 0x7)
-            {
-            default: throw new NotImplementedException(string.Format("Unknown Z80 register {0}.", bits & 7));
-            case 0: return Registers.b;
-            case 1: return Registers.c;
-            case 2: return Registers.d;
-            case 3: return Registers.e;
-            case 4: return Registers.h;
-            case 5: return Registers.l;
-            case 7: return Registers.a;
-            }
-        }
-
-        private RegisterStorage LiteralRegister(char ch)
-        {
-            switch (ch)
-            {
-            case 'r': return Registers.r;
-            case 'i': return Registers.i;
-            default: throw new NotImplementedException(string.Format("Unknown register {0}.", ch));
-            }
-        }
-
-        private RegisterStorage WordRegister(char encoding)
-        {
-            switch (encoding)
-            {
-            case 'B': case 'b': return Registers.bc;
-            case 'D': case 'd': return Registers.de;
-            case 'H': case 'h': return IndexRegister != null ? IndexRegister : Registers.hl;
-            case 'S': case 's': return Registers.sp;
-            case 'A': case 'a': return Registers.af;
-            default: throw new NotImplementedException(string.Format("Unknown word register specifier {0}", encoding));
-            }
-        }
-
-        private PrimitiveType OperandSize(char c)
-        {
-            switch (c)
-            {
-            default: throw new NotSupportedException(string.Format("Unsupported operand size {0}.", c));
-            case 'b': return PrimitiveType.Byte;
-            case 'w': return PrimitiveType.Word16;
-            }
-        }
-
-        private abstract class OpRec
-        {
-            public abstract Z80Instruction Decode(Z80Disassembler disasm, byte op, string opFormat);
-        }
-
-        private class SingleByteOpRec : OpRec
-        {
+            public readonly InstrClass IClass;
             public readonly Opcode i8080Opcode;
             public readonly Opcode Z80Opcode;
-            public readonly InstrClass IClass;
-            public readonly string Format;
+            private readonly Mutator[] mutators;
 
-            public SingleByteOpRec(Opcode i8080, Opcode z80, string format, InstrClass iclass = InstrClass.Linear)
+            public InstrDecoder(InstrClass iclass, Opcode i8080, Opcode z80, params Mutator [] mutators)
             {
+                this.IClass = iclass;
                 this.i8080Opcode = i8080;
                 this.Z80Opcode = z80;
-                this.IClass = iclass;
-                this.Format = format;
+                this.mutators = mutators;
             }
 
-            public override Z80Instruction Decode(Z80Disassembler disasm, byte op, string opFormat)
+            public override Z80Instruction Decode(Z80Disassembler disasm, byte op)
             {
-                return disasm.DecodeOperands(Z80Opcode, IClass, op, Format);
+                var instr = disasm.instr;
+                foreach (var m in mutators)
+                {
+                    if (!m(op, disasm))
+                        return disasm.Invalid();
+                }
+                instr.IClass = IClass;
+                instr.Code = Z80Opcode;
+                var ops = disasm.ops;
+                if (ops.Count > 0)
+                {
+                    instr.Op1 = ops[0];
+                    if (ops.Count > 1)
+                    {
+                        instr.Op2 = ops[1];
+                    }
+                }
+                return instr;
             }
         }
 
-        private class IndexPrefixOpRec : OpRec
+        private class IndexPrefixDecoder : Decoder
         {
-            private RegisterStorage IndexRegister;
+            private readonly RegisterStorage IndexRegister;
 
-            public IndexPrefixOpRec(RegisterStorage idxReg)
+            public IndexPrefixDecoder(RegisterStorage idxReg)
             {
                 this.IndexRegister = idxReg;
             }
 
-            public override Z80Instruction Decode(Z80Disassembler disasm, byte op, string opFormat)
+            public override Z80Instruction Decode(Z80Disassembler dasm, byte op)
             {
-                disasm.IndexRegister = this.IndexRegister;
-                op = disasm.rdr.ReadByte();
+                dasm.IndexRegister = this.IndexRegister;
+                op = dasm.rdr.ReadByte();
+                var instr = dasm.instr;
                 if (op == 0xCB)
                 {
-                    var offset = disasm.rdr.ReadSByte();
-                    op = disasm.rdr.ReadByte();
+                    var offset = dasm.rdr.ReadSByte();
+                    op = dasm.rdr.ReadByte();
                     switch (op >> 6)
                     {
                     default: throw new NotImplementedException();
                     case 1:
-                        return new Z80Instruction
-                        {
-                            Code = Opcode.bit,
-                            Op1 = new ImmediateOperand(Constant.Byte((byte) ((op >> 3) & 0x07))),
-                            Op2 = new MemoryOperand(IndexRegister, offset, PrimitiveType.Byte)
-                        };
+                        instr.Code = Opcode.bit;
+                        instr.Op1 = new ImmediateOperand(Constant.Byte((byte) ((op >> 3) & 0x07)));
+                            instr.Op2 = new MemoryOperand(IndexRegister, offset, PrimitiveType.Byte);
+                        return instr;
                     case 2:
-                        return new Z80Instruction
-                        {
-                            Code = Opcode.res,
-                            Op1 = new ImmediateOperand(Constant.Byte((byte)((op >> 3) & 0x07))),
-                            Op2 = new MemoryOperand(IndexRegister, offset, PrimitiveType.Byte)
-                        };
+                        instr.Code = Opcode.res;
+                        instr.Op1 = new ImmediateOperand(Constant.Byte((byte) ((op >> 3) & 0x07)));
+                        instr.Op2 = new MemoryOperand(IndexRegister, offset, PrimitiveType.Byte);
+                        return instr;
                     case 3:
-                        return new Z80Instruction
-                        {
-                            Code = Opcode.set,
-                            Op1 = new ImmediateOperand(Constant.Byte((byte)((op >> 3) & 0x07))),
-                            Op2 = new MemoryOperand(IndexRegister, offset, PrimitiveType.Byte)
-                        };
+                        instr.Code = Opcode.set;
+                        instr.Op1 = new ImmediateOperand(Constant.Byte((byte) ((op >> 3) & 0x07)));
+                        instr.Op2 = new MemoryOperand(IndexRegister, offset, PrimitiveType.Byte);
+                        return instr;
                     }
                 }
                 else
                 {
-                    return oprecs[op].Decode(disasm, op, opFormat);
+                    return oprecs[op].Decode(dasm, op);
                 }
             }
         }
 
-        private class CbPrefixOpRec : OpRec
+        private class CbPrefixOpRec : Decoder
         {
             static readonly Opcode[] cbOpcodes = new Opcode[] {
                 Opcode.rlc,
@@ -347,495 +201,712 @@ namespace Reko.Arch.Z80
                 Opcode.srl,
             };
 
-            static readonly string[] cbFormats = new string[] {
-                "R", "R", "R", "R", "R", "R", "Mb", "R", 
+            static readonly Mutator[] cbFormats = new Mutator[] {
+                R, R, R, R, R, R, Mb, R, 
             };
 
-            public override Z80Instruction Decode(Z80Disassembler disasm, byte op, string opFormat)
+            public override Z80Instruction Decode(Z80Disassembler dasm, byte op2)
             {
-                op = disasm.rdr.ReadByte();
-                Opcode code;
-                MachineOperand Op2;
+                if (!dasm.rdr.TryReadByte(out var op))
+                    return dasm.Invalid();
+
+                dasm.instr.IClass = InstrClass.Linear;
+                var y = (byte) ((op >> 3) & 0x07);
                 switch (op >> 6)
                 {
-                default: throw new NotImplementedException();
+                default: throw new InvalidOperationException();
                 case 0:
-                    return disasm.DecodeOperands(
-                        cbOpcodes[(op >> 3) & 0x07],
-                        InstrClass.Linear,
-                        op,
-                        cbFormats[op & 0x07]);
+                    dasm.instr.Code = cbOpcodes[y];
+                    break;
                 case 1:
-                    code = Opcode.bit;
+                    dasm.instr.Code = Opcode.bit;
+                    dasm.ops.Add(ImmediateOperand.Byte(y));
                     break;
                 case 2:
-                    code = Opcode.res;
+                    dasm.instr.Code = Opcode.res;
+                    dasm.ops.Add(ImmediateOperand.Byte(y));
                     break;
                 case 3:
-                    code = Opcode.set;
+                    dasm.instr.Code = Opcode.set;
+                    dasm.ops.Add(ImmediateOperand.Byte(y));
                     break;
                 }
-                if ((op & 7) == 6)
-                {
-                    Op2 = disasm.MemOperand('b');
-                }
-                else
-                {
-                    Op2 = new RegisterOperand(disasm.ByteRegister(op));
-                }
-                return new Z80Instruction
-                {
-                    Code = code,
-                    Op1 = new ImmediateOperand(Constant.Byte((byte)((op >> 3) & 0x07))),
-                    Op2 = Op2,
-                };
+                if (!cbFormats[op & 0x07](op, dasm))
+                    return dasm.Invalid();
+                dasm.instr.Op1 = dasm.ops[0];
+                dasm.instr.Op2 = dasm.ops.Count > 1 ? dasm.ops[1] : null;
+                return dasm.instr;
             }
         }
 
-        private class EdPrefixOpRec : OpRec
+        private class EdPrefixDecoder : Decoder
         {
-            public override Z80Instruction Decode(Z80Disassembler disasm, byte op, string opFormat)
+            public override Z80Instruction Decode(Z80Disassembler disasm, byte op)
             {
-                op = disasm.rdr.ReadByte();
-                OpRec oprec = null;
-                if (0x40 <= op && op < 0x80)
-                    oprec = edOprecs[op-0x40];
-                else if (0xA0 <= op && op < 0xC0)
-                    oprec = edOprecs[op - 0x60];
-                else 
-                    return new Z80Instruction { Code = Opcode.illegal };
-                return oprec.Decode(disasm, op, ((SingleByteOpRec)oprec).Format);
+                if (!disasm.rdr.TryReadByte(out var op2))
+                    return disasm.Invalid();
+                Decoder decoder = null;
+                if (0x40 <= op2 && op2 < 0x80)
+                    decoder = edOprecs[op2 - 0x40];
+                else if (0xA0 <= op2 && op2 < 0xC0)
+                    decoder = edOprecs[op2 - 0x60];
+                else
+                    return disasm.Invalid();
+                return decoder.Decode(disasm, op2);
             }
         }
+
+        private static InstrDecoder Instr(Opcode op8080, Opcode opZ80, params Mutator[] mutators)
+        {
+            return new InstrDecoder(InstrClass.Linear, op8080, opZ80, mutators);
+        }
+
+        private static InstrDecoder Instr(Opcode op8080, Opcode opZ80, InstrClass iclass)
+        {
+            return new InstrDecoder(iclass, op8080, opZ80);
+        }
+
+        private static InstrDecoder Instr(Opcode op8080, Opcode opZ80, Mutator m0, InstrClass iclass)
+        {
+            return new InstrDecoder(iclass, op8080, opZ80, m0);
+        }
+
+        private static InstrDecoder Instr(Opcode op8080, Opcode opZ80, Mutator m0, Mutator m1, InstrClass iclass)
+        {
+            return new InstrDecoder(iclass, op8080, opZ80, m0, m1);
+        }
+
+        #region Mutators
+
+        private static bool a(byte op, Z80Disassembler dasm)
+        {
+            dasm.ops.Add(new RegisterOperand(Registers.a));
+            return true;
+        }
+
+        // Absolute memory address.
+        private static bool A(byte op, Z80Disassembler dasm)
+        {
+            if (!dasm.rdr.TryReadLeUInt16(out ushort us))
+                return false;
+            dasm.ops.Add(AddressOperand.Ptr16(us));
+            return true;
+        }
+
+        private static bool B(byte op, Z80Disassembler dasm)
+        {
+            dasm.ops.Add(new MemoryOperand(Registers.bc, PrimitiveType.Byte));
+            return true;
+        }
+
+        private static bool D(byte op, Z80Disassembler dasm)
+        {
+            dasm.ops.Add(new MemoryOperand(Registers.de, PrimitiveType.Byte));
+            return true;
+        }
+
+        // memory access using HL
+        private static bool Hb(byte op, Z80Disassembler dasm)
+        {
+            dasm.ops.Add(new MemoryOperand(
+                dasm.IndexRegister ?? Registers.hl, 
+                PrimitiveType.Byte));
+            return true;
+        }
+
+        private static bool C(byte op, Z80Disassembler dasm)
+        {
+            dasm.ops.Add(new ConditionOperand(ConditionCode[(op >> 3) & 7]));
+            return true;
+        }
+
+        private static bool Q(byte op, Z80Disassembler dasm)
+        {
+            dasm.ops.Add(new ConditionOperand(ConditionCode[(op >> 3) & 3]));
+            return true;
+        }
+
+        // register encoded in bits 3..5 of op
+        private static bool r(byte op, Z80Disassembler dasm)
+        {
+            dasm.ops.Add(new RegisterOperand(ByteRegister[(op >> 3)&7]));
+            return true;
+        }
+
+        // register encoded in bits 0..2 of op.
+        private static bool R(byte op, Z80Disassembler dasm)
+        {
+            dasm.ops.Add(new RegisterOperand(ByteRegister[op & 7]));
+            return true;
+        }
+
+        // Literal registers
+        private static bool Li(byte op, Z80Disassembler dasm)
+        {
+            dasm.ops.Add(new RegisterOperand(Registers.i));
+            return true;
+        }
+
+        private static bool Lr(byte op, Z80Disassembler dasm)
+        {
+            dasm.ops.Add(new RegisterOperand(Registers.r));
+            return true;
+        }
+
+        private static Mutator x(byte imm) {
+            return (u, d) =>
+            {
+                d.ops.Add(ImmediateOperand.Byte(imm));
+                return true;
+            };
+        }
+
+        // Relative jump
+        private static bool Jb(byte op, Z80Disassembler dasm)
+        {
+            if (!dasm.rdr.TryReadByte(out var bOffset))
+                return false;
+
+            int offset = (sbyte) bOffset;
+            dasm.ops.Add(AddressOperand.Create(dasm.rdr.Address + offset));
+            return true;
+        }
+
+        private static bool Sw(byte op, Z80Disassembler dasm)
+        {
+            dasm.ops.Add(new MemoryOperand(Registers.sp, PrimitiveType.Word16));
+            return true;
+        }
+
+        private static bool Wa(byte op, Z80Disassembler dasm)
+        {
+            dasm.ops.Add(new RegisterOperand(Registers.af));
+            return true;
+        }
+
+        private static bool Wb(byte op, Z80Disassembler dasm)
+        {
+            dasm.ops.Add(new RegisterOperand(Registers.bc));
+            return true;
+        }
+
+        private static bool Wd(byte op, Z80Disassembler dasm)
+        {
+            dasm.ops.Add(new RegisterOperand(Registers.de));
+            return true;
+        }
+
+        private static bool Wh(byte op, Z80Disassembler dasm)
+        {
+            dasm.ops.Add(new RegisterOperand(dasm.IndexRegister ?? Registers.hl));
+            return true;
+        }
+
+        private static bool Ws(byte op, Z80Disassembler dasm)
+        {
+            dasm.ops.Add(new RegisterOperand(Registers.sp));
+            return true;
+        }
+
+
+        private static bool Ib(byte op, Z80Disassembler dasm)
+        {
+            if (!dasm.rdr.TryReadByte(out byte imm))
+                return false;
+            dasm.ops.Add(ImmediateOperand.Byte(imm));
+            return true;
+        }
+
+        private static bool Iw(byte op, Z80Disassembler dasm)
+        {
+            if (!dasm.rdr.TryReadLeUInt16(out ushort imm))
+                return false;
+            dasm.ops.Add(ImmediateOperand.Word16(imm));
+            return true;
+        }
+
+        private static Mutator M(PrimitiveType w)
+        {
+            return (op, dasm) =>
+            {
+                RegisterStorage baseReg = Registers.hl;
+                sbyte offset = 0;
+                if (dasm.IndexRegister != null)
+                {
+                    baseReg = dasm.IndexRegister;
+                    if (!dasm.rdr.TryReadByte(out byte bOff))
+                        return false;
+                    offset = (sbyte) bOff;
+                }
+                dasm.ops.Add(new MemoryOperand(baseReg, offset, w));
+                return true;
+            };
+        }
+        private static Mutator Mb => M(PrimitiveType.Byte);
+        private static Mutator Mw => M(PrimitiveType.Word16);
+
+        private static bool mc(byte op, Z80Disassembler dasm)
+        {
+            dasm.ops.Add(new MemoryOperand(Registers.c, PrimitiveType.Byte));
+            return true;
+        }
+
+        private static bool Ob(byte op, Z80Disassembler dasm)
+        {
+            if (!dasm.rdr.TryReadLeUInt16(out ushort dir))
+                return false;
+            dasm.ops.Add(new MemoryOperand(Constant.Word16(dir), PrimitiveType.Byte));
+            return true;
+        }
+
+        private static bool ob(byte op, Z80Disassembler dasm)
+        {
+            if (!dasm.rdr.TryReadByte(out byte dir))
+                return false;
+            dasm.ops.Add(new MemoryOperand(Constant.Word16(dir), PrimitiveType.Byte));
+            return true;
+        }
+
+        private static bool Ow(byte op, Z80Disassembler dasm)
+        {
+            if (!dasm.rdr.TryReadLeUInt16(out ushort dir))
+                return false;
+            dasm.ops.Add(new MemoryOperand(Constant.Word16(dir), PrimitiveType.Word16));
+            return true;
+        }
+
+        #endregion
 
         /// <summary>
         /// References:
         /// http://wikiti.brandonw.net/index.php?title=Z80_Instruction_Set
         /// http://www.zophar.net/fileuploads/2/10807fvllz/z80-1.txt
         /// </summary>
-        private static readonly OpRec [] oprecs = new OpRec[] 
+        private static readonly Decoder[] oprecs = new Decoder[]
         {
             // 00
-            new SingleByteOpRec(Opcode.nop, Opcode.nop, "", InstrClass.Zero|InstrClass.Linear|InstrClass.Padding),
-            new SingleByteOpRec(Opcode.lxi, Opcode.ld, "Wb,Iw"),
-            new SingleByteOpRec(Opcode.stax, Opcode.ld, "B,a"),
-            new SingleByteOpRec(Opcode.inx, Opcode.inc, "Wb"),
-            new SingleByteOpRec(Opcode.inr, Opcode.inc, "r"),
-            new SingleByteOpRec(Opcode.dcr, Opcode.dec, "r"),
-            new SingleByteOpRec(Opcode.mvi, Opcode.ld, "r,Ib"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.rlca, ""),
+            Instr(Opcode.nop, Opcode.nop, InstrClass.Zero|InstrClass.Linear|InstrClass.Padding),
+            Instr(Opcode.lxi, Opcode.ld, Wb,Iw),
+            Instr(Opcode.stax, Opcode.ld, B,a),
+            Instr(Opcode.inx, Opcode.inc, Wb),
+            Instr(Opcode.inr, Opcode.inc, r),
+            Instr(Opcode.dcr, Opcode.dec, r),
+            Instr(Opcode.mvi, Opcode.ld, r,Ib),
+            Instr(Opcode.illegal, Opcode.rlca),
 
-            new SingleByteOpRec(Opcode.illegal, Opcode.ex_af, ""),
-            new SingleByteOpRec(Opcode.dad, Opcode.add, "Wh,Wb"),
-            new SingleByteOpRec(Opcode.ldax, Opcode.ld, "a,B"),
-            new SingleByteOpRec(Opcode.dcx, Opcode.dec, "Wb"),
-            new SingleByteOpRec(Opcode.inr, Opcode.inc, "r"),
-            new SingleByteOpRec(Opcode.dcr, Opcode.dec, "r"),
-            new SingleByteOpRec(Opcode.mvi, Opcode.ld, "r,Ib"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.rrca, ""),
+            Instr(Opcode.illegal, Opcode.ex_af),
+            Instr(Opcode.dad, Opcode.add, Wh,Wb),
+            Instr(Opcode.ldax, Opcode.ld, a,B),
+            Instr(Opcode.dcx, Opcode.dec, Wb),
+            Instr(Opcode.inr, Opcode.inc, r),
+            Instr(Opcode.dcr, Opcode.dec, r),
+            Instr(Opcode.mvi, Opcode.ld, r,Ib),
+            Instr(Opcode.illegal, Opcode.rrca),
 
             // 10
-            new SingleByteOpRec(Opcode.illegal, Opcode.djnz, "Jb", InstrClass.ConditionalTransfer),
-            new SingleByteOpRec(Opcode.lxi, Opcode.ld, "Wd,Iw"),
-            new SingleByteOpRec(Opcode.stax, Opcode.ld, "D,a"),
-            new SingleByteOpRec(Opcode.inx, Opcode.inc, "Wd"),
-            new SingleByteOpRec(Opcode.inr, Opcode.inc, "r"),
-            new SingleByteOpRec(Opcode.dcr, Opcode.dec, "r"),
-            new SingleByteOpRec(Opcode.mvi, Opcode.ld, "r,Ib"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.rla, ""),
+            Instr(Opcode.illegal, Opcode.djnz, Jb, InstrClass.ConditionalTransfer),
+            Instr(Opcode.lxi, Opcode.ld, Wd,Iw),
+            Instr(Opcode.stax, Opcode.ld, D,a),
+            Instr(Opcode.inx, Opcode.inc, Wd),
+            Instr(Opcode.inr, Opcode.inc, r),
+            Instr(Opcode.dcr, Opcode.dec, r),
+            Instr(Opcode.mvi, Opcode.ld, r,Ib),
+            Instr(Opcode.illegal, Opcode.rla),
 
-            new SingleByteOpRec(Opcode.illegal, Opcode.jr, "Jb", InstrClass.Transfer),
-            new SingleByteOpRec(Opcode.dad, Opcode.add, "Wh,Wd"),
-            new SingleByteOpRec(Opcode.ldax, Opcode.ld, "a,D"),
-            new SingleByteOpRec(Opcode.dcx, Opcode.dec, "Wd"),
-            new SingleByteOpRec(Opcode.inr, Opcode.inc, "r"),
-            new SingleByteOpRec(Opcode.dcr, Opcode.dec, "r"),
-            new SingleByteOpRec(Opcode.mvi, Opcode.ld, "r,Ib"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.rra, ""),
+            Instr(Opcode.illegal, Opcode.jr, Jb, InstrClass.Transfer),
+            Instr(Opcode.dad, Opcode.add, Wh,Wd),
+            Instr(Opcode.ldax, Opcode.ld, a,D),
+            Instr(Opcode.dcx, Opcode.dec, Wd),
+            Instr(Opcode.inr, Opcode.inc, r),
+            Instr(Opcode.dcr, Opcode.dec, r),
+            Instr(Opcode.mvi, Opcode.ld, r,Ib),
+            Instr(Opcode.illegal, Opcode.rra),
 
             // 20
-            new SingleByteOpRec(Opcode.illegal, Opcode.jr, "Q,Jb", InstrClass.ConditionalTransfer),
-            new SingleByteOpRec(Opcode.lxi, Opcode.ld, "Wh,Iw"),
-            new SingleByteOpRec(Opcode.shld, Opcode.ld, "Ow,Wh"),
-            new SingleByteOpRec(Opcode.inx, Opcode.inc, "Wh"),
-            new SingleByteOpRec(Opcode.inr, Opcode.inc, "r"),
-            new SingleByteOpRec(Opcode.dcr, Opcode.dec, "r"),
-            new SingleByteOpRec(Opcode.mvi, Opcode.ld, "r,Ib"),
-            new SingleByteOpRec(Opcode.daa, Opcode.daa, ""),
+            Instr(Opcode.illegal, Opcode.jr, Q, Jb,InstrClass.ConditionalTransfer),
+            Instr(Opcode.lxi, Opcode.ld, Wh,Iw),
+            Instr(Opcode.shld, Opcode.ld, Ow,Wh),
+            Instr(Opcode.inx, Opcode.inc, Wh),
+            Instr(Opcode.inr, Opcode.inc, r),
+            Instr(Opcode.dcr, Opcode.dec, r),
+            Instr(Opcode.mvi, Opcode.ld, r,Ib),
+            Instr(Opcode.daa, Opcode.daa),
 
-            new SingleByteOpRec(Opcode.illegal, Opcode.jr, "Q,Jb", InstrClass.ConditionalTransfer),
-            new SingleByteOpRec(Opcode.dad, Opcode.add, "Wh,Wh"),
-            new SingleByteOpRec(Opcode.lhld, Opcode.ld, "Wh,Ow"),
-            new SingleByteOpRec(Opcode.dcx, Opcode.dec, "Wh"),
-            new SingleByteOpRec(Opcode.inr, Opcode.inc, "r"),
-            new SingleByteOpRec(Opcode.dcr, Opcode.dec, "r"),
-            new SingleByteOpRec(Opcode.mvi, Opcode.ld, "r,Ib"),
-            new SingleByteOpRec(Opcode.cma, Opcode.cpl, ""),
+            Instr(Opcode.illegal, Opcode.jr, Q, Jb,InstrClass.ConditionalTransfer),
+            Instr(Opcode.dad, Opcode.add, Wh,Wh),
+            Instr(Opcode.lhld, Opcode.ld, Wh,Ow),
+            Instr(Opcode.dcx, Opcode.dec, Wh),
+            Instr(Opcode.inr, Opcode.inc, r),
+            Instr(Opcode.dcr, Opcode.dec, r),
+            Instr(Opcode.mvi, Opcode.ld, r,Ib),
+            Instr(Opcode.cma, Opcode.cpl),
 
             // 30
-            new SingleByteOpRec(Opcode.illegal, Opcode.jr, "Q,Jb", InstrClass.ConditionalTransfer),
-            new SingleByteOpRec(Opcode.lxi, Opcode.ld, "Ws,Iw"),
-            new SingleByteOpRec(Opcode.sta, Opcode.ld, "Ob,a"),
-            new SingleByteOpRec(Opcode.inx, Opcode.inc, "Ws"),
-            new SingleByteOpRec(Opcode.inr, Opcode.inc, "Hb"),
-            new SingleByteOpRec(Opcode.dcr, Opcode.dec, "Hb"),
-            new SingleByteOpRec(Opcode.mvi, Opcode.ld, "Mb,Ib"),
-            new SingleByteOpRec(Opcode.stc, Opcode.scf, ""),
+            Instr(Opcode.illegal, Opcode.jr, Q, Jb,InstrClass.ConditionalTransfer),
+            Instr(Opcode.lxi, Opcode.ld, Ws,Iw),
+            Instr(Opcode.sta, Opcode.ld, Ob,a),
+            Instr(Opcode.inx, Opcode.inc, Ws),
+            Instr(Opcode.inr, Opcode.inc, Hb),
+            Instr(Opcode.dcr, Opcode.dec, Hb),
+            Instr(Opcode.mvi, Opcode.ld, Mb,Ib),
+            Instr(Opcode.stc, Opcode.scf),
 
-            new SingleByteOpRec(Opcode.illegal, Opcode.jr, "Q,Jb"),
-            new SingleByteOpRec(Opcode.dad, Opcode.add, "Wh,Ws"),
-            new SingleByteOpRec(Opcode.lda, Opcode.ld, "a,Ob"),
-            new SingleByteOpRec(Opcode.dcx, Opcode.dec, "Ws"),
-            new SingleByteOpRec(Opcode.inr, Opcode.inc, "r"),
-            new SingleByteOpRec(Opcode.dcr, Opcode.dec, "r"),
-            new SingleByteOpRec(Opcode.mvi, Opcode.ld, "r,Ib"),
-            new SingleByteOpRec(Opcode.cmc, Opcode.ccf, ""),
+            Instr(Opcode.illegal, Opcode.jr, Q,Jb),
+            Instr(Opcode.dad, Opcode.add, Wh,Ws),
+            Instr(Opcode.lda, Opcode.ld, a,Ob),
+            Instr(Opcode.dcx, Opcode.dec, Ws),
+            Instr(Opcode.inr, Opcode.inc, r),
+            Instr(Opcode.dcr, Opcode.dec, r),
+            Instr(Opcode.mvi, Opcode.ld, r,Ib),
+            Instr(Opcode.cmc, Opcode.ccf),
 
             // 40
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,Mb"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
+            Instr(Opcode.mov, Opcode.ld, r,R),
+            Instr(Opcode.mov, Opcode.ld, r,R),
+            Instr(Opcode.mov, Opcode.ld, r,R),
+            Instr(Opcode.mov, Opcode.ld, r,R),
+            Instr(Opcode.mov, Opcode.ld, r,R),
+            Instr(Opcode.mov, Opcode.ld, r,R),
+            Instr(Opcode.mov, Opcode.ld, r,Mb),
+            Instr(Opcode.mov, Opcode.ld, r,R),
 
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,Mb"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
+            Instr(Opcode.mov, Opcode.ld, r,R),
+            Instr(Opcode.mov, Opcode.ld, r,R),
+            Instr(Opcode.mov, Opcode.ld, r,R),
+            Instr(Opcode.mov, Opcode.ld, r,R),
+            Instr(Opcode.mov, Opcode.ld, r,R),
+            Instr(Opcode.mov, Opcode.ld, r,R),
+            Instr(Opcode.mov, Opcode.ld, r,Mb),
+            Instr(Opcode.mov, Opcode.ld, r,R),
 
             // 50
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,Mb"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
+            Instr(Opcode.mov, Opcode.ld, r,R),
+            Instr(Opcode.mov, Opcode.ld, r,R),
+            Instr(Opcode.mov, Opcode.ld, r,R),
+            Instr(Opcode.mov, Opcode.ld, r,R),
+            Instr(Opcode.mov, Opcode.ld, r,R),
+            Instr(Opcode.mov, Opcode.ld, r,R),
+            Instr(Opcode.mov, Opcode.ld, r,Mb),
+            Instr(Opcode.mov, Opcode.ld, r,R),
 
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,Mb"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
+            Instr(Opcode.mov, Opcode.ld, r,R),
+            Instr(Opcode.mov, Opcode.ld, r,R),
+            Instr(Opcode.mov, Opcode.ld, r,R),
+            Instr(Opcode.mov, Opcode.ld, r,R),
+            Instr(Opcode.mov, Opcode.ld, r,R),
+            Instr(Opcode.mov, Opcode.ld, r,R),
+            Instr(Opcode.mov, Opcode.ld, r,Mb),
+            Instr(Opcode.mov, Opcode.ld, r,R),
 
             // 60
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,Mb"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
+            Instr(Opcode.mov, Opcode.ld, r,R),
+            Instr(Opcode.mov, Opcode.ld, r,R),
+            Instr(Opcode.mov, Opcode.ld, r,R),
+            Instr(Opcode.mov, Opcode.ld, r,R),
+            Instr(Opcode.mov, Opcode.ld, r,R),
+            Instr(Opcode.mov, Opcode.ld, r,R),
+            Instr(Opcode.mov, Opcode.ld, r,Mb),
+            Instr(Opcode.mov, Opcode.ld, r,R),
 
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,Mb"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
+            Instr(Opcode.mov, Opcode.ld, r,R),
+            Instr(Opcode.mov, Opcode.ld, r,R),
+            Instr(Opcode.mov, Opcode.ld, r,R),
+            Instr(Opcode.mov, Opcode.ld, r,R),
+            Instr(Opcode.mov, Opcode.ld, r,R),
+            Instr(Opcode.mov, Opcode.ld, r,R),
+            Instr(Opcode.mov, Opcode.ld, r,Mb),
+            Instr(Opcode.mov, Opcode.ld, r,R),
 
             // 70
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "Mb,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "Mb,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "Mb,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "Mb,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "Mb,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "Mb,R"),
-            new SingleByteOpRec(Opcode.hlt, Opcode.hlt, "", InstrClass.Terminates),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "Mb,R"),
+            Instr(Opcode.mov, Opcode.ld, Mb,R),
+            Instr(Opcode.mov, Opcode.ld, Mb,R),
+            Instr(Opcode.mov, Opcode.ld, Mb,R),
+            Instr(Opcode.mov, Opcode.ld, Mb,R),
+            Instr(Opcode.mov, Opcode.ld, Mb,R),
+            Instr(Opcode.mov, Opcode.ld, Mb,R),
+            Instr(Opcode.hlt, Opcode.hlt, InstrClass.Terminates),
+            Instr(Opcode.mov, Opcode.ld, Mb,R),
 
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,Mb"),
-            new SingleByteOpRec(Opcode.mov, Opcode.ld, "r,R"),
+            Instr(Opcode.mov, Opcode.ld, r,R),
+            Instr(Opcode.mov, Opcode.ld, r,R),
+            Instr(Opcode.mov, Opcode.ld, r,R),
+            Instr(Opcode.mov, Opcode.ld, r,R),
+            Instr(Opcode.mov, Opcode.ld, r,R),
+            Instr(Opcode.mov, Opcode.ld, r,R),
+            Instr(Opcode.mov, Opcode.ld, r,Mb),
+            Instr(Opcode.mov, Opcode.ld, r,R),
 
             // 80
-            new SingleByteOpRec(Opcode.add, Opcode.add, "a,R"),
-            new SingleByteOpRec(Opcode.add, Opcode.add, "a,R"),
-            new SingleByteOpRec(Opcode.add, Opcode.add, "a,R"),
-            new SingleByteOpRec(Opcode.add, Opcode.add, "a,R"),
-            new SingleByteOpRec(Opcode.add, Opcode.add, "a,R"),
-            new SingleByteOpRec(Opcode.add, Opcode.add, "a,R"),
-            new SingleByteOpRec(Opcode.add, Opcode.add, "a,Mb"),
-            new SingleByteOpRec(Opcode.add, Opcode.add, "a,R"),
+            Instr(Opcode.add, Opcode.add, a,R),
+            Instr(Opcode.add, Opcode.add, a,R),
+            Instr(Opcode.add, Opcode.add, a,R),
+            Instr(Opcode.add, Opcode.add, a,R),
+            Instr(Opcode.add, Opcode.add, a,R),
+            Instr(Opcode.add, Opcode.add, a,R),
+            Instr(Opcode.add, Opcode.add, a,Mb),
+            Instr(Opcode.add, Opcode.add, a,R),
 
-            new SingleByteOpRec(Opcode.adc, Opcode.adc, "a,R"),
-            new SingleByteOpRec(Opcode.adc, Opcode.adc, "a,R"),
-            new SingleByteOpRec(Opcode.adc, Opcode.adc, "a,R"),
-            new SingleByteOpRec(Opcode.adc, Opcode.adc, "a,R"),
-            new SingleByteOpRec(Opcode.adc, Opcode.adc, "a,R"),
-            new SingleByteOpRec(Opcode.adc, Opcode.adc, "a,R"),
-            new SingleByteOpRec(Opcode.adc, Opcode.adc, "a,Mb"),
-            new SingleByteOpRec(Opcode.adc, Opcode.adc, "a,R"),
+            Instr(Opcode.adc, Opcode.adc, a,R),
+            Instr(Opcode.adc, Opcode.adc, a,R),
+            Instr(Opcode.adc, Opcode.adc, a,R),
+            Instr(Opcode.adc, Opcode.adc, a,R),
+            Instr(Opcode.adc, Opcode.adc, a,R),
+            Instr(Opcode.adc, Opcode.adc, a,R),
+            Instr(Opcode.adc, Opcode.adc, a,Mb),
+            Instr(Opcode.adc, Opcode.adc, a,R),
 
             // 90
-            new SingleByteOpRec(Opcode.sub, Opcode.sub, "a,R"),
-            new SingleByteOpRec(Opcode.sub, Opcode.sub, "a,R"),
-            new SingleByteOpRec(Opcode.sub, Opcode.sub, "a,R"),
-            new SingleByteOpRec(Opcode.sub, Opcode.sub, "a,R"),
-            new SingleByteOpRec(Opcode.sub, Opcode.sub, "a,R"),
-            new SingleByteOpRec(Opcode.sub, Opcode.sub, "a,R"),
-            new SingleByteOpRec(Opcode.sub, Opcode.sub, "a,Mb"),
-            new SingleByteOpRec(Opcode.sub, Opcode.sub, "a,R"),
+            Instr(Opcode.sub, Opcode.sub, a,R),
+            Instr(Opcode.sub, Opcode.sub, a,R),
+            Instr(Opcode.sub, Opcode.sub, a,R),
+            Instr(Opcode.sub, Opcode.sub, a,R),
+            Instr(Opcode.sub, Opcode.sub, a,R),
+            Instr(Opcode.sub, Opcode.sub, a,R),
+            Instr(Opcode.sub, Opcode.sub, a,Mb),
+            Instr(Opcode.sub, Opcode.sub, a,R),
 
-            new SingleByteOpRec(Opcode.sbb, Opcode.sbc, "a,R"),
-            new SingleByteOpRec(Opcode.sbb, Opcode.sbc, "a,R"),
-            new SingleByteOpRec(Opcode.sbb, Opcode.sbc, "a,R"),
-            new SingleByteOpRec(Opcode.sbb, Opcode.sbc, "a,R"),
-            new SingleByteOpRec(Opcode.sbb, Opcode.sbc, "a,R"),
-            new SingleByteOpRec(Opcode.sbb, Opcode.sbc, "a,R"),
-            new SingleByteOpRec(Opcode.sbb, Opcode.sbc, "a,Mb"),
-            new SingleByteOpRec(Opcode.sbb, Opcode.sbc, "a,R"),
+            Instr(Opcode.sbb, Opcode.sbc, a,R),
+            Instr(Opcode.sbb, Opcode.sbc, a,R),
+            Instr(Opcode.sbb, Opcode.sbc, a,R),
+            Instr(Opcode.sbb, Opcode.sbc, a,R),
+            Instr(Opcode.sbb, Opcode.sbc, a,R),
+            Instr(Opcode.sbb, Opcode.sbc, a,R),
+            Instr(Opcode.sbb, Opcode.sbc, a,Mb),
+            Instr(Opcode.sbb, Opcode.sbc, a,R),
 
             // A0
-            new SingleByteOpRec(Opcode.ana, Opcode.and, "a,R"),
-            new SingleByteOpRec(Opcode.ana, Opcode.and, "a,R"),
-            new SingleByteOpRec(Opcode.ana, Opcode.and, "a,R"),
-            new SingleByteOpRec(Opcode.ana, Opcode.and, "a,R"),
-            new SingleByteOpRec(Opcode.ana, Opcode.and, "a,R"),
-            new SingleByteOpRec(Opcode.ana, Opcode.and, "a,R"),
-            new SingleByteOpRec(Opcode.ana, Opcode.and, "a,Mb"),
-            new SingleByteOpRec(Opcode.ana, Opcode.and, "a,R"),
+            Instr(Opcode.ana, Opcode.and, a,R),
+            Instr(Opcode.ana, Opcode.and, a,R),
+            Instr(Opcode.ana, Opcode.and, a,R),
+            Instr(Opcode.ana, Opcode.and, a,R),
+            Instr(Opcode.ana, Opcode.and, a,R),
+            Instr(Opcode.ana, Opcode.and, a,R),
+            Instr(Opcode.ana, Opcode.and, a,Mb),
+            Instr(Opcode.ana, Opcode.and, a,R),
 
-            new SingleByteOpRec(Opcode.xra, Opcode.xor, "a,R"),
-            new SingleByteOpRec(Opcode.xra, Opcode.xor, "a,R"),
-            new SingleByteOpRec(Opcode.xra, Opcode.xor, "a,R"),
-            new SingleByteOpRec(Opcode.xra, Opcode.xor, "a,R"),
-            new SingleByteOpRec(Opcode.xra, Opcode.xor, "a,R"),
-            new SingleByteOpRec(Opcode.xra, Opcode.xor, "a,R"),
-            new SingleByteOpRec(Opcode.xra, Opcode.xor, "a,Mb"),
-            new SingleByteOpRec(Opcode.xra, Opcode.xor, "a,R"),
+            Instr(Opcode.xra, Opcode.xor, a,R),
+            Instr(Opcode.xra, Opcode.xor, a,R),
+            Instr(Opcode.xra, Opcode.xor, a,R),
+            Instr(Opcode.xra, Opcode.xor, a,R),
+            Instr(Opcode.xra, Opcode.xor, a,R),
+            Instr(Opcode.xra, Opcode.xor, a,R),
+            Instr(Opcode.xra, Opcode.xor, a,Mb),
+            Instr(Opcode.xra, Opcode.xor, a,R),
 
             // B0
-            new SingleByteOpRec(Opcode.ora, Opcode.or, "a,R"),
-            new SingleByteOpRec(Opcode.ora, Opcode.or, "a,R"),
-            new SingleByteOpRec(Opcode.ora, Opcode.or, "a,R"),
-            new SingleByteOpRec(Opcode.ora, Opcode.or, "a,R"),
-            new SingleByteOpRec(Opcode.ora, Opcode.or, "a,R"),
-            new SingleByteOpRec(Opcode.ora, Opcode.or, "a,R"),
-            new SingleByteOpRec(Opcode.ora, Opcode.or, "a,Mb"),
-            new SingleByteOpRec(Opcode.ora, Opcode.or, "a,R"),
+            Instr(Opcode.ora, Opcode.or, a,R),
+            Instr(Opcode.ora, Opcode.or, a,R),
+            Instr(Opcode.ora, Opcode.or, a,R),
+            Instr(Opcode.ora, Opcode.or, a,R),
+            Instr(Opcode.ora, Opcode.or, a,R),
+            Instr(Opcode.ora, Opcode.or, a,R),
+            Instr(Opcode.ora, Opcode.or, a,Mb),
+            Instr(Opcode.ora, Opcode.or, a,R),
 
-            new SingleByteOpRec(Opcode.cmp, Opcode.cp, "a,R"),
-            new SingleByteOpRec(Opcode.cmp, Opcode.cp, "a,R"),
-            new SingleByteOpRec(Opcode.cmp, Opcode.cp, "a,R"),
-            new SingleByteOpRec(Opcode.cmp, Opcode.cp, "a,R"),
-            new SingleByteOpRec(Opcode.cmp, Opcode.cp, "a,R"),
-            new SingleByteOpRec(Opcode.cmp, Opcode.cp, "a,R"),
-            new SingleByteOpRec(Opcode.cmp, Opcode.cp, "a,Mb"),
-            new SingleByteOpRec(Opcode.cmp, Opcode.cp, "a,R"),
+            Instr(Opcode.cmp, Opcode.cp, a,R),
+            Instr(Opcode.cmp, Opcode.cp, a,R),
+            Instr(Opcode.cmp, Opcode.cp, a,R),
+            Instr(Opcode.cmp, Opcode.cp, a,R),
+            Instr(Opcode.cmp, Opcode.cp, a,R),
+            Instr(Opcode.cmp, Opcode.cp, a,R),
+            Instr(Opcode.cmp, Opcode.cp, a,Mb),
+            Instr(Opcode.cmp, Opcode.cp, a,R),
 
             // C0
-            new SingleByteOpRec(Opcode.illegal, Opcode.ret, "C", InstrClass.ConditionalTransfer),
-            new SingleByteOpRec(Opcode.illegal, Opcode.pop, "Wb"),
-            new SingleByteOpRec(Opcode.jnz, Opcode.jp, "C,A", InstrClass.ConditionalTransfer),
-            new SingleByteOpRec(Opcode.jmp, Opcode.jp, "A", InstrClass.Transfer),
-            new SingleByteOpRec(Opcode.illegal, Opcode.call, "C,A", InstrClass.ConditionalTransfer|InstrClass.Call),
-            new SingleByteOpRec(Opcode.illegal, Opcode.push, "Wb"),
-            new SingleByteOpRec(Opcode.adi, Opcode.add, "a,Ib"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.rst, "x00", InstrClass.Transfer|InstrClass.Call),
+            Instr(Opcode.illegal, Opcode.ret, C, InstrClass.ConditionalTransfer),
+            Instr(Opcode.illegal, Opcode.pop, Wb),
+            Instr(Opcode.jnz, Opcode.jp, C, A,InstrClass.ConditionalTransfer),
+            Instr(Opcode.jmp, Opcode.jp, A, InstrClass.Transfer),
+            Instr(Opcode.illegal, Opcode.call, C, A,InstrClass.ConditionalTransfer|InstrClass.Call),
+            Instr(Opcode.illegal, Opcode.push, Wb),
+            Instr(Opcode.adi, Opcode.add, a,Ib),
+            Instr(Opcode.illegal, Opcode.rst, x(00), InstrClass.Transfer|InstrClass.Call),
 
-            new SingleByteOpRec(Opcode.illegal, Opcode.ret, "C", InstrClass.ConditionalTransfer),
-            new SingleByteOpRec(Opcode.illegal, Opcode.ret, "", InstrClass.Transfer),
-            new SingleByteOpRec(Opcode.jz, Opcode.jp, "C,A"),
+            Instr(Opcode.illegal, Opcode.ret, C, InstrClass.ConditionalTransfer),
+            Instr(Opcode.illegal, Opcode.ret, InstrClass.Transfer),
+            Instr(Opcode.jz, Opcode.jp, C, A,InstrClass.ConditionalTransfer),
             new CbPrefixOpRec(),
-            new SingleByteOpRec(Opcode.illegal, Opcode.call, "C,A", InstrClass.ConditionalTransfer|InstrClass.Call),
-            new SingleByteOpRec(Opcode.illegal, Opcode.call, "A", InstrClass.Transfer|InstrClass.Call),
-            new SingleByteOpRec(Opcode.aci, Opcode.adc, "a,Ib"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.rst, "x08", InstrClass.Transfer|InstrClass.Call),
+            Instr(Opcode.illegal, Opcode.call, C, A,InstrClass.ConditionalTransfer|InstrClass.Call),
+            Instr( Opcode.illegal, Opcode.call, A, InstrClass.Transfer|InstrClass.Call),
+            Instr(Opcode.aci, Opcode.adc, a,Ib),
+            Instr(Opcode.illegal, Opcode.rst, x(0x08), InstrClass.Transfer|InstrClass.Call),
 
             // D0
-            new SingleByteOpRec(Opcode.illegal, Opcode.ret, "C", InstrClass.ConditionalTransfer),
-            new SingleByteOpRec(Opcode.illegal, Opcode.pop, "Wd"),
-            new SingleByteOpRec(Opcode.jnc, Opcode.jp, "C,A", InstrClass.ConditionalTransfer),
-            new SingleByteOpRec(Opcode.illegal, Opcode.@out, "ob,a"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.call, "C,A", InstrClass.ConditionalTransfer|InstrClass.Call),
-            new SingleByteOpRec(Opcode.illegal, Opcode.push, "Wd"),
-            new SingleByteOpRec(Opcode.sui, Opcode.sub, "a,Ib"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.rst, "x10", InstrClass.Transfer|InstrClass.Call),
+            Instr(Opcode.illegal, Opcode.ret, C, InstrClass.ConditionalTransfer),
+            Instr(Opcode.illegal, Opcode.pop, Wd),
+            Instr(Opcode.jnc, Opcode.jp, C, A,InstrClass.ConditionalTransfer),
+            Instr(Opcode.illegal, Opcode.@out, ob,a),
+            Instr(Opcode.illegal, Opcode.call, C, A,InstrClass.ConditionalTransfer|InstrClass.Call),
+            Instr(Opcode.illegal, Opcode.push, Wd),
+            Instr(Opcode.sui, Opcode.sub, a,Ib),
+            Instr(Opcode.illegal, Opcode.rst, x(0x10), InstrClass.Transfer|InstrClass.Call),
 
-            new SingleByteOpRec(Opcode.illegal, Opcode.ret, "C", InstrClass.ConditionalTransfer),
-            new SingleByteOpRec(Opcode.illegal, Opcode.exx, ""),
-            new SingleByteOpRec(Opcode.jc, Opcode.jp, "C,A", InstrClass.ConditionalTransfer),
-            new SingleByteOpRec(Opcode.illegal, Opcode.@in, "a,ob"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.call, "C,A", InstrClass.ConditionalTransfer|InstrClass.Call),
-            new IndexPrefixOpRec(Registers.ix),
-            new SingleByteOpRec(Opcode.sbi, Opcode.sbc, "a,Ib"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.rst, "x18", InstrClass.Transfer|InstrClass.Call),
+            Instr(Opcode.illegal, Opcode.ret, C, InstrClass.ConditionalTransfer),
+            Instr(Opcode.illegal, Opcode.exx),
+            Instr(Opcode.jc, Opcode.jp, C, A,InstrClass.ConditionalTransfer),
+            Instr(Opcode.illegal, Opcode.@in, a,ob),
+            Instr(Opcode.illegal, Opcode.call, C, A,InstrClass.ConditionalTransfer|InstrClass.Call),
+            new IndexPrefixDecoder(Registers.ix),
+            Instr(Opcode.sbi, Opcode.sbc, a,Ib),
+            Instr(Opcode.illegal, Opcode.rst, x(0x18), InstrClass.Transfer|InstrClass.Call),
 
             // E0
-            new SingleByteOpRec(Opcode.illegal, Opcode.ret, "C", InstrClass.ConditionalTransfer),
-            new SingleByteOpRec(Opcode.illegal, Opcode.pop, "Wh"),
-            new SingleByteOpRec(Opcode.jpo, Opcode.jp, "C,A", InstrClass.ConditionalTransfer),
-            new SingleByteOpRec(Opcode.illegal, Opcode.ex, "Sw,Wh"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.push, "Wh"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.add, "a,Ib"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.rst, "x20", InstrClass.Transfer|InstrClass.Call),
+            Instr(Opcode.illegal, Opcode.ret, C, InstrClass.ConditionalTransfer),
+            Instr(Opcode.illegal, Opcode.pop, Wh),
+            Instr(Opcode.jpo, Opcode.jp, C, A,InstrClass.ConditionalTransfer),
+            Instr(Opcode.illegal, Opcode.ex, Sw,Wh),
+            Instr(Opcode.illegal, Opcode.illegal),
+            Instr(Opcode.illegal, Opcode.push, Wh),
+            Instr(Opcode.illegal, Opcode.add, a,Ib),
+            Instr(Opcode.illegal, Opcode.rst, x(0x20),InstrClass.Transfer|InstrClass.Call),
 
-            new SingleByteOpRec(Opcode.illegal, Opcode.add, "Ws,D"),
-            new SingleByteOpRec(Opcode.pchl, Opcode.jp, "Mw", InstrClass.Transfer),
-            new SingleByteOpRec(Opcode.jpe, Opcode.jp, "C,A", InstrClass.ConditionalTransfer),
-            new SingleByteOpRec(Opcode.illegal, Opcode.ex, "Wd,Wh"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
-            new EdPrefixOpRec(),
-            new SingleByteOpRec(Opcode.illegal, Opcode.xor, "a,Ib"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.rst, "x28", InstrClass.Transfer|InstrClass.Call),
+            Instr(Opcode.illegal, Opcode.add, Ws,D),
+            Instr(Opcode.pchl, Opcode.jp, Mw, InstrClass.Transfer),
+            Instr(Opcode.jpe, Opcode.jp, C, A,InstrClass.ConditionalTransfer),
+            Instr(Opcode.illegal, Opcode.ex, Wd,Wh),
+            Instr(Opcode.illegal, Opcode.illegal),
+            new EdPrefixDecoder(),
+            Instr(Opcode.illegal, Opcode.xor, a,Ib),
+            Instr(Opcode.illegal, Opcode.rst, x(0x28), InstrClass.Transfer|InstrClass.Call),
 
             // F0
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.pop, "Wa"),
-            new SingleByteOpRec(Opcode.jp, Opcode.jp, "C,A", InstrClass.ConditionalTransfer),
-            new SingleByteOpRec(Opcode.di, Opcode.di, ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.push, "Wa"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.or, "a,Ib"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.rst, "x30", InstrClass.Transfer|InstrClass.Call),
+            Instr(Opcode.illegal, Opcode.illegal),
+            Instr(Opcode.illegal, Opcode.pop, Wa),
+            Instr(Opcode.jp, Opcode.jp, C, A,InstrClass.ConditionalTransfer),
+            Instr(Opcode.di, Opcode.di),
+            Instr(Opcode.illegal, Opcode.illegal),
+            Instr(Opcode.illegal, Opcode.push, Wa),
+            Instr(Opcode.illegal, Opcode.or, a,Ib),
+            Instr(Opcode.illegal, Opcode.rst, x(0x30), InstrClass.Transfer|InstrClass.Call),
 
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
-            new SingleByteOpRec(Opcode.sphl, Opcode.ld, "Ws,Wh"),
-            new SingleByteOpRec(Opcode.jm, Opcode.jp, "C,A", InstrClass.ConditionalTransfer),
-            new SingleByteOpRec(Opcode.ei, Opcode.ei, ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
-            new IndexPrefixOpRec(Registers.iy),
-            new SingleByteOpRec(Opcode.illegal, Opcode.cp, "a,Ib"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.rst, "x38", InstrClass.Transfer|InstrClass.Call),
+            Instr(Opcode.illegal, Opcode.illegal),
+            Instr(Opcode.sphl, Opcode.ld, Ws,Wh),
+            Instr(Opcode.jm, Opcode.jp, C, A,InstrClass.ConditionalTransfer),
+            Instr(Opcode.ei, Opcode.ei),
+            Instr(Opcode.illegal, Opcode.illegal),
+            new IndexPrefixDecoder(Registers.iy),
+            Instr(Opcode.illegal, Opcode.cp, a,Ib),
+            Instr(Opcode.illegal, Opcode.rst, x(0x38), InstrClass.Transfer|InstrClass.Call),
         };
 
-        private static readonly OpRec[] edOprecs = new OpRec[] 
+        private static readonly Decoder[] edOprecs = new Decoder[] 
         {
             // 40
-            new SingleByteOpRec(Opcode.illegal, Opcode.@in, "r,[c"), 
-            new SingleByteOpRec(Opcode.illegal, Opcode.@out, "[c,r"), 
-            new SingleByteOpRec(Opcode.illegal, Opcode.sbc,  "Wh,Wb"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.ld,  "Ow,Wb"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.neg,  ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.retn,  ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.im,  "x00"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.ld,  "Li,a"),
+            Instr(Opcode.illegal, Opcode.@in, r,mc), 
+            Instr(Opcode.illegal, Opcode.@out, mc,r), 
+            Instr(Opcode.illegal, Opcode.sbc,  Wh,Wb),
+            Instr(Opcode.illegal, Opcode.ld,  Ow,Wb),
+            Instr(Opcode.illegal, Opcode.neg  ),
+            Instr(Opcode.illegal, Opcode.retn, InstrClass.Transfer),
+            Instr(Opcode.illegal, Opcode.im,  x(0)),
+            Instr(Opcode.illegal, Opcode.ld,  Li,a),
 
-            new SingleByteOpRec(Opcode.illegal, Opcode.@in,  "r,[c"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.@out,  "[c,r"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.adc,  "Wh,Wb"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.ld,  "Wb,Ow"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal,  ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.reti,  ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal,  ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.ld,  "Lr,a"),
+            Instr(Opcode.illegal, Opcode.@in,  r,mc),
+            Instr(Opcode.illegal, Opcode.@out,  mc,r),
+            Instr(Opcode.illegal, Opcode.adc,  Wh,Wb),
+            Instr(Opcode.illegal, Opcode.ld,  Wb,Ow),
+            Instr(Opcode.illegal, Opcode.illegal  ),
+            Instr(Opcode.illegal, Opcode.reti, InstrClass.Transfer),
+            Instr(Opcode.illegal, Opcode.illegal  ),
+            Instr(Opcode.illegal, Opcode.ld,  Lr,a),
             
             // 50
-            new SingleByteOpRec(Opcode.illegal, Opcode.@in, "r[c"), 
-            new SingleByteOpRec(Opcode.illegal, Opcode.@out, "[c,r"), 
-            new SingleByteOpRec(Opcode.illegal, Opcode.sbc,  "Wh,Wd"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.ld,  "Ow,Wd"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal,  ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal,  ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.im,  "x01"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.ld,  "a,Li"),
+            Instr(Opcode.illegal, Opcode.@in, r,mc), 
+            Instr(Opcode.illegal, Opcode.@out, mc,r), 
+            Instr(Opcode.illegal, Opcode.sbc,  Wh,Wd),
+            Instr(Opcode.illegal, Opcode.ld,  Ow,Wd),
+            Instr(Opcode.illegal, Opcode.illegal),
+            Instr(Opcode.illegal, Opcode.illegal),
+            Instr(Opcode.illegal, Opcode.im,  x(1)),
+            Instr(Opcode.illegal, Opcode.ld,  a,Li),
 
-            new SingleByteOpRec(Opcode.illegal, Opcode.@in,  "r,[c"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.@out,  "[c,r"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.adc,  "Wh,Wd"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.ld,  "Wd,Ow"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal,  ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal,  ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.im,  "x02"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.ld,  "a,Lr"),
+            Instr(Opcode.illegal, Opcode.@in,  r,mc),
+            Instr(Opcode.illegal, Opcode.@out,  mc,r),
+            Instr(Opcode.illegal, Opcode.adc,  Wh,Wd),
+            Instr(Opcode.illegal, Opcode.ld,  Wd,Ow),
+            Instr(Opcode.illegal, Opcode.illegal),
+            Instr(Opcode.illegal, Opcode.illegal),
+            Instr(Opcode.illegal, Opcode.im,  x(2)),
+            Instr(Opcode.illegal, Opcode.ld,  a,Lr),
 
             // 60
-            new SingleByteOpRec(Opcode.illegal, Opcode.@in, "r,[c"), 
-            new SingleByteOpRec(Opcode.illegal, Opcode.@out, "[c,r"), 
-            new SingleByteOpRec(Opcode.illegal, Opcode.sbc,  "Wh,Wh"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.ld,  "Ow,Wh"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal,  ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal,  ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal,  ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.rrd,  ""),
+            Instr(Opcode.illegal, Opcode.@in, r,mc), 
+            Instr(Opcode.illegal, Opcode.@out, mc,r), 
+            Instr(Opcode.illegal, Opcode.sbc,  Wh,Wh),
+            Instr(Opcode.illegal, Opcode.ld,  Ow,Wh),
+            Instr(Opcode.illegal, Opcode.illegal),
+            Instr(Opcode.illegal, Opcode.illegal),
+            Instr(Opcode.illegal, Opcode.illegal),
+            Instr(Opcode.illegal, Opcode.rrd),
 
-            new SingleByteOpRec(Opcode.illegal, Opcode.@in,  "r,[c"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.@out,  "[c,r"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.adc,  "Wh,Wh"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.ld,  "Wh,Ow"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal,  ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal,  ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal,  ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.rld,  ""),
+            Instr(Opcode.illegal, Opcode.@in,  r,mc),
+            Instr(Opcode.illegal, Opcode.@out,  mc,r),
+            Instr(Opcode.illegal, Opcode.adc,  Wh,Wh),
+            Instr(Opcode.illegal, Opcode.ld,  Wh,Ow),
+            Instr(Opcode.illegal, Opcode.illegal),
+            Instr(Opcode.illegal, Opcode.illegal),
+            Instr(Opcode.illegal, Opcode.illegal),
+            Instr(Opcode.illegal, Opcode.rld),
             
             // 70
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal,  ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal,  ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.sbc,  "Wh,Ws"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.ld,  "Ow,Ws"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal,  ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal,  ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal,  ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal,  ""),
+            Instr(Opcode.illegal, Opcode.illegal),
+            Instr(Opcode.illegal, Opcode.illegal),
+            Instr(Opcode.illegal, Opcode.sbc,  Wh,Ws),
+            Instr(Opcode.illegal, Opcode.ld,  Ow,Ws),
+            Instr(Opcode.illegal, Opcode.illegal),
+            Instr(Opcode.illegal, Opcode.illegal),
+            Instr(Opcode.illegal, Opcode.illegal),
+            Instr(Opcode.illegal, Opcode.illegal),
 
-            new SingleByteOpRec(Opcode.illegal, Opcode.@in,  "r,[c"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.@out,  "[c,r"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.adc,  "Wh,Ws"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.ld,  "Ws,Ow"),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal,  ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal,  ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal,  ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal,  ""),
+            Instr(Opcode.illegal, Opcode.@in,  r,mc),
+            Instr(Opcode.illegal, Opcode.@out,  mc,r),
+            Instr(Opcode.illegal, Opcode.adc,  Wh,Ws),
+            Instr(Opcode.illegal, Opcode.ld,  Ws,Ow),
+            Instr(Opcode.illegal, Opcode.illegal),
+            Instr(Opcode.illegal, Opcode.illegal),
+            Instr(Opcode.illegal, Opcode.illegal),
+            Instr(Opcode.illegal, Opcode.illegal),
  
             // A0
-            new SingleByteOpRec(Opcode.illegal, Opcode.ldi, ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.cpi , ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.ini  , ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.outi , ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal,  ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal,  ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal,  ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal,  ""),
+            Instr(Opcode.illegal, Opcode.ldi),
+            Instr(Opcode.illegal, Opcode.cpi),
+            Instr(Opcode.illegal, Opcode.ini),
+            Instr(Opcode.illegal, Opcode.outi),
+            Instr(Opcode.illegal, Opcode.illegal),
+            Instr(Opcode.illegal, Opcode.illegal),
+            Instr(Opcode.illegal, Opcode.illegal),
+            Instr(Opcode.illegal, Opcode.illegal),
 
-            new SingleByteOpRec(Opcode.illegal, Opcode.ldd, ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.cpd , ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.ind  , ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.outd , ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal,  ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal,  ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal,  ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal,  ""),
+            Instr(Opcode.illegal, Opcode.ldd),
+            Instr(Opcode.illegal, Opcode.cpd),
+            Instr(Opcode.illegal, Opcode.ind),
+            Instr(Opcode.illegal, Opcode.outd),
+            Instr(Opcode.illegal, Opcode.illegal),
+            Instr(Opcode.illegal, Opcode.illegal),
+            Instr(Opcode.illegal, Opcode.illegal),
+            Instr(Opcode.illegal, Opcode.illegal),
 
             // B0
-            new SingleByteOpRec(Opcode.illegal, Opcode.ldir, ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.cpir , ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.inir  , ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.otir , ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal,  ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal,  ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal,  ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal,  ""),
+            Instr(Opcode.illegal, Opcode.ldir),
+            Instr(Opcode.illegal, Opcode.cpir),
+            Instr(Opcode.illegal, Opcode.inir),
+            Instr(Opcode.illegal, Opcode.otir),
+            Instr(Opcode.illegal, Opcode.illegal),
+            Instr(Opcode.illegal, Opcode.illegal),
+            Instr(Opcode.illegal, Opcode.illegal),
+            Instr(Opcode.illegal, Opcode.illegal),
 
-            new SingleByteOpRec(Opcode.illegal, Opcode.lddr, ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.cpdr , ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.indr  , ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.otdr , ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal,  ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal,  ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal,  ""),
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal,  ""),
+            Instr(Opcode.illegal, Opcode.lddr),
+            Instr(Opcode.illegal, Opcode.cpdr),
+            Instr(Opcode.illegal, Opcode.indr),
+            Instr(Opcode.illegal, Opcode.otdr),
+            Instr(Opcode.illegal, Opcode.illegal),
+            Instr(Opcode.illegal, Opcode.illegal),
+            Instr(Opcode.illegal, Opcode.illegal),
+            Instr(Opcode.illegal, Opcode.illegal),
         };
+
+        private delegate bool Mutator(byte op, Z80Disassembler dasm);
 #if NEVER
 
 ---		LD	BC,(word)	ED4Bword	BC <- (word)

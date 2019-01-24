@@ -29,8 +29,6 @@ namespace Reko.Arch.Z80
 {
     public class Z80Instruction : MachineInstruction
     {
-        private static Dictionary<Opcode, InstrClass> classOf;
-
         public Opcode Code;
         public InstrClass IClass;
         public MachineOperand Op1;
@@ -69,33 +67,6 @@ namespace Reko.Arch.Z80
                     Op2.Write(writer, options);
                 }
             }
-        }
-
-        static Z80Instruction()
-        {
-            classOf = new Dictionary<Opcode, InstrClass>
-            {
-                { Opcode.illegal, InstrClass.Transfer },
-
-                { Opcode.jc,      InstrClass.Transfer | InstrClass.Conditional },
-                { Opcode.jm,      InstrClass.Transfer | InstrClass.Conditional },
-                { Opcode.jmp,     InstrClass.Transfer },
-                { Opcode.jnc,     InstrClass.Transfer | InstrClass.Conditional },
-                { Opcode.jnz,     InstrClass.Transfer | InstrClass.Conditional },
-                { Opcode.jpe,     InstrClass.Transfer | InstrClass.Conditional },
-                { Opcode.jpo,     InstrClass.Transfer | InstrClass.Conditional },
-                { Opcode.jz,      InstrClass.Transfer | InstrClass.Conditional },
-
-                { Opcode.call,    InstrClass.Transfer | InstrClass.Call},
-                { Opcode.djnz,    InstrClass.Transfer | InstrClass.Conditional},
-                { Opcode.jr,      InstrClass.Transfer },
-                { Opcode.ret,     InstrClass.Transfer },
-                { Opcode.reti,    InstrClass.Transfer },
-                { Opcode.retn,    InstrClass.Transfer },
-
-                { Opcode.hlt,     InstrClass.Transfer },
-                { Opcode.jp,      InstrClass.Transfer }
-            };
         }
     }
 }
