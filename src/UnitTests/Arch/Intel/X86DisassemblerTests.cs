@@ -2738,5 +2738,12 @@ movzx	ax,byte ptr [bp+04]
             var instr = Disassemble64(0xdf, 0xc1);
             Assert.AreEqual("ffreep\tst(1)", instr.ToString());
         }
+
+        [Test]
+        public void X86Dis_Mpd_decoder()
+        {
+            var instr = Disassemble64(0x66, 0x0f, 0x2b, 0xa4, 0x39, 0xd0, 0x22, 0x78, 0xac);
+            Assert.AreEqual("movntpd\t[rcx+rdi+AC7822D0],xmm4", instr.ToString());
+        }
     }
 }

@@ -855,14 +855,15 @@ namespace Reko.Arch.X86
                 }
 				break;
 			case 'p':
-                if (i < fmt.Length -1 && fmt[i+1] == 's')
+                if (i < fmt.Length - 1 &&
+                    (fmt[i + 1] == 's' || fmt[i + 1] == 'd'))
                 {
                     ++i;
-                    dataWidth =  this.currentDecodingContext.VexLong ? PrimitiveType.Word256 : PrimitiveType.Word128;
+                    dataWidth = this.currentDecodingContext.VexLong ? PrimitiveType.Word256 : PrimitiveType.Word128;
                 }
                 else
                 {
-				dataWidth = PrimitiveType.Ptr32;		// Far pointer.
+                    dataWidth = PrimitiveType.Ptr32;		// Far pointer.
                 }
 				break;
 			case 'f':
