@@ -318,7 +318,7 @@ namespace Reko.Arch.X86
             this.decodingContext.iWidth = defaultDataWidth;
 
             X86Instruction instr = null;
-            if (s_aOpRec[op].Decode(this, op, ""))
+            if (s_aOpRec[op].Decode(this, op))
             {
                 instr = decodingContext.MakeInstruction();
             }
@@ -1418,7 +1418,7 @@ namespace Reko.Arch.X86
 		private static Decoder [] s_aOpRec0F38;
 		private static Decoder [] s_aOpRec0F3A;
         private static Decoder [] s_aOpRecGrp;
-		private static Decoder [] s_aFpOpRec;
+		private static Decoder [] s_aFpDecoders;
         private static Dictionary<Opcode, Opcode> s_mpVex;
 
         static X86Disassembler()
@@ -1431,9 +1431,9 @@ namespace Reko.Arch.X86
             s_aOpRec0F3A = Create0F3AOprecs();
 
             s_aOpRecGrp = CreateGroupOprecs();
-            s_aFpOpRec = CreateFpuOprecs();
+            s_aFpDecoders = CreateFpuOprecs();
             s_mpVex = CreateVexMapping();
-            Debug.Assert(s_aFpOpRec.Length == 8 * 0x48);
+            Debug.Assert(s_aFpDecoders.Length == 8 * 0x48);
 		}
 
         public delegate bool Mutator(byte opcode, X86Disassembler dasm);
