@@ -36,6 +36,7 @@ namespace Reko.Arch.Z80
     {
         private readonly EndianImageReader rdr;
         private readonly List<MachineOperand> ops;
+        private Address addr;
         private Z80Instruction instr;
         private RegisterStorage IndexRegister;
 
@@ -49,11 +50,8 @@ namespace Reko.Arch.Z80
         {
             if (!rdr.IsValid)
                 return null;
-            var addr = rdr.Address;
-            this.instr = new Z80Instruction
-            {
-                Address = addr,
-            };
+            this.addr = rdr.Address;
+            this.instr = new Z80Instruction();
             if (!rdr.TryReadByte(out byte op))
                 return Invalid();
 
@@ -63,6 +61,7 @@ namespace Reko.Arch.Z80
             instr = decoder.Decode(this, op);
             if (instr == null)
                 return Invalid();
+            instr.Address = this.addr;
             instr.Length = (int)(rdr.Address - addr);
             return instr;
         }
@@ -73,6 +72,7 @@ namespace Reko.Arch.Z80
             {
                 IClass = InstrClass.Invalid,
                 Code = Opcode.illegal,
+                Address = this.addr,
             };
         }
 

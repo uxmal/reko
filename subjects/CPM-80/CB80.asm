@@ -964,7 +964,8 @@ l08F6:
 	ld	a,(151F)
 	ld	(hl),a
 
-l08FD:
+;; fn08FD: 08FD
+fn08FD proc
 	jp	0920
 
 l0900:
@@ -988,7 +989,8 @@ l0919:
 	ld	a,(151F)
 	ld	(hl),a
 
-l0920:
+;; fn0920: 0920
+fn0920 proc
 	ld	de,0080
 	ld	c,1A
 	call	0221
