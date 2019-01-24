@@ -40,13 +40,16 @@ namespace Reko.WindowsItp
             Func<long> test;
             if (rdbRealDasm.Checked)
             {
+                //var arch = new Reko.Arch.Arm.Arm32Architecture("arm32");
+                var arch = new Reko.Arch.X86.X86ArchitectureFlat32("x86-protected-32");
+
                 if (rewriter)
                 {
-                    test = () => PerformanceTest_A32Rewriter(buf);
+                    test = () => PerformanceTest_A32Rewriter(arch, buf);
                 }
                 else
                 {
-                    test = () => PerformanceTest_A32Dasm(buf);
+                    test = () => PerformanceTest_A32Dasm(arch, buf);
                 }
             }
             else
@@ -136,9 +139,8 @@ namespace Reko.WindowsItp
             return 1;
         }
 
-        private long PerformanceTest_A32Dasm(byte[] buf)
+        private long PerformanceTest_A32Dasm(IProcessorArchitecture arch, byte[] buf)
         {
-            var arch = new Reko.Arch.Arm.Arm32Architecture("arm32");
             var mem = new MemoryArea(Address.Ptr32(0x00100000), buf);
             var rdr = arch.CreateImageReader(mem, mem.BaseAddress);
             var dasm = arch.CreateDisassembler(rdr);
@@ -153,9 +155,8 @@ namespace Reko.WindowsItp
 
         }
 
-        private long PerformanceTest_A32Rewriter(byte[] buf)
+        private long PerformanceTest_A32Rewriter(IProcessorArchitecture arch,   byte[] buf)
         {
-            var arch = new Reko.Arch.Arm.Arm32Architecture("arm32");
             var mem = new MemoryArea(Address.Ptr32(0x00100000), buf);
             var rdr = arch.CreateImageReader(mem, mem.BaseAddress);
             var dasm = arch.CreateRewriter(rdr, arch.CreateProcessorState(), new StorageBinder(),
