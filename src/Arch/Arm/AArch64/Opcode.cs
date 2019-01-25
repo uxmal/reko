@@ -193,5 +193,6 @@ namespace Reko.Arch.Arm.AArch64
         sqdmulh,
         shrn,
         ld1r,
+        sshll,
     }
 }

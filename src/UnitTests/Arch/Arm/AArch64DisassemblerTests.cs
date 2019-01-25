@@ -1265,5 +1265,12 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x7A42D020);
             Expect_Code("ccmp\tw1,w5,#0,LE");
         }
+
+        [Test]
+        public void AArch64Dis_fnmadd()
+        {
+            Given_Instruction(0x1F2003D5);
+            Expect_Code("fnmadd\ts21,s30,s0,s0");
+        }
     }
 }
