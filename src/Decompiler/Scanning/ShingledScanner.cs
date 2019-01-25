@@ -163,11 +163,15 @@ namespace Reko.Scanning
         /// </returns>
         public byte[] ScanRange(MemoryArea mem, Address addrStart, uint cbAlloc, ulong workToDo)
         {
+            const int ProgressBarUpdateInterval = 256 * 1024;
+
             var y = new byte[cbAlloc];
             // Advance by the instruction granularity.
             var step = program.Architecture.InstructionBitSize / 8;
             var delaySlot = InstrClass.None;
             var rewriterCache = new Dictionary<Address, IEnumerator<RtlInstructionCluster>>();
+            var instrCount = 0;
+
             for (var a = 0; a < y.Length; a += step)
             {
                 y[a] = MaybeCode;
@@ -261,7 +265,11 @@ namespace Reko.Scanning
                     AddInstruction(i);
                 }
                 SaveRewriter(addr + i.Length, dasm, rewriterCache);
-                eventListener.ShowProgress("Shingle scanning", sr.FlatInstructions.Count, (int)workToDo);
+                if (++instrCount >= ProgressBarUpdateInterval)
+                {
+                    instrCount = 0;
+                    eventListener.ShowProgress("Shingle scanning", sr.FlatInstructions.Count, (int) workToDo);
+                }
             }
             return y;
         }
