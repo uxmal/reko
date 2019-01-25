@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -41,8 +41,8 @@ namespace Reko.Scanning
         {
             this.TransferTargets = new HashSet<Address>();
             this.DirectlyCalledAddresses = new Dictionary<Address, int>();
-            this.Instructions = new SortedList<Address, RtlInstructionCluster>();
-            this.FlatInstructions = new SortedList<Address, ScanResults.instr>();
+            this.Instructions = new Dictionary<Address, RtlInstructionCluster>();
+            this.FlatInstructions = new Dictionary<ulong, ScanResults.instr>();
             this.FlatEdges = new List<link>();
             this.IndirectCalls = new HashSet<Address>();
             this.IndirectJumps = new HashSet<Address>();
@@ -55,7 +55,7 @@ namespace Reko.Scanning
         /// All the discovered machine instructions, rewritten into RTL
         /// instruction clusters.
         /// </summary>
-        public SortedList<Address, RtlInstructionCluster> Instructions;
+        public Dictionary<Address, RtlInstructionCluster> Instructions;
 
         /// <summary>
         /// Interprocedural control flow graph, consisting of all
@@ -95,7 +95,7 @@ namespace Reko.Scanning
         /// This is a key end result of the scanning stage.
         /// </summary>
         public List<RtlProcedure> Procedures { get;  set; }
-        public SortedList<Address, instr> FlatInstructions { get;  set; }
+        public Dictionary<ulong, instr> FlatInstructions { get;  set; }
         public List<link> FlatEdges { get; set; }
 
         /// <summary>

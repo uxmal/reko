@@ -53,11 +53,13 @@ namespace Reko.UnitTests.Scanning
         {
             this.mr = new MockRepository();
             this.host = mr.Stub<IRewriterHost>();
-            this.sr = new ScanResults();
-            this.sr.FlatInstructions = new SortedList<Address, ScanResults.instr>();
-            this.sr.FlatEdges = new List<ScanResults.link>();
-            this.sr.KnownProcedures = new HashSet<Address>();
-            this.sr.DirectlyCalledAddresses = new Dictionary<Address, int>();
+            this.sr = new ScanResults
+            {
+                FlatInstructions = new Dictionary<ulong, ScanResults.instr>(),
+                FlatEdges = new List<ScanResults.link>(),
+                KnownProcedures = new HashSet<Address>(),
+                DirectlyCalledAddresses = new Dictionary<Address, int>()
+            };
             this.eventListener = new FakeDecompilerEventListener();
         }
 
@@ -102,7 +104,7 @@ namespace Reko.UnitTests.Scanning
         private void Inst(int uAddr, int len, InstrClass rtlc)
         {
             var addr = Address.Ptr32((uint)uAddr);
-            sr.FlatInstructions.Add(addr, new ScanResults.instr
+            sr.FlatInstructions.Add(addr.ToLinear(), new ScanResults.instr
             {
                 addr = addr,
                 size = len,
@@ -114,7 +116,7 @@ namespace Reko.UnitTests.Scanning
         private void Lin(int uAddr, int len, int next)
         {
             var addr = Address.Ptr32((uint)uAddr);
-            sr.FlatInstructions.Add(addr, new ScanResults.instr
+            sr.FlatInstructions.Add(addr.ToLinear(), new ScanResults.instr
             {
                 addr = addr,
                 size = len,
@@ -127,7 +129,7 @@ namespace Reko.UnitTests.Scanning
         private void Call(int uAddr, int len, int next)
         {
             var addr = Address.Ptr32((uint)uAddr);
-            sr.FlatInstructions.Add(addr, new ScanResults.instr
+            sr.FlatInstructions.Add(addr.ToLinear(), new ScanResults.instr
             {
                 addr = addr,
                 size = len,
@@ -140,7 +142,7 @@ namespace Reko.UnitTests.Scanning
         private void Bra(int uAddr, int len, int a, int b)
         {
             var addr = Address.Ptr32((uint)uAddr);
-            sr.FlatInstructions.Add(addr, new ScanResults.instr
+            sr.FlatInstructions.Add(addr.ToLinear(), new ScanResults.instr
             {
                 addr = addr,
                 size = len,
@@ -154,7 +156,7 @@ namespace Reko.UnitTests.Scanning
         private void Bad(int uAddr, int len)
         {
             var addr = Address.Ptr32((uint)uAddr);
-            sr.FlatInstructions.Add(addr, new ScanResults.instr
+            sr.FlatInstructions.Add(addr.ToLinear(), new ScanResults.instr
             {
                 addr = addr,
                 size = len,
@@ -166,7 +168,7 @@ namespace Reko.UnitTests.Scanning
         private void End(int uAddr, int len)
         {
             var addr = Address.Ptr32((uint)uAddr);
-            sr.FlatInstructions.Add(addr, new ScanResults.instr
+            sr.FlatInstructions.Add(addr.ToLinear(), new ScanResults.instr
             {
                 addr = addr,
                 size = len,
@@ -178,7 +180,7 @@ namespace Reko.UnitTests.Scanning
         private void Pad(uint uAddr, int len, int next)
         {
             var addr = Address.Ptr32((uint)uAddr);
-            sr.FlatInstructions.Add(addr, new ScanResults.instr
+            sr.FlatInstructions.Add(addr.ToLinear(), new ScanResults.instr
             {
                 addr = addr,
                 size = len,

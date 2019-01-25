@@ -276,7 +276,7 @@ namespace Reko.Scanning
 
         private void AddInstruction(RtlInstructionCluster i)
         {
-            sr.FlatInstructions.Add(i.Address, new ScanResults.instr
+            sr.FlatInstructions.Add(i.Address.ToLinear(), new ScanResults.instr
             {
                 addr = i.Address,
                 size = i.Length,
@@ -334,7 +334,7 @@ namespace Reko.Scanning
             var oldinstrs = sr.Instructions;
             sr.Instructions = oldinstrs
                 .Where(o => !deadNodes.Contains(o.Key))
-                .ToSortedList(o => o.Key, o => o.Value);
+                .ToDictionary(o => o.Key, o => o.Value);
 
             var oldDirectCalls = sr.DirectlyCalledAddresses;
             sr.DirectlyCalledAddresses = oldDirectCalls
@@ -555,11 +555,6 @@ namespace Reko.Scanning
                    | InstrClass.System
                    | InstrClass.Conditional 
                    | InstrClass.Call)) != 0;        //$REVIEW: what if you call a terminating function?
-        }
-
-        private bool IsTransfer(RtlInstructionCluster i, RtlInstruction r)
-        {
-            return r is RtlGoto || r is RtlCall;
         }
 
         /// <summary>
