@@ -1373,5 +1373,263 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0xD69F03E0);
             Expect_Code("eret");
         }
+
+        [Test]
+        public void AArch64Dis_eor_v()
+        {
+            Given_Instruction(0x6E291D4A);
+            Expect_Code("eor\tv10.16b,v10.16b,v9.16b");
+        }
+
+        [Test]
+        public void AArch64Dis_ldxr()
+        {
+            Given_Instruction(0xC85F7C81);
+            Expect_Code("ldxr\tx1,[x4]");
+        }
+
+        [Test]
+        public void AArch64Dis_ldaxr()
+        {
+            Given_Instruction(0xC85FFE80);
+            Expect_Code("ldaxr\tx0,[x20]");
+
+        }
+
+        // Reko: a decoder for AArch64 instruction D500419F at address 0000000000020B2C has not been implemented. (System L:op0 = 0b000 op1=0b000)
+        [Test]
+        public void AArch64Dis_D500419F()
+        {
+            Given_Instruction(0xD500419F);
+            Expect_Code("invalid@@@");
+
+        }
+
+        // Reko: a decoder for AArch64 instruction D50B7E20 at address 0000000000020E20 has not been implemented. (sys)
+        [Test]
+        public void AArch64Dis_dc_civac()
+        {
+            Given_Instruction(0xD50B7E20);
+            Expect_Code("dc\tcivac,x0");
+
+        }
+
+
+        // Reko: a decoder for AArch64 instruction DAC00C63 at address 0000000000022F94 has not been implemented. (DataProcessing1source sf:S=10 opcode2=00000 opcode=??????)
+        [Test]
+        public void AArch64Dis_rev_reg64()
+        {
+            Given_Instruction(0xDAC00C63);
+            Expect_Code("rev\tx3,x3");
+        }
+
+        // Reko: a decoder for AArch64 instruction 5E28098D at address 00000000000230B4 has not been implemented. (DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b00 op2=???)
+        [Test]
+        public void AArch64Dis_sha1h()
+        {
+            Given_Instruction(0x5E28098D);
+            Expect_Code("sha1h\ts13,s12");
+        }
+
+        // Reko: a decoder for AArch64 instruction 5E0501CC at address 00000000000230B8 has not been implemented. (DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b00 op2=???)
+        [Test]
+        public void AArch64Dis_sha1c_q()
+        {
+            Given_Instruction(0x5E0501CC);
+            Expect_Code("sha1c\tq12,s14,v5.4s");
+        }
+
+        [Test]
+        public void AArch64Dis_add_v()
+        {
+            Given_Instruction(0x0EAD84E7);
+            Expect_Code("add\tv7.2s,v7.2s,v13.2s");
+        }
+
+
+        [Test]
+        public void AArch64Dis_ext_vb()
+        {
+            Given_Instruction(0x2E1B2138);
+            Expect_Code("ext\tv24.8b,v9.8b,v27.8b,#4");
+        }
+
+        // Reko: a decoder for AArch64 instruction 0E013C06 at address 0000000000024950 has not been implemented. (DataProcessingScalarFpAdvancedSimd - op0=0000 op1=00 op2=0000)
+        [Test]
+        public void AArch64Dis_0E013C06()
+        {
+            Given_Instruction(0x0E013C06);
+            Expect_Code("umov\tw6,v0.b[0]");
+
+        }
+
+        // Reko: a decoder for AArch64 instruction 6E000800 at address 0000000000024964 has not been implemented. (DataProcessingScalarFpAdvancedSimd - op0=6 op1=00 op2=0000 op3=xxxxxxx10)
+        [Test]
+        public void AArch64Dis_ext_v()
+        {
+            Given_Instruction(0x6E000800);
+            Expect_Code("ext\tv0.16b,v0.16b,v0.16b,#1");
+
+        }
+
+
+        // Reko: a decoder for AArch64 instruction 5E106271 at address 00000000000239B4 has not been implemented. (DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b00 op2=???)
+        [Test]
+        public void AArch64Dis_sha256su1()
+        {
+            Given_Instruction(0x5E106271);
+            Expect_Code("sha256su1\tv17.4s,v19.4s,v16.4s");
+
+        }
+
+        // Reko: a decoder for AArch64 instruction 4E285B03 at address 0000000000025674 has not been implemented. (DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b00 op2=0b0101)
+        [Test]
+        public void AArch64Dis_aesd()
+        {
+            Given_Instruction(0x4E285B03);
+            Expect_Code("aesd\tv3.16b,v24.16b");
+
+        }
+
+        // Reko: a decoder for AArch64 instruction 4CDF2059 at address 0000000000025764 has not been implemented. (AdvancedSimdLdStMultiplePostIdx L:opcode=1:0010)
+        [Test]
+        public void AArch64Dis_ld1_range()
+        {
+            Given_Instruction(0x4CDF2059);
+            Expect_Code("ld1\t{v25.16b-v28.16b},[x2],#64");
+        }
+
+        // Reko: a decoder for AArch64 instruction 0C007003 at address 0000000000025C4C has not been implemented. (AdvancedSimdLdStMultiple L:opcode=0:0111)
+        [Test]
+        public void AArch64Dis_ld1()
+        {
+            Given_Instruction(0x0C007003);
+            Expect_Code("ld1\t{v3.8b},[x0]");
+
+        }
+
+        // Reko: a decoder for AArch64 instruction 4C9F2000 at address 000000000002577C has not been implemented. (AdvancedSimdLdStMultiplePostIdx L:opcode=0:0010)
+        [Test]
+        public void AArch64Dis_st1_range()
+        {
+            Given_Instruction(0x4C9F2000);
+            Expect_Code("st1\t{v016b-v3.16b},[x0],#64");
+        }
+
+        // Reko: a decoder for AArch64 instruction 4E081CE4 at address 0000000000025C68 has not been implemented. (DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b00 op2=0b0001)
+        [Test]
+        public void AArch64Dis_mov_v_slice()
+        {
+            Given_Instruction(0x4E081CE4);
+            Expect_Code("mov\tv4.d[0],x7");
+
+        }
+
+        // Reko: a decoder for AArch64 instruction 4E284A44 at address 0000000000025CD4 has not been implemented. (DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b00 op2=0b0101)
+        [Test]
+        public void AArch64Dis_aese()
+        {
+            Given_Instruction(0x4E284A44);
+            Expect_Code("aese\tv4.16b,v18.16b");
+
+        }
+
+
+        // Reko: a decoder for AArch64 instruction 4EE48485 at address 0000000000025D90 has not been implemented. (DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b01 op2=0b1100)
+        [Test]
+        public void AArch64Dis_add_vd()
+        {
+            Given_Instruction(0x4EE48485);
+            Expect_Code("add\tv5.2d,v4.2d,v4.2d");
+
+        }
+
+        // Reko: a decoder for AArch64 instruction 0F020508 at address 0000000000027648 has not been implemented. (AdvancedSimdModifiedImm cmode)
+        [Test]
+        public void AArch64Dis_movi_v()
+        {
+            Given_Instruction(0x0F020508);
+            Expect_Code("movi\tv8.2s,#&48");
+
+        }
+
+        [Test]
+        public void AArch64Dis_fnmsub()
+        {
+            Given_Instruction(0x1F74DDE8);
+            Expect_Code("fnmsub\td8,d15,d20,d23");
+
+        }
+
+        [Test]
+        public void AArch64Dis_sqdmulh()
+        {
+            Given_Instruction(0x0E62B76F);
+            Expect_Code("sqdmulh\tv15.4h,v27.4h,v2.4h");
+        }
+
+        [Test]
+        public void AArch64Dis_crc32x()
+        {
+            Given_Instruction(0x9AC54C00);
+            Expect_Code("crc32x\tw0,w0,x5");
+        }
+
+        [Test]
+        public void AArch64Dis_crc32b()
+        {
+            Given_Instruction(0x1AC14000);
+            Expect_Code("crc32b\tw0,w0,w1");
+        }
+
+        [Test]
+        public void AArch64Dis_ror_reg32()
+        {
+            //$TODO: should be 'ror' according to ARM AArch64 manual == the w0,w0 is an alias
+            Given_Instruction(0x13801C02);
+            Expect_Code("extr\tw2,w0,w0,#7");
+        }
+
+        // Reko: a decoder for AArch64 instruction F8A06B20 at address 0000000000194368 has not been implemented. (prfm - register)
+        [Test]
+        public void AArch64Dis_prfm_pld1keep()
+        {
+            Given_Instruction(0xF8A06B20);
+            Expect_Code("prfm\tpld1keep,[x25,x0]");
+
+        }
+
+        [Test]
+        public void AArch64Dis_stlxr()
+        {
+            Given_Instruction(0x8814FE62);
+            Expect_Code("stlxr\tw20,w2,[x19]");
+
+        }
+        // Reko: a decoder for AArch64 instruction 93C08040 at address 00000000001B44EC has not been implemented. (Extract)
+        [Test]
+        public void AArch64Dis_extr()
+        {
+            //$TODO: this is probably a ror
+            Given_Instruction(0x93C08040);
+            Expect_Code("extr\tx0,x2,x0,#&20");
+
+        }
+
+        // Reko: a decoder for AArch64 instruction 88037CA4 at address 0000000000100CA4 has not been implemented. (op1 = 0)
+        [Test]
+        public void AArch64Dis_stxr()
+        {
+            Given_Instruction(0x88037CA4);
+            Expect_Code("stxr\tw3,w4,[x5]");
+
+        }
+
+        [Test]
+        public void AArch64Dis_08007E98()
+        {
+            Given_Instruction(0x08007E98);
+            Expect_Code("stxrb\tw0,w24,[x20]");
+        }
     }
 }
