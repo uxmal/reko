@@ -1363,6 +1363,27 @@ namespace Reko.Arch.Arm.AArch64
             return true;
         }
 
+        private static Mutator Sysreg(params (int pos, int len)[] fields)
+        {
+            var bitfields = fields.Select(f => new Bitfield(f.pos, f.len)).ToArray();
+            return (u, d) =>
+            {
+                var uSysreg = Bitfield.ReadFields(bitfields, u);
+                if (!sysregisters.TryGetValue(uSysreg, out var sreg))
+                {
+                    var sregName = "sysreg" + string.Join("_", bitfields.Select(bf => bf.Read(u)));
+                    Debug.Print("AArch64Dis: unknown system register {0} {1:X}", sregName, uSysreg);
+                    sreg = RegisterStorage.Sysreg(sregName, (int)uSysreg, w64);
+                    //$BUG: race condition: modifying global state.
+                    sysregisters[uSysreg] = sreg;
+                }
+                d.state.ops.Add(new RegisterOperand(sreg));
+                return true;
+            };
+        }
+
+        private static Dictionary<uint, RegisterStorage> sysregisters;
+        
         private static PrimitiveType i8 => PrimitiveType.SByte;
         private static PrimitiveType i16 => PrimitiveType.Int16;
         private static PrimitiveType i32 => PrimitiveType.Int32;
@@ -1479,7 +1500,7 @@ namespace Reko.Arch.Arm.AArch64
                 new Bitfield(pos1, length1),
                 new Bitfield(pos2, length2),
             };
-            return new BitfieldDecoder(bitfields, decoders);
+            return new BitfieldDecoder("", bitfields, decoders);
         }
 
         private static Decoder Mask(
@@ -1494,7 +1515,23 @@ namespace Reko.Arch.Arm.AArch64
                 new Bitfield(pos2, length2),
                 new Bitfield(pos3, length3),
             };
-            return new BitfieldDecoder(bitfields, decoders);
+            return new BitfieldDecoder("", bitfields, decoders);
+        }
+
+        private static Decoder Mask(
+            string tag,
+            int pos1, int length1,
+            int pos2, int length2,
+            int pos3, int length3,
+            params Decoder[] decoders)
+        {
+            var bitfields = new[]
+            {
+                new Bitfield(pos1, length1),
+                new Bitfield(pos2, length2),
+                new Bitfield(pos3, length3),
+            };
+            return new BitfieldDecoder(tag, bitfields, decoders);
         }
 
         private static Decoder Sparse(int pos, uint mask, Decoder @default, params (uint, Decoder)[] decoders)
@@ -1506,6 +1543,23 @@ namespace Reko.Arch.Arm.AArch64
         private static Decoder Sparse(string tag, int pos, uint mask, Decoder @default, params (uint, Decoder)[] decoders)
         {
             return new SparseMaskDecoder(tag, pos, mask, decoders.ToDictionary(k => k.Item1, v => v.Item2), @default);
+        }
+
+        private static Decoder Sparse(string tag, int pos1, int length1,int pos2, int length2, Decoder @default, params (uint, Decoder)[] decoders)
+        {
+            var bitfields = new[]
+            {
+                new Bitfield(pos1, length1),
+                new Bitfield(pos2, length2)
+            };
+            var ds = Enumerable.Range(0, 1 << (length1 + length2))
+                .Select(n => invalid)
+                .ToArray();
+            foreach (var d in decoders)
+            {
+                ds[d.Item1] = d.Item2;
+            }
+            return new BitfieldDecoder(tag, bitfields, ds);
         }
 
         private static Decoder Select(int pos, int length, Predicate<uint> predicate, Decoder trueDecoder, Decoder falseDecoder)
@@ -2289,7 +2343,7 @@ namespace Reko.Arch.Arm.AArch64
                     Select(5,5, n => n == 0x1F,
                         Sparse(10, 6,
                             invalid,
-                            (0, Select(0,5, n => n == 0, Instr(Opcode.eret, x("")), invalid)),
+                            (0, Select(0,5, n => n == 0, Instr(Opcode.eret), invalid)),
                             (2, Select(0,5, n => n == 0x1F, Nyi("ERETAA,RETAAZ... Key A"), invalid)),
                             (3, Select(0,5, n => n == 0x1F, Nyi("ERETAA,RETAAZ... Key B"), invalid))),
                         invalid),
@@ -2330,6 +2384,14 @@ namespace Reko.Arch.Arm.AArch64
                 invalid,
                 invalid);
 
+            var mrs_reg = Instr(Opcode.mrs, X(0,5),Sysreg((19,2),(16,3),(12,4),(8,4),(5,3)));
+            var msr_reg = Instr(Opcode.msr, Sysreg((19,2),(16,3),(12,4),(8,4),(5,3)), X(0,5));
+            var msr_imm = Instr(Opcode.msr, (u, d) =>
+                {
+                    d.state.ops.Add(new RegisterOperand(RegisterStorage.Sysreg("pstate", 4711, w64)));
+                    return true;
+                },
+                U(8, 4, PrimitiveType.Byte));
             var System = Mask(19, 7,  // L:op0
                 Mask(16, 7,  // System L:op0 = 0b000
                     Nyi("System L:op0 = 0b000 op1=0b000"),
@@ -2339,18 +2401,29 @@ namespace Reko.Arch.Arm.AArch64
                         Nyi("System L:op0 = 0b000 op1=0b011 crN=0000"),
                         Nyi("System L:op0 = 0b000 op1=0b011 crN=0001"),
                         Mask(8, 0xF, // System L:op0 = 0b000 op1=0b011 crN=0010 crM
-                            Mask(5,7, // System L:op0 = 0b000 op1=0b011 crN=0010 crM=0000 op2
-                                Select(0,5, n => n == 0x1F, Instr(Opcode.nop), invalid),
-                                Select(0,5, n => n == 0x1F, Instr(Opcode.yield, x("*")), invalid),
-                                Select(0,5, n => n == 0x1F, Instr(Opcode.wfe, x("*")), invalid),
-                                Select(0,5, n => n == 0x1F, Instr(Opcode.wfi, x("*")), invalid),
+                            Mask(5, 7, // System L:op0 = 0b000 op1=0b011 crN=0010 crM=0000 op2
+                                Select(0, 5, n => n == 0x1F, Instr(Opcode.nop), invalid),
+                                Select(0, 5, n => n == 0x1F, Instr(Opcode.yield, x("*")), invalid),
+                                Select(0, 5, n => n == 0x1F, Instr(Opcode.wfe, x("*")), invalid),
+                                Select(0, 5, n => n == 0x1F, Instr(Opcode.wfi, x("*")), invalid),
 
-                                Select(0,5, n => n == 0x1F, Instr(Opcode.sev, x("*")), invalid),
-                                Select(0,5, n => n == 0x1F, Instr(Opcode.sevl, x("*")), invalid),
+                                Select(0, 5, n => n == 0x1F, Instr(Opcode.sev, x("*")), invalid),
+                                Select(0, 5, n => n == 0x1F, Instr(Opcode.sevl, x("*")), invalid),
                                 Nyi("System L:op0 = 0b000 op1=0b011 crN=0010 crM=0000 op2=110"),
                                 Nyi("System L:op0 = 0b000 op1=0b011 crN=0010 crM=0000 op2=111")),
                             Nyi("System L:op0 = 0b000 op1=0b011 crN=0010 crM=0001"),
-                            Nyi("System L:op0 = 0b000 op1=0b011 crN=0010 crM=0010"),
+                            Sparse(5, 7, // System L:op0 = 0b000 op1=0b011 crN=0010 crM=0010 op2=???
+                                Sparse(5, 0x7F,
+                                    Instr(Opcode.hint, U(5, 7, PrimitiveType.Byte)),
+                                    (0b0000_000, Instr(Opcode.nop)),
+                                    (0b0000_001, Instr(Opcode.yield)),
+                                    (0b0000_010, Instr(Opcode.wfe)),
+                                    (0b0000_011, Instr(Opcode.wfi)),
+
+                                    (0b0000_100, Instr(Opcode.sev)),
+                                    (0b0000_101, Instr(Opcode.sevl))),
+                                (0, Nyi("esb")),
+                                (1, Nyi("psb csync"))),
                             Nyi("System L:op0 = 0b000 op1=0b011 crN=0010 crM=0011"),
 
                             Nyi("System L:op0 = 0b000 op1=0b011 crN=0010 crM=0100"),
@@ -2367,9 +2440,18 @@ namespace Reko.Arch.Arm.AArch64
                             Nyi("System L:op0 = 0b000 op1=0b011 crN=0010 crM=1101"),
                             Nyi("System L:op0 = 0b000 op1=0b011 crN=0010 crM=1110"),
                             Nyi("System L:op0 = 0b000 op1=0b011 crN=0010 crM=1111")),
-                        Nyi("System L:op0 = 0b000 op1=0b011 crN=0011"),
+                        Mask("System L:op0 = 0b000 op1=0b011 crN=0011 op2=???", 5, 7,
+                            invalid,
+                            invalid,
+                            Select(0, 5, Is31, Nyi("clrex"), invalid),
+                            invalid,
 
-                        Nyi("System L:op0 = 0b000 op1=0b011 crN=0100"),
+                            Select(0, 5, Is31, Instr(Opcode.dsb, U(8, 4, PrimitiveType.Byte)), invalid), //$TODO: use barrier options
+                            Select(0, 5, Is31, Instr(Opcode.dmb, U(8, 4, PrimitiveType.Byte)), invalid), //$TODO: use barrier options
+                            Select(0, 5, Is31, Instr(Opcode.isb, U(8, 4, PrimitiveType.Byte)), invalid),//$TODO: only 0b1111 = SY barrier allowed
+                            invalid),
+
+                        Select(0, 5, Is31, msr_imm, Nyi("System L:op0 = 0b000 op1=0b011 crN=0100 Rt!=11111")),
                         Nyi("System L:op0 = 0b000 op1=0b011 crN=0110"),
                         Nyi("System L:op0 = 0b000 op1=0b011 crN=0101"),
                         Nyi("System L:op0 = 0b000 op1=0b011 crN=0111"),
@@ -2387,18 +2469,26 @@ namespace Reko.Arch.Arm.AArch64
                     Nyi("System L:op0 = 0b000 op1=0b101"),
                     Nyi("System L:op0 = 0b000 op1=0b110"),
                     Nyi("System L:op0 = 0b000 op1=0b111")),
-                Nyi("System L:op0 = 0b001"),
-                Nyi("System L:op0 = 0b010"),
-                Nyi("System L:op0 = 0b011"),
+                Nyi("sys"),
+                msr_reg,
+                msr_reg,
 
-                Nyi("System L:op0 = 0b100"),
-                Nyi("System L:op0 = 0b101"),
-                Nyi("System L:op0 = 0b110"),
-                Nyi("System L:op0 = 0b111"));
+                invalid,
+                Nyi("sysl"),
+                mrs_reg,
+                mrs_reg);
 
-            var ExceptionGeneration = Nyi("ExceptionGeneration");
-
-            var BranchesExceptionsSystem = Mask(29, 0x7,
+            var ExceptionGeneration = Sparse("ExceptionGeneration", 21, 3, 0, 5, invalid,
+                (0b000_000_01, Instr(Opcode.svc, U(5,16, PrimitiveType.Word16))),
+                (0b000_000_10, Instr(Opcode.hvc, U(5,16, PrimitiveType.Word16))),
+                (0b000_000_11, Instr(Opcode.smc, U(5,16, PrimitiveType.Word16))),
+                (0b001_000_00, Instr(Opcode.brk, U(5,16, PrimitiveType.Word16))),
+                (0b010_000_00, Instr(Opcode.hlt, U(5,16, PrimitiveType.Word16))),
+                (0b010_101_01, Instr(Opcode.dcps1, U(5,16, PrimitiveType.Word16))),
+                (0b010_101_10, Instr(Opcode.dcps2, U(5,16, PrimitiveType.Word16))),
+                (0b010_101_11, Instr(Opcode.dcps3, U(5, 16, PrimitiveType.Word16))));
+                                                 
+            var BranchesExceptionsSystem = Mask("BranchesExceptionsSystem", 29, 0x7,
                 UncondBranchImm,
                 Mask(25, 1,
                     CompareBranchImm,
@@ -2456,10 +2546,10 @@ namespace Reko.Arch.Arm.AArch64
                             Select(0,5, n => n == 0x1F,
                                 Instr(Opcode.test, W(5,5),W(16,5),si(22,2,10,6)),
                                 Instr(Opcode.ands, W(0,5),W(5,5),W(16,5),si(22,2,10,6))),
-                            Instr(Opcode.bics, x("*shifted register, 32-bit")))),
+                            Instr(Opcode.bics, W(0,5),W(5,5),W(16,5),si(22,2,10,6)))),
                     Mask(29,2,21,1,
                         Instr(Opcode.and, X(0,5),X(5,5),X(16,5),si(22,2,10,6)),
-                        Instr(Opcode.bic, x("*shifted register, 64-bit")),
+                        Instr(Opcode.bic, X(0,5),X(5,5),X(16,5),si(22,2,10,6)),
                         Select(22,2,10,6,5,5, n => n == 0x1F,
                             Instr(Opcode.mov, X(0,5),X(16,5),si(22,2,10,6)),
                             Instr(Opcode.orr, X(0,5),X(5,5),X(16,5),si(22,2,10,6))),
@@ -2472,7 +2562,7 @@ namespace Reko.Arch.Arm.AArch64
                         Select(0,5, n => n == 0x1F,
                             Instr(Opcode.test, X(5,5),X(16,5),si(22,2,10,6)),
                             Instr(Opcode.ands, X(0,5),X(5,5),X(16,5),si(22,2,10,6))),
-                        Instr(Opcode.bics, x("*shifted register, 64-bit"))));
+                        Instr(Opcode.bics, X(0,5),X(5,5),X(16,5),si(22,2,10,6))));
             }
             Decoder AddSubShiftedRegister;
             {
@@ -2635,7 +2725,11 @@ namespace Reko.Arch.Arm.AArch64
                         Nyi("DataProcessing1source sf:S=00 opcode2=?????"),
                         (0b00000, Sparse(10, 0x3F,      // sf:S=00 opcode2=00000 opcode
                             Nyi("DataProcessing1source sf:S=00 opcode2=00000 opcode=??????"),
-                            (0b000001, Instr(Opcode.rev16, W(0,5),W(5,5)))
+                            (0b000000, Instr(Opcode.rbit, W(0,5),W(5,5))),
+                            (0b000001, Instr(Opcode.rev16, W(0,5),W(5,5))),
+                            (0b000010, Instr(Opcode.rev, W(0,5), W(5,5))),
+                            (0b000100, Instr(Opcode.clz, W(0,5), W(5,5))),
+                            (0b000101, Instr(Opcode.cls, W(0,5), W(5,5)))
                             ))
                         ),
                     Nyi("DataProcessing1source sf:S=01"),
@@ -2643,7 +2737,11 @@ namespace Reko.Arch.Arm.AArch64
                         Nyi("DataProcessing1source sf:S=10"),
                         (0b00000, Sparse(10, 0x3F,      // sf:S=00 opcode2=00000 opcode
                             Nyi("DataProcessing1source sf:S=10 opcode2=00000 opcode=??????"),
-                            (0b000100, Instr(Opcode.clz, X(0,5), X(5,5)))))),
+                            (0b000000, Instr(Opcode.rbit, X(0,5), X(5,5))),
+                            (0b000001, Instr(Opcode.rev16, X(0,5), X(5,5))),
+                            (0b000010, Instr(Opcode.rev, X(0,5), X(5,5))),
+                            (0b000100, Instr(Opcode.clz, X(0,5), X(5,5))),
+                            (0b000101, Instr(Opcode.cls, X(0,5), X(5,5)))))),
                     Nyi("DataProcessing1source sf:S=11"));
             }
 
@@ -2713,7 +2811,22 @@ namespace Reko.Arch.Arm.AArch64
                     invalid);
             }
 
-         
+            Decoder AddSubWithCarry;
+            {
+                AddSubWithCarry = Select(10, 6, IsZero,
+                    Mask(29, 0x7,
+                        Instr(Opcode.adc, W(0,5), W(5,5), W(16,5)),
+                        Instr(Opcode.adcs, W(0,5), W(5,5), W(16,5)),
+                        Instr(Opcode.sbc, W(0,5), W(5,5), W(16,5)),
+                        Instr(Opcode.sbcs, W(0,5), W(5,5), W(16,5)),
+
+                        Instr(Opcode.adc, X(0,5),X(5,5),X(16,5)),
+                        Instr(Opcode.adcs, X(0,5),X(5,5),X(16,5)),
+                        Instr(Opcode.sbc, X(0,5),X(5,5),X(16,5)),
+                        Instr(Opcode.sbcs, X(0,5),X(5,5),X(16,5))),
+                    invalid);
+            }
+
             Decoder DataProcessingReg;
             {
                 DataProcessingReg =  Mask(28, 1,         // op1
@@ -2738,7 +2851,7 @@ namespace Reko.Arch.Arm.AArch64
                         AddSubShiftedRegister,
                         AddSubExtendedRegister),
                     Mask(21, 0xF,           // op1 = 1, op2
-                        Nyi("AddSubWithCarry"),
+                        AddSubWithCarry,
                         invalid,
                         Mask(11, 1,         // op1 = 1, op2 = 2,
                             ConditionalCompareReg,
@@ -3858,6 +3971,12 @@ namespace Reko.Arch.Arm.AArch64
                 DataProcessingReg,
                 LoadsAndStores,
                 DataProcessingScalarFpAdvancedSimd);
+
+            sysregisters = new[]
+            {
+                (0b11_000_0001_0000_001u, "actlr_el1", w64),
+                (0b11_000_1101_0000_100u, "tpidr_el1", w64),
+            }.ToDictionary(sr => sr.Item1, sr => RegisterStorage.Sysreg(sr.Item2, (int)sr.Item1, sr.Item3));
         }
     }
 }

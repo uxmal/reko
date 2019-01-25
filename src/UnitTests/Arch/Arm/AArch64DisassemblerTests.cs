@@ -1271,6 +1271,107 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_Instruction(0x1F2003D5);
             Expect_Code("fnmadd\ts21,s30,s0,s0");
+
+        // New decoders //// 
+
+        [Test]
+        public void AArch64Dis_sbcs()
+        {
+            Given_Instruction(0xFA01001F);
+            Expect_Code("sbcs\tx31,x0,x1");
+        }
+
+        [Test]
+        public void AArch64Dis_bics_64()
+        {
+            Given_Instruction(0xEA2202DF);
+            Expect_Code("bics\tx31,x22,x2");
+        }
+
+        [Test]
+        public void AArch64Dis_mrs()
+        {
+            Given_Instruction(0xD538D081);
+            Expect_Code("mrs\tx1,tpidr_el1");
+        }
+
+        [Test]
+        public void AArch64Dis_msr_imm()
+        {
+            Given_Instruction(0xD50342DF);
+            Expect_Code("msr\tpstate,#2");
+        }
+
+        [Test]
+        public void AArch64Dis_dmb()
+        {
+            Given_Instruction(0xD50339BF);
+            Expect_Code("dmb\t#9");
+        }
+
+        [Test]
+        public void AArch64Dis_dsb()
+        {
+            Given_Instruction(0xD5033F9F);
+            Expect_Code("dsb\t#&F");
+        }
+
+        [Test]
+        public void AArch64Dis_isb()
+        {
+            Given_Instruction(0xD5033FDF);
+            Expect_Code("isb\t#&F");
+        }
+
+        [Test]
+        public void AArch64Dis_msr_reg()
+        {
+            Given_Instruction(0xD518CC20);
+            Expect_Code("msr\tsysreg3_0_12_12_1,x0");
+        }
+
+
+        [Test]
+        public void AArch64Dis_hint()
+        {
+            Given_Instruction(0xD503229F);
+            Expect_Code("hint\t#&14");
+
+        }
+
+        [Test]
+        public void AArch64Dis_rbit()
+        {
+            Given_Instruction(0x5AC0035B);
+            Expect_Code("rbit\tw27,w26");
+        }
+
+        [Test]
+        public void AArch64Dis_clz()
+        {
+            Given_Instruction(0x5AC0137B);
+            Expect_Code("clz\tw27,w27");
+        }
+
+        [Test]
+        public void AArch64Dis_bic_reg_64()
+        {
+            Given_Instruction(0x8A3A0273);
+            Expect_Code("bic\tx19,x19,x26");
+        }
+
+        [Test]
+        public void AArch64Dis_brk()
+        {
+            Given_Instruction(0xD4210000);
+            Expect_Code("brk\t#&800");
+        }
+
+        [Test]
+        public void AArch64Dis_eret()
+        {
+            Given_Instruction(0xD69F03E0);
+            Expect_Code("eret");
         }
     }
 }
