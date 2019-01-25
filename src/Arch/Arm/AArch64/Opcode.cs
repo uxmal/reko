@@ -235,5 +235,15 @@ namespace Reko.Arch.Arm.AArch64
         crc32w,
         rev32,
         crc32x,
+        sha1h,
+        sha1su1,
+        sha256su0,
+        sha1c,
+        sha1p,
+        sha1m,
+        sha1su0,
+        sha256h,
+        sha256h2,
+        sha256su1
     }
 }

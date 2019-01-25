@@ -219,21 +219,6 @@ namespace Reko.Arch.Arm.AArch64
 
 
 
-
-
-
-        /// <summary>
-        /// 64-bit register.
-        /// </summary>
-        private static Action<List<MachineOperand>, AArch64Disassembler, uint> X(int regnumberOffset)
-        {
-            return (ops, dasm, w) =>
-            {
-                var reg = Registers.GpRegs64[(w >> regnumberOffset) & RegisterMask];
-                ops.Add(new RegisterOperand(reg));
-            };
-        }
-
         // 32-bit register.
         private static Mutator W(int pos, int size) {
             var fields = new[]
@@ -247,6 +232,9 @@ namespace Reko.Arch.Arm.AArch64
                 return true;
             };
         }
+        private static Mutator W_0 = W(0, 5);
+        private static Mutator W_5 = W(5, 5);
+        private static Mutator W_16 = W(16, 5);
 
         // 32-bit register - but use stack register instead of w31
 
@@ -263,6 +251,10 @@ namespace Reko.Arch.Arm.AArch64
                 return true;
             };
         }
+        private static Mutator Ws_0 = Ws(0, 5);
+        private static Mutator Ws_5 = Ws(5, 5);
+        private static Mutator Ws_16 = Ws(16, 5);
+
 
         // 64-bit register.
         private static Mutator X(int pos, int size)
@@ -325,6 +317,9 @@ namespace Reko.Arch.Arm.AArch64
                 return true;
             };
         }
+        private static Mutator Xs_0 = Xs(0, 5);
+        private static Mutator Xs_5 = Xs(5, 5);
+        private static Mutator Xs_16 = Xs(16, 5);
 
         // 8-bit SIMD register.
         private static Mutator B(int pos, int size)
@@ -385,6 +380,9 @@ namespace Reko.Arch.Arm.AArch64
                 return true;
             };
         }
+        private static Mutator S_0 = S(0, 5);
+        private static Mutator S_5 = S(5, 5);
+        private static Mutator S_16 = S(16, 5);
 
         // 32-bit SIMD/FPU register or zero if field = 0b00000
         private static Mutator Sz(int pos, int size)
@@ -1556,7 +1554,7 @@ namespace Reko.Arch.Arm.AArch64
                 new Bitfield(pos2, length2)
             };
             var ds = Enumerable.Range(0, 1 << (length1 + length2))
-                .Select(n => invalid)
+                .Select(n => @default)
                 .ToArray();
             foreach (var d in decoders)
             {
@@ -1636,10 +1634,10 @@ namespace Reko.Arch.Arm.AArch64
             Decoder LdStRegUImm;
             {
                 LdStRegUImm = Mask(30,2, 26,1, 22,2, // size V opc
-                    Instr(Opcode.strb, W(0,5), Mo(i8,5, 10,12)),
-                    Instr(Opcode.ldrb, W(0,5), Mo(i8,5, 10,12)),
-                    Instr(Opcode.ldrsb, X(0,5), Mo(i8,5, 10,12)),
-                    Instr(Opcode.ldrsb, W(0,5), Mo(i8,5, 10,12)),
+                    Instr(Opcode.strb, W_0, Mo(i8,5, 10,12)),
+                    Instr(Opcode.ldrb, W_0, Mo(i8,5, 10,12)),
+                    Instr(Opcode.ldrsb, X_0, Mo(i8,5, 10,12)),
+                    Instr(Opcode.ldrsb, W_0, Mo(i8,5, 10,12)),
                     // 00 1 00
                     Instr(Opcode.str, B(0,5), Mo(w8, 5, 10, 12)),
                     Instr(Opcode.ldr, B(0,5), Mo(w8, 5, 10, 12)),
@@ -1648,7 +1646,7 @@ namespace Reko.Arch.Arm.AArch64
                     // 01 0 00
                     Instr(Opcode.strh, W(0, 5), Mo(w16, 5, 10, 12)),
                     Instr(Opcode.ldrh, W(0, 5), Mo(w16, 5, 10, 12)),
-                    Instr(Opcode.ldrsh, X(0, 5), Mo(i16, 5, 10, 12)),
+                    Instr(Opcode.ldrsh, X_0, Mo(i16, 5, 10, 12)),
                     Instr(Opcode.ldrsh, W(0, 5), Mo(i16, 5, 10, 12)),
                     // 01 1 00
                     Instr(Opcode.str, H(0,5), Mo(w16, 5, 10, 12)),
@@ -1658,16 +1656,16 @@ namespace Reko.Arch.Arm.AArch64
                     // 10 0 00
                     Instr(Opcode.str, W(0, 5), Mo(w32, 5, 10, 12)),
                     Instr(Opcode.ldr, W(0, 5), Mo(w32, 5, 10, 12)),
-                    Instr(Opcode.ldrsw, X(0, 5), Mo(i16, 5, 10, 12)),
+                    Instr(Opcode.ldrsw, X_0, Mo(i16, 5, 10, 12)),
                     invalid,
                     // 10 1 00
-                    Instr(Opcode.str, S(0,5), Mo(w32, 5, 10, 12)),
-                    Instr(Opcode.ldr, S(0,5), Mo(w32, 5, 10, 12)),
+                    Instr(Opcode.str, S_0, Mo(w32, 5, 10, 12)),
+                    Instr(Opcode.ldr, S_0, Mo(w32, 5, 10, 12)),
                     invalid,
                     invalid,
                     // 11 0 00
-                    Instr(Opcode.str, X(0,5), Mo(w64, 5, 10, 12)),
-                    Instr(Opcode.ldr, X(0,5), Mo(w64, 5, 10, 12)),
+                    Instr(Opcode.str, X_0, Mo(w64, 5, 10, 12)),
+                    Instr(Opcode.ldr, X_0, Mo(w64, 5, 10, 12)),
                     Instr(Opcode.prfm, x("*")),
                     invalid,
                     // 11 1 00
@@ -1682,10 +1680,10 @@ namespace Reko.Arch.Arm.AArch64
                 LdStRegisterRegOff = Mask(14, 1,
                     invalid,
                     Mask(30, 2, 26, 1, 22, 2,   // //LoadStoreRegisterRegOff sz V opc
-                        Instr(Opcode.strb, W(0,5),Mr(w8)),
-                        Instr(Opcode.ldrb, W(0,5),Mr(w8)),
-                        Instr(Opcode.ldrsb, X(0,5),Mr(i8)),
-                        Instr(Opcode.ldrsb, W(0,5),Mr(i8)),
+                        Instr(Opcode.strb, W_0,Mr(w8)),
+                        Instr(Opcode.ldrb, W_0,Mr(w8)),
+                        Instr(Opcode.ldrsb, X_0,Mr(i8)),
+                        Instr(Opcode.ldrsb, W_0,Mr(i8)),
 
                         // LoadStoreRegisterRegOff sz:V:opc=00 1 00
                         Instr(Opcode.str, B(0,5),Mr(w8)),
@@ -1694,10 +1692,10 @@ namespace Reko.Arch.Arm.AArch64
                         Instr(Opcode.ldr, Q(0,5),Mr(w128)),
 
                         // LoadStoreRegisterRegOff sz:V:opc=01 0 00
-                        Instr(Opcode.strh, W(0,5),Mr(w16)),
-                        Instr(Opcode.ldrh, W(0,5),Mr(w16)),
-                        Instr(Opcode.ldrsh, X(0,5),Mr(i16)),
-                        Instr(Opcode.ldrsh, W(0,5),Mr(i16)),
+                        Instr(Opcode.strh, W_0,Mr(w16)),
+                        Instr(Opcode.ldrh, W_0,Mr(w16)),
+                        Instr(Opcode.ldrsh, X_0,Mr(i16)),
+                        Instr(Opcode.ldrsh, W_0,Mr(i16)),
 
                         // LoadStoreRegisterRegOff sz:V:opc=01 1 00
                         Instr(Opcode.str, H(0,5),Mr(w16)),
@@ -1706,20 +1704,20 @@ namespace Reko.Arch.Arm.AArch64
                         invalid,
 
                         // LoadStoreRegisterRegOff sz:V:opc=10 0 00
-                        Instr(Opcode.str, W(0,5),Mr(w32)),
-                        Instr(Opcode.ldr, W(0,5),Mr(w32)),
-                        Instr(Opcode.ldrsw, X(0,5),Mr(i32)),
+                        Instr(Opcode.str, W_0,Mr(w32)),
+                        Instr(Opcode.ldr, W_0,Mr(w32)),
+                        Instr(Opcode.ldrsw, X_0,Mr(i32)),
                         invalid,
 
                         // LoadStoreRegisterRegOff sz:V:opc=10 1 00
-                        Instr(Opcode.str, S(0,5),Mr(w32)),
-                        Instr(Opcode.ldr, S(0,5),Mr(w32)),
+                        Instr(Opcode.str, S_0,Mr(w32)),
+                        Instr(Opcode.ldr, S_0,Mr(w32)),
                         invalid,
                         invalid,
 
                         // LoadStoreRegisterRegOff sz:V:opc=11 0 00
-                        Instr(Opcode.str, X(0,5),Mr(w64)),
-                        Instr(Opcode.ldr, X(0,5),Mr(w64)),
+                        Instr(Opcode.str, X_0,Mr(w64)),
+                        Instr(Opcode.ldr, X_0,Mr(w64)),
                         Instr(Opcode.prfm, x("register")),
                         invalid,
 
@@ -1734,18 +1732,18 @@ namespace Reko.Arch.Arm.AArch64
             Decoder LdStRegPairOffset;
             {
                 LdStRegPairOffset = Mask(30,2, 26,1, 22,1, // opc:V:L
-                    Instr(Opcode.stp, W(0,5),W(10,5), Mo(w32,5,15,7)),
-                    Instr(Opcode.ldp, W(0,5),W(10,5), Mo(w32,5,15,7)),
-                    Instr(Opcode.stp, S(0,5),S(10,5), Mo(w32,5,15,7)),
-                    Instr(Opcode.ldp, S(0,5),S(10,5), Mo(w32,5,15,7)),
+                    Instr(Opcode.stp, W_0,W(10,5), Mo(w32,5,15,7)),
+                    Instr(Opcode.ldp, W_0,W(10,5), Mo(w32,5,15,7)),
+                    Instr(Opcode.stp, S_0,S(10,5), Mo(w32,5,15,7)),
+                    Instr(Opcode.ldp, S_0,S(10,5), Mo(w32,5,15,7)),
 
                     invalid,
-                    Instr(Opcode.ldpsw, X(0,5),X(10,5), Mo(w32,5,15,7)),
+                    Instr(Opcode.ldpsw, X_0,X(10,5), Mo(w32,5,15,7)),
                     Instr(Opcode.stp, D(0,5),D(10,5), Mo(w64,5,15,7)),
                     Instr(Opcode.ldp, D(0,5),D(10,5), Mo(w64,5,15,7)),
                     
-                    Instr(Opcode.stp, X(0,5),X(10,5), Mo(w64,5,15,7)),
-                    Instr(Opcode.ldp, X(0,5),X(10,5), Mo(w64,5,15,7)),
+                    Instr(Opcode.stp, X_0,X(10,5), Mo(w64,5,15,7)),
+                    Instr(Opcode.ldp, X_0,X(10,5), Mo(w64,5,15,7)),
                     Instr(Opcode.stp, Q(0,5),Q(10,5), Mo(w128,5,15,7)),
                     Instr(Opcode.ldp, Q(0,5),Q(10,5), Mo(w128,5,15,7)),
 
@@ -1758,18 +1756,18 @@ namespace Reko.Arch.Arm.AArch64
             Decoder LdStRegPairPre;
             {
                 LdStRegPairPre = Mask(30,2, 26,1, 22,1, // opc:V:L
-                    Instr(Opcode.stp, W(0,5),W(10,5), MprePair(PrimitiveType.Word32)),
-                    Instr(Opcode.ldp, W(0,5),W(10,5), MprePair(PrimitiveType.Word32)),
-                    Instr(Opcode.stp, S(0,5),S(10,5), MprePair(PrimitiveType.Word32)),
-                    Instr(Opcode.ldp, S(0,5),S(10,5), MprePair(PrimitiveType.Word32)),
+                    Instr(Opcode.stp, W_0,W(10,5), MprePair(PrimitiveType.Word32)),
+                    Instr(Opcode.ldp, W_0,W(10,5), MprePair(PrimitiveType.Word32)),
+                    Instr(Opcode.stp, S_0,S(10,5), MprePair(PrimitiveType.Word32)),
+                    Instr(Opcode.ldp, S_0,S(10,5), MprePair(PrimitiveType.Word32)),
 
                     invalid,
-                    Instr(Opcode.ldpsw, X(0,5),X(10,5), MprePair(PrimitiveType.Word32)),
+                    Instr(Opcode.ldpsw, X_0,X(10,5), MprePair(PrimitiveType.Word32)),
                     Instr(Opcode.stp, D(0,5),D(10,5), MprePair(PrimitiveType.Word64)),
                     Instr(Opcode.ldp, D(0,5),D(10,5), MprePair(PrimitiveType.Word64)),
                     
-                    Instr(Opcode.stp, X(0,5),X(10,5), MprePair(PrimitiveType.Word64)),
-                    Instr(Opcode.ldp, X(0,5),X(10,5), MprePair(PrimitiveType.Word64)),
+                    Instr(Opcode.stp, X_0,X(10,5), MprePair(PrimitiveType.Word64)),
+                    Instr(Opcode.ldp, X_0,X(10,5), MprePair(PrimitiveType.Word64)),
                     Instr(Opcode.stp, Q(0,5),Q(10,5), MprePair(PrimitiveType.Word128)),
                     Instr(Opcode.ldp, Q(0,5),Q(10,5), MprePair(PrimitiveType.Word128)),
 
@@ -1782,18 +1780,18 @@ namespace Reko.Arch.Arm.AArch64
             Decoder LdStRegPairPost;
             {
                 LdStRegPairPost = Mask(30,2, 26,1, 22,1, // opc:V:L
-                    Instr(Opcode.stp, W(0,5),W(10,5), MpostPair(PrimitiveType.Word32)),
-                    Instr(Opcode.ldp, W(0,5),W(10,5), MpostPair(PrimitiveType.Word32)),
-                    Instr(Opcode.stp, S(0,5),S(10,5), MpostPair(PrimitiveType.Word32)),
-                    Instr(Opcode.ldp, S(0,5),S(10,5), MpostPair(PrimitiveType.Word32)),
+                    Instr(Opcode.stp, W_0,W(10,5), MpostPair(PrimitiveType.Word32)),
+                    Instr(Opcode.ldp, W_0,W(10,5), MpostPair(PrimitiveType.Word32)),
+                    Instr(Opcode.stp, S_0,S(10,5), MpostPair(PrimitiveType.Word32)),
+                    Instr(Opcode.ldp, S_0,S(10,5), MpostPair(PrimitiveType.Word32)),
 
                     invalid,
-                    Instr(Opcode.ldpsw, X(0,5),X(10,5), MpostPair(PrimitiveType.Word32)),
+                    Instr(Opcode.ldpsw, X_0,X(10,5), MpostPair(PrimitiveType.Word32)),
                     Instr(Opcode.stp, D(0,5),D(10,5), MpostPair(PrimitiveType.Word64)),
                     Instr(Opcode.ldp, D(0,5),D(10,5), MpostPair(PrimitiveType.Word64)),
                     
-                    Instr(Opcode.stp, X(0,5),X(10,5), MpostPair(PrimitiveType.Word64)),
-                    Instr(Opcode.ldp, X(0,5),X(10,5), MpostPair(PrimitiveType.Word64)),
+                    Instr(Opcode.stp, X_0,X(10,5), MpostPair(PrimitiveType.Word64)),
+                    Instr(Opcode.ldp, X_0,X(10,5), MpostPair(PrimitiveType.Word64)),
                     Instr(Opcode.stp, Q(0,5),Q(10,5), MpostPair(PrimitiveType.Word128)),
                     Instr(Opcode.ldp, Q(0,5),Q(10,5), MpostPair(PrimitiveType.Word128)),
 
@@ -1810,7 +1808,7 @@ namespace Reko.Arch.Arm.AArch64
                 var LdStRegUnscaledImm = Mask(30, 2, 26, 1, 22, 2,
                     Instr(Opcode.sturb, W(0, 5), Mu(w8, 5, 12, 9)),
                     Instr(Opcode.ldurb, W(0, 5), Mu(w8, 5, 12, 9)),
-                    Instr(Opcode.ldursb, X(0, 5), Mu(i8, 5, 12, 9)),
+                    Instr(Opcode.ldursb, X_0, Mu(i8, 5, 12, 9)),
                     Instr(Opcode.ldursb, W(0, 5), Mu(i8, 5, 12, 9)),
 
                     // LdStRegUnscaledImm size=00 V=1 opc=00
@@ -1822,8 +1820,8 @@ namespace Reko.Arch.Arm.AArch64
                     // LdStRegUnscaledImm size=01 V=0 opc=00
                     Instr(Opcode.sturh, W(0, 5), Mo(w16, 5, 12, 9)),
                     Instr(Opcode.ldurh, W(0, 5), Mo(w16, 5, 12, 9)),
-                    Instr(Opcode.ldursh, X(0,5), Mu(i16,5,12,9)),
-                    Instr(Opcode.ldursh, W(0,5), Mu(i16,5,12,9)),
+                    Instr(Opcode.ldursh, X_0, Mu(i16,5,12,9)),
+                    Instr(Opcode.ldursh, W_0, Mu(i16,5,12,9)),
 
                     // LdStRegUnscaledImm size=01 V=1 opc=00
                     Instr(Opcode.stur, H(0,5), Mu(w16,5,12,9)),
@@ -1832,20 +1830,20 @@ namespace Reko.Arch.Arm.AArch64
                     invalid,
 
                     // LdStRegUnscaledImm size=10 V=0 opc=00
-                    Instr(Opcode.stur, W(0,5), Mu(w32,5,12,9)),
-                    Instr(Opcode.ldur, W(0,5), Mu(w32,5,12,9)),
-                    Instr(Opcode.ldursw, X(0,5), Mu(w32,5,12,9)),
+                    Instr(Opcode.stur, W_0, Mu(w32,5,12,9)),
+                    Instr(Opcode.ldur, W_0, Mu(w32,5,12,9)),
+                    Instr(Opcode.ldursw, X_0, Mu(w32,5,12,9)),
                     invalid,
 
                     // LdStRegUnscaledImm size=10 V=1 opc=00
-                    Instr(Opcode.stur, S(0,5), Mu(w32,5,12,9)),
-                    Instr(Opcode.ldur, S(0,5), Mu(w32,5,12,9)),
+                    Instr(Opcode.stur, S_0, Mu(w32,5,12,9)),
+                    Instr(Opcode.ldur, S_0, Mu(w32,5,12,9)),
                     invalid,
                     invalid,
 
                     // LdStRegUnscaledImm size=11 V=0 opc=00
-                    Instr(Opcode.stur, X(0,5), Mu(w64,5,12,9)),
-                    Instr(Opcode.ldur, X(0,5), Mu(w64,5,12,9)),
+                    Instr(Opcode.stur, X_0, Mu(w64,5,12,9)),
+                    Instr(Opcode.ldur, X_0, Mu(w64,5,12,9)),
                     Instr(Opcode.prfm, x("unscaled offset")),
                     invalid,
 
@@ -1860,7 +1858,7 @@ namespace Reko.Arch.Arm.AArch64
                     LdStRegImmPostIdx = Mask(30, 2, 26, 1, 22, 2,
                         Instr(Opcode.strb, W(0, 5), Mpost(w8)),
                         Instr(Opcode.ldrb, W(0, 5), Mpost(w8)),
-                        Instr(Opcode.ldrsb, X(0, 5), Mpost(i8)),
+                        Instr(Opcode.ldrsb, X_0, Mpost(i8)),
                         Instr(Opcode.ldrsb, W(0, 5), Mpost(i8)),
 
                         Instr(Opcode.str, B(0, 5), Mpost(w8)),
@@ -1870,7 +1868,7 @@ namespace Reko.Arch.Arm.AArch64
 
                         Instr(Opcode.strh, W(0, 5), Mpost(w16)),
                         Instr(Opcode.ldrh, W(0, 5), Mpost(w16)),
-                        Instr(Opcode.ldrsh, X(0, 5), Mpost(i16)),
+                        Instr(Opcode.ldrsh, X_0, Mpost(i16)),
                         Instr(Opcode.ldrsh, W(0, 5), Mpost(i16)),
 
                         Instr(Opcode.str, H(0, 5), Mpost(w16)),
@@ -1878,23 +1876,23 @@ namespace Reko.Arch.Arm.AArch64
                         invalid,
                         invalid,
 
-                        Instr(Opcode.str, W(0,5), Mpost(w32)),
-                        Instr(Opcode.ldr, W(0,5), Mpost(w32)),
-                        Instr(Opcode.ldrsw, X(0,5), Mpost(i32)),
+                        Instr(Opcode.str, W_0, Mpost(w32)),
+                        Instr(Opcode.ldr, W_0, Mpost(w32)),
+                        Instr(Opcode.ldrsw, X_0, Mpost(i32)),
                         invalid,
 
-                        Instr(Opcode.str, S(0, 5), Mpost(w32)),
-                        Instr(Opcode.ldr, S(0, 5), Mpost(w32)),
-                        invalid,
-                        invalid,
-
-                        Instr(Opcode.str, X(0,5), Mpost(w64)),
-                        Instr(Opcode.ldr, X(0,5), Mpost(w64)),
+                        Instr(Opcode.str, S_0, Mpost(w32)),
+                        Instr(Opcode.ldr, S_0, Mpost(w32)),
                         invalid,
                         invalid,
 
-                        Instr(Opcode.str, X(0,5), Mpost(w64)),
-                        Instr(Opcode.ldr, X(0,5), Mpost(w64)),
+                        Instr(Opcode.str, X_0, Mpost(w64)),
+                        Instr(Opcode.ldr, X_0, Mpost(w64)),
+                        invalid,
+                        invalid,
+
+                        Instr(Opcode.str, X_0, Mpost(w64)),
+                        Instr(Opcode.ldr, X_0, Mpost(w64)),
                         invalid,
                         invalid);
                 }
@@ -1906,7 +1904,7 @@ namespace Reko.Arch.Arm.AArch64
                     LdStRegImmPreIdx = Mask(30, 2, 26, 1, 22, 2,
                         Instr(Opcode.strb, W(0, 5), Mpre(w8)),
                         Instr(Opcode.ldrb, W(0, 5), Mpre(w8)),
-                        Instr(Opcode.ldrsb, X(0, 5), Mpre(i8)),
+                        Instr(Opcode.ldrsb, X_0, Mpre(i8)),
                         Instr(Opcode.ldrsb, W(0, 5), Mpre(i8)),
 
                         Instr(Opcode.str, B(0, 5), Mpre(w8)),
@@ -1916,7 +1914,7 @@ namespace Reko.Arch.Arm.AArch64
 
                         Instr(Opcode.strh, W(0, 5), Mpre(w16)),
                         Instr(Opcode.ldrh, W(0, 5), Mpre(w16)),
-                        Instr(Opcode.ldrsh, X(0, 5), Mpre(i16)),
+                        Instr(Opcode.ldrsh, X_0, Mpre(i16)),
                         Instr(Opcode.ldrsh, W(0, 5), Mpre(i16)),
 
                         Instr(Opcode.str, H(0, 5), Mpre(w16)),
@@ -1926,16 +1924,16 @@ namespace Reko.Arch.Arm.AArch64
 
                         Instr(Opcode.str, W(0, 5), Mpre(w32)),
                         Instr(Opcode.ldr, W(0, 5), Mpre(w32)),
-                        Instr(Opcode.ldrsw, X(0, 5), Mpre(i32)),
+                        Instr(Opcode.ldrsw, X_0, Mpre(i32)),
                         invalid,
 
-                        Instr(Opcode.str, S(0, 5), Mpre(w32)),
-                        Instr(Opcode.ldr, S(0, 5), Mpre(w32)),
+                        Instr(Opcode.str, S_0, Mpre(w32)),
+                        Instr(Opcode.ldr, S_0, Mpre(w32)),
                         invalid,
                         invalid,
 
-                        Instr(Opcode.str, X(0,5), Mpre(w64)),
-                        Instr(Opcode.ldr, X(0,5), Mpre(w64)),
+                        Instr(Opcode.str, X_0, Mpre(w64)),
+                        Instr(Opcode.ldr, X_0, Mpre(w64)),
                         invalid,
                         invalid,
 
@@ -1948,11 +1946,11 @@ namespace Reko.Arch.Arm.AArch64
                 Decoder LoadRegLit;
                 {
                     LoadRegLit = Mask(30,2,26,1,    // opc:V
-                        Instr(Opcode.ldr, W(0,5), Mlit(w32)),
-                        Instr(Opcode.ldr, S(0,5), Mlit(w32)),
-                        Instr(Opcode.ldr, X(0,5), Mlit(w64)),
+                        Instr(Opcode.ldr, W_0, Mlit(w32)),
+                        Instr(Opcode.ldr, S_0, Mlit(w32)),
+                        Instr(Opcode.ldr, X_0, Mlit(w64)),
                         Instr(Opcode.ldr, D(0,5), Mlit(w64)),
-                        Instr(Opcode.ldrsw, X(0,5), Mlit(i32)),
+                        Instr(Opcode.ldrsw, X_0, Mlit(i32)),
                         Instr(Opcode.ldr, Q(0,5), Mlit(w128)),
                         Instr(Opcode.prfm, U(0,5,PrimitiveType.Byte),Mlit(w32)),
                         invalid);
@@ -2086,7 +2084,7 @@ namespace Reko.Arch.Arm.AArch64
                 }
 
                 Decoder LoadStoreExclusive = Mask(30, 2, 21, 3, 15, 1,
-                    Instr(Opcode.stxrb, W(16,5), W(0,5), Mb(w8, 5,5)),
+                    Instr(Opcode.stxrb, W_16, W_0, Mb(w8, 5,5)),
                     Nyi("LoadStoreExclusive size:o2:L:o1:o0 000001"),
                     Nyi("LoadStoreExclusive size:o2:L:o1:o0 000010"),
                     Select(10, 5, Is31,
@@ -2137,15 +2135,15 @@ namespace Reko.Arch.Arm.AArch64
                     Nyi("LoadStoreExclusive size:o2:L:o1:o0 101110"),
                     Nyi("LoadStoreExclusive size:o2:L:o1:o0 101111"),
 
-                    Instr(Opcode.stxr, X(0,5), Mb(w64, 5,5)),
-                    Instr(Opcode.stlxr, X(0,5), Mb(w64, 5,5)),
-                    Instr(Opcode.stxp, X(0,5),X(10,5), Mb(w64, 5,5)),
-                    Instr(Opcode.stlxp, X(0,5),X(10,5), Mb(w64, 5,5)),
+                    Instr(Opcode.stxr, X_0, Mb(w64, 5,5)),
+                    Instr(Opcode.stlxr, X_0, Mb(w64, 5,5)),
+                    Instr(Opcode.stxp, X_0,X(10,5), Mb(w64, 5,5)),
+                    Instr(Opcode.stlxp, X_0,X(10,5), Mb(w64, 5,5)),
 
-                    Instr(Opcode.ldxr, X(0,5),Mb(w64,5,5)),
-                    Instr(Opcode.ldaxr, X(0,5), Mb(w64, 5,5)),
-                    Instr(Opcode.ldxp, X(0, 5),X(10,5), Mb(w64, 5, 5)),
-                    Instr(Opcode.ldaxp, X(0, 5), X(10, 5), Mb(w64, 5, 5)),
+                    Instr(Opcode.ldxr, X_0,Mb(w64,5,5)),
+                    Instr(Opcode.ldaxr, X_0, Mb(w64, 5,5)),
+                    Instr(Opcode.ldxp, X_0,X(10,5), Mb(w64, 5, 5)),
+                    Instr(Opcode.ldaxp, X_0, X(10, 5), Mb(w64, 5, 5)),
 
                     Nyi("LoadStoreExclusive size:o2:L:o1:o0 111000"),
                     Nyi("LoadStoreExclusive size:o2:L:o1:o0 111001"),
@@ -2238,66 +2236,66 @@ namespace Reko.Arch.Arm.AArch64
                     Instr(Opcode.sub, Ws(0,5),Ws(5,5),U(10,12,w32),sc(22,2)),
                     Select(0,5, n=>n == 0x1F,
                         Instr(Opcode.cmp, Ws(5,5),U(10,12,w32),sc(22,2)),
-                        Instr(Opcode.subs, W(0,5),W(5,5),U(10,12,w32),sc(22,2))),
+                        Instr(Opcode.subs, W_0,W_5,U(10,12,w32),sc(22,2))),
                     
                     Instr(Opcode.add, Xs(0,5),Xs(5,5),U(10,12,w64),sc(22,2)),
                     Instr(Opcode.adds, Xs(0,5),Xs(5,5),U(10,12,w64),sc(22,2)),
                     Instr(Opcode.sub, Xs(0,5),Xs(5,5),U(10,12,w64),sc(22,2)),
                     Select(0,5, n=> n == 0x1F,
                         Instr(Opcode.cmp, Xs(5,5),U(10,12,w64),sc(22,2)),
-                        Instr(Opcode.subs, X(0,5),Xs(5,5),U(10,12,w64),sc(22,2)))),
+                        Instr(Opcode.subs, X_0,Xs(5,5),U(10,12,w64),sc(22,2)))),
                 invalid);
 
             var LogicalImmediate = Mask(29, 7, // size + op flag
                 Mask(22, 1, // N bit
-                    Instr(Opcode.and, W(0,5),W(5,5),Ul(10,w32)),
+                    Instr(Opcode.and, W_0,W_5,Ul(10,w32)),
                     invalid),
                 Mask(22, 1, // N bit
-                    Instr(Opcode.orr, W(0,5),W(5,5),Ul(10,w32)),
+                    Instr(Opcode.orr, W_0,W_5,Ul(10,w32)),
                     invalid),
                 Mask(22, 1, // N bit
-                    Instr(Opcode.eor, W(0,5),W(5,5),Ul(10,w32)),
+                    Instr(Opcode.eor, W_0,W_5,Ul(10,w32)),
                     invalid),
                 Mask(22, 1, // N bit
-                    Instr(Opcode.ands, W(0,5),W(5,5),Ul(10,w32)),
+                    Instr(Opcode.ands, W_0,W_5,Ul(10,w32)),
                     invalid),
 
-                Instr(Opcode.and, X(0,5),X(5,5),Ul(10,w64)),
-                Instr(Opcode.orr, X(0,5),X(5,5),Ul(10,w64)),
-                Instr(Opcode.eor, X(0,5),X(5,5),Ul(10,w64)),
-                Instr(Opcode.ands, X(0,5),X(5,5),Ul(10,w64)));
+                Instr(Opcode.and, X_0,X_5,Ul(10,w64)),
+                Instr(Opcode.orr, X_0,X_5,Ul(10,w64)),
+                Instr(Opcode.eor, X_0,X_5,Ul(10,w64)),
+                Instr(Opcode.ands, X_0,X_5,Ul(10,w64)));
 
             Nyi("LogicalImmediate");
 
             var MoveWideImmediate = Mask(29, 7,
                 Mask(22, 1,
-                    Instr(Opcode.movn, W(0,5),U(5,16,w32),sh(21,2)),
+                    Instr(Opcode.movn, W_0,U(5,16,w32),sh(21,2)),
                     invalid),
                 invalid,
                 Mask(22, 1,
-                    Instr(Opcode.movz, W(0,5),U(5,16,w32),sh(21,2)),
+                    Instr(Opcode.movz, W_0,U(5,16,w32),sh(21,2)),
                     invalid),
                 Mask(22, 1,
-                    Instr(Opcode.movk, W(0,5),U(5,16,w32),sh(21,2)),
+                    Instr(Opcode.movk, W_0,U(5,16,w32),sh(21,2)),
                     invalid),
 
-                Instr(Opcode.movn, X(0,5),U(5,16,w64),sh(21,2)),
+                Instr(Opcode.movn, X_0,U(5,16,w64),sh(21,2)),
                 invalid,
-                Instr(Opcode.movz, X(0,5),U(5,16,w64),sh(21,2)),
-                Instr(Opcode.movk, X(0,5),U(5,16,w16),sh(21,2)));
+                Instr(Opcode.movz, X_0,U(5,16,w64),sh(21,2)),
+                Instr(Opcode.movk, X_0,U(5,16,w16),sh(21,2)));
 
 
             var PcRelativeAddressing = Mask(31, 1,
-                Instr(Opcode.adr, X(0,5), PcRel(5,19,29,2)),
-                Instr(Opcode.adrp, X(0,5), I(5,19,29,2,i32,12)));
+                Instr(Opcode.adr, X_0, PcRel(5,19,29,2)),
+                Instr(Opcode.adrp, X_0, I(5,19,29,2,i32,12)));
 
             Decoder Bitfield;
             {
                 Bitfield = Mask(22, 1,
                     Mask(29, 7,
-                        Instr(Opcode.sbfm, W(0,5),W(5,5),U(16,6,i32),U(10,6,i32), SbfmAliases),
-                        Instr(Opcode.bfm, W(0,5),W(5,5),U(16,6,i32),U(10,6,i32)),
-                        Instr(Opcode.ubfm, W(0,5),W(5,5),U(16,6,i32),U(10,6,i32), UbfmAliases),
+                        Instr(Opcode.sbfm, W_0,W_5,U(16,6,i32),U(10,6,i32), SbfmAliases),
+                        Instr(Opcode.bfm, W_0,W_5,U(16,6,i32),U(10,6,i32)),
+                        Instr(Opcode.ubfm, W_0,W_5,U(16,6,i32),U(10,6,i32), UbfmAliases),
                         invalid,
 
                         invalid,
@@ -2310,18 +2308,18 @@ namespace Reko.Arch.Arm.AArch64
                         invalid,
                         invalid,
 
-                        Instr(Opcode.sbfm, X(0,5),X(5,5),U(16,6,i32),U(10,6,i32), SbfmAliases),
-                        Instr(Opcode.bfm, X(0,5),X(5,5),U(16,6,i32),U(10,6,i32)),
-                        Instr(Opcode.ubfm, X(0,5),X(5,5),U(16,6,i32),U(10,6,i32), UbfmAliases), 
+                        Instr(Opcode.sbfm, X_0,X_5,U(16,6,i32),U(10,6,i32), SbfmAliases),
+                        Instr(Opcode.bfm, X_0,X_5,U(16,6,i32),U(10,6,i32)),
+                        Instr(Opcode.ubfm, X_0,X_5,U(16,6,i32),U(10,6,i32), UbfmAliases), 
                         invalid));
             }
             Decoder Extract = Select(29, 2, IsZero,
                 Mask("Extract: sf:0", 31, 1,
                     Select(21, 2, u => u == 0b00,
-                        Select(15, 1, IsZero, Instr(Opcode.extr, W(0,5),W(5,5),W(16,5),U(10,6,i32)), invalid),
+                        Select(15, 1, IsZero, Instr(Opcode.extr, W_0,W_5,W_16,U(10,6,i32)), invalid),
                         invalid),
                     Select(21, 2, u => u == 0b10,
-                        Instr(Opcode.extr, X(0,5),X(5,5),X(16,5),U(10,6,i32)),    //$TODO: aliases: ROR is a special case of EXTR.
+                        Instr(Opcode.extr, X_0,X_5,X_16,U(10,6,i32)),    //$TODO: aliases: ROR is a special case of EXTR.
                         invalid)),
                 invalid);
 
@@ -2345,17 +2343,17 @@ namespace Reko.Arch.Arm.AArch64
                 Mask(21, 0xF,
                     Sparse(10, 6,
                         invalid,
-                        (0, Select(0,5, n => n == 0, Instr(Opcode.br, InstrClass.Transfer, X(5,5)), invalid)),
+                        (0, Select(0,5, n => n == 0, Instr(Opcode.br, InstrClass.Transfer, X_5), invalid)),
                         (2, Select(0,5, n => n == 0x1F, Nyi("BRAA,BRAAZ... Key A"), invalid)),
                         (3, Select(0,5, n => n == 0x1F, Nyi("BRAA,BRAAZ... Key B"), invalid))),
                     Sparse(10, 6,
                         invalid,
-                        (0, Select(0,5, n => n == 0, Instr(Opcode.blr, InstrClass.Transfer | InstrClass.Call, X(5,5)), invalid)),
+                        (0, Select(0,5, n => n == 0, Instr(Opcode.blr, InstrClass.Transfer | InstrClass.Call, X_5), invalid)),
                         (2, Select(0,5, n => n == 0x1F, Nyi("BlRAA,BlRAAZ... Key A"), invalid)),
                         (3, Select(0,5, n => n == 0x1F, Nyi("BlRAA,BlRAAZ... Key B"), invalid))),
                     Sparse(10, 6,
                         invalid,
-                        (0, Select(0,5, n => n == 0, Instr(Opcode.ret, InstrClass.Transfer, X(5,5)), invalid)),
+                        (0, Select(0,5, n => n == 0, Instr(Opcode.ret, InstrClass.Transfer, X_5), invalid)),
                         (2, Select(0,5, n => n == 0x1F, Nyi("RETAA,RETAAZ... Key A"), invalid)),
                         (3, Select(0,5, n => n == 0x1F, Nyi("RETAA,RETAAZ... Key B"), invalid))),
                     invalid,
@@ -2384,19 +2382,19 @@ namespace Reko.Arch.Arm.AArch64
 
             var CompareBranchImm = Mask(31, 1, 
                 Mask(24, 1,
-                    Instr(Opcode.cbz,  InstrClass.ConditionalTransfer, W(0,5),J(5,19)),
-                    Instr(Opcode.cbnz, InstrClass.ConditionalTransfer, W(0,5),J(5,19))),
+                    Instr(Opcode.cbz,  InstrClass.ConditionalTransfer, W_0,J(5,19)),
+                    Instr(Opcode.cbnz, InstrClass.ConditionalTransfer, W_0,J(5,19))),
                 Mask(24, 1,
-                    Instr(Opcode.cbz,  InstrClass.ConditionalTransfer, X(0,5),J(5,19)),
-                    Instr(Opcode.cbnz, InstrClass.ConditionalTransfer, X(0,5),J(5,19))));
+                    Instr(Opcode.cbz,  InstrClass.ConditionalTransfer, X_0,J(5,19)),
+                    Instr(Opcode.cbnz, InstrClass.ConditionalTransfer, X_0,J(5,19))));
 
             var TestBranchImm = Mask(24, 1,
                 Mask(31, 1,
-                    Instr(Opcode.tbz,  InstrClass.ConditionalTransfer, W(0,5),I(19,5,w32),J(5,14)),
-                    Instr(Opcode.tbnz, InstrClass.ConditionalTransfer, W(0,5),I(19,5,w32),J(5,14))),
+                    Instr(Opcode.tbz,  InstrClass.ConditionalTransfer, W_0,I(19,5,w32),J(5,14)),
+                    Instr(Opcode.tbnz, InstrClass.ConditionalTransfer, W_0,I(19,5,w32),J(5,14))),
                 Mask(31, 1,
-                    Instr(Opcode.tbz,  InstrClass.ConditionalTransfer, W(0,5),I(19,5,w32),J(5,14)),
-                    Instr(Opcode.tbnz, InstrClass.ConditionalTransfer, W(0,5),I(19,5,w32),J(5,14))));
+                    Instr(Opcode.tbz,  InstrClass.ConditionalTransfer, W_0,I(19,5,w32),J(5,14)),
+                    Instr(Opcode.tbnz, InstrClass.ConditionalTransfer, W_0,I(19,5,w32),J(5,14))));
 
             var CondBranchImm = Mask(24,1,4,1,
                 Instr(Opcode.b, InstrClass.ConditionalTransfer, C(0,4),J(5,19)),
@@ -2404,8 +2402,8 @@ namespace Reko.Arch.Arm.AArch64
                 invalid,
                 invalid);
 
-            var mrs_reg = Instr(Opcode.mrs, X(0,5),Sysreg((19,2),(16,3),(12,4),(8,4),(5,3)));
-            var msr_reg = Instr(Opcode.msr, Sysreg((19,2),(16,3),(12,4),(8,4),(5,3)), X(0,5));
+            var mrs_reg = Instr(Opcode.mrs, X_0,Sysreg((19,2),(16,3),(12,4),(8,4),(5,3)));
+            var msr_reg = Instr(Opcode.msr, Sysreg((19,2),(16,3),(12,4),(8,4),(5,3)), X_0);
             var msr_imm = Instr(Opcode.msr, (u, d) =>
                 {
                     d.state.ops.Add(new RegisterOperand(RegisterStorage.Sysreg("pstate", 4711, w64)));
@@ -2552,37 +2550,37 @@ namespace Reko.Arch.Arm.AArch64
                     Select(15,1, n => n == 1,
                         invalid,
                         Mask(29,2,21,1,
-                            Instr(Opcode.and, W(0,5),W(5,5),W(16,5),si(22,2,10,6)),
-                            Instr(Opcode.bic, W(0,5),W(5,5),W(16,5),si(22,2,10,6)),
+                            Instr(Opcode.and, W_0,W_5,W_16,si(22,2,10,6)),
+                            Instr(Opcode.bic, W_0,W_5,W_16,si(22,2,10,6)),
                             Select(22,2,10,6,5,5, n => n == 0x1F,
-                                Instr(Opcode.mov, W(0,5),W(16,5),si(22,2,10,6)),
-                                Instr(Opcode.orr, W(0,5),W(5,5),W(16,5),si(22,2,10,6))),
+                                Instr(Opcode.mov, W_0,W_16,si(22,2,10,6)),
+                                Instr(Opcode.orr, W_0,W_5,W_16,si(22,2,10,6))),
                             Select(5,5, n => n == 0x1F,
-                                Instr(Opcode.mvn, W(0,5),W(16,5),si(22,2,10,6)),
-                                Instr(Opcode.orn, W(0,5),W(5,5),W(16,5),si(22,2,10,6))),
+                                Instr(Opcode.mvn, W_0,W_16,si(22,2,10,6)),
+                                Instr(Opcode.orn, W_0,W_5,W_16,si(22,2,10,6))),
 
-                            Instr(Opcode.eor, W(0,5),W(5,5),W(16,5),si(22,2,10,6)),
+                            Instr(Opcode.eor, W_0,W_5,W_16,si(22,2,10,6)),
                             Instr(Opcode.eon, x("*shifted register, 32-bit")),
                             Select(0,5, n => n == 0x1F,
-                                Instr(Opcode.test, W(5,5),W(16,5),si(22,2,10,6)),
-                                Instr(Opcode.ands, W(0,5),W(5,5),W(16,5),si(22,2,10,6))),
-                            Instr(Opcode.bics, W(0,5),W(5,5),W(16,5),si(22,2,10,6)))),
+                                Instr(Opcode.test, W_5,W_16,si(22,2,10,6)),
+                                Instr(Opcode.ands, W_0,W_5,W_16,si(22,2,10,6))),
+                            Instr(Opcode.bics, W_0,W_5,W_16,si(22,2,10,6)))),
                     Mask(29,2,21,1,
-                        Instr(Opcode.and, X(0,5),X(5,5),X(16,5),si(22,2,10,6)),
-                        Instr(Opcode.bic, X(0,5),X(5,5),X(16,5),si(22,2,10,6)),
+                        Instr(Opcode.and, X_0,X_5,X_16,si(22,2,10,6)),
+                        Instr(Opcode.bic, X_0,X_5,X_16,si(22,2,10,6)),
                         Select(22,2,10,6,5,5, n => n == 0x1F,
-                            Instr(Opcode.mov, X(0,5),X(16,5),si(22,2,10,6)),
-                            Instr(Opcode.orr, X(0,5),X(5,5),X(16,5),si(22,2,10,6))),
+                            Instr(Opcode.mov, X_0,X_16,si(22,2,10,6)),
+                            Instr(Opcode.orr, X_0,X_5,X_16,si(22,2,10,6))),
                         Select(5,5, n => n == 0x1F,
-                            Instr(Opcode.mvn, X(0,5),X(16,5),si(22,2,10,6)),
-                            Instr(Opcode.orn, X(0,5),X(5,5),X(16,5),si(22,2,10,6))),
+                            Instr(Opcode.mvn, X_0,X_16,si(22,2,10,6)),
+                            Instr(Opcode.orn, X_0,X_5,X_16,si(22,2,10,6))),
 
-                        Instr(Opcode.eor, X(0,5),X(5,5),X(16,5),si(22,2,10,6)),
-                        Instr(Opcode.eon, X(0,5),X(5,5),X(16,5),si(22,2,10,6)),
+                        Instr(Opcode.eor, X_0,X_5,X_16,si(22,2,10,6)),
+                        Instr(Opcode.eon, X_0,X_5,X_16,si(22,2,10,6)),
                         Select(0,5, n => n == 0x1F,
-                            Instr(Opcode.test, X(5,5),X(16,5),si(22,2,10,6)),
-                            Instr(Opcode.ands, X(0,5),X(5,5),X(16,5),si(22,2,10,6))),
-                        Instr(Opcode.bics, X(0,5),X(5,5),X(16,5),si(22,2,10,6))));
+                            Instr(Opcode.test, X_5,X_16,si(22,2,10,6)),
+                            Instr(Opcode.ands, X_0,X_5,X_16,si(22,2,10,6))),
+                        Instr(Opcode.bics, X_0,X_5,X_16,si(22,2,10,6))));
             }
             Decoder AddSubShiftedRegister;
             {
@@ -2590,17 +2588,17 @@ namespace Reko.Arch.Arm.AArch64
                     Select(15,1, n => n == 1,
                         invalid,
                         Mask(29, 3,
-                            Instr(Opcode.add, W(0,5),W(5,5),W(16,5),si(22,2,10,6)),
-                            Instr(Opcode.adds, W(0,5),W(5,5),W(16,5),si(22,2,10,6)),
-                            Instr(Opcode.sub, W(0,5),W(5,5),W(16,5),si(22,2,10,6)),
+                            Instr(Opcode.add, W_0,W_5,W_16,si(22,2,10,6)),
+                            Instr(Opcode.adds, W_0,W_5,W_16,si(22,2,10,6)),
+                            Instr(Opcode.sub, W_0,W_5,W_16,si(22,2,10,6)),
                             Select(0, 5, n => n == 0x1F,
-                                Instr(Opcode.cmp, Ws(5,5),W(16,5),si(22,2,10,6)),
-                                Instr(Opcode.subs, W(0,5),W(5,5),W(16,5),si(22,2,10,6))))),
+                                Instr(Opcode.cmp, Ws(5,5),W_16,si(22,2,10,6)),
+                                Instr(Opcode.subs, W_0,W_5,W_16,si(22,2,10,6))))),
                     Mask(29, 3,
-                        Instr(Opcode.add,  X(0,5),X(5,5),X(16,5),si(22,2,10,6)),
-                        Instr(Opcode.adds, X(0,5),X(5,5),X(16,5),si(22,2,10,6)),
-                        Instr(Opcode.sub,  X(0,5),X(5,5),X(16,5),si(22,2,10,6)),
-                        Instr(Opcode.subs, X(0,5),X(5,5),X(16,5),si(22,2,10,6))));
+                        Instr(Opcode.add,  X_0,X_5,X_16,si(22,2,10,6)),
+                        Instr(Opcode.adds, X_0,X_5,X_16,si(22,2,10,6)),
+                        Instr(Opcode.sub,  X_0,X_5,X_16,si(22,2,10,6)),
+                        Instr(Opcode.subs, X_0,X_5,X_16,si(22,2,10,6))));
             }
 
             var AddSubExtendedRegister = Select(22, 2, n => n != 0,
@@ -2611,14 +2609,14 @@ namespace Reko.Arch.Arm.AArch64
                     Instr(Opcode.sub, Ws(0,5),Ws(5,5),Rx(16,5,13,3),Ex(13,3,10,3)),
                     Select(0,5, n => n == 0x1F,
                         Instr(Opcode.cmp, Ws(5,5),Rx(16,5,13,3),Ex(13,3,10,3)),
-                        Instr(Opcode.subs, W(0,5),Ws(5,5),Rx(16,5,13,3),Ex(13,3,10,3))),
+                        Instr(Opcode.subs, W_0,Ws(5,5),Rx(16,5,13,3),Ex(13,3,10,3))),
 
                     Instr(Opcode.add, Xs(0,5),Xs(5,5),Rx(16,5,13,3),Ex(13,3,10,3)),
                     Instr(Opcode.adds, Xs(0,5),Xs(5,5),Rx(16,5,13,3),Ex(13,3,10,3)),
                     Instr(Opcode.sub, Xs(0,5),Xs(5,5),Rx(16,5,13,3),Ex(13,3,10,3)),
                     Select(0,5, n => n == 0x1F,
                         Instr(Opcode.cmp, Xs(5,5),Rx(16,5,13,3),Ex(13,3,10,3)),
-                        Instr(Opcode.subs, X(0,5),Xs(5,5),Rx(16,5,13,3),Ex(13,3,10,3)))));
+                        Instr(Opcode.subs, X_0,Xs(5,5),Rx(16,5,13,3),Ex(13,3,10,3)))));
 
             Decoder DataProcessing3Source;
             {
@@ -2626,11 +2624,11 @@ namespace Reko.Arch.Arm.AArch64
                     Mask(21, 0x7,
                         Mask(15, 1,
                             Select(10, 5, n => n == 0x1F,
-                                Instr(Opcode.mul, W(0,5),W(5,5),W(16,5)),
-                                Instr(Opcode.madd, W(0,5),W(5,5),W(16,5),W(10,5))),
+                                Instr(Opcode.mul, W_0, W_5, W_16),
+                                Instr(Opcode.madd, W_0,W_5,W_16,W(10,5))),
                             Select(10, 5, n => n == 0x1F,
-                                Instr(Opcode.mneg, W(0,5),W(5,5),W(16,5)),
-                                Instr(Opcode.msub, W(0,5),W(5,5),W(16,5),W(10,5)))),
+                                Instr(Opcode.mneg, W_0, W_5, W_16),
+                                Instr(Opcode.msub, W_0, W_5, W_16, W(10,5)))),
                         invalid,
                         invalid,
                         invalid,
@@ -2646,29 +2644,29 @@ namespace Reko.Arch.Arm.AArch64
                     Mask(21, 0x7,
                         Mask(15, 1,
                             Select(10, 5, n => n == 0x1F,
-                                Instr(Opcode.mul, X(0,5),X(5,5),X(16,5)),
-                                Instr(Opcode.madd, X(0,5),X(5,5),X(16,5),X(10,5))),
+                                Instr(Opcode.mul, X_0,X_5,X_16),
+                                Instr(Opcode.madd, X_0,X_5,X_16,X(10,5))),
                             Select(10, 5, n => n == 0x1F,
-                                Instr(Opcode.mneg, X(0,5),X(5,5),X(16,5)),
-                                Instr(Opcode.msub, X(0,5),X(5,5),X(16,5),X(10,5)))),
+                                Instr(Opcode.mneg, X_0,X_5,X_16),
+                                Instr(Opcode.msub, X_0,X_5,X_16,X(10,5)))),
                         Mask(15, 1,
                             Select(10, 5, n => n == 0x1F,
-                                Instr(Opcode.smull, X(0,5),W(5,5),W(16,5)),
-                                Instr(Opcode.smaddl, X(0,5),W(5,5),W(16,5),X(10,5))),
+                                Instr(Opcode.smull, X_0,W_5,W_16),
+                                Instr(Opcode.smaddl, X_0,W_5,W_16,X(10,5))),
                             Select(10, 5, n => n == 0x1F,
-                                Instr(Opcode.smnegll, X(0,5),W(5,5),W(16,5)),
-                                Instr(Opcode.smsubl, X(0,5),W(5,5),W(16,5),X(10,5)))),
+                                Instr(Opcode.smnegll, X_0,W_5,W_16),
+                                Instr(Opcode.smsubl, X_0,W_5,W_16,X(10,5)))),
                         Mask(15, 1,
-                            Instr(Opcode.smulh, X(0,5),W(5,5),W(16,5)),
+                            Instr(Opcode.smulh, X_0,W_5,W_16),
                             invalid),
                         invalid,
 
                         invalid,
                         Mask(15, 1,
-                            Instr(Opcode.umaddl, X(0,5),W(5,5),W(16,5),X(10,5)),
-                            Instr(Opcode.umsubl, X(0,5),W(5,5),W(16,5),X(10,5))),
+                            Instr(Opcode.umaddl, X_0,W_5,W_16,X(10,5)),
+                            Instr(Opcode.umsubl, X_0,W_5,W_16,X(10,5))),
                         Mask(15, 1,
-                            Instr(Opcode.umulh, X(0,5),W(5,5),W(16,5)),
+                            Instr(Opcode.umulh, X_0,W_5,W_16),
                             invalid),
                         invalid),
                     invalid,
@@ -2680,26 +2678,26 @@ namespace Reko.Arch.Arm.AArch64
             {
                 ConditionalSelect = Mask(29, 7,
                     Mask(10, 3,
-                        Instr(Opcode.csel, W(0,5),W(5,5),W(16,5),C(12,4)),
-                        Instr(Opcode.csinc, W(0,5),W(5,5),W(16,5),C(12,4)),
+                        Instr(Opcode.csel, W_0,W_5,W_16,C(12,4)),
+                        Instr(Opcode.csinc, W_0,W_5,W_16,C(12,4)),
                         invalid,
                         invalid),
                     invalid,
                     Mask(10, 3,
-                        Instr(Opcode.csinv, W(0,5),W(5,5),W(16,5),C(12,4)),
-                        Instr(Opcode.csneg, W(0,5),W(5,5),W(16,5),C(12,4)),
+                        Instr(Opcode.csinv, W_0,W_5,W_16,C(12,4)),
+                        Instr(Opcode.csneg, W_0,W_5,W_16,C(12,4)),
                         invalid,
                         invalid),
                     invalid,
                     Mask(10, 3,
-                        Instr(Opcode.csel, X(0,5),X(5,5),X(16,5),C(12,4)),
-                        Instr(Opcode.csinc, X(0,5),X(5,5),X(16,5),C(12,4)),
+                        Instr(Opcode.csel, X_0,X_5,X_16,C(12,4)),
+                        Instr(Opcode.csinc, X_0,X_5,X_16,C(12,4)),
                         invalid,
                         invalid),
                     invalid,
                     Mask(10, 3,
-                        Instr(Opcode.csinv, X(0,5),X(5,5),X(16,5),C(12,4)),
-                        Instr(Opcode.csneg, X(0,5),X(5,5),X(16,5),C(12,4)),
+                        Instr(Opcode.csinv, X_0,X_5,X_16,C(12,4)),
+                        Instr(Opcode.csneg, X_0,X_5,X_16,C(12,4)),
                         invalid,
                         invalid),
                     invalid);
@@ -2713,8 +2711,8 @@ namespace Reko.Arch.Arm.AArch64
                         Nyi("ConditionalCompareReg sf:op:S=001"),
                         invalid,
                         Mask(31,1,
-                            Instr(Opcode.ccmp, W(5,5),W(15,5),U(0,4,w8),C(12,4)),
-                            Instr(Opcode.ccmp, X(5,5),X(15,5),U(0,4,w8),C(12,4))),
+                            Instr(Opcode.ccmp, W_5,W(15,5),U(0,4,w8),C(12,4)),
+                            Instr(Opcode.ccmp, X_5,X(15,5),U(0,4,w8),C(12,4))),
                         invalid,
                         Nyi("ConditionalCompareReg sf:op:S=101"),
                         invalid,
@@ -2731,11 +2729,11 @@ namespace Reko.Arch.Arm.AArch64
                         invalid,
                         Instr(Opcode.ccmn, x("* 32=bit")),
                         invalid,
-                        Instr(Opcode.ccmp, W(5,5), I(16,5,w32), U(0,4,w8), C(12,4)),
+                        Instr(Opcode.ccmp, W_5, I(16,5,w32), U(0,4,w8), C(12,4)),
                         invalid,
                         Instr(Opcode.ccmn, x("* - 64-bit")),
                         invalid,
-                        Instr(Opcode.ccmp, X(5,5), I(16,5,w64), U(0,4,w8), C(12,4))));
+                        Instr(Opcode.ccmp, X_5, I(16,5,w64), U(0,4,w8), C(12,4))));
             }
 
             Decoder DataProcessing1source;
@@ -2745,11 +2743,11 @@ namespace Reko.Arch.Arm.AArch64
                         Nyi("DataProcessing1source sf:S=00 opcode2=?????"),
                         (0b00000, Sparse(10, 0x3F,      // sf:S=00 opcode2=00000 opcode
                             Nyi("DataProcessing1source sf:S=00 opcode2=00000 opcode=??????"),
-                            (0b000000, Instr(Opcode.rbit, W(0,5),W(5,5))),
-                            (0b000001, Instr(Opcode.rev16, W(0,5),W(5,5))),
-                            (0b000010, Instr(Opcode.rev, W(0,5), W(5,5))),
-                            (0b000100, Instr(Opcode.clz, W(0,5), W(5,5))),
-                            (0b000101, Instr(Opcode.cls, W(0,5), W(5,5)))
+                            (0b000000, Instr(Opcode.rbit, W_0,W_5)),
+                            (0b000001, Instr(Opcode.rev16, W_0,W_5)),
+                            (0b000010, Instr(Opcode.rev, W_0, W_5)),
+                            (0b000100, Instr(Opcode.clz, W_0, W_5)),
+                            (0b000101, Instr(Opcode.cls, W_0, W_5))
                             ))
                         ),
                     Nyi("DataProcessing1source sf:S=01"),
@@ -2757,12 +2755,12 @@ namespace Reko.Arch.Arm.AArch64
                         Nyi("DataProcessing1source sf:S=10"),
                         (0b00000, Sparse(10, 0x3F,      // sf:S=10 opcode2=00000 opcode
                             Nyi("DataProcessing1source sf:S=10 opcode2=00000 opcode=??????"),
-                            (0b000000, Instr(Opcode.rbit, X(0,5), X(5,5))),
-                            (0b000001, Instr(Opcode.rev16, X(0,5), X(5,5))),
-                            (0b000010, Instr(Opcode.rev32, X(0,5), X(5,5))),
-                            (0b000011, Instr(Opcode.rev, X(0,5), X(5,5))),
-                            (0b000100, Instr(Opcode.clz, X(0,5), X(5,5))),
-                            (0b000101, Instr(Opcode.cls, X(0,5), X(5,5)))))),
+                            (0b000000, Instr(Opcode.rbit, X_0, X_5)),
+                            (0b000001, Instr(Opcode.rev16, X_0, X_5)),
+                            (0b000010, Instr(Opcode.rev32, X_0, X_5)),
+                            (0b000011, Instr(Opcode.rev, X_0, X_5)),
+                            (0b000100, Instr(Opcode.clz, X_0, X_5)),
+                            (0b000101, Instr(Opcode.cls, X_0, X_5))))),
                     Nyi("DataProcessing1source sf:S=11"));
             }
 
@@ -2773,14 +2771,14 @@ namespace Reko.Arch.Arm.AArch64
                         Mask(10, 0b11, // sf:S=0:0 opcode=0000xx
                             invalid,
                             invalid,
-                            Instr(Opcode.udiv, W(0,5),W(5,5),W(16,5)),
-                            Instr(Opcode.sdiv, W(0,5),W(5,5),W(16,5))),
+                            Instr(Opcode.udiv, W_0,W_5,W_16),
+                            Instr(Opcode.sdiv, W_0,W_5,W_16)),
                         Nyi("* Data Processing 2 source - sf:S=0:0 opcode=0001xx"),
                         Mask(10, 0b11, // sf:S=0:0 opcode=0010xx
-                            Instr(Opcode.lslv, W(0,5),W(5,5),W(16,5)),
-                            Instr(Opcode.lsrv, W(0,5),W(5,5),W(16,5)),
-                            Instr(Opcode.asrv, W(0,5),W(5,5),W(16,5)),
-                            Instr(Opcode.rorv, W(0,5),W(5,5),W(16,5))),
+                            Instr(Opcode.lslv, W_0,W_5,W_16),
+                            Instr(Opcode.lsrv, W_0,W_5,W_16),
+                            Instr(Opcode.asrv, W_0,W_5,W_16),
+                            Instr(Opcode.rorv, W_0,W_5,W_16)),
                         Nyi("* Data Processing 2 source - sf:S=0:0 opcode=0011xx"),
 
                         Mask(10, 0b11, // Data Processing 2 source - sf:S=1:0 opcode=0100xx
@@ -2808,14 +2806,14 @@ namespace Reko.Arch.Arm.AArch64
                         Mask(10, 0b11, // sf:S=1:0 opcode=0000xx
                             invalid,
                             invalid,
-                            Instr(Opcode.udiv, X(0,5),X(5,5),X(16,5)),
-                            Instr(Opcode.sdiv, X(0,5),X(5,5),X(16,5))),
+                            Instr(Opcode.udiv, X_0,X_5,X_16),
+                            Instr(Opcode.sdiv, X_0,X_5,X_16)),
                         Nyi("* Data Processing 2 source - sf:S=1:0 opcode=0001xx"),
                         Mask(10, 0b11, // sf:S=0:0 opcode=0010xx
-                            Instr(Opcode.lslv, X(0,5),X(5,5),X(16,5)),
-                            Instr(Opcode.lsrv, X(0,5),X(5,5),X(16,5)),
-                            Instr(Opcode.asrv, X(0,5),X(5,5),X(16,5)),
-                            Instr(Opcode.rorv, X(0,5),X(5,5),X(16,5))),
+                            Instr(Opcode.lslv, X_0,X_5,X_16),
+                            Instr(Opcode.lsrv, X_0,X_5,X_16),
+                            Instr(Opcode.asrv, X_0,X_5,X_16),
+                            Instr(Opcode.rorv, X_0,X_5,X_16)),
                         Nyi("* Data Processing 2 source - sf:S=1:0 opcode=0011xx"),
 
                         Mask(10, 0b11, // sf:S=1:0 opcode=0100xx
@@ -2844,15 +2842,15 @@ namespace Reko.Arch.Arm.AArch64
             {
                 AddSubWithCarry = Select(10, 6, IsZero,
                     Mask(29, 0x7,
-                        Instr(Opcode.adc, W(0,5), W(5,5), W(16,5)),
-                        Instr(Opcode.adcs, W(0,5), W(5,5), W(16,5)),
-                        Instr(Opcode.sbc, W(0,5), W(5,5), W(16,5)),
-                        Instr(Opcode.sbcs, W(0,5), W(5,5), W(16,5)),
+                        Instr(Opcode.adc, W_0, W_5, W_16),
+                        Instr(Opcode.adcs, W_0, W_5, W_16),
+                        Instr(Opcode.sbc, W_0, W_5, W_16),
+                        Instr(Opcode.sbcs, W_0, W_5, W_16),
 
-                        Instr(Opcode.adc, X(0,5),X(5,5),X(16,5)),
-                        Instr(Opcode.adcs, X(0,5),X(5,5),X(16,5)),
-                        Instr(Opcode.sbc, X(0,5),X(5,5),X(16,5)),
-                        Instr(Opcode.sbcs, X(0,5),X(5,5),X(16,5))),
+                        Instr(Opcode.adc, X_0,X_5,X_16),
+                        Instr(Opcode.adcs, X_0,X_5,X_16),
+                        Instr(Opcode.sbc, X_0,X_5,X_16),
+                        Instr(Opcode.sbcs, X_0,X_5,X_16)),
                     invalid);
             }
 
@@ -2911,17 +2909,17 @@ namespace Reko.Arch.Arm.AArch64
                     Mask(22, 0b11,      // sf:S=0b00 type
                         Sparse(16, 0b11111,  // sf:S=0b00 type=00 rmode:opcode
                             Nyi("ConversionBetweenFpAndInt sf:S=0b00 type=00"),
-                            (0b00_010, Instr(Opcode.scvtf, S(0,5),W(5,5))),
-                            (0b00_011, Instr(Opcode.ucvtf, S(0,5),W(5,5))),
-                            (0b00_110, Instr(Opcode.fmov,  W(0,5),S(5,5))),
-                            (0b00_111, Instr(Opcode.fmov,  S(0,5),W(5,5))),
-                            (0b01_000, Instr(Opcode.fcvtps, W(0,5),S(5,5))),
-                            (0b10_000, Instr(Opcode.fcvtms, W(0,5),S(5,5))),
-                            (0b11_000, Instr(Opcode.fcvtzs, W(5,5),S(0,5))),
-                            (0b11_001, Instr(Opcode.fcvtzu, W(5,5),S(0,5)))),
+                            (0b00_010, Instr(Opcode.scvtf, S_0,W_5)),
+                            (0b00_011, Instr(Opcode.ucvtf, S_0,W_5)),
+                            (0b00_110, Instr(Opcode.fmov,  W_0,S(5,5))),
+                            (0b00_111, Instr(Opcode.fmov,  S_0,W_5)),
+                            (0b01_000, Instr(Opcode.fcvtps, W_0,S(5,5))),
+                            (0b10_000, Instr(Opcode.fcvtms, W_0,S(5,5))),
+                            (0b11_000, Instr(Opcode.fcvtzs, W_5,S_0)),
+                            (0b11_001, Instr(Opcode.fcvtzu, W_5,S_0))),
                         Sparse(16, 0b11111,  // sf:S=0b00 type=01 rmode:opcode
                             Nyi("ConversionBetweenFpAndInt sf:S=0b00 type=01"),
-                            (0b00_010, Instr(Opcode.scvtf, D(0,5),W(5,5)))
+                            (0b00_010, Instr(Opcode.scvtf, D(0,5),W_5))
                             ),
                         Nyi("ConversionBetweenFpAndInt sf:S=0b00 type=10"),
                         Nyi("ConversionBetweenFpAndInt sf:S=0b00 type=11")),
@@ -2930,11 +2928,11 @@ namespace Reko.Arch.Arm.AArch64
                         Nyi("ConversionBetweenFpAndInt sf:S=0b10 type=00"),
                         Sparse(16, 0b11111,  // sf:S=0b10 type=01
                             Nyi("ConversionBetweenFpAndInt sf:S=0b10 type=01"),
-                            (0b00_111, Instr(Opcode.fmov, D(0,5),X(5,5)))
+                            (0b00_111, Instr(Opcode.fmov, D(0,5),X_5))
                             ),
                         Sparse(16, 0b11111, // sf:S=0b10 type=10
                             Nyi("ConversionBetweenFpAndInt sf:S=0b10 type=10"),
-                            (0b01_111, Instr(Opcode.fmov, Vri(0,5,w128,VectorData.I64, 1),X(5,5)))),
+                            (0b01_111, Instr(Opcode.fmov, Vri(0,5,w128,VectorData.I64, 1),X_5))),
                         Nyi("ConversionBetweenFpAndInt sf:S=0b10 type=11")),
                     invalid);
             }
@@ -2943,7 +2941,7 @@ namespace Reko.Arch.Arm.AArch64
             {
                 ConversionBetweenFpAndFixedPoint = Mask(31, 1, 29, 1, 22, 2, // sf:S:type
                     Mask(16, 0b111, // sf:S:type=0 0 00 opcode 
-                        Instr(Opcode.scvtf, S(0,5),W(5,5),Fxs(10,6)),
+                        Instr(Opcode.scvtf, S_0,W_5,Fxs(10,6)),
                         Nyi("ConversionBetweenFpAndFixedPoint sf:S:type=0 0 00 opcode=001"),
                         Nyi("ConversionBetweenFpAndFixedPoint sf:S:type=0 0 00 opcode=010"),
                         Nyi("ConversionBetweenFpAndFixedPoint sf:S:type=0 0 00 opcode=011"),
@@ -3107,7 +3105,7 @@ namespace Reko.Arch.Arm.AArch64
                         Nyi("AdvancedSIMDscalar2RegMisc U=0 opcode=11011"),
                         Nyi("AdvancedSIMDscalar2RegMisc U=0 opcode=11100"),
                         Mask(22, 0b11, // U=1 opcode=11101 size
-                            Instr(Opcode.scvtf, S(0,5),S(5,5)),
+                            Instr(Opcode.scvtf, S_0,S(5,5)),
                             Nyi("AdvancedSIMDscalar2RegMisc U=0 opcode=11101 size=01"),
                             Nyi("AdvancedSIMDscalar2RegMisc U=0 opcode=11101 size=10"),
                             Nyi("AdvancedSIMDscalar2RegMisc U=0 opcode=11101 size=11")),
@@ -3144,7 +3142,7 @@ namespace Reko.Arch.Arm.AArch64
                         Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=11011"),
                         Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=11100"),
                         Mask(22, 0b11, // U=1 opcode=11101 size
-                            Instr(Opcode.ucvtf, S(0,5), S(5,5)),
+                            Instr(Opcode.ucvtf, S_0, S(5,5)),
                             Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=11101 size=01"),
                             Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=11101 size=10"),
                             Nyi("AdvancedSIMDscalar2RegMisc U=1 opcode=11101 size=11")),
@@ -3157,10 +3155,10 @@ namespace Reko.Arch.Arm.AArch64
                 FloatingPointDataProcessing1src = Mask(31, 1, 29, 1, 22, 2,   // M:S:Type
                     Sparse(15, 0x3F,    // M:S:Type=00 00
                         Nyi("FloatingPointDataProcessing1src M:S:Type=00 00"),
-                        (0b000000, Instr(Opcode.fmov, S(0,5),S(5,5))),
-                        (0b000001, Instr(Opcode.fabs, S(0,5),S(5,5))),
-                        (0b000010, Instr(Opcode.fneg, S(0,5),S(5,5))),
-                        (0b000011, Instr(Opcode.fsqrt, S(0,5),S(5,5))),
+                        (0b000000, Instr(Opcode.fmov, S_0,S(5,5))),
+                        (0b000001, Instr(Opcode.fabs, S_0,S(5,5))),
+                        (0b000010, Instr(Opcode.fneg, S_0,S(5,5))),
+                        (0b000011, Instr(Opcode.fsqrt, S_0,S(5,5))),
                         (0b000101, Instr(Opcode.fcvt, D(0,5),S(5,5))),
                         (0b000111, Instr(Opcode.fcvt, H(0,5),S(5,5)))
                         ),
@@ -3170,7 +3168,7 @@ namespace Reko.Arch.Arm.AArch64
                         (0b000001, Instr(Opcode.fabs, D(0,5),D(5,5))),
                         (0b000010, Instr(Opcode.fneg, D(0,5),D(5,5))),
                         (0b000011, Instr(Opcode.fsqrt,D(0,5),D(5,5))),
-                        (0b000100, Instr(Opcode.fcvt, S(0,5),D(5,5))),
+                        (0b000100, Instr(Opcode.fcvt, S_0,D(5,5))),
                         (0b000111, Instr(Opcode.fcvt, H(0,5),D(5,5)))
                         ),
                     Nyi("FloatingPointDataProcessing1src M:S:Type=00 10"),
@@ -3193,17 +3191,17 @@ namespace Reko.Arch.Arm.AArch64
             {
                 FloatingPointDataProcessing2src = Mask(31,1,29,1,22,2,   // M:S:Type
                     Mask(12, 0b1111,            // M:S:Type=0 0 00 opcode
-                        Instr(Opcode.fmul, S(0,5),S(5,5),S(16,5)),
-                        Instr(Opcode.fdiv, S(0,5),S(5,5),S(16,5)),
-                        Instr(Opcode.fadd, S(0,5),S(5,5),S(16,5)),
-                        Instr(Opcode.fsub, S(0,5),S(5,5),S(16,5)),
+                        Instr(Opcode.fmul, S_0,S(5,5),S(16,5)),
+                        Instr(Opcode.fdiv, S_0,S(5,5),S(16,5)),
+                        Instr(Opcode.fadd, S_0,S(5,5),S(16,5)),
+                        Instr(Opcode.fsub, S_0,S(5,5),S(16,5)),
 
-                        Instr(Opcode.fmax, S(0,5),S(5,5),S(16,5)),
-                        Instr(Opcode.fmin, S(0,5),S(5,5),S(16,5)),
-                        Instr(Opcode.fmaxnm, S(0,5),S(5,5),S(16,5)),
-                        Instr(Opcode.fnmul, S(0,5),S(5,5),S(16,5)),
+                        Instr(Opcode.fmax, S_0,S(5,5),S(16,5)),
+                        Instr(Opcode.fmin, S_0,S(5,5),S(16,5)),
+                        Instr(Opcode.fmaxnm, S_0,S(5,5),S(16,5)),
+                        Instr(Opcode.fnmul, S_0,S(5,5),S(16,5)),
 
-                        Instr(Opcode.fnmul, S(0,5),S(5,5),S(16,5)),
+                        Instr(Opcode.fnmul, S_0,S(5,5),S(16,5)),
                         invalid,
                         invalid,
                         invalid,
@@ -3275,7 +3273,7 @@ namespace Reko.Arch.Arm.AArch64
                 FloatingPointImmediate = Mask(31,1,29,1,    // M:S
                     Select(5, 5, n => n == 0,   // M:S=00 imm5=00000
                         Mask(22,0b11,   // M:S=00 imm5=00000
-                            Instr(Opcode.fmov, S(0,5),If32(13,8)),
+                            Instr(Opcode.fmov, S_0,If32(13,8)),
                             Instr(Opcode.fmov, D(0,5),If64(13,8)),
                             invalid,
                             Instr(Opcode.fmov, H(0,5),If16(13,8))),
@@ -3316,7 +3314,7 @@ namespace Reko.Arch.Arm.AArch64
             {
                 FloatingPointCondSelect = Mask(31, 1, 29, 1,   // M:S
                     Mask(22, 0b11,  // M:S=00 type
-                        Instr(Opcode.fcsel, S(0,5),S(5,5),S(16,5),C(12,4)),
+                        Instr(Opcode.fcsel, S_0,S(5,5),S(16,5),C(12,4)),
                         Instr(Opcode.fcsel, D(0,5),D(5,5),D(16,5),C(12,4)),
                         invalid,
                         Instr(Opcode.fcsel, H(0,5),H(5,5),H(16,5),C(12,4))),
@@ -3454,14 +3452,14 @@ namespace Reko.Arch.Arm.AArch64
                         Mask(22,0b11,       // opcode=01010 U=0 size
                             Instr(Opcode.smaxv, q(30), B(0, 5), Vr(5, 5, BHS_)),
                             Instr(Opcode.smaxv, q(30), H(0, 5), Vr(5, 5, BHS_)),
-                            Instr(Opcode.smaxv, q(30), S(0, 5), Vr(5, 5, BHS_)),
+                            Instr(Opcode.smaxv, q(30), S_0, Vr(5, 5, BHS_)),
                             invalid),
                         Nyi("AdvancedSimdAcrossLanes opcode=01010 U=1"))),
                     (0b11011, Mask(29, 1,
                         Mask(22,0b11,   // opcode=11011 U=0 size
                             Instr(Opcode.addv, q(30),B(0,5),Vr(5,5,BHS_)),
                             Instr(Opcode.addv, q(30),H(0,5),Vr(5,5,BHS_)),
-                            Instr(Opcode.addv, q(30),S(0,5),Vr(5,5,BHS_)),
+                            Instr(Opcode.addv, q(30),S_0,Vr(5,5,BHS_)),
                             invalid),
                         Nyi("AdvancedSimdAcrossLanes opcode=11011 U=1"))));
             }
@@ -3477,8 +3475,8 @@ namespace Reko.Arch.Arm.AArch64
                             invalid,
                             (0b0000, Instr(Opcode.dup, q(30),Vrs(0,5,16,5,false,false),Vrs(5,5,16,5,true,false))),
                             (0b0001, Select(16, 4, n => n == 0b1000,
-                                Instr(Opcode.dup, q(30),Vrs(0,5,16,5,false,false),X(5,5)),
-                                Instr(Opcode.dup, q(30),Vrs(0,5,16,5,false,false),W(5,5))))),
+                                Instr(Opcode.dup, q(30),Vrs(0,5,16,5,false,false),X_5),
+                                Instr(Opcode.dup, q(30),Vrs(0,5,16,5,false,false),W_5)))),
                         Instr(Opcode.mov, q(30),Vrs(0,5,16,5,true,false),Vrs(5,5,11,4,true,true))));
             }
 
@@ -3553,10 +3551,10 @@ namespace Reko.Arch.Arm.AArch64
 
                 Decoder FloatingPointDataProcessing3src = Mask(31,1, 29,1, 22,2,  // M:S:type 
                     Mask(21,1,15,1,
-                        Instr(Opcode.fmadd, S(0,5),S(5,5),S(16,5),S(10,5)),
-                        Instr(Opcode.fmsub, S(0,5),S(5,5),S(16,5),S(10,5)),
-                        Instr(Opcode.fnmadd, S(0,5),S(5,5),S(16,5),S(10,5)),
-                        Instr(Opcode.fnmsub, S(0,5),S(5,5),S(16,5),S(10,5))),
+                        Instr(Opcode.fmadd, S_0,S(5,5),S(16,5),S(10,5)),
+                        Instr(Opcode.fmsub, S_0,S(5,5),S(16,5),S(10,5)),
+                        Instr(Opcode.fnmadd, S_0,S(5,5),S(16,5),S(10,5)),
+                        Instr(Opcode.fnmsub, S_0,S(5,5),S(16,5),S(10,5))),
                     Mask(21,1,15,1,
                         Instr(Opcode.fmadd, D(0,5),D(5,5),D(16,5),D(10,5)),
                         Instr(Opcode.fmsub, D(0,5),D(5,5),D(16,5),D(10,5)),
@@ -3587,6 +3585,24 @@ namespace Reko.Arch.Arm.AArch64
                         (0b00101, Instr(Opcode.aesd, q1, Vr(0,5, BBBB), Vr(5,5,BBBB))),
                         (0b00110, Instr(Opcode.aesmc, q1, Vr(0, 5, BBBB), Vr(5, 5, BBBB))),
                         (0b00111, Instr(Opcode.aesimc, q1, Vr(0,5, BBBB), Vr(5,5,BBBB)))),
+                    invalid);
+
+                Decoder Cryptographic2regSHA = Select(22, 2, IsZero,
+                    Sparse(12, 0x1F, invalid,
+                        (0b00000, Instr(Opcode.sha1h, S_0, S_5)),
+                        (0b00001, Instr(Opcode.sha1su1, Vr(0, 5, SSSS), Vr(5, 5, SSSS))),
+                        (0b00010, Instr(Opcode.sha256su0, Vr(0, 5, SSSS), Vr(5, 5, SSSS)))),
+                    invalid);
+
+                Decoder Cryptographic3regSHA = Select(22, 2, IsZero,
+                    Sparse(12, 0x7, invalid,
+                        (0b000, Instr(Opcode.sha1c, q1, Q(0,5), S_5, Vr(16,5, SSSS))),
+                        (0b001, Instr(Opcode.sha1p, x(""))),
+                        (0b010, Instr(Opcode.sha1m, x(""))),
+                        (0b011, Instr(Opcode.sha1su0, x(""))),
+                        (0b100, Instr(Opcode.sha256h, x(""))),
+                        (0b101, Instr(Opcode.sha256h2, x(""))),
+                        (0b110, Instr(Opcode.sha256su1, q1, Vr(0, 5, SSSS), Vr(5, 5, SSSS), Vr(16, 5, SSSS)))),
                     invalid);
 
                 DataProcessingScalarFpAdvancedSimd = Mask("DataProcessingScalarFpAdvancedSimd", 28, 0xF,
@@ -3839,9 +3855,23 @@ namespace Reko.Arch.Arm.AArch64
                                 Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b10 op2=0b0001"),
                                 AdvancedSimdShiftByImm)),
                         Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b11")),
-                    Mask("  op0=5", 23, 0b11, // op0=5 op1
+                    Mask("op0=5", 23, 0b11, // op0=5 op1
                         Sparse(19, 0b1111, // op0=5 op1=0b00 op2
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b00 op2=???"),
+                            (0b0000, Mask(10, 0b11,     // op0=5 op1=0b00 op2=0000")),
+                                Mask(15, 1,             // op0=5 op1=0b00 op2=0000 op3=xxxxxxx00"),
+                                    Cryptographic3regSHA,
+                                    Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b00 op2=0000 op3=xxx1xxx00")),
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b00 op2=0000 op3=xxxxxxx01"),
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b00 op2=0000 op3=xxxxxxx10"),
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b00 op2=0000 op3=xxxxxxx11"))),
+                            (0b0010, Mask(10, 0b11,     // op0=5 op1=0b00 op2=0100 op3
+                                Mask(15, 1,             // op0=5 op1=0b00 op2=0010 op3=xxx?xxx00"),
+                                    Cryptographic3regSHA,
+                                    Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b00 op2=0010 op3=xxx1xxx00")),
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b00 op2=0010 op3=xxxxxxx01"),
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b00 op2=0010 op3=xxxxxxx10"),
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b00 op2=0010 op3=xxxxxxx11"))),
                             (0b0100, Mask(10, 0b11,     // op0=5 op1=0b00 op2=0100 op3
                                 Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b00 op2=0100 op3=xxxxxxx00"),
                                 Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b00 op2=0100 op3=xxxxxxx01"),
@@ -3850,7 +3880,16 @@ namespace Reko.Arch.Arm.AArch64
                                     Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b00 op2=0100 op3=01xxxxxx10"),
                                     Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b00 op2=0100 op3=10xxxxxx10"),
                                     Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b00 op2=0100 op3=11xxxxxx10")),
-                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b00 op2=0100 op3=xxxxxxx11")))),
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b00 op2=0100 op3=xxxxxxx11"))),
+                            (0b0101, Mask("  op2=5", 10, 0b11,
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b00 op2=0101 op3=xxxxxxx00"),
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b00 op2=0101 op3=xxxxxxx01"),
+                                Mask(17, 0b11,          // op0=5 op1=0b00 op2=0101 op3=??xxxxxx10"),
+                                    Cryptographic2regSHA,
+                                    Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b00 op2=0101 op3=01xxxxx10"),
+                                    Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b00 op2=0101 op3=10xxxxx10"),
+                                    Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b00 op2=0101 op3=11xxxxx10")),
+                                Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b00 op2=0101 op3=xxxxxxx11")))),
                         Sparse(19, 0b1111,  // op0=5 op1=01 op2
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b01 op2=????"),
                             (0b0101, FloatingPointDecoders)),
