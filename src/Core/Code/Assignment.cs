@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,9 +30,7 @@ namespace Reko.Core.Code
 	{
 		public Assignment(Identifier dst, Expression src)
 		{
-			if (dst == null)
-				throw new ArgumentNullException("dst", "Argument must have a non-null value.");
-			this.Dst = dst;
+            this.Dst = dst ?? throw new ArgumentNullException(nameof(dst), "Argument must have a non-null value.");
 			this.Src = src;
 		}
 
@@ -55,7 +53,6 @@ namespace Reko.Core.Code
 		{
 			v.VisitAssignment(this);
 		}
-
 	}
 
 	/// <summary>
@@ -92,8 +89,9 @@ namespace Reko.Core.Code
 	}
 
     /// <summary>
-    /// Represents an assignment due to alias expansion. 
-    /// //$REFACTOR: this class is used so rarely, it may be deleted.
+    /// Represents an assignment due to alias expansion. It exists to denote
+    /// assignments that don't correspond to actual code present in the original
+    /// binary.
     /// </summary>
     public class AliasAssignment : Assignment
     {

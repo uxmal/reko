@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,9 @@ using Reko.Core.Code;
 namespace Reko.Core
 {
     /// <summary>
-    /// Statements constitute the contents basic blocks.
+    /// Statements constitute the contents basic blocks. They associate an
+    /// <see cref="Reko.Core.Code.Instruction"/> with an <see cref="Reko.Core.Address"/> and 
+    /// the <see cref="Reko.Core.Block"/> in which the instrution is located.
     /// </summary>
 	public class Statement
 	{

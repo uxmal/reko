@@ -279,7 +279,7 @@ namespace Reko.Core
         public Dictionary<Identifier, LinearInductionVariable> InductionVariables { get; private set; }
 
         /// <summary>
-        /// The program's decompiled procedures, indexed by address.
+        /// The program's decompiled procedures, ordereds by address.
         /// </summary>
         public SortedList<Address, Procedure> Procedures { get; private set; }
 
@@ -459,6 +459,8 @@ namespace Reko.Core
             }
         }
 
+        //$TODO: remove this property. Procedures now have 
+        // a `EntryAddress` property.
         public Address GetProcedureAddress(Procedure proc)
         {
             return Procedures.Where(de => de.Value == proc)
@@ -503,7 +505,7 @@ namespace Reko.Core
                 return proc;
 
             var generatedName = procedureName ?? this.NamingPolicy.ProcedureName(addr);
-            proc = new Procedure(arch, generatedName, addr, arch.CreateFrame());
+            proc = Procedure.Create(arch, generatedName, addr, arch.CreateFrame());
             if (procedureName == null && this.ImageSymbols.TryGetValue(addr, out ImageSymbol sym))
             {
                 procedureName = sym.Name;

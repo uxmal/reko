@@ -197,7 +197,7 @@ namespace Reko.Scanning
         private void AddBlocks(HeuristicProcedure hproc)
         {
             var name = program.NamingPolicy.ProcedureName(hproc.BeginAddress);
-            var proc = new Procedure(program.Architecture, name, hproc.BeginAddress, hproc.Frame);
+            var proc = Procedure.Create(program.Architecture, name, hproc.BeginAddress, hproc.Frame);
             foreach (var block in hproc.Cfg.Nodes.Where(bb => bb.Instructions.Count > 0))
             {
                 var last = block.Instructions.Last();

@@ -29,14 +29,13 @@ using System.Text;
 namespace Reko.Core
 {
     /// <summary>
-    /// Represents a location in an image whose name or size is 
-    /// known. ImageSymbols are used to "seed" the Scanner
-    /// phase of the decompiler.
+    /// Represents a location in an image whose name and/or size is known. 
+    /// ImageSymbols are used to "seed" the Scanner phase of the decompiler.
     /// </summary>
     /// <remarks>
     /// This information is derived purely from what the image loader can 
     /// garner from an input binary file. Any user-provided information must
-    /// be specified separately and will then override this information.
+    /// be specified separately in <see cref="Reko.Core.UserData"/> and will then override this information.
     /// </remarks>
     public class ImageSymbol
     {
@@ -46,9 +45,9 @@ namespace Reko.Core
         }
 
         /// <summary>
-        /// Use this ctor when only the address of the symbol is known.
+        /// Use this method when only the address of the symbol is known.
         /// </summary>
-        /// <param name="address"></param>
+        /// <param name="address">Address of the symbol.</param>
         public static ImageSymbol Location(IProcessorArchitecture arch, Address address)
         {
             return new ImageSymbol(arch)
@@ -91,7 +90,7 @@ namespace Reko.Core
         }
 
         /// <summary>
-        /// A reference to an external procedure
+        /// A reference to an external procedure.
         /// </summary>
         /// <param name="arch">Processor architecture of the procedure.</param>
         /// <param name="address">Address of stub to the procedure.</param>
@@ -110,7 +109,7 @@ namespace Reko.Core
         }
 
         /// <summary>
-        /// Use this ctor when symbolic data is available.
+        /// Use this method when symbolic information about global data is available.
         /// </summary>
         /// <param name="arch">Architecture to use when interpreting the data object.</param>
         /// <param name="address">Address of data object</param>
@@ -153,7 +152,7 @@ namespace Reko.Core
         public IProcessorArchitecture Architecture { get; set; }
 
         /// <summary>
-        /// The kind of symbol.
+        /// The type of this symbol.
         /// </summary>
         public SymbolType Type { get; set; }
 
@@ -198,7 +197,7 @@ namespace Reko.Core
     public enum SymbolType
     {
         Unknown,            // Unknown type
-        Code,               // executable code, but not the entry point of a procedure.
+        Code,               // executable code, not necessarily the entry point of a procedure.
         Data,               // non-executable data
         Procedure,          // Something that is called.
         ExternalProcedure   // A procedure outside of the binary

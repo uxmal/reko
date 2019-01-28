@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -27,8 +27,8 @@ using System.Text;
 namespace Reko.Core.Code
 {
     /// <summary>
-    /// Models a computed n-way GOTO instruction, which picks one of its <paramref>Targets</paramref> depending
-    /// on the evaluated value of the <paramref name="Expression"/>.
+    /// Models a computed n-way GOTO instruction, which picks one of its <paramref name="Targets" />
+    /// depending on the evaluated value of the <paramref name="Expression"/>.
     /// </summary>
     public class SwitchInstruction : Instruction
     {

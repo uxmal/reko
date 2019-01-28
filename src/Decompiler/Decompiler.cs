@@ -30,6 +30,7 @@ using Reko.Structure;
 using Reko.Typing;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
 

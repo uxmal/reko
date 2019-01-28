@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -43,7 +43,7 @@ namespace Reko.Core
 
         /// <summary>
         /// Use a sequence of continued fractions to find a good 
-        /// rational approximation to the double precition provided number
+        /// rational approximation to the double precision provided number
         /// </summary>
         /// <remarks>
         /// http://jonisalonen.com/2012/converting-decimal-numbers-to-ratios/
