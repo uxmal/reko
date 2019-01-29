@@ -830,7 +830,7 @@ l0000000000015378:
 // SymbolicIn: sp:<invalid> a5:<invalid> s1:<invalid> s8:0x0000000000001000 s3:a0 s2:<invalid> s0:0 s6:0 s9:0 s10:0 s4:<invalid> s7:1 a4:<invalid> a3:<invalid> a2:0x00000000000119A8 a1:<invalid> a0:<invalid> -448(fp):0x00000000 -440(fp):<invalid> -420(fp):0x00000000 -120(fp):<invalid> -104(fp):s11 -96(fp):s10 -88(fp):s9 -80(fp):s8 -72(fp):s7 -64(fp):s6 -56(fp):s5 -48(fp):s4 -40(fp):s3 -32(fp):s2 -24(fp):s1 -16(fp):s0 -8(fp):ra
 
 l0000000000015588:
-	word64 a0_1057 = DPB(a0, __printf_chk(a0, 0x00000000000119C8, Mem0[sp_1020:<unknown>]), 0)
+	__printf_chk(a0, 0x00000000000119C8, Mem0[sp_1020:<unknown>])
 	sp_1020 = sp_1020 + 0xFFFFFFFFFFFFFFF8
 // DataOut: gp sp
 // DataOut (flags): 
@@ -932,7 +932,7 @@ l0000000000015CE8:
 // SymbolicIn: sp:<invalid> a5:<invalid> s1:<invalid> s8:0x0000000000001000 s3:a0 s2:<invalid> s0:<invalid> s6:0 s9:0 s10:0 s4:<invalid> s7:1 a4:<invalid> a3:<invalid> a2:<invalid> a1:<invalid> a0:<invalid> a6:<invalid> -448(fp):<invalid> -440(fp):<invalid> -420(fp):0x00000000 -120(fp):<invalid> -104(fp):s11 -96(fp):s10 -88(fp):s9 -80(fp):s8 -72(fp):s7 -64(fp):s6 -56(fp):s5 -48(fp):s4 -40(fp):s3 -32(fp):s2 -24(fp):s1 -16(fp):s0 -8(fp):ra
 
 l0000000000015CF0:
-	word64 a0_1017 = DPB(0x0000000000011A30, fwrite(0x0000000000011A30, a1, a2, a3), 0)
+	fwrite(0x0000000000011A30, a1, a2, a3)
 	sp_1020 = fn0000000000015FCC(gp, 1)
 // DataOut: gp sp
 // DataOut (flags): 
@@ -1088,7 +1088,7 @@ l0000000000015CB0:
 // SymbolicIn: sp:<invalid> a5:<invalid> s1:<invalid> s8:0x0000000000001000 s3:a0 s2:<invalid> s0:<invalid> s6:0 s9:0 s10:0 s4:<invalid> s7:1 a4:<invalid> a3:<invalid> a2:<invalid> a1:<invalid> a0:<invalid> a6:<invalid> -464(fp):<invalid> -456(fp):<invalid> -448(fp):<invalid> -440(fp):<invalid> -424(fp):0x0000000000000000 -420(fp):0x00000000 -408(fp):<invalid> -208(fp):<invalid> -207(fp):<invalid> -120(fp):<invalid> -104(fp):s11 -96(fp):s10 -88(fp):s9 -80(fp):s8 -72(fp):s7 -64(fp):s6 -56(fp):s5 -48(fp):s4 -40(fp):s3 -32(fp):s2 -24(fp):s1 -16(fp):s0 -8(fp):ra
 
 l0000000000015CB8:
-	word64 a0_933 = DPB(a0, __fprintf_chk(a0, a1, 0x0000000000011A98, Mem915[sp_1020:<unknown>]), 0)
+	__fprintf_chk(a0, a1, 0x0000000000011A98, Mem915[sp_1020:<unknown>])
 	sp_1020 = sp_1020 + 0xFFFFFFFFFFFFFFF8
 // DataOut: gp sp
 // DataOut (flags): 
@@ -1194,7 +1194,7 @@ l0000000000015964:
 // SymbolicIn: sp:<invalid> a5:<invalid> s1:<invalid> s8:0x0000000000001000 s3:a0 s2:<invalid> s0:<invalid> s6:0 s9:0 s10:0 s4:<invalid> s7:1 a4:<invalid> a3:<invalid> a2:<invalid> a1:<invalid> a0:<invalid> a6:<invalid> -456(fp):<invalid> -448(fp):<invalid> -440(fp):<invalid> -420(fp):0x00000000 -120(fp):<invalid> -104(fp):s11 -96(fp):s10 -88(fp):s9 -80(fp):s8 -72(fp):s7 -64(fp):s6 -56(fp):s5 -48(fp):s4 -40(fp):s3 -32(fp):s2 -24(fp):s1 -16(fp):s0 -8(fp):ra
 
 l000000000001596C:
-	word64 a0_875 = DPB(a0, __fprintf_chk(a0, a1, 0x0000000000011A50, Mem176[sp_1020:<unknown>]), 0)
+	__fprintf_chk(a0, a1, 0x0000000000011A50, Mem176[sp_1020:<unknown>])
 	sp_1020 = sp_1020 + 0xFFFFFFFFFFFFFFF8
 // DataOut: gp sp
 // DataOut (flags): 
@@ -1250,7 +1250,7 @@ l000000000001553C:
 // SymbolicIn: sp:<invalid> a5:<invalid> s1:<invalid> s8:0x0000000000001000 s3:a0 s2:<invalid> s0:<invalid> s6:0 s9:0 s10:0 s4:<invalid> s7:1 a4:<invalid> a3:<invalid> a2:<invalid> a1:<invalid> a0:<invalid> a6:<invalid> -464(fp):<invalid> -456(fp):<invalid> -448(fp):<invalid> -440(fp):<invalid> -436(fp):0x00000001 -424(fp):0x0000000000000000 -420(fp):0x00000000 -408(fp):<invalid> -208(fp):<invalid> -207(fp):<invalid> -120(fp):<invalid> -104(fp):s11 -96(fp):s10 -88(fp):s9 -80(fp):s8 -72(fp):s7 -64(fp):s6 -56(fp):s5 -48(fp):s4 -40(fp):s3 -32(fp):s2 -24(fp):s1 -16(fp):s0 -8(fp):ra
 
 l0000000000015544:
-	word64 a0_779 = DPB(a0, __fprintf_chk(a0, a1, 0x0000000000011AD0, Mem176[sp_1020:<unknown>]), 0)
+	__fprintf_chk(a0, a1, 0x0000000000011AD0, Mem176[sp_1020:<unknown>])
 	sp_1020 = fn0000000000015FCC(gp, 1)
 // DataOut: gp sp
 // DataOut (flags): 
@@ -1292,7 +1292,7 @@ l0000000000015B88:
 // SymbolicIn: sp:<invalid> a5:<invalid> s1:<invalid> s8:0x0000000000001000 s3:a0 s2:<invalid> s0:<invalid> s6:0 s9:0 s10:0 s4:<invalid> s7:1 a4:<invalid> a3:<invalid> a2:<invalid> a1:<invalid> a0:<invalid> a6:<invalid> -464(fp):<invalid> -456(fp):<invalid> -448(fp):<invalid> -440(fp):<invalid> -436(fp):0x00000001 -424(fp):0x0000000000000000 -420(fp):0x00000000 -408(fp):<invalid> -208(fp):<invalid> -207(fp):<invalid> -120(fp):<invalid> -104(fp):s11 -96(fp):s10 -88(fp):s9 -80(fp):s8 -72(fp):s7 -64(fp):s6 -56(fp):s5 -48(fp):s4 -40(fp):s3 -32(fp):s2 -24(fp):s1 -16(fp):s0 -8(fp):ra
 
 l0000000000015B8C:
-	word64 a0_739 = DPB(a0, __fprintf_chk(a0, a1, 0x0000000000011A70, Mem176[sp_1020:<unknown>]), 0)
+	__fprintf_chk(a0, a1, 0x0000000000011A70, Mem176[sp_1020:<unknown>])
 	sp_1020 = sp_1020 + 0xFFFFFFFFFFFFFFF8
 // DataOut: gp sp
 // DataOut (flags): 
@@ -1642,7 +1642,7 @@ l0000000000015B50:
 // SymbolicIn: sp:<invalid> a5:0x000000000000C000 s1:<invalid> s8:0x0000000000001000 s3:a0 s2:<invalid> s0:<invalid> s6:0 s9:0 s10:0 s4:<invalid> s7:1 a4:<invalid> a3:<invalid> a2:<invalid> a1:<invalid> a0:<invalid> a6:<invalid> a7:<invalid> t5:<invalid> t4:<invalid> t3:<invalid> t1:<invalid> fa4:<invalid> fa5:<invalid> fa3:<invalid> -464(fp):<invalid> -456(fp):<invalid> -448(fp):<invalid> -440(fp):<invalid> -436(fp):0x00000001 -424(fp):0x0000000000000000 -420(fp):0x00000000 -408(fp):<invalid> -208(fp):<invalid> -207(fp):<invalid> -120(fp):<invalid> -104(fp):s11 -96(fp):s10 -88(fp):s9 -80(fp):s8 -72(fp):s7 -64(fp):s6 -56(fp):s5 -48(fp):s4 -40(fp):s3 -32(fp):s2 -24(fp):s1 -16(fp):s0 -8(fp):ra
 
 l0000000000015B58:
-	word64 a0_570 = DPB(a0_194, __printf_chk(a0_194, 0x0000000000011D48, Mem176[sp_1020:<unknown>]), 0)
+	__printf_chk(a0_194, 0x0000000000011D48, Mem176[sp_1020:<unknown>])
 	sp_1020 = sp_1020 + 0xFFFFFFFFFFFFFFF8
 // DataOut: gp sp
 // DataOut (flags): 
@@ -1929,7 +1929,7 @@ l0000000000015C18:
 // SymbolicIn: sp:<invalid> a5:<invalid> s1:0x0000000000012000 s8:0x0000000000001000 s3:<invalid> s2:<invalid> s0:<invalid> s6:0 s9:0 s10:0 s4:<invalid> s7:1 a4:<invalid> a3:<invalid> a2:4 a1:<invalid> a0:<invalid> a6:<invalid> t3:<invalid> t1:<invalid> a7:<invalid> t5:<invalid> t4:<invalid> fa4:<invalid> fa5:<invalid> fa3:<invalid> -464(fp):<invalid> -456(fp):<invalid> -448(fp):<invalid> -440(fp):<invalid> -436(fp):0x00000001 -424(fp):0x0000000000000000 -420(fp):0x00000000 -408(fp):<invalid> -208(fp):<invalid> -207(fp):<invalid> -120(fp):<invalid> -104(fp):s11 -96(fp):s10 -88(fp):s9 -80(fp):s8 -72(fp):s7 -64(fp):s6 -56(fp):s5 -48(fp):s4 -40(fp):s3 -32(fp):s2 -24(fp):s1 -16(fp):s0 -8(fp):ra
 
 l00000000000157C4:
-	word64 a0_215 = DPB(a0_194, putchar(a0_194), 0)
+	putchar(a0_194)
 	sp_1020 = sp_1020 + 0xFFFFFFFFFFFFFFF8
 	branch Mem176[sp_1020 + 128:word64] == 0x0000000000000000 l00000000000157F0
 // DataOut: gp sp
@@ -1985,7 +1985,7 @@ l00000000000153D0:
 // SymbolicIn: sp:<invalid> a5:<invalid> s1:<invalid> s8:0x0000000000001000 s3:a0 s2:<invalid> s0:<invalid> s6:0 s9:0 s10:0 s4:<invalid> s7:1 a4:<invalid> a3:<invalid> a2:<invalid> a1:<invalid> a0:<invalid> a6:<invalid> -448(fp):<invalid> -440(fp):<invalid> -420(fp):0x00000000 -120(fp):<invalid> -104(fp):s11 -96(fp):s10 -88(fp):s9 -80(fp):s8 -72(fp):s7 -64(fp):s6 -56(fp):s5 -48(fp):s4 -40(fp):s3 -32(fp):s2 -24(fp):s1 -16(fp):s0 -8(fp):ra
 
 l000000000001556C:
-	word64 a0_861 = DPB(0x0000000000011A08, fwrite(0x0000000000011A08, a1, a2, a3), 0)
+	fwrite(0x0000000000011A08, a1, a2, a3)
 	sp_1020 = sp_1020 + 0xFFFFFFFFFFFFFFF8
 // DataOut: gp sp
 // DataOut (flags): 
@@ -2003,7 +2003,7 @@ l00000000000153D8:
 // SymbolicIn: sp:<invalid> a5:<invalid> s1:<invalid> s8:0x0000000000001000 s3:a0 s2:<invalid> s0:<invalid> s6:0 s9:0 s10:0 s4:<invalid> s7:1 a4:<invalid> a3:<invalid> a2:<invalid> a1:<invalid> a0:<invalid> a6:<invalid> a7:<invalid> t5:<invalid> t4:<invalid> t3:<invalid> t1:<invalid> fa4:<invalid> fa5:<invalid> fa3:<invalid> -464(fp):<invalid> -456(fp):<invalid> -448(fp):<invalid> -440(fp):<invalid> -436(fp):0x00000001 -424(fp):0x0000000000000000 -420(fp):0x00000000 -408(fp):<invalid> -208(fp):<invalid> -207(fp):<invalid> -120(fp):<invalid> -104(fp):s11 -96(fp):s10 -88(fp):s9 -80(fp):s8 -72(fp):s7 -64(fp):s6 -56(fp):s5 -48(fp):s4 -40(fp):s3 -32(fp):s2 -24(fp):s1 -16(fp):s0 -8(fp):ra
 
 l0000000000015394:
-	word64 a0_1049 = DPB(0x00000000000119D8, fwrite(0x00000000000119D8, a1, a2, a3), 0)
+	fwrite(0x00000000000119D8, a1, a2, a3)
 	sp_1020 = sp_1020 + 0xFFFFFFFFFFFFFFF8
 // DataOut: gp sp
 // DataOut (flags): 
@@ -2091,7 +2091,7 @@ fn0000000000015EB8_entry:
 // LocalsOut: fp(64) Stack +0000(64)
 
 l0000000000015EB8:
-	word64 a0_23 = DPB(a0, __libc_start_main(a0, a1, fp + 8, a3, a4, a5, a6), 0)
+	__libc_start_main(a0, a1, fp + 8, a3, a4, a5, a6)
 	return
 // DataOut:
 // DataOut (flags): 
@@ -2335,53 +2335,53 @@ l0000000000015FCC:
 // LocalsOut: fp(64)
 
 l0000000000016090:
-	word64 a0_78 = DPB(0x0000000000010BE0, fwrite(0x0000000000010BE0, a1, a2, a3), 0)
-	word64 a0_85 = DPB(0x0000000000010C00, fwrite(0x0000000000010C00, a1, a2, a3), 0)
-	word64 a0_92 = DPB(0x0000000000010C38, fwrite(0x0000000000010C38, a1, a2, a3), 0)
-	word64 a0_99 = DPB(0x0000000000010C88, fwrite(0x0000000000010C88, a1, a2, a3), 0)
-	word64 a0_106 = DPB(0x0000000000010CC8, fwrite(0x0000000000010CC8, a1, a2, a3), 0)
-	word64 a0_113 = DPB(0x0000000000010D18, fwrite(0x0000000000010D18, a1, a2, a3), 0)
-	word64 a0_120 = DPB(0x0000000000010D68, fwrite(0x0000000000010D68, a1, a2, a3), 0)
-	word64 a0_127 = DPB(0x0000000000010D98, fwrite(0x0000000000010D98, a1, a2, a3), 0)
-	word64 a0_134 = DPB(0x0000000000010DE8, fwrite(0x0000000000010DE8, a1, a2, a3), 0)
+	fwrite(0x0000000000010BE0, a1, a2, a3)
+	fwrite(0x0000000000010C00, a1, a2, a3)
+	fwrite(0x0000000000010C38, a1, a2, a3)
+	fwrite(0x0000000000010C88, a1, a2, a3)
+	fwrite(0x0000000000010CC8, a1, a2, a3)
+	fwrite(0x0000000000010D18, a1, a2, a3)
+	fwrite(0x0000000000010D68, a1, a2, a3)
+	fwrite(0x0000000000010D98, a1, a2, a3)
+	fwrite(0x0000000000010DE8, a1, a2, a3)
 	word64 a0_141 = DPB(0x0000000000010E38, fwrite(0x0000000000010E38, a1, a2, a3), 0)
-	word64 a0_145 = DPB(a0_141, fputc(a0_141, a1), 0)
-	word64 a0_152 = DPB(0x0000000000010E88, fwrite(0x0000000000010E88, a1, a2, a3), 0)
-	word64 a0_159 = DPB(0x0000000000010EA0, fwrite(0x0000000000010EA0, a1, a2, a3), 0)
-	word64 a0_166 = DPB(0x0000000000010EE8, fwrite(0x0000000000010EE8, a1, a2, a3), 0)
-	word64 a0_173 = DPB(0x0000000000010F28, fwrite(0x0000000000010F28, a1, a2, a3), 0)
-	word64 a0_180 = DPB(0x0000000000010F68, fwrite(0x0000000000010F68, a1, a2, a3), 0)
-	word64 a0_187 = DPB(0x0000000000010FA8, fwrite(0x0000000000010FA8, a1, a2, a3), 0)
-	word64 a0_194 = DPB(0x0000000000010FF8, fwrite(0x0000000000010FF8, a1, a2, a3), 0)
-	word64 a0_201 = DPB(0x0000000000011048, fwrite(0x0000000000011048, a1, a2, a3), 0)
-	word64 a0_208 = DPB(0x0000000000011098, fwrite(0x0000000000011098, a1, a2, a3), 0)
-	word64 a0_215 = DPB(0x00000000000110C8, fwrite(0x00000000000110C8, a1, a2, a3), 0)
-	word64 a0_222 = DPB(0x0000000000011118, fwrite(0x0000000000011118, a1, a2, a3), 0)
-	word64 a0_229 = DPB(0x0000000000011148, fwrite(0x0000000000011148, a1, a2, a3), 0)
-	word64 a0_236 = DPB(0x0000000000011190, fwrite(0x0000000000011190, a1, a2, a3), 0)
-	word64 a0_243 = DPB(0x00000000000111D8, fwrite(0x00000000000111D8, a1, a2, a3), 0)
+	fputc(a0_141, a1)
+	fwrite(0x0000000000010E88, a1, a2, a3)
+	fwrite(0x0000000000010EA0, a1, a2, a3)
+	fwrite(0x0000000000010EE8, a1, a2, a3)
+	fwrite(0x0000000000010F28, a1, a2, a3)
+	fwrite(0x0000000000010F68, a1, a2, a3)
+	fwrite(0x0000000000010FA8, a1, a2, a3)
+	fwrite(0x0000000000010FF8, a1, a2, a3)
+	fwrite(0x0000000000011048, a1, a2, a3)
+	fwrite(0x0000000000011098, a1, a2, a3)
+	fwrite(0x00000000000110C8, a1, a2, a3)
+	fwrite(0x0000000000011118, a1, a2, a3)
+	fwrite(0x0000000000011148, a1, a2, a3)
+	fwrite(0x0000000000011190, a1, a2, a3)
+	fwrite(0x00000000000111D8, a1, a2, a3)
 	word64 a0_250 = DPB(0x0000000000011228, fwrite(0x0000000000011228, a1, a2, a3), 0)
-	word64 a0_254 = DPB(a0_250, fputc(a0_250, a1), 0)
-	word64 a0_261 = DPB(0x0000000000011258, fwrite(0x0000000000011258, a1, a2, a3), 0)
-	word64 a0_268 = DPB(0x0000000000011268, fwrite(0x0000000000011268, a1, a2, a3), 0)
-	word64 a0_275 = DPB(0x00000000000112C0, fwrite(0x00000000000112C0, a1, a2, a3), 0)
-	word64 a0_282 = DPB(0x0000000000011300, fwrite(0x0000000000011300, a1, a2, a3), 0)
-	word64 a0_289 = DPB(0x0000000000011348, fwrite(0x0000000000011348, a1, a2, a3), 0)
-	word64 a0_296 = DPB(0x0000000000011388, fwrite(0x0000000000011388, a1, a2, a3), 0)
-	word64 a0_308 = DPB(0x00000000000113C8, fwrite(0x00000000000113C8, a1, a2, a3), 0)
+	fputc(a0_250, a1)
+	fwrite(0x0000000000011258, a1, a2, a3)
+	fwrite(0x0000000000011268, a1, a2, a3)
+	fwrite(0x00000000000112C0, a1, a2, a3)
+	fwrite(0x0000000000011300, a1, a2, a3)
+	fwrite(0x0000000000011348, a1, a2, a3)
+	fwrite(0x0000000000011388, a1, a2, a3)
+	fwrite(0x00000000000113C8, a1, a2, a3)
 	return fp + 0xFFFFFFFFFFFFFEF8
 // DataOut: gp sp
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -16 a3:<invalid> -16(fp):s0 -8(fp):ra
 
 l0000000000015FE0:
-	word64 a0_26 = DPB(0x0000000000011408, fwrite(0x0000000000011408, a1, a2, a3), 0)
-	word64 a0_33 = DPB(0x0000000000011458, fwrite(0x0000000000011458, a1, a2, a3), 0)
-	word64 a0_40 = DPB(0x0000000000011498, fwrite(0x0000000000011498, a1, a2, a3), 0)
-	word64 a0_47 = DPB(0x00000000000114E0, fwrite(0x00000000000114E0, a1, a2, a3), 0)
-	word64 a0_54 = DPB(0x0000000000011530, fwrite(0x0000000000011530, a1, a2, a3), 0)
-	word64 a0_61 = DPB(0x0000000000011578, fwrite(0x0000000000011578, a1, a2, a3), 0)
-	word64 a0_73 = DPB(0x00000000000115A8, fwrite(0x00000000000115A8, a1, a2, a3), 0)
+	fwrite(0x0000000000011408, a1, a2, a3)
+	fwrite(0x0000000000011458, a1, a2, a3)
+	fwrite(0x0000000000011498, a1, a2, a3)
+	fwrite(0x00000000000114E0, a1, a2, a3)
+	fwrite(0x0000000000011530, a1, a2, a3)
+	fwrite(0x0000000000011578, a1, a2, a3)
+	fwrite(0x00000000000115A8, a1, a2, a3)
 	return fp + 0xFFFFFFFFFFFFFFD0
 // DataOut: gp sp
 // DataOut (flags): 
@@ -2532,7 +2532,8 @@ l0000000000016544:
 // SymbolicIn: sp:fp + 0xFFFFFFFFFFFFFFD8 s0:a0 a0:<invalid> s2:a1 a1:0 -32(fp):s2 -24(fp):s1 -16(fp):s0 -8(fp):ra
 
 l0000000000016500:
-	word64 a0_41 = DPB(a0_19, close(DPB(a0_19, read(a0_19, a1, a2), 0)), 0)
+	word64 a0_37 = DPB(a0_19, read(a0_19, a1, a2), 0)
+	close(a0_37)
 	a0_24 = (int64) (word32) (0x0000000000000000 - (word64) ((int64) ((word32) (0x00000000000115D0 - a1)) != 0x0000000000000000))
 // DataOut: a0 gp s10 s4 sp
 // DataOut (flags): 
@@ -2675,7 +2676,7 @@ l0000000000016630:
 	word64 a5_33
 	word64 a0_22 = __errno_location()
 	Mem24[a0:word32] = 0x00000000
-	word64 a0_29 = DPB(a0_22, strtol(a0_22), 0)
+	strtol(a0_22)
 	branch qwLoc50 == 0x0000000000000000 l000000000001668C
 // DataOut: a0 a5 gp s1 s10 s2 s3 s4
 // DataOut (flags): 
@@ -2831,7 +2832,7 @@ l00000000000167D8:
 // SymbolicIn: sp:<invalid> a5:<invalid> s0:<invalid> s1:<invalid> s3:<invalid> s4:a2 a1:<invalid> a0:<invalid> s2:<invalid> a2:0 a3:<invalid> a4:<invalid> ra:<invalid> -56(fp):<invalid> -48(fp):s4 -40(fp):s3 -32(fp):s2 -24(fp):s1 -16(fp):s0 -8(fp):ra
 
 l000000000001673C:
-	word64 a0_92 = DPB(a0_87, inet_pton(a0_87, a1, fp + 0xFFFFFFFFFFFFFFB8), 0)
+	inet_pton(a0_87, a1, fp + 0xFFFFFFFFFFFFFFB8)
 	sp_34 = fp + 0xFFFFFFFFFFFFFFB0
 	branch 2 == 0x0000000000000000 l000000000001678C
 // DataOut: gp s0 s1 s10 s4 sp
@@ -3665,7 +3666,7 @@ l0000000000016E60:
 // LocalsOut: fp(64) Local -01D0(0)
 
 l0000000000016E68:
-	word64 a0_456 = DPB(a0_41, __fprintf_chk(a0_113, a1, 0x0000000000011788, tLoc01D0), 0)
+	__fprintf_chk(a0_113, a1, 0x0000000000011788, tLoc01D0)
 	sp_106 = fp + 0xFFFFFFFFFFFFFE28
 	a0_264 = -1
 // DataOut: a0 gp s10 sp
@@ -4039,7 +4040,7 @@ l00000000000172E8:
 // SymbolicIn: sp:<invalid> a5:<invalid> s6:<invalid> s1:<invalid> a2:<invalid> s5:<invalid> a0:<invalid> a1:<invalid> s8:a3 a3:16 a4:<invalid> s0:<invalid> s3:<invalid> s2:32 s4:<invalid> t1:<invalid> t3:32 a6:<invalid> ra:<invalid> a7:<invalid> -488(fp):<invalid> -464(fp):<invalid> -456(fp):0x0000000000000000 -448(fp):0x0000000000000000 -440(fp):0x0000000000000000 -432(fp):0x0000000000000000 -424(fp):<invalid> -416(fp):<invalid> -412(fp):0x0000 -410(fp):0x00 -408(fp):0x0000000000000000 -400(fp):0x00000000 -396(fp):0x0000 -394(fp):0x00 -392(fp):0x0000000000000000 -384(fp):0x00000000 -380(fp):0x0000 -378(fp):0x00 -88(fp):<invalid> -80(fp):s8 -72(fp):s7 -64(fp):s6 -56(fp):s5 -48(fp):s4 -40(fp):s3 -32(fp):s2 -24(fp):s1 -16(fp):s0 -8(fp):ra
 
 l00000000000172C4:
-	word64 a0_110 = DPB(a0_113, __fprintf_chk(a0_113, a1, 0x00000000000117B0, Mem0[sp_106:<unknown>]), 0)
+	__fprintf_chk(a0_113, a1, 0x00000000000117B0, Mem0[sp_106:<unknown>])
 	abort()
 // DataOut:
 // DataOut (flags): 
@@ -4064,7 +4065,7 @@ l0000000000017074:
 // SymbolicIn: sp:<invalid> a5:<invalid> s6:<invalid> s1:<invalid> a2:<invalid> s5:<invalid> a0:<invalid> a1:<invalid> s8:a3 a3:47 a4:<invalid> s0:<invalid> s2:<invalid> s4:<invalid> s3:<invalid> t1:<invalid> t3:32 a6:<invalid> ra:<invalid> a7:<invalid> -496(fp):<invalid> -488(fp):<invalid> -464(fp):<invalid> -456(fp):0x0000000000000000 -448(fp):0x0000000000000000 -440(fp):0x0000000000000000 -432(fp):0x0000000000000000 -424(fp):<invalid> -416(fp):<invalid> -412(fp):0x0000 -410(fp):0x00 -408(fp):0x0000000000000000 -400(fp):0x00000000 -396(fp):0x0000 -394(fp):0x00 -392(fp):0x0000000000000000 -384(fp):0x00000000 -380(fp):0x0000 -378(fp):0x00 -88(fp):<invalid> -80(fp):s8 -72(fp):s7 -64(fp):s6 -56(fp):s5 -48(fp):s4 -40(fp):s3 -32(fp):s2 -24(fp):s1 -16(fp):s0 -8(fp):ra
 
 l000000000001707C:
-	word64 a0_148 = DPB(0x00000000000117F8, fwrite(0x00000000000117F8, a1, a2, a3), 0)
+	fwrite(0x00000000000117F8, a1, a2, a3)
 	sp_106 = sp_106 + 0xFFFFFFFFFFFFFFF8
 // DataOut: gp s10 sp
 // DataOut (flags): 
@@ -4083,7 +4084,7 @@ l0000000000016E18:
 // SymbolicIn: sp:<invalid> a5:32 s6:a2 s1:<invalid> a2:<invalid> s5:a1 a0:<invalid> a1:<invalid> s8:a3 s0:<invalid> s2:<invalid> s4:0x0000000000011000 s3:1 a3:<invalid> -424(fp):<invalid> -416(fp):a0 -88(fp):<invalid> -80(fp):s8 -72(fp):s7 -64(fp):s6 -56(fp):s5 -48(fp):s4 -40(fp):s3 -32(fp):s2 -24(fp):s1 -16(fp):s0 -8(fp):ra
 
 l0000000000017054:
-	word64 a0_414 = DPB(a0_113, __fprintf_chk(a0_113, a1, 0x00000000000117D8, Mem394[sp_106:<unknown>]), 0)
+	__fprintf_chk(a0_113, a1, 0x00000000000117D8, Mem394[sp_106:<unknown>])
 	sp_106 = sp_106 + 0xFFFFFFFFFFFFFFF8
 	a0_264 = -1
 // DataOut: a0 gp s10 sp
@@ -4339,7 +4340,7 @@ l0000000000017514:
 // SymbolicIn: sp:<invalid> a5:<invalid> s0:a0 s2:<invalid> s3:<invalid> s1:0x0000000000010480 a2:12 a1:0x00000000000108C0 a0:<invalid> -40(fp):s3 -32(fp):s2 -24(fp):s1 -16(fp):s0 -8(fp):ra
 
 l00000000000174A4:
-	word64 a0_100 = DPB(a0, memcmp(a0_95, 0x00000000000108D0, a2), 0)
+	memcmp(a0_95, 0x00000000000108D0, a2)
 	sp_101 = sp_91 + 0xFFFFFFFFFFFFFFF0
 	branch a0 != 0x0000000000000000 l0000000000017408
 // DataOut: gp s10 s2 s3 s5 s6 s8 s9 sp
@@ -4479,7 +4480,7 @@ l00000000000177B4:
 // LocalsOut: fp(64) Local -01B0(0)
 
 l00000000000177BC:
-	word64 a0_315 = DPB(a0_43, __fprintf_chk(a0_48, a1, 0x0000000000011920, tLoc01B0), 0)
+	__fprintf_chk(a0_48, a1, 0x0000000000011920, tLoc01B0)
 	sp_111 = fp + 0xFFFFFFFFFFFFFE48
 	a0_136 = -1
 // DataOut: a0 gp s10 sp
@@ -4520,7 +4521,7 @@ l00000000000177DC:
 // SymbolicIn: sp:<invalid> a5:<invalid> s0:<invalid> a2:<invalid> s4:<invalid> s2:<invalid> a0:<invalid> a1:<invalid> s6:<invalid> s3:<invalid> a3:250 s5:128 a4:<invalid> s1:<invalid> s9:<invalid> s7:<invalid> ra:<invalid> s8:<invalid> -104(fp):<invalid> -88(fp):s9 -80(fp):s8 -72(fp):s7 -64(fp):s6 -56(fp):s5 -48(fp):s4 -40(fp):s3 -32(fp):s2 -24(fp):s1 -16(fp):s0 -8(fp):ra
 
 l00000000000177E4:
-	word64 a0_305 = DPB(a0_138, __fprintf_chk(a0_138, a1, 0x0000000000011940, Mem140[sp_102 + 0xFFFFFFFFFFFFFFF0:<unknown>]), 0)
+	__fprintf_chk(a0_138, a1, 0x0000000000011940, Mem140[sp_102 + 0xFFFFFFFFFFFFFFF0:<unknown>])
 	sp_111 = sp_102 + 0xFFFFFFFFFFFFFFE8
 	a0_136 = -1
 // DataOut: a0 gp s10 sp
@@ -4560,7 +4561,7 @@ l00000000000178F8:
 // SymbolicIn: sp:<invalid> a5:<invalid> s0:<invalid> a2:<invalid> s4:<invalid> s2:<invalid> a0:<invalid> a1:<invalid> s6:<invalid> s3:<invalid> a3:<invalid> s5:<invalid> s7:<invalid> a4:<invalid> s1:<invalid> s9:<invalid> ra:<invalid> s8:<invalid> -104(fp):<invalid> -88(fp):s9 -80(fp):s8 -72(fp):s7 -64(fp):s6 -56(fp):s5 -48(fp):s4 -40(fp):s3 -32(fp):s2 -24(fp):s1 -16(fp):s0 -8(fp):ra
 
 l0000000000017900:
-	word64 a0_294 = DPB(a0_138, __fprintf_chk(a0_138, a1, 0x0000000000011960, Mem149[sp_102 + 0xFFFFFFFFFFFFFFF0:<unknown>]), 0)
+	__fprintf_chk(a0_138, a1, 0x0000000000011960, Mem149[sp_102 + 0xFFFFFFFFFFFFFFF0:<unknown>])
 	sp_111 = sp_102 + 0xFFFFFFFFFFFFFFE8
 	a0_136 = -1
 // DataOut: a0 gp s10 sp
@@ -4648,7 +4649,7 @@ l0000000000017768:
 // SymbolicIn: sp:<invalid> a5:<invalid> s0:<invalid> a2:<invalid> s4:<invalid> s2:<invalid> a0:<invalid> a1:<invalid> s6:<invalid> s3:<invalid> a3:250 a4:<invalid> s1:<invalid> s5:<invalid> s9:<invalid> s7:<invalid> ra:<invalid> s8:<invalid> t4:<invalid> t5:<invalid> -408(fp):<invalid> -104(fp):<invalid> -88(fp):s9 -80(fp):s8 -72(fp):s7 -64(fp):s6 -56(fp):s5 -48(fp):s4 -40(fp):s3 -32(fp):s2 -24(fp):s1 -16(fp):s0 -8(fp):ra
 
 l0000000000017804:
-	word64 a0_134 = DPB(0x00000000000117F8, fwrite(0x00000000000117F8, a1, a2, a3), 0)
+	fwrite(0x00000000000117F8, a1, a2, a3)
 	sp_111 = sp_111 + 0xFFFFFFFFFFFFFFF8
 	a0_136 = -1
 // DataOut: a0 gp s10 sp
@@ -4800,8 +4801,8 @@ l00000000000179C0:
 // LocalsOut: fp(64) Local -0068(0)
 
 l0000000000017B14:
+	__snprintf_chk(a0_75, a1, a2, a3, 0x0000000000012A58, tLoc68)
 	s0_148 = -1
-	word64 a0_168 = DPB(a0_75, __snprintf_chk(a0_75, a1, a2, a3, 0x0000000000012A58, tLoc68), 0)
 	Mem170[gp + 2072:word32] = (word32) s0_148
 // DataOut: gp s0 s10 sp
 // DataOut (flags): 
@@ -4906,7 +4907,7 @@ l0000000000017964:
 // LocalsOut: fp(64)
 
 l00000000000179A8:
-	word64 a0_69 = DPB(a0, fputs(a0, a1), 0)
+	fputs(a0, a1)
 // DataOut: gp s10 sp
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -96 a5:<invalid> s0:<invalid> -88(fp):s9 -80(fp):s8 -72(fp):s7 -64(fp):s6 -56(fp):s5 -48(fp):s4 -40(fp):s3 -32(fp):s2 -24(fp):s1 -16(fp):s0 -8(fp):ra
@@ -5300,7 +5301,7 @@ l0000000000017C84:
 // SymbolicIn: sp:<invalid> s0:<invalid> s3:a1 s2:<invalid> s1:a3 s4:a4 a0:<invalid> a5:<invalid> s7:<invalid> a1:<invalid> a4:1 a3:<invalid> s6:1 a2:<invalid> a6:<invalid> -72(fp):s7 -64(fp):s6 -56(fp):s5 -48(fp):s4 -40(fp):s3 -32(fp):s2 -24(fp):s1 -16(fp):s0 -8(fp):ra
 
 l0000000000017CC8:
-	word64 a0_260 = DPB(a0_247, __asprintf_chk(a0_247, a1_206, 0x0000000000012B80, Mem182[sp_184:<unknown>]), 0)
+	__asprintf_chk(a0_247, a1_206, 0x0000000000012B80, Mem182[sp_184:<unknown>])
 // DataOut: gp s10 s8 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> s0:<invalid> s3:a1 s2:<invalid> s1:a3 s4:a4 a0:<invalid> a5:<invalid> s7:<invalid> a1:<invalid> a4:1 fa4:<invalid> fa5:(real32) 0x0000000000000000 a3:<invalid> s6:1 a2:<invalid> a6:<invalid> -72(fp):s7 -64(fp):s6 -56(fp):s5 -48(fp):s4 -40(fp):s3 -32(fp):s2 -24(fp):s1 -16(fp):s0 -8(fp):ra
@@ -5731,7 +5732,7 @@ l0000000000017E78:
 // SymbolicIn: sp:<invalid> s0:<invalid> s4:a1 s3:a2 s2:a3 s5:a4 a5:<invalid> a1:<invalid> a0:<invalid> s1:<invalid> a4:<invalid> a2:<invalid> a3:<invalid> a6:1 s7:12 -72(fp):s7 -64(fp):s6 -56(fp):s5 -48(fp):s4 -40(fp):s3 -32(fp):s2 -24(fp):s1 -16(fp):s0 -8(fp):ra
 
 l0000000000017EBC:
-	word64 a0_271 = DPB(a0_258, __asprintf_chk(a0_258, a1_216, 0x0000000000012B80, Mem190[sp_193:<unknown>]), 0)
+	__asprintf_chk(a0_258, a1_216, 0x0000000000012B80, Mem190[sp_193:<unknown>])
 // DataOut: gp s10 sp
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> s0:<invalid> s4:a1 s3:a2 s2:a3 s5:a4 a5:<invalid> a1:<invalid> a0:<invalid> s1:<invalid> a4:<invalid> a2:<invalid> a3:<invalid> a6:1 fa4:<invalid> fa5:(real32) 0x0000000000000000 s7:12 -72(fp):s7 -64(fp):s6 -56(fp):s5 -48(fp):s4 -40(fp):s3 -32(fp):s2 -24(fp):s1 -16(fp):s0 -8(fp):ra
@@ -5807,7 +5808,7 @@ l0000000000017F04:
 // LocalsOut: fp(64) Local -0050(0) Local -0058(64)
 
 l0000000000018048:
-	word64 a0_175 = DPB(fp + -80, __asprintf_chk(fp + -80, a1, 0x0000000000012B88, tLoc50), 0)
+	__asprintf_chk(fp + -80, a1, 0x0000000000012B88, tLoc50)
 // DataOut: a0 gp s10 s8 sp
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -80 a5:<invalid> s0:a1 s5:a2 s4:a3 a1:<invalid> t1:<invalid> t3:32 s6:<invalid> s1:<invalid> s2:<invalid> a3:<invalid> a4:<invalid> a0:<invalid> -80(fp):0x0000000000000000 -72(fp):<invalid> -64(fp):s6 -56(fp):s5 -48(fp):s4 -40(fp):s3 -32(fp):s2 -24(fp):s1 -16(fp):s0 -8(fp):ra
@@ -5822,7 +5823,7 @@ l0000000000017F60:
 // LocalsOut: fp(64) Local -0050(0) Local -0058(64)
 
 l0000000000018070:
-	word64 a0_165 = DPB(fp + -80, __asprintf_chk(fp + -80, a1, 0x0000000000012BA8, tLoc50), 0)
+	__asprintf_chk(fp + -80, a1, 0x0000000000012BA8, tLoc50)
 // DataOut: a0 gp s10 s8 sp
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -80 a5:<invalid> s0:a1 s5:a2 s4:a3 a1:24 t1:<invalid> t3:32 s6:<invalid> s1:<invalid> s2:<invalid> a3:<invalid> a4:<invalid> a0:<invalid> -80(fp):0x0000000000000000 -72(fp):<invalid> -64(fp):s6 -56(fp):s5 -48(fp):s4 -40(fp):s3 -32(fp):s2 -24(fp):s1 -16(fp):s0 -8(fp):ra
@@ -5837,7 +5838,7 @@ l0000000000017F68:
 // LocalsOut: fp(64) Local -0050(0) Local -0058(64)
 
 l00000000000180D8:
-	word64 a0_156 = DPB(fp + -80, __asprintf_chk(fp + -80, a1, 0x0000000000012BC0, tLoc50), 0)
+	__asprintf_chk(fp + -80, a1, 0x0000000000012BC0, tLoc50)
 // DataOut: a0 gp s10 s8 sp
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -80 a5:<invalid> s0:a1 s5:a2 s4:a3 a1:24 t1:<invalid> t3:32 s6:<invalid> s1:<invalid> s2:<invalid> a0:16 a3:<invalid> a4:<invalid> -80(fp):0x0000000000000000 -72(fp):<invalid> -64(fp):s6 -56(fp):s5 -48(fp):s4 -40(fp):s3 -32(fp):s2 -24(fp):s1 -16(fp):s0 -8(fp):ra
@@ -5852,7 +5853,7 @@ l0000000000017F70:
 // LocalsOut: fp(64) Local -0050(0) Local -0058(64)
 
 l00000000000180F8:
-	word64 a0_148 = DPB(fp + -80, __asprintf_chk(fp + -80, a1, 0x0000000000012BD8, tLoc50), 0)
+	__asprintf_chk(fp + -80, a1, 0x0000000000012BD8, tLoc50)
 // DataOut: a0 gp s10 s8 sp
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -80 a5:8 s0:a1 s5:a2 s4:a3 a1:24 t1:<invalid> t3:32 s6:<invalid> s1:<invalid> s2:<invalid> a0:16 a3:<invalid> a4:<invalid> -80(fp):0x0000000000000000 -72(fp):<invalid> -64(fp):s6 -56(fp):s5 -48(fp):s4 -40(fp):s3 -32(fp):s2 -24(fp):s1 -16(fp):s0 -8(fp):ra
@@ -5868,7 +5869,7 @@ l0000000000017F78:
 l0000000000017FBC:
 	fn00000000000182B4(a2)
 	fn00000000000182B4(a3)
-	word64 a0_141 = DPB(fp + -80, __asprintf_chk(fp + -80, a1, 0x0000000000012BF0, tLoc50), 0)
+	__asprintf_chk(fp + -80, a1, 0x0000000000012BF0, tLoc50)
 // DataOut: a0 gp s10 s8 sp
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -80 a5:8 s0:a1 s5:a2 s4:a3 a1:24 t1:<invalid> t3:32 s6:<invalid> s1:<invalid> s2:<invalid> a0:16 a3:<invalid> a4:<invalid> -80(fp):0x0000000000000000 -72(fp):<invalid> -64(fp):s6 -56(fp):s5 -48(fp):s4 -40(fp):s3 -32(fp):s2 -24(fp):s1 -16(fp):s0 -8(fp):ra
@@ -5884,7 +5885,7 @@ l0000000000017F7C:
 l0000000000018094:
 	fn00000000000182B4(a2)
 	fn00000000000182B4(a3)
-	word64 a0_125 = DPB(fp + -80, __asprintf_chk(fp + -80, a1, 0x0000000000012C10, tLoc50), 0)
+	__asprintf_chk(fp + -80, a1, 0x0000000000012C10, tLoc50)
 // DataOut: a0 gp s10 s8 sp
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -80 a5:8 s0:a1 s5:a2 s4:a3 a1:24 t1:<invalid> t3:32 s6:<invalid> s1:<invalid> s2:<invalid> a0:16 a3:<invalid> a4:<invalid> -80(fp):0x0000000000000000 -72(fp):<invalid> -64(fp):s6 -56(fp):s5 -48(fp):s4 -40(fp):s3 -32(fp):s2 -24(fp):s1 -16(fp):s0 -8(fp):ra
@@ -5900,7 +5901,7 @@ l0000000000017F80:
 l0000000000018008:
 	fn00000000000182B4(a2)
 	fn00000000000182B4(a3)
-	word64 a0_108 = DPB(fp + -80, __asprintf_chk(fp + -80, a1, 0x0000000000012C30, tLoc50), 0)
+	__asprintf_chk(fp + -80, a1, 0x0000000000012C30, tLoc50)
 // DataOut: a0 gp s10 s8 sp
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -80 a5:8 s0:a1 s5:a2 s4:a3 a1:24 t1:<invalid> t3:32 s6:<invalid> s1:<invalid> s2:<invalid> a0:16 a3:<invalid> a4:<invalid> -80(fp):0x0000000000000000 -72(fp):<invalid> -64(fp):s6 -56(fp):s5 -48(fp):s4 -40(fp):s3 -32(fp):s2 -24(fp):s1 -16(fp):s0 -8(fp):ra

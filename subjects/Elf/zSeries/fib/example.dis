@@ -135,7 +135,7 @@ l00000600:
 	Mem13[r15_6 - 16:word64] = r14
 	Mem15[r15_6 - 8:word64] = r15_6 - 176
 	word64 r2_20 = Mem15[0x00002040:word64]
-	word64 r2_22 = DPB(r2_20, __libc_start_main(r2_20, qwLocA0, fp - 152, 0x00000820, 0x00000888, Mem15[r15_6 - 16:(ptr32 (fn void ()))], Mem15[r15_6 - 8:(ptr32 void)]), 0)
+	__libc_start_main(r2_20, qwLocA0, fp - 152, 0x00000820, 0x00000888, Mem15[r15_6 - 16:(ptr32 (fn void ()))], Mem15[r15_6 - 8:(ptr32 void)])
 // DataOut:
 // DataOut (flags): CC
 // SymbolicIn: r15:fp

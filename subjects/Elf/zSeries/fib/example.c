@@ -60,15 +60,15 @@ void _start(Eq_37 r14)
 	*(r15_6 - 0x0010) = r14;
 	*(r15_6 - 0x08) = r15_6 - 0x00B0;
 	word64 r2_20 = Mem15[0x00002040 + 0x00:word64];
-	word64 r2_22 = DPB(r2_20, __libc_start_main(r2_20, qwLocA0, fp - 0x0098, 0x00000820, 0x00000888, Mem15[r15_6 - 0x0010 + 0x00:(ptr32 (fn void ()))], Mem15[r15_6 - 0x08 + 0x00:(ptr32 void)]), 0);
+	__libc_start_main(r2_20, qwLocA0, fp - 0x0098, 0x00000820, 0x00000888, Mem15[r15_6 - 0x0010 + 0x00:(ptr32 (fn void ()))], Mem15[r15_6 - 0x08 + 0x00:(ptr32 void)]);
 }
 
 // 00000648: Register word64 deregister_tm_clones()
 word64 deregister_tm_clones()
 {
-	Eq_94 r2_4 = 0x2068;
-	Eq_96 r5_2 = 0x08C8;
-	Eq_98 r1_6 = 8303 - r2_4;
+	Eq_92 r2_4 = 0x2068;
+	Eq_94 r5_2 = 0x08C8;
+	Eq_96 r1_6 = 8303 - r2_4;
 	if (r1_6 > *r5_2)
 	{
 		word64 r1_23 = Mem0[0x00002030 + 0x00:word64];
@@ -111,7 +111,7 @@ word64 deregister_tm_clones()
 // 00000680: void register_tm_clones()
 void register_tm_clones()
 {
-	Eq_131 r3_4 = 0x2068 - 0x2068;
+	Eq_129 r3_4 = 0x2068 - 0x2068;
 	uint64 r1_6 = r3_4 >> 0x03 >> 0x003F;
 	if ((r3_4 >> 0x03) + r1_6 != 0x00)
 	{
@@ -152,9 +152,9 @@ void register_tm_clones()
 // 000006C8: void __do_global_dtors_aux()
 void __do_global_dtors_aux()
 {
-	Eq_170 r13_16 = 0x08D0;
-	Eq_172 r15_17 = fp - 0x0140;
-	Eq_176 r11_18 = 0x2068;
+	Eq_168 r13_16 = 0x08D0;
+	Eq_170 r15_17 = fp - 0x0140;
+	Eq_174 r11_18 = 0x2068;
 	if (*r11_18 == 0x00)
 	{
 		if (Mem0[r13_16 + 0x00:byte] != Mem0[0x00002028 + 0x00:byte])
@@ -172,7 +172,7 @@ void __do_global_dtors_aux()
 		r15_17 = deregister_tm_clones();
 		*r11_18 = 0x01;
 	}
-	Eq_183 r4_22 = *((word64) r15_17 + 0x0110);
+	Eq_181 r4_22 = *((word64) r15_17 + 0x0110);
 	word64 r15_33;
 	word64 r11_34;
 	word64 r12_35;
@@ -188,9 +188,9 @@ void __do_global_dtors_aux()
 // 00000720: void frame_dummy()
 void frame_dummy()
 {
-	Eq_221 r13_10 = 0x08D8;
-	Eq_223 r2_12 = 0x1E18;
-	Eq_225 CC_14 = cond(*r13_10 - *r2_12);
+	Eq_219 r13_10 = 0x08D8;
+	Eq_221 r2_12 = 0x1E18;
+	Eq_223 CC_14 = cond(*r13_10 - *r2_12);
 	if (*r13_10 == *r2_12)
 	{
 l00000740:
@@ -258,14 +258,14 @@ void main(word64 r2)
 // 00000820: void __libc_csu_init()
 void __libc_csu_init()
 {
-	Eq_301 CC_37 = _init();
-	Eq_305 r1_39 = 7688;
+	Eq_299 CC_37 = _init();
+	Eq_303 r1_39 = 7688;
 	if (!CC_37)
 	{
-		Eq_305 r7_75 = r1_39;
+		Eq_303 r7_75 = r1_39;
 		do
 		{
-			Eq_323 r1_81 = *r7_75;
+			Eq_321 r1_81 = *r7_75;
 			word64 r15_88;
 			word64 r8_90;
 			word64 r9_91;
