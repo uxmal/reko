@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@ using Reko.Core.Types;
 using Reko.Loading;
 using Reko.Scanning;
 using Reko.UnitTests.Mocks;
-using Rhino.Mocks;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -118,8 +118,8 @@ namespace Reko.UnitTests.Typing
         protected void RunTest(ProgramBuilder mock, string outputFile)
         {
             Program program = mock.BuildProgram();
-            var importResolver = MockRepository.GenerateStub<IImportResolver>();
-            DataFlowAnalysis dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
+            var importResolver = new Mock<IImportResolver>();
+            DataFlowAnalysis dfa = new DataFlowAnalysis(program, importResolver.Object, new FakeDecompilerEventListener());
             dfa.DumpProgram();
             dfa.BuildExpressionTrees();
             RunTest(program, outputFile);

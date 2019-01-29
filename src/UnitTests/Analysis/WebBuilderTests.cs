@@ -24,24 +24,18 @@ using Reko.Core.Expressions;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using NUnit.Framework;
-using Rhino.Mocks;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Reko.Core.Rtl;
+using Reko.Core.Serialization;
 
 namespace Reko.UnitTests.Analysis
 {
 	[TestFixture]
 	public class WebBuilderTests : AnalysisTestBase
 	{
-        private MockRepository mr;
-
-        [SetUp]
-        public void Setup()
-        {
-            mr = new MockRepository();
-        }
-
 		[Test]
 		public void WebNestedRepeats()
 		{
@@ -57,13 +51,12 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void WebGlobalHandle()
         {
-            Given_FakeWin32Platform(mr);
-            this.platform.Stub(p => p.ResolveImportByName(null, null)).IgnoreArguments().Return(null);
-            this.platform.Stub(p => p.DataTypeFromImportName(null)).IgnoreArguments().Return(null);
-            this.platform.Stub(p => p.ResolveIndirectCall(null)).IgnoreArguments().Return(null);
-            mr.ReplayAll();
+            Given_FakeWin32Platform();
+            this.platformMock.Setup(p => p.ResolveImportByName(It.IsAny<string>(), It.IsAny<string>())).Returns((Expression) null);
+            this.platformMock.Setup(p => p.DataTypeFromImportName(It.IsAny<string>())).Returns((Tuple<string, SerializedType, SerializedType>) null);
+            this.platformMock.Setup(p => p.ResolveIndirectCall(It.IsAny<RtlCall>())).Returns((Address) null);
 
-			RunFileTest32("Fragments/import32/GlobalHandle.asm", "Analysis/WebGlobalHandle.txt");
+            RunFileTest32("Fragments/import32/GlobalHandle.asm", "Analysis/WebGlobalHandle.txt");
 		}
 
 		[Test]
