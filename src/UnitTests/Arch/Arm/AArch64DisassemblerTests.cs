@@ -148,12 +148,6 @@ namespace Reko.UnitTests.Arch.Arm
             Assert.AreEqual("movk\tx7,#&AAA4", instr.ToString());
         }
 
-        [Test]
-        public void AArch64Dis_ldp()
-        {
-            Given_Instruction(0x2D646C2F);
-            Expect_Code("ldp\ts15,s27,[x1,-#&E0]");
-        }
 
         [Test]
         public void AArch64Dis_tbz()
@@ -1265,5 +1259,431 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x7A42D020);
             Expect_Code("ccmp\tw1,w5,#0,LE");
         }
+
+        [Test]
+        public void AArch64Dis_fnmadd()
+        {
+            Given_Instruction(0x1F2003D5);
+            Expect_Code("fnmadd\ts21,s30,s0,s0");
+        }
+
+        [Test]
+        public void AArch64Dis_sbcs()
+        {
+            Given_Instruction(0xFA01001F);
+            Expect_Code("sbcs\tx31,x0,x1");
+        }
+
+        [Test]
+        public void AArch64Dis_bics_64()
+        {
+            Given_Instruction(0xEA2202DF);
+            Expect_Code("bics\tx31,x22,x2");
+        }
+
+        [Test]
+        public void AArch64Dis_mrs()
+        {
+            Given_Instruction(0xD538D081);
+            Expect_Code("mrs\tx1,tpidr_el1");
+        }
+
+        [Test]
+        public void AArch64Dis_msr_imm()
+        {
+            Given_Instruction(0xD50342DF);
+            Expect_Code("msr\tpstate,#2");
+        }
+
+        [Test]
+        public void AArch64Dis_dmb()
+        {
+            Given_Instruction(0xD50339BF);
+            Expect_Code("dmb\t#9");
+        }
+
+        [Test]
+        public void AArch64Dis_dsb()
+        {
+            Given_Instruction(0xD5033F9F);
+            Expect_Code("dsb\t#&F");
+        }
+
+        [Test]
+        public void AArch64Dis_isb()
+        {
+            Given_Instruction(0xD5033FDF);
+            Expect_Code("isb\t#&F");
+        }
+
+        [Test]
+        public void AArch64Dis_msr_reg()
+        {
+            Given_Instruction(0xD518CC20);
+            Expect_Code("msr\tsysreg3_0_12_12_1,x0");
+        }
+
+
+        [Test]
+        public void AArch64Dis_hint()
+        {
+            Given_Instruction(0xD503229F);
+            Expect_Code("hint\t#&14");
+        }
+
+        [Test]
+        public void AArch64Dis_rbit()
+        {
+            Given_Instruction(0x5AC0035B);
+            Expect_Code("rbit\tw27,w26");
+        }
+
+        [Test]
+        public void AArch64Dis_clz()
+        {
+            Given_Instruction(0x5AC0137B);
+            Expect_Code("clz\tw27,w27");
+        }
+
+        [Test]
+        public void AArch64Dis_bic_reg_64()
+        {
+            Given_Instruction(0x8A3A0273);
+            Expect_Code("bic\tx19,x19,x26");
+        }
+
+        [Test]
+        public void AArch64Dis_brk()
+        {
+            Given_Instruction(0xD4210000);
+            Expect_Code("brk\t#&800");
+        }
+
+        [Test]
+        public void AArch64Dis_eret()
+        {
+            Given_Instruction(0xD69F03E0);
+            Expect_Code("eret");
+        }
+
+        [Test]
+        public void AArch64Dis_eor_v()
+        {
+            Given_Instruction(0x6E291D4A);
+            Expect_Code("eor\tv10.16b,v10.16b,v9.16b");
+        }
+
+        [Test]
+        public void AArch64Dis_eor_v2()
+        {
+            Given_Instruction(0x2E231C03);
+            Expect_Code("eor\tv3.8b,v0.8b,v3.8b");
+        }
+
+        [Test]
+        public void AArch64Dis_ldxr()
+        {
+            Given_Instruction(0xC85F7C81);
+            Expect_Code("ldxr\tx1,[x4]");
+        }
+
+        [Test]
+        public void AArch64Dis_ldaxr()
+        {
+            Given_Instruction(0xC85FFE80);
+            Expect_Code("ldaxr\tx0,[x20]");
+        }
+
+
+        [Test]
+        public void AArch64Dis_rev_reg64()
+        {
+            Given_Instruction(0xDAC00C63);
+            Expect_Code("rev\tx3,x3");
+        }
+
+        [Test]
+        public void AArch64Dis_sha1h()
+        {
+            Given_Instruction(0x5E28098D);
+            Expect_Code("sha1h\ts13,s12");
+        }
+
+        [Test]
+        public void AArch64Dis_sha1c_q()
+        {
+            Given_Instruction(0x5E0501CC);
+            Expect_Code("sha1c\tq12,s14,v5.4s");
+        }
+
+        [Test]
+        public void AArch64Dis_add_v()
+        {
+            Given_Instruction(0x0EAD84E7);
+            Expect_Code("add\tv7.2s,v7.2s,v13.2s");
+        }
+
+        [Test]
+        public void AArch64Dis_ext_vb()
+        {
+            Given_Instruction(0x2E1B2138);
+            Expect_Code("ext\tv24.8b,v9.8b,v27.8b,#4");
+        }
+
+
+
+        [Test]
+        public void AArch64Dis_ext_v()
+        {
+            Given_Instruction(0x6E000800);
+            Expect_Code("ext\tv0.16b,v0.16b,v0.16b,#1");
+        }
+
+
+        // Reko: a decoder for AArch64 instruction 5E106271 at address 00000000000239B4 has not been implemented. (DataProcessingScalarFpAdvancedSimd - op0=5 op1=0b00 op2=???)
+        [Test]
+        public void AArch64Dis_sha256su1()
+        {
+            Given_Instruction(0x5E106271);
+            Expect_Code("sha256su1\tv17.4s,v19.4s,v16.4s");
+        }
+
+        [Test]
+        public void AArch64Dis_aesd()
+        {
+            Given_Instruction(0x4E285B03);
+            Expect_Code("aesd\tv3.16b,v24.16b");
+        }
+
+        [Test]
+        public void AArch64Dis_aese()
+        {
+            Given_Instruction(0x4E284A44);
+            Expect_Code("aese\tv4.16b,v18.16b");
+
+        }
+
+        [Test]
+        public void AArch64Dis_add_vd()
+        {
+            Given_Instruction(0x4EE48485);
+            Expect_Code("add\tv5.2d,v4.2d,v4.2d");
+        }
+
+        [Test]
+        public void AArch64Dis_movi_v()
+        {
+            Given_Instruction(0x0F020508);
+            Expect_Code("movi\tv8.2s,#&48");
+        }
+
+        [Test]
+        public void AArch64Dis_fnmsub()
+        {
+            Given_Instruction(0x1F74DDE8);
+            Expect_Code("fnmsub\td8,d15,d20,d23");
+        }
+
+        [Test]
+        public void AArch64Dis_sqdmulh()
+        {
+            Given_Instruction(0x0E62B76F);
+            Expect_Code("sqdmulh\tv15.4h,v27.4h,v2.4h");
+        }
+
+        [Test]
+        public void AArch64Dis_crc32x()
+        {
+            Given_Instruction(0x9AC54C00);
+            Expect_Code("crc32x\tw0,w0,x5");
+        }
+
+        [Test]
+        public void AArch64Dis_crc32b()
+        {
+            Given_Instruction(0x1AC14000);
+            Expect_Code("crc32b\tw0,w0,w1");
+        }
+
+        [Test]
+        public void AArch64Dis_ror_reg32()
+        {
+            //$TODO: should be 'ror' according to ARM AArch64 manual == the w0,w0 is an alias
+            Given_Instruction(0x13801C02);
+            Expect_Code("extr\tw2,w0,w0,#7");
+        }
+
+
+
+        [Test]
+        public void AArch64Dis_stlxr()
+        {
+            Given_Instruction(0x8814FE62);
+            Expect_Code("stlxr\tw20,w2,[x19]");
+
+        }
+
+        [Test]
+        public void AArch64Dis_extr()
+        {
+            //$TODO: this is probably a ror
+            Given_Instruction(0x93C08040);
+            Expect_Code("extr\tx0,x2,x0,#&20");
+
+        }
+
+        [Test]
+        public void AArch64Dis_stxr()
+        {
+            Given_Instruction(0x88037CA4);
+            Expect_Code("stxr\tw3,w4,[x5]");
+        }
+
+        [Test]
+        public void AArch64Dis_08007E98()
+        {
+            Given_Instruction(0x08007E98);
+            Expect_Code("stxrb\tw0,w24,[x20]");
+        }
+
+        [Test]
+        public void AArch64Dis_stnp()
+        {
+            Given_Instruction(0xA81A664B);
+            Expect_Code("stnp\tx11,x25,[x18,#&1A0]");
+        }
+
+
+
+        // Reko: a decoder for AArch64 instruction 1AC25463 at address 0000000000027A80 has not been implemented. (* Data Processing 2 source - sf:S=0:0 opcode=0101xx)
+        [Test]
+        public void AArch64Dis_crc32ch()
+        {
+            Given_Instruction(0x1AC25463);
+            Expect_Code("crc32ch\tw3,w3,w2");
+        }
+
+        [Test]
+        public void AArch64Dis_ldarxh()
+        {
+            Given_Instruction(0x485FFC62);
+            Expect_Code("ldaxrh\tw2,[x3]");
+        }
+
+        [Test]
+        public void AArch64Dis_strlh()
+        {
+            Given_Instruction(0x489FFC18);
+            Expect_Code("stlrh\tw24,[x0]");
+        }
+
+        [Test]
+        public void AArch64Dis_ldarh()
+        {
+            Given_Instruction(0x48DFFC33);
+            Expect_Code("ldarh\tw19,[x1]");
+        }
+
+        [Test]
+        public void AArch64Dis_sshr_v()
+        {
+            Given_Instruction(0x4F09044A);
+            Expect_Code("sshr\tv10.16b,v2.16b,#7");
+        }
+
+        [Test]
+        public void AArch64Dis_ldp()
+        {
+            Given_Instruction(0x2D646C2F);
+            Expect_Code("ldp\ts15,s27,[x1,-#&E0]");
+        }
+
+        [Test]
+        public void AArch64Dis_ldxrb()
+        {
+            Given_Instruction(0x085F7C13);
+            Expect_Code("ldxrb\tw19,[x0]");
+        }
+
+        /*
+         * //$BORED: amuse yourself by making these tests pass.
+        [Test]
+        public void AArch64Dis_ld1_range()
+        {
+            Given_Instruction(0x4CDF2059);
+            Expect_Code("ld1\t{v25.16b-v28.16b},[x2],#64");
+        }
+
+        [Test]
+        public void AArch64Dis_dc_civac()
+        {
+            Given_Instruction(0xD50B7E20);
+            Expect_Code("dc\tcivac,x0");
+        }
+
+
+        [Test]
+        public void AArch64Dis_ld1()
+        {
+            Given_Instruction(0x0C007003);
+            Expect_Code("ld1\t{v3.8b},[x0]");
+        }
+
+        [Test]
+        public void AArch64Dis_st1()
+        {
+            Given_Instruction(0x4C0070A4);
+            Expect_Code("st1\t{v4.16b},[x5]");
+        }
+
+        [Test]
+        public void AArch64Dis_st1_range()
+        {
+            Given_Instruction(0x4C9F2000);
+            Expect_Code("st1\t{v016b-v3.16b},[x0],#64");
+        }
+
+        [Test]
+        public void AArch64Dis_st3_range()
+        {
+            Given_Instruction(0x0D89A18C);
+            Expect_Code("st3\t{v12.s-v14.s}[0], x[12], x9");
+        }
+
+        [Test]
+        public void AArch64Dis_umov()
+        {
+            Given_Instruction(0x0E013C06);
+            Expect_Code("umov\tw6,v0.b[0]");
+        }
+
+        [Test]
+        public void AArch64Dis_pmull()
+        {
+            Given_Instruction(0x0EE5E005);
+            Expect_Code("pmull\tv5.1q,v0.1d,v5.1d");
+        }
+
+        [Test]
+        public void AArch64Dis_prfm_pld1keep()
+        {
+            Given_Instruction(0xF8A06B20);
+            Expect_Code("prfm\tpld1keep,[x25,x0]");
+        }
+
+        [Test]
+        public void AArch64Dis_mov_v_slice()
+        {
+            Given_Instruction(0x4E081CE4);
+            Expect_Code("mov\tv4.d[0],x7");
+        }
+
+        [Test]
+        public void AArch64Dis_sha1su0()
+        {
+            Given_Instruction(0x5E09310B);
+            Expect_Code("sha1su0\tv11.4s,v8.4s,v9.4s");
+        }
+        */
     }
 }

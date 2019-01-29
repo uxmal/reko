@@ -40,7 +40,7 @@ namespace Reko.UnitTests.Scanning
         {
             this.sr = new ScanResults
             {
-                FlatInstructions = new SortedList<Address, ScanResults.instr>(),
+                FlatInstructions = new Dictionary<ulong, ScanResults.instr>(),
                 FlatEdges = new List<ScanResults.link>(),
                 KnownProcedures = new HashSet<Address>(),
                 DirectlyCalledAddresses = new Dictionary<Address, int>(),
@@ -89,7 +89,7 @@ namespace Reko.UnitTests.Scanning
                     Class = rtlc,
                 }
             };
-            sr.FlatInstructions.Add(addr, instr);
+            sr.FlatInstructions.Add(addr.ToLinear(), instr);
             addr += byteSize;
         }
 

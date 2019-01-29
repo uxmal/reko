@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,11 +35,6 @@ namespace Reko.Core
 		private DirectedGraphImpl<Procedure> graphProcs = new DirectedGraphImpl<Procedure>();
 		private DirectedGraphImpl<object> graphStms = new DirectedGraphImpl<object>();
 
-        public CallGraph()
-        {
-            this.EntryPoints = new List<Procedure>();
-        }
-
 		public void AddEdge(Statement stmCaller, Procedure callee)
 		{
 			graphProcs.AddNode(stmCaller.Block.Procedure);
@@ -51,7 +46,7 @@ namespace Reko.Core
 			graphStms.AddEdge(stmCaller, callee);
 		}
 
-        public List<Procedure> EntryPoints { get; private set; }
+        public List<Procedure> EntryPoints { get; } = new List<Procedure>();
 
         public void AddEntryPoint(Procedure proc)
 		{

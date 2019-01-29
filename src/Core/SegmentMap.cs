@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -28,16 +28,17 @@ using System.Text;
 
 namespace Reko.Core
 {
+    /// <summary>
+    /// Describes the address space of a loaded executable.
+    /// </summary>
     public class SegmentMap
     {
         public event EventHandler MapChanged;
 
-        private SortedList<Address, ImageSegment> segments;
-
         public SegmentMap(Address addrBase, params ImageSegment[] segments)
         {
             this.BaseAddress = addrBase ?? throw new ArgumentNullException("addrBase");
-            this.segments = new SortedList<Address, ImageSegment>();
+            this.Segments = new SortedList<Address, ImageSegment>();
             foreach (var seg in segments)
             {
                 this.AddSegment(seg);
@@ -46,10 +47,7 @@ namespace Reko.Core
 
         public Address BaseAddress { get; private set; }
 
-        public SortedList<Address, ImageSegment> Segments
-        {
-            get { return segments; }
-        }
+        public SortedList<Address, ImageSegment> Segments { get; }
 
         /// <summary>
         /// Adds a segment to the segment map. The segment is assumed to be disjoint
@@ -93,11 +91,10 @@ namespace Reko.Core
 
         public ImageSegment AddSegment(ImageSegment segNew)
         {
-            ImageSegment seg;
-            if (!TryFindSegment(segNew.Address, out seg))
+            if (!TryFindSegment(segNew.Address, out ImageSegment seg))
             {
                 EnsureSegmentSize(segNew);
-                segments.Add(segNew.Address, segNew);
+                Segments.Add(segNew.Address, segNew);
                 MapChanged.Fire(this);
                 //DumpSections();
                 return segNew;
@@ -112,7 +109,7 @@ namespace Reko.Core
                 var segSplit = new ImageSegment(segNew.Name, segNew.Address, segNew.MemoryArea, segNew.Access);
                 segSplit.Size = (uint)(seg.Size - delta);
                 seg.Size = (uint)delta;
-                segments.Add(segNew.Address, segSplit);
+                Segments.Add(segNew.Address, segSplit);
 
                 // And split any items in the segment
 
@@ -141,9 +138,9 @@ namespace Reko.Core
 
         public long GetExtent()
         {
-            if (segments.Count == 0)
+            if (Segments.Count == 0)
                 return 0;
-            var lastMem = segments.Values.Last().MemoryArea;
+            var lastMem = Segments.Values.Last().MemoryArea;
             return (lastMem.BaseAddress - BaseAddress) + lastMem.Length;
         }
 
@@ -170,7 +167,7 @@ namespace Reko.Core
 		public Address MapLinearAddressToAddress(ulong linearAddress)
         {
             //$REVIEW: slow; use binary search at least?
-            foreach (ImageSegment seg in segments.Values)
+            foreach (ImageSegment seg in Segments.Values)
             {
                 if (seg.IsInRange(linearAddress))
                 {
@@ -191,7 +188,7 @@ namespace Reko.Core
         /// <returns></returns>
         public bool TryFindSegment(Address addr, out ImageSegment segment)
         {
-            if (!segments.TryGetLowerBound(addr, out segment))
+            if (!Segments.TryGetLowerBound(addr, out segment))
                 return false;
             if (segment.Address.ToLinear() == addr.ToLinear())
                 return true;
@@ -210,7 +207,7 @@ namespace Reko.Core
         public ImageMap CreateImageMap()
         {
             var imageMap = new ImageMap(this.BaseAddress);
-            foreach (var segment in segments.Values)
+            foreach (var segment in Segments.Values)
             {
                 imageMap.AddItem(segment.Address, new ImageMapItem(segment.Size) { DataType = new UnknownType() });
             }

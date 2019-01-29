@@ -128,7 +128,7 @@ l00000600:
 	Mem10[r15_7 - 176:byte] = 0x00
 	Mem14[r15_7 - 16:word64] = r14
 	Mem16[r15_7 - 8:word64] = r15_7 - 176
-	r2_26 = (word64) __libc_start_main(Mem16[DPB(r2, 0x00002040, 0):word64], qwLocA0, fp - 152, DPB(r5, 0x00000820, 0), DPB(r6, 0x00000888, 0), Mem16[r15_7 - 16:(ptr32 (fn void ()))], Mem16[r15_7 - 8:(ptr32 void)])
+	__libc_start_main(Mem16[DPB(r2, 0x00002040, 0):word64], qwLocA0, fp - 152, DPB(r5, 0x00000820, 0), DPB(r6, 0x00000888, 0), Mem16[r15_7 - 16:(ptr32 (fn void ()))], Mem16[r15_7 - 8:(ptr32 void)])
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

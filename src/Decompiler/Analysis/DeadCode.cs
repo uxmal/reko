@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -58,15 +58,13 @@ namespace Reko.Analysis
 				for (int iStm = 0; iStm < b.Statements.Count; ++iStm)
 				{
 					Statement stm = b.Statements[iStm];
-					Assignment ass = stm.Instruction as Assignment;
-					if (ass != null)
+					if (stm.Instruction is Assignment ass)
 					{
-						Identifier id = ass.Dst as Identifier;
-						if (id != null && ass.Src is Application)
+						if (ass.Dst is Identifier id && ContainedApplication(ass.Src) is Application app)
 						{
 							if (ssa.Identifiers[id].Uses.Count == 0)
 							{
-								stm.Instruction = new SideEffect(ass.Src);
+								stm.Instruction = new SideEffect(app);
 								ssa.Identifiers[id].DefStatement = null;
 							}
 						}
@@ -74,6 +72,36 @@ namespace Reko.Analysis
 				}
 			}
 		}
+
+        /// <summary>
+        /// Digs out an <see cref="Application"/> that may be masked by a 
+        /// chain of dead expressions.
+        /// expressions.
+        /// </summary>
+        private static Application ContainedApplication(Expression exp)
+        {
+            for (; ;)
+            {
+                switch (exp)
+                {
+                case Application app: return app;
+                case Cast cast: return ContainedApplication(cast.Expression);
+                case Slice slice: return ContainedApplication(slice.Expression);
+                case UnaryExpression u: return ContainedApplication(u.Expression);
+                case Dereference deref: return ContainedApplication(deref.Expression);
+                case DepositBits dpb:
+                    var s = ContainedApplication(dpb.Source);
+                    var b = ContainedApplication(dpb.InsertedBits);
+                    if (s != null && b == null)
+                        return s;
+                    if (s == null && b != null)
+                        return b;
+                    return null;
+                default:
+                    return null;
+                }
+            }
+        }
 
         /// <summary>
         /// Remove dead "def variables in a call instruction".

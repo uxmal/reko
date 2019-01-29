@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -65,9 +65,9 @@ namespace Reko.Core.Assemblers
         public void Align(int skip, int alignment)
         {
             if (skip < 0)
-                throw new ArgumentException("skip", "Argument must be >= 0.");
+                throw new ArgumentException(nameof(skip), "Argument must be >= 0.");
             if ((alignment & (alignment - 1)) != 0 || alignment <= 0)
-                throw new ArgumentException("alignment", "Alignment must be a power of 2 larger than 0.");
+                throw new ArgumentException(nameof(alignment), "Alignment must be a power of 2 larger than 0.");
             EmitBytes(0, skip);
 
             var mask = alignment - 1;
@@ -157,7 +157,7 @@ namespace Reko.Core.Assemblers
 		}
 
         /// <summary>
-        /// Patches a value by fetching it from the stream and adding an offset.
+        /// Patches a big-endian value by fetching it from the stream and adding an offset.
         /// </summary>
         /// <param name="offsetPatch"></param>
         /// <param name="offsetRef"></param>
@@ -202,7 +202,7 @@ namespace Reko.Core.Assemblers
         }
 
 		/// <summary>
-		/// Patches a value by fetching it from the stream and adding an offset.
+		/// Patches a little-endian value by fetching it from the stream and adding an offset.
 		/// </summary>
 		/// <param name="offsetPatch"></param>
 		/// <param name="offsetRef"></param>

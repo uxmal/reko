@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@ using System.Xml.Serialization;
 namespace Reko.Core.Serialization
 {
 	/// <summary>
-	/// Extra characteristics that describe extra-lingustic semantics of a procedure.
+	/// This class describes extra-lingustic semantics of a procedure.
     /// These are often helpful when decompiling.
 	/// </summary>
 	public class ProcedureCharacteristics
@@ -56,6 +56,9 @@ namespace Reko.Core.Serialization
         [DefaultValue(false)]
         public virtual bool Terminates { get; set; }
 
+        /// <summary>
+        /// This property is set to true if this procedure returns an allocated chunk of memory.
+        /// </summary>
         [XmlElement("allocator")]
         [DefaultValue(false)]
         public bool Allocator { get; set; }
@@ -78,21 +81,16 @@ namespace Reko.Core.Serialization
 
 	public class DefaultProcedureCharacteristics : ProcedureCharacteristics
 	{
-		private static DefaultProcedureCharacteristics instance;
-
 		private DefaultProcedureCharacteristics()
 		{
 		}
 
 		static DefaultProcedureCharacteristics()
 		{
-			instance = new DefaultProcedureCharacteristics();
+			Instance = new DefaultProcedureCharacteristics();
 		}
 
-		public static DefaultProcedureCharacteristics Instance
-		{
-			get { return instance; }
-		}
+		public static DefaultProcedureCharacteristics Instance { get; }
 
 		public override bool IsAlloca
 		{

@@ -34,7 +34,8 @@ namespace Reko.Core.Serialization
     /// Note that you may safely *add* attributes and elements to the serialization
     /// format. However, should you *rename* or delete XML nodes, you must copy the serialization
     /// file format into a new file, bump the namespace identifier and the class name. You will
-    /// also have to modify the ProjectSerializer to handle the new format.</remarks>
+    /// also have to modify the ProjectSerializer to handle the new format.
+    /// </remarks>
     [XmlRoot(ElementName = "project", Namespace = "http://schemata.jklnet.org/Reko/v4")]
     public class Project_v4 : SerializedProject
     {

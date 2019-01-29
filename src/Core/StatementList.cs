@@ -26,7 +26,7 @@ namespace Reko.Core
 {
 	public class StatementList : List<Statement>
 	{
-		private Block block;
+		private readonly Block block;
 
 		public StatementList(Block block)
 		{

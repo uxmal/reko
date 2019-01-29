@@ -204,8 +204,8 @@ namespace Reko.Core.Code
 
 		public virtual Expression VisitFieldAccess(FieldAccess acc)
 		{
-			acc.Structure = acc.Structure.Accept(this);
-			return acc;
+			var str = acc.Structure.Accept(this);
+            return new FieldAccess(acc.DataType, str, acc.Field);
 		}
 
 		public virtual Expression VisitIdentifier(Identifier id)

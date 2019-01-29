@@ -44,7 +44,7 @@ namespace Reko.Arch.Arm.AArch64
 
             protected void DumpMaskedInstruction(string tag, uint wInstr, uint shMask)
             {
-                return;
+                //return;
                 var hibit = 0x80000000u;
                 var sb = new StringBuilder();
                 for (int i = 0; i < 32; ++i)
@@ -100,10 +100,11 @@ namespace Reko.Arch.Arm.AArch64
 
         public class BitfieldDecoder : Decoder
         {
+            private readonly string tag;
             private readonly Bitfield[] bitfields;
             private readonly Decoder[] decoders;
 
-            public BitfieldDecoder(Bitfield[] bitfields, params Decoder[] decoders)
+            public BitfieldDecoder(string tag, Bitfield[] bitfields, params Decoder[] decoders)
             {
                 Debug.Assert(1 << bitfields.Sum(b => b.Length) == decoders.Length, 
                     $"Expected {1 << bitfields.Sum(b => b.Length)} decoders but found {decoders.Length}.");

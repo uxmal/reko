@@ -37,7 +37,6 @@ namespace Reko.Arch.X86
         private const InstrClass LinkTransfer = InstrClass.Call | InstrClass.Transfer;
         private const InstrClass Transfer = InstrClass.Transfer;
 
-
 		public Opcode code;		        // Opcode of the instruction.
         public InstrClass iclass;       // Instruction class.
         public int repPrefix;           // 0 = no prefix, 2 = repnz, 3 = repz

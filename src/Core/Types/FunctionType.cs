@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -54,14 +54,12 @@ namespace Reko.Core.Types
             Identifier returnValue,
             params Identifier [] parameters)
         {
-            if (parameters == null)
-                throw new ArgumentNullException("parameters");
+            this.Parameters = parameters ?? throw new ArgumentNullException(nameof(parameters));
             this.ParametersValid = true;
             this.FpuStackArgumentMax = -1;
             if (returnValue == null)
                 returnValue = new Identifier("", VoidType.Instance, null);
             this.ReturnValue = returnValue;
-            this.Parameters = parameters;
         }
 
         public static FunctionType Func(Identifier returnId, params Identifier[] formals)
@@ -69,6 +67,11 @@ namespace Reko.Core.Types
             return new FunctionType(returnId, formals);
         }
 
+        /// <summary>
+        /// Create a function type with a void return type.
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <returns>A function type.</returns>
         public static FunctionType Action(params Identifier [] parameters)
         {
             return new FunctionType(new Identifier("", VoidType.Instance, null), parameters);
@@ -109,7 +112,7 @@ namespace Reko.Core.Types
 
         public bool IsVarargs()
         {
-            var last = Parameters != null ? Parameters.LastOrDefault() : null;
+            var last = Parameters?.LastOrDefault();
             return last != null && last.Name == "...";
         }
 

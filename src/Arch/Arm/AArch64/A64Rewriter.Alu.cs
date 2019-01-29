@@ -434,6 +434,13 @@ namespace Reko.Arch.Arm.AArch64
                 case Opcode.uxtw:
                     idx = ZeroExtend(64, PrimitiveType.UInt32, idx);
                     break;
+                case Opcode.sxtx:
+                case Opcode.uxtx:
+                    if (mem.IndexShift != 0)
+                    {
+                        idx = m.Shl(idx, mem.IndexShift);
+                    }
+                    break;
                 default:
                     throw new NotImplementedException($"Register extension {mem.IndexExtend} not implemented yet.");
                 }

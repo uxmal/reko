@@ -1289,10 +1289,36 @@ l08EC:
 	hl = Mem0[0x168B:word16]
 	a = Mem0[0x151E:byte]
 	Mem0[hl:byte] = a
+	// succ:  l08F3_thunk_fn08FD
+l08F3_thunk_fn08FD:
+	call fn08FD (retsize: 0;)
+	return
+	// succ:  fn08EC_exit
+fn08EC_exit:
+
+
+// fn08FD
+// Return size: 0
+define fn08FD
+fn08FD_entry:
 	// succ:  l08FD
 l08FD:
+	sp = fp
+	// succ:  l08FD_thunk_fn0920
+l08FD_thunk_fn0920:
+	call fn0920 (retsize: 0;)
+	return
+	// succ:  fn08FD_exit
+fn08FD_exit:
+
+
+// fn0920
+// Return size: 0
+define fn0920
+fn0920_entry:
 	// succ:  l0920
 l0920:
+	sp = fp
 	de = 0x0080
 	c = 0x1A
 	F_DMAOFF(de)
@@ -1301,8 +1327,8 @@ l0920:
 l0928_thunk_fn092A:
 	call fn092A (retsize: 0;)
 	return
-	// succ:  fn08EC_exit
-fn08EC_exit:
+	// succ:  fn0920_exit
+fn0920_exit:
 
 
 // fn092A

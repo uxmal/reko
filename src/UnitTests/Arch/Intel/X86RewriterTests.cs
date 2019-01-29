@@ -1436,14 +1436,14 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86rw_cmpxchg()
+        public void X86rw_cmpxchg_byte()
         {
             Run32bitTest(0xF0, 0x0F, 0xB0, 0x23); // lock cmpxchg[ebx], ah
             AssertCode(
                 "0|L--|10000000(1): 1 instructions",
                 "1|L--|__lock()",
                 "2|L--|10000001(3): 1 instructions",
-                "3|L--|Z = __cmpxchg(Mem0[ebx:byte], ah, eax, out eax)");
+                "3|L--|Z = __cmpxchg(Mem0[ebx:byte], ah, al, out al)");
         }
 
         [Test]

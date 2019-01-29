@@ -125,11 +125,12 @@ namespace Reko.Core
     {
         None = -1,
         Register = 0,   // Few architectures have 4096 registers (fingers xD)
-        Memory = 4096,
+        Memory = 4096, // Refers to a memory space
         FpuStack = 4098,
-        Global = 8191,
-        Temporary = 8192,
-        Stack = 16834,
+        Global = 8191,          // Global variable within a memory space
+        SystemRegister = 8192,  // Space for system / control registers
+        Stack = 32768,
+        Temporary = 65536,
     }
 
     /// <summary>
@@ -467,6 +468,12 @@ namespace Reko.Core
         public static RegisterStorage Reg64(string name, int number)
         {
             return new RegisterStorage(name, number, 0, PrimitiveType.Word64);
+        }
+
+        // Create a system register.
+        public static RegisterStorage Sysreg(string name, int number, PrimitiveType size)
+        {
+            return new RegisterStorage(name, number + (int)StorageDomain.SystemRegister, 0, size);
         }
 
         public override ulong BitSize

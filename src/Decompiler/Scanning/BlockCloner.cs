@@ -210,7 +210,11 @@ namespace Reko.Scanning
 
         public Expression VisitConditionalExpression(ConditionalExpression c)
         {
-            throw new NotImplementedException();
+            return new ConditionalExpression(
+                c.DataType,
+                c.Condition.Accept(this),
+                c.ThenExp.Accept(this),
+                c.FalseExp.Accept(this));
         }
 
         public Expression VisitConditionOf(ConditionOf cof)

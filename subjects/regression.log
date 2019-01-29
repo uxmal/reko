@@ -24,7 +24,7 @@ error: An error occurred during decompilation. System.ArgumentException: An item
    at Reko.Analysis.CallRewriter.RewriteCalls(SsaState ssaCaller) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 327
    at Reko.Analysis.CallRewriter.Rewrite(IPlatform platform, List`1 ssts, ProgramDataFlow summaries, DecompilerEventListener eventListener) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 103
    at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 137
-   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 126
+   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 127
    at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 174
 === Elf\ARM\angr-685\RTOSDemo.axf
 *** Elf\ARM\angr-685\RTOSDemo.axf
@@ -37,7 +37,7 @@ error: An error occurred during decompilation. System.ArgumentException: An item
    at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 496
    at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
    at Reko.Typing.TypeCollector.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 227
-   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 88
+   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 87
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 84
 0000A284: warning: Expected sizes of arrays to have been determined by now
 20000000: warning: Expected sizes of arrays to have been determined by now
@@ -701,7 +701,7 @@ Parameter name: key
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
    at Reko.Typing.TypeTransformer.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 257
    at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 97
-   at Reko.DecompilerDriver.ReconstructTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 310
+   at Reko.DecompilerDriver.ReconstructTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 311
 00000200: warning: Expected sizes of arrays to have been determined by now
 0000021C: warning: Expected sizes of arrays to have been determined by now
 00000222: warning: Expected sizes of arrays to have been determined by now
@@ -745,7 +745,7 @@ Parameter name: index
    at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
    at Reko.Structure.CompoundConditionCoalescer.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
    at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 484
+   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 485
 00017540: warning: Expected sizes of arrays to have been determined by now
 00017540: warning: Expected sizes of arrays to have been determined by now
 === Elf\x86-64\ais3_crackme\ais3_crackme
@@ -768,7 +768,7 @@ error: An error occurred during decompilation. System.ArgumentException: An item
    at Reko.Analysis.CallRewriter.RewriteCalls(SsaState ssaCaller) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 327
    at Reko.Analysis.CallRewriter.Rewrite(IPlatform platform, List`1 ssts, ProgramDataFlow summaries, DecompilerEventListener eventListener) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 103
    at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 137
-   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 126
+   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 127
    at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 174
 === Elf\x86-64\pngpixel\pngpixel
 *** Elf\x86-64\pngpixel\pngpixel
@@ -823,7 +823,7 @@ error: An error occurred during decompilation. System.ArgumentException: An item
    at Reko.Analysis.CallRewriter.RewriteCalls(SsaState ssaCaller) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 327
    at Reko.Analysis.CallRewriter.Rewrite(IPlatform platform, List`1 ssts, ProgramDataFlow summaries, DecompilerEventListener eventListener) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 103
    at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 137
-   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 126
+   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 127
    at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 174
 === Elf\x86-64\retpoline\retpoline.elf
 === Elf\x86-64\retpoline\retpoline_stripped.elf
@@ -997,7 +997,7 @@ error: An error occurred during decompilation. System.ArgumentException: An item
    at Reko.Analysis.CallRewriter.RewriteCalls(SsaState ssaCaller) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 327
    at Reko.Analysis.CallRewriter.Rewrite(IPlatform platform, List`1 ssts, ProgramDataFlow summaries, DecompilerEventListener eventListener) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 103
    at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 137
-   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 126
+   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 127
    at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 174
 === MachO\const.o
 === Microchip\C18\PIC18Extd\PIC18EggExtd.hex
@@ -1018,7 +1018,7 @@ error: An error occurred during decompilation. System.Collections.Generic.KeyNot
    at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
    at Reko.Core.Lib.BlockDominatorGraph..ctor(DirectedGraph`1 graph, Block entry) in D:\dev\uxmal\reko\master\src\Core\Lib\BlockDominatorGraph.cs:line 34
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 281
-   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 129
+   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 130
    at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 174
 === PDP-11\space.dcproject
 *** PDP-11\space.dcproject
@@ -1044,7 +1044,7 @@ error: An error occurred during decompilation. System.Collections.Generic.KeyNot
    at Reko.Core.Lib.SccFinder`1.Find(TNode start) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 104
    at Reko.Analysis.DataFlowAnalysis.RewriteProceduresToSsa() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 153
    at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 123
-   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 126
+   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 127
    at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 174
 === PDP-11\spcinv.sav
 *** PDP-11\spcinv.sav
@@ -1055,7 +1055,7 @@ error: An error occurred during decompilation. System.Collections.Generic.KeyNot
    at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
    at Reko.Core.Lib.BlockDominatorGraph..ctor(DirectedGraph`1 graph, Block entry) in D:\dev\uxmal\reko\master\src\Core\Lib\BlockDominatorGraph.cs:line 34
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 281
-   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 129
+   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 130
    at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 174
 === PE\MIPS\swlswr\test.exe
 === PE\PPC\hello_ppc.exe
@@ -1079,7 +1079,7 @@ error: An error occurred during decompilation. System.NotSupportedException: Con
    at Reko.Core.Lib.SccFinder`1.Find(TNode start) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 104
    at Reko.Analysis.DataFlowAnalysis.RewriteProceduresToSsa() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 153
    at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 123
-   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 126
+   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 127
    at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 174
 === PE\x86-64\varargs_test\varargs_test.exe
 *** PE\x86-64\varargs_test\varargs_test.exe
@@ -1138,7 +1138,7 @@ error: An error occurred during decompilation. System.Collections.Generic.KeyNot
    at Reko.Core.Lib.SccFinder`1.Find(TNode start) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 104
    at Reko.Analysis.DataFlowAnalysis.RewriteProceduresToSsa() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 153
    at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 123
-   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 126
+   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 127
    at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 174
 === PE\x86\ExeDll\Executable.exe
 === PE\x86\IncorrectUserSignature\IncorrectUserSignature.dcproject
@@ -1158,7 +1158,7 @@ Parameter name: key
    at Reko.Analysis.CallRewriter.EnsureSignature(SsaState ssa, IStorageBinder frame, ProcedureFlow flow) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 164
    at Reko.Analysis.CallRewriter.Rewrite(IPlatform platform, List`1 ssts, ProgramDataFlow summaries, DecompilerEventListener eventListener) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 96
    at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 137
-   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 126
+   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 127
    at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 174
 === TLCS\90\TLCS-90.corpus
 *** TLCS\90\TLCS-90.corpus
@@ -1181,7 +1181,7 @@ error: An error occurred during decompilation. System.Collections.Generic.KeyNot
    at Reko.Core.Lib.SccFinder`1.Find(TNode start) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 104
    at Reko.Analysis.DataFlowAnalysis.RewriteProceduresToSsa() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 153
    at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 123
-   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 126
+   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 127
    at Reko.CmdLine.CmdLineDriver.DecompileRawImage(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 220
 === VMS-vax\unzip.dcproject
 === i8051\rtl8188efw.dcproject
@@ -1255,10 +1255,10 @@ error: An error occurred during decompilation. System.ArgumentException: An item
    at Reko.Analysis.CallRewriter.RewriteCalls(SsaState ssaCaller) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 327
    at Reko.Analysis.CallRewriter.Rewrite(IPlatform platform, List`1 ssts, ProgramDataFlow summaries, DecompilerEventListener eventListener) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 103
    at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 137
-   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 126
+   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 127
    at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 174
 === regressions\snowman-51\switch.dcproject
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 56 binaries in 79.94 seconds ---
+Decompiled 56 binaries in 74.21 seconds ---

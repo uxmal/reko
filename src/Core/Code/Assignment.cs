@@ -53,7 +53,6 @@ namespace Reko.Core.Code
 		{
 			v.VisitAssignment(this);
 		}
-
 	}
 
 	/// <summary>
@@ -90,8 +89,9 @@ namespace Reko.Core.Code
 	}
 
     /// <summary>
-    /// Represents an assignment due to alias expansion. 
-    /// //$REFACTOR: this class is used so rarely, it may be deleted.
+    /// Represents an assignment due to alias expansion. It exists to denote
+    /// assignments that don't correspond to actual code present in the original
+    /// binary.
     /// </summary>
     public class AliasAssignment : Assignment
     {

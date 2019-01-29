@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -74,7 +74,6 @@ namespace Reko.Arch.Arm.AArch64
             case VectorData.F32: return 32;
             case VectorData.F64: return 64;
             }
-            Debug.Assert(false, "Impossiburu");
             return 0;
         }
 

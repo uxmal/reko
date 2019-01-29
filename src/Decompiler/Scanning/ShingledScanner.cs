@@ -163,11 +163,15 @@ namespace Reko.Scanning
         /// </returns>
         public byte[] ScanRange(MemoryArea mem, Address addrStart, uint cbAlloc, ulong workToDo)
         {
+            const int ProgressBarUpdateInterval = 256 * 1024;
+
             var y = new byte[cbAlloc];
             // Advance by the instruction granularity.
             var step = program.Architecture.InstructionBitSize / 8;
             var delaySlot = InstrClass.None;
             var rewriterCache = new Dictionary<Address, IEnumerator<RtlInstructionCluster>>();
+            var instrCount = 0;
+
             for (var a = 0; a < y.Length; a += step)
             {
                 y[a] = MaybeCode;
@@ -261,14 +265,18 @@ namespace Reko.Scanning
                     AddInstruction(i);
                 }
                 SaveRewriter(addr + i.Length, dasm, rewriterCache);
-                eventListener.ShowProgress("Shingle scanning", sr.FlatInstructions.Count, (int)workToDo);
+                if (++instrCount >= ProgressBarUpdateInterval)
+                {
+                    instrCount = 0;
+                    eventListener.ShowProgress("Shingle scanning", sr.FlatInstructions.Count, (int) workToDo);
+                }
             }
             return y;
         }
 
         private void AddInstruction(RtlInstructionCluster i)
         {
-            sr.FlatInstructions.Add(i.Address, new ScanResults.instr
+            sr.FlatInstructions.Add(i.Address.ToLinear(), new ScanResults.instr
             {
                 addr = i.Address,
                 size = i.Length,
@@ -326,7 +334,7 @@ namespace Reko.Scanning
             var oldinstrs = sr.Instructions;
             sr.Instructions = oldinstrs
                 .Where(o => !deadNodes.Contains(o.Key))
-                .ToSortedList(o => o.Key, o => o.Value);
+                .ToDictionary(o => o.Key, o => o.Value);
 
             var oldDirectCalls = sr.DirectlyCalledAddresses;
             sr.DirectlyCalledAddresses = oldDirectCalls
@@ -547,11 +555,6 @@ namespace Reko.Scanning
                    | InstrClass.System
                    | InstrClass.Conditional 
                    | InstrClass.Call)) != 0;        //$REVIEW: what if you call a terminating function?
-        }
-
-        private bool IsTransfer(RtlInstructionCluster i, RtlInstruction r)
-        {
-            return r is RtlGoto || r is RtlCall;
         }
 
         /// <summary>
