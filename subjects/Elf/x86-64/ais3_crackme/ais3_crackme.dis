@@ -363,7 +363,7 @@ l00000000004005C5:
 // SymbolicIn:
 
 l00000000004005EB:
-	branch (word32) DPB(rax_19, verify(Mem11[rsi + 0x0000000000000008:word64]), 0) == 0x00000000 l000000000040060E
+	branch (word32) (word64) verify(Mem11[rsi + 0x0000000000000008:word64]) == 0x00000000 l000000000040060E
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

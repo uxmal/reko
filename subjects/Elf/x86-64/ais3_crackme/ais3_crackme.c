@@ -95,7 +95,7 @@ void main(struct Eq_187 * rsi, word32 edi)
 {
 	if (edi != 0x02)
 		puts("You need to enter the secret key!");
-	else if ((word32) DPB(rax_19, verify(rsi->ptr0008), 0) != 0x00)
+	else if ((word32) (word64) verify(rsi->ptr0008) != 0x00)
 		puts("Correct! that is the secret key!");
 	else
 		puts("I'm sorry, that's the wrong secret key!");
@@ -111,7 +111,7 @@ void __libc_csu_init(word64 rdx, word64 rbx, word64 rbp, word64 rsi, word32 edi,
 	word64 rax_27 = _init();
 	if (rbp_18 >> 0x03 != 0x00)
 	{
-		Eq_240 rbx_35 = 0x00;
+		Eq_239 rbx_35 = 0x00;
 		do
 		{
 			r13_50 = DPB(r13_50, r13d_71, 0);

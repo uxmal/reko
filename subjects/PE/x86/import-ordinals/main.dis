@@ -147,7 +147,7 @@ l0040115A:
 	word32 dwLoc04_317 = 0x00000014
 	word32 dwLoc08_318 = 0x00402508
 	word32 esp_36 = esp_20
-	branch (byte) DPB(eax_28, fn0040146F(edx, Mem26[esp_20 - 4:word32]), 0) != 0x00 l00401179
+	branch (byte) (word32) fn0040146F(edx, Mem26[esp_20 - 4:word32]) != 0x00 l00401179
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -167,7 +167,7 @@ l00401179:
 	Mem54[ebp_133 - 0x00000019:byte] = 0x00
 	Mem56[ebp_133 - 0x00000004:word32] = Mem54[ebp_133 - 0x00000004:word32] & 0x00000000
 	word32 edx_139
-	Mem69[ebp_133 - 0x00000024:byte] = (byte) DPB(eax_61, fn0040143A(out edx_139), 0)
+	Mem69[ebp_133 - 0x00000024:byte] = (byte) (word32) fn0040143A(out edx_139)
 	word32 ebx_127 = DPB(ebx, 0x00, 0)
 	word32 eax_70 = Mem69[0x00403334:word32]
 	branch eax_70 == 0x00000001 l00401172

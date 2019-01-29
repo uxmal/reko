@@ -69,7 +69,7 @@ Eq_131 Win32CrtStartup()
 	word32 dwLoc04_317 = 0x14;
 	word32 dwLoc08_318 = 0x00402508;
 	word32 * esp_36 = esp_20;
-	if ((byte) DPB(eax_28, fn0040146F(edx, *(esp_20 - 0x04)), 0) == 0x00)
+	if ((byte) (word32) fn0040146F(edx, *(esp_20 - 0x04)) == 0x00)
 	{
 l00401172:
 		esp_36 -= 0x04;
@@ -82,12 +82,12 @@ l00401172:
 	*(ebp_133 - 0x19) = 0x00;
 	*(ebp_133 - 0x04) &= 0x00;
 	word32 edx_139;
-	*(ebp_133 - 0x24) = (byte) DPB(eax_61, fn0040143A(out edx_139), 0);
+	*(ebp_133 - 0x24) = (byte) (word32) fn0040143A(out edx_139);
 	word32 ebx_127 = DPB(ebx, 0x00, 0);
 	word32 eax_70 = globals->dw403334;
 	if (eax_70 != 0x01)
 	{
-		struct Eq_236 * esp_297;
+		struct Eq_234 * esp_297;
 		Eq_131 eax_301;
 		if (eax_70 == 0x00)
 		{
@@ -95,7 +95,7 @@ l00401172:
 			PVFV ** esp_84 = esp_36 - 0x04;
 			*esp_84 = (PVFV **) &globals->t4020F0;
 			*(esp_84 - 0x04) = 0x004020E4;
-			esp_297 = (struct Eq_236 *) ((char *) esp_84 + 0x04);
+			esp_297 = (struct Eq_234 *) ((char *) esp_84 + 0x04);
 			if (_initterm_e(*(esp_84 - 0x04), *esp_84) != 0x00)
 			{
 				*(ebp_133 - 0x04) = ~0x01;
@@ -191,7 +191,7 @@ l00401172:
 		}
 		if (bl_272 == 0x00)
 			cexit();
-		union Eq_550 * esp_284 = esp_259 - 0x04;
+		union Eq_548 * esp_284 = esp_259 - 0x04;
 		*esp_284 = 0x00;
 		*(esp_284 - 0x04) = 0x01;
 		// Failed to bind call argument.
@@ -199,7 +199,7 @@ l00401172:
 		ptr32 stackArg4 = <invalid>;
 		fn004015E6(stackArg4, *esp_284);
 		*(ebp_133 - 0x04) = ~0x01;
-		esp_297 = (struct Eq_236 *) ((char *) esp_284 + 0x04);
+		esp_297 = (struct Eq_234 *) ((char *) esp_284 + 0x04);
 		eax_301 = eax_252;
 l004012C3:
 		// Failed to bind call argument.
@@ -220,13 +220,13 @@ l004012C3:
 	goto l00401172;
 }
 
-// 004013F6: Register (ptr32 Eq_579) fn004013F6(Stack (ptr32 Eq_580) dwArg04, Stack up32 dwArg08, Register out (ptr32 Eq_579) edxOut)
-struct Eq_579 * fn004013F6(struct Eq_580 * dwArg04, up32 dwArg08, struct Eq_579 & edxOut)
+// 004013F6: Register (ptr32 Eq_577) fn004013F6(Stack (ptr32 Eq_578) dwArg04, Stack up32 dwArg08, Register out (ptr32 Eq_577) edxOut)
+struct Eq_577 * fn004013F6(struct Eq_578 * dwArg04, up32 dwArg08, struct Eq_577 & edxOut)
 {
-	struct Eq_579 * eax_32;
-	struct Eq_584 * ecx_13 = dwArg04 + dwArg04->dw003C / 0x0040;
-	struct Eq_579 * edx_16 = &ecx_13->w0014 + 0x02 + (word32) ecx_13->w0014 / 22;
-	struct Eq_579 * esi_19 = edx_16 + (word32) ecx_13->w0006;
+	struct Eq_577 * eax_32;
+	struct Eq_582 * ecx_13 = dwArg04 + dwArg04->dw003C / 0x0040;
+	struct Eq_577 * edx_16 = &ecx_13->w0014 + 0x02 + (word32) ecx_13->w0014 / 22;
+	struct Eq_577 * esi_19 = edx_16 + (word32) ecx_13->w0006;
 	for (; edx_16 != esi_19; ++edx_16)
 	{
 		if (dwArg08 >= edx_16->dw000C && dwArg08 < edx_16->dw0008 + edx_16->dw000C)
@@ -285,17 +285,17 @@ byte fn0040146F(word32 edx, word32 dwArg04)
 	return (byte) DPB(eax_52, 0x00, 0);
 }
 
-// 0040153F: Register (ptr32 Eq_696) fn0040153F(Register word32 ebx, Register Eq_144 esi, Register Eq_144 edi, Register out ptr32 edxOut, Register out ptr32 ebxOut, Register out ptr32 ebpOut, Register out ptr32 esiOut, Register out ptr32 ediOut)
-struct Eq_696 * fn0040153F(word32 ebx, Eq_144 esi, Eq_144 edi, ptr32 & edxOut, ptr32 & ebxOut, ptr32 & ebpOut, ptr32 & esiOut, ptr32 & ediOut)
+// 0040153F: Register (ptr32 Eq_694) fn0040153F(Register word32 ebx, Register Eq_144 esi, Register Eq_144 edi, Register out ptr32 edxOut, Register out ptr32 ebxOut, Register out ptr32 ebpOut, Register out ptr32 esiOut, Register out ptr32 ediOut)
+struct Eq_694 * fn0040153F(word32 ebx, Eq_144 esi, Eq_144 edi, ptr32 & edxOut, ptr32 & ebxOut, ptr32 & ebpOut, ptr32 & esiOut, ptr32 & ediOut)
 {
-	struct Eq_696 * eax_81;
+	struct Eq_694 * eax_81;
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	ptr32 stackArg4 = <invalid>;
-	struct Eq_699 * esp_14;
+	struct Eq_697 * esp_14;
 	struct Eq_60 * ebp_13 = fn00401980(ebx, esi, edi, dwLoc0C, stackArg4, 0x08);
 	*(ebp_13 - 0x04) &= 0x00;
-	struct Eq_717 * eax_22 = (struct Eq_717 *) 23117;
+	struct Eq_715 * eax_22 = (struct Eq_715 *) 23117;
 	if (globals->w400000 == 23117)
 	{
 		eax_22 = globals->ptr40003C;
@@ -307,7 +307,7 @@ struct Eq_696 * fn0040153F(word32 ebx, Eq_144 esi, Eq_144 edi, ptr32 & edxOut, p
 			if (eax_22 != null && eax_22->dw0024 >= 0x00)
 			{
 				*(ebp_13 - 0x04) = ~0x01;
-				eax_81 = (struct Eq_696 *) DPB(eax_22, 0x01, 0);
+				eax_81 = (struct Eq_694 *) DPB(eax_22, 0x01, 0);
 l004015C3:
 				// Failed to bind call argument.
 				// Please report this issue at https://github.com/uxmal/reko
@@ -335,7 +335,7 @@ l004015C3:
 		}
 	}
 	*(ebp_13 - 0x04) = ~0x01;
-	eax_81 = (struct Eq_696 *) DPB(eax_22, 0x00, 0);
+	eax_81 = (struct Eq_694 *) DPB(eax_22, 0x00, 0);
 	goto l004015C3;
 }
 
@@ -346,8 +346,8 @@ void fn004015C9(Eq_144 bArg04)
 		globals->dw403338 = 0x00;
 }
 
-// 004015E6: void fn004015E6(Stack ptr32 dwArg04, Stack Eq_550 bArg08)
-void fn004015E6(ptr32 dwArg04, Eq_550 bArg08)
+// 004015E6: void fn004015E6(Stack ptr32 dwArg04, Stack Eq_548 bArg08)
+void fn004015E6(ptr32 dwArg04, Eq_548 bArg08)
 {
 	if (globals->b403354 == 0x00 || bArg08 == 0x00)
 	{
@@ -406,23 +406,23 @@ void fn0040176D(ptr32 dwArg00, word32 dwArg04)
 		__fastfail(dwArg04);
 }
 
-// 0040188B: Register Eq_960 fn0040188B(Register out Eq_488 ecxOut)
-Eq_960 fn0040188B(HMODULE & ecxOut)
+// 0040188B: Register Eq_958 fn0040188B(Register out Eq_486 ecxOut)
+Eq_958 fn0040188B(HMODULE & ecxOut)
 {
-	Eq_488 eax_12 = GetModuleHandleW(null);
-	Eq_488 ecx_20 = eax_12;
+	Eq_486 eax_12 = GetModuleHandleW(null);
+	Eq_486 ecx_20 = eax_12;
 	if (eax_12 != null)
 	{
 		eax_12 = (struct HINSTANCE__ *) 23117;
 		if (eax_12->unused == 23117)
 		{
-			eax_12 = (Eq_488) (eax_12 + (&eax_12->unused)[0x0F] / 0x04);
+			eax_12 = (Eq_486) (eax_12 + (&eax_12->unused)[0x0F] / 0x04);
 			if (eax_12->unused == 0x4550)
 			{
 				ecx_20 = (struct HINSTANCE__ *) 0x010B;
 				if ((&eax_12->unused)[0x06] == 0x010B && (&eax_12->unused)[0x001D] > 0x0E)
 				{
-					Eq_960 eax_38 = DPB(eax_12, (&eax_12->unused)[0x003A] != 0x00, 0);
+					Eq_958 eax_38 = DPB(eax_12, (&eax_12->unused)[0x003A] != 0x00, 0);
 					ecxOut = (struct HINSTANCE__ *) 0x010B;
 					return eax_38;
 				}
@@ -476,7 +476,7 @@ void fn004019FE(word32 edx)
 		globals->dw40336C = 0x01;
 		__cpuid(0x00, 0x00, &0x00, &0x01, &0x00, &edx);
 		__cpuid(0x01, 0x00, &0x01, &0x01, &0x00, &edx);
-		Eq_1122 bLoc14_258 = dwLoc14 & 0x00;
+		Eq_1120 bLoc14_258 = dwLoc14 & 0x00;
 		if ((edx ^ 0x49656E69 | 1818588270 | 0x756E6546) == 0x00 && (0x00 == 0x000106C0 || (0x00 == 0x00020660 || (0x00 == 0x00020670 || (0x00 == 0x00030650 || (0x00 == 0x00030660 || false))))))
 		{
 			ui32 edi_100 = globals->dw403370;
