@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -111,7 +111,7 @@ namespace Reko.UnitTests.Core
                 new Identifier("foo", PrimitiveType.Ptr32, null));
             var sig = FunctionType.Func(new Identifier("bRet", PrimitiveType.Byte, Registers.eax));
             var instr = ab.CreateInstruction(sig, null);
-            Assert.AreEqual("eax = DPB(eax, foo(), 0)", instr.ToString());
+            Assert.AreEqual("eax = DPB(0x00000000, foo(), 0)", instr.ToString());
         }
 
         [Test(Description ="Variadic signature specified, but no way of parsing the parameters.")]
