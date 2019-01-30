@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  .
@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         private ISymbolLoadingService symLdrSvc;
         private IConfigurationService cfgSvc;
         private IFileSystemService fsSvc;
-        private IDecompilerUIService uiSvc;
+        private IDecompilerShellUiService uiSvc;
 
         [SetUp]
         public void Setup()

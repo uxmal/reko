@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@ using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Environments.Msdos;
 using Reko.UnitTests.Mocks;
-using Rhino.Mocks;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -38,30 +38,26 @@ namespace Reko.UnitTests
     [TestFixture]
     public class DecompilerTests
     {
-        MockRepository mr;
-        ILoader loader;
+        private Mock<ILoader>loader;
         TestDecompiler decompiler;
         private ServiceContainer sc;
-        private IFileSystemService fsSvc;
+        private Mock<IFileSystemService> fsSvc;
 
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
-            fsSvc = mr.Stub<IFileSystemService>();
-            var cfgSvc = mr.Stub<IConfigurationService>();
-            var tlSvc = mr.Stub<ITypeLibraryLoaderService>();
+            fsSvc = new Mock<IFileSystemService>();
+            var cfgSvc = new Mock<IConfigurationService>();
+            var tlSvc = new Mock<ITypeLibraryLoaderService>();
             var host = new FakeDecompilerHost();
             sc = new ServiceContainer();
-            loader = mr.StrictMock<ILoader>();
+            loader = new Mock<ILoader>();
             sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
             sc.AddService<DecompilerHost>(host);
-            sc.AddService<IConfigurationService>(cfgSvc);
-            sc.AddService<ITypeLibraryLoaderService>(tlSvc);
-            loader.Replay();
-            decompiler = new TestDecompiler(loader, sc);
-            loader.BackToRecord();
+            sc.AddService<IConfigurationService>((IConfigurationService)cfgSvc.Object);
+            sc.AddService<ITypeLibraryLoaderService>(tlSvc.Object);
+            decompiler = new TestDecompiler(loader.Object, sc);
         }
 
         [Test]

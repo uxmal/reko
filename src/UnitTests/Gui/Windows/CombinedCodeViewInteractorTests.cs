@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Gui.Windows
         public void Setup()
         {
             mr = new MockRepository();
-            mockFactory = new MockFactory(mr);
+            mockFactory = new MockFactory();
             var platform = mockFactory.CreatePlatform();
             var imageMap = new SegmentMap(Address32.Ptr32(0x05));
             program = new Program(imageMap, platform.Architecture, platform);

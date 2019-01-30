@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -27,7 +27,7 @@ using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using Reko.UnitTests.TestCode;
-using Rhino.Mocks;
+using Moq;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -223,8 +223,7 @@ test_exit:
             //    return new ProcedureSerializer(program.Platform, typeLoader, "__cdecl");
             //};
 
-            var importResolver = MockRepository.GenerateStub<IImportResolver>();
-            importResolver.Replay();
+            var importResolver = new Mock<IImportResolver>().Object;
             program.Platform = platform;
             var dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
             dfa.AnalyzeProgram2();
