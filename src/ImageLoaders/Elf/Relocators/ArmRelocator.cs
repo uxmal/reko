@@ -37,6 +37,10 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
         public override ImageSymbol AdjustImageSymbol(ImageSymbol sym)
         {
+            if (sym.Type != SymbolType.Code &&
+                sym.Type != SymbolType.ExternalProcedure &&
+                sym.Type != SymbolType.Procedure)
+                return sym;
             if ((sym.Address.ToLinear() & 1) == 0)
                 return sym;
             if (archThumb == null)
