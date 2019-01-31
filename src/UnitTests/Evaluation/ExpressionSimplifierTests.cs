@@ -18,20 +18,16 @@
  */
 #endregion
 
+using Moq;
+using NUnit.Framework;
 using Reko.Analysis;
-using Reko.Evaluation;
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
-using Reko.Core.Machine;
 using Reko.Core.Operators;
 using Reko.Core.Types;
-using NUnit.Framework;
-using System;
-using System.Collections.Generic;
+using Reko.Evaluation;
 using Reko.UnitTests.Mocks;
-using System.Linq;
-using Rhino.Mocks;
 
 namespace Reko.UnitTests.Evaluation
 {
@@ -55,9 +51,8 @@ namespace Reko.UnitTests.Evaluation
             SsaIdentifierCollection ssaIds = BuildSsaIdentifiers();
             var listener = new FakeDecompilerEventListener();
             var segmentMap = new SegmentMap(Address.Ptr32(0));
-            var importResolver = MockRepository.GenerateStub<IImportResolver>();
-            importResolver.Replay();
-            var ssaCtx = new SsaEvaluationContext(null, ssaIds, importResolver);
+            var importResolver = new Mock<IImportResolver>();
+            var ssaCtx = new SsaEvaluationContext(null, ssaIds, importResolver.Object);
             simplifier = new ExpressionSimplifier(segmentMap, ssaCtx, listener);
         }
 

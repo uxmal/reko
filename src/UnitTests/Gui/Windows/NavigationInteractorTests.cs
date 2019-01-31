@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -18,11 +18,11 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Gui.Controls;
 using Reko.UserInterfaces.WindowsForms;
-using Rhino.Mocks;
 using System;
 
 namespace Reko.UnitTests.Gui.Windows
@@ -30,26 +30,26 @@ namespace Reko.UnitTests.Gui.Windows
     [TestFixture]
     public class NavigationInteractorTests
     {
-        private MockRepository mr;
-        private IButton btnBack;
-        private IButton btnForward;
+        private Mock<IButton> btnBack;
+        private Mock<IButton> btnForward;
         private NavigationInteractor<Address> ni;
         private Address addr42;
         private Address addr43;
         private Address addr44;
         private Address addr45;
-        private INavigableControl<Address> navControl;
+        private Mock<INavigableControl<Address>> navControl;
 
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
-            btnBack = mr.Stub<IButton>();
-            btnForward = mr.Stub<IButton>();
-            navControl = mr.Stub<INavigableControl<Address>>();
-
-            navControl.Stub(n => n.BackButton).Return(btnBack);
-            navControl.Stub(n => n.ForwardButton).Return(btnForward);
+            btnBack = new Mock<IButton>();
+            btnForward = new Mock<IButton>();
+            navControl = new Mock<INavigableControl<Address>>();
+            btnBack.SetupAllProperties();
+            btnForward.SetupAllProperties();
+            navControl.SetupAllProperties();
+            navControl.Setup(n => n.BackButton).Returns(btnBack.Object);
+            navControl.Setup(n => n.ForwardButton).Returns(btnForward.Object);
             addr42 = Address.Ptr32(42);
             addr43 = Address.Ptr32(43);
             addr44 = Address.Ptr32(44);
@@ -60,149 +60,140 @@ namespace Reko.UnitTests.Gui.Windows
         public void Ni_Attach()
         {
             ni = new NavigationInteractor<Address>();
-            mr.ReplayAll();
 
             When_Attached();
 
-            Assert.IsFalse(btnBack.Enabled);
-            Assert.IsFalse(btnForward.Enabled);
+            Assert.IsFalse(btnBack.Object.Enabled);
+            Assert.IsFalse(btnForward.Object.Enabled);
         }
 
         private void When_Attached()
         {
-            ni.Attach(navControl);
+            ni.Attach(navControl.Object);
         }
 
         [Test]
         public void Ni_UserNavigateTo()
         {
             ni = new NavigationInteractor<Address>();
-            mr.ReplayAll();
-
 
             When_Attached();
-            navControl.CurrentAddress = addr42;
-            Assert.IsFalse(btnBack.Enabled);
+            navControl.Object.CurrentAddress = addr42;
+            Assert.IsFalse(btnBack.Object.Enabled);
             ni.RememberAddress(addr43);
-            Assert.IsTrue(btnBack.Enabled);
-            Assert.IsFalse(btnForward.Enabled);
-
-            mr.VerifyAll();
+            Assert.IsTrue(btnBack.Object.Enabled);
+            Assert.IsFalse(btnForward.Object.Enabled);
         }
 
         [Test]
         public void Ni_Back()
         {
             ni = new NavigationInteractor<Address>();
-            mr.ReplayAll();
 
             When_Attached();
-            navControl.CurrentAddress = addr42;
+            navControl.Object.CurrentAddress = addr42;
             ni.RememberAddress(addr43);
-            btnBack.Raise(b => b.Click += null, btnBack, EventArgs.Empty);
+            btnBack.Raise(b => b.Click += null, btnBack.Object, EventArgs.Empty);
 
-            Assert.IsFalse(btnBack.Enabled);
-            Assert.IsTrue(btnForward.Enabled);
+            Assert.IsFalse(btnBack.Object.Enabled);
+            Assert.IsTrue(btnForward.Object.Enabled);
         }
 
         [Test]
         public void Ni_Back2_Then_Navigate()
         {
             ni = new NavigationInteractor<Address>();
-            mr.ReplayAll();
 
             When_Attached();
-            navControl.CurrentAddress = addr42;
+            navControl.Object.CurrentAddress = addr42;
             ni.RememberAddress(addr43);
-            navControl.CurrentAddress = addr43;
+            navControl.Object.CurrentAddress = addr43;
             ni.RememberAddress(addr44);
-            btnBack.Raise(b => b.Click += null, btnBack, EventArgs.Empty);
-            Assert.AreEqual("0000002B", navControl.CurrentAddress.ToString());
-            btnBack.Raise(b => b.Click += null, btnBack, EventArgs.Empty);
-            Assert.AreEqual("0000002A", navControl.CurrentAddress.ToString());
+            btnBack.Raise(b => b.Click += null, btnBack.Object, EventArgs.Empty);
+            Assert.AreEqual("0000002B", navControl.Object.CurrentAddress.ToString());
+            btnBack.Raise(b => b.Click += null, btnBack.Object, EventArgs.Empty);
+            Assert.AreEqual("0000002A", navControl.Object.CurrentAddress.ToString());
 
-            Assert.IsFalse(btnBack.Enabled);
-            Assert.IsTrue(btnForward.Enabled);
+            Assert.IsFalse(btnBack.Object.Enabled);
+            Assert.IsTrue(btnForward.Object.Enabled);
 
             ni.RememberAddress(addr44);
-            btnBack.Raise(b => b.Click += null, btnBack, EventArgs.Empty);
-            Assert.AreEqual("0000002A", navControl.CurrentAddress.ToString());
+            btnBack.Raise(b => b.Click += null, btnBack.Object, EventArgs.Empty);
+            Assert.AreEqual("0000002A", navControl.Object.CurrentAddress.ToString());
         }
 
         [Test]
         public void Ni_Back2_Then_Forward2()
         {
             ni = new NavigationInteractor<Address>();
-            mr.ReplayAll();
 
             When_Attached();
 
-            Assert.IsFalse(btnBack.Enabled);
-            Assert.IsFalse(btnForward.Enabled);
+            Assert.IsFalse(btnBack.Object.Enabled);
+            Assert.IsFalse(btnForward.Object.Enabled);
 
-            navControl.CurrentAddress = addr42;
+            navControl.Object.CurrentAddress = addr42;
             ni.RememberAddress(addr43);
-            navControl.CurrentAddress = addr43;
+            navControl.Object.CurrentAddress = addr43;
             ni.RememberAddress(addr44);
 
-            Assert.IsTrue(btnBack.Enabled);
-            Assert.IsFalse(btnForward.Enabled);
+            Assert.IsTrue(btnBack.Object.Enabled);
+            Assert.IsFalse(btnForward.Object.Enabled);
 
-            btnBack.Raise(b => b.Click += null, btnBack, EventArgs.Empty);
-            Assert.AreEqual("0000002B", navControl.CurrentAddress.ToString());
-            btnBack.Raise(b => b.Click += null, btnBack, EventArgs.Empty);
-            Assert.AreEqual("0000002A", navControl.CurrentAddress.ToString());
+            btnBack.Raise(b => b.Click += null, btnBack.Object, EventArgs.Empty);
+            Assert.AreEqual("0000002B", navControl.Object.CurrentAddress.ToString());
+            btnBack.Raise(b => b.Click += null, btnBack.Object, EventArgs.Empty);
+            Assert.AreEqual("0000002A", navControl.Object.CurrentAddress.ToString());
 
-            Assert.IsFalse(btnBack.Enabled);
-            Assert.IsTrue(btnForward.Enabled);
+            Assert.IsFalse(btnBack.Object.Enabled);
+            Assert.IsTrue(btnForward.Object.Enabled);
 
-            btnForward.Raise(b => b.Click += null, btnForward, EventArgs.Empty);
-            Assert.AreEqual("0000002B", navControl.CurrentAddress.ToString());
-            btnForward.Raise(b => b.Click += null, btnForward, EventArgs.Empty);
-            Assert.AreEqual("0000002C", navControl.CurrentAddress.ToString());
+            btnForward.Raise(b => b.Click += null, btnForward.Object, EventArgs.Empty);
+            Assert.AreEqual("0000002B", navControl.Object.CurrentAddress.ToString());
+            btnForward.Raise(b => b.Click += null, btnForward.Object, EventArgs.Empty);
+            Assert.AreEqual("0000002C", navControl.Object.CurrentAddress.ToString());
 
-            Assert.IsTrue(btnBack.Enabled);
-            Assert.IsFalse(btnForward.Enabled);
+            Assert.IsTrue(btnBack.Object.Enabled);
+            Assert.IsFalse(btnForward.Object.Enabled);
         }
 
         [Test]
         public void Ni_Back2_Then_Forward2_Distinct()
         {
             ni = new NavigationInteractor<Address>();
-            mr.ReplayAll();
 
             When_Attached();
 
-            Assert.IsFalse(btnBack.Enabled);
-            Assert.IsFalse(btnForward.Enabled);
+            Assert.IsFalse(btnBack.Object.Enabled);
+            Assert.IsFalse(btnForward.Object.Enabled);
 
-            navControl.CurrentAddress = addr42;
+            navControl.Object.CurrentAddress = addr42;
             ni.RememberAddress(addr43);
-            navControl.CurrentAddress = addr45;
+            navControl.Object.CurrentAddress = addr45;
             ni.RememberAddress(addr44);
 
-            Assert.IsTrue(btnBack.Enabled);
-            Assert.IsFalse(btnForward.Enabled);
+            Assert.IsTrue(btnBack.Object.Enabled);
+            Assert.IsFalse(btnForward.Object.Enabled);
 
-            btnBack.Raise(b => b.Click += null, btnBack, EventArgs.Empty);
-            Assert.AreEqual("0000002D", navControl.CurrentAddress.ToString());
-            btnBack.Raise(b => b.Click += null, btnBack, EventArgs.Empty);
-            Assert.AreEqual("0000002B", navControl.CurrentAddress.ToString());
-            btnBack.Raise(b => b.Click += null, btnBack, EventArgs.Empty);
-            Assert.AreEqual("0000002A", navControl.CurrentAddress.ToString());
+            btnBack.Raise(b => b.Click += null, btnBack.Object, EventArgs.Empty);
+            Assert.AreEqual("0000002D", navControl.Object.CurrentAddress.ToString());
+            btnBack.Raise(b => b.Click += null, btnBack.Object, EventArgs.Empty);
+            Assert.AreEqual("0000002B", navControl.Object.CurrentAddress.ToString());
+            btnBack.Raise(b => b.Click += null, btnBack.Object, EventArgs.Empty);
+            Assert.AreEqual("0000002A", navControl.Object.CurrentAddress.ToString());
 
-            Assert.IsFalse(btnBack.Enabled);
-            Assert.IsTrue(btnForward.Enabled);
+            Assert.IsFalse(btnBack.Object.Enabled);
+            Assert.IsTrue(btnForward.Object.Enabled);
 
-            btnForward.Raise(b => b.Click += null, btnForward, EventArgs.Empty);
-            Assert.AreEqual("0000002B", navControl.CurrentAddress.ToString());
-            btnForward.Raise(b => b.Click += null, btnForward, EventArgs.Empty);
-            Assert.AreEqual("0000002D", navControl.CurrentAddress.ToString());
-            btnForward.Raise(b => b.Click += null, btnForward, EventArgs.Empty);
-            Assert.AreEqual("0000002C", navControl.CurrentAddress.ToString());
+            btnForward.Raise(b => b.Click += null, btnForward.Object, EventArgs.Empty);
+            Assert.AreEqual("0000002B", navControl.Object.CurrentAddress.ToString());
+            btnForward.Raise(b => b.Click += null, btnForward.Object, EventArgs.Empty);
+            Assert.AreEqual("0000002D", navControl.Object.CurrentAddress.ToString());
+            btnForward.Raise(b => b.Click += null, btnForward.Object, EventArgs.Empty);
+            Assert.AreEqual("0000002C", navControl.Object.CurrentAddress.ToString());
 
-            Assert.IsTrue(btnBack.Enabled);
-            Assert.IsFalse(btnForward.Enabled);
+            Assert.IsTrue(btnBack.Object.Enabled);
+            Assert.IsFalse(btnForward.Object.Enabled);
         }
     }
 }

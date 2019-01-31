@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,104 +18,90 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Services;
 using Reko.Loading;
 using Reko.UnitTests.Mocks;
-using Rhino.Mocks;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Linq;
 
 namespace Reko.UnitTests.Loading
 {
-	[TestFixture]
+    [TestFixture]
 	public class LoaderTests
 	{
-        private MockRepository mr;
         private IServiceContainer sc;
         private FakeDecompilerEventListener eventListener;
-        private IConfigurationService cfgSvc;
+        private Mock<IConfigurationService> cfgSvc;
         private List<SignatureFile> signatureFiles;
-        private IProcessorArchitecture x86arch;
-        private IPlatform msdosPlatform;
+        private Mock<IProcessorArchitecture> x86arch;
+        private Mock<IPlatform> msdosPlatform;
         private byte[] testImage;
 
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
             sc = new ServiceContainer();
             eventListener = new FakeDecompilerEventListener();
-            cfgSvc = mr.Stub<IConfigurationService>();
+            cfgSvc = new Mock<IConfigurationService>();
             signatureFiles = new List<SignatureFile>();
             sc.AddService<DecompilerEventListener>(eventListener);
-            sc.AddService<IConfigurationService>(cfgSvc);
-            cfgSvc.Stub(d => d.GetSignatureFiles()).Return(signatureFiles);
+            sc.AddService<IConfigurationService>(cfgSvc.Object);
+            cfgSvc.Setup(d => d.GetSignatureFiles()).Returns(signatureFiles);
         }
 
         [Test]
         public void Ldr_Match()
         {
-            mr.ReplayAll();
-
             Loader ldr = new Loader(sc);
             Assert.IsTrue(ldr.ImageHasMagicNumber(new byte[] { 0x47, 0x11 }, "4711", "0"));
-
-            mr.VerifyAll();
         }
 
         [Test(Description="Unless otherwise specified, fail loading unknown file formats.")]
         public void Ldr_UnknownImageType()
         {
-            cfgSvc.Stub(d => d.GetImageLoaders()).Return(new List<LoaderConfiguration>());
-            cfgSvc.Stub(d => d.GetRawFile(null)).IgnoreArguments().Return(null);
+            cfgSvc.Setup(d => d.GetImageLoaders()).Returns(new List<LoaderConfiguration>());
+            cfgSvc.Setup(d => d.GetRawFile(It.IsAny<string>())).Returns((RawFileElement)null);
             var testImage = new byte[] { 42, 42, 42, 42, };
-            mr.ReplayAll();
-            Loader ldr = mr.PartialMock<Loader>(sc);
-            ldr.Replay();
+            var ldr = new Mock<Loader>(sc);
 
-            Program prog = ldr.LoadExecutable("", testImage,  null, null);
+            Program prog = ldr.Object.LoadExecutable("", testImage,  null, null);
 
             Assert.AreEqual("WarningDiagnostic -  - The format of the file is unknown." , eventListener.LastDiagnostic);
             Assert.AreEqual(0, prog.ImageMap.BaseAddress.Offset);
             Assert.IsNull(prog.Architecture);
             Assert.IsAssignableFrom<DefaultPlatform>(prog.Platform);
-            mr.VerifyAll();
         }
 
         [Test(Description = "Use default settings when loading unknown file formats.")]
         public void Ldr_UnknownImageType_DefaultSpecified()
         {
             Given_MsDosRawFileFormat();
-            cfgSvc.Stub(d => d.GetImageLoaders()).Return(new List<LoaderConfiguration>());
-            x86arch.Stub(x => x.PostprocessProgram(null)).IgnoreArguments();
+            cfgSvc.Setup(d => d.GetImageLoaders()).Returns(new List<LoaderConfiguration>());
+            x86arch.Setup(x => x.PostprocessProgram(It.IsAny<Program>()));
             var testImage = new byte[] { 42, 42, 42, 42, };
-            mr.ReplayAll();
-            Loader ldr = mr.PartialMock<Loader>(sc);
-            ldr.Replay();
+            var ldr = new Mock<Loader>(sc);
 
-            ldr.DefaultToFormat = "ms-dos-com";
-            Program program = ldr.LoadExecutable("", testImage, null, null);
+            ldr.Object.DefaultToFormat = "ms-dos-com";
+            Program program = ldr.Object.LoadExecutable("", testImage, null, null);
 
             Assert.IsNull(eventListener.LastDiagnostic);
             Assert.AreEqual("0C00:0100", program.ImageMap.BaseAddress.ToString());
-            Assert.AreSame(x86arch, program.Architecture);
-            Assert.AreSame(msdosPlatform, program.Platform);
-            mr.VerifyAll();
+            Assert.AreSame(x86arch.Object, program.Architecture);
+            Assert.AreSame(msdosPlatform.Object, program.Platform);
         }
 
         private void Given_MsDosRawFileFormat()
         {
-            this.x86arch = mr.Stub<IProcessorArchitecture>();
-            var env = mr.Stub<OperatingEnvironment>();
-            this.msdosPlatform = mr.Stub<IPlatform>();
+            this.x86arch = new Mock<IProcessorArchitecture>();
+            var env = new Mock<OperatingEnvironment>();
+            this.msdosPlatform = new Mock<IPlatform>();
             var map = new SegmentMap(Address.SegPtr(0x0C00, 0));
-            var state = new FakeProcessorState(x86arch);
+            var state = new FakeProcessorState(x86arch.Object);
             var rawFile = new RawFileElementImpl
             {
                 BaseAddress = "0C00:0100",
@@ -124,21 +110,24 @@ namespace Reko.UnitTests.Loading
             };
             rawFile.EntryPoint.Address = null;
             rawFile.EntryPoint.Name = "Start_Here";
-            cfgSvc.Stub(d => d.GetRawFile("ms-dos-com")).Return(rawFile);
-            cfgSvc.Stub(d => d.GetArchitecture("x86-real-16")).Return(x86arch);
-            cfgSvc.Stub(d => d.GetEnvironment("ms-dos")).Return(env);
-            env.Stub(e => e.Load(null, null)).IgnoreArguments().Return(msdosPlatform);
-            x86arch.Stub(a => a.TryParseAddress(
-                Arg<string>.Is.Equal("0C00:0100"),
-                out Arg<Address>.Out(Address.SegPtr(0x0C00, 0x0100)).Dummy))
-                .Return(true);
-            x86arch.Stub(a => a.CreateProcessorState()).Return(state);
+            cfgSvc.Setup(d => d.GetRawFile("ms-dos-com")).Returns(rawFile);
+            cfgSvc.Setup(d => d.GetArchitecture("x86-real-16")).Returns(x86arch.Object);
+            cfgSvc.Setup(d => d.GetEnvironment("ms-dos")).Returns(env.Object);
+            env.Setup(e => e.Load(It.IsAny<IServiceProvider>(), It.IsAny<IProcessorArchitecture>()))
+                .Returns(msdosPlatform.Object);
+
+            var addr = Address.SegPtr(0x0C00, 0x0100);
+            x86arch.Setup(a => a.TryParseAddress(
+                "0C00:0100",
+                out addr))
+                .Returns(true);
+            x86arch.Setup(a => a.CreateProcessorState()).Returns(state);
         }
 
         [Test]
         public void Ldr_AtOffset()
         {
-            cfgSvc.Stub(d => d.GetImageLoaders()).Return(new List<LoaderConfiguration>
+            cfgSvc.Setup(d => d.GetImageLoaders()).Returns(new List<LoaderConfiguration>
             {
                 new LoaderElementImpl {
                     Offset = "0002",
@@ -147,16 +136,13 @@ namespace Reko.UnitTests.Loading
                 }
             });
             Given_Image();
-            mr.ReplayAll();
 
-            Loader ldr = mr.PartialMock<Loader>(sc);
-            ldr.Stub(l => l.LoadImageBytes("", 0)).Return(testImage);
-            mr.ReplayAll();
+            var ldr = new Mock<Loader>(sc);
+            ldr.Setup(l => l.LoadImageBytes("", 0)).Returns(testImage);
 
-            var imgLoader = ldr.FindImageLoader<ImageLoader>("", testImage, () => null);
+            var imgLoader = ldr.Object.FindImageLoader<ImageLoader>("", testImage, () => null);
 
             Assert.IsInstanceOf<TestImageLoader>(imgLoader);
-            mr.VerifyAll();
         }
 
         private void Given_Image()
@@ -193,19 +179,17 @@ namespace Reko.UnitTests.Loading
                     TypeName = typeof(FakeImageLoader).AssemblyQualifiedName,
                 }
             };
-            cfgSvc.Expect(c => c.GetImageLoaders()).Return(ldrs);
+            cfgSvc.Expect(c => c.GetImageLoaders()).Returns(ldrs);
         }
 
         [Test]
         public void Ldr_CreateDefaultImageLoader_GivenDefault()
         {
             Given_MsDosRawFileFormat();
-            mr.ReplayAll();
-            var ldr = mr.PartialMock<Loader>(sc);
-            ldr.Replay();
+            var ldr = new Mock<Loader>(sc);
 
-            ldr.DefaultToFormat = "ms-dos-com";
-            var imgLoader = ldr.CreateDefaultImageLoader("foo.com", new byte[30]);
+            ldr.Object.DefaultToFormat = "ms-dos-com";
+            var imgLoader = ldr.Object.CreateDefaultImageLoader("foo.com", new byte[30]);
             var program = imgLoader.Load(null);
         }
 
@@ -235,21 +219,25 @@ namespace Reko.UnitTests.Loading
         [Test(Description = "Validate that entry points are added to the Program instance when loading a 'raw' file.")]
         public void Ldr_RawFileEntryPoint()
         {
-            var arch = mr.Stub<IProcessorArchitecture>();
-            var openv = mr.Stub<OperatingEnvironment>();
-            cfgSvc.Stub(s => s.GetArchitecture("mmix")).Return(arch);
-            cfgSvc.Stub(s => s.GetEnvironment(null)).Return(openv);
-            cfgSvc.Stub(s => s.GetImageLoader("zlorgo")).Return(new LoaderElementImpl {
+            var arch = new Mock<IProcessorArchitecture>();
+            var openv = new Mock<OperatingEnvironment>();
+            cfgSvc.Setup(s => s.GetArchitecture("mmix")).Returns(arch.Object);
+            cfgSvc.Setup(s => s.GetEnvironment(It.IsAny<string>())).Returns(openv.Object);
+            cfgSvc.Setup(s => s.GetImageLoader("zlorgo")).Returns(new LoaderElementImpl {
                 TypeName = typeof(NullImageLoader).FullName,
             });
-            openv.Stub(o => o.Load(null, null)).IgnoreArguments().Return(new DefaultPlatform(sc, arch));
-            arch.Stub(a => a.LoadUserOptions(null)).IgnoreArguments();
-            arch.Stub(a => a.Name).Return("mmix");
-            arch.Stub(a => a.PostprocessProgram(null)).IgnoreArguments();
-            arch.Stub(a => a.TryParseAddress(
-                Arg<string>.Is.Equal("00123500"),
-                out Arg<Address>.Out(Address.Ptr32(0x00123500)).Dummy)).Return(true);
-            mr.ReplayAll();
+            openv.Setup(o => o.Load(
+                It.IsAny<IServiceProvider>(),
+                It.IsAny<IProcessorArchitecture>()))
+                .Returns(new DefaultPlatform(sc, arch.Object));
+            arch.Setup(a => a.LoadUserOptions(It.IsAny<Dictionary<string, object>>()));
+            arch.Setup(a => a.Name).Returns("mmix");
+            arch.Setup(a => a.PostprocessProgram(It.IsAny<Program>()));
+            var addr = Address.Ptr32(0x00123500);
+            arch.Setup(a => a.TryParseAddress(
+                "00123500",
+                out addr))
+                .Returns(true);
 
             var ldr = new Loader(sc);
             var program = ldr.LoadRawImage("foo.bin", new byte[0], Address.Ptr32(0x00123400), new LoadDetails
@@ -261,7 +249,6 @@ namespace Reko.UnitTests.Loading
 
             Assert.AreEqual(1, program.EntryPoints.Count);
             Assert.AreEqual(SymbolType.Procedure, program.EntryPoints[Address.Ptr32(0x00123500)].Type);
-            mr.VerifyAll();
         }
 	}
 }

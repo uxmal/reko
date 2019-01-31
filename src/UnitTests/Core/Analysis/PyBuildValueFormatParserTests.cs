@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 Pavel Tomin.
  *
@@ -18,12 +18,12 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.CLanguage;
 using Reko.Core.Types;
 using Reko.Libraries.Python;
-using Rhino.Mocks;
 
 namespace Reko.UnitTests.Core.Analysis
 {
@@ -31,36 +31,30 @@ namespace Reko.UnitTests.Core.Analysis
     public class PyBuildValueFormatParserTests
     {
         private PyBuildValueFormatParser parser;
-        private MockRepository mr;
         private Program program;
 
         [SetUp]
         public void Setup()
         {
-            this.mr = new MockRepository();
-            var arch = mr.Stub<IProcessorArchitecture>();
-            var platform = mr.Stub<IPlatform>();
-            arch.Stub(a => a.WordWidth).Return(PrimitiveType.Word32);
-            platform.Stub(p => p.Architecture).Return(arch);
-            platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Long)).Return(4);
-            platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.LongLong)).Return(8);
-            platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Double)).Return(8);
-            platform.Stub(p => p.PointerType).Return(PrimitiveType.Ptr32);
-            this.program = new Program { Platform = platform };
+            var arch = new Mock<IProcessorArchitecture>();
+            var platform = new Mock<IPlatform>();
+            arch.Setup(a => a.WordWidth).Returns(PrimitiveType.Word32);
+            platform.Setup(p => p.Architecture).Returns(arch.Object);
+            platform.Setup(p => p.GetByteSizeFromCBasicType(CBasicType.Long)).Returns(4);
+            platform.Setup(p => p.GetByteSizeFromCBasicType(CBasicType.LongLong)).Returns(8);
+            platform.Setup(p => p.GetByteSizeFromCBasicType(CBasicType.Double)).Returns(8);
+            platform.Setup(p => p.PointerType).Returns(PrimitiveType.Ptr32);
+            this.program = new Program { Platform = platform.Object };
         }
 
         private void ParseChar32(string formatString)
         {
-            mr.ReplayAll();
-
             this.parser = new PyBuildValueFormatParser(
                 program,
                 Address.Ptr32(0x123400),
                 formatString,
                 null);
             parser.Parse();
-
-            mr.VerifyAll();
         }
 
         [Test]

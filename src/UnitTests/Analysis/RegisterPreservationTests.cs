@@ -23,7 +23,7 @@ using Reko.Analysis;
 using Reko.Core;
 using Reko.UnitTests.Mocks;
 using Reko.UnitTests.TestCode;
-using Rhino.Mocks;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -74,8 +74,7 @@ namespace Reko.UnitTests.Analysis
 
         public void RunTest(IEnumerable<Procedure> procs)
         {
-            importResolver = MockRepository.GenerateStub<IImportResolver>();
-            importResolver.Replay();
+            importResolver = new Mock<IImportResolver>().Object;
             var flow = new ProgramDataFlow(program);
             var scc = new Dictionary<Procedure, SsaState>();
             foreach (var proc in procs)

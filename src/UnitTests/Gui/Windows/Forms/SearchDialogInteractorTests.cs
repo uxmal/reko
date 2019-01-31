@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  .
@@ -18,11 +18,11 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Gui;
 using Reko.Gui.Forms;
 using Reko.UserInterfaces.WindowsForms.Forms;
-using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -35,19 +35,17 @@ namespace Reko.UnitTests.Gui.Windows.Forms
     [Category(Categories.UserInterface)]
     public class SearchDialogInteractorTests
     {
-        private MockRepository mr;
-        private ISettingsService setSvc;
+        private Mock<ISettingsService> setSvc;
         private ISearchDialog dlg;
         private ServiceContainer sc;
 
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
             sc = new ServiceContainer();
 
-            setSvc = mr.DynamicMock<ISettingsService>();
-            sc.AddService(typeof(ISettingsService), setSvc);
+            setSvc = new Mock<ISettingsService>();
+            sc.AddService(typeof(ISettingsService), setSvc.Object);
         }
 
         [TearDown]
@@ -67,7 +65,6 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Given_UiSettings("SearchDialog/Regexp", 0, 1);
             Given_UiSettings("SearchDialog/Scanned", 1, 0);
             Given_UiSettings("SearchDialog/Unscanned", 1, 0);
-            mr.ReplayAll();
 
             When_CreateDialog();
             When_ShowDialog();
@@ -80,17 +77,21 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Assert.IsFalse(dlg.EndAddress.Enabled);
             Assert.IsFalse(dlg.ScannedMemory.Checked);
             Assert.IsFalse(dlg.UnscannedMemory.Checked);
-            mr.VerifyAll();
+            setSvc.VerifyAll();
         }
 
         private void Given_UiSettings(string settingName, string[] settings)
         {
-            setSvc.Expect(s => s.GetList(settingName)).Return(settings);
+            setSvc.Setup(s => s.GetList(settingName))
+                .Returns(settings)
+                .Verifiable();
         }
 
         private void Given_UiSettings(string settingName, object defaultValue, int value)
         {
-            setSvc.Expect(s => s.Get(settingName, defaultValue)).Return(value);
+            setSvc.Setup(s => s.Get(settingName, defaultValue))
+                .Returns(value)
+                .Verifiable();
         }
 
         private void Then_PatternListHasChoices(params string [] expected)
@@ -112,14 +113,13 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Given_UiSettings("SearchDialog/Encoding", 0, 0);
             Given_UiSettings("SearchDialog/Scope", 0, 0);
             Expect_UiSettingsSet("SearchDialog/Patterns", new[] { "bar", "foo" });
-            mr.ReplayAll();
 
             When_CreateDialog();
             When_ShowDialog();
             When_EnterPattern("bar");
             When_SearchButtonPushed();
 
-            mr.VerifyAll();
+            setSvc.VerifyAll();
         }
 
         [Test]
@@ -145,7 +145,6 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Given_UiSettings("SearchDialog/Encoding", 0, 0);
             Given_UiSettings("SearchDialog/Scope", 0, 0);
             Expect_UiSettingsSet("SearchDialog/Patterns", new[] { "00 11 22 33" });
-            mr.ReplayAll();
 
             When_CreateDialog();
             When_ShowDialog();
@@ -169,18 +168,18 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 
         private void Expect_UiSettingsSet(string name, string[] expected)
         {
-            setSvc.Expect(s => s.SetList(
-                Arg<string>.Is.Equal(name),
-                Arg<string[]>.Is.NotNull)).Do(
-                    new Action<string, IEnumerable<string>>((n, s) =>
+            setSvc.Setup(s => s.SetList(
+                name,
+                It.IsNotNull<IEnumerable<string>>()))
+                    .Callback((string n, IEnumerable<string> s) =>
                     {
-                        var actual = s.ToArray();;
+                        var actual = s.ToArray();
                         Assert.AreEqual(expected.Length, actual.Length);
                         for (int i = 0; i < actual.Length; ++i)
                         {
                             Assert.AreEqual(expected[i], actual[i]);
                         }
-                    }));
+                    }).Verifiable();
         }
 
         private void When_SearchButtonPushed()

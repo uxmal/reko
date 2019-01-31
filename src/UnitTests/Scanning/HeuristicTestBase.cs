@@ -18,20 +18,19 @@
  */
 #endregion
 
+using Moq;
+using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Lib;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Scanning;
-using NUnit.Framework;
-using Rhino.Mocks;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using Reko.Core.Services;
-using Reko.Core.Expressions;
 
 namespace Reko.UnitTests.Scanning
 {
@@ -47,15 +46,13 @@ namespace Reko.UnitTests.Scanning
 
         protected Program program;
         protected ImageSegment segment;
-        protected MockRepository mr;
-        protected IRewriterHost host;
-        protected DecompilerEventListener eventListener;
+        protected Mock<IRewriterHost> host;
+        protected Mock<DecompilerEventListener> eventListener;
         private MemoryArea mem;
 
         public virtual void Setup()
         {
-            mr = new MockRepository();
-            eventListener = mr.Stub<DecompilerEventListener>();
+            eventListener = new Mock<DecompilerEventListener>();
         }
 
         protected MemoryArea CreateMemoryArea(Address addr, params uint[] opcodes)
@@ -72,19 +69,19 @@ namespace Reko.UnitTests.Scanning
 
         protected void Given_RewriterHost()
         {
-            host = mr.Stub<IRewriterHost>();
-            host.Stub(h => h.PseudoProcedure(
-                Arg<string>.Is.Anything,
-                Arg<DataType>.Is.Anything,
-                Arg<Expression[]>.Is.Anything))
-               .Do(new Func<string, DataType, Expression[], Expression>((n, dt, a) =>
+            host = new Mock<IRewriterHost>();
+            host.Setup(h => h.PseudoProcedure(
+                It.IsAny<string>(),
+                It.IsAny<DataType>(),
+                It.IsAny<Expression[]>()))
+               .Returns((string n, DataType dt, Expression[] a) =>
                 {
                     var fn = new FunctionType();
                     var ppp = new PseudoProcedure(n, fn);
                     return new Application(new ProcedureConstant(fn, ppp),
                         dt,
                         a);
-            }));
+            });
         }
 
         protected void Given_Image32(uint addr, string sBytes)
@@ -117,12 +114,15 @@ namespace Reko.UnitTests.Scanning
 
         protected void Given_NoImportedProcedures()
         {
-            host.Stub(h => h.GetImportedProcedure(null, null, null))
-                .IgnoreArguments()
-                .Return(null);
-            host.Stub(h => h.GetImport(null, null))
-                .IgnoreArguments()
-                .Return(null);
+            host.Setup(h => h.GetImportedProcedure(
+                It.IsAny<IProcessorArchitecture>(),
+                It.IsAny<Address>(),
+                It.IsAny<Address>()))
+                .Returns((ExternalProcedure)null);
+            host.Setup(h => h.GetImport(
+                It.IsAny<Address>(),
+                It.IsAny<Address>()))
+                .Returns((Expression)null);
         }
 
         private static byte[] HexStringToBytes(string sBytes)

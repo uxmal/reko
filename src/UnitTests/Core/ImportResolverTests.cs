@@ -29,21 +29,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MockFactory = Reko.UnitTests.Mocks.MockFactory;
+using CommonMockFactory = Reko.UnitTests.Mocks.CommonMockFactory;
 
 namespace Reko.UnitTests.Core
 {
     [TestFixture]
     public class ImportResolverTests
     {
-        private MockFactory mockFactory;
+        private CommonMockFactory mockFactory;
         private Mock<IPlatform> platform;
         private Program program;
 
         [SetUp]
         public void Setup()
         {
-            this.mockFactory = new MockFactory();
+            this.mockFactory = new CommonMockFactory();
             this.platform = mockFactory.CreateMockPlatform();
             this.program = mockFactory.CreateProgram();
         }

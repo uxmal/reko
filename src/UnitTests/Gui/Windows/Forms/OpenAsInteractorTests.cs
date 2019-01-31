@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -23,7 +23,6 @@ using Reko.Gui;
 using Reko.Gui.Controls;
 using Reko.Gui.Forms;
 using NUnit.Framework;
-using Rhino.Mocks;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -37,7 +36,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
     [Ignore("Not worth repairing; unit testing GUIs is hard.")]
     public class OpenAsInteractorTests
     {
-        private MockRepository mr;
+#if TEST_GUI
         private IOpenAsDialog dlg;
         private ListOption[] archNames;
         private ListOption[] platformNames;
@@ -238,5 +237,6 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             dlg.FileName.Text = fileName;
             dlg.FileName.Raise(t => t.TextChanged += null, dlg.FileName, EventArgs.Empty);
         }
+#endif
     }
 }

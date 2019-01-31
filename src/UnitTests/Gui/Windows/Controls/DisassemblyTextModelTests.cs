@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -18,11 +18,11 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Machine;
 using Reko.UserInterfaces.WindowsForms.Controls;
-using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,21 +32,20 @@ namespace Reko.UnitTests.Gui.Windows.Controls
     [TestFixture]
     public class DisassemblyTextModelTests
     {
-        private MockRepository mr;
         private DisassemblyTextModel model;
         private List<MachineInstruction> instrs;
         private Program program;
+        private Mock<IProcessorArchitecture> arch;
 
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
-            var arch = mr.Stub<IProcessorArchitecture>();
-            arch.Stub(a => a.InstructionBitSize).Return(8);
+            this.arch = new Mock<IProcessorArchitecture>();
+            arch.Setup(a => a.InstructionBitSize).Returns(8);
             
             program = new Program
             {
-                Architecture = arch
+                Architecture = arch.Object
             };
         }
 
@@ -107,12 +106,10 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             Given_Model();
             Given_MachineInstructions(3);
             Given_Disassembler();
-            mr.ReplayAll();
 
             var items = model.GetLineSpans(3);
 
             Assert.AreEqual(3, items.Length);
-            mr.VerifyAll();
         }
 
         [Test]
@@ -121,12 +118,10 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             Given_Model(1000, 2, 3);
             Given_MachineInstructions(3);
             Given_Disassembler();
-            mr.ReplayAll();
 
             model.SetPositionAsFraction(3, 4);
 
             Assert.AreEqual("01000004", model.CurrentPosition.ToString());
-            mr.VerifyAll();
         }
 
         [Test]
@@ -135,13 +130,11 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             Given_Model();
             Given_MachineInstructions(3);
             Given_Disassembler();
-            mr.ReplayAll();
 
             var items = model.GetLineSpans(1);
 
             var line = items[0];
             Assert.AreEqual("01000000 ", line.TextSpans[0].GetText());
-            mr.VerifyAll();
         }
 
         [Test]
@@ -150,13 +143,11 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             Given_Model();
             Given_MachineInstructions(3);
             Given_Disassembler();
-            mr.ReplayAll();
 
             var items = model.GetLineSpans(3);
 
             var line = items[2];
             Assert.AreEqual("02 03 04 ", line.TextSpans[1].GetText());
-            mr.VerifyAll();
         }
 
         public void Dtm_ReadItems_DisplayInstructionOpcode()
@@ -164,21 +155,22 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             Given_Model();
             Given_MachineInstructions(3);
             Given_Disassembler();
-            mr.ReplayAll();
 
             var items = model.GetLineSpans(3);
 
             var line = items[3];
             Assert.AreEqual("02 03 04 ", line.TextSpans[1].GetText());
-            mr.VerifyAll();
         }
 
         private void Given_Disassembler()
         {
-            program.Architecture.Stub(a => a.CreateImageReader(null, null)).IgnoreArguments()
-                .Do(new Func<MemoryArea, Address, EndianImageReader>((i, a) => new LeImageReader(i, a)));
-            program.Architecture.Stub(a => a.CreateDisassembler(Arg<EndianImageReader>.Is.NotNull))
-                .Return(instrs);
+            arch.Setup(a => a.CreateImageReader(
+                It.IsAny<MemoryArea>(), 
+                It.IsAny<Address>()))
+                .Returns((MemoryArea i, Address a) => new LeImageReader(i, a));
+            arch.Setup(a => a.CreateDisassembler(
+                It.IsNotNull<EndianImageReader>()))
+                .Returns(instrs);
         }
 
         private class TestInstruction : MachineInstruction

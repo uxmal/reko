@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Arch.PowerPC;
 using Reko.Core;
@@ -27,7 +28,6 @@ using Reko.Environments.SysV;
 using Reko.Core.Types;
 using Reko.UnitTests.Core.Serialization;
 using Reko.UnitTests.Mocks;
-using Rhino.Mocks;
 using System;
 using System.Xml;
 using System.Xml.Serialization;

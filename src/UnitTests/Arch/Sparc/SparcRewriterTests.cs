@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -18,14 +18,14 @@
  */
 #endregion
 
+using Moq;
+using NUnit.Framework;
 using Reko.Arch.Sparc;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
-using NUnit.Framework;
-using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,9 +39,8 @@ namespace Reko.UnitTests.Arch.Sparc
         private SparcArchitecture arch = new SparcArchitecture("sparc", PrimitiveType.Word32);
         private Address baseAddr = Address.Ptr32(0x00100000);
         private SparcProcessorState state;
-        private IRewriterHost host;
+        private Mock<IRewriterHost> host;
         private IEnumerable<RtlInstructionCluster> e;
-        private MockRepository repository;
 
         public override IProcessorArchitecture Architecture
         {
@@ -55,7 +54,7 @@ namespace Reko.UnitTests.Arch.Sparc
 
         protected override IRewriterHost CreateRewriterHost()
         {
-            return host;
+            return host.Object;
         }
 
         protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
@@ -67,13 +66,11 @@ namespace Reko.UnitTests.Arch.Sparc
         public void Setup()
         {
             state = (SparcProcessorState)arch.CreateProcessorState();
-            repository = new MockRepository();
-            host = repository.StrictMock<IRewriterHost>();
+            host = new Mock<IRewriterHost>();
         }
 
         private void BuildTest(params uint[] words)
         {
-            repository.ReplayAll();
             byte[] bytes = words.SelectMany(w => new byte[]
             {
                 (byte) (w >> 24),
@@ -82,7 +79,7 @@ namespace Reko.UnitTests.Arch.Sparc
                 (byte) w
             }).ToArray();
             var image = new MemoryArea(LoadAddress, bytes);
-            e = new SparcRewriter(arch, new LeImageReader(image, 0), state, new Frame(arch.WordWidth), host);
+            e = new SparcRewriter(arch, new LeImageReader(image, 0), state, new Frame(arch.WordWidth), host.Object);
         }
 
         private void BuildTest(params SparcInstruction[] instrs)
@@ -96,7 +93,7 @@ namespace Reko.UnitTests.Arch.Sparc
                     addr += 4;
                     return i;
                 });
-            e = new SparcRewriter(arch, exts.GetEnumerator(), state, new Frame(arch.WordWidth), host);
+            e = new SparcRewriter(arch, exts.GetEnumerator(), state, new Frame(arch.WordWidth), host.Object);
         }
 
         private SparcInstruction Instr(Opcode opcode, params object[] ops)
@@ -195,11 +192,11 @@ namespace Reko.UnitTests.Arch.Sparc
         [Ignore("")]
         public void SparcRw_mulscc()
         {
-            host.Stub(h => h.PseudoProcedure(
-                Arg<string>.Is.Equal("__mulscc"),
-                Arg<DataType>.Is.Equal(VoidType.Instance),
-                Arg<Expression[]>.Is.NotNull))
-                .Return(new Application(
+            host.Setup(h => h.PseudoProcedure(
+                "__mulscc",
+                VoidType.Instance,
+                It.IsNotNull<Expression[]>()))
+                .Returns(new Application(
                      new ProcedureConstant(
                         PrimitiveType.Ptr32,
                         new PseudoProcedure("__mulscc", PrimitiveType.Int32, 2)),
@@ -342,11 +339,11 @@ namespace Reko.UnitTests.Arch.Sparc
         [Test]
         public void SparcRw_ta()
         {
-            host.Stub(h => h.PseudoProcedure(
-                Arg<string>.Is.Equal(PseudoProcedure.Syscall),
-                Arg<DataType>.Is.Equal(VoidType.Instance),
-                Arg<Expression[] >.Is.NotNull))
-                .Return(new Application(
+            host.Setup(h => h.PseudoProcedure(
+                PseudoProcedure.Syscall,
+                VoidType.Instance,
+                It.IsNotNull<Expression[] >()))
+                .Returns(new Application(
                     new ProcedureConstant(
                         PrimitiveType.Ptr32,
                         new PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, 1)),

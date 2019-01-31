@@ -18,49 +18,44 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using Reko.ImageLoaders.LLVM;
-using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UnitTests.ImageLoaders.Llvm
 {
     [TestFixture]
     public class ProgramBuilderTests
     {
-        private MockRepository mr;
         private Dictionary<string, Identifier> globals;
         private ServiceContainer sc;
-        private IProcessorArchitecture arch;
+        private Mock<IProcessorArchitecture> arch;
         private Address addrFn;
 
         [SetUp]
         public void Setup()
         {
-            this.mr = new MockRepository();
             this.globals = new Dictionary<string, Identifier>();
             this.sc = new ServiceContainer();
             this.addrFn = Address.Ptr32(0x00100000);
-            this.arch = mr.Stub<IProcessorArchitecture>();
-            this.arch.Stub(a => a.PointerType).Return(PrimitiveType.Ptr32);
-            var cfgSvc = mr.Stub<IConfigurationService>();
-            var openv = mr.Stub<OperatingEnvironment>();
-            cfgSvc.Stub(c => c.GetArchitecture("x86-protected-64")).Return(arch);
-            cfgSvc.Stub(c => c.GetEnvironment("elf-neutral")).Return(openv);
-            openv.Stub(o => o.Load(sc, arch)).Return(new DefaultPlatform(sc, arch));
+            this.arch = new Mock<IProcessorArchitecture>();
+            this.arch.Setup(a => a.PointerType).Returns(PrimitiveType.Ptr32);
+            var cfgSvc = new Mock<IConfigurationService>();
+            var openv = new Mock<OperatingEnvironment>();
+            cfgSvc.Setup(c => c.GetArchitecture("x86-protected-64")).Returns(arch.Object);
+            cfgSvc.Setup(c => c.GetEnvironment("elf-neutral")).Returns(openv.Object);
+            openv.Setup(o => o.Load(sc, arch.Object)).Returns(new DefaultPlatform(sc, arch.Object));
 
-            sc.AddService<IConfigurationService>(cfgSvc);
+            sc.AddService<IConfigurationService>(cfgSvc.Object);
         }
 
         public void Global(string name, DataType dt)
@@ -72,14 +67,13 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
         {
             var program = new Program
             {
-                Architecture = arch,
-                Platform = new DefaultPlatform(sc, arch),
+                Architecture = arch.Object,
+                Platform = new DefaultPlatform(sc, arch.Object),
             };
             
             var parser = new LLVMParser(new StringReader(
                 string.Join(Environment.NewLine, lines)));
             var fn = parser.ParseFunctionDefinition();
-            mr.ReplayAll();
 
             var pb = new ProgramBuilder(sc, program);
             foreach (var de in globals)

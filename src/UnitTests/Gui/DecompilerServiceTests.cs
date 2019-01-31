@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,12 +18,12 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Services;
 using Reko.Gui;
 using Reko.UnitTests.Mocks;
-using Rhino.Mocks;
 using System;
 using System.ComponentModel.Design;
 
@@ -34,12 +34,10 @@ namespace Reko.UnitTests.Gui
     {
         ServiceContainer sc;
         IDecompilerService svc;
-        private MockRepository mr;
 
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
             sc = new ServiceContainer();
             svc = new DecompilerService();
             sc.AddService(typeof(IDecompilerService), svc);
@@ -49,12 +47,11 @@ namespace Reko.UnitTests.Gui
         [Test]
         public void DecSvc_NotifyOnChangedDecompiler()
         {
-            var loader = mr.Stub<ILoader>();
-            var host = mr.Stub<DecompilerHost>();
-            sc.AddService<DecompilerHost>(host);
-            mr.ReplayAll();
+            var loader = new Mock<ILoader>();
+            var host = new Mock<DecompilerHost>();
+            sc.AddService<DecompilerHost>(host.Object);
 
-            DecompilerDriver d = new DecompilerDriver(loader, sc);
+            DecompilerDriver d = new DecompilerDriver(loader.Object, sc);
             bool decompilerChangedEventFired = true;
             svc.DecompilerChanged += delegate(object o, EventArgs e)
             {
@@ -77,31 +74,28 @@ namespace Reko.UnitTests.Gui
         public void DecSvc_DecompilerProjectName()
         {
             IDecompilerService svc = new DecompilerService();
-            var loader = mr.StrictMock<ILoader>();
-            var host = mr.StrictMock<DecompilerHost>();
-            var arch = mr.StrictMock<IProcessorArchitecture>();
-            var platform = mr.StrictMock<IPlatform>();
+            var loader = new Mock<ILoader>();
+            var host = new Mock<DecompilerHost>();
+            var arch = new Mock<IProcessorArchitecture>();
+            var platform = new Mock<IPlatform>();
             var fileName = OsPath.Relative("foo", "bar", "baz.exe");
             var bytes = new byte[100];
             var mem = new MemoryArea(Address.Ptr32(0x1000), bytes);
             var imageMap = new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
-            var program = new Program(imageMap, arch, platform);
-            sc.AddService<DecompilerHost>(host);
-            platform.Stub(p => p.CreateMetadata()).Return(new TypeLibrary());
-            loader.Stub(l => l.LoadImageBytes(fileName, 0)).Return(bytes);
-            loader.Stub(l => l.LoadExecutable(fileName, bytes, null, null)).Return(program);
-            loader.Replay();
-            var dec = new DecompilerDriver(loader, sc);
-            mr.ReplayAll();
+            var program = new Program(imageMap, arch.Object, platform.Object);
+            sc.AddService<DecompilerHost>(host.Object);
+            platform.Setup(p => p.CreateMetadata()).Returns(new TypeLibrary());
+            loader.Setup(l => l.LoadImageBytes(fileName, 0)).Returns(bytes);
+            loader.Setup(l => l.LoadExecutable(fileName, bytes, null, null)).Returns(program);
+            var dec = new DecompilerDriver(loader.Object, sc);
 
             svc.Decompiler = dec;
             svc.Decompiler.Load(fileName);
 
             Assert.IsNotNull(svc.Decompiler.Project);
             Assert.AreEqual("baz.exe",  svc.ProjectName, "Should have project name available.");
-            mr.VerifyAll();
         }
     }
 }

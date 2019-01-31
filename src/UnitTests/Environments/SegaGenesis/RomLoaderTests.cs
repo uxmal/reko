@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Arch.M68k;
 using Reko.Core;
@@ -25,26 +26,14 @@ using Reko.Core.Configuration;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Environments.SegaGenesis;
-using Rhino.Mocks;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
-using System.Text;
 
 namespace Reko.UnitTests.Environments.SegaGenesis
 {
     [TestFixture]
     public class RomLoaderTests
     {
-        private MockRepository mr;
-
-        [SetUp]
-        public void Setup()
-        {
-            this.mr = new MockRepository();
-        }
-
         private void Given_AbsoluteMemoryMap(SegaGenesisPlatform platform)
         {
             platform.MemoryMap = new MemoryMap_v1
@@ -73,18 +62,17 @@ namespace Reko.UnitTests.Environments.SegaGenesis
         public void Sgrom_LoadImage()
         {
             var sc = new ServiceContainer();
-            var cfgSvc = mr.Stub<IConfigurationService>();
-            var openv = mr.Stub<OperatingEnvironment>();
-            var diagSvc = mr.StrictMock<IDiagnosticsService>();
+            var cfgSvc = new Mock<IConfigurationService>();
+            var openv = new Mock<OperatingEnvironment>();
+            var diagSvc = new Mock<IDiagnosticsService>();
             var arch = new M68kArchitecture("m68k");
             var platform = new SegaGenesisPlatform(sc, arch);
-            cfgSvc.Expect(c => c.GetArchitecture("m68k")).Return(arch);
-            cfgSvc.Expect(c => c.GetEnvironment("sega-genesis")).Return(openv);
-            openv.Expect(o => o.Load(sc, arch)).Return(platform);
-            sc.AddService<IConfigurationService>(cfgSvc);
-            sc.AddService<IDiagnosticsService>(diagSvc);
+            cfgSvc.Setup(c => c.GetArchitecture("m68k")).Returns(arch);
+            cfgSvc.Setup(c => c.GetEnvironment("sega-genesis")).Returns(openv.Object);
+            openv.Setup(o => o.Load(sc, arch)).Returns(platform);
+            sc.AddService<IConfigurationService>(cfgSvc.Object);
+            sc.AddService<IDiagnosticsService>(diagSvc.Object);
             Given_AbsoluteMemoryMap(platform);
-            mr.ReplayAll();
 
             var rawBytes = new byte[0x300];
             var sgrom = new RomLoader(sc, "foo.bin", rawBytes);

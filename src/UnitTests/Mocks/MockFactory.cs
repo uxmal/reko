@@ -32,14 +32,14 @@ namespace Reko.UnitTests.Mocks
     /// <summary>
     /// Utility class to simplify common unit test setup tasks.
     /// </summary>
-    public class MockFactory
+    public class CommonMockFactory
     {
         private Mock<IPlatform> mockPlatform;
         private TypeLibrary platformMetadata;
         private Mock<ILoader> mockLoader;
         private ICollection<Program> programs;
 
-        public MockFactory(object ignore = null)
+        public CommonMockFactory(object ignore = null)
         {
             this.platformMetadata = new TypeLibrary();
             this.programs = new List<Program>();

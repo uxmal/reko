@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -18,13 +18,13 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.CLanguage;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Libraries.Libc;
-using Rhino.Mocks;
 using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Core.Analysis
@@ -33,36 +33,30 @@ namespace Reko.UnitTests.Core.Analysis
     public class ScanfFormatParserTests
     {
         private ScanfFormatParser parser;
-        private MockRepository mr;
-        private DecompilerEventListener eventListener;
+        private Mock<DecompilerEventListener> eventListener;
         private ServiceContainer sc;
         private Program program;
 
         [SetUp]
         public void Setup()
         {
-            this.mr = new MockRepository();
             this.sc = new ServiceContainer();
-            this.eventListener = mr.Stub<DecompilerEventListener>();
-            this.sc.AddService(typeof(DecompilerEventListener), this.eventListener);
-            var arch = mr.Stub<IProcessorArchitecture>();
-            var platform = mr.Stub<IPlatform>();
-            arch.Stub(a => a.WordWidth).Return(PrimitiveType.Word32);
-            platform.Stub(p => p.Architecture).Return(arch);
-            platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Long)).Return(4);
-            platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Double)).Return(8);
-            platform.Stub(p => p.PointerType).Return(PrimitiveType.Ptr32);
-            this.program = new Program { Platform = platform };
+            this.eventListener = new Mock<DecompilerEventListener>();
+            this.sc.AddService(typeof(DecompilerEventListener), this.eventListener.Object);
+            var arch = new Mock<IProcessorArchitecture>();
+            var platform = new Mock<IPlatform>();
+            arch.Setup(a => a.WordWidth).Returns(PrimitiveType.Word32);
+            platform.Setup(p => p.Architecture).Returns(arch.Object);
+            platform.Setup(p => p.GetByteSizeFromCBasicType(CBasicType.Long)).Returns(4);
+            platform.Setup(p => p.GetByteSizeFromCBasicType(CBasicType.Double)).Returns(8);
+            platform.Setup(p => p.PointerType).Returns(PrimitiveType.Ptr32);
+            this.program = new Program { Platform = platform.Object };
         }
 
         private void ParseChar32(string formatString)
         {
-            mr.ReplayAll();
-
             this.parser = new ScanfFormatParser(program, Address.Ptr32(0x123400), formatString, sc);
             parser.Parse();
-
-            mr.VerifyAll();
         }
 
         [Test]
@@ -130,9 +124,17 @@ namespace Reko.UnitTests.Core.Analysis
         [Test]
         public void SFP_32_Invalid_S()
         {
-            eventListener.Expect(e => e.CreateAddressNavigator(null, null)).IgnoreArguments();
-            eventListener.Expect(e => e.Warn(null, null, new object[0])).IgnoreArguments();
+            eventListener.Setup(e => e.CreateAddressNavigator(
+                It.IsAny<Program>(),
+                It.IsAny<Address>())).Verifiable();
+            eventListener.Setup(e => e.Warn(
+                It.IsAny<ICodeLocation>(),
+                It.IsAny<string>(),
+                It.IsAny<object[]>())).Verifiable();
+
             ParseChar32("%S");
+
+            eventListener.Verify();
         }
 
         [Test]

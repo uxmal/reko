@@ -18,28 +18,23 @@
  */
 #endregion
 
+using Moq;
+using NUnit.Framework;
 using Reko.Core;
 using Reko.Gui;
-using NUnit.Framework;
-using Rhino.Mocks;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Text;
 using Reko.UnitTests.Mocks;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Gui
 {
     [TestFixture]
     public class CodeLocationTests
     {
-        private MockRepository mr;
         private Program program;
 
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
             this.program = new Program
             {
                 Architecture = new FakeArchitecture()
@@ -50,23 +45,22 @@ namespace Reko.UnitTests.Gui
         public void NavigateToAddress()
         {
             var project = new Project { Programs = { program } };
-            var memSvc = mr.DynamicMock<ILowLevelViewService>();
-            var decSvc = mr.DynamicMock<IDecompilerService>();
-            var dec = mr.DynamicMock<IDecompiler>();
-            memSvc.Expect(x => x.ShowMemoryAtAddress(
-                Arg<Program>.Is.NotNull,
-                Arg<Address>.Matches(a => a.ToLinear() == 0x1234)));
-            decSvc.Stub(d => d.Decompiler).Return(dec);
-            dec.Stub(d => d.Project).Return(project);
-            mr.ReplayAll();
+            var memSvc = new Mock<ILowLevelViewService>();
+            var decSvc = new Mock<IDecompilerService>();
+            var dec = new Mock<IDecompiler>();
+            memSvc.Setup(x => x.ShowMemoryAtAddress(
+                It.IsNotNull<Program>(),
+                It.Is<Address>(a => a.ToLinear() == 0x1234))).Verifiable();
+            decSvc.Setup(d => d.Decompiler).Returns(dec.Object);
+            dec.Setup(d => d.Project).Returns(project);
 
             var sc = new ServiceContainer();
-            sc.AddService<ILowLevelViewService>(memSvc);
-            sc.AddService<IDecompilerService>(decSvc);
+            sc.AddService<ILowLevelViewService>(memSvc.Object);
+            sc.AddService<IDecompilerService>(decSvc.Object);
             var nav = new AddressNavigator(program, Address.Ptr32(0x1234), sc);
             nav.NavigateTo();
 
-            mr.VerifyAll();
+            memSvc.VerifyAll();
         }
 
         [Test]
@@ -74,18 +68,14 @@ namespace Reko.UnitTests.Gui
         {
             var proc = new Procedure(program.Architecture, "foo", Address.Ptr32(0x00123400), null);
 
-            var codeSvc = mr.DynamicMock<ICodeViewerService>();
-            codeSvc.Expect(x => x.DisplayProcedure(
-                Arg<Program>.Is.Same(program),
-                Arg<Procedure>.Is.Same(proc),
-                Arg<bool>.Is.Equal(true)));
-            mr.ReplayAll();
+            var codeSvc = new Mock<ICodeViewerService>();
+            codeSvc.Setup(x => x.DisplayProcedure(program, proc, true)).Verifiable();
 
             var sc = new ServiceContainer();
-            sc.AddService<ICodeViewerService>(codeSvc);
+            sc.AddService<ICodeViewerService>(codeSvc.Object);
             var nav = new ProcedureNavigator(program, proc, sc);
             nav.NavigateTo();
-            mr.VerifyAll();
+            codeSvc.VerifyAll();
         }
 
         [Test]
@@ -93,20 +83,15 @@ namespace Reko.UnitTests.Gui
         {
             var proc = new Procedure(program.Architecture, "foo", Address.Ptr32(0x00123400), null);
             var block = new Block(proc, "foo_block");
-
-            var codeSvc = mr.DynamicMock<ICodeViewerService>();
-            codeSvc.Expect(x => x.DisplayProcedure(
-                Arg<Program>.Is.Same(program),
-                Arg<Procedure>.Is.Same(proc),
-                Arg<bool>.Is.Equal(true)));
-
-            mr.ReplayAll();
+            var codeSvc = new Mock<ICodeViewerService>();
+            codeSvc.Setup(x => x.DisplayProcedure(program, proc, true)).Verifiable();
 
             var sc = new ServiceContainer();
-            sc.AddService<ICodeViewerService>(codeSvc);
+            sc.AddService<ICodeViewerService>(codeSvc.Object);
             var nav = new BlockNavigator(program, block, sc);
             nav.NavigateTo();
-            mr.VerifyAll();
+
+            codeSvc.VerifyAll();
         }
     }
 }

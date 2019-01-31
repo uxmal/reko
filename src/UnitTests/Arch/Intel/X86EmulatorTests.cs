@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Assemblers.x86;
@@ -25,7 +26,6 @@ using Reko.Core;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Environments.Windows;
-using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -37,7 +37,6 @@ namespace Reko.UnitTests.Arch.Intel
     [TestFixture]
     public class X86EmulatorTests
     {
-        private MockRepository mr;
         private IntelArchitecture arch;
         private X86Emulator emu;
         private SegmentMap segmentMap;
@@ -48,7 +47,6 @@ namespace Reko.UnitTests.Arch.Intel
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
             arch = new X86ArchitectureFlat32("x86-protected-32");
             importReferences = new Dictionary<Address, ImportReference>();
             sc = new ServiceContainer();
@@ -79,10 +77,10 @@ namespace Reko.UnitTests.Arch.Intel
 
         private void Given_Platform()
         {
-            platform = mr.Stub<IPlatform>();
-            platform.Stub(p => p.LookupProcedureByName("", "")).IgnoreArguments()
-                .Return(new ExternalProcedure("", new FunctionType()));
-            platform.Replay();
+            var mockPlatform = new Mock<IPlatform>();
+            mockPlatform.Setup(p => p.LookupProcedureByName(It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(new ExternalProcedure("", new FunctionType()));
+            this.platform = mockPlatform.Object;
         }
 
         [Test]

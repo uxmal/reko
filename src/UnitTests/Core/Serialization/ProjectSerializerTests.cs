@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -18,14 +18,15 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
-using Rhino.Mocks;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
@@ -36,49 +37,45 @@ namespace Reko.UnitTests.Core.Serialization
     [TestFixture]
     public class ProjectSerializerTests
     {
-        private MockRepository mr;
         private ServiceContainer sc;
-        private ILoader loader;
-        private IProcessorArchitecture arch;
-        private IConfigurationService cfgSvc;
-        private IPlatform platform;
-        private DecompilerEventListener listener;
+        private Mock<ILoader> loader;
+        private Mock<IProcessorArchitecture> arch;
+        private Mock<IConfigurationService> cfgSvc;
+        private Mock<IPlatform> platform;
+        private Mock<DecompilerEventListener> listener;
+
 
         [SetUp]
         public void Setup()
         {
-            this.mr = new MockRepository();
             this.sc = new ServiceContainer();
-            loader = mr.Stub<ILoader>();
-            arch = mr.StrictMock<IProcessorArchitecture>();
-            this.listener = mr.Stub<DecompilerEventListener>();
+            loader = new Mock<ILoader>();
+            arch = new Mock<IProcessorArchitecture>();
+            this.listener = new Mock<DecompilerEventListener>();
             Address dummy;
-            arch.Stub(a => a.TryParseAddress(null, out dummy)).IgnoreArguments().WhenCalled(m =>
-            {
-                Address addr;
-                var sAddr = (string)m.Arguments[0];
-                var iColon = sAddr.IndexOf(':');
-                if (iColon > 0)
-                {
-                    addr = Address.SegPtr(
-                        Convert.ToUInt16(sAddr.Remove(iColon)),
-                        Convert.ToUInt16(sAddr.Substring(iColon+1)));
-                    m.ReturnValue = true;
-                }
-                else
-                {
-                    m.ReturnValue = Address32.TryParse32((string)m.Arguments[0], out addr);
-                }
-                m.Arguments[1] = addr;
-            }).Return(false);
-            this.cfgSvc = mr.Stub<IConfigurationService>();
-            this.sc.AddService<IConfigurationService>(cfgSvc);
+            arch.Setup(a => a.TryParseAddress(It.IsAny<string>(), out dummy))
+                .Returns(new StringToAddress((string sAddr, out Address addr) => {
+                    var iColon = sAddr.IndexOf(':');
+                    if (iColon > 0)
+                    {
+                        addr = Address.SegPtr(
+                            Convert.ToUInt16(sAddr.Remove(iColon)),
+                            Convert.ToUInt16(sAddr.Substring(iColon + 1)));
+                        return true;
+                    }
+                    else
+                    {
+                        return Address.TryParse32(sAddr, out addr);
+                    }
+                }));
+            this.cfgSvc = new Mock<IConfigurationService>();
+            this.sc.AddService<IConfigurationService>(cfgSvc.Object);
         }
 
         private void Given_Architecture()
         {
-            this.arch.Stub(a => a.Name).Return("testArch");
-            this.cfgSvc.Stub(c => c.GetArchitecture("testArch")).Return(arch);
+            this.arch.Setup(a => a.Name).Returns("testArch");
+            this.cfgSvc.Setup(c => c.GetArchitecture("testArch")).Returns(arch.Object);
         }
 
         private void Given_TestOS_Platform()
@@ -86,30 +83,38 @@ namespace Reko.UnitTests.Core.Serialization
 
             Debug.Assert(arch != null, "Must call Given_Architecture first.");
             // A very simple dumb platform with no intelligent behaviour.
-            this.platform = mr.Stub<IPlatform>();
-            var oe = mr.Stub<OperatingEnvironment>();
-            this.platform.Stub(p => p.Name).Return("testOS");
-            this.platform.Stub(p => p.SaveUserOptions()).Return(null);
-            this.platform.Stub(p => p.Architecture).Return(arch);
-            this.platform.Stub(p => p.CreateMetadata()).Return(new TypeLibrary());
-            this.cfgSvc.Stub(c => c.GetEnvironment("testOS")).Return(oe);
-            oe.Stub(e => e.Load(sc, arch)).Return(platform);
+            this.platform = new Mock<IPlatform>();
+            var oe = new Mock<OperatingEnvironment>();
+            this.platform.Setup(p => p.Name).Returns("testOS");
+            this.platform.Setup(p => p.SaveUserOptions()).Returns((Dictionary<string,object>)null);
+            this.platform.Setup(p => p.Architecture).Returns(arch.Object);
+            this.platform.Setup(p => p.CreateMetadata()).Returns(new TypeLibrary());
+            this.cfgSvc.Setup(c => c.GetEnvironment("testOS")).Returns(oe.Object);
+            oe.Setup(e => e.Load(sc, arch.Object)).Returns(platform.Object);
         }
 
         private void Given_Platform_Address(string sAddr, uint uAddr)
         {
-            this.platform.Stub(p => p.TryParseAddress(
-                Arg<string>.Is.Equal(sAddr),
-                out Arg<Address>.Out(Address.Ptr32(uAddr)).Dummy)).Return(true);
+            var addr = Address.Ptr32(uAddr);
+            this.platform.Setup(p => p.TryParseAddress(
+                sAddr,
+                out addr)).Returns(true);
         }
 
         [Test]
         public void Ps_Load_v4()
         {
             var bytes = new byte[100];
-            loader.Stub(l => l.LoadImageBytes(null, 0)).IgnoreArguments().Return(bytes);
-            loader.Stub(l => l.LoadExecutable(null, null, null, null)).IgnoreArguments().Return(
-                new Program { Architecture = arch });
+            loader.Setup(l => l.LoadImageBytes(
+                It.IsAny<string>(),
+                It.IsAny<int>())).
+                Returns(bytes);
+            loader.Setup(l => l.LoadExecutable(
+                It.IsAny<string>(),
+                It.IsAny<byte[]>(),
+                It.IsAny<string>(),
+                It.IsAny<Address>())).Returns(
+                new Program { Architecture = arch.Object });
             Given_Architecture();
             Given_TestOS_Platform();
             Given_Platform_Address("113800", 0x113800);
@@ -117,8 +122,7 @@ namespace Reko.UnitTests.Core.Serialization
             Given_Platform_Address("115000", 0x115000);
             Given_Platform_Address("115012", 0x115012);
             Given_Platform_Address("11504F", 0x11504F);
-            arch.Stub(a => a.GetRegister("r1")).Return(new RegisterStorage("r1", 1, 0, PrimitiveType.Word32));
-            mr.ReplayAll();
+            arch.Setup(a => a.GetRegister("r1")).Returns(new RegisterStorage("r1", 1, 0, PrimitiveType.Word32));
 
             var sp = new Project_v4
             {
@@ -187,7 +191,7 @@ namespace Reko.UnitTests.Core.Serialization
                     }
                 }
             };
-            var ps = new ProjectLoader(sc, loader, listener);
+            var ps = new ProjectLoader(sc, loader.Object, listener.Object);
             var p = ps.LoadProject("c:\\tmp\\fproj.proj", sp);
             Assert.AreEqual(1, p.Programs.Count);
             var inputFile = p.Programs[0]; 

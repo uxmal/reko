@@ -18,31 +18,28 @@
  */
 #endregion
 
+using Moq;
+using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Lib;
-using NUnit.Framework;
 using System;
-using Rhino.Mocks;
 
 namespace Reko.UnitTests.Core
 {
 	[TestFixture]
 	public class ProcedureTests
 	{
-        private MockRepository mr;
-        private IProcessorArchitecture arch;
+        private Mock<IProcessorArchitecture> arch;
 
         public ProcedureTests()
 		{
-            mr = new MockRepository();
-            arch = mr.Stub<IProcessorArchitecture>();
-            arch.Replay();
+            arch = new Mock<IProcessorArchitecture>();
 		}
 
 		[Test]
 		public void CreateProcedure()
 		{
-			Procedure proc = Procedure.Create(arch, Address.SegPtr(0xBAFE, 0x0123), null);
+			Procedure proc = Procedure.Create(arch.Object, Address.SegPtr(0xBAFE, 0x0123), null);
 			Assert.IsTrue(proc.EntryBlock != null);
 			Assert.IsTrue(proc.ExitBlock != null);
 		}
@@ -50,13 +47,13 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void ProcToString()
 		{
-			Procedure proc1 = Procedure.Create(arch, Address.SegPtr(0x0F00, 0x0BA9), null);
+			Procedure proc1 = Procedure.Create(arch.Object, Address.SegPtr(0x0F00, 0x0BA9), null);
 			Assert.AreEqual("fn0F00_0BA9", proc1.Name);
 			Assert.AreEqual("void fn0F00_0BA9()", proc1.ToString());
-			Procedure proc2 = Procedure.Create(arch, Address.Ptr32(0x0F000BA9), null);
+			Procedure proc2 = Procedure.Create(arch.Object, Address.Ptr32(0x0F000BA9), null);
 			Assert.AreEqual("fn0F000BA9", proc2.Name);
 			Assert.AreEqual("void fn0F000BA9()", proc2.ToString());
-			Procedure proc3 = new Procedure(arch, "foo",  Address.Ptr32(0x00123400), null);
+			Procedure proc3 = new Procedure(arch.Object, "foo",  Address.Ptr32(0x00123400), null);
 			Assert.AreEqual("foo", proc3.Name);
 			Assert.AreEqual("void foo()", proc3.ToString());
 		}
@@ -65,7 +62,7 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void ProcCharacteristicIsAlloca()
 		{
-			Procedure proc = new Procedure(arch, "foo", Address.Ptr32(0x00123400), null);
+			Procedure proc = new Procedure(arch.Object, "foo", Address.Ptr32(0x00123400), null);
 			Assert.IsFalse(proc.Characteristics.IsAlloca);
 		}
 

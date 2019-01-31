@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,8 +18,8 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
-using Rhino.Mocks;
 using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Expressions;
@@ -40,12 +40,10 @@ namespace Reko.UnitTests.Core.Serialization
         private ProcedureSerializer sigser;
         private ArgumentDeserializer argser;
         private MsdosPlatform platform;
-        private MockRepository mr;
 
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
             var sc = new ServiceContainer();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
             arch = new X86ArchitectureReal("x86-real-16");
@@ -62,7 +60,6 @@ namespace Reko.UnitTests.Core.Serialization
                 // arguments on unaligned offsets
                 13,
                 4);
-            mr.ReplayAll();
         }
 
         [Test]

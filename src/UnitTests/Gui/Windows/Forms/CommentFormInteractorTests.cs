@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 Pavel Tomin.
  *
@@ -18,13 +18,13 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Gui;
 using Reko.Gui.Forms;
 using Reko.UnitTests.Mocks;
 using Reko.UserInterfaces.WindowsForms.Forms;
-using Rhino.Mocks;
 using System.ComponentModel.Design;
 using System.Drawing;
 using System.Linq;
@@ -33,30 +33,28 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 {
     public class CommentFormInteractorTests
     {
-        MockRepository mr;
         private ServiceContainer services;
         private CommentFormInteractor interactor;
-        private IDeclarationForm commentForm;
+        private Mock<IDeclarationForm> commentForm;
         private FakeTextBox textBox;
         private Program program;
 
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
             services = new ServiceContainer();
-            commentForm = mr.Stub<IDeclarationForm>();
+            commentForm = new Mock<IDeclarationForm>();
             textBox = new FakeTextBox();
-            commentForm.Stub(f => f.TextBox).Return(textBox);
-            commentForm.Stub(f => f.ShowAt(new Point()));
-            commentForm.Stub(f => f.Hide());
-            commentForm.Stub(f => f.Dispose());
-            var dlgFactory = mr.Stub<IDialogFactory>();
+            commentForm.Setup(f => f.TextBox).Returns(textBox);
+            commentForm.Setup(f => f.ShowAt(new Point()));
+            commentForm.Setup(f => f.Hide());
+            commentForm.Setup(f => f.Dispose());
+            commentForm.SetupProperty(f => f.HintText);
+            var dlgFactory = new Mock<IDialogFactory>();
             dlgFactory
-                .Stub(f => f.CreateCommentForm())
-                .Return(commentForm);
-            services.AddService<IDialogFactory>(dlgFactory);
-            mr.ReplayAll();
+                .Setup(f => f.CreateCommentForm())
+                .Returns(commentForm.Object);
+            services.AddService<IDialogFactory>(dlgFactory.Object);
             interactor = new CommentFormInteractor(services);
             program = new Program();
         }
@@ -92,7 +90,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             ShowCommentForm(0x14);
 
             var expected = "Enter comment at the address 00000014";
-            Assert.AreEqual(expected, commentForm.HintText);
+            Assert.AreEqual(expected, commentForm.Object.HintText);
         }
 
         [Test]
@@ -102,7 +100,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 
             ShowCommentForm(0x13);
 
-            Assert.AreEqual("This is a comment", commentForm.TextBox.Text);
+            Assert.AreEqual("This is a comment", commentForm.Object.TextBox.Text);
         }
 
         [Test]
@@ -112,7 +110,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 
             ShowCommentForm(0x14);
 
-            Assert.AreEqual("", commentForm.TextBox.Text);
+            Assert.AreEqual("", commentForm.Object.TextBox.Text);
         }
 
         [Test]
@@ -121,7 +119,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Given_Comment(0x15, "This is a comment");
 
             ShowCommentForm(0x15);
-            commentForm.TextBox.Text += " [edited]";
+            commentForm.Object.TextBox.Text += " [edited]";
             LostFocus();
 
             var expected = "This is a comment [edited]";
@@ -132,7 +130,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         public void Cfi_CreateComment()
         {
             ShowCommentForm(0x16);
-            commentForm.TextBox.Text = "New comment";
+            commentForm.Object.TextBox.Text = "New comment";
             LostFocus();
 
             Assert.AreEqual("New comment", CommentAt(0x16));
@@ -144,7 +142,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Given_Comment(0x17, "This is a comment");
 
             ShowCommentForm(0x17);
-            commentForm.TextBox.Text = "";
+            commentForm.Object.TextBox.Text = "";
             LostFocus();
 
             Assert.AreEqual(null, CommentAt(0x17));

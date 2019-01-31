@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -18,50 +18,47 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Types;
 using Reko.ImageLoaders.Elf;
-using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 
 namespace Reko.UnitTests.ImageLoaders.Elf
 {
     [TestFixture]
     public class ElfLoader32Tests
     {
-        private MockRepository mr;
         private byte[] bytes;
         private List<ElfSegment> programHeaders;
         private List<ElfSection> sections;
-        private IPlatform platform;
+        private Mock<IPlatform> platform;
         private ElfLoader32 el32;
         private Elf32_EHdr eih;
         private ServiceContainer sc;
         private ElfImageLoader eil;
         private Program program;
-        private IProcessorArchitecture arch;
+        private Mock<IProcessorArchitecture> arch;
 
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
             programHeaders = new List<ElfSegment>();
             sections = new List<ElfSection>();
-            platform = mr.Stub<IPlatform>();
+            platform = new Mock<IPlatform>();
             this.sc = new ServiceContainer();
-            var cfgSvc = mr.Stub<IConfigurationService>();
-            this.arch = mr.Stub<IProcessorArchitecture>();
-            arch.Stub(a => a.PointerType).Return(PrimitiveType.Ptr32);
-            cfgSvc.Stub(c => c.GetArchitecture("x86-protected-32")).Return(arch);
-            cfgSvc.Stub(c => c.GetArchitecture("mips-be-32")).Return(arch);
-            sc.AddService<IConfigurationService>(cfgSvc);
+            var cfgSvc = new Mock<IConfigurationService>();
+            this.arch = new Mock<IProcessorArchitecture>();
+            arch.Setup(a => a.PointerType).Returns(PrimitiveType.Ptr32);
+            cfgSvc.Setup(c => c.GetArchitecture("x86-protected-32")).Returns(arch.Object);
+            cfgSvc.Setup(c => c.GetArchitecture("mips-be-32")).Returns(arch.Object);
+            sc.AddService<IConfigurationService>(cfgSvc.Object);
         }
 
         private void Given_RawImage(string bytes)
@@ -121,10 +118,10 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             }
             var mem = new MemoryArea(Address.Ptr32(0x10000000), writer.ToArray());
             program.SegmentMap.AddSegment(mem,  ".got", AccessMode.ReadWriteExecute);
-            arch.Stub(a => a.CreateImageReader(
-                Arg<MemoryArea>.Is.NotNull,
-                Arg<Address>.Is.Equal(mem.BaseAddress)))
-                .Return(new BeImageReader(mem, 0));
+            arch.Setup(a => a.CreateImageReader(
+                It.IsNotNull<MemoryArea>(),
+                mem.BaseAddress))
+                .Returns(new BeImageReader(mem, 0));
         }
 
         private void Given_ImageHeader(ElfMachine machine)
@@ -153,10 +150,9 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             Given_Section(".text", 0x1000, "rx");
             Given_Section(".data", 0x2000, "rw");
             Given_Section(".bss", 0x2008, "rw");
-            mr.ReplayAll();
 
             When_CreateLoader32(false);
-            var segmentMap = el32.LoadImageBytes(platform, this.bytes, Address.Ptr32(0x1000));
+            var segmentMap = el32.LoadImageBytes(platform.Object, this.bytes, Address.Ptr32(0x1000));
 
             ImageSegment segText;
             Assert.IsTrue(segmentMap.TryFindSegment(Address.Ptr32(0x1001), out segText));
@@ -232,13 +228,12 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         {
             var syms = new ImageSymbol[]
             {
-                ImageSymbol.ExternalProcedure(arch, Address.Ptr32(0x04000000), "strcpy"),
-                ImageSymbol.ExternalProcedure(arch, Address.Ptr32(0x04000010), "strcmp"),
+                ImageSymbol.ExternalProcedure(arch.Object, Address.Ptr32(0x04000000), "strcpy"),
+                ImageSymbol.ExternalProcedure(arch.Object, Address.Ptr32(0x04000010), "strcmp"),
             }.ToSortedList(k => k.Address);
             Given_ImageHeader(ElfMachine.EM_MIPS);
             Given_Program();
             Given_BE32_GOT(0x0000000, 0x00000000, 0x04000010, 0x04000000);
-            mr.ReplayAll();
 
             When_CreateLoader32(true);
 
@@ -252,7 +247,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
 
         private void Given_Program()
         {
-            this.program = new Program(new SegmentMap(Address.Ptr32(0x10000)), this.arch, this.platform);
+            this.program = new Program(new SegmentMap(Address.Ptr32(0x10000)), this.arch.Object, this.platform.Object);
         }
 
         [Test]
@@ -261,14 +256,11 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             Given_RawImage("C0 DE 00 00 00 00 00 00 DA 7A 00 00");
             Given_ImageHeader(ElfMachine.EM_386);
             Given_ProgramHeader(ProgramHeaderType.PT_LOAD, 0, 0x1000, 8, 8);
-            mr.ReplayAll();
 
             When_CreateLoader32(false);
-            var segmentMap = el32.LoadImageBytes(platform, this.bytes, Address.Ptr32(0x1000));
+            var segmentMap = el32.LoadImageBytes(platform.Object, this.bytes, Address.Ptr32(0x1000));
 
             Assert.AreEqual(1, segmentMap.Segments.Count);
-            mr.VerifyAll();
-
         }
     }
 }

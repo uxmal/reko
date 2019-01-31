@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Serialization;
@@ -26,13 +27,8 @@ using Reko.Gui;
 using Reko.Gui.Controls;
 using Reko.Gui.Design;
 using Reko.UnitTests.Mocks;
-using Rhino.Mocks;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Gui.Design
 {
@@ -41,30 +37,28 @@ namespace Reko.UnitTests.Gui.Design
     {
         private Program program;
         private ProgramDesigner programDesigner;
-        private MockRepository mr;
-        private ITreeNode node;
-        private ITreeNodeDesignerHost host;
-        private IDecompilerShellUiService uiSvc;
+        private Mock<ITreeNode> node;
+        private Mock<ITreeNodeDesignerHost> host;
+        private Mock<IDecompilerShellUiService> uiSvc;
         private CommandID cmdidLoadSymbols;
         private ServiceContainer sc;
-        private ISymbolLoadingService slSvc;
-        private ISymbolSource symSrc;
+        private Mock<ISymbolLoadingService> slSvc;
+        private Mock<ISymbolSource> symSrc;
 
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
             this.sc = new ServiceContainer();
-            this.node = mr.StrictMock<ITreeNode>();
-            this.host = mr.StrictMock<ITreeNodeDesignerHost>();
-            this.uiSvc = mr.StrictMock<IDecompilerShellUiService>();
+            this.node = new Mock<ITreeNode>();
+            this.host = new Mock<ITreeNodeDesignerHost>();
+            this.uiSvc = new Mock<IDecompilerShellUiService>();
             this.cmdidLoadSymbols = new CommandID(CmdSets.GuidReko, CmdIds.LoadSymbols);
-            this.slSvc = mr.StrictMock<ISymbolLoadingService>();
-            this.symSrc = mr.StrictMock<ISymbolSource>();
+            this.slSvc = new Mock<ISymbolLoadingService>();
+            this.symSrc = new Mock<ISymbolSource>();
 
             // Add services to the Service container (which in the real program is the Reko "main window")
-            this.sc.AddService<ISymbolLoadingService>(slSvc);
-            this.sc.AddService<IDecompilerShellUiService>(uiSvc);
+            this.sc.AddService<ISymbolLoadingService>(slSvc.Object);
+            this.sc.AddService<IDecompilerShellUiService>(uiSvc.Object);
         }
         /*
          * I have a binary with no debugging symbols, but i prepared a C/C++ header 
@@ -78,7 +72,6 @@ namespace Reko.UnitTests.Gui.Design
         {
             // A program designer is the öbject behind the "tree item" for each program.
             Given_Program_NoSymbols();
-            mr.ReplayAll();
 
             Expect_MenuItem_LoadSymbols_Enabled();
             // The idea is to write statements in C# that follow the user story.
@@ -90,25 +83,27 @@ namespace Reko.UnitTests.Gui.Design
             Given_Program_NoSymbols();
             Expect_OpenFileDialog();
             Expect_CallsToSymbolService();
-            mr.ReplayAll();
 
             When_User_Selects_LoadSymbols();
+            slSvc.VerifyAll();
+            symSrc.VerifyAll();
+            uiSvc.VerifyAll();
         }
 
         private void Expect_CallsToSymbolService()
         {
-            slSvc.Expect(s => s.GetSymbolSource("foo.h")).Return(symSrc);
-            symSrc.Expect(s => s.GetAllSymbols()).Return(new List<ImageSymbol>
+            slSvc.Setup(s => s.GetSymbolSource("foo.h")).Returns(symSrc.Object).Verifiable();
+            symSrc.Setup(s => s.GetAllSymbols()).Returns(new List<ImageSymbol>
             {
                 ImageSymbol.Procedure(
-                    program.Architecture, 
+                    program.Architecture,
                     Address.Ptr32(0x00112240),
                     "my_procedure",
                     signature:new SerializedSignature
                     {
                         // let's not worry about this yet.
                     })
-            });
+            }).Verifiable();
         }
 
         private void When_User_Selects_LoadSymbols()
@@ -119,7 +114,7 @@ namespace Reko.UnitTests.Gui.Design
 
         private void Expect_OpenFileDialog()
         {
-            uiSvc.Expect(u => u.ShowOpenFileDialog(null)).IgnoreArguments().Return("foo.h");
+            uiSvc.Setup(u => u.ShowOpenFileDialog(It.IsAny<string>())).Returns("foo.h");
         }
 
         private void Expect_MenuItem_LoadSymbols_Enabled()
@@ -139,8 +134,8 @@ namespace Reko.UnitTests.Gui.Design
             this.program.ImageMap = new ImageMap(addr);
             this.program.SegmentMap = new SegmentMap(addr);
             this.programDesigner = new ProgramDesigner();
-            this.programDesigner.Host = host;
-            this.programDesigner.TreeNode = node;
+            this.programDesigner.Host = host.Object;
+            this.programDesigner.TreeNode = node.Object;
             this.programDesigner.Services = sc;
             this.programDesigner.Initialize(program);
         }

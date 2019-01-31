@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -18,29 +18,25 @@
  */
 #endregion
 
-using Reko.Core;
+using Moq;
+using NUnit.Framework;
 using Reko.Core.Archives;
 using Reko.Environments.C64;
-using NUnit.Framework;
-using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.IO;
-using System.Linq;
 using System.Text;
 
 namespace Reko.UnitTests.Environments.C64
 {
     public class D64LoaderTests
     {
-        private MockRepository mr;
         private ServiceContainer sc;
 
         [SetUp]
         public void Setup()
         {
-            this.mr = new MockRepository();
             this.sc = new ServiceContainer();
         }
 

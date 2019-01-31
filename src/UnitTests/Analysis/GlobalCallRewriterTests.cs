@@ -18,20 +18,18 @@
  */
 #endregion
 
-using Reko.Arch.X86;
+using NUnit.Framework;
 using Reko.Analysis;
+using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
-using NUnit.Framework;
-using System;
 using System.Collections.Generic;
-using Rhino.Mocks;
 
 namespace Reko.UnitTests.Analysis
 {
-	[TestFixture]
+    [TestFixture]
 	public class GlobalCallRewriterTests
 	{
 		private Program program;

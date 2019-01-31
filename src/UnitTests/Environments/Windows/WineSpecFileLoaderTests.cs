@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -18,17 +18,15 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Environments.Windows;
-using Rhino.Mocks;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Linq;
 using System.Text;
 
 namespace Reko.UnitTests.Environments.Windows
@@ -38,19 +36,17 @@ namespace Reko.UnitTests.Environments.Windows
     {
         private static string nl = Environment.NewLine;
 
-        private MockRepository mr;
         private IPlatform platform;
         private WineSpecFileLoader wsfl;
         private ServiceContainer sc;
-        private DecompilerEventListener listener;
+        private Mock<DecompilerEventListener> listener;
 
         [SetUp]
         public void Setup()
         {
-            this.mr = new MockRepository();
             this.sc = new ServiceContainer();
-            this.listener = mr.Stub<DecompilerEventListener>();
-            this.sc.AddService<DecompilerEventListener>(listener);
+            this.listener = new Mock<DecompilerEventListener>();
+            this.sc.AddService<DecompilerEventListener>(listener.Object);
         }
 
         private void Given_WineSpecLoader_16(string filename, string contents)
@@ -70,7 +66,6 @@ namespace Reko.UnitTests.Environments.Windows
         {
             Given_WineSpecLoader_16("foo.spec",
                 " # comment");
-            mr.ReplayAll();
 
             var lib = wsfl.Load(platform, new TypeLibrary());
             Assert.AreEqual(0, lib.Modules.Count);
@@ -81,7 +76,6 @@ namespace Reko.UnitTests.Environments.Windows
         {
             Given_WineSpecLoader_16("foo.spec",
                 " 624 pascal SetFastQueue(long long) SetFastQueue16\n");
-            mr.ReplayAll();
 
             var lib = wsfl.Load(platform, new TypeLibrary());
             var mod = lib.Modules["FOO.DLL"];
@@ -101,7 +95,6 @@ namespace Reko.UnitTests.Environments.Windows
                 " 2   pascal -ret16 ExitKernel() ExitKernel16\n" +
                 "3    pascal GetVersion() GetVersion16\n" +
                 "4   pascal -ret16 LocalInit(word word word) LocalInit16\n");
-            mr.ReplayAll();
 
             var lib = wsfl.Load(platform, new TypeLibrary());
             var mod = lib.Modules["FOO.DLL"];
@@ -122,7 +115,6 @@ namespace Reko.UnitTests.Environments.Windows
         {
             Given_WineSpecLoader_16("foo.spec",
                 " @ stdcall -arch=win32 -norelay SMapLS_IP_EBP_36()" + nl + "");
-            mr.ReplayAll();
 
             var lib = wsfl.Load(platform, new TypeLibrary());
             var mod = lib.Modules["FOO.DLL"];
@@ -136,7 +128,6 @@ namespace Reko.UnitTests.Environments.Windows
         {
             Given_WineSpecLoader_32("foo.spec",
                 "115 stdcall WSAStartup(long ptr)\n");
-            mr.ReplayAll();
 
             var lib = wsfl.Load(platform, new TypeLibrary());
             var mod = lib.Modules["FOO.DLL"];
@@ -150,7 +141,6 @@ namespace Reko.UnitTests.Environments.Windows
         {
             Given_WineSpecLoader_32("foo.spec",
                 "@ stdcall WSCEnableNSProvider(ptr long)\n");
-            mr.ReplayAll();
 
             var lib = wsfl.Load(platform, new TypeLibrary());
             var mod = lib.Modules["FOO.DLL"];
@@ -164,7 +154,6 @@ namespace Reko.UnitTests.Environments.Windows
         {
             Given_WineSpecLoader_32("msvcrt.spec",
                 " @ cdecl fgets(ptr long ptr) MSVCRT_fgets\n");
-            mr.ReplayAll();
 
             var lib = wsfl.Load(platform, new TypeLibrary());
             var mod = lib.Modules["MSVCRT.DLL"];
@@ -180,11 +169,10 @@ namespace Reko.UnitTests.Environments.Windows
             Given_WineSpecLoader_32("foo.spec",
                 "@ stdcall flox($-@garbage fosforsyra $!garbage  \n" +
                 "@ stdcall foo(ptr ptr)\n");
-            listener.Expect(l => l.Warn(
-                Arg<ICodeLocation>.Is.NotNull,
-                Arg<string>.Is.NotNull,
-                Arg<object[]>.Is.NotNull));
-            mr.ReplayAll();
+            listener.Setup(l => l.Warn(
+                It.IsNotNull<ICodeLocation>(),
+                It.IsNotNull<string>(),
+                It.IsNotNull<object[]>()));
 
             var lib = wsfl.Load(platform, new TypeLibrary());
             var mod = lib.Modules["FOO.DLL"];
@@ -197,7 +185,6 @@ namespace Reko.UnitTests.Environments.Windows
         {
             Given_WineSpecLoader_16("foo.spec",
                 "328 varargs -ret16 _DebugOutput(word str) _DebugOutput \n");
-            mr.ReplayAll();
 
             var lib = wsfl.Load(platform, new TypeLibrary());
             var mod = lib.Modules["FOO.DLL"];

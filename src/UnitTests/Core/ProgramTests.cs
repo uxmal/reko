@@ -18,35 +18,32 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.Core.Types;
-using Reko.Core.Serialization;
+using Moq;
 using NUnit.Framework;
-using Rhino.Mocks;
-using System;
+using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
 
 namespace Reko.UnitTests.Core
 {
-	[TestFixture]
+    [TestFixture]
 	public class ProgramTests
 	{
 		private Program program;
-        private MockRepository mr;
-        private IProcessorArchitecture arch;
+        private Mock<IProcessorArchitecture> arch;
         private Address addrBase;
 
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
             program = new Program();
         }
 
         private void Given_Architecture()
         {
-            arch = mr.Stub<IProcessorArchitecture>();
-            program.Architecture = arch;
+            arch = new Mock<IProcessorArchitecture>();
+            program.Architecture = arch.Object;
         }
 
         private void Given_Image(params byte[] bytes)
@@ -56,7 +53,7 @@ namespace Reko.UnitTests.Core
             program.SegmentMap = new SegmentMap(addrBase);
             program.SegmentMap.AddSegment(mem, ".text", AccessMode.ReadWriteExecute);
             program.ImageMap = program.SegmentMap.CreateImageMap();
-            arch.Stub(a => a.CreateImageReader(mem, addrBase)).Return(new LeImageReader(mem, 0));
+            arch.Setup(a => a.CreateImageReader(mem, addrBase)).Returns(new LeImageReader(mem, 0));
         }
 
         private void Given_ImageMapItem(Address address, DataType dataType)
@@ -102,9 +99,8 @@ namespace Reko.UnitTests.Core
         {
             Given_Architecture();
             Given_Image(0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
-            mr.ReplayAll();
 
-            var gbl1 = program.ModifyUserGlobal(arch, addrBase, new PrimitiveType_v1 { Domain = Domain.Real, ByteSize = 8 }, "dValue");
+            var gbl1 = program.ModifyUserGlobal(arch.Object, addrBase, new PrimitiveType_v1 { Domain = Domain.Real, ByteSize = 8 }, "dValue");
             Assert.IsNotNull(gbl1);
             Assert.AreEqual("dValue", gbl1.Name);
             Assert.AreEqual(addrBase.ToString(), gbl1.Address.ToString());
@@ -118,7 +114,7 @@ namespace Reko.UnitTests.Core
             Assert.AreEqual("00010000", item.Address.ToString());
             Assert.AreEqual(8, item.Size);
 
-            var gbl2 = program.ModifyUserGlobal(arch, addrBase, new PrimitiveType_v1 { Domain = Domain.Real, ByteSize = 4 }, "fValue");
+            var gbl2 = program.ModifyUserGlobal(arch.Object, addrBase, new PrimitiveType_v1 { Domain = Domain.Real, ByteSize = 4 }, "fValue");
             Assert.IsNotNull(gbl2);
             Assert.AreSame(gbl1, gbl2);
             Assert.AreEqual("fValue", gbl2.Name);
@@ -152,10 +148,9 @@ namespace Reko.UnitTests.Core
             Given_Architecture();
             Given_Image(0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
             Given_ImageMapItem(addrBase, PrimitiveType.Int32);
-            mr.ReplayAll();
 
             var gbl = program.ModifyUserGlobal(
-                arch,
+                arch.Object,
                 addrBase,
                 new PrimitiveType_v1
                 {
@@ -178,7 +173,6 @@ namespace Reko.UnitTests.Core
             Given_Architecture();
             Given_Image(0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
             Given_ImageMapItem(addrBase, PrimitiveType.Int32);
-            mr.ReplayAll();
 
             program.RemoveUserGlobal(addrBase);
             Assert.AreEqual(1, program.ImageMap.Items.Count);
@@ -194,7 +188,6 @@ namespace Reko.UnitTests.Core
             Given_Architecture();
             Given_Image(0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
             Given_ImageMapBlock(addrBase, 5);
-            mr.ReplayAll();
 
             program.RemoveUserGlobal(addrBase);
             /* block items should not be removed*/
@@ -214,7 +207,6 @@ namespace Reko.UnitTests.Core
         {
             Given_Architecture();
             Given_Image(0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x00, 0x00);
-            mr.ReplayAll();
 
             Assert.AreEqual(4u, program.GetDataSize(program.Architecture, addrBase, PrimitiveType.Int32));
         }
@@ -225,7 +217,6 @@ namespace Reko.UnitTests.Core
         {
             Given_Architecture();
             Given_Image(0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x00, 0x00);
-            mr.ReplayAll();
 
             var dt = StringType.NullTerminated(PrimitiveType.Char);
             Assert.AreEqual(6u, program.GetDataSize(program.Architecture, addrBase, dt), "5 bytes for 'hello' and 1 for the terminating null'");

@@ -24,6 +24,7 @@ using Reko.Core.Lib;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
+using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -31,7 +32,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Rhino.Mocks;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -75,8 +75,7 @@ namespace Reko.UnitTests.Analysis
             var proc = mkProc();
             progBuilder.ResolveUnresolved();
            
-            var importResolver = MockRepository.GenerateStub<IImportResolver>();
-            importResolver.Replay();
+            var importResolver = new Mock<IImportResolver>().Object;
             var sst = new SsaTransform(
                 pf,
                 proc,

@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Types;
@@ -25,7 +26,6 @@ using Reko.Gui;
 using Reko.UnitTests.Mocks;
 using Reko.UserInterfaces.WindowsForms;
 using Reko.UserInterfaces.WindowsForms.Controls;
-using Rhino.Mocks;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Drawing;
@@ -37,22 +37,20 @@ namespace Reko.UnitTests.Gui.Windows
     {
         private CombinedCodeViewInteractor interactor;
         private CombinedCodeView combinedCodeView;
-        private MockRepository mr;
-        private MockFactory mockFactory;
+        private CommonMockFactory mockFactory;
         private Program program;
         private Procedure proc;
 
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
-            mockFactory = new MockFactory();
-            var platform = mockFactory.CreatePlatform();
+            mockFactory = new CommonMockFactory();
+            var platform = mockFactory.CreateMockPlatform();
             var imageMap = new SegmentMap(Address32.Ptr32(0x05));
-            program = new Program(imageMap, platform.Architecture, platform);
+            program = new Program(imageMap, platform.Object.Architecture, platform.Object);
             interactor = new CombinedCodeViewInteractor();
-            var uiPreferencesSvc = mr.Stub<IUiPreferencesService>();
-            var uiSvc = mr.Stub<IDecompilerShellUiService>();
+            var uiPreferencesSvc = new Mock<IUiPreferencesService>();
+            var uiSvc = new Mock<IDecompilerShellUiService>();
 
             var styles = new Dictionary<string, UiStyle>()
             {
@@ -64,10 +62,10 @@ namespace Reko.UnitTests.Gui.Windows
                     }
                 }
             };
-            uiPreferencesSvc.Stub(u => u.Styles).Return(styles);
+            uiPreferencesSvc.Setup(u => u.Styles).Returns(styles);
             var sc = new ServiceContainer();
-            sc.AddService<IUiPreferencesService>(uiPreferencesSvc);
-            sc.AddService<IDecompilerShellUiService>(uiSvc);
+            sc.AddService<IUiPreferencesService>(uiPreferencesSvc.Object);
+            sc.AddService<IDecompilerShellUiService>(uiSvc.Object);
             interactor.SetSite(sc);
         }
 
@@ -166,7 +164,6 @@ namespace Reko.UnitTests.Gui.Windows
                 0x0C, 0x0D, 0x0E, 0x0F);
             Given_StubProcedure(0x10, 1);
             Given_ImageMapItem(0x15, PrimitiveType.Int32, "iVar");
-            mr.ReplayAll();
 
             When_CombinedCodeViewCreated();
             interactor.DisplayProcedure(this.program, this.proc);
@@ -223,7 +220,6 @@ fnTest_exit:
                 0x0C, 0x0D, 0x0E, 0x0F);
             Given_StubProcedure(0x10, 1);
             Given_ImageMapItem(0x15, PrimitiveType.Int32, "iVar");
-            mr.ReplayAll();
 
             When_CombinedCodeViewCreated();
             var segment = this.program.SegmentMap.Segments.Values[0];

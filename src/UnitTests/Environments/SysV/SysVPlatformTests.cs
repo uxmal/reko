@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -18,13 +18,13 @@
  */
 #endregion
 
+using Moq;
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Environments.SysV;
 using NUnit.Framework;
-using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -37,30 +37,28 @@ namespace Reko.UnitTests.Environments.SysV
     [TestFixture]
     public class SysVPlatformTests
     {
-        private IProcessorArchitecture arch;
-        private IConfigurationService cfgSvc;
-        private MockRepository mr;
         private ServiceContainer sc;
-        private ITypeLibraryLoaderService tlSvc;
+        private Mock<IProcessorArchitecture> arch;
+        private Mock<IConfigurationService> cfgSvc;
+        private Mock<ITypeLibraryLoaderService> tlSvc;
 
         [SetUp]
         public void Setup()
         {
-            this.mr = new MockRepository();
             this.sc = new ServiceContainer();
-            this.arch = mr.Stub<IProcessorArchitecture>();
-            this.tlSvc = mr.Stub<ITypeLibraryLoaderService>();
-            this.cfgSvc = mr.Stub<IConfigurationService>();
-            sc.AddService<IConfigurationService>(cfgSvc);
-            sc.AddService<ITypeLibraryLoaderService>(tlSvc);
+            this.arch = new Mock<IProcessorArchitecture>();
+            this.tlSvc = new Mock<ITypeLibraryLoaderService>();
+            this.cfgSvc = new Mock<IConfigurationService>();
+            sc.AddService<IConfigurationService>(cfgSvc.Object);
+            sc.AddService<ITypeLibraryLoaderService>(tlSvc.Object);
 
         }
 
         [Test]
         public void SysV_TerminatingFunction()
         {
-            cfgSvc.Stub(c => c.GetInstallationRelativePath("libc.xml"))
-                .Return("libc.xml");
+            cfgSvc.Setup(c => c.GetInstallationRelativePath("libc.xml"))
+                .Returns("libc.xml");
 
             var env = new OperatingEnvironmentElement
             {
@@ -81,9 +79,8 @@ namespace Reko.UnitTests.Environments.SysV
             };
 
             Given_EnvironmentConfiguration(env);
-            tlSvc.Stub(t => t.LoadCharacteristics(null))
-                .IgnoreArguments()
-                .Return(new CharacteristicsLibrary
+            tlSvc.Setup(t => t.LoadCharacteristics(It.IsAny<string>()))
+                .Returns(new CharacteristicsLibrary
                 {
                     Entries =
                     {
@@ -95,9 +92,11 @@ namespace Reko.UnitTests.Environments.SysV
                         }
                     }
                 });
-            tlSvc.Stub(t => t.LoadMetadataIntoLibrary(null, null, null))
-                .IgnoreArguments()
-                .Return(new TypeLibrary
+            tlSvc.Setup(t => t.LoadMetadataIntoLibrary(
+                It.IsAny<IPlatform>(),
+                It.IsAny<ITypeLibraryElement>(),
+                It.IsAny<TypeLibrary>()))
+                .Returns(new TypeLibrary
                 {
                     Signatures =
                     {
@@ -107,26 +106,24 @@ namespace Reko.UnitTests.Environments.SysV
                          }
                      }
                 });
-            mr.ReplayAll();
 
-            var sysv = new SysVPlatform(sc, arch);
+            var sysv = new SysVPlatform(sc, arch.Object);
             var proc = sysv.LookupProcedureByName(null, "exit");
             Assert.IsTrue(proc.Characteristics.Terminates, "exit should have been marked as terminating.");
         }
 
         private void Given_EnvironmentConfiguration(OperatingEnvironmentElement env)
         {
-            cfgSvc.Stub(c => c.GetEnvironment(null))
-                .IgnoreArguments()
-                .Return(env);
+            cfgSvc.Setup(c => c.GetEnvironment(It.IsAny<string>()))
+                .Returns(env);
         }
 
         [Test]
         public void SysV_LoadTrashedRegisters()
         {
-            arch.Stub(a => a.Name).Return("mmix");
-            arch.Stub(a => a.GetRegister((string)null)).IgnoreArguments()
-                .Do(new Func<string, RegisterStorage>(r => new RegisterStorage(r, (int)r[1], 0, PrimitiveType.Word32)));
+            arch.Setup(a => a.Name).Returns("mmix");
+            arch.Setup(a => a.GetRegister(It.IsAny<string>()))
+                .Returns((string r) => new RegisterStorage(r, (int)r[1], 0, PrimitiveType.Word32));
             var env = new OperatingEnvironmentElement
             {
                 Architectures =
@@ -144,9 +141,7 @@ namespace Reko.UnitTests.Environments.SysV
 
             Given_EnvironmentConfiguration(env);
 
-            mr.ReplayAll();
-
-            var sysv = new SysVPlatform(sc, arch);
+            var sysv = new SysVPlatform(sc, arch.Object);
             var regs = sysv.CreateTrashedRegisters();
             Assert.AreEqual(2, regs.Count);
             Assert.AreEqual("r2,r3", string.Join(",", regs.Select(r => r.Name)));
