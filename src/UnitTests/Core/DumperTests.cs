@@ -18,13 +18,13 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Output;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
-using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -37,23 +37,16 @@ namespace Reko.UnitTests.Core
     [TestFixture]
     public class DumperTests
     {
-        private MockRepository mr;
-        private IProcessorArchitecture arch;
-        private IPlatform platform;
+        private Mock<IProcessorArchitecture> arch;
+        private Mock<IPlatform> platform;
         private Program program;
-
-        [SetUp]
-        public void Setup()
-        {
-            mr = new MockRepository();
-        }
 
         private void Given_32bit_Program(int size = 32)
         {
-            this.arch = mr.Stub<IProcessorArchitecture>();
-            this.arch.Stub(a => a.FramePointerType).Return(PrimitiveType.Ptr32);
-            this.arch.Stub(a => a.InstructionBitSize).Return(8);
-            this.platform = mr.Stub<IPlatform>();
+            this.arch = new Mock<IProcessorArchitecture>();
+            this.arch.Setup(a => a.FramePointerType).Returns(PrimitiveType.Ptr32);
+            this.arch.Setup(a => a.InstructionBitSize).Returns(8);
+            this.platform = new Mock<IPlatform>();
             this.program = new Program(
                 new SegmentMap(
                     Address.Ptr32(0x00010000),
@@ -65,16 +58,17 @@ namespace Reko.UnitTests.Core
                                 .Select(i => (byte)i)
                                 .ToArray()),
                         AccessMode.ReadWrite)),
-                arch,
-                platform);
-            arch.Stub(a => a.CreateFrame()).Do(
-                new Func<Frame>(
-                    () => new Frame(PrimitiveType.Ptr32)));
-            arch.Stub(a => a.CreateImageReader(null, null)).IgnoreArguments()
-                .Do(new Func<MemoryArea, Address, EndianImageReader>(
-                    (m, a) => new LeImageReader(m, a)));
-            arch.Stub(a => a.CreateDisassembler(null)).IgnoreArguments()
-                .Return(new[]
+                arch.Object,
+                platform.Object);
+            arch.Setup(a => a.CreateFrame()).Returns(
+                () => new Frame(PrimitiveType.Ptr32));
+            arch.Setup(a => a.CreateImageReader(
+                It.IsNotNull<MemoryArea>(),
+                It.IsNotNull<Address>()))
+                .Returns((MemoryArea m, Address a) => new LeImageReader(m, a));
+            arch.Setup(a => a.CreateDisassembler(
+                It.IsNotNull<EndianImageReader>()))
+                .Returns(new[]
                 {
                     Operation.Add,
                     Operation.Mul,
@@ -85,16 +79,14 @@ namespace Reko.UnitTests.Core
                     Address = Address.Ptr32(0x00010010 + 2 * (uint)i),
                     Length = 2,
                 }));
-
-            arch.Replay();
         }
 
         private void Given_32bit_Program_Zeros(int size = 32)
         {
-            this.arch = mr.Stub<IProcessorArchitecture>();
-            this.arch.Stub(a => a.FramePointerType).Return(PrimitiveType.Ptr32);
-            this.arch.Stub(a => a.InstructionBitSize).Return(8);
-            this.platform = mr.Stub<IPlatform>();
+            this.arch = new Mock<IProcessorArchitecture>();
+            this.arch.Setup(a => a.FramePointerType).Returns(PrimitiveType.Ptr32);
+            this.arch.Setup(a => a.InstructionBitSize).Returns(8);
+            this.platform = new Mock<IPlatform>();
             this.program = new Program(
                 new SegmentMap(
                     Address.Ptr32(0x00010000),
@@ -106,13 +98,13 @@ namespace Reko.UnitTests.Core
                                 .Select(i => (byte)0)
                                 .ToArray()),
                         AccessMode.ReadWrite)),
-                arch,
-                platform);
+                arch.Object,
+                platform.Object);
         }
 
         private Procedure Given_ProcedureAt(Address address)
         {
-            var proc = Procedure.Create(arch, address, arch.CreateFrame());
+            var proc = Procedure.Create(arch.Object, address, arch.Object.CreateFrame());
             var label = program.NamingPolicy.BlockName(address);
             var block = new Block(proc, label);
             program.Procedures.Add(address, proc);
@@ -142,7 +134,6 @@ namespace Reko.UnitTests.Core
         {
             Given_32bit_Program();
             Given_ProcedureAt(Address.Ptr32(0x10010));
-            mr.ReplayAll();
 
             var dmp = new Dumper(program);
 
@@ -164,7 +155,6 @@ fn00010010 proc
 ";
             #endregion
             AssertOutput(sExp, sw);
-            mr.VerifyAll();
         }
 
         [Test]
@@ -173,7 +163,6 @@ fn00010010 proc
             Given_32bit_Program();
             var proc = Given_ProcedureAt(Address.Ptr32(0x10010));
             proc.Name = "__foo@8";
-            mr.ReplayAll();
 
             var dmp = new Dumper(program);
 
@@ -195,7 +184,6 @@ __foo@8 proc
 ";
             #endregion
             AssertOutput(sExp, sw);
-            mr.VerifyAll();
         }
 
         [Test]
@@ -210,7 +198,6 @@ __foo@8 proc
                     DataType = PrimitiveType.Word32,
                     Size = 4,
                 });
-            mr.ReplayAll();
 
             var dmp = new Dumper(program);
 
@@ -227,7 +214,6 @@ l00010004	dd	0x07060504
 ";
             #endregion
             AssertOutput(sExp, sw);
-            mr.VerifyAll();
         }
 
         [Test]
@@ -251,7 +237,6 @@ l00010004	dd	0x07060504
                     DataType = str,
                     Size = 12,
                 });
-            mr.ReplayAll();
 
             var dmp = new Dumper(program);
 
@@ -271,17 +256,17 @@ l00010004		db	0x04
 ";
             #endregion
             AssertOutput(sExp, sw);
-            mr.VerifyAll();
         }
 
         [Test]
         public void Dumper_LotsOfZeros()
         {
             Given_32bit_Program_Zeros(110);
-            arch.Stub(a => a.CreateImageReader(null, null)).IgnoreArguments()
-                .Do(new Func<MemoryArea, Address, EndianImageReader>(
-                    (m, a) => new LeImageReader(m, a)));
-            mr.ReplayAll();
+            arch.Setup(a => a.CreateImageReader(
+                It.IsAny<MemoryArea>(),
+                It.IsAny<Address>()))
+                .Returns(
+                    (MemoryArea m, Address a) => new LeImageReader(m, a));
 
             var addr = program.ImageMap.BaseAddress + 8;
             var item = new ImageMapItem(90) { Address = addr };
@@ -301,7 +286,6 @@ l00010004		db	0x04
 ";
             #endregion
             AssertOutput(sExp, sw);
-            mr.VerifyAll();
         }
 
         [Test]
@@ -309,7 +293,6 @@ l00010004		db	0x04
         {
             Given_32bit_Program();
             Given_ProcedureAt(Address.Ptr32(0x10010));
-            mr.ReplayAll();
 
             var dmp = new Dumper(program);
             dmp.ShowAddresses = true;
@@ -331,7 +314,6 @@ fn00010010 proc
 ";
             #endregion
             AssertOutput(sExp, sw);
-            mr.VerifyAll();
         }
 
         [Test]
@@ -339,7 +321,6 @@ fn00010010 proc
         {
             Given_32bit_Program();
             Given_ProcedureAt(Address.Ptr32(0x10010));
-            mr.ReplayAll();
 
             var dmp = new Dumper(program);
             dmp.ShowCodeBytes = true;
@@ -362,7 +343,6 @@ fn00010010 proc
 ";
             #endregion
             AssertOutput(sExp, sw);
-            mr.VerifyAll();
         }
     }
 }

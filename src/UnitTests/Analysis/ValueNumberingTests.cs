@@ -18,17 +18,15 @@
  */
 #endregion
 
+using Moq;
+using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
-using NUnit.Framework;
-using System;
-using System.IO;
-using System.Diagnostics;
-using System.Collections.Generic;
 using Reko.Core.Lib;
 using Reko.UnitTests.Mocks;
-using Reko.Core.Types;
-using Rhino.Mocks;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -103,9 +101,8 @@ namespace Reko.UnitTests.Analysis
             var group = new HashSet<Procedure>(scc);
             foreach (var proc in scc)
             {
-                var ir = MockRepository.GenerateStub<IImportResolver>();
-                ir.Replay();
-                var sst = new SsaTransform(program, proc, group, ir, progFlow);
+                var ir = new Mock<IImportResolver>();
+                var sst = new SsaTransform(program, proc, group, ir.Object, progFlow);
                 SsaState ssa = sst.Transform();
                 //var vp = new ValuePropagator(program.Architecture, ssa, listener);
                 //vp.Transform();

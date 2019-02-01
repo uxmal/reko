@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -18,13 +18,13 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Lib;
 using Reko.Core.Services;
 using Reko.Scanning;
 using Reko.UnitTests.Mocks;
-using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -36,35 +36,33 @@ namespace Reko.UnitTests.Scanning
     [TestFixture]
     public class VectorBuilderTests
     {
-        private MockRepository mr;
         private Program program;
         private MemoryArea mem;
         private ServiceContainer sc;
-        private IProcessorArchitecture arch;
+        private Mock<IProcessorArchitecture> arch;
 
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
-            var eventListener = mr.Stub<DecompilerEventListener>();
+            var eventListener = new Mock<DecompilerEventListener>();
             sc = new ServiceContainer();
-            sc.AddService<DecompilerEventListener>(eventListener);
+            sc.AddService<DecompilerEventListener>(eventListener.Object);
         }
 
         private void Given_Program(byte [] bytes)
         {
-            this.arch = mr.Stub<IProcessorArchitecture>();
-            arch.Stub(a => a.ReadCodeAddress(
-                Arg<int>.Is.Anything,
-                Arg<EndianImageReader>.Is.NotNull,
-                Arg<ProcessorState>.Is.Anything))
-                .Do(new Func<int, EndianImageReader, ProcessorState, Address>((s, r, st) =>
-                     Address.Ptr32(r.ReadLeUInt32())));
+            this.arch = new Mock<IProcessorArchitecture>();
+            arch.Setup(a => a.ReadCodeAddress(
+                It.IsAny<int>(),
+                It.IsNotNull<EndianImageReader>(),
+                It.IsAny<ProcessorState>()))
+                .Returns((int s, EndianImageReader r, ProcessorState st) =>
+                     Address.Ptr32(r.ReadLeUInt32()));
             mem = new MemoryArea(Address.Ptr32(0x00010000), bytes);
             this.program = new Program(
                 new SegmentMap(mem.BaseAddress,
                     new ImageSegment(".text", mem, AccessMode.ReadExecute)),
-                arch,
+                arch.Object,
                 null);
         }
 
@@ -79,15 +77,13 @@ namespace Reko.UnitTests.Scanning
                 0xCC, 0xCC, 0xCC, 0xCC,
                 0xC3, 0xC3, 0xC3, 0xCC,
             });
-            var scanner = mr.Stub<IScanner>();
-            scanner.Stub(s => s.Services).Return(sc);
-            arch.Stub(s => s.CreateImageReader(this.mem, this.program.ImageMap.BaseAddress))
-                .Return(this.mem.CreateLeReader(0));
-            var state = new FakeProcessorState(arch);
+            var scanner = new Mock<IScanner>();
+            scanner.Setup(s => s.Services).Returns(sc);
+            arch.Setup(s => s.CreateImageReader(this.mem, this.program.ImageMap.BaseAddress))
+                .Returns(this.mem.CreateLeReader(0));
+            var state = new FakeProcessorState(arch.Object);
         
-            mr.ReplayAll();
-
-            var vb = new VectorBuilder(scanner.Services, program, new DirectedGraphImpl<object>());
+            var vb = new VectorBuilder(scanner.Object.Services, program, new DirectedGraphImpl<object>());
             var vector = vb.BuildTable(this.program.ImageMap.BaseAddress, 12, null, 4, state);
             Assert.AreEqual(3, vector.Count);
         }

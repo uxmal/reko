@@ -261,9 +261,10 @@ namespace Reko.Gui.Forms
             if (fileName != null)
             {
                 mru.Use(fileName);
+                mru.Save(MruListFile);
                 uiSvc.WithWaitCursor(() => OpenBinary(fileName, (f) => pageInitial.OpenBinary(f)));
-                }
             }
+        }
 
         /// <summary>
         /// Prompts the user for a metadata file and adds to the project.
@@ -284,6 +285,7 @@ namespace Reko.Gui.Forms
             {
                 var metadata = projectLoader.LoadMetadataFile(fileName);
                 decompilerSvc.Decompiler.Project.MetadataFiles.Add(metadata);
+                mru.Save(MruListFile);
             }
             catch (Exception e)
             {
@@ -306,6 +308,7 @@ namespace Reko.Gui.Forms
                 var t = Type.GetType(typeName, true);
                 var asm = (Assembler) t.GetConstructor(Type.EmptyTypes).Invoke(null);
                 OpenBinary(dlg.FileName.Text, (f) => pageInitial.Assemble(f, asm));
+                mru.Save(MruListFile);
             }
             catch (Exception e)
             {
@@ -686,6 +689,7 @@ namespace Reko.Gui.Forms
                     return false;
                 ProjectFileName = newName;
                 mru.Use(newName);
+                mru.Save(MruListFile);
             }
 
             var fsSvc = Services.RequireService<IFileSystemService>();
@@ -911,6 +915,7 @@ namespace Reko.Gui.Forms
                 string file = mru.Items[iMru];
                 OpenBinary(file, (f) => pageInitial.OpenBinary(file));
                 mru.Use(file);
+                mru.Save(MruListFile);
                 return true;
             }
             return false;

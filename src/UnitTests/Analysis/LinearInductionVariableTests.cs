@@ -26,11 +26,11 @@ using Reko.Core.Lib;
 using Reko.Core.Operators;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
+using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Rhino.Mocks;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -341,8 +341,7 @@ namespace Reko.UnitTests.Analysis
 		private void Prepare(Procedure proc)
 		{
             var listener = new FakeDecompilerEventListener();
-            var importResolver = MockRepository.GenerateStub<IImportResolver>();
-            importResolver.Replay();
+            var importResolver = new Mock<IImportResolver>().Object;
             doms = proc.CreateBlockDominatorGraph();
             SsaTransform sst = new SsaTransform(
                 new Program(),

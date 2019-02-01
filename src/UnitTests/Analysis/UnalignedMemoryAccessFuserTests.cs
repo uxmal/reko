@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -18,20 +18,16 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
-using Rhino.Mocks;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -48,9 +44,8 @@ namespace Reko.UnitTests.Analysis
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
-            arch = mr.Stub<IProcessorArchitecture>();
-            importResolver = mr.Stub<IImportResolver>();
+            arch = new Mock<IProcessorArchitecture>().Object;
+            importResolver = new Mock<IImportResolver>().Object;
             listener = new FakeDecompilerEventListener();
             m = new ProcedureBuilder();
             program = new Program();
@@ -58,8 +53,6 @@ namespace Reko.UnitTests.Analysis
 
         private SsaState RunTest(ProcedureBuilder m)
         {
-            mr.ReplayAll();
-
             var proc = m.Procedure;
             var gr = proc.CreateBlockDominatorGraph();
             var sst = new SsaTransform(

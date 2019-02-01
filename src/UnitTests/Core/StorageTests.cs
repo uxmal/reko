@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,18 +18,13 @@
  */
 #endregion
 
-using System.Linq;
-using Reko.Core;
-using Reko.Core.Machine;
-using Reko.Core.Types;
 using NUnit.Framework;
-
-using System;
-using Rhino.Mocks;
+using Reko.Core;
+using Reko.Core.Types;
 
 namespace Reko.UnitTests.Core
 {
-	[TestFixture]
+    [TestFixture]
 	public class StorageTests
 	{
         private Storage eax;

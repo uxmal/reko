@@ -18,19 +18,18 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
-using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
-using Rhino.Mocks;
-using System.Collections.Generic;
-using System.IO;
 using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -40,18 +39,16 @@ namespace Reko.UnitTests.Analysis
     [TestFixture]
 	public class DeadCodeTests : AnalysisTestBase
 	{
-        private MockRepository mr;
         private SsaProcedureBuilder m;
         private ProgramDataFlow programDataFlow;
-        private IImportResolver importResolver;
+        private Mock<IImportResolver> importResolver;
 
         [SetUp]
         public void Setup()
         {
-            this.mr = new MockRepository();
             m = new SsaProcedureBuilder();
             this.programDataFlow = new ProgramDataFlow();
-            this.importResolver = mr.Stub<IImportResolver>();
+            this.importResolver = new Mock<IImportResolver>();
         }
 
         public void EliminateDeadCode()
@@ -94,7 +91,7 @@ namespace Reko.UnitTests.Analysis
 
 		protected override void RunTest(Program program, TextWriter writer)
 		{
-			DataFlowAnalysis dfa = new DataFlowAnalysis(program, importResolver,  new FakeDecompilerEventListener());
+			DataFlowAnalysis dfa = new DataFlowAnalysis(program, importResolver.Object, new FakeDecompilerEventListener());
 			var ssts = dfa.UntangleProcedures();
 			foreach (var sst in ssts)
 			{

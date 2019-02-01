@@ -25,7 +25,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Types;
 using Reko.UnitTests.Fragments;
 using Reko.UnitTests.Mocks;
-using Rhino.Mocks;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -89,9 +89,9 @@ namespace Reko.UnitTests.Analysis
 
         protected override void RunTest(Program program, TextWriter writer)
         {
-            var importResolver = MockRepository.GenerateStub<IImportResolver>();
+            var importResolver = new Mock<IImportResolver>().Object;
             var listener = new FakeDecompilerEventListener();
-            DataFlowAnalysis dfa = new DataFlowAnalysis(program, importResolver, listener);
+            var dfa = new DataFlowAnalysis(program, importResolver, listener);
             foreach (var proc in program.Procedures.Values)
             {
                 var sst = new SsaTransform(

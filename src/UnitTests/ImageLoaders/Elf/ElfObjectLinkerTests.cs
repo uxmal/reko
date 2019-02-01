@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -22,7 +22,7 @@ using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.ImageLoaders.Elf;
-using Rhino.Mocks;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -49,7 +49,6 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         private void Given_Linker(bool big_endian)
         {
             BuildObjectFile32();
-            mr.ReplayAll();
 
             var eil = new ElfImageLoader(sc, "foo.o", rawBytes);
             eil.LoadElfIdentification();
@@ -57,7 +56,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             var el = new ElfLoader32(eil, eh, rawBytes, big_endian ? ElfLoader.ELFDATA2MSB : ElfLoader.ELFDATA2LSB);
             el.LoadSectionHeaders();
             el.LoadSymbolsFromSections();
-            this.linker = new ElfObjectLinker32(el, arch, rawBytes);
+            this.linker = new ElfObjectLinker32(el, arch.Object, rawBytes);
         }
 
 //                   sh_type: SHT_NULL     sh_flags:      sh_addr; 00000000 sh_offset: 00000000 sh_size: 00000000 sh_link: 00000000 sh_info: 00000000 sh_addralign: 00000000 sh_entsize: 00000000

@@ -22,7 +22,7 @@ using Reko.Core;
 using Reko.Core.Types;
 using Reko.Gui;
 using NUnit.Framework;
-using Rhino.Mocks;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -34,7 +34,6 @@ namespace Reko.UnitTests.Gui
     [TestFixture]
     public class ProcedureSearchResultTests
     {
-        private MockRepository mr;
         private List<ProcedureSearchHit> procs;
         private ServiceContainer sc;
         private Program program;
@@ -42,7 +41,6 @@ namespace Reko.UnitTests.Gui
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
             sc = new ServiceContainer();
             procs = new List<ProcedureSearchHit>();
             program = new Program { Name = "Proggie", Architecture = new FakeArchitecture() };
@@ -51,7 +49,7 @@ namespace Reko.UnitTests.Gui
         [Test]
         public void CreateColumns()
         {
-            var psr = new ProcedureSearchResult(mr.Stub<IServiceProvider>(), procs);
+            var psr = new ProcedureSearchResult(new Mock<IServiceProvider>().Object, procs);
 
             var addr1 = Address.Ptr32(0x00001);
             var addr2 = Address.Ptr32(0x00002);
@@ -59,29 +57,27 @@ namespace Reko.UnitTests.Gui
             procs.Add(new ProcedureSearchHit(program, addr1, new Procedure(program.Architecture, "foo", addr1, new Frame(PrimitiveType.Word32))));
             procs.Add(new ProcedureSearchHit(program, addr2, new Procedure(program.Architecture, "bar", addr2, new Frame(PrimitiveType.Word32))));
 
-            var view = mr.StrictMock<ISearchResultView>();
-            view.Expect(s => view.AddColumn(
-                Arg<string>.Is.Equal("Program"),
-                Arg<int>.Is.Anything));
-            view.Expect(s => view.AddColumn(
-                Arg<string>.Is.Equal("Address"),
-                Arg<int>.Is.Anything));
-            view.Expect(s => view.AddColumn(
-                Arg<string>.Is.Equal("Procedure Name"),
-                Arg<int>.Is.Anything));
+            var view = new Mock<ISearchResultView>();
+            view.Setup(s => s.AddColumn(
+                "Program",
+                It.IsAny<int>())).Verifiable();
+            view.Setup(s => s.AddColumn(
+                "Address",
+                It.IsAny<int>())).Verifiable();
+            view.Setup(s => s.AddColumn(
+                "Procedure Name",
+                It.IsAny<int>())).Verifiable();
 
-            mr.ReplayAll();
-
-            psr.View = view;
+            psr.View = view.Object;
             psr.CreateColumns();
 
-            mr.VerifyAll();
+            view.VerifyAll();
         }
 
         [Test]
         public void GetItemData()
         {
-            ISearchResult psr = new ProcedureSearchResult(mr.Stub<IServiceProvider>(), procs);
+            ISearchResult psr = new ProcedureSearchResult(new Mock<IServiceProvider>().Object, procs);
 
             var addr1 = Address.Ptr32(0x00001);
             var addr2 = Address.Ptr32(0x00002);
@@ -97,10 +93,10 @@ namespace Reko.UnitTests.Gui
             Assert.AreEqual("foo", str[2]);
         }
 
-        private T AddService<T>()
+        private Mock<T> AddService<T>() where T : class
         {
-            var svc = mr.StrictMock<T>();
-            sc.AddService(typeof(T), svc);
+            var svc = new Mock<T>();
+            sc.AddService(typeof(T), svc.Object);
             return svc;
         }
 
@@ -110,15 +106,17 @@ namespace Reko.UnitTests.Gui
             var mvs = AddService<ILowLevelViewService>();
             var cvs = AddService<ICodeViewerService>();
             var decSvc = AddService<IDecompilerService>();
-            var dec = mr.StrictMock<IDecompiler>();
+            var dec = new Mock<IDecompiler>();
 
-            cvs.Stub(c => c.DisplayProcedure(null, null, true)).IgnoreArguments();
-            mvs.Expect(s => s.ShowMemoryAtAddress(
-                Arg<Program>.Is.NotNull,
-                Arg<Address>.Is.Equal(Address.Ptr32(0x4234))));
-            decSvc.Stub(d => d.Decompiler).Return(dec);
-            dec.Stub(d => d.Project).Return(new Project { Programs = { new Program() } });
-            mr.ReplayAll();
+            cvs.Setup(c => c.DisplayProcedure(
+                It.IsAny<Program>(),
+                It.IsAny<Procedure>(),
+                true));
+            mvs.Setup(s => s.ShowMemoryAtAddress(
+                It.IsNotNull<Program>(),
+                It.Is<Address>(a => a.ToLinear() == 0x4234))).Verifiable();
+            decSvc.Setup(d => d.Decompiler).Returns(dec.Object);
+            dec.Setup(d => d.Project).Returns(new Project { Programs = { new Program() } });
 
             ISearchResult psr = new ProcedureSearchResult(sc, procs);
             var addr = Address.Ptr32(0x4234);
@@ -126,7 +124,8 @@ namespace Reko.UnitTests.Gui
                 program, addr,
                 new Procedure(program.Architecture, "foo", addr, new Frame(PrimitiveType.Word32))));
             psr.NavigateTo(0);
-            mr.VerifyAll();
+
+            mvs.VerifyAll();
         }
     }
 }

@@ -28,7 +28,7 @@ using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using Reko.UnitTests.TestCode;
-using Rhino.Mocks;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -43,15 +43,13 @@ namespace Reko.UnitTests.Analysis
     [TestFixture]
     public class DataFlowAnalysisTests2
     {
-        private MockRepository mr;
         private ProgramBuilder pb;
-        private IImportResolver importResolver;
+        private Mock<IImportResolver> importResolver;
 
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
-            this.importResolver = mr.Stub<IImportResolver>();
+            this.importResolver = new Mock<IImportResolver>();
         }
 
         private void GivenProgram(ProgramBuilder pb)
@@ -96,9 +94,7 @@ namespace Reko.UnitTests.Analysis
 
         private void RunTest(Program program, TextWriter writer)
         {
-            mr.ReplayAll();
-
-            var dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
+            var dfa = new DataFlowAnalysis(program, importResolver.Object, new FakeDecompilerEventListener());
             dfa.AnalyzeProgram();
             foreach (var proc in program.Procedures.Values)
             {
@@ -121,9 +117,8 @@ namespace Reko.UnitTests.Analysis
                     m.MStore(m.Word32(0x010008), m.IAdd(r1, r2));
                     m.Return();
                 });
-            mr.ReplayAll();
 
-            var dfa = new DataFlowAnalysis(pb.BuildProgram(), importResolver, new FakeDecompilerEventListener());
+            var dfa = new DataFlowAnalysis(pb.BuildProgram(), importResolver.Object, new FakeDecompilerEventListener());
             dfa.AnalyzeProgram();
             var sExp = @"// test
 // Return size: 0
@@ -155,7 +150,7 @@ test_exit:
                 m.MStore(m.Word32(0x010008), r1);
                 m.Return();
             });
-            var dfa = new DataFlowAnalysis(pb.BuildProgram(), importResolver, new FakeDecompilerEventListener());
+            var dfa = new DataFlowAnalysis(pb.BuildProgram(), importResolver.Object, new FakeDecompilerEventListener());
             dfa.AnalyzeProgram();
             var sExp = @"// test
 // Return size: 0
@@ -248,24 +243,22 @@ test_exit:
                     m.Return();
                 });
             var program = pb.BuildProgram();
-            var platform = mr.Stub<IPlatform>();
-            platform.Stub(p => p.Architecture).Return(arch);
-            platform.Stub(p => p.CreateImplicitArgumentRegisters()).Return(
+            var platform = new Mock<IPlatform>();
+            platform.Setup(p => p.Architecture).Returns(arch);
+            platform.Setup(p => p.CreateImplicitArgumentRegisters()).Returns(
                 new HashSet<RegisterStorage>());
-            platform.Stub(p => p.DefaultCallingConvention).Return("__cdecl");
-            platform.Stub(p => p.GetCallingConvention(null))
-                .Return(new X86CallingConvention(4, 4, 4, true, false));
-            platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Int)).Return(4);
+            platform.Setup(p => p.DefaultCallingConvention).Returns("__cdecl");
+            platform.Setup(p => p.GetCallingConvention(null))
+                .Returns(new X86CallingConvention(4, 4, 4, true, false));
+            platform.Setup(p => p.GetByteSizeFromCBasicType(CBasicType.Int)).Returns(4);
             //platform.Test_CreateProcedureSerializer = (t, d) =>
             //{
             //    var typeLoader = new TypeLibraryDeserializer(platform, false, new TypeLibrary());
             //    return new ProcedureSerializer(program.Platform, typeLoader, "__cdecl");
             //};
 
-            var importResolver = MockRepository.GenerateStub<IImportResolver>();
-            mr.ReplayAll();
-
-            program.Platform = platform;
+            var importResolver = new Mock<IImportResolver>().Object;
+            program.Platform = platform.Object;
             var dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
             dfa.AnalyzeProgram();
             var sExp = @"// test
@@ -280,7 +273,6 @@ l1:
 test_exit:
 ";
             AssertProgram(sExp, pb.Program);
-            mr.VerifyAll();
         }
 
         [Test]
@@ -312,9 +304,8 @@ test_exit:
                 m.Return();
             });
             var program = pb.BuildProgram();
-            mr.ReplayAll();
 
-            var dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
+            var dfa = new DataFlowAnalysis(program, importResolver.Object, new FakeDecompilerEventListener());
             dfa.AnalyzeProgram();
 
             var sExp =
@@ -393,9 +384,8 @@ level2_exit:
                 m.Return();
             });
             var program = pb.BuildProgram();
-            mr.ReplayAll();
 
-            var dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
+            var dfa = new DataFlowAnalysis(program, importResolver.Object, new FakeDecompilerEventListener());
             dfa.AnalyzeProgram();
 
             var sExp =
@@ -457,9 +447,8 @@ level2_exit:
                 m.Return();
             });
             var program = pb.BuildProgram();
-            mr.ReplayAll();
 
-            var dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
+            var dfa = new DataFlowAnalysis(program, importResolver.Object, new FakeDecompilerEventListener());
             dfa.AnalyzeProgram();
 
             var sExp =

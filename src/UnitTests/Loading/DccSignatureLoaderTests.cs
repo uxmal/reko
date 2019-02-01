@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -18,33 +18,25 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Services;
-using Reko.Loading;
-using Rhino.Mocks;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace Reko.UnitTests.Loading
 {
     [TestFixture]
     public class DccSignatureLoaderTests
     {
-        private MockRepository mr;
         private ServiceContainer sc;
 
         [SetUp]
         public void Setup()
         {
-            this.mr = new MockRepository();
             this.sc = new ServiceContainer();
-            var diagSvc = mr.Stub<IDiagnosticsService>();
-            sc.AddService<IDiagnosticsService>(diagSvc);
+            var diagSvc = new Mock<IDiagnosticsService>();
+            sc.AddService<IDiagnosticsService>(diagSvc.Object);
         }
 
         /*

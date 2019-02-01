@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -18,40 +18,27 @@
  */
 #endregion
 
-#if DEBUG
-using Reko.Core;
+using Moq;
 using NUnit.Framework;
-using Rhino.Mocks;
+using Reko.Core;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.ImageLoaders.OdbgScript
 {
     [TestFixture]
     public class OllyLangTests
     {
-        private MockRepository mr;
-        private IHost host;
+        private Mock<IHost> host;
         private OllyLang engine;
         private MemoryArea mem;
         private SegmentMap imageMap;
-
-        [SetUp]
-        public void Setup()
-        {
-            mr = new MockRepository();
-        }
 
         [Test]
         public void Ose_var()
         {
             Given_Engine();
             Given_Script("var foo\r\n");
-            mr.ReplayAll();
 
             engine.Run();
 
@@ -66,9 +53,9 @@ namespace Reko.ImageLoaders.OdbgScript
 
         private void Given_Engine()
         {
-            this.host = mr.Stub<IHost>();
+            this.host = new Mock<IHost>();
             engine = new OllyLang(null);
-            engine.Host = host;
+            engine.Host = host.Object;
             engine.Debugger = new Debugger(null);
         }
 
@@ -78,15 +65,16 @@ namespace Reko.ImageLoaders.OdbgScript
             imageMap = new SegmentMap(
                 mem.BaseAddress,
                 new ImageSegment(".text", mem, AccessMode.ReadExecute));
-            host.Stub(h => h.SegmentMap).Return(imageMap);
-            host.Stub(h => h.TE_GetMemoryInfo(
-                Arg<ulong>.Is.Anything,
-                out Arg<MEMORY_BASIC_INFORMATION>.Out(new MEMORY_BASIC_INFORMATION
-                {
-                    BaseAddress = mem.BaseAddress.ToLinear(),
-                    RegionSize = (uint)mem.Length,
-                    AllocationBase = mem.BaseAddress.ToLinear()
-                }).Dummy)).Return(true);
+            host.Setup(h => h.SegmentMap).Returns(imageMap);
+            var meminfo = new MEMORY_BASIC_INFORMATION
+            {
+                BaseAddress = mem.BaseAddress.ToLinear(),
+                RegionSize = (uint) mem.Length,
+                AllocationBase = mem.BaseAddress.ToLinear()
+            };
+            host.Setup(h => h.TE_GetMemoryInfo(
+                It.IsAny<ulong>(),
+                out meminfo)).Returns(true);
         }
 
         [Test]
@@ -111,7 +99,6 @@ namespace Reko.ImageLoaders.OdbgScript
             Given_Engine();
             Given_Image(0x001000, new byte[] { 0, 0, 0, 0, 0, 1, 2, 3 });
             Given_Script("find 001000, #01#\r\n");
-            mr.ReplayAll();
 
             engine.Run();
 
@@ -123,14 +110,15 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             Given_Engine();
             Given_Image(0x001000, new byte[] { 0x2a, 0x2a, 0x2a, 0x21, 0x23, 0x21, 0x23 });
-            host.Expect(h => h.WriteMemory(
-                Arg<ulong>.Is.Anything,
-                Arg<int>.Is.Equal(3),
-                Arg<byte[]>.Is.NotNull)).Do(new Func<ulong,int,byte[],bool>((a, l, b) =>
+            host.Setup(h => h.WriteMemory(
+                It.IsAny<ulong>(),
+                3,
+                It.IsNotNull<byte[]>()))
+                .Returns((ulong a, int l, byte[] b) =>
             {
-                MemoryArea.WriteBytes(b, (long)a - (long)mem.BaseAddress.ToLinear(), l,mem.Bytes);
+                MemoryArea.WriteBytes(b, (long) a - (long) mem.BaseAddress.ToLinear(), l, mem.Bytes);
                 return true;
-            }));
+            });
 
             Given_Script(
                 "find 001000, #21??21#\r\n" +
@@ -139,7 +127,6 @@ namespace Reko.ImageLoaders.OdbgScript
                 "fill $RESULT,3,2d\r\n"+
                 "done:\r\n"
                 );
-            mr.ReplayAll();
 
             engine.Run();
 
@@ -181,4 +168,3 @@ namespace Reko.ImageLoaders.OdbgScript
     }
 }
 
-#endif

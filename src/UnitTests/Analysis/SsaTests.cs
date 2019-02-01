@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,19 +18,16 @@
  */
 #endregion
 
+using Moq;
+using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
-using Reko.Core.Lib;
 using Reko.Core.Expressions;
-using Reko.Core.Machine;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
-using NUnit.Framework;
-using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using Rhino.Mocks;
-using System.Collections.Generic;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -66,14 +63,15 @@ namespace Reko.UnitTests.Analysis
         protected override void RunTest(Program program, TextWriter writer)
 		{
             var flow = new ProgramDataFlow();
-            var importResolver = MockRepository.GenerateStub<IImportResolver>();
-            importResolver.Replay();
+            var importResolver = new Mock<IImportResolver>();
             foreach (Procedure proc in program.Procedures.Values)
             {
                 var sst = new SsaTransform(
-                    program, proc, 
+                    program,
+                    proc, 
                     new HashSet<Procedure>(),
-                    importResolver, flow);
+                    importResolver.Object,
+                    flow);
                 sst.Transform();
                 sst.AddUsesToExitBlock();
                 sst.RemoveDeadSsaIdentifiers();
@@ -89,8 +87,7 @@ namespace Reko.UnitTests.Analysis
         private void RunUnitTest(ProcedureBuilder m, string outfile)
         {
             var flow = new ProgramDataFlow();
-            var importResolver = MockRepository.GenerateStub<IImportResolver>();
-            importResolver.Replay();
+            var importResolver = new Mock<IImportResolver>();
 
             var proc = m.Procedure;
             var platform = new FakePlatform(null, m.Architecture)
@@ -111,7 +108,7 @@ namespace Reko.UnitTests.Analysis
                 program,
                 proc, 
                 new HashSet<Procedure>(),
-                importResolver,
+                importResolver.Object,
                 flow);
             sst.Transform();
             ssa = sst.SsaState;

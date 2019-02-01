@@ -22,7 +22,7 @@ using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.ImageLoaders.MachO;
 using NUnit.Framework;
-using Rhino.Mocks;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -35,18 +35,16 @@ namespace Reko.UnitTests.ImageLoaders.MachO
     public class MachOLoaderTests
     {
         private ServiceContainer sc;
-        private MockRepository mr;
         private ImageWriter writer;
         private MachOLoader ldr;
-        private IConfigurationService cfgSvc;
+        private Mock<IConfigurationService> cfgSvc;
 
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
             sc = new ServiceContainer();
-            cfgSvc = mr.Stub<IConfigurationService>();
-            sc.AddService<IConfigurationService>(cfgSvc);
+            cfgSvc = new Mock<IConfigurationService>();
+            sc.AddService<IConfigurationService>(cfgSvc.Object);
         }
 
         private void Given_Le64Header(uint cpu, uint loaders)
@@ -78,16 +76,14 @@ namespace Reko.UnitTests.ImageLoaders.MachO
             Given_Le64Header(Parser.CPU_TYPE_X86_64, 1);
             Given_x86Arch();
 
-            mr.ReplayAll();
-
             When_CreateLoader();
             ldr.Load(Address.Ptr64(0x10000));
         }
 
         private void Given_x86Arch()
         {
-            var arch = mr.Stub<IProcessorArchitecture>();
-            cfgSvc.Stub(c => c.GetArchitecture("x86-protected-64")).Return(arch);
+            var arch = new Mock<IProcessorArchitecture>();
+            cfgSvc.Setup(c => c.GetArchitecture("x86-protected-64")).Returns(arch.Object);
         }
     }
 }

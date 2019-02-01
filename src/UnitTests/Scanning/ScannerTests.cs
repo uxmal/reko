@@ -18,18 +18,19 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Assemblers.x86;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Rtl;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Scanning;
 using Reko.UnitTests.Mocks;
 using Reko.UnitTests.Scanning.Fragments;
-using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -48,7 +49,7 @@ namespace Reko.UnitTests.Scanning
         private Program program;
         private TestScanner scan;
         private Identifier reg1;
-        private IImportResolver importResolver;
+        private Mock<IImportResolver> importResolver;
         private IDictionary<Address, FunctionType> callSigs;
         private ServiceContainer sc;
         private Project project;
@@ -77,9 +78,8 @@ namespace Reko.UnitTests.Scanning
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
             fakeArch = new FakeArchitecture();
-            importResolver = mr.StrictMock<IImportResolver>();
+            importResolver = new Mock<IImportResolver>();
             callSigs = new Dictionary<Address, FunctionType>();
             this.eventListener = new FakeDecompilerEventListener();
             arch = fakeArch;
@@ -224,7 +224,7 @@ namespace Reko.UnitTests.Scanning
             };
             return new TestScanner(
                 program,
-                importResolver,
+                importResolver.Object,
                 sc);
         }
 
@@ -233,7 +233,7 @@ namespace Reko.UnitTests.Scanning
             this.program = program;
             return new TestScanner(
                 program, 
-                importResolver,
+                importResolver.Object,
                 sc);
         }
 
@@ -246,7 +246,7 @@ namespace Reko.UnitTests.Scanning
             program.SegmentMap = new SegmentMap(
                 mem.BaseAddress,
                 new ImageSegment("progseg", this.mem, AccessMode.ReadExecute));
-            return new TestScanner(program, importResolver, sc);
+            return new TestScanner(program, importResolver.Object, sc);
         }
 
         private DataScanner CreateDataScanner(Program program)
@@ -422,11 +422,10 @@ fn0C00_0000_exit:
             var groxSig = CreateSignature("ax", "bx");
             var grox = new ExternalProcedure("grox", groxSig);
 
-            importResolver.Stub(i => i.ResolveProcedure(
-                Arg<string>.Is.Equal("module"),
-                Arg<string>.Is.Equal("grox"),
-                Arg<IPlatform>.Is.NotNull)).Return(grox);
-            mr.ReplayAll();
+            importResolver.Setup(i => i.ResolveProcedure(
+                "module",
+                "grox",
+                It.IsNotNull<IPlatform>())).Returns(grox);
 
             var scan = CreateScanner(program, 0x1000, 0x2000);
             var proc = scan.ScanProcedure(arch, Address.Ptr32(0x2000), "fn000020", arch.CreateProcessorState());
@@ -574,13 +573,14 @@ fn00001000_exit:
         public void Scanner_Trampoline()
         {
             var scan = CreateScanner(0x1000, 0x2000);
-            var platform = mr.Stub<IPlatform>();
-            platform.Stub(p => p.GetTrampolineDestination(null, null))
-                .IgnoreArguments()
-                .Return(new ExternalProcedure("bar", new FunctionType()));
-            platform.Stub(p => p.LookupProcedureByName("foo.dll", "bar")).Return(
+            var platform = new Mock<IPlatform>();
+            platform.Setup(p => p.GetTrampolineDestination(
+                It.IsAny<IEnumerable<RtlInstructionCluster>>(),
+                It.IsAny<IRewriterHost>()))
+                .Returns(new ExternalProcedure("bar", new FunctionType()));
+            platform.Setup(p => p.LookupProcedureByName("foo.dll", "bar")).Returns(
                 new ExternalProcedure("bar", new FunctionType()));
-            program.Platform = platform;
+            program.Platform = platform.Object;
             Given_Trace(new RtlTrace(0x1000)
             {
                 m => { m.Goto(m.Mem32(m.Word32(0x2000))); }
@@ -588,7 +588,6 @@ fn00001000_exit:
             program.ImportReferences.Add(
                 Address.Ptr32(0x2000),
                 new NamedImportReference(Address.Ptr32(0x2000), "foo.dll", "bar"));
-            mr.ReplayAll();
 
             var proc = scan.ScanProcedure(arch, Address.Ptr32(0x1000), "fn1000", arch.CreateProcessorState());
 
@@ -694,7 +693,6 @@ fn00001000_exit:
                 Address.Ptr32(0x12324),
                 FunctionType.Action(),
                 null);
-            mr.ReplayAll();
 
             sc.ScanImage();
 
@@ -1026,7 +1024,6 @@ fn00001200_exit:
                 {
                     CSignature = "int foo(char * a, float b)"
                 });
-            mr.ReplayAll();
 
             var scanner = new Scanner(
                 this.program,
@@ -1067,7 +1064,7 @@ fn00001200_exit:
             var sym = ImageSymbol.DataObject(arch, Address.Ptr32(0x00100000), "data_blob", dt);
             program.ImageSymbols.Add(sym.Address, sym);
 
-            var scanner = new Scanner(program, importResolver, sc);
+            var scanner = new Scanner(program, importResolver.Object, sc);
             var sr = scanner.ScanDataItems();
             Assert.AreEqual(1, sr.KnownProcedures.Count);
             Assert.AreEqual("00100010", sr.KnownProcedures.First().ToString());

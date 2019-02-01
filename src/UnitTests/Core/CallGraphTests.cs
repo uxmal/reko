@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Moq;
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
@@ -26,7 +27,6 @@ using Reko.Loading;
 using Reko.Scanning;
 using NUnit.Framework;
 using System;
-using Rhino.Mocks;
 
 namespace Reko.UnitTests.Core
 {
@@ -37,12 +37,11 @@ namespace Reko.UnitTests.Core
 		public void Creation()
 		{
 			CallGraph g = new CallGraph();
-            var arch = MockRepository.GenerateStub<IProcessorArchitecture>();
-            arch.Replay();
-			Procedure p1 = new Procedure(arch, "p1000", Address.Ptr32(0x1000), null);
-			Procedure p2 = new Procedure(arch, "p2000", Address.Ptr32(0x2000), null);
-			Procedure p3 = new Procedure(arch, "p3000", Address.Ptr32(0x3000), null);
-			Procedure p4 = new Procedure(arch, "p4000", Address.Ptr32(0x4000), null);
+            var arch = new Mock<IProcessorArchitecture>();
+			Procedure p1 = new Procedure(arch.Object, "p1000", Address.Ptr32(0x1000), null);
+			Procedure p2 = new Procedure(arch.Object, "p2000", Address.Ptr32(0x2000), null);
+			Procedure p3 = new Procedure(arch.Object, "p3000", Address.Ptr32(0x3000), null);
+			Procedure p4 = new Procedure(arch.Object, "p4000", Address.Ptr32(0x4000), null);
 
             var pc2 = new ProcedureConstant(PrimitiveType.Ptr32, p2);
             var pc3 = new ProcedureConstant(PrimitiveType.Ptr32, p3);

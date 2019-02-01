@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -18,11 +18,11 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Output;
 using Reko.Core.Types;
-using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -34,30 +34,28 @@ namespace Reko.UnitTests.Core.Output
     [TestFixture]
     public class CTypeReferenceFormatterTests
     {
-        private MockRepository mr;
-        private IPlatform platform;
-        private Formatter formatter;
+        private Mock<IPlatform> platform;
+        private Mock<Formatter> formatter;
         private CTypeReferenceFormatter ctrf;
 
         [SetUp]
         public void Setup()
         {
-            this.mr = new MockRepository();
-            this.formatter = mr.StrictMock<Formatter>();
+            this.formatter = new Mock<Formatter>();
         }
 
         private void Given_Msdos_ish_platform()
         {
-            this.platform = mr.Stub<IPlatform>();
-            platform.Stub(p => p.GetPrimitiveTypeName(PrimitiveType.Int16, "C")).Return("int");
-            platform.Stub(p => p.GetPrimitiveTypeName(PrimitiveType.Int32, "C")).Return("long");
+            this.platform = new Mock<IPlatform>();
+            platform.Setup(p => p.GetPrimitiveTypeName(PrimitiveType.Int16, "C")).Returns("int");
+            platform.Setup(p => p.GetPrimitiveTypeName(PrimitiveType.Int32, "C")).Returns("long");
         }
 
         private void Given_CTypeReferenceFormatter()
         {
             Debug.Assert(platform != null);
             Debug.Assert(formatter != null);
-            this.ctrf = new CTypeReferenceFormatter(platform, formatter);
+            this.ctrf = new CTypeReferenceFormatter(platform.Object, formatter.Object);
         }
 
         [Test]
@@ -65,12 +63,12 @@ namespace Reko.UnitTests.Core.Output
         {
             Given_Msdos_ish_platform();
             Given_CTypeReferenceFormatter();
-            formatter.Expect(f => f.WriteKeyword("int"));
-            formatter.Expect(f => f.Write(""));
-            mr.ReplayAll();
+            formatter.Setup(f => f.WriteKeyword("int")).Verifiable();
+            formatter.Setup(f => f.Write("")).Verifiable();
 
             ctrf.WriteTypeReference(PrimitiveType.Int16);
-            mr.VerifyAll();
+
+            formatter.Verify();
         }
 
         [Test]
@@ -78,12 +76,12 @@ namespace Reko.UnitTests.Core.Output
         {
             Given_Msdos_ish_platform();
             Given_CTypeReferenceFormatter();
-            formatter.Expect(f => f.WriteKeyword("long"));
-            formatter.Expect(f => f.Write(""));
-            mr.ReplayAll();
+            formatter.Setup(f => f.WriteKeyword("long")).Verifiable();
+            formatter.Setup(f => f.Write("")).Verifiable();
 
             ctrf.WriteTypeReference(PrimitiveType.Int32);
-            mr.VerifyAll();
+
+            formatter.Verify();
         }
     }
 }

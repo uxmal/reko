@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
@@ -27,20 +28,19 @@ using Reko.Core.Expressions;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
-using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using CommonMockFactory = Reko.UnitTests.Mocks.CommonMockFactory;
 
 namespace Reko.UnitTests.Analysis
 {
     [TestFixture]
     public class UserSignatureBuilderTests
     {
-        private MockRepository mr;
-        private MockFactory mockFactory;
+        private CommonMockFactory mockFactory;
         private Program program;
         private Procedure proc;
         private IPlatform platform;
@@ -48,9 +48,8 @@ namespace Reko.UnitTests.Analysis
         [SetUp]
         public void Setup()
         {
-            this.mr = new MockRepository();
-            this.mockFactory = new MockFactory(mr);
-            this.platform = mockFactory.CreatePlatform();
+            this.mockFactory = new CommonMockFactory();
+            this.platform = mockFactory.CreateMockPlatform().Object;
             this.program = mockFactory.CreateProgram();
         }
 

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,15 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Expressions;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
-using Rhino.Mocks;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
@@ -33,63 +34,59 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
-using System;
-using Reko.Core.Expressions;
 
 namespace Reko.UnitTests.Core.Serialization
 {
     [TestFixture]
 	public class SerializedProjectTests
 	{
-        private MockRepository mr;
-        private MockFactory mockFactory;
+        private CommonMockFactory mockFactory;
         private ServiceContainer sc;
-        private ILoader loader;
-        private IProcessorArchitecture arch;
-        private IPlatform platform;
-        private IConfigurationService cfgSvc;
-        private DecompilerEventListener listener;
+        private Mock<ILoader> loader;
+        private Mock<IProcessorArchitecture> arch;
+        private Mock<IPlatform> platform;
+        private Mock<IConfigurationService> cfgSvc;
+        private Mock<DecompilerEventListener> listener;
 
         [SetUp]
         public void Setup()
         {
-            this.mr = new MockRepository();
-            this.mockFactory = new MockFactory(mr);
-            this.cfgSvc = mr.Stub<IConfigurationService>();
-            this.listener = mr.Stub<DecompilerEventListener>();
+            this.mockFactory = new CommonMockFactory();
+            this.cfgSvc = new Mock<IConfigurationService>();
+            this.listener = new Mock<DecompilerEventListener>();
             this.sc = new ServiceContainer();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl('/'));
-            sc.AddService<IConfigurationService>(cfgSvc);
+            sc.AddService<IConfigurationService>(cfgSvc.Object);
         }
 
         private void Given_Architecture()
         {
-            this.arch = mr.StrictMock<IProcessorArchitecture>();
-            this.arch.Stub(a => a.Name).Return("testArch");
-            this.arch.Stub(a => a.SaveUserOptions()).Return(null);
-            this.cfgSvc.Stub(c => c.GetArchitecture("testArch")).Return(arch);
+            this.arch = new Mock<IProcessorArchitecture>();
+            this.arch.Setup(a => a.Name).Returns("testArch");
+            this.arch.Setup(a => a.SaveUserOptions()).Returns((Dictionary<string,object>)null);
+            this.cfgSvc.Setup(c => c.GetArchitecture("testArch")).Returns(arch.Object);
         }
 
         private void Given_TestOS_Platform()
         {
-            Debug.Assert(arch != null, "Must call Given_Architecture first.");
+            Debug.Assert(arch.Object != null, "Must call Given_Architecture first.");
             // A very simple dumb platform with no intelligent behaviour.
-            this.platform = mr.Stub<IPlatform>();
-            var oe = mr.Stub<OperatingEnvironment>();
-            this.platform.Stub(p => p.Name).Return("testOS");
-            this.platform.Stub(p => p.SaveUserOptions()).Return(null);
-            this.platform.Stub(p => p.Architecture).Return(arch);
-            this.platform.Stub(p => p.CreateMetadata()).Return(new TypeLibrary());
-            this.platform.Stub(p => p.DefaultCallingConvention).Return("");
-            this.cfgSvc.Stub(c => c.GetEnvironment("testOS")).Return(oe);
-            oe.Stub(e => e.Load(sc, arch)).Return(platform);
+            this.platform = new Mock<IPlatform>();
+            var oe = new Mock<OperatingEnvironment>();
+            this.platform.Setup(p => p.Name).Returns("testOS");
+            this.platform.Setup(p => p.SaveUserOptions()).Returns((Dictionary<string,object>) null);
+            this.platform.Setup(p => p.Architecture).Returns(arch.Object);
+            this.platform.Setup(p => p.CreateMetadata()).Returns(new TypeLibrary());
+            this.platform.Setup(p => p.DefaultCallingConvention).Returns("");
+            this.cfgSvc.Setup(c => c.GetEnvironment("testOS")).Returns(oe.Object);
+            oe.Setup(e => e.Load(sc, arch.Object)).Returns(platform.Object);
         }
 
         private void Expect_TryParseAddress(string sAddr, Address addr)
         {
-            platform.Stub(p => p.TryParseAddress(
-                Arg<string>.Is.Equal(sAddr),
-                out Arg<Address>.Out(addr).Dummy)).Return(true);
+            platform.Setup(p => p.TryParseAddress(
+                sAddr, out addr))
+                .Returns(true);
         }
 
         [Test]
@@ -187,8 +184,8 @@ namespace Reko.UnitTests.Core.Serialization
                 {
                     new Program
                     {
-                        Architecture = arch,
-                        Platform = platform,
+                        Architecture = arch.Object,
+                        Platform = platform.Object,
                         SegmentMap = new SegmentMap(Address.SegPtr(0x1000, 0)), //, new byte[100]),
                         DisassemblyFilename = "foo.asm",
                         IntermediateFilename = "foo.cod",
@@ -276,7 +273,6 @@ namespace Reko.UnitTests.Core.Serialization
                     }
                 }
             };
-            mr.ReplayAll();
 
             using (FileUnitTester fut = new FileUnitTester("Core/SudSaveProject.txt"))
             {
@@ -322,9 +318,8 @@ namespace Reko.UnitTests.Core.Serialization
                     }
                 }
             };
-            mr.ReplayAll();
 
-            var ps = new ProjectLoader(sc, loader, listener);
+            var ps = new ProjectLoader(sc, loader.Object, listener.Object);
             var project = ps.LoadProject("project.dcproj", sProject);
             Assert.AreEqual(2, project.Programs.Count);
             var input0 = project.Programs[0];
@@ -332,7 +327,6 @@ namespace Reko.UnitTests.Core.Serialization
             Assert.AreEqual("1000:0400", input0.User.Globals.Values[0].Address);
             var str_t = (StringType_v2)input0.User.Globals.Values[0].DataType;
             Assert.AreEqual("prim(Character,1)", str_t.CharType.ToString());
-            mr.VerifyAll();
         }
 
         private void Given_BinaryFile(string exeName, Address address)
@@ -340,7 +334,7 @@ namespace Reko.UnitTests.Core.Serialization
             var bytes = new byte[0x10];
             var program = new Program
             {
-                Architecture = arch,
+                Architecture = arch.Object,
                 SegmentMap = new SegmentMap(
                     address,
                     new ImageSegment(
@@ -348,14 +342,14 @@ namespace Reko.UnitTests.Core.Serialization
                         new MemoryArea(address, bytes),
                         AccessMode.ReadWriteExecute))
             };
-            loader.Stub(l => l.LoadImageBytes(
-                Arg<string>.Matches(s => s.EndsWith(exeName)),
-                Arg<int>.Is.Anything)).Return(bytes);
-            loader.Stub(l => l.LoadExecutable(
-                Arg<string>.Matches(s => s.EndsWith(exeName)),
-                Arg<byte[]>.Is.NotNull,
-                Arg<string>.Is.Null,
-                Arg<Address>.Is.Null)).Return(program);
+            loader.Setup(l => l.LoadImageBytes(
+                It.Is<string>(s => s.EndsWith(exeName)),
+                It.IsAny<int>())).Returns(bytes);
+            loader.Setup(l => l.LoadExecutable(
+                It.Is<string>(s => s.EndsWith(exeName)),
+                It.IsNotNull<byte[]>(),
+                null,
+                null)).Returns(program);
         }
 
         private void Given_ExecutableProgram(string exeName, Address address)
@@ -366,31 +360,32 @@ namespace Reko.UnitTests.Core.Serialization
                     new ImageSegment(".text", mem, AccessMode.ReadWriteExecute));
             var program = new Program
             {
-                Architecture = arch,
-                Platform = mockFactory.CreatePlatform(),
+                Architecture = arch.Object,
+                Platform = mockFactory.CreateMockPlatform().Object,
                 SegmentMap = segmentMap,
                 ImageMap = segmentMap.CreateImageMap()
             };
-            loader.Stub(l => l.LoadImageBytes(
-                Arg<string>.Matches(s => s.EndsWith(exeName)),
-                Arg<int>.Is.Anything)).Return(bytes);
-            loader.Stub(l => l.LoadExecutable(
-                Arg<string>.Matches(s => s.EndsWith(exeName)),
-                Arg<byte[]>.Is.NotNull,
-                Arg<string>.Is.Null,
-                Arg<Address>.Is.Null)).Return(program);
+            loader.Setup(l => l.LoadImageBytes(
+                It.Is<string>(s => s.EndsWith(exeName)),
+                It.IsAny<int>())).Returns(bytes);
+            loader.Setup(l => l.LoadExecutable(
+                It.Is<string>(s => s.EndsWith(exeName)),
+                It.IsNotNull<byte[]>(),
+                null,
+                null)).Returns(program);
         }
 
         private void Expect_Arch_ParseAddress(string sExp, Address result)
         {
-            arch.Stub(a => a.TryParseAddress(
-                Arg<string>.Is.Equal("1000:0400"),
-                out Arg<Address>.Out(Address.SegPtr(0x1000, 0x0400)).Dummy)).Return(true);
+            arch.Setup(a => a.TryParseAddress(
+                sExp,
+                out result))
+                .Returns(true);
         }
 
         private void Given_Loader()
         {
-            this.loader = mr.Stub<ILoader>();
+            this.loader = new Mock<ILoader>();
         }
 
         [Test]
@@ -404,8 +399,8 @@ namespace Reko.UnitTests.Core.Serialization
                 {
                     new Program
                     {
-                        Architecture = arch,
-                        Platform = platform,
+                        Architecture = arch.Object,
+                        Platform = platform.Object,
                         Filename = "c:\\test\\foo.exe",
                     }
                 },
@@ -418,7 +413,6 @@ namespace Reko.UnitTests.Core.Serialization
                     }
                 }
             };
-            mr.ReplayAll();
 
             var ps = new ProjectSaver(sc);
             ps.Serialize("c:\\test\\foo.project", project);
@@ -439,15 +433,18 @@ namespace Reko.UnitTests.Core.Serialization
                     }
                 }
             };
-            var loader = mr.Stub<ILoader>();
+            var loader = new Mock<ILoader>();
             var typelib = new TypeLibrary();
-            loader.Stub(l => l.LoadMetadata("", null, null)).IgnoreArguments().Return(typelib);
-            var oracle = mr.Stub<IOracleService>();
-            oracle.Stub(o => o.QueryPlatform(Arg<string>.Is.NotNull)).Return(mockFactory.CreatePlatform());
-            sc.AddService<IOracleService>(oracle);
-            mr.ReplayAll();
+            loader.Setup(l => l.LoadMetadata(
+                It.IsAny<string>(),
+                It.IsAny<IPlatform>(),
+                It.IsAny<TypeLibrary>()))
+                .Returns(typelib);
+            var oracle = new Mock<IOracleService>();
+            oracle.Setup(o => o.QueryPlatform(It.IsNotNull<string>())).Returns(mockFactory.CreatePlatform());
+            sc.AddService<IOracleService>(oracle.Object);
 
-            var ploader = new ProjectLoader(sc, loader, listener);
+            var ploader = new ProjectLoader(sc, loader.Object, listener.Object);
             var project = ploader.LoadProject("c:\\bar\\bar.dcproj", sProject);
             Assert.AreEqual(1, project.MetadataFiles.Count);
             Assert.AreEqual("c:\\tmp\\foo.def", project.MetadataFiles[0].Filename);
@@ -489,21 +486,22 @@ namespace Reko.UnitTests.Core.Serialization
             Given_TestOS_Platform();
             Expect_TryParseAddress("0041230", Address.Ptr32(0x0041230));
             Expect_TryParseAddress("00443210", Address.Ptr32(0x00443210));
-            arch.Stub(a => a.GetRegister("eax")).Return(new RegisterStorage("eax", 0, 0, PrimitiveType.Word32));
-            arch.Stub(a => a.GetRegister("ecx")).Return(new RegisterStorage("ecx", 1, 0, PrimitiveType.Word32));
-            var loader = mr.Stub<ILoader>();
-            loader.Stub(l => l.LoadImageBytes(null, 0))
-                .IgnoreArguments()
-                .Return(new byte[10]);
-            loader.Stub(l => l.LoadExecutable(null, null, null, null))
-                .IgnoreArguments()
-                .Return(new Program
+            arch.Setup(a => a.GetRegister("eax")).Returns(new RegisterStorage("eax", 0, 0, PrimitiveType.Word32));
+            arch.Setup(a => a.GetRegister("ecx")).Returns(new RegisterStorage("ecx", 1, 0, PrimitiveType.Word32));
+            var loader = new Mock<ILoader>();
+            loader.Setup(l => l.LoadImageBytes(It.IsAny<string>(), It.IsAny<int>()))
+                .Returns(new byte[10]);
+            loader.Setup(l => l.LoadExecutable(
+                It.IsAny<string>(),
+                It.IsAny<byte[]>(),
+                It.IsAny<string>(),
+                It.IsAny<Address>()))
+                .Returns(new Program
                 {
-                    Platform = this.platform,
+                    Platform = this.platform.Object
                 });
-            mr.ReplayAll();
 
-            var ploader = new ProjectLoader(sc, loader, listener);
+            var ploader = new ProjectLoader(sc, loader.Object, listener.Object);
             var project = ploader.LoadProject("c:\\tmp\\foo\\bar.proj", sProject);
             Assert.IsTrue(project.Programs[0].User.Heuristics.Contains("HeuristicScanning"));
             Assert.AreEqual("windows-1251", project.Programs[0].User.TextEncoding.WebName);

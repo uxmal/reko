@@ -17,12 +17,12 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
+using Moq;
+using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Types;
 using Reko.Core.Output;
 using Reko.Core.Serialization;
-using NUnit.Framework;
-using Rhino.Mocks;
 using System.IO;
 using System;
 using System.Collections.Generic;

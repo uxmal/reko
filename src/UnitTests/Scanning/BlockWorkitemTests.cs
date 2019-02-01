@@ -29,7 +29,7 @@ using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Scanning;
 using Reko.UnitTests.Mocks;
-using Rhino.Mocks;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -42,9 +42,8 @@ namespace Reko.UnitTests.Scanning
     [TestFixture]
     public class BlockWorkitemTests
     {
-        private MockRepository mr;
-        private IScanner scanner;
-        private IProcessorArchitecture arch;
+        private Mock<IScanner> scanner;
+        private Mock<IProcessorArchitecture> arch;
         private Program program;
         private Procedure proc;
         private Block block;
@@ -58,7 +57,6 @@ namespace Reko.UnitTests.Scanning
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
             program = new Program();
             trace = new RtlTrace(0x00100000);
             r0 = new Identifier("r0", PrimitiveType.Word32, new RegisterStorage("r0", 0, 0, PrimitiveType.Word32));
@@ -66,40 +64,41 @@ namespace Reko.UnitTests.Scanning
             r2 = new Identifier("r2", PrimitiveType.Word32, new RegisterStorage("r2", 2, 0, PrimitiveType.Word32));
             sp = new Identifier("sp", PrimitiveType.Word32, new RegisterStorage("sp", 15, 0, PrimitiveType.Word32));
             var sc = new ServiceContainer();
-            var listener = mr.Stub<DecompilerEventListener>();
-            scanner = mr.StrictMock<IScanner>();
-            arch = mr.Stub<IProcessorArchitecture>();
-            proc = new Procedure(arch, "testProc", Address.Ptr32(0x00100000), new Frame(PrimitiveType.Word32));
+            var listener = new Mock<DecompilerEventListener>();
+            scanner = new Mock<IScanner>();
+            arch = new Mock<IProcessorArchitecture>();
+            proc = new Procedure(arch.Object, "testProc", Address.Ptr32(0x00100000), new Frame(PrimitiveType.Word32));
             block = proc.AddBlock("l00100000");
             grf = proc.Frame.EnsureFlagGroup(Registers.eflags, 3, "SCZ", PrimitiveType.Byte);
-            program.Architecture = arch;
+            program.Architecture = arch.Object;
             program.SegmentMap = new SegmentMap(
                 Address.Ptr32(0x00100000),
                 new ImageSegment(
                     ".text",
                     new MemoryArea(Address.Ptr32(0x00100000), new byte[0x20000]),
                     AccessMode.ReadExecute));
-            arch.Replay();
-            program.Platform = new DefaultPlatform(null, arch);
-            arch.BackToRecord();
-            arch.StackRegister = (RegisterStorage)sp.Storage;
-            arch.Stub(s => s.PointerType).Return(PrimitiveType.Ptr32);
-            arch.Stub(s => s.CreateFrameApplicationBuilder(null, null, null)).IgnoreArguments().Do(
-                new Func<IStorageBinder, CallSite, Expression, FrameApplicationBuilder>(
-                    (frame, site, callee) => new FrameApplicationBuilder(arch, frame, site, callee, false)));
-            scanner.Stub(s => s.Services).Return(sc);
-            sc.AddService<DecompilerEventListener>(listener);
+            program.Platform = new DefaultPlatform(null, arch.Object);
+            arch.Setup(a => a.StackRegister).Returns((RegisterStorage)sp.Storage);
+            arch.Setup(s => s.PointerType).Returns(PrimitiveType.Ptr32);
+            arch.Setup(s => s.CreateFrameApplicationBuilder(
+                It.IsAny<IStorageBinder>(),
+                It.IsAny<CallSite>(),
+                It.IsAny<Expression>()))
+                .Returns((IStorageBinder frame, CallSite site, Expression callee) =>
+                    new FrameApplicationBuilder(arch.Object, frame, site, callee, false));
+            scanner.Setup(s => s.Services).Returns(sc);
+            sc.AddService<DecompilerEventListener>(listener.Object);
         }
 
         private BlockWorkitem CreateWorkItem(Address addr)
         {
-            return CreateWorkItem(addr, new FakeProcessorState(arch));
+            return CreateWorkItem(addr, new FakeProcessorState(arch.Object));
         }
 
         private BlockWorkitem CreateWorkItem(Address addr, ProcessorState state)
         {
             return new BlockWorkitem(
-                scanner,
+                scanner.Object,
                 program,
                 program.Architecture,
                 state,
@@ -130,7 +129,7 @@ namespace Reko.UnitTests.Scanning
 
         private void Given_TrashedRegisters(params Identifier[] regs)
         {
-            program.Platform = new FakePlatform(null, arch)
+            program.Platform = new FakePlatform(null, arch.Object)
             {
                 Test_CreateTrashedRegisters =
                     () => regs
@@ -139,26 +138,59 @@ namespace Reko.UnitTests.Scanning
             };
         }
 
+        private void Given_NoImportedProcedure()
+        {
+            scanner.Setup(s => s.GetImportedProcedure(
+                It.IsAny<IProcessorArchitecture>(),
+                It.IsAny<Address>(),
+                It.IsAny<Address>()))
+                .Returns((ExternalProcedure)null);
+        }
+
         private void Given_NoInlinedCall()
         {
-            arch.Stub(a => a.CreateImageReader(null, null))
-                .IgnoreArguments()
-                .Return(new LeImageReader(new byte[0]));
-            arch.Stub(a => a.InlineCall(null, null, null, null))
-                .IgnoreArguments()
-                .Return(null);
+            arch.Setup(a => a.CreateImageReader(
+                It.IsAny<MemoryArea>(),
+                It.IsAny<Address>()))
+                .Returns(new LeImageReader(new byte[0]));
+            arch.Setup(a => a.InlineCall(
+                It.IsAny<Address>(),
+                It.IsAny<Address>(),
+                It.IsAny<EndianImageReader>(),
+                It.IsAny<IStorageBinder>()))
+                .Returns((List<RtlInstruction>)null);
+        }
+
+        private void Given_NoTrampoline()
+        {
+            scanner.Setup(s => s.GetTrampoline(
+                It.IsAny<IProcessorArchitecture>(),
+                It.IsAny<Address>()))
+                .Returns((ProcedureBase)null);
+        }
+
+        private void Given_SimpleTrace(IEnumerable<RtlInstructionCluster> trace)
+        {
+            scanner.Setup(s => s.GetTrace(
+                It.IsAny<IProcessorArchitecture>(),
+                It.IsAny<Address>(),
+                It.IsAny<ProcessorState>(),
+                It.IsAny<IStorageBinder>()))
+                .Returns(trace);
         }
 
         private Address Given_Trace(Action<RtlEmitter> generator)
         {
             var addr = Address.Ptr32(0x00100000);
             trace.Add(generator);
-            scanner.Stub(s => s.GetTrace(null, null, null, null))
-                .IgnoreArguments()
-                .Return(trace);
-            scanner.Stub(s => s.FindContainingBlock(addr))
-                .IgnoreArguments()
-                .Return(block);
+            scanner.Setup(s => s.GetTrace(
+                It.IsAny<IProcessorArchitecture>(),
+                It.IsAny<Address>(),
+                It.IsAny<ProcessorState>(),
+                It.IsAny<IStorageBinder>()))
+                .Returns(trace);
+            scanner.Setup(s => s.FindContainingBlock(It.IsAny<Address>()))
+                .Returns(block);
             return addr;
         }
 
@@ -182,17 +214,14 @@ namespace Reko.UnitTests.Scanning
             trace.Add(m => { m.Return(4, 0); });
             trace.Add(m => { m.Fn(m.Int32(0x49242)); });
 
-            using (mr.Record())
-            {
-                scanner.Stub(x => x.FindContainingBlock(
-                    Arg<Address>.Is.Anything)).Return(block);
-                scanner.Stub(x => x.TerminateBlock(null, null)).IgnoreArguments();
-                scanner.Stub(x => x.SetProcedureReturnAddressBytes(
-                    Arg<Procedure>.Is.NotNull,
-                    Arg<int>.Is.Equal(4),
-                    Arg<Address>.Matches(a => a.ToLinear() == 0x00100000)));
-                scanner.Stub(x => x.GetTrace(null, null, null, null)).IgnoreArguments().Return(trace);
-            }
+            scanner.Setup(x => x.FindContainingBlock(
+                It.IsAny<Address>())).Returns(block);
+            //scanner.Setup(x => x.TerminateBlock(null, null)).IgnoreArguments();
+            scanner.Setup(x => x.SetProcedureReturnAddressBytes(
+                It.IsNotNull<Procedure>(),
+                4,
+                It.Is<Address>(a => a.ToLinear() == 0x00100000)));
+            Given_SimpleTrace(trace);
 
             var wi = CreateWorkItem(Address.Ptr32(0x1000));
             wi.Process();
@@ -210,26 +239,25 @@ namespace Reko.UnitTests.Scanning
             });
 
             Block next = block.Procedure.AddBlock("next");
-            using (mr.Record())
-            {
-                arch.Stub(x => x.PointerType).Return(PrimitiveType.Ptr32);
-                arch.Stub(x => x.CreateRewriter(
-                    Arg<EndianImageReader>.Is.Anything,
-                    Arg<ProcessorState>.Is.Anything,
-                    Arg<IStorageBinder>.Is.Anything,
-                    Arg<IRewriterHost>.Is.Anything)).Return(trace);
-                scanner.Stub(x => x.FindContainingBlock(
-                    Arg<Address>.Is.Anything)).Return(block);
-                scanner.Expect(x => x.EnqueueJumpTarget(
-                    Arg<Address>.Is.NotNull,
-                    Arg<Address>.Is.Anything,
-                    Arg<Procedure>.Is.Same(block.Procedure),
-                    Arg<ProcessorState>.Is.Anything)).Return(next);
-                scanner.Stub(x => x.TerminateBlock(null, null)).IgnoreArguments();
-                scanner.Stub(x => x.GetTrace(null, null, null, null)).IgnoreArguments().Return(trace);
-                scanner.Stub(f => f.GetImportedProcedure(null, null, null)).IgnoreArguments().Return(null);
-                scanner.Stub(s => s.GetTrampoline(null, null)).IgnoreArguments().Return(null);
-            }
+            arch.Setup(x => x.PointerType).Returns(PrimitiveType.Ptr32);
+            arch.Setup(x => x.CreateRewriter(
+                It.IsAny<EndianImageReader>(),
+                It.IsAny<ProcessorState>(),
+                It.IsAny<IStorageBinder>(),
+                It.IsAny<IRewriterHost>())).Returns(trace);
+            scanner.Setup(x => x.FindContainingBlock(
+                It.IsAny<Address>())).Returns(block);
+            scanner.Setup(x => x.EnqueueJumpTarget(
+                It.IsNotNull<Address>(),
+                It.IsAny<Address>(),
+                block.Procedure,
+                It.IsAny<ProcessorState>()))
+                .Returns(next)
+                .Verifiable();
+            //scanner.Setup(x => x.TerminateBlock(null, null)).IgnoreArguments();
+            Given_SimpleTrace(trace);
+            Given_NoImportedProcedure();
+            Given_NoTrampoline();
 
             var wi = CreateWorkItem(Address.Ptr32(0x1000));
             wi.Process();
@@ -239,7 +267,8 @@ namespace Reko.UnitTests.Scanning
             Assert.AreEqual(1, proc.ControlGraph.Successors(block).Count);
             var items = new List<Block>(proc.ControlGraph.Successors(block));
             Assert.AreSame(next, items[0]);
-            mr.VerifyAll();
+
+            scanner.Verify();
         }
 
         [Test]
@@ -253,28 +282,30 @@ namespace Reko.UnitTests.Scanning
             var blockThen = new Block(proc, "then");
             ProcessorState s1 = null;
             ProcessorState s2 = null;
-            using (mr.Record())
-            {
-                arch.Stub(a => a.FramePointerType).Return(PrimitiveType.Ptr32);
-                arch.Stub(x => x.CreateRewriter(
-                    Arg<EndianImageReader>.Is.Anything,
-                    Arg<ProcessorState>.Is.Anything,
-                    Arg<IStorageBinder>.Is.Anything,
-                    Arg<IRewriterHost>.Is.Anything)).Return(trace);
-                scanner.Stub(x => x.FindContainingBlock(
-                    Arg<Address>.Is.Anything)).Return(block);
+                arch.Setup(a => a.FramePointerType).Returns(PrimitiveType.Ptr32);
+                arch.Setup(x => x.CreateRewriter(
+                    It.IsAny<EndianImageReader>(),
+                    It.IsAny<ProcessorState>(),
+                    It.IsAny<IStorageBinder>(),
+                    It.IsAny<IRewriterHost>())).Returns(trace);
+                scanner.Setup(x => x.FindContainingBlock(
+                    It.IsAny<Address>())).Returns(block);
                 scanner.Expect(x => x.EnqueueJumpTarget(
-                    Arg<Address>.Is.NotNull,
-                    Arg<Address>.Matches(arg => arg.Offset == 0x00100004),
-                    Arg<Procedure>.Is.Same(block.Procedure),
-                    Arg<ProcessorState>.Matches(arg => StashArg(ref s1, arg)))).Return(blockElse);
+                It.IsNotNull<Address>(),
+                It.Is<Address>(arg => arg.Offset == 0x00100004),
+                block.Procedure,
+                It.Is<ProcessorState>(arg => StashArg(ref s1, arg))))
+                .Returns(blockElse)
+                .Verifiable();
                 scanner.Expect(x => x.EnqueueJumpTarget(
-                    Arg<Address>.Is.NotNull,
-                    Arg<Address>.Matches(arg => arg.Offset == 0x00104000),
-                    Arg<Procedure>.Is.Same(block.Procedure),
-                    Arg<ProcessorState>.Matches(arg => StashArg(ref s2, arg)))).Return(blockThen);
-                scanner.Stub(x => x.GetTrace(null, null, null, null)).IgnoreArguments().Return(trace);
-            }
+                    It.IsNotNull<Address>(),
+                    It.Is<Address>(arg => arg.Offset == 0x00104000),
+                    block.Procedure,
+                    It.Is<ProcessorState>(arg => StashArg(ref s2, arg))))
+                    .Returns(blockThen)
+                .Verifiable();
+            Given_SimpleTrace(trace);
+            
             var wi = CreateWorkItem(Address.Ptr32(0x1000));
             wi.Process();
             Assert.AreEqual(1, block.Statements.Count, "Expected a branch statement in the block");
@@ -282,7 +313,7 @@ namespace Reko.UnitTests.Scanning
             Assert.IsNotNull(s1);
             Assert.IsNotNull(s2);
 
-            mr.VerifyAll();
+            scanner.Verify();
         }
 
         [Test]
@@ -292,36 +323,37 @@ namespace Reko.UnitTests.Scanning
             trace.Add(m => { m.Assign(m.Word32(0x4000), m.Word32(0)); });
             trace.Add(m => { m.Return(4, 0); });
 
-            using (mr.Record())
-            {
-                arch.Stub(x => x.CreateRewriter(
-                    Arg<EndianImageReader>.Is.Anything,
-                    Arg<ProcessorState>.Is.Anything,
-                    Arg<IStorageBinder>.Is.Anything,
-                    Arg<IRewriterHost>.Is.Anything)).Return(trace);
-                arch.Stub(x => x.PointerType).Return(PrimitiveType.Ptr32);
+            arch.Setup(x => x.CreateRewriter(
+                It.IsAny<EndianImageReader>(),
+                It.IsAny<ProcessorState>(),
+                It.IsAny<IStorageBinder>(),
+                It.IsAny<IRewriterHost>())).Returns(trace);
+            arch.Setup(x => x.PointerType).Returns(PrimitiveType.Ptr32);
                 Given_NoInlinedCall();
-                scanner.Stub(x => x.GetImportedProcedure(null, null, null)).IgnoreArguments().Return(null);
-                scanner.Stub(x => x.FindContainingBlock(
-                    Arg<Address>.Is.Anything)).Return(block);
-                scanner.Expect(x => x.ScanProcedure(
-                    Arg<IProcessorArchitecture>.Is.NotNull,
-                    Arg<Address>.Matches(arg => arg.Offset == 0x102000),
-                    Arg<string>.Is.Null,
-                    Arg<ProcessorState>.Is.Anything))
-                        .Return(new Procedure(program.Architecture, "fn102000", Address.Ptr32(0x00102000), new Frame(PrimitiveType.Word32)));
-                scanner.Stub(x => x.TerminateBlock(null, null)).IgnoreArguments();
-                scanner.Stub(x => x.SetProcedureReturnAddressBytes(
-                    Arg<Procedure>.Is.NotNull,
-                    Arg<int>.Is.Equal(4),
-                    Arg<Address>.Is.NotNull));
-                scanner.Stub(x => x.GetTrace(null, null, null, null)).IgnoreArguments().Return(trace);
-            }
+            Given_NoImportedProcedure();
+                scanner.Setup(x => x.FindContainingBlock(
+                    It.IsAny<Address>())).Returns(block);
+            scanner.Setup(x => x.ScanProcedure(
+                It.IsNotNull<IProcessorArchitecture>(),
+                It.Is<Address>(arg => arg.Offset == 0x102000),
+                null,
+                It.IsAny<ProcessorState>()))
+                        .Returns(new Procedure(program.Architecture, "fn102000", Address.Ptr32(0x00102000), new Frame(PrimitiveType.Word32)))
+                        .Verifiable();
+                //scanner.Setup(x => x.TerminateBlock(null, null)).IgnoreArguments();
+                scanner.Setup(x => x.SetProcedureReturnAddressBytes(
+                    It.IsNotNull<Procedure>(),
+                    4,
+                    It.IsNotNull<Address>()));
+                Given_SimpleTrace(trace);
+            
             var wi = CreateWorkItem(Address.Ptr32(0x1000));
             wi.Process();
+
             var callees = new List<Procedure>(program.CallGraph.Callees(block.Procedure));
             Assert.AreEqual(1, callees.Count);
             Assert.AreEqual("fn102000", callees[0].Name);
+            scanner.Verify();
         }
 
         [Test]
@@ -338,23 +370,20 @@ namespace Reko.UnitTests.Scanning
                 }
             };
 
-            using (mr.Record())
-            {
-                scanner.Stub(x => x.FindContainingBlock(
-                    Arg<Address>.Is.Anything)).Return(block);
-                scanner.Expect(x => x.GetImportedProcedure(
-                    Arg<IProcessorArchitecture>.Is.NotNull,
-                    Arg<Address>.Matches(a => a.ToLinear() == 0x102000u),
-                    Arg<Address>.Is.NotNull)).Return(alloca);
-                scanner.Stub(x => x.GetTrace(null, null, null, null)).IgnoreArguments().Return(trace);
-            }
+            scanner.Setup(x => x.FindContainingBlock(
+                It.IsAny<Address>())).Returns(block);
+            scanner.Setup(x => x.GetImportedProcedure(
+                It.IsNotNull<IProcessorArchitecture>(),
+                It.Is<Address>(a => a.ToLinear() == 0x102000u),
+                It.IsNotNull<Address>())).Returns(alloca);
+            Given_SimpleTrace(trace);
             trace.Add(m => m.Call(Address.Ptr32(0x102000), 4));
             var state = new FakeProcessorState(program.Architecture);
             state.SetRegister(Registers.eax, Constant.Word32(0x0400));
             var wi = CreateWorkItem(Address.Ptr32(0x1000), state);
             wi.Process();
 
-            mr.VerifyAll();
+            scanner.Verify();
             Assert.AreEqual(1, block.Statements.Count);
             Assert.AreEqual("esp = esp - 0x00000400", block.Statements.Last.ToString());
         }
@@ -362,9 +391,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Bwi_CallingAllocaWithNonConstant()
         {
-            arch = mr.Stub<IProcessorArchitecture>();
-            arch = new X86ArchitectureFlat32("x86-protected-32");
-            program.Platform = new DefaultPlatform(null, arch);
+            program.Platform = new DefaultPlatform(null, arch.Object);
 
             var sig = CreateSignature(Registers.esp, Registers.eax);
             var alloca = new ExternalProcedure("alloca", sig, new ProcedureCharacteristics
@@ -374,20 +401,18 @@ namespace Reko.UnitTests.Scanning
 
             trace.Add(m => m.Call(Address.Ptr32(0x102000), 4));
 
-            using (mr.Record())
-            {
-                scanner.Stub(x => x.FindContainingBlock(
-                    Arg<Address>.Is.Anything)).Return(block);
-                scanner.Expect(x => x.GetImportedProcedure(
-                    Arg<IProcessorArchitecture>.Is.NotNull,
-                    Arg<Address>.Is.Equal(Address.Ptr32(0x102000u)),
-                    Arg<Address>.Is.NotNull)).Return(alloca);
-                scanner.Stub(x => x.GetTrace(null, null, null, null)).IgnoreArguments().Return(trace);
+            scanner.Setup(x => x.FindContainingBlock(
+                    It.IsAny<Address>())).Returns(block);
+            scanner.Setup(x => x.GetImportedProcedure(
+                    It.IsNotNull<IProcessorArchitecture>(),
+                    Address.Ptr32(0x102000u),
+                    It.IsNotNull<Address>())).Returns(alloca);
+            Given_SimpleTrace(trace);
 
-            }
             var wi = CreateWorkItem(Address.Ptr32(0x1000));
             wi.Process();
-            mr.VerifyAll();
+
+            scanner.Verify();
             Assert.AreEqual(1, block.Statements.Count);
             Assert.AreEqual("esp = alloca(eax)", block.Statements.Last.ToString());
         }
@@ -401,20 +426,20 @@ namespace Reko.UnitTests.Scanning
                 Terminates = true,
             };
             block = proc.AddBlock("the_block");
-            arch.Stub(a => a.PointerType).Return(PrimitiveType.Word32);
-            scanner.Stub(s => s.FindContainingBlock(Arg<Address>.Is.Anything)).Return(block);
-            scanner.Stub(s => s.GetImportedProcedure(Arg<IProcessorArchitecture>.Is.NotNull, Arg<Address>.Is.Anything, Arg<Address>.Is.NotNull)).Return(null);
+            arch.Setup(a => a.PointerType).Returns(PrimitiveType.Word32);
+            scanner.Setup(s => s.FindContainingBlock(It.IsAny<Address>())).Returns(block);
+            Given_NoImportedProcedure();
             Given_NoInlinedCall();
-            scanner.Expect(s => s.ScanProcedure(
-                Arg<IProcessorArchitecture>.Is.NotNull,
-                Arg<Address>.Is.Anything,
-                Arg<string>.Is.Anything,
-                Arg<ProcessorState>.Is.Anything))
-                .Return(terminator);
-            scanner.Expect(s => s.TerminateBlock(Arg<Block>.Is.NotNull, Arg<Address>.Is.NotNull));
-            arch.Stub(a => a.FramePointerType).Return(PrimitiveType.Ptr32);
-            scanner.Stub(s => s.GetTrace(null, null, null, null)).IgnoreArguments().Return(trace);
-            mr.ReplayAll();
+            scanner.Setup(s => s.ScanProcedure(
+                It.IsNotNull<IProcessorArchitecture>(),
+                It.IsAny<Address>(),
+                It.IsAny<string>(),
+                It.IsAny<ProcessorState>()))
+                .Returns(terminator)
+                .Verifiable();
+            scanner.Setup(s => s.TerminateBlock(It.IsNotNull<Block>(), It.IsNotNull<Address>())).Verifiable();
+            arch.Setup(a => a.FramePointerType).Returns(PrimitiveType.Ptr32);
+            Given_SimpleTrace(trace);
 
             trace.Add(m => m.Call(Address.Ptr32(0x00102000), 4));
             trace.Add(m => m.SideEffect(new ProcedureConstant(VoidType.Instance, new PseudoProcedure("shouldnt_decompile_this", VoidType.Instance, 0))));
@@ -423,7 +448,7 @@ namespace Reko.UnitTests.Scanning
             wi.Process();
 
             Assert.AreEqual(1, block.Statements.Count, "Should only have rewritten the Call to 'terminator'");
-            mr.VerifyAll();
+            scanner.Verify();
         }
 
         [Test]
@@ -437,31 +462,31 @@ namespace Reko.UnitTests.Scanning
             proc2.Signature = sig;
             var block2 = new Block(proc, "l00100008");
             var block3 = new Block(proc, "l00100004");
-            arch.Stub(a => a.PointerType).Return(PrimitiveType.Ptr32);
-            scanner.Expect(s => s.FindContainingBlock(Address.Ptr32(0x00001000))).IgnoreArguments().Return(block).Repeat.Times(2);
-            scanner.Expect(s => s.FindContainingBlock(Address.Ptr32(0x00001004))).IgnoreArguments().Return(block2); // .Repeat.Times(2);
-            scanner.Expect(s => s.GetImportedProcedure(null, null, null)).IgnoreArguments().Return(null);
-            scanner.Expect(s => s.EnqueueJumpTarget(
-                Arg<Address>.Is.NotNull,
-                Arg<Address>.Matches(a => a.ToLinear() == 0x00100004),
-                Arg<Procedure>.Is.NotNull,
-                Arg<ProcessorState>.Is.NotNull))
-                .Return(block3);
+            arch.Setup(a => a.PointerType).Returns(PrimitiveType.Ptr32);
+            scanner.Setup(s => s.FindContainingBlock(Address.Ptr32(0x00100000))).Returns(block);
+            scanner.Setup(s => s.FindContainingBlock(Address.Ptr32(0x00100004))).Returns(block2);
+            Given_NoImportedProcedure();
             Given_NoInlinedCall();
-            scanner.Expect(s => s.ScanProcedure(
-                Arg<IProcessorArchitecture>.Is.NotNull,
-                Arg<Address>.Is.Equal(Address.Ptr32(0x102000)),
-                Arg<string>.Is.Null,
-                Arg<ProcessorState>.Is.NotNull)).Return(proc2);
-            scanner.Expect(s => s.GetTrace(null, null, null, null)).IgnoreArguments().Return(trace);
-            mr.ReplayAll();
+            scanner.Setup(s => s.EnqueueJumpTarget(
+                It.IsNotNull<Address>(),
+                It.Is<Address>(a => a.ToLinear() == 0x00100004),
+                It.IsNotNull<Procedure>(),
+                It.IsNotNull<ProcessorState>()))
+                .Returns(block3);
+            scanner.Setup(s => s.ScanProcedure(
+                It.IsNotNull<IProcessorArchitecture>(),
+                Address.Ptr32(0x102000),
+                null,
+                It.IsNotNull<ProcessorState>())).Returns(proc2);
 
             trace.Add(m => m.Call(Address.Ptr32(0x102000), 0));
             trace.Add(m => m.Return(0, 0));
-            var wi = CreateWorkItem(Address.Ptr32(0x1000));
+            Given_SimpleTrace(trace);
+
+            var wi = CreateWorkItem(Address.Ptr32(0x00100000));
             wi.Process();
 
-            mr.VerifyAll();
+            scanner.Verify();
             var sw = new StringWriter();
             proc.Write(false, sw);
             var sExp = @"// testProc
@@ -480,7 +505,7 @@ testProc_exit:
         [Test]
         public void Bwi_IndirectCallMatchedByPlatform()
         {
-            var platform = mr.StrictMock<IPlatform>();
+            var platform =new Mock<IPlatform>();
             var reg0 = proc.Frame.EnsureRegister(new RegisterStorage("r0", 0, 0, PrimitiveType.Ptr32));
             var reg1 = proc.Frame.EnsureRegister(new RegisterStorage("r1", 1, 0, PrimitiveType.Ptr32));
             var sysSvc = new SystemService {
@@ -488,35 +513,40 @@ testProc_exit:
                 Signature = FunctionType.Action(reg1),
                 Characteristics = new ProcedureCharacteristics()
             };
-            platform.Expect(p => p.FindService(null, null)).IgnoreArguments().Return(sysSvc);
-            platform.Stub(p => p.PointerType).Return(PrimitiveType.Ptr32);
-            platform.Stub(p => p.ResolveIndirectCall(null)).IgnoreArguments().Return(null);
-            platform.Stub(p => p.CreateTrashedRegisters())
-                .Return(new HashSet<RegisterStorage>());
-            program.Platform = platform;
-            scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x100000))).Return(block);
-            scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x100004))).Return(block);
-            scanner.Stub(s => s.GetTrace(null, null, null, null)).IgnoreArguments().Return(trace);
-            mr.ReplayAll();
+            platform.Setup(p => p.FindService(
+                It.IsAny<RtlInstruction>(),
+                It.IsAny<ProcessorState>()))
+                .Returns(sysSvc)
+                .Verifiable();
+            platform.Setup(p => p.PointerType).Returns(PrimitiveType.Ptr32);
+            platform.Setup(p => p.ResolveIndirectCall(It.IsAny<RtlCall>()))
+                .Returns((Address)null);
+            platform.Setup(p => p.CreateTrashedRegisters())
+                .Returns(new HashSet<RegisterStorage>());
+            program.Platform = platform.Object;
+            scanner.Setup(f => f.FindContainingBlock(Address.Ptr32(0x100000))).Returns(block);
+            scanner.Setup(f => f.FindContainingBlock(Address.Ptr32(0x100004))).Returns(block);
+            Given_SimpleTrace(trace);
 
             trace.Add(m => m.Call(m.Mem32(m.IAdd(reg0, -32)), 4));
             var wi = CreateWorkItem(Address.Ptr32(0x100000));
             wi.Process();
 
             Assert.AreEqual("SysSvc(r1)", block.Statements[0].ToString());
-            mr.VerifyAll();
+            platform.Verify();
         }
 
         [Test]
         public void Bwi_IndirectJump()
         {
-            var platform = mr.StrictMock<IPlatform>();
+            var platform =new Mock<IPlatform>();
             var sp = proc.Frame.EnsureRegister(new RegisterStorage("sp", 14, 0, PrimitiveType.Ptr32));
-            platform.Expect(p => p.FindService(null, null)).IgnoreArguments().Return(null);
-            scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x100000))).Return(block);
-            scanner.Stub(s => s.GetTrace(null, null, null, null)).IgnoreArguments().Return(trace);
-            scanner.Stub(s => s.TerminateBlock(null, null)).IgnoreArguments();
-            mr.ReplayAll();
+            platform.Setup(p => p.FindService(
+                It.IsAny<RtlInstruction>(),
+                It.IsAny<ProcessorState>())).Returns((SystemService)null);
+            scanner.Setup(f => f.FindContainingBlock(Address.Ptr32(0x100000))).Returns(block);
+            Given_SimpleTrace(trace);
+            //scanner.Setup(s => s.TerminateBlock(null, null)).IgnoreArguments();
 
             trace.Add(m => m.Goto(m.Mem32(sp)));
             var wi = CreateWorkItem(Address.Ptr32(0x0100000));
@@ -524,6 +554,7 @@ testProc_exit:
 
             Assert.AreEqual("call Mem0[sp:word32] (retsize: 4;)", block.Statements[0].ToString());
             Assert.AreEqual("return", block.Statements[1].ToString());
+            platform.Verify();
         }
 
         [Test]
@@ -531,17 +562,19 @@ testProc_exit:
         {
             var l00100008 = new Block(proc, "l00100008");
             var l00100100 = new Block(proc, "l00101000");
-            scanner.Stub(f => f.GetImportedProcedure(null, null, null)).IgnoreArguments().Return(null);
-            scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x100000))).Return(block);
-            scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x100004))).Return(block);
-            scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x100008))).Return(l00100008);
-            scanner.Stub(s => s.GetTrace(null, null, null, null)).IgnoreArguments().Return(trace);
-            scanner.Stub(s => s.TerminateBlock(null, null)).IgnoreArguments();
-            scanner.Stub(s => s.EnqueueJumpTarget(null, null, null, null))
-                .IgnoreArguments()
-                .Return(l00100100);
-            scanner.Stub(s => s.GetTrampoline(null, null)).IgnoreArguments().Return(null);
-            mr.ReplayAll();
+            Given_NoImportedProcedure();
+            scanner.Setup(f => f.FindContainingBlock(Address.Ptr32(0x100000))).Returns(block);
+            scanner.Setup(f => f.FindContainingBlock(Address.Ptr32(0x100004))).Returns(block);
+            scanner.Setup(f => f.FindContainingBlock(Address.Ptr32(0x100008))).Returns(l00100008);
+            Given_SimpleTrace(trace);
+            //scanner.Setup(s => s.TerminateBlock(null, null)).IgnoreArguments();
+            scanner.Setup(s => s.EnqueueJumpTarget(
+                It.IsAny<Address>(),
+                It.IsAny<Address>(),
+                It.IsAny<Procedure>(),
+                It.IsAny<ProcessorState>()))
+                .Returns(l00100100);
+            Given_NoTrampoline();
 
             trace.Add(m => m.GotoD(Address.Ptr32(0x0100100)));
             trace.Add(m => m.Assign(r0, r1));
@@ -553,7 +586,7 @@ testProc_exit:
             Assert.AreEqual("goto 0x00100100", block.Statements[1].ToString());
 
             Assert.AreEqual("l00101000", block.Succ[0].Name);
-            mr.VerifyAll();
+            scanner.Verify();
         }
 
         [Test]
@@ -561,22 +594,21 @@ testProc_exit:
         {
             var l00100008 = new Block(proc, "l00100008");
             var l00100100 = new Block(proc, "l00101000");
-            scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x100000))).Return(block);
-            scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x100004))).Return(block);
-            scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x100008))).Return(l00100008);
-            scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x10000C))).Return(null);
-            scanner.Stub(s => s.GetTrace(null, null, null, null)).IgnoreArguments().Return(trace);
-            scanner.Stub(s => s.EnqueueJumpTarget(
-                Arg<Address>.Is.Equal(Address.Ptr32(0x00100004)),
-                Arg<Address>.Is.Equal(Address.Ptr32(0x00101000)),
-                Arg<Procedure>.Is.Equal(proc),
-                Arg<ProcessorState>.Is.NotNull)).Return(l00100100);
-            scanner.Stub(s => s.EnqueueJumpTarget(
-                Arg<Address>.Is.Equal(Address.Ptr32(0x00100004)),
-                Arg<Address>.Is.Equal(Address.Ptr32(0x00100008)),
-                Arg<Procedure>.Is.Equal(proc),
-                Arg<ProcessorState>.Is.NotNull)).Return(l00100008);
-            mr.ReplayAll();
+            scanner.Setup(f => f.FindContainingBlock(Address.Ptr32(0x100000))).Returns(block);
+            scanner.Setup(f => f.FindContainingBlock(Address.Ptr32(0x100004))).Returns(block);
+            scanner.Setup(f => f.FindContainingBlock(Address.Ptr32(0x100008))).Returns(l00100008);
+            scanner.Setup(f => f.FindContainingBlock(Address.Ptr32(0x10000C))).Returns((Block)null);
+            Given_SimpleTrace(trace);
+            scanner.Setup(s => s.EnqueueJumpTarget(
+                Address.Ptr32(0x00100004),
+                Address.Ptr32(0x00101000),
+                proc,
+                It.IsNotNull<ProcessorState>())).Returns(l00100100);
+            scanner.Setup(s => s.EnqueueJumpTarget(
+                Address.Ptr32(0x00100004),
+                Address.Ptr32(0x00100008),
+                proc,
+                It.IsNotNull<ProcessorState>())).Returns(l00100008);
 
             trace.Add(m => m.Branch(r1, Address.Ptr32(0x101000), InstrClass.ConditionalTransfer | InstrClass.Delay));
             trace.Add(m => m.Assign(r0, r1));   // 100004
@@ -606,20 +638,26 @@ testProc_exit:
         {
             var l00100008 = new Block(proc, "l00100008");
             var l00100100 = new Block(proc, "l00101000");
-            scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x100000))).Return(block);
-            scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x100004))).Return(block);
-            scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x100008))).Return(block);
-            scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x10000C))).Return(null);
-            scanner.Stub(s => s.GetTrace(null, null, null, null)).IgnoreArguments().Return(trace);
-            scanner.Stub(s => s.TerminateBlock(null, null)).IgnoreArguments();
-            scanner.Stub(s => s.GetImportedProcedure(null, null, null)).IgnoreArguments().Return(null);
+            scanner.Setup(f => f.FindContainingBlock(Address.Ptr32(0x100000))).Returns(block);
+            scanner.Setup(f => f.FindContainingBlock(Address.Ptr32(0x100004))).Returns(block);
+            scanner.Setup(f => f.FindContainingBlock(Address.Ptr32(0x100008))).Returns(block);
+            scanner.Setup(f => f.FindContainingBlock(Address.Ptr32(0x10000C))).Returns((Block)null);
+            Given_SimpleTrace(trace);
+            //scanner.Setup(s => s.TerminateBlock(null, null)).IgnoreArguments();
+            Given_NoImportedProcedure();
             Given_NoInlinedCall();
-            scanner.Stub(s => s.ScanProcedure(null, null, null, null)).IgnoreArguments().Return(proc);
-            scanner.Stub(s => s.EnqueueJumpTarget(null, null, null, null))
-                .IgnoreArguments()
-                .Return(l00100100);
-            arch.Stub(a => a.PointerType).Return(PrimitiveType.Ptr32);
-            mr.ReplayAll();
+            scanner.Setup(s => s.ScanProcedure(
+                It.IsAny<IProcessorArchitecture>(),
+                It.IsAny<Address>(),
+                It.IsAny<string>(),
+                It.IsAny<ProcessorState>())).Returns(proc);
+            scanner.Setup(s => s.EnqueueJumpTarget(
+                It.IsAny<Address>(),
+                It.IsAny<Address>(),
+                It.IsAny<Procedure>(),
+                It.IsAny<ProcessorState>()))
+                .Returns(l00100100);
+            arch.Setup(a => a.PointerType).Returns(PrimitiveType.Ptr32);
 
             trace.Add(m => m.CallD(Address.Ptr32(0x0100100), 0));
             trace.Add(m => m.Assign(r0, r1));
@@ -631,8 +669,7 @@ testProc_exit:
             Assert.AreEqual("r0 = r1", block.Statements[0].ToString());
             Assert.AreEqual("call testProc (retsize: 0;)", block.Statements[1].ToString());
             Assert.AreEqual("r1 = r2", block.Statements[2].ToString());
-
-            mr.VerifyAll();
+            scanner.Verify();
         }
 
         [Test]
@@ -640,15 +677,17 @@ testProc_exit:
         {
             var l00100008 = new Block(proc, "l00100008");
             var l00100100 = new Block(proc, "l00101000");
-            scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x100000))).Return(block);
-            scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x100004))).Return(block);
-            scanner.Stub(s => s.GetTrace(null, null, null, null)).IgnoreArguments().Return(trace);
-            scanner.Stub(s => s.TerminateBlock(null, null)).IgnoreArguments();
-            scanner.Stub(s => s.EnqueueJumpTarget(null, null, null, null))
-                .IgnoreArguments()
-                .Return(l00100100);
-            scanner.Stub(s => s.SetProcedureReturnAddressBytes(proc, 0, Address.Ptr32(0x100000)));
-            mr.ReplayAll();
+            scanner.Setup(f => f.FindContainingBlock(Address.Ptr32(0x100000))).Returns(block);
+            scanner.Setup(f => f.FindContainingBlock(Address.Ptr32(0x100004))).Returns(block);
+            Given_SimpleTrace(trace);
+            //scanner.Setup(s => s.TerminateBlock(null, null)).IgnoreArguments();
+            scanner.Setup(s => s.EnqueueJumpTarget(
+                It.IsAny<Address>(),
+                It.IsAny<Address>(),
+                It.IsAny<Procedure>(),
+                It.IsAny<ProcessorState>()))
+                .Returns(l00100100);
+            scanner.Setup(s => s.SetProcedureReturnAddressBytes(proc, 0, Address.Ptr32(0x100000)));
 
             trace.Add(m => m.ReturnD(0, 0));
             trace.Add(m => m.Assign(r0, r1));
@@ -658,7 +697,6 @@ testProc_exit:
             Assert.AreEqual(2, block.Statements.Count);
             Assert.AreEqual("r0 = r1", block.Statements[0].ToString());
             Assert.AreEqual("return", block.Statements[1].ToString());
-            mr.VerifyAll();
         }
 
         [Test(Description = "Test for when a delay slot is anulled (SPARC)")]
@@ -666,23 +704,21 @@ testProc_exit:
         {
             var l00100008 = new Block(proc, "l00100008");
             var l00100100 = new Block(proc, "l00101000");
-            scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x100000))).Return(block);
-            scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x100004))).Return(block);
-            scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x100008))).Return(l00100008);
-            scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x10000C))).Return(null);
-            scanner.Stub(s => s.GetTrace(null, null, null, null)).IgnoreArguments().Return(trace);
-            scanner.Stub(s => s.EnqueueJumpTarget(
-                Arg<Address>.Is.Equal(Address.Ptr32(0x00100004)),
-                Arg<Address>.Is.Equal(Address.Ptr32(0x00101000)),
-                Arg<Procedure>.Is.Equal(proc),
-                Arg<ProcessorState>.Is.NotNull)).Return(l00100100);
-            scanner.Stub(s => s.EnqueueJumpTarget(
-                Arg<Address>.Is.Equal(Address.Ptr32(0x00100004)),
-                Arg<Address>.Is.Equal(Address.Ptr32(0x00100008)),
-                Arg<Procedure>.Is.Equal(proc),
-                Arg<ProcessorState>.Is.NotNull)).Return(l00100008);
-            mr.ReplayAll();
-
+            scanner.Setup(f => f.FindContainingBlock(Address.Ptr32(0x100000))).Returns(block);
+            scanner.Setup(f => f.FindContainingBlock(Address.Ptr32(0x100004))).Returns(block);
+            scanner.Setup(f => f.FindContainingBlock(Address.Ptr32(0x100008))).Returns(l00100008);
+            scanner.Setup(f => f.FindContainingBlock(Address.Ptr32(0x10000C))).Returns((Block)null);
+            Given_SimpleTrace(trace);
+            scanner.Setup(s => s.EnqueueJumpTarget(
+                Address.Ptr32(0x00100004),
+                Address.Ptr32(0x00101000),
+                proc,
+                It.IsNotNull<ProcessorState>())).Returns(l00100100);
+            scanner.Setup(s => s.EnqueueJumpTarget(
+                Address.Ptr32(0x00100004),
+                Address.Ptr32(0x00100008),
+                proc,
+                It.IsNotNull<ProcessorState>())).Returns(l00100008);
             trace.Add(m => m.Branch(r1, Address.Ptr32(0x101000), InstrClass.ConditionalTransfer | InstrClass.Delay | InstrClass.Annul));
             trace.Add(m => m.Assign(r0, r1));   // 100004
             trace.Add(m => m.Assign(r2, r1));   // 100008
@@ -710,20 +746,19 @@ testProc_exit:
         {
             var l00100000 = new Block(proc, "l0010000");
             var l00100004 = new Block(proc, "l00100004");
-            scanner.Stub(f => f.GetImportedProcedure(null, null, null)).IgnoreArguments().Return(null);
-            scanner.Stub(s => s.GetTrace(null, null, null, null)).IgnoreArguments().Return(trace);
-            scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x100000))).Return(l00100000);
-            scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x100004))).Return(l00100000);
-            scanner.Stub(s => s.EnqueueJumpTarget(
-                Arg<Address>.Is.Equal(Address.Ptr32(0x00100004)),
-                Arg<Address>.Is.Equal(Address.Ptr32(0x00100004)),
-                Arg<Procedure>.Is.Equal(proc),
-                Arg<ProcessorState>.Is.NotNull)).Return(l00100004);
-            scanner.Stub(s => s.TerminateBlock(
-                Arg<Block>.Is.Equal(l00100000),
-                Arg<Address>.Is.Equal(Address.Ptr32(0x0010000C))));
-            scanner.Stub(s => s.GetTrampoline(null, null)).IgnoreArguments().Return(null);
-            mr.ReplayAll();
+            Given_NoImportedProcedure();
+            Given_SimpleTrace(trace);
+            scanner.Setup(f => f.FindContainingBlock(Address.Ptr32(0x100000))).Returns(l00100000);
+            scanner.Setup(f => f.FindContainingBlock(Address.Ptr32(0x100004))).Returns(l00100000);
+            scanner.Setup(s => s.EnqueueJumpTarget(
+                Address.Ptr32(0x00100004),
+                Address.Ptr32(0x00100004),
+                proc,
+                It.IsNotNull<ProcessorState>())).Returns(l00100004);
+            scanner.Setup(s => s.TerminateBlock(
+                l00100000,
+                Address.Ptr32(0x0010000C)));
+            Given_NoTrampoline();
 
             trace.Add(m => m.Assign(r0, r1));   // 100000
             trace.Add(m => m.GotoD(Address.Ptr32(0x00100004)));   // 100004
@@ -732,7 +767,7 @@ testProc_exit:
             var wi = CreateWorkItem(Address.Ptr32(0x00100000));
             wi.Process();
 
-            mr.VerifyAll();
+            //mr.Verify();
         }
 
         [Test(Description = "User-defined procedures with signatures should generate applications immediately")]
@@ -749,21 +784,17 @@ testProc_exit:
                         new Identifier("str", new Pointer(PrimitiveType.Char, 32), r0.Storage),
                     new Identifier("f", PrimitiveType.Real32, r1.Storage))
             };
-            scanner.Stub(s => s.GetTrace(null, null, null, null)).IgnoreArguments().Return(trace);
-            scanner.Stub(f => f.FindContainingBlock(null)).IgnoreArguments().Return(l00100000);
-            scanner.Stub(f => f.GetImportedProcedure(
-                Arg<IProcessorArchitecture>.Is.NotNull,
-                Arg<Address>.Is.Equal(addrCallee),
-                Arg<Address>.Is.Equal(addrCall))).Return(null);
+            Given_SimpleTrace(trace);
+            scanner.Setup(f => f.FindContainingBlock(It.IsAny<Address>())).Returns(l00100000);
+            Given_NoImportedProcedure();
             Given_NoInlinedCall();
-            scanner.Stub(f => f.ScanProcedure(
-                Arg<IProcessorArchitecture>.Is.NotNull,
-                Arg<Address>.Is.Equal(addrCallee),
-                Arg<string>.Is.Anything,
-                Arg<ProcessorState>.Is.Anything)).Return(procCallee);
-            scanner.Stub(f => f.SetProcedureReturnAddressBytes(null, 0, null)).IgnoreArguments();
-            scanner.Stub(f => f.TerminateBlock(null, null)).IgnoreArguments();
-            mr.ReplayAll();
+            scanner.Setup(f => f.ScanProcedure(
+                It.IsNotNull<IProcessorArchitecture>(),
+                addrCallee,
+                It.IsAny<string>(),
+                It.IsAny<ProcessorState>())).Returns(procCallee);
+            //scanner.Setup(f => f.SetProcedureReturnAddressBytes(null, 0, null)).IgnoreArguments();
+            //scanner.Setup(f => f.TerminateBlock(null, null)).IgnoreArguments();
 
             trace.Add(m => m.Call(addrCallee, 4));
             trace.Add(m => m.Return(4, 0));
@@ -777,9 +808,8 @@ testProc_exit:
 
             var wi = CreateWorkItem(addrCall);
             wi.Process();
-            Assert.AreEqual("r0 = testFn(r0, r1)", l00100000.Statements[0].ToString());
 
-            mr.VerifyAll();
+            Assert.AreEqual("r0 = testFn(r0, r1)", l00100000.Statements[0].ToString());
         }
 
         [Test(Description = "Create two edges even if they both point to the same destination")]
@@ -789,16 +819,14 @@ testProc_exit:
             var addrNext = Address.Ptr32(0x00100004);
             var blockOther = new Block(proc, "other");
 
-            scanner.Stub(s => s.FindContainingBlock(addrStart)).Return(block);
-            scanner.Stub(s => s.FindContainingBlock(addrNext)).Return(blockOther);
-            scanner.Stub(s => s.GetTrace(null, null, null, null)).IgnoreArguments().Return(trace);
-            scanner.Stub(s => s.EnqueueJumpTarget(
-                Arg<Address>.Is.Equal(addrStart),
-                Arg<Address>.Is.Equal(addrNext),
-                Arg<Procedure>.Is.Same(proc),
-                Arg<ProcessorState>.Is.Anything)).Return(blockOther);
-            mr.ReplayAll();
-
+            scanner.Setup(s => s.FindContainingBlock(addrStart)).Returns(block);
+            scanner.Setup(s => s.FindContainingBlock(addrNext)).Returns(blockOther);
+            Given_SimpleTrace(trace);
+            scanner.Setup(s => s.EnqueueJumpTarget(
+                addrStart,
+                addrNext,
+                proc,
+                It.IsAny<ProcessorState>())).Returns(blockOther);
             trace.Add(m => m.Branch(m.Mem8(m.Word32(0x12340)), addrNext, InstrClass.ConditionalTransfer));
 
             var wi = CreateWorkItem(addrStart);
@@ -807,7 +835,6 @@ testProc_exit:
             Assert.AreEqual(2, block.Succ.Count);
             Assert.AreSame(blockOther, block.Succ[0]);
             Assert.AreSame(blockOther, block.Succ[1]);
-            mr.VerifyAll();
         }
 
         [Test(Description = "Tests the implementation of #25; user specified register values at a specific address in the program")]
@@ -821,15 +848,18 @@ testProc_exit:
             };
             trace.Add(m => { m.Assign(r1, m.Mem32(m.Word32(0x112200))); });
             trace.Add(m => { m.Assign(m.Mem32(m.Word32(0x112204)), r1); });
-            scanner.Stub(s => s.FindContainingBlock(null)).IgnoreArguments().Return(block);
-            scanner.Stub(s => s.GetTrace(null, null, null, null)).IgnoreArguments().Return(trace);
-            arch.Stub(s => s.GetRegister("r1")).Return((RegisterStorage)r1.Storage);
-            arch.Stub(s => s.GetRegister("r2")).Return((RegisterStorage)r2.Storage);
-            arch.Stub(s => s.MakeAddressFromConstant(null)).IgnoreArguments()
-                .Do(new Func<Constant, Address>(c => Address.Ptr32(c.ToUInt32())));
+            scanner.Setup(s => s.FindContainingBlock(It.IsAny<Address>())).Returns(block);
+            Given_SimpleTrace(trace);
+            arch.Setup(s => s.GetRegister("r1")).Returns((RegisterStorage)r1.Storage);
+            arch.Setup(s => s.GetRegister("r2")).Returns((RegisterStorage)r2.Storage);
+            arch.Setup(s => s.MakeAddressFromConstant(It.IsAny<Constant>()))
+                .Returns((Constant c) => Address.Ptr32(c.ToUInt32()));
             Constant co;
-            arch.Stub(s => s.TryRead(null, null, null, out co)).IgnoreArguments().Return(false);
-            mr.ReplayAll();
+            arch.Setup(s => s.TryRead(
+                It.IsAny<MemoryArea>(),
+                It.IsAny<Address>(),
+                It.IsAny<PrimitiveType>(),
+                out co)).Returns(false);
 
             var wi = CreateWorkItem(addrStart);
             wi.Process();
@@ -846,17 +876,20 @@ testProc_exit:
             var addrStart = Address.Ptr32(0x00100000);
             var blockCallRet = new Block(proc, "callRetStub");
             trace.Add(m => { m.Assign(m.Mem32(m.Word32(0x00123400)), m.Word32(1)); });
-            scanner.Stub(s => s.GetTrace(null, null, null, null)).IgnoreArguments().Return(trace);
-            scanner.Stub(s => s.FindContainingBlock(addrStart)).IgnoreArguments().Return(block);
-            scanner.Expect(s => s.CreateCallRetThunk(null, null, null)).IgnoreArguments().Return(blockCallRet);
+            Given_SimpleTrace(trace);
+            scanner.Setup(s => s.FindContainingBlock(It.IsAny<Address>())).Returns(block);
+            scanner.Setup(s => s.CreateCallRetThunk(
+                It.IsAny<Address>(),
+                It.IsAny<Procedure>(),
+                It.IsAny<Procedure>()))
+                .Returns(blockCallRet);
             program.Procedures.Add(addrStart + 4, Procedure.Create(program.Architecture, addrStart + 4, new Frame(PrimitiveType.Ptr32)));
-            mr.ReplayAll();
 
             var wi = CreateWorkItem(addrStart);
             wi.Process();
 
             Assert.AreEqual("Mem0[0x00123400:word32] = 0x00000001", block.Statements[0].Instruction.ToString());
-            mr.VerifyAll();
+            scanner.Verify();
         }
 
         [Test(Description = "Jumping to an address off the address space should warn and emit ExternalProcedure")]
@@ -865,20 +898,22 @@ testProc_exit:
             var addrStart = Address.Ptr32(0x00100000);
             var blockCallRet = new Block(proc, "jmpOut");
             trace.Add(m => { m.Goto(Address.Ptr32(0x00123400)); });
-            scanner.Stub(f => f.GetImportedProcedure(null, null, null)).IgnoreArguments().Return(null);
-            scanner.Stub(x => x.TerminateBlock(null, null)).IgnoreArguments();
-            scanner.Stub(s => s.GetTrace(null, null, null, null)).IgnoreArguments().Return(trace);
-            scanner.Stub(s => s.FindContainingBlock(addrStart)).IgnoreArguments().Return(block);
-            scanner.Expect(s => s.Warn(null, null, null)).IgnoreArguments();
+            Given_NoImportedProcedure();
+            //scanner.Setup(x => x.TerminateBlock(null, null)).IgnoreArguments();
+            Given_SimpleTrace(trace);
+            scanner.Setup(s => s.FindContainingBlock(It.IsAny<Address>())).Returns(block);
+            scanner.Setup(s => s.Warn(
+                It.IsAny<Address>(),
+                It.IsAny<string>(),
+                It.IsAny<object[]>()));
             program.Procedures.Add(addrStart + 4, Procedure.Create(program.Architecture, addrStart + 4, new Frame(PrimitiveType.Ptr32)));
-            mr.ReplayAll();
 
             var wi = CreateWorkItem(addrStart);
             wi.Process();
 
             Assert.AreEqual("call fn00123400 (retsize: 4;)", block.Statements[0].Instruction.ToString());
             Assert.AreEqual("return", block.Statements[1].Instruction.ToString());
-            mr.VerifyAll();
+            scanner.Verify();
         }
 
         [Test(Description = "Read constants from read-only memory")]
@@ -896,40 +931,43 @@ testProc_exit:
             });
 
             Given_Segment(".text2", 0x00123000, 0x500, AccessMode.ReadExecute);
-            scanner.Stub(s => s.FindContainingBlock(addrStart)).IgnoreArguments().Return(block);
-            scanner.Stub(s => s.GetTrace(null, null, null, null)).IgnoreArguments().Return(trace);
-            arch.Stub(a => a.MakeAddressFromConstant(
-                Arg<Constant>.Matches(c => c.ToUInt32() == 0x00100004))).Return(Address.Ptr32(0x00100004));
-            arch.Stub(a => a.TryRead(
-                Arg<MemoryArea>.Is.NotNull,
-                Arg<Address>.Is.Equal(Address.Ptr32(0x00100004)),
-                Arg<PrimitiveType>.Is.Equal(PrimitiveType.Word32),
-                out Arg<Constant>.Out(Constant.Word32(0x00123400)).Dummy)).Return(true);
-            arch.Stub(a => a.MakeAddressFromConstant(
-                Arg<Constant>.Matches(c => c.ToUInt32() == 0x00123400))).Return(Address.Ptr32(0x00123400));
+            scanner.Setup(s => s.FindContainingBlock(addrStart)).Returns(block);
+            Given_SimpleTrace(trace);
+            arch.Setup(a => a.MakeAddressFromConstant(
+                It.Is<Constant>(c => c.ToUInt32() == 0x00100004))).Returns(Address.Ptr32(0x00100004));
+            var addr = Constant.Word32(0x00123400);
+            arch.Setup(a => a.TryRead(
+                It.IsNotNull<MemoryArea>(),
+                Address.Ptr32(0x00100004),
+                PrimitiveType.Word32,
+                out addr)).Returns(true);
+            arch.Setup(a => a.MakeAddressFromConstant(
+                It.Is<Constant>(c => c.ToUInt32() == 0x00123400))).Returns(Address.Ptr32(0x00123400));
             Given_NoInlinedCall();
-            scanner.Stub(s => s.SetProcedureReturnAddressBytes(
-                Arg<Procedure>.Is.Same(proc),
-                Arg<int>.Is.Equal(0),
-                Arg<Address>.Is.Equal(addrStart)));
-            scanner.Stub(s => s.TerminateBlock(
-                Arg<Block>.Is.Same(block),
-                Arg<Address>.Is.Equal(addrStart + 4)));
-            scanner.Stub(f => f.GetImportedProcedure(null, null, null)).IgnoreArguments().Return(null);
+            scanner.Setup(s => s.SetProcedureReturnAddressBytes(
+                proc,
+                0,
+                addrStart));
+            scanner.Setup(s => s.TerminateBlock(
+                block,
+                addrStart + 4));
+            scanner.Setup(f => f.GetImportedProcedure(
+                It.IsAny<IProcessorArchitecture>(),
+                It.IsAny<Address>(),
+                It.IsAny<Address>())).Returns((ExternalProcedure) null);
             scanner.Expect(s => s.ScanProcedure(
-                Arg<IProcessorArchitecture>.Is.NotNull,
-                Arg<Address>.Is.Equal(Address.Ptr32(0x00123400)),
-                Arg<string>.Is.Null,
-                Arg<ProcessorState>.Is.NotNull)).
-                Return(new ExternalProcedure("fn00123400", new FunctionType()));
-            program.Procedures.Add(addrStart + 4, Procedure.Create(arch, addrStart + 4, new Frame(PrimitiveType.Ptr32)));
-            mr.ReplayAll();
+                It.IsNotNull<IProcessorArchitecture>(),
+                Address.Ptr32(0x00123400),
+                null,
+                It.IsNotNull<ProcessorState>())).
+                Returns(new ExternalProcedure("fn00123400", new FunctionType()));
+            program.Procedures.Add(addrStart + 4, Procedure.Create(arch.Object, addrStart + 4, new Frame(PrimitiveType.Ptr32)));
 
             var wi = CreateWorkItem(addrStart);
             wi.Process();
 
             Assert.AreEqual("call fn00123400 (retsize: 0;)", block.Statements[3].Instruction.ToString());
-            mr.VerifyAll();
+            scanner.Verify();
     }
 
         [Test]
@@ -942,7 +980,6 @@ testProc_exit:
                 m.Call(r2, 4);
                 m.Call(r1, 4);
             });
-            mr.ReplayAll();
 
             var wi = CreateWorkItem(addrStart);
             wi.Process();
@@ -954,7 +991,6 @@ call r2 (retsize: 4;)
 call r1 (retsize: 4;)
 ";
             AssertBlockCode(expected, block);
-            mr.VerifyAll();
     }
     }
 }

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -22,7 +22,7 @@ using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Types;
 using Reko.Scanning;
-using Rhino.Mocks;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,25 +34,25 @@ namespace Reko.UnitTests.Scanning
     public class StringFinderTests
     {
         private Program program;
-        private MockRepository mr;
-        private IProcessorArchitecture arch;
+        private Mock<IProcessorArchitecture> arch;
 
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
-            arch = mr.Stub<IProcessorArchitecture>();
+            arch = new Mock<IProcessorArchitecture>();
         }
 
         private void Given_Image(params byte[] bytes)
         {
             var mem = new MemoryArea(Address.Ptr32(0x00400000), bytes);
-            arch.Stub(a => a.CreateImageReader(mem, null))
-                .IgnoreArguments()
-                .Return(new LeImageReader(mem, mem.BaseAddress));
+            arch.Setup(a => a.CreateImageReader(
+                It.IsAny<MemoryArea>(),
+                It.IsAny<Address>(),
+                It.IsAny<Address>()))
+                .Returns(new LeImageReader(mem, mem.BaseAddress));
             this.program = new Program
             {
-                Architecture = arch,
+                Architecture = arch.Object,
                 SegmentMap = new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment(".text", mem, AccessMode.ReadExecute)),
@@ -63,7 +63,6 @@ namespace Reko.UnitTests.Scanning
         public void StrFind_TooShort()
         {
             Given_Image(0x23, 0);
-            mr.ReplayAll();
 
             var sf = new StringFinder(program);
             Assert.AreEqual(0, sf.FindStrings(new StringFinderCriteria
@@ -78,7 +77,6 @@ namespace Reko.UnitTests.Scanning
         public void StrFind_SingleMatch()
         {
             Given_Image(0x41, 0);
-            mr.ReplayAll();
 
             var sf = new StringFinder(program);
             var hits = sf.FindStrings(new StringFinderCriteria
@@ -95,7 +93,6 @@ namespace Reko.UnitTests.Scanning
         public void StrFind_TwoMatch()
         {
             Given_Image(0x42, 0, 0x12, 0x43, 0x00);
-            mr.ReplayAll();
 
             var sf = new StringFinder(program);
             var hits = sf.FindStrings(new StringFinderCriteria
@@ -113,7 +110,6 @@ namespace Reko.UnitTests.Scanning
         public void StrFind_FindUtf16Le()
         {
             Given_Image(Encoding.GetEncoding("utf-16le").GetBytes("\0\0Hello\0"));
-            mr.ReplayAll();
 
             var sf = new StringFinder(program);
             var hits = sf.FindStrings(new StringFinderCriteria

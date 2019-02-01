@@ -18,22 +18,20 @@
  */
 #endregion
 
+using Moq;
+using NUnit.Framework;
 using Reko.Analysis;
+using Reko.Arch.X86;
 using Reko.Core;
+using Reko.Core.Code;
 using Reko.Core.Expressions;
-using Reko.Core.Lib;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using Rhino.Mocks;
-using Reko.Core.Code;
-using Reko.Arch.X86;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -50,7 +48,7 @@ namespace Reko.UnitTests.Analysis
         private Dictionary<Address, ImportReference> importReferences;
         private ProgramDataFlow programFlow;
         private bool addUseInstructions;
-        private IImportResolver importResolver;
+        private Mock<IImportResolver> importResolver;
         private SsaTransform sst;
 
         private Identifier r1;
@@ -64,7 +62,7 @@ namespace Reko.UnitTests.Analysis
             Given_Architecture(new FakeArchitecture());
  
             this.addUseInstructions = false;
-            this.importResolver = MockRepository.GenerateStub<IImportResolver>();
+            this.importResolver = new Mock<IImportResolver>();
             this.r1 = new Identifier("r1", PrimitiveType.Word32, new RegisterStorage("r1", 1, 0, PrimitiveType.Word32));
             this.r2 = new Identifier("r2", PrimitiveType.Word32, new RegisterStorage("r2", 2, 0, PrimitiveType.Word32));
             this.r3 = new Identifier("r3", PrimitiveType.Word32, new RegisterStorage("r3", 3, 0, PrimitiveType.Word32));
@@ -110,7 +108,6 @@ namespace Reko.UnitTests.Analysis
                     Address.Ptr32(0),
                     0x40000,
                     AccessMode.ReadWriteExecute));
-            this.importResolver.Replay();
 
             var writer = new StringWriter();
             foreach (var proc in this.pb.Program.Procedures.Values)
@@ -119,7 +116,7 @@ namespace Reko.UnitTests.Analysis
                     this.pb.Program,
                     proc,
                     new HashSet<Procedure>(),
-                    importResolver,
+                    importResolver.Object,
                     programFlow);
                 var ssa = sst.Transform();
                 if (this.addUseInstructions)
@@ -141,8 +138,7 @@ namespace Reko.UnitTests.Analysis
         private void RunTest_FrameAccesses(string sExp, Action<ProcedureBuilder> builder)
         {
             pb.Add("proc1", builder);
-            var importResolver = MockRepository.GenerateStub<IImportResolver>();
-            importResolver.Replay();
+            var importResolver = new Mock<IImportResolver>();
 
             var program = this.pb.Program;
             RunTest_FrameAccesses(sExp);
@@ -173,7 +169,7 @@ namespace Reko.UnitTests.Analysis
                     this.pb.Program,
                     proc,
                     new HashSet<Procedure>(),
-                    importResolver,
+                    importResolver.Object,
                     programFlow);
                 sst.Transform();
 
@@ -185,7 +181,11 @@ namespace Reko.UnitTests.Analysis
                 //   esp_2 = fp - 4
                 //   mov [fp - 8],eax
 
-                var vp = new ValuePropagator(this.pb.Program.SegmentMap, sst.SsaState, importResolver, listener);
+                var vp = new ValuePropagator(
+                    this.pb.Program.SegmentMap,
+                    sst.SsaState,
+                    importResolver.Object,
+                    listener);
                 vp.Transform();
 
                 sst.RenameFrameAccesses = true;
@@ -229,7 +229,7 @@ namespace Reko.UnitTests.Analysis
                 program,
                 proc,
                 new HashSet<Procedure>(),
-                importResolver,
+                importResolver.Object,
                 programFlow);
             sst.Transform();
             sst.SsaState.Validate(s => Assert.Fail(s));
@@ -1771,10 +1771,10 @@ proc1_exit:
             var addr = Address.Ptr32(0x00031234);
             importReferences.Add(addr, new NamedImportReference(
                 addr, "COREDLL.DLL", "fnFoo"));
-            importResolver.Stub(i => i.ResolveToImportedProcedureConstant(
-                Arg<Statement>.Is.Anything,
-                Arg<Constant>.Matches(c => c.ToUInt32() == 0x00031234)))
-                .Return(new ProcedureConstant(
+            importResolver.Setup(i => i.ResolveToImportedProcedureConstant(
+                It.IsAny<Statement>(),
+                It.Is<Constant>(c => c.ToUInt32() == 0x00031234)))
+                .Returns(new ProcedureConstant(
                     PrimitiveType.Ptr32,
                     new ExternalProcedure(
                         "ImportedFunc",

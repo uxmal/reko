@@ -18,11 +18,11 @@
  */
 #endregion
 
+using Moq;
 using Reko.Arch.PowerPC;
 using Reko.Core;
 using Reko.UnitTests.Arch.PowerPC;
 using NUnit.Framework;
-using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,14 +34,6 @@ namespace Reko.UnitTests.Environments.Ps3
     [TestFixture]
     public class Ps3PlatformTests
     {
-        private MockRepository mr;
-
-        [SetUp]
-        public void Setup()
-        {
-            mr = new MockRepository();
-        }
-
         [Test]
         public void Ps3p_GetTrampoline()
         {
@@ -51,15 +43,14 @@ namespace Reko.UnitTests.Environments.Ps3
             m.Lwz(m.r11, 0x1234, m.r11);
             m.Mtctr(m.r11);
             m.Bctr();
-            var host = mr.Stub<IRewriterHost>();
-            host.Stub(h => h.GetImportedProcedure(
-                Arg<IProcessorArchitecture>.Is.NotNull,
-                Arg<Address>.Matches(a => a.ToLinear() == 0x10061234),
-                Arg<Address>.Is.Anything))
-                .Return(new ExternalProcedure("foo", new FunctionType()));
-            mr.ReplayAll();
+            var host = new Mock<IRewriterHost>();
+            host.Setup(h => h.GetImportedProcedure(
+                It.IsNotNull<IProcessorArchitecture>(),
+                It.Is<Address>(a => a.ToLinear() == 0x10061234),
+                It.IsAny<Address>()))
+                .Returns(new ExternalProcedure("foo", new FunctionType()));
 
-            ProcedureBase proc = arch.GetTrampolineDestination(m.Instructions, host);
+            ProcedureBase proc = arch.GetTrampolineDestination(m.Instructions, host.Object);
 
             Assert.IsNotNull(proc);
             Assert.AreEqual("foo", proc.Name);

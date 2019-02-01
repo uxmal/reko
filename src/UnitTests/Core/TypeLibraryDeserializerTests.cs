@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -18,11 +18,11 @@
  */
 #endregion
 
+using Moq;
 using Reko.Core;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using NUnit.Framework;
-using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,16 +35,9 @@ namespace Reko.UnitTests.Core
     [TestFixture]
     public class TypeLibraryDeserializerTests
     {
-        private MockRepository mr;
-        private IProcessorArchitecture arch;
-        private IPlatform platform;
+        private Mock<IProcessorArchitecture> arch;
+        private Mock<IPlatform> platform;
         private ProcedureSerializer procSer;
-
-        [SetUp]
-        public void Setup()
-        {
-            mr = new MockRepository();
-        }
 
         [TearDown]
         public void TearDown()
@@ -53,28 +46,26 @@ namespace Reko.UnitTests.Core
 
         private void Given_ArchitectureStub()
         {
-            arch = mr.DynamicMock<IProcessorArchitecture>();
-            arch.Stub(a => a.PointerType).Return(PrimitiveType.Ptr32);
-            arch.Stub(a => a.WordWidth).Return(PrimitiveType.Ptr32);
-            platform = mr.DynamicMock<IPlatform>();
-            platform.Stub(p => p.PointerType).Return(PrimitiveType.Ptr32);
-            platform.Stub(p => p.Architecture).Return(arch);
-            platform.Replay();
-            this.procSer = new ProcedureSerializer(platform, null, "");
+            arch = new Mock<IProcessorArchitecture>();
+            arch.Setup(a => a.PointerType).Returns(PrimitiveType.Ptr32);
+            arch.Setup(a => a.WordWidth).Returns(PrimitiveType.Ptr32);
+            platform = new Mock<IPlatform>();
+            platform.Setup(p => p.PointerType).Returns(PrimitiveType.Ptr32);
+            platform.Setup(p => p.Architecture).Returns(arch.Object);
+            this.procSer = new ProcedureSerializer(platform.Object, null, "");
         }
 
         private void Given_Arch_PointerDataType(PrimitiveType dt)
         {
-            arch.Stub(a => a.PointerType).Return(dt);
+            arch.Setup(a => a.PointerType).Returns(dt);
         }
 
         [Test]
         public void Tlldr_Empty()
         {
             Given_ArchitectureStub();
-            mr.ReplayAll();
 
-            var tlLdr = new TypeLibraryDeserializer(platform, true, new TypeLibrary());
+            var tlLdr = new TypeLibraryDeserializer(platform.Object, true, new TypeLibrary());
             TypeLibrary lib = tlLdr.Load(new SerializedLibrary());
             Assert.AreEqual(0, lib.Types.Count);
             Assert.AreEqual(0, lib.Signatures.Count);
@@ -85,9 +76,8 @@ namespace Reko.UnitTests.Core
         public void Tlldr_typedef_int()
         {
             Given_ArchitectureStub();
-            mr.ReplayAll();
 
-            var tlLdr = new TypeLibraryDeserializer(platform, true, new TypeLibrary());
+            var tlLdr = new TypeLibraryDeserializer(platform.Object, true, new TypeLibrary());
             var slib = new SerializedLibrary
             {
                 Types = new SerializedType[]
@@ -105,9 +95,8 @@ namespace Reko.UnitTests.Core
         {
             Given_ArchitectureStub();
             Given_Arch_PointerDataType(PrimitiveType.Ptr32);
-            mr.ReplayAll();
 
-            var tlLdr = new TypeLibraryDeserializer(platform, true, new TypeLibrary());
+            var tlLdr = new TypeLibraryDeserializer(platform.Object, true, new TypeLibrary());
             var slib = new SerializedLibrary
             {
                 Types = new SerializedType[]
@@ -131,9 +120,8 @@ namespace Reko.UnitTests.Core
         {
             Given_ArchitectureStub();
             Given_ProcedureSignature(FunctionType.Action());
-            mr.ReplayAll();
 
-            var tlLdr = new TypeLibraryDeserializer(platform, true, new TypeLibrary());
+            var tlLdr = new TypeLibraryDeserializer(platform.Object, true, new TypeLibrary());
             var slib = new SerializedLibrary
             {
                 Procedures = {
@@ -151,7 +139,6 @@ namespace Reko.UnitTests.Core
             };
             var lib = tlLdr.Load(slib);
 
-            mr.VerifyAll();
             Assert.AreEqual(
                 "void foo()",
                 lib.Lookup("foo").ToString("foo"));
@@ -162,9 +149,8 @@ namespace Reko.UnitTests.Core
         {
             Given_ArchitectureStub();
             Given_ProcedureSignature(new FunctionType());
-            mr.ReplayAll();
 
-            var tlLDr = new TypeLibraryDeserializer(platform, true, new TypeLibrary());
+            var tlLDr = new TypeLibraryDeserializer(platform.Object, true, new TypeLibrary());
             var slib = new SerializedLibrary
             {
                 Procedures = {
@@ -181,7 +167,6 @@ namespace Reko.UnitTests.Core
             };
             var lib = tlLDr.Load(slib);
 
-            mr.VerifyAll();
             Assert.AreEqual(1, lib.Modules[""].ServicesByOrdinal.Count);
             Assert.IsNotNull(lib.Modules[""].ServicesByOrdinal[2]);
         }
@@ -190,10 +175,9 @@ namespace Reko.UnitTests.Core
         public void Tlldr_typedef_struct()
         {
             Given_ArchitectureStub();
-            mr.ReplayAll();
 
             var typelib = new TypeLibrary();
-            var tlldr = new TypeLibraryDeserializer(platform, true, typelib);
+            var tlldr = new TypeLibraryDeserializer(platform.Object, true, typelib);
             new StructType_v1
             {
                 Name = "localeinfo_struct",
@@ -223,10 +207,9 @@ namespace Reko.UnitTests.Core
         public void Tlldr_typedef_forwarded_struct()
         {
             Given_ArchitectureStub();
-            mr.ReplayAll();
 
             var typelib = new TypeLibrary();
-            var tlldr = new TypeLibraryDeserializer(platform, true, typelib);
+            var tlldr = new TypeLibraryDeserializer(platform.Object, true, typelib);
             new SerializedTypedef
             {
                 Name = "_locale_tstruct",
@@ -256,10 +239,9 @@ namespace Reko.UnitTests.Core
         public void Tlldr_typedef_forwarded_union()
         {
             Given_ArchitectureStub();
-            mr.ReplayAll();
 
             var typelib = new TypeLibrary();
-            var tlldr = new TypeLibraryDeserializer(platform, true, typelib);
+            var tlldr = new TypeLibraryDeserializer(platform.Object, true, typelib);
             new SerializedTypedef
             {
                 Name = "variant_t",
@@ -292,15 +274,14 @@ namespace Reko.UnitTests.Core
         public void Tlldr_signature()
         {
             Given_ArchitectureStub();
-            arch.Stub(a => a.GetRegister("r3")).Return(new RegisterStorage("r3", 3, 0, PrimitiveType.Word32));
+            arch.Setup(a => a.GetRegister("r3")).Returns(new RegisterStorage("r3", 3, 0, PrimitiveType.Word32));
             var r3 = new RegisterStorage("r3", 3, 0, PrimitiveType.Word32);
             Given_ProcedureSignature(FunctionType.Func(
                 new Identifier("", PrimitiveType.Int32, r3),
                 new Identifier("", PrimitiveType.Real32, r3)));
-            mr.ReplayAll();
 
             var typelib = new TypeLibrary();
-            var tlldr = new TypeLibraryDeserializer(platform, true, typelib);
+            var tlldr = new TypeLibraryDeserializer(platform.Object, true, typelib);
             var fn = tlldr.VisitSignature(new SerializedSignature
             {
                 Arguments = new[]
@@ -318,23 +299,22 @@ namespace Reko.UnitTests.Core
                 }
             });
             Assert.AreEqual("(fn int32 (real32))", fn.ToString());
-            mr.VerifyAll();
         }
 
         private void Given_ProcedureSignature(FunctionType sig)
         {
-            //procSer.Stub(p => p.Deserialize(null, null)).IgnoreArguments().Return(sig);
+            //procSer.Setup(p => p.Deserialize(null, null)).IgnoreArguments().Returns(sig);
         }
 
         [Test(Description = "Verifies that globals can be specified by ordinal")]
         public void Tlldr_LoadGlobalByOrdinal()
         {
             var typelib = new TypeLibrary();
-            platform = mr.Stub<IPlatform>();
-            platform.Stub(p => p.DefaultCallingConvention).Return("__cdecl");
-            platform.Stub(p => p.Architecture).Return(new FakeArchitecture());
-            platform.Replay();
-            var tlldr = new TypeLibraryDeserializer(platform, true, typelib);
+            platform = new Mock<IPlatform>();
+            platform.Setup(p => p.DefaultCallingConvention).Returns("__cdecl");
+            platform.Setup(p => p.Architecture).Returns(new FakeArchitecture());
+
+            var tlldr = new TypeLibraryDeserializer(platform.Object, true, typelib);
             tlldr.Load(new SerializedLibrary
             {
                 ModuleName = "stdlib",
@@ -358,9 +338,8 @@ namespace Reko.UnitTests.Core
         public void Tlldr_typedef_empty_enum()
         {
             Given_ArchitectureStub();
-            mr.ReplayAll();
 
-            var tlLdr = new TypeLibraryDeserializer(platform, true, new TypeLibrary());
+            var tlLdr = new TypeLibraryDeserializer(platform.Object, true, new TypeLibrary());
             var slib = new SerializedLibrary
             {
                 Types = new SerializedType[]

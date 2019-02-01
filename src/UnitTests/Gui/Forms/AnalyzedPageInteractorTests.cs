@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Core;
@@ -27,7 +28,6 @@ using Reko.Core.Types;
 using Reko.Gui;
 using Reko.Gui.Forms;
 using Reko.UnitTests.Mocks;
-using Rhino.Mocks;
 using System.ComponentModel.Design;
 using System.Linq;
 
@@ -36,35 +36,33 @@ namespace Reko.UnitTests.Gui.Forms
     [TestFixture]
     public class AnalyzedPageInteractorTests
     {
-        private MockRepository mr;
         private Program program;
-        private IMainForm form;
+        private Mock<IMainForm> form;
         private AnalyzedPageInteractorImpl interactor;
-        private IDecompilerShellUiService uiSvc;
-        private ICodeViewerService codeViewSvc;
-        private ILowLevelViewService memViewSvc;
-        private IDisassemblyViewService disasmViewSvc;
+        private Mock<IDecompilerShellUiService> uiSvc;
+        private Mock<ICodeViewerService> codeViewSvc;
+        private Mock<ILowLevelViewService> memViewSvc;
+        private Mock<IDisassemblyViewService> disasmViewSvc;
         private ServiceContainer sc;
-        private IProjectBrowserService pbSvc;
+        private Mock<IProjectBrowserService> pbSvc;
         private DecompilerService decSvc;
 
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
-
-            form = mr.StrictMock<IMainForm>();
+            form = new Mock<IMainForm>();
             sc = new ServiceContainer();
             uiSvc = AddService<IDecompilerShellUiService>();
-            sc.AddService(typeof(IDecompilerUIService), uiSvc);
+            sc.AddService<IDecompilerUIService>(uiSvc.Object);
             codeViewSvc = AddService<ICodeViewerService>();
             memViewSvc = AddService<ILowLevelViewService>();
             disasmViewSvc = AddService<IDisassemblyViewService>();
             pbSvc = AddService<IProjectBrowserService>();
 
-            form.Stub(f => f.Show());
+            form.Setup(f => f.Show());
 
-            var platform = mr.Stub<IPlatform>();
+            var platform = new Mock<IPlatform>();
+            platform.Setup(p => p.CreateMetadata()).Returns(new TypeLibrary());
             var loadAddress = Address.Ptr32(0x100000);
             var bytes = new byte[4711];
             var arch = new X86ArchitectureFlat32("x86-protected-32");
@@ -75,21 +73,25 @@ namespace Reko.UnitTests.Gui.Forms
                     mem.BaseAddress,
                     new ImageSegment(".text", mem, AccessMode.ReadExecute)),
                 Architecture = arch,
-                Platform = platform,
+                Platform = platform.Object,
             };
-            ILoader ldr = mr.StrictMock<ILoader>();
-            ldr.Stub(l => l.LoadExecutable(null, null, null, null)).IgnoreArguments().Return(program);
-            ldr.Stub(l => l.LoadImageBytes(null, 0)).IgnoreArguments().Return(bytes);
-            ldr.Replay();
-            sc.AddService(typeof(DecompilerEventListener), new FakeDecompilerEventListener());
+            var ldr = new Mock<ILoader>();
+            ldr.Setup(l => l.LoadExecutable(
+                It.IsAny<string>(),
+                It.IsAny<byte[]>(),
+                It.IsAny<string>(),
+                It.IsAny<Address>())).Returns(program);
+            ldr.Setup(l => l.LoadImageBytes(
+                It.IsAny<string>(),
+                It.IsAny<int>())).Returns(bytes);
+            sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
             sc.AddService<DecompilerHost>(new FakeDecompilerHost());
             this.decSvc = new DecompilerService();
-            decSvc.Decompiler = new DecompilerDriver(ldr, sc);
+            decSvc.Decompiler = new DecompilerDriver(ldr.Object, sc);
             decSvc.Decompiler.Load("test.exe");
             this.program = this.decSvc.Decompiler.Project.Programs.First();
-            sc.AddService(typeof(IDecompilerService), decSvc);
-
-            sc.AddService(typeof(IWorkerDialogService), new FakeWorkerDialogService());
+            sc.AddService<IDecompilerService>(decSvc);
+            sc.AddService<IWorkerDialogService>(new FakeWorkerDialogService());
         }
 
         [TearDown]
@@ -102,10 +104,10 @@ namespace Reko.UnitTests.Gui.Forms
             interactor = new AnalyzedPageInteractorImpl(sc);
         }
 
-        private T AddService<T>() where T : class
+        private Mock<T> AddService<T>() where T : class
         {
-            var svc = mr.DynamicMock<T>();
-            sc.AddService(typeof(T), svc);
+            var svc = new Mock<T>();
+            sc.AddService(typeof(T), svc.Object);
             return svc;
         }
 
@@ -113,30 +115,28 @@ namespace Reko.UnitTests.Gui.Forms
         public void Anpi_Populate()
         {
             Given_Interactor();
-            pbSvc.Expect(p => p.Reload());
-            mr.ReplayAll();
+            pbSvc.Setup(p => p.Reload()).Verifiable();
 
-            form.Show();
+            form.Object.Show();
             program.Procedures.Add(
                 Address.Ptr32(0x12345), 
                 Procedure.Create(program.Architecture, "foo", Address.Ptr32(0x12345), program.Architecture.CreateFrame()));
             interactor.EnterPage();
 
-            mr.VerifyAll();
+            pbSvc.VerifyAll();
         }
 
 
         [Test]
         public void Anpi_SelectProcedure()
         {
-            codeViewSvc.Stub(s => s.DisplayProcedure(
-                Arg<Program>.Is.Anything,
-                Arg<Procedure>.Matches(proc => proc.Name == "foo_proc"),
-                Arg<bool>.Is.Equal(true)));
-            mr.ReplayAll();
+            codeViewSvc.Setup(s => s.DisplayProcedure(
+                It.IsAny<Program>(),
+                It.Is<Procedure>(proc => proc.Name == "foo_proc"),
+                true));
 
             Given_Interactor();
-            form.Show();
+            form.Object.Show();
             Procedure p = new Procedure(program.Architecture, "foo_proc", Address.Ptr32(0x12346), program.Architecture.CreateFrame());
             p.Signature = FunctionType.Func(
                 new Identifier("eax", PrimitiveType.Word32, Registers.eax),
@@ -148,8 +148,6 @@ namespace Reko.UnitTests.Gui.Forms
 
             //form.BrowserList.Items[1].Selected = true;
             //form.BrowserList.FocusedItem = form.BrowserList.Items[1];
-
-            mr.VerifyAll();
         }
     }
 }

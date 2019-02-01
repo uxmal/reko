@@ -18,13 +18,13 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
-using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -36,7 +36,6 @@ namespace Reko.UnitTests.Analysis
     [TestFixture]
     public class UsedRegisterFinderTests
     {
-        private MockRepository mr;
         private ProgramDataFlow pf;
         private ProgramBuilder progBuilder;
         private SegmentMap segmentMap;
@@ -44,7 +43,6 @@ namespace Reko.UnitTests.Analysis
         [SetUp]
         public void Setup()
         {
-            this.mr = new MockRepository();
             this.pf = new ProgramDataFlow();
             this.progBuilder = new ProgramBuilder();
             this.segmentMap = new SegmentMap(Address.Ptr32(0));
@@ -85,22 +83,24 @@ namespace Reko.UnitTests.Analysis
             {
                 Programs = { this.progBuilder.Program }
             };
-            var importResolver = mr.Stub<IImportResolver>();
-            importResolver.Replay();
-            var platform = mr.Stub<IPlatform>();
-            platform.Stub(p => p.CreateTrashedRegisters()).Return(new HashSet<RegisterStorage>());
-            platform.Replay();
-            progBuilder.Program.Platform = platform;
+            var importResolver = new Mock<IImportResolver>();
+            var platform = new Mock<IPlatform>();
+            platform.Setup(p => p.CreateTrashedRegisters()).Returns(new HashSet<RegisterStorage>());
+            progBuilder.Program.Platform = platform.Object;
 
             var sst = new SsaTransform(
                 progBuilder.Program,
                 proc,
                 new HashSet<Procedure>(),
-                importResolver,
+                importResolver.Object,
                 new ProgramDataFlow());
             sst.Transform();
 
-            var vp = new ValuePropagator(segmentMap, sst.SsaState, importResolver, NullDecompilerEventListener.Instance);
+            var vp = new ValuePropagator(
+                segmentMap,
+                sst.SsaState,
+                importResolver.Object,
+                NullDecompilerEventListener.Instance);
             vp.Transform();
 
             sst.RenameFrameAccesses = true;

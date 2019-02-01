@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -18,17 +18,15 @@
  */
 #endregion
 
-using Reko.Scanning;
 using NUnit.Framework;
-using Rhino.Mocks;
+using Reko.Core;
+using Reko.Core.Lib;
+using Reko.Scanning;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using Reko.Core.Types;
-using Reko.Core;
-using Reko.Core.Lib;
 
 namespace Reko.UnitTests.Scanning
 {
@@ -69,7 +67,7 @@ namespace Reko.UnitTests.Scanning
 
         private void When_DisassembleProcedure()
         {
-            var hsc = new HeuristicScanner(null, program, host, eventListener);
+            var hsc = new HeuristicScanner(null, program, host.Object, eventListener.Object);
             var mem = program.SegmentMap.Segments.Values.First().MemoryArea;
             this.proc = hsc.DisassembleProcedure(
                 mem.BaseAddress,
@@ -84,7 +82,6 @@ namespace Reko.UnitTests.Scanning
                 "55 89 e5 c3");
             Given_x86_32();
             Given_RewriterHost();
-            mr.ReplayAll();
 
             When_DisassembleProcedure();
             var conflicts = BlockConflictResolver.BuildConflictGraph(proc.Cfg.Nodes);
@@ -103,7 +100,6 @@ namespace Reko.UnitTests.Scanning
                 "55 E8 00 00 00 38 c3");
             Given_x86_32();
             Given_RewriterHost();
-            mr.ReplayAll();
 
             When_DisassembleProcedure();
             var conflicts = BlockConflictResolver.BuildConflictGraph(proc.Cfg.Nodes);
@@ -129,10 +125,9 @@ namespace Reko.UnitTests.Scanning
             Given_x86_32();
             Given_RewriterHost();
             Given_NoImportedProcedures();
-            mr.ReplayAll();
 
             When_DisassembleProcedure();
-            var hps = new BlockConflictResolver(program,CreateScanResults(proc.Cfg), proc.IsValidAddress, host);
+            var hps = new BlockConflictResolver(program,CreateScanResults(proc.Cfg), proc.IsValidAddress, host.Object);
             hps.BlockConflictResolution(proc.BeginAddress);
 
             var sExp =
@@ -165,10 +160,9 @@ l00010009:  // pred: l00010008
             Given_x86_32();
             Given_RewriterHost();
             Given_NoImportedProcedures();
-            mr.ReplayAll();
 
             When_DisassembleProcedure();
-            var hps = new BlockConflictResolver(program, CreateScanResults(proc.Cfg), proc.IsValidAddress, host);
+            var hps = new BlockConflictResolver(program, CreateScanResults(proc.Cfg), proc.IsValidAddress, host.Object);
             hps.BlockConflictResolution(proc.BeginAddress);
 
             var sExp =

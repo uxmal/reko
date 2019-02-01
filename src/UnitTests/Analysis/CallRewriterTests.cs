@@ -18,21 +18,21 @@
  */
 #endregion
 
+using Moq;
+using NUnit.Framework;
 using Reko.Analysis;
+using Reko.Arch.X86;
 using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
 using Reko.Core.Output;
 using Reko.Core.Serialization;
-using Reko.UnitTests.Mocks;
-using NUnit.Framework;
-using System;
-using System.IO;
 using Reko.Core.Types;
+using Reko.UnitTests.Mocks;
+using System;
 using System.Collections.Generic;
-using Reko.Core.Expressions;
-using Reko.Arch.X86;
-using Reko.Core.Code;
 using System.Diagnostics;
-using Rhino.Mocks;
+using System.IO;
 using System.Linq;
 
 namespace Reko.UnitTests.Analysis
@@ -97,10 +97,9 @@ namespace Reko.UnitTests.Analysis
         protected override void RunTest(Program program, TextWriter writer)
         {
             var eventListener = new FakeDecompilerEventListener();
-            var importResolver = MockRepository.GenerateStub<IImportResolver>();
-            importResolver.Replay();
+            var importResolver = new Mock<IImportResolver>();
 
-            dfa = new DataFlowAnalysis(program, importResolver, eventListener);
+            dfa = new DataFlowAnalysis(program, importResolver.Object, eventListener);
             var ssts = dfa.RewriteProceduresToSsa();
 
             // Discover ssaId's that are live out at each call site.
@@ -109,7 +108,7 @@ namespace Reko.UnitTests.Analysis
                 program,
                 ssts.Select(sst => sst.SsaState),
                 dfa.ProgramDataFlow,
-                importResolver,
+                importResolver.Object,
                 eventListener);
             uvr.Transform();
 

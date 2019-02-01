@@ -18,15 +18,14 @@
  */
 #endregion
 
+using Moq;
+using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Services;
 using Reko.Gui;
 using Reko.Gui.Forms;
 using Reko.UnitTests.Mocks;
-using NUnit.Framework;
-using Rhino.Mocks;
-using System;
 using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Gui.Forms
@@ -35,29 +34,28 @@ namespace Reko.UnitTests.Gui.Forms
     [Category(Categories.UserInterface)]
     public class ScannedPageInteractorTests
     {
-        private IMainForm form;
+        private Mock<IMainForm> form;
         private Program program;
         private ScannedPageInteractor interactor;
         private IDecompilerService decSvc;
         private ServiceContainer sc;
-        private MockRepository mr;
         private ImageSegment mapSegment1;
         private ImageSegment mapSegment2;
-        private IDecompilerShellUiService uiSvc;
-        private ILowLevelViewService memSvc;
+        private Mock<IDecompilerShellUiService> uiSvc;
+        private Mock<ILowLevelViewService> memSvc;
 
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
             sc = new ServiceContainer();
 
-            form = mr.Stub<IMainForm>();
+            form = new Mock<IMainForm>();
 
-            var platform = mr.Stub<IPlatform>();
+            var platform = new Mock<IPlatform>();
+            platform.Setup(p => p.CreateMetadata()).Returns(new TypeLibrary());
             program = new Program();
             program.Architecture = new X86ArchitectureReal("x86-real-16");
-            program.Platform = platform;
+            program.Platform = platform.Object;
             var mem = new MemoryArea(Address.SegPtr(0xC00, 0), new byte[10000]);
             program.SegmentMap = new SegmentMap(
                 mem.BaseAddress,
@@ -78,15 +76,18 @@ namespace Reko.UnitTests.Gui.Forms
             uiSvc = AddService<IDecompilerShellUiService>();
             memSvc = AddService<ILowLevelViewService>();
 
-            ILoader ldr = mr.StrictMock<ILoader>();
-            ldr.Stub(l => l.LoadImageBytes("test.exe", 0)).Return(new byte[400]);
-            ldr.Stub(l => l.LoadExecutable(
-                Arg<string>.Is.NotNull,
-                Arg<byte[]>.Is.NotNull,
-                Arg<string>.Is.Null,
-                Arg<Address>.Is.Null)).Return(program);
-            ldr.Replay();
-            decSvc.Decompiler = new DecompilerDriver(ldr, sc);
+            var ldr = new Mock<ILoader>();
+            ldr.Setup(l => l.LoadImageBytes("test.exe", 0)).Returns(new byte[400]);
+            ldr.Setup(l => l.LoadExecutable(
+                It.IsNotNull<string>(),
+                It.IsNotNull<byte[]>(),
+                null,
+                It.IsAny<Address>())).Returns(program)
+                .Callback(() =>
+                {
+                    program.ToString();
+                });
+            decSvc.Decompiler = new DecompilerDriver(ldr.Object, sc);
             decSvc.Decompiler.Load("test.exe");
 
             interactor = new ScannedPageInteractor(sc);
@@ -95,31 +96,32 @@ namespace Reko.UnitTests.Gui.Forms
         [TearDown]
         public void Teardown()
         {
-            form.Dispose();
+            form.Object.Dispose();
         }
 
-        private T AddService<T>() where T : class
+        private Mock<T> AddService<T>() where T : class
         {
             var oldSvc = sc.GetService(typeof(T));
             if (oldSvc != null)
                 sc.RemoveService(typeof(T));
-            var svc = mr.DynamicMock<T>();
-            sc.AddService(typeof(T), svc);
+            var svc = new Mock<T>();
+            sc.AddService(typeof(T), svc.Object);
             return svc;
         }
 
         [Test]
-        public void LpiPopulateBrowserWithScannedProcedures()
+        public void Lpi_PopulateBrowserWithScannedProcedures()
         {
             var brSvc = AddService<IProjectBrowserService>();
-            brSvc.Expect(b => b.Reload());
-            mr.ReplayAll();
+            brSvc.Setup(b => b.Reload()).Verifiable();
 
             // Instead write expectations for the two added items.
 
             AddProcedure(Address.SegPtr(0xC20, 0x0000), "Test1");
             AddProcedure(Address.SegPtr(0xC20, 0x0002), "Test2");
             interactor.EnterPage();
+
+            brSvc.VerifyAll();
         }
 
         private void AddProcedure(Address addr, string procName)
@@ -136,36 +138,30 @@ namespace Reko.UnitTests.Gui.Forms
             AddService<ILowLevelViewService>();
             AddService<IDisassemblyViewService>();
             AddService<IProjectBrowserService>();
-            mr.ReplayAll();
 
             interactor.EnterPage();
-
-            mr.VerifyAll();
         }
 
         [Test]
         public void Lpi_CallScanProgramWhenenteringPage()
         {
             var decSvc = AddService<IDecompilerService>();
-            var decompiler = mr.Stub<IDecompiler>();
+            var decompiler = new Mock<IDecompiler>();
             var program = new Program();
             var mem = new MemoryArea(Address.Ptr32(0x3000), new byte[10]);
             program.SegmentMap = new SegmentMap(
                 mem.BaseAddress,
                 new ImageSegment(".text", mem, AccessMode.ReadWriteExecute));
             var project = new Project { Programs = { program } };
-            decompiler.Stub(x => x.Project).Return(project);
-            decSvc.Stub(x => x.Decompiler).Return(decompiler);
+            decompiler.Setup(x => x.Project).Returns(project);
+            decSvc.Setup(x => x.Decompiler).Returns(decompiler.Object);
             AddService<IDecompilerShellUiService>();
             AddService<ILowLevelViewService>();
             AddService<IDisassemblyViewService>();
             AddService<IProjectBrowserService>();
-            mr.ReplayAll();
 
             Assert.IsNotNull(sc);
             interactor.EnterPage();
-
-            mr.VerifyAll();
         }
 
         private MenuStatus QueryStatus(int cmdId)

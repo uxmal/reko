@@ -18,41 +18,14 @@
  */
 #endregion
 
-using Moq;
-using NUnit.Framework;
-using Reko.Arch.Pdp11;
 using Reko.Core;
-using Reko.Core.Expressions;
-using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.UnitTests.Arch.Pdp11
+namespace Reko.UnitTests
 {
-    [TestFixture]
-    public class Pdp11ArchitectureTests
-    {
-        private Pdp11Architecture arch;
-
-        [SetUp]
-        public void Setup()
-        {
-            this.arch = new Pdp11Architecture("pdp11");
-        }
-
-        [Test]
-        public void Pdp11Arch_CreateStackAccess()
-        {
-            var binder = new Mock<IStorageBinder>();
-            var sp = Registers.sp;
-            binder.Setup(b => b.EnsureRegister(sp)).Returns(new Identifier(sp.Name, sp.DataType, sp));
-            
-            var access = arch.CreateStackAccess(binder.Object, -12, PrimitiveType.Word16);
-
-            Assert.AreEqual("Mem0[sp + -12:word16]", access.ToString());
-        }
-    }
+    public delegate bool StringToAddress(string s, out Address a);
 }

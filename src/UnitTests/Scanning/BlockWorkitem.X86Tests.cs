@@ -18,36 +18,34 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Assemblers.x86;
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
-using Reko.Core.Lib;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Environments.Msdos;
 using Reko.Scanning;
 using Reko.UnitTests.Mocks;
-using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace Reko.UnitTests.Scanning
 {
     [TestFixture]
     public class BlockWorkItem_X86Tests
     {
-        private MockRepository mr;
         private Procedure proc;
         private Block block;
-        private IScanner scanner;
+        private Mock<IScanner> scanner;
         private RewriterHost host;
         private ProcessorState state;
         private BlockWorkitem wi;
@@ -59,19 +57,18 @@ namespace Reko.UnitTests.Scanning
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
-            var cfgSvc = mr.Stub<IConfigurationService>();
-            var env = mr.Stub<OperatingEnvironment>();
-            var tlSvc = mr.Stub<ITypeLibraryLoaderService>();
-            var eventListener = mr.Stub<DecompilerEventListener>();
-            cfgSvc.Stub(c => c.GetEnvironment("ms-dos")).Return(env);
-            env.Stub(c => c.TypeLibraries).Return(new List<ITypeLibraryElement>());
-            env.Stub(c => c.CharacteristicsLibraries).Return(new List<ITypeLibraryElement>());
+            var cfgSvc = new Mock<IConfigurationService>();
+            var env = new Mock<OperatingEnvironment>();
+            var tlSvc = new Mock<ITypeLibraryLoaderService>();
+            var eventListener = new Mock<DecompilerEventListener>();
+            cfgSvc.Setup(c => c.GetEnvironment("ms-dos")).Returns(env.Object);
+            env.Setup(c => c.TypeLibraries).Returns(new List<ITypeLibraryElement>());
+            env.Setup(c => c.CharacteristicsLibraries).Returns(new List<ITypeLibraryElement>());
             sc = new ServiceContainer();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
-            sc.AddService<IConfigurationService>(cfgSvc);
-            sc.AddService<ITypeLibraryLoaderService>(tlSvc);
-            sc.AddService<DecompilerEventListener>(eventListener);
+            sc.AddService<IConfigurationService>(cfgSvc.Object);
+            sc.AddService<ITypeLibraryLoaderService>(tlSvc.Object);
+            sc.AddService<DecompilerEventListener>(eventListener.Object);
         }
 
         private void BuildTest32(Action<X86Assembler> m)
@@ -197,8 +194,8 @@ namespace Reko.UnitTests.Scanning
             proc = new Procedure(arch, "test", addr, arch.CreateFrame());
             block = proc.AddBlock("testblock");
             var asm = new X86Assembler(sc, new DefaultPlatform(sc, arch), addr, new List<ImageSymbol>());
-            scanner = mr.StrictMock<IScanner>();
-            scanner.Stub(s => s.Services).Return(sc);
+            scanner = new Mock<IScanner>();
+            scanner.Setup(s => s.Services).Returns(sc);
             m(asm);
             lr = asm.GetImage();
             this.state = arch.CreateProcessorState();
@@ -237,13 +234,16 @@ namespace Reko.UnitTests.Scanning
                 ImageMap = lr.ImageMap,
                 Platform = platform,
             };
-            using (mr.Record())
-            {
-                scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Is.Anything)).Return(block);
-                scanner.Stub(x => x.GetTrace(null, null, null, null)).IgnoreArguments().Return(rw);
-                scanner.Stub(x => x.Services).Return(sc);
-            }
-            wi = new BlockWorkitem(scanner, program, arch, state, addr);
+
+            scanner.Setup(x => x.FindContainingBlock(It.IsAny<Address>())).Returns(block);
+            scanner.Setup(x => x.GetTrace(
+                It.IsAny<IProcessorArchitecture>(),
+                It.IsAny<Address>(),
+                It.IsAny<ProcessorState>(),
+                It.IsAny<IStorageBinder>())).Returns(rw);
+            scanner.Setup(x => x.Services).Returns(sc);
+
+            wi = new BlockWorkitem(scanner.Object, program, arch, state, addr);
         }
 
 
@@ -302,7 +302,7 @@ namespace Reko.UnitTests.Scanning
             BuildTest32(m =>
             {
                 m.Xor(m.eax, m.eax);
-                scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x00010000))).Return(block);
+                scanner.Setup(x => x.FindContainingBlock(It.Is<Address>(addr => addr.Offset == 0x00010000))).Returns(block);
             });
             state.SetRegister(Registers.eax, Constant.Invalid);
             wi.Process();
@@ -316,7 +316,7 @@ namespace Reko.UnitTests.Scanning
             BuildTest32(m =>
             {
                 m.Sub(m.eax, m.eax);
-                scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x00010000))).Return(block);
+                scanner.Setup(x => x.FindContainingBlock(It.Is<Address>(addr => addr.Offset == 0x00010000))).Returns(block);
             });
             state.SetRegister(Registers.eax, Constant.Invalid);
             wi.Process();
@@ -329,7 +329,7 @@ namespace Reko.UnitTests.Scanning
             BuildTest16(m =>
             {
                 m.In(m.al, m.dx);
-                scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Is.Anything)).Return(block);
+                scanner.Setup(x => x.FindContainingBlock(It.IsAny<Address>())).Returns(block);
             });
             state.SetRegister(Registers.al, Constant.Byte(3));
             wi.Process();
@@ -378,22 +378,21 @@ namespace Reko.UnitTests.Scanning
                 m.Dw(0x0C00);
                 m.Repeat(30, mm => mm.Dw(0xC3));
 
-                scanner.Stub(x => x.TerminateBlock(
-                    Arg<Block>.Is.Anything,
-                    Arg<Address>.Is.Anything));
+                scanner.Setup(x => x.TerminateBlock(
+                    It.IsAny<Block>(),
+                    It.IsAny<Address>()));
            
-                ExpectJumpTarget(0x0C00, 0x0000, "l0C00_0000");
                 var block1234 = ExpectJumpTarget(0x0C00, 0x0034, "foo1");
                 var block1236 = ExpectJumpTarget(0x0C00, 0x0036, "foo2");
                 var block1238 = ExpectJumpTarget(0x0C00, 0x0038, "foo3");
                 var block123A = ExpectJumpTarget(0x0C00, 0x003A, "foo4");
-                scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x0000))).Return(block);
-                scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x0003))).Return(block);
-                scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x0005))).Return(block);
-                scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x0034))).Return(block1234);
-                scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x0036))).Return(block1236);
-                scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x0038))).Return(block1238);
-                scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x003A))).Return(block123A);
+                scanner.Setup(x => x.FindContainingBlock(It.Is<Address>(addr => addr.Offset == 0x0000))).Returns(block);
+                scanner.Setup(x => x.FindContainingBlock(It.Is<Address>(addr => addr.Offset == 0x0003))).Returns(block);
+                scanner.Setup(x => x.FindContainingBlock(It.Is<Address>(addr => addr.Offset == 0x0005))).Returns(block);
+                scanner.Setup(x => x.FindContainingBlock(It.Is<Address>(addr => addr.Offset == 0x0034))).Returns(block1234);
+                scanner.Setup(x => x.FindContainingBlock(It.Is<Address>(addr => addr.Offset == 0x0036))).Returns(block1236);
+                scanner.Setup(x => x.FindContainingBlock(It.Is<Address>(addr => addr.Offset == 0x0038))).Returns(block1238);
+                scanner.Setup(x => x.FindContainingBlock(It.Is<Address>(addr => addr.Offset == 0x003A))).Returns(block123A);
             });
 
             var mem = this.program.SegmentMap.Segments.Values.First().MemoryArea;
@@ -418,22 +417,21 @@ namespace Reko.UnitTests.Scanning
                 "\tswitch (bx) { foo1 foo2 foo3 foo4 }" + nl;
             Assert.AreEqual(sExp, sw.ToString());
             Assert.IsTrue(proc.ControlGraph.Blocks.Contains(block));
+            scanner.Verify();
         }
 
         private Block ExpectJumpTarget(ushort selector, ushort offset, string blockLabel)
         {
+            var addr = Address.SegPtr(selector, offset);
             var block = new Block(proc, blockLabel) { Address = Address.SegPtr(selector, offset) };
-            scanner.Expect(x => x.EnqueueJumpTarget(
-                Arg<Address>.Is.NotNull,
-                Arg<Address>.Matches(q => (Niz(q, selector, offset))),
-                Arg<Procedure>.Is.Anything,
-                Arg<ProcessorState>.Is.Anything)).Return(block);
+            scanner.Setup(s => s.EnqueueJumpTarget(
+                It.IsNotNull<Address>(),
+                addr,
+                It.IsAny<Procedure>(),
+                It.IsAny<ProcessorState>()))
+                .Returns(block)
+                .Verifiable();
             return block;
-        }
-
-        private bool Niz(Address q, ushort selector, ushort offset)
-        {
-            return q.Selector.Value == selector && q.Offset == offset;
         }
 
         [Test]
@@ -446,27 +444,29 @@ namespace Reko.UnitTests.Scanning
                 m.Movsw();
                 m.Mov(m.bx, m.dx);
 
-                scanner.Stub(f => f.GetImportedProcedure(null, null, null)).IgnoreArguments().Return(null);
+                scanner.Setup(f => f.GetImportedProcedure(
+                    It.IsAny<IProcessorArchitecture>(),
+                    It.IsAny<Address>(),
+                    It.IsAny<Address>())).Returns((ExternalProcedure)null);
 
-                scanner.Expect(x => x.EnqueueJumpTarget(
-                    Arg<Address>.Is.NotNull,
-                    Arg<Address>.Matches(a => a.Offset == 2),
-                    Arg<Procedure>.Is.Same(proc),
-                    Arg<ProcessorState>.Is.Anything)).Return(follow);
-                scanner.Expect(x => x.EnqueueJumpTarget(
-                    Arg<Address>.Is.NotNull,
-                    Arg<Address>.Matches(a => a.Offset == 2),
-                    Arg<Procedure>.Is.Same(proc),
-                    Arg<ProcessorState>.Is.Anything)).Return(block);
-                scanner.Expect(x => x.EnqueueJumpTarget(
-                    Arg<Address>.Is.NotNull,
-                    Arg<Address>.Matches(a => a.Offset == 0),
-                    Arg<Procedure>.Is.Same(proc),
-                    Arg<ProcessorState>.Is.Anything)).Return(block);
-                scanner.Expect(x => x.TerminateBlock(
-                    Arg<Block>.Is.Anything,
-                    Arg<Address>.Is.Anything));
-                scanner.Stub(s => s.GetTrampoline(null, null)).IgnoreArguments().Return(null);
+                scanner.SetupSequence(x => x.EnqueueJumpTarget(
+                    It.IsNotNull<Address>(),
+                    It.Is<Address>(a => a.Offset == 2),
+                    proc,
+                    It.IsAny<ProcessorState>()))
+                        .Returns(follow)
+                        .Returns(block);
+                scanner.Setup(x => x.EnqueueJumpTarget(
+                    It.IsNotNull<Address>(),
+                    It.Is<Address>(a => a.Offset == 0),
+                    proc,
+                    It.IsAny<ProcessorState>())).Returns(block);
+                scanner.Setup(x => x.TerminateBlock(
+                    It.IsAny<Block>(),
+                    It.IsAny<Address>()));
+                scanner.Setup(s => s.GetTrampoline(
+                    It.IsAny<IProcessorArchitecture>(),
+                    It.IsAny<Address>())).Returns((Procedure)null);
             });
             follow.Procedure = proc;
             wi.Process();
@@ -484,17 +484,22 @@ namespace Reko.UnitTests.Scanning
                 m.Inc(m.esi);
                 m.Jmp("x");
 
-                scanner.Expect(x => x.EnqueueJumpTarget(
-                    Arg<Address>.Is.NotNull,
-                    Arg<Address>.Matches(a => a.Offset == 0x0003),
-                    Arg<Procedure>.Is.Same(proc),
-                    Arg<ProcessorState>.Is.Anything)).Return(new Block(proc, "l0003"));
-                scanner.Expect(x => x.TerminateBlock(
-                    Arg<Block>.Is.Anything,
-                    Arg<Address>.Is.Anything));
-                scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Is.Anything)).Return(block);
-                scanner.Stub(f => f.GetImportedProcedure(null, null, null)).IgnoreArguments().Return(null);
-                scanner.Stub(s => s.GetTrampoline(null, null)).IgnoreArguments().Return(null);
+                scanner.Setup(x => x.EnqueueJumpTarget(
+                    It.IsNotNull<Address>(),
+                    It.Is<Address>(a => a.Offset == 0x0003),
+                    proc,
+                    It.IsAny<ProcessorState>())).Returns(new Block(proc, "l0003"));
+                scanner.Setup(x => x.TerminateBlock(
+                    It.IsAny<Block>(),
+                    It.IsAny<Address>()));
+                scanner.Setup(x => x.FindContainingBlock(It.IsAny<Address>())).Returns(block);
+                scanner.Setup(f => f.GetImportedProcedure(
+                    It.IsAny<IProcessorArchitecture>(),
+                    It.IsAny<Address>(),
+                    It.IsAny<Address>())).Returns((ExternalProcedure)null);
+                scanner.Setup(s => s.GetTrampoline(
+                    It.IsAny<IProcessorArchitecture>(),
+                    It.IsAny<Address>())).Returns((Procedure) null);
             });
             wi.Process();
             var sExp =
@@ -521,16 +526,15 @@ namespace Reko.UnitTests.Scanning
 
                 m.Import("_GetDC", "GetDC", "user32.dll");
 
-                scanner.Stub(x => x.TerminateBlock(Arg<Block>.Is.Anything, Arg<Address>.Is.Anything));
-                scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Is.Anything)).Return(block);
-                scanner.Stub(x => x.SetProcedureReturnAddressBytes(
-                    Arg<Procedure>.Is.NotNull,
-                    Arg<int>.Is.Equal(4),
-                    Arg<Address>.Is.Anything));
+                scanner.Setup(x => x.TerminateBlock(It.IsAny<Block>(), It.IsAny<Address>()));
+                scanner.Setup(x => x.FindContainingBlock(It.IsAny<Address>())).Returns(block);
+                scanner.Setup(x => x.SetProcedureReturnAddressBytes(
+                    It.IsNotNull<Procedure>(),
+                    4,
+                    It.IsAny<Address>()));
             });
             wi.Process();
 
-            mr.VerifyAll();
             var sExp =
                 "testblock:" + nl +
                 "\tebx = GetDC" + nl +

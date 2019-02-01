@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  .
@@ -18,19 +18,15 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Services;
 using Reko.Gui;
 using Reko.Gui.Forms;
-using Rhino.Mocks;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Gui.Windows.Forms
 {
@@ -40,70 +36,64 @@ namespace Reko.UnitTests.Gui.Windows.Forms
     [Category(Categories.UserInterface)]
     public class SymbolSourceInteractorTests
     {
-        private ISymbolSourceDialog dlg;
-        private MockRepository mr;
+        private Mock<ISymbolSourceDialog> dlg;
         private ServiceContainer sc;
-        private ISymbolLoadingService symLdrSvc;
-        private IConfigurationService cfgSvc;
-        private IFileSystemService fsSvc;
-        private IDecompilerUIService uiSvc;
+        private Mock<ISymbolLoadingService> symLdrSvc;
+        private Mock<IConfigurationService> cfgSvc;
+        private Mock<IFileSystemService> fsSvc;
+        private Mock<IDecompilerShellUiService> uiSvc;
 
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
             sc = new ServiceContainer();
-            symLdrSvc = mr.StrictMock<ISymbolLoadingService>();
-            fsSvc = mr.Stub<IFileSystemService>();
-            cfgSvc = mr.Stub<IConfigurationService>();
-            uiSvc = mr.Stub<IDecompilerShellUiService>();
-            cfgSvc.Stub(c => c.GetSymbolSources()).Return(new List<SymbolSource>());
+            symLdrSvc = new Mock<ISymbolLoadingService>();
+            fsSvc = new Mock<IFileSystemService>();
+            cfgSvc = new Mock<IConfigurationService>();
+            uiSvc = new Mock<IDecompilerShellUiService>();
+            cfgSvc.Setup(c => c.GetSymbolSources())
+                .Returns(new List<SymbolSource>());
 
-            sc.AddService<IConfigurationService>(cfgSvc);
-            sc.AddService<IFileSystemService>(fsSvc);
-            sc.AddService<IDecompilerShellUiService>(uiSvc);
+            sc.AddService<IConfigurationService>(cfgSvc.Object);
+            sc.AddService<IFileSystemService>(fsSvc.Object);
+            sc.AddService<IDecompilerShellUiService>(uiSvc.Object);
         }
 
         [TearDown]
         public void TearDown()
         {
             if (dlg != null)
-                dlg.Dispose();
+                dlg.Object.Dispose();
             dlg = null;
         }
 
         [Test]
         public void SymSrcDlg_Load()
         {
-            mr.ReplayAll();
-
             When_CreateDlg();
 
-            Assert.IsFalse(dlg.SymbolSourceList.Enabled);
-            Assert.IsFalse(dlg.AssemblyFile.Enabled);
-            Assert.IsFalse(dlg.BrowseAssemblyFile.Enabled);
-            Assert.IsFalse(dlg.OkButton.Enabled);
-            Assert.IsFalse(dlg.SymbolSourceClasses.Enabled);
+            Assert.IsFalse(dlg.Object.SymbolSourceList.Enabled);
+            Assert.IsFalse(dlg.Object.AssemblyFile.Enabled);
+            Assert.IsFalse(dlg.Object.BrowseAssemblyFile.Enabled);
+            Assert.IsFalse(dlg.Object.OkButton.Enabled);
+            Assert.IsFalse(dlg.Object.SymbolSourceClasses.Enabled);
         }
 
         [Test]
         public void SymSrcDlg_FocusLeftSymbolFile()
         {
-            mr.ReplayAll();
-
             When_CreateDlg();
-            dlg.SymbolFileUrl.Text = "foo.sym";
-            dlg.BrowseSymbolFile.Focus();
+            dlg.Object.SymbolFileUrl.Text = "foo.sym";
+            dlg.Object.BrowseSymbolFile.Focus();
 
-            Assert.IsTrue(dlg.SymbolSourceList.Enabled);
+            Assert.IsTrue(dlg.Object.SymbolSourceList.Enabled);
         }
 
         private void When_CreateDlg()
         {
-            dlg = mr.Stub<ISymbolSourceDialog>();
-            dlg.Stub(d => d.Services).Return(sc);
-            dlg.Stub(d => d.Dispose());
-            dlg.Replay();
+            dlg = new Mock<ISymbolSourceDialog>();
+            dlg.Setup(d => d.Services).Returns(sc);
+            dlg.Setup(d => d.Dispose());
         }
     }
 }

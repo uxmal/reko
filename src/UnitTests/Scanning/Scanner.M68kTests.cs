@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -18,41 +18,36 @@
  */
 #endregion
 
-using Reko;
+using Moq;
+using NUnit.Framework;
 using Reko.Arch.M68k;
 using Reko.Assemblers.M68k;
 using Reko.Core;
 using Reko.Core.Services;
 using Reko.Scanning;
-using NUnit.Framework;
-using Rhino.Mocks;
+using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
 using System.ComponentModel.Design;
-using Reko.UnitTests.Mocks;
+using System.IO;
 
 namespace Reko.UnitTests.Scanning
 {
     [TestFixture]
     public class Scanner_M68kTests
     {
-        private MockRepository mr;
         private M68kArchitecture arch;
         private Program program;
         private Scanner scanner;
         private ServiceContainer sc;
-        private DecompilerEventListener listener;
+        private Mock<DecompilerEventListener> listener;
 
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
             sc = new ServiceContainer();
-            listener = mr.Stub<DecompilerEventListener>();
-            sc.AddService<DecompilerEventListener>(listener);
+            listener = new Mock<DecompilerEventListener>();
+            sc.AddService<DecompilerEventListener>(listener.Object);
             sc.AddService<DecompilerHost>(new FakeDecompilerHost());
         }
 

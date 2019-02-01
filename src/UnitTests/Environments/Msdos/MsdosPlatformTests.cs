@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Core;
@@ -26,7 +27,6 @@ using Reko.Core.Expressions;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Environments.Msdos;
-using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -36,7 +36,6 @@ namespace Reko.UnitTests.Environments.Msdos
     [TestFixture]
     public class MsDosPlatformTests
     {
-        private MockRepository mr;
         private ServiceContainer sc;
         private X86ArchitectureReal arch;
         private MsdosPlatform platform;
@@ -45,17 +44,16 @@ namespace Reko.UnitTests.Environments.Msdos
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
-            var cfgSvc = mr.Stub<IConfigurationService>();
-            var tlSvc = mr.Stub<ITypeLibraryLoaderService>();
-            var env = mr.Stub<OperatingEnvironment>();
-            env.Stub(e => e.TypeLibraries).Return(new List<ITypeLibraryElement>());
-            env.Stub(e => e.CharacteristicsLibraries).Return(new List<ITypeLibraryElement>());
-            cfgSvc.Stub(c => c.GetEnvironment("ms-dos")).Return(env);
+            var cfgSvc = new Mock<IConfigurationService>();
+            var tlSvc = new Mock<ITypeLibraryLoaderService>();
+            var env = new Mock<OperatingEnvironment>();
+            env.Setup(e => e.TypeLibraries).Returns(new List<ITypeLibraryElement>());
+            env.Setup(e => e.CharacteristicsLibraries).Returns(new List<ITypeLibraryElement>());
+            cfgSvc.Setup(c => c.GetEnvironment("ms-dos")).Returns(env.Object);
             sc = new ServiceContainer();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
-            sc.AddService<IConfigurationService>(cfgSvc);
-            sc.AddService<ITypeLibraryLoaderService>(tlSvc);
+            sc.AddService<IConfigurationService>(cfgSvc.Object);
+            sc.AddService<ITypeLibraryLoaderService>(tlSvc.Object);
         }
 
         private void Given_MsdosPlatform()
@@ -72,7 +70,6 @@ namespace Reko.UnitTests.Environments.Msdos
         [Test]
         public void MspRealModeServices()
         {
-            mr.ReplayAll();
             Given_MsdosPlatform();
 
             var state = arch.CreateProcessorState();

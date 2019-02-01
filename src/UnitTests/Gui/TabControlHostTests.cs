@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -18,11 +18,12 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Gui;
 using Reko.UserInterfaces.WindowsForms;
-using Rhino.Mocks;
 using System;
+using System.ComponentModel.Design;
 using System.Windows.Forms;
 
 namespace Reko.UnitTests.Gui
@@ -32,17 +33,15 @@ namespace Reko.UnitTests.Gui
     public class TabControlHostTests
     {
         private TabControl tabCtrl;
-        private MockRepository mr;
-        private IWindowPane pane;
-        private IServiceProvider services;
+        private Mock<IWindowPane> pane;
+        private ServiceContainer services;
 
         [SetUp]
         public void Setup()
         {
             this.tabCtrl = new TabControl();
-            this.mr = new MockRepository();
-            this.pane = mr.Stub<IWindowPane>();
-            this.services = mr.Stub<IServiceProvider>();
+            this.pane = new Mock<IWindowPane>();
+            this.services = new ServiceContainer();
         }
 
         [Test]
@@ -51,7 +50,7 @@ namespace Reko.UnitTests.Gui
             tabCtrl.TabPages.Add("Test");
             Assert.AreEqual(1, tabCtrl.TabPages.Count);
             ITabControlHostService host = new TabControlHost(services, tabCtrl);
-            IWindowFrame frame = host.Attach(pane, tabCtrl.TabPages[0]);
+            IWindowFrame frame = host.Attach(pane.Object, tabCtrl.TabPages[0]);
             frame.Title = "Foo";
 
             Assert.AreEqual("Foo", tabCtrl.TabPages[0].Text);
@@ -61,7 +60,7 @@ namespace Reko.UnitTests.Gui
         public void Tch_AddPage()
         {
             ITabControlHostService host = new TabControlHost(services, tabCtrl);
-            host.Add(pane, "Foo");
+            host.Add(pane.Object, "Foo");
 
             Assert.AreEqual("Foo", tabCtrl.TabPages[0].Text);
         }

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -18,16 +18,13 @@
  */
 #endregion
 
+using Moq;
+using NUnit.Framework;
+using Reko.Core;
 using Reko.Gui;
 using Reko.Gui.Controls;
 using Reko.Gui.Design;
-using Reko.Core;
-using NUnit.Framework;
-using Rhino.Mocks;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Reko.UnitTests.Gui.Design
 {
@@ -36,7 +33,6 @@ namespace Reko.UnitTests.Gui.Design
     {
         private static string nl = Environment.NewLine;
 
-        private MockRepository mr;
         private ImageSegment seg1;
         private ImageSegment seg2;
         private SegmentMap map;
@@ -44,7 +40,6 @@ namespace Reko.UnitTests.Gui.Design
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
             seg1 = new ImageSegment("seg1", new MemoryArea(Address.Ptr32(0x01000), new byte[0x1000]), AccessMode.Execute);
             seg2 = new ImageSegment("seg2", new MemoryArea(Address.Ptr32(0x02000), new byte[0x1000]), AccessMode.Execute);
             map = new SegmentMap(seg1.Address,
@@ -55,20 +50,19 @@ namespace Reko.UnitTests.Gui.Design
         [Category(Categories.UnitTests)]
         public void Imd_Add_Empty()
         {
-            var host = mr.StrictMock<ITreeNodeDesignerHost>();
-            var treeNode = mr.StrictMock<ITreeNode>();
-            treeNode.Expect(t => t.Text = "seg1");
-            treeNode.Expect(t => t.ImageName = "RoSection.ico");
-            treeNode.Expect(t => t.ToolTipText = "seg1" + nl  + "Address: 00001000" + nl  + "Size: 1000" + nl  + "--x");
+            var host = new Mock<ITreeNodeDesignerHost>();
+            var treeNode = new Mock<ITreeNode>();
+            treeNode.SetupSet(t => t.Text = "seg1").Verifiable();
+            treeNode.SetupSet(t => t.ImageName = "RoSection.ico").Verifiable();
+            treeNode.SetupSet(t => t.ToolTipText = "seg1" + nl  + "Address: 00001000" + nl  + "Size: 1000" + nl  + "--x");
             var des = new ImageMapSegmentNodeDesigner();
-            des.Host = host;
-            des.TreeNode = treeNode;
+            des.Host = host.Object;
+            des.TreeNode = treeNode.Object;
             des.Component = seg1;
-            mr.ReplayAll();
 
             des.Initialize(seg1);
 
-            mr.VerifyAll();
+            treeNode.VerifyAll();
         }
     }
 }

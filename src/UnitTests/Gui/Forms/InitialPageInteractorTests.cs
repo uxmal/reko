@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,170 +18,151 @@
  */
 #endregion
 
+using Moq;
+using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Services;
 using Reko.Gui;
 using Reko.Gui.Forms;
 using Reko.UnitTests.Mocks;
-using NUnit.Framework;
-using Rhino.Mocks;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Gui.Forms
 {
-	[TestFixture]
+    [TestFixture]
     [Category(Categories.UserInterface)]
 	public class InitialPageInteractorTests
     {
-        private MockRepository mr;
-        private IMainForm form;
+        private Mock<IMainForm> form;
 		private TestInitialPageInteractor i;
         private FakeUiService uiSvc;
         private ServiceContainer sc;
-        private IProjectBrowserService browserSvc;
-        private ILoader loader;
-        private IDecompiler dec;
-        private DecompilerHost host;
-        private ILowLevelViewService memSvc;
+        private Mock<IProjectBrowserService> browserSvc;
+        private Mock<ILoader> loader;
+        private Mock<IDecompiler> dec;
+        private Mock<DecompilerHost> host;
+        private Mock<ILowLevelViewService> memSvc;
         private Program program;
         private Project project;
 
 		[SetUp]
 		public void Setup()
 		{
-            mr = new MockRepository();
-            form = mr.Stub<IMainForm>();
+            form = new Mock<IMainForm>();
             sc = new ServiceContainer();
-            loader = mr.StrictMock<ILoader>();
-            dec = mr.StrictMock<IDecompiler>();
+            loader = new Mock<ILoader>();
+            dec = new Mock<IDecompiler>();
             sc = new ServiceContainer();
             uiSvc = new FakeShellUiService();
-            host = mr.StrictMock<DecompilerHost>();
-            memSvc = mr.StrictMock<ILowLevelViewService>();
+            host = new Mock<DecompilerHost>();
+            memSvc = new Mock<ILowLevelViewService>();
             var mem = new MemoryArea(Address.Ptr32(0x10000), new byte[1000]);
             var imageMap = new SegmentMap(
                 mem.BaseAddress,
                 new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
-            var arch = mr.StrictMock<IProcessorArchitecture>();
-            var platform = mr.StrictMock<IPlatform>();
-            program = new Program(imageMap, arch, platform);
+            var arch = new Mock<IProcessorArchitecture>();
+            var platform = new Mock<IPlatform>();
+            program = new Program(imageMap, arch.Object, platform.Object);
             project = new Project { Programs = { program } };
 
-            browserSvc = mr.StrictMock<IProjectBrowserService>();
+            browserSvc = new Mock<IProjectBrowserService>();
 
             sc.AddService<IDecompilerUIService>(uiSvc);
-            sc.AddService(typeof(IDecompilerShellUiService), uiSvc);
-            sc.AddService(typeof(IDecompilerService), new DecompilerService());
-            sc.AddService(typeof(IWorkerDialogService), new FakeWorkerDialogService());
-            sc.AddService(typeof(DecompilerEventListener), new FakeDecompilerEventListener());
-            sc.AddService(typeof(IProjectBrowserService), browserSvc);
-            sc.AddService(typeof(ILowLevelViewService), memSvc);
-            sc.AddService<ILoader>(loader);
-            sc.AddService<DecompilerHost>(host);
+            sc.AddService<IDecompilerShellUiService>(new Mock<IDecompilerShellUiService>().Object);
+            sc.AddService<IDecompilerService>(new DecompilerService());
+            sc.AddService<IWorkerDialogService>(new FakeWorkerDialogService());
+            sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
+            sc.AddService<IProjectBrowserService>(browserSvc.Object);
+            sc.AddService<ILowLevelViewService>(memSvc.Object);
+            sc.AddService<ILoader>(loader.Object);
+            sc.AddService<DecompilerHost>(host.Object);
 
-            i = new TestInitialPageInteractor(sc, dec);
+            i = new TestInitialPageInteractor(sc, dec.Object);
 
 		}
 
 		[TearDown]
 		public void Teardown()
 		{
-			form.Dispose();
+			form.Object.Dispose();
 		}
 
         [Test]
         public void Ipi_OpenBinary_CanAdvance()
         {
-            mr.ReplayAll();
-
             Assert.IsFalse(i.CanAdvance);
 
-            mr.Record();
-
-            dec.Stub(d => d.Load("floxe.exe")).Return(false);
-            dec.Stub(d => d.Project).Return(project);
-            browserSvc.Stub(b => b.Load(project));
-            memSvc.Stub(m => m.ViewImage(program));
-            mr.ReplayAll();
+            dec.Setup(d => d.Load("floxe.exe", null)).Returns(false);
+            dec.Setup(d => d.Project).Returns(project);
+            browserSvc.Setup(b => b.Load(project));
+            memSvc.Setup(m => m.ViewImage(program));
 
             i.OpenBinary("floxe.exe");
             Assert.IsTrue(i.CanAdvance, "Page should be ready to advance");
-            mr.VerifyAll();
         }
 
         [Test]
         public void Ipi_OpenBinary_ShouldPopulateFields()
         {
-            dec.Stub(d => d.Project).Return(project);
-            browserSvc.Stub(b => b.Load(project));
-            mr.ReplayAll();
+            dec.Setup(d => d.Project).Returns(project);
+            browserSvc.Setup(b => b.Load(project));
 
             Assert.IsFalse(i.CanAdvance, "Page should not be ready to advance");
 
-            mr.Record();
-            dec.Stub(d => d.Load("floxe.exe")).Return(false);
-            memSvc.Stub(m => m.ViewImage(program));
-            mr.ReplayAll();
+            dec.Setup(d => d.Load("floxe.exe", null)).Returns(false);
+            memSvc.Setup(m => m.ViewImage(program));
 
             i.OpenBinary("floxe.exe");
 
             Assert.IsTrue(i.CanAdvance, "Page should be ready to advance");
-            mr.VerifyAll();
         }
 
         [Test]
         public void Ipi_OpenBinary_ShouldShowMemoryWindow()
         {
-            dec.Stub(d => d.Load("floxe.exe")).Return(false);
-            dec.Stub(d => d.Project).Return(project);
-            browserSvc.Stub(d => d.Load(project));
-            memSvc.Expect(s => s.ViewImage(program));
-            mr.ReplayAll();
+            dec.Setup(d => d.Load("floxe.exe", null)).Returns(false);
+            dec.Setup(d => d.Project).Returns(project);
+            browserSvc.Setup(d => d.Load(project));
+            memSvc.Setup(s => s.ViewImage(program)).Verifiable();
 
             i.OpenBinary("floxe.exe");
 
-            mr.VerifyAll();
+            memSvc.VerifyAll();
         }
 
         [Test]
         public void Ipi_OpenBinary_ShouldBrowseProject()
         {
-            dec.Stub(d => d.Load("foo.exe")).Return(false);
-            dec.Stub(d => d.Project).Return(project);
-            browserSvc.Expect(b => b.Load(project));
-            memSvc.Stub(m => m.ViewImage(program));
-            mr.ReplayAll();
+            dec.Setup(d => d.Load("foo.exe", null)).Returns(false);
+            dec.Setup(d => d.Project).Returns(project);
+            browserSvc.Setup(b => b.Load(project)).Verifiable();
+            memSvc.Setup(m => m.ViewImage(program));
 
             i.OpenBinary("foo.exe");
 
-            mr.VerifyAll();
+            browserSvc.VerifyAll();
         }
 
         [Test]
         public void Ipi_LeavePage()
         {
-            dec.Expect(d => d.Load("foo.exe")).Return(false);
-            dec.Stub(d => d.Project).Return(project);
-            browserSvc.Stub(b => b.Load(project));
-            memSvc.Stub(m => m.ViewImage(program));
-            mr.ReplayAll();
+            dec.Setup(d => d.Load("foo.exe", null)).Returns(false);
+            dec.Setup(d => d.Project).Returns(project);
+            browserSvc.Setup(b => b.Load(project));
+            memSvc.Setup(m => m.ViewImage(program));
 
             i.OpenBinary("foo.exe");
             Assert.IsTrue(i.LeavePage());
-
-            mr.VerifyAll();
         }
 
         [Test]
         public void Ipi_NextPhaseButton_ScanningNotNeeded()
         {
             program.NeedsScanning = false;
-            dec.Stub(d => d.Load("foo.exe")).Return(false);
-            dec.Stub(d => d.Project).Return(project);
-            browserSvc.Stub(b => b.Load(project));
-            mr.ReplayAll();
+            dec.Setup(d => d.Load("foo.exe", null)).Returns(false);
+            dec.Setup(d => d.Project).Returns(project);
+            browserSvc.Setup(b => b.Load(project));
 
             i.OpenBinary("foo.exe");
 
@@ -189,17 +170,15 @@ namespace Reko.UnitTests.Gui.Forms
             var text = new CommandText();
             Assert.IsTrue(i.QueryStatus(new CommandID(CmdSets.GuidReko, CmdIds.ActionNextPhase), status, text));
             Assert.AreEqual("A&nalyze dataflow", text.Text);
-            mr.VerifyAll();
         }
 
         [Test]
         public void Ipi_FinishDecompilationButton()
         {
             program.NeedsScanning = false;
-            dec.Stub(d => d.Load("foo.exe")).Return(false);
-            dec.Stub(d => d.Project).Return(project);
-            browserSvc.Stub(b => b.Load(project));
-            mr.ReplayAll();
+            dec.Setup(d => d.Load("foo.exe", null)).Returns(false);
+            dec.Setup(d => d.Project).Returns(project);
+            browserSvc.Setup(b => b.Load(project));
             var status = new CommandStatus();
             var cmd = new CommandID(
                 CmdSets.GuidReko, CmdIds.ActionFinishDecompilation);
@@ -211,7 +190,6 @@ namespace Reko.UnitTests.Gui.Forms
 
             Assert.IsTrue(i.QueryStatus(cmd, status, null));
             Assert.AreEqual(MenuStatus.Visible | MenuStatus.Enabled, status.Status);
-            mr.VerifyAll();
         }
 
         private class TestInitialPageInteractor : InitialPageInteractorImpl

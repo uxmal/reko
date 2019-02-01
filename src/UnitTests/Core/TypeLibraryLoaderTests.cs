@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 Pavel Tomin.
  *
@@ -18,14 +18,12 @@
  */
 #endregion
 
-using Reko.Arch.X86;
-using Reko.Environments.Windows;
-using Reko.Core;
-using Reko.UnitTests.Mocks;
 using NUnit.Framework;
-using Rhino.Mocks;
-using System.Text;
+using Reko.Arch.X86;
+using Reko.Core;
 using Reko.Core.Types;
+using Reko.Environments.Windows;
+using System.Text;
 
 namespace Reko.UnitTests.Core
 {

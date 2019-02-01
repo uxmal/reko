@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -18,11 +18,10 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Loading;
-using Rhino.Mocks;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -34,21 +33,19 @@ namespace Reko.UnitTests.Loading
     {
         private readonly string nl = Environment.NewLine;
 
-        private FlirtoidSignatureLoader fsl;
-        private MockRepository mr;
+        private Mock<FlirtoidSignatureLoader> fsl;
 
         [SetUp]
         public void Setup()
         {
-            this.mr = new MockRepository();
             this.fsl = null;
         }
 
         private void Given_FlirtoidSignatureLoader(string file)
         {
-            fsl = mr.PartialMock<FlirtoidSignatureLoader>();
-            fsl.Stub(f => f.CreateReader(null)).IgnoreArguments()
-                .Return(new MemoryStream(Encoding.UTF8.GetBytes(file)));
+            fsl = new Mock<FlirtoidSignatureLoader> { CallBase = true };
+            fsl.Setup(f => f.CreateReader(It.IsAny<string>()))
+                .Returns(new MemoryStream(Encoding.UTF8.GetBytes(file)));
         }
 
         [Test]
@@ -57,9 +54,8 @@ namespace Reko.UnitTests.Loading
             var file =
                 "01234521aF  Single_Line";
             Given_FlirtoidSignatureLoader(file);
-            mr.ReplayAll();
 
-            var sigs = fsl.Load("foo.foo").ToArray();
+            var sigs = fsl.Object.Load("foo.foo").ToArray();
             Assert.AreEqual(1, sigs.Length);
             Assert.AreEqual("01234521aF", sigs[0].ImagePattern);
             Assert.AreEqual("Single_Line", sigs[0].Name);

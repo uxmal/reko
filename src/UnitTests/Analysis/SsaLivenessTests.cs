@@ -20,16 +20,14 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
-using Reko.Core.Lib;
-using Reko.Core.Types;
 using Reko.Analysis;
 using Reko.UnitTests.Mocks;
 using Reko.UnitTests.TestCode;
+using Moq;
 using NUnit.Framework;
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using Rhino.Mocks;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -128,8 +126,7 @@ namespace Reko.UnitTests.Analysis
                 Platform = platform,
             };
             this.proc = proc;
-            var importResolver = MockRepository.GenerateStub<IImportResolver>();
-            importResolver.Replay();
+            var importResolver = new Mock<IImportResolver>().Object;
             var sst = new SsaTransform(
                 program,
                 proc,

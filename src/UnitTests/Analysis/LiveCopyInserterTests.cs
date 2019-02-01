@@ -22,12 +22,12 @@ using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.UnitTests.Mocks;
+using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Rhino.Mocks;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -180,8 +180,7 @@ namespace Reko.UnitTests.Analysis
                 Platform = platform,
             };
             this.proc = proc;
-            var importResolver = MockRepository.GenerateStub<IImportResolver>();
-            importResolver.Replay();
+            var importResolver = new Mock<IImportResolver>().Object;
 			var gr = proc.CreateBlockDominatorGraph();
             SsaTransform sst = new SsaTransform(
                 program,

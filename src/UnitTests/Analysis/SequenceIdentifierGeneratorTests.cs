@@ -18,30 +18,27 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
-using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace Reko.UnitTests.Analysis
 {
     [TestFixture]
     public class SequenceIdentifierGeneratorTests
     {
-        private IImportResolver importResolver;
+        private Mock<IImportResolver> importResolver;
 
         [SetUp]
         public void Setup()
         {
-            this.importResolver = MockRepository.GenerateStub<IImportResolver>();
-            importResolver.Replay();
+            this.importResolver = new Mock<IImportResolver>();
         }
 
         private void RunTest(string sExp, Action<ProcedureBuilder> builder)
@@ -52,7 +49,7 @@ namespace Reko.UnitTests.Analysis
                 new Program(), 
                 pb.Procedure, 
                 new HashSet<Procedure>(),
-                importResolver,
+                importResolver.Object,
                 null);
             sst.Transform();
 

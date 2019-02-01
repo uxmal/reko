@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -25,23 +25,22 @@ using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.UnitTests.Core.Serialization;
 using Reko.UnitTests.Mocks;
+using Moq;
 using NUnit.Framework;
 using System;
 using System.Xml;
 using System.Xml.Serialization;
 using Reko.Environments.Windows;
-using Rhino.Mocks;
 using System.Collections.Generic;
+using CommonMockFactory = Reko.UnitTests.Mocks.CommonMockFactory;
 
 namespace Reko.UnitTests.Arch.Intel
 {
     [TestFixture]
     [Category(Categories.UnitTests)]
     public class FastcallConventionTests
-
     {
-        private MockRepository mr;
-        private MockFactory mockFactory;
+        private CommonMockFactory mockFactory;
         private IntelArchitecture arch;
         private FastcallConvention fcc;
         private ICallingConventionEmitter ccr;
@@ -55,8 +54,7 @@ namespace Reko.UnitTests.Arch.Intel
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
-            mockFactory = new MockFactory(mr);
+            mockFactory = new CommonMockFactory();
             arch = new X86ArchitectureFlat32("x86-protected-32");
             platform = new Win32Platform(null, arch);
         }

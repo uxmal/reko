@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
 * Copyright (C) 1999-2019 John Källén.
 *
@@ -18,37 +18,30 @@
 */
 #endregion
 
-using Reko.Gui;
+using Moq;
 using NUnit.Framework;
-using Rhino.Mocks;
-using System;
-using System.ComponentModel.Design;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Reko.UserInterfaces.WindowsForms;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Gui.Windows
 {
     [TestFixture]
     public class WindowsFormsSettingsServiceTests
     {
-        private MockRepository mr;
-        private IRegistryService regSvc;
         private ServiceContainer sc;
         private WindowsFormsSettingsService settingsSvc;
-        private IRegistryKey hkcu;
+        private Mock<IRegistryService> regSvc;
+        private Mock<IRegistryKey> hkcu;
 
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
-            regSvc = mr.StrictMock<IRegistryService>();
-            hkcu = mr.StrictMock<IRegistryKey>();
+            regSvc = new Mock<IRegistryService>();
+            hkcu = new Mock<IRegistryKey>();
 
             sc = new ServiceContainer();
-            sc.AddService(typeof(IRegistryService), regSvc);
-            regSvc.Stub(r => r.CurrentUser).Return(hkcu);
+            sc.AddService(typeof(IRegistryService), regSvc.Object);
+            regSvc.Setup(r => r.CurrentUser).Returns(hkcu.Object);
 
             settingsSvc = new WindowsFormsSettingsService(sc);
         }
@@ -56,54 +49,64 @@ namespace Reko.UnitTests.Gui.Windows
         [Test]
         public void WFSS_SetString()
         {
-            var hk = mr.StrictMock<IRegistryKey>();
-            hkcu.Expect(h => h.OpenSubKey(@"Software\jklSoft\Reko", true)).Return(hk);
-            hk.Expect(h => h.SetValue("foo", "bar"));
-            mr.ReplayAll();
-
+            var hk = new Mock<IRegistryKey>();
+            hkcu.Setup(h => h.OpenSubKey(@"Software\jklSoft\Reko", true))
+                .Returns(hk.Object)
+                .Verifiable();
+            hk.Setup(h => h.SetValue("foo", "bar"))
+                .Verifiable();
             settingsSvc.Set("foo", "bar");
 
-            mr.VerifyAll();
+            hkcu.VerifyAll();
         }
 
         [Test]
         public void WFSS_SetStringWithDeepPath()
         {
-            var hk = mr.StrictMock<IRegistryKey>();
-            hkcu.Expect(h => h.OpenSubKey(@"Software\jklSoft\Reko\Deep\Scope", true)).Return(hk);
-            hk.Expect(h => h.SetValue("foo", "bar"));
-            mr.ReplayAll();
+            var hk = new Mock<IRegistryKey>();
+            hkcu.Setup(h => h.OpenSubKey(@"Software\jklSoft\Reko\Deep\Scope", true))
+                .Returns(hk.Object)
+                .Verifiable();
+            hk.Setup(h => h.SetValue("foo", "bar"))
+                .Verifiable();
 
             settingsSvc.Set("Deep/Scope/foo", "bar");
 
-            mr.VerifyAll();
+            hk.VerifyAll();
+            hkcu.VerifyAll();
         }
 
         [Test]
         public void WFSS_SetIntegerWithPath()
         {
-            var hk = mr.StrictMock<IRegistryKey>();
-            hkcu.Expect(h => h.OpenSubKey(@"Software\jklSoft\Reko", true)).Return(hk);
-            hk.Expect(h => h.SetValue("foo", 3));
-            mr.ReplayAll();
+            var hk = new Mock<IRegistryKey>();
+            hkcu.Setup(h => h.OpenSubKey(@"Software\jklSoft\Reko", true))
+                .Returns(hk.Object)
+                .Verifiable();
+            hk.Setup(h => h.SetValue("foo", 3)).Verifiable();
 
             settingsSvc.Set("foo", 3);
 
-            mr.VerifyAll();
+            hk.VerifyAll();
+            hkcu.VerifyAll();
         }
 
         [Test]
         public void WFSS_GetExistingInt()
         {
-            var hk = mr.StrictMock<IRegistryKey>();
-            hkcu.Expect(h => h.OpenSubKey(@"Software\jklSoft\Reko", false)).Return(hk);
-            hk.Expect(h => h.GetValue("foo", 3)).Return(4);
-            mr.ReplayAll();
+            var hk = new Mock<IRegistryKey>();
+            hkcu.Setup(h => h.OpenSubKey(@"Software\jklSoft\Reko", false))
+                .Returns(hk.Object)
+                .Verifiable();
+            hk.Setup(h => h.GetValue("foo", 3))
+                .Returns(4)
+                .Verifiable();
 
             int v = (int) settingsSvc.Get("foo", 3);
             Assert.AreEqual(4, v);
 
-            mr.VerifyAll();
+            hk.VerifyAll();
+            hkcu.VerifyAll();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -24,28 +24,27 @@ using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using NUnit.Framework;
-using Rhino.Mocks;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CommonMockFactory = Reko.UnitTests.Mocks.CommonMockFactory;
 
 namespace Reko.UnitTests.Core
 {
     [TestFixture]
     public class ImportResolverTests
     {
-        private MockRepository mr;
-        private MockFactory mockFactory;
-        private IPlatform platform;
+        private CommonMockFactory mockFactory;
+        private Mock<IPlatform> platform;
         private Program program;
 
         [SetUp]
         public void Setup()
         {
-            this.mr = new MockRepository();
-            this.mockFactory = new MockFactory(mr);
-            this.platform = mockFactory.CreatePlatform();
+            this.mockFactory = new CommonMockFactory();
+            this.platform = mockFactory.CreateMockPlatform();
             this.program = mockFactory.CreateProgram();
         }
 
@@ -84,7 +83,7 @@ namespace Reko.UnitTests.Core
             program.EnvironmentMetadata.Modules.Add("foo", module);
 
             var impres = new ImportResolver(proj, program, new FakeDecompilerEventListener());
-            var ep = impres.ResolveProcedure("foo", "bar@4", platform);
+            var ep = impres.ResolveProcedure("foo", "bar@4", platform.Object);
             Assert.AreEqual("bar", ep.Name);
         }
 
@@ -123,7 +122,7 @@ namespace Reko.UnitTests.Core
             program.EnvironmentMetadata.Modules.Add(module.ModuleName, module);
 
             var impres = new ImportResolver(proj, program, new FakeDecompilerEventListener());
-            var ep = impres.ResolveProcedure("foo", 9, platform);
+            var ep = impres.ResolveProcedure("foo", 9, platform.Object);
             Assert.AreEqual("bar", ep.Name);
         }
 
@@ -177,7 +176,7 @@ namespace Reko.UnitTests.Core
             });
 
             var impres = new ImportResolver(proj, program, new FakeDecompilerEventListener());
-            var ep = impres.ResolveProcedure("foo", "bar", platform);
+            var ep = impres.ResolveProcedure("foo", "bar", platform.Object);
             Assert.AreEqual("bar", ep.Name);
 
             var sigExp =
@@ -229,7 +228,7 @@ namespace Reko.UnitTests.Core
             program.EnvironmentMetadata.Modules.Add(module.ModuleName, module);
 
             var impres = new ImportResolver(proj, program, new FakeDecompilerEventListener());
-            var dt = impres.ResolveImport("foo", "bar", platform);
+            var dt = impres.ResolveImport("foo", "bar", platform.Object);
             Assert.AreEqual("&bar", dt.ToString());
         }
 
@@ -238,13 +237,15 @@ namespace Reko.UnitTests.Core
         {
             var proj = new Project();
             var impres = new ImportResolver(proj, program, new FakeDecompilerEventListener());
-            platform.Stub(p => p.ResolveImportByName(null, null)).
-                IgnoreArguments().Return(null);
+            platform.Setup(p => p.ResolveImportByName(
+                It.IsAny<string>(),
+                It.IsAny<string>()))
+              .Returns((Expression)null);
             SerializedType nullType = null;
-            platform.Stub(p => p.DataTypeFromImportName("??_7Scope@@6B@")).
-                Return(Tuple.Create("`vftable'", nullType, nullType));
+            platform.Setup(p => p.DataTypeFromImportName("??_7Scope@@6B@")).
+                Returns(Tuple.Create("`vftable'", nullType, nullType));
 
-            var id = impres.ResolveImport("foo", "??_7Scope@@6B@", platform);
+            var id = impres.ResolveImport("foo", "??_7Scope@@6B@", platform.Object);
 
             Assert.AreEqual("`vftable'", id.ToString());
             Assert.IsInstanceOf<UnknownType>(id.DataType);

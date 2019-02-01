@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -18,12 +18,11 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Gui;
-using Reko.Gui.Forms;
 using Reko.UserInterfaces.WindowsForms;
 using Reko.UserInterfaces.WindowsForms.Forms;
-using Rhino.Mocks;
 using System;
 using System.ComponentModel.Design;
 using System.Linq;
@@ -38,13 +37,11 @@ namespace Reko.UnitTests.Gui.Windows
         Form form;
         DecompilerShellUiService svc;
         ServiceContainer sc;
-        MockRepository mr;
         private MainForm mainForm;
 
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
             form = new Form();
             form.IsMdiContainer = true;
             sc = new ServiceContainer();
@@ -62,17 +59,15 @@ namespace Reko.UnitTests.Gui.Windows
         [Test]
         public void DSU_CreateWindow()
         {
-            var pane = mr.StrictMock<IWindowPane>();
-            pane.Expect(p => p.SetSite(sc));
-            pane.Expect(p => p.CreateControl()).Return(new Control());
-            mr.ReplayAll();
+            var pane = new Mock<IWindowPane>();
+            pane.Setup(p => p.SetSite(sc));
+            pane.Setup(p => p.CreateControl()).Returns(new Control());
 
-            IWindowFrame window = svc.CreateWindow("testWin", "Test Window", pane);
+            IWindowFrame window = svc.CreateWindow("testWin", "Test Window", pane.Object);
             Assert.IsNotNull(window);
             Assert.AreEqual(1, svc.DocumentWindows.Count());
-            Assert.AreSame(pane, svc.DocumentWindows.First().Pane);
+            Assert.AreSame(pane.Object, svc.DocumentWindows.First().Pane);
             window.Show();
-            mr.VerifyAll();
         }
 
 
@@ -81,23 +76,19 @@ namespace Reko.UnitTests.Gui.Windows
         {
             form.Show();
 
-            var pane = mr.StrictMock<IWindowPane>();
-            Expect.Call(() => pane.SetSite(sc));
-            Expect.Call(pane.CreateControl()).IgnoreArguments().Return(new Control());
+            var pane = new Mock<IWindowPane>();
+            pane.Setup(p => p.SetSite(sc)).Verifiable();
+            pane.Setup(p => p.CreateControl()).Returns(new Control()).Verifiable();
+            pane.Setup(p => p.Close()).Verifiable();
 
-            Expect.Call(() => pane.Close());
-
-            mr.ReplayAll();
-
-            var frame = svc.CreateWindow("testWindow", "Test Window", pane);
+            var frame = svc.CreateWindow("testWindow", "Test Window", pane.Object);
             frame.Show();
             Assert.AreEqual(1, svc.DocumentWindows.Count());
             Assert.IsNotNull(svc.FindWindow("testWindow"));
             frame.Close();
             Assert.IsNull(svc.FindWindow("testWindow"));
 
-            mr.VerifyAll();
-
+            pane.VerifyAll();
         }
 
         [Test]
@@ -105,19 +96,18 @@ namespace Reko.UnitTests.Gui.Windows
         {
             form.Show();
 
-            var pane = mr.StrictMock<IWindowPane>();
+            var pane = new Mock<IWindowPane>();
             var ctrl1 = new Control();
-            pane.Expect(s => s.SetSite(Arg<IServiceProvider>.Is.Anything));
-            pane.Expect(s => s.CreateControl()).Return(ctrl1);
-            pane.Expect(s => s.Close());
-            mr.ReplayAll();
+            pane.Setup(s => s.SetSite(It.IsAny<IServiceProvider>())).Verifiable();
+            pane.Setup(s => s.CreateControl()).Returns(ctrl1).Verifiable();
+            pane.Setup(s => s.Close());
 
-            var frame = svc.CreateWindow("testWindow", "Test Window", pane);
+            var frame = svc.CreateWindow("testWindow", "Test Window", pane.Object);
             frame.Show();
             frame.Show();
             frame.Close();
 
-            mr.VerifyAll();
+            pane.VerifyAll();
         }
      }
 }

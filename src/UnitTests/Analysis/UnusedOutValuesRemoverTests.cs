@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -18,29 +18,27 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
+using Reko.Analysis;
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Services;
+using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Reko.Core;
-using Reko.Analysis;
-using System.IO;
 using System.Diagnostics;
-using Rhino.Mocks;
-using Reko.Core.Services;
-using Reko.Core.Types;
-using Reko.Core.Expressions;
+using System.IO;
+using System.Linq;
 
 namespace Reko.UnitTests.Analysis
 {
     [TestFixture]
     public class UnusedOutValuesRemoverTests
     {
-        private MockRepository mr;
-        private IImportResolver import;
-        private DecompilerEventListener eventListener;
+        private Mock<IImportResolver> import;
+        private Mock<DecompilerEventListener> eventListener;
         private ProgramBuilder pb;
         private List<SsaState> ssaStates;
         private RegisterStorage regA;
@@ -51,9 +49,8 @@ namespace Reko.UnitTests.Analysis
         {
             UnusedOutValuesRemover.trace.Level = TraceLevel.Verbose;
 
-            this.mr = new MockRepository();
-            this.import = mr.Stub<IImportResolver>();
-            this.eventListener = mr.Stub<DecompilerEventListener>();
+            this.import = new Mock<IImportResolver>();
+            this.eventListener = new Mock<DecompilerEventListener>();
             this.pb = new ProgramBuilder();
             this.ssaStates = new List<SsaState>();
             this.regA = new RegisterStorage("regA", 0x1234, 0, PrimitiveType.Word32);
@@ -78,8 +75,8 @@ namespace Reko.UnitTests.Analysis
                 program,
                 ssaStates,
                 dataFlow,
-                import,
-                eventListener);
+                import.Object,
+                eventListener.Object);
             uvr.Transform();
         }
 
@@ -101,17 +98,18 @@ namespace Reko.UnitTests.Analysis
 
         private void RunTest(string sExp, Program program)
         {
-            mr.ReplayAll();
-
-            var dfa = new DataFlowAnalysis(program, import, eventListener);
+            var dfa = new DataFlowAnalysis(
+                program, 
+                import.Object, 
+                eventListener.Object);
             var ssts = dfa.RewriteProceduresToSsa();
 
             var uvr = new UnusedOutValuesRemover(
                 program,
                 ssts.Select(sst => sst.SsaState),
                 dfa.ProgramDataFlow,
-                import,
-                eventListener);
+                import.Object,
+                eventListener.Object);
             uvr.Transform();
 
             var sb = new StringWriter();
@@ -126,7 +124,6 @@ namespace Reko.UnitTests.Analysis
                 Debug.Print(sActual);
                 Assert.AreEqual(sExp, sActual);
             }
-            mr.VerifyAll();
         }
 
         [Test]

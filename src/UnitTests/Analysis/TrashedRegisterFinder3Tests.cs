@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
@@ -27,26 +28,23 @@ using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
-using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Analysis
 {
     [TestFixture]
     public class TrashedRegisterFinder3Tests
     {
-        private MockRepository mr;
-        private IPlatform platform;
         private IProcessorArchitecture arch;
         private ProgramBuilder builder;
         private Program program;
-        private IImportResolver importResolver;
+        private Mock<IImportResolver> importResolver;
+        private Mock<IPlatform> platform;
         private ProgramDataFlow dataFlow;
         private StringBuilder sbExpected;
         private ExternalProcedure fnExit;
@@ -54,11 +52,10 @@ namespace Reko.UnitTests.Analysis
         [SetUp]
         public void Setup()
         {
-            this.mr = new MockRepository();
-            this.platform = mr.Stub<IPlatform>();
+            this.platform = new Mock<IPlatform>();
             this.arch = new FakeArchitecture();
             this.builder = new ProgramBuilder(arch);
-            this.importResolver = mr.Stub<IImportResolver>();
+            this.importResolver = new Mock<IImportResolver>();
             this.sbExpected = new StringBuilder();
             this.fnExit = new ExternalProcedure(
                 "exit",
@@ -71,8 +68,6 @@ namespace Reko.UnitTests.Analysis
 
         private void RunTest()
         {
-            mr.ReplayAll();
-
             this.program = builder.BuildProgram();
             this.dataFlow = new ProgramDataFlow(program);
             var sscf = new SccFinder<Procedure>(new ProcedureGraph(program), ProcessScc);
@@ -126,11 +121,15 @@ namespace Reko.UnitTests.Analysis
                     program,
                     proc,
                     procSet,
-                    importResolver,
+                    importResolver.Object,
                     dataFlow);
                 sst.Transform();
                 sst.AddUsesToExitBlock();
-                var vp = new ValuePropagator(program.SegmentMap, sst.SsaState, importResolver, NullDecompilerEventListener.Instance);
+                var vp = new ValuePropagator(
+                    program.SegmentMap, 
+                    sst.SsaState, 
+                    importResolver.Object,
+                    NullDecompilerEventListener.Instance);
                 vp.Transform();
                 sstSet.Add(sst);
             }
@@ -159,7 +158,8 @@ namespace Reko.UnitTests.Analysis
 
         private void Given_PlatformTrashedRegisters(params RegisterStorage[] regs)
         {
-            platform.Stub(p => p.CreateTrashedRegisters()).Return(regs.ToHashSet());
+            platform.Setup(p => p.CreateTrashedRegisters())
+                .Returns(regs.ToHashSet());
         }
 
         private void Given_Architecture(IProcessorArchitecture arch)

@@ -1,7 +1,7 @@
 
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,46 +19,43 @@
  */
 #endregion
 
-using Reko.Arch.X86;
+using Moq;
+using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
-using Reko.Core.Code;
-using Reko.Core.Types;
+using Reko.Core.Serialization;
 using Reko.UnitTests.Mocks;
-using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using Rhino.Mocks;
-using Reko.Core.Serialization;
 using System.Linq;
 
 namespace Reko.UnitTests.Analysis
 {
-	/// <summary>
-	/// Used to test register liveness across the whole program.
+    /// <summary>
+    /// Used to test register liveness across the whole program.
     /// This shows the result of analysis just before the call rewriting
     /// takes place.
-	/// </summary>
-	[TestFixture]
+    /// </summary>
+    [TestFixture]
 	public class RegisterLivenessTests : AnalysisTestBase
 	{
-        private MockRepository mr;
         private SortedList<Address, Procedure_v1> userSigs;
-        private IImportResolver importResolver;
+        private Mock<IImportResolver> importResolver;
 
         [SetUp]
         public void Setup()
         {
-            this.mr = new MockRepository();
             userSigs = new SortedList<Address, Procedure_v1>();
-            this.importResolver = mr.Stub<IImportResolver>();
+            this.importResolver = new Mock<IImportResolver>();
         }
 
 		protected override void RunTest(Program program, TextWriter writer)
 		{
 			var eventListener = new FakeDecompilerEventListener();
-			var dfa = new DataFlowAnalysis(program, importResolver, eventListener);
+			var dfa = new DataFlowAnalysis(
+                program, 
+                importResolver.Object, 
+                eventListener);
             program.User.Procedures = userSigs;
             var usb = new UserSignatureBuilder(program);
             usb.BuildSignatures(eventListener);
@@ -73,7 +70,7 @@ namespace Reko.UnitTests.Analysis
                 program,
                 ssts.Select(sst => sst.SsaState),
                 dfa.ProgramDataFlow,
-                importResolver,
+                importResolver.Object,
                 eventListener);
             uvr.Transform();
             DumpProcedureFlows(program, dfa, writer);
