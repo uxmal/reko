@@ -271,6 +271,7 @@
     <Compile Include="Gui\Windows\Forms\SymbolSourceInteractorTests.cs" />
     <Compile Include="ImageLoaders\Elf\Relocators\x86RelocatorTests.cs" />
     <Compile Include="ImageLoaders\IntelHex\HexLoaderTests.cs" />
+    <Compile Include="ImageLoaders\OdbgScript\OllyLang.Tests.cs" />
     <Compile Include="Loading\NullImageLoaderTests.cs" />
     <Compile Include="Loading\SymbolLoadingServiceTests.cs" />
     <Compile Include="ImageLoaders\Llvm\LlvmLexerTests.cs" />

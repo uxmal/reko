@@ -34,6 +34,7 @@ using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -381,7 +382,6 @@ namespace Reko.UnitTests.Scanning
                     It.IsAny<Block>(),
                     It.IsAny<Address>()));
            
-                ExpectJumpTarget(0x0C00, 0x0000, "l0C00_0000");
                 var block1234 = ExpectJumpTarget(0x0C00, 0x0034, "foo1");
                 var block1236 = ExpectJumpTarget(0x0C00, 0x0036, "foo2");
                 var block1238 = ExpectJumpTarget(0x0C00, 0x0038, "foo3");
@@ -422,20 +422,16 @@ namespace Reko.UnitTests.Scanning
 
         private Block ExpectJumpTarget(ushort selector, ushort offset, string blockLabel)
         {
+            var addr = Address.SegPtr(selector, offset);
             var block = new Block(proc, blockLabel) { Address = Address.SegPtr(selector, offset) };
             scanner.Setup(s => s.EnqueueJumpTarget(
                 It.IsNotNull<Address>(),
-                It.Is<Address>(q => Niz(q, selector, offset)),
+                addr,
                 It.IsAny<Procedure>(),
                 It.IsAny<ProcessorState>()))
                 .Returns(block)
                 .Verifiable();
             return block;
-        }
-
-        private bool Niz(Address q, ushort selector, ushort offset)
-        {
-            return q.Selector.Value == selector && q.Offset == offset;
         }
 
         [Test]
@@ -453,16 +449,13 @@ namespace Reko.UnitTests.Scanning
                     It.IsAny<Address>(),
                     It.IsAny<Address>())).Returns((ExternalProcedure)null);
 
-                scanner.Setup(x => x.EnqueueJumpTarget(
+                scanner.SetupSequence(x => x.EnqueueJumpTarget(
                     It.IsNotNull<Address>(),
                     It.Is<Address>(a => a.Offset == 2),
                     proc,
-                    It.IsAny<ProcessorState>())).Returns(follow);
-                scanner.Setup(x => x.EnqueueJumpTarget(
-                    It.IsNotNull<Address>(),
-                    It.Is<Address>(a => a.Offset == 2),
-                    proc,
-                    It.IsAny<ProcessorState>())).Returns(block);
+                    It.IsAny<ProcessorState>()))
+                        .Returns(follow)
+                        .Returns(block);
                 scanner.Setup(x => x.EnqueueJumpTarget(
                     It.IsNotNull<Address>(),
                     It.Is<Address>(a => a.Offset == 0),

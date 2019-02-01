@@ -366,7 +366,7 @@ namespace Reko.UnitTests.Scanning
 
             scanner.Setup(x => x.FindContainingBlock(
                 It.IsAny<Address>())).Returns(block);
-            scanner.Expect(x => x.GetImportedProcedure(
+            scanner.Setup(x => x.GetImportedProcedure(
                 It.IsNotNull<IProcessorArchitecture>(),
                 It.Is<Address>(a => a.ToLinear() == 0x102000u),
                 It.IsNotNull<Address>())).Returns(alloca);
@@ -385,9 +385,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Bwi_CallingAllocaWithNonConstant()
         {
-            this.arch = null;
-            var arch = new X86ArchitectureFlat32("x86-protected-32");
-            program.Platform = new DefaultPlatform(null, arch);
+            program.Platform = new DefaultPlatform(null, arch.Object);
 
             var sig = CreateSignature(Registers.esp, Registers.eax);
             var alloca = new ExternalProcedure("alloca", sig, new ProcedureCharacteristics
@@ -397,13 +395,13 @@ namespace Reko.UnitTests.Scanning
 
             trace.Add(m => m.Call(Address.Ptr32(0x102000), 4));
 
-                scanner.Setup(x => x.FindContainingBlock(
+            scanner.Setup(x => x.FindContainingBlock(
                     It.IsAny<Address>())).Returns(block);
-                scanner.Expect(x => x.GetImportedProcedure(
+            scanner.Setup(x => x.GetImportedProcedure(
                     It.IsNotNull<IProcessorArchitecture>(),
                     Address.Ptr32(0x102000u),
                     It.IsNotNull<Address>())).Returns(alloca);
-                Given_SimpleTrace(trace);
+            Given_SimpleTrace(trace);
 
             var wi = CreateWorkItem(Address.Ptr32(0x1000));
             wi.Process();
@@ -461,26 +459,27 @@ namespace Reko.UnitTests.Scanning
             var block2 = new Block(proc, "l00100008");
             var block3 = new Block(proc, "l00100004");
             arch.Setup(a => a.PointerType).Returns(PrimitiveType.Ptr32);
-            scanner.Setup(s => s.FindContainingBlock(Address.Ptr32(0x00001000))).Returns(block);
-            scanner.Setup(s => s.FindContainingBlock(Address.Ptr32(0x00001004))).Returns(block2);
+            scanner.Setup(s => s.FindContainingBlock(Address.Ptr32(0x00100000))).Returns(block);
+            scanner.Setup(s => s.FindContainingBlock(Address.Ptr32(0x00100004))).Returns(block2);
             Given_NoImportedProcedure();
-            scanner.Expect(s => s.EnqueueJumpTarget(
+            Given_NoInlinedCall();
+            scanner.Setup(s => s.EnqueueJumpTarget(
                 It.IsNotNull<Address>(),
                 It.Is<Address>(a => a.ToLinear() == 0x00100004),
                 It.IsNotNull<Procedure>(),
                 It.IsNotNull<ProcessorState>()))
                 .Returns(block3);
-            Given_NoInlinedCall();
-            scanner.Expect(s => s.ScanProcedure(
+            scanner.Setup(s => s.ScanProcedure(
                 It.IsNotNull<IProcessorArchitecture>(),
                 Address.Ptr32(0x102000),
                 null,
                 It.IsNotNull<ProcessorState>())).Returns(proc2);
-            Given_SimpleTrace(trace);
 
             trace.Add(m => m.Call(Address.Ptr32(0x102000), 0));
             trace.Add(m => m.Return(0, 0));
-            var wi = CreateWorkItem(Address.Ptr32(0x1000));
+            Given_SimpleTrace(trace);
+
+            var wi = CreateWorkItem(Address.Ptr32(0x00100000));
             wi.Process();
 
             scanner.Verify();
