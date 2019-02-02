@@ -2009,7 +2009,7 @@ T_177: (in c : Eq_10)
 T_178: (in b : Eq_10)
   Class: Eq_10
   DataType: Eq_10
-  OrigDataType: uint8
+  OrigDataType: byte
 T_179: (in de : Eq_12)
   Class: Eq_12
   DataType: Eq_12
@@ -2941,7 +2941,7 @@ T_410: (in cond(c) : byte)
 T_411: (in a : byte)
   Class: Eq_10
   DataType: Eq_10
-  OrigDataType: bool
+  OrigDataType: byte
 T_412: (in 1 : int8)
   Class: Eq_412
   DataType: int8

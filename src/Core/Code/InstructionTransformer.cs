@@ -277,8 +277,8 @@ namespace Reko.Core.Code
 
 		public virtual Expression VisitSlice(Slice slice)
 		{
-			slice.Expression = slice.Expression.Accept(this);
-			return slice;
+			var e = slice.Expression.Accept(this);
+			return new Slice(slice.DataType, e, slice.Offset);
 		}
 
 		public virtual Expression VisitTestCondition(TestCondition tc)

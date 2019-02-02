@@ -326,7 +326,7 @@ Eq_81 fn0800_0402(Eq_81 ds)
 		ui16 ax_118 = *((word32) ds + 0x00002A27);
 		++*((word32) ds + 0x00002A27);
 		Eq_858 es_bx_123 = *((word32) ds + 9884);
-		fn0800_BF9E(DPB(ptrLoc0C, 0x4348, 0), ds, DPB(ptrLoc08_31, SEQ(SLICE(es_bx_123, selector, 16), (word16) es_bx_123)[ax_118].w0000, 0));
+		fn0800_BF9E(DPB(ptrLoc0C, 0x4348, 0), ds, DPB(ptrLoc08_31, *((word16) (word16) es_bx_123 + ax_118 * 0x04), 0));
 		fn0800_0C6C(ds, DPB(ptrLoc08_31, 0x4348, 0));
 		word16 di_156 = 0x4348;
 		word16 cx_161 = ~0x00;
@@ -4074,7 +4074,7 @@ word16 fn0800_2DE2(Eq_81 si, Eq_81 ds, Eq_870 * ptrArg02, Eq_81 wArg04, Eq_3864 
 		if (ax_86 == *((word32) ds + 9882))
 			return 0x00;
 		Eq_858 es_bx_569 = *((word32) ds + 9884);
-		fn0800_BF9E(DPB(ptrLoc1E, 0x45B2, 0), ds, DPB(ptrLoc1A, SEQ(SLICE(es_bx_569, selector, 16), (word16) es_bx_569)[*((word32) ds + 18002)].w0000, 0));
+		fn0800_BF9E(DPB(ptrLoc1E, 0x45B2, 0), ds, DPB(ptrLoc1A, *((word16) (word16) es_bx_569 + *((word32) ds + 18002) * 0x04), 0));
 		Eq_81 di_1227 = 0x45B2;
 		word16 cx_599 = ~0x00;
 		while (cx_599 != 0x00)
@@ -11122,7 +11122,7 @@ l0800_8FCB:
 						ax.u0 = 0x0A;
 						dx_ax = di * 0x0A;
 						dx = SLICE(dx_ax, word16, 16);
-						dl = SLICE(dx_ax, byte, 16);
+						dl.u0 = SLICE(dx_ax, byte, 16);
 						v88.u0 = (byte) wLoc0C.u0 + 0x0A;
 						wLoc0C = v88;
 						SCZO = cond(v88);
@@ -11367,14 +11367,14 @@ l0800_8FCB:
 					di = fp - 44;
 					cx.u0 = 0x10;
 					cl = (byte) cx;
-					ch = SLICE(cx, byte, 8);
+					ch.u1 = SLICE(cx, byte, 8);
 					while (cx != 0x00)
 					{
 						es->*di = ax;
 						di = (word32) di + 0x02;
 						--cx;
 						cl = (byte) cx;
-						ch = SLICE(cx, byte, 8);
+						ch.u1 = SLICE(cx, byte, 8);
 					}
 					es = ss->*sp;
 					sp = (union Eq_81 Eq_81::*) ((char *) sp + 0x02);
