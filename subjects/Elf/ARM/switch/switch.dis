@@ -521,7 +521,7 @@ l000085A8:
 // SymbolicIn:
 
 l000085B0:
-	byte C_35 = SLICE(cond(r1_10 - 0x10000000), bool, 1)
+	bool C_35 = SLICE(cond(r1_10 - 0x10000000), bool, 1)
 	branch r1_10 >=u 0x10000000 l000085B8
 // DataOut:
 // DataOut (flags):
@@ -564,7 +564,7 @@ l000085C0:
 // SymbolicIn:
 
 l000085C4:
-	byte C_50 = SLICE(cond(r1_10 - 0x80000000), bool, 1)
+	bool C_50 = SLICE(cond(r1_10 - 0x80000000), bool, 1)
 	branch r1_10 >=u 0x80000000 l000085CC
 // DataOut:
 // DataOut (flags):
@@ -710,7 +710,7 @@ l00008604_1:
 // SymbolicIn:
 
 l00008608:
-	byte Z_116 = SLICE(cond(r0), bool, 2)
+	bool Z_116 = SLICE(cond(r0), bool, 2)
 	branch r0 == 0x00000000 l00008610
 // DataOut:
 // DataOut (flags):

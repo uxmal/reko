@@ -39,7 +39,7 @@ namespace Reko.Arch.Sparc
                 Registers.psr,
                 (uint) grf, 
                 arch.GrfToString(Registers.psr, "", (uint) grf),
-                Bits.IsSingleBitSet((uint)grf) ? PrimitiveType.Byte : PrimitiveType.Bool);
+                Bits.IsSingleBitSet((uint)grf) ? PrimitiveType.Bool: PrimitiveType.Byte);
         }
 
         private void RewriteBranch(Expression cond)

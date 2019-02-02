@@ -77,10 +77,10 @@ l000000DE:
 	goto l00000080;
 }
 
-// 000000EC: FlagGroup Eq_124 prvCopyDataToQueue(Register Eq_2 r0, Register Eq_2 r1, Register Eq_2 r2, Register Eq_2 r3, Register Eq_2 r7, Register Eq_2 lr, Register out Eq_2 r0Out, Register out Eq_2 r7Out, Register out Eq_2 lrOut)
-Eq_124 prvCopyDataToQueue(Eq_2 r0, Eq_2 r1, Eq_2 r2, Eq_2 r3, Eq_2 r7, Eq_2 lr, union Eq_2 & r0Out, union Eq_2 & r7Out, union Eq_2 & lrOut)
+// 000000EC: FlagGroup bool prvCopyDataToQueue(Register Eq_2 r0, Register Eq_2 r1, Register Eq_2 r2, Register Eq_2 r3, Register Eq_2 r7, Register Eq_2 lr, Register out Eq_2 r0Out, Register out Eq_2 r7Out, Register out Eq_2 lrOut)
+bool prvCopyDataToQueue(Eq_2 r0, Eq_2 r1, Eq_2 r2, Eq_2 r3, Eq_2 r7, Eq_2 lr, union Eq_2 & r0Out, union Eq_2 & r7Out, union Eq_2 & lrOut)
 {
-	Eq_124 Z_194;
+	bool Z_194;
 	Eq_2 r5_117;
 	Eq_2 r4_124 = r0;
 	Eq_2 r0_109 = *((word32) r0 + 0x0040);
@@ -2200,8 +2200,8 @@ void vListInsertEnd(struct Eq_1479 * r0, struct Eq_1480 * r1)
 	r0->dw0000 = r2_5 + 0x01;
 }
 
-// 0000830C: FlagGroup Eq_4915 vListInsert(Register (ptr32 Eq_482) r0, Register (ptr32 Eq_1556) r1)
-Eq_4915 vListInsert(struct Eq_482 * r0, struct Eq_1556 * r1)
+// 0000830C: FlagGroup bool vListInsert(Register (ptr32 Eq_482) r0, Register (ptr32 Eq_1556) r1)
+bool vListInsert(struct Eq_482 * r0, struct Eq_1556 * r1)
 {
 	struct Eq_1556 * r2_13;
 	struct Eq_1556 * r3_14;
@@ -2249,8 +2249,8 @@ struct Eq_1480 * uxListRemove(struct Eq_1480 * r0)
 	return r3_21 - 0x01;
 }
 
-// 00008364: FlagGroup Eq_40 xQueueCRSend(Register Eq_2 r0, Register Eq_2 r1, Register Eq_2 r2, Register Eq_2 r7, Register Eq_2 lr, Register ptr32 cpsr, Register out Eq_2 r0Out)
-Eq_40 xQueueCRSend(Eq_2 r0, Eq_2 r1, Eq_2 r2, Eq_2 r7, Eq_2 lr, ptr32 cpsr, union Eq_2 & r0Out)
+// 00008364: FlagGroup bool xQueueCRSend(Register Eq_2 r0, Register Eq_2 r1, Register Eq_2 r2, Register Eq_2 r7, Register Eq_2 lr, Register ptr32 cpsr, Register out Eq_2 r0Out)
+bool xQueueCRSend(Eq_2 r0, Eq_2 r1, Eq_2 r2, Eq_2 r7, Eq_2 lr, ptr32 cpsr, union Eq_2 & r0Out)
 {
 	__msr(cpsr, 191);
 	__isb_sy();
@@ -2258,10 +2258,10 @@ Eq_40 xQueueCRSend(Eq_2 r0, Eq_2 r1, Eq_2 r2, Eq_2 r7, Eq_2 lr, ptr32 cpsr, unio
 	vPortEnterCritical(cpsr, out r0_161);
 	if (*((word32) r0 + 0x0038) == *((word32) r0 + 0x003C))
 	{
-		Eq_40 Z_33 = vPortExitCritical(cpsr);
+		bool Z_33 = vPortExitCritical(cpsr);
 		if (r2 != 0x00)
 		{
-			Eq_40 Z_43 = vCoRoutineAddToDelayedList(r2, (word32) r0 + 0x0010);
+			bool Z_43 = vCoRoutineAddToDelayedList(r2, (word32) r0 + 0x0010);
 			__msr(cpsr, 0x00);
 			r0Out = ~0x03;
 			return Z_43;
@@ -2281,7 +2281,7 @@ Eq_40 xQueueCRSend(Eq_2 r0, Eq_2 r1, Eq_2 r2, Eq_2 r7, Eq_2 lr, ptr32 cpsr, unio
 	Eq_2 r2_65 = *((word32) r0 + 0x0038);
 	Eq_2 r3_66 = *((word32) r0 + 0x003C);
 	Eq_2 r0_136 = 0x00;
-	Eq_40 Z_157 = SLICE(cond(r2_65 - r3_66), bool, 2);
+	bool Z_157 = SLICE(cond(r2_65 - r3_66), bool, 2);
 	if (r2_65 < r3_66)
 	{
 		Z_157 = prvCopyDataToQueue(r0, r1, 0x00, r3_66, r7, lr, out r0_162, out r7_78, out lr_73);
@@ -2309,8 +2309,8 @@ l000083AA:
 	}
 }
 
-// 00008400: FlagGroup Eq_40 xQueueCRReceive(Register Eq_2 r0, Register Eq_2 r1, Register Eq_2 r2, Register Eq_2 r6, Register Eq_2 r7, Register Eq_2 lr, Register ptr32 cpsr, Register out Eq_2 r0Out, Register out Eq_2 r6Out, Register out Eq_2 r7Out, Register out Eq_2 lrOut)
-Eq_40 xQueueCRReceive(Eq_2 r0, Eq_2 r1, Eq_2 r2, Eq_2 r6, Eq_2 r7, Eq_2 lr, ptr32 cpsr, union Eq_2 & r0Out, union Eq_2 & r6Out, union Eq_2 & r7Out, union Eq_2 & lrOut)
+// 00008400: FlagGroup bool xQueueCRReceive(Register Eq_2 r0, Register Eq_2 r1, Register Eq_2 r2, Register Eq_2 r6, Register Eq_2 r7, Register Eq_2 lr, Register ptr32 cpsr, Register out Eq_2 r0Out, Register out Eq_2 r6Out, Register out Eq_2 r7Out, Register out Eq_2 lrOut)
+bool xQueueCRReceive(Eq_2 r0, Eq_2 r1, Eq_2 r2, Eq_2 r6, Eq_2 r7, Eq_2 lr, ptr32 cpsr, union Eq_2 & r0Out, union Eq_2 & r6Out, union Eq_2 & r7Out, union Eq_2 & lrOut)
 {
 	__msr(cpsr, 191);
 	__isb_sy();
@@ -2318,10 +2318,10 @@ Eq_40 xQueueCRReceive(Eq_2 r0, Eq_2 r1, Eq_2 r2, Eq_2 r6, Eq_2 r7, Eq_2 lr, ptr3
 	Eq_2 r5_16 = *((word32) r0 + 0x0038);
 	if (r5_16 == 0x00)
 	{
-		Eq_40 Z_105 = SLICE(cond(r2), bool, 2);
+		bool Z_105 = SLICE(cond(r2), bool, 2);
 		if (r2 != 0x00)
 		{
-			Eq_40 Z_113 = vCoRoutineAddToDelayedList(r2, (word32) r0 + 0x0024);
+			bool Z_113 = vCoRoutineAddToDelayedList(r2, (word32) r0 + 0x0024);
 			__msr(cpsr, r5_16);
 			r0Out = ~0x03;
 			r6Out = r6;
@@ -2483,8 +2483,8 @@ bool vPortEnterCritical(ptr32 cpsr, union Eq_9 & r0Out)
 	return C_30;
 }
 
-// 000085B0: FlagGroup Eq_5443 vPortExitCritical(Register ptr32 cpsr)
-Eq_5443 vPortExitCritical(ptr32 cpsr)
+// 000085B0: FlagGroup bool vPortExitCritical(Register ptr32 cpsr)
+bool vPortExitCritical(ptr32 cpsr)
 {
 	Eq_9 r0_9 = xPortRaisePrivilege(cpsr);
 	word32 * r2_13 = globals->ptr85D8;
@@ -2492,7 +2492,7 @@ Eq_5443 vPortExitCritical(ptr32 cpsr)
 	*r2_13 = r3_14 - 0x01;
 	if (r3_14 == 0x01)
 		__msr(cpsr, r3_14 - 0x01);
-	Eq_5443 Z_20 = SLICE(cond(r0_9 - 0x01), bool, 2);
+	bool Z_20 = SLICE(cond(r0_9 - 0x01), bool, 2);
 	if (r0_9 != 0x01)
 		__msr(cpsr, __mrs(cpsr) | 0x01);
 	return Z_20;
@@ -2565,7 +2565,7 @@ void prvFlashCoRoutine(struct Eq_5590 * r0, Eq_2 r7, Eq_2 lr, ptr32 cpsr)
 		r5_107 = globals->ptr86E0;
 		r6_105 = fp - 0x0014;
 l00008696:
-		Eq_5624 Z_59 = xQueueCRReceive(*r5_107, r6_105, ~0x00, r6_105, r7, lr, cpsr, out r0_26, out r6_105, out r7, out lr);
+		bool Z_59 = xQueueCRReceive(*r5_107, r6_105, ~0x00, r6_105, r7, lr, cpsr, out r0_26, out r6_105, out r7, out lr);
 		if (Z_59)
 		{
 			r4_113->w0068 = 0x01C2;
@@ -2597,7 +2597,7 @@ l00008690:
 void prvFixedDelayCoRoutine(struct Eq_5670 * r0, ui32 r1, Eq_2 r7, Eq_2 lr, ptr32 cpsr)
 {
 	Eq_2 r0_81;
-	Eq_5676 Z_29;
+	bool Z_29;
 	word32 r0_22;
 	up32 r3_9 = (word32) r0->w0068;
 	if (r3_9 != 0x0182)
@@ -3061,8 +3061,8 @@ void xCoRoutineCreate(struct Eq_1088 * r0, uint32 r1, struct Eq_1088 * r2, ptr32
 	vListInsertEnd((char *) &r7_53->ptr0000 + 0x04 + r0_106 * 0x14, &r0_32->dw0004);
 }
 
-// 00008EF0: FlagGroup Eq_1565 vCoRoutineAddToDelayedList(Register Eq_2 r0, Register (ptr32 Eq_482) r1)
-Eq_1565 vCoRoutineAddToDelayedList(Eq_2 r0, struct Eq_482 * r1)
+// 00008EF0: FlagGroup bool vCoRoutineAddToDelayedList(Register Eq_2 r0, Register (ptr32 Eq_482) r1)
+bool vCoRoutineAddToDelayedList(Eq_2 r0, struct Eq_482 * r1)
 {
 	struct Eq_6504 * r4_14 = globals->ptr8F28;
 	up32 r5_18 = (word32) r0 + r4_14->dw0074;
@@ -3070,7 +3070,7 @@ Eq_1565 vCoRoutineAddToDelayedList(Eq_2 r0, struct Eq_482 * r1)
 	up32 r3_29 = r4_14->dw0074;
 	struct Eq_6515 * r1_30 = r4_14->ptr0000;
 	r1_30->dw0004 = r5_18;
-	Eq_1565 Z_44 = vListInsert(r4_14->ptr0068, &r1_30->dw0004);
+	bool Z_44 = vListInsert(r4_14->ptr0068, &r1_30->dw0004);
 	if (r1 == null)
 		return Z_44;
 	struct Eq_6515 * r1_53 = r4_14->ptr0000;
@@ -4683,8 +4683,8 @@ void I2CSlaveDataGet(word32 r0)
 {
 }
 
-// 0000A5C4: FlagGroup Eq_9558 memcpy(Register Eq_2 r0, Register Eq_2 r1, Register Eq_2 r2, Register Eq_2 r3, Register Eq_2 r4, Register Eq_2 r5, Register Eq_2 r6, Register Eq_2 r7, Register Eq_2 lr, Register out ptr32 r4Out, Register out ptr32 r5Out, Register out ptr32 r6Out, Register out ptr32 r7Out, Register out ptr32 lrOut)
-Eq_9558 memcpy(Eq_2 r0, Eq_2 r1, Eq_2 r2, Eq_2 r3, Eq_2 r4, Eq_2 r5, Eq_2 r6, Eq_2 r7, Eq_2 lr, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & lrOut)
+// 0000A5C4: FlagGroup bool memcpy(Register Eq_2 r0, Register Eq_2 r1, Register Eq_2 r2, Register Eq_2 r3, Register Eq_2 r4, Register Eq_2 r5, Register Eq_2 r6, Register Eq_2 r7, Register Eq_2 lr, Register out ptr32 r4Out, Register out ptr32 r5Out, Register out ptr32 r6Out, Register out ptr32 r7Out, Register out ptr32 lrOut)
+bool memcpy(Eq_2 r0, Eq_2 r1, Eq_2 r2, Eq_2 r3, Eq_2 r4, Eq_2 r5, Eq_2 r6, Eq_2 r7, Eq_2 lr, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & lrOut)
 {
 	Eq_2 r5_149 = r0;
 	if (r2 > 0x0F)

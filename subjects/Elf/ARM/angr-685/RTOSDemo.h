@@ -770,7 +770,7 @@ Eq_22: (fn word32 (Eq_2))
 	T_906 (in xTaskRemoveFromEventList : ptr32)
 	T_978 (in xTaskRemoveFromEventList : ptr32)
 	T_1151 (in xTaskRemoveFromEventList : ptr32)
-Eq_37: (fn Eq_40 (ptr32))
+Eq_37: (fn bool (ptr32))
 	T_37 (in vPortExitCritical : ptr32)
 	T_38 (in signature of vPortExitCritical : void)
 	T_122 (in vPortExitCritical : ptr32)
@@ -813,84 +813,10 @@ Eq_37: (fn Eq_40 (ptr32))
 	T_5034 (in vPortExitCritical : ptr32)
 	T_5038 (in vPortExitCritical : ptr32)
 	T_5381 (in vPortExitCritical : ptr32)
-Eq_40: (union "Eq_40" (bool u0) (byte u1))
-	T_40 (in vPortExitCritical(cpsr) : byte)
-	T_123 (in vPortExitCritical(cpsr) : byte)
-	T_202 (in memcpy(*((word32) r0 + 12), r1, r0_109, r3, r0, r5_15, r2, r7, lr, out r4_124, out r5_117, out r6_30, out r7, out lr) : byte)
-	T_229 (in memcpy(*((word32) r0 + 8), r1, r0_109, r3, r0, r5_15, r2, r7, lr, out r4_71, out r5_72, out r6_73, out r7_74, out lr_66) : byte)
-	T_342 (in memcpy(r1, r1_13, r2_5, r1, r4, r5, r6, r7, lr, out r4_40, out r5_41, out r6_42, out r7_43, out lr_35) : byte)
-	T_374 (in prvCopyDataToQueue(r0, r1, r3, r3_42, r3, lr, out r0_59, out r7_410, out lr_58) : byte)
-	T_385 (in vPortExitCritical(cpsr) : byte)
-	T_389 (in vPortExitCritical(cpsr) : byte)
-	T_419 (in vPortExitCritical(cpsr) : byte)
-	T_443 (in vPortExitCritical(cpsr) : byte)
-	T_479 (in vPortExitCritical(cpsr) : byte)
-	T_494 (in vPortExitCritical(cpsr) : byte)
-	T_596 (in vPortExitCritical(cpsr) : byte)
-	T_606 (in vPortExitCritical(cpsr) : byte)
-	T_667 (in vPortExitCritical(cpsr) : byte)
-	T_670 (in vPortExitCritical(cpsr) : byte)
-	T_716 (in vPortExitCritical(cpsr) : byte)
-	T_719 (in vPortExitCritical(cpsr) : byte)
-	T_726 (in vPortExitCritical(cpsr) : byte)
-	T_743 (in vPortExitCritical(cpsr) : byte)
-	T_775 (in vPortExitCritical(cpsr) : byte)
-	T_783 (in vPortExitCritical(cpsr) : byte)
-	T_824 (in prvCopyDataToQueue(r0, r1, r3, r3, r2, lr, out r0_162, out r7_44, out lr_39) : byte)
-	T_1023 (in vPortExitCritical(cpsr) : byte)
-	T_1025 (in vPortExitCritical(cpsr) : byte)
-	T_1145 (in vPortExitCritical(cpsr) : byte)
-	T_1158 (in vPortExitCritical(cpsr) : byte)
-	T_1170 (in vPortExitCritical(cpsr) : byte)
-	T_1490 (in vPortExitCritical(cpsr) : byte)
-	T_1858 (in vPortExitCritical(cpsr) : byte)
-	T_1860 (in vPortExitCritical(cpsr) : byte)
-	T_1994 (in vPortExitCritical(cpsr) : byte)
-	T_2077 (in vPortExitCritical(cpsr) : byte)
-	T_2194 (in vPortExitCritical(cpsr) : byte)
-	T_2237 (in vPortExitCritical(cpsr) : byte)
-	T_2467 (in vPortExitCritical(cpsr) : byte)
-	T_2595 (in vPortExitCritical(cpsr) : byte)
-	T_2976 (in vPortExitCritical(cpsr) : byte)
-	T_2998 (in vPortExitCritical(cpsr) : byte)
-	T_4194 (in vPortExitCritical(cpsr) : byte)
-	T_4222 (in vPortExitCritical(cpsr) : byte)
-	T_4380 (in vPortExitCritical(cpsr) : byte)
-	T_4446 (in vPortExitCritical(cpsr) : byte)
-	T_5007 (in Z : Eq_40)
-	T_5033 (in Z_33 : Eq_40)
-	T_5035 (in vPortExitCritical(cpsr) : byte)
-	T_5039 (in vPortExitCritical(cpsr) : byte)
-	T_5060 (in Z_157 : Eq_40)
-	T_5063 (in SLICE(cond(r2_65 - r3_66), bool, 2) : bool)
-	T_5073 (in prvCopyDataToQueue(r0, r1, 0x00000000, r3_66, r7, lr, out r0_162, out r7_78, out lr_73) : byte)
-	T_5082 (in Z_43 : Eq_40)
-	T_5089 (in vCoRoutineAddToDelayedList(r2, (word32) r0 + 16) : bool)
-	T_5107 (in SLICE(cond(r0_85), bool, 2) : bool)
-	T_5116 (in Z : Eq_40)
-	T_5158 (in Z_105 : Eq_40)
-	T_5160 (in SLICE(cond(r2), bool, 2) : bool)
-	T_5163 (in Z_113 : Eq_40)
-	T_5167 (in vCoRoutineAddToDelayedList(r2, (word32) r0 + 36) : bool)
-	T_5214 (in memcpy(r1, r1_30, r2_22, (word32) r3_27 - 1, r0, r5_16, r6, r7, lr, out r4_60, out r5_189, out r6, out r7, out lr) : byte)
-	T_5230 (in SLICE(cond(r0_72), bool, 2) : bool)
-	T_5263 (in prvCopyDataToQueue(r0, r1, 0x00000000, r3_13, r7, lr, out r0_97, out r7_28, out lr_23) : byte)
-	T_5328 (in memcpy(r1, r3_38, lr_26, r3_38, r0, r2, r1, (word32) r7_35 - 1, lr_26, out r4_64, out r5_65, out r6_152, out r7_153, out lr_154) : byte)
-	T_5382 (in vPortExitCritical(cpsr) : byte)
-	T_5714 (in vCoRoutineAddToDelayedList(r0_81, null) : bool)
 Eq_65: (fn void ())
 	T_65 (in vTaskMissedYield : ptr32)
 	T_66 (in signature of vTaskMissedYield : void)
 	T_106 (in vTaskMissedYield : ptr32)
-Eq_124: (union "Eq_124" (bool u0) (Eq_9689 u1))
-	T_124 (in Z : Eq_124)
-	T_134 (in Z_194 : Eq_124)
-	T_171 (in SLICE(cond((word32) r5_15 + 1), bool, 2) : bool)
-	T_176 (in SLICE(cond((word32) r5_15 + 1), bool, 2) : bool)
-	T_253 (in SLICE(cond(r5_72 + 0x00000001), bool, 2) : bool)
-	T_267 (in SLICE(cond(r5_72 + 0x00000001), bool, 2) : bool)
-	T_271 (in SLICE(cond(r6_30 - 0x00000002), bool, 2) : bool)
-	T_289 (in SLICE(cond((word32) r5_117 + 1), bool, 2) : bool)
 Eq_155: (fn Eq_2 (Eq_2, Eq_158))
 	T_155 (in xTaskPriorityDisinherit : ptr32)
 	T_156 (in signature of xTaskPriorityDisinherit : void)
@@ -905,7 +831,7 @@ Eq_158: (union "Eq_158" (ui32 u0) (ptr32 u1))
 	T_3200 (in Mem25[r2_38 + 124:word32] : word32)
 	T_3206 (in r2_38->t007C & ~((0x00000001 << r1_39) << 0x00000000) : word32)
 	T_3209 (in Mem48[r2_38 + 124:word32] : word32)
-Eq_178: (fn Eq_40 (Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, ptr32, ptr32, ptr32, ptr32, ptr32))
+Eq_178: (fn bool (Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, ptr32, ptr32, ptr32, ptr32, ptr32))
 	T_178 (in memcpy : ptr32)
 	T_179 (in signature of memcpy : void)
 	T_220 (in memcpy : ptr32)
@@ -916,7 +842,7 @@ Eq_216: (struct "Eq_216" (0 up32 dw0000) (4 up32 dw0004) (8 up32 dw0008) (38 wor
 	T_216 (in r4_71 : (ptr32 Eq_216))
 Eq_326: (struct "Eq_326" (24 word32 dw0024) (45 byte b0045))
 	T_326 (in r0 + 12 : word32)
-Eq_368: (fn Eq_40 (Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, Eq_2))
+Eq_368: (fn bool (Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, Eq_2))
 	T_368 (in prvCopyDataToQueue : ptr32)
 	T_369 (in signature of prvCopyDataToQueue : void)
 	T_818 (in prvCopyDataToQueue : ptr32)
@@ -1620,7 +1546,7 @@ Eq_1512: (struct "Eq_1512" (24 up32 dw0024) (4C word32 dw004C))
 	T_1549 (in r1_45 : (ptr32 Eq_1512))
 	T_1552 (in Mem42[r4_12 + 4:word32] : word32)
 	T_1562 (in Mem42[r4_12 + 4:word32] : word32)
-Eq_1553: (fn Eq_1565 ((ptr32 Eq_482), (ptr32 Eq_1556)))
+Eq_1553: (fn bool ((ptr32 Eq_482), (ptr32 Eq_1556)))
 	T_1553 (in vListInsert : ptr32)
 	T_1554 (in signature of vListInsert : void)
 	T_1573 (in vListInsert : ptr32)
@@ -1644,14 +1570,6 @@ Eq_1556: (struct "Eq_1556" (0 word32 dw0000) (4 (ptr32 Eq_1556) ptr0004) (8 (ptr
 	T_4952 (in Mem37[r2_13 + 4:word32] : word32)
 	T_6537 (in r1_30 + 0x00000004 : word32)
 	T_6547 (in r1_53 + 0x00000018 : word32)
-Eq_1565: (union "Eq_1565" (byte u0) (Eq_9690 u1))
-	T_1565 (in vListInsert(r4_12->ptr006C, &r4_12->ptr0004->dw0024) : byte)
-	T_1576 (in vListInsert(r0_44, &r1_45->dw0024) : byte)
-	T_2691 (in vListInsert(r0, globals->ptr0FF4->dw0004 + 0x00000038) : byte)
-	T_6503 (in Z : Eq_1565)
-	T_6531 (in Z_44 : Eq_1565)
-	T_6538 (in vListInsert(r4_14->ptr0068, &r1_30->dw0004) : byte)
-	T_6548 (in vListInsert(r1, &r1_53->dw0004 + 5) : byte)
 Eq_1609: (fn void (ui32, word32, ui32, word32, Eq_1234, (ptr32 (ptr32 Eq_1088)), (ptr32 Eq_1088), (ptr32 Eq_1237)))
 	T_1609 (in prvInitialiseNewTask : ptr32)
 	T_1610 (in signature of prvInitialiseNewTask : void)
@@ -2121,12 +2039,9 @@ Eq_4843: (fn void ((ptr32 Eq_4829), (ptr32 ui32)))
 	T_4843 (in SSIDataGet : ptr32)
 	T_4844 (in signature of SSIDataGet : void)
 	T_4851 (in SSIDataGet : ptr32)
-Eq_4915: (union "Eq_4915" (bool u0) (byte u1))
-	T_4915 (in Z : Eq_4915)
-	T_4963 (in SLICE(cond(r4_27 + 0x00000001), bool, 2) : bool)
 Eq_4951: (struct "Eq_4951" (4 (ptr32 Eq_1556) ptr0004))
 	T_4951 (in r2_13 + 4 : word32)
-Eq_5083: (fn Eq_40 (Eq_2, (ptr32 Eq_482)))
+Eq_5083: (fn bool (Eq_2, (ptr32 Eq_482)))
 	T_5083 (in vCoRoutineAddToDelayedList : ptr32)
 	T_5084 (in signature of vCoRoutineAddToDelayedList : void)
 	T_5164 (in vCoRoutineAddToDelayedList : ptr32)
@@ -2208,10 +2123,6 @@ Eq_5408: (fn Eq_9 (ptr32))
 	T_6355 (in xPortRaisePrivilege : ptr32)
 	T_6373 (in xPortRaisePrivilege : ptr32)
 	T_6389 (in xPortRaisePrivilege : ptr32)
-Eq_5443: (union "Eq_5443" (bool u0) (byte u1))
-	T_5443 (in Z : Eq_5443)
-	T_5461 (in Z_20 : Eq_5443)
-	T_5465 (in SLICE(cond(r0_9 - 0x00000001), bool, 2) : bool)
 Eq_5476: (fn void ())
 	T_5476 (in PDCInit : ptr32)
 	T_5477 (in signature of PDCInit : void)
@@ -2234,24 +2145,16 @@ Eq_5590: (struct "Eq_5590" (68 uint16 w0068))
 Eq_5602: (struct "Eq_5602" (4 up32 dw0004))
 	T_5602 (in sp_14 : (ptr32 Eq_5602))
 	T_5605 (in fp - 24 : word32)
-Eq_5611: (fn Eq_5624 (Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, ptr32, Eq_2, Eq_2, Eq_2, Eq_2))
+Eq_5611: (fn bool (Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, ptr32, Eq_2, Eq_2, Eq_2, Eq_2))
 	T_5611 (in xQueueCRReceive : ptr32)
 	T_5612 (in signature of xQueueCRReceive : void)
 	T_5656 (in xQueueCRReceive : ptr32)
-Eq_5624: (union "Eq_5624" (byte u0) (Eq_9691 u1))
-	T_5624 (in xQueueCRReceive(*r5_107, fp - 20, 0x00000000, fp - 20, r7, lr, cpsr, out r0_26, out r6_105, out r7, out lr) : byte)
-	T_5655 (in Z_59 : Eq_5624)
-	T_5665 (in xQueueCRReceive(*r5_107, r6_105, 0xFFFFFFFF, r6_105, r7, lr, cpsr, out r0_26, out r6_105, out r7, out lr) : byte)
 Eq_5643: (fn void (up32, ptr32))
 	T_5643 (in vParTestToggleLED : ptr32)
 	T_5644 (in signature of vParTestToggleLED : void)
 Eq_5670: (struct "Eq_5670" (68 uint16 w0068))
 	T_5670 (in r0 : (ptr32 Eq_5670))
-Eq_5676: (union "Eq_5676" (byte u0) (Eq_9692 u1))
-	T_5676 (in Z_29 : Eq_5676)
-	T_5697 (in xQueueCRSend(*globals->ptr877C, fp - 12, 0x00000000, r7, lr, cpsr, out r0_22) : byte)
-	T_5748 (in xQueueCRSend(*globals->ptr877C, fp - 12, 0x00000000, r7, lr, cpsr, out r0_22) : byte)
-Eq_5685: (fn Eq_5676 (Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, ptr32, Eq_2))
+Eq_5685: (fn bool (Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, ptr32, Eq_2))
 	T_5685 (in xQueueCRSend : ptr32)
 	T_5686 (in signature of xQueueCRSend : void)
 	T_5738 (in xQueueCRSend : ptr32)
@@ -2722,30 +2625,27 @@ Eq_9534: (struct "Eq_9534" (4 ui32 dw0004))
 	T_9534 (in r0 : (ptr32 Eq_9534))
 Eq_9552: (struct "Eq_9552" (8 word32 dw0008))
 	T_9552 (in r0 : (ptr32 Eq_9552))
-Eq_9558: (union "Eq_9558" (bool u0) (byte u1))
-	T_9558 (in Z : Eq_9558)
-	T_9673 (in SLICE(NZCV_145, bool, 2) : bool)
 Eq_9635: (struct "Eq_9635" 0001 (0 (arr Eq_9635) a0000))
 	T_9635 (in Mem74[r1 + r3_66:word32] : word32)
 	T_9637 (in Mem77[r5_149 + r3_66:word32] : word32)
 	T_9682
 	T_9683
-Eq_9643: (union "Eq_9643" ((ptr32 word32) u0) ((ptr32 Eq_9694) u1) ((ptr32 Eq_9688) u2))
+Eq_9643: (union "Eq_9643" ((ptr32 word32) u0) ((ptr32 Eq_9690) u1) ((ptr32 Eq_9688) u2))
 	T_9643 (in r6_84 : Eq_9643)
 	T_9646 (in r6_65 & ~0x00000003 : word32)
-Eq_9647: (union "Eq_9647" ((ptr32 word32) u0) ((ptr32 Eq_9694) u1) ((ptr32 Eq_9688) u2))
+Eq_9647: (union "Eq_9647" ((ptr32 word32) u0) ((ptr32 Eq_9690) u1) ((ptr32 Eq_9688) u2))
 	T_9647 (in 0x00000004 : word32)
-Eq_9651: (union "Eq_9651" ((ptr32 word32) u0) ((ptr32 Eq_9696) u1) ((ptr32 Eq_9688) u2))
+Eq_9651: (union "Eq_9651" ((ptr32 word32) u0) ((ptr32 Eq_9692) u1) ((ptr32 Eq_9688) u2))
 	T_9651 (in r6_84 + 0x00000004 : word32)
-Eq_9653: (union "Eq_9653" ((ptr32 word32) u0) ((ptr32 Eq_9696) u1) ((ptr32 Eq_9688) u2))
+Eq_9653: (union "Eq_9653" ((ptr32 word32) u0) ((ptr32 Eq_9692) u1) ((ptr32 Eq_9688) u2))
 	T_9653 (in r6_84 + 0x00000004 : word32)
-Eq_9658: (union "Eq_9658" ((ptr32 word32) u0) ((ptr32 Eq_9698) u1) ((ptr32 Eq_9688) u2))
+Eq_9658: (union "Eq_9658" ((ptr32 word32) u0) ((ptr32 Eq_9694) u1) ((ptr32 Eq_9688) u2))
 	T_9658 (in r1 + r3 : word32)
-Eq_9659: (struct "Eq_9659" 0001 (0 Eq_9699 t0000))
+Eq_9659: (struct "Eq_9659" 0001 (0 Eq_9695 t0000))
 	T_9659 (in Mem97[r1 + r3:byte] : byte)
 	T_9684
 	T_9685
-Eq_9664: (union "Eq_9664" ((ptr32 word32) u0) ((ptr32 Eq_9698) u1) ((ptr32 Eq_9688) u2))
+Eq_9664: (union "Eq_9664" ((ptr32 word32) u0) ((ptr32 Eq_9694) u1) ((ptr32 Eq_9688) u2))
 	T_9664 (in 0x00000001 : word32)
 Eq_9686: (union "Eq_9686" (word32 u0) ((arr Eq_9659) u1) ((arr Eq_9635) u2) (Eq_2 u3))
 	T_9686
@@ -2753,28 +2653,20 @@ Eq_9687: (struct "Eq_9687" 0010 (FFFFFFDC Eq_2 tFFFFFFDC) (FFFFFFE0 word32 dwFFF
 	T_9687
 Eq_9688: (union "Eq_9688" (word32 u0) (code u1))
 	T_9688
-Eq_9689: (union "Eq_9689" (bool u0) (byte u1))
+Eq_9689: (union "Eq_9689" (word32 u0) ((arr Eq_9659) u1) ((arr Eq_9635) u2) (Eq_2 u3))
 	T_9689
-Eq_9690: (union "Eq_9690" (bool u0) (byte u1))
+Eq_9690: (struct "Eq_9690" 0010 (FFFFFFDC Eq_2 tFFFFFFDC) (FFFFFFE0 word32 dwFFFFFFE0) (FFFFFFE4 word32 dwFFFFFFE4) (FFFFFFE8 word32 dwFFFFFFE8) (FFFFFFEC word32 dwFFFFFFEC) (FFFFFFF0 word32 dwFFFFFFF0) (FFFFFFF4 word32 dwFFFFFFF4) (FFFFFFF8 word32 dwFFFFFFF8) (FFFFFFFC word32 dwFFFFFFFC) (0 Eq_9689 t0000) (4 word32 dw0004) (8 word32 dw0008) (C word32 dw000C) (10 word32 dw0010) (18 ptr32 ptr0018) (24 word32 dw0024) (34 word32 dw0034) (38 Eq_2 t0038) (3C Eq_2 t003C) (40 Eq_2 t0040) (44 byte b0044) (45 byte b0045) (4C uint32 dw004C) (58 uint32 dw0058) (5C word32 dw005C))
 	T_9690
-Eq_9691: (union "Eq_9691" (bool u0) (byte u1))
+Eq_9691: (union "Eq_9691" (word32 u0) ((arr Eq_9659) u1) ((arr Eq_9635) u2) (Eq_2 u3))
 	T_9691
-Eq_9692: (union "Eq_9692" (bool u0) (byte u1))
+Eq_9692: (struct "Eq_9692" 0010 (FFFFFFDC Eq_2 tFFFFFFDC) (FFFFFFE0 word32 dwFFFFFFE0) (FFFFFFE4 word32 dwFFFFFFE4) (FFFFFFE8 word32 dwFFFFFFE8) (FFFFFFEC word32 dwFFFFFFEC) (FFFFFFF0 word32 dwFFFFFFF0) (FFFFFFF4 word32 dwFFFFFFF4) (FFFFFFF8 word32 dwFFFFFFF8) (FFFFFFFC word32 dwFFFFFFFC) (0 Eq_9691 t0000) (4 word32 dw0004) (8 word32 dw0008) (C word32 dw000C) (10 word32 dw0010) (18 ptr32 ptr0018) (24 word32 dw0024) (34 word32 dw0034) (38 Eq_2 t0038) (3C Eq_2 t003C) (40 Eq_2 t0040) (44 byte b0044) (45 byte b0045) (4C uint32 dw004C) (58 uint32 dw0058) (5C word32 dw005C))
 	T_9692
 Eq_9693: (union "Eq_9693" (word32 u0) ((arr Eq_9659) u1) ((arr Eq_9635) u2) (Eq_2 u3))
 	T_9693
 Eq_9694: (struct "Eq_9694" 0010 (FFFFFFDC Eq_2 tFFFFFFDC) (FFFFFFE0 word32 dwFFFFFFE0) (FFFFFFE4 word32 dwFFFFFFE4) (FFFFFFE8 word32 dwFFFFFFE8) (FFFFFFEC word32 dwFFFFFFEC) (FFFFFFF0 word32 dwFFFFFFF0) (FFFFFFF4 word32 dwFFFFFFF4) (FFFFFFF8 word32 dwFFFFFFF8) (FFFFFFFC word32 dwFFFFFFFC) (0 Eq_9693 t0000) (4 word32 dw0004) (8 word32 dw0008) (C word32 dw000C) (10 word32 dw0010) (18 ptr32 ptr0018) (24 word32 dw0024) (34 word32 dw0034) (38 Eq_2 t0038) (3C Eq_2 t003C) (40 Eq_2 t0040) (44 byte b0044) (45 byte b0045) (4C uint32 dw004C) (58 uint32 dw0058) (5C word32 dw005C))
 	T_9694
-Eq_9695: (union "Eq_9695" (word32 u0) ((arr Eq_9659) u1) ((arr Eq_9635) u2) (Eq_2 u3))
+Eq_9695: (union "Eq_9695" (byte u0) ((arr Eq_9659) u1))
 	T_9695
-Eq_9696: (struct "Eq_9696" 0010 (FFFFFFDC Eq_2 tFFFFFFDC) (FFFFFFE0 word32 dwFFFFFFE0) (FFFFFFE4 word32 dwFFFFFFE4) (FFFFFFE8 word32 dwFFFFFFE8) (FFFFFFEC word32 dwFFFFFFEC) (FFFFFFF0 word32 dwFFFFFFF0) (FFFFFFF4 word32 dwFFFFFFF4) (FFFFFFF8 word32 dwFFFFFFF8) (FFFFFFFC word32 dwFFFFFFFC) (0 Eq_9695 t0000) (4 word32 dw0004) (8 word32 dw0008) (C word32 dw000C) (10 word32 dw0010) (18 ptr32 ptr0018) (24 word32 dw0024) (34 word32 dw0034) (38 Eq_2 t0038) (3C Eq_2 t003C) (40 Eq_2 t0040) (44 byte b0044) (45 byte b0045) (4C uint32 dw004C) (58 uint32 dw0058) (5C word32 dw005C))
-	T_9696
-Eq_9697: (union "Eq_9697" (word32 u0) ((arr Eq_9659) u1) ((arr Eq_9635) u2) (Eq_2 u3))
-	T_9697
-Eq_9698: (struct "Eq_9698" 0010 (FFFFFFDC Eq_2 tFFFFFFDC) (FFFFFFE0 word32 dwFFFFFFE0) (FFFFFFE4 word32 dwFFFFFFE4) (FFFFFFE8 word32 dwFFFFFFE8) (FFFFFFEC word32 dwFFFFFFEC) (FFFFFFF0 word32 dwFFFFFFF0) (FFFFFFF4 word32 dwFFFFFFF4) (FFFFFFF8 word32 dwFFFFFFF8) (FFFFFFFC word32 dwFFFFFFFC) (0 Eq_9697 t0000) (4 word32 dw0004) (8 word32 dw0008) (C word32 dw000C) (10 word32 dw0010) (18 ptr32 ptr0018) (24 word32 dw0024) (34 word32 dw0034) (38 Eq_2 t0038) (3C Eq_2 t003C) (40 Eq_2 t0040) (44 byte b0044) (45 byte b0045) (4C uint32 dw004C) (58 uint32 dw0058) (5C word32 dw005C))
-	T_9698
-Eq_9699: (union "Eq_9699" (byte u0) ((arr Eq_9659) u1))
-	T_9699
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
@@ -2932,10 +2824,10 @@ T_39: (in cpsr : ptr32)
   Class: Eq_4
   DataType: ptr32
   OrigDataType: word32
-T_40: (in vPortExitCritical(cpsr) : byte)
+T_40: (in vPortExitCritical(cpsr) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_41: (in r0_73 : Eq_2)
   Class: Eq_2
   DataType: Eq_2
@@ -3264,14 +3156,14 @@ T_122: (in vPortExitCritical : ptr32)
   Class: Eq_37
   DataType: (ptr32 Eq_37)
   OrigDataType: (ptr32 (fn T_123 (T_4)))
-T_123: (in vPortExitCritical(cpsr) : byte)
+T_123: (in vPortExitCritical(cpsr) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
-T_124: (in Z : Eq_124)
+  DataType: bool
+  OrigDataType: bool
+T_124: (in Z : bool)
   Class: Eq_124
-  DataType: Eq_124
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_125: (in r0 : Eq_2)
   Class: Eq_2
   DataType: Eq_2
@@ -3308,9 +3200,9 @@ T_133: (in lrOut : Eq_2)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: ptr32
-T_134: (in Z_194 : Eq_124)
+T_134: (in Z_194 : bool)
   Class: Eq_124
-  DataType: Eq_124
+  DataType: bool
   OrigDataType: bool
 T_135: (in r5_117 : Eq_2)
   Class: Eq_2
@@ -3458,7 +3350,7 @@ T_170: (in cond((word32) r5_15 + 1) : byte)
   OrigDataType: byte
 T_171: (in SLICE(cond((word32) r5_15 + 1), bool, 2) : bool)
   Class: Eq_124
-  DataType: Eq_124
+  DataType: bool
   OrigDataType: bool
 T_172: (in 0x00000001 : word32)
   Class: Eq_172
@@ -3478,7 +3370,7 @@ T_175: (in cond((word32) r5_15 + 1) : byte)
   OrigDataType: byte
 T_176: (in SLICE(cond((word32) r5_15 + 1), bool, 2) : bool)
   Class: Eq_124
-  DataType: Eq_124
+  DataType: bool
   OrigDataType: bool
 T_177: (in r6_30 : word32)
   Class: Eq_177
@@ -3580,10 +3472,10 @@ T_201: (in out lr : ptr32)
   Class: Eq_193
   DataType: ptr32
   OrigDataType: ptr32
-T_202: (in memcpy(*((word32) r0 + 12), r1, r0_109, r3, r0, r5_15, r2, r7, lr, out r4_124, out r5_117, out r6_30, out r7, out lr) : byte)
+T_202: (in memcpy(*((word32) r0 + 12), r1, r0_109, r3, r0, r5_15, r2, r7, lr, out r4_124, out r5_117, out r6_30, out r7, out lr) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_203: (in r3_38 : Eq_2)
   Class: Eq_2
   DataType: Eq_2
@@ -3688,10 +3580,10 @@ T_228: (in out lr_66 : ptr32)
   Class: Eq_193
   DataType: ptr32
   OrigDataType: ptr32
-T_229: (in memcpy(*((word32) r0 + 8), r1, r0_109, r3, r0, r5_15, r2, r7, lr, out r4_71, out r5_72, out r6_73, out r7_74, out lr_66) : byte)
+T_229: (in memcpy(*((word32) r0 + 8), r1, r0_109, r3, r0, r5_15, r2, r7, lr, out r4_71, out r5_72, out r6_73, out r7_74, out lr_66) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_230: (in r2_82 : up32)
   Class: Eq_230
   DataType: up32
@@ -3786,7 +3678,7 @@ T_252: (in cond(r5_72 + 0x00000001) : byte)
   OrigDataType: byte
 T_253: (in SLICE(cond(r5_72 + 0x00000001), bool, 2) : bool)
   Class: Eq_124
-  DataType: Eq_124
+  DataType: bool
   OrigDataType: bool
 T_254: (in 0x00000000 : word32)
   Class: Eq_254
@@ -3842,7 +3734,7 @@ T_266: (in cond(r5_72 + 0x00000001) : byte)
   OrigDataType: byte
 T_267: (in SLICE(cond(r5_72 + 0x00000001), bool, 2) : bool)
   Class: Eq_124
-  DataType: Eq_124
+  DataType: bool
   OrigDataType: bool
 T_268: (in 0x00000002 : word32)
   Class: Eq_177
@@ -3858,7 +3750,7 @@ T_270: (in cond(r6_30 - 0x00000002) : byte)
   OrigDataType: byte
 T_271: (in SLICE(cond(r6_30 - 0x00000002), bool, 2) : bool)
   Class: Eq_124
-  DataType: Eq_124
+  DataType: bool
   OrigDataType: bool
 T_272: (in r6_30 == 0x00000002 : bool)
   Class: Eq_272
@@ -3930,7 +3822,7 @@ T_288: (in cond((word32) r5_117 + 1) : byte)
   OrigDataType: byte
 T_289: (in SLICE(cond((word32) r5_117 + 1), bool, 2) : bool)
   Class: Eq_124
-  DataType: Eq_124
+  DataType: bool
   OrigDataType: bool
 T_290: (in 56 : int32)
   Class: Eq_290
@@ -4140,10 +4032,10 @@ T_341: (in out lr_35 : ptr32)
   Class: Eq_193
   DataType: ptr32
   OrigDataType: ptr32
-T_342: (in memcpy(r1, r1_13, r2_5, r1, r4, r5, r6, r7, lr, out r4_40, out r5_41, out r6_42, out r7_43, out lr_35) : byte)
+T_342: (in memcpy(r1, r1_13, r2_5, r1, r4, r5, r6, r7, lr, out r4_40, out r5_41, out r6_42, out r7_43, out lr_35) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_343: (in lr : Eq_2)
   Class: Eq_2
   DataType: Eq_2
@@ -4268,10 +4160,10 @@ T_373: (in out lr_58 : ptr32)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: ptr32
-T_374: (in prvCopyDataToQueue(r0, r1, r3, r3_42, r3, lr, out r0_59, out r7_410, out lr_58) : byte)
+T_374: (in prvCopyDataToQueue(r0, r1, r3, r3_42, r3, lr, out r0_59, out r7_410, out lr_58) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_375: (in 36 : int32)
   Class: Eq_375
   DataType: int32
@@ -4312,10 +4204,10 @@ T_384: (in vPortExitCritical : ptr32)
   Class: Eq_37
   DataType: (ptr32 Eq_37)
   OrigDataType: (ptr32 (fn T_385 (T_348)))
-T_385: (in vPortExitCritical(cpsr) : byte)
+T_385: (in vPortExitCritical(cpsr) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_386: (in 0x00000000 : word32)
   Class: Eq_349
   DataType: word32
@@ -4328,10 +4220,10 @@ T_388: (in vPortExitCritical : ptr32)
   Class: Eq_37
   DataType: (ptr32 Eq_37)
   OrigDataType: (ptr32 (fn T_389 (T_348)))
-T_389: (in vPortExitCritical(cpsr) : byte)
+T_389: (in vPortExitCritical(cpsr) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_390: (in vTaskSuspendAll : ptr32)
   Class: Eq_390
   DataType: (ptr32 Eq_390)
@@ -4448,10 +4340,10 @@ T_418: (in vPortExitCritical : ptr32)
   Class: Eq_37
   DataType: (ptr32 Eq_37)
   OrigDataType: (ptr32 (fn T_419 (T_348)))
-T_419: (in vPortExitCritical(cpsr) : byte)
+T_419: (in vPortExitCritical(cpsr) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_420: (in 0x10000000 : word32)
   Class: Eq_420
   DataType: word32
@@ -4544,10 +4436,10 @@ T_442: (in vPortExitCritical : ptr32)
   Class: Eq_37
   DataType: (ptr32 Eq_37)
   OrigDataType: (ptr32 (fn T_443 (T_348)))
-T_443: (in vPortExitCritical(cpsr) : byte)
+T_443: (in vPortExitCritical(cpsr) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_444: (in xTaskCheckForTimeOut : ptr32)
   Class: Eq_444
   DataType: (ptr32 Eq_444)
@@ -4688,10 +4580,10 @@ T_478: (in vPortExitCritical : ptr32)
   Class: Eq_37
   DataType: (ptr32 Eq_37)
   OrigDataType: (ptr32 (fn T_479 (T_348)))
-T_479: (in vPortExitCritical(cpsr) : byte)
+T_479: (in vPortExitCritical(cpsr) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_480: (in vTaskPlaceOnEventList : ptr32)
   Class: Eq_480
   DataType: (ptr32 Eq_480)
@@ -4748,10 +4640,10 @@ T_493: (in vPortExitCritical : ptr32)
   Class: Eq_37
   DataType: (ptr32 Eq_37)
   OrigDataType: (ptr32 (fn T_494 (T_348)))
-T_494: (in vPortExitCritical(cpsr) : byte)
+T_494: (in vPortExitCritical(cpsr) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_495: (in prvUnlockQueue : ptr32)
   Class: Eq_460
   DataType: (ptr32 Eq_460)
@@ -5156,10 +5048,10 @@ T_595: (in vPortExitCritical : ptr32)
   Class: Eq_37
   DataType: (ptr32 Eq_37)
   OrigDataType: (ptr32 (fn T_596 (T_559)))
-T_596: (in vPortExitCritical(cpsr) : byte)
+T_596: (in vPortExitCritical(cpsr) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_597: (in 0x00000000 : word32)
   Class: Eq_2
   DataType: (ptr32 word32)
@@ -5196,10 +5088,10 @@ T_605: (in vPortExitCritical : ptr32)
   Class: Eq_37
   DataType: (ptr32 Eq_37)
   OrigDataType: (ptr32 (fn T_606 (T_559)))
-T_606: (in vPortExitCritical(cpsr) : byte)
+T_606: (in vPortExitCritical(cpsr) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_607: (in vTaskSuspendAll : ptr32)
   Class: Eq_390
   DataType: (ptr32 Eq_390)
@@ -5440,10 +5332,10 @@ T_666: (in vPortExitCritical : ptr32)
   Class: Eq_37
   DataType: (ptr32 Eq_37)
   OrigDataType: (ptr32 (fn T_667 (T_559)))
-T_667: (in vPortExitCritical(cpsr) : byte)
+T_667: (in vPortExitCritical(cpsr) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_668: (in 0x00000001 : word32)
   Class: Eq_2
   DataType: (ptr32 word32)
@@ -5452,10 +5344,10 @@ T_669: (in vPortExitCritical : ptr32)
   Class: Eq_37
   DataType: (ptr32 Eq_37)
   OrigDataType: (ptr32 (fn T_670 (T_559)))
-T_670: (in vPortExitCritical(cpsr) : byte)
+T_670: (in vPortExitCritical(cpsr) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_671: (in xTaskCheckForTimeOut : ptr32)
   Class: Eq_444
   DataType: (ptr32 Eq_444)
@@ -5636,10 +5528,10 @@ T_715: (in vPortExitCritical : ptr32)
   Class: Eq_37
   DataType: (ptr32 Eq_37)
   OrigDataType: (ptr32 (fn T_716 (T_559)))
-T_716: (in vPortExitCritical(cpsr) : byte)
+T_716: (in vPortExitCritical(cpsr) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_717: (in 0x00000001 : word32)
   Class: Eq_561
   DataType: word32
@@ -5648,10 +5540,10 @@ T_718: (in vPortExitCritical : ptr32)
   Class: Eq_37
   DataType: (ptr32 Eq_37)
   OrigDataType: (ptr32 (fn T_719 (T_559)))
-T_719: (in vPortExitCritical(cpsr) : byte)
+T_719: (in vPortExitCritical(cpsr) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_720: (in 0x00000000 : word32)
   Class: Eq_720
   DataType: word32
@@ -5676,10 +5568,10 @@ T_725: (in vPortExitCritical : ptr32)
   Class: Eq_37
   DataType: (ptr32 Eq_37)
   OrigDataType: (ptr32 (fn T_726 (T_559)))
-T_726: (in vPortExitCritical(cpsr) : byte)
+T_726: (in vPortExitCritical(cpsr) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_727: (in prvUnlockQueue : ptr32)
   Class: Eq_460
   DataType: (ptr32 Eq_460)
@@ -5744,10 +5636,10 @@ T_742: (in vPortExitCritical : ptr32)
   Class: Eq_37
   DataType: (ptr32 Eq_37)
   OrigDataType: (ptr32 (fn T_743 (T_559)))
-T_743: (in vPortExitCritical(cpsr) : byte)
+T_743: (in vPortExitCritical(cpsr) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_744: (in vTaskPlaceOnEventList : ptr32)
   Class: Eq_480
   DataType: (ptr32 Eq_480)
@@ -5872,10 +5764,10 @@ T_774: (in vPortExitCritical : ptr32)
   Class: Eq_37
   DataType: (ptr32 Eq_37)
   OrigDataType: (ptr32 (fn T_775 (T_769)))
-T_775: (in vPortExitCritical(cpsr) : byte)
+T_775: (in vPortExitCritical(cpsr) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_776: (in r0 : word32)
   Class: Eq_776
   DataType: word32
@@ -5904,10 +5796,10 @@ T_782: (in vPortExitCritical : ptr32)
   Class: Eq_37
   DataType: (ptr32 Eq_37)
   OrigDataType: (ptr32 (fn T_783 (T_777)))
-T_783: (in vPortExitCritical(cpsr) : byte)
+T_783: (in vPortExitCritical(cpsr) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_784: (in vPortFree : ptr32)
   Class: Eq_784
   DataType: (ptr32 Eq_784)
@@ -6068,10 +5960,10 @@ T_823: (in out lr_39 : ptr32)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: ptr32
-T_824: (in prvCopyDataToQueue(r0, r1, r3, r3, r2, lr, out r0_162, out r7_44, out lr_39) : byte)
+T_824: (in prvCopyDataToQueue(r0, r1, r3, r3, r2, lr, out r0_162, out r7_44, out lr_39) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: (union ((union (bool u0) (byte u1)) u0) (byte u1))
+  DataType: bool
+  OrigDataType: bool
 T_825: (in 0x00000002 : word32)
   Class: Eq_2
   DataType: (ptr32 word32)
@@ -6864,18 +6756,18 @@ T_1022: (in vPortExitCritical : ptr32)
   Class: Eq_37
   DataType: (ptr32 Eq_37)
   OrigDataType: (ptr32 (fn T_1023 (T_1012)))
-T_1023: (in vPortExitCritical(cpsr) : byte)
+T_1023: (in vPortExitCritical(cpsr) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_1024: (in vPortExitCritical : ptr32)
   Class: Eq_37
   DataType: (ptr32 Eq_37)
   OrigDataType: (ptr32 (fn T_1025 (T_1012)))
-T_1025: (in vPortExitCritical(cpsr) : byte)
+T_1025: (in vPortExitCritical(cpsr) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_1026: (in r0 : Eq_2)
   Class: Eq_2
   DataType: Eq_2
@@ -7352,10 +7244,10 @@ T_1144: (in vPortExitCritical : ptr32)
   Class: Eq_37
   DataType: (ptr32 Eq_37)
   OrigDataType: (ptr32 (fn T_1145 (T_1090)))
-T_1145: (in vPortExitCritical(cpsr) : byte)
+T_1145: (in vPortExitCritical(cpsr) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_1146: (in 16 : int32)
   Class: Eq_1146
   DataType: int32
@@ -7404,10 +7296,10 @@ T_1157: (in vPortExitCritical : ptr32)
   Class: Eq_37
   DataType: (ptr32 Eq_37)
   OrigDataType: (ptr32 (fn T_1158 (T_1090)))
-T_1158: (in vPortExitCritical(cpsr) : byte)
+T_1158: (in vPortExitCritical(cpsr) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_1159: (in 0x10000000 : word32)
   Class: Eq_1159
   DataType: word32
@@ -7452,10 +7344,10 @@ T_1169: (in vPortExitCritical : ptr32)
   Class: Eq_37
   DataType: (ptr32 Eq_37)
   OrigDataType: (ptr32 (fn T_1170 (T_1090)))
-T_1170: (in vPortExitCritical(cpsr) : byte)
+T_1170: (in vPortExitCritical(cpsr) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_1171: (in r0 : ui32)
   Class: Eq_1102
   DataType: ui32
@@ -8732,10 +8624,10 @@ T_1489: (in vPortExitCritical : ptr32)
   Class: Eq_37
   DataType: (ptr32 Eq_37)
   OrigDataType: (ptr32 (fn T_1490 (T_1360)))
-T_1490: (in vPortExitCritical(cpsr) : byte)
+T_1490: (in vPortExitCritical(cpsr) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_1491: (in 116 : int32)
   Class: Eq_1491
   DataType: int32
@@ -9032,10 +8924,10 @@ T_1564: (in Mem42[r4_12 + 4:word32] + 0x00000024 : word32)
   Class: Eq_1556
   DataType: (ptr32 Eq_1556)
   OrigDataType: word32
-T_1565: (in vListInsert(r4_12->ptr006C, &r4_12->ptr0004->dw0024) : byte)
+T_1565: (in vListInsert(r4_12->ptr006C, &r4_12->ptr0004->dw0024) : bool)
   Class: Eq_1565
-  DataType: Eq_1565
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_1566: (in 132 : int32)
   Class: Eq_1566
   DataType: int32
@@ -9076,10 +8968,10 @@ T_1575: (in r1_45 + 0x00000024 : word32)
   Class: Eq_1556
   DataType: (ptr32 Eq_1556)
   OrigDataType: word32
-T_1576: (in vListInsert(r0_44, &r1_45->dw0024) : byte)
+T_1576: (in vListInsert(r0_44, &r1_45->dw0024) : bool)
   Class: Eq_1565
-  DataType: Eq_1565
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_1577: (in r0 : ui32)
   Class: Eq_1230
   DataType: ui32
@@ -10204,18 +10096,18 @@ T_1857: (in vPortExitCritical : ptr32)
   Class: Eq_37
   DataType: (ptr32 Eq_37)
   OrigDataType: (ptr32 (fn T_1858 (T_1770)))
-T_1858: (in vPortExitCritical(cpsr) : byte)
+T_1858: (in vPortExitCritical(cpsr) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_1859: (in vPortExitCritical : ptr32)
   Class: Eq_37
   DataType: (ptr32 Eq_37)
   OrigDataType: (ptr32 (fn T_1860 (T_1770)))
-T_1860: (in vPortExitCritical(cpsr) : byte)
+T_1860: (in vPortExitCritical(cpsr) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_1861: (in r0 : (ptr32 Eq_1861))
   Class: Eq_1861
   DataType: (ptr32 Eq_1861)
@@ -10748,10 +10640,10 @@ T_1993: (in vPortExitCritical : ptr32)
   Class: Eq_37
   DataType: (ptr32 Eq_37)
   OrigDataType: (ptr32 (fn T_1994 (T_1976)))
-T_1994: (in vPortExitCritical(cpsr) : byte)
+T_1994: (in vPortExitCritical(cpsr) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_1995: (in vPortEnterCritical : ptr32)
   Class: Eq_6
   DataType: (ptr32 Eq_6)
@@ -11080,10 +10972,10 @@ T_2076: (in vPortExitCritical : ptr32)
   Class: Eq_37
   DataType: (ptr32 Eq_37)
   OrigDataType: (ptr32 (fn T_2077 (T_1976)))
-T_2077: (in vPortExitCritical(cpsr) : byte)
+T_2077: (in vPortExitCritical(cpsr) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_2078: (in r0 : (ptr32 Eq_2078))
   Class: Eq_2078
   DataType: (ptr32 Eq_2078)
@@ -11548,10 +11440,10 @@ T_2193: (in vPortExitCritical : ptr32)
   Class: Eq_37
   DataType: (ptr32 Eq_37)
   OrigDataType: (ptr32 (fn T_2194 (T_2177)))
-T_2194: (in vPortExitCritical(cpsr) : byte)
+T_2194: (in vPortExitCritical(cpsr) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_2195: (in vPortEnterCritical : ptr32)
   Class: Eq_6
   DataType: (ptr32 Eq_6)
@@ -11720,10 +11612,10 @@ T_2236: (in vPortExitCritical : ptr32)
   Class: Eq_37
   DataType: (ptr32 Eq_37)
   OrigDataType: (ptr32 (fn T_2237 (T_2177)))
-T_2237: (in vPortExitCritical(cpsr) : byte)
+T_2237: (in vPortExitCritical(cpsr) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_2238: (in 0x00000000 : word32)
   Class: Eq_2175
   DataType: word32
@@ -12640,10 +12532,10 @@ T_2466: (in vPortExitCritical : ptr32)
   Class: Eq_37
   DataType: (ptr32 Eq_37)
   OrigDataType: (ptr32 (fn T_2467 (T_465)))
-T_2467: (in vPortExitCritical(cpsr) : byte)
+T_2467: (in vPortExitCritical(cpsr) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_2468: (in 0x00000000 : word32)
   Class: Eq_2444
   DataType: word32
@@ -13152,10 +13044,10 @@ T_2594: (in vPortExitCritical : ptr32)
   Class: Eq_37
   DataType: (ptr32 Eq_37)
   OrigDataType: (ptr32 (fn T_2595 (T_465)))
-T_2595: (in vPortExitCritical(cpsr) : byte)
+T_2595: (in vPortExitCritical(cpsr) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_2596: (in 0x00000001 : word32)
   Class: Eq_2444
   DataType: word32
@@ -13536,10 +13428,10 @@ T_2690: (in globals->ptr0FF4->dw0004 + 0x00000038 : word32)
   Class: Eq_1556
   DataType: (ptr32 Eq_1556)
   OrigDataType: word32
-T_2691: (in vListInsert(r0, globals->ptr0FF4->dw0004 + 0x00000038) : byte)
+T_2691: (in vListInsert(r0, globals->ptr0FF4->dw0004 + 0x00000038) : bool)
   Class: Eq_1565
-  DataType: Eq_1565
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_2692: (in prvAddCurrentTaskToDelayedList.isra.0 : ptr32)
   Class: Eq_2024
   DataType: (ptr32 Eq_2024)
@@ -14676,10 +14568,10 @@ T_2975: (in vPortExitCritical : ptr32)
   Class: Eq_37
   DataType: (ptr32 Eq_37)
   OrigDataType: (ptr32 (fn T_2976 (T_448)))
-T_2976: (in vPortExitCritical(cpsr) : byte)
+T_2976: (in vPortExitCritical(cpsr) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_2977: (in 0x00000001 : word32)
   Class: Eq_446
   DataType: (ptr32 Eq_446)
@@ -14764,10 +14656,10 @@ T_2997: (in vPortExitCritical : ptr32)
   Class: Eq_37
   DataType: (ptr32 Eq_37)
   OrigDataType: (ptr32 (fn T_2998 (T_448)))
-T_2998: (in vPortExitCritical(cpsr) : byte)
+T_2998: (in vPortExitCritical(cpsr) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_2999: (in 0x00000000 : word32)
   Class: Eq_446
   DataType: (ptr32 Eq_446)
@@ -19548,10 +19440,10 @@ T_4193: (in vPortExitCritical : ptr32)
   Class: Eq_37
   DataType: (ptr32 Eq_37)
   OrigDataType: (ptr32 (fn T_4194 (T_4103)))
-T_4194: (in vPortExitCritical(cpsr) : byte)
+T_4194: (in vPortExitCritical(cpsr) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_4195: (in 0x00000000 : word32)
   Class: Eq_4101
   DataType: word32
@@ -19660,10 +19552,10 @@ T_4221: (in vPortExitCritical : ptr32)
   Class: Eq_37
   DataType: (ptr32 Eq_37)
   OrigDataType: (ptr32 (fn T_4222 (T_4206)))
-T_4222: (in vPortExitCritical(cpsr) : byte)
+T_4222: (in vPortExitCritical(cpsr) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_4223: (in r0 : (ptr32 Eq_4223))
   Class: Eq_4223
   DataType: (ptr32 Eq_4223)
@@ -20292,10 +20184,10 @@ T_4379: (in vPortExitCritical : ptr32)
   Class: Eq_37
   DataType: (ptr32 Eq_37)
   OrigDataType: (ptr32 (fn T_4380 (T_4304)))
-T_4380: (in vPortExitCritical(cpsr) : byte)
+T_4380: (in vPortExitCritical(cpsr) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_4381: (in 0x00000000 : uint32)
   Class: Eq_4381
   DataType: uint32
@@ -20556,10 +20448,10 @@ T_4445: (in vPortExitCritical : ptr32)
   Class: Eq_37
   DataType: (ptr32 Eq_37)
   OrigDataType: (ptr32 (fn T_4446 (T_4430)))
-T_4446: (in vPortExitCritical(cpsr) : byte)
+T_4446: (in vPortExitCritical(cpsr) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_4447: (in cpsr : ptr32)
   Class: Eq_4
   DataType: ptr32
@@ -22432,10 +22324,10 @@ T_4914: (in Mem22[r0 + 0x00000000:word32] : word32)
   Class: Eq_4884
   DataType: word32
   OrigDataType: word32
-T_4915: (in Z : Eq_4915)
+T_4915: (in Z : bool)
   Class: Eq_4915
-  DataType: Eq_4915
-  OrigDataType: (union (bool u1) (byte u0))
+  DataType: bool
+  OrigDataType: bool
 T_4916: (in r2_13 : (ptr32 Eq_1556))
   Class: Eq_1556
   DataType: (ptr32 Eq_1556)
@@ -22626,7 +22518,7 @@ T_4962: (in cond(r4_27 + 0x00000001) : byte)
   OrigDataType: byte
 T_4963: (in SLICE(cond(r4_27 + 0x00000001), bool, 2) : bool)
   Class: Eq_4915
-  DataType: Eq_4915
+  DataType: bool
   OrigDataType: bool
 T_4964: (in r2_5 : (ptr32 Eq_1479))
   Class: Eq_1479
@@ -22800,10 +22692,10 @@ T_5006: (in Mem17[r2_5 + 4:word32] : word32)
   Class: Eq_1480
   DataType: (ptr32 Eq_1480)
   OrigDataType: word32
-T_5007: (in Z : Eq_40)
+T_5007: (in Z : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_5008: (in r0 : Eq_2)
   Class: Eq_2
   DataType: Eq_2
@@ -22904,18 +22796,18 @@ T_5032: (in *((word32) r0 + 56) == *((word32) r0 + 60) : bool)
   Class: Eq_5032
   DataType: bool
   OrigDataType: bool
-T_5033: (in Z_33 : Eq_40)
+T_5033: (in Z_33 : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_5034: (in vPortExitCritical : ptr32)
   Class: Eq_37
   DataType: (ptr32 Eq_37)
   OrigDataType: (ptr32 (fn T_5035 (T_5013)))
-T_5035: (in vPortExitCritical(cpsr) : byte)
+T_5035: (in vPortExitCritical(cpsr) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_5036: (in 0x00000000 : word32)
   Class: Eq_2
   DataType: (ptr32 word32)
@@ -22928,10 +22820,10 @@ T_5038: (in vPortExitCritical : ptr32)
   Class: Eq_37
   DataType: (ptr32 Eq_37)
   OrigDataType: (ptr32 (fn T_5039 (T_5013)))
-T_5039: (in vPortExitCritical(cpsr) : byte)
+T_5039: (in vPortExitCritical(cpsr) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_5040: (in __msr : ptr32)
   Class: Eq_518
   DataType: (ptr32 Eq_518)
@@ -23012,9 +22904,9 @@ T_5059: (in 0x00000000 : word32)
   Class: Eq_2
   DataType: (ptr32 word32)
   OrigDataType: word32
-T_5060: (in Z_157 : Eq_40)
+T_5060: (in Z_157 : bool)
   Class: Eq_40
-  DataType: Eq_40
+  DataType: bool
   OrigDataType: bool
 T_5061: (in r2_65 - r3_66 : word32)
   Class: Eq_5061
@@ -23026,7 +22918,7 @@ T_5062: (in cond(r2_65 - r3_66) : byte)
   OrigDataType: byte
 T_5063: (in SLICE(cond(r2_65 - r3_66), bool, 2) : bool)
   Class: Eq_40
-  DataType: Eq_40
+  DataType: bool
   OrigDataType: bool
 T_5064: (in r2_65 < r3_66 : bool)
   Class: Eq_5064
@@ -23064,10 +22956,10 @@ T_5072: (in out lr_73 : ptr32)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: ptr32
-T_5073: (in prvCopyDataToQueue(r0, r1, 0x00000000, r3_66, r7, lr, out r0_162, out r7_78, out lr_73) : byte)
+T_5073: (in prvCopyDataToQueue(r0, r1, 0x00000000, r3_66, r7, lr, out r0_162, out r7_78, out lr_73) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_5074: (in 36 : int32)
   Class: Eq_5074
   DataType: int32
@@ -23100,10 +22992,10 @@ T_5081: (in __msr(cpsr, 0x00000000) : word32)
   Class: Eq_523
   DataType: word32
   OrigDataType: word32
-T_5082: (in Z_43 : Eq_40)
+T_5082: (in Z_43 : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: (union (bool u0) (byte u1))
+  DataType: bool
+  OrigDataType: bool
 T_5083: (in vCoRoutineAddToDelayedList : ptr32)
   Class: Eq_5083
   DataType: (ptr32 Eq_5083)
@@ -23130,7 +23022,7 @@ T_5088: (in r0 + 0x00000010 : word32)
   OrigDataType: ptr32
 T_5089: (in vCoRoutineAddToDelayedList(r2, (word32) r0 + 16) : bool)
   Class: Eq_40
-  DataType: Eq_40
+  DataType: bool
   OrigDataType: bool
 T_5090: (in __msr : ptr32)
   Class: Eq_518
@@ -23202,7 +23094,7 @@ T_5106: (in cond(r0_85) : byte)
   OrigDataType: byte
 T_5107: (in SLICE(cond(r0_85), bool, 2) : bool)
   Class: Eq_40
-  DataType: Eq_40
+  DataType: bool
   OrigDataType: bool
 T_5108: (in 0x00000000 : word32)
   Class: Eq_5097
@@ -23236,9 +23128,9 @@ T_5115: (in ~0x00000004 : word32)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: word32
-T_5116: (in Z : Eq_40)
+T_5116: (in Z : bool)
   Class: Eq_40
-  DataType: Eq_40
+  DataType: bool
   OrigDataType: bool
 T_5117: (in r0 : Eq_2)
   Class: Eq_2
@@ -23404,17 +23296,17 @@ T_5157: (in r2_19 != 0x00000000 : bool)
   Class: Eq_5157
   DataType: bool
   OrigDataType: bool
-T_5158: (in Z_105 : Eq_40)
+T_5158: (in Z_105 : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: (union (bool u0) (byte u1))
+  DataType: bool
+  OrigDataType: bool
 T_5159: (in cond(r2) : byte)
   Class: Eq_5159
   DataType: byte
   OrigDataType: byte
 T_5160: (in SLICE(cond(r2), bool, 2) : bool)
   Class: Eq_40
-  DataType: Eq_40
+  DataType: bool
   OrigDataType: bool
 T_5161: (in 0x00000000 : word32)
   Class: Eq_2
@@ -23424,10 +23316,10 @@ T_5162: (in r2 != 0x00000000 : bool)
   Class: Eq_5162
   DataType: bool
   OrigDataType: bool
-T_5163: (in Z_113 : Eq_40)
+T_5163: (in Z_113 : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: (union (bool u0) (byte u1))
+  DataType: bool
+  OrigDataType: bool
 T_5164: (in vCoRoutineAddToDelayedList : ptr32)
   Class: Eq_5083
   DataType: (ptr32 Eq_5083)
@@ -23442,7 +23334,7 @@ T_5166: (in r0 + 0x00000024 : word32)
   OrigDataType: ptr32
 T_5167: (in vCoRoutineAddToDelayedList(r2, (word32) r0 + 36) : bool)
   Class: Eq_40
-  DataType: Eq_40
+  DataType: bool
   OrigDataType: bool
 T_5168: (in __msr : ptr32)
   Class: Eq_518
@@ -23628,10 +23520,10 @@ T_5213: (in out lr : ptr32)
   Class: Eq_193
   DataType: ptr32
   OrigDataType: ptr32
-T_5214: (in memcpy(r1, r1_30, r2_22, (word32) r3_27 - 1, r0, r5_16, r6, r7, lr, out r4_60, out r5_189, out r6, out r7, out lr) : byte)
+T_5214: (in memcpy(r1, r1_30, r2_22, (word32) r3_27 - 1, r0, r5_16, r6, r7, lr, out r4_60, out r5_189, out r6, out r7, out lr) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_5215: (in 16 : int32)
   Class: Eq_5215
   DataType: int32
@@ -23694,7 +23586,7 @@ T_5229: (in cond(r0_72) : byte)
   OrigDataType: byte
 T_5230: (in SLICE(cond(r0_72), bool, 2) : bool)
   Class: Eq_40
-  DataType: Eq_40
+  DataType: bool
   OrigDataType: bool
 T_5231: (in 0x00000000 : word32)
   Class: Eq_5223
@@ -23824,10 +23716,10 @@ T_5262: (in out lr_23 : ptr32)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: ptr32
-T_5263: (in prvCopyDataToQueue(r0, r1, 0x00000000, r3_13, r7, lr, out r0_97, out r7_28, out lr_23) : byte)
+T_5263: (in prvCopyDataToQueue(r0, r1, 0x00000000, r3_13, r7, lr, out r0_97, out r7_28, out lr_23) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_5264: (in 0x00000000 : word32)
   Class: Eq_5244
   DataType: word32
@@ -24084,10 +23976,10 @@ T_5327: (in out lr_154 : ptr32)
   Class: Eq_193
   DataType: ptr32
   OrigDataType: ptr32
-T_5328: (in memcpy(r1, r3_38, lr_26, r3_38, r0, r2, r1, (word32) r7_35 - 1, lr_26, out r4_64, out r5_65, out r6_152, out r7_153, out lr_154) : byte)
+T_5328: (in memcpy(r1, r3_38, lr_26, r3_38, r0, r2, r1, (word32) r7_35 - 1, lr_26, out r4_64, out r5_65, out r6_152, out r7_153, out lr_154) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_5329: (in 0x00000000 : word32)
   Class: Eq_5329
   DataType: word32
@@ -24300,10 +24192,10 @@ T_5381: (in vPortExitCritical : ptr32)
   Class: Eq_37
   DataType: (ptr32 Eq_37)
   OrigDataType: (ptr32 (fn T_5382 (T_5367)))
-T_5382: (in vPortExitCritical(cpsr) : byte)
+T_5382: (in vPortExitCritical(cpsr) : bool)
   Class: Eq_40
-  DataType: Eq_40
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_5383: (in 0x00000000 : word32)
   Class: Eq_5376
   DataType: word32
@@ -24544,10 +24436,10 @@ T_5442: (in r0_20 | 0x00000001 : word32)
   Class: Eq_9
   DataType: Eq_9
   OrigDataType: ui32
-T_5443: (in Z : Eq_5443)
+T_5443: (in Z : bool)
   Class: Eq_5443
-  DataType: Eq_5443
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_5444: (in r0_9 : Eq_9)
   Class: Eq_9
   DataType: Eq_9
@@ -24616,10 +24508,10 @@ T_5460: (in r3_14 != 0x00000001 : bool)
   Class: Eq_5460
   DataType: bool
   OrigDataType: bool
-T_5461: (in Z_20 : Eq_5443)
+T_5461: (in Z_20 : bool)
   Class: Eq_5443
-  DataType: Eq_5443
-  OrigDataType: (union ((union (bool u0) (byte u1)) u0) ((union (bool u0) (byte u1)) u1))
+  DataType: bool
+  OrigDataType: bool
 T_5462: (in 0x00000001 : word32)
   Class: Eq_9
   DataType: ui32
@@ -24634,7 +24526,7 @@ T_5464: (in cond(r0_9 - 0x00000001) : byte)
   OrigDataType: byte
 T_5465: (in SLICE(cond(r0_9 - 0x00000001), bool, 2) : bool)
   Class: Eq_5443
-  DataType: Eq_5443
+  DataType: bool
   OrigDataType: bool
 T_5466: (in r0_9 == 0x00000001 : bool)
   Class: Eq_5466
@@ -25268,10 +25160,10 @@ T_5623: (in out lr : ptr32)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: ptr32
-T_5624: (in xQueueCRReceive(*r5_107, fp - 20, 0x00000000, fp - 20, r7, lr, cpsr, out r0_26, out r6_105, out r7, out lr) : byte)
+T_5624: (in xQueueCRReceive(*r5_107, fp - 20, 0x00000000, fp - 20, r7, lr, cpsr, out r0_26, out r6_105, out r7, out lr) : bool)
   Class: Eq_5624
-  DataType: Eq_5624
-  OrigDataType: (union (bool u0) (byte u1))
+  DataType: bool
+  OrigDataType: bool
 T_5625: (in 0x000001C3 : word32)
   Class: Eq_5597
   DataType: word32
@@ -25392,10 +25284,10 @@ T_5654: (in Mem97[Mem83[0x000086E4:word32] + 0x00000000:word32] : word32)
   Class: Eq_5649
   DataType: word32
   OrigDataType: word32
-T_5655: (in Z_59 : Eq_5624)
+T_5655: (in Z_59 : bool)
   Class: Eq_5624
-  DataType: Eq_5624
-  OrigDataType: (union (bool u1) (byte u0))
+  DataType: bool
+  OrigDataType: bool
 T_5656: (in xQueueCRReceive : ptr32)
   Class: Eq_5611
   DataType: (ptr32 Eq_5611)
@@ -25432,10 +25324,10 @@ T_5664: (in out lr : ptr32)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: ptr32
-T_5665: (in xQueueCRReceive(*r5_107, r6_105, 0xFFFFFFFF, r6_105, r7, lr, cpsr, out r0_26, out r6_105, out r7, out lr) : byte)
+T_5665: (in xQueueCRReceive(*r5_107, r6_105, 0xFFFFFFFF, r6_105, r7, lr, cpsr, out r0_26, out r6_105, out r7, out lr) : bool)
   Class: Eq_5624
-  DataType: Eq_5624
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_5666: (in 0x01C2 : uint16)
   Class: Eq_5600
   DataType: uint16
@@ -25476,10 +25368,10 @@ T_5675: (in r0_81 : Eq_2)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: word32
-T_5676: (in Z_29 : Eq_5676)
+T_5676: (in Z_29 : bool)
   Class: Eq_5676
-  DataType: Eq_5676
-  OrigDataType: (union ((union (bool u0) (byte u1)) u0) ((union (bool u1) (byte u0)) u1))
+  DataType: bool
+  OrigDataType: bool
 T_5677: (in r0_22 : word32)
   Class: Eq_5677
   DataType: word32
@@ -25560,10 +25452,10 @@ T_5696: (in out r0_22 : ptr32)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: ptr32
-T_5697: (in xQueueCRSend(*globals->ptr877C, fp - 12, 0x00000000, r7, lr, cpsr, out r0_22) : byte)
+T_5697: (in xQueueCRSend(*globals->ptr877C, fp - 12, 0x00000000, r7, lr, cpsr, out r0_22) : bool)
   Class: Eq_5676
-  DataType: Eq_5676
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_5698: (in r3_9 <= 0x00000182 : bool)
   Class: Eq_5698
   DataType: bool
@@ -25630,7 +25522,7 @@ T_5713: (in 0x00000000 : word32)
   OrigDataType: word32
 T_5714: (in vCoRoutineAddToDelayedList(r0_81, null) : bool)
   Class: Eq_40
-  DataType: Eq_40
+  DataType: bool
   OrigDataType: bool
 T_5715: (in 0x0196 : uint16)
   Class: Eq_5681
@@ -25764,10 +25656,10 @@ T_5747: (in out r0_22 : ptr32)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: ptr32
-T_5748: (in xQueueCRSend(*globals->ptr877C, fp - 12, 0x00000000, r7, lr, cpsr, out r0_22) : byte)
+T_5748: (in xQueueCRSend(*globals->ptr877C, fp - 12, 0x00000000, r7, lr, cpsr, out r0_22) : bool)
   Class: Eq_5676
-  DataType: Eq_5676
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_5749: (in 0x0182 : uint16)
   Class: Eq_5681
   DataType: uint16
@@ -28784,9 +28676,9 @@ T_6502: (in r1 < 0x00000001 : bool)
   Class: Eq_6502
   DataType: bool
   OrigDataType: bool
-T_6503: (in Z : Eq_1565)
+T_6503: (in Z : bool)
   Class: Eq_1565
-  DataType: Eq_1565
+  DataType: bool
   OrigDataType: bool
 T_6504: (in r4_14 : (ptr32 Eq_6504))
   Class: Eq_6504
@@ -28896,10 +28788,10 @@ T_6530: (in r5_18 >= r3_29 : bool)
   Class: Eq_6530
   DataType: bool
   OrigDataType: bool
-T_6531: (in Z_44 : Eq_1565)
+T_6531: (in Z_44 : bool)
   Class: Eq_1565
-  DataType: Eq_1565
-  OrigDataType: (union ((union (bool u0) (byte u1)) u0) (byte u1))
+  DataType: bool
+  OrigDataType: bool
 T_6532: (in vListInsert : ptr32)
   Class: Eq_1553
   DataType: (ptr32 Eq_1553)
@@ -28924,10 +28816,10 @@ T_6537: (in r1_30 + 0x00000004 : word32)
   Class: Eq_1556
   DataType: (ptr32 Eq_1556)
   OrigDataType: (ptr32 word32)
-T_6538: (in vListInsert(r4_14->ptr0068, &r1_30->dw0004) : byte)
+T_6538: (in vListInsert(r4_14->ptr0068, &r1_30->dw0004) : bool)
   Class: Eq_1565
-  DataType: Eq_1565
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_6539: (in 0x00000000 : word32)
   Class: Eq_482
   DataType: (ptr32 Eq_482)
@@ -28964,10 +28856,10 @@ T_6547: (in r1_53 + 0x00000018 : word32)
   Class: Eq_1556
   DataType: (ptr32 Eq_1556)
   OrigDataType: word32
-T_6548: (in vListInsert(r1, &r1_53->dw0004 + 5) : byte)
+T_6548: (in vListInsert(r1, &r1_53->dw0004 + 5) : bool)
   Class: Eq_1565
-  DataType: Eq_1565
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_6549: (in r5_16 : (ptr32 Eq_6549))
   Class: Eq_6549
   DataType: (ptr32 Eq_6549)
@@ -41004,10 +40896,10 @@ T_9557: (in r0 : word32)
   Class: Eq_9557
   DataType: word32
   OrigDataType: word32
-T_9558: (in Z : Eq_9558)
+T_9558: (in Z : bool)
   Class: Eq_9558
-  DataType: Eq_9558
-  OrigDataType: byte
+  DataType: bool
+  OrigDataType: bool
 T_9559: (in r5_149 : Eq_2)
   Class: Eq_2
   DataType: Eq_2
@@ -41466,7 +41358,7 @@ T_9672: (in NZCV_145 : byte)
   OrigDataType: byte
 T_9673: (in SLICE(NZCV_145, bool, 2) : bool)
   Class: Eq_9558
-  DataType: Eq_9558
+  DataType: bool
   OrigDataType: bool
 T_9674: (in r2 & 0x0000000F : word32)
   Class: Eq_2
@@ -41511,7 +41403,7 @@ T_9683:
 T_9684:
   Class: Eq_9659
   DataType: Eq_9659
-  OrigDataType: (struct "Eq_9659" 0001 (0 Eq_9699 t0000))
+  OrigDataType: (struct "Eq_9659" 0001 (0 Eq_9695 t0000))
 T_9685:
   Class: Eq_9659
   DataType: Eq_9659
@@ -41555,22 +41447,6 @@ T_9694:
 T_9695:
   Class: Eq_9695
   DataType: Eq_9695
-  OrigDataType: 
-T_9696:
-  Class: Eq_9696
-  DataType: Eq_9696
-  OrigDataType: 
-T_9697:
-  Class: Eq_9697
-  DataType: Eq_9697
-  OrigDataType: 
-T_9698:
-  Class: Eq_9698
-  DataType: Eq_9698
-  OrigDataType: 
-T_9699:
-  Class: Eq_9699
-  DataType: Eq_9699
   OrigDataType: 
 */
 typedef struct Eq_1088;
@@ -41910,19 +41786,9 @@ typedef union Eq_9 {
 
 typedef word32 (Eq_22)(Eq_2);
 
-typedef Eq_40 (Eq_37)(ptr32);
-
-typedef union Eq_40 {
-	bool u0;
-	byte u1;
-} Eq_40;
+typedef bool (Eq_37)(ptr32);
 
 typedef void (Eq_65)();
-
-typedef union Eq_124 {
-	bool u0;
-	Eq_9689 u1;
-} Eq_124;
 
 typedef Eq_2 (Eq_155)(Eq_2, Eq_158);
 
@@ -41931,7 +41797,7 @@ typedef union Eq_158 {
 	ptr32 u1;
 } Eq_158;
 
-typedef Eq_40 (Eq_178)(Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, ptr32, ptr32, ptr32, ptr32, ptr32);
+typedef bool (Eq_178)(Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, ptr32, ptr32, ptr32, ptr32, ptr32);
 
 typedef struct Eq_216 {
 	up32 dw0000;	// 0
@@ -41946,7 +41812,7 @@ typedef struct Eq_326 {
 	byte b0045;	// 45
 } Eq_326;
 
-typedef Eq_40 (Eq_368)(Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, Eq_2);
+typedef bool (Eq_368)(Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, Eq_2);
 
 typedef bool (Eq_390)();
 
@@ -42197,7 +42063,7 @@ typedef struct Eq_1512 {
 	word32 dw004C;	// 4C
 } Eq_1512;
 
-typedef Eq_1565 (Eq_1553)(Eq_482 *, Eq_1556 *);
+typedef bool (Eq_1553)(Eq_482 *, Eq_1556 *);
 
 typedef struct Eq_1556 {
 	word32 dw0000;	// 0
@@ -42205,11 +42071,6 @@ typedef struct Eq_1556 {
 	struct Eq_1556 * ptr0008;	// 8
 	struct Eq_482 * ptr0010;	// 10
 } Eq_1556;
-
-typedef union Eq_1565 {
-	byte u0;
-	Eq_9690 u1;
-} Eq_1565;
 
 typedef void (Eq_1609)(ui32, word32, ui32, word32, Eq_1234, Eq_1088 * *, Eq_1088 *, Eq_1237 *);
 
@@ -42776,16 +42637,11 @@ typedef void (Eq_4834)(Eq_4829 *, ui32);
 
 typedef void (Eq_4843)(Eq_4829 *, ui32 *);
 
-typedef union Eq_4915 {
-	bool u0;
-	byte u1;
-} Eq_4915;
-
 typedef struct Eq_4951 {
 	struct Eq_1556 * ptr0004;	// 4
 } Eq_4951;
 
-typedef Eq_40 (Eq_5083)(Eq_2, Eq_482 *);
+typedef bool (Eq_5083)(Eq_2, Eq_482 *);
 
 typedef bool (Eq_5098)(Eq_5100 *, ptr32);
 
@@ -42834,11 +42690,6 @@ typedef struct Eq_5372 {
 
 typedef Eq_9 (Eq_5408)(ptr32);
 
-typedef union Eq_5443 {
-	bool u0;
-	byte u1;
-} Eq_5443;
-
 typedef void (Eq_5476)();
 
 typedef up32 (Eq_5486)(Eq_4829 *, ui32);
@@ -42855,12 +42706,7 @@ typedef struct Eq_5602 {
 	up32 dw0004;	// 4
 } Eq_5602;
 
-typedef Eq_5624 (Eq_5611)(Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, ptr32, Eq_2, Eq_2, Eq_2, Eq_2);
-
-typedef union Eq_5624 {
-	byte u0;
-	Eq_9691 u1;
-} Eq_5624;
+typedef bool (Eq_5611)(Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, ptr32, Eq_2, Eq_2, Eq_2, Eq_2);
 
 typedef void (Eq_5643)(up32, ptr32);
 
@@ -42868,12 +42714,7 @@ typedef struct Eq_5670 {
 	uint16 w0068;	// 68
 } Eq_5670;
 
-typedef union Eq_5676 {
-	byte u0;
-	Eq_9692 u1;
-} Eq_5676;
-
-typedef Eq_5676 (Eq_5685)(Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, ptr32, Eq_2);
+typedef bool (Eq_5685)(Eq_2, Eq_2, Eq_2, Eq_2, Eq_2, ptr32, Eq_2);
 
 typedef void (Eq_5781)(Eq_1088 *, uint32, Eq_1088 *, ptr32);
 
@@ -43383,52 +43224,47 @@ typedef struct Eq_9552 {
 	word32 dw0008;	// 8
 } Eq_9552;
 
-typedef union Eq_9558 {
-	bool u0;
-	byte u1;
-} Eq_9558;
-
 typedef struct Eq_9635 {	// size: 1 1
 	Eq_9635 a0000[];	// 0
 } Eq_9635;
 
 typedef union Eq_9643 {
 	word32 * u0;
-	struct Eq_9694 * u1;
+	struct Eq_9690 * u1;
 	union Eq_9688 * u2;
 } Eq_9643;
 
 typedef union Eq_9647 {
 	word32 * u0;
-	struct Eq_9694 * u1;
+	struct Eq_9690 * u1;
 	union Eq_9688 * u2;
 } Eq_9647;
 
 typedef union Eq_9651 {
 	word32 * u0;
-	struct Eq_9696 * u1;
+	struct Eq_9692 * u1;
 	union Eq_9688 * u2;
 } Eq_9651;
 
 typedef union Eq_9653 {
 	word32 * u0;
-	struct Eq_9696 * u1;
+	struct Eq_9692 * u1;
 	union Eq_9688 * u2;
 } Eq_9653;
 
 typedef union Eq_9658 {
 	word32 * u0;
-	struct Eq_9698 * u1;
+	struct Eq_9694 * u1;
 	union Eq_9688 * u2;
 } Eq_9658;
 
 typedef struct Eq_9659 {	// size: 1 1
-	Eq_9699 t0000;	// 0
+	Eq_9695 t0000;	// 0
 } Eq_9659;
 
 typedef union Eq_9664 {
 	word32 * u0;
-	struct Eq_9698 * u1;
+	struct Eq_9694 * u1;
 	union Eq_9688 * u2;
 } Eq_9664;
 
@@ -43473,23 +43309,73 @@ typedef union Eq_9688 {
 } Eq_9688;
 
 typedef union Eq_9689 {
-	bool u0;
-	byte u1;
+	word32 u0;
+	Eq_9659 u1[];
+	Eq_9635 u2[];
+	Eq_2 u3;
 } Eq_9689;
 
-typedef union Eq_9690 {
-	bool u0;
-	byte u1;
+typedef struct Eq_9690 {	// size: 16 10
+	Eq_2 tFFFFFFDC;	// FFFFFFDC
+	word32 dwFFFFFFE0;	// FFFFFFE0
+	word32 dwFFFFFFE4;	// FFFFFFE4
+	word32 dwFFFFFFE8;	// FFFFFFE8
+	word32 dwFFFFFFEC;	// FFFFFFEC
+	word32 dwFFFFFFF0;	// FFFFFFF0
+	word32 dwFFFFFFF4;	// FFFFFFF4
+	word32 dwFFFFFFF8;	// FFFFFFF8
+	word32 dwFFFFFFFC;	// FFFFFFFC
+	Eq_9689 t0000;	// 0
+	word32 dw0004;	// 4
+	word32 dw0008;	// 8
+	word32 dw000C;	// C
+	word32 dw0010;	// 10
+	ptr32 ptr0018;	// 18
+	word32 dw0024;	// 24
+	word32 dw0034;	// 34
+	Eq_2 t0038;	// 38
+	Eq_2 t003C;	// 3C
+	Eq_2 t0040;	// 40
+	byte b0044;	// 44
+	byte b0045;	// 45
+	uint32 dw004C;	// 4C
+	uint32 dw0058;	// 58
+	word32 dw005C;	// 5C
 } Eq_9690;
 
 typedef union Eq_9691 {
-	bool u0;
-	byte u1;
+	word32 u0;
+	Eq_9659 u1[];
+	Eq_9635 u2[];
+	Eq_2 u3;
 } Eq_9691;
 
-typedef union Eq_9692 {
-	bool u0;
-	byte u1;
+typedef struct Eq_9692 {	// size: 16 10
+	Eq_2 tFFFFFFDC;	// FFFFFFDC
+	word32 dwFFFFFFE0;	// FFFFFFE0
+	word32 dwFFFFFFE4;	// FFFFFFE4
+	word32 dwFFFFFFE8;	// FFFFFFE8
+	word32 dwFFFFFFEC;	// FFFFFFEC
+	word32 dwFFFFFFF0;	// FFFFFFF0
+	word32 dwFFFFFFF4;	// FFFFFFF4
+	word32 dwFFFFFFF8;	// FFFFFFF8
+	word32 dwFFFFFFFC;	// FFFFFFFC
+	Eq_9691 t0000;	// 0
+	word32 dw0004;	// 4
+	word32 dw0008;	// 8
+	word32 dw000C;	// C
+	word32 dw0010;	// 10
+	ptr32 ptr0018;	// 18
+	word32 dw0024;	// 24
+	word32 dw0034;	// 34
+	Eq_2 t0038;	// 38
+	Eq_2 t003C;	// 3C
+	Eq_2 t0040;	// 40
+	byte b0044;	// 44
+	byte b0045;	// 45
+	uint32 dw004C;	// 4C
+	uint32 dw0058;	// 58
+	word32 dw005C;	// 5C
 } Eq_9692;
 
 typedef union Eq_9693 {
@@ -43528,77 +43414,7 @@ typedef struct Eq_9694 {	// size: 16 10
 } Eq_9694;
 
 typedef union Eq_9695 {
-	word32 u0;
-	Eq_9659 u1[];
-	Eq_9635 u2[];
-	Eq_2 u3;
-} Eq_9695;
-
-typedef struct Eq_9696 {	// size: 16 10
-	Eq_2 tFFFFFFDC;	// FFFFFFDC
-	word32 dwFFFFFFE0;	// FFFFFFE0
-	word32 dwFFFFFFE4;	// FFFFFFE4
-	word32 dwFFFFFFE8;	// FFFFFFE8
-	word32 dwFFFFFFEC;	// FFFFFFEC
-	word32 dwFFFFFFF0;	// FFFFFFF0
-	word32 dwFFFFFFF4;	// FFFFFFF4
-	word32 dwFFFFFFF8;	// FFFFFFF8
-	word32 dwFFFFFFFC;	// FFFFFFFC
-	Eq_9695 t0000;	// 0
-	word32 dw0004;	// 4
-	word32 dw0008;	// 8
-	word32 dw000C;	// C
-	word32 dw0010;	// 10
-	ptr32 ptr0018;	// 18
-	word32 dw0024;	// 24
-	word32 dw0034;	// 34
-	Eq_2 t0038;	// 38
-	Eq_2 t003C;	// 3C
-	Eq_2 t0040;	// 40
-	byte b0044;	// 44
-	byte b0045;	// 45
-	uint32 dw004C;	// 4C
-	uint32 dw0058;	// 58
-	word32 dw005C;	// 5C
-} Eq_9696;
-
-typedef union Eq_9697 {
-	word32 u0;
-	Eq_9659 u1[];
-	Eq_9635 u2[];
-	Eq_2 u3;
-} Eq_9697;
-
-typedef struct Eq_9698 {	// size: 16 10
-	Eq_2 tFFFFFFDC;	// FFFFFFDC
-	word32 dwFFFFFFE0;	// FFFFFFE0
-	word32 dwFFFFFFE4;	// FFFFFFE4
-	word32 dwFFFFFFE8;	// FFFFFFE8
-	word32 dwFFFFFFEC;	// FFFFFFEC
-	word32 dwFFFFFFF0;	// FFFFFFF0
-	word32 dwFFFFFFF4;	// FFFFFFF4
-	word32 dwFFFFFFF8;	// FFFFFFF8
-	word32 dwFFFFFFFC;	// FFFFFFFC
-	Eq_9697 t0000;	// 0
-	word32 dw0004;	// 4
-	word32 dw0008;	// 8
-	word32 dw000C;	// C
-	word32 dw0010;	// 10
-	ptr32 ptr0018;	// 18
-	word32 dw0024;	// 24
-	word32 dw0034;	// 34
-	Eq_2 t0038;	// 38
-	Eq_2 t003C;	// 3C
-	Eq_2 t0040;	// 40
-	byte b0044;	// 44
-	byte b0045;	// 45
-	uint32 dw004C;	// 4C
-	uint32 dw0058;	// 58
-	word32 dw005C;	// 5C
-} Eq_9698;
-
-typedef union Eq_9699 {
 	byte u0;
 	Eq_9659 u1[];
-} Eq_9699;
+} Eq_9695;
 

@@ -23,10 +23,6 @@ Eq_40: (fn void ((ptr32 Eq_2)))
 Eq_45: (fn void (word32, word32, word32, word32, word32, word32, (ptr32 Eq_7)))
 	T_45 (in _init : ptr32)
 	T_46 (in signature of _init : void)
-Eq_86: (union "Eq_86" (bool u0) (byte u1))
-	T_86 (in Z_122 : Eq_86)
-	T_98 (in SLICE(cond(0x00000000), bool, 2) : bool)
-	T_105 (in SLICE(cond(i1_114), bool, 2) : bool)
 Eq_114: (fn int32 ((ptr32 char)))
 	T_114 (in printf : ptr32)
 	T_115 (in signature of printf : void)
@@ -390,9 +386,9 @@ T_85: (in i1_114 : word32)
   Class: Eq_85
   DataType: word32
   OrigDataType: word32
-T_86: (in Z_122 : Eq_86)
+T_86: (in Z_122 : bool)
   Class: Eq_86
-  DataType: Eq_86
+  DataType: bool
   OrigDataType: bool
 T_87: (in 0x00000000 : word32)
   Class: Eq_60
@@ -440,7 +436,7 @@ T_97: (in cond(0x00000000) : byte)
   OrigDataType: byte
 T_98: (in SLICE(cond(0x00000000), bool, 2) : bool)
   Class: Eq_86
-  DataType: Eq_86
+  DataType: bool
   OrigDataType: bool
 T_99: (in 0x00010ABC : word32)
   Class: Eq_75
@@ -468,7 +464,7 @@ T_104: (in cond(i1_114) : byte)
   OrigDataType: byte
 T_105: (in SLICE(cond(i1_114), bool, 2) : bool)
   Class: Eq_86
-  DataType: Eq_86
+  DataType: bool
   OrigDataType: bool
 T_106: (in 0x00000000 : word32)
   Class: Eq_85
@@ -834,11 +830,6 @@ typedef struct Eq_7 {
 typedef void (Eq_40)( *);
 
 typedef void (Eq_45)(word32, word32, word32, word32, word32, word32, Eq_7 *);
-
-typedef union Eq_86 {
-	bool u0;
-	byte u1;
-} Eq_86;
 
 typedef int32 (Eq_114)(char *);
 

@@ -178,7 +178,7 @@ ptr32 * __divsi3(ptr32 * r0, ptr32 * r1)
 		{
 			do
 			{
-				Eq_234 C_35 = SLICE(cond(r1_10 - (ptr32 *) 0x10000000), bool, 1);
+				bool C_35 = SLICE(cond(r1_10 - (ptr32 *) 0x10000000), bool, 1);
 				if (r1_10 < (ptr32 *) 0x10000000)
 					C_35.u0 = SLICE(cond(r1_10 - r0), bool, 1);
 				if (!C_35)
@@ -188,7 +188,7 @@ ptr32 * __divsi3(ptr32 * r0, ptr32 * r1)
 			} while (C_35);
 			do
 			{
-				Eq_249 C_50 = SLICE(cond(r1_10 - (ptr32 *) 0x80000000), bool, 1);
+				bool C_50 = SLICE(cond(r1_10 - (ptr32 *) 0x80000000), bool, 1);
 				if (r1_10 < (ptr32 *) 0x80000000)
 					C_50.u0 = SLICE(cond(r1_10 - r0), bool, 1);
 				if (!C_50)
@@ -221,7 +221,7 @@ ptr32 * __divsi3(ptr32 * r0, ptr32 * r1)
 					r0 = r0_101 - (r1_10 >> 0x03);
 				if (r0_101 >= r1_10 >> 0x03)
 					r2_109 |= r3_118 >> 0x03;
-				Eq_299 Z_116 = SLICE(cond(r0), bool, 2);
+				bool Z_116 = SLICE(cond(r0), bool, 2);
 				if (r0 != null)
 				{
 					r3_118 >>= 0x04;

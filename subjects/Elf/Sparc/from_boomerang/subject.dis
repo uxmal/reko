@@ -432,7 +432,7 @@ l00010B74:
 
 l00010B84:
 	word32 i1_114
-	byte Z_122
+	bool Z_122
 	branch o0_20 == 0x00000000 l00010B84_ds_t
 // DataOut:
 // DataOut (flags):

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -75,6 +75,8 @@ namespace Reko.Arch.Sparc
             {
                 instrCur = dasm.Current;
                 var addr = instrCur.Address;
+                if (addr.ToLinear() == 0x0000000000010c44)
+                    addr.ToString();
                 rtlInstructions = new List<RtlInstruction>();
                 rtlc = InstrClass.Linear;
                 m = new RtlEmitter(rtlInstructions);

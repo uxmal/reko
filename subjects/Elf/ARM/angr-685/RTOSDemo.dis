@@ -145,7 +145,7 @@ prvUnlockQueue_exit:
 
 
 
-byte prvCopyDataToQueue(word32 r0, word32 r1, word32 r2, word32 r3, word32 r7, word32 lr, ptr32 & r0Out, ptr32 & r7Out, ptr32 & lrOut)
+bool prvCopyDataToQueue(word32 r0, word32 r1, word32 r2, word32 r3, word32 r7, word32 lr, ptr32 & r0Out, ptr32 & r7Out, ptr32 & lrOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r2:[0..31] r3:[0..31] r7:[0..31]
@@ -158,7 +158,7 @@ prvCopyDataToQueue_entry:
 // SymbolicIn:
 
 l000000EC:
-	byte Z_194
+	bool Z_194
 	word32 r5_117
 	word32 r4_124 = r0
 	word32 r0_109 = Mem11[r0 + 64:word32]
@@ -6163,7 +6163,7 @@ vListInsertEnd_exit:
 
 
 
-byte vListInsert(word32 r0, word32 r1)
+bool vListInsert(word32 r0, word32 r1)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r0:[0..31] r1:[0..31]
@@ -6276,7 +6276,7 @@ uxListRemove_exit:
 
 
 
-byte xQueueCRSend(word32 r0, word32 r1, word32 r2, word32 r7, word32 lr, word32 cpsr, ptr32 & r0Out)
+bool xQueueCRSend(word32 r0, word32 r1, word32 r2, word32 r7, word32 lr, word32 cpsr, ptr32 & r0Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  cpsr:[0..31] lr:[0..31] r0:[0..31] r1:[0..31] r2:[0..31] r7:[0..31]
@@ -6299,14 +6299,14 @@ l00008364:
 // SymbolicIn:
 
 l000083B2:
-	byte Z_33 = vPortExitCritical(cpsr)
+	bool Z_33 = vPortExitCritical(cpsr)
 	branch r2 != 0x00000000 l000083D8
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000083D8:
-	byte Z_43 = vCoRoutineAddToDelayedList(r2, r0 + 0x00000010)
+	bool Z_43 = vCoRoutineAddToDelayedList(r2, r0 + 0x00000010)
 	__msr(cpsr, 0x00000000)
 	r0Out = ~0x00000003
 	return Z_43
@@ -6331,7 +6331,7 @@ l00008388:
 	word32 r2_65 = Mem11[r0 + 56:word32]
 	word32 r3_66 = Mem11[r0 + 60:word32]
 	word32 r0_136 = 0x00000000
-	byte Z_157 = SLICE(cond(r2_65 - r3_66), bool, 2)
+	bool Z_157 = SLICE(cond(r2_65 - r3_66), bool, 2)
 	branch r2_65 <u r3_66 l000083C0
 // DataOut:
 // DataOut (flags):
@@ -6382,7 +6382,7 @@ xQueueCRSend_exit:
 
 
 
-byte xQueueCRReceive(word32 r0, word32 r1, word32 r2, word32 r6, word32 r7, word32 lr, word32 cpsr, ptr32 & r0Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & lrOut)
+bool xQueueCRReceive(word32 r0, word32 r1, word32 r2, word32 r6, word32 r7, word32 lr, word32 cpsr, ptr32 & r0Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & lrOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  cpsr:[0..31] lr:[0..31] r0:[0..31] r1:[0..31] r2:[0..31] r6:[0..31] r7:[0..31]
@@ -6500,14 +6500,14 @@ l00008440:
 // SymbolicIn:
 
 l00008418:
-	byte Z_105 = SLICE(cond(r2), bool, 2)
+	bool Z_105 = SLICE(cond(r2), bool, 2)
 	branch r2 != 0x00000000 l0000848A
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000848A:
-	byte Z_113 = vCoRoutineAddToDelayedList(r2, r0 + 0x00000024)
+	bool Z_113 = vCoRoutineAddToDelayedList(r2, r0 + 0x00000024)
 	__msr(cpsr, r5_16)
 	r0Out = ~0x00000003
 	r6Out = r6
@@ -6871,7 +6871,7 @@ vPortEnterCritical_exit:
 
 
 
-byte vPortExitCritical(word32 cpsr)
+bool vPortExitCritical(word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  cpsr:[0..31]
@@ -6900,7 +6900,7 @@ l000085C0:
 // SymbolicIn:
 
 l000085C4:
-	byte Z_20 = SLICE(cond(r0_9 - 0x00000001), bool, 2)
+	bool Z_20 = SLICE(cond(r0_9 - 0x00000001), bool, 2)
 	branch r0_9 == 0x00000001 l000085D4
 // DataOut:
 // DataOut (flags):
@@ -7146,7 +7146,7 @@ l000086D2:
 // SymbolicIn:
 
 l00008696:
-	byte Z_59 = xQueueCRReceive(Mem47[r5_107:word32], r6_105, 0xFFFFFFFF, r6_105, r7, lr, cpsr, out r0_26, out r6_105, out r7, out lr)
+	bool Z_59 = xQueueCRReceive(Mem47[r5_107:word32], r6_105, 0xFFFFFFFF, r6_105, r7, lr, cpsr, out r0_26, out r6_105, out r7, out lr)
 	branch Z_59 l000086D8
 // DataOut:
 // DataOut (flags):
@@ -7216,7 +7216,7 @@ prvFixedDelayCoRoutine_entry:
 
 l000086E8:
 	word32 r0_81
-	byte Z_29
+	bool Z_29
 	word32 r0_22
 	word32 r3_9 = (word32) Mem7[r0 + 104:word16]
 	branch r3_9 == 0x00000182 l00008750
@@ -15056,7 +15056,7 @@ I2CSlaveDataGet_exit:
 
 
 
-byte memcpy(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r7, word32 lr, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & lrOut)
+bool memcpy(word32 r0, word32 r1, word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r7, word32 lr, ptr32 & r4Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & lrOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  lr:[0..31] r0:[0..31] r1:[0..31] r2:[0..31] r3:[0..31] r4:[0..31] r5:[0..31] r6:[0..31] r7:[0..31]
