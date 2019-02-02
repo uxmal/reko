@@ -12191,7 +12191,7 @@ T_2518: (in cx_1299 : Eq_281)
 T_2519: (in es_1025 : Eq_281)
   Class: Eq_281
   DataType: Eq_281
-  OrigDataType: (ptr16 (segment))
+  OrigDataType: selector
 T_2520: (in di_1182 : Eq_2520)
   Class: Eq_2520
   DataType: Eq_2520
@@ -12775,7 +12775,7 @@ T_2664: (in (wLoc9A_1039 & 0x0020) != 0x0000 : bool)
 T_2665: (in es_1380 : Eq_281)
   Class: Eq_281
   DataType: Eq_281
-  OrigDataType: (ptr16 (segment))
+  OrigDataType: selector
 T_2666: (in di_1379 : (memptr Eq_281 Eq_2666))
   Class: Eq_2666
   DataType: (memptr Eq_281 Eq_2666)

@@ -82,7 +82,7 @@ l000000DE:
 byte prvCopyDataToQueue(Eq_2 * r0, Eq_127 * r1, word32 r2, ptr32 & r0Out)
 {
 	byte Z_104;
-	struct Eq_9953 * r0_14 = r0->ptr0040;
+	struct Eq_9956 * r0_14 = r0->ptr0040;
 	*r0Out = r0_14;
 	struct Eq_3 * r5_116 = r0->ptr0038;
 	if (r0_14 == null)
@@ -152,7 +152,7 @@ byte prvCopyDataToQueue(Eq_2 * r0, Eq_127 * r1, word32 r2, ptr32 & r0Out)
 // 0000016C: void prvCopyDataFromQueue(Register (ptr32 Eq_2) r0, Register (ptr32 Eq_127) r1)
 void prvCopyDataFromQueue(Eq_2 * r0, Eq_127 * r1)
 {
-	struct Eq_9953 * r2_4 = r0->ptr0040;
+	struct Eq_9956 * r2_4 = r0->ptr0040;
 	if (r2_4 == null)
 		return;
 	struct Eq_127 * r4_20 = r0->ptr0004;
@@ -2332,7 +2332,7 @@ Eq_40 xQueueCRReceive(Eq_5236 * r0, Eq_127 * r1, Eq_459 * r2, word32 cpsr, ptr32
 	if (r2_49 != null)
 	{
 		struct Eq_127 * r1_75;
-		struct Eq_9953 * r2_66 = r0->ptr0040;
+		struct Eq_9956 * r2_66 = r0->ptr0040;
 		struct Eq_127 * r3_68 = r0->ptr0004;
 		word32 r1_69 = Mem0[r0 + 0x0C:word32] + r2_66;
 		struct Eq_459 * r3_73 = r0->ptr0038;
@@ -2388,7 +2388,7 @@ void xQueueCRReceiveFromISR(Eq_5379 * r0, Eq_127 * r1, word32 * r2)
 	if (r0->dw0038 == 0x00)
 		return;
 	struct Eq_127 * r3_45;
-	struct Eq_9953 * lr_32 = r0->ptr0040;
+	struct Eq_9956 * lr_32 = r0->ptr0040;
 	struct Eq_127 * r4_33 = r0->ptr0004;
 	word32 r3_34 = Mem0[r0 + 0x0C:word32] + lr_32;
 	word32 r7_43 = r0->dw0038;
@@ -3728,7 +3728,7 @@ void OSRAMStringDraw(byte * r0, uint32 r1, ui32 r2)
 	OSRAMWriteByte(0x80);
 	OSRAMWriteByte(r1 + 0x24 & 0x0F);
 	OSRAMWriteByte(0x80);
-	OSRAMWriteByte(0x12);
+	OSRAMWriteByte((uint32) SLICE(r1 + 0x24, ui4, 4) | 0x10);
 	OSRAMWriteByte(0x40);
 	ui32 r3_29 = (word32) *r0;
 	if (r3_29 == 0x00)
@@ -3757,7 +3757,7 @@ l00009846:
 	}
 	int32 r4_53 = 0x5F - r4_14;
 	OSRAMWriteArray(r6_44 + (r3_29 - 0x20) * 0x05, r4_53);
-	Eq_8180 r3_56 = (word32) *r5_16;
+	Eq_8184 r3_56 = (word32) *r5_16;
 	ui32 r0_63 = (word32) (r3_56 - 0x20 + (r3_56 - 0x20 << 0x02) + globals->dw987C + r4_53)->b0010;
 	OSRAMWriteFinal(r0_63);
 }
@@ -3769,7 +3769,7 @@ void OSRAMImageDraw(byte * r0, word32 r1, word32 r2, word32 r3, word32 dwArg00)
 	{
 		byte * r5_37 = r0;
 		word32 r4_39;
-		uint32 r8_43 = (uint32) SLICE(r1 + 0x90, ui4, 4);
+		uint32 r8_43 = (uint32) SLICE(r1 + 0x24, ui4, 4);
 		word32 r6_44 = dwArg00 + r2;
 		ui32 r7_47 = r1 + 0x24 & 0x0F;
 		do
@@ -3808,7 +3808,7 @@ void OSRAMInit(word32 r0)
 		OSRAMWriteArray(r5_30 + 0x02 + (r7_26 + 0x01EC), r4_28 - 0x02);
 		OSRAMWriteFinal(r6_27);
 		r5_30 += r4_28 + 0x01;
-		struct Eq_8351 * r3_47 = r7_26 + (r5_30 << 0x00);
+		struct Eq_8354 * r3_47 = r7_26 + (r5_30 << 0x00);
 		if (r5_30 > 0x70)
 			break;
 		r4_28 = (word32) r3_47->b00EC;
@@ -3832,7 +3832,7 @@ void OSRAMDisplayOn()
 		OSRAMWriteArray(r5_20 + 0x02 + (r7_16 + 0x01EC), r4_18 - 0x02);
 		OSRAMWriteFinal(r6_17);
 		r5_20 += r4_18 + 0x01;
-		struct Eq_8401 * r3_36 = r7_16 + (r5_20 << 0x00);
+		struct Eq_8404 * r3_36 = r7_16 + (r5_20 << 0x00);
 		if (r5_20 > 0x70)
 			break;
 		r4_18 = (word32) r3_36->b00EC;
@@ -3882,8 +3882,8 @@ void SSIEnable(Eq_4910 * r0)
 	r0->dw0004 |= 0x02;
 }
 
-// 00009A40: void SSIDisable(Register (ptr32 Eq_8491) r0)
-void SSIDisable(Eq_8491 * r0)
+// 00009A40: void SSIDisable(Register (ptr32 Eq_8494) r0)
+void SSIDisable(Eq_8494 * r0)
 {
 	r0->dw0004 &= ~0x02;
 }
@@ -3902,14 +3902,14 @@ void SSIIntUnregister()
 	IntUnregister(0x17);
 }
 
-// 00009A74: void SSIIntEnable(Register (ptr32 Eq_8514) r0, Register ui32 r1)
-void SSIIntEnable(Eq_8514 * r0, ui32 r1)
+// 00009A74: void SSIIntEnable(Register (ptr32 Eq_8517) r0, Register ui32 r1)
+void SSIIntEnable(Eq_8517 * r0, ui32 r1)
 {
 	r0->dw0014 = r1 | r0->dw0014;
 }
 
-// 00009A7C: void SSIIntDisable(Register (ptr32 Eq_8523) r0, Register ui32 r1)
-void SSIIntDisable(Eq_8523 * r0, ui32 r1)
+// 00009A7C: void SSIIntDisable(Register (ptr32 Eq_8526) r0, Register ui32 r1)
+void SSIIntDisable(Eq_8526 * r0, ui32 r1)
 {
 	r0->dw0014 &= ~(r1 << 0x00);
 }
@@ -3921,8 +3921,8 @@ void SSIIntStatus(word32 r0, word32 r1)
 		;
 }
 
-// 00009A94: void SSIIntClear(Register (ptr32 Eq_8539) r0, Register word32 r1)
-void SSIIntClear(Eq_8539 * r0, word32 r1)
+// 00009A94: void SSIIntClear(Register (ptr32 Eq_8542) r0, Register word32 r1)
+void SSIIntClear(Eq_8542 * r0, word32 r1)
 {
 	r0->dw0020 = r1;
 }
@@ -3936,8 +3936,8 @@ void SSIDataPut(Eq_4950 * r0, ui32 r1)
 	r0->dw0008 = r1;
 }
 
-// 00009AA8: void SSIDataNonBlockingPut(Register (ptr32 Eq_8554) r0, Register word32 r1)
-void SSIDataNonBlockingPut(Eq_8554 * r0, word32 r1)
+// 00009AA8: void SSIDataNonBlockingPut(Register (ptr32 Eq_8557) r0, Register word32 r1)
+void SSIDataNonBlockingPut(Eq_8557 * r0, word32 r1)
 {
 	if ((r0->dw000C & 0x02) != 0x00)
 		r0->dw0008 = r1;
@@ -3952,8 +3952,8 @@ void SSIDataGet(Eq_4950 * r0, ui32 * r1)
 	*r1 = r0->dw0008;
 }
 
-// 00009AC8: void SSIDataNonBlockingGet(Register (ptr32 Eq_8579) r0, Register (ptr32 ui32) r1)
-void SSIDataNonBlockingGet(Eq_8579 * r0, ui32 * r1)
+// 00009AC8: void SSIDataNonBlockingGet(Register (ptr32 Eq_8582) r0, Register (ptr32 ui32) r1)
+void SSIDataNonBlockingGet(Eq_8582 * r0, ui32 * r1)
 {
 	ui32 r3_4 = r0->dw000C;
 	ui32 r3_12 = r3_4 & 0x04;
@@ -4308,8 +4308,8 @@ void SysCtlClkVerificationClear()
 	*r3_5 = 0x00;
 }
 
-// 00009F38: void UARTParityModeSet(Register (ptr32 Eq_9340) r0, Register ui32 r1)
-void UARTParityModeSet(Eq_9340 * r0, ui32 r1)
+// 00009F38: void UARTParityModeSet(Register (ptr32 Eq_9343) r0, Register ui32 r1)
+void UARTParityModeSet(Eq_9343 * r0, ui32 r1)
 {
 	r0->dw002C = r1 | r0->dw002C & ~0x86;
 }
@@ -4319,8 +4319,8 @@ void UARTParityModeGet(word32 r0)
 {
 }
 
-// 00009F4C: void UARTConfigSet(Register (ptr32 Eq_9353) r0, Register uint32 r1, Register ui32 r2)
-void UARTConfigSet(Eq_9353 * r0, uint32 r1, ui32 r2)
+// 00009F4C: void UARTConfigSet(Register (ptr32 Eq_9356) r0, Register uint32 r1, Register ui32 r2)
+void UARTConfigSet(Eq_9356 * r0, uint32 r1, ui32 r2)
 {
 	do
 	{
@@ -4338,22 +4338,22 @@ void UARTConfigSet(Eq_9353 * r0, uint32 r1, ui32 r2)
 	r0->dw0030 = r0->dw0030 | 0x0300 | 0x01;
 }
 
-// 00009FA8: void UARTConfigGet(Register (ptr32 Eq_9433) r0, Register (ptr32 uint32) r1, Register (ptr32 ui32) r2)
-void UARTConfigGet(Eq_9433 * r0, uint32 * r1, ui32 * r2)
+// 00009FA8: void UARTConfigGet(Register (ptr32 Eq_9436) r0, Register (ptr32 uint32) r1, Register (ptr32 ui32) r2)
+void UARTConfigGet(Eq_9436 * r0, uint32 * r1, ui32 * r2)
 {
 	*r1 = (SysCtlClockGet() << 0x02) /u (r0->dw0028 + (r0->dw0024 << 0x06));
 	*r2 = r0->dw002C & 0xEE;
 }
 
-// 00009FD4: void UARTEnable(Register (ptr32 Eq_9461) r0)
-void UARTEnable(Eq_9461 * r0)
+// 00009FD4: void UARTEnable(Register (ptr32 Eq_9464) r0)
+void UARTEnable(Eq_9464 * r0)
 {
 	r0->dw002C |= 0x10;
 	r0->dw0030 = r0->dw0030 | 0x0300 | 0x01;
 }
 
-// 00009FEC: void UARTDisable(Register (ptr32 Eq_9480) r0)
-void UARTDisable(Eq_9480 * r0)
+// 00009FEC: void UARTDisable(Register (ptr32 Eq_9483) r0)
+void UARTDisable(Eq_9483 * r0)
 {
 	do
 		;
@@ -4372,29 +4372,29 @@ void UARTSpaceAvail(word32 r0)
 {
 }
 
-// 0000A024: void UARTCharNonBlockingGet(Register (ptr32 Eq_9511) r0)
-void UARTCharNonBlockingGet(Eq_9511 * r0)
+// 0000A024: void UARTCharNonBlockingGet(Register (ptr32 Eq_9514) r0)
+void UARTCharNonBlockingGet(Eq_9514 * r0)
 {
 	r0->dw0018 << 0x001B < 0x00;
 }
 
-// 0000A034: void UARTCharGet(Register (ptr32 Eq_9519) r0)
-void UARTCharGet(Eq_9519 * r0)
+// 0000A034: void UARTCharGet(Register (ptr32 Eq_9522) r0)
+void UARTCharGet(Eq_9522 * r0)
 {
 	do
 		;
 	while (r0->dw0018 << 0x001B < 0x00);
 }
 
-// 0000A044: void UARTCharNonBlockingPut(Register (ptr32 Eq_9527) r0, Register word32 r1)
-void UARTCharNonBlockingPut(Eq_9527 * r0, word32 r1)
+// 0000A044: void UARTCharNonBlockingPut(Register (ptr32 Eq_9530) r0, Register word32 r1)
+void UARTCharNonBlockingPut(Eq_9530 * r0, word32 r1)
 {
 	if (r0->dw0018 << 0x001A >= 0x00)
 		r0->dw0000 = r1;
 }
 
-// 0000A054: void UARTCharPut(Register (ptr32 Eq_9539) r0, Register word32 r1)
-void UARTCharPut(Eq_9539 * r0, word32 r1)
+// 0000A054: void UARTCharPut(Register (ptr32 Eq_9542) r0, Register word32 r1)
+void UARTCharPut(Eq_9542 * r0, word32 r1)
 {
 	do
 		;
@@ -4402,8 +4402,8 @@ void UARTCharPut(Eq_9539 * r0, word32 r1)
 	r0->dw0000 = r1;
 }
 
-// 0000A064: void UARTBreakCtl(Register (ptr32 Eq_9551) r0, Register word32 r1)
-void UARTBreakCtl(Eq_9551 * r0, word32 r1)
+// 0000A064: void UARTBreakCtl(Register (ptr32 Eq_9554) r0, Register word32 r1)
+void UARTBreakCtl(Eq_9554 * r0, word32 r1)
 {
 	ui32 r3_4 = r0->dw002C;
 	if (r1 != 0x00)
@@ -4428,14 +4428,14 @@ void UARTIntUnregister(word32 r0)
 	IntUnregister(22);
 }
 
-// 0000A0B8: void UARTIntEnable(Register (ptr32 Eq_9595) r0, Register ui32 r1)
-void UARTIntEnable(Eq_9595 * r0, ui32 r1)
+// 0000A0B8: void UARTIntEnable(Register (ptr32 Eq_9598) r0, Register ui32 r1)
+void UARTIntEnable(Eq_9598 * r0, ui32 r1)
 {
 	r0->dw0038 = r1 | r0->dw0038;
 }
 
-// 0000A0C0: void UARTIntDisable(Register (ptr32 Eq_9604) r0, Register ui32 r1)
-void UARTIntDisable(Eq_9604 * r0, ui32 r1)
+// 0000A0C0: void UARTIntDisable(Register (ptr32 Eq_9607) r0, Register ui32 r1)
+void UARTIntDisable(Eq_9607 * r0, ui32 r1)
 {
 	r0->dw0038 &= ~(r1 << 0x00);
 }
@@ -4472,8 +4472,8 @@ void CPUwfi()
 	__wait_for_interrupt();
 }
 
-// 0000A0F4: void I2CMasterInit(Register (ptr32 Eq_8307) r0, Register word32 r1)
-void I2CMasterInit(Eq_8307 * r0, word32 r1)
+// 0000A0F4: void I2CMasterInit(Register (ptr32 Eq_8310) r0, Register word32 r1)
+void I2CMasterInit(Eq_8310 * r0, word32 r1)
 {
 	r0->dw0020 |= 0x10;
 	uint32 r0_19 = SysCtlClockGet();
@@ -4484,35 +4484,35 @@ void I2CMasterInit(Eq_8307 * r0, word32 r1)
 	r0->dw000C = (r0_19 - 0x01 + r3_20) /u r3_20 - 0x01;
 }
 
-// 0000A128: void I2CSlaveInit(Register (ptr32 Eq_9666) r0, Register word32 r1)
-void I2CSlaveInit(Eq_9666 * r0, word32 r1)
+// 0000A128: void I2CSlaveInit(Register (ptr32 Eq_9669) r0, Register word32 r1)
+void I2CSlaveInit(Eq_9669 * r0, word32 r1)
 {
 	*(r0 - 0x07E0) |= 0x20;
 	r0->dw0004 = 0x01;
 	r0->dw0000 = r1;
 }
 
-// 0000A140: void I2CMasterEnable(Register (ptr32 Eq_9686) r0)
-void I2CMasterEnable(Eq_9686 * r0)
+// 0000A140: void I2CMasterEnable(Register (ptr32 Eq_9689) r0)
+void I2CMasterEnable(Eq_9689 * r0)
 {
 	r0->dw0020 |= 0x10;
 }
 
-// 0000A14C: void I2CSlaveEnable(Register (ptr32 Eq_9695) r0)
-void I2CSlaveEnable(Eq_9695 * r0)
+// 0000A14C: void I2CSlaveEnable(Register (ptr32 Eq_9698) r0)
+void I2CSlaveEnable(Eq_9698 * r0)
 {
 	*(r0 - 0x07E0) |= 0x20;
 	r0->dw0004 = 0x01;
 }
 
-// 0000A160: void I2CMasterDisable(Register (ptr32 Eq_9711) r0)
-void I2CMasterDisable(Eq_9711 * r0)
+// 0000A160: void I2CMasterDisable(Register (ptr32 Eq_9714) r0)
+void I2CMasterDisable(Eq_9714 * r0)
 {
 	r0->dw0020 &= ~0x10;
 }
 
-// 0000A16C: void I2CSlaveDisable(Register (ptr32 Eq_9721) r0)
-void I2CSlaveDisable(Eq_9721 * r0)
+// 0000A16C: void I2CSlaveDisable(Register (ptr32 Eq_9724) r0)
+void I2CSlaveDisable(Eq_9724 * r0)
 {
 	r0->dw0004 = 0x00;
 	*(r0 - 0x07E0) &= ~0x20;
@@ -4532,26 +4532,26 @@ void I2CIntUnregister()
 	IntUnregister(0x18);
 }
 
-// 0000A1A8: void I2CMasterIntEnable(Register (ptr32 Eq_9751) r0)
-void I2CMasterIntEnable(Eq_9751 * r0)
+// 0000A1A8: void I2CMasterIntEnable(Register (ptr32 Eq_9754) r0)
+void I2CMasterIntEnable(Eq_9754 * r0)
 {
 	r0->dw0010 = 0x01;
 }
 
-// 0000A1B0: void I2CSlaveIntEnable(Register (ptr32 Eq_9756) r0)
-void I2CSlaveIntEnable(Eq_9756 * r0)
+// 0000A1B0: void I2CSlaveIntEnable(Register (ptr32 Eq_9759) r0)
+void I2CSlaveIntEnable(Eq_9759 * r0)
 {
 	r0->dw000C = 0x01;
 }
 
-// 0000A1B8: void I2CMasterIntDisable(Register (ptr32 Eq_9761) r0)
-void I2CMasterIntDisable(Eq_9761 * r0)
+// 0000A1B8: void I2CMasterIntDisable(Register (ptr32 Eq_9764) r0)
+void I2CMasterIntDisable(Eq_9764 * r0)
 {
 	r0->dw0010 = 0x00;
 }
 
-// 0000A1C0: void I2CSlaveIntDisable(Register (ptr32 Eq_9766) r0)
-void I2CSlaveIntDisable(Eq_9766 * r0)
+// 0000A1C0: void I2CSlaveIntDisable(Register (ptr32 Eq_9769) r0)
+void I2CSlaveIntDisable(Eq_9769 * r0)
 {
 	r0->dw000C = 0x00;
 }
@@ -4577,8 +4577,8 @@ Eq_7930 * I2CMasterIntStatus(Eq_7930 * r0, word32 r1)
 	}
 }
 
-// 0000A1E0: void I2CSlaveIntStatus(Register (ptr32 Eq_9789) r0, Register word32 r1)
-void I2CSlaveIntStatus(Eq_9789 * r0, word32 r1)
+// 0000A1E0: void I2CSlaveIntStatus(Register (ptr32 Eq_9792) r0, Register word32 r1)
+void I2CSlaveIntStatus(Eq_9792 * r0, word32 r1)
 {
 	if (r1 != 0x00)
 		r0->dw0014 == 0x00;
@@ -4586,15 +4586,15 @@ void I2CSlaveIntStatus(Eq_9789 * r0, word32 r1)
 		r0->dw0010 == 0x00;
 }
 
-// 0000A1F8: void I2CMasterIntClear(Register (ptr32 Eq_9803) r0)
-void I2CMasterIntClear(Eq_9803 * r0)
+// 0000A1F8: void I2CMasterIntClear(Register (ptr32 Eq_9806) r0)
+void I2CMasterIntClear(Eq_9806 * r0)
 {
 	r0->dw001C = 0x01;
 	r0->dw0018 = 0x01;
 }
 
-// 0000A200: void I2CSlaveIntClear(Register (ptr32 Eq_9812) r0)
-void I2CSlaveIntClear(Eq_9812 * r0)
+// 0000A200: void I2CSlaveIntClear(Register (ptr32 Eq_9815) r0)
+void I2CSlaveIntClear(Eq_9815 * r0)
 {
 	r0->dw0018 = 0x01;
 }
@@ -4621,8 +4621,8 @@ void I2CMasterControl(Eq_7930 * r0, word32 r1)
 	r0->dw0004 = r1;
 }
 
-// 0000A224: void I2CMasterErr(Register (ptr32 Eq_9828) r0)
-void I2CMasterErr(Eq_9828 * r0)
+// 0000A224: void I2CMasterErr(Register (ptr32 Eq_9831) r0)
+void I2CMasterErr(Eq_9831 * r0)
 {
 	ui32 r3_4 = r0->dw0004;
 	if (r3_4 << 0x001F < 0x00 || (r3_4 & 0x02) == 0x00)
@@ -4645,8 +4645,8 @@ void I2CSlaveStatus(word32 r0)
 {
 }
 
-// 0000A248: void I2CSlaveDataPut(Register (ptr32 Eq_9846) r0, Register word32 r1)
-void I2CSlaveDataPut(Eq_9846 * r0, word32 r1)
+// 0000A248: void I2CSlaveDataPut(Register (ptr32 Eq_9849) r0, Register word32 r1)
+void I2CSlaveDataPut(Eq_9849 * r0, word32 r1)
 {
 	r0->dw0008 = r1;
 }
@@ -4656,10 +4656,10 @@ void I2CSlaveDataGet(word32 r0)
 {
 }
 
-// 0000A5C4: FlagGroup byte memcpy(Register (ptr32 Eq_127) r0, Register (ptr32 Eq_127) r1, Register (ptr32 Eq_9953) r2)
-byte memcpy(Eq_127 * r0, Eq_127 * r1, Eq_9953 * r2)
+// 0000A5C4: FlagGroup byte memcpy(Register (ptr32 Eq_127) r0, Register (ptr32 Eq_127) r1, Register (ptr32 Eq_9956) r2)
+byte memcpy(Eq_127 * r0, Eq_127 * r1, Eq_9956 * r2)
 {
-	struct Eq_9953 * r2_125;
+	struct Eq_9956 * r2_125;
 	struct Eq_127 * r5_104 = r0;
 	r2_125 = r2;
 	if (r2 > &globals->t000F)
@@ -4669,7 +4669,7 @@ byte memcpy(Eq_127 * r0, Eq_127 * r1, Eq_9953 * r2)
 			r5_104 = r0;
 			r2_125 = r2;
 l0000A630:
-			struct Eq_9953 * r3_51;
+			struct Eq_9956 * r3_51;
 			do
 			{
 				Mem55[r5_104 + r3_51:byte] = (byte) (word32) Mem0[r1 + r3_51:byte];
@@ -4718,7 +4718,7 @@ l0000A63C:
 				r5_104[r3_110 / 0x0010] = r1[r3_110 / 0x0010];
 				r3_110 += 0x04;
 			} while (r3_110 != r4_112 << 0x02);
-			struct Eq_9953 * r6_123 = r6_109 & ~0x03;
+			struct Eq_9956 * r6_123 = r6_109 & ~0x03;
 			r2_125 = r2 & 0x03;
 			r1 += r6_123 + 0x04;
 			r5_104 += r6_123 + 0x04;

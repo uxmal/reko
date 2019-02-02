@@ -66,7 +66,7 @@ Eq_1007 g_t0003 =
 		0x16,
 		0xA36A,
 	};
-struct Eq_9953 g_t0004 = 
+struct Eq_9956 g_t0004 = 
 	{
 		
 		{
@@ -104,7 +104,7 @@ struct Eq_4165 g_t000C =
 		0x00008005,
 		0xFFF0F007,
 	};
-struct Eq_9953 g_t000F = 
+struct Eq_9956 g_t000F = 
 	{
 		
 		{
@@ -447,7 +447,7 @@ word32 g_dw9878 = 0x0000A304;
 int32 g_dw987C = 41716;
 uint32 g_dw9960 = 0x20000002;
 struct Eq_4901 * g_ptr9964 = &g_t40005000;
-struct Eq_8307 * g_ptr9968 = &g_t40020000;
+struct Eq_8310 * g_ptr9968 = &g_t40020000;
 word32 * g_ptr996C = &g_dw2000087C;
 word32 g_dw9970 = 0x0000A2F4;
 word32 g_dw99BC = 0x0000A2F4;

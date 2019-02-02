@@ -2780,7 +2780,7 @@ T_270: (in hl_29 + 0x007F : word16)
   Class: Eq_270
   DataType: word16
   OrigDataType: word16
-T_271: (in SLICE((word16) hl_29.u1 + 127, byte, 8) : byte)
+T_271: (in SLICE(hl_29 + 0x007F, byte, 8) : byte)
   Class: Eq_263
   DataType: uint8
   OrigDataType: byte
@@ -5084,7 +5084,7 @@ T_846: (in hl_48 + 0x0030 : word16)
   Class: Eq_846
   DataType: word16
   OrigDataType: word16
-T_847: (in SLICE((word16) hl_48.u1 + 48, byte, 8) : byte)
+T_847: (in SLICE(hl_48 + 0x0030, byte, 8) : byte)
   Class: Eq_847
   DataType: byte
   OrigDataType: byte
@@ -9892,7 +9892,7 @@ T_2048: (in hl_19 + 0x0001 : word16)
   Class: Eq_2048
   DataType: word16
   OrigDataType: word16
-T_2049: (in SLICE((word16) hl_19 + 1, byte, 8) : byte)
+T_2049: (in SLICE(hl_19 + 0x0001, byte, 8) : byte)
   Class: Eq_11
   DataType: byte
   OrigDataType: byte
@@ -11800,7 +11800,7 @@ T_2525: (in hl_208 + 0x000C : word16)
   Class: Eq_2525
   DataType: word16
   OrigDataType: word16
-T_2526: (in SLICE((word16) hl_208 + 12, byte, 8) : byte)
+T_2526: (in SLICE(hl_208 + 0x000C, byte, 8) : byte)
   Class: Eq_11
   DataType: byte
   OrigDataType: byte
@@ -12580,7 +12580,7 @@ T_2720: (in DPB(af, 0x00 - (Mem0[hl_10 + 0x0000:byte] <u 0x2F), 0) : word16)
   Class: Eq_2720
   DataType: word16
   OrigDataType: word16
-T_2721: (in SLICE(DPB(af, 0x00 - (*hl_10 < 0x2F), 0), byte, 8) : byte)
+T_2721: (in SLICE(DPB(af, 0x00 - (Mem0[hl_10 + 0x0000:byte] <u 0x2F), 0), byte, 8) : byte)
   Class: Eq_2721
   DataType: byte
   OrigDataType: byte
@@ -14768,7 +14768,7 @@ T_3267: (in DPB(af, 0x00 - (Mem0[0x16A8:byte] <u 0x03) & SLICE(af, byte, 8), 0) 
   Class: Eq_3267
   DataType: word16
   OrigDataType: word16
-T_3268: (in SLICE(DPB(af, 0x00 - (globals->t16A8 < 0x03) & SLICE(af, byte, 8), 0), byte, 8) : byte)
+T_3268: (in SLICE(DPB(af, 0x00 - (Mem0[0x16A8:byte] <u 0x03) & SLICE(af, byte, 8), 0), byte, 8) : byte)
   Class: Eq_3268
   DataType: byte
   OrigDataType: byte
@@ -14776,11 +14776,11 @@ T_3269: (in 0x00 - (globals->t16A8 < 0xFF) & SLICE(DPB(af, 0x00 - (globals->t16A
   Class: Eq_3269
   DataType: byte
   OrigDataType: byte
-T_3270: (in DPB(af, 0x00 - (Mem0[0x16A8:byte] <u 0xFF) & SLICE(DPB(af, 0x00 - (globals->t16A8 < 0x03) & SLICE(af, byte, 8), 0), byte, 8), 0) : word16)
+T_3270: (in DPB(af, 0x00 - (Mem0[0x16A8:byte] <u 0xFF) & SLICE(DPB(af, 0x00 - (Mem0[0x16A8:byte] <u 0x03) & SLICE(af, byte, 8), 0), byte, 8), 0) : word16)
   Class: Eq_3270
   DataType: word16
   OrigDataType: word16
-T_3271: (in SLICE(DPB(af, 0x00 - (globals->t16A8 < 0xFF) & SLICE(DPB(af, 0x00 - (globals->t16A8 < 0x03) & SLICE(af, byte, 8), 0), byte, 8), 0), byte, 8) : byte)
+T_3271: (in SLICE(DPB(af, 0x00 - (Mem0[0x16A8:byte] <u 0xFF) & SLICE(DPB(af, 0x00 - (Mem0[0x16A8:byte] <u 0x03) & SLICE(af, byte, 8), 0), byte, 8), 0), byte, 8) : byte)
   Class: Eq_3252
   DataType: byte
   OrigDataType: byte
@@ -14952,7 +14952,7 @@ T_3313: (in bc_64 + 0x14FF : word16)
   Class: Eq_3313
   DataType: (ptr16 byte)
   OrigDataType: (ptr16 byte)
-T_3314: (in SLICE(&bc_64->t14FF, byte, 8) : byte)
+T_3314: (in SLICE(bc_64 + 0x14FF, byte, 8) : byte)
   Class: Eq_483
   DataType: byte
   OrigDataType: byte
