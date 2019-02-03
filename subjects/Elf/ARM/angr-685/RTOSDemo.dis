@@ -11507,7 +11507,7 @@ l000097E0:
 	OSRAMWriteByte(0x00000080)
 	OSRAMWriteByte(r1 + 0x00000024 & 0x0000000F)
 	OSRAMWriteByte(0x00000080)
-	OSRAMWriteByte(0x00000012)
+	OSRAMWriteByte((uint32) SLICE(r1 + 0x00000024, ui4, 4) | 0x00000010)
 	OSRAMWriteByte(0x00000040)
 	word32 r3_117 = (word32) Mem11[r0:byte]
 	branch r3_117 == 0x00000000 l00009876
@@ -11624,7 +11624,7 @@ l00009880:
 l00009888:
 	word32 r5_103 = r0
 	word32 r4_112 = r2
-	word32 r8_29 = (uint32) SLICE(r1 + 0x00000048, ui4, 4)
+	word32 r8_29 = (uint32) SLICE(r1 + 0x00000024, ui4, 4)
 	word32 r6_30 = dwArg00 + r2
 	word32 r7_33 = r1 + 0x00000024 & 0x0000000F
 // DataOut:

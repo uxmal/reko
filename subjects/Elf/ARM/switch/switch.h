@@ -1030,7 +1030,7 @@ T_233: (in ip_5 >= 0x00000000 : bool)
 T_234: (in C_35 : Eq_234)
   Class: Eq_234
   DataType: Eq_234
-  OrigDataType: (union (bool u0) (byte u1))
+  OrigDataType: bool
 T_235: (in 0x10000000 : word32)
   Class: Eq_131
   DataType: (ptr32 ptr32)
@@ -1090,7 +1090,7 @@ T_248: (in r3_118 << 4 : word32)
 T_249: (in C_50 : Eq_249)
   Class: Eq_249
   DataType: Eq_249
-  OrigDataType: (union (bool u0) (byte u1))
+  OrigDataType: bool
 T_250: (in 0x80000000 : word32)
   Class: Eq_131
   DataType: (ptr32 ptr32)
@@ -1290,7 +1290,7 @@ T_298: (in r0_101 - (r1_10 >> 3) : word32)
 T_299: (in Z_116 : Eq_299)
   Class: Eq_299
   DataType: Eq_299
-  OrigDataType: (union (bool u0) (byte u1))
+  OrigDataType: bool
 T_300: (in cond(r0) : byte)
   Class: Eq_300
   DataType: byte

@@ -3941,7 +3941,7 @@ T_226: (in i2Out : ptr32)
 T_227: (in Z_34 : Eq_227)
   Class: Eq_227
   DataType: Eq_227
-  OrigDataType: (union (bool u0) (byte u1))
+  OrigDataType: bool
 T_228: (in 0x00000000 : word32)
   Class: Eq_161
   DataType: char
@@ -5801,7 +5801,7 @@ T_691: (in 0x00000001 : word32)
 T_692: (in Z_137 : Eq_692)
   Class: Eq_692
   DataType: Eq_692
-  OrigDataType: (union (bool u0) (byte u1))
+  OrigDataType: bool
 T_693: (in 0x00000001 : word32)
   Class: Eq_693
   DataType: int32
@@ -8265,7 +8265,7 @@ T_1307: (in (int32) o2_112->bFFFFFFFF != 0x0000002F : bool)
 T_1308: (in Z_122 : Eq_1308)
   Class: Eq_1308
   DataType: Eq_1308
-  OrigDataType: (union (bool u0) (byte u1))
+  OrigDataType: bool
 T_1309: (in sp_39 + 0x00000061 : word32)
   Class: Eq_1309
   DataType: (ptr32 int8)
@@ -8325,7 +8325,7 @@ T_1322: (in SLICE(cond(o3_125 - 0x0000002E), bool, 2) : bool)
 T_1323: (in Z_136 : Eq_1322)
   Class: Eq_1322
   DataType: Eq_1322
-  OrigDataType: (union (bool u0) (byte u1))
+  OrigDataType: bool
 T_1324: (in -1 : int32)
   Class: Eq_1324
   DataType: int32
@@ -8817,7 +8817,7 @@ T_1445: (in o1_117 + 0x00000002 : word32)
 T_1446: (in C_194 : Eq_1446)
   Class: Eq_1446
   DataType: Eq_1446
-  OrigDataType: (union (bool u0) (byte u1))
+  OrigDataType: bool
 T_1447: (in 0x00000000 : word32)
   Class: Eq_1447
   DataType: word32
@@ -9125,7 +9125,7 @@ T_1522: (in i0_218 : Eq_161)
 T_1523: (in Z_107 : Eq_1523)
   Class: Eq_1523
   DataType: Eq_1523
-  OrigDataType: (union (bool u0) (byte u1))
+  OrigDataType: bool
 T_1524: (in 0x00000000 : word32)
   Class: Eq_1519
   DataType: int32
@@ -16001,7 +16001,7 @@ T_3241: (in o1_458 : Eq_161)
 T_3242: (in Z_124 : Eq_3242)
   Class: Eq_3242
   DataType: Eq_3242
-  OrigDataType: (union (bool u0) (byte u1))
+  OrigDataType: bool
 T_3243: (in 0x0002B760 : word32)
   Class: Eq_3243
   DataType: (ptr32 (ptr32 char))
@@ -18973,7 +18973,7 @@ T_3984: (in l1_253 : (ptr32 Eq_3577))
 T_3985: (in Z_283 : Eq_3985)
   Class: Eq_3985
   DataType: Eq_3985
-  OrigDataType: (union (bool u0) (byte u1))
+  OrigDataType: bool
 T_3986: (in 0xFFFFFFFF : word32)
   Class: Eq_3962
   DataType: word32
@@ -30165,7 +30165,7 @@ T_6782: (in fp : ptr32)
 T_6783: (in Z_30 : Eq_6783)
   Class: Eq_6783
   DataType: Eq_6783
-  OrigDataType: (union (bool u0) (byte u1))
+  OrigDataType: bool
 T_6784: (in cond(o2_22) : byte)
   Class: Eq_6784
   DataType: byte
@@ -30529,7 +30529,7 @@ T_6873: (in i5_15 == 0x00000000 : bool)
 T_6874: (in Z_714 : Eq_6874)
   Class: Eq_6874
   DataType: Eq_6874
-  OrigDataType: (union (bool u0) (byte u1))
+  OrigDataType: bool
 T_6875: (in i0_685 : ui32)
   Class: Eq_6875
   DataType: ui32
@@ -31065,7 +31065,7 @@ T_7007: (in l2_456 + 0x00000001 : word32)
 T_7008: (in Z_605 : Eq_7008)
   Class: Eq_7008
   DataType: Eq_7008
-  OrigDataType: (union (bool u0) (byte u1))
+  OrigDataType: bool
 T_7009: (in 0x00000000 : word32)
   Class: Eq_6918
   DataType: word32
@@ -33757,7 +33757,7 @@ T_7680: (in l1_908 + 0x00000001 : word32)
 T_7681: (in Z_1014 : Eq_7681)
   Class: Eq_7681
   DataType: Eq_7681
-  OrigDataType: (union (bool u0) (byte u1))
+  OrigDataType: bool
 T_7682: (in 0x00000000 : word32)
   Class: Eq_7626
   DataType: word32
@@ -35477,7 +35477,7 @@ T_8110: (in 0xFFFFFFFF : word32)
 T_8111: (in Z_104 : Eq_8111)
   Class: Eq_8111
   DataType: Eq_8111
-  OrigDataType: (union (bool u0) (byte u1))
+  OrigDataType: bool
 T_8112: (in g0_83 : Eq_8112)
   Class: Eq_8112
   DataType: Eq_8112

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@ namespace Reko.Core.Expressions
         /// <summary>
         /// The expression being sliced.
         /// </summary>
-        public Expression Expression { get; set; }
+        public readonly Expression Expression;
 
         /// <summary>
         /// Bit offset of the slice.

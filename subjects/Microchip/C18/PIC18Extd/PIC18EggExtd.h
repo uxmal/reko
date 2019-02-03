@@ -286,7 +286,7 @@ T_35: (in 0x00 : byte)
 T_36: (in Z_17 : Eq_36)
   Class: Eq_36
   DataType: Eq_36
-  OrigDataType: (union (bool u0) (byte u1))
+  OrigDataType: bool
 T_37: (in cond(TABLAT) : byte)
   Class: Eq_37
   DataType: byte
@@ -546,7 +546,7 @@ T_100: (in Data55[0x00:0xC3:byte] : byte)
 T_101: (in Z_57 : Eq_101)
   Class: Eq_101
   DataType: Eq_101
-  OrigDataType: (union (bool u0) (byte u1))
+  OrigDataType: bool
 T_102: (in 0x00 : byte)
   Class: Eq_102
   DataType: (ptr8 Eq_102)

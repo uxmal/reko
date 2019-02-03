@@ -59,7 +59,7 @@ l000080:
 		TBLPTRU_49 = globals->b00C9;
 		0x00->b00C5 = 0x00->b00C5 - 0x01;
 		0x00->b00C6 = 0x00->b00C6 - !SLICE(cond(0x00->b00C5), bool, 0);
-		Z_17 = SLICE(cond(0x00->b00C6), bool, 2);
+		Z_17.u0 = SLICE(cond(0x00->b00C6), bool, 2);
 	}
 	while (true)
 	{
@@ -67,7 +67,7 @@ l000080:
 		*FSR0 = TABLAT;
 		0x00->b00C3 = 0x00->b00C3 - 0x01;
 		++FSR0;
-		Z_57 = SLICE(cond(0x00->b00C3), bool, 2);
+		Z_57.u0 = SLICE(cond(0x00->b00C3), bool, 2);
 		if (0x00->b00C3 < 0x00)
 			break;
 		0x00->b00C4 = 0x00->b00C4 - 0x01;

@@ -393,7 +393,7 @@ T_85: (in i1_114 : word32)
 T_86: (in Z_122 : Eq_86)
   Class: Eq_86
   DataType: Eq_86
-  OrigDataType: (union (bool u0) (byte u1))
+  OrigDataType: bool
 T_87: (in 0x00000000 : word32)
   Class: Eq_60
   DataType: word32

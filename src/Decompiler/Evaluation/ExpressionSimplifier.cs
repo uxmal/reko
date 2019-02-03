@@ -727,7 +727,8 @@ namespace Reko.Evaluation
 
         public virtual Expression VisitSlice(Slice slice)
         {
-            slice.Expression = slice.Expression.Accept(this);
+            var e = slice.Expression.Accept(this);
+            slice = new Slice(slice.DataType, e, slice.Offset);
             if (sliceConst.Match(slice))
             {
                 Changed = true;
