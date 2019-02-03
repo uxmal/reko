@@ -98,7 +98,7 @@ void main(int32 o0)
 		if (o0_31 != 68188 || (o3_37 != 68236 || (o2_43 != 68284 || o1_49 != 68332)))
 		{
 			i1_114 = 0x00;
-			Z_122.u0 = SLICE(cond(0x00), bool, 2);
+			Z_122 = SLICE(cond(0x00), bool, 2);
 			goto l00010C44;
 		}
 		i1_114 = 0x01;
@@ -107,7 +107,7 @@ void main(int32 o0)
 		i1_114 = 0x01;
 	else
 		i1_114 = 0x00;
-	Z_122.u0 = SLICE(cond(i1_114), bool, 2);
+	Z_122 = SLICE(cond(i1_114), bool, 2);
 l00010C44:
 	if (!Z_122)
 		printf("Pass\n");

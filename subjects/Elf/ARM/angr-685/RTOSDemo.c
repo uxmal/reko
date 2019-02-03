@@ -91,14 +91,14 @@ bool prvCopyDataToQueue(Eq_2 r0, Eq_2 r1, Eq_2 r2, Eq_2 r3, Eq_2 r7, Eq_2 lr, un
 		if (r6_105 != 0x00)
 		{
 			r5_117 = (word32) r5_15 + 0x01;
-			Z_194.u0 = SLICE(cond((word32) r5_15 + 0x01), bool, 2);
+			Z_194 = SLICE(cond((word32) r5_15 + 0x01), bool, 2);
 		}
 		else
 		{
 			r0_109 = xTaskPriorityDisinherit(*((word32) r0 + 0x04), out lr);
 			*((word32) r0 + 0x04) = r6_105;
 			r5_117 = (word32) r5_15 + 0x01;
-			Z_194.u0 = SLICE(cond((word32) r5_15 + 0x01), bool, 2);
+			Z_194 = SLICE(cond((word32) r5_15 + 0x01), bool, 2);
 		}
 	}
 	else
@@ -139,7 +139,7 @@ bool prvCopyDataToQueue(Eq_2 r0, Eq_2 r1, Eq_2 r2, Eq_2 r3, Eq_2 r7, Eq_2 lr, un
 		*((word32) r4_124 + 0x0C) = r3_38;
 		if (r3_38 < r1_40)
 			*((word32) r4_124 + 0x0C) = *((word32) r4_124 + 0x04);
-		Z_194.u0 = SLICE(cond(r6_30 - 0x02), bool, 2);
+		Z_194 = SLICE(cond(r6_30 - 0x02), bool, 2);
 		if (r6_30 != 0x02)
 		{
 			*((word32) r4_124 + 0x0038) = (word32) r5_117 + 0x01;
@@ -2289,7 +2289,7 @@ bool xQueueCRSend(Eq_2 r0, Eq_2 r1, Eq_2 r2, Eq_2 r7, Eq_2 lr, ptr32 cpsr, union
 		{
 			word32 r0_85;
 			xCoRoutineRemoveFromEventList((word32) r0 + 0x0024, out r0_85);
-			Z_157.u0 = SLICE(cond(r0_85), bool, 2);
+			Z_157 = SLICE(cond(r0_85), bool, 2);
 			if (r0_85 != 0x00)
 			{
 				r0_136 = ~0x04;
@@ -2365,7 +2365,7 @@ bool xQueueCRReceive(Eq_2 r0, Eq_2 r1, Eq_2 r2, Eq_2 r6, Eq_2 r7, Eq_2 lr, ptr32
 		{
 			word32 r0_72;
 			xCoRoutineRemoveFromEventList(&r4_60->dw0010, out r0_72);
-			Z.u0 = SLICE(cond(r0_72), bool, 2);
+			Z = SLICE(cond(r0_72), bool, 2);
 			if (r0_72 != 0x00)
 			{
 				r0_146 = ~0x04;

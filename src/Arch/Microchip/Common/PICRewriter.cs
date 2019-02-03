@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2019 Christian Hostelet.
  * inspired by work from:
@@ -28,6 +28,7 @@ using Reko.Core.Rtl;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Reko.Core.Lib;
 
 namespace Reko.Arch.MicrochipPIC.Common
 {
@@ -101,7 +102,15 @@ namespace Reko.Arch.MicrochipPIC.Common
         protected abstract void SetStatusFlags(Expression dst);
 
         protected Identifier FlagGroup(FlagM flags)
-            => binder.EnsureFlagGroup(PICRegisters.STATUS, (uint)flags, arch.GrfToString(PICRegisters.STATUS, "", (uint)flags), PrimitiveType.Byte);
+            => binder.EnsureFlagGroup(
+                PICRegisters.STATUS, 
+                (uint)flags, 
+                arch.GrfToString(PICRegisters.STATUS, 
+                    "",
+                    (uint)flags), 
+                Bits.IsSingleBitSet((uint)flags)
+                    ? PrimitiveType.Bool
+                    : PrimitiveType.Byte);
 
         protected static MemoryAccess DataMem8(Expression ea)
             => new MemoryAccess(PICRegisters.GlobalData, ea, PrimitiveType.Byte);

@@ -450,7 +450,7 @@ xrealloc_entry:
 // SymbolicIn:
 
 l000116B0:
-	byte Z_34
+	bool Z_34
 	branch o0 == 0x00000000 l000116B0_ds_t
 // DataOut:
 // DataOut (flags):
@@ -856,7 +856,7 @@ l00011828:
 // SymbolicIn:
 
 l00011840:
-	bool NZV_26 = SLICE(cond(l0_21), bool, 3)
+	byte NZV_26 = SLICE(cond(l0_21), bool, 3)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1551,7 +1551,7 @@ l00011AE0_ds_f:
 // SymbolicIn:
 
 l00011AFC:
-	byte Z_137 = SLICE(cond((int32) Mem0[o0_56 + 0x00000001:int8] - 0x0000002F), bool, 2)
+	bool Z_137 = SLICE(cond((int32) Mem0[o0_56 + 0x00000001:int8] - 0x0000002F), bool, 2)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2543,13 +2543,13 @@ l00012004_ds_f:
 // SymbolicIn:
 
 l00012018:
-	byte Z_122 = SLICE(cond((int32) Mem108[sp_39 + 0x00000061:int8] - 0x0000002F), bool, 2)
+	bool Z_122 = SLICE(cond((int32) Mem108[sp_39 + 0x00000061:int8] - 0x0000002F), bool, 2)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00012024:
-	byte Z_136
+	bool Z_136
 	branch Z_122 l00012018_ds_t
 // DataOut:
 // DataOut (flags):
@@ -2720,7 +2720,7 @@ l000120B0:
 
 l000120B8:
 	word32 g0_192 = o2_187 - (sp_39 + 0x00000060)
-	byte C_194 = SLICE(cond(g0_192), bool, 0)
+	bool C_194 = SLICE(cond(g0_192), bool, 0)
 	branch g0_192 <u 0x00000000 l000120B0_ds_t
 // DataOut:
 // DataOut (flags):
@@ -2947,7 +2947,7 @@ l000121B4:
 
 l000121B8:
 	word32 i0_218
-	byte Z_107
+	bool Z_107
 	branch o0_75 != 0x00000000 l000121B8_ds_t
 // DataOut:
 // DataOut (flags):
@@ -4779,7 +4779,7 @@ l00013034:
 
 l00013074:
 	word32 o0_514
-	byte Z_124
+	bool Z_124
 	branch access(l4_149, 0x00000004) != 0xFFFFFFFF l00013034_ds_t
 // DataOut:
 // DataOut (flags):
@@ -6073,7 +6073,7 @@ l00013BC8:
 	word32 i1_218
 	word32 i0_469
 	word32 l1_253
-	byte Z_283
+	bool Z_283
 	branch i1_57 == 0xFFFFFFFF l00013BC8_ds_t
 // DataOut:
 // DataOut (flags):
@@ -9803,7 +9803,7 @@ l00015C9C:
 // SymbolicIn:
 
 l00015CA4:
-	bool NZV_107
+	byte NZV_107
 	word32 g2_37 = g1_18 - i4_111
 	branch g3_120 - g2_37 <= 0x00000000 l00015C9C_ds_t
 // DataOut:
@@ -10126,7 +10126,7 @@ l00015E04:
 	word32 i4_1158 = o4
 	word32 i5_15 = o5
 	word32 i6_16 = fp
-	byte Z_30 = SLICE(cond(o2_22), bool, 2)
+	bool Z_30 = SLICE(cond(o2_22), bool, 2)
 	branch o2_22 == 0x00000000 l00015E04_ds_t
 // DataOut:
 // DataOut (flags):
@@ -10360,7 +10360,7 @@ l00015EFC:
 
 l00015F24:
 	word32 o2_183 = Mem181[0x00028068:word32]
-	bool NV_1747 = SLICE(cond(o2_183 - Mem181[i6_16 + 68:word32]), bool, 3)
+	byte NV_1747 = SLICE(cond(o2_183 - Mem181[i6_16 + 68:word32]), bool, 3)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -10871,7 +10871,7 @@ l000161A8_ds_f:
 // SymbolicIn:
 
 l000161B8:
-	byte Z_605
+	bool Z_605
 	branch i0_501 == 0x00000000 l000161B8_ds_t
 // DataOut:
 // DataOut (flags):
@@ -10963,7 +10963,7 @@ l000163F4_ds_t:
 // SymbolicIn:
 
 l000164A0:
-	byte Z_714
+	bool Z_714
 	word32 i0_685 = (word32) Mem416[o1_419:byte]
 	Mem690[0x0002B2C0:word32] = o1_419 + 0x00000001
 	l0_127 = i0_685 << 0x00000018 >> 0x00000018
@@ -11456,7 +11456,7 @@ l000166BC_ds_f:
 // SymbolicIn:
 
 l000166CC:
-	byte Z_1014
+	bool Z_1014
 	branch l4_855 == 0x00000000 l000166CC_ds_t
 // DataOut:
 // DataOut (flags):
@@ -12422,7 +12422,7 @@ l00016A98:
 // SymbolicIn:
 
 l00016AC8:
-	byte Z_104
+	bool Z_104
 	word32 g0_83
 	branch dwLoc28_400 > 0x00000003 l00016AC8_ds_t
 // DataOut:

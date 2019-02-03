@@ -38,10 +38,6 @@ Eq_27: (segment "Eq_27" (C6 byte b00C6))
 	T_27 (in 0x00 : byte)
 Eq_28: (union "Eq_28" (byte u0) ((memptr (ptr8 Eq_27) byte) u1))
 	T_28 (in 0xC6 : byte)
-Eq_36: (union "Eq_36" (bool u0) (byte u1))
-	T_36 (in Z_17 : Eq_36)
-	T_38 (in SLICE(cond(TABLAT), bool, 2) : bool)
-	T_169 (in SLICE(cond(0x00->b00C6), bool, 2) : bool)
 Eq_42: (segment "Eq_42" (C0 byte b00C0))
 	T_42 (in 0x00 : byte)
 Eq_43: (union "Eq_43" (byte u0) ((memptr (ptr8 Eq_42) byte) u1))
@@ -68,10 +64,6 @@ Eq_97: (union "Eq_97" (byte u0) ((memptr (ptr8 Eq_96) byte) u1) ((memptr (ptr8 E
 	T_97 (in 0xC3 : byte)
 Eq_99: (segment "Eq_99" (C3 byte b00C3))
 	T_99 (in 0x00 : byte)
-Eq_101: (union "Eq_101" (bool u0) (byte u1))
-	T_101 (in Z_57 : Eq_101)
-	T_105 (in SLICE(cond(0x00->b00C3), bool, 2) : bool)
-	T_129 (in SLICE(cond(0x00->b00C3), bool, 2) : bool)
 Eq_102: (segment "Eq_102" (C3 byte b00C3))
 	T_102 (in 0x00 : byte)
 Eq_106: (segment "Eq_106" (C5 byte b00C5))
@@ -283,9 +275,9 @@ T_35: (in 0x00 : byte)
   Class: Eq_34
   DataType: byte
   OrigDataType: byte
-T_36: (in Z_17 : Eq_36)
+T_36: (in Z_17 : bool)
   Class: Eq_36
-  DataType: Eq_36
+  DataType: bool
   OrigDataType: bool
 T_37: (in cond(TABLAT) : byte)
   Class: Eq_37
@@ -293,7 +285,7 @@ T_37: (in cond(TABLAT) : byte)
   OrigDataType: byte
 T_38: (in SLICE(cond(TABLAT), bool, 2) : bool)
   Class: Eq_36
-  DataType: Eq_36
+  DataType: bool
   OrigDataType: bool
 T_39: (in __tblrd : ptr32)
   Class: Eq_15
@@ -543,9 +535,9 @@ T_100: (in Data55[0x00:0xC3:byte] : byte)
   Class: Eq_98
   DataType: byte
   OrigDataType: byte
-T_101: (in Z_57 : Eq_101)
+T_101: (in Z_57 : bool)
   Class: Eq_101
-  DataType: Eq_101
+  DataType: bool
   OrigDataType: bool
 T_102: (in 0x00 : byte)
   Class: Eq_102
@@ -561,7 +553,7 @@ T_104: (in cond(0x00->b00C3) : byte)
   OrigDataType: byte
 T_105: (in SLICE(cond(0x00->b00C3), bool, 2) : bool)
   Class: Eq_101
-  DataType: Eq_101
+  DataType: bool
   OrigDataType: bool
 T_106: (in 0x00 : byte)
   Class: Eq_106
@@ -657,7 +649,7 @@ T_128: (in cond(0x00->b00C3) : byte)
   OrigDataType: byte
 T_129: (in SLICE(cond(0x00->b00C3), bool, 2) : bool)
   Class: Eq_101
-  DataType: Eq_101
+  DataType: bool
   OrigDataType: bool
 T_130: (in Data80[0x00:0xC3:byte] : byte)
   Class: Eq_127
@@ -817,7 +809,7 @@ T_168: (in cond(0x00->b00C6) : byte)
   OrigDataType: byte
 T_169: (in SLICE(cond(0x00->b00C6), bool, 2) : bool)
   Class: Eq_36
-  DataType: Eq_36
+  DataType: bool
   OrigDataType: bool
 T_170: (in 0x00 : byte)
   Class: Eq_170
@@ -1106,11 +1098,6 @@ typedef union Eq_28 {
 	byte Eq_27::* u1;
 } Eq_28;
 
-typedef union Eq_36 {
-	bool u0;
-	byte u1;
-} Eq_36;
-
 typedef struct Eq_42 {
 	byte b00C0;	// C0
 } Eq_42;
@@ -1170,11 +1157,6 @@ typedef union Eq_97 {
 typedef struct Eq_99 {
 	byte b00C3;	// C3
 } Eq_99;
-
-typedef union Eq_101 {
-	bool u0;
-	byte u1;
-} Eq_101;
 
 typedef struct Eq_102 {
 	byte b00C3;	// C3

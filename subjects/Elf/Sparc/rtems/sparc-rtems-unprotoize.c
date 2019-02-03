@@ -142,11 +142,11 @@ Eq_161 xmalloc(Eq_161 o0, ptr32 & i1Out, ptr32 & i2Out, ptr32 & i6Out, ptr32 & i
 // 000116B0: Register Eq_161 xrealloc(Register Eq_161 o0, Register Eq_161 o1, Register out Eq_161 i1Out, Register out ptr32 i2Out)
 Eq_161 xrealloc(Eq_161 o0, Eq_161 o1, union Eq_161 & i1Out, ptr32 & i2Out)
 {
-	Eq_227 Z_34;
+	bool Z_34;
 	if (o0 != 0x00)
-		Z_34.u0 = SLICE(cond(realloc(o0, o1)), bool, 2);
+		Z_34 = SLICE(cond(realloc(o0, o1)), bool, 2);
 	else
-		Z_34.u0 = SLICE(cond(malloc(o1)), bool, 2);
+		Z_34 = SLICE(cond(malloc(o1)), bool, 2);
 	if (Z_34)
 	{
 		i1Out = o1;
@@ -287,7 +287,7 @@ l00011828:
 l0001183C:
 	i1_62 = i1_62 + o0_34
 l00011840:
-	bool NZV_26 = SLICE(cond(l0_21), bool, 3)
+	Eq_413 NZV_26 = SLICE(cond(l0_21), bool, 3)
 	goto l00011844
 l00011840_ds_f:
 	Eq_416 o0_34 = read(o0, i1_62, l0_21)
@@ -307,7 +307,7 @@ l00011864:
 l00011864_ds_f:
 	branch l0_21 != 0x00 l00011874_ds_t
 l00011864_ds_t:
-	NZV_26 = SLICE(cond(l0_21), bool, 3)
+	NZV_26.u0 = SLICE(cond(l0_21), bool, 3)
 	goto l00011844
 l00011870:
 l00011874:
@@ -514,14 +514,14 @@ l00011B1C:
 						return i0_26;
 					}
 					int8 * o2_62 = &o0_56->b0001;
-					Eq_692 Z_137 = SLICE(cond((int32) o0_56->b0001 - 0x2F), bool, 2);
+					bool Z_137 = SLICE(cond((int32) o0_56->b0001 - 0x2F), bool, 2);
 					while (!Z_137)
 					{
 						++o2_62;
 						int32 o0_80 = (int32) *o2_62;
 						if (o0_80 == 0x00)
 							goto l00011B1C;
-						Z_137.u0 = SLICE(cond(o0_80 - 0x2F), bool, 2);
+						Z_137 = SLICE(cond(o0_80 - 0x2F), bool, 2);
 					}
 					l1_22 = l1_22->ptr0004;
 				}
@@ -837,9 +837,9 @@ word32 abspath(Eq_161 o0, Eq_161 o1, struct Eq_1189 & i6Out)
 	if ((int32) sp_39->b0061 != 0x00)
 	{
 		struct Eq_1316 * o1_117 = &sp_39->b0061;
-		Eq_1308 Z_122 = SLICE(cond((int32) sp_39->b0061 - 0x2F), bool, 2);
+		bool Z_122 = SLICE(cond((int32) sp_39->b0061 - 0x2F), bool, 2);
 l00012024:
-		Eq_1322 Z_136;
+		bool Z_136;
 		if (!Z_122)
 		{
 			word32 o3_128 = (word32) o1_117->b0000;
@@ -848,12 +848,12 @@ l00012024:
 				o1_117 = &o1_117->b0001;
 				goto l00012110;
 			}
-			Z_136.u0 = SLICE(cond(o3_128 - 0x2E), bool, 2);
+			Z_136 = SLICE(cond(o3_128 - 0x2E), bool, 2);
 		}
 		else
 		{
 			word32 o3_125 = (word32) o1_117->b0000;
-			Z_136.u0 = SLICE(cond(o3_125 - 0x2E), bool, 2);
+			Z_136 = SLICE(cond(o3_125 - 0x2E), bool, 2);
 		}
 		word32 o0_141;
 		if (Z_136)
@@ -889,12 +889,12 @@ l00012024:
 					while (true)
 					{
 						Eq_1453 g0_192 = o2_187 - &sp_39->b0060;
-						Eq_1446 C_194 = SLICE(cond(g0_192), bool, 0);
+						bool C_194 = SLICE(cond(g0_192), bool, 0);
 						if (g0_192 < 0x00)
 							break;
 						if ((int32) *o2_187 == 0x2F)
 						{
-							C_194.u0 = SLICE(cond(o2_187 - &sp_39->b0060), bool, 0);
+							C_194 = SLICE(cond(o2_187 - &sp_39->b0060), bool, 0);
 							break;
 						}
 						o2_187 += -0x01;
@@ -925,7 +925,7 @@ l00012110:
 					int32 o0_245 = (int32) o1_117->b0000;
 					if (o0_245 == 0x00)
 						goto l00012120;
-					Z_122.u0 = SLICE(cond(o0_245 - 0x2F), bool, 2);
+					Z_122 = SLICE(cond(o0_245 - 0x2F), bool, 2);
 					goto l00012024;
 				}
 				o0_141 = (word32) o1_117->b0000;
@@ -984,7 +984,7 @@ Eq_161 shortpath(Eq_161 o0, Eq_161 o1, union Eq_463 & l0Out, struct Eq_464 & l2O
 	o0_75 = (int32) *l0_114;
 l000121B8:
 	Eq_161 i0_218;
-	Eq_1523 Z_107;
+	bool Z_107;
 	if (o0_75 == 0x00)
 	{
 		ui32 o1_94 = (word32) *i0_121;
@@ -997,12 +997,12 @@ l000121B8:
 				i0_218 = (word32) i0_121 + 0x01;
 			goto l000122FC;
 		}
-		Z_107.u0 = SLICE(cond(o1_94), bool, 2);
+		Z_107 = SLICE(cond(o1_94), bool, 2);
 	}
 	else
 	{
 		word32 o1_91 = (word32) *i0_121;
-		Z_107.u0 = SLICE(cond(o1_91), bool, 2);
+		Z_107 = SLICE(cond(o1_91), bool, 2);
 	}
 	int32 o0_113;
 	if (!Z_107)
@@ -1629,7 +1629,7 @@ Eq_161 process_aux_info_file(Eq_161 o0, word32 o2, union Eq_161 & l1Out)
 	while (true)
 	{
 		Eq_161 o0_514;
-		Eq_3242 Z_124;
+		bool Z_124;
 		if (access(l4_149, 0x04) == ~0x00)
 		{
 			if (globals->ptr2B760 != (char *) 0x02)
@@ -1661,10 +1661,10 @@ Eq_161 process_aux_info_file(Eq_161 o0, word32 o2, union Eq_161 & l1Out)
 				i0_112 = notice(94928, stackArg72, stackArg76, stackArg80, stackArg84, stackArg88, out i1_113, out i2_102, out i6_118);
 				goto l000135B8;
 			}
-			Z_124.u0 = SLICE(cond(0x01), bool, 2);
+			Z_124 = SLICE(cond(0x01), bool, 2);
 		}
 		else
-			Z_124.u0 = SLICE(cond(l2_222), bool, 2);
+			Z_124 = SLICE(cond(l2_222), bool, 2);
 		Eq_161 o1_458;
 		if (!Z_124)
 		{
@@ -2096,7 +2096,7 @@ l00013BAC:
 		ptr32 i1_218;
 		Eq_161 i0_469;
 		struct Eq_3577 * l1_253;
-		Eq_3985 Z_283;
+		bool Z_283;
 		if (i1_57 != ~0x00)
 		{
 			struct Eq_4000 * l1_81 = l1_20 + 0x01;
@@ -2127,12 +2127,12 @@ l00013BAC:
 				i0_469.u0 = 0x01;
 				goto l00013DFC;
 			}
-			Z_283.u0 = SLICE(cond(i1_218), bool, 2);
+			Z_283 = SLICE(cond(i1_218), bool, 2);
 		}
 		else
 		{
 			l1_253 = (struct Eq_3577 *) (l1_20 + 0x01);
-			Z_283.u0 = SLICE(cond(i1_57 + ~0x00), bool, 2);
+			Z_283 = SLICE(cond(i1_57 + ~0x00), bool, 2);
 		}
 		if (!Z_283)
 		{
@@ -3396,7 +3396,7 @@ l00015D44:
 	}
 	int32 g3_120 = i5_119 - g1_18;
 l00015CA4:
-	bool NZV_107;
+	Eq_6643 NZV_107;
 	int32 g2_37 = g1_18 - i4_111;
 	if (g3_120 - g2_37 > 0x00)
 	{
@@ -3417,7 +3417,7 @@ l00015CA4:
 					break;
 				g3_101 += 0x04;
 			}
-			NZV_107 = SLICE(cond(i5_119 - g1_18), bool, 3);
+			NZV_107.u0 = SLICE(cond(i5_119 - g1_18), bool, 3);
 l00015D30:
 			if (NZV_107)
 				goto l00015D40;
@@ -3455,7 +3455,7 @@ l00015D30:
 			g4_47 = i4_111 + g3_120;
 		i4_111 = g4_47;
 	}
-	NZV_107 = SLICE(cond(i5_119 - g1_18), bool, 3);
+	NZV_107.u0 = SLICE(cond(i5_119 - g1_18), bool, 3);
 	goto l00015D30;
 }
 
@@ -3501,12 +3501,12 @@ Eq_6565 _getopt_internal(Eq_6656 (* o1)[], int8 * o2, ptr32 * o4, word32 o5, wor
 	ptr32 * i4_1158 = o4;
 	word32 i5_15 = o5;
 	struct Eq_6770 * i6_16 = fp;
-	Eq_6783 Z_30 = SLICE(cond(o2_22), bool, 2);
+	bool Z_30 = SLICE(cond(o2_22), bool, 2);
 	if (o2_22 != null)
 	{
 		if (globals->dw2806C != 0x00)
 			goto l00015E74;
-		Z_30.u0 = SLICE(cond(o2_22), bool, 2);
+		Z_30 = SLICE(cond(o2_22), bool, 2);
 	}
 	if (!Z_30)
 		globals->ptr28068 = (ptr32 *) 0x01;
@@ -3640,7 +3640,7 @@ l000161A8:
 									i3_498 = 0x01;
 								}
 l000161B8:
-								Eq_7008 Z_605;
+								bool Z_605;
 								if (i0_501 != 0x00)
 								{
 									if (i3_498 == 0x00)
@@ -3657,10 +3657,10 @@ l000161B8:
 										globals->t28074.u0 = 0x00;
 										goto l00016978;
 									}
-									Z_605.u0 = SLICE(cond(l3_492), bool, 2);
+									Z_605 = SLICE(cond(l3_492), bool, 2);
 								}
 								else
-									Z_605.u0 = SLICE(cond(l3_492), bool, 2);
+									Z_605 = SLICE(cond(l3_492), bool, 2);
 								if (!Z_605)
 								{
 									ptr32 * o2_1328 = globals->ptr28068;
@@ -3758,7 +3758,7 @@ l0001640C:
 									goto l0001640C;
 								o1_419 = globals->t2B2C0;
 l000164A0:
-								Eq_6874 Z_714;
+								bool Z_714;
 								ui32 i0_685 = (word32) *o1_419;
 								globals->t2B2C0 = (word32) o1_419 + 0x01;
 								l0_127 = i0_685 << 0x18 >> 0x18;
@@ -3766,11 +3766,11 @@ l000164A0:
 								Eq_161 o3_700 = globals->t2B2C0;
 								if ((int32) *o3_700 == 0x00)
 								{
-									Z_714.u0 = SLICE(cond(o0_695), bool, 2);
+									Z_714 = SLICE(cond(o0_695), bool, 2);
 									globals->ptr28068 = (ptr32 *) ((char *) globals->ptr28068 + 0x01);
 								}
 								else
-									Z_714.u0 = SLICE(cond(o0_695), bool, 2);
+									Z_714 = SLICE(cond(o0_695), bool, 2);
 								if (Z_714 || l0_127 == 0x3A)
 								{
 									if (globals->dw28070 != 0x00)
@@ -3849,7 +3849,7 @@ l000166BC:
 												i0_854 = 0x01;
 											}
 l000166CC:
-											Eq_7681 Z_1014;
+											bool Z_1014;
 											if (l4_855 != 0x00)
 											{
 												if (i0_854 == 0x00)
@@ -3865,10 +3865,10 @@ l000166CC:
 													globals->ptr28068 = (ptr32 *) ((char *) o2_1225 + 0x01);
 													goto l00016978;
 												}
-												Z_1014.u0 = SLICE(cond(l3_1001), bool, 2);
+												Z_1014 = SLICE(cond(l3_1001), bool, 2);
 											}
 											else
-												Z_1014.u0 = SLICE(cond(l3_1001), bool, 2);
+												Z_1014 = SLICE(cond(l3_1001), bool, 2);
 											if (Z_1014)
 											{
 												globals->t2B2C0.u0 = 0x00;
@@ -4054,7 +4054,7 @@ l00016000:
 		globals->ptr2B2F0 = o1_144;
 l00015F24:
 	ptr32 * o2_183 = globals->ptr28068;
-	bool NV_1747 = SLICE(cond(o2_183 - i6_16->ptr0044), bool, 3);
+	Eq_6980 NV_1747 = SLICE(cond(o2_183 - i6_16->ptr0044), bool, 3);
 	while (!NV_1747)
 	{
 		int32 o0_196 = o2_183 << 0x02;
@@ -4072,7 +4072,7 @@ l00015F24:
 		ptr32 * o1_214 = i6_16->ptr0044;
 		globals->ptr28068 = o0_216;
 		o2_183 = o0_216;
-		NV_1747 = SLICE(cond(o0_216 - o1_214), bool, 3);
+		NV_1747.u0 = SLICE(cond(o0_216 - o1_214), bool, 3);
 	}
 	globals->ptr2B300 = o2_183;
 	goto l00015F78;
@@ -4156,7 +4156,7 @@ Eq_3067 pexecute(Eq_3067 o0, pid_t * o1, word32 o2, word32 o3, word32 * o4, word
 	int32 dwLoc28_400 = 0x00;
 	while (true)
 	{
-		Eq_8111 Z_104;
+		bool Z_104;
 		Eq_8112 g0_83;
 		if (dwLoc28_400 > 0x03)
 			break;
@@ -4166,7 +4166,7 @@ Eq_3067 pexecute(Eq_3067 o0, pid_t * o1, word32 o2, word32 o3, word32 * o4, word
 		l1 = o0_85;
 		if (o0_85 >= 0x00)
 		{
-			Z_104.u0 = SLICE(cond(o0_85 - ~0x00), bool, 2);
+			Z_104 = SLICE(cond(o0_85 - ~0x00), bool, 2);
 			goto l00016AEC;
 		}
 		sleep(dwLoc2C_399);
@@ -4174,7 +4174,7 @@ Eq_3067 pexecute(Eq_3067 o0, pid_t * o1, word32 o2, word32 o3, word32 * o4, word
 		dwLoc2C_399 <<= 0x01;
 		++dwLoc28_400;
 	}
-	Z_104.u0 = SLICE(cond(g0_83), bool, 2);
+	Z_104 = SLICE(cond(g0_83), bool, 2);
 l00016AEC:
 	if (!Z_104)
 	{

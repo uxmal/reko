@@ -21,7 +21,7 @@ void fn00000E(byte TABLAT, Eq_10 FSR0, word24 TBLPTR)
 	byte TBLPTRL_4 = 0x06;
 	byte TBLPTRH_46 = 0x00;
 	byte TBLPTRU_49 = 0x00;
-	Eq_36 Z_17 = SLICE(cond(TABLAT), bool, 2);
+	bool Z_17 = SLICE(cond(TABLAT), bool, 2);
 	while (true)
 	{
 		if (!Z_17 && 0x00->b00C5 == 0x00)
@@ -47,7 +47,7 @@ void fn00000E(byte TABLAT, Eq_10 FSR0, word24 TBLPTR)
 		globals->b00C8 = TBLPTRH_46;
 		globals->b00C9 = TBLPTRU_49;
 		0x00->b00C3 = 0x00->b00C3;
-		Eq_101 Z_57 = SLICE(cond(0x00->b00C3), bool, 2);
+		bool Z_57 = SLICE(cond(0x00->b00C3), bool, 2);
 l000080:
 		if (Z_57)
 			break;
@@ -59,7 +59,7 @@ l000080:
 		TBLPTRU_49 = globals->b00C9;
 		0x00->b00C5 = 0x00->b00C5 - 0x01;
 		0x00->b00C6 = 0x00->b00C6 - !SLICE(cond(0x00->b00C5), bool, 0);
-		Z_17.u0 = SLICE(cond(0x00->b00C6), bool, 2);
+		Z_17 = SLICE(cond(0x00->b00C6), bool, 2);
 	}
 	while (true)
 	{
@@ -67,7 +67,7 @@ l000080:
 		*FSR0 = TABLAT;
 		0x00->b00C3 = 0x00->b00C3 - 0x01;
 		++FSR0;
-		Z_57.u0 = SLICE(cond(0x00->b00C3), bool, 2);
+		Z_57 = SLICE(cond(0x00->b00C3), bool, 2);
 		if (0x00->b00C3 < 0x00)
 			break;
 		0x00->b00C4 = 0x00->b00C4 - 0x01;
