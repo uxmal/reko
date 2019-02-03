@@ -41,7 +41,14 @@ namespace Reko.Core.Expressions
 			Expression = i; offset = (byte) bitOffset;
 		}
 
+        /// <summary>
+        /// The expression being sliced.
+        /// </summary>
         public readonly Expression Expression;
+
+        /// <summary>
+        /// Bit offset of the slice.
+        /// </summary>
         public int Offset { get { return offset; } }
 
         public override IEnumerable<Expression> Children
