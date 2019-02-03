@@ -103,6 +103,7 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Analysis\AdjacentBranchCollector.cs" />
     <Compile Include="Analysis\Aliases.cs">
       <SubType>Code</SubType>
     </Compile>

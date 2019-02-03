@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -98,8 +98,7 @@ namespace Reko.UnitTests.Mocks
         public IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
             var linAddr = rdr.Address.ToLinear();
-            RtlTrace trace;
-            if (!rewriters.Traces.TryGetValue(rdr.Address, out trace))
+            if (!rewriters.Traces.TryGetValue(rdr.Address, out RtlTrace trace))
             {
                 if (ignoreUnknownTraces)
                 {
@@ -156,37 +155,38 @@ namespace Reko.UnitTests.Mocks
             throw new NotImplementedException();
         }
 
-        public FlagGroupStorage GetFlagGroup(uint grf)
+        public FlagGroupStorage GetFlagGroup(uint uGrf)
         {
+            var grf = (StatusFlags) uGrf;
             var sb = new StringBuilder();
-            if (((uint)grf & 0x01) != 0) sb.Append('S');
-            if (((uint)grf & 0x02) != 0) sb.Append('C');
-            if (((uint)grf & 0x04) != 0) sb.Append('Z');
-            if (((uint)grf & 0x10) != 0) sb.Append('O');
-            if (((uint)grf & 0x20) != 0) sb.Append('O');
+            if ((grf & StatusFlags.S) != 0) sb.Append('S');
+            if ((grf & StatusFlags.C) != 0) sb.Append('C');
+            if ((grf & StatusFlags.Z) != 0) sb.Append('Z');
+            if ((grf & StatusFlags.O) != 0) sb.Append('O');
+            if ((grf & StatusFlags.V) != 0) sb.Append('V');
+            if ((grf & StatusFlags.X) != 0) sb.Append('X');
             if (sb.Length == 0)
                 return null;
-            return new FlagGroupStorage(flags, grf, sb.ToString(), PrimitiveType.Byte);
+            return new FlagGroupStorage(flags, uGrf, sb.ToString(), PrimitiveType.Byte);
         }
 
 		public FlagGroupStorage GetFlagGroup(string s)
 		{
-            uint grf = 0;
+            StatusFlags grf = 0;
             for (int i = 0; i < s.Length; ++i)
             {
                 switch (char.ToUpper(s[i]))
                 {
-                case 'S': grf |= 0x01; break;
-                case 'C': grf |= 0x02; break;
-                case 'Z': grf |= 0x04; break;
-                case 'O': grf |= 0x10; break;
-                case 'V': grf |= 0x10; break;
-                case 'X': grf |= 0x20; break;
-
+                case 'S': grf |= StatusFlags.S; break;
+                case 'C': grf |= StatusFlags.C; break;
+                case 'Z': grf |= StatusFlags.Z; break;
+                case 'O': grf |= StatusFlags.O; break;
+                case 'V': grf |= StatusFlags.V; break;
+                case 'X': grf |= StatusFlags.X; break;
                 }
             }
             if (grf != 0)
-                return new FlagGroupStorage(flags, grf, s, PrimitiveType.Byte);
+                return new FlagGroupStorage(flags, (uint)grf, s, PrimitiveType.Byte);
             return null;
 		}
 
@@ -201,8 +201,7 @@ namespace Reko.UnitTests.Mocks
 		{
             if (s[0] == 'r')
             {
-                int reg;
-                if (int.TryParse(s.Substring(1), out reg))
+                if (int.TryParse(s.Substring(1), out int reg))
                     return GetRegister(reg);
             }
             return null;
@@ -241,7 +240,7 @@ namespace Reko.UnitTests.Mocks
 
         private class Comp : EqualityComparer<MachineInstruction>
         {
-            private Normalize norm;
+            private readonly Normalize norm;
 
             public Comp(Normalize norm)
             {
@@ -414,8 +413,7 @@ namespace Reko.UnitTests.Mocks
 
 		public override Constant GetRegister(RegisterStorage r)
 		{
-            Constant c;
-            if (!regValues.TryGetValue(r, out c))
+            if (!regValues.TryGetValue(r, out  Constant c))
             {
                 c = Constant.Invalid;
             }
@@ -447,14 +445,16 @@ namespace Reko.UnitTests.Mocks
         public override void OnAfterCall(FunctionType sigCallee)
         {
         }
-
     }
 
     [Flags]
     public enum StatusFlags: uint
     {
-        S = 1,
-        Z = 2,
-        C = 4,
+        S = 0x01,
+        Z = 0x02,
+        C = 0x04,
+        O = 0x08,
+        V = 0x10,
+        X = 0x20,
     }
 }

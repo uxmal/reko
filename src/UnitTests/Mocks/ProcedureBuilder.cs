@@ -213,7 +213,6 @@ namespace Reko.UnitTests.Mocks
         public Identifier Flags(string s)
         {
             return Frame.EnsureFlagGroup(Architecture.GetFlagGroup(s));
-        
             //return base.Flags(Architecture.GetFlagGroup(s).FlagRegister, grf, s);
         }
 

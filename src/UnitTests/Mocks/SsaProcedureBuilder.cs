@@ -41,7 +41,7 @@ namespace Reko.UnitTests.Mocks
     {
         public SsaState Ssa { get; private set; }
 
-        public SsaProcedureBuilder() : this("SsaProcedureBuilder")
+        public SsaProcedureBuilder() : this(nameof(SsaProcedureBuilder))
         {
         }
 
@@ -66,6 +66,14 @@ namespace Reko.UnitTests.Mocks
         private Identifier Reg(string name, PrimitiveType pt)
         {
             return Reg(name, RegisterStorage(name, pt));
+        }
+
+        public Identifier Flags(string name, FlagGroupStorage flags)
+        {
+            var id = new Identifier(name, flags.DataType, flags);
+            var sid = new SsaIdentifier(id, id, null, null, false);
+            Ssa.Identifiers.Add(id, sid);
+            return sid.Identifier;
         }
 
         public override Identifier Local32(string name, int offset)

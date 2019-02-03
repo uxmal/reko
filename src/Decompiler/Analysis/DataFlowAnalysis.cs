@@ -221,6 +221,7 @@ namespace Reko.Analysis
             usb.BuildSignatures(eventListener);
             CallRewriter.Rewrite(program, eventListener);
             IntraBlockDeadRegisters.Apply(program, eventListener);
+            AdjacentBranchCollector.Transform(program, eventListener);
             eventListener.ShowStatus("Finding terminating procedures.");
             var term = new TerminationAnalysis(flow, eventListener);
             term.Analyze(program);

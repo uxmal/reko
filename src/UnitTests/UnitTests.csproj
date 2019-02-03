@@ -149,6 +149,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Analysis\AdjacentBranchCollectorTests.cs" />
     <Compile Include="Analysis\SsaMutatorTests.cs" />
     <Compile Include="Arch\Alpha\AlphaDisassemblerTests.cs" />
     <Compile Include="Arch\Alpha\AlphaRewriterTests.cs" />
