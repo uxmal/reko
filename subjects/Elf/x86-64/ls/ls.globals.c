@@ -172,7 +172,7 @@ char g_str415F2E[] = "POSIXLY_CORRECT";
 ui32 g_a415F50[] = 
 	{
 	};
-union Eq_15848 g_u415F84 = 
+union Eq_15838 g_u415F84 = 
 	{
 		10.0F
 	};
@@ -216,7 +216,7 @@ union Eq_14 g_u61A3D8 =
 	{
 		true
 	};
-Eq_22985 g_a61A3E0[] = 
+Eq_22978 g_a61A3E0[] = 
 	{
 	};
 union Eq_14 g_u61A3E8 = 
@@ -295,7 +295,7 @@ union Eq_14 g_u61A578 =
 		true
 	};
 word32 g_dw61A580 = 0x00000001;
-Eq_20287 g_t61A5A0 = 
+Eq_20280 g_t61A5A0 = 
 	{
 		0x00000006,
 		0x00000000,
@@ -308,7 +308,7 @@ union Eq_14 g_u61A5D8 =
 	};
 word64 g_qw61A5E0 = 0x0000000000000100;
 word64 g_qw61A5E8 = 0x000000000061B220;
-union Eq_20367 g_u61A5F0 = 
+union Eq_20360 g_u61A5F0 = 
 	{
 		1
 	};
