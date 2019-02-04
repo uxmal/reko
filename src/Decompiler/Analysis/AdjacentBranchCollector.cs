@@ -187,26 +187,13 @@ namespace Reko.Analysis
 
         private bool BlockTrashesIdentifier(Block block, Identifier id)
         {
-            bool IsTrashed(Identifier dst, Identifier src)
-            {
-                var dstStg = dst.Storage as FlagGroupStorage;
-                var srcStg = src.Storage as FlagGroupStorage;
-                if (dstStg != null && srcStg != null)
-                {
-                    //$TODO: when moved to analysis-development,
-                    // simply use Overlap.
-                    return (dstStg.FlagGroupBits & srcStg.FlagGroupBits) != 0;
-                }
-                return false;
-            }
-
             bool ApplOutArgumentTrashesIdentifier(Expression e)
             {
                 if (e is Application appl)
                 {
                     if (appl.Arguments.OfType<OutArgument>()
                         .Any(a => a.Expression is Identifier i && 
-                                    IsTrashed(i, id)))
+                                    i.Storage.OverlapsWith(id.Storage)))
                         return true;
                 }
                 return false;
@@ -217,7 +204,7 @@ namespace Reko.Analysis
                 switch (stm.Instruction)
                 {
                 case Assignment ass:
-                    if (IsTrashed(ass.Dst, id))
+                    if (ass.Dst.Storage.OverlapsWith(id.Storage))
                         return true;
                     if (ApplOutArgumentTrashesIdentifier(ass.Src))
                         return true;
