@@ -120,6 +120,8 @@ namespace Reko.Analysis
                 
             IntraBlockDeadRegisters.Apply(program, eventListener);
 
+            AdjacentBranchCollector.Transform(program, eventListener);
+
             var ssts = RewriteProceduresToSsa();
 
             // Discover ssaId's that are live out at each call site.

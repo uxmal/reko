@@ -149,6 +149,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Analysis\AdjacentBranchCollectorTests.cs" />
     <Compile Include="Analysis\ProjectionPropagatorTests.cs" />
     <Compile Include="Analysis\ProcedureFlowTests.cs" />
     <Compile Include="Analysis\SsaMutatorTests.cs" />

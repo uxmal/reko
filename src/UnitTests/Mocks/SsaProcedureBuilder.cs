@@ -69,6 +69,14 @@ namespace Reko.UnitTests.Mocks
             return Reg(name, RegisterStorage(name, pt));
         }
 
+        public Identifier Flags(string name, FlagGroupStorage flags)
+        {
+            var id = new Identifier(name, flags.DataType, flags);
+            var sid = new SsaIdentifier(id, id, null, null, false);
+            Ssa.Identifiers.Add(id, sid);
+            return sid.Identifier;
+        }
+
         public Identifier SeqId(string name, DataType dt, params Storage[] storages)
         {
             //$TODO: SequenceStorage should deal with arbitrary # of sub-storages

@@ -114,10 +114,10 @@ word32 bazulate(ptr32 * r0, ptr32 * r1)
 	ptr32 ** sp_29;
 	word32 * fp_24 = frobulate(r0, r1, out sp_29);
 	word32 r0_38 = __divsi3(r0 + r1, r0);
-	ptr32 * r0_46 = *(fp_24 - 0x0018);
-	word32 * fp_47 = frobulate(r0_46, *sp_29, out sp_80);
-	__divsi3(r0_38, r0_46);
-	return *fp_47;
+	ptr32 * r0_47 = *(fp_24 - 0x0018);
+	word32 * fp_48 = frobulate(r0_47, *sp_29, out sp_82);
+	__divsi3(r0_38, r0_47);
+	return *fp_48;
 }
 
 // 000084D4: Register word32 switcheroo(Register (ptr32 ptr32) r0)
@@ -160,8 +160,8 @@ ptr32 * __divsi3(ptr32 * r0, ptr32 * r1)
 {
 	ptr32 * r1_10;
 	int32 ip_5 = r0 ^ r1;
-	Eq_211 r3_118 = 0x01;
-	ptr32 * r2_109 = null;
+	Eq_211 r3_134 = 0x01;
+	ptr32 * r2_103 = null;
 	r1_10 = r1;
 	if (r1 < null)
 		r1_10 = 0x00 - r1;
@@ -182,59 +182,58 @@ ptr32 * __divsi3(ptr32 * r0, ptr32 * r1)
 				if (r1_10 < (ptr32 *) 0x10000000)
 					C_35 = SLICE(cond(r1_10 - r0), bool, 1);
 				if (!C_35)
+				{
 					r1_10 <<= 0x04;
-				if (!C_35)
-					r3_118 <<= 0x04;
+					r3_134 <<= 0x04;
+				}
 			} while (C_35);
 			do
 			{
-				bool C_50 = SLICE(cond(r1_10 - (ptr32 *) 0x80000000), bool, 1);
+				bool C_48 = SLICE(cond(r1_10 - (ptr32 *) 0x80000000), bool, 1);
 				if (r1_10 < (ptr32 *) 0x80000000)
-					C_50 = SLICE(cond(r1_10 - r0), bool, 1);
-				if (!C_50)
+					C_48 = SLICE(cond(r1_10 - r0), bool, 1);
+				if (!C_48)
+				{
 					r1_10 <<= 0x01;
-				if (!C_50)
-					r3_118 <<= 0x01;
-			} while (C_50);
+					r3_134 <<= 0x01;
+				}
+			} while (C_48);
 			do
 			{
-				ptr32 * r0_67;
-				r0_67 = r0;
 				if (r0 >= r1_10)
-					r0_67 = r0 - r1_10;
-				if (r0 >= r1_10)
-					r2_109 |= r3_118;
-				ptr32 * r0_80;
-				r0_80 = r0_67;
-				if (r0_67 >= r1_10 >> 0x01)
-					r0_80 = r0_67 - (r1_10 >> 0x01);
-				if (r0_67 >= r1_10 >> 0x01)
-					r2_109 |= r3_118 >> 0x01;
-				ptr32 * r0_101;
-				r0_101 = r0_80;
-				if (r0_80 >= r1_10 >> 0x02)
-					r0_101 = r0_80 - (r1_10 >> 0x02);
-				if (r0_80 >= r1_10 >> 0x02)
-					r2_109 |= r3_118 >> 0x02;
-				r0 = r0_101;
-				if (r0_101 >= r1_10 >> 0x03)
-					r0 = r0_101 - (r1_10 >> 0x03);
-				if (r0_101 >= r1_10 >> 0x03)
-					r2_109 |= r3_118 >> 0x03;
-				bool Z_116 = SLICE(cond(r0), bool, 2);
+				{
+					r0 -= r1_10;
+					r2_103 |= r3_134;
+				}
+				if (r0 >= r1_10 >> 0x01)
+				{
+					r0 -= r1_10 >> 0x01;
+					r2_103 |= r3_134 >> 0x01;
+				}
+				if (r0 >= r1_10 >> 0x02)
+				{
+					r0 -= r1_10 >> 0x02;
+					r2_103 |= r3_134 >> 0x02;
+				}
+				if (r0 >= r1_10 >> 0x03)
+				{
+					r0 -= r1_10 >> 0x03;
+					r2_103 |= r3_134 >> 0x03;
+				}
+				bool Z_93 = SLICE(cond(r0), bool, 2);
 				if (r0 != null)
 				{
-					r3_118 >>= 0x04;
-					Z_116 = SLICE(cond(r3_118), bool, 2);
+					r3_134 >>= 0x04;
+					Z_93 = SLICE(cond(r3_134), bool, 2);
 				}
-				if (!Z_116)
+				if (!Z_93)
 					r1_10 >>= 0x04;
-			} while (Z_116);
+			} while (Z_93);
 		}
-		ptr32 * r0_133 = r2_109;
+		ptr32 * r0_109 = r2_103;
 		if (ip_5 < 0x00)
-			r0_133 = 0x00 - r2_109;
-		return r0_133;
+			r0_109 = 0x00 - r2_103;
+		return r0_109;
 	}
 }
 
@@ -252,7 +251,7 @@ void __libc_csu_init(word32 r4, word32 r5, word32 r6, word32 r10, ptr32 lr, ptr3
 {
 	word32 pc_19;
 	ptr32 r10_21;
-	Eq_331 r4_24;
+	Eq_321 r4_24;
 	word32 r0_20 = _init(0x00, 0x8668 + globals->dw86A4, lr, pc, out r4_24, out r10_21, out pc_19);
 	int32 r2_30 = globals->dw86AC;
 	<anonymous> * r1_31[] = r10_21 + globals->dw86A8;

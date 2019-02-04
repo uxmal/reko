@@ -352,10 +352,10 @@ l00008470:
 	word32 sp_29
 	word32 fp_24 = frobulate(r0, r1, out sp_29)
 	word32 r0_38 = __divsi3(r0 + r1, r0)
-	word32 r0_46 = Mem19[fp_24 - 24:word32]
-	word32 fp_47 = frobulate(r0_46, Mem19[sp_29:word32], out sp_80)
-	__divsi3(r0_38, r0_46)
-	return Mem19[fp_47:word32]
+	word32 r0_47 = Mem19[fp_24 - 24:word32]
+	word32 fp_48 = frobulate(r0_47, Mem19[sp_29:word32], out sp_82)
+	__divsi3(r0_38, r0_47)
+	return Mem19[fp_48:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -465,8 +465,8 @@ word32 __divsi3(word32 r0, word32 r1)
 
 // MayUse:  r0:[0..31] r1:[0..31]
 // LiveOut: r0
-// Trashed: NZCV ip r0 r2 r3
-// Preserved: r1 sp
+// Trashed: NZCV ip r0 r1 r2 r3
+// Preserved: sp
 __divsi3_entry:
 // DataOut:
 // DataOut (flags):
@@ -475,8 +475,8 @@ __divsi3_entry:
 l00008588:
 	word32 r1_10
 	word32 ip_5 = r0 ^ r1
-	word32 r3_118 = 0x00000001
-	word32 r2_109 = 0x00000000
+	word32 r3_134 = 0x00000001
+	word32 r2_103 = 0x00000000
 	r1_10 = r1
 	branch r1 >= 0x00000000 l0000859C
 // DataOut:
@@ -534,25 +534,14 @@ l000085B4_1:
 // SymbolicIn:
 
 l000085B8:
-	branch C_35 l000085BC
+	branch C_35 l000085C0
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000085B8_1:
 	r1_10 = r1_10 << 4
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l000085BC:
-	branch C_35 l000085C0
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l000085BC_1:
-	r3_118 = r3_118 << 4
+	r3_134 = r3_134 << 4
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -564,167 +553,105 @@ l000085C0:
 // SymbolicIn:
 
 l000085C4:
-	bool C_50 = SLICE(cond(r1_10 - 0x80000000), bool, 1)
+	bool C_48 = SLICE(cond(r1_10 - 0x80000000), bool, 1)
 	branch r1_10 >=u 0x80000000 l000085CC
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000085C8_1:
-	C_50 = SLICE(cond(r1_10 - r0), bool, 1) (alias)
+	C_48 = SLICE(cond(r1_10 - r0), bool, 1) (alias)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000085CC:
-	branch C_50 l000085D0
+	branch C_48 l000085D4
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000085CC_1:
 	r1_10 = r1_10 << 1
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l000085D0:
-	branch C_50 l000085D4
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l000085D0_1:
-	r3_118 = r3_118 << 1
+	r3_134 = r3_134 << 1
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000085D4:
-	branch C_50 l000085C4
+	branch C_48 l000085C4
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000085D8:
-	word32 r0_67
-	r0_67 = r0
-	branch r0 <u r1_10 l000085E0
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l000085DC_1:
-	r0_67 = r0 - r1_10
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l000085E0:
 	branch r0 <u r1_10 l000085E4
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
-l000085E0_1:
-	r2_109 = r2_109 | r3_118
+l000085DC_1:
+	r0 = r0 - r1_10
+	r2_103 = r2_103 | r3_134
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000085E4:
-	word32 r0_80
-	r0_80 = r0_67
-	branch r0_67 <u r1_10 >> 1 l000085EC
+	branch r0 <u r1_10 >> 1 l000085F0
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000085E8_1:
-	r0_80 = r0_67 - (r1_10 >> 1)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l000085EC:
-	branch r0_67 <u r1_10 >> 1 l000085F0
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l000085EC_1:
-	r2_109 = r2_109 | r3_118 >> 1
+	r0 = r0 - (r1_10 >> 1)
+	r2_103 = r2_103 | r3_134 >> 1
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000085F0:
-	word32 r0_101
-	r0_101 = r0_80
-	branch r0_80 <u r1_10 >> 2 l000085F8
+	branch r0 <u r1_10 >> 2 l000085FC
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000085F4_1:
-	r0_101 = r0_80 - (r1_10 >> 2)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l000085F8:
-	branch r0_80 <u r1_10 >> 2 l000085FC
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l000085F8_1:
-	r2_109 = r2_109 | r3_118 >> 2
+	r0 = r0 - (r1_10 >> 2)
+	r2_103 = r2_103 | r3_134 >> 2
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000085FC:
-	r0 = r0_101
-	branch r0_101 <u r1_10 >> 3 l00008604
+	branch r0 <u r1_10 >> 3 l00008608
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00008600_1:
-	r0 = r0_101 - (r1_10 >> 3)
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00008604:
-	branch r0_101 <u r1_10 >> 3 l00008608
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-l00008604_1:
-	r2_109 = r2_109 | r3_118 >> 3
+	r0 = r0 - (r1_10 >> 3)
+	r2_103 = r2_103 | r3_134 >> 3
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00008608:
-	bool Z_116 = SLICE(cond(r0), bool, 2)
+	bool Z_93 = SLICE(cond(r0), bool, 2)
 	branch r0 == 0x00000000 l00008610
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000860C_1:
-	r3_118 = r3_118 >>u 4
-	Z_116 = SLICE(cond(r3_118), bool, 2) (alias)
+	r3_134 = r3_134 >>u 4
+	Z_93 = SLICE(cond(r3_134), bool, 2) (alias)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00008610:
-	branch Z_116 l00008614
+	branch Z_93 l00008614
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -736,26 +663,26 @@ l00008610_1:
 // SymbolicIn:
 
 l00008614:
-	branch Z_116 l000085D8
+	branch Z_93 l000085D8
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00008618:
-	word32 r0_133 = r2_109
+	word32 r0_109 = r2_103
 	branch ip_5 >= 0x00000000 l00008624
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00008620_1:
-	r0_133 = 0x00000000 - r2_109
+	r0_109 = 0x00000000 - r2_103
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00008624:
-	return r0_133
+	return r0_109
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
