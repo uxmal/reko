@@ -36,7 +36,7 @@ namespace Reko.Analysis
 {
     public class TrashedRegisterFinder3 : InstructionVisitor<bool>
     {
-        private static TraceSwitch trace = new TraceSwitch("TrashedRegisters", "Trashed value propagation", "Verbose");
+        private static TraceSwitch trace = new TraceSwitch("TrashedRegisters", "Trashed value propagation") { Level = TraceLevel.Error };
 
         private readonly IProcessorArchitecture arch;
         private readonly SegmentMap segmentMap;

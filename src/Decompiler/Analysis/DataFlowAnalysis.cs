@@ -265,44 +265,54 @@ namespace Reko.Analysis
             foreach (var sst in this.ssts)
             {
                 var ssa = sst.SsaState;
-
-                // Procedures should be untangled from each other. Now process
-                // each one separately.
-                DeadCode.Eliminate(ssa);
-
-                // Build expressions. A definition with a single use can be subsumed
-                // into the using expression. 
-
-                var coa = new Coalescer(ssa);
-                coa.Transform();
-                DeadCode.Eliminate(ssa);
-
-                var vp = new ValuePropagator(program.SegmentMap, ssa, importResolver, eventListener);
-                vp.Transform();
-
-                var liv = new LinearInductionVariableFinder(
-                    ssa,
-                    new BlockDominatorGraph(
-                        ssa.Procedure.ControlGraph, 
-                        ssa.Procedure.EntryBlock));
-                liv.Find();
-
-                foreach (var de in liv.Contexts)
+                try
                 {
-                    var str = new StrengthReduction(ssa, de.Key, de.Value);
-                    str.ClassifyUses();
-                    str.ModifyUses();
+
+                    // Procedures should be untangled from each other. Now process
+                    // each one separately.
+                    DeadCode.Eliminate(ssa);
+
+                    // Build expressions. A definition with a single use can be subsumed
+                    // into the using expression. 
+
+                    var coa = new Coalescer(ssa);
+                    coa.Transform();
+                    DeadCode.Eliminate(ssa);
+
+                    var vp = new ValuePropagator(program.SegmentMap, ssa, importResolver, eventListener);
+                    vp.Transform();
+
+                    var liv = new LinearInductionVariableFinder(
+                        ssa,
+                        new BlockDominatorGraph(
+                            ssa.Procedure.ControlGraph,
+                            ssa.Procedure.EntryBlock));
+                    liv.Find();
+
+                    foreach (var de in liv.Contexts)
+                    {
+                        var str = new StrengthReduction(ssa, de.Key, de.Value);
+                        str.ClassifyUses();
+                        str.ModifyUses();
+                    }
+
+                    //var opt = new OutParameterTransformer(proc, ssa.Identifiers);
+                    //opt.Transform();
+                    DeadCode.Eliminate(ssa);
+
+                    // Definitions with multiple uses and variables joined by PHI functions become webs.
+                    var web = new WebBuilder(program, ssa, program.InductionVariables, eventListener);
+                    web.Transform();
+                    ssa.ConvertBack(false);
                 }
-
-                //var opt = new OutParameterTransformer(proc, ssa.Identifiers);
-                //opt.Transform();
-                DeadCode.Eliminate(ssa);
-
-                // Definitions with multiple uses and variables joined by PHI functions become webs.
-                var web = new WebBuilder(program, ssa, program.InductionVariables, eventListener);
-                web.Transform();
-                ssa.ConvertBack(false);
-
+                catch (Exception ex)
+                {
+                    eventListener.Error(
+                        eventListener.CreateProcedureNavigator(program, ssa.Procedure),
+                        ex,
+                        "An internal error occurred while building the expressions of {0}",
+                        ssa.Procedure.Name);
+                }
                 eventListener.Advance(1);
             }
         }
