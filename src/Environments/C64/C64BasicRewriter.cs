@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Arch.Mos6502;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
@@ -734,15 +735,13 @@ namespace Reko.Environments.C64
 
         private void RewriteSys()
         {
-            int addr;
             if (!EatSpaces() ||
-                !GetInteger(out addr))
+                !GetInteger(out int addr))
                 throw new InvalidOperationException("Expected address after SYS.");
-            m.SideEffect(
-                host.PseudoProcedure("__Sys", VoidType.Instance,
-                    new ProcedureConstant(arch.PointerType, new ExternalProcedure(
-                        string.Format("fn{0:X4}", addr),
-                        new FunctionType()))));
+            var addrMachineCode = Address.Ptr16((ushort) addr);
+            IProcessorArchitecture arch6502 = host.GetArchitecture("m6502");
+            rtlc = InstrClass.Transfer | InstrClass.Call;
+            m.CallX(addrMachineCode, 2, arch6502);
         }
 
         private bool GetInteger(out int number)

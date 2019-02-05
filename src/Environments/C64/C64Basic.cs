@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -211,7 +211,7 @@ namespace Reko.Environments.C64
 
             public override Core.Expressions.Constant GetRegister(RegisterStorage r)
             {
-                throw new NotImplementedException();
+                return Constant.Invalid;
             }
 
             public override void SetRegister(RegisterStorage r, Core.Expressions.Constant v)
