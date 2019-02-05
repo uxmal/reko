@@ -194,9 +194,6 @@ namespace Reko.Environments.C64
             var lines = rdr.ToSortedList(line => (ushort)line.Address.ToLinear(), line => line);
             var arch6502 = new Mos6502ProcessorArchitecture("m6502");
             var arch = new C64Basic(lines);
-            image = new MemoryArea(
-                Address.Ptr16(lines.Keys[0]),
-                new byte[0xFFFF]);
             var program = new Program(
                 new SegmentMap(
                     image.BaseAddress,
@@ -204,7 +201,8 @@ namespace Reko.Environments.C64
                 arch,
                 new C64Platform(Services, arch6502));
             program.Architectures.Add(arch6502.Name, arch6502);
-            var sym = ImageSymbol.Procedure(arch, image.BaseAddress, state: arch.CreateProcessorState());
+            var addrBasic = Address.Ptr16(lines.Keys[0]);
+            var sym = ImageSymbol.Procedure(arch, addrBasic, state: arch.CreateProcessorState());
             program.EntryPoints.Add(sym.Address, sym);
             return program;
         }
