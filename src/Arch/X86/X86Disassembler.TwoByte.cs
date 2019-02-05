@@ -50,7 +50,7 @@ namespace Reko.Arch.X86
                 Instr(Opcode.invd, InstrClass.System),
                 Instr(Opcode.wbinvd, InstrClass.System),
                 s_invalid,
-                Instr(Opcode.ud2),
+                Instr(Opcode.ud2, InstrClass.Invalid),
                 s_invalid,
                 Instr(Opcode.prefetchw, Ev),
                 Instr(Opcode.femms),    // AMD-specific
@@ -413,7 +413,7 @@ namespace Reko.Arch.X86
 				new PrefixedDecoder(
                     dec:Instr(Opcode.jmpe),
                     decF3:Instr(Opcode.popcnt, Gv,Ev)),
-				Instr(Opcode.ud1, Gv,Ev),
+				Instr(Opcode.ud1, InstrClass.Invalid, Gv,Ev),
 				new GroupDecoder(8, Ev,Ib),
 				Instr(Opcode.btc, Gv,Ev),
 
@@ -611,7 +611,7 @@ namespace Reko.Arch.X86
                 new PrefixedDecoder(
                     Instr(Opcode.paddd, Pq,Qq),
                     Instr(Opcode.vpaddd, Vx,Hx,Wx)),
-				Instr(Opcode.ud0, Gv,Ev),
+				Instr(Opcode.ud0, InstrClass.Invalid,  Gv,Ev),
 			};
         }
     }
