@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -81,6 +81,7 @@ namespace Reko.Environments.C64
             return new C64BasicInstruction
             {
                 Address = Address.Ptr16(line),
+                Length = (int) (rdr.Address - addr),
                 NextAddress = next,
                 Line = mem.ToArray()
             };

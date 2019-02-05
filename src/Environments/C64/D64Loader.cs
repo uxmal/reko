@@ -21,6 +21,7 @@
 using Reko.Arch.Mos6502;
 using Reko.Core;
 using Reko.Core.Archives;
+using Reko.Core.Configuration;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -192,14 +193,16 @@ namespace Reko.Environments.C64
                 loadedBytes);
             var rdr = new C64BasicReader(image, 0x0801);
             var lines = rdr.ToSortedList(line => (ushort)line.Address.ToLinear(), line => line);
-            var arch6502 = new Mos6502ProcessorArchitecture("m6502");
+            var cfgSvc = Services.RequireService<IConfigurationService>();
+            var arch6502 = (Mos6502ProcessorArchitecture) cfgSvc.GetArchitecture("m6502");
             var arch = new C64Basic(lines);
+            var platform = cfgSvc.GetEnvironment("c64").Load(Services, arch);
             var program = new Program(
                 new SegmentMap(
                     image.BaseAddress,
                     new ImageSegment("code", image, AccessMode.ReadWriteExecute)),
                 arch,
-                new C64Platform(Services, arch6502));
+                platform);
             program.Architectures.Add(arch6502.Name, arch6502);
             var addrBasic = Address.Ptr16(lines.Keys[0]);
             var sym = ImageSymbol.Procedure(arch, addrBasic, state: arch.CreateProcessorState());

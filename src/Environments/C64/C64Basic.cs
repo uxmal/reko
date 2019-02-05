@@ -43,6 +43,7 @@ namespace Reko.Environments.C64
 
         public C64Basic(SortedList<ushort, C64BasicInstruction> program) : base("c64Basic")
         {
+            this.Description = "Commodore 64 Basic";
             this.program = program;
             this.PointerType = PrimitiveType.Ptr16;
             this.InstructionBitSize = 8;
