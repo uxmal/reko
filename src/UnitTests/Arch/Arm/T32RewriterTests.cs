@@ -91,6 +91,11 @@ namespace Reko.UnitTests.Arch.Arm
                 throw new NotImplementedException();
             }
 
+            public IProcessorArchitecture GetArchitecture(string archLabel)
+            {
+                throw new NotImplementedException();
+            }
+
             public Expression GetImport(Address addrThunk, Address addrInstr)
             {
                 throw new NotImplementedException();

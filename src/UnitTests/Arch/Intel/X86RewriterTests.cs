@@ -162,6 +162,12 @@ namespace Reko.UnitTests.Arch.Intel
                     args);
             }
 
+            public IProcessorArchitecture GetArchitecture(string archLabel)
+            {
+                throw new NotImplementedException();
+            }
+
+
             public FunctionType GetCallSignatureAtAddress(Address addrCallInstruction)
             {
                 throw new NotImplementedException();
