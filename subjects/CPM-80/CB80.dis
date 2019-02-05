@@ -1,3513 +1,3835 @@
-// fn0387
-// Return size: 0
-define fn0387
+word16 fn0387(ptr16 & spOut)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut: hl sp
+// Trashed: hl sp
+// Preserved:
 fn0387_entry:
-	// succ:  l0387
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0387:
-	sp = fp
-	hl = 0x038F
-	sp = sp - 0x0002
-	Mem0[sp:word16] = hl
-	hl = Mem0[0x1648:word16]
-	call hl (retsize: 2;)
-	return
-	// succ:  fn0387_exit
+	word16 hl_6 = Mem5[0x1648:word16]
+	word16 sp_7
+	word16 hl_8
+	call hl_6 (retsize: 2;)
+		uses: hl:hl_6,sp:fp - 0x0002,Stack +0002:0x038F
+		defs: hl:hl_8,sp:sp_7
+	spOut = sp_7
+	return hl_8
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0387_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0390
-// Return size: 2
-define fn0390
+
+word16 fn0390(byte b, byte c, byte e, word16 wArg00, word16 wArg02)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  b:[0..7] c:[0..7] e:[0..7] Stack +0002:[0..7]
+// LiveOut: sp
+// Trashed: SZPC bc de f hl sp
+// Preserved:
 fn0390_entry:
-	// succ:  l0390
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0390:
-	sp = fp
-	hl = 0x1656
-	Mem0[hl:byte] = e
-	hl = hl - 0x0001
-	SZP = cond(hl)
-	Mem0[hl:byte] = b
-	hl = hl - 0x0001
-	SZP = cond(hl)
-	Mem0[hl:byte] = c
-	hl = hl - 0x0001
-	SZP = cond(hl)
-	de = Mem0[sp:word16]
-	sp = sp + 0x0002
-	bc = Mem0[sp:word16]
-	sp = sp + 0x0002
-	Mem0[hl:byte] = c
-	sp = sp - 0x0002
-	Mem0[sp:word16] = de
-	// succ:  l039D
+	Mem5[0x1656:byte] = e
+	Mem8[0x1655:byte] = b
+	Mem11[0x1654:byte] = c
+	Mem19[0x1653:byte] = (byte) wArg02
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l039D:
-	a = Mem0[0x1653:byte]
-	a = a - 0x01
-	SZP = cond(a)
-	Mem0[0x1653:byte] = a
-	SZPC = cond(a - 0xFF)
-	branch Test(EQ,Z) l03BA
-	// succ:  l03A9 l03BA
-l03A9:
-	hl = Mem0[0x1654:word16]
-	a = Mem0[0x1656:byte]
-	Mem0[hl:byte] = a
-	hl = Mem0[0x1654:word16]
-	hl = hl + 0x0001
-	SZP = cond(hl)
-	Mem0[0x1654:word16] = hl
-	goto l039D
-	// succ:  l039D
+	byte a_23 = Mem22[0x1653:byte]
+	Mem25[0x1653:byte] = a_23 - 0x01
+	branch a_23 == 0x00 l03BA
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l03BA:
-	return
-	// succ:  fn0390_exit
+	return fp + 0x0002
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0390_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l03A9:
+	Mem30[Mem25[0x1654:word16]:byte] = Mem25[0x1656:byte]
+	Mem34[0x1654:word16] = Mem30[0x1654:word16] + 0x0001
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn03BB
-// Return size: 2
-define fn03BB
+
+bool fn03BB(byte c)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  c:[0..7]
+// LiveOut: C
+// Trashed: SZPC c f hl
+// Preserved: sp
 fn03BB_entry:
-	// succ:  l03BB
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l03BB:
-	sp = fp
-	hl = 0x1657
-	Mem0[hl:byte] = c
-	a = Mem0[0x1657:byte]
-	a = a - 0x61
-	SZC = cond(a)
-	c = a
-	a = 0x1A
-	a = a - c
-	SZC = cond(a)
-	a = a - a - C
-	SZPC = cond(a)
-	a = ~a
-	return
-	// succ:  fn03BB_exit
+	Mem5[0x1657:byte] = c
+	return SLICE(cond(0x00 - (0x1A - (Mem5[0x1657:byte] - 0x61) <u 0x00)), bool, 0)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn03BB_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn03CB
-// Return size: 2
-define fn03CB
+
+void fn03CB(byte c)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  c:[0..7]
+// LiveOut:
+// Trashed: SZPC bc f hl
+// Preserved: sp
 fn03CB_entry:
-	// succ:  l03CB
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l03CB:
-	sp = fp
-	hl = 0x1658
-	Mem0[hl:byte] = c
-	a = Mem0[0x1658:byte]
-	a = a - 0x41
-	SZC = cond(a)
-	c = a
-	a = 0x19
-	a = a - c
-	SZC = cond(a)
-	a = a - a - C
-	SZPC = cond(a)
-	a = ~a
-	sp = sp - 0x0002
-	Mem0[sp:word16] = af
-	hl = Mem0[0x1658:word16]
-	c = l
-	call fn03BB (retsize: 2;)
-	bc = Mem0[sp:word16]
-	sp = sp + 0x0002
-	c = b
-	a = a | c
-	SZ = cond(a)
-	C = false
+	Mem5[0x1658:byte] = c
+	fn03BB((byte) Mem19[0x1658:word16])
 	return
-	// succ:  fn03CB_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn03CB_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn03E6
-// Return size: 2
-define fn03E6
+
+void fn03E6(byte a, byte c)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a:[0..7] c:[0..7]
+// LiveOut:
+// Trashed: SZPC c f hl
+// Preserved: sp
 fn03E6_entry:
-	// succ:  l03E6
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l03E6:
-	sp = fp
-	hl = 0x1659
-	Mem0[hl:byte] = c
-	hl = Mem0[0x1659:word16]
-	c = l
-	call fn03BB (retsize: 2;)
-	a = __rcr(a, 0x01, C)
-	C = cond(a)
-	branch Test(UGE,C) l03FB
-	// succ:  l03F5 l03FB
-l03F5:
-	a = Mem0[0x1659:byte]
-	a = a + 0x5F
-	SZPC = cond(a)
-	return
-	// succ:  fn03E6_exit
+	Mem5[0x1659:byte] = c
+	branch __rcr(a, 0x01, fn03BB((byte) Mem5[0x1659:word16])) >=u 0x00 l03FB
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l03FB:
-	a = Mem0[0x1659:byte]
 	return
-	// succ:  fn03E6_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l03F5:
+	return
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn03E6_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0400
-// Return size: 2
-define fn0400
+
+void fn0400()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: hl
+// Preserved: sp
 fn0400_entry:
-	// succ:  l0400
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0400:
-	sp = fp
-	hl = Mem0[0x0006:word16]
-	Mem0[0x1640:word16] = hl
-	hl = 0x0080
-	Mem0[0x164E:word16] = hl
+	Mem5[0x1640:word16] = Mem0[0x0006:word16]
+	Mem7[0x164E:word16] = 0x0080
 	return
-	// succ:  fn0400_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0400_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn040D
-// Return size: 2
-define fn040D
+
+word16 fn040D(byte b, byte c, byte e, word16 wArg00, word16 wArg02, ptr16 & spOut, ptr16 & fOut)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  b:[0..7] c:[0..7] e:[0..7] Stack +0002:[0..7]
+// LiveOut: de f sp
+// Trashed: SZPC bc de f hl sp
+// Preserved:
 fn040D_entry:
-	// succ:  l040D
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l040D:
-	sp = fp
-	hl = 0x165E
-	Mem0[hl:byte] = e
-	hl = hl - 0x0001
-	SZP = cond(hl)
-	Mem0[hl:byte] = b
-	hl = hl - 0x0001
-	SZP = cond(hl)
-	Mem0[hl:byte] = c
-	hl = hl - 0x0001
-	SZP = cond(hl)
-	de = Mem0[sp:word16]
-	sp = sp + 0x0002
-	bc = Mem0[sp:word16]
-	sp = sp + 0x0002
-	Mem0[hl:byte] = b
-	hl = hl - 0x0001
-	SZP = cond(hl)
-	Mem0[hl:byte] = c
-	sp = sp - 0x0002
-	Mem0[sp:word16] = de
-	// succ:  l041C
+	Mem5[0x165E:byte] = e
+	Mem8[0x165D:byte] = b
+	Mem11[0x165C:byte] = c
+	Mem18[0x165B:byte] = SLICE(wArg02, byte, 8)
+	Mem22[0x165A:byte] = (byte) wArg02
+	word16 de_13 = wArg00
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l041C:
-	a = 0x00
-	hl = 0x165E
-	SZPC = cond(a - Mem0[hl:byte])
-	branch Test(UGE,C) l045A
-	// succ:  l0425 l045A
-l0425:
-	hl = Mem0[0x165C:word16]
-	v13 = de
-	de = hl
-	hl = v13
-	c = 0x1A
-	F_DMAOFF(de)
-	hl = Mem0[0x165A:word16]
-	v14 = de
-	de = hl
-	hl = v14
-	c = 0x14
-	a = F_READ(de)
-	SZPC = cond(a - 0x00)
-	branch Test(NE,Z) l044D
-	// succ:  l043C l044D
-l043C:
-	hl = 0x165E
-	Mem0[hl:byte] = Mem0[hl:byte] - 0x01
-	SZP = cond(Mem0[hl:byte])
-	de = 0x0080
-	hl = Mem0[0x165C:word16]
-	hl = hl + de
-	SZPC = cond(hl)
-	Mem0[0x165C:word16] = hl
-	goto l0457
-	// succ:  l0457
-l044D:
-	hl = Mem0[0x165C:word16]
-	Mem0[hl:byte] = 0x1A
-	hl = 0x165E
-	Mem0[hl:byte] = 0x00
-	// succ:  l0457
-l0457:
-	goto l041C
-	// succ:  l041C
+	branch Mem27[0x165E:byte] <=u 0x00 l045A
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l045A:
-	return
-	// succ:  fn040D_exit
+	spOut = fp + 0x0002
+	fOut = <invalid>
+	return de_13
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn040D_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0425:
+	F_DMAOFF(Mem27[0x165C:word16])
+	word16 hl_34 = Mem27[0x165A:word16]
+	de_13 = hl_34
+	branch F_READ(hl_34) != 0x00 l044D
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l044D:
+	Mem43[Mem27[0x165C:word16]:byte] = 0x1A
+	Mem45[0x165E:byte] = 0x00
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l043C:
+	Mem47[0x165E:byte] = Mem27[0x165E:byte] - 0x01
+	Mem53[0x165C:word16] = Mem47[0x165C:word16] + 0x0080
+	de_13 = 0x0080
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0457:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn045B
-// Return size: 2
-define fn045B
+
+void fn045B()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SZPC f hl
+// Preserved: sp
 fn045B_entry:
-	// succ:  l045B
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l045B:
-	sp = fp
-	a = Mem0[0x0080:byte]
-	SZPC = cond(a - 0x00)
-	branch Test(NE,Z) l0466
-	// succ:  l0463 l0466
-l0463:
-	a = 0x00
-	return
-	// succ:  fn045B_exit
+	branch Mem0[0x0080:byte] != 0x00 l0466
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0466:
-	hl = 0x0080
-	Mem0[hl:byte] = Mem0[hl:byte] - 0x01
-	SZP = cond(Mem0[hl:byte])
-	hl = Mem0[0x164E:word16]
-	hl = hl + 0x0001
-	SZP = cond(hl)
-	Mem0[0x164E:word16] = hl
-	a = Mem0[hl:byte]
+	Mem8[0x0080:byte] = Mem0[0x0080:byte] - 0x01
+	Mem13[0x164E:word16] = Mem8[0x164E:word16] + 0x0001
 	return
-	// succ:  fn045B_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0463:
+	return
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn045B_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0473
-// Return size: 2
-define fn0473
+
+byte fn0473(byte c)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  c:[0..7]
+// LiveOut: c
+// Trashed: c de hl
+// Preserved: sp
 fn0473_entry:
-	// succ:  l0473
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0473:
-	sp = fp
-	hl = 0x165F
-	Mem0[hl:byte] = c
-	hl = Mem0[0x165F:word16]
-	h = 0x00
-	v6 = de
-	de = hl
-	hl = v6
-	c = 0x02
-	C_WRITE(e)
-	return
-	// succ:  fn0473_exit
+	Mem5[0x165F:byte] = c
+	C_WRITE((byte) DPB(Mem5[0x165F:word16], 0x00, 8))
+	return <invalid>
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0473_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0483
-// Return size: 2
-define fn0483
+
+word16 fn0483(byte b, byte c, byte d, byte e, word16 wArg00, word16 wArg02)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  b:[0..7] c:[0..7] d:[0..7] e:[0..7] Stack +0002:[0..7]
+// LiveOut: bc
+// Trashed: SZPC bc de f hl sp
+// Preserved:
 fn0483_entry:
-	// succ:  l0483
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0483:
-	sp = fp
-	hl = 0x1665
-	Mem0[hl:byte] = d
-	hl = hl - 0x0001
-	SZP = cond(hl)
-	Mem0[hl:byte] = e
-	hl = hl - 0x0001
-	SZP = cond(hl)
-	Mem0[hl:byte] = b
-	hl = hl - 0x0001
-	SZP = cond(hl)
-	Mem0[hl:byte] = c
-	hl = hl - 0x0001
-	SZP = cond(hl)
-	de = Mem0[sp:word16]
-	sp = sp + 0x0002
-	bc = Mem0[sp:word16]
-	sp = sp + 0x0002
-	Mem0[hl:byte] = b
-	hl = hl - 0x0001
-	SZP = cond(hl)
-	Mem0[hl:byte] = c
-	sp = sp - 0x0002
-	Mem0[sp:word16] = de
-	de = 0x0080
-	hl = Mem0[0x1664:word16]
-	hl = hl + de
-	SZPC = cond(hl)
-	hl = hl - 0x0001
-	SZP = cond(hl)
-	c = 0x07
-	call fn1326 (retsize: 2;)
-	v12 = de
-	de = hl
-	hl = v12
-	hl = 0x1667
-	Mem0[hl:byte] = e
-	// succ:  l04A6
+	Mem5[0x1665:byte] = d
+	Mem8[0x1664:byte] = e
+	Mem11[0x1663:byte] = b
+	Mem14[0x1662:byte] = c
+	Mem21[0x1661:byte] = SLICE(wArg02, byte, 8)
+	Mem24[0x1660:byte] = (byte) wArg02
+	word16 hl_28 = Mem26[0x1664:word16]
+	byte c_37
+	byte l_39
+	fn1326(0x07, SLICE(hl_28 + 0x007F, byte, 8), (byte) (hl_28 + 0x007F), out l_39)
+	Mem50[0x1667:byte] = l_39
+	word16 bc_125 = DPB(wArg02, c_37, 0)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l04A6:
-	a = 0x00
-	hl = 0x1667
-	SZPC = cond(a - Mem0[hl:byte])
-	branch Test(UGE,C) l0523
-	// succ:  l04AF l0523
-l04AF:
-	hl = Mem0[0x1662:word16]
-	v15 = de
-	de = hl
-	hl = v15
-	c = 0x1A
-	F_DMAOFF(de)
-	hl = Mem0[0x1660:word16]
-	v16 = de
-	de = hl
-	hl = v16
-	c = 0x15
-	a = F_WRITE(de)
-	SZPC = cond(a - 0x00)
-	branch Test(NE,Z) l04D7
-	// succ:  l04C6 l04D7
-l04C6:
-	hl = 0x1667
-	Mem0[hl:byte] = Mem0[hl:byte] - 0x01
-	SZP = cond(Mem0[hl:byte])
-	de = 0x0080
-	hl = Mem0[0x1662:word16]
-	hl = hl + de
-	SZPC = cond(hl)
-	Mem0[0x1662:word16] = hl
-	goto l0520
-	// succ:  l0520
-l04D7:
-	hl = 0x02A3
-	Mem0[0x1668:word16] = hl
-	// succ:  l04DD
-l04DD:
-	hl = Mem0[0x1668:word16]
-	a = Mem0[hl:byte]
-	SZPC = cond(a - 0x24)
-	branch Test(EQ,Z) l04F7
-	// succ:  l04E6 l04F7
-l04E6:
-	hl = Mem0[0x1668:word16]
-	c = Mem0[hl:byte]
-	call fn0473 (retsize: 2;)
-	hl = Mem0[0x1668:word16]
-	hl = hl + 0x0001
-	SZP = cond(hl)
-	Mem0[0x1668:word16] = hl
-	goto l04DD
-	// succ:  l04DD
-l04F7:
-	hl = Mem0[0x1660:word16]
-	a = Mem0[hl:byte]
-	SZPC = cond(a - 0x00)
-	branch Test(NE,Z) l050D
-	// succ:  l0500 l050D
-l0500:
-	de = 0x0000
-	c = 0x19
-	a = DRV_GET()
-	a = a + 0x01
-	SZP = cond(a)
-	hl = Mem0[0x1660:word16]
-	Mem0[hl:byte] = a
-	// succ:  l050D
-l050D:
-	hl = Mem0[0x1660:word16]
-	a = 0x61
-	a = a + Mem0[hl:byte]
-	SZPC = cond(a)
-	a = a - 0x01
-	SZP = cond(a)
-	c = a
-	call fn0473 (retsize: 2;)
-	c = 0x3A
-	call fn0473 (retsize: 2;)
-	call fn0387 (retsize: 2;)
-	// succ:  l0520
-l0520:
-	goto l04A6
-	// succ:  l04A6
+	branch Mem53[0x1667:byte] <=u 0x00 l0523
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0523:
-	return
-	// succ:  fn0483_exit
+	return bc_125
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0483_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l04AF:
+	F_DMAOFF(Mem53[0x1662:word16])
+	bc_125 = DPB(bc_125, 0x15, 0) (alias)
+	branch F_WRITE(Mem53[0x1660:word16]) != 0x00 l04D7
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l04D7:
+	Mem69[0x1668:word16] = 0x02A3
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l04DD:
+	branch Mem70[Mem70[0x1668:word16]:byte] == 0x24 l04F7
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l04F7:
+	branch Mem70[Mem70[0x1660:word16]:byte] != 0x00 l050D
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0500:
+	Mem85[Mem70[0x1660:word16]:byte] = DRV_GET() + 0x01
+	bc_125 = DPB(bc_125, 0x19, 0) (alias)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l050D:
+	fn0473(Mem86[Mem86[0x1660:word16]:byte] + 0x60)
+	byte c_98
+	fn0473(0x3A)
+	fn0387(out sp_143)
+	bc_125 = DPB(bc_125, c_98, 0) (alias)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l04E6:
+	byte c_105
+	fn0473(Mem70[Mem70[0x1668:word16]:byte])
+	Mem111[0x1668:word16] = Mem70[0x1668:word16] + 0x0001
+	bc_125 = DPB(bc_125, c_105, 0) (alias)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l04C6:
+	Mem113[0x1667:byte] = Mem53[0x1667:byte] - 0x01
+	Mem119[0x1662:word16] = Mem113[0x1662:word16] + 0x0080
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0520:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0524
-// Return size: 2
-define fn0524
+
+byte fn0524(byte c)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  c:[0..7]
+// LiveOut: c
+// Trashed: c de hl
+// Preserved: sp
 fn0524_entry:
-	// succ:  l0524
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0524:
-	sp = fp
-	hl = 0x166A
-	Mem0[hl:byte] = c
-	hl = Mem0[0x166A:word16]
-	h = 0x00
-	v6 = de
-	de = hl
-	hl = v6
-	c = 0x05
-	L_WRITE(e)
-	return
-	// succ:  fn0524_exit
+	Mem5[0x166A:byte] = c
+	L_WRITE((byte) DPB(Mem5[0x166A:word16], 0x00, 8))
+	return <invalid>
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0524_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0534
-// Return size: 2
-define fn0534
+
+word16 fn0534(byte c)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  c:[0..7]
+// LiveOut: bc
+// Trashed: SZPC bc de f hl sp
+// Preserved:
 fn0534_entry:
-	// succ:  l0534
+	word16 bc_45 = DPB(bc, c, 0)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0534:
-	sp = fp
-	hl = 0x166B
-	Mem0[hl:byte] = c
-	hl = Mem0[0x14BE:word16]
-	v5 = de
-	de = hl
-	hl = v5
-	hl = Mem0[0x14BC:word16]
-	hl = hl + de
-	SZPC = cond(hl)
-	a = Mem0[0x166B:byte]
-	Mem0[hl:byte] = a
-	hl = Mem0[0x14BE:word16]
-	hl = hl + 0x0001
-	SZP = cond(hl)
-	Mem0[0x14BE:word16] = hl
-	v10 = de
-	de = hl
-	hl = v10
-	hl = 0x0200
-	call fn1335 (retsize: 2;)
-	branch Test(ULT,C) l056A
-	// succ:  l0555 l056A
+	Mem5[0x166B:byte] = c
+	Mem14[Mem5[0x14BC:word16] + Mem5[0x14BE:word16]:byte] = Mem5[0x166B:byte]
+	word16 hl_15 = Mem14[0x14BE:word16]
+	Mem18[0x14BE:word16] = hl_15 + 0x0001
+	branch fn1335((byte) (hl_15 + 0x0001), SLICE(hl_15 + 0x0001, byte, 8), 0x00, 0x02) l056A
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0555:
-	bc = 0x14C0
-	sp = sp - 0x0002
-	Mem0[sp:word16] = bc
-	hl = Mem0[0x14BC:word16]
-	b = h
-	c = l
-	de = 0x0200
-	call fn0483 (retsize: 2;)
-	hl = 0x0000
-	Mem0[0x14BE:word16] = hl
-	// succ:  l056A
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	word16 hl_36 = Mem35[0x14BC:word16]
+	word16 stackArg0 = <invalid>
+	bc_45 = fn0483(SLICE(hl_36, byte, 8), (byte) hl_36, 0x02, 0x00, stackArg0, 0x14C0)
+	Mem54[0x14BE:word16] = 0x0000
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l056A:
-	return
-	// succ:  fn0534_exit
+	return bc_45
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0534_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn056B
-// Return size: 2
-define fn056B
+
+bool fn056B(byte c, ptr16 & bcOut, ptr16 & fOut)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  c:[0..7]
+// LiveOut: C bc f
+// Trashed: SZPC bc f hl
+// Preserved: de f sp
 fn056B_entry:
-	// succ:  l056B
+	word16 bc_19 = DPB(bc, c, 0)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l056B:
-	sp = fp
-	hl = 0x166C
-	Mem0[hl:byte] = c
-	a = Mem0[0x14F3:byte]
-	SZPC = cond(a - 0x01)
-	branch Test(NE,Z) l0581
-	// succ:  l0577 l0581
-l0577:
-	hl = Mem0[0x166C:word16]
-	c = l
-	call fn0524 (retsize: 2;)
-	goto l05A2
-	// succ:  l05A2
+	Mem5[0x166C:byte] = c
+	branch Mem5[0x14F3:byte] != 0x01 l0581
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0581:
-	a = Mem0[0x14F3:byte]
-	SZPC = cond(a - 0x02)
-	branch Test(NE,Z) l0593
-	// succ:  l0589 l0593
-l0589:
-	hl = Mem0[0x166C:word16]
-	c = l
-	call fn0473 (retsize: 2;)
-	goto l05A2
-	// succ:  l05A2
+	branch Mem5[0x14F3:byte] != 0x02 l0593
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0593:
-	a = Mem0[0x14F3:byte]
-	SZPC = cond(a - 0x04)
-	branch Test(NE,Z) l05A2
-	// succ:  l059B l05A2
+	branch Mem5[0x14F3:byte] != 0x04 l05A2
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l059B:
-	hl = Mem0[0x166C:word16]
-	c = l
-	call fn0534 (retsize: 2;)
-	// succ:  l05A2
+	bc_19 = fn0534((byte) Mem5[0x166C:word16])
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0589:
+	byte c_30
+	fn0473((byte) Mem5[0x166C:word16])
+	bc_19 = DPB(bc, c_30, 0) (alias)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0577:
+	byte c_36
+	fn0524((byte) Mem5[0x166C:word16])
+	bc_19 = DPB(bc, c_36, 0) (alias)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l05A2:
-	a = Mem0[0x166C:byte]
-	SZPC = cond(a - 0x0D)
-	branch Test(NE,Z) l05B2
-	// succ:  l05AA l05B2
-l05AA:
-	hl = 0x14F6
-	Mem0[hl:byte] = 0x01
-	goto l05CD
-	// succ:  l05CD
+	byte a_40 = Mem5[0x166C:byte]
+	bool C_67 = SLICE(cond(a_40 - 0x0D), bool, 0)
+	branch a_40 != 0x0D l05B2
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l05B2:
-	a = Mem0[0x166C:byte]
-	SZPC = cond(a - 0x0A)
-	branch Test(NE,Z) l05C9
-	// succ:  l05BA l05C9
-l05BA:
-	a = Mem0[0x14F3:byte]
-	SZPC = cond(a - 0x00)
-	branch Test(EQ,Z) l05C6
-	// succ:  l05C2 l05C6
-l05C2:
-	hl = 0x14FD
-	Mem0[hl:byte] = Mem0[hl:byte] + 0x01
-	SZP = cond(Mem0[hl:byte])
-	// succ:  l05C6
-l05C6:
-	goto l05CD
-	// succ:  l05CD
+	byte a_43 = Mem5[0x166C:byte]
+	C_67 = SLICE(cond(a_43 - 0x0A), bool, 0) (alias)
+	branch a_43 != 0x0A l05C9
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l05C9:
-	hl = 0x14F6
-	Mem0[hl:byte] = Mem0[hl:byte] + 0x01
-	SZP = cond(Mem0[hl:byte])
-	// succ:  l05CD
+	Mem47[0x14F6:byte] = Mem5[0x14F6:byte] + 0x01
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l05BA:
+	byte a_49 = Mem5[0x14F3:byte]
+	C_67 = SLICE(cond(a_49), bool, 0) (alias)
+	branch a_49 == 0x00 l05C6
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l05C2:
+	Mem53[0x14FD:byte] = Mem5[0x14FD:byte] + 0x01
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l05C6:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l05AA:
+	Mem56[0x14F6:byte] = 0x01
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l05CD:
-	return
-	// succ:  fn056B_exit
+	bcOut = bc_19
+	fOut = <invalid>
+	return C_67
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn056B_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn05CE
-// Return size: 2
-define fn05CE
+
+void fn05CE(byte b, byte c)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  b:[0..7] c:[0..7]
+// LiveOut:
+// Trashed: SZPC bc f hl
+// Preserved: f sp
 fn05CE_entry:
-	// succ:  l05CE
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l05CE:
-	sp = fp
-	hl = 0x166E
-	Mem0[hl:byte] = b
-	hl = hl - 0x0001
-	SZP = cond(hl)
-	Mem0[hl:byte] = c
-	// succ:  l05D4
+	Mem5[0x166E:byte] = b
+	Mem9[0x166D:byte] = c
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l05D4:
-	hl = Mem0[0x166D:word16]
-	a = Mem0[hl:byte]
-	SZPC = cond(a - 0x24)
-	branch Test(EQ,Z) l05EE
-	// succ:  l05DD l05EE
-l05DD:
-	hl = Mem0[0x166D:word16]
-	c = Mem0[hl:byte]
-	call fn056B (retsize: 2;)
-	hl = Mem0[0x166D:word16]
-	hl = hl + 0x0001
-	SZP = cond(hl)
-	Mem0[0x166D:word16] = hl
-	goto l05D4
-	// succ:  l05D4
+	branch Mem10[Mem10[0x166D:word16]:byte] == 0x24 l05EE
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l05EE:
 	return
-	// succ:  fn05CE_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn05CE_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l05DD:
+	fn056B(Mem10[Mem10[0x166D:word16]:byte], out bc_18, out f_40)
+	Mem27[0x166D:word16] = Mem10[0x166D:word16] + 0x0001
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn05EF
-// Return size: 2
-define fn05EF
+
+bool fn05EF(byte b, byte c, ptr16 & bcOut, ptr16 & deOut, ptr16 & fOut)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  b:[0..7] c:[0..7]
+// LiveOut: C bc de f
+// Trashed: SZPC bc de f hl
+// Preserved: sp
 fn05EF_entry:
-	// succ:  l05EF
+	word16 bc_29 = DPB(DPB(DPB(DPB(bc, b, 8), c, 0), b, 8), c, 0)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l05EF:
-	sp = fp
-	hl = 0x1670
-	Mem0[hl:byte] = b
-	hl = hl - 0x0001
-	SZP = cond(hl)
-	Mem0[hl:byte] = c
-	hl = 0x1671
-	Mem0[hl:byte] = 0x01
-	// succ:  l05FA
+	Mem5[0x1670:byte] = b
+	Mem9[0x166F:byte] = c
+	Mem11[0x1671:byte] = 0x01
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l05FA:
-	hl = Mem0[0x166F:word16]
-	a = Mem0[hl:byte]
-	hl = 0x1671
-	SZPC = cond(a - Mem0[hl:byte])
-	branch Test(ULT,C) l061A
-	// succ:  l0605 l061A
+	byte a_14 = Mem12[Mem12[0x166F:word16]:byte]
+	bool C_17 = SLICE(cond(a_14 - Mem12[0x1671:byte]), bool, 0)
+	branch a_14 <u Mem12[0x1671:byte] l061A
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0605:
-	hl = Mem0[0x1671:word16]
-	h = 0x00
-	v11 = de
-	de = hl
-	hl = v11
-	hl = Mem0[0x166F:word16]
-	hl = hl + de
-	SZPC = cond(hl)
-	c = Mem0[hl:byte]
-	call fn056B (retsize: 2;)
-	hl = 0x1671
-	Mem0[hl:byte] = Mem0[hl:byte] + 0x01
-	SZP = cond(Mem0[hl:byte])
-	branch Test(NE,Z) l05FA
-	// succ:  l061A l05FA
+	word16 hl_22 = DPB(Mem12[0x1671:word16], 0x00, 8)
+	C_17 = fn056B(Mem12[Mem12[0x166F:word16] + hl_22:byte], out bc_29, out f)
+	Mem36[0x1671:byte] = Mem12[0x1671:byte] + 0x01
+	de = hl_22
+	branch Mem36[0x1671:byte] != 0x00 l05FA
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l061A:
-	return
-	// succ:  fn05EF_exit
+	bcOut = bc_29
+	deOut = de
+	fOut = f
+	return C_17
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn05EF_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn061B
-// Return size: 2
-define fn061B
+
+bool fn061B(byte b, byte c, byte d, byte e)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  b:[0..7] c:[0..7] d:[0..7] e:[0..7]
+// LiveOut: C
+// Trashed: SZPC bc de f hl sp
+// Preserved:
 fn061B_entry:
-	// succ:  l061B
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l061B:
-	sp = fp
-	hl = 0x1675
-	Mem0[hl:byte] = d
-	hl = hl - 0x0001
-	SZP = cond(hl)
-	Mem0[hl:byte] = e
-	hl = hl - 0x0001
-	SZP = cond(hl)
-	Mem0[hl:byte] = b
-	hl = hl - 0x0001
-	SZP = cond(hl)
-	Mem0[hl:byte] = c
-	hl = 0x14F3
-	Mem0[hl:byte] = 0x02
-	hl = Mem0[0x1672:word16]
-	b = h
-	c = l
-	call fn05CE (retsize: 2;)
-	hl = Mem0[0x1674:word16]
-	b = h
-	c = l
-	call fn05EF (retsize: 2;)
-	call fn0387 (retsize: 2;)
-	return
-	// succ:  fn061B_exit
+	Mem5[0x1675:byte] = d
+	Mem8[0x1674:byte] = e
+	Mem11[0x1673:byte] = b
+	Mem15[0x1672:byte] = c
+	Mem17[0x14F3:byte] = 0x02
+	word16 hl_18 = Mem17[0x1672:word16]
+	fn05CE(SLICE(hl_18, byte, 8), (byte) hl_18)
+	word16 hl_30 = Mem17[0x1674:word16]
+	bool C_42 = fn05EF(SLICE(hl_30, byte, 8), (byte) hl_30, out bc_45, out de_46, out f_47)
+	fn0387(out sp_48)
+	return C_42
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn061B_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn063E
-// Return size: 2
-define fn063E
+
+void fn063E(byte b, byte c, byte d, byte e)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  b:[0..7] c:[0..7] d:[0..7] e:[0..7]
+// LiveOut:
+// Trashed: SZPC bc de f hl
+// Preserved: sp
 fn063E_entry:
-	// succ:  l063E
+	word16 bc_58 = DPB(DPB(DPB(DPB(bc, b, 8), c, 0), b, 8), c, 0)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l063E:
-	sp = fp
-	hl = 0x1679
-	Mem0[hl:byte] = d
-	hl = hl - 0x0001
-	SZP = cond(hl)
-	Mem0[hl:byte] = e
-	hl = hl - 0x0001
-	SZP = cond(hl)
-	Mem0[hl:byte] = b
-	hl = hl - 0x0001
-	SZP = cond(hl)
-	Mem0[hl:byte] = c
-	hl = 0x167B
-	Mem0[hl:byte] = 0x00
-	hl = Mem0[0x1678:word16]
-	Mem0[hl:byte] = 0x00
-	hl = 0x167A
-	Mem0[hl:byte] = 0x00
-	// succ:  l0657
+	Mem5[0x1679:byte] = d
+	Mem8[0x1678:byte] = e
+	Mem11[0x1677:byte] = b
+	Mem15[0x1676:byte] = c
+	Mem17[0x167B:byte] = 0x00
+	Mem19[Mem17[0x1678:word16]:byte] = 0x00
+	Mem21[0x167A:byte] = 0x00
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0657:
-	a = 0x03
-	hl = 0x167A
-	SZPC = cond(a - Mem0[hl:byte])
-	branch Test(ULT,C) l06B6
-	// succ:  l0660 l06B6
+	branch Mem24[0x167A:byte] >u 0x03 l06B6
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0660:
-	hl = 0x167C
-	Mem0[hl:byte] = 0x30
-	// succ:  l0665
+	Mem28[0x167C:byte] = 0x30
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0665:
-	hl = Mem0[0x167A:word16]
-	h = 0x00
-	bc = 0x0227
-	hl = hl + hl
-	SZPC = cond(hl)
-	hl = hl + bc
-	SZPC = cond(hl)
-	de = 0x1676
-	call fn1348 (retsize: 2;)
-	branch Test(ULT,C) l0697
-	// succ:  l0678 l0697
-l0678:
-	hl = Mem0[0x167A:word16]
-	h = 0x00
-	bc = 0x0227
-	hl = hl + hl
-	SZPC = cond(hl)
-	hl = hl + bc
-	SZPC = cond(hl)
-	de = 0x1676
-	call fn1348 (retsize: 2;)
-	v15 = de
-	de = hl
-	hl = v15
-	hl = hl - 0x0001
-	SZP = cond(hl)
-	Mem0[hl:byte] = e
-	hl = hl + 0x0001
-	SZP = cond(hl)
-	Mem0[hl:byte] = d
-	hl = 0x167B
-	Mem0[hl:byte] = 0x01
-	hl = hl + 0x0001
-	SZP = cond(hl)
-	Mem0[hl:byte] = Mem0[hl:byte] + 0x01
-	SZP = cond(Mem0[hl:byte])
-	goto l0665
-	// succ:  l0665
+	word16 bc_57 = DPB(0x0227, b_39, 8)
+	bool C_46 = fn1348(0x1676, DPB(Mem29[0x167A:word16], 0x00, 8) * 0x0002 + 0x0227, out de_144, out l_145)
+	bc_58 = DPB(bc_57, c_40, 0) (alias)
+	branch C_46 l0697
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0697:
-	a = Mem0[0x167B:byte]
-	a = __rcr(a, 0x01, C)
-	C = cond(a)
-	branch Test(UGE,C) l06AF
-	// succ:  l069E l06AF
+	branch __rcr(Mem29[0x167B:byte], 0x01, C_46) >=u 0x00 l06AF
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l069E:
-	hl = Mem0[0x1678:word16]
-	a = Mem0[hl:byte]
-	a = a + 0x01
-	SZP = cond(a)
-	Mem0[hl:byte] = a
-	c = a
-	b = 0x00
-	hl = Mem0[0x1678:word16]
-	hl = hl + bc
-	SZPC = cond(hl)
-	a = Mem0[0x167C:byte]
-	Mem0[hl:byte] = a
-	// succ:  l06AF
+	word16 hl_50 = Mem29[0x1678:word16]
+	byte a_51 = Mem29[hl_50:byte]
+	Mem53[hl_50:byte] = a_51 + 0x01
+	bc_58 = DPB(DPB(bc_57, a_51 + 0x01, 0), 0x00, 8) (alias)
+	Mem64[Mem53[0x1678:word16] + bc_58:byte] = Mem53[0x167C:byte]
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l06AF:
-	hl = 0x167A
-	Mem0[hl:byte] = Mem0[hl:byte] + 0x01
-	SZP = cond(Mem0[hl:byte])
-	branch Test(NE,Z) l0657
-	// succ:  l06B6 l0657
+	Mem67[0x167A:byte] = Mem66[0x167A:byte] + 0x01
+	branch Mem67[0x167A:byte] != 0x00 l0657
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l06B6:
-	de = 0x0030
-	hl = Mem0[0x1676:word16]
-	hl = hl + de
-	SZPC = cond(hl)
-	sp = sp - 0x0002
-	Mem0[sp:word16] = hl
-	hl = Mem0[0x1678:word16]
-	a = Mem0[hl:byte]
-	a = a + 0x01
-	SZP = cond(a)
-	Mem0[hl:byte] = a
-	c = a
-	b = 0x00
-	hl = Mem0[0x1678:word16]
-	hl = hl + bc
-	SZPC = cond(hl)
-	bc = Mem0[sp:word16]
-	sp = sp + 0x0002
-	Mem0[hl:byte] = c
+	word16 hl_80 = Mem79[0x1678:word16]
+	word16 hl_72 = Mem71[0x1676:word16]
+	byte a_81 = Mem79[hl_80:byte]
+	Mem83[hl_80:byte] = a_81 + 0x01
+	Mem102[Mem83[0x1678:word16] + DPB(DPB(bc_58, a_81 + 0x01, 0), 0x00, 8):byte] = (byte) (hl_72 + 0x0030)
 	return
-	// succ:  fn063E_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn063E_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0678:
+	word16 de_114
+	word16 hl_115
+	fn1348(0x1676, DPB(Mem29[0x167A:word16], 0x00, 8) * 0x0002 + 0x0227, out de_114, out l_143)
+	Mem125[de_114 - 0x0001:byte] = (byte) hl_115
+	Mem128[de_114:byte] = SLICE(hl_115, byte, 8)
+	Mem130[0x167B:byte] = 0x01
+	Mem132[0x167C:byte] = Mem130[0x167C:byte] + 0x01
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn06CE
-// Return size: 2
-define fn06CE
+
+word16 fn06CE(byte b, byte c, ptr16 & deOut, ptr16 & fOut)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  b:[0..7] c:[0..7]
+// LiveOut: bc de f
+// Trashed: SZPC bc de f hl
+// Preserved: sp
 fn06CE_entry:
-	// succ:  l06CE
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l06CE:
-	sp = fp
-	hl = 0x167E
-	Mem0[hl:byte] = b
-	hl = hl - 0x0001
-	SZP = cond(hl)
-	Mem0[hl:byte] = c
-	hl = Mem0[0x167D:word16]
-	b = h
-	c = l
-	de = 0x162C
-	call fn063E (retsize: 2;)
-	bc = 0x162C
-	call fn05EF (retsize: 2;)
-	return
-	// succ:  fn06CE_exit
+	Mem5[0x167E:byte] = b
+	Mem9[0x167D:byte] = c
+	word16 hl_10 = Mem9[0x167D:word16]
+	fn063E(SLICE(hl_10, byte, 8), (byte) hl_10, 0x16, 0x2C)
+	byte f_29
+	word16 bc_30
+	word16 de_32
+	fn05EF(0x16, 0x2C, out bc_30, out de_32, out f_29)
+	deOut = de_32
+	fOut = f_29
+	return bc_30
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn06CE_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0722
-// Return size: 2
-define fn0722
+
+void fn0722(byte c)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  c:[0..7]
+// LiveOut:
+// Trashed: SZPC bc f hl
+// Preserved: sp
 fn0722_entry:
-	// succ:  l0722
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0722:
-	sp = fp
-	hl = 0x1681
-	Mem0[hl:byte] = c
-	a = 0x09
-	hl = 0x1681
-	SZPC = cond(a - Mem0[hl:byte])
-	branch Test(UGE,C) l073B
-	// succ:  l072F l073B
-l072F:
-	a = Mem0[0x1681:byte]
-	a = a + 0x57
-	SZPC = cond(a)
-	c = a
-	call fn056B (retsize: 2;)
-	goto l0744
-	// succ:  l0744
+	Mem5[0x1681:byte] = c
+	branch Mem5[0x1681:byte] <=u 0x09 l073B
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l073B:
-	a = Mem0[0x1681:byte]
-	a = a + 0x30
-	SZPC = cond(a)
-	c = a
-	call fn056B (retsize: 2;)
-	// succ:  l0744
+	fn056B(Mem5[0x1681:byte] + 0x30, out bc_15, out f_14)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l072F:
+	fn056B(Mem5[0x1681:byte] + 0x57, out bc_26, out f_25)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0744:
 	return
-	// succ:  fn0722_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0722_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0745
-// Return size: 2
-define fn0745
+
+void fn0745(byte c)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  c:[0..7]
+// LiveOut:
+// Trashed: SZPC bc f hl
+// Preserved: f sp
 fn0745_entry:
-	// succ:  l0745
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0745:
-	sp = fp
-	hl = 0x1682
-	Mem0[hl:byte] = c
-	// succ:  l0749
+	Mem5[0x1682:byte] = c
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0749:
-	hl = 0x1682
-	a = Mem0[0x14F6:byte]
-	SZPC = cond(a - Mem0[hl:byte])
-	branch Test(UGE,C) l075B
-	// succ:  l0753 l075B
-l0753:
-	c = 0x20
-	call fn056B (retsize: 2;)
-	goto l0749
-	// succ:  l0749
+	branch Mem5[0x14F6:byte] >=u Mem5[0x1682:byte] l075B
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l075B:
 	return
-	// succ:  fn0745_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0745_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0753:
+	fn056B(0x20, out bc_13, out f_29)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn075C
-// Return size: 2
-define fn075C
+
+word16 fn075C(byte b, byte c, byte d, byte e, ptr16 & deOut, ptr16 & hlOut, ptr16 & spOut, ptr16 & fOut)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  b:[0..7] c:[0..7] d:[0..7] e:[0..7]
+// LiveOut: bc de f hl sp
+// Trashed: SZPC bc de f hl sp
+// Preserved:
 fn075C_entry:
-	// succ:  l075C
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l075C:
-	sp = fp
-	hl = 0x1686
-	Mem0[hl:byte] = d
-	hl = hl - 0x0001
-	SZP = cond(hl)
-	Mem0[hl:byte] = e
-	hl = hl - 0x0001
-	SZP = cond(hl)
-	Mem0[hl:byte] = b
-	hl = hl - 0x0001
-	SZP = cond(hl)
-	Mem0[hl:byte] = c
-	hl = 0x14F3
-	Mem0[hl:byte] = 0x02
-	a = Mem0[0x14F6:byte]
-	SZPC = cond(a - 0x01)
-	branch Test(EQ,Z) l077D
-	// succ:  l0773 l077D
+	Mem5[0x1686:byte] = d
+	Mem8[0x1685:byte] = e
+	Mem11[0x1684:byte] = b
+	Mem14[0x1683:byte] = c
+	Mem16[0x14F3:byte] = 0x02
+	branch Mem16[0x14F6:byte] == 0x01 l077D
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0773:
-	c = 0x0D
-	call fn056B (retsize: 2;)
-	c = 0x0A
-	call fn056B (retsize: 2;)
-	// succ:  l077D
+	fn056B(0x0D, out bc_133, out f_134)
+	fn056B(0x0A, out bc_135, out f_136)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l077D:
-	bc = 0x0260
-	call fn05CE (retsize: 2;)
-	hl = Mem0[0x1683:word16]
-	b = h
-	c = l
-	call fn06CE (retsize: 2;)
-	c = 0x0D
-	call fn056B (retsize: 2;)
-	c = 0x0A
-	call fn056B (retsize: 2;)
-	a = 0x00
-	de = 0x1685
-	call fn1353 (retsize: 2;)
-	a = a | l
-	SZ = cond(a)
-	C = false
-	branch Test(EQ,Z) l07AF
-	// succ:  l07A1 l07AF
+	fn05CE(0x02, 0x60)
+	word16 hl_47 = Mem16[0x1683:word16]
+	fn06CE(SLICE(hl_47, byte, 8), (byte) hl_47, out de_128, out f_129)
+	fn056B(0x0D, out bc_130, out f_131)
+	word16 bc_105
+	fn056B(0x0A, out bc_105, out f_132)
+	byte l_81
+	byte f_107
+	word16 de_106 = fn1353(0x00, 0x1685, out l_81, out f_107)
+	branch l_81 == 0x00 l07AF
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l07A1:
-	bc = 0x034E
-	call fn05CE (retsize: 2;)
-	hl = Mem0[0x1685:word16]
-	b = h
-	c = l
-	call fn06CE (retsize: 2;)
-	// succ:  l07AF
+	fn05CE(0x03, 0x4E)
+	word16 hl_100 = Mem16[0x1685:word16]
+	bc_105 = fn06CE(SLICE(hl_100, byte, 8), (byte) hl_100, out de_106, out f_107)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l07AF:
-	call fn0387 (retsize: 2;)
-	return
-	// succ:  fn075C_exit
+	word16 sp_114
+	word16 hl_113 = fn0387(out sp_114)
+	deOut = de_106
+	hlOut = hl_113
+	spOut = sp_114
+	fOut = f_107
+	return bc_105
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn075C_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn07B3
-// Return size: 2
-define fn07B3
+
+void fn07B3()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: C bc de f hl
+// Preserved: SZP sp
 fn07B3_entry:
-	// succ:  l07B3
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l07B3:
-	sp = fp
-	a = Mem0[0x14F9:byte]
-	a = __rcr(a, 0x01, C)
-	C = cond(a)
-	branch Test(UGE,C) l080E
-	// succ:  l07BA l080E
+	branch __rcr(Mem0[0x14F9:byte], 0x01, C) >=u 0x00 l080E
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l07BA:
-	c = 0x0D
-	call fn056B (retsize: 2;)
-	// succ:  l07BF
+	fn056B(0x0D, out bc_139, out f_140)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l07BF:
-	hl = 0x14F7
-	a = Mem0[0x14FD:byte]
-	SZPC = cond(a - Mem0[hl:byte])
-	branch Test(UGE,C) l07D6
-	// succ:  l07C9 l07D6
-l07C9:
-	c = 0x0D
-	call fn056B (retsize: 2;)
-	c = 0x0A
-	call fn056B (retsize: 2;)
-	goto l07BF
-	// succ:  l07BF
+	branch Mem0[0x14FD:byte] >=u Mem0[0x14F7:byte] l07D6
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l07D6:
-	c = 0x0D
-	call fn056B (retsize: 2;)
-	c = 0x0A
-	call fn056B (retsize: 2;)
-	bc = 0x02B7
-	call fn05CE (retsize: 2;)
-	bc = 0x14FF
-	call fn05EF (retsize: 2;)
-	a = Mem0[0x14F8:byte]
-	a = a - 0x0A
-	SZC = cond(a)
-	c = a
-	call fn0745 (retsize: 2;)
-	bc = 0x02FC
-	call fn05CE (retsize: 2;)
-	hl = Mem0[0x14FE:word16]
-	c = l
-	b = 0x00
-	call fn06CE (retsize: 2;)
-	hl = 0x14FE
-	Mem0[hl:byte] = Mem0[hl:byte] + 0x01
-	SZP = cond(Mem0[hl:byte])
-	bc = 0x0382
-	call fn05EF (retsize: 2;)
-	// succ:  l080E
+	fn056B(0x0D, out bc_141, out f_142)
+	fn056B(0x0A, out bc_143, out f_144)
+	fn05CE(0x02, 0xB7)
+	fn05EF(0x14, 0xFF, out bc_145, out de_146, out f_147)
+	fn0745(Mem0[0x14F8:byte] - 0x0A)
+	fn05CE(0x02, 0xFC)
+	fn06CE(0x00, (byte) Mem0[0x14FE:word16], out de_148, out f_149)
+	Mem92[0x14FE:byte] = Mem0[0x14FE:byte] + 0x01
+	fn05EF(0x03, 0x82, out bc_150, out de_151, out f_152)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l080E:
-	hl = 0x14FD
-	Mem0[hl:byte] = 0x03
+	Mem106[0x14FD:byte] = 0x03
 	return
-	// succ:  fn07B3_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn07B3_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l07C9:
+	fn056B(0x0D, out bc_153, out f_154)
+	fn056B(0x0A, out bc_155, out f_156)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0814
-// Return size: 2
-define fn0814
+
+void fn0814()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SZPC bc de f hl
+// Preserved: sp
 fn0814_entry:
-	// succ:  l0814
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0814:
-	sp = fp
-	c = 0x0D
-	call fn056B (retsize: 2;)
-	c = 0x0A
-	call fn056B (retsize: 2;)
-	a = Mem0[0x14F7:byte]
-	a = a - 0x03
-	SZC = cond(a)
-	c = a
-	a = Mem0[0x14FD:byte]
-	SZPC = cond(a - c)
-	branch Test(ULT,C) l082E
-	// succ:  l082B l082E
+	fn056B(0x0D, out bc_46, out f_47)
+	fn056B(0x0A, out bc_13, out f_12)
+	branch Mem0[0x14FD:byte] <u Mem0[0x14F7:byte] - 0x03 l082E
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l082B:
-	call fn07B3 (retsize: 2;)
-	// succ:  l082E
+	fn07B3()
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l082E:
 	return
-	// succ:  fn0814_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0814_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn082F
-// Return size: 2
-define fn082F
+
+word16 fn082F(word16 af, byte b, byte c, byte e, word16 wArg00, word16 wArg02, word16 wArg04, ptr16 & spOut)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  af:[8..15] b:[0..7] c:[0..7] e:[0..7] Stack +0002:[0..7] Stack +0004:[0..7]
+// LiveOut: af sp
+// Trashed: SZPC af bc de f hl sp
+// Preserved:
 fn082F_entry:
-	// succ:  l082F
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l082F:
-	sp = fp
-	hl = 0x168D
-	Mem0[hl:byte] = e
-	hl = hl - 0x0001
-	SZP = cond(hl)
-	Mem0[hl:byte] = b
-	hl = hl - 0x0001
-	SZP = cond(hl)
-	Mem0[hl:byte] = c
-	hl = hl - 0x0001
-	SZP = cond(hl)
-	de = Mem0[sp:word16]
-	sp = sp + 0x0002
-	bc = Mem0[sp:word16]
-	sp = sp + 0x0002
-	Mem0[hl:byte] = b
-	hl = hl - 0x0001
-	SZP = cond(hl)
-	Mem0[hl:byte] = c
-	hl = hl - 0x0001
-	SZP = cond(hl)
-	bc = Mem0[sp:word16]
-	sp = sp + 0x0002
-	Mem0[hl:byte] = b
-	hl = hl - 0x0001
-	SZP = cond(hl)
-	Mem0[hl:byte] = c
-	sp = sp - 0x0002
-	Mem0[sp:word16] = de
-	hl = 0x168F
-	Mem0[hl:byte] = 0x00
-	hl = hl + 0x0001
-	SZP = cond(hl)
-	Mem0[hl:byte] = 0x00
-	hl = hl + 0x0001
-	SZP = cond(hl)
-	Mem0[hl:byte] = 0x00
-	a = Mem0[0x168D:byte]
-	a = __rol(a, 0x01)
-	C = cond(a)
-	a = __rcr(a, 0x01, C)
-	C = cond(a)
-	branch Test(UGE,C) l085E
-	// succ:  l0856 l085E
-l0856:
-	hl = 0x1690
-	Mem0[hl:byte] = 0x01
-	goto l087E
-	// succ:  l087E
+	Mem5[0x168D:byte] = e
+	Mem8[0x168C:byte] = b
+	Mem11[0x168B:byte] = c
+	Mem18[0x168A:byte] = SLICE(wArg02, byte, 8)
+	Mem21[0x1689:byte] = (byte) wArg02
+	Mem26[0x1688:byte] = SLICE(wArg04, byte, 8)
+	Mem29[0x1687:byte] = (byte) wArg04
+	Mem33[0x168F:byte] = 0x00
+	Mem35[0x1690:byte] = 0x00
+	Mem38[0x1691:byte] = 0x00
+	byte a_40 = __rol(Mem38[0x168D:byte], 0x01)
+	byte a_42 = __rcr(a_40, 0x01, cond(a_40))
+	word16 af_93 = DPB(af, a_42, 0)
+	branch a_42 >=u 0x00 l085E
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l085E:
-	a = Mem0[0x168D:byte]
-	a = __rol(a, 0x01)
-	C = cond(a)
-	a = __rol(a, 0x01)
-	C = cond(a)
-	a = __rcr(a, 0x01, C)
-	C = cond(a)
-	branch Test(UGE,C) l086F
-	// succ:  l0867 l086F
-l0867:
-	hl = 0x1691
-	Mem0[hl:byte] = 0x01
-	goto l087E
-	// succ:  l087E
+	byte a_46 = __rol(__rol(Mem38[0x168D:byte], 0x01), 0x01)
+	byte a_48 = __rcr(a_46, 0x01, cond(a_46))
+	af_93 = DPB(af, a_48, 0) (alias)
+	branch a_48 >=u 0x00 l086F
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l086F:
-	a = Mem0[0x168D:byte]
-	a = __rol(a, 0x01)
-	C = cond(a)
-	a = __rol(a, 0x01)
-	C = cond(a)
-	a = __rol(a, 0x01)
-	C = cond(a)
-	a = __rcr(a, 0x01, C)
-	C = cond(a)
-	branch Test(UGE,C) l087E
-	// succ:  l0879 l087E
+	byte a_53 = __rol(__rol(__rol(Mem38[0x168D:byte], 0x01), 0x01), 0x01)
+	byte a_55 = __rcr(a_53, 0x01, cond(a_53))
+	af_93 = DPB(af, a_55, 0) (alias)
+	branch a_55 >=u 0x00 l087E
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0879:
-	hl = 0x168F
-	Mem0[hl:byte] = 0x01
-	// succ:  l087E
+	Mem58[0x168F:byte] = 0x01
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0867:
+	Mem60[0x1691:byte] = 0x01
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0856:
+	Mem62[0x1690:byte] = 0x01
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l087E:
-	a = Mem0[0x168D:byte]
-	a = __rol(a, 0x01)
-	C = cond(a)
-	a = __rol(a, 0x01)
-	C = cond(a)
-	a = __rol(a, 0x01)
-	C = cond(a)
-	a = __rol(a, 0x01)
-	C = cond(a)
-	a = __rcr(a, 0x01, C)
-	C = cond(a)
-	branch Test(UGE,C) l088E
-	// succ:  l0889 l088E
+	byte a_68 = __rol(__rol(__rol(__rol(Mem63[0x168D:byte], 0x01), 0x01), 0x01), 0x01)
+	branch __rcr(a_68, 0x01, cond(a_68)) >=u 0x00 l088E
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0889:
-	hl = 0x168E
-	Mem0[hl:byte] = 0x01
-	// succ:  l088E
+	Mem73[0x168E:byte] = 0x01
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l088E:
-	a = Mem0[0x168D:byte]
-	a = a + 0x0F
-	SZPC = cond(a)
-	Mem0[0x168D:byte] = a
-	hl = Mem0[0x1687:word16]
-	b = h
-	c = l
-	hl = Mem0[0x1689:word16]
-	v15 = de
-	de = hl
-	hl = v15
-	call fn0990 (retsize: 2;)
-	a = ~a
-	a = __rcr(a, 0x01, C)
-	C = cond(a)
-	branch Test(UGE,C) l08B1
-	// succ:  l08A7 l08B1
+	byte a_75 = Mem74[0x168D:byte]
+	Mem78[0x168D:byte] = a_75 + 0x0F
+	word16 hl_79 = Mem78[0x1687:word16]
+	word16 hl_84 = Mem78[0x1689:word16]
+	word16 af_100
+	byte a_112 = __rcr(~(byte) af_100, 0x01, fn0990(DPB(af_93, a_75 + 0x0F, 0), SLICE(hl_79, byte, 8), (byte) hl_79, SLICE(hl_84, byte, 8), (byte) hl_84, out af_100))
+	bool C_113 = cond(a_112)
+	branch a_112 >=u 0x00 l08B1
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l08A7:
-	hl = Mem0[0x1687:word16]
-	v16 = de
-	de = hl
-	hl = v16
-	bc = 0x024C
-	call fn061B (retsize: 2;)
-	// succ:  l08B1
+	word16 hl_114 = Mem78[0x1687:word16]
+	C_113 = fn061B(0x02, 0x4C, SLICE(hl_114, byte, 8), (byte) hl_114)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l08B1:
-	a = Mem0[0x1690:byte]
-	a = __rcr(a, 0x01, C)
-	C = cond(a)
-	branch Test(UGE,C) l08DD
-	// succ:  l08B8 l08DD
-l08B8:
-	hl = Mem0[0x168B:word16]
-	a = Mem0[hl:byte]
-	SZPC = cond(a - 0x00)
-	branch Test(NE,Z) l08DA
-	// succ:  l08C1 l08DA
-l08C1:
-	a = Mem0[0x151D:byte]
-	SZPC = cond(a - 0x00)
-	branch Test(NE,Z) l08D3
-	// succ:  l08C9 l08D3
-l08C9:
-	hl = Mem0[0x168B:word16]
-	a = Mem0[0x151F:byte]
-	Mem0[hl:byte] = a
-	goto l08DA
-	// succ:  l08DA
-l08D3:
-	hl = Mem0[0x168B:word16]
-	a = Mem0[0x151D:byte]
-	Mem0[hl:byte] = a
-	// succ:  l08DA
-l08DA:
-	// succ:  l08DA_thunk_fn08EC
-l08DA_thunk_fn08EC:
-	call fn08EC (retsize: 0;)
-	return
-	// succ:  fn082F_exit
+	byte a_135 = __rcr(Mem78[0x1690:byte], 0x01, C_113)
+	bool C_136 = cond(a_135)
+	branch a_135 >=u 0x00 l08DD
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l08DD:
-	a = Mem0[0x1691:byte]
-	a = __rcr(a, 0x01, C)
-	C = cond(a)
-	branch Test(UGE,C) l0900
-	// succ:  l08E4 l0900
-l08E4:
-	a = Mem0[0x151E:byte]
-	SZPC = cond(a - 0x00)
-	branch Test(EQ,Z) l08F6
-	// succ:  l08E9_thunk_fn08EC l08F6
-l08E9_thunk_fn08EC:
-	call fn08EC (retsize: 0;)
-	return
-	// succ:  fn082F_exit
-l08F6:
-	hl = Mem0[0x168B:word16]
-	a = Mem0[0x151F:byte]
-	Mem0[hl:byte] = a
-	// succ:  l08FC_thunk_fn08EC
-l08FC_thunk_fn08EC:
-	call fn08EC (retsize: 0;)
-	return
-	// succ:  fn082F_exit
+	byte a_138 = __rcr(Mem78[0x1691:byte], 0x01, C_136)
+	bool C_139 = cond(a_138)
+	branch a_138 >=u 0x00 l0900
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0900:
-	a = Mem0[0x168F:byte]
-	a = __rcr(a, 0x01, C)
-	C = cond(a)
-	branch Test(UGE,C) l0920
-	goto l0907
-	// succ:  l0907 l0904_thunk_fn08EC
+	byte a_141 = __rcr(Mem78[0x168F:byte], 0x01, C_139)
+	word16 af_241 = DPB(af_100, a_141, 0)
+	branch a_141 >=u 0x00 l0920
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0904_thunk_fn08EC:
-	call fn08EC (retsize: 0;)
-	return
-	// succ:  fn082F_exit
+	word16 sp_147
+	fn08EC(out sp_147)
+	spOut = sp_147
+	return af_241
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0907:
-	a = Mem0[0x1520:byte]
-	SZPC = cond(a - 0x00)
-	branch Test(EQ,Z) l0919
-	// succ:  l090F l0919
-l090F:
-	hl = Mem0[0x168B:word16]
-	a = Mem0[0x1520:byte]
-	Mem0[hl:byte] = a
-	// succ:  l0916_thunk_fn08EC
-l0916_thunk_fn08EC:
-	call fn08EC (retsize: 0;)
-	return
-	// succ:  fn082F_exit
+	branch Mem78[0x1520:byte] == 0x00 l0919
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0919:
-	hl = Mem0[0x168B:word16]
-	a = Mem0[0x151F:byte]
-	Mem0[hl:byte] = a
-	// succ:  l091F_thunk_fn08EC
+	byte a_156 = Mem78[0x151F:byte]
+	Mem157[Mem78[0x168B:word16]:byte] = a_156
+	word16 af_244 = DPB(af_100, a_156, 0)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l091F_thunk_fn08EC:
-	call fn08EC (retsize: 0;)
-	return
-	// succ:  fn082F_exit
+	word16 sp_162
+	fn08EC(out sp_162)
+	spOut = sp_162
+	return af_244
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l090F:
+	byte a_168 = Mem78[0x1520:byte]
+	Mem169[Mem78[0x168B:word16]:byte] = a_168
+	word16 af_243 = DPB(af_100, a_168, 0)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0916_thunk_fn08EC:
+	word16 sp_174
+	fn08EC(out sp_174)
+	spOut = sp_174
+	return af_243
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l08E4:
+	byte a_179 = Mem78[0x151E:byte]
+	word16 af_234 = DPB(af_100, a_179, 0)
+	branch a_179 == 0x00 l08F6
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l08F6:
+	byte a_183 = Mem78[0x151F:byte]
+	Mem184[Mem78[0x168B:word16]:byte] = a_183
+	word16 af_235 = DPB(af_100, a_183, 0)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l08FC_thunk_fn08EC:
+	word16 sp_189
+	fn08EC(out sp_189)
+	spOut = sp_189
+	return af_235
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l08E9_thunk_fn08EC:
+	word16 sp_198
+	fn08EC(out sp_198)
+	spOut = sp_198
+	return af_234
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l08B8:
+	byte a_204 = Mem78[Mem78[0x168B:word16]:byte]
+	word16 af_236 = DPB(af_100, a_204, 0)
+	branch a_204 != 0x00 l08DA
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l08C1:
+	branch Mem78[0x151D:byte] != 0x00 l08D3
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l08D3:
+	byte a_211 = Mem78[0x151D:byte]
+	Mem212[Mem78[0x168B:word16]:byte] = a_211
+	af_236 = DPB(af_100, a_211, 0) (alias)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l08C9:
+	byte a_214 = Mem78[0x151F:byte]
+	Mem215[Mem78[0x168B:word16]:byte] = a_214
+	af_236 = DPB(af_100, a_214, 0) (alias)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l08DA:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l08DA_thunk_fn08EC:
+	word16 sp_220
+	fn08EC(out sp_220)
+	spOut = sp_220
+	return af_236
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn082F_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn08EC
-// Return size: 0
-define fn08EC
+
+bool fn08EC(ptr16 & spOut)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut: C sp
+// Trashed: SZPC bc de f hl sp
+// Preserved:
 fn08EC_entry:
-	// succ:  l08EC
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l08EC:
-	sp = fp
-	hl = Mem0[0x168B:word16]
-	a = Mem0[0x151E:byte]
-	Mem0[hl:byte] = a
-	// succ:  l08F3_thunk_fn08FD
+	Mem6[Mem0[0x168B:word16]:byte] = Mem0[0x151E:byte]
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l08F3_thunk_fn08FD:
-	call fn08FD (retsize: 0;)
-	return
-	// succ:  fn08EC_exit
+	word16 sp_11
+	bool C_15 = fn08FD(out sp_11)
+	spOut = sp_11
+	return C_15
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn08EC_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn08FD
-// Return size: 0
-define fn08FD
+
+bool fn08FD(ptr16 & spOut)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut: C sp
+// Trashed: SZPC bc de f hl sp
+// Preserved:
 fn08FD_entry:
-	// succ:  l08FD
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l08FD:
-	sp = fp
-	// succ:  l08FD_thunk_fn0920
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l08FD_thunk_fn0920:
-	call fn0920 (retsize: 0;)
-	return
-	// succ:  fn08FD_exit
+	bool C_11 = fn0920()
+	spOut = sp_7
+	return C_11
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn08FD_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0920
-// Return size: 0
-define fn0920
+
+bool fn0920()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut: C
+// Trashed: SZPC bc de f hl sp
+// Preserved:
 fn0920_entry:
-	// succ:  l0920
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0920:
-	sp = fp
-	de = 0x0080
-	c = 0x1A
-	F_DMAOFF(de)
-	a = Mem0[0x168D:byte]
-	// succ:  l0928_thunk_fn092A
+	F_DMAOFF(0x0080)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0928_thunk_fn092A:
-	call fn092A (retsize: 0;)
-	return
-	// succ:  fn0920_exit
+	fn092A()
+	return C_15
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0920_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn092A
-// Return size: 0
-define fn092A
-fn092A_entry:
-	// succ:  l092A
+
+void fn092A()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SZPC bc de f hl sp
+// Preserved:
 l092A:
-	sp = fp
-	d = 0xFE
-	branch Test(NE,Z) l092D_thunk_fn096E
-	goto l092D_thunk_fn0930
-	// succ:  l092D_thunk_fn0930 l092D_thunk_fn096E
-l092A:
-	SZPC = cond(a - 0x00)
-	branch Test(NE,Z) l096E
-	// succ:  l092C_thunk_fn0930 l092C_thunk_fn096E
-l092C_thunk_fn0930:
-	call fn0930 (retsize: 0;)
-	return
-	// succ:  fn092A_exit
+	branch a != 0x00 l096E
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l092C_thunk_fn096E:
-	call fn096E (retsize: 0;)
+	fn096E()
 	return
-	// succ:  fn092A_exit
-l092D_thunk_fn0930:
-	call fn0930 (retsize: 0;)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l092C_thunk_fn0930:
+	fn0930()
 	return
-	// succ:  fn092A_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+fn092A_entry:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l092A:
+	branch Z l092D_thunk_fn096E
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l092D_thunk_fn096E:
-	call fn096E (retsize: 0;)
+	fn096E()
 	return
-	// succ:  fn092A_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l092D_thunk_fn0930:
+	fn0930()
+	return
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn092A_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0930
-// Return size: 0
-define fn0930
+
+void fn0930()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SZPC bc de f hl sp
+// Preserved:
 fn0930_entry:
-	// succ:  l0930
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0930:
-	sp = v3
-	de = 0x0000
-	c = 0x0C
-	S_BDOSVER(out b, out h, out a, out l)
-	a = a - 0x30
-	SZC = cond(a)
-	a = a - a - C
-	SZPC = cond(a)
-	a = ~a
-	hl = 0x168E
-	a = a & Mem0[hl:byte]
-	SZ = cond(a)
-	C = false
-	a = __rcr(a, 0x01, C)
-	C = cond(a)
-	branch Test(UGE,C) l0953
-	// succ:  l0944 l0953
+	byte b_5
+	byte h_6
+	byte a_7
+	byte l_8
+	S_BDOSVER(out b_5, out h_6, out a_7, out l_8)
+	branch (~(0x00 - (a_7 <u 0x30)) & Mem0[0x168E:byte]) >>u 0x01 >=u 0x00 l0953
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0944:
-	bc = 0x0007
-	hl = Mem0[0x168B:word16]
-	hl = hl + bc
-	SZPC = cond(hl)
-	a = 0x80
-	a = a | Mem0[hl:byte]
-	SZ = cond(a)
-	C = false
-	hl = Mem0[0x168B:word16]
-	hl = hl + bc
-	SZPC = cond(hl)
-	Mem0[hl:byte] = a
-	// succ:  l0953
+	Mem30[Mem0[0x168B:word16] + 0x0007:byte] = Mem0[Mem0[0x168B:word16] + 0x0007:byte] | 0x80
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0953:
-	hl = Mem0[0x168B:word16]
-	v16 = de
-	de = hl
-	hl = v16
-	c = 0x0F
-	a = F_OPEN(de)
-	SZPC = cond(a - 0xFF)
-	branch Test(NE,Z) l096B
-	// succ:  l0961 l096B
+	branch F_OPEN(Mem31[0x168B:word16]) != 0xFF l096B
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0961:
-	hl = Mem0[0x1687:word16]
-	v18 = de
-	de = hl
-	hl = v18
-	bc = 0x0236
-	call fn061B (retsize: 2;)
-	// succ:  l096B
+	word16 hl_41 = Mem31[0x1687:word16]
+	fn061B(0x02, 0x36, SLICE(hl_41, byte, 8), (byte) hl_41)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l096B:
-	// succ:  l096B_thunk_fn096E
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l096B_thunk_fn096E:
-	call fn096E (retsize: 0;)
+	fn096E()
 	return
-	// succ:  fn0930_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0930_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn096E
-// Return size: 0
-define fn096E
+
+void fn096E()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SZPC bc de f hl sp
+// Preserved:
 fn096E_entry:
-	// succ:  l096E
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l096E:
-	sp = v3
-	hl = Mem0[0x168B:word16]
-	v6 = de
-	de = hl
-	hl = v6
-	c = 0x13
-	a = F_DELETE(de)
-	hl = Mem0[0x168B:word16]
-	v9 = de
-	de = hl
-	hl = v9
-	c = 0x16
-	a = F_MAKE(de)
-	SZPC = cond(a - 0xFF)
-	branch Test(NE,Z) l098F
-	// succ:  l0985 l098F
+	F_DELETE(Mem0[0x168B:word16])
+	branch F_MAKE(Mem0[0x168B:word16]) != 0xFF l098F
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0985:
-	hl = Mem0[0x1687:word16]
-	v12 = de
-	de = hl
-	hl = v12
-	bc = 0x0287
-	call fn061B (retsize: 2;)
-	// succ:  l098F
+	word16 hl_17 = Mem0[0x1687:word16]
+	fn061B(0x02, 0x87, SLICE(hl_17, byte, 8), (byte) hl_17)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l098F:
 	return
-	// succ:  fn096E_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn096E_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0990
-// Return size: 2
-define fn0990
+
+bool fn0990(word16 af, byte b, byte c, byte d, byte e, ptr16 & afOut)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  af:[8..15] b:[0..7] c:[0..7] d:[0..7] e:[0..7]
+// LiveOut: C af
+// Trashed: SZPC af bc de f hl sp
+// Preserved:
 fn0990_entry:
-	// succ:  l0990
+	word16 bc_20 = DPB(DPB(DPB(bc, b, 8), c, 0), b, 8)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0990:
-	sp = fp
-	hl = 0x1695
-	Mem0[hl:byte] = d
-	hl = hl - 0x0001
-	SZP = cond(hl)
-	Mem0[hl:byte] = e
-	hl = hl - 0x0001
-	SZP = cond(hl)
-	Mem0[hl:byte] = b
-	hl = hl - 0x0001
-	SZP = cond(hl)
-	Mem0[hl:byte] = c
-	c = 0x0B
-	sp = sp - 0x0002
-	Mem0[sp:word16] = bc
-	hl = Mem0[0x168B:word16]
-	hl = hl + 0x0001
-	SZP = cond(hl)
-	b = h
-	c = l
-	e = 0x20
-	call fn0390 (retsize: 2;)
-	hl = Mem0[0x1692:word16]
-	a = Mem0[hl:byte]
-	Mem0[0x1696:byte] = a
-	hl = Mem0[0x1692:word16]
-	hl = hl + 0x0001
-	SZP = cond(hl)
-	Mem0[0x1692:word16] = hl
-	hl = hl + 0x0001
-	SZP = cond(hl)
-	a = Mem0[hl:byte]
-	SZPC = cond(a - 0x3A)
-	branch Test(NE,Z) l0A0C
-	// succ:  l09BD l0A0C
-l09BD:
-	hl = Mem0[0x1692:word16]
-	c = Mem0[hl:byte]
-	call fn03CB (retsize: 2;)
-	hl = Mem0[0x1692:word16]
-	sp = sp - 0x0002
-	Mem0[sp:word16] = af
-	a = Mem0[hl:byte]
-	a = a - 0x40
-	SZC = cond(a)
-	a = a - 0x01
-	SZC = cond(a)
-	a = a - a - C
-	SZPC = cond(a)
-	bc = Mem0[sp:word16]
-	sp = sp + 0x0002
-	c = b
-	a = a | c
-	SZ = cond(a)
-	C = false
-	sp = sp - 0x0002
-	Mem0[sp:word16] = af
-	a = 0x02
-	hl = 0x1696
-	a = a - Mem0[hl:byte]
-	SZC = cond(a)
-	a = a - a - C
-	SZPC = cond(a)
-	bc = Mem0[sp:word16]
-	sp = sp + 0x0002
-	c = b
-	a = a & c
-	SZ = cond(a)
-	C = false
-	a = __rcr(a, 0x01, C)
-	C = cond(a)
-	branch Test(UGE,C) l0A06
-	// succ:  l09E0 l0A06
-l09E0:
-	hl = Mem0[0x1692:word16]
-	a = 0x1F
-	a = a & Mem0[hl:byte]
-	SZ = cond(a)
-	C = false
-	hl = Mem0[0x168B:word16]
-	Mem0[hl:byte] = a
-	hl = Mem0[0x168B:word16]
-	a = 0x10
-	SZPC = cond(a - Mem0[hl:byte])
-	branch Test(UGE,C) l09F6
-	// succ:  l09F3 l09F6
-l09F3:
-	a = 0x00
-	return
-	// succ:  fn0990_exit
-l09F6:
-	hl = Mem0[0x1692:word16]
-	hl = hl + 0x0001
-	SZP = cond(hl)
-	hl = hl + 0x0001
-	SZP = cond(hl)
-	Mem0[0x1692:word16] = hl
-	hl = 0x1696
-	Mem0[hl:byte] = Mem0[hl:byte] - 0x01
-	SZP = cond(Mem0[hl:byte])
-	Mem0[hl:byte] = Mem0[hl:byte] - 0x01
-	SZP = cond(Mem0[hl:byte])
-	goto l0A09
-	// succ:  l0A09
-l0A06:
-	a = 0x00
-	return
-	// succ:  fn0990_exit
-l0A09:
-	goto l0A11
-	// succ:  l0A11
+	Mem5[0x1695:byte] = d
+	Mem8[0x1694:byte] = e
+	Mem11[0x1693:byte] = b
+	Mem14[0x1692:byte] = c
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	word16 hl_23 = Mem22[0x168B:word16]
+	word16 stackArg0 = <invalid>
+	word16 sp_35 = fn0390(SLICE(hl_23 + 0x0001, byte, 8), (byte) (hl_23 + 0x0001), 0x20, stackArg0, DPB(bc_20, 0x0B, 0))
+	Mem42[0x1696:byte] = Mem22[Mem22[0x1692:word16]:byte]
+	word16 hl_43 = Mem42[0x1692:word16]
+	Mem45[0x1692:word16] = hl_43 + 0x0001
+	byte a_47 = Mem45[hl_43 + 0x0002:byte]
+	word16 af_128 = DPB(af, a_47, 0)
+	branch a_47 != 0x3A l0A0C
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0A0C:
-	hl = Mem0[0x168B:word16]
-	Mem0[hl:byte] = 0x00
-	// succ:  l0A11
+	Mem51[Mem45[0x168B:word16]:byte] = 0x00
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l09BD:
+	fn03CB(Mem45[Mem45[0x1692:word16]:byte])
+	word16 hl_61 = Mem45[0x1692:word16]
+	Mem65[sp_35 - 0x0002:word16] = af_128
+	Mem79[sp_35 - 0x0002:word16] = DPB(af, 0x00 - (Mem65[hl_61:byte] <u 0x41) | Mem65[sp_35 + 0x0003:byte], 0)
+	byte a_91 = 0x00 - (0x02 - Mem79[0x1696:byte] <u 0x00) & Mem79[sp_35 + 0x0003:byte]
+	bool C_95 = cond(a_91 >>u 0x01)
+	branch a_91 >>u 0x01 >=u 0x00 l0A06
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0A06:
+	afOut = DPB(af, 0x00, 0)
+	return C_95
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l09E0:
+	Mem101[Mem79[0x168B:word16]:byte] = Mem79[Mem79[0x1692:word16]:byte] & 0x1F
+	word16 hl_102 = Mem101[0x168B:word16]
+	af_128 = DPB(af, 0x10, 0) (alias)
+	bool C_105 = SLICE(cond(0x10 - Mem101[hl_102:byte]), bool, 0)
+	branch Mem101[hl_102:byte] <=u 0x10 l09F6
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l09F6:
+	Mem109[0x1692:word16] = Mem101[0x1692:word16] + 0x0002
+	Mem111[0x1696:byte] = Mem109[0x1696:byte] - 0x01
+	Mem113[0x1696:byte] = Mem111[0x1696:byte] - 0x01
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0A09:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0A11:
-	hl = 0x1697
-	Mem0[hl:byte] = 0x00
-	// succ:  l0A16
+	Mem116[0x1697:byte] = 0x00
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0A16:
-	a = 0x07
-	hl = 0x1697
-	a = a - Mem0[hl:byte]
-	SZC = cond(a)
-	a = a - a - C
-	SZPC = cond(a)
-	a = ~a
-	sp = sp - 0x0002
-	Mem0[sp:word16] = af
-	call fn0B74 (retsize: 2;)
-	bc = Mem0[sp:word16]
-	sp = sp + 0x0002
-	c = b
-	a = a & c
-	SZ = cond(a)
-	C = false
-	a = __rcr(a, 0x01, C)
-	C = cond(a)
-	branch Test(UGE,C) l0A53
-	// succ:  l0A29 l0A53
-l0A29:
-	hl = Mem0[0x1697:word16]
-	h = 0x00
-	v19 = de
-	de = hl
-	hl = v19
-	hl = Mem0[0x1692:word16]
-	hl = hl + de
-	SZPC = cond(hl)
-	sp = sp - 0x0002
-	Mem0[sp:word16] = hl
-	hl = Mem0[0x1697:word16]
-	h = 0x00
-	bc = 0x0001
-	hl = hl + bc
-	SZPC = cond(hl)
-	v21 = de
-	de = hl
-	hl = v21
-	hl = Mem0[0x168B:word16]
-	hl = hl + de
-	SZPC = cond(hl)
-	de = Mem0[sp:word16]
-	sp = sp + 0x0002
-	a = Mem0[de:byte]
-	Mem0[hl:byte] = a
-	SZPC = cond(a - 0x2A)
-	branch Test(NE,Z) l0A4D
-	// succ:  l0A4A l0A4D
-l0A4A:
-	a = 0x00
-	return
-	// succ:  fn0990_exit
-l0A4D:
-	call fn0B91 (retsize: 2;)
-	goto l0A16
-	// succ:  l0A16
+	byte a_125 = ~(0x00 - (0x07 - Mem119[0x1697:byte] <u 0x00))
+	Mem130[sp_35 - 0x0002:word16] = DPB(af_128, a_125, 0)
+	fn0B74()
+	word16 bc_139 = Mem130[sp_35 - 0x0002:word16]
+	branch (a_125 & SLICE(bc_139, byte, 8)) >>u 0x01 >=u 0x00 l0A53
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0A53:
-	a = 0x01
-	hl = 0x1696
-	a = a - Mem0[hl:byte]
-	SZC = cond(a)
-	a = a - a - C
-	SZPC = cond(a)
-	hl = hl + 0x0001
-	SZP = cond(hl)
-	c = Mem0[hl:byte]
-	b = 0x00
-	hl = Mem0[0x1692:word16]
-	hl = hl + bc
-	SZPC = cond(hl)
-	sp = sp - 0x0002
-	Mem0[sp:word16] = af
-	a = Mem0[hl:byte]
-	a = a - 0x2E
-	SZC = cond(a)
-	a = a - 0x01
-	SZC = cond(a)
-	a = a - a - C
-	SZPC = cond(a)
-	bc = Mem0[sp:word16]
-	sp = sp + 0x0002
-	c = b
-	a = a & c
-	SZ = cond(a)
-	C = false
-	a = __rcr(a, 0x01, C)
-	C = cond(a)
-	branch Test(UGE,C) l0AA3
-	// succ:  l0A70 l0AA3
-l0A70:
-	call fn0B91 (retsize: 2;)
-	a = 0x03
-	hl = 0x1696
-	SZPC = cond(a - Mem0[hl:byte])
-	branch Test(UGE,C) l0A7F
-	// succ:  l0A7C l0A7F
-l0A7C:
-	a = 0x00
-	return
-	// succ:  fn0990_exit
-l0A7F:
-	hl = Mem0[0x1696:word16]
-	sp = sp - 0x0002
-	Mem0[sp:word16] = hl
-	hl = Mem0[0x1697:word16]
-	h = 0x00
-	v24 = de
-	de = hl
-	hl = v24
-	hl = Mem0[0x1692:word16]
-	hl = hl + de
-	SZPC = cond(hl)
-	bc = 0x0009
-	sp = sp - 0x0002
-	Mem0[sp:word16] = hl
-	hl = Mem0[0x168B:word16]
-	hl = hl + bc
-	SZPC = cond(hl)
-	v25 = de
-	de = hl
-	hl = v25
-	bc = Mem0[sp:word16]
-	sp = sp + 0x0002
-	hl = Mem0[sp:word16]
-	sp = sp + 0x0002
-	// succ:  l0A98
-l0A98:
-	a = Mem0[bc:byte]
-	Mem0[de:byte] = a
-	bc = bc + 0x0001
-	SZP = cond(bc)
-	de = de + 0x0001
-	SZP = cond(de)
-	l = l - 0x01
-	SZP = cond(l)
-	branch Test(NE,Z) l0A98
-	// succ:  l0AA0 l0A98
-l0AA0:
-	goto l0AE5
-	// succ:  l0AE5
+	word16 af_449
+	word16 bc_232
+	word16 hl_161 = Mem130[0x1692:word16] + DPB(DPB(bc_139, Mem130[0x1697:byte], 0), 0x00, 8)
+	Mem166[sp_35 - 0x0002:word16] = DPB(af_128, 0x00 - (0x01 - Mem130[0x1696:byte] <u 0x00), 0)
+	branch (0x00 - (Mem166[hl_161:byte] <u 0x2F) & Mem166[sp_35 + 0x0003:byte]) >>u 0x01 >=u 0x00 l0AA3
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0AA3:
-	a = Mem0[0x1696:byte]
-	a = a - 0x00
-	SZC = cond(a)
-	a = a - 0x01
-	SZC = cond(a)
-	a = a - a - C
-	SZPC = cond(a)
-	hl = Mem0[0x1697:word16]
-	h = 0x00
-	v22 = de
-	de = hl
-	hl = v22
-	hl = Mem0[0x1692:word16]
-	hl = hl + de
-	SZPC = cond(hl)
-	sp = sp - 0x0002
-	Mem0[sp:word16] = af
-	a = Mem0[hl:byte]
-	a = a - 0x2E
-	SZC = cond(a)
-	a = a - 0x01
-	SZC = cond(a)
-	a = a - a - C
-	SZPC = cond(a)
-	bc = Mem0[sp:word16]
-	sp = sp + 0x0002
-	c = b
-	a = a | c
-	SZ = cond(a)
-	C = false
-	a = __rcr(a, 0x01, C)
-	C = cond(a)
-	branch Test(UGE,C) l0AE2
-	// succ:  l0AC3 l0AE2
-l0AC3:
-	hl = Mem0[0x1694:word16]
-	l = Mem0[hl:byte]
-	sp = sp - 0x0002
-	Mem0[sp:word16] = hl
-	hl = Mem0[0x1694:word16]
-	hl = hl + 0x0001
-	SZP = cond(hl)
-	bc = 0x0009
-	sp = sp - 0x0002
-	Mem0[sp:word16] = hl
-	hl = Mem0[0x168B:word16]
-	hl = hl + bc
-	SZPC = cond(hl)
-	v23 = de
-	de = hl
-	hl = v23
-	bc = Mem0[sp:word16]
-	sp = sp + 0x0002
-	hl = Mem0[sp:word16]
-	sp = sp + 0x0002
-	// succ:  l0AD7
-l0AD7:
-	a = Mem0[bc:byte]
-	Mem0[de:byte] = a
-	bc = bc + 0x0001
-	SZP = cond(bc)
-	de = de + 0x0001
-	SZP = cond(de)
-	l = l - 0x01
-	SZP = cond(l)
-	branch Test(NE,Z) l0AD7
-	// succ:  l0ADF l0AD7
-l0ADF:
-	goto l0AE5
-	// succ:  l0AE5
+	word16 hl_195 = Mem166[0x1692:word16] + DPB(Mem166[0x1697:word16], 0x00, 8)
+	Mem199[sp_35 - 0x0002:word16] = DPB(af_128, 0x00 - (Mem166[0x1696:byte] <u 0x01), 0)
+	byte a_211 = 0x00 - (Mem199[hl_195:byte] <u 0x2F) | Mem199[sp_35 + 0x0003:byte]
+	bool C_215 = cond(a_211 >>u 0x01)
+	branch a_211 >>u 0x01 >=u 0x00 l0AE2
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0AE2:
-	a = 0x00
-	return
-	// succ:  fn0990_exit
+	afOut = DPB(af_128, 0x00, 0)
+	return C_215
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0AC3:
+	word16 hl_217 = Mem199[0x1694:word16]
+	Mem221[sp_35 - 0x0002:word16] = DPB(hl_217, Mem199[hl_217:byte], 0)
+	Mem226[sp_35 - 0x0004:word16] = Mem221[0x1694:word16] + 0x0001
+	word16 de_231 = Mem226[0x168B:word16] + 0x0009
+	bc_232 = Mem226[sp_35 - 0x0004:word16]
+	byte l_243 = (byte) Mem226[sp_35 - 0x0002:word16]
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0AD7:
+	byte a_238 = Mem237[bc_232:byte]
+	Mem240[de_231:byte] = a_238
+	af_449 = DPB(af_128, a_238, 0) (alias)
+	bc_232 = bc_232 + 0x0001
+	de_231 = de_231 + 0x0001
+	l_243 = l_243 - 0x01
+	branch l_243 != 0x00 l0AD7
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0ADF:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0A70:
+	fn0B91()
+	bool C_254 = SLICE(cond(0x03 - Mem166[0x1696:byte]), bool, 0)
+	branch Mem166[0x1696:byte] <=u 0x03 l0A7F
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0A7F:
+	Mem257[sp_35 - 0x0002:word16] = Mem166[0x1696:word16]
+	Mem267[sp_35 - 0x0004:word16] = Mem257[0x1692:word16] + DPB(Mem257[0x1697:word16], 0x00, 8)
+	word16 de_272 = Mem267[0x168B:word16] + 0x0009
+	bc_232 = Mem267[sp_35 - 0x0004:word16]
+	byte l_284 = (byte) Mem267[sp_35 - 0x0002:word16]
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0A98:
+	byte a_279 = Mem278[bc_232:byte]
+	Mem281[de_272:byte] = a_279
+	af_449 = DPB(af_128, a_279, 0) (alias)
+	bc_232 = bc_232 + 0x0001
+	de_272 = de_272 + 0x0001
+	l_284 = l_284 - 0x01
+	branch l_284 != 0x00 l0A98
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0AA0:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0AE5:
-	c = 0x03
-	sp = sp - 0x0002
-	Mem0[sp:word16] = bc
-	bc = 0x000C
-	hl = Mem0[0x168B:word16]
-	hl = hl + bc
-	SZPC = cond(hl)
-	b = h
-	c = l
-	e = 0x00
-	call fn0390 (retsize: 2;)
-	bc = 0x0020
-	hl = Mem0[0x168B:word16]
-	hl = hl + bc
-	SZPC = cond(hl)
-	Mem0[hl:byte] = 0x00
-	hl = 0x1697
-	Mem0[hl:byte] = 0x00
-	// succ:  l0B04
+	Mem295[sp_35 - 0x0002:word16] = DPB(bc_232, 0x03, 0)
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	word16 hl_297 = Mem295[0x168B:word16]
+	word16 stackArg0 = <invalid>
+	fn0390(SLICE(hl_297 + 0x000C, byte, 8), (byte) (hl_297 + 0x000C), 0x00, stackArg0, Mem295[sp_35 - 0x0002:word16])
+	Mem318[Mem295[0x168B:word16] + 0x0020:byte] = 0x00
+	Mem320[0x1697:byte] = 0x00
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0B04:
-	a = 0x07
-	hl = 0x1697
-	SZPC = cond(a - Mem0[hl:byte])
-	branch Test(ULT,C) l0B38
-	// succ:  l0B0D l0B38
+	af_449 = DPB(af_449, 0x07, 0) (alias)
+	branch Mem323[0x1697:byte] >u 0x07 l0B38
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0B0D:
-	hl = Mem0[0x1697:word16]
-	h = 0x00
-	bc = 0x0001
-	hl = hl + bc
-	SZPC = cond(hl)
-	v26 = de
-	de = hl
-	hl = v26
-	hl = Mem0[0x168B:word16]
-	hl = hl + de
-	SZPC = cond(hl)
-	c = Mem0[hl:byte]
-	call fn03E6 (retsize: 2;)
-	hl = Mem0[0x1697:word16]
-	h = 0x00
-	bc = 0x0001
-	hl = hl + bc
-	SZPC = cond(hl)
-	v27 = de
-	de = hl
-	hl = v27
-	hl = Mem0[0x168B:word16]
-	hl = hl + de
-	SZPC = cond(hl)
-	Mem0[hl:byte] = a
-	a = Mem0[0x1697:byte]
-	a = a + 0x01
-	SZP = cond(a)
-	Mem0[0x1697:byte] = a
-	branch Test(NE,Z) l0B04
-	// succ:  l0B38 l0B04
+	fn03E6(0x07, Mem323[Mem323[0x168B:word16] + (DPB(Mem323[0x1697:word16], 0x00, 8) + 0x0001):byte])
+	Mem355[Mem323[0x168B:word16] + (DPB(Mem323[0x1697:word16], 0x00, 8) + 0x0001):byte] = 0x07
+	byte a_356 = Mem355[0x1697:byte]
+	Mem359[0x1697:byte] = a_356 + 0x01
+	af_449 = DPB(af_449, a_356 + 0x01, 0) (alias)
+	branch a_356 != 0x01 l0B04
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0B38:
-	hl = 0x1697
-	Mem0[hl:byte] = 0x00
-	// succ:  l0B3D
+	Mem362[0x1697:byte] = 0x00
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0B3D:
-	a = 0x02
-	hl = 0x1697
-	SZPC = cond(a - Mem0[hl:byte])
-	branch Test(ULT,C) l0B71
-	// succ:  l0B46 l0B71
+	af_449 = DPB(af_449, 0x02, 0) (alias)
+	bool C_367 = SLICE(cond(0x02 - Mem365[0x1697:byte]), bool, 0)
+	branch Mem365[0x1697:byte] >u 0x02 l0B71
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0B46:
-	hl = Mem0[0x1697:word16]
-	h = 0x00
-	bc = 0x0009
-	hl = hl + bc
-	SZPC = cond(hl)
-	v28 = de
-	de = hl
-	hl = v28
-	hl = Mem0[0x168B:word16]
-	hl = hl + de
-	SZPC = cond(hl)
-	c = Mem0[hl:byte]
-	call fn03E6 (retsize: 2;)
-	hl = Mem0[0x1697:word16]
-	h = 0x00
-	bc = 0x0009
-	hl = hl + bc
-	SZPC = cond(hl)
-	v29 = de
-	de = hl
-	hl = v29
-	hl = Mem0[0x168B:word16]
-	hl = hl + de
-	SZPC = cond(hl)
-	Mem0[hl:byte] = a
-	a = Mem0[0x1697:byte]
-	a = a + 0x01
-	SZP = cond(a)
-	Mem0[0x1697:byte] = a
-	branch Test(NE,Z) l0B3D
-	// succ:  l0B71 l0B3D
+	fn03E6(0x02, Mem365[Mem365[0x168B:word16] + (DPB(Mem365[0x1697:word16], 0x00, 8) + 0x0009):byte])
+	word16 hl_395 = Mem365[0x168B:word16] + (DPB(Mem365[0x1697:word16], 0x00, 8) + 0x0009)
+	Mem397[hl_395:byte] = 0x02
+	byte a_398 = Mem397[0x1697:byte]
+	Mem401[0x1697:byte] = a_398 + 0x01
+	C_367 = SLICE(cond(hl_395), bool, 0) (alias)
+	af_449 = DPB(af_449, a_398 + 0x01, 0) (alias)
+	branch a_398 != 0x01 l0B3D
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0B71:
-	a = 0x01
-	return
-	// succ:  fn0990_exit
+	afOut = DPB(af_449, 0x01, 0)
+	return C_367
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0A7C:
+	afOut = DPB(af_128, 0x00, 0)
+	return C_254
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0A29:
+	Mem413[sp_35 - 0x0002:word16] = Mem130[0x1692:word16] + DPB(Mem130[0x1697:word16], 0x00, 8)
+	byte a_425 = Mem413[Mem413[sp_35 - 0x0002:word16]:byte]
+	Mem426[Mem413[0x168B:word16] + (DPB(Mem413[0x1697:word16], 0x00, 8) + 0x0001):byte] = a_425
+	af_128 = DPB(af_128, a_425, 0) (alias)
+	bool C_475 = SLICE(cond(a_425 - 0x2A), bool, 0)
+	branch a_425 != 0x2A l0A4D
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0A4D:
+	fn0B91()
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0A4A:
+	afOut = DPB(af_128, 0x00, 0)
+	return C_475
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l09F3:
+	afOut = DPB(af, 0x00, 0)
+	return C_105
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0990_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0B74
-// Return size: 2
-define fn0B74
+
+void fn0B74()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SZPC bc de f hl
+// Preserved: sp
 fn0B74_entry:
-	// succ:  l0B74
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0B74:
-	sp = fp
-	hl = Mem0[0x1697:word16]
-	h = 0x00
-	v5 = de
-	de = hl
-	hl = v5
-	hl = Mem0[0x1692:word16]
-	hl = hl + de
-	SZPC = cond(hl)
-	a = Mem0[hl:byte]
-	a = a - 0x2E
-	SZC = cond(a)
-	a = a + 0xFF
-	SZPC = cond(a)
-	a = a - a - C
-	SZPC = cond(a)
-	sp = sp - 0x0002
-	Mem0[sp:word16] = af
-	a = Mem0[0x1696:byte]
-	a = a - 0x00
-	SZC = cond(a)
-	a = a + 0xFF
-	SZPC = cond(a)
-	a = a - a - C
-	SZPC = cond(a)
-	bc = Mem0[sp:word16]
-	sp = sp + 0x0002
-	c = b
-	a = a & c
-	SZ = cond(a)
-	C = false
 	return
-	// succ:  fn0B74_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0B74_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0B91
-// Return size: 2
-define fn0B91
+
+void fn0B91()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SZP hl
+// Preserved: sp
 fn0B91_entry:
-	// succ:  l0B91
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0B91:
-	sp = fp
-	hl = 0x1697
-	Mem0[hl:byte] = Mem0[hl:byte] + 0x01
-	SZP = cond(Mem0[hl:byte])
-	hl = hl - 0x0001
-	SZP = cond(hl)
-	Mem0[hl:byte] = Mem0[hl:byte] - 0x01
-	SZP = cond(Mem0[hl:byte])
+	Mem5[0x1697:byte] = Mem0[0x1697:byte] + 0x01
+	Mem8[0x1696:byte] = Mem5[0x1696:byte] - 0x01
 	return
-	// succ:  fn0B91_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0B91_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0BE4
-// Return size: 2
-define fn0BE4
+
+void fn0BE4(word16 af)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  af:[8..15]
+// LiveOut:
+// Trashed: SZPC af bc de f hl sp
+// Preserved:
 fn0BE4_entry:
-	goto l0BE4
-	// succ:  l0BE4
-l0105:
-	call fn1729 (retsize: 2;)
-	return
-	// succ:  fn0BE4_exit
-l020A:
-	call fn172D (retsize: 2;)
-	return
-	// succ:  fn0BE4_exit
-l0224:
-	call fn177D (retsize: 2;)
-	return
-	// succ:  fn0BE4_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0BE4:
-	sp = fp
-	a = Mem0[0x138A:byte]
-	a = a - 0x01
-	SZC = cond(a)
-	a = a + 0xFF
-	SZPC = cond(a)
-	a = a - a - C
-	SZPC = cond(a)
-	sp = sp - 0x0002
-	Mem0[sp:word16] = af
-	a = Mem0[0x14F3:byte]
-	a = a - 0x02
-	SZC = cond(a)
-	a = a - 0x01
-	SZC = cond(a)
-	a = a - a - C
-	SZPC = cond(a)
-	bc = Mem0[sp:word16]
-	sp = sp + 0x0002
-	c = b
-	a = a & c
-	SZ = cond(a)
-	C = false
-	a = __rcr(a, 0x01, C)
-	C = cond(a)
-	branch Test(UGE,C) l0C1A
-	// succ:  l0BFC l0C1A
+	word16 af_12 = DPB(af, 0x00 - (Mem0[0x138A:byte] <u 0xFE), 0)
+	byte a_25 = 0x00 - (Mem13[0x14F3:byte] <u 0x03) & SLICE(af_12, byte, 8)
+	word16 af_90 = DPB(af, a_25 >>u 0x01, 0)
+	branch a_25 >>u 0x01 >=u 0x00 l0C1A
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0BFC:
-	a = Mem0[0x14F6:byte]
-	SZPC = cond(a - 0x01)
-	branch Test(EQ,Z) l0C07
-	// succ:  l0C04 l0C07
+	branch Mem13[0x14F6:byte] == 0x01 l0C07
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0C04:
-	call fn0814 (retsize: 2;)
-	// succ:  l0C07
+	fn0814()
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0C07:
-	bc = 0x0296
-	call fn05CE (retsize: 2;)
-	a = Mem0[0x138A:byte]
-	a = a - 0x01
-	SZP = cond(a)
-	c = a
-	b = 0x00
-	call fn06CE (retsize: 2;)
-	call fn0814 (retsize: 2;)
-	// succ:  l0C1A
+	fn05CE(0x02, 0x96)
+	byte a_52 = Mem13[0x138A:byte]
+	fn06CE(0x00, a_52 - 0x01, out de_265, out f_266)
+	fn0814()
+	af_90 = DPB(af, a_52 - 0x01, 0) (alias)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0C1A:
-	hl = Mem0[0x1388:word16]
-	sp = hl
-	a = Mem0[0x138A:byte]
-	a = a + 0x30
-	SZPC = cond(a)
-	Mem0[0x1645:byte] = a
-	bc = 0x0231
-	sp = sp - 0x0002
-	Mem0[sp:word16] = bc
-	bc = 0x1642
-	sp = sp - 0x0002
-	Mem0[sp:word16] = bc
-	e = 0x10
-	bc = 0x005C
-	call fn082F (retsize: 2;)
-	bc = 0x005C
-	sp = sp - 0x0002
-	Mem0[sp:word16] = bc
-	bc = 0x0108
-	de = 0x0103
-	call fn1346 (retsize: 2;)
-	sp = sp + 0xFFFE
-	c = 0x07
-	call fn1326 (retsize: 2;)
-	v16 = de
-	de = hl
-	hl = v16
-	hl = Mem0[0x0108:word16]
-	b = h
-	c = l
-	call fn040D (retsize: 2;)
-	a = Mem0[0x138A:byte]
-	a = a - 0x00
-	SZC = cond(a)
-	a = a - 0x01
-	SZC = cond(a)
-	a = a - a - C
-	SZPC = cond(a)
-	sp = sp - 0x0002
-	Mem0[sp:word16] = af
-	a = 0x03
-	hl = 0x138A
-	a = a - Mem0[hl:byte]
-	SZC = cond(a)
-	a = a - a - C
-	SZPC = cond(a)
-	bc = Mem0[sp:word16]
-	sp = sp + 0x0002
-	c = b
-	a = a | c
-	SZ = cond(a)
-	C = false
-	a = __rcr(a, 0x01, C)
-	C = cond(a)
-	branch Test(UGE,C) l0C71
-	// succ:  l0C68 l0C71
+	byte a_76 = Mem13[0x138A:byte]
+	word16 hl_74 = Mem13[0x1388:word16]
+	Mem79[0x1645:byte] = a_76 + 0x30
+	Mem82[hl_74 - 0x0002:word16] = 0x0231
+	Mem85[hl_74 - 0x0004:word16] = 0x1642
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	word16 stackArg0 = <invalid>
+	word16 sp_101
+	word16 af_96 = fn082F(DPB(af_90, a_76 + 0x30, 0), 0x00, 0x5C, 0x10, stackArg0, Mem85[hl_74 - 0x0004:word16], Mem85[hl_74 - 0x0002:word16], out sp_101)
+	Mem108[sp_101 - 0x0002:word16] = 0x005C
+	word16 hl_116 = (word16) fn1346(0x01, 0x0103)
+	byte l_128
+	fn1326(0x07, SLICE(hl_116, byte, 8), (byte) hl_116, out l_128)
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	word16 hl_137 = Mem108[0x0108:word16]
+	word16 stackArg0 = <invalid>
+	word16 sp_147
+	byte f_143
+	word16 de_145 = fn040D(SLICE(hl_137, byte, 8), (byte) hl_137, l_128, stackArg0, Mem108[sp_101 + 0xFFFC:word16], out sp_147, out f_143)
+	Mem160[sp_147 - 0x0002:word16] = DPB(af_96, 0x00 - (Mem108[0x138A:byte] <u 0x01), 0)
+	word16 bc_168 = Mem160[sp_147 - 0x0002:word16]
+	byte b_170 = SLICE(bc_168, byte, 8)
+	word16 hl_162 = 0x138A
+	word16 sp_169 = sp_147
+	word16 bc_184 = DPB(bc_168, b_170, 0)
+	branch (0x00 - (0x03 - Mem160[0x138A:byte] <u 0x00) | b_170) >>u 0x01 >=u 0x00 l0C71
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0C68:
-	de = 0x0000
-	bc = 0x0001
-	call fn075C (retsize: 2;)
-	// succ:  l0C71
+	bc_184 = fn075C(0x00, 0x01, 0x00, 0x00, out de_145, out hl_162, out sp_169, out f_143)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0C71:
-	a = Mem0[0x138A:byte]
-	SZPC = cond(a - 0x01)
-	branch Test(NE,Z) l0C7C
-	// succ:  l0C79 l0C7C
-l0C79:
-	goto l020A
-	// succ:  l020A
+	byte a_193 = Mem160[0x138A:byte]
+	word16 af_206 = DPB(af_96, a_193, 0)
+	branch a_193 != 0x01 l0C7C
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0C7C:
-	a = Mem0[0x138A:byte]
-	SZPC = cond(a - 0x02)
-	branch Test(NE,Z) l0C87
-	// succ:  l0C84 l0C87
-l0C84:
-	goto l0224
-	// succ:  l0224
+	byte a_196 = Mem160[0x138A:byte]
+	word16 af_207 = DPB(af_96, a_196, 0)
+	branch a_196 != 0x02 l0C87
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0C87:
-	a = Mem0[0x138A:byte]
-	SZPC = cond(a - 0x03)
-	branch Test(NE,Z) l0C92
-	// succ:  l0C8F l0C92
-l0C8F:
-	goto l0105
-	// succ:  l0105
+	byte a_199 = Mem160[0x138A:byte]
+	word16 af_208 = DPB(af_96, a_199, 0)
+	branch a_199 != 0x03 l0C92
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0C92:
 	return
-	// succ:  fn0BE4_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0C8F:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0105:
+	call fn1729 (retsize: 2;)
+		uses: af:af_208,bc:bc_210,de:de_215,f:f_217,hl:hl_213,sp:sp_202,Stack +0000:af_12
+	return
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0C84:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0224:
+	call fn177D (retsize: 2;)
+		uses: af:af_207,bc:bc_210,de:de_215,f:f_217,hl:hl_213,sp:sp_202,Stack +0000:af_12
+	return
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0C79:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l020A:
+	call fn172D (retsize: 2;)
+		uses: af:af_206,bc:bc_210,de:de_215,f:f_217,hl:hl_213,sp:sp_202,Stack +0000:af_12
+	return
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0BE4_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0C93
-// Return size: 2
-define fn0C93
+
+void fn0C93()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SZPC bc f hl
+// Preserved: sp
 fn0C93_entry:
-	// succ:  l0C93
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0C93:
-	sp = fp
-	a = Mem0[0x138D:byte]
-	hl = 0x138C
-	a = a + Mem0[hl:byte]
-	SZPC = cond(a)
-	c = Mem0[hl:byte]
-	b = 0x00
-	hl = 0x138C
-	hl = hl + bc
-	SZPC = cond(hl)
-	a = a + Mem0[hl:byte]
-	SZPC = cond(a)
-	a = a + 0x7F
-	SZPC = cond(a)
 	return
-	// succ:  fn0C93_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0C93_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0D64
-// Return size: 2
-define fn0D64
+
+bool fn0D64()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut: C
+// Trashed: SZPC bc f hl
+// Preserved: sp
 fn0D64_entry:
-	// succ:  l0D64
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0D64:
-	sp = fp
-	bc = 0x0009
-	hl = Mem0[0x1521:word16]
-	hl = hl + bc
-	SZPC = cond(hl)
-	a = Mem0[hl:byte]
-	a = a | a
-	SZ = cond(a)
-	C = false
-	a = __rcr(a, 0x01, C)
-	C = cond(a)
-	return
-	// succ:  fn0D64_exit
+	return cond(Mem0[Mem0[0x1521:word16] + 0x0009:byte] >>u 0x01)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0D64_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0D6F
-// Return size: 2
-define fn0D6F
+
+void fn0D6F()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SZPC bc f hl
+// Preserved: sp
 fn0D6F_entry:
-	// succ:  l0D6F
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0D6F:
-	sp = fp
-	bc = 0x0009
-	hl = Mem0[0x1521:word16]
-	hl = hl + bc
-	SZPC = cond(hl)
-	a = 0x02
-	a = a | Mem0[hl:byte]
-	SZ = cond(a)
-	C = false
-	Mem0[hl:byte] = a
+	word16 hl_5 = Mem0[0x1521:word16]
+	Mem12[hl_5 + 0x0009:byte] = Mem0[hl_5 + 0x0009:byte] | 0x02
 	return
-	// succ:  fn0D6F_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0D6F_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0D84
-// Return size: 2
-define fn0D84
+
+void fn0D84(byte a)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a:[0..7]
+// LiveOut:
+// Trashed: SZPC bc de f hl sp
+// Preserved:
 fn0D84_entry:
-	// succ:  l0D84
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0D84:
-	sp = fp
-	call fn0D64 (retsize: 2;)
-	a = __rcr(a, 0x01, C)
-	C = cond(a)
-	branch Test(UGE,C) l0D94
-	// succ:  l0D8B l0D94
+	branch __rcr(a, 0x01, fn0D64()) >=u 0x00 l0D94
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0D8B:
-	de = 0x0000
-	bc = 0x0002
-	call fn075C (retsize: 2;)
-	// succ:  l0D94
+	fn075C(0x00, 0x02, 0x00, 0x00, out de_46, out hl_47, out sp_48, out f_49)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0D94:
-	bc = 0x0009
-	hl = Mem0[0x1521:word16]
-	hl = hl + bc
-	SZPC = cond(hl)
-	a = 0x01
-	a = a | Mem0[hl:byte]
-	SZ = cond(a)
-	C = false
-	Mem0[hl:byte] = a
+	word16 hl_31 = Mem0[0x1521:word16]
+	Mem38[hl_31 + 0x0009:byte] = Mem0[hl_31 + 0x0009:byte] | 0x01
 	return
-	// succ:  fn0D84_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0D84_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0DB9
-// Return size: 2
-define fn0DB9
+
+void fn0DB9()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SZPC bc f hl
+// Preserved: sp
 fn0DB9_entry:
-	// succ:  l0DB9
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0DB9:
-	sp = fp
-	bc = 0x0009
-	hl = Mem0[0x1521:word16]
-	hl = hl + bc
-	SZPC = cond(hl)
-	a = Mem0[hl:byte]
-	a = a + 0xFC
-	SZPC = cond(a)
-	a = __rcr(a, 0x01, C)
-	C = cond(a)
-	a = __rcr(a, 0x01, C)
-	C = cond(a)
-	a = __rcr(a, 0x01, C)
-	C = cond(a)
+	byte a_7 = Mem0[Mem0[0x1521:word16] + 0x0009:byte]
+	byte a_11 = __rcr(a_7 + 0xFC, 0x01, SLICE(cond(a_7 + 0xFC), bool, 0))
+	byte a_13 = __rcr(a_11, 0x01, cond(a_11))
+	__rcr(a_13, 0x01, cond(a_13))
 	return
-	// succ:  fn0DB9_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0DB9_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0DCB
-// Return size: 2
-define fn0DCB
+
+void fn0DCB()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SZPC bc f hl
+// Preserved: sp
 fn0DCB_entry:
-	// succ:  l0DCB
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0DCB:
-	sp = fp
-	bc = 0x0009
-	hl = Mem0[0x1521:word16]
-	hl = hl + bc
-	SZPC = cond(hl)
-	a = 0x08
-	a = a | Mem0[hl:byte]
-	SZ = cond(a)
-	C = false
-	Mem0[hl:byte] = a
+	word16 hl_5 = Mem0[0x1521:word16]
+	Mem12[hl_5 + 0x0009:byte] = Mem0[hl_5 + 0x0009:byte] | 0x08
 	return
-	// succ:  fn0DCB_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0DCB_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0E63
-// Return size: 2
-define fn0E63
+
+void fn0E63(byte c)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  c:[0..7]
+// LiveOut:
+// Trashed: SZPC bc de f hl
+// Preserved: sp
 fn0E63_entry:
-	// succ:  l0E63
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0E63:
-	sp = fp
-	hl = 0x16A6
-	Mem0[hl:byte] = c
-	call fn0C93 (retsize: 2;)
-	c = a
-	b = 0x00
-	hl = 0x152C
-	hl = hl + bc
-	SZPC = cond(hl)
-	hl = hl + bc
-	SZPC = cond(hl)
-	e = Mem0[hl:byte]
-	hl = hl + 0x0001
-	SZP = cond(hl)
-	d = Mem0[hl:byte]
-	v12 = de
-	de = hl
-	hl = v12
-	Mem0[0x1521:word16] = hl
-	// succ:  l0E79
+	Mem5[0x16A6:byte] = c
+	fn0C93()
+	word16 bc_18 = DPB(DPB(bc_7, a, 0), 0x00, 8)
+	word16 hl_20 = bc_18 + 0x152C + bc_18
+	Mem32[0x1521:word16] = DPB(DPB(de, Mem5[hl_20:byte], 0), Mem5[hl_20 + 0x0001:byte], 8)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0E79:
-	a = 0x00
-	de = 0x1521
-	call fn1353 (retsize: 2;)
-	a = a | l
-	SZ = cond(a)
-	C = false
-	branch Test(EQ,Z) l0EA8
-	// succ:  l0E85 l0EA8
-l0E85:
-	hl = Mem0[0x1521:word16]
-	hl = hl + 0x0001
-	SZP = cond(hl)
-	hl = hl + 0x0001
-	SZP = cond(hl)
-	a = Mem0[0x16A6:byte]
-	SZPC = cond(a - Mem0[hl:byte])
-	branch Test(NE,Z) l0E9B
-	// succ:  l0E91 l0E9B
-l0E91:
-	call fn0EAB (retsize: 2;)
-	a = __rcr(a, 0x01, C)
-	C = cond(a)
-	branch Test(UGE,C) l0E9B
-	// succ:  l0E98 l0E9B
-l0E98:
-	a = 0x01
-	return
-	// succ:  fn0E63_exit
-l0E9B:
-	hl = Mem0[0x1521:word16]
-	e = Mem0[hl:byte]
-	hl = hl + 0x0001
-	SZP = cond(hl)
-	d = Mem0[hl:byte]
-	v18 = de
-	de = hl
-	hl = v18
-	Mem0[0x1521:word16] = hl
-	goto l0E79
-	// succ:  l0E79
+	byte l_38
+	word16 de_36 = fn1353(0x00, 0x1521, out l_38, out f_97)
+	branch l_38 == 0x00 l0EA8
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0EA8:
-	a = 0x00
 	return
-	// succ:  fn0E63_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0E85:
+	byte a_52 = Mem48[0x16A6:byte]
+	branch a_52 != Mem48[Mem48[0x1521:word16] + 0x0002:byte] l0E9B
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0E91:
+	de_36 = de_58
+	branch __rcr(a_52, 0x01, fn0EAB()) >=u 0x00 l0E9B
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0E9B:
+	word16 hl_66 = Mem48[0x1521:word16]
+	Mem77[0x1521:word16] = DPB(DPB(de_36, Mem48[hl_66:byte], 0), Mem48[hl_66 + 0x0001:byte], 8)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0E98:
+	return
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0E63_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0EAB
-// Return size: 2
-define fn0EAB
+
+bool fn0EAB()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut: C
+// Trashed: SZPC bc de f hl
+// Preserved: sp
 fn0EAB_entry:
-	// succ:  l0EAB
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0EAB:
-	sp = fp
-	hl = 0x16A7
-	Mem0[hl:byte] = 0x00
-	// succ:  l0EB0
+	Mem4[0x16A7:byte] = 0x00
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0EB0:
-	a = Mem0[0x138C:byte]
-	hl = 0x16A7
-	SZPC = cond(a - Mem0[hl:byte])
-	branch Test(ULT,C) l0EE2
-	// succ:  l0EBA l0EE2
-l0EBA:
-	hl = Mem0[0x16A7:word16]
-	h = 0x00
-	bc = 0x000A
-	hl = hl + bc
-	SZPC = cond(hl)
-	v9 = de
-	de = hl
-	hl = v9
-	hl = Mem0[0x1521:word16]
-	hl = hl + de
-	SZPC = cond(hl)
-	sp = sp - 0x0002
-	Mem0[sp:word16] = hl
-	hl = Mem0[0x16A7:word16]
-	h = 0x00
-	bc = 0x138C
-	hl = hl + bc
-	SZPC = cond(hl)
-	de = Mem0[sp:word16]
-	sp = sp + 0x0002
-	a = Mem0[de:byte]
-	SZPC = cond(a - Mem0[hl:byte])
-	branch Test(EQ,Z) l0EDB
-	// succ:  l0ED8 l0EDB
-l0ED8:
-	a = 0x00
-	return
-	// succ:  fn0EAB_exit
-l0EDB:
-	hl = 0x16A7
-	Mem0[hl:byte] = Mem0[hl:byte] + 0x01
-	SZP = cond(Mem0[hl:byte])
-	goto l0EB0
-	// succ:  l0EB0
+	byte a_6 = Mem5[0x138C:byte]
+	bool C_9 = SLICE(cond(a_6 - Mem5[0x16A7:byte]), bool, 0)
+	branch a_6 <u Mem5[0x16A7:byte] l0EE2
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0EE2:
-	a = 0x01
-	return
-	// succ:  fn0EAB_exit
+	return C_9
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0EBA:
+	word16 hl_27 = DPB(Mem23[0x16A7:word16], 0x00, 8)
+	byte a_31 = Mem23[Mem5[0x1521:word16] + (DPB(Mem5[0x16A7:word16], 0x00, 8) + 0x000A):byte]
+	bool C_45 = SLICE(cond(a_31 - Mem23[hl_27 + 0x138C:byte]), bool, 0)
+	branch a_31 == Mem23[hl_27 + 0x138C:byte] l0EDB
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0EDB:
+	Mem35[0x16A7:byte] = Mem23[0x16A7:byte] + 0x01
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0ED8:
+	return C_45
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0EAB_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0FB8
-// Return size: 2
-define fn0FB8
+
+void fn0FB8()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SZPC bc f hl
+// Preserved: sp
 fn0FB8_entry:
-	// succ:  l0FB8
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0FB8:
-	sp = fp
-	hl = Mem0[0x138C:word16]
-	h = 0x00
-	bc = 0x000B
-	hl = hl + bc
-	SZPC = cond(hl)
-	a = l
 	return
-	// succ:  fn0FB8_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0FB8_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn100A
-// Return size: 2
-define fn100A
+
+void fn100A(word16 af)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  af:[0..15]
+// LiveOut:
+// Trashed: SZPC af bc de f hl sp
+// Preserved:
 fn100A_entry:
-	goto l100A
-	// succ:  l100A
-l1002:
-	a = Mem0[0x16A8:byte]
-	a = a - 0x20
-	SZC = cond(a)
-	a = a + 0xFF
-	SZPC = cond(a)
-	a = a - a - C
-	SZPC = cond(a)
-	// succ:  l100A
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l100A:
-	sp = fp
-	sp = sp - 0x0002
-	Mem0[sp:word16] = af
-	a = Mem0[0x16A8:byte]
-	a = a + 0x5F
-	SZPC = cond(a)
-	a = a - 0x5B
-	SZC = cond(a)
-	a = a + 0xFF
-	SZPC = cond(a)
-	a = a - a - C
-	SZPC = cond(a)
-	bc = Mem0[sp:word16]
-	sp = sp + 0x0002
-	c = b
-	a = a & c
-	SZ = cond(a)
-	C = false
-	sp = sp - 0x0002
-	Mem0[sp:word16] = af
-	a = Mem0[0x16A8:byte]
-	a = a - 0x00
-	SZC = cond(a)
-	a = a + 0xFF
-	SZPC = cond(a)
-	a = a - a - C
-	SZPC = cond(a)
-	bc = Mem0[sp:word16]
-	sp = sp + 0x0002
-	c = b
-	a = a & c
-	SZ = cond(a)
-	C = false
-	sp = sp - 0x0002
-	Mem0[sp:word16] = af
-	a = Mem0[0x14FF:byte]
-	a = a - 0x0E
-	SZC = cond(a)
-	a = a - a - C
-	SZPC = cond(a)
-	bc = Mem0[sp:word16]
-	sp = sp + 0x0002
-	c = b
-	a = a & c
-	SZ = cond(a)
-	C = false
-	a = __rcr(a, 0x01, C)
-	C = cond(a)
-	branch Test(UGE,C) l104D
-	// succ:  l1032 l104D
-l1032:
-	a = Mem0[0x14FF:byte]
-	a = a + 0x01
-	SZP = cond(a)
-	Mem0[0x14FF:byte] = a
-	c = a
-	b = 0x00
-	hl = 0x14FF
-	hl = hl + bc
-	SZPC = cond(hl)
-	a = Mem0[0x16A8:byte]
-	Mem0[hl:byte] = a
-	call fn045B (retsize: 2;)
-	Mem0[0x16A8:byte] = a
-	goto l1002
-	// succ:  l1002
+	branch (0x00 - (Mem34[0x14FF:byte] <u 0x0E) & SLICE(DPB(af, 0x00 - (Mem20[0x16A8:byte] <u 0xFF) & SLICE(DPB(af, 0x00 - (Mem5[0x16A8:byte] <u 0x03) & SLICE(af, byte, 8), 0), byte, 8), 0), byte, 8)) >>u 0x01 >=u 0x00 l104D
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l104D:
-	a = Mem0[0x14FF:byte]
-	SZPC = cond(a - 0x00)
-	branch Test(NE,Z) l105E
-	// succ:  l1052_thunk_fn1055 l1052_thunk_fn1055
+	byte a_50 = Mem34[0x14FF:byte]
+	word16 af_55 = DPB(af, a_50, 0)
+	word16 af_66 = DPB(af, a_50, 0)
+	branch a_50 != 0x00 l105E
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l1052_thunk_fn1055:
-	call fn1055 (retsize: 0;)
+	fn1055(af_55)
 	return
-	// succ:  fn100A_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l1052_thunk_fn1055:
-	call fn1055 (retsize: 0;)
+	fn1055(af_66)
 	return
-	// succ:  fn100A_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn100A_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l1032:
+	byte a_77 = Mem34[0x14FF:byte]
+	Mem79[0x14FF:byte] = a_77 + 0x01
+	byte a_88 = Mem79[0x16A8:byte]
+	Mem89[DPB(DPB(af, a_77 + 0x01, 0), 0x00, 8) + 0x14FF:byte] = a_88
+	fn045B()
+	Mem96[0x16A8:byte] = a_88
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l1002:
+	af = DPB(af, 0x00 - (Mem96[0x16A8:byte] <u 0x21), 0) (alias)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn1055
-// Return size: 0
-define fn1055
+
+void fn1055(word16 af)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a:[0..15] af:[8..15]
+// LiveOut:
+// Trashed: SZPC af bc de f hl sp
+// Preserved:
 fn1055_entry:
-	// succ:  l1055
+	word16 af_19 = DPB(af, a, 0)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l1055:
-	sp = fp
-	bc = 0x0369
-	call fn05CE (retsize: 2;)
-	call fn0387 (retsize: 2;)
-	// succ:  l105B_thunk_fn1078
+	fn05CE(0x03, 0x69)
+	fn0387(out sp_30)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l105B_thunk_fn1078:
-	call fn1078 (retsize: 0;)
+	fn1078(af_19)
 	return
-	// succ:  fn1055_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn1055_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn106E
-// Return size: 0
-define fn106E
+
+void fn106E(word16 af, word16 wArg00)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a:[0..7] af:[8..15] Stack +0000:[0..7]
+// LiveOut:
+// Trashed: SZPC af bc de f hl sp
+// Preserved:
 fn106E_entry:
-	// succ:  l106E
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l106E:
-	sp = fp
-	a = a + 0xFF
-	SZPC = cond(a)
-	a = a - a - C
-	SZPC = cond(a)
-	bc = Mem0[sp:word16]
-	sp = sp + 0x0002
-	c = b
-	a = a & c
-	SZ = cond(a)
-	C = false
-	a = __rcr(a, 0x01, C)
-	C = cond(a)
-	branch Test(UGE,C) l1075_thunk_fn1081
-	// succ:  l1075_thunk_fn1078 l1075_thunk_fn1081
+	byte a_14 = 0x00 - (a <u 0xFF) & SLICE(wArg00, byte, 8)
+	word16 af_22 = DPB(af, a_14 >>u 0x01, 0)
+	word16 af_33 = DPB(af, a_14 >>u 0x01, 0)
+	branch a_14 >>u 0x01 >=u 0x00 l1075_thunk_fn1081
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l1075_thunk_fn1081:
+	fn1081(af_22)
+	return
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l1075_thunk_fn1078:
-	call fn1078 (retsize: 0;)
+	fn1078(af_33)
 	return
-	// succ:  fn106E_exit
-l1075_thunk_fn1081:
-	call fn1081 (retsize: 0;)
-	return
-	// succ:  fn106E_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn106E_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn1078
-// Return size: 0
-define fn1078
+
+void fn1078(word16 af)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a:[0..15] af:[8..15]
+// LiveOut:
+// Trashed: SZPC af bc de f hl sp
+// Preserved:
 fn1078_entry:
-	goto l1078
-	// succ:  l1078
-l105E:
-	a = Mem0[0x16A8:byte]
-	a = a + 0x5F
-	SZPC = cond(a)
-	a = a - 0x5B
-	SZC = cond(a)
-	a = a + 0xFF
-	SZPC = cond(a)
-	a = a - a - C
-	SZPC = cond(a)
-	sp = sp - 0x0002
-	Mem0[sp:word16] = af
-	a = Mem0[0x16A8:byte]
-	a = a - 0x00
-	SZC = cond(a)
-	a = a + 0xFF
-	SZPC = cond(a)
-	a = a - a - C
-	SZPC = cond(a)
-	bc = Mem0[sp:word16]
-	sp = sp + 0x0002
-	c = b
-	a = a & c
-	SZ = cond(a)
-	C = false
-	a = __rcr(a, 0x01, C)
-	C = cond(a)
-	branch Test(UGE,C) l1081
-	goto l1078
-	// succ:  l1078 l1075_thunk_fn1081
-l1075_thunk_fn1081:
-	call fn1081 (retsize: 0;)
-	return
-	// succ:  fn1078_exit
+	word16 af_19 = DPB(af, a, 0)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l1078:
-	sp = v3
-	call fn045B (retsize: 2;)
-	Mem0[0x16A8:byte] = a
-	goto l105E
-	// succ:  l105E
+	fn045B()
+	Mem10[0x16A8:byte] = a
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l105E:
+	Mem22[v3 - 0x0002:word16] = DPB(af_19, 0x00 - (Mem10[0x16A8:byte] <u 0x03), 0)
+	byte a_34 = 0x00 - (Mem22[0x16A8:byte] <u 0xFF) & Mem22[v3 + 0x0003:byte]
+	a = a_34 >>u 0x01
+	af_19 = DPB(af_19, a_34 >>u 0x01, 0) (alias)
+	word16 af_40 = DPB(af_19, a_34 >>u 0x01, 0)
+	branch a_34 >>u 0x01 >=u 0x00 l1081
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l1075_thunk_fn1081:
+	fn1081(af_40)
+	return
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn1078_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn1081
-// Return size: 0
-define fn1081
+
+void fn1081(word16 af)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a:[0..15] af:[8..15]
+// LiveOut:
+// Trashed: SZPC af bc de f hl sp
+// Preserved:
 fn1081_entry:
-	// succ:  l1081
+	word16 af_21 = DPB(af, a, 0)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l1081:
-	sp = v3
-	call fn045B (retsize: 2;)
-	Mem0[0x16A8:byte] = a
-	// succ:  l1087
+	fn045B()
+	Mem10[0x16A8:byte] = a
+	word16 sp_174 = v3
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l1087:
-	a = Mem0[0x16A8:byte]
-	a = a + 0x5F
-	SZPC = cond(a)
-	a = a - 0x5D
-	SZC = cond(a)
-	a = a + 0xFF
-	SZPC = cond(a)
-	a = a - a - C
-	SZPC = cond(a)
-	sp = sp - 0x0002
-	Mem0[sp:word16] = af
-	a = Mem0[0x16A8:byte]
-	a = a - 0x00
-	SZC = cond(a)
-	a = a + 0xFF
-	SZPC = cond(a)
-	a = a - a - C
-	SZPC = cond(a)
-	bc = Mem0[sp:word16]
-	sp = sp + 0x0002
-	c = b
-	a = a & c
-	SZ = cond(a)
-	C = false
-	a = __rcr(a, 0x01, C)
-	C = cond(a)
-	branch Test(UGE,C) l11FD
-	// succ:  l10A1 l11FD
-l10A1:
-	a = Mem0[0x16A8:byte]
-	SZPC = cond(a - 0x20)
-	branch Test(NE,Z) l10AC
-	// succ:  l10A9 l10AC
-l10A9:
-	call fn1262 (retsize: 2;)
-	// succ:  l10AC
-l10AC:
-	a = Mem0[0x16A8:byte]
-	SZPC = cond(a - 0x42)
-	branch Test(NE,Z) l10BC
-	// succ:  l10B4 l10BC
-l10B4:
-	hl = 0x14F3
-	Mem0[hl:byte] = 0x00
-	goto l11B5
-	// succ:  l11B5
-l10BC:
-	a = Mem0[0x16A8:byte]
-	SZPC = cond(a - 0x43)
-	branch Test(NE,Z) l10CD
-	// succ:  l10C4 l10CD
-l10C4:
-	call fn12D8 (retsize: 2;)
-	Mem0[0x151D:byte] = a
-	goto l11B5
-	// succ:  l11B5
-l10CD:
-	a = Mem0[0x16A8:byte]
-	SZPC = cond(a - 0x44)
-	branch Test(NE,Z) l10DE
-	// succ:  l10D5 l10DE
-l10D5:
-	call fn1279 (retsize: 2;)
-	Mem0[0x138B:byte] = a
-	goto l11B5
-	// succ:  l11B5
-l10DE:
-	a = Mem0[0x16A8:byte]
-	SZPC = cond(a - 0x46)
-	branch Test(NE,Z) l10EE
-	// succ:  l10E6 l10EE
-l10E6:
-	hl = 0x14F3
-	Mem0[hl:byte] = 0x04
-	goto l11B5
-	// succ:  l11B5
-l10EE:
-	a = Mem0[0x16A8:byte]
-	SZPC = cond(a - 0x49)
-	branch Test(NE,Z) l10FE
-	// succ:  l10F6 l10FE
-l10F6:
-	hl = 0x14FA
-	Mem0[hl:byte] = 0x01
-	goto l11B5
-	// succ:  l11B5
-l10FE:
-	a = Mem0[0x16A8:byte]
-	SZPC = cond(a - 0x4C)
-	branch Test(NE,Z) l110F
-	// succ:  l1106 l110F
-l1106:
-	call fn1279 (retsize: 2;)
-	Mem0[0x14F7:byte] = a
-	goto l11B5
-	// succ:  l11B5
-l110F:
-	a = Mem0[0x16A8:byte]
-	SZPC = cond(a - 0x4E)
-	branch Test(NE,Z) l111F
-	// succ:  l1117 l111F
-l1117:
-	hl = 0x14FB
-	Mem0[hl:byte] = 0x01
-	goto l11B5
-	// succ:  l11B5
-l111F:
-	a = Mem0[0x16A8:byte]
-	SZPC = cond(a - 0x4F)
-	branch Test(NE,Z) l112F
-	// succ:  l1127 l112F
-l1127:
-	hl = 0x14EF
-	Mem0[hl:byte] = 0x00
-	goto l11B5
-	// succ:  l11B5
-l112F:
-	a = Mem0[0x16A8:byte]
-	SZPC = cond(a - 0x50)
-	branch Test(NE,Z) l113F
-	// succ:  l1137 l113F
-l1137:
-	hl = 0x14F3
-	Mem0[hl:byte] = 0x01
-	goto l11B5
-	// succ:  l11B5
-l113F:
-	a = Mem0[0x16A8:byte]
-	SZPC = cond(a - 0x52)
-	branch Test(NE,Z) l1150
-	// succ:  l1147 l1150
-l1147:
-	call fn12D8 (retsize: 2;)
-	Mem0[0x1520:byte] = a
-	goto l11B5
-	// succ:  l11B5
-l1150:
-	a = Mem0[0x16A8:byte]
-	SZPC = cond(a - 0x53)
-	branch Test(NE,Z) l1160
-	// succ:  l1158 l1160
-l1158:
-	hl = 0x14F0
-	Mem0[hl:byte] = 0x01
-	goto l11B5
-	// succ:  l11B5
-l1160:
-	a = Mem0[0x16A8:byte]
-	SZPC = cond(a - 0x54)
-	branch Test(NE,Z) l1170
-	// succ:  l1168 l1170
-l1168:
-	hl = 0x14F5
-	Mem0[hl:byte] = 0x01
-	goto l11B5
-	// succ:  l11B5
-l1170:
-	a = Mem0[0x16A8:byte]
-	SZPC = cond(a - 0x55)
-	branch Test(NE,Z) l1180
-	// succ:  l1178 l1180
-l1178:
-	hl = 0x1529
-	Mem0[hl:byte] = 0x01
-	goto l11B5
-	// succ:  l11B5
-l1180:
-	a = Mem0[0x16A8:byte]
-	SZPC = cond(a - 0x56)
-	branch Test(NE,Z) l1190
-	// succ:  l1188 l1190
-l1188:
-	hl = 0x14FC
-	Mem0[hl:byte] = 0x01
-	goto l11B5
-	// succ:  l11B5
-l1190:
-	a = Mem0[0x16A8:byte]
-	SZPC = cond(a - 0x57)
-	branch Test(NE,Z) l11A1
-	// succ:  l1198 l11A1
-l1198:
-	call fn1279 (retsize: 2;)
-	Mem0[0x14F8:byte] = a
-	goto l11B5
-	// succ:  l11B5
-l11A1:
-	a = Mem0[0x16A8:byte]
-	SZPC = cond(a - 0x58)
-	branch Test(NE,Z) l11B2
-	// succ:  l11A9 l11B2
-l11A9:
-	call fn12D8 (retsize: 2;)
-	Mem0[0x151E:byte] = a
-	goto l11B5
-	// succ:  l11B5
-l11B2:
-	call fn1229 (retsize: 2;)
-	// succ:  l11B5
-l11B5:
-	call fn045B (retsize: 2;)
-	Mem0[0x16A8:byte] = a
-	call fn1262 (retsize: 2;)
-	a = Mem0[0x16A8:byte]
-	SZPC = cond(a - 0x2C)
-	branch Test(NE,Z) l11CF
-	// succ:  l11C6 l11CF
-l11C6:
-	call fn045B (retsize: 2;)
-	Mem0[0x16A8:byte] = a
-	goto l11FA
-	// succ:  l11FA
-l11CF:
-	a = Mem0[0x16A8:byte]
-	a = a + 0x5F
-	SZPC = cond(a)
-	SZPC = cond(a - 0x5D)
-	branch Test(NE,Z) l11FA
-	// succ:  l11D9 l11FA
-l11D9:
-	call fn045B (retsize: 2;)
-	Mem0[0x16A8:byte] = a
-	call fn1262 (retsize: 2;)
-	a = Mem0[0x16A8:byte]
-	a = a + 0x5F
-	SZPC = cond(a)
-	SZPC = cond(a - 0x5B)
-	branch Test(EQ,Z) l11F4
-	// succ:  l11EC l11F4
-l11EC:
-	hl = 0x16A8
-	Mem0[hl:byte] = 0x5D
-	goto l11FA
-	// succ:  l11FA
-l11F4:
-	call fn045B (retsize: 2;)
-	Mem0[0x16A8:byte] = a
-	// succ:  l11FA
-l11FA:
-	goto l1087
-	// succ:  l1087
+	word16 sp_20 = sp_174 - 0x0002
+	Mem23[sp_20:word16] = DPB(af_21, 0x00 - (Mem11[0x16A8:byte] <u 0x01), 0)
+	sp_174 = sp_20 + 0x0002
+	branch (0x00 - (Mem23[0x16A8:byte] <u 0xFF) & Mem23[sp_20 + 0x0001:byte]) >>u 0x01 >=u 0x00 l11FD
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l11FD:
-	a = Mem0[0x14F3:byte]
-	SZPC = cond(a - 0x01)
-	branch Test(NE,Z) l120F
-	// succ:  l1205 l120F
+	branch Mem23[0x14F3:byte] != 0x01 l120F
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l1205:
-	c = 0x0C
-	call fn056B (retsize: 2;)
-	hl = 0x14F9
-	Mem0[hl:byte] = 0x01
-	// succ:  l120F
+	fn056B(0x0C, out bc_379, out f_380)
+	Mem52[0x14F9:byte] = 0x01
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l120F:
-	a = Mem0[0x14F3:byte]
-	Mem0[0x14F4:byte] = a
-	a = Mem0[0x14F7:byte]
-	a = a + 0x01
-	SZP = cond(a)
-	Mem0[0x14FD:byte] = a
-	hl = 0x138A
-	Mem0[hl:byte] = 0x01
-	call fn07B3 (retsize: 2;)
-	call fn0BE4 (retsize: 2;)
+	Mem55[0x14F4:byte] = Mem53[0x14F3:byte]
+	byte a_56 = Mem55[0x14F7:byte]
+	Mem59[0x14FD:byte] = a_56 + 0x01
+	Mem61[0x138A:byte] = 0x01
+	fn07B3()
+	fn0BE4(DPB(af_21, a_56 + 0x01, 0))
 	__ei()
 	__hlt()
-	hl = 0x14F3
-	Mem0[hl:byte] = 0x02
-	bc = 0x02D1
-	call fn05CE (retsize: 2;)
-	a = Mem0[0x16A8:byte]
-	SZPC = cond(a - 0x00)
-	branch Test(EQ,Z) l125E
-	// succ:  l1239_thunk_fn123C l1239_thunk_fn123C
+	Mem83[0x14F3:byte] = 0x02
+	fn05CE(0x02, 0xD1)
+	branch Mem83[0x16A8:byte] == 0x00 l125E
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l1239_thunk_fn123C:
-	call fn123C (retsize: 0;)
+	fn123C()
 	return
-	// succ:  fn1081_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l1239_thunk_fn123C:
-	call fn123C (retsize: 0;)
+	fn123C()
 	return
-	// succ:  fn1081_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn1081_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l10A1:
+	branch Mem23[0x16A8:byte] != 0x20 l10AC
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l10A9:
+	fn1262()
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l10AC:
+	byte a_123 = Mem23[0x16A8:byte]
+	word16 af_198 = DPB(af_21, a_123, 0)
+	branch a_123 != 0x42 l10BC
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l10BC:
+	byte a_126 = Mem23[0x16A8:byte]
+	word16 af_275 = DPB(af_21, a_126, 0)
+	branch a_126 != 0x43 l10CD
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l10CD:
+	byte a_129 = Mem23[0x16A8:byte]
+	word16 af_263 = DPB(af_21, a_129, 0)
+	branch a_129 != 0x44 l10DE
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l10DE:
+	a_123 = Mem23[0x16A8:byte]
+	af_198 = DPB(af_21, a_123, 0) (alias)
+	branch a_123 != 0x46 l10EE
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l10EE:
+	a_123 = Mem23[0x16A8:byte]
+	af_198 = DPB(af_21, a_123, 0) (alias)
+	branch a_123 != 0x49 l10FE
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l10FE:
+	byte a_138 = Mem23[0x16A8:byte]
+	word16 af_247 = DPB(af_21, a_138, 0)
+	branch a_138 != 0x4C l110F
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l110F:
+	a_123 = Mem23[0x16A8:byte]
+	af_198 = DPB(af_21, a_123, 0) (alias)
+	branch a_123 != 0x4E l111F
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l111F:
+	a_123 = Mem23[0x16A8:byte]
+	af_198 = DPB(af_21, a_123, 0) (alias)
+	branch a_123 != 0x4F l112F
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l112F:
+	a_123 = Mem23[0x16A8:byte]
+	af_198 = DPB(af_21, a_123, 0) (alias)
+	branch a_123 != 0x50 l113F
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l113F:
+	byte a_150 = Mem23[0x16A8:byte]
+	word16 af_229 = DPB(af_21, a_150, 0)
+	branch a_150 != 0x52 l1150
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l1150:
+	a_123 = Mem23[0x16A8:byte]
+	af_198 = DPB(af_21, a_123, 0) (alias)
+	branch a_123 != 0x53 l1160
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l1160:
+	a_123 = Mem23[0x16A8:byte]
+	af_198 = DPB(af_21, a_123, 0) (alias)
+	branch a_123 != 0x54 l1170
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l1170:
+	a_123 = Mem23[0x16A8:byte]
+	af_198 = DPB(af_21, a_123, 0) (alias)
+	branch a_123 != 0x55 l1180
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l1180:
+	a_123 = Mem23[0x16A8:byte]
+	af_198 = DPB(af_21, a_123, 0) (alias)
+	branch a_123 != 0x56 l1190
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l1190:
+	byte a_165 = Mem23[0x16A8:byte]
+	word16 af_209 = DPB(af_21, a_165, 0)
+	branch a_165 != 0x57 l11A1
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l11A1:
+	a_123 = Mem23[0x16A8:byte]
+	word16 af_197 = DPB(af_21, a_123, 0)
+	af_198 = DPB(af_21, a_123, 0) (alias)
+	branch a_123 != 0x58 l11B2
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l11B2:
+	sp_174 = fn1229()
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l11A9:
+	af_198 = fn12D8(af_197, out sp_174)
+	a_123 = (byte) af_198 (alias)
+	Mem208[0x151E:byte] = a_123
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l1198:
+	af_198 = fn1279(af_209, out sp_174)
+	a_123 = (byte) af_198 (alias)
+	Mem220[0x14F8:byte] = a_123
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l1188:
+	Mem222[0x14FC:byte] = 0x01
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l1178:
+	Mem224[0x1529:byte] = 0x01
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l1168:
+	Mem226[0x14F5:byte] = 0x01
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l1158:
+	Mem228[0x14F0:byte] = 0x01
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l1147:
+	af_198 = fn12D8(af_229, out sp_174)
+	a_123 = (byte) af_198 (alias)
+	Mem240[0x1520:byte] = a_123
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l1137:
+	Mem242[0x14F3:byte] = 0x01
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l1127:
+	Mem244[0x14EF:byte] = 0x00
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l1117:
+	Mem246[0x14FB:byte] = 0x01
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l1106:
+	af_198 = fn1279(af_247, out sp_174)
+	a_123 = (byte) af_198 (alias)
+	Mem258[0x14F7:byte] = a_123
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l10F6:
+	Mem260[0x14FA:byte] = 0x01
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l10E6:
+	Mem262[0x14F3:byte] = 0x04
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l10D5:
+	af_198 = fn1279(af_263, out sp_174)
+	a_123 = (byte) af_198 (alias)
+	Mem274[0x138B:byte] = a_123
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l10C4:
+	af_198 = fn12D8(af_275, out sp_174)
+	a_123 = (byte) af_198 (alias)
+	Mem286[0x151D:byte] = a_123
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l10B4:
+	Mem288[0x14F3:byte] = 0x00
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l11B5:
+	fn045B()
+	Mem296[0x16A8:byte] = a_123
+	fn1262()
+	byte a_303 = Mem296[0x16A8:byte]
+	af_21 = DPB(af_198, a_303, 0) (alias)
+	branch a_303 != 0x2C l11CF
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l11CF:
+	byte a_306 = Mem296[0x16A8:byte]
+	af_21 = DPB(af_198, a_306 + 0x5F, 0) (alias)
+	branch a_306 != 0x02 l11FA
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l11D9:
+	fn045B()
+	Mem316[0x16A8:byte] = a_306 + 0x5F
+	fn1262()
+	byte a_323 = Mem316[0x16A8:byte]
+	af_21 = DPB(af_198, a_323 + 0x5F, 0) (alias)
+	af_21 = DPB(af_198, a_323 + 0x5F, 0) (alias)
+	branch a_323 == 0x04 l11F4
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l11F4:
+	fn045B()
+	Mem333[0x16A8:byte] = a_323 + 0x5F
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l11EC:
+	Mem335[0x16A8:byte] = 0x5D
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l11C6:
+	fn045B()
+	Mem342[0x16A8:byte] = a_303
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l11FA:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn1229
-// Return size: 0
-define fn1229
+
+word16 fn1229()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut: sp
+// Trashed: SZPC bc f hl sp
+// Preserved:
 fn1229_entry:
-	// succ:  l1229
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l1229:
-	sp = fp
-	hl = 0x14F3
-	Mem0[hl:byte] = 0x02
-	bc = 0x02D1
-	call fn05CE (retsize: 2;)
-	a = Mem0[0x16A8:byte]
-	SZPC = cond(a - 0x00)
-	branch Test(EQ,Z) l125E_in_fn1229
-	// succ:  l1239_thunk_fn123C l125E_in_fn1229
-l1239_thunk_fn123C:
-	call fn123C (retsize: 0;)
-	return
-	// succ:  fn1229_exit
+	Mem4[0x14F3:byte] = 0x02
+	fn05CE(0x02, 0xD1)
+	branch Mem4[0x16A8:byte] == 0x00 l125E_in_fn1229
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l125E_in_fn1229:
-	call fn0387 (retsize: 2;)
-	return
-	// succ:  fn1229_exit
+	word16 sp_19
+	fn0387(out sp_19)
+	return sp_19
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l1239_thunk_fn123C:
+	return fn123C()
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn1229_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn123C
-// Return size: 0
-define fn123C
+
+word16 fn123C()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut: sp
+// Trashed: SZPC bc f hl sp
+// Preserved:
 fn123C_entry:
-	// succ:  l123C
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l123C:
-	sp = v3
-	c = 0x3E
-	call fn056B (retsize: 2;)
-	c = 0x20
-	call fn056B (retsize: 2;)
-	// succ:  l1246
+	fn056B(0x3E, out bc_48, out f_49)
+	fn056B(0x20, out bc_13, out f_12)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l1246:
-	a = Mem0[0x16A8:byte]
-	SZPC = cond(a - 0x00)
-	branch Test(EQ,Z) l125E
-	// succ:  l124E l125E
-l124E:
-	hl = Mem0[0x16A8:word16]
-	c = l
-	call fn056B (retsize: 2;)
-	call fn045B (retsize: 2;)
-	Mem0[0x16A8:byte] = a
-	goto l1246
-	// succ:  l1246
+	byte a_20 = Mem19[0x16A8:byte]
+	branch a_20 == 0x00 l125E
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l125E:
-	call fn0387 (retsize: 2;)
-	return
-	// succ:  fn123C_exit
+	word16 sp_24
+	fn0387(out sp_24)
+	return sp_24
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn123C_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l124E:
+	fn056B((byte) Mem19[0x16A8:word16], out bc_50, out f_51)
+	fn045B()
+	Mem41[0x16A8:byte] = a_20
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn1262
-// Return size: 2
-define fn1262
+
+void fn1262()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SZPC f hl
+// Preserved: sp
 fn1262_entry:
-	// succ:  l1262
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l1262:
-	sp = fp
-	a = Mem0[0x16A8:byte]
-	SZPC = cond(a - 0x20)
-	branch Test(NE,Z) l1278
-	// succ:  l126A l1278
+	byte a_4 = Mem0[0x16A8:byte]
+	branch a_4 != 0x20 l1278
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l126A:
-	call fn045B (retsize: 2;)
-	Mem0[0x16A8:byte] = a
-	SZPC = cond(a - 0x20)
-	branch Test(NE,Z) l1278
-	// succ:  l1275 l1278
-l1275:
-	goto l126A
-	// succ:  l126A
+	fn045B()
+	Mem14[0x16A8:byte] = a_4
+	branch a_4 != 0x20 l1278
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l1278:
 	return
-	// succ:  fn1262_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn1262_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l1275:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn1279
-// Return size: 2
-define fn1279
+
+word16 fn1279(word16 af, ptr16 & spOut)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a:[0..7] af:[8..15]
+// LiveOut: af sp
+// Trashed: SZPC af bc f hl sp
+// Preserved:
 fn1279_entry:
-	// succ:  l1279
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l1279:
-	sp = fp
-	call fn045B (retsize: 2;)
-	Mem0[0x16A8:byte] = a
-	call fn1262 (retsize: 2;)
-	a = Mem0[0x16A8:byte]
-	SZPC = cond(a - 0x28)
-	branch Test(EQ,Z) l128D
-	// succ:  l128A l128D
+	fn045B()
+	Mem10[0x16A8:byte] = a
+	fn1262()
+	byte a_17 = Mem10[0x16A8:byte]
+	word16 sp_2 = fp
+	word16 af_100 = DPB(af, a_17, 0)
+	af_100 = DPB(af, a_17, 0) (alias)
+	word16 af_102 = DPB(af_100, a_17, 0)
+	branch a_17 == 0x28 l128D
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l128A:
-	call fn1229 (retsize: 2;)
-	// succ:  l128D
+	sp_2 = fn1229()
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l128D:
-	hl = 0x16AA
-	Mem0[hl:byte] = 0x00
-	// succ:  l1292
+	Mem29[0x16AA:byte] = 0x00
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l1292:
-	call fn045B (retsize: 2;)
-	Mem0[0x16A9:byte] = a
-	a = a - 0x30
-	SZC = cond(a)
-	c = a
-	a = 0x09
-	SZPC = cond(a - c)
-	branch Test(ULT,C) l12BE
-	// succ:  l12A1 l12BE
-l12A1:
-	a = Mem0[0x16AA:byte]
-	a = a + a
-	SZPC = cond(a)
-	a = a + a
-	SZPC = cond(a)
-	a = a + a
-	SZPC = cond(a)
-	sp = sp - 0x0002
-	Mem0[sp:word16] = af
-	a = Mem0[0x16AA:byte]
-	a = a + a
-	SZPC = cond(a)
-	bc = Mem0[sp:word16]
-	sp = sp + 0x0002
-	c = b
-	a = a + c
-	SZPC = cond(a)
-	sp = sp - 0x0002
-	Mem0[sp:word16] = af
-	a = Mem0[0x16A9:byte]
-	a = a + 0x0F
-	SZPC = cond(a)
-	bc = Mem0[sp:word16]
-	sp = sp + 0x0002
-	c = b
-	a = a + c
-	SZPC = cond(a)
-	Mem0[0x16AA:byte] = a
-	goto l1292
-	// succ:  l1292
+	fn045B()
+	Mem37[0x16A9:byte] = a_17
+	word16 sp_126 = sp_2
+	branch a_17 >u 0x39 || a_17 <u 0x30 l12BE
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l12BE:
-	a = Mem0[0x16A9:byte]
-	SZPC = cond(a - 0x20)
-	branch Test(NE,Z) l12C9
-	// succ:  l12C6 l12C9
+	branch Mem37[0x16A9:byte] != 0x20 l12C9
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l12C6:
-	call fn1262 (retsize: 2;)
-	// succ:  l12C9
+	fn1262()
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l12C9:
-	a = Mem0[0x16A9:byte]
-	SZPC = cond(a - 0x29)
-	branch Test(EQ,Z) l12D4
-	// succ:  l12D1 l12D4
+	branch Mem37[0x16A9:byte] == 0x29 l12D4
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l12D1:
-	call fn1229 (retsize: 2;)
-	// succ:  l12D4
+	sp_126 = fn1229()
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l12D4:
-	a = Mem0[0x16AA:byte]
-	return
-	// succ:  fn1279_exit
+	word16 af_108 = DPB(af_102, Mem37[0x16AA:byte], 0)
+	spOut = sp_126
+	return af_108
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn1279_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l12A1:
+	word16 sp_71 = sp_2 - 0x0002
+	Mem75[sp_71:word16] = DPB(af_102, Mem37[0x16AA:byte] * 0x08, 0)
+	Mem85[sp_71:word16] = DPB(af_102, Mem75[0x16AA:byte] * 0x02 + Mem75[sp_71 + 0x0001:byte], 0)
+	a_17 = Mem85[0x16A9:byte] + 0x0F + Mem85[sp_71 + 0x0001:byte]
+	Mem94[0x16AA:byte] = a_17
+	af_102 = DPB(af_102, a_17, 0) (alias)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn12D8
-// Return size: 2
-define fn12D8
+
+word16 fn12D8(word16 af, ptr16 & spOut)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a:[0..7] af:[8..15]
+// LiveOut: af sp
+// Trashed: SZPC af bc f hl sp
+// Preserved:
 fn12D8_entry:
-	// succ:  l12D8
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l12D8:
-	sp = fp
-	call fn045B (retsize: 2;)
-	Mem0[0x16A8:byte] = a
-	call fn1262 (retsize: 2;)
-	a = Mem0[0x16A8:byte]
-	SZPC = cond(a - 0x28)
-	branch Test(NE,Z) l12F4
-	// succ:  l12E9 l12F4
-l12E9:
-	call fn045B (retsize: 2;)
-	a = a + 0x1F
-	SZPC = cond(a)
-	Mem0[0x16AB:byte] = a
-	goto l12F7
-	// succ:  l12F7
+	fn045B()
+	Mem10[0x16A8:byte] = a
+	fn1262()
+	byte a_17 = Mem10[0x16A8:byte]
+	word16 sp_2 = fp
+	word16 af_51 = DPB(af, a_17, 0)
+	branch a_17 != 0x28 l12F4
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l12F4:
-	call fn1229 (retsize: 2;)
-	// succ:  l12F7
+	sp_2 = fn1229()
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l12E9:
+	fn045B()
+	Mem36[0x16AB:byte] = a_17 + 0x1F
+	a_17 = a_17 + 0x1F
+	af_51 = DPB(af, a_17 + 0x1F, 0) (alias)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l12F7:
-	call fn045B (retsize: 2;)
-	a = a - 0x29
-	SZC = cond(a)
-	a = a + 0xFF
-	SZPC = cond(a)
-	a = a - a - C
-	SZPC = cond(a)
-	sp = sp - 0x0002
-	Mem0[sp:word16] = af
-	a = 0x10
-	hl = 0x16AB
-	a = a - Mem0[hl:byte]
-	SZC = cond(a)
-	a = a - a - C
-	SZPC = cond(a)
-	bc = Mem0[sp:word16]
-	sp = sp + 0x0002
-	c = b
-	a = a | c
-	SZ = cond(a)
-	C = false
-	a = __rcr(a, 0x01, C)
-	C = cond(a)
-	branch Test(UGE,C) l1311
-	// succ:  l130B_thunk_fn130E l130B_thunk_fn130E
+	fn045B()
+	word16 sp_50 = sp_2 - 0x0002
+	Mem58[sp_50:word16] = DPB(af_51, 0x00 - (a_17 <u 0x28), 0)
+	branch (0x00 - (0x10 - Mem58[0x16AB:byte] <u 0x00) | Mem58[sp_50 + 0x0001:byte]) >>u 0x01 >=u 0x00 l1311
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l130B_thunk_fn130E:
-	call fn130E (retsize: 0;)
-	return
-	// succ:  fn12D8_exit
+	spOut = fn130E()
+	return <invalid>
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l130B_thunk_fn130E:
-	call fn130E (retsize: 0;)
-	return
-	// succ:  fn12D8_exit
+	spOut = fn130E()
+	return <invalid>
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn12D8_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn130B
-// Return size: 0
-define fn130B
+
+void fn130B()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: bc f hl sp
+// Preserved: SZPC
 fn130B_entry:
-	// succ:  l130B
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l130B:
-	sp = fp
-	branch Test(UGE,C) l1311_in_fn130B
-	// succ:  l130B_thunk_fn130E l1311_in_fn130B
-l130B_thunk_fn130E:
-	call fn130E (retsize: 0;)
-	return
-	// succ:  fn130B_exit
+	branch C l1311_in_fn130B
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l1311_in_fn130B:
-	a = Mem0[0x16AB:byte]
 	return
-	// succ:  fn130B_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l130B_thunk_fn130E:
+	fn130E()
+	return
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn130B_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn130E
-// Return size: 0
-define fn130E
+
+word16 fn130E()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut: sp
+// Trashed: SZPC bc f hl sp
+// Preserved:
 fn130E_entry:
-	// succ:  l130E
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l130E:
-	sp = v3
-	call fn1229 (retsize: 2;)
-	// succ:  l1311
+	word16 sp_6 = fn1229()
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l1311:
-	a = Mem0[0x16AB:byte]
-	return
-	// succ:  fn130E_exit
+	return sp_6
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn130E_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn1315
-// Return size: 2
-define fn1315
+
+void fn1315(word16 de)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  de:[0..15]
+// LiveOut:
+// Trashed: SZPC de f hl
+// Preserved: sp
 fn1315_entry:
-	// succ:  l1315
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l1315:
-	sp = fp
-	v3 = de
-	de = hl
-	hl = v3
-	e = a
-	d = 0x00
-	v9 = de
-	de = hl
-	hl = v9
-	a = Mem0[de:byte]
-	a = a + l
-	SZPC = cond(a)
-	l = a
-	de = de + 0x0001
-	SZP = cond(de)
-	a = Mem0[de:byte]
-	a = a + h + C
-	SZPC = cond(a)
-	h = a
 	return
-	// succ:  fn1315_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn1315_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn1326
-// Return size: 2
-define fn1326
+
+byte fn1326(byte c, byte h, byte l, ptr16 & lOut)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  c:[0..7] h:[0..7] l:[0..7]
+// LiveOut: c l
+// Trashed: SZPC c f h l
+// Preserved: sp
 fn1326_entry:
-	// succ:  l1326
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l1326:
-	sp = fp
-	a = h
-	a = a | a
-	SZ = cond(a)
-	C = false
-	a = __rcr(a, 0x01, C)
-	C = cond(a)
-	h = a
-	a = l
-	a = __rcr(a, 0x01, C)
-	C = cond(a)
-	l = a
+	uint16 v13_25 = SEQ(h, l) >>u 0x01
+	h = SLICE(v13_25, byte, 8)
+	l = (byte) v13_25
 	c = c - 0x01
-	SZP = cond(c)
-	branch Test(NE,Z) l1326
-	// succ:  l1331 l1326
+	branch c != 0x00 l1326
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l1331:
-	return
-	// succ:  fn1326_exit
+	lOut = l
+	return <invalid>
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn1326_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn1335
-// Return size: 2
-define fn1335
+
+bool fn1335(byte e, byte d, byte l, byte h)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  d:[0..7] e:[0..7] h:[0..7] l:[0..7]
+// LiveOut: C
+// Trashed: SZPC f h l
+// Preserved: sp
 fn1335_entry:
-	// succ:  l1335
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l1335:
-	sp = fp
-	a = e
-	a = a - l
-	SZC = cond(a)
-	l = a
-	a = d
-	a = a - h - C
-	SZPC = cond(a)
-	h = a
-	return
-	// succ:  fn1335_exit
+	return SLICE(cond(SLICE(SEQ(d, e) - SEQ(h, l), byte, 8)), bool, 0)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn1335_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn133C
-// Return size: 2
-define fn133C
+
+void fn133C(byte a, byte e, byte d)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a:[0..7] d:[0..7] e:[0..7]
+// LiveOut:
+// Trashed: SZPC b c f h l
+// Preserved: sp
 fn133C_entry:
-	// succ:  l133C
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l133C:
-	sp = fp
-	c = a
-	b = 0x00
-	a = e
-	a = a - c
-	SZC = cond(a)
-	l = a
-	a = d
-	a = a - b - C
-	SZPC = cond(a)
-	h = a
 	return
-	// succ:  fn133C_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn133C_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn1346
-// Return size: 2
-define fn1346
+
+byte fn1346(byte b, word16 de)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  b:[0..7] de:[0..15]
+// LiveOut: hl
+// Trashed: SZPC b c de f hl
+// Preserved: sp
 fn1346_entry:
-	// succ:  l1346
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l1346:
-	sp = fp
-	l = c
-	h = b
-	// succ:  l1347_thunk_fn1348
+	word16 hl_9 = DPB(DPB(hl, c, 0), b, 8)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l1347_thunk_fn1348:
-	call fn1348 (retsize: 0;)
-	return
-	// succ:  fn1346_exit
+	word16 hl_15
+	fn1348(de, hl_9, out de_20, out l_21)
+	return (byte) hl_15
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn1346_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn1348
-// Return size: 2
-define fn1348
+
+bool fn1348(word16 de, word16 hl, ptr16 & deOut, ptr16 & lOut)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  de:[0..15] hl:[0..15]
+// LiveOut: C de hl
+// Trashed: SZPC b c de f hl
+// Preserved: sp
 fn1348_entry:
-	// succ:  l1348
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l1348:
-	sp = fp
-	c = Mem0[hl:byte]
-	hl = hl + 0x0001
-	SZP = cond(hl)
-	b = Mem0[hl:byte]
-	a = Mem0[de:byte]
-	a = a - c
-	SZC = cond(a)
-	l = a
-	de = de + 0x0001
-	SZP = cond(de)
-	a = Mem0[de:byte]
-	a = a - b - C
-	SZPC = cond(a)
-	h = a
-	return
-	// succ:  fn1348_exit
+	bool C_22 = SLICE(cond(SLICE(SEQ(Mem0[de + 0x0001:byte], Mem0[de:byte]) - SEQ(Mem0[hl + 0x0001:byte], Mem0[hl:byte]), byte, 8)), bool, 0)
+	deOut = de + 0x0001
+	lOut = <invalid>
+	return C_22
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn1348_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn1353
-// Return size: 2
-define fn1353
+
+word16 fn1353(byte a, word16 de, ptr16 & lOut, ptr16 & fOut)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a:[0..7] de:[0..15]
+// LiveOut: de f l
+// Trashed: SZPC de f h l
+// Preserved: sp
 fn1353_entry:
-	// succ:  l1353
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l1353:
-	sp = fp
-	l = a
-	h = 0x00
-	a = Mem0[de:byte]
-	a = a - l
-	SZC = cond(a)
-	l = a
-	de = de + 0x0001
-	SZP = cond(de)
-	a = Mem0[de:byte]
-	a = a - h - C
-	SZPC = cond(a)
-	h = a
-	return
-	// succ:  fn1353_exit
+	lOut = Mem0[de:byte] - a
+	fOut = <invalid>
+	return de + 0x0001
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn1353_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn1356
-// Return size: 2
-define fn1356
+
+void fn1356(word16 de, byte l, byte h)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  de:[0..15] h:[0..7] l:[0..7]
+// LiveOut:
+// Trashed: SZPC de f h l
+// Preserved: sp
 fn1356_entry:
-	// succ:  l1356
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l1356:
-	sp = fp
-	a = Mem0[de:byte]
-	a = a - l
-	SZC = cond(a)
-	l = a
-	de = de + 0x0001
-	SZP = cond(de)
-	a = Mem0[de:byte]
-	a = a - h - C
-	SZPC = cond(a)
-	h = a
 	return
-	// succ:  fn1356_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn1356_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn140B
-// Return size: 0
-define fn140B
-fn140B_entry:
-	// succ:  l140B
-l140B:
-	sp = fp
-	// succ:  l1493_thunk_fn1494
-l1493_thunk_fn1494:
-	call fn1494 (retsize: 0;)
-	return
-	// succ:  fn140B_exit
+
+void fn140B()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 fn140B_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+fn140B_entry:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l140B:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l1493_thunk_fn1494:
+	fn1494()
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn1494
-// Return size: 0
-define fn1494
-fn1494_entry:
-	// succ:  l1494
-l1494:
-	sp = v3
+
+void fn1494()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 fn1494_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+fn1494_entry:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l1494:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn156F
-// Return size: 0
-define fn156F
+
+void fn156F()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: sp
 fn156F_entry:
-	// succ:  l156F
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l156F:
-	sp = fp
-	// succ:  l15AF_thunk_fn15B0
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l15AF_thunk_fn15B0:
-	call fn15B0 (retsize: 0;)
+	fn15B0()
 	return
-	// succ:  fn156F_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn156F_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn15B0
-// Return size: 0
-define fn15B0
-fn15B0_entry:
-	// succ:  l15B0
-l15B0:
-	sp = fp
-	bc = bc + 0x0001
-	SZP = cond(bc)
-	l = a
-	__hlt()
-	branch Test(UGE,C) l164C
-	// succ:  l1647 l164C
-l1647:
-	// succ:  l164C
-l164C:
-	b = b - 0x01
-	SZP = cond(b)
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	a = Mem0[de:byte]
-	call fn08EC (retsize: 2;)
-	sp = sp + 0x0002
-	branch Test(ULT,C) l1494
-	goto l1686
-	// succ:  l1686 l1683_thunk_fn1494
-l1683_thunk_fn1494:
-	call fn1494 (retsize: 0;)
-	return
-	// succ:  fn15B0_exit
-l1686:
-	call fn140B (retsize: 2;)
-	hl = Mem0[0x1752:word16]
-	v11 = de
-	de = hl
-	hl = v11
-	a = 0x82
-	a = a | a
-	SZ = cond(a)
-	C = false
-	C = cond(true)
-	// succ:  l1691_thunk_fn092A
+
+void fn15B0()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
 l1691_thunk_fn092A:
-	call fn092A (retsize: 0;)
+	fn092A()
 	return
-	// succ:  fn15B0_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn15B0_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+fn15B0_entry:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l15B0:
+	__hlt()
+	branch C l164C
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l1647:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l164C:
+	branch fn08EC(out sp_86) l1494
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l1683_thunk_fn1494:
+	fn1494()
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l1686:
+	fn140B()
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 
 

@@ -1,31 +1,4 @@
 === CPM-80\CB80.dcproject
-*** CPM-80\CB80.dcproject
-020A: warning: Call target address 172D is invalid.
-0224: warning: Call target address 177D is invalid.
-0105: warning: Call target address 1729 is invalid.
-1239: warning: Procedure fn100A previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-1239: warning: Procedure fn100A previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-1052: warning: Procedure fn100A previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-1052: warning: Procedure fn100A previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-08E9: warning: Procedure fn082F previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-08FC: warning: Procedure fn082F previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-08DA: warning: Procedure fn082F previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0904: warning: Procedure fn082F previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0916: warning: Procedure fn082F previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-091F: warning: Procedure fn082F previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-130B: warning: Procedure fn12D8 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-130B: warning: Procedure fn12D8 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-error: An error occurred during decompilation. System.ArgumentException: An item with the same key has already been added.
-   at System.ThrowHelper.ThrowArgumentException(ExceptionResource resource)
-   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
-   at Reko.Analysis.CallApplicationBuilder..ctor(SsaState ssaCaller, Statement stmCall, CallInstruction call, Expression callee) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallApplicationBuilder.cs:line 55
-   at Reko.Analysis.CallRewriter.CreateApplicationBuilder(SsaState ssaCaller, Statement stmCaller, CallInstruction call, ProcedureConstant fn) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 265
-   at Reko.Analysis.CallRewriter.RewriteCall(SsaState ssaCaller, Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 304
-   at Reko.Analysis.CallRewriter.RewriteCalls(SsaState ssaCaller) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 327
-   at Reko.Analysis.CallRewriter.Rewrite(IPlatform platform, List`1 ssts, ProgramDataFlow summaries, DecompilerEventListener eventListener) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 103
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 139
-   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 127
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 174
 === Elf\ARM\angr-685\RTOSDemo.axf
 *** Elf\ARM\angr-685\RTOSDemo.axf
 0000951A: error: An error occurred while processing the statement Mem21[r3_14 + 0x00000000:word32] = Mem19[r3_14 - r4_11 + 0x00000000:word32].
@@ -759,16 +732,14 @@ Parameter name: index
 000000000040216C: warning: Unable to resolve imported reference __gmon_start__.
 0000000000402178: warning: Unable to resolve imported reference __gmon_start__.
 00000000004025B0: warning: Unable to resolve imported reference __gmon_start__.
-error: An error occurred during decompilation. System.ArgumentException: An item with the same key has already been added.
-   at System.ThrowHelper.ThrowArgumentException(ExceptionResource resource)
-   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
-   at Reko.Analysis.CallApplicationBuilder..ctor(SsaState ssaCaller, Statement stmCall, CallInstruction call, Expression callee) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallApplicationBuilder.cs:line 55
-   at Reko.Analysis.CallRewriter.CreateApplicationBuilder(SsaState ssaCaller, Statement stmCaller, CallInstruction call, ProcedureConstant fn) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 265
-   at Reko.Analysis.CallRewriter.RewriteCall(SsaState ssaCaller, Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 304
-   at Reko.Analysis.CallRewriter.RewriteCalls(SsaState ssaCaller) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 327
-   at Reko.Analysis.CallRewriter.Rewrite(IPlatform platform, List`1 ssts, ProgramDataFlow summaries, DecompilerEventListener eventListener) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 103
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 139
-   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 127
+error: An error occurred during decompilation. System.Collections.Generic.KeyNotFoundException: The given key was not present in the dictionary.
+   at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 196
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
+   at Reko.Core.Lib.BlockDominatorGraph..ctor(DirectedGraph`1 graph, Block entry) in D:\dev\uxmal\reko\master\src\Core\Lib\BlockDominatorGraph.cs:line 34
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 283
+   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 130
    at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 174
 === Elf\x86-64\pngpixel\pngpixel
 *** Elf\x86-64\pngpixel\pngpixel
@@ -814,17 +785,11 @@ error: An error occurred during decompilation. System.ArgumentException: An item
 0000000000400CA0: warning: Unable to resolve imported reference png_create_info_struct.
 0000000000400CB0: warning: Unable to resolve imported reference png_get_PLTE.
 0000000000400CC0: warning: Unable to resolve imported reference __gmon_start__.
-error: An error occurred during decompilation. System.ArgumentException: An item with the same key has already been added.
-   at System.ThrowHelper.ThrowArgumentException(ExceptionResource resource)
-   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
-   at Reko.Analysis.CallApplicationBuilder..ctor(SsaState ssaCaller, Statement stmCall, CallInstruction call, Expression callee) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallApplicationBuilder.cs:line 55
-   at Reko.Analysis.CallRewriter.CreateApplicationBuilder(SsaState ssaCaller, Statement stmCaller, CallInstruction call, ProcedureConstant fn) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 265
-   at Reko.Analysis.CallRewriter.RewriteCall(SsaState ssaCaller, Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 304
-   at Reko.Analysis.CallRewriter.RewriteCalls(SsaState ssaCaller) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 327
-   at Reko.Analysis.CallRewriter.Rewrite(IPlatform platform, List`1 ssts, ProgramDataFlow summaries, DecompilerEventListener eventListener) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 103
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 139
-   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 127
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 174
+l0000000000400E2D: warning: Non-integral switch expression
+00401958: warning: Expected sizes of arrays to have been determined by now
+00601E00: warning: Expected sizes of arrays to have been determined by now
+00401958: warning: Expected sizes of arrays to have been determined by now
+00601E00: warning: Expected sizes of arrays to have been determined by now
 === Elf\x86-64\retpoline\retpoline.elf
 === Elf\x86-64\retpoline\retpoline_stripped.elf
 === Elf\x86-64\simd_double\simd_double
@@ -986,19 +951,24 @@ error: An error occurred during decompilation. System.ArgumentException: An item
 0800:0385: warning: Procedure __setargv previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:03FF: warning: Procedure __setargv previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:0392: warning: Procedure __setargv previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-error: An error occurred during decompilation. System.ArgumentException: An item with the same key has already been added.
-   at System.ThrowHelper.ThrowArgumentException(ExceptionResource resource)
-   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
-   at System.Linq.Enumerable.ToDictionary[TSource,TKey,TElement](IEnumerable`1 source, Func`2 keySelector, Func`2 elementSelector, IEqualityComparer`1 comparer)
-   at System.Linq.Enumerable.ToDictionary[TSource,TKey](IEnumerable`1 source, Func`2 keySelector)
-   at Reko.Analysis.CallApplicationBuilder..ctor(SsaState ssaCaller, Statement stmCall, CallInstruction call, Expression callee) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallApplicationBuilder.cs:line 51
-   at Reko.Analysis.CallRewriter.CreateApplicationBuilder(SsaState ssaCaller, Statement stmCaller, CallInstruction call, ProcedureConstant fn) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 265
-   at Reko.Analysis.CallRewriter.RewriteCall(SsaState ssaCaller, Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 304
-   at Reko.Analysis.CallRewriter.RewriteCalls(SsaState ssaCaller) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 327
-   at Reko.Analysis.CallRewriter.Rewrite(IPlatform platform, List`1 ssts, ProgramDataFlow summaries, DecompilerEventListener eventListener) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 103
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 139
-   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 127
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 174
+0800:0BA1: error: An error occurred while processing the statement word16 di_45 = si_102 - (fp - 0x0084).
+    Not handling mp16 and mp16 yet
+       at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 382
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 227
+   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
+   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 170
+   at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 84
+0800:1358: error: An error occurred while processing the statement word16 di_327 = di_312 - (fp - 0x008A).
+    Not handling (memptr T_2189 (struct (0 T_3204 t0000))) and mp16 yet
+       at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 382
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 227
+   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
+   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 170
+   at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 84
+l0800_112E: warning: Non-integral switch expression
+l0800_17AE: warning: Non-integral switch expression
 === MachO\const.o
 === Microchip\C18\PIC18Extd\PIC18EggExtd.hex
 *** Microchip\C18\PIC18Extd\PIC18EggExtd.hex
@@ -1246,19 +1216,16 @@ Borland C v3 runtime detected
 1483:0D02: warning: Procedure fn1483_0CFA previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 1483:0DCF: warning: Procedure fn1483_0D3F previously had a return address of 2 bytes on the stack, but now seems to have a return address of 4 bytes on the stack.
 1483:0DCF: warning: Multiple different values of stack delta in procedure fn1483_0D3F when processing RET instruction; was 2 previously.
-error: An error occurred during decompilation. System.ArgumentException: An item with the same key has already been added.
-   at System.ThrowHelper.ThrowArgumentException(ExceptionResource resource)
-   at System.Collections.Generic.Dictionary`2.Insert(TKey key, TValue value, Boolean add)
-   at Reko.Analysis.CallApplicationBuilder..ctor(SsaState ssaCaller, Statement stmCall, CallInstruction call, Expression callee) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallApplicationBuilder.cs:line 55
-   at Reko.Analysis.CallRewriter.CreateApplicationBuilder(SsaState ssaCaller, Statement stmCaller, CallInstruction call, ProcedureConstant fn) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 265
-   at Reko.Analysis.CallRewriter.RewriteCall(SsaState ssaCaller, Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 304
-   at Reko.Analysis.CallRewriter.RewriteCalls(SsaState ssaCaller) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 327
-   at Reko.Analysis.CallRewriter.Rewrite(IPlatform platform, List`1 ssts, ProgramDataFlow summaries, DecompilerEventListener eventListener) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 103
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 139
-   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 127
+error: An error occurred during decompilation. System.ApplicationException: Dominator graph calculation timed out.
+   at Reko.Core.Lib.DominatorGraph`1.Intersect(Dictionary`2 postdoms, T b1, T b2) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 238
+   at Reko.Core.Lib.DominatorGraph`1.Build(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 164
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 44
+   at Reko.Core.Lib.BlockDominatorGraph..ctor(DirectedGraph`1 graph, Block entry) in D:\dev\uxmal\reko\master\src\Core\Lib\BlockDominatorGraph.cs:line 34
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 283
+   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 130
    at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 174
 === regressions\snowman-51\switch.dcproject
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 56 binaries in 88.10 seconds ---
+Decompiled 56 binaries in 67.83 seconds ---

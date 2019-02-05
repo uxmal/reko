@@ -38,9 +38,9 @@ namespace Reko.Analysis
         private readonly Statement stmCall;
         private readonly IProcessorArchitecture arch;
         private readonly int stackDepthOnEntry;
-        private readonly Dictionary<StorageDomain, CallBinding> defs;
-        private readonly Dictionary<StorageDomain, CallBinding> uses;
-        private Dictionary<StorageDomain, CallBinding> map;
+        private readonly Dictionary<Storage, CallBinding> defs;
+        private readonly Dictionary<Storage, CallBinding> uses;
+        private Dictionary<Storage, CallBinding> map;
         private bool bindUses;
 
         public CallApplicationBuilder(SsaState ssaCaller, Statement stmCall, CallInstruction call, Expression callee) : base(call.CallSite, callee)
@@ -48,13 +48,8 @@ namespace Reko.Analysis
             this.ssaCaller = ssaCaller;
             this.stmCall = stmCall;
             this.arch = ssaCaller.Procedure.Architecture;
-            this.defs = call.Definitions.ToDictionary(u => u.Storage.Domain);
-            var uses = new Dictionary<StorageDomain, CallBinding>();
-            foreach (var u in call.Uses)
-            {
-                uses.Add(u.Storage.Domain, u);
-            }
-            this.uses = call.Uses.ToDictionary(u => u.Storage.Domain);
+            this.defs = call.Definitions.ToDictionary(d => d.Storage);
+            this.uses = call.Uses.ToDictionary(u => u.Storage);
             this.stackDepthOnEntry = site.StackDepthOnEntry;
         }
 
@@ -86,7 +81,7 @@ namespace Reko.Analysis
             return With(defs, stg);
         }
 
-        private Expression With(Dictionary<StorageDomain, CallBinding> map, Storage stg)
+        private Expression With(Dictionary<Storage, CallBinding> map, Storage stg)
         {
             this.map = map;
             var exp = stg.Accept(this);
@@ -96,7 +91,7 @@ namespace Reko.Analysis
 
         public Expression VisitFlagGroupStorage(FlagGroupStorage grf)
         {
-            if (!map.TryGetValue(grf.Domain, out var cb))
+            if (!map.TryGetValue(grf, out var cb))
                 return null;
             else
                 return cb.Expression;
@@ -120,7 +115,7 @@ namespace Reko.Analysis
 
         public Expression VisitOutArgumentStorage(OutArgumentStorage arg)
         {
-            if (defs.TryGetValue(arg.OriginalIdentifier.Storage.Domain, out var binding))
+            if (defs.TryGetValue(arg.OriginalIdentifier.Storage, out var binding))
             {
                 return binding.Expression;
             }
@@ -135,8 +130,21 @@ namespace Reko.Analysis
 
         public Expression VisitRegisterStorage(RegisterStorage reg)
         {
-            if (map.TryGetValue(reg.Domain, out CallBinding cb))
+            // If the architecture has no subregisters, this test will
+            // be true.
+            if (map.TryGetValue(reg, out CallBinding cb))
                 return cb.Expression;
+            // If the architecture has subregisters, we need a more
+            // expensive test.
+            //$TODO: perhaps this can be done with another level of lookup, 
+            // eg by using a Dictionary<StorageDomain<Dictionary<Storage, CallBinding>>
+            foreach (var de in map)
+            {
+                if (reg.OverlapsWith(de.Value.Storage))
+                {
+                    return de.Value.Expression;
+                }
+            }
             if (bindUses)
                 return EnsureRegister(reg);
             return null;

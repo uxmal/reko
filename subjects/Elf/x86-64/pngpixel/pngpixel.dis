@@ -1,1308 +1,1049 @@
-// _init
-// Return size: 8
-define _init
+word64 _init()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut: rax
+// Trashed: SCZO rax
+// Preserved: rsp
 _init_entry:
-	// succ:  l0000000000400AE8
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000000400AE8:
-	rsp = fp
-	rsp = rsp - 0x0000000000000008
-	SCZO = cond(rsp)
-	rax = __gmon_start__
-	SZO = cond(rax & rax)
-	C = false
-	branch Test(EQ,Z) l0000000000400AFD
-	// succ:  l0000000000400AF8 l0000000000400AFD
+	word64 rax_15 = __gmon_start__
+	branch __gmon_start__ == 0x0000000000000000 l0000000000400AFD
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000000400AF8:
 	call __gmon_start__ (retsize: 8;)
-	// succ:  l0000000000400AFD
+		uses: rax:__gmon_start__,rsp:fp - 0x0000000000000008
+		defs: rax:rax_8
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000000400AFD:
-	rsp = rsp + 0x0000000000000008
-	SCZO = cond(rsp)
-	return
-	// succ:  _init_exit
+	return rax_15
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 _init_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// _start
-// Return size: 0
-define _start
-_start_entry:
-	// succ:  l0000000000400CD0
-l0000000000400CD0:
-	rsp = fp
-	rbp = (uint64) (ebp ^ ebp)
-	SZO = cond(ebp)
-	C = false
-	r9 = rdx
-	rsi = Mem0[rsp:word64]
-	rsp = rsp + 8
-	rdx = rsp
-	__align(rsp)
-	rsp = rsp - 8
-	Mem0[rsp:word64] = rax
-	v11 = rsp
-	rsp = rsp - 8
-	Mem0[rsp:word64] = v11
-	r8 = 0x00000000004017F0
-	rcx = 0x0000000000401780
-	rdi = 0x00000000004012F9
-	eax = __libc_start_main(rdi, rsi, rdx, rcx, r8, r9, Mem0[rsp:(ptr64 void)])
-	__hlt()
+
+void _start(word64 rdx, word64 qwArg00)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  rdx:[0..63] Stack +0000:[0..63]
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 _start_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+_start_entry:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000000400CD0:
+	__align(fp + 8)
+	__libc_start_main(0x00000000004012F9, qwArg00, fp + 8, 0x0000000000401780, 0x00000000004017F0, rdx, fp)
+	__hlt()
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// deregister_tm_clones
-// Return size: 8
-define deregister_tm_clones
+
+void deregister_tm_clones(word64 rbp, word64 r8)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  r8:[0..63] rbp:[0..63]
+// LiveOut:
+// Trashed: SCZO r8 rax rdi
+// Preserved: rbp rsp
 deregister_tm_clones_entry:
-	// succ:  l0000000000400D00
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000000400D00:
-	rsp = fp
-	rax = (uint64) 0x006020FF
-	rsp = rsp - 8
-	Mem0[rsp:word64] = rbp
-	r8 = r8 - 6299896
-	SCZO = cond(r8)
-	SCZO = cond(rax - 0x000000000000000E)
-	rbp = rsp
-	branch Test(ULE,CZ) l0000000000400D30
-	// succ:  l0000000000400D15 l0000000000400D30
+	branch false l0000000000400D30
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000000400D15:
-	rax = (uint64) 0x00000000
-	SZO = cond(rax & rax)
-	C = false
-	branch Test(EQ,Z) l0000000000400D30
-	// succ:  l0000000000400D1F l0000000000400D30
-l0000000000400D1F:
-	rbp = Mem0[rsp:word64]
-	rsp = rsp + 8
-	rdi = (uint64) 0x006020F8
-	call rax (retsize: 8;)
-	return
-	// succ:  deregister_tm_clones_exit
+	branch 0x0000000000000000 == 0x0000000000000000 l0000000000400D30
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000000400D30:
-	rbp = Mem0[rsp:word64]
-	rsp = rsp + 8
 	return
-	// succ:  deregister_tm_clones_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000000400D1F:
+	call 0x0000000000000000 (retsize: 8;)
+		uses: r8:r8 - 6299896,rax:0x0000000000000000,rbp:rbp,rdi:0x00000000006020F8,rsp:fp,Stack +0000:rbp
+	return
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 deregister_tm_clones_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// register_tm_clones
-// Return size: 0
-define register_tm_clones
+
+void register_tm_clones(word64 rbp)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  rbp:[0..63]
+// LiveOut:
+// Trashed: SCZO rax rdi rsi
+// Preserved: rbp rsp
 register_tm_clones_entry:
-	// succ:  l0000000000400D40
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000000400D40:
-	rsp = fp
-	rsi = (uint64) 0x006020F8
-	rsp = rsp - 8
-	Mem0[rsp:word64] = rbp
-	rsi = rsi - 6299896
-	SCZO = cond(rsi)
-	rsi = rsi >> 0x0000000000000003
-	SCZO = cond(rsi)
-	rbp = rsp
-	rax = rsi
-	rax = rax >>u 0x000000000000003F
-	SCZO = cond(rax)
-	rsi = rsi + rax
-	SCZO = cond(rsi)
-	rsi = rsi >> 0x0000000000000001
-	SCZO = cond(rsi)
-	branch Test(EQ,Z) l0000000000400D78
-	// succ:  l0000000000400D63 l0000000000400D78
+	branch 0 == 0x0000000000000000 l0000000000400D78
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000000400D63:
-	rax = (uint64) 0x00000000
-	SZO = cond(rax & rax)
-	C = false
-	branch Test(EQ,Z) l0000000000400D78
-	// succ:  l0000000000400D6D l0000000000400D78
-l0000000000400D6D:
-	rbp = Mem0[rsp:word64]
-	rsp = rsp + 8
-	rdi = (uint64) 0x006020F8
-	call rax (retsize: 8;)
-	return
-	// succ:  register_tm_clones_exit
+	branch 0x0000000000000000 == 0x0000000000000000 l0000000000400D78
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000000400D78:
-	rbp = Mem0[rsp:word64]
-	rsp = rsp + 8
 	return
-	// succ:  register_tm_clones_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000000400D6D:
+	call 0x0000000000000000 (retsize: 8;)
+		uses: rax:0x0000000000000000,rbp:rbp,rdi:0x00000000006020F8,rsi:0,rsp:fp,Stack +0000:rbp
+	return
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 register_tm_clones_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// __do_global_dtors_aux
-// Return size: 8
-define __do_global_dtors_aux
+
+void __do_global_dtors_aux(word64 r8)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  r8:[0..63]
+// LiveOut:
+// Trashed: SCZO r8 rax rdi
+// Preserved: rbp rsp
 __do_global_dtors_aux_entry:
-	// succ:  l0000000000400D80
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000000400D80:
-	rsp = fp
-	SCZO = cond(Mem0[0x0000000000602108:byte] - 0x00)
-	branch Test(NE,Z) l0000000000400D9A
-	// succ:  l0000000000400D89 l0000000000400D9A
+	branch Mem0[0x0000000000602108:byte] != 0x00 l0000000000400D9A
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000000400D89:
-	rsp = rsp - 8
-	Mem0[rsp:word64] = rbp
-	rbp = rsp
-	call deregister_tm_clones (retsize: 8;)
-	rbp = Mem0[rsp:word64]
-	rsp = rsp + 8
-	Mem0[0x0000000000602108:byte] = 0x01
-	// succ:  l0000000000400D9A
+	deregister_tm_clones(fp - 8, r8)
+	Mem20[0x0000000000602108:byte] = 0x01
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000000400D9A:
 	return
-	// succ:  __do_global_dtors_aux_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 __do_global_dtors_aux_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// frame_dummy
-// Return size: 8
-define frame_dummy
+
+void frame_dummy(word64 rbp, word64 rsi)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  rbp:[0..63] rsi:[0..63]
+// LiveOut:
+// Trashed: SCZO rax rdi rsi
+// Preserved: rbp rsp
 frame_dummy_entry:
-	// succ:  l0000000000400DA0
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000000400DA0:
-	rsp = fp
-	rdi = (uint64) 0x00601E10
-	SCZO = cond(Mem0[rdi:word64] - 0x0000000000000000)
-	branch Test(NE,Z) l0000000000400DB0
-	// succ:  l0000000000400DAB l0000000000400DB0
-l0000000000400DAB:
-	// succ:  l0000000000400DAB_thunk_register_tm_clones
-l0000000000400DAB_thunk_register_tm_clones:
-	call register_tm_clones (retsize: 0;)
-	return
-	// succ:  frame_dummy_exit
+	branch Mem0[0x0000000000601E10:word64] != 0x0000000000000000 l0000000000400DB0
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000000400DB0:
-	rax = (uint64) 0x00000000
-	SZO = cond(rax & rax)
-	C = false
-	branch Test(EQ,Z) l0000000000400DAB
-	// succ:  l0000000000400DBA l0000000000400DAB
+	branch 0x0000000000000000 == 0x0000000000000000 l0000000000400DAB
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000000400DBA:
-	rsp = rsp - 8
-	Mem0[rsp:word64] = rbp
-	rbp = rsp
 	call fn0000000000000000 (retsize: 8;)
-	rbp = Mem0[rsp:word64]
-	rsp = rsp + 8
-	// succ:  l0000000000400DC1_thunk_register_tm_clones
+		uses: rax:0x0000000000000000,rbp:fp - 8,rdi:0x0000000000601E10,rsi:rsi,rsp:fp - 8,Stack +0008:rbp
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000000400DC1_thunk_register_tm_clones:
-	call register_tm_clones (retsize: 0;)
+	register_tm_clones(rbp)
 	return
-	// succ:  frame_dummy_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000000400DAB:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000000400DAB_thunk_register_tm_clones:
+	register_tm_clones(rbp)
+	return
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 frame_dummy_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// component
-// Return size: 8
-define component
+
+word32 component(word32 ecx, word32 edx, word32 esi, word64 rdi, word32 r8d, ptr64 & rcxOut)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  ecx:[0..31] edx:[0..31] esi:[0..31] r8d:[0..31] rdi:[0..63]
+// LiveOut: rax rcx
+// Trashed: SCZO rax rcx rdx
+// Preserved: rbp rsp
 component_entry:
-	// succ:  l0000000000400DC6
+	word64 rcx_106 = DPB(rcx, ecx, 0)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000000400DC6:
-	rsp = fp
-	rsp = rsp - 8
-	Mem0[rsp:word64] = rbp
-	rbp = rsp
-	rsp = rsp - 0x0000000000000030
-	SCZO = cond(rsp)
-	Mem0[rbp - 0x0000000000000018:word64] = rdi
-	Mem0[rbp - 0x000000000000001C:word32] = esi
-	Mem0[rbp - 0x0000000000000020:word32] = edx
-	Mem0[rbp - 0x0000000000000024:word32] = ecx
-	Mem0[rbp - 0x0000000000000028:word32] = r8d
-	rax = (uint64) Mem0[rbp - 0x000000000000001C:word32]
-	rax = (uint64) (eax >>u 0x00000006)
-	SCZO = cond(eax)
-	rax = (uint64) (eax *s Mem0[rbp - 0x0000000000000028:word32])
-	SCZO = cond(eax)
-	rax = (uint64) (eax *s Mem0[rbp - 0x0000000000000024:word32])
-	SCZO = cond(eax)
-	Mem0[rbp - 0x0000000000000008:word32] = eax
-	rax = (uint64) Mem0[rbp - 0x000000000000001C:word32]
-	rax = (uint64) (eax & 0x0000003F)
-	SZO = cond(eax)
-	C = false
-	rax = (uint64) (eax *s Mem0[rbp - 0x0000000000000028:word32])
-	SCZO = cond(eax)
-	rdx = (uint64) eax
-	rax = (uint64) Mem0[rbp - 0x0000000000000020:word32]
-	rax = (uint64) (eax + edx)
-	SCZO = cond(eax)
-	rax = (uint64) (eax *s Mem0[rbp - 0x0000000000000024:word32])
-	SCZO = cond(eax)
-	Mem0[rbp - 0x0000000000000004:word32] = eax
-	rax = (uint64) Mem0[rbp - 0x0000000000000008:word32]
-	rax = rax << 0x0000000000000003
-	SCZO = cond(rax)
-	v15 = Mem0[rbp - 0x0000000000000018:word64] + rax
-	Mem0[rbp - 0x0000000000000018:word64] = v15
-	SCZO = cond(v15)
-	rax = (uint64) Mem0[rbp - 0x0000000000000004:word32]
-	rax = (uint64) (eax >>u 0x00000003)
-	SCZO = cond(eax)
-	rax = (uint64) eax
-	v16 = Mem0[rbp - 0x0000000000000018:word64] + rax
-	Mem0[rbp - 0x0000000000000018:word64] = v16
-	SCZO = cond(v16)
-	v17 = Mem0[rbp - 0x0000000000000004:word32] & 0x00000007
-	Mem0[rbp - 0x0000000000000004:word32] = v17
-	SZO = cond(Mem0[rbp - 0x0000000000000004:word32])
-	C = false
-	SCZO = cond(Mem0[rbp - 0x0000000000000024:word32] - 0x00000010)
-	branch Test(UGT,CZ) l0000000000400EC1
-	// succ:  l0000000000400E2D l0000000000400EC1
+	word32 eax_40 = (word32) (uint64) ((word32) (uint64) (word32) (uint64) (edx + (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) esi) & 0x0000003F)) *s r8d))) *s ecx)
+	word64 v16_51 = rdi + ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) esi) >>u 0x00000006)) *s r8d)) *s ecx))) << 0x0000000000000003) + (uint64) ((word32) ((uint64) ((word32) ((uint64) eax_40) >>u 0x00000003)))
+	branch ecx >u 0x00000010 l0000000000400EC1
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000000400E2D:
-	rax = (uint64) Mem0[rbp - 0x0000000000000024:word32]
-	rax = Mem0[0x00401828 + rax * 0x0000000000000008:word64]
-	switch (Mem0[rbp - 0x0000000000000024:word32]) { l0000000000400EC1 l0000000000400E3A l0000000000400E5A l0000000000400EC1 l0000000000400E77 l0000000000400EC1 l0000000000400EC1 l0000000000400EC1 l0000000000400E94 l0000000000400EC1 l0000000000400EC1 l0000000000400EC1 l0000000000400EC1 l0000000000400EC1 l0000000000400EC1 l0000000000400EC1 l0000000000400EA0 }
-	// succ:  l0000000000400EC1 l0000000000400E3A l0000000000400E5A l0000000000400EC1 l0000000000400E77 l0000000000400EC1 l0000000000400EC1 l0000000000400EC1 l0000000000400E94 l0000000000400EC1 l0000000000400EC1 l0000000000400EC1 l0000000000400EC1 l0000000000400EC1 l0000000000400EC1 l0000000000400EC1 l0000000000400EA0
-l0000000000400E3A:
-	rax = Mem0[rbp - 0x0000000000000018:word64]
-	eax = (word32) Mem0[rax:byte]
-	edx = (word32) al
-	rax = (uint64) 0x00000007
-	rax = (uint64) (eax - Mem0[rbp - 0x0000000000000004:word32])
-	SCZO = cond(eax)
-	rcx = (uint64) eax
-	rdx = (uint64) (edx >> cl)
-	SCZO = cond(edx)
-	rax = (uint64) edx
-	rax = (uint64) (eax & 0x00000001)
-	SZO = cond(eax)
-	C = false
-	goto l0000000000400EE7
-	// succ:  l0000000000400EE7
-l0000000000400E5A:
-	rax = Mem0[rbp - 0x0000000000000018:word64]
-	eax = (word32) Mem0[rax:byte]
-	edx = (word32) al
-	rax = (uint64) 0x00000006
-	rax = (uint64) (eax - Mem0[rbp - 0x0000000000000004:word32])
-	SCZO = cond(eax)
-	rcx = (uint64) eax
-	rdx = (uint64) (edx >> cl)
-	SCZO = cond(edx)
-	rax = (uint64) edx
-	rax = (uint64) (eax & 0x00000003)
-	SZO = cond(eax)
-	C = false
-	goto l0000000000400EE7
-	// succ:  l0000000000400EE7
-l0000000000400E77:
-	rax = Mem0[rbp - 0x0000000000000018:word64]
-	eax = (word32) Mem0[rax:byte]
-	edx = (word32) al
-	rax = (uint64) 0x00000004
-	rax = (uint64) (eax - Mem0[rbp - 0x0000000000000004:word32])
-	SCZO = cond(eax)
-	rcx = (uint64) eax
-	rdx = (uint64) (edx >> cl)
-	SCZO = cond(edx)
-	rax = (uint64) edx
-	rax = (uint64) (eax & 0x0000000F)
-	SZO = cond(eax)
-	C = false
-	goto l0000000000400EE7
-	// succ:  l0000000000400EE7
-l0000000000400E94:
-	rax = Mem0[rbp - 0x0000000000000018:word64]
-	eax = (word32) Mem0[rax:byte]
-	eax = (word32) al
-	goto l0000000000400EE7
-	// succ:  l0000000000400EE7
+	word64 rax_112
+	switch (ecx) { l0000000000400EC1 l0000000000400E3A l0000000000400E5A l0000000000400EC1 l0000000000400E77 l0000000000400EC1 l0000000000400EC1 l0000000000400EC1 l0000000000400E94 l0000000000400EC1 l0000000000400EC1 l0000000000400EC1 l0000000000400EC1 l0000000000400EC1 l0000000000400EC1 l0000000000400EC1 l0000000000400EA0 }
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000000400EA0:
-	rax = Mem0[rbp - 0x0000000000000018:word64]
-	eax = (word32) Mem0[rax:byte]
-	eax = (word32) al
-	rax = (uint64) (eax << 0x00000008)
-	SCZO = cond(eax)
-	rdx = (uint64) eax
-	rax = Mem0[rbp - 0x0000000000000018:word64]
-	rax = rax + 0x0000000000000001
-	SCZO = cond(rax)
-	eax = (word32) Mem0[rax:byte]
-	eax = (word32) al
-	rax = (uint64) (eax + edx)
-	SCZO = cond(eax)
-	goto l0000000000400EE7
-	// succ:  l0000000000400EE7
-l0000000000400EC1:
-	rax = Mem0[0x0000000000602100:word64]
-	rdx = (uint64) Mem0[rbp - 0x0000000000000024:word32]
-	rsi = (uint64) 0x00401808
-	rdi = rax
-	rax = (uint64) 0x00000000
-	eax = fprintf(rdi, rsi, rdx)
-	rdi = (uint64) 0x00000001
-	exit(rdi)
+	rax_112 = (uint64) (word32) ((byte) (word32) Mem54[v16_51 + 0x0000000000000001:byte] + (uint64) ((word32) ((uint64) ((word32) ((byte) ((word32) Mem54[v16_51:byte])) << 0x00000008))))
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000000400E94:
+	rax_112 = DPB(v16_51, (word32) (byte) (word32) Mem54[v16_51:byte], 0) (alias)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000000400E77:
+	rcx_106 = (uint64) (word32) (uint64) (0x00000004 - (eax_40 & 0x00000007))
+	rax_112 = (uint64) ((word32) (uint64) (word32) (uint64) ((word32) (byte) (word32) Mem54[v16_51:byte] >> (byte) rcx_106) & 0x0000000F)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000000400E5A:
+	rcx_106 = (uint64) (word32) (uint64) (0x00000006 - (eax_40 & 0x00000007))
+	rax_112 = (uint64) ((word32) (uint64) (word32) (uint64) ((word32) (byte) (word32) Mem54[v16_51:byte] >> (byte) rcx_106) & 0x00000003)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000000400E3A:
+	rcx_106 = (uint64) (word32) (uint64) (0x00000007 - (eax_40 & 0x00000007))
+	rax_112 = (uint64) ((word32) (uint64) (word32) (uint64) ((word32) (byte) (word32) Mem54[v16_51:byte] >> (byte) rcx_106) & 0x00000001)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000000400EE7:
-	rsp = rbp
-	rbp = Mem0[rsp:word64]
-	rsp = rsp + 8
-	return
-	// succ:  component_exit
+	rcxOut = rcx_106
+	return (word32) rax_112
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 component_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000000400EC1:
+	fprintf(Mem54[0x0000000000602100:word64], 0x0000000000401808, (uint64) ecx)
+	exit(0x0000000000000001)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// print_pixel
-// Return size: 8
-define print_pixel
+
+word64 print_pixel(word64 rcx, word64 rdx, word64 rbx, word64 rbp, word64 rsi, word64 rdi, word64 r8, word64 r9, word64 r12, word64 r13, selector fs, ptr64 & r8Out, ptr64 & r9Out)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  ecx:[0..63] fs:[0..15] r12:[0..63] r13:[0..63] r8:[0..63] r9:[0..63] rbp:[0..63] rbx:[0..63] rcx:[32..63] rdi:[0..63] rdx:[0..63] rsi:[0..63]
+// LiveOut: r8 r9 rcx
+// Trashed: SCZO r8 r9 rax rcx rdi rdx rsi
+// Preserved: r12 r13 rbp rbx rsp
 print_pixel_entry:
-	// succ:  l0000000000400EE9
+	word64 rcx_41 = DPB(rcx, ecx, 0)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000000400EE9:
-	rsp = fp
-	rsp = rsp - 8
-	Mem0[rsp:word64] = rbp
-	rbp = rsp
-	rsp = rsp - 8
-	Mem0[rsp:word64] = r13
-	rsp = rsp - 8
-	Mem0[rsp:word64] = r12
-	rsp = rsp - 8
-	Mem0[rsp:word64] = rbx
-	rsp = rsp - 0x0000000000000058
-	SCZO = cond(rsp)
-	Mem0[rbp - 0x0000000000000058:word64] = rdi
-	Mem0[rbp - 0x0000000000000060:word64] = rsi
-	Mem0[rbp - 0x0000000000000068:word64] = rdx
-	Mem0[rbp - 0x000000000000006C:word32] = ecx
-	rax = Mem0[fs:0x00000028:word64]
-	Mem0[rbp - 0x0000000000000028:word64] = rax
-	rax = (uint64) (eax ^ eax)
-	SZO = cond(eax)
-	C = false
-	rdx = Mem0[rbp - 0x0000000000000060:word64]
-	rax = Mem0[rbp - 0x0000000000000058:word64]
-	rsi = rdx
-	rdi = rax
+	word64 r8_154
+	word64 rcx_156
+	word64 rax_26 = Mem24[fs:0x00000028:word64]
+	word64 rcx_42
+	word64 rax_43
+	word64 r8_45
+	word64 r9_47
 	call png_get_bit_depth (retsize: 8;)
-	eax = (word32) al
-	Mem0[rbp - 0x0000000000000040:word32] = eax
-	rdx = Mem0[rbp - 0x0000000000000060:word64]
-	rax = Mem0[rbp - 0x0000000000000058:word64]
-	rsi = rdx
-	rdi = rax
+		uses: fs:fs,r12:r12,r13:r13,r8:r8,r9:r9,rax:rdi,rbp:fp - 8,rbx:rbx,rcx:rcx_41,rdi:rdi,rdx:rsi,rsi:rsi,rsp:fp - 0x0000000000000078,Stack +000C:ecx,Stack +0010:rdx,Stack +0018:rsi,Stack +0020:rdi,Stack +0030:dwLoc50,Stack +0034:dwLoc4C,Stack +0038:eax_50,Stack +003C:dwLoc44,Stack +0040:qwLoc40,Stack +0048:qwLoc38,Stack +0050:rax_26,Stack +0060:rbx,Stack +0068:r12,Stack +0070:r13,Stack +0078:rbp
+		defs: r8:r8_45,r9:r9_47,rax:rax_43,rcx:rcx_42
+	word32 eax_50 = (word32) (byte) rax_43
+	word64 rdx_58
+	word64 rcx_59
+	word64 rax_60
+	word64 r8_61
+	word64 r9_245
 	call png_get_color_type (retsize: 8;)
-	eax = (word32) al
-	SCZO = cond(eax - 0x00000006)
-	branch Test(UGT,CZ) l00000000004012C9
-	// succ:  l0000000000400F4C l00000000004012C9
+		uses: fs:fs,r12:r12,r13:r13,r8:r8_45,r9:r9_47,rax:rdi,rbp:fp - 8,rbx:rbx,rcx:rcx_42,rdi:rdi,rdx:rsi,rsi:rsi,rsp:fp - 0x0000000000000078,Stack +000C:ecx,Stack +0010:rdx,Stack +0018:rsi,Stack +0020:rdi,Stack +0030:dwLoc50,Stack +0034:dwLoc4C,Stack +0038:eax_50,Stack +003C:dwLoc44,Stack +0040:qwLoc40,Stack +0048:qwLoc38,Stack +0050:rax_26,Stack +0060:rbx,Stack +0068:r12,Stack +0070:r13,Stack +0078:rbp
+		defs: r8:r8_61,r9:r9_62,rax:rax_60,rcx:rcx_59,rdx:rdx_58
+	word32 eax_65 = (word32) (byte) rax_60
+	branch eax_65 >u 0x00000006 l00000000004012C9
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000000400F4C:
-	rax = (uint64) eax
-	rax = Mem0[0x00401958 + rax * 0x0000000000000008:word64]
-	switch (eax) { l0000000000400F58 l00000000004012C9 l0000000000401155 l0000000000400F8D l00000000004011D2 l00000000004012C9 l000000000040122A }
-	// succ:  l0000000000400F58 l00000000004012C9 l0000000000401155 l0000000000400F8D l00000000004011D2 l00000000004012C9 l000000000040122A
-l0000000000400F58:
-	rdx = (uint64) Mem0[rbp - 0x0000000000000040:word32]
-	rsi = (uint64) Mem0[rbp - 0x000000000000006C:word32]
-	rax = Mem0[rbp - 0x0000000000000068:word64]
-	r8 = (uint64) 0x00000001
-	rcx = (uint64) edx
-	rdx = (uint64) 0x00000000
-	rdi = rax
-	call component (retsize: 8;)
-	rsi = (uint64) eax
-	rdi = (uint64) 0x004018B0
-	rax = (uint64) 0x00000000
-	eax = printf(rdi, rsi)
-	goto l00000000004012DA
-	// succ:  l00000000004012DA
-l0000000000400F8D:
-	rdx = (uint64) Mem0[rbp - 0x0000000000000040:word32]
-	rsi = (uint64) Mem0[rbp - 0x000000000000006C:word32]
-	rax = Mem0[rbp - 0x0000000000000068:word64]
-	r8 = (uint64) 0x00000001
-	rcx = (uint64) edx
-	rdx = (uint64) 0x00000000
-	rdi = rax
-	call component (retsize: 8;)
-	Mem0[rbp - 0x000000000000003C:word32] = eax
-	Mem0[rbp - 0x0000000000000038:word64] = 0x0000000000000000
-	Mem0[rbp - 0x0000000000000048:word32] = 0x00000000
-	rcx = rbp - 0x0000000000000048
-	rdx = rbp - 0x0000000000000038
-	rsi = Mem0[rbp - 0x0000000000000060:word64]
-	rax = Mem0[rbp - 0x0000000000000058:word64]
-	rdi = rax
-	call png_get_PLTE (retsize: 8;)
-	rax = (uint64) (eax & 0x00000008)
-	SZO = cond(eax)
-	C = false
-	SZO = cond(eax & eax)
-	C = false
-	branch Test(EQ,Z) l0000000000401137
-	// succ:  l0000000000400FE1 l0000000000401137
-l0000000000400FE1:
-	rax = (uint64) Mem0[rbp - 0x0000000000000048:word32]
-	SZO = cond(eax & eax)
-	C = false
-	branch Test(LE,SZO) l0000000000401137
-	// succ:  l0000000000400FEC l0000000000401137
-l0000000000400FEC:
-	rax = Mem0[rbp - 0x0000000000000038:word64]
-	SZO = cond(rax & rax)
-	C = false
-	branch Test(EQ,Z) l0000000000401137
-	// succ:  l0000000000400FF9 l0000000000401137
-l0000000000400FF9:
-	Mem0[rbp - 0x0000000000000030:word64] = 0x0000000000000000
-	Mem0[rbp - 0x0000000000000044:word32] = 0x00000000
-	rcx = rbp - 0x0000000000000044
-	rdx = rbp - 0x0000000000000030
-	rsi = Mem0[rbp - 0x0000000000000060:word64]
-	rax = Mem0[rbp - 0x0000000000000058:word64]
-	r8 = (uint64) 0x00000000
-	rdi = rax
-	call png_get_tRNS (retsize: 8;)
-	rax = (uint64) (eax & 0x00000010)
-	SZO = cond(eax)
-	C = false
-	SZO = cond(eax & eax)
-	C = false
-	branch Test(EQ,Z) l00000000004010D1
-	// succ:  l0000000000401031 l00000000004010D1
-l0000000000401031:
-	rax = (uint64) Mem0[rbp - 0x0000000000000044:word32]
-	SZO = cond(eax & eax)
-	C = false
-	branch Test(LE,SZO) l00000000004010D1
-	// succ:  l000000000040103C l00000000004010D1
-l000000000040103C:
-	rax = Mem0[rbp - 0x0000000000000030:word64]
-	SZO = cond(rax & rax)
-	C = false
-	branch Test(EQ,Z) l00000000004010D1
-	// succ:  l0000000000401049 l00000000004010D1
-l0000000000401049:
-	rax = (uint64) Mem0[rbp - 0x0000000000000044:word32]
-	SCZO = cond(Mem0[rbp - 0x000000000000003C:word32] - eax)
-	branch Test(UGE,C) l0000000000401063
-	// succ:  l0000000000401051 l0000000000401063
-l0000000000401051:
-	rdx = Mem0[rbp - 0x0000000000000030:word64]
-	rax = (uint64) Mem0[rbp - 0x000000000000003C:word32]
-	rax = rax + rdx
-	SCZO = cond(rax)
-	eax = (word32) Mem0[rax:byte]
-	esi = (word32) al
-	goto l0000000000401068
-	// succ:  l0000000000401068
-l0000000000401063:
-	rsi = (uint64) 0x000000FF
-	// succ:  l0000000000401068
-l0000000000401068:
-	rcx = Mem0[rbp - 0x0000000000000038:word64]
-	rdx = (uint64) Mem0[rbp - 0x000000000000003C:word32]
-	rax = rdx
-	rax = rax + rax
-	SCZO = cond(rax)
-	rax = rax + rdx
-	SCZO = cond(rax)
-	rax = rax + rcx
-	SCZO = cond(rax)
-	eax = (word32) Mem0[rax + 0x0000000000000002:byte]
-	edi = (word32) al
-	rcx = Mem0[rbp - 0x0000000000000038:word64]
-	rdx = (uint64) Mem0[rbp - 0x000000000000003C:word32]
-	rax = rdx
-	rax = rax + rax
-	SCZO = cond(rax)
-	rax = rax + rdx
-	SCZO = cond(rax)
-	rax = rax + rcx
-	SCZO = cond(rax)
-	eax = (word32) Mem0[rax + 0x0000000000000001:byte]
-	ecx = (word32) al
-	r8 = Mem0[rbp - 0x0000000000000038:word64]
-	rdx = (uint64) Mem0[rbp - 0x000000000000003C:word32]
-	rax = rdx
-	rax = rax + rax
-	SCZO = cond(rax)
-	rax = rax + rdx
-	SCZO = cond(rax)
-	rax = rax + r8
-	SCZO = cond(rax)
-	eax = (word32) Mem0[rax:byte]
-	edx = (word32) al
-	rax = (uint64) Mem0[rbp - 0x000000000000003C:word32]
-	r9 = (uint64) esi
-	r8 = (uint64) edi
-	rsi = (uint64) eax
-	rdi = (uint64) 0x004018B9
-	rax = (uint64) 0x00000000
-	eax = printf(rdi, rsi, rdx, rcx, r8, r9)
-	goto l0000000000401150
-	// succ:  l0000000000401150
-l00000000004010D1:
-	rcx = Mem0[rbp - 0x0000000000000038:word64]
-	rdx = (uint64) Mem0[rbp - 0x000000000000003C:word32]
-	rax = rdx
-	rax = rax + rax
-	SCZO = cond(rax)
-	rax = rax + rdx
-	SCZO = cond(rax)
-	rax = rax + rcx
-	SCZO = cond(rax)
-	eax = (word32) Mem0[rax + 0x0000000000000002:byte]
-	esi = (word32) al
-	rcx = Mem0[rbp - 0x0000000000000038:word64]
-	rdx = (uint64) Mem0[rbp - 0x000000000000003C:word32]
-	rax = rdx
-	rax = rax + rax
-	SCZO = cond(rax)
-	rax = rax + rdx
-	SCZO = cond(rax)
-	rax = rax + rcx
-	SCZO = cond(rax)
-	eax = (word32) Mem0[rax + 0x0000000000000001:byte]
-	ecx = (word32) al
-	rdi = Mem0[rbp - 0x0000000000000038:word64]
-	rdx = (uint64) Mem0[rbp - 0x000000000000003C:word32]
-	rax = rdx
-	rax = rax + rax
-	SCZO = cond(rax)
-	rax = rax + rdx
-	SCZO = cond(rax)
-	rax = rax + rdi
-	SCZO = cond(rax)
-	eax = (word32) Mem0[rax:byte]
-	edx = (word32) al
-	rax = (uint64) Mem0[rbp - 0x000000000000003C:word32]
-	r8 = (uint64) esi
-	rsi = (uint64) eax
-	rdi = (uint64) 0x004018D3
-	rax = (uint64) 0x00000000
-	eax = printf(rdi, rsi, rdx, rcx, r8)
-	goto l0000000000401150
-	// succ:  l0000000000401150
-l0000000000401137:
-	rax = (uint64) Mem0[rbp - 0x000000000000003C:word32]
-	rsi = (uint64) eax
-	rdi = (uint64) 0x004018EA
-	rax = (uint64) 0x00000000
-	eax = printf(rdi, rsi)
-	goto l00000000004012DA
-	// succ:  l00000000004012DA
-l0000000000401150:
-	goto l00000000004012DA
-	// succ:  l00000000004012DA
-l0000000000401155:
-	rdx = (uint64) Mem0[rbp - 0x0000000000000040:word32]
-	rsi = (uint64) Mem0[rbp - 0x000000000000006C:word32]
-	rax = Mem0[rbp - 0x0000000000000068:word64]
-	r8 = (uint64) 0x00000003
-	rcx = (uint64) edx
-	rdx = (uint64) 0x00000002
-	rdi = rax
-	call component (retsize: 8;)
-	r12 = (uint64) eax
-	rdx = (uint64) Mem0[rbp - 0x0000000000000040:word32]
-	rsi = (uint64) Mem0[rbp - 0x000000000000006C:word32]
-	rax = Mem0[rbp - 0x0000000000000068:word64]
-	r8 = (uint64) 0x00000003
-	rcx = (uint64) edx
-	rdx = (uint64) 0x00000001
-	rdi = rax
-	call component (retsize: 8;)
-	rbx = (uint64) eax
-	rdx = (uint64) Mem0[rbp - 0x0000000000000040:word32]
-	rsi = (uint64) Mem0[rbp - 0x000000000000006C:word32]
-	rax = Mem0[rbp - 0x0000000000000068:word64]
-	r8 = (uint64) 0x00000003
-	rcx = (uint64) edx
-	rdx = (uint64) 0x00000000
-	rdi = rax
-	call component (retsize: 8;)
-	rcx = (uint64) r12d
-	rdx = (uint64) ebx
-	rsi = (uint64) eax
-	rdi = (uint64) 0x00401906
-	rax = (uint64) 0x00000000
-	eax = printf(rdi, rsi, rdx, rcx)
-	goto l00000000004012DA
-	// succ:  l00000000004012DA
-l00000000004011D2:
-	rdx = (uint64) Mem0[rbp - 0x0000000000000040:word32]
-	rsi = (uint64) Mem0[rbp - 0x000000000000006C:word32]
-	rax = Mem0[rbp - 0x0000000000000068:word64]
-	r8 = (uint64) 0x00000002
-	rcx = (uint64) edx
-	rdx = (uint64) 0x00000001
-	rdi = rax
-	call component (retsize: 8;)
-	rbx = (uint64) eax
-	rdx = (uint64) Mem0[rbp - 0x0000000000000040:word32]
-	rsi = (uint64) Mem0[rbp - 0x000000000000006C:word32]
-	rax = Mem0[rbp - 0x0000000000000068:word64]
-	r8 = (uint64) 0x00000002
-	rcx = (uint64) edx
-	rdx = (uint64) 0x00000000
-	rdi = rax
-	call component (retsize: 8;)
-	rdx = (uint64) ebx
-	rsi = (uint64) eax
-	rdi = (uint64) 0x00401914
-	rax = (uint64) 0x00000000
-	eax = printf(rdi, rsi, rdx)
-	goto l00000000004012DA
-	// succ:  l00000000004012DA
+	switch ((word32) Mem51[(uint64) eax_65 * 0x0000000000000008 + 0x00401958:word64]) { l0000000000400F58 l00000000004012C9 l0000000000401155 l0000000000400F8D l00000000004011D2 l00000000004012C9 l000000000040122A }
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l000000000040122A:
-	rdx = (uint64) Mem0[rbp - 0x0000000000000040:word32]
-	rsi = (uint64) Mem0[rbp - 0x000000000000006C:word32]
-	rax = Mem0[rbp - 0x0000000000000068:word64]
-	r8 = (uint64) 0x00000004
-	rcx = (uint64) edx
-	rdx = (uint64) 0x00000003
-	rdi = rax
-	call component (retsize: 8;)
-	r13 = (uint64) eax
-	rdx = (uint64) Mem0[rbp - 0x0000000000000040:word32]
-	rsi = (uint64) Mem0[rbp - 0x000000000000006C:word32]
-	rax = Mem0[rbp - 0x0000000000000068:word64]
-	r8 = (uint64) 0x00000004
-	rcx = (uint64) edx
-	rdx = (uint64) 0x00000002
-	rdi = rax
-	call component (retsize: 8;)
-	r12 = (uint64) eax
-	rdx = (uint64) Mem0[rbp - 0x0000000000000040:word32]
-	rsi = (uint64) Mem0[rbp - 0x000000000000006C:word32]
-	rax = Mem0[rbp - 0x0000000000000068:word64]
-	r8 = (uint64) 0x00000004
-	rcx = (uint64) edx
-	rdx = (uint64) 0x00000001
-	rdi = rax
-	call component (retsize: 8;)
-	rbx = (uint64) eax
-	rdx = (uint64) Mem0[rbp - 0x0000000000000040:word32]
-	rsi = (uint64) Mem0[rbp - 0x000000000000006C:word32]
-	rax = Mem0[rbp - 0x0000000000000068:word64]
-	r8 = (uint64) 0x00000004
-	rcx = (uint64) edx
-	rdx = (uint64) 0x00000000
-	rdi = rax
-	call component (retsize: 8;)
-	r8 = (uint64) r13d
-	rcx = (uint64) r12d
-	rdx = (uint64) ebx
-	rsi = (uint64) eax
-	rdi = (uint64) 0x00401926
-	rax = (uint64) 0x00000000
-	eax = printf(rdi, rsi, rdx, rcx, r8)
-	goto l00000000004012DA
-	// succ:  l00000000004012DA
+	r8_154 = (uint64) (word32) (uint64) (word32) (word64) component((word32) (uint64) (word32) (uint64) eax_50, 0x00000003, (word32) (uint64) ecx, rdx, 0x00000004, out rcx_630)
+	rcx_156 = (uint64) (word32) (uint64) (word32) (word64) component((word32) (uint64) (word32) (uint64) eax_50, 0x00000002, (word32) (uint64) ecx, rdx, 0x00000004, out rcx_631)
+	printf(0x0000000000401926, (uint64) (word32) (word64) component((word32) (uint64) (word32) (uint64) eax_50, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000004, out rcx_633), (uint64) (word32) (uint64) (word32) (word64) component((word32) (uint64) (word32) (uint64) eax_50, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000004, out rcx_632), rcx_156, r8_154)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l00000000004011D2:
+	printf(0x0000000000401914, (uint64) (word32) (word64) component((word32) (uint64) (word32) (uint64) eax_50, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000002, out rcx_156), (uint64) (word32) (uint64) (word32) (word64) component((word32) (uint64) (word32) (uint64) eax_50, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000002, out rcx_629))
+	r8_154 = 0x0000000000000002
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000000400F8D:
+	word32 eax_230 = (word32) (word64) component((word32) (uint64) (word32) (uint64) eax_50, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000001, out rcx_628)
+	word64 rax_243
+	call png_get_PLTE (retsize: 8;)
+		uses: fs:fs,r12:r12,r13:r13,r8:0x0000000000000001,r9:r9_62,rax:rdi,rbp:fp - 8,rbx:rbx,rcx:fp - 0x0000000000000050,rdi:rdi,rdx:fp - 0x0000000000000040,rsi:rsi,rsp:fp - 0x0000000000000078,Stack +000C:ecx,Stack +0010:rdx,Stack +0018:rsi,Stack +0020:rdi,Stack +0030:0x00000000,Stack +0034:dwLoc4C,Stack +0038:eax_50,Stack +003C:eax_230,Stack +0040:0x0000000000000000,Stack +0048:qwLoc38,Stack +0050:rax_26,Stack +0060:rbx,Stack +0068:r12,Stack +0070:r13,Stack +0078:rbp
+		defs: r8:r8_244,r9:r9_245,rax:rax_243,rcx:rcx_242
+	branch (word32) (uint64) ((word32) rax_243 & 0x00000008) == 0x00000000 l0000000000401137
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000000400FE1:
+	branch true l0000000000401137
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000000400FEC:
+	branch 0x0000000000000000 == 0x0000000000000000 l0000000000401137
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000000401137:
+	printf(0x00000000004018EA, (uint64) (word32) (uint64) eax_230)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000000400FF9:
+	word64 rax_281
+	call png_get_tRNS (retsize: 8;)
+		uses: fs:fs,r12:r12,r13:r13,r8:0x0000000000000000,r9:r9_245,rax:rdi,rbp:fp - 8,rbx:rbx,rcx:fp - 0x000000000000004C,rdi:rdi,rdx:fp - 0x0000000000000038,rsi:rsi,rsp:fp - 0x0000000000000078,Stack +000C:ecx,Stack +0010:rdx,Stack +0018:rsi,Stack +0020:rdi,Stack +0030:0x00000000,Stack +0034:0x00000000,Stack +0038:eax_50,Stack +003C:eax_230,Stack +0040:0x0000000000000000,Stack +0048:0x0000000000000000,Stack +0050:rax_26,Stack +0060:rbx,Stack +0068:r12,Stack +0070:r13,Stack +0078:rbp
+		defs: r9:r9_283,rax:rax_281
+	branch (word32) (uint64) ((word32) rax_281 & 0x00000010) == 0x00000000 l00000000004010D1
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000000401031:
+	branch true l00000000004010D1
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l000000000040103C:
+	branch 0x0000000000000000 == 0x0000000000000000 l00000000004010D1
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l00000000004010D1:
+	word64 rdx_320 = (uint64) eax_230
+	rcx_156 = (word64) (word32) (byte) (word32) Mem270[(uint64) eax_230 * 0x0000000000000003 + 0x0000000000000001:byte] (alias)
+	r8_154 = (uint64) (word32) (byte) (word32) Mem270[(uint64) eax_230 * 0x0000000000000003 + 0x0000000000000002:byte]
+	printf(0x00000000004018D3, (uint64) (word32) (uint64) eax_230, DPB(rdx_320, (word32) (byte) (word32) Mem270[rdx_320 * 0x0000000000000003:byte], 0), rcx_156, r8_154)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000000401049:
+	word32 esi_349
+	branch eax_230 >=u 0x00000000 l0000000000401063
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000000401063:
+	esi_349 = 0x000000FF (alias)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000000401051:
+	esi_349 = (word32) (byte) (word32) Mem270[(uint64) eax_230:byte]
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000000401068:
+	word64 rdx_371 = (uint64) eax_230
+	rcx_156 = (word64) (word32) (byte) (word32) Mem270[(uint64) eax_230 * 0x0000000000000003 + 0x0000000000000001:byte] (alias)
+	r9_245 = (uint64) esi_349
+	r8_154 = (uint64) (word32) (byte) (word32) Mem270[(uint64) eax_230 * 0x0000000000000003 + 0x0000000000000002:byte]
+	printf(0x00000000004018B9, (uint64) (word32) (uint64) eax_230, DPB(rdx_371, (word32) (byte) (word32) Mem270[rdx_371 * 0x0000000000000003:byte], 0), rcx_156, r8_154, r9_245)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000000401150:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000000401155:
+	rcx_156 = (uint64) (word32) (uint64) (word32) (word64) component((word32) (uint64) (word32) (uint64) eax_50, 0x00000002, (word32) (uint64) ecx, rdx, 0x00000003, out rcx_625)
+	printf(0x0000000000401906, (uint64) (word32) (word64) component((word32) (uint64) (word32) (uint64) eax_50, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000003, out rcx_627), (uint64) (word32) (uint64) (word32) (word64) component((word32) (uint64) (word32) (uint64) eax_50, 0x00000001, (word32) (uint64) ecx, rdx, 0x00000003, out rcx_626), rcx_156)
+	r8_154 = 0x0000000000000003
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l00000000004012C9:
-	rax = Mem0[rbp - 0x0000000000000058:word64]
-	rsi = (uint64) 0x00401938
-	rdi = rax
 	call png_error (retsize: 8;)
-	// succ:  l00000000004012DA
+		uses: fs:fs,r12:r12,r13:r13,r8:r8_61,r9:r9_62,rax:rdi,rbp:fp - 8,rbx:rbx,rcx:rcx_59,rdi:rdi,rdx:rdx_58,rsi:0x0000000000401938,rsp:fp - 0x0000000000000078,Stack +000C:ecx,Stack +0010:rdx,Stack +0018:rsi,Stack +0020:rdi,Stack +0030:dwLoc50,Stack +0034:dwLoc4C,Stack +0038:eax_50,Stack +003C:dwLoc44,Stack +0040:qwLoc40,Stack +0048:qwLoc38,Stack +0050:rax_26,Stack +0060:rbx,Stack +0068:r12,Stack +0070:r13,Stack +0078:rbp
+		defs: r8:r8_480,r9:r9_482,rcx:rcx_476
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000000400F58:
+	printf(0x00000000004018B0, (uint64) (word32) (word64) component((word32) (uint64) (word32) (uint64) eax_50, 0x00000000, (word32) (uint64) ecx, rdx, 0x00000001, out rcx_156))
+	r8_154 = 0x0000000000000001
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l00000000004012DA:
-	rax = Mem0[rbp - 0x0000000000000028:word64]
-	rax = rax ^ Mem0[fs:0x00000028:word64]
-	SZO = cond(rax)
-	C = false
-	branch Test(EQ,Z) l00000000004012EE
-	// succ:  l00000000004012E9 l00000000004012EE
+	branch (rax_26 ^ Mem510[fs:0x00000028:word64]) == 0x0000000000000000 l00000000004012EE
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l00000000004012EE:
+	r8Out = r8_154
+	r9Out = r9_245
+	return rcx_156
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+print_pixel_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l00000000004012E9:
 	__stack_chk_fail()
-l00000000004012EE:
-	rsp = rsp + 0x0000000000000058
-	SCZO = cond(rsp)
-	rbx = Mem0[rsp:word64]
-	rsp = rsp + 8
-	r12 = Mem0[rsp:word64]
-	rsp = rsp + 8
-	r13 = Mem0[rsp:word64]
-	rsp = rsp + 8
-	rbp = Mem0[rsp:word64]
-	rsp = rsp + 8
-	return
-	// succ:  print_pixel_exit
-print_pixel_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// main
-// Return size: 8
-define main
+
+void main(word64 rbx, word64 rbp, word64 rsi, word32 edi, word64 r8, word64 r9, word64 r12, word64 r13, selector fs)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  edi:[0..31] fs:[0..15] r12:[0..63] r13:[0..63] r8:[0..63] r9:[0..63] rbp:[0..63] rbx:[0..63] rsi:[0..63]
+// LiveOut:
+// Trashed: SCZO rax rcx rdi rdx rsi
+// Preserved: r8 r9 rbp rsp
 main_entry:
-	// succ:  l00000000004012F9
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l00000000004012F9:
-	rsp = fp
-	rsp = rsp - 8
-	Mem0[rsp:word64] = rbp
-	rbp = rsp
-	rsp = rsp - 160
-	SCZO = cond(rsp)
-	Mem0[rbp - 0x0000000000000094:word32] = edi
-	Mem0[rbp - 0x00000000000000A0:word64] = rsi
-	rax = Mem0[fs:0x00000028:word64]
-	Mem0[rbp - 0x0000000000000008:word64] = rax
-	rax = (uint64) (eax ^ eax)
-	SZO = cond(eax)
-	C = false
-	Mem0[rbp - 0x0000000000000084:word32] = 0x00000001
-	SCZO = cond(Mem0[rbp - 0x0000000000000094:word32] - 0x00000004)
-	branch Test(NE,Z) l000000000040173F
-	// succ:  l0000000000401337 l000000000040173F
-l0000000000401337:
-	rax = Mem0[rbp - 0x00000000000000A0:word64]
-	rax = rax + 0x0000000000000008
-	SCZO = cond(rax)
-	rax = Mem0[rax:word64]
-	rdi = rax
-	eax = atol(rdi)
-	Mem0[rbp - 0x0000000000000028:word64] = rax
-	rax = Mem0[rbp - 0x00000000000000A0:word64]
-	rax = rax + 0x0000000000000010
-	SCZO = cond(rax)
-	rax = Mem0[rax:word64]
-	rdi = rax
-	eax = atol(rdi)
-	Mem0[rbp - 0x0000000000000020:word64] = rax
-	rax = Mem0[rbp - 0x00000000000000A0:word64]
-	rax = rax + 0x0000000000000018
-	SCZO = cond(rax)
-	rax = Mem0[rax:word64]
-	rsi = (uint64) 0x00401990
-	rdi = rax
-	rax = fopen(rdi, rsi)
-	Mem0[rbp - 0x0000000000000018:word64] = rax
-	Mem0[rbp - 0x0000000000000040:word64] = 0x0000000000000000
-	SCZO = cond(Mem0[rbp - 0x0000000000000018:word64] - 0x0000000000000000)
-	branch Test(EQ,Z) l0000000000401716
-	// succ:  l000000000040139D l0000000000401716
-l000000000040139D:
-	rcx = (uint64) 0x00000000
-	rdx = (uint64) 0x00000000
-	rsi = (uint64) 0x00000000
-	rdi = (uint64) 0x00401993
-	call png_create_read_struct (retsize: 8;)
-	Mem0[rbp - 0x0000000000000038:word64] = rax
-	rax = Mem0[rbp - 0x0000000000000038:word64]
-	SZO = cond(rax & rax)
-	C = false
-	branch Test(EQ,Z) l00000000004016F6
-	// succ:  l00000000004013C7 l00000000004016F6
-l00000000004013C7:
-	rax = Mem0[rbp - 0x0000000000000038:word64]
-	rdi = rax
-	call png_create_info_struct (retsize: 8;)
-	Mem0[rbp - 0x0000000000000030:word64] = rax
-	rax = Mem0[rbp - 0x0000000000000030:word64]
-	SZO = cond(rax & rax)
-	C = false
-	branch Test(EQ,Z) l00000000004016C0
-	// succ:  l00000000004013E4 l00000000004016C0
-l00000000004013E4:
-	rax = Mem0[rbp - 0x0000000000000038:word64]
-	rdx = Mem0[rbp - 0x0000000000000018:word64]
-	rsi = rdx
-	rdi = rax
-	call png_init_io (retsize: 8;)
-	rdx = Mem0[rbp - 0x0000000000000030:word64]
-	rax = Mem0[rbp - 0x0000000000000038:word64]
-	rsi = rdx
-	rdi = rax
-	call png_read_info (retsize: 8;)
-	rdx = Mem0[rbp - 0x0000000000000030:word64]
-	rax = Mem0[rbp - 0x0000000000000038:word64]
-	rsi = rdx
-	rdi = rax
-	call png_get_rowbytes (retsize: 8;)
-	rdx = rax
-	rax = Mem0[rbp - 0x0000000000000038:word64]
-	rsi = rdx
-	rdi = rax
-	call png_malloc (retsize: 8;)
-	Mem0[rbp - 0x0000000000000040:word64] = rax
-	rax = Mem0[rbp - 0x0000000000000040:word64]
-	Mem0[rbp - 0x0000000000000010:word64] = rax
-	rsi = Mem0[rbp - 0x0000000000000030:word64]
-	rax = Mem0[rbp - 0x0000000000000038:word64]
-	r9 = rbp - 0x0000000000000074
-	r8 = rbp - 0x0000000000000078
-	rcx = rbp - 0x000000000000007C
-	rdx = rbp - 0x0000000000000080
-	rsp = rsp - 0x0000000000000008
-	SCZO = cond(rsp)
-	rdi = rbp - 0x0000000000000068
-	rsp = rsp - 8
-	Mem0[rsp:word64] = rdi
-	rdi = rbp - 0x000000000000006C
-	rsp = rsp - 8
-	Mem0[rsp:word64] = rdi
-	rdi = rbp - 0x0000000000000070
-	rsp = rsp - 8
-	Mem0[rsp:word64] = rdi
-	rdi = rax
-	call png_get_IHDR (retsize: 8;)
-	rsp = rsp + 0x0000000000000020
-	SCZO = cond(rsp)
-	SZO = cond(eax & eax)
-	C = false
-	branch Test(EQ,Z) l00000000004016AF
-	// succ:  l000000000040147A l00000000004016AF
-l000000000040147A:
-	rax = (uint64) Mem0[rbp - 0x0000000000000070:word32]
-	SZO = cond(eax & eax)
-	C = false
-	branch Test(EQ,Z) l0000000000401488
-	// succ:  l0000000000401481 l0000000000401488
-l0000000000401481:
-	SCZO = cond(eax - 0x00000001)
-	branch Test(EQ,Z) l0000000000401491
-	// succ:  l0000000000401486 l0000000000401491
-l0000000000401486:
-	goto l000000000040149A
-	// succ:  l000000000040149A
-l0000000000401488:
-	Mem0[rbp - 0x0000000000000064:word32] = 0x00000001
-	goto l00000000004014AB
-	// succ:  l00000000004014AB
-l0000000000401491:
-	Mem0[rbp - 0x0000000000000064:word32] = 0x00000007
-	goto l00000000004014AB
-	// succ:  l00000000004014AB
-l000000000040149A:
-	rax = Mem0[rbp - 0x0000000000000038:word64]
-	rsi = (uint64) 0x0040199A
-	rdi = rax
-	call png_error (retsize: 8;)
-	// succ:  l00000000004014AB
-l00000000004014AB:
-	rax = Mem0[rbp - 0x0000000000000038:word64]
-	rdi = rax
-	call png_start_read_image (retsize: 8;)
-	Mem0[rbp - 0x0000000000000060:word32] = 0x00000000
-	goto l0000000000401673
-	// succ:  l0000000000401673
-l00000000004014C3:
-	rax = (uint64) Mem0[rbp - 0x0000000000000070:word32]
-	SCZO = cond(eax - 0x00000001)
-	branch Test(NE,Z) l00000000004015CE
-	// succ:  l00000000004014CF l00000000004015CE
-l00000000004014CF:
-	SCZO = cond(Mem0[rbp - 0x0000000000000060:word32] - 0x00000001)
-	branch Test(LE,SZO) l00000000004014EF
-	// succ:  l00000000004014D5 l00000000004014EF
-l00000000004014D5:
-	rax = (uint64) 0x00000007
-	rax = (uint64) (eax - Mem0[rbp - 0x0000000000000060:word32])
-	SCZO = cond(eax)
-	rax = (uint64) (eax >> 0x00000001)
-	SCZO = cond(eax)
-	rdx = (uint64) 0x00000001
-	rcx = (uint64) eax
-	rdx = (uint64) (edx << cl)
-	SCZO = cond(edx)
-	rax = (uint64) edx
-	rax = (uint64) (eax - 0x00000001)
-	SCZO = cond(eax)
-	goto l00000000004014F4
-	// succ:  l00000000004014F4
-l00000000004014EF:
-	rax = (uint64) 0x00000007
-	// succ:  l00000000004014F4
-l00000000004014F4:
-	rdx = (uint64) Mem0[rbp - 0x0000000000000060:word32]
-	rsi = (uint64) edx
-	rsi = (uint64) (esi & 0x00000001)
-	SZO = cond(esi)
-	C = false
-	rdx = (uint64) Mem0[rbp - 0x0000000000000060:word32]
-	rdx = (uint64) (edx + 0x00000001)
-	SCZO = cond(edx)
-	rdx = (uint64) (edx >> 0x00000001)
-	SCZO = cond(edx)
-	rcx = (uint64) 0x00000003
-	rcx = (uint64) (ecx - edx)
-	SCZO = cond(ecx)
-	rdx = (uint64) ecx
-	rcx = (uint64) edx
-	rsi = (uint64) (esi << cl)
-	SCZO = cond(esi)
-	rdx = (uint64) esi
-	rdx = (uint64) (edx & 0x00000007)
-	SZO = cond(edx)
-	C = false
-	rax = (uint64) (eax - edx)
-	SCZO = cond(eax)
-	rdx = (uint64) eax
-	rax = (uint64) Mem0[rbp - 0x0000000000000080:word32]
-	rdx = (uint64) (edx + eax)
-	SCZO = cond(edx)
-	SCZO = cond(Mem0[rbp - 0x0000000000000060:word32] - 0x00000001)
-	branch Test(LE,SZO) l0000000000401531
-	// succ:  l0000000000401525 l0000000000401531
-l0000000000401525:
-	rax = (uint64) 0x00000007
-	rax = (uint64) (eax - Mem0[rbp - 0x0000000000000060:word32])
-	SCZO = cond(eax)
-	rax = (uint64) (eax >> 0x00000001)
-	SCZO = cond(eax)
-	goto l0000000000401536
-	// succ:  l0000000000401536
-l0000000000401531:
-	rax = (uint64) 0x00000003
-	// succ:  l0000000000401536
-l0000000000401536:
-	rcx = (uint64) eax
-	rdx = (uint64) (edx >>u cl)
-	SCZO = cond(edx)
-	rax = (uint64) edx
-	SZO = cond(eax & eax)
-	C = false
-	branch Test(EQ,Z) l000000000040166E
-	// succ:  l0000000000401544 l000000000040166E
-l0000000000401544:
-	rax = (uint64) Mem0[rbp - 0x0000000000000060:word32]
-	rax = (uint64) (eax & 0x00000001)
-	SZO = cond(eax)
-	C = false
-	rdx = (uint64) eax
-	rax = (uint64) Mem0[rbp - 0x0000000000000060:word32]
-	rax = (uint64) (eax + 0x00000001)
-	SCZO = cond(eax)
-	rax = (uint64) (eax >> 0x00000001)
-	SCZO = cond(eax)
-	rcx = (uint64) 0x00000003
-	rcx = (uint64) (ecx - eax)
-	SCZO = cond(ecx)
-	rax = (uint64) ecx
-	rcx = (uint64) eax
-	rdx = (uint64) (edx << cl)
-	SCZO = cond(edx)
-	rax = (uint64) edx
-	rax = (uint64) (eax & 0x00000007)
-	SZO = cond(eax)
-	C = false
-	Mem0[rbp - 0x0000000000000058:word32] = eax
-	rax = (uint64) Mem0[rbp - 0x0000000000000060:word32]
-	rax = (uint64) (eax & 0x00000001)
-	SZO = cond(eax)
-	C = false
-	SZO = cond(eax & eax)
-	C = false
-	al = Test(EQ,Z)
-	edx = (word32) al
-	rax = (uint64) Mem0[rbp - 0x0000000000000060:word32]
-	rax = (uint64) (eax >> 0x00000001)
-	SCZO = cond(eax)
-	rcx = (uint64) 0x00000003
-	rcx = (uint64) (ecx - eax)
-	SCZO = cond(ecx)
-	rax = (uint64) ecx
-	rcx = (uint64) eax
-	rdx = (uint64) (edx << cl)
-	SCZO = cond(edx)
-	rax = (uint64) edx
-	rax = (uint64) (eax & 0x00000007)
-	SZO = cond(eax)
-	C = false
-	Mem0[rbp - 0x000000000000005C:word32] = eax
-	rax = (uint64) 0x00000007
-	rax = (uint64) (eax - Mem0[rbp - 0x0000000000000060:word32])
-	SCZO = cond(eax)
-	rax = (uint64) (eax >> 0x00000001)
-	SCZO = cond(eax)
-	rdx = (uint64) 0x00000001
-	rcx = (uint64) eax
-	rdx = (uint64) (edx << cl)
-	SCZO = cond(edx)
-	rax = (uint64) edx
-	Mem0[rbp - 0x0000000000000050:word32] = eax
-	SCZO = cond(Mem0[rbp - 0x0000000000000060:word32] - 0x00000002)
-	branch Test(LE,SZO) l00000000004015C4
-	// succ:  l00000000004015AF l00000000004015C4
-l00000000004015AF:
-	rax = (uint64) Mem0[rbp - 0x0000000000000060:word32]
-	rax = (uint64) (eax - 0x00000001)
-	SCZO = cond(eax)
-	rax = (uint64) (eax >> 0x00000001)
-	SCZO = cond(eax)
-	rdx = (uint64) 0x00000008
-	rcx = (uint64) eax
-	rdx = (uint64) (edx >> cl)
-	SCZO = cond(edx)
-	rax = (uint64) edx
-	goto l00000000004015C9
-	// succ:  l00000000004015C9
-l00000000004015C4:
-	rax = (uint64) 0x00000008
-	// succ:  l00000000004015C9
-l00000000004015C9:
-	Mem0[rbp - 0x0000000000000054:word32] = eax
-	goto l00000000004015E8
-	// succ:  l00000000004015E8
-l00000000004015CE:
-	Mem0[rbp - 0x0000000000000058:word32] = 0x00000000
-	rax = (uint64) Mem0[rbp - 0x0000000000000058:word32]
-	Mem0[rbp - 0x000000000000005C:word32] = eax
-	Mem0[rbp - 0x0000000000000050:word32] = 0x00000001
-	rax = (uint64) Mem0[rbp - 0x0000000000000050:word32]
-	Mem0[rbp - 0x0000000000000054:word32] = eax
-	// succ:  l00000000004015E8
-l00000000004015E8:
-	rax = (uint64) Mem0[rbp - 0x000000000000005C:word32]
-	Mem0[rbp - 0x000000000000004C:word32] = eax
-	goto l0000000000401664
-	// succ:  l0000000000401664
-l00000000004015F0:
-	rdi = (uint64) 0x004019B6
-	eax = puts(rdi)
-	rax = Mem0[rbp - 0x0000000000000038:word64]
-	rcx = Mem0[rbp - 0x0000000000000010:word64]
-	rdx = (uint64) 0x00000000
-	rsi = rcx
-	rdi = rax
-	call png_read_row (retsize: 8;)
-	rax = (uint64) Mem0[rbp - 0x000000000000004C:word32]
-	SCZO = cond(rax - Mem0[rbp - 0x0000000000000020:word64])
-	branch Test(NE,Z) l000000000040165E
-	// succ:  l000000000040161B l000000000040165E
-l000000000040161B:
-	rax = (uint64) Mem0[rbp - 0x0000000000000058:word32]
-	Mem0[rbp - 0x0000000000000048:word32] = eax
-	Mem0[rbp - 0x0000000000000044:word32] = 0x00000000
-	goto l0000000000401656
-	// succ:  l0000000000401656
-l000000000040162A:
-	rax = (uint64) Mem0[rbp - 0x0000000000000048:word32]
-	SCZO = cond(rax - Mem0[rbp - 0x0000000000000028:word64])
-	branch Test(NE,Z) l000000000040164C
-	// succ:  l0000000000401633 l000000000040164C
-l0000000000401633:
-	rsi = Mem0[rbp - 0x0000000000000030:word64]
-	rax = Mem0[rbp - 0x0000000000000038:word64]
-	rcx = (uint64) Mem0[rbp - 0x0000000000000044:word32]
-	rdx = Mem0[rbp - 0x0000000000000010:word64]
-	rdi = rax
-	call print_pixel (retsize: 8;)
-	goto l000000000040167F
-	// succ:  l000000000040167F
-l000000000040164C:
-	rax = (uint64) Mem0[rbp - 0x0000000000000050:word32]
-	v26 = Mem0[rbp - 0x0000000000000048:word32] + eax
-	Mem0[rbp - 0x0000000000000048:word32] = v26
-	SCZO = cond(v26)
-	v27 = Mem0[rbp - 0x0000000000000044:word32] + 0x00000001
-	Mem0[rbp - 0x0000000000000044:word32] = v27
-	SCZO = cond(v27)
-	// succ:  l0000000000401656
-l0000000000401656:
-	rax = (uint64) Mem0[rbp - 0x0000000000000080:word32]
-	SCZO = cond(Mem0[rbp - 0x0000000000000048:word32] - eax)
-	branch Test(ULT,C) l000000000040162A
-	// succ:  l000000000040165E l000000000040162A
-l000000000040165E:
-	rax = (uint64) Mem0[rbp - 0x0000000000000054:word32]
-	v25 = Mem0[rbp - 0x000000000000004C:word32] + eax
-	Mem0[rbp - 0x000000000000004C:word32] = v25
-	SCZO = cond(v25)
-	// succ:  l0000000000401664
-l0000000000401664:
-	rax = (uint64) Mem0[rbp - 0x000000000000007C:word32]
-	SCZO = cond(Mem0[rbp - 0x000000000000004C:word32] - eax)
-	branch Test(ULT,C) l00000000004015F0
-	// succ:  l000000000040166C l00000000004015F0
-l000000000040166C:
-	goto l000000000040166F
-	// succ:  l000000000040166F
-l000000000040166E:
-	// succ:  l000000000040166F
-l000000000040166F:
-	v24 = Mem0[rbp - 0x0000000000000060:word32] + 0x00000001
-	Mem0[rbp - 0x0000000000000060:word32] = v24
-	SCZO = cond(v24)
-	// succ:  l0000000000401673
-l0000000000401673:
-	rax = (uint64) Mem0[rbp - 0x0000000000000060:word32]
-	SCZO = cond(eax - Mem0[rbp - 0x0000000000000064:word32])
-	branch Test(LT,SO) l00000000004014C3
-	// succ:  l000000000040167F l00000000004014C3
-l000000000040167F:
-	Mem0[rbp - 0x0000000000000040:word64] = 0x0000000000000000
-	rax = Mem0[rbp - 0x0000000000000038:word64]
-	rdx = Mem0[rbp - 0x0000000000000010:word64]
-	rsi = rdx
-	rdi = rax
-	call png_free (retsize: 8;)
-	rax = Mem0[rbp - 0x0000000000000038:word64]
-	rdx = rbp - 0x0000000000000030
-	rsi = rdx
-	rdi = rax
-	call png_destroy_info_struct (retsize: 8;)
-	goto l00000000004016DE
-	// succ:  l00000000004016DE
-l00000000004016AF:
-	rax = Mem0[rbp - 0x0000000000000038:word64]
-	rsi = (uint64) 0x004019C3
-	rdi = rax
-	call png_error (retsize: 8;)
-	// succ:  l00000000004016C0
-l00000000004016C0:
-	rax = Mem0[0x0000000000602100:word64]
-	rcx = rax
-	rdx = (uint64) 0x0000002C
-	rsi = (uint64) 0x00000001
-	rdi = (uint64) 0x004019E8
-	eax = fwrite(rdi, rsi, rdx, rcx)
-	// succ:  l00000000004016DE
-l00000000004016DE:
-	rax = rbp - 0x0000000000000038
-	rdx = (uint64) 0x00000000
-	rsi = (uint64) 0x00000000
-	rdi = rax
-	call png_destroy_read_struct (retsize: 8;)
-	goto l000000000040175D
-	// succ:  l000000000040175D
-l00000000004016F6:
-	rax = Mem0[0x0000000000602100:word64]
-	rcx = rax
-	rdx = (uint64) 0x0000002E
-	rsi = (uint64) 0x00000001
-	rdi = (uint64) 0x00401A18
-	eax = fwrite(rdi, rsi, rdx, rcx)
-	goto l000000000040175D
-	// succ:  l000000000040175D
-l0000000000401716:
-	rax = Mem0[rbp - 0x00000000000000A0:word64]
-	rax = rax + 0x0000000000000018
-	SCZO = cond(rax)
-	rdx = Mem0[rax:word64]
-	rax = Mem0[0x0000000000602100:word64]
-	rsi = (uint64) 0x00401A48
-	rdi = rax
-	rax = (uint64) 0x00000000
-	eax = fprintf(rdi, rsi, rdx)
-	goto l000000000040175D
-	// succ:  l000000000040175D
+	word64 rax_13 = Mem11[fs:0x00000028:word64]
+	branch edi != 0x00000004 l000000000040173F
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l000000000040173F:
-	rax = Mem0[0x0000000000602100:word64]
-	rcx = rax
-	rdx = (uint64) 0x00000027
-	rsi = (uint64) 0x00000001
-	rdi = (uint64) 0x00401A70
-	eax = fwrite(rdi, rsi, rdx, rcx)
-	// succ:  l000000000040175D
+	fwrite(0x0000000000401A70, 0x0000000000000001, 0x0000000000000027, Mem16[0x0000000000602100:word64])
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000000401337:
+	word64 rax_27 = Mem16[rsi + 0x0000000000000008:word64]
+	word64 rax_30 = DPB(rax_27, atol(rax_27), 0)
+	word64 rax_34 = Mem31[rsi + 0x0000000000000010:word64]
+	word64 rax_37 = DPB(rax_34, atol(rax_34), 0)
+	word64 rax_44 = fopen(Mem38[rsi + 0x0000000000000018:word64], 0x0000000000401990)
+	word64 qwLoc48_667 = 0x0000000000000000
+	branch rax_44 == 0x0000000000000000 l0000000000401716
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000000401716:
+	fprintf(Mem46[0x0000000000602100:word64], 0x0000000000401A48, Mem46[rsi + 0x0000000000000018:word64])
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l000000000040139D:
+	word64 rsi_63
+	word64 rax_64
+	word64 rcx_65
+	word64 rdx_66
+	word64 r9_68
+	word64 r8_70
+	call png_create_read_struct (retsize: 8;)
+		uses: fs:fs,r12:r12,r13:r13,r8:r8,r9:r9,rax:rax_44,rbp:fp - 8,rbx:rbx,rcx:0x0000000000000000,rdi:0x0000000000401993,rdx:0x0000000000000000,rsi:0x0000000000000000,rsp:fp - 168,Stack +0008:rsi,Stack +0014:edi,Stack +0024:0x00000001,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C,Stack +0048:dwLoc68,Stack +004C:dwLoc64,Stack +0050:dwLoc60,Stack +0054:dwLoc5C,Stack +0058:dwLoc58,Stack +005C:dwLoc54,Stack +0060:dwLoc50,Stack +0064:dwLoc4C,Stack +0068:0x0000000000000000,Stack +0070:rax_64,Stack +0078:qwLoc38,Stack +0080:rax_30,Stack +0088:rax_37,Stack +0090:rax_44,Stack +0098:qwLoc18,Stack +00A0:rax_13,Stack +00A8:rbp,Stack +FFFFFFE8:qwLocC8,Stack +FFFFFFF0:qwLocC0,Stack +FFFFFFF8:qwLocB8
+		defs: r8:r8_70,r9:r9_68,rax:rax_64,rcx:rcx_65,rdx:rdx_66,rsi:rsi_63
+	branch rax_64 == 0x0000000000000000 l00000000004016F6
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l00000000004016F6:
+	fwrite(0x0000000000401A18, 0x0000000000000001, 0x000000000000002E, Mem72[0x0000000000602100:word64])
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l00000000004013C7:
+	word64 rcx_193
+	word64 rax_87
+	word64 rcx_88
+	word64 r9_188
+	word64 r8_189
+	call png_create_info_struct (retsize: 8;)
+		uses: fs:fs,r12:r12,r13:r13,r8:r8_70,r9:r9_68,rax:rax_64,rbp:fp - 8,rbx:rbx,rcx:rcx_65,rdi:rax_64,rdx:rdx_66,rsi:rsi_63,rsp:fp - 168,Stack +0008:rsi,Stack +0014:edi,Stack +0024:0x00000001,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C,Stack +0048:dwLoc68,Stack +004C:dwLoc64,Stack +0050:dwLoc60,Stack +0054:dwLoc5C,Stack +0058:dwLoc58,Stack +005C:dwLoc54,Stack +0060:dwLoc50,Stack +0064:dwLoc4C,Stack +0068:0x0000000000000000,Stack +0070:rax_64,Stack +0078:rax_87,Stack +0080:rax_30,Stack +0088:rax_37,Stack +0090:rax_44,Stack +0098:qwLoc18,Stack +00A0:rax_13,Stack +00A8:rbp,Stack +FFFFFFE8:qwLocC8,Stack +FFFFFFF0:qwLocC0,Stack +FFFFFFF8:qwLocB8
+		defs: r8:r8_91,r9:r9_90,rax:rax_87,rcx:rcx_88
+	branch rax_87 == 0x0000000000000000 l00000000004016C0
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l00000000004013E4:
+	word64 rcx_105
+	word64 r9_107
+	word64 r8_108
+	call png_init_io (retsize: 8;)
+		uses: fs:fs,r12:r12,r13:r13,r8:r8_91,r9:r9_90,rax:rax_64,rbp:fp - 8,rbx:rbx,rcx:rcx_88,rdi:rax_64,rdx:rax_44,rsi:rax_44,rsp:fp - 168,Stack +0008:rsi,Stack +0014:edi,Stack +0024:0x00000001,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C,Stack +0048:dwLoc68,Stack +004C:dwLoc64,Stack +0050:dwLoc60,Stack +0054:dwLoc5C,Stack +0058:dwLoc58,Stack +005C:dwLoc54,Stack +0060:dwLoc50,Stack +0064:dwLoc4C,Stack +0068:0x0000000000000000,Stack +0070:rax_64,Stack +0078:rax_87,Stack +0080:rax_30,Stack +0088:rax_37,Stack +0090:rax_44,Stack +0098:rax_140,Stack +00A0:rax_13,Stack +00A8:rbp,Stack +FFFFFFE8:fp - 0x0000000000000078,Stack +FFFFFFF0:fp - 0x0000000000000074,Stack +FFFFFFF8:fp - 0x0000000000000070
+		defs: r8:r8_108,r9:r9_107,rcx:rcx_105
+	word64 rcx_117
+	word64 r9_119
+	word64 r8_120
+	call png_read_info (retsize: 8;)
+		uses: fs:fs,r12:r12,r13:r13,r8:r8_108,r9:r9_107,rax:rax_64,rbp:fp - 8,rbx:rbx,rcx:rcx_105,rdi:rax_64,rdx:rax_87,rsi:rax_87,rsp:fp - 168,Stack +0008:rsi,Stack +0014:edi,Stack +0024:0x00000001,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C,Stack +0048:dwLoc68,Stack +004C:dwLoc64,Stack +0050:dwLoc60,Stack +0054:dwLoc5C,Stack +0058:dwLoc58,Stack +005C:dwLoc54,Stack +0060:dwLoc50,Stack +0064:dwLoc4C,Stack +0068:0x0000000000000000,Stack +0070:rax_64,Stack +0078:rax_87,Stack +0080:rax_30,Stack +0088:rax_37,Stack +0090:rax_44,Stack +0098:rax_140,Stack +00A0:rax_13,Stack +00A8:rbp,Stack +FFFFFFE8:fp - 0x0000000000000078,Stack +FFFFFFF0:fp - 0x0000000000000074,Stack +FFFFFFF8:fp - 0x0000000000000070
+		defs: r8:r8_120,r9:r9_119,rcx:rcx_117
+	word64 rax_128
+	word64 rcx_129
+	word64 r9_131
+	word64 r8_132
+	call png_get_rowbytes (retsize: 8;)
+		uses: fs:fs,r12:r12,r13:r13,r8:r8_120,r9:r9_119,rax:rax_64,rbp:fp - 8,rbx:rbx,rcx:rcx_117,rdi:rax_64,rdx:rax_87,rsi:rax_87,rsp:fp - 168,Stack +0008:rsi,Stack +0014:edi,Stack +0024:0x00000001,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C,Stack +0048:dwLoc68,Stack +004C:dwLoc64,Stack +0050:dwLoc60,Stack +0054:dwLoc5C,Stack +0058:dwLoc58,Stack +005C:dwLoc54,Stack +0060:dwLoc50,Stack +0064:dwLoc4C,Stack +0068:0x0000000000000000,Stack +0070:rax_64,Stack +0078:rax_87,Stack +0080:rax_30,Stack +0088:rax_37,Stack +0090:rax_44,Stack +0098:rax_140,Stack +00A0:rax_13,Stack +00A8:rbp,Stack +FFFFFFE8:fp - 0x0000000000000078,Stack +FFFFFFF0:fp - 0x0000000000000074,Stack +FFFFFFF8:fp - 0x0000000000000070
+		defs: r8:r8_132,r9:r9_131,rax:rax_128,rcx:rcx_129
+	word64 rax_140
+	call png_malloc (retsize: 8;)
+		uses: fs:fs,r12:r12,r13:r13,r8:r8_132,r9:r9_131,rax:rax_64,rbp:fp - 8,rbx:rbx,rcx:rcx_129,rdi:rax_64,rdx:rax_128,rsi:rax_128,rsp:fp - 168,Stack +0008:rsi,Stack +0014:edi,Stack +0024:0x00000001,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C,Stack +0048:dwLoc68,Stack +004C:dwLoc64,Stack +0050:dwLoc60,Stack +0054:dwLoc5C,Stack +0058:dwLoc58,Stack +005C:dwLoc54,Stack +0060:dwLoc50,Stack +0064:dwLoc4C,Stack +0068:0x0000000000000000,Stack +0070:rax_64,Stack +0078:rax_87,Stack +0080:rax_30,Stack +0088:rax_37,Stack +0090:rax_44,Stack +0098:rax_140,Stack +00A0:rax_13,Stack +00A8:rbp,Stack +FFFFFFE8:fp - 0x0000000000000078,Stack +FFFFFFF0:fp - 0x0000000000000074,Stack +FFFFFFF8:fp - 0x0000000000000070
+		defs: rax:rax_140
+	word64 rax_169
+	word64 rsi_168
+	word64 rcx_170
+	word64 rdx_171
+	word64 r9_172
+	word64 r8_173
+	call png_get_IHDR (retsize: 8;)
+		uses: fs:fs,r12:r12,r13:r13,r8:fp - 0x0000000000000080,r9:fp - 0x000000000000007C,rax:rax_64,rbp:fp - 8,rbx:rbx,rcx:fp - 0x0000000000000084,rdi:rax_64,rdx:fp - 0x0000000000000088,rsi:rax_87,rsp:fp - 0x00000000000000C8,Stack +0008:fp - 0x0000000000000078,Stack +0010:fp - 0x0000000000000074,Stack +0018:fp - 0x0000000000000070,Stack +0028:rsi,Stack +0034:edi,Stack +0044:0x00000001,Stack +0048:dwLoc88,Stack +004C:dwLoc84,Stack +0058:dwLoc78,Stack +0064:dwLoc6C,Stack +0068:dwLoc68,Stack +006C:dwLoc64,Stack +0070:dwLoc60,Stack +0074:dwLoc5C,Stack +0078:dwLoc58,Stack +007C:dwLoc54,Stack +0080:dwLoc50,Stack +0084:dwLoc4C,Stack +0088:rax_140,Stack +0090:rax_64,Stack +0098:rax_87,Stack +00A0:rax_30,Stack +00A8:rax_37,Stack +00B0:rax_44,Stack +00B8:rax_140,Stack +00C0:rax_13,Stack +00C8:rbp
+		defs: r8:r8_173,r9:r9_172,rax:rax_169,rcx:rcx_170,rdx:rdx_171,rsi:rsi_168
+	qwLoc48_667 = rax_140
+	qwLoc18 = rax_140
+	qwLocB8 = fp - 0x0000000000000070
+	qwLocC0 = fp - 0x0000000000000074
+	qwLocC8 = fp - 0x0000000000000078
+	branch (word32) rax_169 == 0x00000000 l00000000004016AF
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l00000000004016AF:
+	call png_error (retsize: 8;)
+		uses: fs:fs,r12:r12,r13:r13,r8:r8_173,r9:r9_172,rax:rax_64,rbp:fp - 8,rbx:rbx,rcx:rcx_170,rdi:rax_64,rdx:rdx_171,rsi:0x00000000004019C3,rsp:fp - 0x00000000000000A8,Stack +0008:rsi,Stack +0014:edi,Stack +0024:0x00000001,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C,Stack +0048:dwLoc68,Stack +004C:dwLoc64,Stack +0050:dwLoc60,Stack +0054:dwLoc5C,Stack +0058:dwLoc58,Stack +005C:dwLoc54,Stack +0060:dwLoc50,Stack +0064:dwLoc4C,Stack +0068:rax_140,Stack +0070:rax_64,Stack +0078:rax_87,Stack +0080:rax_30,Stack +0088:rax_37,Stack +0090:rax_44,Stack +0098:rax_140,Stack +00A0:rax_13,Stack +00A8:rbp,Stack +FFFFFFE8:fp - 0x0000000000000078,Stack +FFFFFFF0:fp - 0x0000000000000074,Stack +FFFFFFF8:fp - 0x0000000000000070
+		defs: r8:r8_189,r9:r9_188
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l00000000004016C0:
+	word64 rax_192 = Mem191[0x0000000000602100:word64]
+	fwrite(0x00000000004019E8, 0x0000000000000001, 0x000000000000002C, rax_192)
+	rcx_193 = rax_192
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l000000000040147A:
+	word32 eax_199 = (word32) (uint64) dwLoc78
+	branch eax_199 == 0x00000000 l0000000000401488
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000000401488:
+	dwLoc6C = 0x00000001
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000000401481:
+	branch eax_199 == 0x00000001 l0000000000401491
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000000401491:
+	dwLoc6C = 0x00000007
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000000401486:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l000000000040149A:
+	call png_error (retsize: 8;)
+		uses: fs:fs,r12:r12,r13:r13,r8:r8_173,r9:r9_172,rax:rax_64,rbp:fp - 8,rbx:rbx,rcx:rcx_170,rdi:rax_64,rdx:rdx_171,rsi:0x000000000040199A,rsp:fp - 0x00000000000000A8,Stack +0008:rsi,Stack +0014:edi,Stack +0024:0x00000001,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C,Stack +0048:dwLoc68,Stack +004C:dwLoc64,Stack +0050:dwLoc60,Stack +0054:dwLoc5C,Stack +0058:dwLoc58,Stack +005C:dwLoc54,Stack +0060:dwLoc50,Stack +0064:dwLoc4C,Stack +0068:rax_140,Stack +0070:rax_64,Stack +0078:rax_87,Stack +0080:rax_30,Stack +0088:rax_37,Stack +0090:rax_44,Stack +0098:rax_140,Stack +00A0:rax_13,Stack +00A8:rbp,Stack +FFFFFFE8:fp - 0x0000000000000078,Stack +FFFFFFF0:fp - 0x0000000000000074,Stack +FFFFFFF8:fp - 0x0000000000000070
+		defs: r8:r8_216,r9:r9_215,rcx:rcx_213,rdx:rdx_214,rsi:rsi_211
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l00000000004014AB:
+	word64 rcx_229
+	word64 r9_233
+	word64 r8_235
+	call png_start_read_image (retsize: 8;)
+		uses: fs:fs,r12:r12,r13:r13,r8:r8_234,r9:r9_232,rax:rax_64,rbp:fp - 8,rbx:rbx,rcx:rcx_228,rdi:rax_64,rdx:rdx_230,rsi:rsi_224,rsp:fp - 0x00000000000000A8,Stack +0008:rsi,Stack +0014:edi,Stack +0024:0x00000001,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C_695,Stack +0048:0x00000000,Stack +004C:dwLoc64,Stack +0050:dwLoc60,Stack +0054:dwLoc5C,Stack +0058:dwLoc58,Stack +005C:dwLoc54,Stack +0060:dwLoc50,Stack +0064:dwLoc4C,Stack +0068:rax_140,Stack +0070:rax_64,Stack +0078:rax_87,Stack +0080:rax_30,Stack +0088:rax_37,Stack +0090:rax_44,Stack +0098:rax_140,Stack +00A0:rax_13,Stack +00A8:rbp,Stack +FFFFFFE8:fp - 0x0000000000000078,Stack +FFFFFFF0:fp - 0x0000000000000074,Stack +FFFFFFF8:fp - 0x0000000000000070
+		defs: r8:r8_235,r9:r9_233,rcx:rcx_229
+	dwLoc68 = 0x00000000
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000000401673:
+	branch (word32) (uint64) dwLoc68 < dwLoc6C l00000000004014C3
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l00000000004014C3:
+	branch (word32) (uint64) dwLoc78 != 0x00000001 l00000000004015CE
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l00000000004015CE:
+	dwLoc60 = 0x00000000
+	dwLoc64 = 0x00000000
+	dwLoc58 = 0x00000001
+	dwLoc5C = 0x00000001
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l00000000004014CF:
+	word32 eax_274
+	branch dwLoc68 <= 0x00000001 l00000000004014EF
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l00000000004014EF:
+	eax_274 = 0x00000007 (alias)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l00000000004014D5:
+	eax_274 = (word32) (uint64) ((word32) (uint64) (word32) (uint64) (0x00000001 << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x00000007 - dwLoc68)) >> 0x00000001))))) - 0x00000001) (alias)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l00000000004014F4:
+	word32 eax_321
+	word32 edx_327 = (word32) (uint64) (word32) (uint64) ((word32) (uint64) (eax_274 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68))) & 0x00000001)) << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x00000003 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68) + 0x00000001)) >> 0x00000001)))))))))))) & 0x00000007))) + dwLoc88)
+	branch dwLoc68 <= 0x00000001 l0000000000401531
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000000401531:
+	eax_321 = 0x00000003 (alias)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000000401525:
+	eax_321 = (word32) (uint64) ((word32) (uint64) (0x00000007 - dwLoc68) >> 0x00000001) (alias)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000000401536:
+	rcx_229 = (uint64) eax_321
+	branch (word32) (uint64) (word32) (uint64) (edx_327 >>u (byte) rcx_229) == 0x00000000 l000000000040166E
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l000000000040166E:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000000401544:
+	word32 eax_424
+	rcx_229 = (uint64) (word32) (uint64) ((word32) (uint64) (0x00000007 - dwLoc68) >> 0x00000001)
+	dwLoc60 = (word32) (uint64) ((word32) (uint64) (word32) (uint64) ((word32) (uint64) (word32) (uint64) ((word32) (uint64) dwLoc68 & 0x00000001) << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x00000003 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc68) + 0x00000001)) >> 0x00000001))))))))) & 0x00000007)
+	dwLoc64 = (word32) (uint64) ((word32) (uint64) (word32) (uint64) ((word32) ((word32) (uint64) ((word32) (uint64) dwLoc68 & 0x00000001) == 0x00000000) << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) (0x00000003 - (word32) ((uint64) ((word32) ((uint64) dwLoc68) >> 0x00000001))))))))) & 0x00000007)
+	dwLoc58 = (word32) (uint64) (word32) (uint64) (0x00000001 << (byte) rcx_229)
+	branch dwLoc68 <= 0x00000002 l00000000004015C4
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l00000000004015C4:
+	eax_424 = 0x00000008 (alias)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l00000000004015AF:
+	rcx_229 = (uint64) (word32) (uint64) ((word32) (uint64) ((word32) (uint64) dwLoc68 - 0x00000001) >> 0x00000001)
+	eax_424 = (word32) (uint64) (word32) (uint64) (0x00000008 >> (byte) rcx_229) (alias)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l00000000004015C9:
+	dwLoc5C = eax_424
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l00000000004015E8:
+	dwLoc54 = (word32) (uint64) dwLoc64
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000000401664:
+	branch dwLoc54 <u (word32) ((uint64) dwLoc84) l00000000004015F0
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l00000000004015F0:
+	puts(0x00000000004019B6)
+	call png_read_row (retsize: 8;)
+		uses: fs:fs,r12:r12,r13:r13,r8:r8_456,r9:r9_454,rax:rax_64,rbp:fp - 8,rbx:rbx,rcx:rax_140,rdi:rax_64,rdx:0x0000000000000000,rsi:rax_140,rsp:fp - 0x00000000000000A8,Stack +0008:rsi,Stack +0014:edi,Stack +0024:0x00000001,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C_695,Stack +0048:dwLoc68_697,Stack +004C:dwLoc64_712,Stack +0050:dwLoc60_1048,Stack +0054:dwLoc5C_1055,Stack +0058:dwLoc58_1052,Stack +005C:dwLoc54_716,Stack +0060:dwLoc50_897,Stack +0064:dwLoc4C_908,Stack +0068:rax_140,Stack +0070:rax_64,Stack +0078:rax_87,Stack +0080:rax_30,Stack +0088:rax_37,Stack +0090:rax_44,Stack +0098:rax_140,Stack +00A0:rax_13,Stack +00A8:rbp,Stack +FFFFFFE8:fp - 0x0000000000000078,Stack +FFFFFFF0:fp - 0x0000000000000074,Stack +FFFFFFF8:fp - 0x0000000000000070
+		defs: r8:r8_457,r9:r9_455,rcx:rcx_452
+	branch (uint64) dwLoc54 != rax_37 l000000000040165E
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l000000000040161B:
+	dwLoc50 = (word32) (uint64) dwLoc60
+	dwLoc4C = 0x00000000
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000000401656:
+	branch dwLoc50 <u (word32) ((uint64) dwLoc88) l000000000040162A
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l000000000040162A:
+	branch (uint64) dwLoc50 != rax_30 l000000000040164C
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l000000000040164C:
+	dwLoc50 = dwLoc50 + (word32) ((uint64) dwLoc58)
+	dwLoc4C = dwLoc4C + 0x00000001
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000000401633:
+	rcx_229 = print_pixel((uint64) dwLoc4C, rax_140, rbx, fp - 8, rax_87, rax_64, r8_235, r9_233, r12, r13, fs, out r8_235, out r9_233)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l000000000040165E:
+	dwLoc54 = dwLoc54 + (word32) ((uint64) dwLoc5C)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l000000000040166C:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l000000000040166F:
+	dwLoc68 = dwLoc68 + 0x00000001
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l000000000040167F:
+	word64 rcx_548
+	word64 r9_555
+	word64 r8_561
+	call png_free (retsize: 8;)
+		uses: fs:fs,r12:r12,r13:r13,r8:r8_556,r9:r9_550,rax:rax_64,rbp:fp - 8,rbx:rbx,rcx:rcx_540,rdi:rax_64,rdx:rax_140,rsi:rax_140,rsp:fp - 0x00000000000000A8,Stack +0008:rsi,Stack +0014:edi,Stack +0024:0x00000001,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C_695,Stack +0048:dwLoc68_697,Stack +004C:dwLoc64_854,Stack +0050:dwLoc60_846,Stack +0054:dwLoc5C_869,Stack +0058:dwLoc58_862,Stack +005C:dwLoc54_877,Stack +0060:dwLoc50_892,Stack +0064:dwLoc4C_903,Stack +0068:0x0000000000000000,Stack +0070:rax_64,Stack +0078:rax_87,Stack +0080:rax_30,Stack +0088:rax_37,Stack +0090:rax_44,Stack +0098:rax_140,Stack +00A0:rax_13,Stack +00A8:rbp,Stack +FFFFFFE8:fp - 0x0000000000000078,Stack +FFFFFFF0:fp - 0x0000000000000074,Stack +FFFFFFF8:fp - 0x0000000000000070
+		defs: r8:r8_561,r9:r9_555,rcx:rcx_548
+	call png_destroy_info_struct (retsize: 8;)
+		uses: fs:fs,r12:r12,r13:r13,r8:r8_561,r9:r9_555,rax:rax_64,rbp:fp - 8,rbx:rbx,rcx:rcx_548,rdi:rax_64,rdx:fp - 0x0000000000000038,rsi:fp - 0x0000000000000038,rsp:fp - 0x00000000000000A8,Stack +0008:rsi,Stack +0014:edi,Stack +0024:0x00000001,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C_695,Stack +0048:dwLoc68_697,Stack +004C:dwLoc64_854,Stack +0050:dwLoc60_846,Stack +0054:dwLoc5C_869,Stack +0058:dwLoc58_862,Stack +005C:dwLoc54_877,Stack +0060:dwLoc50_892,Stack +0064:dwLoc4C_903,Stack +0068:0x0000000000000000,Stack +0070:rax_64,Stack +0078:rax_87,Stack +0080:rax_30,Stack +0088:rax_37,Stack +0090:rax_44,Stack +0098:rax_140,Stack +00A0:rax_13,Stack +00A8:rbp,Stack +FFFFFFE8:fp - 0x0000000000000078,Stack +FFFFFFF0:fp - 0x0000000000000074,Stack +FFFFFFF8:fp - 0x0000000000000070
+		defs: r8:r8_594,r9:r9_593,rcx:rcx_591
+	qwLoc48_667 = 0x0000000000000000
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l00000000004016DE:
+	call png_destroy_read_struct (retsize: 8;)
+		uses: fs:fs,r12:r12,r13:r13,r8:r8_615,r9:r9_612,rax:fp - 0x0000000000000040,rbp:fp - 8,rbx:rbx,rcx:rcx_609,rdi:fp - 0x0000000000000040,rdx:0x0000000000000000,rsi:0x0000000000000000,rsp:fp - 0x00000000000000A8,Stack +0008:rsi,Stack +0014:edi,Stack +0024:0x00000001,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C_950,Stack +0048:dwLoc68_952,Stack +004C:dwLoc64_957,Stack +0050:dwLoc60_955,Stack +0054:dwLoc5C_961,Stack +0058:dwLoc58_959,Stack +005C:dwLoc54_966,Stack +0060:dwLoc50_970,Stack +0064:dwLoc4C_972,Stack +0068:qwLoc48_930,Stack +0070:rax_64,Stack +0078:rax_87,Stack +0080:rax_30,Stack +0088:rax_37,Stack +0090:rax_44,Stack +0098:qwLoc18_936,Stack +00A0:rax_13,Stack +00A8:rbp,Stack +FFFFFFE8:qwLocC8_945,Stack +FFFFFFF0:qwLocC0_942,Stack +FFFFFFF8:qwLocB8_939
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l000000000040175D:
-	rax = (uint64) Mem0[rbp - 0x0000000000000084:word32]
-	rdi = Mem0[rbp - 0x0000000000000008:word64]
-	rdi = rdi ^ Mem0[fs:0x00000028:word64]
-	SZO = cond(rdi)
-	C = false
-	branch Test(EQ,Z) l0000000000401777
-	// succ:  l0000000000401772 l0000000000401777
+	branch (rax_13 ^ Mem626[fs:0x00000028:word64]) == 0x0000000000000000 l0000000000401777
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000000401777:
+	return
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+main_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000000401772:
 	__stack_chk_fail()
-l0000000000401777:
-	rsp = rbp
-	rbp = Mem0[rsp:word64]
-	rsp = rsp + 8
-	return
-	// succ:  main_exit
-main_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// __libc_csu_init
-// Return size: 8
-define __libc_csu_init
+
+void __libc_csu_init(word64 rdx, word64 rbx, word64 rbp, word64 rsi, word32 edi, word64 r12, word64 r13, word64 r14, word64 r15)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  edi:[0..31] r12:[0..63] r13:[0..63] r14:[0..63] r15:[0..63] rbp:[0..63] rbx:[0..63] rdx:[0..63] rsi:[0..63]
+// LiveOut:
+// Trashed: SCZO rax rdi rdx rsi
+// Preserved: r12 r13 r14 r15 rbp rbx rsp
 __libc_csu_init_entry:
-	// succ:  l0000000000401780
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000000401780:
-	rsp = fp
-	rsp = rsp - 8
-	Mem0[rsp:word64] = r15
-	rsp = rsp - 8
-	Mem0[rsp:word64] = r14
-	r15 = (uint64) edi
-	rsp = rsp - 8
-	Mem0[rsp:word64] = r13
-	rsp = rsp - 8
-	Mem0[rsp:word64] = r12
-	r12 = 0x0000000000601E00
-	rsp = rsp - 8
-	Mem0[rsp:word64] = rbp
-	rbp = 0x0000000000601E08
-	rsp = rsp - 8
-	Mem0[rsp:word64] = rbx
-	r14 = rsi
-	r13 = rdx
-	rbp = rbp - r12
-	SCZO = cond(rbp)
-	rsp = rsp - 0x0000000000000008
-	SCZO = cond(rsp)
-	rbp = rbp >> 0x0000000000000003
-	SCZO = cond(rbp)
-	call _init (retsize: 8;)
-	SZO = cond(rbp & rbp)
-	C = false
-	branch Test(EQ,Z) l00000000004017D6
-	// succ:  l00000000004017B6 l00000000004017D6
+	word64 r15_10 = (uint64) edi
+	word32 r15d_83 = (word32) r15_10
+	word64 r15_55 = DPB(r15_10, r15d_83, 0)
+	word64 rbp_29 = 0x0000000000601E08 - 0x0000000000601E00
+	word64 rax_33 = _init()
+	branch rbp_29 >> 0x0000000000000003 == 0x0000000000000000 l00000000004017D6
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l00000000004017B6:
-	rbx = (uint64) (ebx ^ ebx)
-	SZO = cond(ebx)
-	C = false
-	// succ:  l00000000004017C0
+	word64 rbx_41 = 0x0000000000000000
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l00000000004017C0:
-	rdx = r13
-	rsi = r14
-	rdi = (uint64) r15d
-	call Mem0[r12 + rbx * 0x0000000000000008:word64] (retsize: 8;)
-	rbx = rbx + 0x0000000000000001
-	SCZO = cond(rbx)
-	SCZO = cond(rbx - rbp)
-	branch Test(NE,Z) l00000000004017C0
-	// succ:  l00000000004017D6 l00000000004017C0
+	r15_55 = DPB(r15_55, r15d_83, 0) (alias)
+	call Mem24[0x0000000000601E00 + rbx_41 * 0x0000000000000008:word64] (retsize: 8;)
+		uses: r12:0x0000000000601E00,r13:rdx,r14:rsi,r15:r15_56,rax:rax_61,rbp:rbp_29 >> 0x0000000000000003,rbx:rbx_52,rdi:(uint64) r15d_83,rdx:rdx,rsi:rsi,rsp:fp - 0x0000000000000038,Stack +0010:rbx,Stack +0018:rbp,Stack +0020:r12,Stack +0028:r13,Stack +0030:r14,Stack +0038:r15
+		defs: rax:rax_62
+	rbx_41 = rbx_41 + 0x0000000000000001
+	branch rbx_41 != rbp_29 >> 0x0000000000000003 l00000000004017C0
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l00000000004017D6:
-	rsp = rsp + 0x0000000000000008
-	SCZO = cond(rsp)
-	rbx = Mem0[rsp:word64]
-	rsp = rsp + 8
-	rbp = Mem0[rsp:word64]
-	rsp = rsp + 8
-	r12 = Mem0[rsp:word64]
-	rsp = rsp + 8
-	r13 = Mem0[rsp:word64]
-	rsp = rsp + 8
-	r14 = Mem0[rsp:word64]
-	rsp = rsp + 8
-	r15 = Mem0[rsp:word64]
-	rsp = rsp + 8
 	return
-	// succ:  __libc_csu_init_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 __libc_csu_init_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// __libc_csu_fini
-// Return size: 8
-define __libc_csu_fini
+
+void __libc_csu_fini()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: rsp
 __libc_csu_fini_entry:
-	// succ:  l00000000004017F0
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l00000000004017F0:
-	rsp = fp
 	return
-	// succ:  __libc_csu_fini_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 __libc_csu_fini_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// _fini
-// Return size: 8
-define _fini
+
+void _fini()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SCZO
+// Preserved: rsp
 _fini_entry:
-	// succ:  l00000000004017F4
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l00000000004017F4:
-	rsp = fp
-	rsp = rsp - 0x0000000000000008
-	SCZO = cond(rsp)
-	rsp = rsp + 0x0000000000000008
-	SCZO = cond(rsp)
 	return
-	// succ:  _fini_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 _fini_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 
 
