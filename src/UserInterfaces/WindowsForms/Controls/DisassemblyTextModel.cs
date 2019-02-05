@@ -86,7 +86,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                     var options = ShowPcRelative
                         ? MachineInstructionWriterOptions.None
                         : MachineInstructionWriterOptions.ResolvePcRelativeAddress;
-                    var arch = program.Architecture;    //$TODO: get this from imageitem.
+
+                    var arch = GetArchitectureForAddress(addr);
                     var dasm = program.CreateDisassembler(arch, Align(position)).GetEnumerator();
                     while (count != 0 && dasm.MoveNext())
                     {
@@ -100,6 +101,20 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 }
             }
             return lines.ToArray();
+        }
+
+        private IProcessorArchitecture GetArchitectureForAddress(Address addr)
+        {
+            IProcessorArchitecture arch = null;
+            // Try to find a basic block at this address and use its architecture.
+            if (program.ImageMap.TryFindItem(addr, out var item) &&
+                item is ImageMapBlock imb &&
+                imb.Block != null &&
+                imb.Block.Procedure != null)
+            {
+                arch = imb.Block.Procedure.Architecture;
+            }
+            return arch ?? program.Architecture;
         }
 
         public static LineSpan RenderAsmLine(

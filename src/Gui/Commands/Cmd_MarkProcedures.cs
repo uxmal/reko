@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -40,6 +40,7 @@ namespace Reko.Gui.Commands
         {
             var decSvc = Services.RequireService<IDecompilerService>();
             var brSvc = Services.RequireService<IProjectBrowserService>();
+            //$TODO if arch > 1 pick arch.
             try
             {
                 //$HACK: we have to stop events while this is happening. This is gross

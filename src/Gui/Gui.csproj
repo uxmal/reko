@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
@@ -226,6 +226,7 @@
     <Compile Include="SelectionService.cs" />
     <Compile Include="SignatureParser.cs" />
     <Compile Include="StatementNavigator.cs" />
+    <Compile Include="TreeNodeCollectionDesigner.cs" />
     <Compile Include="TreeNodeDesigner.cs" />
     <Compile Include="Forms\ICallSiteDialog.cs" />
     <Compile Include="Forms\TextEncodingInteractor.cs" />
@@ -334,4 +335,3 @@
     </PostBuildEvent>
   </PropertyGroup>
 </Project>
-

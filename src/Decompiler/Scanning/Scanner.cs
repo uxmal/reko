@@ -220,12 +220,8 @@ namespace Reko.Scanning
 
         public IProcessorArchitecture GetArchitecture(string archMoniker)
         {
-            if (Program.Architectures.TryGetValue(archMoniker, out var arch))
-                return arch;
             var cfgSvc = Services.RequireService<IConfigurationService>();
-            arch = cfgSvc.GetArchitecture(archMoniker);
-            Program.Architectures[archMoniker] = arch;
-            return arch;
+            return Program.EnsureArchitecture(archMoniker, cfgSvc.GetArchitecture);
         }
 
         public IEnumerable<RtlInstructionCluster> GetTrace(IProcessorArchitecture arch, Address addrStart, ProcessorState state, IStorageBinder binder)

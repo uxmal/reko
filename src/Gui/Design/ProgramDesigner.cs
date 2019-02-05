@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Services;
 using Reko.Gui;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.IO;
@@ -38,8 +39,12 @@ namespace Reko.Gui.Design
         {
             base.Initialize(obj);
             program = (Program) obj;
-            if (program.Architecture != null)
-                Host.AddComponent(program, program.Architecture);
+            var archesDes = new TreeNodeCollectionDesigner(
+                "Architectures",
+                "",
+                ArchitectureCollection(program));
+            Host.AddComponent(program, archesDes);
+            archesDes.TreeNode.Expand();
             if (program.Platform != null)
                 Host.AddComponent(program, program.Platform);
             if (program.ImageMap != null)
@@ -57,6 +62,11 @@ namespace Reko.Gui.Design
             SetTreeNodeProperties(program);
         }
 
+        private IEnumerable ArchitectureCollection(Program program)
+        {
+            return program.Architectures.Values.OrderBy(a => a.Name);
+        }
+
         private ProcedureDesigner MakeProcedureDesigner(KeyValuePair<Address,Procedure> p)
         {
             var des = new ProcedureDesigner(program, p.Value, null, p.Key, false);
@@ -68,7 +78,7 @@ namespace Reko.Gui.Design
             TreeNode.Text = program.Name;
             TreeNode.ImageName = "Binary.ico";
             var sb = new StringBuilder();
-            sb.Append(program.Filename != null ? program.Filename : "(No file name)");
+            sb.Append(program.Filename ?? "(No file name)");
             if (program.NeedsScanning)
             {
                 sb.AppendLine();
