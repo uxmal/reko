@@ -44,7 +44,6 @@ namespace Reko.Gui.Design
                 "",
                 ArchitectureCollection(program));
             Host.AddComponent(program, archesDes);
-            archesDes.TreeNode.Expand();
             if (program.Platform != null)
                 Host.AddComponent(program, program.Platform);
             if (program.ImageMap != null)

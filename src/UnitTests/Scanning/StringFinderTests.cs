@@ -40,6 +40,7 @@ namespace Reko.UnitTests.Scanning
         public void Setup()
         {
             arch = new Mock<IProcessorArchitecture>();
+            arch.Setup(a => a.Name).Returns("FakeArch");
         }
 
         private void Given_Image(params byte[] bytes)

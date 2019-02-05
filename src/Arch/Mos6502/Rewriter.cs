@@ -400,6 +400,7 @@ namespace Reko.Arch.Mos6502
             var v = Constant.Bool(value);
             m.Assign(reg, v);
         }
+
         private void St(RegisterStorage reg)
         {
             var mem = RewriteOperand(instrCur.Operand);
@@ -439,7 +440,7 @@ namespace Reko.Arch.Mos6502
             case AddressMode.AbsoluteY:
                 return m.Mem8(m.IAdd(
                     arch.MakeAddressFromConstant(op.Offset),
-                    binder.EnsureRegister(Registers.x)));
+                    binder.EnsureRegister(op.Register)));
             case AddressMode.ZeroPage:
                 if (op.Register != null)
                 {

@@ -62,6 +62,7 @@ namespace Reko.UnitTests.Gui.Forms
                 mem.BaseAddress,
                 new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
             var arch = new Mock<IProcessorArchitecture>();
+            arch.Setup(a => a.Name).Returns("FakeArch");
             var platform = new Mock<IPlatform>();
             program = new Program(imageMap, arch.Object, platform.Object);
             project = new Project { Programs = { program } };

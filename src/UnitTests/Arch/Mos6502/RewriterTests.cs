@@ -204,5 +204,14 @@ namespace Reko.UnitTests.Arch.Mos6502
                 "1|L--|NVIDZC = Mem0[s:byte]",
                 "2|L--|s = s + 1");
         }
+
+        [Test]
+        public void Rw6502_sta_y()
+        {
+            BuildTest(0x99, 0xF8, 0x00); // sta $00F8,y
+            AssertCode(
+                "0|L--|0200(3): 1 instructions",
+                "1|L--|Mem0[0x00F8 + y:byte] = a");
+        }
     }
 }

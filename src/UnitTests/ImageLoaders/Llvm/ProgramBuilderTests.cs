@@ -48,6 +48,7 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
             this.sc = new ServiceContainer();
             this.addrFn = Address.Ptr32(0x00100000);
             this.arch = new Mock<IProcessorArchitecture>();
+            this.arch.Setup(a => a.Name).Returns("FakeArch");
             this.arch.Setup(a => a.PointerType).Returns(PrimitiveType.Ptr32);
             var cfgSvc = new Mock<IConfigurationService>();
             var openv = new Mock<OperatingEnvironment>();

@@ -69,12 +69,12 @@ namespace Reko.UnitTests.Loading
             var testImage = new byte[] { 42, 42, 42, 42, };
             var ldr = new Mock<Loader>(sc);
 
-            Program prog = ldr.Object.LoadExecutable("", testImage,  null, null);
+            Program program = ldr.Object.LoadExecutable("", testImage,  null, null);
 
             Assert.AreEqual("WarningDiagnostic -  - The format of the file is unknown." , eventListener.LastDiagnostic);
-            Assert.AreEqual(0, prog.ImageMap.BaseAddress.Offset);
-            Assert.IsNull(prog.Architecture);
-            Assert.IsAssignableFrom<DefaultPlatform>(prog.Platform);
+            Assert.AreEqual(0, program.ImageMap.BaseAddress.Offset);
+            Assert.IsNull(program.Architecture);
+            Assert.IsAssignableFrom<DefaultPlatform>(program.Platform);
         }
 
         [Test(Description = "Use default settings when loading unknown file formats.")]
@@ -98,6 +98,7 @@ namespace Reko.UnitTests.Loading
         private void Given_MsDosRawFileFormat()
         {
             this.x86arch = new Mock<IProcessorArchitecture>();
+            this.x86arch.Setup(a => a.Name).Returns("x86-real-16");
             var env = new Mock<OperatingEnvironment>();
             this.msdosPlatform = new Mock<IPlatform>();
             var map = new SegmentMap(Address.SegPtr(0x0C00, 0));

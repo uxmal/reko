@@ -111,12 +111,12 @@ namespace Reko.UnitTests.Gui.Windows
 
         private void When_MovedTo(uint addr)
         {
-            interactor.SelectedAddress = Address32.Ptr32(addr);
+            interactor.SelectedAddress = Address.Ptr32(addr);
         }
 
         private void Given_ImageSegment(uint addr, params byte[] bytes)
         {
-            var mem = new MemoryArea(Address32.Ptr32(addr), bytes);
+            var mem = new MemoryArea(Address.Ptr32(addr), bytes);
             var seg = new ImageSegment(".text", mem, AccessMode.ReadWrite);
             program.SegmentMap.AddSegment(seg);
             program.ImageMap = program.SegmentMap.CreateImageMap();

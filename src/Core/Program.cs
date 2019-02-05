@@ -388,7 +388,7 @@ namespace Reko.Core
         private void SetDefaultArchitecture(IProcessorArchitecture arch)
         {
             this.archDefault = arch;
-            if (!Architectures.ContainsKey(arch.Name))
+            if (arch != null && !Architectures.ContainsKey(arch.Name))
             {
                 Architectures.Add(arch.Name, arch);
             }

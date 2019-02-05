@@ -56,6 +56,8 @@ namespace Reko.UnitTests.Mocks
 		{
             this.rewriters = new RtlTraceBuilder();
             this.StackRegister = GetRegister(FakeArchitecture.iStackRegister);
+            this.Name = "FakeArch";
+            this.Description = "Fake Architecture for testing";
         }
 
 		static FakeArchitecture()

@@ -85,6 +85,7 @@ namespace Reko.UnitTests.Gui.Windows
             var dasm = new Mock<IEnumerable<MachineInstruction>>();
             var e = new Mock<IEnumerator<MachineInstruction>>();
 
+            arch.Setup(a => a.Name).Returns("FakeArch");
             arch.Setup(a => a.CreateDisassembler(It.IsNotNull<EndianImageReader>())).Returns(dasm.Object);
             arch.Setup(a => a.InstructionBitSize).Returns(8);
             arch.Setup(a => a.CreateImageReader(

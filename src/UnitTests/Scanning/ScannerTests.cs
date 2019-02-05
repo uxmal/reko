@@ -43,7 +43,6 @@ namespace Reko.UnitTests.Scanning
     [TestFixture]
     public class ScannerTests
     {
-        private MockRepository mr;
         private IProcessorArchitecture arch;
         private FakeArchitecture fakeArch;
         private Program program;

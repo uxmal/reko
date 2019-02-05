@@ -49,6 +49,7 @@ namespace Reko.UnitTests.Gui.Commands
             mem = new MemoryArea(Address.Ptr32(0x00400000), new byte[2000]);
             segmentMap = new SegmentMap(mem.BaseAddress);
             arch = new Mock<IProcessorArchitecture>();
+            arch.Setup(a => a.Name).Returns("FakeArch");
             platform = new Mock<IPlatform>();
             searchSvc = new Mock<ISearchResultService>();
 

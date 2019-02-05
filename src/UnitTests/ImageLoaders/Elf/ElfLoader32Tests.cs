@@ -55,6 +55,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             this.sc = new ServiceContainer();
             var cfgSvc = new Mock<IConfigurationService>();
             this.arch = new Mock<IProcessorArchitecture>();
+            arch.Setup(a => a.Name).Returns("FakeArch");
             arch.Setup(a => a.PointerType).Returns(PrimitiveType.Ptr32);
             cfgSvc.Setup(c => c.GetArchitecture("x86-protected-32")).Returns(arch.Object);
             cfgSvc.Setup(c => c.GetArchitecture("mips-be-32")).Returns(arch.Object);
