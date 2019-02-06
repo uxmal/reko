@@ -35,6 +35,11 @@ namespace Reko.Arch.Blackfin
     {
         public BlackfinArchitecture(string archId) : base(archId)
         {
+            PointerType = PrimitiveType.Ptr32;
+            FramePointerType = PrimitiveType.Ptr32;
+            WordWidth = PrimitiveType.Word16;
+            StackRegister = Registers.SP;
+            InstructionBitSize = 16;
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
@@ -44,12 +49,12 @@ namespace Reko.Arch.Blackfin
 
         public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
         {
-            throw new NotImplementedException();
+            return new LeImageReader(img, addr);
         }
 
         public override EndianImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
         {
-            throw new NotImplementedException();
+            return new LeImageReader(img, addrBegin, addrEnd);
         }
 
         public override EndianImageReader CreateImageReader(MemoryArea img, ulong off)
@@ -79,7 +84,7 @@ namespace Reko.Arch.Blackfin
 
         public override ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new BlackfinProcessorState(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
@@ -109,7 +114,8 @@ namespace Reko.Arch.Blackfin
 
         public override RegisterStorage GetRegister(int i)
         {
-            throw new NotImplementedException();
+            //$BUG: just to ge things off the ground.
+            return Registers.Pointers[i];
         }
 
         public override RegisterStorage GetRegister(string name)

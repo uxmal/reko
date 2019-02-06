@@ -47,19 +47,35 @@ namespace Reko.Arch.Blackfin
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            if (!mapOpcodes.TryGetValue(Opcode, out var sOpcode))
+            if (Opcode == Opcode.mov)
             {
-                sOpcode = Opcode.ToString();
+                Operands[0].Write(writer, options);
+                writer.WriteString(" = ");
+                Operands[1].Write(writer, options);
             }
-            writer.WriteOpcode(sOpcode);
-            var sep = " ";
-            if (Operands == null)
-                return;
-            foreach (var op in Operands)
+            else if (Opcode == Opcode.mov_x)
             {
-                writer.WriteString(sep);
-                sep = ",";
-                op.Write(writer, options);
+                Operands[0].Write(writer, options);
+                writer.WriteString(" = ");
+                Operands[1].Write(writer, options);
+                writer.WriteString(" (X)");
+            }
+            else
+            {
+                if (!mapOpcodes.TryGetValue(Opcode, out var sOpcode))
+                {
+                    sOpcode = Opcode.ToString();
+                }
+                writer.WriteOpcode(sOpcode);
+                var sep = " ";
+                if (Operands == null)
+                    return;
+                foreach (var op in Operands)
+                {
+                    writer.WriteString(sep);
+                    sep = ",";
+                    op.Write(writer, options);
+                }
             }
             writer.WriteString(";");
         }

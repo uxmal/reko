@@ -18,14 +18,29 @@
  */
 #endregion
 
-namespace Reko.Arch.Blackfin
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Reko.Core;
+
+namespace Reko.ImageLoaders.Elf.Relocators
 {
-    public enum Opcode
+    public class BlackfinRelocator : ElfRelocator32
     {
-        invalid,
-        JUMP,
-        JUMP_S,
-        mov,
-        mov_x,
+        public BlackfinRelocator(ElfLoader32 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
+        {
+        }
+
+        public override ElfSymbol RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
+        {
+            return symbol;
+        }
+
+        public override string RelocationTypeToString(uint type)
+        {
+            return $"{type:X}";
+        }
     }
 }

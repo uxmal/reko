@@ -256,6 +256,9 @@ namespace Reko.ImageLoaders.Elf
                 }
                 options["decoder"] = "nano";
                 break;
+            case ElfMachine.EM_BLACKFIN:
+                arch = "blackfin";
+                break;
             default:
                 throw new NotSupportedException(string.Format("Processor format {0} is not supported.", machine));
             }

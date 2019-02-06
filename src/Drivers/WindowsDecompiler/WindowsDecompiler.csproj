@@ -192,6 +192,10 @@
       <Project>{32f09304-51be-4797-a86a-c0befed2422b}</Project>
       <Name>Arm</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Arch\Blackfin\Blackfin.csproj">
+      <Project>{0bccefdd-63a8-47f2-9a39-8ce7b5f9cfab}</Project>
+      <Name>Blackfin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Arch\Cray\Cray.csproj">
       <Project>{47b16677-2bfc-4a5c-a830-e1683c574aec}</Project>
       <Name>Cray</Name>

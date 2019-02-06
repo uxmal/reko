@@ -45,6 +45,7 @@
     <Compile Include="BlackfinArchitecture.cs" />
     <Compile Include="BlackfinDisassembler.cs" />
     <Compile Include="BlackfinInstruction.cs" />
+    <Compile Include="BlackfinProcessorState.cs" />
     <Compile Include="MemoryOperand.cs" />
     <Compile Include="Opcode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -24,6 +24,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Types;
@@ -85,7 +86,7 @@ namespace Reko.Arch.Blackfin
             [Conditional("DEBUG")]
             public static void TraceDecoder(uint wInstr, Bitfield bitfield, string debugString)
             {
-                var shMask = bitfield.Mask;
+                var shMask = bitfield.Mask << bitfield.Position;
                 TraceDecoder(wInstr, shMask, debugString);
             }
 
@@ -138,10 +139,26 @@ namespace Reko.Arch.Blackfin
                     if (!mutator(uInstr, dasm))
                         return dasm.Invalid();
                 }
-                dasm.instr.Opcode = opcode;
+                dasm.instr.Address = dasm.addr;
                 dasm.instr.IClass = iclass;
+                dasm.instr.Opcode = opcode;
                 dasm.instr.Operands = dasm.ops.ToArray();
                 return dasm.instr;
+            }
+        }
+
+        private class Mask32Decoder : MaskDecoder
+        {
+            public Mask32Decoder(Bitfield bitfield, params Decoder[] decoders) : base(bitfield, decoders)
+            {
+            }
+
+            public override BlackfinInstruction Decode(uint uInstr, BlackfinDisassembler dasm)
+            {
+                if (!dasm.rdr.TryReadLeUInt16(out ushort uInstrLo))
+                    return dasm.Invalid();
+                uInstr = (uInstr << 16) | uInstrLo;
+                return base.Decode(uInstr, dasm);
             }
         }
 
@@ -188,7 +205,7 @@ namespace Reko.Arch.Blackfin
                 message = (string.IsNullOrEmpty(message))
                     ? rev
                     : $"{rev} - {message}";
-                dasm.EmitUnitTest("Blackfin", instrHexBytes, message, "ThumbDis", dasm.addr, w =>
+                dasm.EmitUnitTest("Blackfin", instrHexBytes, message, "BlackfinDasm", dasm.addr, w =>
                 {
                     if (uInstr > 0xFFFF)
                     {
@@ -235,12 +252,60 @@ namespace Reko.Arch.Blackfin
             return new MaskDecoder(new Bitfield(pos, len), decoders);
         }
 
+        private static MaskDecoder Mask32(
+            int pos,
+            int len,
+            Decoder defaultDecoder,
+            params (int, Decoder)[] sparseDecoders)
+        {
+            var decoders = Enumerable.Range(0, 1 << len)
+                .Select(i => defaultDecoder)
+                .ToArray();
+            foreach (var sd in sparseDecoders)
+            {
+                decoders[sd.Item1] = sd.Item2;
+            }
+            return new Mask32Decoder(new Bitfield(pos, len), decoders);
+        }
+
         private static NyiDecoder Nyi(string message)
         {
             return new NyiDecoder(message);
         }
 
         #region Mutators
+
+        // RegisterGroup + register
+        private static Mutator R(RegisterStorage[] regs, int bitpos)
+        {
+            var bitfield = new Bitfield(bitpos, 5);
+            return (u, d) =>
+            {
+                var iReg = (int) bitfield.Read(u);
+                var reg = regs[iReg];
+                if (reg == null)
+                    return false;
+                d.ops.Add(new RegisterOperand(reg));
+                return true;
+            };
+        }
+
+        private static readonly Mutator Rlo16 = R(Registers.RPIB_Lo, 16);
+        private static readonly Mutator Rhi16 = R(Registers.RPI_Hi, 16);
+        private static readonly Mutator Rpib16 = R(Registers.RPIB, 16);
+
+        // Immediate quantity
+        private static Mutator Imm(int pos, int len, PrimitiveType dt)
+        {
+            var bitfield = new Bitfield(pos, len);
+            return (u, d) =>
+            {
+                var imm = bitfield.Read(u);
+                var c = Constant.Create(dt, imm);
+                d.ops.Add(new ImmediateOperand(c));
+                return true;
+            };
+        }
 
         // Indirect pointer
         private static Mutator IP(int bitpos)
@@ -295,6 +360,13 @@ namespace Reko.Arch.Blackfin
         static BlackfinDisassembler()
         {
             var invalid = Instr(InstrClass.Invalid, Opcode.invalid);
+            var instr32 = Mask32(24, 8,
+                Nyi(""),
+                (0xE1, Mask(5 + 16, 2,
+                    Instr(Opcode.mov, Rlo16, Imm(0, 16, PrimitiveType.Word16)),
+                    Instr(Opcode.mov_x, Rpib16, Imm(0, 16, PrimitiveType.Word16)),
+                    Instr(Opcode.mov, Rhi16, Imm(0, 16, PrimitiveType.Word16)),
+                    Nyi(""))));
 
             rootDecoder = Mask(12, 4, new Decoder[16]
             {
@@ -321,10 +393,10 @@ namespace Reko.Arch.Blackfin
                 Nyi("0b1010............"),
                 Nyi("0b1011............"),
 
-                Nyi("0b1100............"),
-                Nyi("0b1101............"),
-                Nyi("0b1110............"),
-                Nyi("0b1111............"),
+                instr32,
+                instr32,
+                instr32,
+                instr32,
             });
         }
     }

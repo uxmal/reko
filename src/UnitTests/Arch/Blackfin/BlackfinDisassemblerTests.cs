@@ -68,5 +68,19 @@ namespace Reko.UnitTests.Arch.Blackfin
             var instr = DisassembleHexBytes("FF2F");
             Assert.AreEqual("JUMP.S 000FFFFE;", instr.ToString());
         }
+
+        [Test]
+        public void BlackfinDasm_load_lo_imm()
+        {
+            var instr = DisassembleHexBytes("0EE1EC0F ");
+            Assert.AreEqual("SP.L = 0FEC;", instr.ToString());
+        }
+
+        [Test]
+        public void BlackfinDasm_load_hi_imm()
+        {
+            var instr = DisassembleHexBytes("4EE1EC0F ");
+            Assert.AreEqual("SP.H = 0FEC;", instr.ToString());
+        }
     }
 }

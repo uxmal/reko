@@ -95,6 +95,7 @@
     <Compile Include="Relocators\Arm64Relocator.cs" />
     <Compile Include="Relocators\ArmRelocator.cs" />
     <Compile Include="Relocators\AvrRelocator.cs" />
+    <Compile Include="Relocators\BlackfinRelocator.cs" />
     <Compile Include="Relocators\ElfRelocator.cs" />
     <Compile Include="Relocators\M68kRelocator.cs" />
     <Compile Include="Relocators\MipsRelocator.cs" />
