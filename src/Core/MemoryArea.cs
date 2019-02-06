@@ -687,7 +687,6 @@ namespace Reko.Core
             }
         }
 
-
         public Constant ReadBeDouble(long off) { return ReadBeDouble(abImage, off); }
         public Constant ReadBeFloat(long off) { return ReadBeFloat(abImage, off); }
         public long ReadBeInt64(uint off) { return ReadBeInt64(this.abImage, off); }

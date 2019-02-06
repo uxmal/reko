@@ -206,6 +206,7 @@ by the PreBuild.targets file.
     <Environments Include="$(SolutionDir)Environments\RiscOS\bin\$(Configuration)\netstandard2.0\Reko.Environments.RiscOS.*" />
     <Environments Include="$(SolutionDir)Environments\RT11\bin\$(Configuration)\netstandard2.0\Reko.Environments.RT11.*" />
     <Environments Include="$(SolutionDir)Environments\SegaGenesis\bin\$(Configuration)\netstandard2.0\Reko.Environments.SegaGenesis.*" />
+    <Environments Include="$(SolutionDir)Environments\Snes\bin\$(Configuration)\Reko.Environments.Snes.*" />
     <Environments Include="$(SolutionDir)Environments\Switch\bin\$(Configuration\netstandard2.0\Reko.Environments.Switch.*" />
     <Environments Include="$(SolutionDir)Environments\SysV\bin\$(Configuration)\netstandard2.0\Reko.Environments.SysV.*" />
     <Environments Include="$(SolutionDir)Environments\Trs80\bin\$(Configuration)\netstandard2.0\Reko.Environments.Trs80.*" />
