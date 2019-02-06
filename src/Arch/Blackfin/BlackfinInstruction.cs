@@ -47,26 +47,35 @@ namespace Reko.Arch.Blackfin
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            if (Opcode == Opcode.mov)
+            (string prefix, string infix, string suffix) aaOpcode;
+            if (!mapOpcodes.TryGetValue(Opcode, out aaOpcode))
             {
-                Operands[0].Write(writer, options);
-                writer.WriteString(" = ");
-                Operands[1].Write(writer, options);
+                aaOpcode.prefix = Opcode.ToString();
             }
-            else if (Opcode == Opcode.mov_x)
+            if (aaOpcode.infix != null)
             {
+                writer.WriteString(aaOpcode.prefix);
                 Operands[0].Write(writer, options);
-                writer.WriteString(" = ");
-                Operands[1].Write(writer, options);
-                writer.WriteString(" (X)");
+                if (Operands.Length > 2)
+                {
+                    writer.WriteString(" = ");
+                    Operands[1].Write(writer, options);
+                    writer.WriteString(aaOpcode.infix);
+                    Operands[2].Write(writer, options);
+                }
+                else if (Operands.Length > 1)
+                {
+                    writer.WriteString(aaOpcode.infix);
+                    Operands[1].Write(writer, options);
+                }
+                else
+                {
+                    writer.WriteString(aaOpcode.infix);
+                }
             }
             else
             {
-                if (!mapOpcodes.TryGetValue(Opcode, out var sOpcode))
-                {
-                    sOpcode = Opcode.ToString();
-                }
-                writer.WriteOpcode(sOpcode);
+                writer.WriteOpcode(aaOpcode.prefix);
                 var sep = " ";
                 if (Operands == null)
                     return;
@@ -77,12 +86,63 @@ namespace Reko.Arch.Blackfin
                     op.Write(writer, options);
                 }
             }
+            if (aaOpcode.suffix != null)
+            {
+                writer.WriteString(aaOpcode.suffix);
+            }
             writer.WriteString(";");
         }
 
-        private static readonly Dictionary<Opcode, string> mapOpcodes = new Dictionary<Opcode, string>
+        private static readonly Dictionary<Opcode, (string,string,string)> mapOpcodes = 
+            new Dictionary<Opcode, (string, string, string)>
         {
-            { Opcode.JUMP_S, "JUMP.S" },
+            { Opcode.add, (null, " += ", null) },
+            { Opcode.add3, (null, " + ", null) },
+            { Opcode.add_sh1, (null, " + ", " << 1") },
+            { Opcode.add_sh2, (null, " + ", " << 2") },
+            { Opcode.and3, (null, " & ", null) },
+            { Opcode.or3, (null, " | ", null) },
+            { Opcode.sub3, (null, " - ", null) },
+            { Opcode.xor3, (null, " ^ ", null) },
+            { Opcode.asr, (null, " >>>= ", null) },
+            { Opcode.asr3, (null, " >>> ", null) },
+            { Opcode.DIVQ, ("DIVQ(", null, ")") },
+            { Opcode.lsl, (null, " <<= ", null) },
+            { Opcode.lsl3, (null, " << ", null) },
+            { Opcode.lsr, (null, " >>= ", null) },
+            { Opcode.lsr3, (null, " >> ", null) },
+            { Opcode.bitset, ( "BITSET(", ",", ")") },
+            { Opcode.bittgl, ( "BITTGL(", ",", ")") },
+            { Opcode.bitclr, ( "BITCLR(", ",", ")") },
+            { Opcode.if_cc_jump, ("IF CC JUMP", null, null) },
+            { Opcode.if_cc_jump_bp, ("IF CC JUMP", null, " (BP)") },
+            { Opcode.if_cc_mov, ("IF CC ", " = ", null) },
+            { Opcode.if_ncc_mov, ("IF !CC ", " = ", null) },
+            { Opcode.if_ncc_jump, ("IF !CC JUMP", null, null) },
+            { Opcode.if_ncc_jump_bp, ("IF !CC JUMP", null, " (BP)") },
+            { Opcode.mov, (null, " = ", null) },
+            { Opcode.mov_cc_eq, ("CC = ", " == ", null) },
+            { Opcode.mov_cc_le, ("CC = ", " <= ", null) },
+            { Opcode.mov_cc_lt, ("CC = ", " < ", null) },
+            { Opcode.mov_cc_ule, ("CC = ", " <= ", null) },
+            { Opcode.mov_cc_ult, ("CC = ", " < ", null) },
+            { Opcode.mov_cc_bittest, ( "CC = BITTEST(", ",", ")" )},
+            { Opcode.mov_cc_n_bittest, ( "CC = !BITTEST(", ",", ")" )},
+            { Opcode.mov_r_cc, (null, " = ", "CC") },
+            { Opcode.mov_xb, (null, " = ", ".B (X)") },
+            { Opcode.mov_xl, (null, " = ", ".L (X)") },
+            { Opcode.mov_zb, (null, " = ", ".B (Z)") },
+            { Opcode.mov_zl, (null, " = ", ".L (Z)") },
+            { Opcode.mov_x, (null, " = ", " (X)") },
+            { Opcode.mov_z, (null, " = ", " (Z)") },
+            { Opcode.mul, (null, " *= ", null) },
+            { Opcode.neg, (null, " = -", null) },
+            { Opcode.neg_cc, ("CC = !CC", null, null)},
+            { Opcode.not, (null, " = ~", null) },
+            { Opcode.JUMP_S, ("JUMP.S", null, null) },
+            { Opcode.JUMP_L, ("JUMP.L", null, null) },
+            { Opcode.sub, (null, " -= ", null) },
+
         };
     }
 }

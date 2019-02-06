@@ -49,6 +49,7 @@
     <Compile Include="MemoryOperand.cs" />
     <Compile Include="Opcode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RegisterRange.cs" />
     <Compile Include="Registers.cs" />
   </ItemGroup>
   <ItemGroup>

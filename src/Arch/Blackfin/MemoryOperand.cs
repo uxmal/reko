@@ -28,8 +28,10 @@ namespace Reko.Arch.Blackfin
     {
         public RegisterStorage Base;
         public RegisterStorage Index;
-        public bool PreIncrement;
+        public int Offset;
+        public bool PreDecrement;
         public bool PostDecrement;
+        public bool PostIncrement;
 
         public MemoryOperand(PrimitiveType dt) : base(dt)
         {
@@ -37,14 +39,41 @@ namespace Reko.Arch.Blackfin
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.WriteChar('(');
+            if (base.Width.BitSize == 8)
+            {
+                writer.WriteChar('B');
+            } else if (base.Width.BitSize == 16)
+            {
+                writer.WriteChar('W');
+            }
+            writer.WriteChar('[');
+            if (PreDecrement)
+            {
+                writer.WriteString("--");
+            }
             writer.WriteString(Base.Name);
             if (Index != null)
             {
                 writer.WriteString(" + ");
                 writer.WriteString(Index.Name);
             }
-            writer.WriteChar(')');
+            else if (Offset > 0)
+            {
+                writer.WriteString($" + 0x{Offset:X4}");
+            }
+            else if (Offset < 0)
+            {
+                writer.WriteString($" - 0x{-Offset:X4}");
+            }
+            if (PostIncrement)
+            {
+                writer.WriteString("++");
+            }
+            else if (PostDecrement)
+            {
+                writer.WriteString("--");
+            }
+            writer.WriteChar(']');
         }
     }
 }
