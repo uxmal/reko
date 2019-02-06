@@ -258,6 +258,37 @@ namespace Reko.Arch.Blackfin
 
         private static Mutator IP0 = IP(0);
 
+        // PC-indexed
+        private static Mutator PCIX(int bitpos)
+        {
+            var bitfield = new Bitfield(bitpos, 3);
+            return (u, d) =>
+            {
+                d.ops.Add(new MemoryOperand(PrimitiveType.Word32)
+                {
+                    Base = Registers.PC,
+                    Index = Registers.Pointers[bitfield.Read(u)]
+                });
+                return true;
+            };
+        }
+
+        private static Mutator PCIX0 = PCIX(0);
+
+        // PC-relative jump destination
+        private static Mutator J(int bitsize)
+        {
+            var bitfield = new Bitfield(0, bitsize);
+            return (u, d) =>
+            {
+                var offset = bitfield.ReadSigned(u) << 1;
+                d.ops.Add(AddressOperand.Create(d.addr + offset));
+                return true;
+            };
+        }
+
+        private static Mutator J12 = J(12);
+
         #endregion
 
 
@@ -271,9 +302,13 @@ namespace Reko.Arch.Blackfin
                     Nyi("0b0000............"),
                     (0x05, Mask(3, 1,
                         Instr(InstrClass.Transfer, Opcode.JUMP, IP0),
-                        invalid))),
+                        invalid)),
+                    (0x08, Mask(3, 1,
+                        Instr(InstrClass.Transfer, Opcode.JUMP, PCIX0),
+                        invalid))
+                    ),
                 Nyi("0b0001............"),
-                Nyi("0b0010............"),
+                Instr(InstrClass.Transfer, Opcode.JUMP_S, J12),
                 Nyi("0b0011............"),
 
                 Nyi("0b0100............"),

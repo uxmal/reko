@@ -47,8 +47,14 @@ namespace Reko.Arch.Blackfin
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.WriteOpcode(Opcode.ToString());
+            if (!mapOpcodes.TryGetValue(Opcode, out var sOpcode))
+            {
+                sOpcode = Opcode.ToString();
+            }
+            writer.WriteOpcode(sOpcode);
             var sep = " ";
+            if (Operands == null)
+                return;
             foreach (var op in Operands)
             {
                 writer.WriteString(sep);
@@ -57,5 +63,10 @@ namespace Reko.Arch.Blackfin
             }
             writer.WriteString(";");
         }
+
+        private static readonly Dictionary<Opcode, string> mapOpcodes = new Dictionary<Opcode, string>
+        {
+            { Opcode.JUMP_S, "JUMP.S" },
+        };
     }
 }

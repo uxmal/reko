@@ -49,10 +49,24 @@ namespace Reko.UnitTests.Arch.Blackfin
         }
 
         [Test]
-        public void BlackfinDasm_Jump()
+        public void BlackfinDasm_Jump_indirect()
         {
             var instr = DisassembleHexBytes("5300");
             Assert.AreEqual("JUMP (P3);", instr.ToString());
+        }
+
+        [Test]
+        public void BlackfinDasm_Jump_pc_indexed()
+        {
+            var instr = DisassembleHexBytes("8400");
+            Assert.AreEqual("JUMP (PC + P4);", instr.ToString());
+        }
+
+        [Test]
+        public void BlackfinDasm_jump_s()
+        {
+            var instr = DisassembleHexBytes("FF2F");
+            Assert.AreEqual("JUMP.S 000FFFFE;", instr.ToString());
         }
     }
 }

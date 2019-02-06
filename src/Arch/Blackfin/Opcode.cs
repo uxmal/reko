@@ -24,5 +24,6 @@ namespace Reko.Arch.Blackfin
     {
         invalid,
         JUMP,
+        JUMP_S,
     }
 }

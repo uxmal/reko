@@ -27,6 +27,7 @@ namespace Reko.Arch.Blackfin
     public class MemoryOperand : MachineOperand
     {
         public RegisterStorage Base;
+        public RegisterStorage Index;
         public bool PreIncrement;
         public bool PostDecrement;
 
@@ -38,6 +39,11 @@ namespace Reko.Arch.Blackfin
         {
             writer.WriteChar('(');
             writer.WriteString(Base.Name);
+            if (Index != null)
+            {
+                writer.WriteString(" + ");
+                writer.WriteString(Index.Name);
+            }
             writer.WriteChar(')');
         }
     }

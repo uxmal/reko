@@ -30,11 +30,13 @@ namespace Reko.Arch.Blackfin
     public static class Registers
     {
         public static readonly RegisterStorage[] Pointers;
+        public static readonly RegisterStorage PC;
 
         static Registers()
         {
             var factory = new StorageFactory();
             Pointers = factory.RangeOfReg32(8, "P{0}");
+            PC = factory.Reg32("PC");
         }
     }
 }
