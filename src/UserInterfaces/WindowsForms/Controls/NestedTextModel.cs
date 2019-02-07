@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -44,6 +44,11 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             public readonly int iModel;
             public readonly object InnerLocation;
             public Location(int i, object pos) { this.iModel = i;  this.InnerLocation = pos; }
+
+            public override string ToString()
+            {
+                return $"Location: {iModel}:{InnerLocation}";
+            }
         }
 
         public NodeCollection Nodes { get; private set; }
@@ -83,9 +88,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         public LineSpan[] GetLineSpans(int count)
         {
-            Location loc = CurrentPosition as Location;
             var spans = new List<LineSpan>();
-            if (loc == null)
+            if (!(CurrentPosition is Location loc))
                 return spans.ToArray();
             for (int i = loc.iModel; count > 0 && i < Nodes.Count; ++i)
             {
@@ -255,6 +259,13 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                     outer.EndPosition = new Location(Count - 1, this[Count - 1].Model.EndPosition);
                 }
             }
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{{Nested: {0} nodes: {1}}}",
+                this.Nodes.Count,
+                string.Join(",", this.Nodes.Select(n => n.cLines)));
         }
     }
 

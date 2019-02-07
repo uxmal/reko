@@ -143,6 +143,7 @@
     <Compile Include="Forms\IKeyBindingsDialog.cs" />
     <Compile Include="Forms\IProcedureDialog.cs" />
     <Compile Include="Forms\IResourceEditor.cs" />
+    <Compile Include="Forms\ISelectItemDialog.cs" />
     <Compile Include="Forms\ISymbolSourceDialog.cs" />
     <Compile Include="Forms\KeyBindingsInteractor.cs" />
     <Compile Include="Forms\ScannedPageInteractor.cs" />

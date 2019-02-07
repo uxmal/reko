@@ -22,8 +22,10 @@ using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Gui.Forms;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Linq;
 
 namespace Reko.Gui
 {
@@ -49,5 +51,6 @@ namespace Reko.Gui
         IDeclarationForm CreateCommentForm();
         IJumpTableDialog CreateJumpTableDialog(Program program, MachineInstruction instrIndirectJmp, Address addrVector, int stride);
         ISymbolSourceDialog CreateSymbolSourceDialog();
+        ISelectItemDialog CreateSelectItemDialog(string caption, object[] items, bool multiSelect);
     }
 }
