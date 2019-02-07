@@ -64,19 +64,16 @@ namespace Reko.Environments.C64
         public C64BasicInstruction ReadLine(Address addr)
         {
             var rdr = image.CreateLeReader(addr);
-            ushort next;
-            ushort line; 
-            byte b;
-            if (!rdr.TryReadLeUInt16(out next))
+            if (!rdr.TryReadLeUInt16(out ushort next))
                 return null;
-            if (!rdr.TryReadLeUInt16(out line))
+            if (!rdr.TryReadLeUInt16(out ushort line))
                 return null;
             if (next < 0x0801)
                 return null;
-            var mem = new MemoryStream();
-            while (rdr.TryReadByte(out b) && b != 0)
+            var mem = new List<byte>();
+            while (rdr.TryReadByte(out byte b) && b != 0)
             {
-                mem.WriteByte(b);
+                mem.Add(b);
             }
             return new C64BasicInstruction
             {

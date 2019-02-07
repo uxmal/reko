@@ -134,8 +134,7 @@ namespace Reko.Environments.C64
             IArchiveBrowserService abSvc = Services.GetService<IArchiveBrowserService>();
             if (abSvc != null)
             {
-                var selectedFile = abSvc.UserSelectFileFromArchive(entries) as D64FileEntry;
-                if (selectedFile != null)
+                if (abSvc.UserSelectFileFromArchive(entries) is D64FileEntry selectedFile)
                 {
                     this.program = LoadImage(addrLoad, selectedFile);
                     return program;
@@ -145,7 +144,8 @@ namespace Reko.Environments.C64
             var mem = new MemoryArea(Address.Ptr16(0), RawImage);
             var segmentMap = new SegmentMap(mem.BaseAddress);
             segmentMap.AddSegment(mem, "code", AccessMode.ReadWriteExecute);
-            return new Program {
+            return new Program
+            {
                 SegmentMap = segmentMap,
                 Architecture = arch,
                 Platform = new DefaultPlatform(Services, arch)
@@ -197,12 +197,9 @@ namespace Reko.Environments.C64
             var arch6502 = (Mos6502ProcessorArchitecture) cfgSvc.GetArchitecture("m6502");
             var arch = new C64Basic(lines);
             var platform = cfgSvc.GetEnvironment("c64").Load(Services, arch);
-            var program = new Program(
-                new SegmentMap(
-                    image.BaseAddress,
-                    new ImageSegment("code", image, AccessMode.ReadWriteExecute)),
-                arch,
-                platform);
+            var segMap = platform.CreateAbsoluteMemoryMap();
+            segMap.AddSegment(image, "code", AccessMode.ReadWriteExecute);
+            var program = new Program(segMap, arch, platform);
             program.Architectures.Add(arch6502.Name, arch6502);
             var addrBasic = Address.Ptr16(lines.Keys[0]);
             var sym = ImageSymbol.Procedure(arch, addrBasic, state: arch.CreateProcessorState());
@@ -278,8 +275,8 @@ namespace Reko.Environments.C64
 
         public class D64FileEntry : ArchivedFile
         {
-            private byte[] image;
-            private int offset;
+            private readonly byte[] image;
+            private readonly int offset;
 
             public D64FileEntry(string name, byte[] diskImage, int offset, FileType fileType)
             {

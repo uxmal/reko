@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -50,13 +50,7 @@ namespace Reko.Environments.C64
             return null;
         }
 
-        public override InstrClass InstructionClass
-        {
-            get
-            {
-                return InstrClass.Linear;
-            }
-        }
+        public override InstrClass InstructionClass => InstrClass.Linear;
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {

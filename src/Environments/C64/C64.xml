@@ -6,7 +6,7 @@
     http://www.zimmers.net/anonftp/pub/cbm/c64/manuals/mapping-c64.txt.gz
     -->
   <segment name="zero_page" addr="0000" size="0100">
-    <description>Z80 Address Space</description>
+    <description>Zero page</description>
     <global name="IO_port_direction">
       <!-- variable address="0000" -->
       <description>
@@ -393,4 +393,9 @@
 <variable address="$00FF"><description> Temporary register for BASIC floating point to ASCII conversion
 </description></variable>
   </segment>
+
+  <segment name="stack_page" addr="0100" size="0100"></segment>
+
+  <segment name="os_data" addr="0200" size="0200"></segment>
+
 </memory>
