@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
@@ -143,6 +143,7 @@
     <Compile Include="Forms\IKeyBindingsDialog.cs" />
     <Compile Include="Forms\IProcedureDialog.cs" />
     <Compile Include="Forms\IResourceEditor.cs" />
+    <Compile Include="Forms\ISelectItemDialog.cs" />
     <Compile Include="Forms\ISymbolSourceDialog.cs" />
     <Compile Include="Forms\KeyBindingsInteractor.cs" />
     <Compile Include="Forms\ScannedPageInteractor.cs" />
@@ -226,6 +227,7 @@
     <Compile Include="SelectionService.cs" />
     <Compile Include="SignatureParser.cs" />
     <Compile Include="StatementNavigator.cs" />
+    <Compile Include="TreeNodeCollectionDesigner.cs" />
     <Compile Include="TreeNodeDesigner.cs" />
     <Compile Include="Forms\ICallSiteDialog.cs" />
     <Compile Include="Forms\TextEncodingInteractor.cs" />
@@ -334,4 +336,3 @@
     </PostBuildEvent>
   </PropertyGroup>
 </Project>
-

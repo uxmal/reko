@@ -83,6 +83,11 @@ namespace Reko.UnitTests.Arch
                     args);
             }
 
+            public virtual IProcessorArchitecture GetArchitecture(string archLabel)
+            {
+                throw new NotImplementedException();
+            }
+
             public ExternalProcedure GetInterceptedCall(IProcessorArchitecture arch, Address addrImportThunk)
             {
                 throw new NotImplementedException();

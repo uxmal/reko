@@ -196,6 +196,16 @@ namespace Reko.UserInterfaces.WindowsForms
                 Services = this.services
             };
         }
+
+        public ISelectItemDialog CreateSelectItemDialog(string caption, object[] items, bool multiSelect)
+        {
+            return new SelectItemDialog
+            {
+                Text = caption,
+                Items = items,
+                MultiSelect = multiSelect
+            };
+        }
     }
 }
 

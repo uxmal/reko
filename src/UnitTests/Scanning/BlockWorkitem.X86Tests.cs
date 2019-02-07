@@ -130,6 +130,11 @@ namespace Reko.UnitTests.Scanning
                 sigs.Add(addrCallInstruction.ToLinear(), signature);
             }
 
+            public IProcessorArchitecture GetArchitecture(string archLabel)
+            {
+                throw new NotImplementedException();
+            }
+
             public Expression GetImport(Address addrThunk, Address addrInstr)
             {
                 return null;

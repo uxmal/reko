@@ -66,6 +66,7 @@ namespace Reko.UnitTests.Core.Serialization
         private void Given_TestArch()
         {
             this.arch = new Mock<IProcessorArchitecture>();
+            this.arch.Setup(a => a.Name).Returns("testArch");
             this.cfgSvc.Setup(c => c.GetArchitecture("testArch")).Returns(arch.Object);
         }
 

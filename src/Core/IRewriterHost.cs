@@ -38,6 +38,14 @@ namespace Reko.Core
         Expression PseudoProcedure(string name, DataType returnType, params Expression [] args);
         Expression PseudoProcedure(string name, ProcedureCharacteristics c, DataType returnType, params Expression [] args);
 
+
+        /// <summary>
+        /// Obtain a reference to the processor architecture with the name <paramref name="archMoniker"/>.
+        /// </summary>
+        /// <param name="archMoniker">The name of the desired architecture.</param>
+        /// <returns></returns>
+        IProcessorArchitecture GetArchitecture(string archMoniker);
+
         /// <summary>
         /// Given an address addrThunk, returns the possible imported thing (procedure or 
         /// global variable) pointed to by Thunk.

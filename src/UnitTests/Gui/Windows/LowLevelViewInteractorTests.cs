@@ -137,6 +137,7 @@ namespace Reko.UnitTests.Gui.Windows
             arch = new Mock<IProcessorArchitecture>();
             var dasm = new Mock<IEnumerable<MachineInstruction>>();
             var e = new Mock<IEnumerator<MachineInstruction>>();
+            arch.Setup(a => a.Name).Returns("FakeArch");
             arch.Setup(a => a.InstructionBitSize).Returns(8);
             arch.Setup(a => a.PointerType).Returns(PrimitiveType.Ptr32);
             arch.Setup(a => a.CreateImageReader(

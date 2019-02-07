@@ -345,7 +345,9 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         {
             base.Setup();
             this.arch = new Mock<IProcessorArchitecture>();
+            arch.Setup(a => a.Name).Returns("FakeArchLe");
             this.arch32be = new Mock<IProcessorArchitecture>();
+            arch.Setup(a => a.Name).Returns("FakeArchBe");
             this.tlSvc = new Mock<ITypeLibraryLoaderService>(); 
             sc.AddService<ITypeLibraryLoaderService>(tlSvc.Object);
             cfgSvc.Setup(d => d.GetArchitecture("x86-protected-32")).Returns(arch.Object);

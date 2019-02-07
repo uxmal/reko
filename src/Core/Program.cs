@@ -42,10 +42,14 @@ namespace Reko.Core
     /// A Decompiler project may consist of several of these Programs.
     /// </remarks>
     [Designer("Reko.Gui.Design.ProgramDesigner,Reko.Gui")]
-    public class Program
+    public class Program : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private IProcessorArchitecture archDefault;
         private Identifier globals;
         private Encoding encoding;
+
 
         public Program()
         {
@@ -87,7 +91,11 @@ namespace Reko.Core
         /// <summary>
         /// The processor architecture to use for decompilation.
         /// </summary>
-		public IProcessorArchitecture Architecture { get; set; }
+		public IProcessorArchitecture Architecture
+        {
+            get { return archDefault; }
+            set { SetDefaultArchitecture(value); }
+        }
 
         public IPlatform Platform { get; set; }
 
@@ -367,6 +375,26 @@ namespace Reko.Core
 
         // Mutators /////////////////////////////////////////////////////////////////
 
+        public IProcessorArchitecture EnsureArchitecture(string archLabel, Func<string,IProcessorArchitecture> getter)
+        {
+            if (Architectures.TryGetValue(archLabel, out var arch))
+                return arch;
+            arch = getter(archLabel);
+            Architectures[arch.Name] = arch;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Architectures)));
+            return arch;
+        }
+
+        private void SetDefaultArchitecture(IProcessorArchitecture arch)
+        {
+            this.archDefault = arch;
+            if (arch != null && !Architectures.ContainsKey(arch.Name))
+            {
+                Architectures.Add(arch.Name, arch);
+            }
+            //$REVIEW: raise an event if this option becomes user-available.
+        }
+
         /// <summary>
         /// This method is called when the user has created a global item.
         /// </summary>
@@ -457,15 +485,6 @@ namespace Reko.Core
             {
                 return (uint)(strDt.Size + strDt.Size);
             }
-        }
-
-        //$TODO: remove this property. Procedures now have 
-        // a `EntryAddress` property.
-        public Address GetProcedureAddress(Procedure proc)
-        {
-            return Procedures.Where(de => de.Value == proc)
-                .Select(de => de.Key)
-                .FirstOrDefault();
         }
 
         public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, params Expression[] args)

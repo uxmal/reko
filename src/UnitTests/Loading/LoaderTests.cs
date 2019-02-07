@@ -98,6 +98,7 @@ namespace Reko.UnitTests.Loading
         private void Given_MsDosRawFileFormat()
         {
             this.x86arch = new Mock<IProcessorArchitecture>();
+            this.x86arch.Setup(a => a.Name).Returns("x86-real-16");
             var env = new Mock<OperatingEnvironment>();
             this.msdosPlatform = new Mock<IPlatform>();
             var map = new SegmentMap(Address.SegPtr(0x0C00, 0));

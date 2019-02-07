@@ -61,6 +61,11 @@ namespace Reko.UnitTests.Mocks
             Init(arch,name, Address.Ptr32(0x00123400), null);
         }
 
+        public ProcedureBuilder(IProcessorArchitecture arch, string name, Address addr)
+        {
+            Init(arch, name, addr, null);
+        }
+
         public ProcedureBuilder(IProcessorArchitecture arch, string name, Dictionary<string, Block> blocks)
         {
             Init(arch, name, Address.Ptr32(0x00123400), blocks);

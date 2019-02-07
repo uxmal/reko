@@ -95,6 +95,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
         private void Given_i386_Architecture()
         {
             this.arch_386 = new Mock<IProcessorArchitecture>();
+            arch_386.Setup(a => a.Name).Returns("x86-protected-32");
             arch_386.Setup(a => a.CreateFrame()).Returns(new Frame(PrimitiveType.Ptr32));
             arch_386.Setup(a => a.WordWidth).Returns(PrimitiveType.Word32);
             arch_386.Setup(a => a.PointerType).Returns(PrimitiveType.Ptr32);

@@ -61,6 +61,11 @@ namespace Reko.WindowsItp
                     args);
             }
 
+            public IProcessorArchitecture GetArchitecture(string archLabel)
+            {
+                throw new NotImplementedException();
+            }
+
             public FunctionType GetCallSignatureAtAddress(Address addrCallInstruction)
             {
                 throw new NotImplementedException();

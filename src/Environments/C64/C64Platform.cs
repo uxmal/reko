@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -38,12 +38,9 @@ namespace Reko.Environments.C64
     /// </summary>
     public class C64Platform : Platform
     {
-        private Mos6502ProcessorArchitecture arch;
-
-        public C64Platform(IServiceProvider services, Mos6502ProcessorArchitecture arch)
+        public C64Platform(IServiceProvider services, IProcessorArchitecture arch)
             : base(services, arch, "c64")
         {
-            this.arch = arch;
         }
 
         public override string DefaultCallingConvention

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 Pavel Tomin.
  *
@@ -296,7 +296,7 @@ namespace Reko.UserInterfaces.WindowsForms
             var proc = tag as Procedure;
 
             if (proc != null)
-                addr = program.GetProcedureAddress(proc);
+                addr = proc.EntryAddress;
 
             return addr;
         }
@@ -368,7 +368,7 @@ namespace Reko.UserInterfaces.WindowsForms
             var proc = e.Destination as Procedure;
 
             if (proc != null)
-                addr = program.GetProcedureAddress(proc);
+                addr = proc.EntryAddress;
 
             if (addr == null)
                 return;

@@ -49,6 +49,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             this.arch = new Mock<IProcessorArchitecture>();
             this.platform = new Mock<IPlatform>();
             this.platform.Setup(p => p.Architecture).Returns(arch.Object);
+            this.arch.Setup(a => a.Name).Returns("FakeArch");
             this.arch.Setup(a => a.CreateImageReader(
                 It.IsAny<MemoryArea>(),
                 It.IsAny<Address>()))

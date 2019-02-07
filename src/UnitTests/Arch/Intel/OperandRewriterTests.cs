@@ -250,7 +250,12 @@ namespace Reko.UnitTests.Arch.Intel
             Console.WriteLine(d.Message);
         }
 
-		#endregion
+        #endregion
+
+        public IProcessorArchitecture GetArchitecture(string archLabel)
+        {
+            throw new NotImplementedException();
+        }
 
         public ExternalProcedure GetInterceptedCall(IProcessorArchitecture arch, Address addrImportThunk)
         {

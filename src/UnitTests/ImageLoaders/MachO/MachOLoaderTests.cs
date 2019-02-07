@@ -83,6 +83,7 @@ namespace Reko.UnitTests.ImageLoaders.MachO
         private void Given_x86Arch()
         {
             var arch = new Mock<IProcessorArchitecture>();
+            arch.Setup(a => a.Name).Returns("x86-protected-64");
             cfgSvc.Setup(c => c.GetArchitecture("x86-protected-64")).Returns(arch.Object);
         }
     }

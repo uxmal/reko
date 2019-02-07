@@ -41,6 +41,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
         public void Setup()
         {
             this.arch = new Mock<IProcessorArchitecture>();
+            arch.Setup(a => a.Name).Returns("FakeArch");
             arch.Setup(a => a.InstructionBitSize).Returns(8);
             
             program = new Program
@@ -61,6 +62,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             var mem = Given_MemoryArea(size);
             var seg = new ImageSegment(".text", mem, AccessMode.ReadExecute);
             program.SegmentMap = new SegmentMap(mem.BaseAddress, seg);
+            program.ImageMap = program.SegmentMap.CreateImageMap();
             return seg;
         }
 

@@ -52,6 +52,7 @@ namespace Reko.UnitTests.Scanning
         private void Given_Program(byte [] bytes)
         {
             this.arch = new Mock<IProcessorArchitecture>();
+            this.arch.Setup(a => a.Name).Returns("FakeArch");
             arch.Setup(a => a.ReadCodeAddress(
                 It.IsAny<int>(),
                 It.IsNotNull<EndianImageReader>(),

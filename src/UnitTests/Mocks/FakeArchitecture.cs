@@ -61,6 +61,7 @@ namespace Reko.UnitTests.Mocks
             this.InstructionBitSize = 32;
             this.rewriters = new RtlTraceBuilder();
             this.StackRegister = GetRegister(FakeArchitecture.iStackRegister);
+            this.Description = "Fake Architecture for testing";
             this.FramePointerType = PrimitiveType.Ptr32;
             this.PointerType = PrimitiveType.Ptr32;
             this.WordWidth = PrimitiveType.Word32;

@@ -21,6 +21,7 @@
 using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.Code;
+using Reko.Core.Configuration;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Rtl;
@@ -215,6 +216,12 @@ namespace Reko.Scanning
                 proc.Architecture,
                 stateOnEntry,
                 addrStart);
+        }
+
+        public IProcessorArchitecture GetArchitecture(string archMoniker)
+        {
+            var cfgSvc = Services.RequireService<IConfigurationService>();
+            return Program.EnsureArchitecture(archMoniker, cfgSvc.GetArchitecture);
         }
 
         public IEnumerable<RtlInstructionCluster> GetTrace(IProcessorArchitecture arch, Address addrStart, ProcessorState state, IStorageBinder binder)

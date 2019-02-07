@@ -67,6 +67,7 @@ namespace Reko.UnitTests.Scanning
             var listener = new Mock<DecompilerEventListener>();
             scanner = new Mock<IScanner>();
             arch = new Mock<IProcessorArchitecture>();
+            arch.Setup(a => a.Name).Returns("FakeArch");
             proc = new Procedure(arch.Object, "testProc", Address.Ptr32(0x00100000), new Frame(PrimitiveType.Word32));
             block = proc.AddBlock("l00100000");
             grf = proc.Frame.EnsureFlagGroup(Registers.eflags, 3, "SCZ", PrimitiveType.Byte);

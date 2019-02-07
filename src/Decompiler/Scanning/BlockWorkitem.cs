@@ -532,7 +532,7 @@ namespace Reko.Scanning
             {
                 // Some image loaders generate import symbols at addresses
                 // outside of the program image. 
-                var impProc = scanner.GetImportedProcedure(arch, addr, this.ric.Address);
+                var impProc = scanner.GetImportedProcedure(this.arch, addr, this.ric.Address);
                 if (impProc != null)
                 {
                     sig = impProc.Signature;
@@ -555,7 +555,8 @@ namespace Reko.Scanning
                     return true;
                 }
 
-                var callee = scanner.ScanProcedure(blockCur.Procedure.Architecture, addr, null, state);
+                var arch = call.Architecture ?? blockCur.Procedure.Architecture;
+                var callee = scanner.ScanProcedure(arch, addr, null, state);
                 if (callee is DispatchProcedure disp)
                 {
                     callee = ResolveDispatchProcedureCall(disp, state);

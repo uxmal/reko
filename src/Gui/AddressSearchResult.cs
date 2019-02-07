@@ -202,6 +202,7 @@ namespace Reko.Gui
 
         public void MarkProcedures()
         {
+            //$TODO: if > 1 arch, pick one.
             var procAddrs = SelectedHits().Select(hit => new ProgramAddress(hit.Program, hit.Address));
             services.RequireService<ICommandFactory>().MarkProcedures(procAddrs).Do();
         }

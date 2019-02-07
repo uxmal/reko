@@ -77,6 +77,7 @@ namespace Reko.UnitTests.Gui
             var loader = new Mock<ILoader>();
             var host = new Mock<DecompilerHost>();
             var arch = new Mock<IProcessorArchitecture>();
+            arch.Setup(a => a.Name).Returns("FakeArch");
             var platform = new Mock<IPlatform>();
             var fileName = OsPath.Relative("foo", "bar", "baz.exe");
             var bytes = new byte[100];

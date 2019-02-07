@@ -44,6 +44,7 @@ namespace Reko.UnitTests.Core
         private void Given_32bit_Program(int size = 32)
         {
             this.arch = new Mock<IProcessorArchitecture>();
+            this.arch.Setup(a => a.Name).Returns("FakeArch");
             this.arch.Setup(a => a.FramePointerType).Returns(PrimitiveType.Ptr32);
             this.arch.Setup(a => a.InstructionBitSize).Returns(8);
             this.platform = new Mock<IPlatform>();
@@ -84,6 +85,7 @@ namespace Reko.UnitTests.Core
         private void Given_32bit_Program_Zeros(int size = 32)
         {
             this.arch = new Mock<IProcessorArchitecture>();
+            this.arch.Setup(a => a.Name).Returns("FakeArch");
             this.arch.Setup(a => a.FramePointerType).Returns(PrimitiveType.Ptr32);
             this.arch.Setup(a => a.InstructionBitSize).Returns(8);
             this.platform = new Mock<IPlatform>();

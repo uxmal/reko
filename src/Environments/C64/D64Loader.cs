@@ -21,6 +21,7 @@
 using Reko.Arch.Mos6502;
 using Reko.Core;
 using Reko.Core.Archives;
+using Reko.Core.Configuration;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -133,8 +134,7 @@ namespace Reko.Environments.C64
             IArchiveBrowserService abSvc = Services.GetService<IArchiveBrowserService>();
             if (abSvc != null)
             {
-                var selectedFile = abSvc.UserSelectFileFromArchive(entries) as D64FileEntry;
-                if (selectedFile != null)
+                if (abSvc.UserSelectFileFromArchive(entries) is D64FileEntry selectedFile)
                 {
                     this.program = LoadImage(addrLoad, selectedFile);
                     return program;
@@ -144,7 +144,8 @@ namespace Reko.Environments.C64
             var mem = new MemoryArea(Address.Ptr16(0), RawImage);
             var segmentMap = new SegmentMap(mem.BaseAddress);
             segmentMap.AddSegment(mem, "code", AccessMode.ReadWriteExecute);
-            return new Program {
+            return new Program
+            {
                 SegmentMap = segmentMap,
                 Architecture = arch,
                 Platform = new DefaultPlatform(Services, arch)
@@ -191,18 +192,17 @@ namespace Reko.Environments.C64
                 Address.Ptr16(alignedAddress),
                 loadedBytes);
             var rdr = new C64BasicReader(image, 0x0801);
-            var programLines = rdr.ToSortedList(line => (ushort)line.Address.ToLinear(), line => line);
-            var arch = new C64Basic(programLines);
-            image = new MemoryArea(
-                Address.Ptr16(programLines.Keys[0]),
-                new byte[0xFFFF]);
-            var program = new Program(
-                new SegmentMap(
-                    image.BaseAddress,
-                    new ImageSegment("code", image, AccessMode.ReadWriteExecute)),
-                arch,
-                new C64Platform(Services, null));
-            var sym = ImageSymbol.Procedure(arch, image.BaseAddress, state: arch.CreateProcessorState());
+            var lines = rdr.ToSortedList(line => (ushort)line.Address.ToLinear(), line => line);
+            var cfgSvc = Services.RequireService<IConfigurationService>();
+            var arch6502 = (Mos6502ProcessorArchitecture) cfgSvc.GetArchitecture("m6502");
+            var arch = new C64Basic(lines);
+            var platform = cfgSvc.GetEnvironment("c64").Load(Services, arch);
+            var segMap = platform.CreateAbsoluteMemoryMap();
+            segMap.AddSegment(image, "code", AccessMode.ReadWriteExecute);
+            var program = new Program(segMap, arch, platform);
+            program.Architectures.Add(arch6502.Name, arch6502);
+            var addrBasic = Address.Ptr16(lines.Keys[0]);
+            var sym = ImageSymbol.Procedure(arch, addrBasic, state: arch.CreateProcessorState());
             program.EntryPoints.Add(sym.Address, sym);
             return program;
         }
@@ -275,8 +275,8 @@ namespace Reko.Environments.C64
 
         public class D64FileEntry : ArchivedFile
         {
-            private byte[] image;
-            private int offset;
+            private readonly byte[] image;
+            private readonly int offset;
 
             public D64FileEntry(string name, byte[] diskImage, int offset, FileType fileType)
             {

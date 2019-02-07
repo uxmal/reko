@@ -53,6 +53,7 @@ namespace Reko.UnitTests.Core.Serialization
             arch = new Mock<IProcessorArchitecture>();
             this.listener = new Mock<DecompilerEventListener>();
             Address dummy;
+            arch.Setup(a => a.Name).Returns("FakeArch");
             arch.Setup(a => a.TryParseAddress(It.IsAny<string>(), out dummy))
                 .Returns(new StringToAddress((string sAddr, out Address addr) => {
                     var iColon = sAddr.IndexOf(':');

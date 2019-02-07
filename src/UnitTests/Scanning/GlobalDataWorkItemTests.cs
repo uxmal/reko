@@ -43,6 +43,7 @@ namespace Reko.UnitTests.Scanning
             this.scanner = new Mock<IScannerQueue>();
             this.arch = new Mock<IProcessorArchitecture>();
             this.platform = new Mock<IPlatform>();
+            arch.Setup(a => a.Name).Returns("FakeArch");
             arch.Setup(a => a.CreateImageReader(
                 It.IsAny<MemoryArea>(),
                 It.IsAny<Address>()))

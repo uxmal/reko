@@ -111,12 +111,12 @@ namespace Reko.UnitTests.Gui.Windows
 
         private void When_MovedTo(uint addr)
         {
-            interactor.SelectedAddress = Address32.Ptr32(addr);
+            interactor.SelectedAddress = Address.Ptr32(addr);
         }
 
         private void Given_ImageSegment(uint addr, params byte[] bytes)
         {
-            var mem = new MemoryArea(Address32.Ptr32(addr), bytes);
+            var mem = new MemoryArea(Address.Ptr32(addr), bytes);
             var seg = new ImageSegment(".text", mem, AccessMode.ReadWrite);
             program.SegmentMap.AddSegment(seg);
             program.ImageMap = program.SegmentMap.CreateImageMap();
@@ -124,8 +124,8 @@ namespace Reko.UnitTests.Gui.Windows
 
         private void Given_StubProcedure(uint addr, uint size)
         {
-            var address = Address32.Ptr32(addr);
-            var m = new ProcedureBuilder(program.Architecture, "fnTest");
+            var address = Address.Ptr32(addr);
+            var m = new ProcedureBuilder(program.Architecture, "fnTest", address);
             m.Return();
             this.proc = m.Procedure;
             this.program.Procedures[address] = proc;
@@ -141,7 +141,7 @@ namespace Reko.UnitTests.Gui.Windows
 
         private void Given_ImageMapItem(uint addr, DataType dataType, string name)
         {
-            var address = Address32.Ptr32(addr);
+            var address = Address.Ptr32(addr);
             var item = new ImageMapItem
             {
                 Address = address,

@@ -43,6 +43,7 @@ namespace Reko.Environments.C64
 
         public C64Basic(SortedList<ushort, C64BasicInstruction> program) : base("c64Basic")
         {
+            this.Description = "Commodore 64 Basic";
             this.Endianness = EndianServices.Little;
             this.program = program;
             this.PointerType = PrimitiveType.Ptr16;
@@ -177,7 +178,7 @@ namespace Reko.Environments.C64
 
             public override Core.Expressions.Constant GetRegister(RegisterStorage r)
             {
-                throw new NotImplementedException();
+                return Constant.Invalid;
             }
 
             public override void SetRegister(RegisterStorage r, Core.Expressions.Constant v)
