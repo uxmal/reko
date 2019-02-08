@@ -4,7 +4,7 @@ Projection propagation is an analysis being developed for Reko to handle transfo
 
 The goal of the projection propagation transform is to eliminate as many `SEQ` and `SLICE` operations as possible, to improve thereadability of the generated decompiled code.
 
-## Examples
+## Motivating Examples
 
 ### Fusing def -> SEQ
 
@@ -128,7 +128,7 @@ The calling code looks like this:
     ...
 ```
 
-Because neither the `dx` nor the `ax` register can be used when accessing memory, they must be copied over to `es:bx`. After rewriting to IR, SSA transformation and value propagation, the code fragments will look like this:
+Note that in x86 real mode, neither the `dx` nor the `ax` register can be used to make an effective address. The register values must be copied over to `es:bx`. After rewriting to IR, SSA transformation and value propagation, the code fragments will look like this:
 ```
     ...
     es_ax_42 = Mem41[es_40:bx_32 + 42:word32]
@@ -218,6 +218,91 @@ After further analysis and translation to high-level language:
 
 Because `func_returning_32bit_value` has changed the storages it trashes from `es,dx,ax` to `es,dx:ax`, all other callers to `func_returning_32bit_value` need to be re-analyzed.
 
+
+### Sequences of phi assignments
+
+Fusing expression sequences that are propagated via phi assignments can resultin in fruitful code simplifications. In the following example, the values in the registers `ax` and `dx` are carried around in a loop:
+```
+    def ax
+    def dx
+    def cx
+loop:
+    ax_3 = PHI(ax, ax_2)
+    dx_3 = PHI(dx, dx_2)
+    cx_3 = PHI(cx, cx_2)
+    if (cx_3 == 0) goto done
+body:
+ *  dx_ax_1 = SEQ(dx_3, ax_3)
+    dx_ax_2 = dx_ax_1 + Mem[...]
+    cx_2 = cx_3 - 1
+    dx_2 = SLICE(dx_ax_2, word16, 16)
+    ax_2 = SLICE(dx_ax_2, word16, 0)
+    goto loop
+    
+```
+The sequence `dx_ax_1` is defined by two `PHI` assigments for `dx_3` and `ax_3`. The two phi expressions are replaced with a single phi expression for the sequence, and two slicing expressions extracting the sub expressions. For each predecessor block, the algorithm inserts new `SEQ` statements. 
+```
+    def ax
+    def dx
+    def cx
+*   dx_ax = SEQ(dx, ax)
+loop:
+*   dx_ax_1 = PHI(dx_ax, dx_ax_3)
+*   ax_3 = SLICE(dx_ax_1, word16, 0)
+*   dx_3 = SLICE(dx_ax_1, word16, 16)
+    cx_3 = PHI(cx, cx_2)
+    if (cx_3 == 0) goto done
+body:
+    dx_ax_2 = dx_ax_1 + Mem[...]
+    cx_2 = cx_3 - 1
+    dx_2 = SLICE(dx_ax_2, word16, 16)
+    ax_2 = SLICE(dx_ax_2, word16, 0)
+*   dx_ax_3 = SEQ(dx_2, ax_2) 
+    goto loop
+```
+The new `SEQ` statements can be fed back into the algorithm and propagated further, yielding:
+```
+    def dx_ax
+    def cx
+*   ax = SLICE(dx_ax, word16, 0)
+*   dx = SLICE(dx_ax, word16, 16)
+loop:
+    dx_ax_1 = PHI(dx_ax, dx_ax_3)
+    ax_3 = SLICE(dx_ax_1, word16, 0)
+    dx_3 = SLICE(dx_ax_1, word16, 16)
+    cx_3 = PHI(cx, cx_2)
+    if (cx_3 == 0) goto done
+body:
+    dx_ax_2 = dx_ax_1 + Mem[...]
+    cx_2 = cx_3 - 1
+    dx_2 = SLICE(dx_ax_2, word16, 16)
+    ax_2 = SLICE(dx_ax_2, word16, 0)
+*   dx_ax_3 = dx_ax_2
+    goto loop
+```
+After value propagation and dead code elimination this becomes:
+```
+    def dx_ax
+    def cx
+loop:
+    dx_ax_1 = PHI(dx_ax, dx_ax_2)
+    cx_3 = PHI(cx, cx_2)
+    if (cx_3 == 0) goto done
+body:
+    dx_ax_2 = dx_ax_1 + Mem[...]
+    cx_2 = cx_3 - 1
+    goto loop
+```
+And in high-level language:
+```
+void foo(word16 cx, word32 dx_ax) {
+    while (cx != 3) {
+        dx_ax += <some dereference>
+        --cx
+    }
+}
+```
+
 ### Avoiding over-eager fusion
 
 There are cases when we should avoid fusing a register pair. 
@@ -233,7 +318,7 @@ when rewritten to RTL / SSA becomes:
     ...
 ```
 
-In this example the `ds` register is used in conjunction with the `si` and `di` registers. Unless we can prove that `si` and `di` are related by a constant offset, we must assume that `si` and `di` are separate "near pointers" (in x86 parlance) into the memory segment referred to by `ds`. In this case, `ds` needs to be treated as a separate identifier, and we cannot fuse the sequences. The end result will be:
+In this example the `ds` register is used in conjunction with both the `si` and the `di` registers. Unless we can prove that `si` and `di` are related by a constant offset, we must assume that `si` and `di` are separate "near pointers" (in x86 parlance) into the memory segment referred to by `ds`. In this case, `ds` needs to be treated as a separate identifier, and we cannot fuse the sequences. The end result will be:
 ```
     ax_2 = Mem0[ds:si:word16] + Mem0[ds:di:word16]
 ```
@@ -245,3 +330,244 @@ Once this is translated to high-level language, we have:
 
 ## Sketch of approach
 
+The algorithm is implemented as an analysis stage followed by synthesis stage. The analysis examines the procedure in question to find all fusion candidate expressions. A candidate expression is:
+* a `SEQ(x_0,x_1,...,x_n-1)` expression which fuses `n` expressions.
+* a segmented memory access `Mem[seg:off]` or `Mem[seg:off+e]` expression, where `seg` and `off` are `SLICE` and `(cast)` expressions. It can be regarded as a special case of a `SEQ` expression for the purposes of this algorithm.
+
+For each `SEQ` in the procedure, we trace the definition of all its subexpressions. If all these are defined in the same basic block, we generate a _fusion candidate_ node, which keeps track of all the definitions in the proposed fused sequence, and all `SEQ`s or `Mem`s using the proposed fused sequence. For example, the code 
+```
+block1:
+    v_1 = ...
+    v_2 = ...
+...
+block2:
+    v_3 = SEQ(v_1, v_2)
+    ...
+block3:
+    v_4 = SEQ(v_1, v_2)
+```
+would result in the candidate node, keyed on the definition set `{ v1, v2 }`:
+```
+fusion_candidate[{v_1, v_2}]:
+    block: block1
+    uses: { v_3, v_2}
+```
+We also need to keep track of, for each variable, which candidates it's involved in. 
+```
+v_1: [ fusion_candidate[{v_1, v_2}]
+```
+If a variable is involved in more than one fusion candidate, then we have to reject the fusion candidate and remove it from the set under consideration. All surviving fusion candidates are then used to rewrite the code according to the following rules:
+
+### Def statements
+Multiple `def` statements whose variables participate in a fusion candidate generate a `def` of a new fused identifier. The original `def` statements are replaced with `SLICE` operations:
+```
+    def v1
+    def v2
+    ...
+    def vn
+...
+block_a:
+    ... = SEQ(vn, ... v2, v1)
+...
+block_b:
+    ... = SEQ(vn, ... v2, v1)
+```
+becomes
+```
+    def vn_v2_v1
+    v1 = SLICE(vn_v2_v1, ...)
+    v2 = SLICE(vn_v2_v1, ...)
+    ...
+    vn = SLICE(vn_v2_v1, ...)
+...
+block_a:
+    ... = vn_v2_v1
+...
+block_b:
+    ... = vn_v2_v1
+```
+The new definitions of the identifiers `v1`, `v2`, ... `vn` are now likely dead variables, since the analysis phase has discovered that those identifiers are solely used to build the same candidate. Any calls to the procedure will be affected as well. The caller:
+```
+    call foo
+        use:v1,v2,..vn
+```
+will need to change to:
+```
+    vn_v2_v1 = SEQ(vn,v2,...,v1)
+    call foo
+        use:vn_v2_v1
+```
+The newly created `SEQ` in the caller can now be fed back into the algorithm.
+
+### Assignments
+Multiple assignments whose variables participate in a fusion candidate generate an assignment to a fresh identifier with the `SEQ` of the sources of the assignments. The original assignments are replaced with `SLICE` assignments:
+```
+    v1 = compute_v1
+    v2 = compute_v2
+    ...
+    vn = compute_vn
+...
+block_a:
+    ... = SEQ(vn, ... v2, v1)
+...
+block_b:
+    ... = SEQ(vn, ... v2, v1)
+```
+becomes
+```
+    vn_v2_v1 = SEQ(compute_vn,compute_v2,compute_v1)
+    v1 = SLICE(vn_v2_v1, ...)
+    v2 = SLICE(vn_v2_v1, ...)
+    ...
+    vn = SLICE(vn_v2_v1, ...)
+...
+block_a:
+    ... = vn_v2_v1 
+...
+block_b:
+    ... = vn_v2_v1
+```
+
+### Phi expressions
+Multiple `PHI` assignments involved in a fused sequence generate a single `PHI` assignment to a fresh identifier. The original `PHI` assignments are replaced by `SLICE` assignments. Additionally, new `SEQ` assignments are added to the end of each predecessor block of the `PHI` statements. These new `SEQ` assignments are fed back into the algorithm.
+```
+block_a:
+    v1_a = compute_v1
+    v2_a = compute_v2
+    ...
+    vn_a = compute_vn
+...
+block_b:
+    v1_b = compute_v1
+    v2_b = compute_v2
+    ...
+    vn_b = compute_vn
+...
+block_z:
+    v1_z = compute_v1
+    v2_z = compute_v2
+    ...
+    vn_z = compute_vn
+...
+block_join:
+    v1 = PHI(v1_a, v1_b, ... v1_z)
+    v2 = PHI(v2_a, v2_b, ... v2_z)
+    ...
+    vn = PHI(vn_a, vn_b, ... vn_z)
+    ...
+block_use:
+    ... = SEQ(vn,...,v2,v1)
+```
+becomes
+```
+block_a:
+    v1_a = compute_v1
+    v2_a = compute_v2
+    ...
+    vn_a = compute_vn
+    vn_v2_v1_a = SEQ(vn_a,...,v2_a,v1_a)
+...
+block_b:
+    v1_b = compute_v1
+    v2_b = compute_v2
+    ...
+    vn_b = compute_vn
+    vn_v2_v1_b = SEQ(vn_b,...,v2_b,v1_b)
+...
+block_z:
+    v1_z = compute_v1
+    v2_z = compute_v2
+    ...
+    vn_z = compute_vn
+    vn_v2_v1_z = SEQ(vn_z,...,v2_z,v1_z)
+...
+block_join:
+    vn_v2_v1 = PHI(vn_v2_v1_a, vn_v2_v1_b, vn_v2_v1_c)
+    v1 = SLICE(vn_v2_v1, ...)
+    v2 = SLICE(vn_v2_v1, ...)
+    ...
+    vn = SLICE(vn_v2_v1, ...)
+    ...
+block_use:
+    ... = vn_v2_v1
+```
+
+### Call instructions
+Definitions in `call` instructions are fused. In the called function, the `use` statements of the components of the fused sequence are replaced with a single `use` of the fused identifier. New `SEQ` assignments are introduced in the exit blocks of the called function:
+```
+callee_proc()
+    ...
+callee_proc_exit:
+    use v1
+    use v2
+    ...
+    use vn
+
+caller_proc()
+    ...
+    call callee_proc
+        def: v1,v2,..,vn
+    ...
+    ... = SEQ(vn,...v2,v1)
+```
+becomes
+```
+callee_proc()
+    ...
+callee_proc_exit:
+    vn_v2_v1 = SEQ(vn,...,v2,v1)
+    use vn_v2_v1
+
+caller_proc()
+    ...
+    call callee_proc
+        def: vn_v2_v1
+    ...
+    ... = vn_v2_v1
+```
+The newly added `SEQ` expressions are fed back into the algorithm.
+
+## Pseudocode
+
+A rough pseudocode of this algorithm follows:
+```Python
+    # Build initial work list
+    wl = {}
+    for stm in proc:
+        seq = find_seq(stm) # find a SEQ expression
+        if seq:
+            wl.add((stm, seq))
+    used_in_candidate = { }
+    fusion_candidates = { }
+    rejected_candidates = { }
+    while len(wl):
+        while len(wl):
+            (stm, seq) = next(wl)
+            wl -= cand
+            defStms = get_defining_statements(seq)
+            if not all_stms_in_same_block(defStms):
+                continue
+            # Make a key from the variables in the SEQ
+            key = key_from_seq_variables(seq.expressions)
+            if fusion_candidates.contains(key):
+                fusion_cand = fusion_candidates[key]
+            else:
+                # Make sure none of the variables in the SEQ
+                # is used in another candidate
+                for seq_id in seq.expressions:
+                    if used_in_candidate.Contains(seq_id):
+                        rejected_candidates.add(key)
+                        continue
+                fusion_cand = make_fusion_candidate(seq, stms)
+                fusion_candidates.add(key, fusion_cand)
+            fusion_candidate.usingSeqs.append(stm)
+
+        # We now have a set of candidates to work with
+        for fusion_cand in fusion_candidates:
+            if rejected_candidates.contains(fusion_cand):
+                continue
+            new_seqs = modify_code(fusion_cand)
+            # Newly discovered candidates are fed back into 
+            # the algorithm.
+            wl += new_seqs
+```
