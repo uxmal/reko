@@ -61,6 +61,7 @@ namespace Reko.UnitTests.Analysis
 		public void Setup()
 		{
             arch = new Mock<IProcessorArchitecture>();
+            arch.Setup(a => a.Name).Returns("FakeArch");
             importResolver = new Mock<IImportResolver>();
             listener = new FakeDecompilerEventListener();
             m = new SsaProcedureBuilder();
@@ -469,7 +470,7 @@ namespace Reko.UnitTests.Analysis
 
         [Test]
         [Category(Categories.UnitTests)]
-        public void SliceShift()
+        public void VpSliceShift()
         {
             Constant eight = Constant.Word16(8);
             Identifier C = m.Reg8("C");
