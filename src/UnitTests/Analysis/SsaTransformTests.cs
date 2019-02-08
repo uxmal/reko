@@ -3756,5 +3756,119 @@ SsaDpb_exit:
             #endregion
             AssertProcedureCode(expected);
         }
+
+        private void MakeEndiannessCheck(ProcedureBuilder m)
+        {
+            var fp = m.Frame.FramePointer;
+            var r0 = m.Reg32("r0", 0);
+            var tmp = m.Frame.CreateTemporary(PrimitiveType.Byte);
+            m.MStore(m.ISub(fp, 4), m.Word16(0x0001));
+            m.Assign(tmp, m.Mem8(m.ISub(fp, 4)));
+            m.Assign(r0, m.Dpb(r0, tmp, 0));
+            m.Return();
+        }
+
+        [Test(Description = "GitHub issue #727: https://github.com/uxmal/reko/issues/727")]
+        [Category(Categories.UnitTests)]
+        public void SsaEndiannessCheck_LE()
+        {
+            Given_Architecture(new FakeArchitecture
+            {
+                Test_Endianness = EndianServices.Little
+            });
+            var sExp =
+            #region Expected
+@"fp:fp
+    def:  def fp
+Mem2: orig: Mem0
+v3_3: orig: v3
+    def:  v3_3 = bLoc04_7
+    uses: r0_5 = DPB(r0, v3_3, 0)
+r0:r0
+    def:  def r0
+    uses: r0_5 = DPB(r0, v3_3, 0)
+r0_5: orig: r0
+    def:  r0_5 = DPB(r0, v3_3, 0)
+    uses: use r0_5
+wLoc04_6: orig: wLoc04
+    def:  wLoc04_6 = 0x0001
+    uses: bLoc04_7 = SLICE(wLoc04_6, byte, 0) (alias)
+bLoc04_7: orig: bLoc04
+    def:  bLoc04_7 = SLICE(wLoc04_6, byte, 0) (alias)
+    uses: v3_3 = bLoc04_7
+// proc1
+// Return size: 0
+define proc1
+proc1_entry:
+	def fp
+	def r0
+	// succ:  l1
+l1:
+	wLoc04_6 = 0x0001
+	bLoc04_7 = SLICE(wLoc04_6, byte, 0) (alias)
+	v3_3 = bLoc04_7
+	r0_5 = DPB(r0, v3_3, 0)
+	return
+	// succ:  proc1_exit
+proc1_exit:
+	use r0_5
+======
+";
+            #endregion
+
+            this.RunTest_FrameAccesses(sExp, MakeEndiannessCheck);
+        }
+
+        [Test(Description = "GitHub issue #727: https://github.com/uxmal/reko/issues/727")]
+        [Category(Categories.UnitTests)]
+        public void SsaEndiannessCheck_BE()
+        {
+            Given_Architecture(new FakeArchitecture
+            {
+                Test_Endianness = EndianServices.Big
+            });
+
+            var sExp =
+            #region Expected
+@"fp:fp
+    def:  def fp
+Mem2: orig: Mem0
+v3_3: orig: v3
+    def:  v3_3 = bLoc04_7
+    uses: r0_5 = DPB(r0, v3_3, 0)
+r0:r0
+    def:  def r0
+    uses: r0_5 = DPB(r0, v3_3, 0)
+r0_5: orig: r0
+    def:  r0_5 = DPB(r0, v3_3, 0)
+    uses: use r0_5
+wLoc04_6: orig: wLoc04
+    def:  wLoc04_6 = 0x0001
+    uses: bLoc04_7 = SLICE(wLoc04_6, byte, 8) (alias)
+bLoc04_7: orig: bLoc04
+    def:  bLoc04_7 = SLICE(wLoc04_6, byte, 8) (alias)
+    uses: v3_3 = bLoc04_7
+// proc1
+// Return size: 0
+define proc1
+proc1_entry:
+	def fp
+	def r0
+	// succ:  l1
+l1:
+	wLoc04_6 = 0x0001
+	bLoc04_7 = SLICE(wLoc04_6, byte, 8) (alias)
+	v3_3 = bLoc04_7
+	r0_5 = DPB(r0, v3_3, 0)
+	return
+	// succ:  proc1_exit
+proc1_exit:
+	use r0_5
+======
+";
+            #endregion
+
+            RunTest_FrameAccesses(sExp, MakeEndiannessCheck);
+        }
     }
 }

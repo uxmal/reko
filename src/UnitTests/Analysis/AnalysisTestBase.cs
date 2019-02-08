@@ -117,6 +117,18 @@ namespace Reko.UnitTests.Analysis
             return program;
         }
 
+        protected Program BuildProgram(IProcessorArchitecture arch, Action<ProcedureBuilder> buildProc)
+        {
+            var m = new ProgramBuilder(arch);
+            var pb = new ProcedureBuilder(arch);
+            pb.ProgramMock = m;
+            buildProc(pb);
+            m.Add(pb);
+            var program = m.BuildProgram();
+            program.CallGraph.AddProcedure(pb.Procedure);
+            return program;
+        }
+
         protected Program RewriteFile(string relativePath)
         {
             return RewriteMsdosAssembler(relativePath, "");
@@ -325,6 +337,13 @@ namespace Reko.UnitTests.Analysis
             var program = BuildProgram(m);
             AssertRunOutput(program, RunTest, sExp);
         }
+
+        protected void RunStringTest(string sExp, IProcessorArchitecture arch, Action<ProcedureBuilder> m)
+        {
+            var program = BuildProgram(arch, m);
+            AssertRunOutput(program, RunTest, sExp);
+        }
+
 
         protected void RunStringTest(string sExp, ProcedureBuilder pb)
         {

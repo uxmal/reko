@@ -1742,13 +1742,16 @@ namespace Reko.Analysis
                 // Defined locally in this block.
                 if (ints.Length == 1)
                 {
-                    if (offsetInterval.Start == ints[0].Item3.Start &&
-                        offsetInterval.End == ints[0].Item3.End)
+                    var stg = (StackStorage) ints[0].Item1.Identifier.Storage;
+                    var start = stg.StackOffset;
+                    var end = start + stg.DataType.Size;
+                    if (start == ints[0].Item3.Start &&
+                        end == ints[0].Item3.End)
                     {
                         // Exact match
                         return ints[0].Item1;
                     }
-                    return null;
+                    return CreateSliceStatement(ints[0].Item1, stg, bs);
                 }
                 else
                 {
@@ -1814,9 +1817,26 @@ namespace Reko.Analysis
                 return null;
             }
 
-            private Tuple<SsaIdentifier, Expression, Interval<int>> SliceAndShift(KeyValuePair<Interval<int>, AliasState> arg)
+            private SsaIdentifier CreateSliceStatement(SsaIdentifier sidFrom, StackStorage stgFrom, SsaBlockState bsTo)
             {
-                return new Tuple<SsaIdentifier, Expression, Interval<int>>(
+                // Defined identifer is "wider" than the storage
+                // being read. The reader gets a slice of the 
+                // defined identifier.
+                int offset = stgFrom.OffsetOf(this.id.Storage);
+                var e = this.outer.arch.Endianness.MakeSlice(id.DataType, sidFrom.Identifier, offset);
+                var sidUse = sidFrom;
+
+                var ass = new AliasAssignment(id, e);
+                var sidAlias = InsertAfterDefinition(sidFrom.DefStatement, ass);
+                sidUse.Uses.Add(sidAlias.DefStatement);
+                //if (e is DepositBits)
+                //    sidFrom.Uses.Add(sidAlias.DefStatement);
+                return sidAlias;
+            }
+
+            private (SsaIdentifier, Expression, Interval<int>) SliceAndShift(KeyValuePair<Interval<int>, AliasState> arg)
+            {
+                return (
                     arg.Value.SsaId,
                     arg.Value.SsaId.Identifier,
                     arg.Key.Intersect(this.offsetInterval));

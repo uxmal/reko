@@ -93,6 +93,16 @@ namespace Reko.Core
         public abstract MkSequence MakeSequence(DataType dataType, Expression[] accesses);
 
         /// <summary>
+        /// Given an expression <paramref name="expr"/> referring to memory, create a slice whose
+        /// low memory address is <paramref name="loOffset" /> addresses beyond the <paramref name="expr" />.
+        /// </summary>
+        /// <param name="dataType">DataType of the resulting slice.</param>
+        /// <param name="expr">The memory expression.</param>
+        /// <param name="loOffset"></param>
+        /// <returns></returns>
+        public abstract Slice MakeSlice(DataType dataType, Expression expr, int loOffset);
+
+        /// <summary>
         /// Reads a value from memory, respecting the processor's endianness. Use this
         /// instead of ImageWriter when random access of memory is requored.
         /// </summary>
@@ -140,9 +150,19 @@ namespace Reko.Core
                     accesses.Reverse().ToArray());
             }
 
+            public override Slice MakeSlice(DataType dataType, Expression expr, int loOffset)
+            {
+                return new Slice(dataType, expr, loOffset);
+            }
+
             public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
             {
                 return mem.TryReadLe(addr, dt, out value);
+            }
+
+            public override string ToString()
+            {
+                return "LittleEndian";
             }
         }
 
@@ -181,9 +201,19 @@ namespace Reko.Core
                 return new MkSequence(dataType, accesses);
             }
 
+            public override Slice MakeSlice(DataType dataType, Expression expr, int bitOffset)
+            {
+                return new Slice(dataType, expr, expr.DataType.BitSize - (dataType.BitSize + bitOffset));
+            }
+
             public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)
             {
                 return mem.TryReadBe(addr, dt, out value);
+            }
+
+            public override string ToString()
+            {
+                return "BigEndian";
             }
         }
     }
