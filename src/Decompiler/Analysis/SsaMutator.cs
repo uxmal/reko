@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -119,6 +119,30 @@ namespace Reko.Analysis
             var iPos = block.Statements.IndexOf(stmAfter);
             var linAddr = stmAfter.LinearAddress;
             return block.Statements.Insert(iPos + 1, linAddr, instr);
+        }
+
+        public void DefineUninitializedIdentifiers(
+            Statement stm,
+            CallInstruction call)
+        {
+            var trashedSids = call.Definitions.Select(d => (Identifier) d.Expression)
+                .Select(id => ssa.Identifiers[id])
+                .Where(sid => sid.DefStatement == null);
+            foreach (var sid in trashedSids)
+            {
+                DefineUninitializedIdentifier(stm, sid);
+            }
+        }
+
+        private void DefineUninitializedIdentifier(
+            Statement stm,
+            SsaIdentifier sid)
+        {
+            var value = Constant.Invalid;
+            var ass = new Assignment(sid.Identifier, value);
+            var newStm = InsertStatementAfter(ass, stm);
+            sid.DefExpression = value;
+            sid.DefStatement = newStm;
         }
     }
 }
