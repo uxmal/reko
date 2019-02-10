@@ -841,6 +841,63 @@ main_exit:
         }
 
         [Test]
+        public void CrwExcessRegisterUse()
+        {
+            var ret = new RegisterStorage("ret", 1, 0, PrimitiveType.Word32);
+            var ssa = Given_Procedure("main", m =>
+            {
+                var a = m.Reg32("a");
+                m.Label("body");
+                m.Call("fn", 4, new Identifier[] { a }, new Identifier[] { });
+                m.Return();
+            });
+            Given_Procedure("fn", m => { });
+            Given_Signature("fn", FunctionType.Action());
+
+            When_RewriteCalls(ssa);
+
+            var sExp =
+            #region Expected
+@"main_entry:
+body:
+	fn()
+	return
+main_exit:
+";
+            #endregion
+            AssertProcedureCode(sExp, ssa);
+        }
+
+        [Test]
+        public void CrwExcessRegisterDefinition()
+        {
+            var ret = new RegisterStorage("ret", 1, 0, PrimitiveType.Word32);
+            var ssa = Given_Procedure("main", m =>
+            {
+                var a = m.Reg32("a");
+                m.Label("body");
+                m.Call("fn", 4, new Identifier[] { }, new Identifier[] { a });
+                m.Return();
+            });
+            Given_Procedure("fn", m => { });
+            Given_Signature("fn", FunctionType.Action());
+
+            When_RewriteCalls(ssa);
+
+            var sExp =
+            #region Expected
+@"main_entry:
+body:
+	fn()
+	a = <invalid>
+	return
+main_exit:
+";
+            #endregion
+            AssertProcedureCode(sExp, ssa);
+        }
+
+        [Test]
         public void CrwReturnRegisterNotFound()
         {
             var ret = new RegisterStorage("ret", 1, 0, PrimitiveType.Word32);
