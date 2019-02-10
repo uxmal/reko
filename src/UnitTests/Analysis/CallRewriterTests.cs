@@ -130,6 +130,7 @@ namespace Reko.UnitTests.Analysis
                 proc.Write(true, writer);
                 writer.Flush();
             }
+            ssts.ForEach(sst => sst.SsaState.Validate(s => Assert.Fail(s)));
         }
 
         private void Given_ExitBlockStatement(Identifier id)
@@ -174,12 +175,14 @@ namespace Reko.UnitTests.Analysis
         {
             var crw = When_CallRewriterCreated();
             crw.RewriteCalls(ssa);
+            ssa.Validate(s => Assert.Fail(s));
         }
 
         private void When_RewriteReturns(SsaState ssa)
         {
             var crw = When_CallRewriterCreated();
             crw.RewriteReturns(ssa);
+            ssa.Validate(s => Assert.Fail(s));
         }
 
         private void AssertExpected(string sExp, SsaState ssa)
