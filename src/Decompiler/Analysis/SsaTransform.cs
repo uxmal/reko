@@ -37,7 +37,7 @@ namespace Reko.Analysis
     /// form.
 	/// </summary>
     /// <remarks>
-    /// This class implements an SSA algorithm that doesn't require 
+    /// This class implements an SSA algorithm that does not require the
     /// calculation of the dominator graph. It is based on the algorithm
     /// described in "Simple and Efficient Construction of Static Single
     /// Assignment Form" by Matthias Braun, Sebastian Buchwald, Sebastian 
@@ -51,19 +51,19 @@ namespace Reko.Analysis
     {
         private static TraceSwitch trace = new TraceSwitch("SsaTransform", "Traces the progress of SSA analysis") { Level = TraceLevel.Info };
 
-        private IProcessorArchitecture arch;
-        private Program program;
-        private ProgramDataFlow programFlow;
-        private IImportResolver importResolver;
+        private readonly IProcessorArchitecture arch;
+        private readonly Program program;
+        private readonly ProgramDataFlow programFlow;
+        private readonly IImportResolver importResolver;
+        private readonly Dictionary<Block, SsaBlockState> blockstates;
+        private readonly SsaState ssa;
+        private readonly TransformerFactory factory;
+        public readonly HashSet<SsaIdentifier> incompletePhis;
+        private readonly HashSet<Procedure> sccProcs;
+        private readonly ExpressionEmitter m;
+        private HashSet<SsaIdentifier> sidsToRemove;
         private Block block;
         private Statement stmCur;
-        private Dictionary<Block, SsaBlockState> blockstates;
-        private SsaState ssa;
-        private TransformerFactory factory;
-        public readonly HashSet<SsaIdentifier> incompletePhis;
-        private HashSet<SsaIdentifier> sidsToRemove;
-        private HashSet<Procedure> sccProcs;
-        private ExpressionEmitter m;
 
         public SsaTransform(
             Program program,
@@ -72,7 +72,7 @@ namespace Reko.Analysis
             IImportResolver importResolver,
             ProgramDataFlow programFlow)
         {
-            this.arch = program.Architecture;
+            this.arch = proc.Architecture;
             this.program = program;
             this.programFlow = programFlow;
             this.importResolver = importResolver;
@@ -1039,7 +1039,7 @@ namespace Reko.Analysis
 
         public class TransformerFactory : StorageVisitor<IdentifierTransformer>
         {
-            private SsaTransform transform;
+            private readonly SsaTransform transform;
             private Identifier id;
             private Statement stm;
 
@@ -1263,6 +1263,8 @@ namespace Reko.Analysis
                     sidUse = ReadVariableRecursive(bsTo);
                     e = new DepositBits(sidUse.Identifier, aliasFrom.SsaId.Identifier, (int)stgFrom.BitAddress);
                 }
+
+
                 var ass = new AliasAssignment(id, e);
                 var sidAlias = InsertAfterDefinition(sidFrom.DefStatement, ass);
                 sidUse.Uses.Add(sidAlias.DefStatement);
@@ -1272,6 +1274,20 @@ namespace Reko.Analysis
                 return sidAlias;
             }
 
+            /// <summary>
+            /// Inserts the assignment <paramref name="ass"/> before the statement
+            /// <paramref name="stm"/>.
+            /// </summary>
+            public SsaIdentifier InsertBeforeDefinition(Statement stm, Assignment ass)
+            {
+                int i = stm.Block.Statements.IndexOf(stm);
+                var stmBefore = new Statement(stm.LinearAddress, ass, stm.Block);
+                stm.Block.Statements.Insert(i, stmBefore);
+
+                var sidTo = ssaIds.Add(ass.Dst, stmBefore, ass.Src, false);
+                ass.Dst = sidTo.Identifier;
+                return sidTo;
+            }
 
             /// <summary>
             /// Inserts the statement <paramref name="ass"/> after the statement
@@ -1581,7 +1597,7 @@ namespace Reko.Analysis
 
         public class FlagGroupTransformer : IdentifierTransformer
         {
-            private uint flagMask;
+            private readonly uint flagMask;
             private FlagGroupStorage flagGroup;
 
             public FlagGroupTransformer(Identifier id, FlagGroupStorage flagGroup, Statement stm, SsaTransform outer)
@@ -1733,104 +1749,93 @@ namespace Reko.Analysis
             public override SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs)
             {
                 var ints = bs.currentStackDef.GetIntervalsOverlappingWith(offsetInterval)
-                    .OrderByDescending(i => i.Key.End - i.Key.Start)
-                    .ThenBy(i => i.Key.Start)
+                    .OrderBy(i => i.Key.Start)
+                    .ThenBy(i => i.Key.End - i.Key.Start)
                     .Select(SliceAndShift)
                     .ToArray();
                 if (ints.Length == 0)
                     return null;
-                // Defined locally in this block.
-                if (ints.Length == 1)
+                // Part of 'id' is defined locally in this block. We now 
+                // walk across the bits of 'id'.
+                int offsetLo = this.offsetInterval.Start;
+                int offsetHi = this.offsetInterval.End;
+                var sequence = new List<(SsaIdentifier sid, Interval<int> interval)>();
+                foreach (var (sid, expr, intFrom) in ints)
                 {
-                    var stg = (StackStorage) ints[0].Item1.Identifier.Storage;
-                    var start = stg.StackOffset;
-                    var end = start + stg.DataType.Size;
-                    if (start == ints[0].Item3.Start &&
-                        end == ints[0].Item3.End)
+                    if (offsetLo < intFrom.Start)
                     {
-                        // Exact match
-                        return ints[0].Item1;
+                        // Found a gap in the interval tree that isn't defined
+                        // in this block. Look for the gap in another block.
+                        this.offsetInterval = Interval.Create(offsetLo, intFrom.Start);
+                        var sidR = ReadVariableRecursive(bs);
+                        sequence.Add((sidR, offsetInterval));
                     }
-                    return CreateSliceStatement(ints[0].Item1, stg, bs);
+                    if (offsetLo < intFrom.End)
+                    {
+                        var subInt = new Interval<int>(offsetLo, Math.Min(intFrom.End, offsetHi));
+                        sequence.Add((sid, subInt));
+                        offsetLo = intFrom.End;
+                    }
+                }
+                if (offsetLo < offsetHi)
+                {
+                    this.offsetInterval = Interval.Create(offsetLo, offsetHi);
+                    var sidR = ReadVariableRecursive(bs);
+                    sequence.Add((sidR, offsetInterval));
+                }
+                if (sequence.Count == 1)
+                {
+                    var sidTo = MakeSequenceElement(bs, sequence[0]);
+                    return sidTo;
                 }
                 else
                 {
-                    var prev = ints[0].Item3;
-                    var sequence = new List<SsaIdentifier> { ints[0].Item1 };
-                    foreach (var src in ints.Skip(1))
+                    var seq = outer.arch.Endianness.MakeSequence(this.id.DataType, sequence.Select(e => (Expression)MakeSequenceElement(bs, e).Identifier).ToArray());
+                    var assSeq = new Assignment(id, seq);
+                    var sidTo = InsertBeforeDefinition(this.stm, assSeq);
+                    foreach (Identifier item in seq.Expressions)
                     {
-                        DebugEx.PrintIf(SsaTransform.trace.TraceVerbose, "Analyze: {0} {1} {2}", src.Item1, src.Item2, src.Item3);
-                        if (prev.End == src.Item3.Start)
-                        {
-                            // Previous item ended where next starts:
-                            // extend it and create a sequence.
-                            prev = Interval.Create(prev.Start, src.Item3.End);
-                            sequence.Add(src.Item1);
-                        }
-                        else if (prev.End < src.Item3.Start)
-                        {
-                            // Gap betweeen prev item and this item.
-                            // Emit the sequence somehow.
-                            throw new NotImplementedException("do something with slice");
-                        }
-                        else if (src.Item3.Covers(prev))
-                        {
-                            sequence.Clear();
-                            sequence.Add(src.Item1);
-                            prev = src.Item3;
-                        }
-                        else if (sequence.Count > 0 && src.Item3.OverlapsWith(prev))
-                        {
-                            var dpb = new DepositBits(sequence[0].Identifier, src.Item2, src.Item3.Start - prev.Start);
-                            var ass = new AliasAssignment(id, dpb);
-                            var iStm = outer.stmCur.Block.Statements.IndexOf(outer.stmCur);
-                            var stm = outer.stmCur.Block.Statements.Insert(iStm, outer.stmCur.LinearAddress, ass);
-                            var sidTo = ssaIds.Add(ass.Dst, stm, ass.Src, false);
-                            ass.Dst = sidTo.Identifier;
-                            sequence[0].Uses.Add(stm);
-                            src.Item1.Uses.Add(stm);
-                            sequence = new List<SsaIdentifier> { sidTo };
-                        }
-                        else
-                        {
-                            prev = Interval.Create(prev.Start, src.Item3.End);
-                            sequence.Add(src.Item1);
-                        }
+                        outer.ssa.Identifiers[item].Uses.Add(sidTo.DefStatement);
                     }
-                    if (sequence.Count == 1)
-                        return sequence[0];
-                    if (sequence.Count > 1)
-                    {
-                        var seq = outer.arch.Endianness.MakeSequence(this.id.DataType, sequence.Select(s => s.Identifier).ToArray());
-                        var ass = new AliasAssignment(id, seq);
-                        var iStm = outer.stmCur.Block.Statements.IndexOf(outer.stmCur);
-                        var stm = outer.stmCur.Block.Statements.Insert(iStm, outer.stmCur.LinearAddress, ass);
-                        var sidTo = ssaIds.Add(ass.Dst, stm, ass.Src, false);
-                        ass.Dst = sidTo.Identifier;
-                        foreach (var sid in sequence)
-                        {
-                            sid.Uses.Add(stm);
-                        }
-                        return sidTo;
-                    }
+                    return sidTo;
                 }
-                return null;
             }
 
-            private SsaIdentifier CreateSliceStatement(SsaIdentifier sidFrom, StackStorage stgFrom, SsaBlockState bsTo)
+            private SsaIdentifier MakeSequenceElement(SsaBlockState bs, (SsaIdentifier sid, Interval<int> interval) elem)
             {
-                // Defined identifer is "wider" than the storage
-                // being read. The reader gets a slice of the 
-                // defined identifier.
-                int offset = stgFrom.OffsetOf(this.id.Storage);
-                var e = this.outer.arch.Endianness.MakeSlice(id.DataType, sidFrom.Identifier, offset);
+                var stg = (StackStorage) elem.sid.Identifier.Storage;
+                var start = stg.StackOffset;
+                var end = start + stg.DataType.Size;
+                if (start == elem.interval.Start &&
+                    end == elem.interval.End)
+                {
+                    // Exact match
+                    return elem.sid;
+                }
+                var sidSlice = CreateSliceStatement(elem.sid, elem.interval, elem.interval.Start - start, bs);
+                return sidSlice;
+            }
+
+            /// <summary>
+            /// Create a slice statement to extract a subinterval from 
+            /// <paramref name="sidFrom"/>.
+            /// </summary>
+            /// <remarks>
+            /// The source, or defined identifer is "wider" than the destinatior or
+            /// used storage. We must provide a slice of the defined identifier.
+            /// </remarks>
+            private SsaIdentifier CreateSliceStatement(SsaIdentifier sidFrom, Interval<int> intv, int offset, SsaBlockState bs)
+            {
+                var bitSize = (intv.End - intv.Start) * DataType.BitsPerByte;
+                var bitOffset = offset * DataType.BitsPerByte;
+                var idSlice = outer.ssa.Procedure.Frame.EnsureStackVariable(intv.Start, PrimitiveType.CreateWord(bitSize));
+                var e = this.outer.arch.Endianness.MakeSlice(idSlice.DataType, sidFrom.Identifier, bitOffset);
                 var sidUse = sidFrom;
 
-                var ass = new AliasAssignment(id, e);
+                //$TODO: perhaps this alias has already been computed?
+                var ass = new AliasAssignment(idSlice, e);
                 var sidAlias = InsertAfterDefinition(sidFrom.DefStatement, ass);
                 sidUse.Uses.Add(sidAlias.DefStatement);
-                //if (e is DepositBits)
-                //    sidFrom.Uses.Add(sidAlias.DefStatement);
                 return sidAlias;
             }
 

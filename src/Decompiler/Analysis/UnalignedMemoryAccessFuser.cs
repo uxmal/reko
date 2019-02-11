@@ -247,8 +247,7 @@ namespace Reko.Analysis
                 }
                 else
                 {
-                    var ass = stm.Instruction as Assignment;
-                    if (ass == null)
+                    if (!(stm.Instruction is Assignment ass))
                         continue;
                     src = ass.Src;
                 }
@@ -332,18 +331,17 @@ namespace Reko.Analysis
 
         private Tuple<string, Application> MatchIntrinsicApplication(Expression e, string [] names)
         {
-            var app = e as Application;
-            if (app == null)
+            if (e is Application app &&
+                app.Procedure is ProcedureConstant pc &&
+                pc.Procedure is PseudoProcedure intrinsic &&
+                names.Contains(intrinsic.Name))
+            {
+                return Tuple.Create(intrinsic.Name, app);
+            }
+            else
+            {
                 return null;
-            var pc = app.Procedure as ProcedureConstant;
-            if (pc == null)
-                return null;
-            var ppp = pc.Procedure as PseudoProcedure;
-            if (ppp == null)
-                return null;
-            if (!names.Contains(ppp.Name))
-                return null;
-            return Tuple.Create(ppp.Name, app);
+            }
         }
     }
 }

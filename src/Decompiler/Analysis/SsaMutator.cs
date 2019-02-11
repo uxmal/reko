@@ -73,7 +73,7 @@ namespace Reko.Analysis
         /// <param name="register">The register whose post-call value is incremented.</param>
         /// <param name="delta">The amount by which to increment the register.</param>
         public void AdjustRegisterAfterCall(
-                        Statement stm,
+            Statement stm,
             CallInstruction call,
             RegisterStorage register,
             int delta)

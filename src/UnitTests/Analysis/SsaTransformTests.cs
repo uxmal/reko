@@ -131,7 +131,7 @@ namespace Reko.UnitTests.Analysis
             }
             var sActual = writer.ToString();
             if (sActual != sExp)
-                Debug.Print(sActual);
+                Console.WriteLine(sActual);
             Assert.AreEqual(sExp, sActual);
         }
 
@@ -201,10 +201,10 @@ namespace Reko.UnitTests.Analysis
             var sActual = writer.ToString();
             if (sActual != sExp)
             {
-                Debug.Print("<< Expected ========");
-                Debug.Print(sExp);
-                Debug.Print(">> Actual ==========");
-                Debug.Print(sActual);
+                Console.WriteLine("<< Expected ========");
+                Console.WriteLine(sExp);
+                Console.WriteLine(">> Actual ==========");
+                Console.WriteLine(sActual);
             }
             Assert.AreEqual(sExp, sActual);
         }
@@ -240,6 +240,7 @@ namespace Reko.UnitTests.Analysis
         {
             sst.RenameFrameAccesses = true;
             sst.Transform();
+            sst.SsaState.Dump(true);
             sst.SsaState.Validate(s => Assert.Fail(s));
         }
 
@@ -257,7 +258,7 @@ namespace Reko.UnitTests.Analysis
             var actual = writer.ToString();
             if (actual != expected)
             {
-                Debug.Print(actual);
+                Console.WriteLine(actual);
             }
             Assert.AreEqual(expected, actual);
         }
@@ -2782,12 +2783,12 @@ r1_7: orig: r1
     uses: use r1_7
 wLoc02_8: orig: wLoc02
     def:  wLoc02_8 = 0x1234
-    uses: dwLoc04_10 = SEQ(wLoc02_8, wLoc04_9) (alias)
+    uses: dwLoc04_10 = SEQ(wLoc02_8, wLoc04_9)
 wLoc04_9: orig: wLoc04
     def:  wLoc04_9 = 0x5678
-    uses: dwLoc04_10 = SEQ(wLoc02_8, wLoc04_9) (alias)
+    uses: dwLoc04_10 = SEQ(wLoc02_8, wLoc04_9)
 dwLoc04_10: orig: dwLoc04
-    def:  dwLoc04_10 = SEQ(wLoc02_8, wLoc04_9) (alias)
+    def:  dwLoc04_10 = SEQ(wLoc02_8, wLoc04_9)
     uses: r1_7 = dwLoc04_10
 // proc1
 // Return size: 0
@@ -2801,7 +2802,7 @@ l1:
 	wLoc02_8 = 0x1234
 	r63_5 = fp - 0x00000004
 	wLoc04_9 = 0x5678
-	dwLoc04_10 = SEQ(wLoc02_8, wLoc04_9) (alias)
+	dwLoc04_10 = SEQ(wLoc02_8, wLoc04_9)
 	r1_7 = dwLoc04_10
 	return
 	// succ:  proc1_exit
@@ -3515,10 +3516,11 @@ main_exit:
 	def fp
 body:
 	qwLoc08_6 = 0x0000000000005678
+	dwLoc04_9 = SLICE(qwLoc08_6, word32, 32) (alias)
 	dwLoc08_7 = 0x00001234
 	dwLoc08_8 = dwLoc08_7 + 0x00000001
-	qwLoc08_9 = DPB(qwLoc08_6, dwLoc08_8, 0) (alias)
-	Mem5[0x0000567C:word64] = qwLoc08_9
+	qwLoc08_10 = SEQ(dwLoc04_9, dwLoc08_8)
+	Mem5[0x0000567C:word64] = qwLoc08_10
 	return
 proc_exit:
 ";
@@ -3615,7 +3617,6 @@ proc_exit:
 ";
             #endregion
             AssertProcedureCode(expected);
-
         }
 
         [Test]
@@ -3712,7 +3713,7 @@ l1:
 	dwLoc08_13 = r1_7
 	r1_9 = Mem8[0x00123408:word32]
 	dwLoc04_14 = r1_9
-	nLoc0C_15 = SEQ(dwLoc0C_12, dwLoc08_13, dwLoc04_14) (alias)
+	nLoc0C_15 = SEQ(dwLoc0C_12, dwLoc08_13, dwLoc04_14)
 	fp0_11 = nLoc0C_15
 	return
 Ssa96BitStackLocal_exit:

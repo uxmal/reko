@@ -25,6 +25,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -35,7 +36,7 @@ namespace Reko.UnitTests.Analysis
     public class UnalignedMemoryAccessFuserTests : AnalysisTestBase
     {
         private ProcedureBuilder m;
-        private IProcessorArchitecture arch;
+        private Mock<IProcessorArchitecture> arch;
         private IImportResolver importResolver;
         private FakeDecompilerEventListener listener;
         private Program program;
@@ -43,7 +44,7 @@ namespace Reko.UnitTests.Analysis
         [SetUp]
         public void Setup()
         {
-            arch = new Mock<IProcessorArchitecture>().Object;
+            arch = new Mock<IProcessorArchitecture>();
             importResolver = new Mock<IImportResolver>().Object;
             listener = new FakeDecompilerEventListener();
             m = new ProcedureBuilder();
@@ -74,7 +75,7 @@ namespace Reko.UnitTests.Analysis
             var sActual = sw.ToString();
             if (sExp != sActual)
             {
-                Debug.Print("{0}", sActual);
+                Console.WriteLine("{0}", sActual);
                 Assert.AreEqual(sExp, sActual);
             }
         }
@@ -555,7 +556,6 @@ ProcedureBuilder_exit:
             AssertStringsEqual(sExp, ssa);
         }
 
-
         [Test]
         public void Ufuser_Store_Bigendian()
         {
@@ -566,6 +566,7 @@ ProcedureBuilder_exit:
 
             __swl(loc40, r8);
             __swr(loc3D, r8);
+            arch.Setup(a => a.Endianness).Returns(EndianServices.Big);
             var ssa = RunTest(m);
             var sExp =
             #region Expected
@@ -576,9 +577,19 @@ r8:r8
     uses: loc40_3 = r8
 loc40_3: orig: loc40
     def:  loc40_3 = __swl(loc40, r8)
+    uses: bLoc3D_5 = SLICE(loc40_3, byte, 24) (alias)
 loc3D:Local -003D
     def:  def loc3D
-loc3D_5: orig: loc3D
+    uses: nLoc3C_6 = SLICE(loc3D, word24, 8) (alias)
+bLoc3D_5: orig: bLoc3D
+    def:  bLoc3D_5 = SLICE(loc40_3, byte, 24) (alias)
+    uses: loc3D_7 = SEQ(nLoc3C_6, bLoc3D_5)
+nLoc3C_6: orig: nLoc3C
+    def:  nLoc3C_6 = SLICE(loc3D, word24, 8) (alias)
+    uses: loc3D_7 = SEQ(nLoc3C_6, bLoc3D_5)
+loc3D_7: orig: loc3D
+    def:  loc3D_7 = SEQ(nLoc3C_6, bLoc3D_5)
+loc3D_8: orig: loc3D
     def:  loc40_3 = r8
 // ProcedureBuilder
 // Return size: 0
@@ -587,8 +598,11 @@ ProcedureBuilder_entry:
 	def loc40
 	def r8
 	def loc3D
+	nLoc3C_6 = SLICE(loc3D, word24, 8) (alias)
 	// succ:  l1
 l1:
+	bLoc3D_5 = SLICE(loc40_3, byte, 24) (alias)
+	loc3D_7 = SEQ(nLoc3C_6, bLoc3D_5)
 	loc40_3 = r8
 ProcedureBuilder_exit:
 ";
