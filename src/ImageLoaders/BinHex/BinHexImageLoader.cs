@@ -69,7 +69,7 @@ namespace Reko.ImageLoaders.BinHex
                     }
                 }
             }
-            if (hdr.FileType == "MPST")
+            if (hdr.FileType == "MPST" || hdr.FileType == "APPL")
             {
                 this.mem = new MemoryArea(addrLoad, rsrcFork);
                 this.rsrcFork = new ResourceFork(platform, rsrcFork);

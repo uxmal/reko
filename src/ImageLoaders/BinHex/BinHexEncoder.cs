@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -51,9 +51,25 @@ namespace Reko.ImageLoaders.BinHex
 
         public void Encode(byte[] bytes)
         {
+            uint leftchar = 0;
+            int leftbits = 0;
             for (int i = 0; i < bytes.Length; ++i)
             {
-                Encode(bytes[i]);
+                // Shift into our buffer, and output any 6 bits ready 
+                leftchar = (leftchar << 8) | bytes[i];
+                leftbits += 8;
+                while (leftbits >= 6)
+                {
+                    uint this_ch = (leftchar >> (leftbits - 6)) & 0x3f;
+                    leftbits -= 6;
+                    writer.Write(BitEncodings[(int)this_ch]);
+                }
+            }
+            // Output a possible runt byte
+            if (leftbits != 0)
+            {
+                leftchar <<= (6 - leftbits);
+                writer.Write(BitEncodings[(int)(leftchar & 0x3F)]);
             }
         }
 
