@@ -141,8 +141,8 @@ l0040115A:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word32 stackArg4 = <invalid>
-	word32 esp_20
 	word32 ebp_133 = fn00401980(ebx, esi, edi, dwLoc0C, stackArg4, 0x00000014)
+	word32 esp_20 = <invalid>
 	Mem26[esp_20 - 4:word32] = 0x00000001
 	word32 dwLoc04_317 = 0x00000014
 	word32 dwLoc08_318 = 0x00402508
@@ -226,8 +226,8 @@ l004011E8:
 l004011FE:
 	Mem125[esp_109:word32] = eax_119
 	word32 esi_137
-	word32 esp_138
 	word32 eax_132 = fn0040153F(ebx_127, eax_119, 0x00000000, out edx_139, out ebx_127, out ebp_133, out esi_137, out edi_121)
+	word32 esp_138 = <invalid>
 	ecx_117 = Mem125[esp_138:word32]
 	esp_118 = esp_138 + 4
 	branch (byte) eax_132 == 0x00 l00401218
@@ -240,9 +240,9 @@ l00401209:
 	Mem153[esp_138 - 4:word32] = 0x00000002
 	Mem155[esp_138 - 8:word32] = edi_121
 	word32 esi_156 = Mem155[esi_137:word32]
-	word32 esp_158
-	int8 Top_159
 	fn00401972()
+	int8 Top_159 = <invalid>
+	word32 esp_158 = <invalid>
 	call esi_156 (retsize: 4;)
 		uses: eax:eax_132,ebp:ebp_133,ebx:ebx_134,ecx:esi_156,edi:edi_136,edx:edx_139,esi:esi_156,esp:esp_158,fs:fs_59,Stack +0000:dwLoc04_321,Stack +FFFFFFF8:dwLoc0C_327,Stack +FFFFFFFC:dwLoc08_324,Top:Top_159
 		defs: ecx:ecx_161,edx:edx_164,esp:esp_160,Top:Top_163
@@ -260,8 +260,8 @@ l00401218:
 
 l00401223:
 	Mem174[esp_118 - 4:word32] = eax_166
-	word32 esp_183
 	eax_166 = fn0040153F(ebx_127, eax_166, edi_121, out edx_139, out ebx_127, out ebp_133, out esi_167, out edi_121)
+	word32 esp_183 = <invalid>
 	ecx_117 = Mem174[esp_183:word32]
 	esp_118 = esp_183 + 4
 	branch (byte) eax_166 == 0x00 l00401236
@@ -308,12 +308,12 @@ l00401236:
 	Mem245[esp_238 - 4:word32] = eax_240
 	Mem248[esp_238 - 8:word32] = Mem245[eax_216:word32]
 	Mem251[esp_238 - 12:word32] = Mem248[eax_233:word32]
-	int8 Top_254
 	word32 eax_252 = fn00401040(eax_240, ecx_239, ebp_133, eax_233)
 	byte bl_272 = (byte) ebx_127
 	word32 ecx_263
 	word32 eax_262 = fn0040188B(out ecx_263)
 	word32 ebx_279 = DPB(ebx_127, bl_272, 0)
+	int8 Top_254 = <invalid>
 	word32 esp_259 = esp_238
 	branch (byte) eax_262 != 0x00 l00401267
 // DataOut:
@@ -610,9 +610,9 @@ l0040153F:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word32 stackArg4 = <invalid>
-	word32 esp_14
 	word32 ebp_13 = fn00401980(ebx, esi, edi, dwLoc0C, stackArg4, 0x00000008)
 	Mem20[ebp_13 - 0x00000004:word32] = Mem7[ebp_13 - 0x00000004:word32] & 0x00000000
+	word32 esp_14 = <invalid>
 	word32 eax_22 = 0x00005A4D
 	branch Mem20[0x00400000:word16] != 0x5A4D l004015BA
 // DataOut:

@@ -369,8 +369,8 @@ l0800_0265:
 	word16 bp_36
 	word16 bx_37
 	selector es_41
-	word16 sp_43
 	word16 dx_40 = _scanf(0x0194, dx, bx, _printf(cx, dx, bx, es, ds, 0x0194, out di_20), di_20, es, ds, 0x01B0, out bx_37, out bp_36, out es_41)
+	word16 sp_43 = <invalid>
 	word16 cx_52 = Mem34[ss:sp_43 + 2:word16]
 	Mem56[ss:sp_43 + 2:word16] = Mem34[ss:bp_36 - 0x0002:word16]
 	Mem59[ss:sp_43:word16] = Mem56[ss:bp_36 - 0x0004:word16]
@@ -735,10 +735,10 @@ l0800_0395:
 // SymbolicIn:
 
 l0800_03A3:
-	bool Z_35
-	bool C_124
 	word16 ax_116
 	fn0800_03BF(ax_156, cx_117, si_119, di_10, es, bp, out ax_116, out cx_117, out si_119)
+	bool Z_35 = <invalid>
+	bool C_124 = <invalid>
 	byte al_128 = (byte) ax_116
 	branch Z_35 | C_124 l0800_03AF
 // DataOut:
@@ -821,8 +821,9 @@ fn0800_0393_exit:
 // SymbolicIn:
 
 l0800_03AA:
-	bool Z_125
 	fn0800_03BF(ax_116, cx_117, si_119, di_10, es, bp, out ax_116, out cx_117, out si_119)
+	bool Z_125 = <invalid>
+	C_124 = <invalid>
 	al_128 = (byte) ax_116 (alias)
 	branch Z_125 | C_124 l0800_03A8
 // DataOut:
@@ -3702,8 +3703,8 @@ l0800_13F6:
 
 l0800_1417:
 	Mem248[ss:sp_210 - 10:word16] = ax_239
-	word16 sp_251
 	__REALCVT(ds)
+	word16 sp_251 = <invalid>
 	Mem259[ss:sp_251 - 2:word16] = ss
 	wArg02 = wArg02 + wLoc06_1359
 	es = Mem259[ss:sp_251 - 2:selector]
@@ -5595,8 +5596,8 @@ l0800_1908:
 	Mem479[ss:sp_466 - 6:word16] = wArg06
 	Mem482[ss:sp_466 - 8:word16] = wArg04
 	Mem485[ss:sp_466 - 10:word16] = wArg02
-	word16 sp_486
 	__scantod(ds)
+	word16 sp_486 = <invalid>
 	branch wLoc26 <= 0x0000 l0800_1964
 // DataOut:
 // DataOut (flags):
@@ -5685,7 +5686,7 @@ l0800_1941:
 l0800_1953:
 	Mem538[ss:sp_486 + 0x000A:word16] = ax_529
 	Mem541[ss:sp_486 + 0x0008:word16] = di_1049
-	word16 sp_543
+	word16 sp_543 = <invalid>
 	Top_1176 = __scanrslt(ds)
 	sp_1149 = sp_543 + 0x0004
 // DataOut:
@@ -5699,6 +5700,7 @@ l0800_1932:
 
 l0800_195E:
 	Top_1176 = __scanpop(ds)
+	sp_1149 = <invalid>
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

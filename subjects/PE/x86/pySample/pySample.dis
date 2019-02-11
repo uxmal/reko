@@ -444,8 +444,8 @@ l100012BF:
 	word32 ebx_214
 	word32 edi_216
 	word32 esi_218
-	word32 esp_219
 	word32 eax_212 = fn10001742(InterlockedCompareExchange, 0x100033AC, 0x00000002, out edx, out ebx_214, out ebp_213, out esi_218, out edi_216)
+	word32 esp_219 = <invalid>
 	ecx = Mem203[esp_219:word32]
 	esp_120 = esp_219 + 4
 	branch eax_212 == 0x00000000 l100012DD
@@ -531,13 +531,13 @@ l10001388:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word32 stackArg4 = <invalid>
-	word32 esp_103
 	word32 ebp_13 = fn100017E8(ebx, esi, edi, dwLoc0C, stackArg4, 0x00000010)
 	word32 ebx_116 = Mem7[ebp_13 + 0x00000008:word32]
 	Mem26[ebp_13 - 0x0000001C:word32] = 0x00000001
 	Mem28[ebp_13 - 0x00000004:word32] = 0x00000000
 	Mem29[0x10003008:word32] = edx
 	Mem30[ebp_13 - 0x00000004:word32] = 0x00000001
+	word32 esp_103 = <invalid>
 	word32 edi_110 = ecx
 	word32 esi_113 = edx
 	branch edx != 0x00000000 l100013C3
@@ -632,8 +632,8 @@ l1000140E:
 	Mem146[esp_109 - 4:word32] = 0x00000000
 	Mem148[esp_109 - 8:word32] = ebx_116
 	word32 ecx_153
-	int8 Top_155
 	fn100011E9(edx, ebx_116, ebp_13, esi_113, edi_110, Mem148[esp_109 - 4:word32], out ecx_153, out edx, out ebx_116, out esi_113, out edi_110)
+	int8 Top_155 = <invalid>
 	esp_103 = esp_109 + 0x00000004
 	word32 eax_163 = Mem148[0x100020CC:word32]
 	branch eax_163 == 0x00000000 l1000142E
@@ -672,10 +672,10 @@ l10001437:
 	word32 ebx_205
 	word32 ecx_206
 	word32 esi_207
-	int8 Top_208
 	word32 edi_209
 	word32 edx_210
 	word32 eax_204 = fn100011E9(edx, ebx_116, ebp_13, esi_113, edi_110, Mem197[esp_187 - 4:word32], out ecx_206, out edx_210, out ebx_205, out esi_207, out edi_209)
+	int8 Top_208 = <invalid>
 	esp_103 = esp_187 + 0x00000004
 	branch eax_204 != 0x00000000 l10001446
 // DataOut:
@@ -831,8 +831,8 @@ l100015CF:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word32 stackArg4 = <invalid>
-	word32 esp_14
 	word32 ebp_13 = fn100017E8(ebx, esi, edi, dwLoc0C, stackArg4, 0x00000014)
+	word32 esp_14 = <invalid>
 	Mem21[esp_14 - 4:word32] = Mem7[0x100033B4:word32]
 	word32 eax_23 = _decode_pointer(Mem21[esp_14 - 4:(ptr32 void)])
 	word32 ecx_24 = Mem21[esp_14 - 4:word32]
@@ -1157,9 +1157,9 @@ l10001742:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word32 stackArg4 = <invalid>
-	word32 esp_14
 	word32 ebp_13 = fn100017E8(ebx, esi, edi, dwLoc0C, stackArg4, 0x00000008)
 	Mem20[ebp_13 - 0x00000004:word32] = Mem7[ebp_13 - 0x00000004:word32] & 0x00000000
+	word32 esp_14 = <invalid>
 	Mem25[esp_14 - 4:word32] = 0x10000000
 	word32 edx_23 = 0x10000000
 	branch fn100016D0(Mem25[esp_14 - 4:word32]) == 0x00000000 l1000179F

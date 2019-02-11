@@ -296,6 +296,20 @@ namespace Reko.Analysis
 			}
 		}
 
+        public void AddDefinitions(Statement stm)
+        {
+            var dc = new SsaDefinitionsCollector();
+            var definitions = dc.CollectDefinitions(stm);
+            foreach (var id in definitions)
+            {
+                if (Identifiers.TryGetValue(id, out var sid))
+                {
+                    sid.DefExpression = null;
+                    sid.DefStatement = stm;
+                }
+            }
+        }
+
         /// <summary>
         /// Remove all uses <paramref name="stm"/> makes.
         /// </summary>

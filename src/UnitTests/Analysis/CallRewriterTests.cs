@@ -130,6 +130,7 @@ namespace Reko.UnitTests.Analysis
                 proc.Write(true, writer);
                 writer.Flush();
             }
+            ssts.ForEach(sst => sst.SsaState.Validate(s => Assert.Fail(s)));
         }
 
         private void Given_ExitBlockStatement(Identifier id)
@@ -174,12 +175,14 @@ namespace Reko.UnitTests.Analysis
         {
             var crw = When_CallRewriterCreated();
             crw.RewriteCalls(ssa);
+            ssa.Validate(s => Assert.Fail(s));
         }
 
         private void When_RewriteReturns(SsaState ssa)
         {
             var crw = When_CallRewriterCreated();
             crw.RewriteReturns(ssa);
+            ssa.Validate(s => Assert.Fail(s));
         }
 
         private void AssertExpected(string sExp, SsaState ssa)
@@ -830,6 +833,63 @@ main_exit:
 	def arg
 body:
 	fn(arg)
+	return
+main_exit:
+";
+            #endregion
+            AssertProcedureCode(sExp, ssa);
+        }
+
+        [Test]
+        public void CrwExcessRegisterUse()
+        {
+            var ret = new RegisterStorage("ret", 1, 0, PrimitiveType.Word32);
+            var ssa = Given_Procedure("main", m =>
+            {
+                var a = m.Reg32("a");
+                m.Label("body");
+                m.Call("fn", 4, new Identifier[] { a }, new Identifier[] { });
+                m.Return();
+            });
+            Given_Procedure("fn", m => { });
+            Given_Signature("fn", FunctionType.Action());
+
+            When_RewriteCalls(ssa);
+
+            var sExp =
+            #region Expected
+@"main_entry:
+body:
+	fn()
+	return
+main_exit:
+";
+            #endregion
+            AssertProcedureCode(sExp, ssa);
+        }
+
+        [Test]
+        public void CrwExcessRegisterDefinition()
+        {
+            var ret = new RegisterStorage("ret", 1, 0, PrimitiveType.Word32);
+            var ssa = Given_Procedure("main", m =>
+            {
+                var a = m.Reg32("a");
+                m.Label("body");
+                m.Call("fn", 4, new Identifier[] { }, new Identifier[] { a });
+                m.Return();
+            });
+            Given_Procedure("fn", m => { });
+            Given_Signature("fn", FunctionType.Action());
+
+            When_RewriteCalls(ssa);
+
+            var sExp =
+            #region Expected
+@"main_entry:
+body:
+	fn()
+	a = <invalid>
 	return
 main_exit:
 ";

@@ -532,9 +532,8 @@ l0000000000403273:
 // SymbolicIn:
 
 l0000000000403289:
-	word32 esi_536 = (int32) al_526
 	r14_1008 = r14_1008 + 0x0000000000000001
-	rsi_4239 = fn000000000040E650(0x00000001, DPB(rsi_4239, esi_536, 0), Mem495[0x000000000061B0E8:word64])
+	rsi_4239 = fn000000000040E650(0x00000001, DPB(rsi_4239, (int32) al_526, 0), Mem495[0x000000000061B0E8:word64])
 	al_526 = (byte) (word32) Mem495[r14_1008:byte] (alias)
 	branch al_526 != 0x00 l0000000000403289
 // DataOut:
@@ -7498,7 +7497,7 @@ l0000000000406FBC:
 	word64 r13_1041 = r13_1009 - r12_394
 	word64 rax_1102 = DPB(rax_1008, fputs_unlocked(r12_394, Mem1018[0x000000000061A610:word64]), 0)
 	Mem1057[0x000000000061B018:word64] = Mem1018[0x000000000061B018:word64] + r13_1041
-	word64 rcx_1107
+	word64 rcx_1107 = <invalid>
 	word64 r10_1103
 	word64 r8_1105
 	word64 r9_1106
@@ -7519,8 +7518,8 @@ l0000000000407160:
 l000000000040716B:
 	word64 rax_1136 = DPB(rax_1111, fwrite_unlocked(0x000000000041377E, 0x0000000000000001, 0x0000000000000004, Mem1057[0x000000000061A610:word64]), 0)
 	Mem1133[0x000000000061B018:word64] = Mem1057[0x000000000061B018:word64] + 0x0000000000000004
-	word64 rcx_1141
 	fn0000000000406540(rax_1136, r13_1041 + 0x0000000000000004 + rax_1111, 0x0000000000000000, 0x01, rbx_22, r10_1103, fs, out ecx_1321, out r8_1105, out r9_1106, out r10_1103)
+	word64 rcx_1141 = <invalid>
 	word32 ecx_1162 = (word32) rcx_1141
 	branch (word32) (uint64) Mem1133[0x000000000061B12C:word32] == 0x00000000 l0000000000407012
 // DataOut:
@@ -7702,8 +7701,8 @@ l0000000000407911:
 	word64 r10_172
 	word64 r8_174
 	word64 r9_175
-	word64 rcx_176
 	fn0000000000406540(rax_166, rsi, 0x0000000000000000, 0x00, rdi, r10, fs, out ecx_280, out r8_174, out r9_175, out r10_172)
+	word64 rcx_176 = <invalid>
 	word32 ecx_198 = (word32) rcx_176
 	branch (word32) (uint64) Mem16[0x000000000061B12C:word32] == 0x00000000 l0000000000407948
 // DataOut:
@@ -14724,8 +14723,8 @@ l000000000040C833:
 // SymbolicIn:
 
 l000000000040C8B0:
+	word64 rbp_109 = <invalid>
 	ebp_151 = (word32) rbp_109 (alias)
-	word64 rbp_109
 	word64 rbx_110
 	rax_108 = (word64) fn0000000000411360(rdx, 0x00000000, rbx_20, rbp_48, fp - 0x0000000000000030, rbx_20, 0x0000000000415F3E, r9, rdx, rsi, r14, r15, out rbx_110, out rsp_115, out ebp_308, out r8, out r9, out r12_102, out r13_103, out r14, out r15)
 	byte bpl_156 = (byte) ebp_151
@@ -16538,10 +16537,10 @@ l000000000040D7B0:
 // SymbolicIn:
 
 l000000000040D7E8:
-	word64 r12_28
 	word64 rbx_33
 	rcx = fn0000000000411900(fs, out rbx_33, out rsp_22, out r12d_173, out r15)
 	word64 rdx_42 = (uint64) ((word32) Mem21[rax_23:byte] & 0xFFFFFFDF)
+	word64 r12_28 = <invalid>
 	byte dl_43 = (byte) rdx_42
 	word32 r12d_89 = (word32) r12_28
 	rdx_153 = DPB(rdx_42, dl_43, 0) (alias)

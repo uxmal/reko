@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 Pavel Tomin.
  *
@@ -123,32 +123,7 @@ namespace Reko.Analysis
                  proc.Frame, call.CallSite, call.Callee);
             stm.Instruction = ab.CreateInstruction(ft, null);
             ssaIdTransformer.Transform(stm, call);
-            DefineUninitializedIdentifiers(stm, call);
-        }
-
-
-        private void DefineUninitializedIdentifiers(
-            Statement stm,
-            CallInstruction call)
-        {
-            var trashedSids = call.Definitions.Select(d => (Identifier) d.Expression)
-                .Select(id => ssa.Identifiers[id])
-                .Where(sid => sid.DefStatement == null);
-            foreach (var sid in trashedSids)
-            {
-                DefineUninitializedIdentifier(stm, sid);
-            }
-        }
-
-        private void DefineUninitializedIdentifier(
-            Statement stm,
-            SsaIdentifier sid)
-        {
-            var value = Constant.Invalid;
-            var ass = new Assignment(sid.Identifier, value);
-            var newStm = ssam.InsertStatementAfter(ass, stm);
-            sid.DefExpression = value;
-            sid.DefStatement = newStm;
+            ssam.DefineUninitializedIdentifiers(stm, call);
         }
             }
 

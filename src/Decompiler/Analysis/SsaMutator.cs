@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -119,6 +119,41 @@ namespace Reko.Analysis
             var iPos = block.Statements.IndexOf(stmAfter);
             var linAddr = stmAfter.LinearAddress;
             return block.Statements.Insert(iPos + 1, linAddr, instr);
+        }
+
+        /// <summary>
+        /// After CallInstruction to Application rewriting some identifiers
+        /// defined in CallInstruction can become undefined. Create
+        /// '<id> = Constant.Invalid' instruction for each of undefined
+        /// identifier to avoid losing information about their place of
+        /// definition. Normally these instruction should be eliminated as
+        /// 'dead' code. If they are not then it means that there are uses of
+        /// <id> after call. So signanture of Application is incorrect.
+        /// Assignment to 'Constant.Invalid' is good way to draw attention of
+        /// user and developer.
+        /// </summary>
+        public void DefineUninitializedIdentifiers(
+            Statement stm,
+            CallInstruction call)
+        {
+            var trashedSids = call.Definitions.Select(d => (Identifier) d.Expression)
+                .Select(id => ssa.Identifiers[id])
+                .Where(sid => sid.DefStatement == null);
+            foreach (var sid in trashedSids)
+            {
+                DefineUninitializedIdentifier(stm, sid);
+            }
+        }
+
+        private void DefineUninitializedIdentifier(
+            Statement stm,
+            SsaIdentifier sid)
+        {
+            var value = Constant.Invalid;
+            var ass = new Assignment(sid.Identifier, value);
+            var newStm = InsertStatementAfter(ass, stm);
+            sid.DefExpression = value;
+            sid.DefStatement = newStm;
         }
     }
 }

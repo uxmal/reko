@@ -145,8 +145,8 @@ void main(selector es, selector ds)
 	word16 cx_37 = fn0800_2C9A(ds, out dx_38, out bx_36);
 	word16 di_54;
 	fn0800_B2EF(cx_37, dx_38, bx_36, ds, 2024, ds, out si_482, out di_54);
-	word16 sp_84;
 	selector ds_134 = fn0800_0541(fn0800_0402(cx_37, dx_38, bx_36, es, ds), di_54, ds);
+	word16 sp_84 = <invalid>;
 	Mem91[ss:sp_84 - 0x02 + 0x00:word16] = 0x01;
 	Mem93[ss:sp_84 - 0x04 + 0x00:word16] = 0x01;
 	fn0800_2DBF(ds_134, Mem93[ss:sp_84 - 0x04 + 0x00:word16], Mem93[ss:sp_84 - 0x02 + 0x00:word16]);
@@ -155,10 +155,10 @@ void main(selector es, selector ds)
 	word16 bp_104;
 	word16 cx_106;
 	word16 dx_108;
-	word16 sp_111;
 	word16 ax_103 = fn0800_9764(ds_134, out cx_106, out dx_108, out bp_104, out si_483, out di_484);
 	Mem118[ss:bp_104 - 0x02 + 0x00:word16] = dx_108;
 	Mem119[ss:bp_104 - 0x04 + 0x00:word16] = ax_103;
+	word16 sp_111 = <invalid>;
 	word16 sp_117 = sp_111 + 0x04;
 	word16 bx_120 = Mem119[ds_134:0x2A25:word16];
 	if (bx_120 <=u 0x08)
@@ -175,14 +175,17 @@ void main(selector es, selector ds)
 		case 0x03:
 		case 0x04:
 			ds_134 = fn0800_12E2(cx_106, dx_108, ds_134);
+			sp_117 = <invalid>;
 			break;
 		case 0x05:
 			ds_134 = fn0800_18D9(cx_106, dx_108, ds_134);
+			sp_117 = <invalid>;
 			break;
 		case 0x06:
 		case 0x07:
 		case 0x08:
 			ds_134 = fn0800_19EE(cx_106, dx_108, ds_134);
+			sp_117 = <invalid>;
 			break;
 		}
 	}
@@ -193,10 +196,10 @@ void main(selector es, selector ds)
 	word16 di_232;
 	word16 dx_233;
 	word16 si_235;
-	word16 sp_236;
 	word32 dx_ax_469 = SEQ(dx_233, fn0800_9764(ds_134, out cx_485, out dx_233, out bp_229, out si_235, out di_232)) - SEQ(Mem226[ss:(bp_229 - 0x02) + 0x00:word16], Mem226[ss:(bp_229 - 0x04) + 0x00:word16]);
 	Mem248[ss:bp_229 - 0x02 + 0x00:word16] = SLICE(dx_ax_469, word16, 16);
 	Mem249[ss:bp_229 - 0x04 + 0x00:word16] = (word16) dx_ax_469;
+	word16 sp_236 = <invalid>;
 	Mem252[ss:sp_236 + 0x02:word16] = Mem249[ds_134:10737:word16];
 	Mem255[ss:sp_236 + 0x00:word16] = Mem252[ds_134:0x29EF:word16];
 	Mem258[ss:sp_236 - 0x02 + 0x00:word16] = Mem255[ds_134:10741:word16];
@@ -214,8 +217,8 @@ void main(selector es, selector ds)
 	word16 di_292;
 	word16 dx_293;
 	word16 si_294;
-	word16 sp_295;
 	word16 ax_288 = fn0800_8BCA(bp_229, ax_262, di_265, stackArg0, out dx_293, out bp_289, out si_294, out di_292);
+	word16 sp_295 = <invalid>;
 	Mem301[ss:sp_295 - 0x02 + 0x00:word16] = dx_293;
 	Mem303[ss:sp_295 - 0x04 + 0x00:word16] = ax_288;
 	Mem309[ss:sp_295 - 0x06 + 0x00:word16] = 0x00;
@@ -231,8 +234,8 @@ void main(selector es, selector ds)
 	word16 di_327;
 	word16 dx_328;
 	word16 si_329;
-	word16 sp_330;
 	word16 ax_323 = fn0800_8BCA(bp_289, si_294, di_292, stackArg0, out dx_328, out bp_324, out si_329, out di_327);
+	word16 sp_330 = <invalid>;
 	Mem336[ss:sp_330 - 0x02 + 0x00:word16] = dx_328;
 	Mem338[ss:sp_330 - 0x04 + 0x00:word16] = ax_323;
 	// Failed to bind call argument.
@@ -242,8 +245,8 @@ void main(selector es, selector ds)
 	word16 di_343;
 	word16 dx_344;
 	word16 si_345;
-	word16 sp_346;
 	word16 ax_339 = fn0800_8BBB(bp_324, si_329, di_327, stackArg0, out cx_489, out dx_344, out bx_490, out bp_340, out si_345, out di_343);
+	word16 sp_346 = <invalid>;
 	Mem352[ss:sp_346 - 0x02 + 0x00:word16] = dx_344;
 	Mem354[ss:sp_346 - 0x04 + 0x00:word16] = ax_339;
 	Mem360[ss:sp_346 - 0x06 + 0x00:word16] = 0x00;
@@ -259,8 +262,8 @@ void main(selector es, selector ds)
 	word16 di_378;
 	word16 dx_379;
 	word16 si_380;
-	word16 sp_381;
 	word16 ax_374 = fn0800_8BCA(bp_340, si_345, di_343, stackArg0, out dx_379, out bp_375, out si_380, out di_378);
+	word16 sp_381 = <invalid>;
 	Mem387[ss:sp_381 - 0x02 + 0x00:word16] = dx_379;
 	Mem389[ss:sp_381 - 0x04 + 0x00:word16] = ax_374;
 	// Failed to bind call argument.
@@ -269,8 +272,8 @@ void main(selector es, selector ds)
 	word16 cx_393;
 	word16 dx_395;
 	word16 si_396;
-	word16 sp_397;
 	word16 ax_390 = fn0800_8BBB(bp_375, si_380, di_378, stackArg0, out cx_393, out dx_395, out bx_493, out bp_391, out si_396, out di_494);
+	word16 sp_397 = <invalid>;
 	Mem403[ss:sp_397 - 0x02 + 0x00:word16] = dx_395;
 	Mem405[ss:sp_397 - 0x04 + 0x00:word16] = ax_390;
 	Mem414[ss:sp_397 - 0x06 + 0x00:word16] = (uint16) ((uint32) (uint16) si_396 % 100);
@@ -839,19 +842,19 @@ word16 fn0800_09A3(ptr16 & dsOut)
 	word16 bp_55;
 	selector ds_59;
 	word16 dx_60;
-	word16 sp_63;
 	word16 ax_54 = fn0800_4311(stackArg2, stackArg4, out dx_60, out bp_55, out si_433, out di_434, out ds_59);
 	Mem71[ss:bp_55 - 0x02 + 0x00:word16] = dx_60;
 	Mem72[ss:bp_55 - 0x04 + 0x00:word16] = ax_54;
 	Mem73[ss:bp_55 - 0x06 + 0x00:word16] = dx_60;
 	Mem74[ss:bp_55 - 0x08 + 0x00:word16] = ax_54;
+	word16 sp_63 = <invalid>;
 	Mem77[ss:sp_63 + 0x02:word16] = Mem74[ss:bp_55 - 0x02 + 0x00:word16];
 	Mem79[ss:sp_63 + 0x00:word16] = ax_54;
 	Mem81[ss:sp_63 - 0x02 + 0x00:word16] = ds_59;
 	Mem84[ss:sp_63 - 0x04 + 0x00:word16] = 0x0A6E;
-	word16 sp_94;
 	selector ds_108;
 	word16 bp_86 = fn0800_867A(Mem84[ss:sp_63 - 0x04 + 0x00:word16], Mem84[ss:sp_63 - 0x02 + 0x00:selector], Mem84[ss:sp_63 + 0x00:word16], Mem84[ss:sp_63 + 0x02:selector], out ds_108);
+	word16 sp_94 = <invalid>;
 	while (true)
 	{
 		word16 dx_272;
@@ -1034,10 +1037,10 @@ word16 fn0800_0B79(word16 si, word16 di, word16 wArg02, word16 wArg04, word16 wA
 			word16 di_66;
 			word16 dx_67;
 			word16 si_68;
-			word16 sp_69;
 			word16 ax_62 = fn0800_8BC2(bp_27, si, di, stackArg0, out cx_207, out dx_67, out bx_208, out bp_63, out si_68, out di_66);
 			Mem75[ss:bp_63 + 0x06:word16] = dx_67;
 			Mem76[ss:bp_63 + 0x04:word16] = ax_62;
+			word16 sp_69 = <invalid>;
 			Mem82[ss:sp_69 + 0x06:word16] = 0x00;
 			Mem84[ss:sp_69 + 0x04:word16] = 0x0A;
 			Mem87[ss:sp_69 + 0x02:word16] = Mem84[ss:bp_63 + 0x0A:word16];
@@ -1046,10 +1049,10 @@ word16 fn0800_0B79(word16 si, word16 di, word16 wArg02, word16 wArg04, word16 wA
 			// Please report this issue at https://github.com/uxmal/reko
 			word16 stackArg0 = <invalid>;
 			word16 dx_96;
-			word16 sp_98;
 			word16 ax_91 = fn0800_8BC2(bp_63, si_68, di_66, stackArg0, out cx_210, out dx_96, out bx_211, out bp_27, out si, out di);
 			Mem104[ss:bp_27 + 0x0A:word16] = dx_96;
 			Mem105[ss:bp_27 + 0x08:word16] = ax_91;
+			word16 sp_98 = <invalid>;
 			sp_103 = sp_98 + 0x08;
 		}
 		word16 sp_111 = sp_103 - 0x02;
@@ -1243,8 +1246,8 @@ word16 fn0800_0DA9(selector ds, word16 wArg02, word16 wArg04, ptr16 & dxOut, ptr
 		// Please report this issue at https://github.com/uxmal/reko
 		word16 stackArg4 = <invalid>;
 		word16 bp_22;
-		word16 sp_25;
 		word16 ax_21 = fn0800_A614(ds, SEQ(wArg04, wArg02), stackArg4, out cx, out dx_91, out bp_22, out si_92, out di_93, out ds);
+		word16 sp_25 = <invalid>;
 		Mem39[ss:sp_25 + 0x02:word16] = Mem19[ss:bp_22 + 0x0A:word16];
 		Mem42[ss:sp_25 + 0x00:word16] = Mem39[ss:bp_22 + 0x08:word16];
 		dx = fn0800_8F7F(ax_21, ds, Mem42[ss:sp_25 + 0x00:segptr32]);
@@ -1287,7 +1290,6 @@ selector fn0800_0DE8(word16 cx, word16 dx, selector ds)
 	selector ds_117;
 	word16 dx_118;
 	word16 di_140;
-	word16 sp_169;
 	word16 di_164;
 	word16 cx_163;
 	word16 dx_166;
@@ -1296,6 +1298,7 @@ selector fn0800_0DE8(word16 cx, word16 dx, selector ds)
 	word16 ax_160 = fn0800_4234(fn0800_37BE(fn0800_3678(ds, 17022, ds, out dx_118, out si_990, out ds_117), dx_118, ds_117, 0x4477, ds_117, stackArg6, stackArg8, out di_140), di_140, ds_117, 0x4477, ds_117, 2284, ds_117, out cx_163, out dx_166, out bp_993, out si_168, out di_164, out ds_165);
 	Mem177[ds_165:10717:word16] = dx_166;
 	Mem178[ds_165:10715:word16] = ax_160;
+	word16 sp_169 = <invalid>;
 	word16 sp_175 = sp_169 + 0x08;
 	while (true)
 	{
@@ -1305,13 +1308,14 @@ selector fn0800_0DE8(word16 cx, word16 dx, selector ds)
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
 		word16 stackArg4 = <invalid>;
+		word16 sp_201 = <invalid>;
 		word16 di_198;
 		selector ds_199;
 		word16 si_200;
-		word16 sp_201;
 		if (fn0800_2DE2(cx_163, dx_166, si_168, di_164, ds_165, Mem186[ss:sp_180 - 0x02 + 0x00:segptr32], stackArg4, out ch_997, out bp_998, out si_200, out di_198, out ds_199) == 0x00)
 			break;
 		fn0800_3764(si_200, di_198, ds_199);
+		sp_175 = <invalid>;
 		if (fn0800_388C(si_200, di_198, ds_199, out cx_163, out dx_166, out bp_1005, out si_168, out di_164, out ds_165) != 0x00)
 		{
 			word16 si_343;
@@ -1334,6 +1338,7 @@ selector fn0800_0DE8(word16 cx, word16 dx, selector ds)
 				word16 bp_336;
 				word16 dx_341;
 				word16 ax_334 = fn0800_3992(0x00, di_164, ds_165, out dx_341, out bp_336, out si_343, out ds_165);
+				sp_312 = <invalid>;
 				word16 ax_349 = ax_334;
 				if (ax_334 != 0x00)
 					si_343 = 0x0E;
@@ -1346,6 +1351,7 @@ selector fn0800_0DE8(word16 cx, word16 dx, selector ds)
 						{
 						case 0x00:
 							ax_349 = fn0800_6AD4(bp_336, si_343, ds_165, out dx_341, out ds_165);
+							sp_312 = <invalid>;
 							si_343 = ax_349;
 							break;
 						case 0x01:
@@ -1359,6 +1365,7 @@ selector fn0800_0DE8(word16 cx, word16 dx, selector ds)
 								// Please report this issue at https://github.com/uxmal/reko
 								word16 stackArg0 = <invalid>;
 								ax_349 = fn0800_8CAA(ax_334, 0x08, dx_473, stackArg0, out cl_1023, out dx_341);
+								sp_312 = <invalid>;
 								if (dx_341 == 0x52 && ax_349 == 0x4E43)
 									si_343 = 0x04;
 							}
@@ -1369,8 +1376,8 @@ selector fn0800_0DE8(word16 cx, word16 dx, selector ds)
 								Mem513[ss:sp_508 - 0x02 + 0x00:word16] = Mem510[ds_165:0x2A07:word16];
 								Mem516[ss:sp_508 - 0x04 + 0x00:word16] = Mem513[ds_165:0x2A09:word16];
 								Mem519[ss:sp_508 - 0x06 + 0x00:word16] = Mem516[ds_165:0x2A07:word16];
-								word16 sp_529;
 								fn0800_75EA(ds_165, Mem519[ss:sp_508 - 0x06 + 0x00:word16], Mem519[ss:sp_508 - 0x04 + 0x00:word16], Mem519[ss:sp_508 - 0x02 + 0x00:word16], Mem519[ss:sp_508 + 0x00:word16], out dx_1024, out bp_1025, out si_343, out ds_165);
+								word16 sp_529 = <invalid>;
 								sp_312 = sp_529 + 0x08;
 								ax_349 = Mem519[ds_165:0x2A05:word16];
 								dx_341 = Mem519[ds_165:0x2A03:word16];
@@ -1401,7 +1408,7 @@ selector fn0800_0DE8(word16 cx, word16 dx, selector ds)
 									Mem644[ss:sp_529 + 0x00:word16] = Mem641[ds_623:10719:word16];
 									Mem647[ss:sp_529 - 0x02 + 0x00:word16] = Mem644[ds_623:0x29E5:word16];
 									Mem650[ss:sp_529 - 0x04 + 0x00:word16] = Mem647[ds_623:0x29E3:word16];
-									word16 sp_660;
+									word16 sp_660 = <invalid>;
 									ax_349 = fn0800_3B0A(Mem650[ss:sp_529 + 0x04:word16], Mem650[ss:sp_529 + 0x06:word16], out cx_1035, out dx_341, out bp_1036, out ds_165);
 									sp_312 = sp_660 + 0x0C;
 									si_343 = 0x02;
@@ -1423,16 +1430,19 @@ selector fn0800_0DE8(word16 cx, word16 dx, selector ds)
 							if (fn0800_3F0A(ds_165, Mem380[ss:sp_312 - 0x04 + 0x00:word16], Mem380[ss:sp_312 - 0x02 + 0x00:word16], out cx_1019, out dx_1020, out ds_385) == 0x4D5A)
 							{
 								ax_349 = fn0800_5E64(ds_385, out dx_341, out ds_165);
+								sp_312 = <invalid>;
 								si_343 = ax_349;
 							}
 							else
 							{
 								ax_349 = fn0800_669C(ds_385, out dx_341, out ds_165);
+								sp_312 = <invalid>;
 								si_343 = ax_349;
 							}
 							break;
 						case 0x05:
 							ax_349 = fn0800_67BF(ds_165, out dx_341, out ds_165);
+							sp_312 = <invalid>;
 							si_343 = ax_349;
 							break;
 						}
@@ -1479,8 +1489,8 @@ selector fn0800_0DE8(word16 cx, word16 dx, selector ds)
 				Mem808[ss:sp_762 - 0x06 + 0x00:word16] = Mem805[ds_165:10719:word16];
 				Mem811[ss:sp_762 - 0x08 + 0x00:word16] = Mem808[ds_165:0x29E5:word16];
 				Mem814[ss:sp_762 - 0x0A + 0x00:word16] = Mem811[ds_165:0x29E3:word16];
-				word16 sp_824;
 				fn0800_3B0A(Mem814[ss:sp_762 - 0x02 + 0x00:word16], Mem814[ss:sp_762 + 0x00:word16], out cx_1016, out dx_1017, out bp_1018, out ds_165);
+				word16 sp_824 = <invalid>;
 				sp_312 = sp_824 + 0x0C;
 			}
 			word16 sp_892;
@@ -1490,17 +1500,17 @@ selector fn0800_0DE8(word16 cx, word16 dx, selector ds)
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
 			word16 stackArg4 = <invalid>;
-			word16 sp_848;
 			selector ds_853;
 			fn0800_A614(ds_165, Mem843[ss:sp_838 - 0x02 + 0x00:segptr32], stackArg4, out cx_1007, out dx_1008, out bp_1009, out si_1010, out di_1011, out ds_853);
+			word16 sp_848 = <invalid>;
 			Mem862[ss:sp_848 + 0x02:word16] = Mem843[ds_853:10721:word16];
 			Mem865[ss:sp_848 + 0x00:word16] = Mem862[ds_853:10719:word16];
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
 			word16 stackArg4 = <invalid>;
-			word16 sp_870;
 			word16 di_872;
 			fn0800_A614(ds_853, Mem865[ss:sp_848 + 0x00:segptr32], stackArg4, out cx_1013, out dx_1014, out bp_1015, out si_168, out di_872, out ds_165);
+			word16 sp_870 = <invalid>;
 			if (si_168 > 0x02)
 			{
 				Mem900[ss:sp_870 + 0x02:word16] = ds_165;
@@ -1509,7 +1519,10 @@ selector fn0800_0DE8(word16 cx, word16 dx, selector ds)
 				sp_892 = sp_870 + 0x04;
 			}
 			else
+			{
 				si_168 = fn0800_37DF(si_168, di_872, ds_165, out di_872, out ds_165);
+				sp_892 = <invalid>;
+			}
 			word16 sp_913 = sp_892 - 0x02;
 			Mem916[ss:sp_913 + 0x00:word16] = ds_165;
 			Mem919[ss:sp_913 - 0x02 + 0x00:word16] = 0x4541;
@@ -1559,6 +1572,7 @@ selector fn0800_112D(word16 cx, word16 dx, selector ds)
 		if (fn0800_2DE2(cx, dx, si_113, di_114, ds, Mem112[ss:sp_106 - 0x02 + 0x00:segptr32], stackArg4, out ch_596, out bp_597, out si_126, out di_124, out ds_125) == 0x00)
 			break;
 		fn0800_3764(si_126, di_124, ds_125);
+		sp_103 = <invalid>;
 		word16 bp_152;
 		if (fn0800_388C(si_126, di_124, ds_125, out cx, out dx, out bp_152, out si_113, out di_114, out ds) != 0x00)
 		{
@@ -1584,6 +1598,7 @@ selector fn0800_112D(word16 cx, word16 dx, selector ds)
 					{
 					case 0x00:
 						ax_177 = fn0800_4C55(ax_177, bp_152, ds, out dx_206, out ds);
+						sp_203 = <invalid>;
 						si_113 = ax_177;
 						break;
 					case 0x01:
@@ -1595,9 +1610,11 @@ selector fn0800_112D(word16 cx, word16 dx, selector ds)
 						// Please report this issue at https://github.com/uxmal/reko
 						word16 stackArg0 = <invalid>;
 						ax_177 = fn0800_8CAA(ax_177, 0x08, dx_335, stackArg0, out cl_600, out dx_206);
+						sp_203 = <invalid>;
 						if (dx_206 == 0x52 && ax_177 == 0x4E43)
 						{
 							ax_177 = fn0800_5374(ds, out dx_206, out bp_612, out ds);
+							sp_203 = <invalid>;
 							si_113 = ax_177;
 						}
 						else
@@ -1605,10 +1622,12 @@ selector fn0800_112D(word16 cx, word16 dx, selector ds)
 						break;
 					case 0x02:
 						ax_177 = fn0800_51A9(ds, out dx_206, out ds);
+						sp_203 = <invalid>;
 						si_113 = ax_177;
 						break;
 					case 0x03:
 						ax_177 = fn0800_518F(ax_177, dx_180, ds, out dx_206, out ds);
+						sp_203 = <invalid>;
 						si_113 = ax_177;
 						break;
 					case 0x04:
@@ -1620,16 +1639,19 @@ selector fn0800_112D(word16 cx, word16 dx, selector ds)
 						if (ax_246 == 0x4D5A)
 						{
 							ax_177 = fn0800_46FE(ds_250, out dx_206, out ds);
+							sp_203 = <invalid>;
 							si_113 = ax_177;
 						}
 						else
 						{
 							ax_177 = fn0800_4B97(ax_246, dx_251, ds_250, out dx_206, out ds);
+							sp_203 = <invalid>;
 							si_113 = ax_177;
 						}
 						break;
 					case 0x05:
 						ax_177 = fn0800_4BB1(ax_177, dx_180, ds, out dx_206, out ds);
+						sp_203 = <invalid>;
 						si_113 = ax_177;
 						break;
 					}
@@ -1658,20 +1680,23 @@ selector fn0800_112D(word16 cx, word16 dx, selector ds)
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
 			word16 stackArg4 = <invalid>;
-			word16 sp_467;
 			selector ds_472;
 			fn0800_A614(ds, Mem462[ss:sp_402 - 0x02 + 0x00:segptr32], stackArg4, out cx_603, out dx_604, out bp_605, out si_606, out di_607, out ds_472);
+			word16 sp_467 = <invalid>;
 			Mem481[ss:sp_467 + 0x02:word16] = Mem462[ds_472:10721:word16];
 			Mem484[ss:sp_467 + 0x00:word16] = Mem481[ds_472:10719:word16];
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
 			word16 stackArg4 = <invalid>;
-			word16 sp_489;
 			word16 si_493;
 			word16 di_491;
 			fn0800_A614(ds_472, Mem484[ss:sp_467 + 0x00:segptr32], stackArg4, out cx_609, out dx_610, out bp_611, out si_493, out di_491, out ds);
+			word16 sp_489 = <invalid>;
 			if (Mem484[ds:0x2A25:word16] != 0x02 && si_493 == 0x00)
+			{
 				si_113 = fn0800_37DF(si_493, di_491, ds, out di_491, out ds);
+				sp_515 = <invalid>;
+			}
 			else
 			{
 				Mem526[ss:sp_489 + 0x02:word16] = ds;
@@ -1701,9 +1726,9 @@ selector fn0800_12E2(word16 cx, word16 dx, selector ds)
 	word16 di_80;
 	word16 si_81;
 	fn0800_B2EF(cx, dx, bx_22 << 0x02, ds, 2362, ds, out si_81, out di_80);
+	word16 sp_108 = <invalid>;
 	word16 dx_105;
 	word16 si_107;
-	word16 sp_108;
 	word16 di_103;
 	word16 bp_100;
 	selector ds_104;
@@ -1751,8 +1776,8 @@ selector fn0800_12E2(word16 cx, word16 dx, selector ds)
 				Mem237[ss:sp_108 + 0x04:word16] = 0x0941;
 				Mem239[ss:sp_108 + 0x02:word16] = ds_104;
 				Mem242[ss:sp_108 + 0x00:word16] = 0x4348;
+				word16 sp_254 = <invalid>;
 				word16 dx_251;
-				word16 sp_254;
 				word16 ax_245 = fn0800_4234(si_107, di_103, ds_104, Mem242[ss:sp_108 + 0x00:word16], Mem242[ss:sp_108 + 0x02:word16], Mem242[ss:sp_108 + 0x04:word16], Mem242[ss:sp_108 + 0x06:word16], out cx_1982, out dx_251, out bp_100, out si_1983, out di_1984, out ds_104);
 				Mem262[ds_104:10705:word16] = dx_251;
 				Mem263[ds_104:10703:word16] = ax_245;
@@ -1811,7 +1836,7 @@ selector fn0800_12E2(word16 cx, word16 dx, selector ds)
 	}
 	word16 sp_397 = sp_113 - 0x02;
 	Mem399[ss:sp_397 + 0x00:word16] = 0x00;
-	word16 sp_410;
+	word16 sp_410 = <invalid>;
 	word16 dx_407;
 	selector ds_406;
 	word16 di_1833;
@@ -1825,10 +1850,10 @@ selector fn0800_12E2(word16 cx, word16 dx, selector ds)
 		Mem427[ss:sp_421 - 0x02 + 0x00:word16] = 0x4541;
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
+		word16 sp_442 = <invalid>;
 		word16 stackArg4 = <invalid>;
 		sp_1804 = sp_442 + 0x04;
 		word16 bp_438;
-		word16 sp_442;
 		if (fn0800_2DE2(cx_1836, dx_407, si_417, di_1833, ds_406, Mem427[ss:sp_421 - 0x02 + 0x00:segptr32], stackArg4, out ch_1970, out bp_438, out si_417, out di_1833, out ds_406) == 0x00)
 			break;
 		Mem455[ss:sp_442 + 0x02:word16] = ds_406;
@@ -1890,7 +1915,7 @@ selector fn0800_12E2(word16 cx, word16 dx, selector ds)
 		{
 			Mem573[ss:sp_442 + 0x02:word16] = Mem566[ss:bp_438 - 0x06 + 0x00:word16];
 			Mem576[ss:sp_442 + 0x00:word16] = Mem573[ss:bp_438 - 0x08 + 0x00:word16];
-			word16 sp_587;
+			word16 sp_587 = <invalid>;
 			cx_1835 = (word16) fn0800_23EC(ds_406, Mem576[ss:sp_442 + 0x00:word16], Mem576[ss:sp_442 + 0x02:word16], out bp_1987, out si_1988, out di_1833, out ds_406);
 			sp_1804 = sp_587 + 0x04;
 		}
@@ -1903,12 +1928,12 @@ selector fn0800_12E2(word16 cx, word16 dx, selector ds)
 	} while ((DPB(DPB(ax_578, Mem621[es_bx_622 + 0x04:byte], 0), 0x00, 8) << 0x08) + dx_407 <u ~0x73);
 	if (si_417 != 0x00)
 	{
-		word16 sp_656;
 		selector ds_652 = fn0800_1E5E(ds_406);
+		word16 sp_656 = <invalid>;
 		Mem665[ss:sp_656 - 0x02 + 0x00:word16] = 0x01;
 		selector ds_671;
-		word16 sp_675;
 		word16 cx_669 = fn0800_1CF6(ds_652, Mem665[ss:sp_656 - 0x02 + 0x00:word16], out dx_1990, out bp_1991, out si_1992, out di_1993, out ds_671);
+		word16 sp_675 = <invalid>;
 		Mem684[ss:sp_675 + 0x00:word16] = 0x01;
 		Mem689[ss:sp_675 - 0x02 + 0x00:word16] = 0x00;
 		fn0800_2DBF(ds_671, Mem689[ss:sp_675 - 0x02 + 0x00:word16], Mem689[ss:sp_675 + 0x00:word16]);
@@ -1931,7 +1956,6 @@ selector fn0800_12E2(word16 cx, word16 dx, selector ds)
 		Mem723[ss:sp_675 - 0x02 + 0x00:word16] = 0x0941;
 		Mem725[ss:sp_675 - 0x04 + 0x00:word16] = ds_671;
 		Mem728[ss:sp_675 - 0x06 + 0x00:word16] = 0x4477;
-		word16 sp_738;
 		word16 si_1660;
 		word16 di_1678;
 		word16 cx_1709;
@@ -1940,6 +1964,7 @@ selector fn0800_12E2(word16 cx, word16 dx, selector ds)
 		word16 ax_729 = fn0800_4234(si_711, di_709, ds_671, Mem728[ss:sp_675 - 0x06 + 0x00:word16], Mem728[ss:sp_675 - 0x04 + 0x00:word16], Mem728[ss:sp_675 - 0x02 + 0x00:word16], Mem728[ss:sp_675 + 0x00:word16], out cx_1709, out dx_1700, out bp_1996, out si_1660, out di_1678, out ds_1661);
 		Mem746[ds_1661:10717:word16] = dx_1700;
 		Mem747[ds_1661:10715:word16] = ax_729;
+		word16 sp_738 = <invalid>;
 		word16 sp_1687 = sp_738 + 0x08;
 		do
 		{
@@ -1948,11 +1973,11 @@ selector fn0800_12E2(word16 cx, word16 dx, selector ds)
 			Mem755[ss:sp_749 - 0x02 + 0x00:word16] = 0x4541;
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
+			word16 sp_770 = <invalid>;
 			word16 stackArg4 = <invalid>;
 			word16 sp_1718 = sp_770 + 0x04;
 			word16 di_767;
 			word16 si_769;
-			word16 sp_770;
 			if (fn0800_2DE2(cx_1709, dx_1700, si_1660, di_1678, ds_1661, Mem755[ss:sp_749 - 0x02 + 0x00:segptr32], stackArg4, out ch_2003, out bp_2004, out si_769, out di_767, out ds_1661) == 0x00)
 				goto l0800_18A9;
 			Mem783[ss:sp_770 + 0x02:word16] = ds_1661;
@@ -1963,11 +1988,11 @@ selector fn0800_12E2(word16 cx, word16 dx, selector ds)
 			word16 di_796;
 			word16 dx_798;
 			word16 si_800;
-			word16 sp_801;
 			selector ds_1322;
 			word16 ax_792 = fn0800_4234(si_769, di_767, ds_1661, Mem791[ss:sp_770 - 0x04 + 0x00:word16], Mem791[ss:sp_770 - 0x02 + 0x00:word16], Mem791[ss:sp_770 + 0x00:word16], Mem791[ss:sp_770 + 0x02:word16], out cx_2016, out dx_798, out bp_793, out si_800, out di_796, out ds_1322);
 			Mem809[ds_1322:0x29E5:word16] = dx_798;
 			Mem810[ds_1322:0x29E3:word16] = ax_792;
+			word16 sp_801 = <invalid>;
 			Mem812[ss:sp_801 + 0x06:word16] = ds_1322;
 			Mem815[ss:sp_801 + 0x04:word16] = 0x4541;
 			Mem817[ss:sp_801 + 0x02:word16] = ss;
@@ -2008,9 +2033,9 @@ selector fn0800_12E2(word16 cx, word16 dx, selector ds)
 			// Please report this issue at https://github.com/uxmal/reko
 			int32 dx_ax_933 = (int32) Mem931[ds_1322:0x29E9:word16];
 			word16 stackArg0 = <invalid>;
-			word16 sp_941;
 			word16 ax_937 = fn0800_8C8A((word16) dx_ax_933, 0x08, SLICE(dx_ax_933, word16, 16), stackArg0, out cl_2022, out dx_2023);
 			ptr32 es_di_946 = Mem931[ss:bp_793 - 0x08 + 0x00:segptr32];
+			word16 sp_941 = <invalid>;
 			Mem948[ss:sp_941 - 0x02 + 0x00:word16] = ax_937;
 			selector es_1838 = SLICE(es_di_946, selector, 16);
 			word16 di_1839 = (word16) es_di_946;
@@ -2072,9 +2097,9 @@ selector fn0800_12E2(word16 cx, word16 dx, selector ds)
 			// Please report this issue at https://github.com/uxmal/reko
 			word16 stackArg0 = <invalid>;
 			word16 dx_1095;
-			word16 sp_1096;
 			word16 ax_1092 = fn0800_8C8A(Mem1083[ds_1322:10727:word16], 0x08, Mem1083[ds_1322:0x29E9:word16], stackArg0, out cl_2025, out dx_1095);
 			ptr32 es_di_1106 = Mem1083[ss:bp_793 - 0x08 + 0x00:segptr32];
+			word16 sp_1096 = <invalid>;
 			Mem1108[ss:sp_1096 - 0x02 + 0x00:word16] = ax_1092;
 			selector es_1144 = SLICE(es_di_1106, selector, 16);
 			word16 di_1116 = (word16) es_di_1106;
@@ -2160,6 +2185,7 @@ selector fn0800_12E2(word16 cx, word16 dx, selector ds)
 				byte cl_1336;
 				word16 dx_1337;
 				word16 ax_1334 = fn0800_8CAA(ax_1292, 0x08, dx_1323, stackArg0, out cl_1336, out dx_1337);
+				sp_1301 = <invalid>;
 				cx_1294 = DPB(cx_1320, cl_1336, 0);
 				if (dx_1337 != 0x52 || ax_1334 != 0x4E43)
 				{
@@ -2168,7 +2194,7 @@ selector fn0800_12E2(word16 cx, word16 dx, selector ds)
 					Mem1356[ss:sp_1301 - 0x04 + 0x00:word16] = Mem1353[ds_1322:0x2A07:word16];
 					Mem1359[ss:sp_1301 - 0x06 + 0x00:word16] = Mem1356[ds_1322:0x2A09:word16];
 					Mem1362[ss:sp_1301 - 0x08 + 0x00:word16] = Mem1359[ds_1322:0x2A07:word16];
-					word16 sp_1372;
+					word16 sp_1372 = <invalid>;
 					cx_1294 = fn0800_75EA(ds_1322, Mem1362[ss:sp_1301 - 0x08 + 0x00:word16], Mem1362[ss:sp_1301 - 0x06 + 0x00:word16], Mem1362[ss:sp_1301 - 0x04 + 0x00:word16], Mem1362[ss:sp_1301 - 0x02 + 0x00:word16], out dx_2039, out bp_2040, out si_2041, out ds_1322);
 					sp_1301 = sp_1372 + 0x08;
 					word16 ax_1379 = Mem1362[ds_1322:0x2A05:word16];
@@ -2214,6 +2240,7 @@ selector fn0800_12E2(word16 cx, word16 dx, selector ds)
 					byte cl_1500;
 					word16 dx_1501;
 					word16 ax_1498 = fn0800_8CAA(ax_1447, 0x08, dx_1487, stackArg0, out cl_1500, out dx_1501);
+					sp_1467 = <invalid>;
 					cx_1460 = DPB(cx_1484, cl_1500, 0);
 					if (dx_1501 == 0x52 && ax_1498 == 0x4E43)
 						goto l0800_181E;
@@ -2240,8 +2267,8 @@ l0800_181E:
 				Mem1584[ss:sp_1573 - 0x06 + 0x00:word16] = Mem1581[ds_1322:10703:word16];
 				Mem1587[ss:sp_1573 - 0x08 + 0x00:word16] = Mem1584[ds_1322:0x29E5:word16];
 				Mem1590[ss:sp_1573 - 0x0A + 0x00:word16] = Mem1587[ds_1322:0x29E3:word16];
-				word16 sp_1600;
 				fn0800_3B0A(Mem1590[ss:sp_1573 - 0x02 + 0x00:word16], Mem1590[ss:sp_1573 + 0x00:word16], out cx_1294, out dx_2058, out bp_2059, out ds_1322);
+				word16 sp_1600 = <invalid>;
 				sp_1301 = sp_1600 + 0x0C;
 			}
 			word16 sp_1613 = sp_1301 - 0x02;
@@ -2256,9 +2283,9 @@ l0800_181E:
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
 			word16 stackArg4 = <invalid>;
-			word16 sp_1656;
 			word16 di_1658;
 			fn0800_A614(ds_1636, Mem1651[ss:sp_1613 - 0x02 + 0x00:segptr32], stackArg4, out cx_2035, out dx_2036, out bp_2037, out si_1660, out di_1658, out ds_1661);
+			word16 sp_1656 = <invalid>;
 			Mem1669[ss:sp_1656 + 0x02:word16] = ds_1661;
 			Mem1672[ss:sp_1656 + 0x00:word16] = 0x4541;
 			Mem1674[ss:sp_1656 - 0x02 + 0x00:word16] = si_1660;
@@ -2281,14 +2308,14 @@ l0800_18A9:
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
 		word16 stackArg4 = <invalid>;
-		word16 sp_1734;
 		selector ds_1739;
 		fn0800_A614(ds_1661, Mem1729[ss:sp_1724 - 0x02 + 0x00:segptr32], stackArg4, out cx_2006, out dx_2007, out bp_2008, out si_2009, out di_2010, out ds_1739);
+		word16 sp_1734 = <invalid>;
 		Mem1747[ss:sp_1734 + 0x02:word16] = ds_1739;
 		Mem1750[ss:sp_1734 + 0x00:word16] = 0x4477;
 		fn0800_8F7F(0x4477, ds_1739, Mem1750[ss:sp_1734 + 0x00:segptr32]);
-		word16 sp_1767;
 		selector ds_1763 = fn0800_1E5E(ds_1739);
+		word16 sp_1767 = <invalid>;
 		Mem1776[ss:sp_1767 - 0x02 + 0x00:word16] = Mem1750[ds_1763:10705:word16];
 		Mem1779[ss:sp_1767 - 0x04 + 0x00:word16] = Mem1776[ds_1763:10703:word16];
 		// Failed to bind call argument.
@@ -2319,11 +2346,11 @@ selector fn0800_18D9(word16 cx, word16 dx, selector ds)
 	word16 si_38;
 	fn0800_B2EF(cx, dx, Mem18[ds:0x2A25:word16] << 0x02, ds, 2412, ds, out si_38, out di_37);
 	word16 dx_62;
-	word16 sp_65;
 	selector ds_106;
 	word16 ax_56 = fn0800_AA7E(si_38, di_37, ds, 0x4348, ds, 2429, ds, out cx_434, out dx_62, out bp_435, out si_436, out di_437, out ds_106);
 	Mem71[ds_106:10705:word16] = dx_62;
 	Mem72[ds_106:10703:word16] = ax_56;
+	word16 sp_65 = <invalid>;
 	if ((ax_56 | dx_62) == 0x00)
 	{
 		Mem78[ss:sp_65 + 0x06:word16] = ds_106;
@@ -2335,13 +2362,13 @@ selector fn0800_18D9(word16 cx, word16 dx, selector ds)
 		fn0800_0D24(ds_106, Mem84[ss:sp_65 + 0x02:word16], Mem84[ss:sp_65 + 0x04:segptr32], stackArg6, out cx_439, out dx_440, out bx_441, out si_442, out di_443, out es_444, out ds_106, out Top_445);
 	}
 	Mem105[ss:sp_65 + 0x06:word16] = 0x01;
-	word16 sp_116;
 	word16 bp_108;
 	word16 si_115;
 	word16 di_111;
 	selector ds_112;
 	word16 dx_113;
 	word16 cx_110 = fn0800_1CF6(ds_106, Mem105[ss:sp_65 + 0x06:word16], out dx_113, out bp_108, out si_115, out di_111, out ds_112);
+	word16 sp_116 = <invalid>;
 	Mem127[ss:sp_116 + 0x00:word16] = 0x00;
 	Mem129[ss:sp_116 - 0x02 + 0x00:word16] = 0x00;
 	fn0800_2DBF(ds_112, Mem129[ss:sp_116 - 0x02 + 0x00:word16], Mem129[ss:sp_116 + 0x00:word16]);
@@ -2355,11 +2382,11 @@ selector fn0800_18D9(word16 cx, word16 dx, selector ds)
 		Mem145[ss:sp_134 - 0x06 + 0x00:word16] = bp_108 - 0x08;
 		Mem147[ss:sp_134 - 0x08 + 0x00:word16] = ss;
 		Mem150[ss:sp_134 - 0x0A + 0x00:word16] = bp_108 - 0x04;
+		word16 sp_166 = <invalid>;
 		word16 di_159;
 		word16 si_162;
 		selector ds_164;
 		word16 bp_165;
-		word16 sp_166;
 		if (fn0800_29C5(cx_110, dx_113, si_115, di_111, ds_112, out bp_165, out si_162, out di_159, out ds_164) == 0x00)
 			break;
 		Mem220[ss:sp_166 + 0x0A:word16] = ss;
@@ -2367,8 +2394,8 @@ selector fn0800_18D9(word16 cx, word16 dx, selector ds)
 		fn0800_0C93(si_162, di_159, ds_164, Mem223[ss:sp_166 + 0x08:word16], Mem223[ss:sp_166 + 0x0A:word16], out dx_451);
 		Mem239[ss:sp_166 + 0x0A:word16] = Mem223[ss:bp_165 - 0x06 + 0x00:word16];
 		Mem242[ss:sp_166 + 0x08:word16] = Mem239[ss:bp_165 - 0x08 + 0x00:word16];
-		word16 sp_252;
 		fn0800_23EC(ds_164, Mem242[ss:sp_166 + 0x08:word16], Mem242[ss:sp_166 + 0x0A:word16], out bp_108, out si_115, out di_452, out ds_112);
+		word16 sp_252 = <invalid>;
 		Mem263[ss:sp_252 + 0x02:word16] = Mem242[ss:bp_108 - 0x06 + 0x00:word16];
 		Mem266[ss:sp_252 + 0x00:word16] = Mem263[ss:bp_108 - 0x08 + 0x00:word16];
 		// Failed to bind call argument.
@@ -2422,8 +2449,8 @@ selector fn0800_18D9(word16 cx, word16 dx, selector ds)
 		cx_110 = fn0800_0ABC(di_319, ds_112, Mem388[ss:sp_252 - 0x02 + 0x00:word16], Mem388[ss:sp_252 + 0x00:word16], Mem388[ss:sp_252 + 0x02:word16], out dx_113, out di_111);
 		sp_131 = sp_252 + 0x04;
 	}
-	word16 sp_186;
 	selector ds_182 = fn0800_1E5E(ds_164);
+	word16 sp_186 = <invalid>;
 	Mem195[ss:sp_186 - 0x02 + 0x00:word16] = Mem150[ds_182:10705:word16];
 	Mem198[ss:sp_186 - 0x04 + 0x00:word16] = Mem195[ds_182:10703:word16];
 	// Failed to bind call argument.
@@ -2442,11 +2469,11 @@ selector fn0800_19EE(word16 cx, word16 dx, selector ds)
 	fn0800_B2EF(cx, dx, Mem21[ds:0x2A25:word16] << 0x02, ds, 0x0986, ds, out si_41, out di_40);
 	word16 bp_60;
 	word16 dx_65;
-	word16 sp_68;
 	selector ds_104;
 	word16 ax_59 = fn0800_AA7E(si_41, di_40, ds, 0x4348, ds, 0x0997, ds, out cx_1241, out dx_65, out bp_60, out si_1242, out di_1243, out ds_104);
 	Mem74[ds_104:10705:word16] = dx_65;
 	Mem75[ds_104:10703:word16] = ax_59;
+	word16 sp_68 = <invalid>;
 	if ((ax_59 | dx_65) == 0x00)
 	{
 		Mem81[ss:sp_68 + 0x06:word16] = ds_104;
@@ -2473,7 +2500,7 @@ selector fn0800_19EE(word16 cx, word16 dx, selector ds)
 	Mem136[ss:sp_68 + 0x04:word16] = 0x01;
 	fn0800_2DBF(ds_104, Mem136[ss:sp_68 + 0x04:word16], Mem136[ss:sp_68 + 0x06:word16]);
 	Mem143[ss:sp_68 + 0x06:word16] = 0x01;
-	word16 sp_153;
+	word16 sp_153 = <invalid>;
 	word16 bp_1102;
 	word16 si_1116;
 	word16 di_1149;
@@ -2505,11 +2532,11 @@ selector fn0800_19EE(word16 cx, word16 dx, selector ds)
 		Mem196[ss:sp_185 - 0x06 + 0x00:word16] = bp_1102 - 0x08;
 		Mem198[ss:sp_185 - 0x08 + 0x00:word16] = ss;
 		Mem201[ss:sp_185 - 0x0A + 0x00:word16] = bp_1102 - 0x04;
+		word16 sp_217 = <invalid>;
 		word16 di_210;
 		word16 si_213;
 		selector ds_215;
 		word16 bp_216;
-		word16 sp_217;
 		if (fn0800_29C5(cx_1148, dx_1150, si_1116, di_1149, ds_1110, out bp_216, out si_213, out di_210, out ds_215) == 0x00)
 			break;
 		Mem276[ss:sp_217 + 0x0A:word16] = ss;
@@ -2799,17 +2826,17 @@ selector fn0800_19EE(word16 cx, word16 dx, selector ds)
 		Mem1077[ds_1061:0x29E5:word16] = Mem1074[ds_1061:10705:word16];
 		Mem1078[ds_1061:0x29E3:word16] = dx_1076;
 		selector ds_1084;
-		word16 sp_1088;
 		fn0800_5374(ds_1061, out dx_1267, out bp_1268, out ds_1084);
+		word16 sp_1088 = <invalid>;
 		Mem1097[ss:sp_1088 - 0x02 + 0x00:word16] = Mem1078[ds_1084:10721:word16];
 		Mem1100[ss:sp_1088 - 0x04 + 0x00:word16] = Mem1097[ds_1084:10719:word16];
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
 		word16 stackArg4 = <invalid>;
-		word16 sp_1105;
 		word16 di_1107;
 		word16 si_1109;
 		fn0800_A614(ds_1084, Mem1100[ss:sp_1088 - 0x04 + 0x00:segptr32], stackArg4, out cx_1270, out dx_1271, out bp_1102, out si_1109, out di_1107, out ds_1110);
+		word16 sp_1105 = <invalid>;
 		si_1116 = si_1109;
 		if (si_1109 != 0x00)
 		{
@@ -2828,9 +2855,9 @@ selector fn0800_19EE(word16 cx, word16 dx, selector ds)
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg4 = <invalid>;
-	word16 sp_239;
 	selector ds_244;
 	fn0800_A614(ds_215, Mem234[ss:sp_217 + 0x08:segptr32], stackArg4, out cx_1255, out dx_242, out bp_236, out si_1256, out di_1257, out ds_244);
+	word16 sp_239 = <invalid>;
 	if (Mem234[ds_244:0x2A25:word16] == 0x07)
 	{
 		Mem253[ss:sp_239 + 0x02:word16] = ds_244;
@@ -2887,8 +2914,8 @@ word16 fn0800_1CF6(selector ds, word16 wArg02, ptr16 & dxOut, ptr16 & bpOut, ptr
 		// Please report this issue at https://github.com/uxmal/reko
 		word16 stackArg2 = <invalid>;
 		word16 stackArg4 = <invalid>;
+		word16 sp_289 = <invalid>;
 		word16 dx_286;
-		word16 sp_289;
 		word16 ax_280 = fn0800_4311(stackArg2, stackArg4, out dx_286, out bp_255, out si_262, out di_539, out ds_259);
 		Mem297[ds_259:11859:word16] = dx_286;
 		Mem298[ds_259:11857:word16] = ax_280;
@@ -2902,8 +2929,8 @@ word16 fn0800_1CF6(selector ds, word16 wArg02, ptr16 & dxOut, ptr16 & bpOut, ptr
 		// Please report this issue at https://github.com/uxmal/reko
 		word16 stackArg2 = <invalid>;
 		word16 stackArg4 = <invalid>;
+		word16 sp_263 = <invalid>;
 		word16 dx_260;
-		word16 sp_263;
 		word16 ax_254 = fn0800_4311(stackArg2, stackArg4, out dx_260, out bp_255, out si_262, out di_536, out ds_259);
 		Mem271[ds_259:11859:word16] = dx_260;
 		Mem272[ds_259:11857:word16] = ax_254;
@@ -2972,14 +2999,14 @@ selector fn0800_1E5E(selector ds)
 	word16 sp_110 = fp - 0x02;
 	if (ax_24 >u ax_98)
 	{
-		word16 sp_185;
+		word16 sp_185 = <invalid>;
 		si_145 = fn0800_3BC3(cx_100, 0x00, ds_102, out ds_102);
 		sp_110 = sp_185 + 0x0C;
 	}
 	else if (ax_24 <u ax_98)
 	{
-		word16 sp_146;
 		fn0800_3C99(ax_24, di_101, ds_102, out bp_330, out si_145, out ds_102);
+		word16 sp_146 = <invalid>;
 		sp_110 = sp_146 + 0x0C;
 	}
 	word16 sp_198 = sp_110 - 0x02;
@@ -3093,9 +3120,9 @@ word16 fn0800_1F5C(selector ds, segptr32 ptrArg02, word16 wArg04, ptr16 & dxOut,
 	word16 ax_211 = ax_207 + (cx_195 + 0x03);
 	word16 stackArg0 = <invalid>;
 	segptr32 ptrLoc06_407 = SEQ(ax_175, dx_177);
-	word16 sp_221;
 	Mem230[ptrLoc06_407 + 0x00:byte] = (byte) fn0800_8C8A(ax_211, 0x08, 0x00 - (ax_207 <u 0x00) + (ax_211 <u 0x00), stackArg0, out cl_473, out dx_474);
 	Mem239[ptrLoc06_407 + 0x01:byte] = (byte) (ptrLoc06_407 - Mem230[ds:11857:word16]) + (cx_195 + 0x03);
+	word16 sp_221 = <invalid>;
 	Mem243[ss:sp_221 - 0x02 + 0x00:word16] = SLICE(ptrLoc06_407, selector, 16);
 	Mem246[ss:sp_221 - 0x04 + 0x00:word16] = ptrLoc06_407 + 0x02;
 	word16 bx_229 = (word16) ptrLoc06_407;
@@ -3517,8 +3544,8 @@ byte fn0800_23EC(selector ds, segptr32 ptrArg02, word16 wArg04, ptr16 & bpOut, p
 	word16 bp_385;
 	selector ds_389;
 	word16 si_392;
-	word16 sp_393;
 	word16 cx_387 = (word16) fn0800_3C99(si_26, di_261 - 0x01, ds_24, out bp_385, out si_392, out ds_389);
+	word16 sp_393 = <invalid>;
 	Mem403[ss:sp_393 + 0x0A:word16] = Mem363[ss:bp_385 - 0x02 + 0x00:word16];
 	Mem406[ss:sp_393 + 0x08:word16] = Mem403[ss:bp_385 - 0x04 + 0x00:word16];
 	word16 dx_410 = -Mem406[ss:bp_385 - 0x08 + 0x00:word16];
@@ -3632,8 +3659,8 @@ word16 fn0800_24FE(selector ds, segptr32 ptrArg02, ptr16 & dsOut)
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg0 = <invalid>;
 	word16 dx_375;
-	word16 sp_376;
 	word16 ax_372 = fn0800_8C8A(ax_339, 0x08, dx_360, stackArg0, out cl_705, out dx_375);
+	word16 sp_376 = <invalid>;
 	if (dx_375 != 0x52 || ax_372 != 0x4E43)
 	{
 		Mem389[ss:sp_376 - 0x02 + 0x00:word16] = ds_359;
@@ -3732,6 +3759,7 @@ byte fn0800_2688(selector ds, ui32 dwArg02, word16 wArg04, word16 wArg06, word16
 				word16 stackArg0 = <invalid>;
 				Mem239[ptrLoc06_291 + 0x02:byte] = (byte) fn0800_8C8A((word16) dx_ax_268, 0x08, SLICE(dx_ax_268, word16, 16), stackArg0, out cl_413, out dx_149);
 				Mem243[ptrLoc06_291 + 0x03:byte] = ax_166 + dwArg02_314;
+				sp_110 = <invalid>;
 			}
 			ptrLoc06_339 = SEQ(ptrLoc06_291, v18_74);
 			ptrLoc06_289 = DPB(ptrLoc06_414, v19_81, 0);
@@ -3747,6 +3775,7 @@ byte fn0800_2688(selector ds, ui32 dwArg02, word16 wArg04, word16 wArg06, word16
 		Mem119[ptrLoc0E_344 + 0x00:byte] = (byte) fn0800_8C8A(ax_100, 0x08, 0x00 - (ax_100 <u 0x00), stackArg0, out cl_108, out dx_408);
 		Mem128[ptrLoc0E_344 + 0x01:byte] = (byte) (v24_95 - Mem119[ds:11857:word16]);
 		wLoc06_273 = v24_95;
+		sp_110 = <invalid>;
 	}
 	if ((wArg06 | wArg08) == 0x00)
 	{
@@ -4002,9 +4031,10 @@ word16 fn0800_29C5(word16 cx, word16 dx, word16 si, word16 di, selector ds, ptr1
 	{
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
+		word16 sp_44 = <invalid>;
 		word16 stackArg4 = <invalid>;
+		cx = <invalid>;
 		sp_13 = sp_44 + 0x04;
-		word16 sp_44;
 		if (fn0800_2DE2(cx, dx, si, di, ds, SEQ(ds, 0x4541), stackArg4, out ch_1255, out bp_40, out si, out di, out ds) == 0x00)
 		{
 			word16 di_801 = Mem31[ss:sp_44 + 0x04:word16];
@@ -4324,8 +4354,8 @@ word16 fn0800_29C5(word16 cx, word16 dx, word16 si, word16 di, selector ds, ptr1
 	Mem160[ss:sp_150 - 0x06 + 0x00:word16] = Mem157[ss:bp_40 + 0x08:word16];
 	Mem163[ss:sp_150 - 0x08 + 0x00:word16] = Mem160[ss:bp_40 + 0x06:word16];
 	Mem166[ss:sp_150 - 0x0A + 0x00:word16] = Mem163[ss:bp_40 + 0x04:word16];
-	word16 sp_167;
 	word16 ax_170 = fn0800_29C5(cx_174, 0x00, si, di, ds, out bp_1256, out si_1257, out di_1258, out ds_1259);
+	word16 sp_167 = <invalid>;
 	word16 di_182 = Mem166[ss:sp_167 + 0x0C:word16];
 	word16 si_184 = Mem166[ss:sp_167 + 0x0E:word16];
 	bpOut = Mem166[ss:bp_40 + 0x00:word16];
@@ -4395,11 +4425,11 @@ word16 fn0800_2D0A(ptr16 & dxOut, ptr16 & bpOut, ptr16 & dsOut)
 	word16 stackArg4 = <invalid>;
 	word16 bp_22;
 	word16 dx_27;
-	word16 sp_30;
 	selector ds_114;
 	word16 ax_21 = fn0800_4311(stackArg2, stackArg4, out dx_27, out bp_22, out si_241, out di_25, out ds_114);
 	Mem38[ss:bp_22 - 0x02 + 0x00:word16] = dx_27;
 	Mem39[ss:bp_22 - 0x04 + 0x00:word16] = ax_21;
+	word16 sp_30 = <invalid>;
 	Mem42[ss:sp_30 + 0x02:word16] = Mem39[ss:bp_22 + 0x06:word16];
 	Mem45[ss:sp_30 + 0x00:word16] = Mem42[ss:bp_22 + 0x04:word16];
 	// Failed to bind call argument.
@@ -4509,7 +4539,6 @@ word16 fn0800_2DE2(word16 cx, word16 dx, word16 si, word16 di, selector ds, segp
 			// Please report this issue at https://github.com/uxmal/reko
 			word16 stackArg4 = <invalid>;
 			word16 bp_484;
-			word16 sp_487;
 			word16 cx_488;
 			word16 di_489;
 			word16 dx_490;
@@ -4520,6 +4549,7 @@ word16 fn0800_2DE2(word16 cx, word16 dx, word16 si, word16 di, selector ds, segp
 			Mem500[ds_492:17949:word16] = 0x00;
 			Mem501[ds_492:17947:word16] = 0x00;
 			Mem503[ds_492:18002:word16] = Mem501[ds_492:18002:word16] + 0x01;
+			word16 sp_487 = <invalid>;
 			Mem507[ss:sp_487 + 0x02:word16] = Mem503[ss:bp_484 + 0x06:word16];
 			Mem510[ss:sp_487 + 0x00:word16] = Mem507[ss:bp_484 + 0x04:word16];
 			// Failed to bind call argument.
@@ -4706,11 +4736,11 @@ word16 fn0800_2DE2(word16 cx, word16 dx, word16 si, word16 di, selector ds, segp
 			selector ds_792;
 			word16 dx_793;
 			word16 si_795;
-			word16 sp_796;
 			word16 ax_787 = fn0800_4234(si_313, di_2165, ds, Mem770[es_778:bx_776 + 0x00:word16] + 0x01, Mem770[es_778:bx_776 + 0x02:word16], 0x0A13, ds, out cx_790, out dx_793, out bp_788, out si_795, out di_791, out ds_792);
 			Mem804[ds_792:17949:word16] = dx_793;
 			Mem805[ds_792:17947:word16] = ax_787;
 			Mem806[ds_792:0x4654:word16] = 0x01;
+			word16 sp_796 = <invalid>;
 			Mem809[ss:sp_796 + 0x06:word16] = Mem806[ss:bp_788 + 0x06:word16];
 			Mem812[ss:sp_796 + 0x04:word16] = Mem809[ss:bp_788 + 0x04:word16];
 			// Failed to bind call argument.
@@ -5647,13 +5677,13 @@ word16 fn0800_37DF(word16 si, word16 di, selector ds, ptr16 & diOut, ptr16 & dsO
 	word16 di_85 = di_340 - 0x01;
 	fn0800_35A3(si, di_85, di_85, es_44, 0x4541, ds);
 	word16 dx_147;
-	word16 sp_150;
 	word16 si_149;
 	word16 bp_142;
 	selector ds_146;
 	word16 ax_141 = fn0800_AA7E(si, di_85, ds, fp - 0x6C, ss, 0x0A4D, ds, out cx_144, out dx_147, out bp_142, out si_149, out di_327, out ds_146);
 	Mem156[ss:bp_142 - 0x02 + 0x00:word16] = dx_147;
 	Mem157[ss:bp_142 - 0x04 + 0x00:word16] = ax_141;
+	word16 sp_150 = <invalid>;
 	word16 sp_155 = sp_150 + 0x08;
 	if ((ax_141 | dx_147) != 0x00)
 	{
@@ -5662,8 +5692,8 @@ word16 fn0800_37DF(word16 si, word16 di, selector ds, ptr16 & diOut, ptr16 & dsO
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
 		word16 stackArg4 = <invalid>;
-		word16 sp_172;
 		fn0800_A614(ds_146, Mem167[ss:sp_150 + 0x04:segptr32], stackArg4, out cx_329, out dx_330, out bp_142, out si_149, out di_331, out ds_146);
+		word16 sp_172 = <invalid>;
 		Mem186[ss:sp_172 + 0x02:word16] = 0x0180;
 		Mem188[ss:sp_172 + 0x00:word16] = ss;
 		Mem191[ss:sp_172 - 0x02 + 0x00:word16] = bp_142 - 0x6A;
@@ -5700,10 +5730,10 @@ word16 fn0800_388C(word16 si, word16 di, selector ds, ptr16 & cxOut, ptr16 & dxO
 	selector ds_29;
 	word16 dx_30;
 	word16 si_32;
-	word16 sp_33;
 	word16 ax_24 = fn0800_4234(si, di, ds, 0x4541, ds, 0x0A13, ds, out cx_294, out dx_30, out bp_295, out si_32, out di_28, out ds_29);
 	Mem41[ds_29:0x29E5:word16] = dx_30;
 	Mem42[ds_29:0x29E3:word16] = ax_24;
+	word16 sp_33 = <invalid>;
 	Mem44[ss:sp_33 + 0x06:word16] = ds_29;
 	Mem47[ss:sp_33 + 0x04:word16] = 0x0A50;
 	Mem49[ss:sp_33 + 0x02:word16] = ds_29;
@@ -5713,10 +5743,10 @@ word16 fn0800_388C(word16 si, word16 di, selector ds, ptr16 & cxOut, ptr16 & dxO
 	selector ds_58;
 	word16 dx_59;
 	word16 si_61;
-	word16 sp_62;
 	word16 ax_53 = fn0800_4234(si_32, di_28, ds_29, Mem52[ss:sp_33 + 0x00:word16], Mem52[ss:sp_33 + 0x02:word16], Mem52[ss:sp_33 + 0x04:word16], Mem52[ss:sp_33 + 0x06:word16], out cx_296, out dx_59, out bp_54, out si_61, out di_57, out ds_58);
 	Mem70[ds_58:10721:word16] = dx_59;
 	Mem71[ds_58:10719:word16] = ax_53;
+	word16 sp_62 = <invalid>;
 	Mem73[ss:sp_62 + 0x06:word16] = ds_58;
 	Mem76[ss:sp_62 + 0x04:word16] = 0x44DC;
 	Mem78[ss:sp_62 + 0x02:word16] = ss;
@@ -5748,21 +5778,21 @@ word16 fn0800_388C(word16 si, word16 di, selector ds, ptr16 & cxOut, ptr16 & dxO
 				// Failed to bind call argument.
 				// Please report this issue at https://github.com/uxmal/reko
 				word16 stackArg4 = <invalid>;
-				word16 sp_172;
 				selector ds_177;
 				fn0800_A614(ds_58, Mem167[ss:sp_62 + 0x04:segptr32], stackArg4, out cx_298, out dx_299, out bp_300, out si_301, out di_302, out ds_177);
+				word16 sp_172 = <invalid>;
 				Mem186[ss:sp_172 + 0x02:word16] = Mem167[ds_177:10721:word16];
 				Mem189[ss:sp_172 + 0x00:word16] = Mem186[ds_177:10719:word16];
 				// Failed to bind call argument.
 				// Please report this issue at https://github.com/uxmal/reko
 				word16 stackArg4 = <invalid>;
 				word16 bp_191;
-				word16 sp_194;
 				word16 cx_195;
 				word16 di_196;
 				word16 si_198;
 				selector ds_199;
 				fn0800_A614(ds_177, Mem189[ss:sp_172 + 0x00:segptr32], stackArg4, out cx_195, out dx_304, out bp_191, out si_198, out di_196, out ds_199);
+				word16 sp_194 = <invalid>;
 				Mem207[ss:sp_194 + 0x02:word16] = ds_199;
 				Mem210[ss:sp_194 + 0x00:word16] = 0x44DC;
 				word16 dx_212 = fn0800_8F7F(0x44DC, ds_199, Mem210[ss:sp_194 + 0x00:segptr32]);
@@ -5856,10 +5886,10 @@ word16 fn0800_3992(word16 si, word16 di, selector ds, ptr16 & dxOut, ptr16 & bpO
 		selector ds_151;
 		word16 dx_152;
 		word16 si_154;
-		word16 sp_155;
 		word16 ax_146 = fn0800_AA7E(si, di_90, ds, fp - 116, ss, 0x0A4D, ds, out cx_620, out dx_152, out bp_147, out si_154, out di_621, out ds_151);
 		Mem161[ss:bp_147 - 0x02 + 0x00:word16] = dx_152;
 		Mem162[ss:bp_147 - 0x04 + 0x00:word16] = ax_146;
+		word16 sp_155 = <invalid>;
 		word16 ax_163 = ax_146 | dx_152;
 		if (ax_163 != 0x00)
 		{
@@ -5877,8 +5907,8 @@ word16 fn0800_3992(word16 si, word16 di, selector ds, ptr16 & dxOut, ptr16 & bpO
 				// Please report this issue at https://github.com/uxmal/reko
 				word16 stackArg0 = <invalid>;
 				word16 dx_217;
-				word16 sp_218;
 				word16 ax_214 = fn0800_8CAA(ax_163, 0x08, dx_203, stackArg0, out cl_626, out dx_217);
+				word16 sp_218 = <invalid>;
 				if (dx_217 != 0x52 || ax_214 != 0x4E43)
 				{
 					Mem436[ss:sp_218 - 0x02 + 0x00:word16] = Mem197[ss:bp_147 - 0x02 + 0x00:word16];
@@ -6037,11 +6067,11 @@ word16 fn0800_3B0A(word16 wArg0A, word16 wArg0C, ptr16 & cxOut, ptr16 & dxOut, p
 		word16 stackArg2 = <invalid>;
 		word16 stackArg4 = <invalid>;
 		word16 dx_51;
-		word16 sp_54;
 		selector ds_117;
 		word16 ax_45 = fn0800_4311(stackArg2, stackArg4, out dx_51, out bp_193, out si_53, out di_49, out ds_117);
 		Mem62[ss:bp_193 - 0x02 + 0x00:word16] = dx_51;
 		Mem63[ss:bp_193 - 0x04 + 0x00:word16] = ax_45;
+		word16 sp_54 = <invalid>;
 		while ((Mem66[ss:bp_193 + 0x0C:word16] | Mem66[ss:bp_193 + 0x0E:word16]) != 0x00)
 		{
 			word16 ax_81;
@@ -6109,10 +6139,10 @@ word16 fn0800_3BC3(word16 cx, word16 dx, selector ds, ptr16 & dsOut)
 	word16 bp_47;
 	selector ds_51;
 	word16 dx_52;
-	word16 sp_55;
 	word16 ax_46 = fn0800_4234(fn0800_37BE(cx, dx, ds, 0x43AD, ds, stackArg6, stackArg8, out di_26), di_26, ds, 0x43AD, ds, 0x0A61, ds, out cx_287, out dx_52, out bp_47, out si_288, out di_289, out ds_51);
 	Mem63[ds_51:10709:word16] = dx_52;
 	Mem64[ds_51:10707:word16] = ax_46;
+	word16 sp_55 = <invalid>;
 	Mem67[ss:sp_55 + 0x06:word16] = Mem64[ss:bp_47 + 0x06:word16];
 	Mem70[ss:sp_55 + 0x04:word16] = Mem67[ss:bp_47 + 0x04:word16];
 	fn0800_4194(ds_51, Mem70[ss:sp_55 + 0x04:word16], Mem70[ss:sp_55 + 0x06:word16]);
@@ -6134,8 +6164,8 @@ word16 fn0800_3BC3(word16 cx, word16 dx, selector ds, ptr16 & dsOut)
 	Mem130[ss:sp_55 - 0x04 + 0x00:word16] = Mem127[ss:bp_47 + 0x04:word16];
 	word16 bp_132;
 	selector ds_136;
-	word16 sp_140;
 	fn0800_3B0A(Mem130[ss:sp_55 + 0x04:word16], Mem130[ss:sp_55 + 0x06:word16], out cx_294, out dx_295, out bp_132, out ds_136);
+	word16 sp_140 = <invalid>;
 	Mem150[ss:sp_140 + 0x0A:word16] = Mem130[ds_136:10709:word16];
 	Mem153[ss:sp_140 + 0x08:word16] = Mem150[ds_136:10707:word16];
 	fn0800_BA67(ds_136, Mem153[ss:sp_140 + 0x08:word16], Mem153[ss:sp_140 + 0x0A:word16]);
@@ -6155,17 +6185,17 @@ word16 fn0800_3BC3(word16 cx, word16 dx, selector ds, ptr16 & dsOut)
 	Mem208[ss:sp_140 + 0x02:word16] = Mem205[ds_136:10709:word16];
 	Mem211[ss:sp_140 + 0x00:word16] = Mem208[ds_136:10707:word16];
 	selector ds_217;
-	word16 sp_221;
 	fn0800_3B0A(Mem211[ss:sp_140 + 0x08:word16], Mem211[ss:sp_140 + 0x0A:word16], out cx_300, out dx_301, out bp_302, out ds_217);
+	word16 sp_221 = <invalid>;
 	Mem231[ss:sp_221 + 0x0A:word16] = Mem211[ds_217:10709:word16];
 	Mem234[ss:sp_221 + 0x08:word16] = Mem231[ds_217:10707:word16];
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg4 = <invalid>;
-	word16 sp_239;
 	word16 si_243;
 	selector ds_244;
 	fn0800_A614(ds_217, Mem234[ss:sp_221 + 0x08:segptr32], stackArg4, out cx_304, out dx_305, out bp_236, out si_243, out di_306, out ds_244);
+	word16 sp_239 = <invalid>;
 	Mem252[ss:sp_239 + 0x02:word16] = ds_244;
 	Mem255[ss:sp_239 + 0x00:word16] = 0x43AD;
 	fn0800_8F7F(0x43AD, ds_244, Mem255[ss:sp_239 + 0x00:segptr32]);
@@ -6198,10 +6228,10 @@ byte fn0800_3C99(word16 si, word16 di, selector ds, ptr16 & bpOut, ptr16 & siOut
 	word16 bp_80;
 	selector ds_84;
 	word16 dx_85;
-	word16 sp_88;
 	word16 ax_79 = fn0800_4234(si_411, di_412, ds, fp - 0x6C, ss, 0x0A61, ds, out cx_458, out dx_85, out bp_80, out si_459, out di_460, out ds_84);
 	Mem95[ss:bp_80 - 0x02 + 0x00:word16] = dx_85;
 	Mem96[ss:bp_80 - 0x04 + 0x00:word16] = ax_79;
+	word16 sp_88 = <invalid>;
 	Mem101[ss:sp_88 + 0x06:word16] = 0x00;
 	Mem103[ss:sp_88 + 0x04:word16] = 0x00;
 	Mem105[ss:sp_88 + 0x02:word16] = 0x00;
@@ -6216,8 +6246,8 @@ byte fn0800_3C99(word16 si, word16 di, selector ds, ptr16 & bpOut, ptr16 & siOut
 	Mem140[ss:sp_88 - 0x04 + 0x00:word16] = Mem137[ss:bp_80 + 0x04:word16];
 	word16 bp_142;
 	selector ds_146;
-	word16 sp_150;
 	fn0800_3B0A(Mem140[ss:sp_88 + 0x04:word16], Mem140[ss:sp_88 + 0x06:word16], out cx_465, out dx_466, out bp_142, out ds_146);
+	word16 sp_150 = <invalid>;
 	Mem159[ss:sp_150 + 0x0A:word16] = 0x00;
 	ui32 ax_dx_427 = SEQ(Mem159[ss:bp_142 + 0x0A:word16], Mem159[ss:bp_142 + 0x08:word16]);
 	Mem159[ss:bp_142 + 0x0C:ui32] = SEQ(Mem159[ss:bp_142 + 0x0E:word16], Mem159[ss:bp_142 + 0x0C:word16]);
@@ -6245,27 +6275,27 @@ byte fn0800_3C99(word16 si, word16 di, selector ds, ptr16 & bpOut, ptr16 & siOut
 	Mem231[ss:sp_150 + 0x00:word16] = Mem228[ss:bp_142 + 0x04:word16];
 	word16 bp_233;
 	selector ds_237;
-	word16 sp_241;
 	fn0800_3B0A(Mem231[ss:sp_150 + 0x08:word16], Mem231[ss:sp_150 + 0x0A:word16], out cx_470, out dx_471, out bp_233, out ds_237);
+	word16 sp_241 = <invalid>;
 	Mem251[ss:sp_241 + 0x0A:word16] = Mem231[ss:bp_233 - 0x02 + 0x00:word16];
 	Mem254[ss:sp_241 + 0x08:word16] = Mem251[ss:bp_233 - 0x04 + 0x00:word16];
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg4 = <invalid>;
-	word16 sp_259;
 	selector ds_264;
 	fn0800_A614(ds_237, Mem254[ss:sp_241 + 0x08:segptr32], stackArg4, out cx_473, out dx_474, out bp_475, out si_476, out di_477, out ds_264);
+	word16 sp_259 = <invalid>;
 	Mem273[ss:sp_259 + 0x02:word16] = Mem254[ds_264:10705:word16];
 	Mem276[ss:sp_259 + 0x00:word16] = Mem273[ds_264:10703:word16];
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg4 = <invalid>;
 	word16 bp_278;
-	word16 sp_281;
 	selector ds_286;
 	word16 si_285;
 	word16 di_283;
 	fn0800_A614(ds_264, Mem276[ss:sp_259 + 0x00:segptr32], stackArg4, out cx_479, out dx_480, out bp_278, out si_285, out di_283, out ds_286);
+	word16 sp_281 = <invalid>;
 	Mem295[ss:sp_281 + 0x02:word16] = 0x0180;
 	Mem297[ss:sp_281 + 0x00:word16] = ds_286;
 	Mem300[ss:sp_281 - 0x02 + 0x00:word16] = 0x4348;
@@ -6295,10 +6325,10 @@ byte fn0800_3C99(word16 si, word16 di, selector ds, ptr16 & bpOut, ptr16 & siOut
 	word16 cx_385;
 	selector ds_387;
 	word16 dx_388;
-	word16 sp_391;
 	word16 ax_382 = fn0800_4234(si_285, di_283, ds_286, Mem379[ss:sp_281 - 0x04 + 0x00:word16], Mem379[ss:sp_281 - 0x02 + 0x00:word16], Mem379[ss:sp_281 + 0x00:word16], Mem379[ss:sp_281 + 0x02:word16], out cx_385, out dx_388, out bp_383, out si_481, out di_482, out ds_387);
 	Mem399[ds_387:10705:word16] = dx_388;
 	Mem400[ds_387:10703:word16] = ax_382;
+	word16 sp_391 = <invalid>;
 	word16 si_403 = Mem400[ss:sp_391 + 0x0A:word16];
 	bpOut = Mem400[ss:bp_383 + 0x00:word16];
 	siOut = si_403;
@@ -6609,10 +6639,10 @@ word16 fn0800_40BF(byte ah, word16 cx, selector ds, word16 wArg02, word16 wArg04
 // 0800:4110: Register byte fn0800_4110(Register selector ds, Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06, Stack word16 wArg08, Stack word16 wArg0A, Stack word16 wArg0C, Register out ptr16 siOut, Register out ptr16 diOut, Register out ptr16 dsOut)
 byte fn0800_4110(selector ds, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, word16 wArg0A, word16 wArg0C, ptr16 & siOut, ptr16 & diOut, ptr16 & dsOut)
 {
-	word16 cx_120;
 	word16 di_123;
 	word16 si_133;
 	word16 ax_28 = fn0800_ABA3(ds, wArg02, wArg04, 0x01, wArg06, wArg0A, wArg0C, out ch_140, out si_133, out di_123);
+	word16 cx_120 = <invalid>;
 	if (wArg08 != 0x00 || ax_28 != wArg06)
 	{
 		// Failed to bind call argument.
@@ -6666,7 +6696,6 @@ word16 fn0800_4234(word16 si, word16 di, selector ds, word16 wArg02, word16 wArg
 {
 	word16 bp_27;
 	word16 dx_32;
-	word16 sp_35;
 	word16 cx_29;
 	word16 di_30;
 	selector ds_31;
@@ -6674,6 +6703,7 @@ word16 fn0800_4234(word16 si, word16 di, selector ds, word16 wArg02, word16 wArg
 	word16 ax_26 = fn0800_AA7E(si, di, ds, wArg02, wArg04, wArg06, wArg08, out cx_29, out dx_32, out bp_27, out si_104, out di_30, out ds_31);
 	Mem41[ss:bp_27 - 0x02 + 0x00:word16] = dx_32;
 	Mem42[ss:bp_27 - 0x04 + 0x00:word16] = ax_26;
+	word16 sp_35 = <invalid>;
 	if ((ax_26 | Mem42[ss:(bp_27 - 0x02) + 0x00:word16]) == 0x00)
 	{
 		Mem49[ss:sp_35 + 0x06:word16] = Mem42[ss:bp_27 + 0x06:word16];
@@ -6762,13 +6792,13 @@ word16 fn0800_4311(word16 wArg02, word16 wArg04, ptr16 & dxOut, ptr16 & bpOut, p
 	word16 stackArg4 = <invalid>;
 	word16 bp_18;
 	word16 dx_23;
-	word16 sp_26;
 	word16 di_21;
 	selector ds_22;
 	word16 si_25;
 	word16 ax_17 = fn0800_9F89(stackArg2, stackArg4, out dx_23, out bp_18, out si_25, out di_21, out ds_22);
 	Mem32[ss:bp_18 - 0x02 + 0x00:word16] = dx_23;
 	Mem33[ss:bp_18 - 0x04 + 0x00:word16] = ax_17;
+	word16 sp_26 = <invalid>;
 	if ((ax_17 | dx_23) == 0x00)
 	{
 		Mem39[ss:sp_26 + 0x02:word16] = ds_22;
@@ -6981,8 +7011,8 @@ word16 fn0800_4550(ptr16 & bpOut)
 					// Please report this issue at https://github.com/uxmal/reko
 					word16 stackArg0 = <invalid>;
 					word16 dx_61;
-					word16 sp_63;
 					word16 ax_56 = fn0800_8BC2(bp_103, si_28, di_27, stackArg0, out cx, out dx_61, out bx_174, out bp_103, out si_28, out di_27);
+					word16 sp_63 = <invalid>;
 					Mem70[ss:sp_63 + 0x06:word16] = dx_61;
 					Mem72[ss:sp_63 + 0x04:word16] = ax_56;
 					word16 dx_75;
@@ -7108,8 +7138,8 @@ word16 fn0800_46FE(selector ds, ptr16 & dxOut, ptr16 & dsOut)
 			// Please report this issue at https://github.com/uxmal/reko
 			word16 stackArg0 = <invalid>;
 			word16 dx_135;
-			word16 sp_136;
 			word16 ax_132 = fn0800_8CAA(ax_101, 0x08, dx_122, stackArg0, out cl_134, out dx_135);
+			word16 sp_136 = <invalid>;
 			if (dx_135 != 0x52 || ax_132 != 0x4E43)
 			{
 				dxOut = dx_135;
@@ -7146,8 +7176,8 @@ word16 fn0800_46FE(selector ds, ptr16 & dxOut, ptr16 & dsOut)
 				// Failed to bind call argument.
 				// Please report this issue at https://github.com/uxmal/reko
 				word16 stackArg0 = <invalid>;
-				word16 sp_252;
 				fn0800_8C69(wLoc0C_1465, 0x09, 0x00, stackArg0, out cl_1613, out dx_1614);
+				word16 sp_252 = <invalid>;
 				Mem268[ss:sp_252 - 0x02 + 0x00:word16] = 0x00;
 				Mem271[ss:sp_252 - 0x04 + 0x00:word16] = 0x00;
 				Mem273[ss:sp_252 - 0x06 + 0x00:word16] = 22;
@@ -7365,8 +7395,8 @@ word16 fn0800_46FE(selector ds, ptr16 & dxOut, ptr16 & dsOut)
 				word16 stackArg4 = <invalid>;
 				word16 stackArg0 = <invalid>;
 				word16 dx_1082;
-				word16 sp_1095;
 				fn0800_8C8A(fn0800_AD2F(ds_1044, Mem1078[ss:sp_252 - 0x04 + 0x00:segptr32], stackArg4, out cx_1708, out dx_1082), 0x04, dx_1082, stackArg0, out cl_1710, out dx_1711);
+				word16 sp_1095 = <invalid>;
 				Mem1109[ss:sp_1095 - 0x02 + 0x00:word16] = 0x00;
 				Mem1112[ss:sp_1095 - 0x04 + 0x00:word16] = dx_154;
 				Mem1115[ss:sp_1095 - 0x06 + 0x00:word16] = ax_151;
@@ -7375,8 +7405,8 @@ word16 fn0800_46FE(selector ds, ptr16 & dxOut, ptr16 & dsOut)
 				fn0800_ACB3(ds_1044, Mem1121[ss:sp_1095 - 0x0A + 0x00:word16], Mem1121[ss:sp_1095 - 0x08 + 0x00:word16], Mem1121[ss:sp_1095 - 0x02 + 0x00:word16], out cx_1712, out dx_1713, out bx_1714, out es_1715);
 				word16 bp_1134;
 				selector ds_1138;
-				word16 sp_1142;
 				word16 ax_1133 = fn0800_5374(ds_1044, out dx_1716, out bp_1134, out ds_1138);
+				word16 sp_1142 = <invalid>;
 				if (ax_1133 == 0x00)
 				{
 					Mem1155[ss:sp_1142 - 0x02 + 0x00:word16] = Mem1121[ds_1138:10721:word16];
@@ -7412,8 +7442,8 @@ word16 fn0800_46FE(selector ds, ptr16 & dxOut, ptr16 & dsOut)
 					// Please report this issue at https://github.com/uxmal/reko
 					word16 di_1250 = Mem1233[ss:bp_1235 - 0x08 + 0x00:word16];
 					word16 stackArg0 = <invalid>;
-					word16 sp_1261;
 					Mem1266[ss:bp_1235 - 0x0A + 0x00:word16] = fn0800_8CAA(Mem1233[ss:bp_1235 - 0x08 + 0x00:word16], 0x09, Mem1233[ss:bp_1235 - 0x06 + 0x00:word16], stackArg0, out cl_1725, out dx_1726);
+					word16 sp_1261 = <invalid>;
 					if ((di_1250 & 0x01FF) != 0x00)
 						Mem1272[ss:bp_1235 - 0x0A + 0x00:word16] = Mem1266[ss:bp_1235 - 0x0A + 0x00:word16] + 0x01;
 					Mem1280[ss:sp_1261 - 0x02 + 0x00:word16] = 0x00;
@@ -7508,8 +7538,8 @@ word16 fn0800_4BB1(word16 ax, word16 dx, selector ds, ptr16 & dxOut, ptr16 & dsO
 		fn0800_401E(cx_49, ds_19, 0x601A, Mem60[ds_19:10719:word16], Mem46[ds_19:10721:word16], out cx_267, out dx_268, out bx_269, out di_270, out es_271, out ds_272, out Top_273);
 		word16 cx_103;
 		selector ds_105;
-		word16 sp_109;
 		fn0800_3B0A(0x10, 0x00, out cx_103, out dx_274, out bp_275, out ds_105);
+		word16 sp_109 = <invalid>;
 		Mem118[ss:sp_109 + 0x0A:word16] = Mem99[ds_105:10721:word16];
 		Mem121[ss:sp_109 + 0x08:word16] = Mem118[ds_105:10719:word16];
 		Mem126[ss:sp_109 + 0x06:word16] = 0x00;
@@ -7637,8 +7667,8 @@ word16 fn0800_4C55(word16 ax, word16 bp, selector ds, ptr16 & dxOut, ptr16 & dsO
 		word16 dx_495 = dx_484 + (ax_463 <u 0x01);
 		word16 stackArg0 = <invalid>;
 		word16 dx_508;
-		word16 sp_509;
 		word16 ax_505 = fn0800_8C69(ax_463 + 0x01, 0x02, dx_495, stackArg0, out cl_966, out dx_508);
+		word16 sp_509 = <invalid>;
 		Mem515[ss:sp_509 - 0x02 + 0x00:word16] = dx_508;
 		Mem517[ss:sp_509 - 0x04 + 0x00:word16] = ax_505;
 		Mem520[ss:sp_509 - 0x06 + 0x00:word16] = Mem517[ds_483:0x29E5:word16];
@@ -7716,8 +7746,8 @@ void fn0800_4F2C(word16 ax, selector ds)
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg0 = <invalid>;
 	word16 dx_36;
-	word16 sp_37;
 	word16 ax_33 = fn0800_8C69(ax, 0x02, dx_22, stackArg0, out cl_786, out dx_36);
+	word16 sp_37 = <invalid>;
 	Mem46[ss:sp_37 - 0x02 + 0x00:word16] = Mem43[ds_103:0x29E5:word16];
 	Mem49[ss:sp_37 - 0x04 + 0x00:word16] = Mem46[ds_103:0x29E3:word16];
 	// Failed to bind call argument.
@@ -7750,8 +7780,8 @@ void fn0800_4F2C(word16 ax, selector ds)
 	word16 cx_126 = fn0800_3F58(ds_103, Mem124[ss:sp_37 - 0x04 + 0x00:word16], Mem124[ss:sp_37 - 0x02 + 0x00:word16], out dx_129, out di_789, out ds_128);
 	word16 stackArg0 = <invalid>;
 	word16 dx_143;
-	word16 sp_144;
 	word16 ax_140 = fn0800_8CAA(ax_50, 0x08, dx_129, stackArg0, out cl_791, out dx_143);
+	word16 sp_144 = <invalid>;
 	if (dx_143 != 0x52 || ax_140 != 0x4E43)
 	{
 		Mem159[ss:sp_144 - 0x02 + 0x00:word16] = Mem124[ds_128:10721:word16];
@@ -7761,8 +7791,8 @@ void fn0800_4F2C(word16 ax, selector ds)
 		word16 stackArg0 = <invalid>;
 		byte cl_170;
 		word16 dx_171;
-		word16 sp_172;
 		word16 ax_168 = fn0800_8CAA(ax_33, 0x02, dx_36, stackArg0, out cl_170, out dx_171);
+		word16 sp_172 = <invalid>;
 		Mem178[ss:sp_172 - 0x02 + 0x00:word16] = dx_171;
 		Mem180[ss:sp_172 - 0x04 + 0x00:word16] = ax_168;
 		selector ds_188;
@@ -7779,7 +7809,7 @@ void fn0800_4F2C(word16 ax, selector ds)
 		Mem236[ss:sp_172 - 0x04 + 0x00:word16] = Mem233[ds_188:10719:word16];
 		Mem239[ss:sp_172 - 0x06 + 0x00:word16] = Mem236[ds_188:0x29E5:word16];
 		Mem242[ss:sp_172 - 0x08 + 0x00:word16] = Mem239[ds_188:0x29E3:word16];
-		word16 sp_252;
+		word16 sp_252 = <invalid>;
 		word16 bp_244;
 		selector ds_248;
 		word16 ax_243 = fn0800_3B0A(Mem242[ss:sp_172 + 0x00:word16], Mem242[ss:sp_172 + 0x02:word16], out cx_808, out dx_809, out bp_244, out ds_248);
@@ -7843,16 +7873,16 @@ void fn0800_4F2C(word16 ax, selector ds)
 					// Please report this issue at https://github.com/uxmal/reko
 					word16 stackArg0 = <invalid>;
 					word16 dx_473;
-					word16 sp_474;
 					word16 ax_470 = fn0800_8C69(Mem452[ss:bp_244 - 0x06 + 0x00:word16], 0x02, Mem452[ss:bp_244 - 0x04 + 0x00:word16], stackArg0, out cl_853, out dx_473);
+					word16 sp_474 = <invalid>;
 					Mem480[ss:sp_474 - 0x02 + 0x00:word16] = dx_473;
 					Mem482[ss:sp_474 - 0x04 + 0x00:word16] = ax_470;
 					Mem485[ss:sp_474 - 0x06 + 0x00:word16] = Mem482[ds_457:10721:word16];
 					Mem488[ss:sp_474 - 0x08 + 0x00:word16] = Mem485[ds_457:10719:word16];
 					Mem491[ss:sp_474 - 0x0A + 0x00:word16] = Mem488[ds_457:0x29E5:word16];
 					Mem494[ss:sp_474 - 0x0C + 0x00:word16] = Mem491[ds_457:0x29E3:word16];
-					word16 sp_504;
 					fn0800_3B0A(Mem494[ss:sp_474 - 0x04 + 0x00:word16], Mem494[ss:sp_474 - 0x02 + 0x00:word16], out cx_854, out dx_855, out bp_244, out ds_248);
+					word16 sp_504 = <invalid>;
 					sp_258 = sp_504 + 0x0C;
 				}
 				ax_243 = Mem514[ss:bp_244 - 0x06 + 0x00:word16] | Mem514[ss:(bp_244 - 0x04) + 0x00:word16];
@@ -7871,8 +7901,8 @@ void fn0800_4F2C(word16 ax, selector ds)
 		word16 stackArg0 = <invalid>;
 		byte cl_531;
 		word16 dx_532;
-		word16 sp_533;
 		word16 ax_529 = fn0800_8CAA(wLoc18, 0x02, wLoc16, stackArg0, out cl_531, out dx_532);
+		word16 sp_533 = <invalid>;
 		Mem539[ss:sp_533 - 0x02 + 0x00:word16] = dx_532;
 		Mem541[ss:sp_533 - 0x04 + 0x00:word16] = ax_529;
 		selector ds_547;
@@ -7908,8 +7938,8 @@ void fn0800_4F2C(word16 ax, selector ds)
 		fn0800_ACB3(ds_619, Mem650[ss:sp_533 - 0x06 + 0x00:word16], Mem650[ss:sp_533 - 0x04 + 0x00:word16], Mem650[ss:sp_533 + 0x02:word16], out cx_826, out dx_827, out bx_828, out es_829);
 		word16 bp_663;
 		selector ds_667;
-		word16 sp_671;
 		Mem677[ss:bp_663 - 0x02 + 0x00:word16] = fn0800_5374(ds_619, out dx_830, out bp_663, out ds_667);
+		word16 sp_671 = <invalid>;
 		Mem680[ss:sp_671 - 0x02 + 0x00:word16] = 0x00;
 		ui32 ax_dx_716 = SEQ(Mem680[ss:bp_663 - 0x18 + 0x00:word16], Mem680[ss:bp_663 - 0x1A + 0x00:word16]) + SEQ(Mem680[ss:(bp_663 - 0x10) + 0x00:word16], Mem680[ss:(bp_663 - 0x12) + 0x00:word16]);
 		Mem689[ss:sp_671 - 0x04 + 0x00:word16] = SLICE(ax_dx_716, word16, 16);
@@ -8019,8 +8049,8 @@ word16 fn0800_51A9(selector ds, ptr16 & dxOut, ptr16 & dsOut)
 					Mem469[ss:sp_18 - 0x06 + 0x00:word16] = Mem466[ds:10719:word16];
 					Mem472[ss:sp_18 - 0x08 + 0x00:word16] = Mem469[ds:0x29E5:word16];
 					Mem475[ss:sp_18 - 0x0A + 0x00:word16] = Mem472[ds:0x29E3:word16];
-					word16 sp_485;
 					fn0800_3B0A(Mem475[ss:sp_18 - 0x02 + 0x00:word16], Mem475[ss:sp_18 + 0x00:word16], out cx_620, out dx_621, out bp_290, out ds);
+					word16 sp_485 = <invalid>;
 					sp_11 = sp_485 + 0x0C;
 				}
 				continue;
@@ -8057,8 +8087,8 @@ word16 fn0800_51A9(selector ds, ptr16 & dxOut, ptr16 & dsOut)
 			// Please report this issue at https://github.com/uxmal/reko
 			word16 stackArg0 = <invalid>;
 			word16 dx_256;
-			word16 sp_257;
 			word16 ax_253 = fn0800_8CAA(ax_219, 0x08, dx_243, stackArg0, out cl_617, out dx_256);
+			word16 sp_257 = <invalid>;
 			if (dx_256 != 0x52 || ax_253 != 0x4E43)
 			{
 				Mem272[ss:sp_257 - 0x02 + 0x00:word16] = Mem238[ss:bp_290 - 0x02 + 0x00:word16];
@@ -8067,15 +8097,15 @@ word16 fn0800_51A9(selector ds, ptr16 & dxOut, ptr16 & dsOut)
 				Mem282[ss:sp_257 - 0x08 + 0x00:word16] = Mem279[ds_242:10719:word16];
 				Mem285[ss:sp_257 - 0x0A + 0x00:word16] = Mem282[ds_242:0x29E5:word16];
 				Mem288[ss:sp_257 - 0x0C + 0x00:word16] = Mem285[ds_242:0x29E3:word16];
-				word16 sp_298;
 				fn0800_3B0A(Mem288[ss:sp_257 - 0x04 + 0x00:word16], Mem288[ss:sp_257 - 0x02 + 0x00:word16], out cx_634, out dx_635, out bp_290, out ds);
+				word16 sp_298 = <invalid>;
 				sp_11 = sp_298 + 0x0C;
 				continue;
 			}
 			selector ds_311;
 			word16 dx_312;
-			word16 sp_315;
 			word16 ax_306 = fn0800_5374(ds_242, out dx_312, out bp_290, out ds_311);
+			word16 sp_315 = <invalid>;
 			if (ax_306 == 0x00)
 			{
 				Mem328[ss:sp_315 - 0x02 + 0x00:word16] = 0x01;
@@ -8155,10 +8185,10 @@ word16 fn0800_5374(selector ds, ptr16 & dxOut, ptr16 & bpOut, ptr16 & dsOut)
 		selector ds_130;
 		Mem140[ds_130:11849:word16] = fn0800_3E27(ds_109, Mem122[ds_109:0x29E3:word16], Mem119[ds_109:0x29E5:word16], out cx_658, out dx_659, out di_660, out es_661, out ds_130, out Top_662);
 		fn0800_3E27(ds_130, Mem143[ds_130:0x29E3:word16], Mem140[ds_130:0x29E5:word16], out cx_663, out dx_664, out di_665, out es_666, out ds_667, out Top_668);
+		word16 sp_182 = <invalid>;
 		word16 bp_174;
 		selector ds_178;
 		word16 dx_179;
-		word16 sp_182;
 		if (fn0800_2D0A(out dx_179, out bp_174, out ds_178) == Mem172[ds_178:11849:word16])
 		{
 			Mem194[ss:sp_182 + 0x06:word16] = 0x01;
@@ -8172,12 +8202,12 @@ word16 fn0800_5374(selector ds, ptr16 & dxOut, ptr16 & bpOut, ptr16 & dsOut)
 			word16 bp_198;
 			selector ds_202;
 			word16 dx_203;
-			word16 sp_206;
 			word16 ax_197 = fn0800_4311(stackArg2, stackArg4, out dx_203, out bp_198, out si_673, out di_674, out ds_202);
 			Mem214[ss:bp_198 - 0x06 + 0x00:word16] = dx_203;
 			Mem215[ss:bp_198 - 0x08 + 0x00:word16] = ax_197;
 			Mem218[ds_202:11891:word16] = dx_203 + 0x01;
 			Mem219[ds_202:11889:word16] = 0x00;
+			word16 sp_206 = <invalid>;
 			Mem223[ss:sp_206 + 0x02:word16] = 0x01;
 			Mem225[ss:sp_206 + 0x00:word16] = 0x0F;
 			// Failed to bind call argument.
@@ -8189,7 +8219,6 @@ word16 fn0800_5374(selector ds, ptr16 & dxOut, ptr16 & bpOut, ptr16 & dsOut)
 			word16 bp_227;
 			selector ds_231;
 			word16 dx_232;
-			word16 sp_235;
 			word16 ax_226 = fn0800_4311(stackArg2, stackArg4, out dx_232, out bp_227, out si_677, out di_678, out ds_231);
 			Mem242[ss:bp_227 - 0x02 + 0x00:word16] = dx_232;
 			Mem243[ss:bp_227 - 0x04 + 0x00:word16] = ax_226;
@@ -8208,6 +8237,7 @@ word16 fn0800_5374(selector ds, ptr16 & dxOut, ptr16 & bpOut, ptr16 & dsOut)
 			Mem264[ds_231:0x2A01:word16] = 0x00;
 			Mem265[ds_231:0x29FF:word16] = 0x00;
 			Mem267[ss:bp_227 - 0x0E + 0x00:word16] = Mem265[ds_231:11855:word16];
+			word16 sp_235 = <invalid>;
 			Mem270[ss:sp_235 + 0x02:word16] = 0x01;
 			word16 si_278;
 			selector ds_275;
@@ -8340,20 +8370,20 @@ word16 fn0800_55E8(selector ds, ptr16 & dsOut)
 		Mem83[ss:sp_78 - 0x02 + 0x00:word16] = ds;
 		Mem86[ss:sp_78 - 0x04 + 0x00:word16] = 10511;
 		selector ds_90;
-		word16 sp_94;
 		fn0800_5A24(ds, Mem86[ss:sp_78 - 0x04 + 0x00:word16], Mem86[ss:sp_78 - 0x02 + 0x00:word16], Mem86[ss:sp_78 + 0x00:word16], out ds_90);
+		word16 sp_94 = <invalid>;
 		Mem106[ss:sp_94 + 0x04:word16] = 0x10;
 		Mem108[ss:sp_94 + 0x02:word16] = ds_90;
 		Mem111[ss:sp_94 + 0x00:word16] = 10319;
 		selector ds_115;
-		word16 sp_119;
 		fn0800_5A24(ds_90, Mem111[ss:sp_94 + 0x00:word16], Mem111[ss:sp_94 + 0x02:word16], Mem111[ss:sp_94 + 0x04:word16], out ds_115);
+		word16 sp_119 = <invalid>;
 		Mem131[ss:sp_119 + 0x04:word16] = 0x10;
 		Mem133[ss:sp_119 + 0x02:word16] = ds_115;
 		Mem136[ss:sp_119 + 0x00:word16] = 10127;
 		selector ds_140;
-		word16 sp_144;
 		word16 bp_137 = fn0800_5A24(ds_115, Mem136[ss:sp_119 + 0x00:word16], Mem136[ss:sp_119 + 0x02:word16], Mem136[ss:sp_119 + 0x04:word16], out ds_140);
+		word16 sp_144 = <invalid>;
 		Mem156[ss:sp_144 + 0x04:word16] = 0x10;
 		word16 ax_157 = fn0800_5C39(ds_140, Mem156[ss:sp_144 + 0x04:word16], out si_471, out di_472, out ds);
 		Mem172[ss:bp_137 - 0x02 + 0x00:word16] = 0x00;
@@ -8413,8 +8443,8 @@ word16 fn0800_55E8(selector ds, ptr16 & dsOut)
 				// Please report this issue at https://github.com/uxmal/reko
 				int32 dx_ax_462 = SEQ(Mem313[ss:sp_283 - 0x02 + 0x00:word16], Mem313[ss:sp_283 + 0x00:word16]) + (int32) bx_310;
 				word16 stackArg0 = <invalid>;
+				word16 sp_333 = <invalid>;
 				word16 dx_332;
-				word16 sp_333;
 				Mem339[ss:sp_333 - 0x02 + 0x00:word16] = fn0800_8C69((word16) dx_ax_462, Mem313[ds:11845:byte], SLICE(dx_ax_462, word16, 16), stackArg0, out cl_477, out dx_332);
 				word16 ax_342 = 0x01 << Mem339[ds:11845:byte];
 				Mem345[ss:sp_333 - 0x04 + 0x00:word16] = dx_332;
@@ -8647,8 +8677,8 @@ word16 fn0800_5A24(selector ds, word16 wArg02, word16 wArg04, word16 wArg06, ptr
 				Mem90[wArg04:si_75 + 0x00:word16] = fn0800_5C39(ds_164, 0x04, out si_75, out di_80, out ds_164);
 			} while (di_80 + 0x01 <u wArg06_144);
 		}
-		word16 sp_117;
 		fn0800_4550(out bp_182);
+		word16 sp_117 = <invalid>;
 		sp_122 = sp_117 + 0x06;
 	}
 	word16 bp_131 = Mem126[ss:sp_122 + 0x04:word16];
@@ -8798,6 +8828,7 @@ word16 fn0800_5C39(selector ds, word16 wArg02, ptr16 & siOut, ptr16 & diOut, ptr
 			Mem118[ds:0x29FD:word16] = dx_88 + DPB(DPB((word16) es_bx_94, Mem72[es_bx_94 + 0x00:byte], 0), 0x00, 8) + (ax_85 <u 0x00) + (ax_109 <u 0x00) + (ax_113 <u 0x00);
 			Mem119[ds:10747:word16] = ax_113;
 			Mem120[ds:11845:word16] = 0x10;
+			sp_13 = <invalid>;
 		}
 		if ((Mem122[ds:10747:word16] & 0x01) != 0x00)
 			di_129 |= wLoc08_165;
@@ -8960,7 +8991,7 @@ word16 fn0800_5E64(selector ds, ptr16 & dxOut, ptr16 & dsOut)
 			Mem2194[ds:di_2193 + 0x00:byte] = 0x00;
 			++di_2193;
 		}
-		word16 sp_121;
+		word16 sp_121 = <invalid>;
 		bp_1076 = fn0800_09A3(out ds);
 		sp_128 = sp_121 + 0x08;
 	}
@@ -8994,10 +9025,10 @@ word16 fn0800_5E64(selector ds, ptr16 & dxOut, ptr16 & dsOut)
 		// Please report this issue at https://github.com/uxmal/reko
 		word16 stackArg0 = <invalid>;
 		word16 dx_265;
-		word16 sp_266;
 		word16 ax_274 = fn0800_8C69(di_251, 0x09, 0x00, stackArg0, out cl_2501, out dx_265) + Mem237[ss:(bp_1076 - 0x22) + 0x00:word16];
 		Mem278[ss:bp_1076 - 0x02 + 0x00:word16] = dx_265 + (ax_274 <u 0x00);
 		Mem279[ss:bp_1076 - 0x04 + 0x00:word16] = ax_274;
+		word16 sp_266 = <invalid>;
 		word16 ax_280 = Mem279[ss:bp_1076 - 0x02 + 0x00:word16];
 		word16 dx_281 = Mem279[ss:bp_1076 - 0x04 + 0x00:word16];
 		if (ax_280 >=u Mem279[ds_242:0x2A09:word16] && (ax_280 >u Mem279[ds_242:0x2A09:word16] || dx_281 >u Mem279[ds_242:0x2A07:word16]))
@@ -9072,12 +9103,12 @@ word16 fn0800_5E64(selector ds, ptr16 & dxOut, ptr16 & dsOut)
 			word16 stackArg2 = <invalid>;
 			word16 stackArg4 = <invalid>;
 			word16 dx_589;
-			word16 sp_592;
 			word16 di_587;
 			selector ds_588;
 			word16 ax_583 = fn0800_4311(stackArg2, stackArg4, out dx_589, out bp_1076, out si_2526, out di_587, out ds_588);
 			Mem599[ss:bp_1076 - 0x0A + 0x00:word16] = dx_589;
 			Mem600[ss:bp_1076 - 0x0C + 0x00:word16] = ax_583;
+			word16 sp_592 = <invalid>;
 			Mem605[ss:sp_592 + 0x02:word16] = 0x00;
 			Mem607[ss:sp_592 + 0x00:word16] = 0x00;
 			Mem610[ss:sp_592 - 0x02 + 0x00:word16] = Mem607[ss:bp_1076 - 0x34 + 0x00:word16];
@@ -9113,6 +9144,7 @@ word16 fn0800_5E64(selector ds, ptr16 & dxOut, ptr16 & dsOut)
 				Mem701[es_621:bx_618 + 0x00:word16] = ax_694;
 				Mem703[ss:bp_1076 - 0x36 + 0x00:word16] = Mem701[ss:bp_1076 - 0x36 + 0x00:word16] + 0x04;
 				di_587 = ax_667;
+				sp_626 = <invalid>;
 				cx_619 = DPB(cx_669, cl_687, 0);
 			}
 			word16 sp_708 = sp_626 - 0x02;
@@ -9157,8 +9189,8 @@ word16 fn0800_5E64(selector ds, ptr16 & dxOut, ptr16 & dsOut)
 				// Please report this issue at https://github.com/uxmal/reko
 				word16 stackArg0 = <invalid>;
 				byte cl_823;
-				word16 sp_825;
 				word16 ax_821 = fn0800_8CAA(Mem817[ss:bp_1076 - 0x10 + 0x00:word16], 0x04, Mem817[ss:bp_1076 - 0x0E + 0x00:word16], stackArg0, out cl_823, out dx_2586);
+				word16 sp_825 = <invalid>;
 				Mem831[ss:sp_825 - 0x02 + 0x00:word16] = ax_821;
 				word16 di_836;
 				word16 cx_835;
@@ -9280,8 +9312,8 @@ word16 fn0800_5E64(selector ds, ptr16 & dxOut, ptr16 & dsOut)
 		Mem1170[ss:sp_1131 - 0x06 + 0x00:word16] = Mem1167[ss:bp_1076 - 0x04 + 0x00:word16];
 		word16 bp_1172;
 		selector ds_1176;
-		word16 sp_1180;
 		fn0800_75EA(ds_1048, Mem1170[ss:sp_1131 - 0x06 + 0x00:word16], Mem1170[ss:sp_1131 - 0x04 + 0x00:word16], Mem1170[ss:sp_1131 - 0x02 + 0x00:word16], Mem1170[ss:sp_1131 + 0x00:word16], out dx_2552, out bp_1172, out si_2553, out ds_1176);
+		word16 sp_1180 = <invalid>;
 		Mem1191[ss:sp_1180 + 0x06:word16] = 0x00;
 		Mem1194[ss:sp_1180 + 0x04:word16] = 0x00;
 		Mem1196[ss:sp_1180 + 0x02:word16] = 0x20;
@@ -9323,8 +9355,8 @@ word16 fn0800_5E64(selector ds, ptr16 & dxOut, ptr16 & dsOut)
 		// Please report this issue at https://github.com/uxmal/reko
 		word16 stackArg0 = <invalid>;
 		byte cl_1334;
-		word16 sp_1336;
 		Mem1341[ss:bp_1172 - 0x22 + 0x00:word16] = fn0800_8CAA(Mem1314[ds_1319:0x2A03:word16], 0x04, Mem1314[ds_1319:0x2A05:word16], stackArg0, out cl_1334, out dx_2568);
+		word16 sp_1336 = <invalid>;
 		word16 cx_1367 = DPB(cx_1317, cl_1334, 0);
 		word16 ax_1342 = Mem1341[ds_1319:0x2A03:word16];
 		if ((ax_1342 & 0x0F) != 0x00)
@@ -9341,8 +9373,8 @@ word16 fn0800_5E64(selector ds, ptr16 & dxOut, ptr16 & dsOut)
 		// Please report this issue at https://github.com/uxmal/reko
 		word16 stackArg0 = <invalid>;
 		byte cl_1393;
-		word16 sp_1395;
 		word16 ax_1391 = fn0800_8CAA(Mem1387[ss:bp_1172 - 0x1C + 0x00:word16], 0x04, Mem1387[ss:bp_1172 - 0x1A + 0x00:word16], stackArg0, out cl_1393, out dx_2572);
+		word16 sp_1395 = <invalid>;
 		Mem1404[ss:sp_1395 - 0x02 + 0x00:word16] = Mem1387[ss:bp_1172 - 0x22 + 0x00:word16] + ax_1391;
 		selector ds_1410;
 		fn0800_40BF(ax_1391, DPB(cx_1370, cl_1393, 0), ds_1372, Mem1404[ss:sp_1395 - 0x02 + 0x00:byte], Mem1404[ss:sp_1395 + 0x00:word16], Mem1404[ss:sp_1395 + 0x02:word16], out cx_2573, out dx_2574, out di_2575, out ds_1410);
@@ -9399,8 +9431,8 @@ word16 fn0800_5E64(selector ds, ptr16 & dxOut, ptr16 & dsOut)
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
 		word16 stackArg0 = <invalid>;
-		word16 sp_1593;
 		fn0800_8CAA(Mem1585[ss:bp_1566 - 0x20 + 0x00:word16], 0x09, Mem1585[ss:bp_1566 - 0x1E + 0x00:word16], stackArg0, out cl_2601, out dx_2602);
+		word16 sp_1593 = <invalid>;
 		Mem1609[ss:sp_1593 - 0x02 + 0x00:word16] = 0x00;
 		Mem1612[ss:sp_1593 - 0x04 + 0x00:word16] = 0x00;
 		Mem1614[ss:sp_1593 - 0x06 + 0x00:word16] = 0x02;
@@ -9503,9 +9535,9 @@ word16 fn0800_5E64(selector ds, ptr16 & dxOut, ptr16 & dsOut)
 		// Please report this issue at https://github.com/uxmal/reko
 		word16 stackArg0 = <invalid>;
 		byte cl_1994;
-		word16 sp_1996;
 		word16 ax_1992 = fn0800_8CAA(Mem1987[ss:bp_1566 - 0x08 + 0x00:word16], 0x04, Mem1987[ss:bp_1566 - 0x06 + 0x00:word16], stackArg0, out cl_1994, out dx_2652);
 		Mem2001[ss:bp_1566 - 0x28 + 0x00:word16] = ax_1992;
+		word16 sp_1996 = <invalid>;
 		Mem2006[ss:sp_1996 - 0x02 + 0x00:word16] = Mem2001[ds_1880:10721:word16];
 		Mem2009[ss:sp_1996 - 0x04 + 0x00:word16] = Mem2006[ds_1880:10719:word16];
 		Mem2011[ss:sp_1996 - 0x06 + 0x00:word16] = ax_1992;
@@ -9530,9 +9562,9 @@ word16 fn0800_5E64(selector ds, ptr16 & dxOut, ptr16 & dsOut)
 		word16 ax_2063 = (word16) dx_ax_2258;
 		word16 stackArg0 = <invalid>;
 		byte cl_2075;
-		word16 sp_2077;
 		word16 ax_2073 = fn0800_8CAA(ax_2063 + 0x20, 0x04, SLICE(dx_ax_2258, word16, 16) + (ax_2063 <u 0x20), stackArg0, out cl_2075, out dx_2658);
 		Mem2082[ss:bp_1566 - 44 + 0x00:word16] = ax_2073;
+		word16 sp_2077 = <invalid>;
 		Mem2085[ss:sp_2077 - 0x02 + 0x00:word16] = Mem2082[ds_2052:10721:word16];
 		Mem2088[ss:sp_2077 - 0x04 + 0x00:word16] = Mem2085[ds_2052:10719:word16];
 		Mem2090[ss:sp_2077 - 0x06 + 0x00:word16] = ax_2073;
@@ -9639,7 +9671,7 @@ word16 fn0800_669C(selector ds, ptr16 & dxOut, ptr16 & dsOut)
 				Mem305[ds:di_304 + 0x00:byte] = 0x00;
 				++di_304;
 			}
-			word16 sp_129;
+			word16 sp_129 = <invalid>;
 			bp_121 = fn0800_09A3(out ds);
 			sp_136 = sp_129 + 0x08;
 		}
@@ -9715,20 +9747,20 @@ word16 fn0800_67BF(selector ds, ptr16 & dxOut, ptr16 & dsOut)
 			selector ds_322;
 			fn0800_409C(cx_104, ds_106, Mem314[ds_106:0x2A07:word16], Mem311[ds_106:0x2A09:word16], Mem308[ds_106:10719:word16], Mem101[ds_106:10721:word16], out cx_997, out dx_998, out di_999, out es_1000, out ds_322, out Top_1001);
 			fn0800_ACB3(ds_322, Mem344[ds_322:10719:word16], Mem341[ds_322:10721:word16], 0x01, out cx_1002, out dx_1003, out bx_1004, out es_1005);
-			word16 sp_380;
 			fn0800_75EA(ds_322, Mem367[ds_322:0x2A07:word16], Mem364[ds_322:0x2A09:word16], Mem361[ds_322:0x2A07:word16], Mem347[ds_322:0x2A09:word16], out dx_1006, out bp_270, out si_379, out ds_274);
 			ui32 ax_dx_830 = SEQ(Mem370[ds_274:0x2A09:word16], Mem370[ds_274:0x2A07:word16]) - SEQ(Mem370[ds_274:0x2A05:word16], Mem370[ds_274:0x2A03:word16]) + SEQ(Mem370[ds_274:20106:word16], Mem370[ds_274:0x4E88:word16]);
 			word16 dx_393 = (word16) ax_dx_830;
 			Mem402[ss:bp_270 - 0x06 + 0x00:word16] = SLICE(ax_dx_830, word16, 16) + (dx_393 <u 0x0E);
 			Mem403[ss:bp_270 - 0x08 + 0x00:word16] = dx_393 + 0x0E;
+			word16 sp_380 = <invalid>;
 			sp_284 = sp_380 + 0x08;
 		}
 		else
 		{
 			fn0800_ACB3(ds_106, Mem130[ds_106:0x29E3:word16], Mem127[ds_106:0x29E5:word16], 0x01, out cx_975, out dx_976, out bx_977, out es_978);
 			selector ds_169;
-			word16 sp_173;
 			fn0800_3B0A(0x10, 0x00, out cx_979, out dx_980, out bp_981, out ds_169);
+			word16 sp_173 = <invalid>;
 			Mem184[ss:sp_173 + 0x0A:word16] = 0x00;
 			Mem187[ss:sp_173 + 0x08:word16] = 0x00;
 			Mem189[ss:sp_173 + 0x06:word16] = 0x1A;
@@ -9750,7 +9782,6 @@ word16 fn0800_67BF(selector ds, ptr16 & dxOut, ptr16 & dsOut)
 			word16 dx_259 = Mem257[ds_239:0x2A07:word16];
 			Mem266[ss:sp_173 + 0x06:word16] = Mem257[ds_239:0x2A09:word16] - (dx_259 <u 0x1C);
 			Mem268[ss:sp_173 + 0x04:word16] = dx_259 - 0x1C;
-			word16 sp_278;
 			fn0800_75EA(ds_239, Mem268[ss:sp_173 + 0x04:word16], Mem268[ss:sp_173 + 0x06:word16], Mem268[ss:sp_173 + 0x08:word16], Mem268[ss:sp_173 + 0x0A:word16], out dx_996, out bp_270, out si_277, out ds_274);
 			word16 dx_286 = Mem268[ds_274:0x2A07:word16];
 			word16 dx_291 = dx_286 - 0x1C - Mem268[ds_274:0x2A03:word16];
@@ -9758,6 +9789,7 @@ word16 fn0800_67BF(selector ds, ptr16 & dxOut, ptr16 & dsOut)
 			word16 dx_295 = (word16) ax_dx_826;
 			Mem304[ss:bp_270 - 0x06 + 0x00:word16] = SLICE(ax_dx_826, word16, 16) + (dx_295 <u 0x0E);
 			Mem305[ss:bp_270 - 0x08 + 0x00:word16] = dx_295 + 0x0E;
+			word16 sp_278 = <invalid>;
 			sp_284 = sp_278 + 0x08;
 		}
 		word16 sp_408 = sp_284 - 0x02;
@@ -10058,8 +10090,8 @@ void fn0800_6F20(word16 ax, selector ds, word16 wArg02, word16 wArg04)
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg0 = <invalid>;
 	word16 dx_36;
-	word16 sp_37;
 	word16 ax_33 = fn0800_8C69(ax, 0x02, dx_22, stackArg0, out cl_1333, out dx_36);
+	word16 sp_37 = <invalid>;
 	Mem46[ss:sp_37 - 0x02 + 0x00:word16] = Mem43[ds_102:0x29E5:word16];
 	Mem49[ss:sp_37 - 0x04 + 0x00:word16] = Mem46[ds_102:0x29E3:word16];
 	// Failed to bind call argument.
@@ -10102,8 +10134,8 @@ void fn0800_6F20(word16 ax, selector ds, word16 wArg02, word16 wArg04)
 			// Please report this issue at https://github.com/uxmal/reko
 			word16 stackArg0 = <invalid>;
 			word16 dx_174;
-			word16 sp_175;
 			word16 ax_171 = fn0800_8C69(ax_115, 0x02, dx_160, stackArg0, out cl_1458, out dx_174);
+			word16 sp_175 = <invalid>;
 			Mem220 = Mem182;
 			if ((ax_171 | dx_174) != 0x00)
 			{
@@ -10195,11 +10227,11 @@ void fn0800_6F20(word16 ax, selector ds, word16 wArg02, word16 wArg04)
 		Mem500[ss:sp_93 - 0x02 + 0x00:word16] = ax_248 - 0x08;
 		Mem503[ss:sp_93 - 0x04 + 0x00:word16] = dx_251;
 		Mem506[ss:sp_93 - 0x06 + 0x00:word16] = ax_248;
-		word16 sp_516;
 		cx_1221 = fn0800_75EA(ds_454, Mem506[ss:sp_93 - 0x06 + 0x00:word16], Mem506[ss:sp_93 - 0x04 + 0x00:word16], Mem506[ss:sp_93 - 0x02 + 0x00:word16], Mem506[ss:sp_93 + 0x00:word16], out dx_1379, out bp_508, out si_1380, out ds_273);
 		word16 v58_523 = Mem506[ds_273:0x2A03:word16] + 0x08;
 		Mem524[ds_273:0x2A03:word16] = v58_523;
 		Mem528[ds_273:0x2A05:word16] = Mem524[ds_273:0x2A05:word16] + (v58_523 <u 0x00);
+		word16 sp_516 = <invalid>;
 		sp_298 = sp_516 + 0x08;
 	}
 	word16 ax_532 = Mem531[ds_273:0x2A05:word16];
@@ -10228,9 +10260,9 @@ void fn0800_6F20(word16 ax, selector ds, word16 wArg02, word16 wArg04)
 		Mem622[ss:sp_546 - 0x08 + 0x00:word16] = Mem619[ds_273:0x29E5:word16];
 		Mem625[ss:sp_546 - 0x0A + 0x00:word16] = Mem622[ds_273:0x29E3:word16];
 		selector ds_631;
-		word16 sp_635;
 		word16 bp_627;
 		word16 ax_626 = fn0800_3B0A(Mem625[ss:sp_546 - 0x02 + 0x00:word16], Mem625[ss:sp_546 + 0x00:word16], out cx_1389, out dx_1390, out bp_627, out ds_631);
+		word16 sp_635 = <invalid>;
 		Mem645[ss:sp_635 + 0x0A:word16] = Mem625[ds_631:0x29E5:word16];
 		Mem648[ss:sp_635 + 0x08:word16] = Mem645[ds_631:0x29E3:word16];
 		word16 dx_653;
@@ -10287,16 +10319,16 @@ void fn0800_6F20(word16 ax, selector ds, word16 wArg02, word16 wArg04)
 					// Please report this issue at https://github.com/uxmal/reko
 					word16 stackArg0 = <invalid>;
 					word16 dx_834;
-					word16 sp_835;
 					word16 ax_831 = fn0800_8C69(Mem813[ss:bp_627 - 0x04 + 0x00:word16], 0x02, Mem813[ss:bp_627 - 0x02 + 0x00:word16], stackArg0, out cl_1443, out dx_834);
+					word16 sp_835 = <invalid>;
 					Mem841[ss:sp_835 - 0x02 + 0x00:word16] = dx_834;
 					Mem843[ss:sp_835 - 0x04 + 0x00:word16] = ax_831;
 					Mem846[ss:sp_835 - 0x06 + 0x00:word16] = Mem843[ds_818:10721:word16];
 					Mem849[ss:sp_835 - 0x08 + 0x00:word16] = Mem846[ds_818:10719:word16];
 					Mem852[ss:sp_835 - 0x0A + 0x00:word16] = Mem849[ds_818:0x29E5:word16];
 					Mem855[ss:sp_835 - 0x0C + 0x00:word16] = Mem852[ds_818:0x29E3:word16];
-					word16 sp_865;
 					fn0800_3B0A(Mem855[ss:sp_835 - 0x04 + 0x00:word16], Mem855[ss:sp_835 - 0x02 + 0x00:word16], out cx_1444, out dx_1445, out bp_627, out ds_652);
+					word16 sp_865 = <invalid>;
 					sp_1217 = sp_865 + 0x0C;
 				}
 				ax_708 = Mem875[ss:bp_627 - 0x04 + 0x00:word16] | Mem875[ss:(bp_627 - 0x02) + 0x00:word16];
@@ -10329,6 +10361,7 @@ void fn0800_6F20(word16 ax, selector ds, word16 wArg02, word16 wArg04)
 			word16 ax_947 = fn0800_8CAA(Mem923[ss:bp_508 - 0x04 + 0x00:word16], 0x02, Mem923[ss:bp_508 - 0x02 + 0x00:word16], stackArg0, out cl_949, out dx_950);
 			Mem961[ss:bp_508 - 0x02 + 0x00:word16] = dx_950 + (ax_947 <u 0x01);
 			Mem962[ss:bp_508 - 0x04 + 0x00:word16] = ax_947 + 0x01;
+			sp_937 = <invalid>;
 			cx_1222 = DPB(cx_1221, cl_949, 0);
 		}
 		else
@@ -10341,6 +10374,7 @@ void fn0800_6F20(word16 ax, selector ds, word16 wArg02, word16 wArg04)
 			word16 ax_933 = fn0800_8CAA(Mem923[ss:bp_508 - 0x04 + 0x00:word16], 0x02, Mem923[ss:bp_508 - 0x02 + 0x00:word16], stackArg0, out cl_935, out dx_936);
 			Mem942[ss:bp_508 - 0x02 + 0x00:word16] = dx_936;
 			Mem943[ss:bp_508 - 0x04 + 0x00:word16] = ax_933;
+			sp_937 = <invalid>;
 			cx_1222 = DPB(cx_1221, cl_935, 0);
 		}
 		while (true)
@@ -10386,8 +10420,8 @@ void fn0800_6F20(word16 ax, selector ds, word16 wArg02, word16 wArg04)
 		word16 stackArg0 = <invalid>;
 		byte cl_1069;
 		word16 dx_1070;
-		word16 sp_1071;
 		word16 ax_1067 = fn0800_8CAA(Mem1063[ds_273:0x2A03:word16], 0x02, Mem1063[ds_273:0x2A05:word16], stackArg0, out cl_1069, out dx_1070);
+		word16 sp_1071 = <invalid>;
 		Mem1077[ss:sp_1071 - 0x02 + 0x00:word16] = dx_1070;
 		Mem1079[ss:sp_1071 - 0x04 + 0x00:word16] = ax_1067;
 		selector ds_1085;
@@ -10510,8 +10544,8 @@ word16 fn0800_741D(selector ds, ptr16 & dxOut)
 					Mem432[ss:sp_18 - 0x06 + 0x00:word16] = Mem429[ds:10719:word16];
 					Mem435[ss:sp_18 - 0x08 + 0x00:word16] = Mem432[ds:0x29E5:word16];
 					Mem438[ss:sp_18 - 0x0A + 0x00:word16] = Mem435[ds:0x29E3:word16];
-					word16 sp_448;
 					fn0800_3B0A(Mem438[ss:sp_18 - 0x02 + 0x00:word16], Mem438[ss:sp_18 + 0x00:word16], out cx_577, out dx_578, out bp_225, out ds);
+					word16 sp_448 = <invalid>;
 					sp_11 = sp_448 + 0x0C;
 				}
 			}
@@ -10545,8 +10579,8 @@ word16 fn0800_741D(selector ds, ptr16 & dxOut)
 				Mem220[ss:sp_18 - 0x04 + 0x00:word16] = Mem217[ss:bp_225 - 0x02 + 0x00:word16];
 				Mem223[ss:sp_18 - 0x06 + 0x00:word16] = Mem220[ss:bp_225 - 0x04 + 0x00:word16];
 				selector ds_229;
-				word16 sp_233;
 				fn0800_75EA(ds_202, Mem223[ss:sp_18 - 0x06 + 0x00:word16], Mem223[ss:sp_18 - 0x04 + 0x00:word16], Mem223[ss:sp_18 - 0x02 + 0x00:word16], Mem223[ss:sp_18 + 0x00:word16], out dx_567, out bp_225, out si_568, out ds_229);
+				word16 sp_233 = <invalid>;
 				Mem242[ss:sp_233 + 0x06:word16] = 0x01;
 				word16 dx_244 = Mem242[ds_229:0x2A03:word16];
 				word16 dx_250 = -(dx_244 + 0x02);
@@ -10576,8 +10610,8 @@ word16 fn0800_741D(selector ds, ptr16 & dxOut)
 					Mem374[ss:sp_233 + 0x00:word16] = Mem371[ds:10719:word16];
 					Mem377[ss:sp_233 - 0x02 + 0x00:word16] = Mem374[ds:0x29E5:word16];
 					Mem380[ss:sp_233 - 0x04 + 0x00:word16] = Mem377[ds:0x29E3:word16];
-					word16 sp_390;
 					fn0800_3B0A(Mem380[ss:sp_233 + 0x04:word16], Mem380[ss:sp_233 + 0x06:word16], out cx_599, out dx_600, out bp_225, out ds);
+					word16 sp_390 = <invalid>;
 					sp_11 = sp_390 + 0x0C;
 				}
 				else
@@ -10660,12 +10694,12 @@ word16 fn0800_75EA(selector ds, word16 wArg02, word16 wArg04, word16 wArg06, wor
 		word16 bp_65;
 		selector ds_69;
 		word16 dx_70;
-		word16 sp_73;
 		word16 ax_64 = fn0800_4311(stackArg2, stackArg4, out dx_70, out bp_65, out si_1052, out di_1053, out ds_69);
 		Mem81[ss:bp_65 - 0x14 + 0x00:word16] = dx_70;
 		Mem82[ss:bp_65 - 22 + 0x00:word16] = ax_64;
 		Mem85[ds_69:11891:word16] = dx_70 + 0x01;
 		Mem86[ds_69:11889:word16] = 0x00;
+		word16 sp_73 = <invalid>;
 		Mem90[ss:sp_73 + 0x02:word16] = 0x01;
 		Mem92[ss:sp_73 + 0x00:word16] = 0x10;
 		// Failed to bind call argument.
@@ -10677,12 +10711,12 @@ word16 fn0800_75EA(selector ds, word16 wArg02, word16 wArg04, word16 wArg06, wor
 		word16 bp_94;
 		selector ds_98;
 		word16 dx_99;
-		word16 sp_102;
 		word16 ax_93 = fn0800_4311(stackArg2, stackArg4, out dx_99, out bp_94, out si_1056, out di_1057, out ds_98);
 		Mem110[ss:bp_94 - 0x10 + 0x00:word16] = dx_99;
 		Mem111[ss:bp_94 - 0x12 + 0x00:word16] = ax_93;
 		Mem114[ds_98:11833:word16] = dx_99 + 0x01;
 		Mem115[ds_98:11831:word16] = 0x00;
+		word16 sp_102 = <invalid>;
 		Mem119[ss:sp_102 + 0x02:word16] = 0x01;
 		Mem121[ss:sp_102 + 0x00:word16] = 0x10;
 		// Failed to bind call argument.
@@ -10694,12 +10728,12 @@ word16 fn0800_75EA(selector ds, word16 wArg02, word16 wArg04, word16 wArg06, wor
 		word16 bp_123;
 		selector ds_127;
 		word16 dx_128;
-		word16 sp_131;
 		word16 ax_122 = fn0800_4311(stackArg2, stackArg4, out dx_128, out bp_123, out si_1060, out di_1061, out ds_127);
 		Mem139[ss:bp_123 - 0x0C + 0x00:word16] = dx_128;
 		Mem140[ss:bp_123 - 0x0E + 0x00:word16] = ax_122;
 		Mem143[ds_127:11829:word16] = dx_128 + 0x01;
 		Mem144[ds_127:0x2E33:word16] = 0x00;
+		word16 sp_131 = <invalid>;
 		Mem148[ss:sp_131 + 0x02:word16] = 0x01;
 		Mem150[ss:sp_131 + 0x00:word16] = 0x10;
 		// Failed to bind call argument.
@@ -10711,12 +10745,12 @@ word16 fn0800_75EA(selector ds, word16 wArg02, word16 wArg04, word16 wArg06, wor
 		word16 bp_152;
 		selector ds_156;
 		word16 dx_157;
-		word16 sp_160;
 		word16 ax_151 = fn0800_4311(stackArg2, stackArg4, out dx_157, out bp_152, out si_1064, out di_1065, out ds_156);
 		Mem168[ss:bp_152 - 0x08 + 0x00:word16] = dx_157;
 		Mem169[ss:bp_152 - 0x0A + 0x00:word16] = ax_151;
 		Mem172[ds_156:11841:word16] = dx_157 + 0x01;
 		Mem173[ds_156:11839:word16] = 0x00;
+		word16 sp_160 = <invalid>;
 		Mem177[ss:sp_160 + 0x02:word16] = 0x01;
 		Mem179[ss:sp_160 + 0x00:word16] = 0x10;
 		// Failed to bind call argument.
@@ -10727,13 +10761,13 @@ word16 fn0800_75EA(selector ds, word16 wArg02, word16 wArg04, word16 wArg06, wor
 		word16 stackArg4 = <invalid>;
 		selector ds_185;
 		word16 dx_186;
-		word16 sp_189;
 		word16 ax_180 = fn0800_4311(stackArg2, stackArg4, out dx_186, out bp_181, out si_1068, out di_1069, out ds_185);
 		Mem197[ss:bp_181 - 0x04 + 0x00:word16] = dx_186;
 		Mem198[ss:bp_181 - 0x06 + 0x00:word16] = ax_180;
 		Mem201[ds_185:11837:word16] = dx_186 + 0x01;
 		Mem202[ds_185:11835:word16] = 0x00;
 		fn0800_87F8(ds_185);
+		word16 sp_189 = <invalid>;
 		Mem213[ss:sp_189 + 0x02:word16] = Mem202[ds_185:0x29E5:word16];
 		Mem216[ss:sp_189 + 0x00:word16] = Mem213[ds_185:0x29E3:word16];
 		// Failed to bind call argument.
@@ -10997,8 +11031,8 @@ byte fn0800_7A02(byte ch, selector ds, ptr16 & cxOut, ptr16 & dsOut)
 		Mem161[ss:sp_120 - 0x02 + 0x00:word16] = ds;
 		Mem164[ss:sp_120 - 0x04 + 0x00:word16] = 10511;
 		fn0800_43D4(Mem164[ss:sp_120 - 0x04 + 0x00:word16], Mem164[ss:sp_120 - 0x02 + 0x00:selector], Mem164[ss:sp_120 + 0x00:word16]);
-		word16 sp_185;
 		word16 bp_184 = fn0800_7FDC(ds, out ds);
+		word16 sp_185 = <invalid>;
 		Mem194[ss:sp_185 - 0x02 + 0x00:word16] = 0x00;
 		Mem197[ss:sp_185 - 0x04 + 0x00:word16] = Mem194[ss:bp_184 - 0x02 + 0x00:word16];
 		Mem200[ss:sp_185 - 0x06 + 0x00:word16] = Mem197[ss:bp_184 - 0x04 + 0x00:word16];
@@ -11011,16 +11045,16 @@ byte fn0800_7A02(byte ch, selector ds, ptr16 & cxOut, ptr16 & dsOut)
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
 		selector stackArg4 = <invalid>;
-		word16 sp_234;
 		fn0800_441C(ds, Mem225[ss:sp_185 - 0x06 + 0x00:word16], stackArg4, Mem225[ss:sp_185 - 0x02 + 0x00:word16], out bp_778);
+		word16 sp_234 = <invalid>;
 		Mem243[ss:sp_234 + 0x04:word16] = 0x10;
 		Mem245[ss:sp_234 + 0x02:word16] = ds;
 		Mem248[ss:sp_234 + 0x00:word16] = 10319;
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
 		selector stackArg4 = <invalid>;
-		word16 sp_257;
 		fn0800_441C(ds, Mem248[ss:sp_234 + 0x00:word16], stackArg4, Mem248[ss:sp_234 + 0x04:word16], out bp_780);
+		word16 sp_257 = <invalid>;
 		Mem266[ss:sp_257 + 0x04:word16] = 0x10;
 		Mem268[ss:sp_257 + 0x02:word16] = ds;
 		Mem271[ss:sp_257 + 0x00:word16] = 10127;
@@ -11028,8 +11062,8 @@ byte fn0800_7A02(byte ch, selector ds, ptr16 & cxOut, ptr16 & dsOut)
 		// Please report this issue at https://github.com/uxmal/reko
 		selector stackArg4 = <invalid>;
 		word16 bp_277;
-		word16 sp_280;
 		word16 cx_274 = fn0800_441C(ds, Mem271[ss:sp_257 + 0x00:word16], stackArg4, Mem271[ss:sp_257 + 0x04:word16], out bp_277);
+		word16 sp_280 = <invalid>;
 		Mem289[ss:sp_280 + 0x04:word16] = 0x10;
 		Mem291[ss:sp_280 + 0x02:word16] = ds;
 		Mem294[ss:sp_280 + 0x00:word16] = 10511;
@@ -11201,9 +11235,9 @@ byte fn0800_7C78(byte ch, selector ds, ptr16 & cxOut, ptr16 & dsOut)
 		word16 dx_22 = Mem20[ds:0x467A:word16];
 		if (ax_21 >=u Mem20[ds:0x4680:word16] && (ax_21 != Mem20[ds:0x4680:word16] || dx_22 >=u Mem20[ds:0x467E:word16]))
 			break;
-		word16 sp_93;
 		selector ds_126;
 		word16 bp_92 = fn0800_7FDC(ds, out ds_126);
+		word16 sp_93 = <invalid>;
 		Mem102[ss:sp_93 - 0x02 + 0x00:word16] = 0x00;
 		Mem105[ss:sp_93 - 0x04 + 0x00:word16] = Mem102[ss:bp_92 - 0x02 + 0x00:word16];
 		Mem108[ss:sp_93 - 0x06 + 0x00:word16] = Mem105[ss:bp_92 - 0x04 + 0x00:word16];
@@ -11579,8 +11613,8 @@ word16 fn0800_7FDC(selector ds, ptr16 & dsOut)
 				word16 bx_419;
 				word16 cx_420;
 				word16 dx_422;
-				word16 sp_424;
 				word16 ax_417 = fn0800_8BC2(bp_105, si_163, di_159, stackArg0, out cx_420, out dx_422, out bx_419, out bp_105, out si_802, out di_803);
+				word16 sp_424 = <invalid>;
 				Mem431[ss:sp_424 + 0x06:word16] = dx_422;
 				Mem433[ss:sp_424 + 0x04:word16] = ax_417;
 				Mem435[ss:sp_424 + 0x02:word16] = ds;
@@ -13294,6 +13328,7 @@ l0800_8FCB:
 					Mem537[ss:sp_513 - 0x0E + 0x00:word16] = wArg04;
 					Mem540[ss:sp_513 - 0x0010 + 0x00:word16] = wArg02;
 					fn0800_A2D0(ds);
+					sp_541 = <invalid>;
 					if (wLoc0A > 0x00)
 					{
 						if (((int16) bLoc03_1267 & 0x01) == 0x00)
@@ -13310,11 +13345,15 @@ l0800_8FCB:
 							Mem596[ss:sp_541 + 0x10:word16] = ax_594;
 							Mem599[ss:sp_541 + 0x0E:word16] = es_574;
 							Mem602[ss:sp_541 + 0x0C:word16] = di_573;
+							sp_604 = <invalid>;
 							Top_605 = fn0800_A2D4(ds);
 							sp_606 = sp_604 + 0x06;
 						}
 						else
+						{
 							Top_572 = fn0800_A2D8(ds);
+							sp_571 = <invalid>;
+						}
 						goto l0800_8FC8;
 					}
 					fn0800_A2D8(ds);
@@ -14699,9 +14738,9 @@ l0800_9A32:
 							word16 dx_277 = Mem273[ss:wArg02 + 0x02:word16];
 							Mem283[ss:sp_269 - 0x02 + 0x00:word16] = ss;
 							selector es_284 = Mem283[ss:sp_269 - 0x02 + 0x00:selector];
-							word16 sp_290;
 							word16 di_289 = fn0800_9810(SLICE(dx_277, byte, 8), (byte) dx_277, fp - 0x48, es_284);
 							Mem297[es_284:di_289 + 0x00:byte] = 0x3A;
+							word16 sp_290 = <invalid>;
 							wArg02 += 0x04;
 							sp_269 = sp_290 + ~0x01;
 							di_266 = di_289 + 0x01;
@@ -14710,9 +14749,9 @@ l0800_9A32:
 						Mem302[ss:sp_300 + 0x00:word16] = ss;
 						word16 dx_305 = Mem302[ss:sp_300 + 0x02:word16];
 						es_140 = Mem302[ss:sp_300 + 0x00:selector];
-						word16 sp_312;
 						word16 di_311 = fn0800_9810(SLICE(dx_305, byte, 8), (byte) dx_305, di_266, es_140);
 						Mem318[ss:di_311 + 0x00:byte] = 0x00;
+						word16 sp_312 = <invalid>;
 						sp_1025 = sp_312 + ~0x01;
 						wLoc04_1325 &= ~0x04;
 						word16 di_325 = di_311 - (fp - 0x48);
@@ -14746,8 +14785,8 @@ l0800_9A32:
 							ax_244 = 0x06;
 						}
 						Mem253[ss:sp_212 - 0x0E + 0x00:word16] = ax_244;
-						word16 sp_256;
 						fn0800_A2CC(ds);
+						word16 sp_256 = <invalid>;
 						Mem259[ss:sp_256 - 0x02 + 0x00:word16] = ss;
 						es_140 = Mem259[ss:sp_256 - 0x02 + 0x00:selector];
 						sp_1025 = sp_256;
@@ -15529,17 +15568,17 @@ word16 fn0800_A1D6(selector ds, word16 wArg02, word16 wArg04, ptr16 & cxOut, ptr
 {
 	word16 ax_59;
 	word16 bx_11 = Mem7[ds:0x87:word16];
-	bool C_21;
 	word16 bx_17;
 	word16 cx_18;
 	word16 dx_19;
 	fn0800_8F2F((byte) wArg02, wArg02, Mem7[ds:0x89:word16], wArg04, (byte) bx_11, bx_11, out cx_18, out dx_19, out bx_17);
+	bool C_21 = <invalid>;
 	if (!C_21)
 	{
 		word16 bx_25 = Mem7[ds:0x8F:word16];
-		bool C_35;
-		bool Z_36;
 		fn0800_8F2F((byte) wArg02, wArg02, Mem7[ds:0x91:word16], wArg04, (byte) bx_25, bx_25, out cx_18, out dx_19, out bx_17);
+		bool Z_36 = <invalid>;
+		bool C_35 = <invalid>;
 		if (!(Z_36 | C_35) && fn0800_A162(ds, wArg02, wArg04, out cx_18, out dx_19, out bx_17) != 0x00)
 		{
 			ax_59 = 0x00;
@@ -15574,17 +15613,17 @@ word16 fn0800_A215(selector ds, ui32 dwArg02, word16 wArg04, ptr16 & dxOut)
 		// Please report this issue at https://github.com/uxmal/reko
 		selector stackArg0 = <invalid>;
 		word16 dx_48;
-		word16 sp_50;
 		word16 ax_46 = fn0800_8CCB(Mem7[ds:0x8B:word16], dwArg02_128, Mem7[ds:141:word16], dwArg02_128, stackArg0, out cx_173, out dx_48);
 		word16 bx_59 = Mem57[ds:0x87:word16];
-		bool C_68;
 		fn0800_8F2F((byte) ax_46, ax_46, Mem57[ds:0x89:word16], dx_48, (byte) bx_59, bx_59, out cx_65, out dx_174, out bx_64);
+		word16 sp_50 = <invalid>;
+		bool C_68 = <invalid>;
 		if (!C_68)
 		{
 			word16 bx_72 = Mem57[ds:0x8F:word16];
-			bool C_82;
-			bool Z_83;
 			fn0800_8F2F((byte) ax_46, ax_46, Mem57[ds:0x91:word16], dx_48, (byte) bx_72, bx_72, out cx_175, out dx_176, out bx_177);
+			bool Z_83 = <invalid>;
+			bool C_82 = <invalid>;
 			if (!(Z_83 | C_82))
 			{
 				word16 ax_86 = Mem57[ds:141:word16];
@@ -15888,8 +15927,8 @@ word16 fn0800_A614(selector ds, segptr32 ptrArg02, word16 wArg04, ptr16 & cxOut,
 		{
 			if (Mem11[ptrArg02 + 0x00:word16] < 0x00)
 			{
-				word16 sp_38;
 				word16 ax_32 = fn0800_A6B7(ds, bx_21, ptrArg02, out dx, out bx_228, out bp_33, out es_229);
+				word16 sp_38 = <invalid>;
 				cx = Mem30[ss:sp_38 + 0x02:word16];
 				sp_122 = sp_38 + 0x04;
 				if (ax_32 != 0x00)
@@ -16158,8 +16197,8 @@ word16 fn0800_A877(selector ds, ptr16 & bxOut)
 			// Please report this issue at https://github.com/uxmal/reko
 			segptr32 stackArg2 = <invalid>;
 			word16 stackArg4 = <invalid>;
-			word16 sp_45;
 			fn0800_A6B7(ds, stackArg2, stackArg4, out dx_109, out bx, out bp_110, out es_111);
+			word16 sp_45 = <invalid>;
 			sp_13 = sp_45 + 0x04;
 			ptrLoc06_86 = ptrLoc06_94;
 		}
@@ -16282,7 +16321,7 @@ l0800_A9B9:
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
 		word16 stackArg4 = <invalid>;
-		word16 sp_159;
+		word16 sp_159 = <invalid>;
 		if (fn0800_BA89(ds, SEQ(ptrArg0C, ptrArg0C), stackArg4, 0x00, 0x00, ax_128, 0x0200, out cx_161, out bp_155, out si, out di, out ds) == 0x00)
 		{
 			Mem176[Mem150[ss:bp_155 + 0x0E:segptr32] + 0x10:word16] = 0x00;
@@ -16295,8 +16334,8 @@ l0800_A9B9:
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
 		word16 stackArg4 = <invalid>;
-		word16 sp_189;
 		fn0800_A614(ds, Mem184[ss:sp_159 + 0x08:segptr32], stackArg4, out cx_303, out dx_304, out bp_155, out si, out di, out ds);
+		word16 sp_189 = <invalid>;
 		cx_161 = Mem184[ss:sp_189 + 0x02:word16];
 l0800_A9C7:
 		dx_177 = 0x00;
@@ -16512,6 +16551,7 @@ word16 fn0800_ABA3(selector ds, word16 wArg02, word16 wArg04, word16 wArg06, wor
 				// Failed to bind call argument.
 				// Please report this issue at https://github.com/uxmal/reko
 				selector stackArg0 = <invalid>;
+				sp_100 = <invalid>;
 				wArg04 = dx_98;
 				wArg02 = fn0800_8CCB(wArg02, 0x00, wArg04, wArg06, stackArg0, out cx_97, out dx_98);
 				Mem57 = Mem107;
@@ -16723,6 +16763,7 @@ l0800_AE0A:
 				word16 ax_95 = fn0800_8CCB(Mem66[ss:bp_111 + 0x04:word16], 0x00, Mem66[ss:bp_111 + 0x06:word16], di_17, stackArg0, out cx, out dx_97);
 				Mem105[ss:bp_111 + 0x06:word16] = dx_97;
 				Mem106[ss:bp_111 + 0x04:word16] = ax_95;
+				sp_13 = <invalid>;
 			} while (si_74 + 0x01 <u Mem106[ss:bp_111 + 0x0A:word16]);
 		}
 	}
@@ -16748,8 +16789,8 @@ word16 fn0800_AE10(selector ds)
 			word16 sp_37 = sp_11 - 0x02;
 			Mem38[ss:sp_37 + 0x00:word16] = Mem27[ss:bp_26 - 0x02 + 0x00:word16];
 			Mem40[ss:sp_37 - 0x02 + 0x00:word16] = bx_30;
-			word16 sp_48;
 			fn0800_A6B7(ds, Mem40[ss:sp_37 - 0x02 + 0x00:word16], Mem40[ss:sp_37 + 0x00:word16], out dx_90, out bx_91, out bp_26, out es_92);
+			word16 sp_48 = <invalid>;
 			sp_11 = sp_48 + 0x04;
 		}
 		Mem61[ss:bp_26 - 0x04 + 0x00:word16] = Mem59[ss:bp_26 - 0x04 + 0x00:word16] + 0x14;
@@ -16763,7 +16804,10 @@ word16 fn0800_AE4C(selector ds, segptr32 ptrArg02, ptr16 & dxOut, ptr16 & bpOut,
 	word16 sp_23 = fp - 0x02;
 	word16 bp_17 = fp - 0x02;
 	if ((Mem7[ptrArg02 + 0x02:word16] & 0x0200) != 0x00)
+	{
 		bp_17 = fn0800_AE10(ds);
+		sp_23 = <invalid>;
+	}
 	word16 ax_105;
 	ptr32 es_bx_31 = Mem7[ss:bp_17 + 0x04:segptr32];
 	word16 sp_36 = sp_23 - 0x02;
@@ -16851,7 +16895,10 @@ l0800_AF7F:
 			do
 			{
 				if ((Mem43[Mem43[ss:bp_147 + 0x04:segptr32] + 0x02:word16] & 0x0200) != 0x00)
+				{
 					bp_147 = fn0800_AE10(ds);
+					sp_58 = <invalid>;
+				}
 				word16 sp_66 = sp_58 - 0x02;
 				Mem68[ss:sp_66 + 0x00:word16] = 0x01;
 				Mem71[ss:sp_66 - 0x02 + 0x00:word16] = ds;
@@ -17031,8 +17078,8 @@ void fn0800_B083(byte ah, word16 wArg02, word16 wArg04, byte bArg06, word16 wArg
 word16 fn0800_B0A1(segptr32 ptrArg02, word16 wArg04, segptr32 ptrArg06, word16 wArg08, word16 wArg0A)
 {
 	word16 ax_33;
-	bool C_29;
 	fn0800_8F2F((byte) wArg02, wArg02, wArg08, wArg04, (byte) wArg06, wArg06, out cx_196, out dx_197, out bx_198);
+	bool C_29 = <invalid>;
 	if (!C_29)
 		ax_33 = 0x01;
 	else
@@ -17300,8 +17347,8 @@ word16 fn0800_B324(selector ds, byte bArg02, segptr32 ptrArg04, word16 wArg06, p
 		es_121 = ptrArg04;
 		if ((Mem247[ptrArg04:bx_128 + 0x02:word16] & 0x08) == 0x00 || Mem247[ds:0x4EE6:byte] != 0x0A && Mem247[ds:0x4EE6:byte] != 0x0D)
 			goto l0800_B4A3;
-		word16 sp_273;
 		word16 ax_267 = fn0800_A6B7(ds, ptrArg04, ptrArg04, out dx, out bx_128, out bp_417, out es_121);
+		word16 sp_273 = <invalid>;
 		cx = Mem265[ss:sp_273 + 0x02:word16];
 		sp_135 = sp_273 + 0x04;
 		ax_127 = ax_267;
@@ -17324,8 +17371,8 @@ l0800_B39C:
 	{
 		if (Mem33[ptrArg04 + 0x00:word16] != 0x00)
 		{
-			word16 sp_160;
 			word16 ax_154 = fn0800_A6B7(ds, bx_31, ptrArg04, out dx, out bx_128, out bp_155, out es_121);
+			word16 sp_160 = <invalid>;
 			cx = Mem153[ss:sp_160 + 0x02:word16];
 			sp_135 = sp_160 + 0x04;
 			if (ax_154 != 0x00)
@@ -17346,8 +17393,8 @@ l0800_B39C:
 		word16 sp_204 = sp_135 - 0x02;
 		Mem205[ss:sp_204 + 0x00:word16] = Mem189[ss:bp_155 + 0x08:word16];
 		Mem208[ss:sp_204 - 0x02 + 0x00:word16] = Mem205[ss:bp_155 + 0x06:word16];
-		word16 sp_216;
 		word16 ax_210 = fn0800_A6B7(ds, Mem208[ss:sp_204 - 0x02 + 0x00:word16], Mem208[ss:sp_204 + 0x00:word16], out dx, out bx_128, out bp_412, out es_121);
+		word16 sp_216 = <invalid>;
 		cx = Mem208[ss:sp_216 + 0x02:word16];
 		sp_135 = sp_216 + 0x04;
 		ax_127 = ax_210;
@@ -17418,9 +17465,9 @@ word16 fn0800_B4BE(selector ds, segptr32 ptrArg02, word16 wArg04, word16 wArg06,
 			Mem402[ss:sp_388 - 0x04 + 0x00:word16] = (int16) Mem395[es_bx_393 + 0x00:byte];
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
+			word16 sp_408 = <invalid>;
 			word16 stackArg6 = <invalid>;
 			sp_103 = sp_408 + 0x06;
-			word16 sp_408;
 		} while (fn0800_B324(ds, Mem402[ss:sp_388 - 0x04 + 0x00:byte], Mem402[ss:sp_388 - 0x02 + 0x00:segptr32], stackArg6, out cx, out dx_410, out bx_406, out bp_121, out es_407) != ~0x00);
 		goto l0800_B4F5;
 	}
@@ -17482,8 +17529,8 @@ word16 fn0800_B4BE(selector ds, segptr32 ptrArg02, word16 wArg04, word16 wArg06,
 	{
 		if (Mem17[ptrArg02 + 0x00:word16] != 0x00)
 		{
-			word16 sp_126;
 			word16 ax_120 = fn0800_A6B7(ds, bx_26, ptrArg02, out dx_576, out bx_577, out bp_121, out es_578);
+			word16 sp_126 = <invalid>;
 			cx = Mem119[ss:sp_126 + 0x02:word16];
 			sp_103 = sp_126 + 0x04;
 			if (ax_120 != 0x00)
@@ -17533,8 +17580,8 @@ l0800_B6A0:
 				Mem72[ptrArg02 + 0x00:word16] = ~0x00 - Mem17[ptrArg02 + 0x06:word16];
 			else
 			{
-				word16 sp_56;
 				word16 ax_50 = fn0800_A6B7(ds, ptrArg02, ptrArg02, out dx_585, out bx_586, out bp_121, out es_587);
+				word16 sp_56 = <invalid>;
 				cx = Mem48[ss:sp_56 + 0x02:word16];
 				sp_103 = sp_56 + 0x04;
 				if (ax_50 != 0x00)
@@ -17809,8 +17856,8 @@ l0800_B7BD:
 		word16 stackArg0 = <invalid>;
 		word16 bp_505;
 		word16 si_510;
-		word16 sp_511;
 		word16 ax_504 = fn0800_8BBB(bp_27, si_17, di_223, stackArg0, out cx_779, out dx_780, out bx_781, out bp_505, out si_510, out di_782);
+		word16 sp_511 = <invalid>;
 		Mem519[ss:sp_511 - 0x02 + 0x00:word16] = 0x00;
 		Mem522[ss:sp_511 - 0x04 + 0x00:word16] = Mem519[ds:20200:word16];
 		word16 dx_529 = Mem522[ss:bp_505 + 0x06:word16] + (word16) (Mem522[ds:20200:word16] *s si_510) - Mem522[ss:(bp_505 - 0x04) + 0x00:word16];
@@ -17821,8 +17868,8 @@ l0800_B7BD:
 		word16 stackArg0 = <invalid>;
 		word16 bx_540;
 		word16 cx_541;
-		word16 sp_545;
 		word16 ax_538 = fn0800_8BBB(bp_505, si_510, ax_504, stackArg0, out cx_541, out dx_784, out bx_540, out bp_27, out si_785, out di_223);
+		word16 sp_545 = <invalid>;
 		si_17 = ax_538;
 		if (ax_538 <u di_223)
 		{
@@ -18024,8 +18071,8 @@ l0800_BAAB:
 					// Please report this issue at https://github.com/uxmal/reko
 					word16 stackArg2 = <invalid>;
 					word16 dx_158;
-					word16 sp_161;
 					word16 ax_152 = fn0800_9F7F(stackArg2, out dx_158, out bp_153, out si_137, out di_15, out ds);
+					word16 sp_161 = <invalid>;
 					cx = Mem151[ss:sp_161 + 0x00:word16];
 					Mem168[ss:bp_153 + 0x0A:word16] = dx_158;
 					Mem169[ss:bp_153 + 0x08:word16] = ax_152;
@@ -18387,13 +18434,13 @@ word16 fn0800_C01E(segptr32 ptrArg02, word16 wArg04, segptr32 ptrArg06, word16 w
 word16 fn0800_C04F(selector ds, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut)
 {
 	word16 di_21;
-	word16 sp_23;
 	word16 bp_20 = fn0800_C379(ds, out si_400, out di_21);
 	word16 dx_30 = Mem13[ds:0x26E2:word16];
 	Mem35[ss:bp_20 - 0x02 + 0x00:word16] = Mem13[ds:9956:word16] + 4814 + (dx_30 <u 0xA600);
 	Mem36[ss:bp_20 - 0x04 + 0x00:word16] = dx_30 + 0xA600;
 	word16 si_40 = Mem36[Mem36[ss:bp_20 + 0x04:segptr32] + 0x00:word16];
 	int32 dx_ax_46 = (int32) (si_40 + 63556 >> 0x02);
+	word16 sp_23 = <invalid>;
 	Mem49[ss:sp_23 - 0x02 + 0x00:word16] = (word16) dx_ax_46;
 	Mem52[ss:sp_23 - 0x04 + 0x00:word16] = SLICE(dx_ax_46, word16, 16);
 	word16 dx_60;
@@ -18484,7 +18531,6 @@ void fn0800_C177(selector ds)
 {
 	word16 di_16;
 	word16 si_17;
-	word16 sp_18;
 	word16 bp_15 = fn0800_C379(ds, out si_17, out di_16);
 	ax_29 = Mem7[ds:9956:word16] + 4814 + (Mem7[ds:0x26E2:word16] <u 0xA600);
 	Mem31[ss:bp_15 + 0x04:word16] = v10_30;
@@ -18492,6 +18538,7 @@ void fn0800_C177(selector ds)
 	ui32 v11_v10_579 = Mem7[ss:bp_15 + 0x04:ui32] - SEQ(ax_29, dx_25 + 0xA600);
 	Mem35[ss:bp_15 + 0x06:word16] = SLICE(v11_v10_579, word16, 16);
 	Mem39[Mem35[ss:bp_15 + 0x0C:segptr32] + 0x02:byte] = 0x00;
+	word16 sp_18 = <invalid>;
 	Mem45[ss:sp_18 - 0x02 + 0x00:word16] = 0x00;
 	Mem47[ss:sp_18 - 0x04 + 0x00:word16] = 0x3C;
 	Mem50[ss:sp_18 - 0x06 + 0x00:word16] = Mem47[ss:bp_15 + 0x06:word16];
@@ -18502,8 +18549,8 @@ void fn0800_C177(selector ds)
 	word16 bp_55;
 	word16 di_58;
 	word16 si_60;
-	word16 sp_61;
 	Mem70[Mem53[ss:bp_55 + 0x0C:segptr32] + 0x03:byte] = (byte) fn0800_8BCA(bp_15, si_17, di_16, stackArg0, out dx_700, out bp_55, out si_60, out di_58);
+	word16 sp_61 = <invalid>;
 	Mem76[ss:sp_61 - 0x02 + 0x00:word16] = 0x00;
 	Mem78[ss:sp_61 - 0x04 + 0x00:word16] = 0x3C;
 	Mem81[ss:sp_61 - 0x06 + 0x00:word16] = Mem78[ss:bp_55 + 0x06:word16];
@@ -18515,10 +18562,10 @@ void fn0800_C177(selector ds)
 	word16 di_89;
 	word16 dx_90;
 	word16 si_91;
-	word16 sp_92;
 	word16 ax_85 = fn0800_8BBB(bp_55, si_60, di_58, stackArg0, out cx_702, out dx_90, out bx_703, out bp_86, out si_91, out di_89);
 	Mem97[ss:bp_86 + 0x06:word16] = dx_90;
 	Mem98[ss:bp_86 + 0x04:word16] = ax_85;
+	word16 sp_92 = <invalid>;
 	Mem104[ss:sp_92 - 0x02 + 0x00:word16] = 0x00;
 	Mem106[ss:sp_92 - 0x04 + 0x00:word16] = 0x3C;
 	Mem109[ss:sp_92 - 0x06 + 0x00:word16] = Mem106[ss:bp_86 + 0x06:word16];
@@ -18529,8 +18576,8 @@ void fn0800_C177(selector ds)
 	word16 bp_114;
 	word16 di_117;
 	word16 si_119;
-	word16 sp_120;
 	Mem129[Mem112[ss:bp_114 + 0x0C:segptr32] + 0x00:byte] = (byte) fn0800_8BCA(bp_86, si_91, di_89, stackArg0, out dx_705, out bp_114, out si_119, out di_117);
+	word16 sp_120 = <invalid>;
 	Mem135[ss:sp_120 - 0x02 + 0x00:word16] = 0x00;
 	Mem137[ss:sp_120 - 0x04 + 0x00:word16] = 0x3C;
 	Mem140[ss:sp_120 - 0x06 + 0x00:word16] = Mem137[ss:bp_114 + 0x06:word16];
@@ -18542,10 +18589,10 @@ void fn0800_C177(selector ds)
 	word16 di_148;
 	word16 dx_149;
 	word16 si_150;
-	word16 sp_151;
 	word16 ax_144 = fn0800_8BBB(bp_114, si_119, di_117, stackArg0, out cx_707, out dx_149, out bx_708, out bp_145, out si_150, out di_148);
 	Mem156[ss:bp_145 + 0x06:word16] = dx_149;
 	Mem157[ss:bp_145 + 0x04:word16] = ax_144;
+	word16 sp_151 = <invalid>;
 	Mem163[ss:sp_151 - 0x02 + 0x00:word16] = 0x00;
 	Mem165[ss:sp_151 - 0x04 + 0x00:word16] = 0x88F8;
 	Mem168[ss:sp_151 - 0x06 + 0x00:word16] = Mem165[ss:bp_145 + 0x06:word16];
@@ -18556,8 +18603,8 @@ void fn0800_C177(selector ds)
 	word16 bp_173;
 	word16 di_176;
 	word16 si_178;
-	word16 sp_179;
 	Mem190[Mem171[ss:bp_173 + 0x08:segptr32] + 0x00:word16] = (fn0800_8BBB(bp_145, si_150, di_148, stackArg0, out cx_710, out dx_711, out bx_712, out bp_173, out si_178, out di_176) << 0x02) + 0x07BC;
+	word16 sp_179 = <invalid>;
 	Mem196[ss:sp_179 - 0x02 + 0x00:word16] = 0x00;
 	Mem198[ss:sp_179 - 0x04 + 0x00:word16] = 0x88F8;
 	Mem201[ss:sp_179 - 0x06 + 0x00:word16] = Mem198[ss:bp_173 + 0x06:word16];
@@ -18566,7 +18613,6 @@ void fn0800_C177(selector ds)
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg0 = <invalid>;
 	word16 dx_210;
-	word16 sp_212;
 	word16 bp_206;
 	word16 si_211;
 	word16 di_209;
@@ -18574,6 +18620,7 @@ void fn0800_C177(selector ds)
 	Mem217[ss:bp_206 + 0x06:word16] = dx_210;
 	Mem218[ss:bp_206 + 0x04:word16] = ax_205;
 	word16 v10_30 = (word16) v11_v10_579;
+	word16 sp_212 = <invalid>;
 	if (Mem218[ss:bp_206 + 0x06:word16] >= 0x00 && (Mem218[ss:bp_206 + 0x06:word16] != 0x00 || Mem218[ss:bp_206 + 0x04:word16] >=u 0x2250))
 	{
 		word16 v31_227 = Mem218[ss:bp_206 + 0x04:word16] - 0x2250;
@@ -18591,10 +18638,10 @@ void fn0800_C177(selector ds)
 		word16 bp_256;
 		word16 di_259;
 		word16 si_261;
-		word16 sp_262;
 		word16 ax_255 = fn0800_8BBB(bp_206, si_211, di_209, stackArg0, out cx_715, out dx_716, out bx_717, out bp_256, out si_261, out di_259);
 		ptr32 es_bx_267 = Mem252[ss:bp_256 + 0x08:segptr32];
 		Mem271[es_bx_267 + 0x00:word16] = Mem252[es_bx_267 + 0x00:word16] + ax_255;
+		word16 sp_262 = <invalid>;
 		Mem277[ss:sp_262 - 0x02 + 0x00:word16] = 0x00;
 		Mem279[ss:sp_262 - 0x04 + 0x00:word16] = 0x2238;
 		Mem282[ss:sp_262 - 0x06 + 0x00:word16] = Mem279[ss:bp_256 + 0x06:word16];
@@ -18606,6 +18653,7 @@ void fn0800_C177(selector ds)
 		word16 ax_286 = fn0800_8BCA(bp_256, si_261, di_259, stackArg0, out dx_291, out bp_206, out si_211, out di_209);
 		Mem298[ss:bp_206 + 0x06:word16] = dx_291;
 		Mem299[ss:bp_206 + 0x04:word16] = ax_286;
+		sp_212 = <invalid>;
 	}
 	if (Mem302[ds:0x26E6:word16] != 0x00)
 	{
@@ -18617,10 +18665,10 @@ void fn0800_C177(selector ds)
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
 		word16 stackArg0 = <invalid>;
+		word16 sp_331 = <invalid>;
 		word16 bp_325;
 		word16 di_328;
 		word16 si_330;
-		word16 sp_331;
 		Mem337[ss:sp_331 - 0x02 + 0x00:word16] = fn0800_8BCA(bp_206, si_211, di_209, stackArg0, out dx_727, out bp_325, out si_330, out di_328);
 		Mem343[ss:sp_331 - 0x04 + 0x00:word16] = 0x00;
 		Mem345[ss:sp_331 - 0x06 + 0x00:word16] = 0x18;
@@ -18629,7 +18677,7 @@ void fn0800_C177(selector ds)
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
 		word16 stackArg0 = <invalid>;
-		word16 sp_359;
+		word16 sp_359 = <invalid>;
 		Mem365[ss:sp_359 - 0x02 + 0x00:word16] = fn0800_8BBB(bp_325, si_330, di_328, stackArg0, out cx_729, out dx_730, out bx_731, out bp_206, out si_211, out di_209);
 		Mem368[ss:sp_359 - 0x04 + 0x00:word16] = 0x00;
 		Mem376[ss:sp_359 - 0x06 + 0x00:word16] = Mem368[Mem368[ss:bp_206 + 0x08:segptr32] + 0x00:word16] + 63566;
@@ -18652,8 +18700,8 @@ void fn0800_C177(selector ds)
 	word16 bp_417;
 	word16 di_420;
 	word16 si_422;
-	word16 sp_423;
 	Mem432[Mem413[ss:bp_417 + 0x0C:segptr32] + 0x01:byte] = (byte) fn0800_8BCA(bp_206, si_211, di_209, stackArg0, out dx_720, out bp_417, out si_422, out di_420);
+	word16 sp_423 = <invalid>;
 	Mem438[ss:sp_423 - 0x02 + 0x00:word16] = 0x00;
 	Mem440[ss:sp_423 - 0x04 + 0x00:word16] = 0x18;
 	Mem443[ss:sp_423 - 0x06 + 0x00:word16] = Mem440[ss:bp_417 + 0x06:word16];
@@ -18736,8 +18784,8 @@ word16 fn0800_C379(selector ds, ptr16 & siOut, ptr16 & diOut)
 					word16 stackArg4 = <invalid>;
 					fn0800_C01E(SEQ(Mem162[ds:9948:word16], Mem165[ds:9946:word16]), stackArg4, SEQ(ptrLoc06_400, ptrLoc06_400), 0x03);
 					Mem183[Mem168[ds:9946:segptr32] + 0x03:byte] = 0x00;
+					word16 sp_200 = <invalid>;
 					word16 dx_197;
-					word16 sp_200;
 					Mem211[ss:sp_200 + 0x02:word16] = fn0800_A471(ds, SEQ(ptrLoc06_400, ptrLoc06_400 + 0x03), out dx_197, out bp_193, out di);
 					Mem213[ss:sp_200 + 0x00:word16] = dx_197;
 					word16 dx_223;
@@ -19066,18 +19114,18 @@ int8 fn1483_0C6C(byte al, byte ah, word32 ecx, word16 dx, word16 bx, word16 bp, 
 	word16 bx_25;
 	word16 di_26;
 	selector ds_27;
-	word16 dx_28;
-	word32 ecx_29;
 	selector es_30;
 	word16 si_31;
-	word16 sp_32;
-	selector ss_33;
 	word16 ax_23 = fn1483_1BB8(al, ax_14, ecx_19, dx, bx, bp, si, di, es, ds, out cx_134, out dl_135, out bx_25, out si_31, out di_26, out es_30, out ds_27);
+	word16 dx_28 = <invalid>;
+	selector ss_33 = <invalid>;
+	word16 sp_32 = <invalid>;
 	word16 di_40 = di_26 + Mem0[ds_27:bx_25 + 0x00:word16];
 	word16 ax_41 = (word16) (SEQ(SLICE(dx_28, byte, 8), ax_23) + SEQ(Mem0[ds_27:si_31 + 5244:byte], Mem0[ds_27:bx_25 + 0x3303:word16]));
 	word16 sp_59 = Mem0[ss_33:sp_32 + 0x00:word16];
 	word16 v17_62 = Mem0[ds_27:ax_41 + 0x020E + di_40:word16] + di_40;
 	Mem63[ds_27:ax_41 + 0x020E + di_40:word16] = v17_62;
+	word32 ecx_29 = <invalid>;
 	word16 cx_65 = (word16) ecx_29;
 	byte ch_85 = SLICE(cx_65 - 0x01, byte, 8);
 	word32 ecx_102 = DPB(ecx_29, cx_65 - 0x01, 0);
@@ -19414,16 +19462,14 @@ byte fn1483_1B91(word16 cx, byte bh, byte bl, word16 di, selector ds, selector p
 {
 	word16 bx_17 = DPB(bx, bh, 8);
 	Mem21[ds:bx_17 + 4344 + di:word16] = ~Mem0[ds:bx_17 + 4344 + di:word16];
-	word16 ax_8 = DPB(ax, al - 0x28, 0);
 	word16 v18_35 = Mem30[psegArg00:bx_17 + 0x3201 + di:word16];
 	Mem36[psegArg00:bx_17 + 0x3201 + di:word16] = di;
+	word16 ax_8 = DPB(ax, al - 0x28, 0);
 	__inb(0x41);
 	__sti();
 	Mem47[psegArg00:~0xE0:word16] = Mem36[psegArg00:~0xE0:word16] + 0x01;
-	word16 ax_22 = DPB(ax_8 ^ 12025, al_12, 0);
 	ui16 ax_al_62 = SEQ(cx, (byte) (ax_8 ^ 12025)) - SEQ(0xA587, bh);
-	word32 ecx_43 = DPB(ecx, ax_22, 0);
-	byte al_12 = (byte) ax_al_62;
+	word32 ecx_43 = DPB(ecx, DPB(ax_8 ^ 12025, (byte) ax_al_62, 0), 0);
 	word16 ax_54 = DPB(SLICE(ax_al_62, word16, 8), __inb(fp) - ~0x07 & 0x0A, 0);
 	word32 ecx_57;
 	fn1483_1BB9(ax_54, ecx_43, fp, bx_17, bp, si, v18_35, es, psegArg00, out ecx_57, out dl_73, out bx_74, out si_75, out di_76, out es_77, out ds_78);
