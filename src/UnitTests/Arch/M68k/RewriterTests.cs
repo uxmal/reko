@@ -1661,5 +1661,35 @@ namespace Reko.UnitTests.Arch.M68k
                 "0|L--|00010000(8): 1 instructions",
                 "1|L--|a0 = Mem0[0x0001025E:word32]");
         }
+
+        [Test]
+        public void M68krw_dblt()
+        {
+            Rewrite(0x5DCA, 0x4EF9);    // dblt d2,$0016B6AB
+            AssertCode(
+                "0|T--|00010000(4): 3 instructions",
+                "1|T--|if (Test(LT,CV)) branch 00010004",
+                "2|L--|d2 = d2 - 0x00000001",
+                "3|T--|if (d2 != 0xFFFFFFFF) branch 00014EFB");
+        }
+
+        [Test]
+        public void M68krw_rtd()
+        {
+            Rewrite(0x4E74, 0x0006);    // rtd #$0006
+            AssertCode(
+                "0|T--|00010000(4): 1 instructions",
+                "1|T--|return (4,6)");
+        }
+
+        [Test]
+        public void M68krw_trapmi()
+        {
+            Rewrite(0x5BFC);    // trapmi
+            AssertCode(
+                "0|T--|00010000(2): 2 instructions",
+                "1|T--|if (Test(GE,N)) branch 00010002",
+                "2|L--|__syscall(0x0007)");
+        }
     }
 }

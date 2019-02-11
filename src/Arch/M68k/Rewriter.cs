@@ -45,7 +45,7 @@ namespace Reko.Arch.M68k
         private readonly M68kState state;
         private readonly IRewriterHost host;
         private readonly IEnumerator<M68kInstruction> dasm;
-        internal M68kInstruction di;
+        internal M68kInstruction instr;
         internal RtlEmitter m;
         private List<RtlInstruction> rtlInstructions;
         private InstrClass rtlc;
@@ -64,20 +64,20 @@ namespace Reko.Arch.M68k
         {
             while (dasm.MoveNext())
             {
-                di = dasm.Current;
-                var addr = di.Address;
-                var len = di.Length;
+                instr = dasm.Current;
+                var addr = instr.Address;
+                var len = instr.Length;
                 rtlInstructions = new List<RtlInstruction>();
-                rtlc = di.iclass;
+                rtlc = instr.iclass;
                 m = new RtlEmitter(rtlInstructions);
-                orw = new OperandRewriter(arch, this.m, this.binder, di.dataWidth);
-                switch (di.code)
+                orw = new OperandRewriter(arch, this.m, this.binder, instr.dataWidth);
+                switch (instr.code)
                 {
                 default:
                     host.Warn(
-                        di.Address,
+                        instr.Address,
                         "M68k instruction '{0}' is not supported yet.",
-                        di.code);
+                        instr.code);
                     m.Invalid();
                     break;
                 case Opcode.illegal: RewriteIllegal(); break;
@@ -110,7 +110,7 @@ VS Overflow Set 1001 V
                 case Opcode.bgt: RewriteBcc(ConditionCode.GT, FlagM.NF | FlagM.VF | FlagM.ZF); break;
                 case Opcode.bhi: RewriteBcc(ConditionCode.UGT, FlagM.CF | FlagM.ZF); break;
                 case Opcode.ble: RewriteBcc(ConditionCode.LE, FlagM.NF | FlagM.VF | FlagM.ZF); break;
-                case Opcode.blt: RewriteBcc(ConditionCode.LT, FlagM.CF | FlagM.ZF); break;
+                case Opcode.blt: RewriteBcc(ConditionCode.LT, FlagM.CF | FlagM.VF); break;
                 case Opcode.bls: RewriteBcc(ConditionCode.ULE, FlagM.VF | FlagM.ZF); break;
                 case Opcode.bmi: RewriteBcc(ConditionCode.LT, FlagM.NF); break;
                 case Opcode.bne: RewriteBcc(ConditionCode.NE, FlagM.ZF); break;
@@ -140,6 +140,7 @@ VS Overflow Set 1001 V
                 case Opcode.dbge: RewriteDbcc(ConditionCode.GE, FlagM.NF | FlagM.ZF); break;
                 case Opcode.dble: RewriteDbcc(ConditionCode.GT, FlagM.NF | FlagM.VF | FlagM.ZF); break;
                 case Opcode.dbls: RewriteDbcc(ConditionCode.ULE, FlagM.CF | FlagM.ZF ); break;
+                case Opcode.dblt: RewriteDbcc(ConditionCode.LT, FlagM.CF | FlagM.VF); break;
                 case Opcode.dbhi: RewriteDbcc(ConditionCode.UGT, FlagM.CF | FlagM.ZF); break;
                 case Opcode.dbpl: RewriteDbcc(ConditionCode.GT, FlagM.NF); break;
                 case Opcode.dbne: RewriteDbcc(ConditionCode.NE, FlagM.ZF); break;
@@ -222,6 +223,7 @@ VS Overflow Set 1001 V
                 case Opcode.ror: RewriteRotation(PseudoProcedure.Ror);  break;
                 case Opcode.roxl: RewriteRotationX(PseudoProcedure.RolC);  break;
                 case Opcode.roxr: RewriteRotationX(PseudoProcedure.RorC);  break;
+                case Opcode.rtd: RewriteRtd(); break;
                 case Opcode.rte: RewriteRte(); break;
                 case Opcode.rtm: RewriteRtm(); break;
                 case Opcode.rts: RewriteRts(); break;
@@ -240,8 +242,8 @@ VS Overflow Set 1001 V
                 case Opcode.spl: RewriteScc(ConditionCode.GT, FlagM.NF); break;
                 case Opcode.svc: RewriteScc(ConditionCode.NO, FlagM.VF); break;
                 case Opcode.svs: RewriteScc(ConditionCode.OV, FlagM.VF); break;
-                case Opcode.st: orw.RewriteMoveDst(di.op1, di.Address, PrimitiveType.Bool, Constant.True()); break;
-                case Opcode.sf: orw.RewriteMoveDst(di.op1, di.Address, PrimitiveType.Bool, Constant.False()); break;
+                case Opcode.st: orw.RewriteMoveDst(instr.op1, instr.Address, PrimitiveType.Bool, Constant.True()); break;
+                case Opcode.sf: orw.RewriteMoveDst(instr.op1, instr.Address, PrimitiveType.Bool, Constant.False()); break;
                 case Opcode.stop: RewriteStop(); break;
                 case Opcode.sub: RewriteArithmetic((s, d) => m.ISub(d, s)); break;
                 case Opcode.suba: RewriteArithmetic((s, d) => m.ISub(d, s)); break;
@@ -250,11 +252,21 @@ VS Overflow Set 1001 V
                 case Opcode.subx: RewriteArithmetic((s, d) => m.ISub(m.ISub(d, s), binder.EnsureFlagGroup(Registers.ccr, (uint)FlagM.XF, "X", PrimitiveType.Bool))); break;
                 case Opcode.swap: RewriteSwap(); break;
                 case Opcode.trap: RewriteTrap(); break;
+                case Opcode.trapcc: RewriteTrapCc(ConditionCode.UGE, FlagM.CF); break;
+                case Opcode.trapcs: RewriteTrapCc(ConditionCode.ULT, FlagM.CF); break;
                 case Opcode.trapeq: RewriteTrapCc(ConditionCode.EQ, FlagM.ZF); break;
                 case Opcode.trapf: RewriteTrapCc(ConditionCode.NEVER, 0); break;
+                case Opcode.trapge: RewriteTrapCc(ConditionCode.GE, FlagM.NF | FlagM.VF); break;
+                case Opcode.trapgt: RewriteTrapCc(ConditionCode.GT, FlagM.NF | FlagM.VF | FlagM.ZF); break;
                 case Opcode.traphi: RewriteTrapCc(ConditionCode.UGT, FlagM.CF | FlagM.ZF); break;
+                case Opcode.traple: RewriteTrapCc(ConditionCode.LE, FlagM.NF | FlagM.VF | FlagM.ZF); break;
+                case Opcode.traplt: RewriteTrapCc(ConditionCode.LT, FlagM.CF | FlagM.VF); break;
                 case Opcode.trapls: RewriteTrapCc(ConditionCode.ULE, FlagM.VF | FlagM.ZF); break;
-                case Opcode.traplt: RewriteTrapCc(ConditionCode.LT, FlagM.CF | FlagM.ZF); break;
+                case Opcode.trapmi: RewriteTrapCc(ConditionCode.LT, FlagM.NF); break;
+                case Opcode.trapne: RewriteTrapCc(ConditionCode.NE, FlagM.ZF); break;
+                case Opcode.trappl: RewriteTrapCc(ConditionCode.GT, FlagM.NF); break;
+                case Opcode.trapvc: RewriteTrapCc(ConditionCode.NO, FlagM.VF); break;
+                case Opcode.trapvs: RewriteTrapCc(ConditionCode.OV, FlagM.VF); break;
 
                 case Opcode.tas: RewriteTas(); break;
                 case Opcode.tst: RewriteTst(); break;
