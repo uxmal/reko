@@ -10,7 +10,7 @@
 
 ;; fn00001498: 00001498
 fn00001498 proc
-	rts	
+	rts
 0000149A                               00 00                       ..   
 
 ;; fn0000149C: 0000149C
@@ -158,7 +158,7 @@ l00001592:
 l0000159A:
 	illegal	#$A9A3
 	movem.l	(a7)+,a2-a3
-	rts	
+	rts
 000015A2       00 00                                       ..           
 ;;; Segment CRTSTDIO (000015A4)
 000015A4             00 10 00 02 4E 56 00 00 2F 03 2F 04     ....NV.././.
@@ -210,7 +210,7 @@ l0000162A:
 	movea.l	(a7)+,a2
 	move.l	(a7)+,d3
 	unlk	a6
-	rts	
+	rts
 00001632       4E 71                                       Nq           
 
 l00001634:
@@ -238,7 +238,7 @@ l00001652:
 	movea.l	(a7)+,a2
 	move.l	(a7)+,d3
 	unlk	a6
-	rts	
+	rts
 
 ;; fn00001680: 00001680
 fn00001680 proc
@@ -263,7 +263,7 @@ l00001698:
 	move.l	d2,$0008(a2)
 	movea.l	(a7)+,a2
 	unlk	a6
-	rts	
+	rts
 
 l000016B8:
 	btst.w	#$0004,$000E(a2)
@@ -277,7 +277,7 @@ l000016C0:
 l000016C8:
 	movea.l	(a7)+,a2
 	unlk	a6
-	rts	
+	rts
 000016CE                                           00 00               ..
 
 ;; fn000016D0: 000016D0
@@ -430,7 +430,7 @@ l00001C34:
 	move.l	-$0220(a6),d0
 	movem.l	(a7)+,d3-d7/a2-a4
 	unlk	a6
-	rts	
+	rts
 
 ;; fn00001C40: 00001C40
 fn00001C40 proc
@@ -464,12 +464,12 @@ l00001C6C:
 l00001C76:
 	move.l	d0,(a0)
 	unlk	a6
-	rts	
+	rts
 
 l00001C7C:
 	addq.l	#$01,(a0)
 	unlk	a6
-	rts	
+	rts
 00001C82       00 00                                       ..           
 
 ;; fn00001C84: 00001C84
@@ -501,7 +501,7 @@ l00001CA4:
 l00001CBA:
 	movem.l	(a7)+,d3-d6
 	unlk	a6
-	rts	
+	rts
 00001CC2       00 00                                       ..           
 
 ;; fn00001CC4: 00001CC4
@@ -537,7 +537,7 @@ l00001CE4:
 l00001D02:
 	movem.l	(a7)+,d3-d6
 	unlk	a6
-	rts	
+	rts
 00001D0A                               00 00                       ..   
 
 ;; fn00001D0C: 00001D0C
@@ -549,7 +549,7 @@ fn00001D0C proc
 	move.l	a1,(a0)
 	move.l	-$0004(a1),d0
 	unlk	a6
-	rts	
+	rts
 00001D22       00 00                                       ..           
 
 ;; fn00001D24: 00001D24
@@ -567,7 +567,7 @@ l00001D32:
 	addq.w	#$04,a7
 	movea.l	(a7)+,a2
 	unlk	a6
-	rts	
+	rts
 00001D42       4E 71                                       Nq           
 
 l00001D44:
@@ -581,7 +581,7 @@ l00001D50:
 	moveq	#-$01,d0
 	movea.l	(a7)+,a2
 	unlk	a6
-	rts	
+	rts
 
 l00001D58:
 	btst.w	#$0006,$000E(a2)
@@ -596,14 +596,14 @@ l00001D60:
 	extb.l	d0
 	movea.l	(a7)+,a2
 	unlk	a6
-	rts	
+	rts
 00001D76                   4E 71                               Nq       
 
 l00001D78:
 	moveq	#$00,d0
 	movea.l	(a7)+,a2
 	unlk	a6
-	rts	
+	rts
 
 ;; fn00001D80: 00001D80
 fn00001D80 proc
@@ -660,7 +660,7 @@ l00001DE0:
 	move.l	d3,d0
 	movem.l	(a7)+,d3-d4/a2
 	unlk	a6
-	rts	
+	rts
 
 ;; fn00001DF4: 00001DF4
 fn00001DF4 proc
@@ -669,7 +669,7 @@ fn00001DF4 proc
 	move.l	d2,-(a7)
 	jsr.l	$0008(pc)                                            ; 00001E04
 	unlk	a6
-	rts	
+	rts
 
 ;; fn00001E04: 00001E04
 fn00001E04 proc
@@ -747,7 +747,7 @@ l00001E70:
 	move.l	d4,d0
 	movem.l	(a7)+,d3-d7/a2
 	unlk	a6
-	rts	
+	rts
 00001E7A                               00 00 4E 56 00 00           ..NV..
 00001E80 4E BA FF 72 4A 2D FA 9C 67 04 4E BA 01 4C 4E 5E N..rJ-..g.N..LN^
 00001E90 4E 75 00 00                                     Nu..           
@@ -853,7 +853,7 @@ l00001F5C:
 	moveq	#-$01,d0
 	movem.l	(a7)+,d3-d5/a2-a3
 	unlk	a6
-	rts	
+	rts
 
 l00001F6C:
 	lea	-$06A8(a5),a0
@@ -893,7 +893,7 @@ l00001FB2:
 	moveq	#-$01,d0
 	movem.l	(a7)+,d3-d5/a2-a3
 	unlk	a6
-	rts	
+	rts
 00001FC2       4E 71                                       Nq           
 
 l00001FC4:
@@ -901,7 +901,7 @@ l00001FC4:
 	andi.l	#$000000FF,d0
 	movem.l	(a7)+,d3-d5/a2-a3
 	unlk	a6
-	rts	
+	rts
 00001FD6                   00 00                               ..       
 
 ;; fn00001FD8: 00001FD8
@@ -935,7 +935,7 @@ l00002008:
 	move.l	d3,d0
 	movem.l	(a7)+,d3-d6
 	unlk	a6
-	rts	
+	rts
 00002012       00 00                                       ..           
 
 ;; fn00002014: 00002014
@@ -969,7 +969,7 @@ l00002058:
 	move.l	d2,$0004(a2)
 	movea.l	(a7)+,a2
 	unlk	a6
-	rts	
+	rts
 
 ;; fn00002068: 00002068
 fn00002068 proc
@@ -989,7 +989,7 @@ l00002080:
 	movea.l	(a7)+,a2
 	move.l	(a7)+,d3
 	unlk	a6
-	rts	
+	rts
 
 l00002090:
 	andi.w	#$0083,d0
@@ -1042,7 +1042,7 @@ l000020E0:
 	movea.l	(a7)+,a2
 	move.l	(a7)+,d3
 	unlk	a6
-	rts	
+	rts
 
 ;; fn000020F0: 000020F0
 fn000020F0 proc
@@ -1071,7 +1071,7 @@ l0000210C:
 l00002128:
 	movea.l	(a7)+,a2
 	unlk	a6
-	rts	
+	rts
 0000212E                                           00 00               ..
 ;;; Segment CRTSTART (00002130)
 00002130 00 20 00 04 4E 56 FF D8 20 38 03 16 20 40 67 20 . ..NV.. 8.. @g 
@@ -1139,7 +1139,7 @@ l00002250:
 l0000225A:
 	movem.l	(a7)+,d3-d4/a2
 	unlk	a6
-	rts	
+	rts
 00002262       00 00                                       ..           
 
 ;; fn00002264: 00002264
@@ -1174,7 +1174,7 @@ l0000228C:
 	move.l	a0,d0
 	movea.l	(a7)+,a2
 	unlk	a6
-	rts	
+	rts
 
 ;; fn00002294: 00002294
 fn00002294 proc
@@ -1185,7 +1185,7 @@ fn00002294 proc
 	move.l	$0008(a6),-(a7)
 	jsr.l	$00B2(pc)                                            ; 00002354
 	unlk	a6
-	rts	
+	rts
 000022AA                               00 00 4E 56 00 00           ..NV..
 000022B0 74 00 2F 02 72 01 2F 01 2F 2E 00 08 4E BA 00 96 t./.r././...N...
 000022C0 4E 5E 4E 75                                     N^Nu           
@@ -1228,7 +1228,7 @@ l0000231C:
 	moveq	#$00,d0
 	movea.l	(a7)+,a2
 	unlk	a6
-	rts	
+	rts
 00002324             4E 56 00 00 74 01 2F 02 72 00 2F 01     NV..t./.r./.
 00002330 2F 01 4E BA 00 20 4E 5E 4E 75 00 00 4E 56 00 00 /.N.. N^Nu..NV..
 00002340 74 01 2F 02 2F 02 72 00 2F 01 4E BA 00 08 4E 5E t././.r./.N...N^
@@ -1278,7 +1278,7 @@ l000023AA:
 
 l000023AE:
 	unlk	a6
-	rts	
+	rts
 000023B2       00 00                                       ..           
 
 ;; fn000023B4: 000023B4
@@ -1312,7 +1312,7 @@ l000023D8:
 l000023DE:
 	movem.l	(a7)+,d3-d5
 	unlk	a6
-	rts	
+	rts
 000023E6                   00 00 4E 56 00 00 74 02 2F 02       ..NV..t./.
 000023F0 4E BA 00 06 4E 5E 4E 75                         N...N^Nu       
 
@@ -1327,7 +1327,7 @@ fn000023F8 proc
 	movea.l	-$0508(a5),a0
 	jsr.l	(a0)
 	unlk	a6
-	rts	
+	rts
 
 ;; fn00002418: 00002418
 fn00002418 proc
@@ -1346,7 +1346,7 @@ l00002430:
 	pea	$000000FF
 	jsr.l	$0008(pc)                                            ; 0000243C
 	unlk	a6
-	rts	
+	rts
 
 ;; fn0000243C: 0000243C
 fn0000243C proc
@@ -1396,7 +1396,7 @@ l0000247C:
 l0000248E:
 	movea.l	(a7)+,a2
 	unlk	a6
-	rts	
+	rts
 ;;; Segment CRTFIXED (00002494)
 00002494             00 40 00 02 4A AD FA A4 66 00 00 04     .@..J...f...
 000024A0 A9 F4 2E 6D FA A4 4E 75 20 0E 4E 75             ...m..Nu .Nu   
@@ -1410,7 +1410,7 @@ fn000024B0 proc
 	move.l	$0008(a6),-(a7)
 	jsr.l	$0008(pc)                                            ; 000024C4
 	unlk	a6
-	rts	
+	rts
 
 ;; fn000024C4: 000024C4
 fn000024C4 proc
@@ -1427,7 +1427,7 @@ l000024D6:
 	move.l	(a7)+,d4
 	move.l	(a7)+,d3
 	unlk	a6
-	rts	
+	rts
 
 l000024E0:
 	addq.l	#$03,d3
@@ -1456,7 +1456,7 @@ l00002506:
 	move.l	(a7)+,d4
 	move.l	(a7)+,d3
 	unlk	a6
-	rts	
+	rts
 0000250E                                           00 00               ..
 
 ;; fn00002510: 00002510
@@ -1529,14 +1529,14 @@ l00002586:
 	movea.l	(a7)+,a2
 	move.l	(a7)+,d3
 	unlk	a6
-	rts	
+	rts
 
 l000025A8:
 	moveq	#$00,d0
 	movea.l	(a7)+,a2
 	move.l	(a7)+,d3
 	unlk	a6
-	rts	
+	rts
 000025B2       00 00                                       ..           
 
 ;; fn000025B4: 000025B4
@@ -1573,14 +1573,14 @@ l000025E4:
 	move.l	a0,d0
 	movea.l	(a7)+,a2
 	unlk	a6
-	rts	
+	rts
 00002606                   4E 71                               Nq       
 
 l00002608:
 	moveq	#$00,d0
 	movea.l	(a7)+,a2
 	unlk	a6
-	rts	
+	rts
 
 ;; fn00002610: 00002610
 fn00002610 proc
@@ -1588,7 +1588,7 @@ fn00002610 proc
 	move.l	-$02CC(a5),d0
 	move.l	$0008(a6),-$02CC(a5)
 	unlk	a6
-	rts	
+	rts
 00002622       00 00 4E 56 00 00 20 2D FD 34 4E 5E 4E 75   ..NV.. -.4N^Nu
 00002630 4E 56 00 00 74 00 2F 02 4E BA FF D6 70 00 4E 5E NV..t./.N...p.N^
 00002640 4E 75 00 00                                     Nu..           
@@ -1610,13 +1610,13 @@ l00002650:
 l0000265C:
 	moveq	#$01,d0
 	unlk	a6
-	rts	
+	rts
 00002662       4E 71                                       Nq           
 
 l00002664:
 	moveq	#$00,d0
 	unlk	a6
-	rts	
+	rts
 0000266A                               00 00 4E 56 00 00           ..NV..
 00002670 48 E7 18 30 26 2D FA EC 4A AD FA DC 66 50 20 3C H..0&-..J...fP <
 00002680 00 00 02 00 A1 22 2B 48 FA DC 66 08 31 FC FD A3 ....."+H..f.1...
@@ -1650,7 +1650,7 @@ l0000274E:
 
 l00002758:
 	unlk	a6
-	rts	
+	rts
 
 ;; fn0000275C: 0000275C
 fn0000275C proc
@@ -1663,7 +1663,7 @@ fn0000275C proc
 l0000276C:
 	moveq	#$00,d0
 	unlk	a6
-	rts	
+	rts
 00002772       4E 71                                       Nq           
 
 l00002774:
@@ -1689,7 +1689,7 @@ l00002794:
 	move.l	d2,(a0)
 	moveq	#$01,d0
 	unlk	a6
-	rts	
+	rts
 
 ;; fn000027A0: 000027A0
 fn000027A0 proc
@@ -1698,7 +1698,7 @@ fn000027A0 proc
 	move.l	d2,-(a7)
 	jsr.l	$005A(a5)
 	unlk	a6
-	rts	
+	rts
 
 ;; fn000027B0: 000027B0
 fn000027B0 proc
@@ -1816,7 +1816,7 @@ l00002882:
 	move.l	a1,d0
 	movem.l	(a7)+,d3-d6/a2-a4
 	unlk	a6
-	rts	
+	rts
 
 l0000288C:
 	movea.l	(a2),a2
@@ -1827,7 +1827,7 @@ l00002894:
 	move.l	a1,d0
 	movem.l	(a7)+,d3-d6/a2-a4
 	unlk	a6
-	rts	
+	rts
 0000289E                                           00 00               ..
 
 ;; fn000028A0: 000028A0
@@ -1883,7 +1883,7 @@ l000028FC:
 	moveq	#$00,d0
 	movem.l	(a7)+,d3-d7/a2
 	unlk	a6
-	rts	
+	rts
 0000290A                               4E 71                       Nq   
 
 l0000290C:
@@ -1927,7 +1927,7 @@ l00002946:
 	moveq	#-$01,d0
 	movem.l	(a7)+,d3-d7/a2
 	unlk	a6
-	rts	
+	rts
 
 l00002950:
 	movea.l	a2,a0
@@ -1988,7 +1988,7 @@ l000029B4:
 	addq.w	#$08,a7
 	movem.l	(a7)+,d3-d7/a2
 	unlk	a6
-	rts	
+	rts
 000029C6                   00 00                               ..       
 
 ;; fn000029C8: 000029C8
@@ -2060,7 +2060,7 @@ l00002A4A:
 l00002A4C:
 	movem.l	(a7)+,d3-d5
 	unlk	a6
-	rts	
+	rts
 
 ;; fn00002A54: 00002A54
 fn00002A54 proc
@@ -2102,7 +2102,7 @@ l00002AA8:
 	moveq	#-$01,d0
 	movem.l	(a7)+,d3-d5/a2
 	unlk	a6
-	rts	
+	rts
 00002AB2       4E 71                                       Nq           
 
 l00002AB4:
@@ -2126,7 +2126,7 @@ l00002AD4:
 	moveq	#$00,d0
 	movem.l	(a7)+,d3-d5/a2
 	unlk	a6
-	rts	
+	rts
 00002ADE                                           00 00               ..
 
 ;; fn00002AE0: 00002AE0
@@ -2153,7 +2153,7 @@ l00002AFE:
 	move.l	d2,(08,a2,d3)
 	move.l	(a7)+,d3
 	unlk	a6
-	rts	
+	rts
 
 ;; fn00002B18: 00002B18
 fn00002B18 proc
@@ -2204,7 +2204,7 @@ l00002B74:
 l00002B78:
 	movea.l	(a7)+,a2
 	unlk	a6
-	rts	
+	rts
 00002B7E                                           00 00               ..
 00002B80 4E 56 00 00 24 2E 00 0C 67 22 22 2E 00 08 20 01 NV..$...g""... .
 00002B90 02 40 00 03 66 16 20 02 02 40 00 03 66 0E 2F 02 .@..f. ..@..f./.
@@ -2370,7 +2370,7 @@ l00002DDC:
 	movea.l	(a7)+,a3
 	movea.l	(a7)+,a2
 	unlk	a6
-	rts	
+	rts
 00002DE6                   4E 71                               Nq       
 
 l00002DE8:
@@ -2394,7 +2394,7 @@ l00002E0E:
 	movea.l	(a7)+,a3
 	movea.l	(a7)+,a2
 	unlk	a6
-	rts	
+	rts
 
 ;; fn00002E18: 00002E18
 fn00002E18 proc
@@ -2430,7 +2430,7 @@ l00002E4C:
 	movea.l	(a7)+,a3
 	movea.l	(a7)+,a2
 	unlk	a6
-	rts	
+	rts
 
 l00002E6C:
 	andi.w	#$FFFC,d2
@@ -2456,7 +2456,7 @@ l00002E9A:
 	movea.l	(a7)+,a3
 	movea.l	(a7)+,a2
 	unlk	a6
-	rts	
+	rts
 00002EA6                   00 00                               ..       
 
 ;; fn00002EA8: 00002EA8
@@ -2469,7 +2469,7 @@ fn00002EA8 proc
 l00002EB6:
 	moveq	#-$03,d0
 	unlk	a6
-	rts	
+	rts
 
 l00002EBC:
 	movea.l	-$0538(a5),a0
@@ -2482,7 +2482,7 @@ l00002EBC:
 l00002ED0:
 	moveq	#-$01,d0
 	unlk	a6
-	rts	
+	rts
 00002ED6                   4E 71                               Nq       
 
 l00002ED8:
@@ -2494,7 +2494,7 @@ l00002ED8:
 l00002EE4:
 	moveq	#-$02,d0
 	unlk	a6
-	rts	
+	rts
 00002EEA                               4E 71                       Nq   
 
 l00002EEC:
@@ -2527,7 +2527,7 @@ l00002F1C:
 
 l00002F1E:
 	unlk	a6
-	rts	
+	rts
 00002F22       00 00                                       ..           
 ;;; Segment CRTLOWIO (00002F24)
 00002F24             00 60 00 05 4E 56 00 00 20 2E 00 08     .`..NV.. ...
@@ -2626,7 +2626,7 @@ l0000336A:
 	moveq	#$16,d0
 	move.l	d0,-$06C4(a5)
 	unlk	a6
-	rts	
+	rts
 
 l00003374:
 	lea	-$0502(a5),a0
@@ -2634,7 +2634,7 @@ l00003374:
 	move.w	(a0,d2*4),d0
 	move.l	d0,-$06C4(a5)
 	unlk	a6
-	rts	
+	rts
 00003386                   00 00 4E 56 FE B0 2F 0A 24 6E       ..NV../.$n
 00003390 00 08 4A 12 67 00 00 8A 20 4A 43 E8 00 01 4A 18 ..J.g... JC...J.
 000033A0 66 FC 91 C9 B0 FC 00 FF 62 76 41 EE FF 00 10 DA f.......bvA.....
