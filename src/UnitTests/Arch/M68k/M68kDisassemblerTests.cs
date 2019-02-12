@@ -377,7 +377,7 @@ namespace Reko.UnitTests.Arch.M68k
         [Test]
         public void M68kdis_rts()
         {
-            RunTest("rts\t", 0x4E75);
+            RunTest("rts", 0x4E75);
         }
 
         [Test]
@@ -635,7 +635,7 @@ namespace Reko.UnitTests.Arch.M68k
         [Test]
         public void M68kdis_rte()
         {
-            RunTest("rte\t", 0x4E73);
+            RunTest("rte", 0x4E73);
         }
 
         [Test]
@@ -716,7 +716,7 @@ namespace Reko.UnitTests.Arch.M68k
             // This is an fbcc instruction, which uses an encoding
             // which is not valid with a 68k FPU; it should
             // decode to an illegal instruction
-            RunTest("illegal\t", 0xF2BC, 0x00E0);
+            RunTest("illegal", 0xF2BC, 0x00E0);
         }
 
         [Test]
@@ -729,6 +729,18 @@ namespace Reko.UnitTests.Arch.M68k
         public void M68kdis_move_pc_relative_indexing()
         {
             RunTest("movea.l\t(0000025C,pc),a0", 0x207B, 0x0170, 0x0000, 0x025C);
+        }
+
+        [Test]
+        public void M68kdis_cinv_invalid()
+        {
+            RunTest("cinv", 0xF400);
+        }
+
+        [Test]
+        public void M68kdis_bfins()
+        {
+            RunTest("bfins\td3,d5,{d3:#$00000002}", 0xEFC5, 0x38C2);
         }
     }
 }

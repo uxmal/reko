@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -63,7 +63,7 @@ namespace Reko.UnitTests.Assemblers.M68k
             {
                 m.Nop();
             });
-            Expect("nop\t");
+            Expect("nop");
         }
 
         [Test]

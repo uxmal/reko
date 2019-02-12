@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -151,8 +151,7 @@ namespace Reko.Assemblers.M68k
             var eaSrc = ExpectEffectiveAddress();
             Expect(TokenType.COMMA);
             var eaDst = ExpectEffectiveAddress();
-            var rDst = eaDst as RegisterOperand;
-            if (rDst != null)
+            if (eaDst is RegisterOperand rDst)
             {
                 if (rDst.Register is AddressRegister)
                 {

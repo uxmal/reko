@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -36,22 +36,15 @@ namespace Reko.Arch.M68k
     public interface M68kOperandVisitor<T>
     {
         T Visit(M68kImmediateOperand imm);
-
         T Visit(MemoryOperand mem);
-
         T Visit(PredecrementMemoryOperand pre);
-
         T Visit(M68kAddressOperand addressOperand);
-
         T Visit(PostIncrementMemoryOperand post);
-
         T Visit(RegisterSetOperand registerSet);
-
         T Visit(IndexedOperand indexedOperand);
-
         T Visit(IndirectIndexedOperand indirectIndexedOperand);
-
         T Visit(DoubleRegisterOperand doubleRegisterOperand);
+        T Visit(BitfieldOperand bitfield);
     }
 
     public abstract class M68kOperandImpl : MachineOperand, M68kOperand

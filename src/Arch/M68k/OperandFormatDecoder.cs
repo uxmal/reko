@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -151,8 +151,7 @@ namespace Reko.Arch.M68k
             }
             else if (offset == 0x00)
             {
-                short sOffset;
-                if (!rdr.TryReadBeInt16(out sOffset))
+                if (!rdr.TryReadBeInt16(out short sOffset))
                 {
                     op = null;
                     return false;
@@ -195,8 +194,7 @@ namespace Reko.Arch.M68k
                 }
                 rdr.Offset += 1;    // skip a byte so we get the appropriate lsb byte and align the word stream.
             }
-            Constant imm;
-            if (!rdr.TryReadBe(type, out imm))
+            if (!rdr.TryReadBe(type, out Constant imm))
             {
                 op = null; return false;
             }
@@ -394,8 +392,7 @@ namespace Reko.Arch.M68k
 
         private bool TryAddressRegisterIndirectWithIndex(PrimitiveType dataWidth, EndianImageReader rdr, out MachineOperand op)
         {
-            ushort extension;
-            if (!rdr.TryReadBeUInt16(out extension))
+            if (!rdr.TryReadBeUInt16(out ushort extension))
             {
                 op = null; return false;
             }

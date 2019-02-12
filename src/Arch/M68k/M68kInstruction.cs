@@ -76,14 +76,19 @@ namespace Reko.Arch.M68k
             {
                 writer.WriteOpcode(code.ToString());
             }
-            writer.Tab();
             if (op1 != null)
             {
+                writer.Tab();
                 WriteOperand(op1, writer, options);
                 if (op2 != null)
                 {
                     writer.WriteChar(',');
                     WriteOperand(op2, writer, options);
+                    if (op3 != null)
+                    {
+                        writer.WriteChar(',');
+                        WriteOperand(op3, writer, options);
+                    }
                 }
             }
         }
