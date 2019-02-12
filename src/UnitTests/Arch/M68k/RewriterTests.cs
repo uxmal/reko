@@ -52,7 +52,7 @@ namespace Reko.UnitTests.Arch.M68k
         protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder binder, IRewriterHost host)
         {
             var state = arch.CreateProcessorState();
-            return arch.CreateRewriter(mem.CreateLeReader(0), state, arch.CreateFrame(), host);
+            return arch.CreateRewriter(mem.CreateBeReader(0), state, arch.CreateFrame(), host);
         }
 
         private void Rewrite(params ushort[] opcodes)
@@ -1143,7 +1143,7 @@ namespace Reko.UnitTests.Arch.M68k
         {
             Rewrite(0x40E7);        // move sr,-(a7)
             AssertCode(
-                "0|L--|00010000(2): 3 instructions",
+                "0|S--|00010000(2): 3 instructions",
                 "1|L--|a7 = a7 - 2",
                 "2|L--|v4 = sr",
                 "3|L--|Mem0[a7:word16] = v4");
@@ -1154,7 +1154,7 @@ namespace Reko.UnitTests.Arch.M68k
         {
             Rewrite(0x46FC, 0x2700);        // move #$2700,sr
             AssertCode(
-                "0|L--|00010000(4): 1 instructions",
+                "0|S--|00010000(4): 1 instructions",
                 "1|L--|sr = 0x2700");
         }
 
@@ -1554,10 +1554,10 @@ namespace Reko.UnitTests.Arch.M68k
         [Test]
         public void M68krw_pc_relative_indexing()
         {
-            Rewrite(0x0C3B, 0x0004, 0x0028);    // cmpi.b\t#$04,(pc,d0.w,+002C)
+            Rewrite(0x0C3B, 0x0004, 0x0028);    // cmpi.b\t#$04,($2C,pc,d0.w)
             AssertCode(
                 "0|L--|00010000(6): 2 instructions",
-                "1|L--|v3 = Mem0[0x00010002 + (word32) ((int16) d0) + 44:byte] - 4",
+                "1|L--|v3 = Mem0[0x0001002C + (int32) ((int16) d0):byte] - 4",
                 "2|L--|CVZN = cond(v3)");
         }
 

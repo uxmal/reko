@@ -229,17 +229,22 @@ namespace Reko.Arch.M68k
             writer.WriteString("(");
             if (Imm8 < 0)
             {
-                writer.WriteFormat("-{0:X2},", -Imm8);
+                writer.WriteFormat("-${0:X2},", -Imm8);
             }
             else if (Imm8 > 0)
             {
-                writer.WriteFormat("{0:X2},", Imm8);
+                writer.WriteFormat("${0:X2},", Imm8);
             }
             writer.WriteString(ARegister.Name);
-            writer.WriteString(",");
-            writer.WriteString(XRegister.Name);
-            if (Scale > 1)
-                writer.WriteFormat("*{0}", Scale);
+            if (XRegister != null)
+            {
+                writer.WriteString(",");
+                writer.WriteString(XRegister.Name);
+                if (XWidth.Size == 2)
+                    writer.WriteString(".w");
+                if (Scale > 1)
+                    writer.WriteFormat("*{0}", Scale);
+            }
             writer.WriteString(")");
         }
     }

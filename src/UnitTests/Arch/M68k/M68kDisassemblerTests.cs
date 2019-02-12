@@ -350,7 +350,7 @@ namespace Reko.UnitTests.Arch.M68k
         public void M68kdis_subq_w()
         {
             RunTest("subq.w\t#$07,-(a6)", 0x5F66);
-            RunTest("subq.w\t#$01,(34,a0,d1)", 0x5370, 0x1034);
+            RunTest("subq.w\t#$01,($34,a0,d1.w)", 0x5370, 0x1034);
         }
 
         [Test]
@@ -567,7 +567,7 @@ namespace Reko.UnitTests.Arch.M68k
         [Test]
         public void M68kdis_btst()
         {
-            RunTest("btst.w\t#$0000,(34,a0,d0)", 0x0830, 0x0000, 0x0034);
+            RunTest("btst.w\t#$0000,($34,a0,d0.w)", 0x0830, 0x0000, 0x0034);
         }
 
         [Test]
@@ -665,7 +665,7 @@ namespace Reko.UnitTests.Arch.M68k
         [Test]
         public void M68kdis_address_mode()
         {
-            RunTest("move.l\t(-04,a2,d0*4),d2", 0x2432, 0x04fc);
+            RunTest("move.l\t(-$04,a2,d0.w*4),d2", 0x2432, 0x04fc);
         }
 
         [Test]
@@ -722,7 +722,7 @@ namespace Reko.UnitTests.Arch.M68k
         [Test]
         public void M68kdis_cmpi_pc_relative_indexing()
         {
-            RunTest("cmpi.b\t#$04,(pc,d0.w,+002C)", 0x0C3B, 0x0004, 0x0028);
+            RunTest("cmpi.b\t#$04,($2C,pc,d0.w)", 0x0C3B, 0x0004, 0x0028);
         }
 
         [Test]
@@ -747,6 +747,12 @@ namespace Reko.UnitTests.Arch.M68k
         public void M68kdis_fsave()
         {
             RunTest("fsave\t(a0)", 0xF310);
+        }
+
+        [Test]
+        public void M68kdis_tst_i_16()
+        {
+            RunTest("tst.w\t#$1234", 0x4A7C, 0x1234);
         }
     }
 }

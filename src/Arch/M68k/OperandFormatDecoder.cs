@@ -41,7 +41,7 @@ namespace Reko.Arch.M68k
         public OperandFormatDecoder(M68kDisassembler dasm, int i)
         {
             this.dasm = dasm;
-            this.opcode = dasm.instruction;
+            this.opcode = dasm.uInstr;
             this.i = i;
         }
 
@@ -420,7 +420,9 @@ namespace Reko.Arch.M68k
                     outer = rdr.ReadBe(EXT_OUTER_DISPLACEMENT_LONG(extension) ? PrimitiveType.Word32 : PrimitiveType.Int16);
                 }
                 if (EXT_BASE_REGISTER_PRESENT(extension))
+                {
                     base_reg = Registers.AddressRegister(opcode & 7);
+                }
                 if (EXT_INDEX_REGISTER_PRESENT(extension))
                 {
                     index_reg = EXT_INDEX_AR(extension)

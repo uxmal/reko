@@ -167,6 +167,7 @@ namespace Reko.Arch.M68k
         fdmul,
         fssub,
         fdsub,
+        frestore,
         fsave,
 
         fbf,
