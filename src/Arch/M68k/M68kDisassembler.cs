@@ -19,14 +19,13 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Code;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
 
 namespace Reko.Arch.M68k
@@ -444,11 +443,6 @@ namespace Reko.Arch.M68k
             return new DoubleRegisterOperand(
                 Registers.DataRegister((int)d1&7),
                 Registers.DataRegister((int)d2&7));
-        }
-
-        private static M68kImmediateOperand get_3bit_qdata(int bitPattern)
-        {
-            return new M68kImmediateOperand(Constant.Byte((byte) g_3bit_qdata_table[bitPattern]));
         }
 
         private bool TryReadImm8(out byte b)
@@ -1938,19 +1932,17 @@ namespace Reko.Arch.M68k
             }
 
             var other_reg = BIT_F(extension)
-                        ? get_addr_reg((int)(extension >> 12) & 7)
-                        : get_data_reg((int)(extension >> 12) & 7);
+                ? get_addr_reg((int)(extension >> 12) & 7)
+                : get_data_reg((int)(extension >> 12) & 7);
+            dasm.instr.code = Opcode.movec;
+            dasm.instr.iclass = InstrClass.Linear;
             if (BIT_0(dasm.uInstr))
             {
-                dasm.instr.code = Opcode.movec;
-                dasm.instr.iclass = InstrClass.Linear;
                 dasm.instr.op1 = other_reg;
                 dasm.instr.op2 = reg_name;
             }
             else
             {
-                    dasm.instr.code = Opcode.movec;
-                dasm.instr.iclass = InstrClass.Linear;
                 dasm.instr.op1 = reg_name;
                 dasm.instr.op2 = other_reg;
             }
@@ -2005,21 +1997,16 @@ namespace Reko.Arch.M68k
             return false;
         }
 
-        public static bool bit(uint word, int pos)
-        {
-            return (word & (1u << pos)) != 0;
-        }
-
         public void WriteRegisterSet(uint data, int bitPos, int incr, string regType, StringBuilder buffer)
         {
             string sep = "";
             for (int i = 0; i < 8; i++, bitPos += incr)
             {
-                if (bit(data, bitPos))
+                if (Bits.IsBitSet(data, bitPos))
                 {
                     int first = i;
                     int run_length = 0;
-                    while (i < 7 && bit(data, bitPos+incr))
+                    while (i < 7 && Bits.IsBitSet(data, bitPos+incr))
                     {
                         bitPos += incr;
                         ++i;
@@ -2032,72 +2019,6 @@ namespace Reko.Arch.M68k
                     sep = "/";
                 }
             }
-
-        }
-
-        private static bool d68000_movep_re_16(M68kDisassembler dasm)
-        {
-            if (!dasm.rdr.TryReadBeInt16(out short sDisplacement))
-                return false;
-            var displacement = Constant.Int16(sDisplacement);
-            dasm.instr.code = Opcode.movep;
-            dasm.instr.iclass = InstrClass.Linear;
-            dasm.instr.dataWidth = PrimitiveType.Word16;
-            dasm.instr.op1 = get_data_reg((dasm.uInstr >> 9) & 7);
-            dasm.instr.op2 = new MemoryOperand(
-                    PrimitiveType.Word16,
-                    Registers.AddressRegister(dasm.uInstr & 7),
-                    displacement);
-            return true;
-        }
-
-        private static bool d68000_movep_re_32(M68kDisassembler dasm)
-        {
-            if (!dasm.rdr.TryReadBeInt16(out short sDisplacement))
-                return false;
-            var displacement = Constant.Int16(sDisplacement);
-            dasm.instr.code = Opcode.movep;
-            dasm.instr.iclass = InstrClass.Linear;
-            dasm.instr.dataWidth = PrimitiveType.Word32;
-            dasm.instr.op1 = get_data_reg((dasm.uInstr >> 9) & 7);
-            dasm.instr.op2 = new MemoryOperand(
-                    PrimitiveType.Word32,
-                    Registers.AddressRegister(dasm.uInstr & 7),
-                    displacement);
-            return true;
-        }
-
-        private static bool d68000_movep_er_16(M68kDisassembler dasm)
-        {
-            var instr = dasm.instr;
-            instr.code = Opcode.movep;
-            instr.dataWidth = PrimitiveType.Word16;
-            if (!dasm.rdr.TryReadBeInt16(out short sDisplacement))
-                return false;
-            var displacement = Constant.Int16(sDisplacement);
-
-            instr.op1 = new MemoryOperand(
-                PrimitiveType.Word16,
-                Registers.AddressRegister(dasm.uInstr & 7),
-                displacement);
-            instr.op2 = get_data_reg((dasm.uInstr >> 9) & 7);
-            return true;
-        }
-
-        private static bool d68000_movep_er_32(M68kDisassembler dasm)
-        {
-            var instr = dasm.instr;
-            instr.code = Opcode.movep;
-            instr.dataWidth = PrimitiveType.Word32;
-            if (!dasm.rdr.TryReadBeInt16(out short sDisplacement))
-                return false;
-            var displacement = Constant.Int16(sDisplacement);
-            instr.op1 = new MemoryOperand(
-                PrimitiveType.Word32,
-                Registers.AddressRegister(dasm.uInstr & 7),
-                displacement);
-            instr.op2 = get_data_reg((dasm.uInstr >> 9) & 7);
-            return true;
         }
 
         private static bool d68010_moves_8(M68kDisassembler dasm)
@@ -2673,7 +2594,7 @@ namespace Reko.Arch.M68k
         // PScc:  0000000000xxxxxx
         private static bool d68851_p001(M68kDisassembler dasm)
         {
-            dasm.g_dasm_str = string.Format("MMU 001 group");
+            //dasm.g_dasm_str = string.Format("MMU 001 group");
             return false;
         }
 
@@ -2735,6 +2656,25 @@ namespace Reko.Arch.M68k
 
         private static readonly Mutator A0 = A(0);
         private static readonly Mutator A9 = A(9);
+
+        // Address register with 16-bit displacement
+
+        private static Mutator Ad(int bitOffset)
+        {
+            return d =>
+            {
+                if (!d.rdr.TryReadBeInt16(out short sDisplacement))
+                    return false;
+                var aReg = Registers.AddressRegister((d.uInstr >> bitOffset) & 0x7);
+                d.ops.Add(new MemoryOperand(
+                    PrimitiveType.Word16,
+                    Registers.AddressRegister(d.uInstr & 7),
+                    Constant.Int16(sDisplacement)));
+                return true;
+            };
+        }
+
+        private static readonly Mutator Ad0 = Ad(0);
 
         // Effective address (EA) 
         private static Mutator E(int bitOffset)
@@ -2975,11 +2915,11 @@ namespace Reko.Arch.M68k
         /// </summary>
         private static void GenTable()
         {
-         g_opcode_info = new Decoder[] 
-        {
+            g_opcode_info = new Decoder[]
+           {
 //  opcode handler             mask    match   ea mask 
 	Instr(d68000_1010         , 0xf000, 0xa000, 0x000),
-	Instr(0xf000, 0xf000, 0x000, Opcode.illegal, InstrClass.Invalid),  // d68000_1111
+    Instr(0xf000, 0xf000, 0x000, Opcode.illegal, InstrClass.Invalid),  // d68000_1111
 	Instr(D0,D9, 0xf1f8, 0xc100, 0x000, Opcode.abcd),             // d68000_abcd_rr
 	Instr(Pre0,Pre9, 0xf1f8, 0xc108, 0x000, Opcode.abcd),             // d68000_abcd_mm
 	Instr(s6,E0,D9, 0xf1c0, 0xd000, 0xbff, Opcode.add),           // d68000_add_er_8
@@ -3028,22 +2968,22 @@ namespace Reko.Arch.M68k
 	Instr(sl,D9,D0, 0xf1f8, 0xe1a0, 0x000, Opcode.asl),           // d68000_asl_r_32    
 	Instr(sw,E0,    0xffc0, 0xe1c0, 0x3f8, Opcode.asl),           // d68000_asl_ea      
 	Instr(d68000_bcc_8        , 0xf000, 0x6000, 0x000, iclass:InstrClass.ConditionalTransfer),
-	Instr(d68000_bcc_16       , 0xf0ff, 0x6000, 0x000, iclass:InstrClass.ConditionalTransfer),
+    Instr(d68000_bcc_16       , 0xf0ff, 0x6000, 0x000, iclass:InstrClass.ConditionalTransfer),
     Instr(d68020_bcc_32       , 0xf0ff, 0x60ff, 0x000, iclass:InstrClass.ConditionalTransfer),
     Instr(sr,D9,E0, 0xf1c0, 0x0140, 0xbf8, Opcode.bchg),          // d68000_bchg_r 
 	Instr(sr,Ib,E0, 0xffc0, 0x0840, 0xbf8, Opcode.bchg),          // d68000_bchg_s 
 	Instr(sr,D9,E0, 0xf1c0, 0x0180, 0xbf8, Opcode.bclr),          // d68000_bclr_r 
 	Instr(sr,Ib,E0, 0xffc0, 0x0880, 0xbf8, Opcode.bclr),          // d68000_bclr_s 
 	Instr(d68020_bfchg        , 0xffc0, 0xeac0, 0xa78),
-	Instr(d68020_bfclr        , 0xffc0, 0xecc0, 0xa78),
-	Instr(d68020_bfexts       , 0xffc0, 0xebc0, 0xa7b),
-	Instr(d68020_bfextu       , 0xffc0, 0xe9c0, 0xa7b),
-	Instr(d68020_bfffo        , 0xffc0, 0xedc0, 0xa7b),
-	Instr(d68020_bfins        , 0xffc0, 0xefc0, 0xa78),
-	Instr(d68020_bfset        , 0xffc0, 0xeec0, 0xa78),
-	Instr(d68020_bftst        , 0xffc0, 0xe8c0, 0xa7b),
-	Instr(d68010_bkpt         , 0xfff8, 0x4848, 0x000),
-	Instr(J, 0xff00, 0x6000, 0x000, Opcode.bra, InstrClass.Transfer),              // d68000_bra_8
+    Instr(d68020_bfclr        , 0xffc0, 0xecc0, 0xa78),
+    Instr(d68020_bfexts       , 0xffc0, 0xebc0, 0xa7b),
+    Instr(d68020_bfextu       , 0xffc0, 0xe9c0, 0xa7b),
+    Instr(d68020_bfffo        , 0xffc0, 0xedc0, 0xa7b),
+    Instr(d68020_bfins        , 0xffc0, 0xefc0, 0xa78),
+    Instr(d68020_bfset        , 0xffc0, 0xeec0, 0xa78),
+    Instr(d68020_bftst        , 0xffc0, 0xe8c0, 0xa7b),
+    Instr(d68010_bkpt         , 0xfff8, 0x4848, 0x000),
+    Instr(J, 0xff00, 0x6000, 0x000, Opcode.bra, InstrClass.Transfer),              // d68000_bra_8
 	Instr(J, 0xffff, 0x6000, 0x000, Opcode.bra, InstrClass.Transfer),              // d68000_bra_16
 	Instr(J, 0xffff, 0x60ff, 0x000, Opcode.bra, InstrClass.Transfer),              // d68020_bra_32
 	Instr(D9,E0, 0xf1c0, 0x01c0, 0xbf8, Opcode.bset),         // d68000_bset_r
@@ -3054,18 +2994,18 @@ namespace Reko.Arch.M68k
 	Instr(sl,D9,E0, 0xf1c0, 0x0100, 0xbff, Opcode.btst),      // d68000_btst_r 
 	Instr(sw,Iw,E0, 0xffc0, 0x0800, 0xbfb, Opcode.btst),      // d68000_btst_s
 	Instr(d68020_callm        , 0xffc0, 0x06c0, 0x27b, iclass:InstrClass.Transfer|InstrClass.Call),
-	Instr(d68020_cas_8        , 0xffc0, 0x0ac0, 0x3f8),
-	Instr(d68020_cas_16       , 0xffc0, 0x0cc0, 0x3f8),
-	Instr(d68020_cas_32       , 0xffc0, 0x0ec0, 0x3f8),
-	Instr(d68020_cas2_16      , 0xffff, 0x0cfc, 0x000),
-	Instr(d68020_cas2_32      , 0xffff, 0x0efc, 0x000),
-	Instr(d68000_chk_16       , 0xf1c0, 0x4180, 0xbff),
-	Instr(d68020_chk_32       , 0xf1c0, 0x4100, 0xbff),
-	Instr(d68020_chk2_cmp2_8  , 0xffc0, 0x00c0, 0x27b),
-	Instr(d68020_chk2_cmp2_16 , 0xffc0, 0x02c0, 0x27b),
-	Instr(d68020_chk2_cmp2_32 , 0xffc0, 0x04c0, 0x27b),
-	Instr(d68040_cinv         , 0xff20, 0xf400, 0x000),
-	Instr(sb,E0, 0xffc0, 0x4200, 0xbf8, Opcode.clr),      // d68000_clr_8
+    Instr(d68020_cas_8        , 0xffc0, 0x0ac0, 0x3f8),
+    Instr(d68020_cas_16       , 0xffc0, 0x0cc0, 0x3f8),
+    Instr(d68020_cas_32       , 0xffc0, 0x0ec0, 0x3f8),
+    Instr(d68020_cas2_16      , 0xffff, 0x0cfc, 0x000),
+    Instr(d68020_cas2_32      , 0xffff, 0x0efc, 0x000),
+    Instr(d68000_chk_16       , 0xf1c0, 0x4180, 0xbff),
+    Instr(d68020_chk_32       , 0xf1c0, 0x4100, 0xbff),
+    Instr(d68020_chk2_cmp2_8  , 0xffc0, 0x00c0, 0x27b),
+    Instr(d68020_chk2_cmp2_16 , 0xffc0, 0x02c0, 0x27b),
+    Instr(d68020_chk2_cmp2_32 , 0xffc0, 0x04c0, 0x27b),
+    Instr(d68040_cinv         , 0xff20, 0xf400, 0x000),
+    Instr(sb,E0, 0xffc0, 0x4200, 0xbf8, Opcode.clr),      // d68000_clr_8
 	Instr(sw,E0, 0xffc0, 0x4240, 0xbf8, Opcode.clr),      // d68000_clr_16
 	Instr(sl,E0, 0xffc0, 0x4280, 0xbf8, Opcode.clr),      // d68000_clr_32
 	Instr(sb,E0,D9, 0xf1c0, 0xb000, 0xbff, Opcode.cmp),   // d68000_cmp_8
@@ -3075,38 +3015,38 @@ namespace Reko.Arch.M68k
 	Instr(sl,E0,A9, 0xf1c0, 0xb1c0, 0xfff, Opcode.cmpa),  // d68000_cmpa_32
 	Instr(sb,Ib,E0, 0xffc0, 0x0c00, 0xbf8, Opcode.cmpi),  // d68000_cmpi_8
 	Instr(d68020_cmpi_pcdi_8  , 0xffff, 0x0c3a, 0x000),
-	Instr(d68020_cmpi_pcix_8  , 0xffff, 0x0c3b, 0x000),
-	Instr(sw,Iw,E0, 0xffc0, 0x0c40, 0xbf8, Opcode.cmpi),      // d68000_cmpi_16
+    Instr(d68020_cmpi_pcix_8  , 0xffff, 0x0c3b, 0x000),
+    Instr(sw,Iw,E0, 0xffc0, 0x0c40, 0xbf8, Opcode.cmpi),      // d68000_cmpi_16
 	Instr(d68020_cmpi_pcdi_16 , 0xffff, 0x0c7a, 0x000),
-	Instr(d68020_cmpi_pcix_16 , 0xffff, 0x0c7b, 0x000),
-	Instr(sl,Il,E0, 0xffc0, 0x0c80, 0xbf8, Opcode.cmpi),      // d68000_cmpi_32
+    Instr(d68020_cmpi_pcix_16 , 0xffff, 0x0c7b, 0x000),
+    Instr(sl,Il,E0, 0xffc0, 0x0c80, 0xbf8, Opcode.cmpi),      // d68000_cmpi_32
 	Instr(d68020_cmpi_pcdi_32 , 0xffff, 0x0cba, 0x000),
-	Instr(d68020_cmpi_pcix_32 , 0xffff, 0x0cbb, 0x000),
-	Instr(sb,Post0,Post9, 0xf1f8, 0xb108, 0x000, Opcode.cmpm),      // d68000_cmpm_8
+    Instr(d68020_cmpi_pcix_32 , 0xffff, 0x0cbb, 0x000),
+    Instr(sb,Post0,Post9, 0xf1f8, 0xb108, 0x000, Opcode.cmpm),      // d68000_cmpm_8
 	Instr(sw,Post0,Post9 , 0xf1f8, 0xb148, 0x000, Opcode.cmpm),     // d68000_cmpm_16     
 	Instr(sl,Post0,Post9 , 0xf1f8, 0xb188, 0x000, Opcode.cmpm),     // d68000_cmpm_32     
 	Instr(d68020_cpbcc_16     , 0xf1c0, 0xf080, 0x000),
-	Instr(d68020_cpbcc_32     , 0xf1c0, 0xf0c0, 0x000),
-	Instr(d68020_cpdbcc       , 0xf1f8, 0xf048, 0x000),
-	Instr(d68020_cpgen        , 0xf1c0, 0xf000, 0x000),
-	Instr(d68020_cprestore    , 0xf1c0, 0xf140, 0x37f),
-	Instr(d68020_cpsave       , 0xf1c0, 0xf100, 0x2f8),
-	Instr(d68020_cpscc        , 0xf1c0, 0xf040, 0xbf8),
-	Instr(d68020_cptrapcc_0   , 0xf1ff, 0xf07c, 0x000),
-	Instr(d68020_cptrapcc_16  , 0xf1ff, 0xf07a, 0x000),
-	Instr(d68020_cptrapcc_32  , 0xf1ff, 0xf07b, 0x000),
-	Instr(d68040_cpush        , 0xff20, 0xf420, 0x000),
+    Instr(d68020_cpbcc_32     , 0xf1c0, 0xf0c0, 0x000),
+    Instr(d68020_cpdbcc       , 0xf1f8, 0xf048, 0x000),
+    Instr(d68020_cpgen        , 0xf1c0, 0xf000, 0x000),
+    Instr(d68020_cprestore    , 0xf1c0, 0xf140, 0x37f),
+    Instr(d68020_cpsave       , 0xf1c0, 0xf100, 0x2f8),
+    Instr(d68020_cpscc        , 0xf1c0, 0xf040, 0xbf8),
+    Instr(d68020_cptrapcc_0   , 0xf1ff, 0xf07c, 0x000),
+    Instr(d68020_cptrapcc_16  , 0xf1ff, 0xf07a, 0x000),
+    Instr(d68020_cptrapcc_32  , 0xf1ff, 0xf07b, 0x000),
+    Instr(d68040_cpush        , 0xff20, 0xf420, 0x000),
     Instr(d68000_dbcc         , 0xf0f8, 0x50c8, 0x000),
     Instr(D0,Rw, 0xfff8, 0x51c8, 0x000, Opcode.dbra),         // d68000_dbra
 	Instr(sw,E0,D9, 0xf1c0, 0x81c0, 0xbff, Opcode.divs),      // d68000_divs
 	Instr(su,E0,D9, 0xf1c0, 0x80c0, 0xbff, Opcode.divu),      // d68000_divu   
 	Instr(d68020_divl         , 0xffc0, 0x4c40, 0xbff),
-	Instr(sb,D9,E0, 0xf1c0, 0xb100, 0xbf8, Opcode.eor),       // d68000_eor_8  
-	Instr(sw,D9,E0, 0xf1c0, 0xb140, 0xbf8, Opcode.eor),       // d68000_eor_16 
-	Instr(sl,D9,E0, 0xf1c0, 0xb180, 0xbf8, Opcode.eor),       // d68000_eor_32 
-	Instr(d68000_eori_to_ccr  , 0xffff, 0x0a3c, 0x000),
-	Instr(d68000_eori_to_sr   , 0xffff, 0x0a7c, 0x000),
-	Instr(sb,Ib,E0, 0xffc0, 0x0a00, 0xbf8, Opcode.eori),      // d68000_eori_8
+    Instr(sb,D9,E0, 0xf1c0, 0xb100, 0xbf8, Opcode.eor),          // d68000_eor_8  
+	Instr(sw,D9,E0, 0xf1c0, 0xb140, 0xbf8, Opcode.eor),         // d68000_eor_16 
+	Instr(sl,D9,E0, 0xf1c0, 0xb180, 0xbf8, Opcode.eor),         // d68000_eor_32 
+	Instr(sb,Ib,ccr, 0xffff, 0x0a3c, 0x000, Opcode.eori),       //  d68000_eori_to_ccr
+    Instr(d68000_eori_to_sr   , 0xffff, 0x0a7c, 0x000),
+    Instr(sb,Ib,E0, 0xffc0, 0x0a00, 0xbf8, Opcode.eori),      // d68000_eori_8
 	Instr(sw,Iw,E0, 0xffc0, 0x0a40, 0xbf8, Opcode.eori),      // d68000_eori_16
 	Instr(sl,Il,E0, 0xffc0, 0x0a80, 0xbf8, Opcode.eori),      // d68000_eori_32
 	Instr(D9,D0, 0xf1f8, 0xc140, 0x000, Opcode.exg),          // d68000_exg_dd 
@@ -3116,8 +3056,8 @@ namespace Reko.Arch.M68k
 	Instr(sw,D0, 0xfff8, 0x4880, 0x000, Opcode.ext),          // d68000_ext_16
 	Instr(sl,D0, 0xfff8, 0x48c0, 0x000, Opcode.ext),          // d68000_ext_32
 	Instr(d68040_fpu          , 0xffc0, 0xf200, 0x000),
-	Instr(d68000_illegal      , 0xffff, 0x4afc, 0x000, iclass:InstrClass.Invalid),
-	Instr(sl,E0, 0xffc0, 0x4ec0, 0x27b, Opcode.jmp, InstrClass.Transfer),   // d68000_jmp
+    Instr(d68000_illegal      , 0xffff, 0x4afc, 0x000, iclass:InstrClass.Invalid),
+    Instr(sl,E0, 0xffc0, 0x4ec0, 0x27b, Opcode.jmp, InstrClass.Transfer),   // d68000_jmp
 	Instr(sl,E0, 0xffc0, 0x4e80, 0x27b, Opcode.jsr, InstrClass.Transfer|InstrClass.Call),   // d68000_jsr
 	Instr(E0,A9, 0xf1c0, 0x41c0, 0x27b, Opcode.lea),       // d68000_lea
 	Instr(A0,Iw, 0xfff8, 0x4e50, 0x000, Opcode.link),         // d68000_link_16 
@@ -3144,20 +3084,20 @@ namespace Reko.Arch.M68k
 	Instr(sw,E0,ccr,   0xffc0, 0x44c0, 0xbff, Opcode.move),     // d68000_move_to_ccr
 	Instr(sw,ccr,E0,   0xffc0, 0x42c0, 0xbf8, Opcode.move),     // d68010_move_fr_ccr
 	Instr(d68000_move_to_sr   , 0xffc0, 0x46c0, 0xbff),
-	Instr(d68000_move_fr_sr   , 0xffc0, 0x40c0, 0xbf8),
-	Instr(d68000_move_to_usp  , 0xfff8, 0x4e60, 0x000),
-	Instr(d68000_move_fr_usp  , 0xfff8, 0x4e68, 0x000),
-	Instr(d68010_movec        , 0xfffe, 0x4e7a, 0x000),
-	Instr(sw,Mw,E0, 0xfff8, 0x48a0, 0x000, Opcode.movem),     // d68000_movem_pd_16
+    Instr(d68000_move_fr_sr   , 0xffc0, 0x40c0, 0xbf8),
+    Instr(d68000_move_to_usp  , 0xfff8, 0x4e60, 0x000),
+    Instr(d68000_move_fr_usp  , 0xfff8, 0x4e68, 0x000),
+    Instr(d68010_movec        , 0xfffe, 0x4e7a, 0x000),
+    Instr(sw,Mw,E0, 0xfff8, 0x48a0, 0x000, Opcode.movem),     // d68000_movem_pd_16
 	Instr(sl,Ml,E0, 0xfff8, 0x48e0, 0x000, Opcode.movem),     // d68000_movem_pd_32
 	Instr(sw,Mw,E0, 0xffc0, 0x4880, 0x2f8, Opcode.movem),     // d68000_movem_re_16
 	Instr(sl,Ml,E0, 0xffc0, 0x48c0, 0x2f8, Opcode.movem),     // d68000_movem_re_32
-	Instr(sw,n,E0,mw, 0xffc0, 0x4c80, 0x37b, Opcode.movem),    // d68000_movem_er_16
-	Instr(sl,n,E0,ml, 0xffc0, 0x4cc0, 0x37b, Opcode.movem),    // d68000_movem_er_32
-	Instr(d68000_movep_er_16  , 0xf1f8, 0x0108, 0x000),
-	Instr(d68000_movep_er_32  , 0xf1f8, 0x0148, 0x000),
-	Instr(d68000_movep_re_16  , 0xf1f8, 0x0188, 0x000),
-	Instr(d68000_movep_re_32  , 0xf1f8, 0x01c8, 0x000),
+	Instr(sw,n,E0,mw, 0xffc0, 0x4c80, 0x37b, Opcode.movem),     // d68000_movem_er_16
+	Instr(sl,n,E0,ml, 0xffc0, 0x4cc0, 0x37b, Opcode.movem),     // d68000_movem_er_32
+	Instr(sw,Ad0,D9, 0xf1f8, 0x0108, 0x000, Opcode.movep),      // d68000_movep_er_16
+    Instr(sl,Ad0,D9, 0xf1f8, 0x0148, 0x000, Opcode.movep),      // 68000_movep_er_32
+    Instr(sw,D9,Ad0,             0xf1f8, 0x0188, 0x000, Opcode.movep),   // d68000_movep_re_16),
+	Instr(sl,D9,Ad0,             0xf1f8, 0x01c8, 0x000, Opcode.movep),   // d68000_movep_re_32
 	Instr(d68010_moves_8      , 0xffc0, 0x0e00, 0x3f8, iclass:InstrClass.System),
 	Instr(d68010_moves_16     , 0xffc0, 0x0e40, 0x3f8, iclass:InstrClass.System),
 	Instr(d68010_moves_32     , 0xffc0, 0x0e80, 0x3f8, iclass:InstrClass.System),

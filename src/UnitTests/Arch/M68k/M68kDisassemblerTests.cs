@@ -754,5 +754,20 @@ namespace Reko.UnitTests.Arch.M68k
         {
             RunTest("tst.w\t#$1234", 0x4A7C, 0x1234);
         }
+
+        [Test]
+        public void M68kdis_movep()
+        {
+            RunTest("movep.w\t$1234(a2),d2", 0x050A, 0x1234);
+            RunTest("movep.l\t$1234(a2),d2", 0x054A, 0x1234);
+            RunTest("movep.w\td2,$1234(a2)", 0x058A, 0x1234);
+            RunTest("movep.l\td2,$1234(a2)", 0x05CA, 0x1234);
+        }
+
+        [Test]
+        public void M68kdis_eori_ccr()
+        {
+            RunTest("eori.b\t#$80,ccr", 0x0A3C, 0x0080);
+        }
     }
 }
