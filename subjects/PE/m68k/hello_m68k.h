@@ -125,7 +125,7 @@ Eq_414: (union "Eq_414" (int32 u0) (up32 u1))
 	T_414 (in 7 - d0_150 : word32)
 	T_415 (in 0x00000000 : word32)
 Eq_458: (union "Eq_458" (bool u0) (byte u1))
-	T_458 (in DPB(CZ, false, 0) : byte)
+	T_458 (in DPB(CV, false, 0) : byte)
 Eq_459: (struct "Eq_459" (FFFFFAA8 word32 dwFFFFFAA8))
 	T_459 (in a5 : (ptr32 Eq_459))
 	T_477 (in a5 : (ptr32 Eq_459))
@@ -2341,7 +2341,7 @@ T_386: (in cond(v25_136) : byte)
   Class: Eq_386
   DataType: byte
   OrigDataType: byte
-T_387: (in CZ : byte)
+T_387: (in CV : byte)
   Class: Eq_386
   DataType: byte
   OrigDataType: byte
@@ -2569,7 +2569,7 @@ T_443: (in Z_177 : bool)
   Class: Eq_443
   DataType: bool
   OrigDataType: bool
-T_444: (in CZ_178 : byte)
+T_444: (in CV_178 : byte)
   Class: Eq_444
   DataType: byte
   OrigDataType: byte
@@ -2625,7 +2625,7 @@ T_457: (in false : bool)
   Class: Eq_457
   DataType: bool
   OrigDataType: bool
-T_458: (in DPB(CZ, false, 0) : byte)
+T_458: (in DPB(CV, false, 0) : byte)
   Class: Eq_458
   DataType: Eq_458
   OrigDataType: (union (bool u0) (byte u1))

@@ -199,11 +199,11 @@ void fn000016D0(Eq_365 * a5, byte * dwArg08)
 	byte * dwArg08_122 = dwArg08 + 0x01;
 	if (v17_42 != 0x00)
 	{
-		while (!DPB(CZ, false, 0))
+		while (!DPB(CV, false, 0))
 		{
 			int32 d0_139;
 			ci8 v25_136 = (byte) d6_131 - 0x20;
-			CZ = cond(v25_136);
+			CV = cond(v25_136);
 			if (v25_136 >= 0x00 && (byte) d6_131 <= 0x78)
 				d0_139 = (int32) (a5->aFFFFF7E8[(int32) (byte) d6_131] & 0x0F);
 			else
@@ -230,7 +230,7 @@ void fn000016D0(Eq_365 * a5, byte * dwArg08)
 				bool C_175;
 				bool V_176;
 				bool Z_177;
-				byte CZ_178;
+				byte CV_178;
 				byte VZN_179;
 				word32 d0_180;
 				word32 d2_181;

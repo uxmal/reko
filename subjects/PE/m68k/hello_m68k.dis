@@ -196,7 +196,7 @@ l00001556:
 	byte CVZN_80 = cond(v19_77)
 	branch v19_77 > 0x00 l00001576
 // DataOut: a2 a3 d0 d1 d2
-// DataOut (flags): CZ
+// DataOut (flags): CV
 // SymbolicIn: a7:fp - 18 a3:<invalid> a2:<invalid> d0:<invalid> a0:<invalid> a1:<invalid> d1:<invalid> d2:SLICE(a3, word32, 16) -16(fp):0x44415441 -8(fp):a2 -4(fp):a3
 // LocalsOut: fp(32)
 
@@ -517,7 +517,7 @@ l000016FA:
 // LocalsOut: fp(32) Local -000C(32) Stack +0008(32)
 
 l0000170E:
-	branch DPB(CZ, false, 0) l00001C34
+	branch DPB(CV, false, 0) l00001C34
 // DataOut: a2 a3 d6
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000244 a6:fp - 0x00000004 a3:a5 + -2040 a2:a5 + -2072 d7:<invalid> a0:<invalid> d6:<invalid> d3:<invalid> d4:<invalid> d5:<invalid> a4:<invalid> d0:<invalid> d2:7 -580(fp):d3 -576(fp):d4 -572(fp):d5 -568(fp):d6 -564(fp):d7 -560(fp):a2 -556(fp):a3 -552(fp):a4 -548(fp):0 -12(fp):<invalid> -4(fp):a6 8(fp):<invalid>
@@ -526,7 +526,7 @@ l0000170E:
 l00001716:
 	word32 d0_139
 	byte v25_136 = (byte) d6_131 - 0x20
-	CZ = cond(v25_136) (alias)
+	CV = cond(v25_136) (alias)
 	branch v25_136 < 0x00 l00001734
 // DataOut: a2 a3 d6
 // DataOut (flags): 
@@ -598,13 +598,13 @@ l00001750:
 	bool C_175
 	bool V_176
 	bool Z_177
-	byte CZ_178
+	byte CV_178
 	byte VZN_179
 	word32 d0_180
 	word32 d2_181
 	call 0x00001758 + (int32) Mem0[0x00001758 + (int32) ((int16) d0_150) * 2:word16] (retsize: 4; depth: 584)
-		uses: a0_129,a2_33,a3_32,a4_116,a5,a6_5,a7_28,C_156,CVZN_159,CVZNX_149,CZ_138,d0_158,d2_153,d3_110,d4_112,d5_114,d6_131,d7_118,dwLoc0224_36,dwLoc0228_9,dwLoc022C_12,dwLoc0230_15,dwLoc0234_18,dwLoc0238_21,dwLoc023C_24,dwLoc0240_27,dwLoc0244_30,dwLoc04_4,dwLoc0C_152,dwLoc10,dwLoc14,dwLoc18,dwLoc1C,dwLoc20,V_141,VZN_140,Z_127,ZN_142
-		defs: a0_172,a2_164,a3_163,a4_162,a5_170,a6_161,a7_160,C_175,CVZN_171,CVZNX_173,CZ_178,d0_180,d2_181,d3_169,d4_168,d5_167,d6_166,d7_165,V_176,VZN_179,Z_177,ZN_174
+		uses: a0_129,a2_33,a3_32,a4_116,a5,a6_5,a7_28,C_156,CV_138,CVZN_159,CVZNX_149,d0_158,d2_153,d3_110,d4_112,d5_114,d6_131,d7_118,dwLoc0224_36,dwLoc0228_9,dwLoc022C_12,dwLoc0230_15,dwLoc0234_18,dwLoc0238_21,dwLoc023C_24,dwLoc0240_27,dwLoc0244_30,dwLoc04_4,dwLoc0C_152,dwLoc10,dwLoc14,dwLoc18,dwLoc1C,dwLoc20,V_141,VZN_140,Z_127,ZN_142
+		defs: a0_172,a2_164,a3_163,a4_162,a5_170,a6_161,a7_160,C_175,CV_178,CVZN_171,CVZNX_173,d0_180,d2_181,d3_169,d4_168,d5_167,d6_166,d7_165,V_176,VZN_179,Z_177,ZN_174
 	return
 // DataOut:
 // DataOut (flags): 
