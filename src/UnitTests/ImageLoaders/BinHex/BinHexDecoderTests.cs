@@ -81,6 +81,7 @@ namespace Reko.UnitTests.ImageLoaders.BinHex
         {
             file.Write(":");
             Encode(0x42, 0x90, 0x03);
+            enc.Flush();
             file.Write(":");
             BinHexDecoder decoder = CreateDecoder();
             IEnumerator<byte> e = decoder.GetBytes().GetEnumerator();
@@ -95,6 +96,7 @@ namespace Reko.UnitTests.ImageLoaders.BinHex
         {
             file.Write(":");
             Encode(0x80, 0x00, 0x90, 0x06, 0x90, 0x00, 0x00);
+            enc.Flush();
             file.Write(":");
 
             var decoder = CreateDecoder();
@@ -109,6 +111,7 @@ namespace Reko.UnitTests.ImageLoaders.BinHex
         {
             file.Write(":");
             Encode(0x2B, 0x90, 0x00, 0x90, 0x05);
+            enc.Flush();
             file.Write(":");
             var decoder = CreateDecoder();
             var bytes = decoder.GetBytes();
