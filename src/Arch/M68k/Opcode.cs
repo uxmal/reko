@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -220,6 +220,24 @@ namespace Reko.Arch.M68k
         ori,
         
         pack,
+
+        pbas,
+        pbac,
+        pbbs,
+        pbbc,
+        pbcc,
+        pbcs,
+        pbgs,
+        pbgc,
+        pbis,
+        pbic,
+        pbls,
+        pblc,
+        pbss,
+        pbsc,
+        pbws,
+        pbwc,
+
         pea,
         pflushr,
         pload,

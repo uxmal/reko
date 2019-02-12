@@ -90,11 +90,10 @@ namespace Reko.Arch.M68k
 
         private void WriteOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            var memOp = op as MemoryOperand;
-            if (memOp != null && memOp.Base == Registers.pc)
+            if (op is MemoryOperand memOp && memOp.Base == Registers.pc)
             {
                 var uAddr = Address.ToUInt32() + memOp.Offset.ToInt32();
-                var addr = Address.Ptr32((uint)uAddr);
+                var addr = Address.Ptr32((uint) uAddr);
                 if ((options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
                 {
                     writer.WriteAddress(addr.ToString(), addr);
