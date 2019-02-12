@@ -48,9 +48,9 @@ namespace Reko.Arch.M68k
             CarryFlagMask = (uint)FlagM.CF;
             StackRegister = Registers.a7;
             flagGroups = new Dictionary<uint, FlagGroupStorage>();
-    }
+        }
 
-    public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
+        public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
             return M68kDisassembler.Create68020(rdr);
         }

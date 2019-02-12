@@ -742,5 +742,11 @@ namespace Reko.UnitTests.Arch.M68k
         {
             RunTest("bfins\td3,d5,{d3:#$00000002}", 0xEFC5, 0x38C2);
         }
+
+        [Test]
+        public void M68kdis_fsave()
+        {
+            RunTest("fsave\t(a0)", 0xF310);
+        }
     }
 }

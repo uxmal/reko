@@ -86,7 +86,6 @@ namespace Reko.Arch.M68k
             return instr;
         }
 
-#if !NEVER
         /* ======================================================================== */
         /* ========================= LICENSING & COPYRIGHT ======================== */
         /* ======================================================================== */
@@ -692,14 +691,16 @@ namespace Reko.Arch.M68k
 
                 if ((g_cpu_type & M68010_LESS) != 0 && EXT_INDEX_SCALE(extension) != 0)
                 {
-                    throw new NotSupportedException("Invalid address mode.");
+                    // Invalid address mode.
+                    return null;
                 }
 
                 if (EXT_FULL(extension))
                 {
                     if ((g_cpu_type & M68010_LESS) != 0)
                     {
-                        throw new NotSupportedException("Invalid address mode.");
+                        // Invalid address mode.
+                        return null;
                     }
 
                     if (EXT_EFFECTIVE_ZERO(extension))
@@ -760,9 +761,6 @@ namespace Reko.Arch.M68k
                         EXT_INDEX_AR(extension) ? 'A' : 'D', EXT_INDEX_REGISTER(extension),
                         EXT_INDEX_LONG(extension) ? 'l' : 'w');
                 }
-                if (EXT_INDEX_SCALE(extension) != 0)
-                    mode += string.Format("*{0}", 1 << EXT_INDEX_SCALE(extension));
-                mode += ")";
                 return new IndexedOperand(
                     dataWidth,
                     null,
@@ -919,6 +917,31 @@ namespace Reko.Arch.M68k
 
         private static M68kInstruction d68020_bfchg(M68kDisassembler dasm)
         {
+            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
+
+            if (!dasm.rdr.TryReadBeUInt16(out ushort extension))
+                return Invalid();
+
+            MachineOperand offset;
+            if (BIT_B(extension))
+                offset = get_data_reg((extension >> 6) & 7);
+            else
+                offset = new M68kImmediateOperand(Constant.Byte((byte)((extension >> 6) & 31)));
+
+            MachineOperand width;
+            if (BIT_5(extension))
+                width = new RegisterOperand(Registers.DataRegister(extension & 7));
+            else
+                width = new M68kImmediateOperand(Constant.UInt32(g_5bit_data_table[extension & 31]));
+
+            dasm.instr.code = Opcode.bfchg;
+            dasm.instr.op1 = dasm.get_ea_mode_str_8(dasm.instruction);
+            dasm.instr.op2 = new BitfieldOperand(PrimitiveType.Word32, offset, width);
+            return dasm.instr;
+        }
+
+        private static M68kInstruction d68020_bfclr(M68kDisassembler dasm)
+        {
             MachineOperand offset;
             MachineOperand width;
 
@@ -935,53 +958,34 @@ namespace Reko.Arch.M68k
                 width = new RegisterOperand(Registers.DataRegister(extension & 7));
             else
                 width = new M68kImmediateOperand(Constant.UInt32(g_5bit_data_table[extension & 31]));
-
-            dasm.g_dasm_str = string.Format("bfchg   {0} {1}:{2}; (2+)", dasm.get_ea_mode_str_8(dasm.instruction), offset, width);
-            return Invalid();
-        }
-
-        private static M68kInstruction d68020_bfclr(M68kDisassembler dasm)
-        {
-            string offset;
-            string width;
-
-            dasm.LIMIT_CPU_TYPES(M68020_PLUS);
-
-            if (!dasm.rdr.TryReadBeUInt16(out ushort extension))
-                return Invalid();
-
-            if (BIT_B(extension))
-                offset = string.Format("D{0}", (extension >> 6) & 7);
-            else
-                offset = string.Format("{0}", (extension >> 6) & 31);
-            if (BIT_5(extension))
-                width = string.Format("D{0}", extension & 7);
-            else
-                width = string.Format("{0}", g_5bit_data_table[extension & 31]);
-            dasm.g_dasm_str = string.Format("bfclr   {0} {1}:{2}; (2+)", dasm.get_ea_mode_str_8(dasm.instruction), offset, width);
-            return Invalid();
+            dasm.instr.code = Opcode.bfclr;
+            dasm.instr.op1 = dasm.get_ea_mode_str_8(dasm.instruction);
+            dasm.instr.op2 = new BitfieldOperand(PrimitiveType.Word32, offset, width);
+            return dasm.instr;
         }
 
         private static M68kInstruction d68020_bfexts(M68kDisassembler dasm)
         {
-            string offset; ;
-            string width; ;
-
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
 
             if (!dasm.rdr.TryReadBeUInt16(out ushort extension))
                 return Invalid();
 
+            MachineOperand offset;
             if (BIT_B(extension))
-                offset = string.Format("D{0}", (extension >> 6) & 7);
+                offset = get_data_reg((extension >> 6) & 7);
             else
-                offset = string.Format("{0}", (extension >> 6) & 31);
+                offset = new M68kImmediateOperand(Constant.Byte((byte) ((extension >> 6) & 31)));
+            MachineOperand width;
             if (BIT_5(extension))
-                width = string.Format("D{0}", extension & 7);
+                width = new RegisterOperand(Registers.DataRegister(extension & 7));
             else
-                width = string.Format("{0}", g_5bit_data_table[extension & 31]);
-            dasm.g_dasm_str = string.Format("bfexts  D{0},{1} {2}:{3}; (2+)", (extension >> 12) & 7, dasm.get_ea_mode_str_8(dasm.instruction), offset, width);
-            return Invalid();
+                width = new M68kImmediateOperand(Constant.UInt32(g_5bit_data_table[extension & 31]));
+            dasm.instr.code = Opcode.bfexts;
+            dasm.instr.op1 = get_data_reg((extension >> 12) & 7);
+            dasm.instr.op2 = dasm.get_ea_mode_str_8(dasm.instruction);
+            dasm.instr.op3 = new BitfieldOperand(PrimitiveType.Word32, offset, width);
+            return dasm.instr;
         }
 
         private static M68kInstruction d68020_bfextu(M68kDisassembler dasm)
@@ -1015,13 +1019,16 @@ namespace Reko.Arch.M68k
                 return Invalid();
 
             var offset = BIT_B(extension)
-                ? string.Format("D{0}", (extension >> 6) & 7)
-                : string.Format("{0}", (extension >> 6) & 31);
+                ? new RegisterOperand(Registers.DataRegister((extension >> 6) & 7))
+                : (MachineOperand) new M68kImmediateOperand(Constant.Int32((extension >> 6) & 31));
             var width = BIT_5(extension)
-                ? string.Format("D{0}", extension & 7)
-                : string.Format("{0}", g_5bit_data_table[extension & 31]);
-            dasm.g_dasm_str = string.Format("bfffo   D{0},{1} {2}:{3}; (2+)", (extension >> 12) & 7, dasm.get_ea_mode_str_8(dasm.instruction), offset, width);
-            return Invalid();
+                ? new RegisterOperand(Registers.DataRegister(extension & 7))
+                : (MachineOperand) new M68kImmediateOperand(Constant.Int32((int) g_5bit_data_table[extension & 31]));
+            dasm.instr.code = Opcode.bfffo;
+            dasm.instr.op1 = get_data_reg((extension >> 12) & 7);
+            dasm.instr.op2 = dasm.get_ea_mode_str_8(dasm.instruction);
+            dasm.instr.op3 = new BitfieldOperand(PrimitiveType.Word32, offset, width);
+            return dasm.instr;
         }
 
         private static M68kInstruction d68020_bfins(M68kDisassembler dasm)
@@ -1046,45 +1053,39 @@ namespace Reko.Arch.M68k
 
         private static M68kInstruction d68020_bfset(M68kDisassembler dasm)
         {
-            string offset; 
-            string width;
-
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
 
             if (!dasm.rdr.TryReadBeUInt16(out ushort extension))
                 return Invalid();
-            if (BIT_B(extension))
-                offset = string.Format("D{0}", (extension >> 6) & 7);
-            else
-                offset = string.Format("{0}", (extension >> 6) & 31);
-            if (BIT_5(extension))
-                width = string.Format("D{0}", extension & 7);
-            else
-                width = string.Format("{0}", g_5bit_data_table[extension & 31]);
-            dasm.g_dasm_str = string.Format("bfset   {0} {1}:{2}; (2+)", dasm.get_ea_mode_str_8(dasm.instruction), offset, width);
-            return Invalid();
+            var offset = BIT_B(extension)
+                ? new RegisterOperand(Registers.DataRegister((extension >> 6) & 7))
+                : (MachineOperand) new M68kImmediateOperand(Constant.Int32((extension >> 6) & 31));
+            var width = BIT_5(extension)
+                ? new RegisterOperand(Registers.DataRegister(extension & 7))
+                : (MachineOperand) new M68kImmediateOperand(Constant.Int32((int)g_5bit_data_table[extension & 31]));
+            dasm.instr.code = Opcode.bfins;
+            dasm.instr.op1 = dasm.get_ea_mode_str_8(dasm.instruction);
+            dasm.instr.op2 = new BitfieldOperand(PrimitiveType.Word32, offset, width);
+            return dasm.instr;
         }
 
         private static M68kInstruction d68020_bftst(M68kDisassembler dasm)
         {
-            string offset; 
-            string width; 
-
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
 
             if (!dasm.rdr.TryReadBeUInt16(out ushort extension))
                 return Invalid();
 
-            if (BIT_B(extension))
-                offset = string.Format("D{0}", (extension >> 6) & 7);
-            else
-                offset = string.Format("{0}", (extension >> 6) & 31);
-            if (BIT_5(extension))
-                width = string.Format("D{0}", extension & 7);
-            else
-                width = string.Format("{0}", g_5bit_data_table[extension & 31]);
-            dasm.g_dasm_str = string.Format("bftst   {0} {1}:{2}; (2+)", dasm.get_ea_mode_str_8(dasm.instruction), offset, width);
-            return Invalid();
+            var offset = BIT_B(extension)
+                ? new RegisterOperand(Registers.DataRegister((extension >> 6) & 7))
+                : (MachineOperand) new M68kImmediateOperand(Constant.Int32((extension >> 6) & 31));
+            var width = BIT_5(extension)
+                ? new RegisterOperand(Registers.DataRegister(extension & 7))
+                : (MachineOperand) new M68kImmediateOperand(Constant.Int32((int) g_5bit_data_table[extension & 31]));
+            dasm.instr.code = Opcode.bftst;
+            dasm.instr.op1 = dasm.get_ea_mode_str_8(dasm.instruction);
+            dasm.instr.op2 = new BitfieldOperand(PrimitiveType.Word32, offset, width);
+            return dasm.instr;
         }
 
         private static M68kInstruction d68020_callm(M68kDisassembler dasm)
@@ -1449,7 +1450,9 @@ namespace Reko.Arch.M68k
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
             if (((dasm.instruction >> 9) & 7) == 1)
             {
-                dasm.g_dasm_str = string.Format("fsave   {0}", dasm.get_ea_mode_str_8(dasm.instruction));
+                dasm.instr.code = Opcode.fsave;
+                dasm.instr.op1 = dasm.get_ea_mode_str_8(dasm.instruction);
+                return dasm.instr;
             }
             else
             {
@@ -1537,8 +1540,8 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 Address = dasm.instr.Address,
-                code = g_dbcc[(dasm.instruction >> 8) & 0xf],
                 iclass = InstrClass.ConditionalTransfer,
+                code = g_dbcc[(dasm.instruction >> 8) & 0xf],
                 op1 = get_data_reg(dasm.instruction & 7),
                 op2 = new M68kAddressOperand(temp_pc + sDisplacement)
             };
@@ -3026,14 +3029,14 @@ namespace Reko.Arch.M68k
 	new Decoder("sb:D9,D0", 0xf1f8, 0xe028, 0x000, Opcode.lsr),       // d68000_lsr_r_8  
 	new Decoder("sw:D9,D0", 0xf1f8, 0xe068, 0x000, Opcode.lsr),       // d68000_lsr_r_16 
 	new Decoder("sl:D9,D0", 0xf1f8, 0xe0a8, 0x000, Opcode.lsr),       // d68000_lsr_r_32 
-	new Decoder("sw:E0", 0xffc0, 0xe2c0, 0x3f8, Opcode.lsr),          // d68000_lsr_ea   
+	new Decoder("sw:E0",    0xffc0, 0xe2c0, 0x3f8, Opcode.lsr),       // d68000_lsr_ea   
 	new Decoder("s6:q9,D0", 0xf1f8, 0xe108, 0x000, Opcode.lsl),       // d68000_lsl_s_8  
 	new Decoder("s6:q9,D0", 0xf1f8, 0xe148, 0x000, Opcode.lsl),       // d68000_lsl_s_16 
 	new Decoder("s6:q9,D0", 0xf1f8, 0xe188, 0x000, Opcode.lsl),       // d68000_lsl_s_32 
 	new Decoder("sb:D9,D0", 0xf1f8, 0xe128, 0x000, Opcode.lsl),       // d68000_lsl_r_8  
 	new Decoder("sw:D9,D0", 0xf1f8, 0xe168, 0x000, Opcode.lsl),       // d68000_lsl_r_16 
 	new Decoder("sl:D9,D0", 0xf1f8, 0xe1a8, 0x000, Opcode.lsl),       // d68000_lsl_r_32 
-	new Decoder("sw:E0", 0xffc0, 0xe3c0, 0x3f8, Opcode.lsl),          // d68000_lsl_ea       
+	new Decoder("sw:E0",    0xffc0, 0xe3c0, 0x3f8, Opcode.lsl),       // d68000_lsl_ea       
 	new Decoder("sb:E0,e6", 0xf000, 0x1000, 0xbff, Opcode.move),      // d68000_move_8   
 	new Decoder("sw:E0,e6", 0xf000, 0x3000, 0xfff, Opcode.move),      // d68000_move_16  
 	new Decoder("sl:E0,e6", 0xf000, 0x2000, 0xfff, Opcode.move),      // d68000_move_32  
@@ -3323,6 +3326,5 @@ namespace Reko.Arch.M68k
                 }
             }
         }
-#endif
     }
 }

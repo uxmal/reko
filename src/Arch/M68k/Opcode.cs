@@ -63,7 +63,12 @@ namespace Reko.Arch.M68k
         bvc,
         bvs,
 
+        bfchg,
+        bfclr,
+        bfexts,
+        bfffo,
         bfins,
+        bftst,
         callm,
         cas,
         cas2,
@@ -162,6 +167,7 @@ namespace Reko.Arch.M68k
         fdmul,
         fssub,
         fdsub,
+        fsave,
 
         fbf,
         fbeq,
