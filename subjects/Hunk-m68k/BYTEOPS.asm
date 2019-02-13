@@ -2479,7 +2479,7 @@ l00002472:
 l00002476:
 	lea	$00002BC4,a1
 	and.w	#$00FF,d6
-	add.b	(a1,d6),d4
+	add.b	(a1,d6.w),d4
 	moveq	#$20,d5
 	sub.l	d4,d5
 	bne	$00002496
@@ -2828,7 +2828,7 @@ l000026BA:
 l000026BE:
 	lea	$00002BC4,a1
 	and.w	#$00FF,d6
-	add.b	(a1,d6),d4
+	add.b	(a1,d6.w),d4
 	moveq	#$20,d5
 	sub.l	d4,d5
 	bne	$000026E0

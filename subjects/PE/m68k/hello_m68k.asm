@@ -338,8 +338,8 @@ l00001736:
 	bcs	$00001C24
 
 l00001750:
-	move.w	(06,pc,d0*2),d0
-	jmp.l	(02,pc,d0)
+	move.w	($08,pc,d0.w*2),d0
+	jmp.l	($04,pc,d0.w)
 00001758                         00 10 00 28 00 40 00 A4         ...(.@..
 00001760 00 E4 00 EC 01 20 01 44 48 6E FD E0 2F 2E 00 08 ..... .DHn../...
 00001770 49 C6 2F 06 4E BA 04 CA 4F EF 00 0C 60 00 04 A6 I./.N...O...`...
@@ -2141,7 +2141,7 @@ fn00002AE0 proc
 	beq	$00002AFE
 
 l00002AF8:
-	movea.l	(0C,a0,d3),a0
+	movea.l	($0C,a0,d3),a0
 	illegal	#$A01F
 
 l00002AFE:
@@ -2149,8 +2149,8 @@ l00002AFE:
 	movea.l	(a0),a0
 	moveq	#$00,d2
 	move.l	d2,(a2,d3)
-	move.l	d2,(04,a2,d3)
-	move.l	d2,(08,a2,d3)
+	move.l	d2,($04,a2,d3)
+	move.l	d2,($08,a2,d3)
 	move.l	(a7)+,d3
 	unlk	a6
 	rts
@@ -2278,8 +2278,8 @@ l00002C32:
 	bcs	$00002C60
 
 l00002C4E:
-	move.w	(08,pc,d0*2),d0
-	jmp.l	(04,pc,d0)
+	move.w	($0A,pc,d0.w*2),d0
+	jmp.l	($06,pc,d0.w)
 00002C56                   4E 71 00 7C 00 A8 01 00 01 1C       Nq.|......
 
 l00002C60:

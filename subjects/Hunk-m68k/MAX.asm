@@ -1629,7 +1629,7 @@ l00001C84:
 	move.b	$0037(a7),d0
 	and.l	#$000000FF,d0
 	lea	$00002BEC,a0
-	btst.w	#$0000,(01,a0,d0)
+	btst.w	#$0000,($01,a0,d0.w)
 	beq	$00001CAA
 
 l00001CA6:
@@ -1800,7 +1800,7 @@ l00001DF6:
 	move.b	$0037(a7),d0
 	and.l	#$000000FF,d0
 	lea	$00002BEC,a0
-	btst.w	#$0000,(01,a0,d0)
+	btst.w	#$0000,($01,a0,d0.w)
 	beq	$00001E1C
 
 l00001E18:
@@ -4962,7 +4962,7 @@ l00003A9E:
 l00003AA2:
 	lea	$00003DCC,a1
 	and.w	#$00FF,d6
-	add.b	(a1,d6),d4
+	add.b	(a1,d6.w),d4
 	moveq	#$20,d5
 	sub.l	d4,d5
 	bne	$00003AC2
@@ -5311,7 +5311,7 @@ l00003CE6:
 l00003CEA:
 	lea	$00003DCC,a1
 	and.w	#$00FF,d6
-	add.b	(a1,d6),d4
+	add.b	(a1,d6.w),d4
 	moveq	#$20,d5
 	sub.l	d4,d5
 	bne	$00003D0C
