@@ -47,8 +47,7 @@ namespace Reko.Arch.Pdp11
             if (!rdr.IsValid)
                 return null;
             var addr = rdr.Address;
-            ushort opcode;
-            if (!rdr.TryReadLeUInt16(out opcode))
+            if (!rdr.TryReadLeUInt16(out ushort opcode))
                 return null;
             dataWidth = DataWidthFromSizeBit(opcode & 0x8000u);
             var decoder = decoders[(opcode >> 0x0C) & 0x00F];
