@@ -34,15 +34,16 @@ namespace Reko.Arch.Vax
 {
     public partial class VaxRewriter : IEnumerable<RtlInstructionCluster>
     {
-        private IStorageBinder binder;
-        private IRewriterHost host;
-        private EndianImageReader rdr;
-        private ProcessorState state;
-        private VaxArchitecture arch;
+        private readonly IStorageBinder binder;
+        private readonly IRewriterHost host;
+        private readonly EndianImageReader rdr;
+        private readonly ProcessorState state;
+        private readonly VaxArchitecture arch;
+        private readonly IEnumerator<VaxInstruction> dasm;
         private InstrClass rtlc;
+        private VaxInstruction instr;
         private List<RtlInstruction> rtlInstructions;
         private RtlEmitter m;
-        private IEnumerator<VaxInstruction> dasm;
 
         public VaxRewriter(VaxArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
@@ -58,26 +59,27 @@ namespace Reko.Arch.Vax
         {
             while (dasm.MoveNext())
             {
-                var addr = dasm.Current.Address;
-                var len = dasm.Current.Length;
+                instr = dasm.Current;
+                var addr = this.instr.Address;
+                var len = this.instr.Length;
                 rtlInstructions = new List<RtlInstruction>();
-                rtlc = dasm.Current.IClass;
+                rtlc = this.instr.IClass;
                 m = new RtlEmitter(rtlInstructions);
-                switch (dasm.Current.Opcode)
+                switch (this.instr.Opcode)
                 {
                 default:
                     //EmitUnitTest();
                     //emitter.SideEffect(Constant.String(
-                    //    dasm.Current.ToString(),
+                    //    this.instr.ToString(),
                     //    StringType.NullTerminated(PrimitiveType.Char)));
-                    host.Warn(
-                        dasm.Current.Address,
-                        "VAX instruction {0} not supported yet.",
-                        dasm.Current.Opcode);
+                    //host.Warn(
+                    //    this.instr.Address,
+                    //    "VAX instruction {0} not supported yet.",
+                    //    this.instr.Opcode);
                     m.Invalid();
                     break;
-                case Opcode.Invalid: m.Invalid(); break;
-                case Opcode.Reserved: m.Invalid(); break;
+                case Opcode.Invalid: rtlc = InstrClass.Invalid; m.Invalid(); break;
+                case Opcode.Reserved: rtlc = InstrClass.Invalid; m.Invalid(); break;
                 case Opcode.acbb: RewriteAcbi(PrimitiveType.Byte); break;
                 case Opcode.acbd: RewriteAcbf(PrimitiveType.Real64); break;
                 case Opcode.acbf: RewriteAcbf(PrimitiveType.Real32); break;
@@ -149,8 +151,11 @@ namespace Reko.Arch.Vax
                 case Opcode.bsbb: RewriteBsb(); break;
                 case Opcode.bsbw: RewriteBsb(); break;
 
-                case Opcode.caseb: goto default;
-                case Opcode.casel: goto default;
+                case Opcode.callg: RewriteCallg(); break;
+                case Opcode.calls: RewriteCalls(); break;
+                case Opcode.caseb: RewriteCase(PrimitiveType.Byte); break;
+                case Opcode.casel: RewriteCase(PrimitiveType.Word32); break;
+                case Opcode.casew: RewriteCase(PrimitiveType.Word16); break;
                 case Opcode.chme: RewriteChm("vax_chme"); break;
                 case Opcode.chmk: RewriteChm("vax_chmk"); break;
                 case Opcode.chms: RewriteChm("vax_chms"); break;
@@ -240,6 +245,8 @@ namespace Reko.Arch.Vax
                 case Opcode.emodf: RewriteEmod("emodf", PrimitiveType.Real32 , PrimitiveType.Byte); break; //$TODO: VAX floating point types
                 case Opcode.emodg: RewriteEmod("emodg", PrimitiveType.Real64 , PrimitiveType.Word16); break; //$TODO: VAX floating point types
                 case Opcode.emodh: RewriteEmod("emodh", PrimitiveType.Real128, PrimitiveType.Word16); break; //$TODO: VAX floating point types
+                case Opcode.extv: RewriteExtv(Domain.SignedInt); break;
+                case Opcode.extzv: RewriteExtv(Domain.UnsignedInt); break;
 
                 case Opcode.ffc: RewriteFfx("__ffc"); break;
                 case Opcode.ffs: RewriteFfx("__ffs"); break;
@@ -277,7 +284,7 @@ namespace Reko.Arch.Vax
                 case Opcode.movh:   RewriteAluUnary2(PrimitiveType.Real128,Copy, NZ00); break;
                 case Opcode.movl:   RewriteAluUnary2(PrimitiveType.Word32, Copy, NZ00); break;
                 case Opcode.movo:   RewriteAluUnary2(PrimitiveType.Word128,Copy, NZ00); break;
-                case Opcode.movp: goto default;
+                case Opcode.movp:   RewriteMovp(); break;
                 case Opcode.movq:   RewriteAluUnary2(PrimitiveType.Word64, Copy, NZ00); break;
                 case Opcode.movw:   RewriteAluUnary2(PrimitiveType.Word16, Copy, NZ00); break;
                 case Opcode.movzbl: RewriteMovz(PrimitiveType.Byte, PrimitiveType.UInt32); break;
@@ -306,7 +313,7 @@ namespace Reko.Arch.Vax
                 case Opcode.polyh: RewritePoly(PrimitiveType.Real128); break;
 
                 case Opcode.popr:  goto default;
-                case Opcode.prober: goto default;
+                case Opcode.prober: RewriteProber(); break;
                 case Opcode.probew: goto default;
                 case Opcode.pushr:  goto default;
 
@@ -376,15 +383,10 @@ namespace Reko.Arch.Vax
 
                 case Opcode.emul: goto default;
                 case Opcode.ediv: goto default;
-                case Opcode.casew: goto default;
-                case Opcode.extv: goto default;
-                case Opcode.extzv: goto default;
                 case Opcode.insv: goto default;
 
                 case Opcode.mtpr: goto default;
-                case Opcode.callg: goto default;
                 case Opcode.mfpr: goto default;
-                case Opcode.calls: goto default;
                 case Opcode.movpsl: goto default;
                 case Opcode.xfc: goto default;
                 case Opcode.mfvp: goto default;
@@ -478,21 +480,21 @@ namespace Reko.Arch.Vax
         [Conditional("DEBUG")]
         private void EmitUnitTest()
         {
-            if (seen.Contains(dasm.Current.Opcode))
+            if (seen.Contains(this.instr.Opcode))
                 return;
-            seen.Add(dasm.Current.Opcode);
+            seen.Add(this.instr.Opcode);
 
             var r2 = rdr.Clone();
-            r2.Offset -= dasm.Current.Length;
-            var bytes = r2.ReadBytes(dasm.Current.Length);
+            r2.Offset -= this.instr.Length;
+            var bytes = r2.ReadBytes(this.instr.Length);
             Debug.WriteLine("        [Test]");
-            Debug.WriteLine("        public void VaxRw_" + dasm.Current.Opcode + "()");
+            Debug.WriteLine("        public void VaxRw_" + this.instr.Opcode + "()");
             Debug.WriteLine("        {");
             Debug.Write("            BuildTest(");
             Debug.Write(string.Join(
                 ", ",
                 bytes.Select(b => string.Format("0x{0:X2}", (int)b))));
-            Debug.WriteLine(");\t// " + dasm.Current.ToString());
+            Debug.WriteLine(");\t// " + this.instr.ToString());
             Debug.WriteLine("            AssertCode(");
             Debug.WriteLine("                \"0|L--|00100000(2): 1 instructions\",");
             Debug.WriteLine("                \"1|L--|@@@\");");
@@ -507,10 +509,10 @@ namespace Reko.Arch.Vax
 
         private Expression RewriteSrcOp(int iOp, PrimitiveType width)
         {
-            var op = dasm.Current.Operands[iOp];
-            var regOp = op as RegisterOperand;
-            if (regOp != null)
+            var op = this.instr.Operands[iOp];
+            switch (op)
             {
+            case RegisterOperand regOp:
                 var reg = binder.EnsureRegister(regOp.Register);
                 if (reg == null)
                     return null;
@@ -540,23 +542,20 @@ namespace Reko.Arch.Vax
                 {
                     return m.Cast(width, reg);
                 }
-            }
-            var immOp = op as ImmediateOperand;
-            if (immOp != null)
-            {
+
+            case ImmediateOperand immOp:
                 return immOp.Value;
-            }
-            var memOp = op as MemoryOperand;
-            if (memOp != null)
-            {
+
+            case MemoryOperand memOp:
                 Expression ea;
                 if (memOp.Base != null)
                 {
-                    var reg = binder.EnsureRegister(memOp.Base);
+                    reg = binder.EnsureRegister(memOp.Base);
                     if (memOp.AutoDecrement)
                     {
                         m.Assign(reg, m.ISub(reg, width.Size));
-                    } else if (memOp.AutoIncrement)
+                    }
+                    else if (memOp.AutoIncrement)
                     {
                         var tmp = binder.CreateTemporary(reg.DataType);
                         m.Assign(tmp, reg);
@@ -593,10 +592,8 @@ namespace Reko.Arch.Vax
                 else
                 {
                 }
-            }
-            var addrOp = op as AddressOperand;
-            if (addrOp != null)
-            {
+                break;
+            case AddressOperand addrOp:
                 return addrOp.Address;
             }
             throw new NotImplementedException(op.GetType().Name);
@@ -604,7 +601,7 @@ namespace Reko.Arch.Vax
 
         private Identifier RewriteDstOp(int iOp, PrimitiveType width, Func<Expression, Expression> fn)
         {
-            var op = dasm.Current.Operands[iOp];
+            var op = this.instr.Operands[iOp];
             var regOp = op as RegisterOperand;
             if (regOp != null)
             {
@@ -697,6 +694,21 @@ namespace Reko.Arch.Vax
             }
             var grf = FlagGroup(FlagM.NZVC);
             m.Assign(grf, m.Cond(dst));
+            return true;
+        }
+
+        private bool NZ0(Expression dst)
+        {
+            if (dst == null)
+            {
+                EmitInvalid();
+                return false;
+            }
+            var grf = FlagGroup(FlagM.NF | FlagM.ZF);
+            m.Assign(grf, m.Cond(dst));
+            var c = FlagGroup(FlagM.CF);
+            var v = FlagGroup(FlagM.VF);
+            m.Assign(v, Constant.False());
             return true;
         }
 

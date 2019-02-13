@@ -41,13 +41,18 @@ namespace Reko.Arch.Vax
             var index = RewriteDstOp(2, width, e => m.FAdd(e, add));
             if (!NZV(index))
                 return;
-            var cAdd = add as Constant;
-            if (cAdd == null)
+            if (!(add is Constant cAdd))
             {
                 host.Error(
-                    dasm.Current.Address,
+                    this.instr.Address,
                     "Instruction {0} too complex to rewrite.",
-                    dasm.Current);
+                    this.instr);
+                m.Invalid();
+                return;
+            }
+            if (!(this.instr.Operands[3] is AddressOperand addrOp))
+            {
+                rtlc = InstrClass.Invalid;
                 m.Invalid();
                 return;
             }
@@ -55,14 +60,14 @@ namespace Reko.Arch.Vax
             {
                 m.Branch(
                     m.FLe(index, limit),
-                    ((AddressOperand)dasm.Current.Operands[3]).Address,
+                    addrOp.Address,
                     InstrClass.ConditionalTransfer);
             }
             else
             {
                 m.Branch(
                     m.FGe(index, limit),
-                    ((AddressOperand)dasm.Current.Operands[3]).Address,
+                    addrOp.Address,
                     InstrClass.ConditionalTransfer);
             }
         }
@@ -74,28 +79,33 @@ namespace Reko.Arch.Vax
             var index = RewriteDstOp(2, width, e => m.IAdd(e, add));
             if (!NZV(index))
                 return;
-            var cAdd = add as Constant;
-            if (cAdd == null)
+            if (!(add is Constant cAdd))
             {
                 Debug.Print(
                     "{0}: Instruction {1} too complex to rewrite.",
-                    dasm.Current.Address,
-                    dasm.Current);
+                    this.instr.Address,
+                    this.instr);
+                m.Invalid();
+                return;
+            }
+            if (!(this.instr.Operands[3] is AddressOperand addrOp))
+            {
+                rtlc = InstrClass.Invalid;
                 m.Invalid();
                 return;
             }
             if (cAdd.ToInt32() >= 0)
             {
                 m.Branch(
-                          m.Le(index, limit),
-                          ((AddressOperand)dasm.Current.Operands[3]).Address,
-                          InstrClass.ConditionalTransfer);
+                    m.Le(index, limit),
+                    addrOp.Address,
+                    InstrClass.ConditionalTransfer);
             }
             else
             {
                 m.Branch(
                     m.Ge(index, limit),
-                    ((AddressOperand)dasm.Current.Operands[3]).Address,
+                    addrOp.Address,
                     InstrClass.ConditionalTransfer);
             }
         }
@@ -116,7 +126,7 @@ namespace Reko.Arch.Vax
                 test = m.Eq0(test);
             }
             m.Branch(test,
-                ((AddressOperand)dasm.Current.Operands[2]).Address,
+                ((AddressOperand)this.instr.Operands[2]).Address,
                 InstrClass.ConditionalTransfer);
         }
 
@@ -124,7 +134,7 @@ namespace Reko.Arch.Vax
         {
             var pos = RewriteSrcOp(0, PrimitiveType.Word32);
             var bas = RewriteSrcOp(1, PrimitiveType.Word32);
-            var dst = ((AddressOperand)dasm.Current.Operands[2]).Address;
+            var dst = ((AddressOperand)this.instr.Operands[2]).Address;
             var tst = binder.CreateTemporary(PrimitiveType.Word32);
             m.Assign(tst, m.And(bas, m.Shl(Constant.Int32(1), pos)));
             if (updateBit)
@@ -145,7 +155,7 @@ namespace Reko.Arch.Vax
         {
             var pos = RewriteSrcOp(0, PrimitiveType.Word32);
             var bas = RewriteSrcOp(1, PrimitiveType.Word32);
-            var dst = ((AddressOperand)dasm.Current.Operands[2]).Address;
+            var dst = ((AddressOperand)this.instr.Operands[2]).Address;
             var tst = binder.CreateTemporary(PrimitiveType.Word32);
             m.SideEffect(host.PseudoProcedure("__set_interlock", VoidType.Instance));
             m.Assign(tst, m.And(bas, m.Shl(Constant.Int32(1), pos)));
@@ -169,28 +179,39 @@ namespace Reko.Arch.Vax
             var n = RewriteSrcOp(0, PrimitiveType.Word32);
             var test = fn(m.And(n, 1));
             m.Branch(test,
-                    ((AddressOperand)dasm.Current.Operands[1]).Address,
+                    ((AddressOperand)this.instr.Operands[1]).Address,
                     rtlc);
         }
 
         private void RewriteBranch()
         {
-            m.Goto(
-                ((AddressOperand)dasm.Current.Operands[0]).Address);
+            if (!(this.instr.Operands[0] is AddressOperand addrOp))
+            {
+                rtlc = InstrClass.Invalid;
+                m.Invalid();
+                return;
+            }
+            m.Goto(addrOp.Address);
         }
 
         private void RewriteBsb()
         {
-            m.Call(
-                ((AddressOperand)dasm.Current.Operands[0]).Address,
-                4);
+            if (this.instr.Operands[0] is AddressOperand addrOp)
+            {
+                m.Call(addrOp.Address, 4);
+            }
+            else
+            { 
+                rtlc = InstrClass.Invalid;
+                m.Invalid();
+            }
         }
 
         private void RewriteBranch(ConditionCode cc, FlagM flags)
         {
             m.Branch(
                 m.Test(cc, FlagGroup(flags)),
-                ((AddressOperand)dasm.Current.Operands[0]).Address,
+                ((AddressOperand)this.instr.Operands[0]).Address,
                 InstrClass.ConditionalTransfer);
         }
 
@@ -206,8 +227,57 @@ namespace Reko.Arch.Vax
                 return;
             m.Branch(
                 cmp(dst, limit),
-                ((AddressOperand)dasm.Current.Operands[2]).Address,
+                ((AddressOperand)this.instr.Operands[2]).Address,
                 rtlc);
+        }
+
+        private void RewriteCallg()
+        {
+            var callDst = RewriteSrcOp(1, PrimitiveType.Word32);
+            if (callDst is Address addr)
+            {
+                callDst = addr += 2;
+            }
+            else
+            {
+                callDst = m.IAddS(callDst, 2);
+            }
+            m.Call(callDst, 4);
+        }
+
+        private void RewriteCalls()
+        {
+            var callDst = RewriteSrcOp(1, PrimitiveType.Word32);
+            if (callDst is Address addr)
+            {
+                callDst = addr += 2;
+            }
+            else
+            {
+                callDst = m.IAddS(callDst, 2);
+            }
+            m.Call(callDst, 4);
+        }
+
+        private void RewriteCase(PrimitiveType size)
+        {
+            var selector = RewriteSrcOp(0, size);
+            var b = RewriteSrcOp(1, size);
+            var lim = RewriteSrcOp(2, size);
+            var tmp = binder.CreateTemporary(size);
+            m.Assign(tmp, m.ISub(selector, b));
+            if (lim is Constant cLim)
+            {
+                var offset = cLim.ToInt32() * 2;
+                var addrBeginTable = this.instr.Address + this.instr.Length;
+                var addrEndTable = addrBeginTable + offset;
+                m.BranchInMiddleOfInstruction(
+                    m.Gt(tmp, lim),
+                    addrEndTable,
+                    InstrClass.ConditionalTransfer);
+                m.Goto(m.IAdd(addrBeginTable, m.IMul(tmp, 2)));
+            }
+            m.Invalid();
         }
 
         private void RewriteSob(
@@ -221,7 +291,7 @@ namespace Reko.Arch.Vax
                 return;
             m.Branch(
                 cmp(dst, Constant.Word32(0)),
-                ((AddressOperand)dasm.Current.Operands[1]).Address,
+                ((AddressOperand)this.instr.Operands[1]).Address,
                 InstrClass.ConditionalTransfer);
         }
 

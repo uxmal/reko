@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -71,16 +71,23 @@ namespace Reko.Arch.Vax
         private void RewriteMova(PrimitiveType width)
         {
             var opSrc = RewriteSrcOp(0, width);
-            var mem = opSrc as MemoryAccess;
-            if (mem == null)
+            Expression dst;
+            if (opSrc is MemoryAccess mem)
+            {
+                dst = RewriteDstOp(1, PrimitiveType.Word32, e => mem.EffectiveAddress);
+            }
+            else if (opSrc is Address addr)
+            {
+                dst = opSrc;
+            }
+            else
             {
                 Debug.Print(
                     "{0}: Source operand must be a memory reference.",
-                    dasm.Current.Address);
+                    instr.Address);
                 m.Invalid();
                 return;
             }
-            var dst = RewriteDstOp(1, PrimitiveType.Word32, e => mem.EffectiveAddress);
             NZ00(dst);
         }
 
@@ -187,8 +194,7 @@ namespace Reko.Arch.Vax
             var op1 = RewriteSrcOp(0, PrimitiveType.SByte);
             Func<Expression, Expression, Expression> fn;
             Expression shift;
-            var c = op1 as Constant;
-            if (c != null)
+            if (op1 is Constant c)
             {
                 var sh = c.ToInt16();
                 if (sh > 0)
@@ -198,9 +204,9 @@ namespace Reko.Arch.Vax
                 else
                 {
                     fn = m.Sar;
-                    sh = (short)-sh;
+                    sh = (short) -sh;
                 }
-                shift = Constant.SByte((sbyte)sh);
+                shift = Constant.SByte((sbyte) sh);
             }
             else
             {
@@ -340,6 +346,28 @@ namespace Reko.Arch.Vax
             m.Assign(c, Constant.False());
         }
 
+        private void RewriteExtv(Domain domain)
+        {
+            var pos = RewriteSrcOp(0, PrimitiveType.Word32);
+            var size = RewriteSrcOp(1, PrimitiveType.Byte);
+            if (pos is Constant cPos && size is Constant cSize)
+            {
+                var nSize = cSize.ToInt32();
+                if (0 <= nSize && nSize < 32)
+                {
+                    var bas = RewriteSrcOp(2, PrimitiveType.Word32);
+                    Expression dst = RewriteDstOp(3, PrimitiveType.Word32, e =>
+                        m.Cast(
+                            PrimitiveType.Create(domain, 32),
+                            m.Slice(bas, cPos.ToInt32(), cSize.ToInt32())));
+                    this.NZ0(dst);
+                    return;
+                }
+            }
+            rtlc = InstrClass.Invalid;
+            m.Invalid();
+        }
+
         private void RewriteFfx(string fnname)
         {
             var start = RewriteSrcOp(0, PrimitiveType.Word32);
@@ -425,8 +453,7 @@ namespace Reko.Arch.Vax
         {
             var sp = binder.EnsureRegister(Registers.sp);
             m.Assign(sp, m.ISub(sp, PrimitiveType.Word32.Size));
-            var op0 = RewriteSrcOp(0, PrimitiveType.Word32) as MemoryAccess;
-            if (op0 == null)
+            if (!(RewriteSrcOp(0, PrimitiveType.Word32) is MemoryAccess op0))
             {
                 EmitInvalid();
                 return;
