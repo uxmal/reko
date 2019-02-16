@@ -612,7 +612,7 @@ namespace Reko.Gui.Forms
                         .SelectMany(p => new StringFinder(p).FindStrings(criteria));
                     srSvc.ShowAddressSearchResults(
                        hits,
-                       new StringSearchDetails(criteria.Encoding));
+                       new StringSearchDetails(criteria));
                 }
             }
         }
