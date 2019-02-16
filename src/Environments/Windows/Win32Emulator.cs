@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -66,8 +66,7 @@ namespace Reko.Environments.Windows
 
         private Module EnsureModule(string moduleName)
         {
-            Module module;
-            if (!modules.TryGetValue(moduleName, out module))
+            if (!modules.TryGetValue(moduleName, out Module module))
             {
                 module = new Module(moduleName);
                 modules.Add(module.Name, module);
@@ -82,12 +81,13 @@ namespace Reko.Environments.Windows
             Action<IProcessorEmulator> emulator,
             ProcedureCharacteristics chars = null)
         {
-            SimulatedProc proc;
-            if (!module.Procedures.TryGetValue(procName, out proc))
+            if (!module.Procedures.TryGetValue(procName, out SimulatedProc proc))
             {
                 var extProc = platform.LookupProcedureByName(module.Name, procName);
-                proc = new SimulatedProc(procName, emulator);
-                proc.Signature = extProc.Signature;
+                proc = new SimulatedProc(procName, emulator)
+                {
+                    Signature = extProc.Signature
+                };
                 if (chars != null)
                     proc.Characteristics = chars;
                 proc.uFakedAddress = ++this.uPseudoFn;
@@ -164,14 +164,44 @@ namespace Reko.Environments.Windows
         void VirtualProtect(IProcessorEmulator emulator)
         {
             uint esp = (uint)emulator.ReadRegister(Registers.esp);
-            uint arg1 = ReadLeUInt32(esp + 4u );
-            uint arg2 = ReadLeUInt32(esp + 8u );
-            uint arg3 = ReadLeUInt32(esp + 12u);
-            uint arg4 = ReadLeUInt32(esp + 16u);
-            Debug.Print("VirtualProtect({0:X8},{1:X8},{2:X8},{3:X8})", arg1, arg2, arg3, arg4);
-
-            emulator.WriteRegister(Registers.eax, 1u);
+            uint uAddress = ReadLeUInt32(esp + 4u );
+            uint dwSize = ReadLeUInt32(esp + 8u );
+            uint newProtect = ReadLeUInt32(esp + 12u);
+            uint pOldProtect = ReadLeUInt32(esp + 16u);
+            Debug.Print("VirtualProtect({0:X8},{1:X8},{2:X8},{3:X8})", uAddress, dwSize, newProtect, pOldProtect);
+            //$TODO: to make this work we have to keep a mapping (page -> permissions)
+            // For now, return the protection of the segment.
+            if (!this.map.TryFindSegment(Address.Ptr32(uAddress), out var seg))
+            {
+                var prot = MapProtectionToWin32(seg.Access);
+                WriteLeUInt32(Address.Ptr32(pOldProtect), prot);
+                emulator.WriteRegister(Registers.eax, 0u);
+            }
+            else
+            {
+                // RWX = 0x70
+                WriteLeUInt32(Address.Ptr32(pOldProtect), 0x70);
+                emulator.WriteRegister(Registers.eax, 1u);
+            }
             emulator.WriteRegister(Registers.esp, esp + 20);
+        }
+
+        private uint MapProtectionToWin32(AccessMode access)
+        {
+            const uint PAGE_EXECUTE = 0x10;
+            const uint PAGE_READONLY = 0x02;
+            const uint PAGE_EXECUTE_READWRITE = 0x40;
+            const uint PAGE_READWRITE = 0x04;
+
+            if (access == AccessMode.Read)
+                return PAGE_READONLY;
+            if (access == AccessMode.ReadExecute)
+                return PAGE_EXECUTE;
+            if (access == AccessMode.ReadWriteExecute)
+                return PAGE_EXECUTE_READWRITE;
+            if (access == AccessMode.ReadWrite)
+                return PAGE_READWRITE;
+            throw new NotImplementedException($"Unimplemented protection {access}.");
         }
 
         void NYI(IProcessorEmulator emulator)
@@ -185,8 +215,7 @@ namespace Reko.Environments.Windows
             // per memory fetch. TryFindSegment needs an overload
             // that accepts ulongs / linear addresses.
             var addr = Address.Ptr32(ea);
-            ImageSegment segment;
-            if (!map.TryFindSegment(addr, out segment))
+            if (!map.TryFindSegment(addr, out ImageSegment segment))
                 throw new AccessViolationException();
             return segment.MemoryArea.ReadLeUInt32(addr);
         }
@@ -197,8 +226,7 @@ namespace Reko.Environments.Windows
             // per memory fetch. TryFindSegment needs an overload
             // that accepts ulongs / linear addresses.
             var addr = Address.Ptr32(ea);
-            ImageSegment segment;
-            if (!map.TryFindSegment(addr, out segment))
+            if (!map.TryFindSegment(addr, out ImageSegment segment))
                 throw new AccessViolationException();
             segment.MemoryArea.WriteLeUInt32(addr, value);
         }
@@ -208,8 +236,7 @@ namespace Reko.Environments.Windows
             //$PERF: wow this is inefficient; an allocation
             // per memory fetch. TryFindSegment needs an overload
             // that accepts ulongs / linear addresses.
-            ImageSegment segment;
-            if (!map.TryFindSegment(ea, out segment))
+            if (!map.TryFindSegment(ea, out ImageSegment segment))
                 throw new AccessViolationException();
             segment.MemoryArea.WriteLeUInt32(ea, value);
         }
@@ -217,8 +244,7 @@ namespace Reko.Environments.Windows
         private string ReadMbString(TWord pstrLibName)
         {
             var addr = Address.Ptr32(pstrLibName);
-            ImageSegment segment;
-            if (!map.TryFindSegment(addr, out segment))
+            if (!map.TryFindSegment(addr, out ImageSegment segment))
                 throw new AccessViolationException();
             var rdr = segment.MemoryArea.CreateLeReader(addr);
             var ab = new List<byte>();
@@ -234,8 +260,7 @@ namespace Reko.Environments.Windows
 
         public bool InterceptCall(IProcessorEmulator emu, TWord l)
         {
-            ExternalProcedure epProc;
-            if (!this.InterceptedCalls.TryGetValue(l, out epProc))
+            if (!this.InterceptedCalls.TryGetValue(l, out ExternalProcedure epProc))
                 return false;
             ((SimulatedProc)epProc).Emulator(emu);
             return true;
