@@ -26,6 +26,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 
 namespace Reko.Arch.M68k
@@ -238,6 +239,8 @@ namespace Reko.Arch.M68k
             public Decoder(Mutator[] mutators, uint mask, uint match, uint ea_mask, Opcode opcode = Opcode.illegal, InstrClass iclass = InstrClass.Linear)
             {
                 this.mutators = mutators;
+                if (mutators.Any(m => m == null))
+                    throw new ArgumentException();
                 this.mask = mask;
                 this.match = match;
                 this.ea_mask = ea_mask;
@@ -3223,7 +3226,7 @@ namespace Reko.Arch.M68k
 	Instr(d68851_pbcc32       , 0xffc0, 0xf0c0, 0x000),
 	Instr(d68851_pdbcc        , 0xfff8, 0xf048, 0x000),
 	Instr(d68851_p001         , 0xffc0, 0xf040, 0x000),
-	Instr(null, 0, 0, 0),
+	Instr(d => false, 0, 0, 0),
 };
         }
 
