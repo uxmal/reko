@@ -178,12 +178,14 @@ namespace Reko.Gui
                 case CmdIds.ActionMarkType:
                     status.Status = details is CodeSearchDetails
                         ? MenuStatus.Visible
-                        : MenuStatus.Enabled | MenuStatus.Visible;
+                        : details is StringSearchDetails
+                            ? 0
+                            : MenuStatus.Enabled | MenuStatus.Visible;
                     return true;
                 case CmdIds.ActionMarkStrings:
                     status.Status = details is StringSearchDetails
-                        ? MenuStatus.Enabled | MenuStatus.Visible | MenuStatus.Checked
-                        : MenuStatus.Enabled | MenuStatus.Visible;
+                        ? MenuStatus.Enabled | MenuStatus.Visible
+                        : 0;
                     return true;
                 }
             }
