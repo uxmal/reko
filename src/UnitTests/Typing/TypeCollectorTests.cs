@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -29,6 +29,7 @@ using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using Reko.Core.Expressions;
 using Reko.UnitTests.Fragments;
+using Reko.Core.Serialization;
 
 namespace Reko.UnitTests.Typing
 {
@@ -256,6 +257,42 @@ namespace Reko.UnitTests.Typing
                 m.Assign(b16, m.Or(m.Mem16(m.IAdd(ptr, 14)), m.Word16(0x00FF)));
             });
             RunTest(pp.BuildProgram(), "Typing/TycoStructMembers.txt");
+        }
+
+
+        [Test]
+        public void TycoUserData()
+        {
+            var addrUserData = Address.Ptr32(0x00001400);
+            var program = new ProgramBuilder().BuildProgram();
+            program.User = new UserData
+            {
+                Globals =
+                {
+                    {
+                        addrUserData, new GlobalDataItem_v2
+                        {
+                            Name = "xAcceleration",
+                            DataType = PrimitiveType_v1.Real64()
+                        }
+                    }
+                }
+            };
+            var tyco = Given_TypeCollector(program);
+
+            tyco.CollectUserGlobalVariableTypes();
+
+            Assert.AreEqual("400: xAcceleration: real64", program.GlobalFields.Fields.First().ToString());
+        }
+
+        private TypeCollector Given_TypeCollector(Program program)
+        {
+            var tyco = new TypeCollector(
+                program.TypeFactory,
+                program.TypeStore,
+                program,
+                new FakeDecompilerEventListener());
+            return tyco;
         }
     }
 }
