@@ -77,8 +77,8 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             mockFactory = new CommonMockFactory();
             services = new ServiceContainer();
             configSvc = new Mock<IConfigurationService>();
-            services.AddService<IConfigurationService>(configSvc.Object);
             uiSvc = new Mock<IDecompilerShellUiService>();
+            services.AddService(uiSvc.Object);
         }
 
         [Test]
@@ -423,7 +423,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         {
             this.decompiler = new Mock<IDecompiler>();
             // Having a compiler presupposes having a project.
-            var platform = mockFactory.CreatePlatform();
+            var platform = mockFactory.CreateMockPlatform();
             var mem = new MemoryArea(Address.Ptr32(0x00010000), new byte[100]);
             var project = new Project
             {
@@ -433,8 +433,8 @@ namespace Reko.UnitTests.Gui.Windows.Forms
                     SegmentMap = new SegmentMap(
                         mem.BaseAddress,
                         new ImageSegment(".text", mem, AccessMode.ReadExecute)),
-                    Platform = platform,
-                    Architecture = platform.Architecture,
+                    Platform = platform.Object,
+                    Architecture = platform.Object.Architecture,
                 }
                 }
             };
@@ -621,6 +621,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             svcFactory.Setup(s => s.CreateSelectionService()).Returns(selSvc.Object);
             services.AddService<IDialogFactory>(dlgFactory.Object);
             services.AddService<IServiceFactory>(svcFactory.Object);
+            services.AddService<IFileSystemService>(fsSvc.Object);
             brSvc.Setup(b => b.Clear());
 
             form = new Mock<IMainForm>();
@@ -631,7 +632,11 @@ namespace Reko.UnitTests.Gui.Windows.Forms
                 It.IsAny<CommandStatus>(),
                 It.IsAny<CommandText>())).Returns(false);
             tcHostSvc.Setup(t => t.Execute(It.IsAny<CommandID>())).Returns(false);
-
+            fsSvc.Setup(f => f.CreateStreamWriter(
+                It.IsAny<string>(),
+                It.IsAny<bool>(),
+                It.IsAny<Encoding>()))
+                .Returns((string f, bool a, Encoding e) => new StringWriter());
             uiSvc.Setup(u => u.DocumentWindows).Returns(new List<IWindowFrame>());
             brSvc.Setup(u => u.ContainsFocus).Returns(false);
             tcHostSvc.Setup(u => u.ContainsFocus).Returns(false);
@@ -655,10 +660,6 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         private void When_CreateMainFormInteractor()
         {
             Assert.IsNotNull(dlgFactory, "Make sure you have called SetupMainFormInteractor to set up all mocks and stubs");
-            var services = new ServiceContainer();
-            services.AddService<IDialogFactory>(dlgFactory.Object);
-            services.AddService<IServiceFactory>(svcFactory.Object);
-            services.AddService<IDecompilerShellUiService>(uiSvc.Object);
             interactor = new MainFormInteractor(services);
             interactor.Attach(form.Object);
         }
@@ -670,6 +671,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             services.AddService<IDialogFactory>(dlgFactory.Object);
             services.AddService<IServiceFactory>(svcFactory.Object);
             services.AddService<IDecompilerShellUiService>(uiSvc.Object);
+            services.AddService<IFileSystemService>(fsSvc.Object);
             interactor = new MainFormInteractor(services);
             interactor.Attach(form.Object);
         }

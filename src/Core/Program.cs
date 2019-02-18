@@ -449,7 +449,8 @@ namespace Reko.Core
             foreach (var kv in User.Globals)
             {
                 var dt = kv.Value.DataType.Accept(tlDeser);
-                var item = new ImageMapItem((uint)dt.Size)
+                var size = GetDataSize(Architecture, kv.Key, dt);
+                var item = new ImageMapItem(size)
                 {
                     Address = kv.Key,
                     DataType = dt,
