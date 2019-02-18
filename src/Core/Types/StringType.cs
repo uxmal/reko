@@ -60,6 +60,11 @@ namespace Reko.Core.Types
             this.PrefixOffset = prefixOffset;
         }
 
+        public override void Accept(IDataTypeVisitor v)
+        {
+            v.VisitString(this);
+        }
+
         public override T Accept<T>(IDataTypeVisitor<T> v)
         {
             return v.VisitString(this);
