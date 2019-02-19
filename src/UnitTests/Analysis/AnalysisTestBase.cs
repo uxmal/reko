@@ -297,7 +297,7 @@ namespace Reko.UnitTests.Analysis
             var sActual = sw.ToString();
             if (sExp != sActual)
             {
-                Debug.Print(sActual);
+                Console.WriteLine(sActual);
                 Assert.AreEqual(sExp, sActual);
             }
         }
