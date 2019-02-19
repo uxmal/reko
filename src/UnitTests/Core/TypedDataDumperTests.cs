@@ -69,7 +69,6 @@ namespace Reko.UnitTests.Core
             str.Accept(tdd);
 
             Assert.AreEqual("db\t0x0D,0x0A,'Hello',0x00" + cr, sw.ToString());
-             
         }
     }
 }
