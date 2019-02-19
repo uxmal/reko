@@ -13920,8 +13920,8 @@ T_3191: (in SEQ(d, e) - SEQ(h, l) : ui16)
   OrigDataType: ui16
 T_3192: (in SLICE(SEQ(d, e) - SEQ(h, l), byte, 8) : byte)
   Class: Eq_3192
-  DataType: Eq_3192
-  OrigDataType: 
+  DataType: byte
+  OrigDataType: byte
 T_3193: (in cond(SLICE(SEQ(d, e) - SEQ(h, l), byte, 8)) : byte)
   Class: Eq_3193
   DataType: byte
@@ -14068,8 +14068,8 @@ T_3228: (in SEQ(de->b0001, de->b0000) - SEQ(hl->b0001, hl->b0000) : ui16)
   OrigDataType: ui16
 T_3229: (in SLICE(SEQ(Mem0[de + 0x0001:byte], Mem0[de + 0x0000:byte]) - SEQ(Mem0[hl + 0x0001:byte], Mem0[hl + 0x0000:byte]), byte, 8) : byte)
   Class: Eq_3229
-  DataType: Eq_3229
-  OrigDataType: 
+  DataType: byte
+  OrigDataType: byte
 T_3230: (in cond(SLICE(SEQ(de->b0001, de->b0000) - SEQ(hl->b0001, hl->b0000), byte, 8)) : byte)
   Class: Eq_3230
   DataType: byte

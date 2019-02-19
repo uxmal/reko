@@ -267,7 +267,7 @@ l00001556:
 	branch Test(GT,VZN) l00001576
 	// succ:  l0000155C l00001576
 l0000155C:
-	branch Test(LT,CZ) l00001572
+	branch Test(LT,CV) l00001572
 	// succ:  l0000155E l00001572
 l0000155E:
 	v22 = Mem0[a3:byte]
@@ -646,12 +646,12 @@ l0000170E:
 	ZN = cond(Mem0[a6 + -544:word32] - 0x00000000)
 	C = false
 	V = false
-	branch Test(LT,CZ) l00001C34
+	branch Test(LT,CV) l00001C34
 	// succ:  l00001716 l00001C34
 l00001716:
 	v25 = (byte) d6 - 0x20
 	CVZN = cond(v25)
-	branch Test(LT,CZ) l00001734
+	branch Test(LT,CV) l00001734
 	// succ:  l0000171C l00001734
 l0000171C:
 	v26 = (byte) d6 - 0x78
@@ -764,7 +764,7 @@ l00001C40:
 	v5 = Mem0[a1 + 4:word32] - 0x00000001
 	Mem0[a1 + 4:word32] = v5
 	CVZNX = cond(v5)
-	branch Test(LT,CZ) l00001C60
+	branch Test(LT,CV) l00001C60
 	// succ:  l00001C4E l00001C60
 l00001C4E:
 	a0 = Mem0[a1:word32]
@@ -2139,7 +2139,7 @@ l00002250:
 	CVZNX = cond(d1)
 	v18 = d1 - d4
 	CVZN = cond(v18)
-	branch Test(LT,CZ) l00002218
+	branch Test(LT,CV) l00002218
 	// succ:  l0000225A l00002218
 l0000225A:
 	d3 = Mem0[a7:word32]
@@ -3619,7 +3619,7 @@ l000028F0:
 	CVZNX = cond(d4)
 	v25 = d4 - Mem0[a5 + -1312:word32]
 	CVZN = cond(v25)
-	branch Test(LT,CZ) l000028CA
+	branch Test(LT,CV) l000028CA
 	// succ:  l000028FA l000028CA
 l000028FA:
 	goto l0000290E

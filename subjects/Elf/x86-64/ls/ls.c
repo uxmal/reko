@@ -593,7 +593,7 @@ l00000000004031F9:
 				globals->dw61B108 = 0x02;
 				globals->dw61B148 = ~0x00;
 				if (globals->dw61B150 == 0x00)
-					Mem3959[0x000000000061B150:word32] = (word32) (uint64) ((word32) (uint64) (0x00 - SLICE(cond(isatty(0x01) - 0x01), bool, 1)) + 0x02);
+					globals->dw61B150 = (word32) (uint64) ((word32) (uint64) (0x00 - SLICE(cond(isatty(0x01) - 0x01), bool, 1)) + 0x02);
 				globals->b61B144 = 0x00;
 				globals->b61B129 = 0x00;
 				r13_1007 = 0x01;
@@ -1333,7 +1333,7 @@ l0000000000403AE2:
 					{
 						word32 eax_1758 = 0x02;
 						if (globals->b61B10D == 0x00 && globals->dw61B12C != 0x03)
-							eax_1758 = (word32) (uint64) ((word32) (uint64) ((word32) (uint64) (0x00 - SLICE(cond(0x0061B150 - 0x01), bool, 1)) & ~0x01) + 0x04);
+							eax_1758 = (word32) (uint64) ((word32) (uint64) ((word32) (uint64) (0x00 - SLICE(cond(globals->dw61B150 - 0x01), bool, 1)) & ~0x01) + 0x04);
 						globals->dw61B110 = eax_1758;
 					}
 					if (globals->b61B10E != 0x00)
@@ -5434,8 +5434,8 @@ void fn000000000040A600(struct Eq_7237 * rsi, struct Eq_7238 * rdi)
 		dl_37 = 0x2D;
 	byte al_95;
 	rsi->b0000 = dl_37;
-	Mem60[rsi + 0x01:byte] = (byte) (uint64) ((word32) (uint64) ((word32) (uint64) (0x00 - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_6) & 0x0100)) - 0x01), bool, 1)) & ~0x44) + 114);
-	Mem73[rsi + 0x02:byte] = (byte) (uint64) ((word32) (uint64) ((word32) (uint64) (0x00 - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_6) & 0x80)) - 0x01), bool, 1)) & ~0x49) + 0x77);
+	rsi->b0001 = (byte) (uint64) ((word32) (uint64) ((word32) (uint64) (0x00 - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_6) & 0x0100)) - 0x01), bool, 1)) & ~0x44) + 114);
+	rsi->b0002 = (byte) (uint64) ((word32) (uint64) ((word32) (uint64) (0x00 - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_6) & 0x80)) - 0x01), bool, 1)) & ~0x49) + 0x77);
 	ui32 eax_84 = (word32) (uint64) (0x00 - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_6) & 0x40)) - 0x01), bool, 1));
 	if ((edi_6 & 0x0800) != 0x00)
 		al_95 = (byte) (uint64) ((word32) (uint64) (eax_84 & ~0x1F) + 115);
@@ -5443,27 +5443,27 @@ void fn000000000040A600(struct Eq_7237 * rsi, struct Eq_7238 * rdi)
 		al_95 = (byte) (uint64) ((word32) (uint64) (eax_84 & ~0x4A) + 0x78);
 	byte al_148;
 	rsi->b0003 = al_95;
-	Mem113[rsi + 0x04:byte] = (byte) (uint64) ((word32) (uint64) ((word32) (uint64) (0x00 - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_6) & 0x20)) - 0x01), bool, 1)) & ~0x44) + 114);
-	Mem126[rsi + 0x05:byte] = (byte) (uint64) ((word32) (uint64) ((word32) (uint64) (0x00 - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_6) & 0x10)) - 0x01), bool, 1)) & ~0x49) + 0x77);
+	rsi->b0004 = (byte) (uint64) ((word32) (uint64) ((word32) (uint64) (0x00 - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_6) & 0x20)) - 0x01), bool, 1)) & ~0x44) + 114);
+	rsi->b0005 = (byte) (uint64) ((word32) (uint64) ((word32) (uint64) (0x00 - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_6) & 0x10)) - 0x01), bool, 1)) & ~0x49) + 0x77);
 	ui32 eax_137 = (word32) (uint64) (0x00 - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_6) & 0x08)) - 0x01), bool, 1));
 	if ((edi_6 & 0x0400) != 0x00)
 		al_148 = (byte) (uint64) ((word32) (uint64) (eax_137 & ~0x1F) + 115);
 	else
 		al_148 = (byte) (uint64) ((word32) (uint64) (eax_137 & ~0x4A) + 0x78);
 	rsi->b0006 = al_148;
-	Mem166[rsi + 0x07:byte] = (byte) (uint64) ((word32) (uint64) ((word32) (uint64) (0x00 - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_6) & 0x04)) - 0x01), bool, 1)) & ~0x44) + 114);
-	Mem181[rsi + 0x08:byte] = (byte) (uint64) ((word32) (uint64) ((word32) (uint64) (0x00 - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_6) & 0x02)) - 0x01), bool, 1)) & ~0x49) + 0x77);
+	rsi->b0007 = (byte) (uint64) ((word32) (uint64) ((word32) (uint64) (0x00 - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_6) & 0x04)) - 0x01), bool, 1)) & ~0x44) + 114);
+	rsi->b0008 = (byte) (uint64) ((word32) (uint64) ((word32) (uint64) (0x00 - SLICE(cond((word32) ((uint64) ((word32) ((uint64) edi_6) & 0x02)) - 0x01), bool, 1)) & ~0x49) + 0x77);
 	if ((edi_6 & 0x0200) == 0x00)
 	{
 		rsi->b000A = 0x20;
 		rsi->b000B = 0x00;
-		Mem197[rsi + 0x09:byte] = (byte) (uint64) ((word32) (uint64) ((word32) (uint64) (0x00 - SLICE(cond((word32) ((uint64) (edi_6 & 0x01)) - 0x01), bool, 1)) & ~0x4A) + 0x78);
+		rsi->b0009 = (byte) (uint64) ((word32) (uint64) ((word32) (uint64) (0x00 - SLICE(cond((word32) ((uint64) (edi_6 & 0x01)) - 0x01), bool, 1)) & ~0x4A) + 0x78);
 	}
 	else
 	{
 		rsi->b000A = 0x20;
 		rsi->b000B = 0x00;
-		Mem212[rsi + 0x09:byte] = (byte) (uint64) ((word32) (uint64) ((word32) (uint64) (0x00 - SLICE(cond((word32) ((uint64) (edi_6 & 0x01)) - 0x01), bool, 1)) & ~0x1F) + 116);
+		rsi->b0009 = (byte) (uint64) ((word32) (uint64) ((word32) (uint64) (0x00 - SLICE(cond((word32) ((uint64) (edi_6 & 0x01)) - 0x01), bool, 1)) & ~0x1F) + 116);
 	}
 }
 
@@ -6534,7 +6534,7 @@ l000000000040C12D:
 						uint64 rdi_1396 = DPB(rdi_223, edi_168, 0);
 						rdi_1396 = DPB(rdi_223, edi_168, 0);
 						rdi_1395 = DPB(rdi_1396, edi_168, 0);
-						word32 ecx_227 = (word32) (uint64) ((word32) r14d_222 + ecx_139);
+						Eq_14531 ecx_227 = (word32) (uint64) ((word32) r14d_222 + ecx_139);
 						if (r12d_1401 <= r14d_222)
 						{
 							ecx_139 = (word32) (uint64) ((word32) (uint64) ~(word32) (uint64) (0x00 - SLICE(cond(r12d_1401 - ecx_227), bool, 1)) + 0x03);

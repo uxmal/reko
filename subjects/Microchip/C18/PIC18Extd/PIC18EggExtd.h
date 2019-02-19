@@ -777,8 +777,8 @@ T_160: (in cond(0x00->b00C5) : byte)
   OrigDataType: byte
 T_161: (in SLICE(cond(0x00->b00C5), bool, 0) : bool)
   Class: Eq_161
-  DataType: Eq_161
-  OrigDataType: 
+  DataType: bool
+  OrigDataType: bool
 T_162: (in !SLICE(cond(0x00->b00C5), bool, 0) : bool)
   Class: Eq_162
   DataType: Eq_162

@@ -25146,8 +25146,8 @@ T_5569: (in (word16) dx_ax_387 : word16)
   OrigDataType: word16
 T_5570: (in SLICE(dx_ax_396, word16, 16) : word16)
   Class: Eq_5570
-  DataType: Eq_5570
-  OrigDataType: 
+  DataType: word16
+  OrigDataType: word16
 T_5571: (in DPB(SLICE(dx_ax_396, word16, 16), dl_409, 0) : word16)
   Class: Eq_255
   DataType: Eq_255
