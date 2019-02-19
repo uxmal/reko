@@ -971,8 +971,8 @@ T_231: (in rLoc0C : real64)
   OrigDataType: real64
 T_232: (in SLICE(rArg04, word32, 32) : word32)
   Class: Eq_232
-  DataType: Eq_232
-  OrigDataType: 
+  DataType: word32
+  OrigDataType: word32
 T_233: (in DPB(rLoc0C, SLICE(rArg04, word32, 32), 32) : real64)
   Class: Eq_230
   DataType: Eq_230

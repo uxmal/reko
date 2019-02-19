@@ -34952,8 +34952,8 @@ T_8141: (in r1 + 0x00000024 : word32)
   OrigDataType: word32
 T_8142: (in SLICE(r1 + 0x00000024, ui4, 4) : ui4)
   Class: Eq_8142
-  DataType: Eq_8142
-  OrigDataType: 
+  DataType: ui4
+  OrigDataType: ui4
 T_8143: (in (uint32) SLICE(r1 + 0x00000024, ui4, 4) : uint32)
   Class: Eq_8143
   DataType: uint32
@@ -35360,8 +35360,8 @@ T_8243: (in r1 + 0x00000024 : word32)
   OrigDataType: word32
 T_8244: (in SLICE(r1 + 0x00000024, ui4, 4) : ui4)
   Class: Eq_8244
-  DataType: Eq_8244
-  OrigDataType: 
+  DataType: ui4
+  OrigDataType: ui4
 T_8245: (in (uint32) SLICE(r1 + 0x00000024, ui4, 4) : uint32)
   Class: Eq_8241
   DataType: uint32
@@ -38972,8 +38972,8 @@ T_9146: (in Mem0[0x00009E58 + 0x00000000:word32] : word32)
   OrigDataType: ptr32
 T_9147: (in SLICE(r3_4, ui4, 6) : ui4)
   Class: Eq_9147
-  DataType: Eq_9147
-  OrigDataType: 
+  DataType: ui4
+  OrigDataType: ui4
 T_9148: (in (uint32) SLICE(r3_4, ui4, 6) : uint32)
   Class: Eq_9148
   DataType: uint32
@@ -39072,8 +39072,8 @@ T_9171: (in Mem0[Mem0[0x00009E5C + 0x00000000:word32] + 0x00000000:word32] : wor
   OrigDataType: word32
 T_9172: (in SLICE(r2_41, ui9, 5) : ui9)
   Class: Eq_9172
-  DataType: Eq_9172
-  OrigDataType: 
+  DataType: ui9
+  OrigDataType: ui9
 T_9173: (in (uint32) SLICE(r2_41, ui9, 5) : uint32)
   Class: Eq_9173
   DataType: uint32
@@ -39160,8 +39160,8 @@ T_9193: (in r0_22 >> 2 : word32)
   OrigDataType: uint32
 T_9194: (in SLICE(r3_4, ui4, 23) : ui4)
   Class: Eq_9194
-  DataType: Eq_9194
-  OrigDataType: 
+  DataType: ui4
+  OrigDataType: ui4
 T_9195: (in (uint32) SLICE(r3_4, ui4, 23) : uint32)
   Class: Eq_9195
   DataType: uint32

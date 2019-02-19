@@ -17720,8 +17720,8 @@ T_3753: (in r10_44 : Eq_3753)
   OrigDataType: (union (int16 u1) (word20 u0))
 T_3754: (in SLICE(r15, byte, 0) : byte)
   Class: Eq_3754
-  DataType: Eq_3754
-  OrigDataType: 
+  DataType: byte
+  OrigDataType: byte
 T_3755: (in (int16) SLICE(r15, byte, 0) : int16)
   Class: Eq_3753
   DataType: Eq_3753
@@ -18464,8 +18464,8 @@ T_3939: (in r13_301 * 0x00004 + r14_324 + r14_324 + r14_324 : word20)
   OrigDataType: ui20
 T_3940: (in SLICE(r7_1082, byte, 0) : byte)
   Class: Eq_3940
-  DataType: Eq_3940
-  OrigDataType: 
+  DataType: byte
+  OrigDataType: byte
 T_3941: (in (int16) SLICE(r7_1082, byte, 0) : int16)
   Class: Eq_3941
   DataType: int16
@@ -18592,8 +18592,8 @@ T_3971: (in r13_366 * 0x00004 + r14_374 + r14_374 + r14_374 : word20)
   OrigDataType: ui20
 T_3972: (in SLICE(r7_1082, byte, 0) : byte)
   Class: Eq_3972
-  DataType: Eq_3972
-  OrigDataType: 
+  DataType: byte
+  OrigDataType: byte
 T_3973: (in (int16) SLICE(r7_1082, byte, 0) : int16)
   Class: Eq_3973
   DataType: int16
@@ -19021,19 +19021,19 @@ T_4078: (in bLoc24_197 != 0x00 : bool)
 T_4079: (in r13_587 : Eq_3746)
   Class: Eq_3746
   DataType: Eq_3746
-  OrigDataType: (union (ci16 u0) (word20 u1))
+  OrigDataType: (union (int16 u0) (word20 u1))
 T_4080: (in SLICE(bLoc1D_193, byte, 0) : byte)
   Class: Eq_4080
-  DataType: Eq_4080
-  OrigDataType: 
+  DataType: byte
+  OrigDataType: byte
 T_4081: (in r11_451 : word20)
   Class: Eq_4081
   DataType: Eq_4081
   OrigDataType: (union (byte u1) ((union (int24 u1) (word20 u0)) u0) (ptr16 u2))
 T_4082: (in SLICE(r11_451, byte, 0) : byte)
   Class: Eq_4082
-  DataType: Eq_4082
-  OrigDataType: 
+  DataType: byte
+  OrigDataType: byte
 T_4083: (in SLICE(bLoc1D_193, byte, 0) - SLICE(r11_451, byte, 0) : int16)
   Class: Eq_4083
   DataType: byte
@@ -19377,15 +19377,15 @@ T_4167: (in bLoc16_722 : byte)
 T_4168: (in r13_532 : Eq_3746)
   Class: Eq_3746
   DataType: Eq_3746
-  OrigDataType: (union (ci16 u0) (word20 u1))
+  OrigDataType: (union (int16 u0) (word20 u1))
 T_4169: (in SLICE(bLoc1D_193, byte, 0) : byte)
   Class: Eq_4169
-  DataType: Eq_4169
-  OrigDataType: 
+  DataType: byte
+  OrigDataType: byte
 T_4170: (in SLICE(r11_451, byte, 0) : byte)
   Class: Eq_4170
-  DataType: Eq_4170
-  OrigDataType: 
+  DataType: byte
+  OrigDataType: byte
 T_4171: (in SLICE(bLoc1D_193, byte, 0) - SLICE(r11_451, byte, 0) : int16)
   Class: Eq_4171
   DataType: byte
@@ -19460,8 +19460,8 @@ T_4188: (in PRINT : word16)
   OrigDataType: (ptr16 (fn T_4193 (T_3685, T_4190, T_3992, T_4191, T_4192)))
 T_4189: (in SLICE(r9_486, byte, 0) : byte)
   Class: Eq_4189
-  DataType: Eq_4189
-  OrigDataType: 
+  DataType: byte
+  OrigDataType: byte
 T_4190: (in (int16) SLICE(r9_486, byte, 0) : int16)
   Class: Eq_3702
   DataType: Eq_3702
@@ -19525,15 +19525,15 @@ T_4204: (in v17_107 == 0x00 : bool)
 T_4205: (in r13_515 : Eq_3746)
   Class: Eq_3746
   DataType: Eq_3746
-  OrigDataType: (union (ci16 u0) (word20 u1))
+  OrigDataType: (union (int16 u0) (word20 u1))
 T_4206: (in SLICE(bLoc1D_193, byte, 0) : byte)
   Class: Eq_4206
-  DataType: Eq_4206
-  OrigDataType: 
+  DataType: byte
+  OrigDataType: byte
 T_4207: (in SLICE(r11_497, byte, 0) : byte)
   Class: Eq_4207
-  DataType: Eq_4207
-  OrigDataType: 
+  DataType: byte
+  OrigDataType: byte
 T_4208: (in SLICE(bLoc1D_193, byte, 0) - SLICE(r11_497, byte, 0) : int16)
   Class: Eq_4208
   DataType: byte
@@ -19920,8 +19920,8 @@ T_4303: (in r15Out : Eq_4303)
   OrigDataType: ptr16
 T_4304: (in SLICE(r11_194, byte, 0) : byte)
   Class: Eq_4304
-  DataType: Eq_4304
-  OrigDataType: 
+  DataType: byte
+  OrigDataType: byte
 T_4305: (in (int16) SLICE(r11_194, byte, 0) : int16)
   Class: Eq_4300
   DataType: Eq_4300

@@ -14352,8 +14352,8 @@ T_3263: (in DPB(wArg10 + (wArg05 + 2), 0x00, 8) * 0x0002 + DPB(bc, 0x00, 8) : wo
   OrigDataType: ui16
 T_3264: (in SLICE(DPB(wArg10 + (wArg05 + 2), 0x00, 8) * 0x0002 + DPB(bc, 0x00, 8), byte, 8) : byte)
   Class: Eq_3264
-  DataType: Eq_3264
-  OrigDataType: 
+  DataType: byte
+  OrigDataType: byte
 T_3265: (in DPB(bc, SLICE(DPB(wArg10 + (wArg05 + 2), 0x00, 8) * 0x0002 + DPB(bc, 0x00, 8), byte, 8), 8) : word16)
   Class: Eq_3265
   DataType: int16
@@ -15020,8 +15020,8 @@ T_3430: (in DPB(wArg10 + (wArg05 + 2), 0x00, 8) * 0x0002 + DPB(bc, 0x00, 8) : wo
   OrigDataType: ui16
 T_3431: (in SLICE(DPB(wArg10 + (wArg05 + 2), 0x00, 8) * 0x0002 + DPB(bc, 0x00, 8), byte, 8) : byte)
   Class: Eq_3431
-  DataType: Eq_3431
-  OrigDataType: 
+  DataType: byte
+  OrigDataType: byte
 T_3432: (in DPB(bc, SLICE(DPB(wArg10 + (wArg05 + 2), 0x00, 8) * 0x0002 + DPB(bc, 0x00, 8), byte, 8), 8) : word16)
   Class: Eq_3432
   DataType: int16
