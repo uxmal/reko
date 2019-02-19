@@ -436,7 +436,7 @@ namespace Reko.Core.Expressions
         public DataType VisitSlice(Slice slice)
         {
             slice.Expression.Accept(this);
-            return slice.DataType;
+            return RecordDataType(slice.DataType, slice);
         }
 
         public DataType VisitTestCondition(TestCondition tc)
