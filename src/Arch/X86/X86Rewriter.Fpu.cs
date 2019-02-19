@@ -353,6 +353,17 @@ namespace Reko.Arch.X86
                 host.PseudoProcedure("scalbn", PrimitiveType.Real64, FpuRegister(0), FpuRegister(1)));
         }
 
+        // 8087 status register bits:
+        // bit 8: C0
+        // bit 9: C1
+        // bit 10: C2
+        // bit 14: C3
+        // 8086 flag register bits:
+        // bit 0: CF
+        // bit 1: RESERVED
+        // bit 2: PF
+        // bit 6: ZF
+
         private void RewriteFstsw()
         {
             if (MatchesFstswSequence())

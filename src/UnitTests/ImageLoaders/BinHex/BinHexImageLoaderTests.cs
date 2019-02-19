@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Linq;
 
 namespace Reko.UnitTests.ImageLoaders.BinHex
 {
@@ -31,7 +32,7 @@ namespace Reko.UnitTests.ImageLoaders.BinHex
     public class BinHexImageLoaderTests
     {
         [Test]
-        public void LoadHeader()
+        public void BinHex_LoadHeader()
         {
             StringWriter file = new StringWriter();
             BinHexEncoder enc = new BinHexEncoder(file);
@@ -50,8 +51,9 @@ namespace Reko.UnitTests.ImageLoaders.BinHex
             enc.Encode(0x00);
             enc.Flush();
 
-            BinHexImageLoader loader = new BinHexImageLoader(null, "foo.bar", null);
-            BinHexHeader hdr = loader.LoadBinHexHeader(CreateDecoder(file).GetBytes().GetEnumerator());
+            var loader = new BinHexImageLoader(null, "foo.bar", null);
+            var header = CreateDecoder(file).GetBytes().ToArray();
+            var hdr = loader.LoadBinHexHeader(header.AsEnumerable<byte>().GetEnumerator());
             Assert.AreEqual("foo.bar", hdr.FileName);
             Assert.AreEqual("FTYP", hdr.FileType);
             Assert.AreEqual("CREA", hdr.FileCreator);

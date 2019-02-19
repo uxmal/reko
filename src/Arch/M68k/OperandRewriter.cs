@@ -135,7 +135,7 @@ namespace Reko.Arch.M68k
             if (indidx.ARegister == Registers.pc)
             {
                 // pc-relative instruction.
-                return addrInstr + (2 + indidx.Imm8);
+                return addrInstr + indidx.Imm8;
             }
             Expression ea = binder.EnsureRegister(indidx.ARegister);
             if (indidx.Imm8 != 0)

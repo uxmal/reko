@@ -258,6 +258,7 @@
     <Compile Include="Core\Serialization\Json\JsonProcedureSerializerTests.cs" />
     <Compile Include="Core\Serialization\ProcedureSerializerTests.cs" />
     <Compile Include="Core\StridedIntervalTests.cs" />
+    <Compile Include="Core\TypedDataDumperTests.cs" />
     <Compile Include="Core\Types\DataTypeComparerTests.cs" />
     <Compile Include="Drivers\CmdLine\CmdLineDriverTests.cs" />
     <Compile Include="Environments\MacOS\MacOSClassicTests.cs" />
@@ -688,6 +689,7 @@
     <Compile Include="Scanning\BlockClonerTests.cs" />
     <Compile Include="Scanning\BlockWorkitemTests.cs" />
     <Compile Include="Scanning\CommentInjectorTests.cs" />
+    <Compile Include="Scanning\DataScannerTests.cs" />
     <Compile Include="Scanning\EscapedAccessRewriterTests.cs" />
     <Compile Include="Scanning\Fragments\RtlEvenOdd.cs" />
     <Compile Include="Scanning\GlobalDataWorkItemTests.cs" />

@@ -2164,24 +2164,23 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        [Ignore("How to deal with unordered comparisons?? Is IsNan enough?")]
         public void X86rw_fcmovnu()
         {
             Run32bitTest(0xDB, 0xD9);    // fcmovnu\tst(0),st(1)
             AssertCode(
-                "0|L--|10000000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|10000000(2): 2 instructions",
+                "1|T--|if (Test(IS_NAN,P)) branch 10000002",
+                "2|L--|ST[Top:real64] = ST[Top + 1:real64]");
         }
 
         [Test]
-        [Ignore("How to deal with unordered comparisons?? Is IsNan enough?")]
         public void X86rw_fcmovu()
         {
             Run32bitTest(0xDA, 0xD9);    // fcmovu\tst(0),st(1)
             AssertCode(
-                "0|L--|10000000(4): 1 instructions",
-                "1|L--|if (IsNan(P) branch 100000002",
-                "2|L--|rArg0 = rArg1");
+                "0|L--|10000000(2): 2 instructions",
+                "1|T--|if (Test(NOT_NAN,P)) branch 10000002",
+                "2|L--|ST[Top:real64] = ST[Top + 1:real64]");
         }
 
         [Test]
@@ -3137,7 +3136,7 @@ namespace Reko.UnitTests.Arch.Intel
             Run32bitTest(0xDA, 0xDD);	// fcmovu	st(0),st(5)
             AssertCode(
                 "0|L--|10000000(2): 2 instructions",
-                "1|T--|if (Test(EQ,Z)) branch 10000002",
+                "1|T--|if (Test(NOT_NAN,P)) branch 10000002",
                 "2|L--|ST[Top:real64] = ST[Top + 5:real64]");
         }
 
@@ -3167,7 +3166,7 @@ namespace Reko.UnitTests.Arch.Intel
             Run32bitTest(0xDB, 0xD9);	// fcmovnu	st(0),st(1)
             AssertCode(
                 "0|L--|10000000(2): 2 instructions",
-                "1|T--|if (Test(EQ,Z)) branch 10000002",
+                "1|T--|if (Test(IS_NAN,P)) branch 10000002",
                 "2|L--|ST[Top:real64] = ST[Top + 1:real64]");
         }
 

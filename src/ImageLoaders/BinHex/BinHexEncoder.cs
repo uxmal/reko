@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -41,8 +41,8 @@ namespace Reko.ImageLoaders.BinHex
         public const string binhex4header = "(This file must be converted with BinHex 4.0)";
 
         private TextWriter writer;
-        private int buffer;
-        private int bufferCount;
+        private uint leftchar = 0;
+        private int leftbits = 0;
 
         public BinHexEncoder(TextWriter writer)
         {
@@ -59,35 +59,24 @@ namespace Reko.ImageLoaders.BinHex
 
         public void Encode(byte b)
         {
-            buffer = (buffer << 8) | b;
-            ++bufferCount;
-            if (bufferCount == 3)
+            // Shift into our buffer, and output any 6 bits ready 
+            leftchar = (leftchar << 8) | b;
+            leftbits += 8;
+            while (leftbits >= 6)
             {
-                FlushEncodedChars();
+                uint this_ch = (leftchar >> (leftbits - 6)) & 0x3f;
+                leftbits -= 6;
+                writer.Write(BitEncodings[(int) this_ch]);
             }
-        }
-
-        private void FlushEncodedChars()
-        {
-            FlushEncodedChar(buffer >> 18);
-            FlushEncodedChar(buffer >> 12);
-            FlushEncodedChar(buffer >> 6);
-            FlushEncodedChar(buffer);
-            bufferCount = 0;
-            buffer = 0;
-        }
-
-        private void FlushEncodedChar(int bits)
-        {
-            writer.Write(BitEncodings[bits & 0x3F]);
         }
 
         public void Flush()
         {
-            if (bufferCount > 0)
+            // Output a possible runt byte
+            if (leftbits != 0)
             {
-                buffer = buffer << (8 * (3 - bufferCount));
-                FlushEncodedChars();
+                leftchar <<= (6 - leftbits);
+                writer.Write(BitEncodings[(int) (leftchar & 0x3F)]);
             }
         }
 

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -65,7 +65,7 @@ namespace Reko.ImageLoaders.BinHex
         public IEnumerable<byte> GetBytes()
         {
             int lastByte = -1;
-            IEnumerator<byte> unexpanded = GetUnexpandedBytes().GetEnumerator();
+            var unexpanded = GetUnexpandedBytes().GetEnumerator();
             while (unexpanded.MoveNext())
             {
                 byte b = unexpanded.Current;
@@ -76,15 +76,16 @@ namespace Reko.ImageLoaders.BinHex
                         int count = unexpanded.Current;
                         if (count > 0)
                         {
-                            for (int i = 0; i < count-1; ++i)
+                            for (int i = 0; i < count - 1; ++i)
                             {
-                                yield return (byte)lastByte;
+                                yield return (byte) lastByte;
                             }
-                            lastByte = -1;
                             continue;
                         }
                         else
+                        {
                             b = 0x90;
+                        }
                     }
                 }
                 yield return b;

@@ -54,13 +54,6 @@ namespace Reko.UnitTests.Mocks
             return new FakeTypeDeserializer(ptrBitSize);
         }
 
-        [Obsolete("Remove this once Moq port is done.")]
-
-        public IPlatform CreatePlatform()
-        {
-            return CreateMockPlatform().Object;
-        }
-
         public Mock<IPlatform> CreateMockPlatform()
         {
             if (this.mockPlatform != null)

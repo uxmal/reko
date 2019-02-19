@@ -432,7 +432,7 @@ namespace Reko.Analysis
 			BinaryOperator cmpOp = null;
 			if (isNegated)
 			{
-				cc = Negate(cc);
+				cc = cc.Invert();
 			}
             bool isReal = (bin.DataType is PrimitiveType p && p.Domain == Domain.Real);
 			switch (cc)
@@ -453,6 +453,11 @@ namespace Reko.Analysis
 				return ComparisonFromOverflow(bin, isNegated);
 			case ConditionCode.NO:
 				return ComparisonFromOverflow(bin, !isNegated);
+            case ConditionCode.IS_NAN:
+                return OrderedComparison(bin,false);
+            case ConditionCode.NOT_NAN:
+                return OrderedComparison(bin, true);
+
             case ConditionCode.PE:
                 return ComparisonFromParity(bin, isNegated);
             case ConditionCode.PO:
@@ -521,24 +526,27 @@ namespace Reko.Analysis
             return e;
         }
 
-        public static ConditionCode Negate(ConditionCode cc)
+        /// <summary>
+        /// Generate a comparison using the standard C
+        /// "isunordered" function. 
+        /// </summary>
+        public Expression OrderedComparison(BinaryExpression bin, bool isNegated)
 		{
-			switch (cc)
+            var sig = new FunctionType(
+                new Identifier("", PrimitiveType.Bool, null),
+                new Identifier("x", bin.DataType, null),
+                new Identifier("y", bin.DataType, null));
+            Expression e = m.Fn(
+                new ProcedureConstant(
+                    platform.PointerType,
+                    new PseudoProcedure("isunordered", sig)),
+                bin.Left,
+                bin.Right);
+            if (isNegated)
 			{
-			case ConditionCode.UGT: return ConditionCode.ULE;
-			case ConditionCode.ULE: return ConditionCode.UGT;
-			case ConditionCode.ULT: return ConditionCode.UGE;
-			case ConditionCode.GT:  return ConditionCode.LE; 
-			case ConditionCode.GE:  return ConditionCode.LT; 
-			case ConditionCode.LT:  return ConditionCode.GE; 
-			case ConditionCode.LE:  return ConditionCode.GT; 
-			case ConditionCode.UGE: return ConditionCode.ULT;
-			case ConditionCode.NE:  return ConditionCode.EQ; 
-			case ConditionCode.EQ:  return ConditionCode.NE; 
-			case ConditionCode.SG:  return ConditionCode.GE; 
-			case ConditionCode.NS:  return ConditionCode.LT; 
-			default: throw new ArgumentException(string.Format("Don't know how to negate ConditionCode.{0}.",  cc), "cc");
+                e = m.Not(e);
 			}
+            return e;
 		}
 
 		private void Use(Expression expr, Statement stm)

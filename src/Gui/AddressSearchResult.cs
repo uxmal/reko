@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Types;
+using Reko.Scanning;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -177,7 +178,14 @@ namespace Reko.Gui
                 case CmdIds.ActionMarkType:
                     status.Status = details is CodeSearchDetails
                         ? MenuStatus.Visible
-                        : MenuStatus.Enabled | MenuStatus.Visible;
+                        : details is StringSearchDetails
+                            ? 0
+                            : MenuStatus.Enabled | MenuStatus.Visible;
+                    return true;
+                case CmdIds.ActionMarkStrings:
+                    status.Status = details is StringSearchDetails
+                        ? MenuStatus.Enabled | MenuStatus.Visible
+                        : 0;
                     return true;
                 }
             }
@@ -192,10 +200,15 @@ namespace Reko.Gui
             {
             case CmdIds.ViewFindWhatPointsHere: ViewFindWhatPointsHere(); return true;
             case CmdIds.ViewAsCode: details = new CodeSearchDetails(); View.Invalidate(); return true;
-            case CmdIds.ViewAsStrings: details = new StringSearchDetails(Encoding.ASCII); View.Invalidate(); return true;
+            case CmdIds.ViewAsStrings: details = new StringSearchDetails(new StringFinderCriteria
+            {
+                Encoding = Encoding.ASCII,
+                StringType = StringType.NullTerminated(PrimitiveType.Char),
+            }); View.Invalidate(); return true;
             case CmdIds.ViewAsData: details = new DataSearchDetails(); View.Invalidate(); return true;
             case CmdIds.ActionMarkProcedure: MarkProcedures(); return true;
             case CmdIds.ActionMarkType: MarkType(); return true;
+            case CmdIds.ActionMarkStrings: MarkStrings(); return true;
             }
             return false;
         }
@@ -221,6 +234,16 @@ namespace Reko.Gui
                 }
                 View.Invalidate();
             });
+        }
+
+        public void MarkStrings()
+        {
+            foreach (var pa in SelectedHits())
+            {
+                var sDetails = (StringSearchDetails) details;
+                var dt = sDetails.Criteria.StringType;
+                pa.Program.AddUserGlobalItem(pa.Program.Architecture, pa.Address, dt);
+            }
         }
 
         /// <summary>
@@ -290,19 +313,20 @@ namespace Reko.Gui
 
     public class StringSearchDetails : AddressSearchDetails
     {
-        private Encoding encoding;
 
-        public StringSearchDetails(Encoding enc)
+        public StringSearchDetails(StringFinderCriteria criteria)
         {
-            this.encoding = enc;
+            this.Criteria = criteria;
         }
+
+        public StringFinderCriteria Criteria { get; }
 
         public override string RenderHit(AddressSearchHit hit)
         {
             var arch = hit.Program.Architecture;
             var rdr = hit.Program.CreateImageReader(arch, hit.Address);
             var bytes = rdr.ReadBytes(hit.Length);
-            return encoding.GetString(bytes.ToArray());
+            return Criteria.Encoding.GetString(bytes.ToArray());
         }
     }
 }

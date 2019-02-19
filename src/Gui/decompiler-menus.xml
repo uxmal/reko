@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <menu-definitions xmlns="urn:Decompiler.Schemata.MenuDefinitions">
 	<cmdSet id="Reko">6D65B38B-4275-4892-BD3C-05AC0645373F</cmdSet>
 
@@ -129,6 +129,7 @@
   <cmd id="ActionScanHeuristically" cmdSet="Reko" container="ActionScanHeuristically">Scan _heuristically</cmd>
   <cmd id="ActionEditSignature" cmdSet="Reko" container="ActionEditSignature">Edit _Signature...</cmd>
   <cmd id="ActionMarkType" cmdSet="Reko" container="ActionMarkType">Mark _Type</cmd>
+  <cmd id="ActionMarkStrings" cmdSet="Reko" container="ActionMarkStrings">Mark selection as _strings</cmd>
   <cmd id="ActionAssumeRegisterValues" cmdSet="Reko" container="ActionAssumeRegisterValues">_Register values...</cmd>
 
   <cmd id="ToolsOptions" cmdSet="Reko" container="GrpTools">_Options...</cmd>
@@ -199,6 +200,7 @@
   <placement item="ViewFindWhatPointsHere" container="GrpAddressSearch" />
   <placement item="ActionMarkProcedure" container="GrpAddressSearch"/>
   <placement item="ActionMarkType" container="GrpAddressSearch"/>
+  <placement item="ActionMarkStrings" container="GrpAddressSearch"/>
   <placement item="ActionScanHeuristically" container="GrpAddressSearch"/>
 
   <!-- Accelerators ================================================== -->

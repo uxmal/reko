@@ -75,17 +75,40 @@ namespace Reko.Arch.Vax
             var len = RewriteSrcOp(0, PrimitiveType.Word16);
             var str1 = RewriteSrcOp(1, PrimitiveType.Ptr32);
             var str2 = RewriteSrcOp(2, PrimitiveType.Ptr32);
-            var addrCur = dasm.Current.Address;
+            var addrCur = instr.Address;
             var r0 = binder.EnsureRegister(Registers.r0);
             var r1 = binder.EnsureRegister(Registers.r1);
             var r2 = binder.EnsureRegister(Registers.r2);
             var r3 = binder.EnsureRegister(Registers.r3);
-            var addrNext = addrCur + dasm.Current.Length;
+            var addrNext = addrCur + instr.Length;
 
             m.Assign(r0, len);
             m.Assign(r1, str1);
             m.Assign(r2, str2);
             //$TODO: emit clusters.
+        }
+
+        private void RewriteMovp()
+        {
+            var len = RewriteSrcOp(0, PrimitiveType.Word16);
+            var src = RewriteSrcOp(1, PrimitiveType.Ptr32);
+            var dst = RewriteSrcOp(2, PrimitiveType.Ptr32);
+            m.SideEffect(host.PseudoProcedure(
+                "__movp", 
+                VoidType.Instance,
+                dst, src, len));
+        }
+
+        private void RewriteProber()
+        {
+            var mode = RewriteSrcOp(0, PrimitiveType.Word16);
+            var len = RewriteSrcOp(1, PrimitiveType.Ptr32);
+            var @base = RewriteSrcOp(2, PrimitiveType.Ptr32);
+            var z = FlagGroup(FlagM.ZF);
+            m.Assign(z, host.PseudoProcedure(
+                "__prober",
+                PrimitiveType.Bool,
+                @base, len, mode));
         }
 
         private void RewriteScanc()

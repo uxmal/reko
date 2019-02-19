@@ -67,6 +67,7 @@ namespace Reko.Arch.Vax
             this.FramePointerType = PrimitiveType.Ptr32;
             this.WordWidth = PrimitiveType.Word32;
             this.PointerType = PrimitiveType.Ptr32;
+            this.StackRegister = Registers.sp;
             this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
         }
 
@@ -148,15 +149,24 @@ namespace Reko.Arch.Vax
 
         public override RegisterStorage[] GetRegisters()
         {
-            throw new NotImplementedException();
+            return regs;
+        }
+
+        public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
+        {
+            foreach (var flag in flagRegisters)
+            {
+                if ((flags.FlagGroupBits & flag.FlagGroupBits) != 0)
+                    yield return flag;
+            }
         }
 
         //$REVIEW: shouldn't this be flaggroup?
-        private static RegisterStorage[] flagRegisters = {
-            new RegisterStorage("C", 0, 0, PrimitiveType.Bool),
-            new RegisterStorage("V", 0, 0, PrimitiveType.Bool),
-            new RegisterStorage("Z", 0, 0, PrimitiveType.Bool),
-            new RegisterStorage("N", 0, 0, PrimitiveType.Bool),
+        private static readonly FlagGroupStorage[] flagRegisters = {
+            new FlagGroupStorage(Registers.psw, (uint)FlagM.CF, "C", PrimitiveType.Bool),
+            new FlagGroupStorage(Registers.psw, (uint)FlagM.VF, "V", PrimitiveType.Bool),
+            new FlagGroupStorage(Registers.psw, (uint)FlagM.ZF, "Z", PrimitiveType.Bool),
+            new FlagGroupStorage(Registers.psw, (uint)FlagM.NF, "N", PrimitiveType.Bool),
         };
 
         public override string GrfToString(RegisterStorage flagregister, string prefix, uint grf)

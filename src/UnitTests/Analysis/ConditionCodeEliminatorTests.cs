@@ -723,5 +723,57 @@ RorChainFragment_exit:
             #endregion
             RunStringTest(sExp, new RorChainFragment());
         }
+
+        [Test]
+        public void CceUnorderedComparison()
+        {
+            var sExp =
+            #region Expected
+@"rArg0:FPU +0
+    def:  def rArg0
+    uses: branch !isunordered(rArg0, rArg1) m3Done
+rArg1:FPU +1
+    def:  def rArg1
+    uses: branch !isunordered(rArg0, rArg1) m3Done
+C_3: orig: C
+r0_4: orig: r0
+r0_5: orig: r0
+// ProcedureBuilder
+// Return size: 0
+define ProcedureBuilder
+ProcedureBuilder_entry:
+	def rArg0
+	def rArg1
+	// succ:  l1
+l1:
+	branch !isunordered(rArg0, rArg1) m3Done
+	// succ:  m1isNan m3Done
+m1isNan:
+	return 0x00000000
+	// succ:  ProcedureBuilder_exit
+m3Done:
+	return 0x00000001
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+
+";
+            #endregion
+            RunStringTest(sExp, m =>
+            {
+                var r0 = m.Reg32("r0", 0);
+                var f0 = m.Frame.EnsureFpuStackVariable(0, PrimitiveType.Real80);
+                var f1 = m.Frame.EnsureFpuStackVariable(1, PrimitiveType.Real80);
+                var C = m.Flags("C");
+
+                m.Assign(C, m.Cond(m.FSub(f0, f1)));
+                m.BranchIf(m.Test(ConditionCode.NOT_NAN, C), "m3Done");
+                m.Label("m1isNan");
+                m.Assign(r0, 0);
+                m.Return(r0);
+                m.Label("m3Done");
+                m.Assign(r0, 1);
+                m.Return(r0);
+            });
+        }
     }
 }

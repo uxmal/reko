@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -63,12 +63,21 @@ namespace Reko.Arch.M68k
         bvc,
         bvs,
 
+        bfchg,
+        bfclr,
+        bfexts,
+        bfffo,
+        bfins,
+        bftst,
         callm,
         cas,
         cas2,
         chk,
         chk2,
         cinv,
+        cinvl,
+        cinvp,
+        cinva,
         clr,
         cmp,
         cmp2,
@@ -158,6 +167,8 @@ namespace Reko.Arch.M68k
         fdmul,
         fssub,
         fdsub,
+        frestore,
+        fsave,
 
         fbf,
         fbeq,
@@ -220,6 +231,24 @@ namespace Reko.Arch.M68k
         ori,
         
         pack,
+
+        pbas,
+        pbac,
+        pbbs,
+        pbbc,
+        pbcc,
+        pbcs,
+        pbgs,
+        pbgc,
+        pbis,
+        pbic,
+        pbls,
+        pblc,
+        pbss,
+        pbsc,
+        pbws,
+        pbwc,
+
         pea,
         pflushr,
         pload,

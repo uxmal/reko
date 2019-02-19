@@ -190,8 +190,8 @@ namespace Reko.Arch.X86
                 case Opcode.fcmovnb: RewriteFcmov(FlagM.CF| FlagM.ZF, ConditionCode.GE); break;
                 case Opcode.fcmovnbe: RewriteFcmov(FlagM.CF| FlagM.ZF, ConditionCode.LE); break;
                 case Opcode.fcmovne: RewriteFcmov(FlagM.ZF, ConditionCode.EQ); break;
-                case Opcode.fcmovnu: RewriteFcmov(FlagM.ZF, ConditionCode.EQ); break;
-                case Opcode.fcmovu: RewriteFcmov(FlagM.ZF, ConditionCode.EQ); break;
+                case Opcode.fcmovnu: RewriteFcmov(FlagM.PF, ConditionCode.IS_NAN); break;
+                case Opcode.fcmovu: RewriteFcmov(FlagM.PF, ConditionCode.NOT_NAN); break;
                 case Opcode.fcom: RewriteFcom(0); break;
                 case Opcode.fcomi: RewriteFcomi(false); break;
                 case Opcode.fcomip: RewriteFcomi(true); break;

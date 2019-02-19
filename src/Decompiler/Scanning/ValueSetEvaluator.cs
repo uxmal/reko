@@ -338,7 +338,16 @@ namespace Reko.Scanning
 
         public ValueSet VisitProcedureConstant(ProcedureConstant pc)
         {
-            throw new NotImplementedException();
+            Address addr;
+            switch (pc.Procedure)
+            {
+            case Procedure proc:
+                addr = proc.EntryAddress;
+                var cAddr = addr.ToConstant();
+                return new ConcreteValueSet(pc.DataType, cAddr);
+            default:
+                return ValueSet.Any;
+            }
         }
 
         public ValueSet VisitScopeResolution(ScopeResolution scopeResolution)

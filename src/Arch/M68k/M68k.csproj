@@ -70,6 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddressOperand.cs" />
+    <Compile Include="BitfieldOperand.cs" />
     <Compile Include="IndexedOperand.cs" />
     <Compile Include="M68kArchitecture.cs" />
     <Compile Include="M68kDisassembler.cs" />

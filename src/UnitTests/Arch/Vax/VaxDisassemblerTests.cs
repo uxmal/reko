@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -91,7 +91,7 @@ namespace Reko.UnitTests.Arch.Vax
         [Test]
         public void VaxDis_jsb()
         {
-            AssertCode("jsb\t00100000", 0x16, 0xBF, 0xFC, 0xFF);
+            AssertCode("jsb\t00100000", 0x16, 0xCF, 0xFC, 0xFF);
         }
 
         [Test]
@@ -130,5 +130,7 @@ namespace Reko.UnitTests.Arch.Vax
         {
             AssertCode("Invalid\t", 0xD0, 0x50, 0x03);
         }
+
+
     }
 }

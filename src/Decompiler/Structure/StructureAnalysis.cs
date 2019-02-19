@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -946,7 +946,10 @@ doing future pattern matches.
                 Probe();
             }
             else
+            {
+                DumpGraph();
                 throw new NotImplementedException(string.Format("Can't collapse {0} ({1}) => {2}", from.Block.Name, from.Type, to.Block.Name));
+            }
         }
 
 #if NILZ
