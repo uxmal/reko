@@ -56,7 +56,7 @@ namespace Reko.UnitTests.Core
             var str = StringType.NullTerminated(PrimitiveType.Char);
             str.Accept(tdd);
 
-            Assert.AreEqual("db\t'Hello',0x00\r\n", sw.ToString());
+            Assert.AreEqual("db\t'Hello',0x00" + cr, sw.ToString());
         }
 
         [Test]
@@ -68,7 +68,8 @@ namespace Reko.UnitTests.Core
             var str = StringType.NullTerminated(PrimitiveType.Char);
             str.Accept(tdd);
 
-            Assert.AreEqual("db\t0x0D,0x0A,'Hello',0x00\r\n", sw.ToString());
+            Assert.AreEqual("db\t0x0D,0x0A,'Hello',0x00" + cr, sw.ToString());
+             
         }
     }
 }
