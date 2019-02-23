@@ -293,8 +293,8 @@ namespace Reko.UnitTests.Arch.Z80
         {
             BuildTest(0x17);
             AssertCode(
-                "0|L--|0100(2): 2 instructions",
-                "1|L--|a = rla(a, 1, C)",
+                "0|L--|0100(1): 2 instructions",
+                "1|L--|a = __rcl(a, 0x01, C)",
                 "2|L--|C = cond(a)");
         }
     }
