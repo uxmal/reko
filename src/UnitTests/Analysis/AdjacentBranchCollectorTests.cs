@@ -98,6 +98,8 @@ l1:
 	// succ:  m1do m4skip
 m1do:
 	r1 = r2
+	// succ:  m3do
+m3do:
 	r2 = 0x00000000
 	// succ:  m4skip
 m4skip:
