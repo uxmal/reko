@@ -630,9 +630,11 @@ namespace Reko.UnitTests.Arch.M68k
         {
             Rewrite(0x51CD, 0xFFFA);        // dbra -$6
             AssertCode(
-                "0|T--|00010000(4): 2 instructions",
-                "1|L--|d5 = d5 - 0x00000001",
-                "2|T--|if (d5 != 0xFFFFFFFF) branch 0000FFFC");
+                "0|T--|00010000(4): 4 instructions",
+                "1|L--|v3 = SLICE(d5, word16, 0)",
+                "2|L--|v3 = v3 - 1",
+                "3|L--|d5 = DPB(d5, v3, 0)",
+                "4|T--|if (v3 != 0xFFFF) branch 0000FFFC");
         }
 
         [Test]
@@ -640,10 +642,12 @@ namespace Reko.UnitTests.Arch.M68k
         {
             Rewrite(0x5FCF, 0xFFFA);
             AssertCode(
-                "0|T--|00010000(4): 3 instructions",
+                "0|T--|00010000(4): 5 instructions",
                 "1|T--|if (Test(GT,VZN)) branch 00010004",
-                "2|L--|d7 = d7 - 0x00000001",
-                "3|T--|if (d7 != 0xFFFFFFFF) branch 0000FFFC");
+                "2|L--|v4 = SLICE(d7, word16, 0)",
+                "3|L--|v4 = v4 - 1",
+                "4|L--|d7 = DPB(d7, v4, 0)",
+                "5|T--|if (v4 != 0xFFFF) branch 0000FFFC");
         }
 
         [Test]
@@ -1107,10 +1111,12 @@ namespace Reko.UnitTests.Arch.M68k
         {
             Rewrite(0x56C8, 0xFFFA);
             AssertCode(
-                "0|T--|00010000(4): 3 instructions",
+                "0|T--|00010000(4): 5 instructions",
                 "1|T--|if (Test(NE,Z)) branch 00010004",
-                "2|L--|d0 = d0 - 0x00000001",
-                "3|T--|if (d0 != 0xFFFFFFFF) branch 0000FFFC");
+                "2|L--|v4 = SLICE(d0, word16, 0)",
+                "3|L--|v4 = v4 - 1",
+                "4|L--|d0 = DPB(d0, v4, 0)",
+                "5|T--|if (v4 != 0xFFFF) branch 0000FFFC");
         }
 
         [Test]
@@ -1481,10 +1487,12 @@ namespace Reko.UnitTests.Arch.M68k
         {
             Rewrite(0x55CF, 0xFFF2);        // dbcs d7,$000F21B2
             AssertCode(
-                "0|T--|00010000(4): 3 instructions",
+                "0|T--|00010000(4): 5 instructions",
                 "1|T--|if (Test(ULT,C)) branch 00010004",
-                "2|L--|d7 = d7 - 0x00000001",
-                "3|T--|if (d7 != 0xFFFFFFFF) branch 0000FFF4");
+                "2|L--|v4 = SLICE(d7, word16, 0)",
+                "3|L--|v4 = v4 - 1",
+                "4|L--|d7 = DPB(d7, v4, 0)",
+                "5|T--|if (v4 != 0xFFFF) branch 0000FFF4");
         }
 
         [Test]
@@ -1667,10 +1675,12 @@ namespace Reko.UnitTests.Arch.M68k
         {
             Rewrite(0x5DCA, 0x4EF9);    // dblt d2,$0016B6AB
             AssertCode(
-                "0|T--|00010000(4): 3 instructions",
+                "0|T--|00010000(4): 5 instructions",
                 "1|T--|if (Test(LT,CV)) branch 00010004",
-                "2|L--|d2 = d2 - 0x00000001",
-                "3|T--|if (d2 != 0xFFFFFFFF) branch 00014EFB");
+                "2|L--|v4 = SLICE(d2, word16, 0)",
+                "3|L--|v4 = v4 - 1",
+                "4|L--|d2 = DPB(d2, v4, 0)",
+                "5|T--|if (v4 != 0xFFFF) branch 00014EFB");
         }
 
         [Test]
@@ -1690,6 +1700,19 @@ namespace Reko.UnitTests.Arch.M68k
                 "0|T--|00010000(2): 2 instructions",
                 "1|T--|if (Test(GE,N)) branch 00010002",
                 "2|L--|__syscall(0x0007)");
+        }
+
+        [Test]
+        public void M68krw_dbeq()
+        {
+            Rewrite(0x57C9, 0xFFFC);    //  dbeq d1,$001062C4
+            AssertCode(
+                "0|T--|00010000(4): 5 instructions",
+                "1|T--|if (Test(EQ,Z)) branch 00010004",
+                "2|L--|v4 = SLICE(d1, word16, 0)",
+                "3|L--|v4 = v4 - 1",
+                "4|L--|d1 = DPB(d1, v4, 0)",
+                "5|T--|if (v4 != 0xFFFF) branch 0000FFFE");
         }
     }
 }

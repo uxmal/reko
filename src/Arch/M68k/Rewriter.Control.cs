@@ -139,10 +139,12 @@ namespace Reko.Arch.M68k
                     InstrClass.ConditionalTransfer);
             }
             var src = orw.RewriteSrc(instr.op1, instr.Address);
-
-            m.Assign(src, m.ISub(src, 1));
+            var tmp = binder.CreateTemporary(PrimitiveType.Word16);
+            m.Assign(tmp, m.Slice(tmp.DataType, src, 0));
+            m.Assign(tmp, m.ISubS(tmp, 1));
+            m.Assign(src, m.Dpb(src, tmp, 0));
             m.Branch(
-                m.Ne(src, m.Word32(-1)),
+                m.Ne(tmp, m.Word16(0xFFFF)),
                 addr,
                 InstrClass.ConditionalTransfer);
         }
