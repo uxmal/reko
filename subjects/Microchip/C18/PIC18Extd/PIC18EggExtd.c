@@ -47,7 +47,7 @@ void fn00000E(Eq_8 FSR0, word24 TBLPTR)
 		globals->b00C8 = TBLPTRH_25;
 		globals->b00C9 = TBLPTRU_26;
 		0x00->b00C3 = 0x00->b00C3;
-		Eq_105 Z_57 = cond(0x00->b00C3);
+		Eq_99 Z_57 = cond(0x00->b00C3);
 l000080:
 		if (Z_57)
 			break;
@@ -92,8 +92,8 @@ void fn0000D0(byte LATB, byte FSR2L, ptr16 FSR2, byte * FSR1)
 	}
 }
 
-// 000128: void fn000128(Register cu8 WREG, Register cu8 FSR0L, Register cu8 FSR0H, Register Eq_222 FSR0)
-void fn000128(cu8 WREG, cu8 FSR0L, cu8 FSR0H, Eq_222 FSR0)
+// 000128: void fn000128(Register cu8 WREG, Register cu8 FSR0L, Register cu8 FSR0H, Register Eq_210 FSR0)
+void fn000128(cu8 WREG, cu8 FSR0L, cu8 FSR0H, Eq_210 FSR0)
 {
 	while (FSR0H < WREG)
 	{

@@ -10,6 +10,6 @@
 	};
 word32 g_dw8000271C = 0x00000000;
 byte g_b80002724 = 0x00;
-up32 g_dw80002726 = 0x00000000;
+uint32 g_dw80002726 = 0x00000000;
 <anonymous> g_tFFFFFFFF;
 

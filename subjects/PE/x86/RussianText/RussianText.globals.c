@@ -4,7 +4,7 @@
 
 #include "RussianText.h"
 
-up32 g_dw40208B = 0x00000000;
+uint32 g_dw40208B = 0x00000000;
 char g_b4020A4 = 'Ý';
 word32 g_dw4020F8 = 0x00000000;
 

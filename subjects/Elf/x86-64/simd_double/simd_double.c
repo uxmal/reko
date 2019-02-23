@@ -85,8 +85,8 @@ void frame_dummy()
 	register_tm_clones();
 }
 
-// 000000000000072A: Register (ptr64 void) _mm_malloc(Register uint64 rsi, Register Eq_111 rdi)
-void(uint64 rsi, Eq_111 rdi)
+// 000000000000072A: Register (ptr64 void) _mm_malloc(Register uint64 rsi, Register Eq_107 rdi)
+void(uint64 rsi, Eq_107 rdi)
 {
 	void * rax_22;
 	if (rsi == 0x01)
@@ -131,13 +131,13 @@ void vec_add(real64 * rcx[], real64 * rdx[], real64 * rsi[], word64 rdi, word64 
 		;
 }
 
-// 0000000000000898: void main(Register Eq_165 xmm0)
-void main(Eq_165 xmm0)
+// 0000000000000898: void main(Register Eq_159 xmm0)
+void main(Eq_159 xmm0)
 {
 	real64 rax_13[] = _mm_malloc(0x20, 0x2000);
 	real64 rax_20[] = _mm_malloc(0x20, 0x2000);
 	real64 rax_27[] = _mm_malloc(0x20, 0x2000);
-	Eq_182 qwLoc10_164 = 0x00;
+	Eq_176 qwLoc10_164 = 0x00;
 	while (qwLoc10_164 < 0x0400)
 	{
 		real64 * rcx_151 = rax_13 + qwLoc10_164;
@@ -152,10 +152,10 @@ void main(Eq_165 xmm0)
 		*rcx_151 = (real64) xmm0;
 		qwLoc10_164 = (word64) qwLoc10_164 + 0x01;
 	}
-	Eq_182 qwLoc18_134 = 0x00;
+	Eq_176 qwLoc18_134 = 0x00;
 	while (qwLoc18_134 < 0x0400)
 	{
-		Eq_215 rax_118 = (word64) qwLoc18_134.u1 + 0x01;
+		Eq_209 rax_118 = (word64) qwLoc18_134.u1 + 0x01;
 		ui32 eax_119 = (word32) rax_118;
 		real64 * rcx_123 = rax_20 + qwLoc18_134;
 		if (rax_118 >= 0x00)
@@ -168,7 +168,7 @@ void main(Eq_165 xmm0)
 		*rcx_123 = (real64) xmm0;
 		qwLoc18_134 = (word64) qwLoc18_134.u1 + 0x01;
 	}
-	Eq_182 qwLoc20_115 = 0x00;
+	Eq_176 qwLoc20_115 = 0x00;
 	while (qwLoc20_115 < 0x0400)
 	{
 		xmm0 = __xorpd(xmm0, xmm0);
@@ -176,7 +176,7 @@ void main(Eq_165 xmm0)
 		qwLoc20_115 = (word64) qwLoc20_115.u1 + 0x01;
 	}
 	vec_add(rax_20, rax_13, rax_27, 0x0400, qwLoc60);
-	Eq_182 qwLoc28_104 = 0x00;
+	Eq_176 qwLoc28_104 = 0x00;
 	while (qwLoc28_104 < 0x0400)
 	{
 		printf("%g\n", tLoc60);

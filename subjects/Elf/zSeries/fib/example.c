@@ -7,7 +7,7 @@
 // 00000560: FlagGroup byte _init()
 byte _init()
 {
-	word64 r1_37 = Mem0[0x00002038 + 0x00:word64];
+	word64 r1_37 = Mem0[0x00002038:word64];
 	if (r1_37 != 0x00)
 	{
 		word64 r15_76;
@@ -52,26 +52,26 @@ void __libc_start_main()
 {
 }
 
-// 00000600: void _start(Register Eq_37 r14)
-void _start(Eq_37 r14)
+// 00000600: void _start(Register Eq_35 r14)
+void _start(Eq_35 r14)
 {
-	Eq_38 r15_6 = fp - 0x00A0 & ~0x0F;
+	Eq_36 r15_6 = fp - 0x00A0 & ~0x0F;
 	*(r15_6 - 0x00B0) = 0x00;
 	*(r15_6 - 0x0010) = r14;
 	*(r15_6 - 0x08) = r15_6 - 0x00B0;
-	word64 r2_20 = Mem15[0x00002040 + 0x00:word64];
+	word64 r2_20 = Mem15[0x00002040:word64];
 	__libc_start_main(r2_20, qwLocA0, fp - 0x0098, 0x00000820, 0x00000888, Mem15[r15_6 - 0x0010 + 0x00:(ptr32 (fn void ()))], Mem15[r15_6 - 0x08 + 0x00:(ptr32 void)]);
 }
 
 // 00000648: Register word64 deregister_tm_clones()
 word64 deregister_tm_clones()
 {
-	Eq_92 r2_4 = 0x2068;
-	Eq_94 r5_2 = 0x08C8;
-	Eq_96 r1_6 = 8303 - r2_4;
+	Eq_88 r2_4 = 0x2068;
+	Eq_90 r5_2 = 0x08C8;
+	Eq_92 r1_6 = 8303 - r2_4;
 	if (r1_6 > *r5_2)
 	{
-		word64 r1_23 = Mem0[0x00002030 + 0x00:word64];
+		word64 r1_23 = Mem0[0x00002030:word64];
 		if (r1_23 != 0x00)
 		{
 			word64 r15_32;
@@ -111,11 +111,11 @@ word64 deregister_tm_clones()
 // 00000680: void register_tm_clones()
 void register_tm_clones()
 {
-	Eq_129 r3_4 = 0x2068 - 0x2068;
+	Eq_123 r3_4 = 0x2068 - 0x2068;
 	uint64 r1_6 = r3_4 >> 0x03 >> 0x003F;
 	if ((r3_4 >> 0x03) + r1_6 != 0x00)
 	{
-		word64 r1_26 = Mem0[0x00002050 + 0x00:word64];
+		word64 r1_26 = Mem0[0x00002050:word64];
 		if (r1_26 != 0x00)
 		{
 			word64 r15_36;
@@ -152,12 +152,12 @@ void register_tm_clones()
 // 000006C8: void __do_global_dtors_aux()
 void __do_global_dtors_aux()
 {
-	Eq_168 r13_16 = 0x08D0;
-	Eq_170 r15_17 = fp - 0x0140;
-	Eq_174 r11_18 = 0x2068;
+	Eq_160 r13_16 = 0x08D0;
+	Eq_162 r15_17 = fp - 0x0140;
+	Eq_166 r11_18 = 0x2068;
 	if (*r11_18 == 0x00)
 	{
-		if (Mem0[r13_16 + 0x00:byte] != Mem0[0x00002028 + 0x00:byte])
+		if (Mem0[r13_16 + 0x00:byte] != Mem0[0x00002028:byte])
 		{
 			word64 r15_59;
 			word64 r12_61;
@@ -172,7 +172,7 @@ void __do_global_dtors_aux()
 		r15_17 = deregister_tm_clones();
 		*r11_18 = 0x01;
 	}
-	Eq_181 r4_22 = *((word64) r15_17 + 0x0110);
+	Eq_173 r4_22 = *((word64) r15_17 + 0x0110);
 	word64 r15_33;
 	word64 r11_34;
 	word64 r12_35;
@@ -188,9 +188,9 @@ void __do_global_dtors_aux()
 // 00000720: void frame_dummy()
 void frame_dummy()
 {
-	Eq_219 r13_10 = 0x08D8;
-	Eq_221 r2_12 = 0x1E18;
-	Eq_223 CC_14 = cond(*r13_10 - *r2_12);
+	Eq_209 r13_10 = 0x08D8;
+	Eq_211 r2_12 = 0x1E18;
+	Eq_213 CC_14 = cond(*r13_10 - *r2_12);
 	if (*r13_10 == *r2_12)
 	{
 l00000740:
@@ -200,7 +200,7 @@ l00000740:
 			return;
 		}
 	}
-	word64 r1_23 = Mem0[0x00002048 + 0x00:word64];
+	word64 r1_23 = Mem0[0x00002048:word64];
 	CC_14 = cond(r1_23);
 	if (r1_23 != 0x00)
 	{
@@ -258,14 +258,14 @@ void main(word64 r2)
 // 00000820: void __libc_csu_init()
 void __libc_csu_init()
 {
-	Eq_299 CC_37 = _init();
-	Eq_303 r1_39 = 7688;
+	Eq_287 CC_37 = _init();
+	Eq_291 r1_39 = 7688;
 	if (!CC_37)
 	{
-		Eq_303 r7_75 = r1_39;
+		Eq_291 r7_75 = r1_39;
 		do
 		{
-			Eq_321 r1_81 = *r7_75;
+			Eq_309 r1_81 = *r7_75;
 			word64 r15_88;
 			word64 r8_90;
 			word64 r9_91;

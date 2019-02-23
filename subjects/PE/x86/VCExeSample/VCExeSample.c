@@ -25,7 +25,7 @@ void test2(word32 dwArg04)
 		test1("5", 0x06, "7", globals->r4020E4);
 }
 
-// 004010B0: void indirect_call_test3(Stack (ptr32 Eq_55) c)
+// 004010B0: void indirect_call_test3(Stack (ptr32 Eq_51) c)
 void indirect_call_test3(cdecl_class * c)
 {
 	c->vtbl->method04(c, 1000);
@@ -43,8 +43,8 @@ void test5()
 	globals->gbl_c->vtbl->method04(globals->gbl_c, 999, globals->r4020EC);
 }
 
-// 00401120: void test6(Stack (ptr32 Eq_100) c, Stack int32 a, Stack int32 b)
-void test6(cdecl_class * c, int32 a, int32 b)
+// 00401120: void test6(Stack Eq_62 c, Stack int32 a, Stack int32 b)
+void test6(Eq_62 c, int32 a, int32 b)
 {
 	c->vtbl->method04(c, c->vtbl->sum(c, a, b));
 }
@@ -69,7 +69,7 @@ void nested_if_blocks_test8(real64 rArg04, real64 rArg0)
 // 00401230: void loop_test9(Stack real32 rArg04, FpuStack real64 rArg0)
 void loop_test9(real32 rArg04, real64 rArg0)
 {
-	word32 dwLoc08_10 = 0x00;
+	int32 dwLoc08_10 = 0x00;
 	while (globals->gbl_thiscall->vtbl->modify_double(globals->gbl_thiscall, dwLoc08_10, (real64) rArg04) > (real64) dwLoc08_10)
 	{
 		globals->gbl_thiscall->vtbl->set_double(globals->gbl_thiscall, (real64) rArg04);
@@ -107,7 +107,7 @@ void loop_test11(real64 rArg04)
 	}
 }
 
-// 00401330: void nested_structs_test12(Stack (ptr32 Eq_291) dwArg04)
+// 00401330: void nested_structs_test12(Stack (ptr32 Eq_243) dwArg04)
 void nested_structs_test12(nested_structs_type * dwArg04)
 {
 	dwArg04->a = 0x01;
@@ -116,7 +116,7 @@ void nested_structs_test12(nested_structs_type * dwArg04)
 	dwArg04->d = 0x04;
 }
 
-// 00401360: void nested_structs_test13(Stack (ptr32 Eq_308) str)
+// 00401360: void nested_structs_test13(Stack (ptr32 Eq_260) str)
 void nested_structs_test13(nested_structs_type * str)
 {
 	nested_structs_test12(str);

@@ -16,7 +16,7 @@ void fn0000(byte R1)
 	byte CAOP_19;
 	fn4EF3();
 	globals->b0157 = 0x05;
-	bcu8 A_24 = (bcu8 *) 33002;
+	bcu8 A_24 = *(bcu8 *) 33002;
 	if ((A_24 >> 0x02 & 0x01) == 0x00)
 	{
 		byte SP_31;

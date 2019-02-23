@@ -32,7 +32,7 @@ void fn0040110B(word32 eax)
 			*(esp_19 - 0x04) = eax_22;
 			*(esp_19 - 0x08) = 0x08;
 			*(esp_19 - 0x0C) = (HANDLE *) GetProcessHeap();
-			Eq_43 eax_36 = HeapFree(*(esp_19 - 0x0C), *(esp_19 - 0x08), *(esp_19 - 0x04));
+			Eq_41 eax_36 = HeapFree(*(esp_19 - 0x0C), *(esp_19 - 0x08), *(esp_19 - 0x04));
 			*(esp_19 - 0x04) = globals->dw40208B;
 			word32 esp_41;
 			byte SCZO_42;

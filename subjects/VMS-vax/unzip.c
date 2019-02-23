@@ -4810,7 +4810,7 @@ void fn000117AA(Eq_346 r0, Eq_8360 * r2, Eq_346 r6, word32 r8, Eq_346 r9, Eq_302
 			word32 r9_229;
 			word32 r6_230;
 			word32 r7_231;
-			(*((char *) (ptr32 *) 0x01 + 0x02))();
+			(*(ptr32 *) 0x01 + 0x02)();
 			r2_221->wC682 = (word16) r0_224;
 			*(sp_213 - 0x04) = fp_227 + -0x0014;
 			ptr32 sp_240;
@@ -4832,7 +4832,7 @@ void fn000117AA(Eq_346 r0, Eq_8360 * r2, Eq_346 r6, word32 r8, Eq_346 r9, Eq_302
 			word32 r9_256;
 			word32 r6_257;
 			word32 r7_258;
-			(*((char *) (ptr32 *) 0x01 + 0x02))();
+			(*(ptr32 *) 0x01 + 0x02)();
 			r2_248->wC684 = (word16) r0_251;
 			*(sp_240 - 0x04) = fp_254 + -0x0012;
 			ptr32 sp_267;
@@ -4854,7 +4854,7 @@ void fn000117AA(Eq_346 r0, Eq_8360 * r2, Eq_346 r6, word32 r8, Eq_346 r9, Eq_302
 			word32 r9_283;
 			word32 r6_284;
 			word32 r7_285;
-			(*((char *) (ptr32 *) 0x01 + 0x02))();
+			(*(ptr32 *) 0x01 + 0x02)();
 			r2_275->wC686 = (word16) r0_278;
 			*(sp_267 - 0x04) = fp_281 + -0x0010;
 			ptr32 sp_294;
@@ -4876,7 +4876,7 @@ void fn000117AA(Eq_346 r0, Eq_8360 * r2, Eq_346 r6, word32 r8, Eq_346 r9, Eq_302
 			word32 r9_310;
 			word32 r6_311;
 			word32 r7_312;
-			(*((char *) (ptr32 *) 0x01 + 0x02))();
+			(*(ptr32 *) 0x01 + 0x02)();
 			r2_302->wC688 = (word16) r0_305;
 			*(sp_294 - 0x04) = (char *) fp_308 - 0x0E;
 			struct Eq_11537 * r2_321;
@@ -4912,7 +4912,7 @@ void fn000117AA(Eq_346 r0, Eq_8360 * r2, Eq_346 r6, word32 r8, Eq_346 r9, Eq_302
 			word32 r9_363;
 			word32 r6_364;
 			word32 r7_365;
-			(*((char *) (ptr32 *) 0x01 + 0x02))();
+			(*(ptr32 *) 0x01 + 0x02)();
 			r2_355->wC692 = (word16) r0_358;
 			r2_355->dw0080 = r2_355->dwC68A + r2_355->dwC68E;
 		}

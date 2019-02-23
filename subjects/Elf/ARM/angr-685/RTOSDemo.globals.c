@@ -4,22 +4,22 @@
 
 #include "RTOSDemo.h"
 
-Eq_1007 g_t808814F3;
-Eq_1007 g_t828E83B5;
-Eq_1007 g_t8348094B;
-Eq_1007 g_t83F240D9;
-Eq_1007 g_t8C45C0F8;
-Eq_1007 g_t9CE000ED;
-Eq_1007 g_tA373CBF4;
-Eq_1007 g_tAF8000F3;
-Eq_1007 g_tB00FF0E8;
-Eq_1007 g_tD351B3F2;
+Eq_999 g_t808814F3;
+Eq_999 g_t828E83B5;
+Eq_999 g_t8348094B;
+Eq_999 g_t83F240D9;
+Eq_999 g_t8C45C0F8;
+Eq_999 g_t9CE000ED;
+Eq_999 g_tA373CBF4;
+Eq_999 g_tAF8000F3;
+Eq_999 g_tB00FF0E8;
+Eq_999 g_tD351B3F2;
 word32 g_dwE000E010;
 word32 g_dwE000E014;
 ui32 g_dwE000E100;
 ui32 g_dwE000E180;
 word32 g_dwE000ED04;
-struct Eq_459 ** g_ptrE000ED08;
+struct Eq_455 ** g_ptrE000ED08;
 ui32 g_dwE000ED0C;
 ui32 g_dwE000ED10;
 ui32 g_dwE000ED1C;
@@ -28,19 +28,19 @@ ui32 g_dwE000ED24;
 word32 g_dwE000ED90;
 ui32 g_dwE000ED9C;
 ui32 g_dwE000EDA0;
-Eq_2705 g_tF88EF001;
-Eq_1007 g_tFE200008;
-Eq_1007 g_tFEBF00E7;
-Eq_1007 g_tFF2400BD;
-Eq_1007 g_tFFF04F23;
-Eq_1007 g_tFFF04FFF;
+Eq_2639 g_tF88EF001;
+Eq_999 g_tFE200008;
+Eq_999 g_tFEBF00E7;
+Eq_999 g_tFF2400BD;
+Eq_999 g_tFFF04F23;
+Eq_999 g_tFFF04FFF;
 Eq_3 g_tFFFFFFFF;
 Eq_3 g_t0001 = 
 	{
 		0x09200002,
 		&g_t0080,
 	};
-Eq_1007 g_t0003 = 
+Eq_999 g_t0003 = 
 	{
 		&g_t800920,
 		0x00800100,
@@ -66,14 +66,14 @@ Eq_1007 g_t0003 =
 		0x16,
 		0xA36A,
 	};
-struct Eq_9956 g_t0004 = 
+struct Eq_9480 g_t0004 = 
 	{
 		
 		{
 			0x09
 		},
 	};
-Eq_1007 g_t0008 = 
+Eq_999 g_t0008 = 
 	{
 		&g_t8001,
 		0x00008005,
@@ -99,23 +99,23 @@ Eq_1007 g_t0008 =
 		0xB1,
 		0x0624,
 	};
-struct Eq_4165 g_t000C = 
+struct Eq_3963 g_t000C = 
 	{
 		0x00008005,
 		0xFFF0F007,
 	};
-struct Eq_9956 g_t000F = 
+struct Eq_9480 g_t000F = 
 	{
 		
 		{
 			0x00
 		},
 	};
-Eq_2708 g_t0080 = 
+Eq_2642 g_t0080 = 
 	{
 		&g_tF88EF001,
 	};
-struct Eq_459 g_t00BF = 
+struct Eq_455 g_t00BF = 
 	{
 		&g_t83045F8,
 		0x08FA87F0,
@@ -128,7 +128,7 @@ struct Eq_459 g_t00BF =
 		0x5CB2E33C,
 		0x00B25CB2,
 	};
-Eq_1007 g_t00FF = 
+Eq_999 g_t00FF = 
 	{
 		&g_t16BD7063,
 		0x7E460246,
@@ -157,47 +157,47 @@ Eq_1007 g_t00FF =
 word32 * g_ptr02A0 = &g_dwE000ED04;
 word32 * g_ptr0424 = &g_dwE000ED04;
 word32 * g_ptr06A8 = &g_dwE000ED04;
-struct Eq_1285 * g_ptr0854 = &g_t200000C4;
+struct Eq_1275 * g_ptr0854 = &g_t200000C4;
 word32 * g_ptr0858 = &g_dwE000ED04;
-struct Eq_1427 * g_ptr08B0 = &g_t200000C4;
-struct Eq_1604 * g_ptr098C = &g_t200000C4;
-struct Eq_1621 * g_ptr09E0 = &g_t200000C4;
+struct Eq_1413 * g_ptr08B0 = &g_t200000C4;
+struct Eq_1586 * g_ptr098C = &g_t200000C4;
+struct Eq_1603 * g_ptr09E0 = &g_t200000C4;
 word32 g_dw09E4 = 0x0000A27C;
 ui32 g_dw09E8 = 0x0000852D;
-struct Eq_1679 * g_ptr0A08 = &g_t200000C4;
-struct Eq_1687 * g_ptr0A1C = &g_t200000C4;
-struct Eq_1748 * g_ptr0B04 = &g_t200000C4;
+struct Eq_1653 * g_ptr0A08 = &g_t200000C4;
+struct Eq_1661 * g_ptr0A1C = &g_t200000C4;
+struct Eq_1720 * g_ptr0B04 = &g_t200000C4;
 word32 * g_ptr0B08 = &g_dwE000ED04;
-struct Eq_1856 * g_ptr0BD0 = &g_t200000C4;
-struct Eq_1928 * g_ptr0C58 = &g_t200000C4;
+struct Eq_1824 * g_ptr0BD0 = &g_t200000C4;
+struct Eq_1894 * g_ptr0C58 = &g_t200000C4;
 word32 * g_ptr0C5C = &g_dwE000ED04;
-struct Eq_2068 * g_ptr0CFC = &g_t200000C4;
-struct Eq_2135 * g_ptr0D64 = &g_t200000C4;
+struct Eq_2030 * g_ptr0CFC = &g_t200000C4;
+struct Eq_2095 * g_ptr0D64 = &g_t200000C4;
 word32 * g_ptr0D68 = &g_dwE000ED04;
-struct Eq_2218 * g_ptr0E64 = &g_t200000C4;
+struct Eq_2174 * g_ptr0E64 = &g_t200000C4;
 word32 g_dw0E68 = 0x200000CC;
-struct Eq_2410 * g_ptr0F40 = &g_t200000C4;
+struct Eq_2362 * g_ptr0F40 = &g_t200000C4;
 word32 * g_ptr0F44 = &g_dwE000ED04;
 word32 * g_ptr0F78 = &g_dwE000ED04;
-struct Eq_2570 * g_ptr0F7C = &g_t200000C4;
-struct Eq_2604 * g_ptr0FD4 = &g_t200000C4;
+struct Eq_2518 * g_ptr0F7C = &g_t200000C4;
+struct Eq_2548 * g_ptr0FD4 = &g_t200000C4;
 word32 * g_ptr0FD8 = &g_dwE000ED04;
-struct Eq_2664 * g_ptr0FF4 = &g_t200000C4;
-struct Eq_2676 * g_ptr1018 = &g_t200000C4;
-struct Eq_2700 * g_ptr107C = &g_t200000C4;
-struct Eq_2779 * g_ptr10D4 = &g_t200000C4;
-struct Eq_2825 * g_ptr111C = &g_t200000C4;
-struct Eq_2886 * g_ptr1134 = &g_t200000C4;
-struct Eq_2916 * g_ptr1140 = &g_t200000C4;
-struct Eq_2920 * g_ptr1154 = &g_t200000C4;
-struct Eq_2942 * g_ptr11A8 = &g_t200000C4;
-struct Eq_2998 * g_ptr11B8 = &g_t200000C4;
-struct Eq_3004 * g_ptr1248 = &g_t200000C4;
+struct Eq_2602 * g_ptr0FF4 = &g_t200000C4;
+struct Eq_2614 * g_ptr1018 = &g_t200000C4;
+struct Eq_2636 * g_ptr107C = &g_t200000C4;
+struct Eq_2713 * g_ptr10D4 = &g_t200000C4;
+struct Eq_2757 * g_ptr111C = &g_t200000C4;
+struct Eq_2816 * g_ptr1134 = &g_t200000C4;
+struct Eq_2842 * g_ptr1140 = &g_t200000C4;
+struct Eq_2846 * g_ptr1154 = &g_t200000C4;
+struct Eq_2866 * g_ptr11A8 = &g_t200000C4;
+struct Eq_2918 * g_ptr11B8 = &g_t200000C4;
+struct Eq_2924 * g_ptr1248 = &g_t200000C4;
 word32 g_dw124C = 0x200000CC;
-struct Eq_3140 * g_ptr12CC = &g_t200000C4;
+struct Eq_3056 * g_ptr12CC = &g_t200000C4;
 word32 g_dw12D0 = 0x200000CC;
-struct Eq_3216 * g_ptr12E8 = &g_t200000C4;
-struct Eq_3254 ** g_ptr1330 = &g_ptr200000C8;
+struct Eq_3126 * g_ptr12E8 = &g_t200000C4;
+struct Eq_3160 ** g_ptr1330 = &g_ptr200000C8;
 ui32 * g_ptr1374 = &g_dwE000ED1C;
 word32 * g_ptr1378 = &g_dwE000ED04;
 ui32 * g_ptr14E8 = &g_dwE000ED20;
@@ -215,7 +215,7 @@ ui32 g_dw1514 = 0x05070001;
 ui32 g_dw1518 = 0x20000000;
 word32 g_dw151C = 0x20000200;
 ui32 g_dw1520 = 0x01070001;
-word32 g_dw1524 = 0x40000013;
+ui32 g_dw1524 = 0x40000013;
 uint32 g_dw1528 = 0x1FFFFFFE;
 ui32 g_dw152C = 0x13000001;
 ui32 * g_ptr1530 = &g_dwE000ED24;
@@ -236,7 +236,7 @@ ui32 g_dw1678 = 0x01070001;
 ui32 g_dw167C = 0x0107003F;
 ui32 g_dw1680 = 0x03070009;
 ui32 g_dw1684 = 0x01070009;
-Eq_1007 g_t1689 = 
+Eq_999 g_t1689 = 
 	{
 		&g_t148009F3,
 		0xEF681A4B,
@@ -262,9 +262,9 @@ Eq_1007 g_t1689 =
 		0x83,
 		0xBF88,
 	};
-struct Eq_3979 ** g_ptr16E0 = &g_ptr200000C8;
+struct Eq_3783 ** g_ptr16E0 = &g_ptr200000C8;
 word32 * g_ptr1710 = &g_dwE000ED04;
-Eq_1007 g_t1715 = 
+Eq_999 g_t1715 = 
 	{
 		&g_tC0F04F0,
 		0x08F3EFBF,
@@ -290,13 +290,13 @@ Eq_1007 g_t1715 =
 		0xE3,
 		0x0002,
 	};
-struct Eq_459 *** g_ptr1724 = &g_ptrE000ED08;
-struct Eq_3266 * g_ptr1728 = &g_dwE000ED9C;
-struct Eq_4149 * g_ptr177C = &g_t20000230;
-struct Eq_4199 * g_ptr1790 = &g_t20000230;
+struct Eq_455 *** g_ptr1724 = &g_ptrE000ED08;
+struct Eq_3170 * g_ptr1728 = &g_dwE000ED9C;
+struct Eq_3949 * g_ptr177C = &g_t20000230;
+struct Eq_3995 * g_ptr1790 = &g_t20000230;
 word32 * g_ptr1870 = &g_dwE000ED04;
 word32 * g_ptr1984 = &g_dwE000ED04;
-Eq_1007 g_t8001 = 
+Eq_999 g_t8001 = 
 	{
 		&g_tFEBF00E7,
 		0x08BF00E7,
@@ -332,22 +332,22 @@ ui32 g_dw80F8 = 0x00008069;
 word32 g_dw80FC = 0x0000A260;
 ui32 g_dw8100 = 0x00008039;
 byte * g_ptr8104 = &g_bA268;
-struct Eq_4746 * g_ptr8174 = &g_t4000C000;
+struct Eq_4518 * g_ptr8174 = &g_t4000C000;
 ui32 * g_ptr8178 = &g_dw4000C018;
 byte * g_ptr817C = &g_b2000022C;
 word32 * g_ptr8180 = &g_dwE000ED04;
 uint32 g_dw828C = 0x10000010;
 uint32 g_dw8290 = 0x20000001;
-struct Eq_4910 * g_ptr8294 = &g_t40008000;
+struct Eq_4666 * g_ptr8294 = &g_t40008000;
 uint32 g_dw8298 = 0x000F4240;
-struct Eq_4950 * g_ptr82CC = &g_t40008000;
-struct Eq_5456 * g_ptr8560 = &g_t200000C4;
+struct Eq_4702 * g_ptr82CC = &g_t40008000;
+struct Eq_5204 * g_ptr8560 = &g_t200000C4;
 word32 * g_ptr85AC = &g_dw200000BC;
 word32 * g_ptr85D8 = &g_dw200000BC;
 byte * g_ptr85F0 = &g_b200007F4;
 byte * g_ptr862C = &g_b200007F4;
 byte * g_ptr866C = &g_b200007F4;
-Eq_1007 g_t8671 = 
+Eq_999 g_t8671 = 
 	{
 		&g_t828E83B5,
 		0xE1F5B3B0,
@@ -373,9 +373,9 @@ Eq_1007 g_t8671 =
 		0xDE,
 		0xE1F4,
 	};
-struct Eq_5236 ** g_ptr86E0 = &g_ptr200007F8;
+struct Eq_4986 ** g_ptr86E0 = &g_ptr200007F8;
 word32 * g_ptr86E4 = &g_dw200000C0;
-Eq_1007 g_t86E9 = 
+Eq_999 g_t86E9 = 
 	{
 		&g_t828E83B5,
 		0xC1F5B3B0,
@@ -401,18 +401,18 @@ Eq_1007 g_t86E9 =
 		0x10,
 		0x004B,
 	};
-struct Eq_459 * (* g_ptr8778)[] = &g_aA284;
+struct Eq_455 * (* g_ptr8778)[] = &g_aA284;
 struct Eq_2 ** g_ptr877C = &g_ptr200007F8;
 word32 * g_ptr8780 = &g_dw200000C0;
 word32 * g_ptr87C4 = &g_ptr200007F8;
-struct Eq_1007 * g_ptr87C8 = &g_t86E9;
-struct Eq_1007 * g_ptr87CC = &g_t8671;
-struct Eq_6497 * g_ptr8EEC = &g_t200007FC;
-struct Eq_6594 * g_ptr8F28 = &g_t200007FC;
-struct Eq_6641 * g_ptr9088 = &g_t200007FC;
+struct Eq_999 * g_ptr87C8 = &g_t86E9;
+struct Eq_999 * g_ptr87CC = &g_t8671;
+struct Eq_6211 * g_ptr8EEC = &g_t200007FC;
+struct Eq_6306 * g_ptr8F28 = &g_t200007FC;
+struct Eq_6351 * g_ptr9088 = &g_t200007FC;
 word32 g_dw908C = 0x20000808;
 word32 g_dw9090 = 0x20000800;
-struct Eq_6987 ** g_ptr90C0 = &g_t200007FC;
+struct Eq_6689 ** g_ptr90C0 = &g_t200007FC;
 up32 g_dw9104 = 0x40006000;
 up32 g_dw9108 = 0x40007000;
 up32 g_dw93A8 = 0x40006000;
@@ -434,20 +434,20 @@ ui32 * g_ptr9634 = &g_dwE000ED24;
 ui32 * g_ptr9688 = &g_dwE000E180;
 ui32 * g_ptr968C = &g_dwE000E010;
 ui32 * g_ptr9690 = &g_dwE000ED24;
-struct Eq_7930 * g_ptr96C0 = &g_t40020000;
+struct Eq_7580 * g_ptr96C0 = &g_t40020000;
 word32 * g_ptr96FC = &g_dw2000087C;
-struct Eq_7930 * g_ptr9700 = &g_t40020000;
-struct Eq_7930 * g_ptr9730 = &g_t40020000;
+struct Eq_7580 * g_ptr9700 = &g_t40020000;
+struct Eq_7580 * g_ptr9730 = &g_t40020000;
 word32 * g_ptr9734 = &g_dw2000087C;
-struct Eq_7930 * g_ptr9778 = &g_t40020000;
+struct Eq_7580 * g_ptr9778 = &g_t40020000;
 word32 * g_ptr977C = &g_dw2000087C;
 byte * g_ptr97C4 = &g_bA2F4;
 byte * g_ptr97C8 = &g_bA2FC;
 word32 g_dw9878 = 0x0000A304;
 int32 g_dw987C = 41716;
 uint32 g_dw9960 = 0x20000002;
-struct Eq_4901 * g_ptr9964 = &g_t40005000;
-struct Eq_8310 * g_ptr9968 = &g_t40020000;
+struct Eq_4657 * g_ptr9964 = &g_t40005000;
+struct Eq_7928 * g_ptr9968 = &g_t40020000;
 word32 * g_ptr996C = &g_dw2000087C;
 word32 g_dw9970 = 0x0000A2F4;
 word32 g_dw99BC = 0x0000A2F4;
@@ -493,7 +493,7 @@ word32 g_dwA0B4 = 0x4000C000;
 uint32 g_dwA120 = 0x001E8480;
 uint32 g_dwA124 = 0x007A1200;
 byte g_bA268 = 0x53;
-struct Eq_459 * g_aA284[] = 
+struct Eq_455 * g_aA284[] = 
 	{
 	};
 ui32 g_aA2A4[] = 
@@ -505,39 +505,39 @@ byte g_bA2FC = 0xB1;
 word32 * g_aA554[] = 
 	{
 	};
-Eq_1007 g_t800500;
-Eq_1007 g_t800920;
-Eq_1007 g_t810900;
-Eq_1007 g_t146047F;
-Eq_1007 g_t14B0F60;
-Eq_1007 g_t14D0AE7;
-Eq_1007 g_t1B0834D;
-Eq_1007 g_t1D01A1D;
-Eq_1007 g_t2210043;
-Eq_1007 g_t2429312;
-Eq_1007 g_t2FE1EF7;
-Eq_1007 g_t4F10168;
-Eq_1007 g_t4FB96F0;
-Eq_1007 g_t72E0260;
-Eq_1007 g_t742A2D8;
-Eq_459 g_t83045F8;
-Eq_1007 g_t8E92D60;
-Eq_1007 g_t9F3EF80;
-Eq_1007 g_tA68A0B9;
-Eq_1007 g_tC0F04F0;
-Eq_1007 g_tC2200D0;
-Eq_1007 g_t11F38000;
-Eq_1007 g_t148009F3;
-Eq_1007 g_t16BD7063;
-Eq_1007 g_t17D1FA7F;
-Eq_1007 g_t181D02FE;
-Eq_1007 g_t1B46047F;
+Eq_999 g_t800500;
+Eq_999 g_t800920;
+Eq_999 g_t810900;
+Eq_999 g_t146047F;
+Eq_999 g_t14B0F60;
+Eq_999 g_t14D0AE7;
+Eq_999 g_t1B0834D;
+Eq_999 g_t1D01A1D;
+Eq_999 g_t2210043;
+Eq_999 g_t2429312;
+Eq_999 g_t2FE1EF7;
+Eq_999 g_t4F10168;
+Eq_999 g_t4FB96F0;
+Eq_999 g_t72E0260;
+Eq_999 g_t742A2D8;
+Eq_455 g_t83045F8;
+Eq_999 g_t8E92D60;
+Eq_999 g_t9F3EF80;
+Eq_999 g_tA68A0B9;
+Eq_999 g_tC0F04F0;
+Eq_999 g_tC2200D0;
+Eq_999 g_t11F38000;
+Eq_999 g_t148009F3;
+Eq_999 g_t16BD7063;
+Eq_999 g_t17D1FA7F;
+Eq_999 g_t181D02FE;
+Eq_999 g_t1B46047F;
 word32 g_a20000000[] = 
 	{
 	};
 word32 g_dw200000BC = 0xAAAAAAAA;
 word32 g_dw200000C0 = 0x00000001;
-Eq_1285 g_t200000C4 = 
+Eq_1275 g_t200000C4 = 
 	{
 		0x00000000,
 		null,
@@ -547,17 +547,17 @@ Eq_1285 g_t200000C4 =
 		0x00000000,
 		0x00000000,
 	};
-struct Eq_3254 * g_ptr200000C8 = null;
+struct Eq_3160 * g_ptr200000C8 = null;
 word32 g_dw20000160 = 0x00000000;
 byte g_b2000022C = 0x00;
-Eq_4149 g_t20000230 = 
+Eq_3949 g_t20000230 = 
 	{
 		0x00000000,
 		0x00000000,
 	};
 byte g_b200007F4 = 0x00;
-struct Eq_5236 * g_ptr200007F8 = null;
-Eq_6497 g_t200007FC = 
+struct Eq_4986 * g_ptr200007F8 = null;
+Eq_6211 g_t200007FC = 
 	{
 		null,
 		0x00000000,
@@ -566,15 +566,15 @@ Eq_6497 g_t200007FC =
 	};
 word32 g_dw2000087C = 0x00000000;
 word32 g_dw20000880 = 0x00000000;
-Eq_1007 g_t208114F3;
-Eq_1007 g_t303501BD;
-Eq_1007 g_t3BF000D1;
-Eq_4887 g_t40004000;
-Eq_4901 g_t40005000;
-Eq_4910 g_t40008000;
-Eq_4746 g_t4000C000;
+Eq_999 g_t208114F3;
+Eq_999 g_t303501BD;
+Eq_999 g_t3BF000D1;
+Eq_4643 g_t40004000;
+Eq_4657 g_t40005000;
+Eq_4666 g_t40008000;
+Eq_4518 g_t4000C000;
 ui32 g_dw4000C018;
-Eq_7930 g_t40020000;
+Eq_7580 g_t40020000;
 word32 g_dw400FE018;
 ui32 g_dw400FE030;
 word32 g_dw400FE034;
@@ -589,11 +589,11 @@ ui32 g_dw400FE110;
 ui32 g_dw400FE120;
 word32 g_dw400FE150;
 word32 g_dw400FE160;
-Eq_1007 g_t43FE9EF7;
-Eq_1007 g_t4605B570;
-Eq_1007 g_t5268E36C;
-Eq_1007 g_t626C2168;
-Eq_1007 g_t63D20260;
-Eq_1007 g_t67F7FF34;
-Eq_1007 g_t7063A560;
+Eq_999 g_t43FE9EF7;
+Eq_999 g_t4605B570;
+Eq_999 g_t5268E36C;
+Eq_999 g_t626C2168;
+Eq_999 g_t63D20260;
+Eq_999 g_t67F7FF34;
+Eq_999 g_t7063A560;
 

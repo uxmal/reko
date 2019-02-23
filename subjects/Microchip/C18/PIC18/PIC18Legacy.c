@@ -12,8 +12,8 @@ void fn00000000()
 	fn00000E(0x00, 0x00);
 }
 
-// 00000E: void fn00000E(Register Eq_17 FSR0, Register word24 TBLPTR)
-void fn00000E(Eq_17 FSR0, word24 TBLPTR)
+// 00000E: void fn00000E(Register Eq_13 FSR0, Register word24 TBLPTR)
+void fn00000E(Eq_13 FSR0, word24 TBLPTR)
 {
 	__tblrd(TBLPTR, 0x01);
 	0x00->b00C5 = TABLAT;
@@ -22,7 +22,7 @@ void fn00000E(Eq_17 FSR0, word24 TBLPTR)
 	byte TBLPTRL_24 = 0x06;
 	byte TBLPTRH_25 = 0x00;
 	byte TBLPTRU_26 = 0x00;
-	Eq_44 Z_15 = cond(TABLAT);
+	Eq_40 Z_15 = cond(TABLAT);
 	while (true)
 	{
 		if (!Z_15 && 0x00->b00C5 == 0x00)
@@ -48,7 +48,7 @@ void fn00000E(Eq_17 FSR0, word24 TBLPTR)
 		globals->b00C8 = TBLPTRH_25;
 		globals->b00C9 = TBLPTRU_26;
 		0x00->b00C3 = 0x00->b00C3;
-		Eq_114 Z_57 = cond(0x00->b00C3);
+		Eq_104 Z_57 = cond(0x00->b00C3);
 l000080:
 		if (Z_57)
 			break;
@@ -76,8 +76,8 @@ l000080:
 	goto l000080;
 }
 
-// 0000D0: void fn0000D0(Register byte LATB, Register byte FSR2L, Register (ptr16 Eq_194) FSR2, Register (ptr16 Eq_195) FSR1)
-void fn0000D0(byte LATB, byte FSR2L, Eq_194 * FSR2, Eq_195 * FSR1)
+// 0000D0: void fn0000D0(Register byte LATB, Register byte FSR2L, Register (ptr16 Eq_178) FSR2, Register (ptr16 Eq_179) FSR1)
+void fn0000D0(byte LATB, byte FSR2L, Eq_178 * FSR2, Eq_179 * FSR1)
 {
 	FSR1->b0000 = FSR2L;
 	while (FSR2->b00FE != 0x00)
@@ -94,8 +94,8 @@ void fn0000D0(byte LATB, byte FSR2L, Eq_194 * FSR2, Eq_195 * FSR1)
 	FSR1->b0001 = FSR1->b0001;
 }
 
-// 000128: void fn000128(Register cu8 WREG, Register cu8 FSR0L, Register cu8 FSR0H, Register Eq_234 FSR0)
-void fn000128(cu8 WREG, cu8 FSR0L, cu8 FSR0H, Eq_234 FSR0)
+// 000128: void fn000128(Register cu8 WREG, Register cu8 FSR0L, Register cu8 FSR0H, Register Eq_218 FSR0)
+void fn000128(cu8 WREG, cu8 FSR0L, cu8 FSR0H, Eq_218 FSR0)
 {
 	while (FSR0H < WREG)
 	{

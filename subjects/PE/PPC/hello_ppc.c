@@ -873,7 +873,7 @@ word32 fn00401A34(Eq_2 * r2, word32 dwArg08, ptr32 & r2Out, ptr32 & r3Out)
 				struct Eq_2061 * r11_52 = r11_36;
 			} while ((struct Eq_2061 *) 0x00001FF8 > r11_52);
 		}
-		(int32 *) 0x00001FF8 = 0x00;
+		*(int32 *) 0x00001FF8 = 0x00;
 		word32 r3_45;
 		*r3Out = 0x01;
 		return r0_10;
@@ -1825,12 +1825,12 @@ void fn00402A24(word32 r0, Eq_2 * r2, Eq_18 r3, Eq_18 r4, Eq_18 r5, ui32 r11, wo
 			r2_197 = dwLoc0244;
 			if (fp + -0x0220 == 0x00)
 			{
-				r11_199 = (ui32 *) 288;
+				r11_199 = *(ui32 *) 288;
 				r11_200 = r11_199 & 0xFF;
 			}
 			else
 			{
-				r11_202 = (word32) (byte *) 0x0BFF;
+				r11_202 = (word32) *(byte *) 0x0BFF;
 				v21_203 = (int8) r11_202;
 				r11_204 = (int32) v21_203;
 				r11_205 = r11_204 & 0xFF;
@@ -2741,7 +2741,7 @@ void fn00403CA0(Eq_3265 * r2, word32 r13, word32 r14, word32 r15, word32 r16, wo
 	if (r4_7 == 0x00)
 	{
 		*r2->ptr015C = 0x01;
-		r13 = (word32 *) 0x092C;
+		r13 = *(word32 *) 0x092C;
 		fn00403D7C(fp + -0x0038);
 		*r2->ptr0160 = fp + -0x0018;
 	}

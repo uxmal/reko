@@ -2030,7 +2030,7 @@ void fn15B0(byte a, word16 bc, word16 de, byte h)
 	else
 	{
 		fn140B();
-		Eq_96 e_87 = (byte) (word16 *) 0x1752;
+		Eq_96 e_87 = (byte) *(word16 *) 0x1752;
 		byte l_89 = (byte) de;
 		byte h_90 = SLICE(de, byte, 8);
 		byte b_96;

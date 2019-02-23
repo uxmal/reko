@@ -8,8 +8,8 @@ int8 g_aFFFFFFEC[];
 <anonymous> g_tFFFFFFFF;
 byte g_b0002;
 int32 g_dw01C4;
-Eq_3064 g_t0695;
-Eq_2885 g_t10000000 = 
+Eq_3062 g_t0695;
+Eq_2883 g_t10000000 = 
 	{
 		&g_ptr10000860,
 		0,
@@ -20,7 +20,7 @@ int32 g_dw10000014 = 0;
 int32 g_dw10000018 = 4;
 int32 g_dw1000001C = 204800;
 int32 g_dw10000020 = 0;
-Eq_3064 g_t10000024 = 
+Eq_3062 g_t10000024 = 
 	{
 		
 		{
@@ -35,7 +35,7 @@ word32 g_a100007E0[] =
 	{
 	};
 <anonymous> * g_ptr10000860 = null;
-struct Eq_2885 * g_ptr10000878 = &g_t10000000;
+struct Eq_2883 * g_ptr10000878 = &g_t10000000;
 ptr32 g_ptr1000087C = 0x00400000;
 ptr32 g_ptr10000880 = 0x00410000;
 int8 ** g_ptr100008A0 = &g_ptr10000AAC;
@@ -46,8 +46,9 @@ int32 * g_ptr10000914 = &g_dw01C4;
 word32 (* g_ptr100009C8)[] = &g_a100007E0;
 int32 * g_ptr10000A20 = &g_dw10000AA8;
 int32 * g_ptr10000A28 = &g_dw1000001C;
-struct Eq_3064 * g_ptr10000A40 = &g_t10000024;
+struct Eq_3062 * g_ptr10000A40 = &g_t10000024;
 uint16 (** g_ptr10000A6C)[] = null;
 int32 g_dw10000AA8 = 0;
 int8 * g_ptr10000AAC = null;
+<anonymous> * g_ptr100107F8;
 

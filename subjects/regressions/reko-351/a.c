@@ -53,7 +53,7 @@ void __do_global_dtors_aux()
 {
 	if (globals->b80002724 == 0x00)
 	{
-		up32 d0_100 = globals->dw80002726;
+		uint32 d0_100 = globals->dw80002726;
 		<anonymous> * a2_101[] = globals->a80002714;
 		while (0x00 - d0_100 > 0x00)
 		{
@@ -199,11 +199,11 @@ void main()
 	_sin(DPB(rLoc1C, 0x40091EB8, 0), DPB(rLoc14, 1063818100, 0), fp - 0x08);
 }
 
-// 800004DE: void _sin(Stack real64 rArg04, Stack real64 rArg0C, Stack Eq_219 tArg14)
-void _sin(real64 rArg04, real64 rArg0C, Eq_219 tArg14)
+// 800004DE: void _sin(Stack real64 rArg04, Stack real64 rArg0C, Stack Eq_207 tArg14)
+void _sin(real64 rArg04, real64 rArg0C, Eq_207 tArg14)
 {
-	Eq_230 rLoc0C_23 = DPB(rLoc0C, SLICE(rArg04, word32, 32), 32);
-	Eq_234 v9_26 = (real64) ((real80) rLoc0C_23 * rLoc0C_23);
+	Eq_218 rLoc0C_23 = DPB(rLoc0C, SLICE(rArg04, word32, 32), 32);
+	Eq_222 v9_26 = (real64) ((real80) rLoc0C_23 * rLoc0C_23);
 	int32 dwLoc20_100 = 0x01;
 	while ((real64) ((real80) rLoc0C_23 / rLoc14) >= rArg0C)
 	{
