@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -40,6 +40,11 @@ namespace Reko.ImageLoaders.Elf
         public bool IsValidAddress(ulong uAddr)
         {
             return p_vaddr <= uAddr && uAddr < p_vaddr + p_pmemsz;
+        }
+
+        public override string ToString()
+        {
+            return $"[{p_vaddr:X} - 0x{p_pmemsz:X}] - {p_type}";
         }
     }
 }

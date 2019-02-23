@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -46,6 +46,11 @@ namespace Reko.ImageLoaders.Elf
                 return 0;
             else
                 return (uint)(Size / EntrySize);
+        }
+
+        public override string ToString()
+        {
+            return $"[{Address} - 0x{Size:X}] - {Name ?? "(no name)"}";
         }
     }
 
