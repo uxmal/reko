@@ -14329,17 +14329,23 @@ l000000000040BD70:
 
 l000000000040BE06_1:
 	r11_1701 = 0x0000000000000001
-	r15_1702 = 0x0000000000413990
-	r15d_1703 = (word32) r15_1702 (alias)
-// DataOut: bx fs r11 r12 r12d r13 r14 r15 r8 rbp rbx rdi
+// DataOut: bx fs r11 r12 r12d r13 r14 r8 rbp rbx rdi
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 232 rax:0x0000000000413990 r14:rsi r12:rdi rbx:rcx rcx:<invalid> r15:<invalid> r13:<invalid> rdi:<invalid> eax:0x00413990 rbp:<invalid> r11:<invalid> rdx:0x0000000000000001 -200(fp):edx -196(fp):(eax & 0xFFFFFFE8) + 0x00000400 -192(fp):r8 -184(fp):rsi -176(fp):eax -144(fp):eax -64(fp):<invalid> -48(fp):rbx -40(fp):rbp -32(fp):r12 -24(fp):r13 -16(fp):r14 -8(fp):r15
 // LocalsOut: fp(64) Local -0008(32) Local -0040(64) Local -0090(32) Local -00B0(0) Local -00B8(64) Local -00C0(0) Local -00C4(64) Local -00C8(32) Local -00F0(0)
 
+l000000000040BE0A_1:
+	r15_1702 = 0x0000000000413990
+	r15d_1703 = (word32) r15_1702 (alias)
+// DataOut: bx fs r11 r12 r12d r13 r14 r15 r8 rbp rbx rdi
+// DataOut (flags): 
+// SymbolicIn: rsp:fp - 232 rax:0x0000000000413990 r14:rsi r12:rdi rbx:rcx rcx:<invalid> r15:<invalid> r13:<invalid> rdi:<invalid> eax:0x00413990 rbp:<invalid> r11:0x0000000000000001 rdx:0x0000000000000001 -200(fp):edx -196(fp):(eax & 0xFFFFFFE8) + 0x00000400 -192(fp):r8 -184(fp):rsi -176(fp):eax -144(fp):eax -64(fp):<invalid> -48(fp):rbx -40(fp):rbp -32(fp):r12 -24(fp):r13 -16(fp):r14 -8(fp):r15
+// LocalsOut: fp(64) Local -0008(32) Local -0040(64) Local -0090(32) Local -00B0(0) Local -00B8(64) Local -00C0(0) Local -00C4(64) Local -00C8(32) Local -00F0(0)
+
 l000000000040BE0E:
-	r11_78 = PHI((r11_68, l000000000040BD70), (r11_1701, l000000000040BE06_1))
-	r15_79 = PHI((r15_61, l000000000040BD70), (r15_1702, l000000000040BE06_1))
-	r15d_80 = PHI((r15d_62, l000000000040BD70), (r15d_1703, l000000000040BE06_1))
+	r11_78 = PHI((r11_68, l000000000040BD70), (r11_1701, l000000000040BE0A_1))
+	r15_79 = PHI((r15_61, l000000000040BD70), (r15_1702, l000000000040BE0A_1))
+	r15d_80 = PHI((r15d_62, l000000000040BD70), (r15d_1703, l000000000040BE0A_1))
 	qwLoc98_81 = r11_78
 	eax_82 = strlen(rdi_74)
 	rax_83 = DPB(rax_77, eax_82, 0) (alias)

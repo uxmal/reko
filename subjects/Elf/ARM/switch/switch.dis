@@ -567,6 +567,11 @@ l000085B8:
 
 l000085B8_1:
 	r1_103 = r1_103 << 4
+// DataOut: fp ip r0 r1 r2 r3 r4
+// DataOut (flags): C
+// SymbolicIn: sp:fp ip:r0 ^ r1 r3:<invalid> r2:0x00000000 r1:<invalid> r0:0x00000000 - r0
+
+l000085BC_1:
 	r3_105 = r3_105 << 4
 // DataOut: fp ip r0 r1 r2 r3 r4
 // DataOut (flags): C
@@ -599,6 +604,11 @@ l000085CC:
 
 l000085CC_1:
 	r1_103 = r1_103 << 1
+// DataOut: fp ip r0 r1 r2 r3 r4
+// DataOut (flags): C
+// SymbolicIn: sp:fp ip:r0 ^ r1 r3:<invalid> r2:0x00000000 r1:<invalid> r0:0x00000000 - r0
+
+l000085D0_1:
 	r3_105 = r3_105 << 1
 // DataOut: fp ip r0 r1 r2 r3 r4
 // DataOut (flags): C
@@ -618,6 +628,11 @@ l000085D8:
 
 l000085DC_1:
 	r0 = r0 - r1_103
+// DataOut: fp ip r0 r1 r2 r3 r4
+// DataOut (flags): 
+// SymbolicIn: sp:fp ip:r0 ^ r1 r3:<invalid> r2:<invalid> r1:<invalid> r0:<invalid>
+
+l000085E0_1:
 	r2_112 = r2_112 | r3_105
 // DataOut: fp ip r0 r1 r2 r3 r4
 // DataOut (flags): 
@@ -631,6 +646,11 @@ l000085E4:
 
 l000085E8_1:
 	r0 = r0 - (r1_103 >> 1)
+// DataOut: fp ip r0 r1 r2 r3 r4
+// DataOut (flags): 
+// SymbolicIn: sp:fp ip:r0 ^ r1 r3:<invalid> r2:<invalid> r1:<invalid> r0:<invalid>
+
+l000085EC_1:
 	r2_112 = r2_112 | r3_105 >> 1
 // DataOut: fp ip r0 r1 r2 r3 r4
 // DataOut (flags): 
@@ -644,6 +664,11 @@ l000085F0:
 
 l000085F4_1:
 	r0 = r0 - (r1_103 >> 2)
+// DataOut: fp ip r0 r1 r2 r3 r4
+// DataOut (flags): 
+// SymbolicIn: sp:fp ip:r0 ^ r1 r3:<invalid> r2:<invalid> r1:<invalid> r0:<invalid>
+
+l000085F8_1:
 	r2_112 = r2_112 | r3_105 >> 2
 // DataOut: fp ip r0 r1 r2 r3 r4
 // DataOut (flags): 
@@ -657,6 +682,11 @@ l000085FC:
 
 l00008600_1:
 	r0 = r0 - (r1_103 >> 3)
+// DataOut: fp ip r0 r1 r2 r3 r4
+// DataOut (flags): 
+// SymbolicIn: sp:fp ip:r0 ^ r1 r3:<invalid> r2:<invalid> r1:<invalid> r0:<invalid>
+
+l00008604_1:
 	r2_112 = r2_112 | r3_105 >> 3
 // DataOut: fp ip r0 r1 r2 r3 r4
 // DataOut (flags): 

@@ -5,14 +5,14 @@
 #include "TESTLONG.h"
 
 struct Eq_126 * g_ptr0000;
-Eq_806 g_t0001;
+Eq_809 g_t0001;
 word32 g_a0008[];
 ui32 g_a0010[];
 union Eq_31 g_u12BC = 
 	{
 		0x64
 	};
-Eq_4246 g_a2815[] = 
+Eq_4252 g_a2815[] = 
 	{
 	};
 ptr32 g_ptr3D70 = 0x00000000;
@@ -26,13 +26,13 @@ ui32 g_dw3D8C = 0x05050505;
 word32 g_dw3D98 = 0x05050505;
 ptr32 g_ptr3D9C = 0x06060606;
 word32 g_dw3DA0 = 0x06060606;
-struct Eq_2843 * g_ptr3DA4 = &g_t6060606;
+struct Eq_2846 * g_ptr3DA4 = &g_t6060606;
 word32 g_dw3DA8 = 0x06060606;
-Eq_3362 g_a3DAC[] = 
+Eq_3365 g_a3DAC[] = 
 	{
 	};
 Eq_4 g_t4000;
 Eq_69 g_t10202;
 Eq_69 g_t3030303;
-Eq_2843 g_t6060606;
+Eq_2846 g_t6060606;
 
