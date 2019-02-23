@@ -100,7 +100,7 @@ namespace Reko.Arch.Z80
                 case Opcode.jr: RewriteJr(); break;
                 case Opcode.ld: RewriteLd();  break;
                 case Opcode.rl: RewriteRotation(PseudoProcedure.RolC, true); break;
-                case Opcode.rla: RewriteRotation(PseudoProcedure.RolC, false); break;
+                case Opcode.rla: RewriteRotation(PseudoProcedure.RolC, true); break;
                 case Opcode.rlc: RewriteRotation(PseudoProcedure.Rol, false); break;
                 case Opcode.rlca: RewriteRotation(PseudoProcedure.Rol, false); break;
                 case Opcode.rr: RewriteRotation(PseudoProcedure.RorC, true); break;
