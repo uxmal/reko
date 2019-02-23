@@ -4,16 +4,16 @@
 
 #include "FIBO.h"
 
-Eq_797 g_tFFFFFFFF;
+Eq_800 g_tFFFFFFFF;
 struct Eq_122 * g_ptr0000;
-Eq_977 g_t0001;
+Eq_980 g_t0001;
 struct Eq_6 * g_ptr0004;
-Eq_797 g_t0005;
+Eq_800 g_t0005;
 word32 g_a0008[];
 ui32 g_a0010[];
 byte g_b1410 = 0x49;
 byte g_b1438 = 0x49;
-Eq_4534 g_t28B1 = 
+Eq_4540 g_t28B1 = 
 	{
 		
 		{
@@ -42,23 +42,23 @@ Eq_27 g_t3EB0 =
 word32 g_dw3EBC = 0x05050505;
 ptr32 g_ptr3EC0 = 0x06060606;
 int32 g_dw3EC4 = 101058054;
-struct Eq_2793 * g_ptr3EC8 = &g_t6060606;
+struct Eq_2796 * g_ptr3EC8 = &g_t6060606;
 struct Eq_6 * g_ptr3ECC = &g_t6060606;
-Eq_3649 g_t3ED0 = 
+Eq_3652 g_t3ED0 = 
 	{
 		
 		{
 		},
 	};
 word32 g_dw3FD4;
-Eq_600 g_t3FDC;
+Eq_603 g_t3FDC;
 word32 g_dw3FE0;
-struct Eq_551 * g_ptr3FEC;
+struct Eq_554 * g_ptr3FEC;
 Eq_27 g_t3FF0;
 Eq_27 g_t3FF4;
 Eq_27 g_t3FFC;
 Eq_6 g_t4000;
 Eq_5 g_t10202;
 Eq_5 g_t3030303;
-Eq_2793 g_t6060606;
+Eq_2796 g_t6060606;
 

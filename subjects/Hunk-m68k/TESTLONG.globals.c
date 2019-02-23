@@ -5,12 +5,12 @@
 #include "TESTLONG.h"
 
 struct Eq_124 * g_ptr0000;
-Eq_888 g_t0001;
+Eq_891 g_t0001;
 struct Eq_6 * g_ptr0004;
 word32 g_a0008[];
 ui32 g_a0010[];
-Eq_2705 g_t0400;
-Eq_4438 g_t2815 = 
+Eq_2708 g_t0400;
+Eq_4444 g_t2815 = 
 	{
 		
 		{
@@ -39,23 +39,23 @@ Eq_27 g_t3D8C =
 word32 g_dw3D98 = 0x05050505;
 ptr32 g_ptr3D9C = 0x06060606;
 int32 g_dw3DA0 = 101058054;
-struct Eq_2705 * g_ptr3DA4 = &g_t6060606;
+struct Eq_2708 * g_ptr3DA4 = &g_t6060606;
 struct Eq_6 * g_ptr3DA8 = &g_t6060606;
-Eq_3558 g_t3DAC = 
+Eq_3561 g_t3DAC = 
 	{
 		
 		{
 		},
 	};
 word32 g_dw3EB0;
-Eq_576 g_t3EB8;
+Eq_579 g_t3EB8;
 word32 g_dw3EBC;
-struct Eq_533 * g_ptr3EC8;
+struct Eq_536 * g_ptr3EC8;
 Eq_27 g_t3ECC;
 Eq_27 g_t3ED0;
 Eq_27 g_t3ED8;
 Eq_6 g_t4000;
 Eq_5 g_t10202;
 Eq_5 g_t3030303;
-Eq_2705 g_t6060606;
+Eq_2708 g_t6060606;
 

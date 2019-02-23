@@ -21,7 +21,7 @@ word32 g_dw14BC;
 ptr32 g_ptr14C0;
 int32 g_dw14C4;
 word32 g_dw14CC;
-Eq_528 g_t14D0;
+Eq_531 g_t14D0;
 word32 g_dw14D4;
-struct Eq_495 * g_ptr14D8;
+struct Eq_498 * g_ptr14D8;
 

@@ -88,6 +88,16 @@ namespace Reko.UnitTests.Typing
             RunTest(program, outputFile);
         }
 
+        private TypeCollector Given_TypeCollector(Program program)
+        {
+            var tyco = new TypeCollector(
+                program.TypeFactory,
+                program.TypeStore,
+                program,
+                new FakeDecompilerEventListener());
+            return tyco;
+        }
+
         private void DumpProgAndStore(Program program, FileUnitTester fut)
         {
             foreach (Procedure proc in program.Procedures.Values)
@@ -100,15 +110,7 @@ namespace Reko.UnitTests.Typing
             fut.AssertFilesEqual();
         }
 
-        private TypeCollector Given_TypeCollector(Program program)
-        {
-            var tyco = new TypeCollector(
-                program.TypeFactory,
-                program.TypeStore,
-                program,
-                new FakeDecompilerEventListener());
-            return tyco;
-        }
+        
 
         [Test]
         public void TycoMemStore()

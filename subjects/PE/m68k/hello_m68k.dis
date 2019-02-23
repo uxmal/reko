@@ -3625,9 +3625,9 @@ l000028FA:
 	goto l0000290E
 	// succ:  l0000290E
 l000028FC:
-	v50 = d4
-	Mem0[a5 + -1292:word32] = v50
-	CVZN = cond(v50)
+	v51 = d4
+	Mem0[a5 + -1292:word32] = v51
+	CVZN = cond(v51)
 	d0 = 0
 	CVZN = cond(d0)
 	d3 = Mem0[a7:word32]
@@ -3741,9 +3741,9 @@ l0000295A:
 	__syscall(0xA023)
 	// succ:  l00002970
 l00002970:
-	v49 = a2
-	Mem0[a5 + -1316:word32] = v49
-	CVZN = cond(v49)
+	v50 = a2
+	Mem0[a5 + -1316:word32] = v50
+	CVZN = cond(v50)
 	// succ:  l00002974
 l00002974:
 	d1 = 0
@@ -3823,17 +3823,19 @@ l00002986:
 	Mem0[a0:word32] = v47
 	a0 = a0 + 4
 	CVZN = cond(v47)
-	d0 = d0 - 0x00000001
-	branch d0 != 0xFFFFFFFF l00002986
+	v48 = SLICE(d0, word16, 0)
+	v48 = v48 - 1
+	d0 = DPB(d0, v48, 0)
+	branch v48 != 0xFFFF l00002986
 	// succ:  l000029AA l00002986
 l000029AA:
 	d5 = Mem0[a5 + -1312:word32]
 	CVZN = cond(d5)
 	d7 = 32
 	CVZN = cond(d7)
-	v48 = Mem0[a5 + -1312:word32] + d7
-	Mem0[a5 + -1312:word32] = v48
-	CVZNX = cond(v48)
+	v49 = Mem0[a5 + -1312:word32] + d7
+	Mem0[a5 + -1312:word32] = v49
+	CVZNX = cond(v49)
 	// succ:  l000029B4
 l000029B4:
 	a7 = a7 - 4

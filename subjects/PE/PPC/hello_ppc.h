@@ -17881,7 +17881,7 @@ T_3865: (in 0x000000FF : word32)
   Class: Eq_3865
   DataType: ui32
   OrigDataType: ui32
-T_3866: (in (int32) (int8) (word32) (byte *) 0x00000BFF & 0x000000FF : word32)
+T_3866: (in (int32) (int8) (word32) *(byte *) 0x00000BFF & 0x000000FF : word32)
   Class: Eq_3665
   DataType: ui32
   OrigDataType: ui32
@@ -17897,7 +17897,7 @@ T_3869: (in 0x000000FF : word32)
   Class: Eq_3869
   DataType: ui32
   OrigDataType: ui32
-T_3870: (in (ui32 *) 0x00000120 & 0x000000FF : word32)
+T_3870: (in *(ui32 *) 0x00000120 & 0x000000FF : word32)
   Class: Eq_3665
   DataType: ui32
   OrigDataType: ui32

@@ -10848,7 +10848,7 @@ T_2325: (in Mem659[4:word32] : word32)
   Class: Eq_2323
   DataType: (ptr32 Eq_2323)
   OrigDataType: int32
-T_2326: (in strerror((struct Eq_2323 **) 4) : (ptr32 char))
+T_2326: (in strerror(*(struct Eq_2323 **) 4) : (ptr32 char))
   Class: Eq_2326
   DataType: (ptr32 char)
   OrigDataType: (ptr32 char)

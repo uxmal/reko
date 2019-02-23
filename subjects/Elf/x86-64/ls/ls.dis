@@ -13478,6 +13478,11 @@ l000000000040BD70:
 
 l000000000040BE06_1:
 	r11_64 = 0x0000000000000001
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l000000000040BE0A_1:
 	r15_481 = 0x0000000000413990
 // DataOut:
 // DataOut (flags):

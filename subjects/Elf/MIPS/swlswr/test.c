@@ -9,9 +9,9 @@ ptr32 _init(word32 ra)
 {
 	if (__gmon_start__ == 0x00)
 	{
-		ptr32 r25_16 = (ptr32 *) 0x00020A4C;
+		ptr32 r25_16 = *(ptr32 *) 0x00020A4C;
 		(r25_16 + 2004)();
-		ptr32 r25_23 = (ptr32 *) 0x00020A4C;
+		ptr32 r25_23 = *(ptr32 *) 0x00020A4C;
 		(r25_23 + 0x0970)();
 		return __gmon_start__;
 	}
@@ -22,8 +22,8 @@ ptr32 _init(word32 ra)
 // 00000610: void __start(Register word32 r2, Register word32 ra, Stack word32 dwArg00)
 void __start(word32 r2, word32 ra, word32 dwArg00)
 {
-	word32 r8_18 = (word32 *) 0x00020A60;
-	<anonymous> * r25_23 = (<anonymous> **) 0x00020A24;
+	word32 r8_18 = *(word32 *) 0x00020A60;
+	<anonymous> * r25_23 = *(<anonymous> **) 0x00020A24;
 	r25_23();
 	while (true)
 		;
@@ -174,7 +174,7 @@ void calloc(ptr32 r28, word32 ra)
 // 00000A10: void _fini(Register word32 ra)
 void _fini(word32 ra)
 {
-	ptr32 r25_15 = (ptr32 *) 0x00020A4C;
+	ptr32 r25_15 = *(ptr32 *) 0x00020A4C;
 	(r25_15 + 0x06F4)();
 }
 

@@ -266,6 +266,18 @@ namespace Reko.Core.Expressions
                     }
                     return h;
                 });
+            Add(typeof(OutArgument),
+                (ea, eb) =>
+                {
+                    var a = (OutArgument) ea;
+                    var b = (OutArgument) eb;
+                    return EqualsImpl(a.Expression, b.Expression);
+                },
+                obj =>
+                {
+                    var oa = (OutArgument) obj;
+                    return GetHashCodeImpl(oa.Expression);
+                });
 
             Add(typeof(PhiFunction),
                 (ea, eb) =>
@@ -421,9 +433,9 @@ namespace Reko.Core.Expressions
             if (tx != ty)
                 return false;
 
-            if (!eqs.ContainsKey(tx))
+            if (!eqs.TryGetValue(tx, out var eqFn))
                 throw new NotImplementedException($"No equality implemented for {tx.Name}");
-            return eqs[tx](x, y);
+            return eqFn(x, y);
         }
 
         private static int GetHashCodeImpl(Expression obj)

@@ -575,8 +575,8 @@ word32 string_list_cons(ptr32 & i6Out)
 {
 	word32 i1_23;
 	ptr32 i6_28;
-	(union Eq_161 *) 0x08 = (union Eq_161 *) xmalloc(0x08, out i1_23, out i2_24, out i6_28, out i7_29);
-	(word32 *) 0x0C = i1_23;
+	*(union Eq_161 *) 0x08 = xmalloc(0x08, out i1_23, out i2_24, out i6_28, out i7_29);
+	*(word32 *) 0x0C = i1_23;
 	i6Out = i6_28;
 	return 0x08;
 }

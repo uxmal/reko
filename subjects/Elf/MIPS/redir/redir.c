@@ -16,8 +16,8 @@ void _init(word32 ra)
 // 00400230: void __start(Stack word32 dwArg00)
 void __start(word32 dwArg00)
 {
-	word32 r2_16 = (word32 *) 0x100107A0;
-	<anonymous> * r25_18 = (<anonymous> **) 0x100107F8;
+	word32 r2_16 = *(word32 *) 0x100107A0;
+	<anonymous> * r25_18 = *(<anonymous> **) 0x100107F8;
 	r25_18();
 	while (true)
 		;
@@ -1200,7 +1200,7 @@ void main(word32 r3, word32 r4, word32 r5, word32 r16, word32 r30, word32 ra, wo
 						continue;
 					__errno_location();
 					__errno_location();
-					strerror((struct Eq_2323 **) 0x04);
+					strerror(*(struct Eq_2323 **) 0x04);
 					print_log();
 					exit(-0x01);
 					r16_723 = 0x04;
@@ -2353,7 +2353,7 @@ void properties_load(char * r4, FILE * r5, word32 r30, word32 ra, word32 dwArg00
 		dwLoc30_510 = 0x01;
 		if (0x01 != 0x00)
 		{
-			(byte *) 0x02 = (byte *) 0x00;
+			*(byte *) 0x02 = 0x00;
 			dwLoc48 = (char *) 0x02;
 		}
 		else

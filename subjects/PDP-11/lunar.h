@@ -15398,7 +15398,7 @@ T_3523: (in Mem65[0x3FFC:ptr16] : ptr16)
   Class: Eq_696
   DataType: (ptr16 Eq_696)
   OrigDataType: ptr16
-T_3524: (in fn13AA(pc, (struct Eq_696 **) 0x3FFC) : void)
+T_3524: (in fn13AA(pc, *(struct Eq_696 **) 0x3FFC) : void)
   Class: Eq_1598
   DataType: void
   OrigDataType: void
@@ -15414,7 +15414,7 @@ T_3527: (in 0x00 : byte)
   Class: Eq_3526
   DataType: ci8
   OrigDataType: ci8
-T_3528: (in (ci8 *) 0xFB8C > 0x00 : bool)
+T_3528: (in *(ci8 *) 0xFB8C > 0x00 : bool)
   Class: Eq_3528
   DataType: bool
   OrigDataType: bool

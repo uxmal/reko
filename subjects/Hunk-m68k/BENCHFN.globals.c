@@ -4,16 +4,16 @@
 
 #include "BENCHFN.h"
 
-Eq_755 g_tFFFFFFFF;
+Eq_758 g_tFFFFFFFF;
 struct Eq_124 * g_ptr0000;
-Eq_929 g_t0001;
+Eq_932 g_t0001;
 struct Eq_6 * g_ptr0004;
-Eq_755 g_t0005;
+Eq_758 g_t0005;
 word32 g_a0008[];
 ui32 g_a0010[];
 byte g_b142C = 0x65;
 byte g_b1468 = 0x66;
-Eq_4463 g_t288D = 
+Eq_4469 g_t288D = 
 	{
 		
 		{
@@ -42,23 +42,23 @@ Eq_27 g_t3E8C =
 word32 g_dw3E98 = 0x05050505;
 ptr32 g_ptr3E9C = 0x06060606;
 int32 g_dw3EA0 = 101058054;
-struct Eq_2736 * g_ptr3EA4 = &g_t6060606;
+struct Eq_2739 * g_ptr3EA4 = &g_t6060606;
 struct Eq_6 * g_ptr3EA8 = &g_t6060606;
-Eq_3589 g_t3EAC = 
+Eq_3592 g_t3EAC = 
 	{
 		
 		{
 		},
 	};
 word32 g_dw3FB0;
-Eq_576 g_t3FB8;
+Eq_579 g_t3FB8;
 word32 g_dw3FBC;
-struct Eq_533 * g_ptr3FC8;
+struct Eq_536 * g_ptr3FC8;
 Eq_27 g_t3FCC;
 Eq_27 g_t3FD0;
 Eq_27 g_t3FD8;
 Eq_6 g_t4000;
 Eq_5 g_t10202;
 Eq_5 g_t3030303;
-Eq_2736 g_t6060606;
+Eq_2739 g_t6060606;
 

@@ -8,13 +8,13 @@
 void fn0000(byte R1)
 {
 	globals->b001D = 0x00;
-	byte A_11 = (byte *) 0x80F0;
+	byte A_11 = *(byte *) 0x80F0;
 	byte SP_19;
 	byte R1_20;
 	byte R7_22;
 	fn4EF3();
 	globals->b0157 = 0x05;
-	bcu8 A_34 = (bcu8 *) 33002;
+	bcu8 A_34 = *(bcu8 *) 33002;
 	if ((A_34 >> 0x02 & 0x01) == 0x00)
 		fn4AC0();
 }

@@ -1015,7 +1015,7 @@ Eq_2 fn00401A34(Eq_2 r2, Eq_2 dwArg08, union Eq_1872 & r3Out)
 				r11_74 = r11_22;
 			} while (r11_74 < (struct Eq_1893 *) 0x00001FF8);
 		}
-		(int32 *) 0x00001FF8 = 0x00;
+		*(int32 *) 0x00001FF8 = 0x00;
 		r3Out.u0 = 0x01;
 		return (struct Eq_6095 *) <invalid>;
 	}
@@ -1964,9 +1964,9 @@ void fn00402A24(Eq_2 r2, Eq_17 r3, Eq_17 r4, Eq_17 r5, ui32 r11, word32 r13, wor
 			r1_40 = fn00403FB4(r2_43, stackArg20);
 			r2_43 = r1_40->t0014;
 			if (fp == ~0x021F)
-				r11 = (ui32 *) 288 & 0xFF;
+				r11 = *(ui32 *) 288 & 0xFF;
 			else
-				r11 = (int32) (int8) (word32) (byte *) 0x0BFF & 0xFF;
+				r11 = (int32) (int8) (word32) *(byte *) 0x0BFF & 0xFF;
 		}
 		if ((r11 & 0x20) != 0x00)
 		{
@@ -2941,7 +2941,7 @@ void fn00403CA0(Eq_2 r2, word32 r13, word32 r14, word32 r15, word32 r16, word32 
 	if (r4_8 == null)
 	{
 		**((word32) r2 + 0x015C) = 0x01;
-		r13 = (word32 *) 0x092C;
+		r13 = *(word32 *) 0x092C;
 		fn00403D7C(fp + -0x0038);
 		**((word32) r2 + 0x0160) = fp + -0x0018;
 	}

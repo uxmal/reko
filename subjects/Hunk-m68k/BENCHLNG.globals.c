@@ -5,12 +5,12 @@
 #include "BENCHLNG.h"
 
 struct Eq_122 * g_ptr0000;
-Eq_1156 g_t0001;
+Eq_1159 g_t0001;
 struct Eq_6 * g_ptr0004;
 word32 g_a0008[];
 ui32 g_a0010[];
-Eq_2967 g_t0400;
-Eq_4519 g_t28C5 = 
+Eq_2970 g_t0400;
+Eq_4525 g_t28C5 = 
 	{
 		
 		{
@@ -39,23 +39,23 @@ Eq_27 g_t3E3C =
 word32 g_dw3E48 = 0x05050505;
 ptr32 g_ptr3E4C = 0x06060606;
 int32 g_dw3E50 = 101058054;
-struct Eq_2967 * g_ptr3E54 = &g_t6060606;
+struct Eq_2970 * g_ptr3E54 = &g_t6060606;
 struct Eq_6 * g_ptr3E58 = &g_t6060606;
-Eq_3817 g_t3E5C = 
+Eq_3820 g_t3E5C = 
 	{
 		
 		{
 		},
 	};
 word32 g_dw3F60;
-Eq_574 g_t3F68;
+Eq_577 g_t3F68;
 word32 g_dw3F6C;
-struct Eq_531 * g_ptr3F78;
+struct Eq_534 * g_ptr3F78;
 Eq_27 g_t3F7C;
 Eq_27 g_t3F80;
 Eq_27 g_t3F88;
 Eq_6 g_t4000;
 Eq_5 g_t10202;
 Eq_5 g_t3030303;
-Eq_2967 g_t6060606;
+Eq_2970 g_t6060606;
 

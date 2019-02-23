@@ -13,7 +13,7 @@ void fn80000000(word32 d2)
 // 80000132: Register real96 fn80000132(Register word32 d2, Stack Eq_9 rArg04, Stack Eq_9 rArg10)
 real96 fn80000132(word32 d2, Eq_9 rArg04, Eq_9 rArg10)
 {
-	Eq_11 dwLoc08_64 = (union Eq_11 *) 0x800004FC;
+	Eq_11 dwLoc08_64 = *(union Eq_11 *) 0x800004FC;
 	word32 dwLoc14_59;
 	for (dwLoc14_59 = 0x00; (real96) dwLoc14_59 < rArg10; ++dwLoc14_59)
 		dwLoc08_64 = SEQ(dwLoc08_64, dwLoc08_64, dwLoc08_64) * rArg04;
@@ -23,7 +23,7 @@ real96 fn80000132(word32 d2, Eq_9 rArg04, Eq_9 rArg10)
 // 8000018E: Register real96 fn8000018E(Register word32 d2, Stack Eq_9 rArg04)
 real96 fn8000018E(word32 d2, Eq_9 rArg04)
 {
-	Eq_26 dwLoc08_64 = (union Eq_26 *) 0x80000508;
+	Eq_26 dwLoc08_64 = *(union Eq_26 *) 0x80000508;
 	int32 dwLoc14_59;
 	for (dwLoc14_59 = 0x01; (real96) dwLoc14_59 <= rArg04; ++dwLoc14_59)
 		dwLoc08_64 = SEQ(dwLoc08_64, dwLoc08_64, dwLoc08_64) * (real80) ((real96) dwLoc14_59);
@@ -34,7 +34,7 @@ real96 fn8000018E(word32 d2, Eq_9 rArg04)
 real96 fn800001F2(word32 d2, Eq_9 rArg04)
 {
 	Eq_9 dwLoc08_117 = rArg04;
-	real96 rLoc1C_112 = (real96 *) 0x80000514;
+	real96 rLoc1C_112 = *(real96 *) 0x80000514;
 	int32 dwLoc20_113 = 0x03;
 	while (100 - dwLoc20_113 >= 0x00)
 	{
@@ -49,8 +49,8 @@ real96 fn800001F2(word32 d2, Eq_9 rArg04)
 // 800002AE: Register real96 fn800002AE(Register word32 d2, Stack Eq_9 rArg04)
 real96 fn800002AE(word32 d2, Eq_9 rArg04)
 {
-	Eq_78 dwLoc08_116 = (union Eq_78 *) 0x80000520;
-	real96 rLoc1C_111 = (real96 *) 0x8000052C;
+	Eq_78 dwLoc08_116 = *(union Eq_78 *) 0x80000520;
+	real96 rLoc1C_111 = *(real96 *) 0x8000052C;
 	int32 dwLoc20_112 = 0x02;
 	while (100 - dwLoc20_112 >= 0x00)
 	{
@@ -72,7 +72,7 @@ void fn8000036C(word32 d2, Eq_9 rArg04)
 // 800003CC: void fn800003CC(Register word32 d2)
 void fn800003CC(word32 d2)
 {
-	Eq_9 fp0_8 = (union Eq_9 *) 0x80000538;
+	Eq_9 fp0_8 = *(union Eq_9 *) 0x80000538;
 	fn80000132(d2, fp0_8, fp0_8);
 	fn8000018E(d2, fp0_8);
 	fn800001F2(d2, fp0_8);

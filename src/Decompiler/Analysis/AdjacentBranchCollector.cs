@@ -40,12 +40,11 @@ namespace Reko.Analysis
     ///  | \
     ///  |  PredConditional
     ///  | /
-    ///  Block
-    ///  if (C) SuccConditional
+    ///  if (C) Final2
     ///  | \
-    ///  |  SuccConditional
-    ///  | /
-    ///  Final
+    ///  |  Final2
+    ///  |
+    ///  Final1
     /// skip2:
     /// </code>
     /// into the more easily read:
@@ -54,10 +53,12 @@ namespace Reko.Analysis
     /// if (C) PreConditional
     ///  | \
     ///  |  PredConditional
-    ///  |  SuccConditional
-    ///  | /
-    ///  Final
+    ///  |  |
+    ///  |  Final2
+    ///  |
+    ///  Final1
     /// </code>
+    /// Final1 and Final2 could be the same block or different blocks.
     /// </summary>
     /// <remarks>
     /// This kind of IL code is especially common when decompiling 
@@ -92,12 +93,12 @@ namespace Reko.Analysis
         private class Candidate
         {
             public Block Predecessor;
-            public TestCondition PredecessorTest;
+            public Branch PredecessorTest;
             public Block PredecessorConditional;
             public Block Block;
-            public TestCondition BlockTest;
-            public Block SuccessorConditional;
-            public Block Final;
+            public Branch BlockTest;
+            public Block Final1;
+            public Block Final2;
         }
 
         public void Transform()
@@ -126,8 +127,8 @@ namespace Reko.Analysis
         ///  | /
         ///  Block
         ///  | \
-        ///  |  SuccConditional
-        ///  | /
+        ///  |  Final2
+        ///  |
         ///  Final
         /// </summary>
         private Candidate DetermineCandidate(Block block)
@@ -139,12 +140,10 @@ namespace Reko.Analysis
             var blockTest = this.BlockTest(block, true);
             if (blockTest == null)
                 return null;
-            // Determine the blocks in the successor triangle
-            var final = block.Succ[1];
-            var succCond = block.Succ[0];
-            if (succCond.Pred.Count != 1)
-                return null;
-            if (final.Pred.Count != 2)
+            // Determine the final blocks
+            var final1 = block.Succ[1];
+            var final2 = block.Succ[0];
+            if (final2.Pred.Count != 1)
                 return null;
             // Determine the blocks in the predecessor triangle.
             var pred = block.Pred[0];
@@ -162,11 +161,10 @@ namespace Reko.Analysis
             if (predTest == null)
                 return null;
 
-            if (!cmp.Equals(predTest, blockTest))
+            if (!cmp.Equals(predTest.Condition, blockTest.Condition))
                 return null;
 
-
-            var v = DetermineConditionalIdentifier(predTest);
+            var v = DetermineConditionalIdentifier(predTest.Condition);
             if (v == null)
                 return null;
             if (BlockTrashesIdentifier(predCond, v))
@@ -180,8 +178,8 @@ namespace Reko.Analysis
                 PredecessorConditional = predCond,
                 Block = block,
                 BlockTest = blockTest,
-                SuccessorConditional = succCond,
-                Final = final
+                Final1 = final1,
+                Final2 = final2,
             };
         }
 
@@ -221,9 +219,11 @@ namespace Reko.Analysis
             return false;
         }
 
-        private Identifier DetermineConditionalIdentifier(TestCondition predTest)
+        private Identifier DetermineConditionalIdentifier(Expression e)
         {
-            return predTest.Expression as Identifier;
+            return (e is TestCondition predTest)
+                ? predTest.Expression as Identifier
+                : null;
         }
 
         /// <summary>
@@ -248,14 +248,12 @@ namespace Reko.Analysis
             return pred;
         }
 
-        private TestCondition BlockTest(Block block, bool singleStatement)
+        private Branch BlockTest(Block block, bool singleStatement)
         {
             var c = block.Statements.Count;
             if (c == 0 || (singleStatement && c != 1))
                 return null;
-            if (!(block.Statements[c-1].Instruction is Branch branch))
-                return null;
-            return branch.Condition as TestCondition;
+            return block.Statements[c - 1].Instruction as Branch;
         }
 
         /// <summary>
@@ -265,27 +263,15 @@ namespace Reko.Analysis
         /// </summary>
         private void FuseIntoPredecessor(Candidate c)
         {
-            // Transfer all successor conditional statements first.
-            var predStms = c.PredecessorConditional.Statements;
-            foreach (var stm in c.SuccessorConditional.Statements)
-            {
-                stm.Block = c.PredecessorConditional;
-                predStms.Add(stm);
-            }
-            // Redirect edges from pred and predCond to point to
-            // final.
-            Block.ReplaceJumpsFrom(c.Block, c.Predecessor);
-            Block.ReplaceJumpsFrom(c.SuccessorConditional, c.PredecessorConditional);
-            Block.ReplaceJumpsTo(c.Block, c.Final);
-            c.Predecessor.Statements.Last.Instruction = new Branch(
-                c.PredecessorTest, c.Final);
-            // Delete the skipped blocks
-            var cfg = proc.ControlGraph;
-            cfg.RemoveEdge(c.Block, c.Final);
-            cfg.RemoveEdge(c.Block, c.SuccessorConditional);
-            cfg.Blocks.Remove(c.Block);
-            cfg.Blocks.Remove(c.SuccessorConditional);
-        }
+            // 'Block' is dead, so unhook it from the graph.
+            c.PredecessorConditional.Succ[0] = c.Final2;
+            c.Final2.Pred[0] = c.PredecessorConditional;
+            c.PredecessorTest.Target = c.Final1;
+            Block.ReplaceJumpsTo(c.Block, c.Final1);
 
+            // Delete the dead block
+            var cfg = proc.ControlGraph;
+            cfg.Blocks.Remove(c.Block);
+        }
     }
 }

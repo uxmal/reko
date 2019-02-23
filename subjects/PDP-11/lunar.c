@@ -109,7 +109,7 @@ void fn0300(Eq_5 r4)
 			if (globals->w25C0 != 0x00 && 2000 - r3_64 < 0x00)
 			{
 				globals->w25C0 = 0x00;
-				(word16 *) 62466 = (word16 *) 62466;
+				*(word16 *) 62466 = *(word16 *) 62466;
 			}
 		}
 		globals->t0068 = r3_64;
@@ -795,21 +795,21 @@ word16 fn0E32()
 	globals->w00AE = 0x00;
 	globals->w34C2 = 0x00;
 	globals->w34D2 = 0x00;
-	(word16 *) 62466 = (word16 *) 62466;
+	*(word16 *) 62466 = *(word16 *) 62466;
 	do
 	{
 		cu16 r4_15 = __swab(globals->w00AC + 0x01);
 		globals->w35CA = __ror(r4_15, r4_15) + globals->w35CA & ~~0x0380 | 0x9C50;
 		struct Eq_2222 * r5_28;
 		fn0E98(&globals->w35CC, out r5_28);
-		(word16 *) 62466 = (word16 *) 62466;
+		*(word16 *) 62466 = *(word16 *) 62466;
 		globals->w00AE -= 0x0A;
 		struct Eq_2240 * r5_40;
 		fn0E98(r5_28, out r5_40);
 		r5_40->w0000 = 0xF700;
 		r5_40->w0002 = 0x00;
 		globals->w34C2 = 13770;
-		(word16 *) 62466 = (word16 *) 62466;
+		*(word16 *) 62466 = *(word16 *) 62466;
 		globals->w00AE += 33;
 	} while (0xC0 - globals->w00AE <= 0x00);
 	// Failed to bind call argument.
@@ -1520,7 +1520,7 @@ void fn13AA(word16 pc, struct Eq_696 * ptrArg00)
 		*r0_67 = 0x00;
 		r0_58 = r0_67 + 0x01;
 	}
-	(word16 *) ~0x01 = 0x00;
+	*(word16 *) ~0x01 = 0x00;
 	word16 * r0_78 = globals->a013E;
 	while (true)
 	{
@@ -1642,26 +1642,26 @@ void fn34E0(word16 pc)
 	__reset();
 	__reset();
 	__reset();
-	(word16 *) ~0x01 = 0x00;
+	*(word16 *) ~0x01 = 0x00;
 	globals->w0004 = 13638;
 	globals->w0006 = 0x00;
-	(word16 *) ~0x0471 = 0x00;
+	*(word16 *) ~0x0471 = 0x00;
 	fn355A();
-	(word16 *) ~0x0471 = 131;
+	*(word16 *) ~0x0471 = 131;
 	fn355A();
-	(word16 *) ~0x0471 = 131;
+	*(word16 *) ~0x0471 = 131;
 	fn355A();
-	(word16 *) ~0x0471 = 0x4B;
+	*(word16 *) ~0x0471 = 0x4B;
 	fn355A();
-	(word16 *) ~0x0471 = 0x2F;
+	*(word16 *) ~0x0471 = 0x2F;
 	fn355A();
-	(word16 *) ~0x0471 = 0x46;
+	*(word16 *) ~0x0471 = 0x46;
 	fn355A();
-	(word16 *) ~0x0471 = 0x0D;
+	*(word16 *) ~0x0471 = 0x0D;
 	fn355A();
-	(word16 *) ~0x99 = 0x40;
-	(word16 *) 0xF400 = 13666;
-	fn13AA(pc, (struct Eq_696 **) 0x3FFC);
+	*(word16 *) ~0x99 = 0x40;
+	*(word16 *) 0xF400 = 13666;
+	fn13AA(pc, *(struct Eq_696 **) 0x3FFC);
 }
 
 // 355A: void fn355A()
@@ -1669,6 +1669,6 @@ void fn355A()
 {
 	do
 		;
-	while ((ci8 *) 64396 > 0x00);
+	while (*(ci8 *) 64396 > 0x00);
 }
 
