@@ -89,6 +89,17 @@ namespace Reko.UnitTests.Typing
             RunTest(program, outputFile);
         }
 
+        private TypeCollector Given_TypeCollector(Program program)
+        {
+            var tyco = new TypeCollector(
+                program.TypeFactory,
+                program.TypeStore,
+                program,
+                new FakeDecompilerEventListener());
+            return tyco;
+        }
+
+
         private void DumpProgAndStore(Program program, FileUnitTester fut)
         {
             foreach (Procedure proc in program.Procedures.Values)
@@ -283,16 +294,6 @@ namespace Reko.UnitTests.Typing
             tyco.CollectUserGlobalVariableTypes();
 
             Assert.AreEqual("400: xAcceleration: real64", program.GlobalFields.Fields.First().ToString());
-        }
-
-        private TypeCollector Given_TypeCollector(Program program)
-        {
-            var tyco = new TypeCollector(
-                program.TypeFactory,
-                program.TypeStore,
-                program,
-                new FakeDecompilerEventListener());
-            return tyco;
         }
     }
 }

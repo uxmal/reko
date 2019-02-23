@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -520,7 +520,17 @@ namespace Reko.Typing
                 var c = effectiveAddress as Constant;
                 p = effectiveAddress;
                 offset = 0;
+                //$BUG: offsets should be long for 64-bit architectures.
                 MemoryAccessCommon(null, globals, OffsetOf(c), tvAccess, eaBitSize);
+            }
+            else if (effectiveAddress is Address addr && !addr.Selector.HasValue)
+            {
+                // Mem[addr]
+                //$TODO: what to do about segmented addresses?
+                p = effectiveAddress;
+                offset = 0;
+                //$BUG: offsets should be long for 64-bit architectures.
+                MemoryAccessCommon(null, globals, (int) addr.ToLinear(), tvAccess, eaBitSize);
             }
             else if (IsArrayAccess(effectiveAddress))
             {
