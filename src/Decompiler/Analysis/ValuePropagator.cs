@@ -74,7 +74,7 @@ namespace Reko.Analysis
             do
             {
                 Changed = false;
-                foreach (Statement stm in ssa.Procedure.Statements)
+                foreach (Statement stm in ssa.Procedure.Statements) // .ToArray())
                 {
                     this.stmCur = stm;
                     Transform(stm);
