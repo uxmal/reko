@@ -50,12 +50,17 @@ namespace Reko.Core
         private readonly Project project;
         private readonly Program program;
         private readonly DecompilerEventListener eventListener;
+        private readonly Dictionary<string, ImageSymbol> localProcs;
 
         public ImportResolver(Project project, Program program, DecompilerEventListener eventListener)
         {
             this.project = project ?? throw new ArgumentNullException("project");
             this.program = program;
             this.eventListener = eventListener;
+            this.localProcs = program.ImageSymbols.Values
+                .Where(sym => sym.Name != null && sym.Type == SymbolType.Procedure)
+                .GroupBy(sym => sym.Name)
+                .ToDictionary(g => g.Key, g => g.First());
         }
 
         private void EnsureSignature(Program program, SystemService svc)
@@ -231,7 +236,6 @@ namespace Reko.Core
             }
     }
 
-        [Obsolete()]
         public ProcedureConstant ResolveToImportedProcedureConstant(Statement stm, Constant c)
         {
             var addrInstruction = program.SegmentMap.MapLinearAddressToAddress(stm.LinearAddress);
@@ -239,26 +243,24 @@ namespace Reko.Core
             if (!program.ImportReferences.TryGetValue(addrImportThunk, out var impref))
                 return null;
 
-            if (impref.SymbolType == SymbolType.ExternalProcedure)
+            if (impref.SymbolType == SymbolType.Procedure)
             {
-                var extProc = impref.ResolveImportedProcedure(
-                    this,
-                    program.Platform,
-                    new AddressContext(program, addrInstruction, this.eventListener));
-                return new ProcedureConstant(program.Platform.PointerType, extProc);
-            }
-            else if (impref.SymbolType == SymbolType.Procedure)
-            {
-                //$TODO: we need to be able to look up local symbols based on name.
-                // Add a program.ProceduresByName dictionary.
-                var proc = program.Procedures.Values.FirstOrDefault(p => p.Name == impref.EntryName);
-                if (proc == null)
+                if (!this.localProcs.TryGetValue(impref.EntryName, out var sym))
+                    return null;
+                if (! program.Procedures.TryGetValue(sym.Address, out var proc))
                     return null;
                 return new ProcedureConstant(program.Platform.PointerType, proc);
             }
             else
             {
-                return null;
+                //$TODO: need to work on imported data symbols
+                // for now, treat them as imported procedures.
+
+                var extProc = impref.ResolveImportedProcedure(
+                    this,
+                    program.Platform,
+                    new AddressContext(program, addrInstruction, this.eventListener));
+                return new ProcedureConstant(program.Platform.PointerType, extProc);
             }
         }
     }

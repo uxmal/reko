@@ -654,6 +654,19 @@ namespace Reko.UnitTests.Analysis
 			}
 		}
 
+        private SsaState RunTest(ProcedureBuilder m)
+        {
+            var proc = m.Procedure;
+            var gr = proc.CreateBlockDominatorGraph();
+            var sst = new SsaTransform(new ProgramDataFlow(), proc, importResolver.Object, gr, new HashSet<RegisterStorage>());
+            var ssa = sst.SsaState;
+
+            var segmentMap = new SegmentMap(Address.Ptr32(0));
+            var vp = new ValuePropagator(segmentMap, ssa, new CallGraph(), importResolver.Object, listener);
+            vp.Transform();
+            return ssa;
+        }
+
         [Test(Description = "Casting a DPB should result in the deposited bits.")]
         [Category(Categories.UnitTests)]
         public void VpLoadDpb()

@@ -20,7 +20,9 @@
 
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Expressions;
 using Reko.Core.Services;
+using Reko.Core.Types;
 using Reko.Environments.Windows;
 using System;
 using System.Collections.Generic;
@@ -624,31 +626,35 @@ namespace Reko.ImageLoaders.MzExe
             return segs.ToArray();
         }
 
-        bool LoadSegment(NeSegment seg, MemoryArea mem, SegmentMap imageMap)
+        bool LoadSegment(NeSegment neSeg, MemoryArea mem, SegmentMap imageMap)
         {
             Array.Copy(
                 RawImage,
-                (uint)seg.DataOffset << this.cbFileAlignmentShift,
+                (uint) neSeg.DataOffset << this.cbFileAlignmentShift,
                 mem.Bytes,
-                seg.LinearAddress - (int)mem.BaseAddress.ToLinear(),
-                seg.DataLength);
-            var x = seg.Address.ToLinear();
+                neSeg.LinearAddress - (int)mem.BaseAddress.ToLinear(),
+                neSeg.DataLength);
 
             AccessMode access =
-                (seg.Flags & 1) != 0
+                (neSeg.Flags & 1) != 0
                     ? AccessMode.ReadWrite
                     : AccessMode.ReadExecute;
-            this.segmentMap.AddSegment(
+            var seg = this.segmentMap.AddSegment(
                 mem,
-                seg.Address.Selector.Value.ToString("X4"),
+                neSeg.Address.Selector.Value.ToString("X4"),
                 access);
-            if ((seg.Flags & NE_STFLAGS_RELOCATIONS) == 0)
+            var stg = new TemporaryStorage(
+                string.Format("seg{0:X4}", seg.Address.Selector.Value),
+                0,
+                PrimitiveType.SegmentSelector);
+            seg.Identifier = new Identifier(seg.Name, stg.DataType, stg);
+            if ((neSeg.Flags & NE_STFLAGS_RELOCATIONS) == 0)
                 return true;
             var rdr = new LeImageReader(
                 RawImage,
-                seg.DataLength + ((uint)seg.DataOffset << this.cbFileAlignmentShift));
+                neSeg.DataLength + ((uint)neSeg.DataOffset << this.cbFileAlignmentShift));
             int count = rdr.ReadLeInt16();
-            return ApplyRelocations(rdr, count, seg);
+            return ApplyRelocations(rdr, count, neSeg);
         }
 
 #if NE_
@@ -944,7 +950,6 @@ namespace Reko.ImageLoaders.MzExe
                     re.target1,
                     re.target2);
             }
-
         }
     }
 }

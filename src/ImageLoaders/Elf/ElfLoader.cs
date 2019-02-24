@@ -275,6 +275,7 @@ namespace Reko.ImageLoaders.Elf
         {
             { ElfSymbolType.STT_FUNC, SymbolType.Procedure },
             { ElfSymbolType.STT_OBJECT, SymbolType.Data },
+            { ElfSymbolType.STT_NOTYPE, SymbolType.Unknown },
         };
 
         public ImageSymbol CreateImageSymbol(ElfSymbol sym, bool isExecutable)
@@ -282,7 +283,7 @@ namespace Reko.ImageLoaders.Elf
             if (!isExecutable && sym.SectionIndex > 0 && sym.SectionIndex >= Sections.Count)
                 return null;
             SymbolType? st = GetSymbolType(sym);
-            if (st == null)
+            if (st == null || st.Value == SymbolType.Unknown)
                 return null;
             // If this is a relocatable file, the symbol value is 
             // an offset from the section's virtual address. 
@@ -309,7 +310,7 @@ namespace Reko.ImageLoaders.Elf
                 return null;
             if (sym.SectionIndex == 0)
             {
-                if (st != SymbolType.Procedure)
+                if (st != SymbolType.Procedure && st != SymbolType.Unknown)
                     return null;
                 st = SymbolType.ExternalProcedure;
             }
