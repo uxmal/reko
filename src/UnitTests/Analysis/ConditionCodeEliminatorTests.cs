@@ -109,7 +109,7 @@ namespace Reko.UnitTests.Analysis
                 cce.Transform();
                 ssa.Validate(s => { ssa.Dump(true); Assert.Fail(s); });
 
-                var vp = new ValuePropagator(program.SegmentMap, ssa, importResolver, listener);
+                var vp = new ValuePropagator(program.SegmentMap, ssa, program.CallGraph, importResolver, listener);
                 vp.Transform();
                 ssa.Validate(s => { ssa.Dump(true); Assert.Fail(s); });
 
@@ -568,7 +568,7 @@ ProcedureBuilder_exit:
                 null, 
                 new ProgramDataFlow());
             this.ssaState = ssa.Transform();
-            var vp = new ValuePropagator(segmentMap, ssaState, null, new FakeDecompilerEventListener());
+            var vp = new ValuePropagator(segmentMap, ssaState, new CallGraph(), null, new FakeDecompilerEventListener());
             vp.Transform();
             Given_ConditionCodeEliminator();
             cce.Transform();

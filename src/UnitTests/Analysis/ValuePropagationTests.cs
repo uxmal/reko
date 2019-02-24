@@ -128,7 +128,7 @@ namespace Reko.UnitTests.Analysis
 				proc.Write(false, writer);
 				writer.WriteLine();
 
-				var vp = new ValuePropagator(program.SegmentMap, ssa, importResolver.Object, listener);
+				var vp = new ValuePropagator(program.SegmentMap, ssa, program.CallGraph, importResolver.Object, listener);
 				vp.Transform();
                 sst.RenameFrameAccesses = true;
                 sst.Transform();
@@ -165,7 +165,7 @@ namespace Reko.UnitTests.Analysis
             var ssa = sst.SsaState;
             sst.Transform();
 
-            var vp = new ValuePropagator(segmentMap, ssa, importResolver.Object, listener);
+            var vp = new ValuePropagator(segmentMap, ssa, program.CallGraph, importResolver.Object, listener);
             vp.Transform();
             return ssa;
         }
@@ -185,7 +185,7 @@ namespace Reko.UnitTests.Analysis
 
         private void RunValuePropagator()
         {
-            var vp = new ValuePropagator(segmentMap, m.Ssa, importResolver.Object, listener);
+            var vp = new ValuePropagator(segmentMap, m.Ssa, program.CallGraph, importResolver.Object, listener);
             vp.Transform();
             m.Ssa.Validate(s => Assert.Fail(s));
         }
@@ -274,6 +274,7 @@ namespace Reko.UnitTests.Analysis
 			ValuePropagator vp = new ValuePropagator(
                 segmentMap, 
                 ssa,
+                program.CallGraph,
                 importResolver.Object,
                 listener);
 			vp.Transform();
@@ -352,7 +353,7 @@ namespace Reko.UnitTests.Analysis
                 new ProgramDataFlow());
             sst.Transform();
 
-            var vp = new ValuePropagator(segmentMap, sst.SsaState, importResolver.Object, listener);
+            var vp = new ValuePropagator(segmentMap, sst.SsaState, program.CallGraph, importResolver.Object, listener);
             var stm = m.Procedure.EntryBlock.Succ[0].Statements.Last;
 			vp.Transform(stm);
 			Assert.AreEqual("branch x_2 == 0x00000002 test", stm.Instruction.ToString());
@@ -642,7 +643,7 @@ namespace Reko.UnitTests.Analysis
             sst.Transform();
 			var ssa = sst.SsaState;
 
-			var vp = new ValuePropagator(segmentMap, ssa, importResolver.Object, listener);
+			var vp = new ValuePropagator(segmentMap, ssa, program.CallGraph, importResolver.Object, listener);
 			vp.Transform();
 
 			using (FileUnitTester fut = new FileUnitTester("Analysis/VpDpbDpb.txt"))

@@ -776,7 +776,7 @@ namespace Reko.ImageLoaders.MzExe
                         address = addrImportStubs;
                         importStubs.Add(lp, new Tuple<Address, ImportReference>(
                             address,
-                            new OrdinalImportReference(address, module, rep.target2)));
+                            new OrdinalImportReference(address, module, rep.target2, SymbolType.ExternalProcedure)));
                         addrImportStubs += 8;
                     }
                     break;
@@ -799,7 +799,7 @@ namespace Reko.ImageLoaders.MzExe
                         string fnName = Encoding.ASCII.GetString(abFnName);
                         importStubs.Add(lp, new Tuple<Address, ImportReference>(
                             address,
-                            new NamedImportReference(address, module, fnName)));
+                            new NamedImportReference(address, module, fnName, SymbolType.ExternalProcedure)));
                     }
                     break;
                 case NE_RELTYPE.INTERNAL:

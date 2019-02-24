@@ -402,7 +402,7 @@ namespace Reko.UnitTests.Gui.Windows
         private void Given_ImportedFunction(Address addr, string module, string functionName)
         {
             Assert.IsNotNull(program);
-            this.program.ImportReferences.Add(addr, new NamedImportReference(addr, module, functionName));
+            this.program.ImportReferences.Add(addr, new NamedImportReference(addr, module, functionName, SymbolType.ExternalProcedure));
         }
 
         private void Given_ImageMapItem(uint address)

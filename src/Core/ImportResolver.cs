@@ -239,11 +239,27 @@ namespace Reko.Core
             if (!program.ImportReferences.TryGetValue(addrImportThunk, out var impref))
                 return null;
 
-            var extProc = impref.ResolveImportedProcedure(
-                this,
-                program.Platform,
-                new AddressContext(program, addrInstruction, this.eventListener));
-            return new ProcedureConstant(program.Platform.PointerType, extProc);
+            if (impref.SymbolType == SymbolType.ExternalProcedure)
+            {
+                var extProc = impref.ResolveImportedProcedure(
+                    this,
+                    program.Platform,
+                    new AddressContext(program, addrInstruction, this.eventListener));
+                return new ProcedureConstant(program.Platform.PointerType, extProc);
+            }
+            else if (impref.SymbolType == SymbolType.Procedure)
+            {
+                //$TODO: we need to be able to look up local symbols based on name.
+                // Add a program.ProceduresByName dictionary.
+                var proc = program.Procedures.Values.FirstOrDefault(p => p.Name == impref.EntryName);
+                if (proc == null)
+                    return null;
+                return new ProcedureConstant(program.Platform.PointerType, proc);
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

@@ -216,7 +216,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
                             new NamedImportReference(
                                 imgSym.Address,
                                 null,   // ELF imports don't specify which modile to take the import from
-                                imgSym.Name);
+                                imgSym.Name,
+                                imgSym.Type);
                     }
                 }
             }

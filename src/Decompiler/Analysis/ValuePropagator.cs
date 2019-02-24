@@ -47,6 +47,7 @@ namespace Reko.Analysis
 
         private readonly IProcessorArchitecture arch;
         private readonly SsaState ssa;
+        private readonly CallGraph callGraph;
         private readonly ExpressionSimplifier eval;
         private readonly SsaEvaluationContext evalCtx;
         private readonly SsaIdentifierTransformer ssaIdTransformer;
@@ -56,10 +57,12 @@ namespace Reko.Analysis
         public ValuePropagator(
             SegmentMap segmentMap,
             SsaState ssa,
+            CallGraph callGraph,
             IImportResolver importResolver,
             DecompilerEventListener eventListener)
         {
             this.ssa = ssa;
+            this.callGraph = callGraph;
             this.arch = ssa.Procedure.Architecture;
             this.eventListener = eventListener;
             this.ssaIdTransformer = new SsaIdentifierTransformer(ssa);
@@ -73,8 +76,10 @@ namespace Reko.Analysis
         {
             do
             {
+                //$PERFORMANCE: consider changing this to a work list, where 
+                // every time we process the 
                 Changed = false;
-                foreach (Statement stm in ssa.Procedure.Statements) // .ToArray())
+                foreach (Statement stm in ssa.Procedure.Statements.ToArray())
                 {
                     this.stmCur = stm;
                     Transform(stm);
@@ -107,14 +112,24 @@ namespace Reko.Analysis
 
         public Instruction VisitCallInstruction(CallInstruction ci)
         {
+            var oldCallee = ci.Callee;
             ci.Callee = ci.Callee.Accept(eval);
-            if (ci.Callee is ProcedureConstant pc &&
-                pc.Procedure.Signature.ParametersValid)
+            if (ci.Callee is ProcedureConstant pc)
             {
-                var ab = new CallApplicationBuilder(this.ssa, this.stmCur, ci, ci.Callee);
-                evalCtx.Statement.Instruction = ab.CreateInstruction(pc.Procedure.Signature, pc.Procedure.Characteristics);
-                ssaIdTransformer.Transform(evalCtx.Statement, ci);
-                return evalCtx.Statement.Instruction;
+                if (pc.Procedure.Signature.ParametersValid)
+                {
+                    var ab = new CallApplicationBuilder(this.ssa, this.stmCur, ci, ci.Callee);
+                    evalCtx.Statement.Instruction = ab.CreateInstruction(pc.Procedure.Signature, pc.Procedure.Characteristics);
+                    ssaIdTransformer.Transform(evalCtx.Statement, ci);
+                    return evalCtx.Statement.Instruction;
+                }
+                if (oldCallee != pc && pc.Procedure is Procedure procCallee)
+                {
+                    // This was an indirect call, but is now a direct call.
+                    // Make sure the call graph knows about the link between
+                    // this statement and the callee.
+                    callGraph.AddEdge(stmCur, procCallee);
+                }
             }
             foreach (var use in ci.Uses)
             {

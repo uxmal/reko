@@ -99,6 +99,7 @@ namespace Reko.UnitTests.Analysis
             var vp = new ValuePropagator(
                 segmentMap,
                 sst.SsaState,
+                new CallGraph(),
                 importResolver.Object,
                 NullDecompilerEventListener.Instance);
             vp.Transform();

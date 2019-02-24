@@ -127,7 +127,8 @@ namespace Reko.UnitTests.Analysis
                 sst.AddUsesToExitBlock();
                 var vp = new ValuePropagator(
                     program.SegmentMap, 
-                    sst.SsaState, 
+                    sst.SsaState,
+                    program.CallGraph,
                     importResolver.Object,
                     NullDecompilerEventListener.Instance);
                 vp.Transform();

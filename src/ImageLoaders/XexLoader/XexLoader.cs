@@ -613,7 +613,7 @@ namespace Reko.ImageLoaders.Xex
                     UInt32 importAddress = xexData.import_records[i];
 
                     var theAddress = new Address32(importAddress);
-                    imports.Add(theAddress, new OrdinalImportReference(theAddress, importLibName, (int)importOrdinal));
+                    imports.Add(theAddress, new OrdinalImportReference(theAddress, importLibName, (int)importOrdinal, SymbolType.ExternalProcedure));
                 } else if(type == 1) {
                     if (libIndex >= xexData.libNames.Count) {
                         throw new BadImageFormatException($"XEX: invalid import type 0 record lib index ({libIndex}, max:{xexData.libNames.Count})");
@@ -624,7 +624,7 @@ namespace Reko.ImageLoaders.Xex
                     UInt32 importAddress = xexData.import_records[i];
 
                     var theAddress = new Address32(importAddress);
-                    imports.Add(theAddress, new OrdinalImportReference(theAddress, importLibName, (int)importOrdinal));
+                    imports.Add(theAddress, new OrdinalImportReference(theAddress, importLibName, (int)importOrdinal, SymbolType.ExternalProcedure));
                 }
             }
         }

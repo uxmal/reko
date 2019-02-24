@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -71,7 +71,7 @@ namespace Reko.UnitTests.Analysis
                 cce.Transform();
                 DeadCode.Eliminate(ssa);
 
-                ValuePropagator vp = new ValuePropagator(program.SegmentMap, ssa, importResolver, listener);
+                ValuePropagator vp = new ValuePropagator(program.SegmentMap, ssa, program.CallGraph, importResolver, listener);
                 vp.Transform();
                 DeadCode.Eliminate(ssa);
                 Coalescer co = new Coalescer(ssa);

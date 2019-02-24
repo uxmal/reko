@@ -414,7 +414,8 @@ fn0C00_0000_exit:
                 new NamedImportReference(
                     Address.Ptr32(0x2000),
                     "module",
-                    "grox"));
+                    "grox",
+                    SymbolType.ExternalProcedure));
             Given_Trace(new RtlTrace(0x2000) {
                     m => m.SideEffect(m.Word32(0x1234))
             });
@@ -586,7 +587,7 @@ fn00001000_exit:
             });
             program.ImportReferences.Add(
                 Address.Ptr32(0x2000),
-                new NamedImportReference(Address.Ptr32(0x2000), "foo.dll", "bar"));
+                new NamedImportReference(Address.Ptr32(0x2000), "foo.dll", "bar", SymbolType.ExternalProcedure));
 
             var proc = scan.ScanProcedure(arch, Address.Ptr32(0x1000), "fn1000", arch.CreateProcessorState());
 

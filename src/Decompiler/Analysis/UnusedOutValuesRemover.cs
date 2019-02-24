@@ -79,7 +79,7 @@ namespace Reko.Analysis
                 {
                     if (this.eventListener.IsCanceled())
                         return;
-                    var vp = new ValuePropagator(program.SegmentMap, ssa, importResolver, eventListener);
+                    var vp = new ValuePropagator(program.SegmentMap, ssa, program.CallGraph, importResolver, eventListener);
                     vp.Transform();
                     change |= RemoveUnusedDefinedValues(ssa, wl);
                 }

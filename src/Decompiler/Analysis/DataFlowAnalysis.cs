@@ -134,10 +134,24 @@ namespace Reko.Analysis
                 eventListener);
             uvr.Transform();
 
+            DumpWatchedProcedure();
+
             // At this point, the exit blocks contain only live out registers.
             // We can create signatures from that.
             CallRewriter.Rewrite(program.Platform, ssts, this.flow, eventListener);
             return ssts;
+        }
+
+        [Conditional("DEBUG")]
+        public void DumpWatchedProcedure()
+        {
+            foreach (var proc in program.Procedures.Values)
+            {
+                if (proc.Name == "")
+                {
+                    proc.Dump(true);
+                }
+            }
         }
 
         /// <summary>
@@ -179,7 +193,7 @@ namespace Reko.Analysis
             // New stack based variables may be available now.
             foreach (var sst in ssts)
             {
-                var vp = new ValuePropagator(program.SegmentMap, sst.SsaState, importResolver, this.eventListener);
+                var vp = new ValuePropagator(program.SegmentMap, sst.SsaState, program.CallGraph, importResolver, this.eventListener);
                 vp.Transform();
                 sst.RenameFrameAccesses = true;
                 sst.Transform();
@@ -322,7 +336,7 @@ namespace Reko.Analysis
                     coa.Transform();
                     DeadCode.Eliminate(ssa);
 
-                    var vp = new ValuePropagator(program.SegmentMap, ssa, importResolver, eventListener);
+                    var vp = new ValuePropagator(program.SegmentMap, ssa, program.CallGraph, importResolver,  eventListener);
                     vp.Transform();
 
                     var liv = new LinearInductionVariableFinder(
@@ -387,7 +401,7 @@ namespace Reko.Analysis
                 // We also hope that procedure constants
                 // kept in registers are propagated to the corresponding call
                 // sites.
-                var vp = new ValuePropagator(program.SegmentMap, ssa, importResolver, eventListener);
+                var vp = new ValuePropagator(program.SegmentMap, ssa, program.CallGraph, importResolver, eventListener);
                 vp.Transform();
 
                 // Fuse additions and subtractions that are linked by the carry flag.

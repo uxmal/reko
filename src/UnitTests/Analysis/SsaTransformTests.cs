@@ -184,6 +184,7 @@ namespace Reko.UnitTests.Analysis
                 var vp = new ValuePropagator(
                     this.pb.Program.SegmentMap,
                     sst.SsaState,
+                    program.CallGraph,
                     importResolver.Object,
                     listener);
                 vp.Transform();
@@ -1770,7 +1771,7 @@ proc1_exit:
 ";
             var addr = Address.Ptr32(0x00031234);
             importReferences.Add(addr, new NamedImportReference(
-                addr, "COREDLL.DLL", "fnFoo"));
+                addr, "COREDLL.DLL", "fnFoo", SymbolType.ExternalProcedure));
             importResolver.Setup(i => i.ResolveToImportedProcedureConstant(
                 It.IsAny<Statement>(),
                 It.Is<Constant>(c => c.ToUInt32() == 0x00031234)))
