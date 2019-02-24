@@ -152,7 +152,12 @@ namespace Reko.Analysis
 
         public Expression VisitSequenceStorage(SequenceStorage seq)
         {
-            throw new NotImplementedException();
+            var exps = new Storage[] { seq.Head, seq.Tail }
+                .Select(stg => stg.Accept(this))
+                .ToArray();
+            return new MkSequence(
+                PrimitiveType.CreateWord(exps.Sum(e => e.DataType.BitSize)),
+                exps);
         }
 
         public Expression VisitStackArgumentStorage(StackArgumentStorage stack)
