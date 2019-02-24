@@ -83,7 +83,7 @@ namespace Reko.UnitTests.Analysis
                 proc.CreateBlockDominatorGraph(),
                 new HashSet<RegisterStorage>());
             var segmentMap = new SegmentMap(Address.Ptr32(0));
-            var vp = new ValuePropagator(segmentMap, sst.SsaState, importResolver, NullDecompilerEventListener.Instance);
+            var vp = new ValuePropagator(segmentMap, sst.SsaState, new CallGraph(), importResolver, NullDecompilerEventListener.Instance);
             vp.Transform();
 
             sst.RenameFrameAccesses = true;

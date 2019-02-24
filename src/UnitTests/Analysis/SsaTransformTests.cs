@@ -100,7 +100,11 @@ namespace Reko.UnitTests.Analysis
             //   esp_2 = fp - 4
             //   mov [fp - 8],eax
 
-            var vp = new ValuePropagator(this.pb.Program.SegmentMap, ssa.SsaState, importResolver, listener);
+            var vp = new ValuePropagator(
+                this.pb.Program.SegmentMap, 
+                ssa.SsaState, 
+                this.pb.Program.CallGraph,
+                importResolver, listener);
             vp.Transform();
 
             ssa.RenameFrameAccesses = true;
@@ -696,7 +700,7 @@ ProcedureBuilder_exit:
 ";
             var addr = Address.Ptr32(0x00031234);
             importReferences.Add(addr, new NamedImportReference(
-                addr, "COREDLL.DLL", "fnFoo"));
+                addr, "COREDLL.DLL", "fnFoo", SymbolType.ExternalProcedure));
             RunTest(sExp, m =>
             {
                 var r13 = m.Reg32("r13", 13);

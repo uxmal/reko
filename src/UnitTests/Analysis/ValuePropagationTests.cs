@@ -101,7 +101,7 @@ namespace Reko.UnitTests.Analysis
 				proc.Write(false, writer);
 				writer.WriteLine();
 
-				ValuePropagator vp = new ValuePropagator(program.SegmentMap, ssa, importResolver.Object, listener);
+				ValuePropagator vp = new ValuePropagator(program.SegmentMap, ssa, program.CallGraph, importResolver.Object, listener);
 				vp.Transform();
 
 				ssa.Write(writer);
@@ -124,7 +124,7 @@ namespace Reko.UnitTests.Analysis
 
         private void RunValuePropagator()
         {
-            var vp = new ValuePropagator(segmentMap, m.Ssa, importResolver.Object, listener);
+            var vp = new ValuePropagator(segmentMap, m.Ssa, new CallGraph(), importResolver.Object, listener);
             vp.Transform();
             m.Ssa.Validate(s => Assert.Fail(s));
         }
@@ -223,7 +223,7 @@ namespace Reko.UnitTests.Analysis
                 new HashSet<RegisterStorage>());
 			SsaState ssa = sst.SsaState;
 
-			ValuePropagator vp = new ValuePropagator(segmentMap, ssa, importResolver.Object, listener);
+			ValuePropagator vp = new ValuePropagator(segmentMap, ssa, new CallGraph(), importResolver.Object, listener);
 			vp.Transform();
 
 			using (FileUnitTester fut = new FileUnitTester("Analysis/VpDbp.txt"))
@@ -288,7 +288,7 @@ namespace Reko.UnitTests.Analysis
 			Assert.AreEqual("y = x - 0x00000002", stmY.ToString());
 			Assert.AreEqual("branch y == 0x00000000 test", stm.ToString());
 
-			var vp = new ValuePropagator(segmentMap, m.Ssa, importResolver.Object, listener);
+			var vp = new ValuePropagator(segmentMap, m.Ssa, new CallGraph(), importResolver.Object, listener);
 			vp.Transform(stm);
 			Assert.AreEqual("branch x == 0x00000002 test", stm.Instruction.ToString());
 		}
@@ -313,7 +313,7 @@ namespace Reko.UnitTests.Analysis
 			Assert.AreEqual("z = y + 0x00000002", stmZ.Instruction.ToString());
 			Assert.AreEqual("w = y", stmW.Instruction.ToString());
 
-			var vp = new ValuePropagator(segmentMap, m.Ssa, importResolver.Object, listener);
+			var vp = new ValuePropagator(segmentMap, m.Ssa, new CallGraph(), importResolver.Object, listener);
 			vp.Transform(stmX);
 			vp.Transform(stmY);
 			vp.Transform(stmZ);
@@ -555,7 +555,7 @@ namespace Reko.UnitTests.Analysis
 			var sst = new SsaTransform(new ProgramDataFlow(), proc, importResolver, gr, new HashSet<RegisterStorage>());
 			var ssa = sst.SsaState;
 
-			var vp = new ValuePropagator(segmentMap, ssa, importResolver, listener);
+			var vp = new ValuePropagator(segmentMap, ssa, new CallGraph(), importResolver, listener);
 			vp.Transform();
 
 			using (FileUnitTester fut = new FileUnitTester("Analysis/VpDpbDpb.txt"))
@@ -574,7 +574,7 @@ namespace Reko.UnitTests.Analysis
             var ssa = sst.SsaState;
 
             var segmentMap = new SegmentMap(Address.Ptr32(0));
-            var vp = new ValuePropagator(segmentMap, ssa, importResolver.Object, listener);
+            var vp = new ValuePropagator(segmentMap, ssa, new CallGraph(), importResolver.Object, listener);
             vp.Transform();
             return ssa;
         }

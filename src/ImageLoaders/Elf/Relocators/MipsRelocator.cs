@@ -170,7 +170,11 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     ImageSymbol symGotEntry = loader.CreateGotSymbol(addrGot, symbol.Name);
                     symbols[addrGot] = symGotEntry;
                     Debug.Print("Found GOT entry at {0}, changing symbol at {1}", symGotEntry, addrGot);
-                    program.ImportReferences[addrGot] = new NamedImportReference(addrGot, null, symbol.Name);
+                    var st = ElfLoader.GetSymbolType(symbol);
+                    if (st.HasValue)
+                    {
+                        program.ImportReferences[addrGot] = new NamedImportReference(addrGot, null, symbol.Name, st.Value);
+                    }
                 }
             }
         }

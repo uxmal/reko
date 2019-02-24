@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -34,32 +34,32 @@ namespace Reko.UnitTests.Core
         [Test]
         public void NIR_Compare()
         {
-            var nir1= new NamedImportReference(Address.Ptr64(0x123400), "libc.so", "malloc");
-            var nir2= new NamedImportReference(Address.Ptr64(0x123400), "libc.so", "malloc");
+            var nir1= new NamedImportReference(Address.Ptr64(0x123400), "libc.so", "malloc", SymbolType.ExternalProcedure);
+            var nir2= new NamedImportReference(Address.Ptr64(0x123400), "libc.so", "malloc", SymbolType.ExternalProcedure);
             Assert.AreEqual(0, nir1.CompareTo(nir2));
         }
 
         [Test]
         public void NIR_Compare_No_Module()
         {
-            var nirNullModule1 = new NamedImportReference(Address.Ptr64(0x123400), "libc.so", "malloc");
-            var nirNullModule2 = new NamedImportReference(Address.Ptr64(0x123400), null, "malloc");
+            var nirNullModule1 = new NamedImportReference(Address.Ptr64(0x123400), "libc.so", "malloc", SymbolType.ExternalProcedure);
+            var nirNullModule2 = new NamedImportReference(Address.Ptr64(0x123400), null, "malloc", SymbolType.ExternalProcedure);
             Assert.AreEqual(1, nirNullModule1.CompareTo(nirNullModule2));
         }
 
         [Test]
         public void NIR_Compare_No_Module_2()
         {
-            var nirNullModule1 = new NamedImportReference(Address.Ptr64(0x123400), null, "malloc");
-            var nirNullModule2 = new NamedImportReference(Address.Ptr64(0x123400), "libc.so", "malloc");
+            var nirNullModule1 = new NamedImportReference(Address.Ptr64(0x123400), null, "malloc", SymbolType.ExternalProcedure);
+            var nirNullModule2 = new NamedImportReference(Address.Ptr64(0x123400), "libc.so", "malloc", SymbolType.ExternalProcedure);
             Assert.AreEqual(-1, nirNullModule1.CompareTo(nirNullModule2));
         }
 
         [Test]
         public void NIR_Compare_No_Module_anywhere()
         {
-            var nirNullModule1 = new NamedImportReference(Address.Ptr64(0x123400), null, "malloc");
-            var nirNullModule2 = new NamedImportReference(Address.Ptr64(0x123400), null, "malloc");
+            var nirNullModule1 = new NamedImportReference(Address.Ptr64(0x123400), null, "malloc", SymbolType.ExternalProcedure);
+            var nirNullModule2 = new NamedImportReference(Address.Ptr64(0x123400), null, "malloc", SymbolType.ExternalProcedure);
             Assert.AreEqual(0, nirNullModule1.CompareTo(nirNullModule2));
         }
     }

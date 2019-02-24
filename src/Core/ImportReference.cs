@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -38,11 +38,14 @@ namespace Reko.Core
         public string ModuleName;
         public string EntryName;
 
-        public ImportReference(Address addr, string moduleName)
+        public ImportReference(Address addr, string moduleName, SymbolType symType)
         {
             this.ReferenceAddress = addr;
             this.ModuleName = moduleName;
+            this.SymbolType = symType;
         }
+
+        public SymbolType SymbolType { get; }
 
         public abstract Expression ResolveImport(IImportResolver importResolver, IPlatform platform, AddressContext ctx);
 
@@ -55,8 +58,8 @@ namespace Reko.Core
     {
         public string ImportName;
 
-        public NamedImportReference(Address addr, string moduleName, string importName)
-            : base(addr, moduleName)
+        public NamedImportReference(Address addr, string moduleName, string importName, SymbolType symType)
+            : base(addr, moduleName, symType)
         {
             this.ImportName = importName;
             this.EntryName = importName;
@@ -132,8 +135,8 @@ namespace Reko.Core
     {
         public int Ordinal;
 
-        public OrdinalImportReference(Address addr, string moduleName, int ordinal)
-            : base(addr, moduleName)
+        public OrdinalImportReference(Address addr, string moduleName, int ordinal, SymbolType symType)
+            : base(addr, moduleName, symType)
         {
             this.Ordinal = ordinal;
             this.EntryName = string.Format("{0}_{1}", moduleName, ordinal);

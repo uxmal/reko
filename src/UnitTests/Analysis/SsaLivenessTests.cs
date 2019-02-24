@@ -134,7 +134,7 @@ namespace Reko.UnitTests.Analysis
 			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, platform);
 			cce.Transform();
             var segmentMap = new SegmentMap(Address.Ptr32(0x00123400));
-			ValuePropagator vp = new ValuePropagator(segmentMap, ssa, importResolver, new FakeDecompilerEventListener());
+			ValuePropagator vp = new ValuePropagator(segmentMap, ssa, new CallGraph(), importResolver, new FakeDecompilerEventListener());
 			vp.Transform();
 			DeadCode.Eliminate(proc, ssa);
 			Coalescer coa = new Coalescer(proc, ssa);

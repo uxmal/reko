@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -80,7 +80,7 @@ namespace Reko.UnitTests.Evaluation
                 proc.CreateBlockDominatorGraph(),
                 new HashSet<RegisterStorage>()).Transform();
             var segmentMap = new SegmentMap(Address.Ptr32(0));
-            var vp = new ValuePropagator(segmentMap, ssa, null, null);
+            var vp = new ValuePropagator(segmentMap, ssa, new CallGraph(), null, null);
             vp.Transform();
             var rule = new ConstDivisionImplementedByMultiplication(ssa);
             rule.Transform();

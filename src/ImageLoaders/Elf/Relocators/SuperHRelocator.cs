@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -42,7 +42,11 @@ namespace Reko.ImageLoaders.Elf.Relocators
             {
                 var addrPfn = Address.Ptr32((uint)rela.Offset);
                 Debug.Print("Import reference {0} - {1}", addrPfn, symbol.Name);
-                program.ImportReferences[addrPfn] = new NamedImportReference(addrPfn, null, symbol.Name);
+                var st = ElfLoader.GetSymbolType(symbol);
+                if (st.HasValue)
+                {
+                    program.ImportReferences[addrPfn] = new NamedImportReference(addrPfn, null, symbol.Name, st.Value);
+                }
                 return symbol;
             }
             return symbol;

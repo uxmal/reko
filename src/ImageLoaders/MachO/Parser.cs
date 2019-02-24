@@ -678,7 +678,7 @@ namespace Reko.ImageLoaders.MachO
                     "__imp__" + msym.Name,
                     ptr);
                 ldr.imageSymbols[addr] = impSymbol;
-                ldr.program.ImportReferences.Add(addr, new NamedImportReference(addrImport, "", msym.Name));
+                ldr.program.ImportReferences.Add(addr, new NamedImportReference(addrImport, "", msym.Name, SymbolType.ExternalProcedure));
                 addr = rdr.Address;
                 ++i;
             }
