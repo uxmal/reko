@@ -153,7 +153,7 @@ namespace Reko.UnitTests.Analysis
             return list;
         }
 
-    private SsaState RunTest(ProcedureBuilder m)
+        private SsaState RunTest(ProcedureBuilder m)
         {
             var proc = m.Procedure;
             var sst = new SsaTransform(
@@ -178,7 +178,7 @@ namespace Reko.UnitTests.Analysis
             var sActual = sw.ToString();
             if (sExp != sActual)
             {
-                Debug.Print("{0}", sActual);
+                Console.WriteLine(sActual);
                 Assert.AreEqual(sExp, sActual);
             }
         }
@@ -654,19 +654,6 @@ namespace Reko.UnitTests.Analysis
 			}
 		}
 
-        private SsaState RunTest(ProcedureBuilder m)
-        {
-            var proc = m.Procedure;
-            var gr = proc.CreateBlockDominatorGraph();
-            var sst = new SsaTransform(new ProgramDataFlow(), proc, importResolver.Object, gr, new HashSet<RegisterStorage>());
-            var ssa = sst.SsaState;
-
-            var segmentMap = new SegmentMap(Address.Ptr32(0));
-            var vp = new ValuePropagator(segmentMap, ssa, new CallGraph(), importResolver.Object, listener);
-            vp.Transform();
-            return ssa;
-        }
-
         [Test(Description = "Casting a DPB should result in the deposited bits.")]
         [Category(Categories.UnitTests)]
         public void VpLoadDpb()
@@ -1092,6 +1079,87 @@ ProcedureBuilder_exit:
                 m.Return();
             });
             RunFileTest(pb.BuildProgram(), "Analysis/VpConstantHighByte.txt");
+        }
+
+        // This code breaks in ValuePropagator.VisitCallInstruction when calling  
+        // ssaIdTransformer.Transform(...)
+        [Test]
+        [Ignore("This code is paraphrased from a MIPS ELF binary; all MIPS binaries have this problem")]
+        public void VpReusedRegistersAtCall()
+        {
+            var sExp =
+            #region Expected
+@"r2_1:r2
+    def:  r2_1 = Mem4[0x00220200:word32]
+    uses: r4_1 = r2_1
+          callee(r2_1)
+r2_2:r2
+    def:  r2_2 = callee
+    uses: callee(r2_1)
+r4_1:r4
+    def:  r4_1 = r2_1
+r25_1:r25
+    def:  r25_1 = callee
+Mem4: orig: Mem0
+    uses: r2_1 = Mem4[0x00220200:word32]
+Mem5: orig: Mem0
+    uses: r2_2 = callee
+// SsaProcedureBuilder
+// Return size: 0
+define SsaProcedureBuilder
+SsaProcedureBuilder_entry:
+	// succ:  l1
+l1:
+	r2_1 = Mem4[0x00220200:word32]
+	r4_1 = r2_1
+	r2_2 = callee
+	r25_1 = callee
+	callee(r2_1)
+	return
+	// succ:  SsaProcedureBuilder_exit
+SsaProcedureBuilder_exit:
+";
+            #endregion
+
+            var uAddrGotSlot = m.Word32(0x0040000);
+            var reg2 = new RegisterStorage("r2", 2, 0, PrimitiveType.Word32);
+            var reg4 = new RegisterStorage("r4", 4, 0, PrimitiveType.Word32);
+            var reg25 = new RegisterStorage("r25", 25, 0, PrimitiveType.Word32);
+            var r2_1 = m.Reg("r2_1", reg2);
+            var r2_2 = m.Reg("r2_2", reg2);
+            var r4_1 = m.Reg("r4_1", reg4);
+            var r25_1 = m.Reg("r25_1", reg25);
+            m.Assign(r2_1, m.Mem32(m.Word32(0x0220200)));    // fetch a string pointer perhaps
+            m.Assign(r4_1, r2_1);
+            m.Assign(r2_2, m.Mem32(uAddrGotSlot)); // pointer to a function in a lookup table.
+            m.Assign(r25_1, r2_2);
+            var stmCall = m.Call(r25_1, 0,
+                new Identifier[] { r4_1, r2_2 },
+                new Identifier[] { });
+            m.Return();
+
+            // Initially we don't know what r2_2 is pointing to.
+            var vp = new ValuePropagator(segmentMap, m.Ssa, program.CallGraph, importResolver.Object, listener);
+            vp.Transform();
+
+            // Later, Reko discovers information about the pointer in 0x00400000!
+
+            var sigCallee = FunctionType.Action(
+                    new Identifier("r4", PrimitiveType.Word64, reg4));
+            var callee = new ProcedureConstant(
+                PrimitiveType.Ptr32,
+                new ExternalProcedure("callee", sigCallee));
+            // Add our new found knowledge to the import resolver.
+            importResolver.Setup(i => i.ResolveToImportedProcedureConstant(
+                It.IsNotNull<Statement>(),
+                uAddrGotSlot)).
+                Returns(callee);
+
+            // Run Value propagation again with the newly gathered information.
+
+            vp.Transform();
+
+            AssertStringsEqual(sExp, m.Ssa);
         }
     }
 }
