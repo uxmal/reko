@@ -13,10 +13,10 @@ _init_entry:
 l004001BC:
 	word32 r25_12 = Mem11[0x1000087C:word32]
 	call r25_12 + 1836 (retsize: 0;)
-		uses: r25:r25_12 + 1836,r28:0x10008860,ra:ra,sp:fp + -32,Stack +0010:0x10008860,Stack +0018:0x10008860,Stack +001C:ra
+		uses: r25:r25_12 + 1836,Stack +0010:0x10008860,Stack +0018:0x10008860,Stack +001C:ra
 	word32 r25_16 = Mem11[0x10000880:word32]
 	call r25_16 + -25584 (retsize: 0;)
-		uses: r25:r25_16 + -25584,r28:0x10008860,ra:ra,sp:fp + -32,Stack +0010:0x10008860,Stack +0018:0x10008860,Stack +001C:ra
+		uses: r25:r25_16 + -25584,Stack +0010:0x10008860,Stack +0018:0x10008860,Stack +001C:ra
 	return
 // DataOut:
 // DataOut (flags):
@@ -51,7 +51,7 @@ l00400230:
 	word32 r2_16 = Mem0[0x100107A0:word32]
 	word32 r25_18 = Mem17[0x100107F8:word32]
 	call r25_18 (retsize: 0;)
-		uses: r2:r2_16,r25:r25_18,r28:0x10008860,r4:dwArg00,r5:fp + 4,r6:(dwArg00 + 1 << 0x02) + (fp + 4),r7:Mem0[0x100106D8:word32],ra:0x00000000,sp:fp + -24,Stack +0010:r2_16,Stack +0018:dwArg00
+		uses: r2:r2_16,r25:r25_18,r4:dwArg00,r5:fp + 4,r6:(dwArg00 + 1 << 0x02) + (fp + 4),r7:Mem0[0x100106D8:word32],Stack +0010:r2_16,Stack +0018:dwArg00
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -81,389 +81,389 @@ l00400290:
 	word32 r2_351
 	word32 r3_353
 	call r25_5 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2,r24:172,r25:r25_5,r28:r28,r3:r3,r4:r4,ra:ra,sp:fp
+		uses: r15:ra,r2:r2,r24:172,r25:r25_5,r3:r3,r4:r4
 		defs: r2:r2_351,r3:r3_353,r4:r4_349
 	word32 r25_12 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_354
 	word32 r2_355
 	word32 r3_356
 	call r25_12 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_351,r24:167,r25:r25_12,r28:r28,r3:r3_353,r4:r4_349,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_351,r24:167,r25:r25_12,r3:r3_353,r4:r4_349
 		defs: r2:r2_355,r3:r3_356,r4:r4_354
 	word32 r25_18 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_357
 	word32 r2_358
 	word32 r3_359
 	call r25_18 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_355,r24:166,r25:r25_18,r28:r28,r3:r3_356,r4:r4_354,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_355,r24:166,r25:r25_18,r3:r3_356,r4:r4_354
 		defs: r2:r2_358,r3:r3_359,r4:r4_357
 	word32 r25_24 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_360
 	word32 r2_361
 	word32 r3_362
 	call r25_24 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_358,r24:165,r25:r25_24,r28:r28,r3:r3_359,r4:r4_357,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_358,r24:165,r25:r25_24,r3:r3_359,r4:r4_357
 		defs: r2:r2_361,r3:r3_362,r4:r4_360
 	word32 r25_30 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_363
 	word32 r2_364
 	word32 r3_365
 	call r25_30 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_361,r24:162,r25:r25_30,r28:r28,r3:r3_362,r4:r4_360,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_361,r24:162,r25:r25_30,r3:r3_362,r4:r4_360
 		defs: r2:r2_364,r3:r3_365,r4:r4_363
 	word32 r25_36 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_366
 	word32 r2_367
 	word32 r3_368
 	call r25_36 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_364,r24:161,r25:r25_36,r28:r28,r3:r3_365,r4:r4_363,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_364,r24:161,r25:r25_36,r3:r3_365,r4:r4_363
 		defs: r2:r2_367,r3:r3_368,r4:r4_366
 	word32 r25_42 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_369
 	word32 r2_370
 	word32 r3_371
 	call r25_42 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_367,r24:160,r25:r25_42,r28:r28,r3:r3_368,r4:r4_366,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_367,r24:160,r25:r25_42,r3:r3_368,r4:r4_366
 		defs: r2:r2_370,r3:r3_371,r4:r4_369
 	word32 r25_48 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_372
 	word32 r2_373
 	word32 r3_374
 	call r25_48 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_370,r24:152,r25:r25_48,r28:r28,r3:r3_371,r4:r4_369,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_370,r24:152,r25:r25_48,r3:r3_371,r4:r4_369
 		defs: r2:r2_373,r3:r3_374,r4:r4_372
 	word32 r25_54 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_375
 	word32 r2_376
 	word32 r3_377
 	call r25_54 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_373,r24:150,r25:r25_54,r28:r28,r3:r3_374,r4:r4_372,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_373,r24:150,r25:r25_54,r3:r3_374,r4:r4_372
 		defs: r2:r2_376,r3:r3_377,r4:r4_375
 	word32 r25_60 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_378
 	word32 r2_379
 	word32 r3_380
 	call r25_60 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_376,r24:149,r25:r25_60,r28:r28,r3:r3_377,r4:r4_375,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_376,r24:149,r25:r25_60,r3:r3_377,r4:r4_375
 		defs: r2:r2_379,r3:r3_380,r4:r4_378
 	word32 r25_66 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_381
 	word32 r2_382
 	word32 r3_383
 	call r25_66 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_379,r24:146,r25:r25_66,r28:r28,r3:r3_380,r4:r4_378,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_379,r24:146,r25:r25_66,r3:r3_380,r4:r4_378
 		defs: r2:r2_382,r3:r3_383,r4:r4_381
 	word32 r25_72 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_384
 	word32 r2_385
 	word32 r3_386
 	call r25_72 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_382,r24:144,r25:r25_72,r28:r28,r3:r3_383,r4:r4_381,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_382,r24:144,r25:r25_72,r3:r3_383,r4:r4_381
 		defs: r2:r2_385,r3:r3_386,r4:r4_384
 	word32 r25_78 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_387
 	word32 r2_388
 	word32 r3_389
 	call r25_78 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_385,r24:143,r25:r25_78,r28:r28,r3:r3_386,r4:r4_384,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_385,r24:143,r25:r25_78,r3:r3_386,r4:r4_384
 		defs: r2:r2_388,r3:r3_389,r4:r4_387
 	word32 r25_84 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_390
 	word32 r2_391
 	word32 r3_392
 	call r25_84 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_388,r24:142,r25:r25_84,r28:r28,r3:r3_389,r4:r4_387,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_388,r24:142,r25:r25_84,r3:r3_389,r4:r4_387
 		defs: r2:r2_391,r3:r3_392,r4:r4_390
 	word32 r25_90 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_393
 	word32 r2_394
 	word32 r3_395
 	call r25_90 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_391,r24:138,r25:r25_90,r28:r28,r3:r3_392,r4:r4_390,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_391,r24:138,r25:r25_90,r3:r3_392,r4:r4_390
 		defs: r2:r2_394,r3:r3_395,r4:r4_393
 	word32 r25_96 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_396
 	word32 r2_397
 	word32 r3_398
 	call r25_96 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_394,r24:137,r25:r25_96,r28:r28,r3:r3_395,r4:r4_393,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_394,r24:137,r25:r25_96,r3:r3_395,r4:r4_393
 		defs: r2:r2_397,r3:r3_398,r4:r4_396
 	word32 r25_102 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_399
 	word32 r2_400
 	word32 r3_401
 	call r25_102 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_397,r24:134,r25:r25_102,r28:r28,r3:r3_398,r4:r4_396,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_397,r24:134,r25:r25_102,r3:r3_398,r4:r4_396
 		defs: r2:r2_400,r3:r3_401,r4:r4_399
 	word32 r25_108 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_402
 	word32 r2_403
 	word32 r3_404
 	call r25_108 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_400,r24:129,r25:r25_108,r28:r28,r3:r3_401,r4:r4_399,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_400,r24:129,r25:r25_108,r3:r3_401,r4:r4_399
 		defs: r2:r2_403,r3:r3_404,r4:r4_402
 	word32 r25_114 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_405
 	word32 r2_406
 	word32 r3_407
 	call r25_114 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_403,r24:128,r25:r25_114,r28:r28,r3:r3_404,r4:r4_402,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_403,r24:128,r25:r25_114,r3:r3_404,r4:r4_402
 		defs: r2:r2_406,r3:r3_407,r4:r4_405
 	word32 r25_120 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_408
 	word32 r2_409
 	word32 r3_410
 	call r25_120 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_406,r24:127,r25:r25_120,r28:r28,r3:r3_407,r4:r4_405,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_406,r24:127,r25:r25_120,r3:r3_407,r4:r4_405
 		defs: r2:r2_409,r3:r3_410,r4:r4_408
 	word32 r25_126 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_411
 	word32 r2_412
 	word32 r3_413
 	call r25_126 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_409,r24:124,r25:r25_126,r28:r28,r3:r3_410,r4:r4_408,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_409,r24:124,r25:r25_126,r3:r3_410,r4:r4_408
 		defs: r2:r2_412,r3:r3_413,r4:r4_411
 	word32 r25_132 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_414
 	word32 r2_415
 	word32 r3_416
 	call r25_132 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_412,r24:121,r25:r25_132,r28:r28,r3:r3_413,r4:r4_411,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_412,r24:121,r25:r25_132,r3:r3_413,r4:r4_411
 		defs: r2:r2_415,r3:r3_416,r4:r4_414
 	word32 r25_138 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_417
 	word32 r2_418
 	word32 r3_419
 	call r25_138 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_415,r24:120,r25:r25_138,r28:r28,r3:r3_416,r4:r4_414,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_415,r24:120,r25:r25_138,r3:r3_416,r4:r4_414
 		defs: r2:r2_418,r3:r3_419,r4:r4_417
 	word32 r25_144 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_420
 	word32 r2_421
 	word32 r3_422
 	call r25_144 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_418,r24:116,r25:r25_144,r28:r28,r3:r3_419,r4:r4_417,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_418,r24:116,r25:r25_144,r3:r3_419,r4:r4_417
 		defs: r2:r2_421,r3:r3_422,r4:r4_420
 	word32 r25_150 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_423
 	word32 r2_424
 	word32 r3_425
 	call r25_150 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_421,r24:115,r25:r25_150,r28:r28,r3:r3_422,r4:r4_420,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_421,r24:115,r25:r25_150,r3:r3_422,r4:r4_420
 		defs: r2:r2_424,r3:r3_425,r4:r4_423
 	word32 r25_156 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_426
 	word32 r2_427
 	word32 r3_428
 	call r25_156 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_424,r24:114,r25:r25_156,r28:r28,r3:r3_425,r4:r4_423,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_424,r24:114,r25:r25_156,r3:r3_425,r4:r4_423
 		defs: r2:r2_427,r3:r3_428,r4:r4_426
 	word32 r25_162 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_429
 	word32 r2_430
 	word32 r3_431
 	call r25_162 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_427,r24:113,r25:r25_162,r28:r28,r3:r3_428,r4:r4_426,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_427,r24:113,r25:r25_162,r3:r3_428,r4:r4_426
 		defs: r2:r2_430,r3:r3_431,r4:r4_429
 	word32 r25_168 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_432
 	word32 r2_433
 	word32 r3_434
 	call r25_168 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_430,r24:107,r25:r25_168,r28:r28,r3:r3_431,r4:r4_429,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_430,r24:107,r25:r25_168,r3:r3_431,r4:r4_429
 		defs: r2:r2_433,r3:r3_434,r4:r4_432
 	word32 r25_174 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_435
 	word32 r2_436
 	word32 r3_437
 	call r25_174 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_433,r24:106,r25:r25_174,r28:r28,r3:r3_434,r4:r4_432,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_433,r24:106,r25:r25_174,r3:r3_434,r4:r4_432
 		defs: r2:r2_436,r3:r3_437,r4:r4_435
 	word32 r25_180 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_438
 	word32 r2_439
 	word32 r3_440
 	call r25_180 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_436,r24:104,r25:r25_180,r28:r28,r3:r3_437,r4:r4_435,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_436,r24:104,r25:r25_180,r3:r3_437,r4:r4_435
 		defs: r2:r2_439,r3:r3_440,r4:r4_438
 	word32 r25_186 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_441
 	word32 r2_442
 	word32 r3_443
 	call r25_186 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_439,r24:102,r25:r25_186,r28:r28,r3:r3_440,r4:r4_438,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_439,r24:102,r25:r25_186,r3:r3_440,r4:r4_438
 		defs: r2:r2_442,r3:r3_443,r4:r4_441
 	word32 r25_192 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_444
 	word32 r2_445
 	word32 r3_446
 	call r25_192 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_442,r24:101,r25:r25_192,r28:r28,r3:r3_443,r4:r4_441,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_442,r24:101,r25:r25_192,r3:r3_443,r4:r4_441
 		defs: r2:r2_445,r3:r3_446,r4:r4_444
 	word32 r25_198 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_447
 	word32 r2_448
 	word32 r3_449
 	call r25_198 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_445,r24:99,r25:r25_198,r28:r28,r3:r3_446,r4:r4_444,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_445,r24:99,r25:r25_198,r3:r3_446,r4:r4_444
 		defs: r2:r2_448,r3:r3_449,r4:r4_447
 	word32 r25_204 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_450
 	word32 r2_451
 	word32 r3_452
 	call r25_204 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_448,r24:94,r25:r25_204,r28:r28,r3:r3_449,r4:r4_447,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_448,r24:94,r25:r25_204,r3:r3_449,r4:r4_447
 		defs: r2:r2_451,r3:r3_452,r4:r4_450
 	word32 r25_210 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_453
 	word32 r2_454
 	word32 r3_455
 	call r25_210 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_451,r24:91,r25:r25_210,r28:r28,r3:r3_452,r4:r4_450,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_451,r24:91,r25:r25_210,r3:r3_452,r4:r4_450
 		defs: r2:r2_454,r3:r3_455,r4:r4_453
 	word32 r25_216 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_456
 	word32 r2_457
 	word32 r3_458
 	call r25_216 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_454,r24:87,r25:r25_216,r28:r28,r3:r3_455,r4:r4_453,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_454,r24:87,r25:r25_216,r3:r3_455,r4:r4_453
 		defs: r2:r2_457,r3:r3_458,r4:r4_456
 	word32 r25_222 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_459
 	word32 r2_460
 	word32 r3_461
 	call r25_222 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_457,r24:86,r25:r25_222,r28:r28,r3:r3_458,r4:r4_456,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_457,r24:86,r25:r25_222,r3:r3_458,r4:r4_456
 		defs: r2:r2_460,r3:r3_461,r4:r4_459
 	word32 r25_228 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_462
 	word32 r2_463
 	word32 r3_464
 	call r25_228 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_460,r24:84,r25:r25_228,r28:r28,r3:r3_461,r4:r4_459,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_460,r24:84,r25:r25_228,r3:r3_461,r4:r4_459
 		defs: r2:r2_463,r3:r3_464,r4:r4_462
 	word32 r25_234 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_465
 	word32 r2_466
 	word32 r3_467
 	call r25_234 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_463,r24:82,r25:r25_234,r28:r28,r3:r3_464,r4:r4_462,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_463,r24:82,r25:r25_234,r3:r3_464,r4:r4_462
 		defs: r2:r2_466,r3:r3_467,r4:r4_465
 	word32 r25_240 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_468
 	word32 r2_469
 	word32 r3_470
 	call r25_240 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_466,r24:80,r25:r25_240,r28:r28,r3:r3_467,r4:r4_465,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_466,r24:80,r25:r25_240,r3:r3_467,r4:r4_465
 		defs: r2:r2_469,r3:r3_470,r4:r4_468
 	word32 r25_246 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_471
 	word32 r2_472
 	word32 r3_473
 	call r25_246 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_469,r24:79,r25:r25_246,r28:r28,r3:r3_470,r4:r4_468,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_469,r24:79,r25:r25_246,r3:r3_470,r4:r4_468
 		defs: r2:r2_472,r3:r3_473,r4:r4_471
 	word32 r25_252 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_474
 	word32 r2_475
 	word32 r3_476
 	call r25_252 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_472,r24:74,r25:r25_252,r28:r28,r3:r3_473,r4:r4_471,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_472,r24:74,r25:r25_252,r3:r3_473,r4:r4_471
 		defs: r2:r2_475,r3:r3_476,r4:r4_474
 	word32 r25_258 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_477
 	word32 r2_478
 	word32 r3_479
 	call r25_258 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_475,r24:71,r25:r25_258,r28:r28,r3:r3_476,r4:r4_474,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_475,r24:71,r25:r25_258,r3:r3_476,r4:r4_474
 		defs: r2:r2_478,r3:r3_479,r4:r4_477
 	word32 r25_264 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_480
 	word32 r2_481
 	word32 r3_482
 	call r25_264 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_478,r24:68,r25:r25_264,r28:r28,r3:r3_479,r4:r4_477,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_478,r24:68,r25:r25_264,r3:r3_479,r4:r4_477
 		defs: r2:r2_481,r3:r3_482,r4:r4_480
 	word32 r25_270 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_483
 	word32 r2_484
 	word32 r3_485
 	call r25_270 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_481,r24:67,r25:r25_270,r28:r28,r3:r3_482,r4:r4_480,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_481,r24:67,r25:r25_270,r3:r3_482,r4:r4_480
 		defs: r2:r2_484,r3:r3_485,r4:r4_483
 	word32 r25_276 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_486
 	word32 r2_487
 	word32 r3_488
 	call r25_276 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_484,r24:65,r25:r25_276,r28:r28,r3:r3_485,r4:r4_483,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_484,r24:65,r25:r25_276,r3:r3_485,r4:r4_483
 		defs: r2:r2_487,r3:r3_488,r4:r4_486
 	word32 r25_282 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_489
 	word32 r2_490
 	word32 r3_491
 	call r25_282 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_487,r24:63,r25:r25_282,r28:r28,r3:r3_488,r4:r4_486,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_487,r24:63,r25:r25_282,r3:r3_488,r4:r4_486
 		defs: r2:r2_490,r3:r3_491,r4:r4_489
 	word32 r25_288 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_492
 	word32 r2_493
 	word32 r3_494
 	call r25_288 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_490,r24:57,r25:r25_288,r28:r28,r3:r3_491,r4:r4_489,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_490,r24:57,r25:r25_288,r3:r3_491,r4:r4_489
 		defs: r2:r2_493,r3:r3_494,r4:r4_492
 	word32 r25_294 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_495
 	word32 r2_496
 	word32 r3_497
 	call r25_294 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_493,r24:56,r25:r25_294,r28:r28,r3:r3_494,r4:r4_492,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_493,r24:56,r25:r25_294,r3:r3_494,r4:r4_492
 		defs: r2:r2_496,r3:r3_497,r4:r4_495
 	word32 r25_300 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_498
 	word32 r2_499
 	word32 r3_500
 	call r25_300 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_496,r24:54,r25:r25_300,r28:r28,r3:r3_497,r4:r4_495,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_496,r24:54,r25:r25_300,r3:r3_497,r4:r4_495
 		defs: r2:r2_499,r3:r3_500,r4:r4_498
 	word32 r25_306 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_501
 	word32 r2_502
 	word32 r3_503
 	call r25_306 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_499,r24:53,r25:r25_306,r28:r28,r3:r3_500,r4:r4_498,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_499,r24:53,r25:r25_306,r3:r3_500,r4:r4_498
 		defs: r2:r2_502,r3:r3_503,r4:r4_501
 	word32 r25_312 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_504
 	word32 r2_505
 	word32 r3_506
 	call r25_312 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_502,r24:52,r25:r25_312,r28:r28,r3:r3_503,r4:r4_501,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_502,r24:52,r25:r25_312,r3:r3_503,r4:r4_501
 		defs: r2:r2_505,r3:r3_506,r4:r4_504
 	word32 r25_318 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_507
 	word32 r2_508
 	word32 r3_509
 	call r25_318 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_505,r24:49,r25:r25_318,r28:r28,r3:r3_506,r4:r4_504,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_505,r24:49,r25:r25_318,r3:r3_506,r4:r4_504
 		defs: r2:r2_508,r3:r3_509,r4:r4_507
 	word32 r25_324 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_510
 	word32 r2_511
 	word32 r3_512
 	call r25_324 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_508,r24:42,r25:r25_324,r28:r28,r3:r3_509,r4:r4_507,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_508,r24:42,r25:r25_324,r3:r3_509,r4:r4_507
 		defs: r2:r2_511,r3:r3_512,r4:r4_510
 	word32 r25_330 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_513
 	word32 r2_514
 	word32 r3_515
 	call r25_330 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_511,r24:39,r25:r25_330,r28:r28,r3:r3_512,r4:r4_510,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_511,r24:39,r25:r25_330,r3:r3_512,r4:r4_510
 		defs: r2:r2_514,r3:r3_515,r4:r4_513
 	word32 r25_336 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_336 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_514,r24:38,r25:r25_336,r28:r28,r3:r3_515,r4:r4_513,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_514,r24:38,r25:r25_336,r3:r3_515,r4:r4_513
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -503,7 +503,7 @@ printf_entry:
 l004002A0:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:167,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:167,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -531,7 +531,7 @@ recv_entry:
 l004002B0:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:166,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:166,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -559,7 +559,7 @@ connect_entry:
 l004002C0:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:165,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:165,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -584,361 +584,361 @@ l004002D0:
 	word32 r2_327
 	word32 r3_329
 	call r25_5 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2,r24:162,r25:r25_5,r28:r28,r3:r3,r4:r4,ra:ra,sp:fp
+		uses: r15:ra,r2:r2,r24:162,r25:r25_5,r3:r3,r4:r4
 		defs: r2:r2_327,r3:r3_329,r4:r4_325
 	word32 r25_12 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_330
 	word32 r2_331
 	word32 r3_332
 	call r25_12 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_327,r24:161,r25:r25_12,r28:r28,r3:r3_329,r4:r4_325,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_327,r24:161,r25:r25_12,r3:r3_329,r4:r4_325
 		defs: r2:r2_331,r3:r3_332,r4:r4_330
 	word32 r25_18 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_333
 	word32 r2_334
 	word32 r3_335
 	call r25_18 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_331,r24:160,r25:r25_18,r28:r28,r3:r3_332,r4:r4_330,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_331,r24:160,r25:r25_18,r3:r3_332,r4:r4_330
 		defs: r2:r2_334,r3:r3_335,r4:r4_333
 	word32 r25_24 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_336
 	word32 r2_337
 	word32 r3_338
 	call r25_24 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_334,r24:152,r25:r25_24,r28:r28,r3:r3_335,r4:r4_333,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_334,r24:152,r25:r25_24,r3:r3_335,r4:r4_333
 		defs: r2:r2_337,r3:r3_338,r4:r4_336
 	word32 r25_30 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_339
 	word32 r2_340
 	word32 r3_341
 	call r25_30 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_337,r24:150,r25:r25_30,r28:r28,r3:r3_338,r4:r4_336,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_337,r24:150,r25:r25_30,r3:r3_338,r4:r4_336
 		defs: r2:r2_340,r3:r3_341,r4:r4_339
 	word32 r25_36 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_342
 	word32 r2_343
 	word32 r3_344
 	call r25_36 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_340,r24:149,r25:r25_36,r28:r28,r3:r3_341,r4:r4_339,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_340,r24:149,r25:r25_36,r3:r3_341,r4:r4_339
 		defs: r2:r2_343,r3:r3_344,r4:r4_342
 	word32 r25_42 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_345
 	word32 r2_346
 	word32 r3_347
 	call r25_42 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_343,r24:146,r25:r25_42,r28:r28,r3:r3_344,r4:r4_342,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_343,r24:146,r25:r25_42,r3:r3_344,r4:r4_342
 		defs: r2:r2_346,r3:r3_347,r4:r4_345
 	word32 r25_48 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_348
 	word32 r2_349
 	word32 r3_350
 	call r25_48 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_346,r24:144,r25:r25_48,r28:r28,r3:r3_347,r4:r4_345,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_346,r24:144,r25:r25_48,r3:r3_347,r4:r4_345
 		defs: r2:r2_349,r3:r3_350,r4:r4_348
 	word32 r25_54 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_351
 	word32 r2_352
 	word32 r3_353
 	call r25_54 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_349,r24:143,r25:r25_54,r28:r28,r3:r3_350,r4:r4_348,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_349,r24:143,r25:r25_54,r3:r3_350,r4:r4_348
 		defs: r2:r2_352,r3:r3_353,r4:r4_351
 	word32 r25_60 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_354
 	word32 r2_355
 	word32 r3_356
 	call r25_60 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_352,r24:142,r25:r25_60,r28:r28,r3:r3_353,r4:r4_351,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_352,r24:142,r25:r25_60,r3:r3_353,r4:r4_351
 		defs: r2:r2_355,r3:r3_356,r4:r4_354
 	word32 r25_66 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_357
 	word32 r2_358
 	word32 r3_359
 	call r25_66 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_355,r24:138,r25:r25_66,r28:r28,r3:r3_356,r4:r4_354,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_355,r24:138,r25:r25_66,r3:r3_356,r4:r4_354
 		defs: r2:r2_358,r3:r3_359,r4:r4_357
 	word32 r25_72 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_360
 	word32 r2_361
 	word32 r3_362
 	call r25_72 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_358,r24:137,r25:r25_72,r28:r28,r3:r3_359,r4:r4_357,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_358,r24:137,r25:r25_72,r3:r3_359,r4:r4_357
 		defs: r2:r2_361,r3:r3_362,r4:r4_360
 	word32 r25_78 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_363
 	word32 r2_364
 	word32 r3_365
 	call r25_78 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_361,r24:134,r25:r25_78,r28:r28,r3:r3_362,r4:r4_360,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_361,r24:134,r25:r25_78,r3:r3_362,r4:r4_360
 		defs: r2:r2_364,r3:r3_365,r4:r4_363
 	word32 r25_84 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_366
 	word32 r2_367
 	word32 r3_368
 	call r25_84 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_364,r24:129,r25:r25_84,r28:r28,r3:r3_365,r4:r4_363,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_364,r24:129,r25:r25_84,r3:r3_365,r4:r4_363
 		defs: r2:r2_367,r3:r3_368,r4:r4_366
 	word32 r25_90 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_369
 	word32 r2_370
 	word32 r3_371
 	call r25_90 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_367,r24:128,r25:r25_90,r28:r28,r3:r3_368,r4:r4_366,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_367,r24:128,r25:r25_90,r3:r3_368,r4:r4_366
 		defs: r2:r2_370,r3:r3_371,r4:r4_369
 	word32 r25_96 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_372
 	word32 r2_373
 	word32 r3_374
 	call r25_96 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_370,r24:127,r25:r25_96,r28:r28,r3:r3_371,r4:r4_369,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_370,r24:127,r25:r25_96,r3:r3_371,r4:r4_369
 		defs: r2:r2_373,r3:r3_374,r4:r4_372
 	word32 r25_102 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_375
 	word32 r2_376
 	word32 r3_377
 	call r25_102 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_373,r24:124,r25:r25_102,r28:r28,r3:r3_374,r4:r4_372,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_373,r24:124,r25:r25_102,r3:r3_374,r4:r4_372
 		defs: r2:r2_376,r3:r3_377,r4:r4_375
 	word32 r25_108 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_378
 	word32 r2_379
 	word32 r3_380
 	call r25_108 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_376,r24:121,r25:r25_108,r28:r28,r3:r3_377,r4:r4_375,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_376,r24:121,r25:r25_108,r3:r3_377,r4:r4_375
 		defs: r2:r2_379,r3:r3_380,r4:r4_378
 	word32 r25_114 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_381
 	word32 r2_382
 	word32 r3_383
 	call r25_114 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_379,r24:120,r25:r25_114,r28:r28,r3:r3_380,r4:r4_378,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_379,r24:120,r25:r25_114,r3:r3_380,r4:r4_378
 		defs: r2:r2_382,r3:r3_383,r4:r4_381
 	word32 r25_120 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_384
 	word32 r2_385
 	word32 r3_386
 	call r25_120 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_382,r24:116,r25:r25_120,r28:r28,r3:r3_383,r4:r4_381,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_382,r24:116,r25:r25_120,r3:r3_383,r4:r4_381
 		defs: r2:r2_385,r3:r3_386,r4:r4_384
 	word32 r25_126 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_387
 	word32 r2_388
 	word32 r3_389
 	call r25_126 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_385,r24:115,r25:r25_126,r28:r28,r3:r3_386,r4:r4_384,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_385,r24:115,r25:r25_126,r3:r3_386,r4:r4_384
 		defs: r2:r2_388,r3:r3_389,r4:r4_387
 	word32 r25_132 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_390
 	word32 r2_391
 	word32 r3_392
 	call r25_132 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_388,r24:114,r25:r25_132,r28:r28,r3:r3_389,r4:r4_387,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_388,r24:114,r25:r25_132,r3:r3_389,r4:r4_387
 		defs: r2:r2_391,r3:r3_392,r4:r4_390
 	word32 r25_138 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_393
 	word32 r2_394
 	word32 r3_395
 	call r25_138 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_391,r24:113,r25:r25_138,r28:r28,r3:r3_392,r4:r4_390,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_391,r24:113,r25:r25_138,r3:r3_392,r4:r4_390
 		defs: r2:r2_394,r3:r3_395,r4:r4_393
 	word32 r25_144 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_396
 	word32 r2_397
 	word32 r3_398
 	call r25_144 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_394,r24:107,r25:r25_144,r28:r28,r3:r3_395,r4:r4_393,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_394,r24:107,r25:r25_144,r3:r3_395,r4:r4_393
 		defs: r2:r2_397,r3:r3_398,r4:r4_396
 	word32 r25_150 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_399
 	word32 r2_400
 	word32 r3_401
 	call r25_150 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_397,r24:106,r25:r25_150,r28:r28,r3:r3_398,r4:r4_396,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_397,r24:106,r25:r25_150,r3:r3_398,r4:r4_396
 		defs: r2:r2_400,r3:r3_401,r4:r4_399
 	word32 r25_156 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_402
 	word32 r2_403
 	word32 r3_404
 	call r25_156 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_400,r24:104,r25:r25_156,r28:r28,r3:r3_401,r4:r4_399,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_400,r24:104,r25:r25_156,r3:r3_401,r4:r4_399
 		defs: r2:r2_403,r3:r3_404,r4:r4_402
 	word32 r25_162 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_405
 	word32 r2_406
 	word32 r3_407
 	call r25_162 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_403,r24:102,r25:r25_162,r28:r28,r3:r3_404,r4:r4_402,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_403,r24:102,r25:r25_162,r3:r3_404,r4:r4_402
 		defs: r2:r2_406,r3:r3_407,r4:r4_405
 	word32 r25_168 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_408
 	word32 r2_409
 	word32 r3_410
 	call r25_168 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_406,r24:101,r25:r25_168,r28:r28,r3:r3_407,r4:r4_405,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_406,r24:101,r25:r25_168,r3:r3_407,r4:r4_405
 		defs: r2:r2_409,r3:r3_410,r4:r4_408
 	word32 r25_174 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_411
 	word32 r2_412
 	word32 r3_413
 	call r25_174 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_409,r24:99,r25:r25_174,r28:r28,r3:r3_410,r4:r4_408,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_409,r24:99,r25:r25_174,r3:r3_410,r4:r4_408
 		defs: r2:r2_412,r3:r3_413,r4:r4_411
 	word32 r25_180 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_414
 	word32 r2_415
 	word32 r3_416
 	call r25_180 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_412,r24:94,r25:r25_180,r28:r28,r3:r3_413,r4:r4_411,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_412,r24:94,r25:r25_180,r3:r3_413,r4:r4_411
 		defs: r2:r2_415,r3:r3_416,r4:r4_414
 	word32 r25_186 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_417
 	word32 r2_418
 	word32 r3_419
 	call r25_186 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_415,r24:91,r25:r25_186,r28:r28,r3:r3_416,r4:r4_414,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_415,r24:91,r25:r25_186,r3:r3_416,r4:r4_414
 		defs: r2:r2_418,r3:r3_419,r4:r4_417
 	word32 r25_192 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_420
 	word32 r2_421
 	word32 r3_422
 	call r25_192 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_418,r24:87,r25:r25_192,r28:r28,r3:r3_419,r4:r4_417,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_418,r24:87,r25:r25_192,r3:r3_419,r4:r4_417
 		defs: r2:r2_421,r3:r3_422,r4:r4_420
 	word32 r25_198 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_423
 	word32 r2_424
 	word32 r3_425
 	call r25_198 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_421,r24:86,r25:r25_198,r28:r28,r3:r3_422,r4:r4_420,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_421,r24:86,r25:r25_198,r3:r3_422,r4:r4_420
 		defs: r2:r2_424,r3:r3_425,r4:r4_423
 	word32 r25_204 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_426
 	word32 r2_427
 	word32 r3_428
 	call r25_204 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_424,r24:84,r25:r25_204,r28:r28,r3:r3_425,r4:r4_423,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_424,r24:84,r25:r25_204,r3:r3_425,r4:r4_423
 		defs: r2:r2_427,r3:r3_428,r4:r4_426
 	word32 r25_210 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_429
 	word32 r2_430
 	word32 r3_431
 	call r25_210 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_427,r24:82,r25:r25_210,r28:r28,r3:r3_428,r4:r4_426,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_427,r24:82,r25:r25_210,r3:r3_428,r4:r4_426
 		defs: r2:r2_430,r3:r3_431,r4:r4_429
 	word32 r25_216 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_432
 	word32 r2_433
 	word32 r3_434
 	call r25_216 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_430,r24:80,r25:r25_216,r28:r28,r3:r3_431,r4:r4_429,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_430,r24:80,r25:r25_216,r3:r3_431,r4:r4_429
 		defs: r2:r2_433,r3:r3_434,r4:r4_432
 	word32 r25_222 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_435
 	word32 r2_436
 	word32 r3_437
 	call r25_222 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_433,r24:79,r25:r25_222,r28:r28,r3:r3_434,r4:r4_432,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_433,r24:79,r25:r25_222,r3:r3_434,r4:r4_432
 		defs: r2:r2_436,r3:r3_437,r4:r4_435
 	word32 r25_228 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_438
 	word32 r2_439
 	word32 r3_440
 	call r25_228 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_436,r24:74,r25:r25_228,r28:r28,r3:r3_437,r4:r4_435,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_436,r24:74,r25:r25_228,r3:r3_437,r4:r4_435
 		defs: r2:r2_439,r3:r3_440,r4:r4_438
 	word32 r25_234 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_441
 	word32 r2_442
 	word32 r3_443
 	call r25_234 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_439,r24:71,r25:r25_234,r28:r28,r3:r3_440,r4:r4_438,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_439,r24:71,r25:r25_234,r3:r3_440,r4:r4_438
 		defs: r2:r2_442,r3:r3_443,r4:r4_441
 	word32 r25_240 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_444
 	word32 r2_445
 	word32 r3_446
 	call r25_240 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_442,r24:68,r25:r25_240,r28:r28,r3:r3_443,r4:r4_441,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_442,r24:68,r25:r25_240,r3:r3_443,r4:r4_441
 		defs: r2:r2_445,r3:r3_446,r4:r4_444
 	word32 r25_246 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_447
 	word32 r2_448
 	word32 r3_449
 	call r25_246 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_445,r24:67,r25:r25_246,r28:r28,r3:r3_446,r4:r4_444,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_445,r24:67,r25:r25_246,r3:r3_446,r4:r4_444
 		defs: r2:r2_448,r3:r3_449,r4:r4_447
 	word32 r25_252 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_450
 	word32 r2_451
 	word32 r3_452
 	call r25_252 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_448,r24:65,r25:r25_252,r28:r28,r3:r3_449,r4:r4_447,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_448,r24:65,r25:r25_252,r3:r3_449,r4:r4_447
 		defs: r2:r2_451,r3:r3_452,r4:r4_450
 	word32 r25_258 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_453
 	word32 r2_454
 	word32 r3_455
 	call r25_258 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_451,r24:63,r25:r25_258,r28:r28,r3:r3_452,r4:r4_450,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_451,r24:63,r25:r25_258,r3:r3_452,r4:r4_450
 		defs: r2:r2_454,r3:r3_455,r4:r4_453
 	word32 r25_264 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_456
 	word32 r2_457
 	word32 r3_458
 	call r25_264 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_454,r24:57,r25:r25_264,r28:r28,r3:r3_455,r4:r4_453,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_454,r24:57,r25:r25_264,r3:r3_455,r4:r4_453
 		defs: r2:r2_457,r3:r3_458,r4:r4_456
 	word32 r25_270 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_459
 	word32 r2_460
 	word32 r3_461
 	call r25_270 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_457,r24:56,r25:r25_270,r28:r28,r3:r3_458,r4:r4_456,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_457,r24:56,r25:r25_270,r3:r3_458,r4:r4_456
 		defs: r2:r2_460,r3:r3_461,r4:r4_459
 	word32 r25_276 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_462
 	word32 r2_463
 	word32 r3_464
 	call r25_276 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_460,r24:54,r25:r25_276,r28:r28,r3:r3_461,r4:r4_459,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_460,r24:54,r25:r25_276,r3:r3_461,r4:r4_459
 		defs: r2:r2_463,r3:r3_464,r4:r4_462
 	word32 r25_282 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_465
 	word32 r2_466
 	word32 r3_467
 	call r25_282 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_463,r24:53,r25:r25_282,r28:r28,r3:r3_464,r4:r4_462,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_463,r24:53,r25:r25_282,r3:r3_464,r4:r4_462
 		defs: r2:r2_466,r3:r3_467,r4:r4_465
 	word32 r25_288 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_468
 	word32 r2_469
 	word32 r3_470
 	call r25_288 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_466,r24:52,r25:r25_288,r28:r28,r3:r3_467,r4:r4_465,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_466,r24:52,r25:r25_288,r3:r3_467,r4:r4_465
 		defs: r2:r2_469,r3:r3_470,r4:r4_468
 	word32 r25_294 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_471
 	word32 r2_472
 	word32 r3_473
 	call r25_294 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_469,r24:49,r25:r25_294,r28:r28,r3:r3_470,r4:r4_468,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_469,r24:49,r25:r25_294,r3:r3_470,r4:r4_468
 		defs: r2:r2_472,r3:r3_473,r4:r4_471
 	word32 r25_300 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_474
 	word32 r2_475
 	word32 r3_476
 	call r25_300 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_472,r24:42,r25:r25_300,r28:r28,r3:r3_473,r4:r4_471,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_472,r24:42,r25:r25_300,r3:r3_473,r4:r4_471
 		defs: r2:r2_475,r3:r3_476,r4:r4_474
 	word32 r25_306 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_477
 	word32 r2_478
 	word32 r3_479
 	call r25_306 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_475,r24:39,r25:r25_306,r28:r28,r3:r3_476,r4:r4_474,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_475,r24:39,r25:r25_306,r3:r3_476,r4:r4_474
 		defs: r2:r2_478,r3:r3_479,r4:r4_477
 	word32 r25_312 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_312 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_478,r24:38,r25:r25_312,r28:r28,r3:r3_479,r4:r4_477,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_478,r24:38,r25:r25_312,r3:r3_479,r4:r4_477
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -978,7 +978,7 @@ __xpg_basename_entry:
 l004002E0:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:161,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:161,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1006,7 +1006,7 @@ snprintf_entry:
 l004002F0:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:160,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:160,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1034,7 +1034,7 @@ getpid_entry:
 l00400300:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:152,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:152,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1062,7 +1062,7 @@ fgets_entry:
 l00400310:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:150,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:150,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1090,7 +1090,7 @@ memcpy_entry:
 l00400320:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:149,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:149,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1118,7 +1118,7 @@ tolower_entry:
 l00400330:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:146,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:146,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1146,7 +1146,7 @@ malloc_entry:
 l00400340:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:144,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:144,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1171,305 +1171,305 @@ l00400350:
 	word32 r2_279
 	word32 r3_281
 	call r25_5 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2,r24:143,r25:r25_5,r28:r28,r3:r3,r4:r4,ra:ra,sp:fp
+		uses: r15:ra,r2:r2,r24:143,r25:r25_5,r3:r3,r4:r4
 		defs: r2:r2_279,r3:r3_281,r4:r4_277
 	word32 r25_12 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_282
 	word32 r2_283
 	word32 r3_284
 	call r25_12 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_279,r24:142,r25:r25_12,r28:r28,r3:r3_281,r4:r4_277,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_279,r24:142,r25:r25_12,r3:r3_281,r4:r4_277
 		defs: r2:r2_283,r3:r3_284,r4:r4_282
 	word32 r25_18 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_285
 	word32 r2_286
 	word32 r3_287
 	call r25_18 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_283,r24:138,r25:r25_18,r28:r28,r3:r3_284,r4:r4_282,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_283,r24:138,r25:r25_18,r3:r3_284,r4:r4_282
 		defs: r2:r2_286,r3:r3_287,r4:r4_285
 	word32 r25_24 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_288
 	word32 r2_289
 	word32 r3_290
 	call r25_24 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_286,r24:137,r25:r25_24,r28:r28,r3:r3_287,r4:r4_285,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_286,r24:137,r25:r25_24,r3:r3_287,r4:r4_285
 		defs: r2:r2_289,r3:r3_290,r4:r4_288
 	word32 r25_30 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_291
 	word32 r2_292
 	word32 r3_293
 	call r25_30 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_289,r24:134,r25:r25_30,r28:r28,r3:r3_290,r4:r4_288,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_289,r24:134,r25:r25_30,r3:r3_290,r4:r4_288
 		defs: r2:r2_292,r3:r3_293,r4:r4_291
 	word32 r25_36 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_294
 	word32 r2_295
 	word32 r3_296
 	call r25_36 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_292,r24:129,r25:r25_36,r28:r28,r3:r3_293,r4:r4_291,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_292,r24:129,r25:r25_36,r3:r3_293,r4:r4_291
 		defs: r2:r2_295,r3:r3_296,r4:r4_294
 	word32 r25_42 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_297
 	word32 r2_298
 	word32 r3_299
 	call r25_42 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_295,r24:128,r25:r25_42,r28:r28,r3:r3_296,r4:r4_294,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_295,r24:128,r25:r25_42,r3:r3_296,r4:r4_294
 		defs: r2:r2_298,r3:r3_299,r4:r4_297
 	word32 r25_48 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_300
 	word32 r2_301
 	word32 r3_302
 	call r25_48 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_298,r24:127,r25:r25_48,r28:r28,r3:r3_299,r4:r4_297,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_298,r24:127,r25:r25_48,r3:r3_299,r4:r4_297
 		defs: r2:r2_301,r3:r3_302,r4:r4_300
 	word32 r25_54 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_303
 	word32 r2_304
 	word32 r3_305
 	call r25_54 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_301,r24:124,r25:r25_54,r28:r28,r3:r3_302,r4:r4_300,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_301,r24:124,r25:r25_54,r3:r3_302,r4:r4_300
 		defs: r2:r2_304,r3:r3_305,r4:r4_303
 	word32 r25_60 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_306
 	word32 r2_307
 	word32 r3_308
 	call r25_60 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_304,r24:121,r25:r25_60,r28:r28,r3:r3_305,r4:r4_303,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_304,r24:121,r25:r25_60,r3:r3_305,r4:r4_303
 		defs: r2:r2_307,r3:r3_308,r4:r4_306
 	word32 r25_66 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_309
 	word32 r2_310
 	word32 r3_311
 	call r25_66 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_307,r24:120,r25:r25_66,r28:r28,r3:r3_308,r4:r4_306,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_307,r24:120,r25:r25_66,r3:r3_308,r4:r4_306
 		defs: r2:r2_310,r3:r3_311,r4:r4_309
 	word32 r25_72 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_312
 	word32 r2_313
 	word32 r3_314
 	call r25_72 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_310,r24:116,r25:r25_72,r28:r28,r3:r3_311,r4:r4_309,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_310,r24:116,r25:r25_72,r3:r3_311,r4:r4_309
 		defs: r2:r2_313,r3:r3_314,r4:r4_312
 	word32 r25_78 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_315
 	word32 r2_316
 	word32 r3_317
 	call r25_78 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_313,r24:115,r25:r25_78,r28:r28,r3:r3_314,r4:r4_312,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_313,r24:115,r25:r25_78,r3:r3_314,r4:r4_312
 		defs: r2:r2_316,r3:r3_317,r4:r4_315
 	word32 r25_84 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_318
 	word32 r2_319
 	word32 r3_320
 	call r25_84 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_316,r24:114,r25:r25_84,r28:r28,r3:r3_317,r4:r4_315,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_316,r24:114,r25:r25_84,r3:r3_317,r4:r4_315
 		defs: r2:r2_319,r3:r3_320,r4:r4_318
 	word32 r25_90 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_321
 	word32 r2_322
 	word32 r3_323
 	call r25_90 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_319,r24:113,r25:r25_90,r28:r28,r3:r3_320,r4:r4_318,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_319,r24:113,r25:r25_90,r3:r3_320,r4:r4_318
 		defs: r2:r2_322,r3:r3_323,r4:r4_321
 	word32 r25_96 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_324
 	word32 r2_325
 	word32 r3_326
 	call r25_96 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_322,r24:107,r25:r25_96,r28:r28,r3:r3_323,r4:r4_321,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_322,r24:107,r25:r25_96,r3:r3_323,r4:r4_321
 		defs: r2:r2_325,r3:r3_326,r4:r4_324
 	word32 r25_102 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_327
 	word32 r2_328
 	word32 r3_329
 	call r25_102 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_325,r24:106,r25:r25_102,r28:r28,r3:r3_326,r4:r4_324,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_325,r24:106,r25:r25_102,r3:r3_326,r4:r4_324
 		defs: r2:r2_328,r3:r3_329,r4:r4_327
 	word32 r25_108 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_330
 	word32 r2_331
 	word32 r3_332
 	call r25_108 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_328,r24:104,r25:r25_108,r28:r28,r3:r3_329,r4:r4_327,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_328,r24:104,r25:r25_108,r3:r3_329,r4:r4_327
 		defs: r2:r2_331,r3:r3_332,r4:r4_330
 	word32 r25_114 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_333
 	word32 r2_334
 	word32 r3_335
 	call r25_114 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_331,r24:102,r25:r25_114,r28:r28,r3:r3_332,r4:r4_330,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_331,r24:102,r25:r25_114,r3:r3_332,r4:r4_330
 		defs: r2:r2_334,r3:r3_335,r4:r4_333
 	word32 r25_120 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_336
 	word32 r2_337
 	word32 r3_338
 	call r25_120 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_334,r24:101,r25:r25_120,r28:r28,r3:r3_335,r4:r4_333,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_334,r24:101,r25:r25_120,r3:r3_335,r4:r4_333
 		defs: r2:r2_337,r3:r3_338,r4:r4_336
 	word32 r25_126 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_339
 	word32 r2_340
 	word32 r3_341
 	call r25_126 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_337,r24:99,r25:r25_126,r28:r28,r3:r3_338,r4:r4_336,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_337,r24:99,r25:r25_126,r3:r3_338,r4:r4_336
 		defs: r2:r2_340,r3:r3_341,r4:r4_339
 	word32 r25_132 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_342
 	word32 r2_343
 	word32 r3_344
 	call r25_132 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_340,r24:94,r25:r25_132,r28:r28,r3:r3_341,r4:r4_339,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_340,r24:94,r25:r25_132,r3:r3_341,r4:r4_339
 		defs: r2:r2_343,r3:r3_344,r4:r4_342
 	word32 r25_138 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_345
 	word32 r2_346
 	word32 r3_347
 	call r25_138 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_343,r24:91,r25:r25_138,r28:r28,r3:r3_344,r4:r4_342,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_343,r24:91,r25:r25_138,r3:r3_344,r4:r4_342
 		defs: r2:r2_346,r3:r3_347,r4:r4_345
 	word32 r25_144 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_348
 	word32 r2_349
 	word32 r3_350
 	call r25_144 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_346,r24:87,r25:r25_144,r28:r28,r3:r3_347,r4:r4_345,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_346,r24:87,r25:r25_144,r3:r3_347,r4:r4_345
 		defs: r2:r2_349,r3:r3_350,r4:r4_348
 	word32 r25_150 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_351
 	word32 r2_352
 	word32 r3_353
 	call r25_150 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_349,r24:86,r25:r25_150,r28:r28,r3:r3_350,r4:r4_348,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_349,r24:86,r25:r25_150,r3:r3_350,r4:r4_348
 		defs: r2:r2_352,r3:r3_353,r4:r4_351
 	word32 r25_156 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_354
 	word32 r2_355
 	word32 r3_356
 	call r25_156 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_352,r24:84,r25:r25_156,r28:r28,r3:r3_353,r4:r4_351,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_352,r24:84,r25:r25_156,r3:r3_353,r4:r4_351
 		defs: r2:r2_355,r3:r3_356,r4:r4_354
 	word32 r25_162 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_357
 	word32 r2_358
 	word32 r3_359
 	call r25_162 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_355,r24:82,r25:r25_162,r28:r28,r3:r3_356,r4:r4_354,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_355,r24:82,r25:r25_162,r3:r3_356,r4:r4_354
 		defs: r2:r2_358,r3:r3_359,r4:r4_357
 	word32 r25_168 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_360
 	word32 r2_361
 	word32 r3_362
 	call r25_168 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_358,r24:80,r25:r25_168,r28:r28,r3:r3_359,r4:r4_357,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_358,r24:80,r25:r25_168,r3:r3_359,r4:r4_357
 		defs: r2:r2_361,r3:r3_362,r4:r4_360
 	word32 r25_174 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_363
 	word32 r2_364
 	word32 r3_365
 	call r25_174 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_361,r24:79,r25:r25_174,r28:r28,r3:r3_362,r4:r4_360,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_361,r24:79,r25:r25_174,r3:r3_362,r4:r4_360
 		defs: r2:r2_364,r3:r3_365,r4:r4_363
 	word32 r25_180 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_366
 	word32 r2_367
 	word32 r3_368
 	call r25_180 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_364,r24:74,r25:r25_180,r28:r28,r3:r3_365,r4:r4_363,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_364,r24:74,r25:r25_180,r3:r3_365,r4:r4_363
 		defs: r2:r2_367,r3:r3_368,r4:r4_366
 	word32 r25_186 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_369
 	word32 r2_370
 	word32 r3_371
 	call r25_186 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_367,r24:71,r25:r25_186,r28:r28,r3:r3_368,r4:r4_366,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_367,r24:71,r25:r25_186,r3:r3_368,r4:r4_366
 		defs: r2:r2_370,r3:r3_371,r4:r4_369
 	word32 r25_192 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_372
 	word32 r2_373
 	word32 r3_374
 	call r25_192 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_370,r24:68,r25:r25_192,r28:r28,r3:r3_371,r4:r4_369,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_370,r24:68,r25:r25_192,r3:r3_371,r4:r4_369
 		defs: r2:r2_373,r3:r3_374,r4:r4_372
 	word32 r25_198 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_375
 	word32 r2_376
 	word32 r3_377
 	call r25_198 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_373,r24:67,r25:r25_198,r28:r28,r3:r3_374,r4:r4_372,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_373,r24:67,r25:r25_198,r3:r3_374,r4:r4_372
 		defs: r2:r2_376,r3:r3_377,r4:r4_375
 	word32 r25_204 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_378
 	word32 r2_379
 	word32 r3_380
 	call r25_204 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_376,r24:65,r25:r25_204,r28:r28,r3:r3_377,r4:r4_375,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_376,r24:65,r25:r25_204,r3:r3_377,r4:r4_375
 		defs: r2:r2_379,r3:r3_380,r4:r4_378
 	word32 r25_210 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_381
 	word32 r2_382
 	word32 r3_383
 	call r25_210 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_379,r24:63,r25:r25_210,r28:r28,r3:r3_380,r4:r4_378,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_379,r24:63,r25:r25_210,r3:r3_380,r4:r4_378
 		defs: r2:r2_382,r3:r3_383,r4:r4_381
 	word32 r25_216 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_384
 	word32 r2_385
 	word32 r3_386
 	call r25_216 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_382,r24:57,r25:r25_216,r28:r28,r3:r3_383,r4:r4_381,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_382,r24:57,r25:r25_216,r3:r3_383,r4:r4_381
 		defs: r2:r2_385,r3:r3_386,r4:r4_384
 	word32 r25_222 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_387
 	word32 r2_388
 	word32 r3_389
 	call r25_222 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_385,r24:56,r25:r25_222,r28:r28,r3:r3_386,r4:r4_384,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_385,r24:56,r25:r25_222,r3:r3_386,r4:r4_384
 		defs: r2:r2_388,r3:r3_389,r4:r4_387
 	word32 r25_228 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_390
 	word32 r2_391
 	word32 r3_392
 	call r25_228 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_388,r24:54,r25:r25_228,r28:r28,r3:r3_389,r4:r4_387,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_388,r24:54,r25:r25_228,r3:r3_389,r4:r4_387
 		defs: r2:r2_391,r3:r3_392,r4:r4_390
 	word32 r25_234 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_393
 	word32 r2_394
 	word32 r3_395
 	call r25_234 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_391,r24:53,r25:r25_234,r28:r28,r3:r3_392,r4:r4_390,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_391,r24:53,r25:r25_234,r3:r3_392,r4:r4_390
 		defs: r2:r2_394,r3:r3_395,r4:r4_393
 	word32 r25_240 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_396
 	word32 r2_397
 	word32 r3_398
 	call r25_240 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_394,r24:52,r25:r25_240,r28:r28,r3:r3_395,r4:r4_393,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_394,r24:52,r25:r25_240,r3:r3_395,r4:r4_393
 		defs: r2:r2_397,r3:r3_398,r4:r4_396
 	word32 r25_246 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_399
 	word32 r2_400
 	word32 r3_401
 	call r25_246 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_397,r24:49,r25:r25_246,r28:r28,r3:r3_398,r4:r4_396,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_397,r24:49,r25:r25_246,r3:r3_398,r4:r4_396
 		defs: r2:r2_400,r3:r3_401,r4:r4_399
 	word32 r25_252 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_402
 	word32 r2_403
 	word32 r3_404
 	call r25_252 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_400,r24:42,r25:r25_252,r28:r28,r3:r3_401,r4:r4_399,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_400,r24:42,r25:r25_252,r3:r3_401,r4:r4_399
 		defs: r2:r2_403,r3:r3_404,r4:r4_402
 	word32 r25_258 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_405
 	word32 r2_406
 	word32 r3_407
 	call r25_258 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_403,r24:39,r25:r25_258,r28:r28,r3:r3_404,r4:r4_402,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_403,r24:39,r25:r25_258,r3:r3_404,r4:r4_402
 		defs: r2:r2_406,r3:r3_407,r4:r4_405
 	word32 r25_264 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_264 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_406,r24:38,r25:r25_264,r28:r28,r3:r3_407,r4:r4_405,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_406,r24:38,r25:r25_264,r3:r3_407,r4:r4_405
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1509,7 +1509,7 @@ strtoul_entry:
 l00400360:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:142,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:142,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1537,7 +1537,7 @@ socket_entry:
 l00400370:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:138,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:138,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1565,7 +1565,7 @@ select_entry:
 l00400380:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:137,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:137,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1593,7 +1593,7 @@ fflush_entry:
 l00400390:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:134,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:134,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1621,7 +1621,7 @@ strncasecmp_entry:
 l004003A0:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:129,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:129,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1649,7 +1649,7 @@ bzero_entry:
 l004003B0:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:128,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:128,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1677,7 +1677,7 @@ send_entry:
 l004003C0:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:127,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:127,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1705,7 +1705,7 @@ accept_entry:
 l004003D0:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:124,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:124,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1733,7 +1733,7 @@ rename_entry:
 l004003E0:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:121,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:121,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1761,7 +1761,7 @@ strrchr_entry:
 l004003F0:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:120,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:120,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1789,7 +1789,7 @@ fprintf_entry:
 l00400400:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:116,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:116,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1817,7 +1817,7 @@ strcat_entry:
 l00400410:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:115,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:115,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1845,7 +1845,7 @@ bind_entry:
 l00400420:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:114,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:114,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1873,7 +1873,7 @@ inet_addr_entry:
 l00400430:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:113,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:113,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1901,7 +1901,7 @@ signal_entry:
 l00400440:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:107,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:107,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1926,193 +1926,193 @@ l00400450:
 	word32 r2_183
 	word32 r3_185
 	call r25_5 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2,r24:106,r25:r25_5,r28:r28,r3:r3,r4:r4,ra:ra,sp:fp
+		uses: r15:ra,r2:r2,r24:106,r25:r25_5,r3:r3,r4:r4
 		defs: r2:r2_183,r3:r3_185,r4:r4_181
 	word32 r25_12 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_186
 	word32 r2_187
 	word32 r3_188
 	call r25_12 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_183,r24:104,r25:r25_12,r28:r28,r3:r3_185,r4:r4_181,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_183,r24:104,r25:r25_12,r3:r3_185,r4:r4_181
 		defs: r2:r2_187,r3:r3_188,r4:r4_186
 	word32 r25_18 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_189
 	word32 r2_190
 	word32 r3_191
 	call r25_18 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_187,r24:102,r25:r25_18,r28:r28,r3:r3_188,r4:r4_186,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_187,r24:102,r25:r25_18,r3:r3_188,r4:r4_186
 		defs: r2:r2_190,r3:r3_191,r4:r4_189
 	word32 r25_24 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_192
 	word32 r2_193
 	word32 r3_194
 	call r25_24 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_190,r24:101,r25:r25_24,r28:r28,r3:r3_191,r4:r4_189,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_190,r24:101,r25:r25_24,r3:r3_191,r4:r4_189
 		defs: r2:r2_193,r3:r3_194,r4:r4_192
 	word32 r25_30 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_195
 	word32 r2_196
 	word32 r3_197
 	call r25_30 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_193,r24:99,r25:r25_30,r28:r28,r3:r3_194,r4:r4_192,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_193,r24:99,r25:r25_30,r3:r3_194,r4:r4_192
 		defs: r2:r2_196,r3:r3_197,r4:r4_195
 	word32 r25_36 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_198
 	word32 r2_199
 	word32 r3_200
 	call r25_36 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_196,r24:94,r25:r25_36,r28:r28,r3:r3_197,r4:r4_195,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_196,r24:94,r25:r25_36,r3:r3_197,r4:r4_195
 		defs: r2:r2_199,r3:r3_200,r4:r4_198
 	word32 r25_42 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_201
 	word32 r2_202
 	word32 r3_203
 	call r25_42 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_199,r24:91,r25:r25_42,r28:r28,r3:r3_200,r4:r4_198,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_199,r24:91,r25:r25_42,r3:r3_200,r4:r4_198
 		defs: r2:r2_202,r3:r3_203,r4:r4_201
 	word32 r25_48 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_204
 	word32 r2_205
 	word32 r3_206
 	call r25_48 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_202,r24:87,r25:r25_48,r28:r28,r3:r3_203,r4:r4_201,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_202,r24:87,r25:r25_48,r3:r3_203,r4:r4_201
 		defs: r2:r2_205,r3:r3_206,r4:r4_204
 	word32 r25_54 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_207
 	word32 r2_208
 	word32 r3_209
 	call r25_54 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_205,r24:86,r25:r25_54,r28:r28,r3:r3_206,r4:r4_204,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_205,r24:86,r25:r25_54,r3:r3_206,r4:r4_204
 		defs: r2:r2_208,r3:r3_209,r4:r4_207
 	word32 r25_60 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_210
 	word32 r2_211
 	word32 r3_212
 	call r25_60 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_208,r24:84,r25:r25_60,r28:r28,r3:r3_209,r4:r4_207,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_208,r24:84,r25:r25_60,r3:r3_209,r4:r4_207
 		defs: r2:r2_211,r3:r3_212,r4:r4_210
 	word32 r25_66 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_213
 	word32 r2_214
 	word32 r3_215
 	call r25_66 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_211,r24:82,r25:r25_66,r28:r28,r3:r3_212,r4:r4_210,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_211,r24:82,r25:r25_66,r3:r3_212,r4:r4_210
 		defs: r2:r2_214,r3:r3_215,r4:r4_213
 	word32 r25_72 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_216
 	word32 r2_217
 	word32 r3_218
 	call r25_72 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_214,r24:80,r25:r25_72,r28:r28,r3:r3_215,r4:r4_213,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_214,r24:80,r25:r25_72,r3:r3_215,r4:r4_213
 		defs: r2:r2_217,r3:r3_218,r4:r4_216
 	word32 r25_78 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_219
 	word32 r2_220
 	word32 r3_221
 	call r25_78 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_217,r24:79,r25:r25_78,r28:r28,r3:r3_218,r4:r4_216,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_217,r24:79,r25:r25_78,r3:r3_218,r4:r4_216
 		defs: r2:r2_220,r3:r3_221,r4:r4_219
 	word32 r25_84 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_222
 	word32 r2_223
 	word32 r3_224
 	call r25_84 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_220,r24:74,r25:r25_84,r28:r28,r3:r3_221,r4:r4_219,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_220,r24:74,r25:r25_84,r3:r3_221,r4:r4_219
 		defs: r2:r2_223,r3:r3_224,r4:r4_222
 	word32 r25_90 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_225
 	word32 r2_226
 	word32 r3_227
 	call r25_90 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_223,r24:71,r25:r25_90,r28:r28,r3:r3_224,r4:r4_222,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_223,r24:71,r25:r25_90,r3:r3_224,r4:r4_222
 		defs: r2:r2_226,r3:r3_227,r4:r4_225
 	word32 r25_96 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_228
 	word32 r2_229
 	word32 r3_230
 	call r25_96 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_226,r24:68,r25:r25_96,r28:r28,r3:r3_227,r4:r4_225,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_226,r24:68,r25:r25_96,r3:r3_227,r4:r4_225
 		defs: r2:r2_229,r3:r3_230,r4:r4_228
 	word32 r25_102 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_231
 	word32 r2_232
 	word32 r3_233
 	call r25_102 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_229,r24:67,r25:r25_102,r28:r28,r3:r3_230,r4:r4_228,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_229,r24:67,r25:r25_102,r3:r3_230,r4:r4_228
 		defs: r2:r2_232,r3:r3_233,r4:r4_231
 	word32 r25_108 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_234
 	word32 r2_235
 	word32 r3_236
 	call r25_108 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_232,r24:65,r25:r25_108,r28:r28,r3:r3_233,r4:r4_231,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_232,r24:65,r25:r25_108,r3:r3_233,r4:r4_231
 		defs: r2:r2_235,r3:r3_236,r4:r4_234
 	word32 r25_114 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_237
 	word32 r2_238
 	word32 r3_239
 	call r25_114 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_235,r24:63,r25:r25_114,r28:r28,r3:r3_236,r4:r4_234,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_235,r24:63,r25:r25_114,r3:r3_236,r4:r4_234
 		defs: r2:r2_238,r3:r3_239,r4:r4_237
 	word32 r25_120 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_240
 	word32 r2_241
 	word32 r3_242
 	call r25_120 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_238,r24:57,r25:r25_120,r28:r28,r3:r3_239,r4:r4_237,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_238,r24:57,r25:r25_120,r3:r3_239,r4:r4_237
 		defs: r2:r2_241,r3:r3_242,r4:r4_240
 	word32 r25_126 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_243
 	word32 r2_244
 	word32 r3_245
 	call r25_126 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_241,r24:56,r25:r25_126,r28:r28,r3:r3_242,r4:r4_240,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_241,r24:56,r25:r25_126,r3:r3_242,r4:r4_240
 		defs: r2:r2_244,r3:r3_245,r4:r4_243
 	word32 r25_132 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_246
 	word32 r2_247
 	word32 r3_248
 	call r25_132 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_244,r24:54,r25:r25_132,r28:r28,r3:r3_245,r4:r4_243,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_244,r24:54,r25:r25_132,r3:r3_245,r4:r4_243
 		defs: r2:r2_247,r3:r3_248,r4:r4_246
 	word32 r25_138 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_249
 	word32 r2_250
 	word32 r3_251
 	call r25_138 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_247,r24:53,r25:r25_138,r28:r28,r3:r3_248,r4:r4_246,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_247,r24:53,r25:r25_138,r3:r3_248,r4:r4_246
 		defs: r2:r2_250,r3:r3_251,r4:r4_249
 	word32 r25_144 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_252
 	word32 r2_253
 	word32 r3_254
 	call r25_144 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_250,r24:52,r25:r25_144,r28:r28,r3:r3_251,r4:r4_249,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_250,r24:52,r25:r25_144,r3:r3_251,r4:r4_249
 		defs: r2:r2_253,r3:r3_254,r4:r4_252
 	word32 r25_150 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_255
 	word32 r2_256
 	word32 r3_257
 	call r25_150 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_253,r24:49,r25:r25_150,r28:r28,r3:r3_254,r4:r4_252,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_253,r24:49,r25:r25_150,r3:r3_254,r4:r4_252
 		defs: r2:r2_256,r3:r3_257,r4:r4_255
 	word32 r25_156 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_258
 	word32 r2_259
 	word32 r3_260
 	call r25_156 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_256,r24:42,r25:r25_156,r28:r28,r3:r3_257,r4:r4_255,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_256,r24:42,r25:r25_156,r3:r3_257,r4:r4_255
 		defs: r2:r2_259,r3:r3_260,r4:r4_258
 	word32 r25_162 = Mem0[r28 - 0x00007FF0:word32]
 	word32 r4_261
 	word32 r2_262
 	word32 r3_263
 	call r25_162 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_259,r24:39,r25:r25_162,r28:r28,r3:r3_260,r4:r4_258,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_259,r24:39,r25:r25_162,r3:r3_260,r4:r4_258
 		defs: r2:r2_262,r3:r3_263,r4:r4_261
 	word32 r25_168 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_168 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2_262,r24:38,r25:r25_168,r28:r28,r3:r3_263,r4:r4_261,ra:ra,sp:fp
+		uses: r15:ra,r2:r2_262,r24:38,r25:r25_168,r3:r3_263,r4:r4_261
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2152,7 +2152,7 @@ strncmp_entry:
 l00400460:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:104,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:104,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2180,7 +2180,7 @@ strncpy_entry:
 l00400470:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:102,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:102,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2208,7 +2208,7 @@ unlink_entry:
 l00400480:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:101,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:101,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2236,7 +2236,7 @@ strcasecmp_entry:
 l00400490:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:99,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:99,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2264,7 +2264,7 @@ listen_entry:
 l004004A0:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:94,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:94,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2292,7 +2292,7 @@ fork_entry:
 l004004B0:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:91,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:91,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2320,7 +2320,7 @@ gettimeofday_entry:
 l004004C0:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:87,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:87,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2348,7 +2348,7 @@ fopen_entry:
 l004004D0:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:86,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:86,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2376,7 +2376,7 @@ ftell_entry:
 l004004E0:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:84,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:84,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2404,7 +2404,7 @@ fclose_entry:
 l004004F0:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:82,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:82,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2432,7 +2432,7 @@ inet_ntoa_entry:
 l00400500:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:80,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:80,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2460,7 +2460,7 @@ time_entry:
 l00400510:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:79,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:79,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2488,7 +2488,7 @@ strcspn_entry:
 l00400520:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:74,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:74,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2516,7 +2516,7 @@ strsep_entry:
 l00400530:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:71,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:71,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2544,7 +2544,7 @@ getsockopt_entry:
 l00400540:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:68,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:68,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2572,7 +2572,7 @@ strftime_entry:
 l00400550:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:67,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:67,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2600,7 +2600,7 @@ __errno_location_entry:
 l00400560:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:65,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:65,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2628,7 +2628,7 @@ exit_entry:
 l00400570:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:63,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:63,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2656,7 +2656,7 @@ gmtime_entry:
 l00400580:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:57,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:57,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2684,7 +2684,7 @@ strspn_entry:
 l00400590:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:56,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:56,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2712,7 +2712,7 @@ strlen_entry:
 l004005A0:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:54,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:54,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2740,7 +2740,7 @@ __uClibc_start_main_entry:
 l004005B0:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:53,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:53,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2768,7 +2768,7 @@ toupper_entry:
 l004005C0:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:52,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:52,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2796,7 +2796,7 @@ strchr_entry:
 l004005D0:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:49,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:49,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2824,7 +2824,7 @@ close_entry:
 l004005E0:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:42,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:42,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2852,7 +2852,7 @@ strpbrk_entry:
 l004005F0:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:39,r25:r25_5,r28:r28,ra:ra,sp:fp
+		uses: r15:ra,r24:39,r25:r25_5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2874,7 +2874,7 @@ free_entry:
 l00400600:
 	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
 	call r25_5 (retsize: 0;)
-		uses: r1:r1,r15:ra,r2:r2,r24:38,r25:r25_5,r28:r28,r3:r3,r4:r4,ra:ra,sp:fp
+		uses: r15:ra,r2:r2,r24:38,r25:r25_5,r3:r3,r4:r4
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2944,7 +2944,7 @@ l00400674:
 	word32 r25_23 = Mem22[r3_17:word32]
 	Mem28[r1_25 + 4:word32] = r2_20
 	call r25_23 (retsize: 0;)
-		uses: r1:r1_25 + 4,r2:r2_27,r25:r25_23,r28:0x10008860,r3:r3_21,r4:r4_34,ra:ra,sp:fp + -32,Stack +0010:0x10008860,Stack +001C:ra
+		uses: r2:r2_27,r25:r25_23,r3:r3_21,r4:r4_34,Stack +0010:0x10008860,Stack +001C:ra
 		defs: r4:r4_35
 	r3_17 = Mem28[Mem28[0x10000878:word32] + 4:word32]
 	r1 = r1_25 + 4
@@ -3319,7 +3319,7 @@ l00400A74_ds_f:
 // SymbolicIn:
 
 l00400A8C:
-	fopen(r2_147 + 1685, Mem144[0x10000880:word32] + -50040)
+	word32 r2_158 = fopen(r2_147 + 1685, Mem144[0x10000880:word32] + -50040)
 	dwLoc2C = r2_158
 	branch r2_158 == 0x00000000 l00400A8C_ds_t
 // DataOut:
@@ -3563,7 +3563,7 @@ l00400F30:
 	word32 r25_505 = Mem503[r28_1015 - 0x00007F30:word32]
 	word32 r2_513
 	call r25_505 (retsize: 0;)
-		uses: r1:r1_218,r16:r16_509,r2:r2_501,r25:r25_505,r28:r28_498,r3:r3_517,r30:fp + -416,r4:0x00000000,r5:r5_511,r6:r6_515,r7:r7_519,ra:ra,sp:fp + -416,Stack +0010:dwLoc0190_1498,Stack +0014:r2_256,Stack +0018:r2_259,Stack +001C:r2_261 + 469,Stack +0020:r2_265,Stack +0024:r2_268,Stack +0028:r2_271,Stack +002C:dwLoc0174_1390,Stack +0030:r2_288,Stack +0038:0x10008860,Stack +0040:0x00000000,Stack +0044:dwLoc015C_2142,Stack +0048:dwLoc0158_2132,Stack +004C:r2_313,Stack +0050:dwLoc0150_1510,Stack +0054:r2_343,Stack +0058:0x0002,Stack +005A:wLoc0146_1457,Stack +005C:r2_452,Stack +0068:r2_141 + 1685,Stack +0170:r2_513,Stack +0174:dwLoc2C_1495,Stack +0178:fp + -304,Stack +017C:r2_246,Stack +0180:dwLoc20_1389,Stack +0184:dwLoc1C_2162,Stack +0188:dwLoc18_2182,Stack +018C:dwLoc14_2202,Stack +0194:r16,Stack +0198:r30,Stack +019C:ra,Stack +01A0:r4,Stack +01A4:r5
+		uses: r2:r2_501,r25:r25_505,r3:r3_517,r4:0x00000000,r5:r5_511,r6:r6_515,r7:r7_519,Stack +0010:dwLoc0190_1498,Stack +0014:r2_256,Stack +0018:r2_259,Stack +001C:r2_261 + 469,Stack +0020:r2_265,Stack +0024:r2_268,Stack +0028:r2_271,Stack +002C:dwLoc0174_1390,Stack +0030:r2_288,Stack +0038:0x10008860,Stack +0040:0x00000000,Stack +0044:dwLoc015C_2142,Stack +0048:dwLoc0158_2132,Stack +004C:r2_313,Stack +0050:dwLoc0150_1510,Stack +0054:r2_343,Stack +0058:0x0002,Stack +005A:wLoc0146_1457,Stack +005C:r2_452,Stack +0068:r2_141 + 1685,Stack +0170:r2_513,Stack +0174:dwLoc2C_1495,Stack +0178:fp + -304,Stack +017C:r2_246,Stack +0180:dwLoc20_1389,Stack +0184:dwLoc1C_2162,Stack +0188:dwLoc18_2182,Stack +018C:dwLoc14_2202,Stack +0194:r16,Stack +0198:r30,Stack +019C:ra,Stack +01A0:r4,Stack +01A4:r5
 		defs: r2:r2_513
 	dwLoc0160_1349 = 0x00000000
 	dwLoc30 = r2_513
@@ -3917,7 +3917,7 @@ l004014CC:
 	word32 r25_861 = Mem837[r28_1015 - 0x00007F28:word32]
 	word32 r2_868
 	call r25_861 (retsize: 0;)
-		uses: r1:r1_218,r16:r16_1327,r2:dwLoc0150_1772 + 8,r25:r25_861,r28:r28_860,r3:fp + -328,r30:fp + -416,r4:dwLoc0150_1772 + 8,r5:fp + -328,r6:Mem837[dwLoc0150_1772:word32],r7:Mem837[dwLoc0150_1772 + 0x00000020:word32],ra:ra,sp:fp + -416,Stack +0010:0x00000000,Stack +0014:r2_256,Stack +0018:r2_259,Stack +001C:r2_261 + 469,Stack +0020:r2_265,Stack +0024:r2_268,Stack +0028:r2_271,Stack +002C:dwLoc0174_1390,Stack +0030:r2_288,Stack +0038:0x10008860,Stack +0040:dwLoc0160_1539,Stack +0044:r2_868,Stack +0048:dwLoc0158_1538,Stack +004C:r2_313,Stack +0050:dwLoc0150_1772,Stack +0054:r2_343,Stack +0058:0x0002,Stack +005A:wLoc0146_1457,Stack +005C:r2_452,Stack +0068:r2_141 + 1685,Stack +0170:r2_513,Stack +0174:fp + -176,Stack +0178:dwLoc28_1522,Stack +017C:r2_246,Stack +0180:dwLoc20_1389,Stack +0184:dwLoc1C_2162,Stack +0188:dwLoc18_2182,Stack +018C:dwLoc14_2202,Stack +0194:r16,Stack +0198:r30,Stack +019C:ra,Stack +01A0:r4,Stack +01A4:r5
+		uses: r2:dwLoc0150_1772 + 8,r25:r25_861,r3:fp + -328,r4:dwLoc0150_1772 + 8,r5:fp + -328,r6:Mem837[dwLoc0150_1772:word32],r7:Mem837[dwLoc0150_1772 + 0x00000020:word32],Stack +0010:0x00000000,Stack +0014:r2_256,Stack +0018:r2_259,Stack +001C:r2_261 + 469,Stack +0020:r2_265,Stack +0024:r2_268,Stack +0028:r2_271,Stack +002C:dwLoc0174_1390,Stack +0030:r2_288,Stack +0038:0x10008860,Stack +0040:dwLoc0160_1539,Stack +0044:r2_868,Stack +0048:dwLoc0158_1538,Stack +004C:r2_313,Stack +0050:dwLoc0150_1772,Stack +0054:r2_343,Stack +0058:0x0002,Stack +005A:wLoc0146_1457,Stack +005C:r2_452,Stack +0068:r2_141 + 1685,Stack +0170:r2_513,Stack +0174:fp + -176,Stack +0178:dwLoc28_1522,Stack +017C:r2_246,Stack +0180:dwLoc20_1389,Stack +0184:dwLoc1C_2162,Stack +0188:dwLoc18_2182,Stack +018C:dwLoc14_2202,Stack +0194:r16,Stack +0198:r30,Stack +019C:ra,Stack +01A0:r4,Stack +01A4:r5
 		defs: r2:r2_868,r3:r3_871,r5:r5_867,r6:r6_870,r7:r7_872
 	r28_1015 = 0x10008860
 	dwLoc015C = r2_868
@@ -4073,7 +4073,7 @@ l00401608_ds_f:
 l00401654:
 	word32 r25_940 = Mem921[r28_1015 - 0x00007EF8:word32]
 	call r25_940 (retsize: 0;)
-		uses: r1:r1_218,r16:r16_1327,r2:r2_936 + 0x00000001,r25:r25_940,r28:r28_939,r3:r2_933 + 0x0000001F,r30:fp + -416,r4:dwLoc0158_1805,r5:r5_946,r6:r6_950,r7:r7_953,ra:ra,sp:fp + -416,Stack +0010:0x00000000,Stack +0014:r2_256,Stack +0018:r2_259,Stack +001C:r2_261 + 469,Stack +0020:r2_265,Stack +0024:r2_268,Stack +0028:r2_271,Stack +002C:dwLoc0174_1390,Stack +0030:r2_288,Stack +0038:0x10008860,Stack +0040:dwLoc0160_1539,Stack +0044:dwLoc015C_2365,Stack +0048:dwLoc0158_1805,Stack +004C:r2_313,Stack +0050:dwLoc0150_1772,Stack +0054:r2_343,Stack +0058:0x0002,Stack +005A:wLoc0146_1457,Stack +005C:r2_452,Stack +0068:r2_141 + 1685,Stack +0170:r2_513,Stack +0174:fp + -176,Stack +0178:dwLoc28_1522,Stack +017C:r2_246,Stack +0180:dwLoc20_1389,Stack +0184:dwLoc1C_1836,Stack +0188:dwLoc18_1870,Stack +018C:dwLoc14_1939,Stack +0194:r16,Stack +0198:r30,Stack +019C:ra,Stack +01A0:r4,Stack +01A4:r5
+		uses: r2:r2_936 + 0x00000001,r25:r25_940,r3:r2_933 + 0x0000001F,r4:dwLoc0158_1805,r5:r5_946,r6:r6_950,r7:r7_953,Stack +0010:0x00000000,Stack +0014:r2_256,Stack +0018:r2_259,Stack +001C:r2_261 + 469,Stack +0020:r2_265,Stack +0024:r2_268,Stack +0028:r2_271,Stack +002C:dwLoc0174_1390,Stack +0030:r2_288,Stack +0038:0x10008860,Stack +0040:dwLoc0160_1539,Stack +0044:dwLoc015C_2365,Stack +0048:dwLoc0158_1805,Stack +004C:r2_313,Stack +0050:dwLoc0150_1772,Stack +0054:r2_343,Stack +0058:0x0002,Stack +005A:wLoc0146_1457,Stack +005C:r2_452,Stack +0068:r2_141 + 1685,Stack +0170:r2_513,Stack +0174:fp + -176,Stack +0178:dwLoc28_1522,Stack +017C:r2_246,Stack +0180:dwLoc20_1389,Stack +0184:dwLoc1C_1836,Stack +0188:dwLoc18_1870,Stack +018C:dwLoc14_1939,Stack +0194:r16,Stack +0198:r30,Stack +019C:ra,Stack +01A0:r4,Stack +01A4:r5
 		defs: r3:r3_952,r5:r5_947,r6:r6_951,r7:r7_954
 	r28_1015 = 0x10008860
 	branch Mem921[dwLoc0158 + 0x000007D8:word32] > 0x00000000 l00401654_ds_t
@@ -4089,7 +4089,7 @@ l00401654_ds_t:
 l004016D8:
 	word32 r2_959 = Mem921[dwLoc0158 + 0x000017C0:word32]
 	call r2_959 (retsize: 0;)
-		uses: r1:r1_218,r16:r16_1327,r2:r2_959,r25:r2_959,r28:0x10008860,r3:r3_952,r30:fp + -416,r4:dwLoc0158_1805,r5:r5_947,r6:r6_951,r7:r7_954,ra:ra,sp:fp + -416,Stack +0010:0x00000000,Stack +0014:r2_256,Stack +0018:r2_259,Stack +001C:r2_261 + 469,Stack +0020:r2_265,Stack +0024:r2_268,Stack +0028:r2_271,Stack +002C:dwLoc0174_1390,Stack +0030:r2_288,Stack +0038:0x10008860,Stack +0040:dwLoc0160_1539,Stack +0044:dwLoc015C_2365,Stack +0048:dwLoc0158_1805,Stack +004C:r2_313,Stack +0050:dwLoc0150_1772,Stack +0054:r2_343,Stack +0058:0x0002,Stack +005A:wLoc0146_1457,Stack +005C:r2_452,Stack +0068:r2_141 + 1685,Stack +0170:r2_513,Stack +0174:fp + -176,Stack +0178:dwLoc28_1522,Stack +017C:r2_246,Stack +0180:dwLoc20_1389,Stack +0184:r2_959,Stack +0188:dwLoc18_1870,Stack +018C:dwLoc14_1939,Stack +0194:r16,Stack +0198:r30,Stack +019C:ra,Stack +01A0:r4,Stack +01A4:r5
+		uses: r2:r2_959,r25:r2_959,r3:r3_952,r4:dwLoc0158_1805,r5:r5_947,r6:r6_951,r7:r7_954,Stack +0010:0x00000000,Stack +0014:r2_256,Stack +0018:r2_259,Stack +001C:r2_261 + 469,Stack +0020:r2_265,Stack +0024:r2_268,Stack +0028:r2_271,Stack +002C:dwLoc0174_1390,Stack +0030:r2_288,Stack +0038:0x10008860,Stack +0040:dwLoc0160_1539,Stack +0044:dwLoc015C_2365,Stack +0048:dwLoc0158_1805,Stack +004C:r2_313,Stack +0050:dwLoc0150_1772,Stack +0054:r2_343,Stack +0058:0x0002,Stack +005A:wLoc0146_1457,Stack +005C:r2_452,Stack +0068:r2_141 + 1685,Stack +0170:r2_513,Stack +0174:fp + -176,Stack +0178:dwLoc28_1522,Stack +017C:r2_246,Stack +0180:dwLoc20_1389,Stack +0184:r2_959,Stack +0188:dwLoc18_1870,Stack +018C:dwLoc14_1939,Stack +0194:r16,Stack +0198:r30,Stack +019C:ra,Stack +01A0:r4,Stack +01A4:r5
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word32 stackArg0 = <invalid>
@@ -4184,7 +4184,7 @@ l0040174C_ds_f:
 l00401798:
 	word32 r25_1016 = Mem998[r28_1015 - 0x00007E10:word32]
 	call r25_1016 (retsize: 0;)
-		uses: r1:r1_218,r16:r16_1327,r2:r2_1012 + 0x00000001,r25:r25_1016,r28:r28_1015,r3:r2_1009 + 0x0000001F,r30:fp + -416,r4:dwLoc0158_1805,r5:r5_1022,r6:r6_1026,r7:r7_1029,ra:ra,sp:fp + -416,Stack +0010:0x00000000,Stack +0014:r2_256,Stack +0018:r2_259,Stack +001C:r2_261 + 469,Stack +0020:r2_265,Stack +0024:r2_268,Stack +0028:r2_271,Stack +002C:dwLoc0174_1390,Stack +0030:r2_288,Stack +0038:0x10008860,Stack +0040:dwLoc0160_1539,Stack +0044:dwLoc015C_2365,Stack +0048:dwLoc0158_1805,Stack +004C:r2_313,Stack +0050:dwLoc0150_1772,Stack +0054:r2_343,Stack +0058:0x0002,Stack +005A:wLoc0146_1457,Stack +005C:r2_452,Stack +0068:r2_141 + 1685,Stack +0170:r2_513,Stack +0174:fp + -176,Stack +0178:dwLoc28_1522,Stack +017C:r2_246,Stack +0180:dwLoc20_1389,Stack +0184:dwLoc1C_1867,Stack +0188:dwLoc18_1870,Stack +018C:dwLoc14_1939,Stack +0194:r16,Stack +0198:r30,Stack +019C:ra,Stack +01A0:r4,Stack +01A4:r5
+		uses: r2:r2_1012 + 0x00000001,r25:r25_1016,r3:r2_1009 + 0x0000001F,r4:dwLoc0158_1805,r5:r5_1022,r6:r6_1026,r7:r7_1029,Stack +0010:0x00000000,Stack +0014:r2_256,Stack +0018:r2_259,Stack +001C:r2_261 + 469,Stack +0020:r2_265,Stack +0024:r2_268,Stack +0028:r2_271,Stack +002C:dwLoc0174_1390,Stack +0030:r2_288,Stack +0038:0x10008860,Stack +0040:dwLoc0160_1539,Stack +0044:dwLoc015C_2365,Stack +0048:dwLoc0158_1805,Stack +004C:r2_313,Stack +0050:dwLoc0150_1772,Stack +0054:r2_343,Stack +0058:0x0002,Stack +005A:wLoc0146_1457,Stack +005C:r2_452,Stack +0068:r2_141 + 1685,Stack +0170:r2_513,Stack +0174:fp + -176,Stack +0178:dwLoc28_1522,Stack +017C:r2_246,Stack +0180:dwLoc20_1389,Stack +0184:dwLoc1C_1867,Stack +0188:dwLoc18_1870,Stack +018C:dwLoc14_1939,Stack +0194:r16,Stack +0198:r30,Stack +019C:ra,Stack +01A0:r4,Stack +01A4:r5
 		defs: r3:r3_1028,r5:r5_1023,r6:r6_1027,r7:r7_1030
 	r28_1015 = 0x10008860
 	branch Mem998[dwLoc0158 + 0x0000178C:word32] > 0x00000000 l00401798_ds_t
@@ -4200,7 +4200,7 @@ l00401798_ds_t:
 l0040181C:
 	word32 r2_1035 = Mem998[dwLoc0158 + 0x000017C4:word32]
 	call r2_1035 (retsize: 0;)
-		uses: r1:r1_218,r16:r16_1327,r2:r2_1035,r25:r2_1035,r28:0x10008860,r3:r3_1028,r30:fp + -416,r4:dwLoc0158_1805,r5:r5_1023,r6:r6_1027,r7:r7_1030,ra:ra,sp:fp + -416,Stack +0010:0x00000000,Stack +0014:r2_256,Stack +0018:r2_259,Stack +001C:r2_261 + 469,Stack +0020:r2_265,Stack +0024:r2_268,Stack +0028:r2_271,Stack +002C:dwLoc0174_1390,Stack +0030:r2_288,Stack +0038:0x10008860,Stack +0040:dwLoc0160_1539,Stack +0044:dwLoc015C_2365,Stack +0048:dwLoc0158_1805,Stack +004C:r2_313,Stack +0050:dwLoc0150_1772,Stack +0054:r2_343,Stack +0058:0x0002,Stack +005A:wLoc0146_1457,Stack +005C:r2_452,Stack +0068:r2_141 + 1685,Stack +0170:r2_513,Stack +0174:fp + -176,Stack +0178:dwLoc28_1522,Stack +017C:r2_246,Stack +0180:dwLoc20_1389,Stack +0184:dwLoc1C_1867,Stack +0188:r2_1035,Stack +018C:dwLoc14_1939,Stack +0194:r16,Stack +0198:r30,Stack +019C:ra,Stack +01A0:r4,Stack +01A4:r5
+		uses: r2:r2_1035,r25:r2_1035,r3:r3_1028,r4:dwLoc0158_1805,r5:r5_1023,r6:r6_1027,r7:r7_1030,Stack +0010:0x00000000,Stack +0014:r2_256,Stack +0018:r2_259,Stack +001C:r2_261 + 469,Stack +0020:r2_265,Stack +0024:r2_268,Stack +0028:r2_271,Stack +002C:dwLoc0174_1390,Stack +0030:r2_288,Stack +0038:0x10008860,Stack +0040:dwLoc0160_1539,Stack +0044:dwLoc015C_2365,Stack +0048:dwLoc0158_1805,Stack +004C:r2_313,Stack +0050:dwLoc0150_1772,Stack +0054:r2_343,Stack +0058:0x0002,Stack +005A:wLoc0146_1457,Stack +005C:r2_452,Stack +0068:r2_141 + 1685,Stack +0170:r2_513,Stack +0174:fp + -176,Stack +0178:dwLoc28_1522,Stack +017C:r2_246,Stack +0180:dwLoc20_1389,Stack +0184:dwLoc1C_1867,Stack +0188:r2_1035,Stack +018C:dwLoc14_1939,Stack +0194:r16,Stack +0198:r30,Stack +019C:ra,Stack +01A0:r4,Stack +01A4:r5
 		defs: r3:r3_1044,r5:r5_1041,r6:r6_1043,r7:r7_1045
 	dwLoc18 = r2_1035
 	r28_1015 = 0x10008860
@@ -4291,7 +4291,7 @@ l00401874_ds_f:
 l004018C0:
 	word32 r2_1081 = Mem1064[dwLoc0158 + 0x000017C4:word32]
 	call r2_1081 (retsize: 0;)
-		uses: r1:r1_218,r16:r16_1327,r2:r2_1081,r25:r2_1081,r28:r28_1086,r3:r2_1075 + 0x0000001F,r30:fp + -416,r4:dwLoc0158_1805,r5:r5_1091,r6:r6_1095,r7:r7_1098,ra:ra,sp:fp + -416,Stack +0010:0x00000000,Stack +0014:r2_256,Stack +0018:r2_259,Stack +001C:r2_261 + 469,Stack +0020:r2_265,Stack +0024:r2_268,Stack +0028:r2_271,Stack +002C:dwLoc0174_1390,Stack +0030:r2_288,Stack +0038:0x10008860,Stack +0040:dwLoc0160_1539,Stack +0044:dwLoc015C_2365,Stack +0048:dwLoc0158_1805,Stack +004C:r2_313,Stack +0050:dwLoc0150_1772,Stack +0054:r2_343,Stack +0058:0x0002,Stack +005A:wLoc0146_1457,Stack +005C:r2_452,Stack +0068:r2_141 + 1685,Stack +0170:r2_513,Stack +0174:fp + -176,Stack +0178:dwLoc28_1522,Stack +017C:r2_246,Stack +0180:dwLoc20_1389,Stack +0184:dwLoc1C_1867,Stack +0188:dwLoc18_1903,Stack +018C:r2_1081,Stack +0194:r16,Stack +0198:r30,Stack +019C:ra,Stack +01A0:r4,Stack +01A4:r5
+		uses: r2:r2_1081,r25:r2_1081,r3:r2_1075 + 0x0000001F,r4:dwLoc0158_1805,r5:r5_1091,r6:r6_1095,r7:r7_1098,Stack +0010:0x00000000,Stack +0014:r2_256,Stack +0018:r2_259,Stack +001C:r2_261 + 469,Stack +0020:r2_265,Stack +0024:r2_268,Stack +0028:r2_271,Stack +002C:dwLoc0174_1390,Stack +0030:r2_288,Stack +0038:0x10008860,Stack +0040:dwLoc0160_1539,Stack +0044:dwLoc015C_2365,Stack +0048:dwLoc0158_1805,Stack +004C:r2_313,Stack +0050:dwLoc0150_1772,Stack +0054:r2_343,Stack +0058:0x0002,Stack +005A:wLoc0146_1457,Stack +005C:r2_452,Stack +0068:r2_141 + 1685,Stack +0170:r2_513,Stack +0174:fp + -176,Stack +0178:dwLoc28_1522,Stack +017C:r2_246,Stack +0180:dwLoc20_1389,Stack +0184:dwLoc1C_1867,Stack +0188:dwLoc18_1903,Stack +018C:r2_1081,Stack +0194:r16,Stack +0198:r30,Stack +019C:ra,Stack +01A0:r4,Stack +01A4:r5
 		defs: r3:r3_1097,r5:r5_1092,r6:r6_1096,r7:r7_1099
 	dwLoc14 = r2_1081
 	r28_1015 = 0x10008860
@@ -4353,7 +4353,7 @@ l00401918_ds_f:
 l00401964:
 	word32 r25_1120 = Mem1102[r28_1015 - 0x00007EB0:word32]
 	call r25_1120 (retsize: 0;)
-		uses: r1:r1_218,r16:r16_1327,r2:r2_1116 + 0x00000001,r25:r25_1120,r28:r28_1119,r3:r2_1113 + 0x0000001F,r30:fp + -416,r4:dwLoc0158_1805,r5:r5_1126,r6:r6_1130,r7:r7_1133,ra:ra,sp:fp + -416,Stack +0010:0x00000000,Stack +0014:r2_256,Stack +0018:r2_259,Stack +001C:r2_261 + 469,Stack +0020:r2_265,Stack +0024:r2_268,Stack +0028:r2_271,Stack +002C:dwLoc0174_1390,Stack +0030:r2_288,Stack +0038:0x10008860,Stack +0040:dwLoc0160_1539,Stack +0044:dwLoc015C_2365,Stack +0048:dwLoc0158_1805,Stack +004C:r2_313,Stack +0050:dwLoc0150_1772,Stack +0054:r2_343,Stack +0058:0x0002,Stack +005A:wLoc0146_1457,Stack +005C:r2_452,Stack +0068:r2_141 + 1685,Stack +0170:r2_513,Stack +0174:fp + -176,Stack +0178:dwLoc28_1522,Stack +017C:r2_246,Stack +0180:dwLoc20_1389,Stack +0184:dwLoc1C_1867,Stack +0188:dwLoc18_1903,Stack +018C:dwLoc14_1936,Stack +0194:r16,Stack +0198:r30,Stack +019C:ra,Stack +01A0:r4,Stack +01A4:r5
+		uses: r2:r2_1116 + 0x00000001,r25:r25_1120,r3:r2_1113 + 0x0000001F,r4:dwLoc0158_1805,r5:r5_1126,r6:r6_1130,r7:r7_1133,Stack +0010:0x00000000,Stack +0014:r2_256,Stack +0018:r2_259,Stack +001C:r2_261 + 469,Stack +0020:r2_265,Stack +0024:r2_268,Stack +0028:r2_271,Stack +002C:dwLoc0174_1390,Stack +0030:r2_288,Stack +0038:0x10008860,Stack +0040:dwLoc0160_1539,Stack +0044:dwLoc015C_2365,Stack +0048:dwLoc0158_1805,Stack +004C:r2_313,Stack +0050:dwLoc0150_1772,Stack +0054:r2_343,Stack +0058:0x0002,Stack +005A:wLoc0146_1457,Stack +005C:r2_452,Stack +0068:r2_141 + 1685,Stack +0170:r2_513,Stack +0174:fp + -176,Stack +0178:dwLoc28_1522,Stack +017C:r2_246,Stack +0180:dwLoc20_1389,Stack +0184:dwLoc1C_1867,Stack +0188:dwLoc18_1903,Stack +018C:dwLoc14_1936,Stack +0194:r16,Stack +0198:r30,Stack +019C:ra,Stack +01A0:r4,Stack +01A4:r5
 		defs: r3:r3_1132,r5:r5_1127,r6:r6_1131,r7:r7_1134
 	r28_1015 = 0x10008860
 // DataOut:
@@ -4514,7 +4514,7 @@ l00401A50:
 	word32 r25_1167 = Mem1102[r28_1015 - 0x00007FC8:word32]
 	word32 r2_1184
 	call r25_1167 (retsize: 0;)
-		uses: r1:r1_218,r16:r16_1327,r2:r2_1183,r25:r25_1167,r28:r28_1166,r3:r3_1197,r30:fp + -416,r4:dwLoc0158_1805,r5:r2_513,r6:r6_1192,r7:r7_1206,ra:ra,sp:fp + -416,Stack +0010:0x00000000,Stack +0014:r2_256,Stack +0018:r2_259,Stack +001C:r2_261 + 469,Stack +0020:r2_265,Stack +0024:r2_268,Stack +0028:r2_271,Stack +002C:dwLoc0174_1390,Stack +0030:r2_288,Stack +0038:0x10008860,Stack +0040:dwLoc0160_1539,Stack +0044:dwLoc015C_2365,Stack +0048:dwLoc0158_1805,Stack +004C:r2_313,Stack +0050:dwLoc0150_1772,Stack +0054:r2_343,Stack +0058:0x0002,Stack +005A:wLoc0146_1457,Stack +005C:r2_452,Stack +0068:r2_141 + 1685,Stack +0170:r2_513,Stack +0174:fp + -176,Stack +0178:dwLoc28_1522,Stack +017C:r2_246,Stack +0180:dwLoc20_1389,Stack +0184:dwLoc1C_1867,Stack +0188:dwLoc18_1903,Stack +018C:dwLoc14_1936,Stack +0194:r16,Stack +0198:r30,Stack +019C:ra,Stack +01A0:r4,Stack +01A4:r5
+		uses: r2:r2_1183,r25:r25_1167,r3:r3_1197,r4:dwLoc0158_1805,r5:r2_513,r6:r6_1192,r7:r7_1206,Stack +0010:0x00000000,Stack +0014:r2_256,Stack +0018:r2_259,Stack +001C:r2_261 + 469,Stack +0020:r2_265,Stack +0024:r2_268,Stack +0028:r2_271,Stack +002C:dwLoc0174_1390,Stack +0030:r2_288,Stack +0038:0x10008860,Stack +0040:dwLoc0160_1539,Stack +0044:dwLoc015C_2365,Stack +0048:dwLoc0158_1805,Stack +004C:r2_313,Stack +0050:dwLoc0150_1772,Stack +0054:r2_343,Stack +0058:0x0002,Stack +005A:wLoc0146_1457,Stack +005C:r2_452,Stack +0068:r2_141 + 1685,Stack +0170:r2_513,Stack +0174:fp + -176,Stack +0178:dwLoc28_1522,Stack +017C:r2_246,Stack +0180:dwLoc20_1389,Stack +0184:dwLoc1C_1867,Stack +0188:dwLoc18_1903,Stack +018C:dwLoc14_1936,Stack +0194:r16,Stack +0198:r30,Stack +019C:ra,Stack +01A0:r4,Stack +01A4:r5
 		defs: r2:r2_1184,r3:r3_1202,r5:r5_1182,r6:r6_1193,r7:r7_1207
 	r28_1015 = 0x10008860
 	r2_1142 = (word32) (r2_1184 < 3)
@@ -4531,7 +4531,7 @@ l00401A50_ds_t:
 l00401A80:
 	word32 r25_1215 = Mem1102[r28_1015 - 0x00007E4C:word32]
 	call r25_1215 (retsize: 0;)
-		uses: r1:r1_218,r16:r16_1327,r2:r2_1222,r25:r25_1215,r28:r28_1214,r3:r3_1227,r30:fp + -416,r4:r2_313,r5:dwLoc0158_1805,r6:r6_1225,r7:r7_1229,ra:ra,sp:fp + -416,Stack +0010:0x00000000,Stack +0014:r2_256,Stack +0018:r2_259,Stack +001C:r2_261 + 469,Stack +0020:r2_265,Stack +0024:r2_268,Stack +0028:r2_271,Stack +002C:dwLoc0174_1390,Stack +0030:r2_288,Stack +0038:0x10008860,Stack +0040:dwLoc0160_1539,Stack +0044:dwLoc015C_2365,Stack +0048:dwLoc0158_1805,Stack +004C:r2_313,Stack +0050:dwLoc0150_1772,Stack +0054:r2_343,Stack +0058:0x0002,Stack +005A:wLoc0146_1457,Stack +005C:r2_452,Stack +0068:r2_141 + 1685,Stack +0170:r2_513,Stack +0174:fp + -176,Stack +0178:dwLoc28_1522,Stack +017C:r2_246,Stack +0180:dwLoc20_1389,Stack +0184:dwLoc1C_1867,Stack +0188:dwLoc18_1903,Stack +018C:dwLoc14_1936,Stack +0194:r16,Stack +0198:r30,Stack +019C:ra,Stack +01A0:r4,Stack +01A4:r5
+		uses: r2:r2_1222,r25:r25_1215,r3:r3_1227,r4:r2_313,r5:dwLoc0158_1805,r6:r6_1225,r7:r7_1229,Stack +0010:0x00000000,Stack +0014:r2_256,Stack +0018:r2_259,Stack +001C:r2_261 + 469,Stack +0020:r2_265,Stack +0024:r2_268,Stack +0028:r2_271,Stack +002C:dwLoc0174_1390,Stack +0030:r2_288,Stack +0038:0x10008860,Stack +0040:dwLoc0160_1539,Stack +0044:dwLoc015C_2365,Stack +0048:dwLoc0158_1805,Stack +004C:r2_313,Stack +0050:dwLoc0150_1772,Stack +0054:r2_343,Stack +0058:0x0002,Stack +005A:wLoc0146_1457,Stack +005C:r2_452,Stack +0068:r2_141 + 1685,Stack +0170:r2_513,Stack +0174:fp + -176,Stack +0178:dwLoc28_1522,Stack +017C:r2_246,Stack +0180:dwLoc20_1389,Stack +0184:dwLoc1C_1867,Stack +0188:dwLoc18_1903,Stack +018C:dwLoc14_1936,Stack +0194:r16,Stack +0198:r30,Stack +019C:ra,Stack +01A0:r4,Stack +01A4:r5
 		defs: r3:r3_1228,r5:r5_1221,r6:r6_1226,r7:r7_1230
 	r28_1015 = 0x10008860
 	dwLoc0158 = 0x00000000
@@ -4592,9 +4592,8 @@ l00401358_ds_f:
 // SymbolicIn:
 
 l00401398:
-	__errno_location()
 	r28_1015 = 0x10008860
-	r3_1010 = Mem717[r2_771:word32]
+	r3_1010 = Mem717[__errno_location():word32]
 	branch r3_1010 != 4 l00401398_ds_t
 // DataOut:
 // DataOut (flags):
@@ -4606,9 +4605,6 @@ l00401398_ds_t:
 // SymbolicIn:
 
 l004013C4:
-	__errno_location()
-	__errno_location()
-	strerror(Mem717[r2_792:word32])
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
@@ -4617,11 +4613,12 @@ l004013C4:
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
+	word32 r2_782 = __errno_location()
 	word32 stackArg0 = <invalid>
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(0x00000000, Mem717[0x10000880:word32] + -24912, Mem717[r2_782:word32], r2_802, fp + -416, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_2445, out r4_2446, out r5_2447, out r6_2448, out r7_2449)
+	print_log(0x00000000, Mem717[0x10000880:word32] + -24912, Mem717[r2_782:word32], strerror(Mem717[__errno_location():word32]), fp + -416, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_2445, out r4_2446, out r5_2447, out r6_2448, out r7_2449)
 	exit(-1)
 	r16_1327 = r2_782
 // DataOut:
@@ -4651,7 +4648,7 @@ l00400F28:
 l00401AD4:
 	word32 r25_1240 = Mem499[r28_1015 - 0x00007ED0:word32]
 	call r25_1240 (retsize: 0;)
-		uses: r1:r1_218,r16:r16_509,r2:r2_501,r25:r25_1240,r28:r28_498,r3:r3_517,r30:fp + -416,r4:r2_313,r5:r5_511,r6:r6_515,r7:r7_519,ra:ra,sp:fp + -416,Stack +0010:dwLoc0190_1498,Stack +0014:r2_256,Stack +0018:r2_259,Stack +001C:r2_261 + 469,Stack +0020:r2_265,Stack +0024:r2_268,Stack +0028:r2_271,Stack +002C:dwLoc0174_1390,Stack +0030:r2_288,Stack +0038:0x10008860,Stack +0040:dwLoc0160_2108,Stack +0044:dwLoc015C_2142,Stack +0048:dwLoc0158_2132,Stack +004C:r2_313,Stack +0050:dwLoc0150_1510,Stack +0054:r2_343,Stack +0058:0x0002,Stack +005A:wLoc0146_1457,Stack +005C:r2_452,Stack +0068:r2_141 + 1685,Stack +0170:dwLoc30_2110,Stack +0174:dwLoc2C_1495,Stack +0178:dwLoc28_2121,Stack +017C:r2_246,Stack +0180:dwLoc20_1389,Stack +0184:dwLoc1C_2162,Stack +0188:dwLoc18_2182,Stack +018C:dwLoc14_2202,Stack +0194:r16,Stack +0198:r30,Stack +019C:ra,Stack +01A0:r4,Stack +01A4:r5
+		uses: r2:r2_501,r25:r25_1240,r3:r3_517,r4:r2_313,r5:r5_511,r6:r6_515,r7:r7_519,Stack +0010:dwLoc0190_1498,Stack +0014:r2_256,Stack +0018:r2_259,Stack +001C:r2_261 + 469,Stack +0020:r2_265,Stack +0024:r2_268,Stack +0028:r2_271,Stack +002C:dwLoc0174_1390,Stack +0030:r2_288,Stack +0038:0x10008860,Stack +0040:dwLoc0160_2108,Stack +0044:dwLoc015C_2142,Stack +0048:dwLoc0158_2132,Stack +004C:r2_313,Stack +0050:dwLoc0150_1510,Stack +0054:r2_343,Stack +0058:0x0002,Stack +005A:wLoc0146_1457,Stack +005C:r2_452,Stack +0068:r2_141 + 1685,Stack +0170:dwLoc30_2110,Stack +0174:dwLoc2C_1495,Stack +0178:dwLoc28_2121,Stack +017C:r2_246,Stack +0180:dwLoc20_1389,Stack +0184:dwLoc1C_2162,Stack +0188:dwLoc18_2182,Stack +018C:dwLoc14_2202,Stack +0194:r16,Stack +0198:r30,Stack +019C:ra,Stack +01A0:r4,Stack +01A4:r5
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word32 stackArg0 = <invalid>
@@ -4747,7 +4744,7 @@ client_new_entry:
 // SymbolicIn:
 
 l00401B70:
-	malloc(6100)
+	word32 r2_30 = malloc(6100)
 	branch r2_30 != 0x00000000 l00401B70_ds_t
 // DataOut:
 // DataOut (flags):
@@ -4763,8 +4760,7 @@ l00401BFC:
 	Mem54[r2_30 + 0x00001798:word16] = 0x0002
 	Mem58[r2_30 + 0x0000179A:word16] = (word16) (word32) Mem54[r4 + 0x00000002:uint16]
 	Mem62[r2_30 + 0x0000179C:word32] = Mem58[r4 + 0x00000004:word32]
-	accept(r6, r2_30 + 12080, 0xBADDCADE)
-	Mem79[r2_30:word32] = r2_74
+	Mem79[r2_30:word32] = accept(r6, r2_30 + 12080, 0xBADDCADE)
 	Mem84[r2_30 + 0x000017A8:word16] = 0x0002
 	Mem88[r2_30 + 0x000017AA:word16] = (word16) (word32) Mem84[r5 + 0x00000002:uint16]
 	Mem92[r2_30 + 0x000017AC:word32] = Mem88[r5 + 0x00000004:word32]
@@ -4816,12 +4812,9 @@ l00401DDC:
 	Mem163[r2_30 + 0x00000FB4:word32] = 0x00000000
 	Mem165[r2_30 + 0x000017BC:word32] = 0x00000000
 	Mem167[r2_30 + 0x000017B8:word32] = 0x00000000
-	time(0x00000000)
-	Mem180[r2_30 + 0x000017C8:word32] = r2_175
-	time(0x00000000)
-	Mem193[r2_30 + 0x000017CC:word32] = r2_188
-	time(0x00000000)
-	Mem206[r2_30 + 0x000017D0:word32] = r2_201
+	Mem180[r2_30 + 0x000017C8:word32] = time(0x00000000)
+	Mem193[r2_30 + 0x000017CC:word32] = time(0x00000000)
+	Mem206[r2_30 + 0x000017D0:word32] = time(0x00000000)
 	branch r7 == 0x00000000 l00401DDC_ds_t
 // DataOut:
 // DataOut (flags):
@@ -4979,7 +4972,7 @@ l00402028:
 		uses: r16:r2_42,r2:r4,r25:inet_ntoa,r28:0x10008860,r3:r3_43,r30:fp + -320,r4:Mem24[r4 + 0x0000179C:word32],r5:r5_45,r6:r6_46,r7:r7_44,ra:ra,sp:fp + -320,Stack +0010:fp + -24,Stack +0014:r2_54,Stack +0018:r2_66,Stack +0020:0x10008860,Stack +0127:bLoc19,Stack +0128:16,Stack +0134:r16,Stack +0138:r30,Stack +013C:ra,Stack +0140:r4
 		defs: r2:r2_54
 	word32 r2_66 = (word32) Mem64[r4 + 0x0000179A:uint16]
-	word32 r3_77 = snprintf(0xBADDC9E6, 256, Mem67[0x10000880:word32] + -49368, 0x00000000)
+	word32 r2_76 = snprintf(0xBADDC9E6, 256, Mem67[0x10000880:word32] + -49368, 0x00000000)
 	word32 dwLoc18_125 = r2_76
 	branch (word32) (r2_76 < 256) != 0x00000000 l00402028_ds_t
 // DataOut:
@@ -5191,8 +5184,7 @@ l00402660_ds_f:
 // SymbolicIn:
 
 l00402674:
-	r3_101 = strncasecmp(0xBADDC2EE, Mem78[0x10000880:word32] + -49288, 6)
-	branch r2_98 != 0x00000000 l00402674_ds_t
+	branch strncasecmp(0xBADDC2EE, Mem78[0x10000880:word32] + -49288, 6) != 0x00000000 l00402674_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -5219,8 +5211,7 @@ l004027F8_ds_f:
 // SymbolicIn:
 
 l0040280C:
-	r3_101 = strncasecmp(Mem78[0x10000880:word32] + -49216, 0xBADDC2EE, 10)
-	branch r2_121 != 0x00000000 l0040280C_ds_t
+	branch strncasecmp(Mem78[0x10000880:word32] + -49216, 0xBADDC2EE, 10) != 0x00000000 l0040280C_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -5306,7 +5297,6 @@ l004026F8:
 	// Please report this issue at https://github.com/uxmal/reko
 	word32 stackArg0 = <invalid>
 	request_make_url(r3_184, dwLoc20_543, ra, stackArg0)
-	strlen(dwLoc20_543 + 1064)
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
@@ -5329,6 +5319,7 @@ l004026F8:
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
+	word32 r2_203 = strlen(dwLoc20_543 + 1064)
 	word32 stackArg0 = <invalid>
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
@@ -5463,8 +5454,7 @@ l00402950_ds_f:
 // SymbolicIn:
 
 l00402964:
-	word32 r3_323 = strncasecmp(Mem308[0x10000880:word32] + -49176, 0xBADDC2EE, 10)
-	branch r2_320 != 0x00000000 l00402964_ds_t
+	branch strncasecmp(Mem308[0x10000880:word32] + -49176, 0xBADDC2EE, 10) != 0x00000000 l00402964_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -6245,8 +6235,7 @@ client_read_request_entry:
 // SymbolicIn:
 
 l00402E44:
-	time(0x00000000)
-	Mem33[r4 + 0x000017CC:word32] = r2_21
+	Mem33[r4 + 0x000017CC:word32] = time(0x00000000)
 	word32 r2_44
 	call recv (retsize: 0;)
 		uses: r2:r4 + 8,r25:recv,r28:0x10008860,r3:r4,r30:fp + -40,r4:Mem33[r4:word32],r5:r4 + 8,r6:1744,r7:16384,ra:ra,sp:fp + -40,Stack +0010:0x10008860,Stack +001C:r30,Stack +0020:ra,Stack +0028:r4
@@ -6280,7 +6269,7 @@ l00402EF8:
 	word32 r7_127
 	word32 r6_125
 	word32 r5_123
-	time(0x00000000)
+	word32 r2_22 = time(0x00000000)
 	Mem34[r4 + 0x000017CC:word32] = r2_22
 	word32 r3_119 = r2_22
 	branch Mem34[r4 + 0x00000FAC:word32] > 0x00000000 l00402EF8_ds_t
@@ -6385,10 +6374,8 @@ client_read_reply_entry:
 // SymbolicIn:
 
 l0040307C:
-	time(0x00000000)
-	Mem31[r4 + 0x000017D0:word32] = r2_21
-	read(Mem31[r4 + 0x00000004:word32], r4 + 8048, 1999)
-	Mem48[r4 + 0x0000178C:word32] = r2_41
+	Mem31[r4 + 0x000017D0:word32] = time(0x00000000)
+	Mem48[r4 + 0x0000178C:word32] = read(Mem31[r4 + 0x00000004:word32], r4 + 8048, 1999)
 	Mem52[r4 + 0x00001788:word32] = r4 + 4024
 	return
 // DataOut:
@@ -6505,8 +6492,7 @@ l004031DC_ds_t:
 // SymbolicIn:
 
 l00403220:
-	time(0x00000000)
-	Mem34[r4 + 0x000017D0:word32] = r2_22
+	Mem34[r4 + 0x000017D0:word32] = time(0x00000000)
 	word32 r2_45
 	call send (retsize: 0;)
 		uses: r2:r4,r25:send,r28:0x10008860,r3:r4,r30:fp + -48,r4:Mem34[r4:word32],r5:Mem34[r4 + 0x00001788:word32],r6:Mem34[r4 + 0x0000178C:word32],r7:0x00000000,ra:ra,sp:fp + -48,Stack +0010:0x10008860,Stack +0018:r2_45,Stack +0024:r30,Stack +0028:ra,Stack +0030:r4
@@ -6665,8 +6651,7 @@ l004033D0_ds_f:
 // SymbolicIn:
 
 l004033E4:
-	strncasecmp(dwLoc18_184, Mem23[0x10000880:word32] + -24152, 4)
-	branch r2_59 != 0x00000000 l004033E4_ds_t
+	branch strncasecmp(dwLoc18_184, Mem23[0x10000880:word32] + -24152, 4) != 0x00000000 l004033E4_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -7180,8 +7165,7 @@ l00403840_ds_f:
 // SymbolicIn:
 
 l0040387C:
-	time(0x00000000)
-	dwArg04_126 = r2_25
+	dwArg04_126 = time(0x00000000)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -7284,7 +7268,7 @@ l00403A1C:
 	word32 r6_141
 	word32 r5_140
 	word32 r2_146
-	socket(2, 2, 6)
+	word32 r2_27 = socket(2, 2, 6)
 	branch r2_27 >= 0x00000000 l00403A1C_ds_t
 // DataOut:
 // DataOut (flags):
@@ -7296,8 +7280,7 @@ l00403A1C_ds_t:
 // SymbolicIn:
 
 l00403B10:
-	connect(r2_27, r4, 16)
-	branch r2_44 >= 0x00000000 l00403B10_ds_t
+	branch connect(r2_27, r4, 16) >= 0x00000000 l00403B10_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -7320,8 +7303,7 @@ l00403B10_ds_f:
 
 l00403B3C:
 	__errno_location()
-	__errno_location()
-	strerror(Mem33[r2_64:word32])
+	strerror(Mem33[__errno_location():word32])
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
@@ -7347,8 +7329,7 @@ l00403A1C_ds_f:
 
 l00403A78:
 	__errno_location()
-	__errno_location()
-	strerror(Mem33[r2_113:word32])
+	strerror(Mem33[__errno_location():word32])
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
@@ -7399,7 +7380,7 @@ l00403C00:
 	word32 r5_21
 	word32 r4_17
 	word32 r2_32
-	malloc(12)
+	word32 r2_19 = malloc(12)
 	branch r2_19 != 0x00000000 l00403C00_ds_t
 // DataOut:
 // DataOut (flags):
@@ -7995,7 +7976,7 @@ request_new_entry:
 
 l00404240:
 	word32 r2_59
-	malloc(1372)
+	word32 r2_21 = malloc(1372)
 	branch r2_21 != 0x00000000 l00404240_ds_t
 // DataOut:
 // DataOut (flags):
@@ -8219,8 +8200,7 @@ l004044D4_ds_t:
 
 l00404544:
 	Mem29[r4 + 0x00000558:word32] = Mem19[r4 + 0x00000558:word32] + 1
-	malloc(r6)
-	Mem49[r4 + 4 + ((Mem29[r4 + 0x00000558:word32] << 0x02) + 1040):word32] = r2_36
+	Mem49[r4 + 4 + ((Mem29[r4 + 0x00000558:word32] << 0x02) + 1040):word32] = malloc(r6)
 	branch Mem49[r4 + 4 + ((Mem49[r4 + 0x00000558:word32] << 0x02) + 1040):word32] != 0x00000000 l00404544_ds_t
 // DataOut:
 // DataOut (flags):
@@ -8233,7 +8213,7 @@ l00404544_ds_t:
 
 l0040463C:
 	Mem65[r4 + 4 + (Mem49[r4 + 0x00000558:word32] + 1296):byte] = (byte) (word32) r6
-	r3_101 = memcpy(Mem65[r4 + 4 + ((Mem65[r4 + 0x00000558:word32] << 0x02) + 1040):word32], r5, r6)
+	memcpy(Mem65[r4 + 4 + ((Mem65[r4 + 0x00000558:word32] << 0x02) + 1040):word32], r5, r6)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -8347,8 +8327,7 @@ l004046C4_ds_t:
 // SymbolicIn:
 
 l00404738:
-	strncasecmp(r4 + 276, Mem15[0x10000880:word32] + -23556, 7)
-	branch r2_26 != 0x00000000 l00404738_ds_t
+	branch strncasecmp(r4 + 276, Mem15[0x10000880:word32] + -23556, 7) != 0x00000000 l00404738_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -8497,7 +8476,7 @@ l0040495C_ds_t:
 l00404A58:
 	word32 r25_51 = Mem22[r28_128 - 0x00007E74:word32]
 	call r25_51 (retsize: 0;)
-		uses: r2:r2_43,r25:r25_51,r28:r28_45,r3:r3_40,r30:fp + -48,r4:2,r5:Mem22[r28_45 - 0x00007FE0:word32] + -23492,r6:Mem22[r28_45 - 0x00007FE0:word32] + -23472,r7:132,ra:ra,sp:fp + -48,Stack +0010:0x10008860,Stack +0018:dwLoc18_159,Stack +0024:r30,Stack +0028:ra,Stack +0030:r4,Stack +0034:r5,Stack +0038:dwArg08_164
+		uses: r2:r2_43,r25:r25_51,r3:r3_40,r4:2,r5:Mem22[r28_45 - 0x00007FE0:word32] + -23492,r6:Mem22[r28_45 - 0x00007FE0:word32] + -23472,r7:132,Stack +0010:0x10008860,Stack +0018:dwLoc18_159,Stack +0024:r30,Stack +0028:ra,Stack +0030:r4,Stack +0034:r5,Stack +0038:dwArg08_164
 		defs: r7:r7_60
 	r28_128 = 0x10008860
 // DataOut:
@@ -8514,7 +8493,7 @@ l00404994:
 	word32 r2_84 = (word32) Mem72[r4 + 4 + (dwLoc18_157 + 1296):int8]
 	word32 r25_88 = Mem72[r28_128 - 0x00007E18:word32]
 	call r25_88 (retsize: 0;)
-		uses: r2:r2_84,r25:r25_88,r28:r28_45,r3:r4,r30:fp + -48,r4:dwArg08_164,r5:Mem72[r4 + 4 + ((dwLoc18_159 << 0x02) + 1040):word32],r6:r2_84,r7:r7_95,ra:ra,sp:fp + -48,Stack +0010:0x10008860,Stack +0018:dwLoc18_159,Stack +0024:r30,Stack +0028:ra,Stack +0030:r4,Stack +0034:r5,Stack +0038:dwArg08_164
+		uses: r2:r2_84,r25:r25_88,r3:r4,r4:dwArg08_164,r5:Mem72[r4 + 4 + ((dwLoc18_159 << 0x02) + 1040):word32],r6:r2_84,r7:r7_95,Stack +0010:0x10008860,Stack +0018:dwLoc18_159,Stack +0024:r30,Stack +0028:ra,Stack +0030:r4,Stack +0034:r5,Stack +0038:dwArg08_164
 		defs: r7:r7_96
 	r28_128 = 0x10008860
 	dwArg08_156 = dwArg08_156 + (word32) Mem72[(r4 + 4) + (dwLoc18_157 + 1296):int8]
@@ -8555,7 +8534,7 @@ l00404AC4:
 	word32 r2_124 = r4 + 4 + ((r3_119 << 0x02) + 1040)
 	word32 r25_129 = Mem126[r28_128 - 0x00007FD4:word32]
 	call r25_129 (retsize: 0;)
-		uses: r2:r2_124,r25:r25_129,r28:r28_128,r3:r3_119 + -1,r30:fp + -48,r4:Mem126[r2_124:word32],r5:r4 + 1368,r6:r4,r7:r7_138,ra:ra,sp:fp + -48,Stack +0010:0x10008860,Stack +0018:dwLoc18_159,Stack +0024:r30,Stack +0028:ra,Stack +0030:r4,Stack +0034:r5,Stack +0038:dwArg08_164
+		uses: r2:r2_124,r25:r25_129,r3:r3_119 + -1,r4:Mem126[r2_124:word32],r5:r4 + 1368,r6:r4,r7:r7_138,Stack +0010:0x10008860,Stack +0018:dwLoc18_159,Stack +0024:r30,Stack +0028:ra,Stack +0030:r4,Stack +0034:r5,Stack +0038:dwArg08_164
 		defs: r3:r3_137,r7:r7_139
 	r28_128 = 0x10008860
 // DataOut:
@@ -8745,7 +8724,7 @@ l00404D28_ds_f:
 // SymbolicIn:
 
 l00404D38:
-	strpbrk(r5, Mem17[0x10000880:word32] + -23444)
+	word32 r2_51 = strpbrk(r5, Mem17[0x10000880:word32] + -23444)
 	word32 dwLoc18_205 = r2_51
 	branch r2_51 != 0x00000000 l00404D38_ds_t
 // DataOut:
@@ -8817,7 +8796,7 @@ l00404E00:
 // SymbolicIn:
 
 l00404E1C:
-	strpbrk(dwLoc18_205, Mem61[0x10000880:word32] + -46896)
+	word32 r2_96 = strpbrk(dwLoc18_205, Mem61[0x10000880:word32] + -46896)
 	dwLoc14 = r2_96
 	branch r2_96 != 0x00000000 l00404E1C_ds_t
 // DataOut:
@@ -9010,7 +8989,7 @@ l00404FF8_ds_f:
 // SymbolicIn:
 
 l00405008:
-	strpbrk(r5, Mem17[0x10000880:word32] + -23444)
+	word32 r2_51 = strpbrk(r5, Mem17[0x10000880:word32] + -23444)
 	word32 dwLoc18_197 = r2_51
 	branch r2_51 != 0x00000000 l00405008_ds_t
 // DataOut:
@@ -9082,7 +9061,7 @@ l004050D0:
 // SymbolicIn:
 
 l004050EC:
-	strpbrk(dwLoc18_197, Mem61[0x10000880:word32] + -46896)
+	word32 r2_96 = strpbrk(dwLoc18_197, Mem61[0x10000880:word32] + -46896)
 	branch r2_96 != 0x00000000 l004050EC_ds_t
 // DataOut:
 // DataOut (flags):
@@ -9105,7 +9084,7 @@ l00405164_ds_t:
 // SymbolicIn:
 
 l004051D4:
-	strtoul(dwLoc18_197, 0xBADDCAEA, 10)
+	word32 r2_122 = strtoul(dwLoc18_197, 0xBADDCAEA, 10)
 	Mem129[r4 + 0x00000554:word32] = r2_122
 	r3_127 = r2_122
 // DataOut:
@@ -9232,9 +9211,8 @@ l00405264_ds_t:
 
 l004052BC:
 	word32 r4_32 = Mem31[Mem18[0x100009C8:word32] + (dwLoc18_57 << 0x02):word32]
-	strncmp(r4_32, r4_32, 20)
 	dwLoc18_57 = dwLoc18_57 + 1
-	branch r2_40 != 0x00000000 l004052BC_ds_t
+	branch strncmp(r4_32, r4_32, 20) != 0x00000000 l004052BC_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -9476,8 +9454,7 @@ l0040555C_ds_f:
 // SymbolicIn:
 
 l0040556C:
-	strlen(r4)
-	malloc(r2_41 + 22)
+	word32 r2_52 = malloc(strlen(r4) + 22)
 	dwArg04_553 = r2_52
 	branch r2_52 != 0x00000000 l0040556C_ds_t
 // DataOut:
@@ -9492,8 +9469,8 @@ l0040556C_ds_t:
 l004055F4:
 	word32 dwLoc48_562
 	strcpy(r2_52, r4)
-	strrchr(r2_52, 47)
 	dwLoc30_558 = 1
+	word32 r2_78 = strrchr(r2_52, 47)
 	branch r2_78 == 0x00000000 l004055F4_ds_t
 // DataOut:
 // DataOut (flags):
@@ -9529,7 +9506,7 @@ l00405674:
 // SymbolicIn:
 
 l00405698:
-	fopen(0xBADDCAFE, Mem112[0x10000880:word32] + -46040)
+	word32 r2_124 = fopen(0xBADDCAFE, Mem112[0x10000880:word32] + -46040)
 	branch r2_124 != 0x00000000 l00405698_ds_t
 // DataOut:
 // DataOut (flags):
@@ -9563,7 +9540,7 @@ l0040572C:
 // SymbolicIn:
 
 l00405748:
-	fgets(0xBADDC9B6, 255, fp + -328)
+	word32 r2_158 = fgets(0xBADDC9B6, 255, fp + -328)
 	branch r2_158 != 0x00000000 l00405748_ds_t
 // DataOut:
 // DataOut (flags):
@@ -9575,7 +9552,7 @@ l00405748_ds_t:
 // SymbolicIn:
 
 l00405788:
-	strchr(r2_158, 10)
+	word32 r2_173 = strchr(r2_158, 10)
 	branch r2_173 == 0x00000000 l00405788_ds_t
 // DataOut:
 // DataOut (flags):
@@ -9598,7 +9575,7 @@ l004057B8:
 // SymbolicIn:
 
 l004057C4:
-	word32 r3_196 = strchr(r2_158, 35)
+	word32 r2_194 = strchr(r2_158, 35)
 	branch r2_194 == 0x00000000 l004057C4_ds_t
 // DataOut:
 // DataOut (flags):
@@ -9646,7 +9623,7 @@ l00405858:
 	word32 r2_249 = r2_229 + r2_242
 	dwLoc24 = r2_229
 	dwLoc20 = r2_249
-	word32 r3_260 = strchr(r2_249, 61)
+	word32 r2_259 = strchr(r2_249, 61)
 	branch r2_259 != 0x00000000 l00405858_ds_t
 // DataOut:
 // DataOut (flags):
@@ -9748,8 +9725,7 @@ l00405A0C_ds_f:
 
 l00405A1C:
 	word32 r2_360 = Mem310[0x10000A40:word32] + 4 + (dwLoc014C * 0x00000014 - dwLoc014C << 0x03)
-	strcasecmp(r2_360, Mem310[r2_360:word32])
-	branch r2_367 != 0x00000000 l00405A1C_ds_t
+	branch strcasecmp(r2_360, Mem310[r2_360:word32]) != 0x00000000 l00405A1C_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -9782,7 +9758,7 @@ l00405B54:
 	word32 r25_392 = Mem387[0x1000087C:word32]
 	word32 r2_397
 	call r25_392 + 21488 (retsize: 0;)
-		uses: r2:1,r25:r25_392 + 21488,r28:0x10008860,r3:r2_386,r30:fp + -368,r4:r2_283,r5:0x00000000,r6:r6_370,r7:r7_372,ra:ra,sp:fp + -368,Stack +0010:dwLoc0160_711,Stack +0018:0x10008860,Stack +0020:r2_124,Stack +0024:dwLoc014C_640,Stack +0128:r2_301,Stack +0130:r4_22,Stack +0134:r5_24,Stack +0138:bLoc38_556,Stack +0139:bLoc37_557,Stack +0140:dwLoc30_584,Stack +0144:1,Stack +0148:r2_194,Stack +014C:r2_229,Stack +0150:r2_249,Stack +0154:r2_283,Stack +0158:r2_386,Stack +0164:r30,Stack +0168:ra,Stack +0170:r4,Stack +0174:dwArg04_575
+		uses: r2:1,r25:r25_392 + 21488,r3:r2_386,r4:r2_283,r5:0x00000000,r6:r6_370,r7:r7_372,Stack +0010:dwLoc0160_711,Stack +0018:0x10008860,Stack +0020:r2_124,Stack +0024:dwLoc014C_640,Stack +0128:r2_301,Stack +0130:r4_22,Stack +0134:r5_24,Stack +0138:bLoc38_556,Stack +0139:bLoc37_557,Stack +0140:dwLoc30_584,Stack +0144:1,Stack +0148:r2_194,Stack +014C:r2_229,Stack +0150:r2_249,Stack +0154:r2_283,Stack +0158:r2_386,Stack +0164:r30,Stack +0168:ra,Stack +0170:r4,Stack +0174:dwArg04_575
 		defs: r2:r2_397
 	Mem414[Mem387[0x10000A40:word32] + 4 + ((dwLoc014C * 0x00000014 - dwLoc014C << 0x03) + 144):word32] = r2_397
 // DataOut:
@@ -9828,8 +9804,7 @@ l00405ADC_ds_t:
 // SymbolicIn:
 
 l00405BBC:
-	strchr(Mem387[0x10000880:word32] + -46208, (word32) Mem387[r2_283:int8])
-	Mem468[Mem387[0x10000A40:word32] + 4 + ((dwLoc014C * 0x00000014 - dwLoc014C << 0x03) + 144):word32] = (word32) (r2_450 >u 0x00000000)
+	Mem468[Mem387[0x10000A40:word32] + 4 + ((dwLoc014C * 0x00000014 - dwLoc014C << 0x03) + 144):word32] = (word32) (strchr(Mem387[0x10000880:word32] + -46208, (word32) Mem387[r2_283:int8]) >u 0x00000000)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -9895,7 +9870,7 @@ l00405780:
 // SymbolicIn:
 
 l00405C9C:
-	r3_18 = fclose(r2_124)
+	fclose(r2_124)
 	r2_501 = 1
 // DataOut:
 // DataOut (flags):
@@ -9991,7 +9966,6 @@ properties_parse_command_line_entry:
 l00405CD0:
 	word32 r28_134 = 0x10008860
 	word32 dwLoc28_395 = 0x00000000
-	r16_164 = r16
 	r5_115 = r5
 // DataOut:
 // DataOut (flags):
@@ -9999,7 +9973,6 @@ l00405CD0:
 
 l00405D00:
 	word32 r5_115
-	word32 r16_164
 	word32 r3_182 = r4
 	branch (word32) (dwLoc28_395 < r4) != 0x00000000 l00405CD0_ds_t
 // DataOut:
@@ -10169,7 +10142,7 @@ l004061EC:
 	word32 r2_148 = (word32) bLoc1C_399
 	word32 r25_159 = Mem151[r28_134 - 0x00007E74:word32]
 	call r25_159 (retsize: 0;)
-		uses: r1:r1_171,r16:r16_164,r2:r2_148,r25:r25_159,r28:r28_134,r3:r3_137,r30:fp + -72,r4:1,r5:Mem151[r28_134 - 0x00007FE0:word32] + -22924,r6:Mem151[r28_134 - 0x00007FE0:word32] + -22900,r7:200,ra:ra,sp:fp + -72,Stack +0010:r2_148,Stack +0018:0x10008860,Stack +0020:dwLoc28_432,Stack +0024:dwLoc24_427,Stack +0028:dwLoc20_428,Stack +002C:bLoc1C_399,Stack +0030:dwLoc18_424,Stack +0034:dwLoc14_542,Stack +003C:r16,Stack +0040:r30,Stack +0044:ra,Stack +0048:r4,Stack +004C:r5
+		uses: r2:r2_148,r25:r25_159,r3:r3_137,r4:1,r5:Mem151[r28_134 - 0x00007FE0:word32] + -22924,r6:Mem151[r28_134 - 0x00007FE0:word32] + -22900,r7:200,Stack +0010:r2_148,Stack +0018:0x10008860,Stack +0020:dwLoc28_432,Stack +0024:dwLoc24_427,Stack +0028:dwLoc20_428,Stack +002C:bLoc1C_399,Stack +0030:dwLoc18_424,Stack +0034:dwLoc14_542,Stack +003C:r16,Stack +0040:r30,Stack +0044:ra,Stack +0048:r4,Stack +004C:r5
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word32 stackArg0 = <invalid>
@@ -10184,8 +10157,7 @@ l00405EEC_ds_f:
 // SymbolicIn:
 
 l00405EFC:
-	r1 = Mem125[r28_134 - 0x00007E20:word32] + ((dwLoc24 * 0x00000014 - dwLoc24 << 0x03) + 8)
-	branch (word32) bLoc1C_399 == (word32) Mem125[r1 + 0x00000004:int8] l00405EFC_ds_t
+	branch (word32) bLoc1C_399 == (word32) Mem125[(Mem125[r28_134 - 0x00007E20:word32] + ((dwLoc24 * 0x00000014 - dwLoc24 << 0x03) + 8)) + 0x00000004:int8] l00405EFC_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -10225,15 +10197,14 @@ l00405F80:
 	word32 r6_221
 	word32 r7_223
 	call r25_213 (retsize: 0;)
-		uses: r1:r1_197,r16:r16_164,r2:r2_211,r25:r25_213,r28:r28_134,r3:r3_209,r30:fp + -72,r4:r2_211,r5:r5_216,r6:r6_220,r7:r7_222,ra:ra,sp:fp + -72,Stack +0010:dwLoc38,Stack +0018:0x10008860,Stack +0020:dwLoc28_432,Stack +0024:dwLoc24_427,Stack +0028:dwLoc20_428,Stack +002C:bLoc1C_399,Stack +0030:dwLoc18_424,Stack +0034:dwLoc14_542,Stack +003C:r16,Stack +0040:r30,Stack +0044:ra,Stack +0048:r4,Stack +004C:r5
+		uses: r2:r2_211,r25:r25_213,r3:r3_209,r4:r2_211,r5:r5_216,r6:r6_220,r7:r7_222,Stack +0010:dwLoc38,Stack +0018:0x10008860,Stack +0020:dwLoc28_432,Stack +0024:dwLoc24_427,Stack +0028:dwLoc20_428,Stack +002C:bLoc1C_399,Stack +0030:dwLoc18_424,Stack +0034:dwLoc14_542,Stack +003C:r16,Stack +0040:r30,Stack +0044:ra,Stack +0048:r4,Stack +004C:r5
 		defs: r2:r2_218,r5:r5_217,r6:r6_221,r7:r7_223
-	r1 = Mem125[0x10000A40:word32] + ((dwLoc24 * 0x00000014 - dwLoc24 << 0x03) + 8)
-	word32 r2_236 = (word32) Mem125[r1 + 0x00000004:int8]
+	word32 r1_235 = Mem125[0x10000A40:word32] + ((dwLoc24 * 0x00000014 - dwLoc24 << 0x03) + 8)
+	word32 r2_236 = (word32) Mem125[r1_235 + 0x00000004:int8]
 	word32 r2_242
 	call toupper (retsize: 0;)
 		uses: r1:r1_235,r16:r2_218,r2:r2_236,r25:toupper,r28:0x10008860,r3:dwLoc24_427,r30:fp + -72,r4:r2_236,r5:r5_217,r6:r6_221,r7:r7_223,ra:ra,sp:fp + -72,Stack +0010:dwLoc38,Stack +0018:0x10008860,Stack +0020:dwLoc28_432,Stack +0024:dwLoc24_427,Stack +0028:dwLoc20_428,Stack +002C:bLoc1C_399,Stack +0030:dwLoc18_424,Stack +0034:dwLoc14_542,Stack +003C:r16,Stack +0040:r30,Stack +0044:ra,Stack +0048:r4,Stack +004C:r5
 		defs: r2:r2_242,r5:r5_241,r6:r6_244,r7:r7_245
-	r16_164 = r2_218
 	r28_134 = 0x10008860
 	branch r2_218 == r2_242 l00405F80_ds_t
 // DataOut:
@@ -10263,7 +10234,7 @@ l004060E8:
 	word32 r25_267 = Mem262[r28_134 - 0x00007FE4:word32]
 	word32 r2_275
 	call r25_267 + 21488 (retsize: 0;)
-		uses: r1:r1_277,r16:r16_272,r2:1,r25:r25_267 + 21488,r28:r28_258,r3:r2_261,r30:fp + -72,r4:dwLoc18_424,r5:0x00000000,r6:r6_278,r7:r7_280,ra:ra,sp:fp + -72,Stack +0010:dwLoc38,Stack +0018:0x10008860,Stack +0020:dwLoc28_432,Stack +0024:dwLoc24_427,Stack +0028:1,Stack +002C:bLoc1C_399,Stack +0030:dwLoc18_424,Stack +0034:r2_261,Stack +003C:r16,Stack +0040:r30,Stack +0044:ra,Stack +0048:r4,Stack +004C:r5
+		uses: r2:1,r25:r25_267 + 21488,r3:r2_261,r4:dwLoc18_424,r5:0x00000000,r6:r6_278,r7:r7_280,Stack +0010:dwLoc38,Stack +0018:0x10008860,Stack +0020:dwLoc28_432,Stack +0024:dwLoc24_427,Stack +0028:1,Stack +002C:bLoc1C_399,Stack +0030:dwLoc18_424,Stack +0034:r2_261,Stack +003C:r16,Stack +0040:r30,Stack +0044:ra,Stack +0048:r4,Stack +004C:r5
 		defs: r2:r2_275,r5:r5_274,r6:r6_279,r7:r7_281
 	Mem295[Mem262[0x10000A40:word32] + 4 + ((dwLoc24 * 0x00000014 - dwLoc24 << 0x03) + 144):word32] = r2_275
 	r28_134 = 0x10008860
@@ -10292,7 +10263,7 @@ l0040608C:
 	word32 r2_307 = (r2_303 << 0x03) + (Mem262[r28_134 - 0x00007E20:word32] + 13)
 	word32 r25_311 = Mem262[r28_134 - 0x00007ED4:word32]
 	call r25_311 (retsize: 0;)
-		uses: r1:r1_277,r16:r16_272,r2:r2_307,r25:r25_311,r28:r28_258,r3:r2_303 << 0x03,r30:fp + -72,r4:r2_307,r5:dwLoc18_424,r6:20,r7:r7_280,ra:ra,sp:fp + -72,Stack +0010:dwLoc38,Stack +0018:0x10008860,Stack +0020:dwLoc28_432,Stack +0024:dwLoc24_427,Stack +0028:1,Stack +002C:bLoc1C_399,Stack +0030:dwLoc18_424,Stack +0034:r2_261,Stack +003C:r16,Stack +0040:r30,Stack +0044:ra,Stack +0048:r4,Stack +004C:r5
+		uses: r2:r2_307,r25:r25_311,r3:r2_303 << 0x03,r4:r2_307,r5:dwLoc18_424,r6:20,r7:r7_280,Stack +0010:dwLoc38,Stack +0018:0x10008860,Stack +0020:dwLoc28_432,Stack +0024:dwLoc24_427,Stack +0028:1,Stack +002C:bLoc1C_399,Stack +0030:dwLoc18_424,Stack +0034:r2_261,Stack +003C:r16,Stack +0040:r30,Stack +0044:ra,Stack +0048:r4,Stack +004C:r5
 		defs: r5:r5_314,r6:r6_317,r7:r7_318
 	r28_134 = 0x10008860
 // DataOut:
@@ -10356,7 +10327,7 @@ l00405E54_ds_f:
 l00405E64:
 	word32 r25_81 = Mem75[r28_134 - 0x00007DC4:word32]
 	call r25_81 (retsize: 0;)
-		uses: r1:r1_100,r16:r16_90,r2:r5,r25:r25_81,r28:r28_55,r3:r3_76,r30:fp + -72,r4:Mem75[r5:word32],r5:r5_94,r6:r6_103,r7:r7_107,ra:ra,sp:fp + -72,Stack +0010:dwLoc38,Stack +0018:0x10008860,Stack +0020:dwLoc28_423,Stack +0024:dwLoc24_536,Stack +0028:dwLoc20_533,Stack +002C:bLoc1C_399,Stack +0030:dwLoc18_424,Stack +0034:dwLoc14_539,Stack +003C:r16,Stack +0040:r30,Stack +0044:ra,Stack +0048:r4,Stack +004C:r5
+		uses: r2:r5,r25:r25_81,r3:r3_76,r4:Mem75[r5:word32],r5:r5_94,r6:r6_103,r7:r7_107,Stack +0010:dwLoc38,Stack +0018:0x10008860,Stack +0020:dwLoc28_423,Stack +0024:dwLoc24_536,Stack +0028:dwLoc20_533,Stack +002C:bLoc1C_399,Stack +0030:dwLoc18_424,Stack +0034:dwLoc14_539,Stack +003C:r16,Stack +0040:r30,Stack +0044:ra,Stack +0048:r4,Stack +004C:r5
 	exit(0x00000000)
 	r28_134 = r28_120
 // DataOut:
@@ -10555,7 +10526,8 @@ l0040636C:
 // SymbolicIn:
 
 l004065D0:
-	return printf(Mem57[0x10000880:word32] + -45632, 0x00000000)
+	printf(Mem57[0x10000880:word32] + -45632, 0x00000000)
+	return r3_220
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -10605,7 +10577,7 @@ l00406664:
 		defs: r2:r2_40,r3:r3_41
 	word32 r25_50 = Mem43[0x1000087C:word32]
 	call r25_50 + 27004 (retsize: 0;)
-		uses: r2:fp + -1048,r25:r25_50 + 27004,r28:0x10008860,r3:r3_41,r30:fp + -1080,r4:Mem43[Mem43[0x10000A20:word32]:word32],r5:r4,r6:r2_40,r7:fp + -1048,ra:ra,sp:fp + -1080,Stack +0010:0x10008860,Stack +0018:fp + 8,Stack +0420:r2_40,Stack +042C:r30,Stack +0430:ra,Stack +0438:r4,Stack +043C:r5,Stack +0440:r6,Stack +0444:r7
+		uses: r2:fp + -1048,r25:r25_50 + 27004,r3:r3_41,r4:Mem43[Mem43[0x10000A20:word32]:word32],r5:r4,r6:r2_40,r7:fp + -1048,Stack +0010:0x10008860,Stack +0018:fp + 8,Stack +0420:r2_40,Stack +042C:r30,Stack +0430:ra,Stack +0438:r4,Stack +043C:r5,Stack +0440:r6,Stack +0444:r7
 		defs: r2:r2_57,r3:r3_58,r4:r4_56,r5:r5_53,r6:r6_54,r7:r7_55
 // DataOut:
 // DataOut (flags):
@@ -10673,7 +10645,7 @@ l0040672C_ds_t:
 
 l004067EC:
 	Mem28[Mem15[0x10000A20:word32]:word32] = Mem15[Mem15[0x10000914:word32]:word32]
-	r3_100 = strcpy(Mem28[Mem28[0x100008A0:word32]:word32], Mem28[0x10000880:word32] + -22724)
+	strcpy(Mem28[Mem28[0x100008A0:word32]:word32], Mem28[0x10000880:word32] + -22724)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -10684,8 +10656,7 @@ l0040672C_ds_f:
 // SymbolicIn:
 
 l0040674C:
-	r3_100 = fopen(Mem15[Mem15[0x100008A0:word32]:word32], r4)
-	Mem61[Mem15[0x10000A20:word32]:word32] = r2_54
+	Mem61[Mem15[0x10000A20:word32]:word32] = fopen(Mem15[Mem15[0x100008A0:word32]:word32], r4)
 	branch Mem61[Mem61[0x10000A20:word32]:word32] != 0x00000000 l0040674C_ds_t
 // DataOut:
 // DataOut (flags):
@@ -10784,7 +10755,7 @@ l004068AC_ds_f:
 l004068CC:
 	strcpy(0xBADDC9EE, Mem12[Mem12[0x100008A0:word32]:word32])
 	call rename (retsize: 0;)
-		uses: r2:r2_49,r25:rename,r28:0x10008860,r3:strcat(0xBADDC9EE, Mem12[0x10000880:word32] + -45432),r30:fp + -296,r4:Mem12[Mem12[0x100008A0:word32]:word32],r5:fp + -272,ra:ra,sp:fp + -296,Stack +0010:0x10008860,Stack +011C:r30,Stack +0120:ra
+		uses: r2:strcat(0xBADDC9EE, Mem12[0x10000880:word32] + -45432),r25:rename,r28:0x10008860,r3:r3_50,r30:fp + -296,r4:Mem12[Mem12[0x100008A0:word32]:word32],r5:fp + -272,ra:ra,sp:fp + -296,Stack +0010:0x10008860,Stack +011C:r30,Stack +0120:ra
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -10819,9 +10790,10 @@ log_string_entry:
 // SymbolicIn:
 
 l0040697C:
+	gettimeofday(fp + -40, 0x00000000)
 	word32 r2_47
 	call gmtime (retsize: 0;)
-		uses: hi:hi,lo:lo_93,r1:r1,r16:r5,r17:r7,r2:fp + -40,r25:gmtime,r28:0x10008860,r3:gettimeofday(fp + -40, 0x00000000),r30:fp + -104,r4:fp + -40,r5:r5_30,r6:r6_32,r7:r7_34,ra:ra,sp:fp + -104,Stack +0010:r2_77,Stack +0014:r7,Stack +0018:0x10008860,Stack +0044:dwLoc24,Stack +0048:dwLoc20,Stack +0054:r16,Stack +0058:r17,Stack +005C:r30,Stack +0060:ra,Stack +0068:r4
+		uses: hi:hi,lo:lo_93,r1:r1,r16:r5,r17:r7,r2:fp + -40,r25:gmtime,r28:0x10008860,r3:r3_36,r30:fp + -104,r4:fp + -40,r5:r5_30,r6:r6_32,r7:r7_34,ra:ra,sp:fp + -104,Stack +0010:r2_77,Stack +0014:r7,Stack +0018:0x10008860,Stack +0044:dwLoc24,Stack +0048:dwLoc20,Stack +0054:r16,Stack +0058:r17,Stack +005C:r30,Stack +0060:ra,Stack +0068:r4
 		defs: r2:r2_47
 	strftime(0xBADDCAB6, 28, Mem19[0x10000880:word32] + -45416, r2_47)
 	fprintf(r4, Mem79[0x10000880:word32] + -45376, 0x00000000)
@@ -10885,8 +10857,7 @@ l00406B20_ds_f:
 // SymbolicIn:
 
 l00406B4C:
-	ftell(r4)
-	branch (word32) (r2_142 < Mem122[Mem122[0x10000A28:word32]:word32]) != 0x00000000 l00406B4C_ds_t
+	branch (word32) (ftell(r4) < Mem122[Mem122[0x10000A28:word32]:word32]) != 0x00000000 l00406B4C_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -10943,7 +10914,7 @@ l00406BF0:
 	word32 r6_121
 	word32 r3_118
 	word32 r2_115
-	malloc(36)
+	word32 r2_30 = malloc(36)
 	branch r2_30 != 0x00000000 l00406BF0_ds_t
 // DataOut:
 // DataOut (flags):
@@ -11033,7 +11004,7 @@ l00406D4C:
 	word32 r5_107
 	word32 r3_110
 	word32 r2_113
-	socket(2, 2, 6)
+	word32 r2_27 = socket(2, 2, 6)
 	branch r2_27 >= 0x00000000 l00406D4C_ds_t
 // DataOut:
 // DataOut (flags):
@@ -11045,8 +11016,7 @@ l00406D4C_ds_t:
 // SymbolicIn:
 
 l00406E40:
-	word32 r3_46 = bind(r2_27, r4 + 16, 16)
-	branch r2_45 >= 0x00000000 l00406E40_ds_t
+	branch bind(r2_27, r4 + 16, 16) >= 0x00000000 l00406E40_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -11086,8 +11056,7 @@ l00406F0C_ds_f:
 
 l00406F34:
 	__errno_location()
-	__errno_location()
-	strerror(Mem33[r2_80:word32])
+	strerror(Mem33[__errno_location():word32])
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
@@ -11113,8 +11082,7 @@ l00406E40_ds_f:
 
 l00406E74:
 	__errno_location()
-	__errno_location()
-	strerror(Mem33[r2_129:word32])
+	strerror(Mem33[__errno_location():word32])
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
@@ -11140,8 +11108,7 @@ l00406D4C_ds_f:
 
 l00406DA8:
 	__errno_location()
-	__errno_location()
-	strerror(Mem33[r2_178:word32])
+	strerror(Mem33[__errno_location():word32])
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
@@ -11298,7 +11265,7 @@ slist_new_entry:
 
 l00407150:
 	word32 r2_32
-	malloc(12)
+	word32 r2_19 = malloc(12)
 	branch r2_19 != 0x00000000 l00407150_ds_t
 // DataOut:
 // DataOut (flags):
@@ -12398,7 +12365,7 @@ l00407A38:
 	word32 r25_41 = Mem22[0x1000087C:word32]
 	word32 r2_50
 	call r25_41 + 30688 (retsize: 0;)
-		uses: f12:f12,f14:f14,r16:fp + -56,r17:__unpack_f,r2:r2_39,r25:r25_41 + 30688,r28:0x10008860,r4:fp + -72,r5:fp + -56,r6:fp + -40,ra:ra,sp:fp + -96,Stack +0010:0x10008860,Stack +0048:(word32) f12,Stack +004C:(word32) f14,Stack +0054:r16,Stack +0058:r17,Stack +005C:ra
+		uses: r2:r2_39,r25:r25_41 + 30688,r4:fp + -72,r5:fp + -56,r6:fp + -40,Stack +0010:0x10008860,Stack +0048:(word32) f12,Stack +004C:(word32) f14,Stack +0054:r16,Stack +0058:r17,Stack +005C:ra
 		defs: r2:r2_50
 	__pack_f(r2_50)
 	return
@@ -12431,7 +12398,7 @@ l00407AE0:
 	word32 r25_41 = Mem22[0x1000087C:word32]
 	word32 r2_52
 	call r25_41 + 30688 (retsize: 0;)
-		uses: f12:f12,f14:f14,r16:fp + -56,r17:__unpack_f,r2:dwLoc34 ^ 0x00000001,r25:r25_41 + 30688,r28:0x10008860,r4:fp + -72,r5:fp + -56,r6:fp + -40,ra:ra,sp:fp + -96,Stack +0010:0x10008860,Stack +002C:dwLoc34 ^ 0x00000001,Stack +0048:(word32) f12,Stack +004C:(word32) f14,Stack +0054:r16,Stack +0058:r17,Stack +005C:ra
+		uses: r2:dwLoc34 ^ 0x00000001,r25:r25_41 + 30688,r4:fp + -72,r5:fp + -56,r6:fp + -40,Stack +0010:0x10008860,Stack +002C:dwLoc34 ^ 0x00000001,Stack +0048:(word32) f12,Stack +004C:(word32) f14,Stack +0054:r16,Stack +0058:r17,Stack +005C:ra
 		defs: r2:r2_52
 	__pack_f(r2_52)
 	return
@@ -14077,7 +14044,7 @@ l004084FC:
 	word32 r25_57 = Mem34[0x10000880:word32]
 	word32 r2_64
 	call r25_57 + -32384 (retsize: 0;)
-		uses: f12:f12,f13:f13,f14:f14,f15:f15,r16:fp + -88,r17:fp + -32,r18:__unpack_d,r2:r2_50,r25:r25_57 + -32384,r28:0x10008860,r3:r3_49,r4:fp + -112,r5:fp + -88,r6:fp + -64,r7:r7_51,r8:r8_53,ra:ra,sp:fp + -136,Stack +0010:0x10008860,Stack +0060:f13,Stack +0064:f12,Stack +0068:f15,Stack +006C:f14,Stack +0074:r16,Stack +0078:r17,Stack +007C:r18,Stack +0080:ra
+		uses: r2:r2_50,r25:r25_57 + -32384,r3:r3_49,r4:fp + -112,r5:fp + -88,r6:fp + -64,r7:r7_51,r8:r8_53,Stack +0010:0x10008860,Stack +0060:f13,Stack +0064:f12,Stack +0068:f15,Stack +006C:f14,Stack +0074:r16,Stack +0078:r17,Stack +007C:r18,Stack +0080:ra
 		defs: r2:r2_64
 	__pack_d(r2_64)
 	return
@@ -14113,7 +14080,7 @@ l004085CC:
 	word32 r25_57 = Mem34[0x10000880:word32]
 	word32 r2_67
 	call r25_57 + -32384 (retsize: 0;)
-		uses: f12:f12,f13:f13,f14:f14,f15:f15,r16:fp + -88,r17:fp + -32,r18:__unpack_d,r2:dwLoc54 ^ 0x00000001,r25:r25_57 + -32384,r28:0x10008860,r3:r3_49,r4:fp + -112,r5:fp + -88,r6:fp + -64,r7:r7_51,r8:r8_53,ra:ra,sp:fp + -136,Stack +0010:0x10008860,Stack +0034:dwLoc54 ^ 0x00000001,Stack +0060:f13,Stack +0064:f12,Stack +0068:f15,Stack +006C:f14,Stack +0074:r16,Stack +0078:r17,Stack +007C:r18,Stack +0080:ra
+		uses: r2:dwLoc54 ^ 0x00000001,r25:r25_57 + -32384,r3:r3_49,r4:fp + -112,r5:fp + -88,r6:fp + -64,r7:r7_51,r8:r8_53,Stack +0010:0x10008860,Stack +0034:dwLoc54 ^ 0x00000001,Stack +0060:f13,Stack +0064:f12,Stack +0068:f15,Stack +006C:f14,Stack +0074:r16,Stack +0078:r17,Stack +007C:r18,Stack +0080:ra
 		defs: r2:r2_67
 	__pack_d(r2_67)
 	return
@@ -17219,7 +17186,7 @@ l00409C4C:
 
 l00409C50:
 	call r25_17 (retsize: 0;)
-		uses: r16:r16_26,r17:-1,r2:r2_27,r25:r25_22,r28:0x10008860,r3:r3_31,ra:ra,sp:fp + -40,Stack +0010:0x10008860,Stack +001C:r16,Stack +0020:r17,Stack +0024:ra
+		uses: r2:r2_27,r25:r25_22,r3:r3_31,Stack +0010:0x10008860,Stack +001C:r16,Stack +0020:r17,Stack +0024:ra
 		defs: r3:r3_32
 	r16_20 = r16_20 + -4
 	r2_12 = Mem16[r16_20:word32]
@@ -17292,7 +17259,7 @@ _fini_entry:
 l00409CB0:
 	word32 r25_12 = Mem11[0x1000087C:word32]
 	call r25_12 + 1568 (retsize: 0;)
-		uses: r25:r25_12 + 1568,r28:0x10008860,ra:ra,sp:fp + -32,Stack +0010:0x10008860,Stack +0018:0x10008860,Stack +001C:ra
+		uses: r25:r25_12 + 1568,Stack +0010:0x10008860,Stack +0018:0x10008860,Stack +001C:ra
 	return
 // DataOut:
 // DataOut (flags):

@@ -58,7 +58,7 @@ namespace Reko.Analysis
 			this.program = program;
             this.importResolver = importResolver;
             this.eventListener = eventListener;
-			this.flow = new ProgramDataFlow();
+			this.flow = new ProgramDataFlow(program);
 		}
 
 		public void DumpProgram()
@@ -179,7 +179,7 @@ namespace Reko.Analysis
         private void UntangleProcedureScc(IList<Procedure> procs)
         {
             this.sccProcs = procs.ToHashSet();
-            flow.CreateFlowsFor(program.Architecture, procs);
+            flow.CreateFlowsFor(procs);
 
             // Convert all procedures in the SCC to SSA form and perform
             // value propagation.

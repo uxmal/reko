@@ -545,7 +545,7 @@ l000000014000137F:
 	word64 rbx_101 = Mem84[rax_119:word64]
 	fn0000000140001BF4()
 	call rbx_101 (retsize: 8;)
-		uses: r8:0x0000000000000000,r9:r9_92,rax:rax_89,rbp:rbp,rbx:rbx_101,rcx:0x0000000000000000,rdi:rdi,rdx:DPB(rdx_91, 0x0000000000000002, 0),rsi:rsi_110,rsp:fp - 0x0000000000000038,Stack +0000:qwLoc40,Stack +0010:qwLoc30,Stack +0028:bLoc18_286,Stack +0038:rdi,Stack +0048:rbx,Stack +0050:rsi,xmm0:xmm0
+		uses: r8:0x0000000000000000,r9:r9_92,rax:rax_89,rcx:0x0000000000000000,rdx:DPB(rdx_91, 0x0000000000000002, 0),Stack +0000:qwLoc40,Stack +0010:qwLoc30,Stack +0028:bLoc18_286,Stack +0038:rdi,Stack +0048:rbx,Stack +0050:rsi
 		defs: r8:r8_122,r9:r9_125,rax:rax_119,rcx:rcx_118,rdx:rdx_121
 // DataOut:
 // DataOut (flags):
@@ -1976,7 +1976,7 @@ l0000000140001B7B:
 l0000000140001B83:
 	fn0000000140001BF4()
 	call rdi_19 (retsize: 8;)
-		uses: rbx:rbx_14,rcx:rdi_19,rdi:rdi_19,rsi:0x0000000140002680,rsp:fp - 0x0000000000000028,Stack +0028:rdi,Stack +0038:rbx,Stack +0040:rsi
+		uses: rcx:rdi_19,Stack +0028:rdi,Stack +0038:rbx,Stack +0040:rsi
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2034,7 +2034,7 @@ l0000000140001BC7:
 l0000000140001BCF:
 	fn0000000140001BF4()
 	call rdi_19 (retsize: 8;)
-		uses: rbx:rbx_14,rcx:rdi_19,rdi:rdi_19,rsi:0x0000000140002690,rsp:fp - 0x0000000000000028,Stack +0028:rdi,Stack +0038:rbx,Stack +0040:rsi
+		uses: rcx:rdi_19,Stack +0028:rdi,Stack +0038:rbx,Stack +0040:rsi
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2072,7 +2072,6 @@ fn0000000140001BF4_entry:
 
 l0000000140001BF4:
 	call Mem0[0x0000000140002190:word64] (retsize: 8;)
-		uses: rsp:fp
 	return
 // DataOut:
 // DataOut (flags):
@@ -2411,7 +2410,7 @@ fn0000000140001F10_entry:
 
 l0000000140001F10:
 	call rax (retsize: 8;)
-		uses: rax:rax,rsp:fp
+		uses: rax:rax
 	return
 // DataOut:
 // DataOut (flags):
