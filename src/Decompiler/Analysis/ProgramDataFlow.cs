@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,10 +42,10 @@ namespace Reko.Analysis
 
 		public ProgramDataFlow(Program program) : this()
 		{
-            CreateFlowsFor(program.Architecture, program.Procedures.Values);
+            CreateFlowsFor(program.Procedures.Values);
 		}
 
-        public void CreateFlowsFor(IProcessorArchitecture arch, IEnumerable<Procedure> procs)
+        public void CreateFlowsFor(IEnumerable<Procedure> procs)
         {
             foreach (Procedure proc in procs)
             {
@@ -56,7 +56,7 @@ namespace Reko.Analysis
                         block,
                         new HashSet<Storage>(),
                         new SymbolicEvaluationContext(
-                            arch,
+                            proc.Architecture,
                             proc.Frame));
                 }
             }
