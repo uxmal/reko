@@ -1,2130 +1,2479 @@
-// fn0000000140001000
-// Return size: 8
-define fn0000000140001000
+word64 fn0000000140001000(word64 rbx, word64 rsi, word64 rdi, ptr64 & rcxOut, ptr64 & rdxOut, ptr64 & r8Out, ptr64 & r9Out, ptr64 & xmm0Out)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  rbx:[0..63] rdi:[0..63] rsi:[0..63]
+// LiveOut: r8 r9 rax rcx rdx xmm0
+// Trashed: SCZO r8 r9 rax rcx rdx xmm0
+// Preserved: rsp
 fn0000000140001000_entry:
-	// succ:  l0000000140001000
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001000:
-	rsp = fp
-	rsp = rsp - 200
-	SCZO = cond(rsp)
-	rax = Mem0[0x0000000140003000:word64]
-	rax = rax ^ rsp
-	SZO = cond(rax)
-	C = false
-	Mem0[rsp + 0x00000000000000B8:word64] = rax
-	xmm0 = Mem0[0x0000000140002260:word128]
-	r9 = 0x0000000140002240
-	Mem0[rsp + 0x0000000000000038:word32] = 0x00000057
-	r8 = 0x0000000140002250
-	Mem0[rsp + 0x0000000000000030:word32] = 0x00000063
-	rcx = 0x0000000140002210
-	rdx = (uint64) 0x00000003
-	Mem0[rsp + 0x0000000000000020:word128] = xmm0
-	call fn0000000140001140 (retsize: 8;)
-	rax = rsp + 0x0000000000000044
-	Mem0[rsp + 0x0000000000000038:word64] = rax
-	r9 = rsp + 0x0000000000000078
-	rax = rsp + 0x0000000000000040
-	Mem0[rsp + 0x0000000000000030:word64] = rax
-	r8 = rsp + 0x0000000000000058
-	rax = rsp + 0x0000000000000050
-	Mem0[rsp + 0x0000000000000028:word64] = rax
-	rdx = rsp + 0x000000000000004C
-	rax = rsp + 0x0000000000000048
-	rcx = 0x0000000140002228
-	Mem0[rsp + 0x0000000000000020:word64] = rax
-	call fn00000001400010D0 (retsize: 8;)
-	rax = (uint64) (eax ^ eax)
-	SZO = cond(eax)
-	C = false
-	rcx = Mem0[rsp + 0x00000000000000B8:word64]
-	rcx = rcx ^ rsp
-	SZO = cond(rcx)
-	C = false
-	call fn00000001400011B0 (retsize: 8;)
-	rsp = rsp + 200
-	SCZO = cond(rsp)
-	return
-	// succ:  fn0000000140001000_exit
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	word64 rax_6 = Mem0[0x0000000140003000:word64] ^ fp - 200
+	word128 xmm0_10 = Mem9[0x0000000140002260:word128]
+	word64 stackArg8 = <invalid>
+	word64 stackArg16 = <invalid>
+	word64 stackArg24 = <invalid>
+	word64 stackArg32 = <invalid>
+	fn0000000140001140(rax_6, 0x0000000140002210, 0x0000000000000003, rbx, rsi, rdi, 0x0000000140002250, 0x0000000140002240, stackArg8, stackArg16, stackArg24, stackArg32)
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	word64 stackArg8 = <invalid>
+	word64 stackArg16 = <invalid>
+	word64 stackArg24 = <invalid>
+	word64 stackArg32 = <invalid>
+	word64 r9_43 = fn00000001400010D0(fp - 0x0000000000000080, 0x0000000140002228, fp - 0x000000000000007C, rbx, rsi, rdi, fp - 0x0000000000000070, fp - 0x0000000000000050, stackArg8, stackArg16, stackArg24, stackArg32)
+	word64 r8_56
+	word64 rcx_58
+	word64 rdx_59
+	word64 rax_57 = fn00000001400011B0(rax_6 ^ fp - 200, rbx, rsi, rdi, qwLocD0, out rcx_58, out rdx_59, out r8_56)
+	rcxOut = rcx_58
+	rdxOut = rdx_59
+	r8Out = r8_56
+	r9Out = r9_43
+	xmm0Out = xmm0_10
+	return rax_57
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0000000140001000_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn00000001400010C0
-// Return size: 8
-define fn00000001400010C0
+
+word64 fn00000001400010C0()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut: rax
+// Trashed: rax
+// Preserved: rsp
 fn00000001400010C0_entry:
-	// succ:  l00000001400010C0
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l00000001400010C0:
-	rsp = fp
-	rax = 0x0000000140003628
-	return
-	// succ:  fn00000001400010C0_exit
+	return 0x0000000140003628
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn00000001400010C0_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn00000001400010D0
-// Return size: 8
-define fn00000001400010D0
+
+word64 fn00000001400010D0(word64 rax, word64 rcx, word64 rdx, word64 rbx, word64 rsi, word64 rdi, word64 r8, word64 r9, word64 qwArg08, word64 qwArg10, word64 qwArg18, word64 qwArg20)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  r8:[0..63] r9:[0..63] rax:[0..63] rbx:[0..63] rcx:[0..63] rdi:[0..63] rdx:[0..63] rsi:[0..63]
+// LiveOut: r9
+// Trashed: SCZO r8 r9 rax rcx rdx
+// Preserved: rbx rdi rsi rsp
 fn00000001400010D0_entry:
-	// succ:  l00000001400010D0
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l00000001400010D0:
-	rsp = fp
-	Mem0[rsp + 0x0000000000000008:word64] = rcx
-	Mem0[rsp + 0x0000000000000010:word64] = rdx
-	Mem0[rsp + 0x0000000000000018:word64] = r8
-	Mem0[rsp + 0x0000000000000020:word64] = r9
-	rsp = rsp - 8
-	Mem0[rsp:word64] = rbx
-	rsp = rsp - 8
-	Mem0[rsp:word64] = rsi
-	rsp = rsp - 8
-	Mem0[rsp:word64] = rdi
-	rsp = rsp - 0x0000000000000030
-	SCZO = cond(rsp)
-	rdi = rcx
-	rsi = rsp + 0x0000000000000058
-	rcx = (uint64) (ecx ^ ecx)
-	SZO = cond(ecx)
-	C = false
+	word64 rax_32
 	call _acrt_iob_func (retsize: 8;)
-	rbx = rax
-	call fn00000001400010C0 (retsize: 8;)
-	r9 = (uint64) (r9d ^ r9d)
-	SZO = cond(r9d)
-	C = false
-	Mem0[rsp + 0x0000000000000020:word64] = rsi
-	r8 = rdi
-	rdx = rbx
-	rcx = Mem0[rax:word64]
+		uses: r8:r8,r9:r9,rax:rax,rbx:rbx,rcx:0x0000000000000000,rdi:rcx,rdx:rdx,rsi:fp + 0x0000000000000010,rsp:fp - 0x0000000000000048,Stack +0028:fp + 0x0000000000000010,Stack +0038:rdi,Stack +0040:rsi,Stack +0048:rbx,Stack +0058:rcx,Stack +0060:rdx,Stack +0068:r8,Stack +0070:r9
+		defs: rax:rax_32
+	word64 rax_35 = fn00000001400010C0()
+	word64 r9_47
 	call _stdio_common_vfscanf (retsize: 8;)
-	rsp = rsp + 0x0000000000000030
-	SCZO = cond(rsp)
-	rdi = Mem0[rsp:word64]
-	rsp = rsp + 8
-	rsi = Mem0[rsp:word64]
-	rsp = rsp + 8
-	rbx = Mem0[rsp:word64]
-	rsp = rsp + 8
-	return
-	// succ:  fn00000001400010D0_exit
+		uses: r8:rcx,r9:0x0000000000000000,rax:rax_35,rbx:rax_32,rcx:Mem40[rax_35:word64],rdi:rcx,rdx:rax_32,rsi:fp + 0x0000000000000010,rsp:fp - 0x0000000000000048,Stack +0028:fp + 0x0000000000000010,Stack +0038:rdi,Stack +0040:rsi,Stack +0048:rbx,Stack +0058:rcx,Stack +0060:rdx,Stack +0068:r8,Stack +0070:r9
+		defs: r9:r9_47
+	return r9_47
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn00000001400010D0_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0000000140001130
-// Return size: 8
-define fn0000000140001130
+
+word64 fn0000000140001130()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut: rax
+// Trashed: rax
+// Preserved: rsp
 fn0000000140001130_entry:
-	// succ:  l0000000140001130
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001130:
-	rsp = fp
-	rax = 0x0000000140003620
-	return
-	// succ:  fn0000000140001130_exit
+	return 0x0000000140003620
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0000000140001130_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0000000140001140
-// Return size: 8
-define fn0000000140001140
+
+void fn0000000140001140(word64 rax, word64 rcx, word64 rdx, word64 rbx, word64 rsi, word64 rdi, word64 r8, word64 r9, word64 qwArg08, word64 qwArg10, word64 qwArg18, word64 qwArg20)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  r8:[0..63] r9:[0..63] rax:[0..63] rbx:[0..63] rcx:[0..63] rdi:[0..63] rdx:[0..63] rsi:[0..63]
+// LiveOut:
+// Trashed: SCZO r8 r9 rax rcx rdx
+// Preserved: rbx rdi rsi rsp
 fn0000000140001140_entry:
-	// succ:  l0000000140001140
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001140:
-	rsp = fp
-	Mem0[rsp + 0x0000000000000008:word64] = rcx
-	Mem0[rsp + 0x0000000000000010:word64] = rdx
-	Mem0[rsp + 0x0000000000000018:word64] = r8
-	Mem0[rsp + 0x0000000000000020:word64] = r9
-	rsp = rsp - 8
-	Mem0[rsp:word64] = rbx
-	rsp = rsp - 8
-	Mem0[rsp:word64] = rsi
-	rsp = rsp - 8
-	Mem0[rsp:word64] = rdi
-	rsp = rsp - 0x0000000000000030
-	SCZO = cond(rsp)
-	rdi = rcx
-	rsi = rsp + 0x0000000000000058
-	rcx = (uint64) 0x00000001
+	word64 rax_30
 	call _acrt_iob_func (retsize: 8;)
-	rbx = rax
-	call fn0000000140001130 (retsize: 8;)
-	r9 = (uint64) (r9d ^ r9d)
-	SZO = cond(r9d)
-	C = false
-	Mem0[rsp + 0x0000000000000020:word64] = rsi
-	r8 = rdi
-	rdx = rbx
-	rcx = Mem0[rax:word64]
+		uses: r8:r8,r9:r9,rax:rax,rbx:rbx,rcx:0x0000000000000001,rdi:rcx,rdx:rdx,rsi:fp + 0x0000000000000010,rsp:fp - 0x0000000000000048,Stack +0028:fp + 0x0000000000000010,Stack +0038:rdi,Stack +0040:rsi,Stack +0048:rbx,Stack +0058:rcx,Stack +0060:rdx,Stack +0068:r8,Stack +0070:r9
+		defs: rax:rax_30
+	word64 rax_33 = fn0000000140001130()
 	call _stdio_common_vfprintf (retsize: 8;)
-	rsp = rsp + 0x0000000000000030
-	SCZO = cond(rsp)
-	rdi = Mem0[rsp:word64]
-	rsp = rsp + 8
-	rsi = Mem0[rsp:word64]
-	rsp = rsp + 8
-	rbx = Mem0[rsp:word64]
-	rsp = rsp + 8
+		uses: r8:rcx,r9:0x0000000000000000,rax:rax_33,rbx:rax_30,rcx:Mem38[rax_33:word64],rdi:rcx,rdx:rax_30,rsi:fp + 0x0000000000000010,rsp:fp - 0x0000000000000048,Stack +0028:fp + 0x0000000000000010,Stack +0038:rdi,Stack +0040:rsi,Stack +0048:rbx,Stack +0058:rcx,Stack +0060:rdx,Stack +0068:r8,Stack +0070:r9
 	return
-	// succ:  fn0000000140001140_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0000000140001140_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn00000001400011B0
-// Return size: 8
-define fn00000001400011B0
+
+word64 fn00000001400011B0(word64 rcx, word64 rbx, word64 rsi, word64 rdi, word64 qwArg00, ptr64 & rcxOut, ptr64 & rdxOut, ptr64 & r8Out)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  rbx:[0..63] rcx:[0..63] rdi:[0..63] rsi:[0..63] Stack +0000:[0..63]
+// LiveOut: r8 rax rcx rdx
+// Trashed: SCZO r8 rax rcx rdx
+// Preserved: rsp
 fn00000001400011B0_entry:
-	// succ:  l00000001400011B0
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l00000001400011B0:
-	rsp = fp
-	SCZO = cond(rcx - Mem0[0x0000000140003000:word64])
-	branch Test(NE,Z) l00000001400011CC
-	// succ:  l00000001400011BA l00000001400011CC
+	branch rcx != Mem0[0x0000000140003000:word64] l00000001400011CC
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l00000001400011BA:
-	v6 = (rcx & 0x0000000000000001 << 0x40 - 0x10) != 0x0000000000000000
-	rcx = __rol(rcx, 0x10)
-	C = v6
-	SZO = cond(cx & 0xFFFF)
-	C = false
-	branch Test(NE,Z) l00000001400011C8
-	// succ:  l00000001400011C6 l00000001400011C8
-l00000001400011C6:
-	return
-	// succ:  fn00000001400011B0_exit
+	word64 rcx_8 = __rol(rcx, 0x10)
+	branch ((word16) rcx_8 & 0xFFFF) != 0x0000 l00000001400011C8
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l00000001400011C8:
-	v12 = (rcx & 0x0000000000000001 << 0x10) != 0x0000000000000000
-	rcx = __ror(rcx, 0x10)
-	C = v12
-	// succ:  l00000001400011CC
+	rcx = __ror(rcx_8, 0x10)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l00000001400011CC:
-	// succ:  l00000001400011CC_thunk_fn000000014000147C
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l00000001400011CC_thunk_fn000000014000147C:
-	call fn000000014000147C (retsize: 0;)
-	return
-	// succ:  fn00000001400011B0_exit
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	word64 stackArg8 = <invalid>
+	word64 r8_25
+	word64 rcx_27
+	word64 rdx_28
+	word64 rax_26 = fn000000014000147C(rcx, rbx, rsi, rdi, qwArg00, stackArg8, out rcx_27, out rdx_28, out r8_25)
+	rcxOut = rcx_27
+	rdxOut = rdx_28
+	r8Out = r8_25
+	return rax_26
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l00000001400011C6:
+	rcxOut = rcx_8
+	rdxOut = rdx
+	r8Out = r8
+	return rax
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn00000001400011B0_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn00000001400011D4
-// Return size: 8
-define fn00000001400011D4
+
+void fn00000001400011D4(word64 rax, word64 rdx, word64 rbx, word64 rbp, word64 rsi, word64 rdi, word64 r8, word64 r9, word128 xmm0, word128 xmm1)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  r8:[0..63] r9:[0..63] rax:[0..63] rbp:[0..63] rbx:[0..63] rdi:[0..63] rdx:[0..63] rsi:[0..63] xmm0:[0..127] xmm1:[0..127]
+// LiveOut:
+// Trashed: SCZO r8 r9 rax rbp rbx rcx rdx rsp xmm0 xmm1
+// Preserved:
 fn00000001400011D4_entry:
-	// succ:  l00000001400011D4
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l00000001400011D4:
-	rsp = fp
-	rsp = rsp - 8
-	Mem0[rsp:word64] = rbx
-	rsp = rsp - 0x0000000000000020
-	SCZO = cond(rsp)
-	rcx = (uint64) 0x00000001
 	call set_app_type (retsize: 8;)
-	call fn0000000140001920 (retsize: 8;)
-	rcx = (uint64) eax
-	eax = _set_fmode(Mem0[rsp:int32])
-	rax = __p__commode()
-	rbx = rax
-	call fn0000000140001ABC (retsize: 8;)
-	rcx = (uint64) 0x00000001
-	Mem0[rbx:word32] = eax
-	call fn000000014000164C (retsize: 8;)
-	SZO = cond(al & al)
-	C = false
-	branch Test(EQ,Z) l0000000140001279
-	// succ:  l000000014000120D l0000000140001279
+		uses: r8:r8_34,r9:r9_35,rax:rax,rbp:rbp_37,rbx:rbx,rcx:0x0000000000000001,rdi:rdi,rdx:rdx_40,rsi:rsi,rsp:fp - 0x0000000000000028,Stack +0008:dwLoc28,Stack +0028:rbx,xmm0:xmm0_42,xmm1:xmm1_43
+	fn0000000140001920()
+	_set_fmode(dwLoc28)
+	word64 rax_17 = __p__commode()
+	Mem26[rax_17:word32] = (word32) fn0000000140001ABC()
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	word64 stackArg8 = <invalid>
+	word64 r8_34
+	word64 r9_35
+	word64 rbp_37
+	word64 rbx_38
+	word64 rdx_40
+	word128 xmm0_42
+	word128 xmm1_43
+	word64 rax_36 = fn000000014000164C(0x00000001, rdx, rax_17, rbp, r8, r9, xmm0, xmm1, stackArg8, out rdx_40, out rbx_38, out rbp_37, out r8_34, out r9_35, out xmm0_42, out xmm1_43)
+	branch (byte) rax_36 == 0x00 l0000000140001279
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000140001279:
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	word64 stackArg8 = <invalid>
+	fn0000000140001974(0x00000007, rbx_38, rbp_37, qwLoc30, stackArg8, qwLoc20, out rcx_210, out rdx_211, out r8_212)
+	int3()
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l000000014000120D:
-	call fn0000000140001B5C (retsize: 8;)
-	rcx = 0x0000000140001BA8
-	call fn0000000140001854 (retsize: 8;)
-	call fn0000000140001918 (retsize: 8;)
-	rcx = (uint64) eax
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	word64 stackArg8 = <invalid>
+	word64 stackArg16 = <invalid>
+	fn0000000140001B5C(rbx_38, rsi, rdi, stackArg8, stackArg16)
+	word64 rdx_72 = fn0000000140001854(rax_36, 0x0000000140001BA8, rbx_38)
+	word64 rax_77 = fn0000000140001918()
+	word64 rax_81
+	word64 r8_82
+	word64 rdx_83
+	word64 r9_84
 	call configure_narrow_argv (retsize: 8;)
-	SZO = cond(eax & eax)
-	C = false
-	branch Test(NE,Z) l0000000140001284
-	// succ:  l000000014000122E l0000000140001284
+		uses: r8:r8_34,r9:r9_35,rax:rax_77,rbp:rbp_37,rbx:rbx_38,rcx:(uint64) (word32) rax_77,rdi:rdi,rdx:rdx_72,rsi:rsi,rsp:fp - 40,Stack +0000:rbx,Stack +0008:dwLoc28,Stack +0010:qwLoc20,Stack +0028:rbx,Stack +FFFFFFE0:dwLoc28,xmm0:xmm0_42,xmm1:xmm1_43
+		defs: r8:r8_82,r9:r9_84,rax:rax_81,rdx:rdx_83
+	branch (word32) rax_81 != 0x00000000 l0000000140001284
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000140001284:
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	word64 stackArg8 = <invalid>
+	fn0000000140001974(0x00000007, rbx_38, rbp_37, qwLoc30, stackArg8, qwLoc20, out rcx_216, out rdx_217, out r8_218)
+	int3()
+	int3()
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l000000014000128F_thunk_fn0000000140001290:
+	fn0000000140001290()
+	return
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l000000014000122E:
-	call fn0000000140001928 (retsize: 8;)
-	call fn0000000140001958 (retsize: 8;)
-	SZO = cond(eax & eax)
-	C = false
-	branch Test(EQ,Z) l0000000140001248
-	// succ:  l000000014000123C l0000000140001248
+	fn0000000140001928(qwLoc30)
+	branch (word32) (word64) fn0000000140001958() == 0x00000000 l0000000140001248
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l000000014000123C:
-	rcx = 0x0000000140001ABC
-	__setusermatherr(rcx)
-	// succ:  l0000000140001248
+	__setusermatherr(0x0000000140001ABC)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001248:
-	call fn0000000140001DD0 (retsize: 8;)
-	call fn0000000140001DD0 (retsize: 8;)
-	call fn0000000140001ABC (retsize: 8;)
-	rcx = (uint64) eax
+	fn0000000140001DD0()
+	fn0000000140001DD0()
+	word64 rax_120 = fn0000000140001ABC()
+	word64 rcx_129
+	word64 rax_130
+	word64 r8_133
+	word64 rdx_136
+	word64 r9_139
 	call configthreadlocale (retsize: 8;)
-	call fn0000000140001938 (retsize: 8;)
-	SZO = cond(al & al)
-	C = false
-	branch Test(EQ,Z) l000000014000126C
-	// succ:  l0000000140001267 l000000014000126C
+		uses: r8:r8_82,r9:r9_84,rax:rax_120,rbp:rbp_37,rbx:rbx_38,rcx:(uint64) (word32) rax_120,rdi:rdi,rdx:rdx_83,rsi:rsi,rsp:fp - 40,Stack +0000:rbx,Stack +0008:dwLoc28,Stack +0010:qwLoc20,Stack +0028:rbx,Stack +FFFFFFE0:dwLoc28,xmm0:xmm0_42,xmm1:xmm1_43
+		defs: r8:r8_133,r9:r9_139,rax:rax_130,rcx:rcx_129,rdx:rdx_136
+	byte al_143 = fn0000000140001938()
+	word64 rax_148 = DPB(rax_130, al_143, 0)
+	branch al_143 == 0x00 l000000014000126C
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001267:
 	call initialize_narrow_environment (retsize: 8;)
-	// succ:  l000000014000126C
+		uses: r8:r8_133,r9:r9_139,rax:rax_148,rbp:rbp_37,rbx:rbx_38,rcx:rcx_129,rdi:rdi,rdx:rdx_136,rsi:rsi,rsp:fp - 40,Stack +0000:rbx,Stack +0008:dwLoc28,Stack +0010:qwLoc20,Stack +0028:rbx,Stack +FFFFFFE0:dwLoc28,xmm0:xmm0_42,xmm1:xmm1_43
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l000000014000126C:
-	call fn0000000140001ABC (retsize: 8;)
-	rax = (uint64) (eax ^ eax)
-	SZO = cond(eax)
-	C = false
-	rsp = rsp + 0x0000000000000020
-	SCZO = cond(rsp)
-	rbx = Mem0[rsp:word64]
-	rsp = rsp + 8
+	fn0000000140001ABC()
 	return
-	// succ:  fn00000001400011D4_exit
-l0000000140001279:
-	rcx = (uint64) 0x00000007
-	call fn0000000140001974 (retsize: 8;)
-	int3()
-	// succ:  l0000000140001284
-l0000000140001284:
-	rcx = (uint64) 0x00000007
-	call fn0000000140001974 (retsize: 8;)
-	int3()
-	int3()
-	// succ:  l000000014000128F_thunk_fn0000000140001290
-l000000014000128F_thunk_fn0000000140001290:
-	call fn0000000140001290 (retsize: 0;)
-	return
-	// succ:  fn00000001400011D4_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn00000001400011D4_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0000000140001290
-// Return size: 8
-define fn0000000140001290
+
+void fn0000000140001290()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SCZO rax
+// Preserved: rsp
 fn0000000140001290_entry:
-	// succ:  l0000000140001290
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001290:
-	rsp = fp
-	rsp = rsp - 0x0000000000000028
-	SCZO = cond(rsp)
-	call fn000000014000193C (retsize: 8;)
-	rax = (uint64) (eax ^ eax)
-	SZO = cond(eax)
-	C = false
-	rsp = rsp + 0x0000000000000028
-	SCZO = cond(rsp)
+	fn000000014000193C()
 	return
-	// succ:  fn0000000140001290_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0000000140001290_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn00000001400012A0
-// Return size: 0
-define fn00000001400012A0
+
+void fn00000001400012A0()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SCZO rax rcx
+// Preserved: rsp
 fn00000001400012A0_entry:
-	// succ:  l00000001400012A0
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l00000001400012A0:
-	rsp = fp
-	rsp = rsp - 0x0000000000000028
-	SCZO = cond(rsp)
-	call fn0000000140001B14 (retsize: 8;)
-	call fn0000000140001ABC (retsize: 8;)
-	rcx = (uint64) eax
-	rsp = rsp + 0x0000000000000028
-	SCZO = cond(rsp)
-	rsp = rsp + 0x0000000000000008
+	fn0000000140001B14(tLoc30)
+	word64 rax_8 = fn0000000140001ABC()
 	call set_new_mode (retsize: 8;)
-	rsp = rsp - 0x0000000000000008
+		uses: rax:rax_8,rcx:(uint64) (word32) rax_8,rsp:fp + 0x0000000000000008,Stack +FFFFFFD0:tLoc30
 	return
-	// succ:  fn00000001400012A0_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn00000001400012A0_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn00000001400012BC
-// Return size: 0
-define fn00000001400012BC
+
+void fn00000001400012BC(word64 rax, word64 rdx, word64 rbx, word64 rbp, word64 rsi, word64 rdi, word64 r8, word64 r9, word128 xmm0, word64 qwArg08, word64 qwArg10)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  al:[0..63] r8:[0..63] r9:[0..63] rax:[8..63] rbp:[0..63] rbx:[0..63] rdi:[0..63] rdx:[0..63] rsi:[0..63] xmm0:[0..127]
+// LiveOut:
+// Trashed: SCZO r8 r9 rax rcx rdx xmm0
+// Preserved: rbx rdi rsi rsp
 fn00000001400012BC_entry:
-	// succ:  l00000001400012BC
+	word64 rax_21 = DPB(rax, al, 0)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l00000001400012BC:
-	rsp = fp
-	Mem0[rsp + 0x0000000000000008:word64] = rbx
-	Mem0[rsp + 0x0000000000000010:word64] = rsi
-	rsp = rsp - 8
-	Mem0[rsp:word64] = rdi
-	rsp = rsp - 0x0000000000000030
-	SCZO = cond(rsp)
-	rcx = (uint64) 0x00000001
-	call fn0000000140001600 (retsize: 8;)
-	SZO = cond(al & al)
-	C = false
-	branch Test(NE,Z) l00000001400012E4
-	// succ:  l00000001400012D9 l00000001400012E4
+	fn0000000140001600(ecx, edx)
+	branch al != 0x00 l00000001400012E4
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l00000001400012D9:
-	rcx = (uint64) 0x00000007
-	call fn0000000140001974 (retsize: 8;)
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	word64 stackArg8 = <invalid>
+	rax_21 = fn0000000140001974(0x00000007, rbx, rbp, qwLoc40, stackArg8, qwLoc30, out rcx_325, out rdx, out r8)
 	int3()
-	// succ:  l00000001400012E4
+	al = (byte) rax_21 (alias)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l00000001400012E4:
-	sil = sil ^ sil
-	SZO = cond(sil)
-	C = false
-	Mem0[rsp + 0x0000000000000020:byte] = sil
-	call fn00000001400015C4 (retsize: 8;)
-	bl = al
-	rcx = (uint64) Mem0[0x00000001400035B0:word32]
-	SCZO = cond(ecx - 0x00000001)
-	branch Test(NE,Z) l0000000140001308
-	// succ:  l00000001400012FE l0000000140001308
+	fn00000001400015C4(gs)
+	word64 rcx_164 = (uint64) Mem32[0x00000001400035B0:word32]
+	word64 rax_119 = DPB(rax_21, al, 0)
+	word64 rsi_110 = DPB(rsi, 0x00, 0)
+	byte bLoc18_265 = 0x00
+	word64 rbx_42 = DPB(rbx, al, 0)
+	word32 ecx_37 = (word32) rcx_164
+	branch ecx_37 != 0x00000001 l0000000140001308
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l00000001400012FE:
-	rcx = (uint64) 0x00000007
-	call fn0000000140001974 (retsize: 8;)
-	// succ:  l0000000140001308
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	word64 stackArg8 = <invalid>
+	rax_119 = fn0000000140001974(0x00000007, rbx_42, rbp, qwLoc40, stackArg8, qwLoc30, out rcx_164, out rdx, out r8)
+	ecx_37 = (word32) rcx_164 (alias)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001308:
-	SZO = cond(ecx & ecx)
-	C = false
-	branch Test(NE,Z) l0000000140001356
-	// succ:  l000000014000130C l0000000140001356
-l000000014000130C:
-	Mem0[0x00000001400035B0:word32] = 0x00000001
-	rdx = 0x00000001400021D0
-	rcx = 0x00000001400021B8
-	eax = _initterm_e(rcx, rdx)
-	SZO = cond(eax & eax)
-	C = false
-	branch Test(EQ,Z) l0000000140001337
-	// succ:  l000000014000132D l0000000140001337
-l000000014000132D:
-	rax = (uint64) 0x000000FF
-	goto l0000000140001423
-	// succ:  l0000000140001423
-l0000000140001337:
-	rdx = 0x00000001400021B0
-	rcx = 0x00000001400021A0
-	_initterm(rcx, rdx)
-	Mem0[0x00000001400035B0:word32] = 0x00000002
-	goto l000000014000135E
-	// succ:  l000000014000135E
+	word64 rcx_163 = DPB(rcx_164, ecx_37, 0)
+	branch ecx_37 != 0x00000000 l0000000140001356
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001356:
-	sil = 0x01
-	Mem0[rsp + 0x0000000000000020:byte] = sil
-	// succ:  l000000014000135E
+	rsi_110 = DPB(rsi, 0x01, 0) (alias)
+	bLoc18_265 = 0x01
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l000000014000130C:
+	Mem61[0x00000001400035B0:word32] = 0x00000001
+	word32 eax_64 = _initterm_e(0x00000001400021B8, 0x00000001400021D0)
+	rax_119 = DPB(rax_119, eax_64, 0) (alias)
+	branch eax_64 == 0x00000000 l0000000140001337
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000140001337:
+	_initterm(0x00000001400021A0, 0x00000001400021B0)
+	Mem70[0x00000001400035B0:word32] = 0x00000002
+	rdx = 0x00000001400021B0
+	rcx_163 = 0x00000001400021A0
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l000000014000135E:
-	cl = bl
-	call fn00000001400017B4 (retsize: 8;)
-	call fn0000000140001964 (retsize: 8;)
-	rbx = rax
-	SCZO = cond(Mem0[rax:word64] - 0x0000000000000000)
-	branch Test(EQ,Z) l0000000140001395
-	// succ:  l0000000140001373 l0000000140001395
+	byte sil_227 = (byte) rsi_110
+	fn00000001400017B4(cl)
+	fn0000000140001964()
+	word64 rsi_231 = DPB(rsi_110, sil_227, 0)
+	word64 rcx_118 = DPB(rcx_163, al, 0)
+	branch Mem84[rax_119:word64] == 0x0000000000000000 l0000000140001395
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001373:
-	rcx = rax
-	call fn0000000140001718 (retsize: 8;)
-	SZO = cond(al & al)
-	C = false
-	branch Test(EQ,Z) l0000000140001395
-	// succ:  l000000014000137F l0000000140001395
+	rax_119 = fn0000000140001718(rax_119, out rcx_118, out rdx, out r8, out r9)
+	branch (byte) rax_119 == 0x00 l0000000140001395
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l000000014000137F:
-	rbx = Mem0[rbx:word64]
-	rcx = rbx
-	call fn0000000140001BF4 (retsize: 8;)
-	r8 = (uint64) (r8d ^ r8d)
-	SZO = cond(r8d)
-	C = false
-	edx = r8 + 0x0000000000000002
-	rcx = (uint64) (ecx ^ ecx)
-	SZO = cond(ecx)
-	C = false
-	call rbx (retsize: 8;)
-	// succ:  l0000000140001395
+	word64 rbx_101 = Mem84[rax_119:word64]
+	fn0000000140001BF4()
+	call rbx_101 (retsize: 8;)
+		uses: r8:0x0000000000000000,r9:r9_92,rax:rax_89,rbp:rbp,rbx:rbx_101,rcx:0x0000000000000000,rdi:rdi,rdx:DPB(rdx_91, 0x0000000000000002, 0),rsi:rsi_110,rsp:fp - 0x0000000000000038,Stack +0000:qwLoc40,Stack +0010:qwLoc30,Stack +0028:bLoc18_286,Stack +0038:rdi,Stack +0048:rbx,Stack +0050:rsi,xmm0:xmm0
+		defs: r8:r8_122,r9:r9_125,rax:rax_119,rcx:rcx_118,rdx:rdx_121
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001395:
-	call fn000000014000196C (retsize: 8;)
-	rbx = rax
-	SCZO = cond(Mem0[rax:word64] - 0x0000000000000000)
-	branch Test(EQ,Z) l00000001400013B7
-	// succ:  l00000001400013A3 l00000001400013B7
+	word64 rax_134
+	fn000000014000196C()
+	rax_134 = rax_119
+	branch Mem84[rax_119:word64] == 0x0000000000000000 l00000001400013B7
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l00000001400013A3:
-	rcx = rax
-	call fn0000000140001718 (retsize: 8;)
-	SZO = cond(al & al)
-	C = false
-	branch Test(EQ,Z) l00000001400013B7
-	// succ:  l00000001400013AF l00000001400013B7
+	rax_134 = fn0000000140001718(rax_119, out rcx_118, out rdx, out r8, out r9)
+	branch (byte) rax_134 == 0x00 l00000001400013B7
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l00000001400013AF:
-	rcx = Mem0[rbx:word64]
 	call register_thread_local_exe_atexit_callback (retsize: 8;)
-	// succ:  l00000001400013B7
+		uses: r8:r8_133,r9:r9_137,rax:rax_134,rbp:rbp,rbx:rax_127,rcx:Mem84[rax_127:word64],rdi:rdi,rdx:rdx_136,rsi:rsi_110,rsp:fp - 0x0000000000000038,Stack +0000:qwLoc40,Stack +0010:qwLoc30,Stack +0028:bLoc18_286,Stack +0038:rdi,Stack +0048:rbx,Stack +0050:rsi,xmm0:xmm0
+		defs: r8:r8_153,r9:r9_155,rax:rax_151,rcx:rcx_150,rdx:rdx_152
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l00000001400013B7:
+	word64 rcx_167
+	word64 rax_169
+	word64 rdx_176
+	word64 r8_183
+	word64 r9_191
 	call _p___argv (retsize: 8;)
-	rdi = rax
+		uses: r8:r8_177,r9:r9_185,rax:rax_168,rbp:rbp,rbx:rax_127,rcx:rcx_161,rdi:rdi,rdx:rdx_170,rsi:rsi_110,rsp:fp - 0x0000000000000038,Stack +0000:qwLoc40,Stack +0010:qwLoc30,Stack +0028:bLoc18_286,Stack +0038:rdi,Stack +0048:rbx,Stack +0050:rsi,xmm0:xmm0_216
+		defs: r8:r8_183,r9:r9_191,rax:rax_169,rcx:rcx_167,rdx:rdx_176
+	word64 rcx_194
+	word64 rax_195
+	word64 rdx_196
+	word64 r8_197
+	word64 r9_198
 	call _p___argc (retsize: 8;)
-	rbx = rax
+		uses: r8:r8_183,r9:r9_191,rax:rax_169,rbp:rbp,rbx:rax_127,rcx:rcx_167,rdi:rax_169,rdx:rdx_176,rsi:rsi_110,rsp:fp - 0x0000000000000038,Stack +0000:qwLoc40,Stack +0010:qwLoc30,Stack +0028:bLoc18_286,Stack +0038:rdi,Stack +0048:rbx,Stack +0050:rsi,xmm0:xmm0_216
+		defs: r8:r8_197,r9:r9_198,rax:rax_195,rcx:rcx_194,rdx:rdx_196
 	call get_initial_narrow_environment (retsize: 8;)
-	r8 = rax
-	rdx = Mem0[rdi:word64]
-	rcx = (uint64) Mem0[rbx:word32]
-	call fn0000000140001000 (retsize: 8;)
-	rbx = (uint64) eax
-	call fn0000000140001AC0 (retsize: 8;)
-	SZO = cond(al & al)
-	C = false
-	branch Test(NE,Z) l00000001400013EB
-	// succ:  l00000001400013E4 l00000001400013EB
-l00000001400013E4:
-	rcx = (uint64) ebx
-	exit(rcx)
+		uses: r8:r8_197,r9:r9_198,rax:rax_195,rbp:rbp,rbx:rax_195,rcx:rcx_194,rdi:rax_169,rdx:rdx_196,rsi:rsi_110,rsp:fp - 0x0000000000000038,Stack +0000:qwLoc40,Stack +0010:qwLoc30,Stack +0028:bLoc18_286,Stack +0038:rdi,Stack +0048:rbx,Stack +0050:rsi,xmm0:xmm0_216
+	word64 r8_211
+	word64 r9_212
+	word64 rcx_214
+	word64 rdx_215
+	word128 xmm0_216
+	word64 rax_213 = fn0000000140001000(rax_195, rsi_110, rax_169, out rcx_214, out rdx_215, out r8_211, out r9_212, out xmm0_216)
+	fn0000000140001AC0(rax)
+	word64 rbx_222 = (uint64) (word32) rax_213
+	word32 ebx_247 = (word32) rbx_222
+	branch (byte) rax_213 != 0x00 l00000001400013EB
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l00000001400013EB:
-	SZO = cond(sil & sil)
-	C = false
-	branch Test(NE,Z) l00000001400013F5
-	// succ:  l00000001400013F0 l00000001400013F5
+	branch sil_227 != 0x00 l00000001400013F5
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l00000001400013F0:
 	call cexit (retsize: 8;)
-	// succ:  l00000001400013F5
+		uses: r8:r8_211,r9:r9_212,rax:rax_213,rbp:rbp,rbx:rbx_222,rcx:rcx_214,rdi:rax_169,rdx:rdx_215,rsi:rsi_231,rsp:fp - 0x0000000000000038,Stack +0000:qwLoc40,Stack +0010:qwLoc30,Stack +0028:bLoc18_286,Stack +0038:rdi,Stack +0048:rbx,Stack +0050:rsi,xmm0:xmm0_216
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l00000001400013F5:
-	rdx = (uint64) (edx ^ edx)
-	SZO = cond(edx)
-	C = false
-	cl = 0x01
-	call fn00000001400017D8 (retsize: 8;)
-	rax = (uint64) ebx
-	// succ:  l0000000140001423
+	fn00000001400017D8(dl)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l00000001400013E4:
+	exit((uint64) ebx_247)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l000000014000132D:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001423:
-	rbx = Mem0[rsp + 0x0000000000000040:word64]
-	rsi = Mem0[rsp + 0x0000000000000048:word64]
-	rsp = rsp + 0x0000000000000030
-	SCZO = cond(rsp)
-	rdi = Mem0[rsp:word64]
-	rsp = rsp + 8
 	return
-	// succ:  fn00000001400012BC_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn00000001400012BC_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// Win32CrtStartup
-// Return size: 8
+
 DWORD Win32CrtStartup()
+// stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  r8:[0..63] r9:[0..63] rbp:[0..63] rbx:[0..63] rdi:[0..63] rdx:[0..63] rsi:[0..63] xmm0:[0..127]
+// LiveOut: eax
+// Trashed: eax
+// Preserved:
 Win32CrtStartup_entry:
-	// succ:  l0000000140001434
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001434:
-	rsp = fp
-	rsp = rsp - 0x0000000000000028
-	SCZO = cond(rsp)
-	call fn000000014000186C (retsize: 8;)
-	rsp = rsp + 0x0000000000000028
-	SCZO = cond(rsp)
-	// succ:  l0000000140001441_thunk_fn00000001400012BC
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	word64 stackArg8 = <invalid>
+	word64 stackArg32 = <invalid>
+	word64 rax_6 = fn000000014000186C(stackArg8, qwLoc20, dwLoc18, stackArg32)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001441_thunk_fn00000001400012BC:
-	call fn00000001400012BC (retsize: 0;)
-	return
-	// succ:  Win32CrtStartup_exit
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	word64 stackArg8 = <invalid>
+	word64 stackArg16 = <invalid>
+	fn00000001400012BC(rax_6, rdx, rbx, rbp, rsi, rdi, r8, r9, xmm0, stackArg8, stackArg16)
+	return <invalid>
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 Win32CrtStartup_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0000000140001448
-// Return size: 0
-define fn0000000140001448
+
+word32 fn0000000140001448(HANDLE tArg00, UINT tArg08)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  Stack +0000:[0..63] Stack +0008:[0..31]
+// LiveOut: eax
+// Trashed: SCZO eax rcx rdx
+// Preserved: rbx rsp
 fn0000000140001448_entry:
-	// succ:  l0000000140001448
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001448:
-	rsp = fp
-	rsp = rsp - 8
-	Mem0[rsp:word64] = rbx
-	rsp = rsp - 0x0000000000000020
-	SCZO = cond(rsp)
-	rbx = rcx
-	rcx = (uint64) (ecx ^ ecx)
-	SZO = cond(ecx)
-	C = false
-	eax = SetUnhandledExceptionFilter(Mem0[rsp:LPTOP_LEVEL_EXCEPTION_FILTER])
-	rcx = rbx
-	eax = UnhandledExceptionFilter(Mem0[rsp:(ptr64 (struct "_EXCEPTION_POINTERS"))])
-	eax = GetCurrentProcess()
-	rcx = rax
-	rdx = (uint64) 0xC0000409
-	rsp = rsp + 0x0000000000000020
-	SCZO = cond(rsp)
-	rbx = Mem0[rsp:word64]
-	rsp = rsp + 8
-	call TerminateProcess (retsize: 8;)
-	return
-	// succ:  fn0000000140001448_exit
+	SetUnhandledExceptionFilter(tLoc28)
+	UnhandledExceptionFilter(tLoc28)
+	GetCurrentProcess()
+	TerminateProcess(tArg00, tArg08)
+	return <invalid>
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0000000140001448_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn000000014000147C
-// Return size: 0
-define fn000000014000147C
+
+word64 fn000000014000147C(word64 rcx, word64 rbx, word64 rsi, word64 rdi, word64 qwArg00, word64 qwArg08, ptr64 & rcxOut, ptr64 & rdxOut, ptr64 & r8Out)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  rbx:[0..63] rcx:[0..63] rdi:[0..63] rsi:[0..63] Stack +0000:[0..63]
+// LiveOut: r8 rax rcx rdx
+// Trashed: SCZO r8 rax rcx rdx
+// Preserved: rsp
 fn000000014000147C_entry:
-	// succ:  l000000014000147C
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l000000014000147C:
-	rsp = fp
-	Mem0[rsp + 0x0000000000000008:word64] = rcx
-	rsp = rsp - 0x0000000000000038
-	SCZO = cond(rsp)
-	rcx = (uint64) 0x00000017
-	eax = IsProcessorFeaturePresent(Mem0[rsp:DWORD])
-	SZO = cond(eax & eax)
-	C = false
-	branch Test(EQ,Z) l000000014000149A
-	// succ:  l0000000140001493 l000000014000149A
-l0000000140001493:
-	rcx = (uint64) 0x00000002
-	__fastfail(ecx)
+	branch IsProcessorFeaturePresent(tLoc38) == 0x00000000 l000000014000149A
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l000000014000149A:
-	rcx = 0x00000001400030E0
-	call fn0000000140001550 (retsize: 8;)
-	rax = Mem0[rsp + 0x0000000000000038:word64]
-	Mem0[0x00000001400031D8:word64] = rax
-	rax = rsp + 0x0000000000000038
-	rax = rax + 0x0000000000000008
-	SCZO = cond(rax)
-	Mem0[0x0000000140003178:word64] = rax
-	rax = Mem0[0x00000001400031D8:word64]
-	Mem0[0x0000000140003050:word64] = rax
-	rax = Mem0[rsp + 0x0000000000000040:word64]
-	Mem0[0x0000000140003160:word64] = rax
-	Mem0[0x0000000140003040:word32] = 0xC0000409
-	Mem0[0x0000000140003044:word32] = 0x00000001
-	Mem0[0x0000000140003058:word32] = 0x00000001
-	rax = (uint64) 0x00000008
-	rax = rax *s 0x0000000000000000
-	SCZO = cond(rax)
-	rcx = 0x0000000140003060
-	Mem0[rcx + rax:word64] = 0x0000000000000002
-	rax = (uint64) 0x00000008
-	rax = rax *s 0x0000000000000000
-	SCZO = cond(rax)
-	rcx = Mem0[0x0000000140003000:word64]
-	Mem0[rsp + 0x0000000000000020 + rax:word64] = rcx
-	rax = (uint64) 0x00000008
-	rax = rax *s 0x0000000000000001
-	SCZO = cond(rax)
-	rcx = Mem0[0x0000000140003008:word64]
-	Mem0[rsp + 0x0000000000000020 + rax:word64] = rcx
-	rcx = 0x0000000140002200
-	call fn0000000140001448 (retsize: 8;)
-	rsp = rsp + 0x0000000000000038
-	SCZO = cond(rsp)
-	return
-	// succ:  fn000000014000147C_exit
+	fn0000000140001550(0x00000001400030E0, rbx, rsi, rdi, qwLoc38)
+	Mem24[0x00000001400031D8:word64] = qwArg00
+	Mem27[0x0000000140003178:word64] = fp + 0x0000000000000008
+	Mem29[0x0000000140003050:word64] = Mem27[0x00000001400031D8:word64]
+	Mem31[0x0000000140003160:word64] = rcx
+	Mem32[0x0000000140003040:word32] = 0xC0000409
+	Mem33[0x0000000140003044:word32] = 0x00000001
+	Mem34[0x0000000140003058:word32] = 0x00000001
+	Mem38[0x0000000140003060:word64] = 0x0000000000000002
+	word64 rax_69 = DPB(0x0000000000000008, fn0000000140001448(tLoc40, qwLoc38), 0)
+	rcxOut = rcx_50
+	rdxOut = rdx_51
+	r8Out = r8_15
+	return rax_69
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn000000014000147C_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000140001493:
+	__fastfail(0x00000002)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0000000140001550
-// Return size: 8
-define fn0000000140001550
+
+void fn0000000140001550(word64 rcx, word64 rbx, word64 rsi, word64 rdi, word64 qwArg08)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  rbx:[0..63] rcx:[0..63] rdi:[0..63] rsi:[0..63] Stack +0008:[0..63]
+// LiveOut:
+// Trashed: SCZO r8 rax rcx rdx
+// Preserved: r9 rbx rdi rsi rsp
 fn0000000140001550_entry:
-	// succ:  l0000000140001550
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001550:
-	rsp = fp
-	rsp = rsp - 8
-	Mem0[rsp:word64] = rbx
-	rsp = rsp - 8
-	Mem0[rsp:word64] = rsi
-	rsp = rsp - 8
-	Mem0[rsp:word64] = rdi
-	rsp = rsp - 0x0000000000000040
-	SCZO = cond(rsp)
-	rbx = rcx
-	RtlCaptureContext(Mem0[rsp:PCONTEXT])
-	rsi = Mem0[rbx + 0x00000000000000F8:word64]
-	rdi = (uint64) (edi ^ edi)
-	SZO = cond(edi)
-	C = false
-	// succ:  l000000014000156A
+	RtlCaptureContext(tLoc58)
+	word64 rsi_15 = Mem11[rcx + 0x00000000000000F8:word64]
+	word64 rdi_16 = 0x0000000000000000
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l000000014000156A:
-	r8 = (uint64) (r8d ^ r8d)
-	SZO = cond(r8d)
-	C = false
-	rdx = rsp + 0x0000000000000060
-	rcx = rsi
-	rax = RtlLookupFunctionEntry(rcx, rdx, r8)
-	SZO = cond(rax & rax)
-	C = false
-	branch Test(EQ,Z) l00000001400015B9
-	// succ:  l0000000140001580 l00000001400015B9
+	word32 edi_53 = (word32) rdi_16
+	word64 rax_25 = RtlLookupFunctionEntry(rsi_15, fp + 0x0000000000000008, 0x0000000000000000)
+	branch rax_25 == 0x0000000000000000 l00000001400015B9
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001580:
-	v16 = Mem0[rsp + 0x0000000000000038:word64] & 0x0000000000000000
-	Mem0[rsp + 0x0000000000000038:word64] = v16
-	SZO = cond(Mem0[rsp + 0x0000000000000038:word64])
-	C = false
-	rcx = rsp + 0x0000000000000068
-	rdx = Mem0[rsp + 0x0000000000000060:word64]
-	r9 = rax
-	Mem0[rsp + 0x0000000000000030:word64] = rcx
-	r8 = rsi
-	rcx = rsp + 0x0000000000000070
-	Mem0[rsp + 0x0000000000000028:word64] = rcx
-	rcx = (uint64) (ecx ^ ecx)
-	SZO = cond(ecx)
-	C = false
-	Mem0[rsp + 0x0000000000000020:word64] = rbx
+	word64 v16_30 = qwLoc20 & 0x0000000000000000
 	call KERNEL32.dll!RtlVirtualUnwind (retsize: 8;)
-	rdi = (uint64) (edi + 0x00000001)
-	SZO = cond(edi)
-	SCZO = cond(edi - 0x00000002)
-	branch Test(LT,SO) l000000014000156A
-	// succ:  l00000001400015B9 l000000014000156A
+		uses: r8:rsi_15,r9:rax_25,rax:rax_25,rbx:rcx,rcx:0x0000000000000000,rdi:rdi_46,rdx:qwArg08,rsi:rsi_15,rsp:fp - 0x0000000000000058,Stack +0008:tLoc58,Stack +0028:rcx,Stack +0030:fp + 0x0000000000000018,Stack +0038:fp + 0x0000000000000010,Stack +0040:v16_30,Stack +0048:rdi,Stack +0050:rsi,Stack +0058:rbx,Stack +0068:qwArg08
+	rdi_16 = (uint64) (edi_53 + 0x00000001)
+	qwLoc20 = v16_30
+	branch (word32) rdi_16 < 0x00000002 l000000014000156A
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l00000001400015B9:
-	rsp = rsp + 0x0000000000000040
-	SCZO = cond(rsp)
-	rdi = Mem0[rsp:word64]
-	rsp = rsp + 8
-	rsi = Mem0[rsp:word64]
-	rsp = rsp + 8
-	rbx = Mem0[rsp:word64]
-	rsp = rsp + 8
 	return
-	// succ:  fn0000000140001550_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0000000140001550_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn00000001400015C4
-// Return size: 8
-define fn00000001400015C4
+
+void fn00000001400015C4(selector gs)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  gs:[0..15]
+// LiveOut:
+// Trashed: SCZO rax rcx
+// Preserved: rsp
 fn00000001400015C4_entry:
-	// succ:  l00000001400015C4
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l00000001400015C4:
-	rsp = fp
-	rsp = rsp - 0x0000000000000028
-	SCZO = cond(rsp)
-	call fn0000000140001DC4 (retsize: 8;)
-	SZO = cond(eax & eax)
-	C = false
-	branch Test(EQ,Z) l00000001400015F2
-	// succ:  l00000001400015D1 l00000001400015F2
+	branch (word32) fn0000000140001DC4() == 0x00000000 l00000001400015F2
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l00000001400015D1:
-	rax = Mem0[gs:0x00000030:word64]
-	rcx = Mem0[rax + 0x0000000000000008:word64]
-	goto l00000001400015E5
-	// succ:  l00000001400015E5
-l00000001400015E0:
-	SCZO = cond(rcx - rax)
-	branch Test(EQ,Z) l00000001400015F9
-	// succ:  l00000001400015E5 l00000001400015F9
+	word64 rcx_17 = Mem0[Mem0[gs:0x00000030:word64] + 0x0000000000000008:word64]
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l00000001400015E5:
-	rax = (uint64) (eax ^ eax)
-	SZO = cond(eax)
-	C = false
 	__lock()
-	Z = __cmpxchg(Mem0[0x00000001400035B8:word64], rcx, rax, out rax)
-	branch Test(NE,Z) l00000001400015E0
-	// succ:  l00000001400015F2 l00000001400015E0
-l00000001400015F2:
-	al = al ^ al
-	SZO = cond(al)
-	C = false
-	// succ:  l00000001400015F4
-l00000001400015F4:
-	rsp = rsp + 0x0000000000000028
-	SCZO = cond(rsp)
-	return
-	// succ:  fn00000001400015C4_exit
+	word64 rax_24
+	branch __cmpxchg(Mem0[0x00000001400035B8:word64], rcx_17, 0x0000000000000000, out rax_24) l00000001400015E0
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l00000001400015E0:
+	branch rcx_17 == rax_24 l00000001400015F9
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l00000001400015F9:
-	al = 0x01
-	goto l00000001400015F4
-	// succ:  l00000001400015F4
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l00000001400015F2:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l00000001400015F4:
+	return
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn00000001400015C4_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0000000140001600
-// Return size: 8
-define fn0000000140001600
+
+void fn0000000140001600(word32 ecx, word32 edx)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  ecx:[0..31] edx:[0..31]
+// LiveOut:
+// Trashed: SCZO r10 r11d r8 r9 rax rcx rdx
+// Preserved: rbx rsp
 fn0000000140001600_entry:
-	// succ:  l0000000140001600
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001600:
-	rsp = fp
-	rsp = rsp - 8
-	Mem0[rsp:word64] = rbx
-	rsp = rsp - 0x0000000000000020
-	SCZO = cond(rsp)
-	eax = (word32) Mem0[0x00000001400035F0:byte]
-	SZO = cond(ecx & ecx)
-	C = false
-	rbx = (uint64) 0x00000001
-	branch Test(NE,Z) l0000000140001617
-	// succ:  l0000000140001614_1 l0000000140001617
+	byte al_15 = (byte) (word32) Mem5[0x00000001400035F0:byte]
+	branch ecx != 0x00000000 l0000000140001617
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001614_1:
-	eax = ebx
-	// succ:  l0000000140001617
+	al_15 = 0x01 (alias)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001617:
-	Mem0[0x00000001400035F0:byte] = al
-	call fn0000000140001BFC (retsize: 8;)
-	call fn0000000140001938 (retsize: 8;)
-	SZO = cond(al & al)
-	C = false
-	branch Test(NE,Z) l000000014000162F
-	// succ:  l000000014000162B l000000014000162F
-l000000014000162B:
-	al = al ^ al
-	SZO = cond(al)
-	C = false
-	goto l0000000140001643
-	// succ:  l0000000140001643
+	Mem18[0x00000001400035F0:byte] = al_15
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	word64 stackArg8 = <invalid>
+	word64 stackArg16 = <invalid>
+	word64 stackArg24 = <invalid>
+	fn0000000140001BFC(edx, 0x0000000000000001, stackArg8, stackArg16, stackArg24)
+	branch fn0000000140001938() != 0x00 l000000014000162F
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l000000014000162F:
-	call fn0000000140001938 (retsize: 8;)
-	SZO = cond(al & al)
-	C = false
-	branch Test(NE,Z) l0000000140001641
-	// succ:  l0000000140001638 l0000000140001641
-l0000000140001638:
-	rcx = (uint64) (ecx ^ ecx)
-	SZO = cond(ecx)
-	C = false
-	call fn0000000140001938 (retsize: 8;)
-	goto l000000014000162B
-	// succ:  l000000014000162B
+	branch fn0000000140001938() != 0x00 l0000000140001641
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001641:
-	al = bl
-	// succ:  l0000000140001643
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000140001638:
+	fn0000000140001938()
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l000000014000162B:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001643:
-	rsp = rsp + 0x0000000000000020
-	SCZO = cond(rsp)
-	rbx = Mem0[rsp:word64]
-	rsp = rsp + 8
 	return
-	// succ:  fn0000000140001600_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0000000140001600_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn000000014000164C
-// Return size: 8
-define fn000000014000164C
+
+word64 fn000000014000164C(word32 ecx, word64 rdx, word64 rbx, word64 rbp, word64 r8, word64 r9, word128 xmm0, word128 xmm1, word64 qwArg08, ptr64 & rdxOut, ptr64 & rbxOut, ptr64 & rbpOut, ptr64 & r8Out, ptr64 & r9Out, ptr64 & xmm0Out, ptr64 & xmm1Out)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  ecx:[0..31] r8:[0..63] r9:[0..63] rbp:[0..63] rbx:[0..63] rdx:[0..63] xmm0:[0..127] xmm1:[0..127]
+// LiveOut: r8 r9 rax rbp rbx rdx xmm0 xmm1
+// Trashed: SCZO r8 r9 rax rbp rbx rcx rdx rsp xmm0 xmm1
+// Preserved:
 fn000000014000164C_entry:
-	// succ:  l000000014000164C
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l000000014000164C:
-	rsp = fp
-	Mem0[rsp + 0x0000000000000008:word64] = rbx
-	rsp = rsp - 8
-	Mem0[rsp:word64] = rbp
-	rbp = rsp
-	rsp = rsp - 0x0000000000000040
-	SCZO = cond(rsp)
-	rbx = (uint64) ecx
-	SCZO = cond(ecx - 0x00000001)
-	branch Test(UGT,CZ) l000000014000170A
-	// succ:  l0000000140001664 l000000014000170A
-l0000000140001664:
-	call fn0000000140001DC4 (retsize: 8;)
-	SZO = cond(eax & eax)
-	C = false
-	branch Test(EQ,Z) l0000000140001698
-	// succ:  l000000014000166D l0000000140001698
-l000000014000166D:
-	SZO = cond(ebx & ebx)
-	C = false
-	branch Test(NE,Z) l0000000140001698
-	// succ:  l0000000140001671 l0000000140001698
-l0000000140001671:
-	rcx = 0x00000001400035C0
-	call initialize_onexit_table (retsize: 8;)
-	SZO = cond(eax & eax)
-	C = false
-	branch Test(EQ,Z) l0000000140001685
-	// succ:  l0000000140001681 l0000000140001685
-l0000000140001681:
-	al = al ^ al
-	SZO = cond(al)
-	C = false
-	goto l00000001400016FF
-	// succ:  l00000001400016FF
-l0000000140001685:
-	rcx = 0x00000001400035D8
-	call initialize_onexit_table (retsize: 8;)
-	SZO = cond(eax & eax)
-	C = false
-	al = Test(EQ,Z)
-	goto l00000001400016FF
-	// succ:  l00000001400016FF
-l0000000140001698:
-	rdx = Mem0[0x0000000140003000:word64]
-	r8 = r8 | 0xFFFFFFFFFFFFFFFF
-	SZO = cond(r8)
-	C = false
-	rax = (uint64) edx
-	rcx = (uint64) 0x00000040
-	rax = (uint64) (eax & 0x0000003F)
-	SZO = cond(eax)
-	C = false
-	rcx = (uint64) (ecx - eax)
-	SCZO = cond(ecx)
-	al = 0x01
-	v20 = (r8 & 0x0000000000000001 << cl) != 0x0000000000000000
-	r8 = __ror(r8, cl)
-	C = v20
-	r8 = r8 ^ rdx
-	SZO = cond(r8)
-	C = false
-	Mem0[rbp - 0x0000000000000020:word64] = r8
-	Mem0[rbp - 0x0000000000000018:word64] = r8
-	xmm0 = Mem0[rbp - 0x0000000000000020:word128]
-	Mem0[rbp - 0x0000000000000010:word64] = r8
-	xmm1 = DPB(xmm1, Mem0[rbp - 0x0000000000000010:real64], 0)
-	Mem0[0x00000001400035C0:word128] = xmm0
-	Mem0[rbp - 0x0000000000000020:word64] = r8
-	Mem0[rbp - 0x0000000000000018:word64] = r8
-	xmm0 = Mem0[rbp - 0x0000000000000020:word128]
-	Mem0[rbp - 0x0000000000000010:word64] = r8
-	Mem0[0x00000001400035D0:real64] = (real64) xmm1
-	xmm1 = DPB(xmm1, Mem0[rbp - 0x0000000000000010:real64], 0)
-	Mem0[0x00000001400035D8:word128] = xmm0
-	Mem0[0x00000001400035E8:real64] = (real64) xmm1
-	// succ:  l00000001400016FF
-l00000001400016FF:
-	rbx = Mem0[rsp + 0x0000000000000050:word64]
-	rsp = rsp + 0x0000000000000040
-	SCZO = cond(rsp)
-	rbp = Mem0[rsp:word64]
-	rsp = rsp + 8
-	return
-	// succ:  fn000000014000164C_exit
+	word64 rbx_11 = (uint64) ecx
+	word32 ebx_42 = (word32) rbx_11
+	word64 rbx_85 = DPB(rbx_11, ebx_42, 0)
+	branch ecx >u 0x00000001 l000000014000170A
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l000000014000170A:
-	rcx = (uint64) 0x00000005
-	call fn0000000140001974 (retsize: 8;)
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	word64 stackArg8 = <invalid>
+	word64 rcx_18
+	fn0000000140001974(0x00000005, rbx_11, fp - 8, qwLoc50, stackArg8, qwLoc40, out rcx_18, out rdx_178, out r8_179)
 	int3()
 	int3()
 	int3()
 	int3()
-	// succ:  l0000000140001717_thunk_fn0000000140001718
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001717_thunk_fn0000000140001718:
-	call fn0000000140001718 (retsize: 0;)
-	return
-	// succ:  fn000000014000164C_exit
+	word64 r8_24
+	word64 rdx_27
+	word64 r9_28
+	word64 rax_25 = fn0000000140001718(rcx_18, out rcx_180, out rdx_27, out r8_24, out r9_28)
+	rdxOut = rdx_27
+	rbxOut = rbx_11
+	rbpOut = fp - 8
+	r8Out = r8_24
+	r9Out = r9_28
+	xmm0Out = xmm0
+	xmm1Out = xmm1
+	return rax_25
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000140001664:
+	word64 rdx_102
+	word64 rax_151
+	word64 r8_103
+	word64 rax_33 = fn0000000140001DC4()
+	branch (word32) rax_33 == 0x00000000 l0000000140001698
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l000000014000166D:
+	branch ebx_42 != 0x00000000 l0000000140001698
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000140001698:
+	rdx_102 = Mem7[0x0000000140003000:word64]
+	word64 rax_55 = (uint64) ((word32) (uint64) (word32) rdx_102 & 0x0000003F)
+	r8_103 = __ror(r8 | 0xFFFFFFFFFFFFFFFF, (byte) (uint64) (0x00000040 - (word32) rax_55)) ^ rdx_102
+	Mem74[0x00000001400035C0:word128] = SEQ(r8_103, r8_103)
+	Mem79[0x00000001400035D0:real64] = r8_103
+	word128 owLoc28_132 = SEQ(r8_103, r8_103)
+	Mem81[0x00000001400035D8:word128] = owLoc28_132
+	Mem82[0x00000001400035E8:real64] = r8_103
+	rax_151 = DPB(rax_55, 0x01, 0) (alias)
+	xmm0 = owLoc28_132
+	xmm1 = DPB(xmm1, r8_103, 0)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000140001671:
+	word64 rax_87
+	call initialize_onexit_table (retsize: 8;)
+		uses: r8:r8,r9:r9,rax:rax_33,rbp:fp - 8,rbx:rbx_85,rcx:0x00000001400035C0,rdx:rdx,rsp:fp - 0x0000000000000048,Stack +0000:qwLoc50,Stack +0010:qwLoc40,Stack +0028:qwLoc28,Stack +0030:qwLoc20,Stack +0038:qwLoc18,Stack +0048:rbp,Stack +0058:rbx,xmm0:xmm0,xmm1:xmm1
+		defs: r8:r8_90,r9:r9_93,rax:rax_87,rdx:rdx_89
+	branch (word32) rax_87 == 0x00000000 l0000000140001685
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000140001685:
+	word64 rax_101
+	call initialize_onexit_table (retsize: 8;)
+		uses: r8:r8_90,r9:r9_93,rax:rax_87,rbp:fp - 8,rbx:rbx_85,rcx:0x00000001400035D8,rdx:rdx_89,rsp:fp - 0x0000000000000048,Stack +0000:qwLoc50,Stack +0010:qwLoc40,Stack +0028:qwLoc28,Stack +0030:qwLoc20,Stack +0038:qwLoc18,Stack +0048:rbp,Stack +0058:rbx,xmm0:xmm0,xmm1:xmm1
+		defs: r8:r8_103,r9:r9_104,rax:rax_101,rdx:rdx_102
+	rax_151 = DPB(rax_101, (word32) rax_101 == 0x00000000, 0) (alias)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000140001681:
+	rax_151 = DPB(rax_87, 0x00, 0) (alias)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l00000001400016FF:
+	rdxOut = rdx_102
+	rbxOut = rbx
+	rbpOut = rbp
+	r8Out = r8_103
+	r9Out = r9
+	xmm0Out = xmm0
+	xmm1Out = xmm1
+	return rax_151
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn000000014000164C_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0000000140001718
-// Return size: 8
-define fn0000000140001718
+
+word64 fn0000000140001718(word64 rcx, ptr64 & rcxOut, ptr64 & rdxOut, ptr64 & r8Out, ptr64 & r9Out)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  rcx:[0..63]
+// LiveOut: r8 r9 rax rcx rdx
+// Trashed: SCZO r8 r9 rax rcx rdx
+// Preserved: rsp
 fn0000000140001718_entry:
-	// succ:  l0000000140001718
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001718:
-	rsp = fp
-	rsp = rsp - 0x0000000000000018
-	SCZO = cond(rsp)
-	r8 = rcx
-	rax = (uint64) 0x00005A4D
-	SCZO = cond(Mem0[0x0000000140000000:word16] - ax)
-	branch Test(NE,Z) l00000001400017A6
-	// succ:  l000000014000172D l00000001400017A6
+	word64 rax_88
+	word64 r8_23 = rcx
+	word64 rax_11 = 0x0000000000005A4D
+	branch Mem0[0x0000000140000000:word16] != 0x5A4D l00000001400017A6
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l000000014000172D:
-	rax = (int64) Mem0[0x000000014000003C:word32]
+	rax_11 = (int64) Mem0[0x000000014000003C:word32]
 	rdx = 0x0000000140000000
-	rcx = rax + rdx
-	SCZO = cond(Mem0[rcx:word32] - 0x00004550)
-	branch Test(NE,Z) l00000001400017A6
-	// succ:  l0000000140001747 l00000001400017A6
+	rcx = rax_11 + 0x0000000140000000
+	branch Mem0[rcx:word32] != 0x00004550 l00000001400017A6
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001747:
-	rax = (uint64) 0x0000020B
-	SCZO = cond(Mem0[rcx + 0x0000000000000018:word16] - ax)
-	branch Test(NE,Z) l00000001400017A6
-	// succ:  l0000000140001752 l00000001400017A6
+	rax_11 = 0x000000000000020B
+	branch Mem0[rcx + 0x0000000000000018:word16] != 0x020B l00000001400017A6
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l00000001400017A6:
+	rax_88 = DPB(rax_11, 0x00, 0) (alias)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001752:
-	r8 = r8 - rdx
-	SCZO = cond(r8)
-	eax = (word32) Mem0[rcx + 0x0000000000000014:word16]
-	rdx = rcx + 0x0000000000000018
-	rdx = rdx + rax
-	SCZO = cond(rdx)
-	eax = (word32) Mem0[rcx + 0x0000000000000006:word16]
-	rcx = rax + rax * 0x0000000000000004
-	r9 = rdx + rcx * 0x0000000000000008
-	// succ:  l000000014000176C
+	word64 rax_30 = DPB(0x000000000000020B, (word32) Mem0[rcx + 0x0000000000000006:word16], 0)
+	rdx = rcx + 0x0000000000000018 + DPB(0x000000000000020B, (word32) Mem0[rcx + 0x0000000000000014:word16], 0)
+	r8_23 = rcx - 0x0000000140000000
+	rcx = rax_30 * 0x0000000000000005
+	r9 = rdx + rax_30 * 0x0000000000000028
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l000000014000176C:
-	Mem0[rsp:word64] = rdx
-	SCZO = cond(rdx - r9)
-	branch Test(EQ,Z) l000000014000178D
-	// succ:  l0000000140001775 l000000014000178D
+	branch rdx == r9 l000000014000178D
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l000000014000178D:
+	rdx = 0x0000000000000000
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001775:
-	rcx = (uint64) Mem0[rdx + 0x000000000000000C:word32]
-	SCZO = cond(r8 - rcx)
-	branch Test(ULT,C) l0000000140001787
-	// succ:  l000000014000177D l0000000140001787
+	rcx = (uint64) Mem35[rdx + 0x000000000000000C:word32]
+	word32 ecx_49 = (word32) rcx
+	rcx = DPB(rcx, ecx_49, 0) (alias)
+	branch r8_23 <u rcx l0000000140001787
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l000000014000177D:
-	rax = (uint64) Mem0[rdx + 0x0000000000000008:word32]
-	rax = (uint64) (eax + ecx)
-	SCZO = cond(eax)
-	SCZO = cond(r8 - rax)
-	branch Test(ULT,C) l000000014000178F
-	// succ:  l0000000140001787 l000000014000178F
+	rax_30 = (uint64) ((word32) (uint64) Mem35[rdx + 0x0000000000000008:word32] + ecx_49)
+	branch r8_23 <u rax_30 l000000014000178F
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l000000014000178F:
+	branch rdx != 0x0000000000000000 l0000000140001798
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000140001798:
+	branch Mem35[rdx + 0x0000000000000024:word32] >= 0x00000000 l00000001400017A2
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l00000001400017A2:
+	rax_88 = DPB(rax_30, 0x01, 0) (alias)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l000000014000179E:
+	rax_88 = DPB(rax_30, 0x00, 0) (alias)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000140001794:
+	rax_88 = DPB(rax_30, 0x00, 0) (alias)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l00000001400017AC:
+	rcxOut = rcx
+	rdxOut = rdx
+	r8Out = r8_23
+	r9Out = r9
+	return rax_88
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+fn0000000140001718_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001787:
 	rdx = rdx + 0x0000000000000028
-	SCZO = cond(rdx)
-	goto l000000014000176C
-	// succ:  l000000014000176C
-l000000014000178D:
-	rdx = (uint64) (edx ^ edx)
-	SZO = cond(edx)
-	C = false
-	// succ:  l000000014000178F
-l000000014000178F:
-	SZO = cond(rdx & rdx)
-	C = false
-	branch Test(NE,Z) l0000000140001798
-	// succ:  l0000000140001794 l0000000140001798
-l0000000140001794:
-	al = al ^ al
-	SZO = cond(al)
-	C = false
-	goto l00000001400017AC
-	// succ:  l00000001400017AC
-l0000000140001798:
-	SCZO = cond(Mem0[rdx + 0x0000000000000024:word32] - 0x00000000)
-	branch Test(GE,SO) l00000001400017A2
-	// succ:  l000000014000179E l00000001400017A2
-l000000014000179E:
-	al = al ^ al
-	SZO = cond(al)
-	C = false
-	goto l00000001400017AC
-	// succ:  l00000001400017AC
-l00000001400017A2:
-	al = 0x01
-	goto l00000001400017AC
-	// succ:  l00000001400017AC
-l00000001400017A6:
-	al = al ^ al
-	SZO = cond(al)
-	C = false
-	// succ:  l00000001400017AC
-l00000001400017AC:
-	rsp = rsp + 0x0000000000000018
-	SCZO = cond(rsp)
-	return
-	// succ:  fn0000000140001718_exit
-fn0000000140001718_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn00000001400017B4
-// Return size: 8
-define fn00000001400017B4
+
+void fn00000001400017B4(byte cl)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  cl:[0..7]
+// LiveOut:
+// Trashed: SCZO rax rdx
+// Preserved: rbx rsp
 fn00000001400017B4_entry:
-	// succ:  l00000001400017B4
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l00000001400017B4:
-	rsp = fp
-	rsp = rsp - 8
-	Mem0[rsp:word64] = rbx
-	rsp = rsp - 0x0000000000000020
-	SCZO = cond(rsp)
-	bl = cl
-	call fn0000000140001DC4 (retsize: 8;)
-	rdx = (uint64) (edx ^ edx)
-	SZO = cond(edx)
-	C = false
-	SZO = cond(eax & eax)
-	C = false
-	branch Test(EQ,Z) l00000001400017D2
-	// succ:  l00000001400017C7 l00000001400017D2
+	branch (word32) fn0000000140001DC4() == 0x00000000 l00000001400017D2
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l00000001400017C7:
-	SZO = cond(bl & bl)
-	C = false
-	branch Test(NE,Z) l00000001400017D2
-	// succ:  l00000001400017CB l00000001400017D2
+	branch cl != 0x00 l00000001400017D2
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l00000001400017CB:
-	v13 = Mem0[0x00000001400035B8:word64]
-	Mem0[0x00000001400035B8:word64] = rdx
-	rdx = v13
-	// succ:  l00000001400017D2
+	Mem24[0x00000001400035B8:word64] = 0x0000000000000000
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l00000001400017D2:
-	rsp = rsp + 0x0000000000000020
-	SCZO = cond(rsp)
-	rbx = Mem0[rsp:word64]
-	rsp = rsp + 8
 	return
-	// succ:  fn00000001400017B4_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn00000001400017B4_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn00000001400017D8
-// Return size: 8
-define fn00000001400017D8
+
+void fn00000001400017D8(byte dl)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  dl:[0..7]
+// LiveOut:
+// Trashed: SCZO al
+// Preserved: cl rbx rsp
 fn00000001400017D8_entry:
-	// succ:  l00000001400017D8
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l00000001400017D8:
-	rsp = fp
-	rsp = rsp - 8
-	Mem0[rsp:word64] = rbx
-	rsp = rsp - 0x0000000000000020
-	SCZO = cond(rsp)
-	SCZO = cond(Mem0[0x00000001400035F0:byte] - 0x00)
-	bl = cl
-	branch Test(EQ,Z) l00000001400017ED
-	// succ:  l00000001400017E9 l00000001400017ED
+	branch Mem5[0x00000001400035F0:byte] == 0x00 l00000001400017ED
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l00000001400017E9:
-	SZO = cond(dl & dl)
-	C = false
-	branch Test(NE,Z) l00000001400017FB
-	// succ:  l00000001400017ED l00000001400017FB
+	branch dl != 0x00 l00000001400017FB
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l00000001400017ED:
-	cl = bl
-	call fn0000000140001938 (retsize: 8;)
-	cl = bl
-	call fn0000000140001938 (retsize: 8;)
-	// succ:  l00000001400017FB
+	fn0000000140001938()
+	fn0000000140001938()
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l00000001400017FB:
-	al = 0x01
-	rsp = rsp + 0x0000000000000020
-	SCZO = cond(rsp)
-	rbx = Mem0[rsp:word64]
-	rsp = rsp + 8
 	return
-	// succ:  fn00000001400017D8_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn00000001400017D8_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0000000140001804
-// Return size: 8
-define fn0000000140001804
+
+word64 fn0000000140001804(word64 rax, word64 rcx, word64 rbx, ptr64 & rdxOut)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  rax:[0..63] rbx:[0..63] rcx:[0..63]
+// LiveOut: rax rdx
+// Trashed: SCZO rax rcx rdx
+// Preserved: rbx rsp
 fn0000000140001804_entry:
-	// succ:  l0000000140001804
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001804:
-	rsp = fp
-	rsp = rsp - 8
-	Mem0[rsp:word64] = rbx
-	rsp = rsp - 0x0000000000000020
-	SCZO = cond(rsp)
-	rdx = Mem0[0x0000000140003000:word64]
-	rbx = rcx
-	rcx = (uint64) edx
-	rdx = rdx ^ Mem0[0x00000001400035C0:word64]
-	SZO = cond(rdx)
-	C = false
-	rcx = (uint64) (ecx & 0x0000003F)
-	SZO = cond(ecx)
-	C = false
-	v12 = (rdx & 0x0000000000000001 << cl) != 0x0000000000000000
-	rdx = __ror(rdx, cl)
-	C = v12
-	SCZO = cond(rdx - 0xFFFFFFFFFFFFFFFF)
-	branch Test(NE,Z) l0000000140001833
-	// succ:  l0000000140001829 l0000000140001833
-l0000000140001829:
-	rcx = rbx
-	call crt_atexit (retsize: 8;)
-	goto l0000000140001842
-	// succ:  l0000000140001842
+	word64 rdx_22
+	word32 eax_33
+	word64 rdx_7 = Mem5[0x0000000140003000:word64]
+	word64 rdx_17 = __ror(rdx_7 ^ Mem5[0x00000001400035C0:word64], (byte) (uint64) ((word32) (uint64) (word32) rdx_7 & 0x0000003F))
+	branch rdx_17 != 0xFFFFFFFFFFFFFFFF l0000000140001833
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001833:
-	rdx = rbx
-	rcx = 0x00000001400035C0
+	word64 rax_25
 	call register_onexit_function (retsize: 8;)
-	// succ:  l0000000140001842
+		uses: rax:rax,rbx:rcx,rcx:0x00000001400035C0,rdx:rcx,rsp:fp - 0x0000000000000028,Stack +0028:rbx
+		defs: rax:rax_25,rdx:rdx_22
+	eax_33 = (word32) rax_25 (alias)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000140001829:
+	word64 rax_30
+	call crt_atexit (retsize: 8;)
+		uses: rax:rax,rbx:rcx,rcx:rcx,rdx:rdx_17,rsp:fp - 0x0000000000000028,Stack +0028:rbx
+		defs: rax:rax_30,rdx:rdx_28
+	eax_33 = (word32) rax_30 (alias)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001842:
-	rcx = (uint64) (ecx ^ ecx)
-	SZO = cond(ecx)
-	C = false
-	SZO = cond(eax & eax)
-	C = false
-	branch Test(NE,Z) l000000014000184A
-	// succ:  l0000000140001846_1 l000000014000184A
+	word64 rcx_32 = 0x0000000000000000
+	branch eax_33 != 0x00000000 l000000014000184A
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001846_1:
-	rcx = rbx
-	// succ:  l000000014000184A
+	rcx_32 = rcx
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l000000014000184A:
-	rax = rcx
-	rsp = rsp + 0x0000000000000020
-	SCZO = cond(rsp)
-	rbx = Mem0[rsp:word64]
-	rsp = rsp + 8
-	return
-	// succ:  fn0000000140001804_exit
+	rdxOut = rdx_22
+	return rcx_32
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0000000140001804_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0000000140001854
-// Return size: 8
-define fn0000000140001854
+
+word64 fn0000000140001854(word64 rax, word64 rcx, word64 rbx)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  rax:[0..63] rbx:[0..63] rcx:[0..63]
+// LiveOut: rdx
+// Trashed: SCZO rax rcx rdx
+// Preserved: rsp
 fn0000000140001854_entry:
-	// succ:  l0000000140001854
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001854:
-	rsp = fp
-	rsp = rsp - 0x0000000000000028
-	SCZO = cond(rsp)
-	call fn0000000140001804 (retsize: 8;)
-	rax = -rax
-	SCZO = cond(rax)
-	C = rax == 0x0000000000000000
-	rax = (uint64) (eax - eax - C)
-	SCZO = cond(eax)
-	rax = (uint64) -eax
-	SCZO = cond(eax)
-	C = eax == 0x00000000
-	rax = (uint64) (eax - 0x00000001)
-	SZO = cond(eax)
-	rsp = rsp + 0x0000000000000028
-	SCZO = cond(rsp)
-	return
-	// succ:  fn0000000140001854_exit
+	word64 rdx_10
+	fn0000000140001804(rax, rcx, rbx, out rdx_10)
+	return rdx_10
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0000000140001854_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn000000014000186C
-// Return size: 8
-define fn000000014000186C
+
+word64 fn000000014000186C(word64 qwArg08, word64 qwArg10, word64 qwArg18, word64 qwArg20)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  Stack +0010:[0..63] Stack +0018:[0..63]
+// LiveOut: rax
+// Trashed: SCZO rax rcx
+// Preserved: rbp rbx rsp
 fn000000014000186C_entry:
-	// succ:  l000000014000186C
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l000000014000186C:
-	rsp = fp
-	Mem0[rsp + 0x0000000000000020:word64] = rbx
-	rsp = rsp - 8
-	Mem0[rsp:word64] = rbp
-	rbp = rsp
-	rsp = rsp - 0x0000000000000020
-	SCZO = cond(rsp)
-	v6 = Mem0[rbp + 0x0000000000000018:word64] & 0x0000000000000000
-	Mem0[rbp + 0x0000000000000018:word64] = v6
-	SZO = cond(Mem0[rbp + 0x0000000000000018:word64])
-	C = false
-	rbx = 0x000000002DDFA232
-	rax = Mem0[0x0000000140003000:word64]
-	SCZO = cond(rax - rbx)
-	branch Test(NE,Z) l0000000140001903
-	// succ:  l0000000140001894 l0000000140001903
+	word64 rax_14 = Mem11[0x0000000140003000:word64]
+	branch rax_14 != 0x000000002DDFA232 l0000000140001903
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001894:
-	rcx = rbp + 0x0000000000000018
-	GetSystemTimeAsFileTime(Mem0[rsp:LPFILETIME])
-	rax = Mem0[rbp + 0x0000000000000018:word64]
-	Mem0[rbp + 0x0000000000000010:word64] = rax
-	eax = GetCurrentThreadId()
-	rax = (uint64) eax
-	v13 = Mem0[rbp + 0x0000000000000010:word64] ^ rax
-	Mem0[rbp + 0x0000000000000010:word64] = v13
-	SZO = cond(Mem0[rbp + 0x0000000000000010:word64])
-	C = false
-	eax = GetCurrentProcessId()
-	rax = (uint64) eax
-	rcx = rbp + 0x0000000000000020
-	v14 = Mem0[rbp + 0x0000000000000010:word64] ^ rax
-	Mem0[rbp + 0x0000000000000010:word64] = v14
-	SZO = cond(Mem0[rbp + 0x0000000000000010:word64])
-	C = false
-	eax = QueryPerformanceCounter(Mem0[rsp:(ptr64 LARGE_INTEGER)])
-	rax = (uint64) Mem0[rbp + 0x0000000000000020:word32]
-	rcx = rbp + 0x0000000000000010
-	rax = rax << 0x0000000000000020
-	SCZO = cond(rax)
-	rax = rax ^ Mem0[rbp + 0x0000000000000020:word64]
-	SZO = cond(rax)
-	C = false
-	rax = rax ^ Mem0[rbp + 0x0000000000000010:word64]
-	SZO = cond(rax)
-	C = false
-	rax = rax ^ rcx
-	SZO = cond(rax)
-	C = false
-	rcx = 0x00000000FFFFFFFF
-	rax = rax & rcx
-	SZO = cond(rax)
-	C = false
-	rcx = 0x000000002DDFA233
-	SCZO = cond(rax - rbx)
-	branch Test(NE,Z) l00000001400018FC
-	// succ:  l00000001400018F8_1 l00000001400018FC
+	GetSystemTimeAsFileTime(tLoc28)
+	word64 v14_26 = qwArg10 & 0x0000000000000000 ^ (uint64) GetCurrentThreadId() ^ (uint64) GetCurrentProcessId()
+	QueryPerformanceCounter(tLoc28)
+	word64 rax_35 = (uint64) dwArg18 << 0x0000000000000020 ^ qwArg18 ^ v14_26 ^ fp + 0x0000000000000008
+	rax_14 = rax_35 & 0x00000000FFFFFFFF
+	branch (rax_35 & 0x00000000FFFFFFFF) != 0x000000002DDFA232 l00000001400018FC
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l00000001400018F8_1:
-	rax = rcx
-	// succ:  l00000001400018FC
+	rax_14 = 0x000000002DDFA233
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l00000001400018FC:
-	Mem0[0x0000000140003000:word64] = rax
-	// succ:  l0000000140001903
+	Mem43[0x0000000140003000:word64] = rax_14
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001903:
-	rbx = Mem0[rsp + 0x0000000000000048:word64]
-	rax = ~rax
-	Mem0[0x0000000140003008:word64] = rax
-	rsp = rsp + 0x0000000000000020
-	SCZO = cond(rsp)
-	rbp = Mem0[rsp:word64]
-	rsp = rsp + 8
-	return
-	// succ:  fn000000014000186C_exit
+	word64 rax_49 = ~rax_14
+	Mem50[0x0000000140003008:word64] = rax_49
+	return rax_49
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn000000014000186C_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0000000140001918
-// Return size: 8
-define fn0000000140001918
+
+word64 fn0000000140001918()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut: rax
+// Trashed: rax
+// Preserved: rsp
 fn0000000140001918_entry:
-	// succ:  l0000000140001918
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001918:
-	rsp = fp
-	rax = (uint64) 0x00000001
-	return
-	// succ:  fn0000000140001918_exit
+	return 0x0000000000000001
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0000000140001918_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0000000140001920
-// Return size: 8
-define fn0000000140001920
+
+void fn0000000140001920()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: rax
+// Preserved: rsp
 fn0000000140001920_entry:
-	// succ:  l0000000140001920
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001920:
-	rsp = fp
-	rax = (uint64) 0x00004000
 	return
-	// succ:  fn0000000140001920_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0000000140001920_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0000000140001928
-// Return size: 0
-define fn0000000140001928
+
+void fn0000000140001928(PSLIST_HEADER tArg00)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  Stack +0000:[0..63]
+// LiveOut:
+// Trashed: rcx
+// Preserved: rsp
 fn0000000140001928_entry:
-	// succ:  l0000000140001928
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001928:
-	rsp = fp
-	rcx = 0x0000000140003600
-	call InitializeSListHead (retsize: 8;)
+	InitializeSListHead(tArg00)
 	return
-	// succ:  fn0000000140001928_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0000000140001928_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0000000140001938
-// Return size: 8
-define fn0000000140001938
+
+byte fn0000000140001938()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut: al
+// Trashed: al
+// Preserved: rsp
 fn0000000140001938_entry:
-	// succ:  l0000000140001938
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001938:
-	rsp = fp
-	al = 0x01
-	return
-	// succ:  fn0000000140001938_exit
+	return 0x01
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0000000140001938_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn000000014000193C
-// Return size: 8
-define fn000000014000193C
+
+void fn000000014000193C()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SCZO rax
+// Preserved: rsp
 fn000000014000193C_entry:
-	// succ:  l000000014000193C
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l000000014000193C:
-	rsp = fp
-	rsp = rsp - 0x0000000000000028
-	SCZO = cond(rsp)
-	call fn0000000140001130 (retsize: 8;)
-	v5 = Mem0[rax:word64] | 0x0000000000000004
-	Mem0[rax:word64] = v5
-	SZO = cond(Mem0[rax:word64])
-	C = false
-	call fn00000001400010C0 (retsize: 8;)
-	v8 = Mem0[rax:word64] | 0x0000000000000002
-	Mem0[rax:word64] = v8
-	SZO = cond(Mem0[rax:word64])
-	C = false
-	rsp = rsp + 0x0000000000000028
-	SCZO = cond(rsp)
+	word64 rax_5 = fn0000000140001130()
+	Mem8[rax_5:word64] = Mem0[rax_5:word64] | 0x0000000000000004
+	word64 rax_11 = fn00000001400010C0()
+	Mem13[rax_11:word64] = Mem8[rax_11:word64] | 0x0000000000000002
 	return
-	// succ:  fn000000014000193C_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn000000014000193C_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0000000140001958
-// Return size: 8
-define fn0000000140001958
+
+word32 fn0000000140001958()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut: rax
+// Trashed: SCZO rax
+// Preserved: rsp
 fn0000000140001958_entry:
-	// succ:  l0000000140001958
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001958:
-	rsp = fp
-	rax = (uint64) (eax ^ eax)
-	SZO = cond(eax)
-	C = false
-	SCZO = cond(Mem0[0x0000000140003014:word32] - eax)
-	al = Test(EQ,Z)
-	return
-	// succ:  fn0000000140001958_exit
+	return (word32) (uint64) (Mem0[0x0000000140003014:word32] == 0x00000000)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0000000140001958_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0000000140001964
-// Return size: 8
-define fn0000000140001964
+
+void fn0000000140001964()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: rax
+// Preserved: rsp
 fn0000000140001964_entry:
-	// succ:  l0000000140001964
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001964:
-	rsp = fp
-	rax = 0x0000000140003638
 	return
-	// succ:  fn0000000140001964_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0000000140001964_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn000000014000196C
-// Return size: 8
-define fn000000014000196C
+
+void fn000000014000196C()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: rax
+// Preserved: rsp
 fn000000014000196C_entry:
-	// succ:  l000000014000196C
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l000000014000196C:
-	rsp = fp
-	rax = 0x0000000140003630
 	return
-	// succ:  fn000000014000196C_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn000000014000196C_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0000000140001974
-// Return size: 8
-define fn0000000140001974
+
+word64 fn0000000140001974(word32 ecx, word64 rbx, word64 rbp, word64 qwArg00, word64 qwArg08, word64 qwArg10, ptr64 & rcxOut, ptr64 & rdxOut, ptr64 & r8Out)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  ecx:[0..31] rbp:[0..63] rbx:[0..63] Stack +0000:[0..63] Stack +0010:[0..63]
+// LiveOut: r8 rax rcx rdx
+// Trashed: SCZO r8 rax rcx rdx
+// Preserved: r9 rbp rbx rsp
 fn0000000140001974_entry:
-	// succ:  l0000000140001974
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001974:
-	rsp = fp
-	Mem0[rsp + 0x0000000000000008:word64] = rbx
-	rsp = rsp - 8
-	Mem0[rsp:word64] = rbp
-	rbp = rsp - 0x00000000000004C0
-	rsp = rsp - 1472
-	SCZO = cond(rsp)
-	rbx = (uint64) ecx
-	rcx = (uint64) 0x00000017
-	eax = IsProcessorFeaturePresent(Mem0[rsp:DWORD])
-	SZO = cond(eax & eax)
-	C = false
-	branch Test(EQ,Z) l000000014000199D
-	// succ:  l0000000140001999 l000000014000199D
-l0000000140001999:
-	rcx = (uint64) ebx
-	__fastfail(ecx)
+	word32 ebx_99 = (word32) (uint64) ecx
+	branch IsProcessorFeaturePresent(tLoc05C8) == 0x00000000 l000000014000199D
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l000000014000199D:
-	v13 = Mem0[0x0000000140003610:word32] & 0x00000000
-	Mem0[0x0000000140003610:word32] = v13
-	SZO = cond(Mem0[0x0000000140003610:word32])
-	C = false
-	rcx = rbp - 0x0000000000000010
-	rdx = (uint64) (edx ^ edx)
-	SZO = cond(edx)
-	C = false
-	r8 = (uint64) 0x000004D0
-	eax = memset(Mem0[rsp:(ptr64 void)], Mem0[rsp + 8:int32], Mem0[rsp + 16:size_t])
-	rcx = rbp - 0x0000000000000010
-	RtlCaptureContext(Mem0[rsp:PCONTEXT])
-	rbx = Mem0[rbp + 0x00000000000000E8:word64]
-	rdx = rbp + 0x00000000000004D8
-	rcx = rbx
-	r8 = (uint64) (r8d ^ r8d)
-	SZO = cond(r8d)
-	C = false
-	rax = RtlLookupFunctionEntry(rcx, rdx, r8)
-	SZO = cond(rax & rax)
-	C = false
-	branch Test(EQ,Z) l0000000140001A1A
-	// succ:  l00000001400019DE l0000000140001A1A
+	Mem18[0x0000000140003610:word32] = Mem7[0x0000000140003610:word32] & 0x00000000
+	memset(ptrLoc05C8, dwLoc05C0, tLoc05B8)
+	RtlCaptureContext(ptrLoc05C8)
+	word64 rax_27 = RtlLookupFunctionEntry(qwLoc03E0, fp + 0x0000000000000010, 0x0000000000000000)
+	branch rax_27 == 0x0000000000000000 l0000000140001A1A
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l00000001400019DE:
-	v19 = Mem0[rsp + 0x0000000000000038:word64] & 0x0000000000000000
-	Mem0[rsp + 0x0000000000000038:word64] = v19
-	SZO = cond(Mem0[rsp + 0x0000000000000038:word64])
-	C = false
-	rcx = rbp + 0x00000000000004E0
-	rdx = Mem0[rbp + 0x00000000000004D8:word64]
-	r9 = rax
-	Mem0[rsp + 0x0000000000000030:word64] = rcx
-	r8 = rbx
-	rcx = rbp + 0x00000000000004E8
-	Mem0[rsp + 0x0000000000000028:word64] = rcx
-	rcx = rbp - 0x0000000000000010
-	Mem0[rsp + 0x0000000000000020:word64] = rcx
-	rcx = (uint64) (ecx ^ ecx)
-	SZO = cond(ecx)
-	C = false
 	call KERNEL32.dll!RtlVirtualUnwind (retsize: 8;)
-	// succ:  l0000000140001A1A
+		uses: r8:qwLoc03E0,r9:rax_27,rax:rax_27,rbp:fp - 0x00000000000004C8,rbx:qwLoc03E0,rcx:0x0000000000000000,rdx:qwArg10,rsp:fp - 1480,Stack +0008:ptrLoc05C8,Stack +0010:dwLoc05C0,Stack +0018:tLoc05B8,Stack +0028:fp - 0x00000000000004D8,Stack +0030:fp + 0x0000000000000020,Stack +0038:fp + 0x0000000000000018,Stack +0040:qwLoc0590 & 0x0000000000000000,Stack +0048:qwLoc0588,Stack +0050:qwLoc0580,Stack +0058:dwLoc0578,Stack +005C:dwLoc0574,Stack +0068:qwLoc0568,Stack +0190:qwLoc0440,Stack +01F0:qwLoc03E0,Stack +05C8:rbp,Stack +05D0:qwArg00,Stack +05D8:rbx,Stack +05E0:qwArg10
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001A1A:
-	rax = Mem0[rbp + 0x00000000000004C8:word64]
-	rcx = rsp + 0x0000000000000050
-	Mem0[rbp + 0x00000000000000E8:word64] = rax
-	rdx = (uint64) (edx ^ edx)
-	SZO = cond(edx)
-	C = false
-	rax = rbp + 0x00000000000004C8
-	r8 = (uint64) 0x00000098
-	rax = rax + 0x0000000000000008
-	SCZO = cond(rax)
-	Mem0[rbp + 0x0000000000000088:word64] = rax
-	eax = memset(Mem0[rsp:(ptr64 void)], Mem0[rsp + 8:int32], Mem0[rsp + 16:size_t])
-	rax = Mem0[rbp + 0x00000000000004C8:word64]
-	Mem0[rsp + 0x0000000000000060:word64] = rax
-	Mem0[rsp + 0x0000000000000050:word32] = 0x40000015
-	Mem0[rsp + 0x0000000000000054:word32] = 0x00000001
-	eax = IsDebuggerPresent()
-	SCZO = cond(eax - 0x00000001)
-	rax = rsp + 0x0000000000000050
-	Mem0[rsp + 0x0000000000000040:word64] = rax
-	rax = rbp - 0x0000000000000010
-	bl = Test(EQ,Z)
-	Mem0[rsp + 0x0000000000000048:word64] = rax
-	rcx = (uint64) (ecx ^ ecx)
-	SZO = cond(ecx)
-	C = false
-	eax = SetUnhandledExceptionFilter(Mem0[rsp:LPTOP_LEVEL_EXCEPTION_FILTER])
-	rcx = rsp + 0x0000000000000040
-	eax = UnhandledExceptionFilter(Mem0[rsp:(ptr64 (struct "_EXCEPTION_POINTERS"))])
-	SZO = cond(eax & eax)
-	C = false
-	branch Test(NE,Z) l0000000140001AA8
-	// succ:  l0000000140001A9E l0000000140001AA8
+	memset(ptrLoc05C8, dwLoc05C0, tLoc05B8)
+	word32 eax_69 = IsDebuggerPresent()
+	SetUnhandledExceptionFilter(ptrLoc05C8)
+	word32 eax_80 = UnhandledExceptionFilter(ptrLoc05C8)
+	word64 rax_137 = DPB(fp - 0x00000000000004D8, eax_80, 0)
+	branch eax_80 != 0x00000000 l0000000140001AA8
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001A9E:
-	bl = -bl
-	SCZO = cond(bl)
-	C = bl == 0x00
-	rax = (uint64) (eax - eax - C)
-	SCZO = cond(eax)
-	v22 = Mem0[0x0000000140003610:word32] & eax
-	Mem0[0x0000000140003610:word32] = v22
-	SZO = cond(Mem0[0x0000000140003610:word32])
-	C = false
-	// succ:  l0000000140001AA8
+	rax_137 = (uint64) (0x00000000 - (-(eax_69 == 0x00000001) == 0x00))
+	Mem89[0x0000000140003610:word32] = Mem76[0x0000000140003610:word32] & (word32) rax_137
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001AA8:
-	rbx = Mem0[rsp + 0x00000000000005D0:word64]
-	rsp = rsp + 1472
-	SCZO = cond(rsp)
-	rbp = Mem0[rsp:word64]
-	rsp = rsp + 8
-	return
-	// succ:  fn0000000140001974_exit
+	rcxOut = fp - 0x0000000000000588
+	rdxOut = 0x0000000000000000
+	r8Out = 0x0000000000000098
+	return rax_137
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0000000140001974_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000140001999:
+	__fastfail((word32) (uint64) ebx_99)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0000000140001ABC
-// Return size: 8
-define fn0000000140001ABC
+
+word64 fn0000000140001ABC()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut: rax
+// Trashed: SCZO rax
+// Preserved: rsp
 fn0000000140001ABC_entry:
-	// succ:  l0000000140001ABC
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001ABC:
-	rsp = fp
-	rax = (uint64) (eax ^ eax)
-	SZO = cond(eax)
-	C = false
-	return
-	// succ:  fn0000000140001ABC_exit
+	return 0x0000000000000000
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0000000140001ABC_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0000000140001AC0
-// Return size: 8
-define fn0000000140001AC0
+
+void fn0000000140001AC0(word64 rax)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  rax:[32..63]
+// LiveOut:
+// Trashed: SCZO rax rcx
+// Preserved: rsp
 fn0000000140001AC0_entry:
-	// succ:  l0000000140001AC0
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001AC0:
-	rsp = fp
-	rsp = rsp - 0x0000000000000028
-	SCZO = cond(rsp)
-	rcx = (uint64) (ecx ^ ecx)
-	SZO = cond(ecx)
-	C = false
-	eax = GetModuleHandleW(Mem0[rsp:LPCWSTR])
-	rcx = rax
-	SZO = cond(rax & rax)
-	C = false
-	branch Test(NE,Z) l0000000140001AD8
-	// succ:  l0000000140001AD4 l0000000140001AD8
-l0000000140001AD4:
-	al = al ^ al
-	SZO = cond(al)
-	C = false
-	goto l0000000140001B0F
-	// succ:  l0000000140001B0F
+	word64 rax_8 = DPB(rax, GetModuleHandleW(tLoc28), 0)
+	branch rax_8 != 0x0000000000000000 l0000000140001AD8
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001AD8:
-	rax = (uint64) 0x00005A4D
-	SCZO = cond(Mem0[rcx:word16] - ax)
-	branch Test(NE,Z) l0000000140001AD4
-	// succ:  l0000000140001AE2 l0000000140001AD4
+	branch Mem0[rax_8:word16] != 0x5A4D l0000000140001AD4
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001AE2:
-	rax = (int64) Mem0[rcx + 0x000000000000003C:word32]
-	rax = rax + rcx
-	SCZO = cond(rax)
-	SCZO = cond(Mem0[rax:word32] - 0x00004550)
-	branch Test(NE,Z) l0000000140001AD4
-	// succ:  l0000000140001AF1 l0000000140001AD4
+	word64 rax_18 = (int64) Mem0[rax_8 + 0x000000000000003C:word32] + rax_8
+	branch Mem0[rax_18:word32] != 0x00004550 l0000000140001AD4
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001AF1:
-	rcx = (uint64) 0x0000020B
-	SCZO = cond(Mem0[rax + 0x0000000000000018:word16] - cx)
-	branch Test(NE,Z) l0000000140001AD4
-	// succ:  l0000000140001AFC l0000000140001AD4
+	branch Mem0[rax_18 + 0x0000000000000018:word16] != 0x020B l0000000140001AD4
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001AFC:
-	SCZO = cond(Mem0[rax + 0x0000000000000084:word32] - 0x0000000E)
-	branch Test(ULE,CZ) l0000000140001AD4
-	// succ:  l0000000140001B05 l0000000140001AD4
+	branch Mem0[rax_18 + 0x0000000000000084:word32] <=u 0x0000000E l0000000140001AD4
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001B05:
-	SCZO = cond(Mem0[rax + 0x00000000000000F8:word32] - 0x00000000)
-	al = Test(NE,Z)
-	// succ:  l0000000140001B0F
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000140001AD4:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001B0F:
-	rsp = rsp + 0x0000000000000028
-	SCZO = cond(rsp)
 	return
-	// succ:  fn0000000140001AC0_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0000000140001AC0_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0000000140001B14
-// Return size: 0
-define fn0000000140001B14
+
+void fn0000000140001B14(LPTOP_LEVEL_EXCEPTION_FILTER tArg00)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  Stack +0000:[0..63]
+// LiveOut:
+// Trashed: eax rcx
+// Preserved: rsp
 fn0000000140001B14_entry:
-	// succ:  l0000000140001B14
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001B14:
-	rsp = fp
-	rcx = 0x0000000140001B24
-	call SetUnhandledExceptionFilter (retsize: 8;)
+	SetUnhandledExceptionFilter(tArg00)
 	return
-	// succ:  fn0000000140001B14_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0000000140001B14_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0000000140001B24
-// Return size: 8
-define fn0000000140001B24
+
+void fn0000000140001B24(word64 rcx, word64 rbx, word64 rsi, word64 rdi)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  rbx:[0..63] rcx:[0..63] rdi:[0..63] rsi:[0..63]
+// LiveOut:
+// Trashed: SCZO rax rcx rsp
+// Preserved:
 fn0000000140001B24_entry:
-	// succ:  l0000000140001B24
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001B24:
-	rsp = fp
-	rsp = rsp - 0x0000000000000028
-	SCZO = cond(rsp)
-	rax = Mem0[rcx:word64]
-	SCZO = cond(Mem0[rax:word32] - 0xE06D7363)
-	branch Test(NE,Z) l0000000140001B4F
-	// succ:  l0000000140001B33 l0000000140001B4F
+	word64 rax_6 = Mem0[rcx:word64]
+	branch Mem0[rax_6:word32] != 0xE06D7363 l0000000140001B4F
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001B33:
-	SCZO = cond(Mem0[rax + 0x0000000000000018:word32] - 0x00000004)
-	branch Test(NE,Z) l0000000140001B4F
-	// succ:  l0000000140001B39 l0000000140001B4F
+	branch Mem0[rax_6 + 0x0000000000000018:word32] != 0x00000004 l0000000140001B4F
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001B39:
-	rcx = (uint64) Mem0[rax + 0x0000000000000020:word32]
-	eax = rcx + 0xFFFFFFFFE66CFAE0
-	SCZO = cond(eax - 0x00000002)
-	branch Test(ULE,CZ) l0000000140001B56
-	// succ:  l0000000140001B47 l0000000140001B56
+	word64 rcx_11 = (uint64) Mem0[rax_6 + 0x0000000000000020:word32]
+	word32 ecx_15 = (word32) rcx_11
+	rcx_11 = DPB(rcx_11, ecx_15, 0) (alias)
+	word64 rax_20 = DPB(rax_6, rcx_11 + 0xFFFFFFFFE66CFAE0, 0)
+	branch rcx_11 <=u 0xFFFFFFFFE66CFADE l0000000140001B56
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001B47:
-	SCZO = cond(ecx - 0x01994000)
-	branch Test(EQ,Z) l0000000140001B56
-	// succ:  l0000000140001B4F l0000000140001B56
-l0000000140001B4F:
-	rax = (uint64) (eax ^ eax)
-	SZO = cond(eax)
-	C = false
-	rsp = rsp + 0x0000000000000028
-	SCZO = cond(rsp)
-	return
-	// succ:  fn0000000140001B24_exit
+	branch ecx_15 == 0x01994000 l0000000140001B56
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001B56:
 	call api-ms-win-crt-runtime-l1-1-0.dll!terminate (retsize: 8;)
+		uses: rax:rax_20,rbx:rbx,rcx:rcx_22,rdi:rdi,rsi:rsi,rsp:fp - 0x0000000000000028
 	int3()
-	// succ:  l0000000140001B5B_thunk_fn0000000140001B5C
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001B5B_thunk_fn0000000140001B5C:
-	call fn0000000140001B5C (retsize: 0;)
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	word64 stackArg8 = <invalid>
+	word64 stackArg16 = <invalid>
+	fn0000000140001B5C(rbx, rsi, rdi, stackArg8, stackArg16)
 	return
-	// succ:  fn0000000140001B24_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000140001B4F:
+	return
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0000000140001B24_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0000000140001B5C
-// Return size: 8
-define fn0000000140001B5C
+
+void fn0000000140001B5C(word64 rbx, word64 rsi, word64 rdi, word64 qwArg08, word64 qwArg10)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  rbx:[0..63] rdi:[0..63] rsi:[0..63]
+// LiveOut:
+// Trashed: SCZO rcx
+// Preserved: rbx rdi rsi rsp
 fn0000000140001B5C_entry:
-	// succ:  l0000000140001B5C
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001B5C:
-	rsp = fp
-	Mem0[rsp + 0x0000000000000008:word64] = rbx
-	Mem0[rsp + 0x0000000000000010:word64] = rsi
-	rsp = rsp - 8
-	Mem0[rsp:word64] = rdi
-	rsp = rsp - 0x0000000000000020
-	SCZO = cond(rsp)
-	rbx = 0x0000000140002680
-	rsi = 0x0000000140002680
-	goto l0000000140001B91
-	// succ:  l0000000140001B91
-l0000000140001B7B:
-	rdi = Mem0[rbx:word64]
-	SZO = cond(rdi & rdi)
-	C = false
-	branch Test(EQ,Z) l0000000140001B8D
-	// succ:  l0000000140001B83 l0000000140001B8D
-l0000000140001B83:
-	rcx = rdi
-	call fn0000000140001BF4 (retsize: 8;)
-	call rdi (retsize: 8;)
-	// succ:  l0000000140001B8D
-l0000000140001B8D:
-	rbx = rbx + 0x0000000000000008
-	SCZO = cond(rbx)
-	// succ:  l0000000140001B91
+	word64 rbx_12 = 0x0000000140002680
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001B91:
-	SCZO = cond(rbx - rsi)
-	branch Test(ULT,C) l0000000140001B7B
-	// succ:  l0000000140001B96 l0000000140001B7B
+	branch rbx_12 <u 0x0000000140002680 l0000000140001B7B
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000140001B7B:
+	word64 rdi_19 = Mem9[rbx_12:word64]
+	branch rdi_19 == 0x0000000000000000 l0000000140001B8D
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000140001B83:
+	fn0000000140001BF4()
+	call rdi_19 (retsize: 8;)
+		uses: rbx:rbx_14,rcx:rdi_19,rdi:rdi_19,rsi:0x0000000140002680,rsp:fp - 0x0000000000000028,Stack +0028:rdi,Stack +0038:rbx,Stack +0040:rsi
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000140001B8D:
+	rbx_12 = rbx_12 + 0x0000000000000008
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001B96:
-	rbx = Mem0[rsp + 0x0000000000000030:word64]
-	rsi = Mem0[rsp + 0x0000000000000038:word64]
-	rsp = rsp + 0x0000000000000020
-	SCZO = cond(rsp)
-	rdi = Mem0[rsp:word64]
-	rsp = rsp + 8
 	return
-	// succ:  fn0000000140001B5C_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0000000140001B5C_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0000000140001BA8
-// Return size: 8
-define fn0000000140001BA8
+
+void fn0000000140001BA8(word64 rbx, word64 rsi, word64 rdi, word64 qwArg08, word64 qwArg10)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  rbx:[0..63] rdi:[0..63] rsi:[0..63]
+// LiveOut:
+// Trashed: SCZO rcx
+// Preserved: rbx rdi rsi rsp
 fn0000000140001BA8_entry:
-	// succ:  l0000000140001BA8
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001BA8:
-	rsp = fp
-	Mem0[rsp + 0x0000000000000008:word64] = rbx
-	Mem0[rsp + 0x0000000000000010:word64] = rsi
-	rsp = rsp - 8
-	Mem0[rsp:word64] = rdi
-	rsp = rsp - 0x0000000000000020
-	SCZO = cond(rsp)
-	rbx = 0x0000000140002690
-	rsi = 0x0000000140002690
-	goto l0000000140001BDD
-	// succ:  l0000000140001BDD
-l0000000140001BC7:
-	rdi = Mem0[rbx:word64]
-	SZO = cond(rdi & rdi)
-	C = false
-	branch Test(EQ,Z) l0000000140001BD9
-	// succ:  l0000000140001BCF l0000000140001BD9
-l0000000140001BCF:
-	rcx = rdi
-	call fn0000000140001BF4 (retsize: 8;)
-	call rdi (retsize: 8;)
-	// succ:  l0000000140001BD9
-l0000000140001BD9:
-	rbx = rbx + 0x0000000000000008
-	SCZO = cond(rbx)
-	// succ:  l0000000140001BDD
+	word64 rbx_12 = 0x0000000140002690
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001BDD:
-	SCZO = cond(rbx - rsi)
-	branch Test(ULT,C) l0000000140001BC7
-	// succ:  l0000000140001BE2 l0000000140001BC7
+	branch rbx_12 <u 0x0000000140002690 l0000000140001BC7
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000140001BC7:
+	word64 rdi_19 = Mem9[rbx_12:word64]
+	branch rdi_19 == 0x0000000000000000 l0000000140001BD9
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000140001BCF:
+	fn0000000140001BF4()
+	call rdi_19 (retsize: 8;)
+		uses: rbx:rbx_14,rcx:rdi_19,rdi:rdi_19,rsi:0x0000000140002690,rsp:fp - 0x0000000000000028,Stack +0028:rdi,Stack +0038:rbx,Stack +0040:rsi
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l0000000140001BD9:
+	rbx_12 = rbx_12 + 0x0000000000000008
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001BE2:
-	rbx = Mem0[rsp + 0x0000000000000030:word64]
-	rsi = Mem0[rsp + 0x0000000000000038:word64]
-	rsp = rsp + 0x0000000000000020
-	SCZO = cond(rsp)
-	rdi = Mem0[rsp:word64]
-	rsp = rsp + 8
 	return
-	// succ:  fn0000000140001BA8_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0000000140001BA8_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0000000140001BF4
-// Return size: 0
-define fn0000000140001BF4
+
+void fn0000000140001BF4()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: rsp
 fn0000000140001BF4_entry:
-	// succ:  l0000000140001BF4
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001BF4:
-	rsp = fp
 	call Mem0[0x0000000140002190:word64] (retsize: 8;)
+		uses: rsp:fp
 	return
-	// succ:  fn0000000140001BF4_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0000000140001BF4_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0000000140001BFC
-// Return size: 8
-define fn0000000140001BFC
+
+void fn0000000140001BFC(word32 edx, word32 ebx, word64 qwArg08, word64 qwArg10, word64 qwArg18)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  edx:[0..31] rbx:[0..31]
+// LiveOut:
+// Trashed: SCZO r10 r11d r8 r9 rax rcx rdx
+// Preserved: rbp rbx rdi rsp
 fn0000000140001BFC_entry:
-	// succ:  l0000000140001BFC
+	word32 ebx_137 = (word32) rbx
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001BFC:
-	rsp = fp
-	Mem0[rsp + 0x0000000000000010:word64] = rbx
-	Mem0[rsp + 0x0000000000000018:word64] = rdi
-	rsp = rsp - 8
-	Mem0[rsp:word64] = rbp
-	rbp = rsp
-	rsp = rsp - 0x0000000000000020
-	SCZO = cond(rsp)
-	v7 = Mem0[rbp - 0x0000000000000018:word32] & 0x00000000
-	Mem0[rbp - 0x0000000000000018:word32] = v7
-	SZO = cond(Mem0[rbp - 0x0000000000000018:word32])
-	C = false
-	rcx = (uint64) (ecx ^ ecx)
-	SZO = cond(ecx)
-	C = false
-	rax = (uint64) (eax ^ eax)
-	SZO = cond(eax)
-	C = false
-	Mem0[0x000000014000301C:word32] = 0x00000002
-	__cpuid(eax, ecx, &eax, &ebx, &ecx, &edx)
-	r8 = (uint64) ecx
-	Mem0[0x0000000140003018:word32] = 0x00000001
-	rcx = (uint64) (ecx ^ 0x444D4163)
-	SZO = cond(ecx)
-	C = false
-	r9 = (uint64) edx
-	r10 = (uint64) edx
-	r9 = (uint64) (r9d ^ 0x69746E65)
-	SZO = cond(r9d)
-	C = false
-	r10 = (uint64) (r10d ^ 0x49656E69)
-	SZO = cond(r10d)
-	C = false
-	r8 = (uint64) (r8d ^ 0x6C65746E)
-	SZO = cond(r8d)
-	C = false
-	r10 = (uint64) (r10d | r8d)
-	SZO = cond(r10d)
-	C = false
-	r11 = (uint64) ebx
-	r8 = (uint64) Mem0[0x0000000140003614:word32]
-	r11 = (uint64) (r11d ^ 0x68747541)
-	SZO = cond(r11d)
-	C = false
-	r11 = (uint64) (r11d | r9d)
-	SZO = cond(r11d)
-	C = false
-	rdx = (uint64) ebx
-	r11 = (uint64) (r11d | ecx)
-	SZO = cond(r11d)
-	C = false
-	rdx = (uint64) (edx ^ 0x756E6547)
-	SZO = cond(edx)
-	C = false
-	rcx = (uint64) (ecx ^ ecx)
-	SZO = cond(ecx)
-	C = false
-	rdi = (uint64) eax
-	r10 = (uint64) (r10d | edx)
-	SZO = cond(r10d)
-	C = false
-	rax = (uint64) 0x00000001
-	__cpuid(eax, ecx, &eax, &ebx, &ecx, &edx)
-	Mem0[rbp - 0x0000000000000010:word32] = eax
-	r9 = (uint64) ecx
-	Mem0[rbp - 0x0000000000000008:word32] = r9d
-	rcx = (uint64) eax
-	Mem0[rbp - 0x000000000000000C:word32] = ebx
-	Mem0[rbp - 0x0000000000000004:word32] = edx
-	SZO = cond(r10d & r10d)
-	C = false
-	branch Test(NE,Z) l0000000140001CE9
-	// succ:  l0000000140001C97 l0000000140001CE9
+	Mem17[0x000000014000301C:word32] = 0x00000002
+	__cpuid(0x00000000, 0x00000000, &0x00000000, &ebx_137, &0x00000000, &edx)
+	Mem23[0x0000000140003018:word32] = 0x00000001
+	rdx_163 = (uint64) ((word32) (uint64) ebx_137 ^ 0x756E6547)
+	word32 edx_52 = (word32) rdx_163
+	word32 r8d_108 = (word32) (uint64) Mem23[0x0000000140003614:word32]
+	__cpuid(0x00000001, 0x00000000, &0x00000001, &ebx_137, &0x00000000, &edx_52)
+	byte bLoc20_235 = dwLoc20 & 0x00000000
+	word32 r11d_96 = (word32) (uint64) ((word32) (uint64) ((word32) (uint64) ((word32) (uint64) ebx_137 ^ 0x68747541) | (word32) ((uint64) ((word32) ((uint64) edx) ^ 0x69746E65))) | 0x444D4163)
+	word64 rdx_163 = DPB(rdx_163, edx_52, 0)
+	rdx_163 = DPB(rdx_163, edx_52, 0) (alias)
+	rdx_163 = DPB(rdx_163, edx_52, 0) (alias)
+	rdx_163 = DPB(rdx_163, edx_52, 0) (alias)
+	rdx_163 = DPB(rdx_163, edx_52, 0) (alias)
+	rdx_163 = DPB(rdx_163, edx_52, 0) (alias)
+	word64 rdx_162 = DPB(rdx_163, edx_52, 0)
+	rdx_162 = DPB(rdx_163, edx_52, 0) (alias)
+	rdx_162 = DPB(rdx_163, edx_52, 0) (alias)
+	word64 rdx_161 = DPB(rdx_162, edx_52, 0)
+	rdx_161 = DPB(rdx_162, edx_52, 0) (alias)
+	branch (word32) (uint64) ((word32) (uint64) ((word32) (uint64) ((word32) (uint64) edx ^ 0x49656E69) | 0x6C65746E) | edx_52) != 0x00000000 l0000000140001CE9
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001C97:
-	v27 = Mem0[0x0000000140003020:word64] | 0xFFFFFFFFFFFFFFFF
-	Mem0[0x0000000140003020:word64] = v27
-	SZO = cond(Mem0[0x0000000140003020:word64])
-	C = false
-	r8 = (uint64) (r8d | 0x00000004)
-	SZO = cond(r8d)
-	C = false
-	rax = (uint64) (eax & 0x0FFF3FF0)
-	SZO = cond(eax)
-	C = false
-	Mem0[0x0000000140003614:word32] = r8d
-	SCZO = cond(eax - 0x000106C0)
-	branch Test(EQ,Z) l0000000140001CDE
-	// succ:  l0000000140001CB6 l0000000140001CDE
+	Mem69[0x0000000140003020:word64] = Mem63[0x0000000140003020:word64] | 0xFFFFFFFFFFFFFFFF
+	r8d_108 = (word32) (uint64) (r8d_108 | 0x00000004) (alias)
+	Mem75[0x0000000140003614:word32] = r8d_108
+	branch 0xFFFEF940 == 0x00000000 l0000000140001CDE
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001CB6:
-	SCZO = cond(eax - 0x00020660)
-	branch Test(EQ,Z) l0000000140001CDE
-	// succ:  l0000000140001CBD l0000000140001CDE
+	branch 0xFFFDF9A0 == 0x00000000 l0000000140001CDE
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001CBD:
-	SCZO = cond(eax - 0x00020670)
-	branch Test(EQ,Z) l0000000140001CDE
-	// succ:  l0000000140001CC4 l0000000140001CDE
+	branch 0xFFFDF990 == 0x00000000 l0000000140001CDE
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001CC4:
-	rax = (uint64) (eax + 0xFFFCF9B0)
-	SCZO = cond(eax)
-	SCZO = cond(eax - 0x00000020)
-	branch Test(UGT,CZ) l0000000140001CE9
-	// succ:  l0000000140001CCE l0000000140001CE9
+	branch false l0000000140001CE9
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001CCE:
-	rbx = 0x0000000000010001
-	C = __bt(rbx, rax)
-	branch Test(UGE,C) l0000000140001CE9
-	// succ:  l0000000140001CDE l0000000140001CE9
+	ebx_137 = 0x00010001 (alias)
+	branch __bt(0x0000000000010001, 0x00000000FFFCF9B0) l0000000140001CE9
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001CDE:
-	r8 = (uint64) (r8d | 0x00000001)
-	SZO = cond(r8d)
-	C = false
-	Mem0[0x0000000140003614:word32] = r8d
-	// succ:  l0000000140001CE9
+	r8d_108 = (word32) (uint64) (r8d_108 | 0x00000001) (alias)
+	Mem94[0x0000000140003614:word32] = r8d_108
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001CE9:
-	SZO = cond(r11d & r11d)
-	C = false
-	branch Test(NE,Z) l0000000140001D07
-	// succ:  l0000000140001CEE l0000000140001D07
+	branch r11d_96 != 0x00000000 l0000000140001D07
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001CEE:
-	rcx = (uint64) (ecx & 0x0FF00F00)
-	SZO = cond(ecx)
-	C = false
-	SCZO = cond(ecx - 0x00600F00)
-	branch Test(ULT,C) l0000000140001D07
-	// succ:  l0000000140001CFC l0000000140001D07
+	branch false l0000000140001D07
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001CFC:
-	r8 = (uint64) (r8d | 0x00000004)
-	SZO = cond(r8d)
-	C = false
-	Mem0[0x0000000140003614:word32] = r8d
-	// succ:  l0000000140001D07
+	r8d_108 = (word32) (uint64) (r8d_108 | 0x00000004) (alias)
+	Mem113[0x0000000140003614:word32] = r8d_108
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001D07:
-	rax = (uint64) 0x00000007
-	Mem0[rbp - 0x0000000000000020:word32] = edx
-	Mem0[rbp - 0x000000000000001C:word32] = r9d
-	SCZO = cond(edi - eax)
-	branch Test(LT,SO) l0000000140001D3B
-	// succ:  l0000000140001D17 l0000000140001D3B
+	branch true l0000000140001D3B
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001D17:
-	rcx = (uint64) (ecx ^ ecx)
-	SZO = cond(ecx)
-	C = false
-	__cpuid(eax, ecx, &eax, &ebx, &ecx, &edx)
-	Mem0[rbp - 0x0000000000000010:word32] = eax
-	Mem0[rbp - 0x000000000000000C:word32] = ebx
-	Mem0[rbp - 0x0000000000000008:word32] = ecx
-	Mem0[rbp - 0x0000000000000004:word32] = edx
-	Mem0[rbp - 0x0000000000000018:word32] = ebx
-	C = __bt(ebx, 0x09)
-	branch Test(UGE,C) l0000000140001D3B
-	// succ:  l0000000140001D30 l0000000140001D3B
+	__cpuid(0x00000007, 0x00000000, &0x00000007, &ebx_137, &0x00000000, &edx_52)
+	bLoc20_235 = ebx_137
+	branch __bt(ebx_137, 0x09) l0000000140001D3B
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001D30:
-	r8 = (uint64) (r8d | 0x00000002)
-	SZO = cond(r8d)
-	C = false
-	Mem0[0x0000000140003614:word32] = r8d
-	// succ:  l0000000140001D3B
+	Mem151[0x0000000140003614:word32] = (word32) (uint64) (r8d_108 | 0x00000002)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001D3B:
-	C = __bt(r9d, 0x14)
-	branch Test(UGE,C) l0000000140001DB0
-	// succ:  l0000000140001D42 l0000000140001DB0
+	branch __bt(0x00000000, 0x14) l0000000140001DB0
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001D42:
-	Mem0[0x0000000140003018:word32] = 0x00000002
-	Mem0[0x000000014000301C:word32] = 0x00000006
-	C = __bt(r9d, 0x1B)
-	branch Test(UGE,C) l0000000140001DB0
-	// succ:  l0000000140001D5D l0000000140001DB0
+	Mem154[0x0000000140003018:word32] = 0x00000002
+	Mem155[0x000000014000301C:word32] = 0x00000006
+	branch __bt(0x00000000, 0x1B) l0000000140001DB0
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001D5D:
-	C = __bt(r9d, 0x1C)
-	branch Test(UGE,C) l0000000140001DB0
-	// succ:  l0000000140001D64 l0000000140001DB0
+	branch __bt(0x00000000, 0x1C) l0000000140001DB0
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001D64:
-	rcx = (uint64) (ecx ^ ecx)
-	SZO = cond(ecx)
-	C = false
-	edx_eax = __xgetbv(ecx)
-	rdx = rdx << 0x0000000000000020
-	SCZO = cond(rdx)
-	rdx = rdx | rax
-	SZO = cond(rdx)
-	C = false
-	Mem0[rbp + 0x0000000000000010:word64] = rdx
-	rax = Mem0[rbp + 0x0000000000000010:word64]
-	al = al & 0x06
-	SZO = cond(al)
-	C = false
-	SCZO = cond(al - 0x06)
-	branch Test(NE,Z) l0000000140001DB0
-	// succ:  l0000000140001D7E l0000000140001DB0
+	word64 edx_eax_160 = __xgetbv(0x00000000)
+	branch ((byte) (DPB(rdx_161, edx_eax_160, 0) << 0x0000000000000020 | DPB(0x0000000000000007, edx_eax_160, 0)) & 0x06) != 0x06 l0000000140001DB0
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001D7E:
-	rax = (uint64) Mem0[0x000000014000301C:word32]
-	rax = (uint64) (eax | 0x00000008)
-	SZO = cond(eax)
-	C = false
-	Mem0[0x0000000140003018:word32] = 0x00000003
-	SZO = cond(Mem0[rbp - 0x0000000000000018:byte] & 0x20)
-	C = false
-	Mem0[0x000000014000301C:word32] = eax
-	branch Test(EQ,Z) l0000000140001DB0
-	// succ:  l0000000140001D9D l0000000140001DB0
+	word32 eax_195 = (word32) (uint64) ((word32) (uint64) Mem183[0x000000014000301C:word32] | 0x00000008)
+	Mem192[0x0000000140003018:word32] = 0x00000003
+	Mem196[0x000000014000301C:word32] = eax_195
+	branch (bLoc20_235 & 0x20) == 0x00 l0000000140001DB0
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001D9D:
-	rax = (uint64) (eax | 0x00000020)
-	SZO = cond(eax)
-	C = false
-	Mem0[0x0000000140003018:word32] = 0x00000005
-	Mem0[0x000000014000301C:word32] = eax
-	// succ:  l0000000140001DB0
+	Mem202[0x0000000140003018:word32] = 0x00000005
+	Mem203[0x000000014000301C:word32] = (word32) (uint64) (eax_195 | 0x00000020)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001DB0:
-	rbx = Mem0[rsp + 0x0000000000000038:word64]
-	rax = (uint64) (eax ^ eax)
-	SZO = cond(eax)
-	C = false
-	rdi = Mem0[rsp + 0x0000000000000040:word64]
-	rsp = rsp + 0x0000000000000020
-	SCZO = cond(rsp)
-	rbp = Mem0[rsp:word64]
-	rsp = rsp + 8
 	return
-	// succ:  fn0000000140001BFC_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0000000140001BFC_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0000000140001DC4
-// Return size: 8
-define fn0000000140001DC4
+
+word64 fn0000000140001DC4()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut: rax
+// Trashed: SCZO rax
+// Preserved: rsp
 fn0000000140001DC4_entry:
-	// succ:  l0000000140001DC4
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001DC4:
-	rsp = fp
-	rax = (uint64) (eax ^ eax)
-	SZO = cond(eax)
-	C = false
-	SCZO = cond(Mem0[0x0000000140003030:word32] - eax)
-	al = Test(NE,Z)
-	return
-	// succ:  fn0000000140001DC4_exit
+	return (uint64) (Mem0[0x0000000140003030:word32] != 0x00000000)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0000000140001DC4_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0000000140001DD0
-// Return size: 8
-define fn0000000140001DD0
+
+void fn0000000140001DD0()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: rsp
 fn0000000140001DD0_entry:
-	// succ:  l0000000140001DD0
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001DD0:
-	rsp = fp
 	return
-	// succ:  fn0000000140001DD0_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0000000140001DD0_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0000000140001E7C
-// Return size: 8
-define fn0000000140001E7C
+
+void fn0000000140001E7C(word64 rdx, word64 rbx, word64 rsi, word64 rdi, word64 r9)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  r9:[0..63] rbx:[0..63] rdi:[0..63] rdx:[0..63] rsi:[0..63]
+// LiveOut:
+// Trashed: SCZO r10 r11d r8 r9 rax rcx rdx rsp
+// Preserved:
 fn0000000140001E7C_entry:
-	// succ:  l0000000140001E7C
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001E7C:
-	rsp = fp
-	rsp = rsp - 0x0000000000000028
-	SCZO = cond(rsp)
-	r8 = Mem0[r9 + 0x0000000000000038:word64]
-	rcx = rdx
-	rdx = r9
-	call fn0000000140001E9C (retsize: 8;)
-	rsp = rsp + 0xFFFFFFFFFFFFFFF8
-	rax = (uint64) 0x00000001
-	rsp = rsp + 0x0000000000000028
-	SCZO = cond(rsp)
+	fn0000000140001E9C(rdx, r9, rbx, rsi, rdi, Mem0[r9 + 0x0000000000000038:word64], qwLoc30)
 	return
-	// succ:  fn0000000140001E7C_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0000000140001E7C_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0000000140001E9C
-// Return size: 8
-define fn0000000140001E9C
+
+void fn0000000140001E9C(word64 rcx, word64 rdx, word64 rbx, word64 rsi, word64 rdi, word64 r8, word64 qwArg00)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  r8:[0..63] rbx:[0..63] rcx:[0..63] rdi:[0..63] rdx:[0..63] rsi:[0..63] Stack +0000:[0..63]
+// LiveOut:
+// Trashed: SCZO r10 r11d r8 r9 rax rcx rdx
+// Preserved: rbx rsp
 fn0000000140001E9C_entry:
-	// succ:  l0000000140001E9C
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001E9C:
-	rsp = fp
-	rsp = rsp - 8
-	Mem0[rsp:word64] = rbx
-	r11 = (uint64) Mem0[r8:word32]
-	rbx = rdx
-	r11 = (uint64) (r11d & 0xFFFFFFF8)
-	SZO = cond(r11d)
-	C = false
-	r9 = rcx
-	SZO = cond(Mem0[r8:byte] & 0x04)
-	C = false
-	r10 = rcx
-	branch Test(EQ,Z) l0000000140001EC7
-	// succ:  l0000000140001EB4 l0000000140001EC7
+	word32 r11d_29 = (word32) (uint64) ((word32) (uint64) Mem5[r8:word32] & 0xFFFFFFF8)
+	word64 r9_13 = rcx
+	word64 r10_16 = rcx
+	branch (Mem5[r8:byte] & 0x04) == 0x00 l0000000140001EC7
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001EB4:
-	rax = (uint64) Mem0[r8 + 0x0000000000000008:word32]
-	r10 = (int64) Mem0[r8 + 0x0000000000000004:word32]
-	rax = (uint64) -eax
-	SCZO = cond(eax)
-	C = eax == 0x00000000
-	r10 = r10 + rcx
-	SCZO = cond(r10)
-	rcx = (int64) eax
-	r10 = r10 & rcx
-	SZO = cond(r10)
-	C = false
-	// succ:  l0000000140001EC7
+	r10_16 = (int64) Mem5[r8 + 0x0000000000000004:word32] + rcx & (int64) ((word32) ((uint64) (-((word32) ((uint64) Mem5[r8 + 0x0000000000000008:word32])))))
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001EC7:
-	rax = (int64) r11d
-	rdx = Mem0[rax + r10:word64]
-	rax = Mem0[rbx + 0x0000000000000010:word64]
-	rcx = (uint64) Mem0[rax + 0x0000000000000008:word32]
-	rcx = rcx + Mem0[rbx + 0x0000000000000008:word64]
-	SCZO = cond(rcx)
-	SZO = cond(Mem0[rcx + 0x0000000000000003:byte] & 0x0F)
-	C = false
-	branch Test(EQ,Z) l0000000140001EE9
-	// succ:  l0000000140001EDF l0000000140001EE9
+	word64 rdx_33 = Mem5[(int64) r11d_29 + r10_16:word64]
+	word64 rcx_37 = (uint64) Mem5[Mem5[rdx + 0x0000000000000010:word64] + 0x0000000000000008:word32] + Mem5[rdx + 0x0000000000000008:word64]
+	branch (Mem5[rcx_37 + 0x0000000000000003:byte] & 0x0F) == 0x00 l0000000140001EE9
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001EDF:
-	eax = (word32) Mem0[rcx + 0x0000000000000003:byte]
-	rax = (uint64) (eax & 0xFFFFFFF0)
-	SZO = cond(eax)
-	C = false
-	r9 = r9 + rax
-	SCZO = cond(r9)
-	// succ:  l0000000140001EE9
+	r9_13 = rcx + (uint64) ((word32) Mem5[rcx_37 + 0x0000000000000003:byte] & 0xFFFFFFF0)
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001EE9:
-	r9 = r9 ^ rdx
-	SZO = cond(r9)
-	C = false
-	rcx = r9
-	rbx = Mem0[rsp:word64]
-	rsp = rsp + 8
-	// succ:  l0000000140001EF0_thunk_fn00000001400011B0
+	word64 r9_48 = r9_13 ^ rdx_33
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001EF0_thunk_fn00000001400011B0:
-	call fn00000001400011B0 (retsize: 0;)
+	fn00000001400011B0(r9_48, rbx, rsi, rdi, qwArg00, out rcx_82, out rdx_83, out r8_84)
 	return
-	// succ:  fn0000000140001E9C_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0000000140001E9C_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0000000140001F10
-// Return size: 0
-define fn0000000140001F10
+
+void fn0000000140001F10(word64 rax)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  rax:[0..63]
+// LiveOut:
+// Trashed: rax
+// Preserved: rsp
 fn0000000140001F10_entry:
-	// succ:  l0000000140001F10
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001F10:
-	rsp = fp
 	call rax (retsize: 8;)
+		uses: rax:rax,rsp:fp
 	return
-	// succ:  fn0000000140001F10_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0000000140001F10_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0000000140001F12
-// Return size: 8
-define fn0000000140001F12
+
+void fn0000000140001F12(word64 rcx, word64 rdx, word64 rbp)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  rbp:[0..63] rcx:[0..63] rdx:[0..63]
+// LiveOut:
+// Trashed: SCZO rax rcx rdx
+// Preserved: rbp rsp
 fn0000000140001F12_entry:
-	// succ:  l0000000140001F12
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001F12:
-	rsp = fp
-	rsp = rsp - 8
-	Mem0[rsp:word64] = rbp
-	rsp = rsp - 0x0000000000000020
-	SCZO = cond(rsp)
-	rbp = rdx
-	rax = Mem0[rcx:word64]
-	rdx = rcx
-	rcx = (uint64) Mem0[rax:word32]
+	word64 rax_11 = Mem5[rcx:word64]
 	call seh_filter_exe (retsize: 8;)
-	rsp = rsp + 0x0000000000000020
-	SCZO = cond(rsp)
-	rbp = Mem0[rsp:word64]
-	rsp = rsp + 8
+		uses: rax:rax_11,rbp:rdx,rcx:(uint64) Mem5[rax_11:word32],rdx:rcx,rsp:fp - 0x0000000000000028,Stack +0028:rbp
 	return
-	// succ:  fn0000000140001F12_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0000000140001F12_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
 
 
-// fn0000000140001F30
-// Return size: 8
-define fn0000000140001F30
+
+void fn0000000140001F30(word64 rcx)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  rcx:[0..63]
+// LiveOut:
+// Trashed: SCZO rax rcx
+// Preserved: rbp rsp
 fn0000000140001F30_entry:
-	// succ:  l0000000140001F30
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 l0000000140001F30:
-	rsp = fp
-	rsp = rsp - 8
-	Mem0[rsp:word64] = rbp
-	rbp = rdx
-	rax = Mem0[rcx:word64]
-	rcx = (uint64) (ecx ^ ecx)
-	SZO = cond(ecx)
-	C = false
-	SCZO = cond(Mem0[rax:word32] - 0xC0000005)
-	cl = Test(EQ,Z)
-	rax = (uint64) ecx
-	rbp = Mem0[rsp:word64]
-	rsp = rsp + 8
 	return
-	// succ:  fn0000000140001F30_exit
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 fn0000000140001F30_exit:
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
 
 
