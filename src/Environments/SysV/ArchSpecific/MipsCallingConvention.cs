@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -50,7 +50,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             this.fregs = new[] { "f12", "f13", "f14", "f15" }
                 .Select(r => arch.GetRegister(r))
                 .ToArray();
-            this.iret = arch.GetRegister("r3");
+            this.iret = arch.GetRegister("r2");
             this.fret = arch.GetRegister("f1");
         }
 
