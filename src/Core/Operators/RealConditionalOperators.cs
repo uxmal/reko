@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,10 +37,9 @@ namespace Reko.Core.Operators
             return Constant.Bool(c1.ToReal64() == c2.ToReal64());
         }
 
-        public override string ToString()
-        {
-            return " == ";
-        }
+        public override Operator Negate() => Feq;
+
+        public override string ToString() => " == ";
     }
 
     public class RneOperator : RealConditionalOperator
@@ -52,10 +51,8 @@ namespace Reko.Core.Operators
             return Constant.Bool(c1.ToReal64() != c2.ToReal64());
         }
 
-        public override string ToString()
-        {
-            return " != ";
-        }
+        public override Operator Negate() => Fne;
+        public override string ToString() => " != ";
     }
 
     public class RltOperator : RealConditionalOperator
@@ -67,10 +64,9 @@ namespace Reko.Core.Operators
             return Constant.Bool(c1.ToReal64() < c2.ToReal64());
 		}
 
-		public override string ToString()
-		{
-			return " < ";
-		}
+        public override Operator Negate() => Fgt;
+
+        public override string ToString() => " < ";
 	}
 
 	public class RgtOperator : RealConditionalOperator
@@ -82,13 +78,14 @@ namespace Reko.Core.Operators
             return Constant.Bool(c1.ToReal64() > c2.ToReal64());
         }
 
-        public override string ToString()
-		{
-			return " > ";
-		}
-	}
 
-	public class RleOperator : RealConditionalOperator
+        public override Operator Negate() => Flt;
+
+        public override string ToString() => " > ";
+
+    }
+
+    public class RleOperator : RealConditionalOperator
 	{
 		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
@@ -97,13 +94,12 @@ namespace Reko.Core.Operators
             return Constant.Bool(c1.ToReal64() <= c2.ToReal64());
         }
 
-        public override string ToString()
-		{
-			return " <= ";
-		}
-	}
+        public override Operator Negate() => Fge;
 
-	public class RgeOperator : RealConditionalOperator
+        public override string ToString() => " <= ";
+    }
+
+    public class RgeOperator : RealConditionalOperator
 	{
 		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
@@ -112,10 +108,10 @@ namespace Reko.Core.Operators
             return Constant.Bool(c1.ToReal64() >= c2.ToReal64());
         }
 
-        public override string ToString()
-		{
-			return " >= ";
-		}
-	}
+        public override Operator Negate() => Fle;
+
+        public override string ToString() => " >= ";
+
+    }
 
 }
