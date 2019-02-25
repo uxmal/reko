@@ -5,7 +5,7 @@
 #include "BENCHLNG.h"
 
 struct Eq_116 * g_ptr0000;
-Eq_1052 g_t0001;
+Eq_1050 g_t0001;
 struct Eq_4 * g_ptr0004;
 word32 g_a0008[];
 ui32 g_a0010[];
@@ -13,7 +13,7 @@ union Eq_25 g_u12BC =
 	{
 		0x64
 	};
-Eq_4325 g_t28C5 = 
+Eq_4317 g_t28C5 = 
 	{
 		
 		{
@@ -30,9 +30,9 @@ int32 g_dw3E3C = 84215045;
 word32 g_dw3E48 = 0x05050505;
 ptr32 g_ptr3E4C = 0x06060606;
 int32 g_dw3E50 = 101058054;
-struct Eq_3125 * g_ptr3E54 = &g_t6060606;
-struct Eq_3117 * g_ptr3E58 = &g_t6060606;
-Eq_3623 g_t3E5C = 
+struct Eq_3117 * g_ptr3E54 = &g_t6060606;
+struct Eq_3109 * g_ptr3E58 = &g_t6060606;
+Eq_3615 g_t3E5C = 
 	{
 		
 		{
@@ -47,5 +47,5 @@ Eq_73 g_t3F88;
 Eq_4 g_t4000;
 Eq_61 g_t10202;
 Eq_61 g_t3030303;
-Eq_3125 g_t6060606;
+Eq_3117 g_t6060606;
 

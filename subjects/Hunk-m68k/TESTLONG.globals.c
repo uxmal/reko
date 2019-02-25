@@ -13,7 +13,7 @@ union Eq_25 g_u12BC =
 	{
 		0x64
 	};
-Eq_4176 g_t2815 = 
+Eq_4170 g_t2815 = 
 	{
 		
 		{
@@ -30,9 +30,9 @@ int32 g_dw3D8C = 84215045;
 word32 g_dw3D98 = 0x05050505;
 ptr32 g_ptr3D9C = 0x06060606;
 int32 g_dw3DA0 = 101058054;
-struct Eq_2792 * g_ptr3DA4 = &g_t6060606;
-struct Eq_2784 * g_ptr3DA8 = &g_t6060606;
-Eq_3293 g_t3DAC = 
+struct Eq_2786 * g_ptr3DA4 = &g_t6060606;
+struct Eq_2778 * g_ptr3DA8 = &g_t6060606;
+Eq_3287 g_t3DAC = 
 	{
 		
 		{
@@ -47,5 +47,5 @@ Eq_73 g_t3ED8;
 Eq_4 g_t4000;
 Eq_61 g_t10202;
 Eq_61 g_t3030303;
-Eq_2792 g_t6060606;
+Eq_2786 g_t6060606;
 

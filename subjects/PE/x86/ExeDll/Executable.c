@@ -560,7 +560,7 @@ void fn00401774(word32 dwArg00, word32 dwArg04)
 		globals->dw403368 = 0x00;
 		memset(fp - 808, 0x00, 0x02CC);
 		memset(fp - 0x5C, 0x00, 0x50);
-		byte bl_90 = 0x00 - (0x01 - IsDebuggerPresent() == 0x00);
+		byte bl_90 = 0x00 - (IsDebuggerPresent() == 0x01);
 		SetUnhandledExceptionFilter(null);
 		if (UnhandledExceptionFilter(fp - 0x0C) == 0x00)
 			globals->dw403368 &= 0x00 - (-((word32) (bl_90 + 0x01)) == 0x00);
@@ -569,13 +569,13 @@ void fn00401774(word32 dwArg00, word32 dwArg04)
 		__fastfail(dwArg04);
 }
 
-// 0040188F: Register Eq_1060 fn0040188F()
-Eq_1060 fn0040188F()
+// 0040188F: Register Eq_1058 fn0040188F()
+Eq_1058 fn0040188F()
 {
-	Eq_1061 eax_4 = GetModuleHandleW(null);
+	Eq_1059 eax_4 = GetModuleHandleW(null);
 	if (eax_4 == null || eax_4->unused != 23117)
 		return 0x00;
-	struct Eq_1075 * eax_42 = eax_4 + eax_4->dw003C / 0x0040;
+	struct Eq_1073 * eax_42 = eax_4 + eax_4->dw003C / 0x0040;
 	if (eax_42->dw0000 != 0x4550 || (eax_42->w0018 != 0x010B || eax_42->dw0074 <= 0x0E))
 		return 0x00;
 	return eax_42->dw00E8 != 0x00;

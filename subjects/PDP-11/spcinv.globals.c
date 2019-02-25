@@ -4,7 +4,7 @@
 
 #include "spcinv.h"
 
-Eq_852 g_tFFFFFFFF;
+Eq_836 g_tFFFFFFFF;
 Eq_12 g_t0001 = 
 	{
 		0x00,
@@ -23,7 +23,7 @@ Eq_12 g_t0002 =
 		},
 		0x00,
 	};
-Eq_485 g_t0003 = 
+Eq_479 g_t0003 = 
 	{
 		
 		{
@@ -33,6 +33,12 @@ Eq_485 g_t0003 =
 		{
 			0x00
 		},
+	};
+Eq_664 g_t000A = 
+	{
+		0x0E30,
+		0x0000,
+		0x0005,
 	};
 cui16 g_w0024 = 0x0000;
 word16 g_w02C6 = 0x2E2C;
@@ -51,17 +57,107 @@ byte g_b0BC6 = 0x87;
 word16 g_w0BC8 = 0x0020;
 word16 g_w0DA8 = 0x0087;
 word16 g_w0DAA = 0x0000;
-Eq_2768 g_a0DAC[] = 
+Eq_2728 g_a0DAC[6] = 
 	{
+		
+		{
+			
+			{
+				0xE0
+			},
+		},
+		
+		{
+			
+			{
+				0xF0
+			},
+		},
+		
+		{
+			
+			{
+				0x00
+			},
+		},
+		
+		{
+			
+			{
+				0x10
+			},
+		},
+		
+		{
+			
+			{
+				0x20
+			},
+		},
+		
+		{
+			
+			{
+				0x30
+			},
+		},
 	};
-Eq_2769 g_a0DB8[] = 
+Eq_2729 g_a0DB8[6] = 
 	{
+		
+		{
+			
+			{
+				0x00
+			},
+		},
+		
+		{
+			
+			{
+				0x00
+			},
+		},
+		
+		{
+			
+			{
+				0x00
+			},
+		},
+		
+		{
+			
+			{
+				0x00
+			},
+		},
+		
+		{
+			
+			{
+				0x00
+			},
+		},
+		
+		{
+			
+			{
+				0x00
+			},
+		},
 	};
 word16 g_a0DC4[] = 
 	{
 	};
-word16 g_a0DD4[] = 
+word16 g_a0DD4[6] = 
 	{
+		0x001E,
+		0x0019,
+		0x0014,
+		0x000F,
+		0x000A,
+		0x0005,
 	};
 ptr16 g_a0DE0[] = 
 	{
@@ -82,16 +178,16 @@ ptr16 g_a0E30[] =
 	{
 	};
 byte g_b0E56 = 0x00;
-Eq_2778 g_a0EE6[] = 
+Eq_2738 g_a0EE6[] = 
 	{
 	};
-Eq_2777 g_a0EE9[] = 
+Eq_2737 g_a0EE9[] = 
 	{
 	};
 ci8 g_a0EEC[] = 
 	{
 	};
-Eq_2781 g_a0EF0[] = 
+Eq_2741 g_a0EF0[] = 
 	{
 	};
 byte g_a0EF3[] = 
@@ -121,7 +217,7 @@ Eq_14 g_t0F08 =
 	{
 		0x00
 	};
-struct Eq_852 * g_ptr0F0A = &g_tFFFFFFFF;
+struct Eq_836 * g_ptr0F0A = &g_tFFFFFFFF;
 Eq_14 g_t0F0C = 
 	{
 		0x01
@@ -129,16 +225,16 @@ Eq_14 g_t0F0C =
 cui16 g_w0F0E = 0x0000;
 ci16 g_w0F10 = 0x0000;
 word16 g_w0F12 = 0x0000;
-Eq_459 g_t0F14 = 
+Eq_454 g_t0F14 = 
 	{
 		0x0000
 	};
 word16 g_w0F16 = 0x0000;
-Eq_282 g_t0F18 = 
+Eq_278 g_t0F18 = 
 	{
 		0x00
 	};
-struct Eq_485 * g_ptr0F1A = null;
+struct Eq_479 * g_ptr0F1A = null;
 word16 g_w0F1C = 0x0000;
 word16 g_w0F1E = 0x0000;
 ci16 g_w0F20 = 0x0000;
@@ -167,5 +263,5 @@ ui16 g_w1170 = 0x0000;
 word16 g_w1172 = 0x0000;
 ui16 g_w1174 = 0x0000;
 char g_b1178 = '\x00';
-Eq_852 g_tFFFF;
+Eq_836 g_tFFFF;
 

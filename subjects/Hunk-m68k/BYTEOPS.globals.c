@@ -20,9 +20,9 @@ int32 g_dw2BA4 = 84215045;
 word32 g_dw2BB0 = 0x05050505;
 ptr32 g_ptr2BB4 = 0x06060606;
 int32 g_dw2BB8 = 101058054;
-struct Eq_2751 * g_ptr2BBC = &g_t6060606;
-struct Eq_2743 * g_ptr2BC0 = &g_t6060606;
-Eq_3214 g_t2BC4 = 
+struct Eq_2745 * g_ptr2BBC = &g_t6060606;
+struct Eq_2737 * g_ptr2BC0 = &g_t6060606;
+Eq_3208 g_t2BC4 = 
 	{
 		
 		{
@@ -36,5 +36,5 @@ Eq_602 g_t2CF0;
 Eq_4 g_t4000;
 Eq_59 g_t10202;
 Eq_59 g_t3030303;
-Eq_2751 g_t6060606;
+Eq_2745 g_t6060606;
 

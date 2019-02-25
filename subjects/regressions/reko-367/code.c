@@ -31,26 +31,24 @@ real80 fn8000018E(real96 rArg04)
 // 800001F2: void fn800001F2(Stack real96 rArg04)
 void fn800001F2(real96 rArg04)
 {
-	int32 dwLoc20_25 = 0x03;
-	while (100 - dwLoc20_25 >= 0x00)
+	int32 dwLoc20_25;
+	for (dwLoc20_25 = 0x03; dwLoc20_25 <= 100; dwLoc20_25 += 0x02)
 	{
 		fn80000132((real96) (real80) rArg04, (real96) (real80) dwLoc20_25);
 		fn8000018E((real96) (real80) dwLoc20_25);
-		dwLoc20_25 += 0x02;
 	}
 }
 
-// 800002AE: Register real80 fn800002AE(Stack real96 rArg04, Register out Eq_55 fp2Out)
-real80 fn800002AE(real96 rArg04, Eq_55 & fp2Out)
+// 800002AE: Register real80 fn800002AE(Stack real96 rArg04, Register out Eq_53 fp2Out)
+real80 fn800002AE(real96 rArg04, Eq_53 & fp2Out)
 {
-	int32 dwLoc20_24 = 0x02;
-	while (100 - dwLoc20_24 >= 0x00)
+	int32 dwLoc20_24;
+	for (dwLoc20_24 = 0x02; dwLoc20_24 <= 100; dwLoc20_24 += 0x02)
 	{
 		fn80000132((real96) (real80) rArg04, (real96) (real80) dwLoc20_24);
 		real96 v19_59 = (real96) (real80) dwLoc20_24;
 		fn8000018E(v19_59);
 		rLoc3C = v19_59;
-		dwLoc20_24 += 0x02;
 	}
 	real80 fp2_102;
 	*fp2Out = fp2;

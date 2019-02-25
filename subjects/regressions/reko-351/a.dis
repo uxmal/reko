@@ -157,7 +157,7 @@ l800000E4:
 l800000F4:
 	word32 d0_100 = Mem0[0x80002726:word32]
 	word32 a2_101 = 0x80002714
-	branch 0x00000000 - d0_100 <=u 0x00000000 l8000012C
+	branch d0_100 >=u 0x00000000 l8000012C
 // DataOut: a2 d0
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x0000000C a6:fp - 0x00000004 -12(fp):d2 -8(fp):a2 -4(fp):a6
@@ -184,7 +184,7 @@ l80000114:
 		uses: a0_107,a2_101,a6_5,a7_11,C_18,CVZN_106,CVZNX_103,CZ,d0_102,d2_47,dwLoc04_4,dwLoc08_10,dwLoc0C_14,dwLoc10,V_19,VZ_51,Z_17,ZN_16
 		defs: a0_120,a2_110,a6_109,a7_108,C_114,CVZN_111,CVZNX_118,CZ_121,d0_117,d2_112,V_115,VZ_119,Z_116,ZN_113
 	d0_100 = Mem105[0x80002726:word32]
-	branch 0x00000000 - d0_100 >u 0x00000000 l80000114
+	branch d0_100 <u 0x00000000 l80000114
 // DataOut: a2 d0
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x0000000C a6:fp - 0x00000004 a2:80002714 d0:<invalid> d2:0x00000000 a0:<invalid> -12(fp):d2 -8(fp):a2 -4(fp):a6
@@ -690,7 +690,7 @@ __do_global_ctors_aux_entry:
 
 l80000624:
 	word32 a0_12 = Mem0[0x8000270C:word32]
-	branch -1 - a0_12 == 0x00000000 l80000646
+	branch a0_12 == -1 l80000646
 // DataOut: a2
 // DataOut (flags): 
 // SymbolicIn: a7:fp
@@ -707,7 +707,7 @@ l8000063C:
 	call a0_12 (retsize: 4; depth: 12)
 		uses: a0_12,a2_13,a6_5,a7_7,CVZN_16,d0_14,dwLoc04_4,dwLoc08_10,Z_17
 		defs: a0_30,a2_28,a6_27,a7_26,CVZN_29,d0_31,Z_32
-	branch -1 - Mem0[a2_28 - 4:word32] != 0x00000000 l8000063C
+	branch Mem0[a2_28 - 4:word32] != -1 l8000063C
 // DataOut: a2
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000008 a6:fp - 0x00000004 a0:<invalid> a2:<invalid> d0:-1 -8(fp):a2 -4(fp):a6

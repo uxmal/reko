@@ -95,7 +95,7 @@ fn03BB_entry:
 l03BB:
 	Mem4[0x1657:byte] = c
 	byte a_5 = Mem4[0x1657:byte]
-	byte a_12 = 0x00 - (0x1A - (a_5 - 0x61) <u 0x00)
+	byte a_12 = 0x00 - (a_5 - 0x61 >u 0x1A)
 	byte c_7
 	*cOut = a_5 - 0x61
 	byte a_16
@@ -1990,7 +1990,7 @@ l09BD:
 	Mem540[sp_31 - 0x0002:word16] = DPB(af, 0x00 - (Mem526[hl_524:byte] <u 0x41) | Mem526[sp_31 + 0x0003:byte], 0)
 	b_133 = Mem540[sp_31 + 0x0003:byte] (alias)
 	*bOut = b_133
-	byte a_555 = 0x00 - (0x02 - Mem540[0x1696:byte] <u 0x00) & b_133
+	byte a_555 = 0x00 - (Mem540[0x1696:byte] >u 0x02) & b_133
 	byte l_543
 	*lOut = 0x96
 	byte h_544
@@ -2050,7 +2050,7 @@ l0A11:
 // LocalsOut: Local -0002(16)
 
 l0A16:
-	Mem106[sp_31 - 0x0002:word16] = DPB(af_147, ~(0x00 - (0x07 - Mem85[0x1697:byte] <u 0x00)), 0)
+	Mem106[sp_31 - 0x0002:word16] = DPB(af_147, ~(0x00 - (Mem85[0x1697:byte] >u 0x07)), 0)
 	byte h_107
 	byte a_108 = fn0B74(b_133, out h_107)
 	word16 bc_109 = Mem106[sp_31 - 0x0002:word16]
@@ -2065,7 +2065,7 @@ l0A16:
 l0A53:
 	word16 bc_192
 	word16 hl_169 = Mem106[0x1692:word16] + DPB(bc_113, 0x00, 8)
-	Mem173[sp_31 - 0x0002:word16] = DPB(af_147, 0x00 - (0x01 - Mem106[0x1696:byte] <u 0x00), 0)
+	Mem173[sp_31 - 0x0002:word16] = DPB(af_147, 0x00 - (Mem106[0x1696:byte] >u 0x01), 0)
 	byte b_182 = Mem173[sp_31 + 0x0003:byte]
 	*bOut = b_182
 	byte c_184
@@ -2467,7 +2467,7 @@ l0C1A:
 	byte h_96
 	*hOut = 0x13
 	byte c_105 = b_103
-	branch (0x00 - (0x03 - Mem92[0x138A:byte] <u 0x00) | b_103) >>u 0x01 >=u 0x00 l0C71
+	branch (0x00 - (Mem92[0x138A:byte] >u 0x03) | b_103) >>u 0x01 >=u 0x00 l0C71
 // DataOut: b c d e h l
 // DataOut (flags): 
 // SymbolicIn: sp:fp a:<invalid> bc:<invalid> c:<invalid> b:<invalid> hl:<invalid> de:<invalid> h:<invalid> l:<invalid> -2(fp):af
@@ -3900,7 +3900,7 @@ l12F7:
 	word16 sp_18 = sp_1 - 0x0002
 	Mem19[sp_18:word16] = DPB(af_10, 0x00 - (fn045B() <u 0x2A), 0)
 	byte b_30 = Mem19[sp_18 + 0x0001:byte]
-	branch (0x00 - (0x10 - Mem19[0x16AB:byte] <u 0x00) | b_30) >>u 0x01 >=u 0x00 l1311
+	branch (0x00 - (Mem19[0x16AB:byte] >u 0x10) | b_30) >>u 0x01 >=u 0x00 l1311
 // DataOut: af b c d e h l
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> a:<invalid> hl:<invalid> bc:<invalid> c:<invalid> h:<invalid> de:<invalid> b:<invalid> l:<invalid>
