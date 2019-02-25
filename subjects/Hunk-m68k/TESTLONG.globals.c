@@ -4,58 +4,49 @@
 
 #include "TESTLONG.h"
 
-struct Eq_124 * g_ptr0000;
-Eq_891 g_t0001;
-struct Eq_6 * g_ptr0004;
+struct Eq_118 * g_ptr0000;
+Eq_793 g_t0001;
+struct Eq_4 * g_ptr0004;
 word32 g_a0008[];
 ui32 g_a0010[];
-Eq_2708 g_t0400;
-Eq_4444 g_t2815 = 
+union Eq_25 g_u12BC = 
+	{
+		0x64
+	};
+Eq_4297 g_t2815 = 
 	{
 		
 		{
 		},
 	};
 ptr32 g_ptr3D70 = 0x00000000;
-struct Eq_6 * g_ptr3D74 = &g_t4000;
-Eq_27 g_t3D78 = 
-	{
-		0x00
-	};
-union Eq_5 * g_ptr3D7C = &g_t10202;
-union Eq_5 * g_ptr3D80 = &g_t3030303;
-Eq_27 g_t3D84 = 
-	{
-		0x04
-	};
-Eq_27 g_t3D88 = 
-	{
-		0x04
-	};
-Eq_27 g_t3D8C = 
-	{
-		0x05
-	};
+struct Eq_4 * g_ptr3D74 = &g_t4000;
+union Eq_25 * g_ptr3D78 = null;
+union Eq_3 * g_ptr3D7C = &g_t10202;
+union Eq_3 * g_ptr3D80 = &g_t3030303;
+int32 g_dw3D84 = 67372036;
+int32 g_dw3D88 = 67372036;
+int32 g_dw3D8C = 84215045;
 word32 g_dw3D98 = 0x05050505;
 ptr32 g_ptr3D9C = 0x06060606;
 int32 g_dw3DA0 = 101058054;
-struct Eq_2708 * g_ptr3DA4 = &g_t6060606;
-struct Eq_6 * g_ptr3DA8 = &g_t6060606;
-Eq_3561 g_t3DAC = 
+struct Eq_2933 * g_ptr3DA4 = &g_t6060606;
+struct Eq_4 * g_ptr3DA8 = &g_t6060606;
+Eq_3418 g_t3DAC = 
 	{
 		
 		{
 		},
 	};
 word32 g_dw3EB0;
-Eq_579 g_t3EB8;
+Eq_546 g_t3EB8;
 word32 g_dw3EBC;
-struct Eq_536 * g_ptr3EC8;
-Eq_27 g_t3ECC;
-Eq_27 g_t3ED0;
-Eq_27 g_t3ED8;
-Eq_6 g_t4000;
-Eq_5 g_t10202;
-Eq_5 g_t3030303;
-Eq_2708 g_t6060606;
+struct Eq_507 * g_ptr3EC8;
+Eq_75 g_t3ECC;
+Eq_75 g_t3ED0;
+Eq_75 g_t3ED8;
+Eq_4 g_t4000;
+Eq_3 g_t10202;
+Eq_3 g_t3030303;
+Eq_2933 g_t6060606;
 

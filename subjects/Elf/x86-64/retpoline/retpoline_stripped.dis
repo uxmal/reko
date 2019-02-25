@@ -96,7 +96,7 @@ l00000000004004D8:
 
 l00000000004004CB:
 	call 0x0000000000000000 (retsize: 8;)
-		uses: r8:r8,rax:0x0000000000000000,rbp:rbp,rdi:0x0000000000601040,rsp:fp,Stack +0000:rbp
+		uses: r8:r8,rax:0x0000000000000000,rdi:0x0000000000601040,Stack +0000:rbp
 	return
 // DataOut:
 // DataOut (flags):

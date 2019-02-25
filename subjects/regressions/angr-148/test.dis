@@ -92,7 +92,7 @@ l0000000000400487:
 
 l0000000000400491:
 	call 0x0000000000000000 (retsize: 8;)
-		uses: r8:r8 - 6295616,rax:0x0000000000000000,rbp:rbp,rdi:0x0000000000601040,rsp:fp,Stack +0000:rbp
+		uses: r8:r8 - 6295616,rax:0x0000000000000000,rdi:0x0000000000601040,Stack +0000:rbp
 	return
 // DataOut:
 // DataOut (flags):
@@ -137,7 +137,7 @@ l00000000004004C4:
 
 l00000000004004CE:
 	call 0x0000000000000000 (retsize: 8;)
-		uses: r8:r8 - 6295616,rax:393476,rbp:rbp,rdi:0x0000000000601040,rdx:0x0000000000000000,rsi:393476,rsp:fp,Stack +0000:rbp
+		uses: r8:r8 - 6295616,rax:393476,rdi:0x0000000000601040,rdx:0x0000000000000000,rsi:393476,Stack +0000:rbp
 	return
 // DataOut:
 // DataOut (flags):
@@ -317,9 +317,7 @@ __libc_csu_init_entry:
 // SymbolicIn:
 
 l0000000000400550:
-	word64 r15_7 = (uint64) edi
-	word32 r15d_80 = (word32) r15_7
-	word64 r15_52 = DPB(r15_7, r15d_80, 0)
+	word32 r15d_80 = (word32) (uint64) edi
 	word64 rbp_29 = 0x0000000000600E18 - 0x0000000000600E10
 	word64 rbx_30 = 0x0000000000000000
 	word64 rax_34 = _init()
@@ -334,9 +332,8 @@ l0000000000400588:
 // SymbolicIn:
 
 l0000000000400590:
-	r15_52 = DPB(r15_52, r15d_80, 0) (alias)
 	call Mem28[0x0000000000600E10 + rbx_30 * 0x0000000000000008:word64] (retsize: 8;)
-		uses: r12:0x0000000000600E10,r13:rdx,r14:rsi,r15:r15_53,rax:rax_58,rbp:rbp_29 >> 0x0000000000000003,rbx:rbx_49,rdi:(uint64) r15d_80,rdx:rdx,rsi:rsi,rsp:fp - 0x0000000000000038,Stack +0010:rbx,Stack +0018:rbp,Stack +0020:r12,Stack +0028:r13,Stack +0030:r14,Stack +0038:r15
+		uses: rax:rax_58,rdi:(uint64) r15d_80,rdx:rdx,rsi:rsi,Stack +0010:rbx,Stack +0018:rbp,Stack +0020:r12,Stack +0028:r13,Stack +0030:r14,Stack +0038:r15
 		defs: rax:rax_59
 	rbx_30 = rbx_30 + 0x0000000000000001
 	branch rbx_30 != rbp_29 >> 0x0000000000000003 l0000000000400590

@@ -185,6 +185,11 @@ namespace Reko.Analysis
                 sst.Transform();
             }
 
+            foreach (var ssa in ssts.Select(sst => sst.SsaState))
+            {
+                RemovePreservedRegistersFromIndirectCalls(ssa);
+            }
+
             var uid = new UsedRegisterFinder(program.Architecture, flow, procs, this.eventListener);
             foreach (var sst in ssts)
             {
@@ -196,6 +201,44 @@ namespace Reko.Analysis
                 RemoveDeadArgumentsFromCalls(ssa.Procedure, procFlow, ssts);
             }
             eventListener.Advance(procs.Count);
+        }
+
+        private void RemovePreservedRegistersFromIndirectCalls(SsaState ssa)
+        {
+            foreach (var stm in ssa.Procedure.Statements)
+            {
+                RemovePreservedRegistersFromIndirectCall(ssa, stm);
+            }
+        }
+
+        private void RemovePreservedRegistersFromIndirectCall(
+            SsaState ssa,
+            Statement stm)
+        {
+            if (!(stm.Instruction is CallInstruction ci))
+                return;
+            if (ci.Callee is ProcedureConstant)
+                return;
+            var trashedRegisters = program.Platform.CreateTrashedRegisters();
+            foreach (var use in ci.Uses.ToList())
+            {
+                if (IsPreservedRegister(trashedRegisters, use.Storage))
+                {
+                    ci.Uses.Remove(use);
+                    ssa.RemoveUses(stm, use.Expression);
+                }
+            }
+        }
+
+        private bool IsPreservedRegister(
+            HashSet<RegisterStorage> trashedRegisters,
+            Storage stg)
+        {
+            if (!(stg is RegisterStorage))
+                return false;
+            if (trashedRegisters.Count == 0)
+                return false;
+            return !trashedRegisters.Where(r => r.OverlapsWith(stg)).Any();
         }
 
         /// <summary>

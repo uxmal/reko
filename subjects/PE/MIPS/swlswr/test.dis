@@ -431,7 +431,7 @@ l0001131C_ds_f:
 l00011330:
 	word32 r8_69 = Mem40[Mem40[0x0001303C:word32]:word32]
 	call r8_69 (retsize: 0;)
-		uses: r2:r2,r4:r4,r5:r5,r6:r6,r8:r8_69,r9:r9_42,ra:ra,sp:fp + -24,Stack +0010:ra,Stack +0018:r4,Stack +001C:r5,Stack +0020:r6
+		uses: r2:r2,r4:r4,r5:r5,r6:r6,r8:r8_69,r9:r9_42,Stack +0010:ra,Stack +0018:r4,Stack +001C:r5,Stack +0020:r6
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

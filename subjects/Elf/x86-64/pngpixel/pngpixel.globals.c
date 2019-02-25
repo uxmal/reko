@@ -4,7 +4,7 @@
 
 #include "pngpixel.h"
 
-Eq_1109 g_a0001[];
+Eq_1105 g_a0001[];
 Eq_21 g_t4012F9 = Unexpected function type (fn int32 (int32, (ptr64 (ptr64 char)), (ptr64 (ptr64 char))))
 ;
 Eq_24 g_t401780 = Unexpected function type (fn void ())
