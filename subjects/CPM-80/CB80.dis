@@ -93,7 +93,7 @@ fn03BB_entry:
 
 l03BB:
 	Mem5[0x1657:byte] = c
-	return SLICE(cond(0x00 - (0x1A - (Mem5[0x1657:byte] - 0x61) <u 0x00)), bool, 0)
+	return SLICE(cond(0x00 - (Mem5[0x1657:byte] - 0x61 >u 0x1A)), bool, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1729,7 +1729,7 @@ l09BD:
 	word16 hl_61 = Mem45[0x1692:word16]
 	Mem65[sp_35 - 0x0002:word16] = af_128
 	Mem79[sp_35 - 0x0002:word16] = DPB(af, 0x00 - (Mem65[hl_61:byte] <u 0x41) | Mem65[sp_35 + 0x0003:byte], 0)
-	byte a_91 = 0x00 - (0x02 - Mem79[0x1696:byte] <u 0x00) & Mem79[sp_35 + 0x0003:byte]
+	byte a_91 = 0x00 - (Mem79[0x1696:byte] >u 0x02) & Mem79[sp_35 + 0x0003:byte]
 	bool C_95 = cond(a_91 >>u 0x01)
 	branch a_91 >>u 0x01 >=u 0x00 l0A06
 // DataOut:
@@ -1773,7 +1773,7 @@ l0A11:
 // SymbolicIn:
 
 l0A16:
-	byte a_125 = ~(0x00 - (0x07 - Mem119[0x1697:byte] <u 0x00))
+	byte a_125 = ~(0x00 - (Mem119[0x1697:byte] >u 0x07))
 	Mem130[sp_35 - 0x0002:word16] = DPB(af_128, a_125, 0)
 	fn0B74()
 	word16 bc_139 = Mem130[sp_35 - 0x0002:word16]
@@ -1786,7 +1786,7 @@ l0A53:
 	word16 af_449
 	word16 bc_232
 	word16 hl_161 = Mem130[0x1692:word16] + DPB(DPB(bc_139, Mem130[0x1697:byte], 0), 0x00, 8)
-	Mem166[sp_35 - 0x0002:word16] = DPB(af_128, 0x00 - (0x01 - Mem130[0x1696:byte] <u 0x00), 0)
+	Mem166[sp_35 - 0x0002:word16] = DPB(af_128, 0x00 - (Mem130[0x1696:byte] >u 0x01), 0)
 	branch (0x00 - (Mem166[hl_161:byte] <u 0x2F) & Mem166[sp_35 + 0x0003:byte]) >>u 0x01 >=u 0x00 l0AA3
 // DataOut:
 // DataOut (flags):
@@ -2105,7 +2105,7 @@ l0C1A:
 	word16 hl_162 = 0x138A
 	word16 sp_169 = sp_147
 	word16 bc_184 = DPB(bc_168, b_170, 0)
-	branch (0x00 - (0x03 - Mem160[0x138A:byte] <u 0x00) | b_170) >>u 0x01 >=u 0x00 l0C71
+	branch (0x00 - (Mem160[0x138A:byte] >u 0x03) | b_170) >>u 0x01 >=u 0x00 l0C71
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3371,7 +3371,7 @@ l12F7:
 	fn045B()
 	word16 sp_50 = sp_2 - 0x0002
 	Mem58[sp_50:word16] = DPB(af_51, 0x00 - (a_17 <u 0x28), 0)
-	branch (0x00 - (0x10 - Mem58[0x16AB:byte] <u 0x00) | Mem58[sp_50 + 0x0001:byte]) >>u 0x01 >=u 0x00 l1311
+	branch (0x00 - (Mem58[0x16AB:byte] >u 0x10) | Mem58[sp_50 + 0x0001:byte]) >>u 0x01 >=u 0x00 l1311
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

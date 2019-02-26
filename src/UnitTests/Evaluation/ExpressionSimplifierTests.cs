@@ -238,5 +238,13 @@ namespace Reko.UnitTests.Evaluation
             var expr = m.Fn(rolc_8, foo, m.Byte(1), Constant.False());
             Assert.AreEqual("foo_1 << 0x01", expr.Accept(simplifier).ToString());
         }
+
+        [Test(Description = "Reported in GitHub issue #733")]
+        public void Exs_NormalizeSubForComparison()
+        {
+            Given_ExpressionSimplifier();
+            var expr = m.Le0(m.ISub(m.Word32(0x02), foo));
+            Assert.AreEqual("foo_1 >= 0x00000002", expr.Accept(simplifier).ToString());
+        }
     }
 }

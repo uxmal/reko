@@ -3696,7 +3696,7 @@ l00002604:
 // SymbolicIn:
 
 l0000261C:
-	branch 32 - (Mem26[dwArg04 + 24:word32] & 42) == 0x00000000 l0000262E
+	branch (Mem26[dwArg04 + 24:word32] & 42) == 32 l0000262E
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3803,7 +3803,7 @@ l000026E6:
 // SymbolicIn:
 
 l000026C4:
-	branch -1 - Mem149[dwArg04 + 20:word32] != 0x00000000 l000026D6
+	branch Mem149[dwArg04 + 20:word32] != -1 l000026D6
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -6206,7 +6206,7 @@ l000038B4:
 // SymbolicIn:
 
 l000038D0:
-	branch 10 - dwArg04 != 0x00000000 l000038E2
+	branch dwArg04 != 10 l000038E2
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -6273,7 +6273,7 @@ l00003910:
 // SymbolicIn:
 
 l0000392C:
-	branch 64 - (Mem29[dwArg08 + 24:word32] & 73) == 0x00000000 l0000393E
+	branch (Mem29[dwArg08 + 24:word32] & 73) == 64 l0000393E
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -6329,7 +6329,7 @@ l000039A0:
 
 l000039AC:
 	d0_101 = 10
-	branch 10 - dwArg04 != 0x00000000 l000039CC
+	branch dwArg04 != 10 l000039CC
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

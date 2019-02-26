@@ -811,7 +811,7 @@ l0000000000400E2D: warning: Non-integral switch expression
 000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00002FE6: error: An error occurred while processing the statement branch d0 - d5_830 >=u 0x00000000 l00002F9E.
-    Pulling difference (ptr32 (struct 0004 (0 (ptr32 (struct (0 T_4306 t0000))) ptr0000))) and (union (int32 u0) (uint32 u1))
+    Pulling difference (ptr32 (struct 0004 (0 (ptr32 (struct (0 T_4300 t0000))) ptr0000))) and (union (int32 u0) (uint32 u1))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 109
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -830,7 +830,7 @@ l0000000000400E2D: warning: Non-integral switch expression
 000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000326E: error: An error occurred while processing the statement branch d0 - d5_830 >=u 0x00000000 l00003226.
-    Pulling difference (ptr32 (struct 0004 (0 (ptr32 (struct (0 T_4841 t0000))) ptr0000))) and (union (int32 u0) (uint32 u1))
+    Pulling difference (ptr32 (struct 0004 (0 (ptr32 (struct (0 T_4833 t0000))) ptr0000))) and (union (int32 u0) (uint32 u1))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 109
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -849,7 +849,7 @@ l0000000000400E2D: warning: Non-integral switch expression
 000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000300A: error: An error occurred while processing the statement branch d0 - d5_830 >=u 0x00000000 l00002FC2.
-    Pulling difference (ptr32 (struct 0004 (0 (ptr32 (struct (0 T_4308 t0000))) ptr0000))) and (union (int32 u0) (uint32 u1))
+    Pulling difference (ptr32 (struct 0004 (0 (ptr32 (struct (0 T_4300 t0000))) ptr0000))) and (union (int32 u0) (uint32 u1))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 109
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -996,10 +996,7 @@ fn0200: error: An error occurred while rewriting procedure to high-level languag
    at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
    at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 485
 000002CC: warning: Expected sizes of arrays to have been determined by now
-00000DAC: warning: Expected sizes of arrays to have been determined by now
-00000DB8: warning: Expected sizes of arrays to have been determined by now
 00000DC4: warning: Expected sizes of arrays to have been determined by now
-00000DD4: warning: Expected sizes of arrays to have been determined by now
 00000DE0: warning: Expected sizes of arrays to have been determined by now
 00000DF0: warning: Expected sizes of arrays to have been determined by now
 00000E00: warning: Expected sizes of arrays to have been determined by now
@@ -1013,10 +1010,7 @@ fn0200: error: An error occurred while rewriting procedure to high-level languag
 00000EF3: warning: Expected sizes of arrays to have been determined by now
 00000F2A: warning: Expected sizes of arrays to have been determined by now
 000002CC: warning: Expected sizes of arrays to have been determined by now
-00000DAC: warning: Expected sizes of arrays to have been determined by now
-00000DB8: warning: Expected sizes of arrays to have been determined by now
 00000DC4: warning: Expected sizes of arrays to have been determined by now
-00000DD4: warning: Expected sizes of arrays to have been determined by now
 00000DE0: warning: Expected sizes of arrays to have been determined by now
 00000DF0: warning: Expected sizes of arrays to have been determined by now
 00000E00: warning: Expected sizes of arrays to have been determined by now
@@ -1036,7 +1030,7 @@ fn0200: error: An error occurred while rewriting procedure to high-level languag
 hello_m68k.exe: warning: Win32 M68k main procedure finder not supported.
 error: An error occurred during decompilation. System.NotSupportedException: Constants of type uispr48 are not supported.
    at Reko.Core.Expressions.Constant.Create(DataType dt, Int64 value) in D:\dev\uxmal\reko\master\src\Core\Expressions\Constant.cs:line 138
-   at Reko.Evaluation.ExpressionSimplifier.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.cs:line 608
+   at Reko.Evaluation.ExpressionSimplifier.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.cs:line 622
    at Reko.Core.Expressions.MkSequence.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MkSequence.cs:line 53
    at Reko.Analysis.ValuePropagator.VisitAssignment(Assignment a) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 102
    at Reko.Core.Code.Assignment.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 49
@@ -1558,21 +1552,6 @@ error: An error occurred during decompilation. System.Collections.Generic.KeyNot
 === regressions\angr-148\test
 === regressions\reko-121\m68k_jump.dcproject
 === regressions\reko-351\a.out
-*** regressions\reko-351\a.out
-8000018A: warning: Procedure frame_dummy previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-800001A0: warning: Procedure frame_dummy previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-80000644: error: An error occurred while processing the statement branch -1 - a0_12 != 0x00000000 l8000063C.
-    Pulling difference int32 and (ptr32 code)
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 284
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 109
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 156
-   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 85
-80002714: warning: Expected sizes of arrays to have been determined by now
-80002714: warning: Expected sizes of arrays to have been determined by now
 === regressions\reko-367\code.dcproject
 === regressions\reko-90\PP.EXE
 *** regressions\reko-90\PP.EXE
@@ -2079,4 +2058,4 @@ Parameter name: key
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 56 binaries in 82.99 seconds ---
+Decompiled 56 binaries in 74.32 seconds ---

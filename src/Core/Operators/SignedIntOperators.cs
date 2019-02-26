@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,18 +38,12 @@ namespace Reko.Core.Operators
             return Constant.Bool(c1.ToInt32() < c2.ToInt32());
 		}
 
-		public override string ToString()
-		{
-			return " < ";
-		}
+        public override Operator Negate() => Gt;
 
-        public override ConditionalOperator Transpose()
-        {
-            return Operator.Gt;
-        }
+        public override string ToString() => " < ";
     }
 
-	public class GtOperator : SignedIntOperator
+    public class GtOperator : SignedIntOperator
 	{
 		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
@@ -59,18 +53,12 @@ namespace Reko.Core.Operators
             return Constant.Bool(c1.ToInt32() > c2.ToInt32());
 		}
 
-		public override string ToString()
-		{
-			return " > ";
-		}
+        public override Operator Negate() => Lt;
 
-        public override ConditionalOperator Transpose()
-        {
-            return Operator.Lt;
-        }
+        public override string ToString() => " > ";
     }
 
-	public class LeOperator : SignedIntOperator
+    public class LeOperator : SignedIntOperator
 	{
 		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
@@ -80,18 +68,12 @@ namespace Reko.Core.Operators
             return Constant.Bool(c1.ToInt32() <= c2.ToInt32());
         }
 
-		public override string ToString()
-		{
-			return " <= ";
-		}
+        public override Operator Negate() => Ge;
 
-        public override ConditionalOperator Transpose()
-        {
-            return Operator.Ge;
-        }
+        public override string ToString() => " <= ";
     }
 
-	public class GeOperator : SignedIntOperator
+    public class GeOperator : SignedIntOperator
 	{
 		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
@@ -101,14 +83,8 @@ namespace Reko.Core.Operators
             return Constant.Bool(c1.ToInt32() >= c2.ToInt32());
         }
 
-		public override string ToString()
-		{
-			return " >= ";
-		}
+        public override Operator Negate() => Le;
 
-        public override ConditionalOperator Transpose()
-        {
-            return Operator.Le;
-        }
+        public override string ToString() => " >= ";
     }
 }

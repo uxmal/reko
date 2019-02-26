@@ -135,7 +135,7 @@ l800001F2:
 // SymbolicIn:
 
 l8000021C:
-	branch 100 - dwLoc20_113 < 0x00000000 l8000028A
+	branch dwLoc20_113 > 100 l8000028A
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -183,7 +183,7 @@ l800002AE:
 // SymbolicIn:
 
 l800002DA:
-	branch 100 - dwLoc20_112 < 0x00000000 l80000348
+	branch dwLoc20_112 > 100 l80000348
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

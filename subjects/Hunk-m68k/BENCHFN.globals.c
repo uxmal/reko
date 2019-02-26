@@ -13,7 +13,7 @@ word32 g_a0008[];
 ui32 g_a0010[];
 byte g_b142C = 0x65;
 byte g_b1468 = 0x66;
-Eq_4335 g_t288D = 
+Eq_4329 g_t288D = 
 	{
 		
 		{
@@ -30,9 +30,9 @@ int32 g_dw3E8C = 84215045;
 word32 g_dw3E98 = 0x05050505;
 ptr32 g_ptr3E9C = 0x06060606;
 int32 g_dw3EA0 = 101058054;
-struct Eq_2980 * g_ptr3EA4 = &g_t6060606;
+struct Eq_2974 * g_ptr3EA4 = &g_t6060606;
 struct Eq_4 * g_ptr3EA8 = &g_t6060606;
-Eq_3465 g_t3EAC = 
+Eq_3459 g_t3EAC = 
 	{
 		
 		{
@@ -48,5 +48,5 @@ Eq_505 g_t3FD8;
 Eq_4 g_t4000;
 Eq_3 g_t10202;
 Eq_3 g_t3030303;
-Eq_2980 g_t6060606;
+Eq_2974 g_t6060606;
 

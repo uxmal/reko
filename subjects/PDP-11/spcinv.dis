@@ -16,7 +16,7 @@ l02FC:
 // SymbolicIn:
 
 l0388:
-	branch 0x1178 - r4_109 == 0x0000 l02A6
+	branch r4_109 == 0x1178 l02A6
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -81,7 +81,7 @@ l0352:
 // SymbolicIn:
 
 l0358:
-	branch 0x0008 - Mem190[0x0F14:word16] >=u 0x0000 l0370
+	branch Mem190[0x0F14:word16] <=u 0x0008 l0370
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -115,7 +115,7 @@ l0370:
 	// Please report this issue at https://github.com/uxmal/reko
 	stackArg0 = <invalid>
 	r0_262 = fn0998(fn07A6(r4_240, pc, out r1_255, out r5_254), r1_255, r4_240, r5_254, pc, stackArg0, out r2_261, out r4_263, out r5_264)
-	branch 0x1178 - r4_263 == 0x0000 l0394
+	branch r4_263 == 0x1178 l0394
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -323,7 +323,7 @@ l0216:
 // SymbolicIn:
 
 l021A:
-	branch 0x0042 - r0_9 == 0x0000 l0236
+	branch r0_9 == 0x0042 l0236
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -343,7 +343,7 @@ l023C:
 l0220:
 	r2_31 = 0x0001
 	r3_35 = 0x0001
-	branch 0x0049 - r0_9 == 0x0000 l0240
+	branch r0_9 == 0x0049 l0240
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -351,7 +351,7 @@ l0220:
 l022A:
 	r2_39 = 0x0000
 	r3_40 = 0x0002
-	branch 0x0045 - r0_9 == 0x0000 l0240
+	branch r0_9 == 0x0045 l0240
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -518,20 +518,20 @@ l04B4:
 // SymbolicIn:
 
 l04D2:
-	branch 0x0004 - (r0_20 - 0x0001) <=u 0x0000 l0584
+	branch r0_20 - 0x0001 >=u 0x0004 l0584
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l04D8:
-	branch 0x0002 - (r0_20 - 0x0001) == 0x0000 l0584
+	branch r0_20 - 0x0001 == 0x0002 l0584
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l04DE:
 	Mem55[r5_10 + 0x0EF3:byte] = r0_20 - 0x0001
-	branch 0x0016 - (r0_20 - 0x0001) <u 0x0000 l04EE
+	branch r0_20 - 0x0001 >u 0x0016 l04EE
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -548,7 +548,7 @@ l04E8:
 
 l04EE:
 	r1 = r0_20
-	branch 0x0003 - (r0_20 - 0x0001) != 0x0000 l0504
+	branch r0_20 - 0x0001 != 0x0003 l0504
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -712,7 +712,7 @@ l0588:
 
 l051A:
 	r2_113 = r2_113 + 0x0002
-	branch 0x000A - r2_113 <= 0x0000 l050C
+	branch r2_113 >= 0x000A l050C
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1037,7 +1037,7 @@ l06D0:
 
 l06B2:
 	word16 r0_24 = Mem0[0x0F14:word16]
-	branch 0x0008 - r0_24 <u 0x0000 l06D4
+	branch r0_24 >u 0x0008 l06D4
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1140,13 +1140,13 @@ l0700:
 l0724:
 	Mem86[r2_236 + 0x0EE9:byte] = Mem85[r2_236 + 0x0EE9:byte] + 0x01
 	word16 r3_101 = r3_9
-	branch 0x0019 - (r0_31 + 0x0001) == 0x0000 l0784
+	branch r0_31 + 0x0001 == 0x0019 l0784
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0730:
-	branch 0x0018 - (r0_31 + 0x0001) == 0x0000 l0744
+	branch r0_31 + 0x0001 == 0x0018 l0744
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1197,7 +1197,7 @@ l075A:
 // SymbolicIn:
 
 l0736:
-	branch 0x0016 - (r0_31 + 0x0001) <u 0x0000 l078A
+	branch r0_31 + 0x0001 >u 0x0016 l078A
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1390,13 +1390,13 @@ l084A:
 
 l0800:
 	Mem150[r1:word16] = Mem98[r1:word16] + Mem98[0x0F20:word16]
-	branch 0x0008 - Mem150[r1:word16] <=u 0x0000 l0810
+	branch Mem150[r1:word16] >=u 0x0008 l0810
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l080A:
-	branch 0x0048 - Mem150[r1:word16] <u 0x0000 l0814
+	branch Mem150[r1:word16] >u 0x0048 l0814
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1408,7 +1408,7 @@ l0810:
 // SymbolicIn:
 
 l0814:
-	branch 0x0017 - r0 != 0x0000 l081E
+	branch r0 != 0x0017 l081E
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1420,7 +1420,7 @@ l081A:
 // SymbolicIn:
 
 l081E:
-	branch 0x0016 - r0 <u 0x0000 l0828
+	branch r0 >u 0x0016 l0828
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1617,7 +1617,7 @@ l0910:
 	Mem451[r2_372 + 0x0EE6:byte] = (int16) Mem368[r3_437:byte] + 0x0002
 	Mem452[r2_372 + 0x0EE9:byte] = Mem451[r0_389 + 0x000C:byte]
 	Mem453[r2_372 + 0x0EEC:byte] = 0x80
-	branch 0x0DAC - r0_389 == 0x0000 l0936
+	branch r0_389 == 0x0DAC l0936
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1807,7 +1807,7 @@ l0A1E:
 // SymbolicIn:
 
 l0A22:
-	branch 0x0028 - Mem8[0x0F1E:word16] > 0x0000 l0A5E
+	branch Mem8[0x0F1E:word16] < 0x0028 l0A5E
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1883,13 +1883,13 @@ l09F0:
 // SymbolicIn:
 
 l09FE:
-	branch 0x0002 - r2_22 == 0x0000 l0A2A
+	branch r2_22 == 0x0002 l0A2A
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l09F6:
-	branch 0x0049 - r2_22 == 0x0000 l0A2A
+	branch r2_22 == 0x0049 l0A2A
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2347,7 +2347,7 @@ l0B9C:
 // SymbolicIn:
 
 l0BA4:
-	branch 0x0001 - r3 == 0x0000 l0BB4
+	branch r3 == 0x0001 l0BB4
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

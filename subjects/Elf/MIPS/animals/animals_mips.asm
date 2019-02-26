@@ -1,37 +1,13 @@
-;;; Segment  (00000000)
+;;; Segment .comment (00000000)
 00000000 7F 45 4C 46 01 02 01 00 00 00 00 00 00 00 00 00 .ELF............
-00000010 00 03 00 08 00 00 00 01 00 00 3E E0 00 00 00 34 ..........>....4
-00000020 00 02 85 0C 70 00 10 07 00 34 00 20 00 0B 00 28 ....p....4. ...(
-00000030 00 2B 00 2A 00 00 00 06 00 00 00 34 00 00 00 34 .+.*.......4...4
-00000040 00 00 00 34 00 00 01 60 00 00 01 60 00 00 00 04 ...4...`...`....
-00000050 00 00 00 04 00 00 00 03 00 00 01 94 00 00 01 94 ................
-00000060 00 00 01 94 00 00 00 0D 00 00 00 0D 00 00 00 04 ................
-00000070 00 00 00 01 70 00 00 03 00 00 01 C8 00 00 01 C8 ....p...........
-00000080 00 00 01 C8 00 00 00 18 00 00 00 18 00 00 00 04 ................
-00000090 00 00 00 08 70 00 00 00 00 00 01 E0 00 00 01 E0 ....p...........
-000000A0 00 00 01 E0 00 00 00 18 00 00 00 18 00 00 00 04 ................
-000000B0 00 00 00 04 00 00 00 01 00 00 00 00 00 00 00 00 ................
-000000C0 00 00 00 00 00 00 8C 38 00 00 8C 38 00 00 00 05 .......8...8....
-000000D0 00 01 00 00 00 00 00 01 00 00 8C 38 00 01 8C 38 ...........8...8
-000000E0 00 01 8C 38 00 00 03 74 00 00 03 98 00 00 00 06 ...8...t........
-000000F0 00 01 00 00 00 00 00 02 00 00 02 1C 00 00 02 1C ................
-00000100 00 00 02 1C 00 00 01 28 00 00 01 28 00 00 00 04 .......(...(....
-00000110 00 00 00 04 00 00 00 04 00 00 01 A4 00 00 01 A4 ................
-00000120 00 00 01 A4 00 00 00 20 00 00 00 20 00 00 00 04 ....... ... ....
-00000130 00 00 00 04 00 00 00 04 00 00 01 F8 00 00 01 F8 ................
-00000140 00 00 01 F8 00 00 00 24 00 00 00 24 00 00 00 04 .......$...$....
-00000150 00 00 00 04 64 74 E5 50 00 00 75 70 00 00 75 70 ....dt.P..up..up
-00000160 00 00 75 70 00 00 04 0C 00 00 04 0C 00 00 00 04 ..up............
-00000170 00 00 00 04 00 00 00 00 00 00 00 00 00 00 00 00 ................
-00000180 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
-00000190 00 00 00 04                                     ....           
+00000010 00 03 00 08 00 00 00 01 00 00 3E E0 00          ..........>..  
 ;;; Segment .interp (00000194)
 00000194             2F 6C 69 62 2F 6C 64 2E 73 6F 2E 31     /lib/ld.so.1
-000001A0 00 00 00 00                                     ....           
+000001A0 00                                              .              
 ;;; Segment .note.ABI-tag (000001A4)
 000001A4             00 00 00 04 00 00 00 10 00 00 00 01     ............
 000001B0 47 4E 55 00 00 00 00 00 00 00 00 03 00 00 00 02 GNU.............
-000001C0 00 00 00 00 00 00 00 00                         ........       
+000001C0 00 00 00 00                                     ....           
 ;;; Segment .MIPS.abiflags (000001C8)
 000001C8                         00 00 20 02 01 01 00 05         .. .....
 000001D0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
@@ -56,23 +32,23 @@
 ; DT_SYMTAB            000007D4
 ; DT_STRSZ             000025B2
 ; DT_SYMENT                  16
-; 70000035             00018A7C
+; DT_MIPS_RLD_MAP_REL  00018A7C
 ; DT_DEBUG             00000000
 ; DT_PLTGOT            00018D10
 ; DT_REL               00003954
 ; DT_RELSZ                  184
 ; DT_RELENT                   8
-; DT_MIPS_RLD_VERSION         1
+; DT_MIPS_RLD_VERSION  00000001
 ; DT_MIPS_FLAGS        00000002
 ; DT_MIPS_BASE_ADDRESS 00000000
 ; DT_MIPS_LOCAL_GOTNO       142
 ; DT_MIPS_SYMTABNO          159
 ; DT_MIPS_UNREFEXTNO         40
 ; DT_MIPS_GOTSYM            135
-; 6FFFFFFB             08000000
-; 6FFFFFFE             000038B4
-; 6FFFFFFF             00000003
-; 6FFFFFF0             00003776
+; DT_FLAGS_1           08000000
+; DT_VERNEED           000038B4
+; DT_VERNEEDNUM               3
+; DT_VERSYM            00003776
 ;;; Segment .hash (00000344)
 00000344             00 00 00 83 00 00 00 9F 00 00 00 21     ...........!
 00000350 00 00 00 43 00 00 00 00 00 00 00 96 00 00 00 3A ...C...........:
@@ -992,8 +968,6 @@ l00003E80:
 l00003E8C:
 	bgezal	r0,00003E94
 	nop
-
-l00003E94:
 	lui	r28,+0002
 	addiu	r28,r28,-00003194
 	addu	r28,r28,ra
@@ -1003,8 +977,6 @@ l00003E94:
 	nop
 	bgezal	r0,00003EB8
 	nop
-
-l00003EB8:
 	lui	r28,+0002
 	addiu	r28,r28,-000031B8
 	addu	r28,r28,ra
@@ -1022,8 +994,6 @@ __start proc
 	or	r0,ra,r0
 	bgezal	r0,00003EEC
 	nop
-
-l00003EEC:
 	lui	r28,+0002
 	addiu	r28,r28,-000031EC
 	addu	r28,r28,ra
@@ -1160,8 +1130,6 @@ l00004074:
 	addiu	r25,r25,+00003F40
 	bgezal	r0,00003F40
 	nop
-
-l00004080:
 	addiu	r2,r0,+00000001
 	sb	r2,-7050(r19)
 
@@ -1230,8 +1198,6 @@ l00004140:
 	or	r25,r2,r0
 	bgezal	r0,00004798
 	nop
-
-l00004158:
 	lw	r28,0010(r30)
 	addiu	r3,r30,+00000024
 	addiu	r2,r30,+00000028
@@ -1241,8 +1207,6 @@ l00004158:
 	or	r25,r2,r0
 	bgezal	r0,000048EC
 	nop
-
-l0000417C:
 	lw	r28,0010(r30)
 	addiu	r2,r30,+00000024
 	or	r4,r2,r0
@@ -1250,8 +1214,6 @@ l0000417C:
 	or	r25,r2,r0
 	bgezal	r0,00004834
 	nop
-
-l00004198:
 	lw	r28,0010(r30)
 	beq	r0,r0,00004274
 	nop
@@ -1263,8 +1225,6 @@ l000041A4:
 	or	r25,r2,r0
 	bgezal	r0,00004A38
 	nop
-
-l000041BC:
 	lw	r28,0010(r30)
 	addiu	r3,r30,+00000020
 	addiu	r2,r30,+00000028
@@ -1274,8 +1234,6 @@ l000041BC:
 	or	r25,r2,r0
 	bgezal	r0,00004B8C
 	nop
-
-l000041E0:
 	lw	r28,0010(r30)
 	addiu	r2,r30,+00000020
 	or	r4,r2,r0
@@ -1283,8 +1241,6 @@ l000041E0:
 	or	r25,r2,r0
 	bgezal	r0,00004AD4
 	nop
-
-l000041FC:
 	lw	r28,0010(r30)
 	beq	r0,r0,00004274
 	nop
@@ -1299,8 +1255,6 @@ l00004208:
 	or	r25,r2,r0
 	bgezal	r0,00004C94
 	nop
-
-l0000422C:
 	lw	r28,0010(r30)
 	addiu	r3,r30,+0000001C
 	addiu	r2,r30,+00000028
@@ -1310,8 +1264,6 @@ l0000422C:
 	or	r25,r2,r0
 	bgezal	r0,00004F30
 	nop
-
-l00004250:
 	lw	r28,0010(r30)
 	addiu	r2,r30,+0000001C
 	or	r4,r2,r0
@@ -1319,8 +1271,6 @@ l00004250:
 	or	r25,r2,r0
 	bgezal	r0,00004E78
 	nop
-
-l0000426C:
 	lw	r28,0010(r30)
 	nop
 
@@ -1331,8 +1281,6 @@ l00004274:
 	or	r25,r2,r0
 	bgezal	r0,00005010
 	nop
-
-l0000428C:
 	lw	r28,0010(r30)
 	or	r3,r2,r0
 	lw	r2,0000(r3)
@@ -1349,8 +1297,6 @@ l0000428C:
 	or	r25,r2,r0
 	bgezal	r0,00004674
 	nop
-
-l000042CC:
 	lw	r28,0010(r30)
 	or	r2,r16,r0
 	beq	r0,r0,00004318
@@ -1437,8 +1383,6 @@ _GLOBAL__sub_I_main proc
 	or	r25,r2,r0
 	bgezal	r0,00004334
 	nop
-
-l00004414:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -1539,8 +1483,6 @@ _ZN5HumanC1ENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE proc
 	or	r25,r2,r0
 	bgezal	r0,000044F0
 	nop
-
-l00004574:
 	lw	r28,0010(r30)
 	lw	r2,-7F94(r28)
 	addiu	r3,r2,+00000008
@@ -1626,8 +1568,6 @@ _ZNSt10unique_ptrI6AnimalSt14default_deleteIS0_EED1Ev proc
 	or	r25,r2,r0
 	bgezal	r0,00005064
 	nop
-
-l000046B0:
 	lw	r28,0010(r30)
 	sw	r2,0018(r30)
 	lw	r2,0018(r30)
@@ -1641,8 +1581,6 @@ l000046C8:
 	or	r25,r2,r0
 	bgezal	r0,000050BC
 	nop
-
-l000046DC:
 	lw	r28,0010(r30)
 	or	r3,r2,r0
 	lw	r2,0018(r30)
@@ -1653,8 +1591,6 @@ l000046DC:
 	or	r25,r2,r0
 	bgezal	r0,00005114
 	nop
-
-l00004704:
 	lw	r28,0010(r30)
 
 l00004708:
@@ -1685,8 +1621,6 @@ Dog::Dog proc
 	or	r25,r2,r0
 	bgezal	r0,000044F0
 	nop
-
-l00004768:
 	lw	r28,0010(r30)
 	lw	r2,-7F84(r28)
 	addiu	r3,r2,+00000008
@@ -1725,8 +1659,6 @@ _ZSt11make_uniqueI3DogJEENSt9_MakeUniqIT_E15__single_objectEDpOT0_ proc
 	or	r25,r2,r0
 	bgezal	r0,0000472C
 	nop
-
-l000047F4:
 	lw	r28,0010(r30)
 	or	r5,r16,r0
 	lw	r4,0028(r30)
@@ -1734,8 +1666,6 @@ l000047F4:
 	or	r25,r2,r0
 	bgezal	r0,00005174
 	nop
-
-l00004810:
 	lw	r28,0010(r30)
 	lw	r2,0028(r30)
 	or	sp,r30,r0
@@ -1763,8 +1693,6 @@ _ZNSt10unique_ptrI3DogSt14default_deleteIS0_EED1Ev proc
 	or	r25,r2,r0
 	bgezal	r0,000051D8
 	nop
-
-l00004870:
 	lw	r28,0010(r30)
 	sw	r2,0018(r30)
 	lw	r2,0018(r30)
@@ -1778,8 +1706,6 @@ l00004888:
 	or	r25,r2,r0
 	bgezal	r0,00005230
 	nop
-
-l0000489C:
 	lw	r28,0010(r30)
 	or	r3,r2,r0
 	lw	r2,0018(r30)
@@ -1790,8 +1716,6 @@ l0000489C:
 	or	r25,r2,r0
 	bgezal	r0,00005288
 	nop
-
-l000048C4:
 	lw	r28,0010(r30)
 
 l000048C8:
@@ -1822,8 +1746,6 @@ _ZNSt10unique_ptrI6AnimalSt14default_deleteIS0_EEaSI3DogS1_IS5_EEENSt9enable_ifI
 	or	r25,r2,r0
 	bgezal	r0,000053B4
 	nop
-
-l00004928:
 	lw	r28,0010(r30)
 	or	r5,r2,r0
 	lw	r4,0028(r30)
@@ -1831,24 +1753,18 @@ l00004928:
 	or	r25,r2,r0
 	bgezal	r0,000052E8
 	nop
-
-l00004944:
 	lw	r28,0010(r30)
 	lw	r4,002C(r30)
 	lw	r2,-7F74(r28)
 	or	r25,r2,r0
 	bgezal	r0,00005230
 	nop
-
-l0000495C:
 	lw	r28,0010(r30)
 	or	r4,r2,r0
 	lw	r2,-7F64(r28)
 	or	r25,r2,r0
 	bgezal	r0,00005430
 	nop
-
-l00004974:
 	lw	r28,0010(r30)
 	or	r5,r2,r0
 	addiu	r2,r30,+00000018
@@ -1857,16 +1773,12 @@ l00004974:
 	or	r25,r2,r0
 	bgezal	r0,00005458
 	nop
-
-l00004994:
 	lw	r28,0010(r30)
 	lw	r4,0028(r30)
 	lw	r2,-7F8C(r28)
 	or	r25,r2,r0
 	bgezal	r0,000050BC
 	nop
-
-l000049AC:
 	lw	r28,0010(r30)
 	lw	r2,0028(r30)
 	or	sp,r30,r0
@@ -1893,8 +1805,6 @@ Cat::Cat proc
 	or	r25,r2,r0
 	bgezal	r0,000044F0
 	nop
-
-l00004A08:
 	lw	r28,0010(r30)
 	lw	r2,-7F5C(r28)
 	addiu	r3,r2,+00000008
@@ -1933,8 +1843,6 @@ _ZSt11make_uniqueI3CatJEENSt9_MakeUniqIT_E15__single_objectEDpOT0_ proc
 	or	r25,r2,r0
 	bgezal	r0,000049CC
 	nop
-
-l00004A94:
 	lw	r28,0010(r30)
 	or	r5,r16,r0
 	lw	r4,0028(r30)
@@ -1942,8 +1850,6 @@ l00004A94:
 	or	r25,r2,r0
 	bgezal	r0,00005484
 	nop
-
-l00004AB0:
 	lw	r28,0010(r30)
 	lw	r2,0028(r30)
 	or	sp,r30,r0
@@ -1971,8 +1877,6 @@ _ZNSt10unique_ptrI3CatSt14default_deleteIS0_EED1Ev proc
 	or	r25,r2,r0
 	bgezal	r0,000054E8
 	nop
-
-l00004B10:
 	lw	r28,0010(r30)
 	sw	r2,0018(r30)
 	lw	r2,0018(r30)
@@ -1986,8 +1890,6 @@ l00004B28:
 	or	r25,r2,r0
 	bgezal	r0,00005540
 	nop
-
-l00004B3C:
 	lw	r28,0010(r30)
 	or	r3,r2,r0
 	lw	r2,0018(r30)
@@ -1998,8 +1900,6 @@ l00004B3C:
 	or	r25,r2,r0
 	bgezal	r0,00005598
 	nop
-
-l00004B64:
 	lw	r28,0010(r30)
 
 l00004B68:
@@ -2030,8 +1930,6 @@ _ZNSt10unique_ptrI6AnimalSt14default_deleteIS0_EEaSI3CatS1_IS5_EEENSt9enable_ifI
 	or	r25,r2,r0
 	bgezal	r0,000055F8
 	nop
-
-l00004BC8:
 	lw	r28,0010(r30)
 	or	r5,r2,r0
 	lw	r4,0028(r30)
@@ -2039,24 +1937,18 @@ l00004BC8:
 	or	r25,r2,r0
 	bgezal	r0,000052E8
 	nop
-
-l00004BE4:
 	lw	r28,0010(r30)
 	lw	r4,002C(r30)
 	lw	r2,-7F4C(r28)
 	or	r25,r2,r0
 	bgezal	r0,00005540
 	nop
-
-l00004BFC:
 	lw	r28,0010(r30)
 	or	r4,r2,r0
 	lw	r2,-7F40(r28)
 	or	r25,r2,r0
 	bgezal	r0,00005674
 	nop
-
-l00004C14:
 	lw	r28,0010(r30)
 	or	r5,r2,r0
 	addiu	r2,r30,+00000018
@@ -2065,16 +1957,12 @@ l00004C14:
 	or	r25,r2,r0
 	bgezal	r0,0000569C
 	nop
-
-l00004C34:
 	lw	r28,0010(r30)
 	lw	r4,0028(r30)
 	lw	r2,-7F8C(r28)
 	or	r25,r2,r0
 	bgezal	r0,000050BC
 	nop
-
-l00004C4C:
 	lw	r28,0010(r30)
 	lw	r2,0028(r30)
 	or	sp,r30,r0
@@ -2116,8 +2004,6 @@ _ZSt11make_uniqueI5HumanJRPcEENSt9_MakeUniqIT_E15__single_objectEDpOT0_ proc
 	or	r25,r2,r0
 	bgezal	r0,00004C6C
 	nop
-
-l00004CD8:
 	lw	r28,0010(r30)
 	lw	r16,0000(r2)
 	addiu	r2,r30,+00000018
@@ -2151,8 +2037,6 @@ l00004CD8:
 	or	r25,r2,r0
 	bgezal	r0,00004534
 	nop
-
-l00004D5C:
 	lw	r28,0010(r30)
 	or	r5,r16,r0
 	lw	r4,0048(r30)
@@ -2160,8 +2044,6 @@ l00004D5C:
 	or	r25,r2,r0
 	bgezal	r0,000056C8
 	nop
-
-l00004D78:
 	lw	r28,0010(r30)
 	addiu	r2,r30,+0000001C
 	or	r4,r2,r0
@@ -2219,8 +2101,6 @@ _ZNSt10unique_ptrI5HumanSt14default_deleteIS0_EED1Ev proc
 	or	r25,r2,r0
 	bgezal	r0,0000572C
 	nop
-
-l00004EB4:
 	lw	r28,0010(r30)
 	sw	r2,0018(r30)
 	lw	r2,0018(r30)
@@ -2234,8 +2114,6 @@ l00004ECC:
 	or	r25,r2,r0
 	bgezal	r0,00005784
 	nop
-
-l00004EE0:
 	lw	r28,0010(r30)
 	or	r3,r2,r0
 	lw	r2,0018(r30)
@@ -2246,8 +2124,6 @@ l00004EE0:
 	or	r25,r2,r0
 	bgezal	r0,0000584C
 	nop
-
-l00004F08:
 	lw	r28,0010(r30)
 
 l00004F0C:
@@ -2278,8 +2154,6 @@ _ZNSt10unique_ptrI6AnimalSt14default_deleteIS0_EEaSI5HumanS1_IS5_EEENSt9enable_i
 	or	r25,r2,r0
 	bgezal	r0,000058D8
 	nop
-
-l00004F6C:
 	lw	r28,0010(r30)
 	or	r5,r2,r0
 	lw	r4,0028(r30)
@@ -2287,24 +2161,18 @@ l00004F6C:
 	or	r25,r2,r0
 	bgezal	r0,000052E8
 	nop
-
-l00004F88:
 	lw	r28,0010(r30)
 	lw	r4,002C(r30)
 	lw	r2,-7F28(r28)
 	or	r25,r2,r0
 	bgezal	r0,00005784
 	nop
-
-l00004FA0:
 	lw	r28,0010(r30)
 	or	r4,r2,r0
 	lw	r2,-7F1C(r28)
 	or	r25,r2,r0
 	bgezal	r0,00005954
 	nop
-
-l00004FB8:
 	lw	r28,0010(r30)
 	or	r5,r2,r0
 	addiu	r2,r30,+00000018
@@ -2313,16 +2181,12 @@ l00004FB8:
 	or	r25,r2,r0
 	bgezal	r0,0000597C
 	nop
-
-l00004FD8:
 	lw	r28,0010(r30)
 	lw	r4,0028(r30)
 	lw	r2,-7F8C(r28)
 	or	r25,r2,r0
 	bgezal	r0,000050BC
 	nop
-
-l00004FF0:
 	lw	r28,0010(r30)
 	lw	r2,0028(r30)
 	or	sp,r30,r0
@@ -2348,8 +2212,6 @@ _ZNKSt10unique_ptrI6AnimalSt14default_deleteIS0_EEptEv proc
 	or	r25,r2,r0
 	bgezal	r0,000059A8
 	nop
-
-l00005048:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -2375,8 +2237,6 @@ _ZNSt15__uniq_ptr_implI6AnimalSt14default_deleteIS0_EE6_M_ptrEv proc
 	or	r25,r2,r0
 	bgezal	r0,00005A00
 	nop
-
-l000050A0:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -2402,8 +2262,6 @@ _ZNSt10unique_ptrI6AnimalSt14default_deleteIS0_EE11get_deleterEv proc
 	or	r25,r2,r0
 	bgezal	r0,00005A58
 	nop
-
-l000050F8:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -2458,8 +2316,6 @@ _ZNSt10unique_ptrI3DogSt14default_deleteIS0_EEC1IS2_vEEPS0_ proc
 	or	r25,r2,r0
 	bgezal	r0,00005AB0
 	nop
-
-l000051B8:
 	lw	r28,0010(r30)
 	nop
 	or	sp,r30,r0
@@ -2486,8 +2342,6 @@ _ZNSt15__uniq_ptr_implI3DogSt14default_deleteIS0_EE6_M_ptrEv proc
 	or	r25,r2,r0
 	bgezal	r0,00005B34
 	nop
-
-l00005214:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -2513,8 +2367,6 @@ _ZNSt10unique_ptrI3DogSt14default_deleteIS0_EE11get_deleterEv proc
 	or	r25,r2,r0
 	bgezal	r0,00005B8C
 	nop
-
-l0000526C:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -2568,8 +2420,6 @@ _ZNSt10unique_ptrI6AnimalSt14default_deleteIS0_EE5resetEPS0_ proc
 	or	r25,r2,r0
 	bgezal	r0,00005064
 	nop
-
-l00005328:
 	lw	r28,0010(r30)
 	or	r3,r2,r0
 	addiu	r2,r30,+00000024
@@ -2579,8 +2429,6 @@ l00005328:
 	or	r25,r2,r0
 	bgezal	r0,00005C0C
 	nop
-
-l0000534C:
 	lw	r28,0010(r30)
 	lw	r2,0024(r30)
 	beq	r2,r0,00005398
@@ -2592,8 +2440,6 @@ l0000535C:
 	or	r25,r2,r0
 	bgezal	r0,000050BC
 	nop
-
-l00005370:
 	lw	r28,0010(r30)
 	or	r3,r2,r0
 	lw	r2,0024(r30)
@@ -2603,8 +2449,6 @@ l00005370:
 	or	r25,r2,r0
 	bgezal	r0,00005114
 	nop
-
-l00005394:
 	lw	r28,0010(r30)
 
 l00005398:
@@ -2632,8 +2476,6 @@ _ZNSt10unique_ptrI3DogSt14default_deleteIS0_EE7releaseEv proc
 	or	r25,r2,r0
 	bgezal	r0,00005CBC
 	nop
-
-l000053EC:
 	lw	r28,0010(r30)
 	sw	r2,0018(r30)
 	lw	r2,0028(r30)
@@ -2642,8 +2484,6 @@ l000053EC:
 	or	r25,r2,r0
 	bgezal	r0,000051D8
 	nop
-
-l0000540C:
 	lw	r28,0010(r30)
 	sw	r0,0000(r2)
 	lw	r2,0018(r30)
@@ -2700,8 +2540,6 @@ _ZNSt10unique_ptrI3CatSt14default_deleteIS0_EEC1IS2_vEEPS0_ proc
 	or	r25,r2,r0
 	bgezal	r0,00005D14
 	nop
-
-l000054C8:
 	lw	r28,0010(r30)
 	nop
 	or	sp,r30,r0
@@ -2728,8 +2566,6 @@ _ZNSt15__uniq_ptr_implI3CatSt14default_deleteIS0_EE6_M_ptrEv proc
 	or	r25,r2,r0
 	bgezal	r0,00005D98
 	nop
-
-l00005524:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -2755,8 +2591,6 @@ _ZNSt10unique_ptrI3CatSt14default_deleteIS0_EE11get_deleterEv proc
 	or	r25,r2,r0
 	bgezal	r0,00005DF0
 	nop
-
-l0000557C:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -2808,8 +2642,6 @@ _ZNSt10unique_ptrI3CatSt14default_deleteIS0_EE7releaseEv proc
 	or	r25,r2,r0
 	bgezal	r0,00005E48
 	nop
-
-l00005630:
 	lw	r28,0010(r30)
 	sw	r2,0018(r30)
 	lw	r2,0028(r30)
@@ -2818,8 +2650,6 @@ l00005630:
 	or	r25,r2,r0
 	bgezal	r0,000054E8
 	nop
-
-l00005650:
 	lw	r28,0010(r30)
 	sw	r0,0000(r2)
 	lw	r2,0018(r30)
@@ -2876,8 +2706,6 @@ _ZNSt10unique_ptrI5HumanSt14default_deleteIS0_EEC1IS2_vEEPS0_ proc
 	or	r25,r2,r0
 	bgezal	r0,00005EA0
 	nop
-
-l0000570C:
 	lw	r28,0010(r30)
 	nop
 	or	sp,r30,r0
@@ -2904,8 +2732,6 @@ _ZNSt15__uniq_ptr_implI5HumanSt14default_deleteIS0_EE6_M_ptrEv proc
 	or	r25,r2,r0
 	bgezal	r0,00005F24
 	nop
-
-l00005768:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -2931,8 +2757,6 @@ _ZNSt10unique_ptrI5HumanSt14default_deleteIS0_EE11get_deleterEv proc
 	or	r25,r2,r0
 	bgezal	r0,00005F7C
 	nop
-
-l000057C0:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -2995,8 +2819,6 @@ l00005884:
 	or	r25,r2,r0
 	bgezal	r0,000057DC
 	nop
-
-l00005898:
 	lw	r28,0010(r30)
 	addiu	r5,r0,+0000001C
 	or	r4,r16,r0
@@ -3032,8 +2854,6 @@ _ZNSt10unique_ptrI5HumanSt14default_deleteIS0_EE7releaseEv proc
 	or	r25,r2,r0
 	bgezal	r0,00005FD4
 	nop
-
-l00005910:
 	lw	r28,0010(r30)
 	sw	r2,0018(r30)
 	lw	r2,0028(r30)
@@ -3042,8 +2862,6 @@ l00005910:
 	or	r25,r2,r0
 	bgezal	r0,0000572C
 	nop
-
-l00005930:
 	lw	r28,0010(r30)
 	sw	r0,0000(r2)
 	lw	r2,0018(r30)
@@ -3098,8 +2916,6 @@ _ZNKSt10unique_ptrI6AnimalSt14default_deleteIS0_EE3getEv proc
 	or	r25,r2,r0
 	bgezal	r0,0000602C
 	nop
-
-l000059E4:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -3125,8 +2941,6 @@ _ZSt3getILj0EJP6AnimalSt14default_deleteIS0_EEERNSt13tuple_elementIXT_ESt5tupleI
 	or	r25,r2,r0
 	bgezal	r0,00006088
 	nop
-
-l00005A3C:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -3152,8 +2966,6 @@ _ZNSt15__uniq_ptr_implI6AnimalSt14default_deleteIS0_EE10_M_deleterEv proc
 	or	r25,r2,r0
 	bgezal	r0,000060DC
 	nop
-
-l00005A94:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -3180,16 +2992,12 @@ _ZNSt15__uniq_ptr_implI3DogSt14default_deleteIS0_EEC1EPS0_ proc
 	or	r25,r2,r0
 	bgezal	r0,00006130
 	nop
-
-l00005AF0:
 	lw	r28,0010(r30)
 	lw	r4,0020(r30)
 	lw	r2,-7F78(r28)
 	or	r25,r2,r0
 	bgezal	r0,000051D8
 	nop
-
-l00005B08:
 	lw	r28,0010(r30)
 	or	r3,r2,r0
 	lw	r2,0024(r30)
@@ -3219,8 +3027,6 @@ _ZSt3getILj0EJP3DogSt14default_deleteIS0_EEERNSt13tuple_elementIXT_ESt5tupleIJDp
 	or	r25,r2,r0
 	bgezal	r0,0000618C
 	nop
-
-l00005B70:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -3246,8 +3052,6 @@ _ZNSt15__uniq_ptr_implI3DogSt14default_deleteIS0_EE10_M_deleterEv proc
 	or	r25,r2,r0
 	bgezal	r0,000061E0
 	nop
-
-l00005BC8:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -3286,8 +3090,6 @@ _ZSt4swapIP6AnimalENSt9enable_ifIXsrSt6__and_IJSt6__not_ISt15__is_tuple_likeIT_E
 	or	r25,r2,r0
 	bgezal	r0,00005BE4
 	nop
-
-l00005C48:
 	lw	r28,0010(r30)
 	lw	r2,0000(r2)
 	sw	r2,0018(r30)
@@ -3296,8 +3098,6 @@ l00005C48:
 	or	r25,r2,r0
 	bgezal	r0,00005BE4
 	nop
-
-l00005C68:
 	lw	r28,0010(r30)
 	lw	r3,0000(r2)
 	lw	r2,0028(r30)
@@ -3308,8 +3108,6 @@ l00005C68:
 	or	r25,r2,r0
 	bgezal	r0,00005BE4
 	nop
-
-l00005C90:
 	lw	r28,0010(r30)
 	lw	r3,0000(r2)
 	lw	r2,002C(r30)
@@ -3339,8 +3137,6 @@ _ZNKSt10unique_ptrI3DogSt14default_deleteIS0_EE3getEv proc
 	or	r25,r2,r0
 	bgezal	r0,00006234
 	nop
-
-l00005CF8:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -3367,16 +3163,12 @@ _ZNSt15__uniq_ptr_implI3CatSt14default_deleteIS0_EEC1EPS0_ proc
 	or	r25,r2,r0
 	bgezal	r0,00006290
 	nop
-
-l00005D54:
 	lw	r28,0010(r30)
 	lw	r4,0020(r30)
 	lw	r2,-7F50(r28)
 	or	r25,r2,r0
 	bgezal	r0,000054E8
 	nop
-
-l00005D6C:
 	lw	r28,0010(r30)
 	or	r3,r2,r0
 	lw	r2,0024(r30)
@@ -3406,8 +3198,6 @@ _ZSt3getILj0EJP3CatSt14default_deleteIS0_EEERNSt13tuple_elementIXT_ESt5tupleIJDp
 	or	r25,r2,r0
 	bgezal	r0,000062EC
 	nop
-
-l00005DD4:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -3433,8 +3223,6 @@ _ZNSt15__uniq_ptr_implI3CatSt14default_deleteIS0_EE10_M_deleterEv proc
 	or	r25,r2,r0
 	bgezal	r0,00006340
 	nop
-
-l00005E2C:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -3460,8 +3248,6 @@ _ZNKSt10unique_ptrI3CatSt14default_deleteIS0_EE3getEv proc
 	or	r25,r2,r0
 	bgezal	r0,00006394
 	nop
-
-l00005E84:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -3488,16 +3274,12 @@ _ZNSt15__uniq_ptr_implI5HumanSt14default_deleteIS0_EEC1EPS0_ proc
 	or	r25,r2,r0
 	bgezal	r0,000063F0
 	nop
-
-l00005EE0:
 	lw	r28,0010(r30)
 	lw	r4,0020(r30)
 	lw	r2,-7F2C(r28)
 	or	r25,r2,r0
 	bgezal	r0,0000572C
 	nop
-
-l00005EF8:
 	lw	r28,0010(r30)
 	or	r3,r2,r0
 	lw	r2,0024(r30)
@@ -3527,8 +3309,6 @@ _ZSt3getILj0EJP5HumanSt14default_deleteIS0_EEERNSt13tuple_elementIXT_ESt5tupleIJ
 	or	r25,r2,r0
 	bgezal	r0,0000644C
 	nop
-
-l00005F60:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -3554,8 +3334,6 @@ _ZNSt15__uniq_ptr_implI5HumanSt14default_deleteIS0_EE10_M_deleterEv proc
 	or	r25,r2,r0
 	bgezal	r0,000064A0
 	nop
-
-l00005FB8:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -3581,8 +3359,6 @@ _ZNKSt10unique_ptrI5HumanSt14default_deleteIS0_EE3getEv proc
 	or	r25,r2,r0
 	bgezal	r0,000064F4
 	nop
-
-l00006010:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -3608,8 +3384,6 @@ _ZNKSt15__uniq_ptr_implI6AnimalSt14default_deleteIS0_EE6_M_ptrEv proc
 	or	r25,r2,r0
 	bgezal	r0,00006550
 	nop
-
-l00006068:
 	lw	r28,0010(r30)
 	lw	r2,0000(r2)
 	or	sp,r30,r0
@@ -3635,8 +3409,6 @@ _ZSt12__get_helperILj0EP6AnimalJSt14default_deleteIS0_EEERT0_RSt11_Tuple_implIXT
 	or	r25,r2,r0
 	bgezal	r0,000065A8
 	nop
-
-l000060C0:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -3661,8 +3433,6 @@ _ZSt3getILj1EJP6AnimalSt14default_deleteIS0_EEERNSt13tuple_elementIXT_ESt5tupleI
 	or	r25,r2,r0
 	bgezal	r0,00006600
 	nop
-
-l00006114:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -3688,8 +3458,6 @@ _ZNSt5tupleIJP3DogSt14default_deleteIS0_EEEC1IS1_S3_Lb1EEEv proc
 	or	r25,r2,r0
 	bgezal	r0,00006654
 	nop
-
-l0000616C:
 	lw	r28,0010(r30)
 	nop
 	or	sp,r30,r0
@@ -3715,8 +3483,6 @@ _ZSt12__get_helperILj0EP3DogJSt14default_deleteIS0_EEERT0_RSt11_Tuple_implIXT_EJ
 	or	r25,r2,r0
 	bgezal	r0,000066C8
 	nop
-
-l000061C4:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -3741,8 +3507,6 @@ _ZSt3getILj1EJP3DogSt14default_deleteIS0_EEERNSt13tuple_elementIXT_ESt5tupleIJDp
 	or	r25,r2,r0
 	bgezal	r0,00006720
 	nop
-
-l00006218:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -3768,8 +3532,6 @@ _ZNKSt15__uniq_ptr_implI3DogSt14default_deleteIS0_EE6_M_ptrEv proc
 	or	r25,r2,r0
 	bgezal	r0,00006774
 	nop
-
-l00006270:
 	lw	r28,0010(r30)
 	lw	r2,0000(r2)
 	or	sp,r30,r0
@@ -3796,8 +3558,6 @@ _ZNSt5tupleIJP3CatSt14default_deleteIS0_EEEC1IS1_S3_Lb1EEEv proc
 	or	r25,r2,r0
 	bgezal	r0,000067CC
 	nop
-
-l000062CC:
 	lw	r28,0010(r30)
 	nop
 	or	sp,r30,r0
@@ -3823,8 +3583,6 @@ _ZSt12__get_helperILj0EP3CatJSt14default_deleteIS0_EEERT0_RSt11_Tuple_implIXT_EJ
 	or	r25,r2,r0
 	bgezal	r0,00006840
 	nop
-
-l00006324:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -3849,8 +3607,6 @@ _ZSt3getILj1EJP3CatSt14default_deleteIS0_EEERNSt13tuple_elementIXT_ESt5tupleIJDp
 	or	r25,r2,r0
 	bgezal	r0,00006898
 	nop
-
-l00006378:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -3876,8 +3632,6 @@ _ZNKSt15__uniq_ptr_implI3CatSt14default_deleteIS0_EE6_M_ptrEv proc
 	or	r25,r2,r0
 	bgezal	r0,000068EC
 	nop
-
-l000063D0:
 	lw	r28,0010(r30)
 	lw	r2,0000(r2)
 	or	sp,r30,r0
@@ -3904,8 +3658,6 @@ _ZNSt5tupleIJP5HumanSt14default_deleteIS0_EEEC1IS1_S3_Lb1EEEv proc
 	or	r25,r2,r0
 	bgezal	r0,00006944
 	nop
-
-l0000642C:
 	lw	r28,0010(r30)
 	nop
 	or	sp,r30,r0
@@ -3931,8 +3683,6 @@ _ZSt12__get_helperILj0EP5HumanJSt14default_deleteIS0_EEERT0_RSt11_Tuple_implIXT_
 	or	r25,r2,r0
 	bgezal	r0,000069B8
 	nop
-
-l00006484:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -3957,8 +3707,6 @@ _ZSt3getILj1EJP5HumanSt14default_deleteIS0_EEERNSt13tuple_elementIXT_ESt5tupleIJ
 	or	r25,r2,r0
 	bgezal	r0,00006A10
 	nop
-
-l000064D8:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -3984,8 +3732,6 @@ _ZNKSt15__uniq_ptr_implI5HumanSt14default_deleteIS0_EE6_M_ptrEv proc
 	or	r25,r2,r0
 	bgezal	r0,00006A64
 	nop
-
-l00006530:
 	lw	r28,0010(r30)
 	lw	r2,0000(r2)
 	or	sp,r30,r0
@@ -4012,8 +3758,6 @@ _ZSt3getILj0EJP6AnimalSt14default_deleteIS0_EEERKNSt13tuple_elementIXT_ESt5tuple
 	or	r25,r2,r0
 	bgezal	r0,00006ABC
 	nop
-
-l0000658C:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -4039,8 +3783,6 @@ _ZNSt11_Tuple_implILj0EJP6AnimalSt14default_deleteIS0_EEE7_M_headERS4_ proc
 	or	r25,r2,r0
 	bgezal	r0,00006B10
 	nop
-
-l000065E4:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -4065,8 +3807,6 @@ _ZSt12__get_helperILj1ESt14default_deleteI6AnimalEJEERT0_RSt11_Tuple_implIXT_EJS
 	or	r25,r2,r0
 	bgezal	r0,00006B38
 	nop
-
-l00006638:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -4091,8 +3831,6 @@ _ZNSt11_Tuple_implILj0EJP3DogSt14default_deleteIS0_EEEC2Ev proc
 	or	r25,r2,r0
 	bgezal	r0,00006B8C
 	nop
-
-l0000668C:
 	lw	r28,0010(r30)
 	lw	r2,0020(r30)
 	or	r4,r2,r0
@@ -4100,8 +3838,6 @@ l0000668C:
 	or	r25,r2,r0
 	bgezal	r0,00006BE4
 	nop
-
-l000066A8:
 	lw	r28,0010(r30)
 	nop
 	or	sp,r30,r0
@@ -4128,8 +3864,6 @@ _ZNSt11_Tuple_implILj0EJP3DogSt14default_deleteIS0_EEE7_M_headERS4_ proc
 	or	r25,r2,r0
 	bgezal	r0,00006C14
 	nop
-
-l00006704:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -4154,8 +3888,6 @@ _ZSt12__get_helperILj1ESt14default_deleteI3DogEJEERT0_RSt11_Tuple_implIXT_EJS3_D
 	or	r25,r2,r0
 	bgezal	r0,00006C3C
 	nop
-
-l00006758:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -4181,8 +3913,6 @@ _ZSt3getILj0EJP3DogSt14default_deleteIS0_EEERKNSt13tuple_elementIXT_ESt5tupleIJD
 	or	r25,r2,r0
 	bgezal	r0,00006C90
 	nop
-
-l000067B0:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -4207,8 +3937,6 @@ _ZNSt11_Tuple_implILj0EJP3CatSt14default_deleteIS0_EEEC2Ev proc
 	or	r25,r2,r0
 	bgezal	r0,00006CE4
 	nop
-
-l00006804:
 	lw	r28,0010(r30)
 	lw	r2,0020(r30)
 	or	r4,r2,r0
@@ -4216,8 +3944,6 @@ l00006804:
 	or	r25,r2,r0
 	bgezal	r0,00006D3C
 	nop
-
-l00006820:
 	lw	r28,0010(r30)
 	nop
 	or	sp,r30,r0
@@ -4244,8 +3970,6 @@ _ZNSt11_Tuple_implILj0EJP3CatSt14default_deleteIS0_EEE7_M_headERS4_ proc
 	or	r25,r2,r0
 	bgezal	r0,00006D6C
 	nop
-
-l0000687C:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -4270,8 +3994,6 @@ _ZSt12__get_helperILj1ESt14default_deleteI3CatEJEERT0_RSt11_Tuple_implIXT_EJS3_D
 	or	r25,r2,r0
 	bgezal	r0,00006D94
 	nop
-
-l000068D0:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -4297,8 +4019,6 @@ _ZSt3getILj0EJP3CatSt14default_deleteIS0_EEERKNSt13tuple_elementIXT_ESt5tupleIJD
 	or	r25,r2,r0
 	bgezal	r0,00006DE8
 	nop
-
-l00006928:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -4323,8 +4043,6 @@ _ZNSt11_Tuple_implILj0EJP5HumanSt14default_deleteIS0_EEEC2Ev proc
 	or	r25,r2,r0
 	bgezal	r0,00006E3C
 	nop
-
-l0000697C:
 	lw	r28,0010(r30)
 	lw	r2,0020(r30)
 	or	r4,r2,r0
@@ -4332,8 +4050,6 @@ l0000697C:
 	or	r25,r2,r0
 	bgezal	r0,00006E94
 	nop
-
-l00006998:
 	lw	r28,0010(r30)
 	nop
 	or	sp,r30,r0
@@ -4360,8 +4076,6 @@ _ZNSt11_Tuple_implILj0EJP5HumanSt14default_deleteIS0_EEE7_M_headERS4_ proc
 	or	r25,r2,r0
 	bgezal	r0,00006EC4
 	nop
-
-l000069F4:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -4386,8 +4100,6 @@ _ZSt12__get_helperILj1ESt14default_deleteI5HumanEJEERT0_RSt11_Tuple_implIXT_EJS3
 	or	r25,r2,r0
 	bgezal	r0,00006EEC
 	nop
-
-l00006A48:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -4413,8 +4125,6 @@ _ZSt3getILj0EJP5HumanSt14default_deleteIS0_EEERKNSt13tuple_elementIXT_ESt5tupleI
 	or	r25,r2,r0
 	bgezal	r0,00006F40
 	nop
-
-l00006AA0:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -4439,8 +4149,6 @@ _ZSt12__get_helperILj0EP6AnimalJSt14default_deleteIS0_EEERKT0_RKSt11_Tuple_implI
 	or	r25,r2,r0
 	bgezal	r0,00006F94
 	nop
-
-l00006AF4:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -4478,8 +4186,6 @@ _ZNSt11_Tuple_implILj1EJSt14default_deleteI6AnimalEEE7_M_headERS3_ proc
 	or	r25,r2,r0
 	bgezal	r0,00006FEC
 	nop
-
-l00006B70:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -4504,8 +4210,6 @@ _ZNSt11_Tuple_implILj1EJSt14default_deleteI3DogEEEC2Ev proc
 	or	r25,r2,r0
 	bgezal	r0,00007014
 	nop
-
-l00006BC4:
 	lw	r28,0010(r30)
 	nop
 	or	sp,r30,r0
@@ -4559,8 +4263,6 @@ _ZNSt11_Tuple_implILj1EJSt14default_deleteI3DogEEE7_M_headERS3_ proc
 	or	r25,r2,r0
 	bgezal	r0,0000703C
 	nop
-
-l00006C74:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -4585,8 +4287,6 @@ _ZSt12__get_helperILj0EP3DogJSt14default_deleteIS0_EEERKT0_RKSt11_Tuple_implIXT_
 	or	r25,r2,r0
 	bgezal	r0,00007064
 	nop
-
-l00006CC8:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -4611,8 +4311,6 @@ _ZNSt11_Tuple_implILj1EJSt14default_deleteI3CatEEEC2Ev proc
 	or	r25,r2,r0
 	bgezal	r0,000070BC
 	nop
-
-l00006D1C:
 	lw	r28,0010(r30)
 	nop
 	or	sp,r30,r0
@@ -4666,8 +4364,6 @@ _ZNSt11_Tuple_implILj1EJSt14default_deleteI3CatEEE7_M_headERS3_ proc
 	or	r25,r2,r0
 	bgezal	r0,000070E4
 	nop
-
-l00006DCC:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -4692,8 +4388,6 @@ _ZSt12__get_helperILj0EP3CatJSt14default_deleteIS0_EEERKT0_RKSt11_Tuple_implIXT_
 	or	r25,r2,r0
 	bgezal	r0,0000710C
 	nop
-
-l00006E20:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -4718,8 +4412,6 @@ _ZNSt11_Tuple_implILj1EJSt14default_deleteI5HumanEEEC2Ev proc
 	or	r25,r2,r0
 	bgezal	r0,00007164
 	nop
-
-l00006E74:
 	lw	r28,0010(r30)
 	nop
 	or	sp,r30,r0
@@ -4773,8 +4465,6 @@ _ZNSt11_Tuple_implILj1EJSt14default_deleteI5HumanEEE7_M_headERS3_ proc
 	or	r25,r2,r0
 	bgezal	r0,0000718C
 	nop
-
-l00006F24:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -4799,8 +4489,6 @@ _ZSt12__get_helperILj0EP5HumanJSt14default_deleteIS0_EEERKT0_RKSt11_Tuple_implIX
 	or	r25,r2,r0
 	bgezal	r0,000071B4
 	nop
-
-l00006F78:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -4826,8 +4514,6 @@ _ZNSt11_Tuple_implILj0EJP6AnimalSt14default_deleteIS0_EEE7_M_headERKS4_ proc
 	or	r25,r2,r0
 	bgezal	r0,0000720C
 	nop
-
-l00006FD0:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -4892,8 +4578,6 @@ _ZNSt11_Tuple_implILj0EJP3DogSt14default_deleteIS0_EEE7_M_headERKS4_ proc
 	or	r25,r2,r0
 	bgezal	r0,00007234
 	nop
-
-l000070A0:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -4945,8 +4629,6 @@ _ZNSt11_Tuple_implILj0EJP3CatSt14default_deleteIS0_EEE7_M_headERKS4_ proc
 	or	r25,r2,r0
 	bgezal	r0,0000725C
 	nop
-
-l00007148:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -4998,8 +4680,6 @@ _ZNSt11_Tuple_implILj0EJP5HumanSt14default_deleteIS0_EEE7_M_headERKS4_ proc
 	or	r25,r2,r0
 	bgezal	r0,00007284
 	nop
-
-l000071F0:
 	lw	r28,0010(r30)
 	or	sp,r30,r0
 	lw	ra,001C(sp)
@@ -5080,8 +4760,6 @@ __libc_csu_init proc
 	sw	ra,0034(sp)
 	bgezal	r0,00003E5C
 	sw	r17,0020(sp)
-
-l000072F4:
 	lw	r28,0010(sp)
 	lw	r16,-7DCC(r28)
 	lw	r18,-7DC8(r28)
@@ -5150,21 +4828,108 @@ l000073AC:
 	jr	ra
 	addiu	sp,sp,+00000028
 ;;; Segment .MIPS.stubs (000073C0)
-000073C0 8F 99 80 10 03 E0 78 25 03 20 F8 09 24 18 00 9A ......x%. ..$...
-000073D0 8F 99 80 10 03 E0 78 25 03 20 F8 09 24 18 00 99 ......x%. ..$...
-000073E0 8F 99 80 10 03 E0 78 25 03 20 F8 09 24 18 00 97 ......x%. ..$...
-000073F0 8F 99 80 10 03 E0 78 25 03 20 F8 09 24 18 00 96 ......x%. ..$...
-00007400 8F 99 80 10 03 E0 78 25 03 20 F8 09 24 18 00 95 ......x%. ..$...
-00007410 8F 99 80 10 03 E0 78 25 03 20 F8 09 24 18 00 94 ......x%. ..$...
-00007420 8F 99 80 10 03 E0 78 25 03 20 F8 09 24 18 00 93 ......x%. ..$...
-00007430 8F 99 80 10 03 E0 78 25 03 20 F8 09 24 18 00 92 ......x%. ..$...
-00007440 8F 99 80 10 03 E0 78 25 03 20 F8 09 24 18 00 91 ......x%. ..$...
-00007450 8F 99 80 10 03 E0 78 25 03 20 F8 09 24 18 00 8F ......x%. ..$...
-00007460 8F 99 80 10 03 E0 78 25 03 20 F8 09 24 18 00 8E ......x%. ..$...
-00007470 8F 99 80 10 03 E0 78 25 03 20 F8 09 24 18 00 8D ......x%. ..$...
-00007480 8F 99 80 10 03 E0 78 25 03 20 F8 09 24 18 00 8B ......x%. ..$...
-00007490 8F 99 80 10 03 E0 78 25 03 20 F8 09 24 18 00 8A ......x%. ..$...
-000074A0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+
+;; _Znwj: 000073C0
+_Znwj proc
+	lw	r25,-7FF0(r28)
+	or	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+0000009A
+
+;; _ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEC1ERKS4_: 000073D0
+_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEC1ERKS4_ proc
+	lw	r25,-7FF0(r28)
+	or	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+00000099
+
+;; _ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEED1Ev: 000073E0
+_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEED1Ev proc
+	lw	r25,-7FF0(r28)
+	or	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+00000097
+
+;; : 000073F0
+ proc
+	lw	r25,-7FF0(r28)
+	or	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+00000096
+
+;; __cxa_atexit: 00007400
+__cxa_atexit proc
+	lw	r25,-7FF0(r28)
+	or	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+00000095
+
+;; _ZStlsIcSt11char_traitsIcESaIcEERSt13basic_ostreamIT_T0_ES7_RKNSt7__cxx1112basic_stringIS4_S5_T1_EE: 00007410
+_ZStlsIcSt11char_traitsIcESaIcEERSt13basic_ostreamIT_T0_ES7_RKNSt7__cxx1112basic_stringIS4_S5_T1_EE proc
+	lw	r25,-7FF0(r28)
+	or	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+00000094
+
+;; __libc_start_main: 00007420
+__libc_start_main proc
+	lw	r25,-7FF0(r28)
+	or	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+00000093
+
+;; _ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc: 00007430
+_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc proc
+	lw	r25,-7FF0(r28)
+	or	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+00000092
+
+;; _ZNSaIcED1Ev: 00007440
+_ZNSaIcED1Ev proc
+	lw	r25,-7FF0(r28)
+	or	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+00000091
+
+;; _ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEC1EPKcRKS3_: 00007450
+_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEC1EPKcRKS3_ proc
+	lw	r25,-7FF0(r28)
+	or	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+0000008F
+
+;; _ZNSt8ios_base4InitC1Ev: 00007460
+_ZNSt8ios_base4InitC1Ev proc
+	lw	r25,-7FF0(r28)
+	or	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+0000008E
+
+;; atoi: 00007470
+atoi proc
+	lw	r25,-7FF0(r28)
+	or	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+0000008D
+
+;; _Unwind_Resume: 00007480
+_Unwind_Resume proc
+	lw	r25,-7FF0(r28)
+	or	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+0000008B
+
+;; _ZNSaIcEC1Ev: 00007490
+_ZNSaIcEC1Ev proc
+	lw	r25,-7FF0(r28)
+	or	r15,ra,r0
+	jalr	ra,r25
+	addiu	r24,r0,+0000008A
+	nop
+	nop
+	nop
+	nop
 ;;; Segment .fini (000074B0)
 
 ;; _fini: 000074B0
@@ -5177,8 +4942,6 @@ _fini proc
 	sw	ra,001C(sp)
 	bgezal	r0,000074D0
 	nop
-
-l000074D0:
 	lui	r28,+0002
 	addiu	r28,r28,-000067D0
 	addu	r28,r28,ra
@@ -5189,27 +4952,35 @@ l000074D0:
 	lw	ra,001C(sp)
 	jr	ra
 	addiu	sp,sp,+00000020
-000074F8                         00 00 00 00 00 00 00 00         ........
 ;;; Segment .rodata (00007500)
-00007500 00 02 00 01                                     ....           
+_IO_stdin_used		; 00007500
+	dd	0x00020001
 00007504             00 00 00 00 00 00 00 00 00 00 00 00     ............
-00007510 00                                              .              
+_ZStL19piecewise_construct		; 00007510
+	db	0x00
 00007511    00 00 00                                      ...           
-00007514             00 00 00 02                             ....       
-00007518                         00                              .      
+_ZN9__gnu_cxxL21__default_lock_policyE		; 00007514
+	dd	0x00000002
+_ZStL13allocator_arg		; 00007518
+	db	0x00
 00007519                            00 00 00                      ...   
-0000751C                                     00                      .  
+_ZStL6ignore		; 0000751C
+	db	0x00
 0000751D                                        00 00 00              ...
 00007520 57 6F 6F 66 0A 00 00 00 4D 65 61 75 78 0A 00 00 Woof....Meaux...
 00007530 48 65 6C 6C 6F 2C 20 6D 79 20 6E 61 6D 65 20 69 Hello, my name i
 00007540 73 20 00 00 0A 00 00 00 00 00 00 00 00 00 00 00 s ..............
-00007550 35 48 75 6D 61 6E 00                            5Human.        
+_ZTS5Human		; 00007550
+	db	0x35, 0x48, 0x75, 0x6D, 0x61, 0x6E, 0x00
 00007557                      00                                .       
-00007558                         33 43 61 74 00                  3Cat.  
+_ZTS3Cat		; 00007558
+	db	0x33, 0x43, 0x61, 0x74, 0x00
 0000755D                                        00 00 00              ...
-00007560 33 44 6F 67 00                                  3Dog.          
+_ZTS3Dog		; 00007560
+	db	0x33, 0x44, 0x6F, 0x67, 0x00
 00007565                00 00 00                              ...       
-00007568                         36 41 6E 69 6D 61 6C 00         6Animal.
+_ZTS6Animal		; 00007568
+	dq	0x0000000036416E69
 ;;; Segment .eh_frame_hdr (00007570)
 00007570 01 1B 03 3B 00 00 04 08 00 00 00 80 FF FF CB 50 ...;...........P
 00007580 00 00 04 F8 FF FF CD C4 00 00 16 78 FF FF CE 68 ...........x...h
@@ -5591,20 +5362,29 @@ l000074D0:
 00018C7C                                     FF FF FF FF             ....
 00018C80 00 00 00 00                                     ....           
 ;;; Segment .data.rel.ro (00018C84)
-00018C84             00 00 00 00 00 01 8C B4 00 00 45 C8     ..........E.
-00018C90 00 00 00 00 00 01 8C C0 00 00 44 90             ..........D.   
-00018C9C                                     00 00 00 00             ....
-00018CA0 00 01 8C CC 00 00 44 30                         ......D0       
-00018CA8                         00 00 00 00 00 01 8C D8         ........
-00018CB0 00 00 00 00                                     ....           
-00018CB4             00 00 00 08 00 00 75 50 00 01 8C D8     ......uP....
-00018CC0 00 00 00 08 00 00 75 58 00 01 8C D8             ......uX....   
-00018CCC                                     00 00 00 08             ....
-00018CD0 00 00 75 60 00 01 8C D8                         ..u`....       
-00018CD8                         00 00 00 08 00 00 75 68         ......uh
+_ZTV5Human		; 00018C84
+	db	0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x8C, 0xB4, 0x00, 0x00, 0x45, 0xC8
+_ZTV3Cat		; 00018C90
+	db	0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x8C, 0xC0, 0x00, 0x00, 0x44, 0x90
+_ZTV3Dog		; 00018C9C
+	db	0x00, 0x00, 0x00, 0x00
+	db	0x00, 0x01, 0x8C, 0xCC, 0x00, 0x00, 0x44, 0x30
+_ZTV6Animal		; 00018CA8
+	db	0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x8C, 0xD8
+	db	0x00, 0x00, 0x00, 0x00
+_ZTI5Human		; 00018CB4
+	db	0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x75, 0x50, 0x00, 0x01, 0x8C, 0xD8
+_ZTI3Cat		; 00018CC0
+	db	0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x75, 0x58, 0x00, 0x01, 0x8C, 0xD8
+_ZTI3Dog		; 00018CCC
+	db	0x00, 0x00, 0x00, 0x08
+	db	0x00, 0x00, 0x75, 0x60, 0x00, 0x01, 0x8C, 0xD8
+_ZTI6Animal		; 00018CD8
+	dq	0x0000000000000008
 ;;; Segment .data (00018CE0)
 00018CE0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
-00018CF0 00 00 00 00                                     ....           
+DW.ref.__gxx_personality_v0		; 00018CF0
+	dd	0x00000000
 00018CF4             00 00 00 00 00 00 00 00 00 00 00 00     ............
 ;;; Segment .rld_map (00018D00)
 00018D00 00 00 00 00                                     ....           
@@ -5869,8 +5649,12 @@ _ZNSt10_Head_baseILj0EP5HumanLb0EE7_M_headERKS2__GOT		; 00018F2C
 _init_GOT		; 00018F30
 	dd	0x00003E5C
 00018F34             00 01 8C 70 00 01 8C 74 00 00 00 00     ...p...t....
-00018F40 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
-00018F50 00 00 00 00                                     ....           
+00018F40 00 00 00 00 00 00 00 00                         ........       
+_ZNSt8ios_base4InitD1Ev_GOT		; 00018F48
+	dd	0x00000000
+00018F4C                                     00 00 00 00             ....
+__gmon_start___GOT		; 00018F50
+	dd	0x00000000
 _ZNSaIcEC1Ev_GOT		; 00018F54
 	dd	0x00007490
 _Unwind_Resume_GOT		; 00018F58
@@ -5897,19 +5681,26 @@ _ZdlPvj_GOT		; 00018F84
 	dd	0x000073F0
 _ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEED1Ev_GOT		; 00018F88
 	dd	0x000073E0
-00018F8C                                     00 00 00 00             ....
+__cxa_finalize_GOT		; 00018F8C
+	dd	0x00000000
 _ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEC1ERKS4__GOT		; 00018F90
 	dd	0x000073D0
 _Znwj_GOT		; 00018F94
 	dd	0x000073C0
 00018F98                         00 00 00 00 00 00 00 00         ........
-; ...
+__gxx_personality_v0_GOT		; 00018FA0
+	dd	0x00000000
+__cxa_pure_virtual_GOT		; 00018FA4
+	dd	0x00000000
 ;;; Segment .sdata (00018FA8)
 00018FA8                         00 01 8F A8                     ....   
 ;;; Segment .bss (00018FB0)
-00018FB0 00                                              .              
+completed.6311		; 00018FB0
+	db	0x00
 00018FB1    00 00 00                                      ...           
-00018FB4             00 00 00 00                             ....       
+dtor_idx.6313		; 00018FB4
+	dd	0x00000000
 00018FB8                         00 00 00 00 00 00 00 00         ........
-00018FC0 00                                              .              
+_ZStL8__ioinit		; 00018FC0
+	db	0x00
 00018FC1    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ...............

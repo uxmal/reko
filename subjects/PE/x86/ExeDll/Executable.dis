@@ -1354,7 +1354,7 @@ l0040178F:
 	Mem30[0x00403368:word32] = 0x00000000
 	memset(fp - 0x00000328, 0x00000000, 0x000002CC)
 	memset(fp - 0x0000005C, 0x00000000, 0x00000050)
-	byte bl_90 = 0x00 - (0x00000001 - IsDebuggerPresent() == 0x00000000)
+	byte bl_90 = 0x00 - (IsDebuggerPresent() == 0x00000001)
 	SetUnhandledExceptionFilter(0x00000000)
 	branch UnhandledExceptionFilter(fp - 0x0000000C) != 0x00000000 l00401889
 // DataOut:

@@ -4,9 +4,11 @@
 
 #include "lunar.h"
 
+word16 g_w0003 = 0x0000;
 word16 g_w0004 = 0x0200;
 word16 g_w0006 = 0x00E0;
 word16 g_w0010 = 0x0206;
+word16 g_w001A = 0x00E0;
 Eq_5 g_t0044 = 
 	{
 		L'\x00'
@@ -117,8 +119,9 @@ cui16 g_w008A = 0x0000;
 cui16 g_w008C = 0x0000;
 cui16 g_w008E = 0x0000;
 cui16 g_w0090 = 0x0000;
-struct Eq_641 * g_ptr0092 = null;
-struct Eq_696 * g_ptr009E = &g_ptr009E;
+struct Eq_633 * g_ptr0092 = null;
+word16 g_w0096 = 0x00CE;
+struct Eq_684 * g_ptr009E = &g_ptr009E;
 word16 g_w00A0 = 0x0000;
 cui16 g_w00A2 = 0x0000;
 cui16 g_w00A4 = 0x0000;
@@ -127,17 +130,28 @@ cui16 g_w00A8 = 0x0000;
 wchar_t g_w00AA = L'\x00';
 int16 g_w00AC = 0;
 ci16 g_w00AE = 0x0000;
-struct Eq_1501 * g_ptr00B0 = &g_ptr00B0;
+struct Eq_1437 * g_ptr00B0 = &g_ptr00B0;
 word16 * g_a013E[] = 
 	{
+	};
+Eq_420 g_t021C = 
+	{
+		
+		{
+			L'쀀'
+		},
+		
+		{
+			L'㓠'
+		},
 	};
 word16 g_w07BA = 0x0000;
 word16 g_w0C72 = 0x0000;
 word16 g_w0F70 = 0x0A9F;
-struct Eq_3278 * g_a168C[] = 
+struct Eq_3202 * g_a168C[] = 
 	{
 	};
-struct Eq_3283 * g_a1696[] = 
+struct Eq_3207 * g_a1696[] = 
 	{
 	};
 word16 g_a182A[] = 
@@ -145,8 +159,14 @@ word16 g_a182A[] =
 	};
 word16 g_w182C = 0x0000;
 word16 g_w182E = 0x0000;
+Eq_2453 g_t1F96 = 
+	{
+		0x0000,
+		0x0000,
+		0,
+	};
 word16 g_w25AA = 0x0000;
-Eq_3303 g_t25B8 = 
+Eq_3227 g_t25B8 = 
 	{
 		
 		{
@@ -174,10 +194,10 @@ Eq_5 g_t26AE =
 		L'\x00'
 	};
 cui16 g_w27A8 = 0x0000;
-Eq_3529 g_a27B0[] = 
+Eq_3445 g_a27B0[] = 
 	{
 	};
-Eq_3346 g_t2814 = 
+Eq_3270 g_t2814 = 
 	{
 		0x30
 	};
@@ -185,7 +205,7 @@ ci16 g_w28F0 = 0x030C;
 Eq_5 g_a28F2[] = 
 	{
 	};
-Eq_3536 g_a28F8[] = 
+Eq_3452 g_a28F8[] = 
 	{
 	};
 Eq_5 g_t34B4 = 
@@ -213,11 +233,12 @@ Eq_23 g_t35CE =
 	};
 word16 g_w35D0 = 0x4F20;
 word16 g_w35D2 = 0x2046;
-struct Eq_696 * g_ptr3FFC;
+struct Eq_684 * g_ptr3FFC;
 word16 g_wF400;
 word16 g_wF402;
 ci8 g_bFB8C;
 word16 g_wFB8E;
 word16 g_wFF66;
+word16 g_wFFF6;
 word16 g_wFFFE;
 

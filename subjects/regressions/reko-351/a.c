@@ -40,7 +40,7 @@ void __do_global_dtors_aux(word32 d1, word32 d2, word32 a2, word32 a6)
 		uint32 d0_21 = globals->dw80002726;
 		<anonymous> * a2_20[] = globals->a80002714;
 		up32 d2_25 = 0x00;
-		if (0x00 - d0_21 > 0x00)
+		if (d0_21 < 0x00)
 		{
 			do
 			{
@@ -152,16 +152,16 @@ void main()
 	_sin(1374396351.0, 1.8446744072626e+19, fp - 0x08);
 }
 
-// 800004DE: void _sin(Stack real64 rArg04, Stack real64 rArg0C, Stack Eq_210 tArg14)
-void _sin(real64 rArg04, real64 rArg0C, Eq_210 tArg14)
+// 800004DE: void _sin(Stack real64 rArg04, Stack real64 rArg0C, Stack Eq_208 tArg14)
+void _sin(real64 rArg04, real64 rArg0C, Eq_208 tArg14)
 {
 	word32 dwArg04_110 = SLICE(rArg04, word32, 0);
 	word32 dwArg08_112 = SLICE(rArg04, word32, 32);
-	Eq_221 v9_14 = (real64) ((real96) SEQ(dwArg04_110, dwArg08_112) * SEQ(dwArg04_110, dwArg08_112));
+	Eq_219 v9_14 = (real64) ((real96) SEQ(dwArg04_110, dwArg08_112) * SEQ(dwArg04_110, dwArg08_112));
 	word32 dwLoc20_121 = 0x02;
 	while (true)
 	{
-		Eq_249 rLoc14_123;
+		Eq_247 rLoc14_123;
 		real64 rLoc0C_122;
 		if ((real64) ((real96) rLoc0C_122 / rLoc14_123) < rArg0C)
 			break;
@@ -182,7 +182,7 @@ void __do_global_ctors_aux(word32 a2, word32 a6)
 	ptr32 a6_21 = fp - 0x04;
 	ptr32 a7_19 = fp - 0x08;
 	ptr32 a2_13 = 0x8000270C;
-	while (-0x01 - a0_12 != 0x00)
+	while (a0_12 != (<anonymous> *) -0x01)
 	{
 		ptr32 a2_24;
 		a0_12();

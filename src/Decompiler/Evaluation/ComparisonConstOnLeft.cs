@@ -41,7 +41,7 @@ namespace Reko.Evaluation
             if (bin.Right is Constant)
                 return false;
             this.bin = new BinaryExpression(
-                cond.Transpose(),
+                cond.Negate(),
                 bin.DataType,
                 bin.Right,
                 cLeft);

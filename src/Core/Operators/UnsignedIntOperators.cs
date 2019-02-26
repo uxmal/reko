@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,15 +39,9 @@ namespace Reko.Core.Operators
 			return Constant.Bool(v1 < v2);
 		}
 
-		public override string ToString()
-		{
-			return " <u ";
-		}
+        public override Operator Negate() => Ugt;
 
-        public override ConditionalOperator Transpose()
-        {
-            return Operator.Ugt;
-        }
+        public override string ToString() => " <u ";
     }
 
     public class UgtOperator : UnsignedIntOperator
@@ -61,15 +55,9 @@ namespace Reko.Core.Operators
             return Constant.Bool(v1 <= v2);
 		}
 
-		public override string ToString()
-		{
-			return " >u ";
-		}
+        public override Operator Negate() => Ult;
 
-        public override ConditionalOperator Transpose()
-        {
-            return Operator.Ult;
-        }
+        public override string ToString() => " >u ";
     }
 
     public class UleOperator : UnsignedIntOperator
@@ -84,16 +72,9 @@ namespace Reko.Core.Operators
             return Constant.Bool(v1 <= v2);
 		}
 
-		public override string ToString()
-		{
-			return " <=u ";
-		}
+        public override Operator Negate() => Uge;
 
-        public override ConditionalOperator Transpose()
-        {
-            return Operator.Uge;
-        }
-
+        public override string ToString() => " <=u ";
     }
 
     public class UgeOperator : UnsignedIntOperator
@@ -108,15 +89,8 @@ namespace Reko.Core.Operators
 			return Constant.Bool(v1 >= v2);
 		}
 
-		public override string ToString()
-		{
-			return " >=u ";
-		}
+        public override Operator Negate() => Ule;
 
-        public override ConditionalOperator Transpose()
-        {
-            return Operator.Ule;
-        }
-
+        public override string ToString() => " >=u ";
     }
 }

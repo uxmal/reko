@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,15 +37,9 @@ namespace Reko.Core.Operators
             return Constant.Bool(c1.ToReal64() == c2.ToReal64());
         }
 
-        public override string ToString()
-        {
-            return " == ";
-        }
+        public override Operator Negate() => Feq;
 
-        public override ConditionalOperator Transpose()
-        {
-            return this;
-        }
+        public override string ToString() => " == ";
     }
 
     public class RneOperator : RealConditionalOperator
@@ -57,15 +51,8 @@ namespace Reko.Core.Operators
             return Constant.Bool(c1.ToReal64() != c2.ToReal64());
         }
 
-        public override string ToString()
-        {
-            return " != ";
-        }
-
-        public override ConditionalOperator Transpose()
-        {
-            return this;
-        }
+        public override Operator Negate() => Fne;
+        public override string ToString() => " != ";
     }
 
     public class RltOperator : RealConditionalOperator
@@ -77,16 +64,10 @@ namespace Reko.Core.Operators
             return Constant.Bool(c1.ToReal64() < c2.ToReal64());
 		}
 
-		public override string ToString()
-		{
-			return " < ";
-		}
+        public override Operator Negate() => Fgt;
 
-        public override ConditionalOperator Transpose()
-        {
-            return Operator.Fgt;
-        }
-    }
+        public override string ToString() => " < ";
+	}
 
 	public class RgtOperator : RealConditionalOperator
 	{
@@ -97,15 +78,10 @@ namespace Reko.Core.Operators
             return Constant.Bool(c1.ToReal64() > c2.ToReal64());
         }
 
-        public override string ToString()
-		{
-			return " > ";
-		}
 
-        public override ConditionalOperator Transpose()
-        {
-            return Operator.Flt;
-        }
+        public override Operator Negate() => Flt;
+
+        public override string ToString() => " > ";
 
     }
 
@@ -118,16 +94,9 @@ namespace Reko.Core.Operators
             return Constant.Bool(c1.ToReal64() <= c2.ToReal64());
         }
 
-        public override string ToString()
-		{
-			return " <= ";
-		}
+        public override Operator Negate() => Fge;
 
-        public override ConditionalOperator Transpose()
-        {
-            return Operator.Fge;
-        }
-
+        public override string ToString() => " <= ";
     }
 
     public class RgeOperator : RealConditionalOperator
@@ -139,15 +108,9 @@ namespace Reko.Core.Operators
             return Constant.Bool(c1.ToReal64() >= c2.ToReal64());
         }
 
-        public override string ToString()
-		{
-			return " >= ";
-		}
+        public override Operator Negate() => Fle;
 
-        public override ConditionalOperator Transpose()
-        {
-            return Operator.Fle;
-        }
+        public override string ToString() => " >= ";
 
     }
 

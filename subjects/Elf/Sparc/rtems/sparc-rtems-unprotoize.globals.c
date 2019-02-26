@@ -8,7 +8,7 @@ Eq_621 g_tFFFFFFFF;
 ptr32 g_ptr0001;
 Eq_161 g_t0008;
 word32 g_dw000C;
-Eq_4707 g_t007B;
+Eq_4659 g_t007B;
 Eq_2 g_t16EE4 = Unexpected function type (fn void ())
 ;
 Eq_161 g_t16F14 = 
@@ -81,7 +81,7 @@ Eq_161 g_t27F54 =
 	{
 		'\x00'
 	};
-Eq_4594 g_t28000 = 
+Eq_4546 g_t28000 = 
 	{
 		null,
 	};
@@ -95,12 +95,12 @@ Eq_161 g_t28064 =
 ptr32 * g_ptr28068 = &g_ptr0001;
 word32 g_dw2806C = 0x00000000;
 word32 g_dw28070 = 0x00000001;
-Eq_6565 g_t28074 = 
+Eq_6517 g_t28074 = 
 	{
 		'\x00'
 	};
 char * g_ptr28078 = &g_str17AF0;
-Eq_3519 g_t28120 = 
+Eq_3477 g_t28120 = 
 	{
 		null
 	};
@@ -108,7 +108,7 @@ Eq_161 g_t28130 =
 	{
 		'\x00'
 	};
-Eq_3519 g_t28140 = 
+Eq_3477 g_t28140 = 
 	{
 		null
 	};
@@ -126,7 +126,7 @@ Eq_161 g_t28190 =
 		'\x00'
 	};
 word32 g_dw281A0 = 0x00000000;
-Eq_3519 g_t281C0 = 
+Eq_3477 g_t281C0 = 
 	{
 		null
 	};

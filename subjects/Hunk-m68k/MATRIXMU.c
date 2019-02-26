@@ -313,13 +313,13 @@ void fn00001354(int32 d2, word32 a0, union Eq_3 * a2, struct Eq_19 * a3, int32 d
 int32 fn00001390(ptr32 dwArg04, ptr32 dwArg08, ptr32 dwArg0C)
 {
 	Eq_582 d4_134 = 0x00;
-	while (0x05 - d4_134 > 0x00)
+	while (d4_134 < 0x05)
 	{
-		int32 d3_131 = 0x00;
-		while (0x04 - d3_131 > 0x00)
+		int32 d3_131;
+		for (d3_131 = 0x00; d3_131 < 0x04; ++d3_131)
 		{
 			Eq_582 d2_129 = 0x00;
-			while (0x04 - d2_129 > 0x00)
+			while (d2_129 < 0x04)
 			{
 				uint32 d1_64 = __swap(0x0014) * (word16) d2_129;
 				union Eq_582 * a1_77 = dwArg08 + ((word16) d2_129 * 0x0014 + DPB(__swap(DPB(d1_64, (word16) (d1_64 + __swap(d2_129) * 0x14), 0)), 0x00, 0)) + (d3_131 << 0x02);
@@ -333,7 +333,6 @@ int32 fn00001390(ptr32 dwArg04, ptr32 dwArg08, ptr32 dwArg0C)
 				(dwArg0C + ((word32) ((word16) d4_134 * 0x0014) + DPB(__swap(DPB(d5_116, (word16) (d5_116 + __swap(d4_134) * 0x14), 0)), 0x00, 0)))[d3_131] = d0_110;
 				d2_129 = (word32) d2_129.u0 + 0x01;
 			}
-			++d3_131;
 		}
 		d4_134 = (word32) d4_134.u0 + 0x01;
 	}

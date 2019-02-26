@@ -772,7 +772,7 @@ l00001390:
 // SymbolicIn:
 
 l0000145A:
-	branch 5 - d4_134 > 0x00000000 l000013A6
+	branch d4_134 < 5 l000013A6
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -784,7 +784,7 @@ l000013A6:
 // SymbolicIn:
 
 l00001450:
-	branch 4 - d3_131 > 0x00000000 l000013AC
+	branch d3_131 < 4 l000013AC
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -796,7 +796,7 @@ l000013AC:
 // SymbolicIn:
 
 l00001446:
-	branch 4 - d2_129 > 0x00000000 l000013B2
+	branch d2_129 < 4 l000013B2
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

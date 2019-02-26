@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,15 +24,20 @@ using System;
 
 namespace Reko.Core.Operators
 {
-	/// <summary>
-	/// Summary description for ConditionalOperator.
-	/// </summary>
-	public abstract class ConditionalOperator : BinaryOperator
-	{
-        public abstract ConditionalOperator Transpose();
-	}
+    /// <summary>
+    /// Models a binary conditional operator.
+    /// </summary>
+    public abstract class ConditionalOperator : BinaryOperator
+    {
+        /// <summary>
+        /// Negating a conditional operator "flips" it around 0. Eg. 
+        /// negating LT generates GT. This is not the
+        /// same as Inverting it, which changes LT to GE
+        /// </summary>
+        public abstract Operator Negate();
+    }
 
-	public class CandOperator : BinaryOperator
+    public class CandOperator : BinaryOperator
 	{
 		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
@@ -67,15 +72,9 @@ namespace Reko.Core.Operators
             return c1.ToInt32() == c2.ToInt32() ? Constant.True() : Constant.False();
 		}
 
-		public override string ToString()
-		{
-			return " == ";
-		}
+        public override Operator Negate() => Eq;
 
-        public override ConditionalOperator Transpose()
-        {
-            return this;
-        }
+        public override string ToString() => " == ";
     }
 
 	public class NeOperator : ConditionalOperator
@@ -89,14 +88,9 @@ namespace Reko.Core.Operators
 				: Constant.False();
 		}
 
-		public override string ToString()
-		{
-			return " != ";
-		}
 
-        public override ConditionalOperator Transpose()
-        {
-            return this;
-        }
+        public override Operator Negate() => Ne;
+
+        public override string ToString() => " != ";
     }
 }

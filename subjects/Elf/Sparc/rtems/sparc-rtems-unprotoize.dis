@@ -3597,7 +3597,7 @@ referenced_file_is_newer_entry:
 
 l0001245C:
 	word32 l1_83
-	word32 i0_66 = check_aux_info(0x00000001 - (0x00000000 - ((int32) Mem0[check_aux_info(0x00000001 - (0x00000000 - ((int32) Mem0[check_aux_info(0x00000001 - (0x00000000 - ((int32) Mem0[o0:int8] ^ 0x0000002F) <u 0x00000000), out i1_199) + 1:int8] ^ 0x0000002A) <u 0x00000000), out i1_200) + 2:int8] ^ 0x00000020) <u 0x00000000), out i1_201)
+	word32 i0_66 = check_aux_info(0x00000001 - (((int32) Mem0[check_aux_info(0x00000001 - (((int32) Mem0[check_aux_info(0x00000001 - (((int32) Mem0[o0:int8] ^ 0x0000002F) >u 0x00000000), out i1_199) + 1:int8] ^ 0x0000002A) >u 0x00000000), out i1_200) + 2:int8] ^ 0x00000020) >u 0x00000000), out i1_201)
 	branch (int32) Mem0[i0_66 + 3:int8] == 0x0000003A l0001245C_ds_t
 // DataOut:
 // DataOut (flags):
@@ -3686,7 +3686,7 @@ save_def_or_dec_entry:
 // SymbolicIn:
 
 l0001251C:
-	word32 i0_81 = check_aux_info(0x00000001 - (0x00000000 - ((int32) Mem0[check_aux_info(0x00000001 - (0x00000000 - ((int32) Mem0[check_aux_info(0x00000001 - (0x00000000 - ((int32) Mem0[xmalloc(0x0000002C, out i1_1140, out i2_1141, out i6_1142, out i7_1143):int8] ^ 0x0000002F) <u 0x00000000), out i1_1144) + 1:int8] ^ 0x0000002A) <u 0x00000000), out i1_1145) + 2:int8] ^ 0x00000020) <u 0x00000000), out i1_1146)
+	word32 i0_81 = check_aux_info(0x00000001 - (((int32) Mem0[check_aux_info(0x00000001 - (((int32) Mem0[check_aux_info(0x00000001 - (((int32) Mem0[xmalloc(0x0000002C, out i1_1140, out i2_1141, out i6_1142, out i7_1143):int8] ^ 0x0000002F) >u 0x00000000), out i1_1144) + 1:int8] ^ 0x0000002A) >u 0x00000000), out i1_1145) + 2:int8] ^ 0x00000020) >u 0x00000000), out i1_1146)
 	word32 i0_101 = i0_81 + 0x00000003
 	branch (int32) Mem0[i0_81 + 3:int8] == 0x0000003A l0001251C_ds_t
 // DataOut:
@@ -3815,7 +3815,7 @@ l00012644:
 l00012648:
 	word32 o2_257
 	word32 i0_228 = check_aux_info(o2_220, out i1_1149)
-	Mem250[l2_172 + 32:byte] = (byte) (0x00000001 - (0x00000000 - ((int32) Mem211[i0_228:int8] ^ 0x0000004E) <u 0x00000000))
+	Mem250[l2_172 + 32:byte] = (byte) (0x00000001 - (((int32) Mem211[i0_228:int8] ^ 0x0000004E) >u 0x00000000))
 	word32 o0_252 = (int32) Mem250[i0_228 + 0x00000001:int8]
 	branch o0_252 == 0x00000043 l00012648_ds_t
 // DataOut:
@@ -3893,7 +3893,7 @@ l000126B0:
 
 l000126B8:
 	word32 o0_412
-	word32 i0_374 = check_aux_info(0x00000001 - (0x00000000 - (((word32) Mem297[check_aux_info(0x00000001 - (0x00000000 - (((word32) Mem297[check_aux_info(0x00000001 - (0x00000000 - (((word32) Mem297[check_aux_info(0x00000001 - (0x00000000 - (((word32) Mem297[i0_265 + 0x00000001:byte] << 0x00000018) >> 0x00000018 ^ 0x00000020) <u 0x00000000), out i1_1150) + 0x00000001:byte] << 0x00000018) >> 0x00000018 ^ 0x0000002A) <u 0x00000000), out i1_1151) + 0x00000001:byte] << 0x00000018) >> 0x00000018 ^ 0x0000002F) <u 0x00000000), out i1_1152) + 0x00000001:byte] << 0x00000018) >> 0x00000018 ^ 0x00000020) <u 0x00000000), out i1_1153)
+	word32 i0_374 = check_aux_info(0x00000001 - ((((word32) Mem297[check_aux_info(0x00000001 - ((((word32) Mem297[check_aux_info(0x00000001 - ((((word32) Mem297[check_aux_info(0x00000001 - ((((word32) Mem297[i0_265 + 0x00000001:byte] << 0x00000018) >> 0x00000018 ^ 0x00000020) >u 0x00000000), out i1_1150) + 0x00000001:byte] << 0x00000018) >> 0x00000018 ^ 0x0000002A) >u 0x00000000), out i1_1151) + 0x00000001:byte] << 0x00000018) >> 0x00000018 ^ 0x0000002F) >u 0x00000000), out i1_1152) + 0x00000001:byte] << 0x00000018) >> 0x00000018 ^ 0x00000020) >u 0x00000000), out i1_1153)
 	branch strncmp(i0_374 + 0x00000001, 0x000171C8, 0x00000006) == 0x00000000 l000126B8_ds_t
 // DataOut:
 // DataOut (flags):
@@ -4040,7 +4040,7 @@ l00012810_ds_t:
 // SymbolicIn:
 
 l000127F8:
-	check_aux_info(0x00000001 - (0x00000000 - ((int32) Mem513[o0_505 + -3:int8] ^ 0x00000029) <u 0x00000000), out i1_1156)
+	check_aux_info(0x00000001 - (((int32) Mem513[o0_505 + -3:int8] ^ 0x00000029) >u 0x00000000), out i1_1156)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4051,7 +4051,7 @@ l00012810_ds_f:
 // SymbolicIn:
 
 l00012838:
-	word32 i0_548 = check_aux_info(0x00000001 - (0x00000000 - ((int32) Mem513[o0_505 + 0xFFFFFFFF:int8] ^ 0x00000020) <u 0x00000000), out i1_1157)
+	word32 i0_548 = check_aux_info(0x00000001 - (((int32) Mem513[o0_505 + 0xFFFFFFFF:int8] ^ 0x00000020) >u 0x00000000), out i1_1157)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4160,7 +4160,7 @@ l00012928_ds_f:
 
 l00012938:
 	word32 i0_766
-	word32 i0_748 = check_aux_info(0x00000001 - (0x00000000 - ((int32) Mem656[check_aux_info(0x00000001 - (0x00000000 - ((int32) Mem656[check_aux_info(0x00000001 - (0x00000000 - ((int32) Mem656[check_aux_info(0x00000001 - (0x00000000 - ((int32) Mem656[check_aux_info(0x00000001 - (0x00000000 - ((int32) Mem656[i1_596 + 0x00000001:int8] ^ 0x00000020) <u 0x00000000), out i1_1167) + 0x00000001:int8] ^ 0x0000002F) <u 0x00000000), out i1_1168) + 0x00000001:int8] ^ 0x0000002A) <u 0x00000000), out i1_1169) + 0x00000001:int8] ^ 0x00000020) <u 0x00000000), out i1_1170) + 0x00000001:int8] ^ 0x00000028) <u 0x00000000), out i1_1171)
+	word32 i0_748 = check_aux_info(0x00000001 - (((int32) Mem656[check_aux_info(0x00000001 - (((int32) Mem656[check_aux_info(0x00000001 - (((int32) Mem656[check_aux_info(0x00000001 - (((int32) Mem656[check_aux_info(0x00000001 - (((int32) Mem656[i1_596 + 0x00000001:int8] ^ 0x00000020) >u 0x00000000), out i1_1167) + 0x00000001:int8] ^ 0x0000002F) >u 0x00000000), out i1_1168) + 0x00000001:int8] ^ 0x0000002A) >u 0x00000000), out i1_1169) + 0x00000001:int8] ^ 0x00000020) >u 0x00000000), out i1_1170) + 0x00000001:int8] ^ 0x00000028) >u 0x00000000), out i1_1171)
 	branch (int32) Mem656[i0_748 + 0x00000001:int8] == 0x00000029 l00012938_ds_t
 // DataOut:
 // DataOut (flags):
@@ -4199,7 +4199,7 @@ l000129C8_ds_f:
 l000129D8:
 	word32 i0_783
 	Mem806[l2_172 + 36:word32] = dupnstr(i0_748 + 0x00000001, i0_766 + 0xFFFFFFFF - (i0_748 + 0x00000001), out sp_1172, out l0_1173, out i0_783, out i6_1174)
-	word32 i0_815 = check_aux_info(0x00000001 - (0x00000000 - ((int32) Mem806[i0_783 + 0x00000001:int8] ^ 0x00000020) <u 0x00000000), out i1_1175)
+	word32 i0_815 = check_aux_info(0x00000001 - (((int32) Mem806[i0_783 + 0x00000001:int8] ^ 0x00000020) >u 0x00000000), out i1_1175)
 	branch (int32) Mem806[i0_815 + 0x00000001:int8] != 0x0000002A l000129D8_ds_t
 // DataOut:
 // DataOut (flags):
@@ -4241,7 +4241,7 @@ l00012A4C_ds_t:
 // SymbolicIn:
 
 l00012A5C:
-	dupnstr(i0_815 + 0x00000001, check_aux_info(0x00000001 - (0x00000000 - ((int32) Mem806[i0_833 + 0xFFFFFFFF:int8] ^ 0x00000020) <u 0x00000000), out i1_1176) - (i0_815 + 0x00000001), out sp_1177, out l0_1178, out i0_1179, out i6_1180)
+	dupnstr(i0_815 + 0x00000001, check_aux_info(0x00000001 - (((int32) Mem806[i0_833 + 0xFFFFFFFF:int8] ^ 0x00000020) >u 0x00000000), out i1_1176) - (i0_815 + 0x00000001), out sp_1177, out l0_1178, out i0_1179, out i6_1180)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4252,7 +4252,7 @@ l000129D8_ds_f:
 // SymbolicIn:
 
 l00012A18:
-	check_aux_info(0x00000001 - (0x00000000 - ((int32) Mem806[i0_815 + 0x00000002:int8] ^ 0x0000002F) <u 0x00000000), out i1_900)
+	check_aux_info(0x00000001 - (((int32) Mem806[i0_815 + 0x00000002:int8] ^ 0x0000002F) >u 0x00000000), out i1_900)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -6139,10 +6139,10 @@ l00013C38:
 // SymbolicIn:
 
 l00013C3C:
-	check_source(0x00000001 - (0x00000000 - (o0_110 ^ 0x00000029) <u 0x00000000), l0_113, out i1_660, out i2_661, out i6_662)
+	check_source(0x00000001 - ((o0_110 ^ 0x00000029) >u 0x00000000), l0_113, out i1_660, out i2_661, out i6_662)
 	word32 l0_168 = l0_113 + 0xFFFFFFFF
 	check_source(SLICE(cond(Mem0[0x000281E0:word32] - l0_168), bool, 0), 0x00000000, out i1_663, out i2_664, out i6_665)
-	check_source(0x00000001 - (0x00000000 - ((int32) Mem0[l0_168:int8] ^ 0x00000029) <u 0x00000000), l0_168, out i1_666, out i2_667, out i6_668)
+	check_source(0x00000001 - (((int32) Mem0[l0_168:int8] ^ 0x00000029) >u 0x00000000), l0_168, out i1_666, out i2_667, out i6_668)
 	branch edit_formals_lists(l0_168, out l1_253, out l2_22, out i1_218, out i2_220) == 0x00000000 l00013C3C_ds_t
 // DataOut:
 // DataOut (flags):
@@ -6526,7 +6526,7 @@ l00013EA8_ds_f:
 l00013EB4:
 	word32 o0_128 = forward_to_next_token_char(i0_112)
 	word32 i6_156
-	check_source(0x00000001 - (0x00000000 - ((int32) Mem0[o0_128:int8] ^ 0x0000007B) <u 0x00000000), o0_128, out i1_151, out i2_152, out i6_156)
+	check_source(0x00000001 - (((int32) Mem0[o0_128:int8] ^ 0x0000007B) >u 0x00000000), o0_128, out i1_151, out i2_152, out i6_156)
 	return i6_156
 // DataOut:
 // DataOut (flags):
@@ -10616,7 +10616,7 @@ l00016098_ds_f:
 // SymbolicIn:
 
 l000160A4:
-	o1_380 = 0x00000001 - (0x00000000 - (o0_372 ^ 0x0000002D) <u 0x00000000)
+	o1_380 = 0x00000001 - ((o0_372 ^ 0x0000002D) >u 0x00000000)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

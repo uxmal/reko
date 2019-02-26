@@ -311,6 +311,20 @@ namespace Reko.Evaluation
                 }
             }
 
+            // (rel (- c e) 0 => (rel -c e) => (rel.Negate e c)
+
+            if (binLeft != null && cRight != null && cRight.IsIntegerZero &&
+                IsIntComparison(binExp.Operator) &&
+                binLeft.Left is Constant cBinLeft &&
+                binLeft.Operator == Operator.ISub)
+            {
+                return new BinaryExpression(
+                    ((ConditionalOperator) binExp.Operator).Negate(),
+                    binExp.DataType,
+                    binLeft.Right,
+                    cBinLeft);
+            }
+
             // (rel (- e c1) c2) => (rel e c1+c2)
 
             if (binLeft != null && cLeftRight != null && cRight != null &&
