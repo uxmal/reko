@@ -138,7 +138,19 @@ namespace Reko.Core
                 if (mod.ServicesByOrdinal.TryGetValue(ordinal, out var svc))
                 {
                     EnsureSignature(program, svc);
-                    return new ExternalProcedure(svc.Name, svc.Signature, svc.Characteristics);
+                    if (svc.Signature != null)
+                    {
+                        return new ExternalProcedure(svc.Name, svc.Signature, svc.Characteristics);
+                    }
+                    else
+                    {
+                        // We have a name for the external procedure, but can't find a proper signature for it. 
+                        // So we make a "dumb" one. It's better than nothing.
+                        eventListener.Warn(
+                            new NullCodeLocation(moduleName),
+                            "Unable to resolve signature for {0}", svc.Name);
+                        return new ExternalProcedure(svc.Name, new FunctionType());
+                    }
                 }
             }
             return platform.LookupProcedureByOrdinal(moduleName, ordinal);
