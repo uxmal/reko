@@ -1084,7 +1084,6 @@ ProcedureBuilder_exit:
         // This code breaks in ValuePropagator.VisitCallInstruction when calling  
         // ssaIdTransformer.Transform(...)
         [Test]
-        [Ignore("This code is paraphrased from a MIPS ELF binary; all MIPS binaries have this problem")]
         public void VpReusedRegistersAtCall()
         {
             var sExp =
