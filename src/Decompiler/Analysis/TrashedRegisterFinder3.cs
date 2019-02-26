@@ -759,7 +759,6 @@ namespace Reko.Analysis
 
             public void RemoveExpressionUse(Expression expr)
             {
-                throw new NotImplementedException();
             }
 
             public void RemoveIdentifierUse(Identifier id)
