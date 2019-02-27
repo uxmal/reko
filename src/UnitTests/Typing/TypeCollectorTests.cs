@@ -27,7 +27,6 @@ using Reko.Typing;
 using Reko.UnitTests.Fragments;
 using Reko.UnitTests.Mocks;
 using System;
-using Reko.Core.Serialization;
 using System.Linq;
 
 namespace Reko.UnitTests.Typing

@@ -6,8 +6,8 @@ fn00200089_entry:
 l00200089:
 	xsp = fp
 	call fn0020060C (retsize: 4;)
-	v3 = Mem0[0x00006F86:word32] | 1 << 0x06
-	Mem0[0x00006F86:word32] = v3
+	v3 = Mem0[0x00006F86:byte] | 1 << 0x06
+	Mem0[0x00006F86:byte] = v3
 	xix = 0x00200040
 	xiy = 0x00006FB8
 	b = 0x12
@@ -136,13 +136,8 @@ l002001A4:
 	w = 0x01
 	call fn002004F2 (retsize: 4;)
 	xwa = 0x00007000
-	branch false l002001B1
-	// succ:  l002001AF_1 l002001B1
-l002001AF_1:
 	v31 = Mem0[xwa:word32]
 	call v31 (retsize: 4;)
-	// succ:  l002001B1
-l002001B1:
 	hl = 0x0D06
 	v33 = Mem0[0x00004003:byte]
 	a = v33
@@ -217,13 +212,8 @@ l00200256:
 	w = 0x01
 	call fn002004F2 (retsize: 4;)
 	xwa = 0x00007000
-	branch false l00200263
-	// succ:  l00200261_1 l00200263
-l00200261_1:
 	v39 = Mem0[xwa:word32]
 	call v39 (retsize: 4;)
-	// succ:  l00200263
-l00200263:
 	hl = 0x0D0A
 	v40 = Mem0[0x00004003:byte]
 	a = v40
@@ -298,13 +288,8 @@ l0020030A:
 	w = 0x01
 	call fn002004F2 (retsize: 4;)
 	xwa = 0x00007000
-	branch false l00200317
-	// succ:  l00200315_1 l00200317
-l00200315_1:
 	v43 = Mem0[xwa:word32]
 	call v43 (retsize: 4;)
-	// succ:  l00200317
-l00200317:
 	hl = 0x0D0E
 	v44 = Mem0[0x00004003:byte]
 	a = v44
@@ -400,13 +385,13 @@ l0020050A:
 	de = de + hl
 	N = false
 	SZHVC = cond(de)
-	v15 = a
-	Mem0[xde:byte] = v15
+	v14 = Mem0[xde:word32]
+	a = v14
 	xde = xde + 0x00000001
 	N = false
 	SZHVC = cond(xde)
-	v17 = w
-	Mem0[xde:byte] = v17
+	v16 = Mem0[xde:word32]
+	w = v16
 	xbc = Mem0[xsp:word32]
 	xsp = xsp + 4
 	xde = Mem0[xsp:word32]
@@ -484,8 +469,8 @@ l00200557:
 	H = false
 	N = false
 	SZVC = cond(d)
-	v9 = d
-	Mem0[0x00004002:byte] = v9
+	v9 = Mem0[0x00004002:word32]
+	d = v9
 	xde = 0x00009800
 	xwa = 0x00000000
 	a = c
@@ -532,13 +517,13 @@ l00200589:
 	w = w + v22
 	N = false
 	SZHVC = cond(w)
-	v23 = a
-	Mem0[xde:byte] = v23
+	v23 = Mem0[xde:word32]
+	a = v23
 	xde = xde + 0x00000001
 	N = false
 	SZHV = cond(xde)
-	v24 = w
-	Mem0[xde:byte] = v24
+	v24 = Mem0[xde:word32]
+	w = v24
 	xde = xde + 0x00000001
 	N = false
 	SZHV = cond(xde)
@@ -618,13 +603,8 @@ l002005F5:
 	xix = 0x00FFFE00
 	v9 = Mem0[xwa:word32]
 	xix = v9
-	branch false l00200609
-	// succ:  l00200607_1 l00200609
-l00200607_1:
 	v10 = Mem0[xix:word32]
 	call v10 (retsize: 4;)
-	// succ:  l00200609
-l00200609:
 	xix = Mem0[xsp:word32]
 	xsp = xsp + 4
 	sr = Mem0[xsp:word16]
@@ -647,8 +627,8 @@ l0020060C:
 	branch Test(NE,Z) l0020061C
 	// succ:  l00200613 l0020061C
 l00200613:
-	v7 = Mem0[0x00006F83:word32] & ~(1 << 0x03)
-	Mem0[0x00006F83:word32] = v7
+	v7 = Mem0[0x00006F83:byte] & ~(1 << 0x03)
+	Mem0[0x00006F83:byte] = v7
 	v8 = 0x00
 	Mem0[0x00006DA0:byte] = v8
 	// succ:  l0020061C

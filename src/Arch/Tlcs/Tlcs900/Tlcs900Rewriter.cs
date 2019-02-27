@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -35,12 +35,12 @@ namespace Reko.Arch.Tlcs.Tlcs900
 {
     public partial class Tlcs900Rewriter : IEnumerable<RtlInstructionCluster>
     {
-        private Tlcs900Architecture arch;
-        private EndianImageReader rdr;
-        private ProcessorState state;
-        private IStorageBinder binder;
-        private IRewriterHost host;
-        private IEnumerator<Tlcs900Instruction> dasm;
+        private readonly Tlcs900Architecture arch;
+        private readonly EndianImageReader rdr;
+        private readonly ProcessorState state;
+        private readonly IStorageBinder binder;
+        private readonly IRewriterHost host;
+        private readonly IEnumerator<Tlcs900Instruction> dasm;
         private InstrClass rtlc;
         private RtlEmitter m;
         private Tlcs900Instruction instr;

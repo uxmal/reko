@@ -3551,8 +3551,8 @@ l143C:
 	V = false
 	// succ:  l143E
 l143E:
-	v23 = Mem0[r1:byte]
-	r1 = r1 + 0x0001
+	v23 = Mem0[r1:word16]
+	r1 = r1 + 0x0002
 	v24 = v23
 	v24 = v24 & v24
 	NZ = cond(v24)

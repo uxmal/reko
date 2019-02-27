@@ -134,7 +134,7 @@ namespace Reko.Analysis
                     de => platform.Architecture.GetSubregister(
                         (RegisterStorage) de.Key,
                         de.Value.Lsb,
-                        de.Value.Extent),
+                        de.Value.Extent) ?? (RegisterStorage)de.Key,
                     de=>de.Value);
             
             //$BUG: should be sorted by ABI register order. Need a new method
@@ -162,16 +162,17 @@ namespace Reko.Analysis
 			}
 
             var liveOut = allLiveOut
+                .Select(de => (Key:de.Key as RegisterStorage, Value:de.Value))
                 .Where(de =>
                 {
-                    return de.Key is RegisterStorage reg
-                        && !implicitRegs.Contains(reg);
+                    return de.Key != null 
+                        && !implicitRegs.Contains(de.Key);
                 })
                 .ToDictionary(
-                    de => platform.Architecture.GetSubregister(
-                        (RegisterStorage)de.Key,
+                     de => platform.Architecture.GetSubregister(
+                        de.Key,
                         de.Value.Lsb,
-                        de.Value.Extent),
+                        de.Value.Extent) ?? de.Key,
                     de => de.Value);
 
             // Sort the names in a stable way to avoid regression tests failing.

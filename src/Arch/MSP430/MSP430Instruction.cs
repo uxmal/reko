@@ -60,6 +60,7 @@ namespace Reko.Arch.Msp430
                 return c;
             }
         }
+        public InstrClass IClass;
 
         public override int OpcodeAsInteger
         {

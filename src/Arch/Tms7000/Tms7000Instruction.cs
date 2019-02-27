@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -30,21 +30,10 @@ namespace Reko.Arch.Tms7000
         public MachineOperand op2;
         public MachineOperand op3;
 
-        public override InstrClass InstructionClass
-        {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-        }
+        public override InstrClass InstructionClass => IClass;
+        public InstrClass IClass;
 
-        public override int OpcodeAsInteger
-        {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-        }
+        public override int OpcodeAsInteger => (int) Opcode;
 
         public override MachineOperand GetOperand(int i)
         {

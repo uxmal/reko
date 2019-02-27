@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -72,18 +72,6 @@ namespace Reko.Arch.X86
             this.FpuStackRegister = Registers.Top;
             this.Options = new X86Options();
         }
-
-		public Address AddressFromSegOffset(X86State state, RegisterStorage seg, uint offset)
-		{
-			if (mode == ProcessorMode.Protected32)
-			{
-				return Address.Ptr32(offset);
-			}
-			else
-			{
-				return state.AddressFromSegOffset(seg, offset);
-			}
-		}
 
         public X86Disassembler CreateDisassemblerImpl(EndianImageReader imageReader)
         {

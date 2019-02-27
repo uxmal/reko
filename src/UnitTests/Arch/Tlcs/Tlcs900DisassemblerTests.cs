@@ -338,5 +338,17 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             AssertCode("muls\tde,bc","D94A");
         }
+
+        [Test]
+        public void Tlcs900_dis_ld_mem_imm()
+        {
+            AssertCode("ld\t(00006DA0),00", "﻿F1A06D0000");
+        }
+
+        [Test]
+        public void Tlcs900_dis_ld_d_i3()
+        {
+            AssertCode("ld\td,04", "﻿CCAC");
+        }
     }
 }
