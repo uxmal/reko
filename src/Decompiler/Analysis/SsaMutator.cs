@@ -155,5 +155,14 @@ namespace Reko.Analysis
             sid.DefExpression = value;
             sid.DefStatement = newStm;
         }
+
+        public void AdjustSsa(Statement stm, CallInstruction call)
+        {
+            ssa.ReplaceDefinitions(stm, null);
+            ssa.RemoveUses(stm);
+            ssa.AddDefinitions(stm);
+            ssa.AddUses(stm);
+            DefineUninitializedIdentifiers(stm, call);
+        }
     }
 }

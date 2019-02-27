@@ -50,6 +50,7 @@ namespace Reko.Analysis
         private readonly CallGraph callGraph;
         private readonly ExpressionSimplifier eval;
         private readonly SsaEvaluationContext evalCtx;
+        private readonly SsaMutator ssam;
         private readonly DecompilerEventListener eventListener;
         private Statement stmCur;
 
@@ -65,6 +66,7 @@ namespace Reko.Analysis
             this.arch = ssa.Procedure.Architecture;
             this.eventListener = eventListener;
             this.evalCtx = new SsaEvaluationContext(arch, ssa.Identifiers, importResolver);
+            this.ssam = new SsaMutator(ssa);
             this.eval = new ExpressionSimplifier(segmentMap, evalCtx, eventListener);
         }
 
@@ -118,7 +120,7 @@ namespace Reko.Analysis
                 {
                     var ab = new CallApplicationBuilder(this.ssa, this.stmCur, ci, ci.Callee);
                     evalCtx.Statement.Instruction = ab.CreateInstruction(pc.Procedure.Signature, pc.Procedure.Characteristics);
-                    AdjustSsa(ssa, evalCtx.Statement, ci);
+                    ssam.AdjustSsa(evalCtx.Statement, ci);
                     return evalCtx.Statement.Instruction;
                 }
                 if (oldCallee != pc && pc.Procedure is Procedure procCallee)
@@ -139,16 +141,6 @@ namespace Reko.Analysis
                 def.Expression = def.Expression.Accept(eval);
             }
             return ci;
-        }
-
-        private void AdjustSsa(SsaState ssa, Statement stm, CallInstruction call)
-        {
-            ssa.ReplaceDefinitions(stm, null);
-            ssa.RemoveUses(stm);
-            ssa.AddDefinitions(stm);
-            ssa.AddUses(stm);
-            var ssam = new SsaMutator(ssa);
-            ssam.DefineUninitializedIdentifiers(stm, call);
         }
 
         public Instruction VisitComment(CodeComment comment)

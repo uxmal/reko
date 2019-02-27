@@ -305,7 +305,8 @@ namespace Reko.Analysis
             ApplicationBuilder ab = CreateApplicationBuilder(ssaCaller, stm, call, fn);
             var instr = ab.CreateInstruction(sigCallee, procCallee.Characteristics);
             stm.Instruction = instr;
-            AdjustSsa(ssaCaller, stm, call);
+            var ssam = new SsaMutator(ssaCaller);
+            ssam.AdjustSsa(stm, call);
             return true;
         }
 
@@ -413,16 +414,6 @@ namespace Reko.Analysis
                 insertPos, iAddr, 
                 new Store(parameter, e));
             ssa.AddUses(stm);
-        }
-
-        private void AdjustSsa(SsaState ssa, Statement stm, CallInstruction call)
-        {
-            ssa.ReplaceDefinitions(stm, null);
-            ssa.RemoveUses(stm);
-            ssa.AddDefinitions(stm);
-            ssa.AddUses(stm);
-            var ssam = new SsaMutator(ssa);
-            ssam.DefineUninitializedIdentifiers(stm, call);
         }
     }
 }
