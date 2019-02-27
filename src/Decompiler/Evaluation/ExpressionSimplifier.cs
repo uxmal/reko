@@ -591,7 +591,13 @@ namespace Reko.Evaluation
                 access.MemoryId,
                 access.EffectiveAddress.Accept(this),
                 access.DataType);
-            return ctx.GetValue(value, segmentMap);
+            var newValue = ctx.GetValue(value, segmentMap);
+            if (newValue != value)
+            {
+                ctx.RemoveExpressionUse(value);
+                ctx.UseExpression(newValue);
+            }
+            return newValue;
         }
 
         public virtual Expression VisitMkSequence(MkSequence seq)
