@@ -367,6 +367,7 @@ namespace Reko.Arch.Pdp11
             throw new NotImplementedException();
         }
 
+        // Rewrites a destination operand when the source is unary.
         private Expression RewriteDst(MachineOperand op, Expression src, Func<Expression, Expression> gen)
         {
             var regOp = op as RegisterOperand;
@@ -385,7 +386,7 @@ namespace Reko.Arch.Pdp11
             if (memOp != null)
             {
                 var r = binder.EnsureRegister(memOp.Register);
-                var tmp = binder.CreateTemporary(dasm.Current.DataWidth);
+                Expression tmp = MaybeAssignTmp(gen(src));
                 switch (memOp.Mode)
                 {
                 default:
@@ -398,25 +399,22 @@ namespace Reko.Arch.Pdp11
                         m.Mem(
                             dasm.Current.DataWidth,
                             Address.Ptr16(memOp.EffectiveAddress)),
-                        gen(src));
+                        tmp);
                     break;
                 case AddressMode.RegDef:
-                    m.Assign(tmp, gen(src));
                     m.Assign(m.Mem(tmp.DataType, r), tmp);
                     break;
                 case AddressMode.AutoIncr:
-                    m.Assign(tmp, gen(src));
                     m.Assign(m.Mem(tmp.DataType, r), tmp);
                     m.Assign(r, m.IAdd(r, tmp.DataType.Size));
                     break;
                 case AddressMode.AutoIncrDef:
-                    m.Assign(tmp, gen(src));
                     m.Assign(m.Mem(PrimitiveType.Ptr16, m.Mem(tmp.DataType, r)), tmp);
                     m.Assign(r, m.IAdd(r, tmp.DataType.Size));
                     break;
                 case AddressMode.AutoDecr:
                     m.Assign(r, m.ISub(r, tmp.DataType.Size));
-                    m.Assign(m.Mem(tmp.DataType, r), gen(src));
+                    m.Assign(m.Mem(tmp.DataType, r), tmp);
                     break;
                 case AddressMode.AutoDecrDef:
                     m.Assign(r, m.ISub(r, tmp.DataType.Size));
@@ -424,7 +422,7 @@ namespace Reko.Arch.Pdp11
                         m.Mem(
                             tmp.DataType, 
                             m.Mem(PrimitiveType.Ptr16, r)),
-                        gen(src));
+                        tmp);
                     break;
                 case AddressMode.Indexed:
                     if (r.Storage == Registers.pc)
@@ -432,7 +430,7 @@ namespace Reko.Arch.Pdp11
                         var addr = dasm.Current.Address + dasm.Current.Length + memOp.EffectiveAddress;
                         m.Assign(
                             m.Mem(dasm.Current.DataWidth, addr),
-                            gen(src));
+                            tmp);
                     }
                     else
                     {
@@ -442,7 +440,7 @@ namespace Reko.Arch.Pdp11
                                 m.IAdd(
                                     r,
                                     Constant.Word16(memOp.EffectiveAddress))),
-                            gen(src));
+                            tmp);
                     }
                     break;
                 case AddressMode.IndexedDef:
@@ -450,12 +448,13 @@ namespace Reko.Arch.Pdp11
                     {
                         //$REVIEW: what if there are two of these?
                         var addr = dasm.Current.Address + dasm.Current.Length + memOp.EffectiveAddress;
+                        var deferred = binder.CreateTemporary(PrimitiveType.Ptr16);
                         m.Assign(
-                            tmp,
+                            deferred,
                             m.Mem(PrimitiveType.Ptr16, addr));
                         m.Assign(
-                            m.Mem(dasm.Current.DataWidth, tmp),
-                            gen(src));
+                            m.Mem(dasm.Current.DataWidth, deferred),
+                            tmp);
                     }
                     else
                     {
@@ -467,13 +466,22 @@ namespace Reko.Arch.Pdp11
                                     m.IAdd(
                                         r,
                                         Constant.Word16(memOp.EffectiveAddress)))),
-                            gen(src));
+                            tmp);
                     }
                     break;
                 }
                 return tmp;
             }
             return null;
+        }
+
+        private Expression MaybeAssignTmp(Expression exp)
+        {
+            if (exp is Constant || exp is Identifier)
+                return exp;
+            var tmp = binder.CreateTemporary(exp.DataType);
+            m.Assign(tmp, exp);
+            return tmp;
         }
 
         private Expression RewriteDst(MachineOperand op, Expression src, Func<Expression, Expression, Expression> gen)
