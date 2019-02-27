@@ -1429,6 +1429,22 @@ varargs_test.exe: warning: Win32 X86-64 main procedure finder not implemented ye
 === PE\x86\import-ordinals\import-ordinals.dcproject
 === PE\x86\pySample\pySample.dcproject
 === TLCS\900\ngp_iq\NGP_IQ.NGP
+*** TLCS\900\ngp_iq\NGP_IQ.NGP
+0020060C: error: ImmediateOperand
+00200089: error: ImmediateOperand
+002000A4: error: ImmediateOperand
+error: An error occurred during decompilation. System.NotImplementedException: ImmediateOperand
+   at Reko.Arch.Tlcs.Tlcs900.Tlcs900Rewriter.RewriteDst(MachineOperand op, Expression src, Func`3 fn) in D:\dev\uxmal\reko\master\src\Arch\Tlcs\Tlcs900\Tlcs900Rewriter.cs:line 245
+   at Reko.Arch.Tlcs.Tlcs900.Tlcs900Rewriter.RewriteLd() in D:\dev\uxmal\reko\master\src\Arch\Tlcs\Tlcs900\Tlcs900Rewriter.Alu.cs:line 128
+   at Reko.Arch.Tlcs.Tlcs900.Tlcs900Rewriter.<GetEnumerator>d__34.MoveNext() in D:\dev\uxmal\reko\master\src\Arch\Tlcs\Tlcs900\Tlcs900Rewriter.cs:line 104
+   at Reko.Scanning.ShingledScanner.ScanRange(MemoryArea mem, Address addrStart, UInt32 cbAlloc, UInt64 workToDo) in D:\dev\uxmal\reko\master\src\Decompiler\Scanning\ShingledScanner.cs:line 180
+   at Reko.Scanning.ScannerInLinq.ScanInstructions(ScanResults sr) in D:\dev\uxmal\reko\master\src\Decompiler\Scanning\ScannerInLinq.cs:line 121
+   at Reko.Scanning.ScannerInLinq.ScanImage(ScanResults sr) in D:\dev\uxmal\reko\master\src\Decompiler\Scanning\ScannerInLinq.cs:line 66
+   at Reko.Scanning.Scanner.ShingleScanProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 1014
+   at Reko.Scanning.Scanner.ScanImage() in D:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 765
+   at Reko.DecompilerDriver.ScanProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 421
+   at Reko.DecompilerDriver.ScanPrograms() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 409
+   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 171
 === TLCS\90\TLCS-90.corpus
 *** TLCS\90\TLCS-90.corpus
 034E: warning: Procedure fn034E previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
@@ -2325,4 +2341,4 @@ l0800_906A: warning: Non-integral switch expression
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 56 binaries in 93.84 seconds ---
+Decompiled 56 binaries in 88.85 seconds ---

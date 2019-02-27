@@ -38,10 +38,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
         private readonly Tlcs900Architecture arch;
         private readonly ImageReader rdr;
         private readonly List<MachineOperand> ops;
-
         private Address addr;
-        private MachineOperand opSrc;
-        private MachineOperand opDst;
         private PrimitiveType opSize;
 
         public Tlcs900Disassembler(Tlcs900Architecture arch, ImageReader rdr)
@@ -56,9 +53,10 @@ namespace Reko.Arch.Tlcs.Tlcs900
             this.addr = rdr.Address;
             if (!rdr.TryReadByte(out byte b))
                 return null;
-            this.opDst = null;
             this.opSize = null;
             this.ops.Clear();
+            if (addr.ToLinear() == 0x200116) //$DEBUG
+                addr.ToLinear();
             var instr = opRecs[b].Decode(b, this);
             if (instr == null)
             {
@@ -104,9 +102,9 @@ namespace Reko.Arch.Tlcs.Tlcs900
         {
             return (b, dasm) => 
             {
-                size = dasm.Size(size);
-                var c = Constant.Create(size, imm3Const[b & 7]);
-                dasm.opSize = size;
+                var s = dasm.Size(size);
+                var c = Constant.Create(s, imm3Const[b & 7]);
+                dasm.opSize = s;
                 dasm.ops.Add(new ImmediateOperand(c));
                 return true;
             };
@@ -378,6 +376,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
         }
         private static readonly Mutator<Tlcs900Disassembler> Zb = Z(PrimitiveType.Byte);
         private static readonly Mutator<Tlcs900Disassembler> Zw = Z(PrimitiveType.Word16);
+        private static readonly Mutator<Tlcs900Disassembler> Zx = Z(PrimitiveType.Word32);
 
 
         private static Mutator<Tlcs900Disassembler> O(PrimitiveType size) {
@@ -659,24 +658,28 @@ namespace Reko.Arch.Tlcs.Tlcs900
         private class InvOpRec : OpRecBase
         {
             private Opcode opcode;
-            private Mutator<Tlcs900Disassembler> mutator;
+            private Mutator<Tlcs900Disassembler>[] mutators;
 
-            public InvOpRec(Opcode opcode, Mutator<Tlcs900Disassembler> mutator)
+            public InvOpRec(Opcode opcode, params Mutator<Tlcs900Disassembler>[]mutators)
             {
                 this.opcode = opcode;
-                this.mutator = mutator;
+                this.mutators = mutators;
             }
 
             public override Tlcs900Instruction Decode(byte b, Tlcs900Disassembler dasm)
             {
-                if (!mutator(b, dasm))
-                    return dasm.Invalid();
+                foreach (var m in mutators)
+                {
+                    if (!m(b, dasm))
+                        return dasm.Invalid();
+                }
+                bool swap = dasm.ops.Count == 2;
                 return new Tlcs900Instruction
                 {
                     Opcode = this.opcode,
                     Address = dasm.addr,
-                    op1 = dasm.ops[1],
-                    op2 = dasm.ops[0],
+                    op1 = swap ? dasm.ops[1] : dasm.ops[0],
+                    op2 = swap ? dasm.ops[0] : null
                 };
             }
         }

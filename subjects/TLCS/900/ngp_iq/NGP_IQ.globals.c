@@ -4,14 +4,13 @@
 
 #include "NGP_IQ.h"
 
-ui8 g_b4002;
 byte g_b4003;
 byte g_b4004;
 byte g_b6DA0;
-ui32 g_dw6F83;
-ui32 g_dw6F86;
+byte g_b6F83;
+byte g_b6F86;
 byte g_b6F91;
-Eq_223 g_a7000[];
+Eq_198 g_a7000[];
 byte g_b8002;
 byte g_b8003;
 byte g_b8004;

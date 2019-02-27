@@ -192,8 +192,8 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("F1866FBE");	// set	06,(00006F86)
             AssertCode(
                 "0|L--|00010000(4): 2 instructions",
-                "1|L--|v2 = Mem0[0x00006F86:word32] | 1 << 0x06",
-                "2|L--|Mem0[0x00006F86:word32] = v2");
+                "1|L--|v2 = Mem0[0x00006F86:byte] | 1 << 0x06",
+                "2|L--|Mem0[0x00006F86:byte] = v2");
         }
 
         [Test]
@@ -202,8 +202,8 @@ namespace Reko.UnitTests.Arch.Tlcs
             RewriteCode("F1836FB3");	// res	03,(00006F83)
             AssertCode(
                 "0|L--|00010000(4): 2 instructions",
-                "1|L--|v2 = Mem0[0x00006F83:word32] & ~(1 << 0x03)",
-                "2|L--|Mem0[0x00006F83:word32] = v2");
+                "1|L--|v2 = Mem0[0x00006F83:byte] & ~(1 << 0x03)",
+                "2|L--|Mem0[0x00006F83:byte] = v2");
         }
 
         [Test]
