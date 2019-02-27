@@ -4,7 +4,7 @@
 
 #include "spcinv.h"
 
-Eq_836 g_tFFFFFFFF;
+Eq_835 g_tFFFFFFFF;
 Eq_12 g_t0001 = 
 	{
 		0x00,
@@ -23,7 +23,7 @@ Eq_12 g_t0002 =
 		},
 		0x00,
 	};
-Eq_479 g_t0003 = 
+Eq_474 g_t0003 = 
 	{
 		
 		{
@@ -34,7 +34,7 @@ Eq_479 g_t0003 =
 			0x00
 		},
 	};
-Eq_664 g_t000A = 
+Eq_661 g_t000A = 
 	{
 		0x0E30,
 		0x0000,
@@ -57,7 +57,7 @@ byte g_b0BC6 = 0x87;
 word16 g_w0BC8 = 0x0020;
 word16 g_w0DA8 = 0x0087;
 word16 g_w0DAA = 0x0000;
-Eq_2728 g_a0DAC[6] = 
+Eq_2727 g_a0DAC[6] = 
 	{
 		
 		{
@@ -102,7 +102,7 @@ Eq_2728 g_a0DAC[6] =
 			},
 		},
 	};
-Eq_2729 g_a0DB8[6] = 
+Eq_2728 g_a0DB8[6] = 
 	{
 		
 		{
@@ -178,16 +178,16 @@ ptr16 g_a0E30[] =
 	{
 	};
 byte g_b0E56 = 0x00;
-Eq_2738 g_a0EE6[] = 
+Eq_2737 g_a0EE6[] = 
 	{
 	};
-Eq_2737 g_a0EE9[] = 
+Eq_2736 g_a0EE9[] = 
 	{
 	};
 ci8 g_a0EEC[] = 
 	{
 	};
-Eq_2741 g_a0EF0[] = 
+Eq_2740 g_a0EF0[] = 
 	{
 	};
 byte g_a0EF3[] = 
@@ -217,7 +217,7 @@ Eq_14 g_t0F08 =
 	{
 		0x00
 	};
-struct Eq_836 * g_ptr0F0A = &g_tFFFFFFFF;
+struct Eq_835 * g_ptr0F0A = &g_tFFFFFFFF;
 Eq_14 g_t0F0C = 
 	{
 		0x01
@@ -225,16 +225,16 @@ Eq_14 g_t0F0C =
 cui16 g_w0F0E = 0x0000;
 ci16 g_w0F10 = 0x0000;
 word16 g_w0F12 = 0x0000;
-Eq_454 g_t0F14 = 
+Eq_452 g_t0F14 = 
 	{
-		0x0000
+		L'\x00'
 	};
 word16 g_w0F16 = 0x0000;
-Eq_278 g_t0F18 = 
+Eq_276 g_t0F18 = 
 	{
 		0x00
 	};
-struct Eq_479 * g_ptr0F1A = null;
+struct Eq_474 * g_ptr0F1A = null;
 word16 g_w0F1C = 0x0000;
 word16 g_w0F1E = 0x0000;
 ci16 g_w0F20 = 0x0000;
@@ -262,6 +262,6 @@ word16 g_w116E = 0x0000;
 ui16 g_w1170 = 0x0000;
 word16 g_w1172 = 0x0000;
 ui16 g_w1174 = 0x0000;
-char g_b1178 = '\x00';
-Eq_836 g_tFFFF;
+byte g_b1178 = 0x00;
+Eq_835 g_tFFFF;
 
