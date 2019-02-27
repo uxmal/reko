@@ -1084,7 +1084,6 @@ ProcedureBuilder_exit:
         // This code breaks in ValuePropagator.VisitCallInstruction when calling  
         // ssaIdTransformer.Transform(...)
         [Test]
-        [Ignore("This code is paraphrased from a MIPS ELF binary; all MIPS binaries have this problem")]
         public void VpReusedRegistersAtCall()
         {
             var sExp =
@@ -1095,7 +1094,6 @@ ProcedureBuilder_exit:
           callee(r2_1)
 r2_2:r2
     def:  r2_2 = callee
-    uses: callee(r2_1)
 r4_1:r4
     def:  r4_1 = r2_1
 r25_1:r25
@@ -1103,7 +1101,6 @@ r25_1:r25
 Mem4: orig: Mem0
     uses: r2_1 = Mem4[0x00220200:word32]
 Mem5: orig: Mem0
-    uses: r2_2 = callee
 // SsaProcedureBuilder
 // Return size: 0
 define SsaProcedureBuilder
@@ -1159,6 +1156,7 @@ SsaProcedureBuilder_exit:
 
             vp.Transform();
 
+            m.Ssa.Validate(s => Assert.Fail(s));
             AssertStringsEqual(sExp, m.Ssa);
         }
     }

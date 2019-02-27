@@ -3199,9 +3199,9 @@ l00401B6C_thunk_client_new:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word32 stackArg0 = <invalid>
-	word32 stackArg4 = <invalid>
+	stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
-	word32 stackArg12 = <invalid>
+	stackArg12 = <invalid>
 	client_new(r4_1281, r5_1283, r6_1288, r7_1292, fp + -416, ra, stackArg0, stackArg4, stackArg8, stackArg12)
 	return
 // DataOut:
@@ -3227,7 +3227,7 @@ l004008D0:
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg0 = <invalid>
+	stackArg0 = <invalid>
 	word32 stackArg4 = <invalid>
 	word32 r6_59
 	word32 r7_61
@@ -3236,14 +3236,14 @@ l004008D0:
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg0 = <invalid>
+	stackArg0 = <invalid>
 	word32 stackArg4 = <invalid>
 	word32 r4_67
 	word32 r5_68
 	word32 r6_70
 	word32 r7_72
 	word32 r3_71 = properties_parse_command_line(r1_24, r4, r5, r6_59, r7_61, r16, fp + -416, ra, stackArg0, stackArg4, out r4_67, out r5_68, out r6_70, out r7_72)
-	word32 dwLoc0160_1349 = 2
+	dwLoc0160_1349 = 2
 	word32 r2_75 = Mem25[Mem25[0x10000A40:word32] + 0x000004BC:word32]
 	branch r2_75 == 0x00000000 l004008D0_ds_t
 // DataOut:
@@ -3265,7 +3265,7 @@ l004009BC:
 	call fork (retsize: 0;)
 		uses: r1:r1_24,r16:r16,r2:r2_75,r25:fork,r28:0x10008860,r3:r3_71,r30:fp + -416,r4:r4_67,r5:r5_68,r6:r6_70,r7:r7_72,ra:ra,sp:fp + -416,Stack +0010:dwLoc0190,Stack +0014:dwLoc018C,Stack +0018:dwLoc0188,Stack +001C:dwLoc0184,Stack +0020:dwLoc0180,Stack +0024:dwLoc017C,Stack +0028:dwLoc0178,Stack +002C:dwLoc0174,Stack +0030:dwLoc0170,Stack +0038:0x10008860,Stack +0040:2,Stack +0044:dwLoc015C,Stack +0048:dwLoc0158,Stack +004C:dwLoc0154,Stack +0050:dwLoc0150,Stack +0054:dwLoc014C,Stack +0058:wLoc0148,Stack +005A:wLoc0146,Stack +005C:dwLoc0144,Stack +0068:dwLoc0138,Stack +0170:dwLoc30,Stack +0174:r2_80,Stack +0178:dwLoc28,Stack +017C:dwLoc24,Stack +0180:dwLoc20,Stack +0184:dwLoc1C,Stack +0188:dwLoc18,Stack +018C:dwLoc14,Stack +0194:r16,Stack +0198:r30,Stack +019C:ra,Stack +01A0:r4,Stack +01A4:r5
 		defs: r2:r2_80
-	dwLoc2C = r2_80
+	dwLoc2C_1350 = r2_80
 	branch r2_80 == 0x00000000 l004009BC_ds_t
 // DataOut:
 // DataOut (flags):
@@ -3302,8 +3302,7 @@ l00400A54_ds_f:
 // SymbolicIn:
 
 l00400A74:
-	word32 r2_147 = (word32) Mem144[r2_141 + 1685:int8]
-	branch r2_147 == 0x00000000 l00400A74_ds_t
+	branch (word32) Mem144[r2_141 + 1685:int8] == 0x00000000 l00400A74_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3319,8 +3318,8 @@ l00400A74_ds_f:
 // SymbolicIn:
 
 l00400A8C:
-	word32 r2_158 = fopen(r2_147 + 1685, Mem144[0x10000880:word32] + -50040)
-	dwLoc2C = r2_158
+	word32 r2_158 = fopen(r2_141 + 1685, Mem144[0x10000880:word32] + -25020)
+	dwLoc2C_1369 = r2_158
 	branch r2_158 == 0x00000000 l00400A8C_ds_t
 // DataOut:
 // DataOut (flags):
@@ -3338,7 +3337,7 @@ l00400A8C_ds_f:
 
 l00400AC4:
 	getpid()
-	fprintf(r2_158, Mem167[0x10000880:word32] + -50032, 0x00000000)
+	fprintf(r2_158, Mem167[0x10000880:word32] + -25016, 0x00000000)
 	fclose(r2_158)
 // DataOut:
 // DataOut (flags):
@@ -3352,7 +3351,7 @@ l00400B20:
 	Mem219[r1_218:word32] = Mem215[Mem215[0x10000A40:word32] + 0x000005EC:word32]
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg0 = <invalid>
+	stackArg0 = <invalid>
 	word32 r5_231
 	word32 r6_234
 	word32 r7_238
@@ -3362,14 +3361,14 @@ l00400B20:
 		defs: r2:r2_246
 	word32 r2_252 = Mem251[0x10000A40:word32]
 	word32 r2_274 = Mem272[Mem272[0x10000A28:word32]:word32]
-	word32 dwLoc0190_1380 = r2_252 + 13
+	dwLoc0190_1380 = r2_252 + 13
 	word32 r2_256 = Mem254[Mem254[0x10000A40:word32] + 0x0000012C:word32]
 	word32 r2_259 = Mem257[Mem257[0x10000A40:word32] + 0x000001C4:word32]
 	word32 r2_261 = Mem260[0x10000A40:word32]
 	word32 r2_265 = Mem263[Mem263[0x10000A40:word32] + 0x000002F4:word32]
 	word32 r2_268 = Mem266[Mem266[0x100008A0:word32]:word32]
 	word32 r2_271 = Mem269[Mem269[0x100008F4:word32]:word32]
-	word32 dwLoc20_1387 = r2_274
+	dwLoc20_1387 = r2_274
 	branch r2_274 >= 0x00000000 l00400B20_ds_t
 // DataOut:
 // DataOut (flags):
@@ -3386,7 +3385,7 @@ l00400B20_ds_f:
 // SymbolicIn:
 
 l00400C78:
-	dwLoc20_1387 = r2_274 + 1023
+	dwLoc20_1388 = r2_274 + 1023
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3402,11 +3401,11 @@ l00400C88:
 	// Please report this issue at https://github.com/uxmal/reko
 	word32 r2_288 = Mem285[Mem285[0x10000A40:word32] + 0x00000554:word32]
 	word32 stackArg0 = <invalid>
-	word32 stackArg4 = <invalid>
+	stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
-	word32 stackArg12 = <invalid>
+	stackArg12 = <invalid>
 	print_log(3, Mem289[0x10000880:word32] + -25008, r2_246, Mem289[Mem289[0x10000A60:word32]:word32], fp + -416, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_306, out r4_300, out r5_301, out r6_304, out r7_307)
-	word32 dwLoc0174_1390 = dwLoc20_1387 >> 0x0A
+	word32 dwLoc0174_1390 = dwLoc20_1389 >> 0x0A
 	word32 r2_313 = clist_new(fp + -416, ra, out r3_315, out r4_311, out r5_312, out r6_314, out r7_316)
 	branch r2_313 != 0x00000000 l00400C88_ds_t
 // DataOut:
@@ -3446,12 +3445,12 @@ l00400D6C:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word32 stackArg0 = <invalid>
-	word32 stackArg4 = <invalid>
+	stackArg4 = <invalid>
 	uint16 stackArg6 = <invalid>
-	word32 stackArg8 = <invalid>
+	stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
 	word32 stackArg0 = <invalid>
-	word32 stackArg4 = <invalid>
+	stackArg4 = <invalid>
 	slist_add(r2_343, server_new(Mem352[0x10000A40:word32] + 13, Mem352[Mem352[0x10000A40:word32] + 0x0000012C:word32], Mem352[Mem352[0x10000A40:word32] + 0x00000554:word32], 0x00000000, fp + -416, ra, stackArg0, stackArg4, stackArg6, stackArg8, stackArg12, out r3_386, out r6_384, out r7_387), stackArg0, stackArg4, out r3_398)
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
@@ -3467,34 +3466,34 @@ l00400D6C:
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg0 = <invalid>
+	stackArg0 = <invalid>
 	word32 stackArg4 = <invalid>
-	uint16 stackArg6 = <invalid>
+	stackArg6 = <invalid>
 	word32 stackArg8 = <invalid>
-	word32 stackArg12 = <invalid>
+	stackArg12 = <invalid>
 	word32 r2_412 = server_new(Mem389[0x10000A40:word32] + 13, Mem389[Mem389[0x10000A40:word32] + 0x000001C4:word32], Mem389[Mem389[0x10000A40:word32] + 0x00000554:word32], 1, fp + -416, ra, stackArg0, stackArg4, stackArg6, stackArg8, stackArg12, out r3_414, out r6_413, out r7_415)
 	word32 stackArg0 = <invalid>
-	word32 stackArg4 = <invalid>
+	stackArg4 = <invalid>
 	slist_add(r2_343, r2_412, stackArg0, stackArg4, out r3_2434)
-	bzero(0xBADDC9B6, 16)
+	bzero(fp + -328, 16)
 	word32 r2_444 = (word32) Mem442[Mem442[0x10000A40:word32] + 0x000002F6:uint16]
+	word32 r7_439 = <invalid>
+	word32 r3_438 = <invalid>
+	word32 r6_437 = <invalid>
+	word32 r5_435 = <invalid>
 	word16 wLoc0146_1457 = (word16) r2_444
 	word32 r2_452
-	word32 r5_1022
-	word32 r6_1026
-	word32 r7_1029
-	word32 r3_1010
 	call inet_addr (retsize: 0;)
 		uses: r1:r1_218,r16:r16,r2:r2_444,r25:inet_addr,r28:0x10008860,r3:r3_438,r30:fp + -416,r4:Mem445[0x10000A40:word32] + 469,r5:r5_435,r6:r6_437,r7:r7_439,ra:ra,sp:fp + -416,Stack +0010:r2_252 + 13,Stack +0014:r2_256,Stack +0018:r2_259,Stack +001C:r2_261 + 469,Stack +0020:r2_265,Stack +0024:r2_268,Stack +0028:r2_271,Stack +002C:dwLoc0174_1390,Stack +0030:r2_288,Stack +0038:0x10008860,Stack +0040:2,Stack +0044:dwLoc015C,Stack +0048:dwLoc0158,Stack +004C:r2_313,Stack +0050:r2_412,Stack +0054:r2_343,Stack +0058:0x0002,Stack +005A:wLoc0146_1457,Stack +005C:r2_452,Stack +0068:r2_141 + 1685,Stack +0170:dwLoc30,Stack +0174:dwLoc2C_1377,Stack +0178:dwLoc28,Stack +017C:r2_246,Stack +0180:dwLoc20_1389,Stack +0184:dwLoc1C,Stack +0188:dwLoc18,Stack +018C:dwLoc14,Stack +0194:r16,Stack +0198:r30,Stack +019C:ra,Stack +01A0:r4,Stack +01A4:r5
 		defs: r2:r2_452,r3:r3_454,r5:r5_451,r6:r6_453,r7:r7_455
-	word32 dwLoc0150_1459 = Mem457[r2_343 + 0x00000008:word32]
+	dwLoc0150_1459 = Mem457[r2_343 + 0x00000008:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00400EA4:
-	word32 r28_1015 = 0x10008860
-	branch dwLoc0150_1459 != 0x00000000 l00400D6C_ds_t
+	r28_465 = 0x10008860
+	branch dwLoc0150_1460 != 0x00000000 l00400D6C_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3507,8 +3506,8 @@ l00400D6C_ds_t:
 l00400EBC:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg0 = <invalid>
-	branch server_open(dwLoc0150_1459, r16, fp + -416, ra, stackArg0, out r3_1010, out r5_1022, out r6_1026, out r7_1029) != 0x00000000 l00400EBC_ds_t
+	stackArg0 = <invalid>
+	branch server_open(dwLoc0150_1460, r16, fp + -416, ra, stackArg0, out r3_479, out r5_473, out r6_477, out r7_481) != 0x00000000 l00400EBC_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3519,7 +3518,7 @@ l00400EBC_ds_t:
 // SymbolicIn:
 
 l00400EF8:
-	dwLoc0150_1459 = Mem462[dwLoc0150_1459 + 0x00000018:word32]
+	dwLoc0150_1487 = Mem462[dwLoc0150_1460 + 0x00000018:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3531,6 +3530,10 @@ l00400EBC_ds_f:
 
 l00400EDC:
 	exit(-1)
+	r5_1306 = r5_487
+	r6_1308 = r6_489
+	r3_1309 = r3_490
+	r7_1310 = r7_491
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3541,14 +3544,13 @@ l00400D6C_ds_f:
 // SymbolicIn:
 
 l00400EB4:
-	r16_1327 = r16
+	r16_509 = r16
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00400F10:
-	word32 r16_1327
-	word32 r2_501 = Mem499[Mem499[r28_1015 - 0x00007FA0:word32]:word32]
+	word32 r2_501 = Mem499[Mem499[r28_498 - 0x00007FA0:word32]:word32]
 	branch r2_501 == 0x00000000 l00400F10_ds_t
 // DataOut:
 // DataOut (flags):
@@ -3560,20 +3562,20 @@ l00400F10_ds_t:
 // SymbolicIn:
 
 l00400F30:
-	word32 r25_505 = Mem503[r28_1015 - 0x00007F30:word32]
+	word32 r25_505 = Mem503[r28_498 - 0x00007F30:word32]
 	word32 r2_513
 	call r25_505 (retsize: 0;)
 		uses: r2:r2_501,r25:r25_505,r3:r3_517,r4:0x00000000,r5:r5_511,r6:r6_515,r7:r7_519,Stack +0010:dwLoc0190_1498,Stack +0014:r2_256,Stack +0018:r2_259,Stack +001C:r2_261 + 469,Stack +0020:r2_265,Stack +0024:r2_268,Stack +0028:r2_271,Stack +002C:dwLoc0174_1390,Stack +0030:r2_288,Stack +0038:0x10008860,Stack +0040:0x00000000,Stack +0044:dwLoc015C_2142,Stack +0048:dwLoc0158_2132,Stack +004C:r2_313,Stack +0050:dwLoc0150_1510,Stack +0054:r2_343,Stack +0058:0x0002,Stack +005A:wLoc0146_1457,Stack +005C:r2_452,Stack +0068:r2_141 + 1685,Stack +0170:r2_513,Stack +0174:dwLoc2C_1495,Stack +0178:fp + -304,Stack +017C:r2_246,Stack +0180:dwLoc20_1389,Stack +0184:dwLoc1C_2162,Stack +0188:dwLoc18_2182,Stack +018C:dwLoc14_2202,Stack +0194:r16,Stack +0198:r30,Stack +019C:ra,Stack +01A0:r4,Stack +01A4:r5
 		defs: r2:r2_513
-	dwLoc0160_1349 = 0x00000000
-	dwLoc30 = r2_513
-	word32 dwLoc2C_1516 = 0x00000000
+	dwLoc0160_1488 = 0x00000000
+	dwLoc30_1514 = r2_513
+	dwLoc2C_1516 = 0x00000000
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00400F5C:
-	branch (word32) (dwLoc2C_1516 <u 32) != 0x00000000 l00400F30_ds_t
+	branch (word32) (dwLoc2C_1517 <u 32) != 0x00000000 l00400F30_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3584,8 +3586,8 @@ l00400F30_ds_t:
 // SymbolicIn:
 
 l00400F78:
-	Mem534[fp + -304 + (dwLoc2C_1516 << 0x02):word32] = 0x00000000
-	dwLoc2C_1516 = dwLoc2C_1516 + 1
+	Mem534[fp + -304 + (dwLoc2C_1517 << 0x02):word32] = 0x00000000
+	dwLoc2C_1519 = dwLoc2C_1517 + 1
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3601,14 +3603,14 @@ l00400F70:
 // SymbolicIn:
 
 l00400FA4:
-	dwLoc2C = fp + -176
-	dwLoc28 = 0x00000000
+	dwLoc2C_1520 = fp + -176
+	dwLoc28_1521 = 0x00000000
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00400FB0:
-	branch (word32) (dwLoc28 <u 32) != 0x00000000 l00400FA4_ds_t
+	branch (word32) (dwLoc28_1522 <u 32) != 0x00000000 l00400FA4_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3619,8 +3621,8 @@ l00400FA4_ds_t:
 // SymbolicIn:
 
 l00400FCC:
-	Mem549[fp + -176 + (dwLoc28 << 0x02):word32] = 0x00000000
-	dwLoc28 = dwLoc28 + 1
+	Mem549[fp + -176 + (dwLoc28_1522 << 0x02):word32] = 0x00000000
+	dwLoc28_1524 = dwLoc28_1522 + 1
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3636,13 +3638,13 @@ l00400FC4:
 // SymbolicIn:
 
 l00400FF8:
-	dwLoc0150_1459 = Mem542[r2_343 + 0x00000008:word32]
+	dwLoc0150_1527 = Mem542[r2_343 + 0x00000008:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0040100C:
-	branch dwLoc0150_1459 != 0x00000000 l00400FF8_ds_t
+	branch dwLoc0150_1528 != 0x00000000 l00400FF8_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3653,9 +3655,9 @@ l00400FF8_ds_t:
 // SymbolicIn:
 
 l00401024:
-	word32 r2_560 = Mem557[dwLoc0150_1459:word32]
-	Mem577[fp + -304 + ((r2_560 >>u 0x05) << 0x02):word32] = Mem557[fp + -304 + ((r2_560 >>u 0x05) << 0x02):word32] | 1 << Mem557[dwLoc0150_1459:word32] + 0x0000001F
-	branch (word32) (dwLoc0160_1349 < Mem577[dwLoc0150_1459:word32]) == 0x00000000 l00401024_ds_t
+	word32 r2_560 = Mem557[dwLoc0150_1528:word32]
+	Mem577[fp + -304 + ((r2_560 >>u 0x05) << 0x02):word32] = Mem557[fp + -304 + ((r2_560 >>u 0x05) << 0x02):word32] | 1 << Mem557[dwLoc0150_1528:word32] + 0x0000001F
+	branch (word32) (dwLoc0160_1529 < Mem577[dwLoc0150_1528:word32]) == 0x00000000 l00401024_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3671,13 +3673,13 @@ l00401024_ds_f:
 // SymbolicIn:
 
 l004010A0:
-	dwLoc0160_1349 = Mem577[dwLoc0150_1459:word32]
+	dwLoc0160_1530 = Mem577[dwLoc0150_1528:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l004010B4:
-	dwLoc0150_1459 = Mem586[dwLoc0150_1459 + 0x00000018:word32]
+	dwLoc0150_1532 = Mem586[dwLoc0150_1528 + 0x00000018:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3693,13 +3695,13 @@ l0040101C:
 // SymbolicIn:
 
 l004010CC:
-	dwLoc0158 = Mem557[r2_313 + 0x00000008:word32]
+	dwLoc0158_1537 = Mem557[r2_313 + 0x00000008:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l004010E0:
-	branch dwLoc0158 != 0x00000000 l004010CC_ds_t
+	branch dwLoc0158_1538 != 0x00000000 l004010CC_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3710,7 +3712,7 @@ l004010CC_ds_t:
 // SymbolicIn:
 
 l004010F8:
-	branch Mem594[dwLoc0158:word32] < 0x00000000 l004010F8_ds_t
+	branch Mem594[dwLoc0158_1538:word32] < 0x00000000 l004010F8_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3726,7 +3728,7 @@ l004010F8_ds_f:
 // SymbolicIn:
 
 l00401110:
-	branch (word32) (dwLoc0160_1349 < Mem594[dwLoc0158:word32]) == 0x00000000 l00401110_ds_t
+	branch (word32) (dwLoc0160_1539 < Mem594[dwLoc0158_1538:word32]) == 0x00000000 l00401110_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3742,13 +3744,13 @@ l00401110_ds_f:
 // SymbolicIn:
 
 l0040112C:
-	dwLoc0160_1349 = Mem594[dwLoc0158:word32]
+	dwLoc0160_1540 = Mem594[dwLoc0158_1538:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00401140:
-	branch Mem606[dwLoc0158 + 0x00000FAC:word32] != 0x00000000 l00401140_ds_t
+	branch Mem606[dwLoc0158_1538 + 0x00000FAC:word32] != 0x00000000 l00401140_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3759,8 +3761,8 @@ l00401140_ds_t:
 // SymbolicIn:
 
 l004011BC:
-	word32 r2_610 = Mem606[dwLoc0158:word32]
-	Mem627[fp + -176 + ((r2_610 >>u 0x05) << 0x02):word32] = Mem606[fp + -176 + ((r2_610 >>u 0x05) << 0x02):word32] | 1 << Mem606[dwLoc0158:word32] + 0x0000001F
+	word32 r2_610 = Mem606[dwLoc0158_1538:word32]
+	Mem627[fp + -176 + ((r2_610 >>u 0x05) << 0x02):word32] = Mem606[fp + -176 + ((r2_610 >>u 0x05) << 0x02):word32] | 1 << Mem606[dwLoc0158_1538:word32] + 0x0000001F
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3771,14 +3773,14 @@ l00401140_ds_f:
 // SymbolicIn:
 
 l00401158:
-	word32 r2_629 = Mem606[dwLoc0158:word32]
-	Mem646[fp + -304 + ((r2_629 >>u 0x05) << 0x02):word32] = Mem606[fp + -304 + ((r2_629 >>u 0x05) << 0x02):word32] | 1 << Mem606[dwLoc0158:word32] + 0x0000001F
+	word32 r2_629 = Mem606[dwLoc0158_1538:word32]
+	Mem646[fp + -304 + ((r2_629 >>u 0x05) << 0x02):word32] = Mem606[fp + -304 + ((r2_629 >>u 0x05) << 0x02):word32] | 1 << Mem606[dwLoc0158_1538:word32] + 0x0000001F
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0040121C:
-	branch Mem648[dwLoc0158 + 0x00000004:word32] < 0x00000000 l0040121C_ds_t
+	branch Mem648[dwLoc0158_1538 + 0x00000004:word32] < 0x00000000 l0040121C_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3794,7 +3796,7 @@ l0040121C_ds_f:
 // SymbolicIn:
 
 l00401234:
-	branch (word32) (dwLoc0160_1349 < Mem648[dwLoc0158 + 0x00000004:word32]) == 0x00000000 l00401234_ds_t
+	branch (word32) (dwLoc0160_1543 < Mem648[dwLoc0158_1538 + 0x00000004:word32]) == 0x00000000 l00401234_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3810,13 +3812,13 @@ l00401234_ds_f:
 // SymbolicIn:
 
 l00401250:
-	dwLoc0160_1349 = Mem648[dwLoc0158 + 0x00000004:word32]
+	dwLoc0160_1545 = Mem648[dwLoc0158_1538 + 0x00000004:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00401264:
-	branch Mem659[dwLoc0158 + 0x0000178C:word32] != 0x00000000 l00401264_ds_t
+	branch Mem659[dwLoc0158_1538 + 0x0000178C:word32] != 0x00000000 l00401264_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3827,8 +3829,8 @@ l00401264_ds_t:
 // SymbolicIn:
 
 l004012E0:
-	word32 r2_663 = Mem659[dwLoc0158 + 0x00000004:word32]
-	Mem680[fp + -176 + ((r2_663 >>u 0x05) << 0x02):word32] = Mem659[fp + -176 + ((r2_663 >>u 0x05) << 0x02):word32] | 1 << Mem659[dwLoc0158 + 0x00000004:word32] + 0x0000001F
+	word32 r2_663 = Mem659[dwLoc0158_1538 + 0x00000004:word32]
+	Mem680[fp + -176 + ((r2_663 >>u 0x05) << 0x02):word32] = Mem659[fp + -176 + ((r2_663 >>u 0x05) << 0x02):word32] | 1 << Mem659[dwLoc0158_1538 + 0x00000004:word32] + 0x0000001F
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3839,14 +3841,14 @@ l00401264_ds_f:
 // SymbolicIn:
 
 l0040127C:
-	word32 r2_682 = Mem659[dwLoc0158 + 0x00000004:word32]
-	Mem699[fp + -304 + ((r2_682 >>u 0x05) << 0x02):word32] = Mem659[fp + -304 + ((r2_682 >>u 0x05) << 0x02):word32] | 1 << Mem659[dwLoc0158 + 0x00000004:word32] + 0x0000001F
+	word32 r2_682 = Mem659[dwLoc0158_1538 + 0x00000004:word32]
+	Mem699[fp + -304 + ((r2_682 >>u 0x05) << 0x02):word32] = Mem659[fp + -304 + ((r2_682 >>u 0x05) << 0x02):word32] | 1 << Mem659[dwLoc0158_1538 + 0x00000004:word32] + 0x0000001F
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00401340:
-	dwLoc0158 = Mem701[dwLoc0158 + 0x000017B8:word32]
+	dwLoc0158_1548 = Mem701[dwLoc0158_1538 + 0x000017B8:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3866,7 +3868,7 @@ l00401358:
 	call select (retsize: 0;)
 		uses: r1:r1_218,r16:r16_509,r2:dwLoc0160_1539 + 1,r25:select,r28:0x10008860,r3:fp + -304,r30:fp + -416,r4:dwLoc0160_1539 + 1,r5:fp + -304,r6:0x00000000,r7:0x00000000,ra:ra,sp:fp + -416,Stack +0010:0x00000000,Stack +0014:r2_256,Stack +0018:r2_259,Stack +001C:r2_261 + 469,Stack +0020:r2_265,Stack +0024:r2_268,Stack +0028:r2_271,Stack +002C:dwLoc0174_1390,Stack +0030:r2_288,Stack +0038:0x10008860,Stack +0040:dwLoc0160_1539,Stack +0044:dwLoc015C_2142,Stack +0048:dwLoc0158_1538,Stack +004C:r2_313,Stack +0050:dwLoc0150_1528,Stack +0054:r2_343,Stack +0058:0x0002,Stack +005A:wLoc0146_1457,Stack +005C:r2_452,Stack +0068:r2_141 + 1685,Stack +0170:r2_513,Stack +0174:fp + -176,Stack +0178:dwLoc28_1522,Stack +017C:r2_246,Stack +0180:dwLoc20_1389,Stack +0184:dwLoc1C_2162,Stack +0188:dwLoc18_2182,Stack +018C:dwLoc14_2202,Stack +0194:r16,Stack +0198:r30,Stack +019C:ra,Stack +01A0:r4,Stack +01A4:r5
 		defs: r2:r2_753,r3:r3_764,r5:r5_752,r6:r6_763,r7:r7_765
-	dwLoc0190_1380 = 0x00000000
+	dwLoc0190_1549 = 0x00000000
 	branch r2_753 >= 0x00000000 l00401358_ds_t
 // DataOut:
 // DataOut (flags):
@@ -3878,14 +3880,14 @@ l00401358_ds_t:
 // SymbolicIn:
 
 l00401454:
-	r28_1015 = 0x10008860
-	dwLoc0150_1459 = Mem717[r2_343 + 0x00000008:word32]
+	r28_1321 = 0x10008860
+	dwLoc0150_1771 = Mem717[r2_343 + 0x00000008:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00401468:
-	branch dwLoc0150_1459 != 0x00000000 l00401454_ds_t
+	branch dwLoc0150_1772 != 0x00000000 l00401454_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3896,9 +3898,9 @@ l00401454_ds_t:
 // SymbolicIn:
 
 l00401480:
-	word32 r2_846 = Mem837[dwLoc0150_1459:word32]
-	r3_1010 = r2_846 + 0x0000001F
-	branch Mem837[fp + -304 + ((Mem837[dwLoc0150_1459:word32] >>u 0x05) << 0x02):word32] >> r2_846 + 0x0000001F == 0x00000001 l00401480_ds_t
+	word32 r2_846 = Mem837[dwLoc0150_1772:word32]
+	r3_847 = r2_846 + 0x0000001F
+	branch Mem837[fp + -304 + ((Mem837[dwLoc0150_1772:word32] >>u 0x05) << 0x02):word32] >> r2_846 + 0x0000001F == 0x00000001 l00401480_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3914,13 +3916,13 @@ l00401480_ds_f:
 // SymbolicIn:
 
 l004014CC:
-	word32 r25_861 = Mem837[r28_1015 - 0x00007F28:word32]
+	word32 r25_861 = Mem837[r28_860 - 0x00007F28:word32]
 	word32 r2_868
 	call r25_861 (retsize: 0;)
 		uses: r2:dwLoc0150_1772 + 8,r25:r25_861,r3:fp + -328,r4:dwLoc0150_1772 + 8,r5:fp + -328,r6:Mem837[dwLoc0150_1772:word32],r7:Mem837[dwLoc0150_1772 + 0x00000020:word32],Stack +0010:0x00000000,Stack +0014:r2_256,Stack +0018:r2_259,Stack +001C:r2_261 + 469,Stack +0020:r2_265,Stack +0024:r2_268,Stack +0028:r2_271,Stack +002C:dwLoc0174_1390,Stack +0030:r2_288,Stack +0038:0x10008860,Stack +0040:dwLoc0160_1539,Stack +0044:r2_868,Stack +0048:dwLoc0158_1538,Stack +004C:r2_313,Stack +0050:dwLoc0150_1772,Stack +0054:r2_343,Stack +0058:0x0002,Stack +005A:wLoc0146_1457,Stack +005C:r2_452,Stack +0068:r2_141 + 1685,Stack +0170:r2_513,Stack +0174:fp + -176,Stack +0178:dwLoc28_1522,Stack +017C:r2_246,Stack +0180:dwLoc20_1389,Stack +0184:dwLoc1C_2162,Stack +0188:dwLoc18_2182,Stack +018C:dwLoc14_2202,Stack +0194:r16,Stack +0198:r30,Stack +019C:ra,Stack +01A0:r4,Stack +01A4:r5
 		defs: r2:r2_868,r3:r3_871,r5:r5_867,r6:r6_870,r7:r7_872
-	r28_1015 = 0x10008860
-	dwLoc015C = r2_868
+	r28_873 = 0x10008860
+	dwLoc015C_1801 = r2_868
 	branch r2_868 != 0x00000000 l004014CC_ds_t
 // DataOut:
 // DataOut (flags):
@@ -3937,9 +3939,9 @@ l00401524:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word32 stackArg0 = <invalid>
-	word32 stackArg4 = <invalid>
-	r28_1015 = 0x10008860
-	branch clist_add(r2_313, r2_868, stackArg0, stackArg4, out r3_1010, out r5_1022, out r6_1026, out r7_1029) != 0x00000000 l00401524_ds_t
+	stackArg4 = <invalid>
+	r28_886 = 0x10008860
+	branch clist_add(r2_313, r2_868, stackArg0, stackArg4, out r3_884, out r5_881, out r6_883, out r7_885) != 0x00000000 l00401524_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3966,12 +3968,12 @@ l00401548:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word32 stackArg0 = <invalid>
-	word32 stackArg4 = <invalid>
-	word32 stackArg8 = <invalid>
-	word32 stackArg12 = <invalid>
-	word32 stackArg0 = <invalid>
-	r3_1010 = client_destroy(print_log(1, Mem874[0x10000880:word32] + -24884, Mem874[0x10000880:word32] + -24840, 224, fp + -416, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_899, out r4_2457, out r5_896, out r6_898, out r7_900), r2_868, fp + -416, ra, stackArg0, out r5_1022, out r6_1026, out r7_1029)
-	r28_1015 = 0x10008860
+	stackArg4 = <invalid>
+	stackArg8 = <invalid>
+	stackArg12 = <invalid>
+	stackArg0 = <invalid>
+	r3_909 = client_destroy(print_log(1, Mem874[0x10000880:word32] + -24884, Mem874[0x10000880:word32] + -24840, 224, fp + -416, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_899, out r4_2457, out r5_896, out r6_898, out r7_900), r2_868, fp + -416, ra, stackArg0, out r5_906, out r6_908, out r7_910)
+	r28_911 = 0x10008860
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3987,7 +3989,7 @@ l0040151C:
 // SymbolicIn:
 
 l0040159C:
-	dwLoc0150_1459 = Mem913[dwLoc0150_1459 + 0x00000018:word32]
+	dwLoc0150_1803 = Mem913[dwLoc0150_1772 + 0x00000018:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4003,13 +4005,13 @@ l00401478:
 // SymbolicIn:
 
 l004015B4:
-	dwLoc0158 = Mem837[r2_313 + 0x00000008:word32]
+	dwLoc0158_1804 = Mem837[r2_313 + 0x00000008:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l004015C8:
-	branch dwLoc0158 != 0x00000000 l004015B4_ds_t
+	branch dwLoc0158_1805 != 0x00000000 l004015B4_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4020,7 +4022,7 @@ l004015B4_ds_t:
 // SymbolicIn:
 
 l004015E0:
-	branch dwLoc0158 == 0x00000000 l004015E0_ds_t
+	branch dwLoc0158_1805 == 0x00000000 l004015E0_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4036,7 +4038,7 @@ l004015E0_ds_f:
 // SymbolicIn:
 
 l004015F0:
-	branch Mem921[dwLoc0158:word32] < 0x00000000 l004015F0_ds_t
+	branch Mem921[dwLoc0158_1805:word32] < 0x00000000 l004015F0_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4052,9 +4054,9 @@ l004015F0_ds_f:
 // SymbolicIn:
 
 l00401608:
-	word32 r2_933 = Mem921[dwLoc0158:word32]
-	r3_1010 = r2_933 + 0x0000001F
-	word32 r2_936 = Mem921[fp + -304 + ((Mem921[dwLoc0158:word32] >>u 0x05) << 0x02):word32] >> r2_933 + 0x0000001F
+	word32 r2_933 = Mem921[dwLoc0158_1805:word32]
+	r3_934 = r2_933 + 0x0000001F
+	word32 r2_936 = Mem921[fp + -304 + ((Mem921[dwLoc0158_1805:word32] >>u 0x05) << 0x02):word32] >> r2_933 + 0x0000001F
 	branch r2_936 == 0x00000001 l00401608_ds_t
 // DataOut:
 // DataOut (flags):
@@ -4071,12 +4073,12 @@ l00401608_ds_f:
 // SymbolicIn:
 
 l00401654:
-	word32 r25_940 = Mem921[r28_1015 - 0x00007EF8:word32]
+	word32 r25_940 = Mem921[r28_939 - 0x00007EF8:word32]
 	call r25_940 (retsize: 0;)
 		uses: r2:r2_936 + 0x00000001,r25:r25_940,r3:r2_933 + 0x0000001F,r4:dwLoc0158_1805,r5:r5_946,r6:r6_950,r7:r7_953,Stack +0010:0x00000000,Stack +0014:r2_256,Stack +0018:r2_259,Stack +001C:r2_261 + 469,Stack +0020:r2_265,Stack +0024:r2_268,Stack +0028:r2_271,Stack +002C:dwLoc0174_1390,Stack +0030:r2_288,Stack +0038:0x10008860,Stack +0040:dwLoc0160_1539,Stack +0044:dwLoc015C_2365,Stack +0048:dwLoc0158_1805,Stack +004C:r2_313,Stack +0050:dwLoc0150_1772,Stack +0054:r2_343,Stack +0058:0x0002,Stack +005A:wLoc0146_1457,Stack +005C:r2_452,Stack +0068:r2_141 + 1685,Stack +0170:r2_513,Stack +0174:fp + -176,Stack +0178:dwLoc28_1522,Stack +017C:r2_246,Stack +0180:dwLoc20_1389,Stack +0184:dwLoc1C_1836,Stack +0188:dwLoc18_1870,Stack +018C:dwLoc14_1939,Stack +0194:r16,Stack +0198:r30,Stack +019C:ra,Stack +01A0:r4,Stack +01A4:r5
 		defs: r3:r3_952,r5:r5_947,r6:r6_951,r7:r7_954
-	r28_1015 = 0x10008860
-	branch Mem921[dwLoc0158 + 0x000007D8:word32] > 0x00000000 l00401654_ds_t
+	r28_955 = 0x10008860
+	branch Mem921[dwLoc0158_1805 + 0x000007D8:word32] > 0x00000000 l00401654_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4087,15 +4089,15 @@ l00401654_ds_t:
 // SymbolicIn:
 
 l004016D8:
-	word32 r2_959 = Mem921[dwLoc0158 + 0x000017C0:word32]
+	word32 r2_959 = Mem921[dwLoc0158_1805 + 0x000017C0:word32]
 	call r2_959 (retsize: 0;)
 		uses: r2:r2_959,r25:r2_959,r3:r3_952,r4:dwLoc0158_1805,r5:r5_947,r6:r6_951,r7:r7_954,Stack +0010:0x00000000,Stack +0014:r2_256,Stack +0018:r2_259,Stack +001C:r2_261 + 469,Stack +0020:r2_265,Stack +0024:r2_268,Stack +0028:r2_271,Stack +002C:dwLoc0174_1390,Stack +0030:r2_288,Stack +0038:0x10008860,Stack +0040:dwLoc0160_1539,Stack +0044:dwLoc015C_2365,Stack +0048:dwLoc0158_1805,Stack +004C:r2_313,Stack +0050:dwLoc0150_1772,Stack +0054:r2_343,Stack +0058:0x0002,Stack +005A:wLoc0146_1457,Stack +005C:r2_452,Stack +0068:r2_141 + 1685,Stack +0170:r2_513,Stack +0174:fp + -176,Stack +0178:dwLoc28_1522,Stack +017C:r2_246,Stack +0180:dwLoc20_1389,Stack +0184:r2_959,Stack +0188:dwLoc18_1870,Stack +018C:dwLoc14_1939,Stack +0194:r16,Stack +0198:r30,Stack +019C:ra,Stack +01A0:r4,Stack +01A4:r5
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg0 = <invalid>
-	dwLoc1C = r2_959
-	r3_1010 = client_send_request(dwLoc0158, fp + -416, ra, stackArg0, out r5_1022, out r6_1026, out r7_1029)
-	r28_1015 = 0x10008860
+	stackArg0 = <invalid>
+	dwLoc1C_1835 = r2_959
+	r3_978 = client_send_request(dwLoc0158_1805, fp + -416, ra, stackArg0, out r5_975, out r6_977, out r7_979)
+	r28_980 = 0x10008860
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4106,7 +4108,7 @@ l00401654_ds_f:
 // SymbolicIn:
 
 l00401688:
-	branch Mem921[dwLoc0158:word32] < 0x00000000 l00401688_ds_t
+	branch Mem921[dwLoc0158_1805:word32] < 0x00000000 l00401688_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4122,16 +4124,19 @@ l00401688_ds_f:
 // SymbolicIn:
 
 l004016A0:
-	close(Mem921[dwLoc0158:word32])
-	Mem996[dwLoc0158:word32] = -1
-	r28_1015 = 0x10008860
-	r3_1010 = dwLoc0158
+	close(Mem921[dwLoc0158_1805:word32])
+	Mem996[dwLoc0158_1805:word32] = -1
+	r7_992 = <invalid>
+	r6_990 = <invalid>
+	r5_988 = <invalid>
+	r28_993 = 0x10008860
+	r3_994 = dwLoc0158_1805
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00401724:
-	branch dwLoc0158 == 0x00000000 l00401724_ds_t
+	branch dwLoc0158_1805 == 0x00000000 l00401724_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4147,7 +4152,7 @@ l00401724_ds_f:
 // SymbolicIn:
 
 l00401734:
-	branch Mem998[dwLoc0158 + 0x00000004:word32] < 0x00000000 l00401734_ds_t
+	branch Mem998[dwLoc0158_1805 + 0x00000004:word32] < 0x00000000 l00401734_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4163,9 +4168,9 @@ l00401734_ds_f:
 // SymbolicIn:
 
 l0040174C:
-	word32 r2_1009 = Mem998[dwLoc0158 + 0x00000004:word32]
+	word32 r2_1009 = Mem998[dwLoc0158_1805 + 0x00000004:word32]
 	r3_1010 = r2_1009 + 0x0000001F
-	word32 r2_1012 = Mem998[fp + -304 + ((Mem998[dwLoc0158 + 0x00000004:word32] >>u 0x05) << 0x02):word32] >> r2_1009 + 0x0000001F
+	word32 r2_1012 = Mem998[fp + -304 + ((Mem998[dwLoc0158_1805 + 0x00000004:word32] >>u 0x05) << 0x02):word32] >> r2_1009 + 0x0000001F
 	branch r2_1012 == 0x00000001 l0040174C_ds_t
 // DataOut:
 // DataOut (flags):
@@ -4186,8 +4191,8 @@ l00401798:
 	call r25_1016 (retsize: 0;)
 		uses: r2:r2_1012 + 0x00000001,r25:r25_1016,r3:r2_1009 + 0x0000001F,r4:dwLoc0158_1805,r5:r5_1022,r6:r6_1026,r7:r7_1029,Stack +0010:0x00000000,Stack +0014:r2_256,Stack +0018:r2_259,Stack +001C:r2_261 + 469,Stack +0020:r2_265,Stack +0024:r2_268,Stack +0028:r2_271,Stack +002C:dwLoc0174_1390,Stack +0030:r2_288,Stack +0038:0x10008860,Stack +0040:dwLoc0160_1539,Stack +0044:dwLoc015C_2365,Stack +0048:dwLoc0158_1805,Stack +004C:r2_313,Stack +0050:dwLoc0150_1772,Stack +0054:r2_343,Stack +0058:0x0002,Stack +005A:wLoc0146_1457,Stack +005C:r2_452,Stack +0068:r2_141 + 1685,Stack +0170:r2_513,Stack +0174:fp + -176,Stack +0178:dwLoc28_1522,Stack +017C:r2_246,Stack +0180:dwLoc20_1389,Stack +0184:dwLoc1C_1867,Stack +0188:dwLoc18_1870,Stack +018C:dwLoc14_1939,Stack +0194:r16,Stack +0198:r30,Stack +019C:ra,Stack +01A0:r4,Stack +01A4:r5
 		defs: r3:r3_1028,r5:r5_1023,r6:r6_1027,r7:r7_1030
-	r28_1015 = 0x10008860
-	branch Mem998[dwLoc0158 + 0x0000178C:word32] > 0x00000000 l00401798_ds_t
+	r28_1031 = 0x10008860
+	branch Mem998[dwLoc0158_1805 + 0x0000178C:word32] > 0x00000000 l00401798_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4198,12 +4203,12 @@ l00401798_ds_t:
 // SymbolicIn:
 
 l0040181C:
-	word32 r2_1035 = Mem998[dwLoc0158 + 0x000017C4:word32]
+	word32 r2_1035 = Mem998[dwLoc0158_1805 + 0x000017C4:word32]
 	call r2_1035 (retsize: 0;)
 		uses: r2:r2_1035,r25:r2_1035,r3:r3_1028,r4:dwLoc0158_1805,r5:r5_1023,r6:r6_1027,r7:r7_1030,Stack +0010:0x00000000,Stack +0014:r2_256,Stack +0018:r2_259,Stack +001C:r2_261 + 469,Stack +0020:r2_265,Stack +0024:r2_268,Stack +0028:r2_271,Stack +002C:dwLoc0174_1390,Stack +0030:r2_288,Stack +0038:0x10008860,Stack +0040:dwLoc0160_1539,Stack +0044:dwLoc015C_2365,Stack +0048:dwLoc0158_1805,Stack +004C:r2_313,Stack +0050:dwLoc0150_1772,Stack +0054:r2_343,Stack +0058:0x0002,Stack +005A:wLoc0146_1457,Stack +005C:r2_452,Stack +0068:r2_141 + 1685,Stack +0170:r2_513,Stack +0174:fp + -176,Stack +0178:dwLoc28_1522,Stack +017C:r2_246,Stack +0180:dwLoc20_1389,Stack +0184:dwLoc1C_1867,Stack +0188:r2_1035,Stack +018C:dwLoc14_1939,Stack +0194:r16,Stack +0198:r30,Stack +019C:ra,Stack +01A0:r4,Stack +01A4:r5
 		defs: r3:r3_1044,r5:r5_1041,r6:r6_1043,r7:r7_1045
-	dwLoc18 = r2_1035
-	r28_1015 = 0x10008860
+	dwLoc18_1868 = r2_1035
+	r28_1046 = 0x10008860
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4214,7 +4219,7 @@ l00401798_ds_f:
 // SymbolicIn:
 
 l004017CC:
-	branch Mem998[dwLoc0158 + 0x00000004:word32] < 0x00000000 l004017CC_ds_t
+	branch Mem998[dwLoc0158_1805 + 0x00000004:word32] < 0x00000000 l004017CC_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4230,16 +4235,19 @@ l004017CC_ds_f:
 // SymbolicIn:
 
 l004017E4:
-	close(Mem998[dwLoc0158 + 0x00000004:word32])
-	Mem1062[dwLoc0158 + 0x00000004:word32] = -1
-	r28_1015 = 0x10008860
-	r3_1010 = dwLoc0158
+	close(Mem998[dwLoc0158_1805 + 0x00000004:word32])
+	Mem1062[dwLoc0158_1805 + 0x00000004:word32] = -1
+	r7_1058 = <invalid>
+	r6_1056 = <invalid>
+	r5_1054 = <invalid>
+	r28_1059 = 0x10008860
+	r3_1060 = dwLoc0158_1805
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0040184C:
-	branch dwLoc0158 == 0x00000000 l0040184C_ds_t
+	branch dwLoc0158_1805 == 0x00000000 l0040184C_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4255,7 +4263,7 @@ l0040184C_ds_f:
 // SymbolicIn:
 
 l0040185C:
-	branch Mem1064[dwLoc0158:word32] < 0x00000000 l0040185C_ds_t
+	branch Mem1064[dwLoc0158_1805:word32] < 0x00000000 l0040185C_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4271,9 +4279,9 @@ l0040185C_ds_f:
 // SymbolicIn:
 
 l00401874:
-	word32 r2_1075 = Mem1064[dwLoc0158:word32]
-	r3_1010 = r2_1075 + 0x0000001F
-	branch Mem1064[fp + -176 + ((Mem1064[dwLoc0158:word32] >>u 0x05) << 0x02):word32] >> r2_1075 + 0x0000001F == 0x00000001 l00401874_ds_t
+	word32 r2_1075 = Mem1064[dwLoc0158_1805:word32]
+	r3_1076 = r2_1075 + 0x0000001F
+	branch Mem1064[fp + -176 + ((Mem1064[dwLoc0158_1805:word32] >>u 0x05) << 0x02):word32] >> r2_1075 + 0x0000001F == 0x00000001 l00401874_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4289,18 +4297,18 @@ l00401874_ds_f:
 // SymbolicIn:
 
 l004018C0:
-	word32 r2_1081 = Mem1064[dwLoc0158 + 0x000017C4:word32]
+	word32 r2_1081 = Mem1064[dwLoc0158_1805 + 0x000017C4:word32]
 	call r2_1081 (retsize: 0;)
 		uses: r2:r2_1081,r25:r2_1081,r3:r2_1075 + 0x0000001F,r4:dwLoc0158_1805,r5:r5_1091,r6:r6_1095,r7:r7_1098,Stack +0010:0x00000000,Stack +0014:r2_256,Stack +0018:r2_259,Stack +001C:r2_261 + 469,Stack +0020:r2_265,Stack +0024:r2_268,Stack +0028:r2_271,Stack +002C:dwLoc0174_1390,Stack +0030:r2_288,Stack +0038:0x10008860,Stack +0040:dwLoc0160_1539,Stack +0044:dwLoc015C_2365,Stack +0048:dwLoc0158_1805,Stack +004C:r2_313,Stack +0050:dwLoc0150_1772,Stack +0054:r2_343,Stack +0058:0x0002,Stack +005A:wLoc0146_1457,Stack +005C:r2_452,Stack +0068:r2_141 + 1685,Stack +0170:r2_513,Stack +0174:fp + -176,Stack +0178:dwLoc28_1522,Stack +017C:r2_246,Stack +0180:dwLoc20_1389,Stack +0184:dwLoc1C_1867,Stack +0188:dwLoc18_1903,Stack +018C:r2_1081,Stack +0194:r16,Stack +0198:r30,Stack +019C:ra,Stack +01A0:r4,Stack +01A4:r5
 		defs: r3:r3_1097,r5:r5_1092,r6:r6_1096,r7:r7_1099
-	dwLoc14 = r2_1081
-	r28_1015 = 0x10008860
+	dwLoc14_1872 = r2_1081
+	r28_1100 = 0x10008860
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l004018F0:
-	branch dwLoc0158 == 0x00000000 l004018F0_ds_t
+	branch dwLoc0158_1805 == 0x00000000 l004018F0_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4316,7 +4324,7 @@ l004018F0_ds_f:
 // SymbolicIn:
 
 l00401900:
-	branch Mem1102[dwLoc0158 + 0x00000004:word32] < 0x00000000 l00401900_ds_t
+	branch Mem1102[dwLoc0158_1805 + 0x00000004:word32] < 0x00000000 l00401900_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4332,9 +4340,9 @@ l00401900_ds_f:
 // SymbolicIn:
 
 l00401918:
-	word32 r2_1113 = Mem1102[dwLoc0158 + 0x00000004:word32]
-	r3_1010 = r2_1113 + 0x0000001F
-	word32 r2_1116 = Mem1102[fp + -176 + ((Mem1102[dwLoc0158 + 0x00000004:word32] >>u 0x05) << 0x02):word32] >> r2_1113 + 0x0000001F
+	word32 r2_1113 = Mem1102[dwLoc0158_1805 + 0x00000004:word32]
+	r3_1114 = r2_1113 + 0x0000001F
+	word32 r2_1116 = Mem1102[fp + -176 + ((Mem1102[dwLoc0158_1805 + 0x00000004:word32] >>u 0x05) << 0x02):word32] >> r2_1113 + 0x0000001F
 	branch r2_1116 == 0x00000001 l00401918_ds_t
 // DataOut:
 // DataOut (flags):
@@ -4351,17 +4359,17 @@ l00401918_ds_f:
 // SymbolicIn:
 
 l00401964:
-	word32 r25_1120 = Mem1102[r28_1015 - 0x00007EB0:word32]
+	word32 r25_1120 = Mem1102[r28_1119 - 0x00007EB0:word32]
 	call r25_1120 (retsize: 0;)
 		uses: r2:r2_1116 + 0x00000001,r25:r25_1120,r3:r2_1113 + 0x0000001F,r4:dwLoc0158_1805,r5:r5_1126,r6:r6_1130,r7:r7_1133,Stack +0010:0x00000000,Stack +0014:r2_256,Stack +0018:r2_259,Stack +001C:r2_261 + 469,Stack +0020:r2_265,Stack +0024:r2_268,Stack +0028:r2_271,Stack +002C:dwLoc0174_1390,Stack +0030:r2_288,Stack +0038:0x10008860,Stack +0040:dwLoc0160_1539,Stack +0044:dwLoc015C_2365,Stack +0048:dwLoc0158_1805,Stack +004C:r2_313,Stack +0050:dwLoc0150_1772,Stack +0054:r2_343,Stack +0058:0x0002,Stack +005A:wLoc0146_1457,Stack +005C:r2_452,Stack +0068:r2_141 + 1685,Stack +0170:r2_513,Stack +0174:fp + -176,Stack +0178:dwLoc28_1522,Stack +017C:r2_246,Stack +0180:dwLoc20_1389,Stack +0184:dwLoc1C_1867,Stack +0188:dwLoc18_1903,Stack +018C:dwLoc14_1936,Stack +0194:r16,Stack +0198:r30,Stack +019C:ra,Stack +01A0:r4,Stack +01A4:r5
 		defs: r3:r3_1132,r5:r5_1127,r6:r6_1131,r7:r7_1134
-	r28_1015 = 0x10008860
+	r28_1135 = 0x10008860
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00401980:
-	branch dwLoc0158 == 0x00000000 l00401980_ds_t
+	branch dwLoc0158_1805 == 0x00000000 l00401980_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4377,8 +4385,7 @@ l00401980_ds_f:
 // SymbolicIn:
 
 l00401990:
-	word32 r2_1142
-	branch Mem1102[dwLoc0158 + 0x00000004:word32] >= 0x00000000 l00401990_ds_t
+	branch Mem1102[dwLoc0158_1805 + 0x00000004:word32] >= 0x00000000 l00401990_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4394,7 +4401,7 @@ l00401990_ds_f:
 // SymbolicIn:
 
 l004019A8:
-	r2_1142 = Mem1102[dwLoc0158:word32]
+	r2_1142 = Mem1102[dwLoc0158_1805:word32]
 	branch r2_1142 < 0x00000000 l004019A8_ds_t
 // DataOut:
 // DataOut (flags):
@@ -4411,7 +4418,7 @@ l004019A8_ds_f:
 // SymbolicIn:
 
 l004019C0:
-	branch Mem1102[dwLoc0158 + 0x00000004:word32] >= 0x00000000 l004019C0_ds_t
+	branch Mem1102[dwLoc0158_1805 + 0x00000004:word32] >= 0x00000000 l004019C0_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4427,7 +4434,7 @@ l004019C0_ds_f:
 // SymbolicIn:
 
 l004019D8:
-	branch Mem1102[dwLoc0158:word32] < 0x00000000 l004019D8_ds_t
+	branch Mem1102[dwLoc0158_1805:word32] < 0x00000000 l004019D8_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4443,8 +4450,8 @@ l004019D8_ds_f:
 // SymbolicIn:
 
 l004019F0:
-	r2_1142 = Mem1102[dwLoc0158 + 0x0000178C:word32]
-	branch r2_1142 <= 0x00000000 l004019F0_ds_t
+	r2_1150 = Mem1102[dwLoc0158_1805 + 0x0000178C:word32]
+	branch r2_1150 <= 0x00000000 l004019F0_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4460,8 +4467,8 @@ l004019F0_ds_f:
 // SymbolicIn:
 
 l00401A08:
-	r2_1142 = Mem1102[dwLoc0158:word32]
-	branch r2_1142 >= 0x00000000 l00401A08_ds_t
+	r2_1154 = Mem1102[dwLoc0158_1805:word32]
+	branch r2_1154 >= 0x00000000 l00401A08_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4477,8 +4484,8 @@ l00401A08_ds_f:
 // SymbolicIn:
 
 l00401A20:
-	r2_1142 = Mem1102[dwLoc0158 + 0x00000004:word32]
-	branch r2_1142 < 0x00000000 l00401A20_ds_t
+	r2_1156 = Mem1102[dwLoc0158_1805 + 0x00000004:word32]
+	branch r2_1156 < 0x00000000 l00401A20_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4494,8 +4501,8 @@ l00401A20_ds_f:
 // SymbolicIn:
 
 l00401A38:
-	r2_1142 = Mem1102[dwLoc0158 + 0x00000FAC:word32]
-	branch r2_1142 <= 0x00000000 l00401A38_ds_t
+	r2_1158 = Mem1102[dwLoc0158_1805 + 0x00000FAC:word32]
+	branch r2_1158 <= 0x00000000 l00401A38_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4511,14 +4518,14 @@ l00401A38_ds_f:
 // SymbolicIn:
 
 l00401A50:
-	word32 r25_1167 = Mem1102[r28_1015 - 0x00007FC8:word32]
+	word32 r25_1167 = Mem1102[r28_1166 - 0x00007FC8:word32]
 	word32 r2_1184
 	call r25_1167 (retsize: 0;)
 		uses: r2:r2_1183,r25:r25_1167,r3:r3_1197,r4:dwLoc0158_1805,r5:r2_513,r6:r6_1192,r7:r7_1206,Stack +0010:0x00000000,Stack +0014:r2_256,Stack +0018:r2_259,Stack +001C:r2_261 + 469,Stack +0020:r2_265,Stack +0024:r2_268,Stack +0028:r2_271,Stack +002C:dwLoc0174_1390,Stack +0030:r2_288,Stack +0038:0x10008860,Stack +0040:dwLoc0160_1539,Stack +0044:dwLoc015C_2365,Stack +0048:dwLoc0158_1805,Stack +004C:r2_313,Stack +0050:dwLoc0150_1772,Stack +0054:r2_343,Stack +0058:0x0002,Stack +005A:wLoc0146_1457,Stack +005C:r2_452,Stack +0068:r2_141 + 1685,Stack +0170:r2_513,Stack +0174:fp + -176,Stack +0178:dwLoc28_1522,Stack +017C:r2_246,Stack +0180:dwLoc20_1389,Stack +0184:dwLoc1C_1867,Stack +0188:dwLoc18_1903,Stack +018C:dwLoc14_1936,Stack +0194:r16,Stack +0198:r30,Stack +019C:ra,Stack +01A0:r4,Stack +01A4:r5
 		defs: r2:r2_1184,r3:r3_1202,r5:r5_1182,r6:r6_1193,r7:r7_1207
-	r28_1015 = 0x10008860
-	r2_1142 = (word32) (r2_1184 < 3)
-	branch r2_1142 == 0x00000000 l00401A50_ds_t
+	r28_1208 = 0x10008860
+	r2_1209 = (word32) (r2_1184 < 3)
+	branch r2_1209 == 0x00000000 l00401A50_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4529,12 +4536,12 @@ l00401A50_ds_t:
 // SymbolicIn:
 
 l00401A80:
-	word32 r25_1215 = Mem1102[r28_1015 - 0x00007E4C:word32]
+	word32 r25_1215 = Mem1102[r28_1214 - 0x00007E4C:word32]
 	call r25_1215 (retsize: 0;)
 		uses: r2:r2_1222,r25:r25_1215,r3:r3_1227,r4:r2_313,r5:dwLoc0158_1805,r6:r6_1225,r7:r7_1229,Stack +0010:0x00000000,Stack +0014:r2_256,Stack +0018:r2_259,Stack +001C:r2_261 + 469,Stack +0020:r2_265,Stack +0024:r2_268,Stack +0028:r2_271,Stack +002C:dwLoc0174_1390,Stack +0030:r2_288,Stack +0038:0x10008860,Stack +0040:dwLoc0160_1539,Stack +0044:dwLoc015C_2365,Stack +0048:dwLoc0158_1805,Stack +004C:r2_313,Stack +0050:dwLoc0150_1772,Stack +0054:r2_343,Stack +0058:0x0002,Stack +005A:wLoc0146_1457,Stack +005C:r2_452,Stack +0068:r2_141 + 1685,Stack +0170:r2_513,Stack +0174:fp + -176,Stack +0178:dwLoc28_1522,Stack +017C:r2_246,Stack +0180:dwLoc20_1389,Stack +0184:dwLoc1C_1867,Stack +0188:dwLoc18_1903,Stack +018C:dwLoc14_1936,Stack +0194:r16,Stack +0198:r30,Stack +019C:ra,Stack +01A0:r4,Stack +01A4:r5
 		defs: r3:r3_1228,r5:r5_1221,r6:r6_1226,r7:r7_1230
-	r28_1015 = 0x10008860
-	dwLoc0158 = 0x00000000
+	r28_1231 = 0x10008860
+	dwLoc0158_2105 = 0x00000000
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4550,7 +4557,7 @@ l00401A78:
 // SymbolicIn:
 
 l00401AA4:
-	branch dwLoc0158 != 0x00000000 l00401AA4_ds_t
+	branch dwLoc0158_2106 != 0x00000000 l00401AA4_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4561,7 +4568,7 @@ l00401AA4_ds_t:
 // SymbolicIn:
 
 l00401ABC:
-	dwLoc0158 = Mem1234[dwLoc0158 + 0x000017B8:word32]
+	dwLoc0158_2107 = Mem1234[dwLoc0158_2106 + 0x000017B8:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4592,9 +4599,12 @@ l00401358_ds_f:
 // SymbolicIn:
 
 l00401398:
-	r28_1015 = 0x10008860
-	r3_1010 = Mem717[__errno_location():word32]
-	branch r3_1010 != 4 l00401398_ds_t
+	r7_774 = <invalid>
+	r6_772 = <invalid>
+	r5_770 = <invalid>
+	r28_775 = 0x10008860
+	r3_776 = Mem717[__errno_location():word32]
+	branch r3_776 != 4 l00401398_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4614,13 +4624,17 @@ l004013C4:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word32 r2_782 = __errno_location()
-	word32 stackArg0 = <invalid>
-	word32 stackArg4 = <invalid>
+	stackArg0 = <invalid>
+	stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
-	word32 stackArg12 = <invalid>
+	stackArg12 = <invalid>
 	print_log(0x00000000, Mem717[0x10000880:word32] + -24912, Mem717[r2_782:word32], strerror(Mem717[__errno_location():word32]), fp + -416, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_2445, out r4_2446, out r5_2447, out r6_2448, out r7_2449)
 	exit(-1)
-	r16_1327 = r2_782
+	r16_787 = r2_782
+	r5_1332 = r5_825
+	r6_1335 = r6_827
+	r7_1338 = r7_829
+	r3_1341 = r3_828
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4646,12 +4660,12 @@ l00400F28:
 // SymbolicIn:
 
 l00401AD4:
-	word32 r25_1240 = Mem499[r28_1015 - 0x00007ED0:word32]
+	word32 r25_1240 = Mem499[r28_498 - 0x00007ED0:word32]
 	call r25_1240 (retsize: 0;)
 		uses: r2:r2_501,r25:r25_1240,r3:r3_517,r4:r2_313,r5:r5_511,r6:r6_515,r7:r7_519,Stack +0010:dwLoc0190_1498,Stack +0014:r2_256,Stack +0018:r2_259,Stack +001C:r2_261 + 469,Stack +0020:r2_265,Stack +0024:r2_268,Stack +0028:r2_271,Stack +002C:dwLoc0174_1390,Stack +0030:r2_288,Stack +0038:0x10008860,Stack +0040:dwLoc0160_2108,Stack +0044:dwLoc015C_2142,Stack +0048:dwLoc0158_2132,Stack +004C:r2_313,Stack +0050:dwLoc0150_1510,Stack +0054:r2_343,Stack +0058:0x0002,Stack +005A:wLoc0146_1457,Stack +005C:r2_452,Stack +0068:r2_141 + 1685,Stack +0170:dwLoc30_2110,Stack +0174:dwLoc2C_1495,Stack +0178:dwLoc28_2121,Stack +017C:r2_246,Stack +0180:dwLoc20_1389,Stack +0184:dwLoc1C_2162,Stack +0188:dwLoc18_2182,Stack +018C:dwLoc14_2202,Stack +0194:r16,Stack +0198:r30,Stack +019C:ra,Stack +01A0:r4,Stack +01A4:r5
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg0 = <invalid>
+	stackArg0 = <invalid>
 	slist_destroy(r2_343, fp + -416, ra, stackArg0)
 	branch r2_141 == 0x00000695 l00401AD4_ds_t
 // DataOut:
@@ -4745,6 +4759,8 @@ client_new_entry:
 
 l00401B70:
 	word32 r2_30 = malloc(6100)
+	word32 r7_28 = <invalid>
+	word32 r6_27 = <invalid>
 	branch r2_30 != 0x00000000 l00401B70_ds_t
 // DataOut:
 // DataOut (flags):
@@ -4756,11 +4772,11 @@ l00401B70_ds_t:
 // SymbolicIn:
 
 l00401BFC:
-	bzero(r2_30 + 12080, 16)
+	bzero(r2_30 + 6040, 16)
 	Mem54[r2_30 + 0x00001798:word16] = 0x0002
 	Mem58[r2_30 + 0x0000179A:word16] = (word16) (word32) Mem54[r4 + 0x00000002:uint16]
 	Mem62[r2_30 + 0x0000179C:word32] = Mem58[r4 + 0x00000004:word32]
-	Mem79[r2_30:word32] = accept(r6, r2_30 + 12080, 0xBADDCADE)
+	Mem79[r2_30:word32] = accept(r6, r2_30 + 6040, fp + -32)
 	Mem84[r2_30 + 0x000017A8:word16] = 0x0002
 	Mem88[r2_30 + 0x000017AA:word16] = (word16) (word32) Mem84[r5 + 0x00000002:uint16]
 	Mem92[r2_30 + 0x000017AC:word32] = Mem88[r5 + 0x00000004:word32]
@@ -4972,7 +4988,8 @@ l00402028:
 		uses: r16:r2_42,r2:r4,r25:inet_ntoa,r28:0x10008860,r3:r3_43,r30:fp + -320,r4:Mem24[r4 + 0x0000179C:word32],r5:r5_45,r6:r6_46,r7:r7_44,ra:ra,sp:fp + -320,Stack +0010:fp + -24,Stack +0014:r2_54,Stack +0018:r2_66,Stack +0020:0x10008860,Stack +0127:bLoc19,Stack +0128:16,Stack +0134:r16,Stack +0138:r30,Stack +013C:ra,Stack +0140:r4
 		defs: r2:r2_54
 	word32 r2_66 = (word32) Mem64[r4 + 0x0000179A:uint16]
-	word32 r2_76 = snprintf(0xBADDC9E6, 256, Mem67[0x10000880:word32] + -49368, 0x00000000)
+	word32 r2_76 = snprintf(fp + -280, 256, Mem67[0x10000880:word32] + -24684, 0x00000000)
+	word32 r3_77 = <invalid>
 	word32 dwLoc18_125 = r2_76
 	branch (word32) (r2_76 < 256) != 0x00000000 l00402028_ds_t
 // DataOut:
@@ -5062,8 +5079,8 @@ void client_parse_request(word32 r3, word32 r4, word32 r7, word32 r30, word32 ra
 
 // MayUse:  r3:[0..31] r30:[0..31] r4:[0..31] r7:[0..31] ra:[0..31]
 // LiveOut:
-// Trashed: r2 r25 r28 r3 r4
-// Preserved: r30 r5 r6 r7 ra sp
+// Trashed: r2 r25 r28 r3 r4 r5 r6 r7
+// Preserved: r30 ra sp
 client_parse_request_entry:
 // DataOut:
 // DataOut (flags):
@@ -5184,7 +5201,8 @@ l00402660_ds_f:
 // SymbolicIn:
 
 l00402674:
-	branch strncasecmp(0xBADDC2EE, Mem78[0x10000880:word32] + -49288, 6) != 0x00000000 l00402674_ds_t
+	r3_101 = <invalid>
+	branch strncasecmp(fp + -2064, Mem78[0x10000880:word32] + -24644, 6) != 0x00000000 l00402674_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -5211,7 +5229,8 @@ l004027F8_ds_f:
 // SymbolicIn:
 
 l0040280C:
-	branch strncasecmp(Mem78[0x10000880:word32] + -49216, 0xBADDC2EE, 10) != 0x00000000 l0040280C_ds_t
+	r3_101 = <invalid>
+	branch strncasecmp(Mem78[0x10000880:word32] + -24608, fp + -2064, 10) != 0x00000000 l0040280C_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -5319,7 +5338,7 @@ l004026F8:
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	word32 r2_203 = strlen(dwLoc20_543 + 1064)
+	word32 r2_203 = strlen(dwLoc20_543 + 532)
 	word32 stackArg0 = <invalid>
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
@@ -5333,7 +5352,7 @@ l004026F8:
 	word32 stackArg12 = <invalid>
 	word32 r7_223
 	word32 r3_235
-	dwLoc28_541 = add_to_request(r3_235, r4, request_add_lines(dwLoc20_543, r4, add_to_request(r2_203, r4, dwLoc28_541, dwLoc20_543 + 532, r2_203, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_222, out r5_776, out r6_777, out r7_223), r7_223, fp + -2104, ra, stackArg0, stackArg4, stackArg8, out r3_235), fp + -2064, 0x00000000, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_785, out r5_786, out r6_787, out r7_251)
+	dwLoc28_541 = add_to_request(r3_235, r4, request_add_lines(dwLoc20_543, r4, add_to_request(r2_203, r4, dwLoc28_541, dwLoc20_543 + 532, r2_203, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_222, out r5_773, out r6_774, out r7_223), r7_223, fp + -2104, ra, stackArg0, stackArg4, stackArg8, out r3_235), fp + -2064, 0x00000000, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_782, out r5_783, out r6_784, out r7_251)
 	Mem256[r4 + 0x00001794:word32] = 2
 // DataOut:
 // DataOut (flags):
@@ -5357,7 +5376,7 @@ l004026B8:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(2, Mem78[0x10000880:word32] + -24636, Mem78[0x10000880:word32] + -24540, 204, fp + -2104, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_269, out r4_792, out r5_793, out r6_794, out r7_270)
+	print_log(2, Mem78[0x10000880:word32] + -24636, Mem78[0x10000880:word32] + -24540, 204, fp + -2104, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_269, out r4_789, out r5_790, out r6_791, out r7_270)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -5380,7 +5399,7 @@ l00402614:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(2, Mem78[0x10000880:word32] + -24396, Mem78[0x10000880:word32] + -24540, 195, fp + -2104, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_284, out r4_280, out r5_766, out r6_767, out r7_768)
+	print_log(2, Mem78[0x10000880:word32] + -24396, Mem78[0x10000880:word32] + -24540, 195, fp + -2104, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_284, out r4_280, out r5_282, out r6_283, out r7_285)
 	Mem288[r4 + 0x00001794:word32] = 0x00000000
 // DataOut:
 // DataOut (flags):
@@ -5454,7 +5473,8 @@ l00402950_ds_f:
 // SymbolicIn:
 
 l00402964:
-	branch strncasecmp(Mem308[0x10000880:word32] + -49176, 0xBADDC2EE, 10) != 0x00000000 l00402964_ds_t
+	word32 r3_323 = <invalid>
+	branch strncasecmp(Mem308[0x10000880:word32] + -24588, fp + -2064, 10) != 0x00000000 l00402964_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -5950,6 +5970,9 @@ l00402B4C_ds_f:
 
 l00402B88:
 	memcpy(r5, r6, r7)
+	r7_102 = <invalid>
+	r6_101 = <invalid>
+	r5_100 = <invalid>
 	r3_104 = r7
 	r2_106 = r5 + r7
 // DataOut:
@@ -6266,11 +6289,11 @@ client_send_request_entry:
 // SymbolicIn:
 
 l00402EF8:
-	word32 r7_127
-	word32 r6_125
-	word32 r5_123
 	word32 r2_22 = time(0x00000000)
 	Mem34[r4 + 0x000017CC:word32] = r2_22
+	word32 r7_127 = <invalid>
+	word32 r5_123 = <invalid>
+	word32 r6_125 = <invalid>
 	word32 r3_119 = r2_22
 	branch Mem34[r4 + 0x00000FAC:word32] > 0x00000000 l00402EF8_ds_t
 // DataOut:
@@ -6375,7 +6398,7 @@ client_read_reply_entry:
 
 l0040307C:
 	Mem31[r4 + 0x000017D0:word32] = time(0x00000000)
-	Mem48[r4 + 0x0000178C:word32] = read(Mem31[r4 + 0x00000004:word32], r4 + 8048, 1999)
+	Mem48[r4 + 0x0000178C:word32] = read(Mem31[r4 + 0x00000004:word32], r4 + 4024, 1999)
 	Mem52[r4 + 0x00001788:word32] = r4 + 4024
 	return
 // DataOut:
@@ -6559,8 +6582,8 @@ word32 client_check_reply_http(word32 r4, word32 dwArg00)
 
 // MayUse:  r4:[0..31]
 // LiveOut: r2
-// Trashed: r2 r25 r28 r3
-// Preserved: r30 r4 r5 r6 ra sp
+// Trashed: r2 r25 r28 r3 r4 r5 r6
+// Preserved: r30 ra sp
 client_check_reply_http_entry:
 // DataOut:
 // DataOut (flags):
@@ -6995,8 +7018,8 @@ void client_close(word32 r4, word32 dwArg00)
 
 // MayUse:  r4:[0..31]
 // LiveOut:
-// Trashed: r2 r25 r28 r3
-// Preserved: r30 r4 ra sp
+// Trashed: r2 r25 r28 r3 r4
+// Preserved: r30 ra sp
 client_close_entry:
 // DataOut:
 // DataOut (flags):
@@ -7280,6 +7303,9 @@ l00403A1C_ds_t:
 // SymbolicIn:
 
 l00403B10:
+	r7_144 = <invalid>
+	r6_141 = <invalid>
+	r5_140 = <invalid>
 	branch connect(r2_27, r4, 16) >= 0x00000000 l00403B10_ds_t
 // DataOut:
 // DataOut (flags):
@@ -7377,10 +7403,10 @@ clist_new_entry:
 // SymbolicIn:
 
 l00403C00:
-	word32 r5_21
-	word32 r4_17
 	word32 r2_32
 	word32 r2_19 = malloc(12)
+	word32 r5_21 = <invalid>
+	word32 r4_17 = <invalid>
 	branch r2_19 != 0x00000000 l00403C00_ds_t
 // DataOut:
 // DataOut (flags):
@@ -8107,7 +8133,7 @@ l00404378:
 	word32 stackArg4 = <invalid>
 	word32 r2_25 = get_method(r4, r5, r6, fp + -48, ra, stackArg0, stackArg4, out r5_23)
 	word32 stackArg0 = <invalid>
-	branch is_a_method(stackArg0) != 0x00000000 l00404378_ds_t
+	branch is_a_method(r4, stackArg0) != 0x00000000 l00404378_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -8214,6 +8240,8 @@ l00404544_ds_t:
 l0040463C:
 	Mem65[r4 + 4 + (Mem49[r4 + 0x00000558:word32] + 1296):byte] = (byte) (word32) r6
 	memcpy(Mem65[r4 + 4 + ((Mem65[r4 + 0x00000558:word32] << 0x02) + 1040):word32], r5, r6)
+	r3_101 = <invalid>
+	r7_121 = <invalid>
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -8349,7 +8377,7 @@ l004047D4_ds_t:
 // SymbolicIn:
 
 l0040485C:
-	snprintf(r4 + 1320, 256, Mem47[0x10000880:word32] + -47032, 0x00000000)
+	snprintf(r4 + 532, 256, Mem47[0x10000880:word32] + -23516, 0x00000000)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -8360,7 +8388,7 @@ l004047D4_ds_f:
 // SymbolicIn:
 
 l004047EC:
-	snprintf(r4 + 1320, 256, Mem72[0x10000880:word32] + -47072, 0x00000000)
+	snprintf(r4 + 532, 256, Mem72[0x10000880:word32] + -23536, 0x00000000)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -8371,7 +8399,7 @@ l00404738_ds_f:
 // SymbolicIn:
 
 l00404774:
-	snprintf(r4 + 1320, 256, Mem94[0x10000880:word32] + -47096, 0x00000000)
+	snprintf(r4 + 532, 256, Mem94[0x10000880:word32] + -23548, 0x00000000)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -8583,6 +8611,7 @@ l00404B34:
 		uses: r2:fp + 4,r25:strsep,r28:0x10008860,r30:fp + -48,r4:fp + 4,r5:Mem17[0x10000880:word32] + -23452,r6:r6,ra:ra,sp:fp + -48,Stack +0010:0x10008860,Stack +0018:r2_26,Stack +0024:r30,Stack +0028:ra,Stack +0030:r4,Stack +0034:r5
 		defs: r2:r2_26
 	strncpy(r4, r2_26, 256)
+	word32 r5_37 = <invalid>
 	r5Out = r5_37
 	return r5
 // DataOut:
@@ -8796,7 +8825,7 @@ l00404E00:
 // SymbolicIn:
 
 l00404E1C:
-	word32 r2_96 = strpbrk(dwLoc18_205, Mem61[0x10000880:word32] + -46896)
+	word32 r2_96 = strpbrk(dwLoc18_205, Mem61[0x10000880:word32] + -23448)
 	dwLoc14 = r2_96
 	branch r2_96 != 0x00000000 l00404E1C_ds_t
 // DataOut:
@@ -8820,10 +8849,12 @@ l00404E94_ds_t:
 // SymbolicIn:
 
 l00404F04:
-	word32 r2_118 = r2_96 - dwLoc18_205
-	strncpy(r2_118 + 20, dwLoc18_205, r2_118)
+	strncpy(r4 + 20, dwLoc18_205, r2_96 - dwLoc18_205)
 	word32 r2_133 = r2_96 - dwLoc18_205
 	Mem137[r4 + 4 + (r2_133 + 16):byte] = 0x00
+	r7_128 = <invalid>
+	r6_127 = <invalid>
+	r5_124 = <invalid>
 	r3_134 = r2_133 + 16
 // DataOut:
 // DataOut (flags):
@@ -9061,7 +9092,7 @@ l004050D0:
 // SymbolicIn:
 
 l004050EC:
-	word32 r2_96 = strpbrk(dwLoc18_197, Mem61[0x10000880:word32] + -46896)
+	word32 r2_96 = strpbrk(dwLoc18_197, Mem61[0x10000880:word32] + -23448)
 	branch r2_96 != 0x00000000 l004050EC_ds_t
 // DataOut:
 // DataOut (flags):
@@ -9084,8 +9115,9 @@ l00405164_ds_t:
 // SymbolicIn:
 
 l004051D4:
-	word32 r2_122 = strtoul(dwLoc18_197, 0xBADDCAEA, 10)
+	word32 r2_122 = strtoul(dwLoc18_197, fp + -20, 10)
 	Mem129[r4 + 0x00000554:word32] = r2_122
+	r7_125 = <invalid>
 	r3_127 = r2_122
 // DataOut:
 // DataOut (flags):
@@ -9179,13 +9211,13 @@ request_get_content_length_exit:
 
 
 
-word32 is_a_method(word32 dwArg00)
+word32 is_a_method(word32 r4, word32 dwArg00)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse: 
+// MayUse:  r4:[0..31]
 // LiveOut: r2
-// Trashed: r2 r25 r28 r3
-// Preserved: r30 r4 r5 r6 ra sp
+// Trashed: r2 r25 r28 r3 r4 r5 r6
+// Preserved: r30 ra sp
 is_a_method_entry:
 // DataOut:
 // DataOut (flags):
@@ -9210,9 +9242,8 @@ l00405264_ds_t:
 // SymbolicIn:
 
 l004052BC:
-	word32 r4_32 = Mem31[Mem18[0x100009C8:word32] + (dwLoc18_57 << 0x02):word32]
 	dwLoc18_57 = dwLoc18_57 + 1
-	branch strncmp(r4_32, r4_32, 20) != 0x00000000 l004052BC_ds_t
+	branch strncmp(Mem31[Mem18[0x100009C8:word32] + (dwLoc18_57 << 0x02):word32], r4, 20) != 0x00000000 l004052BC_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -9454,7 +9485,7 @@ l0040555C_ds_f:
 // SymbolicIn:
 
 l0040556C:
-	word32 r2_52 = malloc(strlen(r4) + 22)
+	word32 r2_52 = malloc(strlen(r4) + 11)
 	dwArg04_553 = r2_52
 	branch r2_52 != 0x00000000 l0040556C_ds_t
 // DataOut:
@@ -9500,13 +9531,13 @@ l0040564C:
 // SymbolicIn:
 
 l00405674:
-	strcpy(dwLoc48_562, 0xBADDCABE)
+	strcpy(dwLoc48_562, fp + -64)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00405698:
-	word32 r2_124 = fopen(0xBADDCAFE, Mem112[0x10000880:word32] + -46040)
+	word32 r2_124 = fopen(dwArg04_553, Mem112[0x10000880:word32] + -23020)
 	branch r2_124 != 0x00000000 l00405698_ds_t
 // DataOut:
 // DataOut (flags):
@@ -9540,7 +9571,7 @@ l0040572C:
 // SymbolicIn:
 
 l00405748:
-	word32 r2_158 = fgets(0xBADDC9B6, 255, fp + -328)
+	word32 r2_158 = fgets(fp + -328, 255, r2_124)
 	branch r2_158 != 0x00000000 l00405748_ds_t
 // DataOut:
 // DataOut (flags):
@@ -9576,6 +9607,9 @@ l004057B8:
 
 l004057C4:
 	word32 r2_194 = strchr(r2_158, 35)
+	word32 r7_200 = <invalid>
+	word32 r6_198 = <invalid>
+	word32 r3_196 = <invalid>
 	branch r2_194 == 0x00000000 l004057C4_ds_t
 // DataOut:
 // DataOut (flags):
@@ -9624,6 +9658,9 @@ l00405858:
 	dwLoc24 = r2_229
 	dwLoc20 = r2_249
 	word32 r2_259 = strchr(r2_249, 61)
+	word32 r7_262 = <invalid>
+	word32 r6_261 = <invalid>
+	word32 r3_260 = <invalid>
 	branch r2_259 != 0x00000000 l00405858_ds_t
 // DataOut:
 // DataOut (flags):
@@ -9724,8 +9761,9 @@ l00405A0C_ds_f:
 // SymbolicIn:
 
 l00405A1C:
-	word32 r2_360 = Mem310[0x10000A40:word32] + 4 + (dwLoc014C * 0x00000014 - dwLoc014C << 0x03)
-	branch strcasecmp(r2_360, Mem310[r2_360:word32]) != 0x00000000 l00405A1C_ds_t
+	word32 r7_372 = <invalid>
+	word32 r6_370 = <invalid>
+	branch strcasecmp(r2_229, Mem310[Mem310[0x10000A40:word32] + 4 + (dwLoc014C * 0x00000014 - dwLoc014C << 0x03):word32]) != 0x00000000 l00405A1C_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -9804,7 +9842,7 @@ l00405ADC_ds_t:
 // SymbolicIn:
 
 l00405BBC:
-	Mem468[Mem387[0x10000A40:word32] + 4 + ((dwLoc014C * 0x00000014 - dwLoc014C << 0x03) + 144):word32] = (word32) (strchr(Mem387[0x10000880:word32] + -46208, (word32) Mem387[r2_283:int8]) >u 0x00000000)
+	Mem468[Mem387[0x10000A40:word32] + 4 + ((dwLoc014C * 0x00000014 - dwLoc014C << 0x03) + 144):word32] = (word32) (strchr(Mem387[0x10000880:word32] + -23104, (word32) Mem387[r2_283:int8]) >u 0x00000000)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -9871,6 +9909,9 @@ l00405780:
 
 l00405C9C:
 	fclose(r2_124)
+	r7_26 = <invalid>
+	r6_25 = <invalid>
+	r3_18 = <invalid>
 	r2_501 = 1
 // DataOut:
 // DataOut (flags):
@@ -9966,13 +10007,13 @@ properties_parse_command_line_entry:
 l00405CD0:
 	word32 r28_134 = 0x10008860
 	word32 dwLoc28_395 = 0x00000000
-	r5_115 = r5
+	r5_216 = r5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00405D00:
-	word32 r5_115
+	word32 r5_216
 	word32 r3_182 = r4
 	branch (word32) (dwLoc28_395 < r4) != 0x00000000 l00405CD0_ds_t
 // DataOut:
@@ -10330,6 +10371,9 @@ l00405E64:
 		uses: r2:r5,r25:r25_81,r3:r3_76,r4:Mem75[r5:word32],r5:r5_94,r6:r6_103,r7:r7_107,Stack +0010:dwLoc38,Stack +0018:0x10008860,Stack +0020:dwLoc28_423,Stack +0024:dwLoc24_536,Stack +0028:dwLoc20_533,Stack +002C:bLoc1C_399,Stack +0030:dwLoc18_424,Stack +0034:dwLoc14_539,Stack +003C:r16,Stack +0040:r30,Stack +0044:ra,Stack +0048:r4,Stack +004C:r5
 	exit(0x00000000)
 	r28_134 = r28_120
+	r5_216 = r5_115
+	r6 = r6_118
+	r7 = r7_119
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -10379,6 +10423,8 @@ properties_print_usage_entry:
 // SymbolicIn:
 
 l0040628C:
+	word32 r6_116
+	word32 r5_113
 	branch r4 == 0x00000000 l0040628C_ds_t
 // DataOut:
 // DataOut (flags):
@@ -10407,6 +10453,8 @@ l004062C0_ds_t:
 
 l00406304:
 	printf(Mem15[0x10000880:word32] + -22852, 0x00000000)
+	r6_116 = <invalid>
+	r5_113 = <invalid>
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -10418,13 +10466,13 @@ l004062C0_ds_f:
 
 l004062D8:
 	printf(Mem15[0x10000880:word32] + -22868, 0x00000000)
+	r6_116 = <invalid>
+	r5_113 = <invalid>
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00406328:
-	word32 r6_116
-	word32 r5_113
 	word32 dwLoc18_244 = 0x00000000
 // DataOut:
 // DataOut (flags):
@@ -10453,7 +10501,9 @@ l00406374_ds_t:
 // SymbolicIn:
 
 l00406530:
-	printf(Mem57[0x10000880:word32] + -45648, 0x00000000)
+	printf(Mem57[0x10000880:word32] + -22824, 0x00000000)
+	r6_116 = <invalid>
+	r5_113 = <invalid>
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -10504,7 +10554,9 @@ l0040641C:
 // SymbolicIn:
 
 l004064C8:
-	printf(Mem181[0x10000880:word32] + -45664, 0x00000000)
+	printf(Mem181[0x10000880:word32] + -22832, 0x00000000)
+	r6_116 = <invalid>
+	r5_113 = <invalid>
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -10526,7 +10578,8 @@ l0040636C:
 // SymbolicIn:
 
 l004065D0:
-	printf(Mem57[0x10000880:word32] + -45632, 0x00000000)
+	printf(Mem57[0x10000880:word32] + -22816, 0x00000000)
+	word32 r3_220 = <invalid>
 	return r3_220
 // DataOut:
 // DataOut (flags):
@@ -10646,6 +10699,9 @@ l0040672C_ds_t:
 l004067EC:
 	Mem28[Mem15[0x10000A20:word32]:word32] = Mem15[Mem15[0x10000914:word32]:word32]
 	strcpy(Mem28[Mem28[0x100008A0:word32]:word32], Mem28[0x10000880:word32] + -22724)
+	r6_103 = <invalid>
+	r5_102 = <invalid>
+	r3_100 = <invalid>
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -10657,6 +10713,9 @@ l0040672C_ds_f:
 
 l0040674C:
 	Mem61[Mem15[0x10000A20:word32]:word32] = fopen(Mem15[Mem15[0x100008A0:word32]:word32], r4)
+	r6_103 = <invalid>
+	r5_102 = <invalid>
+	r3_100 = <invalid>
 	branch Mem61[Mem61[0x10000A20:word32]:word32] != 0x00000000 l0040674C_ds_t
 // DataOut:
 // DataOut (flags):
@@ -10753,9 +10812,10 @@ l004068AC_ds_f:
 // SymbolicIn:
 
 l004068CC:
-	strcpy(0xBADDC9EE, Mem12[Mem12[0x100008A0:word32]:word32])
+	strcpy(fp + -272, Mem12[Mem12[0x100008A0:word32]:word32])
+	word32 r3_50 = <invalid>
 	call rename (retsize: 0;)
-		uses: r2:strcat(0xBADDC9EE, Mem12[0x10000880:word32] + -45432),r25:rename,r28:0x10008860,r3:r3_50,r30:fp + -296,r4:Mem12[Mem12[0x100008A0:word32]:word32],r5:fp + -272,ra:ra,sp:fp + -296,Stack +0010:0x10008860,Stack +011C:r30,Stack +0120:ra
+		uses: r2:strcat(fp + -272, Mem12[0x10000880:word32] + -22716),r25:rename,r28:0x10008860,r3:r3_50,r30:fp + -296,r4:Mem12[Mem12[0x100008A0:word32]:word32],r5:fp + -272,ra:ra,sp:fp + -296,Stack +0010:0x10008860,Stack +011C:r30,Stack +0120:ra
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -10791,12 +10851,16 @@ log_string_entry:
 
 l0040697C:
 	gettimeofday(fp + -40, 0x00000000)
+	word32 r3_36 = <invalid>
+	word32 r7_34 = <invalid>
+	word32 r6_32 = <invalid>
+	word32 r5_30 = <invalid>
 	word32 r2_47
 	call gmtime (retsize: 0;)
 		uses: hi:hi,lo:lo_93,r1:r1,r16:r5,r17:r7,r2:fp + -40,r25:gmtime,r28:0x10008860,r3:r3_36,r30:fp + -104,r4:fp + -40,r5:r5_30,r6:r6_32,r7:r7_34,ra:ra,sp:fp + -104,Stack +0010:r2_77,Stack +0014:r7,Stack +0018:0x10008860,Stack +0044:dwLoc24,Stack +0048:dwLoc20,Stack +0054:r16,Stack +0058:r17,Stack +005C:r30,Stack +0060:ra,Stack +0068:r4
 		defs: r2:r2_47
-	strftime(0xBADDCAB6, 28, Mem19[0x10000880:word32] + -45416, r2_47)
-	fprintf(r4, Mem79[0x10000880:word32] + -45376, 0x00000000)
+	strftime(fp + -72, 28, Mem19[0x10000880:word32] + -22708, r2_47)
+	fprintf(r4, Mem79[0x10000880:word32] + -22688, 0x00000000)
 	fflush(r4)
 	Mem111[Mem79[0x10000878:word32] + 2084:word32] = Mem79[Mem79[0x10000878:word32] + 2084:word32] + 1
 	word32 lo_93 = (word32) (dwLoc24 *s 0x10624DD3)
@@ -10915,6 +10979,8 @@ l00406BF0:
 	word32 r3_118
 	word32 r2_115
 	word32 r2_30 = malloc(36)
+	word32 r7_28 = <invalid>
+	word32 r6_27 = <invalid>
 	branch r2_30 != 0x00000000 l00406BF0_ds_t
 // DataOut:
 // DataOut (flags):
@@ -10931,10 +10997,13 @@ l00406C7C:
 	Mem44[r2_30 + 0x00000018:word32] = 0x00000000
 	Mem46[r2_30 + 0x0000001C:word32] = 0x00000000
 	Mem49[r2_30 + 0x00000004:word32] = r6
-	bzero(r2_30 + 16, 16)
+	bzero(r2_30 + 8, 16)
 	Mem65[r2_30 + 0x00000008:word16] = 0x0002
 	word32 r2_67 = (word32) r5
 	Mem68[r2_30 + 0x0000000A:word16] = (word16) r2_67
+	word32 r7_59 = <invalid>
+	word32 r6_58 = <invalid>
+	word32 r5_57 = <invalid>
 	word32 r2_76
 	call inet_addr (retsize: 0;)
 		uses: r2:r2_67,r25:inet_addr,r28:0x10008860,r3:r2_30,r30:fp + -48,r4:r4,r5:r5_57,r6:r6_58,r7:r7_59,ra:ra,sp:fp + -48,Stack +0010:0x10008860,Stack +0018:r2_30,Stack +0024:r30,Stack +0028:ra,Stack +0030:r4,Stack +0034:r5,Stack +0036:r5,Stack +0038:r6,Stack +003C:r7
@@ -11016,7 +11085,10 @@ l00406D4C_ds_t:
 // SymbolicIn:
 
 l00406E40:
-	branch bind(r2_27, r4 + 16, 16) >= 0x00000000 l00406E40_ds_t
+	word32 r7_47 = <invalid>
+	word32 r3_46 = <invalid>
+	word32 r6_44 = <invalid>
+	branch bind(r2_27, r4 + 8, 16) >= 0x00000000 l00406E40_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -11149,8 +11221,8 @@ void server_close(word32 r4, word32 dwArg00)
 
 // MayUse:  r4:[0..31]
 // LiveOut:
-// Trashed: r2 r25 r28 r3
-// Preserved: r30 r4 ra sp
+// Trashed: r2 r25 r28 r3 r4
+// Preserved: r30 ra sp
 server_close_entry:
 // DataOut:
 // DataOut (flags):
