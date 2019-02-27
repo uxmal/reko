@@ -3587,8 +3587,8 @@ l143C:
 // LocalsOut: Local -0002(16)
 
 l143E:
-	r1_18 = r1_18 + 0x0001
-	branch Mem0[r1_18:byte] == 0x00 l144A
+	r1_18 = r1_18 + 0x0002
+	branch Mem0[r1_18:word16] == 0x0000 l144A
 // DataOut: pc r1 r2 r3 r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0002 r1:<invalid> -2(fp):<invalid>

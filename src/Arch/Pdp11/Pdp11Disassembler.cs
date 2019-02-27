@@ -51,6 +51,8 @@ namespace Reko.Arch.Pdp11
             var addr = rdr.Address;
             if (!rdr.TryReadLeUInt16(out ushort opcode))
                 return null;
+            if (addr.ToLinear() == 0x277A)
+                addr.ToString();
             ops.Clear();
             dataWidth = PrimitiveType.Word16;
             var decoder = decoders[(opcode >> 0x0C) & 0x00F];
@@ -72,59 +74,6 @@ namespace Reko.Arch.Pdp11
             return instrCur;
         }
 
-        private Pdp11Instruction DecodeOperands(ushort wOpcode, Opcode opcode, InstrClass iclass, string fmt)
-        {
-            int i = 0;
-            dataWidth = PrimitiveType.Word16;
-            if (fmt.Length == 0)
-            {
-                return new Pdp11Instruction
-                {
-                    Opcode = opcode,
-                    IClass = iclass,
-                };
-            }
-            switch (fmt[i])
-            {
-            case 'b': dataWidth = PrimitiveType.Byte; i += 2; break;
-            case 'w': dataWidth = PrimitiveType.Word16; i += 2; break;
-            }
-            while (i != fmt.Length)
-            {
-                if (fmt[i] == ',')
-                    ++i;
-                MachineOperand op;
-                switch (fmt[i++])
-                {
-                case 'E': op = this.DecodeOperand(wOpcode); break;
-                case 'e': op = this.DecodeOperand((uint)wOpcode >> 6); break;
-                case 'r': op = new RegisterOperand(arch.GetRegister((wOpcode >> 6) & 7)); break;
-                case 'I': op = Imm6(wOpcode); break;
-                case 'F': op = this.DecodeOperand(wOpcode, true); break;
-                case 'f': op = FpuAccumulator(wOpcode); break;
-                default: throw new NotImplementedException();
-                }
-                if (op == null)
-                {
-                    return new Pdp11Instruction
-                    {
-                        Opcode = Opcode.illegal,
-                        IClass = InstrClass.Invalid
-                    };
-                }
-                ops.Add(op);
-            }
-            var instr = new Pdp11Instruction
-            {
-                Opcode = opcode,
-                IClass = iclass,
-                DataWidth = dataWidth,
-                op1 = ops.Count > 0 ? ops[0] : null,
-                op2 = ops.Count > 1 ? ops[1] : null,
-            };
-            return instr;
-        }
-
         #region Mutators
         private static bool b(uint uInstr, Pdp11Disassembler dasm)
         {
@@ -139,37 +88,56 @@ namespace Reko.Arch.Pdp11
 
         private static bool E(uint wOpcode, Pdp11Disassembler dasm)
         {
-            dasm.ops.Add(dasm.DecodeOperand(wOpcode));
+
+            var op = dasm.DecodeOperand(wOpcode);
+            if (op == null)
+                return false;
+            dasm.ops.Add(op);
             return true;
         }
 
         private static bool e(uint wOpcode, Pdp11Disassembler dasm)
         {
-            dasm.ops.Add(dasm.DecodeOperand(wOpcode >> 6));
+            var op = dasm.DecodeOperand(wOpcode >> 6);
+            if (op == null)
+                return false;
+            dasm.ops.Add(op);
             return true;
         }
 
         private static bool r(uint wOpcode, Pdp11Disassembler dasm)
         {
-            dasm.ops.Add(new RegisterOperand(dasm.arch.GetRegister(((int)wOpcode >> 6) & 7)));
+            var op = new RegisterOperand(dasm.arch.GetRegister(((int)wOpcode >> 6) & 7));
+            if (op == null)
+                return false;
+            dasm.ops.Add(op);
             return true;
         }
 
         private static bool I(uint wOpcode, Pdp11Disassembler dasm)
         {
-            dasm.ops.Add(dasm.Imm6((ushort)wOpcode));
+            var op = dasm.Imm6((ushort)wOpcode);
+            if (op == null)
+                return false;
+            dasm.ops.Add(op);
             return true;
         }
 
         private static bool F(uint wOpcode, Pdp11Disassembler dasm)
         {
-            dasm.ops.Add(dasm.DecodeOperand(wOpcode, true));
+            var op = dasm.DecodeOperand(wOpcode, true);
+            if (op == null)
+                return false;
+            dasm.ops.Add(op);
             return true;
         }
 
         private static bool f(uint wOpcode, Pdp11Disassembler dasm)
         {
-            dasm.ops.Add(dasm.FpuAccumulator(wOpcode));
+            var op = dasm.FpuAccumulator(wOpcode);
+            if (op == null)
+                return false;
+            dasm.ops.Add(op);
             return true;
         }
         

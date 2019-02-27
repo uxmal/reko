@@ -1525,7 +1525,7 @@ word16 fn1420(Eq_1631 r2, Eq_104 r3)
 	r1_18 = wLoc02_17;
 	do
 	{
-		r1_18 = (union Eq_2227 *) ((char *) r1_18 + 0x01);
+		r1_18 = (union Eq_2227 *) ((char *) r1_18 + 0x02);
 		if (*r1_18 == 0x00)
 			goto l144A;
 	} while (*((word16) r3 + 0x02) - r1_18 < 0x00);

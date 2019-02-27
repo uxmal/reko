@@ -1545,7 +1545,7 @@ Eq_2109: (struct "Eq_2109" (0 word16 w0000) (2 (ptr16 Eq_104) ptr0002) (4 (ptr16
 	T_12191 (in 0x529C : word16)
 Eq_2164: (union "Eq_2164" (bool u0) (word16 u1))
 	T_2164 (in r1_40 < 0x0000 : bool)
-Eq_2227: (union "Eq_2227" (word16 u0) (Eq_15594 u1))
+Eq_2227: (union "Eq_2227" (byte u0) (word16 u1))
 	T_2227 (in r4_25 : (ptr16 Eq_2227))
 	T_2230 (in Mem6[r3_20 + 0x0004:word16] : word16)
 	T_2238 (in r4_25 + 0x0001 : word16)
@@ -1554,7 +1554,7 @@ Eq_2227: (union "Eq_2227" (word16 u0) (Eq_15594 u1))
 	T_3035 (in Mem0[r3 + 0x0004:word16] : word16)
 	T_3036 (in r1_18 : (ptr16 Eq_2227))
 	T_3058 (in r1_18 + 0x0002 : word16)
-	T_3072 (in r1_18 + 0x0001 : word16)
+	T_3072 (in r1_18 + 0x0002 : word16)
 	T_3327 (in r0_56 : (ptr16 Eq_2227))
 	T_3330 (in Mem50[r3_12 + 0x0004:word16] : word16)
 	T_3335 (in r0_277 : (ptr16 Eq_2227))
@@ -2368,7 +2368,7 @@ Eq_15105: (struct "Eq_15105" 0004 (0 word16 w0000))
 	T_15105 (in r1_209 : (ptr16 Eq_15105))
 	T_15106 (in 0x47E4 : word16)
 	T_15131 (in r1_209 + 0x0004 : word16)
-Eq_15141: (union "Eq_15141" (byte u0) ((ptr16 Eq_15595) u1))
+Eq_15141: (union "Eq_15141" (byte u0) ((ptr16 Eq_15593) u1))
 	T_15141 (in r1_101 : Eq_15141)
 	T_15142 (in 0x0000 : word16)
 	T_15169 (in r1_101 + 0x0001 : word16)
@@ -2460,12 +2460,8 @@ Eq_15591: (struct "Eq_15591" (0 (ptr16 Eq_15005) ptr0000) (15FF cui16 w15FF) (58
 	T_15591
 Eq_15592: (union "Eq_15592" (ci8 u0) (ci16 u1) (Eq_2737 u2) (Eq_3207 u3) (Eq_3317 u4))
 	T_15592
-Eq_15593: (union "Eq_15593" (byte u0) (word16 u1))
+Eq_15593: (struct "Eq_15593" 0001 (A byte b000A) (FFFA cui16 wFFFA))
 	T_15593
-Eq_15594: (struct "Eq_15594" 0001 (0 Eq_15593 t0000))
-	T_15594
-Eq_15595: (struct "Eq_15595" 0001 (A byte b000A) (FFFA cui16 wFFFA))
-	T_15595
 // Type Variables ////////////
 globals_t: (in globals : (ptr16 (struct "Globals")))
   Class: Eq_1
@@ -14610,7 +14606,7 @@ T_3035: (in Mem0[r3 + 0x0004:word16] : word16)
 T_3036: (in r1_18 : (ptr16 Eq_2227))
   Class: Eq_2227
   DataType: (ptr16 Eq_2227)
-  OrigDataType: (ptr16 (union (word16 u1) ((struct 0001 (0 (union (byte u1) (word16 u0) (byte u2) (word16 u3)) u0000)) u0)))
+  OrigDataType: (ptr16 (struct 0002 (0 word16 w0000)))
 T_3037: (in r1_32 : (ptr16 Eq_1631))
   Class: Eq_3037
   DataType: (ptr16 Eq_1631)
@@ -14747,31 +14743,31 @@ T_3070: (in *((word16) r3 + 2) - r1_18 < 0x0000 : bool)
   Class: Eq_3070
   DataType: bool
   OrigDataType: bool
-T_3071: (in 0x0001 : word16)
+T_3071: (in 0x0002 : word16)
   Class: Eq_3071
   DataType: int16
   OrigDataType: int16
-T_3072: (in r1_18 + 0x0001 : word16)
+T_3072: (in r1_18 + 0x0002 : word16)
   Class: Eq_2227
   DataType: (ptr16 Eq_2227)
-  OrigDataType: (ptr16 word16)
+  OrigDataType: ptr16
 T_3073: (in 0x0000 : word16)
   Class: Eq_3073
   DataType: word16
   OrigDataType: word16
 T_3074: (in r1_18 + 0x0000 : word16)
   Class: Eq_3074
-  DataType: ptr16
-  OrigDataType: ptr16
-T_3075: (in Mem0[r1_18 + 0x0000:byte] : byte)
+  DataType: (ptr16 word16)
+  OrigDataType: (ptr16 word16)
+T_3075: (in Mem0[r1_18 + 0x0000:word16] : word16)
   Class: Eq_3075
-  DataType: byte
-  OrigDataType: byte
-T_3076: (in 0x00 : byte)
+  DataType: word16
+  OrigDataType: word16
+T_3076: (in 0x0000 : word16)
   Class: Eq_3075
-  DataType: byte
-  OrigDataType: byte
-T_3077: (in *r1_18 == 0x00 : bool)
+  DataType: word16
+  OrigDataType: word16
+T_3077: (in *r1_18 == 0x0000 : bool)
   Class: Eq_3077
   DataType: bool
   OrigDataType: bool
@@ -64839,14 +64835,6 @@ T_15593:
   Class: Eq_15593
   DataType: Eq_15593
   OrigDataType: 
-T_15594:
-  Class: Eq_15594
-  DataType: Eq_15594
-  OrigDataType: 
-T_15595:
-  Class: Eq_15595
-  DataType: Eq_15595
-  OrigDataType: 
 */
 typedef struct Eq_1986;
 union Eq_191 {
@@ -65541,8 +65529,8 @@ typedef union Eq_2164 {
 } Eq_2164;
 
 typedef union Eq_2227 {
-	word16 u0;
-	Eq_15594 u1;
+	byte u0;
+	word16 u1;
 } Eq_2227;
 
 typedef word16 (Eq_2315)(Eq_1620, ptr16, ptr16);
@@ -66138,7 +66126,7 @@ typedef struct Eq_15105 {	// size: 4 4
 
 typedef union Eq_15141 {
 	byte u0;
-	struct Eq_15595 * u1;
+	struct Eq_15593 * u1;
 } Eq_15141;
 
 typedef bool (Eq_15170)(Eq_15141);
@@ -66260,17 +66248,8 @@ typedef union Eq_15592 {
 	Eq_3317 u4;
 } Eq_15592;
 
-typedef union Eq_15593 {
-	byte u0;
-	word16 u1;
-} Eq_15593;
-
-typedef struct Eq_15594 {	// size: 1 1
-	Eq_15593 t0000;	// 0
-} Eq_15594;
-
-typedef struct Eq_15595 {	// size: 1 1
+typedef struct Eq_15593 {	// size: 1 1
 	byte b000A;	// A
 	cui16 wFFFA;	// FFFA
-} Eq_15595;
+} Eq_15593;
 
