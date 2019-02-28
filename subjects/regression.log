@@ -22,6 +22,50 @@
 20000000: warning: Expected sizes of arrays to have been determined by now
 === Elf\ARM\switch\switch
 === Elf\MIPS\redir\redir
+*** Elf\MIPS\redir\redir
+004006B8: warning: Unable to resolve imported reference __deregister_frame_info.
+00400740: warning: Unable to resolve imported reference __register_frame_info.
+00401DE8: warning: Unable to resolve imported reference inet_ntoa.
+004009BC: warning: Unable to resolve imported reference fork.
+00400BB8: warning: Unable to resolve imported reference __xpg_basename.
+00400E78: warning: Unable to resolve imported reference inet_addr.
+0040137C: warning: Unable to resolve imported reference select.
+0040207C: warning: Unable to resolve imported reference getsockopt.
+004020A0: warning: Unable to resolve imported reference inet_ntoa.
+004020C4: warning: Unable to resolve imported reference inet_ntoa.
+00402EB0: warning: Unable to resolve imported reference recv.
+00402F84: warning: Unable to resolve imported reference send.
+00403264: warning: Unable to resolve imported reference send.
+00404B70: warning: Unable to resolve imported reference strsep.
+00404C04: warning: Unable to resolve imported reference strsep.
+00404C98: warning: Unable to resolve imported reference strsep.
+00405810: warning: Unable to resolve imported reference strspn.
+00405874: warning: Unable to resolve imported reference strcspn.
+00405940: warning: Unable to resolve imported reference strspn.
+00405984: warning: Unable to resolve imported reference strcspn.
+00405FE0: warning: Unable to resolve imported reference toupper.
+004064B0: warning: Unable to resolve imported reference toupper.
+00406458: warning: Unable to resolve imported reference tolower.
+00406680: warning: Unable to resolve imported reference vsnprintf.
+0040692C: warning: Unable to resolve imported reference rename.
+004069E0: warning: Unable to resolve imported reference gmtime.
+00406D0C: warning: Unable to resolve imported reference inet_addr.
+00406F18: warning: Unable to resolve imported reference listen.
+main: error: An error occurred while renaming variables.
+    Value cannot be null.
+Parameter name: key
+       at System.ThrowHelper.ThrowArgumentNullException(ExceptionArgument argument)
+   at System.Collections.Generic.Dictionary`2.FindEntry(TKey key)
+   at System.Collections.Generic.Dictionary`2.TryGetValue(TKey key, TValue& value)
+   at Reko.Core.Lib.DominatorGraph`1.ImmediateDominator(T node) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 128
+   at Reko.Core.Lib.DominatorGraph`1.CommonDominator(IEnumerable`1 blocks) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 100
+   at Reko.Analysis.DeclarationInserter.InsertDeclaration(Web web) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeclarationInserter.cs:line 60
+   at Reko.Analysis.WebBuilder.InsertDeclarations() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 89
+   at Reko.Analysis.WebBuilder.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 107
+100007E0: warning: Expected sizes of arrays to have been determined by now
+10000028: warning: Expected sizes of arrays to have been determined by now
+10000028: warning: Expected sizes of arrays to have been determined by now
+100007E0: warning: Expected sizes of arrays to have been determined by now
 === Elf\MIPS\swlswr\test
 === Elf\Msp430\a.out
 *** Elf\Msp430\a.out
@@ -1030,7 +1074,7 @@ fn0200: error: An error occurred while rewriting procedure to high-level languag
 hello_m68k.exe: warning: Win32 M68k main procedure finder not supported.
 error: An error occurred during decompilation. System.NotSupportedException: Constants of type uispr48 are not supported.
    at Reko.Core.Expressions.Constant.Create(DataType dt, Int64 value) in D:\dev\uxmal\reko\master\src\Core\Expressions\Constant.cs:line 138
-   at Reko.Evaluation.ExpressionSimplifier.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.cs:line 622
+   at Reko.Evaluation.ExpressionSimplifier.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.cs:line 628
    at Reko.Core.Expressions.MkSequence.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MkSequence.cs:line 53
    at Reko.Analysis.ValuePropagator.VisitAssignment(Assignment a) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 102
    at Reko.Core.Code.Assignment.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 49
@@ -2057,4 +2101,4 @@ Parameter name: key
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 56 binaries in 61.35 seconds ---
+Decompiled 56 binaries in 56.96 seconds ---
