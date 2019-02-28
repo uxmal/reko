@@ -541,8 +541,6 @@ namespace Reko.UnitTests.Arch.Pdp11
                   "5|L--|V = false");
         }
 
-
-
         [Test]
         public void Pdp11Rw_Swab()
         {
@@ -650,6 +648,18 @@ namespace Reko.UnitTests.Arch.Pdp11
                 "1|L--|Mem0[0x19E0:word16] = 0x0001",
                 "2|L--|NZ = cond(0x0001)",
                 "3|L--|V = false");
+        }
+
+        [Test]
+        public void Pdp11rw_mov_pc()
+        {
+            BuildTest(0x11EA);  // mov pc,*-(r2)
+            AssertCode(
+                "0|L--|0200(2): 4 instructions",
+                "1|L--|r2 = r2 - 0x0002",
+                "2|L--|Mem0[Mem0[r2:ptr16]:ptr16] = 0202",
+                "3|L--|NZ = cond(0x0202)",
+                "4|L--|V = false");
         }
     }
 }

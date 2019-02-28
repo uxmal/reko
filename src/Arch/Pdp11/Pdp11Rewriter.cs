@@ -345,7 +345,10 @@ namespace Reko.Arch.Pdp11
             var regOp = op as RegisterOperand;
             if (regOp != null)
             {
-                return binder.EnsureRegister(regOp.Register);
+                if (regOp.Register == Registers.pc)
+                    return instr.Address + instr.Length;
+                else
+                    return binder.EnsureRegister(regOp.Register);
             }
             var immOp = op as ImmediateOperand;
             if (immOp != null)
@@ -477,7 +480,7 @@ namespace Reko.Arch.Pdp11
 
         private Expression MaybeAssignTmp(Expression exp)
         {
-            if (exp is Constant || exp is Identifier)
+            if (exp is Constant || exp is Identifier || exp is Address)
                 return exp;
             var tmp = binder.CreateTemporary(exp.DataType);
             m.Assign(tmp, exp);
