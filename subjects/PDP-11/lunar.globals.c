@@ -44,23 +44,23 @@ word16 * g_ptr0072 = null;
 cui16 g_w0074 = 0x0000;
 ui16 g_w0076 = 0x0000;
 word16 * g_ptr0078 = null;
-Eq_27 g_t007A = 
+Eq_25 g_t007A = 
 	{
 		L'\x00'
 	};
 int16 g_w007C = 0;
 word16 * g_ptr007E = null;
 word16 g_w0080 = 0x0000;
-Eq_27 g_t0082 = 
+Eq_25 g_t0082 = 
 	{
 		L'\x00'
 	};
 word16 g_w0084 = 0x0000;
-Eq_27 g_t0086 = 
+Eq_25 g_t0086 = 
 	{
 		L'\x00'
 	};
-Eq_27 g_t0088 = 
+Eq_25 g_t0088 = 
 	{
 		L'\x00'
 	};
@@ -68,9 +68,9 @@ cui16 g_w008A = 0x0000;
 cui16 g_w008C = 0x0000;
 cui16 g_w008E = 0x0000;
 cui16 g_w0090 = 0x0000;
-struct Eq_649 * g_ptr0092 = null;
+struct Eq_647 * g_ptr0092 = null;
 word16 g_w0096 = 0x00CE;
-struct Eq_753 * g_ptr009E = &g_ptr009E;
+struct Eq_751 * g_ptr009E = &g_ptr009E;
 ci16 g_w00A0 = 0x0000;
 ci16 g_w00A2 = 0x0000;
 ci16 g_w00A4 = 0x0000;
@@ -79,12 +79,12 @@ cui16 g_w00A8 = 0x0000;
 wchar_t g_w00AA = L'\x00';
 int16 g_w00AC = 0;
 ci16 g_w00AE = 0x0000;
-struct Eq_1510 * g_ptr00B0 = &g_ptr00B0;
+struct Eq_1503 * g_ptr00B0 = &g_ptr00B0;
 word16 * g_a013E[] = 
 	{
 	};
 word16 g_w01C2 = 0x16F4;
-Eq_440 g_t021C = 
+Eq_438 g_t021C = 
 	{
 		&g_wFFFFC000,
 		fn34E0,
@@ -98,10 +98,10 @@ word16 g_w07D0 = 0x090A;
 word16 g_w0BB8 = 0x09DF;
 word16 g_w0C72 = 0x0000;
 word16 g_w0F70 = 0x0A9F;
-struct Eq_3437 * g_a168C[] = 
+struct Eq_3420 * g_a168C[] = 
 	{
 	};
-struct Eq_3442 * g_a1696[] = 
+struct Eq_3425 * g_a1696[] = 
 	{
 	};
 word16 g_a182A[] = 
@@ -109,20 +109,20 @@ word16 g_a182A[] =
 	};
 word16 g_w182C = 0x0000;
 word16 g_w182E = 0x0000;
-Eq_27 g_t1830 = 
+Eq_25 g_t1830 = 
 	{
 		L'\x00'
 	};
 word16 g_w1832 = 0x0000;
 cui16 g_w1834 = 0x0000;
-Eq_2647 g_t1F96 = 
+Eq_2630 g_t1F96 = 
 	{
 		0x0000,
 		0x0000,
 		0,
 	};
 word16 g_w25AA = 0x0000;
-Eq_3462 g_t25B8 = 
+Eq_3445 g_t25B8 = 
 	{
 		
 		{
@@ -142,7 +142,7 @@ cui16 g_w27A8 = 0x0000;
 byte g_a27B0[] = 
 	{
 	};
-Eq_3508 g_t2814 = 
+Eq_3489 g_t2814 = 
 	{
 		0x30
 	};
@@ -150,7 +150,7 @@ ci16 g_w28F0 = 0x030C;
 word16 * g_a28F2[] = 
 	{
 	};
-Eq_3695 g_a28F8[] = 
+Eq_3677 g_a28F8[] = 
 	{
 	};
 word16 g_w2904 = 0x010E;
@@ -167,7 +167,7 @@ word16 g_a34E0[] =
 word16 g_w3588 = 0x2054;
 cui16 g_w35CA = 0x4345;
 word16 g_w35CC = 0x5541;
-Eq_27 g_t35CE = 
+Eq_25 g_t35CE = 
 	{
 		L'䕓'
 	};
