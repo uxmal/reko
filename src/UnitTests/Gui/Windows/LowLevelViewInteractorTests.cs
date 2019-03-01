@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Machine;
@@ -25,7 +26,6 @@ using Reko.Core.Types;
 using Reko.Gui;
 using Reko.UserInterfaces.WindowsForms;
 using Reko.UserInterfaces.WindowsForms.Controls;
-using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -37,36 +37,33 @@ namespace Reko.UnitTests.Gui.Windows
     [Category(Categories.UserInterface)]
     public class LowLevelViewInteractorTests
     {
-        private LowLevelViewInteractor interactor;
-        private MockRepository mr;
-        private IProcessorArchitecture arch;
-        private IDecompilerShellUiService uiSvc;
-        private IDialogFactory dlgFactory;
+        private Mock<LowLevelViewInteractor> interactor;
+        private Mock<IProcessorArchitecture> arch;
+        private Mock<IDecompilerShellUiService> uiSvc;
+        private Mock<IUiPreferencesService> uiPrefsSvc;
+        private Mock<IDialogFactory> dlgFactory;
         private ServiceContainer sp;
         private Address addrBase;
         private LowLevelView control;
         private MemoryArea mem;
         private SegmentMap segmentMap;
         private ImageMap imageMap;
-        private IUiPreferencesService uiPrefsSvc;
         private Program program;
         private Form form;
 
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
             sp = new ServiceContainer();
-            uiSvc = mr.StrictMock<IDecompilerShellUiService>();
-            uiPrefsSvc = mr.StrictMock<IUiPreferencesService>();
-            dlgFactory = mr.StrictMock<IDialogFactory>();
-            uiSvc.Stub(u => u.SetContextMenu(null, 0)).IgnoreArguments();
-            uiSvc.Replay();
-            uiPrefsSvc.Stub(u => u.Styles).Return(new Dictionary<string, UiStyle>());
-            uiPrefsSvc.Replay();
-            sp.AddService(typeof(IDecompilerShellUiService), uiSvc);
-			sp.AddService(typeof(IDialogFactory), dlgFactory);
-            sp.AddService(typeof(IUiPreferencesService), uiPrefsSvc);
+            uiSvc = new Mock<IDecompilerShellUiService>();
+            uiPrefsSvc = new Mock<IUiPreferencesService>();
+            dlgFactory = new Mock<IDialogFactory>();
+            uiSvc.Setup(u => u.SetContextMenu(
+                It.IsAny<object>(), It.IsAny<int>()));
+            uiPrefsSvc.Setup(u => u.Styles).Returns(new Dictionary<string, UiStyle>());
+            sp.AddService<IDecompilerShellUiService>(uiSvc.Object);
+			sp.AddService<IDialogFactory>(dlgFactory.Object);
+            sp.AddService<IUiPreferencesService>(uiPrefsSvc.Object);
             addrBase = Address.Ptr32(0x1000);
         }
 
@@ -78,10 +75,10 @@ namespace Reko.UnitTests.Gui.Windows
 
         private void Given_Interactor()
         {
-            interactor = mr.PartialMock<LowLevelViewInteractor>();
-            interactor.SetSite(sp);
-            control = (LowLevelView) interactor.CreateControl();
-            interactor.Program = program;
+            interactor = new Mock<LowLevelViewInteractor>();
+            interactor.Object.SetSite(sp);
+            control = (LowLevelView) interactor.Object.CreateControl();
+            interactor.Object.Program = program;
         }
 
         [Test]
@@ -90,12 +87,11 @@ namespace Reko.UnitTests.Gui.Windows
             Given_Architecture();
             Given_Program(new byte[0x13000]); 
             Given_Interactor();
-            mr.ReplayAll();
 
             When_ShowControl();
             control.MemoryView.Focus();
             var status = new CommandStatus();
-            Assert.IsTrue(interactor.QueryStatus(new CommandID(CmdSets.GuidReko, CmdIds.ViewGoToAddress), status, null));
+            Assert.IsTrue(interactor.Object.QueryStatus(new CommandID(CmdSets.GuidReko, CmdIds.ViewGoToAddress), status, null));
             Assert.AreEqual(status.Status, MenuStatus.Enabled | MenuStatus.Visible);
         }
 
@@ -113,12 +109,10 @@ namespace Reko.UnitTests.Gui.Windows
             Given_Architecture();
             Given_Program(new byte[0x13000]);
             Given_Interactor();
-            mr.ReplayAll();
 
-            interactor.Control.MemoryView.SelectedAddress = Address.Ptr32(0x12321);
+            interactor.Object.Control.MemoryView.SelectedAddress = Address.Ptr32(0x12321);
 
-            Assert.AreEqual(0x12321ul, interactor.Control.DisassemblyView.TopAddress.ToLinear());
-            mr.VerifyAll();
+            Assert.AreEqual(0x12321ul, interactor.Object.Control.DisassemblyView.TopAddress.ToLinear());
         }
 
         [Test]
@@ -127,44 +121,40 @@ namespace Reko.UnitTests.Gui.Windows
             Given_Interactor();
             Given_Architecture();
             Given_Program(new byte[] { 0x4, 0x3, 0x2, 0x1 });
-            interactor.Stub(i => i.GetSelectedAddressRange())
-                .Return(new AddressRange(program.ImageMap.BaseAddress, program.ImageMap.BaseAddress));
-            mr.ReplayAll();
+            interactor.Setup(i => i.GetSelectedAddressRange())
+                .Returns(new AddressRange(program.ImageMap.BaseAddress, program.ImageMap.BaseAddress));
 
             When_ShowControl();
-            interactor.Control.MemoryView.Focus();
-            interactor.Program = program;
-            interactor.GotoAddress();
+            interactor.Object.Control.MemoryView.Focus();
+            interactor.Object.Program = program;
+            interactor.Object.GotoAddress();
 
-            mr.VerifyAll();
-            Assert.AreEqual("0x01020304", interactor.Control.ToolBarAddressTextbox.Text);
-            mr.ReplayAll();
+            Assert.AreEqual("0x01020304", interactor.Object.Control.ToolBarAddressTextbox.Text);
         }
 
         private void Given_Architecture()
         {
-            arch = mr.Stub<IProcessorArchitecture>();
-            var dasm = mr.Stub<IEnumerable<MachineInstruction>>();
-            var e = mr.Stub<IEnumerator<MachineInstruction>>();
-            arch.Stub(a => a.InstructionBitSize).Return(8);
-            arch.Stub(a => a.PointerType).Return(PrimitiveType.Ptr32);
-            arch.Stub(a => a.CreateImageReader(null, null))
-                .IgnoreArguments()
-                .Do(new Func<MemoryArea, Address, EndianImageReader>((i, a) => new LeImageReader(i, a)));
-            arch.Stub(a => a.CreateDisassembler(
-                Arg<EndianImageReader>.Is.NotNull)).Return(dasm);
+            arch = new Mock<IProcessorArchitecture>();
+            var dasm = new Mock<IEnumerable<MachineInstruction>>();
+            var e = new Mock<IEnumerator<MachineInstruction>>();
+            arch.Setup(a => a.Name).Returns("FakeArch");
+            arch.Setup(a => a.InstructionBitSize).Returns(8);
+            arch.Setup(a => a.PointerType).Returns(PrimitiveType.Ptr32);
+            arch.Setup(a => a.CreateImageReader(
+                It.IsAny<MemoryArea>(),
+                It.IsAny<Address>()))
+                .Returns((MemoryArea i, Address a) => new LeImageReader(i, a));
+            arch.Setup(a => a.CreateDisassembler(
+                It.IsNotNull<EndianImageReader>())).Returns(dasm.Object);
             Address dummy;
-            arch.Stub(a => a.TryParseAddress(null, out dummy)).IgnoreArguments().WhenCalled(m =>
+            arch.Setup(a => a.TryParseAddress(
+                It.IsNotNull<string>(),
+                out dummy))
+                .Returns(new StringToAddress((string sAddr, out Address addr) =>
                 {
-                    Address addr;
-                    bool ret = Address.TryParse32((string)m.Arguments[0], out addr);
-                    m.Arguments[1] = addr;
-                    m.ReturnValue = ret;
-                }).Return(false);
-            dasm.Stub(d => d.GetEnumerator()).Return(e);
-            arch.Replay();
-            dasm.Replay();
-            e.Replay();
+                    return Address.TryParse32(sAddr, out addr);
+                }));
+            dasm.Setup(d => d.GetEnumerator()).Returns(e.Object);
         }
 
         private void Given_Program(byte[] bytes)
@@ -178,8 +168,8 @@ namespace Reko.UnitTests.Gui.Windows
             this.imageMap = segmentMap.CreateImageMap();
             this.program = new Program(
                 segmentMap,
-                arch, 
-                new DefaultPlatform(null, arch));
+                arch.Object,
+                new DefaultPlatform(null, arch.Object));
             this.program.ImageMap = imageMap;
         }
 
@@ -189,9 +179,8 @@ namespace Reko.UnitTests.Gui.Windows
             Given_Architecture();
             Given_Program(new byte[100]);
             Given_Interactor();
-            mr.ReplayAll();
 
-            interactor.SetTypeAtAddressRange(addrBase, "i32");
+            interactor.Object.SetTypeAtAddressRange(addrBase, "i32");
 
             ImageMapItem item;
             Assert.IsTrue(imageMap.TryFindItemExact(addrBase, out item));
@@ -205,10 +194,9 @@ namespace Reko.UnitTests.Gui.Windows
             Given_Architecture();
             Given_Program(new byte[100]);
             Given_Interactor();
-            mr.ReplayAll();
 
             control.MemoryView.SetAddressRange(addrBase, addrBase + 12);
-            interactor.SetTypeAtAddressRange(addrBase, "apx");
+            interactor.Object.SetTypeAtAddressRange(addrBase, "apx");
 
             ImageMapItem item;
             Assert.IsTrue(imageMap.TryFindItemExact(addrBase, out item));
@@ -228,8 +216,8 @@ namespace Reko.UnitTests.Gui.Windows
                     mem.BaseAddress,
                     new ImageSegment(
                         "code", mem, AccessMode.ReadWriteExecute));
-            program = new Program(segmentMap, arch, null);
-            interactor.Program = program;
+            program = new Program(segmentMap, arch.Object, null);
+            interactor.Object.Program = program;
         }
 
         [Test]

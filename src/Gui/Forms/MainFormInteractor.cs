@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -76,7 +76,7 @@ namespace Reko.Gui.Forms
         {
             this.dlgFactory = services.RequireService<IDialogFactory>();
             this.mru = new MruList(MaxMruItems);
-            this.mru.Load(MruListFile);
+            this.mru.Load(services.RequireService<IFileSystemService>(), MruListFile);
             this.sc = services.RequireService<IServiceContainer>();
         }
 
@@ -178,9 +178,6 @@ namespace Reko.Gui.Forms
             var upSvc = svcFactory.CreateUiPreferencesService();
             sc.AddService<IUiPreferencesService>(upSvc);
 
-            var fsSvc = svcFactory.CreateFileSystemService();
-            sc.AddService<IFileSystemService>(fsSvc);
-
             srSvc = svcFactory.CreateSearchResultService();
             sc.AddService<ISearchResultService>(srSvc);
 
@@ -260,10 +257,16 @@ namespace Reko.Gui.Forms
             var fileName = uiSvc.ShowOpenFileDialog(null);
             if (fileName != null)
             {
-                mru.Use(fileName);
+                RememberFilenameInMru(fileName);
                 uiSvc.WithWaitCursor(() => OpenBinary(fileName, (f) => pageInitial.OpenBinary(f)));
-                }
             }
+        }
+
+        private void RememberFilenameInMru(string fileName)
+        {
+            mru.Use(fileName);
+            mru.Save(Services.RequireService<IFileSystemService>(), MruListFile);
+        }
 
         /// <summary>
         /// Prompts the user for a metadata file and adds to the project.
@@ -273,7 +276,6 @@ namespace Reko.Gui.Forms
             var fileName = uiSvc.ShowOpenFileDialog(null);
             if (fileName == null)
                 return;
-            mru.Use(fileName);
             var projectLoader = new ProjectLoader(
                 Services,
                 loader,
@@ -284,6 +286,7 @@ namespace Reko.Gui.Forms
             {
                 var metadata = projectLoader.LoadMetadataFile(fileName);
                 decompilerSvc.Decompiler.Project.MetadataFiles.Add(metadata);
+                RememberFilenameInMru(fileName);
             }
             catch (Exception e)
             {
@@ -300,12 +303,12 @@ namespace Reko.Gui.Forms
                 dlg.Services = sc;
                 if (uiSvc.ShowModalDialog(dlg) != DialogResult.OK)
                     return true;
-                mru.Use(dlg.FileName.Text);
 
                 var typeName = dlg.SelectedArchitectureTypeName;
                 var t = Type.GetType(typeName, true);
                 var asm = (Assembler) t.GetConstructor(Type.EmptyTypes).Invoke(null);
                 OpenBinary(dlg.FileName.Text, (f) => pageInitial.Assemble(f, asm));
+                RememberFilenameInMru(dlg.FileName.Text);
             }
             catch (Exception e)
             {
@@ -391,6 +394,7 @@ namespace Reko.Gui.Forms
             sc.RequireService<IProjectBrowserService>().Clear();
             diagnosticsSvc.ClearDiagnostics();
             decompilerSvc.Decompiler = null;
+            this.ProjectFileName = null;
         }
 
         private void CloseAllDocumentWindows()
@@ -609,7 +613,7 @@ namespace Reko.Gui.Forms
                         .SelectMany(p => new StringFinder(p).FindStrings(criteria));
                     srSvc.ShowAddressSearchResults(
                        hits,
-                       new StringSearchDetails(criteria.Encoding));
+                       new StringSearchDetails(criteria));
                 }
             }
         }
@@ -685,7 +689,7 @@ namespace Reko.Gui.Forms
                 if (newName == null)
                     return false;
                 ProjectFileName = newName;
-                mru.Use(newName);
+                RememberFilenameInMru(newName);
             }
 
             var fsSvc = Services.RequireService<IFileSystemService>();
@@ -910,7 +914,7 @@ namespace Reko.Gui.Forms
             {
                 string file = mru.Items[iMru];
                 OpenBinary(file, (f) => pageInitial.OpenBinary(file));
-                mru.Use(file);
+                RememberFilenameInMru(file);
                 return true;
             }
             return false;
@@ -997,7 +1001,6 @@ namespace Reko.Gui.Forms
                 uiPrefsSvc.WindowSize = form.Size;
                 uiPrefsSvc.WindowState = form.WindowState;
                 uiPrefsSvc.Save();
-                mru.Save(MruListFile);
             }
             catch { }
         }
@@ -1006,5 +1009,5 @@ namespace Reko.Gui.Forms
         {
             UpdateWindowTitle();
         }
-        }
+    }
 }

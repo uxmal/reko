@@ -22,7 +22,7 @@ namespace Reko.WindowsItp
             InitializeComponent();
         }
 
-        private class RewriterHost : IRewriterHost
+        public class RewriterHost : IRewriterHost
         {
             private Dictionary<string, PseudoProcedure> ppp;
             private Dictionary<Address, ImportReference> importThunks;
@@ -59,6 +59,11 @@ namespace Reko.WindowsItp
                     new ProcedureConstant(PrimitiveType.Ptr32, ppp),
                     returnType,
                     args);
+            }
+
+            public IProcessorArchitecture GetArchitecture(string archLabel)
+            {
+                throw new NotImplementedException();
             }
 
             public FunctionType GetCallSignatureAtAddress(Address addrCallInstruction)

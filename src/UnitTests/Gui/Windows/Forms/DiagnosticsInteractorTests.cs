@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,15 @@
  */
 #endregion
 
+using Moq;
+using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Services;
 using Reko.Gui;
-using NUnit.Framework;
-using Rhino.Mocks;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Text;
-using System.Windows.Forms;
 using Reko.UserInterfaces.WindowsForms.Forms;
+using System;
+using System.ComponentModel.Design;
+using System.Windows.Forms;
 
 namespace Reko.UnitTests.Gui.Windows.Forms
 {
@@ -39,7 +37,6 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         private ListView lv;
         private TestDiagnosticsInteractor interactor;
         private IDiagnosticsService svc;
-        private MockRepository mr;
 
         [SetUp]
         public void Setup()
@@ -49,7 +46,6 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             interactor = new TestDiagnosticsInteractor();
             interactor.Attach(lv);
             svc = interactor;
-            mr = new MockRepository();
         }
 
         [TearDown]
@@ -77,36 +73,30 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         [Test]
         public void NavigateOnDoubleClick()
         {
-            var location = mr.DynamicMock<ICodeLocation>();
-            location.Expect(x => x.NavigateTo());
-            mr.ReplayAll();
+            var location = new Mock<ICodeLocation>();
+            location.Setup(x => x.NavigateTo()).Verifiable();
 
-            svc.Warn(location, "Hello");
+            svc.Warn(location.Object, "Hello");
             interactor.FocusedListItem = lv.Items[0];
             interactor.UserDoubleClicked();
 
-            mr.VerifyAll();
+            location.VerifyAll();
         }
 
         [Test(Description = "If no items selected, the Copy menu item should be visible but disabled")]
         public void Di_NoItemsSelected_DisableCopy()
         {
-            mr.ReplayAll();
-
             var cmd = new CommandID(CmdSets.GuidReko, CmdIds.EditCopy);
             var status = new CommandStatus();
             var txt = new CommandText();
             Assert.IsTrue(interactor.QueryStatus(cmd, status, txt));
 
             Assert.AreEqual(MenuStatus.Visible, status.Status);
-            mr.VerifyAll();
         }
 
         [Test(Description = "If >0 items selected, the Copy menu item should be visible and enabled")]
         public void Di_ItemsSelected_EnableCopy()
         {
-            mr.ReplayAll();
-
             svc.Error("Nilz");
             lv.SelectedIndices.Add(0);
 
@@ -116,12 +106,10 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Assert.IsTrue(interactor.QueryStatus(cmd, status, txt));
 
             Assert.AreEqual(MenuStatus.Visible|MenuStatus.Enabled, status.Status);
-            mr.VerifyAll();
         }        
 
         private class TestDiagnosticsInteractor : DiagnosticsInteractor
         {
-
             public void UserDoubleClicked()
             {
                 base.listView_DoubleClick(null, EventArgs.Empty);

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ using Reko.Core.Operators;
 using Reko.Core.Types;
 using Reko.UnitTests.Fragments;
 using Reko.UnitTests.Mocks;
-using Rhino.Mocks;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -91,9 +91,9 @@ namespace Reko.UnitTests.Analysis
 
         protected override void RunTest(Program program, TextWriter writer)
         {
-            var importResolver = MockRepository.GenerateStub<IImportResolver>();
+            var importResolver = new Mock<IImportResolver>().Object;
             var listener = new FakeDecompilerEventListener();
-            DataFlowAnalysis dfa = new DataFlowAnalysis(program, importResolver, listener);
+            var dfa = new DataFlowAnalysis(program, importResolver, listener);
             dfa.UntangleProcedures();
             foreach (Procedure proc in program.Procedures.Values)
             {
@@ -108,7 +108,7 @@ namespace Reko.UnitTests.Analysis
                 var cce = new ConditionCodeEliminator(ssa, program.Platform);
                 cce.Transform();
 
-                var vp = new ValuePropagator(program.SegmentMap, ssa, importResolver, listener);
+                var vp = new ValuePropagator(program.SegmentMap, ssa, program.CallGraph, importResolver, listener);
                 vp.Transform();
 
                 DeadCode.Eliminate(proc, ssa);
@@ -588,6 +588,154 @@ ProcedureBuilder_exit:
                 m.MStore(m.Word32(0x00123400), rax);
 
                 m.Label("mElse");
+                m.Return();
+            });
+        }
+
+        [Test]
+        public void CceRorcWithIntermediateCopy()
+        {
+            var sExp =
+            #region Expected
+@"fp:fp
+sp_1: orig: sp
+h:h
+    def:  def h
+    uses: h_5 = PHI((h, l1), (h_12, m1Loop))
+l:l
+    def:  def l
+    uses: l_6 = PHI((l, l1), (l_16, m1Loop))
+c:c
+    def:  def c
+    uses: c_7 = PHI((c, l1), (c_17, m1Loop))
+h_5: orig: h
+    def:  h_5 = PHI((h, l1), (h_12, m1Loop))
+    uses: v13_24 = SEQ(h_5, l_6) >>u 0x01
+l_6: orig: l
+    def:  l_6 = PHI((l, l1), (l_16, m1Loop))
+    uses: v13_24 = SEQ(h_5, l_6) >>u 0x01
+c_7: orig: c
+    def:  c_7 = PHI((c, l1), (c_17, m1Loop))
+    uses: c_17 = c_7 - 0x01
+a_8: orig: a
+a_9: orig: a
+a_10: orig: a
+    def:  a_10 = SLICE(v13_24, byte, 8)
+    uses: h_12 = a_10
+          Mem21[0x00001001:byte] = a_10
+h_12: orig: h
+    def:  h_12 = a_10
+    uses: h_5 = PHI((h, l1), (h_12, m1Loop))
+a_13: orig: a
+a_14: orig: a
+    def:  a_14 = (byte) v13_24
+    uses: l_16 = a_14
+          Mem20[0x00001000:byte] = a_14
+C_15: orig: C
+l_16: orig: l
+    def:  l_16 = a_14
+    uses: l_6 = PHI((l, l1), (l_16, m1Loop))
+c_17: orig: c
+    def:  c_17 = c_7 - 0x01
+    uses: branch c_17 != 0x00 m1Loop
+          c_7 = PHI((c, l1), (c_17, m1Loop))
+SZP_18: orig: SZP
+Z_19: orig: Z
+Mem20: orig: Mem0
+    def:  Mem20[0x00001000:byte] = a_14
+Mem21: orig: Mem0
+    def:  Mem21[0x00001001:byte] = a_10
+v11_22: orig: v11
+v12_23: orig: v12
+v13_24: orig: v13
+    def:  v13_24 = SEQ(h_5, l_6) >>u 0x01
+    uses: a_10 = SLICE(v13_24, byte, 8)
+          a_14 = (byte) v13_24
+// RorChainFragment
+// Return size: 0
+void RorChainFragment(byte c, byte l, byte h)
+RorChainFragment_entry:
+	def h
+	def l
+	def c
+	// succ:  l1
+l1:
+	// succ:  m1Loop
+m1Loop:
+	h_5 = PHI((h, l1), (h_12, m1Loop))
+	l_6 = PHI((l, l1), (l_16, m1Loop))
+	c_7 = PHI((c, l1), (c_17, m1Loop))
+	h_12 = a_10
+	v13_24 = SEQ(h_5, l_6) >>u 0x01
+	a_10 = SLICE(v13_24, byte, 8)
+	a_14 = (byte) v13_24
+	l_16 = a_14
+	c_17 = c_7 - 0x01
+	branch c_17 != 0x00 m1Loop
+	// succ:  m2Done m1Loop
+m2Done:
+	Mem20[0x00001000:byte] = a_14
+	Mem21[0x00001001:byte] = a_10
+	return
+	// succ:  RorChainFragment_exit
+RorChainFragment_exit:
+
+";
+            #endregion
+            RunStringTest(sExp, new RorChainFragment());
+        }
+
+        [Test]
+        public void CceUnorderedComparison()
+        {
+            var sExp =
+            #region Expected
+                @"rArg0:FPU stack
+    def:  def rArg0
+    uses: return rArg0
+          return rArg0
+          branch !isunordered(rArg0, rArg1) m3Done
+rArg1:FPU stack
+    def:  def rArg1
+    uses: branch !isunordered(rArg0, rArg1) m3Done
+C_2: orig: C
+r0_3: orig: r0
+r0_4: orig: r0
+r0_5: orig: r0
+// ProcedureBuilder
+// Return size: 0
+real80 ProcedureBuilder(real80 rArg0, real80 rArg1)
+ProcedureBuilder_entry:
+	def rArg0
+	def rArg1
+	// succ:  l1
+l1:
+	branch !isunordered(rArg0, rArg1) m3Done
+	// succ:  m1isNan m3Done
+m1isNan:
+	return rArg0
+	// succ:  ProcedureBuilder_exit
+m3Done:
+	return rArg0
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+
+";
+            #endregion
+            RunStringTest(sExp, m =>
+            {
+                var r0 = m.Reg32("r0", 0);
+                var f0 = m.Frame.EnsureFpuStackVariable(0, PrimitiveType.Real80);
+                var f1 = m.Frame.EnsureFpuStackVariable(1, PrimitiveType.Real80);
+                var C = m.Flags("C");
+
+                m.Assign(C, m.Cond(m.FSub(f0, f1)));
+                m.BranchIf(m.Test(ConditionCode.NOT_NAN, C), "m3Done");
+                m.Label("m1isNan");
+                m.Assign(r0, 0);
+                m.Return();
+                m.Label("m3Done");
+                m.Assign(r0, 1);
                 m.Return();
             });
         }

@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,22 +36,15 @@ namespace Reko.Arch.M68k
     public interface M68kOperandVisitor<T>
     {
         T Visit(M68kImmediateOperand imm);
-
         T Visit(MemoryOperand mem);
-
         T Visit(PredecrementMemoryOperand pre);
-
         T Visit(M68kAddressOperand addressOperand);
-
         T Visit(PostIncrementMemoryOperand post);
-
         T Visit(RegisterSetOperand registerSet);
-
         T Visit(IndexedOperand indexedOperand);
-
         T Visit(IndirectIndexedOperand indirectIndexedOperand);
-
         T Visit(DoubleRegisterOperand doubleRegisterOperand);
+        T Visit(BitfieldOperand bitfield);
     }
 
     public abstract class M68kOperandImpl : MachineOperand, M68kOperand
@@ -236,17 +229,22 @@ namespace Reko.Arch.M68k
             writer.WriteString("(");
             if (Imm8 < 0)
             {
-                writer.WriteFormat("-{0:X2},", -Imm8);
+                writer.WriteFormat("-${0:X2},", -Imm8);
             }
             else if (Imm8 > 0)
             {
-                writer.WriteFormat("{0:X2},", Imm8);
+                writer.WriteFormat("${0:X2},", Imm8);
             }
             writer.WriteString(ARegister.Name);
-            writer.WriteString(",");
-            writer.WriteString(XRegister.Name);
-            if (Scale > 1)
-                writer.WriteFormat("*{0}", Scale);
+            if (XRegister != null)
+            {
+                writer.WriteString(",");
+                writer.WriteString(XRegister.Name);
+                if (XWidth.Size == 2)
+                    writer.WriteString(".w");
+                if (Scale > 1)
+                    writer.WriteFormat("*{0}", Scale);
+            }
             writer.WriteString(")");
         }
     }

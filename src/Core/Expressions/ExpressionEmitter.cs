@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1178,17 +1178,17 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
-        /// Generates a bit-slice of type <paramref name="primitiveType"/> of 
+        /// Generates a bit-slice of type <paramref name="dt"/> of 
         /// an expression <paramref name="value"/>, starting at bit position
         /// <paramref name="bitOffset"/>.
         /// </summary>
-        /// <param name="primitiveType">The type of the bit slice</param>
+        /// <param name="dt">The type of the bit slice</param>
         /// <param name="value">The value being sliced</param>
         /// <param name="bitOffset">Slice offset from least significant bit.</param>
         /// <returns>A bit-slice expression.</returns>
-        public Slice Slice(PrimitiveType primitiveType, Expression value, int bitOffset)
+        public Slice Slice(DataType dt, Expression value, int bitOffset)
         {
-            return new Slice(primitiveType, value, bitOffset);
+            return new Slice(dt, value, bitOffset);
         }
 
         /// <summary>

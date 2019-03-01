@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Reko.Core
 {
@@ -92,11 +93,6 @@ namespace Reko.Core
             Assign(reg, new MemoryAccess(MemoryIdentifier.GlobalMemory, ea, reg.DataType));
         }
 
-        public Statement Phi(Identifier idDst, params Expression[] exprs)
-        {
-            return Emit(new PhiAssignment(idDst, new PhiFunction(idDst.DataType, exprs)));
-        }
-
         public virtual void Return()
         {
             Emit(new ReturnInstruction());
@@ -153,42 +149,66 @@ namespace Reko.Core
             return Emit(s);
         }
 
+        /// <summary>
+        /// Allocate a stack-based identifier.
+        /// </summary>
+        /// <param name="primitiveType">Data type of the identifier</param>
+        /// <param name="name">name of the identifier.</param>
         public Identifier Local(PrimitiveType primitiveType, string name)
         {
             localStackOffset -= primitiveType.Size;
             return Frame.EnsureStackLocal(localStackOffset, primitiveType, name);
         }
 
+        /// <summary>
+        /// Convenience method that allocates a stack-based boolean, aligned to 32 bits.
+        /// </summary>
         public Identifier LocalBool(string name)
         {
             localStackOffset -= PrimitiveType.Word32.Size;
             return Frame.EnsureStackLocal(localStackOffset, PrimitiveType.Bool, name);
         }
 
+        /// <summary>
+        /// Convenience method that allocates a stack-based byte, aligned to 32 bits.
+        /// </summary>
         public Identifier LocalByte(string name)
         {
             localStackOffset -= PrimitiveType.Word32.Size;
             return Frame.EnsureStackLocal(localStackOffset, PrimitiveType.Byte, name);
         }
 
+        /// <summary>
+        /// Convenience method that allocates a stack-based 16-bit word, aligned to 32 bits.
+        /// </summary>
         public Identifier Local16(string name)
         {
             localStackOffset -= PrimitiveType.Word32.Size;
             return Frame.EnsureStackLocal(localStackOffset, PrimitiveType.Word16, name);
         }
 
+        /// <summary>
+        /// Convenience method that allocates a stack-based 32-bit word.
+        /// </summary>
         public Identifier Local32(string name)
         {
             localStackOffset -= PrimitiveType.Word32.Size;
             return Frame.EnsureStackLocal(localStackOffset, PrimitiveType.Word32, name);
         }
 
+        /// <summary>
+        /// Allocates a stack-based 32-bit variable  named <paramref name="name"/> at the 
+        /// given <paramref name="offset"/>.
+        /// </summary>
         public virtual Identifier Local32(string name, int offset)
         {
             Debug.Assert(offset < 0);
             return Frame.EnsureStackLocal(offset, PrimitiveType.Word32, name);
         }
 
+        /// <summary>
+        /// Generate a temporary identifier named <paramref name="name"/> with the data type <paramref name="type"/>.
+        /// </summary>
         public Identifier Temp(DataType type, string name)
         {
             return Frame.CreateTemporary(name, type);

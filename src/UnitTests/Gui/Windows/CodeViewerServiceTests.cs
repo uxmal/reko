@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,16 +18,13 @@
  */
 #endregion
 
+using Moq;
+using NUnit.Framework;
 using Reko.Core;
 using Reko.Gui;
 using Reko.UnitTests.Mocks;
-using NUnit.Framework;
-using Rhino.Mocks;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Text;
 using Reko.UserInterfaces.WindowsForms;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Gui.Windows
 {
@@ -36,12 +33,10 @@ namespace Reko.UnitTests.Gui.Windows
     {
         private ServiceContainer sc;
         private Program program;
-        private MockRepository mr;
 
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
             sc = new ServiceContainer();
             var mem = new MemoryArea(Address.Ptr32(0x0040000),  new byte[0x400]);
             this.program = new Program
@@ -58,26 +53,28 @@ namespace Reko.UnitTests.Gui.Windows
             m.Return();
 
             var uiSvc = AddMockService<IDecompilerShellUiService>();
-            uiSvc.Expect(s => s.FindDocumentWindow(
+            uiSvc.Setup(s => s.FindDocumentWindow(
                     "CombinedCodeViewInteractor", m.Procedure))
-                .Return(null);
-            var windowPane = mr.Stub<CombinedCodeViewInteractor>();
-            var windowFrame = mr.StrictMock<IWindowFrame>();
-            windowFrame.Stub(f => f.Pane).Return(windowPane);
-            uiSvc.Expect(s => s.CreateDocumentWindow(
-                    Arg<string>.Is.Equal("CombinedCodeViewInteractor"),
-                Arg<string>.Is.Equal(m.Procedure),
-                Arg<string>.Is.Equal(m.Procedure.Name),
-                Arg<IWindowPane>.Is.Anything))
-                .Return(windowFrame);
-            windowFrame.Expect(s => s.Show());
-
-            mr.ReplayAll();
+                .Returns((IWindowFrame) null)
+                .Verifiable();
+            var windowPane = new Mock<CombinedCodeViewInteractor>();
+            var windowFrame = new Mock<IWindowFrame>();
+            windowFrame.Setup(f => f.Pane).Returns(windowPane.Object);
+            uiSvc.Setup(s => s.CreateDocumentWindow(
+                "CombinedCodeViewInteractor",
+                m.Procedure,
+                m.Procedure.Name,
+                It.IsAny<IWindowPane>()))
+                .Returns(windowFrame.Object)
+                .Verifiable();
+            windowFrame.Setup(s => s.Show())
+                .Verifiable();
 
             var codeViewerSvc = new CodeViewerServiceImpl(sc);
             codeViewerSvc.DisplayProcedure(program, m.Procedure, true);
 
-            uiSvc.VerifyAllExpectations();
+            uiSvc.VerifyAll();
+            windowFrame.VerifyAll();
         }
 
         [Test]
@@ -88,32 +85,32 @@ namespace Reko.UnitTests.Gui.Windows
             var label = ".seg global variables";
 
             var uiSvc = AddMockService<IDecompilerShellUiService>();
-            uiSvc.Expect(s => s.FindDocumentWindow(
+            uiSvc.Setup(s => s.FindDocumentWindow(
                     "CombinedCodeViewInteractor", segment))
-                .Return(null);
-            var windowPane = mr.Stub<CombinedCodeViewInteractor>();
-            var windowFrame = mr.StrictMock<IWindowFrame>();
-            windowFrame.Stub(f => f.Pane).Return(windowPane);
-            uiSvc.Expect(s => s.CreateDocumentWindow(
-                    Arg<string>.Is.Equal("CombinedCodeViewInteractor"),
-                Arg<string>.Is.Equal(segment),
-                Arg<string>.Is.Equal(label),
-                Arg<IWindowPane>.Is.Anything))
-                .Return(windowFrame);
-            windowFrame.Expect(s => s.Show());
-
-            mr.ReplayAll();
+                .Returns((IWindowFrame)null)
+                .Verifiable();
+            var windowPane = new Mock<CombinedCodeViewInteractor>();
+            var windowFrame = new Mock<IWindowFrame>();
+            windowFrame.Setup(f => f.Pane).Returns(windowPane.Object);
+            uiSvc.Setup(s => s.CreateDocumentWindow(
+                "CombinedCodeViewInteractor",
+                segment,
+                label,
+                It.IsAny<IWindowPane>()))
+                .Returns(windowFrame.Object);
+            windowFrame.Setup(s => s.Show()).Verifiable();
 
             var codeViewerSvc = new CodeViewerServiceImpl(sc);
             codeViewerSvc.DisplayGlobals(program, segment);
 
-            uiSvc.VerifyAllExpectations();
+            uiSvc.VerifyAll();
+            windowFrame.VerifyAll();
         }
 
-        private T AddMockService<T>() where T : class
+        private Mock<T> AddMockService<T>() where T : class
         {
-            var svc = mr.StrictMock<T>();
-            sc.AddService(typeof (T), svc);
+            var svc = new Mock<T>();
+            sc.AddService(typeof (T), svc.Object);
             return svc;
         }
     }

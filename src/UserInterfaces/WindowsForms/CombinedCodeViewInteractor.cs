@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 Pavel Tomin.
+ * Copyright (C) 1999-2019 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -94,7 +94,7 @@ namespace Reko.UserInterfaces.WindowsForms
             ProgramChanged();
             if (program != null)
             {
-                var addr = program.GetProcedureAddress(proc);
+                var addr = proc.EntryAddress;
                 if (addr == null)
                 {
                     addr = program.SegmentMap.Segments.Values
@@ -411,7 +411,7 @@ namespace Reko.UserInterfaces.WindowsForms
             var proc = tag as Procedure;
 
             if (proc != null)
-                addr = program.GetProcedureAddress(proc);
+                addr = proc.EntryAddress;
 
             return addr;
         }
@@ -425,7 +425,7 @@ namespace Reko.UserInterfaces.WindowsForms
                 var blockItem = item as ImageMapBlock;
                 if (blockItem != null)
                 {
-                    addr = program.GetProcedureAddress(blockItem.Block.Procedure);
+                    addr = blockItem.Block.Procedure.EntryAddress;
                 }
                 else if (!(item.DataType is UnknownType))
                 {
@@ -608,7 +608,7 @@ namespace Reko.UserInterfaces.WindowsForms
             var proc = e.Destination as Procedure;
 
             if (proc != null)
-                addr = program.GetProcedureAddress(proc);
+                addr = proc.EntryAddress;
 
             if (addr == null)
                 return;

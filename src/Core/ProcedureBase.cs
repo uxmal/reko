@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ using System.IO;
 namespace Reko.Core
 {
     /// <summary>
-    /// Abstract base class for all applicable procedure-like entities.
+    /// Abstract base class for all things callable.
     /// </summary>
 	[DefaultProperty("Name")]
 	public abstract class ProcedureBase

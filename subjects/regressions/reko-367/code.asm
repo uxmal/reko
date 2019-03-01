@@ -3,7 +3,7 @@
 ;; fn80000000: 80000000
 fn80000000 proc
 	jsr.l	$03CC(pc)                                            ; 800003CC
-	rts	
+	rts
 80000006                   4E 71 4E 71 4E 71 4E 71 4E 71       NqNqNqNqNq
 80000010 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
 80000020 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
@@ -55,7 +55,7 @@ l80000172:
 	fmove.x	(a7)+,fp0
 	move.l	(a7)+,d2
 	unlk	a6
-	rts	
+	rts
 
 ;; fn8000018E: 8000018E
 fn8000018E proc
@@ -80,7 +80,7 @@ l800001B8:
 	bra	$800001A8
 
 l800001D4:
-	nop	
+	nop
 	move.l	-$000C(a6),d0
 	move.l	-$0008(a6),d1
 	move.l	-$0004(a6),d2
@@ -90,7 +90,7 @@ l800001D4:
 	fmove.x	(a7)+,fp0
 	move.l	(a7)+,d2
 	unlk	a6
-	rts	
+	rts
 
 ;; fn800001F2: 800001F2
 fn800001F2 proc
@@ -144,7 +144,7 @@ l8000028A:
 	move.l	-$002C(a6),d2
 	fmovem.x	-$0028(a6),fp2
 	unlk	a6
-	rts	
+	rts
 
 ;; fn800002AE: 800002AE
 fn800002AE proc
@@ -198,7 +198,7 @@ l80000348:
 	move.l	-$002C(a6),d2
 	fmovem.x	-$0028(a6),fp2
 	unlk	a6
-	rts	
+	rts
 
 ;; fn8000036C: 8000036C
 fn8000036C proc
@@ -228,7 +228,7 @@ fn8000036C proc
 	move.l	-$0010(a6),d2
 	fmovem.x	-$000C(a6),fp2
 	unlk	a6
-	rts	
+	rts
 
 ;; fn800003CC: 800003CC
 fn800003CC proc
@@ -259,4 +259,4 @@ fn800003CC proc
 	lea	$000C(a7),a7
 	clr.l	d0
 	unlk	a6
-	rts	
+	rts

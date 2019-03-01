@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -125,6 +125,7 @@ namespace Reko.Arch.X86
 
         private class X86InstructionDecodeInfo
         {
+            // These fields are for analysis.
             bool isModRegMemActive;
             byte modRegMemByte;
 
@@ -134,9 +135,19 @@ namespace Reko.Arch.X86
             bool isRegisterExtensionActive;
             X86LegacyCodeRegisterExtension registerExtension;
 
+            // These fields are for synthesis.
+            public Opcode opcode;
+            public InstrClass iclass;
+            public PrimitiveType dataWidth;
+            public PrimitiveType addressWidth;
+            public List<MachineOperand> ops;
+            public PrimitiveType iWidth;
+
+
             internal X86InstructionDecodeInfo()
             {
                 this.registerExtension = new X86LegacyCodeRegisterExtension(0);
+                this.ops = new List<MachineOperand>();
                 this.Reset();
             }
 
@@ -158,7 +169,19 @@ namespace Reko.Arch.X86
                 this.IsVex = false;
                 this.VexRegister = 0;
                 this.VexLong = false;
+
+                this.ops.Clear();
             }
+
+            public X86Instruction MakeInstruction()
+            {
+                return new X86Instruction(this.opcode, this.iclass, this.iWidth, this.addressWidth, this.ops.ToArray())
+                {
+                    repPrefix = this.F2Prefix ? 2 :
+                                this.F3Prefix ? 3 : 0
+                };
+            }
+
 
             internal bool IsSegmentOverrideActive()
             {
@@ -239,20 +262,18 @@ namespace Reko.Arch.X86
         }
 
         private ProcessorMode mode;
-        private X86Instruction instrCur;
         private Address addr;
-        private PrimitiveType dataWidth;
-		private PrimitiveType addressWidth;
 		private PrimitiveType defaultDataWidth;
 		private PrimitiveType defaultAddressWidth;
-		private EndianImageReader	rdr;
+		private EndianImageReader rdr;
 
-        bool isRegisterExtensionEnabled;
+        private bool isRegisterExtensionEnabled;
 
-        private X86InstructionDecodeInfo currentDecodingContext;
+        private X86InstructionDecodeInfo decodingContext;
 
 		/// <summary>
-		/// Creates a disassembler that uses the specified reader to fetch bytes from the program image.
+		/// Creates a disassembler that uses the specified reader to fetch bytes
+        /// from the program image.
         /// </summary>
 		/// <param name="width">Default address and data widths. PrimitiveType.Word16 for 
         /// 16-bit operation, PrimitiveType.Word32 for 32-bit operation.</param>
@@ -268,7 +289,7 @@ namespace Reko.Arch.X86
 			this.defaultDataWidth = defaultWordSize;
 			this.defaultAddressWidth = defaultAddressSize;
             this.isRegisterExtensionEnabled = useRexPrefix;
-            this.currentDecodingContext = new X86InstructionDecodeInfo();
+            this.decodingContext = new X86InstructionDecodeInfo();
         }
 
         /// <summary>
@@ -286,37 +307,36 @@ namespace Reko.Arch.X86
             if (!rdr.IsValid)
                 return null;
             this.addr = rdr.Address;
-            dataWidth = defaultDataWidth;
-            addressWidth = defaultAddressWidth;
 
             // Reset the state of the currentInstruction
-            this.currentDecodingContext.Reset();
+            this.decodingContext.Reset();
+            this.decodingContext.dataWidth = defaultDataWidth;
+            this.decodingContext.addressWidth = defaultAddressWidth;
             if (!rdr.TryReadByte(out byte op))
                 return null;
-            try
+
+            this.decodingContext.iWidth = defaultDataWidth;
+
+            X86Instruction instr = null;
+            if (s_aOpRec[op].Decode(this, op))
             {
-                instrCur = s_aOpRec[op].Decode(this, op, "");
+                instr = decodingContext.MakeInstruction();
             }
-            catch
+            else 
             {
-                instrCur = Illegal();
-                //throw new AddressCorrelatedException(addr, ex, "An exception occurred when disassembling x86 code.");
+                instr = Illegal();
             }
-            if (instrCur == null)
-            {
-                instrCur = Illegal();
-            }
-            instrCur.Address = addr;
-            instrCur.Length = (int)(rdr.Address - addr);
-            return instrCur;
+            instr.Address = addr;
+            instr.Length = (int)(rdr.Address - addr);
+            return instr;
         }
 
         private X86Instruction Illegal()
         {
-            return new X86Instruction(Opcode.illegal, InstrClass.Invalid, dataWidth, addressWidth);
+            return new X86Instruction(Opcode.illegal, InstrClass.Invalid, decodingContext.dataWidth, decodingContext.addressWidth);
         }
 
-        private X86Instruction NotYetImplemented(string message)
+        private void NotYetImplemented(string message)
         {
             // collect bytes from rdr.addr to this.addr 
             var r2 = rdr.Clone();
@@ -330,27 +350,26 @@ namespace Reko.Arch.X86
                 w.WriteLine("    AssertCode32(\"@@@\", {0});",
                     string.Join(", ", bytes.Select(b => $"0x{b:X2}")));
             });
-            return Illegal();
         }
 
         private RegisterStorage RegFromBitsRexB(int bits, PrimitiveType dataWidth)
         {
             int reg_bits = bits & 7;
-            reg_bits |= this.currentDecodingContext.RegisterExtension.FlagTargetModrmRegOrMem ? 8 : 0;
+            reg_bits |= this.decodingContext.RegisterExtension.FlagTargetModrmRegOrMem ? 8 : 0;
             return GpRegFromBits(reg_bits, dataWidth);
         }
 
         private RegisterStorage RegFromBitsRexW(int bits, PrimitiveType dataWidth)
         {
             int reg_bits = bits & 7;
-            reg_bits |= this.currentDecodingContext.RegisterExtension.FlagWideValue ? 8 : 0;
+            reg_bits |= this.decodingContext.RegisterExtension.FlagWideValue ? 8 : 0;
             return GpRegFromBits(reg_bits, dataWidth);
         }
 
         private RegisterStorage RegFromBitsRexR(int bits, PrimitiveType dataWidth, Func<int, PrimitiveType, RegisterStorage> fnReg)
         {
             int reg_bits = bits & 7;
-            reg_bits |= this.currentDecodingContext.RegisterExtension.FlagTargetModrmRegister ? 8 : 0;
+            reg_bits |= this.decodingContext.RegisterExtension.FlagTargetModrmRegister ? 8 : 0;
             return fnReg(reg_bits, dataWidth);
         }
 
@@ -375,14 +394,14 @@ namespace Reko.Arch.X86
         private RegisterStorage RegFromBitsRexX(int bits, PrimitiveType dataWidth, Func<int, PrimitiveType, RegisterStorage> fnReg)
         {
             int reg_bits = bits & 7;
-            reg_bits |= this.currentDecodingContext.RegisterExtension.FlagTargetSIBIndex ? 8 : 0;
+            reg_bits |= this.decodingContext.RegisterExtension.FlagTargetSIBIndex ? 8 : 0;
             return fnReg(reg_bits, dataWidth);
         }
 
         private RegisterStorage RegFromBitsRexB(int bits, PrimitiveType dataWidth, Func<int, PrimitiveType, RegisterStorage> fnReg)
         {
             int reg_bits = bits & 7;
-            reg_bits |= this.currentDecodingContext.RegisterExtension.FlagTargetModrmRegOrMem ? 8 : 0;
+            reg_bits |= this.decodingContext.RegisterExtension.FlagTargetModrmRegOrMem ? 8 : 0;
             return fnReg(reg_bits, dataWidth);
         }
 
@@ -398,10 +417,10 @@ namespace Reko.Arch.X86
 				case 1: return Registers.cl;
 				case 2: return Registers.dl;
 				case 3: return Registers.bl;
-                case 4: return this.currentDecodingContext.IsRegisterExtensionActive() ? Registers.spl : Registers.ah;
-                case 5: return this.currentDecodingContext.IsRegisterExtensionActive() ? Registers.bpl : Registers.ch;
-                case 6: return this.currentDecodingContext.IsRegisterExtensionActive() ? Registers.sil : Registers.dh;
-                case 7: return this.currentDecodingContext.IsRegisterExtensionActive() ? Registers.dil : Registers.bh;
+                case 4: return this.decodingContext.IsRegisterExtensionActive() ? Registers.spl : Registers.ah;
+                case 5: return this.decodingContext.IsRegisterExtensionActive() ? Registers.bpl : Registers.ch;
+                case 6: return this.decodingContext.IsRegisterExtensionActive() ? Registers.sil : Registers.dh;
+                case 7: return this.decodingContext.IsRegisterExtensionActive() ? Registers.dil : Registers.bh;
                 case 8: return Registers.r8b;
                 case 9: return Registers.r9b;
                 case 10: return Registers.r10b;
@@ -541,19 +560,537 @@ namespace Reko.Arch.X86
 			throw new ArgumentOutOfRangeException("bits", string.Format("{0} doesn't correspond to a segment register.", bits));
 		}
 
+        // Operand decoders //////
+
+        // Absolute memory address
+        public static bool Ap(byte op, X86Disassembler dasm)
+        {
+            var rdr = dasm.rdr;
+            if (!rdr.TryReadLeUInt16(out ushort off))
+                return false;
+            if (!rdr.TryReadLeUInt16(out ushort seg))
+                return false;
+            var addr = dasm.mode.CreateSegmentedAddress(seg, off);
+            if (addr == null)
+                return false;
+            dasm.decodingContext.ops.Add(new X86AddressOperand(addr));
+            return true;
+        }
+
+        // control register encoded in the reg field.
+        private static bool Cd(byte op, X86Disassembler dasm)
+        {
+            if (!dasm.TryEnsureModRM(out byte modRm))
+                return false;
+            var creg = dasm.mode.GetControlRegister((modRm >> 3) & 7);
+            if (creg == null)
+                return false;
+            var operand = new RegisterOperand(creg);
+            dasm.decodingContext.ops.Add(operand);
+            return true;
+        }
+
+        // debug register encoded in the reg field.
+        private static bool Dd(byte op, X86Disassembler dasm)
+        {
+            if (!dasm.TryEnsureModRM(out byte modRm))
+                return false;
+            var dreg = dasm.mode.GetDebugRegister((modRm >> 3) & 7);
+            if (dreg == null)
+                return false;
+            var operand = new RegisterOperand(dreg);
+            dasm.decodingContext.ops.Add(operand);
+            return true;
+
+        }
+
+        // memory or register operand specified by mod & r/m fields.
+        private static Mutator E(string sWidth)
+        {
+            return (u, d) =>
+            {
+                int i = 0;
+                var width = d.OperandWidth(sWidth, ref i);
+                var op = d.DecodeModRM(width, d.decodingContext.SegmentOverride, d.GpRegFromBits);
+                if (op == null)
+                    return false;
+                d.decodingContext.ops.Add(op);
+                return true;
+            };
+        }
+        private static readonly Mutator Eb = E("b");
+        private static readonly Mutator Ed = E("d");
+        private static readonly Mutator Ep = E("p");
+        private static readonly Mutator Eq = E("q");
+        private static readonly Mutator Ev = E("v");
+        private static readonly Mutator Ey = E("y");
+        private static readonly Mutator Ew = E("w");
+
+        // Floating-point ST(x)
+        private static bool F(byte op, X86Disassembler d)
+        {
+            if (!d.TryEnsureModRM(out byte modRm))
+                return false;
+            d.decodingContext.ops.Add(new FpuOperand(modRm & 0x07));
+            return true;
+        }
+
+        // Floating-point ST(0)
+        private static bool f(byte op, X86Disassembler d)
+        {
+            d.decodingContext.ops.Add(new FpuOperand(0));
+            return true;
+        }
+
+        // register operand specified by the reg field of the modRM byte.
+        public static Mutator G(string sWidth)
+        {
+            return (u, d) =>
+            {
+                int i = 0;
+                var width = d.OperandWidth(sWidth, ref i);
+                if (!d.TryEnsureModRM(out byte modRm))
+                    return false;
+                var op = new RegisterOperand(
+                    d.RegFromBitsRexR(
+                        modRm >> 3,
+                        width,
+                        d.GpRegFromBits));
+                d.decodingContext.ops.Add(op);
+                return true;
+            };
+        }
+
+        private static readonly Mutator Gb = G("b");
+        private static readonly Mutator Gd = G("d");
+        private static readonly Mutator Gv = G("v");
+        private static readonly Mutator Gy = G("y");
+
+        // If VEX encoding, use vvvv register.
+        public static Mutator H(string sWidth)
+        {
+            return (u, d) => {
+                if (d.decodingContext.IsVex)
+                {
+                    int i = 0;
+                    var width = d.SseOperandWidth(sWidth, ref i);
+                    var op = new RegisterOperand(d.XmmRegFromBits(
+                        d.decodingContext.VexRegister,
+                        width));
+                    d.decodingContext.ops.Add(op);
+                }
+                return true;
+            };
+        }
+
+        private static readonly Mutator Hdq = H("dq");
+        private static readonly Mutator Hpd = H("pd");
+        private static readonly Mutator Hps = H("ps");
+        private static readonly Mutator Hqq = H("qq");
+        private static readonly Mutator Hsd = H("sd");
+        private static readonly Mutator Hss = H("ss");
+        private static readonly Mutator Hq = H("q");
+        private static readonly Mutator Hx = H("x");
+
+        // Immediate operand.
+        public static Mutator I(string sWidth)
+        {
+            return (u, d) =>
+            {
+                PrimitiveType width;
+                var ops = d.decodingContext.ops;
+                if (sWidth[0] == 'x')
+                {
+                    width = ops[ops.Count - 1].Width;
+                    d.decodingContext.iWidth = width;
+                }
+                else
+                { 
+                    int i = 0;
+                    width = d.OperandWidth(sWidth, ref i); //  Don't use the width of the previous operand.
+                }
+                var op = d.CreateImmediateOperand(width, d.decodingContext.dataWidth);
+                if (op == null)
+                    return false;
+                d.decodingContext.ops.Add(op);
+                return true;
+            };
+        }
+
+        private static readonly Mutator Ib = I("b");
+        private static readonly Mutator Iv = I("v");
+        private static readonly Mutator Iw = I("w");
+        private static readonly Mutator Ix = I("x");
+        private static readonly Mutator Iz = I("z");
+
+        // Relative ("near") jump.
+
+        public static Mutator J(string sWidth)
+        {
+            return (u, d) =>
+            {
+                int i = 0;
+                var width = d.OperandWidth(sWidth, ref i);
+                if (!d.rdr.TryRead(width, out Constant cOffset))
+                    return false;
+                long jOffset = cOffset.ToInt64();
+                ulong uAddr = (ulong) ((long) d.rdr.Address.Offset + jOffset);
+                MachineOperand op;
+                if (d.defaultAddressWidth.BitSize == 64)      //$REVIEW: not too keen on the switch statement here.
+                    op = AddressOperand.Ptr64(uAddr);
+                else if (d.defaultAddressWidth.BitSize == 32)
+                    op = AddressOperand.Ptr32((uint) uAddr);
+                else
+                    op = new ImmediateOperand(Constant.Create(d.defaultAddressWidth, uAddr));
+                d.decodingContext.ops.Add(op);
+                return true;
+            };
+        }
+        private static readonly Mutator Jb = J("b");
+        private static readonly Mutator Jv = J("v");
+
+        // The upper 4 bits of the 8-bit immediate selects a 128-bit XMM register or a 256-bit YMM register, determined
+        // by operand type.
+        public static bool Lx(byte op, X86Disassembler d)
+        {
+            if (!d.rdr.TryReadByte(out var lReg))
+                return false;
+            var ops = d.decodingContext.ops;
+            var width =  ops[ops.Count-1].Width; // Use width of the previous operand.
+            d.decodingContext.iWidth = width;
+            //width = OperandWidth(strFormat, ref i); //  Don't use the width of the previous operand.
+            var operand = new RegisterOperand(d.XmmRegFromBits((lReg >> 4) & 0xF, width));
+            ops.Add(operand);
+            return true;
+        }
+
+        // modRM may only refer to memory.
+        public static Mutator M(string sWidth)
+        {
+            return (u, d) =>
+            {
+                int i = 0;
+                var width = d.OperandWidth(sWidth, ref i);
+                if (!d.TryEnsureModRM(out byte modRm))
+                    return false;
+                if ((modRm & 0xC0) == 0xC0)
+                    return false;
+                var op = d.DecodeModRM(width, d.decodingContext.SegmentOverride, d.GpRegFromBits) as MemoryOperand;
+                if (op == null)
+                    return false;
+                d.decodingContext.ops.Add(op);
+                return true;
+            };
+        }
+
+        private static readonly Mutator MB = M("B");
+        private static readonly Mutator Mb = M("b");
+        private static readonly Mutator Md = M("d");
+        private static readonly Mutator Mdq = M("dq");
+        private static readonly Mutator Mf = M("f");
+        private static readonly Mutator Mg = M("g");
+        private static readonly Mutator Mh = M("h");
+        private static readonly Mutator Mp = M("p");
+        private static readonly Mutator Mpd = M("pd");
+        private static readonly Mutator Mps = M("ps");
+        private static readonly Mutator Mq = M("q");
+        private static readonly Mutator Ms = M("s");
+        private static readonly Mutator Mv = M("v");
+        private static readonly Mutator Mw = M("w");
+        private static readonly Mutator Mx = M("x");
+        private static readonly Mutator My = M("y");
+
+        // MMX register operand specified by the r/m field of the modRM byte.
+        private static Mutator N(string sWidth)
+        {
+            return (u, d) =>
+            {
+                int i = 0;
+                var width = d.SseOperandWidth(sWidth, ref i);
+                if (!d.TryEnsureModRM(out byte modRm))
+                    return false;
+                var op = new RegisterOperand(d.RegFromBitsRexR(modRm, width, d.MmxRegFromBits));
+                d.decodingContext.ops.Add(op);
+                return true;
+            };
+        }
+        private static readonly Mutator Nq = N("q");
+
+        // Offset of the operand is encoded directly after the opcode.
+        public static Mutator O(string sWidth)
+        {
+            return (u, d) =>
+            {
+                int i = 0;
+                var width = d.OperandWidth(sWidth, ref i);
+                if (!d.rdr.TryReadLe(d.decodingContext.addressWidth, out var offset))
+                    return false;
+                var memOp = new MemoryOperand(width, offset);
+                memOp.SegOverride = d.decodingContext.SegmentOverride;
+                d.decodingContext.ops.Add(memOp);
+                return true;
+            };
+        }
+
+        private static readonly Mutator Ob = O("b");
+        private static readonly Mutator Ov = O("v");
+
+        // MMX register operand specified by the reg field of the modRM byte.
+        public static Mutator P(string sWidth)
+        {
+            return (u, d) => {
+                int i = 0;
+                var width = d.SseOperandWidth(sWidth, ref i);
+                if (!d.TryEnsureModRM(out byte modRm))
+                    return false;
+                var op = new RegisterOperand(d.RegFromBitsRexR(modRm >> 3, width, d.MmxRegFromBits));
+                d.decodingContext.ops.Add(op);
+                return true;
+            };
+        }
+
+        private static readonly Mutator Pd = P("d");
+        private static readonly Mutator Ppi = P("pi");
+        private static readonly Mutator Pq = P("q");
+
+        // memory or register MMX operand specified by mod & r/m fields.
+        public static Mutator Q(string sWidth)
+        {
+            return (u, d) =>
+            {
+                int i = 0;
+                var width = d.SseOperandWidth(sWidth, ref i);
+                var op = d.DecodeModRM(width, d.decodingContext.SegmentOverride, d.MmxRegFromBits);
+                if (op == null)
+                    return false;
+                d.decodingContext.ops.Add(op);
+                return true;
+            };
+        }
+
+        private static readonly Mutator Qd = Q("d");
+        private static readonly Mutator Qpi = Q("pi");
+        private static readonly Mutator Qq = Q("q");
+
+        // register operand specified by the mod field of the modRM byte.
+        public static Mutator R(string sWidth)
+        {
+            return (u, d) =>
+            {
+                int i = 0;
+                var width = d.OperandWidth(sWidth, ref i);
+                if (!d.TryEnsureModRM(out byte modRm))
+                    return false;
+                var op = new RegisterOperand(
+                    d.RegFromBitsRexR(
+                        modRm,
+                        width,
+                        d.GpRegFromBits));
+                d.decodingContext.ops.Add(op);
+                return true;
+            };
+        }
+
+        private static readonly Mutator Rv = R("v");
+        private static readonly Mutator Ry = R("y");
+
+        // XMM operand specified by the modRm field of the modRM byte.
+        public static Mutator U(string sWidth)
+        {
+            return (u, d) => {
+                int i = 0;
+                var width = d.SseOperandWidth(sWidth, ref i);
+                if (!d.TryEnsureModRM(out byte modRm))
+                    return false;
+                var op = new RegisterOperand(d.RegFromBitsRexR(
+                    modRm, 
+                    width, 
+                    d.XmmRegFromBits));
+                d.decodingContext.ops.Add(op);
+                return true;
+            };
+        }
+
+        private static readonly Mutator Udq = U("dq");
+        private static readonly Mutator Upd = U("pd");
+        private static readonly Mutator Ups = U("ps");
+        private static readonly Mutator Ux = U("x");
+
+        // XMM operand specified by the reg field of the modRM byte.
+        public static Mutator V(string sWidth)
+        {
+            return (u, d) =>
+            {
+                int i = 0;
+                var width = d.SseOperandWidth(sWidth, ref i);
+                if (!d.TryEnsureModRM(out byte modRm))
+                    return false;
+                var op = new RegisterOperand(
+                    d.RegFromBitsRexR(modRm >> 3,
+                    width,
+                    d.XmmRegFromBits));
+                d.decodingContext.ops.Add(op);
+                return true;
+            };
+        }
+
+
+        private static readonly Mutator Vdq = V("dq");
+        private static readonly Mutator Vpd = V("pd");
+        private static readonly Mutator Vps = V("ps");
+        private static readonly Mutator Vsd = V("sd");
+        private static readonly Mutator Vss = V("ss");
+        private static readonly Mutator Vq = V("q");
+        private static readonly Mutator Vqq = V("qq");
+        private static readonly Mutator Vx = V("x");
+        private static readonly Mutator Vy = V("y");
+
+        // memory or XMM operand specified by mod & r/m fields.
+        public static Mutator W(string sWidth)
+        {
+            return (u, d) =>
+            {
+                int i = 0;
+                var width = d.SseOperandWidth(sWidth, ref i);
+                var op = d.DecodeModRM(width, d.decodingContext.SegmentOverride, d.XmmRegFromBits);
+                if (op == null)
+                    return false;
+                d.decodingContext.ops.Add(op);
+                return true;
+            };
+        }
+
+        private static readonly Mutator Wd = W("d");
+        private static readonly Mutator Wdq = W("dq");
+        private static readonly Mutator Wpd = W("pd");
+        private static readonly Mutator Wpq = W("pq");
+        private static readonly Mutator Wps = W("ps");
+        private static readonly Mutator Wq = W("q");
+        private static readonly Mutator Wqq = W("qq");
+        private static readonly Mutator Wsd = W("sd");
+        private static readonly Mutator Wss = W("ss");
+        private static readonly Mutator Wx = W("x");
+        private static readonly Mutator Wy = W("y");
+
+
+        // Segment register encoded by reg field of modRM byte.
+        public static bool Sw(byte op, X86Disassembler d)
+        {
+            if (!d.TryEnsureModRM(out byte modRm))
+                return false;
+            d.decodingContext.ops.Add(new RegisterOperand(SegFromBits(modRm >> 3)));
+            return true;
+        }
+
+        // Implicit use of accumulator.
+        public static Mutator a(string sWidth)
+        {
+            return (u, d) =>
+            {
+                int i = 0;
+                var op = new RegisterOperand(d.RegFromBitsRexW(0, d.OperandWidth(sWidth, ref i)));
+                d.decodingContext.ops.Add(op);
+                return true;
+            };
+        }
+
+        private static readonly Mutator ab = a("b");
+        private static readonly Mutator av = a("v");
+        private static readonly Mutator aw = a("w");
+
+        private static bool b(byte op, X86Disassembler d)
+        {
+            d.decodingContext.iWidth = PrimitiveType.Byte;
+            return true;
+        }
+
+        // Implicit use of CL.
+        private static bool c(byte u, X86Disassembler d)
+        {
+            d.decodingContext.ops.Add(new RegisterOperand(Registers.cl));
+            return true;
+        }
+
+        // Implicit use of DX or EDX.
+        private static Mutator d(string sWidth)
+        {
+            return (u, d) =>
+            {
+                int i = 0;
+                var width = d.OperandWidth(sWidth, ref i);
+                var op = new RegisterOperand(d.RegFromBitsRexW(2, width));
+                d.decodingContext.ops.Add(op);
+                return true;
+            };
+        }
+
+        private static readonly Mutator dw = d("w");
+
+        private static bool n1(byte u, X86Disassembler d)
+        {
+            var op = new ImmediateOperand(Constant.Byte(1));
+            d.decodingContext.ops.Add(op);
+            return true;
+        }
+
+        private static bool n3(byte u, X86Disassembler d)
+        {
+            var op = new ImmediateOperand(Constant.Byte(3));
+            d.decodingContext.ops.Add(op);
+            return true;
+        }
+
+        // Register encoded as last 3 bits of instruction.
+        private static Mutator r(string sWidth)
+        {
+            return (u, d) =>
+            {
+                int i = 0;
+                d.decodingContext.iWidth =
+                    d.OperandWidth(sWidth, ref i);
+                var op = new RegisterOperand(d.RegFromBitsRexB(
+                    u, 
+                    d.decodingContext.iWidth));
+                d.decodingContext.ops.Add(op);
+                return true;
+            };
+        }
+
+        private static readonly Mutator rb = r("b");
+        private static readonly Mutator rq = r("q");
+        private static readonly Mutator rv = r("v");
+        private static readonly Mutator rw = r("w");
+
+
+        private static Mutator Reg(RegisterStorage reg)
+        {
+            var op = new RegisterOperand(reg);
+            return (u, d) =>
+            {
+                d.decodingContext.ops.Add(op);
+                return true;
+            };
+        }
+        private static readonly Mutator s0 = Reg(Registers.es);
+        private static readonly Mutator s1 = Reg(Registers.cs);
+        private static readonly Mutator s2 = Reg(Registers.ss);
+        private static readonly Mutator s3 = Reg(Registers.ds);
+        private static readonly Mutator s4 = Reg(Registers.fs);
+        private static readonly Mutator s5 = Reg(Registers.gs);
+
         public static InstructionDecoder Instr(Opcode op)
         {
-            return new InstructionDecoder(op, InstrClass.Linear, "");
+            return new InstructionDecoder(op, InstrClass.Linear);
         }
 
-        public static InstructionDecoder Instr(Opcode op, string format)
+        public static InstructionDecoder Instr(Opcode op, params Mutator [] mutators)
         {
-            return new InstructionDecoder(op, InstrClass.Linear, format);
+            return new InstructionDecoder(op, InstrClass.Linear, mutators);
         }
 
-        public static InstructionDecoder Instr(Opcode op, InstrClass iclass, string format)
+        public static InstructionDecoder Instr(Opcode op, InstrClass iclass, params Mutator [] mutators)
         {
-            return new InstructionDecoder(op, iclass, format);
+            return new InstructionDecoder(op, iclass, mutators);
         }
 
         public static PrefixedDecoder Prefixed(Opcode op, string format)
@@ -566,262 +1103,24 @@ namespace Reko.Arch.X86
             return new NyiDecoder(message);
         }
 
-
 		/// <summary>
 		/// If the ModR/M byte hasn't been read yet, do so now.
 		/// </summary>
 		/// <returns></returns>
 		private bool TryEnsureModRM(out byte modRm)
 		{
-            if (!this.currentDecodingContext.IsModRegMemByteActive())
+            if (!this.decodingContext.IsModRegMemByteActive())
             {
                 if (!rdr.TryReadByte(out byte modrm))
                 {
                     modRm = 0;
                     return false;
                 }
-                this.currentDecodingContext.ModRegMemByte = modrm;
+                this.decodingContext.ModRegMemByte = modrm;
             }
-            modRm = this.currentDecodingContext.ModRegMemByte;
+            modRm = this.decodingContext.ModRegMemByte;
             return true;
 		}
-
-        private X86Instruction DecodeOperands(Opcode opcode, byte op, string strFormat, InstrClass iclass)
-        {
-            if (strFormat == null)
-                return null;
-            MachineOperand pOperand;
-            PrimitiveType width = null;
-            PrimitiveType iWidth = dataWidth;
-            byte modRm;
-            List<MachineOperand> ops = new List<MachineOperand>();
-            int i = 0;
-            while (i != strFormat.Length)
-            {
-                if (strFormat[i] == ',')
-                    ++i;
-
-                pOperand = null;
-                MemoryOperand memOp;
-                char chFmt = strFormat[i++];
-                switch (chFmt)
-                {
-                case '1':
-                    pOperand = new ImmediateOperand(Constant.Byte(1));
-                    break;
-                case '3':
-                    pOperand = new ImmediateOperand(Constant.Byte(3));
-                    break;
-                case 'A':		// Absolute memory address.
-                    ++i;
-                    if (!rdr.TryReadLeUInt16(out ushort off))
-                        return null;
-                    if (!rdr.TryReadLeUInt16(out ushort seg))
-                        return null;
-                    var addr = mode.CreateSegmentedAddress(seg, off);
-                    if (addr == null)
-                        return null;
-                    pOperand = new X86AddressOperand(addr);
-                    break;
-                case 'C':       // control register encoded in the reg field.
-                    ++i;
-                    if (!TryEnsureModRM(out modRm))
-                        return null;
-                    var creg = mode.GetControlRegister((modRm >> 3) & 7);
-                    if (creg == null)
-                        return null;
-                    pOperand = new RegisterOperand(creg);
-                    break;
-                case 'D':       // debug register encoded in the reg field.
-                    ++i;
-                    if (!TryEnsureModRM(out modRm))
-                        return null;
-                    var dreg = mode.GetDebugRegister((modRm >> 3) & 7);
-                    if (dreg == null)
-                        return null;
-                    pOperand = new RegisterOperand(dreg);
-                    break;
-                case 'E':		// memory or register operand specified by mod & r/m fields.
-                    width = OperandWidth(strFormat, ref i);
-                    ++i;
-                    pOperand = DecodeModRM(width, this.currentDecodingContext.SegmentOverride, GpRegFromBits);
-                    if (pOperand == null)
-                        return null;
-                    break;
-                case 'Q':		// memory or register MMX operand specified by mod & r/m fields.
-                    width = SseOperandWidth(strFormat, ref i);
-                    pOperand = DecodeModRM(width, this.currentDecodingContext.SegmentOverride, MmxRegFromBits);
-                    if (pOperand == null)
-                        return null;
-                    break;
-                case 'G':		// register operand specified by the reg field of the modRM byte.
-                    width = OperandWidth(strFormat, ref i);
-                    ++i;
-                    if (!TryEnsureModRM(out modRm))
-                        return null;
-                    pOperand = new RegisterOperand(RegFromBitsRexR(modRm >> 3, width, GpRegFromBits));
-                    break;
-                case 'H':       // If VEX encoding, use vvvv register.
-                    if (currentDecodingContext.IsVex)
-                    {
-                        width = SseOperandWidth(strFormat, ref i);
-                        pOperand = new RegisterOperand(XmmRegFromBits(currentDecodingContext.VexRegister, width));
-                    }
-                    else
-                    {
-                        i = strFormat.IndexOf(',', i);
-                    }
-                    break;
-                case 'N':       // MMX register operand specified by the r/m field of the modRM byte.
-                    width = SseOperandWidth(strFormat, ref i);
-                    if (!TryEnsureModRM(out modRm))
-                        return null;
-                    pOperand = new RegisterOperand(RegFromBitsRexR(modRm, width, MmxRegFromBits));
-                    break;
-                case 'P':		// MMX register operand specified by the reg field of the modRM byte.
-                    width = SseOperandWidth(strFormat, ref i);
-                    if (!TryEnsureModRM(out modRm))
-                        return null;
-                    pOperand = new RegisterOperand(RegFromBitsRexR(modRm >> 3, width, MmxRegFromBits));
-                    break;
-                case 'I':		// Immediate operand.
-                    if (strFormat[i] == 'x')
-                    {
-                        iWidth = width; // Use width of the previous operand.
-                    }
-                    else
-                    {
-                        width = OperandWidth(strFormat, ref i); //  Don't use the width of the previous operand.
-                    }
-                    ++i;
-                    pOperand = CreateImmediateOperand(width, dataWidth);
-                    if (pOperand == null)
-                        return null;
-                    break;
-                case 'L': // The upper 4 bits of the 8-bit immediate selects a 128-bit XMM register or a 256-bit YMM register, determined
-                          // by operand type.
-                    if (!rdr.TryReadByte(out var lReg))
-                        return null;
-                    if (strFormat[i] == 'x')
-                    {
-                        iWidth = width; // Use width of the previous operand.
-                    }
-                    else
-                    {
-                        width = OperandWidth(strFormat, ref i); //  Don't use the width of the previous operand.
-                    }
-                    ++i;
-                    pOperand = new RegisterOperand(XmmRegFromBits((lReg >> 4) & 0xF, width));
-                    break;
-                case 'J':		// Relative ("near") jump.
-                    width = OperandWidth(strFormat, ref i);
-                    ++i;
-                    Constant cOffset;
-                    if (!rdr.TryRead(width, out cOffset))
-                        return null;
-                    long jOffset = cOffset.ToInt64();
-                    ulong uAddr = (ulong) ((long)rdr.Address.Offset + jOffset);
-                    if (defaultAddressWidth.BitSize == 64)      //$REVIEW: not too keen on the switch statement here.
-                        pOperand = AddressOperand.Ptr64(uAddr);
-                    else if (defaultAddressWidth.BitSize == 32)
-                        pOperand = AddressOperand.Ptr32((uint)uAddr);
-                    else
-                        pOperand = new ImmediateOperand(Constant.Create(defaultDataWidth, uAddr));
-                    break;
-                case 'M':		// modRM may only refer to memory.
-                    width = OperandWidth(strFormat, ref i);
-                    ++i;
-                    if (!TryEnsureModRM(out modRm))
-                        return null;
-                    if ((modRm & 0xC0) == 0xC0)
-                        return null;
-                    pOperand = DecodeModRM(dataWidth, this.currentDecodingContext.SegmentOverride, GpRegFromBits) as MemoryOperand;
-                    if (pOperand == null)
-                        return null;
-                    break;
-                case 'O':		// Offset of the operand is encoded directly after the opcode.
-                    width = OperandWidth(strFormat, ref i);
-                    ++i;
-                    if (!rdr.TryReadLe(addressWidth, out var offset))
-                        return null;
-                    pOperand = memOp = new MemoryOperand(width, offset);
-                    memOp.SegOverride = this.currentDecodingContext.SegmentOverride;
-                    break;
-                case 'R':	// register operand specified by the mod field of the modRM byte.
-                    width = OperandWidth(strFormat, ref i);
-                    ++i;
-                    if (!TryEnsureModRM(out modRm))
-                        return null;
-                    pOperand = new RegisterOperand(RegFromBitsRexR(modRm, width, GpRegFromBits));
-                    break;
-                case 'S':		// Segment register encoded by reg field of modRM byte.
-                    ++i;        // Skip over the 'w'.
-                    if (!TryEnsureModRM(out modRm))
-                        return null;
-                    pOperand = new RegisterOperand(SegFromBits(modRm >> 3));
-                    break;
-                case 'U':		// XMM operand specified by the modRm field of the modRM byte.
-                    width = SseOperandWidth(strFormat, ref i);
-                    if (!TryEnsureModRM(out modRm))
-                        return null;
-                    pOperand = new RegisterOperand(RegFromBitsRexR(modRm, width, XmmRegFromBits));
-                    break;
-                case 'V':		// XMM operand specified by the reg field of the modRM byte.
-                    width = SseOperandWidth(strFormat, ref i);
-                    if (!TryEnsureModRM(out modRm))
-                        return null;
-                    pOperand = new RegisterOperand(RegFromBitsRexR(modRm >> 3, width, XmmRegFromBits));
-                    break;
-                case 'W':		// memory or XMM operand specified by mod & r/m fields.
-                    width = SseOperandWidth(strFormat, ref i);
-                    pOperand = DecodeModRM(width, this.currentDecodingContext.SegmentOverride, XmmRegFromBits);
-                    break;
-                case 'a':		// Implicit use of accumulator.
-                    pOperand = new RegisterOperand(RegFromBitsRexW(0, OperandWidth(strFormat, ref i)));
-                    ++i;
-                    break;
-                case 'b':
-                    iWidth = PrimitiveType.Byte;
-                    pOperand = null;
-                    break;
-                case 'c':		// Implicit use of CL.
-                    pOperand = new RegisterOperand(Registers.cl);
-                    break;
-                case 'd':		// Implicit use of DX or EDX.
-                    width = OperandWidth(strFormat, ref i);
-                    ++i;
-                    pOperand = new RegisterOperand(RegFromBitsRexW(2, width));
-                    break;
-                case 'r':		// Register encoded as last 3 bits of instruction.
-                    iWidth = width = OperandWidth(strFormat, ref i);
-                    ++i;
-                    pOperand = new RegisterOperand(RegFromBitsRexB(op, width));
-                    break;
-                case 's':		// Segment encoded as next byte of the format string.
-                    pOperand = new RegisterOperand(SegFromBits(strFormat[i++] - '0'));
-                    break;
-                case 'F':		// Floating-point ST(x)
-                    if (!TryEnsureModRM(out modRm))
-                        return null;
-                    pOperand = new FpuOperand(modRm & 0x07);
-                    break;
-                case 'f':		// ST(0)
-                    pOperand = new FpuOperand(0);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(string.Format("Unknown format specifier '{0}' at position {1} of format string '{2}'.", chFmt, i, strFormat));
-                }
-                if (pOperand != null)
-                {
-                    ops.Add(pOperand);
-                }
-            }
-            return new X86Instruction(opcode, iclass, iWidth, addressWidth, ops.ToArray())
-            {
-                repPrefix = this.currentDecodingContext.F2Prefix ? 2 :
-                            this.currentDecodingContext.F3Prefix ? 3 : 0
-            };
-        }
 
 		/// <summary>
 		/// Returns the operand width of the operand type.
@@ -835,61 +1134,67 @@ namespace Reko.Arch.X86
 			default:
 				throw new ArgumentOutOfRangeException(string.Format("Unknown operand width specifier '{0}'.", fmt[i]));
 			case 'b':
-				dataWidth = PrimitiveType.Byte;
+				decodingContext.dataWidth = PrimitiveType.Byte;
 				break;
             case 'B':
-                dataWidth = PrimitiveType.Bcd80;
+                decodingContext.dataWidth = PrimitiveType.Bcd80;
                 break;
 			case 'v':
 				break;
 			case 'w':
-				dataWidth = PrimitiveType.Word16;
+				decodingContext.dataWidth = PrimitiveType.Word16;
 				break;
 			case 'd':
                 if (i < fmt.Length - 1 && fmt[i + 1] == 'q')
                 {
                     ++i;
-                    dataWidth = PrimitiveType.Word128;
+                    decodingContext.dataWidth = PrimitiveType.Word128;
                 }
                 else
                 {
-                    dataWidth = PrimitiveType.Word32;
+                    decodingContext.dataWidth = PrimitiveType.Word32;
                 }
 				break;
 			case 'p':
-                if (i < fmt.Length -1 && fmt[i+1] == 's')
+                if (i < fmt.Length - 1 &&
+                    (fmt[i + 1] == 's' || fmt[i + 1] == 'd'))
                 {
                     ++i;
-                    dataWidth =  this.currentDecodingContext.VexLong ? PrimitiveType.Word256 : PrimitiveType.Word128;
+                    decodingContext.dataWidth =  this.decodingContext.VexLong ? PrimitiveType.Word256 : PrimitiveType.Word128;
                 }
                 else
                 {
-				dataWidth = PrimitiveType.Ptr32;		// Far pointer.
+				decodingContext.dataWidth = PrimitiveType.Ptr32;		// Far pointer.
                 }
 				break;
 			case 'f':
-				dataWidth = PrimitiveType.Real32;
+				decodingContext.dataWidth = PrimitiveType.Real32;
 				break;
 			case 'g':
-				dataWidth = PrimitiveType.Real64;
+				decodingContext.dataWidth = PrimitiveType.Real64;
 				break;
 			case 'h':
-				dataWidth = PrimitiveType.Real80;
+				decodingContext.dataWidth = PrimitiveType.Real80;
 				break;
             case 'q':
-                dataWidth = PrimitiveType.Word64;
+                decodingContext.dataWidth = PrimitiveType.Word64;
                 break;
             case 's':
-                dataWidth = this.dataWidth.BitSize == 64 ? PrimitiveType.CreateWord(80) : PrimitiveType.CreateWord(48);
+                decodingContext.dataWidth = this.decodingContext.dataWidth.BitSize == 64 ? PrimitiveType.CreateWord(80) : PrimitiveType.CreateWord(48);
+                break;
+            case 'x':
+                decodingContext.dataWidth = this.decodingContext.VexLong
+                    ? PrimitiveType.Word256
+                    : PrimitiveType.Word128;
                 break;
             case 'y':
-                dataWidth = (this.isRegisterExtensionEnabled && this.currentDecodingContext.RegisterExtension.FlagWideValue) ? PrimitiveType.Word64: PrimitiveType.Word32;
+                decodingContext.dataWidth = (this.isRegisterExtensionEnabled && this.decodingContext.RegisterExtension.FlagWideValue) ? PrimitiveType.Word64: PrimitiveType.Word32;
                 break;
             case 'z':
-                dataWidth = this.dataWidth.BitSize == 64 ? PrimitiveType.Int32 : this.dataWidth;
+                decodingContext.dataWidth = this.decodingContext.dataWidth.BitSize == 64 ? PrimitiveType.Int32 : this.decodingContext.dataWidth;
                 break;
             }
-			return dataWidth;
+			return decodingContext.dataWidth;
 		}
 
         private PrimitiveType SseOperandWidth(string fmt, ref int i)
@@ -905,9 +1210,9 @@ namespace Reko.Arch.X86
             case 'p':
                 switch (fmt[i++])
                 {
-                case 'd': return this.currentDecodingContext.VexLong ? PrimitiveType.Word256 : PrimitiveType.Word128; //$TODO: this should be array[2] of double32
-                case 'i': return this.currentDecodingContext.VexLong ? PrimitiveType.Word256 : PrimitiveType.Word128; //$TODO: this should be array[4] of int32
-                case 's': return this.currentDecodingContext.VexLong ? PrimitiveType.Word256 : PrimitiveType.Word128; //$TODO: this should be array[4] of real32
+                case 'd': return this.decodingContext.VexLong ? PrimitiveType.Word256 : PrimitiveType.Word128; //$TODO: this should be array[2] of double32
+                case 'i': return this.decodingContext.VexLong ? PrimitiveType.Word256 : PrimitiveType.Word128; //$TODO: this should be array[4] of int32
+                case 's': return this.decodingContext.VexLong ? PrimitiveType.Word256 : PrimitiveType.Word128; //$TODO: this should be array[4] of real32
                 default: throw new NotImplementedException(string.Format("Unknown operand width p{0}", fmt[i-1]));
                 }
             case 'q':
@@ -925,11 +1230,11 @@ namespace Reko.Arch.X86
                 default: throw new NotImplementedException(string.Format("Unknown operand width s{0}", fmt[i - 1]));
                 }
             case 'x':
-                return this.currentDecodingContext.VexLong
+                return this.decodingContext.VexLong
                     ? PrimitiveType.Word256
                     : PrimitiveType.Word128;
             case 'y':
-                return this.currentDecodingContext.SizeOverridePrefix
+                return this.decodingContext.SizeOverridePrefix
                     ? PrimitiveType.Word128
                     : PrimitiveType.Word64;
             default: throw new NotImplementedException(string.Format("Unknown operand width {0}", fmt[i-1]));
@@ -972,15 +1277,15 @@ namespace Reko.Arch.X86
             if (!TryEnsureModRM(out byte modRm))
                 return null;
 
-			int  rm = this.currentDecodingContext.ModRegMemByte & 0x07;
-			int  mod = this.currentDecodingContext.ModRegMemByte >> 6;
+			int  rm = this.decodingContext.ModRegMemByte & 0x07;
+			int  mod = this.decodingContext.ModRegMemByte >> 6;
 
 			RegisterStorage b;
             RegisterStorage idx;
 			byte scale = 1;
 			PrimitiveType offsetWidth = null;
 
-			if (addressWidth == PrimitiveType.Word16)
+			if (decodingContext.addressWidth == PrimitiveType.Word16)
 			{
 				// 16-bit addressing modes are weird.
 
@@ -1014,7 +1319,6 @@ namespace Reko.Arch.X86
 			}
 			else 
 			{
-				b = RegFromBitsRexR(rm, addressWidth, GpRegFromBits);
 				idx = RegisterStorage.None;
 
 				switch (mod)
@@ -1035,17 +1339,22 @@ namespace Reko.Arch.X86
 					}
 					else
 					{
-						offsetWidth = null;
+                        b = RegFromBitsRexB(rm, decodingContext.addressWidth, GpRegFromBits);
+                        offsetWidth = null;
 					}
 					break;
 				case 1:
-					offsetWidth = PrimitiveType.SByte;
+                    b = RegFromBitsRexB(rm, decodingContext.addressWidth, GpRegFromBits);
+                    offsetWidth = PrimitiveType.SByte;
 					break;
 				case 2:
-					offsetWidth = PrimitiveType.Word32;
+                    b = RegFromBitsRexB(rm, decodingContext.addressWidth, GpRegFromBits);
+                    offsetWidth = PrimitiveType.Word32;
 					break;
 				case 3:
 					return new RegisterOperand(RegFromBitsRexB(rm, dataWidth, regFn));
+                default:
+                    throw new InvalidOperationException("Impossiburu.");
 				}
 
 				// Handle possible s-i-b byte.
@@ -1056,18 +1365,18 @@ namespace Reko.Arch.X86
 
                     if (!rdr.TryReadByte(out byte sib))
                         return null;
-					if (((this.currentDecodingContext.ModRegMemByte & 0xC0) == 0) && ((sib & 0x7) == 5))
+					if (((this.decodingContext.ModRegMemByte & 0xC0) == 0) && ((sib & 0x7) == 5))
 					{
 						offsetWidth = PrimitiveType.Word32;
 						b = RegisterStorage.None;
 					}
 					else
 					{
-						b = RegFromBitsRexB(sib, addressWidth, GpRegFromBits);
+						b = RegFromBitsRexB(sib, decodingContext.addressWidth, GpRegFromBits);
 					}
 			
 					int i = (sib >> 3) & 0x7;
-					idx = (i == 0x04) ? RegisterStorage.None : RegFromBitsRexX(i, addressWidth, GpRegFromBits);
+					idx = (i == 0x04) ? RegisterStorage.None : RegFromBitsRexX(i, decodingContext.addressWidth, GpRegFromBits);
 					scale = (byte) (1 << (sib >> 6));
 				}
 			}
@@ -1109,12 +1418,12 @@ namespace Reko.Arch.X86
 		private static Decoder [] s_aOpRec0F38;
 		private static Decoder [] s_aOpRec0F3A;
         private static Decoder [] s_aOpRecGrp;
-		private static Decoder [] s_aFpOpRec;
+		private static Decoder [] s_aFpDecoders;
         private static Dictionary<Opcode, Opcode> s_mpVex;
 
         static X86Disassembler()
 		{
-            s_invalid = new InstructionDecoder(Opcode.illegal, InstrClass.Invalid, "");
+            s_invalid = Instr(Opcode.illegal, InstrClass.Invalid);
             s_nyi = nyi("This could be invalid or it could be not yet implemented");
             s_aOpRec = CreateOnebyteOprecs();
             s_aOpRec0F = CreateTwobyteOprecs();
@@ -1122,9 +1431,13 @@ namespace Reko.Arch.X86
             s_aOpRec0F3A = Create0F3AOprecs();
 
             s_aOpRecGrp = CreateGroupOprecs();
-            s_aFpOpRec = CreateFpuOprecs();
+            s_aFpDecoders = CreateFpuOprecs();
             s_mpVex = CreateVexMapping();
-            Debug.Assert(s_aFpOpRec.Length == 8 * 0x48);
+            Debug.Assert(s_aFpDecoders.Length == 8 * 0x48);
 		}
-	}
+
+        public delegate bool Mutator(byte opcode, X86Disassembler dasm);
+
+    }
+
 }	

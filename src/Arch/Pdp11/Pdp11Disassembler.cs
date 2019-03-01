@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,8 +31,9 @@ namespace Reko.Arch.Pdp11
 {
     public class Pdp11Disassembler : DisassemblerBase<Pdp11Instruction>
     {
-        private Pdp11Architecture arch;
-        private EndianImageReader rdr;
+        private readonly Pdp11Architecture arch;
+        private readonly EndianImageReader rdr;
+        private readonly List<MachineOperand> ops;
         private Pdp11Instruction instrCur;
         private PrimitiveType dataWidth;
 
@@ -40,6 +41,7 @@ namespace Reko.Arch.Pdp11
         {
             this.rdr = rdr;
             this.arch = arch;
+            this.ops = new List<MachineOperand>(2);
         }
 
         public override Pdp11Instruction DisassembleInstruction()
@@ -47,10 +49,12 @@ namespace Reko.Arch.Pdp11
             if (!rdr.IsValid)
                 return null;
             var addr = rdr.Address;
-            ushort opcode;
-            if (!rdr.TryReadLeUInt16(out opcode))
+            if (!rdr.TryReadLeUInt16(out ushort opcode))
                 return null;
-            dataWidth = DataWidthFromSizeBit(opcode & 0x8000u);
+            if (addr.ToLinear() == 0x277A)
+                addr.ToString();
+            ops.Clear();
+            dataWidth = PrimitiveType.Word16;
             var decoder = decoders[(opcode >> 0x0C) & 0x00F];
             if (decoder != null)
             {
@@ -70,85 +74,117 @@ namespace Reko.Arch.Pdp11
             return instrCur;
         }
 
-        private Pdp11Instruction DecodeOperands(ushort wOpcode, Opcode opcode, InstrClass iclass, string fmt)
+        #region Mutators
+        private static bool b(uint uInstr, Pdp11Disassembler dasm)
         {
-            List<MachineOperand> ops = new List<MachineOperand>(2);
-            int i = 0;
-            dataWidth = PrimitiveType.Word16;
-            if (fmt.Length == 0)
-            {
-                return new Pdp11Instruction
-                {
-                    Opcode = opcode,
-                    IClass = iclass,
-                };
-            }
-            switch (fmt[i])
-            {
-            case 'b': dataWidth = PrimitiveType.Byte; i += 2; break;
-            case 'w': dataWidth = PrimitiveType.Word16; i += 2; break;
-            }
-            while (i != fmt.Length)
-            {
-                if (fmt[i] == ',')
-                    ++i;
-                MachineOperand op;
-                switch (fmt[i++])
-                {
-                case 'E': op = this.DecodeOperand(wOpcode); break;
-                case 'e': op = this.DecodeOperand(wOpcode >> 6); break;
-                case 'r': op = new RegisterOperand(arch.GetRegister((wOpcode >> 6) & 7)); break;
-                case 'I': op = Imm6(wOpcode); break;
-                case 'F': op = this.DecodeOperand(wOpcode, true); break;
-                case 'f': op = FpuAccumulator(wOpcode); break;
-                default: throw new NotImplementedException();
-                }
-                if (op == null)
-                {
-                    return new Pdp11Instruction
-                    {
-                        Opcode = Opcode.illegal,
-                        IClass = InstrClass.Invalid
-                    };
-                }
-                ops.Add(op);
-            }
-            var instr = new Pdp11Instruction
-            {
-                Opcode = opcode,
-                IClass = iclass,
-                DataWidth = dataWidth,
-                op1 = ops.Count > 0 ? ops[0] : null,
-                op2 = ops.Count > 1 ? ops[1] : null,
-            };
-            return instr;
+            dasm.dataWidth = PrimitiveType.Byte;
+            return true;
+        }
+        private static bool w(uint uInstr, Pdp11Disassembler dasm)
+        {
+            dasm.dataWidth = PrimitiveType.Word16;
+            return true;
         }
 
-        abstract class OpRec
+        private static bool E(uint wOpcode, Pdp11Disassembler dasm)
+        {
+
+            var op = dasm.DecodeOperand(wOpcode);
+            if (op == null)
+                return false;
+            dasm.ops.Add(op);
+            return true;
+        }
+
+        private static bool e(uint wOpcode, Pdp11Disassembler dasm)
+        {
+            var op = dasm.DecodeOperand(wOpcode >> 6);
+            if (op == null)
+                return false;
+            dasm.ops.Add(op);
+            return true;
+        }
+
+        private static bool r(uint wOpcode, Pdp11Disassembler dasm)
+        {
+            var op = new RegisterOperand(dasm.arch.GetRegister(((int)wOpcode >> 6) & 7));
+            if (op == null)
+                return false;
+            dasm.ops.Add(op);
+            return true;
+        }
+
+        private static bool I(uint wOpcode, Pdp11Disassembler dasm)
+        {
+            var op = dasm.Imm6((ushort)wOpcode);
+            if (op == null)
+                return false;
+            dasm.ops.Add(op);
+            return true;
+        }
+
+        private static bool F(uint wOpcode, Pdp11Disassembler dasm)
+        {
+            var op = dasm.DecodeOperand(wOpcode, true);
+            if (op == null)
+                return false;
+            dasm.ops.Add(op);
+            return true;
+        }
+
+        private static bool f(uint wOpcode, Pdp11Disassembler dasm)
+        {
+            var op = dasm.FpuAccumulator(wOpcode);
+            if (op == null)
+                return false;
+            dasm.ops.Add(op);
+            return true;
+        }
+        
+        #endregion
+
+        abstract class Decoder
         {
             public abstract Pdp11Instruction Decode(ushort opcode, Pdp11Disassembler dasm);
         }
 
-        class FormatOpRec : OpRec
+        class InstrDecoder : Decoder
         {
-            private readonly string fmt;
             private readonly InstrClass iclass;
             private readonly Opcode opcode;
+            private readonly Mutator<Pdp11Disassembler>[] mutators;
 
-            public FormatOpRec(string fmt, Opcode op, InstrClass iclass = InstrClass.Linear)
+            public InstrDecoder(Opcode op, InstrClass iclass, params Mutator<Pdp11Disassembler>[] mutators)
             {
-                this.fmt = fmt;
                 this.opcode = op;
                 this.iclass = iclass;
+                this.mutators = mutators;
             }
 
             public override Pdp11Instruction Decode(ushort opcode, Pdp11Disassembler dasm)
             {
-                return dasm.DecodeOperands(opcode, this.opcode, iclass, fmt);
+                foreach (var m in mutators)
+                {
+                    if (!m(opcode, dasm))
+                        return new Pdp11Instruction
+                        {
+                            Opcode = Opcode.illegal,
+                            IClass = InstrClass.Invalid,
+                        };
+                }
+                var instr = new Pdp11Instruction
+                {
+                    Opcode = this.opcode,
+                    IClass = iclass,
+                    DataWidth = dasm.dataWidth,
+                    op1 = dasm.ops.Count > 0 ? dasm.ops[0] : null,
+                    op2 = dasm.ops.Count > 1 ? dasm.ops[1] : null,
+                };
+                return instr;
             }
         }
 
-        class FnOpRec : OpRec
+        class FnOpRec : Decoder
         {
             private Func<ushort, Pdp11Disassembler, Pdp11Instruction> fn;
 
@@ -163,54 +199,66 @@ namespace Reko.Arch.Pdp11
             }
         }
 
-        private static OpRec[] decoders;
-        private static OpRec[] extraDecoders;
-        private static OpRec[] fpu2Decoders;
+        private static InstrDecoder Instr(Opcode opcode, params Mutator<Pdp11Disassembler> [] mutators)
+        {
+            return new InstrDecoder(opcode, InstrClass.Linear, mutators);
+        }
+
+        private static InstrDecoder Instr(Opcode opcode, InstrClass iclass, params Mutator<Pdp11Disassembler>[] mutators)
+        {
+            return new InstrDecoder(opcode, iclass, mutators);
+        }
+
+        private static readonly Decoder[] decoders;
+        private static readonly Decoder[] extraDecoders;
+        private static readonly Decoder[] fpu2Decoders;
 
         static Pdp11Disassembler()
         {
-            decoders = new OpRec[] {
+            var illegal = Instr(Opcode.illegal, InstrClass.Invalid);
+            
+            decoders = new Decoder[] {
                 null,
-                new FormatOpRec("w:e,E", Opcode.mov),
-                new FormatOpRec("e,E", Opcode.cmp),
-                new FormatOpRec("e,E", Opcode.bit),
-                new FormatOpRec("e,E", Opcode.bic),
-                new FormatOpRec("e,E", Opcode.bis),
-                new FormatOpRec("w:e,E", Opcode.add),
+                Instr(Opcode.mov, w,e,E),
+                Instr(Opcode.cmp, e,E),
+                Instr(Opcode.bit, e,E),
+                Instr(Opcode.bic, e,E),
+                Instr(Opcode.bis, e,E),
+                Instr(Opcode.add, w,e,E),
                 null,
 
                 null,
-                new FormatOpRec("b:e,E", Opcode.movb),
-                new FormatOpRec("e,E", Opcode.cmp),
-                new FormatOpRec("e,E", Opcode.bit),
-                new FormatOpRec("e,E", Opcode.bic),
-                new FormatOpRec("e,E", Opcode.bis),
-                new FormatOpRec("w:e,E", Opcode.sub),
+                Instr(Opcode.movb, b,e,E),
+                Instr(Opcode.cmp, e,E),
+                Instr(Opcode.bit, e,E),
+                Instr(Opcode.bic, e,E),
+                Instr(Opcode.bis, e,E),
+                Instr(Opcode.sub, w,e,E),
                 null,
             };
 
-            extraDecoders = new OpRec[]
+            extraDecoders = new Decoder[]
             {
-                new FormatOpRec("E,r", Opcode.mul),
-                new FormatOpRec("E,r", Opcode.div),
-                new FormatOpRec("E,r", Opcode.ash),
-                new FormatOpRec("E,r", Opcode.ashc),
-                new FormatOpRec("E,r", Opcode.xor),
+                Instr(Opcode.mul, E,r),
+                Instr(Opcode.div, E,r),
+                Instr(Opcode.ash, E,r),
+                Instr(Opcode.ashc, E,r),
+                Instr(Opcode.xor, E,r),
                 new FnOpRec(FpuArithmetic),
-                new FormatOpRec("", Opcode.illegal),
-                new FormatOpRec("r,I", Opcode.sob )
+                illegal,
+                Instr(Opcode.sob , r,I)
             };
 
-            fpu2Decoders = new OpRec[16]
+            fpu2Decoders = new Decoder[16]
             {
-                new FormatOpRec("", Opcode.illegal),
+                illegal,
                 // 00 cfcc
                 // 01 setf
                 // 02 seti
                 // 09 setd
                 // 0A setl
 
-                new FormatOpRec("", Opcode.illegal),
+                illegal,
                 // 01 - ldfps
                 // 02 - stfps
                 // 03 - stst
@@ -218,27 +266,25 @@ namespace Reko.Arch.Pdp11
                 // 5 tstf
                 // 6 absf
                 //{  7, "F", Opcode.negf }, 
-                new FormatOpRec("F,f", Opcode.mulf),
-                new FormatOpRec("F,f", Opcode.modf),
+                Instr(Opcode.mulf, F,f),
+                Instr(Opcode.modf, F,f),
 
-                new FormatOpRec("F,f", Opcode.addf),
-                new FormatOpRec("", Opcode.illegal),
-                new FormatOpRec("F,f", Opcode.subf),
-                new FormatOpRec("F,f", Opcode.cmpf),
+                Instr(Opcode.addf, F,f),
+                illegal,
+                Instr(Opcode.subf, F,f),
+                Instr(Opcode.cmpf, F,f),
 
-                new FormatOpRec("", Opcode.illegal),
-                new FormatOpRec("f,F", Opcode.divf),
-                new FormatOpRec("f,E", Opcode.stexp),
-                new FormatOpRec("f,F", Opcode.stcdi),
+                illegal,
+                Instr(Opcode.divf, f,F),
+                Instr(Opcode.stexp, f,E),
+                Instr(Opcode.stcdi, f,F),
 
-                new FormatOpRec("f,F", Opcode.stcfd),
-                new FormatOpRec("F,f", Opcode.ldexp),
-                new FormatOpRec("F,f", Opcode.ldcid),
-                new FormatOpRec("F,f", Opcode.ldcfd),
+                Instr(Opcode.stcfd, f,F),
+                Instr(Opcode.ldexp, F,f),
+                Instr(Opcode.ldcid, F,f),
+                Instr(Opcode.ldcfd, F,f),
             };
         }
-
-
 
         private MachineOperand Imm6(ushort opcode)
         {
@@ -246,9 +292,9 @@ namespace Reko.Arch.Pdp11
             return new AddressOperand(rdr.Address - offset);
         }
 
-        private RegisterOperand FpuAccumulator(int opcode)
+        private RegisterOperand FpuAccumulator(uint opcode)
         {
-            var freg= arch.GetFpuRegister(opcode & 0x7);
+            var freg= arch.GetFpuRegister((int)opcode & 0x7);
             if (freg == null)
                 return null;
             return new RegisterOperand(freg);
@@ -310,7 +356,7 @@ namespace Reko.Arch.Pdp11
             case 0x002:
                 switch (opcode & 0x38)
                 {
-                case 0: op1 = dasm.DecodeOperand(opcode & 7); oc = Opcode.rts; iclass = InstrClass.Transfer; break;
+                case 0: op1 = dasm.DecodeOperand(opcode & 7u); oc = Opcode.rts; iclass = InstrClass.Transfer; break;
                 case 3: op1 = dasm.DecodeOperand(opcode); oc = Opcode.spl; break;
                 case 0x20:
                 case 0x28:
@@ -492,10 +538,10 @@ namespace Reko.Arch.Pdp11
         /// </summary>
         /// <param name="operandBits"></param>
         /// <returns>A decoded operand, or null if invalid.</returns>
-        private MachineOperand DecodeOperand(int operandBits, bool fpuReg = false)
+        private MachineOperand DecodeOperand(uint operandBits, bool fpuReg = false)
         {
             ushort u;
-            var reg = this.arch.GetRegister(operandBits & 7);
+            var reg = this.arch.GetRegister((int)operandBits & 7);
             //Debug.Print("operandBits {0:X} {1:X} ", (operandBits >> 3) & 7, operandBits & 7);
             if (reg == Registers.pc)
             {

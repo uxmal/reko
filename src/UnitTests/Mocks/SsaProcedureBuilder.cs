@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 Pavel Tomin.
+ * Copyright (C) 1999-2019 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Reko.UnitTests.Mocks
 {
@@ -40,7 +41,7 @@ namespace Reko.UnitTests.Mocks
     {
         public SsaState Ssa { get; private set; }
 
-        public SsaProcedureBuilder() : this("SsaProcedureBuilder")
+        public SsaProcedureBuilder() : this(nameof(SsaProcedureBuilder))
         {
         }
 
@@ -67,11 +68,27 @@ namespace Reko.UnitTests.Mocks
             return Reg(name, RegisterStorage(name, pt));
         }
 
+        public Identifier Flags(string name, FlagGroupStorage flags)
+        {
+            var id = new Identifier(name, flags.DataType, flags);
+            var sid = new SsaIdentifier(id, id, null, null, false);
+            Ssa.Identifiers.Add(id, sid);
+            return sid.Identifier;
+        }
+
         public override Identifier Local32(string name, int offset)
         {
             var local = base.Local32(name, offset);
             var sid = new SsaIdentifier(local, local, null, null, false);
             Ssa.Identifiers.Add(local, sid);
+            return sid.Identifier;
+        }
+
+        public Identifier Temp(string name, TemporaryStorage stg)
+        {
+            var id = new Identifier(stg.Name, stg.DataType, stg);
+            var sid = new SsaIdentifier(id, id, null, null, false);
+            Ssa.Identifiers.Add(id, sid);
             return sid.Identifier;
         }
 
@@ -94,6 +111,12 @@ namespace Reko.UnitTests.Mocks
         public override Statement Emit(Instruction instr)
         {
             var stm = base.Emit(instr);
+            ProcessInstruction(instr, stm);
+            return stm;
+        }
+
+        private Statement ProcessInstruction(Instruction instr, Statement stm)
+        {
             switch (instr)
             {
             case Assignment ass:
@@ -123,9 +146,46 @@ namespace Reko.UnitTests.Mocks
                     }
                 }
                 break;
+            case CallInstruction call:
+                foreach (var def in call.Definitions)
+                {
+                    var id = def.Identifier;
+                    Ssa.Identifiers[id].DefStatement = stm;
+                    Ssa.Identifiers[id].DefExpression = call.Callee;
+                }
+                break;
+            case DefInstruction def:
+                Ssa.Identifiers[def.Identifier].DefStatement = stm;
+                Ssa.Identifiers[def.Identifier].DefExpression = null;
+                break;
             }
             Ssa.AddUses(stm);
             return stm;
+        }
+
+        public void AddDefToEntryBlock(Identifier id)
+        {
+            var def = new DefInstruction(id);
+            var stm = Procedure.EntryBlock.Statements.Add(0, def);
+            ProcessInstruction(def, stm);
+        }
+
+        public new void AddUseToExitBlock(Identifier id)
+        {
+            var use = new UseInstruction(id);
+            var stm = Procedure.ExitBlock.Statements.Add(0, use);
+            ProcessInstruction(use, stm);
+        }
+
+        public void AddPhiToExitBlock(Identifier idDst, params (Expression, string)[] exprs)
+        {
+            var args = exprs
+                .Select(de => new PhiArgument(BlockOf(de.Item2), de.Item1))
+                .ToArray();
+            var phiFunc = new PhiFunction(idDst.DataType, args);
+            var phi = new PhiAssignment(idDst, phiFunc);
+            var stm = Procedure.ExitBlock.Statements.Add(0, phi);
+            ProcessInstruction(phi, stm);
         }
 
         private MemoryIdentifier AddMemIdToSsa(MemoryIdentifier idOld)

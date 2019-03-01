@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -104,7 +104,7 @@ namespace Reko.UnitTests.Arch.Mos6502
             BuildTest(0x48);
             AssertCode(
                 "0|L--|0200(1): 2 instructions",
-                "1|L--|s = s - 0x01",
+                "1|L--|s = s - 1",
                 "2|L--|Mem0[s:byte] = a");
         }
 
@@ -115,7 +115,7 @@ namespace Reko.UnitTests.Arch.Mos6502
             AssertCode(
                 "0|L--|0200(1): 3 instructions",
                 "1|L--|a = Mem0[s:byte]",
-                "2|L--|s = s + 0x01",
+                "2|L--|s = s + 1",
                 "3|L--|NZ = cond(a)");
         }
         [Test]
@@ -126,7 +126,7 @@ namespace Reko.UnitTests.Arch.Mos6502
                 "0|L--|0200(2): 3 instructions",
                 "1|L--|v3 = Mem0[0x0064 + x:byte] << 0x01",
                 "2|L--|Mem0[0x0064 + x:byte] = v3",
-                "3|L--|NCZ = cond(v3)");
+                "3|L--|NZC = cond(v3)");
         }
 
         [Test]
@@ -144,7 +144,7 @@ namespace Reko.UnitTests.Arch.Mos6502
             BuildTest(0xC1, 0x38);
             AssertCode(
                 "0|L--|0200(2): 1 instructions",
-                "1|L--|NCZ = cond(a - Mem0[Mem0[0x0038 + (uint16) x:ptr16]:byte])");
+                "1|L--|NZC = cond(a - Mem0[Mem0[0x0038 + (uint16) x:ptr16]:byte])");
         }
 
         [Test]
@@ -165,7 +165,7 @@ namespace Reko.UnitTests.Arch.Mos6502
                 "0|L--|0200(1): 3 instructions",
                 "1|L--|v3 = a << 0x01",
                 "2|L--|a = v3",
-                "3|L--|NCZ = cond(v3)");
+                "3|L--|NZC = cond(v3)");
         }
 
         [Test]
@@ -174,7 +174,7 @@ namespace Reko.UnitTests.Arch.Mos6502
             BuildTest(0x20, 0x13, 0xEA);
             AssertCode(
                 "0|T--|0200(3): 1 instructions",
-                "1|T--|call 0xEA13 (2)");
+                "1|T--|call EA13 (2)");
         }
 
         [Test]
@@ -184,6 +184,34 @@ namespace Reko.UnitTests.Arch.Mos6502
             AssertCode(
                 "0|L--|0200(2): 1 instructions",
                 "1|L--|Mem0[0x00D0:byte] = a");
+        }
+
+        [Test]
+        public void Rw6502_jmp_indirect()
+        {
+            BuildTest(0x6C, 0x34, 0x12);
+            AssertCode(
+                "0|T--|0200(3): 1 instructions",
+                "1|T--|goto Mem0[0x1234:word16]");
+        }
+
+        [Test]
+        public void Rw6502_plp()
+        {
+            BuildTest(0x28);	// plp
+            AssertCode(
+                "0|L--|0200(1): 2 instructions",
+                "1|L--|NVIDZC = Mem0[s:byte]",
+                "2|L--|s = s + 1");
+        }
+
+        [Test]
+        public void Rw6502_sta_y()
+        {
+            BuildTest(0x99, 0xF8, 0x00); // sta $00F8,y
+            AssertCode(
+                "0|L--|0200(3): 1 instructions",
+                "1|L--|Mem0[0x00F8 + y:byte] = a");
         }
     }
 }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Reko.UnitTests.ImageLoaders.BinHex
 {
@@ -40,37 +41,6 @@ namespace Reko.UnitTests.ImageLoaders.BinHex
             file.Write("(This file must be converted with BinHex 4.0)");
             stm = new MemoryStream();
             enc = new BinHexEncoder(file);
-
-        }
-
-        [Test]
-        public void DecodeOnes()
-        {
-            file.Write(":rrrr:");
-            BinHexDecoder decoder = CreateDecoder();
-            foreach (byte b in decoder.GetBytes())
-            {
-                stm.WriteByte(b);
-            }
-            Assert.AreEqual(3, stm.Position);
-            byte[] bytes = stm.GetBuffer();
-            Assert.AreEqual(0xFF, bytes[0]);
-            Assert.AreEqual(0xFF, bytes[1]);
-            Assert.AreEqual(0xFF, bytes[2]);
-        }
-
-        [Test]
-        public void ExpandRunLengthSequence()
-        {
-            file.Write(":");
-            Encode(0x42, 0x90, 0x03);
-            file.Write(":");
-            BinHexDecoder decoder = CreateDecoder();
-            IEnumerator<byte> e = decoder.GetBytes().GetEnumerator();
-            Assert.AreEqual(0x42, Get(e));
-            Assert.AreEqual(0x42, Get(e));
-            Assert.AreEqual(0x42, Get(e));
-            Assert.IsFalse(e.MoveNext());
         }
 
         private byte Get(IEnumerator<byte> e)
@@ -86,10 +56,68 @@ namespace Reko.UnitTests.ImageLoaders.BinHex
 
         private void Encode(params byte[] bytes)
         {
-            for (int i = 0;  i < bytes.Length; ++i)
+            enc.Encode(bytes);
+        }
+
+
+        [Test]
+        public void BinHex_DecodeOnes()
+        {
+            file.Write(":rrrr:");
+            BinHexDecoder decoder = CreateDecoder();
+            foreach (byte b in decoder.GetBytes())
             {
-                enc.Encode(bytes[i]);
+                stm.WriteByte(b);
             }
+            Assert.AreEqual(3, stm.Position);
+            byte[] bytes = stm.GetBuffer();
+            Assert.AreEqual(0xFF, bytes[0]);
+            Assert.AreEqual(0xFF, bytes[1]);
+            Assert.AreEqual(0xFF, bytes[2]);
+        }
+
+        [Test]
+        public void BinHex_ExpandRunLengthSequence()
+        {
+            file.Write(":");
+            Encode(0x42, 0x90, 0x03);
+            enc.Flush();
+            file.Write(":");
+            BinHexDecoder decoder = CreateDecoder();
+            IEnumerator<byte> e = decoder.GetBytes().GetEnumerator();
+            Assert.AreEqual(0x42, Get(e));
+            Assert.AreEqual(0x42, Get(e));
+            Assert.AreEqual(0x42, Get(e));
+            Assert.IsFalse(e.MoveNext());
+        }
+
+        [Test]
+        public void BinHex_Issue_729()
+        {
+            file.Write(":");
+            Encode(0x80, 0x00, 0x90, 0x06, 0x90, 0x00, 0x00);
+            enc.Flush();
+            file.Write(":");
+
+            var decoder = CreateDecoder();
+            var bytes = decoder.GetBytes();
+            Assert.AreEqual(
+                "80 00 00 00 00 00 00 90 00",
+                string.Join(" ", bytes.Select(b => $"{(int) b:X2}")));
+        }
+
+        [Test]
+        public void BinHex_Repeat_90()
+        {
+            file.Write(":");
+            Encode(0x2B, 0x90, 0x00, 0x90, 0x05);
+            enc.Flush();
+            file.Write(":");
+            var decoder = CreateDecoder();
+            var bytes = decoder.GetBytes();
+            Assert.AreEqual(
+                "2B 90 90 90 90 90",
+                string.Join(" ", bytes.Select(b => $"{(int) b:X2}")));
         }
     }
 }

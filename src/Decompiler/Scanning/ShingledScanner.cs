@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -140,7 +140,7 @@ namespace Reko.Scanning
             foreach (var segment in program.SegmentMap.Segments.Values
                 .Where(s => s.IsExecutable))
             {
-                var sc = ScanRange(segment.MemoryArea, segment.Address, segment.EndAddress, workToDo);
+                var sc = ScanRange(segment.MemoryArea, segment.Address, segment.Size, workToDo);
                 map.Add(segment, sc);
             }
             return map;
@@ -161,14 +161,17 @@ namespace Reko.Scanning
         /// <param name="segment"></param>
         /// <returns>An array of bytes classifying each byte as code or data.
         /// </returns>
-        public byte[] ScanRange(MemoryArea mem, Address addrStart, Address addrEnd, ulong workToDo)
+        public byte[] ScanRange(MemoryArea mem, Address addrStart, uint cbAlloc, ulong workToDo)
         {
-            var cbAlloc = addrEnd - addrStart;
+            const int ProgressBarUpdateInterval = 256 * 1024;
+
             var y = new byte[cbAlloc];
             // Advance by the instruction granularity.
             var step = program.Architecture.InstructionBitSize / 8;
             var delaySlot = InstrClass.None;
             var rewriterCache = new Dictionary<Address, IEnumerator<RtlInstructionCluster>>();
+            var instrCount = 0;
+
             for (var a = 0; a < y.Length; a += step)
             {
                 y[a] = MaybeCode;
@@ -262,14 +265,18 @@ namespace Reko.Scanning
                     AddInstruction(i);
                 }
                 SaveRewriter(addr + i.Length, dasm, rewriterCache);
-                eventListener.ShowProgress("Shingle scanning", sr.Instructions.Count, (int)workToDo);
+                if (++instrCount >= ProgressBarUpdateInterval)
+                {
+                    instrCount = 0;
+                    eventListener.ShowProgress("Shingle scanning", sr.FlatInstructions.Count, (int) workToDo);
+                }
             }
             return y;
         }
 
-        public void AddInstruction(RtlInstructionCluster i)
+        private void AddInstruction(RtlInstructionCluster i)
         {
-            sr.FlatInstructions.Add(i.Address, new ScanResults.instr
+            sr.FlatInstructions.Add(i.Address.ToLinear(), new ScanResults.instr
             {
                 addr = i.Address,
                 size = i.Length,
@@ -327,7 +334,7 @@ namespace Reko.Scanning
             var oldinstrs = sr.Instructions;
             sr.Instructions = oldinstrs
                 .Where(o => !deadNodes.Contains(o.Key))
-                .ToSortedList(o => o.Key, o => o.Value);
+                .ToDictionary(o => o.Key, o => o.Value);
 
             var oldDirectCalls = sr.DirectlyCalledAddresses;
             sr.DirectlyCalledAddresses = oldDirectCalls
@@ -545,13 +552,9 @@ namespace Reko.Scanning
                 &&
                 (i.Class &
                   (InstrClass.Linear 
+                   | InstrClass.System
                    | InstrClass.Conditional 
                    | InstrClass.Call)) != 0;        //$REVIEW: what if you call a terminating function?
-        }
-
-        private bool IsTransfer(RtlInstructionCluster i, RtlInstruction r)
-        {
-            return r is RtlGoto || r is RtlCall;
         }
 
         /// <summary>

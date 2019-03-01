@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,20 +43,24 @@ namespace Reko.Analysis
     {
         private static TraceSwitch trace = new TraceSwitch("ValuePropagation", "Traces value propagation");
 
-        private IProcessorArchitecture arch;
-        private SsaState ssa;
-        private ExpressionSimplifier eval;
-        private SsaEvaluationContext evalCtx;
-        private SsaIdentifierTransformer ssaIdTransformer;
-        private DecompilerEventListener eventListener;
+        private readonly IProcessorArchitecture arch;
+        private readonly SsaState ssa;
+        private readonly CallGraph callGraph;
+        private readonly ExpressionSimplifier eval;
+        private readonly SsaEvaluationContext evalCtx;
+        private readonly SsaIdentifierTransformer ssaIdTransformer;
+        private readonly DecompilerEventListener eventListener;
+        private Statement stmCur;
 
         public ValuePropagator(
             SegmentMap segmentMap,
             SsaState ssa,
+            CallGraph callGraph,
             IImportResolver importResolver,
             DecompilerEventListener eventListener)
         {
             this.ssa = ssa;
+            this.callGraph = callGraph;
             this.arch = ssa.Procedure.Architecture;
             this.eventListener = eventListener;
             this.ssaIdTransformer = new SsaIdentifierTransformer(ssa);
@@ -70,9 +74,12 @@ namespace Reko.Analysis
         {
             do
             {
+                //$PERFORMANCE: consider changing this to a work list, where 
+                // every time we process the 
                 Changed = false;
-                foreach (Statement stm in ssa.Procedure.Statements)
+                foreach (Statement stm in ssa.Procedure.Statements.ToArray())
                 {
+                    this.stmCur = stm;
                     Transform(stm);
                 }
             } while (Changed);
@@ -103,16 +110,26 @@ namespace Reko.Analysis
 
         public Instruction VisitCallInstruction(CallInstruction ci)
         {
+            var oldCallee = ci.Callee;
             ci.Callee = ci.Callee.Accept(eval);
-            if (ci.Callee is ProcedureConstant pc &&
-                pc.Procedure.Signature.ParametersValid)
+            if (ci.Callee is ProcedureConstant pc)
             {
-                var ab = new ApplicationBuilder(
-                      arch, ssa.Procedure.Frame, ci.CallSite,
-                      ci.Callee, pc.Procedure.Signature, false);
-                evalCtx.Statement.Instruction = ab.CreateInstruction();
-                ssaIdTransformer.Transform(evalCtx.Statement, ci);
-                return evalCtx.Statement.Instruction;
+                if (pc.Procedure.Signature.ParametersValid)
+                {
+                    var ab = new ApplicationBuilder(
+                        arch, ssa.Procedure.Frame, ci.CallSite,
+                        ci.Callee, pc.Procedure.Signature, false);
+                    evalCtx.Statement.Instruction = ab.CreateInstruction();
+                    ssaIdTransformer.Transform(evalCtx.Statement, ci);
+                    return evalCtx.Statement.Instruction;
+                }
+                if (oldCallee != pc && pc.Procedure is Procedure procCallee)
+                {
+                    // This was an indirect call, but is now a direct call.
+                    // Make sure the call graph knows about the link between
+                    // this statement and the callee.
+                    callGraph.AddEdge(stmCur, procCallee);
+                }
             }
             return ci;
         }

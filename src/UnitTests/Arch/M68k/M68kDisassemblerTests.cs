@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -350,7 +350,7 @@ namespace Reko.UnitTests.Arch.M68k
         public void M68kdis_subq_w()
         {
             RunTest("subq.w\t#$07,-(a6)", 0x5F66);
-            RunTest("subq.w\t#$01,(34,a0,d1)", 0x5370, 0x1034);
+            RunTest("subq.w\t#$01,($34,a0,d1.w)", 0x5370, 0x1034);
         }
 
         [Test]
@@ -377,7 +377,7 @@ namespace Reko.UnitTests.Arch.M68k
         [Test]
         public void M68kdis_rts()
         {
-            RunTest("rts\t", 0x4E75);
+            RunTest("rts", 0x4E75);
         }
 
         [Test]
@@ -567,7 +567,7 @@ namespace Reko.UnitTests.Arch.M68k
         [Test]
         public void M68kdis_btst()
         {
-            RunTest("btst.w\t#$0000,(34,a0,d0)", 0x0830, 0x0000, 0x0034);
+            RunTest("btst.w\t#$0000,($34,a0,d0.w)", 0x0830, 0x0000, 0x0034);
         }
 
         [Test]
@@ -635,7 +635,7 @@ namespace Reko.UnitTests.Arch.M68k
         [Test]
         public void M68kdis_rte()
         {
-            RunTest("rte\t", 0x4E73);
+            RunTest("rte", 0x4E73);
         }
 
         [Test]
@@ -665,7 +665,7 @@ namespace Reko.UnitTests.Arch.M68k
         [Test]
         public void M68kdis_address_mode()
         {
-            RunTest("move.l\t(-04,a2,d0*4),d2", 0x2432, 0x04fc);
+            RunTest("move.l\t(-$04,a2,d0.w*4),d2", 0x2432, 0x04fc);
         }
 
         [Test]
@@ -716,19 +716,58 @@ namespace Reko.UnitTests.Arch.M68k
             // This is an fbcc instruction, which uses an encoding
             // which is not valid with a 68k FPU; it should
             // decode to an illegal instruction
-            RunTest("illegal\t", 0xF2BC, 0x00E0);
+            RunTest("illegal", 0xF2BC, 0x00E0);
         }
 
         [Test]
         public void M68kdis_cmpi_pc_relative_indexing()
         {
-            RunTest("cmpi.b\t#$04,(pc,d0.w,+002C)", 0x0C3B, 0x0004, 0x0028);
+            RunTest("cmpi.b\t#$04,($2C,pc,d0.w)", 0x0C3B, 0x0004, 0x0028);
         }
 
         [Test]
         public void M68kdis_move_pc_relative_indexing()
         {
             RunTest("movea.l\t(0000025C,pc),a0", 0x207B, 0x0170, 0x0000, 0x025C);
+        }
+
+        [Test]
+        public void M68kdis_cinv_invalid()
+        {
+            RunTest("cinv", 0xF400);
+        }
+
+        [Test]
+        public void M68kdis_bfins()
+        {
+            RunTest("bfins\td3,d5,{d3:#$00000002}", 0xEFC5, 0x38C2);
+        }
+
+        [Test]
+        public void M68kdis_fsave()
+        {
+            RunTest("fsave\t(a0)", 0xF310);
+        }
+
+        [Test]
+        public void M68kdis_tst_i_16()
+        {
+            RunTest("tst.w\t#$1234", 0x4A7C, 0x1234);
+        }
+
+        [Test]
+        public void M68kdis_movep()
+        {
+            RunTest("movep.w\t$1234(a2),d2", 0x050A, 0x1234);
+            RunTest("movep.l\t$1234(a2),d2", 0x054A, 0x1234);
+            RunTest("movep.w\td2,$1234(a2)", 0x058A, 0x1234);
+            RunTest("movep.l\td2,$1234(a2)", 0x05CA, 0x1234);
+        }
+
+        [Test]
+        public void M68kdis_eori_ccr()
+        {
+            RunTest("eori.b\t#$80,ccr", 0x0A3C, 0x0080);
         }
     }
 }

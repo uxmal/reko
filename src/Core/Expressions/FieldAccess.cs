@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ namespace Reko.Core.Expressions
     /// a.field. The <paramref name="expr"/> is expected to be a structure
     /// type. If it is a pointer type, that is the expression should be 
     /// a^.field (as expressed in Pascal), remember to first "wrap" it in
-    /// a <code>Dereference</code> instance.
+    /// a <see cref="Dereference" /> instance.
     /// </summary>
 	public class FieldAccess : Expression
 	{
@@ -39,7 +39,7 @@ namespace Reko.Core.Expressions
 			this.Structure = expr; this.Field = field;
 		}
 
-        public Expression Structure { get; set; }
+        public Expression Structure { get; private set; }
         public Field Field { get; private set; }
 
         public override IEnumerable<Expression> Children

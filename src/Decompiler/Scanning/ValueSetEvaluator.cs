@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -72,7 +72,7 @@ namespace Reko.Scanning
 
         public ValueSet VisitApplication(Application appl)
         {
-            throw new NotImplementedException();
+            return IntervalValueSet.Any;
         }
 
         public ValueSet VisitArrayAccess(ArrayAccess acc)
@@ -338,7 +338,16 @@ namespace Reko.Scanning
 
         public ValueSet VisitProcedureConstant(ProcedureConstant pc)
         {
-            throw new NotImplementedException();
+            Address addr;
+            switch (pc.Procedure)
+            {
+            case Procedure proc:
+                addr = proc.EntryAddress;
+                var cAddr = addr.ToConstant();
+                return new ConcreteValueSet(pc.DataType, cAddr);
+            default:
+                return ValueSet.Any;
+            }
         }
 
         public ValueSet VisitScopeResolution(ScopeResolution scopeResolution)

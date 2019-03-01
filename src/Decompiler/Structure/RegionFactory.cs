@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -99,7 +99,10 @@ namespace Reko.Structure
         {
             //$TODO: should there be a warning? Phi functions should have been
             // removed before entering this code.
-            var args = phi.Src.Arguments;
+            // Order these by block name for stability.
+            var args = phi.Src.Arguments
+                .Select(a => a.Value)
+                .ToArray();
             var dst = phi.Dst;
             return new AbsynAssignment(dst,
                 new Application(

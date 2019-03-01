@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,10 +40,7 @@ namespace Reko.UnitTests.Arch.Intel
 		private Procedure proc;
         private X86Instruction instr;
 
-        // Once the project has been ported to use NUnit 3.0, remove this comment and uncomment the line containing "[OneTimeSetup]" and remove the line containing "[TestFixtureSetUp]".
-        // 
-        // [OneTimeSetUp]
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void Setup()
         {
             arch = new X86ArchitectureReal("x86-real-16");

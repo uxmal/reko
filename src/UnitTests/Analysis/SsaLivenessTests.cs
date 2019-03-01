@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,16 +20,14 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
-using Reko.Core.Lib;
-using Reko.Core.Types;
 using Reko.Analysis;
 using Reko.UnitTests.Mocks;
 using Reko.UnitTests.TestCode;
+using Moq;
 using NUnit.Framework;
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using Rhino.Mocks;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -60,7 +58,7 @@ namespace Reko.UnitTests.Analysis
 			Assert.AreEqual("branch Mem0[i_3:byte] != 0 loop", block1.Statements[2].Instruction.ToString());
 			Assert.IsTrue(sla.IsLiveOut(i_1.Identifier, block1.Statements[2]), "i_1 should be live at the end of block 1");
 			Assert.IsTrue(sla.IsLiveOut(i_3.Identifier, block1.Statements[2]),"i_3 should be live at the end of block 1");
-			Assert.AreEqual("i_1 = PHI(i, i_3)", block1.Statements[0].Instruction.ToString());
+			Assert.AreEqual("i_1 = PHI((i, LiveLoopMock_entry), (i_3, loop))", block1.Statements[0].Instruction.ToString());
 			Assert.IsFalse(sla.IsLiveOut(i_3.Identifier, block1.Statements[0]), "i_3 is dead after the phi function");
 		}
 
@@ -125,8 +123,7 @@ namespace Reko.UnitTests.Analysis
 			this.proc = proc;
 			Aliases alias = new Aliases(proc);
 			alias.Transform();
-            var importResolver = MockRepository.GenerateStub<IImportResolver>();
-            importResolver.Replay();
+            var importResolver = new Mock<IImportResolver>().Object;
 			SsaTransform sst = new SsaTransform(
                 new ProgramDataFlow(),
                 proc,
@@ -137,7 +134,7 @@ namespace Reko.UnitTests.Analysis
 			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, platform);
 			cce.Transform();
             var segmentMap = new SegmentMap(Address.Ptr32(0x00123400));
-			ValuePropagator vp = new ValuePropagator(segmentMap, ssa, importResolver, new FakeDecompilerEventListener());
+			ValuePropagator vp = new ValuePropagator(segmentMap, ssa, new CallGraph(), importResolver, new FakeDecompilerEventListener());
 			vp.Transform();
 			DeadCode.Eliminate(proc, ssa);
 			Coalescer coa = new Coalescer(proc, ssa);

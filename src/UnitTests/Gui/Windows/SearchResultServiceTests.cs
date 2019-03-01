@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,10 +18,11 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
+using Reko.Core.Services;
 using Reko.Gui;
 using Reko.UserInterfaces.WindowsForms;
-using Rhino.Mocks;
 using System.ComponentModel.Design;
 using System.Windows.Forms;
 
@@ -31,20 +32,18 @@ namespace Reko.UnitTests.Gui.Windows
     [Category(Categories.UserInterface)]
     public class SearchResultServiceTests
     {
-        private MockRepository mr;
         private Form form;
         private ListView listSearchResults;
         private SearchResultServiceImpl svc;
-        private IWindowFrame frame;
+        private Mock<IWindowFrame> frame;
         private ServiceContainer sc;
 
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
-            frame = mr.DynamicMock<IWindowFrame>();
+            frame = new Mock<IWindowFrame>();
             sc = new ServiceContainer();
-            sc.AddService(typeof(IWindowFrame), frame);
+            sc.AddService(typeof(IWindowFrame), frame.Object);
         }
 
         private void CreateUI()
@@ -65,8 +64,6 @@ namespace Reko.UnitTests.Gui.Windows
         [Test]
         public void SRS_Creation()
         {
-            mr.ReplayAll();
-
             CreateUI();
 
             Assert.IsTrue(listSearchResults.VirtualMode);
@@ -76,22 +73,20 @@ namespace Reko.UnitTests.Gui.Windows
         [Test]
         public void SRS_ShowSingleItem()
         {
-            var result = mr.StrictMock<ISearchResult>();
-            result.Expect(s => s.ContextMenuID).Return(0);
-            result.Expect(s => s.Count).Return(1);
-            result.Expect(s => s.View = Arg<ISearchResultView>.Is.NotNull);
+            var result = new Mock<ISearchResult>();
+            result.Expect(s => s.ContextMenuID).Returns(0);
+            result.Expect(s => s.Count).Returns(1);
             result.Expect(s => s.CreateColumns());
-            result.Expect(s => s.Count).Return(1);
-            result.Expect(s => s.GetItem(0)).Return(new SearchResultItem { Items = new[] { "foo", "bar" }, ImageIndex = -1 });
-            result.Expect(s => s.Count).Return(1);
-            result.Expect(s => s.GetItem(0)).Return(new SearchResultItem { Items = new[] { "foo", "bar" }, ImageIndex = -1 });
-            result.Expect(s => s.Count).Return(1);
-            result.Expect(s => s.GetItem(0)).Return(new SearchResultItem { Items = new[] { "foo", "bar" }, ImageIndex = -1 });
-            mr.ReplayAll();
+            result.Expect(s => s.Count).Returns(1);
+            result.Expect(s => s.GetItem(0)).Returns(new SearchResultItem { Items = new[] { "foo", "bar" }, ImageIndex = -1 });
+            result.Expect(s => s.Count).Returns(1);
+            result.Expect(s => s.GetItem(0)).Returns(new SearchResultItem { Items = new[] { "foo", "bar" }, ImageIndex = -1 });
+            result.Expect(s => s.Count).Returns(1);
+            result.Expect(s => s.GetItem(0)).Returns(new SearchResultItem { Items = new[] { "foo", "bar" }, ImageIndex = -1 });
 
             CreateUI();
             form.Show();
-            svc.ShowSearchResults(result);
+            svc.ShowSearchResults(result.Object);
 
             Assert.AreEqual(1, listSearchResults.Items.Count);
             Assert.AreEqual(1, listSearchResults.VirtualListSize);
@@ -99,59 +94,56 @@ namespace Reko.UnitTests.Gui.Windows
             Assert.AreEqual("foo", listSearchResults.Items[0].SubItems[0].Text);
             Assert.AreEqual("bar", listSearchResults.Items[0].SubItems[1].Text);
 
-            mr.VerifyAll();
+            result.VerifyAll();
         }
 
         [Test]
         public void SRS_CreateColumns()
         {
-            var result = mr.StrictMock<ISearchResult>();
-            result.Expect(s => s.View = Arg<ISearchResultView>.Is.NotNull);
-            result.Expect(s => s.ContextMenuID).Return(0);
-            result.Expect(s => s.Count).Return(0);
+            var result = new Mock<ISearchResult>();
+            //result.Expect(s => s.View = Arg<ISearchResultView>.Is.NotNull);
+            result.Expect(s => s.ContextMenuID).Returns(0);
+            result.Expect(s => s.Count).Returns(0);
             result.Expect(s => s.CreateColumns());
-            mr.ReplayAll();
 
             CreateUI();
             form.Show();
-            svc.ShowSearchResults(result);
+            svc.ShowSearchResults(result.Object);
 
-            mr.VerifyAll();
+            result.VerifyAll();
         }
 
 
         [Test]
         public void DoubleClickShouldNavigate()
         {
-            var result = mr.DynamicMock<ISearchResult>();
-            result.Expect(s => s.NavigateTo(1));
-            mr.ReplayAll();
+            var result = new Mock<ISearchResult>();
+            result.Expect(s => s.NavigateTo(1)).Verifiable();
 
             CreateUI();
             form.Show();
-            svc.ShowSearchResults(result);
+            svc.ShowSearchResults(result.Object);
             svc.DoubleClickItem(1);
 
-            mr.VerifyAll();
+            result.VerifyAll();
         }
 
         [Test]
         public void SRS_ShowResults_ChangesContextMenu()
         {
-            var result = mr.DynamicMock<ISearchResult>();
-            var uiSvc = mr.DynamicMock<IDecompilerShellUiService>();
-            result.Expect(r => r.ContextMenuID).Return(42);
+            var result = new Mock<ISearchResult>();
+            var uiSvc = new Mock<IDecompilerShellUiService>();
+            result.Expect(r => r.ContextMenuID).Returns(42);
             uiSvc.Expect(u => u.SetContextMenu(
-                Arg<object>.Is.NotNull,
-                Arg<int>.Is.Equal(42)));
-            sc.AddService(typeof(IDecompilerShellUiService), uiSvc);
-            mr.ReplayAll();
+                It.IsNotNull<object>(),
+                42));
+            sc.AddService(typeof(IDecompilerShellUiService), uiSvc.Object);
 
             CreateUI();
             form.Show();
-            svc.ShowSearchResults(result);
+            svc.ShowSearchResults(result.Object);
 
-            mr.VerifyAll();
+            result.VerifyAll();
         }
     }
 }

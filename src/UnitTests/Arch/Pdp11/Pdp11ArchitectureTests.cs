@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,12 +18,12 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Arch.Pdp11;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
-using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,12 +46,11 @@ namespace Reko.UnitTests.Arch.Pdp11
         [Test]
         public void Pdp11Arch_CreateStackAccess()
         {
-            var binder = MockRepository.GenerateStub<IStorageBinder>();
+            var binder = new Mock<IStorageBinder>();
             var sp = Registers.sp;
-            binder.Stub(b => b.EnsureRegister(sp)).Return(new Identifier(sp.Name, sp.DataType, sp));
-            binder.Replay();
+            binder.Setup(b => b.EnsureRegister(sp)).Returns(new Identifier(sp.Name, sp.DataType, sp));
             
-            var access = arch.CreateStackAccess(binder, -12, PrimitiveType.Word16);
+            var access = arch.CreateStackAccess(binder.Object, -12, PrimitiveType.Word16);
 
             Assert.AreEqual("Mem0[sp + -12:word16]", access.ToString());
         }

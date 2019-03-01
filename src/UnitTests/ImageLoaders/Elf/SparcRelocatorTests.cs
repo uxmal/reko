@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@ using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.ImageLoaders.Elf;
-using Rhino.Mocks;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -35,15 +35,11 @@ namespace Reko.UnitTests.ImageLoaders.Elf
     [TestFixture]
     public class SparcRelocatorTests
     {
-        private MockRepository mr;
-
         public void SparcRel_Test()
         {
-            this.mr = new MockRepository();
             var sc = new ServiceContainer();
-            var cfgSvc = mr.Stub<IConfigurationService>();
+            var cfgSvc = new Mock<IConfigurationService>();
             sc.AddService(typeof(IConfigurationService), cfgSvc);
-            mr.ReplayAll();
         }
     }
 }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,11 +26,11 @@ using Reko.Core.Lib;
 using Reko.Core.Operators;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
+using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Rhino.Mocks;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -246,7 +246,7 @@ namespace Reko.UnitTests.Analysis
 
 			Identifier id3 = m.Local32("id_3");
 			Identifier id4 = m.Local32("id_4");
-			liv.Context.PhiStatement = m.Phi(id3, id2, id4);
+			liv.Context.PhiStatement = m.Phi(id3, (id2, "block2"), (id4, "block4"));
 			liv.Context.PhiIdentifier = id3;
 			SsaId(id3, liv.Context.PhiStatement, ((PhiAssignment)liv.Context.PhiStatement.Instruction).Src, false);
 			Assert.AreEqual(4, ssaIds.Count);
@@ -337,8 +337,7 @@ namespace Reko.UnitTests.Analysis
 		private void Prepare(Procedure proc)
 		{
             var listener = new FakeDecompilerEventListener();
-            var importResolver = MockRepository.GenerateStub<IImportResolver>();
-            importResolver.Replay();
+            var importResolver = new Mock<IImportResolver>().Object;
 			this.proc = proc;
             doms = proc.CreateBlockDominatorGraph();
 			SsaTransform sst = new SsaTransform(
@@ -357,7 +356,7 @@ namespace Reko.UnitTests.Analysis
 			DeadCode.Eliminate(proc, ssa);
 
             var segmentMap = new SegmentMap(Address.Ptr32(0x00123400));
-			var vp = new ValuePropagator(segmentMap, ssa, importResolver, listener);
+			var vp = new ValuePropagator(segmentMap, ssa, new CallGraph(), importResolver, listener);
 			vp.Transform();
 
 			DeadCode.Eliminate(proc, ssa);

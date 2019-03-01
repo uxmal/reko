@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -82,9 +82,13 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 string symStr = loader.GetSymbolName(rela_plt.LinkedSection, sym);
 
                 var addr = plt.Address + (uint)i * 4;
+                //$TODO: why is this relocator not like the others? This code needs 
+                // to be changed to us RelocateEntry like all other subclasses.
                 program.ImportReferences.Add(
                     addr,
-                    new NamedImportReference(addr, null, symStr));
+                    //$BUG: ExternalProcedure below should be using the symbol type. When
+                    // changing to use RelocateEntry this will go away.
+                    new NamedImportReference(addr, null, symStr, SymbolType.ExternalProcedure));
             }
         }
 

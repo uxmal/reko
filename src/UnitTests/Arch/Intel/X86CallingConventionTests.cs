@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@ using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.Environments.Windows;
 using Reko.UnitTests.Mocks;
-using Rhino.Mocks;
+using Moq;
 using System;
 using System.Collections.Generic;
 
@@ -35,8 +35,7 @@ namespace Reko.UnitTests.Arch.Intel
     [Category(Categories.UnitTests)]
     public class X86CallingConventionTests
     {
-        private MockRepository mr;
-        private MockFactory mockFactory;
+        private CommonMockFactory mockFactory;
         private IntelArchitecture arch;
         private X86CallingConvention cc;
         private ICallingConventionEmitter ccr;
@@ -50,8 +49,7 @@ namespace Reko.UnitTests.Arch.Intel
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
-            mockFactory = new MockFactory(mr);
+            mockFactory = new CommonMockFactory();
             arch = new X86ArchitectureFlat32("x86-protected-32");
             platform = new Win32Platform(null, arch);
         }

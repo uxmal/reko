@@ -39,7 +39,7 @@ SZO_7: orig: SZO
 cx_8: orig: cx
 dx_ax_9: orig: dx_ax
 ax_10: orig: ax
-    def:  ax_10 = PHI(ax_20, ax_23)
+    def:  ax_10 = PHI((ax_20, l0C00_0011), (ax_23, l0C00_001C))
     uses: return ax_10
 SCZO_11: orig: SCZO
 SZO_12: orig: SZO
@@ -60,12 +60,12 @@ dx_ax_19: orig: dx_ax
     uses: ax_20 = (word16) dx_ax_19 (alias)
 ax_20: orig: ax
     def:  ax_20 = (word16) dx_ax_19 (alias)
-    uses: ax_10 = PHI(ax_20, ax_23)
+    uses: ax_10 = PHI((ax_20, l0C00_0011), (ax_23, l0C00_001C))
 SCZO_21: orig: SCZO
 SZO_22: orig: SZO
 ax_23: orig: ax
     def:  ax_23 = 0x0001
-    uses: ax_10 = PHI(ax_20, ax_23)
+    uses: ax_10 = PHI((ax_20, l0C00_0011), (ax_23, l0C00_001C))
 dx:dx
 dx_ax_25: orig: dx_ax
 // fn0C00_000B
@@ -89,7 +89,7 @@ l0C00_001C:
 	ax_23 = 0x0001
 	// succ:  l0C00_001F
 l0C00_001F:
-	ax_10 = PHI(ax_20, ax_23)
+	ax_10 = PHI((ax_20, l0C00_0011), (ax_23, l0C00_001C))
 	return ax_10
 	// succ:  fn0C00_000B_exit
 fn0C00_000B_exit:

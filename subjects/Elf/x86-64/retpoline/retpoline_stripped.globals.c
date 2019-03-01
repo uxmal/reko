@@ -4,11 +4,10 @@
 
 #include "retpoline_stripped.h"
 
-Eq_28 g_t400660 = Unexpected function type (fn int32 (int32, (ptr64 (ptr64 char)), (ptr64 (ptr64 char))))
+Eq_24 g_t400660 = Unexpected function type (fn int32 (int32, (ptr64 (ptr64 char)), (ptr64 (ptr64 char))))
 ;
-Eq_31 g_t400710 = Unexpected function type (fn void ())
+Eq_27 g_t400710 = Unexpected function type (fn void ())
 ;
-Eq_32 g_t400780 = Unexpected function type (fn void ())
+Eq_28 g_t400780 = Unexpected function type (fn void ())
 ;
-word64 g_qw600FF8 = 0x0000000000000000;
 

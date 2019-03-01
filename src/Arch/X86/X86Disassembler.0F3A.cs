@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,15 +32,14 @@ namespace Reko.Arch.X86
             return new Decoder[] {
 
                 // 00
-                new PrefixedDecoder(
-                    Opcode.illegal, "",
-                    Opcode.vpermq, "Vqq,Wqq,Ib"),
-                s_nyi,
-                s_nyi,
+                new PrefixedDecoder(dec66: Instr(Opcode.vpermq, Vqq,Wqq,Ib)),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpermpd, Vqq,Wqq,Ib)),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpblendd, Vx,Hx,Wx,Ib)),
                 s_invalid,
-                s_nyi,
-                s_nyi,
-                s_nyi,
+
+                new PrefixedDecoder(dec66: Instr(Opcode.vpermilps, Vx,Wx,Ib)),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpermilpd, Vx,Wx,Ib)),
+                new PrefixedDecoder(dec66: Instr(Opcode.vperm2f128, Vqq,Hqq,Wqq,Ib)),
                 s_invalid,
 
                 s_nyi,
@@ -51,8 +50,8 @@ namespace Reko.Arch.X86
                 s_nyi,
                 s_nyi,
                 new PrefixedDecoder(
-                    Opcode.palignr, "Pq,Qq,Ib",
-                    Opcode.palignr, "Vx,Wx,Ib"),
+                    dec:Instr(Opcode.palignr, Pq,Qq,Ib),
+                    dec66:Instr(Opcode.palignr, Vx,Wx,Ib)),
 
                 // 10
                 s_invalid,
@@ -123,8 +122,8 @@ namespace Reko.Arch.X86
 
                 s_invalid,
                 s_invalid,
-                Instr(Opcode.vblendvpsv, "Vx,Hx,Wx,Lx"),
-                Instr(Opcode.vblendvpdv, "Vx,Hx,Wx,Lx"),
+                Instr(Opcode.vblendvpsv, Vx,Hx,Wx,Lx),
+                Instr(Opcode.vblendvpdv, Vx,Hx,Wx,Lx),
                 s_nyi,
                 s_invalid,
                 s_invalid,
@@ -154,7 +153,7 @@ namespace Reko.Arch.X86
                 s_nyi,
                 s_nyi,
                 new PrefixedDecoder(
-                    dec66: Instr(Opcode.pcmpistri, "Vx,Wx,Ib")),
+                    dec66: Instr(Opcode.pcmpistri, Vx,Wx,Ib)),
                 s_invalid,
                 s_invalid,
                 s_invalid,

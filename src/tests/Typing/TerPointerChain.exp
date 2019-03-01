@@ -78,7 +78,7 @@ T_11: (in Mem0[Mem0[Mem0[r1 + 0x00000004:word32] + 0x00000008:word32] + 0x000000
   Class: Eq_11
   DataType: byte
   OrigDataType: byte
-T_12: (in (word32) r1->ptr0004->ptr0008->b0010 : word32)
+T_12: (in (word32) Mem0[Mem0[Mem0[r1 + 0x00000004:word32] + 0x00000008:word32] + 0x00000010:byte] : word32)
   Class: Eq_12
   DataType: word32
   OrigDataType: word32
@@ -138,7 +138,7 @@ T_26: (in Mem0[Mem0[Mem0[Mem0[r3 + 0x00000000:word32] + 0x00000000:word32] + 0x0
   Class: Eq_26
   DataType: word16
   OrigDataType: word16
-T_27: (in (word32) ****r3 : word32)
+T_27: (in (word32) Mem0[Mem0[Mem0[Mem0[r3 + 0x00000000:word32] + 0x00000000:word32] + 0x00000000:word32] + 0x00000000:word16] : word32)
   Class: Eq_27
   DataType: word32
   OrigDataType: word32

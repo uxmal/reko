@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -190,8 +190,8 @@ namespace Reko.Arch.X86
                 case Opcode.fcmovnb: RewriteFcmov(FlagM.CF| FlagM.ZF, ConditionCode.GE); break;
                 case Opcode.fcmovnbe: RewriteFcmov(FlagM.CF| FlagM.ZF, ConditionCode.LE); break;
                 case Opcode.fcmovne: RewriteFcmov(FlagM.ZF, ConditionCode.EQ); break;
-                case Opcode.fcmovnu: RewriteFcmov(FlagM.ZF, ConditionCode.EQ); break;
-                case Opcode.fcmovu: RewriteFcmov(FlagM.ZF, ConditionCode.EQ); break;
+                case Opcode.fcmovnu: RewriteFcmov(FlagM.PF, ConditionCode.IS_NAN); break;
+                case Opcode.fcmovu: RewriteFcmov(FlagM.PF, ConditionCode.NOT_NAN); break;
                 case Opcode.fcom: RewriteFcom(0); break;
                 case Opcode.fcomi: RewrteFcomi(false); break;
                 case Opcode.fcomip: RewrteFcomi(true); break;
@@ -303,6 +303,9 @@ namespace Reko.Arch.X86
                 case Opcode.lfence: RewriteLfence(); break;
                 case Opcode.lfs: RewriteLxs(Registers.fs); break;
                 case Opcode.lgs: RewriteLxs(Registers.gs); break;
+                case Opcode.lgdt: RewriteLxdt("__lgdt"); break;
+                case Opcode.lidt: RewriteLxdt("__lidt"); break;
+                case Opcode.lldt: RewriteLxdt("__lldt"); break;
                 case Opcode.@lock: RewriteLock(); break;
                 case Opcode.lods: RewriteStringInstruction(); break;
                 case Opcode.lodsb: RewriteStringInstruction(); break;
@@ -463,12 +466,15 @@ namespace Reko.Arch.X86
                 case Opcode.sets: RewriteSet(ConditionCode.SG); break;
                 case Opcode.setz: RewriteSet(ConditionCode.EQ); break;
                 case Opcode.sfence: RewriteSfence(); break;
+                case Opcode.sgdt: RewriteSxdt("__sgdt"); break;
+                case Opcode.sha1msg2: RewriteSha1msg2(); break;
                 case Opcode.shl: RewriteBinOp(BinaryOperator.Shl); break;
                 case Opcode.shld: RewriteShxd("__shld"); break;
                 case Opcode.shr: RewriteBinOp(BinaryOperator.Shr); break;
                 case Opcode.shrd: RewriteShxd("__shrd"); break;
+                case Opcode.sidt: RewriteSxdt("__sidt"); break;
                 case Opcode.vshufps: RewritePackedTernaryop("__vshufps", PrimitiveType.Real32); break;
-                case Opcode.sldt: RewriteSldt(); break;
+                case Opcode.sldt: RewriteSxdt("__sldt"); break;
                 case Opcode.sqrtps: RewritePackedUnaryop("__sqrtps", PrimitiveType.Real32); break;
                 case Opcode.sqrtsd: RewriteSqrtsd(); break;
                 case Opcode.stc: RewriteSetFlag(FlagM.CF, Constant.True()); break;

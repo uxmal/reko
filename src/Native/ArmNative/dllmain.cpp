@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 1999-2018 John Källén.
+* Copyright (C) 1999-2019 John Källén.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
 
 // dllmain.cpp : Defines the entry point for the DLL application.
 /*
-* Copyright (C) 1999-2018 John Källén.
+* Copyright (C) 1999-2019 John Källén.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by

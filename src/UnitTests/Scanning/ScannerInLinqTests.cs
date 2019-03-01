@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Assemblers.x86;
@@ -27,7 +28,6 @@ using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.Scanning;
 using Reko.UnitTests.Mocks;
-using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -39,25 +39,26 @@ namespace Reko.UnitTests.Scanning
     [TestFixture]
     public class ScannerInLinqTests
     {
-        private MockRepository mr;
+        private string nl = Environment.NewLine;
+
         private ScanResults sr;
         private ScannerInLinq siq;
         private Program program;
-        private string nl = Environment.NewLine;
         private RelocationDictionary rd;
-        private IRewriterHost host;
+        private Mock<IRewriterHost> host;
         private FakeDecompilerEventListener eventListener;
 
         [SetUp]
         public void Setup()
         {
-            this.mr = new MockRepository();
-            this.host = mr.Stub<IRewriterHost>();
-            this.sr = new ScanResults();
-            this.sr.FlatInstructions = new SortedList<Address, ScanResults.instr>();
-            this.sr.FlatEdges = new List<ScanResults.link>();
-            this.sr.KnownProcedures = new HashSet<Address>();
-            this.sr.DirectlyCalledAddresses = new Dictionary<Address, int>();
+            this.host = new Mock<IRewriterHost>();
+            this.sr = new ScanResults
+            {
+                FlatInstructions = new Dictionary<ulong, ScanResults.instr>(),
+                FlatEdges = new List<ScanResults.link>(),
+                KnownProcedures = new HashSet<Address>(),
+                DirectlyCalledAddresses = new Dictionary<Address, int>()
+            };
             this.eventListener = new FakeDecompilerEventListener();
         }
 
@@ -102,7 +103,7 @@ namespace Reko.UnitTests.Scanning
         private void Inst(int uAddr, int len, InstrClass rtlc)
         {
             var addr = Address.Ptr32((uint)uAddr);
-            sr.FlatInstructions.Add(addr, new ScanResults.instr
+            sr.FlatInstructions.Add(addr.ToLinear(), new ScanResults.instr
             {
                 addr = addr,
                 size = len,
@@ -114,7 +115,7 @@ namespace Reko.UnitTests.Scanning
         private void Lin(int uAddr, int len, int next)
         {
             var addr = Address.Ptr32((uint)uAddr);
-            sr.FlatInstructions.Add(addr, new ScanResults.instr
+            sr.FlatInstructions.Add(addr.ToLinear(), new ScanResults.instr
             {
                 addr = addr,
                 size = len,
@@ -127,7 +128,7 @@ namespace Reko.UnitTests.Scanning
         private void Call(int uAddr, int len, int next)
         {
             var addr = Address.Ptr32((uint)uAddr);
-            sr.FlatInstructions.Add(addr, new ScanResults.instr
+            sr.FlatInstructions.Add(addr.ToLinear(), new ScanResults.instr
             {
                 addr = addr,
                 size = len,
@@ -140,7 +141,7 @@ namespace Reko.UnitTests.Scanning
         private void Bra(int uAddr, int len, int a, int b)
         {
             var addr = Address.Ptr32((uint)uAddr);
-            sr.FlatInstructions.Add(addr, new ScanResults.instr
+            sr.FlatInstructions.Add(addr.ToLinear(), new ScanResults.instr
             {
                 addr = addr,
                 size = len,
@@ -154,7 +155,7 @@ namespace Reko.UnitTests.Scanning
         private void Bad(int uAddr, int len)
         {
             var addr = Address.Ptr32((uint)uAddr);
-            sr.FlatInstructions.Add(addr, new ScanResults.instr
+            sr.FlatInstructions.Add(addr.ToLinear(), new ScanResults.instr
             {
                 addr = addr,
                 size = len,
@@ -166,7 +167,7 @@ namespace Reko.UnitTests.Scanning
         private void End(int uAddr, int len)
         {
             var addr = Address.Ptr32((uint)uAddr);
-            sr.FlatInstructions.Add(addr, new ScanResults.instr
+            sr.FlatInstructions.Add(addr.ToLinear(), new ScanResults.instr
             {
                 addr = addr,
                 size = len,
@@ -178,7 +179,7 @@ namespace Reko.UnitTests.Scanning
         private void Pad(uint uAddr, int len, int next)
         {
             var addr = Address.Ptr32((uint)uAddr);
-            sr.FlatInstructions.Add(addr, new ScanResults.instr
+            sr.FlatInstructions.Add(addr.ToLinear(), new ScanResults.instr
             {
                 addr = addr,
                 size = len,
@@ -205,7 +206,7 @@ namespace Reko.UnitTests.Scanning
 
         private void CreateScanner()
         {
-            this.siq = new ScannerInLinq(null, program, host, eventListener);
+            this.siq = new ScannerInLinq(null, program, host.Object, eventListener);
         }
 
         [Test]
@@ -350,17 +351,16 @@ namespace Reko.UnitTests.Scanning
                 m.Ret();
             });
             CreateScanner();
-            host.Stub(h => h.PseudoProcedure(
-                Arg<string>.Is.Equal("__hlt"),
-                Arg<ProcedureCharacteristics>.Is.NotNull,
-                Arg<DataType>.Is.NotNull,
-                Arg<Expression>.Is.Anything)).
-                Return(new Application(
+            host.Setup(h => h.PseudoProcedure(
+                "__hlt",
+                It.IsNotNull<ProcedureCharacteristics>(),
+                It.IsNotNull<DataType>(),
+                It.IsAny<Expression>())).
+                Returns(new Application(
                     new ProcedureConstant(
                         new UnknownType(),
                         new PseudoProcedure("__hlt", VoidType.Instance, 0)),
                     VoidType.Instance));
-            mr.ReplayAll();
 
             siq.ScanInstructions(sr);
             var blocks = ScannerInLinq.BuildBasicBlocks(sr);
@@ -378,7 +378,6 @@ namespace Reko.UnitTests.Scanning
             Lin(0x1003, 2, 0x1005);
             Call(0x1005, 5, 0x100A);
             End(0x100A, 1);
-            mr.ReplayAll();
 
             CreateScanner();
             var blocks = ScannerInLinq.BuildBasicBlocks(sr);
@@ -400,7 +399,6 @@ namespace Reko.UnitTests.Scanning
             Lin(0x1003, 2, 0x1005);
             Call(0x1005, 5, 0x100A);
             Bad(0x100A, 1);
-            mr.ReplayAll();
 
             CreateScanner();
             var blocks = ScannerInLinq.BuildBasicBlocks(sr);
@@ -421,7 +419,6 @@ namespace Reko.UnitTests.Scanning
             Lin(0x1003, 5, 0x1008);
             Lin(0x1008, 4, 0x100C);
             End(0x100C, 4);
-            mr.ReplayAll();
 
             CreateScanner();
             sr.KnownProcedures = new HashSet<Address>();
@@ -442,7 +439,6 @@ namespace Reko.UnitTests.Scanning
             Pad(0x100C, 4, 0x1010);
             Lin(0x1010, 4, 0x1014);
             End(0x1014, 4);
-            mr.ReplayAll();
 
             CreateScanner();
             var blocks = ScannerInLinq.BuildBasicBlocks(sr);

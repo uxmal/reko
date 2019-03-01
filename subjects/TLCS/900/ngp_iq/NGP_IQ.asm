@@ -118,9 +118,7 @@ l002001A4:
 	ld	w,01
 	call	002004F2
 	ld	xwa,00007000
-	call	T,(xwa)
-
-l002001B1:
+	call	(xwa)
 	ld	hl,0D06
 	ld	a,(00004003)
 	ld	w,04
@@ -195,9 +193,7 @@ l00200256:
 	ld	w,01
 	call	002004F2
 	ld	xwa,00007000
-	call	T,(xwa)
-
-l00200263:
+	call	(xwa)
 	ld	hl,0D0A
 	ld	a,(00004003)
 	ld	w,04
@@ -273,9 +269,7 @@ l0020030A:
 	ld	w,01
 	call	002004F2
 	ld	xwa,00007000
-	call	T,(xwa)
-
-l00200317:
+	call	(xwa)
 	ld	hl,0D0E
 	ld	a,(00004003)
 	ld	w,04
@@ -356,9 +350,9 @@ fn0020050A proc
 	ld	h,00
 	mul	hl,0040
 	add	de,hl
-	ld	(xde),a
+	ld	a,(xde)
 	add	xde,00000001
-	ld	(xde),w
+	ld	w,(xde)
 	pop	xbc
 	pop	xde
 	pop	xhl
@@ -389,7 +383,7 @@ fn00200557 proc
 	push	xhl
 	push	xde
 	sll	01,d
-	ld	(00004002),d
+	ld	d,(00004002)
 	ld	xde,00009800
 	ld	xwa,00000000
 	ld	a,c
@@ -418,9 +412,9 @@ l00200589:
 	ld	w,00
 	add	wa,0009
 	add	w,(00004002)
-	ld	(xde),a
+	ld	a,(xde)
 	inc	00000001,xde
-	ld	(xde),w
+	ld	w,(xde)
 	inc	00000001,xde
 	djnz	b,00200579
 
@@ -466,9 +460,7 @@ fn002005F5 proc
 	add	w,w
 	ld	xix,00FFFE00
 	ld	xix,(xwa+a)
-	call	T,(xix)
-
-l00200609:
+	call	(xix)
 	pop	xix
 	pop	sr
 	ret

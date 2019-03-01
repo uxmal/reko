@@ -4,4 +4,28 @@
 
 #include "unzip.h"
 
+ptr32 g_ptr0001;
+Eq_27596 g_t0002;
+byte g_b0004;
+ptr32 g_ptr0006;
+ptr32 g_ptr0008;
+Eq_3629 g_t00FF;
+up32 g_dw0480;
+Eq_2998 g_t7432 = 
+	{
+		0x00,
+		0x00,
+		0x00000000,
+		0x00000000,
+		0x00000000,
+		0,
+		0x00000000,
+	};
+struct Eq_4081 g_t10ABC = 
+	{
+		;
+struct Eq_4194 g_t10BBC = 
+		{
+			;
+int8 g_b3FD39;
 

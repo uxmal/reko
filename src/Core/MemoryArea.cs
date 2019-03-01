@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,6 +46,7 @@ namespace Reko.Core
 		}
 
         public Address BaseAddress { get; private set; }        // Address of start of image.
+        [Obsolete("EndAddress is not safe to use when a memory area reaches the maximum allowable address. Use the Length property instead.")]
         public Address EndAddress { get { return BaseAddress + Length; } }  // Address of the first byte beyond image.
         public byte[] Bytes { get { return abImage; } }
         public long Length { get { return abImage.Length; } }

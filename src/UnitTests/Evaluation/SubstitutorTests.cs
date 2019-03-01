@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +18,13 @@
  */
 #endregion
 
+using Moq;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using Reko.Evaluation;
 using NUnit.Framework;
-using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,29 +35,26 @@ namespace Reko.UnitTests.Evaluation
     [TestFixture]
     public class SubstitutorTests
     {
-        private MockRepository repository;
         private ProcedureBuilder m;
-        private EvaluationContext ctx;
+        private Mock<EvaluationContext> ctx;
 
         [SetUp]
         public void Setup()
         {
-            repository = new MockRepository();
             m = new ProcedureBuilder();
-            ctx = repository.Stub<EvaluationContext>();
+            ctx = new Mock<EvaluationContext>();
         }
 
         [TearDown]
         public void TearDown()
         {
-            repository.VerifyAll();
+            ctx.VerifyAll();
         }
 
         [Test]
         public void Const()
         {
-            ctx.Replay();
-            var subst = new Substitutor(ctx);
+            var subst = new Substitutor(ctx.Object);
             var c = m.Int32(4);
             var c2 = c.Accept(subst);
             Assert.AreSame(c, c2);
@@ -67,10 +64,9 @@ namespace Reko.UnitTests.Evaluation
         public void Identifier_GetValue()
         {
             var id = m.Register(3);
-            ctx.Expect(c => c.GetValue(Arg<Identifier>.Is.Same(id))).Return(Constant.Invalid);
-            ctx.Replay();
+            ctx.Setup(c => c.GetValue(id)).Returns(Constant.Invalid);
 
-            var subst = new Substitutor(ctx);
+            var subst = new Substitutor(ctx.Object);
             var cInvalid = id.Accept(subst);
             Assert.AreSame(Constant.Invalid, cInvalid);
         }
@@ -80,10 +76,9 @@ namespace Reko.UnitTests.Evaluation
         {
             var id = m.Register(3);
             var e = m.IAdd(id, m.Word32(12));
-            ctx.Expect(c => c.GetValue(Arg<Identifier>.Is.Same(id))).Return(Constant.Invalid);
-            ctx.Replay();
+            ctx.Setup(c => c.GetValue(id)).Returns(Constant.Invalid);
 
-            var subst = new Substitutor(ctx);
+            var subst = new Substitutor(ctx.Object);
             var cInvalid = e.Accept(subst);
 
             Assert.AreSame(Constant.Invalid, cInvalid);
@@ -94,10 +89,9 @@ namespace Reko.UnitTests.Evaluation
         {
             var id = m.Register(3);
             var e = m.IAdd(id, id);
-            ctx.Expect(c => c.GetValue(Arg<Identifier>.Is.Same(id))).Return(id);
-            ctx.Replay();
+            ctx.Setup(c => c.GetValue(id)).Returns(id);
 
-            var subst = new Substitutor(ctx);
+            var subst = new Substitutor(ctx.Object);
             var e2 = e.Accept(subst);
 
             Assert.AreEqual("r3 + r3", e2.ToString());
@@ -108,10 +102,9 @@ namespace Reko.UnitTests.Evaluation
         {
             var id = m.Register(3);
             var e = m.Not(id);
-            ctx.Expect(c => c.GetValue(Arg<Identifier>.Is.Same(id))).Return(id);
-            ctx.Replay();
+            ctx.Setup(c => c.GetValue(id)).Returns(id);
 
-            var subst = new Substitutor(ctx);
+            var subst = new Substitutor(ctx.Object);
             var e2 = e.Accept(subst);
 
             Assert.AreEqual("!r3", e2.ToString());
@@ -122,10 +115,9 @@ namespace Reko.UnitTests.Evaluation
         {
             var id = m.Register(3);
             var e = m.Not(id);
-            ctx.Expect(c => c.GetValue(Arg<Identifier>.Is.Same(id))).Return(Constant.Invalid);
-            ctx.Replay();
+            ctx.Setup(c => c.GetValue(id)).Returns(Constant.Invalid);
 
-            var subst = new Substitutor(ctx);
+            var subst = new Substitutor(ctx.Object);
             var e2 = e.Accept(subst);
 
             Assert.AreSame(Constant.Invalid, e2);
@@ -136,10 +128,9 @@ namespace Reko.UnitTests.Evaluation
         {
             var id = m.Register(3);
             var e = m.Mem16(id);
-            ctx.Expect(c => c.GetValue(Arg<Identifier>.Is.Same(id))).Return(id);
-            ctx.Replay();
+            ctx.Setup(c => c.GetValue(id)).Returns(id);
 
-            var subst = new Substitutor(ctx);
+            var subst = new Substitutor(ctx.Object);
             var e2 = e.Accept(subst);
 
             Assert.AreEqual("Mem0[r3:word16]", e2.ToString());
@@ -150,10 +141,9 @@ namespace Reko.UnitTests.Evaluation
         {
             var id = m.Register(3);
             var e = m.Mem16(id);
-            ctx.Expect(c => c.GetValue(Arg<Identifier>.Is.Same(id))).Return(Constant.Invalid);
-            ctx.Replay();
+            ctx.Setup(c => c.GetValue(id)).Returns(Constant.Invalid);
 
-            var subst = new Substitutor(ctx);
+            var subst = new Substitutor(ctx.Object);
             var e2 = e.Accept(subst);
 
             Assert.AreSame(Constant.Invalid, e2);
@@ -165,11 +155,10 @@ namespace Reko.UnitTests.Evaluation
             var es = m.Frame.CreateTemporary("es", PrimitiveType.Word16);
             var bx = m.Frame.CreateTemporary("bx", PrimitiveType.Word16);
             var e = m.SegMem16(es, bx);
-            ctx.Expect(c => c.GetValue(Arg<Identifier>.Is.Same(es))).Return(es);
-            ctx.Expect(c => c.GetValue(Arg<Identifier>.Is.Same(bx))).Return(bx);
-            ctx.Replay();
+            ctx.Setup(c => c.GetValue(es)).Returns(es);
+            ctx.Setup(c => c.GetValue(bx)).Returns(bx);
 
-            var subst = new Substitutor(ctx);
+            var subst = new Substitutor(ctx.Object);
             var e2 = e.Accept(subst);
 
             Assert.AreEqual("Mem0[es:bx:word16]", e2.ToString());
@@ -181,11 +170,10 @@ namespace Reko.UnitTests.Evaluation
             var es = m.Frame.CreateTemporary("es", PrimitiveType.Word16);
             var bx = m.Frame.CreateTemporary("bx", PrimitiveType.Word16);
             var e = m.SegMem16(es, bx);
-            ctx.Expect(c => c.GetValue(Arg<Identifier>.Is.Same(es))).Return(es);
-            ctx.Expect(c => c.GetValue(Arg<Identifier>.Is.Same(bx))).Return(Constant.Invalid);
-            ctx.Replay();
+            ctx.Setup(c => c.GetValue(es)).Returns(es);
+            ctx.Setup(c => c.GetValue(bx)).Returns(Constant.Invalid);
 
-            var subst = new Substitutor(ctx);
+            var subst = new Substitutor(ctx.Object);
             var e2 = e.Accept(subst);
 
             Assert.AreSame(Constant.Invalid, e2);
@@ -196,10 +184,9 @@ namespace Reko.UnitTests.Evaluation
         {
             var id = m.Register(3);
             var e = m.Cond(id);
-            ctx.Expect(c => c.GetValue(Arg<Identifier>.Is.Same(id))).Return(id);
-            ctx.Replay();
+            ctx.Setup(c => c.GetValue(id)).Returns(id);
 
-            var subst = new Substitutor(ctx);
+            var subst = new Substitutor(ctx.Object);
             var e2 = e.Accept(subst);
 
             Assert.AreEqual("cond(r3)", e2.ToString());
@@ -210,10 +197,9 @@ namespace Reko.UnitTests.Evaluation
         {
             var id = m.Register(3);
             var e = m.Cond(id);
-            ctx.Expect(c => c.GetValue(Arg<Identifier>.Is.Same(id))).Return(Constant.Invalid);
-            ctx.Replay();
+            ctx.Setup(c => c.GetValue(id)).Returns(Constant.Invalid);
 
-            var subst = new Substitutor(ctx);
+            var subst = new Substitutor(ctx.Object);
             var e2 = e.Accept(subst);
 
             Assert.AreSame(Constant.Invalid, e2);

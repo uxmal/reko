@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Reko.Analysis
@@ -112,11 +113,11 @@ namespace Reko.Analysis
 
 		public void Transform(Statement stm, PhiAssignment phi)
 		{
-			Identifier idDst = (Identifier) phi.Dst;
+			Identifier idDst = phi.Dst;
 			for (int i = 0; i < phi.Src.Arguments.Length; ++i)
 			{
-                Identifier id = phi.Src.Arguments[i] as Identifier;
-				Block pred = stm.Block.Pred[i];
+                Identifier id = phi.Src.Arguments[i].Value as Identifier;
+                Block pred = phi.Src.Arguments[i].Block;
 				if (id != null && idDst != id)
 				{
 					if (IsLiveAtCopyPoint(idDst, pred))
@@ -127,12 +128,12 @@ namespace Reko.Analysis
 					}
 					else if (IsLiveOut(id, stm))
 					{
-						phi.Src.Arguments[i] = idDst;
-						int idx = IndexOfInsertedCopy(pred);
+                        phi.Src.Arguments[i] = new PhiArgument(pred, idDst);
+                        int idx = IndexOfInsertedCopy(pred);
 						InsertAssignment(idDst, id, pred, idx);
 					}
-				}
-			}
+                }
+            }
 		}
 
 

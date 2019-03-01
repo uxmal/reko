@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -337,6 +337,18 @@ namespace Reko.UnitTests.Arch.Tlcs
         public void Tlcs900_dis_muls()
         {
             AssertCode("muls\tde,bc","D94A");
+        }
+
+        [Test]
+        public void Tlcs900_dis_ld_mem_imm()
+        {
+            AssertCode("ld\t(00006DA0),00", "﻿F1A06D0000");
+        }
+
+        [Test]
+        public void Tlcs900_dis_ld_d_i3()
+        {
+            AssertCode("ld\td,04", "﻿CCAC");
         }
     }
 }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Assemblers.x86;
@@ -30,7 +31,6 @@ using Reko.Core.Services;
 using Reko.Loading;
 using Reko.Scanning;
 using Reko.UnitTests.Mocks;
-using Rhino.Mocks;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.IO;
@@ -77,20 +77,17 @@ namespace Reko.UnitTests.Arch.Intel
 
         private void DoRewriteCore()
         {
-            var cfgSvc = MockRepository.GenerateStub<IConfigurationService>();
-            var env = MockRepository.GenerateStub<OperatingEnvironment>();
-            var tlSvc = MockRepository.GenerateStub<ITypeLibraryLoaderService>();
+            var cfgSvc = new Mock<IConfigurationService>();
+            var env = new Mock<OperatingEnvironment>();
+            var tlSvc = new Mock<ITypeLibraryLoaderService>();
             var eventListener = new FakeDecompilerEventListener();
-            cfgSvc.Stub(c => c.GetEnvironment("ms-dos")).Return(env);
-            cfgSvc.Replay();
-            env.Stub(e => e.TypeLibraries).Return(new List<ITypeLibraryElement>());
-            env.Stub(e => e.CharacteristicsLibraries).Return(new List<ITypeLibraryElement>());
-            env.Replay();
-            tlSvc.Replay();
+            cfgSvc.Setup(c => c.GetEnvironment("ms-dos")).Returns(env.Object);
+            env.Setup(e => e.TypeLibraries).Returns(new List<ITypeLibraryElement>());
+            env.Setup(e => e.CharacteristicsLibraries).Returns(new List<ITypeLibraryElement>());
             sc.AddService<DecompilerHost>(new FakeDecompilerHost());
             sc.AddService<DecompilerEventListener>(eventListener);
-            sc.AddService<IConfigurationService>(cfgSvc);
-            sc.AddService<ITypeLibraryLoaderService>(tlSvc);
+            sc.AddService<IConfigurationService>(cfgSvc.Object);
+            sc.AddService<ITypeLibraryLoaderService>(tlSvc.Object);
 
             Project project = LoadProject();
             project.Programs.Add(this.program);

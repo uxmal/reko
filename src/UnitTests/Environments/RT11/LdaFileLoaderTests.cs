@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,13 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Environments.RT11;
-using Rhino.Mocks;
 using System;
-using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
-using System.Text;
 
 namespace Reko.UnitTests.Environments.RT11
 {
@@ -36,7 +35,7 @@ namespace Reko.UnitTests.Environments.RT11
 
         private void Given_LdaFile(params byte [] bytes)
         {
-            var services = MockRepository.GenerateStrictMock<IServiceProvider>();
+            var services = new ServiceContainer();
             this.ldaLdr = new LdaFileLoader(services, "foo.lda", bytes);
         }
 

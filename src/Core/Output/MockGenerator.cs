@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -220,7 +220,11 @@ namespace Reko.Core.Output
             foreach (var arg in phi.Src.Arguments)
             {
                 writer.Write(", ");
-                arg.Accept(this);
+                writer.Write("(");
+                arg.Value.Accept(this);
+                writer.Write(",");
+                writer.Write("\"{0}\"", arg.Block.Name);
+                writer.Write(")");
             }
             writer.WriteLine(");");
         }

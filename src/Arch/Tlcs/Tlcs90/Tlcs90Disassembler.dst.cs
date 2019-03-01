@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -74,14 +74,14 @@ namespace Reko.Arch.Tlcs.Tlcs90
             invalid,
 
             // 20
-            new OpRec(Opcode.ld, "x,r"),
-            new OpRec(Opcode.ld, "x,r"),
-            new OpRec(Opcode.ld, "x,r"),
-            new OpRec(Opcode.ld, "x,r"),
+            Instr(Opcode.ld, x,r),
+            Instr(Opcode.ld, x,r),
+            Instr(Opcode.ld, x,r),
+            Instr(Opcode.ld, x,r),
 
-            new OpRec(Opcode.ld, "x,r"),
-            new OpRec(Opcode.ld, "x,r"),
-            new OpRec(Opcode.ld, "x,r"),
+            Instr(Opcode.ld, x,r),
+            Instr(Opcode.ld, x,r),
+            Instr(Opcode.ld, x,r),
             invalid,
 
             invalid,
@@ -103,22 +103,22 @@ namespace Reko.Arch.Tlcs.Tlcs90
             invalid,
             invalid,
             invalid,
-            new OpRec(Opcode.ld, "x,Ib"),
+            Instr(Opcode.ld, x,Ib),
 
-            new OpRec(Opcode.ld, "B,x"),
-            new OpRec(Opcode.ld, "D,x"),
-            new OpRec(Opcode.ld, "H,x"),
+            Instr(Opcode.ld, B,x),
+            Instr(Opcode.ld, D,x),
+            Instr(Opcode.ld, H,x),
             invalid,
 
-            new OpRec(Opcode.ld, "X,x"),
-            new OpRec(Opcode.ld, "Y,x"),
-            new OpRec(Opcode.ld, "S,x"),
-            new OpRec(Opcode.ldw, "x,Iw"),
+            Instr(Opcode.ld, X,x),
+            Instr(Opcode.ld, Y,x),
+            Instr(Opcode.ld, S,x),
+            Instr(Opcode.ldw, x,Iw),
 
             // 40
-            new OpRec(Opcode.ld, "x,B"),
-            new OpRec(Opcode.ld, "x,D"),
-            new OpRec(Opcode.ld, "x,H"),
+            Instr(Opcode.ld, x,B),
+            Instr(Opcode.ld, x,D),
+            Instr(Opcode.ld, x,H),
             invalid,
 
             invalid,
@@ -126,9 +126,9 @@ namespace Reko.Arch.Tlcs.Tlcs90
             invalid,
             invalid,
 
-            new OpRec(Opcode.ld, "x,X"),
-            new OpRec(Opcode.ld, "x,Y"),
-            new OpRec(Opcode.ld, "x,S"),
+            Instr(Opcode.ld, x,X),
+            Instr(Opcode.ld, x,Y),
+            Instr(Opcode.ld, x,S),
             invalid,
 
             invalid,
@@ -168,15 +168,15 @@ namespace Reko.Arch.Tlcs.Tlcs90
             invalid,
             invalid,
 
-            new OpRec(Opcode.add, "x,Ib"),
-            new OpRec(Opcode.adc, "x,Ib"),
-            new OpRec(Opcode.sub, "x,Ib"),
-            new OpRec(Opcode.sbc, "x,Ib"),
+            Instr(Opcode.add, x,Ib),
+            Instr(Opcode.adc, x,Ib),
+            Instr(Opcode.sub, x,Ib),
+            Instr(Opcode.sbc, x,Ib),
 
-            new OpRec(Opcode.and, "x,Ib"),
-            new OpRec(Opcode.xor, "x,Ib"),
-            new OpRec(Opcode.or,  "x,Ib"),
-            new OpRec(Opcode.cp,  "x,Ib"),
+            Instr(Opcode.and, x,Ib),
+            Instr(Opcode.xor, x,Ib),
+            Instr(Opcode.or,  x,Ib),
+            Instr(Opcode.cp,  x,Ib),
 
             // 70
             invalid,
@@ -284,46 +284,46 @@ namespace Reko.Arch.Tlcs.Tlcs90
             invalid,
 
             // C0
-            new OpRec(Opcode.jp, "c,x", InstrClass.ConditionalTransfer),
-            new OpRec(Opcode.jp, "c,x", InstrClass.ConditionalTransfer),
-            new OpRec(Opcode.jp, "c,x", InstrClass.ConditionalTransfer),
-            new OpRec(Opcode.jp, "c,x", InstrClass.ConditionalTransfer),
+            Instr(Opcode.jp, InstrClass.ConditionalTransfer, c,x),
+            Instr(Opcode.jp, InstrClass.ConditionalTransfer, c,x),
+            Instr(Opcode.jp, InstrClass.ConditionalTransfer, c,x),
+            Instr(Opcode.jp, InstrClass.ConditionalTransfer, c,x),
 
-            new OpRec(Opcode.jp, "c,x", InstrClass.ConditionalTransfer),
-            new OpRec(Opcode.jp, "c,x", InstrClass.ConditionalTransfer),
-            new OpRec(Opcode.jp, "c,x", InstrClass.ConditionalTransfer),
-            new OpRec(Opcode.jp, "c,x", InstrClass.ConditionalTransfer),
+            Instr(Opcode.jp, InstrClass.ConditionalTransfer, c,x),
+            Instr(Opcode.jp, InstrClass.ConditionalTransfer, c,x),
+            Instr(Opcode.jp, InstrClass.ConditionalTransfer, c,x),
+            Instr(Opcode.jp, InstrClass.ConditionalTransfer, c,x),
 
-            new OpRec(Opcode.jp, "x", InstrClass.Transfer),
-            new OpRec(Opcode.jp, "c,x", InstrClass.ConditionalTransfer),
-            new OpRec(Opcode.jp, "c,x", InstrClass.ConditionalTransfer),
-            new OpRec(Opcode.jp, "c,x", InstrClass.ConditionalTransfer),
+            Instr(Opcode.jp, InstrClass.Transfer, x),
+            Instr(Opcode.jp, InstrClass.ConditionalTransfer, c,x),
+            Instr(Opcode.jp, InstrClass.ConditionalTransfer, c,x),
+            Instr(Opcode.jp, InstrClass.ConditionalTransfer, c,x),
 
-            new OpRec(Opcode.jp, "c,x", InstrClass.ConditionalTransfer),
-            new OpRec(Opcode.jp, "c,x", InstrClass.ConditionalTransfer),
-            new OpRec(Opcode.jp, "c,x", InstrClass.ConditionalTransfer),
-            new OpRec(Opcode.jp, "c,x", InstrClass.ConditionalTransfer),
+            Instr(Opcode.jp, InstrClass.ConditionalTransfer, c,x),
+            Instr(Opcode.jp, InstrClass.ConditionalTransfer, c,x),
+            Instr(Opcode.jp, InstrClass.ConditionalTransfer, c,x),
+            Instr(Opcode.jp, InstrClass.ConditionalTransfer, c,x),
 
             // D0
-            new OpRec(Opcode.call, "c,x", InstrClass.ConditionalTransfer),
-            new OpRec(Opcode.call, "c,x", InstrClass.ConditionalTransfer),
-            new OpRec(Opcode.call, "c,x", InstrClass.ConditionalTransfer),
-            new OpRec(Opcode.call, "c,x", InstrClass.ConditionalTransfer),
+            Instr(Opcode.call, InstrClass.ConditionalTransfer, c,x),
+            Instr(Opcode.call, InstrClass.ConditionalTransfer, c,x),
+            Instr(Opcode.call, InstrClass.ConditionalTransfer, c,x),
+            Instr(Opcode.call, InstrClass.ConditionalTransfer, c,x),
 
-            new OpRec(Opcode.call, "c,x", InstrClass.ConditionalTransfer),
-            new OpRec(Opcode.call, "c,x", InstrClass.ConditionalTransfer),
-            new OpRec(Opcode.call, "c,x", InstrClass.ConditionalTransfer),
-            new OpRec(Opcode.call, "c,x", InstrClass.ConditionalTransfer),
+            Instr(Opcode.call, InstrClass.ConditionalTransfer, c,x),
+            Instr(Opcode.call, InstrClass.ConditionalTransfer, c,x),
+            Instr(Opcode.call, InstrClass.ConditionalTransfer, c,x),
+            Instr(Opcode.call, InstrClass.ConditionalTransfer, c,x),
 
-            new OpRec(Opcode.call, "x"),
-            new OpRec(Opcode.call, "c,x", InstrClass.ConditionalTransfer),
-            new OpRec(Opcode.call, "c,x", InstrClass.ConditionalTransfer),
-            new OpRec(Opcode.call, "c,x", InstrClass.ConditionalTransfer),
+            Instr(Opcode.call, x),
+            Instr(Opcode.call, InstrClass.ConditionalTransfer, c,x),
+            Instr(Opcode.call, InstrClass.ConditionalTransfer, c,x),
+            Instr(Opcode.call, InstrClass.ConditionalTransfer, c,x),
 
-            new OpRec(Opcode.call, "c,x", InstrClass.ConditionalTransfer),
-            new OpRec(Opcode.call, "c,x", InstrClass.ConditionalTransfer),
-            new OpRec(Opcode.call, "c,x", InstrClass.ConditionalTransfer),
-            new OpRec(Opcode.call, "c,x", InstrClass.ConditionalTransfer),
+            Instr(Opcode.call, InstrClass.ConditionalTransfer, c,x),
+            Instr(Opcode.call, InstrClass.ConditionalTransfer, c,x),
+            Instr(Opcode.call, InstrClass.ConditionalTransfer, c,x),
+            Instr(Opcode.call, InstrClass.ConditionalTransfer, c,x),
 
             // E0
             invalid,

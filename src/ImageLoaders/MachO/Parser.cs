@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -678,7 +678,7 @@ namespace Reko.ImageLoaders.MachO
                     "__imp__" + msym.Name,
                     ptr);
                 ldr.imageSymbols[addr] = impSymbol;
-                ldr.program.ImportReferences.Add(addr, new NamedImportReference(addrImport, "", msym.Name));
+                ldr.program.ImportReferences.Add(addr, new NamedImportReference(addrImport, "", msym.Name, SymbolType.ExternalProcedure));
                 addr = rdr.Address;
                 ++i;
             }

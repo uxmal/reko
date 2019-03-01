@@ -1,5 +1,5 @@
 #region License
-/* Copyright (C) 1999-2018 John Källén.
+/* Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,6 +30,7 @@ using Reko.Structure;
 using Reko.Typing;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
 
@@ -42,7 +43,7 @@ namespace Reko
         bool Load(string fileName, string loader=null);
         Program LoadRawImage(string file, LoadDetails raw);
         void ScanPrograms();
-        ProcedureBase ScanProcedure(ProgramAddress paddr);
+        ProcedureBase ScanProcedure(ProgramAddress paddr, IProcessorArchitecture arch);
         void AnalyzeDataFlow();
         void ReconstructTypes();
         void StructureProgram();
@@ -374,12 +375,12 @@ namespace Reko
         }
 
         /// <summary>
-        /// Starts a scan at address <paramref name="addr"/> on the user's request.
+        /// Starts a scan at address <paramref name="paddr"/> on the user's request.
         /// </summary>
-        /// <param name="addr"></param>
+        /// <param name="paddr"></param>
         /// <returns>a ProcedureBase, because the target procedure may have been a thunk or 
         /// an linked procedure the user has decreed not decompileable.</returns>
-        public ProcedureBase ScanProcedure(ProgramAddress paddr)
+        public ProcedureBase ScanProcedure(ProgramAddress paddr, IProcessorArchitecture arch)
         {
             var program = paddr.Program;
             if (scanner == null)        //$TODO: it's unfortunate that we depend on the scanner of the Decompiler class.
@@ -387,7 +388,7 @@ namespace Reko
             var procName = program.User.Procedures.TryGetValue(
                 paddr.Address, out var sProc) ? sProc.Name : null;
             return scanner.ScanProcedure(
-                program.Architecture,       //$TODO: make this user-selectable.
+                arch,
                 paddr.Address,
                 procName, 
                 program.Architecture.CreateProcessorState());

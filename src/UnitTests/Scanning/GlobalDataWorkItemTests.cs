@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,43 +18,42 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.Scanning;
-using Rhino.Mocks;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Reko.UnitTests.Scanning
 {
     [TestFixture]
     public class GlobalDataWorkItemTests
     {
-        private MockRepository mr;
-        private IScannerQueue scanner;
-        private IProcessorArchitecture arch;
-        private IPlatform platform;
+        private Mock<IScannerQueue> scanner;
+        private Mock<IProcessorArchitecture> arch;
+        private Mock<IPlatform> platform;
         private Program program;
 
         [SetUp]
         public void Setup()
         {
-            this.mr = new MockRepository();
-            this.scanner = mr.StrictMock<IScanner>();
-            this.arch = mr.StrictMock<IProcessorArchitecture>();
-            this.platform = mr.StrictMock<IPlatform>();
-            arch.Stub(a => a.CreateImageReader(null, null))
-                .IgnoreArguments()
-                .Do(new Func<MemoryArea, Address, EndianImageReader>((i, a) => new LeImageReader(i, a)));
-            platform.Stub(p => p.Architecture).Return(arch);
-            scanner.Stub(s => s.Error(null, null, null))
-                .IgnoreArguments()
-                .Do(new Action<Address, string, object[]>((a, s, args) => { Assert.Fail(string.Format("{0}: {1}", a, string.Format(s, args))); }));
+            this.scanner = new Mock<IScannerQueue>();
+            this.arch = new Mock<IProcessorArchitecture>();
+            this.platform = new Mock<IPlatform>();
+            arch.Setup(a => a.Name).Returns("FakeArch");
+            arch.Setup(a => a.CreateImageReader(
+                It.IsAny<MemoryArea>(),
+                It.IsAny<Address>()))
+                .Returns((MemoryArea i, Address a) => new LeImageReader(i, a));
+            platform.Setup(p => p.Architecture).Returns(arch.Object);
+            scanner.Setup(s => s.Error(
+                It.IsAny<Address>(),
+                It.IsAny<string>(),
+                It.IsAny<object[]>()))
+                .Callback((Address a, string s, object[] args) => { Assert.Fail(string.Format("{0}: {1}", a, string.Format(s, args))); });
         }
 
         private void Given_Program(Address address, byte[] bytes)
@@ -64,10 +63,10 @@ namespace Reko.UnitTests.Scanning
             var imageMap = segmentMap.CreateImageMap();
             this.program = new Program
             {
-                Architecture = arch,
+                Architecture = arch.Object,
                 SegmentMap = segmentMap,
                 ImageMap = imageMap,
-                Platform = platform
+                Platform = platform.Object
             };
         }
 
@@ -116,20 +115,20 @@ namespace Reko.UnitTests.Scanning
             Expect_ScannerGlobalData(0x43210063, ft2);
             Expect_ScannerGlobalData(0x43210038, ft1);
             Expect_ScannerGlobalData(0x43210073, ft2);
-            mr.ReplayAll();
 
-            var gdwi = new GlobalDataWorkItem(scanner, program, program.ImageMap.BaseAddress, arrayType, null);
+            var gdwi = new GlobalDataWorkItem(scanner.Object, program, program.ImageMap.BaseAddress, arrayType, null);
             gdwi.Process();
 
-            mr.VerifyAll();
+            scanner.Verify();
         }
 
         private void Expect_ScannerGlobalData(uint addrExp, DataType dtExp)
         {
-            scanner.Expect(s => s.EnqueueUserGlobalData(
-                Arg<Address>.Is.Equal(Address.Ptr32(addrExp)),
-                Arg<DataType>.Is.Same(dtExp),
-                Arg<string>.Is.Anything));
+            scanner.Setup(s => s.EnqueueUserGlobalData(
+                Address.Ptr32(addrExp),
+                dtExp,
+                It.IsAny<string>()))
+                .Verifiable();
         }
 
         [Test]
@@ -155,12 +154,10 @@ namespace Reko.UnitTests.Scanning
             Expect_ScannerGlobalData(0x43210017, ft);
             Expect_ScannerGlobalData(0x43210000, str);
 
-            mr.ReplayAll();
-
-            var gdwi = new GlobalDataWorkItem(scanner, program, program.ImageMap.BaseAddress, str, null);
+            var gdwi = new GlobalDataWorkItem(scanner.Object, program, program.ImageMap.BaseAddress, str, null);
             gdwi.Process();
 
-            mr.VerifyAll();
+            scanner.Verify();
         }
 
         [Test(Description = "Scanner should be able to handle structures with padding 'holes'")]
@@ -188,12 +185,11 @@ namespace Reko.UnitTests.Scanning
                 new StructureField(4, new Pointer(ft, 32), "pfn")
             });
             Expect_ScannerGlobalData(0x43210008, ft);
-            mr.ReplayAll();
 
-            var gdwi = new GlobalDataWorkItem(scanner, program, program.ImageMap.BaseAddress, str, null);
+            var gdwi = new GlobalDataWorkItem(scanner.Object, program, program.ImageMap.BaseAddress, str, null);
             gdwi.Process();
 
-            mr.VerifyAll();
+            scanner.Verify();
         }
 
         [Test]
@@ -204,17 +200,17 @@ namespace Reko.UnitTests.Scanning
             var ft = new FunctionType(
                new Identifier("", PrimitiveType.Real32, null),
                new Identifier[0]);
-            scanner.Expect(s => s.EnqueueUserProcedure(
-                Arg<IProcessorArchitecture>.Is.NotNull,
-                Arg<Address>.Is.Equal(addr),
-                Arg<FunctionType>.Is.NotNull,
-                Arg<string>.Is.Anything));
-            mr.ReplayAll();
+            scanner.Setup(s => s.EnqueueUserProcedure(
+                It.IsNotNull<IProcessorArchitecture>(),
+                addr,
+                It.IsNotNull<FunctionType>(),
+                It.IsAny<string>()))
+                .Verifiable();
 
-            var gdwi = new GlobalDataWorkItem(scanner, program, program.ImageMap.BaseAddress, ft, null);
+            var gdwi = new GlobalDataWorkItem(scanner.Object, program, program.ImageMap.BaseAddress, ft, null);
             gdwi.Process();
 
-            mr.VerifyAll();
+            scanner.Verify();
         }
     }
 }

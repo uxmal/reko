@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@ using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -31,13 +32,13 @@ namespace Reko.Arch.Mos6502
 {
     public class Rewriter : IEnumerable<RtlInstructionCluster>
     {
-        private ProcessorState state;
-        private IStorageBinder binder;
-        private IRewriterHost host;
-        private Mos6502ProcessorArchitecture arch;
-        private IEnumerable<Instruction> instrs;
+        private readonly ProcessorState state;
+        private readonly IStorageBinder binder;
+        private readonly IRewriterHost host;
+        private readonly Mos6502ProcessorArchitecture arch;
+        private readonly EndianImageReader rdr;
+        private readonly IEnumerator<Instruction> dasm;
         private Instruction instrCur;
-        private List<RtlInstruction> rtlInstructions;
         private InstrClass rtlc;
         private RtlEmitter m;
 
@@ -47,7 +48,8 @@ namespace Reko.Arch.Mos6502
             this.state = state;
             this.binder = binder;
             this.host = host;
-            this.instrs = new Disassembler(rdr);
+            this.rdr = rdr;
+            this.dasm = new Disassembler(rdr).GetEnumerator();
         }
 
         private AddressCorrelatedException NYI()
@@ -60,16 +62,20 @@ namespace Reko.Arch.Mos6502
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {
-            var dasm = this.instrs.GetEnumerator();
             while (dasm.MoveNext())
             {
                 this.instrCur = dasm.Current;
-                this.rtlInstructions = new List<RtlInstruction>();
+                var instrs = new List<RtlInstruction>();
                 this.rtlc = instrCur.IClass;
-                this.m = new RtlEmitter(rtlInstructions);
+                this.m = new RtlEmitter(instrs);
                 switch (instrCur.Code)
                 {
-                default: throw NYI();
+                default:
+                    EmitUnitTest();
+                    rtlc = InstrClass.Invalid;
+                    m.Invalid();
+                    break;
+                case Opcode.illegal: m.Invalid(); break;
                 case Opcode.adc: Adc(); break;
                 case Opcode.and: And(); break;
                 case Opcode.asl: Asl(); break;
@@ -106,8 +112,9 @@ namespace Reko.Arch.Mos6502
                 case Opcode.nop: m.Nop(); break;
                 case Opcode.ora: Ora(); break;
                 case Opcode.pha: Push(Registers.a); break;
-                case Opcode.php: Push(AllRegs()); break;
+                case Opcode.php: Push(AllFlags()); break;
                 case Opcode.pla: Pull(Registers.a); break;
+                case Opcode.plp: Plp(); break;
                 case Opcode.rol: Rotate(PseudoProcedure.Rol); break;
                 case Opcode.ror: Rotate(PseudoProcedure.Ror); break;
                 case Opcode.rti: Rti(); break;
@@ -129,7 +136,7 @@ namespace Reko.Arch.Mos6502
                 yield return new RtlInstructionCluster(
                     instrCur.Address,
                     instrCur.Length,
-                    rtlInstructions.ToArray())
+                    instrs.ToArray())
                 {
                     Class = rtlc
                 };
@@ -141,7 +148,7 @@ namespace Reko.Arch.Mos6502
             return GetEnumerator();
         }
 
-        private Identifier AllRegs()
+        private Identifier AllFlags()
         {
             return FlagGroupStorage(FlagM.NF | FlagM.VF | FlagM.BF | FlagM.DF | FlagM.IF | FlagM.ZF | FlagM.CF);
         }
@@ -171,14 +178,8 @@ namespace Reko.Arch.Mos6502
 
         private Identifier FlagGroupStorage(FlagM flags)
         {
-            uint f = (uint) flags;
-            var sb = new StringBuilder();
-            for (int iReg = Registers.N.Number; f != 0; ++iReg, f >>= 1)
-            {
-                if ((f & 1) != 0)
-                    sb.Append(Registers.GetRegister(iReg));
-            }
-            return binder.EnsureFlagGroup(Registers.p, (uint)flags, sb.ToString(), PrimitiveType.Byte);
+            var grf = arch.GetFlagGroup((uint)flags);
+            return binder.EnsureFlagGroup(grf);
         }
 
         private void Asl()
@@ -322,26 +323,26 @@ namespace Reko.Arch.Mos6502
         private void Push(Identifier reg)
         {
             var s = binder.EnsureRegister(arch.StackRegister);
-            m.Assign(s, m.ISub(s, 1));
+            m.Assign(s, m.ISubS(s, 1));
             m.Assign(m.Mem8(s), reg);
         }
 
         private void Pull(RegisterStorage reg)
         {
+            var id = binder.EnsureRegister(reg);
             var s = binder.EnsureRegister(arch.StackRegister);
             var c = FlagGroupStorage(FlagM.NF|FlagM.ZF);
-            var r = binder.EnsureRegister(reg);
-            m.Assign(r, m.Mem8(s));
-            m.Assign(s, m.IAdd(s, 1));
-            m.Assign(c, m.Cond(r));
+            m.Assign(id, m.Mem8(s));
+            m.Assign(s, m.IAddS(s, 1));
+            m.Assign(c, m.Cond(id));
         }
 
         private void Plp()
         {
             var s = binder.EnsureRegister(arch.StackRegister);
-            var c = AllRegs();
+            var c = AllFlags();
             m.Assign(c, m.Mem8(s));
-            m.Assign(s, m.IAdd(s, 1));
+            m.Assign(s, m.IAddS(s, 1));
         }
 
         private void Rotate(string rot)
@@ -399,6 +400,7 @@ namespace Reko.Arch.Mos6502
             var v = Constant.Bool(value);
             m.Assign(reg, v);
         }
+
         private void St(RegisterStorage reg)
         {
             var mem = RewriteOperand(instrCur.Operand);
@@ -425,7 +427,7 @@ namespace Reko.Arch.Mos6502
                         m.Cast(PrimitiveType.UInt16, y)));
             case AddressMode.IndexedIndirect:
                 var x = binder.EnsureRegister(Registers.x);
-                offset = Constant.Word16((ushort) op.Offset.ToByte());
+                offset = Constant.Word16(op.Offset.ToByte());
                 return m.Mem8(
                     m.Mem(
                         PrimitiveType.Ptr16,
@@ -433,23 +435,55 @@ namespace Reko.Arch.Mos6502
                             offset,
                             m.Cast(PrimitiveType.UInt16, x))));
             case AddressMode.Absolute:
-                return m.Mem8(op.Offset);
+                return m.Mem8(arch.MakeAddressFromConstant(op.Offset));
             case AddressMode.AbsoluteX:
-                return m.Mem8(m.IAdd(op.Offset, binder.EnsureRegister(Registers.x)));
+            case AddressMode.AbsoluteY:
+                return m.Mem8(m.IAdd(
+                    arch.MakeAddressFromConstant(op.Offset),
+                    binder.EnsureRegister(op.Register)));
             case AddressMode.ZeroPage:
                 if (op.Register != null)
                 {
                     return m.Mem8(
                         m.IAdd(
-                            Constant.Create(PrimitiveType.Ptr16, op.Offset.ToUInt16()),
+                            arch.MakeAddressFromConstant(op.Offset),
                             binder.EnsureRegister(op.Register)));
                 }
                 else
                 {
-                    return m.Mem8(
-                        Constant.Create(PrimitiveType.Ptr16, op.Offset.ToUInt16()));
+                    return m.Mem8(arch.MakeAddressFromConstant(op.Offset));
                 }
+            case AddressMode.Indirect:
+                return m.Mem16(m.Mem16(arch.MakeAddressFromConstant(op.Offset)));
             }
         }
+
+        private static HashSet<Opcode> seen = new HashSet<Opcode>();
+
+        [Conditional("DEBUG")]
+        private void EmitUnitTest()
+        {
+            if (seen.Contains(dasm.Current.Code))
+                return;
+            seen.Add(dasm.Current.Code);
+
+            var r2 = rdr.Clone();
+            r2.Offset -= dasm.Current.Length;
+            var bytes = r2.ReadBytes(dasm.Current.Length);
+            Debug.WriteLine("        [Test]");
+            Debug.WriteLine("        public void Rw6502_" + dasm.Current.Code + "()");
+            Debug.WriteLine("        {");
+            Debug.Write("            BuildTest(");
+            Debug.Write(string.Join(
+                ", ",
+                bytes.Select(b => string.Format("0x{0:X2}", (int) b))));
+            Debug.WriteLine(");\t// " + dasm.Current.ToString());
+            Debug.WriteLine("            AssertCode(");
+            Debug.WriteLine("                \"0|L--|{0}({1}): 1 instructions\",", dasm.Current.Address, dasm.Current.Length);
+            Debug.WriteLine("                \"1|L--|@@@\");");
+            Debug.WriteLine("        }");
+            Debug.WriteLine("");
+        }
+
     }
 }

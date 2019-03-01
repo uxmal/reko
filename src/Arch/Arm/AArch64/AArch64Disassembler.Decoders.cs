@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -100,10 +100,11 @@ namespace Reko.Arch.Arm.AArch64
 
         public class BitfieldDecoder : Decoder
         {
+            private readonly string tag;
             private readonly Bitfield[] bitfields;
             private readonly Decoder[] decoders;
 
-            public BitfieldDecoder(Bitfield[] bitfields, params Decoder[] decoders)
+            public BitfieldDecoder(string tag, Bitfield[] bitfields, params Decoder[] decoders)
             {
                 Debug.Assert(1 << bitfields.Sum(b => b.Length) == decoders.Length, 
                     $"Expected {1 << bitfields.Sum(b => b.Length)} decoders but found {decoders.Length}.");

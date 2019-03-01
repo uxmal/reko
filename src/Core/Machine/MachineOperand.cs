@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,12 +33,11 @@ namespace Reko.Core.Machine
     /// </summary>
 	public abstract class MachineOperand
 	{
-        public PrimitiveType Width { get { return width; } set { width = value; } }
-        private PrimitiveType width;
+        public PrimitiveType Width { get; set; }
 
 		protected MachineOperand(PrimitiveType width)
 		{
-			this.width = width;
+			this.Width = width;
 		}
 
         public sealed override string ToString()
@@ -109,14 +108,10 @@ namespace Reko.Core.Machine
 
 		private static string FormatString(DataType dt)
 		{
-			switch (dt.Size)
-			{
-			case 1: return "X2";
-			case 2: return "X4";
-			case 4: return "X8";
-			case 8: return "X8";
-			default: throw new InvalidOperationException();
-			}
+            if (dt.Size < 8)
+                return $"X{dt.Size * 2}";
+            else
+                return "X8";
 		}
 
 		public static string FormatUnsignedValue(Constant c, string format = "{0}{1}")
@@ -220,10 +215,10 @@ namespace Reko.Core.Machine
     {
         public Address Address;
 
-        protected AddressOperand(Address a, PrimitiveType type)
+        protected AddressOperand(Address addr, PrimitiveType type)
             : base(type)
         {
-            Address = a ?? throw new ArgumentNullException("a");
+            Address = addr ?? throw new ArgumentNullException(nameof(addr));
         }
 
         public static AddressOperand Create(Address addr)

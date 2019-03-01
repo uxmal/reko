@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Loading;
-using Rhino.Mocks;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,32 +33,22 @@ namespace Reko.UnitTests.Loading
     [TestFixture]
     public class NullImageLoaderTests
     {
-        private MockRepository mr;
-
-        [SetUp]
-        public void Setup()
-        {
-            this.mr = new MockRepository();
-        }
-
         [Test]
         public void Nil_MemoryMap()
         {
             var mmap = new SegmentMap(
                 Address.Ptr16(0x0000),
                 new ImageSegment("low_memory_area", new MemoryArea(Address.Ptr16(0x0000), new byte[0x100]), AccessMode.ReadWriteExecute));
-            var arch = mr.Stub<IProcessorArchitecture>();
-            var platform = mr.Stub<IPlatform>();
-            platform.Stub(p => p.CreateAbsoluteMemoryMap()).Return(mmap);
-            mr.ReplayAll();
+            var arch = new Mock<IProcessorArchitecture>();
+            var platform = new Mock<IPlatform>();
+            platform.Setup(p => p.CreateAbsoluteMemoryMap()).Returns(mmap);
 
             var ldr = new NullImageLoader(null, "foo.exe", new byte[0x1000]);
-            var segMap = ldr.CreatePlatformSegmentMap(platform, Address.Ptr16(0x0100), new byte[] { 0x50 });
+            var segMap = ldr.CreatePlatformSegmentMap(platform.Object, Address.Ptr16(0x0100), new byte[] { 0x50 });
             Assert.AreEqual(2, segMap.Segments.Count);
             var memProg = segMap.Segments.Values.ElementAt(1).MemoryArea;
             Assert.AreEqual(1, memProg.Length);
             Assert.AreEqual((byte)0x50, memProg.Bytes[0]);
-            mr.VerifyAll();
         }
     }
 }

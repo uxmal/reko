@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,151 +34,154 @@ namespace Reko.Arch.X86
 
                 // 0F 38 00
                 new PrefixedDecoder(
-                    Opcode.pshufb, "Pq,Qq",
-                    Opcode.vpshufb, "Vx,Hx,Wx"),
+                    Instr(Opcode.pshufb, Pq,Qq),
+                    Instr(Opcode.vpshufb, Vx,Hx,Wx)),
                 new PrefixedDecoder(
-                    Opcode.phaddw, "Pq,Qq",
-                    Opcode.vphaddw, "Vx,Hx,Wx"),
+                    Instr(Opcode.phaddw, Pq,Qq),
+                    Instr(Opcode.vphaddw, Vx,Hx,Wx)),
                 new PrefixedDecoder(
-                    Opcode.phaddd, "Pq,Qq",
-                    Opcode.vphaddd, "Vx,Hx,Wx"),
+                    Instr(Opcode.phaddd, Pq,Qq),
+                    Instr(Opcode.vphaddd, Vx,Hx,Wx)),
                 new PrefixedDecoder(
-                    Opcode.phaddsw, "Pq,Qq",
-                    Opcode.vphaddsw, "Vx,Hx,Wx"),
+                    Instr(Opcode.phaddsw, Pq,Qq),
+                    Instr(Opcode.vphaddsw, Vx,Hx,Wx)),
 
                 new PrefixedDecoder(
-                    Opcode.pmaddubsw, "Pq,Qq",
-                    Opcode.vpmaddubsw, "Vx,Hx,Wx"),
+                    Instr(Opcode.pmaddubsw, Pq,Qq),
+                    Instr(Opcode.vpmaddubsw, Vx,Hx,Wx)),
                 new PrefixedDecoder(
-                    Opcode.phsubw, "Pq,Qq",
-                    Opcode.vphsubw, "Vx,Hx,Wx"),
+                    Instr(Opcode.phsubw, Pq,Qq),
+                    Instr(Opcode.vphsubw, Vx,Hx,Wx)),
                 new PrefixedDecoder(
-                    Opcode.phsubd, "Pq,Qq",
-                    Opcode.vphsubd, "Vx,Hx,Wx"),
+                    Instr(Opcode.phsubd, Pq,Qq),
+                    Instr(Opcode.vphsubd, Vx,Hx,Wx)),
                 new PrefixedDecoder(
-                    Opcode.phsubsw, "Pq,Qq",
-                    Opcode.vphsubsw, "Vx,Hx,Wx"),
+                    Instr(Opcode.phsubsw, Pq,Qq),
+                    Instr(Opcode.vphsubsw, Vx,Hx,Wx)),
 
                 new PrefixedDecoder(
-                    Opcode.psignb, "Pq,Qq",
-                    Opcode.vpsignb, "Vx,Hx,Wx"),
+                    Instr(Opcode.psignb, Pq,Qq),
+                    Instr(Opcode.vpsignb, Vx,Hx,Wx)),
                 new PrefixedDecoder(
-                    Opcode.psignw, "Pq,Qq",
-                    Opcode.vpsignw, "Vx,Hx,Wx"),
+                    Instr(Opcode.psignw, Pq,Qq),
+                    Instr(Opcode.vpsignw, Vx,Hx,Wx)),
                 new PrefixedDecoder(
-                    Opcode.psignd, "Pq,Qq",
-                    Opcode.vpsignd, "Vx,Hx,Wx"),
+                    Instr(Opcode.psignd, Pq,Qq),
+                    Instr(Opcode.vpsignd, Vx,Hx,Wx)),
                 new PrefixedDecoder(
-                    Opcode.pmulhrsw, "Pq,Qq",
-                    Opcode.vpmulhrsw, "Vx,Hx,Wx"),
+                    Instr(Opcode.pmulhrsw, Pq,Qq),
+                    Instr(Opcode.vpmulhrsw, Vx,Hx,Wx)),
 
                 new PrefixedDecoder(
-                    Opcode.illegal, "",
-                    Opcode.vpermilps, "Vx,Hx,Wx"),
+                    s_invalid,
+                    Instr(Opcode.vpermilps, Vx,Hx,Wx)),
                 new PrefixedDecoder(
-                    Opcode.illegal, "",
-                    Opcode.vpermilpd, "Vx,Hx,Wx"),
+                    s_invalid,
+                    Instr(Opcode.vpermilpd, Vx,Hx,Wx)),
                 new PrefixedDecoder(
-                    Opcode.illegal, "",
-                    Opcode.vtestps, "Vx,Wx"),
+                    s_invalid,
+                    Instr(Opcode.vtestps, Vx,Wx)),
                 new PrefixedDecoder(
-                    Opcode.illegal, "",
-                    Opcode.vtestpd, "Vx,Wx"),
+                    s_invalid,
+                    Instr(Opcode.vtestpd, Vx,Wx)),
 
                 // 0F 38 10
                 new PrefixedDecoder(
-                    Opcode.illegal, "",
-                    Opcode.pblendvb, "Vdq,Wdq"),
+                    s_invalid,
+                    Instr(Opcode.pblendvb, Vdq,Wdq)),
                 s_invalid,
                 s_invalid,
                 new PrefixedDecoder(
-                    Opcode.illegal, "",
-                    Opcode.vcvtph2ps, "Vx,Wx,Ib"),
+                    s_invalid,
+                    Instr(Opcode.vcvtph2ps, Vx,Wx,Ib)),
 
                 new PrefixedDecoder(
-                    Opcode.illegal, "",
-                    Opcode.blendvps, "Vdq,Wdq"),
+                    s_invalid,
+                    Instr(Opcode.blendvps, Vdq,Wdq)),
                 new PrefixedDecoder(
-                    Opcode.illegal, "",
-                    Opcode.blendvpd, "Vdq,Wdq"),
+                    s_invalid,
+                    Instr(Opcode.blendvpd, Vdq,Wdq)),
                 new PrefixedDecoder(
-                    Opcode.illegal, "",
-                    Opcode.vpermps, "Vqq,Hqq,Wqq"),
+                    s_invalid,
+                    Instr(Opcode.vpermps, Vqq,Hqq,Wqq)),
                 new PrefixedDecoder(
-                    Opcode.illegal, "",
-                    Opcode.vptest, "Vx,Wx"),
+                    s_invalid,
+                    Instr(Opcode.vptest, Vx,Wx)),
 
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
+                new PrefixedDecoder(
+                    dec66: Instr(Opcode.vbroadcastss, Vx,Wd)),
+                new PrefixedDecoder(
+                    dec66: Instr(Opcode.vbroadcastsd, Vqq,Wq)),
+                new PrefixedDecoder(
+                    dec66: Instr(Opcode.vbroadcastf128, Vqq,Mdq)),
+                s_invalid,
+
+                new PrefixedDecoder(
+                    dec: Instr(Opcode.pabsb, Pq,Qq),
+                    dec66: Instr(Opcode.vpabsb, Vx,Wx)),
+                new PrefixedDecoder(
+                    dec: Instr(Opcode.pabsw, Pq,Qq),
+                    dec66: Instr(Opcode.vpabsw, Vx,Wx)),
+                new PrefixedDecoder(
+                    dec: Instr(Opcode.pabsd, Pq,Qq),
+                    dec66: Instr(Opcode.vpabsd, Vx,Wx)),
+                s_invalid,
 
                 // 0F 38 20
-                new PrefixedDecoder(
-                    Opcode.illegal, "",
-                    Opcode.pblendvdb, "Vdq,Wdq"),
-                new PrefixedDecoder(
-                    Opcode.illegal, "",
-                    Opcode.vpmovsxbd, "Vx,Wx,Ib"),
-                new PrefixedDecoder(
-                    Opcode.illegal, "",
-                    Opcode.vpmovsxbq, "Vx,Wx,Ib"),
-                new PrefixedDecoder(
-                    Opcode.illegal, "",
-                    Opcode.vpmovsxwd, "Vx,Wx,Ib"),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpmovsxbw, Vx,Mq)),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpmovsxbd, Vx,Mq)),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpmovsxbq, Vx,Mq)),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpmovsxwd, Vx,Mq)),
 
-                new PrefixedDecoder(
-                    Opcode.illegal, "",
-                    Opcode.blendvps, "Vdq,Wdq"),
-                new PrefixedDecoder(
-                    Opcode.illegal, "",
-                    Opcode.blendvpd, "Vdq,Wdq"),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpmovsxwq, Vx,Mq)),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpmovsxdq, Vx,Mq)),
                 s_invalid,
                 s_invalid,
 
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
+                new PrefixedDecoder(dec66: Instr(Opcode.vpmuldq, Vx,Hx,Wx)),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpcmpeqq, Vx,Hx,Wx)),
+                new PrefixedDecoder(dec66: Instr(Opcode.vmovntdqa, Vx,Mx,Wx)),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpackusdw, Vx,Hx,Wx)),
+
+                new PrefixedDecoder(dec66: Instr(Opcode.vmaskmovps, Vx,Hx,Mx)),
+                new PrefixedDecoder(dec66: Instr(Opcode.vmaskmovpd, Vx,Hx,Mx)),
+                new PrefixedDecoder(dec66: Instr(Opcode.vmaskmovps, Mx,Hx,Vx)),
+                new PrefixedDecoder(dec66: Instr(Opcode.vmaskmovpd, Mx,Hx,Vx)),
 
                 // 30
-                new PrefixedDecoder(
-                    Opcode.illegal, "",
-                    Opcode.vpmovsxbw, "Vx,Mq"),
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
+                new PrefixedDecoder(dec66: Instr(Opcode.vpmovzxbw, Vx,Mq)),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpmovzxbd, Vx,Mq)),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpmovzxbq, Vx,Mq)),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpmovzxwd, Vx,Mq)),
 
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
+                new PrefixedDecoder(dec66: Instr(Opcode.vpmovzxwq, Vx,Mq)),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpmovzxdq, Vx,Mq)),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpermd, Vqq,Hqq,Wqq)),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpcmpgtq, Vx,Hx,Wx)),
+
+                new PrefixedDecoder(dec66: Instr(Opcode.vpminsb, Vx,Hx,Wx)),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpminsd, Vx,Hx,Wx)),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpminuw, Vx,Hx,Wx)),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpminud, Vx,Hx,Wx)),
+
+                new PrefixedDecoder(dec66: Instr(Opcode.vpmaxsb, Vx,Hx,Wx)),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpmaxsd, Vx,Hx,Wx)),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpmaxuw, Vx,Hx,Wx)),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpmaxud, Vx,Hx,Wx)),
 
                 // 40
-                s_nyi,
-                s_nyi,
+                new PrefixedDecoder(dec66: Instr(Opcode.vpmulld, Vx,Hx,Wx)),
+                new PrefixedDecoder(dec66: Instr(Opcode.vphminposuw, Vdq,Wdq)),
                 s_invalid,
                 s_invalid,
                 s_invalid,
-                s_nyi,
-                s_nyi,
-                s_nyi,
+                new PrefixedDecoder(
+                    dec66: Instr(Opcode.vpsrlvd, Vx,Hx,Wx),
+                    dec66Wide: Instr(Opcode.vpsrlvq, Vx,Hx,Wx)),
+                new PrefixedDecoder(dec66: Instr(Opcode.vpsravd, Vx,Hx,Wx)),
+                new PrefixedDecoder(
+                    dec66: Instr(Opcode.vpsllvd, Vx,Hx,Wx),
+                    dec66Wide: Instr(Opcode.vpsllvq, Vx,Hx,Wx)),
 
                 s_invalid,
                 s_invalid,
@@ -199,9 +202,9 @@ namespace Reko.Arch.X86
                 s_invalid,
                 s_invalid,
 
-                s_nyi,
-                s_nyi,
-                s_nyi,
+                new PrefixedDecoder(dec66:Instr(Opcode.vpbroadcastd, Vx,Wx)),
+                new PrefixedDecoder(dec66:Instr(Opcode.vpbroadcastq, Vx,Wx)),
+                new PrefixedDecoder(dec66:Instr(Opcode.vpbroadcasti128, Vqq,Mdq)),
                 s_invalid,
                 s_invalid,
                 s_invalid,
@@ -237,8 +240,8 @@ namespace Reko.Arch.X86
                 s_invalid,
                 s_invalid,
 
-                s_nyi,
-                s_nyi,
+                new PrefixedDecoder(dec66: Instr(Opcode.vbroadcastb, Vx,Eb)),
+                new PrefixedDecoder(dec66: Instr(Opcode.vbroadcastw, Vx,Wx)),
                 s_invalid,
                 s_invalid,
                 s_invalid,
@@ -248,14 +251,14 @@ namespace Reko.Arch.X86
 
                 // 0F 38 80
                 new PrefixedDecoder(
-                    Opcode.illegal, "",
-                    Opcode.invept, "Gy,Mdq"),
+                    s_invalid,
+                    Instr(Opcode.invept, Gy,Mdq)),
                 new PrefixedDecoder(
-                    Opcode.illegal, "",
-                    Opcode.invvpid, "Gy,Mdq"),
+                    s_invalid,
+                    Instr(Opcode.invvpid, Gy,Mdq)),
                 new PrefixedDecoder(
-                    Opcode.illegal, "",
-                    Opcode.invpcid, "Gy,Mdq"),
+                    s_invalid,
+                    Instr(Opcode.invpcid, Gy,Mdq)),
                 s_invalid,
                 s_invalid,
                 s_invalid,
@@ -272,23 +275,36 @@ namespace Reko.Arch.X86
                 s_invalid,
 
                 // 90
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
+                new PrefixedDecoder(
+                    dec66: Instr(Opcode.vgatherdd, Vx,Hx,Wx),
+                    dec66Wide: Instr(Opcode.vgatherdq, Vx,Hx,Wx)),
+                new PrefixedDecoder(
+                    dec66: Instr(Opcode.vgatherqd, Vx,Hx,Wx),
+                    dec66Wide: Instr(Opcode.vgatherqq, Vx,Hx,Wx)),
+                new PrefixedDecoder(
+                    dec66: Instr(Opcode.vgatherdps, Vx,Hx,Wx),
+                    dec66Wide: Instr(Opcode.vgatherdpd, Vx,Hx,Wx)),
+                new PrefixedDecoder(
+                    dec66: Instr(Opcode.vgatherqps, Vx,Hx,Wx),
+                    dec66Wide: Instr(Opcode.vgatherqpd, Vx,Hx,Wx)),
+
+                s_invalid,
+                s_invalid,
+                new PrefixedDecoder(
+                    dec66: Instr(Opcode.vfmaddsub132ps, Vx,Hx,Wx),
+                    dec66Wide: Instr(Opcode.vfmaddsub132pd, Vx,Hx,Wx)),
+                new PrefixedDecoder(
+                    dec66: Instr(Opcode.vfmsubadd132ps, Vx,Hx,Wx),
+                    dec66Wide: Instr(Opcode.vfmsubadd132pd, Vx,Hx,Wx)),
 
                 s_nyi,
                 s_nyi,
                 s_nyi,
                 s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
+                s_invalid,
+                s_invalid,
+                new PrefixedDecoder(dec66:nyi("vfmaddsub132ps/dv")),
+                new PrefixedDecoder(dec66:nyi("vfmsubadd132ps/dv")),
 
                 // A0
                 s_invalid,
@@ -300,10 +316,13 @@ namespace Reko.Arch.X86
                 s_nyi,
                 s_nyi,
 
+                new PrefixedDecoder(
+                    dec66: Instr(Opcode.vfmadd213ps, Vx,Hx,Wx),
+                    dec66Wide: Instr(Opcode.vfmadd213pd, Vx,Hx,Wx)),
                 s_nyi,
                 s_nyi,
                 s_nyi,
-                s_nyi,
+
                 s_nyi,
                 s_nyi,
                 s_nyi,
@@ -327,8 +346,12 @@ namespace Reko.Arch.X86
 
                 s_nyi,
                 s_nyi,
-                new PrefixedDecoder(Opcode.illegal, "", Opcode.vfnmsub231ps, "Vx,Hx,Wx"),
-                new PrefixedDecoder(Opcode.illegal, "", Opcode.vfnmsub231ss, "Vx,Hx,Wx"),
+                new PrefixedDecoder(
+                    s_invalid,
+                    dec66:Instr(Opcode.vfnmsub231ps, Vx,Hx,Wx)),
+                new PrefixedDecoder(
+                    s_invalid,
+                    dec66:Instr(Opcode.vfnmsub231ss, Vx,Hx,Wx)),
 
                 // 0F 38 C0
                 s_invalid,
@@ -340,12 +363,12 @@ namespace Reko.Arch.X86
                 s_invalid,
                 s_invalid,
 
-                new PrefixedDecoder(Opcode.sha1nexte, "Vdq,Wdq"),
-                new PrefixedDecoder(Opcode.sha1msg1, "Vdq,Wdq"),
-                new PrefixedDecoder(Opcode.sha1msg2, "Vdq,Wdq"),
-                new PrefixedDecoder(Opcode.sha256mds2, "Vdq,Wdq"),
-                new PrefixedDecoder(Opcode.sha256msg1, "Vdq,Wdq"),
-                new PrefixedDecoder(Opcode.sha256msg2, "Vdq,Wdq"),
+                new PrefixedDecoder(Instr(Opcode.sha1nexte, Vdq,Wdq)),
+                new PrefixedDecoder(Instr(Opcode.sha1msg1, Vdq,Wdq)),
+                new PrefixedDecoder(Instr(Opcode.sha1msg2, Vdq,Wdq)),
+                new PrefixedDecoder(Instr(Opcode.sha256mds2, Vdq,Wdq)),
+                new PrefixedDecoder(Instr(Opcode.sha256msg1, Vdq,Wdq)),
+                new PrefixedDecoder(Instr(Opcode.sha256msg2, Vdq,Wdq)),
                 s_invalid,
                 s_invalid,
 
@@ -363,21 +386,21 @@ namespace Reko.Arch.X86
                 s_invalid,
                 s_invalid,
                 new PrefixedDecoder(
-                    Opcode.illegal, "",
-                    Opcode.aesimc, "Vdq,Wdq"),
+                    s_invalid,
+                    Instr(Opcode.aesimc, Vdq,Wdq)),
 
                 new PrefixedDecoder(
-                    Opcode.illegal, "",
-                    Opcode.vaesenc, "Vdq,Hdq,Wdq"),
+                    s_invalid,
+                    Instr(Opcode.vaesenc, Vdq,Hdq,Wdq)),
                 new PrefixedDecoder(
-                    Opcode.illegal, "",
-                    Opcode.vaesenclast, "Vdq,Hdq,Wdq"),
+                    s_invalid,
+                    Instr(Opcode.vaesenclast, Vdq,Hdq,Wdq)),
                 new PrefixedDecoder(
-                    Opcode.illegal, "",
-                    Opcode.vaesdec, "Vdq,Hdq,Wdq"),
+                    s_invalid,
+                    Instr(Opcode.vaesdec, Vdq,Hdq,Wdq)),
                 new PrefixedDecoder(
-                    Opcode.illegal, "",
-                    Opcode.vaesdeclast, "Vdq,Hdq,Wdq"),
+                    s_invalid,
+                    Instr(Opcode.vaesdeclast, Vdq,Hdq,Wdq)),
 
                 // E0
                 s_invalid,

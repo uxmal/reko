@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -199,5 +199,43 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             Assert.AreEqual("ORDINAL5 (0027:004B)", syms[1].ToString());
             Assert.AreEqual("ORDINAL6 (0037:003B)", syms[2].ToString());
         }
+
+        [Test(Description = "Moveable entries")]
+        public void Neldr_ReadEntryTable_SkipBundle()
+        {
+            var segs = new[]
+            {
+                new NeImageLoader.NeSegment { Address = Address.ProtectedSegPtr(0x17, 0) },
+                new NeImageLoader.NeSegment { Address = Address.ProtectedSegPtr(0x27, 0) },
+                new NeImageLoader.NeSegment { Address = Address.ProtectedSegPtr(0x37, 0) },
+            };
+
+            Given_Bundle(4, 1,
+                Given_BundleEntry(2, 0x42),
+                Given_BundleEntry(0));
+            Given_Bundle(4, 0x00);      // Skip 4 bundles.
+            Given_Bundle(4, 2,
+                Given_BundleEntry(3, 0x4B),
+                Given_BundleEntry(3, 0x3B),
+                Given_BundleEntry(0));
+            Given_Bundle(0, 0);
+            var neldr = new NeImageLoader(services, "FOO.DLL", bytes, 0);
+            var syms = neldr.LoadEntryPoints(
+                0,
+                segs,
+                new Dictionary<int, string>
+                {
+                    { 1, "ORDINAL1" },
+                    { 2, "**BOOM**" },
+                    { 9, "ORDINAL9" },
+                    { 10, "ORDINAL10" },
+                },
+                new X86ArchitectureProtected16("x86-protected-16"));
+            Assert.AreEqual(3, syms.Count);
+            Assert.AreEqual("ORDINAL1 (0017:0042)", syms[0].ToString());
+            Assert.AreEqual("ORDINAL9 (0027:004B)", syms[1].ToString());
+            Assert.AreEqual("ORDINAL10 (0027:003B)", syms[2].ToString());
+        }
+
     }
 }

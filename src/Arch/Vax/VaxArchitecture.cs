@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -67,6 +67,7 @@ namespace Reko.Arch.Vax
             this.FramePointerType = PrimitiveType.Ptr32;
             this.WordWidth = PrimitiveType.Word32;
             this.PointerType = PrimitiveType.Ptr32;
+            this.StackRegister = Registers.sp;
             this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
         }
 
@@ -167,7 +168,7 @@ namespace Reko.Arch.Vax
 
         public override RegisterStorage[] GetRegisters()
         {
-            throw new NotImplementedException();
+            return regs;
         }
 
         //$REVIEW: shouldn't this be flaggroup?

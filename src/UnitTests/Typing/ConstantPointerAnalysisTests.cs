@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,19 +18,16 @@
  */
 #endregion
 
-using Reko.Analysis;
+using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using Reko.Typing;
 using Reko.UnitTests.Mocks;
-using NUnit.Framework;
-using System;
-using Rhino.Mocks;
 
 namespace Reko.UnitTests.Typing
 {
-	[TestFixture]
+    [TestFixture]
 	public class ConstantPointerAnalysisTests
 	{
 		private TypeStore store;

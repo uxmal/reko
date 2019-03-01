@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,13 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Arch.Mips;
-using Reko.Core.Serialization;
+using Reko.Core;
 using Reko.Core.Types;
 using Reko.Environments.Windows;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Reko.Core;
-using Rhino.Mocks;
 using System.Diagnostics;
 
 namespace Reko.UnitTests.Environments.Windows
@@ -38,7 +34,7 @@ namespace Reko.UnitTests.Environments.Windows
     {
         private PrimitiveType i32 = PrimitiveType.Int32;
         private VoidType v = VoidType.Instance;
-        private MockRepository mr;
+
         private MipsLe32Architecture arch;
         private Reko.Environments.Windows.MipsCallingConvention cc;
         private ICallingConventionEmitter ccr;
@@ -46,7 +42,6 @@ namespace Reko.UnitTests.Environments.Windows
         [SetUp]
         public void Setup()
         {
-            this.mr = new MockRepository();
             this.arch = new MipsLe32Architecture("mips-le-32");
         }
 

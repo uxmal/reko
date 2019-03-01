@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -253,11 +253,15 @@ namespace Reko.Typing
                 if (!program.SegmentMap.IsValidAddress(addr))
                 {
                     //$TODO: probably should use a reinterpret_cast here.
-                    var ce = new Cast(ptr, c)
+                    e = new Cast(ptr, c)
                     {
                         TypeVariable = c.TypeVariable
                     };
-                    return ce;
+                    if (dereferenced)
+                    {
+                        e = new Dereference(ptr.Pointee, e);
+                    }
+                    return e;
                 }
                 
                 var dt = ptr.Pointee.ResolveAs<DataType>();
@@ -276,8 +280,7 @@ namespace Reko.Typing
                 }
                 else
                 {
-                    var array = f.DataType as ArrayType;
-                    if (array != null) // C language rules 'promote' arrays to pointers.
+                    if (f.DataType is ArrayType array) // C language rules 'promote' arrays to pointers.
                     {
                         e.DataType = program.TypeFactory.CreatePointer(
                             array.ElementType, 

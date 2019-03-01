@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,28 +18,26 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.ImageLoaders.Elf;
-using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 
 namespace Reko.UnitTests.ImageLoaders.Elf
 {
     [TestFixture]
     public class ElfLoader64Tests
     {
-        private MockRepository mr;
         private byte[] bytes;
         private List<ElfSegment> programHeaders;
         private List<ElfSection> sections;
-        private IPlatform platform;
+        private Mock<IPlatform> platform;
         private ElfLoader64 el64;
         private Elf64_EHdr eih;
         private ServiceContainer sc;
@@ -48,18 +46,16 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
             programHeaders = new List<ElfSegment>();
             sections = new List<ElfSection>();
-            platform = mr.Stub<IPlatform>();
+            platform = new Mock<IPlatform>();
             this.sc = new ServiceContainer();
-            var cfgSvc = mr.Stub<IConfigurationService>();
-            var arch = mr.Stub<IProcessorArchitecture>();
-            platform.Stub(p => p.MakeAddressFromLinear(0))
-                .IgnoreArguments()
-                .Do(new Func<ulong, Address>(u => Address.Ptr64(u)));
-            cfgSvc.Stub(c => c.GetArchitecture("x86-protected-64")).Return(arch);
-            sc.AddService<IConfigurationService>(cfgSvc);
+            var cfgSvc = new Mock<IConfigurationService>();
+            var arch = new Mock<IProcessorArchitecture>();
+            platform.Setup(p => p.MakeAddressFromLinear(It.IsAny<ulong>()))
+                .Returns((ulong u) => Address.Ptr64(u));
+            cfgSvc.Setup(c => c.GetArchitecture("x86-protected-64")).Returns(arch.Object);
+            sc.AddService<IConfigurationService>(cfgSvc.Object);
         }
 
         private void Given_RawImage(string bytes)
@@ -136,10 +132,9 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             Given_Section(".text", 0x1000, "rx");
             Given_Section(".data", 0x2000, "rw");
             Given_Section(".bss", 0x2008, "rw");
-            mr.ReplayAll();
 
             When_CreateLoader64(false);
-            var segmentMap = el64.LoadImageBytes(platform, this.bytes, Address.Ptr64(0x1000));
+            var segmentMap = el64.LoadImageBytes(platform.Object, this.bytes, Address.Ptr64(0x1000));
 
             ImageSegment segText;
             Assert.IsTrue(segmentMap.TryFindSegment(Address.Ptr64(0x1001), out segText));
@@ -154,13 +149,11 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             Given_RawImage("C0 DE 00 00 00 00 00 00 DA 7A 00 00");
             Given_ImageHeader(ElfMachine.EM_X86_64);
             Given_ProgramHeader(ProgramHeaderType.PT_LOAD, 0, 0x1000, 8, 8);
-            mr.ReplayAll();
 
             When_CreateLoader64(false);
-            var segmentMap = el64.LoadImageBytes(platform, this.bytes, Address.Ptr64(0x1000));
+            var segmentMap = el64.LoadImageBytes(platform.Object, this.bytes, Address.Ptr64(0x1000));
 
             Assert.AreEqual(1, segmentMap.Segments.Count);
-            mr.VerifyAll();
 
         }
     }

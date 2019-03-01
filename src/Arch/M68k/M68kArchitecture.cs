@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,9 +48,9 @@ namespace Reko.Arch.M68k
             CarryFlagMask = (uint)FlagM.CF;
             StackRegister = Registers.a7;
             flagGroups = new Dictionary<uint, FlagGroupStorage>();
-    }
+        }
 
-    public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
+        public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
             return M68kDisassembler.Create68020(rdr);
         }
@@ -112,8 +112,7 @@ namespace Reko.Arch.M68k
 
         public override int? GetOpcodeNumber(string name)
         {
-            Opcode result;
-            if (!Enum.TryParse(name, true, out result))
+            if (!Enum.TryParse(name, true, out Opcode result))
                 return null;
             return (int)result;
         }
@@ -143,8 +142,7 @@ namespace Reko.Arch.M68k
 
         public override FlagGroupStorage GetFlagGroup(uint grf)
         {
-            FlagGroupStorage f;
-            if (flagGroups.TryGetValue(grf, out f))
+            if (flagGroups.TryGetValue(grf, out FlagGroupStorage f))
             {
                 return f;
             }
@@ -196,7 +194,7 @@ namespace Reko.Arch.M68k
         }
 
         //$REVIEW: shouldn't this be flaggroup?
-        private static RegisterStorage[] flagRegisters = {
+        private static readonly RegisterStorage[] flagRegisters = {
             new RegisterStorage("C", 0, 0, PrimitiveType.Bool),
             new RegisterStorage("V", 0, 0, PrimitiveType.Bool),
             new RegisterStorage("Z", 0, 0, PrimitiveType.Bool),

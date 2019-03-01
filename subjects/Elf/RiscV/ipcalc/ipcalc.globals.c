@@ -55,7 +55,7 @@ void g_v115A8 = ??void??;
 char g_str115C8[] = "%.2x";
 char g_str115D0[] = "/dev/urandom";
 void g_v115E0 = ??void??;
-Eq_2837 g_t11780 = 
+Eq_2575 g_t11780 = 
 	{
 		0x31,
 		0x00,
@@ -65,7 +65,6 @@ char g_str117A8[] = "%s.0";
 char g_str117B0[] = "Memory allocation failure line %d\n";
 char g_str117D8[] = "ipcalc: bad IPv4 prefix %d\n";
 void g_v117F8 = ??void??;
-char g_str11828[] = "%u";
 char g_str11830[] = "ipcalc: cannot find hostname for %s";
 char g_str11920[] = "ipcalc: bad IPv6 address: %s\n";
 char g_str11940[] = "ipcalc: bad IPv6 prefix: %d\n";
@@ -100,7 +99,7 @@ char g_str11D18[] = "COUNTRY=%s\n";
 char g_str11D28[] = "CITY=\"%s\"\n";
 char g_str11D38[] = "CITY=%s\n";
 char g_str11D48[] = "COORDINATES=\"%s\"\n";
-Eq_2837 g_t12660 = 
+Eq_2575 g_t12660 = 
 	{
 		0x32,
 		0x00,
@@ -116,7 +115,7 @@ char g_str12AE8[] = "GeoIP_id_by_ipnum";
 char g_str12B00[] = "GeoIP_id_by_ipnum_v6";
 char g_str12B18[] = "GeoIP_record_by_ipnum_v6";
 char g_str12B38[] = "GeoIP_code_by_id";
-Eq_3941 g_t12B50 = 
+Eq_3496 g_t12B50 = 
 	{
 		0x69
 	};

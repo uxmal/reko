@@ -289,7 +289,7 @@ l000000014000137F:
 	mov	rcx,rbx
 	call	0000000140001BF4
 	xor	r8d,r8d
-	lea	edx,[rax+02]
+	lea	edx,[r8+02]
 	xor	ecx,ecx
 	call	rbx
 
@@ -585,16 +585,16 @@ l0000000140001698:
 	mov	al,01
 	ror	r8,cl
 	xor	r8,rdx
-	mov	[r13-20],r8
-	mov	[r13-18],r8
+	mov	[rbp-20],r8
+	mov	[rbp-18],r8
 	movups	xmm0,[rbp-20]
-	mov	[r13-10],r8
+	mov	[rbp-10],r8
 	movsd	xmm1,double ptr [rbp-10]
 	movups	[rip+00001EED],xmm0                                 ; 00000001400035C0
-	mov	[r13-20],r8
-	mov	[r13-18],r8
+	mov	[rbp-20],r8
+	mov	[rbp-18],r8
 	movups	xmm0,[rbp-20]
-	mov	[r13-10],r8
+	mov	[rbp-10],r8
 	movsd	double ptr [rip+00001EE5],xmm1                       ; 00000001400035D0
 	movsd	xmm1,double ptr [rbp-10]
 	movups	[rip+00001EE1],xmm0                                 ; 00000001400035D8
@@ -1169,7 +1169,7 @@ fn0000000140001BFC proc
 	cpuid
 	mov	[rbp-10],eax
 	mov	r9d,ecx
-	mov	[r13-08],r9d
+	mov	[rbp-08],r9d
 	mov	ecx,eax
 	mov	[rbp-0C],ebx
 	mov	[rbp-04],edx
@@ -1222,7 +1222,7 @@ l0000000140001CFC:
 l0000000140001D07:
 	mov	eax,00000007
 	mov	[rbp-20],edx
-	mov	[r13-1C],r9d
+	mov	[rbp-1C],r9d
 	cmp	edi,eax
 	jl	0000000140001D3B
 
@@ -1329,12 +1329,12 @@ fn0000000140001E9C proc
 	mov	rbx,rdx
 	and	r11d,F8
 	mov	r9,rcx
-	test	byte ptr [rax],04
+	test	byte ptr [r8],04
 	mov	r10,rcx
 	jz	0000000140001EC7
 
 l0000000140001EB4:
-	mov	eax,[rax+08]
+	mov	eax,[r8+08]
 	movsx	r10,dword ptr [r8+04]
 	neg	eax
 	add	r10,rcx

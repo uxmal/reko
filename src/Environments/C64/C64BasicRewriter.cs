@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Arch.Mos6502;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
@@ -38,12 +39,12 @@ namespace Reko.Environments.C64
     /// </summary>
     public class C64BasicRewriter : IEnumerable<RtlInstructionCluster> 
     {
-        private C64Basic arch;
-        private Address address;
-        private SortedList<ushort, C64BasicInstruction> program;
-        private IRewriterHost host;
+        private readonly C64Basic arch;
+        private readonly Address address;
+        private readonly SortedList<ushort, C64BasicInstruction> program;
+        private readonly IRewriterHost host;
+        private readonly StringType strType;
         private RtlEmitter m;
-        private StringType strType;
         private InstrClass rtlc;
         private List<RtlInstruction> rtlInstructions;
         private byte[] line;
@@ -193,8 +194,7 @@ namespace Reko.Environments.C64
 
         private Expression ExpectLValue()
         {
-            Identifier id;
-            if (!GetIdentifier(out id))
+            if (!GetIdentifier(out Identifier id))
                 SyntaxError();
             Expression e = id;
             if (PeekAndDiscard((byte)'('))
@@ -352,14 +352,12 @@ namespace Reko.Environments.C64
                 --i;
                 if (IsDigit(line[i]))
                 {
-                    int n;
-                    if (GetInteger(out n))
+                    if (GetInteger(out int n))
                         return Constant.Int16((short)n);
                 } 
                 else if (IsLetter(line[i]))
                 {
-                    Identifier id;
-                    if (GetIdentifier(out id))
+                    if (GetIdentifier(out Identifier id))
                     {
                         if (PeekAndDiscard((byte)'('))
                         {
@@ -440,8 +438,7 @@ namespace Reko.Environments.C64
 
         private void RewriteFor()
         {
-            Identifier id;
-            if (!GetIdentifier(out id))
+            if (!GetIdentifier(out Identifier id))
                 SyntaxError();
             Expect((byte)Token.eq);
             var start = ExpectExpr();
@@ -474,8 +471,7 @@ namespace Reko.Environments.C64
 
         private void RewriteGet()
         {
-            Identifier id;
-            if (!GetIdentifier(out id))
+            if (!GetIdentifier(out Identifier id))
                 SyntaxError();
             rtlc = InstrClass.Linear;
             m.SideEffect(
@@ -514,10 +510,9 @@ namespace Reko.Environments.C64
                 if (!EatSpaces())
                     SyntaxError();
                 byte b = line[i];
-                int lineNumber;
                 if (IsDigit(b))
                 {
-                    if (!GetInteger(out lineNumber))
+                    if (!GetInteger(out int lineNumber))
                         SyntaxError();
                     rtlc = InstrClass.ConditionalTransfer;
                     m.Branch(expr, Address.Ptr16((ushort)lineNumber), InstrClass.ConditionalTransfer);
@@ -535,8 +530,7 @@ namespace Reko.Environments.C64
             }
             else if (PeekAndDiscard((byte)Token.GOTO))
             {
-                int lineNumber;
-                if (!GetInteger(out lineNumber))
+                if (!GetInteger(out int lineNumber))
                     SyntaxError();
                 rtlc = InstrClass.ConditionalTransfer;
                 m.Branch(expr, Address.Ptr16((ushort)lineNumber), InstrClass.ConditionalTransfer);
@@ -591,8 +585,7 @@ namespace Reko.Environments.C64
 
         private void RewriteNext()
         {
-            Identifier id;
-            GetIdentifier(out id); // The variable name is redundant.
+            GetIdentifier(out Identifier id); // The variable name is redundant.
             m.SideEffect(host.PseudoProcedure("__Next", VoidType.Instance));
         }
 
@@ -734,15 +727,13 @@ namespace Reko.Environments.C64
 
         private void RewriteSys()
         {
-            int addr;
             if (!EatSpaces() ||
-                !GetInteger(out addr))
+                !GetInteger(out int addr))
                 throw new InvalidOperationException("Expected address after SYS.");
-            m.SideEffect(
-                host.PseudoProcedure("__Sys", VoidType.Instance,
-                    new ProcedureConstant(arch.PointerType, new ExternalProcedure(
-                        string.Format("fn{0:X4}", addr),
-                        new FunctionType()))));
+            var addrMachineCode = Address.Ptr16((ushort) addr);
+            IProcessorArchitecture arch6502 = host.GetArchitecture("m6502");
+            rtlc = InstrClass.Transfer | InstrClass.Call;
+            m.CallX(addrMachineCode, 2, arch6502);
         }
 
         private bool GetInteger(out int number)

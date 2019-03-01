@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -429,10 +429,22 @@ namespace Reko.Core.Output
 		public void VisitPhiFunction(PhiFunction phi)
 		{
 			writer.WriteKeyword("PHI");
-			WriteActuals(phi.Arguments);
-		}
+            writer.Write("(");
+            var sep = "";
+            foreach (var arg in phi.Arguments)
+            {
+                writer.Write(sep);
+                sep = ", ";
+                writer.Write("(");
+                arg.Value.Accept(this);
+                writer.Write(", ");
+                writer.Write(arg.Block.Name);
+                writer.Write(")");
+            }
+            writer.Write(")");
+        }
 
-		public void VisitPointerAddition(PointerAddition pa)
+        public void VisitPointerAddition(PointerAddition pa)
 		{
             writer.Write("PTRADD(");
             WriteExpression(pa.Pointer);

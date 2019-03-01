@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,8 @@
  */
 #endregion
 
+using Reko.Core;
+using Reko.Core.Services;
 using Reko.Gui;
 using Reko.UserInterfaces.WindowsForms;
 using Reko.UserInterfaces.WindowsForms.Forms;
@@ -33,10 +35,11 @@ namespace Reko.WindowsDecompiler
         {
             var services = new ServiceContainer();
             var mainForm = new MainForm();
-            services.AddService(typeof(IServiceFactory), new WindowsServiceFactory(services, mainForm));
-            services.AddService(typeof(IDialogFactory), new WindowsFormsDialogFactory(services));
-            services.AddService(typeof(IRegistryService), new WindowsFormsRegistryService());
-            services.AddService(typeof(ISettingsService), new WindowsFormsSettingsService(services));
+            services.AddService<IServiceFactory>(new WindowsServiceFactory(services, mainForm));
+            services.AddService<IDialogFactory>(new WindowsFormsDialogFactory(services));
+            services.AddService<IRegistryService>(new WindowsFormsRegistryService());
+            services.AddService<ISettingsService>(new WindowsFormsSettingsService(services));
+            services.AddService<IFileSystemService>(new FileSystemServiceImpl());
             mainForm.Attach(services);
             System.Windows.Forms.Application.Run(mainForm);
         }

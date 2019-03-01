@@ -218,6 +218,7 @@
     <Architectures Include="$(SolutionDir)Arch\Mips\$(OutDir)Reko.Arch.Mips.*" />
     <Architectures Include="$(SolutionDir)Arch\Microchip\$(OutDir)Reko.Arch.MicrochipPIC.*" />
     <Architectures Include="$(SolutionDir)Arch\Mos6502\$(OutDir)Reko.Arch.Mos6502.*" />
+    <Architectures Include="$(SolutionDir)Arch\Msp430\$(OutDir)Reko.Arch.Msp430.*" />
     <Architectures Include="$(SolutionDir)Arch\Pdp11\$(OutDir)Reko.Arch.Pdp11.*" />
     <Architectures Include="$(SolutionDir)Arch\PowerPC\$(OutDir)Reko.Arch.PowerPC.*" />
     <Architectures Include="$(SolutionDir)Arch\RiscV\$(OutDir)Reko.Arch.RiscV.*" />

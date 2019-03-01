@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -83,7 +83,7 @@ namespace Reko.Analysis
                     var fuser = new UnalignedMemoryAccessFuser(ssa);
                     fuser.Transform();
 
-                    var vp = new ValuePropagator(program.SegmentMap, ssa, importResolver, eventListener);
+                    var vp = new ValuePropagator(program.SegmentMap, ssa, program.CallGraph, importResolver, eventListener);
 
                     sst.RenameFrameAccesses = true;
                     var icrw = new IndirectCallRewriter(program, ssa, eventListener);
@@ -128,7 +128,7 @@ namespace Reko.Analysis
                     DeadCode.Eliminate(proc, ssa);
 
                     // Definitions with multiple uses and variables joined by PHI functions become webs.
-                    var web = new WebBuilder(proc, ssa.Identifiers, program.InductionVariables);
+                    var web = new WebBuilder(program, proc, ssa.Identifiers, program.InductionVariables, eventListener);
                     web.Transform();
                     ssa.ConvertBack(false);
                 }
@@ -221,6 +221,7 @@ namespace Reko.Analysis
             usb.BuildSignatures(eventListener);
             CallRewriter.Rewrite(program, eventListener);
             IntraBlockDeadRegisters.Apply(program, eventListener);
+            AdjacentBranchCollector.Transform(program, eventListener);
             eventListener.ShowStatus("Finding terminating procedures.");
             var term = new TerminationAnalysis(flow, eventListener);
             term.Analyze(program);
@@ -281,7 +282,7 @@ namespace Reko.Analysis
                 // are propagated to the corresponding call sites.
                 var cce = new ConditionCodeEliminator(ssa, program.Platform);
                 cce.Transform();
-                var vp = new ValuePropagator(program.SegmentMap, ssa, importResolver, eventListener);
+                var vp = new ValuePropagator(program.SegmentMap, ssa, program.CallGraph, importResolver, eventListener);
                 vp.Transform();
 
                 // Now compute SSA for the stack-based variables as well. That is:
@@ -325,7 +326,7 @@ namespace Reko.Analysis
                 DeadCode.Eliminate(proc, ssa);
 
                 // Definitions with multiple uses and variables joined by PHI functions become webs.
-                var web = new WebBuilder(proc, ssa.Identifiers, program.InductionVariables);
+                var web = new WebBuilder(program, proc, ssa.Identifiers, program.InductionVariables, eventListener);
                 web.Transform();
                 ssa.ConvertBack(false);
             }

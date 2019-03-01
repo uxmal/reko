@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,69 +18,60 @@
  */
 #endregion
 
+using Moq;
+using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Gui;
-using Reko.Gui.Forms;
-using Reko.UnitTests.Mocks;
-using NUnit.Framework;
-using Rhino.Mocks;
-using Rhino.Mocks.Constraints;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Text;
-using System.Windows.Forms;
-using Is = Rhino.Mocks.Constraints.Is;
 using Reko.UserInterfaces.WindowsForms;
 using Reko.UserInterfaces.WindowsForms.Controls;
+using System.Collections.Generic;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Gui.Windows
 {
     [TestFixture]
     public class LowLevelViewServiceTests
     {
-        private MockRepository mr;
         private Program program;
-
-        [SetUp]
-        public void Setup()
-        {
-            mr = new MockRepository();
-        }
 
         [Test]
         [Category(Categories.UserInterface)]
         public void MVS_ShowingWindowCreatesWindowFrame()
         {
             ServiceContainer sc = new ServiceContainer();
-            var shellUi = mr.DynamicMock<IDecompilerShellUiService>();
-            var decSvc = mr.StrictMock<IDecompilerService>();
-            var windowFrame = mr.DynamicMock<IWindowFrame>();
-            sc.AddService(typeof(IDecompilerShellUiService), shellUi);
-            sc.AddService<IDecompilerService>(decSvc);
-            AddStubService<IUiPreferencesService>(sc).Stub(u => u.Styles).Return(new Dictionary<string, UiStyle>());
+            var shellUi = new Mock<IDecompilerShellUiService>();
+            var decSvc = new Mock<IDecompilerService>();
+            var windowFrame = new Mock<IWindowFrame>();
+            sc.AddService<IDecompilerShellUiService>(shellUi.Object);
+            sc.AddService<IDecompilerService>(decSvc.Object);
+            AddStubService<IUiPreferencesService>(sc).Setup(u => u.Styles)
+                .Returns(new Dictionary<string, UiStyle>());
             Given_Program();
-            var service = mr.Stub<LowLevelViewServiceImpl>(sc);
+            var service = new Mock<LowLevelViewServiceImpl>(sc);
             var interactor = new LowLevelViewInteractor();
-            service.Stub(x => x.CreateMemoryViewInteractor()).Return(interactor);
+            service.Setup(x => x.CreateMemoryViewInteractor())
+                .Returns(interactor);
 
-            var svc = (ILowLevelViewService)service;
-            shellUi.Expect(s => s.FindDocumentWindow("memoryViewWindow", program)).Return(null);
-            shellUi.Expect(s => s.CreateDocumentWindow(
-                Arg<string>.Is.Anything,
-                Arg<Program>.Is.Same(program),
-                Arg<string>.Is.Equal("Memory View"),
-                Arg<IWindowPane>.Is.Anything))
-                .Return(windowFrame);
-            Expect.Call(windowFrame.Show);
-            mr.ReplayAll();
+            var svc = (ILowLevelViewService)service.Object;
+            shellUi.Setup(s => s.FindDocumentWindow("memoryViewWindow", program))
+                .Returns((IWindowFrame) null)
+                .Verifiable();
+            shellUi.Setup(s => s.CreateDocumentWindow(
+                It.IsAny<string>(),
+                program,
+                "Memory View",
+                It.IsAny<IWindowPane>()))
+                .Returns(windowFrame.Object)
+                .Verifiable();
+            windowFrame.Setup(w => w.Show());
 
             interactor.SetSite(sc);
             interactor.CreateControl();
             svc.ShowMemoryAtAddress(this.program, (Address)this.program.ImageMap.BaseAddress);
 
-            mr.VerifyAll();
+            shellUi.Verify();
+            windowFrame.Verify();
         }
 
         private void Given_Program()
@@ -90,26 +81,24 @@ namespace Reko.UnitTests.Gui.Windows
             var map = new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
-            var arch = mr.Stub<IProcessorArchitecture>();
-            var dasm = mr.Stub<IEnumerable<MachineInstruction>>();
-            var e = mr.Stub<IEnumerator<MachineInstruction>>();
+            var arch = new Mock<IProcessorArchitecture>();
+            var dasm = new Mock<IEnumerable<MachineInstruction>>();
+            var e = new Mock<IEnumerator<MachineInstruction>>();
 
-            arch.Stub(a => a.CreateDisassembler(Arg<EndianImageReader>.Is.NotNull)).Return(dasm);
-            arch.Stub(a => a.InstructionBitSize).Return(8);
-            arch.Stub(a => a.CreateImageReader(
-                Arg<MemoryArea>.Is.NotNull,
-                Arg<Address>.Is.NotNull)).Return(mem.CreateLeReader(addrBase));
-            dasm.Stub(d => d.GetEnumerator()).Return(e);
-            arch.Replay();
-            dasm.Replay();
-            e.Replay();
-            this.program = new Program(map, arch, null);
+            arch.Setup(a => a.Name).Returns("FakeArch");
+            arch.Setup(a => a.CreateDisassembler(It.IsNotNull<EndianImageReader>())).Returns(dasm.Object);
+            arch.Setup(a => a.InstructionBitSize).Returns(8);
+            arch.Setup(a => a.CreateImageReader(
+                It.IsNotNull<MemoryArea>(),
+                It.IsNotNull<Address>())).Returns(mem.CreateLeReader(addrBase));
+            dasm.Setup(d => d.GetEnumerator()).Returns(e.Object);
+            this.program = new Program(map, arch.Object, null);
         }
 
-        private T AddStubService<T>(IServiceContainer sc)
+        private Mock<T> AddStubService<T>(IServiceContainer sc) where T: class
         {
-            var svc = mr.Stub<T>();
-            sc.AddService<T>(svc);
+            var svc = new Mock<T>();
+            sc.AddService<T>(svc.Object);
             return svc;
         }
 
@@ -119,29 +108,30 @@ namespace Reko.UnitTests.Gui.Windows
         {
             var sc = new ServiceContainer();
             var ctrl = new LowLevelView();
-            var interactor = mr.DynamicMock<LowLevelViewInteractor>();
-            interactor.Expect(i => i.SelectedAddress).SetPropertyWithArgument(Address.Ptr32(0x4711));
+            var interactor = new Mock<LowLevelViewInteractor>();
+            //interactor.Expect(i => i.SelectedAddress).SetPropertyWithArgument(Address.Ptr32(0x4711));
             var uiSvc = AddStubService<IDecompilerShellUiService>(sc);
-            AddStubService<IUiPreferencesService>(sc).Stub(u => u.Styles).Return(new Dictionary<string, UiStyle>());
+            AddStubService<IUiPreferencesService>(sc).Setup(u => u.Styles).Returns(new Dictionary<string, UiStyle>());
             Given_Program();
-            uiSvc.Stub(x => x.FindDocumentWindow(null, null)).IgnoreArguments().Return(null);
-            uiSvc.Stub(x => x.CreateDocumentWindow("", null, "", null))
-                .IgnoreArguments()
-                .Return(mr.Stub<IWindowFrame>());
-            uiSvc.Stub(x => x.SetContextMenu(null, MenuIds.CtxMemoryControl)).IgnoreArguments();
-            //uiSvc.Stub(x => x.SetContextMenu(null, MenuIds.CtxMemoryControl));
-            //uiSvc.Stub(x => x.GetContextMenu(MenuIds.CtxDisassembler)).Return(new ContextMenu());
+            uiSvc.Setup(x => x.FindDocumentWindow(It.IsAny<string>(), It.IsAny<object>()))
+                .Returns((IWindowFrame) null);
+            uiSvc.Setup(x => x.CreateDocumentWindow(
+                It.IsAny<string>(),
+                It.IsAny<object>(),
+                It.IsAny<string>(),
+                It.IsAny<IWindowPane>()))
+                .Returns(new Mock<IWindowFrame>().Object);
+            //uiSvc.Setup(x => x.SetContextMenu(null, MenuIds.CtxMemoryControl)).IgnoreArguments();
+            //uiSvc.Setup(x => x.SetContextMenu(null, MenuIds.CtxMemoryControl));
+            //uiSvc.Setup(x => x.GetContextMenu(MenuIds.CtxDisassembler)).Return(new ContextMenu());
 
-            var service = mr.Stub<LowLevelViewServiceImpl>(sc);
-            service.Stub(x => x.CreateMemoryViewInteractor()).Return(interactor);
+            var service = new Mock<LowLevelViewServiceImpl>(sc);
+            service.Setup(x => x.CreateMemoryViewInteractor()).Returns(interactor.Object);
             var image = new MemoryArea(Address.Ptr32(0x1000), new byte[300]);
-            mr.ReplayAll();
 
-            interactor.SetSite(sc);
-            interactor.CreateControl();
-            service.ShowMemoryAtAddress(program, Address.Ptr32(0x4711));
-
-            mr.VerifyAll();
+            interactor.Object.SetSite(sc);
+            interactor.Object.CreateControl();
+            service.Object.ShowMemoryAtAddress(program, Address.Ptr32(0x4711));
         }
     }
 }

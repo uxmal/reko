@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,32 +18,22 @@
  */
 #endregion
 
- using NUnit.Framework;
+using Moq;
+using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using Reko.Environments.Windows;
 using Reko.UnitTests.Mocks;
-using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Reko.UnitTests.Environments.Windows
 {
     [TestFixture]
     public class Win32MipsPlatformTests
     {
-        private MockRepository mr;
-
-        [SetUp]
-        public void Setup()
-        {
-            mr = new MockRepository();
-        }
-
         [Test]
         public void W32Mips_Trampoline()
         {
@@ -57,19 +47,18 @@ namespace Reko.UnitTests.Environments.Windows
                 m => m.Goto(r9)
             };
 
-            var host = mr.Stub<IRewriterHost>();
-            var services = mr.Stub<IServiceProvider>();
-            var arch = mr.Stub<IProcessorArchitecture>();
+            var host = new Mock<IRewriterHost>();
+            var services = new Mock<IServiceProvider>();
+            var arch = new Mock<IProcessorArchitecture>();
             var addr = Address.Ptr32(0x00031234);
-            arch.Stub(a => a.MakeAddressFromConstant(Arg<Constant>.Is.NotNull)).Return(addr);
-            host.Stub(h => h.GetImportedProcedure(
-                Arg<IProcessorArchitecture>.Is.NotNull,
-                Arg<Address>.Is.Equal(addr),
-                Arg<Address>.Is.NotNull)).Return(new ExternalProcedure("foo", new FunctionType()));
-            mr.ReplayAll();
+            arch.Setup(a => a.MakeAddressFromConstant(It.IsNotNull<Constant>())).Returns(addr);
+            host.Setup(h => h.GetImportedProcedure(
+                It.IsNotNull<IProcessorArchitecture>(),
+                addr,
+                It.IsNotNull<Address>())).Returns(new ExternalProcedure("foo", new FunctionType()));
 
-            var platform = new Win32MipsPlatform(services, arch);
-            var result = platform.GetTrampolineDestination(rtl, host);
+            var platform = new Win32MipsPlatform(services.Object, arch.Object);
+            var result = platform.GetTrampolineDestination(rtl, host.Object);
             Assert.IsNotNull(result);
         }
     }

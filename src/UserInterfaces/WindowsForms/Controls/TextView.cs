@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -432,7 +432,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         /// <summary>
         /// The Model provides text spans that the TextView uses to render itself.
         /// </summary>
-        public TextViewModel Model { get { return model; } set { this.model = value; OnModelChanged(EventArgs.Empty); }  }
+        public TextViewModel Model { get { return model; } set { this.model = value; OnModelChanged(EventArgs.Empty); } }
         private TextViewModel model;
         protected virtual void OnModelChanged(EventArgs e)
         {

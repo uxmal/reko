@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 Pavel Tomin.
+ * Copyright (C) 1999-2019 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -214,14 +214,11 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         private void ModifyDeclaration()
         {
             var declText = declarationForm.TextBox.Text.Trim();
-            Procedure proc;
-            if (!program.Procedures.TryGetValue(address, out proc))
+            if (!program.Procedures.TryGetValue(address, out Procedure proc))
                 proc = null;
-            ProcedureBase_v1 sProc;
-            GlobalDataItem_v2 parsedGlobal;
             string procName = null;
             string CSignature = null;
-            if (TryParseSignature(declText, out sProc))
+            if (TryParseSignature(declText, out var sProc))
             {
                 procName = sProc.Name;
                 CSignature = declText;
@@ -231,7 +228,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             {
                 procName = declText;
             }
-            else if (!editProcedure && TryParseGlobal(declText, out parsedGlobal))
+            else if (!editProcedure && TryParseGlobal(declText, out var parsedGlobal))
             {
                 program.User.Procedures.Remove(address);
                 program.ModifyUserGlobal(

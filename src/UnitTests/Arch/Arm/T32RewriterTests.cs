@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -87,6 +87,11 @@ namespace Reko.UnitTests.Arch.Arm
             }
 
             public Expression PseudoProcedure(string name, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
+            {
+                throw new NotImplementedException();
+            }
+
+            public IProcessorArchitecture GetArchitecture(string archLabel)
             {
                 throw new NotImplementedException();
             }

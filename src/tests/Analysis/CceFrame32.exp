@@ -40,7 +40,7 @@ ecx:ecx
 dwLoc08_8: orig: dwLoc08
 wLoc08_9: orig: wLoc08
     def:  wLoc08_9 = 0x0000
-    uses: wLoc08_38 = PHI(wLoc08_9, wLoc08_57)
+    uses: wLoc08_38 = PHI((wLoc08_9, l10000017), (wLoc08_57, l10000049))
 dwArg04:Stack +0004
     def:  def dwArg04
     uses: branch dwArg04 != 0x00000000 l1000002F
@@ -57,7 +57,7 @@ cx_19: orig: cx
 SCZO_20: orig: SCZO
 wLoc08_21: orig: wLoc08
 ax_22: orig: ax
-    def:  ax_22 = PHI(ax_29, ax_49)
+    def:  ax_22 = PHI((ax_29, l10000027), (ax_49, l1000005A))
     uses: return ax_22
 eax_23: orig: eax
 SZO_24: orig: SZO
@@ -67,7 +67,7 @@ ebp_27: orig: ebp
 esp_28: orig: esp
 ax_29: orig: ax
     def:  ax_29 = 0x0000
-    uses: ax_22 = PHI(ax_29, ax_49)
+    uses: ax_22 = PHI((ax_29, l10000027), (ax_49, l1000005A))
 eax:eax
 eax_31: orig: eax
 SZO_32: orig: SZO
@@ -77,7 +77,7 @@ SO_35: orig: SO
 cx_36: orig: cx
 SCZO_37: orig: SCZO
 wLoc08_38: orig: wLoc08
-    def:  wLoc08_38 = PHI(wLoc08_9, wLoc08_57)
+    def:  wLoc08_38 = PHI((wLoc08_9, l10000017), (wLoc08_57, l10000049))
     uses: eax_39 = (int32) wLoc08_38
           ax_49 = wLoc08_38
           eax_51 = (int32) wLoc08_38
@@ -100,7 +100,7 @@ SCZO_47: orig: SCZO
 eax_48: orig: eax
 ax_49: orig: ax
     def:  ax_49 = wLoc08_38
-    uses: ax_22 = PHI(ax_29, ax_49)
+    uses: ax_22 = PHI((ax_29, l10000027), (ax_49, l1000005A))
 eax_50: orig: eax
 eax_51: orig: eax
     def:  eax_51 = (int32) wLoc08_38
@@ -114,7 +114,7 @@ cx_55: orig: cx
 SCZO_56: orig: SCZO
 wLoc08_57: orig: wLoc08
     def:  wLoc08_57 = cx_55
-    uses: wLoc08_38 = PHI(wLoc08_9, wLoc08_57)
+    uses: wLoc08_38 = PHI((wLoc08_9, l10000017), (wLoc08_57, l10000049))
 // fn10000017
 // Return size: 0
 word16 fn10000017(word32 dwArg04)
@@ -131,7 +131,7 @@ l10000027:
 	goto l1000005E
 	// succ:  l1000005E
 l1000002F:
-	wLoc08_38 = PHI(wLoc08_9, wLoc08_57)
+	wLoc08_38 = PHI((wLoc08_9, l10000017), (wLoc08_57, l10000049))
 	eax_39 = (int32) wLoc08_38
 	edx_42 = (int32) Mem0[dwArg04 + eax_39:byte]
 	branch edx_42 == 0x00000000 l1000005A
@@ -149,7 +149,7 @@ l1000005A:
 	ax_49 = wLoc08_38
 	// succ:  l1000005E
 l1000005E:
-	ax_22 = PHI(ax_29, ax_49)
+	ax_22 = PHI((ax_29, l10000027), (ax_49, l1000005A))
 	return ax_22
 	// succ:  fn10000017_exit
 fn10000017_exit:

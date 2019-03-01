@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ using Reko.Environments.Msdos;
 using Reko.Loading;
 using Reko.Scanning;
 using Reko.UnitTests.Mocks;
-using Rhino.Mocks;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -48,6 +48,7 @@ namespace Reko.UnitTests.Analysis
 	public abstract class AnalysisTestBase
 	{
         protected IPlatform platform;
+        protected Mock<IPlatform> platformMock;
         private ServiceContainer sc;
 
         public AnalysisTestBase()
@@ -126,18 +127,15 @@ namespace Reko.UnitTests.Analysis
         {
             var arch = new X86ArchitectureReal("x86-real-16");
             var sc = new ServiceContainer();
-            var cfgSvc = MockRepository.GenerateStub<IConfigurationService>();
-            var env = MockRepository.GenerateStub<OperatingEnvironment>();
-            var tlSvc = MockRepository.GenerateStub<ITypeLibraryLoaderService>();
-            cfgSvc.Stub(c => c.GetEnvironment("ms-dos")).Return(env);
-            cfgSvc.Replay();
-            env.Stub(e => e.TypeLibraries).Return(new List<ITypeLibraryElement>());
-            env.Stub(e => e.CharacteristicsLibraries).Return(new List<ITypeLibraryElement>());
-            env.Replay();
-            tlSvc.Replay();
+            var cfgSvcMock = new Mock<IConfigurationService>();
+            var envMock = new Mock<OperatingEnvironment>();
+            var tlSvcMock = new Mock<ITypeLibraryLoaderService>();
+            cfgSvcMock.Setup(c => c.GetEnvironment("ms-dos")).Returns(envMock.Object);
+            envMock.Setup(e => e.TypeLibraries).Returns(new List<ITypeLibraryElement>());
+            envMock.Setup(e => e.CharacteristicsLibraries).Returns(new List<ITypeLibraryElement>());
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
-            sc.AddService<IConfigurationService>(cfgSvc);
-            sc.AddService<ITypeLibraryLoaderService>(tlSvc);
+            sc.AddService<IConfigurationService>(cfgSvcMock.Object);
+            sc.AddService<ITypeLibraryLoaderService>(tlSvcMock.Object);
             Program program;
             Assembler asm = new X86TextAssembler(sc, arch);
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
@@ -250,7 +248,13 @@ namespace Reko.UnitTests.Analysis
             AssertRunOutput(program, RunTest, sExp);
         }
 
-		protected void RunFileTest(string sourceFile, string configFile, string outputFile)
+        protected void RunStringTest(string sExp, ProcedureBuilder pb)
+        {
+            var program = BuildProgramMock(pb);
+            AssertRunOutput(program, RunTest, sExp);
+        }
+
+        protected void RunFileTest(string sourceFile, string configFile, string outputFile)
 		{
 			Program prog = RewriteMsdosAssembler(sourceFile, configFile);
             SaveRunOutput(prog, RunTest, outputFile);
@@ -293,7 +297,7 @@ namespace Reko.UnitTests.Analysis
             var sActual = sw.ToString();
             if (sExp != sActual)
             {
-                Debug.Print(sActual);
+                Console.WriteLine(sActual);
                 Assert.AreEqual(sExp, sActual);
             }
         }
@@ -303,16 +307,16 @@ namespace Reko.UnitTests.Analysis
             this.platform = platform;
         }
 
-        protected void Given_FakeWin32Platform(MockRepository mr)
+        protected void Given_FakeWin32Platform()
         {
-            var platform = mr.StrictMock<IPlatform>();
+            this.platformMock = new Mock<IPlatform>();
             var tHglobal = new TypeReference("HGLOBAL", PrimitiveType.Ptr32);
             var tLpvoid = new TypeReference("LPVOID", PrimitiveType.Ptr32);
             var tBool = new TypeReference("BOOL", PrimitiveType.Int32);
-            platform.Stub(p => p.LookupProcedureByName(
-                Arg<string>.Is.Anything,
-                Arg<string>.Is.Equal("GlobalHandle")))
-                .Return(
+            platformMock.Setup(p => p.LookupProcedureByName(
+                It.IsAny<string>(),
+                "GlobalHandle"))
+                .Returns(
                     new ExternalProcedure(
                         "GlobalHandle",
                         new FunctionType(
@@ -323,10 +327,10 @@ namespace Reko.UnitTests.Analysis
                         {
                             StackDelta = 4,
                         }));
-            platform.Stub(p => p.LookupProcedureByName(
-                Arg<string>.Is.Anything,
-                Arg<string>.Is.Equal("GlobalUnlock")))
-                .Return(new ExternalProcedure(
+            platformMock.Setup(p => p.LookupProcedureByName(
+                It.IsAny<string>(),
+                "GlobalUnlock"))
+                .Returns(new ExternalProcedure(
                     "GlobalUnlock",
                     new FunctionType(
                         new Identifier("eax",  tBool, Reko.Arch.X86.Registers.eax),
@@ -337,10 +341,10 @@ namespace Reko.UnitTests.Analysis
                         StackDelta = 4,
                     }));
 
-            platform.Stub(p => p.LookupProcedureByName(
-             Arg<string>.Is.Anything,
-             Arg<string>.Is.Equal("GlobalFree")))
-             .Return(new ExternalProcedure(
+            platformMock.Setup(p => p.LookupProcedureByName(
+                It.IsAny<string>(),
+                "GlobalFree"))
+             .Returns(new ExternalProcedure(
                  "GlobalFree",
                  new FunctionType(
                      new Identifier("eax",  tBool, Reko.Arch.X86.Registers.eax),
@@ -350,20 +354,19 @@ namespace Reko.UnitTests.Analysis
                      {
                          StackDelta = 4,
                      }));
-            platform.Stub(p => p.GetTrampolineDestination(
-                Arg<IEnumerable<RtlInstructionCluster>>.Is.NotNull,
-                Arg<IRewriterHost>.Is.NotNull))
-                .Return(null);
+            platformMock.Setup(p => p.GetTrampolineDestination(
+                It.IsNotNull<IEnumerable<RtlInstructionCluster>>(),
+                It.IsNotNull<IRewriterHost>()))
+                .Returns((ProcedureBase)null);
 
-            platform.Stub(p => p.PointerType).Return(PrimitiveType.Ptr32);
-            platform.Stub(p => p.CreateImplicitArgumentRegisters()).Return(
+            platformMock.Setup(p => p.PointerType).Returns(PrimitiveType.Ptr32);
+            platformMock.Setup(p => p.CreateImplicitArgumentRegisters()).Returns(
                 new HashSet<RegisterStorage>());
-            platform.Stub(p => p.MakeAddressFromLinear(0ul))
-                .IgnoreArguments()
-                .Do(new Func<ulong, Address>(ul => Address.Ptr32((uint) ul)));
-            platform.Stub(p => p.CreateTrashedRegisters())
-                .Return(new HashSet<RegisterStorage>());
-            Given_Platform(platform);
+            platformMock.Setup(p => p.MakeAddressFromLinear(It.IsAny<ulong>()))
+                .Returns((ulong ul) => Address.Ptr32((uint) ul));
+            platformMock.Setup(p => p.CreateTrashedRegisters())
+                .Returns(new HashSet<RegisterStorage>());
+            Given_Platform(platformMock.Object);
         }
 	}
 }

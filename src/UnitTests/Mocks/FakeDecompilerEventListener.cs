@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -95,7 +95,11 @@ namespace Reko.UnitTests.Mocks
 
         public void ShowProgress(string caption, int numerator, int denominator)
         {
-            lastProgress = string.Format("{0}: {1}%", caption, (numerator * 100) / denominator);
+            lastProgress = string.Format("{0}: {1}%", caption, (numerator * 100) / (denominator != 0 ? denominator : 1));
+        }
+
+        public void Advance(int count)
+        {
         }
 
         public void ShowStatus(string status)

@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,10 +18,10 @@
  */
 #endregion
 
+using Moq;
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.ImageLoaders.Elf;
-using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -33,10 +33,8 @@ namespace Reko.UnitTests.ImageLoaders.Elf
 {
     public class ElfTests
     {
-        protected MockRepository mr;
-
-        protected IProcessorArchitecture arch;
-        protected IProcessorArchitecture arch32be;
+        protected Mock<IProcessorArchitecture> arch;
+        protected Mock<IProcessorArchitecture> arch32be;
 
         private MemoryStream segnametab;
         protected MemoryStream symbolStringtab;
@@ -44,7 +42,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         protected ServiceContainer sc;
         protected List<ProgramHeader> progHeaders;
         protected List<ObjectSection> objectSections;
-        protected IConfigurationService cfgSvc;
+        protected Mock<IConfigurationService> cfgSvc;
         protected byte[] rawBytes;
 
         public class ProgramHeader
@@ -71,11 +69,10 @@ namespace Reko.UnitTests.ImageLoaders.Elf
 
         public virtual void Setup()
         {
-            this.mr = new MockRepository();
             this.sc = new ServiceContainer();
 
-            this.cfgSvc = mr.Stub<IConfigurationService>();
-            this.sc.AddService(typeof(IConfigurationService), cfgSvc);
+            this.cfgSvc = new Mock<IConfigurationService>();
+            this.sc.AddService<IConfigurationService>(cfgSvc.Object);
             this.segnametab = new MemoryStream();
             this.segnametab.WriteByte(0);
 
@@ -94,9 +91,8 @@ namespace Reko.UnitTests.ImageLoaders.Elf
 
         protected void Given_BeArchitecture()
         {
-            this.arch = mr.Stub<IProcessorArchitecture>();
-            this.arch.Stub(a => a.CreateImageWriter()).Do(new Func<ImageWriter>(() => new BeImageWriter()));
-            this.arch.Replay();
+            this.arch = new Mock<IProcessorArchitecture>();
+            this.arch.Setup(a => a.CreateImageWriter()).Returns(() => new BeImageWriter());
         }
 
         protected int Given_SegName(string segname)

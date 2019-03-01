@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,6 +48,9 @@ namespace Reko.Arch.RiscV
         };
 
         private RegisterStorage[] regs;
+        internal readonly RegisterStorage[] FpRegs;
+        internal readonly RegisterStorage LinkRegister;
+        internal readonly PrimitiveType NaturalSignedInteger;
         private Dictionary<string, RegisterStorage> regsByName;
 
         public RiscVArchitecture(string archId) : base(archId)
@@ -57,21 +60,25 @@ namespace Reko.Arch.RiscV
             this.PointerType = PrimitiveType.Ptr64;
             this.WordWidth = PrimitiveType.Word64;
             this.FramePointerType = PrimitiveType.Ptr64;
+            this.NaturalSignedInteger = PrimitiveType.Int64;
+
+            this.FpRegs = fpuregnames
+                .Select((n, i) => new RegisterStorage(
+                    n,
+                    i + 32,
+                    0,
+                    PrimitiveType.Word64))
+                .ToArray();
             this.regs = regnames
                 .Select((n, i) => new RegisterStorage(
                     n,
                     i,
                     0,
                     PrimitiveType.Word64)) //$TODO: setting!
-                .Concat(
-                    fpuregnames
-                    .Select((n, i) => new RegisterStorage(
-                        n,
-                        i + 32,
-                        0,
-                        PrimitiveType.Word64)))
+                .Concat(FpRegs)
                 .ToArray();
             this.regsByName = regs.ToDictionary(r => r.Name);
+            this.LinkRegister = regs[1];        // ra
             this.StackRegister = regs[2];       // sp
         }
 
@@ -102,7 +109,7 @@ namespace Reko.Arch.RiscV
 
         public override ImageWriter CreateImageWriter(MemoryArea img, Address addr)
         {
-            throw new NotImplementedException();
+            return new LeImageWriter(img, addr);
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)

@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,19 +18,20 @@
  */
 #endregion
 
+using Moq;
+using NUnit.Framework;
 using Reko.Arch.M68k;
 using Reko.Core;
+using Reko.Core.Configuration;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
 using Reko.Environments.AmigaOS;
-using NUnit.Framework;
-using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Reko.Core.Configuration;
 
 namespace Reko.UnitTests.Environments.AmigaOS
 {
@@ -38,10 +39,9 @@ namespace Reko.UnitTests.Environments.AmigaOS
     public class AmigaOSPlatformTests
     {
         private M68kArchitecture arch;
-        private MockRepository mr;
-        private IFileSystemService fsSvc;
-        private ITypeLibraryLoaderService tllSvc;
-        private IServiceProvider services;
+        private Mock<IFileSystemService> fsSvc;
+        private Mock<ITypeLibraryLoaderService> tllSvc;
+        private ServiceContainer services;
         private RtlEmitter m;
         private AmigaOSPlatform platform;
         private List<RtlInstruction> rtls;
@@ -50,19 +50,18 @@ namespace Reko.UnitTests.Environments.AmigaOS
         [SetUp]
         public void Setup()
         {
-            this.mr = new MockRepository();
-            this.fsSvc = mr.StrictMock<IFileSystemService>();
-            this.tllSvc = mr.Stub<ITypeLibraryLoaderService>();
-            this.services = mr.StrictMock<IServiceProvider>();
-            var cfgSvc = mr.Stub<IConfigurationService>();
-            var env = mr.Stub<OperatingEnvironment>();
+            this.fsSvc = new Mock<IFileSystemService>();
+            this.tllSvc = new Mock<ITypeLibraryLoaderService>();
+            this.services = new ServiceContainer();
+            var cfgSvc = new Mock<IConfigurationService>();
+            var env = new Mock<OperatingEnvironment>();
             this.arch = new M68kArchitecture("m68k");
             this.rtls = new List<RtlInstruction>();
             this.m = new RtlEmitter(rtls);
-            cfgSvc.Stub(c => c.GetEnvironment("amigaOS")).Return(env);
-            env.Stub(e => e.TypeLibraries).Return(new List<ITypeLibraryElement>());
-            env.Stub(e => e.CharacteristicsLibraries).Return(new List<ITypeLibraryElement>());
-            env.Stub(e => e.Options).Return(new Dictionary<string, object>
+            cfgSvc.Setup(c => c.GetEnvironment("amigaOS")).Returns(env.Object);
+            env.Setup(e => e.TypeLibraries).Returns(new List<ITypeLibraryElement>());
+            env.Setup(e => e.CharacteristicsLibraries).Returns(new List<ITypeLibraryElement>());
+            env.Setup(e => e.Options).Returns(new Dictionary<string, object>
             {
                 { "versionDependentLibraries", new Dictionary<string,object>
                     {
@@ -71,9 +70,9 @@ namespace Reko.UnitTests.Environments.AmigaOS
                     }
                 }
             });
-            this.services.Stub(s => s.GetService(typeof(IConfigurationService))).Return(cfgSvc);
-            this.services.Stub(s => s.GetService(typeof(IFileSystemService))).Return(fsSvc);
-            this.services.Stub(s => s.GetService(typeof(ITypeLibraryLoaderService))).Return(tllSvc);
+            this.services.AddService(typeof(IConfigurationService), cfgSvc.Object);
+            this.services.AddService(typeof(IFileSystemService), fsSvc.Object);
+            this.services.AddService(typeof(ITypeLibraryLoaderService), tllSvc.Object);
             this.binder = new Frame(arch.FramePointerType);
         }
 
@@ -81,7 +80,6 @@ namespace Reko.UnitTests.Environments.AmigaOS
         public void AOS_LookupA6Call()
         {
             Given_Func("#1 512 0x200 Allocate( heap/a1, size/d0)\n");
-            mr.ReplayAll();
 
             When_Create_Platform();
             m.Call(m.IAdd(binder.EnsureRegister(Registers.a6), -512), 4);
@@ -92,13 +90,11 @@ namespace Reko.UnitTests.Environments.AmigaOS
             Assert.AreEqual(2, svc.Signature.Parameters.Length);
             Assert.AreEqual("a1", svc.Signature.Parameters[0].Storage.ToString());
             Assert.AreEqual("d0", svc.Signature.Parameters[1].Storage.ToString());
-            mr.VerifyAll();
         }
 
         [Test]
         public void AOS_LibrarySelection()
         {
-            mr.ReplayAll();
             When_Create_Platform();
             var libs_v0 = platform.GetLibrarySetForKickstartVersion(0);
             var libs_v33 = platform.GetLibrarySetForKickstartVersion(33);
@@ -109,15 +105,14 @@ namespace Reko.UnitTests.Environments.AmigaOS
             Assert.IsTrue(libs_v33.Contains("exec_v33"));
             Assert.IsTrue(libs_v34.Contains("exec_v34"));
             Assert.IsTrue(libs_v999.Contains("exec_v34")); //TODO: should select version from highest available kickstart version
-            mr.VerifyAll();
         }
 
         private void Given_Func(string fileContents)
         {
             var stm = new MemoryStream(Encoding.ASCII.GetBytes(fileContents));
-            fsSvc.Expect(f => f.CreateFileStream("exec.funcs", FileMode.Open, FileAccess.Read))
-                .Return(stm);
-            tllSvc.Stub(t => t.InstalledFileLocation(null)).IgnoreArguments().Return("exec.funcs");
+            fsSvc.Setup(f => f.CreateFileStream("exec.funcs", FileMode.Open, FileAccess.Read))
+                .Returns(stm);
+            tllSvc.Setup(t => t.InstalledFileLocation(It.IsAny<string>())).Returns("exec.funcs");
         }
 
         private void When_Create_Platform()

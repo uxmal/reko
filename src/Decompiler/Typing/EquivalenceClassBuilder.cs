@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Reko.Typing
@@ -35,12 +36,15 @@ namespace Reko.Typing
 	/// </summary>
 	public class EquivalenceClassBuilder : InstructionVisitorBase
 	{
+        private static TraceSwitch trace = new TraceSwitch(nameof(EquivalenceClassBuilder), "Trace EquivalenceClassBuilder") { Level = TraceLevel.Warning };
+
 		private TypeFactory factory;
 		private TypeStore store;
         private DecompilerEventListener listener;
 		private FunctionType signature;
         private Dictionary<ushort, TypeVariable> segTypevars;
         private Dictionary<string, EquivalenceClass> typeReferenceClasses;
+        private Statement stmCur;
 
 		public EquivalenceClassBuilder(TypeFactory factory, TypeStore store, DecompilerEventListener listener)
         {
@@ -72,6 +76,7 @@ namespace Reko.Typing
                 
                 foreach (Statement stm in proc.Statements)
                 {
+                    stmCur = stm;
                     stm.Instruction.Accept(this);
                 }
             }
@@ -301,6 +306,11 @@ namespace Reko.Typing
             ret.Expression.Accept(this);
             if (!signature.HasVoidReturn)
             {
+                if (signature.ReturnValue.TypeVariable == null)
+                {
+                    DebugEx.PrintIf(trace.TraceWarning, "Eqb: {0:X}: Type variable for return value of signature of {1} is missing", stmCur.LinearAddress, stmCur.Block.Procedure.Name);
+                    return;
+                }
                 store.MergeClasses(
                     signature.ReturnValue.TypeVariable,
                     ret.Expression.TypeVariable);
@@ -324,10 +334,10 @@ namespace Reko.Typing
 		public override void VisitPhiFunction(PhiFunction phi)
 		{
 			TypeVariable tPhi = EnsureTypeVariable(phi);
-			for (int i = 0; i < phi.Arguments.Length; ++i)
+			foreach (var arg in phi.Arguments)
 			{
-				phi.Arguments[i].Accept(this);
-				store.MergeClasses(tPhi, phi.Arguments[i].TypeVariable);
+				arg.Value.Accept(this);
+				store.MergeClasses(tPhi, arg.Value.TypeVariable);
 			}
 		}
 

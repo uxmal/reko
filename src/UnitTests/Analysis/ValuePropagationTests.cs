@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,19 +31,20 @@ using NUnit.Framework;
 using System;
 using System.IO;
 using System.Linq;
-using Rhino.Mocks;
+using Moq;
 using System.Diagnostics;
 using System.Collections.Generic;
 using Reko.UnitTests.Fragments;
+using Reko.Core.Rtl;
+using Reko.Core.Serialization;
 
 namespace Reko.UnitTests.Analysis
 {
 	[TestFixture]
 	public class ValuePropagationTests : AnalysisTestBase
 	{
-        private MockRepository mr;
-        private IProcessorArchitecture arch;
-        private IImportResolver importResolver;
+        private Mock<IProcessorArchitecture> arch;
+        private Mock<IImportResolver> importResolver;
         private FakeDecompilerEventListener listener;
         private SsaProcedureBuilder m;
         private SegmentMap segmentMap;
@@ -51,9 +52,8 @@ namespace Reko.UnitTests.Analysis
         [SetUp]
 		public void Setup()
 		{
-            mr = new MockRepository();
-            arch = mr.Stub<IProcessorArchitecture>();
-            importResolver = mr.Stub<IImportResolver>();
+            arch = new Mock<IProcessorArchitecture>();
+            importResolver = new Mock<IImportResolver>();
             listener = new FakeDecompilerEventListener();
             m = new SsaProcedureBuilder();
             segmentMap = new SegmentMap(Address.Ptr32(0));
@@ -84,7 +84,7 @@ namespace Reko.UnitTests.Analysis
 
         protected override void RunTest(Program program, TextWriter writer)
 		{
-			var dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
+			var dfa = new DataFlowAnalysis(program, importResolver.Object, new FakeDecompilerEventListener());
 			dfa.UntangleProcedures();
 			foreach (Procedure proc in program.Procedures.Values)
 			{
@@ -92,7 +92,7 @@ namespace Reko.UnitTests.Analysis
 				var gr = proc.CreateBlockDominatorGraph();
 				Aliases alias = new Aliases(proc);
 				alias.Transform();
-                SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, importResolver, gr,
+                SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, importResolver.Object, gr,
                     new HashSet<RegisterStorage>());
 				SsaState ssa = sst.SsaState;
                 var cce = new ConditionCodeEliminator(ssa, program.Platform);
@@ -101,7 +101,7 @@ namespace Reko.UnitTests.Analysis
 				proc.Write(false, writer);
 				writer.WriteLine();
 
-				ValuePropagator vp = new ValuePropagator(program.SegmentMap, ssa, importResolver, listener);
+				ValuePropagator vp = new ValuePropagator(program.SegmentMap, ssa, program.CallGraph, importResolver.Object, listener);
 				vp.Transform();
 
 				ssa.Write(writer);
@@ -124,7 +124,7 @@ namespace Reko.UnitTests.Analysis
 
         private void RunValuePropagator()
         {
-            var vp = new ValuePropagator(segmentMap, m.Ssa, importResolver, listener);
+            var vp = new ValuePropagator(segmentMap, m.Ssa, new CallGraph(), importResolver.Object, listener);
             vp.Transform();
             m.Ssa.Validate(s => Assert.Fail(s));
         }
@@ -144,11 +144,10 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void VpGlobalHandle()
 		{
-            Given_FakeWin32Platform(mr);
-            this.platform.Stub(p => p.ResolveImportByName(null, null)).IgnoreArguments().Return(null);
-            this.platform.Stub(p => p.DataTypeFromImportName(null)).IgnoreArguments().Return(null);
-            this.platform.Stub(p => p.ResolveIndirectCall(null)).IgnoreArguments().Return(null);
-            mr.ReplayAll();
+            Given_FakeWin32Platform();
+            this.platformMock.Setup(p => p.ResolveImportByName(It.IsAny<string>(), It.IsAny<string>())).Returns((Expression) null);
+            this.platformMock.Setup(p => p.DataTypeFromImportName(It.IsAny<string>())).Returns((Tuple<string, SerializedType, SerializedType>) null);
+            this.platformMock.Setup(p => p.ResolveIndirectCall(It.IsAny<RtlCall>())).Returns((Address) null);
             RunFileTest32("Fragments/import32/GlobalHandle.asm", "Analysis/VpGlobalHandle.txt");
 		}
 
@@ -224,7 +223,7 @@ namespace Reko.UnitTests.Analysis
                 new HashSet<RegisterStorage>());
 			SsaState ssa = sst.SsaState;
 
-			ValuePropagator vp = new ValuePropagator(segmentMap, ssa, importResolver, listener);
+			ValuePropagator vp = new ValuePropagator(segmentMap, ssa, new CallGraph(), importResolver.Object, listener);
 			vp.Transform();
 
 			using (FileUnitTester fut = new FileUnitTester("Analysis/VpDbp.txt"))
@@ -254,7 +253,7 @@ namespace Reko.UnitTests.Analysis
 
         private ExpressionSimplifier CreatePropagatorWithDummyStatement()
         {
-            var ctx = new SsaEvaluationContext(arch, m.Ssa.Identifiers, importResolver);
+            var ctx = new SsaEvaluationContext(arch.Object, m.Ssa.Identifiers, importResolver.Object);
             ctx.Statement = new Statement(0, new SideEffect(Constant.Word32(32)), null);
             return new ExpressionSimplifier(segmentMap, ctx, listener);
         }
@@ -265,7 +264,7 @@ namespace Reko.UnitTests.Analysis
 			Identifier r = m.Reg32("r");
 
             var sub = new BinaryExpression(Operator.ISub, PrimitiveType.Word32, new MemoryAccess(MemoryIdentifier.GlobalMemory, r, PrimitiveType.Word32), Constant.Word32(0));
-            var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch, m.Ssa.Identifiers, importResolver), listener);
+            var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch.Object, m.Ssa.Identifiers, importResolver.Object), listener);
 			var exp = sub.Accept(vp);
 			Assert.AreEqual("Mem0[r:word32]", exp.ToString());
 		}
@@ -289,7 +288,7 @@ namespace Reko.UnitTests.Analysis
 			Assert.AreEqual("y = x - 0x00000002", stmY.ToString());
 			Assert.AreEqual("branch y == 0x00000000 test", stm.ToString());
 
-			var vp = new ValuePropagator(segmentMap, m.Ssa, importResolver, listener);
+			var vp = new ValuePropagator(segmentMap, m.Ssa, new CallGraph(), importResolver.Object, listener);
 			vp.Transform(stm);
 			Assert.AreEqual("branch x == 0x00000002 test", stm.Instruction.ToString());
 		}
@@ -314,7 +313,7 @@ namespace Reko.UnitTests.Analysis
 			Assert.AreEqual("z = y + 0x00000002", stmZ.Instruction.ToString());
 			Assert.AreEqual("w = y", stmW.Instruction.ToString());
 
-			var vp = new ValuePropagator(segmentMap, m.Ssa, importResolver, listener);
+			var vp = new ValuePropagator(segmentMap, m.Ssa, new CallGraph(), importResolver.Object, listener);
 			vp.Transform(stmX);
 			vp.Transform(stmY);
 			vp.Transform(stmZ);
@@ -331,7 +330,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void VpSliceConstant()
 		{
-            var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch, null, importResolver), listener);
+            var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch.Object, null, importResolver.Object), listener);
             Expression c = new Slice(PrimitiveType.Byte, Constant.Word32(0x10FF), 0).Accept(vp);
 			Assert.AreEqual("0xFF", c.ToString());
 		}
@@ -341,7 +340,7 @@ namespace Reko.UnitTests.Analysis
 		{
 			Identifier x = m.Reg32("x");
 			Identifier y = m.Reg32("y");
-            var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch, m.Ssa.Identifiers, importResolver), listener);
+            var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch.Object, m.Ssa.Identifiers, importResolver.Object), listener);
 			Expression e = vp.VisitUnaryExpression(
 				new UnaryExpression(Operator.Neg, PrimitiveType.Word32, new BinaryExpression(
 				Operator.ISub, PrimitiveType.Word32, x, y)));
@@ -355,7 +354,7 @@ namespace Reko.UnitTests.Analysis
 		public void VpMulAddShift()
 		{
 			Identifier id = m.Reg32("id");
-            var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch, m.Ssa.Identifiers, importResolver), listener);
+            var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch.Object, m.Ssa.Identifiers, importResolver.Object), listener);
 			PrimitiveType t = PrimitiveType.Int32;
 			BinaryExpression b = new BinaryExpression(Operator.Shl, t, 
 				new BinaryExpression(Operator.IAdd, t, 
@@ -371,7 +370,7 @@ namespace Reko.UnitTests.Analysis
 		{
 			Identifier id = m.Reg32("id");
 			Expression e = m.Shl(m.Shl(id, 1), 4);
-            var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch, m.Ssa.Identifiers, importResolver), listener);
+            var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch.Object, m.Ssa.Identifiers, importResolver.Object), listener);
 			e = e.Accept(vp);
 			Assert.AreEqual("id << 0x05", e.ToString());
 		}
@@ -381,7 +380,7 @@ namespace Reko.UnitTests.Analysis
 		{
 			ProcedureBuilder m = new ProcedureBuilder();
 			Expression e = m.Shl(1, m.ISub(Constant.Byte(32), 1));
-            var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch, null, importResolver), listener);
+            var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch.Object, null, importResolver.Object), listener);
 			e = e.Accept(vp);
 			Assert.AreEqual("0x80000000", e.ToString());
 		}
@@ -392,7 +391,7 @@ namespace Reko.UnitTests.Analysis
 			Constant pre = Constant.Word16(0x0001);
 			Constant fix = Constant.Word16(0x0002);
 			Expression e = new MkSequence(PrimitiveType.Word32, pre, fix);
-            var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch, null, importResolver), listener);
+            var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch.Object, null, importResolver.Object), listener);
 			e = e.Accept(vp);
 			Assert.AreEqual("0x00010002", e.ToString());
 		}
@@ -403,7 +402,7 @@ namespace Reko.UnitTests.Analysis
             Constant eight = Constant.Word16(8);
             Identifier C = m.Reg8("C");
             Expression e = new Slice(PrimitiveType.Byte, new BinaryExpression(Operator.Shl, PrimitiveType.Word16, C, eight), 8);
-            var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch, m.Ssa.Identifiers, importResolver), listener);
+            var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch.Object, m.Ssa.Identifiers, importResolver.Object), listener);
             e = e.Accept(vp);
             Assert.AreEqual("C", e.ToString());
         }
@@ -413,16 +412,13 @@ namespace Reko.UnitTests.Analysis
         {
             Constant seg = Constant.Create(PrimitiveType.SegmentSelector, 0x4711);
             Constant off = Constant.Word16(0x4111);
-            arch.Expect(a => a.MakeSegmentedAddress(seg, off)).Return(Address.SegPtr(0x4711, 0x4111));
-            mr.ReplayAll();
+            arch.Setup(a => a.MakeSegmentedAddress(seg, off)).Returns(Address.SegPtr(0x4711, 0x4111));
 
             Expression e = new MkSequence(PrimitiveType.Word32, seg, off);
-            var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch, null, importResolver), listener);
+            var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch.Object, null, importResolver.Object), listener);
             e = e.Accept(vp);
             Assert.IsInstanceOf(typeof(Address), e);
             Assert.AreEqual("4711:4111", e.ToString());
-
-            mr.VerifyAll();
         }
 
         [Test]
@@ -435,7 +431,7 @@ namespace Reko.UnitTests.Analysis
             var r3 = m.Reg16("r3");
             m.Assign(r1, c1);
             m.Assign(r2, c2);
-            var phiStm = m.Phi(r3, r1, r2);
+            var phiStm = m.Phi(r3, (r1, "block1"), (r2, "block2"));
             RunValuePropagator();
             Assert.AreEqual("r3 = 0x4711", phiStm.Instruction.ToString());
         }
@@ -460,7 +456,11 @@ namespace Reko.UnitTests.Analysis
             m.Assign(b, m.ISub(fp, 12));
             m.Assign(c, m.ISub(y, 4));
             m.Assign(d, m.IAdd(z, 8));
-            var phiStm = m.Phi(x, a, b, c, d);
+            var phiStm = m.Phi(x, 
+                (a, "blockA"),
+                (b, "blockB"),
+                (c, "blockC"),
+                (d, "blockD"));
             RunValuePropagator();
             Assert.AreEqual("x = fp - 0x000C", phiStm.Instruction.ToString());
         }
@@ -483,7 +483,7 @@ namespace Reko.UnitTests.Analysis
             var x = m.Reg16("x");
             var y = m.Reg16("y");
             var z = m.Reg16("z");
-            m.Phi(sp, sp_1, sp_2);
+            m.Phi(sp, (sp_1, "block1"), (sp_2, "block2"));
             m.Assign(v, m.ISub(sp, 4));
             m.Assign(w, m.ISub(sp, 8));
             m.Assign(y, m.IAdd(x, 4));
@@ -492,7 +492,11 @@ namespace Reko.UnitTests.Analysis
             m.Assign(b, m.ISub(w, 4));
             m.Assign(c, m.ISub(y, 4));
             m.Assign(d, m.IAdd(z, 8));
-            var phiStm = m.Phi(x, a, b, c, d);
+            var phiStm = m.Phi(x, 
+                (a, "blockA"),
+                (b, "blockB"),
+                (c, "blockC"),
+                (d, "blockD"));
             RunValuePropagator();
             Assert.AreEqual("x = sp - 0x000C", phiStm.Instruction.ToString());
         }
@@ -547,12 +551,11 @@ namespace Reko.UnitTests.Analysis
 
 			Procedure proc = m.Procedure;
 			var gr = proc.CreateBlockDominatorGraph();
-            var importResolver = MockRepository.GenerateStub<IImportResolver>();
-            importResolver.Replay();
+            var importResolver = new Mock<IImportResolver>().Object;
 			var sst = new SsaTransform(new ProgramDataFlow(), proc, importResolver, gr, new HashSet<RegisterStorage>());
 			var ssa = sst.SsaState;
 
-			var vp = new ValuePropagator(segmentMap, ssa, importResolver, listener);
+			var vp = new ValuePropagator(segmentMap, ssa, new CallGraph(), importResolver, listener);
 			vp.Transform();
 
 			using (FileUnitTester fut = new FileUnitTester("Analysis/VpDpbDpb.txt"))
@@ -567,11 +570,11 @@ namespace Reko.UnitTests.Analysis
         {
             var proc = m.Procedure;
             var gr = proc.CreateBlockDominatorGraph();
-            var sst = new SsaTransform(new ProgramDataFlow(), proc, importResolver, gr, new HashSet<RegisterStorage>());
+            var sst = new SsaTransform(new ProgramDataFlow(), proc, importResolver.Object, gr, new HashSet<RegisterStorage>());
             var ssa = sst.SsaState;
 
             var segmentMap = new SegmentMap(Address.Ptr32(0));
-            var vp = new ValuePropagator(segmentMap, ssa, importResolver, listener);
+            var vp = new ValuePropagator(segmentMap, ssa, new CallGraph(), importResolver.Object, listener);
             vp.Transform();
             return ssa;
         }
@@ -830,10 +833,11 @@ ProcedureBuilder_exit:
             m.Call(r1, 4);
             m.Return();
 
-            arch.Stub(a => a.CreateStackAccess(null, 0, null))
-                .IgnoreArguments()
-                .Do(new Func<IStorageBinder, int, DataType, Expression>((f, off, dt) => m.Mem(dt, m.IAdd(sp, off))));
-            mr.ReplayAll();
+            arch.Setup(a => a.CreateStackAccess(
+                It.IsAny<IStorageBinder>(),
+                It.IsAny<int>(),
+                It.IsAny<DataType>()))
+                .Returns((IStorageBinder f, int off, DataType dt) => m.Mem(dt, m.IAdd(sp, off)));
 
             var ssa = RunTest(m);
             var sExp =
@@ -897,7 +901,6 @@ ProcedureBuilder_exit:
                         PrimitiveType.Real64, 
                         m.Mem(PrimitiveType.Real32, m.Word32(0x123400)))));
             m.Return();
-            mr.ReplayAll();
 
             RunFileTest(m, "Analysis/VpCastCast.txt");
         }
@@ -906,7 +909,6 @@ ProcedureBuilder_exit:
         public void VpFCmp()
         {
             var m = new FCmpFragment();
-            mr.ReplayAll();
 
             RunFileTest(m, "Analysis/VpFCmp.txt");
         }
@@ -920,7 +922,6 @@ ProcedureBuilder_exit:
             m.Assign(r1, m.Mem(r1.DataType, m.IAdd(r1, 0x56)));
             m.Return();
 
-            mr.ReplayAll();
             RunFileTest(m, "Analysis/VpAddress32Const.txt");
         }
 

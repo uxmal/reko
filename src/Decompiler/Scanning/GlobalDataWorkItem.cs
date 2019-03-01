@@ -1,6 +1,6 @@
 #region License
 /*
- * Copyright (C) 1999-2018 Pavel Tomin.
+ * Copyright (C) 1999-2019 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -123,6 +123,30 @@ namespace Reko.Scanning
 
         public void VisitString(StringType str)
         {
+            var offsetStart = rdr.Offset;
+            var addr = rdr.Address;
+            if (str.LengthPrefixType == null)
+            {
+                // Null terminated string
+                if (str.ElementType.Size == 1)
+                {
+                    // Byte-sized characters
+                    while (rdr.TryReadByte(out byte b))
+                    {
+                        if (b == 0)
+                            break;
+                    }
+
+                    var len = rdr.Offset - offsetStart;
+                    program.ImageMap.AddItemWithSize(
+                        addr, new ImageMapItem((uint) len)
+                        {
+                            Address = addr,
+                            DataType = str
+                        });
+                    return;
+                }
+            }
             throw new NotImplementedException();
         }
 

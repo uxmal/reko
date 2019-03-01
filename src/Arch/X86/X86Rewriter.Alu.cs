@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -348,7 +348,7 @@ namespace Reko.Arch.X86
         {
             var op1 = SrcOp(instrCur.op1);
             var op2 = SrcOp(instrCur.op2, instrCur.op1.Width);
-            var acc = orw.AluRegister(Registers.rax, instrCur.dataWidth);
+            var acc = orw.AluRegister(Registers.rax, instrCur.op1.Width);
             var Z = orw.FlagGroup(FlagM.ZF);
             m.Assign(
                 Z,

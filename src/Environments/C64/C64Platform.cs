@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,12 +38,9 @@ namespace Reko.Environments.C64
     /// </summary>
     public class C64Platform : Platform
     {
-        private Mos6502ProcessorArchitecture arch;
-
-        public C64Platform(IServiceProvider services, Mos6502ProcessorArchitecture arch)
+        public C64Platform(IServiceProvider services, IProcessorArchitecture arch)
             : base(services, arch, "c64")
         {
-            this.arch = arch;
         }
 
         public override string DefaultCallingConvention

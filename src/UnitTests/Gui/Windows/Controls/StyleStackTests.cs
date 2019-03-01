@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 using NUnit.Framework;
 using Reko.Gui;
 using Reko.UserInterfaces.WindowsForms.Controls;
-using Rhino.Mocks;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -33,24 +33,21 @@ namespace Reko.UnitTests.Gui.Windows.Controls
     [TestFixture]
     public class StyleStackTests
     {
-        private MockRepository mr;
-        private IUiPreferencesService uiPrefs;
+        private Mock<IUiPreferencesService> uiPrefs;
         private Dictionary<string, UiStyle> styles;
 
         [SetUp]
         public void Setup()
         {
-            this.mr = new MockRepository();
-            this.uiPrefs = mr.Stub<IUiPreferencesService>();
+            this.uiPrefs = new Mock<IUiPreferencesService>();
             this.styles = new Dictionary<string, UiStyle>();
-            this.uiPrefs.Stub(u => u.Styles).Return(styles);
+            this.uiPrefs.Setup(u => u.Styles).Returns(styles);
         }
 
         [Test]
         public void Stst_Default()
         {
-            var stst = new StyleStack(uiPrefs);
-            mr.ReplayAll();
+            var stst = new StyleStack(uiPrefs.Object);
 
             var br = stst.GetBackground(Color.FromArgb(0x12, 0x23, 0x45));
             Assert.AreEqual(0x12, br.Color.R);
@@ -64,9 +61,8 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             styles.Add("style1", new UiStyle {
                 Background = new SolidBrush(Color.FromArgb(0x12, 0x34, 0x56))
             });
-            mr.ReplayAll();
 
-            var stst = new StyleStack(uiPrefs);
+            var stst = new StyleStack(uiPrefs.Object);
             stst.PushStyle("style1");
 
             var br = stst.GetBackground(Color.Black);
@@ -86,9 +82,8 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             {
                 PaddingBottom = 6.0f
             });
-            mr.ReplayAll();
 
-            var stst = new StyleStack(uiPrefs);
+            var stst = new StyleStack(uiPrefs.Object);
             stst.PushStyle("style1 style2");
 
             var br = stst.GetBackground(Color.Black);

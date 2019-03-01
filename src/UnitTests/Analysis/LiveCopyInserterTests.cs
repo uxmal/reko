@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,12 +22,12 @@ using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.UnitTests.Mocks;
+using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Rhino.Mocks;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -70,7 +70,7 @@ namespace Reko.UnitTests.Analysis
 			var reg_5 = ssaIds.Where(s => s.Identifier.Name == "reg_2").Single();
 			Assert.IsTrue(ssaIds.Where(s => s.Identifier.Name == "reg_3").Any());
 
-			Assert.AreEqual("reg_2 = PHI(reg, reg_3)", reg_5.DefStatement.Instruction.ToString());
+			Assert.AreEqual("reg_2 = PHI((reg, l1), (reg_3, l2))", reg_5.DefStatement.Instruction.ToString());
 			Assert.IsTrue(lci.IsLiveOut(reg.Identifier, reg_5.DefStatement));
 		}
 
@@ -171,8 +171,7 @@ namespace Reko.UnitTests.Analysis
 		{
             var platform = new DefaultPlatform(null, arch);
 			this.proc = proc;
-            var importResolver = MockRepository.GenerateStub<IImportResolver>();
-            importResolver.Replay();
+            var importResolver = new Mock<IImportResolver>().Object;
             Aliases alias = new Aliases(proc);
 			alias.Transform();
 			var gr = proc.CreateBlockDominatorGraph();
@@ -190,7 +189,12 @@ namespace Reko.UnitTests.Analysis
 			DeadCode.Eliminate(proc, ssa);
 
             var segmentMap = new SegmentMap(Address.Ptr32(0x00400000));
-			ValuePropagator vp = new ValuePropagator(segmentMap, ssa, null, new FakeDecompilerEventListener());
+			ValuePropagator vp = new ValuePropagator(
+                segmentMap, 
+                ssa,
+                new CallGraph(), 
+                null, 
+                new FakeDecompilerEventListener());
 			vp.Transform();
 
 			Coalescer coa = new Coalescer(proc, ssa);

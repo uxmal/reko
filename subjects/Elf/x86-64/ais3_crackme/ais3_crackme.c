@@ -21,15 +21,14 @@ void _start( * rdx, Eq_6 qwArg00)
 // 000000000040043C: void call_gmon_start()
 void call_gmon_start()
 {
-	word64 rax_4 = globals->qw600FE0;
-	if (rax_4 != 0x00)
+	if (__gmon_start__ != 0x00)
 	{
-		word64 rsp_15;
-		byte SCZO_16;
-		word64 rax_17;
-		byte SZO_18;
-		bool C_19;
-		bool Z_20;
+		word64 rsp_14;
+		byte SCZO_15;
+		word64 rax_16;
+		byte SZO_17;
+		bool C_18;
+		bool Z_19;
 		__gmon_start__();
 	}
 }
@@ -109,8 +108,8 @@ void frame_dummy(word64 r8)
 	}
 }
 
-// 0000000000400520: Register word32 verify(Register (arr Eq_136) rdi)
-word32 verify(Eq_136 rdi[])
+// 0000000000400520: Register word32 verify(Register (arr Eq_126) rdi)
+word32 verify(Eq_126 rdi[])
 {
 	word32 dwLoc0C_126 = 0x00;
 	while (true)
@@ -131,8 +130,8 @@ word32 verify(Eq_136 rdi[])
 	return eax_122;
 }
 
-// 00000000004005C5: void main(Register (ptr64 Eq_221) rsi, Register word32 edi)
-void main(Eq_221 * rsi, word32 edi)
+// 00000000004005C5: void main(Register (ptr64 Eq_211) rsi, Register word32 edi)
+void main(Eq_211 * rsi, word32 edi)
 {
 	if (edi != 0x02)
 		puts("You need to enter the secret key!");

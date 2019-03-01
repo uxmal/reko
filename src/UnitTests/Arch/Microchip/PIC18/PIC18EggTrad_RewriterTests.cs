@@ -1,8 +1,8 @@
 ﻿#region License
 /* 
- * Copyright (C) 2017-2018 Christian Hostelet.
+ * Copyright (C) 2017-2019 Christian Hostelet.
  * inspired by work of:
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
     [TestFixture]
     public class PIC18EggTrad_RewriterTests : PICRewriterTestsBase
     {
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void OneSetup()
         {
             SetPICModel(PIC18EggName, PICExecMode.Traditional);

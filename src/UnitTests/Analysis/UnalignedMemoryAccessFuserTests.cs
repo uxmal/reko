@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,20 +18,16 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
-using Rhino.Mocks;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -47,17 +43,14 @@ namespace Reko.UnitTests.Analysis
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
-            arch = mr.Stub<IProcessorArchitecture>();
-            importResolver = mr.Stub<IImportResolver>();
+            arch = new Mock<IProcessorArchitecture>().Object;
+            importResolver = new Mock<IImportResolver>().Object;
             listener = new FakeDecompilerEventListener();
             m = new SsaProcedureBuilder();
         }
 
         private SsaState RunTest(ProcedureBuilder m)
         {
-            mr.ReplayAll();
-
             var proc = m.Procedure;
             var gr = proc.CreateBlockDominatorGraph();
             var sst = new SsaTransform(new ProgramDataFlow(), proc, importResolver, gr, new HashSet<RegisterStorage>());

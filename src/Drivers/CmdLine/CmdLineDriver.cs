@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,12 +35,12 @@ namespace Reko.CmdLine
 {
     public class CmdLineDriver
     {
-        private IServiceProvider services;
-        private ILoader ldr;
-        private IDecompiler decompiler;
-        private IConfigurationService config;
-        private IDiagnosticsService diagnosticSvc;
-        private CmdLineListener listener;
+        private readonly IServiceProvider services;
+        private readonly ILoader ldr;
+        private readonly IDecompiler decompiler;
+        private readonly IConfigurationService config;
+        private readonly IDiagnosticsService diagnosticSvc;
+        private readonly CmdLineListener listener;
         private Timer timer;
 
         public static void Main(string[] args)

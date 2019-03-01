@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,10 +45,7 @@ namespace Reko.UnitTests.Arch.Intel
 		{
 		}
 
-        // Once the project has been ported to use NUnit 3.0, remove this comment and uncomment the line containing "[OneTimeSetup]" and remove the line containing "[TestFixtureSetUp]".
-        // 
-        // [OneTimeSetUp]
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
 		public void GlobalSetup()
 		{
 			arch = new X86ArchitectureFlat32("x86-protected-32");
@@ -253,7 +250,12 @@ namespace Reko.UnitTests.Arch.Intel
             Console.WriteLine(d.Message);
         }
 
-		#endregion
+        #endregion
+
+        public IProcessorArchitecture GetArchitecture(string archLabel)
+        {
+            throw new NotImplementedException();
+        }
 
         public ExternalProcedure GetInterceptedCall(IProcessorArchitecture arch, Address addrImportThunk)
         {

@@ -13,7 +13,7 @@ Z_8: orig: Z
 C_9: orig: C
 SCZO_10: orig: SCZO
 ax_11: orig: ax
-    def:  ax_11 = PHI(ax_14, ax_16, ax_15)
+    def:  ax_11 = PHI((ax_14, l0C00_0007), (ax_16, l0C00_0013), (ax_15, l0C00_000D))
     uses: Mem12[ds:0x0100:word16] = ax_11
 Mem12: orig: Mem0
     def:  Mem12[ds:0x0100:word16] = ax_11
@@ -22,13 +22,13 @@ ds:ds
     uses: Mem12[ds:0x0100:word16] = ax_11
 ax_14: orig: ax
     def:  ax_14 = 0xFFFF
-    uses: ax_11 = PHI(ax_14, ax_16, ax_15)
+    uses: ax_11 = PHI((ax_14, l0C00_0007), (ax_16, l0C00_0013), (ax_15, l0C00_000D))
 ax_15: orig: ax
     def:  ax_15 = 0x0001
-    uses: ax_11 = PHI(ax_14, ax_16, ax_15)
+    uses: ax_11 = PHI((ax_14, l0C00_0007), (ax_16, l0C00_0013), (ax_15, l0C00_000D))
 ax_16: orig: ax
     def:  ax_16 = 0x0000
-    uses: ax_11 = PHI(ax_14, ax_16, ax_15)
+    uses: ax_11 = PHI((ax_14, l0C00_0007), (ax_16, l0C00_0013), (ax_15, l0C00_000D))
 SZO_17: orig: SZO
 Z_18: orig: Z
 C_19: orig: C
@@ -58,7 +58,7 @@ l0C00_0013:
 	ax_16 = 0x0000
 	// succ:  l0C00_0015
 l0C00_0015:
-	ax_11 = PHI(ax_14, ax_16, ax_15)
+	ax_11 = PHI((ax_14, l0C00_0007), (ax_16, l0C00_0013), (ax_15, l0C00_000D))
 	Mem12[ds:0x0100:word16] = ax_11
 	return
 	// succ:  fn0C00_0000_exit

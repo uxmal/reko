@@ -104,27 +104,27 @@ l0C00_002E:
 	CZ_36 = SCZO_34 (alias)
 	// succ:  l0C00_0030
 l0C00_0030:
-	al_23 = PHI(al_19, al_29, al_33)
-	SCZO_24 = PHI(SCZO_20, SCZO_30, SCZO_34)
-	CZ_25 = PHI(CZ_22, CZ_32, CZ_36)
+	al_23 = PHI((al_19, l0C00_0022), (al_29, l0C00_0028), (al_33, l0C00_002E))
+	SCZO_24 = PHI((SCZO_20, l0C00_0022), (SCZO_30, l0C00_0028), (SCZO_34, l0C00_002E))
+	CZ_25 = PHI((CZ_22, l0C00_0022), (CZ_32, l0C00_0028), (CZ_36, l0C00_002E))
 	C_26 = false
 	SCZO_27 = DPB(SCZO_24, C_26, 0) (alias)
 	CZ_28 = DPB(CZ_25, C_26, 0) (alias)
 	return C_26
 	// succ:  fn0C00_000A_exit
 l0C00_0032:
-	SCZO_11 = PHI(SCZO_3, SCZO_37, SCZO_43, SCZO_46)
-	CZ_12 = PHI(CZ_5, CZ_39, CZ_45, CZ_48)
+	SCZO_11 = PHI((SCZO_3, l0C00_000A), (SCZO_37, l0C00_0012), (SCZO_43, l0C00_001A), (SCZO_46, l0C00_001E))
+	CZ_12 = PHI((CZ_5, l0C00_000A), (CZ_39, l0C00_0012), (CZ_45, l0C00_001A), (CZ_48, l0C00_001E))
 	C_13 = true
 	SCZO_14 = DPB(SCZO_11, C_13, 0) (alias)
 	CZ_15 = DPB(CZ_12, C_13, 0) (alias)
 	return C_13
 	// succ:  fn0C00_000A_exit
 fn0C00_000A_exit:
-	al_6 = PHI(al, al_23)
-	C_7 = PHI(C_13, C_26)
-	SCZO_8 = PHI(SCZO_14, SCZO_27)
-	CZ_9 = PHI(CZ_15, CZ_28)
+	al_6 = PHI((al, l0C00_0032), (al_23, l0C00_0030))
+	C_7 = PHI((C_13, l0C00_0032), (C_26, l0C00_0030))
+	SCZO_8 = PHI((SCZO_14, l0C00_0032), (SCZO_27, l0C00_0030))
+	CZ_9 = PHI((CZ_15, l0C00_0032), (CZ_28, l0C00_0030))
 	use al_6 (=> alOut)
 
 // fn0C00_000A

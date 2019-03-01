@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -120,7 +120,7 @@ namespace Reko.Core.Types
         }
 
         private static PrimitiveType Create(Domain dom, int bitSize, string name)
-        {
+		{
             if (mpBitWidthToAllowableDomain.TryGetValue(bitSize, out var domainMask))
             {
                 dom &= domainMask;
@@ -137,18 +137,18 @@ namespace Reko.Core.Types
 		}
 
         public static PrimitiveType CreateWord(int bitSize)
-        {
+		{
             if (bitSize <= 0)
                 throw new ArgumentOutOfRangeException(nameof(bitSize));
-            string name;
+			string name;
             if (bitSize == 1)
-            {
+			{
                 name = "bool";
             }
             else if (bitSize == 8)
             {
-                name = "byte";
-            }
+				name = "byte";
+			}
             else
             { 
                 name = $"word{bitSize}";
@@ -168,7 +168,7 @@ namespace Reko.Core.Types
 		public override bool Equals(object obj)
 		{
             if (!(obj is PrimitiveType that))
-                return false;
+				return false;
             return that.Domain == this.Domain && that.bitSize == this.bitSize;
 		}
 	

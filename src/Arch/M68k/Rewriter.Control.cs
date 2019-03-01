@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
@@ -33,7 +34,7 @@ namespace Reko.Arch.M68k
     {
         private void RewriteBcc(ConditionCode cc, FlagM flags)
         {
-            var addr = ((M68kAddressOperand)di.op1).Address;
+            var addr = ((M68kAddressOperand)instr.op1).Address;
             if ((addr.ToUInt32() & 1) != 0)
             {
                 rtlc = InstrClass.Invalid;
@@ -50,12 +51,12 @@ namespace Reko.Arch.M68k
 
         private void RewriteBra()
         {
-            m.Goto(orw.RewriteSrc(di.op1, di.Address, true));
+            m.Goto(orw.RewriteSrc(instr.op1, instr.Address, true));
         }
 
         private void RewriteBsr()
         {
-            var addr = ((M68kAddressOperand)di.op1).Address;
+            var addr = ((M68kAddressOperand)instr.op1).Address;
             if ((addr.ToUInt32() & 1) != 0)
             {
                 rtlc = InstrClass.Invalid;
@@ -63,7 +64,7 @@ namespace Reko.Arch.M68k
             }
             else
             {
-                m.Call(orw.RewriteSrc(di.op1, di.Address, true), 4);
+                m.Call(orw.RewriteSrc(instr.op1, instr.Address, true), 4);
             }
         }
 
@@ -76,12 +77,12 @@ namespace Reko.Arch.M68k
 
         private void RewriteChk()
         {
-            var src = orw.RewriteSrc(di.op1, di.Address, true);
-            var bound = orw.RewriteSrc(di.op2, di.Address, true);
+            var src = orw.RewriteSrc(instr.op1, instr.Address, true);
+            var bound = orw.RewriteSrc(instr.op2, instr.Address, true);
             m.Branch(m.Cand(
                     m.Ge0(src),
                     m.Le(src, bound)),
-                di.Address + di.Length,
+                instr.Address + instr.Length,
                 InstrClass.ConditionalTransfer);
             m.SideEffect(
                 host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, m.Byte(6)));
@@ -89,15 +90,15 @@ namespace Reko.Arch.M68k
 
         private void RewriteChk2()
         {
-            var reg = orw.RewriteSrc(di.op2, di.Address);
-            var lowBound = orw.RewriteSrc(di.op1, di.Address);
+            var reg = orw.RewriteSrc(instr.op2, instr.Address);
+            var lowBound = orw.RewriteSrc(instr.op1, instr.Address);
             var ea = ((MemoryAccess)lowBound).EffectiveAddress;
             var hiBound = m.Mem(lowBound.DataType, m.IAdd(ea, lowBound.DataType.Size));
             m.Branch(
                 m.Cand(
                     m.Ge(reg, lowBound),
                     m.Le(reg, hiBound)),
-                di.Address + di.Length,
+                instr.Address + instr.Length,
                 InstrClass.ConditionalTransfer);
                 new RtlSideEffect(
                     host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, m.Byte(6)));
@@ -105,7 +106,7 @@ namespace Reko.Arch.M68k
 
         private void RewriteJmp()
         {
-            var src = orw.RewriteSrc(di.op1, di.Address, true);
+            var src = orw.RewriteSrc(instr.op1, instr.Address, true);
             if (src is MemoryAccess mem)
                 src = mem.EffectiveAddress;
             m.Goto(src);
@@ -113,7 +114,7 @@ namespace Reko.Arch.M68k
 
         private void RewriteJsr()
         {
-            var src = orw.RewriteSrc(di.op1, di.Address, true);
+            var src = orw.RewriteSrc(instr.op1, instr.Address, true);
             if (src is MemoryAccess mem)
             {
                 src = mem.EffectiveAddress;
@@ -123,7 +124,7 @@ namespace Reko.Arch.M68k
 
         private void RewriteDbcc(ConditionCode cc, FlagM flags)
         {
-            var addr = (Address)orw.RewriteSrc(di.op2, di.Address, true);
+            var addr = (Address)orw.RewriteSrc(instr.op2, instr.Address, true);
             if (cc == ConditionCode.ALWAYS)
             {
                 rtlc = InstrClass.Transfer;
@@ -134,23 +135,25 @@ namespace Reko.Arch.M68k
             {
                 m.BranchInMiddleOfInstruction(
                     m.Test(cc, orw.FlagGroup(flags)),
-                    di.Address + 4,
+                    instr.Address + 4,
                     InstrClass.ConditionalTransfer);
             }
-            var src = orw.RewriteSrc(di.op1, di.Address);
-
-            m.Assign(src, m.ISub(src, 1));
+            var src = orw.RewriteSrc(instr.op1, instr.Address);
+            var tmp = binder.CreateTemporary(PrimitiveType.Word16);
+            m.Assign(tmp, m.Slice(tmp.DataType, src, 0));
+            m.Assign(tmp, m.ISubS(tmp, 1));
+            m.Assign(src, m.Dpb(src, tmp, 0));
             m.Branch(
-                m.Ne(src, m.Word32(-1)),
+                m.Ne(tmp, m.Word16(0xFFFF)),
                 addr,
                 InstrClass.ConditionalTransfer);
         }
 
         private void RewriteIllegal()
         {
-            if (dasm.Current.op1 != null)
+            if (this.instr.op1 != null)
             {
-                m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, RewriteSrcOperand(dasm.Current.op1)));
+                m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, RewriteSrcOperand(this.instr.op1)));
                 rtlc = InstrClass.Call | InstrClass.Transfer;
             }
             else
@@ -158,6 +161,12 @@ namespace Reko.Arch.M68k
                 rtlc = InstrClass.Invalid;
                 m.Invalid();
             }
+        }
+
+        private void RewriteRtd()
+        {
+            int extraBytesPopped = ((M68kImmediateOperand) this.instr.op1).Constant.ToInt32();
+            m.Return(4, extraBytesPopped);
         }
 
         private void RewriteRtm()
@@ -179,7 +188,7 @@ namespace Reko.Arch.M68k
 
         private void RewriteTrap()
         {
-            var vector = orw.RewriteSrc(di.op1, di.Address);
+            var vector = orw.RewriteSrc(instr.op1, instr.Address);
             m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, vector));
         }
 
@@ -195,13 +204,13 @@ namespace Reko.Arch.M68k
                 rtlc |= InstrClass.Conditional;
                 m.BranchInMiddleOfInstruction(
                     m.Test(cc, orw.FlagGroup(flags)).Invert(),
-                    di.Address + di.Length,
+                    instr.Address + instr.Length,
                     InstrClass.ConditionalTransfer);
             }
             var args = new List<Expression> { Constant.UInt16(7) };
-            if (di.op1 != null)
+            if (instr.op1 != null)
             {
-                args.Add(orw.RewriteSrc(di.op1, di.Address));
+                args.Add(orw.RewriteSrc(instr.op1, instr.Address));
             }
             m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, args.ToArray()));
         }

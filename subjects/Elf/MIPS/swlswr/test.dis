@@ -627,28 +627,28 @@ l000009A8:
 	branch Mem0[r16_37:word32] != -1 l000009A8_ds_t
 // DataOut: r16
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -40 r25:<invalid> r28:0x00018A80 r3:<invalid> r2:-1 r17:-1 r16:<invalid> -24(fp):0x00018A80 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -40 r25:<invalid> r28:0x00018A80 r3:<invalid> r2:<invalid> r17:-1 r16:<invalid> -24(fp):0x00018A80 -12(fp):r16 -8(fp):r17 -4(fp):ra
 
 l000009A8_ds_t:
 // DataOut: r16
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -40 r25:<invalid> r28:0x00018A80 r3:<invalid> r2:-1 r17:-1 r16:<invalid> -24(fp):0x00018A80 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -40 r25:<invalid> r28:0x00018A80 r3:<invalid> r2:<invalid> r17:-1 r16:<invalid> -24(fp):0x00018A80 -12(fp):r16 -8(fp):r17 -4(fp):ra
 
 l000009A8_ds_f:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -40 r25:<invalid> r28:0x00018A80 r3:<invalid> r2:-1 r17:-1 r16:<invalid> -24(fp):0x00018A80 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -40 r25:<invalid> r28:0x00018A80 r3:<invalid> r2:<invalid> r17:-1 r16:<invalid> -24(fp):0x00018A80 -12(fp):r16 -8(fp):r17 -4(fp):ra
 
 l000009BC:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp + -40 r25:<invalid> r28:0x00018A80 r3:<invalid> r2:-1 r17:-1 r16:<invalid> -24(fp):0x00018A80 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp + -40 r25:<invalid> r28:0x00018A80 r3:<invalid> r2:<invalid> r17:-1 r16:<invalid> -24(fp):0x00018A80 -12(fp):r16 -8(fp):r17 -4(fp):ra
 
 __do_global_ctors_aux_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp r25:<invalid> r28:0x00018A80 r3:<invalid> r2:-1 r17:r17 ra:ra r16:r16 -24(fp):0x00018A80 -12(fp):r16 -8(fp):r17 -4(fp):ra
+// SymbolicIn: sp:fp r25:<invalid> r28:0x00018A80 r3:<invalid> r2:<invalid> r17:r17 ra:ra r16:r16 -24(fp):0x00018A80 -12(fp):r16 -8(fp):r17 -4(fp):ra
 
 
 

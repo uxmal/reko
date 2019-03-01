@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,18 +17,15 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
- 
+
+using Moq;
+using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Configuration;
-using Reko.Loading;
-using NUnit.Framework;
-using Rhino.Mocks;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
 using Reko.Core.Services;
+using Reko.Loading;
+using System;
+using System.ComponentModel.Design;
 using System.IO;
 
 namespace Reko.UnitTests.Loading
@@ -60,35 +57,33 @@ namespace Reko.UnitTests.Loading
             }
         }
 
-        private MockRepository mr;
         private ServiceContainer sc;
-        private IConfigurationService cfgSvc;
-        private IFileSystemService fsSvc;
-        private IDiagnosticsService diagSvc;
+        private Mock<IConfigurationService> cfgSvc;
+        private Mock<IFileSystemService> fsSvc;
+        private Mock<IDiagnosticsService> diagSvc;
 
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
             sc = new ServiceContainer();
-            cfgSvc = mr.Stub<IConfigurationService>();
-            fsSvc = mr.Stub<IFileSystemService>();
-            diagSvc = mr.Stub<IDiagnosticsService>();
-            sc.AddService<IFileSystemService>(fsSvc);
-            sc.AddService<IDiagnosticsService>(diagSvc);
+            cfgSvc = new Mock<IConfigurationService>();
+            fsSvc = new Mock<IFileSystemService>();
+            diagSvc = new Mock<IDiagnosticsService>();
+            sc.AddService<IFileSystemService>(fsSvc.Object);
+            sc.AddService<IDiagnosticsService>(diagSvc.Object);
         }
 
         void Given_File(string name, byte[] content)
         {
-            fsSvc.Stub(f => f.FileExists(name)).Return(true);
-            fsSvc.Stub(f => f.CreateFileStream(name, FileMode.Open, FileAccess.Read))
-                .Return(new MemoryStream(content));
+            fsSvc.Setup(f => f.FileExists(name)).Returns(true);
+            fsSvc.Setup(f => f.CreateFileStream(name, FileMode.Open, FileAccess.Read))
+                .Returns(new MemoryStream(content));
         }
 
 
         void Given_NoFile(string name)
         {
-            fsSvc.Stub(f => f.FileExists(name)).Return(false);
+            fsSvc.Setup(f => f.FileExists(name)).Returns(false);
         }
 
         [Test]
@@ -97,12 +92,12 @@ namespace Reko.UnitTests.Loading
             var image = new byte[] { 0x00, 0x00, 0x00, 0x00, 0x12, 0x34, 0x00, 0x00 };
 
             Given_File("foo.exe.sufa-raw.ubj", new byte[] { 0x5B, 0x24, 0x6C, 0x23, 0x69, 0x00 });
-            var le = mr.Stub<LoaderConfiguration>();
-            le.Label = "LoaderKey";
-            le.TypeName = typeof(TestImageLoader).AssemblyQualifiedName;
-            cfgSvc.Stub(c => c.GetImageLoader("LoaderKey")).Return(le);
-            sc.AddService(typeof(IConfigurationService), cfgSvc);
-            mr.ReplayAll();
+            var le = new Mock<LoaderConfiguration>();
+            le.SetupAllProperties();
+            le.Object.Label = "LoaderKey";
+            le.Object.TypeName = typeof(TestImageLoader).AssemblyQualifiedName;
+            cfgSvc.Setup(c => c.GetImageLoader("LoaderKey")).Returns(le.Object);
+            sc.AddService<IConfigurationService>(cfgSvc.Object);
 
             var upSvc = new UnpackingService(sc);
             upSvc.Signatures.Add(new ImageSignature
@@ -144,7 +139,6 @@ namespace Reko.UnitTests.Loading
         public void Upsvc_LoadSuffixArray_LoadSuffixArrayIfpresent()
         {
             Given_File("foo.exe.sufa-raw.ubj", new byte[] { 0x5B, 0x24, 0x6C, 0x23, 0x69, 0x00 });
-            mr.ReplayAll();
 
             var upsvc = new UnpackingService(sc);
             upsvc.FindUnpackerBySignature("foo.exe", new byte[0x1000], 0x0100);
@@ -156,9 +150,8 @@ namespace Reko.UnitTests.Loading
         {
             Given_NoFile("foo.exe.sufa-raw.ubj"); // , new byte[] { 0x5B, 0x24, 0x6C, 0x23, 0x69, 0x00 });
             var stm = new MemoryStream();
-            fsSvc.Expect(f => f.CreateFileStream("foo.exe.sufa-raw.ubj", FileMode.Create, FileAccess.Write))
-                .Return(stm);
-            mr.ReplayAll();
+            fsSvc.Setup(f => f.CreateFileStream("foo.exe.sufa-raw.ubj", FileMode.Create, FileAccess.Write))
+                .Returns(stm);
 
             var upsvc = new UnpackingService(sc);
             upsvc.FindUnpackerBySignature("foo.exe", new byte[0x4], 0);

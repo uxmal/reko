@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@ namespace Reko.Arch.M68k
         public OperandFormatDecoder(M68kDisassembler dasm, int i)
         {
             this.dasm = dasm;
-            this.opcode = dasm.instruction;
+            this.opcode = dasm.uInstr;
             this.i = i;
         }
 
@@ -151,8 +151,7 @@ namespace Reko.Arch.M68k
             }
             else if (offset == 0x00)
             {
-                short sOffset;
-                if (!rdr.TryReadBeInt16(out sOffset))
+                if (!rdr.TryReadBeInt16(out short sOffset))
                 {
                     op = null;
                     return false;
@@ -195,8 +194,7 @@ namespace Reko.Arch.M68k
                 }
                 rdr.Offset += 1;    // skip a byte so we get the appropriate lsb byte and align the word stream.
             }
-            Constant imm;
-            if (!rdr.TryReadBe(type, out imm))
+            if (!rdr.TryReadBe(type, out Constant imm))
             {
                 op = null; return false;
             }
@@ -394,8 +392,7 @@ namespace Reko.Arch.M68k
 
         private bool TryAddressRegisterIndirectWithIndex(PrimitiveType dataWidth, EndianImageReader rdr, out MachineOperand op)
         {
-            ushort extension;
-            if (!rdr.TryReadBeUInt16(out extension))
+            if (!rdr.TryReadBeUInt16(out ushort extension))
             {
                 op = null; return false;
             }
@@ -423,7 +420,9 @@ namespace Reko.Arch.M68k
                     outer = rdr.ReadBe(EXT_OUTER_DISPLACEMENT_LONG(extension) ? PrimitiveType.Word32 : PrimitiveType.Int16);
                 }
                 if (EXT_BASE_REGISTER_PRESENT(extension))
+                {
                     base_reg = Registers.AddressRegister(opcode & 7);
+                }
                 if (EXT_INDEX_REGISTER_PRESENT(extension))
                 {
                     index_reg = EXT_INDEX_AR(extension)

@@ -54,22 +54,22 @@ bx_6: orig: bx
     def:  bx_6 = 0x0FFF
     uses: bh_7 = SLICE(bx_6, byte, 8) (alias)
           bl_8 = (byte) bx_6 (alias)
-          bx_9 = PHI(bx_6, bx_26)
+          bx_9 = PHI((bx_6, l0C00_0004), (bx_26, l0C00_000C))
 bh_7: orig: bh
     def:  bh_7 = SLICE(bx_6, byte, 8) (alias)
-    uses: bh_10 = PHI(bh_7, bh_27)
+    uses: bh_10 = PHI((bh_7, l0C00_0004), (bh_27, l0C00_000C))
 bl_8: orig: bl
     def:  bl_8 = (byte) bx_6 (alias)
-    uses: bl_11 = PHI(bl_8, bl_28)
+    uses: bl_11 = PHI((bl_8, l0C00_0004), (bl_28, l0C00_000C))
 bx_9: orig: bx
-    def:  bx_9 = PHI(bx_6, bx_26)
+    def:  bx_9 = PHI((bx_6, l0C00_0004), (bx_26, l0C00_000C))
     uses: Mem25[0x4DE1:bx_9:byte] = al_22
           bx_26 = bx_9 - 0x0001
 bh_10: orig: bh
-    def:  bh_10 = PHI(bh_7, bh_27)
+    def:  bh_10 = PHI((bh_7, l0C00_0004), (bh_27, l0C00_000C))
     uses: al_12 = bh_10
 bl_11: orig: bl
-    def:  bl_11 = PHI(bl_8, bl_28)
+    def:  bl_11 = PHI((bl_8, l0C00_0004), (bl_28, l0C00_000C))
     uses: ah_14 = bl_11
           al_19 = bl_11
 al_12: orig: al
@@ -118,14 +118,14 @@ bx_26: orig: bx
     uses: bh_27 = SLICE(bx_26, byte, 8) (alias)
           bl_28 = (byte) bx_26 (alias)
           SZO_29 = cond(bx_26)
-          bx_9 = PHI(bx_6, bx_26)
+          bx_9 = PHI((bx_6, l0C00_0004), (bx_26, l0C00_000C))
           branch bx_26 >= 0x0000 l0C00_000C
 bh_27: orig: bh
     def:  bh_27 = SLICE(bx_26, byte, 8) (alias)
-    uses: bh_10 = PHI(bh_7, bh_27)
+    uses: bh_10 = PHI((bh_7, l0C00_0004), (bh_27, l0C00_000C))
 bl_28: orig: bl
     def:  bl_28 = (byte) bx_26 (alias)
-    uses: bl_11 = PHI(bl_8, bl_28)
+    uses: bl_11 = PHI((bl_8, l0C00_0004), (bl_28, l0C00_000C))
 SZO_29: orig: SZO
     def:  SZO_29 = cond(bx_26)
     uses: SCZO_30 = SZO_29 (alias)
@@ -151,9 +151,9 @@ l0C00_0004:
 	bl_8 = (byte) bx_6 (alias)
 	// succ:  l0C00_000C
 l0C00_000C:
-	bx_9 = PHI(bx_6, bx_26)
-	bh_10 = PHI(bh_7, bh_27)
-	bl_11 = PHI(bl_8, bl_28)
+	bx_9 = PHI((bx_6, l0C00_0004), (bx_26, l0C00_000C))
+	bh_10 = PHI((bh_7, l0C00_0004), (bh_27, l0C00_000C))
+	bl_11 = PHI((bl_8, l0C00_0004), (bl_28, l0C00_000C))
 	al_12 = bh_10
 	al_13 = al_12 + 0x01
 	ah_14 = bl_11
@@ -196,23 +196,23 @@ es_5: orig: es
     def:  es_5 = 0x4DE1
 bx_6: orig: bx
     def:  bx_6 = 0x0FFF
-    uses: bx_9 = PHI(bx_6, bx_26)
+    uses: bx_9 = PHI((bx_6, l0C00_0004), (bx_26, l0C00_000C))
 bh_7: orig: bh
     def:  bh_7 = 0x0F (alias)
-    uses: bh_10 = PHI(bh_7, bh_27)
+    uses: bh_10 = PHI((bh_7, l0C00_0004), (bh_27, l0C00_000C))
 bl_8: orig: bl
     def:  bl_8 = 0xFF (alias)
-    uses: bl_11 = PHI(bl_8, bl_28)
+    uses: bl_11 = PHI((bl_8, l0C00_0004), (bl_28, l0C00_000C))
 bx_9: orig: bx
-    def:  bx_9 = PHI(bx_6, bx_26)
+    def:  bx_9 = PHI((bx_6, l0C00_0004), (bx_26, l0C00_000C))
     uses: Mem25[0x4DE1:bx_9:byte] = al_22
           bx_26 = bx_9 - 0x0001
 bh_10: orig: bh
-    def:  bh_10 = PHI(bh_7, bh_27)
+    def:  bh_10 = PHI((bh_7, l0C00_0004), (bh_27, l0C00_000C))
     uses: al_12 = bh_10
           al_13 = bh_10 + 0x01
 bl_11: orig: bl
-    def:  bl_11 = PHI(bl_8, bl_28)
+    def:  bl_11 = PHI((bl_8, l0C00_0004), (bl_28, l0C00_000C))
     uses: ah_14 = bl_11
           al_19 = bl_11
           ah_15 = bl_11 & 0x0F
@@ -261,13 +261,13 @@ bx_26: orig: bx
           bl_28 = (byte) bx_26 (alias)
           SZO_29 = cond(bx_26)
           branch bx_26 >= 0x0000 l0C00_000C
-          bx_9 = PHI(bx_6, bx_26)
+          bx_9 = PHI((bx_6, l0C00_0004), (bx_26, l0C00_000C))
 bh_27: orig: bh
     def:  bh_27 = SLICE(bx_26, byte, 8) (alias)
-    uses: bh_10 = PHI(bh_7, bh_27)
+    uses: bh_10 = PHI((bh_7, l0C00_0004), (bh_27, l0C00_000C))
 bl_28: orig: bl
     def:  bl_28 = (byte) bx_26 (alias)
-    uses: bl_11 = PHI(bl_8, bl_28)
+    uses: bl_11 = PHI((bl_8, l0C00_0004), (bl_28, l0C00_000C))
 SZO_29: orig: SZO
     def:  SZO_29 = cond(bx_26)
     uses: SCZO_30 = SZO_29 (alias)
@@ -293,9 +293,9 @@ l0C00_0004:
 	bl_8 = 0xFF (alias)
 	// succ:  l0C00_000C
 l0C00_000C:
-	bx_9 = PHI(bx_6, bx_26)
-	bh_10 = PHI(bh_7, bh_27)
-	bl_11 = PHI(bl_8, bl_28)
+	bx_9 = PHI((bx_6, l0C00_0004), (bx_26, l0C00_000C))
+	bh_10 = PHI((bh_7, l0C00_0004), (bh_27, l0C00_000C))
+	bl_11 = PHI((bl_8, l0C00_0004), (bl_28, l0C00_000C))
 	al_12 = bh_10
 	al_13 = bh_10 + 0x01
 	ah_14 = bl_11

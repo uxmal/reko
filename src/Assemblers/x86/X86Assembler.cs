@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1722,7 +1722,7 @@ namespace Reko.Assemblers.x86
         public void AddImport(string moduleName, string fnName,  PrimitiveType size)
         {
             Address u =  (addrBase + emitter.Position);
-            ImportReferences.Add(u, new NamedImportReference(u, Path.GetFileNameWithoutExtension(moduleName), fnName));
+            ImportReferences.Add(u, new NamedImportReference(u, Path.GetFileNameWithoutExtension(moduleName), fnName, SymbolType.ExternalProcedure));
             emitter.EmitLe(size, 0);
         }
 

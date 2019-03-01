@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -73,10 +73,23 @@ namespace Reko.Core.Configuration
     //    </Entry>
     public class EntryPointElement : ConfigurationElement
     {
+        /// <summary>
+        /// Optional name of the entry point.
+        /// </summary>
         public string Name { get; set; }
 
+        /// <summary>
+        /// The address of the entry point serialized as a string.
+        /// The architecture is responsible for converting the string
+        /// to a <see cref="Reko.Core.Address"/>.
+        /// </summary>
         public string Address { get; set; }
 
+        /// <summary>
+        /// If true, the <see cref="Address"/> property indicates an 
+        /// indirect entry point. Reko will use the address located at
+        /// <see cref="Address"/> as the actual entry point.
+        /// </summary>
         public bool Follow { get; set; }
     }
 }

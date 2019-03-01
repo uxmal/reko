@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 2018 Stefano Moioli <smxdev4@gmail.com>.
+ * Copyright (C) 2018-2019 Stefano Moioli <smxdev4@gmail.com>.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -613,7 +613,7 @@ namespace Reko.ImageLoaders.Xex
                     UInt32 importAddress = xexData.import_records[i];
 
                     var theAddress = new Address32(importAddress);
-                    imports.Add(theAddress, new OrdinalImportReference(theAddress, importLibName, (int)importOrdinal));
+                    imports.Add(theAddress, new OrdinalImportReference(theAddress, importLibName, (int)importOrdinal, SymbolType.ExternalProcedure));
                 } else if(type == 1) {
                     if (libIndex >= xexData.libNames.Count) {
                         throw new BadImageFormatException($"XEX: invalid import type 0 record lib index ({libIndex}, max:{xexData.libNames.Count})");
@@ -624,7 +624,7 @@ namespace Reko.ImageLoaders.Xex
                     UInt32 importAddress = xexData.import_records[i];
 
                     var theAddress = new Address32(importAddress);
-                    imports.Add(theAddress, new OrdinalImportReference(theAddress, importLibName, (int)importOrdinal));
+                    imports.Add(theAddress, new OrdinalImportReference(theAddress, importLibName, (int)importOrdinal, SymbolType.ExternalProcedure));
                 }
             }
         }

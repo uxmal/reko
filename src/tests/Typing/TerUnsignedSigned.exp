@@ -32,7 +32,7 @@ l1:
 	branch (rsi >> 0x0000000000000003) + (((rsi >> 0x0000000000000003) >> 0x3F) >> 0x0000000000000001) == 0x0000000000000000 mHyperSpace
 	// succ:  mHello mHyperSpace
 mHello:
-	(int64 *) 0x000000000000002A = rsi
+	*(int64 *) 0x000000000000002A = rsi
 	// succ:  mHyperspace
 mHyperspace:
 	return

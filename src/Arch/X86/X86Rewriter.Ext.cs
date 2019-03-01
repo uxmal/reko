@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -94,13 +94,23 @@ namespace Reko.Arch.X86
                     SrcOp(instrCur.op2)));
         }
 
-        private void RewriteSldt()
+        private void RewriteLxdt(string intrinsicName)
+        {
+            rtlc = InstrClass.System;
+            m.SideEffect(
+                host.PseudoProcedure(
+                    intrinsicName,
+                    VoidType.Instance,
+                    SrcOp(instrCur.op1)));
+        }
+
+        private void RewriteSxdt(string intrinsicName)
         {
             rtlc = InstrClass.System;
             m.Assign(
                 SrcOp(instrCur.op1),
                 host.PseudoProcedure(
-                    "__sldt",
+                    intrinsicName,
                     instrCur.op1.Width));
         }
 

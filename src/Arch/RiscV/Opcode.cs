@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,6 +36,42 @@ namespace Reko.Arch.RiscV
         blt,
         bltu,
         bne,
+
+        c_add,
+        c_addi,
+        c_addi16sp,
+        c_addi4spn,
+        c_addiw,
+        c_addw,
+        c_and,
+        c_andi,
+        c_beqz,
+        c_bnez,
+        c_fld,
+        c_fldsp,
+        c_flw,
+        c_flwsp,
+        c_j,
+        c_jalr,
+        c_jr,
+        c_ld,
+        c_ldsp,
+        c_li,
+        c_lui,
+        c_lw,
+        c_lwsp,
+        c_mv,
+        c_or,
+        c_sd,
+        c_sdsp,
+        c_slli,
+        c_srai,
+        c_srli,
+        c_sub,
+        c_subw,
+        c_sw,
+        c_swsp,
+        c_xor,
 
         flw,
 
@@ -81,6 +117,7 @@ namespace Reko.Arch.RiscV
         sraiw,
         lbu,
         lhu,
+
         fadd_d,
         fadd_s,
         fcvt_d_s,
@@ -89,6 +126,20 @@ namespace Reko.Arch.RiscV
         fmv_d_x,
         fmv_s_x,
         fmadd_s,
+        fmsub_s,
+        fnmsub_s,
+        fnmadd_s,
         lwu,
+        fsw,
+
+        mulw,
+        divw,
+        remuw,
+        fld,
+        fsd,
+        c_fsdsp,
+        c_fsd,
+        remw,
+        divuw,
     }
 }

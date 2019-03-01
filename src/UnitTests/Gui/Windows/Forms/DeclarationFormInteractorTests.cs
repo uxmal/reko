@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 Pavel Tomin.
+ * Copyright (C) 1999-2019 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Core;
@@ -29,7 +30,6 @@ using Reko.Gui.Commands;
 using Reko.Gui.Forms;
 using Reko.UnitTests.Mocks;
 using Reko.UserInterfaces.WindowsForms.Forms;
-using Rhino.Mocks;
 using System;
 using System.ComponentModel.Design;
 using System.Drawing;
@@ -38,28 +38,27 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 {
     class DeclarationFormInteractorTests
     {
-        MockRepository mr;
         private ServiceContainer services;
         private DeclarationFormInteractor interactor;
-        private IDeclarationForm declarationForm;
+        private Mock<IDeclarationForm> declarationForm;
         private FakeTextBox textBox;
         private Program program;
 
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
             services = new ServiceContainer();
-            declarationForm = mr.Stub<IDeclarationForm>();
+            declarationForm = new Mock<IDeclarationForm>();
             textBox = new FakeTextBox();
-            declarationForm.Stub(f => f.TextBox).Return(textBox);
-            declarationForm.Stub(f => f.ShowAt(new Point()));
-            declarationForm.Stub(f => f.Hide());
-            declarationForm.Stub(f => f.Dispose());
-            var dlgFactory = mr.Stub<IDialogFactory>();
-            dlgFactory.Stub(f => f.CreateDeclarationForm()).Return(declarationForm);
-            services.AddService<IDialogFactory>(dlgFactory);
-            mr.ReplayAll();
+            declarationForm.Setup(f => f.TextBox).Returns(textBox);
+            declarationForm.Setup(f => f.ShowAt(new Point()));
+            declarationForm.Setup(f => f.Hide());
+            declarationForm.Setup(f => f.Dispose());
+            declarationForm.SetupProperty(f => f.HintText);
+            var dlgFactory = new Mock<IDialogFactory>();
+            dlgFactory.Setup(f => f.CreateDeclarationForm()).Returns(declarationForm.Object);
+            services.AddService<IDialogFactory>(dlgFactory.Object);
+
             interactor = new DeclarationFormInteractor(services);
             var mem = new MemoryArea(Address.Ptr32(0x10), new byte[40]);
             var seg = new ImageSegment(".text", mem, AccessMode.ReadWrite);
@@ -109,25 +108,25 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 
         private void Given_CommandFactory()
         {
-            var markProcedureCmd = mr.Stub<ICommand>();
-            markProcedureCmd.Stub(c => c.Do()).Do(new Action(() =>
+            var markProcedureCmd = new Mock<ICommand>();
+            markProcedureCmd.Setup(c => c.Do()).Callback(() =>
             {
                 program.Procedures.Values[0].Name =
                     program.User.Procedures.Values[0].Name;
-            }));
+            });
 
-            var cmdFactory = mr.Stub<ICommandFactory>();
-            cmdFactory.Stub(f => f.MarkProcedure(null)).IgnoreArguments().Do(
-                new Func<ProgramAddress, ICommand>((pa) =>
+            var cmdFactory = new Mock<ICommandFactory>();
+            cmdFactory.Setup(f => f.MarkProcedure(
+                It.IsAny<ProgramAddress>())).Returns(
+                (ProgramAddress pa) =>
             {
                 var program = pa.Program;
                 var addr = pa.Address;
                 program.Procedures[addr] = new Procedure(program.Architecture, "<unnamed>", addr, null);
-                return markProcedureCmd;
-            }));
+                return markProcedureCmd.Object;
+            });
 
-            services.AddService<ICommandFactory>(cmdFactory);
-            mr.ReplayAll();
+            services.AddService<ICommandFactory>(cmdFactory.Object);
         }
 
         private void When_DeclarationFormCreated(uint addr)
@@ -142,13 +141,13 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 
             Assert.AreEqual(
                 "Enter procedure or global variable declaration at the address 00000013",
-                declarationForm.HintText);
+                declarationForm.Object.HintText);
 
-            Assert.AreEqual("", declarationForm.TextBox.Text);
-            declarationForm.TextBox.Text = "int a(";
-            Assert.AreEqual(Color.Red, declarationForm.TextBox.ForeColor);
-            declarationForm.TextBox.Text = "int a";
-            Assert.AreEqual(SystemColors.ControlText, declarationForm.TextBox.ForeColor);
+            Assert.AreEqual("", declarationForm.Object.TextBox.Text);
+            declarationForm.Object.TextBox.Text = "int a(";
+            Assert.AreEqual(Color.Red, declarationForm.Object.TextBox.ForeColor);
+            declarationForm.Object.TextBox.Text = "int a";
+            Assert.AreEqual(SystemColors.ControlText, declarationForm.Object.TextBox.ForeColor);
             When_FormClosed();
             Assert.AreEqual(3, program.ImageMap.Items.Count);
             Assert.AreEqual(1, program.User.Globals.Count);
@@ -165,9 +164,9 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 
             Assert.AreEqual(
                 "Enter procedure or global variable declaration at the address 00000014",
-                declarationForm.HintText);
+                declarationForm.Object.HintText);
 
-            Assert.AreEqual("double DB", declarationForm.TextBox.Text);
+            Assert.AreEqual("double DB", declarationForm.Object.TextBox.Text);
         }
 
         [Test]
@@ -175,9 +174,9 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         {
             Given_ProcedureSignature(0x16, "float test(float b)");
             When_DeclarationFormCreated(0x16);
-            Assert.AreEqual("float test(float b)", declarationForm.TextBox.Text);
-            declarationForm.TextBox.Text = "float test(floatb b)";
-            Assert.AreEqual(Color.Red, declarationForm.TextBox.ForeColor);
+            Assert.AreEqual("float test(float b)", declarationForm.Object.TextBox.Text);
+            declarationForm.Object.TextBox.Text = "float test(floatb b)";
+            Assert.AreEqual(Color.Red, declarationForm.Object.TextBox.ForeColor);
         }
 
         [Test]
@@ -185,9 +184,9 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         {
             Given_ProcedureName(0x15, "fn123");
             When_DeclarationFormCreated(0x15);
-            Assert.AreEqual("fn123", declarationForm.TextBox.Text);
-            declarationForm.TextBox.Text = "fn123456";
-            Assert.AreEqual(SystemColors.ControlText, declarationForm.TextBox.ForeColor);
+            Assert.AreEqual("fn123", declarationForm.Object.TextBox.Text);
+            declarationForm.Object.TextBox.Text = "fn123456";
+            Assert.AreEqual(SystemColors.ControlText, declarationForm.Object.TextBox.ForeColor);
             When_FormClosed();
             Assert.AreEqual(1, program.User.Procedures.Count);
             Assert.AreEqual(1, program.Procedures.Count);
@@ -203,7 +202,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 
             When_DeclarationFormCreated(0x17);
 
-            Assert.AreEqual("fnName", declarationForm.TextBox.Text);
+            Assert.AreEqual("fnName", declarationForm.Object.TextBox.Text);
         }
 
         [Test(Description = "Just entering a (valid) name should be OK.")]
@@ -215,10 +214,10 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 
             Assert.AreEqual(
                 "Enter procedure declaration at the address 00000017",
-                declarationForm.HintText);
+                declarationForm.Object.HintText);
 
-            declarationForm.TextBox.Text = "foo";
-            Assert.AreEqual(SystemColors.ControlText, declarationForm.TextBox.ForeColor);
+            declarationForm.Object.TextBox.Text = "foo";
+            Assert.AreEqual(SystemColors.ControlText, declarationForm.Object.TextBox.ForeColor);
             When_FormClosed();
 
             Assert.AreEqual("foo", program.Procedures.Values[0].Name);
@@ -235,10 +234,10 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 
             Assert.AreEqual(
                 "Enter procedure declaration at the address 00000018",
-                 declarationForm.HintText);
+                 declarationForm.Object.HintText);
 
-            declarationForm.TextBox.Text = "f@oo";
-            Assert.AreEqual(Color.Red, declarationForm.TextBox.ForeColor);
+            declarationForm.Object.TextBox.Text = "f@oo";
+            Assert.AreEqual(Color.Red, declarationForm.Object.TextBox.ForeColor);
             When_FormClosed();
 
             Assert.AreEqual("fnTest", program.Procedures.Values[0].Name);
@@ -251,7 +250,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 
             When_DeclarationFormCreated(0x17);
 
-            declarationForm.TextBox.Text = "int foo(char *, float)";
+            declarationForm.Object.TextBox.Text = "int foo(char *, float)";
             When_FormClosed();
 
             Assert.AreEqual("foo", program.Procedures.Values[0].Name);
@@ -265,7 +264,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 
             When_DeclarationFormCreated(0x17);
 
-            declarationForm.TextBox.Text = "char * test(int)";
+            declarationForm.Object.TextBox.Text = "char * test(int)";
             When_FormClosed();
 
             Assert.AreEqual("test", program.Procedures.Values[0].Name);
@@ -282,7 +281,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 
             When_DeclarationFormCreated(0x17);
 
-            declarationForm.TextBox.Text = "BYTE foo(BYTE a, BYTE b)";
+            declarationForm.Object.TextBox.Text = "BYTE foo(BYTE a, BYTE b)";
             When_FormClosed();
 
             Assert.AreEqual("foo", program.Procedures.Values[0].Name);
@@ -296,7 +295,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 
             When_DeclarationFormCreated(0x20);
 
-            declarationForm.TextBox.Text = "int funcA(double v)";
+            declarationForm.Object.TextBox.Text = "int funcA(double v)";
             When_FormClosed();
 
             Assert.AreEqual(1, program.User.Procedures.Count);
@@ -314,9 +313,9 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 
             When_DeclarationFormCreated(0x21);
 
-            Assert.AreEqual("float rVal", declarationForm.TextBox.Text);
+            Assert.AreEqual("float rVal", declarationForm.Object.TextBox.Text);
 
-            declarationForm.TextBox.Text = "float abc(char ch)";
+            declarationForm.Object.TextBox.Text = "float abc(char ch)";
             When_FormClosed();
 
             Assert.AreEqual(1, program.ImageMap.Items.Count);
@@ -334,13 +333,13 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 
             When_DeclarationFormCreated(0x19);
 
-            declarationForm.TextBox.Text = "int a";
-            Assert.AreEqual(Color.Red, declarationForm.TextBox.ForeColor);
+            declarationForm.Object.TextBox.Text = "int a";
+            Assert.AreEqual(Color.Red, declarationForm.Object.TextBox.ForeColor);
             When_FormClosed();
 
             Assert.AreEqual(0, program.User.Globals.Count);
             Assert.AreEqual(1, program.User.Procedures.Count);
             Assert.AreEqual(1, program.Procedures.Count);
         }
-            }
+    }
 }

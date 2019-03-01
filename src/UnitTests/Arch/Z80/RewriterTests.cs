@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -286,6 +286,16 @@ namespace Reko.UnitTests.Arch.Z80
                 "3|L--|bc = bc - 1",
                 "4|T--|if (bc == 0x0000) branch 0102",
                 "5|T--|if (Test(NE,Z)) branch 0100");
+        }
+
+        [Test]
+        public void Z80rw_rla()
+        {
+            BuildTest(0x17);
+            AssertCode(
+                "0|L--|0100(1): 2 instructions",
+                "1|L--|a = __rcl(a, 0x01, C)",
+                "2|L--|C = cond(a)");
         }
     }
 }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,12 +39,13 @@ namespace Reko.Core
 
         public static Address Create(DataType size, ulong bitPattern)
         {
-            switch (size.Size)
+            switch (size.BitSize)
             {
             default: throw new ArgumentException("size");
-            case 2: return Ptr16((ushort)bitPattern);
-            case 4: return Ptr32((uint)bitPattern);
-            case 8: return Ptr64(bitPattern);
+            case 16: return Ptr16((ushort)bitPattern);
+            case 32: return Ptr32((uint)bitPattern);
+            case 64: return Ptr64(bitPattern);
+            case 20: return Ptr32((uint) bitPattern);
             }
         }
 

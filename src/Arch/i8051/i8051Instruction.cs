@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,18 +30,10 @@ namespace Reko.Arch.i8051
 {
     public class i8051Instruction : MachineInstruction
     {
-        public override InstrClass InstructionClass
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public override InstrClass InstructionClass => IClass;
 
-        public override int OpcodeAsInteger
-        {
-            get { return (int)Opcode; }
-        }
+        public InstrClass IClass { get; set; }
+        public override int OpcodeAsInteger => (int)Opcode;
 
         public Opcode Opcode { get; set; }
         public MachineOperand Operand1 { get; set; }

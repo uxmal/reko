@@ -23,7 +23,7 @@ l800000A0:
 
 l800000AA:
 	unlk	a6
-	rts	
+	rts
 
 ;; register_tm_clones: 800000AE
 register_tm_clones proc
@@ -54,7 +54,7 @@ l800000D4:
 
 l800000E0:
 	unlk	a6
-	rts	
+	rts
 
 ;; __do_global_dtors_aux: 800000E4
 __do_global_dtors_aux proc
@@ -101,13 +101,13 @@ l8000014C:
 	move.l	-$0008(a6),d2
 	movea.l	-$0004(a6),a2
 	unlk	a6
-	rts	
+	rts
 
 ;; call___do_global_dtors_aux: 80000158
 call___do_global_dtors_aux proc
 	link	a6,#$0000
 	unlk	a6
-	rts	
+	rts
 
 ;; frame_dummy: 80000160
 frame_dummy proc
@@ -147,7 +147,7 @@ l80000198:
 call_frame_dummy proc
 	link	a6,#$0000
 	unlk	a6
-	rts	
+	rts
 
 ;; sine_taylor: 800001AC
 sine_taylor proc
@@ -219,7 +219,7 @@ sine_taylor proc
 	move.l	d0,-(a7)
 	fmove.d	(a7)+,fp0
 	unlk	a6
-	rts	
+	rts
 
 ;; factorial: 8000033C
 factorial proc
@@ -244,7 +244,7 @@ l80000356:
 l8000036A:
 	move.l	-$0008(a6),d0
 	unlk	a6
-	rts	
+	rts
 
 ;; pow_int: 80000372
 pow_int proc
@@ -272,7 +272,7 @@ l800003A8:
 	move.l	d0,-(a7)
 	fmove.d	(a7)+,fp0
 	unlk	a6
-	rts	
+	rts
 
 ;; sine_taylor: 800003BC
 sine_taylor proc
@@ -345,7 +345,7 @@ l80000480:
 	fmove.d	(a7)+,fp0
 	fmovem.x	-$0018(a6),fp2
 	unlk	a6
-	rts	
+	rts
 
 ;; main: 8000049A
 main proc
@@ -365,7 +365,7 @@ main proc
 	lea	$0014(a7),a7
 	clr.l	d0
 	unlk	a6
-	rts	
+	rts
 
 ;; _sin: 800004DE
 _sin proc
@@ -443,7 +443,7 @@ l8000060E:
 	move.l	d0,-(a7)
 	fmove.d	(a7)+,fp0
 	unlk	a6
-	rts	
+	rts
 80000622       4E 71                                       Nq           
 
 ;; __do_global_ctors_aux: 80000624
@@ -466,13 +466,13 @@ l8000063C:
 l80000646:
 	movea.l	-$0004(a6),a2
 	unlk	a6
-	rts	
+	rts
 
 ;; call___do_global_ctors_aux: 8000064E
 call___do_global_ctors_aux proc
 	link	a6,#$0000
 	unlk	a6
-	rts	
+	rts
 ;;; Segment .fini (80000656)
 80000656                   4E B9 80 00 00 E4                   N.....   
 ;;; Segment .eh_frame (8000065C)

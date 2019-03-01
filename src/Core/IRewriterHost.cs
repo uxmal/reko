@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,6 +37,14 @@ namespace Reko.Core
         /// <returns>An Application expression.</returns>
         Expression PseudoProcedure(string name, DataType returnType, params Expression [] args);
         Expression PseudoProcedure(string name, ProcedureCharacteristics c, DataType returnType, params Expression [] args);
+
+
+        /// <summary>
+        /// Obtain a reference to the processor architecture with the name <paramref name="archMoniker"/>.
+        /// </summary>
+        /// <param name="archMoniker">The name of the desired architecture.</param>
+        /// <returns></returns>
+        IProcessorArchitecture GetArchitecture(string archMoniker);
 
         /// <summary>
         /// Given an address addrThunk, returns the possible imported thing (procedure or 

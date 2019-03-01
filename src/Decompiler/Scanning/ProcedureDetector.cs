@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -201,6 +201,8 @@ namespace Reko.Scanning
         {
             var nodesLeft = new HashSet<RtlBlock>(sr.ICFG.Nodes);
             var clusters = new List<Cluster>();
+            int totalCount = nodesLeft.Count;
+            listener.ShowProgress("Finding procedure candidates", 0, totalCount);
             while (nodesLeft.Count > 0)
             {
                 if (listener.IsCanceled())
@@ -211,6 +213,8 @@ namespace Reko.Scanning
 
                 BuildWCC(node, cluster, nodesLeft);
                 sr.BreakOnWatchedAddress(cluster.Blocks.Select(b => b.Address));
+                listener.ShowProgress("Finding procedure candidates", totalCount - nodesLeft.Count, totalCount);
+
             }
             return clusters;
         }
@@ -267,19 +271,18 @@ namespace Reko.Scanning
         private List<RtlProcedure> BuildProcedures(IEnumerable<Cluster> clusters)
         {
             var procs = new List<RtlProcedure>();
+            listener.ShowProgress("Building procedures", 0, clusters.Count());
             foreach (var cluster in clusters)
             {
                 if (listener.IsCanceled())
                     break;
                 FuseLinearBlocks(cluster);
                 // cluster.Dump(sr.ICFG);
-                sr.BreakOnWatchedAddress(cluster.Blocks.Select(b => b.Address));
-                var bcr = new BlockConflictResolver(null, sr, a => true, null);
-                bcr.ResolveBlockConflicts(new Address[0]);
                 if (FindClusterEntries(cluster))
                 {
                     procs.AddRange(PostProcessCluster(cluster));
                 }
+                listener.Advance(1);
             }
             return procs;
         }

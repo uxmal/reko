@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -301,6 +301,14 @@ namespace Reko.WindowsItp
         private void suffixArrayToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (var dlg = new SuffixArrayPerformanceDialog())
+            {
+                dlg.ShowDialog(this);
+            }
+        }
+
+        private void decoderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new DecoderPerformanceDialog())
             {
                 dlg.ShowDialog(this);
             }

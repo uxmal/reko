@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -99,11 +99,12 @@ namespace Reko.UnitTests.Analysis
             var i_1 = m.Reg32("i_1");
             var i_2 = m.Reg32("i_2");
             var i_3 = m.Reg32("i_3");
-            
+
+            m.Label("m0");
             m.Assign(i_1, m.Int32(0));
 
             m.Label("m1");
-            m.Phi(i_2, i_1, i_3);
+            m.Phi(i_2, (i_1,"m0"), (i_3, "m1"));
             m.SideEffect(m.Fn("foo", i_2));
             m.SideEffect(m.Fn("foo", m.IAdd(i_2, 1)));
             m.Assign(i_3, m.IAdd(i_2, 2));

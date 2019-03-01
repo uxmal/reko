@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Reko.Core.Services;
+using System.Diagnostics;
 
 namespace Reko.Evaluation 
 {
@@ -142,10 +143,40 @@ namespace Reko.Evaluation
                 var arg = appl.Arguments[i];
                 args[i] = arg.Accept(this);
             }
+            // Rotations-with-carries that rotate in a false carry 
+            // flag can be simplified to shifts.
+            if (appl.Procedure is ProcedureConstant pc && 
+                pc.Procedure is PseudoProcedure intrinsic)
+            {
+                switch (intrinsic.Name)
+                {
+                case PseudoProcedure.RolC:
+                    if (IsSingleBitRotationWithClearCarryIn(args))
+                    {
+                        return new BinaryExpression(Operator.Shl, appl.DataType, args[0], args[1]);
+                    }
+                    break;
+                case PseudoProcedure.RorC:
+                    if (IsSingleBitRotationWithClearCarryIn(args))
+                    {
+                        return new BinaryExpression(Operator.Shr, appl.DataType, args[0], args[1]);
+                    }
+                    break;
+                }
+            }
             appl = new Application(appl.Procedure.Accept(this),
                 appl.DataType,
                 args);
             return ctx.GetValue(appl);
+        }
+
+        private static bool IsSingleBitRotationWithClearCarryIn(Expression[] args)
+        {
+            Debug.Assert(args.Length == 3);
+            return args[1] is Constant sh &&
+                                    sh.ToInt32() == 1 &&
+                                    args[2] is Constant c &&
+                                    c.IsIntegerZero;
         }
 
         public virtual Expression VisitArrayAccess(ArrayAccess acc)
@@ -272,6 +303,20 @@ namespace Reko.Evaluation
                     else
                         return new BinaryExpression(binExp.Operator, binExp.DataType, binLeft.Left, c);
                 }
+            }
+
+            // (rel (- c e) 0 => (rel -c e) => (rel.Negate e c)
+
+            if (binLeft != null && cRight != null && cRight.IsIntegerZero &&
+                IsIntComparison(binExp.Operator) &&
+                binLeft.Left is Constant cBinLeft &&
+                binLeft.Operator == Operator.ISub)
+            {
+                return new BinaryExpression(
+                    ((ConditionalOperator) binExp.Operator).Negate(),
+                    binExp.DataType,
+                    binLeft.Right,
+                    cBinLeft);
             }
 
             // (rel (- e c1) c2) => (rel e c1+c2)
@@ -532,7 +577,13 @@ namespace Reko.Evaluation
                 access.MemoryId,
                 access.EffectiveAddress.Accept(this),
                 access.DataType);
-            return ctx.GetValue(value, segmentMap);
+            var newValue = ctx.GetValue(value, segmentMap);
+            if (newValue != value)
+            {
+                ctx.RemoveExpressionUse(value);
+                ctx.UseExpression(newValue);
+            }
+            return newValue;
         }
 
         public virtual Expression VisitMkSequence(MkSequence seq)
@@ -593,7 +644,7 @@ namespace Reko.Evaluation
             var args = pc.Arguments
                 .Select(a =>
                 {
-                    var arg = SimplifyPhiArg(a.Accept(this));
+                    var arg = SimplifyPhiArg(a.Value.Accept(this));
                     ctx.RemoveExpressionUse(arg);
                     return arg;
                 })
@@ -678,7 +729,8 @@ namespace Reko.Evaluation
 
         public virtual Expression VisitSlice(Slice slice)
         {
-            slice.Expression = slice.Expression.Accept(this);
+            var e = slice.Expression.Accept(this);
+            slice = new Slice(slice.DataType, e, slice.Offset);
             if (sliceConst.Match(slice))
             {
                 Changed = true;

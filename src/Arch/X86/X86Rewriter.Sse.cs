@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -383,6 +383,18 @@ namespace Reko.Arch.X86
                 m.Assign(dst, m.Dpb(dst, tmp, 0));
             }
         }
+
+        private void RewriteSha1msg2()
+        {
+            var src = SrcOp(instrCur.op2);
+            var dst = SrcOp(instrCur.op1);
+            var tmpSrc = binder.CreateTemporary(PrimitiveType.Word128);
+            var tmpDst = binder.CreateTemporary(PrimitiveType.Word128);
+            m.Assign(tmpSrc, src);
+            m.Assign(tmpDst, dst);
+            m.Assign(dst, host.PseudoProcedure("__sha1msg2", PrimitiveType.Word128, tmpDst, tmpSrc));
+        }
+
 
         private void RewriteSqrtsd()
         {

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -196,24 +196,15 @@ namespace Reko.Arch.Tlcs.Tlcs90
 
         private Expression RewriteSrc(MachineOperand op)
         {
-            var reg = op as RegisterOperand;
-            if (reg != null)
+            switch (op)
             {
+            case RegisterOperand reg:
                 return binder.EnsureRegister(reg.Register);
-            }
-            var addr = op as AddressOperand;
-            if (addr != null)
-            {
+            case AddressOperand addr:
                 return addr.Address;
-            }
-            var imm = op as ImmediateOperand;
-            if (imm != null)
-            {
+            case ImmediateOperand imm:
                 return imm.Value;
-            }
-            var mem = op as MemoryOperand;
-            if (mem != null)
-            {
+            case MemoryOperand mem:
                 Expression ea;
                 if (mem.Base != null)
                 {
@@ -229,7 +220,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                     {
                         ea = m.IAdd(
                             ea,
-                            m.Int16((sbyte)mem.Offset.ToByte()));
+                            m.Int16((sbyte) mem.Offset.ToByte()));
                     }
                 }
                 else

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,10 +42,14 @@ namespace Reko.Core
     /// A Decompiler project may consist of several of these Programs.
     /// </remarks>
     [Designer("Reko.Gui.Design.ProgramDesigner,Reko.Gui")]
-    public class Program
+    public class Program : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private IProcessorArchitecture archDefault;
         private Identifier globals;
         private Encoding encoding;
+
 
         public Program()
         {
@@ -87,7 +91,11 @@ namespace Reko.Core
         /// <summary>
         /// The processor architecture to use for decompilation.
         /// </summary>
-		public IProcessorArchitecture Architecture { get; set; }
+		public IProcessorArchitecture Architecture
+        {
+            get { return archDefault; }
+            set { SetDefaultArchitecture(value); }
+        }
 
         public IPlatform Platform { get; set; }
 
@@ -279,7 +287,7 @@ namespace Reko.Core
         public Dictionary<Identifier, LinearInductionVariable> InductionVariables { get; private set; }
 
         /// <summary>
-        /// The program's decompiled procedures, indexed by address.
+        /// The program's decompiled procedures, ordereds by address.
         /// </summary>
         public SortedList<Address, Procedure> Procedures { get; private set; }
 
@@ -367,6 +375,26 @@ namespace Reko.Core
 
         // Mutators /////////////////////////////////////////////////////////////////
 
+        public IProcessorArchitecture EnsureArchitecture(string archLabel, Func<string,IProcessorArchitecture> getter)
+        {
+            if (Architectures.TryGetValue(archLabel, out var arch))
+                return arch;
+            arch = getter(archLabel);
+            Architectures[arch.Name] = arch;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Architectures)));
+            return arch;
+        }
+
+        private void SetDefaultArchitecture(IProcessorArchitecture arch)
+        {
+            this.archDefault = arch;
+            if (arch != null && !Architectures.ContainsKey(arch.Name))
+            {
+                Architectures.Add(arch.Name, arch);
+            }
+            //$REVIEW: raise an event if this option becomes user-available.
+        }
+
         /// <summary>
         /// This method is called when the user has created a global item.
         /// </summary>
@@ -421,7 +449,8 @@ namespace Reko.Core
             foreach (var kv in User.Globals)
             {
                 var dt = kv.Value.DataType.Accept(tlDeser);
-                var item = new ImageMapItem((uint)dt.Size)
+                var size = GetDataSize(Architecture, kv.Key, dt);
+                var item = new ImageMapItem(size)
                 {
                     Address = kv.Key,
                     DataType = dt,
@@ -457,13 +486,6 @@ namespace Reko.Core
             {
                 return (uint)(strDt.Size + strDt.Size);
             }
-        }
-
-        public Address GetProcedureAddress(Procedure proc)
-        {
-            return Procedures.Where(de => de.Value == proc)
-                .Select(de => de.Key)
-                .FirstOrDefault();
         }
 
         public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, params Expression[] args)
@@ -503,7 +525,7 @@ namespace Reko.Core
                 return proc;
 
             var generatedName = procedureName ?? this.NamingPolicy.ProcedureName(addr);
-            proc = new Procedure(arch, generatedName, addr, arch.CreateFrame());
+            proc = Procedure.Create(arch, generatedName, addr, arch.CreateFrame());
             if (procedureName == null && this.ImageSymbols.TryGetValue(addr, out ImageSymbol sym))
             {
                 procedureName = sym.Name;

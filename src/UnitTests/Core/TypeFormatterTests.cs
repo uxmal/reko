@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,14 @@
  */
 #endregion
 
+using Moq;
+using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Output;
 using Reko.Core.Types;
-using NUnit.Framework;
 using System;
 using System.IO;
 using Reko.Core.Expressions;
-using Rhino.Mocks;
 using System.Collections.Generic;
 
 namespace Reko.UnitTests.Core
@@ -33,11 +33,12 @@ namespace Reko.UnitTests.Core
 	[TestFixture]
 	public class TypeFormatterTests
 	{
-		private StringWriter sw;
+        private readonly string nl = Environment.NewLine;
+
+        private StringWriter sw;
         private TypeFormatter tyfo;
         private TypeReferenceFormatter tyreffo;
-        private IProcessorArchitecture arch;
-        private string nl = Environment.NewLine;
+        private Mock<IProcessorArchitecture> arch;
 
         [SetUp]
         public void SetUp()
@@ -47,8 +48,7 @@ namespace Reko.UnitTests.Core
             tyfo = new TypeFormatter(tf);
             tf = new TextFormatter(sw) { Indentation = 0 };
             tyreffo = new TypeReferenceFormatter(tf);
-            arch = MockRepository.GenerateStub<IProcessorArchitecture>();
-            arch.Replay();
+            arch = new Mock<IProcessorArchitecture>();
         }
         
         [Test]
@@ -324,7 +324,7 @@ struct a {
             {
                 Protection = ClassProtection.Public,
                 Attribute = ClassMemberAttribute.Virtual,
-                Procedure = new Procedure(arch, "do_something", Address.Ptr32(0x00123400), null),
+                Procedure = new Procedure(arch.Object, "do_something", Address.Ptr32(0x00123400), null),
                 Name = "do_something",
             });
             tyfo.Write(ct, null);

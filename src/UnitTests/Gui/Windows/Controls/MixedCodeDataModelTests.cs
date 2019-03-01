@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,28 +18,25 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using Reko.UserInterfaces.WindowsForms.Controls;
-using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace Reko.UnitTests.Gui.Windows.Controls
 {
     [TestFixture]
     public class MixedCodeDataModelTests
     {
-        private MockRepository mr;
-        private IProcessorArchitecture arch;
-        private IPlatform platform;
+        private Mock<IProcessorArchitecture> arch;
+        private Mock<IPlatform> platform;
         private SegmentMap segmentMap;
         private ImageMap imageMap;
         private Program program;
@@ -49,30 +46,31 @@ namespace Reko.UnitTests.Gui.Windows.Controls
         [SetUp]
         public void Setup()
         {
-            this.mr = new MockRepository();
-            this.arch = mr.Stub<IProcessorArchitecture>();
-            this.platform = mr.Stub<IPlatform>();
-            this.platform.Stub(p => p.Architecture).Return(arch);
-            this.arch.Stub(a => a.CreateImageReader(null, null))
-                .IgnoreArguments()
-                .Do(new Func<MemoryArea, Address, EndianImageReader>((m, a) => new LeImageReader(m, a)));
-            this.arch.Stub(a => a.CreateDisassembler(null))
-                .IgnoreArguments()
-                .Do(new Func<EndianImageReader, IEnumerable<MachineInstruction>>((rdr) => new MachineInstruction[]
+            this.arch = new Mock<IProcessorArchitecture>();
+            this.platform = new Mock<IPlatform>();
+            this.platform.Setup(p => p.Architecture).Returns(arch.Object);
+            this.arch.Setup(a => a.Name).Returns("FakeArch");
+            this.arch.Setup(a => a.CreateImageReader(
+                It.IsAny<MemoryArea>(),
+                It.IsAny<Address>()))
+                .Returns((MemoryArea m, Address a) => new LeImageReader(m, a));
+            this.arch.Setup(a => a.CreateDisassembler(
+                It.IsAny<EndianImageReader>()))
+                .Returns((EndianImageReader rdr) => new MachineInstruction[]
                 {
                     Instr(rdr.Address.ToUInt32()),
                     Instr(rdr.Address.ToUInt32()+2),
                     Instr(rdr.Address.ToUInt32()+4)
-                }));
-            this.arch.Stub(a => a.InstructionBitSize).Return(8);
+                });
+            this.arch.Setup(a => a.InstructionBitSize).Returns(8);
             this.writer = new StringWriter();
-            this.proc = Procedure.Create(arch, Address.Ptr32(0x42), new Frame(PrimitiveType.Ptr32));
+            this.proc = Procedure.Create(arch.Object, Address.Ptr32(0x42), new Frame(PrimitiveType.Ptr32));
         }
 
         private void Given_Program()
         {
             this.imageMap = segmentMap.CreateImageMap();
-            this.program = new Program(segmentMap, arch, platform);
+            this.program = new Program(segmentMap, arch.Object, platform.Object);
             this.program.ImageMap = imageMap;
         }
 
@@ -164,7 +162,6 @@ namespace Reko.UnitTests.Gui.Windows.Controls
                 new ImageSegment(".data", memData, AccessMode.ReadWriteExecute));
             Given_Program();
             Given_CodeBlock(memText.BaseAddress, 2);
-            mr.ReplayAll();
 
             var mcdm = new MixedCodeDataModel(program);
             var lines = mcdm.GetLineSpans(2);
@@ -183,10 +180,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
                 new ImageSegment(".text", memText, AccessMode.ReadExecute),
                 new ImageSegment(".data", memData, AccessMode.ReadWriteExecute));
             Given_Program();
-
             Given_CodeBlock(memText.BaseAddress, 4);
-
-            mr.ReplayAll();
 
             var mcdm = new MixedCodeDataModel(program);
             var lines = mcdm.GetLineSpans(2);
@@ -204,14 +198,12 @@ namespace Reko.UnitTests.Gui.Windows.Controls
                 addrBase,
                 new ImageSegment(".text", memText, AccessMode.ReadExecute),
                 new ImageSegment(".data", memData, AccessMode.ReadWriteExecute));
-            var program = new Program(segmentMap, arch, platform);
-
+            var program = new Program(segmentMap, arch.Object, platform.Object);
             Given_CodeBlock(memText.BaseAddress, 4);
-
-            mr.ReplayAll();
 
             var mcdm = new MixedCodeDataModel(program);
             var lines = mcdm.GetLineSpans(2);
+
             Assert.AreEqual(2, lines.Length);
         }
 
@@ -227,10 +219,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
                 new ImageSegment(".text", memText, AccessMode.ReadExecute) { Size = 4 },
                 new ImageSegment(".data", memData, AccessMode.ReadWriteExecute));
             Given_Program();
-
             Given_CodeBlock(memText.BaseAddress, 4);
-
-            mr.ReplayAll();
 
             var mcdm = new MixedCodeDataModel(program);
 
@@ -268,8 +257,6 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             Given_CodeBlock(memText.BaseAddress, 4);
             Given_CodeBlock(Address.Ptr32(0x42004), 4);
 
-            mr.ReplayAll();
-
             var mcdm = new MixedCodeDataModel(program);
 
             // Read all lines
@@ -294,9 +281,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
                 addrBase,
                 new ImageSegment(".text", memText, AccessMode.ReadExecute),
                 new ImageSegment(".data", memData, AccessMode.ReadWriteExecute));
-            var program = new Program(segmentMap, arch, platform);
-
-            mr.ReplayAll();
+            var program = new Program(segmentMap, arch.Object, platform.Object);
 
             var mcdm = new MixedCodeDataModel(program);
 
@@ -352,8 +337,6 @@ namespace Reko.UnitTests.Gui.Windows.Controls
 
             Given_CodeBlock(memText.BaseAddress, 4);
 
-            mr.ReplayAll();
-
             var mcdm = new MixedCodeDataModel(program);
             // Advance 1 line into another piece of code.
             int delta = mcdm.MoveToLine(mcdm.CurrentPosition, 1);
@@ -386,11 +369,9 @@ namespace Reko.UnitTests.Gui.Windows.Controls
                 addrBase,
                 new ImageSegment(".text", memText, AccessMode.ReadExecute),
                 new ImageSegment(".data", memData, AccessMode.ReadWriteExecute));
-            var program = new Program(segmentMap, arch, platform);
+            var program = new Program(segmentMap, arch.Object, platform.Object);
 
             Given_CodeBlock(Address.Ptr32(0x40FF9), 4);
-
-            mr.ReplayAll();
 
             var mcdm = new MixedCodeDataModel(program);
 
@@ -421,11 +402,9 @@ namespace Reko.UnitTests.Gui.Windows.Controls
                 addrBase,
                 new ImageSegment(".text", memText, AccessMode.ReadExecute),
                 new ImageSegment(".data", memData, AccessMode.ReadWriteExecute));
-            var program = new Program(segmentMap, arch, platform);
+            var program = new Program(segmentMap, arch.Object, platform.Object);
 
             Given_CodeBlock(memText.BaseAddress, 4);
-
-            mr.ReplayAll();
 
             var mcdm = new MixedCodeDataModel(program);
             Debug.Print("LineCount: {0}", mcdm.LineCount);
@@ -450,7 +429,6 @@ namespace Reko.UnitTests.Gui.Windows.Controls
                 new ImageSegment(".data", memData, AccessMode.ReadWriteExecute));
             Given_Program();
             Given_CodeBlock(memText.BaseAddress, 4);
-            mr.ReplayAll();
 
             var mcdm = new MixedCodeDataModel(program);
             var num_lines = 4;
@@ -481,8 +459,6 @@ namespace Reko.UnitTests.Gui.Windows.Controls
                 new ImageSegment(".data", memData, AccessMode.ReadWriteExecute));
             Given_Program();
             Given_CodeBlock(memText.BaseAddress, 4);
-
-            mr.ReplayAll();
 
             var mcdm = new MixedCodeDataModel(program);
 
@@ -517,7 +493,6 @@ namespace Reko.UnitTests.Gui.Windows.Controls
 @"This is comment
 Second line");
             Given_Comment(0x41004, "Single line comment");
-            mr.ReplayAll();
 
             var mcdm = new MixedCodeDataModel(program);
             GetLineSpans(mcdm, 1);
@@ -551,7 +526,6 @@ Second line");
             Given_CodeBlock(memText.BaseAddress, 4);
             Given_Comment(0x41000, "First comment");
             Given_Comment(0x41002, "Second comment");
-            mr.ReplayAll();
 
             var mcdm = new MixedCodeDataModel(program);
             GetLineSpans(mcdm, 1);

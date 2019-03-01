@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,18 +18,13 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Core;
-using Reko.Core.Serialization;
 using Reko.Gui;
 using Reko.Gui.Commands;
 using Reko.UnitTests.Mocks;
-using Rhino.Mocks;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
 
 namespace Reko.UnitTests.Gui.Commands
 {
@@ -37,20 +32,19 @@ namespace Reko.UnitTests.Gui.Commands
     public class Cmd_MarkProcedureTests
     {
         private ServiceContainer sc;
-        private MockRepository mr;
         private Program program;
 
         [SetUp]
         public void Setup()
         {
             this.sc = new ServiceContainer();
-            this.mr = new MockRepository();
             var mem = new MemoryArea(Address.SegPtr(0x0C00, 0), new byte[100]);
             this.program = new Program
             {
                 SegmentMap = new SegmentMap(
                     mem.BaseAddress,
-                    new ImageSegment("0C00", mem, AccessMode.ReadWriteExecute))
+                    new ImageSegment("0C00", mem, AccessMode.ReadWriteExecute)),
+                Architecture = new FakeArchitecture(),
             };
             program.BuildImageMap();
         }
@@ -61,23 +55,26 @@ namespace Reko.UnitTests.Gui.Commands
             var addr = Address.SegPtr(0x0C20, 0);
             var proc = new Procedure(new FakeArchitecture(), "foo", addr, null);
             var progaddr = new ProgramAddress(program, addr);
-            var dc = mr.Stub<IDecompiler>();
-            var dcSvc = mr.Stub<IDecompilerService>();
-            var brSvc = mr.Stub<IProjectBrowserService>();
-            dcSvc.Decompiler = dc;
-            sc.AddService<IDecompilerService>(dcSvc);
-            sc.AddService<IProjectBrowserService>(brSvc);
+            var dc = new Mock<IDecompiler>();
+            var dcSvc = new Mock<IDecompilerService>();
+            var brSvc = new Mock<IProjectBrowserService>();
+            dcSvc.Setup(d => d.Decompiler).Returns(dc.Object);
+            sc.AddService<IDecompilerService>(dcSvc.Object);
+            sc.AddService<IProjectBrowserService>(brSvc.Object);
             sc.AddService<IDecompilerShellUiService>(new FakeShellUiService());
-            dc.Expect(d => d.ScanProcedure(progaddr)).IgnoreArguments().Return(proc);
-            brSvc.Expect(b => b.Reload());
-            brSvc.Stub(b => b.CurrentProgram).Return(program);
-            mr.ReplayAll();
+            dc.Setup(d => d. ScanProcedure(
+                It.IsAny<ProgramAddress>(),
+                It.IsAny<IProcessorArchitecture>())
+            ).Returns(proc).Verifiable();
+            brSvc.Setup(b => b.Reload()).Verifiable();
+            brSvc.Setup(b => b.CurrentProgram).Returns(program);
 
             var locations = new[] { new ProgramAddress(program, addr) };
             var cmd = new Cmd_MarkProcedures(sc, locations);
             cmd.DoIt();
 
-            mr.VerifyAll();
+            dc.VerifyAll();
+            brSvc.Verify();
             Assert.AreEqual(1, program.User.Procedures.Count);
             var uproc = program.User.Procedures.Values[0];
             Assert.AreEqual("0C20:0000", uproc.Address);

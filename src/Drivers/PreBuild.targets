@@ -11,7 +11,7 @@ loaded dynamically (using the services provided by IConfigurationService).
     <Copy SourceFiles="@(DecompilerMetadata)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Message Importance="high" Text="Copying ImageLoaders to $(TargetDir)" />
     <Copy SourceFiles="@(ImageLoaders)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
-    <Message Importance="high" Text="Copying Architectures @(Architectures) to $(TargetDir)" />
+    <Message Importance="high" Text="Copying Architectures to $(TargetDir)" />
     <Copy SourceFiles="@(Architectures)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Message Importance="high" Text="Copying Assemblers to $(TargetDir)" />
     <Copy SourceFiles="@(Assemblers)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />

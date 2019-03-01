@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,49 +18,43 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Loading;
-using Rhino.Mocks;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Loading
 {
     [TestFixture]
     public class SymbolLoadingServiceTests
     {
-        private IConfigurationService cfgSvc;
-        private DecompilerEventListener eventListener;
-        private IFileSystemService fsSvc;
-        private MockRepository mr;
+        private Mock<IConfigurationService> cfgSvc;
+        private Mock<DecompilerEventListener> eventListener;
+        private Mock<IFileSystemService> fsSvc;
         private ServiceContainer sc;
 
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
             sc = new ServiceContainer();
-            this.eventListener = mr.StrictMock<DecompilerEventListener>();
-            cfgSvc = mr.StrictMock<IConfigurationService>();
-            fsSvc = mr.StrictMock<IFileSystemService>();
-            sc.AddService<IConfigurationService>(cfgSvc);
-            sc.AddService<IFileSystemService>(fsSvc);
-            sc.AddService<DecompilerEventListener>(eventListener);
+            this.eventListener = new Mock<DecompilerEventListener>();
+            cfgSvc = new Mock<IConfigurationService>();
+            fsSvc = new Mock<IFileSystemService>();
+            sc.AddService<IConfigurationService>(cfgSvc.Object);
+            sc.AddService<IFileSystemService>(fsSvc.Object);
+            sc.AddService<DecompilerEventListener>(eventListener.Object);
 
         }
 
         [Test]
         public void SymLoaderSvc_Load()
         {
-            cfgSvc.Expect(c => c.GetSymbolSources()).Return(new List<SymbolSource>
+            cfgSvc.Setup(c => c.GetSymbolSources()).Returns(new List<SymbolSource>
             {
                 new SymbolSourceDefinition
                 {
@@ -69,8 +63,7 @@ namespace Reko.UnitTests.Loading
                      TypeName = typeof(BobLoader).AssemblyQualifiedName,
                 }
             });
-            fsSvc.Expect(f => f.ReadAllBytes("foo.pdb")).Return(new byte[] { 1, 2, 3, 4 });
-            mr.ReplayAll();
+            fsSvc.Setup(f => f.ReadAllBytes("foo.pdb")).Returns(new byte[] { 1, 2, 3, 4 });
 
             var symLdrSvc = new SymbolLoadingService(sc);
             var symSrc = symLdrSvc.GetSymbolSource("foo.pdb");
@@ -82,12 +75,11 @@ namespace Reko.UnitTests.Loading
 
         public class BobLoader : ISymbolSource
         {
-            private IProcessorArchitecture arch;
+            private Mock<IProcessorArchitecture> arch;
 
             public BobLoader()
             {
-                this.arch = MockRepository.GenerateStub<IProcessorArchitecture>();
-                this.arch.Replay();
+                this.arch = new Mock<IProcessorArchitecture>();
             }
 
             public bool CanLoad(string filename, byte[] fileContents)
@@ -104,7 +96,7 @@ namespace Reko.UnitTests.Loading
                 return new List<ImageSymbol>
                 {
                     ImageSymbol.Procedure(
-                        arch, 
+                        arch.Object, 
                         Address.Ptr64(0x12340000),
                         "MyFunction",
                         signature: new SerializedSignature

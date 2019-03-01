@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,38 +18,28 @@
  */
 #endregion
 
-using Reko.Loading;
+using Moq;
 using NUnit.Framework;
-using Rhino.Mocks;
-using System;
-using System.Collections.Generic;
+using Reko.Loading;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Xml;
 
 namespace Reko.UnitTests.Loading
 {
     [TestFixture]
     public class UnpackerSignatureLoaderTests
     {
-        private MockRepository mr;
-        private UnpackerSignatureLoader usl;
-        [SetUp]
-        public void Setup()
-        {
-            mr = new MockRepository();
-        }
+        private Mock<UnpackerSignatureLoader> usl;
 
         private void Given_Unpacker()
         {
-            usl = mr.PartialMock<UnpackerSignatureLoader>();
+            usl = new Mock<UnpackerSignatureLoader>() { CallBase = true };
         }
 
         private void Given_SignatureFile(string filecontents)
         {
             var rdr = new StringReader(filecontents);
-            usl.Stub(u => u.CreateFileReader(Arg<string>.Is.NotNull)).Return(rdr);
+            usl.Setup(u => u.CreateFileReader(It.IsNotNull<string>())).Returns(rdr);
         }
 
         [Test]
@@ -65,9 +55,9 @@ namespace Reko.UnitTests.Loading
     <ENTIREPE />
   </ENTRY>
 </SIGNATURES>");
-            mr.ReplayAll();
 
-            var sigs = usl.Load("foo.xml").ToArray();
+            var sigs = usl.Object.Load("foo.xml").ToArray();
+
             Assert.AreEqual(1, sigs.Length);
             var sig = sigs[0];
             Assert.AreEqual("LZEXE v0.91, v1.00a (1)", sig.Name);

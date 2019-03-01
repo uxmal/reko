@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,7 +41,14 @@ namespace Reko.Core.Expressions
 			Expression = i; offset = (byte) bitOffset;
 		}
 
-        public Expression Expression { get; set; }
+        /// <summary>
+        /// The expression being sliced.
+        /// </summary>
+        public readonly Expression Expression;
+
+        /// <summary>
+        /// Bit offset of the slice.
+        /// </summary>
         public int Offset { get { return offset; } }
 
         public override IEnumerable<Expression> Children

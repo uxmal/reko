@@ -1250,11 +1250,11 @@ l0B51_thunk_fn0B55:
 // SymbolicIn: sp:fp a:<invalid> b:<invalid> l:<invalid> h:<invalid>
 
 fn0B2C_exit:
-	bc_43 = PHI(bc_49, bc_12, bc, bc)
-	de_44 = PHI(de_50, de, de, de)
-	hl_45 = PHI(hl_51, hl_24, hl, hl)
-	ix_46 = PHI(ix_52, ix, ix, ix)
-	af_47 = PHI(af_53, af_35, af, af)
+	bc_43 = PHI((bc_49, l0B51_thunk_fn0350), (bc_12, l0B51_thunk_fn0B55), (bc, l0B51_thunk_fn0B55), (bc, l0B51_thunk_fn0350))
+	de_44 = PHI((de_50, l0B51_thunk_fn0350), (de, l0B51_thunk_fn0B55), (de, l0B51_thunk_fn0B55), (de, l0B51_thunk_fn0350))
+	hl_45 = PHI((hl_51, l0B51_thunk_fn0350), (hl_24, l0B51_thunk_fn0B55), (hl, l0B51_thunk_fn0B55), (hl, l0B51_thunk_fn0350))
+	ix_46 = PHI((ix_52, l0B51_thunk_fn0350), (ix, l0B51_thunk_fn0B55), (ix, l0B51_thunk_fn0B55), (ix, l0B51_thunk_fn0350))
+	af_47 = PHI((af_53, l0B51_thunk_fn0350), (af_35, l0B51_thunk_fn0B55), (af, l0B51_thunk_fn0B55), (af, l0B51_thunk_fn0350))
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> a:<invalid> b:<invalid> l:<invalid> h:<invalid> c:<invalid> af:<invalid> hl:<invalid> bc:<invalid> de:<invalid> ix:<invalid>
@@ -2361,7 +2361,7 @@ fn291C_entry:
 l291C:
 	byte a_13 = 0x00 - (__ror(Mem0[hl - 1:byte], 0x01) <u 0x00)
 	byte a_20 = 0x00 - (__ror(a, 0x01) <u 0x00)
-	branch __rcl(a_13, 0x01, (bool) cond(__rcl(a_13 ^ a_20, 0x01, false))) >=u 0x00 l293D
+	branch __rcl(a_13, 0x01, (bool) cond((a_13 ^ a_20) << 0x01)) >=u 0x00 l293D
 // DataOut: d e h l
 // DataOut (flags): 
 // SymbolicIn: sp:fp

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1160,6 +1160,21 @@ test_exit:
                 m.Return();
             });
             RunTest(pb.BuildProgram(), "Typing/TerUnsignedSigned.txt");
+        }
+
+        [Test]
+        public void TerAddress()
+        {
+            var pb = new ProgramBuilder();
+            pb.Add("fn", m =>
+            {
+                m.MStore(Address.Ptr32(0x001028),
+                    m.Cast(PrimitiveType.Real32,
+                    m.Mem(PrimitiveType.Real64, Address.Ptr32(0x001020))));
+                m.Return();
+            });
+            var program = pb.BuildProgram();
+            RunTest(program, "Typing/" + nameof(TerAddress) + ".txt");
         }
     }
 }

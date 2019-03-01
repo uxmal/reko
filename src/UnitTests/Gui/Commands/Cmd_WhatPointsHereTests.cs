@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,11 +18,11 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Gui;
 using Reko.Gui.Commands;
-using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -34,32 +34,31 @@ namespace Reko.UnitTests.Gui.Commands
     [TestFixture]
     public class Cmd_WhatPointsHereTests
     {
-        private MockRepository mr;
         private MemoryArea mem;
         private SegmentMap segmentMap;
         private ServiceContainer sc;
         private Program program;
-        private IProcessorArchitecture arch;
-        private IPlatform platform;
-        private ISearchResultService searchSvc;
+        private Mock<IProcessorArchitecture> arch;
+        private Mock<IPlatform> platform;
+        private Mock<ISearchResultService> searchSvc;
 
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
             sc = new ServiceContainer();
             mem = new MemoryArea(Address.Ptr32(0x00400000), new byte[2000]);
             segmentMap = new SegmentMap(mem.BaseAddress);
-            arch = mr.Stub<IProcessorArchitecture>();
-            platform = mr.Stub<IPlatform>();
-            searchSvc = mr.Stub<ISearchResultService>();
+            arch = new Mock<IProcessorArchitecture>();
+            arch.Setup(a => a.Name).Returns("FakeArch");
+            platform = new Mock<IPlatform>();
+            searchSvc = new Mock<ISearchResultService>();
 
-            sc.AddService<ISearchResultService>(searchSvc);
+            sc.AddService<ISearchResultService>(searchSvc.Object);
 
             program = new Program
             {
-                Architecture = arch,
-                Platform = platform,
+                Architecture = arch.Object,
+                Platform = platform.Object,
                 SegmentMap = segmentMap,
             };
         }
@@ -74,9 +73,12 @@ namespace Reko.UnitTests.Gui.Commands
 
         private void Given_Pointers(Address[] addresses)
         {
-            platform.Stub(s => s.CreatePointerScanner(null, null, null, PointerScannerFlags.All))
-                .IgnoreArguments()
-                .Return(addresses);
+            platform.Setup(s => s.CreatePointerScanner(
+                It.IsAny<SegmentMap>(),
+                It.IsAny<EndianImageReader>(),
+                It.IsAny<IEnumerable<Address>>(),
+                It.IsAny<PointerScannerFlags>()))
+                .Returns(addresses);
         }
 
 
@@ -85,12 +87,9 @@ namespace Reko.UnitTests.Gui.Commands
         {
             Given_Segment(".text", Address.Ptr32(0x00401000), 0x0800);
             Given_Pointers(new[] { Address.Ptr32(0x00401800), Address.Ptr32(0x00401804) });
-            mr.ReplayAll();
 
             var cmd = new Cmd_ViewWhatPointsHere(sc, program, new[] { Address.Ptr32(0x00401400) });
             cmd.DoIt();
-
-            mr.VerifyAll();
         }
     }
 }

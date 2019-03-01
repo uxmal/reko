@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,16 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Core;
-using Reko.Core.Expressions;
-using Reko.Core.Serialization;
-using Reko.Environments.SysV;
 using Reko.Core.Types;
-using Reko.UnitTests.Core.Serialization;
-using Reko.UnitTests.Mocks;
-using System;
-using System.Xml;
-using System.Xml.Serialization;
-using Rhino.Mocks;
 using Reko.Environments.SysV.ArchSpecific;
 using System.Collections.Generic;
 

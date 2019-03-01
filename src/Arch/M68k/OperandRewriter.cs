@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -135,7 +135,7 @@ namespace Reko.Arch.M68k
             if (indidx.ARegister == Registers.pc)
             {
                 // pc-relative instruction.
-                return addrInstr + (2 + indidx.Imm8);
+                return addrInstr + indidx.Imm8;
             }
             Expression ea = binder.EnsureRegister(indidx.ARegister);
             if (indidx.Imm8 != 0)

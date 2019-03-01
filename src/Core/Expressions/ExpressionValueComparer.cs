@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -266,6 +266,18 @@ namespace Reko.Core.Expressions
                     }
                     return h;
                 });
+            Add(typeof(OutArgument),
+                (ea, eb) =>
+                {
+                    var a = (OutArgument) ea;
+                    var b = (OutArgument) eb;
+                    return EqualsImpl(a.Expression, b.Expression);
+                },
+                obj =>
+                {
+                    var oa = (OutArgument) obj;
+                    return GetHashCodeImpl(oa.Expression);
+                });
 
             Add(typeof(PhiFunction),
                 (ea, eb) =>
@@ -273,9 +285,9 @@ namespace Reko.Core.Expressions
                     PhiFunction a = (PhiFunction) ea, b = (PhiFunction) eb;
                     if (a.Arguments.Length != b.Arguments.Length)
                         return false;
-                    for (int i = 0; i != a.Arguments.Length; ++i)
+                    for (int i = 0; i < a.Arguments.Length; ++i)
                     {
-                        if (!EqualsImpl(a.Arguments[i], b.Arguments[i]))
+                        if (!EqualsImpl(a.Arguments[i].Value, b.Arguments[i].Value))
                             return false;
                     }
                     return true;
@@ -284,9 +296,12 @@ namespace Reko.Core.Expressions
                 {
                     PhiFunction phi = (PhiFunction) obj;
                     int h = phi.Arguments.Length.GetHashCode();
-                    for (int i = 0; i < phi.Arguments.Length; ++i)
+                    foreach (var arg in phi.Arguments)
                     {
-                        h = h * 47 ^ GetHashCodeImpl(phi.Arguments[i]);
+                        // Order of parameters cannot be guaranteed,
+                        // so we must form the hash code in an order-
+                        // independent fashion.
+                        h ^= GetHashCodeImpl(arg.Value);
                     }
                     return h;
                 });
@@ -418,9 +433,9 @@ namespace Reko.Core.Expressions
             if (tx != ty)
                 return false;
 
-            if (!eqs.ContainsKey(tx))
+            if (!eqs.TryGetValue(tx, out var eqFn))
                 throw new NotImplementedException($"No equality implemented for {tx.Name}");
-            return eqs[tx](x, y);
+            return eqFn(x, y);
         }
 
         private static int GetHashCodeImpl(Expression obj)

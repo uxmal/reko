@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 Pavel Tomin.
+ * Copyright (C) 1999-2019 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,24 +25,22 @@ using Reko.Core.Types;
 using Reko.Core.CLanguage;
 using System;
 using System.Collections.Generic;
-using Rhino.Mocks;
+using Moq;
 
 namespace Reko.UnitTests.Mocks
 {
     /// <summary>
     /// Utility class to simplify common unit test setup tasks.
     /// </summary>
-    public class MockFactory
+    public class CommonMockFactory
     {
-        private MockRepository mr;
-        private IPlatform platform;
+        private Mock<IPlatform> mockPlatform;
         private TypeLibrary platformMetadata;
-        private ILoader loader;
+        private Mock<ILoader> mockLoader;
         private ICollection<Program> programs;
 
-        public MockFactory(MockRepository mr)
+        public CommonMockFactory(object ignore = null)
         {
-            this.mr = mr;
             this.platformMetadata = new TypeLibrary();
             this.programs = new List<Program>();
         }
@@ -56,36 +54,36 @@ namespace Reko.UnitTests.Mocks
             return new FakeTypeDeserializer(ptrBitSize);
         }
 
-        public IPlatform CreatePlatform()
+        public Mock<IPlatform> CreateMockPlatform()
         {
-            if (platform != null)
-                return platform;
+            if (this.mockPlatform != null)
+                return this.mockPlatform;
 
-            platform = mr.Stub<IPlatform>();
+            var mockPlatform = new Mock<IPlatform>();
 
-            platform.Stub(p => p.Name).Return("TestPlatform");
-            platform.Stub(p => p.PointerType).Return(PrimitiveType.Ptr32);
-            platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Char)).Return(1);
-            platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Short)).Return(2);
-            platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Int)).Return(4);
-            platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Long)).Return(4);
-            platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.LongLong)).Return(8);
-            platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Float)).Return(4);
-            platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Double)).Return(8);
-            platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.LongDouble)).Return(8);
-            platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Int64)).Return(8);
-            platform.Stub(p => p.CreateMetadata()).Do(new Func<TypeLibrary>(() => this.platformMetadata.Clone()));
+            mockPlatform.Setup(p => p.Name).Returns("TestPlatform");
+            mockPlatform.Setup(p => p.PointerType).Returns(PrimitiveType.Ptr32);
+            mockPlatform.Setup(p => p.GetByteSizeFromCBasicType(CBasicType.Char)).Returns(1);
+            mockPlatform.Setup(p => p.GetByteSizeFromCBasicType(CBasicType.Short)).Returns(2);
+            mockPlatform.Setup(p => p.GetByteSizeFromCBasicType(CBasicType.Int)).Returns(4);
+            mockPlatform.Setup(p => p.GetByteSizeFromCBasicType(CBasicType.Long)).Returns(4);
+            mockPlatform.Setup(p => p.GetByteSizeFromCBasicType(CBasicType.LongLong)).Returns(8);
+            mockPlatform.Setup(p => p.GetByteSizeFromCBasicType(CBasicType.Float)).Returns(4);
+            mockPlatform.Setup(p => p.GetByteSizeFromCBasicType(CBasicType.Double)).Returns(8);
+            mockPlatform.Setup(p => p.GetByteSizeFromCBasicType(CBasicType.LongDouble)).Returns(8);
+            mockPlatform.Setup(p => p.GetByteSizeFromCBasicType(CBasicType.Int64)).Returns(8);
+            mockPlatform.Setup(p => p.CreateMetadata()).Returns(() => this.platformMetadata.Clone());
             var arch = new X86ArchitectureFlat32("x86-protected-32");
-            platform.Stub(p => p.Architecture).Return(arch);
-            platform.Stub(p => p.DefaultCallingConvention).Return("__cdecl");
+            mockPlatform.Setup(p => p.Architecture).Returns(arch);
+            mockPlatform.Setup(p => p.DefaultCallingConvention).Returns("__cdecl");
             var ccStdcall = new X86CallingConvention(4, 4, 4, false, false);
             var ccCdecl = new X86CallingConvention(4, 4, 4, true, false);
-            platform.Stub(p => p.GetCallingConvention(null)).Return(ccCdecl);
-            platform.Stub(p => p.GetCallingConvention("__stdcall")).Return(ccStdcall);
-            platform.Stub(p => p.SaveUserOptions()).Return(null);
+            mockPlatform.Setup(p => p.GetCallingConvention(null)).Returns(ccCdecl);
+            mockPlatform.Setup(p => p.GetCallingConvention("__stdcall")).Returns(ccStdcall);
+            mockPlatform.Setup(p => p.SaveUserOptions()).Returns((Dictionary<string,object>) null);
 
-            platform.Replay();
-            return platform;
+            this.mockPlatform = mockPlatform;
+            return mockPlatform;
         }
 
         public void Given_PlatformTypes(Dictionary<string, DataType> types)
@@ -97,10 +95,10 @@ namespace Reko.UnitTests.Mocks
 
         public ILoader CreateLoader()
         {
-            if (loader != null)
-                return loader;
+            if (this.mockLoader != null)
+                return this.mockLoader.Object;
 
-            loader = mr.Stub<ILoader>();
+            this.mockLoader = new Mock<ILoader>();
 
             var program = CreateProgram();
             var mem = new MemoryArea(Address.Ptr32(0x10000000), new byte[1000]);
@@ -108,17 +106,15 @@ namespace Reko.UnitTests.Mocks
                 mem.BaseAddress,
                 new ImageSegment(".text", mem, AccessMode.ReadExecute));
             program.ImageMap = program.SegmentMap.CreateImageMap();
-            loader.Stub(
-                l => l.LoadExecutable(null, null, null, null)
-            ).IgnoreArguments().Return(program);
+            mockLoader.Setup(
+                l => l.LoadExecutable(It.IsAny<string>(), It.IsAny<byte[]>(), It.IsAny<string>(), It.IsAny<Address>())
+            ).Returns(program);
 
-            loader.Stub(
-                l => l.LoadImageBytes(null, 0)
-            ).IgnoreArguments().Return(new byte[1000]);
+            mockLoader.Setup(
+                l => l.LoadImageBytes(It.IsAny<string>(), It.IsAny<int>())
+            ).Returns(new byte[1000]);
 
-            loader.Replay();
-
-            return loader;
+            return this.mockLoader.Object;
         }
 
         public void CreateLoadMetadataStub(
@@ -126,35 +122,32 @@ namespace Reko.UnitTests.Mocks
             IPlatform platform,
             TypeLibrary loaderMetadata)
         {
-            loader.Stub(l => l.LoadMetadata(
-                Arg<string>.Is.Equal(metafileName),
-                Arg<IPlatform>.Is.Equal(platform),
-                Arg<TypeLibrary>.Is.NotNull
-            )).Do(new Func<string, IPlatform, TypeLibrary, TypeLibrary>((f, p, tl) =>
+            mockLoader.Setup(l => l.LoadMetadata(
+                metafileName,
+                platform,
+                It.IsNotNull<TypeLibrary>()
+            )).Returns((string f, IPlatform p, TypeLibrary tl) =>
                 {
                     foreach (var module in loaderMetadata.Modules)
                         tl.Modules.Add(module);
 
-                    foreach(var sig in loaderMetadata.Signatures)
+                    foreach (var sig in loaderMetadata.Signatures)
                         tl.Signatures.Add(sig);
 
                     foreach (var type in loaderMetadata.Types)
                         tl.Types.Add(type);
 
                     return tl;
-                }
-            ));
-
-            loader.Replay();
+                });
         }
 
         public Program CreateProgram()
         {
-            var platform = CreatePlatform();
+            var platform = CreateMockPlatform();
 
             var program = new Program {
-                Architecture = platform.Architecture,
-                Platform = platform,
+                Architecture = platform.Object.Architecture,
+                Platform = platform.Object,
             };
 
             programs.Add(program);
@@ -183,7 +176,7 @@ namespace Reko.UnitTests.Mocks
 
             var metafileName = moduleName + ".xml";
 
-            CreateLoadMetadataStub(metafileName, platform, loaderMetadata);
+            CreateLoadMetadataStub(metafileName, mockPlatform.Object, loaderMetadata);
         }
     }
 }

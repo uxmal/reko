@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -164,7 +164,7 @@ namespace Reko.ImageLoaders.LLVM
         
         public Procedure RegisterFunction(FunctionDefinition fn, Address addr)
         {
-            var proc = new Procedure(program.Architecture, fn.FunctionName, addr, new Frame(program.Platform.PointerType));
+            var proc = Procedure.Create(program.Architecture, fn.FunctionName, addr, new Frame(program.Platform.PointerType));
             var builder = new ProcedureBuilder(proc);
             Functions.Add(fn, builder);
             return proc;

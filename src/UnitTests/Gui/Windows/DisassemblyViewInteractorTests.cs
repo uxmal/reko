@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,12 +18,12 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Gui;
 using Reko.Gui.Forms;
 using Reko.UserInterfaces.WindowsForms;
-using Rhino.Mocks;
 using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Gui.Windows
@@ -32,26 +32,24 @@ namespace Reko.UnitTests.Gui.Windows
     [Category(Categories.UserInterface)]
     public class DisassemblyViewInteractorTests
     {
-        private DisassemblyViewInteractor interactor;
-        private MockRepository repository;
-        private IDecompilerShellUiService uiSvc;
-        private IDialogFactory dlgFactory;
         private IServiceContainer sc;
-        private IDecompilerService dcSvc;
+        private DisassemblyViewInteractor interactor;
+        private Mock<IDecompilerShellUiService> uiSvc;
+        private Mock<IDialogFactory> dlgFactory;
+        private Mock<IDecompilerService> dcSvc;
 
         [SetUp]
         public void Setup()
         {
-            repository = new MockRepository();
-            interactor = repository.Stub<DisassemblyViewInteractor>();
+            interactor = new DisassemblyViewInteractor();
             sc = new ServiceContainer();
-            uiSvc = repository.DynamicMock<IDecompilerShellUiService>();
-            dcSvc = repository.Stub<IDecompilerService>();
-            dlgFactory = repository.DynamicMock<IDialogFactory>();
-            sc.AddService<IDecompilerShellUiService>(uiSvc);
+            uiSvc = new Mock<IDecompilerShellUiService>();
+            dcSvc = new Mock<IDecompilerService>();
+            dlgFactory = new Mock<IDialogFactory>();
+            sc.AddService<IDecompilerShellUiService>(uiSvc.Object);
 
-            sc.AddService<IDecompilerService>(dcSvc);
-            sc.AddService<IDialogFactory>(dlgFactory);
+            sc.AddService<IDecompilerService>(dcSvc.Object);
+            sc.AddService<IDialogFactory>(dlgFactory.Object);
         }
 
         private void Initialize()
@@ -71,19 +69,18 @@ namespace Reko.UnitTests.Gui.Windows
         [Test]
         public void DviGotoAddress()
         {
-            var dlg = repository.Stub<IAddressPromptDialog>();
-            dlg.Stub(x => dlg.Address).Return(Address.Ptr32(0x41104110));
-            dlgFactory.Stub(x => x.CreateAddressPromptDialog()).Return(dlg);
-            uiSvc.Expect(x => uiSvc.ShowModalDialog(
-                    Arg<IAddressPromptDialog>.Is.Same(dlg)))
-                .Return(DialogResult.OK);
-            dlg.Expect(x => x.Dispose());
-            repository.ReplayAll();
+            var dlg = new Mock<IAddressPromptDialog>();
+            dlg.Setup(x => x.Address).Returns(Address.Ptr32(0x41104110));
+            dlgFactory.Setup(x => x.CreateAddressPromptDialog()).Returns(dlg.Object);
+            uiSvc.Expect(x => x.ShowModalDialog(dlg.Object))
+                .Returns(DialogResult.OK)
+                .Verifiable();
+            dlg.Setup(x => x.Dispose());
 
             Initialize();
             interactor.Execute(new CommandID(CmdSets.GuidReko, CmdIds.ViewGoToAddress));
 
-            repository.VerifyAll();
+            uiSvc.VerifyAll();
             Assert.AreEqual(0x41104110ul, interactor.StartAddress.ToLinear());
         }
 

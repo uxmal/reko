@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,7 +36,6 @@ namespace Reko.Arch.X86
         private const InstrClass CondTransfer = InstrClass.Conditional | InstrClass.Transfer;
         private const InstrClass LinkTransfer = InstrClass.Call | InstrClass.Transfer;
         private const InstrClass Transfer = InstrClass.Transfer;
-
 
 		public Opcode code;		        // Opcode of the instruction.
         public InstrClass iclass;       // Instruction class.

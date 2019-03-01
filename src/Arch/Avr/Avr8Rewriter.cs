@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -264,15 +264,15 @@ namespace Reko.Arch.Avr
         private Identifier IndexRegPair(RegisterStorage reg)
         {
             int ireg;
-            if (reg == arch.x)
+            if (reg == Avr8Architecture.x)
             {
                 ireg = 26;
             }
-            else if (reg == arch.y)
+            else if (reg == Avr8Architecture.y)
             {
                 ireg = 28;
             }
-            else if (reg == arch.z)
+            else if (reg == Avr8Architecture.z)
             {
                 ireg = 30;
             }
@@ -471,7 +471,7 @@ namespace Reko.Arch.Avr
         private void RewriteIcall()
         {
             rtlc = InstrClass.Transfer | InstrClass.Call;
-            var z = binder.EnsureRegister(arch.z);
+            var z = binder.EnsureRegister(Avr8Architecture.z);
             m.Call(z, 2);
         }
 
@@ -483,7 +483,7 @@ namespace Reko.Arch.Avr
         private void RewriteIjmp()
         {
             rtlc = InstrClass.Transfer;
-            var z = binder.EnsureRegister(arch.z);
+            var z = binder.EnsureRegister(Avr8Architecture.z);
             m.Goto(z);
         }
 
@@ -515,7 +515,7 @@ namespace Reko.Arch.Avr
             var codeSel = binder.EnsureRegister(arch.code);
             if (instr.operands.Length == 0)
             {
-                var z = binder.EnsureRegister(arch.z);
+                var z = binder.EnsureRegister(Avr8Architecture.z);
                 var r0 = binder.EnsureRegister(arch.GetRegister(0));
                 m.Assign(r0, m.SegMem8(codeSel, z));
             }

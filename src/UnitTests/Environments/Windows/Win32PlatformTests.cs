@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,30 +18,25 @@
  */
 #endregion
 
+using Moq;
+using NUnit.Framework;
 using Reko.Arch.X86;
-using Reko.Core.Configuration;
 using Reko.Core;
+using Reko.Core.Configuration;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Environments.Windows;
-using NUnit.Framework;
-using Rhino.Mocks;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.IO;
-using System.Text;
-using System.Xml;
 
 namespace Reko.UnitTests.Environments.Windows
 {
     [TestFixture]
     public class Win32PlatformTests
     {
-        private MockRepository mr;
-        private ITypeLibraryLoaderService tlSvc;
+        private Mock<ITypeLibraryLoaderService> tlSvc;
         private ServiceContainer sc;
         private Win32Platform win32;
         private Program program;
@@ -52,7 +47,6 @@ namespace Reko.UnitTests.Environments.Windows
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
             sc = new ServiceContainer();
             arch = new X86ArchitectureFlat32("x86-protected-32");
         }
@@ -68,22 +62,22 @@ namespace Reko.UnitTests.Environments.Windows
             Given_Configuration_With_Win32_Element();
             Given_TypeLibraryLoaderService();
             Expect_TypeLibraryLoaderService_LoadLibrary("windows.xml");
-            mr.ReplayAll();
 
             When_Creating_Win32_Platform();
             When_Lookup_Procedure("kernel32","foo");
 
-            mr.VerifyAll();
+            tlSvc.Verify();
         }
 
         private void Expect_TypeLibraryLoaderService_LoadLibrary(ITypeLibraryElement expected, TypeLibrary dstLib)
         {
-            environmentMetadata = dstLib;   
-            tlSvc.Expect(t => t.LoadMetadataIntoLibrary(
-                Arg<IPlatform>.Is.NotNull,
-                Arg<ITypeLibraryElement>.Matches(a => a.Name == expected.Name),
-                Arg<TypeLibrary>.Is.NotNull))
-                .Return(dstLib);
+            environmentMetadata = dstLib;
+            tlSvc.Setup(t => t.LoadMetadataIntoLibrary(
+                It.IsNotNull<IPlatform>(),
+                It.Is<ITypeLibraryElement>(a => a.Name == expected.Name),
+                It.IsNotNull<TypeLibrary>()))
+                .Returns(dstLib)
+                .Verifiable();
         }
 
         private void Expect_TypeLibraryLoaderService_LoadLibrary(string expected)
@@ -113,7 +107,7 @@ namespace Reko.UnitTests.Environments.Windows
 
         private void Given_Configuration_With_Win32_Element()
         {
-            var dcSvc = mr.Stub<IConfigurationService>();
+            var dcSvc = new Mock<IConfigurationService>();
             var opEnv = new OperatingEnvironmentElement 
             {
                 TypeLibraries =
@@ -124,11 +118,12 @@ namespace Reko.UnitTests.Environments.Windows
                     }
                 }
             };
-            dcSvc.Expect(d => d.GetEnvironment("win32")).Return(opEnv);
-            dcSvc.Stub(c => c.GetInstallationRelativePath(null)).IgnoreArguments()
-                .Do(new Func<string[], string>(s => string.Join("/", s)));
+            dcSvc.Setup(d => d.GetEnvironment("win32")).Returns(opEnv);
+            dcSvc.Setup(c => c.GetInstallationRelativePath(
+                It.IsAny<string[]>()))
+                .Returns((string []s) => string.Join("/", s));
             
-            sc.AddService<IConfigurationService>(dcSvc);
+            sc.AddService<IConfigurationService>(dcSvc.Object);
         }
 
         private void When_Creating_Win32_Platform()
@@ -148,8 +143,8 @@ namespace Reko.UnitTests.Environments.Windows
 
         private void Given_TypeLibraryLoaderService()
         {
-            tlSvc = mr.StrictMock<ITypeLibraryLoaderService>();
-            sc.AddService(typeof(ITypeLibraryLoaderService), tlSvc);
+            tlSvc = new Mock<ITypeLibraryLoaderService>();
+            sc.AddService(typeof(ITypeLibraryLoaderService), tlSvc.Object);
         }
 
         [Test]
@@ -187,7 +182,6 @@ namespace Reko.UnitTests.Environments.Windows
             Given_TypeLibraryLoaderService();
             Expect_TypeLibraryLoaderService_LoadLibrary("windows.xml", types);
             Given_Configuration_With_Win32_Element();
-            mr.ReplayAll();
 
             When_Creating_Win32_Platform();
             Given_Program();

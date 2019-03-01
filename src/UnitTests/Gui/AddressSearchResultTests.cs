@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,30 +18,25 @@
  */
 #endregion
 
+using Moq;
+using NUnit.Framework;
 using Reko.Core;
 using Reko.Gui;
-using NUnit.Framework;
-using Rhino.Mocks;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Linq;
-using System.Text;
 
 namespace Reko.UnitTests.Gui
 {
     [TestFixture]
     public class AddressSearchResultTests
     {
-        private MockRepository mr;
         private ServiceContainer sc;
         private Program program;
 
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
             sc = new ServiceContainer();
             var mem = new MemoryArea(Address.SegPtr(0xC00, 0), Enumerable.Range(0x0, 0x100).Select(b => (byte)b).ToArray());
             var imageMap = new SegmentMap(

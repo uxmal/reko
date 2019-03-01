@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -103,14 +103,13 @@ namespace Reko.UnitTests.Arch.Pdp11
         {
             BuildTest(0x8A10);
             AssertCode(
-                "0|L--|0200(2): 7 instructions",
-                "1|L--|v3 = 0x00",
-                "2|L--|Mem0[r0:byte] = v3",
-                "3|L--|r0 = r0 + 0x0001",
-                "4|L--|C = false",
-                "5|L--|V = false",
-                "6|L--|N = false",
-                "7|L--|Z = true");
+                "0|L--|0200(2): 6 instructions",
+                "1|L--|Mem0[r0:byte] = 0x00",
+                "2|L--|r0 = r0 + 0x0001",
+                "3|L--|C = false",
+                "4|L--|V = false",
+                "5|L--|N = false",
+                "6|L--|Z = true");
         }
 
         [Test]
@@ -302,7 +301,7 @@ namespace Reko.UnitTests.Arch.Pdp11
                 "2|L--|v3 = Mem0[Mem0[r3:ptr16]:word16]",
                 "3|L--|sp = sp - 0x0002",
                 "4|L--|Mem0[sp:word16] = v3",
-                "5|L--|NZ = cond(v5)",
+                "5|L--|NZ = cond(v3)",
                 "6|L--|V = false");
         }
 
@@ -388,12 +387,11 @@ namespace Reko.UnitTests.Arch.Pdp11
         {
             BuildTest(0x95D5, 0x003D);  // movb #003D,(r5)+
             AssertCode(
-              "0|L--|0200(4): 5 instructions",
-              "1|L--|v3 = 0x3D",
-              "2|L--|Mem0[r5:byte] = v3",
-              "3|L--|r5 = r5 + 0x0001",
-              "4|L--|NZ = cond(v3)",
-              "5|L--|V = false");
+              "0|L--|0200(4): 4 instructions",
+              "1|L--|Mem0[r5:byte] = 0x3D",
+              "2|L--|r5 = r5 + 0x0001",
+              "3|L--|NZ = cond(0x3D)",
+              "4|L--|V = false");
         }
 
         [Test]
@@ -511,11 +509,12 @@ namespace Reko.UnitTests.Arch.Pdp11
         {
             BuildTest(0x193C, 0x0A26); // mov-(r4),@0A26(r4)
             AssertCode(
-                  "0|L--|0200(4): 4 instructions",
+                  "0|L--|0200(4): 5 instructions",
                   "1|L--|r4 = r4 - 0x0002",
-                  "2|L--|Mem0[Mem0[r4 + 0x0A26:word16]:ptr16] = Mem0[r4:word16]",
-                  "3|L--|NZ = cond(v4)",
-                  "4|L--|V = false");
+                  "2|L--|v4 = Mem0[r4:word16]", 
+                  "3|L--|Mem0[Mem0[r4 + 0x0A26:word16]:ptr16] = v4",
+                  "4|L--|NZ = cond(v4)",
+                  "5|L--|V = false");
         }
 
         [Test(Description = "Destination mustn't be an immediate")]
@@ -602,7 +601,7 @@ namespace Reko.UnitTests.Arch.Pdp11
             AssertCode(
                 "0|L--|0200(2): 5 instructions",
                 "1|L--|v4 = __stexp(ac2)",
-                "2|L--|Mem0[r2:word16] = v4",
+                "2|L--|Mem0[r2:int16] = v4",
                 "3|L--|NZ = cond(v4)",
                 "4|L--|C = false",
                 "5|L--|V = false");
@@ -624,6 +623,29 @@ namespace Reko.UnitTests.Arch.Pdp11
             AssertCode(
                "0|T--|0200(4): 1 instructions",
                "1|T--|goto 00DC");
+        }
+
+        [Test]
+        public void Pdp11rw_mov_absolute()
+        {
+            BuildTest(0x15F7, 0x0001, 0x17DA);  // mov #0001,@#57CC
+            AssertCode(
+                "0|L--|0200(6): 3 instructions",
+                "1|L--|Mem0[0x19E0:word16] = 0x0001",
+                "2|L--|NZ = cond(0x0001)",
+                "3|L--|V = false");
+        }
+
+        [Test]
+        public void Pdp11rw_mov_pc()
+        {
+            BuildTest(0x11EA);  // mov pc,*-(r2)
+            AssertCode(
+                "0|L--|0200(2): 4 instructions",
+                "1|L--|r2 = r2 - 0x0002",
+                "2|L--|Mem0[Mem0[r2:ptr16]:ptr16] = 0202",
+                "3|L--|NZ = cond(0x0202)",
+                "4|L--|V = false");
         }
     }
 }

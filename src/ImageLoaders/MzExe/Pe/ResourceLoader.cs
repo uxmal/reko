@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,14 +30,25 @@ namespace Reko.ImageLoaders.MzExe.Pe
 {
     public class ResourceLoader
     {
+        const uint RT_NEWRESOURCE = 0x2000;
+        const uint RT_ERROR = 0x7fff;
+        const uint RT_CURSOR = 1;
         const uint RT_BITMAP = 2;
         const uint RT_ICON = 3;
         const uint RT_MENU = 4;
         const uint RT_DIALOG = 5;
         const uint RT_STRING = 6;
+        const uint RT_FONTDIR = 7;
+        const uint RT_FONT = 8;
         const uint RT_ACCELERATOR = 9;
+        const uint RT_RCDATA = 10;
+        const uint RT_MESSAGETABLE = 11;
+        const uint RT_GROUP_CURSOR = 12;
         const uint RT_GROUP_ICON = 14;
         const uint RT_VERSION = 16;
+        const uint RT_NEWBITMAP = (RT_BITMAP | RT_NEWRESOURCE);
+        const uint RT_NEWMENU = (RT_MENU | RT_NEWRESOURCE);
+        const uint RT_NEWDIALOG = (RT_DIALOG | RT_NEWRESOURCE);
 
         private MemoryArea imgLoaded;
         private uint rvaResources;
@@ -121,7 +132,7 @@ namespace Reko.ImageLoaders.MzExe.Pe
                     throw new BadImageFormatException();
                 var e = new ProgramResourceGroup
                 {
-                    Name = ReadResourceUtf16leString(rvaResources + (rvaName  & ~DIR_MASK)),
+                    Name = ReadResourceUtf16leString(rvaResources + (rvaName & ~DIR_MASK)),
                 };
                 e.Resources.AddRange(ReadLanguageDirectory(subRdr, resourceType, e.Name));
                 entries.Add(e);
@@ -180,7 +191,7 @@ namespace Reko.ImageLoaders.MzExe.Pe
             var codepage = rdr.ReadUInt32();
             var padding = rdr.ReadUInt32();
             var abResource = new byte[size];
-            Array.Copy(imgLoaded.Bytes, (int)rvaData, abResource, 0, abResource.Length);
+            Array.Copy(imgLoaded.Bytes, (int) rvaData, abResource, 0, abResource.Length);
 
             if (resourceType == RT_BITMAP)
             {
@@ -198,8 +209,7 @@ namespace Reko.ImageLoaders.MzExe.Pe
 
         private string GetLocaleName(string langId)
         {
-            int localeId;
-            if (Int32.TryParse(langId, out localeId) && localeId > 0)
+            if (Int32.TryParse(langId, out int localeId) && localeId > 0)
             {
                 try
                 {
@@ -242,14 +252,25 @@ namespace Reko.ImageLoaders.MzExe.Pe
         {
             switch (id)
             {
+            case RT_NEWRESOURCE: return "NEWRESOURCE";
+            case RT_ERROR: return "ERROR";
+            case RT_CURSOR: return "CURSOR";
             case RT_BITMAP: return "BITMAP";
             case RT_ICON: return "ICON";
             case RT_MENU: return "MENU";
             case RT_DIALOG: return "DIALOG";
             case RT_STRING: return "STRING";
+            case RT_FONTDIR: return "FONTDIR";
+            case RT_FONT: return "FONT";
             case RT_ACCELERATOR: return "ACCELERATOR";
+            case RT_RCDATA: return "RCDATA";
+            case RT_MESSAGETABLE: return "MESSAGETABLE";
+            case RT_GROUP_CURSOR: return "GROUP_CURSOR";
             case RT_GROUP_ICON: return "GROUP_ICON";
             case RT_VERSION: return "VERSION";
+            case RT_NEWBITMAP: return "NEWBITMAP";
+            case RT_NEWMENU: return "NEWMENU";
+            case RT_NEWDIALOG: return "NEWDIALOG";
             default: return id.ToString();
             }
         }

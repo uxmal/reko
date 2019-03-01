@@ -17,7 +17,7 @@ ax_4: orig: ax
 ax_5: orig: ax
     def:  ax_5 = ax_4 | ax_4
     uses: SZO_6 = cond(ax_5)
-          ax_9 = PHI(ax_5, ax_11)
+          ax_9 = PHI((ax_5, l0C00_0000), (ax_11, l0C00_0009))
 SZO_6: orig: SZO
     def:  SZO_6 = cond(ax_5)
     uses: Z_7 = (bool) SZO_6 (alias)
@@ -27,12 +27,12 @@ Z_7: orig: Z
 C_8: orig: C
     def:  C_8 = false
 ax_9: orig: ax
-    def:  ax_9 = PHI(ax_5, ax_11)
+    def:  ax_9 = PHI((ax_5, l0C00_0000), (ax_11, l0C00_0009))
 sp_10: orig: sp
     def:  sp_10 = fp
 ax_11: orig: ax
     def:  ax_11 = 0xFFFF
-    uses: ax_9 = PHI(ax_5, ax_11)
+    uses: ax_9 = PHI((ax_5, l0C00_0000), (ax_11, l0C00_0009))
 // fn0C00_0000
 // Return size: 0
 void fn0C00_0000(word16 wArg06)
@@ -54,7 +54,7 @@ l0C00_0009:
 	ax_11 = 0xFFFF
 	// succ:  l0C00_000C
 l0C00_000C:
-	ax_9 = PHI(ax_5, ax_11)
+	ax_9 = PHI((ax_5, l0C00_0000), (ax_11, l0C00_0009))
 	sp_10 = fp
 	return
 	// succ:  fn0C00_0000_exit

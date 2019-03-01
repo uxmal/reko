@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -67,6 +67,7 @@ namespace Reko.Typing
                 factory.CreateStructureType(),
                 program.Platform.PointerType.BitSize));
             CollectSegmentTypes();
+            CollectUserGlobalVariableTypes();
             int cProc = program.Procedures.Count;
             int i = 0;
             foreach (Procedure p in program.Procedures.Values)
@@ -92,6 +93,19 @@ namespace Reko.Typing
                             stm);
                     }
                 }
+            }
+        }
+
+        public void CollectUserGlobalVariableTypes()
+        {
+            var deser = program.CreateTypeLibraryDeserializer();
+            foreach (var ud in program.User.Globals)
+            {
+                var addr = ud.Key;
+                var dt = ud.Value.DataType.Accept(deser);
+                var offset = (int) (addr - program.SegmentMap.BaseAddress);
+                var f = new StructureField(offset, dt, ud.Value.Name);
+                program.GlobalFields.Fields.Add(f);
             }
         }
 

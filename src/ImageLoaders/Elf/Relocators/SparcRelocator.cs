@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -54,7 +54,11 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 {
                     var addrPfn = Address.Ptr32((uint)rela.Offset);
                     Debug.Print("Import reference {0} - {1}", addrPfn, sym.Name);
-                    importReferences[addrPfn]= new NamedImportReference(addrPfn, null, sym.Name);
+                    var st = ElfLoader.GetSymbolType(sym);
+                    if (st.HasValue)
+                    {
+                        importReferences[addrPfn] = new NamedImportReference(addrPfn, null, sym.Name, st.Value);
+                    }
                     return sym;
                 }
             }

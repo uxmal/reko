@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,8 +38,6 @@ namespace Reko.Scanning
 
     public class ScannerInLinq
     {
-        // change @binary_size to simulate a large executable
-        //private const int binary_size = 10;
         private IServiceProvider services;
         private Program program;
         private IRewriterHost host;
@@ -53,57 +51,6 @@ namespace Reko.Scanning
             this.host = host;
             this.eventListener = eventListener;
         }
-
-        #region Simulate binary
-        public void SimulateBinary(int binary_size)
-        {
-            sr.FlatInstructions = new SortedList<Address, instr>();
-            // links betweeen instructions
-            sr.FlatEdges = new List<link>();
-
-
-            // Create a simulated program ----------------------------------------------------
-
-            long @offset = 0x40000;
-            long @end = @offset + @binary_size;
-            while (@offset < @end)
-            {
-                AddInstr(1 + @offset, 1, 'l'); ;
-                AddLink(1 + @offset, 2 + @offset);
-
-                AddInstr(2 + @offset, 1, 'l'); ;
-                AddLink(2 + @offset, 4 + @offset);
-
-                AddInstr(3 + @offset, 1, 'C'); ; // Capital 'C' means this was called by someone.
-                AddLink(3 + @offset, 4 + @offset);
-
-                AddInstr(4 + @offset, 1, 'c');
-                AddLink(4 + @offset, 5 + @offset);
-                AddLink(4 + @offset, 6 + @offset);
-
-                AddInstr(5 + @offset, 1, 'l');
-                AddLink(5 + @offset, 6 + @offset);
-
-                AddInstr(6 + @offset, 1, 'x');
-                AddLink(6 + @offset, 2 + @offset);
-                AddLink(6 + @offset, 7 + @offset);
-
-                AddInstr(7 + @offset, 1, 'l');
-                AddLink(7 + @offset, 8 + @offset);
-
-                AddInstr(8 + @offset, 1, 'l');
-                AddLink(8 + @offset, 9 + @offset);
-
-                AddInstr(9 + @offset, 1, 'l');
-                AddLink(9 + @offset, 10 + @offset);
-
-                AddInstr(10 + @offset, 1, 'l');
-
-                @offset = @offset + 20;
-
-            }
-        }
-        #endregion
 
         public ScanResults ScanImage(ScanResults sr)
         {
@@ -174,7 +121,7 @@ namespace Reko.Scanning
                     shsc.ScanRange(range.Item1,
                         range.Item2,
                         range.Item3,
-                        range.Item3.ToLinear() - range.Item2.ToLinear());
+                        range.Item3);
                 }
                 catch (AddressCorrelatedException aex)
                 {
@@ -191,7 +138,7 @@ namespace Reko.Scanning
         }
 
         [Conditional("DEBUG")]
-        private void DumpRanges(List<Tuple<MemoryArea, Address, Address>> ranges)
+        private void DumpRanges(List<Tuple<MemoryArea, Address, uint>> ranges)
         {
             foreach (var range in ranges)
             {
@@ -210,7 +157,7 @@ namespace Reko.Scanning
         /// been identified as code/data yet.
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<Tuple<MemoryArea, Address, Address>> FindUnscannedRanges()
+        public IEnumerable<Tuple<MemoryArea, Address, uint>> FindUnscannedRanges()
         {
             return this.program.ImageMap.Items
                 .Where(de => de.Value.DataType is UnknownType)
@@ -218,7 +165,7 @@ namespace Reko.Scanning
                 .Where(tup => tup != null);
         }
 
-        private Tuple<MemoryArea, Address, Address> CreateUnscannedArea(KeyValuePair<Address, ImageMapItem> de)
+        private Tuple<MemoryArea, Address, uint> CreateUnscannedArea(KeyValuePair<Address, ImageMapItem> de)
         {
             if (!this.program.SegmentMap.TryFindSegment(de.Key, out ImageSegment seg))
                 return null;
@@ -227,7 +174,7 @@ namespace Reko.Scanning
             return Tuple.Create(
                 seg.MemoryArea,
                 de.Key,
-                de.Key + de.Value.Size);
+                de.Value.Size);
         }
 
         private void BuildWeaklyConnectedComponents(Dictionary<long, block> the_blocks)
@@ -290,7 +237,7 @@ namespace Reko.Scanning
                     group link by link.first into g
                     select new { addr = g.Key, Count = g.Count() })
             {
-                if (sr.FlatInstructions.TryGetValue(cSucc.addr, out var instr))
+                if (sr.FlatInstructions.TryGetValue(cSucc.addr.ToLinear(), out var instr))
                     instr.succ = cSucc.Count;
             }
             // Count and save the # of predecessors for each instruction.
@@ -299,7 +246,7 @@ namespace Reko.Scanning
                     group link by link.second into g
                     select new { addr = g.Key, Count = g.Count() })
             {
-                if (sr.FlatInstructions.TryGetValue(cPred.addr, out var instr))
+                if (sr.FlatInstructions.TryGetValue(cPred.addr.ToLinear(), out var instr))
                     instr.pred = cPred.Count;
             }
 
@@ -310,7 +257,7 @@ namespace Reko.Scanning
                 if ((instr.type & (ushort)InstrClass.Linear) == 0)
                     continue;
                 // Find the instruction that is located directly after instr.
-                if (!sr.FlatInstructions.TryGetValue(instr.addr + instr.size, out instr succ))
+                if (!sr.FlatInstructions.TryGetValue(instr.addr.ToLinear() + (uint) instr.size, out instr succ))
                     continue;
                 // If the first instruction was padding the next one must also be padding, 
                 // otherwise we start a new block.
@@ -357,6 +304,11 @@ namespace Reko.Scanning
             return the_blocks;
         }
 
+        /// <summary>
+        /// From the candidate set of <paramref name="blocks"/>, remove blocks that 
+        /// are invalid.
+        /// </summary>
+        /// <returns>A (hopefully smaller) set of blocks.</returns>
         public static Dictionary<Address, block> RemoveInvalidBlocks(ScanResults sr, Dictionary<Address, block> blocks)
         {
             // Find transitive closure of bad instructions 
@@ -516,8 +468,6 @@ namespace Reko.Scanning
             }
         }
 
-
-
         private void DumpBadBlocks(ScanResults sr, Dictionary<long, block> blocks, IEnumerable<link> edges, HashSet<Address> bad_blocks)
         {
             Debug.Print(
@@ -568,28 +518,5 @@ namespace Reko.Scanning
                     i.addr, i.size, i.type, i.block_id, i.pred, i.succ);
             }
         }
-
-        [Conditional("DEBUG")]
-        private void AddInstr(long uAddr, int size, char type)
-        {
-            var addr = Address.Ptr32((uint)uAddr);
-            sr.FlatInstructions.Add(addr, new instr
-            {
-                addr = addr,
-                size = size,
-                type = type,
-                block_id = addr,
-            });
-        }
-
-        [Conditional("DEBUG")]
-        private void AddLink(long from, long to)
-        {
-            var f = Address.Ptr32((uint)from);
-            var t = Address.Ptr32((uint)to);
-
-            sr.FlatEdges.Add(new link { first = f, second = t });
-        }
-
     }
 }

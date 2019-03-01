@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -133,6 +133,21 @@ namespace Reko.UnitTests.Analysis
             var sExp =
 @"
 // This is a comment
+";
+            AssertProcedureCode(sExp);
+        }
+
+        [Test]
+        public void DeadDpbApplication()
+        {
+            var dead = m.Reg32("dead");
+            m.Assign(dead, m.Dpb(m.Word32(0), m.Fn("foo", Constant.Word32(1)), 0));
+
+            EliminateDeadCode();
+
+            var sExp =
+@"
+foo(0x00000001)
 ";
             AssertProcedureCode(sExp);
         }

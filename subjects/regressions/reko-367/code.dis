@@ -142,7 +142,7 @@ l800001F2:
 // LocalsOut: fp(80) Local -0010(32) Local -001C(0) Local -0020(80) Local -0034(32) Local -0038(32) Stack +0004(80)
 
 l8000021C:
-	branch 100 - dwLoc20_25 < 0x00000000 l8000028A
+	branch dwLoc20_25 > 100 l8000028A
 // DataOut: a6
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000030 a6:fp - 0x00000004 fp0:<invalid> fp1:<invalid> d0:<invalid> fp2:<invalid> d1:<invalid> -72(fp):<invalid> -60(fp):<invalid> -48(fp):d2 -44(fp):fp2 -32(fp):<invalid> -28(fp):<invalid> -16(fp):<invalid> -4(fp):a6
@@ -192,7 +192,7 @@ l800002AE:
 // LocalsOut: fp(80) Local -0010(32) Local -001C(0) Local -0020(80) Local -002C(80) Local -0034(32) Local -0038(32) Stack +0004(80)
 
 l800002DA:
-	branch 100 - dwLoc20_24 < 0x00000000 l80000348
+	branch dwLoc20_24 > 100 l80000348
 // DataOut: a6
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000030 a6:fp - 0x00000004 fp0:<invalid> fp1:<invalid> d0:<invalid> fp2:<invalid> d1:<invalid> -72(fp):<invalid> -60(fp):<invalid> -48(fp):d2 -44(fp):fp2 -32(fp):<invalid> -28(fp):<invalid> -16(fp):<invalid> -4(fp):a6

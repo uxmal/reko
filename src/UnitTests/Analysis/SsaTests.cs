@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,11 +25,11 @@ using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
+using Moq;
 using NUnit.Framework;
 using System;
 using System.Diagnostics;
 using System.IO;
-using Rhino.Mocks;
 using System.Collections.Generic;
 
 namespace Reko.UnitTests.Analysis
@@ -193,8 +193,7 @@ namespace Reko.UnitTests.Analysis
 		{
             var flow = new ProgramDataFlow(program);
             var eventListener = new FakeDecompilerEventListener();
-            var importResolver = MockRepository.GenerateStub<IImportResolver>();
-            importResolver.Replay();
+            var importResolver = new Mock<IImportResolver>().Object;
             var trf = new TrashedRegisterFinder(program, program.Procedures.Values, flow, eventListener);
             trf.Compute();
             trf.RewriteBasicBlocks();

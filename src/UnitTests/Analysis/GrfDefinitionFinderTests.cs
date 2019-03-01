@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,19 +18,18 @@
  */
 #endregion
 
+using Moq;
+using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
-using NUnit.Framework;
-using Reko.UnitTests.Mocks;
-using System;
-using System.IO;
 using Reko.Core.Expressions;
-using Rhino.Mocks;
+using Reko.UnitTests.Mocks;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Reko.UnitTests.Analysis
 {
-	[TestFixture]
+    [TestFixture]
 	public class GrfDefinitionFinderTests : AnalysisTestBase
 	{
 		[Test]
@@ -53,8 +52,7 @@ namespace Reko.UnitTests.Analysis
 
 		protected override void RunTest(Program program, TextWriter writer)
 		{
-            var importResolver = MockRepository.GenerateStub<IImportResolver>();
-            importResolver.Replay();
+            var importResolver = new Mock<IImportResolver>().Object;
             var dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
 			dfa.UntangleProcedures();
 			foreach (Procedure proc in program.Procedures.Values)

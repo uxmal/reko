@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -129,9 +129,8 @@ namespace Reko.Arch.X86
                 while (running && dasm.MoveNext())
                 {
     //                Debug.Print("emu: {0} {1,-15} {2}", dasm.Current.Address, dasm.Current, DumpRegs());
-                    Action bpAction;
                     TWord eip = (uint)dasm.Current.Address.ToLinear();
-                    if (bpExecute.TryGetValue(eip, out bpAction))
+                    if (bpExecute.TryGetValue(eip, out Action bpAction))
                     {
                         ++counter;
                         stepOverAddress = 0;
@@ -291,8 +290,7 @@ namespace Reko.Arch.X86
             byte al = (byte) ReadRegister(X86.Registers.al);
             TWord edi = ReadRegister(X86.Registers.edi);
             var addr = Address.Ptr32(edi);
-            ImageSegment seg;
-            if (!map.TryFindSegment(addr, out seg))
+            if (!map.TryFindSegment(addr, out ImageSegment seg))
                 throw new AccessViolationException();
             byte mem = (byte)(al - seg.MemoryArea.Bytes[edi - (uint)seg.MemoryArea.BaseAddress.ToLinear()]);
             WriteRegister(X86.Registers.edi, edi + 1);      //$BUG: Direction flag not respected

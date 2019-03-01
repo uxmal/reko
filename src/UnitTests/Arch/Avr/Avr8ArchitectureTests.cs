@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Arch.Avr
             var arch = new Avr8Architecture("avr8");
             var r30 = arch.GetRegister(30);
             var r31 = arch.GetRegister(31);
-            var z = arch.z;
+            var z = Avr8Architecture.z;
 
             Assert.AreSame(r30, arch.GetSubregister(z, 0, 8));
             Assert.AreSame(r31, arch.GetSubregister(z, 8, 8));

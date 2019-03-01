@@ -1,6 +1,6 @@
 #region License
 /* 
-* Copyright (C) 1999-2018 John Källén.
+* Copyright (C) 1999-2019 John Källén.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -194,6 +194,16 @@ namespace Reko.UserInterfaces.WindowsForms
             return new SymbolSourceDialog
             {
                 Services = this.services
+            };
+        }
+
+        public ISelectItemDialog CreateSelectItemDialog(string caption, object[] items, bool multiSelect)
+        {
+            return new SelectItemDialog
+            {
+                Text = caption,
+                Items = items,
+                MultiSelect = multiSelect
             };
         }
     }

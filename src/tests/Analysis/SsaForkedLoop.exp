@@ -5,7 +5,7 @@ sp_1: orig: sp
     def:  sp_1 = fp
 ax_2: orig: ax
     def:  ax_2 = 0x0000
-    uses: ax_11 = PHI(ax_2, ax_27, ax_34)
+    uses: ax_11 = PHI((ax_2, l0C00_0000), (ax_27, l0C00_000D), (ax_34, l0C00_0012))
 SZO_3: orig: SZO
     def:  SZO_3 = cond(0x0000)
     uses: Z_4 = (bool) SZO_3 (alias)
@@ -24,11 +24,11 @@ SCZO_8: orig: SCZO
     def:  SCZO_8 = DPB(SCZO, C_6, 0) (alias)
 si:si
     def:  def si
-    uses: si_10 = PHI(si, si_21, si_33)
+    uses: si_10 = PHI((si, l0C00_0000), (si_21, l0C00_000D), (si_33, l0C00_0012))
 si_10: orig: si
-    def:  si_10 = PHI(si, si_21, si_33)
+    def:  si_10 = PHI((si, l0C00_0000), (si_21, l0C00_000D), (si_33, l0C00_0012))
 ax_11: orig: ax
-    def:  ax_11 = PHI(ax_2, ax_27, ax_34)
+    def:  ax_11 = PHI((ax_2, l0C00_0000), (ax_27, l0C00_000D), (ax_34, l0C00_0012))
     uses: SCZO_13 = cond(ax_11 - bx)
           ax_27 = ax_11 + Mem0[ds:si_21:word16]
           ax_34 = ax_11 + Mem0[ds:si_33 + 0x0004:word16]
@@ -71,7 +71,7 @@ si_21: orig: si
     def:  si_21 = si_20 | si_20
     uses: SZO_22 = cond(si_21)
           ax_27 = ax_11 + Mem0[ds:si_21:word16]
-          si_10 = PHI(si, si_21, si_33)
+          si_10 = PHI((si, l0C00_0000), (si_21, l0C00_000D), (si_33, l0C00_0012))
 SZO_22: orig: SZO
     def:  SZO_22 = cond(si_21)
     uses: Z_23 = (bool) SZO_22 (alias)
@@ -89,7 +89,7 @@ SCZO_26: orig: SCZO
 ax_27: orig: ax
     def:  ax_27 = ax_11 + Mem0[ds:si_21:word16]
     uses: SCZO_28 = cond(ax_27)
-          ax_11 = PHI(ax_2, ax_27, ax_34)
+          ax_11 = PHI((ax_2, l0C00_0000), (ax_27, l0C00_000D), (ax_34, l0C00_0012))
 SCZO_28: orig: SCZO
     def:  SCZO_28 = cond(ax_27)
     uses: C_29 = (bool) SCZO_28 (alias)
@@ -107,11 +107,11 @@ Z_32: orig: Z
 si_33: orig: si
     def:  si_33 = Mem0[ds:0x0302:word16]
     uses: ax_34 = ax_11 + Mem0[ds:si_33 + 0x0004:word16]
-          si_10 = PHI(si, si_21, si_33)
+          si_10 = PHI((si, l0C00_0000), (si_21, l0C00_000D), (si_33, l0C00_0012))
 ax_34: orig: ax
     def:  ax_34 = ax_11 + Mem0[ds:si_33 + 0x0004:word16]
     uses: SCZO_35 = cond(ax_34)
-          ax_11 = PHI(ax_2, ax_27, ax_34)
+          ax_11 = PHI((ax_2, l0C00_0000), (ax_27, l0C00_000D), (ax_34, l0C00_0012))
 SCZO_35: orig: SCZO
     def:  SCZO_35 = cond(ax_34)
     uses: C_36 = (bool) SCZO_35 (alias)
@@ -176,8 +176,8 @@ l0C00_0012:
 	Z_39 = (bool) SCZO_35 (alias)
 	// succ:  l0C00_0019
 l0C00_0019:
-	si_10 = PHI(si, si_21, si_33)
-	ax_11 = PHI(ax_2, ax_27, ax_34)
+	si_10 = PHI((si, l0C00_0000), (si_21, l0C00_000D), (si_33, l0C00_0012))
+	ax_11 = PHI((ax_2, l0C00_0000), (ax_27, l0C00_000D), (ax_34, l0C00_0012))
 	SCZO_13 = cond(ax_11 - bx)
 	C_14 = (bool) SCZO_13 (alias)
 	SZO_15 = SCZO_13 (alias)

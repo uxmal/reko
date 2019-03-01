@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -76,25 +76,29 @@ namespace Reko.Arch.M68k
             {
                 writer.WriteOpcode(code.ToString());
             }
-            writer.Tab();
             if (op1 != null)
             {
+                writer.Tab();
                 WriteOperand(op1, writer, options);
                 if (op2 != null)
                 {
                     writer.WriteChar(',');
                     WriteOperand(op2, writer, options);
+                    if (op3 != null)
+                    {
+                        writer.WriteChar(',');
+                        WriteOperand(op3, writer, options);
+                    }
                 }
             }
         }
 
         private void WriteOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            var memOp = op as MemoryOperand;
-            if (memOp != null && memOp.Base == Registers.pc)
+            if (op is MemoryOperand memOp && memOp.Base == Registers.pc)
             {
                 var uAddr = Address.ToUInt32() + memOp.Offset.ToInt32();
-                var addr = Address.Ptr32((uint)uAddr);
+                var addr = Address.Ptr32((uint) uAddr);
                 if ((options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
                 {
                     writer.WriteAddress(addr.ToString(), addr);

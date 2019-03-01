@@ -4,6 +4,7 @@
 
 #include "TLCS-90.h"
 
+cu8 g_b0000 = 0x1A;
 byte g_b0001 = 0x00;
 byte g_a0823[] = 
 	{

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,13 +25,14 @@ using Reko.Core.Serialization;
 using Reko.Analysis;
 using Reko.UnitTests.Mocks;
 using Reko.UnitTests.TestCode;
+using Moq;
 using NUnit.Framework;
 using System;
 using System.Diagnostics;
 using System.IO;
-using Rhino.Mocks;
 using Reko.Core.Types;
 using Reko.Core.Expressions;
+using Reko.Core.Rtl;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -39,13 +40,11 @@ namespace Reko.UnitTests.Analysis
 	public class DataFlowAnalysisTests : AnalysisTestBase
 	{
 		private DataFlowAnalysis dfa;
-        private MockRepository mr;
         private string CSignature;
 
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
             this.CSignature = null;
             dfa = null;
             base.platform = null;
@@ -103,11 +102,10 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void DfaGlobalHandle()
 		{
-            Given_FakeWin32Platform(mr);
-            this.platform.Stub(p => p.ResolveImportByName(null, null)).IgnoreArguments().Return(null);
-            this.platform.Stub(p => p.DataTypeFromImportName(null)).IgnoreArguments().Return(null);
-            this.platform.Stub(p => p.ResolveIndirectCall(null)).IgnoreArguments().Return(null);
-            mr.ReplayAll();
+            Given_FakeWin32Platform();
+            this.platformMock.Setup(p => p.ResolveImportByName(It.IsAny<string>(), It.IsAny<string>())).Returns((Expression)null);
+            this.platformMock.Setup(p => p.DataTypeFromImportName(It.IsAny<string>())).Returns((Tuple<string,SerializedType,SerializedType>)null);
+            this.platformMock.Setup(p => p.ResolveIndirectCall(It.IsAny<RtlCall>())).Returns((Address)null);
             RunFileTest32("Fragments/import32/GlobalHandle.asm", "Analysis/DfaGlobalHandle.txt");
 		}
 
@@ -344,8 +342,7 @@ ProcedureBuilder_exit:
         protected override void RunTest(Program program, TextWriter writer)
 		{
             SetCSignatures(program);
-            IImportResolver importResolver = mr.Stub<IImportResolver>();
-            importResolver.Replay();
+            IImportResolver importResolver = new Mock<IImportResolver>().Object;
 			dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
 			dfa.AnalyzeProgram();
 			foreach (Procedure proc in program.Procedures.Values)

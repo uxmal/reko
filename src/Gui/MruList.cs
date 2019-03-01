@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -44,9 +45,9 @@ namespace Reko.Gui
 			get { return items; }
 		}
 
-		public void Load(string fileLocation)
+		public void Load(IFileSystemService fsSvc, string fileLocation)
 		{
-            if (!File.Exists(fileLocation))
+            if (!fsSvc.FileExists(fileLocation))
                 return;     // Save ourselves the pain of an exception.
 			try
 			{
@@ -65,9 +66,9 @@ namespace Reko.Gui
 			}
 		}
 
-		public void Save(string fileLocation)
+		public void Save(IFileSystemService fsSvc, string fileLocation)
 		{
-			using (var writer = new StreamWriter(fileLocation, false, new UTF8Encoding(false)))
+			using (var writer = fsSvc.CreateStreamWriter(fileLocation, false, new UTF8Encoding(false)))
 			{
 				foreach (string line in items)
 				{

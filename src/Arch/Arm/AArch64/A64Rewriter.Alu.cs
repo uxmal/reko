@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -434,6 +434,13 @@ namespace Reko.Arch.Arm.AArch64
                     break;
                 case Opcode.uxtw:
                     idx = ZeroExtend(64, PrimitiveType.UInt32, idx);
+                    break;
+                case Opcode.sxtx:
+                case Opcode.uxtx:
+                    if (mem.IndexShift != 0)
+                    {
+                        idx = m.Shl(idx, mem.IndexShift);
+                    }
                     break;
                 default:
                     throw new NotImplementedException($"Register extension {mem.IndexExtend} not implemented yet.");

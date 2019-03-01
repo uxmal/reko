@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,24 +24,18 @@ using Reko.Core.Expressions;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using NUnit.Framework;
-using Rhino.Mocks;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Reko.Core.Rtl;
+using Reko.Core.Serialization;
 
 namespace Reko.UnitTests.Analysis
 {
 	[TestFixture]
 	public class WebBuilderTests : AnalysisTestBase
 	{
-        private MockRepository mr;
-
-        [SetUp]
-        public void Setup()
-        {
-            mr = new MockRepository();
-        }
-
 		[Test]
 		public void WebNestedRepeats()
 		{
@@ -57,13 +51,12 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void WebGlobalHandle()
         {
-            Given_FakeWin32Platform(mr);
-            this.platform.Stub(p => p.ResolveImportByName(null, null)).IgnoreArguments().Return(null);
-            this.platform.Stub(p => p.DataTypeFromImportName(null)).IgnoreArguments().Return(null);
-            this.platform.Stub(p => p.ResolveIndirectCall(null)).IgnoreArguments().Return(null);
-            mr.ReplayAll();
+            Given_FakeWin32Platform();
+            this.platformMock.Setup(p => p.ResolveImportByName(It.IsAny<string>(), It.IsAny<string>())).Returns((Expression) null);
+            this.platformMock.Setup(p => p.DataTypeFromImportName(It.IsAny<string>())).Returns((Tuple<string, SerializedType, SerializedType>) null);
+            this.platformMock.Setup(p => p.ResolveIndirectCall(It.IsAny<RtlCall>())).Returns((Address) null);
 
-			RunFileTest32("Fragments/import32/GlobalHandle.asm", "Analysis/WebGlobalHandle.txt");
+            RunFileTest32("Fragments/import32/GlobalHandle.asm", "Analysis/WebGlobalHandle.txt");
 		}
 
 		[Test]
@@ -90,7 +83,7 @@ namespace Reko.UnitTests.Analysis
 
 				DeadCode.Eliminate(proc, ssa);
 
-				var vp = new ValuePropagator(program.SegmentMap, ssa, null, eventListener);
+				var vp = new ValuePropagator(program.SegmentMap, ssa, program.CallGraph, null, eventListener);
 				vp.Transform();
 
 				DeadCode.Eliminate(proc, ssa);
@@ -103,7 +96,7 @@ namespace Reko.UnitTests.Analysis
 				LiveCopyInserter lci = new LiveCopyInserter(proc, ssa.Identifiers);
 				lci.Transform();
 
-				WebBuilder web = new WebBuilder(proc, ssa.Identifiers, new Dictionary<Identifier,LinearInductionVariable>());
+				WebBuilder web = new WebBuilder(program, proc, ssa.Identifiers, new Dictionary<Identifier,LinearInductionVariable>(), eventListener);
 				web.Transform();
 
 				ssa.ConvertBack(false);

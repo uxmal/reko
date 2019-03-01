@@ -1,27 +1,35 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<image>
-  <variable address="0000">
-    <description>
-      | $0000 || 0 || Register || 6510 CPU's data direction I/O port register; 0 = input, 1 = output
-      |-
-      | rowspan="8" colspan ="3" |
-      | Bit 0 - Direction of I/O on port at bit 0 of address $0001; default = 1
-      |-
-      | Bit 1 - Direction of I/O on port at bit 1 of address $0001; default = 1
-      |-
-      | Bit 2 - Direction of I/O on port at bit 2 of address $0001; default = 1
-      |-
-      | Bit 3 - Direction of I/O on port at bit 3 of address $0001; default = 1
-      |-
-      | Bit 4 - Direction of I/O on port at bit 4 of address $0001; default = 0
-      |-
-      | Bit 5 - Direction of I/O on port at bit 5 of address $0001; default = 1
-      |-
-      | Bit 6 - Direction of I/O on port at bit 6 of address $0001; unused, as bit 6 of address $0001 is undefined
-      |-
-      | Bit 7 - Direction of I/O on port at bit 7 of address $0001; unused, as bit 7 of address $0001 is undefined
-    </description>
-  </variable>
+<?xml version="1.0" encoding="utf-8" ?>
+<memory xmlns="http://schemata.jklnet.org/Reko/v4">
+  <!-- References:
+    https://www.c64-wiki.com/wiki/Memory_Map 
+    http://unusedino.de/ec64/technical/aay/c64/
+    http://www.zimmers.net/anonftp/pub/cbm/c64/manuals/mapping-c64.txt.gz
+    -->
+  <segment name="zero_page" addr="0000" size="0100">
+    <description>Zero page</description>
+    <global name="IO_port_direction">
+      <!-- variable address="0000" -->
+      <description>
+        | $0000 || 0 || Register || 6510 CPU's data direction I/O port register; 0 = input, 1 = output
+        |-
+        | rowspan="8" colspan ="3" |
+        | Bit 0 - Direction of I/O on port at bit 0 of address $0001; default = 1
+        |-
+        | Bit 1 - Direction of I/O on port at bit 1 of address $0001; default = 1
+        |-
+        | Bit 2 - Direction of I/O on port at bit 2 of address $0001; default = 1
+        |-
+        | Bit 3 - Direction of I/O on port at bit 3 of address $0001; default = 1
+        |-
+        | Bit 4 - Direction of I/O on port at bit 4 of address $0001; default = 0
+        |-
+        | Bit 5 - Direction of I/O on port at bit 5 of address $0001; default = 1
+        |-
+        | Bit 6 - Direction of I/O on port at bit 6 of address $0001; unused, as bit 6 of address $0001 is undefined
+        |-
+        | Bit 7 - Direction of I/O on port at bit 7 of address $0001; unused, as bit 7 of address $0001 is undefined
+      </description>
+    </global>
 
   <variable address="0001">
     <description>
@@ -384,4 +392,10 @@
 </description></variable>
 <variable address="$00FF"><description> Temporary register for BASIC floating point to ASCII conversion
 </description></variable>
-</image>
+  </segment>
+
+  <segment name="stack_page" addr="0100" size="0100"></segment>
+
+  <segment name="os_data" addr="0200" size="0200"></segment>
+
+</memory>

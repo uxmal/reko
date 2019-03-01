@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,18 +18,14 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.CLanguage;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Environments.Windows;
-using Rhino.Mocks;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
 
 namespace Reko.UnitTests.Environments.Windows
 {
@@ -37,36 +33,30 @@ namespace Reko.UnitTests.Environments.Windows
     public class MsPrintfFormatParserTests
     {
         private MsPrintfFormatParser parser;
-        private MockRepository mr;
         private ServiceContainer sc;
-        private DecompilerEventListener eventListener;
+        private Mock<DecompilerEventListener> eventListener;
         private Program program;
 
         [SetUp]
         public void Setup()
         {
-            this.mr = new MockRepository();
             this.sc = new ServiceContainer();
-            this.eventListener = mr.Stub<DecompilerEventListener>();
-            this.sc.AddService(typeof(DecompilerEventListener), this.eventListener);
-            var arch = mr.Stub<IProcessorArchitecture>();
-            var platform = mr.Stub<IPlatform>();
-            arch.Stub(a => a.WordWidth).Return(PrimitiveType.Word32);
-            platform.Stub(p => p.Architecture).Return(arch);
-            platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Long)).Return(4);
-            platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Double)).Return(8);
-            platform.Stub(p => p.PointerType).Return(PrimitiveType.Ptr32);
-            this.program = new Program { Platform = platform };
+            this.eventListener = new Mock<DecompilerEventListener>();
+            this.sc.AddService(typeof(DecompilerEventListener), this.eventListener.Object);
+            var arch = new Mock<IProcessorArchitecture>();
+            var platform = new Mock<IPlatform>();
+            arch.Setup(a => a.WordWidth).Returns(PrimitiveType.Word32);
+            platform.Setup(p => p.Architecture).Returns(arch.Object);
+            platform.Setup(p => p.GetByteSizeFromCBasicType(CBasicType.Long)).Returns(4);
+            platform.Setup(p => p.GetByteSizeFromCBasicType(CBasicType.Double)).Returns(8);
+            platform.Setup(p => p.PointerType).Returns(PrimitiveType.Ptr32);
+            this.program = new Program { Platform = platform.Object };
         }
 
         private void ParseChar32(string formatString)
         {
-            mr.ReplayAll();
-
             this.parser = new MsPrintfFormatParser(program, Address.Ptr32(0x123400), formatString, sc);
             parser.Parse();
-
-            mr.VerifyAll();
         }
 
         [Test]

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,6 +56,7 @@ namespace Reko.ImageLoaders.Elf
         // Architecture-specific ABI's
         public const int ELFOSABI_ARM = 0x61;
         public const int ELFOSABI_CELL_LV2 = 0x66;     // PS/3 has this in its files
+        public const int ELFOSABI_STANDALONE = 0xFF;   // A GNU extension for the MSP.
 
         // Endianness
         public const byte ELFDATA2LSB = 1;
@@ -238,6 +239,7 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_XTENSA: arch = "xtensa"; break;
             case ElfMachine.EM_AVR: arch = "avr8"; break;
             case ElfMachine.EM_RISCV: arch = "risc-v"; break;
+            case ElfMachine.EM_MSP430: arch = "msp430"; break;
             case ElfMachine.EM_SH:
                 arch = endianness == ELFDATA2LSB ? "superH-le" : "superH-be";
                 // SuperH stack pointer is not defined by the architecture,
@@ -255,6 +257,7 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_S390: //$REVIEW: any pertinent differences?
                 arch = "zSeries";
                 break;
+
             default:
                 throw new NotSupportedException(string.Format("Processor format {0} is not supported.", machineType));
             }
@@ -272,37 +275,46 @@ namespace Reko.ImageLoaders.Elf
         {
             { ElfSymbolType.STT_FUNC, SymbolType.Procedure },
             { ElfSymbolType.STT_OBJECT, SymbolType.Data },
+            { ElfSymbolType.STT_NOTYPE, SymbolType.Unknown },
         };
 
         public ImageSymbol CreateImageSymbol(ElfSymbol sym, bool isExecutable)
         {
             if (!isExecutable && sym.SectionIndex > 0 && sym.SectionIndex >= Sections.Count)
                 return null;
-            if (!mpSymbolType.TryGetValue(sym.Type, out SymbolType st))
+            SymbolType? st = GetSymbolType(sym);
+            if (st == null || st.Value == SymbolType.Unknown)
                 return null;
-            if (sym.SectionIndex == 0)
-            {
-                if (st != SymbolType.Procedure)
-                    return null;
-                st = SymbolType.ExternalProcedure;
-            }
             // If this is a relocatable file, the symbol value is 
             // an offset from the section's virtual address. 
             // If this is an executable file, the symbol value is
             // the virtual address.
             var addr = isExecutable
                 ? platform.MakeAddressFromLinear(sym.Value)
-                : Sections[(int)sym.SectionIndex].Address + sym.Value;
+                : Sections[(int) sym.SectionIndex].Address + sym.Value;
 
             var dt = GetSymbolDataType(sym);
             var imgSym = ImageSymbol.Create(
-                st,
+                st.Value,
                 this.Architecture,
                 addr,
                 sym.Name,
                 dt);
             imgSym.ProcessorState = Architecture.CreateProcessorState();
             return imgSym;
+        }
+
+        public static SymbolType? GetSymbolType(ElfSymbol sym)
+        {
+            if (!mpSymbolType.TryGetValue(sym.Type, out var st))
+                return null;
+            if (sym.SectionIndex == 0)
+            {
+                if (st != SymbolType.Procedure && st != SymbolType.Unknown)
+                    return null;
+                st = SymbolType.ExternalProcedure;
+            }
+            return st;
         }
 
         private DataType GetSymbolDataType(ElfSymbol sym)
@@ -314,7 +326,7 @@ namespace Reko.ImageLoaders.Elf
             else if (sym.Size == 0)
             {
                 return new UnknownType();
-            }
+        }
             else
             {
                 return PrimitiveType.CreateWord(DataType.BitsPerByte * (int)sym.Size);
@@ -362,6 +374,7 @@ namespace Reko.ImageLoaders.Elf
             {
             case ELFOSABI_NONE: // Unspecified ABI
             case ELFOSABI_ARM:
+            case ELFOSABI_STANDALONE:
                 envName = "elf-neutral";
                 break;
             case ELFOSABI_CELL_LV2: // PS/3
@@ -439,8 +452,8 @@ namespace Reko.ImageLoaders.Elf
                 var imgSym = CreateImageSymbol(sym, isExecutable);
                 if (imgSym == null || imgSym.Address.ToLinear() == 0)
                     continue;
-                imgSymbols[imgSym.Address] = imgSym;
-            }
+                    imgSymbols[imgSym.Address] = imgSym;
+                }
             return imgSymbols;
         }
 
@@ -509,13 +522,19 @@ namespace Reko.ImageLoaders.Elf
                     {
                         ImageSymbol gotSym = CreateGotSymbol(addrGot, symbol.Name);
                         symbols[addrGot] = gotSym;
-                        Debug.Print("{0}+{1:X4}: Found GOT entry {2}, referring to symbol at {3}", 
+                        DebugEx.PrintIf(ElfImageLoader.trace.TraceVerbose, "{0}+{1:X4}: Found GOT entry {2}, referring to symbol at {3}", 
                             gotStart, addrGot-gotStart, gotSym, symbol);
-                        program.ImportReferences.Add(addrGot, new NamedImportReference(addrGot, null, symbol.Name));
+                            program.ImportReferences.Add(
+                                addrGot, 
+                                new NamedImportReference(
+                                    addrGot, 
+                                    null, 
+                                    symbol.Name,
+                                    symbol.Type));
+                        }
                     }
                 }
             }
-        }
 
         public ImageSymbol CreateGotSymbol(Address addrGot, string name)
         {
@@ -636,14 +655,14 @@ namespace Reko.ImageLoaders.Elf
             {
                 symList = new Dictionary<int, ElfSymbol>();
                 Symbols.Add(offSymtab, symList);
-        }
+            }
             if (!symList.TryGetValue(i, out var sym))
-        {
+            {
                 sym = LoadSymbol(offSymtab, (ulong)i, symentrysize, offStrtab);
                 symList.Add(i, sym);
             }
             return sym;
-        }
+            }
 
         protected bool IsLoadable(ulong p_pmemsz, ProgramHeaderType p_type)
         {
@@ -679,7 +698,7 @@ namespace Reko.ImageLoaders.Elf
             while (bytes[u] != 0)
             {
                 ++u;
-            }
+        }
             return Encoding.ASCII.GetString(bytes, (int) fileOffset, u - (int) fileOffset);
         }
 
@@ -722,7 +741,7 @@ namespace Reko.ImageLoaders.Elf
             sb.Append((flags & 2) != 0 ? 'w' : '-');
             sb.Append((flags & 1) != 0 ? 'x' : '-');
             return sb.ToString();
-        }
+    }
     }
 
     public class ElfLoader64 : ElfLoader
@@ -885,7 +904,7 @@ namespace Reko.ImageLoaders.Elf
         }
 
         public override IEnumerable<ElfDynamicEntry> GetDynamicEntries(ulong offsetDynamic)
-        {
+            {
             var rdr = imgLoader.CreateReader(offsetDynamic);
             for (; ; )
             {
@@ -1152,13 +1171,13 @@ namespace Reko.ImageLoaders.Elf
                 symbols.Add(
                     (int)i,
                     new ElfSymbol
-                    {
-                        Name = RemoveModuleSuffix(ReadAsciiString(stringtableSection.FileOffset + sym.st_name)),
-                        Type = (ElfSymbolType)(sym.st_info & 0xF),
-                        SectionIndex = sym.st_shndx,
-                        Value = sym.st_value,
-                        Size = sym.st_size,
-                    });
+                {
+                    Name = RemoveModuleSuffix(ReadAsciiString(stringtableSection.FileOffset + sym.st_name)),
+                    Type = (ElfSymbolType)(sym.st_info & 0xF),
+                    SectionIndex = sym.st_shndx,
+                    Value = sym.st_value,
+                    Size = sym.st_size,
+                });
             }
             return symbols;
         }
@@ -1203,10 +1222,10 @@ namespace Reko.ImageLoaders.Elf
                     return addr - ph.p_vaddr;
             }
             return ~0ul;
-        }
+            }
 
         public override Address ComputeBaseAddress(IPlatform platform)
-        {
+                {
             if (Segments.Count == 0)
                 return Address.Ptr32(0);
 
@@ -1214,12 +1233,12 @@ namespace Reko.ImageLoaders.Elf
                 Segments
                 .Where(ph => ph.p_filesz > 0)
                 .Min(ph => (uint)ph.p_vaddr));
-        }
+                }
 
         public override Address CreateAddress(ulong uAddr)
-        {
+            {
             return Address.Ptr32((uint)uAddr);
-        }
+            }
 
 
         public override ElfObjectLinker CreateLinker()
@@ -1234,6 +1253,7 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_386: return new x86Relocator(this, imageSymbols);
             case ElfMachine.EM_ARM: return new ArmRelocator(this, imageSymbols);
             case ElfMachine.EM_MIPS: return new MipsRelocator(this, imageSymbols);
+            case ElfMachine.EM_MSP430: return new Msp430Relocator(this, imageSymbols);
             case ElfMachine.EM_PPC: return new PpcRelocator(this, imageSymbols);
             case ElfMachine.EM_SPARC32PLUS:
             case ElfMachine.EM_SPARC: return new SparcRelocator(this, imageSymbols);
@@ -1337,7 +1357,7 @@ namespace Reko.ImageLoaders.Elf
             }
 
         public override IEnumerable<ElfDynamicEntry> GetDynamicEntries(ulong offsetDynamic)
-        {
+            {
             var rdr = imgLoader.CreateReader(offsetDynamic);
             for (; ; )
             {
@@ -1429,7 +1449,7 @@ namespace Reko.ImageLoaders.Elf
                         rawImage,
                         (long)ph.p_offset, mem.Bytes,
                         vaddr - mem.BaseAddress, (long)ph.p_filesz);
-                }
+            }
             }
             var segmentMap = new SegmentMap(addrPreferred);
             if (Sections.Count > 0)

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,18 +18,15 @@
  */
 #endregion
 
-using Reko.Gui;
-using Reko.Gui.Controls;
-using Reko.Gui.Design;
+using Moq;
+using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Types;
-using NUnit.Framework;
-using Rhino.Mocks;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Reko.Gui;
+using Reko.Gui.Design;
 using Reko.UnitTests.Mocks;
+using System;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Gui.Design
 {
@@ -37,14 +34,13 @@ namespace Reko.UnitTests.Gui.Design
     public class ProcedureDesignerTests
     {
         private MockRepository mr;
-        private IServiceProvider services;
+        private ServiceContainer services;
         private Program program;
 
         [SetUp]
         public void Setup()
         {
-            this.mr = new MockRepository();
-            this.services = mr.StrictMock<IServiceProvider>();
+            this.services = new ServiceContainer();
             this.program = new Program
             {
                 Architecture = new FakeArchitecture()
@@ -53,7 +49,7 @@ namespace Reko.UnitTests.Gui.Design
 
         private void Given_Service<T>(T svc)
         {
-            services.Stub(s => s.GetService(typeof(T))).Return(svc);
+            services.AddService<T>(svc);
         }
 
         [Test]
@@ -62,14 +58,13 @@ namespace Reko.UnitTests.Gui.Design
             var proc = new Procedure(program.Architecture, "foo", Address.Ptr32(0x001100000),  new Frame(PrimitiveType.Ptr32));
             var des = new ProcedureDesigner(program, proc, null, proc.EntryAddress, false);
             des.Services = services;
-            var codeSvc = mr.StrictMock<ICodeViewerService>();
-            Given_Service<ICodeViewerService>(codeSvc);
-            codeSvc.Expect(c => c.DisplayProcedure(program, proc, true));
-            mr.ReplayAll();
+            var codeSvc = new Mock<ICodeViewerService>();
+            Given_Service<ICodeViewerService>(codeSvc.Object);
+            codeSvc.Setup(c => c.DisplayProcedure(program, proc, true)).Verifiable();
 
             des.DoDefaultAction();
 
-            mr.VerifyAll();
+            codeSvc.VerifyAll();
         }
     }
 }

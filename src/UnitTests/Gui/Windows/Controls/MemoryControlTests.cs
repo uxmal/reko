@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,11 +18,10 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.UserInterfaces.WindowsForms.Controls;
-using Rhino.Mocks;
-using System;
 using System.Collections;
 using System.ComponentModel.Design;
 using System.Drawing;
@@ -31,7 +30,7 @@ using System.Windows.Forms;
 
 namespace Reko.UnitTests.Gui.Windows.Controls
 {
-	[TestFixture]
+    [TestFixture]
     [Category(Categories.UserInterface)]
     public class MemoryControlTests
 	{
@@ -81,17 +80,17 @@ namespace Reko.UnitTests.Gui.Windows.Controls
         [Test]
         public void MemCtl_ChangeSelection_RaisesSelectionServiceEvent()
         {
-            var selSvc = MockRepository.GenerateStub<ISelectionService>();
-            selSvc.Expect(s => s.SetSelectedComponents(
-                Arg<ICollection>.Matches(c => ExpectedRange(c, 0x10, 0x10))));
-            selSvc.Replay();
-            sc.AddService<ISelectionService>(selSvc);
+            var selSvc = new Mock<ISelectionService>();
+            selSvc.Setup(s => s.SetSelectedComponents(
+                It.Is<ICollection>(c => ExpectedRange(c, 0x10, 0x10))))
+                .Verifiable();
+            sc.AddService<ISelectionService>(selSvc.Object);
 
             memctl.Services = sc;
-            selSvc.SelectionChanged += delegate { };
+            selSvc.Object.SelectionChanged += delegate { };
             memctl.SelectedAddress = Address.Ptr32(0x10);
 
-            selSvc.VerifyAllExpectations();
+            selSvc.VerifyAll();
         }
 
         private bool ExpectedRange(ICollection c, ulong uAddrBegin, ulong uAddrEnd)

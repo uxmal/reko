@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@ namespace Reko.Core
 			inQ = new HashSet<T>();
 		}
 
-		public WorkList(ICollection<T> coll)
+		public WorkList(IEnumerable<T> coll)
 		{
 			q = new Queue<T>(coll);
 			inQ = new HashSet<T>(coll);

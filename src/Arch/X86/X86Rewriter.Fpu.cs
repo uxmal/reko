@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -365,6 +365,17 @@ namespace Reko.Arch.X86
                 FpuRegister(0),
                 host.PseudoProcedure("scalbn", PrimitiveType.Real64, FpuRegister(0), FpuRegister(1)));
         }
+
+        // 8087 status register bits:
+        // bit 8: C0
+        // bit 9: C1
+        // bit 10: C2
+        // bit 14: C3
+        // 8086 flag register bits:
+        // bit 0: CF
+        // bit 1: RESERVED
+        // bit 2: PF
+        // bit 6: ZF
 
         private void RewriteFstsw()
         {

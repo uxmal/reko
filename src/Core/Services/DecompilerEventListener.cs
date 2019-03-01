@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,6 +48,7 @@ namespace Reko.Core.Services
 
         void ShowStatus(string caption);
         void ShowProgress(string caption, int numerator, int denominator);
+        void Advance(int count);
         bool IsCanceled();
     }
 
@@ -118,6 +119,10 @@ namespace Reko.Core.Services
         public void ShowProgress(string caption, int numerator, int denominator)
         {
             //$TODO: show progress
+        }
+
+        public void Advance(int advance)
+        {
         }
 
         public ICodeLocation CreateAddressNavigator(Program program, Address address)

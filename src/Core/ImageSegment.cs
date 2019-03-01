@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@ using System.ComponentModel;
 namespace Reko.Core
 {
 	/// <summary>
-	/// Represent a segment of memory, corresponding to an 16-bit segment for
+	/// Represents a segment of memory, corresponding to an 16-bit segment for
     /// x86 real and protected modes, and sections of executable files for for
     /// flat processor modes.
 	/// </summary>
@@ -33,6 +33,7 @@ namespace Reko.Core
 	public class ImageSegment
 	{
         private uint ctSize;
+
         /// <summary>
         /// Use this constructor when the segment shares the MemoryArea with
         /// other segments.
@@ -44,7 +45,7 @@ namespace Reko.Core
 		public ImageSegment(string name, Address addr, MemoryArea mem, AccessMode access) : base() 
 		{
 			if (name == null)
-				throw new ArgumentNullException("name", "Segments must have names.");
+				throw new ArgumentNullException(nameof(name), "Segments must have names.");
 			this.Name = name;
             this.Address = addr ?? throw new ArgumentException(nameof(addr));
             this.MemoryArea = mem ?? throw new ArgumentNullException(nameof(mem));
@@ -54,22 +55,12 @@ namespace Reko.Core
 		public ImageSegment(string name, Address addr, uint size, AccessMode access)
 		{
 			if (name == null)
-				throw new ArgumentNullException("name", "Segments must have names.");
+				throw new ArgumentNullException(nameof(name), "Segments must have names.");
             this.Name = name;
             this.Size = size;
             this.Address = addr ?? throw new ArgumentNullException(nameof(addr));
 			this.Access = access;
 		}
-
-        public ImageSegment(string name, Address addr, long size, AccessMode access)
-        {
-            if (name == null)
-                throw new ArgumentNullException("name", "Segments must have names.");
-            this.Name = name;
-            this.Size = (uint) size;
-            this.Address = addr ?? throw new ArgumentNullException(nameof(addr));
-            this.Access = access;
-        }
 
         /// <summary>
         /// Use this constructor when the segment's memory area is completely 
@@ -82,7 +73,7 @@ namespace Reko.Core
         public ImageSegment(string name, MemoryArea mem, AccessMode access)
         {
             if (name == null)
-                throw new ArgumentNullException("name", "Segments must have names.");
+                throw new ArgumentNullException(nameof(name), "Segments must have names.");
             this.Name = name;
             this.MemoryArea = mem ?? throw new ArgumentNullException(nameof(mem));
             this.Size = (uint)mem.Length;
@@ -120,6 +111,11 @@ namespace Reko.Core
 
 		public string Name { get; set; }
 
+        //$TODO: remove this property. EndAddress becomes undefined when
+        // the segment base address + size hit the end of the address space.
+        // E.g. a Z80 ROM program whose base adress is 0xFF00 and whose size
+        // is 0x100 would have an end address of 0xFF00 + 0x100 = 0x10000,
+        // which can't be represented as a Address16.
         public Address EndAddress { get { return Address + ContentSize; } }
 
         public bool IsDiscardable { get; set; }

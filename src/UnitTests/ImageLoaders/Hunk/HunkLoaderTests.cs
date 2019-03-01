@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Arch.M68k;
 using Reko.Core;
@@ -25,7 +26,6 @@ using Reko.Core.Configuration;
 using Reko.Core.Services;
 using Reko.Environments.AmigaOS;
 using Reko.ImageLoaders.Hunk;
-using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -37,35 +37,33 @@ namespace Reko.UnitTests.ImageLoaders.Hunk
     public class HunkLoaderTests
     {
         private HunkMaker mh;
-        private MockRepository mr;
         private ServiceContainer sc;
 
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
             mh = new HunkMaker();
-            var cfgSvc = mr.Stub<IConfigurationService>();
-            var opEnv = mr.Stub<OperatingEnvironment>();
-            var tlSvc = mr.Stub<ITypeLibraryLoaderService>();
-            cfgSvc.Stub(c => c.GetEnvironment("amigaOS")).Return(opEnv);
-            cfgSvc.Stub(c => c.GetArchitecture("m68k")).Return(new M68kArchitecture("m68k"));
-            opEnv.Stub(o => o.Load(null, null))
-                .IgnoreArguments()
-                .Do(new Func<IServiceProvider, IProcessorArchitecture, IPlatform>((sp, arch) =>
-                new AmigaOSPlatform(sp, arch)));
-            opEnv.Stub(o => o.TypeLibraries).Return(new List<ITypeLibraryElement>());
-            opEnv.Stub(o => o.CharacteristicsLibraries).Return(new List<ITypeLibraryElement>());
+            var cfgSvc = new Mock<IConfigurationService>();
+            var opEnv = new Mock<OperatingEnvironment>();
+            var tlSvc = new Mock<ITypeLibraryLoaderService>();
+            cfgSvc.Setup(c => c.GetEnvironment("amigaOS")).Returns(opEnv.Object);
+            cfgSvc.Setup(c => c.GetArchitecture("m68k")).Returns(new M68kArchitecture("m68k"));
+            opEnv.Setup(o => o.Load(
+                It.IsAny<IServiceProvider>(),
+                It.IsAny<IProcessorArchitecture>()))
+                .Returns((IServiceProvider sp, IProcessorArchitecture arch) =>
+                    new AmigaOSPlatform(sp, arch));
+            opEnv.Setup(o => o.TypeLibraries).Returns(new List<ITypeLibraryElement>());
+            opEnv.Setup(o => o.CharacteristicsLibraries).Returns(new List<ITypeLibraryElement>());
             sc = new ServiceContainer();
-            sc.AddService<IConfigurationService>(cfgSvc);
-            sc.AddService<ITypeLibraryLoaderService>(tlSvc);
+            sc.AddService<IConfigurationService>(cfgSvc.Object);
+            sc.AddService<ITypeLibraryLoaderService>(tlSvc.Object);
         }
 
 
         [Test]
         public void Hunk_LoadFile()
         {
-            mr.ReplayAll();
             var bytes = File.ReadAllBytes(
                 FileUnitTester.MapTestPath("../../subjects/Hunk-m68k/FIBO"));
             var ldr = new HunkLoader(sc, "FIBO", bytes);
@@ -75,7 +73,6 @@ namespace Reko.UnitTests.ImageLoaders.Hunk
         [Test]
         public void Hunk_LoadEmpty()
         {
-            mr.ReplayAll();
             var bytes = mh.MakeBytes(
                 HunkType.HUNK_HEADER,
                 "",
@@ -92,7 +89,6 @@ namespace Reko.UnitTests.ImageLoaders.Hunk
         [Test]
         public void Hunk_LoadCode()
         {
-            mr.ReplayAll();
             var bytes = mh.MakeBytes(
                 HunkType.HUNK_HEADER,
                 "CODE",

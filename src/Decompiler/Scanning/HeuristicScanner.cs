@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -91,7 +91,7 @@ namespace Reko.Scanning
                     dasm.ScanRange(range.Item1,
                         range.Item2,
                         range.Item3,
-                        range.Item3.ToLinear() - range.Item2.ToLinear());
+                        range.Item3);
                 }
                 catch (AddressCorrelatedException aex)
                 {
@@ -197,7 +197,7 @@ namespace Reko.Scanning
         private void AddBlocks(HeuristicProcedure hproc)
         {
             var name = program.NamingPolicy.ProcedureName(hproc.BeginAddress);
-            var proc = new Procedure(program.Architecture, name, hproc.BeginAddress, hproc.Frame);
+            var proc = Procedure.Create(program.Architecture, name, hproc.BeginAddress, hproc.Frame);
             foreach (var block in hproc.Cfg.Nodes.Where(bb => bb.Instructions.Count > 0))
             {
                 var last = block.Instructions.Last();
@@ -220,7 +220,7 @@ namespace Reko.Scanning
         /// been identified as code/data yet.
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<Tuple<MemoryArea, Address, Address>> FindUnscannedRanges()
+        public IEnumerable<Tuple<MemoryArea, Address, uint>> FindUnscannedRanges()
         {
             return this.program.ImageMap.Items
                 .Where(de => de.Value.DataType is UnknownType)
@@ -228,7 +228,7 @@ namespace Reko.Scanning
                 .Where(tup => tup != null);
         }
 
-        private Tuple<MemoryArea, Address, Address> CreateUnscannedArea(KeyValuePair<Address, ImageMapItem> de)
+        private Tuple<MemoryArea, Address, uint> CreateUnscannedArea(KeyValuePair<Address, ImageMapItem> de)
         {
             if (!this.program.SegmentMap.TryFindSegment(de.Key, out var seg))
                 return null;
@@ -237,7 +237,7 @@ namespace Reko.Scanning
             return Tuple.Create(
                 seg.MemoryArea,
                 de.Key,
-                de.Key + de.Value.Size);
+                de.Value.Size);
         }
 
         /// <summary>

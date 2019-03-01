@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,12 +28,12 @@ namespace Reko.Arch.Mos6502
     [Flags]
     public enum FlagM
     {
-        NF = 1,
-        VF = 2,
-        CF = 4,
-        ZF = 8,
-        IF = 16,
-        DF = 32,
-        BF = 64,
+        CF = 1,
+        ZF = 2,
+        IF = 4,
+        DF = 8,
+        BF = 16,
+        VF = 64,
+        NF = 128,
     }
 }

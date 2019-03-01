@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -232,7 +232,7 @@ namespace Reko.Analysis
             //}
             u = UseGrfConditionally(sidGrf, ConditionCode.ULT);
             if (c != null)
-                c.Expression = u;
+                binUse.Right = new Cast(c.DataType, u);
             else
                 binUse.Right = u;
             sidGrf.Uses.Remove(useStm);
@@ -324,12 +324,20 @@ namespace Reko.Analysis
         // 1'. a_2 = slice(tmp3,16)
         // 2'. b_2 = (cast) tmp3
         // 4.  flags_3 = cond(b_2)
+
         private Instruction TransformRorC(Application rorc, Assignment a)
         {
             var sidOrigLo = ssaIds[a.Dst];
             var sidCarry = ssaIds[(Identifier)rorc.Arguments[2]];
             if (!(sidCarry.DefExpression is ConditionOf cond))
-                return a;
+            {
+                if (!(sidCarry.DefExpression is Identifier idTmp))
+                    return a;
+                var sidT = ssaIds[idTmp];
+                if (!(sidT.DefExpression is ConditionOf cond2))
+                    return a;
+                cond = cond2;
+            }
             if (!(cond.Expression is Identifier condId))
                 return a;
             var sidOrigHi = ssaIds[condId];
@@ -416,7 +424,7 @@ namespace Reko.Analysis
 			BinaryOperator cmpOp = null;
 			if (isNegated)
 			{
-				cc = Negate(cc);
+				cc = cc.Invert();
 			}
             bool isReal = (bin.DataType is PrimitiveType p && p.Domain == Domain.Real);
             switch (cc)
@@ -437,7 +445,12 @@ namespace Reko.Analysis
 				return ComparisonFromOverflow(bin, isNegated);
 			case ConditionCode.NO:
 				return ComparisonFromOverflow(bin, !isNegated);
-			default: throw new NotImplementedException(string.Format("Case {0} not handled.", cc));
+            case ConditionCode.IS_NAN:
+                return OrderedComparison(bin,false);
+            case ConditionCode.NOT_NAN:
+                return OrderedComparison(bin, true);
+
+            default: throw new NotImplementedException(string.Format("Case {0} not handled.", cc));
 			}
 
 			Expression e;
@@ -483,25 +496,28 @@ namespace Reko.Analysis
 			return e;
 		}
 		
-		public static ConditionCode Negate(ConditionCode cc)
-		{
-			switch (cc)
-			{
-			case ConditionCode.UGT: return ConditionCode.ULE;
-			case ConditionCode.ULE: return ConditionCode.UGT;
-			case ConditionCode.ULT: return ConditionCode.UGE;
-			case ConditionCode.GT:  return ConditionCode.LE; 
-			case ConditionCode.GE:  return ConditionCode.LT; 
-			case ConditionCode.LT:  return ConditionCode.GE; 
-			case ConditionCode.LE:  return ConditionCode.GT; 
-			case ConditionCode.UGE: return ConditionCode.ULT;
-			case ConditionCode.NE:  return ConditionCode.EQ; 
-			case ConditionCode.EQ:  return ConditionCode.NE; 
-			case ConditionCode.SG:  return ConditionCode.GE; 
-			case ConditionCode.NS:  return ConditionCode.LT; 
-			default: throw new ArgumentException(string.Format("Don't know how to negate ConditionCode.{0}.",  cc), "cc");
-			}
-		}
+        /// <summary>
+        /// Generate a comparison using the standard C
+        /// "isunordered" function. 
+        /// </summary>
+        public Expression OrderedComparison(BinaryExpression bin, bool isNegated)
+        {
+            var sig = new FunctionType(
+                new Identifier("", PrimitiveType.Bool, null),
+                new Identifier("x", bin.DataType, null),
+                new Identifier("y", bin.DataType, null));
+            Expression e = m.Fn(
+                new ProcedureConstant(
+                    platform.PointerType,
+                    new PseudoProcedure("isunordered", sig)),
+                bin.Left,
+                bin.Right);
+            if (isNegated)
+            {
+                e = m.Not(e);
+            }
+            return e;
+        }
 
 		private void Use(Expression expr, Statement stm)
 		{

@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@ using Reko.Core;
 using Reko.Core.Assemblers;
 using Reko.Assemblers.Pdp11;
 using NUnit.Framework;
-using Rhino.Mocks;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -34,7 +34,6 @@ namespace Reko.UnitTests.Assemblers.Pdp11
     [TestFixture]
     public class Pdp11TextAssemblerTests
     {
-        private MockRepository mr;
         private Pdp11TextAssembler asm;
         private IEmitter emitter;
         private Program ldr;
@@ -43,7 +42,6 @@ namespace Reko.UnitTests.Assemblers.Pdp11
         [SetUp]
         public void Setup()
         {
-            this.mr = new MockRepository();
             this.emitter = new Emitter();
             this.asm = new Pdp11TextAssembler(emitter);
         }

@@ -6,7 +6,7 @@ wLoc02_4: orig: wLoc02
 bp_5: orig: bp
 bx_6: orig: bx
     def:  bx_6 = 0x0000
-    uses: bx_22 = PHI(bx_6, bx_24)
+    uses: bx_22 = PHI((bx_6, l0C00_000C), (bx_24, l0C00_000E))
 wArg04:Stack +0004
     def:  def wArg04
     uses: branch wArg04 <= 0x0000 l0C00_0015
@@ -19,7 +19,7 @@ C_11: orig: C
 ax_12: orig: ax
 C_13: orig: C
 bx_14: orig: bx
-    def:  bx_14 = PHI(bx_24, bx_30)
+    def:  bx_14 = PHI((bx_24, l0C00_0012), (bx_30, l0C00_0015))
     uses: Mem17[ds:0x0300:word16] = bx_14
 SCZO_15: orig: SCZO
 cx_16: orig: cx
@@ -32,23 +32,23 @@ bp_19: orig: bp
 sp_20: orig: sp
 cx_21: orig: cx
     def:  cx_21 = wArg04
-    uses: cx_23 = PHI(cx_21, cx_26)
+    uses: cx_23 = PHI((cx_21, l0C00_000C), (cx_26, l0C00_000E))
 bx_22: orig: bx
-    def:  bx_22 = PHI(bx_6, bx_24)
+    def:  bx_22 = PHI((bx_6, l0C00_000C), (bx_24, l0C00_000E))
     uses: bx_24 = bx_22 + cx_23
 cx_23: orig: cx
-    def:  cx_23 = PHI(cx_21, cx_26)
+    def:  cx_23 = PHI((cx_21, l0C00_000C), (cx_26, l0C00_000E))
     uses: bx_24 = bx_22 + cx_23
           cx_26 = cx_23 - 0x0001
 bx_24: orig: bx
     def:  bx_24 = bx_22 + cx_23
-    uses: bx_22 = PHI(bx_6, bx_24)
-          bx_14 = PHI(bx_24, bx_30)
+    uses: bx_22 = PHI((bx_6, l0C00_000C), (bx_24, l0C00_000E))
+          bx_14 = PHI((bx_24, l0C00_0012), (bx_30, l0C00_0015))
 SCZO_25: orig: SCZO
 cx_26: orig: cx
     def:  cx_26 = cx_23 - 0x0001
     uses: branch cx_26 != 0x0000 l0C00_000E
-          cx_23 = PHI(cx_21, cx_26)
+          cx_23 = PHI((cx_21, l0C00_000C), (cx_26, l0C00_000E))
 ax_27: orig: ax
     def:  ax_27 = -wArg04
     uses: bx_30 = ax_27
@@ -56,7 +56,7 @@ SCZO_28: orig: SCZO
 C_29: orig: C
 bx_30: orig: bx
     def:  bx_30 = ax_27
-    uses: bx_14 = PHI(bx_24, bx_30)
+    uses: bx_14 = PHI((bx_24, l0C00_0012), (bx_30, l0C00_0015))
 cx:cx
 // fn0C00_0000
 // Return size: 0
@@ -73,8 +73,8 @@ l0C00_000C:
 	cx_21 = wArg04
 	// succ:  l0C00_000E
 l0C00_000E:
-	bx_22 = PHI(bx_6, bx_24)
-	cx_23 = PHI(cx_21, cx_26)
+	bx_22 = PHI((bx_6, l0C00_000C), (bx_24, l0C00_000E))
+	cx_23 = PHI((cx_21, l0C00_000C), (cx_26, l0C00_000E))
 	bx_24 = bx_22 + cx_23
 	cx_26 = cx_23 - 0x0001
 	branch cx_26 != 0x0000 l0C00_000E
@@ -87,7 +87,7 @@ l0C00_0015:
 	bx_30 = ax_27
 	// succ:  l0C00_0019
 l0C00_0019:
-	bx_14 = PHI(bx_24, bx_30)
+	bx_14 = PHI((bx_24, l0C00_0012), (bx_30, l0C00_0015))
 	Mem17[ds:0x0300:word16] = bx_14
 	return
 	// succ:  fn0C00_0000_exit

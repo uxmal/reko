@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1353,6 +1353,14 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        [Ignore("Make this work")]
+        public void ArmDasm_f2c14e3e()
+        {
+            Disassemble32(0xF2C14E3E);
+            Expect_Code("@@@");
+        }
+
+        [Test]
         public void ArmDasm_wfe_eq()
         {
             Disassemble32(0x03200002);
@@ -1387,7 +1395,6 @@ namespace Reko.UnitTests.Arch.Arm
             Disassemble32(0x01FF4EF7);
             Expect_Code("Invalid");
         }
-
 
         [Test]
         public void ArmDasm_shsub8_vs()

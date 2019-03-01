@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -130,7 +130,7 @@ namespace Reko.UnitTests.Arch.Intel
 
             public RewriterHost(Dictionary<Address, ImportReference> importThunks)
             {
-                this.importThunks = importThunks;
+                this.importThunks = importThunks ?? new Dictionary<Address, ImportReference>();
                 this.ppp = new Dictionary<string, PseudoProcedure>();
             }
 
@@ -162,6 +162,12 @@ namespace Reko.UnitTests.Arch.Intel
                     args);
             }
 
+            public IProcessorArchitecture GetArchitecture(string archLabel)
+            {
+                throw new NotImplementedException();
+            }
+
+
             public FunctionType GetCallSignatureAtAddress(Address addrCallInstruction)
             {
                 throw new NotImplementedException();
@@ -169,7 +175,7 @@ namespace Reko.UnitTests.Arch.Intel
 
             public Expression GetImport(Address addrThunk, Address addrInstruction)
             {
-                throw new NotImplementedException();
+                return null;
             }
 
             public ExternalProcedure GetImportedProcedure(IProcessorArchitecture arch, Address addrThunk, Address addrInstruction)
@@ -1431,14 +1437,14 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void X86rw_cmpxchg()
+        public void X86rw_cmpxchg_byte()
         {
             Run32bitTest(0xF0, 0x0F, 0xB0, 0x23); // lock cmpxchg[ebx], ah
             AssertCode(
                 "0|L--|10000000(1): 1 instructions",
                 "1|L--|__lock()",
                 "2|L--|10000001(3): 1 instructions",
-                "3|L--|Z = __cmpxchg(Mem0[ebx:byte], ah, eax, out eax)");
+                "3|L--|Z = __cmpxchg(Mem0[ebx:byte], ah, al, out al)");
         }
 
         [Test]
@@ -1859,7 +1865,7 @@ namespace Reko.UnitTests.Arch.Intel
             Run64bitTest(0x41, 0x0F, 0x18, 0x08); // prefetch
             AssertCode(
                 "0|L--|0000000140000000(4): 1 instructions",
-                "1|L--|__prefetcht0(Mem0[rax:byte])");
+                "1|L--|__prefetcht0(Mem0[r8:byte])");
         }
 
         [Test]
@@ -2150,23 +2156,22 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        [Ignore("How to deal with unordered comparisons?? Is IsNan enough?")]
         public void X86rw_fcmovnu()
         {
             Run32bitTest(0xDB, 0xD9);    // fcmovnu\tst(0),st(1)
             AssertCode(
-                "0|L--|10000000(4): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|10000000(2): 2 instructions",
+                "1|T--|if (Test(IS_NAN,P)) branch 10000002",
+                "2|L--|rArg0 = rArg1");
         }
 
         [Test]
-        [Ignore("How to deal with unordered comparisons?? Is IsNan enough?")]
         public void X86rw_fcmovu()
         {
             Run32bitTest(0xDA, 0xD9);    // fcmovu\tst(0),st(1)
             AssertCode(
-                "0|L--|10000000(4): 1 instructions",
-                "1|L--|if (IsNan(P) branch 100000002",
+                "0|L--|10000000(2): 2 instructions",
+                "1|T--|if (Test(NOT_NAN,P)) branch 10000002",
                 "2|L--|rArg0 = rArg1");
         }
 
@@ -3119,7 +3124,7 @@ namespace Reko.UnitTests.Arch.Intel
             Run32bitTest(0xDA, 0xDD);	// fcmovu	st(0),st(5)
             AssertCode(
                 "0|L--|10000000(2): 2 instructions",
-                "1|T--|if (Test(EQ,Z)) branch 10000002",
+                "1|T--|if (Test(NOT_NAN,P)) branch 10000002",
                 "2|L--|rArg0 = rArg5");
         }
 
@@ -3149,7 +3154,7 @@ namespace Reko.UnitTests.Arch.Intel
             Run32bitTest(0xDB, 0xD9);	// fcmovnu	st(0),st(1)
             AssertCode(
                 "0|L--|10000000(2): 2 instructions",
-                "1|T--|if (Test(EQ,Z)) branch 10000002",
+                "1|T--|if (Test(IS_NAN,P)) branch 10000002",
                 "2|L--|rArg0 = rArg1");
         }
 
@@ -3432,13 +3437,81 @@ namespace Reko.UnitTests.Arch.Intel
                  "1|L--|Mem0[rcx:word16] = __sldt()");
         }
 
+
         [Test]
         public void X86Rw_minpd()
         {
             Run64bitTest(0x66, 0x0F, 0x5D, 0x42, 0x42); // minpd\txmm0,[rdx+42]
-            AssertCode(                "0|L--|0000000140000000(5): 3 instructions",                "1|L--|v4 = xmm0",
+            AssertCode(
+                "0|L--|0000000140000000(5): 3 instructions",
+                "1|L--|v4 = xmm0",
                 "2|L--|v5 = Mem0[rdx + 0x0000000000000042:word128]",
                 "3|L--|xmm0 = __minpd(v4, v5)");
+        }
+
+        [Test]
+        public void X86Rw_sgdt()
+        {
+            Run32bitTest(0x0F, 0x01, 0x00);	// sgdt	[eax]
+            AssertCode(
+                "0|S--|10000000(3): 1 instructions",
+                "1|L--|Mem0[eax:word48] = __sgdt()");
+        }
+
+        [Test]
+        public void X86Rw_sidt()
+        {
+            Run32bitTest(0x0F, 0x01, 0x8A, 0x86, 0x04, 0x05, 0x00);	// sidt	[edx+00050486]
+            AssertCode(
+                "0|S--|10000000(7): 1 instructions",
+                "1|L--|Mem0[edx + 0x00050486:word48] = __sidt()");
+        }
+
+        [Test]
+        public void X86Rw_lldt()
+        {
+            Run32bitTest(0x0F, 0x00, 0x55, 0x8D);	// lldt	word ptr [ebp-73]
+            AssertCode(
+                "0|S--|10000000(4): 1 instructions",
+                "1|L--|__lldt(Mem0[ebp - 0x00000073:word48])");
+        }
+
+        [Test]
+        public void X86Rw_ud0()
+        {
+            Run32bitTest(0x0F, 0xFF, 0xFF);	// ud0	edi,edi
+            AssertCode(
+                "0|---|10000000(3): 1 instructions",
+                "1|---|<invalid>");
+        }
+
+        [Test]
+        public void X86Rw_ud1()
+        {
+            Run32bitTest(0x0F, 0xB9, 0x00);	// ud1	eax,[eax]
+            AssertCode(
+                "0|---|10000000(3): 1 instructions",
+                "1|---|<invalid>");
+        }
+
+        [Test]
+        public void X86Rw_lidt()
+        {
+            Run32bitTest(0x0F, 0x01, 0x1B);	// lidt	[ebx]
+            AssertCode(
+                "0|S--|10000000(3): 1 instructions",
+                "1|L--|__lidt(Mem0[ebx:word48])");
+        }
+
+        [Test]
+        public void X86Rw_sha1msg2()
+        {
+            Run32bitTest(0x0F, 0x38, 0xCA, 0x75, 0xE8);	// sha1msg2	xmm6,[ebp-18]
+            AssertCode(
+                "0|L--|10000000(5): 3 instructions",
+                "1|L--|v4 = Mem0[ebp - 0x00000018:word128]",
+                "2|L--|v5 = xmm6",
+                "3|L--|xmm6 = __sha1msg2(v5, v4)");
         }
     }
 }

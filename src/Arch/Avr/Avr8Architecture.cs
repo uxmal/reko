@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,9 +43,6 @@ namespace Reko.Arch.Avr
             this.WordWidth = PrimitiveType.Word16;
             this.FramePointerType = PrimitiveType.UInt8;
             this.InstructionBitSize = 16;
-            this.x = new RegisterStorage("x", 33, 0, PrimitiveType.Word16);
-            this.y = new RegisterStorage("y", 34, 0, PrimitiveType.Word16);
-            this.z = new RegisterStorage("z", 35, 0, PrimitiveType.Word16);
             this.sreg = new RegisterStorage("sreg", 36, 0, PrimitiveType.Byte);
             this.code = new RegisterStorage("code", 100, 0, PrimitiveType.SegmentSelector);
             this.StackRegister = new RegisterStorage("SP", 0x3D, 0, PrimitiveType.Word16);
@@ -58,7 +55,7 @@ namespace Reko.Arch.Avr
                 .ToArray();
             this.regs =
                 ByteRegs
-                .Concat(new[] { this.x, this.y, this.z, this.sreg })
+                .Concat(new[] { x, y, z, this.sreg })
                 .ToArray();
             this.grfs = new Dictionary<uint, FlagGroupStorage>();
             this.grfToString = new List<Tuple<FlagM, char>>
@@ -74,10 +71,17 @@ namespace Reko.Arch.Avr
             };
         }
         
+        static Avr8Architecture()
+        {
+            x = new RegisterStorage("x", 33, 0, PrimitiveType.Word16);
+            y = new RegisterStorage("y", 34, 0, PrimitiveType.Word16);
+            z = new RegisterStorage("z", 35, 0, PrimitiveType.Word16);
+        }
+
         public RegisterStorage sreg { get; private set; }
-        public RegisterStorage x { get; private set; }
-        public RegisterStorage y { get; private set; }
-        public RegisterStorage z { get; private set; }
+        public static RegisterStorage x { get; }
+        public static RegisterStorage y { get; }
+        public static RegisterStorage z { get; }
         public RegisterStorage code { get; private set; }
 
         public RegisterStorage[] ByteRegs { get; }
@@ -139,8 +143,7 @@ namespace Reko.Arch.Avr
 
         public override FlagGroupStorage GetFlagGroup(uint grf)
         {
-            FlagGroupStorage fl;
-            if (!grfs.TryGetValue(grf, out fl))
+            if (!grfs.TryGetValue(grf, out FlagGroupStorage fl))
             {
                 PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
                 fl = new FlagGroupStorage(this.sreg, grf, GrfToString(grf), dt);
@@ -176,7 +179,7 @@ namespace Reko.Arch.Avr
 
         public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
         {
-            if (reg == this.z)
+            if (reg == z)
             {
                 if (offset == 0)
                     return regs[30];

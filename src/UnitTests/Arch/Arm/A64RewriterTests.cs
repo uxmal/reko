@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1855,6 +1855,15 @@ namespace Reko.UnitTests.Arch.Arm
                 "2|L--|NZCV = 0x00",
                 "3|T--|if (v3) branch 00100004",
                 "4|L--|NZCV = cond(w1 - w5)");
+        }
+
+        [Test]
+        public void A64Rw_str_sxtx()
+        {
+            Given_Instruction(0x3CBBEBC8);
+            AssertCode( // str	q8, [x30,x27,sxtx]
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|Mem0[x30 + x27:word128] = q8");
         }
     }
 }

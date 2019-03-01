@@ -12,9 +12,5 @@ void g_t0AE0() = Unexpected function type (fn void ())
 ;
 uint64 g_qw0B00 = 0x0000000000000004;
 <anonymous> * g_ptr200DE8 = frame_dummy;
-<anonymous> * g_ptr200FD8 = null;
-word64 g_qw200FE8 = 0x0000000000000000;
-<anonymous> * g_ptr200FF0 = null;
-word64 g_qw200FF8 = 0x0000000000000000;
 byte g_b201048 = 0x00;
 

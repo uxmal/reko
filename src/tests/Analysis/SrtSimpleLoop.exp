@@ -16,7 +16,7 @@ l2:
 	p_3 = p_1 + 0x00000004
 	// succ:  loop
 loop:
-	p_1 = PHI(p_0, p_3)
+	p_1 = PHI((p_0, l1), (p_3, l2))
 	branch p_1 == 0x00001000 done
 	goto l2
 	// succ:  l2 done

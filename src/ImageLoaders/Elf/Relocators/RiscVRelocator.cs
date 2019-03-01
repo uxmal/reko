@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Reko.Core;
@@ -39,12 +40,48 @@ namespace Reko.ImageLoaders.Elf.Relocators
         public override ElfSymbol RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
         {
             var rt = (RiscV64Rt)(rela.Info & 0xFF);
+            ulong S = symbol.Value;
+            ulong A = 0;
+            ulong B = 0;
+
+            var addr = referringSection != null
+                ? referringSection.Address + rela.Offset
+                : loader.CreateAddress(rela.Offset);
+            var arch = program.Architecture;
+            var relR = program.CreateImageReader(arch, addr);
+            var relW = program.CreateImageWriter(arch, addr);
 
             switch (rt)
             {
             case RiscV64Rt.R_RISCV_COPY:
+                return symbol;
+            case RiscV64Rt.R_RISCV_RELATIVE: // B + A
+                A = (ulong) rela.Addend;
+                B = program.SegmentMap.BaseAddress.ToLinear();
+                S = 0;
+                break;
+            case RiscV64Rt.R_RISCV_64: // S + A
+                A = (ulong) rela.Addend;
+                B = 0;
+                break;
+            case RiscV64Rt.R_RISCV_JUMP_SLOT: // S
+                S = symbol.Value;
+                if (S == 0)
+                {
+                    var gotEntry = relR.PeekLeUInt64(0);
+                    return CreatePltStubSymbolFromRelocation(symbol, gotEntry, 0x0);
+                }
+                break;
+            default:
+                Debug.Print("ELF RiscV: unhandled relocation {0}: {1}", rt, rela);
                 break;
             }
+
+            var w = relR.ReadLeUInt64();
+            w += ((uint) (B + S + A));
+            relW.WriteLeUInt64(w);
+
+
             return symbol;
         }
 

@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,6 +33,8 @@ namespace Reko.Core.Services
     {
         Stream CreateFileStream(string filename, FileMode mode, FileAccess access);
         Stream CreateFileStream(string filename, FileMode mode, FileAccess access, FileShare share);
+        TextWriter CreateStreamWriter(string filename, bool append, Encoding enc);
+
         XmlWriter CreateXmlWriter(string filename);
         string GetCurrentDirectory();
         bool FileExists(string filePath);
@@ -43,7 +45,7 @@ namespace Reko.Core.Services
 
     public class FileSystemServiceImpl : IFileSystemService
     {
-        private char sepChar;
+        private readonly char sepChar;
 
         public FileSystemServiceImpl()
         {
@@ -68,6 +70,11 @@ namespace Reko.Core.Services
         public Stream CreateFileStream(string filename, FileMode mode, FileAccess access, FileShare share)
         {
             return new FileStream(filename, mode, access, share);
+        }
+
+        public TextWriter CreateStreamWriter(string filename, bool append, Encoding enc)
+        {
+            return new StreamWriter(filename, append, enc);
         }
 
         public XmlWriter CreateXmlWriter(string filename)

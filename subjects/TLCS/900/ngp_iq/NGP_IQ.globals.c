@@ -4,8 +4,21 @@
 
 #include "NGP_IQ.h"
 
-Eq_247 g_a7000[];
+byte g_b4003;
+byte g_b4004;
+byte g_b6DA0;
+byte g_b6F83;
+byte g_b6F86;
+byte g_b6F91;
+Eq_198 g_a7000[];
+byte g_b8002;
+byte g_b8003;
+byte g_b8004;
+byte g_b8005;
+byte g_b8118;
 word16 g_a8300[];
+byte g_b83E0;
+byte g_b83E1;
 byte g_a9000[];
 byte g_a9800[];
 word16 g_aA000[];

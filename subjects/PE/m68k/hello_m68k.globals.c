@@ -5,7 +5,8 @@
 #include "hello_m68k.h"
 
 <anonymous> g_tFFFFFFFF;
-Eq_55 g_t0000;
+Eq_53 g_t0000;
+word16 g_w0AF0;
 word16 g_a1758[] = 
 	{
 	};

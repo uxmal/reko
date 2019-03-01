@@ -103,16 +103,16 @@ void call_frame_dummy()
 {
 }
 
-// 00008434: Register Eq_141 frobulate(Register Eq_141 r0, Stack Eq_141 dwArg00, Register out ptr32 fpOut)
-Eq_141 frobulate(Eq_141 r0, Eq_141 dwArg00, ptr32 & fpOut)
+// 00008434: Register Eq_125 frobulate(Register Eq_125 r0, Stack Eq_125 dwArg00, Register out ptr32 fpOut)
+Eq_125 frobulate(Eq_125 r0, Eq_125 dwArg00, ptr32 & fpOut)
 {
 	word32 fp_25;
 	*fpOut = dwArg00;
 	return __divsi3(r0 * r0, 1337);
 }
 
-// 00008470: Register word32 bazulate(Register Eq_141 r0, Register Eq_141 r1)
-word32 bazulate(Eq_141 r0, Eq_141 r1)
+// 00008470: Register word32 bazulate(Register Eq_125 r0, Register Eq_125 r1)
+word32 bazulate(Eq_125 r0, Eq_125 r1)
 {
 	ptr32 fp_23;
 	word32 r0_28 = __divsi3(r0 + r1, frobulate(r0, r1, out fp_23));
@@ -121,8 +121,8 @@ word32 bazulate(Eq_141 r0, Eq_141 r1)
 	return *fp_32;
 }
 
-// 000084D4: Register word32 switcheroo(Register Eq_141 r0)
-word32 switcheroo(Eq_141 r0)
+// 000084D4: Register word32 switcheroo(Register Eq_125 r0)
+word32 switcheroo(Eq_125 r0)
 {
 	ptr32 fp_19;
 	switch (r0)
@@ -150,22 +150,22 @@ l00008540:
 	return *(fp_19 - -0x04);
 }
 
-// 0000855C: void main(Register Eq_141 r0)
-void main(Eq_141 r0)
+// 0000855C: void main(Register Eq_125 r0)
+void main(Eq_125 r0)
 {
 	switcheroo(r0);
 }
 
-// 00008588: Register Eq_141 __divsi3(Register Eq_141 r0, Register Eq_141 r1)
-Eq_141 __divsi3(Eq_141 r0, Eq_141 r1)
+// 00008588: Register Eq_125 __divsi3(Register Eq_125 r0, Register Eq_125 r1)
+Eq_125 __divsi3(Eq_125 r0, Eq_125 r1)
 {
-	Eq_141 r1_112;
+	Eq_125 r1_103;
 	int32 ip_4 = r0 ^ r1;
-	Eq_211 r3_106 = 0x01;
-	Eq_141 r2_100 = 0x00;
-	r1_112 = r1;
+	Eq_195 r3_105 = 0x01;
+	Eq_125 r2_112 = 0x00;
+	r1_103 = r1;
 	if (r1 < 0x00)
-		r1_112 = 0x00 - r1;
+		r1_103 = 0x00 - r1;
 	if (r1 == 0x00)
 	{
 		__div0(r0);
@@ -175,72 +175,71 @@ Eq_141 __divsi3(Eq_141 r0, Eq_141 r1)
 	{
 		if (r0 < 0x00)
 			r0 = 0x00 - r0;
-		if (r0 >= r1_112)
+		if (r0 >= r1_103)
 		{
 			do
 			{
-				Eq_233 C_140 = cond(r1_112 - 0x10000000);
-				if (r1_112 < 0x10000000)
-					C_140 = cond(r1_112 - r0);
-				if (!C_140)
-					r1_112 <<= 0x04;
-				if (!C_140)
-					r3_106 <<= 0x04;
-			} while (C_140);
+				Eq_217 C_131 = cond(r1_103 - 0x10000000);
+				if (r1_103 < 0x10000000)
+					C_131 = cond(r1_103 - r0);
+				if (!C_131)
+				{
+					r1_103 <<= 0x04;
+					r3_105 <<= 0x04;
+				}
+			} while (C_131);
 			do
 			{
-				Eq_246 C_133 = cond(r1_112 - 0x80000000);
-				if (r1_112 < 0x80000000)
-					C_133 = cond(r1_112 - r0);
-				if (!C_133)
-					r1_112 <<= 0x01;
-				if (!C_133)
-					r3_106 <<= 0x01;
-			} while (C_133);
+				Eq_230 C_124 = cond(r1_103 - 0x80000000);
+				if (r1_103 < 0x80000000)
+					C_124 = cond(r1_103 - r0);
+				if (!C_124)
+				{
+					r1_103 <<= 0x01;
+					r3_105 <<= 0x01;
+				}
+			} while (C_124);
 			do
 			{
-				Eq_141 r0_127;
-				r0_127 = r0;
-				if (r0 >= r1_112)
-					r0_127 = r0 - r1_112;
-				if (r0 >= r1_112)
-					r2_100 |= r3_106;
-				Eq_141 r0_125;
-				r0_125 = r0_127;
-				if (r0_127 >= r1_112 >> 0x01)
-					r0_125 = r0_127 - (r1_112 >> 0x01);
-				if (r0_127 >= r1_112 >> 0x01)
-					r2_100 |= r3_106 >> 0x01;
-				Eq_141 r0_123;
-				r0_123 = r0_125;
-				if (r0_125 >= r1_112 >> 0x02)
-					r0_123 = r0_125 - (r1_112 >> 0x02);
-				if (r0_125 >= r1_112 >> 0x02)
-					r2_100 |= r3_106 >> 0x02;
-				r0 = r0_123;
-				if (r0_123 >= r1_112 >> 0x03)
-					r0 = r0_123 - (r1_112 >> 0x03);
-				if (r0_123 >= r1_112 >> 0x03)
-					r2_100 |= r3_106 >> 0x03;
-				Eq_294 Z_102 = cond(r0);
+				if (r0 >= r1_103)
+				{
+					r0 -= r1_103;
+					r2_112 |= r3_105;
+				}
+				if (r0 >= r1_103 >> 0x01)
+				{
+					r0 -= r1_103 >> 0x01;
+					r2_112 |= r3_105 >> 0x01;
+				}
+				if (r0 >= r1_103 >> 0x02)
+				{
+					r0 -= r1_103 >> 0x02;
+					r2_112 |= r3_105 >> 0x02;
+				}
+				if (r0 >= r1_103 >> 0x03)
+				{
+					r0 -= r1_103 >> 0x03;
+					r2_112 |= r3_105 >> 0x03;
+				}
+				Eq_268 Z_100 = cond(r0);
 				if (r0 != 0x00)
 				{
-					r3_106 >>= 0x04;
-					Z_102 = cond(r3_106);
+					r3_105 >>= 0x04;
+					Z_100 = cond(r3_105);
 				}
-				if (!Z_102)
-					r1_112 >>= 0x04;
-			} while (Z_102);
+				if (!Z_100)
+					r1_103 >>= 0x04;
+			} while (Z_100);
 		}
-		Eq_141 r0_35 = r2_100;
+		Eq_125 r0_35 = r2_112;
 		if (ip_4 < 0x00)
-			r0_35 = 0x00 - r2_100;
+			r0_35 = 0x00 - r2_112;
 		return r0_35;
 	}
 }
 
-// 00008638: void __div0(Register Eq_141 r0)
-void __div0(Eq_141 r0)
+// 00008638: void __div0(Register Eq_125 r0)
+void __div0(Eq_125 r0)
 {
 	__syscall(0x00900014);
 	if (r0 >= 1000)
@@ -252,7 +251,7 @@ void __div0(Eq_141 r0)
 void __libc_csu_init()
 {
 	ptr32 r10_17;
-	Eq_317 r4_18 = _init(out r10_17);
+	Eq_291 r4_18 = _init(out r10_17);
 	int32 r2_20 = globals->dw86AC;
 	<anonymous> * r1_21[] = r10_17 + globals->dw86A8;
 	int32 r3_23 = r10_17 + r2_20 - r1_21;

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -86,7 +86,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                     var options = ShowPcRelative
                         ? MachineInstructionWriterOptions.None
                         : MachineInstructionWriterOptions.ResolvePcRelativeAddress;
-                    var arch = program.Architecture;    //$TODO: get this from imageitem.
+
+                    var arch = GetArchitectureForAddress(addr);
                     var dasm = program.CreateDisassembler(arch, Align(position)).GetEnumerator();
                     while (count != 0 && dasm.MoveNext())
                     {
@@ -100,6 +101,20 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 }
             }
             return lines.ToArray();
+        }
+
+        private IProcessorArchitecture GetArchitectureForAddress(Address addr)
+        {
+            IProcessorArchitecture arch = null;
+            // Try to find a basic block at this address and use its architecture.
+            if (program.ImageMap.TryFindItem(addr, out var item) &&
+                item is ImageMapBlock imb &&
+                imb.Block != null &&
+                imb.Block.Procedure != null)
+            {
+                arch = imb.Block.Procedure.Architecture;
+            }
+            return arch ?? program.Architecture;
         }
 
         public static LineSpan RenderAsmLine(
@@ -153,7 +168,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             var addr = addrInitial;
             if (addr < addrStart)
                 addr = addrStart;
-            if (addr >= addrEnd)
+            if (addrEnd.ToLinear() != 0 && addr >= addrEnd)
                 addr = addrEnd-1;
             this.position = addr;
             return (int)(addr - addrInitial);
@@ -174,7 +189,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             if (offset < 0)
                 offset = 0;
             var addr = addrStart + offset;
-            if (addr >= addrEnd)
+            if (addrEnd.ToLinear() != 0 && addr >= addrEnd)
                 addr = addrEnd-1;
             this.position = addr;
         }
@@ -187,6 +202,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         /// <returns></returns>
         private int GetPositionEstimate(long byteOffset)
         {
+            if (addrEnd.ToLinear() == 0)
+                byteOffset = Math.Abs(byteOffset);
             int bitSize = program.Architecture != null
                 ? program.Architecture.InstructionBitSize
                 : 8;

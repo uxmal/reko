@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -219,7 +219,8 @@ new Decoder(Opcode.brk, "", InstrClass.Padding|InstrClass.Zero),
     new Decoder(Opcode.ora, "A"),
     new Decoder(Opcode.asl, "A"),
     new Decoder(Opcode.illegal, ""),
- 
+
+            // 10
 new Decoder(Opcode.bpl, "j", InstrClass.ConditionalTransfer),
     new Decoder(Opcode.ora, "Iy"),
     new Decoder(Opcode.illegal, ""),
@@ -236,7 +237,7 @@ new Decoder(Opcode.bpl, "j", InstrClass.ConditionalTransfer),
     new Decoder(Opcode.ora, "Ax"),
     new Decoder(Opcode.asl, "Ax"),
     new Decoder(Opcode.illegal, ""),
- 
+            // 20
 new Decoder(Opcode.jsr, "A", InstrClass.Transfer|InstrClass.Call),
     new Decoder(Opcode.and, "Ix"),
     new Decoder(Opcode.illegal, ""),
@@ -253,7 +254,7 @@ new Decoder(Opcode.jsr, "A", InstrClass.Transfer|InstrClass.Call),
     new Decoder(Opcode.and, "A"),
     new Decoder(Opcode.rol, "A"),
     new Decoder(Opcode.illegal, ""),
- 
+        // 30
 new Decoder(Opcode.bmi, "j", InstrClass.ConditionalTransfer),
     new Decoder(Opcode.and, "Iy"),
     new Decoder(Opcode.illegal, ""),
@@ -270,7 +271,7 @@ new Decoder(Opcode.bmi, "j", InstrClass.ConditionalTransfer),
     new Decoder(Opcode.and, "Ax"),
     new Decoder(Opcode.rol, "Ax"),
     new Decoder(Opcode.illegal, ""),
- 
+ // 40
 new Decoder(Opcode.rti, "", InstrClass.Transfer),
     new Decoder(Opcode.eor, "Ix"),
     new Decoder(Opcode.illegal, ""),
@@ -287,7 +288,7 @@ new Decoder(Opcode.rti, "", InstrClass.Transfer),
     new Decoder(Opcode.eor, "A"),
     new Decoder(Opcode.lsr, "A"),
     new Decoder(Opcode.illegal, ""),
- 
+ // 50
 new Decoder(Opcode.bvc, "j", InstrClass.ConditionalTransfer),
     new Decoder(Opcode.eor, "Iy"),
     new Decoder(Opcode.illegal, ""),
@@ -304,7 +305,7 @@ new Decoder(Opcode.bvc, "j", InstrClass.ConditionalTransfer),
     new Decoder(Opcode.eor, "Ax"),
     new Decoder(Opcode.lsr, "Ax"),
     new Decoder(Opcode.illegal, ""),
- 
+ 	// 60
 new Decoder(Opcode.rts, "", InstrClass.Transfer),
     new Decoder(Opcode.adc, "Ix"),
     new Decoder(Opcode.illegal, ""),
@@ -317,11 +318,11 @@ new Decoder(Opcode.rts, "", InstrClass.Transfer),
     new Decoder(Opcode.adc, "#"),
     new Decoder(Opcode.ror, "a"),
     new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.jmp, "I", InstrClass.Transfer),	
+    new Decoder(Opcode.jmp, "i", InstrClass.Transfer),	
     new Decoder(Opcode.adc, "A"),
     new Decoder(Opcode.ror, "A"),
     new Decoder(Opcode.illegal, ""),
- 
+ 	// 70
 new Decoder(Opcode.bvs, "j", InstrClass.ConditionalTransfer),
     new Decoder(Opcode.adc, "Iy"),
     new Decoder(Opcode.illegal, ""),
@@ -338,7 +339,7 @@ new Decoder(Opcode.bvs, "j", InstrClass.ConditionalTransfer),
     new Decoder(Opcode.adc, "Ax"),
     new Decoder(Opcode.ror, "Ax"),
     new Decoder(Opcode.illegal, ""),
- 
+ 	// 80
 new Decoder(Opcode.illegal, ""),
     new Decoder(Opcode.sta, "Ix"),
     new Decoder(Opcode.illegal, ""),
@@ -355,7 +356,7 @@ new Decoder(Opcode.illegal, ""),
     new Decoder(Opcode.sta, "A"),
     new Decoder(Opcode.stx, "A"),
     new Decoder(Opcode.illegal, ""),
- 
+ 	// 90
 new Decoder(Opcode.bcc, "j", InstrClass.ConditionalTransfer),
  	new Decoder(Opcode.sta, "Iy"),
  	new Decoder(Opcode.illegal, ""),
@@ -372,7 +373,7 @@ new Decoder(Opcode.bcc, "j", InstrClass.ConditionalTransfer),
   	new Decoder(Opcode.sta, "Ax"),
  	new Decoder(Opcode.illegal, ""),
  	new Decoder(Opcode.illegal, ""),
- 
+
 // A0
 new Decoder(Opcode.ldy, "#"),
     new Decoder(Opcode.lda, "Ix"),
@@ -390,7 +391,7 @@ new Decoder(Opcode.ldy, "#"),
     new Decoder(Opcode.lda, "A"),
     new Decoder(Opcode.ldx, "A"),
     new Decoder(Opcode.illegal, ""),
- 
+ 	// B0
 new Decoder(Opcode.bcs, "j", InstrClass.ConditionalTransfer),
     new Decoder(Opcode.lda, "Iy"),
     new Decoder(Opcode.illegal, ""),
@@ -407,8 +408,8 @@ new Decoder(Opcode.bcs, "j", InstrClass.ConditionalTransfer),
     new Decoder(Opcode.lda, "Ax"),
     new Decoder(Opcode.ldx, "Ay"),
     new Decoder(Opcode.illegal, ""),
- 
-        // C0
+    
+    // C0
     new Decoder(Opcode.cpy, "#"),
         new Decoder(Opcode.cmp, "Ix"),
         new Decoder(Opcode.illegal, ""),

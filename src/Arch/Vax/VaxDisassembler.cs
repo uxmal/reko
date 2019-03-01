@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,13 +31,17 @@ namespace Reko.Arch.Vax
 {
     public partial class VaxDisassembler : DisassemblerBase<VaxInstruction>
     {
+        private delegate bool Mutator(VaxDisassembler dasm);
+
         private VaxArchitecture arch;
         private EndianImageReader rdr;
+        private List<MachineOperand> ops;
 
         public VaxDisassembler(VaxArchitecture arch, EndianImageReader imageReader)
         {
             this.arch = arch;
             this.rdr = imageReader;
+            this.ops = new List<MachineOperand>();
         }
 
         public override VaxInstruction DisassembleInstruction()
@@ -61,85 +65,8 @@ namespace Reko.Arch.Vax
                 return null;
             instr.Address = addr;
             instr.Length = (int)(rdr.Address - addr);
+            ops.Clear();
             return instr;
-        }
-
-        private VaxInstruction DecodeOperands(Opcode opcode, InstrClass iclass, string format)
-        {
-            var ops = new List<MachineOperand>();
-            MachineOperand op;
-            PrimitiveType width;
-            int i = 0;
-            while (i != format.Length)
-            {
-                switch (format[i++])
-                {
-                case ',':
-                    continue;
-                case 'a':
-                    if (!TryDecodeOperand(Width(format[i++]), out op))
-                        return null;
-                    break;
-                case 'w':
-                case 'm':
-                    if (!TryDecodeOperand(Width(format[i++]), out op))
-                        return null;
-                    if (op is ImmediateOperand)
-                        op = null;    // Can't modify a constant! 
-                    break;
-                case 'r':
-                case 'v':
-                    if (!TryDecodeOperand(Width(format[i++]), out op))
-                        return null;
-                    break;
-                case 'b':
-                    width = Width(format[i++]);
-                    long jOffset = rdr.ReadLeSigned(width);
-                    ulong uAddr = (uint)((long)rdr.Address.Offset + jOffset);
-                    op = AddressOperand.Ptr32((uint)uAddr);
-                    break;
-                default:
-                    throw new NotImplementedException(
-                        string.Format(
-                            "Access type {0} not implemented.", format[i - 1]));
-                }
-                if (op == null)
-                {
-                    return new VaxInstruction
-                    {
-                        Opcode = Opcode.Invalid,
-                        IClass = InstrClass.Invalid,
-                        Operands = new MachineOperand[0],
-                    };
-                }
-                ops.Add(op);
-            }
-            return new VaxInstruction
-            {
-                Opcode = opcode,
-                IClass = iclass,
-                Operands = ops.ToArray()
-            };
-        }
-
-        private PrimitiveType Width(char w)
-        {
-            switch (w)
-            {
-            case 'b': return PrimitiveType.Byte;
-            case 'w': return PrimitiveType.Word16;
-            case 'l': return PrimitiveType.Word32;
-            case 'f': return PrimitiveType.Real32;  //$TODO: this is not IEEE
-            case 'd': return PrimitiveType.Real64;  //$TODO: this is not IEEE
-            case 'g': return PrimitiveType.Real64;  //$TODO: this is not IEEE
-            case 'h': return PrimitiveType.Real128;  //$TODO: this is not IEEE
-            case 'q': return PrimitiveType.Word64;
-            default:
-                throw new NotImplementedException(
-                    string.Format(
-                        "Data width '{0}' not implemented.",
-                        w));
-            }
         }
 
         private bool TryDecodeOperand(PrimitiveType width, out MachineOperand op)
@@ -160,6 +87,8 @@ namespace Reko.Arch.Vax
                 break;
             case 4: // Index mode
                 op = IndexOperand(width, reg);
+                if (op == null)
+                    return false;
                 break;
             case 5: // Register mode
                 op = new RegisterOperand(reg);
@@ -200,18 +129,18 @@ namespace Reko.Arch.Vax
                 };
                 break;
             case 0xA: // Displacement mode
-            case 0xD:
+            case 0xB:
                 if (!rdr.TryReadByte(out byte b))
                     return false;
                 op = DisplacementOperand(width, reg, Constant.SByte((sbyte)b), bSpecifier);
                 break;
-            case 0xB:
-            case 0xE:
+            case 0xC:
+            case 0xD:
                 if (!rdr.TryReadUInt16(out ushort w))
                     return false;
                 op = DisplacementOperand(width, reg, Constant.Int16((short)w), bSpecifier);
                 break;
-            case 0xC:
+            case 0xE:
             case 0xF:
                 if (!rdr.TryReadUInt32(out uint dw))
                     return false;
@@ -251,7 +180,7 @@ namespace Reko.Arch.Vax
             {
                 Base = reg,
                 Offset = c,
-                Deferred = (bSpecifier >> 4) > 0xC
+                Deferred = ((bSpecifier >> 4) & 0x1) != 0
             };
         }
 
@@ -280,34 +209,142 @@ namespace Reko.Arch.Vax
             return new ImmediateOperand(c);
         }
 
-        private RegisterStorage GetReg(int v)
-        {
-            throw new NotImplementedException();
-        }
-
-        public class Decoder
+        private class Decoder
         {
             private readonly Opcode op;
             private readonly InstrClass iclass;
-            private readonly string format;
+            private readonly Mutator[] mutators;
 
-            public Decoder(Opcode op, string format, InstrClass iclass = InstrClass.Linear)
+            public Decoder(Opcode op, InstrClass iclass, params Mutator [] mutators)
             {
                 this.op = op;
                 this.iclass = iclass;
-                this.format = format;
+                this.mutators = mutators;
+            }
+
+            public Decoder(Opcode op, params Mutator[] mutators)
+            {
+                this.op = op;
+                this.iclass = InstrClass.Linear;
+                this.mutators = mutators;
             }
 
             public Decoder(Opcode op, int args)
             {
                 this.op = op;
-                this.format = "";
+                this.mutators = new Mutator[0];
             }
 
             public virtual VaxInstruction Decode(VaxDisassembler dasm)
             {
-                return dasm.DecodeOperands(op, iclass, format);
+                foreach (var m in mutators)
+                {
+                    if (!m(dasm))
+                    {
+                        return new VaxInstruction
+                        {
+                            Opcode = Opcode.Invalid,
+                            IClass = InstrClass.Invalid,
+                            Operands = new MachineOperand[0]
+                        };
+                    }
+                }
+                var instr = new VaxInstruction
+                {
+                    Opcode = this.op,
+                    IClass = this.iclass,
+                    Operands = dasm.ops.ToArray()
+                };
+                return instr;
             }
         }
+
+        private static Mutator a(PrimitiveType dt)
+        {
+            return d =>
+            {
+                if (!d.TryDecodeOperand(dt, out var op))
+                    return false;
+                d.ops.Add(op);
+                return true;
+            };
+        }
+
+        private static readonly Mutator ab = a(PrimitiveType.Byte);
+        private static readonly Mutator aw = a(PrimitiveType.Word16);
+        private static readonly Mutator al = a(PrimitiveType.Word32);
+        private static readonly Mutator aq = a(PrimitiveType.Word64);
+
+
+        private static Mutator b(PrimitiveType width)
+        {
+            return d =>
+            {
+                long jOffset = d.rdr.ReadLeSigned(width);
+                uint uAddr = (uint) ((long) d.rdr.Address.Offset + jOffset);
+                d.ops.Add(AddressOperand.Ptr32(uAddr));
+                return true;
+            };
+        }
+
+        private static readonly Mutator bb = b(PrimitiveType.Byte);
+        private static readonly Mutator bw = b(PrimitiveType.Word16);
+        private static readonly Mutator bl = b(PrimitiveType.Word32);
+
+
+        private static Mutator r(PrimitiveType dt)
+        {
+            return d =>
+            {
+                if (!d.TryDecodeOperand(dt, out var op))
+                    return false;
+                d.ops.Add(op);
+                return true;
+            };
+        }
+
+        private static readonly Mutator rb = r(PrimitiveType.Byte);
+        private static readonly Mutator rw = r(PrimitiveType.Word16);
+        private static readonly Mutator rl = r(PrimitiveType.Word32);
+        private static readonly Mutator rf = r(PrimitiveType.Real32);  //$TODO: this is not IEEE
+        private static readonly Mutator rd = r(PrimitiveType.Real64);  //$TODO: this is not IEEE
+        private static readonly Mutator rg = r(PrimitiveType.Real64);  //$TODO: this is not IEEE
+        private static readonly Mutator rh = r(PrimitiveType.Real128);  //$TODO: this is not IEEE
+        private static readonly Mutator rq = r(PrimitiveType.Word64);
+
+        private static readonly Mutator vb = r(PrimitiveType.Byte);
+
+
+        private static Mutator w(PrimitiveType dt)
+        {
+            return d =>
+            {
+                if (!d.TryDecodeOperand(dt, out var op))
+                    return false;
+                if (op is ImmediateOperand)
+                    return false;    // Can't modify a constant! 
+                d.ops.Add(op);
+                return true;
+            };
+        }
+
+        private static readonly Mutator wb = w(PrimitiveType.Byte);
+        private static readonly Mutator ww = w(PrimitiveType.Word16);
+        private static readonly Mutator wl = w(PrimitiveType.Word32);
+        private static readonly Mutator wf = w(PrimitiveType.Real32);  //$TODO: this is not IEEE
+        private static readonly Mutator wd = w(PrimitiveType.Real64);  //$TODO: this is not IEEE
+        private static readonly Mutator wg = w(PrimitiveType.Real64);  //$TODO: this is not IEEE
+        private static readonly Mutator wh = w(PrimitiveType.Real128);  //$TODO: this is not IEEE
+        private static readonly Mutator wq = w(PrimitiveType.Word64);
+
+        private static readonly Mutator mb = w(PrimitiveType.Byte);
+        private static readonly Mutator mw = w(PrimitiveType.Word16);
+        private static readonly Mutator ml = w(PrimitiveType.Word32);
+        private static readonly Mutator mf = w(PrimitiveType.Real32);  //$TODO: this is not IEEE
+        private static readonly Mutator md = w(PrimitiveType.Real64);  //$TODO: this is not IEEE
+        private static readonly Mutator mg = w(PrimitiveType.Real64);  //$TODO: this is not IEEE
+        private static readonly Mutator mh = w(PrimitiveType.Real128);  //$TODO: this is not IEEE
+
+
     }
 }

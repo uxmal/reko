@@ -7,21 +7,20 @@
 // 0000000000400428: void _init()
 void _init()
 {
-	word64 rax_4 = globals->qw600FF8;
-	if (rax_4 != 0x00)
+	if (__gmon_start__ != 0x00)
 	{
-		word64 rsp_15;
-		byte SCZO_16;
-		word64 rax_17;
-		byte SZO_18;
-		bool C_19;
-		bool Z_20;
+		word64 rsp_14;
+		byte SCZO_15;
+		word64 rax_16;
+		byte SZO_17;
+		bool C_18;
+		bool Z_19;
 		__gmon_start__();
 	}
 }
 
-// 0000000000400480: void _start(Register (ptr64 Eq_17) rdx, Stack Eq_18 qwArg00)
-void _start( * rdx, Eq_18 qwArg00)
+// 0000000000400480: void _start(Register (ptr64 Eq_13) rdx, Stack Eq_14 qwArg00)
+void _start( * rdx, Eq_14 qwArg00)
 {
 	__align((char *) fp + 0x08);
 	__libc_start_main(&globals->t400660, qwArg00, (char *) fp + 0x08, &globals->t400710, &globals->t400780, rdx, fp);
@@ -98,8 +97,8 @@ void branches(int32 esi, int32 edi)
 		free(my1((word32) (uint64) esi, (word32) (uint64) edi));
 }
 
-// 0000000000400660: void main(Register word64 r8)
-void main(word64 r8)
+// 0000000000400660: void main()
+void main()
 {
 	__llvm_retpoline_r11();
 	__llvm_retpoline_r11();

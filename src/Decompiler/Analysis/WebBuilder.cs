@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -39,8 +40,10 @@ namespace Reko.Analysis
     /// </remarks>
 	public class WebBuilder
 	{
+        private readonly Program program;
 		private Procedure proc;
 		private SsaIdentifierCollection ssaIds;
+        private readonly DecompilerEventListener listener;
 		private SsaLivenessAnalysis sla;
 		private BlockDominatorGraph doms;
 		private Dictionary<Identifier,LinearInductionVariable>ivs;
@@ -48,8 +51,9 @@ namespace Reko.Analysis
 		private List<Web> webs;
 		private Statement stmCur;
 
-        public WebBuilder(Procedure proc, SsaIdentifierCollection ssaIds, Dictionary<Identifier,LinearInductionVariable> ivs)
+        public WebBuilder(Program program, Procedure proc, SsaIdentifierCollection ssaIds, Dictionary<Identifier,LinearInductionVariable> ivs, DecompilerEventListener listener)
         {
+            this.program = program;
             this.proc = proc;
             this.ssaIds = ssaIds;
             this.ivs = ivs;
@@ -82,7 +86,9 @@ namespace Reko.Analysis
 
 		public void Transform()
 		{
-			new LiveCopyInserter(proc, ssaIds).Transform();
+            try
+            {
+                new LiveCopyInserter(proc, ssaIds).Transform();
 			BuildWebOf();
 
 			foreach (SsaIdentifier id in ssaIds)
@@ -115,6 +121,14 @@ namespace Reko.Analysis
 				}
 			}
 		}
+            catch (Exception ex)
+            {
+                listener.Error(
+                    listener.CreateProcedureNavigator(program, proc),
+                    ex,
+                    "An error occurred while renaming variables.");
+            }
+		}
 
 		private void Merge(Web a, Web b)
 		{
@@ -142,12 +156,12 @@ namespace Reko.Analysis
 
 		public void VisitPhiAssignment(PhiAssignment p)
 		{
-			Identifier idDst = (Identifier) p.Dst;
+			Identifier idDst = p.Dst;
 			PhiFunction phi = p.Src;
-			for (int i = 0; i < phi.Arguments.Length; ++i)
+			foreach (var de in phi.Arguments)
 			{
-                Identifier id = phi.Arguments[i] as Identifier;
-				Block pred = stmCur.Block.Pred[i];
+                Identifier id = de.Value as Identifier;
+                Block pred = de.Block;
 				if (id != null && id != idDst)
 					Merge(webOf[idDst], webOf[id]);
 			}

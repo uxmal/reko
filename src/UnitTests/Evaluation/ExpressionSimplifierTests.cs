@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,20 +18,16 @@
  */
 #endregion
 
+using Moq;
+using NUnit.Framework;
 using Reko.Analysis;
-using Reko.Evaluation;
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
-using Reko.Core.Machine;
 using Reko.Core.Operators;
 using Reko.Core.Types;
-using NUnit.Framework;
-using System;
-using System.Collections.Generic;
+using Reko.Evaluation;
 using Reko.UnitTests.Mocks;
-using System.Linq;
-using Rhino.Mocks;
 
 namespace Reko.UnitTests.Evaluation
 {
@@ -41,11 +37,13 @@ namespace Reko.UnitTests.Evaluation
         private ExpressionSimplifier simplifier;
         private Identifier foo;
         private ProcedureBuilder m;
+        private PseudoProcedure rolc_8;
 
         [SetUp]
         public void Setup()
         {
             m = new ProcedureBuilder();
+            this.rolc_8 = new PseudoProcedure(PseudoProcedure.RolC, PrimitiveType.Byte, 3);
         }
 
         private void Given_ExpressionSimplifier()
@@ -53,9 +51,8 @@ namespace Reko.UnitTests.Evaluation
             SsaIdentifierCollection ssaIds = BuildSsaIdentifiers();
             var listener = new FakeDecompilerEventListener();
             var segmentMap = new SegmentMap(Address.Ptr32(0));
-            var importResolver = MockRepository.GenerateStub<IImportResolver>();
-            importResolver.Replay();
-            var ssaCtx = new SsaEvaluationContext(null, ssaIds, importResolver);
+            var importResolver = new Mock<IImportResolver>();
+            var ssaCtx = new SsaEvaluationContext(null, ssaIds, importResolver.Object);
             simplifier = new ExpressionSimplifier(segmentMap, ssaCtx, listener);
         }
 
@@ -202,6 +199,22 @@ namespace Reko.UnitTests.Evaluation
             var w32 = PrimitiveType.Word32;
             var expr = m.Cast(w16, (m.Cast(w16, foo)));
             Assert.AreEqual("(word16) foo_0", expr.Accept(simplifier).ToString());
+        }
+
+        [Test]
+        public void Exs_Rolc_To_Shl()
+        {
+            Given_ExpressionSimplifier();
+            var expr = m.Fn(rolc_8, foo, m.Byte(1), Constant.False());
+            Assert.AreEqual("foo_0 << 0x01", expr.Accept(simplifier).ToString());
+        }
+
+        [Test(Description = "Reported in GitHub issue #733")]
+        public void Exs_NormalizeSubForComparison()
+        {
+            Given_ExpressionSimplifier();
+            var expr = m.Le0(m.ISub(m.Word32(0x02), foo));
+            Assert.AreEqual("foo_0 >= 0x00000002", expr.Accept(simplifier).ToString());
         }
     }
 }

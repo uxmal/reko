@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,6 +40,11 @@ namespace Reko.ImageLoaders.Elf
         public bool IsValidAddress(ulong uAddr)
         {
             return p_vaddr <= uAddr && uAddr < p_vaddr + p_pmemsz;
+        }
+
+        public override string ToString()
+        {
+            return $"[{p_vaddr:X} - 0x{p_pmemsz:X}] - {p_type}";
         }
     }
 }

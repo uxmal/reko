@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 Pavel Tomin.
+ * Copyright (C) 1999-2019 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,12 @@
  */
 #endregion
 
-using Reko.Arch.X86;
-using Reko.Environments.Windows;
-using Reko.Core;
-using Reko.UnitTests.Mocks;
 using NUnit.Framework;
-using Rhino.Mocks;
-using System.Text;
+using Reko.Arch.X86;
+using Reko.Core;
 using Reko.Core.Types;
+using Reko.Environments.Windows;
+using System.Text;
 
 namespace Reko.UnitTests.Core
 {

@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@ using Reko.Core.Configuration;
 using Reko.Core;
 using Reko.ImageLoaders.MzExe;
 using NUnit.Framework;
-using Rhino.Mocks;
+using Moq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -53,7 +53,6 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
     public class PeImageLoaderTests
     {
         private ServiceContainer sc;
-        private MockRepository mr;
         private byte[] fileImage;
         private PeImageLoader peldr;
         private LeImageWriter writer;
@@ -65,41 +64,44 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
         private const int RvaData = 0x3000;
         private const int RvaDelayImportDescriptor = 0x1800;
 
-        private IProcessorArchitecture arch_386;
-        private Win32Platform win32;
+        private Mock<IProcessorArchitecture> arch_386;
+        private Mock<Win32Platform> win32;
 
         [SetUp]
         public void Setup()
         {
             sc = new ServiceContainer();
-            mr = new MockRepository();
             addrLoad = Address.Ptr32(0x00100000);
             fileImage = new byte[0x4000];
             writer = new LeImageWriter(fileImage);
-            var cfgSvc = mr.StrictMock<IConfigurationService>();
-            var dcSvc = mr.Stub<DecompilerEventListener>();
+            var cfgSvc = new Mock<IConfigurationService>();
+            var dcSvc = new Mock<DecompilerEventListener>();
             Given_i386_Architecture();
-            this.win32 = mr.PartialMock<Win32Platform>(sc, arch_386);
+            this.win32 = new Mock<Win32Platform>(sc, arch_386.Object) { CallBase = true };
             // Avoid complications with the FindMainProcedure call.
-            this.win32.Stub(w => w.FindMainProcedure(null, null)).IgnoreArguments().Return(null);
-            var win32Env = mr.Stub<OperatingEnvironment>();
-            cfgSvc.Stub(c => c.GetArchitecture("x86-protected-32")).Return(arch_386);
-            cfgSvc.Stub(c => c.GetEnvironment("win32")).Return(win32Env);
-            win32Env.Stub(w => w.Load(null, null)).IgnoreArguments().Return(win32);
-            sc.AddService<IConfigurationService>(cfgSvc);
-            sc.AddService<DecompilerEventListener>(dcSvc);
+            this.win32.Setup(w => w.FindMainProcedure(
+                It.IsAny<Program>(),
+                It.IsAny<Address>())).Returns((ImageSymbol)null);
+            var win32Env = new Mock<OperatingEnvironment>();
+            cfgSvc.Setup(c => c.GetArchitecture("x86-protected-32")).Returns(arch_386.Object);
+            cfgSvc.Setup(c => c.GetEnvironment("win32")).Returns(win32Env.Object);
+            win32Env.Setup(w => w.Load(
+                It.IsAny<IServiceProvider>(),
+                It.IsAny<IProcessorArchitecture>())).Returns(win32.Object);
+            sc.AddService<IConfigurationService>(cfgSvc.Object);
+            sc.AddService<DecompilerEventListener>(dcSvc.Object);
         }
 
         private void Given_i386_Architecture()
         {
-            this.arch_386 = mr.StrictMock<IProcessorArchitecture>();
-            arch_386.Stub(a => a.CreateFrame()).Return(new Frame(PrimitiveType.Ptr32));
-            arch_386.Stub(a => a.WordWidth).Return(PrimitiveType.Word32);
-            arch_386.Stub(a => a.PointerType).Return(PrimitiveType.Ptr32);
+            this.arch_386 = new Mock<IProcessorArchitecture>();
+            arch_386.Setup(a => a.Name).Returns("x86-protected-32");
+            arch_386.Setup(a => a.CreateFrame()).Returns(new Frame(PrimitiveType.Ptr32));
+            arch_386.Setup(a => a.WordWidth).Returns(PrimitiveType.Word32);
+            arch_386.Setup(a => a.PointerType).Returns(PrimitiveType.Ptr32);
             var map = new SegmentMap(addrLoad);
-            var state = new Mocks.FakeProcessorState(this.arch_386);
-            arch_386.Stub(a => a.CreateProcessorState()).Return(state);
-            arch_386.Replay();
+            var state = new Mocks.FakeProcessorState(this.arch_386.Object);
+            arch_386.Setup(a => a.CreateProcessorState()).Returns(state);
         }
 
         // PE section headers are always 40 bytes.
@@ -399,8 +401,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
                         "GetFocus"
                     }
                 });
-            sc.AddService<IDiagnosticsService>(mr.Stub<IDiagnosticsService>());
-            mr.ReplayAll();
+            sc.AddService<IDiagnosticsService>(new Mock<IDiagnosticsService>().Object);
 
             Given_PeLoader();
 
@@ -426,8 +427,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
                         "GetFocus"
                     }
                 });
-            sc.AddService<IDiagnosticsService>(mr.Stub<IDiagnosticsService>());
-            mr.ReplayAll();
+            sc.AddService<IDiagnosticsService>(new Mock<IDiagnosticsService>().Object);
 
             Given_PeLoader();
 
@@ -450,7 +450,6 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
                 Given_Ilt32("malloc", "free", "realloc"),
                 "msvcrt.dll",
                 Given_Ilt32("malloc", "free", "realloc"));
-            mr.ReplayAll();
 
             Given_PeLoader();
             var program = peldr.Load(addrLoad);
@@ -493,7 +492,6 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
                 Given_Ilt32("malloc", "free", "realloc"),
                 "msvcrt.dll",
                 Given_Ilt32(0u, 0u, 0u));
-            mr.ReplayAll();
 
             Given_PeLoader();
 
@@ -522,10 +520,8 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
         {
             Given_Pe32Header(0x00100000);
 
-            mr.ReplayAll();
-
             Given_PeLoader();
-            var ep = peldr.CreateMainEntryPoint(true, Address.Ptr32(0x10000000), this.win32);
+            var ep = peldr.CreateMainEntryPoint(true, Address.Ptr32(0x10000000), this.win32.Object);
 
             Assert.AreEqual("DllMain", ep.Name);
             Assert.AreEqual("fn(stdapi,arg(BOOL),(arg(hModule,HANDLE),arg(dwReason,DWORD),arg(lpReserved,LPVOID)))", ep.Signature.ToString());
@@ -536,10 +532,8 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
         {
             Given_Pe32Header(0x00100000);
 
-            mr.ReplayAll();
-
             Given_PeLoader();
-            var ep = peldr.CreateMainEntryPoint(false, Address.Ptr32(0x10000000), this.win32);
+            var ep = peldr.CreateMainEntryPoint(false, Address.Ptr32(0x10000000), this.win32.Object);
 
             Assert.AreEqual("Win32CrtStartup", ep.Name);
             Assert.AreEqual("fn(__cdecl,arg(DWORD),())", ep.Signature.ToString());
@@ -551,8 +545,6 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             Given_Pe32Header(0x00100000);
             Given_Section("hehe", 0x1000, 0x1000);
             Given_Section("hehe", 0x2000, 0x2000);
-
-            mr.ReplayAll();
 
             Given_PeLoader();
             var program = peldr.Load(addrLoad);
@@ -567,8 +559,6 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
 			Given_Pe32Header(0x00100000);
 			Given_Section("\x00\x00", 0x1000, 0x1000);
 			Given_Section("\x00\x00\x00", 0x2000, 0x2000);
-
-			mr.ReplayAll();
 
 			Given_PeLoader();
 			var program = peldr.Load(addrLoad);

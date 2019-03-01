@@ -4,4 +4,5 @@
 
 #include "code.h"
 
+real96 g_r80000538;
 

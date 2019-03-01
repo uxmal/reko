@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2018 Pavel Tomin.
+ * Copyright (C) 1999-2019 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Arch.PowerPC;
 using Reko.Arch.X86;
@@ -32,7 +33,6 @@ using Reko.Environments.SysV;
 using Reko.Environments.Windows;
 using Reko.Scanning;
 using Reko.UnitTests.Mocks;
-using Rhino.Mocks;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Text;
@@ -63,15 +63,12 @@ namespace Reko.UnitTests.Scanning
         [SetUp]
         public void Setup()
         {
-            this.mr = new MockRepository();
             this.sc = new ServiceContainer();
-            var cfg = mr.Stub<IConfigurationService>();
-            var env = mr.Stub<OperatingEnvironment>();
-            cfg.Stub(c => c.GetEnvironment("")).IgnoreArguments().Return(env);
-            env.Stub(e => e.Architectures).Return(new List<IPlatformArchitectureElement>());
-            cfg.Replay();
-            env.Replay();
-            sc.AddService<IConfigurationService>(cfg);
+            var cfg = new Mock<IConfigurationService>();
+            var env = new Mock<OperatingEnvironment>();
+            cfg.Setup(c => c.GetEnvironment(It.IsAny<string>())).Returns(env.Object);
+            env.Setup(e => e.Architectures).Returns(new List<IPlatformArchitectureElement>());
+            sc.AddService<IConfigurationService>(cfg.Object);
             this.win32 = new Win32Platform(sc, new X86ArchitectureFlat32("x86-protected-32"));
             this.win_x86_64 = new Win_x86_64_Platform(sc, new X86ArchitectureFlat64("x86-protected-64"));
             this.sysV_ppc = new SysVPlatform(sc, new PowerPcBe32Architecture("ppc-be-32"));
@@ -294,13 +291,12 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Vafs_ReplaceArgs()
         {
-            var platform = mr.Stub<IPlatform>();
+            var platform = new Mock<IPlatform>();
             var cc = new X86CallingConvention(4, 4, 4, false, false);
-            platform.Stub(p => p.GetCallingConvention("")).Return(cc);
-            mr.ReplayAll();
+            platform.Setup(p => p.GetCallingConvention("")).Returns(cc);
 
             var newSig = VarargsFormatScanner.ReplaceVarargs(
-                platform,
+                platform.Object,
                 x86PrintfSig, 
                 new DataType[] { PrimitiveType.Int16, new Pointer(PrimitiveType.Char, 32) });
             System.Diagnostics.Debug.Print("{0}", DumpSignature("test", newSig));

@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,13 +28,38 @@ using System.Text;
 
 namespace Reko.Core.Rtl
 {
+    /// <summary>
+    /// Models the `call`, `jsr` or similar machine code instructions.
+    /// </summary>
     public class RtlCall : RtlTransfer
     {
-        public RtlCall(Expression target, byte stackPushedReturnAddressSize, InstrClass rtlClass) : base(target, rtlClass)
+        /// <summary>
+        /// Creates an <see cref="RtlCall"/> instruction.
+        /// </summary>
+        /// <remarks>
+        /// Not only does this instruction model machine language subroutine calls,
+        /// it also models transitions between different processor architectures.
+        /// </remarks>
+        /// <param name="target">The destination of the call.</param>
+        /// <param name="stackPushedReturnAddressSize">If the processor pushes
+        /// a return address on the stack, the size of that return address.</param>
+        /// <param name="rtlClass">Instruction class of the call.</param>
+        /// <param name="archSwitch">If non-null, the new architecture to switch to.</param>
+        public RtlCall(
+            Expression target, 
+            byte stackPushedReturnAddressSize, 
+            InstrClass rtlClass,
+            IProcessorArchitecture arch = null) : base(target, rtlClass)
         {
             Debug.Assert((rtlClass & (InstrClass.Call | InstrClass.Transfer)) != 0);
             this.ReturnAddressSize = stackPushedReturnAddressSize;
+            this.Architecture = arch;
         }
+
+        /// <summary>
+        /// If set, indicates the processor architecture to switch to.
+        /// </summary>
+        public IProcessorArchitecture Architecture { get; }
 
         /// <summary>
         /// The size in bytes of the return address. Some architectures don't 
@@ -50,7 +75,10 @@ namespace Reko.Core.Rtl
 
         protected override void WriteInner(TextWriter writer)
         {
-            writer.Write("call {0} ({1})", Target, ReturnAddressSize);
+            if (Architecture != null)
+                writer.Write("callx {0} {1} ({2})", Architecture.Name, Target, ReturnAddressSize);
+            else
+                writer.Write("call {0} ({1})", Target, ReturnAddressSize);
         }
     }
 }

@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +18,13 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.CmdLine;
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Services;
 using Reko.UnitTests.Mocks;
-using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -36,46 +36,47 @@ namespace Reko.UnitTests.Drivers.CmdLine
     [TestFixture]
     public class CmdLineDriverTests
     {
-        private MockRepository mr;
         private ServiceContainer sc;
-        private ILoader ldr;
-        private IDecompiler decompiler;
-        private IConfigurationService configSvc;
+        private Mock<ILoader> ldr;
+        private Mock<IDecompiler> decompiler;
+        private Mock<IConfigurationService> configSvc;
 
         [SetUp]
         public void Setup()
         {
-            this.mr = new MockRepository();
             this.sc = new ServiceContainer();
-            this.ldr = mr.Stub<ILoader>();
-            this.decompiler = mr.Stub<IDecompiler>();
-            this.configSvc = mr.Stub<IConfigurationService>();
+            this.ldr = new Mock<ILoader>();
+            this.decompiler = new Mock<IDecompiler>();
+            this.configSvc = new Mock<IConfigurationService>();
             sc.AddService<IDiagnosticsService>(new FakeDiagnosticsService());
-            sc.AddService<IConfigurationService>(configSvc);
+            sc.AddService<IConfigurationService>(configSvc.Object);
         }
 
         [Test(Description = "PR #406 describes this as causing a crash.")]
         public void CmdLine_EntryPoint()
         {
-            var arch = mr.Stub<IProcessorArchitecture>();
+            var arch = new Mock<IProcessorArchitecture>();
             var map = new SegmentMap(Address.Ptr32(0x010000));
-            var state = new FakeProcessorState(arch);
-            configSvc.Stub(s => s.GetArchitecture("mmix")).Return(arch);
-            arch.Stub(a => a.TryParseAddress(
-                Arg<string>.Is.Equal("010000"),
-                out Arg<Address>.Out(Address.Ptr32(0x010000)).Dummy))
-                .Return(true);
-            arch.Stub(a => a.TryParseAddress(
-                Arg<string>.Is.Equal("010100"),
-                out Arg<Address>.Out(Address.Ptr32(0x010100)).Dummy))
-                .Return(true); mr.ReplayAll();
-            arch.Stub(a => a.CreateProcessorState()).Return(state);
-            decompiler.Stub(d => d.LoadRawImage(null, null))
-                .IgnoreArguments()
-                .Return(new Program());
-            mr.ReplayAll();
+            var state = new FakeProcessorState(arch.Object);
+            configSvc.Setup(s => s.GetArchitecture("mmix")).Returns(arch.Object);
 
-            var cmdline = new CmdLineDriver(sc, ldr, decompiler, null);
+            Address addr = Address.Ptr32(0x010000);
+            arch.Setup(a => a.TryParseAddress(
+                "010000",
+                out addr))
+                .Returns(true);
+            addr = Address.Ptr32(0x010100);
+            arch.Setup(a => a.TryParseAddress(
+                "010100",
+                out addr))
+                .Returns(true);
+            arch.Setup(a => a.CreateProcessorState()).Returns(state);
+            decompiler.Setup(d => d.LoadRawImage(
+                It.IsAny<string>(),
+                It.IsAny<LoadDetails>()))
+                .Returns(new Program());
+
+            var cmdline = new CmdLineDriver(sc, ldr.Object, decompiler.Object, null);
             cmdline.Execute(new string[]
             {
                 "--arch",  "mmix",
@@ -83,27 +84,25 @@ namespace Reko.UnitTests.Drivers.CmdLine
                 "--entry", "010100",
                 "foo.exe"
             });
-
-            mr.VerifyAll();
         }
 
         // Verify that architecture options are being passed correctly.
         [Test]
         public void CmdLine_ArchOptions()
         {
-            var arch = mr.Stub<IProcessorArchitecture>();
-            configSvc.Stub(c => c.GetArchitecture("test")).Return(arch);
-            arch.Expect(a => a.LoadUserOptions(
-                Arg<Dictionary<string, object>>.Matches(d =>
-                    (string)d["option1"] == "value1" && 
-                    (string)d["option2"] == "value2")));
-            arch.Stub(a => a.TryParseAddress(
-                Arg<string>.Is.Equal("0000"),
-                out Arg<Address>.Out(Address.Ptr32(0x0000)).Dummy))
-                .Return(true);
-            mr.ReplayAll();
+            var arch = new Mock<IProcessorArchitecture>();
+            configSvc.Setup(c => c.GetArchitecture("test")).Returns(arch.Object);
+            arch.Setup(a => a.LoadUserOptions(
+                It.Is<Dictionary<string, object>>(d =>
+                    (string) d["option1"] == "value1" &&
+                    (string) d["option2"] == "value2"))).Verifiable();
+            var addr = Address.Ptr32(0x0000);
+            arch.Setup(a => a.TryParseAddress(
+                "0000",
+                out addr))
+                .Returns(true);
 
-            var cmdline = new CmdLineDriver(sc, ldr, decompiler, null);
+            var cmdline = new CmdLineDriver(sc, ldr.Object, decompiler.Object, null);
             cmdline.Execute(new[]
             {
                 "--arch", "test",
@@ -112,7 +111,7 @@ namespace Reko.UnitTests.Drivers.CmdLine
                 "--base", "0000",
                 "foo.bin"
             });
-            mr.VerifyAll();
+            arch.VerifyAll();
         }
     }
 }

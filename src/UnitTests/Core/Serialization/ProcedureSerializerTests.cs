@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2018 John Källén.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Core;
@@ -26,7 +27,6 @@ using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.Environments.Windows;
 using Reko.UnitTests.Mocks;
-using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,8 +39,7 @@ namespace Reko.UnitTests.Core.Serialization
 {
     public class ProcedureSerializerTests
     {
-        private MockRepository mr;
-        private MockFactory mockFactory;
+        private CommonMockFactory mockFactory;
         private IntelArchitecture arch;
         private ProcedureSerializer ser;
         private Win32Platform platform;
@@ -49,8 +48,7 @@ namespace Reko.UnitTests.Core.Serialization
         [SetUp]
         public void Setup()
         {
-            mr = new MockRepository();
-            mockFactory = new MockFactory(mr);
+            mockFactory = new CommonMockFactory();
             arch = new X86ArchitectureFlat32("x86-protected-32");
             platform = new Win32Platform(null, arch);
         }
@@ -103,7 +101,6 @@ namespace Reko.UnitTests.Core.Serialization
             Identifier seq = new Identifier("es_bx", PrimitiveType.Word32,
                 new SequenceStorage(Registers.es, Registers.bx, PrimitiveType.SegPtr32));
             Given_ProcedureSerializer("stdapi");
-            mr.ReplayAll();
 
             SerializedSignature ssig = ser.Serialize(new FunctionType(seq, new Identifier[0]));
             Verify(ssig, "Core/SsigSerializeSequence.txt");
@@ -116,7 +113,6 @@ namespace Reko.UnitTests.Core.Serialization
             Address addr = Address.Ptr32(0x12345);
             Procedure proc = new Procedure(arch, "foo",  addr, arch.CreateFrame());
             Given_ProcedureSerializer("stdapi");
-            mr.ReplayAll();
 
             Procedure_v1 sproc = ser.Serialize(proc, addr);
             Assert.AreEqual("foo", sproc.Name);
@@ -138,7 +134,6 @@ namespace Reko.UnitTests.Core.Serialization
             };
 
             Given_ProcedureSerializer("stdapi");
-            mr.ReplayAll();
 
             Procedure_v1 sproc = ser.Serialize(proc, addr);
             Assert.AreEqual("eax", sproc.Signature.ReturnValue.Name);
@@ -157,7 +152,6 @@ namespace Reko.UnitTests.Core.Serialization
                 }
             };
             Given_ProcedureSerializer("stdapi");
-            mr.ReplayAll();
 
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             Assert.AreEqual(-1, sig.FpuStackDelta);
@@ -195,9 +189,8 @@ namespace Reko.UnitTests.Core.Serialization
             var ssig = new SerializedSignature
             {
             };
-
             Given_ProcedureSerializer("__cdecl");
-            mr.ReplayAll();
+
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             Assert.AreEqual("void test()", sig.ToString("test"));
         }
@@ -215,7 +208,6 @@ namespace Reko.UnitTests.Core.Serialization
                 }
             };
             Given_ProcedureSerializer("stdapi");
-            mr.ReplayAll();
 
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             Assert.AreEqual(1, sig.FpuStackDelta);
@@ -236,7 +228,6 @@ namespace Reko.UnitTests.Core.Serialization
                 }
             };
             Given_ProcedureSerializer("__cdecl");
-            mr.ReplayAll();
 
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             var sExp =
@@ -267,7 +258,6 @@ namespace Reko.UnitTests.Core.Serialization
                 }
             };
             Given_ProcedureSerializer("__thiscall");
-            mr.ReplayAll();
 
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             var sExp =
@@ -299,7 +289,6 @@ namespace Reko.UnitTests.Core.Serialization
                 }
             };
             Given_ProcedureSerializer("__thiscall");
-            mr.ReplayAll();
 
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             var sExp =
@@ -320,7 +309,6 @@ namespace Reko.UnitTests.Core.Serialization
                 Arguments = new Argument_v1[0]
             };
             Given_ProcedureSerializer("__thiscall");
-            mr.ReplayAll();
 
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             var sExp =
