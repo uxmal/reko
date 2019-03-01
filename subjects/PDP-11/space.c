@@ -4621,7 +4621,7 @@ void fn4534(Eq_1235 r0, Eq_1986 * r4, word16 * r5)
 {
 	word16 r1_7;
 	word16 r2_8;
-		word16 r3_9;
+	word16 r3_9;
 	word16 r4_10;
 	word16 r5_11;
 	Eq_1235 r0_12 = fn0EF8(r0, r4, r5, wLoc02, bLoc01, out r1_7, out r2_8, out r3_9, out r4_10, out r5_11);
