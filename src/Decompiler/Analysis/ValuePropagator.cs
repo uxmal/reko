@@ -50,6 +50,7 @@ namespace Reko.Analysis
         private readonly ExpressionSimplifier eval;
         private readonly SsaEvaluationContext evalCtx;
         private readonly SsaIdentifierTransformer ssaIdTransformer;
+        private readonly SsaMutator ssam;
         private readonly DecompilerEventListener eventListener;
         private Statement stmCur;
 
@@ -65,6 +66,7 @@ namespace Reko.Analysis
             this.arch = ssa.Procedure.Architecture;
             this.eventListener = eventListener;
             this.ssaIdTransformer = new SsaIdentifierTransformer(ssa);
+            this.ssam = new SsaMutator(ssa);
             this.evalCtx = new SsaEvaluationContext(arch, ssa.Identifiers, importResolver);
             this.eval = new ExpressionSimplifier(segmentMap, evalCtx, eventListener);
         }
@@ -203,6 +205,11 @@ namespace Reko.Analysis
             FunctionType sig,
             ProcedureCharacteristics chr)
         {
+            ssam.AdjustRegisterAfterCall(
+                stm,
+                ci,
+                this.arch.StackRegister,
+                sig.StackDelta - ci.CallSite.SizeOfReturnAddressOnStack);
             var ab = new ApplicationBuilder(
                 arch, ssa.Procedure.Frame, ci.CallSite,
                 ci.Callee, sig, false);
