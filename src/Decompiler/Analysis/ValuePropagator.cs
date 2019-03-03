@@ -23,6 +23,7 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
+using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
@@ -116,12 +117,10 @@ namespace Reko.Analysis
             {
                 if (pc.Procedure.Signature.ParametersValid)
                 {
-                    var ab = new ApplicationBuilder(
-                        arch, ssa.Procedure.Frame, ci.CallSite,
-                        ci.Callee, pc.Procedure.Signature, false);
-                    evalCtx.Statement.Instruction = ab.CreateInstruction();
-                    ssaIdTransformer.Transform(evalCtx.Statement, ci);
-                    return evalCtx.Statement.Instruction;
+                    var sig = pc.Procedure.Signature;
+                    var chr = pc.Procedure.Characteristics;
+                    RewriteCall(stmCur, ci, sig, chr);
+                    return stmCur.Instruction;
                 }
                 if (oldCallee != pc && pc.Procedure is Procedure procCallee)
                 {
@@ -197,5 +196,18 @@ namespace Reko.Analysis
         }
 
         #endregion
+
+        private void RewriteCall(
+            Statement stm,
+            CallInstruction ci,
+            FunctionType sig,
+            ProcedureCharacteristics chr)
+        {
+            var ab = new ApplicationBuilder(
+                arch, ssa.Procedure.Frame, ci.CallSite,
+                ci.Callee, sig, false);
+            stm.Instruction = ab.CreateInstruction();
+            ssaIdTransformer.Transform(stm, ci);
+        }
     }
 }
