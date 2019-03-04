@@ -4143,8 +4143,8 @@ l004008D0:
 	Mem25[Mem0[0x10000A20:word32]:word32] = Mem0[Mem0[0x10000914:word32]:word32]
 	signal(r4_26, r5_27)
 	signal(r4_43, r5_44)
-	properties_load(r4_61, r5_62, Mem1587[sp_46:word32], Mem1588[sp_46 + 4:word32])
-	properties_parse_command_line(r4_78, r5_79, Mem1589[sp_64:word32], Mem1590[sp_64 + 4:word32])
+	properties_load(r4_61, r5_62, Mem1587[sp_6:word32], Mem1588[sp_6 + 4:word32])
+	properties_parse_command_line(r4_78, r5_79, Mem1589[sp_6:word32], Mem1590[sp_6 + 4:word32])
 	word32 r2_96 = Mem25[Mem25[0x10000A40:word32] + 0x000004BC:word32]
 	branch r2_96 == 0x00000000 l004008D0_ds_t
 // DataOut: r2
@@ -4276,7 +4276,7 @@ l00400A8C_ds_f:
 
 l00400AC4:
 	getpid()
-	fprintf(r4_1469, r5_1471, Mem1592[sp_1455:<unknown>])
+	fprintf(r4_1469, r5_1471, Mem1592[sp_108:<unknown>])
 	fclose(r4_1488)
 // DataOut:
 // DataOut (flags): 
@@ -4385,10 +4385,10 @@ l00400D50:
 // LocalsOut: fp(32) Local -0138(32) Local -014C(32) Local -0154(32)
 
 l00400D6C:
-	server_new(r2_246, r6_259, r7_260, Mem1597[sp_238:word32], Mem1598[sp_238 + 4:word32], Mem1599[sp_238 + 6:uint16], Mem1600[sp_238 + 8:word32], Mem1601[sp_238 + 12:word32])
-	slist_add(r4_277, r5_278, Mem1602[sp_262:word32], Mem1603[sp_262 + 4:word32])
-	server_new(r2_288, r6_299, r7_300, Mem1604[sp_280:word32], Mem1605[sp_280 + 4:word32], Mem1606[sp_280 + 6:uint16], Mem1607[sp_280 + 8:word32], Mem1608[sp_280 + 12:word32])
-	slist_add(r4_317, r5_318, Mem1609[sp_302:word32], Mem1610[sp_302 + 4:word32])
+	server_new(r2_246, r6_259, r7_260, Mem1597[sp_152:word32], Mem1598[sp_152 + 4:word32], Mem1599[sp_152 + 6:uint16], Mem1600[sp_152 + 8:word32], Mem1601[sp_152 + 12:word32])
+	slist_add(r4_277, r5_278, Mem1602[sp_152:word32], Mem1603[sp_152 + 4:word32])
+	server_new(r2_288, r6_299, r7_300, Mem1604[sp_152:word32], Mem1605[sp_152 + 4:word32], Mem1606[sp_152 + 6:uint16], Mem1607[sp_152 + 8:word32], Mem1608[sp_152 + 12:word32])
+	slist_add(r4_317, r5_318, Mem1609[sp_152:word32], Mem1610[sp_152 + 4:word32])
 	bzero(r4_335, r5_336)
 	word32 sp_360
 	word32 r28_361
@@ -4885,7 +4885,7 @@ l004013C4:
 	__errno_location()
 	__errno_location()
 	strerror(r4_1124)
-	print_log(r4_1140, Mem1614[sp_1126:word32], Mem1615[sp_1126 + 4:word32], Mem1616[sp_1126 + 8:word32], Mem1617[sp_1126 + 12:word32])
+	print_log(r4_1140, Mem1614[sp_554:word32], Mem1615[sp_554 + 4:word32], Mem1616[sp_554 + 8:word32], Mem1617[sp_554 + 12:word32])
 	exit(r4_1160)
 // DataOut: r5 r7
 // DataOut (flags): 
@@ -4946,7 +4946,7 @@ l004014CC_ds_t:
 // LocalsOut: fp(32) Local -0030(32) Local -0138(32) Local -014C(32) Local -0150(32) Local -0154(32) Local -015C(32)
 
 l00401524:
-	clist_add(r4_1022, r5_1023, Mem1624[sp_1006:word32], Mem1625[sp_1006 + 4:word32])
+	clist_add(r4_1022, r5_1023, Mem1624[sp_595:word32], Mem1625[sp_595 + 4:word32])
 	branch r2_1033 != 0x00000000 l00401524_ds_t
 // DataOut: r5 r7
 // DataOut (flags): 
@@ -4966,8 +4966,8 @@ l00401524_ds_f:
 // LocalsOut: fp(32) Local -0030(32) Local -0138(32) Local -014C(32) Local -0150(32) Local -0154(32)
 
 l00401548:
-	print_log(r4_1039, Mem1626[sp_1025:word32], Mem1627[sp_1025 + 4:word32], Mem1628[sp_1025 + 8:word32], Mem1629[sp_1025 + 12:word32])
-	client_destroy(r4_1060, Mem1630[sp_1046:word32])
+	print_log(r4_1039, Mem1626[sp_595:word32], Mem1627[sp_595 + 4:word32], Mem1628[sp_595 + 8:word32], Mem1629[sp_595 + 12:word32])
+	client_destroy(r4_1060, Mem1630[sp_595:word32])
 // DataOut: r5 r7
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -416 r25:<invalid> r28:0x10008860 r30:fp + -416 r2:<invalid> r1:<invalid> r4:<invalid> r5:<invalid> r3:<invalid> r6:<invalid> r7:<invalid> r16:<invalid> -400(fp):0x00000000 -396(fp):<invalid> -392(fp):<invalid> -388(fp):<invalid> -384(fp):<invalid> -380(fp):<invalid> -376(fp):<invalid> -372(fp):<invalid> -368(fp):<invalid> -360(fp):0x10008860 -352(fp):<invalid> -348(fp):<invalid> -344(fp):<invalid> -340(fp):<invalid> -336(fp):<invalid> -332(fp):<invalid> -328(fp):0x0002 -326(fp):<invalid> -324(fp):<invalid> -312(fp):<invalid> -304(fp):0x00000000 -176(fp):0x00000000 -48(fp):<invalid> -44(fp):fp + -176 -40(fp):<invalid> -36(fp):<invalid> -32(fp):<invalid> -28(fp):<invalid> -24(fp):<invalid> -20(fp):<invalid> -12(fp):r16 -8(fp):r30 -4(fp):ra 0(fp):r4 4(fp):r5
@@ -5701,7 +5701,7 @@ l00400F28:
 
 l00401AD4:
 	clist_destroy(Mem1612[sp_420:word32])
-	slist_destroy(Mem1613[sp_426:word32])
+	slist_destroy(Mem1613[sp_420:word32])
 	branch r2_110 == 0x00000695 l00401AD4_ds_t
 // DataOut: r2 r5 r7
 // DataOut (flags): 
@@ -5799,7 +5799,7 @@ l00401BFC:
 	Mem139[r2_32 + 0x000017AA:word16] = (word16) (word32) Mem135[r5 + 0x00000002:uint16]
 	Mem143[r2_32 + 0x000017AC:word32] = Mem139[r5 + 0x00000004:word32]
 	Mem146[r2_32 + 0x00001790:word32] = r7
-	open_destination(r2_148, r4_149, Mem390[sp_116:word32])
+	open_destination(r2_148, r4_149, Mem390[sp_6:word32])
 	Mem165[r2_32 + 0x00000004:word32] = r2_160
 	branch Mem165[r2_32 + 0x00000004:word32] >= 0x00000000 l00401BFC_ds_t
 // DataOut:
@@ -5886,8 +5886,8 @@ l00401F70_ds_t:
 l00401FB4:
 	Mem352[r2_32 + 0x000017C0:word32] = client_copy_request
 	Mem355[r2_32 + 0x000017C4:word32] = client_parse_reply
-	client_prepare_connect(r4_356, Mem403[sp_319:word32])
-	client_send_request(r2_367, r4_370, Mem404[sp_358:word32])
+	client_prepare_connect(r4_356, Mem403[sp_223:word32])
+	client_send_request(r2_367, r4_370, Mem404[sp_223:word32])
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -72 r25:<invalid> r28:0x10008860 r30:fp + -72 r4:<invalid> r2:1 r5:<invalid> r3:r7 r6:<invalid> r7:<invalid> -56(fp):<invalid> -52(fp):<invalid> -48(fp):<invalid> -40(fp):0x10008860 -32(fp):16 -28(fp):r2 -24(fp):r7 -12(fp):r30 -8(fp):ra 0(fp):r4 4(fp):r5 8(fp):r6 12(fp):r7
@@ -5918,7 +5918,7 @@ l00401BFC_ds_f:
 // LocalsOut: fp(32) Local -001C(32)
 
 l00401D48:
-	print_log(r4_171, Mem399[sp_151:word32], Mem400[sp_151 + 4:word32], Mem401[sp_151 + 8:word32], Mem402[sp_151 + 12:word32])
+	print_log(r4_171, Mem399[sp_6:word32], Mem400[sp_6 + 4:word32], Mem401[sp_6 + 8:word32], Mem402[sp_6 + 12:word32])
 	close(r4_191)
 	free(r4_205)
 // DataOut:
@@ -5933,7 +5933,7 @@ l00401B70_ds_f:
 // LocalsOut: fp(32)
 
 l00401BCC:
-	print_log(r4_56, Mem391[sp_23:word32], Mem392[sp_23 + 4:word32], Mem393[sp_23 + 8:word32], Mem394[sp_23 + 12:word32])
+	print_log(r4_56, Mem391[sp_6:word32], Mem392[sp_6 + 4:word32], Mem393[sp_6 + 8:word32], Mem394[sp_6 + 12:word32])
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -72 r25:<invalid> r28:0x10008860 r30:fp + -72 r4:<invalid> r2:r2 -40(fp):0x10008860 -28(fp):r2 -12(fp):r30 -8(fp):ra 0(fp):r4 4(fp):r5 8(fp):r6 12(fp):r7
@@ -6037,7 +6037,7 @@ l0040214C:
 // LocalsOut: fp(32) Stack +0000(32)
 
 l00402158:
-	add_to_request(r4_108, r5_109, r6_110, r7_111, Mem137[sp_89:word32], Mem138[sp_89 + 4:word32], Mem139[sp_89 + 8:word32], Mem140[sp_89 + 12:word32])
+	add_to_request(r4_108, r5_109, r6_110, r7_111, Mem137[sp_62:word32], Mem138[sp_62 + 4:word32], Mem139[sp_62 + 8:word32], Mem140[sp_62 + 12:word32])
 	return
 // DataOut:
 // DataOut (flags): 
@@ -6273,8 +6273,8 @@ l0040280C_ds_f:
 // LocalsOut: fp(32) Local -0020(32) Local -0810(32) Local -0818(32) Stack +0000(32)
 
 l00402840:
-	request_get_content_length(r4_480, r5_481, Mem725[sp_467:word32], Mem726[sp_467 + 4:word32])
-	request_save_line(r4_496, Mem727[sp_483:word32], Mem728[sp_483 + 4:word32], Mem729[sp_483 + 8:word32], Mem730[sp_483 + 11:byte])
+	request_get_content_length(r4_480, r5_481, Mem725[sp_441:word32], Mem726[sp_441 + 4:word32])
+	request_save_line(r4_496, Mem727[sp_441:word32], Mem728[sp_441 + 4:word32], Mem729[sp_441 + 8:word32], Mem730[sp_441 + 11:byte])
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -2104 r25:<invalid> r28:0x10008860 r30:fp + -2104 r2:<invalid> r4:<invalid> r5:<invalid> r6:<invalid> r3:<invalid> r7:<invalid> -2088(fp):fp + -2064 -2080(fp):0x10008860 -2072(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):fp + -2064 -52(fp):r4 + 8 -48(fp):<invalid> -44(fp):<invalid> -40(fp):<invalid> -36(fp):<invalid> -32(fp):<invalid> -28(fp):<invalid> -24(fp):<invalid> -12(fp):r30 -8(fp):ra 0(fp):r4
@@ -6300,12 +6300,12 @@ l004026A8_ds_t:
 // LocalsOut: fp(32) Local -0020(32) Local -0810(32) Local -0818(32) Stack +0000(32)
 
 l004026F8:
-	request_get_host(r4_551, r5_552, Mem703[sp_518:word32], Mem704[sp_518 + 4:word32])
-	request_make_url(r4_566, Mem705[sp_554:word32])
+	request_get_host(r4_551, r5_552, Mem703[sp_63:word32], Mem704[sp_63 + 4:word32])
+	request_make_url(r4_566, Mem705[sp_63:word32])
 	strlen(r4_582)
-	add_to_request(r4_599, r5_600, r6_601, r7_602, Mem706[sp_584:word32], Mem707[sp_584 + 4:word32], Mem708[sp_584 + 8:word32], Mem709[sp_584 + 12:word32])
-	request_add_lines(r4_617, r5_618, r6_619, Mem710[sp_604:word32], Mem711[sp_604 + 4:word32], Mem712[sp_604 + 8:word32])
-	add_to_request(r4_635, r5_636, r6_637, r7_638, Mem713[sp_621:word32], Mem714[sp_621 + 4:word32], Mem715[sp_621 + 8:word32], Mem716[sp_621 + 12:word32])
+	add_to_request(r4_599, r5_600, r6_601, r7_602, Mem706[sp_63:word32], Mem707[sp_63 + 4:word32], Mem708[sp_63 + 8:word32], Mem709[sp_63 + 12:word32])
+	request_add_lines(r4_617, r5_618, r6_619, Mem710[sp_63:word32], Mem711[sp_63 + 4:word32], Mem712[sp_63 + 8:word32])
+	add_to_request(r4_635, r5_636, r6_637, r7_638, Mem713[sp_63:word32], Mem714[sp_63 + 4:word32], Mem715[sp_63 + 8:word32], Mem716[sp_63 + 12:word32])
 	Mem655[r4 + 0x00001794:word32] = 2
 // DataOut:
 // DataOut (flags): 
@@ -6319,7 +6319,7 @@ l004026A8_ds_f:
 // LocalsOut: fp(32) Local -0020(32) Local -0810(32) Local -0818(32) Stack +0000(32)
 
 l004026B8:
-	print_log(r4_531, Mem717[sp_518:word32], Mem718[sp_518 + 4:word32], Mem719[sp_518 + 8:word32], Mem720[sp_518 + 12:word32])
+	print_log(r4_531, Mem717[sp_63:word32], Mem718[sp_63 + 4:word32], Mem719[sp_63 + 8:word32], Mem720[sp_63 + 12:word32])
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -2104 r25:<invalid> r28:0x10008860 r30:fp + -2104 r2:<invalid> r4:<invalid> r5:<invalid> r6:<invalid> r3:<invalid> r7:<invalid> -2088(fp):fp + -2064 -2080(fp):0x10008860 -2072(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):fp + -2064 -52(fp):r4 + 8 -48(fp):<invalid> -44(fp):<invalid> -40(fp):<invalid> -36(fp):<invalid> -32(fp):<invalid> -28(fp):<invalid> -24(fp):<invalid> -12(fp):r30 -8(fp):ra 0(fp):r4
@@ -6332,7 +6332,7 @@ l00402604_ds_f:
 // LocalsOut: fp(32) Stack +0000(32)
 
 l00402614:
-	print_log(r4_408, Mem699[sp_92:word32], Mem700[sp_92 + 4:word32], Mem701[sp_92 + 8:word32], Mem702[sp_92 + 12:word32])
+	print_log(r4_408, Mem699[sp_63:word32], Mem700[sp_63 + 4:word32], Mem701[sp_63 + 8:word32], Mem702[sp_63 + 12:word32])
 	Mem428[r4 + 0x00001794:word32] = 0x00000000
 // DataOut:
 // DataOut (flags): 
@@ -6372,7 +6372,7 @@ l004023D0_ds_t:
 // LocalsOut: fp(32) Local -0020(32) Local -0024(32) Local -0030(32) Local -0810(32) Local -0818(32) Stack +0000(32)
 
 l004028C4:
-	add_to_request(r4_344, r5_345, r6_346, r7_347, Mem681[sp_92:word32], Mem682[sp_92 + 4:word32], Mem683[sp_92 + 8:word32], Mem684[sp_92 + 12:word32])
+	add_to_request(r4_344, r5_345, r6_346, r7_347, Mem681[sp_63:word32], Mem682[sp_63 + 4:word32], Mem683[sp_63 + 8:word32], Mem684[sp_63 + 12:word32])
 	branch dwLoc1C_111 == 0x00000000 l004028C4_ds_t
 // DataOut:
 // DataOut (flags): 
@@ -6425,7 +6425,7 @@ l00402964_ds_f:
 // LocalsOut: fp(32) Local -0020(32) Local -0810(32) Local -0818(32) Stack +0000(32)
 
 l00402998:
-	request_get_content_length(r4_392, r5_393, Mem697[sp_379:word32], Mem698[sp_379 + 4:word32])
+	request_get_content_length(r4_392, r5_393, Mem697[sp_63:word32], Mem698[sp_63 + 4:word32])
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -2104 r25:<invalid> r28:0x10008860 r30:fp + -2104 r2:<invalid> r4:<invalid> r5:<invalid> r6:<invalid> r3:<invalid> r7:<invalid> -2088(fp):fp + -2064 -2080(fp):0x10008860 -2072(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):fp + -2064 -52(fp):r4 + 8 -48(fp):<invalid> -44(fp):<invalid> -40(fp):<invalid> -36(fp):<invalid> -32(fp):<invalid> -28(fp):<invalid> -24(fp):<invalid> -12(fp):r30 -8(fp):ra 0(fp):r4
@@ -6509,7 +6509,7 @@ l004023E4_ds_t:
 // LocalsOut: fp(32) Local -0020(32) Local -0030(32) Local -0810(32) Local -0818(32) Stack +0000(32)
 
 l004029C4:
-	add_to_request(r4_315, r5_316, r6_317, r7_318, Mem685[sp_92:word32], Mem686[sp_92 + 4:word32], Mem687[sp_92 + 8:word32], Mem688[sp_92 + 12:word32])
+	add_to_request(r4_315, r5_316, r6_317, r7_318, Mem685[sp_63:word32], Mem686[sp_63 + 4:word32], Mem687[sp_63 + 8:word32], Mem688[sp_63 + 12:word32])
 	Mem338[dwLoc20_125 + 0x00000554:word32] = Mem0[dwLoc20_125 + 0x00000554:word32]
 	branch Mem338[dwLoc20_125 + 0x00000554:word32] != 0x00000000 l004029C4_ds_t
 // DataOut:
@@ -6581,7 +6581,7 @@ l00402400_ds_t:
 // LocalsOut: fp(32) Local -0020(32) Local -0810(32) Local -0818(32) Stack +0000(32)
 
 l004025D0:
-	add_to_request(r4_293, r5_294, r6_295, r7_296, Mem665[sp_92:word32], Mem666[sp_92 + 4:word32], Mem667[sp_92 + 8:word32], Mem668[sp_92 + 12:word32])
+	add_to_request(r4_293, r5_294, r6_295, r7_296, Mem665[sp_63:word32], Mem666[sp_63 + 4:word32], Mem667[sp_63 + 8:word32], Mem668[sp_63 + 12:word32])
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -2104 r25:<invalid> r28:0x10008860 r30:fp + -2104 r2:<invalid> r4:<invalid> r5:<invalid> r6:<invalid> r3:<invalid> r7:<invalid> -2088(fp):fp + -2064 -2080(fp):0x10008860 -2072(fp):<invalid> -64(fp):<invalid> -60(fp):<invalid> -56(fp):fp + -2064 -52(fp):r4 + 8 -48(fp):<invalid> -44(fp):<invalid> -40(fp):<invalid> -36(fp):<invalid> -32(fp):<invalid> -28(fp):<invalid> -24(fp):<invalid> -12(fp):r30 -8(fp):ra 0(fp):r4
@@ -6607,7 +6607,7 @@ l00402410_ds_t:
 // LocalsOut: fp(32) Local -0810(32) Local -0818(32) Stack +0000(32)
 
 l004024FC:
-	request_new(r2_276, r4_277, Mem669[sp_92:word32])
+	request_new(r2_276, r4_277, Mem669[sp_63:word32])
 	dwLoc20_125 = r2_285
 // DataOut:
 // DataOut (flags): 
@@ -6621,9 +6621,9 @@ l00402410_ds_f:
 // LocalsOut: fp(32) Local -0810(32) Local -0818(32) Stack +0000(32)
 
 l00402428:
-	print_log(r4_204, Mem670[sp_92:word32], Mem671[sp_92 + 4:word32], Mem672[sp_92 + 8:word32], Mem673[sp_92 + 12:word32])
+	print_log(r4_204, Mem670[sp_63:word32], Mem671[sp_63 + 4:word32], Mem672[sp_63 + 8:word32], Mem673[sp_63 + 12:word32])
 	dwLoc20_125 = Mem0[r4 + 0x00000FB4:word32]
-	request_parse_line(r2_226, r4_227, Mem674[sp_211:word32], Mem675[sp_211 + 4:word32])
+	request_parse_line(r2_226, r4_227, Mem674[sp_63:word32], Mem675[sp_63 + 4:word32])
 	branch r2_236 != 0x00000000 l00402428_ds_t
 // DataOut:
 // DataOut (flags): 
@@ -6643,8 +6643,8 @@ l00402428_ds_f:
 // LocalsOut: fp(32) Local -0810(32) Local -0818(32) Stack +0000(32)
 
 l0040249C:
-	print_log(r4_242, Mem676[sp_230:word32], Mem677[sp_230 + 4:word32], Mem678[sp_230 + 8:word32], Mem679[sp_230 + 12:word32])
-	request_destroy(r4_261, Mem680[sp_249:word32])
+	print_log(r4_242, Mem676[sp_63:word32], Mem677[sp_63 + 4:word32], Mem678[sp_63 + 8:word32], Mem679[sp_63 + 12:word32])
+	request_destroy(r4_261, Mem680[sp_63:word32])
 	dwLoc20_125 = 0x00000000
 // DataOut:
 // DataOut (flags): 
@@ -6667,7 +6667,7 @@ l0040251C_ds_t:
 
 l00402550:
 	print_log(r4_164, Mem689[sp_154:word32], Mem690[sp_154 + 4:word32], Mem691[sp_154 + 8:word32], Mem692[sp_154 + 12:word32])
-	add_to_request(r4_184, r5_185, r6_186, r7_187, Mem693[sp_171:word32], Mem694[sp_171 + 4:word32], Mem695[sp_171 + 8:word32], Mem696[sp_171 + 12:word32])
+	add_to_request(r4_184, r5_185, r6_186, r7_187, Mem693[sp_154:word32], Mem694[sp_154 + 4:word32], Mem695[sp_154 + 8:word32], Mem696[sp_154 + 12:word32])
 	Mem203[r4 + 0x00001794:word32] = 2
 // DataOut:
 // DataOut (flags): 
@@ -7351,7 +7351,7 @@ l00403184_ds_t:
 // LocalsOut: fp(32)
 
 l004031AC:
-	client_copy_reply(r4_38, Mem49[sp_29:word32])
+	client_copy_reply(r4_38, Mem49[sp_6:word32])
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -40 r25:<invalid> r28:0x10008860 r30:fp + -40 r2:<invalid> r4:<invalid> -24(fp):0x10008860 -12(fp):r30 -8(fp):ra 0(fp):r4
@@ -8143,7 +8143,7 @@ l00403794_ds_f:
 // LocalsOut: fp(32) Stack +0000(32)
 
 l004037EC:
-	request_destroy(r4_43, Mem54[sp_17:word32])
+	request_destroy(r4_43, Mem54[sp_6:word32])
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -40 r25:<invalid> r28:0x10008860 r30:fp + -40 r4:<invalid> r2:<invalid> -24(fp):0x10008860 -12(fp):r30 -8(fp):ra 0(fp):r4
@@ -8326,7 +8326,7 @@ l00403B3C:
 	__errno_location()
 	__errno_location()
 	strerror(r4_170)
-	print_log(r4_189, Mem215[sp_172:word32], Mem216[sp_172 + 4:word32], Mem217[sp_172 + 8:word32], Mem218[sp_172 + 12:word32])
+	print_log(r4_189, Mem215[sp_6:word32], Mem216[sp_6 + 4:word32], Mem217[sp_6 + 8:word32], Mem218[sp_6 + 12:word32])
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r30:fp + -56 r4:<invalid> r5:<invalid> r6:<invalid> r2:<invalid> -32(fp):0x10008860 -24(fp):r2 -12(fp):r16 -8(fp):r30 -4(fp):ra 0(fp):r4
@@ -8342,7 +8342,7 @@ l00403A78:
 	__errno_location()
 	__errno_location()
 	strerror(r4_83)
-	print_log(r4_102, Mem211[sp_85:word32], Mem212[sp_85 + 4:word32], Mem213[sp_85 + 8:word32], Mem214[sp_85 + 12:word32])
+	print_log(r4_102, Mem211[sp_6:word32], Mem212[sp_6 + 4:word32], Mem213[sp_6 + 8:word32], Mem214[sp_6 + 12:word32])
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r30:fp + -56 r4:<invalid> r5:<invalid> r6:<invalid> r2:r2 -32(fp):0x10008860 -24(fp):r2 -12(fp):r16 -8(fp):r30 -4(fp):ra 0(fp):r4
@@ -8404,7 +8404,7 @@ l00403C00_ds_f:
 // LocalsOut: fp(32)
 
 l00403C4C:
-	print_log(r4_37, Mem60[sp_15:word32], Mem61[sp_15 + 4:word32], Mem62[sp_15 + 8:word32], Mem63[sp_15 + 12:word32])
+	print_log(r4_37, Mem60[sp_6:word32], Mem61[sp_6 + 4:word32], Mem62[sp_6 + 8:word32], Mem63[sp_6 + 12:word32])
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -48 r25:<invalid> r28:0x10008860 r30:fp + -48 r4:<invalid> r2:r2 -32(fp):0x10008860 -24(fp):r2 -12(fp):r30 -8(fp):ra
@@ -8799,7 +8799,7 @@ clist_delete_entry:
 
 l00403FF8:
 	clist_remove(r4_17, r5_18, Mem42[sp_6:word32], Mem43[sp_6 + 4:word32])
-	client_destroy(r4_28, Mem44[sp_20:word32])
+	client_destroy(r4_28, Mem44[sp_6:word32])
 	return
 // DataOut:
 // DataOut (flags): 
@@ -8957,7 +8957,7 @@ clist_destroy_entry:
 
 l004041B0:
 	clist_close_all(r4_15, Mem46[sp_6:word32])
-	clist_destroy_all(r4_24, Mem47[sp_17:word32])
+	clist_destroy_all(r4_24, Mem47[sp_6:word32])
 	free(r4_33)
 	return
 // DataOut:
@@ -9026,7 +9026,7 @@ l004042C0_ds_f:
 // LocalsOut: fp(32)
 
 l00404330:
-	request_parse_line(r4, r4_85, Mem103[sp_17:word32], Mem104[sp_17 + 4:word32])
+	request_parse_line(r4, r4_85, Mem103[sp_6:word32], Mem104[sp_6 + 4:word32])
 	branch r2_94 != 0x00000000 l00404330_ds_t
 // DataOut:
 // DataOut (flags): 
@@ -9064,7 +9064,7 @@ l00404240_ds_f:
 // LocalsOut: fp(32)
 
 l00404290:
-	print_log(r4_41, Mem99[sp_17:word32], Mem100[sp_17 + 4:word32], Mem101[sp_17 + 8:word32], Mem102[sp_17 + 12:word32])
+	print_log(r4_41, Mem99[sp_6:word32], Mem100[sp_6 + 4:word32], Mem101[sp_6 + 8:word32], Mem102[sp_6 + 12:word32])
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -48 r25:<invalid> r28:0x10008860 r30:fp + -48 r4:<invalid> r2:r2 -32(fp):0x10008860 -24(fp):r2 -12(fp):r30 -8(fp):ra 0(fp):r4
@@ -9098,7 +9098,7 @@ request_parse_line_entry:
 
 l00404378:
 	get_method(Mem83[sp_6:word32], Mem84[sp_6 + 4:word32])
-	is_a_method(Mem85[sp_20:word32])
+	is_a_method(Mem85[sp_6:word32])
 	branch r2_39 != 0x00000000 l00404378_ds_t
 // DataOut:
 // DataOut (flags): 
@@ -9112,8 +9112,8 @@ l00404378_ds_t:
 // LocalsOut: fp(32) Stack +0000(32)
 
 l004043E8:
-	get_uri(Mem86[sp_32:word32], Mem87[sp_32 + 4:word32])
-	get_version(Mem88[sp_57:word32], Mem89[sp_57 + 4:word32])
+	get_uri(Mem86[sp_6:word32], Mem87[sp_6 + 4:word32])
+	get_version(Mem88[sp_6:word32], Mem89[sp_6 + 4:word32])
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -48 r25:<invalid> r28:0x10008860 r30:fp + -48 r4:<invalid> r5:<invalid> -32(fp):0x10008860 -24(fp):r2 -12(fp):r30 -8(fp):ra 0(fp):r4 4(fp):r5
@@ -9215,7 +9215,7 @@ l00404544_ds_f:
 // LocalsOut: fp(32) Stack +0000(32)
 
 l004045DC:
-	print_log(r4_118, Mem183[sp_89:word32], Mem184[sp_89 + 4:word32], Mem185[sp_89 + 8:word32], Mem186[sp_89 + 12:word32])
+	print_log(r4_118, Mem183[sp_6:word32], Mem184[sp_6 + 4:word32], Mem185[sp_6 + 8:word32], Mem186[sp_6 + 12:word32])
 	Mem142[r4 + 0x00000558:word32] = Mem109[r4 + 0x00000558:word32] + -1
 // DataOut:
 // DataOut (flags): 
@@ -9315,7 +9315,7 @@ l004047D4_ds_t:
 // LocalsOut: fp(32) Stack +0000(32)
 
 l0040485C:
-	snprintf(r4_144, r5_145, r6_147, Mem167[sp_63:<unknown>])
+	snprintf(r4_144, r5_145, r6_147, Mem167[sp_6:<unknown>])
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r30:fp + -56 r2:47 r4:<invalid> r5:<invalid> r6:<invalid> r3:<invalid> -24(fp):0x10008860 -12(fp):r30 -8(fp):ra 0(fp):r4
@@ -9328,7 +9328,7 @@ l004047D4_ds_f:
 // LocalsOut: fp(32) Stack +0000(32)
 
 l004047EC:
-	snprintf(r4_115, r5_116, r6_118, Mem168[sp_63:<unknown>])
+	snprintf(r4_115, r5_116, r6_118, Mem168[sp_6:<unknown>])
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r30:fp + -56 r2:47 r4:<invalid> r5:<invalid> r6:<invalid> r3:<invalid> -24(fp):0x10008860 -12(fp):r30 -8(fp):ra 0(fp):r4
@@ -9341,7 +9341,7 @@ l00404738_ds_f:
 // LocalsOut: fp(32) Stack +0000(32)
 
 l00404774:
-	snprintf(r4_83, r5_84, r6_86, Mem166[sp_63:<unknown>])
+	snprintf(r4_83, r5_84, r6_86, Mem166[sp_6:<unknown>])
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r30:fp + -56 r2:<invalid> r4:<invalid> r5:<invalid> r6:<invalid> -24(fp):0x10008860 -12(fp):r30 -8(fp):ra 0(fp):r4
@@ -9832,7 +9832,7 @@ l00404E94_ds_f:
 // LocalsOut: fp(32) Local -0014(32) Local -0018(32)
 
 l00404EB0:
-	print_log(r4_163, Mem233[sp_121:word32], Mem234[sp_121 + 4:word32], Mem235[sp_121 + 8:word32], Mem236[sp_121 + 12:word32])
+	print_log(r4_163, Mem233[sp_6:word32], Mem234[sp_6 + 4:word32], Mem235[sp_6 + 8:word32], Mem236[sp_6 + 12:word32])
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r30:fp + -56 r2:<invalid> r3:<invalid> r4:<invalid> r5:<invalid> -32(fp):0x10008860 -24(fp):<invalid> -20(fp):<invalid> -12(fp):r30 -8(fp):ra 0(fp):r4 4(fp):r5
@@ -9845,7 +9845,7 @@ l00404E1C_ds_f:
 // LocalsOut: fp(32)
 
 l00404E54:
-	print_log(r4_135, Mem229[sp_121:word32], Mem230[sp_121 + 4:word32], Mem231[sp_121 + 8:word32], Mem232[sp_121 + 12:word32])
+	print_log(r4_135, Mem229[sp_6:word32], Mem230[sp_6 + 4:word32], Mem231[sp_6 + 8:word32], Mem232[sp_6 + 12:word32])
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r30:fp + -56 r2:<invalid> r3:<invalid> r4:<invalid> r5:<invalid> -32(fp):0x10008860 -24(fp):<invalid> -20(fp):<invalid> -12(fp):r30 -8(fp):ra 0(fp):r4 4(fp):r5
@@ -9858,7 +9858,7 @@ l00404D38_ds_f:
 // LocalsOut: fp(32)
 
 l00404D70:
-	print_log(r4_92, Mem225[sp_78:word32], Mem226[sp_78 + 4:word32], Mem227[sp_78 + 8:word32], Mem228[sp_78 + 12:word32])
+	print_log(r4_92, Mem225[sp_6:word32], Mem226[sp_6 + 4:word32], Mem227[sp_6 + 8:word32], Mem228[sp_6 + 12:word32])
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r30:fp + -56 r2:<invalid> r3:<invalid> r4:<invalid> r5:<invalid> -32(fp):0x10008860 -24(fp):<invalid> -12(fp):r30 -8(fp):ra 0(fp):r4 4(fp):r5
@@ -10068,7 +10068,7 @@ l00405164_ds_f:
 // LocalsOut: fp(32) Local -0014(32) Local -0018(32)
 
 l00405180:
-	print_log(r4_163, Mem225[sp_121:word32], Mem226[sp_121 + 4:word32], Mem227[sp_121 + 8:word32], Mem228[sp_121 + 12:word32])
+	print_log(r4_163, Mem225[sp_6:word32], Mem226[sp_6 + 4:word32], Mem227[sp_6 + 8:word32], Mem228[sp_6 + 12:word32])
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r30:fp + -56 r2:<invalid> r3:<invalid> r4:<invalid> r5:<invalid> -32(fp):0x10008860 -24(fp):<invalid> -20(fp):<invalid> -12(fp):r30 -8(fp):ra 0(fp):r4 4(fp):r5
@@ -10081,7 +10081,7 @@ l004050EC_ds_f:
 // LocalsOut: fp(32)
 
 l00405124:
-	print_log(r4_135, Mem221[sp_121:word32], Mem222[sp_121 + 4:word32], Mem223[sp_121 + 8:word32], Mem224[sp_121 + 12:word32])
+	print_log(r4_135, Mem221[sp_6:word32], Mem222[sp_6 + 4:word32], Mem223[sp_6 + 8:word32], Mem224[sp_6 + 12:word32])
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r30:fp + -56 r2:<invalid> r3:<invalid> r4:<invalid> r5:<invalid> -32(fp):0x10008860 -24(fp):<invalid> -20(fp):<invalid> -12(fp):r30 -8(fp):ra 0(fp):r4 4(fp):r5
@@ -10094,7 +10094,7 @@ l00405008_ds_f:
 // LocalsOut: fp(32)
 
 l00405040:
-	print_log(r4_92, Mem217[sp_78:word32], Mem218[sp_78 + 4:word32], Mem219[sp_78 + 8:word32], Mem220[sp_78 + 12:word32])
+	print_log(r4_92, Mem217[sp_6:word32], Mem218[sp_6 + 4:word32], Mem219[sp_6 + 8:word32], Mem220[sp_6 + 12:word32])
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r30:fp + -56 r2:<invalid> r3:<invalid> r4:<invalid> r5:<invalid> -32(fp):0x10008860 -24(fp):<invalid> -12(fp):r30 -8(fp):ra 0(fp):r4 4(fp):r5
@@ -10329,7 +10329,7 @@ l00405454_ds_f:
 // LocalsOut: fp(32)
 
 l00405468:
-	print_log(r4_58, Mem78[sp_21:word32], Mem79[sp_21 + 4:word32], Mem80[sp_21 + 8:word32], Mem81[sp_21 + 12:word32])
+	print_log(r4_58, Mem78[sp_6:word32], Mem79[sp_6 + 4:word32], Mem80[sp_6 + 8:word32], Mem81[sp_6 + 12:word32])
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r30:fp + -56 r4:<invalid> r5:<invalid> r6:<invalid> r2:r5 r3:<invalid> -32(fp):0x10008860 -20(fp):r2 -12(fp):r30 -8(fp):ra 0(fp):r4 4(fp):r5
@@ -10853,7 +10853,7 @@ l00405858_ds_f:
 // LocalsOut: fp(32)
 
 l004058D8:
-	print_log(r4_260, Mem658[sp_244:word32], Mem659[sp_244 + 4:word32], Mem660[sp_244 + 8:word32], Mem661[sp_244 + 12:word32])
+	print_log(r4_260, Mem658[sp_223:word32], Mem659[sp_223 + 4:word32], Mem660[sp_223 + 8:word32], Mem661[sp_223 + 12:word32])
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -368 r25:<invalid> r28:0x10008860 r30:fp + -368 r3:<invalid> r2:<invalid> r4:<invalid> r5:<invalid> r6:<invalid> r7:<invalid> -352(fp):<invalid> -344(fp):0x10008860 -336(fp):<invalid> -332(fp):<invalid> -72(fp):<invalid> -64(fp):<invalid> -61(fp):<invalid> -60(fp):<invalid> -57(fp):<invalid> -56(fp):<invalid> -55(fp):<invalid> -48(fp):<invalid> -44(fp):<invalid> -40(fp):<invalid> -36(fp):<invalid> -32(fp):<invalid> -28(fp):<invalid> -24(fp):<invalid> -12(fp):r30 -8(fp):ra 0(fp):r4 4(fp):<invalid>
@@ -10897,7 +10897,7 @@ l00405698_ds_f:
 // LocalsOut: fp(32)
 
 l004056D0:
-	print_log(r4_98, Mem654[sp_82:word32], Mem655[sp_82 + 4:word32], Mem656[sp_82 + 8:word32], Mem657[sp_82 + 12:word32])
+	print_log(r4_98, Mem654[sp_6:word32], Mem655[sp_6 + 4:word32], Mem656[sp_6 + 8:word32], Mem657[sp_6 + 12:word32])
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -368 r25:<invalid> r28:0x10008860 r30:fp + -368 r3:<invalid> r2:<invalid> r4:<invalid> r5:<invalid> r6:<invalid> r7:<invalid> -344(fp):0x10008860 -336(fp):<invalid> -72(fp):<invalid> -64(fp):<invalid> -61(fp):<invalid> -60(fp):<invalid> -57(fp):<invalid> -56(fp):<invalid> -55(fp):<invalid> -48(fp):<invalid> -12(fp):r30 -8(fp):ra 0(fp):r4 4(fp):<invalid>
@@ -10910,7 +10910,7 @@ l0040556C_ds_f:
 // LocalsOut: fp(32)
 
 l004055B4:
-	print_log(r4_573, Mem650[sp_559:word32], Mem651[sp_559 + 4:word32], Mem652[sp_559 + 8:word32], Mem653[sp_559 + 12:word32])
+	print_log(r4_573, Mem650[sp_6:word32], Mem651[sp_6 + 4:word32], Mem652[sp_6 + 8:word32], Mem653[sp_6 + 12:word32])
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -368 r25:<invalid> r28:0x10008860 r30:fp + -368 r3:<invalid> r2:<invalid> r4:<invalid> r5:<invalid> r6:<invalid> r7:<invalid> -344(fp):0x10008860 -64(fp):<invalid> -61(fp):<invalid> -60(fp):<invalid> -57(fp):<invalid> -56(fp):<invalid> -55(fp):<invalid> -48(fp):0x00000000 -12(fp):r30 -8(fp):ra 0(fp):r4 4(fp):<invalid>
@@ -11165,7 +11165,7 @@ l004061DC_ds_f:
 
 l004061EC:
 	print_log(r4_158, Mem460[sp_142:word32], Mem461[sp_142 + 4:word32], Mem462[sp_142 + 8:word32], Mem463[sp_142 + 12:word32])
-	properties_print_usage(r4_180, Mem464[sp_165:word32])
+	properties_print_usage(r4_180, Mem464[sp_142:word32])
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -72 r25:<invalid> r28:0x10008860 r30:fp + -72 r2:<invalid> r3:<invalid> r4:<invalid> r1:<invalid> r5:<invalid> r16:<invalid> r6:<invalid> -48(fp):0x10008860 -40(fp):<invalid> -36(fp):<invalid> -32(fp):<invalid> -28(fp):<invalid> -24(fp):<invalid> -20(fp):<invalid> -12(fp):r16 -8(fp):r30 -4(fp):ra 0(fp):r4 4(fp):r5
@@ -11787,7 +11787,7 @@ l0040674C_ds_f:
 
 l00406798:
 	Mem82[Mem76[0x10000A20:word32]:word32] = Mem76[Mem76[0x10000914:word32]:word32]
-	print_log(r4_83, Mem101[sp_63:word32], Mem102[sp_63 + 4:word32], Mem103[sp_63 + 8:word32], Mem104[sp_63 + 12:word32])
+	print_log(r4_83, Mem101[sp_6:word32], Mem102[sp_6 + 4:word32], Mem103[sp_6 + 8:word32], Mem104[sp_6 + 12:word32])
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -40 r25:<invalid> r28:0x10008860 r30:fp + -40 r2:<invalid> r3:<invalid> r4:<invalid> r5:<invalid> r1:<invalid> -24(fp):0x10008860 -12(fp):r30 -8(fp):ra 0(fp):r4
@@ -11879,7 +11879,7 @@ l004068CC:
 // LocalsOut: fp(32)
 
 l00406944:
-	open_log(Mem93[sp_17:word32])
+	open_log(Mem93[sp_6:word32])
 	return
 // DataOut:
 // DataOut (flags): 
@@ -11926,7 +11926,7 @@ l0040697C:
 		uses: dwLoc08_9,dwLoc0C_11,dwLoc10_13,dwLoc14_15,dwLoc50_7,hi_40,r1_41,r16_33,r17_32,r2_43,r25_45,r28_42,r3_39,r30_31,r4_44,r5_35,r6_36,r7_38,ra_30,sp_27
 		defs: hi_59,r1_60,r16_52,r17_51,r2_56,r25_48,r28_47,r3_58,r30_50,r4_53,r5_54,r6_55,r7_57,ra_49,sp_46
 	strftime(r4_62, r5_63, r6_66, r7_67)
-	fprintf(r4_101, r5_103, Mem228[sp_69:<unknown>])
+	fprintf(r4_101, r5_103, Mem228[sp_46:<unknown>])
 	fflush(r4_123)
 	Mem147[Mem0[0x10000878:word32] + 2084:word32] = Mem0[Mem0[0x10000878:word32] + 2084:word32] + 1
 	branch Mem147[Mem147[0x10000A28:word32]:word32] == 0x00000000 l0040697C_ds_t
@@ -12106,7 +12106,7 @@ l00406BF0_ds_f:
 // LocalsOut: fp(32)
 
 l00406C4C:
-	print_log(r4_51, Mem125[sp_23:word32], Mem126[sp_23 + 4:word32], Mem127[sp_23 + 8:word32], Mem128[sp_23 + 12:word32])
+	print_log(r4_51, Mem125[sp_6:word32], Mem126[sp_6 + 4:word32], Mem127[sp_6 + 8:word32], Mem128[sp_6 + 12:word32])
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -48 r25:<invalid> r28:0x10008860 r30:fp + -48 r4:<invalid> r2:r2 -32(fp):0x10008860 -24(fp):r2 -12(fp):r30 -8(fp):ra 0(fp):r4 4(fp):r5 8(fp):r6 12(fp):r7
@@ -12211,7 +12211,7 @@ l00406F34:
 	__errno_location()
 	__errno_location()
 	strerror(r4_257)
-	print_log(r4_276, Mem309[sp_259:word32], Mem310[sp_259 + 4:word32], Mem311[sp_259 + 8:word32], Mem312[sp_259 + 12:word32])
+	print_log(r4_276, Mem309[sp_215:word32], Mem310[sp_215 + 4:word32], Mem311[sp_215 + 8:word32], Mem312[sp_215 + 12:word32])
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r30:fp + -56 r4:<invalid> r5:<invalid> r6:<invalid> r2:<invalid> -32(fp):0x10008860 -24(fp):r2 -12(fp):r16 -8(fp):r30 -4(fp):ra 0(fp):r4
@@ -12227,7 +12227,7 @@ l00406E74:
 	__errno_location()
 	__errno_location()
 	strerror(r4_171)
-	print_log(r4_190, Mem305[sp_173:word32], Mem306[sp_173 + 4:word32], Mem307[sp_173 + 8:word32], Mem308[sp_173 + 12:word32])
+	print_log(r4_190, Mem305[sp_6:word32], Mem306[sp_6 + 4:word32], Mem307[sp_6 + 8:word32], Mem308[sp_6 + 12:word32])
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r30:fp + -56 r4:<invalid> r5:<invalid> r6:<invalid> r2:<invalid> -32(fp):0x10008860 -24(fp):r2 -12(fp):r16 -8(fp):r30 -4(fp):ra 0(fp):r4
@@ -12243,7 +12243,7 @@ l00406DA8:
 	__errno_location()
 	__errno_location()
 	strerror(r4_83)
-	print_log(r4_102, Mem301[sp_85:word32], Mem302[sp_85 + 4:word32], Mem303[sp_85 + 8:word32], Mem304[sp_85 + 12:word32])
+	print_log(r4_102, Mem301[sp_6:word32], Mem302[sp_6 + 4:word32], Mem303[sp_6 + 8:word32], Mem304[sp_6 + 12:word32])
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -56 r25:<invalid> r28:0x10008860 r30:fp + -56 r4:<invalid> r5:<invalid> r6:<invalid> r2:r2 -32(fp):0x10008860 -24(fp):r2 -12(fp):r16 -8(fp):r30 -4(fp):ra 0(fp):r4
@@ -12349,7 +12349,7 @@ server_destroy_entry:
 
 l0040708C:
 	print_log(r4_19, Mem67[sp_6:word32], Mem68[sp_6 + 4:word32], Mem69[sp_6 + 8:word32], Mem70[sp_6 + 12:word32])
-	server_close(r4_37, Mem71[sp_26:word32])
+	server_close(r4_37, Mem71[sp_6:word32])
 	free(r4_50)
 	return
 // DataOut:
@@ -12406,7 +12406,7 @@ l00407150_ds_f:
 // LocalsOut: fp(32)
 
 l0040719C:
-	print_log(r4_37, Mem60[sp_15:word32], Mem61[sp_15 + 4:word32], Mem62[sp_15 + 8:word32], Mem63[sp_15 + 12:word32])
+	print_log(r4_37, Mem60[sp_6:word32], Mem61[sp_6 + 4:word32], Mem62[sp_6 + 8:word32], Mem63[sp_6 + 12:word32])
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -48 r25:<invalid> r28:0x10008860 r30:fp + -48 r4:<invalid> r2:r2 -32(fp):0x10008860 -24(fp):r2 -12(fp):r30 -8(fp):ra
@@ -12717,8 +12717,8 @@ slist_delete_entry:
 
 l004074AC:
 	slist_remove(r4_17, r5_18, Mem69[sp_6:word32], Mem70[sp_6 + 4:word32])
-	print_log(r4_33, Mem71[sp_20:word32], Mem72[sp_20 + 4:word32], Mem73[sp_20 + 8:word32], Mem74[sp_20 + 12:word32])
-	server_destroy(r4_52, Mem75[sp_41:word32])
+	print_log(r4_33, Mem71[sp_6:word32], Mem72[sp_6 + 4:word32], Mem73[sp_6 + 8:word32], Mem74[sp_6 + 12:word32])
+	server_destroy(r4_52, Mem75[sp_6:word32])
 	return
 // DataOut:
 // DataOut (flags): 
@@ -12876,7 +12876,7 @@ slist_destroy_entry:
 
 l004076A8:
 	slist_close_all(r4_15, Mem46[sp_6:word32])
-	slist_destroy_all(r4_24, Mem47[sp_17:word32])
+	slist_destroy_all(r4_24, Mem47[sp_6:word32])
 	free(r4_33)
 	return
 // DataOut:
@@ -14694,7 +14694,7 @@ __extendsfdf2_entry:
 
 l00408100:
 	__unpack_f(r4_11, r5_12)
-	__make_dp(Mem57[sp_15 + 16:word32], Mem58[sp_15 + 20:word32])
+	__make_dp(Mem57[sp_6 + 16:word32], Mem58[sp_6 + 20:word32])
 	return
 // DataOut:
 // DataOut (flags): 

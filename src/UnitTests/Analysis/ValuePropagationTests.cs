@@ -59,10 +59,15 @@ namespace Reko.UnitTests.Analysis
             segmentMap = new SegmentMap(Address.Ptr32(0));
         }
 
-        private ExternalProcedure CreateExternalProcedure(string name, Identifier ret, params Identifier[] parameters)
+        private ExternalProcedure CreateExternalProcedure(
+            string name,
+            int stackDelta,
+            Identifier ret,
+            params Identifier[] parameters)
         {
             var ep = new ExternalProcedure(name, new FunctionType(ret, parameters));
             ep.Signature.ReturnAddressOnStack = 4;
+            ep.Signature.StackDelta = stackDelta;
             return ep;
         }
 
@@ -819,7 +824,12 @@ ProcedureBuilder_exit:
         [Test]
         public void VpIndirectCall()
         {
-            var callee = CreateExternalProcedure("foo", RegArg(1, "r1"), StackArg(4), StackArg(8));
+            var callee = CreateExternalProcedure(
+                "foo",
+                12,
+                RegArg(1, "r1"),
+                StackArg(4),
+                StackArg(8));
             var pc = new ProcedureConstant(PrimitiveType.Ptr32, callee);
 
             var m = new ProcedureBuilder();
@@ -852,6 +862,7 @@ r63:r63
           Mem5[r63 - 0x00000008:word16] = Mem3[0x01231230:word16]
           r1_6 = foo(Mem8[r63 - 0x00000008:word32], Mem9[r63 - 0x00000004:word32])
           r1_6 = foo(Mem8[r63 - 0x00000008:word32], Mem9[r63 - 0x00000004:word32])
+          r63_7 = r63
 r63_2: orig: r63
     def:  r63_2 = r63 - 0x00000004
 Mem3: orig: Mem0
@@ -864,6 +875,7 @@ Mem5: orig: Mem0
 r1_6: orig: r1
     def:  r1_6 = foo(Mem8[r63 - 0x00000008:word32], Mem9[r63 - 0x00000004:word32])
 r63_7: orig: r63
+    def:  r63_7 = r63
 Mem8: orig: Mem0
     uses: r1_6 = foo(Mem8[r63 - 0x00000008:word32], Mem9[r63 - 0x00000004:word32])
 Mem9: orig: Mem0
@@ -881,6 +893,7 @@ l1:
 	r63_4 = r63 - 0x00000008
 	Mem5[r63 - 0x00000008:word16] = Mem3[0x01231230:word16]
 	r1_6 = foo(Mem8[r63 - 0x00000008:word32], Mem9[r63 - 0x00000004:word32])
+	r63_7 = r63
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:

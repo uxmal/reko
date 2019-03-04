@@ -23,6 +23,7 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
+using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
@@ -49,6 +50,7 @@ namespace Reko.Analysis
         private readonly ExpressionSimplifier eval;
         private readonly SsaEvaluationContext evalCtx;
         private readonly SsaIdentifierTransformer ssaIdTransformer;
+        private readonly SsaMutator ssam;
         private readonly DecompilerEventListener eventListener;
         private Statement stmCur;
 
@@ -64,6 +66,7 @@ namespace Reko.Analysis
             this.arch = ssa.Procedure.Architecture;
             this.eventListener = eventListener;
             this.ssaIdTransformer = new SsaIdentifierTransformer(ssa);
+            this.ssam = new SsaMutator(ssa);
             this.evalCtx = new SsaEvaluationContext(arch, ssa.Identifiers, importResolver);
             this.eval = new ExpressionSimplifier(segmentMap, evalCtx, eventListener);
         }
@@ -116,12 +119,10 @@ namespace Reko.Analysis
             {
                 if (pc.Procedure.Signature.ParametersValid)
                 {
-                    var ab = new ApplicationBuilder(
-                        arch, ssa.Procedure.Frame, ci.CallSite,
-                        ci.Callee, pc.Procedure.Signature, false);
-                    evalCtx.Statement.Instruction = ab.CreateInstruction();
-                    ssaIdTransformer.Transform(evalCtx.Statement, ci);
-                    return evalCtx.Statement.Instruction;
+                    var sig = pc.Procedure.Signature;
+                    var chr = pc.Procedure.Characteristics;
+                    RewriteCall(stmCur, ci, sig, chr);
+                    return stmCur.Instruction;
                 }
                 if (oldCallee != pc && pc.Procedure is Procedure procCallee)
                 {
@@ -197,5 +198,23 @@ namespace Reko.Analysis
         }
 
         #endregion
+
+        private void RewriteCall(
+            Statement stm,
+            CallInstruction ci,
+            FunctionType sig,
+            ProcedureCharacteristics chr)
+        {
+            ssam.AdjustRegisterAfterCall(
+                stm,
+                ci,
+                this.arch.StackRegister,
+                sig.StackDelta - ci.CallSite.SizeOfReturnAddressOnStack);
+            var ab = new ApplicationBuilder(
+                arch, ssa.Procedure.Frame, ci.CallSite,
+                ci.Callee, sig, false);
+            stm.Instruction = ab.CreateInstruction();
+            ssaIdTransformer.Transform(stm, ci);
+        }
     }
 }
