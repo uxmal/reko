@@ -82,10 +82,15 @@ namespace Reko.UnitTests.Analysis
             return sid.Identifier;
         }
 
-        private ExternalProcedure CreateExternalProcedure(string name, Identifier ret, params Identifier[] parameters)
+        private ExternalProcedure CreateExternalProcedure(
+            string name,
+            int stackDelta,
+            Identifier ret,
+            params Identifier[] parameters)
         {
             var ep = new ExternalProcedure(name, new FunctionType(ret, parameters));
             ep.Signature.ReturnAddressOnStack = 4;
+            ep.Signature.StackDelta = stackDelta;
             return ep;
         }
 
@@ -908,7 +913,12 @@ ProcedureBuilder_exit:
         [Category(Categories.UnitTests)]
         public void VpIndirectCall()
         {
-            var callee = CreateExternalProcedure("foo", RegArg(1, "r1"), StackArg(4), StackArg(8));
+            var callee = CreateExternalProcedure(
+                "foo",
+                12,
+                RegArg(1, "r1"),
+                StackArg(4),
+                StackArg(8));
             var pc = new ProcedureConstant(PrimitiveType.Ptr32, callee);
 
             var m = new ProcedureBuilder();

@@ -23,6 +23,7 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
+using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
@@ -65,8 +66,8 @@ namespace Reko.Analysis
             this.callGraph = callGraph;
             this.arch = ssa.Procedure.Architecture;
             this.eventListener = eventListener;
-            this.evalCtx = new SsaEvaluationContext(arch, ssa.Identifiers, importResolver);
             this.ssam = new SsaMutator(ssa);
+            this.evalCtx = new SsaEvaluationContext(arch, ssa.Identifiers, importResolver);
             this.eval = new ExpressionSimplifier(segmentMap, evalCtx, eventListener);
         }
 
@@ -118,10 +119,10 @@ namespace Reko.Analysis
             {
                 if (pc.Procedure.Signature.ParametersValid)
                 {
-                    var ab = new CallApplicationBuilder(this.ssa, this.stmCur, ci, ci.Callee);
-                    evalCtx.Statement.Instruction = ab.CreateInstruction(pc.Procedure.Signature, pc.Procedure.Characteristics);
-                    ssam.AdjustSsa(evalCtx.Statement, ci);
-                    return evalCtx.Statement.Instruction;
+                    var sig = pc.Procedure.Signature;
+                    var chr = pc.Procedure.Characteristics;
+                    RewriteCall(stmCur, ci, sig, chr);
+                    return stmCur.Instruction;
                 }
                 if (oldCallee != pc && pc.Procedure is Procedure procCallee)
                 {
@@ -211,81 +212,25 @@ namespace Reko.Analysis
 
         #endregion
 
-        private class CallInstructionBinder : IStorageBinder
+        private void RewriteCall(
+            Statement stm,
+            CallInstruction ci,
+            FunctionType sig,
+            ProcedureCharacteristics chr)
         {
-            private CallInstruction ci;
-
-            public CallInstructionBinder(CallInstruction ci)
-            {
-                this.ci = ci;
-            }
-
-            public Identifier CreateTemporary(DataType dt)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Identifier CreateTemporary(string name, DataType dt)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Identifier EnsureFlagGroup(FlagGroupStorage grf)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Identifier EnsureFlagGroup(RegisterStorage flagRegister, uint flagGroupBits, string name, DataType dataType)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Identifier EnsureFpuStackVariable(int v, DataType dataType)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Identifier EnsureIdentifier(Storage stg)
-            {
-                // If we can't find the storage, we're in trouble.
-                // it could mean that no statement in this fn defined it,
-                // so we probably should create it as a live-in identifier.
-                return ci.Uses
-                    .Select(u => u.Expression)
-                    .OfType<Identifier>()
-                    .Where(i => i.Storage == stg)
-                    .First();
-            }
-
-            public Identifier EnsureOutArgument(Identifier idOrig, DataType outArgumentPointer)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Identifier EnsureRegister(RegisterStorage reg)
-            {
-                return ci.Uses
-                   .Select(u => u.Expression)
-                   .OfType<Identifier>()
-                   .Where(i => i.Storage.Name == reg.Name)
-                   .First();
-            }
-
-            public Identifier EnsureSequence(DataType dt, Storage head, Storage tail)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Identifier EnsureSequence(DataType dt, string name, Storage head, Storage tail)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Identifier EnsureStackVariable(int v, DataType dataType)
-            {
-                throw new NotImplementedException();
-            }
+            ssam.AdjustRegisterAfterCall(
+                stm,
+                ci,
+                this.arch.StackRegister,
+                sig.StackDelta - ci.CallSite.SizeOfReturnAddressOnStack);
+            ssam.AdjustRegisterAfterCall(
+                stm,
+                ci,
+                this.arch.FpuStackRegister,
+                -sig.FpuStackDelta);
+            var ab = new CallApplicationBuilder(this.ssa, stm, ci, ci.Callee);
+            stm.Instruction = ab.CreateInstruction(sig, chr);
+            ssam.AdjustSsa(stm, ci);
         }
-
     }
 }

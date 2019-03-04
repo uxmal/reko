@@ -3450,6 +3450,7 @@ namespace Reko.UnitTests.Arch.Intel
                  "1|L--|Mem0[rcx:word16] = __sldt()");
         }
 
+
         [Test]
         public void X86Rw_minpd()
         {
