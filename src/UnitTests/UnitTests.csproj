@@ -159,6 +159,7 @@
     <Compile Include="Arch\Arm\A64RewriterTests.cs" />
     <Compile Include="Arch\Arm\Arm64ArchitectureTests.cs" />
     <Compile Include="Arch\Blackfin\BlackfinDisassemblerTests.cs" />
+    <Compile Include="Arch\Blackfin\BlackfinRewriterTests.cs" />
     <Compile Include="Arch\Cray\Cray1\Cray1DisassemblerTests.cs" />
     <Compile Include="Arch\Cray\Ymp\YmpDisassemblerTests.cs" />
     <Compile Include="Arch\Cray\Ymp\YmpRewriterTests.cs" />

@@ -30,11 +30,8 @@ namespace Reko.Arch.Blackfin
 {
     public class BlackfinInstruction : MachineInstruction
     {
-        public InstrClass IClass;
         public Opcode Opcode;
         public MachineOperand[] Operands;
-
-        public override InstrClass InstructionClass => IClass;
 
         public override int OpcodeAsInteger => (int) Opcode;
 
@@ -106,7 +103,7 @@ namespace Reko.Arch.Blackfin
             { Opcode.xor3, (null, " ^ ", null) },
             { Opcode.asr, (null, " >>>= ", null) },
             { Opcode.asr3, (null, " >>> ", null) },
-            { Opcode.DIVQ, ("DIVQ(", null, ")") },
+            { Opcode.DIVQ, ("DIVQ (", null, ")") },
             { Opcode.lsl, (null, " <<= ", null) },
             { Opcode.lsl3, (null, " << ", null) },
             { Opcode.lsr, (null, " >>= ", null) },

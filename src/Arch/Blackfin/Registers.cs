@@ -179,24 +179,24 @@ namespace Reko.Arch.Blackfin
 
             AStatFlags = new[]
             {
-                           AC0_COPY,
-            V_COPY,
+                AC0_COPY,
+                V_COPY,
 
-            CC,
-            AQ,
+                CC,
+                AQ,
 
-            RND_MOD,
+                RND_MOD,
 
-            AC0,
-            AC1,
+                AC0,
+                AC1,
 
-            AV0,
-            AV0S,
-            AV1,
-            AV1S,
+                AV0,
+                AV0S,
+                AV1,
+                AV1S,
 
-            V,
-            VS
+                V,
+                VS
             }.ToDictionary(k => k.FlagGroupBits);
         }
 

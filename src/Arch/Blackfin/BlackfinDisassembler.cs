@@ -61,11 +61,11 @@ namespace Reko.Arch.Blackfin
             return instr;
         }
 
-        private BlackfinInstruction Invalid()
+        protected override BlackfinInstruction CreateInvalidInstruction()
         {
             return new BlackfinInstruction
             {
-                IClass = InstrClass.Invalid,
+                InstructionClass = InstrClass.Invalid,
                 Opcode = Opcode.invalid,
                 Address = addr,
                 Length = (int) (rdr.Address - addr),
@@ -137,10 +137,10 @@ namespace Reko.Arch.Blackfin
                 foreach (var mutator in mutators)
                 {
                     if (!mutator(uInstr, dasm))
-                        return dasm.Invalid();
+                        return dasm.CreateInvalidInstruction();
                 }
                 dasm.instr.Address = dasm.addr;
-                dasm.instr.IClass = iclass;
+                dasm.instr.InstructionClass = iclass;
                 dasm.instr.Opcode = opcode;
                 dasm.instr.Operands = dasm.ops.ToArray();
                 return dasm.instr;
@@ -156,7 +156,7 @@ namespace Reko.Arch.Blackfin
             public override BlackfinInstruction Decode(uint uInstr, BlackfinDisassembler dasm)
             {
                 if (!dasm.rdr.TryReadLeUInt16(out ushort uInstrLo))
-                    return dasm.Invalid();
+                    return dasm.CreateInvalidInstruction();
                 uInstr = (uInstr << 16) | uInstrLo;
                 return base.Decode(uInstr, dasm);
             }
@@ -240,7 +240,7 @@ namespace Reko.Arch.Blackfin
                     }
                     w.WriteLine("    Assert.AreEqual(\"@@@\", instr.ToString());");
                 });
-                return dasm.Invalid();
+                return dasm.CreateInvalidInstruction();
             }
         }
 

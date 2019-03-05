@@ -89,11 +89,20 @@ namespace Reko.Arch.Blackfin
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            return new BlackfinRewriter(this, rdr, state, binder, host);
         }
 
         public override FlagGroupStorage GetFlagGroup(uint grf)
         {
+            throw new NotImplementedException();
+        }
+
+        public FlagGroupStorage GetFlagGroup(RegisterStorage reg, uint grf)
+        {
+            if (reg == Registers.ASTAT)
+            {
+                return Registers.AStatFlags[grf];
+            }
             throw new NotImplementedException();
         }
 
@@ -125,7 +134,10 @@ namespace Reko.Arch.Blackfin
 
         public override RegisterStorage[] GetRegisters()
         {
-            throw new NotImplementedException();
+            return Registers.Data
+                .Concat(Registers.Pointers)
+                .Concat(new[] { Registers.A0, Registers.A1 })
+                .ToArray();
         }
 
         public override string GrfToString(uint grf)
@@ -133,7 +145,7 @@ namespace Reko.Arch.Blackfin
             throw new NotImplementedException();
         }
 
-        public override Address MakeAddressFromConstant(Constant c)
+        public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
             throw new NotImplementedException();
         }

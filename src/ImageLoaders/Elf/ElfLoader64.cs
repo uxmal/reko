@@ -477,6 +477,5 @@ namespace Reko.ImageLoaders.Elf
             var addr = Address.Ptr64(uAddrSym);
             return addr;
         }
-
     }
 }
