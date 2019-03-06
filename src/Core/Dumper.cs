@@ -83,9 +83,7 @@ namespace Reko.Core
                 formatter.WriteLine();
                 if (program.Procedures.TryGetValue(block.Address, out var proc))
                 {
-                    formatter.WriteComment(string.Format(
-                        ";; {0}: {1}", proc.Name, block.Address));
-                    formatter.WriteLine();
+                    DumpProcedureHeaderComment(proc, formatter);
 
                     formatter.Write(proc.Name);
                     formatter.Write(" ");
@@ -126,6 +124,30 @@ namespace Reko.Core
                 else
                 {
                     DumpTypedData(program.SegmentMap, program.Architecture, i, formatter);
+                }
+            }
+        }
+
+        private void DumpProcedureHeaderComment(Procedure proc, Formatter formatter)
+        {
+            formatter.WriteComment($";; {proc.Name}: {proc.EntryAddress}");
+            formatter.WriteLine();
+            var callerStms = program.CallGraph.CallerStatements(proc)
+                .OrderBy(c => c.LinearAddress)
+                .ToArray();
+            if (callerStms.Length > 0)
+            {
+                formatter.WriteComment(";;   Called from:");
+                formatter.WriteLine();
+                foreach (var stm in callerStms)
+                {
+                    var addr = program.SegmentMap.MapLinearAddressToAddress(stm.LinearAddress);
+                    formatter.WriteComment(";;     ");
+                    formatter.WriteHyperlink(addr.ToString(), addr);
+                    formatter.Write(" (in ");
+                    formatter.WriteHyperlink(stm.Block.Procedure.Name, stm.Block.Procedure);
+                    formatter.Write(")");
+                    formatter.WriteLine();
                 }
             }
         }
@@ -259,7 +281,7 @@ namespace Reko.Core
             writer.WriteString("\t");
             writer.Address = addrBegin;
             writer.Address = instr.Address;
-            instr.Render(writer, MachineInstructionWriterOptions.None);
+            instr.Render(writer, MachineInstructionWriterOptions.ResolvePcRelativeAddress);
             writer.WriteLine();
             return true;
         }

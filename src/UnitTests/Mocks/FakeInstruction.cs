@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -69,6 +69,7 @@ namespace Reko.UnitTests.Mocks
         Add,
         Sub,
         Mul,
+        Call,
         Jump,
         Branch,
         Ret,

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -108,12 +108,13 @@ namespace Reko.Scanning
                 }
                 else
                 {
-                    inb.Statements.Add(0, 
+                    inb.Statements.Add(
+                        inb.Address.ToLinear(),
                         new CallInstruction(
                             new ProcedureConstant(Program.Platform.PointerType, ProcNew),
                             new CallSite(0, 0)));
                     Program.CallGraph.AddEdge(inb.Statements.Last, ProcNew);
-                    inb.Statements.Add(0, new ReturnInstruction());
+                    inb.Statements.Add(inb.Address.ToLinear(), new ReturnInstruction());
                     inb.Procedure.ControlGraph.AddEdge(inb, inb.Procedure.ExitBlock);
                 }
             }

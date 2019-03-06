@@ -1260,5 +1260,10 @@ namespace Reko.Scanning
             }
             return svc;
         }
+
+        public override string ToString()
+        {
+            return $"{nameof(BlockWorkitem)}: {base.Address}";
+        }
     }
 }

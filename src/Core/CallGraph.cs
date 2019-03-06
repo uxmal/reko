@@ -83,10 +83,12 @@ namespace Reko.Core
 		}
 
         /// <summary>
-        /// Given a procedure, find all the statements that call it,
+        /// Given a procedure, find all the statements that call it.
         /// </summary>
         public IEnumerable<Statement> CallerStatements(Procedure proc)
 		{
+            if (!graphStms.Nodes.Contains(proc))
+                return Array.Empty<Statement>();
             return graphStms.Predecessors(proc).OfType<Statement>();
 		}
 
