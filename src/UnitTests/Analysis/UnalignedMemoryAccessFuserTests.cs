@@ -34,7 +34,6 @@ namespace Reko.UnitTests.Analysis
     [TestFixture]
     public class UnalignedMemoryAccessFuserTests : AnalysisTestBase
     {
-        private MockRepository mr;
         private SsaProcedureBuilder m;
         private IProcessorArchitecture arch;
         private IImportResolver importResolver;

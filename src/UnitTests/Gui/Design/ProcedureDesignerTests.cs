@@ -33,7 +33,6 @@ namespace Reko.UnitTests.Gui.Design
     [TestFixture]
     public class ProcedureDesignerTests
     {
-        private MockRepository mr;
         private ServiceContainer services;
         private Program program;
 

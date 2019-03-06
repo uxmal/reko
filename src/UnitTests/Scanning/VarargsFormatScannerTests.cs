@@ -42,7 +42,6 @@ namespace Reko.UnitTests.Scanning
     [TestFixture]
     public class VarargsFormatScannerTests
     {
-        private MockRepository mr;
         private ProcedureBuilder m;
         private Win32Platform win32;
         private Win_x86_64_Platform win_x86_64;
