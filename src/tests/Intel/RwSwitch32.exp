@@ -13,9 +13,9 @@
 // return address size: 4
 void fn10000000()
 fn10000000_entry:
+	esp = fp
 	// succ:  l10000000
 l10000000:
-	esp = fp
 	eax = Mem0[esp + 0x00000004:word32]
 	SCZO = cond(eax - 0x00000003)
 	branch Test(UGT,CZ) l10000048

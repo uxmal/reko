@@ -100,9 +100,9 @@ fn0C00_0000_entry:
 	def eax
 	def ds
 	def bx
+	sp_1 = fp
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp_1 = fp
 	eax_3 = -eax
 	C_4 = eax_3 == 0x00000000
 	eax_5 = 0x00000000 - (eax_3 == 0x00000000)
@@ -231,9 +231,9 @@ fn0C00_0000_entry:
 	def eax
 	def ds
 	def bx
+	sp_1 = fp
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp_1 = fp
 	eax_3 = -eax
 	C_4 = eax_3 == 0x00000000
 	eax_5 = 0x00000000 - (eax_3 == 0x00000000)

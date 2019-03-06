@@ -20,9 +20,9 @@ void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	def fp
 	def ds
+	sp_1 = fp
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp_1 = fp
 	cx_2 = 0x0005
 	ax_3 = fn0C00_000B(cx_2)
 	Mem4[ds:0x0064:word16] = ax_3
@@ -120,9 +120,9 @@ fn0C00_000B_entry:
 	def si
 	def cx
 	def dx
+	sp_1 = fp
 	// succ:  l0C00_000B
 l0C00_000B:
-	sp_1 = fp
 	sp_2 = fp - 2
 	wLoc02_4 = si
 	SCZO_6 = cond(cx - 0x0001)

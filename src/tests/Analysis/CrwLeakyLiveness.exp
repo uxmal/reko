@@ -16,9 +16,9 @@ void fn0C00_0000(Register selector ds)
 // return address size: 2
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
+	sp = fp
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp = fp
 	C = fn0C00_000A(ds, out ax)
 	branch Test(ULT,C) l0C00_0009
 	// succ:  l0C00_0005 l0C00_0009
@@ -52,9 +52,9 @@ FlagGroup bool fn0C00_000A(Register selector ds, Register out ptr16 axOut)
 // return address size: 2
 bool fn0C00_000A(selector ds, ptr16 & axOut)
 fn0C00_000A_entry:
+	sp = fp
 	// succ:  l0C00_000A
 l0C00_000A:
-	sp = fp
 	si = Mem0[ds:0x0100:word16]
 	SCZO = cond(si - Mem0[ds:0x0102:word16])
 	branch Test(EQ,Z) l0C00_001E

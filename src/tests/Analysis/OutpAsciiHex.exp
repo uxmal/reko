@@ -5,9 +5,9 @@ fn0C00_0000_entry:
 	def fp
 	def al
 	def ds
+	sp_1 = fp
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp_1 = fp
 	C_4 = fn0C00_000A(al, out al_3)
 	branch Test(ULT,C_4) l0C00_0009
 	// succ:  l0C00_0005 l0C00_0009
@@ -45,9 +45,9 @@ fn0C00_000A_entry:
 	def fp
 	def al
 	def alOut
+	sp_1 = fp
 	// succ:  l0C00_000A
 l0C00_000A:
-	sp_1 = fp
 	SCZO_3 = cond(al - 0x30)
 	C_4 = (bool) SCZO_3 (alias)
 	CZ_5 = SCZO_3 (alias)

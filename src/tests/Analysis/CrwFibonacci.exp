@@ -22,9 +22,9 @@ Register word32 fn10000000(Stack word32 dwArg04)
 // return address size: 4
 word32 fn10000000(word32 dwArg04)
 fn10000000_entry:
+	esp = fp
 	// succ:  l10000000
 l10000000:
-	esp = fp
 	esp = fp - 4
 	dwLoc04 = esi
 	esi = dwArg04

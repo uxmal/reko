@@ -8,12 +8,12 @@
 void fn0C00_0000()
 // SymbolicIn: sp:fp
 fn0C00_0000_entry:
+	sp = fp
 // DataOut: ds eax es si
 // DataOut (flags): 
 
 // SymbolicIn: sp:fp
 l0C00_0000:
-	sp = fp
 	eax = eax + eax * 0x00000004
 	Mem0[ds:0x02FC:word32] = eax
 	eax = Mem0[ds:si:word32]
@@ -48,12 +48,12 @@ fn0C00_0000_exit:
 void fn0C00_0026()
 // SymbolicIn: sp:fp
 fn0C00_0026_entry:
+	sp = fp
 // DataOut: ds es
 // DataOut (flags): 
 
 // SymbolicIn: sp:fp
 l0C00_0026:
-	sp = fp
 	cx = Mem0[ds:0x0400:word16]
 	al = 0x00
 	di = Mem0[ds:0x0402:word16]

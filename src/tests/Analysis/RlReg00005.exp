@@ -8,12 +8,12 @@
 void fn0C00_0000()
 // SymbolicIn: sp:fp
 fn0C00_0000_entry:
+	sp = fp
 // DataOut: ds
 // DataOut (flags): 
 
 // SymbolicIn: sp:fp
 l0C00_0000:
-	sp = fp
 	call fn0C00_000C (retsize: 2; depth: 2)
 	Mem0[ds:0x0300:word16] = bx
 	Mem0[ds:0x0302:byte] = 0x00
@@ -36,12 +36,12 @@ fn0C00_0000_exit:
 void fn0C00_000C()
 // SymbolicIn: sp:fp
 fn0C00_000C_entry:
+	sp = fp
 // DataOut: ds
 // DataOut (flags): 
 
 // SymbolicIn: sp:fp
 l0C00_000C:
-	sp = fp
 	cx = ds
 	es = cx
 	di = 0x7E0F

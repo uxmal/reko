@@ -9,9 +9,9 @@ sp_1: orig: sp
 void fn0C00_0000()
 fn0C00_0000_entry:
 	def fp
+	sp_1 = fp
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp_1 = fp
 	fn0C00_0004()
 	return
 	// succ:  fn0C00_0000_exit
@@ -27,9 +27,9 @@ sp_1: orig: sp
 void fn0C00_0000()
 fn0C00_0000_entry:
 	def fp
+	sp_1 = fp
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp_1 = fp
 	fn0C00_0004()
 	return
 	// succ:  fn0C00_0000_exit
@@ -139,9 +139,9 @@ S_31: orig: S
 void fn0C00_0004()
 fn0C00_0004_entry:
 	def fp
+	sp_1 = fp
 	// succ:  l0C00_0004
 l0C00_0004:
-	sp_1 = fp
 	ax_2 = 0x4DE1
 	al_3 = (byte) ax_2 (alias)
 	ah_4 = SLICE(ax_2, byte, 8) (alias)
@@ -281,9 +281,9 @@ S_31: orig: S
 void fn0C00_0004()
 fn0C00_0004_entry:
 	def fp
+	sp_1 = fp
 	// succ:  l0C00_0004
 l0C00_0004:
-	sp_1 = fp
 	ax_2 = 0x4DE1
 	al_3 = 0xE1 (alias)
 	ah_4 = 0x4D (alias)

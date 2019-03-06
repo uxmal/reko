@@ -8,13 +8,13 @@
 void fn0C00_0000()
 // SymbolicIn: sp:fp
 fn0C00_0000_entry:
+	sp = fp
 // DataOut: ds
 // DataOut (flags): 
 // LocalsOut: fp(16)
 
 // SymbolicIn: sp:fp
 l0C00_0000:
-	sp = fp
 	cx = 0x0064
 	sp = fp - 2
 	wLoc02 = 0x0064
@@ -41,13 +41,13 @@ fn0C00_0000_exit:
 void fn0C00_000F()
 // SymbolicIn: sp:fp
 fn0C00_000F_entry:
+	sp = fp
 // DataOut: ds
 // DataOut (flags): 
 // LocalsOut: fp(16) Stack +0002(16)
 
 // SymbolicIn: sp:fp
 l0C00_000F:
-	sp = fp
 	sp = fp - 2
 	wLoc02 = bp
 	bp = fp - 2

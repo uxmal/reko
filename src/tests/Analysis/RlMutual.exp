@@ -8,12 +8,12 @@
 void fn0C00_0000()
 // SymbolicIn: sp:fp
 fn0C00_0000_entry:
+	sp = fp
 // DataOut: dx
 // DataOut (flags): 
 
 // SymbolicIn: sp:fp
 l0C00_0000:
-	sp = fp
 	call fn0C00_0004 (retsize: 2; depth: 2)
 	return
 // DataOut:
@@ -34,12 +34,12 @@ fn0C00_0000_exit:
 void fn0C00_0004()
 // SymbolicIn: sp:fp
 fn0C00_0004_entry:
+	sp = fp
 // DataOut: dx
 // DataOut (flags): 
 
 // SymbolicIn: sp:fp
 l0C00_0004:
-	sp = fp
 	SCZO = cond(dx - 0x001E)
 	branch Test(NE,Z) l0C00_000F
 // DataOut: dx
@@ -80,12 +80,12 @@ fn0C00_0004_exit:
 void fn0C00_0013()
 // SymbolicIn: sp:fp
 fn0C00_0013_entry:
+	sp = fp
 // DataOut: dx
 // DataOut (flags): 
 
 // SymbolicIn: sp:fp
 l0C00_0013:
-	sp = fp
 	SCZO = cond(dx - 0x0014)
 	branch Test(LT,SO) l0C00_001F
 // DataOut: dx

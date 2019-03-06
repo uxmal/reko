@@ -21,9 +21,9 @@ void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	def fp
 	def ds
+	sp_1 = fp
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp_1 = fp
 	bx_3 = fn0C00_000C(ds)
 	Mem4[ds:0x0300:word16] = bx_3
 	Mem5[ds:0x0302:byte] = 0x00
@@ -271,9 +271,9 @@ fn0C00_000C_entry:
 	def SCZO
 	def Mem0
 	def ah
+	sp_1 = fp
 	// succ:  l0C00_000C
 l0C00_000C:
-	sp_1 = fp
 	cx_3 = ds
 	es_4 = cx_3
 	di_5 = 0x7E0F

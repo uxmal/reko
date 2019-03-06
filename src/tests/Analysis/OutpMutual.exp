@@ -4,9 +4,9 @@ void fn0C00_0000(word16 dx)
 fn0C00_0000_entry:
 	def fp
 	def dx
+	sp_1 = fp
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp_1 = fp
 	ax_4 = fn0C00_0004(dx, out dx_3)
 	return
 	// succ:  fn0C00_0000_exit
@@ -31,9 +31,9 @@ fn0C00_0004_entry:
 	def fp
 	def dx
 	def dxOut
+	sp_1 = fp
 	// succ:  l0C00_0004
 l0C00_0004:
-	sp_1 = fp
 	SCZO_3 = cond(dx - 0x001E)
 	Z_4 = (bool) SCZO_3 (alias)
 	SZO_5 = SCZO_3 (alias)
@@ -93,9 +93,9 @@ word16 fn0C00_0013(word16 dx)
 fn0C00_0013_entry:
 	def fp
 	def dx
+	sp_1 = fp
 	// succ:  l0C00_0013
 l0C00_0013:
-	sp_1 = fp
 	SCZO_3 = cond(dx - 0x0014)
 	SO_4 = SCZO_3 (alias)
 	SZO_5 = SCZO_3 (alias)

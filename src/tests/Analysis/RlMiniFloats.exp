@@ -8,12 +8,12 @@
 void fn0C00_0000()
 // SymbolicIn: sp:fp
 fn0C00_0000_entry:
+	sp = fp
 // DataOut: ds
 // DataOut (flags): 
 
 // SymbolicIn: sp:fp
 l0C00_0000:
-	sp = fp
 	ax = 0x0001
 	cl = 0x00
 	bx = 0x0001
@@ -43,12 +43,12 @@ fn0C00_0000_exit:
 void fn0C00_001E()
 // SymbolicIn: sp:fp
 fn0C00_001E_entry:
+	sp = fp
 // DataOut: ax bx ch cl ds
 // DataOut (flags): 
 
 // SymbolicIn: sp:fp
 l0C00_001E:
-	sp = fp
 	cl = cl - ch
 	SCZO = cond(cl)
 	branch Test(ULT,C) l0C00_0027
@@ -100,12 +100,12 @@ fn0C00_001E_exit:
 void fn0C00_0032()
 // SymbolicIn: sp:fp
 fn0C00_0032_entry:
+	sp = fp
 // DataOut: ax bx ch cl ds
 // DataOut (flags): 
 
 // SymbolicIn: sp:fp
 l0C00_0032:
-	sp = fp
 	dx_ax = bx *s ax
 	SCZO = cond(dx_ax)
 	cl = cl + ch

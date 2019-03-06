@@ -26,9 +26,9 @@ fn0C00_0000_entry:
 	def fp
 	def ds
 	def Mem0
+	sp_1 = fp
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp_1 = fp
 	ax_4 = Mem0[ds:0x0300:word16]
 	ax_5 = fn0C00_000C(ax_4)
 	Mem6[ds:0x0302:word16] = ax_5
@@ -63,9 +63,9 @@ fn0C00_0000_entry:
 	def fp
 	def ds
 	def Mem0
+	sp_1 = fp
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp_1 = fp
 	ax_4 = Mem0[ds:0x0300:word16]
 	ax_5 = fn0C00_000C(ax_4)
 	Mem6[ds:0x0302:word16] = ax_5
@@ -162,9 +162,9 @@ word16 fn0C00_000C(word16 ax)
 fn0C00_000C_entry:
 	def fp
 	def ax
+	sp_1 = fp
 	// succ:  l0C00_000C
 l0C00_000C:
-	sp_1 = fp
 	ax_3 = ax | ax
 	SZO_4 = cond(ax_3)
 	Z_5 = (bool) SZO_4 (alias)
@@ -288,9 +288,9 @@ word16 fn0C00_000C(word16 ax)
 fn0C00_000C_entry:
 	def fp
 	def ax
+	sp_1 = fp
 	// succ:  l0C00_000C
 l0C00_000C:
-	sp_1 = fp
 	ax_3 = ax
 	SZO_4 = cond(ax)
 	Z_5 = (bool) SZO_4 (alias)

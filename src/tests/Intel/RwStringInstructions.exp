@@ -10,9 +10,9 @@
 // return address size: 2
 void fn0C00_0000()
 fn0C00_0000_entry:
+	sp = fp
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp = fp
 	eax = eax + eax * 0x00000004
 	Mem0[ds:0x02FC:word32] = eax
 	eax = Mem0[ds:si:word32]
@@ -46,9 +46,9 @@ fn0C00_0000_exit:
 // return address size: 2
 void fn0C00_0026()
 fn0C00_0026_entry:
+	sp = fp
 	// succ:  l0C00_0026
 l0C00_0026:
-	sp = fp
 	cx = Mem0[ds:0x0400:word16]
 	al = 0x00
 	di = Mem0[ds:0x0402:word16]

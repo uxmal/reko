@@ -27,9 +27,9 @@ void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	def fp
 	def ds
+	sp_1 = fp
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp_1 = fp
 	ax_2 = 0x0000
 	SZO_3 = cond(0x0000)
 	C_4 = false
@@ -68,9 +68,9 @@ void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	def fp
 	def ds
+	sp_1 = fp
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp_1 = fp
 	ax_2 = 0x0000
 	SZO_3 = cond(0x0000)
 	C_4 = false

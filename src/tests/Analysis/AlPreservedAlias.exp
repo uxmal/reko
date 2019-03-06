@@ -7,9 +7,9 @@ ds:ds (aliases:)
 // Return size: 2
 void fn0C00_0000()
 fn0C00_0000_entry:
+	sp = fp
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp = fp
 	ax = Mem0[ds:0x0100:word16]
 	call fn0C00_000C (retsize: 2; depth: 2)
 	Mem0[ds:0x0102:word16] = ax
@@ -29,9 +29,9 @@ wLoc02:Local -0002 (aliases:)
 // Return size: 2
 void fn0C00_000C()
 fn0C00_000C_entry:
+	sp = fp
 	// succ:  l0C00_000C
 l0C00_000C:
-	sp = fp
 	sp = fp - 2
 	wLoc02 = ax
 	al = Mem0[ds:0x0104:byte]

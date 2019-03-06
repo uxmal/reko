@@ -147,9 +147,9 @@ fn0C00_0000_entry:
 	def ds
 	def Mem0
 	def di
+	sp_1 = fp
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp_1 = fp
 	bx_3 = si
 	goto l0C00_001A
 	// succ:  l0C00_001A
@@ -355,9 +355,9 @@ fn0C00_0000_entry:
 	def ds
 	def Mem0
 	def di
+	sp_1 = fp
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp_1 = fp
 	bx_3 = si
 	goto l0C00_001A
 	// succ:  l0C00_001A

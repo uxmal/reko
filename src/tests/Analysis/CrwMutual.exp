@@ -13,9 +13,9 @@ void fn0C00_0000(Register word16 dx)
 // return address size: 2
 void fn0C00_0000(word16 dx)
 fn0C00_0000_entry:
+	sp = fp
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp = fp
 	ax = fn0C00_0004(dx, out dx)
 	return
 	// succ:  fn0C00_0000_exit
@@ -39,9 +39,9 @@ Register word16 fn0C00_0004(Register word16 dx, Register out ptr16 dxOut)
 // return address size: 2
 word16 fn0C00_0004(word16 dx, ptr16 & dxOut)
 fn0C00_0004_entry:
+	sp = fp
 	// succ:  l0C00_0004
 l0C00_0004:
-	sp = fp
 	SCZO = cond(dx - 0x001E)
 	branch Test(NE,Z) l0C00_000F
 	// succ:  l0C00_0009 l0C00_000F
@@ -77,9 +77,9 @@ Register word16 fn0C00_0013(Register word16 dx)
 // return address size: 2
 word16 fn0C00_0013(word16 dx)
 fn0C00_0013_entry:
+	sp = fp
 	// succ:  l0C00_0013
 l0C00_0013:
-	sp = fp
 	SCZO = cond(dx - 0x0014)
 	branch Test(LT,SO) l0C00_001F
 	// succ:  l0C00_0018 l0C00_001F

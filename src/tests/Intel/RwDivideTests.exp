@@ -2,9 +2,9 @@
 // Return size: 2
 void fn0C00_0000()
 fn0C00_0000_entry:
+	sp = fp
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp = fp
 	ebx = 0x00000020
 	eax = 0x00000064
 	edx_eax = (int64) eax

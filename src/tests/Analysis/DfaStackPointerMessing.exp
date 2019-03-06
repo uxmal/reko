@@ -27,10 +27,10 @@ word16 fn0C00_0008(word16 bx, selector ds)
 fn0C00_0008_entry:
 	// succ:  l0C00_0008
 l0C00_0008:
-	Mem2[ds:0x0300:word16] = fp
-	Mem5[ds:0x0302:word16] = ss
-	Mem7[ds:0x0308:word16] = bx
-	return Mem7[ds:0x0304:word16]
+	Mem4[ds:0x0300:word16] = fp
+	Mem6[ds:0x0302:word16] = ss
+	Mem8[ds:0x0308:word16] = bx
+	return Mem8[ds:0x0304:word16]
 	// succ:  fn0C00_0008_exit
 fn0C00_0008_exit:
 

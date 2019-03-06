@@ -8,12 +8,12 @@
 void fn0C00_0000()
 // SymbolicIn: sp:fp
 fn0C00_0000_entry:
+	sp = fp
 // DataOut: ds
 // DataOut (flags): 
 
 // SymbolicIn: sp:fp
 l0C00_0000:
-	sp = fp
 	al = 0x20
 	call fn0C00_000C (retsize: 2; depth: 2)
 	branch Test(ULT,C) l0C00_000B
@@ -47,12 +47,12 @@ fn0C00_0000_exit:
 void fn0C00_000C()
 // SymbolicIn: sp:fp
 fn0C00_000C_entry:
+	sp = fp
 // DataOut: al ds
 // DataOut (flags): 
 
 // SymbolicIn: sp:fp
 l0C00_000C:
-	sp = fp
 	SCZO = cond(al - 0x20)
 	branch Test(ULT,C) l0C00_0014
 // DataOut: ds

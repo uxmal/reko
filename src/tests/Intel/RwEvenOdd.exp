@@ -9,9 +9,9 @@
 // return address size: 2
 void fn0C00_0000()
 fn0C00_0000_entry:
+	sp = fp
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp = fp
 	ax = 0x0003
 	call fn0C00_0015 (retsize: 2;)
 	Mem0[ds:0x0300:byte] = al
@@ -35,9 +35,9 @@ fn0C00_0000_exit:
 // return address size: 2
 void fn0C00_0015()
 fn0C00_0015_entry:
+	sp = fp
 	// succ:  l0C00_0015
 l0C00_0015:
-	sp = fp
 	ax = ax | ax
 	SZO = cond(ax)
 	C = false
@@ -70,9 +70,9 @@ fn0C00_0015_exit:
 // return address size: 2
 void fn0C00_0020()
 fn0C00_0020_entry:
+	sp = fp
 	// succ:  l0C00_0020
 l0C00_0020:
-	sp = fp
 	ax = ax | ax
 	SZO = cond(ax)
 	C = false

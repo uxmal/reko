@@ -95,9 +95,9 @@ fn10000000_entry:
 	def esi
 	def dwArg04
 	def edi
+	esp_1 = fp
 	// succ:  l10000000
 l10000000:
-	esp_1 = fp
 	esp_2 = fp - 4
 	dwLoc04_4 = esi
 	esi_6 = dwArg04
@@ -224,9 +224,9 @@ fn10000000_entry:
 	def esi
 	def dwArg04
 	def edi
+	esp_1 = fp
 	// succ:  l10000000
 l10000000:
-	esp_1 = fp
 	esp_2 = fp - 4
 	dwLoc04_4 = esi
 	esi_6 = dwArg04

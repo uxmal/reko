@@ -39,9 +39,9 @@ void fn0C00_0000(word16 wArg06)
 fn0C00_0000_entry:
 	def fp
 	def wArg06
+	sp_1 = fp
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp_1 = fp
 	bp_2 = fp
 	ax_4 = wArg06
 	ax_5 = ax_4 | ax_4

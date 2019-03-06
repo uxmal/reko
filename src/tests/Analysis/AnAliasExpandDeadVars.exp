@@ -15,9 +15,9 @@
 // return address size: 0
 void fn0C00_0000()
 fn0C00_0000_entry:
+	sp = fp
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp = fp
 	cx = Mem0[ds:bx:word16]
 	cx = cx + 0x0002
 	SCZO = cond(cx)

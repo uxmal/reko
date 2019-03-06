@@ -12,9 +12,9 @@
 // return address size: 2
 void fn0C00_0000()
 fn0C00_0000_entry:
+	sp = fp
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp = fp
 	rLoc1 = (real64) Mem0[ds:0x0300:real32]
 	rLoc2 = (real64) Mem0[ds:0x0304:real32]
 	sp = sp - 2
@@ -47,9 +47,9 @@ fn0C00_0000_exit:
 // return address size: 2
 void fn0C00_0024()
 fn0C00_0024_entry:
+	sp = fp
 	// succ:  l0C00_0024
 l0C00_0024:
-	sp = fp
 	sp = sp - 2
 	Mem0[ss:sp:word16] = bp
 	bp = sp
@@ -75,9 +75,9 @@ fn0C00_0024_exit:
 // return address size: 2
 void fn0C00_0031()
 fn0C00_0031_entry:
+	sp = fp
 	// succ:  l0C00_0031
 l0C00_0031:
-	sp = fp
 	sp = sp - 2
 	Mem0[ss:sp:word16] = bp
 	bp = sp

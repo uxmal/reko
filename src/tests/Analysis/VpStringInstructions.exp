@@ -83,9 +83,9 @@ fn0C00_0000_entry:
 	def ds
 	def si
 	def es
+	sp_1 = fp
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp_1 = fp
 	eax_3 = eax + eax * 0x00000004
 	Mem4[ds:0x02FC:word32] = eax_3
 	eax_7 = Mem4[ds:si:word32]
@@ -189,9 +189,9 @@ fn0C00_0000_entry:
 	def ds
 	def si
 	def es
+	sp_1 = fp
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp_1 = fp
 	eax_3 = eax * 0x00000005
 	Mem4[ds:0x02FC:word32] = eax * 0x00000005
 	eax_7 = Mem4[ds:si:word32]
@@ -301,9 +301,9 @@ fn0C00_0026_entry:
 	def SCZO
 	def Z
 	def es
+	sp_1 = fp
 	// succ:  l0C00_0026
 l0C00_0026:
-	sp_1 = fp
 	cx_4 = Mem0[ds:0x0400:word16]
 	al_5 = 0x00
 	di_6 = Mem0[ds:0x0402:word16]
@@ -421,9 +421,9 @@ fn0C00_0026_entry:
 	def SCZO
 	def Z
 	def es
+	sp_1 = fp
 	// succ:  l0C00_0026
 l0C00_0026:
-	sp_1 = fp
 	cx_4 = Mem0[ds:0x0400:word16]
 	al_5 = 0x00
 	di_6 = Mem0[ds:0x0402:word16]

@@ -2,9 +2,9 @@
 // Return size: 2
 void fn0C00_0000()
 fn0C00_0000_entry:
+	sp = fp
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp = fp
 	cx = 0x002A
 	sp = fp - 2
 	wLoc02 = 0x0001
@@ -45,9 +45,9 @@ fn0C00_0000_exit:
 // Return size: 2
 void fn0C00_0023()
 fn0C00_0023_entry:
+	sp = fp
 	// succ:  l0C00_0023
 l0C00_0023:
-	sp = fp
 	sp = fp - 2
 	wLoc02 = cx
 	sp = fp - 4
@@ -69,9 +69,9 @@ fn0C00_0023_exit:
 // Return size: 2
 void fn0C00_0034()
 fn0C00_0034_entry:
+	sp = fp
 	// succ:  l0C00_0034
 l0C00_0034:
-	sp = fp
 	sp = fp - 2
 	wLoc02 = bx
 	sp = fp - 4
@@ -115,9 +115,9 @@ fn0C00_0034_exit:
 // Return size: 2
 void fn0C00_005D()
 fn0C00_005D_entry:
+	sp = fp
 	// succ:  l0C00_005D
 l0C00_005D:
-	sp = fp
 	sp = fp - 2
 	wLoc02 = cx
 	sp = fp - 4
@@ -138,9 +138,9 @@ fn0C00_005D_exit:
 // Return size: 2
 void fn0C00_0069()
 fn0C00_0069_entry:
+	sp = fp
 	// succ:  l0C00_0069
 l0C00_0069:
-	sp = fp
 	Mem0[ds:0x0200:word16] = bx
 	Mem0[ds:0x0300:word16] = cx
 	return

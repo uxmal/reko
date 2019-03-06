@@ -8,12 +8,12 @@
 void fn0C00_0000()
 // SymbolicIn: sp:fp
 fn0C00_0000_entry:
+	sp = fp
 // DataOut: ds
 // DataOut (flags): 
 
 // SymbolicIn: sp:fp
 l0C00_0000:
-	sp = fp
 	call fn0C00_000D (retsize: 2; depth: 2)
 	si = ax
 	call fn0C00_001A (retsize: 2; depth: 2)
@@ -37,13 +37,13 @@ fn0C00_0000_exit:
 void fn0C00_000D()
 // SymbolicIn: sp:fp
 fn0C00_000D_entry:
+	sp = fp
 // DataOut: ds
 // DataOut (flags): 
 // LocalsOut: fp(16)
 
 // SymbolicIn: sp:fp
 l0C00_000D:
-	sp = fp
 	sp = fp - 2
 	wLoc02 = si
 	si = Mem0[ds:0x007A:word16]
@@ -70,13 +70,13 @@ fn0C00_000D_exit:
 void fn0C00_001A()
 // SymbolicIn: sp:fp
 fn0C00_001A_entry:
+	sp = fp
 // DataOut: ds si
 // DataOut (flags): 
 // LocalsOut: fp(16)
 
 // SymbolicIn: sp:fp
 l0C00_001A:
-	sp = fp
 	sp = fp - 2
 	wLoc02 = si
 	ax = Mem0[ds:si:word16]

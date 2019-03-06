@@ -8,13 +8,13 @@
 void fn0C00_0000()
 // SymbolicIn: sp:fp
 fn0C00_0000_entry:
+	sp = fp
 // DataOut: ds
 // DataOut (flags): 
 // LocalsOut: fp(16) Local -0006(16)
 
 // SymbolicIn: sp:fp
 l0C00_0000:
-	sp = fp
 	cx = 0x002A
 	sp = fp - 2
 	wLoc02 = 0x0001
@@ -66,13 +66,13 @@ fn0C00_0000_exit:
 void fn0C00_0023()
 // SymbolicIn: sp:fp
 fn0C00_0023_entry:
+	sp = fp
 // DataOut: ds
 // DataOut (flags): 
 // LocalsOut: fp(16) Stack +0002(16) Stack +0004(16)
 
 // SymbolicIn: sp:fp
 l0C00_0023:
-	sp = fp
 	sp = fp - 2
 	wLoc02 = cx
 	sp = fp - 4
@@ -105,13 +105,13 @@ fn0C00_0023_exit:
 void fn0C00_0034()
 // SymbolicIn: sp:fp
 fn0C00_0034_entry:
+	sp = fp
 // DataOut: ds
 // DataOut (flags): 
 // LocalsOut: fp(16)
 
 // SymbolicIn: sp:fp
 l0C00_0034:
-	sp = fp
 	sp = fp - 2
 	wLoc02 = bx
 	sp = fp - 4
@@ -174,13 +174,13 @@ fn0C00_0034_exit:
 void fn0C00_005D()
 // SymbolicIn: sp:fp
 fn0C00_005D_entry:
+	sp = fp
 // DataOut: cx
 // DataOut (flags): 
 // LocalsOut: fp(16) Stack +0004(16)
 
 // SymbolicIn: sp:fp
 l0C00_005D:
-	sp = fp
 	sp = fp - 2
 	wLoc02 = cx
 	sp = fp - 4
@@ -212,12 +212,12 @@ fn0C00_005D_exit:
 void fn0C00_0069()
 // SymbolicIn: sp:fp
 fn0C00_0069_entry:
+	sp = fp
 // DataOut: bx cx ds
 // DataOut (flags): 
 
 // SymbolicIn: sp:fp
 l0C00_0069:
-	sp = fp
 	Mem0[ds:0x0200:word16] = bx
 	Mem0[ds:0x0300:word16] = cx
 	return

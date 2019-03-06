@@ -23,9 +23,9 @@
 // return address size: 2
 void fn0C00_0000()
 fn0C00_0000_entry:
+	sp = fp
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp = fp
 	bx = Mem0[ds:0x003E:word16]
 	cx = Mem0[ds:0x003E:word16]
 	bx = bx & 0x0007

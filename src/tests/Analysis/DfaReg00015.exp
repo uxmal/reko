@@ -11,27 +11,27 @@ void fn0C00_0000(word16 ax, word16 dx, word16 bx)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	Mem3[ss:0x06B6:word16] = bx
-	Mem7[ss:0x06B4:word16] = ax
-	Mem10[ss:0x06B2:word16] = dx
-	word16 ax_17
-	msdos_open_file(0800:0887, 0x01, out ax_17)
-	selector ds_20 = Mem10[ss:0x06B2:selector]
-	word16 dx_22 = Mem10[ss:0x06B4:word16]
-	word32 ds_dx_23 = SEQ(ds_20, dx_22)
-	word16 si_25 = dx_22
+	Mem5[ss:0x06B6:word16] = bx
+	Mem9[ss:0x06B4:word16] = ax
+	Mem12[ss:0x06B2:word16] = dx
+	word16 ax_19
+	msdos_open_file(0800:0887, 0x01, out ax_19)
+	selector ds_22 = Mem12[ss:0x06B2:selector]
+	word16 dx_24 = Mem12[ss:0x06B4:word16]
+	word32 ds_dx_25 = SEQ(ds_22, dx_24)
+	word16 si_27 = dx_24
 	// succ:  l0C00_0019
 l0C00_0019:
-	si_25 = si_51 + 0x0001
-	word16 si_51 = si_25
-	branch Mem10[ds_20:si_51:byte] != 0x00 l0C00_0019
+	si_27 = si_53 + 0x0001
+	word16 si_53 = si_27
+	branch Mem12[ds_22:si_53:byte] != 0x00 l0C00_0019
 	// succ:  l0C00_001E l0C00_0019
 l0C00_001E:
-	word16 ax_39
-	msdos_write_file(0x3D01, si_25 - dx_22 - 0x0001, ds_dx_23, out ax_39)
-	Mem44[ss:0x06B6:word16] = Mem10[ss:0x06B6:word16]
-	fn0C00_0037(0x0000, 0x00FF, ds_20)
-	msdos_terminate((byte) Mem44[ss:0x06B6:word16])
+	word16 ax_41
+	msdos_write_file(0x3D01, si_27 - dx_24 - 0x0001, ds_dx_25, out ax_41)
+	Mem46[ss:0x06B6:word16] = Mem12[ss:0x06B6:word16]
+	fn0C00_0037(0x0000, 0x00FF, ds_22)
+	msdos_terminate((byte) Mem46[ss:0x06B6:word16])
 fn0C00_0000_exit:
 
 // void fn0C00_0037(Register word16 ax, Register word16 dx, Register selector ds)

@@ -164,9 +164,9 @@ fn0C00_0000_entry:
 	def fp
 	def ds
 	def Mem0
+	sp_1 = fp
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp_1 = fp
 	ax_4 = Mem0[ds:0x0200:word16]
 	dx_5 = Mem0[ds:0x0202:word16]
 	cx_6 = Mem0[ds:0x0204:word16]

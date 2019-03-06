@@ -21,9 +21,9 @@ void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	def fp
 	def ds
+	sp_1 = fp
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp_1 = fp
 	dx_2 = 0x001E
 	ax_3 = fn0C00_000B(dx_2)
 	Mem4[ds:0x012C:word16] = ax_3
@@ -52,9 +52,9 @@ void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	def fp
 	def ds
+	sp_1 = fp
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp_1 = fp
 	dx_2 = 0x001E
 	ax_3 = fn0C00_000B(0x001E)
 	Mem4[ds:0x012C:word16] = ax_3
@@ -79,9 +79,9 @@ word16 fn0C00_000B(word16 dx)
 fn0C00_000B_entry:
 	def fp
 	def dx
+	sp_1 = fp
 	// succ:  l0C00_000B
 l0C00_000B:
-	sp_1 = fp
 	ax_3 = fn0C00_000F(dx)
 	return ax_3
 	// succ:  fn0C00_000B_exit
@@ -104,9 +104,9 @@ word16 fn0C00_000B(word16 dx)
 fn0C00_000B_entry:
 	def fp
 	def dx
+	sp_1 = fp
 	// succ:  l0C00_000B
 l0C00_000B:
-	sp_1 = fp
 	ax_3 = fn0C00_000F(dx)
 	return ax_3
 	// succ:  fn0C00_000B_exit
@@ -203,9 +203,9 @@ fn0C00_000F_entry:
 	def si
 	def SCZO
 	def dx
+	sp_1 = fp
 	// succ:  l0C00_000F
 l0C00_000F:
-	sp_1 = fp
 	sp_2 = fp - 2
 	wLoc02_4 = si
 	si_5 = 0x0000
@@ -331,9 +331,9 @@ fn0C00_000F_entry:
 	def si
 	def SCZO
 	def dx
+	sp_1 = fp
 	// succ:  l0C00_000F
 l0C00_000F:
-	sp_1 = fp
 	sp_2 = fp - 2
 	wLoc02_4 = si
 	si_5 = 0x0000

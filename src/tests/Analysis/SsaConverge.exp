@@ -74,9 +74,9 @@ fn0C00_0000_entry:
 	def fp
 	def bx
 	def ds
+	sp_1 = fp
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp_1 = fp
 	SCZO_3 = cond(bx - 0x0000)
 	Z_4 = (bool) SCZO_3 (alias)
 	SZO_5 = SCZO_3 (alias)

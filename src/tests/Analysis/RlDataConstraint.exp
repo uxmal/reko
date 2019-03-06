@@ -8,12 +8,12 @@
 void fn0C00_0000()
 // SymbolicIn: sp:fp
 fn0C00_0000_entry:
+	sp = fp
 // DataOut: ds si
 // DataOut (flags): 
 
 // SymbolicIn: sp:fp
 l0C00_0000:
-	sp = fp
 	ax = Mem0[ds:si + 0x0200:word16]
 	Mem0[ds:0x0200:word16] = 0x0000
 	Mem0[ds:0x0300:word16] = ax
@@ -45,13 +45,13 @@ fn0C00_0000_exit:
 void fn0C00_002A()
 // SymbolicIn: sp:fp
 fn0C00_002A_entry:
+	sp = fp
 // DataOut: ds
 // DataOut (flags): 
 // LocalsOut: fp(16)
 
 // SymbolicIn: sp:fp
 l0C00_002A:
-	sp = fp
 	sp = fp - 2
 	wLoc02 = ax
 	Mem0[ds:0x0200:word16] = 0xFFFF

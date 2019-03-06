@@ -9,9 +9,9 @@
 // return address size: 2
 void fn0C00_0000()
 fn0C00_0000_entry:
+	sp = fp
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp = fp
 	call fn0C00_000C (retsize: 2;)
 	Mem0[ds:0x0300:word16] = bx
 	Mem0[ds:0x0302:byte] = cl
@@ -40,9 +40,9 @@ fn0C00_0000_exit:
 // return address size: 2
 void fn0C00_000C()
 fn0C00_000C_entry:
+	sp = fp
 	// succ:  l0C00_000C
 l0C00_000C:
-	sp = fp
 	cx = ds
 	es = cx
 	di = 0x7E0F

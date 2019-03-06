@@ -596,9 +596,9 @@ fn10000000_entry:
 	def rLoc2
 	def edi
 	def esi
+	esp_1 = fp
 	// succ:  l10000000
 l10000000:
-	esp_1 = fp
 	eax_3 = dwArg04
 	esp_4 = fp - 4
 	dwLoc04_6 = ebx
@@ -813,9 +813,9 @@ word32 fn1000010A(real64 rArg0)
 fn1000010A_entry:
 	def fp
 	def rArg0
+	esp_1 = fp
 	// succ:  l1000010A
 l1000010A:
-	esp_1 = fp
 	dwLoc04_3 = (int32) rArg0
 	eax_4 = dwLoc04_3
 	return eax_4

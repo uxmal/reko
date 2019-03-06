@@ -31,9 +31,9 @@ void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	def fp
 	def ds
+	sp_1 = fp
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp_1 = fp
 	cx_2 = 0x0064
 	sp_3 = fp - 2
 	wLoc02_4 = 0x0064
@@ -180,9 +180,9 @@ fn0C00_000F_entry:
 	def wArg02
 	def dx
 	def wLoc04
+	sp_1 = fp
 	// succ:  l0C00_000F
 l0C00_000F:
-	sp_1 = fp
 	sp_2 = fp - 2
 	wLoc02_4 = bp
 	bp_5 = fp - 2

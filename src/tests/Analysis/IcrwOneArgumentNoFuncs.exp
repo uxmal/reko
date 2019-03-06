@@ -1,18 +1,18 @@
-a:Stack +0004
-    def:  def a
-    uses: a_1 = a
-          ecx_6 = Mem0[a:word32]
-a_1: orig: a
-    def:  a_1 = a
-    uses: eax_4 = a_1
 fp:fp
     def:  def fp
-    uses: esp_3 = fp
+    uses: esp_1 = fp
           esp_7 = fp - 4
-esp_3: orig: esp
-    def:  esp_3 = fp
+esp_1: orig: esp
+    def:  esp_1 = fp
+a:Stack +0004
+    def:  def a
+    uses: a_3 = a
+          ecx_6 = Mem0[a:word32]
+a_3: orig: a
+    def:  a_3 = a
+    uses: eax_4 = a_3
 eax_4: orig: eax
-    def:  eax_4 = a_1
+    def:  eax_4 = a_3
     uses: call Mem0[ecx_6 + 0x00000004:word32] (retsize: 4; depth: 8)	uses: dwLoc04_8,eax_4,ecx_6,esp_7	defs: eax_10,ecx_11,esp_9
 Mem0:Global memory
     def:  def Mem0
@@ -38,14 +38,14 @@ ecx_11: orig: ecx
 // Return size: 4
 void test(str * a)
 fn0C00_0000_entry:
-	def a
 	def fp
+	def a
 	def Mem0
+	esp_1 = fp
 	// succ:  l0C00_0000
 l0C00_0000:
-	a_1 = a
-	esp_3 = fp
-	eax_4 = a_1
+	a_3 = a
+	eax_4 = a_3
 	ecx_6 = Mem0[a:word32]
 	esp_7 = fp - 4
 	dwLoc04_8 = 0x0000000A

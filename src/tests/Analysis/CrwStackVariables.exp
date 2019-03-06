@@ -27,9 +27,9 @@ void fn0C00_0000(Register selector ds, Stack segptr32 ptrArg04)
 // return address size: 2
 void fn0C00_0000(selector ds, segptr32 ptrArg04)
 fn0C00_0000_entry:
+	sp = fp
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp = fp
 	sp = fp - 2
 	wLoc02 = bp
 	bp = fp - 2
@@ -79,9 +79,9 @@ Register word16 fn0C00_0020(Stack segptr32 ptrArg02)
 // return address size: 2
 word16 fn0C00_0020(segptr32 ptrArg02)
 fn0C00_0020_entry:
+	sp = fp
 	// succ:  l0C00_0020
 l0C00_0020:
-	sp = fp
 	sp = fp - 2
 	wLoc02 = bp
 	bp = fp - 2
@@ -117,9 +117,9 @@ Register word16 fn0C00_002E(Stack segptr32 ptrArg02, Stack word16 wArg06)
 // return address size: 2
 word16 fn0C00_002E(segptr32 ptrArg02, word16 wArg06)
 fn0C00_002E_entry:
+	sp = fp
 	// succ:  l0C00_002E
 l0C00_002E:
-	sp = fp
 	sp = fp - 2
 	wLoc02 = bp
 	bp = fp - 2

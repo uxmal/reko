@@ -5,9 +5,9 @@ sp:sp (aliases:)
 // Return size: 2
 void fn0C00_0000()
 fn0C00_0000_entry:
+	sp = fp
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp = fp
 	call fn0C00_0004 (retsize: 2; depth: 2)
 	return
 	// succ:  fn0C00_0000_exit
@@ -31,9 +31,9 @@ S:Flags (aliases: SZO SCZO)
 // Return size: 2
 void fn0C00_0004()
 fn0C00_0004_entry:
+	sp = fp
 	// succ:  l0C00_0004
 l0C00_0004:
-	sp = fp
 	ax = 0x4DE1
 	es = 0x4DE1
 	bx = 0x0FFF

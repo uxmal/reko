@@ -5,9 +5,9 @@ fn0C00_0000_entry:
 	def fp
 	def ds
 	def Mem0
+	sp_1 = fp
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp_1 = fp
 	si_4 = Mem0[ds:0x0200:word16]
 	ax_6 = fn0C00_0025(si_4, ds, out si_5)
 	Mem7[ds:0x0310:word16] = ax_6
@@ -53,9 +53,9 @@ fn0C00_0025_entry:
 	def si
 	def Mem0
 	def siOut
+	sp_1 = fp
 	// succ:  l0C00_0025
 l0C00_0025:
-	sp_1 = fp
 	ax_5 = Mem0[ds:si:word16]
 	si_6 = si + 0x0002
 	return ax_5
@@ -88,9 +88,9 @@ fn0C00_0027_entry:
 	def siOut
 	def ds
 	def Mem0
+	sp_1 = fp
 	// succ:  l0C00_0027
 l0C00_0027:
-	sp_1 = fp
 	ax_2 = 0x0000
 	si_4 = si | si
 	SZO_5 = cond(si_4)
@@ -146,9 +146,9 @@ fn0C00_002F_entry:
 	def si
 	def Mem0
 	def siOut
+	sp_1 = fp
 	// succ:  l0C00_002F
 l0C00_002F:
-	sp_1 = fp
 	ax_5 = Mem0[ds:si:word16]
 	si_6 = si + 0x0002
 	Mem7[ds:si_6 + 0x0002:word16] = 0x0000
@@ -184,9 +184,9 @@ fn0C00_0036_entry:
 	def si
 	def Mem0
 	def siOut
+	sp_1 = fp
 	// succ:  l0C00_0036
 l0C00_0036:
-	sp_1 = fp
 	ax_5 = Mem0[ds:si:word16]
 	si_6 = si + 0x0002
 	ax_8 = fn0C00_0025(si_6, ds, out si_7)

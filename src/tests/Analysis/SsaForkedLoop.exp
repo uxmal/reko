@@ -136,9 +136,9 @@ fn0C00_0000_entry:
 	def bx
 	def ds
 	def Mem0
+	sp_1 = fp
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp_1 = fp
 	ax_2 = 0x0000
 	SZO_3 = cond(0x0000)
 	Z_4 = (bool) SZO_3 (alias)

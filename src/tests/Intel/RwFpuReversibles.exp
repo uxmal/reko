@@ -9,9 +9,9 @@
 // return address size: 2
 void fn0C00_0000()
 fn0C00_0000_entry:
+	sp = fp
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp = fp
 	rLoc1 = Mem0[ds:0x0300:real64]
 	rLoc2 = Mem0[ds:0x0310:real64]
 	rLoc1 = rLoc1 - rLoc2

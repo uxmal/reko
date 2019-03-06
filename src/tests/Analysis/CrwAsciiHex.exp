@@ -14,9 +14,9 @@ void fn0C00_0000(Register byte al, Register selector ds)
 // return address size: 2
 void fn0C00_0000(byte al, selector ds)
 fn0C00_0000_entry:
+	sp = fp
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp = fp
 	C = fn0C00_000A(al, out al)
 	branch Test(ULT,C) l0C00_0009
 	// succ:  l0C00_0005 l0C00_0009
@@ -45,9 +45,9 @@ FlagGroup bool fn0C00_000A(Register byte al, Register out ptr16 alOut)
 // return address size: 2
 bool fn0C00_000A(byte al, ptr16 & alOut)
 fn0C00_000A_entry:
+	sp = fp
 	// succ:  l0C00_000A
 l0C00_000A:
-	sp = fp
 	SCZO = cond(al - 0x30)
 	branch Test(ULT,C) l0C00_0032
 	// succ:  l0C00_000E l0C00_0032
