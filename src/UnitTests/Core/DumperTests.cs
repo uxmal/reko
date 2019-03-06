@@ -21,6 +21,8 @@
 using Moq;
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Output;
 using Reko.Core.Types;
@@ -56,7 +58,7 @@ namespace Reko.UnitTests.Core
                         new MemoryArea(
                             Address.Ptr32(0x00010000),
                             Enumerable.Range(0, size)
-                                .Select(i => (byte)i)
+                                .Select(i => (byte) i)
                                 .ToArray()),
                         AccessMode.ReadWrite)),
                 arch.Object,
@@ -67,17 +69,15 @@ namespace Reko.UnitTests.Core
                 It.IsNotNull<MemoryArea>(),
                 It.IsNotNull<Address>()))
                 .Returns((MemoryArea m, Address a) => new LeImageReader(m, a));
+        }
+
+        private void Given_Disassembly(params Operation[] operations)
+        {
             arch.Setup(a => a.CreateDisassembler(
                 It.IsNotNull<EndianImageReader>()))
-                .Returns(new[]
+                .Returns(operations.Select((m, i) => new FakeInstruction(m)
                 {
-                    Operation.Add,
-                    Operation.Mul,
-                    Operation.Add,
-                    Operation.Ret
-                }.Select((m, i) => new FakeInstruction(m)
-                {
-                    Address = Address.Ptr32(0x00010010 + 2 * (uint)i),
+                    Address = Address.Ptr32(0x00010010 + 2 * (uint) i),
                     Length = 2,
                 }));
         }
@@ -135,6 +135,11 @@ namespace Reko.UnitTests.Core
         public void Dumper_Proc()
         {
             Given_32bit_Program();
+            Given_Disassembly(
+                Operation.Add,
+                Operation.Mul,
+                Operation.Add,
+                Operation.Ret);
             Given_ProcedureAt(Address.Ptr32(0x10010));
 
             var dmp = new Dumper(program);
@@ -163,6 +168,12 @@ fn00010010 proc
         public void Dumper_NamedProc()
         {
             Given_32bit_Program();
+            Given_Disassembly(
+                Operation.Add,
+                Operation.Mul,
+                Operation.Add,
+                Operation.Ret);
+
             var proc = Given_ProcedureAt(Address.Ptr32(0x10010));
             proc.Name = "__foo@8";
 
@@ -192,6 +203,12 @@ __foo@8 proc
         public void Dumper_Word32()
         {
             Given_32bit_Program();
+            Given_Disassembly(
+                Operation.Add,
+                Operation.Mul,
+                Operation.Add,
+                Operation.Ret);
+
             program.ImageMap.AddItemWithSize(
                 Address.Ptr32(0x10004),
                 new ImageMapItem
@@ -231,6 +248,12 @@ l00010004	dd	0x07060504
                 }
             };
             Given_32bit_Program();
+            Given_Disassembly(
+                Operation.Add,
+                Operation.Mul,
+                Operation.Add,
+                Operation.Ret);
+
             program.ImageMap.AddItemWithSize(
                 Address.Ptr32(0x10004),
                 new ImageMapItem
@@ -294,6 +317,12 @@ l00010004		db	0x04
         public void Dumper_ShowAddressesInDisassembly()
         {
             Given_32bit_Program();
+            Given_Disassembly(
+                Operation.Add,
+                Operation.Mul,
+                Operation.Add,
+                Operation.Ret);
+
             Given_ProcedureAt(Address.Ptr32(0x10010));
 
             var dmp = new Dumper(program);
@@ -322,6 +351,12 @@ fn00010010 proc
         public void Dumper_ShowBytesInDisassembly()
         {
             Given_32bit_Program();
+            Given_Disassembly(
+                Operation.Add,
+                Operation.Mul,
+                Operation.Add,
+                Operation.Ret);
+
             Given_ProcedureAt(Address.Ptr32(0x10010));
 
             var dmp = new Dumper(program);
@@ -345,6 +380,50 @@ fn00010010 proc
 ";
             #endregion
             AssertOutput(sExp, sw);
+        }
+
+        [Test]
+        public void Dumper_ShowCallers()
+        {
+            Given_32bit_Program(48);
+            Given_Disassembly(Operation.Call, Operation.Ret);
+            var p1 = Given_ProcedureAt(Address.Ptr32(0x10010));
+            var p2 = Given_ProcedureAt(Address.Ptr32(0x10020));
+
+            var label = program.NamingPolicy.BlockName(p1.EntryAddress);
+            var b1 = p1.AddBlock(p1.EntryAddress, label);
+            var stm = b1.Statements.Add(
+                p1.EntryAddress.ToLinear(),
+                new CallInstruction(
+                    new ProcedureConstant(PrimitiveType.Ptr32, p2), new CallSite(0, 0)));
+            program.CallGraph.AddEdge(stm, p2);
+
+            var dmp = new Dumper(program);
+            var sw = new StringWriter();
+            dmp.Dump(new TextFormatter(sw));
+
+            string sExp =
+            #region Expected
+@";;; Segment .text (00010000)
+00010000 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F ................
+
+;; fn00010010: 00010010
+fn00010010 proc
+	call
+	ret
+00010018                         18 19 1A 1B 1C 1D 1E 1F         ........
+
+;; fn00010020: 00010020
+;;   Called from:
+;;     00010010 (in fn00010010)
+fn00010020 proc
+	call
+	ret
+00010028                         28 29 2A 2B 2C 2D 2E 2F         ()*+,-./
+";
+            #endregion
+            AssertOutput(sExp, sw);
+
         }
     }
 }
