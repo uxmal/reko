@@ -368,11 +368,16 @@ l000114BC:
 00011500 01 00 00 00 40 00 59 DF 01 00 00 00             ....@.Y.....   
 
 ;; fn0001150C: 0001150C
+;;   Called from:
+;;     00011520 (in __do_global_dtors_aux)
+;;     000115E4 (in frame_dummy)
 fn0001150C proc
 	jmpl	%o7,8,%g0
 	add	%o7,%l7,%l7
 
 ;; __do_global_dtors_aux: 00011514
+;;   Called from:
+;;     00016EE8 (in _fini)
 __do_global_dtors_aux proc
 	save	%sp,0xFFFFFF90,%sp
 	sethi	0x00000000,%o0
@@ -444,6 +449,8 @@ fini_dummy proc
 	restore	%g0,%g0,%g0
 
 ;; frame_dummy: 000115D8
+;;   Called from:
+;;     00016ECC (in _init)
 frame_dummy proc
 	save	%sp,0xFFFFFF90,%sp
 	sethi	0x00000000,%o0
@@ -475,6 +482,32 @@ init_dummy proc
 	restore	%g0,%g0,%g0
 
 ;; notice: 0001162C
+;;   Called from:
+;;     00011698 (in xmalloc)
+;;     000116F0 (in xrealloc)
+;;     00011790 (in fancy_abort)
+;;     000118F0 (in safe_write)
+;;     000119AC (in usage)
+;;     000120EC (in abspath)
+;;     000123A4 (in find_file)
+;;     000123E8 (in aux_info_corrupted)
+;;     00012908 (in save_def_or_dec)
+;;     00012ED0 (in gen_aux_info_file)
+;;     000130B4 (in process_aux_info_file)
+;;     000131F0 (in process_aux_info_file)
+;;     000132E0 (in process_aux_info_file)
+;;     00013338 (in process_aux_info_file)
+;;     00013690 (in declare_source_confusing)
+;;     000136C8 (in declare_source_confusing)
+;;     00013968 (in edit_fn_declaration)
+;;     00013DC4 (in edit_formals_lists)
+;;     00013F80 (in edit_fn_definition)
+;;     00013FC8 (in edit_fn_definition)
+;;     00014834 (in scan_for_missed_items)
+;;     00014848 (in scan_for_missed_items)
+;;     00014910 (in edit_file)
+;;     00014F38 (in main)
+;;     0001516C (in main)
 notice proc
 	save	%sp,0xFFFFFF90,%sp
 	sethi	0x000000AD,%o0
@@ -491,6 +524,16 @@ notice proc
 	restore	%g0,%g0,%g0
 
 ;; xstrerror: 00011660
+;;   Called from:
+;;     000118DC (in safe_write)
+;;     00012390 (in find_file)
+;;     00012F50 (in gen_aux_info_file)
+;;     000130E4 (in process_aux_info_file)
+;;     000131DC (in process_aux_info_file)
+;;     000132CC (in process_aux_info_file)
+;;     00013324 (in process_aux_info_file)
+;;     00014F28 (in main)
+;;     00016BD8 (in pexecute)
 xstrerror proc
 	save	%sp,0xFFFFFF90,%sp
 	call	00027CB0
@@ -499,6 +542,22 @@ xstrerror proc
 	restore	%g0,%o0,%o0
 
 ;; xmalloc: 00011674
+;;   Called from:
+;;     00011730 (in savestring)
+;;     00011758 (in savestring2)
+;;     000117A8 (in dupnstr)
+;;     00011BCC (in string_list_cons)
+;;     00011D1C (in lookup)
+;;     00011D7C (in unexpand_if_needed)
+;;     00012178 (in shortpath)
+;;     00012330 (in find_file)
+;;     00012520 (in save_def_or_dec)
+;;     00012D84 (in munge_compile_params)
+;;     00013250 (in process_aux_info_file)
+;;     000150B8 (in main)
+;;     0001537C (in getpwd)
+;;     000159BC (in choose_temp_base)
+;;     00015B40 (in make_temp_file)
 xmalloc proc
 	save	%sp,0xFFFFFF90,%sp
 	call	00027CBC
@@ -521,6 +580,11 @@ l000116A8:
 	restore	%g0,%o0,%o0
 
 ;; xrealloc: 000116B0
+;;   Called from:
+;;     00011E3C (in unexpand_if_needed)
+;;     00011E98 (in unexpand_if_needed)
+;;     00011EEC (in unexpand_if_needed)
+;;     0001383C (in output_bytes)
 xrealloc proc
 	save	%sp,0xFFFFFF90,%sp
 	orcc	%i0,0x00000000,%o0
@@ -556,6 +620,9 @@ l00011700:
 	restore	%g0,%o0,%o0
 
 ;; xfree: 00011708
+;;   Called from:
+;;     00011D40 (in free_def_dec)
+;;     00011D48 (in free_def_dec)
 xfree proc
 	save	%sp,0xFFFFFF90,%sp
 	orcc	%i0,0x00000000,%o0
@@ -571,6 +638,10 @@ l00011720:
 	restore	%g0,%g0,%g0
 
 ;; savestring: 00011728
+;;   Called from:
+;;     00011C54 (in add_symbol)
+;;     00011F20 (in unexpand_if_needed)
+;;     0001213C (in abspath)
 savestring proc
 	save	%sp,0xFFFFFF90,%sp
 	or	%g0,%i0,%l0
@@ -583,6 +654,8 @@ savestring proc
 	restore	%g0,%g0,%g0
 
 ;; savestring2: 0001174C
+;;   Called from:
+;;     00012E88 (in gen_aux_info_file)
 savestring2 proc
 	save	%sp,0xFFFFFF90,%sp
 	add	%i1,%i3,%o0
@@ -610,6 +683,12 @@ fancy_abort proc
 0001179C                                     90 10 20 21             .. !
 
 ;; dupnstr: 000117A0
+;;   Called from:
+;;     000127A8 (in save_def_or_dec)
+;;     000129E0 (in save_def_or_dec)
+;;     00012A78 (in save_def_or_dec)
+;;     00012CD8 (in munge_compile_params)
+;;     00013DAC (in edit_formals_lists)
 dupnstr proc
 	save	%sp,0xFFFFFF90,%sp
 	or	%g0,%i0,%l0
@@ -624,6 +703,8 @@ dupnstr proc
 	restore	%g0,%g0,%g0
 
 ;; substr: 000117CC
+;;   Called from:
+;;     000138FC (in other_variable_style_function)
 substr proc
 	ba	00011810
 	ldsb	[%o0+%g0],%g2
@@ -666,6 +747,8 @@ l00011820:
 	sethi	0x00000000,%g0
 
 ;; safe_read: 00011828
+;;   Called from:
+;;     00013268 (in process_aux_info_file)
 safe_read proc
 	save	%sp,0xFFFFFF90,%sp
 	or	%g0,%i0,%l2
@@ -763,6 +846,9 @@ l0001190C:
 	restore	%g0,%g0,%g0
 
 ;; save_pointers: 00011914
+;;   Called from:
+;;     00013930 (in edit_fn_declaration)
+;;     00013EF0 (in edit_fn_definition)
 save_pointers proc
 	sethi	0x000000A0,%g2
 	ld	[%g2+480],%o2
@@ -775,6 +861,9 @@ save_pointers proc
 	st	%o1,[%g2+656]
 
 ;; restore_pointers: 00011938
+;;   Called from:
+;;     00013950 (in edit_fn_declaration)
+;;     00013FB0 (in edit_fn_definition)
 restore_pointers proc
 	sethi	0x000000AC,%g2
 	ld	[%g2+640],%o2
@@ -787,6 +876,12 @@ restore_pointers proc
 	st	%o1,[%g2+528]
 
 ;; is_id_char: 0001195C
+;;   Called from:
+;;     00011DEC (in unexpand_if_needed)
+;;     00012850 (in save_def_or_dec)
+;;     00013D20 (in edit_formals_lists)
+;;     00014700 (in scan_for_missed_items)
+;;     00014734 (in scan_for_missed_items)
 is_id_char proc
 	sethi	0x000000AD,%g2
 	or	%g2,0x00000011,%g2
@@ -813,6 +908,9 @@ l00011990:
 	or	%g0,%g2,%o0
 
 ;; usage: 00011998
+;;   Called from:
+;;     0001506C (in main)
+;;     000151AC (in main)
 usage proc
 	save	%sp,0xFFFFFF90,%sp
 	sethi	0x000000A0,%o0
@@ -825,6 +923,8 @@ usage proc
 000119B8                         90 10 20 21                     .. !   
 
 ;; in_system_include_dir: 000119BC
+;;   Called from:
+;;     000148DC (in edit_file)
 in_system_include_dir proc
 	save	%sp,0xFFFFFF90,%sp
 	ldsb	[%i0+%g0],%o0
@@ -882,6 +982,8 @@ l00011A44:
 	restore	%g0,%g0,%g0
 
 ;; needs_to_be_converted: 00011A4C
+;;   Called from:
+;;     00014880 (in edit_file)
 needs_to_be_converted proc
 	ld	[%o0+4],%g3
 	subcc	%g3,0x00000000,%g0
@@ -910,6 +1012,8 @@ l00011A80:
 	sethi	0x00000000,%g0
 
 ;; directory_specified_p: 00011A88
+;;   Called from:
+;;     000148A4 (in edit_file)
 directory_specified_p proc
 	save	%sp,0xFFFFFF90,%sp
 	sethi	0x000000AD,%o0
@@ -983,6 +1087,8 @@ l00011B38:
 	restore	%g0,%g0,%g0
 
 ;; file_excluded_p: 00011B40
+;;   Called from:
+;;     000148B8 (in edit_file)
 file_excluded_p proc
 	save	%sp,0xFFFFFF90,%sp
 	call	00027D1C
@@ -1034,6 +1140,8 @@ l00011BC0:
 	restore	%g0,%g0,%g0
 
 ;; string_list_cons: 00011BC8
+;;   Called from:
+;;     00014F4C (in main)
 string_list_cons proc
 	save	%sp,0xFFFFFF90,%sp
 	call	00011674
@@ -1044,6 +1152,9 @@ string_list_cons proc
 	restore	%g0,%o0,%o0
 
 ;; visit_each_hash_node: 00011BE4
+;;   Called from:
+;;     00014E84 (in do_processing)
+;;     00014E94 (in do_processing)
 visit_each_hash_node proc
 	save	%sp,0xFFFFFF90,%sp
 	sethi	0x00000006,%o0
@@ -1079,6 +1190,8 @@ l00011C34:
 	restore	%g0,%g0,%g0
 
 ;; add_symbol: 00011C3C
+;;   Called from:
+;;     00011D28 (in lookup)
 add_symbol proc
 	save	%sp,0xFFFFFF90,%sp
 	or	%g0,%i0,%l0
@@ -1094,6 +1207,9 @@ add_symbol proc
 	restore	%g0,%g0,%g0
 
 ;; lookup: 00011C6C
+;;   Called from:
+;;     00012314 (in find_file)
+;;     00012894 (in save_def_or_dec)
 lookup proc
 	save	%sp,0xFFFFFF90,%sp
 	ldsb	[%i1+%g0],%o0
@@ -1171,6 +1287,8 @@ l00011D34:
 	restore	%g0,%g0,%g0
 
 ;; free_def_dec: 00011D3C
+;;   Called from:
+;;     00012AC0 (in save_def_or_dec)
 free_def_dec proc
 	save	%sp,0xFFFFFF90,%sp
 	call	00011708
@@ -1347,6 +1465,11 @@ l00011F2C:
 	restore	%g0,%g0,%g0
 
 ;; abspath: 00011F34
+;;   Called from:
+;;     0001216C (in shortpath)
+;;     000124F0 (in referenced_file_is_newer)
+;;     000125C4 (in save_def_or_dec)
+;;     000150FC (in main)
 abspath proc
 	save	%sp,0xFFFFFF90,%sp
 	subcc	%i0,0x00000000,%g0
@@ -1554,6 +1677,21 @@ l00012138:
 	restore	%g0,%o0,%o0
 
 ;; shortpath: 0001214C
+;;   Called from:
+;;     000118D0 (in safe_write)
+;;     00012384 (in find_file)
+;;     00012E54 (in gen_aux_info_file)
+;;     000130D8 (in process_aux_info_file)
+;;     000131D0 (in process_aux_info_file)
+;;     000132C0 (in process_aux_info_file)
+;;     00013318 (in process_aux_info_file)
+;;     0001367C (in declare_source_confusing)
+;;     000136AC (in declare_source_confusing)
+;;     00013D90 (in edit_formals_lists)
+;;     00013F5C (in edit_fn_definition)
+;;     00014814 (in scan_for_missed_items)
+;;     00014900 (in edit_file)
+;;     00015158 (in main)
 shortpath proc
 	save	%sp,0xFFFFFF90,%sp
 	sethi	0x000000AC,%o0
@@ -1725,6 +1863,9 @@ l000122FC:
 	restore	%g0,%g0,%g0
 
 ;; find_file: 00012304
+;;   Called from:
+;;     000124F8 (in referenced_file_is_newer)
+;;     000125CC (in save_def_or_dec)
 find_file proc
 	save	%sp,0xFFFFFF08,%sp
 	or	%g0,%i0,%l1
@@ -1793,6 +1934,8 @@ l000123C8:
 	restore	%g0,%g0,%g0
 
 ;; aux_info_corrupted: 000123D0
+;;   Called from:
+;;     00012408 (in check_aux_info)
 aux_info_corrupted proc
 	save	%sp,0xFFFFFF90,%sp
 	sethi	0x000000A0,%o0
@@ -1806,6 +1949,30 @@ aux_info_corrupted proc
 000123F4             90 10 20 21                             .. !       
 
 ;; check_aux_info: 000123F8
+;;   Called from:
+;;     0001246C (in referenced_file_is_newer)
+;;     00012480 (in referenced_file_is_newer)
+;;     00012494 (in referenced_file_is_newer)
+;;     00012538 (in save_def_or_dec)
+;;     0001254C (in save_def_or_dec)
+;;     00012560 (in save_def_or_dec)
+;;     00012648 (in save_def_or_dec)
+;;     00012688 (in save_def_or_dec)
+;;     000126D0 (in save_def_or_dec)
+;;     000126F0 (in save_def_or_dec)
+;;     00012710 (in save_def_or_dec)
+;;     00012730 (in save_def_or_dec)
+;;     00012780 (in save_def_or_dec)
+;;     00012808 (in save_def_or_dec)
+;;     00012848 (in save_def_or_dec)
+;;     00012948 (in save_def_or_dec)
+;;     00012960 (in save_def_or_dec)
+;;     00012978 (in save_def_or_dec)
+;;     00012990 (in save_def_or_dec)
+;;     000129A8 (in save_def_or_dec)
+;;     000129FC (in save_def_or_dec)
+;;     00012A24 (in save_def_or_dec)
+;;     00012A6C (in save_def_or_dec)
 check_aux_info proc
 	save	%sp,0xFFFFFF90,%sp
 	subcc	%i0,0x00000000,%g0
@@ -1821,6 +1988,8 @@ l00012410:
 	restore	%g0,%g0,%g0
 
 ;; find_corresponding_lparen: 00012418
+;;   Called from:
+;;     00012810 (in save_def_or_dec)
 find_corresponding_lparen proc
 	add	%o0,0xFFFFFFFF,%o0
 	or	%g0,0x00000001,%g3
@@ -2405,6 +2574,9 @@ l00012B5C:
 	restore	%g0,%g0,%g0
 
 ;; munge_compile_params: 00012B64
+;;   Called from:
+;;     00012E48 (in gen_aux_info_file)
+;;     0001509C (in main)
 munge_compile_params proc
 	save	%sp,0xFFFFFF90,%sp
 	call	00027D1C
@@ -2567,6 +2739,8 @@ l00012D00:
 00012E20 00 01 2C D4 00 01 2C D4 00 01 2C 54             ..,...,...,T   
 
 ;; gen_aux_info_file: 00012E2C
+;;   Called from:
+;;     00013108 (in process_aux_info_file)
 gen_aux_info_file proc
 	save	%sp,0xFFFFFF78,%sp
 	sethi	0x0000009F,%l2
@@ -2680,6 +2854,8 @@ l0001302C:
 	restore	%g0,%g0,%g0
 
 ;; process_aux_info_file: 00013034
+;;   Called from:
+;;     00014E60 (in do_processing)
 process_aux_info_file proc
 	save	%sp,0xFFFFFF08,%sp
 	call	00027D1C
@@ -2981,6 +3157,8 @@ l000135B8:
 	restore	%g0,%g0,%g0
 
 ;; reverse_def_dec_list: 000135C0
+;;   Called from:
+;;     00011C0C (in visit_each_hash_node)
 reverse_def_dec_list proc
 	ld	[%o0+8],%o1
 	ld	[%o1+4],%g3
@@ -3013,6 +3191,12 @@ l00013604:
 	sethi	0x00000000,%g0
 
 ;; identify_lineno: 0001360C
+;;   Called from:
+;;     000136B8 (in declare_source_confusing)
+;;     00013D9C (in edit_formals_lists)
+;;     00013F68 (in edit_fn_definition)
+;;     0001464C (in scan_for_missed_items)
+;;     00014820 (in scan_for_missed_items)
 identify_lineno proc
 	sethi	0x000000A0,%g2
 	ld	[%g2+448],%g3
@@ -3040,6 +3224,8 @@ l00013644:
 	sethi	0x00000000,%g0
 
 ;; declare_source_confusing: 0001364C
+;;   Called from:
+;;     000136F0 (in check_source)
 declare_source_confusing proc
 	save	%sp,0xFFFFFF90,%sp
 	sethi	0x0000009F,%o0
@@ -3088,6 +3274,25 @@ l000136D4:
 	or	%g0,0x00000001,%o1
 
 ;; check_source: 000136E0
+;;   Called from:
+;;     00013764 (in seek_to_line)
+;;     000137E4 (in forward_to_next_token_char)
+;;     00013BB4 (in edit_formals_lists)
+;;     00013BE4 (in edit_formals_lists)
+;;     00013C1C (in edit_formals_lists)
+;;     00013C48 (in edit_formals_lists)
+;;     00013C60 (in edit_formals_lists)
+;;     00013C78 (in edit_formals_lists)
+;;     00013CE4 (in edit_formals_lists)
+;;     00013D14 (in edit_formals_lists)
+;;     00013D44 (in edit_formals_lists)
+;;     00013E68 (in find_rightmost_formals_list)
+;;     00013E9C (in find_rightmost_formals_list)
+;;     00013ECC (in find_rightmost_formals_list)
+;;     0001455C (in careful_find_l_paren)
+;;     00014600 (in scan_for_missed_items)
+;;     000146C4 (in scan_for_missed_items)
+;;     0001472C (in scan_for_missed_items)
 check_source proc
 	save	%sp,0xFFFFFF90,%sp
 	subcc	%i0,0x00000000,%g0
@@ -3167,6 +3372,8 @@ l000137A0:
 	restore	%g0,%g0,%g0
 
 ;; forward_to_next_token_char: 000137AC
+;;   Called from:
+;;     00013EB4 (in find_rightmost_formals_list)
 forward_to_next_token_char proc
 	save	%sp,0xFFFFFF90,%sp
 	add	%i0,0x00000001,%i0
@@ -3199,6 +3406,9 @@ l00013800:
 	restore	%g0,%g0,%g0
 
 ;; output_bytes: 00013808
+;;   Called from:
+;;     0001389C (in output_string)
+;;     000138DC (in output_up_to)
 output_bytes proc
 	save	%sp,0xFFFFFF90,%sp
 	sethi	0x000000A0,%l2
@@ -3239,6 +3449,8 @@ l00013864:
 	restore	%g0,%g0,%g0
 
 ;; output_string: 0001388C
+;;   Called from:
+;;     00013DE8 (in edit_formals_lists)
 output_string proc
 	save	%sp,0xFFFFFF90,%sp
 	call	00027D1C
@@ -3250,6 +3462,10 @@ output_string proc
 	restore	%g0,%g0,%g0
 
 ;; output_up_to: 000138AC
+;;   Called from:
+;;     00013DD4 (in edit_formals_lists)
+;;     00013F88 (in edit_fn_definition)
+;;     00013FD0 (in edit_fn_definition)
 output_up_to proc
 	save	%sp,0xFFFFFF90,%sp
 	sethi	0x000000A0,%o0
@@ -3274,6 +3490,8 @@ l000138E8:
 	restore	%g0,%g0,%g0
 
 ;; other_variable_style_function: 000138F0
+;;   Called from:
+;;     00013F20 (in edit_fn_definition)
 other_variable_style_function proc
 	save	%sp,0xFFFFFF90,%sp
 	sethi	0x0000005D,%o1
@@ -3353,6 +3571,8 @@ l00013B60:
 	restore	%g0,%g0,%g0
 
 ;; edit_formals_lists: 00013B68
+;;   Called from:
+;;     00013C88 (in edit_formals_lists)
 edit_formals_lists proc
 	save	%sp,0xFFFFFF90,%sp
 	add	%i0,0xFFFFFFFF,%l1
@@ -3587,6 +3807,8 @@ l00013DFC:
 	restore	%g0,%g0,%g0
 
 ;; find_rightmost_formals_list: 00013E04
+;;   Called from:
+;;     00013F10 (in edit_fn_definition)
 find_rightmost_formals_list proc
 	save	%sp,0xFFFFFF90,%sp
 	ba	00013E14
@@ -3862,6 +4084,8 @@ l000143BC:
 00014510 00 01 43 A8 00 01 43 84                         ..C...C.       
 
 ;; careful_find_l_paren: 00014518
+;;   Called from:
+;;     00014680 (in scan_for_missed_items)
 careful_find_l_paren proc
 	save	%sp,0xFFFFFF90,%sp
 	add	%i0,0xFFFFFFFF,%i0
@@ -4303,6 +4527,8 @@ l00014E1C:
 	restore	%g0,%g0,%g0
 
 ;; do_processing: 00014E24
+;;   Called from:
+;;     000151E4 (in main)
 do_processing proc
 	save	%sp,0xFFFFFF90,%sp
 	sethi	0x0000009F,%o0
@@ -4346,6 +4572,8 @@ l00014E78:
 	restore	%g0,%g0,%g0
 
 ;; main: 00014EA4
+;;   Called from:
+;;     000114F4 (in _start)
 main proc
 	save	%sp,0xFFFFFF88,%sp
 	st	%i1,[%i6+72]
@@ -4599,6 +4827,8 @@ l00015204:
 000152B0 00 01 50 6C 00 01 4F FC                         ..Pl..O.       
 
 ;; getpwd: 000152B8
+;;   Called from:
+;;     00014EF8 (in main)
 getpwd proc
 	save	%sp,0xFFFFFE80,%sp
 	sethi	0x000000AC,%o0
@@ -5176,6 +5406,19 @@ print_and_abort proc
 000158D4             D0 02 60 30                             ..`0       
 
 ;; try: 000158D8
+;;   Called from:
+;;     00015928 (in choose_temp_base)
+;;     00015940 (in choose_temp_base)
+;;     00015958 (in choose_temp_base)
+;;     0001596C (in choose_temp_base)
+;;     00015980 (in choose_temp_base)
+;;     00015994 (in choose_temp_base)
+;;     00015A90 (in make_temp_file)
+;;     00015AA8 (in make_temp_file)
+;;     00015AC0 (in make_temp_file)
+;;     00015AD4 (in make_temp_file)
+;;     00015AE8 (in make_temp_file)
+;;     00015AFC (in make_temp_file)
 try proc
 	save	%sp,0xFFFFFF90,%sp
 	subcc	%i1,0x00000000,%g0
@@ -5205,6 +5448,8 @@ l00015910:
 	restore	%g0,%g0,%g0
 
 ;; choose_temp_base: 00015918
+;;   Called from:
+;;     00012ED8 (in gen_aux_info_file)
 choose_temp_base proc
 	save	%sp,0xFFFFFF90,%sp
 	sethi	0x0000005E,%o0
@@ -5450,6 +5695,10 @@ l00015C1C:
 	restore	%g0,%g0,%g0
 
 ;; my_index: 00015C24
+;;   Called from:
+;;     000160FC (in _getopt_internal)
+;;     000163F8 (in _getopt_internal)
+;;     000164B8 (in _getopt_internal)
 my_index proc
 	ba	00015C48
 	ldsb	[%o0+%g0],%g2
@@ -5478,6 +5727,9 @@ l00015C58:
 	sethi	0x00000000,%g0
 
 ;; exchange: 00015C60
+;;   Called from:
+;;     00015EFC (in _getopt_internal)
+;;     00015FD0 (in _getopt_internal)
 exchange proc
 	save	%sp,0xFFFFFF90,%sp
 	sethi	0x000000AC,%g2
@@ -5578,6 +5830,8 @@ l00015D44:
 	restore	%g0,%g0,%g0
 
 ;; _getopt_initialize: 00015D64
+;;   Called from:
+;;     00015E5C (in _getopt_internal)
 _getopt_initialize proc
 	save	%sp,0xFFFFFF90,%sp
 	sethi	0x000000A0,%o0
@@ -5635,6 +5889,10 @@ l00015DFC:
 	restore	%g0,%g0,%g0
 
 ;; _getopt_internal: 00015E04
+;;   Called from:
+;;     00016998 (in getopt)
+;;     000169C0 (in getopt_long)
+;;     000169E8 (in getopt_long_only)
 _getopt_internal proc
 	save	%sp,0xFFFFFF90,%sp
 	sethi	0x000000A0,%o0
@@ -6733,6 +6991,8 @@ getopt proc
 	restore	%g0,%o0,%o0
 
 ;; getopt_long: 000169A8
+;;   Called from:
+;;     00015088 (in main)
 getopt_long proc
 	save	%sp,0xFFFFFF90,%sp
 	or	%g0,%i0,%o0
@@ -6759,6 +7019,8 @@ getopt_long_only proc
 	restore	%g0,%o0,%o0
 
 ;; pexecute: 000169F8
+;;   Called from:
+;;     00012EFC (in gen_aux_info_file)
 pexecute proc
 	save	%sp,0xFFFFFF70,%sp
 	ld	[%i6+92],%o1
@@ -6963,6 +7225,9 @@ l00016C24:
 	restore	%g0,%g0,%g0
 
 ;; pwait: 00016C2C
+;;   Called from:
+;;     00012F68 (in gen_aux_info_file)
+;;     00012F6C (in gen_aux_info_file)
 pwait proc
 	save	%sp,0xFFFFFF90,%sp
 	call	00027E84
@@ -6971,6 +7236,8 @@ pwait proc
 	restore	%g0,%o0,%o0
 
 ;; mkstemps: 00016C40
+;;   Called from:
+;;     00015BE4 (in make_temp_file)
 mkstemps proc
 	save	%sp,0xFFFFFF88,%sp
 	call	00027D1C
@@ -7129,11 +7396,15 @@ l00016E5C:
 	restore	%g0,%g0,%g0
 
 ;; fn00016E64: 00016E64
+;;   Called from:
+;;     00016E78 (in __do_global_ctors_aux)
 fn00016E64 proc
 	jmpl	%o7,8,%g0
 	add	%o7,%l7,%l7
 
 ;; __do_global_ctors_aux: 00016E6C
+;;   Called from:
+;;     00016ED4 (in _init)
 __do_global_ctors_aux proc
 	save	%sp,0xFFFFFF90,%sp
 	sethi	0x00000000,%o0
@@ -7168,6 +7439,8 @@ init_dummy proc
 ;;; Segment .init (00016EC8)
 
 ;; _init: 00016EC8
+;;   Called from:
+;;     000114CC (in _start)
 _init proc
 	save	%sp,0xFFFFFFA0,%sp
 	call	000115D8

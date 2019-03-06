@@ -482,6 +482,12 @@ free proc
 	nop
 
 ;; __do_global_dtors_aux: 00400620
+;;   Called from:
+;;     0040061C (in strcpy)
+;;     0040061C (in strerror)
+;;     0040061C (in vsnprintf)
+;;     0040061C (in read)
+;;     0040061C (in free)
 __do_global_dtors_aux proc
 	lui	r28,+0FC1
 	addiu	r28,r28,-00007DC0
@@ -2099,6 +2105,8 @@ l00401B50:
 	nop
 
 ;; client_new: 00401B70
+;;   Called from:
+;;     00401B6C (in main)
 client_new proc
 	lui	r28,+0FC0
 	addiu	r28,r28,+00006CF0

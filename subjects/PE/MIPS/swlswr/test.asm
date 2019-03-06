@@ -1,6 +1,8 @@
 ;;; Segment .text (00011000)
 
 ;; fn00011000: 00011000
+;;   Called from:
+;;     00011120 (in fn000110E8)
 fn00011000 proc
 	addiu	sp,sp,-00000028
 	sw	ra,0020(sp)
@@ -65,6 +67,8 @@ Win32CrtStartup proc
 	nop
 
 ;; fn000110E8: 000110E8
+;;   Called from:
+;;     000110D0 (in Win32CrtStartup)
 fn000110E8 proc
 	addiu	sp,sp,-00000028
 	sw	ra,0024(sp)
@@ -125,6 +129,8 @@ fn0001116C proc
 	nop
 
 ;; fn000111C4: 000111C4
+;;   Called from:
+;;     000110B8 (in Win32CrtStartup)
 fn000111C4 proc
 	addiu	sp,sp,-00000020
 	sw	ra,0018(sp)
@@ -185,6 +191,8 @@ l00011268:
 	nop
 
 ;; fn00011278: 00011278
+;;   Called from:
+;;     00011130 (in fn000110E8)
 fn00011278 proc
 	addiu	sp,sp,-00000018
 	sw	ra,0010(sp)
@@ -200,6 +208,11 @@ fn00011278 proc
 	nop
 
 ;; fn000112A8: 000112A8
+;;   Called from:
+;;     00011290 (in fn00011278)
+;;     000113F0 (in fn000113D8)
+;;     0001141C (in fn00011408)
+;;     00011448 (in fn00011434)
 fn000112A8 proc
 	addiu	sp,sp,-00000018
 	sw	ra,0010(sp)
@@ -342,6 +355,8 @@ fn00011434 proc
 	nop
 
 ;; fn00011460: 00011460
+;;   Called from:
+;;     000113B0 (in fn000112A8)
 fn00011460 proc
 	addiu	sp,sp,-00000008
 	addiu	r8,r0,+00000042
@@ -352,6 +367,11 @@ fn00011460 proc
 	nop
 
 ;; fn0001147C: 0001147C
+;;   Called from:
+;;     00011384 (in fn000112A8)
+;;     0001139C (in fn000112A8)
+;;     000114FC (in fn000114E4)
+;;     00011514 (in fn000114E4)
 fn0001147C proc
 	addiu	sp,sp,-00000018
 	sw	ra,0010(sp)
@@ -391,6 +411,8 @@ l000114D4:
 	nop
 
 ;; fn000114E4: 000114E4
+;;   Called from:
+;;     00011108 (in fn000110E8)
 fn000114E4 proc
 	addiu	sp,sp,-00000018
 	sw	ra,0010(sp)
@@ -412,6 +434,8 @@ fn000114E4 proc
 	nop
 
 ;; fn0001152C: 0001152C
+;;   Called from:
+;;     0001170C (in fn000116FC)
 fn0001152C proc
 	addiu	sp,sp,-00000038
 	sw	ra,0030(sp)

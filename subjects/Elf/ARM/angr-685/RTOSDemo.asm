@@ -7,6 +7,13 @@
 00000050 00 00 00 00 09 81 00 00                         ........       
 
 ;; prvUnlockQueue: 00000058
+;;   Called from:
+;;     000001EE (in xQueueGenericSend)
+;;     00000228 (in xQueueGenericSend)
+;;     00000280 (in xQueueGenericSend)
+;;     00000300 (in xQueueGenericReceive)
+;;     00000354 (in xQueueGenericReceive)
+;;     0000037E (in xQueueGenericReceive)
 prvUnlockQueue proc
 B570           	push	{r4-r6,lr}
 4605           	mov	r5,r0
@@ -101,6 +108,11 @@ E8BD 4070     	pop.w	{r4-r6,lr}
 F008 BA62     	b	$000085B0
 
 ;; prvCopyDataToQueue: 000000EC
+;;   Called from:
+;;     0000024C (in xQueueGenericSend)
+;;     0000048E (in xQueueGenericSendFromISR)
+;;     000083C6 (in xQueueCRSend)
+;;     000084B4 (in xQueueCRSendFromISR)
 prvCopyDataToQueue proc
 B570           	push	{r4-r6,lr}
 4604           	mov	r4,r0
@@ -195,6 +207,10 @@ F001 F875     	bl	$00001250
 E7C8           	b	$000000FE
 
 ;; prvCopyDataFromQueue: 0000016C
+;;   Called from:
+;;     000002CA (in xQueuePeekFromISR)
+;;     000003B6 (in xQueueGenericReceive)
+;;     00000554 (in xQueueReceiveFromISR)
 prvCopyDataFromQueue proc
 6C02           	ldr	r2,[r0,#&40]
 B16A           	cbz	r2,$0000018C
@@ -221,6 +237,10 @@ l0000018C:
 0000018E                                           00 BF               ..
 
 ;; xQueueGenericSend: 00000190
+;;   Called from:
+;;     00000628 (in xQueueGiveMutexRecursive)
+;;     000006F8 (in xQueueCreateMutex)
+;;     00008AFE (in MPU_xQueueGenericSend)
 xQueueGenericSend proc
 E92D 47F0     	push.w	{r4-r10,lr}
 2500           	mov	r5,#0
@@ -230,7 +250,7 @@ B084           	sub	sp,#&10
 9201           	str	r2,[sp,#&4]
 461F           	mov	r7,r3
 46A8           	mov	r8,r5
-F8DF 90FC     	ldr	r9,[pc,#&FC]                             ; 000002A0
+F8DF 90FC     	ldr	r9,[000002A0]                            ; [pc,#&FC]
 E027           	b	$000001F8
 
 l000001A8:
@@ -327,7 +347,7 @@ B138           	cbz	r0,$00000266
 
 l00000256:
 F04F 5280     	mov	r2,#&10000000
-4B11           	ldr	r3,[pc,#&44]                            ; 000002A0
+4B11           	ldr	r3,[000002A0]                           ; [pc,#&44]
 601A           	str	r2,[r3]
 F3BF 8F4F     	dsb	sy
 F3BF 8F6F     	isb	sy
@@ -364,6 +384,8 @@ E7E3           	b	$00000266
 000002A0 04 ED 00 E0                                     ....           
 
 ;; xQueuePeekFromISR: 000002A4
+;;   Called from:
+;;     00008BB4 (in MPU_xQueuePeekFromISR)
 xQueuePeekFromISR proc
 B570           	push	{r4-r6,lr}
 F3EF 8511     	mrs	r5,cpsr
@@ -389,6 +411,9 @@ F385 8811     	msr	cpsr,r5
 BD70           	pop	{r4-r6,pc}
 
 ;; xQueueGenericReceive: 000002D8
+;;   Called from:
+;;     000005EC (in xQueueTakeMutexRecursive)
+;;     00008B86 (in MPU_xQueueGenericReceive)
 xQueueGenericReceive proc
 E92D 47F0     	push.w	{r4-r10,lr}
 2500           	mov	r5,#0
@@ -398,7 +423,7 @@ B084           	sub	sp,#&10
 9201           	str	r2,[sp,#&4]
 4699           	mov	r9,r3
 462F           	mov	r7,r5
-F8DF 8138     	ldr	r8,[pc,#&138]                            ; 00000424
+F8DF 8138     	ldr	r8,[00000424]                            ; [pc,#&138]
 E00C           	b	$0000030A
 
 l000002F0:
@@ -544,7 +569,7 @@ D0E7           	beq	$000003CC
 
 l000003FC:
 F04F 5280     	mov	r2,#&10000000
-4B08           	ldr	r3,[pc,#&20]                            ; 00000424
+4B08           	ldr	r3,[00000424]                           ; [pc,#&20]
 601A           	str	r2,[r3]
 F3BF 8F4F     	dsb	sy
 F3BF 8F6F     	isb	sy
@@ -566,6 +591,8 @@ E7D1           	b	$000003C8
 00000424             04 ED 00 E0                             ....       
 
 ;; uxQueueMessagesWaiting: 00000428
+;;   Called from:
+;;     00008B28 (in MPU_uxQueueMessagesWaiting)
 uxQueueMessagesWaiting proc
 B510           	push	{r4,lr}
 4604           	mov	r4,r0
@@ -577,6 +604,8 @@ BD10           	pop	{r4,pc}
 0000043A                               00 BF                       ..   
 
 ;; uxQueueSpacesAvailable: 0000043C
+;;   Called from:
+;;     00008B50 (in MPU_uxQueueSpacesAvailable)
 uxQueueSpacesAvailable proc
 B538           	push	{r3-r5,lr}
 4605           	mov	r5,r0
@@ -590,10 +619,14 @@ BD38           	pop	{r3-r5,pc}
 00000452       00 BF                                       ..           
 
 ;; vQueueDelete: 00000454
+;;   Called from:
+;;     00008C80 (in MPU_vQueueDelete)
 vQueueDelete proc
 F001 B994     	b	$00001780
 
 ;; xQueueGenericSendFromISR: 00000458
+;;   Called from:
+;;     0000816E (in vUART_ISR)
 xQueueGenericSendFromISR proc
 B5F8           	push	{r3-r7,lr}
 F3EF 8611     	mrs	r6,cpsr
@@ -801,6 +834,8 @@ uxQueueMessagesWaitingFromISR proc
 4770           	bx	lr
 
 ;; xQueueGetMutexHolder: 000005B4
+;;   Called from:
+;;     00008BDC (in MPU_xQueueGetMutexHolder)
 xQueueGetMutexHolder proc
 B510           	push	{r4,lr}
 4604           	mov	r4,r0
@@ -821,6 +856,8 @@ F007 FFF0     	bl	$000085B0
 BD10           	pop	{r4,pc}
 
 ;; xQueueTakeMutexRecursive: 000005D4
+;;   Called from:
+;;     00008C30 (in MPU_xQueueTakeMutexRecursive)
 xQueueTakeMutexRecursive proc
 B570           	push	{r4-r6,lr}
 6845           	ldr	r5,[r0,#&4]
@@ -854,6 +891,8 @@ l000005FA:
 BD70           	pop	{r4-r6,pc}
 
 ;; xQueueGiveMutexRecursive: 00000604
+;;   Called from:
+;;     00008C58 (in MPU_xQueueGiveMutexRecursive)
 xQueueGiveMutexRecursive proc
 B538           	push	{r3-r5,lr}
 6845           	ldr	r5,[r0,#&4]
@@ -885,6 +924,9 @@ F7FF FDB2     	bl	$00000190
 BD38           	pop	{r3-r5,pc}
 
 ;; xQueueGenericReset: 00000630
+;;   Called from:
+;;     000006D0 (in xQueueGenericCreate)
+;;     00008AC8 (in MPU_xQueueGenericReset)
 xQueueGenericReset proc
 B570           	push	{r4-r6,lr}
 4604           	mov	r4,r0
@@ -924,7 +966,7 @@ D0F5           	beq	$00000664
 
 l00000678:
 F04F 5280     	mov	r2,#&10000000
-4B0A           	ldr	r3,[pc,#&28]                            ; 000006A8
+4B0A           	ldr	r3,[000006A8]                           ; [pc,#&28]
 601A           	str	r2,[r3]
 F3BF 8F4F     	dsb	sy
 F3BF 8F6F     	isb	sy
@@ -943,6 +985,9 @@ BD70           	pop	{r4-r6,pc}
 000006A8                         04 ED 00 E0                     ....   
 
 ;; xQueueGenericCreate: 000006AC
+;;   Called from:
+;;     000006E4 (in xQueueCreateMutex)
+;;     00008A9C (in MPU_xQueueGenericCreate)
 xQueueGenericCreate proc
 B570           	push	{r4-r6,lr}
 4606           	mov	r6,r0
@@ -976,6 +1021,8 @@ l000006D8:
 E7F5           	b	$000006C8
 
 ;; xQueueCreateMutex: 000006DC
+;;   Called from:
+;;     00008C04 (in MPU_xQueueCreateMutex)
 xQueueCreateMutex proc
 B510           	push	{r4,lr}
 4602           	mov	r2,r0
@@ -999,6 +1046,9 @@ l000006FC:
 BD10           	pop	{r4,pc}
 
 ;; prvInitialiseNewTask: 00000700
+;;   Called from:
+;;     000008F2 (in xTaskCreate)
+;;     00000954 (in xTaskCreateRestricted)
 prvInitialiseNewTask proc
 E92D 4FF8     	push.w	{r3-fp,lr}
 9C0C           	ldr	r4,[sp,#&30]
@@ -1071,9 +1121,12 @@ E8BD 8FF8     	pop.w	{r3-fp,pc}
 00000796                   00 BF                               ..       
 
 ;; prvAddNewTaskToReadyList: 00000798
+;;   Called from:
+;;     000008F8 (in xTaskCreate)
+;;     0000095A (in xTaskCreateRestricted)
 prvAddNewTaskToReadyList proc
 E92D 41F0     	push.w	{r4-r8,lr}
-4C2D           	ldr	r4,[pc,#&B4]                            ; 00000854
+4C2D           	ldr	r4,[00000854]                           ; [pc,#&B4]
 4605           	mov	r5,r0
 F007 FEEA     	bl	$00008578
 6823           	ldr	r3,[r4]
@@ -1117,7 +1170,7 @@ D207           	bhs	$000007FC
 
 l000007EC:
 F04F 5280     	mov	r2,#&10000000
-4B19           	ldr	r3,[pc,#&64]                            ; 00000858
+4B19           	ldr	r3,[00000858]                           ; [pc,#&64]
 601A           	str	r2,[r3]
 F3BF 8F4F     	dsb	sy
 F3BF 8F6F     	isb	sy
@@ -1164,9 +1217,16 @@ E7B3           	b	$000007BA
 00000852       00 BF C4 00 00 20 04 ED 00 E0               ..... ....   
 
 ;; prvAddCurrentTaskToDelayedList.isra.0: 0000085C
+;;   Called from:
+;;     00000C3E (in xTaskNotifyWait)
+;;     00000D4C (in ulTaskNotifyTake)
+;;     00000F6A (in vTaskDelay)
+;;     00000FC4 (in vTaskDelayUntil)
+;;     00000FF0 (in vTaskPlaceOnEventList)
+;;     00001016 (in vTaskPlaceOnUnorderedEventList)
 prvAddCurrentTaskToDelayedList.isra.0 proc
 B570           	push	{r4-r6,lr}
-4C14           	ldr	r4,[pc,#&50]                            ; 000008B0
+4C14           	ldr	r4,[000008B0]                           ; [pc,#&50]
 4605           	mov	r5,r0
 F8D4 6080     	ldr	r6,[r4,#&80]
 6860           	ldr	r0,[r4,#&4]
@@ -1212,6 +1272,9 @@ F007 BD2E     	b	$0000830C
 000008B0 C4 00 00 20                                     ...            
 
 ;; xTaskCreate: 000008B4
+;;   Called from:
+;;     000009AA (in vTaskStartScheduler)
+;;     0000882C (in MPU_xTaskCreate)
 xTaskCreate proc
 E92D 47F0     	push.w	{r4-r10,lr}
 4680           	mov	r8,r0
@@ -1266,6 +1329,8 @@ E7F1           	b	$000008FE
 0000091A                               00 BF                       ..   
 
 ;; xTaskCreateRestricted: 0000091C
+;;   Called from:
+;;     000087EC (in MPU_xTaskCreateRestricted)
 xTaskCreateRestricted proc
 6943           	ldr	r3,[r0,#&14]
 B323           	cbz	r3,$0000096A
@@ -1312,6 +1377,8 @@ F04F 30FF     	mov	r0,#&FFFFFFFF
 4770           	bx	lr
 
 ;; vTaskAllocateMPURegions: 00000970
+;;   Called from:
+;;     0000885C (in MPU_vTaskAllocateMPURegions)
 vTaskAllocateMPURegions proc
 B120           	cbz	r0,$0000097C
 
@@ -1322,7 +1389,7 @@ l00000972:
 F000 BDEC     	b	$00001554
 
 l0000097C:
-4B03           	ldr	r3,[pc,#&C]                             ; 0000098C
+4B03           	ldr	r3,[0000098C]                           ; [pc,#&C]
 6858           	ldr	r0,[r3,#&4]
 2300           	mov	r3,#0
 3004           	adds	r0,#4
@@ -1331,18 +1398,20 @@ F000 BDE5     	b	$00001554
 0000098A                               00 BF C4 00 00 20           ..... 
 
 ;; vTaskStartScheduler: 00000990
+;;   Called from:
+;;     000080DE (in Main)
 vTaskStartScheduler proc
 F04F 4300     	mov	r3,#&80000000
 B510           	push	{r4,lr}
-4C12           	ldr	r4,[pc,#&48]                            ; 000009E0
+4C12           	ldr	r4,[000009E0]                           ; [pc,#&48]
 B082           	sub	sp,#8
 9300           	str	r3,[sp]
 F104 0388     	add	r3,r4,#&88
 9301           	str	r3,[sp,#&4]
 223B           	mov	r2,#&3B
 2300           	mov	r3,#0
-490F           	ldr	r1,[pc,#&3C]                            ; 000009E4
-480F           	ldr	r0,[pc,#&3C]                            ; 000009E8
+490F           	ldr	r1,[000009E4]                           ; [pc,#&3C]
+480F           	ldr	r0,[000009E8]                           ; [pc,#&3C]
 F7FF FF83     	bl	$000008B4
 2801           	cmps	r0,#1
 D001           	beq	$000009B6
@@ -1373,14 +1442,23 @@ F383 8811     	msr	cpsr,r3
 F3BF 8F6F     	isb	sy
 F3BF 8F4F     	dsb	sy
 2200           	mov	r2,#0
-4B02           	ldr	r3,[pc,#&8]                             ; 00000A08
+4B02           	ldr	r3,[00000A08]                           ; [pc,#&8]
 675A           	str	r2,[r3,#&74]
 F000 BDA5     	b	$00001550
 00000A06                   00 BF C4 00 00 20                   .....    
 
 ;; vTaskSuspendAll: 00000A0C
+;;   Called from:
+;;     000001AC (in xQueueGenericSend)
+;;     00000322 (in xQueueGenericReceive)
+;;     0000173A (in pvPortMalloc)
+;;     000017D0 (in xEventGroupWaitBits)
+;;     00001896 (in xEventGroupSetBits)
+;;     00001904 (in xEventGroupSync)
+;;     000019A8 (in vEventGroupDelete)
+;;     000088C8 (in MPU_vTaskSuspendAll)
 vTaskSuspendAll proc
-4A03           	ldr	r2,[pc,#&C]                             ; 00000A1C
+4A03           	ldr	r2,[00000A1C]                           ; [pc,#&C]
 F8D2 308C     	ldr	r3,[r2,#&8C]
 3301           	adds	r3,#1
 F8C2 308C     	str	r3,[r2,#&8C]
@@ -1388,28 +1466,34 @@ F8C2 308C     	str	r3,[r2,#&8C]
 00000A1A                               00 BF C4 00 00 20           ..... 
 
 ;; xTaskGetTickCount: 00000A20
+;;   Called from:
+;;     0000890C (in MPU_xTaskGetTickCount)
 xTaskGetTickCount proc
-4B01           	ldr	r3,[pc,#&4]                             ; 00000A28
+4B01           	ldr	r3,[00000A28]                           ; [pc,#&4]
 F8D3 0080     	ldr	r0,[r3,#&80]
 4770           	bx	lr
 00000A28                         C4 00 00 20                     ...    
 
 ;; xTaskGetTickCountFromISR: 00000A2C
 xTaskGetTickCountFromISR proc
-4B01           	ldr	r3,[pc,#&4]                             ; 00000A34
+4B01           	ldr	r3,[00000A34]                           ; [pc,#&4]
 F8D3 0080     	ldr	r0,[r3,#&80]
 4770           	bx	lr
 00000A34             C4 00 00 20                             ...        
 
 ;; uxTaskGetNumberOfTasks: 00000A38
+;;   Called from:
+;;     00008930 (in MPU_uxTaskGetNumberOfTasks)
 uxTaskGetNumberOfTasks proc
-4B01           	ldr	r3,[pc,#&4]                             ; 00000A40
+4B01           	ldr	r3,[00000A40]                           ; [pc,#&4]
 6818           	ldr	r0,[r3]
 4770           	bx	lr
 00000A3E                                           00 BF               ..
 00000A40 C4 00 00 20                                     ...            
 
 ;; pcTaskGetName: 00000A44
+;;   Called from:
+;;     00008958 (in MPU_pcTaskGetName)
 pcTaskGetName proc
 B108           	cbz	r0,$00000A4A
 
@@ -1418,13 +1502,15 @@ l00000A46:
 4770           	bx	lr
 
 l00000A4A:
-4B02           	ldr	r3,[pc,#&8]                             ; 00000A54
+4B02           	ldr	r3,[00000A54]                           ; [pc,#&8]
 6858           	ldr	r0,[r3,#&4]
 3054           	adds	r0,#&54
 4770           	bx	lr
 00000A52       00 BF C4 00 00 20                           .....        
 
 ;; xTaskGenericNotify: 00000A58
+;;   Called from:
+;;     000089DE (in MPU_xTaskGenericNotify)
 xTaskGenericNotify proc
 B5F8           	push	{r3-r7,lr}
 461C           	mov	r4,r3
@@ -1481,7 +1567,7 @@ BDF8           	pop	{r3-r7,pc}
 
 l00000AA6:
 F106 0724     	add	r7,r6,#&24
-4D16           	ldr	r5,[pc,#&58]                            ; 00000B04
+4D16           	ldr	r5,[00000B04]                           ; [pc,#&58]
 4638           	mov	r0,r7
 F007 FC47     	bl	$00008340
 6CF0           	ldr	r0,[r6,#&4C]
@@ -1502,7 +1588,7 @@ D9D8           	bls	$00000A90
 
 l00000ADE:
 F04F 5280     	mov	r2,#&10000000
-4B09           	ldr	r3,[pc,#&24]                            ; 00000B08
+4B09           	ldr	r3,[00000B08]                           ; [pc,#&24]
 601A           	str	r2,[r3]
 F3BF 8F4F     	dsb	sy
 F3BF 8F6F     	isb	sy
@@ -1573,7 +1659,7 @@ E8BD 81F0     	pop.w	{r4-r8,pc}
 00000B60 03 66 F4 D1                                     .f..           
 
 l00000B64:
-4E1A           	ldr	r6,[pc,#&68]                            ; 00000BD0
+4E1A           	ldr	r6,[00000BD0]                           ; [pc,#&68]
 4607           	mov	r7,r0
 F8D6 308C     	ldr	r3,[r6,#&8C]
 B1B3           	cbz	r3,$00000B9C
@@ -1630,9 +1716,11 @@ E7C0           	b	$00000B50
 00000BD0 C4 00 00 20                                     ...            
 
 ;; xTaskNotifyWait: 00000BD4
+;;   Called from:
+;;     00008A16 (in MPU_xTaskNotifyWait)
 xTaskNotifyWait proc
 E92D 41F0     	push.w	{r4-r8,lr}
-4C1F           	ldr	r4,[pc,#&7C]                            ; 00000C58
+4C1F           	ldr	r4,[00000C58]                           ; [pc,#&7C]
 4615           	mov	r5,r2
 4680           	mov	r8,r0
 460E           	mov	r6,r1
@@ -1688,7 +1776,7 @@ l00000C3C:
 4638           	mov	r0,r7
 F7FF FE0D     	bl	$0000085C
 F04F 5280     	mov	r2,#&10000000
-4B05           	ldr	r3,[pc,#&14]                            ; 00000C5C
+4B05           	ldr	r3,[00000C5C]                           ; [pc,#&14]
 601A           	str	r2,[r3]
 F3BF 8F4F     	dsb	sy
 F3BF 8F6F     	isb	sy
@@ -1722,7 +1810,7 @@ F386 8811     	msr	cpsr,r6
 E8BD 83F8     	pop.w	{r3-r9,pc}
 
 l00000C96:
-4F19           	ldr	r7,[pc,#&64]                            ; 00000CFC
+4F19           	ldr	r7,[00000CFC]                           ; [pc,#&64]
 4688           	mov	r8,r1
 F8D7 308C     	ldr	r3,[r7,#&8C]
 4604           	mov	r4,r0
@@ -1772,9 +1860,11 @@ E7C9           	b	$00000C8E
 00000CFA                               00 BF C4 00 00 20           ..... 
 
 ;; ulTaskNotifyTake: 00000D00
+;;   Called from:
+;;     00008A44 (in MPU_ulTaskNotifyTake)
 ulTaskNotifyTake proc
 B570           	push	{r4-r6,lr}
-4C18           	ldr	r4,[pc,#&60]                            ; 00000D64
+4C18           	ldr	r4,[00000D64]                           ; [pc,#&60]
 4606           	mov	r6,r0
 460D           	mov	r5,r1
 F007 FC36     	bl	$00008578
@@ -1821,7 +1911,7 @@ l00000D4A:
 4628           	mov	r0,r5
 F7FF FD86     	bl	$0000085C
 F04F 5280     	mov	r2,#&10000000
-4B04           	ldr	r3,[pc,#&10]                            ; 00000D68
+4B04           	ldr	r3,[00000D68]                           ; [pc,#&10]
 601A           	str	r2,[r3]
 F3BF 8F4F     	dsb	sy
 F3BF 8F6F     	isb	sy
@@ -1829,9 +1919,12 @@ E7DC           	b	$00000D1C
 00000D62       00 BF C4 00 00 20 04 ED 00 E0               ..... ....   
 
 ;; xTaskIncrementTick: 00000D6C
+;;   Called from:
+;;     00000EF2 (in xTaskResumeAll)
+;;     000016FA (in xPortSysTickHandler)
 xTaskIncrementTick proc
 E92D 47F0     	push.w	{r4-r10,lr}
-4C3C           	ldr	r4,[pc,#&F0]                            ; 00000E64
+4C3C           	ldr	r4,[00000E64]                           ; [pc,#&F0]
 F8D4 308C     	ldr	r3,[r4,#&8C]
 2B00           	cmps	r3,#0
 D15E           	bne	$00000E38
@@ -1867,7 +1960,7 @@ D330           	blo	$00000E14
 
 l00000DB2:
 F04F 0901     	mov	r9,#1
-F8DF 80B0     	ldr	r8,[pc,#&B0]                             ; 00000E68
+F8DF 80B0     	ldr	r8,[00000E68]                            ; [pc,#&B0]
 E023           	b	$00000E04
 
 l00000DBC:
@@ -1963,9 +2056,28 @@ E7D7           	b	$00000E14
 00000E64             C4 00 00 20 CC 00 00 20                 ... ...    
 
 ;; xTaskResumeAll: 00000E6C
+;;   Called from:
+;;     000001F2 (in xQueueGenericSend)
+;;     0000022C (in xQueueGenericSend)
+;;     00000284 (in xQueueGenericSend)
+;;     00000304 (in xQueueGenericReceive)
+;;     00000358 (in xQueueGenericReceive)
+;;     00000382 (in xQueueGenericReceive)
+;;     00000F6E (in vTaskDelay)
+;;     00000FA0 (in vTaskDelayUntil)
+;;     00000FC8 (in vTaskDelayUntil)
+;;     0000175E (in pvPortMalloc)
+;;     00001768 (in pvPortMalloc)
+;;     000017E8 (in xEventGroupWaitBits)
+;;     00001816 (in xEventGroupWaitBits)
+;;     000018E8 (in xEventGroupSetBits)
+;;     0000191E (in xEventGroupSync)
+;;     00001934 (in xEventGroupSync)
+;;     000019CA (in vEventGroupDelete)
+;;     000088E8 (in MPU_xTaskResumeAll)
 xTaskResumeAll proc
 E92D 41F0     	push.w	{r4-r8,lr}
-4C33           	ldr	r4,[pc,#&CC]                            ; 00000F40
+4C33           	ldr	r4,[00000F40]                           ; [pc,#&CC]
 F007 FB81     	bl	$00008578
 F8D4 308C     	ldr	r3,[r4,#&8C]
 3B01           	subs	r3,#1
@@ -2052,7 +2164,7 @@ B16B           	cbz	r3,$00000F26
 
 l00000F0A:
 F04F 5280     	mov	r2,#&10000000
-4B0D           	ldr	r3,[pc,#&34]                            ; 00000F44
+4B0D           	ldr	r3,[00000F44]                           ; [pc,#&34]
 601A           	str	r2,[r3]
 F3BF 8F4F     	dsb	sy
 F3BF 8F6F     	isb	sy
@@ -2077,20 +2189,22 @@ E7D4           	b	$00000EEA
 00000F40 C4 00 00 20 04 ED 00 E0                         ... ....       
 
 ;; vTaskDelay: 00000F48
+;;   Called from:
+;;     000088A8 (in MPU_vTaskDelay)
 vTaskDelay proc
 B508           	push	{r3,lr}
 B940           	cbnz	r0,$00000F5E
 
 l00000F4C:
 F04F 5280     	mov	r2,#&10000000
-4B09           	ldr	r3,[pc,#&24]                            ; 00000F78
+4B09           	ldr	r3,[00000F78]                           ; [pc,#&24]
 601A           	str	r2,[r3]
 F3BF 8F4F     	dsb	sy
 F3BF 8F6F     	isb	sy
 BD08           	pop	{r3,pc}
 
 l00000F5E:
-4A07           	ldr	r2,[pc,#&1C]                            ; 00000F7C
+4A07           	ldr	r2,[00000F7C]                           ; [pc,#&1C]
 F8D2 308C     	ldr	r3,[r2,#&8C]
 3301           	adds	r3,#1
 F8C2 308C     	str	r3,[r2,#&8C]
@@ -2104,8 +2218,10 @@ BD08           	pop	{r3,pc}
 00000F78                         04 ED 00 E0 C4 00 00 20         ....... 
 
 ;; vTaskDelayUntil: 00000F80
+;;   Called from:
+;;     00008884 (in MPU_vTaskDelayUntil)
 vTaskDelayUntil proc
-4A14           	ldr	r2,[pc,#&50]                            ; 00000FD4
+4A14           	ldr	r2,[00000FD4]                           ; [pc,#&50]
 B510           	push	{r4,lr}
 F8D2 408C     	ldr	r4,[r2,#&8C]
 6803           	ldr	r3,[r0]
@@ -2127,7 +2243,7 @@ B9A0           	cbnz	r0,$00000FD0
 
 l00000FA6:
 F04F 5280     	mov	r2,#&10000000
-4B0B           	ldr	r3,[pc,#&2C]                            ; 00000FD8
+4B0B           	ldr	r3,[00000FD8]                           ; [pc,#&2C]
 601A           	str	r2,[r3]
 F3BF 8F4F     	dsb	sy
 F3BF 8F6F     	isb	sy
@@ -2154,10 +2270,13 @@ BD10           	pop	{r4,pc}
 00000FD2       00 BF C4 00 00 20 04 ED 00 E0               ..... ....   
 
 ;; vTaskPlaceOnEventList: 00000FDC
+;;   Called from:
+;;     00000222 (in xQueueGenericSend)
+;;     00000378 (in xQueueGenericReceive)
 vTaskPlaceOnEventList proc
 B510           	push	{r4,lr}
 460C           	mov	r4,r1
-4B04           	ldr	r3,[pc,#&10]                            ; 00000FF4
+4B04           	ldr	r3,[00000FF4]                           ; [pc,#&10]
 6859           	ldr	r1,[r3,#&4]
 3138           	adds	r1,#&38
 F007 F991     	bl	$0000830C
@@ -2167,10 +2286,13 @@ E434           	b	$0000085C
 00000FF2       00 BF C4 00 00 20                           .....        
 
 ;; vTaskPlaceOnUnorderedEventList: 00000FF8
+;;   Called from:
+;;     00001812 (in xEventGroupWaitBits)
+;;     00001930 (in xEventGroupSync)
 vTaskPlaceOnUnorderedEventList proc
 B538           	push	{r3-r5,lr}
 4614           	mov	r4,r2
-4B06           	ldr	r3,[pc,#&18]                            ; 00001018
+4B06           	ldr	r3,[00001018]                           ; [pc,#&18]
 F041 4100     	orr	r1,r1,#&80000000
 685D           	ldr	r5,[r3,#&4]
 685B           	ldr	r3,[r3,#&4]
@@ -2183,10 +2305,20 @@ E421           	b	$0000085C
 00001018                         C4 00 00 20                     ...    
 
 ;; xTaskRemoveFromEventList: 0000101C
+;;   Called from:
+;;     00000082 (in prvUnlockQueue)
+;;     000000C8 (in prvUnlockQueue)
+;;     00000294 (in xQueueGenericSend)
+;;     000003F4 (in xQueueGenericReceive)
+;;     00000412 (in xQueueGenericReceive)
+;;     000004B0 (in xQueueGenericSendFromISR)
+;;     00000512 (in xQueueGiveFromISR)
+;;     0000057C (in xQueueReceiveFromISR)
+;;     00000670 (in xQueueGenericReset)
 xTaskRemoveFromEventList proc
 B5F8           	push	{r3-r7,lr}
 68C3           	ldr	r3,[r0,#&C]
-4C16           	ldr	r4,[pc,#&58]                            ; 0000107C
+4C16           	ldr	r4,[0000107C]                           ; [pc,#&58]
 68DD           	ldr	r5,[r3,#&C]
 F105 0638     	add	r6,r5,#&38
 4630           	mov	r0,r6
@@ -2231,6 +2363,9 @@ E7EF           	b	$0000105C
 0000107C                                     C4 00 00 20             ... 
 
 ;; xTaskRemoveFromUnorderedEventList: 00001080
+;;   Called from:
+;;     000018BC (in xEventGroupSetBits)
+;;     000019B6 (in vEventGroupDelete)
 xTaskRemoveFromUnorderedEventList proc
 B5F8           	push	{r3-r7,lr}
 2501           	mov	r5,#1
@@ -2239,7 +2374,7 @@ F041 4100     	orr	r1,r1,#&80000000
 6001           	str	r1,[r0]
 F106 0724     	add	r7,r6,#&24
 F007 F956     	bl	$00008340
-4C0F           	ldr	r4,[pc,#&3C]                            ; 000010D4
+4C0F           	ldr	r4,[000010D4]                           ; [pc,#&3C]
 4638           	mov	r0,r7
 F007 F952     	bl	$00008340
 6CF3           	ldr	r3,[r6,#&4C]
@@ -2266,8 +2401,10 @@ BDF8           	pop	{r3-r7,pc}
 000010D2       00 BF C4 00 00 20                           .....        
 
 ;; vTaskSwitchContext: 000010D8
+;;   Called from:
+;;     000016A6 (in xPortPendSVHandler)
 vTaskSwitchContext proc
-4A10           	ldr	r2,[pc,#&40]                            ; 0000111C
+4A10           	ldr	r2,[0000111C]                           ; [pc,#&40]
 F8D2 308C     	ldr	r3,[r2,#&8C]
 B9C3           	cbnz	r3,$00001112
 
@@ -2305,8 +2442,11 @@ F8C2 3090     	str	r3,[r2,#&90]
 0000111A                               00 BF C4 00 00 20           ..... 
 
 ;; uxTaskResetEventItemValue: 00001120
+;;   Called from:
+;;     0000182C (in xEventGroupWaitBits)
+;;     0000194A (in xEventGroupSync)
 uxTaskResetEventItemValue proc
-4B04           	ldr	r3,[pc,#&10]                            ; 00001134
+4B04           	ldr	r3,[00001134]                           ; [pc,#&10]
 6859           	ldr	r1,[r3,#&4]
 685A           	ldr	r2,[r3,#&4]
 685B           	ldr	r3,[r3,#&4]
@@ -2318,16 +2458,23 @@ F1C3 0302     	rsb	r3,r3,#2
 00001134             C4 00 00 20                             ...        
 
 ;; xTaskGetCurrentTaskHandle: 00001138
+;;   Called from:
+;;     000005DC (in xQueueTakeMutexRecursive)
+;;     0000060A (in xQueueGiveMutexRecursive)
 xTaskGetCurrentTaskHandle proc
-4B01           	ldr	r3,[pc,#&4]                             ; 00001140
+4B01           	ldr	r3,[00001140]                           ; [pc,#&4]
 6858           	ldr	r0,[r3,#&4]
 4770           	bx	lr
 0000113E                                           00 BF               ..
 00001140 C4 00 00 20                                     ...            
 
 ;; vTaskSetTimeOutState: 00001144
+;;   Called from:
+;;     00000212 (in xQueueGenericSend)
+;;     0000039E (in xQueueGenericReceive)
+;;     00008980 (in MPU_vTaskSetTimeOutState)
 vTaskSetTimeOutState proc
-4B03           	ldr	r3,[pc,#&C]                             ; 00001154
+4B03           	ldr	r3,[00001154]                           ; [pc,#&C]
 F8D3 2094     	ldr	r2,[r3,#&94]
 F8D3 3080     	ldr	r3,[r3,#&80]
 E880 000C     	stm	r0,{r2-r3}
@@ -2335,12 +2482,16 @@ E880 000C     	stm	r0,{r2-r3}
 00001154             C4 00 00 20                             ...        
 
 ;; xTaskCheckForTimeOut: 00001158
+;;   Called from:
+;;     000001D4 (in xQueueGenericSend)
+;;     0000034A (in xQueueGenericReceive)
+;;     000089A8 (in MPU_xTaskCheckForTimeOut)
 xTaskCheckForTimeOut proc
 B570           	push	{r4-r6,lr}
 4604           	mov	r4,r0
 460E           	mov	r6,r1
 F007 FA0B     	bl	$00008578
-4B11           	ldr	r3,[pc,#&44]                            ; 000011A8
+4B11           	ldr	r3,[000011A8]                           ; [pc,#&44]
 6821           	ldr	r1,[r4]
 F8D3 5080     	ldr	r5,[r3,#&80]
 F8D3 2094     	ldr	r2,[r3,#&94]
@@ -2378,21 +2529,26 @@ BD70           	pop	{r4-r6,pc}
 000011A6                   00 BF C4 00 00 20                   .....    
 
 ;; vTaskMissedYield: 000011AC
+;;   Called from:
+;;     0000008C (in prvUnlockQueue)
+;;     000000D2 (in prvUnlockQueue)
 vTaskMissedYield proc
 2201           	mov	r2,#1
-4B02           	ldr	r3,[pc,#&8]                             ; 000011B8
+4B02           	ldr	r3,[000011B8]                           ; [pc,#&8]
 F8C3 2090     	str	r2,[r3,#&90]
 4770           	bx	lr
 000011B6                   00 BF C4 00 00 20                   .....    
 
 ;; vTaskPriorityInherit: 000011BC
+;;   Called from:
+;;     000003DE (in xQueueGenericReceive)
 vTaskPriorityInherit proc
 2800           	cmps	r0,#0
 D042           	beq	$00001246
 
 l000011C0:
 B5F8           	push	{r3-r7,lr}
-4C21           	ldr	r4,[pc,#&84]                            ; 00001248
+4C21           	ldr	r4,[00001248]                           ; [pc,#&84]
 6CC3           	ldr	r3,[r0,#&4C]
 6862           	ldr	r2,[r4,#&4]
 6CD2           	ldr	r2,[r2,#&4C]
@@ -2411,7 +2567,7 @@ F1C2 0202     	rsb	r2,r2,#2
 6382           	str	r2,[r0,#&38]
 
 l000011DE:
-4D1B           	ldr	r5,[pc,#&6C]                            ; 0000124C
+4D1B           	ldr	r5,[0000124C]                           ; [pc,#&6C]
 EB03 0383     	add.w	r3,r3,r3,lsl #2
 6B42           	ldr	r2,[r0,#&34]
 EB05 0383     	add.w	r3,r5,r3,lsl #2
@@ -2467,6 +2623,8 @@ l00001246:
 00001248                         C4 00 00 20 CC 00 00 20         ... ... 
 
 ;; xTaskPriorityDisinherit: 00001250
+;;   Called from:
+;;     00000162 (in prvCopyDataToQueue)
 xTaskPriorityDisinherit proc
 2800           	cmps	r0,#0
 D039           	beq	$000012C8
@@ -2497,7 +2655,7 @@ B978           	cbnz	r0,$00001298
 
 l00001278:
 6CE1           	ldr	r1,[r4,#&4C]
-4A14           	ldr	r2,[pc,#&50]                            ; 000012CC
+4A14           	ldr	r2,[000012CC]                           ; [pc,#&50]
 EB01 0381     	add.w	r3,r1,r1,lsl #2
 EB02 0383     	add.w	r3,r2,r3,lsl #2
 689B           	ldr	r3,[r3,#&8]
@@ -2512,13 +2670,13 @@ EA23 0101     	bic.w	r1,r3,r1
 E000           	b	$0000129A
 
 l00001298:
-4A0C           	ldr	r2,[pc,#&30]                            ; 000012CC
+4A0C           	ldr	r2,[000012CC]                           ; [pc,#&30]
 
 l0000129A:
 2501           	mov	r5,#1
 6DA3           	ldr	r3,[r4,#&58]
 F8D2 E07C     	ldr	lr,[r2,#&7C]
-480B           	ldr	r0,[pc,#&2C]                            ; 000012D0
+480B           	ldr	r0,[000012D0]                           ; [pc,#&2C]
 FA05 F603     	lsl	r6,r5,r3
 4639           	mov	r1,r7
 64E3           	str	r3,[r4,#&4C]
@@ -2539,8 +2697,10 @@ l000012C8:
 000012D0 CC 00 00 20                                     ...            
 
 ;; pvTaskIncrementMutexHeldCount: 000012D4
+;;   Called from:
+;;     0000041C (in xQueueGenericReceive)
 pvTaskIncrementMutexHeldCount proc
-4B04           	ldr	r3,[pc,#&10]                            ; 000012E8
+4B04           	ldr	r3,[000012E8]                           ; [pc,#&10]
 685A           	ldr	r2,[r3,#&4]
 B11A           	cbz	r2,$000012E2
 
@@ -2556,16 +2716,18 @@ l000012E2:
 000012E6                   00 BF C4 00 00 20 00 00 00 00       ..... ....
 
 ;; prvRestoreContextOfFirstTask: 000012F0
+;;   Called from:
+;;     0000135E (in prvSVCHandler)
 prvRestoreContextOfFirstTask proc
-F8DF 0430     	ldr	r0,[pc,#&430]                            ; 00001724
+F8DF 0430     	ldr	r0,[00001724]                            ; [pc,#&430]
 6800           	ldr	r0,[r0]
 6800           	ldr	r0,[r0]
 F380 8808     	msr	cpsr,r0
-4B0C           	ldr	r3,[pc,#&30]                            ; 00001330
+4B0C           	ldr	r3,[00001330]                           ; [pc,#&30]
 6819           	ldr	r1,[r3]
 6808           	ldr	r0,[r1]
 F101 0104     	add	r1,r1,#4
-F8DF 2420     	ldr	r2,[pc,#&420]                            ; 00001728
+F8DF 2420     	ldr	r2,[00001728]                            ; [pc,#&420]
 E8B1 0FF0     	ldm	r1!,{r4-fp}
 E8A2 0FF0     	stm	r2!,{r4-fp}
 E8B0 0FF8     	ldm	r0!,{r3-fp}
@@ -2579,6 +2741,8 @@ F06F 0E02     	mvn	lr,#2
 00001330 C8 00 00 20                                     ...            
 
 ;; prvSVCHandler: 00001334
+;;   Called from:
+;;     00001722 (in vPortSVCHandler)
 prvSVCHandler proc
 6983           	ldr	r3,[r0,#&18]
 F813 3C02     	ldrb.w	r3,[r3,-#&2]
@@ -2602,7 +2766,7 @@ l00001352:
 4770           	bx	lr
 
 l00001354:
-4A07           	ldr	r2,[pc,#&1C]                            ; 00001374
+4A07           	ldr	r2,[00001374]                           ; [pc,#&1C]
 6813           	ldr	r3,[r2]
 F043 433E     	orr	r3,r3,#&BE000000
 6013           	str	r3,[r2]
@@ -2610,7 +2774,7 @@ E7C7           	b	$000012F0
 
 l00001360:
 F04F 5280     	mov	r2,#&10000000
-4B04           	ldr	r3,[pc,#&10]                            ; 00001378
+4B04           	ldr	r3,[00001378]                           ; [pc,#&10]
 601A           	str	r2,[r3]
 F3BF 8F4F     	dsb	sy
 F3BF 8F6F     	isb	sy
@@ -2618,6 +2782,8 @@ F3BF 8F6F     	isb	sy
 00001372       00 BF 1C ED 00 E0 04 ED 00 E0               ..........   
 
 ;; pxPortInitialiseStack: 0000137C
+;;   Called from:
+;;     00000786 (in prvInitialiseNewTask)
 pxPortInitialiseStack proc
 2B01           	cmps	r3,#1
 B430           	push	{r4-r5}
@@ -2643,11 +2809,13 @@ BC30           	pop	{r4-r5}
 000013AE                                           00 BF               ..
 
 ;; xPortStartScheduler: 000013B0
+;;   Called from:
+;;     000009DC (in vTaskStartScheduler)
 xPortStartScheduler proc
-4B4D           	ldr	r3,[pc,#&134]                           ; 000014E8
+4B4D           	ldr	r3,[000014E8]                           ; [pc,#&134]
 B470           	push	{r4-r6}
 681A           	ldr	r2,[r3]
-494D           	ldr	r1,[pc,#&134]                           ; 000014EC
+494D           	ldr	r1,[000014EC]                           ; [pc,#&134]
 F442 027F     	orr	r2,r2,#&FF0000
 601A           	str	r2,[r3]
 681A           	ldr	r2,[r3]
@@ -2661,13 +2829,13 @@ l000013CE:
 F644 651F     	mov	r5,#&4E1F
 2107           	mov	r1,#7
 2000           	mov	r0,#0
-4C46           	ldr	r4,[pc,#&118]                           ; 000014F0
-4A46           	ldr	r2,[pc,#&118]                           ; 000014F4
-4B47           	ldr	r3,[pc,#&11C]                           ; 000014F8
+4C46           	ldr	r4,[000014F0]                           ; [pc,#&118]
+4A46           	ldr	r2,[000014F4]                           ; [pc,#&118]
+4B47           	ldr	r3,[000014F8]                           ; [pc,#&11C]
 6025           	str	r5,[r4]
 6011           	str	r1,[r2]
 6018           	str	r0,[r3]
-48D0           	ldr	r0,[pc,#&340]                           ; 00001724
+48D0           	ldr	r0,[00001724]                           ; [pc,#&340]
 6800           	ldr	r0,[r0]
 6800           	ldr	r0,[r0]
 F380 8808     	msr	cpsr,r0
@@ -2681,9 +2849,9 @@ BC70           	pop	{r4-r6}
 4770           	bx	lr
 
 l00001400:
-483E           	ldr	r0,[pc,#&F8]                            ; 000014FC
-493F           	ldr	r1,[pc,#&FC]                            ; 00001500
-4B3F           	ldr	r3,[pc,#&FC]                            ; 00001504
+483E           	ldr	r0,[000014FC]                           ; [pc,#&F8]
+493F           	ldr	r1,[00001500]                           ; [pc,#&FC]
+4B3F           	ldr	r3,[00001504]                           ; [pc,#&FC]
 1A09           	sub	r1,r1,r0
 F040 0210     	orr	r2,r0,#&10
 2920           	cmps	r1,#&20
@@ -2706,14 +2874,14 @@ EA4F 0343     	mov.w	r3,r3,lsl #1
 D8F8           	bhi	$00001418
 
 l00001426:
-4B38           	ldr	r3,[pc,#&E0]                            ; 00001508
+4B38           	ldr	r3,[00001508]                           ; [pc,#&E0]
 EA43 0242     	orr	r2,r3,r2,lsl #1
 
 l0000142C:
-4937           	ldr	r1,[pc,#&DC]                            ; 0000150C
-4C38           	ldr	r4,[pc,#&E0]                            ; 00001510
+4937           	ldr	r1,[0000150C]                           ; [pc,#&DC]
+4C38           	ldr	r4,[00001510]                           ; [pc,#&E0]
 1A09           	sub	r1,r1,r0
-4B34           	ldr	r3,[pc,#&D0]                            ; 00001504
+4B34           	ldr	r3,[00001504]                           ; [pc,#&D0]
 F040 0011     	orr	r0,r0,#&11
 2920           	cmps	r1,#&20
 6022           	str	r2,[r4]
@@ -2736,14 +2904,14 @@ EA4F 0343     	mov.w	r3,r3,lsl #1
 D8F8           	bhi	$00001446
 
 l00001454:
-4B2F           	ldr	r3,[pc,#&BC]                            ; 00001514
+4B2F           	ldr	r3,[00001514]                           ; [pc,#&BC]
 EA43 0242     	orr	r2,r3,r2,lsl #1
 
 l0000145A:
-4B2F           	ldr	r3,[pc,#&BC]                            ; 00001518
-492F           	ldr	r1,[pc,#&BC]                            ; 0000151C
-4D2C           	ldr	r5,[pc,#&B0]                            ; 00001510
-4828           	ldr	r0,[pc,#&A0]                            ; 00001504
+4B2F           	ldr	r3,[00001518]                           ; [pc,#&BC]
+492F           	ldr	r1,[0000151C]                           ; [pc,#&BC]
+4D2C           	ldr	r5,[00001510]                           ; [pc,#&B0]
+4828           	ldr	r0,[00001504]                           ; [pc,#&A0]
 1AC9           	sub	r1,r1,r3
 F043 0412     	orr	r4,r3,#&12
 2920           	cmps	r1,#&20
@@ -2767,16 +2935,16 @@ EA4F 0343     	mov.w	r3,r3,lsl #1
 D8F8           	bhi	$00001476
 
 l00001484:
-4826           	ldr	r0,[pc,#&98]                            ; 00001520
+4826           	ldr	r0,[00001520]                           ; [pc,#&98]
 EA40 0042     	orr	r0,r0,r2,lsl #1
 
 l0000148A:
 2305           	mov	r3,#5
 2240           	mov	r2,#&40
-4E20           	ldr	r6,[pc,#&80]                            ; 00001510
-4C1C           	ldr	r4,[pc,#&70]                            ; 00001504
-4D24           	ldr	r5,[pc,#&90]                            ; 00001524
-4924           	ldr	r1,[pc,#&90]                            ; 00001528
+4E20           	ldr	r6,[00001510]                           ; [pc,#&80]
+4C1C           	ldr	r4,[00001504]                           ; [pc,#&70]
+4D24           	ldr	r5,[00001524]                           ; [pc,#&90]
+4924           	ldr	r1,[00001528]                           ; [pc,#&90]
 6030           	str	r0,[r6]
 6025           	str	r5,[r4]
 
@@ -2791,12 +2959,12 @@ l000014A4:
 D9F8           	bls	$0000149A
 
 l000014A8:
-4A20           	ldr	r2,[pc,#&80]                            ; 0000152C
+4A20           	ldr	r2,[0000152C]                           ; [pc,#&80]
 EA42 0343     	orr	r3,r2,r3,lsl #1
 
 l000014AE:
-4A18           	ldr	r2,[pc,#&60]                            ; 00001510
-491F           	ldr	r1,[pc,#&7C]                            ; 00001530
+4A18           	ldr	r2,[00001510]                           ; [pc,#&60]
+491F           	ldr	r1,[00001530]                           ; [pc,#&7C]
 6013           	str	r3,[r2]
 680B           	ldr	r3,[r1]
 F443 3380     	orr	r3,r3,#&10000
@@ -2807,31 +2975,31 @@ F842 3C0C     	str.w	r3,[r2,-#&C]
 E781           	b	$000013CE
 
 l000014CA:
-4B1A           	ldr	r3,[pc,#&68]                            ; 00001534
+4B1A           	ldr	r3,[00001534]                           ; [pc,#&68]
 E7EF           	b	$000014AE
 
 l000014CE:
-4A1A           	ldr	r2,[pc,#&68]                            ; 00001538
+4A1A           	ldr	r2,[00001538]                           ; [pc,#&68]
 E7AC           	b	$0000142C
 
 l000014D2:
-4A1A           	ldr	r2,[pc,#&68]                            ; 0000153C
+4A1A           	ldr	r2,[0000153C]                           ; [pc,#&68]
 E7C1           	b	$0000145A
 
 l000014D6:
-481A           	ldr	r0,[pc,#&68]                            ; 00001540
+481A           	ldr	r0,[00001540]                           ; [pc,#&68]
 E7D7           	b	$0000148A
 
 l000014DA:
-4A1A           	ldr	r2,[pc,#&68]                            ; 00001544
+4A1A           	ldr	r2,[00001544]                           ; [pc,#&68]
 E7BD           	b	$0000145A
 
 l000014DE:
-4A1A           	ldr	r2,[pc,#&68]                            ; 00001548
+4A1A           	ldr	r2,[00001548]                           ; [pc,#&68]
 E7A4           	b	$0000142C
 
 l000014E2:
-481A           	ldr	r0,[pc,#&68]                            ; 0000154C
+481A           	ldr	r0,[0000154C]                           ; [pc,#&68]
 E7D1           	b	$0000148A
 000014E6                   00 BF 20 ED 00 E0 90 ED 00 E0       .. .......
 000014F0 14 E0 00 E0 10 E0 00 E0 BC 00 00 20 00 00 00 00 ........... ....
@@ -2842,11 +3010,17 @@ E7D1           	b	$0000148A
 00001540 3F 00 07 01 09 00 07 05 09 00 07 06 09 00 07 01 ?...............
 
 ;; vPortEndScheduler: 00001550
+;;   Called from:
+;;     00000A02 (in vTaskEndScheduler)
 vPortEndScheduler proc
 4770           	bx	lr
 00001552       00 BF                                       ..           
 
 ;; vPortStoreTaskMPUSettings: 00001554
+;;   Called from:
+;;     00000774 (in prvInitialiseNewTask)
+;;     00000978 (in vTaskAllocateMPURegions)
+;;     00000986 (in vTaskAllocateMPURegions)
 vPortStoreTaskMPUSettings proc
 B430           	push	{r4-r5}
 2900           	cmps	r1,#0
@@ -2938,7 +3112,7 @@ EA4F 0242     	mov.w	r2,r2,lsl #1
 D8F8           	bhi	$000015C2
 
 l000015D0:
-4B23           	ldr	r3,[pc,#&8C]                            ; 00001660
+4B23           	ldr	r3,[00001660]                           ; [pc,#&8C]
 EA43 0444     	orr	r4,r3,r4,lsl #1
 
 l000015D6:
@@ -2946,12 +3120,12 @@ l000015D6:
 E7C0           	b	$0000155C
 
 l000015DA:
-4C22           	ldr	r4,[pc,#&88]                            ; 00001664
+4C22           	ldr	r4,[00001664]                           ; [pc,#&88]
 E7FB           	b	$000015D6
 
 l000015DE:
-4B22           	ldr	r3,[pc,#&88]                            ; 00001668
-4922           	ldr	r1,[pc,#&88]                            ; 0000166C
+4B22           	ldr	r3,[00001668]                           ; [pc,#&88]
+4922           	ldr	r1,[0000166C]                           ; [pc,#&88]
 F043 0214     	orr	r2,r3,#&14
 1AC9           	sub	r1,r1,r3
 2920           	cmps	r1,#&20
@@ -2974,12 +3148,12 @@ EA4F 0343     	mov.w	r3,r3,lsl #1
 D3F8           	blo	$000015F4
 
 l00001602:
-4B17           	ldr	r3,[pc,#&5C]                            ; 00001660
+4B17           	ldr	r3,[00001660]                           ; [pc,#&5C]
 EA43 0242     	orr	r2,r3,r2,lsl #1
 
 l00001608:
-4B19           	ldr	r3,[pc,#&64]                            ; 00001670
-491A           	ldr	r1,[pc,#&68]                            ; 00001674
+4B19           	ldr	r3,[00001670]                           ; [pc,#&64]
+491A           	ldr	r1,[00001674]                           ; [pc,#&68]
 F043 0415     	orr	r4,r3,#&15
 1AC9           	sub	r1,r1,r3
 2920           	cmps	r1,#&20
@@ -3003,7 +3177,7 @@ EA4F 0343     	mov.w	r3,r3,lsl #1
 D8F8           	bhi	$00001620
 
 l0000162E:
-4B12           	ldr	r3,[pc,#&48]                            ; 00001678
+4B12           	ldr	r3,[00001678]                           ; [pc,#&48]
 EA43 0242     	orr	r2,r3,r2,lsl #1
 
 l00001634:
@@ -3019,11 +3193,11 @@ BC30           	pop	{r4-r5}
 4770           	bx	lr
 
 l00001648:
-4A06           	ldr	r2,[pc,#&18]                            ; 00001664
+4A06           	ldr	r2,[00001664]                           ; [pc,#&18]
 E7DD           	b	$00001608
 
 l0000164C:
-4A0B           	ldr	r2,[pc,#&2C]                            ; 0000167C
+4A0B           	ldr	r2,[0000167C]                           ; [pc,#&2C]
 E7F1           	b	$00001634
 
 l00001650:
@@ -3031,15 +3205,15 @@ l00001650:
 E798           	b	$00001586
 
 l00001654:
-4C0A           	ldr	r4,[pc,#&28]                            ; 00001680
+4C0A           	ldr	r4,[00001680]                           ; [pc,#&28]
 E7BE           	b	$000015D6
 
 l00001658:
-4A0A           	ldr	r2,[pc,#&28]                            ; 00001684
+4A0A           	ldr	r2,[00001684]                           ; [pc,#&28]
 E7EB           	b	$00001634
 
 l0000165C:
-4A08           	ldr	r2,[pc,#&20]                            ; 00001680
+4A08           	ldr	r2,[00001680]                           ; [pc,#&20]
 E7D3           	b	$00001608
 00001660 01 00 07 03 3F 00 07 03 00 00 00 20 00 20 00 20 ....?...... . . 
 00001670 00 00 00 20 00 02 00 20 01 00 07 01 3F 00 07 01 ... ... ....?...
@@ -3048,7 +3222,7 @@ E7D3           	b	$00001608
 ;; xPortPendSVHandler: 00001688
 xPortPendSVHandler proc
 F3EF 8009     	mrs	r0,cpsr
-4B14           	ldr	r3,[pc,#&50]                            ; 000016E0
+4B14           	ldr	r3,[000016E0]                           ; [pc,#&50]
 681A           	ldr	r2,[r3]
 F3EF 8114     	mrs	r1,cpsr
 E920 0FF2     	stmdb	r0!,{r1,r4-fp}
@@ -3063,7 +3237,7 @@ E8BD 4008     	pop.w	{r3,lr}
 6819           	ldr	r1,[r3]
 6808           	ldr	r0,[r1]
 F101 0104     	add	r1,r1,#4
-4A1A           	ldr	r2,[pc,#&68]                            ; 00001728
+4A1A           	ldr	r2,[00001728]                           ; [pc,#&68]
 E8B1 0FF0     	ldm	r1!,{r4-fp}
 E8A2 0FF0     	stm	r2!,{r4-fp}
 E8B0 0FF8     	ldm	r0!,{r3-fp}
@@ -3086,7 +3260,7 @@ B118           	cbz	r0,$00001708
 
 l00001700:
 F04F 5280     	mov	r2,#&10000000
-4B02           	ldr	r3,[pc,#&8]                             ; 00001710
+4B02           	ldr	r3,[00001710]                           ; [pc,#&8]
 601A           	str	r2,[r3]
 
 l00001708:
@@ -3107,6 +3281,14 @@ E607           	b	$00001334
 00001724             08 ED 00 E0 9C ED 00 E0                 ........   
 
 ;; pvPortMalloc: 0000172C
+;;   Called from:
+;;     000006B8 (in xQueueGenericCreate)
+;;     000008C4 (in xTaskCreate)
+;;     000008CE (in xTaskCreate)
+;;     0000092A (in xTaskCreateRestricted)
+;;     000017AC (in xEventGroupCreate)
+;;     00008CA4 (in MPU_pvPortMalloc)
+;;     00008E4C (in xCoRoutineCreate)
 pvPortMalloc proc
 B510           	push	{r4,lr}
 4604           	mov	r4,r0
@@ -3117,7 +3299,7 @@ F020 0407     	bicne	r4,r0,#7
 l00001738:
 3408           	adds	r4,#8
 F7FF F967     	bl	$00000A0C
-4B0F           	ldr	r3,[pc,#&3C]                            ; 0000177C
+4B0F           	ldr	r3,[0000177C]                           ; [pc,#&3C]
 681A           	ldr	r2,[r3]
 B1AA           	cbz	r2,$00001770
 
@@ -3154,22 +3336,31 @@ E7E3           	b	$00001744
 0000177C                                     30 02 00 20             0.. 
 
 ;; vPortFree: 00001780
+;;   Called from:
+;;     00000454 (in vQueueDelete)
+;;     00000910 (in xTaskCreate)
+;;     000019C2 (in vEventGroupDelete)
+;;     00008CCC (in MPU_vPortFree)
 vPortFree proc
 4770           	bx	lr
 00001782       00 BF                                       ..           
 
 ;; vPortInitialiseBlocks: 00001784
+;;   Called from:
+;;     00008CEC (in MPU_vPortInitialiseBlocks)
 vPortInitialiseBlocks proc
 2200           	mov	r2,#0
-4B02           	ldr	r3,[pc,#&8]                             ; 00001790
+4B02           	ldr	r3,[00001790]                           ; [pc,#&8]
 F8C3 25C0     	str	r2,[r3,#&5C0]
 4770           	bx	lr
 0000178E                                           00 BF               ..
 00001790 30 02 00 20                                     0..            
 
 ;; xPortGetFreeHeapSize: 00001794
+;;   Called from:
+;;     00008D0C (in MPU_xPortGetFreeHeapSize)
 xPortGetFreeHeapSize proc
-4B03           	ldr	r3,[pc,#&C]                             ; 000017A4
+4B03           	ldr	r3,[000017A4]                           ; [pc,#&C]
 F8D3 05C0     	ldr	r0,[r3,#&5C0]
 F5C0 60B6     	rsb	r0,r0,#&5B0
 3004           	adds	r0,#4
@@ -3177,6 +3368,8 @@ F5C0 60B6     	rsb	r0,r0,#&5B0
 000017A2       00 BF 30 02 00 20                           ..0..        
 
 ;; xEventGroupCreate: 000017A8
+;;   Called from:
+;;     00008D30 (in MPU_xEventGroupCreate)
 xEventGroupCreate proc
 B510           	push	{r4,lr}
 2018           	mov	r0,#&18
@@ -3195,6 +3388,8 @@ BD10           	pop	{r4,pc}
 000017C2       00 BF                                       ..           
 
 ;; xEventGroupWaitBits: 000017C4
+;;   Called from:
+;;     00008D6C (in MPU_xEventGroupWaitBits)
 xEventGroupWaitBits proc
 E92D 41F0     	push.w	{r4-r8,lr}
 4606           	mov	r6,r0
@@ -3250,7 +3445,7 @@ B938           	cbnz	r0,$0000182C
 
 l0000181C:
 F04F 5280     	mov	r2,#&10000000
-4B13           	ldr	r3,[pc,#&4C]                            ; 00001870
+4B13           	ldr	r3,[00001870]                           ; [pc,#&4C]
 601A           	str	r2,[r3]
 F3BF 8F4F     	dsb	sy
 F3BF 8F6F     	isb	sy
@@ -3300,6 +3495,8 @@ E7EF           	b	$00001850
 00001870 04 ED 00 E0                                     ....           
 
 ;; xEventGroupClearBits: 00001874
+;;   Called from:
+;;     00008D9C (in MPU_xEventGroupClearBits)
 xEventGroupClearBits proc
 B570           	push	{r4-r6,lr}
 4606           	mov	r6,r0
@@ -3314,6 +3511,10 @@ BD70           	pop	{r4-r6,pc}
 0000188E                                           00 BF               ..
 
 ;; xEventGroupSetBits: 00001890
+;;   Called from:
+;;     00001910 (in xEventGroupSync)
+;;     000019D0 (in vEventGroupSetBitsCallback)
+;;     00008DC8 (in MPU_xEventGroupSetBits)
 xEventGroupSetBits proc
 B5F8           	push	{r3-r7,lr}
 4605           	mov	r5,r0
@@ -3383,6 +3584,8 @@ E7F6           	b	$000018E4
 000018F6                   00 BF                               ..       
 
 ;; xEventGroupSync: 000018F8
+;;   Called from:
+;;     00008DFE (in MPU_xEventGroupSync)
 xEventGroupSync proc
 E92D 41F0     	push.w	{r4-r8,lr}
 4688           	mov	r8,r1
@@ -3419,7 +3622,7 @@ B938           	cbnz	r0,$0000194A
 
 l0000193A:
 F04F 5280     	mov	r2,#&10000000
-4B11           	ldr	r3,[pc,#&44]                            ; 00001984
+4B11           	ldr	r3,[00001984]                           ; [pc,#&44]
 601A           	str	r2,[r3]
 F3BF 8F4F     	dsb	sy
 F3BF 8F6F     	isb	sy
@@ -3469,6 +3672,8 @@ F383 8811     	msr	cpsr,r3
 4770           	bx	lr
 
 ;; vEventGroupDelete: 000019A4
+;;   Called from:
+;;     00008E28 (in MPU_vEventGroupDelete)
 vEventGroupDelete proc
 B510           	push	{r4,lr}
 4604           	mov	r4,r0
@@ -3523,8 +3728,8 @@ E7FE           	b	$00008004
 
 ;; ResetISR: 00008008
 ResetISR proc
-4B08           	ldr	r3,[pc,#&20]                            ; 0000802C
-4809           	ldr	r0,[pc,#&24]                            ; 00008030
+4B08           	ldr	r3,[0000802C]                           ; [pc,#&20]
+4809           	ldr	r0,[00008030]                           ; [pc,#&24]
 4283           	cmps	r3,r0
 D20A           	bhs	$00008026
 
@@ -3555,7 +3760,7 @@ E7FE           	b	$00008034
 vPrintTask proc
 B530           	push	{r4-r5,lr}
 2400           	mov	r4,#0
-4D09           	ldr	r5,[pc,#&24]                            ; 00008064
+4D09           	ldr	r5,[00008064]                           ; [pc,#&24]
 B083           	sub	sp,#&C
 
 l00008040:
@@ -3576,12 +3781,12 @@ E7ED           	b	$00008040
 ;; vCheckTask: 00008068
 vCheckTask proc
 B530           	push	{r4-r5,lr}
-4B0B           	ldr	r3,[pc,#&2C]                            ; 00008098
+4B0B           	ldr	r3,[00008098]                           ; [pc,#&2C]
 B083           	sub	sp,#&C
 9301           	str	r3,[sp,#&4]
 F000 FC48     	bl	$00008904
 AC02           	add	r4,sp,#8
-4D09           	ldr	r5,[pc,#&24]                            ; 0000809C
+4D09           	ldr	r5,[0000809C]                           ; [pc,#&24]
 F844 0D08     	str	r0,[r4,-#&8]!
 
 l0000807C:
@@ -3597,6 +3802,8 @@ E7F2           	b	$0000807C
 00008096                   00 BF 50 A2 00 00 80 08 00 20       ..P...... 
 
 ;; Main: 000080A0
+;;   Called from:
+;;     00008026 (in ResetISR)
 Main proc
 B500           	push	{lr}
 2200           	mov	r2,#0
@@ -3605,30 +3812,30 @@ B083           	sub	sp,#&C
 2003           	mov	r0,#3
 2400           	mov	r4,#0
 F000 FCEC     	bl	$00008A88
-4B0F           	ldr	r3,[pc,#&3C]                            ; 000080F0
+4B0F           	ldr	r3,[000080F0]                           ; [pc,#&3C]
 6018           	str	r0,[r3]
 4620           	mov	r0,r4
 F001 FC1B     	bl	$000098F0
 2203           	mov	r2,#3
 4623           	mov	r3,r4
 9200           	str	r2,[sp]
-490C           	ldr	r1,[pc,#&30]                            ; 000080F4
+490C           	ldr	r1,[000080F4]                           ; [pc,#&30]
 223B           	mov	r2,#&3B
 9401           	str	r4,[sp,#&4]
-480C           	ldr	r0,[pc,#&30]                            ; 000080F8
+480C           	ldr	r0,[000080F8]                           ; [pc,#&30]
 F000 FB9E     	bl	$00008808
 2202           	mov	r2,#2
-490B           	ldr	r1,[pc,#&2C]                            ; 000080FC
+490B           	ldr	r1,[000080FC]                           ; [pc,#&2C]
 4623           	mov	r3,r4
 9200           	str	r2,[sp]
 9401           	str	r4,[sp,#&4]
 223B           	mov	r2,#&3B
-4809           	ldr	r0,[pc,#&24]                            ; 00008100
+4809           	ldr	r0,[00008100]                           ; [pc,#&24]
 F000 FB95     	bl	$00008808
 F7F8 FC57     	bl	$00000990
 4622           	mov	r2,r4
 4621           	mov	r1,r4
-4807           	ldr	r0,[pc,#&1C]                            ; 00008104
+4807           	ldr	r0,[00008104]                           ; [pc,#&1C]
 F001 FB70     	bl	$000097CC
 
 l000080EC:
@@ -3641,7 +3848,7 @@ E7FE           	b	$000080EC
 vUART_ISR proc
 B570           	push	{r4-r6,lr}
 2600           	mov	r6,#0
-4D19           	ldr	r5,[pc,#&64]                            ; 00008174
+4D19           	ldr	r5,[00008174]                           ; [pc,#&64]
 B082           	sub	sp,#8
 2101           	mov	r1,#1
 4628           	mov	r0,r5
@@ -3655,7 +3862,7 @@ F001 FFDA     	bl	$0000A0D8
 D503           	bpl	$00008130
 
 l00008128:
-4B13           	ldr	r3,[pc,#&4C]                            ; 00008178
+4B13           	ldr	r3,[00008178]                           ; [pc,#&4C]
 681B           	ldr	r3,[r3]
 065B           	lsls	r3,r3,#&19
 D416           	bmi	$0000815E
@@ -3665,7 +3872,7 @@ l00008130:
 D503           	bpl	$0000813C
 
 l00008134:
-4A11           	ldr	r2,[pc,#&44]                            ; 0000817C
+4A11           	ldr	r2,[0000817C]                           ; [pc,#&44]
 7813           	ldrb	r3,[r2]
 2B7A           	cmps	r3,#&7A
 D907           	bls	$0000814C
@@ -3676,7 +3883,7 @@ B11B           	cbz	r3,$00008148
 
 l00008140:
 F04F 5280     	mov	r2,#&10000000
-4B0E           	ldr	r3,[pc,#&38]                            ; 00008180
+4B0E           	ldr	r3,[00008180]                           ; [pc,#&38]
 601A           	str	r2,[r3]
 
 l00008148:
@@ -3684,11 +3891,11 @@ B002           	add	sp,#8
 BD70           	pop	{r4-r6,pc}
 
 l0000814C:
-490A           	ldr	r1,[pc,#&28]                            ; 00008178
+490A           	ldr	r1,[00008178]                           ; [pc,#&28]
 6809           	ldr	r1,[r1]
 0689           	lsls	r1,r1,#&1A
 BF5C           	itt	pl
-4907           	ldrpl	r1,[pc,#&1C]                          ; 00008174
+4907           	ldrpl	r1,[00008174]                         ; [pc,#&1C]
 
 l00008156:
 600B           	str	r3,[r1]
@@ -3709,12 +3916,16 @@ E7DD           	b	$00008130
 00008180 04 ED 00 E0                                     ....           
 
 ;; vSetErrorLED: 00008184
+;;   Called from:
+;;     00008204 (in prvSetAndCheckRegisters)
 vSetErrorLED proc
 2101           	mov	r1,#1
 2007           	mov	r0,#7
 F000 BA34     	b	$000085F4
 
 ;; prvSetAndCheckRegisters: 0000818C
+;;   Called from:
+;;     00008216 (in vApplicationIdleHook)
 prvSetAndCheckRegisters proc
 F04F 0B0A     	mov	fp,#&A
 F10B 0001     	add	r0,fp,#1
@@ -3785,13 +3996,15 @@ l000081FE:
 
 l00008200:
 B500           	push	{lr}
-4906           	ldr	r1,[pc,#&18]                            ; 0000821C
+4906           	ldr	r1,[0000821C]                           ; [pc,#&18]
 4788           	blx	r1
 F85D EB04     	pop	lr
 4770           	bx	lr
 0000820C                                     70 47 00 BF             pG..
 
 ;; vApplicationIdleHook: 00008210
+;;   Called from:
+;;     0000852E (in prvIdleTask)
 vApplicationIdleHook proc
 B508           	push	{r3,lr}
 
@@ -3802,12 +4015,14 @@ E7FA           	b	$00008212
 0000821C                                     85 81 00 00             ....
 
 ;; PDCInit: 00008220
+;;   Called from:
+;;     000085DE (in vParTestInitialise)
 PDCInit proc
 B530           	push	{r4-r5,lr}
-481A           	ldr	r0,[pc,#&68]                            ; 0000828C
+481A           	ldr	r0,[0000828C]                           ; [pc,#&68]
 B083           	sub	sp,#&C
 F001 FCA9     	bl	$00009B7C
-4819           	ldr	r0,[pc,#&64]                            ; 00008290
+4819           	ldr	r0,[00008290]                           ; [pc,#&64]
 F001 FCA6     	bl	$00009B7C
 2202           	mov	r2,#2
 2134           	mov	r1,#&34
@@ -3824,9 +4039,9 @@ F04F 2040     	mov	r0,#&40004000
 F000 FFB9     	bl	$000091C8
 2408           	mov	r4,#8
 2200           	mov	r2,#0
-4D0E           	ldr	r5,[pc,#&38]                            ; 00008294
+4D0E           	ldr	r5,[00008294]                           ; [pc,#&38]
 4611           	mov	r1,r2
-4B0E           	ldr	r3,[pc,#&38]                            ; 00008298
+4B0E           	ldr	r3,[00008298]                           ; [pc,#&38]
 4628           	mov	r0,r5
 9400           	str	r4,[sp]
 F001 FBC0     	bl	$000099E8
@@ -3846,10 +4061,14 @@ F001 B8E4     	b	$00009454
 00008290 01 00 00 20 00 80 00 40 40 42 0F 00             ... ...@@B..   
 
 ;; PDCWrite: 0000829C
+;;   Called from:
+;;     000085EC (in vParTestInitialise)
+;;     00008618 (in vParTestSetLED)
+;;     00008656 (in vParTestToggleLED)
 PDCWrite proc
 B530           	push	{r4-r5,lr}
 460D           	mov	r5,r1
-4C0A           	ldr	r4,[pc,#&28]                            ; 000082CC
+4C0A           	ldr	r4,[000082CC]                           ; [pc,#&28]
 B083           	sub	sp,#&C
 F000 010F     	and	r1,r0,#&F
 4620           	mov	r0,r4
@@ -3868,6 +4087,20 @@ BD30           	pop	{r4-r5,pc}
 000082CA                               00 BF 00 80 00 40           .....@
 
 ;; vListInitialise: 000082D0
+;;   Called from:
+;;     00000694 (in xQueueGenericReset)
+;;     0000069C (in xQueueGenericReset)
+;;     00000820 (in prvAddNewTaskToReadyList)
+;;     0000082C (in prvAddNewTaskToReadyList)
+;;     00000836 (in prvAddNewTaskToReadyList)
+;;     0000083C (in prvAddNewTaskToReadyList)
+;;     00000844 (in prvAddNewTaskToReadyList)
+;;     000017BA (in xEventGroupCreate)
+;;     00008EB4 (in xCoRoutineCreate)
+;;     00008EC0 (in xCoRoutineCreate)
+;;     00008ECA (in xCoRoutineCreate)
+;;     00008ED0 (in xCoRoutineCreate)
+;;     00008ED8 (in xCoRoutineCreate)
 vListInitialise proc
 F04F 31FF     	mov	r1,#&FFFFFFFF
 2200           	mov	r2,#0
@@ -3880,6 +4113,11 @@ E880 000C     	stm	r0,{r2-r3}
 000082E6                   00 BF                               ..       
 
 ;; vListInitialiseItem: 000082E8
+;;   Called from:
+;;     00000756 (in prvInitialiseNewTask)
+;;     0000075E (in prvInitialiseNewTask)
+;;     00008E78 (in xCoRoutineCreate)
+;;     00008E80 (in xCoRoutineCreate)
 vListInitialiseItem proc
 2300           	mov	r3,#0
 6103           	str	r3,[r0,#&10]
@@ -3887,6 +4125,25 @@ vListInitialiseItem proc
 000082EE                                           00 BF               ..
 
 ;; vListInsertEnd: 000082F0
+;;   Called from:
+;;     000007D6 (in prvAddNewTaskToReadyList)
+;;     00000AD0 (in xTaskGenericNotify)
+;;     00000B76 (in xTaskGenericNotifyFromISR)
+;;     00000BBE (in xTaskGenericNotifyFromISR)
+;;     00000CAA (in vTaskNotifyGiveFromISR)
+;;     00000CEE (in vTaskNotifyGiveFromISR)
+;;     00000DF4 (in xTaskIncrementTick)
+;;     00000EC2 (in xTaskResumeAll)
+;;     0000100C (in vTaskPlaceOnUnorderedEventList)
+;;     00001058 (in xTaskRemoveFromEventList)
+;;     00001076 (in xTaskRemoveFromEventList)
+;;     000010BA (in xTaskRemoveFromUnorderedEventList)
+;;     00001242 (in vTaskPriorityInherit)
+;;     000012C0 (in xTaskPriorityDisinherit)
+;;     00008EA2 (in xCoRoutineCreate)
+;;     00008F78 (in vCoRoutineSchedule)
+;;     00009000 (in vCoRoutineSchedule)
+;;     000090AC (in xCoRoutineRemoveFromEventList)
 vListInsertEnd proc
 E890 000C     	ldm	r0,{r2-r3}
 B410           	push	{r4}
@@ -3903,6 +4160,12 @@ BC10           	pop	{r4}
 4770           	bx	lr
 
 ;; vListInsert: 0000830C
+;;   Called from:
+;;     00000890 (in prvAddCurrentTaskToDelayedList.isra.0)
+;;     000008AC (in prvAddCurrentTaskToDelayedList.isra.0)
+;;     00000FE6 (in vTaskPlaceOnEventList)
+;;     00008F12 (in vCoRoutineAddToDelayedList)
+;;     00008F22 (in vCoRoutineAddToDelayedList)
 vListInsert proc
 B430           	push	{r4-r5}
 680D           	ldr	r5,[r1]
@@ -3941,6 +4204,27 @@ E7F2           	b	$00008324
 0000833E                                           00 BF               ..
 
 ;; uxListRemove: 00008340
+;;   Called from:
+;;     0000086A (in prvAddCurrentTaskToDelayedList.isra.0)
+;;     00000AAE (in xTaskGenericNotify)
+;;     00000BA2 (in xTaskGenericNotifyFromISR)
+;;     00000CD2 (in vTaskNotifyGiveFromISR)
+;;     00000DCE (in xTaskIncrementTick)
+;;     00000DDA (in xTaskIncrementTick)
+;;     00000EA2 (in xTaskResumeAll)
+;;     00000EA8 (in xTaskResumeAll)
+;;     0000102A (in xTaskRemoveFromEventList)
+;;     0000103A (in xTaskRemoveFromEventList)
+;;     00001090 (in xTaskRemoveFromUnorderedEventList)
+;;     00001098 (in xTaskRemoveFromUnorderedEventList)
+;;     000011FE (in vTaskPriorityInherit)
+;;     00001272 (in xTaskPriorityDisinherit)
+;;     00008EFE (in vCoRoutineAddToDelayedList)
+;;     00008F54 (in vCoRoutineSchedule)
+;;     00008F60 (in vCoRoutineSchedule)
+;;     00008FD8 (in vCoRoutineSchedule)
+;;     00008FE4 (in vCoRoutineSchedule)
+;;     000090A2 (in xCoRoutineRemoveFromEventList)
 uxListRemove proc
 6902           	ldr	r2,[r0,#&10]
 6843           	ldr	r3,[r0,#&4]
@@ -3964,6 +4248,9 @@ BC10           	pop	{r4}
 4770           	bx	lr
 
 ;; xQueueCRSend: 00008364
+;;   Called from:
+;;     00008724 (in prvFixedDelayCoRoutine)
+;;     00008758 (in prvFixedDelayCoRoutine)
 xQueueCRSend proc
 B570           	push	{r4-r6,lr}
 4605           	mov	r5,r0
@@ -4040,6 +4327,9 @@ F06F 0004     	mvn	r0,#4
 E7D4           	b	$000083AA
 
 ;; xQueueCRReceive: 00008400
+;;   Called from:
+;;     0000869E (in prvFlashCoRoutine)
+;;     000086C0 (in prvFlashCoRoutine)
 xQueueCRReceive proc
 B538           	push	{r3-r5,lr}
 4604           	mov	r4,r0
@@ -4228,6 +4518,8 @@ F7FF FE6F     	bl	$00008210
 E7FC           	b	$0000852E
 
 ;; xTaskNotifyStateClear: 00008534
+;;   Called from:
+;;     00008A6C (in MPU_xTaskNotifyStateClear)
 xTaskNotifyStateClear proc
 B538           	push	{r3-r5,lr}
 B178           	cbz	r0,$00008558
@@ -4251,13 +4543,54 @@ F000 F82E     	bl	$000085B0
 BD38           	pop	{r3-r5,pc}
 
 l00008558:
-4B01           	ldr	r3,[pc,#&4]                             ; 00008560
+4B01           	ldr	r3,[00008560]                           ; [pc,#&4]
 685C           	ldr	r4,[r3,#&4]
 E7ED           	b	$0000853A
 0000855E                                           00 BF               ..
 00008560 C4 00 00 20                                     ...            
 
 ;; xPortRaisePrivilege: 00008564
+;;   Called from:
+;;     0000857A (in vPortEnterCritical)
+;;     000085B2 (in vPortExitCritical)
+;;     000087E2 (in MPU_xTaskCreateRestricted)
+;;     0000881A (in MPU_xTaskCreate)
+;;     00008852 (in MPU_vTaskAllocateMPURegions)
+;;     0000887A (in MPU_vTaskDelayUntil)
+;;     000088A0 (in MPU_vTaskDelay)
+;;     000088C2 (in MPU_vTaskSuspendAll)
+;;     000088E2 (in MPU_xTaskResumeAll)
+;;     00008906 (in MPU_xTaskGetTickCount)
+;;     0000892A (in MPU_uxTaskGetNumberOfTasks)
+;;     00008950 (in MPU_pcTaskGetName)
+;;     00008978 (in MPU_vTaskSetTimeOutState)
+;;     0000899E (in MPU_xTaskCheckForTimeOut)
+;;     000089D0 (in MPU_xTaskGenericNotify)
+;;     00008A08 (in MPU_xTaskNotifyWait)
+;;     00008A3A (in MPU_ulTaskNotifyTake)
+;;     00008A64 (in MPU_xTaskNotifyStateClear)
+;;     00008A90 (in MPU_xQueueGenericCreate)
+;;     00008ABE (in MPU_xQueueGenericReset)
+;;     00008AF0 (in MPU_xQueueGenericSend)
+;;     00008B20 (in MPU_uxQueueMessagesWaiting)
+;;     00008B48 (in MPU_uxQueueSpacesAvailable)
+;;     00008B78 (in MPU_xQueueGenericReceive)
+;;     00008BAA (in MPU_xQueuePeekFromISR)
+;;     00008BD4 (in MPU_xQueueGetMutexHolder)
+;;     00008BFC (in MPU_xQueueCreateMutex)
+;;     00008C26 (in MPU_xQueueTakeMutexRecursive)
+;;     00008C50 (in MPU_xQueueGiveMutexRecursive)
+;;     00008C78 (in MPU_vQueueDelete)
+;;     00008C9C (in MPU_pvPortMalloc)
+;;     00008CC4 (in MPU_vPortFree)
+;;     00008CE6 (in MPU_vPortInitialiseBlocks)
+;;     00008D06 (in MPU_xPortGetFreeHeapSize)
+;;     00008D2A (in MPU_xEventGroupCreate)
+;;     00008D5C (in MPU_xEventGroupWaitBits)
+;;     00008D92 (in MPU_xEventGroupClearBits)
+;;     00008DBE (in MPU_xEventGroupSetBits)
+;;     00008DF0 (in MPU_xEventGroupSync)
+;;     00008E20 (in MPU_vEventGroupDelete)
 xPortRaisePrivilege proc
 F3EF 8014     	mrs	r0,cpsr
 F010 0F01     	tst	r0,#1
@@ -4271,6 +4604,35 @@ DF02           	svc	#2
 00008576                   00 20                               .        
 
 ;; vPortEnterCritical: 00008578
+;;   Called from:
+;;     0000005C (in prvUnlockQueue)
+;;     000000A2 (in prvUnlockQueue)
+;;     000001B0 (in xQueueGenericSend)
+;;     000001DC (in xQueueGenericSend)
+;;     000001F8 (in xQueueGenericSend)
+;;     000002F0 (in xQueueGenericReceive)
+;;     0000030A (in xQueueGenericReceive)
+;;     00000326 (in xQueueGenericReceive)
+;;     0000035C (in xQueueGenericReceive)
+;;     000003D8 (in xQueueGenericReceive)
+;;     0000042C (in uxQueueMessagesWaiting)
+;;     00000440 (in uxQueueSpacesAvailable)
+;;     000005B8 (in xQueueGetMutexHolder)
+;;     00000638 (in xQueueGenericReset)
+;;     000007A0 (in prvAddNewTaskToReadyList)
+;;     00000A62 (in xTaskGenericNotify)
+;;     00000BE2 (in xTaskNotifyWait)
+;;     00000C08 (in xTaskNotifyWait)
+;;     00000D08 (in ulTaskNotifyTake)
+;;     00000D20 (in ulTaskNotifyTake)
+;;     00000E72 (in xTaskResumeAll)
+;;     0000115E (in xTaskCheckForTimeOut)
+;;     00001844 (in xEventGroupWaitBits)
+;;     0000187A (in xEventGroupClearBits)
+;;     00001968 (in xEventGroupSync)
+;;     000019DA (in vEventGroupClearBitsCallback)
+;;     0000837C (in xQueueCRSend)
+;;     0000853A (in xTaskNotifyStateClear)
 vPortEnterCritical proc
 B508           	push	{r3,lr}
 F7FF FFF3     	bl	$00008564
@@ -4278,7 +4640,7 @@ F04F 03BF     	mov	r3,#&BF
 F383 8811     	msr	cpsr,r3
 F3BF 8F6F     	isb	sy
 F3BF 8F4F     	dsb	sy
-4A07           	ldr	r2,[pc,#&1C]                            ; 000085AC
+4A07           	ldr	r2,[000085AC]                           ; [pc,#&1C]
 2801           	cmps	r0,#1
 6813           	ldr	r3,[r2]
 F103 0301     	add	r3,r3,#1
@@ -4295,10 +4657,52 @@ BD08           	pop	{r3,pc}
 000085AA                               00 BF BC 00 00 20           ..... 
 
 ;; vPortExitCritical: 000085B0
+;;   Called from:
+;;     0000009E (in prvUnlockQueue)
+;;     000000E8 (in prvUnlockQueue)
+;;     000001A8 (in xQueueGenericSend)
+;;     000001CC (in xQueueGenericSend)
+;;     000001E8 (in xQueueGenericSend)
+;;     00000218 (in xQueueGenericSend)
+;;     00000266 (in xQueueGenericSend)
+;;     00000272 (in xQueueGenericSend)
+;;     000002FA (in xQueueGenericReceive)
+;;     0000031E (in xQueueGenericReceive)
+;;     00000342 (in xQueueGenericReceive)
+;;     00000364 (in xQueueGenericReceive)
+;;     0000036A (in xQueueGenericReceive)
+;;     000003A4 (in xQueueGenericReceive)
+;;     000003CC (in xQueueGenericReceive)
+;;     000003E2 (in xQueueGenericReceive)
+;;     00000432 (in uxQueueMessagesWaiting)
+;;     0000044A (in uxQueueSpacesAvailable)
+;;     000005C2 (in xQueueGetMutexHolder)
+;;     000005CC (in xQueueGetMutexHolder)
+;;     00000664 (in xQueueGenericReset)
+;;     00000688 (in xQueueGenericReset)
+;;     000006A0 (in xQueueGenericReset)
+;;     000007DA (in prvAddNewTaskToReadyList)
+;;     00000A92 (in xTaskGenericNotify)
+;;     00000AEE (in xTaskGenericNotify)
+;;     00000C04 (in xTaskNotifyWait)
+;;     00000C32 (in xTaskNotifyWait)
+;;     00000D1C (in ulTaskNotifyTake)
+;;     00000D3A (in ulTaskNotifyTake)
+;;     00000F1C (in xTaskResumeAll)
+;;     00000F28 (in xTaskResumeAll)
+;;     00001194 (in xTaskCheckForTimeOut)
+;;     0000119E (in xTaskCheckForTimeOut)
+;;     0000185C (in xEventGroupWaitBits)
+;;     00001886 (in xEventGroupClearBits)
+;;     0000197A (in xEventGroupSync)
+;;     000019EA (in vEventGroupClearBitsCallback)
+;;     00008388 (in xQueueCRSend)
+;;     000083B2 (in xQueueCRSend)
+;;     00008550 (in xTaskNotifyStateClear)
 vPortExitCritical proc
 B508           	push	{r3,lr}
 F7FF FFD7     	bl	$00008564
-4A08           	ldr	r2,[pc,#&20]                            ; 000085D8
+4A08           	ldr	r2,[000085D8]                           ; [pc,#&20]
 6813           	ldr	r3,[r2]
 3B01           	subs	r3,#1
 6013           	str	r3,[r2]
@@ -4324,7 +4728,7 @@ BD08           	pop	{r3,pc}
 vParTestInitialise proc
 B508           	push	{r3,lr}
 F7FF FE1F     	bl	$00008220
-4B03           	ldr	r3,[pc,#&C]                             ; 000085F0
+4B03           	ldr	r3,[000085F0]                           ; [pc,#&C]
 2005           	mov	r0,#5
 7819           	ldrb	r1,[r3]
 E8BD 4008     	pop.w	{r3,lr}
@@ -4332,6 +4736,8 @@ F7FF BE56     	b	$0000829C
 000085F0 F4 07 00 20                                     ...            
 
 ;; vParTestSetLED: 000085F4
+;;   Called from:
+;;     00008188 (in vSetErrorLED)
 vParTestSetLED proc
 B538           	push	{r3-r5,lr}
 4604           	mov	r4,r0
@@ -4343,7 +4749,7 @@ D80C           	bhi	$0000861C
 l00008602:
 2301           	mov	r3,#1
 FA03 F004     	lsl	r0,r3,r4
-4B08           	ldr	r3,[pc,#&20]                            ; 0000862C
+4B08           	ldr	r3,[0000862C]                           ; [pc,#&20]
 B2C0           	uxtb	r0,r0
 781A           	ldrb	r2,[r3]
 B14D           	cbz	r5,$00008624
@@ -4368,6 +4774,8 @@ E7F3           	b	$00008614
 0000862C                                     F4 07 00 20             ... 
 
 ;; vParTestToggleLED: 00008630
+;;   Called from:
+;;     00008692 (in prvFlashCoRoutine)
 vParTestToggleLED proc
 B510           	push	{r4,lr}
 4604           	mov	r4,r0
@@ -4377,7 +4785,7 @@ D80E           	bhi	$0000865A
 
 l0000863C:
 2201           	mov	r2,#1
-4B0B           	ldr	r3,[pc,#&2C]                            ; 0000866C
+4B0B           	ldr	r3,[0000866C]                           ; [pc,#&2C]
 FA02 F004     	lsl	r0,r2,r4
 7819           	ldrb	r1,[r3]
 B2C2           	uxtb	r2,r0
@@ -4427,7 +4835,7 @@ B002           	add	sp,#8
 BD70           	pop	{r4-r6,pc}
 
 l0000868C:
-4D14           	ldr	r5,[pc,#&50]                            ; 000086E0
+4D14           	ldr	r5,[000086E0]                           ; [pc,#&50]
 AE01           	add	r6,sp,#4
 
 l00008690:
@@ -4452,12 +4860,12 @@ D0F0           	beq	$00008690
 
 l000086AE:
 2200           	mov	r2,#0
-4B0C           	ldr	r3,[pc,#&30]                            ; 000086E4
+4B0C           	ldr	r3,[000086E4]                           ; [pc,#&30]
 601A           	str	r2,[r3]
 E7EF           	b	$00008696
 
 l000086B6:
-4D0A           	ldr	r5,[pc,#&28]                            ; 000086E0
+4D0A           	ldr	r5,[000086E0]                           ; [pc,#&28]
 AE01           	add	r6,sp,#4
 6828           	ldr	r0,[r5]
 4631           	mov	r1,r6
@@ -4473,7 +4881,7 @@ B002           	add	sp,#8
 BD70           	pop	{r4-r6,pc}
 
 l000086D2:
-4D03           	ldr	r5,[pc,#&C]                             ; 000086E0
+4D03           	ldr	r5,[000086E0]                           ; [pc,#&C]
 AE01           	add	r6,sp,#4
 E7DE           	b	$00008696
 
@@ -4502,7 +4910,7 @@ F240 1283     	mov	r2,#&183
 D109           	bne	$00008716
 
 l00008702:
-4B1D           	ldr	r3,[pc,#&74]                            ; 00008778
+4B1D           	ldr	r3,[00008778]                           ; [pc,#&74]
 9A01           	ldr	r2,[sp,#&4]
 F853 0022     	ldr.w	r0,[r3,r2,lsl #2]
 BB40           	cbnz	r0,$0000875E
@@ -4520,7 +4928,7 @@ F5B3 7FCB     	cmp	r3,#&196
 D1FA           	bne	$00008712
 
 l0000871C:
-4B17           	ldr	r3,[pc,#&5C]                            ; 0000877C
+4B17           	ldr	r3,[0000877C]                           ; [pc,#&5C]
 2200           	mov	r2,#0
 6818           	ldr	r0,[r3]
 A901           	add	r1,sp,#4
@@ -4538,9 +4946,9 @@ D0E6           	beq	$00008702
 
 l00008734:
 2200           	mov	r2,#0
-4B12           	ldr	r3,[pc,#&48]                            ; 00008780
+4B12           	ldr	r3,[00008780]                           ; [pc,#&48]
 601A           	str	r2,[r3]
-4B0F           	ldr	r3,[pc,#&3C]                            ; 00008778
+4B0F           	ldr	r3,[00008778]                           ; [pc,#&3C]
 9A01           	ldr	r2,[sp,#&4]
 F853 0022     	ldr.w	r0,[r3,r2,lsl #2]
 2800           	cmps	r0,#0
@@ -4558,7 +4966,7 @@ B002           	add	sp,#8
 BD10           	pop	{r4,pc}
 
 l00008750:
-4B0A           	ldr	r3,[pc,#&28]                            ; 0000877C
+4B0A           	ldr	r3,[0000877C]                           ; [pc,#&28]
 2200           	mov	r2,#0
 6818           	ldr	r0,[r3]
 A901           	add	r1,sp,#4
@@ -4595,7 +5003,7 @@ B570           	push	{r4-r6,lr}
 2104           	mov	r1,#4
 2001           	mov	r0,#1
 F000 F978     	bl	$00008A88
-4B0A           	ldr	r3,[pc,#&28]                            ; 000087C4
+4B0A           	ldr	r3,[000087C4]                           ; [pc,#&28]
 6018           	str	r0,[r3]
 B188           	cbz	r0,$000087C2
 
@@ -4604,7 +5012,7 @@ B14D           	cbz	r5,$000087B4
 
 l000087A0:
 2400           	mov	r4,#0
-4E09           	ldr	r6,[pc,#&24]                            ; 000087C8
+4E09           	ldr	r6,[000087C8]                           ; [pc,#&24]
 
 l000087A4:
 4622           	mov	r2,r4
@@ -4619,7 +5027,7 @@ l000087B4:
 2200           	mov	r2,#0
 E8BD 4070     	pop.w	{r4-r6,lr}
 2101           	mov	r1,#1
-4803           	ldr	r0,[pc,#&C]                             ; 000087CC
+4803           	ldr	r0,[000087CC]                           ; [pc,#&C]
 F000 BB3F     	b	$00008E40
 
 l000087C2:
@@ -4628,7 +5036,7 @@ BD70           	pop	{r4-r6,pc}
 
 ;; xAreFlashCoRoutinesStillRunning: 000087D0
 xAreFlashCoRoutinesStillRunning proc
-4B01           	ldr	r3,[pc,#&4]                             ; 000087D8
+4B01           	ldr	r3,[000087D8]                           ; [pc,#&4]
 6818           	ldr	r0,[r3]
 4770           	bx	lr
 000087D6                   00 BF C0 00 00 20                   .....    
@@ -4658,6 +5066,9 @@ BD70           	pop	{r4-r6,pc}
 00008806                   00 BF                               ..       
 
 ;; MPU_xTaskCreate: 00008808
+;;   Called from:
+;;     000080C8 (in Main)
+;;     000080DA (in Main)
 MPU_xTaskCreate proc
 E92D 47F0     	push.w	{r4-r10,lr}
 B082           	sub	sp,#8
@@ -4714,6 +5125,8 @@ BD70           	pop	{r4-r6,pc}
 00008872       00 BF                                       ..           
 
 ;; MPU_vTaskDelayUntil: 00008874
+;;   Called from:
+;;     00008082 (in vCheckTask)
 MPU_vTaskDelayUntil proc
 B570           	push	{r4-r6,lr}
 4605           	mov	r5,r0
@@ -4756,6 +5169,9 @@ BD38           	pop	{r3-r5,pc}
 000088BE                                           00 BF               ..
 
 ;; MPU_vTaskSuspendAll: 000088C0
+;;   Called from:
+;;     000085FA (in vParTestSetLED)
+;;     00008634 (in vParTestToggleLED)
 MPU_vTaskSuspendAll proc
 B510           	push	{r4,lr}
 F7FF FE4F     	bl	$00008564
@@ -4774,6 +5190,9 @@ BD10           	pop	{r4,pc}
 000088DE                                           00 BF               ..
 
 ;; MPU_xTaskResumeAll: 000088E0
+;;   Called from:
+;;     00008620 (in vParTestSetLED)
+;;     0000865E (in vParTestToggleLED)
 MPU_xTaskResumeAll proc
 B510           	push	{r4,lr}
 F7FF FE3F     	bl	$00008564
@@ -4794,6 +5213,9 @@ BD10           	pop	{r4,pc}
 00008902       00 BF                                       ..           
 
 ;; MPU_xTaskGetTickCount: 00008904
+;;   Called from:
+;;     00008070 (in vCheckTask)
+;;     00008F82 (in vCoRoutineSchedule)
 MPU_xTaskGetTickCount proc
 B510           	push	{r4,lr}
 F7FF FE2D     	bl	$00008564
@@ -5002,6 +5424,9 @@ BD38           	pop	{r3-r5,pc}
 00008A86                   00 BF                               ..       
 
 ;; MPU_xQueueGenericCreate: 00008A88
+;;   Called from:
+;;     000080AC (in Main)
+;;     00008794 (in vStartFlashCoRoutines)
 MPU_xQueueGenericCreate proc
 B5F8           	push	{r3-r7,lr}
 4605           	mov	r5,r0
@@ -5052,6 +5477,8 @@ BD70           	pop	{r4-r6,pc}
 00008AE2       00 BF                                       ..           
 
 ;; MPU_xQueueGenericSend: 00008AE4
+;;   Called from:
+;;     00008090 (in vCheckTask)
 MPU_xQueueGenericSend proc
 E92D 41F0     	push.w	{r4-r8,lr}
 4605           	mov	r5,r0
@@ -5124,6 +5551,8 @@ BD38           	pop	{r3-r5,pc}
 00008B6A                               00 BF                       ..   
 
 ;; MPU_xQueueGenericReceive: 00008B6C
+;;   Called from:
+;;     0000804C (in vPrintTask)
 MPU_xQueueGenericReceive proc
 E92D 41F0     	push.w	{r4-r8,lr}
 4605           	mov	r5,r0
@@ -5514,6 +5943,9 @@ BD38           	pop	{r3-r5,pc}
 00008E3E                                           00 BF               ..
 
 ;; xCoRoutineCreate: 00008E40
+;;   Called from:
+;;     000087AC (in vStartFlashCoRoutines)
+;;     000087BE (in vStartFlashCoRoutines)
 xCoRoutineCreate proc
 E92D 4FF8     	push.w	{r3-fp,lr}
 4681           	mov	r9,r0
@@ -5525,7 +5957,7 @@ F7F8 FC6E     	bl	$0000172C
 D047           	beq	$00008EE4
 
 l00008E54:
-4F25           	ldr	r7,[pc,#&94]                            ; 00008EEC
+4F25           	ldr	r7,[00008EEC]                           ; [pc,#&94]
 4604           	mov	r4,r0
 683B           	ldr	r3,[r7]
 B33B           	cbz	r3,$00008EAC
@@ -5592,10 +6024,14 @@ E8BD 8FF8     	pop.w	{r3-fp,pc}
 00008EEC                                     FC 07 00 20             ... 
 
 ;; vCoRoutineAddToDelayedList: 00008EF0
+;;   Called from:
+;;     000083DE (in xQueueCRSend)
+;;     00008490 (in xQueueCRReceive)
+;;     00008760 (in prvFixedDelayCoRoutine)
 vCoRoutineAddToDelayedList proc
 B570           	push	{r4-r6,lr}
 460E           	mov	r6,r1
-4C0C           	ldr	r4,[pc,#&30]                            ; 00008F28
+4C0C           	ldr	r4,[00008F28]                           ; [pc,#&30]
 6823           	ldr	r3,[r4]
 6F65           	ldr	r5,[r4,#&74]
 4405           	adds	r5,r0
@@ -5626,9 +6062,11 @@ BD70           	pop	{r4-r6,pc}
 00008F28                         FC 07 00 20                     ...    
 
 ;; vCoRoutineSchedule: 00008F2C
+;;   Called from:
+;;     00008212 (in vApplicationIdleHook)
 vCoRoutineSchedule proc
 E92D 41F0     	push.w	{r4-r8,lr}
-4D55           	ldr	r5,[pc,#&154]                           ; 00009088
+4D55           	ldr	r5,[00009088]                           ; [pc,#&154]
 6D6B           	ldr	r3,[r5,#&54]
 B32B           	cbz	r3,$00008F82
 
@@ -5670,7 +6108,7 @@ F7FF FCBF     	bl	$00008904
 6FAA           	ldr	r2,[r5,#&78]
 6F6B           	ldr	r3,[r5,#&74]
 1A80           	sub	r0,r0,r2
-F8DF 8100     	ldr	r8,[pc,#&100]                            ; 00009090
+F8DF 8100     	ldr	r8,[00009090]                            ; [pc,#&100]
 67E8           	str	r0,[r5,#&7C]
 
 l00008F94:
@@ -5803,7 +6241,7 @@ l00009058:
 009B           	lsls	r3,r3,#2
 18E9           	add	r1,r5,r3
 688A           	ldr	r2,[r1,#&8]
-480A           	ldr	r0,[pc,#&28]                            ; 0000908C
+480A           	ldr	r0,[0000908C]                           ; [pc,#&28]
 6852           	ldr	r2,[r2,#&4]
 4403           	adds	r3,r0
 429A           	cmps	r2,r3
@@ -5833,11 +6271,16 @@ E7E7           	b	$00009058
 00009090 00 08 00 20                                     ...            
 
 ;; xCoRoutineRemoveFromEventList: 00009094
+;;   Called from:
+;;     000083F2 (in xQueueCRSend)
+;;     0000847C (in xQueueCRReceive)
+;;     000084C6 (in xQueueCRSendFromISR)
+;;     0000851C (in xQueueCRReceiveFromISR)
 xCoRoutineRemoveFromEventList proc
 68C3           	ldr	r3,[r0,#&C]
 B570           	push	{r4-r6,lr}
 68DC           	ldr	r4,[r3,#&C]
-4D09           	ldr	r5,[pc,#&24]                            ; 000090C0
+4D09           	ldr	r5,[000090C0]                           ; [pc,#&24]
 F104 0618     	add	r6,r4,#&18
 4630           	mov	r0,r6
 F7FF F94D     	bl	$00008340
@@ -5858,7 +6301,7 @@ BD70           	pop	{r4-r6,pc}
 
 ;; GPIOGetIntNumber: 000090C4
 GPIOGetIntNumber proc
-4B0F           	ldr	r3,[pc,#&3C]                            ; 00009104
+4B0F           	ldr	r3,[00009104]                           ; [pc,#&3C]
 4298           	cmps	r0,r3
 D019           	beq	$000090FE
 
@@ -5879,7 +6322,7 @@ l000090DA:
 4770           	bx	lr
 
 l000090DE:
-4B0A           	ldr	r3,[pc,#&28]                            ; 00009108
+4B0A           	ldr	r3,[00009108]                           ; [pc,#&28]
 4298           	cmps	r0,r3
 D008           	beq	$000090F6
 
@@ -5910,6 +6353,9 @@ l000090FE:
 00009102       00 BF 00 60 00 40 00 70 00 40               ...`.@.p.@   
 
 ;; GPIODirModeSet: 0000910C
+;;   Called from:
+;;     00008238 (in PDCInit)
+;;     00008244 (in PDCInit)
 GPIODirModeSet proc
 F8D0 3400     	ldr	r3,[r0,#&400]
 F012 0F01     	tst	r2,#1
@@ -6014,6 +6460,12 @@ l000091BE:
 000091C6                   00 BF                               ..       
 
 ;; GPIOPadConfigSet: 000091C8
+;;   Called from:
+;;     00008252 (in PDCInit)
+;;     0000947A (in GPIOPinTypeComparator)
+;;     000094A0 (in GPIOPinTypeI2C)
+;;     000094C4 (in GPIOPinTypeQEI)
+;;     000094E8 (in GPIOPinTypeUART)
 GPIOPadConfigSet proc
 B410           	push	{r4}
 F8D0 4500     	ldr	r4,[r0,#&500]
@@ -6197,7 +6649,7 @@ F8C0 141C     	str	r1,[r0,#&41C]
 
 ;; GPIOPortIntRegister: 00009314
 GPIOPortIntRegister proc
-4B24           	ldr	r3,[pc,#&90]                            ; 000093A8
+4B24           	ldr	r3,[000093A8]                           ; [pc,#&90]
 B510           	push	{r4,lr}
 4298           	cmps	r0,r3
 D03C           	beq	$00009396
@@ -6223,7 +6675,7 @@ E8BD 4010     	pop.w	{r4,lr}
 F000 B94F     	b	$000095DC
 
 l0000933E:
-4B1B           	ldr	r3,[pc,#&6C]                            ; 000093AC
+4B1B           	ldr	r3,[000093AC]                           ; [pc,#&6C]
 4298           	cmps	r0,r3
 D016           	beq	$00009372
 
@@ -6275,7 +6727,7 @@ F000 B91A     	b	$000095DC
 
 ;; GPIOPortIntUnregister: 000093B0
 GPIOPortIntUnregister proc
-4B24           	ldr	r3,[pc,#&90]                            ; 00009444
+4B24           	ldr	r3,[00009444]                           ; [pc,#&90]
 B510           	push	{r4,lr}
 4298           	cmps	r0,r3
 D03C           	beq	$00009432
@@ -6301,7 +6753,7 @@ E8BD 4010     	pop.w	{r4,lr}
 F000 B8AF     	b	$00009538
 
 l000093DA:
-4B1B           	ldr	r3,[pc,#&6C]                            ; 00009448
+4B1B           	ldr	r3,[00009448]                           ; [pc,#&6C]
 4298           	cmps	r0,r3
 D016           	beq	$0000940E
 
@@ -6358,6 +6810,9 @@ F850 0021     	ldr.w	r0,[r0,r1,lsl #2]
 00009452       00 BF                                       ..           
 
 ;; GPIOPinWrite: 00009454
+;;   Called from:
+;;     00008276 (in PDCInit)
+;;     00008288 (in PDCInit)
 GPIOPinWrite proc
 F840 2021     	str.w	r2,[r0,r1,lsl #2]
 4770           	bx	lr
@@ -6380,6 +6835,8 @@ F7FF BEA5     	b	$000091C8
 0000947E                                           00 BF               ..
 
 ;; GPIOPinTypeI2C: 00009480
+;;   Called from:
+;;     00009908 (in OSRAMInit)
 GPIOPinTypeI2C proc
 B470           	push	{r4-r6}
 460D           	mov	r5,r1
@@ -6410,6 +6867,10 @@ BC70           	pop	{r4-r6}
 F7FF BE80     	b	$000091C8
 
 ;; GPIOPinTypeUART: 000094C8
+;;   Called from:
+;;     000094EC (in GPIOPinTypeTimer)
+;;     000094F0 (in GPIOPinTypeSSI)
+;;     000094F4 (in GPIOPinTypePWM)
 GPIOPinTypeUART proc
 B470           	push	{r4-r6}
 460D           	mov	r5,r1
@@ -6450,11 +6911,22 @@ IntMasterDisable proc
 F000 BDF0     	b	$0000A0E4
 
 ;; IntRegister: 00009504
+;;   Called from:
+;;     00009330 (in GPIOPortIntRegister)
+;;     00009350 (in GPIOPortIntRegister)
+;;     00009364 (in GPIOPortIntRegister)
+;;     00009376 (in GPIOPortIntRegister)
+;;     00009388 (in GPIOPortIntRegister)
+;;     0000939A (in GPIOPortIntRegister)
+;;     00009A50 (in SSIIntRegister)
+;;     00009C46 (in SysCtlIntRegister)
+;;     0000A086 (in UARTIntRegister)
+;;     0000A184 (in I2CIntRegister)
 IntRegister proc
-4B0A           	ldr	r3,[pc,#&28]                            ; 00009530
+4B0A           	ldr	r3,[00009530]                           ; [pc,#&28]
 B430           	push	{r4-r5}
 681B           	ldr	r3,[r3]
-4C0A           	ldr	r4,[pc,#&28]                            ; 00009534
+4C0A           	ldr	r4,[00009534]                           ; [pc,#&28]
 42A3           	cmps	r3,r4
 D00A           	beq	$00009526
 
@@ -6470,7 +6942,7 @@ F843 2B04     	str	r2,[r3],#&4
 D1F9           	bne	$00009516
 
 l00009522:
-4B03           	ldr	r3,[pc,#&C]                             ; 00009530
+4B03           	ldr	r3,[00009530]                           ; [pc,#&C]
 601C           	str	r4,[r3]
 
 l00009526:
@@ -6481,17 +6953,28 @@ BC30           	pop	{r4-r5}
 00009530 08 ED 00 E0 00 00 00 20                         .......        
 
 ;; IntUnregister: 00009538
+;;   Called from:
+;;     000093D6 (in GPIOPortIntUnregister)
+;;     000093F6 (in GPIOPortIntUnregister)
+;;     0000940A (in GPIOPortIntUnregister)
+;;     0000941C (in GPIOPortIntUnregister)
+;;     0000942E (in GPIOPortIntUnregister)
+;;     00009440 (in GPIOPortIntUnregister)
+;;     00009A6E (in SSIIntUnregister)
+;;     00009C62 (in SysCtlIntUnregister)
+;;     0000A0B0 (in UARTIntUnregister)
+;;     0000A1A2 (in I2CIntUnregister)
 IntUnregister proc
-4B02           	ldr	r3,[pc,#&8]                             ; 00009544
-4A03           	ldr	r2,[pc,#&C]                             ; 00009548
+4B02           	ldr	r3,[00009544]                           ; [pc,#&8]
+4A03           	ldr	r2,[00009548]                           ; [pc,#&C]
 F843 2020     	str.w	r2,[r3,r0,lsl #2]
 4770           	bx	lr
 00009542       00 BF 00 00 00 20 F9 94 00 00               ..... ....   
 
 ;; IntPriorityGroupingSet: 0000954C
 IntPriorityGroupingSet proc
-4B04           	ldr	r3,[pc,#&10]                            ; 00009560
-4A05           	ldr	r2,[pc,#&14]                            ; 00009564
+4B04           	ldr	r3,[00009560]                           ; [pc,#&10]
+4A05           	ldr	r2,[00009564]                           ; [pc,#&14]
 F853 3020     	ldr.w	r3,[r3,r0,lsl #2]
 F043 63BF     	orr	r3,r3,#&5F80000
 F443 3300     	orr	r3,r3,#&20000
@@ -6502,10 +6985,10 @@ F443 3300     	orr	r3,r3,#&20000
 ;; IntPriorityGroupingGet: 00009568
 IntPriorityGroupingGet proc
 F44F 63E0     	mov	r3,#&700
-4906           	ldr	r1,[pc,#&18]                            ; 00009588
+4906           	ldr	r1,[00009588]                           ; [pc,#&18]
 2000           	mov	r0,#0
 6809           	ldr	r1,[r1]
-4A06           	ldr	r2,[pc,#&18]                            ; 0000958C
+4A06           	ldr	r2,[0000958C]                           ; [pc,#&18]
 4019           	ands	r1,r3
 E001           	b	$0000957C
 
@@ -6528,7 +7011,7 @@ l00009586:
 ;; IntPrioritySet: 00009590
 IntPrioritySet proc
 22FF           	mov	r2,#&FF
-4B09           	ldr	r3,[pc,#&24]                            ; 000095B8
+4B09           	ldr	r3,[000095B8]                           ; [pc,#&24]
 B410           	push	{r4}
 F020 0403     	bic	r4,r0,#3
 4423           	adds	r3,r4
@@ -6547,7 +7030,7 @@ BC10           	pop	{r4}
 
 ;; IntPriorityGet: 000095BC
 IntPriorityGet proc
-4B06           	ldr	r3,[pc,#&18]                            ; 000095D8
+4B06           	ldr	r3,[000095D8]                           ; [pc,#&18]
 F020 0203     	bic	r2,r0,#3
 4413           	adds	r3,r2
 6A1B           	ldr	r3,[r3,#&20]
@@ -6560,6 +7043,17 @@ B2C0           	uxtb	r0,r0
 000095D6                   00 BF A4 A2 00 00                   ......   
 
 ;; IntEnable: 000095DC
+;;   Called from:
+;;     0000933A (in GPIOPortIntRegister)
+;;     0000935A (in GPIOPortIntRegister)
+;;     0000936E (in GPIOPortIntRegister)
+;;     00009380 (in GPIOPortIntRegister)
+;;     00009392 (in GPIOPortIntRegister)
+;;     000093A4 (in GPIOPortIntRegister)
+;;     00009A5A (in SSIIntRegister)
+;;     00009C50 (in SysCtlIntRegister)
+;;     0000A090 (in UARTIntRegister)
+;;     0000A18E (in I2CIntRegister)
 IntEnable proc
 2804           	cmps	r0,#4
 D013           	beq	$00009608
@@ -6582,7 +7076,7 @@ D905           	bls	$000095FA
 l000095EE:
 2301           	mov	r3,#1
 3810           	subs	r0,#&10
-4A0E           	ldr	r2,[pc,#&38]                            ; 0000962C
+4A0E           	ldr	r2,[0000962C]                           ; [pc,#&38]
 FA03 F000     	lsl	r0,r3,r0
 6010           	str	r0,[r2]
 
@@ -6590,28 +7084,28 @@ l000095FA:
 4770           	bx	lr
 
 l000095FC:
-4A0C           	ldr	r2,[pc,#&30]                            ; 00009630
+4A0C           	ldr	r2,[00009630]                           ; [pc,#&30]
 6813           	ldr	r3,[r2]
 F043 0302     	orr	r3,r3,#2
 6013           	str	r3,[r2]
 4770           	bx	lr
 
 l00009608:
-4A0A           	ldr	r2,[pc,#&28]                            ; 00009634
+4A0A           	ldr	r2,[00009634]                           ; [pc,#&28]
 6813           	ldr	r3,[r2]
 F443 3380     	orr	r3,r3,#&10000
 6013           	str	r3,[r2]
 4770           	bx	lr
 
 l00009614:
-4A07           	ldr	r2,[pc,#&1C]                            ; 00009634
+4A07           	ldr	r2,[00009634]                           ; [pc,#&1C]
 6813           	ldr	r3,[r2]
 F443 3300     	orr	r3,r3,#&20000
 6013           	str	r3,[r2]
 4770           	bx	lr
 
 l00009620:
-4A04           	ldr	r2,[pc,#&10]                            ; 00009634
+4A04           	ldr	r2,[00009634]                           ; [pc,#&10]
 6813           	ldr	r3,[r2]
 F443 2380     	orr	r3,r3,#&40000
 6013           	str	r3,[r2]
@@ -6620,6 +7114,17 @@ F443 2380     	orr	r3,r3,#&40000
 00009630 10 E0 00 E0 24 ED 00 E0                         ....$...       
 
 ;; IntDisable: 00009638
+;;   Called from:
+;;     000093CC (in GPIOPortIntUnregister)
+;;     000093EC (in GPIOPortIntUnregister)
+;;     00009400 (in GPIOPortIntUnregister)
+;;     00009412 (in GPIOPortIntUnregister)
+;;     00009424 (in GPIOPortIntUnregister)
+;;     00009436 (in GPIOPortIntUnregister)
+;;     00009A64 (in SSIIntUnregister)
+;;     00009C58 (in SysCtlIntUnregister)
+;;     0000A0A6 (in UARTIntUnregister)
+;;     0000A198 (in I2CIntUnregister)
 IntDisable proc
 2804           	cmps	r0,#4
 D013           	beq	$00009664
@@ -6642,7 +7147,7 @@ D905           	bls	$00009656
 l0000964A:
 2301           	mov	r3,#1
 3810           	subs	r0,#&10
-4A0E           	ldr	r2,[pc,#&38]                            ; 00009688
+4A0E           	ldr	r2,[00009688]                           ; [pc,#&38]
 FA03 F000     	lsl	r0,r3,r0
 6010           	str	r0,[r2]
 
@@ -6650,28 +7155,28 @@ l00009656:
 4770           	bx	lr
 
 l00009658:
-4A0C           	ldr	r2,[pc,#&30]                            ; 0000968C
+4A0C           	ldr	r2,[0000968C]                           ; [pc,#&30]
 6813           	ldr	r3,[r2]
 F023 0302     	bic	r3,r3,#2
 6013           	str	r3,[r2]
 4770           	bx	lr
 
 l00009664:
-4A0A           	ldr	r2,[pc,#&28]                            ; 00009690
+4A0A           	ldr	r2,[00009690]                           ; [pc,#&28]
 6813           	ldr	r3,[r2]
 F423 3380     	bic	r3,r3,#&10000
 6013           	str	r3,[r2]
 4770           	bx	lr
 
 l00009670:
-4A07           	ldr	r2,[pc,#&1C]                            ; 00009690
+4A07           	ldr	r2,[00009690]                           ; [pc,#&1C]
 6813           	ldr	r3,[r2]
 F423 3300     	bic	r3,r3,#&20000
 6013           	str	r3,[r2]
 4770           	bx	lr
 
 l0000967C:
-4A04           	ldr	r2,[pc,#&10]                            ; 00009690
+4A04           	ldr	r2,[00009690]                           ; [pc,#&10]
 6813           	ldr	r3,[r2]
 F423 2380     	bic	r3,r3,#&40000
 6013           	str	r3,[r2]
@@ -6680,6 +7185,11 @@ F423 2380     	bic	r3,r3,#&40000
 00009690 24 ED 00 E0                                     $...           
 
 ;; OSRAMDelay: 00009694
+;;   Called from:
+;;     000096DE (in OSRAMWriteArray)
+;;     00009718 (in OSRAMWriteByte)
+;;     00009750 (in OSRAMWriteFinal)
+;;     00009776 (in OSRAMWriteFinal)
 OSRAMDelay proc
 3801           	subs	r0,#1
 D1FD           	bne	$00009694
@@ -6689,10 +7199,18 @@ l00009698:
 0000969A                               00 BF                       ..   
 
 ;; OSRAMWriteFirst: 0000969C
+;;   Called from:
+;;     00009784 (in OSRAMClear)
+;;     000097A4 (in OSRAMClear)
+;;     000097D6 (in OSRAMStringDraw)
+;;     000098A4 (in OSRAMImageDraw)
+;;     00009938 (in OSRAMInit)
+;;     00009996 (in OSRAMDisplayOn)
+;;     000099C4 (in OSRAMDisplayOff)
 OSRAMWriteFirst proc
 B538           	push	{r3-r5,lr}
 4605           	mov	r5,r0
-4C07           	ldr	r4,[pc,#&1C]                            ; 000096C0
+4C07           	ldr	r4,[000096C0]                           ; [pc,#&1C]
 2200           	mov	r2,#0
 4620           	mov	r0,r4
 213D           	mov	r1,#&3D
@@ -6707,14 +7225,22 @@ F000 BDB0     	b	$0000A220
 000096C0 00 00 02 40                                     ...@           
 
 ;; OSRAMWriteArray: 000096C4
+;;   Called from:
+;;     0000978C (in OSRAMClear)
+;;     000097AC (in OSRAMClear)
+;;     0000983A (in OSRAMStringDraw)
+;;     0000985A (in OSRAMStringDraw)
+;;     000098D8 (in OSRAMImageDraw)
+;;     00009944 (in OSRAMInit)
+;;     000099A2 (in OSRAMDisplayOn)
 OSRAMWriteArray proc
 B1C9           	cbz	r1,$000096FA
 
 l000096C6:
 B5F8           	push	{r3-r7,lr}
 4605           	mov	r5,r0
-4F0C           	ldr	r7,[pc,#&30]                            ; 000096FC
-4C0C           	ldr	r4,[pc,#&30]                            ; 00009700
+4F0C           	ldr	r7,[000096FC]                           ; [pc,#&30]
+4C0C           	ldr	r4,[00009700]                           ; [pc,#&30]
 1846           	add	r6,r0,r1
 
 l000096D0:
@@ -6745,35 +7271,64 @@ l000096FA:
 00009700 00 00 02 40                                     ...@           
 
 ;; OSRAMWriteByte: 00009704
+;;   Called from:
+;;     00009794 (in OSRAMClear)
+;;     000097B4 (in OSRAMClear)
+;;     000097E2 (in OSRAMStringDraw)
+;;     000097EC (in OSRAMStringDraw)
+;;     000097F4 (in OSRAMStringDraw)
+;;     000097FA (in OSRAMStringDraw)
+;;     00009806 (in OSRAMStringDraw)
+;;     0000980C (in OSRAMStringDraw)
+;;     00009824 (in OSRAMStringDraw)
+;;     000098B0 (in OSRAMImageDraw)
+;;     000098B6 (in OSRAMImageDraw)
+;;     000098BC (in OSRAMImageDraw)
+;;     000098C2 (in OSRAMImageDraw)
+;;     000098C8 (in OSRAMImageDraw)
+;;     000098CE (in OSRAMImageDraw)
+;;     000099CA (in OSRAMDisplayOff)
+;;     000099D0 (in OSRAMDisplayOff)
+;;     000099D6 (in OSRAMDisplayOff)
+;;     000099DC (in OSRAMDisplayOff)
 OSRAMWriteByte proc
 B510           	push	{r4,lr}
 4604           	mov	r4,r0
 
 l00009708:
 2100           	mov	r1,#0
-4809           	ldr	r0,[pc,#&24]                            ; 00009730
+4809           	ldr	r0,[00009730]                           ; [pc,#&24]
 F000 FD5C     	bl	$0000A1C8
 2800           	cmps	r0,#0
 D0F9           	beq	$00009708
 
 l00009714:
-4B07           	ldr	r3,[pc,#&1C]                            ; 00009734
+4B07           	ldr	r3,[00009734]                           ; [pc,#&1C]
 6818           	ldr	r0,[r3]
 F7FF FFBC     	bl	$00009694
 4621           	mov	r1,r4
-4804           	ldr	r0,[pc,#&10]                            ; 00009730
+4804           	ldr	r0,[00009730]                           ; [pc,#&10]
 F000 FD8C     	bl	$0000A23C
 E8BD 4010     	pop.w	{r4,lr}
 2101           	mov	r1,#1
-4801           	ldr	r0,[pc,#&4]                             ; 00009730
+4801           	ldr	r0,[00009730]                           ; [pc,#&4]
 F000 BD78     	b	$0000A220
 00009730 00 00 02 40 7C 08 00 20                         ...@|..        
 
 ;; OSRAMWriteFinal: 00009738
+;;   Called from:
+;;     0000979E (in OSRAMClear)
+;;     000097C2 (in OSRAMClear)
+;;     0000984A (in OSRAMStringDraw)
+;;     00009872 (in OSRAMStringDraw)
+;;     000098E2 (in OSRAMImageDraw)
+;;     0000994C (in OSRAMInit)
+;;     000099AA (in OSRAMDisplayOn)
+;;     000099E6 (in OSRAMDisplayOff)
 OSRAMWriteFinal proc
 B570           	push	{r4-r6,lr}
 4606           	mov	r6,r0
-4C0E           	ldr	r4,[pc,#&38]                            ; 00009778
+4C0E           	ldr	r4,[00009778]                           ; [pc,#&38]
 
 l0000973E:
 2100           	mov	r1,#0
@@ -6783,8 +7338,8 @@ F000 FD41     	bl	$0000A1C8
 D0F9           	beq	$0000973E
 
 l0000974A:
-4D0C           	ldr	r5,[pc,#&30]                            ; 0000977C
-4C0A           	ldr	r4,[pc,#&28]                            ; 00009778
+4D0C           	ldr	r5,[0000977C]                           ; [pc,#&30]
+4C0A           	ldr	r4,[00009778]                           ; [pc,#&28]
 6828           	ldr	r0,[r5]
 F7FF FFA0     	bl	$00009694
 4631           	mov	r1,r6
@@ -6808,12 +7363,15 @@ E78D           	b	$00009694
 00009778                         00 00 02 40 7C 08 00 20         ...@|.. 
 
 ;; OSRAMClear: 00009780
+;;   Called from:
+;;     00008050 (in vPrintTask)
+;;     0000995C (in OSRAMInit)
 OSRAMClear proc
 B510           	push	{r4,lr}
 2080           	mov	r0,#&80
 F7FF FF8A     	bl	$0000969C
 2106           	mov	r1,#6
-480E           	ldr	r0,[pc,#&38]                            ; 000097C4
+480E           	ldr	r0,[000097C4]                           ; [pc,#&38]
 F7FF FF9A     	bl	$000096C4
 245F           	mov	r4,#&5F
 
@@ -6829,7 +7387,7 @@ F7FF FFCB     	bl	$00009738
 2080           	mov	r0,#&80
 F7FF FF7A     	bl	$0000969C
 2106           	mov	r1,#6
-4807           	ldr	r0,[pc,#&1C]                            ; 000097C8
+4807           	ldr	r0,[000097C8]                           ; [pc,#&1C]
 F7FF FF8A     	bl	$000096C4
 245F           	mov	r4,#&5F
 
@@ -6846,6 +7404,9 @@ E7B9           	b	$00009738
 000097C4             F4 A2 00 00 FC A2 00 00                 ........   
 
 ;; OSRAMStringDraw: 000097CC
+;;   Called from:
+;;     0000805E (in vPrintTask)
+;;     000080E8 (in Main)
 OSRAMStringDraw proc
 B570           	push	{r4-r6,lr}
 4616           	mov	r6,r2
@@ -6877,7 +7438,7 @@ B383           	cbz	r3,$00009876
 
 l00009814:
 2C5A           	cmps	r4,#&5A
-4E18           	ldr	r6,[pc,#&60]                            ; 00009878
+4E18           	ldr	r6,[00009878]                           ; [pc,#&60]
 D90A           	bls	$00009830
 
 l0000981A:
@@ -6919,7 +7480,7 @@ F1C4 045F     	rsb	r4,r4,#&5F
 4621           	mov	r1,r4
 F7FF FF33     	bl	$000096C4
 782B           	ldrb	r3,[r5]
-4A06           	ldr	r2,[pc,#&18]                            ; 0000987C
+4A06           	ldr	r2,[0000987C]                           ; [pc,#&18]
 3B20           	subs	r3,#&20
 EB03 0383     	add.w	r3,r3,r3,lsl #2
 4413           	adds	r3,r2
@@ -6987,22 +7548,24 @@ E8BD 87F0     	pop.w	{r4-r10,pc}
 000098EE                                           00 BF               ..
 
 ;; OSRAMInit: 000098F0
+;;   Called from:
+;;     000080B6 (in Main)
 OSRAMInit proc
 E92D 41F0     	push.w	{r4-r8,lr}
 4604           	mov	r4,r0
 F04F 2010     	mov	r0,#&10001000
 F000 F93F     	bl	$00009B7C
-4818           	ldr	r0,[pc,#&60]                            ; 00009960
+4818           	ldr	r0,[00009960]                           ; [pc,#&60]
 F000 F93C     	bl	$00009B7C
 210C           	mov	r1,#&C
-4817           	ldr	r0,[pc,#&5C]                            ; 00009964
+4817           	ldr	r0,[00009964]                           ; [pc,#&5C]
 F7FF FDBA     	bl	$00009480
 4621           	mov	r1,r4
-4816           	ldr	r0,[pc,#&58]                            ; 00009968
+4816           	ldr	r0,[00009968]                           ; [pc,#&58]
 F000 FBF0     	bl	$0000A0F4
 2201           	mov	r2,#1
-4B15           	ldr	r3,[pc,#&54]                            ; 0000996C
-4F15           	ldr	r7,[pc,#&54]                            ; 00009970
+4B15           	ldr	r3,[0000996C]                           ; [pc,#&54]
+4F15           	ldr	r7,[00009970]                           ; [pc,#&54]
 26E3           	mov	r6,#&E3
 2404           	mov	r4,#4
 2080           	mov	r0,#&80
@@ -7040,7 +7603,7 @@ F7FF BF10     	b	$00009780
 ;; OSRAMDisplayOn: 00009974
 OSRAMDisplayOn proc
 E92D 41F0     	push.w	{r4-r8,lr}
-4F10           	ldr	r7,[pc,#&40]                            ; 000099BC
+4F10           	ldr	r7,[000099BC]                           ; [pc,#&40]
 26E3           	mov	r6,#&E3
 2404           	mov	r4,#4
 2080           	mov	r0,#&80
@@ -7090,6 +7653,8 @@ E8BD 4008     	pop.w	{r3,lr}
 E6A7           	b	$00009738
 
 ;; SSIConfig: 000099E8
+;;   Called from:
+;;     00008264 (in PDCInit)
 SSIConfig proc
 E92D 41F0     	push.w	{r4-r8,lr}
 4617           	mov	r7,r2
@@ -7133,6 +7698,8 @@ l00009A30:
 E7E7           	b	$00009A04
 
 ;; SSIEnable: 00009A34
+;;   Called from:
+;;     0000826A (in PDCInit)
 SSIEnable proc
 6843           	ldr	r3,[r0,#&4]
 F043 0302     	orr	r3,r3,#2
@@ -7202,6 +7769,9 @@ SSIIntClear proc
 4770           	bx	lr
 
 ;; SSIDataPut: 00009A98
+;;   Called from:
+;;     000082AA (in PDCWrite)
+;;     000082B2 (in PDCWrite)
 SSIDataPut proc
 F100 020C     	add	r2,r0,#&C
 
@@ -7228,6 +7798,9 @@ l00009AB2:
 4770           	bx	lr
 
 ;; SSIDataGet: 00009AB8
+;;   Called from:
+;;     000082BA (in PDCWrite)
+;;     000082C2 (in PDCWrite)
 SSIDataGet proc
 F100 020C     	add	r2,r0,#&C
 
@@ -7257,8 +7830,8 @@ l00009AD2:
 
 ;; SysCtlSRAMSizeGet: 00009ADC
 SysCtlSRAMSizeGet proc
-4B03           	ldr	r3,[pc,#&C]                             ; 00009AEC
-4804           	ldr	r0,[pc,#&10]                            ; 00009AF0
+4B03           	ldr	r3,[00009AEC]                           ; [pc,#&C]
+4804           	ldr	r0,[00009AF0]                           ; [pc,#&10]
 681B           	ldr	r3,[r3]
 EA00 2013     	and.w	r0,r0,r3,lsr #8
 F500 7080     	add	r0,r0,#&100
@@ -7268,8 +7841,8 @@ F500 7080     	add	r0,r0,#&100
 
 ;; SysCtlFlashSizeGet: 00009AF4
 SysCtlFlashSizeGet proc
-4B03           	ldr	r3,[pc,#&C]                             ; 00009B04
-4804           	ldr	r0,[pc,#&10]                            ; 00009B08
+4B03           	ldr	r3,[00009B04]                           ; [pc,#&C]
+4804           	ldr	r0,[00009B08]                           ; [pc,#&10]
 681B           	ldr	r3,[r3]
 EA00 20C3     	and.w	r0,r0,r3,lsl #&B
 F500 6000     	add	r0,r0,#&800
@@ -7278,7 +7851,7 @@ F500 6000     	add	r0,r0,#&800
 
 ;; SysCtlPinPresent: 00009B0C
 SysCtlPinPresent proc
-4B03           	ldr	r3,[pc,#&C]                             ; 00009B1C
+4B03           	ldr	r3,[00009B1C]                           ; [pc,#&C]
 681B           	ldr	r3,[r3]
 4203           	adcs	r3,r0
 BF14           	ite	ne
@@ -7291,7 +7864,7 @@ l00009B16:
 
 ;; SysCtlPeripheralPresent: 00009B20
 SysCtlPeripheralPresent proc
-4B05           	ldr	r3,[pc,#&14]                            ; 00009B38
+4B05           	ldr	r3,[00009B38]                           ; [pc,#&14]
 0F02           	lsrs	r2,r0,#&1C
 F853 3022     	ldr.w	r3,[r3,r2,lsl #2]
 F020 4070     	bic	r0,r0,#&F0000000
@@ -7308,7 +7881,7 @@ l00009B34:
 ;; SysCtlPeripheralReset: 00009B3C
 SysCtlPeripheralReset proc
 2100           	mov	r1,#0
-4B0E           	ldr	r3,[pc,#&38]                            ; 00009B78
+4B0E           	ldr	r3,[00009B78]                           ; [pc,#&38]
 0F02           	lsrs	r2,r0,#&1C
 B410           	push	{r4}
 EB03 0382     	add.w	r3,r3,r2,lsl #2
@@ -7341,8 +7914,13 @@ BC10           	pop	{r4}
 00009B78                         54 A5 00 00                     T...   
 
 ;; SysCtlPeripheralEnable: 00009B7C
+;;   Called from:
+;;     00008226 (in PDCInit)
+;;     0000822C (in PDCInit)
+;;     000098FA (in OSRAMInit)
+;;     00009900 (in OSRAMInit)
 SysCtlPeripheralEnable proc
-4B05           	ldr	r3,[pc,#&14]                            ; 00009B94
+4B05           	ldr	r3,[00009B94]                           ; [pc,#&14]
 0F02           	lsrs	r2,r0,#&1C
 EB03 0382     	add.w	r3,r3,r2,lsl #2
 69DB           	ldr	r3,[r3,#&1C]
@@ -7355,7 +7933,7 @@ F020 4070     	bic	r0,r0,#&F0000000
 
 ;; SysCtlPeripheralDisable: 00009B98
 SysCtlPeripheralDisable proc
-4B05           	ldr	r3,[pc,#&14]                            ; 00009BB0
+4B05           	ldr	r3,[00009BB0]                           ; [pc,#&14]
 0F02           	lsrs	r2,r0,#&1C
 EB03 0382     	add.w	r3,r3,r2,lsl #2
 69DA           	ldr	r2,[r3,#&1C]
@@ -7368,7 +7946,7 @@ EA23 0000     	bic.w	r0,r3,r0
 
 ;; SysCtlPeripheralSleepEnable: 00009BB4
 SysCtlPeripheralSleepEnable proc
-4B05           	ldr	r3,[pc,#&14]                            ; 00009BCC
+4B05           	ldr	r3,[00009BCC]                           ; [pc,#&14]
 0F02           	lsrs	r2,r0,#&1C
 EB03 0382     	add.w	r3,r3,r2,lsl #2
 6A9B           	ldr	r3,[r3,#&28]
@@ -7381,7 +7959,7 @@ F020 4070     	bic	r0,r0,#&F0000000
 
 ;; SysCtlPeripheralSleepDisable: 00009BD0
 SysCtlPeripheralSleepDisable proc
-4B05           	ldr	r3,[pc,#&14]                            ; 00009BE8
+4B05           	ldr	r3,[00009BE8]                           ; [pc,#&14]
 0F02           	lsrs	r2,r0,#&1C
 EB03 0382     	add.w	r3,r3,r2,lsl #2
 6A9A           	ldr	r2,[r3,#&28]
@@ -7394,7 +7972,7 @@ EA23 0000     	bic.w	r0,r3,r0
 
 ;; SysCtlPeripheralDeepSleepEnable: 00009BEC
 SysCtlPeripheralDeepSleepEnable proc
-4B05           	ldr	r3,[pc,#&14]                            ; 00009C04
+4B05           	ldr	r3,[00009C04]                           ; [pc,#&14]
 0F02           	lsrs	r2,r0,#&1C
 EB03 0382     	add.w	r3,r3,r2,lsl #2
 6B5B           	ldr	r3,[r3,#&34]
@@ -7407,7 +7985,7 @@ F020 4070     	bic	r0,r0,#&F0000000
 
 ;; SysCtlPeripheralDeepSleepDisable: 00009C08
 SysCtlPeripheralDeepSleepDisable proc
-4B05           	ldr	r3,[pc,#&14]                            ; 00009C20
+4B05           	ldr	r3,[00009C20]                           ; [pc,#&14]
 0F02           	lsrs	r2,r0,#&1C
 EB03 0382     	add.w	r3,r3,r2,lsl #2
 6B5A           	ldr	r2,[r3,#&34]
@@ -7420,7 +7998,7 @@ EA23 0000     	bic.w	r0,r3,r0
 
 ;; SysCtlPeripheralClockGating: 00009C24
 SysCtlPeripheralClockGating proc
-4A05           	ldr	r2,[pc,#&14]                            ; 00009C3C
+4A05           	ldr	r2,[00009C3C]                           ; [pc,#&14]
 6813           	ldr	r3,[r2]
 B918           	cbnz	r0,$00009C32
 
@@ -7457,7 +8035,7 @@ F7FF BC69     	b	$00009538
 
 ;; SysCtlIntEnable: 00009C68
 SysCtlIntEnable proc
-4A02           	ldr	r2,[pc,#&8]                             ; 00009C74
+4A02           	ldr	r2,[00009C74]                           ; [pc,#&8]
 6813           	ldr	r3,[r2]
 4318           	orrs	r0,r3
 6010           	str	r0,[r2]
@@ -7466,7 +8044,7 @@ SysCtlIntEnable proc
 
 ;; SysCtlIntDisable: 00009C78
 SysCtlIntDisable proc
-4A02           	ldr	r2,[pc,#&8]                             ; 00009C84
+4A02           	ldr	r2,[00009C84]                           ; [pc,#&8]
 6813           	ldr	r3,[r2]
 EA23 0000     	bic.w	r0,r3,r0
 6010           	str	r0,[r2]
@@ -7475,7 +8053,7 @@ EA23 0000     	bic.w	r0,r3,r0
 
 ;; SysCtlIntClear: 00009C88
 SysCtlIntClear proc
-4B01           	ldr	r3,[pc,#&4]                             ; 00009C90
+4B01           	ldr	r3,[00009C90]                           ; [pc,#&4]
 6018           	str	r0,[r3]
 4770           	bx	lr
 00009C8E                                           00 BF               ..
@@ -7486,26 +8064,26 @@ SysCtlIntStatus proc
 B910           	cbnz	r0,$00009C9C
 
 l00009C96:
-4B03           	ldr	r3,[pc,#&C]                             ; 00009CA4
+4B03           	ldr	r3,[00009CA4]                           ; [pc,#&C]
 6818           	ldr	r0,[r3]
 4770           	bx	lr
 
 l00009C9C:
-4B02           	ldr	r3,[pc,#&8]                             ; 00009CA8
+4B02           	ldr	r3,[00009CA8]                           ; [pc,#&8]
 6818           	ldr	r0,[r3]
 4770           	bx	lr
 00009CA2       00 BF 50 E0 0F 40 58 E0 0F 40               ..P..@X..@   
 
 ;; SysCtlLDOSet: 00009CAC
 SysCtlLDOSet proc
-4B01           	ldr	r3,[pc,#&4]                             ; 00009CB4
+4B01           	ldr	r3,[00009CB4]                           ; [pc,#&4]
 6018           	str	r0,[r3]
 4770           	bx	lr
 00009CB2       00 BF 34 E0 0F 40                           ..4..@       
 
 ;; SysCtlLDOGet: 00009CB8
 SysCtlLDOGet proc
-4B01           	ldr	r3,[pc,#&4]                             ; 00009CC0
+4B01           	ldr	r3,[00009CC0]                           ; [pc,#&4]
 6818           	ldr	r0,[r3]
 4770           	bx	lr
 00009CBE                                           00 BF               ..
@@ -7513,15 +8091,15 @@ SysCtlLDOGet proc
 
 ;; SysCtlLDOConfigSet: 00009CC4
 SysCtlLDOConfigSet proc
-4B01           	ldr	r3,[pc,#&4]                             ; 00009CCC
+4B01           	ldr	r3,[00009CCC]                           ; [pc,#&4]
 6018           	str	r0,[r3]
 4770           	bx	lr
 00009CCA                               00 BF 60 E1 0F 40           ..`..@
 
 ;; SysCtlReset: 00009CD0
 SysCtlReset proc
-4B01           	ldr	r3,[pc,#&4]                             ; 00009CD8
-4A02           	ldr	r2,[pc,#&8]                             ; 00009CDC
+4B01           	ldr	r3,[00009CD8]                           ; [pc,#&4]
+4A02           	ldr	r2,[00009CDC]                           ; [pc,#&8]
 601A           	str	r2,[r3]
 
 l00009CD6:
@@ -7535,7 +8113,7 @@ F000 BA04     	b	$0000A0EC
 ;; SysCtlDeepSleep: 00009CE4
 SysCtlDeepSleep proc
 B510           	push	{r4,lr}
-4C06           	ldr	r4,[pc,#&18]                            ; 00009D00
+4C06           	ldr	r4,[00009D00]                           ; [pc,#&18]
 6823           	ldr	r3,[r4]
 F043 0304     	orr	r3,r3,#4
 6023           	str	r3,[r4]
@@ -7549,14 +8127,14 @@ BD10           	pop	{r4,pc}
 
 ;; SysCtlResetCauseGet: 00009D04
 SysCtlResetCauseGet proc
-4B01           	ldr	r3,[pc,#&4]                             ; 00009D0C
+4B01           	ldr	r3,[00009D0C]                           ; [pc,#&4]
 6818           	ldr	r0,[r3]
 4770           	bx	lr
 00009D0A                               00 BF 5C E0 0F 40           ..\..@
 
 ;; SysCtlResetCauseClear: 00009D10
 SysCtlResetCauseClear proc
-4A02           	ldr	r2,[pc,#&8]                             ; 00009D1C
+4A02           	ldr	r2,[00009D1C]                           ; [pc,#&8]
 6813           	ldr	r3,[r2]
 EA23 0000     	bic.w	r0,r3,r0
 6010           	str	r0,[r2]
@@ -7565,7 +8143,7 @@ EA23 0000     	bic.w	r0,r3,r0
 
 ;; SysCtlBrownOutConfigSet: 00009D20
 SysCtlBrownOutConfigSet proc
-4B02           	ldr	r3,[pc,#&8]                             ; 00009D2C
+4B02           	ldr	r3,[00009D2C]                           ; [pc,#&8]
 EA40 0181     	orr	r1,r0,r1,lsl #2
 6019           	str	r1,[r3]
 4770           	bx	lr
@@ -7577,8 +8155,8 @@ F243 32F0     	mov	r2,#&33F0
 B4F0           	push	{r4-r7}
 2740           	mov	r7,#&40
 2600           	mov	r6,#0
-4C29           	ldr	r4,[pc,#&A4]                            ; 00009DE0
-4929           	ldr	r1,[pc,#&A4]                            ; 00009DE4
+4C29           	ldr	r4,[00009DE0]                           ; [pc,#&A4]
+4929           	ldr	r1,[00009DE4]                           ; [pc,#&A4]
 6823           	ldr	r3,[r4]
 F060 0503     	orn	r5,r0,#3
 4019           	ands	r1,r3
@@ -7586,7 +8164,7 @@ F441 6100     	orr	r1,r1,#&800
 4029           	ands	r1,r5
 4002           	ands	r2,r0
 F423 0380     	bic	r3,r3,#&400000
-4D25           	ldr	r5,[pc,#&94]                            ; 00009DE8
+4D25           	ldr	r5,[00009DE8]                           ; [pc,#&94]
 B082           	sub	sp,#8
 F443 6300     	orr	r3,r3,#&800
 430A           	orrs	r2,r1
@@ -7608,7 +8186,7 @@ D9F9           	bls	$00009D6A
 
 l00009D76:
 F000 0303     	and	r3,r0,#3
-4C19           	ldr	r4,[pc,#&64]                            ; 00009DE0
+4C19           	ldr	r4,[00009DE0]                           ; [pc,#&64]
 F022 0203     	bic	r2,r2,#3
 431A           	orrs	r2,r3
 F022 63F8     	bic	r3,r2,#&7C00000
@@ -7625,7 +8203,7 @@ F44F 4300     	mov	r3,#&8000
 B16B           	cbz	r3,$00009DBA
 
 l00009D9E:
-4A13           	ldr	r2,[pc,#&4C]                            ; 00009DEC
+4A13           	ldr	r2,[00009DEC]                           ; [pc,#&4C]
 6813           	ldr	r3,[r2]
 0658           	lsls	r0,r3,#&19
 D503           	bpl	$00009DAE
@@ -7651,7 +8229,7 @@ F421 6100     	bic	r1,r1,#&800
 
 l00009DBE:
 2300           	mov	r3,#0
-4A07           	ldr	r2,[pc,#&1C]                            ; 00009DE0
+4A07           	ldr	r2,[00009DE0]                           ; [pc,#&1C]
 6011           	str	r1,[r2]
 9301           	str	r3,[sp,#&4]
 9B01           	ldr	r3,[sp,#&4]
@@ -7674,8 +8252,13 @@ BCF0           	pop	{r4-r7}
 00009DE0 60 E0 0F 40 0F CC BF FF 58 E0 0F 40 50 E0 0F 40 `..@....X..@P..@
 
 ;; SysCtlClockGet: 00009DF0
+;;   Called from:
+;;     000099F6 (in SSIConfig)
+;;     00009F72 (in UARTConfigSet)
+;;     00009FB8 (in UARTConfigGet)
+;;     0000A102 (in I2CMasterInit)
 SysCtlClockGet proc
-4B18           	ldr	r3,[pc,#&60]                            ; 00009E54
+4B18           	ldr	r3,[00009E54]                           ; [pc,#&60]
 681B           	ldr	r3,[r3]
 F003 0230     	and	r2,r3,#&30
 2A10           	cmps	r2,#&10
@@ -7695,7 +8278,7 @@ l00009E04:
 4770           	bx	lr
 
 l00009E06:
-4A14           	ldr	r2,[pc,#&50]                            ; 00009E58
+4A14           	ldr	r2,[00009E58]                           ; [pc,#&50]
 F3C3 1183     	ubfx	r1,r3,#6,#4
 EB02 0281     	add.w	r2,r2,r1,lsl #2
 6B10           	ldr	r0,[r2,#&30]
@@ -7705,7 +8288,7 @@ l00009E12:
 D411           	bmi	$00009E3A
 
 l00009E16:
-4A11           	ldr	r2,[pc,#&44]                            ; 00009E5C
+4A11           	ldr	r2,[00009E5C]                           ; [pc,#&44]
 6812           	ldr	r2,[r2]
 F3C2 1148     	ubfx	r1,r2,#5,#9
 3102           	adds	r1,#2
@@ -7733,18 +8316,18 @@ FBB0 F0F3     	udiv	r0,r0,r3
 4770           	bx	lr
 
 l00009E4A:
-4805           	ldr	r0,[pc,#&14]                            ; 00009E60
+4805           	ldr	r0,[00009E60]                           ; [pc,#&14]
 E7E1           	b	$00009E12
 
 l00009E4E:
-4805           	ldr	r0,[pc,#&14]                            ; 00009E64
+4805           	ldr	r0,[00009E64]                           ; [pc,#&14]
 E7DF           	b	$00009E12
 00009E52       00 BF 60 E0 0F 40 54 A5 00 00 64 E0 0F 40   ..`..@T...d..@
 00009E60 70 38 39 00 C0 E1 E4 00                         p89.....       
 
 ;; SysCtlPWMClockSet: 00009E68
 SysCtlPWMClockSet proc
-4A03           	ldr	r2,[pc,#&C]                             ; 00009E78
+4A03           	ldr	r2,[00009E78]                           ; [pc,#&C]
 6813           	ldr	r3,[r2]
 F423 13F0     	bic	r3,r3,#&1E0000
 4318           	orrs	r0,r3
@@ -7754,7 +8337,7 @@ F423 13F0     	bic	r3,r3,#&1E0000
 
 ;; SysCtlPWMClockGet: 00009E7C
 SysCtlPWMClockGet proc
-4B02           	ldr	r3,[pc,#&8]                             ; 00009E88
+4B02           	ldr	r3,[00009E88]                           ; [pc,#&8]
 6818           	ldr	r0,[r3]
 F400 10F0     	and	r0,r0,#&1E0000
 4770           	bx	lr
@@ -7763,10 +8346,10 @@ F400 10F0     	and	r0,r0,#&1E0000
 ;; SysCtlADCSpeedSet: 00009E8C
 SysCtlADCSpeedSet proc
 B410           	push	{r4}
-4C0A           	ldr	r4,[pc,#&28]                            ; 00009EB8
-490A           	ldr	r1,[pc,#&28]                            ; 00009EBC
+4C0A           	ldr	r4,[00009EB8]                           ; [pc,#&28]
+490A           	ldr	r1,[00009EBC]                           ; [pc,#&28]
 6823           	ldr	r3,[r4]
-4A0A           	ldr	r2,[pc,#&28]                            ; 00009EC0
+4A0A           	ldr	r2,[00009EC0]                           ; [pc,#&28]
 F423 6370     	bic	r3,r3,#&F00
 4303           	orrs	r3,r0
 6023           	str	r3,[r4]
@@ -7785,7 +8368,7 @@ F423 6370     	bic	r3,r3,#&F00
 
 ;; SysCtlADCSpeedGet: 00009EC4
 SysCtlADCSpeedGet proc
-4B02           	ldr	r3,[pc,#&8]                             ; 00009ED0
+4B02           	ldr	r3,[00009ED0]                           ; [pc,#&8]
 6818           	ldr	r0,[r3]
 F400 6070     	and	r0,r0,#&F00
 4770           	bx	lr
@@ -7794,7 +8377,7 @@ F400 6070     	and	r0,r0,#&F00
 
 ;; SysCtlIOSCVerificationSet: 00009ED4
 SysCtlIOSCVerificationSet proc
-4A05           	ldr	r2,[pc,#&14]                            ; 00009EEC
+4A05           	ldr	r2,[00009EEC]                           ; [pc,#&14]
 6813           	ldr	r3,[r2]
 B918           	cbnz	r0,$00009EE2
 
@@ -7811,7 +8394,7 @@ F043 0308     	orr	r3,r3,#8
 
 ;; SysCtlMOSCVerificationSet: 00009EF0
 SysCtlMOSCVerificationSet proc
-4A05           	ldr	r2,[pc,#&14]                            ; 00009F08
+4A05           	ldr	r2,[00009F08]                           ; [pc,#&14]
 6813           	ldr	r3,[r2]
 B918           	cbnz	r0,$00009EFE
 
@@ -7828,7 +8411,7 @@ F043 0304     	orr	r3,r3,#4
 
 ;; SysCtlPLLVerificationSet: 00009F0C
 SysCtlPLLVerificationSet proc
-4A05           	ldr	r2,[pc,#&14]                            ; 00009F24
+4A05           	ldr	r2,[00009F24]                           ; [pc,#&14]
 6813           	ldr	r3,[r2]
 B918           	cbnz	r0,$00009F1A
 
@@ -7847,7 +8430,7 @@ F443 6380     	orr	r3,r3,#&400
 SysCtlClkVerificationClear proc
 2101           	mov	r1,#1
 2200           	mov	r2,#0
-4B01           	ldr	r3,[pc,#&4]                             ; 00009F34
+4B01           	ldr	r3,[00009F34]                           ; [pc,#&4]
 6019           	str	r1,[r3]
 601A           	str	r2,[r3]
 4770           	bx	lr
@@ -8043,7 +8626,7 @@ F043 0301     	orr	r3,r3,#1
 ;; UARTIntRegister: 0000A078
 UARTIntRegister proc
 B510           	push	{r4,lr}
-4C06           	ldr	r4,[pc,#&18]                            ; 0000A094
+4C06           	ldr	r4,[0000A094]                           ; [pc,#&18]
 42A0           	cmps	r0,r4
 BF0C           	ite	eq
 2415           	moveq	r4,#&15
@@ -8060,7 +8643,7 @@ F7FF BAA4     	b	$000095DC
 ;; UARTIntUnregister: 0000A098
 UARTIntUnregister proc
 B510           	push	{r4,lr}
-4C06           	ldr	r4,[pc,#&18]                            ; 0000A0B4
+4C06           	ldr	r4,[0000A0B4]                           ; [pc,#&18]
 42A0           	cmps	r0,r4
 BF0C           	ite	eq
 2415           	moveq	r4,#&15
@@ -8090,6 +8673,8 @@ EA23 0101     	bic.w	r1,r3,r1
 0000A0CA                               00 BF                       ..   
 
 ;; UARTIntStatus: 0000A0CC
+;;   Called from:
+;;     00008116 (in vUART_ISR)
 UARTIntStatus proc
 B909           	cbnz	r1,$0000A0D2
 
@@ -8103,29 +8688,40 @@ l0000A0D2:
 0000A0D6                   00 BF                               ..       
 
 ;; UARTIntClear: 0000A0D8
+;;   Called from:
+;;     00008120 (in vUART_ISR)
 UARTIntClear proc
 6441           	str	r1,[r0,#&44]
 4770           	bx	lr
 
 ;; CPUcpsie: 0000A0DC
+;;   Called from:
+;;     000094FC (in IntMasterEnable)
 CPUcpsie proc
 B662           	cps	#0
 4770           	bx	lr
 0000A0E0 70 47 00 BF                                     pG..           
 
 ;; CPUcpsid: 0000A0E4
+;;   Called from:
+;;     00009500 (in IntMasterDisable)
 CPUcpsid proc
 B672           	cps	#0
 4770           	bx	lr
 0000A0E8                         70 47 00 BF                     pG..   
 
 ;; CPUwfi: 0000A0EC
+;;   Called from:
+;;     00009CE0 (in SysCtlSleep)
+;;     00009CF0 (in SysCtlDeepSleep)
 CPUwfi proc
 BF30           	wfi
 4770           	bx	lr
 0000A0F0 70 47 00 BF                                     pG..           
 
 ;; I2CMasterInit: 0000A0F4
+;;   Called from:
+;;     00009910 (in OSRAMInit)
 I2CMasterInit proc
 B538           	push	{r3-r5,lr}
 460D           	mov	r5,r1
@@ -8134,8 +8730,8 @@ B538           	push	{r3-r5,lr}
 F042 0210     	orr	r2,r2,#&10
 6202           	str	r2,[r0,#&20]
 F7FF FE75     	bl	$00009DF0
-4B06           	ldr	r3,[pc,#&18]                            ; 0000A120
-4A06           	ldr	r2,[pc,#&18]                            ; 0000A124
+4B06           	ldr	r3,[0000A120]                           ; [pc,#&18]
+4A06           	ldr	r2,[0000A124]                           ; [pc,#&18]
 3801           	subs	r0,#1
 2D01           	cmps	r5,#1
 BF08           	it	eq
@@ -8250,6 +8846,11 @@ I2CSlaveIntDisable proc
 0000A1C6                   00 BF                               ..       
 
 ;; I2CMasterIntStatus: 0000A1C8
+;;   Called from:
+;;     000096D4 (in OSRAMWriteArray)
+;;     0000970C (in OSRAMWriteByte)
+;;     00009742 (in OSRAMWriteFinal)
+;;     00009768 (in OSRAMWriteFinal)
 I2CMasterIntStatus proc
 B921           	cbnz	r1,$0000A1D4
 
@@ -8310,6 +8911,8 @@ I2CSlaveIntClear proc
 0000A206                   00 BF                               ..       
 
 ;; I2CMasterSlaveAddrSet: 0000A208
+;;   Called from:
+;;     000096A8 (in OSRAMWriteFirst)
 I2CMasterSlaveAddrSet proc
 EA42 0241     	orr	r2,r2,r1,lsl #1
 6002           	str	r2,[r0]
@@ -8328,6 +8931,11 @@ F3C0 1080     	ubfx	r0,r0,#6,#1
 4770           	bx	lr
 
 ;; I2CMasterControl: 0000A220
+;;   Called from:
+;;     000096BC (in OSRAMWriteFirst)
+;;     000096F0 (in OSRAMWriteArray)
+;;     0000972C (in OSRAMWriteByte)
+;;     00009760 (in OSRAMWriteFinal)
 I2CMasterControl proc
 6041           	str	r1,[r0,#&4]
 4770           	bx	lr
@@ -8354,6 +8962,11 @@ l0000A238:
 0000A23A                               00 BF                       ..   
 
 ;; I2CMasterDataPut: 0000A23C
+;;   Called from:
+;;     000096B0 (in OSRAMWriteFirst)
+;;     000096E8 (in OSRAMWriteArray)
+;;     00009720 (in OSRAMWriteByte)
+;;     00009758 (in OSRAMWriteFinal)
 I2CMasterDataPut proc
 6081           	str	r1,[r0,#&8]
 4770           	bx	lr
@@ -8464,6 +9077,12 @@ g_pulXtals		; 0000A594
 ;;; Segment .text.memcpy (0000A5C4)
 
 ;; memcpy: 0000A5C4
+;;   Called from:
+;;     0000010A (in prvCopyDataToQueue)
+;;     0000012A (in prvCopyDataToQueue)
+;;     00000188 (in prvCopyDataFromQueue)
+;;     00008466 (in xQueueCRReceive)
+;;     00008504 (in xQueueCRReceiveFromISR)
 memcpy proc
 B5F0           	push	{r4-r7,lr}
 0005           	mov	r5,r0

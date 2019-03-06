@@ -2653,6 +2653,8 @@ l000080BA:
 	halt	
 
 ;; fn00008CCE: 00008CCE
+;;   Called from:
+;;     00012977 (in fn00012702)
 fn00008CCE proc
 	subl2	#00000004,sp
 	movab	FFFE5400,r4
@@ -2818,6 +2820,8 @@ l00008DAC:
 	Invalid	
 
 ;; fn00008EC2: 00008EC2
+;;   Called from:
+;;     0000808B (in fn0000802E)
 fn00008EC2 proc
 	movab	-0130(sp),sp
 	movab	FFFE5470,r6
@@ -3573,6 +3577,8 @@ l000098AD:
 00009A50 7C 00                                           |.             
 
 ;; fn00009A52: 00009A52
+;;   Called from:
+;;     00010FB6 (in fn00010E6A)
 fn00009A52 proc
 	movab	-54(sp),sp
 	movab	FFFE5F38,r6
@@ -3583,7 +3589,7 @@ fn00009A52 proc
 	calls	#01,000192C4
 	movb	r0,-20(fp)
 	pushab	-54(fp)
-	calls	#01,(pc)+                                            ; 00009A8E
+	calls	#01,00009A8E                                         ; (pc)+
 	cvtps	+50E87FFE(r2),#2B,-22FF(fp),+0000C613(ap)
 	pushal	(r6)
 	pushab	+05EB(ap)
@@ -3597,7 +3603,7 @@ fn00009A52 proc
 	ret	
 	movzbl	-35(fp),r2
 	pushab	-54(fp)
-	calls	#01,(pc)+                                            ; 00009ACA
+	calls	#01,00009ACA                                         ; (pc)+
 	bispsw	+52D17FFE(r1)
 	rei	
 	beql	00009AD8
@@ -3622,6 +3628,9 @@ fn00009A52 proc
 	halt	
 
 ;; fn00009B0A: 00009B0A
+;;   Called from:
+;;     0000F8BC (in fn0000F816)
+;;     0000F8CB (in fn0000F816)
 fn00009B0A proc
 	subl2	#00000004,sp
 	movab	FFFE77D8,ap
@@ -3686,7 +3695,7 @@ fn00009BAE proc
 	calls	#08,000192D0
 	pushab	+64(r6)
 	pushab	+000101E8(r6)
-	calls	#02,(pc)+                                            ; 00009C70
+	calls	#02,00009C70                                         ; (pc)+
 	adawi	+7FFE(sp),-60F8(fp)
 	Invalid	
 	pushab	+00000088(r6)
@@ -3696,6 +3705,8 @@ fn00009BAE proc
 	nop	
 
 ;; fn00009C8A: 00009C8A
+;;   Called from:
+;;     00009B38 (in fn00009B0A)
 fn00009C8A proc
 	movab	-0104(sp),sp
 	movab	FFFE5F38,r8
@@ -3800,7 +3811,7 @@ l00009CFF:
 	movl	+0134(r6),r2
 	movb	#41,+16(r2)
 	pushl	+0134(r6)
-	calls	#01,(pc)+                                            ; 00009DC4
+	calls	#01,00009DC4                                         ; (pc)+
 	bisl2	+50D07FFE(r1),r4
 	cmpl	r4,#00018282
 	bneq	00009DDC
@@ -3898,7 +3909,7 @@ l00009CFF:
 	bisl2	#00000801,+0094(r6)
 	clrb	+00AE(r6)
 	pushl	+0138(r6)
-	calls	#01,(pc)+                                            ; 00009F45
+	calls	#01,00009F45                                         ; (pc)+
 	Invalid	
 	bneq	00009F55
 	brw	00009FFD
@@ -4117,7 +4128,7 @@ l0000A17D:
 	movl	+0134(r6),r2
 	movb	#21,+16(r2)
 	pushl	+0134(r6)
-	calls	#01,(pc)+                                            ; 0000A1EC
+	calls	#01,0000A1EC                                         ; (pc)+
 	bisl2	+50D07FFE(r1),r4
 	cmpl	r4,#00018282
 	bneq	0000A204
@@ -4214,7 +4225,7 @@ l0000A17D:
 	bneq	0000A35A
 	brw	0000A41D
 	pushl	r3
-	calls	#01,(pc)+                                            ; 0000A35F
+	calls	#01,0000A35F                                         ; (pc)+
 	blbs	+50D07FFE(r1),0000A3B9
 	blbc	r3,0000A36C
 	brw	0000A41D
@@ -4268,7 +4279,7 @@ l0000A17D:
 	bisl2	#00000801,+0094(r6)
 	clrb	+00AE(r6)
 	pushl	+0138(r6)
-	calls	#01,(pc)+                                            ; 0000A43F
+	calls	#01,0000A43F                                         ; (pc)+
 	Invalid	
 	bneq	0000A44F
 	brw	0000A4F9
@@ -4446,7 +4457,7 @@ l0000A6C4:
 	moval	+0001042B(r6),+00D8(r6)
 	mnegb	#01,+00D6(r6)
 	pushab	(r6)
-	calls	#01,(pc)+                                            ; 0000A71A
+	calls	#01,0000A71A                                         ; (pc)+
 	bsbw	0000A5FF
 	pushaq	+50DD0F50(r8)
 	pushal	+0264(r8)
@@ -4457,7 +4468,7 @@ l0000A6C4:
 	clrq	-(sp)
 	pushal	+000101F0(r6)
 	pushab	+0001031C(r6)
-	calls	#04,(pc)+                                            ; 0000A74A
+	calls	#04,0000A74A                                         ; (pc)+
 	movf	+7FFE(sp),+50DD0F50(r8)
 	pushal	+028A(r8)
 	calls	#02,0000C020
@@ -4502,7 +4513,7 @@ l0000A6C4:
 	movzbl	#F3,-(sp)
 	pushl	+000101F0(r6)
 	pushl	#00000000
-	calls	#0C,(pc)+                                            ; 0000A832
+	calls	#0C,0000A832                                         ; (pc)+
 	halt	
 	moval	+5350D07F(sp),-19CDF8AD(r9)
 	ret	
@@ -4513,7 +4524,7 @@ l0000A6C4:
 	pushal	+02B1(r8)
 	calls	#02,0000C020
 	pushl	+000101F0(r6)
-	calls	#01,(pc)+                                            ; 0000A85A
+	calls	#01,0000A85A                                         ; (pc)+
 	bbs	+7FFE(sp),+5001(r0),0000A866
 	movab	+0169(r6),+00010170(r6)
 	clrl	+0001016C(r6)
@@ -4635,6 +4646,8 @@ l0000A9DE:
 0000AA60 D0 50 5B D0 5B 50 04 01 FC 0F                   .P[.[P....     
 
 ;; fn0000AA6A: 0000AA6A
+;;   Called from:
+;;     00009B14 (in fn00009B0A)
 fn0000AA6A proc
 	subl2	#00000018,sp
 	movab	FFFE5F38,r11
@@ -5242,6 +5255,8 @@ l0000B06F:
 0000B070 0C 00                                           ..             
 
 ;; fn0000B072: 0000B072
+;;   Called from:
+;;     0001871C (in fn000186B2)
 fn0000B072 proc
 	subl2	#00000004,sp
 	movab	FFFFB3D0,r2
@@ -5291,7 +5306,7 @@ fn0000B192 proc
 l0000B1AB:
 	pushab	+000101FC(r2)
 	pushl	#00000000
-	calls	#02,(pc)+                                            ; 0000B1B6
+	calls	#02,0000B1B6                                         ; (pc)+
 	addf2	+50D07FFE(r4),r3
 	blbc	r0,0000B1C7
 
@@ -5322,7 +5337,7 @@ l0000B1DF:
 	pushl	#00000030
 	pushl	+000101F0(r2)
 	pushl	#00000000
-	calls	#0C,(pc)+                                            ; 0000B204
+	calls	#0C,0000B204                                         ; (pc)+
 	bisl2	00013206,+5150(r0)
 	blbs	r0,0000B21D
 
@@ -5446,7 +5461,7 @@ fn0000B86E proc
 	movab	FFFE5F38,r3
 	movab	FFFE77D8,r2
 	pushl	+0138(r2)
-	calls	#01,(pc)+                                            ; 0000B886
+	calls	#01,0000B886                                         ; (pc)+
 	bisw2	+50D07FFE(r1),r1
 	blbs	r0,0000B8AC
 
@@ -5465,7 +5480,7 @@ l0000B8AC:
 	movl	+0138(r2),r0
 	movl	+04(ap),+28(r0)
 	pushl	+0138(r2)
-	calls	#01,(pc)+                                            ; 0000B8C7
+	calls	#01,0000B8C7                                         ; (pc)+
 	movw	+50D07FFE(r1),r1
 	blbs	r0,0000B8F1
 
@@ -5512,7 +5527,7 @@ l0000B913:
 
 l0000B940:
 	pushl	+0138(r3)
-	calls	#01,(pc)+                                            ; 0000B947
+	calls	#01,0000B947                                         ; (pc)+
 	bisw2	+50D07FFE(r1),r1
 	blbs	r0,0000B96D
 
@@ -5531,7 +5546,7 @@ l0000B96D:
 	movl	+0138(r3),r0
 	movl	+04(ap),+28(r0)
 	pushl	+0138(r3)
-	calls	#01,(pc)+                                            ; 0000B988
+	calls	#01,0000B988                                         ; (pc)+
 	bisb2	+50D07FFE(r1),r1
 	blbs	r0,0000B9B2
 
@@ -5607,6 +5622,10 @@ l0000B9E1:
 0000BBB0 FC 03                                           ..             
 
 ;; fn0000BBB2: 0000BBB2
+;;   Called from:
+;;     0000BD0A (in fn0000BC8A)
+;;     0000BD0A (in fn0000BD08)
+;;     0000BD28 (in fn0000BD1C)
 fn0000BBB2 proc
 	subl2	#00000004,sp
 	movab	FFFE77D8,r5
@@ -5663,6 +5682,8 @@ l0000BC63:
 0000BC85                D5 50 01 1C 00                        .P...     
 
 ;; fn0000BC8A: 0000BC8A
+;;   Called from:
+;;     000175AE (in fn000173CA)
 fn0000BC8A proc
 	subl2	#00000008,sp
 	pushl	#00000000
@@ -5696,6 +5717,9 @@ fn0000BD08 proc
 	movl	r4,-00000008(fp)
 
 ;; fn0000BD1C: 0000BD1C
+;;   Called from:
+;;     0000BD15 (in fn0000BD08)
+;;     0000BD15 (in fn0000BC8A)
 fn0000BD1C proc
 	pushal	-08(fp)
 	calls	#01,000192A4
@@ -5733,6 +5757,8 @@ l0000BD53:
 0000BDC0 FC 00                                           ..             
 
 ;; fn0000BDC2: 0000BDC2
+;;   Called from:
+;;     00011766 (in fn00010E6A)
 fn0000BDC2 proc
 	subl2	#00000008,sp
 	movab	FFFE5F38,r7
@@ -5749,7 +5775,7 @@ fn0000BDC2 proc
 	moval	+0001042B(r6),+00D8(r6)
 	mnegb	#01,+00D6(r6)
 	pushab	(r6)
-	calls	#01,(pc)+                                            ; 0000BE23
+	calls	#01,0000BE23                                         ; (pc)+
 	bsbw	0000BD08
 	pushaq	+50DD0F50(r8)
 	pushal	+05BA(r7)
@@ -5760,7 +5786,7 @@ fn0000BDC2 proc
 	clrq	-(sp)
 	pushal	+000101F0(r6)
 	pushab	+0001031C(r6)
-	calls	#04,(pc)+                                            ; 0000BE53
+	calls	#04,0000BE53                                         ; (pc)+
 	movf	+7FFE(sp),+50DD0F50(r8)
 	pushal	+05D9(r7)
 	calls	#02,0000C020
@@ -5791,7 +5817,7 @@ fn0000BDC2 proc
 	pushl	#00000032
 	pushl	+000101F0(r6)
 	pushl	#00000000
-	calls	#0C,(pc)+                                            ; 0000BED9
+	calls	#0C,0000BED9                                         ; (pc)+
 	halt	
 	moval	+5350D07F(sp),-19CDF8AD(r9)
 	ret	
@@ -5802,7 +5828,7 @@ fn0000BDC2 proc
 	pushal	+05F9(r7)
 	calls	#02,0000C020
 	pushl	+000101F0(r6)
-	calls	#01,(pc)+                                            ; 0000BF01
+	calls	#01,0000BF01                                         ; (pc)+
 	bbs	+7FFE(sp),+5001(sp),0000BF0D
 	movl	+08(ap),r2
 	moval	+00010544(r6),r3
@@ -5821,7 +5847,7 @@ fn0000BDC2 proc
 	calls	#08,000192D0
 	pushl	r3
 	pushab	+000101E8(r6)
-	calls	#02,(pc)+                                            ; 0000BF5E
+	calls	#02,0000BF5E                                         ; (pc)+
 	adawi	+7FFE(sp),-20F8(fp)
 	Invalid	
 	nop	
@@ -5847,7 +5873,7 @@ fn0000BDC2 proc
 	pushl	#00000036
 	pushl	+000101F0(r6)
 	pushl	#00000000
-	calls	#0C,(pc)+                                            ; 0000BFCD
+	calls	#0C,0000BFCD                                         ; (pc)+
 	halt	
 	moval	+5350D07F(sp),-19CDF8AD(r9)
 	ret	
@@ -5858,10 +5884,10 @@ fn0000BDC2 proc
 	pushal	+0616(r7)
 	calls	#02,0000C020
 	pushl	+000101F0(r6)
-	calls	#01,(pc)+                                            ; 0000BFF4
+	calls	#01,0000BFF4                                         ; (pc)+
 	bbs	+7FFE(sp),+5001(sp),0000C000
 	pushl	+000101F0(r6)
-	calls	#01,(pc)+                                            ; 0000C005
+	calls	#01,0000C005                                         ; (pc)+
 	bbs	+7FFE(sp),+50DD0E50(r8),0000BFEE
 	divl3	#00000033,#00000006,-31F550FE(r11)
 	nop	
@@ -5871,6 +5897,17 @@ fn0000BDC2 proc
 	bvc	0000C022
 
 ;; fn0000C022: 0000C022
+;;   Called from:
+;;     0000B1D0 (in fn0000B192)
+;;     0000B214 (in fn0000B192)
+;;     0000B896 (in fn0000B86E)
+;;     0000B8A7 (in fn0000B86E)
+;;     0000B8D7 (in fn0000B86E)
+;;     0000B8E8 (in fn0000B86E)
+;;     0000B957 (in fn0000B8F6)
+;;     0000B968 (in fn0000B8F6)
+;;     0000B998 (in fn0000B8F6)
+;;     0000B9A9 (in fn0000B8F6)
 fn0000C022 proc
 	subl2	#00000010,sp
 	movab	FFFE5F38,r4
@@ -5921,6 +5958,9 @@ l0000C094:
 0000C0CC                                     7C 00                   |. 
 
 ;; fn0000C0CE: 0000C0CE
+;;   Called from:
+;;     000109DC (in fn000108D2)
+;;     00010A85 (in fn000108D2)
 fn0000C0CE proc
 	subl2	#00000004,sp
 	movab	FFFE77D8,r6
@@ -5956,13 +5996,13 @@ l0000C0F7:
 	moval	+000106C5(r6),+00010A19(r6)
 	mnegb	#01,+00010A17(r6)
 	pushab	+000109C5(r6)
-	calls	#01,(pc)+                                            ; 0000C193
+	calls	#01,0000C193                                         ; (pc)+
 	bsbw	0000C078
 	pushaq	+50D40350(r8)
 	ret	
 	clrl	+00010A78(r6)
 	pushab	+000109C5(r6)
-	calls	#01,(pc)+                                            ; 0000C1AC
+	calls	#01,0000C1AC                                         ; (pc)+
 	Invalid	
 	pushl	+04(ap)
 	pushal	+000106C5(r6)
@@ -5972,7 +6012,7 @@ l0000C0F7:
 
 l0000C1CB:
 	pushab	+000109C5(r6)
-	calls	#01,(pc)+                                            ; 0000C1D4
+	calls	#01,0000C1D4                                         ; (pc)+
 	Invalid	
 	movl	#00000001,+00010A78(r6)
 	clrl	r0
@@ -6000,7 +6040,7 @@ l0000C226:
 	clrl	+00010AA4(r2)
 	pushal	+00010AA4(r2)
 	pushl	#00000000
-	calls	#02,(pc)+                                            ; 0000C237
+	calls	#02,0000C237                                         ; (pc)+
 	adawi	+50E97FFE(r2),-0F71(r11)[r6]
 	Invalid	
 	Invalid	
@@ -6104,6 +6144,8 @@ l0000C354:
 0000C6F0 00 00 00 D0 59 50 04 01 FC 07                   ....YP....     
 
 ;; fn0000C6FA: 0000C6FA
+;;   Called from:
+;;     00010D6E (in fn000108D2)
 fn0000C6FA proc
 	movab	-00E0(sp),sp
 	movab	FFFE5F38,r8
@@ -6149,7 +6191,7 @@ l0000C7A5:
 	pushal	-08(fp)
 	pushal	-28(fp)
 	pushab	-30(fp)
-	calls	#03,(pc)+                                            ; 0000C7B1
+	calls	#03,0000C7B1                                         ; (pc)+
 	ashl	+50E87FFE(r2),#00000004,+5003(r0)
 	ret	
 0000C7BC                                     E1 01 AD F8             ....
@@ -6339,7 +6381,7 @@ l0000CAA4:
 	movl	+04(ap),-00D4(fp)
 	mnegb	#01,-00D6(fp)
 	pushab	-80(fp)
-	calls	#01,(pc)+                                            ; 0000CB03
+	calls	#01,0000CB03                                         ; (pc)+
 	bsbw	0000C9E8
 	pushaq	+50D14350(r8)
 	caseb	+0001(r0)[r10],#12,#3A
@@ -6519,6 +6561,8 @@ l0000CCAA:
 0000CE50 0C 00                                           ..             
 
 ;; fn0000CE52: 0000CE52
+;;   Called from:
+;;     0000D734 (in fn0000D69A)
 fn0000CE52 proc
 	subl2	#00000004,sp
 	movl	+04(ap),r0
@@ -6593,7 +6637,7 @@ l0000CED0:
 	clrq	-(sp)
 	pushaw	-06(fp)
 	pushab	+00010CF8(r2)
-	calls	#04,(pc)+                                            ; 0000CEDE
+	calls	#04,0000CEDE                                         ; (pc)+
 	movf	+7FFE(sp),+5350(r0)
 	blbc	r0,0000CF13
 
@@ -6607,7 +6651,7 @@ l0000CEE8:
 	pushl	#00000027
 	cvtwl	-06(fp),-(sp)
 	pushl	#00000000
-	calls	#0C,(pc)+                                            ; 0000CF01
+	calls	#0C,0000CF01                                         ; (pc)+
 	halt	
 	Invalid	
 	xorw3	-60FE0482(r10),-16800122(r0),r3
@@ -6684,6 +6728,9 @@ l0000CF85:
 	movzwl	#0000,+5E04(r2)
 
 ;; fn0000CFBA: 0000CFBA
+;;   Called from:
+;;     0000AC94 (in fn0000AA6A)
+;;     0000B08F (in fn0000B072)
 fn0000CFBA proc
 	subl2	#00000004,sp
 	movl	+04(ap),r3
@@ -7016,6 +7063,9 @@ l0000D2AA:
 0000D390 54 CA D0 55 EF 6B B1 FE FF 04 D5 50 7C 00       T..U.k.....P|. 
 
 ;; fn0000D39E: 0000D39E
+;;   Called from:
+;;     0000CFCA (in fn0000CFBA)
+;;     00010FDC (in fn00010E6A)
 fn0000D39E proc
 	subl2	#00000004,sp
 	movab	FFFF8504,r6
@@ -7068,6 +7118,8 @@ l0000D3FD:
 0000D403          01 00 00                                  ...         
 
 ;; fn0000D406: 0000D406
+;;   Called from:
+;;     00010D7D (in fn000108D2)
 fn0000D406 proc
 	subl2	#00000004,sp
 	movab	FFFF8504,ap
@@ -7109,6 +7161,8 @@ fn0000D422 proc
 0000D4A0 04 00                                           ..             
 
 ;; fn0000D4A2: 0000D4A2
+;;   Called from:
+;;     00010FC5 (in fn00010E6A)
 fn0000D4A2 proc
 	subl2	#00000004,sp
 	movab	FFFFB3D0,r2
@@ -7169,6 +7223,8 @@ l0000D562:
 0000D563          01 00 00                                  ...         
 
 ;; fn0000D566: 0000D566
+;;   Called from:
+;;     0000F8DA (in fn0000F816)
 fn0000D566 proc
 	subl2	#00000004,sp
 	movab	FFFFB3D0,ap
@@ -7197,6 +7253,13 @@ l0000D5B2:
 0000D5BC                                     FC 00                   .. 
 
 ;; fn0000D5BE: 0000D5BE
+;;   Called from:
+;;     00011B0E (in fn000117AA)
+;;     00011CE9 (in fn00011CDA)
+;;     00012E42 (in fn00012D86)
+;;     000130D5 (in fn00012D86)
+;;     0001741A (in fn000173CA)
+;;     000175FC (in fn000173CA)
 fn0000D5BE proc
 	subl2	#00000004,sp
 	movab	FFFFB3D0,r4
@@ -7282,6 +7345,14 @@ l0000D692:
 0000D696                   D5 50 7C 00                         .P|.     
 
 ;; fn0000D69A: 0000D69A
+;;   Called from:
+;;     0001527C (in fn00015256)
+;;     000152A8 (in fn00015256)
+;;     00017F90 (in fn00017F4E)
+;;     00017FF4 (in fn00017F4E)
+;;     00018054 (in fn00017F4E)
+;;     000185E8 (in fn000185AE)
+;;     00018644 (in fn000185AE)
 fn0000D69A proc
 	subl2	#00000004,sp
 	movab	FFFFB3D0,r4
@@ -7475,6 +7546,12 @@ l0000D7EA:
 0000DC70 F1 FF FF 04 FC 0F                               ......         
 
 ;; fn0000DC76: 0000DC76
+;;   Called from:
+;;     000110B3 (in fn00010E6A)
+;;     00012CE1 (in fn00012A2A)
+;;     00012D4A (in fn00012A2A)
+;;     000132EF (in fn000132B7)
+;;     000147D0 (in fn00014355)
 fn0000DC76 proc
 	subl2	#0000000C,sp
 	movab	00007CC8,r10
@@ -7598,6 +7675,8 @@ l0000E253:
 0000E258                         04 00                           ..     
 
 ;; fn0000E25A: 0000E25A
+;;   Called from:
+;;     0001069D (in fn00010676)
 fn0000E25A proc
 	subl2	#00000004,sp
 	movl	+04(ap),r2
@@ -7610,6 +7689,11 @@ fn0000E25A proc
 0000E274             04 00                                   ..         
 
 ;; fn0000E276: 0000E276
+;;   Called from:
+;;     00010600 (in fn000105F2)
+;;     000106AB (in fn00010676)
+;;     00011B5B (in fn000117AA)
+;;     00011B6C (in fn000117AA)
 fn0000E276 proc
 	subl2	#00000004,sp
 	movl	+04(ap),r1
@@ -7627,6 +7711,8 @@ fn0000E276 proc
 0000E2A4             FC 00                                   ..         
 
 ;; fn0000E2A6: 0000E2A6
+;;   Called from:
+;;     0001222F (in fn000121EA)
 fn0000E2A6 proc
 	subl2	#00000004,sp
 	movab	00007C24,r7
@@ -7660,6 +7746,8 @@ l0000E2E2:
 0000E2E8                         FC 03                           ..     
 
 ;; fn0000E2EA: 0000E2EA
+;;   Called from:
+;;     0000CB8D (in fn0000C6FA)
 fn0000E2EA proc
 	subl2	#00000004,sp
 	movab	0001934C,r8
@@ -8047,6 +8135,8 @@ l0000E3D3:
 0000F450 32 D5 57 12 2E D5 AD                            2.W....        
 
 ;; fn0000F457: 0000F457
+;;   Called from:
+;;     0000C354 (in fn0000C1FE)
 fn0000F457 proc
 	Invalid	
 	pushl	#00000000
@@ -8972,6 +9062,9 @@ l000100ED:
 	movab	0000E258,r11
 
 ;; fn000100F4: 000100F4
+;;   Called from:
+;;     000100ED (in fn000100C2)
+;;     000105C1 (in fn000101BB)
 fn000100F4 proc
 	pushl	+04(ap)
 	calls	#01,(r11)
@@ -9056,15 +9149,25 @@ fn000101BB proc
 	bpt	
 
 ;; fn000101BC: 000101BC
+;;   Called from:
+;;     000101B7 (in fn000100F4)
+;;     000101BB (in fn000101BB)
 fn000101BC proc
 	cmpl	r0,#00004453
 	bgeq	000101C8
 
 ;; fn000101C5: 000101C5
+;;   Called from:
+;;     000101C3 (in fn000101BC)
+;;     000101C3 (in fn000101BC)
+;;     000105B1 (in fn000105B1)
 fn000101C5 proc
 	brw	000105B1
 
 ;; fn000101C8: 000101C8
+;;   Called from:
+;;     000101C3 (in fn000101BC)
+;;     000101C3 (in fn000101BC)
 fn000101C8 proc
 	bneq	000101CD
 
@@ -9396,6 +9499,12 @@ l000105AD:
 	ret	
 
 ;; fn000105B1: 000105B1
+;;   Called from:
+;;     0001018D (in fn000100F4)
+;;     000101B9 (in fn000100F4)
+;;     000101C5 (in fn000101C5)
+;;     000101D6 (in fn000101C8)
+;;     000103E0 (in fn000101C8)
 fn000105B1 proc
 	addl3	#00000004,r8,r1
 	subl2	r1,(r9)
@@ -9407,6 +9516,9 @@ l000105C1:
 	brw	000100F4
 
 ;; fn000105C4: 000105C4
+;;   Called from:
+;;     000100EA (in fn000100C2)
+;;     000105BF (in fn000105B1)
 fn000105C4 proc
 	tstl	+40(r2)
 	bneq	000105EC
@@ -9429,6 +9541,8 @@ l000105EC:
 000105F0 1C 00                                           ..             
 
 ;; fn000105F2: 000105F2
+;;   Called from:
+;;     000103D0 (in fn000101C8)
 fn000105F2 proc
 	subl2	#00000004,sp
 	cmpl	+08(ap),#00000004
@@ -9489,6 +9603,8 @@ l00010664:
 00010671    D5 50 01 FC 07                                .P...         
 
 ;; fn00010676: 00010676
+;;   Called from:
+;;     00010642 (in fn000105F2)
 fn00010676 proc
 	subl2	#00000004,sp
 	movab	FFFFB3D0,r2
@@ -9541,6 +9657,8 @@ l000106FB:
 00010840 D0 02 56 D0 56 50 04 01 0C 00                   ..V.VP....     
 
 ;; fn0001084A: 0001084A
+;;   Called from:
+;;     00018706 (in fn000186B2)
 fn0001084A proc
 	subl2	#00000004,sp
 	movab	FFFFB3D0,r2
@@ -9565,6 +9683,11 @@ l00010862:
 00010890 0C 00                                           ..             
 
 ;; fn00010892: 00010892
+;;   Called from:
+;;     0000F87A (in fn0000F816)
+;;     0001012C (in fn000100F4)
+;;     000103FD (in fn000101C8)
+;;     0001778D (in fn00017772)
 fn00010892 proc
 	subl2	#00000004,sp
 	movl	+04(ap),r3
@@ -10174,6 +10297,9 @@ l00010DCF:
 00010E60 F3 C5 00 00 04 D5 50 01 FC 0F                   ......P...     
 
 ;; fn00010E6A: 00010E6A
+;;   Called from:
+;;     00010A34 (in fn000108D2)
+;;     00010B39 (in fn000108D2)
 fn00010E6A proc
 	subl2	#0000000C,sp
 	movab	FFFE67AC,r7
@@ -10982,6 +11108,9 @@ l000117A3:
 000117A7                      01 FC 03                          ...     
 
 ;; fn000117AA: 000117AA
+;;   Called from:
+;;     00011041 (in fn00010E6A)
+;;     00011085 (in fn00010E6A)
 fn000117AA proc
 	subl2	#0000001C,sp
 	movab	FFFE67AC,r8
@@ -11243,6 +11372,9 @@ l00011B1D:
 00011C00 D0 01 54 D0 54 50 04 01 04 00                   ..T.TP....     
 
 ;; fn00011C0A: 00011C0A
+;;   Called from:
+;;     00012E96 (in fn00012D86)
+;;     0001748E (in fn000173CA)
 fn00011C0A proc
 	subl2	#00000004,sp
 	movab	FFFFB3D0,r2
@@ -11329,6 +11461,8 @@ l00011CD5:
 00011CD8                         1C 00                           ..     
 
 ;; fn00011CDA: 00011CDA
+;;   Called from:
+;;     00011C14 (in fn00011C0A)
 fn00011CDA proc
 	subl2	#00000030,sp
 	movab	FFFFB3D0,r2
@@ -11411,6 +11545,8 @@ l00011CF8:
 00011ED0 D4 50 04 00 00 00                               .P....         
 
 ;; fn00011ED6: 00011ED6
+;;   Called from:
+;;     0000D7C7 (in fn0000D69A)
 fn00011ED6 proc
 	subl2	#00000004,sp
 	movab	FFFFB3D0,r0
@@ -11424,6 +11560,8 @@ fn00011ED6 proc
 00011F04             0C 00                                   ..         
 
 ;; fn00011F06: 00011F06
+;;   Called from:
+;;     0000D7D8 (in fn0000D69A)
 fn00011F06 proc
 	subl2	#00000004,sp
 	movab	FFFFB3D0,r2
@@ -11525,6 +11663,9 @@ l0001224B:
 00012250 FC 03                                           ..             
 
 ;; fn00012252: 00012252
+;;   Called from:
+;;     000121FD (in fn000121EA)
+;;     0001223B (in fn000121EA)
 fn00012252 proc
 	subl2	#00000020,sp
 	movab	FFFFB3D0,r2
@@ -11692,13 +11833,17 @@ l000124F8:
 000124FB                                  00 04 00                  ... 
 
 ;; fn000124FE: 000124FE
+;;   Called from:
+;;     0000D72B (in fn0000D69A)
+;;     000125CF (in fn000125CA)
+;;     00012606 (in fn000125CA)
 fn000124FE proc
 	subl2	#00000004,sp
 	movab	FFFF955C,r2
 
 l00012503:
 	polyf	-(r0),+7E7C52FF(sp),#3F
-	subw2	#0008,(pc)+                                          ; 0001250E
+	subw2	#0008,0001250E                                       ; (pc)+
 	subd2	-21AF60FC(r11),-5DAF2F81(sp)
 	bgtr	00012503
 
@@ -11713,7 +11858,7 @@ l0001251B:
 	pushl	#00000027
 	cvtwl	+08(r2),-(sp)
 	pushl	#00000000
-	calls	#0C,(pc)+                                            ; 0001253B
+	calls	#0C,0001253B                                         ; (pc)+
 	halt	
 	Invalid	
 	blbs	r0,0001254B
@@ -11740,7 +11885,7 @@ l0001251B:
 	pushl	#00000023
 	cvtwl	+08(r2),-(sp)
 	pushl	#00000000
-	calls	#0C,(pc)+                                            ; 0001258D
+	calls	#0C,0001258D                                         ; (pc)+
 	halt	
 	Invalid	
 	blbs	r0,0001259D
@@ -11751,7 +11896,7 @@ l0001251B:
 	movl	+14(r2),r0
 	ret	
 	cvtwl	+08(r2),-(sp)
-	calls	#01,(pc)+                                            ; 000125B3
+	calls	#01,000125B3                                         ; (pc)+
 	bbs	+7FFE(sp),-5DB0(r0),000125CF
 	blbs	r0,000125C3
 	movl	+14(r2),r0
@@ -12183,6 +12328,8 @@ l000129C2:
 	nop	
 
 ;; fn00012A2A: 00012A2A
+;;   Called from:
+;;     0001104E (in fn00010E6A)
 fn00012A2A proc
 	subl2	#00000004,sp
 	movab	FFFE6858,r5
@@ -13042,6 +13189,10 @@ l0001328C:
 	calls	#04,(r2)
 
 ;; fn000132B7: 000132B7
+;;   Called from:
+;;     00013286 (in fn0001325E)
+;;     0001328A (in fn0001325E)
+;;     000132B4 (in fn0001325E)
 fn000132B7 proc
 	addl3	#0000001E,+0000C67E(r5),r3
 	movzwl	+0000C670(r5),r2
@@ -14935,6 +15086,11 @@ fn00014353 proc
 	incl	r4
 
 ;; fn00014355: 00014355
+;;   Called from:
+;;     00013D9B (in fn000132B7)
+;;     00013DF0 (in fn000132B7)
+;;     00013E1B (in fn000132B7)
+;;     00014353 (in fn00014353)
 fn00014355 proc
 	movzbl	(r7),r2
 	bbc	#00000001,r2,0001438D
@@ -16165,6 +16321,8 @@ l0001492E:
 	remque	+5E08(r2),(sp)+
 
 ;; fn00015106: 00015106
+;;   Called from:
+;;     000136C0 (in fn000132B7)
 fn00015106 proc
 	subl2	#00000008,sp
 	movab	FFFFB3D0,r4
@@ -16294,6 +16452,12 @@ l0001524F:
 00015254             FC 00                                   ..         
 
 ;; fn00015256: 00015256
+;;   Called from:
+;;     00016804 (in fn000167AA)
+;;     0001684F (in fn000167AA)
+;;     000168A6 (in fn000167AA)
+;;     000169B4 (in fn000167AA)
+;;     000169FF (in fn000167AA)
 fn00015256 proc
 	subl2	#00000004,sp
 	movab	FFFFB3D0,r2
@@ -16377,6 +16541,8 @@ l00015302:
 00015306                   D5 50 FC 0F                         .P..     
 
 ;; fn0001530A: 0001530A
+;;   Called from:
+;;     0001691C (in fn000167AA)
 fn0001530A proc
 	subl2	#00000034,sp
 	movab	FFFFB3D0,r5
@@ -16782,6 +16948,8 @@ fn0001530A proc
 	remque	+5E34(r2),(sp)+
 
 ;; fn00015896: 00015896
+;;   Called from:
+;;     00016985 (in fn000167AA)
 fn00015896 proc
 	subl2	#00000034,sp
 	movab	FFFFB3D0,r5
@@ -17187,6 +17355,8 @@ fn00015896 proc
 	remque	+5E2C(r2),(sp)+
 
 ;; fn00015E22: 00015E22
+;;   Called from:
+;;     00016A65 (in fn000167AA)
 fn00015E22 proc
 	subl2	#0000002C,sp
 	movab	FFFFB3D0,r6
@@ -17539,6 +17709,8 @@ fn00015E22 proc
 	remque	+5E2C(r2),(sp)+
 
 ;; fn000162E6: 000162E6
+;;   Called from:
+;;     00016ABD (in fn000167AA)
 fn000162E6 proc
 	subl2	#0000002C,sp
 	movab	FFFFB3D0,r6
@@ -18672,6 +18844,8 @@ l0001765A:
 00017660 7C 00                                           |.             
 
 ;; fn00017662: 00017662
+;;   Called from:
+;;     00013138 (in fn00012D86)
 fn00017662 proc
 	subl2	#00000004,sp
 	tstl	+04(ap)
@@ -18829,6 +19003,8 @@ l0001776C:
 00017770 0C 00                                           ..             
 
 ;; fn00017772: 00017772
+;;   Called from:
+;;     00013382 (in fn000132B7)
 fn00017772 proc
 	subl2	#00000004,sp
 	movab	FFFE69A8,r3
@@ -18855,6 +19031,8 @@ fn00017772 proc
 000177C6                   00 00 FC 0F                         ....     
 
 ;; fn000177CA: 000177CA
+;;   Called from:
+;;     00017F37 (in fn00017DEE)
 fn000177CA proc
 	subl2	#0000000C,sp
 	movab	FFFFB3D0,r6
@@ -19169,6 +19347,8 @@ fn000177CA proc
 	halt	
 
 ;; fn00017C2E: 00017C2E
+;;   Called from:
+;;     0001869A (in fn000185AE)
 fn00017C2E proc
 	subl2	#00000004,sp
 	movab	FFFFB3D0,r4
@@ -19297,6 +19477,8 @@ fn00017C2E proc
 	Invalid	
 
 ;; fn00017DEE: 00017DEE
+;;   Called from:
+;;     000186A5 (in fn000185AE)
 fn00017DEE proc
 	movab	-0488(sp),sp
 	movab	FFFFB3D0,r3
@@ -19433,6 +19615,8 @@ l00017F46:
 00017F4A                               D5 50 FC 0F                 .P.. 
 
 ;; fn00017F4E: 00017F4E
+;;   Called from:
+;;     00018690 (in fn000185AE)
 fn00017F4E proc
 	movab	-0540(sp),sp
 	movab	FFFFB3D0,r5
@@ -20021,6 +20205,8 @@ l00018181:
 	Invalid	
 
 ;; fn000185AE: 000185AE
+;;   Called from:
+;;     000186D5 (in fn000186B2)
 fn000185AE proc
 	subl2	#00000004,sp
 	movab	FFFFB3D0,r4
@@ -20191,6 +20377,8 @@ l00018723:
 00018726                   D5 50 1C 00                         .P..     
 
 ;; fn0001872A: 0001872A
+;;   Called from:
+;;     00010D63 (in fn000108D2)
 fn0001872A proc
 	subl2	#0000000C,sp
 	movab	FFFFB3D0,r3
@@ -20236,6 +20424,17 @@ l00018787:
 0001878A                               D5 50 FC 0F                 .P.. 
 
 ;; fn0001878E: 0001878E
+;;   Called from:
+;;     00016828 (in fn000167AA)
+;;     00016875 (in fn000167AA)
+;;     000168D7 (in fn000167AA)
+;;     00016940 (in fn000167AA)
+;;     000169D8 (in fn000167AA)
+;;     00016A30 (in fn000167AA)
+;;     00016A88 (in fn000167AA)
+;;     00017E9D (in fn00017DEE)
+;;     00017EE5 (in fn00017DEE)
+;;     00018144 (in fn00017F4E)
 fn0001878E proc
 	movab	-05D0(sp),sp
 	moval	-008C(fp),r2
@@ -20707,6 +20906,23 @@ l00018BEE:
 00018BF2       D5 50 0C 00                                 .P..         
 
 ;; fn00018BF6: 00018BF6
+;;   Called from:
+;;     0001683C (in fn000167AA)
+;;     00016889 (in fn000167AA)
+;;     00016893 (in fn000167AA)
+;;     000168EB (in fn000167AA)
+;;     000168F5 (in fn000167AA)
+;;     000168FF (in fn000167AA)
+;;     00016954 (in fn000167AA)
+;;     0001695E (in fn000167AA)
+;;     00016968 (in fn000167AA)
+;;     000169EC (in fn000167AA)
+;;     00016A44 (in fn000167AA)
+;;     00016A4E (in fn000167AA)
+;;     00016A9C (in fn000167AA)
+;;     00016AA6 (in fn000167AA)
+;;     00016AC8 (in fn000167AA)
+;;     00016AD2 (in fn000167AA)
 fn00018BF6 proc
 	subl2	#00000004,sp
 	movl	+04(ap),r2
@@ -20731,6 +20947,12 @@ l00018C15:
 00018C30 02 D6 51 D0 51 50 04 01 FC 0F                   ..Q.QP....     
 
 ;; fn00018C3A: 00018C3A
+;;   Called from:
+;;     00018C77 (in fn00018C3A)
+;;     00018CA5 (in fn00018C3A)
+;;     00018E34 (in fn00018C3A)
+;;     00018E6B (in fn00018C3A)
+;;     00018F0D (in fn00018C3A)
 fn00018C3A proc
 	subl2	#00000004,sp
 	movab	0001934C,r10
@@ -21178,6 +21400,10 @@ l00018F1A:
 00018F20 00 00                                           ..             
 
 ;; fn00018F22: 00018F22
+;;   Called from:
+;;     00010AC8 (in fn000108D2)
+;;     00010B78 (in fn000108D2)
+;;     00010E9A (in fn00010E6A)
 fn00018F22 proc
 	subl2	#00000004,sp
 	tstb	+04(ap)
@@ -21225,6 +21451,8 @@ l00018F5E:
 00018F61    00 00 00 3C 00                                ...<.         
 
 ;; fn00018F66: 00018F66
+;;   Called from:
+;;     0000975A (in fn00009746)
 fn00018F66 proc
 	movab	-00A0(sp),sp
 	movc5	
@@ -21238,13 +21466,16 @@ fn00018F66 proc
 	pushl	sp
 	pushab	+08(sp)
 	pushab	-1C(fp)
-	calls	#03,(pc)+                                            ; 00018FA2
+	calls	#03,00018FA2                                         ; (pc)+
 	bgeq	00018F82
 	Invalid	
 	pushaq	#00000004
 	Invalid	
 
 ;; fn00018FA9: 00018FA9
+;;   Called from:
+;;     00009797 (in fn00009746)
+;;     00009899 (in fn00009746)
 fn00018FA9 proc
 	movab	00019320,r6
 	movab	-00A8(sp),sp
@@ -21259,7 +21490,7 @@ fn00018FA9 proc
 	pushl	sp
 	pushab	+10(sp)
 	pushab	-1C(fp)
-	calls	#03,(pc)+                                            ; 00018FE8
+	calls	#03,00018FE8                                         ; (pc)+
 	bgeq	00018FC8
 	Invalid	
 	pushaq	+5250(r0)
@@ -21334,7 +21565,7 @@ fn0001902B proc
 	pushl	sp
 	pushab	+08(sp)
 	pushab	-38(fp)
-	calls	#03,(pc)+                                            ; 000190D5
+	calls	#03,000190D5                                         ; (pc)+
 	bgeq	000190B5
 	Invalid	
 	pushaq	#00000004
@@ -21352,7 +21583,7 @@ fn0001902B proc
 	pushl	sp
 	pushab	+08(sp)
 	pushab	-1C(fp)
-	calls	#03,(pc)+                                            ; 00019116
+	calls	#03,00019116                                         ; (pc)+
 	bgeq	000190F6
 	Invalid	
 	pushaq	#00000004
@@ -21370,7 +21601,7 @@ fn0001902B proc
 	pushl	sp
 	pushab	+08(sp)
 	pushab	-1C(fp)
-	calls	#03,(pc)+                                            ; 00019159
+	calls	#03,00019159                                         ; (pc)+
 	bgeq	00019139
 	Invalid	
 	pushaq	#00000004
@@ -21600,18 +21831,24 @@ fn0001902B proc
 	prober	#04,#0000,#00
 
 ;; fn0001924A: 0001924A
+;;   Called from:
+;;     0001262C (in fn00012616)
 fn0001924A proc
 	halt	
 	halt	
 	cvtbd	#00,#0.5
 
 ;; fn0001924E: 0001924E
+;;   Called from:
+;;     00012635 (in fn00012616)
 fn0001924E proc
 	halt	
 	halt	
 	Invalid	
 
 ;; fn00019252: 00019252
+;;   Called from:
+;;     000126F5 (in fn00012616)
 fn00019252 proc
 	halt	
 	halt	
@@ -21621,12 +21858,19 @@ fn00019252 proc
 	bgtr	0001925E
 
 ;; fn0001925E: 0001925E
+;;   Called from:
+;;     000110F5 (in fn00010E6A)
+;;     0001111F (in fn00010E6A)
+;;     0001137A (in fn00010E6A)
+;;     00011748 (in fn00010E6A)
 fn0001925E proc
 	halt	
 	halt	
 	Invalid	
 
 ;; fn00019262: 00019262
+;;   Called from:
+;;     00017588 (in fn000173CA)
 fn00019262 proc
 	halt	
 	halt	
@@ -21639,6 +21883,8 @@ fn00019266 proc
 	Invalid	
 
 ;; fn0001926A: 0001926A
+;;   Called from:
+;;     000126D1 (in fn00012616)
 fn0001926A proc
 	halt	
 	halt	
@@ -21646,12 +21892,20 @@ fn0001926A proc
 	halt	
 
 ;; fn0001926E: 0001926E
+;;   Called from:
+;;     000117DF (in fn000117AA)
 fn0001926E proc
 	halt	
 	halt	
 	cvtpt	#0001,#00,#00,+64000000(r4)
 
 ;; fn00019272: 00019272
+;;   Called from:
+;;     0000D5F9 (in fn0000D5BE)
+;;     0000D6E7 (in fn0000D69A)
+;;     000117F8 (in fn000117AA)
+;;     000125E1 (in fn000125CA)
+;;     000125F7 (in fn000125CA)
 fn00019272 proc
 	halt	
 	halt	
@@ -21670,11 +21924,19 @@ fn0001927A proc
 	bbsc	#00000006,#00,00019280
 
 ;; fn0001927E: 0001927E
+;;   Called from:
+;;     0000D443 (in fn0000D422)
+;;     000187C4 (in fn0001878E)
+;;     0001889D (in fn0001878E)
 fn0001927E proc
 	halt	
 	halt	
 
 ;; fn00019280: 00019280
+;;   Called from:
+;;     0001927C (in fn0001927A)
+;;     0001927C (in fn0001927A)
+;;     0001927F (in fn0001927E)
 fn00019280 proc
 	movp	#0004,#00,#00
 
@@ -21684,11 +21946,17 @@ fn00019282 proc
 	halt	
 
 ;; fn00019284: 00019284
+;;   Called from:
+;;     00019280 (in fn00019280)
+;;     00019280 (in fn00019280)
 fn00019284 proc
 	movc5	
 	ldpctx	
 
 ;; fn00019286: 00019286
+;;   Called from:
+;;     0000CBA9 (in fn0000C6FA)
+;;     0000CC14 (in fn0000C6FA)
 fn00019286 proc
 	halt	
 	halt	
@@ -21702,18 +21970,25 @@ fn0001928A proc
 	Invalid	
 
 ;; fn0001928E: 0001928E
+;;   Called from:
+;;     0000CEB2 (in fn0000CE52)
 fn0001928E proc
 	halt	
 	halt	
 	muld2	#0.5,#0000
 
 ;; fn00019292: 00019292
+;;   Called from:
+;;     0000A949 (in fn0000A8D6)
 fn00019292 proc
 	halt	
 	halt	
 	Invalid	
 
 ;; fn00019296: 00019296
+;;   Called from:
+;;     0000A93B (in fn0000A8D6)
+;;     0001264A (in fn00012616)
 fn00019296 proc
 	halt	
 	halt	
@@ -21721,33 +21996,54 @@ fn00019296 proc
 00019299                            03                            .     
 
 ;; fn0001929A: 0001929A
+;;   Called from:
+;;     0000A9AA (in fn0000A8D6)
+;;     0000E371 (in fn0000E2EA)
+;;     0000E39C (in fn0000E2EA)
+;;     00018EAE (in fn00018C3A)
+;;     00018EE3 (in fn00018C3A)
 fn0001929A proc
 	halt	
 	halt	
 	Invalid	
 
 ;; fn0001929E: 0001929E
+;;   Called from:
+;;     0000AF67 (in fn0000AEF2)
+;;     0000D671 (in fn0000D5BE)
+;;     00010871 (in fn0001084A)
+;;     0001231A (in fn00012252)
 fn0001929E proc
 	halt	
 	halt	
 	Invalid	
 
 ;; fn000192A2: 000192A2
+;;   Called from:
+;;     0000BC8F (in fn0000BC8A)
 fn000192A2 proc
 	halt	
 	halt	
 	bvc	000192A8
 
 ;; fn000192A6: 000192A6
+;;   Called from:
+;;     0000BC9D (in fn0000BC8A)
+;;     0000BD1F (in fn0000BD1C)
+;;     000192A4 (in fn000192A2)
 fn000192A6 proc
 	halt	
 	halt	
 
 ;; fn000192A8: 000192A8
+;;   Called from:
+;;     000192A4 (in fn000192A2)
 fn000192A8 proc
 	muld2	#0.75,#0000
 
 ;; fn000192AA: 000192AA
+;;   Called from:
+;;     00010EB1 (in fn00010E6A)
 fn000192AA proc
 	halt	
 	halt	
@@ -21759,10 +22055,44 @@ fn000192AE proc
 	halt	
 
 ;; fn000192B0: 000192B0
+;;   Called from:
+;;     000192AC (in fn000192AA)
+;;     000192AC (in fn000192AA)
 fn000192B0 proc
 	Invalid	
 
 ;; fn000192B2: 000192B2
+;;   Called from:
+;;     000097E5 (in fn00009746)
+;;     0000A105 (in fn0000A07A)
+;;     0000A116 (in fn0000A07A)
+;;     0000A127 (in fn0000A07A)
+;;     0000A138 (in fn0000A07A)
+;;     0000A153 (in fn0000A07A)
+;;     0000A172 (in fn0000A07A)
+;;     0000AE7A (in fn0000AE66)
+;;     0000AE8B (in fn0000AE66)
+;;     0000AE9C (in fn0000AE66)
+;;     0000AEAD (in fn0000AE66)
+;;     0000AEC7 (in fn0000AE66)
+;;     0000AEE6 (in fn0000AE66)
+;;     0000D1F8 (in fn0000D0D6)
+;;     0000D416 (in fn0000D406)
+;;     00010666 (in fn000105F2)
+;;     00010D98 (in fn000108D2)
+;;     00010DB3 (in fn000108D2)
+;;     00010DC8 (in fn000108D2)
+;;     00012244 (in fn000121EA)
+;;     000131EF (in fn00012D86)
+;;     00013243 (in fn00012D86)
+;;     0001330A (in fn000132B7)
+;;     000174C1 (in fn000173CA)
+;;     00017F09 (in fn00017DEE)
+;;     00018171 (in fn00017F4E)
+;;     00018751 (in fn0001872A)
+;;     00018775 (in fn0001872A)
+;;     00018A11 (in fn0001878E)
+;;     00018C09 (in fn00018BF6)
 fn000192B2 proc
 	halt	
 	halt	
@@ -21770,6 +22100,18 @@ fn000192B2 proc
 	bpt	
 
 ;; fn000192B6: 000192B6
+;;   Called from:
+;;     0000977D (in fn00009746)
+;;     0000AF45 (in fn0000AEF2)
+;;     0000D155 (in fn0000D0D6)
+;;     0000D1EA (in fn0000D0D6)
+;;     0000D3B1 (in fn0000D39E)
+;;     0001061E (in fn000105F2)
+;;     000108F5 (in fn000108D2)
+;;     00010908 (in fn000108D2)
+;;     00012217 (in fn000121EA)
+;;     00012DAD (in fn00012D86)
+;;     00012DD5 (in fn00012D86)
 fn000192B6 proc
 	halt	
 	halt	
@@ -21777,54 +22119,162 @@ fn000192B6 proc
 000192B9                            04                            .     
 
 ;; fn000192BA: 000192BA
+;;   Called from:
+;;     000097D3 (in fn00009746)
 fn000192BA proc
 	halt	
 	halt	
 	Invalid	
 
 ;; fn000192BE: 000192BE
+;;   Called from:
+;;     0000C100 (in fn0000C0CE)
+;;     0000CA61 (in fn0000C6FA)
+;;     0000CBD7 (in fn0000C6FA)
+;;     0000CBFF (in fn0000C6FA)
+;;     0000CC5D (in fn0000C6FA)
+;;     0000CC98 (in fn0000C6FA)
+;;     0000D17B (in fn0000D0D6)
+;;     00010B30 (in fn000108D2)
+;;     00014869 (in fn00014812)
 fn000192BE proc
 	halt	
 	halt	
 	Invalid	
 
 ;; fn000192C2: 000192C2
+;;   Called from:
+;;     000142E0 (in fn00014355)
 fn000192C2 proc
 	halt	
 	halt	
 	Invalid	
 
 ;; fn000192C6: 000192C6
+;;   Called from:
+;;     0000C78A (in fn0000C6FA)
+;;     0000C927 (in fn0000C6FA)
+;;     0000C9BE (in fn0000C6FA)
+;;     0000CC2E (in fn0000C6FA)
+;;     0000CC67 (in fn0000C6FA)
+;;     0000D14A (in fn0000D0D6)
+;;     0000D61E (in fn0000D5BE)
+;;     0000D711 (in fn0000D69A)
+;;     00010B1A (in fn000108D2)
+;;     0001220C (in fn000121EA)
+;;     00012A75 (in fn00012A2A)
+;;     0001755A (in fn000173CA)
+;;     0001779B (in fn00017772)
 fn000192C6 proc
 	halt	
 	halt	
 	Invalid	
 
 ;; fn000192CE: 000192CE
+;;   Called from:
+;;     0000D0E3 (in fn0000D0D6)
+;;     0000D116 (in fn0000D0D6)
 fn000192CE proc
 	halt	
 	halt	
 	Invalid	
 
 ;; fn000192D2: 000192D2
+;;   Called from:
+;;     0000A0E2 (in fn0000A07A)
+;;     0000A602 (in fn0000A5B2)
+;;     0000A920 (in fn0000A8D6)
+;;     0000C077 (in fn0000C022)
+;;     0000C0B2 (in fn0000C022)
+;;     0000CF66 (in fn0000CF42)
+;;     0000F88E (in fn0000F816)
+;;     0001013D (in fn000100F4)
+;;     00010167 (in fn000100F4)
+;;     0001040E (in fn000101C8)
+;;     00010537 (in fn000101C8)
+;;     0001056B (in fn000101C8)
+;;     00010594 (in fn000101C8)
+;;     000105D3 (in fn000105C4)
+;;     00010938 (in fn000108D2)
+;;     00010AFB (in fn000108D2)
+;;     00010C0B (in fn000108D2)
+;;     00010C47 (in fn000108D2)
+;;     00010C83 (in fn000108D2)
+;;     00010CC0 (in fn000108D2)
+;;     00010CEB (in fn000108D2)
+;;     00010D1B (in fn000108D2)
+;;     00010D4A (in fn000108D2)
+;;     00010F33 (in fn00010E6A)
+;;     00010F7F (in fn00010E6A)
+;;     0001101E (in fn00010E6A)
+;;     000110CB (in fn00010E6A)
+;;     00011178 (in fn00010E6A)
+;;     000111BD (in fn00010E6A)
+;;     000111F7 (in fn00010E6A)
+;;     0001123D (in fn00010E6A)
+;;     00011286 (in fn00010E6A)
+;;     000112DE (in fn00010E6A)
+;;     0001132D (in fn00010E6A)
+;;     0001135B (in fn00010E6A)
+;;     00011783 (in fn00010E6A)
+;;     00011AB1 (in fn000117AA)
+;;     00011AD7 (in fn000117AA)
+;;     00012A92 (in fn00012A2A)
+;;     00012C6E (in fn00012A2A)
+;;     00012D62 (in fn00012A2A)
+;;     0001329E (in fn0001325E)
+;;     0001339F (in fn000132B7)
+;;     000133CF (in fn000132B7)
+;;     00013821 (in fn000132B7)
+;;     0001393B (in fn000132B7)
+;;     00013A45 (in fn000132B7)
+;;     00013C53 (in fn000132B7)
+;;     00013C85 (in fn000132B7)
+;;     00013CBB (in fn000132B7)
+;;     00013CE9 (in fn000132B7)
+;;     00013D79 (in fn000132B7)
+;;     00013DCE (in fn000132B7)
+;;     00014719 (in fn00014355)
+;;     0001475D (in fn00014355)
+;;     00014788 (in fn00014355)
+;;     000147AE (in fn00014355)
+;;     000147EF (in fn00014355)
+;;     000148E3 (in fn00014812)
+;;     00015192 (in fn00015106)
+;;     000151D2 (in fn00015106)
+;;     00015202 (in fn00015106)
+;;     00015248 (in fn00015106)
+;;     0001744D (in fn000173CA)
+;;     00017471 (in fn000173CA)
 fn000192D2 proc
 	halt	
 	halt	
 	mulb2	#02,#00
 
 ;; fn000192D6: 000192D6
+;;   Called from:
+;;     0000C0E9 (in fn0000C0CE)
+;;     0000CBEA (in fn0000C6FA)
 fn000192D6 proc
 	halt	
 	halt	
 	Invalid	
 
 ;; fn000192DA: 000192DA
+;;   Called from:
+;;     00011859 (in fn000117AA)
+;;     00012E5D (in fn00012D86)
+;;     000130F0 (in fn00012D86)
+;;     00017435 (in fn000173CA)
+;;     00017617 (in fn000173CA)
 fn000192DA proc
 	halt	
 	halt	
 	Invalid	
 
 ;; fn000192DE: 000192DE
+;;   Called from:
+;;     000080A3 (in fn0000802E)
 fn000192DE proc
 	halt	
 	halt	
@@ -21834,6 +22284,8 @@ fn000192DE proc
 	halt	
 
 ;; fn000192E6: 000192E6
+;;   Called from:
+;;     00012986 (in fn00012702)
 fn000192E6 proc
 	halt	
 	halt	
@@ -21889,6 +22341,8 @@ fn00019322 proc
 	cvtps	#0009,#00,#0000,+0003(r0)
 
 ;; fn0001932E: 0001932E
+;;   Called from:
+;;     0000C05D (in fn0000C022)
 fn0001932E proc
 	halt	
 	halt	
@@ -21911,6 +22365,8 @@ fn00019336 proc
 	rsb	
 
 ;; fn0001933E: 0001933E
+;;   Called from:
+;;     00019338 (in fn00019336)
 fn0001933E proc
 	halt	
 	halt	
@@ -21923,6 +22379,8 @@ fn00019342 proc
 	Invalid	
 
 ;; fn00019346: 00019346
+;;   Called from:
+;;     00009803 (in fn00009746)
 fn00019346 proc
 	halt	
 	halt	

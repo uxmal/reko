@@ -126,9 +126,11 @@
 ;;; Segment .init (0000000000400AE8)
 
 ;; _init: 0000000000400AE8
+;;   Called from:
+;;     00000000004017AC (in __libc_csu_init)
 _init proc
 	sub	rsp,08
-	mov	rax,[rip+00201505]                                     ; 0000000000601FF8
+	mov	rax,[0000000000601FF8]                                 ; [rip+00201505]
 	test	rax,rax
 	jz	0000000000400AFD
 
@@ -213,6 +215,8 @@ _start proc
 0000000000400CFA                               66 0F 1F 44 00 00           f..D..
 
 ;; deregister_tm_clones: 0000000000400D00
+;;   Called from:
+;;     0000000000400D8D (in __do_global_dtors_aux)
 deregister_tm_clones proc
 	mov	eax,006020FF
 	push	rbp
@@ -238,6 +242,9 @@ l0000000000400D30:
 0000000000400D32       0F 1F 40 00 66 2E 0F 1F 84 00 00 00 00 00   ..@.f.........
 
 ;; register_tm_clones: 0000000000400D40
+;;   Called from:
+;;     0000000000400DAB (in frame_dummy)
+;;     0000000000400DC1 (in frame_dummy)
 register_tm_clones proc
 	mov	esi,006020F8
 	push	rbp
@@ -268,7 +275,7 @@ l0000000000400D78:
 
 ;; __do_global_dtors_aux: 0000000000400D80
 __do_global_dtors_aux proc
-	cmp	byte ptr [rip+00201381],00                             ; 0000000000602108
+	cmp	[0000000000602108],00                                  ; [rip+00201381]
 	jnz	0000000000400D9A
 
 l0000000000400D89:
@@ -276,7 +283,7 @@ l0000000000400D89:
 	mov	rbp,rsp
 	call	0000000000400D00
 	pop	rbp
-	mov	byte ptr [rip+0020136E],01                             ; 0000000000602108
+	mov	[0000000000602108],01                                  ; [rip+0020136E]
 
 l0000000000400D9A:
 	ret
@@ -305,6 +312,18 @@ l0000000000400DBA:
 	jmp	0000000000400D40
 
 ;; component: 0000000000400DC6
+;;   Called from:
+;;     0000000000400F72 (in print_pixel)
+;;     0000000000400FA7 (in print_pixel)
+;;     000000000040116F (in print_pixel)
+;;     0000000000401191 (in print_pixel)
+;;     00000000004011B2 (in print_pixel)
+;;     00000000004011EC (in print_pixel)
+;;     000000000040120D (in print_pixel)
+;;     0000000000401244 (in print_pixel)
+;;     0000000000401266 (in print_pixel)
+;;     0000000000401288 (in print_pixel)
+;;     00000000004012A9 (in print_pixel)
 component proc
 	push	rbp
 	mov	rbp,rsp
@@ -399,7 +418,7 @@ l0000000000400EA0:
 	jmp	0000000000400EE7
 
 l0000000000400EC1:
-	mov	rax,[rip+00201238]                                     ; 0000000000602100
+	mov	rax,[0000000000602100]                                 ; [rip+00201238]
 	mov	edx,[rbp-24]
 	mov	esi,00401808
 	mov	rdi,rax
@@ -413,6 +432,8 @@ l0000000000400EE7:
 	ret
 
 ;; print_pixel: 0000000000400EE9
+;;   Called from:
+;;     0000000000401645 (in main)
 print_pixel proc
 	push	rbp
 	mov	rbp,rsp
@@ -1092,7 +1113,7 @@ l00000000004016AF:
 	call	0000000000400B50
 
 l00000000004016C0:
-	mov	rax,[rip+00200A39]                                     ; 0000000000602100
+	mov	rax,[0000000000602100]                                 ; [rip+00200A39]
 	mov	rcx,rax
 	mov	edx,0000002C
 	mov	esi,00000001
@@ -1108,7 +1129,7 @@ l00000000004016DE:
 	jmp	000000000040175D
 
 l00000000004016F6:
-	mov	rax,[rip+00200A03]                                     ; 0000000000602100
+	mov	rax,[0000000000602100]                                 ; [rip+00200A03]
 	mov	rcx,rax
 	mov	edx,0000002E
 	mov	esi,00000001
@@ -1120,7 +1141,7 @@ l0000000000401716:
 	mov	rax,[rbp-000000A0]
 	add	rax,18
 	mov	rdx,[rax]
-	mov	rax,[rip+002009D5]                                     ; 0000000000602100
+	mov	rax,[0000000000602100]                                 ; [rip+002009D5]
 	mov	esi,00401A48
 	mov	rdi,rax
 	mov	eax,00000000
@@ -1128,7 +1149,7 @@ l0000000000401716:
 	jmp	000000000040175D
 
 l000000000040173F:
-	mov	rax,[rip+002009BA]                                     ; 0000000000602100
+	mov	rax,[0000000000602100]                                 ; [rip+002009BA]
 	mov	rcx,rax
 	mov	edx,00000027
 	mov	esi,00000001
@@ -1156,9 +1177,9 @@ __libc_csu_init proc
 	mov	r15d,edi
 	push	r13
 	push	r12
-	lea	r12,[rip+0020066E]                                     ; 0000000000601E00
+	lea	r12,[0000000000601E00]                                 ; [rip+0020066E]
 	push	rbp
-	lea	rbp,[rip+0020066E]                                     ; 0000000000601E08
+	lea	rbp,[0000000000601E08]                                 ; [rip+0020066E]
 	push	rbx
 	mov	r14,rsi
 	mov	r13,rdx

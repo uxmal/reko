@@ -249,6 +249,8 @@ func8 proc
 	sethi	0x00000000,%g0
 
 ;; main: 00010B0C
+;;   Called from:
+;;     00010A34 (in _start)
 main proc
 	save	%sp,0xFFFFFFA0,%sp
 	or	%g0,0x00000001,%o0
@@ -410,6 +412,8 @@ l00010C78:
 ;;; Segment .init (00010C80)
 
 ;; _init: 00010C80
+;;   Called from:
+;;     00010A1C (in _start)
 _init proc
 	save	%sp,0xFFFFFFA0,%sp
 	call	00010C90
@@ -417,6 +421,8 @@ _init proc
 	unimp
 
 ;; fn00010C90: 00010C90
+;;   Called from:
+;;     00010C84 (in _init)
 fn00010C90 proc
 	ld	[%o7+8],%o0
 	add	%o7,%o0,%o0
@@ -442,6 +448,8 @@ _fini proc
 	unimp
 
 ;; fn00010CC8: 00010CC8
+;;   Called from:
+;;     00010CBC (in _fini)
 fn00010CC8 proc
 	ld	[%o7+8],%o0
 	add	%o7,%o0,%o0

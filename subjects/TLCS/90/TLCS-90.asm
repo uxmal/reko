@@ -1,6 +1,8 @@
 ;;; Segment code (0000)
 
 ;; fn0000: 0000
+;;   Called from:
+;;     1BD8 (in fn1BA4)
 fn0000 proc
 	jp	0100
 0003          00 00 00 00 00 00 00 00 00 00 00 00 00    .............
@@ -55,6 +57,8 @@ l0100:
 02C0 2E FD                                           ..             
 
 ;; fn02C2: 02C2
+;;   Called from:
+;;     5AE0 (in fn5A49)
 fn02C2 proc
 	xor	a,(FFF4)
 	invalid
@@ -83,6 +87,10 @@ fn02C2 proc
 	ld	a,l
 
 ;; fn02F4: 02F4
+;;   Called from:
+;;     1682 (in fn164F)
+;;     16F7 (in fn16F7)
+;;     193D (in fn1929)
 fn02F4 proc
 	adc	a,(ix-0x1C)
 	ld	l,a
@@ -133,10 +141,17 @@ l034A:
 	add	a,(ix-0x22)
 
 ;; fn034E: 034E
+;;   Called from:
+;;     034B (in fn02F4)
 fn034E proc
 	ld	(ix-0x06),a
 
 ;; fn0350: 0350
+;;   Called from:
+;;     0430 (in fn03CD)
+;;     0430 (in fn03B2)
+;;     0B51 (in fn0B2C)
+;;     0B51 (in fn0B2C)
 fn0350 proc
 	ld	a,a
 	ld	a,b
@@ -181,6 +196,9 @@ fn039D proc
 	ld	l,(ix-0x08)
 
 ;; fn03AA: 03AA
+;;   Called from:
+;;     2359 (in fn22A6)
+;;     3EE0 (in fn3EC2)
 fn03AA proc
 	invalid
 	ld	h,(ix-0x07)
@@ -188,6 +206,10 @@ fn03AA proc
 	ld	a,05
 
 ;; fn03B2: 03B2
+;;   Called from:
+;;     034E (in fn034E)
+;;     03B0 (in fn039D)
+;;     03B0 (in fn0350)
 fn03B2 proc
 	srl	h
 	rr	l
@@ -259,6 +281,9 @@ fn03CD proc
 	jp	NZ,0350
 
 ;; fn0434: 0434
+;;   Called from:
+;;     0430 (in fn03CD)
+;;     0430 (in fn03B2)
 fn0434 proc
 	ld	hl,001C
 	add	hl,sp
@@ -435,12 +460,18 @@ l05E8:
 	ld	a,(ix-0x22)
 
 ;; fn0607: 0607
+;;   Called from:
+;;     0604 (in fn04EE)
 fn0607 proc
 	add	a,(ix-0x26)
 	ld	c,a
 	ld	a,(ix-0x21)
 
 ;; fn060E: 060E
+;;   Called from:
+;;     060B (in fn0607)
+;;     0E0F (in fn0DFC)
+;;     0E0F (in fn0CB7)
 fn060E proc
 	adc	a,(ix-0x25)
 	ld	b,a
@@ -591,6 +622,8 @@ l070B:
 0800 BF 1C 00 00 1C                                  .....          
 
 ;; fn0805: 0805
+;;   Called from:
+;;     1BC1 (in fn1BA4)
 fn0805 proc
 	sla
 	di
@@ -602,10 +635,15 @@ fn0805 proc
 0820 20 EB                                            .             
 
 ;; fn0822: 0822
+;;   Called from:
+;;     080A (in fn0805)
 fn0822 proc
 	nop
 
 ;; fn0823: 0823
+;;   Called from:
+;;     0807 (in fn0805)
+;;     0822 (in fn0822)
 fn0823 proc
 	nop
 	ld	a,a
@@ -703,6 +741,13 @@ l0A6B:
 	ld	a,(ix-0x06)
 
 ;; fn0AA6: 0AA6
+;;   Called from:
+;;     0AA3 (in fn59FE)
+;;     5A62 (in fn5A49)
+;;     5A92 (in fn5A49)
+;;     5A98 (in fn5A49)
+;;     5AC1 (in fn5A49)
+;;     5AC7 (in fn5A49)
 fn0AA6 proc
 	xor	a,c
 	ld	(ix-0x06),a
@@ -772,6 +817,8 @@ l0B01:
 	adc	a,l
 
 ;; fn0B1B: 0B1B
+;;   Called from:
+;;     0B19 (in fn0AA6)
 fn0B1B proc
 	ld	(ix-0x0C),a
 	ld	a,(ix-0x0B)
@@ -782,6 +829,9 @@ fn0B1B proc
 	ld	c,a
 
 ;; fn0B2C: 0B2C
+;;   Called from:
+;;     0B2B (in fn0B1B)
+;;     5A2E (in fn59FE)
 fn0B2C proc
 	ld	a,(ix-0x15)
 	adc	a,FF
@@ -803,6 +853,9 @@ fn0B2C proc
 	jp	NZ,0350
 
 ;; fn0B55: 0B55
+;;   Called from:
+;;     0B51 (in fn0B2C)
+;;     0B51 (in fn0B2C)
 fn0B55 proc
 	ld	hl,001C
 	add	hl,sp
@@ -837,6 +890,8 @@ l0B6E:
 0BF0 08 3A 12 00 FE 70 08 38 04 00 FE 59 59 F4       .:...p.8...YY. 
 
 ;; fn0BFE: 0BFE
+;;   Called from:
+;;     5A0A (in fn59FE)
 fn0BFE proc
 	invalid
 	ld	a,b
@@ -867,11 +922,19 @@ l0C2C:
 	jr	NZ,0C2C
 
 ;; fn0C35: 0C35
+;;   Called from:
+;;     0C33 (in fn0C1D)
+;;     168F (in fn164F)
+;;     1704 (in fn16F7)
+;;     1709 (in fn16F7)
+;;     187D (in fn1873)
 fn0C35 proc
 	ld	a,c
 	add	a,(ix-0x0A)
 
 ;; fn0C39: 0C39
+;;   Called from:
+;;     0C36 (in fn0C35)
 fn0C39 proc
 	ld	(ix-0x04),a
 	ld	a,b
@@ -904,6 +967,8 @@ fn0C39 proc
 	ld	a,(ix-0x02)
 
 ;; fn0C80: 0C80
+;;   Called from:
+;;     0C7D (in fn0C39)
 fn0C80 proc
 	xor	a,l
 	ld	(ix-0x02),a
@@ -938,6 +1003,8 @@ l0CA8:
 	ld	l,a
 
 ;; fn0CB7: 0CB7
+;;   Called from:
+;;     0CB6 (in fn0C80)
 fn0CB7 proc
 	ld	a,h
 	adc	a,(ix-0x13)
@@ -1109,6 +1176,9 @@ fn0DFC proc
 	jp	NZ,060E
 
 ;; fn0E13: 0E13
+;;   Called from:
+;;     0E0F (in fn0DFC)
+;;     0E0F (in fn0CB7)
 fn0E13 proc
 	ld	hl,000C
 	add	hl,sp
@@ -1393,6 +1463,8 @@ l1692:
 	push	de
 
 ;; fn16F7: 16F7
+;;   Called from:
+;;     16F6 (in fn164F)
 fn16F7 proc
 	call	02F4
 	add	sp,0008
@@ -1587,6 +1659,9 @@ l1BE9:
 1BF4             35 02 1A 96 0F                          5....      
 
 ;; fn1BF9: 1BF9
+;;   Called from:
+;;     1BCD (in fn1BA4)
+;;     1BF2 (in fn1BDE)
 fn1BF9 proc
 	ld	a,(ix-0x09)
 	add	a,09
@@ -1604,6 +1679,8 @@ fn1BF9 proc
 1C50 F4 F6 26 F0                                     ..&.           
 
 ;; fn1C54: 1C54
+;;   Called from:
+;;     294B (in fn291C)
 fn1C54 proc
 	invalid
 	dec	a
@@ -2409,6 +2486,8 @@ fn3E2D proc
 	ld	a,(ix-0x07)
 
 ;; fn3EC2: 3EC2
+;;   Called from:
+;;     3EBF (in fn3E2D)
 fn3EC2 proc
 	sbc	a,b
 	ld	b,a

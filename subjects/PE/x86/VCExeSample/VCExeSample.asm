@@ -21,6 +21,10 @@ main proc
 00401024             CC CC CC CC CC CC CC CC CC CC CC CC     ............
 
 ;; test1: 00401030
+;;   Called from:
+;;     00401018 (in main)
+;;     00401079 (in test2)
+;;     0040109D (in test2)
 test1 proc
 	push	ebp
 	mov	ebp,esp
@@ -121,6 +125,8 @@ test5 proc
 0040111A                               CC CC CC CC CC CC           ......
 
 ;; test6: 00401120
+;;   Called from:
+;;     00401218 (in nested_if_blocks_test8)
 test6 proc
 	push	ebp
 	mov	ebp,esp
@@ -186,6 +192,8 @@ l00401189:
 004011A9                            CC CC CC CC CC CC CC          .......
 
 ;; nested_if_blocks_test8: 004011B0
+;;   Called from:
+;;     00401316 (in loop_test11)
 nested_if_blocks_test8 proc
 	push	ebp
 	mov	ebp,esp
@@ -234,6 +242,8 @@ l0040120D:
 00401222       CC CC CC CC CC CC CC CC CC CC CC CC CC CC   ..............
 
 ;; loop_test9: 00401230
+;;   Called from:
+;;     00401303 (in loop_test11)
 loop_test9 proc
 	push	ebp
 	mov	ebp,esp
@@ -358,6 +368,8 @@ l00401329:
 0040132D                                        CC CC CC              ...
 
 ;; nested_structs_test12: 00401330
+;;   Called from:
+;;     00401367 (in nested_structs_test13)
 nested_structs_test12 proc
 	push	ebp
 	mov	ebp,esp

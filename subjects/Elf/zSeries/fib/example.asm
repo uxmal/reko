@@ -56,6 +56,8 @@
 ;;; Segment .init (00000560)
 
 ;; _init: 00000560
+;;   Called from:
+;;     00000836 (in __libc_csu_init)
 _init proc
 	stmg	r6,r15,48(r15)
 	lgr	r1,r15
@@ -103,6 +105,8 @@ _start proc
 	nopr	r7
 
 ;; deregister_tm_clones: 00000648
+;;   Called from:
+;;     00000708 (in __do_global_dtors_aux)
 deregister_tm_clones proc
 	larl	r5,000008C8
 	larl	r1,00002068
@@ -123,6 +127,8 @@ l0000067C:
 0000067E                                           07 07               ..
 
 ;; register_tm_clones: 00000680
+;;   Called from:
+;;     00000746 (in frame_dummy)
 register_tm_clones proc
 	larl	r1,00002068
 	larl	r3,00002068
@@ -197,6 +203,10 @@ l00000760:
 00000766                   07 07                               ..       
 
 ;; fib: 00000768
+;;   Called from:
+;;     000007A2 (in fib)
+;;     000007BE (in fib)
+;;     00000800 (in main)
 fib proc
 	stmg	r10,r15,80(r15)
 	aghi	r15,-000000A8

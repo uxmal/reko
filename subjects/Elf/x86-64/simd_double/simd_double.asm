@@ -60,9 +60,11 @@
 ;;; Segment .init (00000000000005A0)
 
 ;; _init: 00000000000005A0
+;;   Called from:
+;;     0000000000000A9C (in __libc_csu_init)
 _init proc
 	sub	rsp,08
-	mov	rax,[rip+00200A3D]                                     ; 0000000000200FE8
+	mov	rax,[0000000000200FE8]                                 ; [rip+00200A3D]
 	test	rax,rax
 	jz	00000000000005B2
 
@@ -95,24 +97,26 @@ _start proc
 	and	rsp,F0
 	push	rax
 	push	rsp
-	lea	r8,[rip+000004AA]                                      ; 0000000000000AE0
-	lea	rcx,[rip+00000433]                                     ; 0000000000000A70
-	lea	rdi,[rip+00000254]                                     ; 0000000000000898
-	call	qword ptr [rip+00200996]                              ; 0000000000200FE0
+	lea	r8,[0000000000000AE0]                                  ; [rip+000004AA]
+	lea	rcx,[0000000000000A70]                                 ; [rip+00000433]
+	lea	rdi,[0000000000000898]                                 ; [rip+00000254]
+	call	[0000000000200FE0]                                    ; [rip+00200996]
 	hlt
 000000000000064B                                  0F 1F 44 00 00            ..D..
 
 ;; deregister_tm_clones: 0000000000000650
+;;   Called from:
+;;     0000000000000703 (in __do_global_dtors_aux)
 deregister_tm_clones proc
-	lea	rdi,[rip+002009F1]                                     ; 0000000000201048
+	lea	rdi,[0000000000201048]                                 ; [rip+002009F1]
 	push	rbp
-	lea	rax,[rip+002009E9]                                     ; 0000000000201048
+	lea	rax,[0000000000201048]                                 ; [rip+002009E9]
 	cmp	rax,rdi
 	mov	rbp,rsp
 	jz	0000000000000680
 
 l0000000000000667:
-	mov	rax,[rip+0020096A]                                     ; 0000000000200FD8
+	mov	rax,[0000000000200FD8]                                 ; [rip+0020096A]
 	test	rax,rax
 	jz	0000000000000680
 
@@ -127,9 +131,11 @@ l0000000000000680:
 0000000000000682       0F 1F 40 00 66 2E 0F 1F 84 00 00 00 00 00   ..@.f.........
 
 ;; register_tm_clones: 0000000000000690
+;;   Called from:
+;;     0000000000000725 (in frame_dummy)
 register_tm_clones proc
-	lea	rdi,[rip+002009B1]                                     ; 0000000000201048
-	lea	rsi,[rip+002009AA]                                     ; 0000000000201048
+	lea	rdi,[0000000000201048]                                 ; [rip+002009B1]
+	lea	rsi,[0000000000201048]                                 ; [rip+002009AA]
 	push	rbp
 	sub	rsi,rdi
 	mov	rbp,rsp
@@ -141,7 +147,7 @@ register_tm_clones proc
 	jz	00000000000006D0
 
 l00000000000006B8:
-	mov	rax,[rip+00200931]                                     ; 0000000000200FF0
+	mov	rax,[0000000000200FF0]                                 ; [rip+00200931]
 	test	rax,rax
 	jz	00000000000006D0
 
@@ -157,22 +163,22 @@ l00000000000006D0:
 
 ;; __do_global_dtors_aux: 00000000000006E0
 __do_global_dtors_aux proc
-	cmp	byte ptr [rip+00200961],00                             ; 0000000000201048
+	cmp	[0000000000201048],00                                  ; [rip+00200961]
 	jnz	0000000000000718
 
 l00000000000006E9:
-	cmp	qword ptr [rip+00200907],00                            ; 0000000000200FF8
+	cmp	[0000000000200FF8],00                                  ; [rip+00200907]
 	push	rbp
 	mov	rbp,rsp
 	jz	0000000000000703
 
 l00000000000006F7:
-	mov	rdi,[rip+00200942]                                     ; 0000000000201040
+	mov	rdi,[0000000000201040]                                 ; [rip+00200942]
 	call	0000000000000610
 
 l0000000000000703:
 	call	0000000000000650
-	mov	byte ptr [rip+00200939],01                             ; 0000000000201048
+	mov	[0000000000201048],01                                  ; [rip+00200939]
 	pop	rbp
 	ret
 0000000000000711    0F 1F 80 00 00 00 00                          .......       
@@ -189,6 +195,10 @@ frame_dummy proc
 	jmp	0000000000000690
 
 ;; _mm_malloc: 000000000000072A
+;;   Called from:
+;;     00000000000008B8 (in main)
+;;     00000000000008D1 (in main)
+;;     00000000000008EA (in main)
 _mm_malloc proc
 	push	rbp
 	mov	rbp,rsp
@@ -237,6 +247,10 @@ l000000000000078B:
 	ret
 
 ;; _mm_free: 000000000000078D
+;;   Called from:
+;;     0000000000000A3E (in main)
+;;     0000000000000A4A (in main)
+;;     0000000000000A56 (in main)
 _mm_free proc
 	push	rbp
 	mov	rbp,rsp
@@ -250,6 +264,8 @@ _mm_free proc
 	ret
 
 ;; vec_add: 00000000000007A8
+;;   Called from:
+;;     00000000000009E9 (in main)
 vec_add proc
 	lea	r10,[rsp+08]
 	and	rsp,E0
@@ -262,7 +278,7 @@ vec_add proc
 	mov	[rbp-000000A0],rsi
 	mov	[rbp-000000A8],rdx
 	mov	[rbp-000000B0],rcx
-	mov	rcx,[rip+0000031E]                                     ; 0000000000000B00
+	mov	rcx,[0000000000000B00]                                 ; [rip+0000031E]
 	mov	rax,[rbp-00000098]
 	mov	edx,00000000
 	div	rcx
@@ -442,7 +458,7 @@ l00000000000009F8:
 	mov	rax,[rax]
 	mov	[rbp-48],rax
 	vmovsd	xmm0,double ptr [rbp-48]
-	lea	rdi,[rip+000000DA]                                     ; 0000000000000AF8
+	lea	rdi,[0000000000000AF8]                                 ; [rip+000000DA]
 	mov	eax,00000001
 	call	00000000000005E0
 	add	qword ptr [rbp-20],01
@@ -474,9 +490,9 @@ __libc_csu_init proc
 	mov	r15d,edi
 	push	r13
 	push	r12
-	lea	r12,[rip+00200366]                                     ; 0000000000200DE8
+	lea	r12,[0000000000200DE8]                                 ; [rip+00200366]
 	push	rbp
-	lea	rbp,[rip+00200366]                                     ; 0000000000200DF0
+	lea	rbp,[0000000000200DF0]                                 ; [rip+00200366]
 	push	rbx
 	mov	r14,rsi
 	mov	r13,rdx

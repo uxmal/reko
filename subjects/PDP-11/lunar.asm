@@ -57,6 +57,9 @@ l0122:
 	br	0122
 
 ;; fn0128: 0128
+;;   Called from:
+;;     0122 (in fn13AA)
+;;     0BB8 (in fn0B06)
 fn0128 proc
 	wait
 	mov	@#006C,r0
@@ -89,6 +92,11 @@ l013C:
 0240 3E 14                                           >.             
 
 ;; fn0242: 0242
+;;   Called from:
+;;     0440 (in fn03CE)
+;;     058E (in fn053A)
+;;     09F6 (in fn0856)
+;;     109A (in fn103C)
 fn0242 proc
 	mov	r0,r4
 	mov	r1,r5
@@ -145,6 +153,8 @@ l02B4:
 02C0 D5 15 00 F7 15 0A 87 00                         ........       
 
 ;; fn02C8: 02C8
+;;   Called from:
+;;     0258 (in fn0242)
 fn02C8 proc
 	movb	(r4)+,r0
 	mov	@#004A,r1
@@ -167,6 +177,8 @@ fn02C8 proc
 	rts	pc
 
 ;; fn0300: 0300
+;;   Called from:
+;;     05A2 (in fn053A)
 fn0300 proc
 	tst	@#0068
 	beq	03A8
@@ -239,6 +251,8 @@ l03A8:
 	rts	pc
 
 ;; fn03CE: 03CE
+;;   Called from:
+;;     05E6 (in fn053A)
 fn03CE proc
 	mov	r0,r1
 	mov	@#0064,r4
@@ -277,6 +291,12 @@ l0414:
 	jmp	@#0242
 
 ;; fn0444: 0444
+;;   Called from:
+;;     0572 (in fn053A)
+;;     09EE (in fn0856)
+;;     0EA2 (in fn0E98)
+;;     1090 (in fn103C)
+;;     10A6 (in fn103C)
 fn0444 proc
 	mov	@#0046,r0
 	bpl	0458
@@ -321,6 +341,8 @@ l0480:
 	rts	pc
 
 ;; fn0488: 0488
+;;   Called from:
+;;     05A6 (in fn053A)
 fn0488 proc
 	mov	@#0050,r1
 	bpl	0490
@@ -415,6 +437,8 @@ l0530:
 	rts	pc
 
 ;; fn053A: 053A
+;;   Called from:
+;;     0138 (in fn0128)
 fn053A proc
 	mov	#FFC0,@#0084
 	mov	@#0044,r5
@@ -675,6 +699,13 @@ l0784:
 	jsr	pc,@#0A0A
 
 ;; fn0790: 0790
+;;   Called from:
+;;     078C (in fn053A)
+;;     07F2 (in fn0856)
+;;     0824 (in fn0856)
+;;     082A (in fn0856)
+;;     083E (in fn0856)
+;;     0896 (in fn0856)
 fn0790 proc
 	rts	pc
 
@@ -749,6 +780,8 @@ l084C:
 	jsr	pc,@#0E32
 
 ;; fn0856: 0856
+;;   Called from:
+;;     0788 (in fn053A)
 fn0856 proc
 	jsr	pc,@#1578
 	mov	@#007E,r5
@@ -971,6 +1004,8 @@ l09D2:
 	illegal
 
 ;; fn0A0A: 0A0A
+;;   Called from:
+;;     078C (in fn053A)
 fn0A0A proc
 	cmp	@#007E,#0096
 	bge	0B00
@@ -1038,6 +1073,9 @@ l0A82:
 	asr	r3
 
 ;; fn0A94: 0A94
+;;   Called from:
+;;     0A92 (in fn0A0A)
+;;     0B0A (in fn0B06)
 fn0A94 proc
 	asr	r3
 	beq	0B00
@@ -1087,6 +1125,9 @@ l0AEC:
 	mov	r2,@#00B0
 
 ;; fn0AF6: 0AF6
+;;   Called from:
+;;     0AF2 (in fn0A94)
+;;     0B70 (in fn0B06)
 fn0AF6 proc
 	tst	(sp)+
 
@@ -1099,6 +1140,8 @@ l0B00:
 	rts	pc
 
 ;; fn0B06: 0B06
+;;   Called from:
+;;     0960 (in fn0856)
 fn0B06 proc
 	jsr	pc,@#13AA
 	sob	pc,0A94
@@ -1219,6 +1262,13 @@ l0BEE:
 	illegal
 
 ;; fn0C36: 0C36
+;;   Called from:
+;;     0B44 (in fn0B06)
+;;     0B58 (in fn0B06)
+;;     0B78 (in fn0B06)
+;;     0B84 (in fn0B06)
+;;     0BF0 (in fn0B06)
+;;     0BF8 (in fn0B06)
 fn0C36 proc
 	mov	#0A80,r5
 	tst	r3
@@ -1258,11 +1308,17 @@ l0C70:
 	rts	pc
 
 ;; fn0C72: 0C72
+;;   Called from:
+;;     0C18 (in fn0B06)
+;;     0C1C (in fn0B06)
+;;     0C5C (in fn0C36)
 fn0C72 proc
 	halt
 0C74             87 00                                   ..         
 
 ;; fn0C76: 0C76
+;;   Called from:
+;;     0C68 (in fn0C36)
 fn0C76 proc
 	bit	#0007,@#0070
 	beq	0C76
@@ -1279,6 +1335,13 @@ l0C8A:
 	rts	pc
 
 ;; fn0C90: 0C90
+;;   Called from:
+;;     080E (in fn0856)
+;;     0830 (in fn0856)
+;;     0990 (in fn0856)
+;;     0BD8 (in fn0B06)
+;;     0C26 (in fn0B06)
+;;     0E22 (in fn0E06)
 fn0C90 proc
 	mov	r4,-(sp)
 	mov	0004(sp),r4
@@ -1304,6 +1367,8 @@ l0CB8:
 	rts	pc
 
 ;; fn0CCA: 0CCA
+;;   Called from:
+;;     088E (in fn0856)
 fn0CCA proc
 	mov	r4,-(sp)
 	mov	0004(sp),r4
@@ -1324,6 +1389,9 @@ l0CE0:
 	rts	pc
 
 ;; fn0CEC: 0CEC
+;;   Called from:
+;;     0638 (in fn053A)
+;;     065A (in fn053A)
 fn0CEC proc
 	jsr	pc,@#0D3C
 	mov	@#28F0,r4
@@ -1353,6 +1421,9 @@ l0D10:
 0D30 DF 15 2A 18 DA 34 DF 09 66 0D 87 00             ..*..4..f...   
 
 ;; fn0D3C: 0D3C
+;;   Called from:
+;;     0CEC (in fn0CEC)
+;;     0F04 (in fn0F04)
 fn0D3C proc
 	mov	r2,-(sp)
 	mov	r3,-(sp)
@@ -1380,6 +1451,9 @@ fn0D66 proc
 	rts	pc
 
 ;; fn0D78: 0D78
+;;   Called from:
+;;     0D24 (in fn0CEC)
+;;     0F9A (in fn0F04)
 fn0D78 proc
 	mov	#0200,-(sp)
 	cmp	r4,#0400
@@ -1447,6 +1521,9 @@ l0E04:
 	rts	pc
 
 ;; fn0E06: 0E06
+;;   Called from:
+;;     0652 (in fn053A)
+;;     090E (in fn0856)
 fn0E06 proc
 	mov	@#0072,r1
 	mov	r1,r4
@@ -1476,6 +1553,11 @@ l0E30:
 	rts	pc
 
 ;; fn0E32: 0E32
+;;   Called from:
+;;     0662 (in fn053A)
+;;     081C (in fn0856)
+;;     0852 (in fn0856)
+;;     091A (in fn0856)
 fn0E32 proc
 	clr	@#00AE
 	clr	@#34C2
@@ -1509,6 +1591,10 @@ l0E92:
 	reset
 
 ;; fn0E98: 0E98
+;;   Called from:
+;;     0E5E (in fn0E32)
+;;     0E6E (in fn0E32)
+;;     0E96 (in fn0E32)
 fn0E98 proc
 	mov	#FFE2,@#0046
 	mov	#00F1,-(sp)
@@ -1563,6 +1649,11 @@ l0EFE:
 	br	0EF0
 
 ;; fn0F04: 0F04
+;;   Called from:
+;;     06D8 (in fn053A)
+;;     0818 (in fn0856)
+;;     083A (in fn0856)
+;;     0912 (in fn0856)
 fn0F04 proc
 	jsr	pc,@#0D3C
 	clr	@#00AA
@@ -1662,6 +1753,12 @@ l0FEE	dw	0x07EE
 1000 B8 10 28 10 32 10 E0 10 90 07 14 11             ..(.2.......   
 
 ;; fn100C: 100C
+;;   Called from:
+;;     0748 (in fn053A)
+;;     0F18 (in fn0F04)
+;;     0F3C (in fn0F04)
+;;     105C (in fn103C)
+;;     1066 (in fn103C)
 fn100C proc
 	mov	r4,-(sp)
 	asl	r4
@@ -1744,6 +1841,19 @@ l10B6:
 1140 D5 15 00 F7 D5 15 0C 26 87 00                   .......&..     
 
 ;; fn114A: 114A
+;;   Called from:
+;;     030E (in fn0300)
+;;     0324 (in fn0300)
+;;     0376 (in fn0300)
+;;     0494 (in fn0488)
+;;     04C0 (in fn0488)
+;;     04EC (in fn0488)
+;;     0518 (in fn0488)
+;;     0552 (in fn053A)
+;;     0A58 (in fn0A0A)
+;;     0A8A (in fn0A0A)
+;;     1246 (in fn123A)
+;;     1252 (in fn123A)
 fn114A proc
 	clr	r3
 	cmp	r1,r0
@@ -1969,6 +2079,10 @@ l1238:
 	rts	pc
 
 ;; fn123A: 123A
+;;   Called from:
+;;     0716 (in fn053A)
+;;     0722 (in fn053A)
+;;     125E (in fn125E)
 fn123A proc
 	tst	r0
 	bpl	124C
@@ -2000,6 +2114,15 @@ l1252:
 	rts	pc
 
 ;; fn125E: 125E
+;;   Called from:
+;;     02CE (in fn02C8)
+;;     02DA (in fn02C8)
+;;     02E8 (in fn02C8)
+;;     02F4 (in fn02C8)
+;;     038A (in fn0300)
+;;     039A (in fn0300)
+;;     0ECE (in fn0E98)
+;;     0EE4 (in fn0E98)
 fn125E proc
 	jsr	pc,@#123A
 	asl	r3
@@ -2009,6 +2132,25 @@ fn125E proc
 	rts	pc
 
 ;; fn126C: 126C
+;;   Called from:
+;;     0316 (in fn0300)
+;;     032C (in fn0300)
+;;     0362 (in fn0300)
+;;     037C (in fn0300)
+;;     049C (in fn0488)
+;;     04CE (in fn0488)
+;;     04F4 (in fn0488)
+;;     0526 (in fn0488)
+;;     0560 (in fn053A)
+;;     06FA (in fn053A)
+;;     0732 (in fn053A)
+;;     073A (in fn053A)
+;;     077A (in fn053A)
+;;     0A60 (in fn0A0A)
+;;     0F58 (in fn0F04)
+;;     0F66 (in fn0F04)
+;;     15AC (in fn1578)
+;;     1610 (in fn15F2)
 fn126C proc
 	asl	r3
 	rol	r2
@@ -2224,6 +2366,16 @@ l1388:
 13A0 1F 0A 3A 15 1F 0A 3C 15 02 00                   ..:...<...     
 
 ;; fn13AA: 13AA
+;;   Called from:
+;;     0A04 (in fn0856)
+;;     0B06 (in fn0B06)
+;;     0B62 (in fn0B06)
+;;     0B6C (in fn0B06)
+;;     0B88 (in fn0B06)
+;;     0BCA (in fn0B06)
+;;     0C30 (in fn0B06)
+;;     0E92 (in fn0E32)
+;;     3554 (in fn34E0)
 fn13AA proc
 	mov	#F700,@#25C0
 	mov	@0000(sp),r0
@@ -2281,6 +2433,12 @@ l13DA:
 1570 F2 14 70 14 F2 14 F2 14                         ..p.....       
 
 ;; fn1578: 1578
+;;   Called from:
+;;     0640 (in fn053A)
+;;     0856 (in fn0856)
+;;     0C7E (in fn0C76)
+;;     0C8A (in fn0C76)
+;;     13C8 (in fn13AA)
 fn1578 proc
 	mov	r0,-(sp)
 	mov	r1,-(sp)
@@ -2348,6 +2506,9 @@ l15E4:
 	rts	pc
 
 ;; fn15F2: 15F2
+;;   Called from:
+;;     1676 (in fn1674)
+;;     167A (in fn1674)
 fn15F2 proc
 	movb	#0020,(r1)+
 	cmp	r0,#2710
@@ -2400,6 +2561,11 @@ l1650:
 	br	161A
 
 ;; fn1658: 1658
+;;   Called from:
+;;     161A (in fn15F2)
+;;     161E (in fn15F2)
+;;     162A (in fn15F2)
+;;     1630 (in fn15F2)
 fn1658 proc
 	tst	0002(sp)
 	bne	1670
@@ -2421,6 +2587,9 @@ l1670:
 	rts	pc
 
 ;; fn1674: 1674
+;;   Called from:
+;;     15C4 (in fn1578)
+;;     15E0 (in fn1578)
 fn1674 proc
 	tst	r0
 	bpl	15F2
@@ -2838,6 +3007,14 @@ l3548:
 	illegal
 
 ;; fn355A: 355A
+;;   Called from:
+;;     3504 (in fn34E0)
+;;     350E (in fn34E0)
+;;     3518 (in fn34E0)
+;;     3522 (in fn34E0)
+;;     352C (in fn34E0)
+;;     3536 (in fn34E0)
+;;     3540 (in fn34E0)
 fn355A proc
 	tst	@#FB8C
 	bpl	355A

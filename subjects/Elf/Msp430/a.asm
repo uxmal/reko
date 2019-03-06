@@ -174,6 +174,9 @@ xHeap		; 02A6
 	db	0x00, 0x00
 
 ;; __write_char: 09B2
+;;   Called from:
+;;     00005330 (in PRINT)
+;;     0000535E (in __write_pad)
 __write_char proc
 	mova.a	@pc,pc
 ;;; Segment .text (00004000)
@@ -305,6 +308,8 @@ l40EC:
 4140 20 28 25 73 20 25 73 29 0A 0A 00 00              (%s %s)....   
 
 ;; main: 414C
+;;   Called from:
+;;     00004036 (in fn00004000)
 main proc
 	mov.w	#0A00,sp
 	mov.w	#5A80,&0120
@@ -360,7 +365,9 @@ main proc
 	mov.w	#0000,r15
 	br.w	5AD8
 
-;; msp430_compute_modulator_bits: 0000420E
+;; msp430_compute_modulator_bits: 420E
+;;   Called from:
+;;     0000432E (in init_uart_isr)
 msp430_compute_modulator_bits proc
 	push.w	r11
 	push.w	r10
@@ -462,7 +469,9 @@ l000042B4:
 	mov.w	@sp+,r11
 	ret.w
 
-;; init_uart_isr: 000042CC
+;; init_uart_isr: 42CC
+;;   Called from:
+;;     00004182 (in main)
 init_uart_isr proc
 	push.w	r11
 	push.w	r10
@@ -556,12 +565,20 @@ l4398:
 	add.w	#0002,sp
 	ret.w
 
-;; uart_putchar_isr_mode: 0000439C
+;; uart_putchar_isr_mode: 439C
+;;   Called from:
+;;     00004188 (in main)
+;;     0000419E (in main)
 uart_putchar_isr_mode proc
 	mov.b	r15,&0200
 	ret.w
 
-;; putchar: 000043A2
+;; putchar: 43A2
+;;   Called from:
+;;     000040A8 (in task_1)
+;;     000040CE (in task_2)
+;;     000040F4 (in task_3)
+;;     000043DA (in putchar)
 putchar proc
 	push.w	r11
 	mov.w	r15,r11
@@ -608,6 +625,8 @@ l000043E0:
 	ret.w
 
 ;; x_getchar: 43E4
+;;   Called from:
+;;     00004388 (in getchar)
 x_getchar proc
 	mov.w	r14,r13
 	mov.w	r15,r14
@@ -624,7 +643,9 @@ l43F8:
 	mov.w	#0000,r15
 	ret.w
 
-;; x_putchar: 000043FC
+;; x_putchar: 43FC
+;;   Called from:
+;;     000043D0 (in putchar)
 x_putchar proc
 	sub.w	#0002,sp
 	mov.b	r15,@sp
@@ -729,7 +750,13 @@ l44A8:
 	mov.w	@sp+,r15
 	reti
 
-;; xTaskCreate: 000044B4
+;; xTaskCreate: 44B4
+;;   Called from:
+;;     000041B6 (in main)
+;;     000041CE (in main)
+;;     000041E6 (in main)
+;;     000041FC (in main)
+;;     0000471C (in vTaskStartScheduler)
 xTaskCreate proc
 	push.w	r11
 	push.w	r10
@@ -925,7 +952,11 @@ l4612:
 	mov.w	@sp+,r11
 	ret.w
 
-;; vTaskDelayUntil: 0000461A
+;; vTaskDelayUntil: 461A
+;;   Called from:
+;;     000040B2 (in task_1)
+;;     000040D8 (in task_2)
+;;     000040FE (in task_3)
 vTaskDelayUntil proc
 	push.w	r11
 	push.w	r10
@@ -1056,7 +1087,9 @@ l46F8:
 46FC                                     49 44 4C 45             IDLE
 4700 00 00                                           ..             
 
-;; vTaskStartScheduler: 00004702
+;; vTaskStartScheduler: 4702
+;;   Called from:
+;;     00004200 (in main)
 vTaskStartScheduler proc
 	cmp.w	#0000,&0202
 	jnz	0000470A
@@ -1090,7 +1123,16 @@ vTaskEndScheduler proc
 	call	5238
 	ret.w
 
-;; vTaskSuspendAll: 00004742
+;; vTaskSuspendAll: 4742
+;;   Called from:
+;;     00004626 (in vTaskDelayUntil)
+;;     000046B2 (in vTaskDelay)
+;;     00004A66 (in prvCheckTasksWaitingTermination)
+;;     00004D8A (in xQueueSend)
+;;     00004E44 (in xQueueSend)
+;;     00004EFC (in xQueueReceive)
+;;     00004FB6 (in xQueueReceive)
+;;     00005166 (in pvPortMalloc)
 vTaskSuspendAll proc
 	bic.w	#0008,sr
 	add.w	#0001,&0218
@@ -1108,7 +1150,18 @@ l00004758:
 l0000475A:
 	ret.w
 
-;; xTaskResumeAll: 0000475C
+;; xTaskResumeAll: 475C
+;;   Called from:
+;;     00004648 (in vTaskDelayUntil)
+;;     000046E4 (in vTaskDelay)
+;;     00004A74 (in prvCheckTasksWaitingTermination)
+;;     00004DE2 (in xQueueSend)
+;;     00004DF0 (in xQueueSend)
+;;     00004E3C (in xQueueSend)
+;;     00004F7E (in xQueueReceive)
+;;     00004F8C (in xQueueReceive)
+;;     00004FAE (in xQueueReceive)
+;;     00005186 (in pvPortMalloc)
 xTaskResumeAll proc
 	push.w	r11
 	push.w	r10
@@ -1224,7 +1277,13 @@ l00004812:
 	mov.w	@sp+,r11
 	ret.w
 
-;; xTaskGetTickCount: 0000481E
+;; xTaskGetTickCount: 481E
+;;   Called from:
+;;     0000404E (in task_idle)
+;;     0000405C (in task_idle)
+;;     00004098 (in task_1)
+;;     000040BE (in task_2)
+;;     000040E4 (in task_3)
 xTaskGetTickCount proc
 	bic.w	#0008,sr
 	add.w	#0001,&0218
@@ -1258,7 +1317,10 @@ l4846:
 l4848:
 	ret.w
 
-;; vTaskIncrementTick: 0000484A
+;; vTaskIncrementTick: 484A
+;;   Called from:
+;;     00004802 (in xTaskResumeAll)
+;;     000052DA (in prvTickISR)
 vTaskIncrementTick proc
 	push.w	r11
 	push.w	r10
@@ -1337,7 +1399,10 @@ l000048D4:
 	mov.w	@sp+,r11
 	ret.w
 
-;; vTaskPlaceOnEventList: 000048DA
+;; vTaskPlaceOnEventList: 48DA
+;;   Called from:
+;;     00004E2C (in xQueueSend)
+;;     00004F9E (in xQueueReceive)
 vTaskPlaceOnEventList proc
 	push.w	r11
 	mov.w	r15,r13
@@ -1375,7 +1440,12 @@ l00004928:
 	mov.w	@sp+,r11
 	ret.w
 
-;; xTaskRemoveFromEventList: 00004930
+;; xTaskRemoveFromEventList: 4930
+;;   Called from:
+;;     00004EDE (in xQueueSendFromISR)
+;;     00005052 (in xQueueReceiveFromISR)
+;;     000050E8 (in prvUnlockQueue)
+;;     000050F8 (in prvUnlockQueue)
 xTaskRemoveFromEventList proc
 	push.w	r11
 	push.w	r10
@@ -1454,7 +1524,9 @@ l49B6:
 	jmp	49AC
 49BC                                     30 41                   0A 
 
-;; prvInitialiseTCBVariables: 000049BE
+;; prvInitialiseTCBVariables: 49BE
+;;   Called from:
+;;     000044E8 (in xTaskCreate)
 prvInitialiseTCBVariables proc
 	push.w	r11
 	push.w	r10
@@ -1491,7 +1563,9 @@ l000049E6:
 	mov.w	@sp+,r11
 	ret.w
 
-;; prvInitialiseTaskLists: 00004A12
+;; prvInitialiseTaskLists: 4A12
+;;   Called from:
+;;     0000459A (in xTaskCreate)
 prvInitialiseTaskLists proc
 	push.w	r11
 	mov.w	#0000,r11
@@ -1523,6 +1597,8 @@ l00004A2E:
 	ret.w
 
 ;; prvCheckTasksWaitingTermination: 4A5E
+;;   Called from:
+;;     000049AC (in prvIdleTask)
 prvCheckTasksWaitingTermination proc
 	push.w	r11
 	cmp.w	#0000,&0204
@@ -1582,7 +1658,9 @@ l4ABE:
 	mov.w	@sp+,r11
 	ret.w
 
-;; prvAllocateTCBAndStack: 00004AC2
+;; prvAllocateTCBAndStack: 4AC2
+;;   Called from:
+;;     000044D8 (in xTaskCreate)
 prvAllocateTCBAndStack proc
 	push.w	r11
 	push.w	r10
@@ -1619,6 +1697,8 @@ l00004AFA:
 	ret.w
 
 ;; prvDeleteTCB: 4B02
+;;   Called from:
+;;     00004AB4 (in prvCheckTasksWaitingTermination)
 prvDeleteTCB proc
 	push.w	r11
 	mov.w	r15,r11
@@ -1629,7 +1709,10 @@ prvDeleteTCB proc
 	mov.w	@sp+,r11
 	ret.w
 
-;; vTaskSwitchContext: 00004B18
+;; vTaskSwitchContext: 4B18
+;;   Called from:
+;;     00005264 (in vPortYield)
+;;     000052DE (in prvTickISR)
 vTaskSwitchContext proc
 	cmp.w	#0000,&0210
 	jnz	00004BAE
@@ -1713,7 +1796,13 @@ l00004BB0:
 	mov.w	0002(r14),0226(r15)
 	jmp	00004B98
 
-;; vListInitialise: 00004BD4
+;; vListInitialise: 4BD4
+;;   Called from:
+;;     00004A24 (in prvInitialiseTaskLists)
+;;     00004A32 (in prvInitialiseTaskLists)
+;;     00004A3A (in prvInitialiseTaskLists)
+;;     00004A42 (in prvInitialiseTaskLists)
+;;     00004A4A (in prvInitialiseTaskLists)
 vListInitialise proc
 	push.w	r11
 	mov.w	r15,r11
@@ -1729,12 +1818,22 @@ vListInitialise proc
 	mov.w	@sp+,r11
 	ret.w
 
-;; vListInitialiseItem: 00004C00
+;; vListInitialiseItem: 4C00
+;;   Called from:
+;;     000049EE (in prvInitialiseTCBVariables)
+;;     000049F8 (in prvInitialiseTCBVariables)
+;;     00004BF4 (in vListInitialise)
 vListInitialiseItem proc
 	mov.w	#0000,0008(r15)
 	ret.w
 
-;; vListInsertEnd: 00004C06
+;; vListInsertEnd: 4C06
+;;   Called from:
+;;     00004560 (in xTaskCreate)
+;;     000045E0 (in vTaskDelete)
+;;     000047C4 (in xTaskResumeAll)
+;;     000048BA (in vTaskIncrementTick)
+;;     00004982 (in xTaskRemoveFromEventList)
 vListInsertEnd proc
 	mov.w	r15,r12
 	mov.w	0004(r15),r13
@@ -1748,7 +1847,12 @@ vListInsertEnd proc
 	add.w	#0001,@r12
 	ret.w
 
-;; vListInsert: 00004C32
+;; vListInsert: 4C32
+;;   Called from:
+;;     0000467C (in vTaskDelayUntil)
+;;     000046E0 (in vTaskDelay)
+;;     000048EC (in vTaskPlaceOnEventList)
+;;     00004928 (in vTaskPlaceOnEventList)
 vListInsert proc
 	push.w	r11
 	mov.w	r15,r11
@@ -1796,7 +1900,20 @@ l00004C76:
 	mov.w	@sp+,r11
 	ret.w
 
-;; vListRemove: 00004C98
+;; vListRemove: 4C98
+;;   Called from:
+;;     000045D0 (in vTaskDelete)
+;;     00004606 (in vTaskDelete)
+;;     0000465C (in vTaskDelayUntil)
+;;     000046C0 (in vTaskDelay)
+;;     00004796 (in xTaskResumeAll)
+;;     000047A0 (in xTaskResumeAll)
+;;     00004890 (in vTaskIncrementTick)
+;;     000048C6 (in vTaskIncrementTick)
+;;     000048FA (in vTaskPlaceOnEventList)
+;;     0000494E (in xTaskRemoveFromEventList)
+;;     0000495E (in xTaskRemoveFromEventList)
+;;     00004A98 (in prvCheckTasksWaitingTermination)
 vListRemove proc
 	mov.w	r15,r14
 	mov.w	0002(r15),r15
@@ -1815,7 +1932,10 @@ l00004CBA:
 	add.w	#FFFF,@r15
 	ret.w
 
-;; xQueueCreate: 00004CC4
+;; xQueueCreate: 4CC4
+;;   Called from:
+;;     000042FE (in init_uart_isr)
+;;     0000430A (in init_uart_isr)
 xQueueCreate proc
 	push.w	r11
 	push.w	r10
@@ -1894,7 +2014,9 @@ l00004D76:
 	mov.w	@sp+,r11
 	ret.w
 
-;; xQueueSend: 00004D7E
+;; xQueueSend: 4D7E
+;;   Called from:
+;;     00004416 (in x_putchar)
 xQueueSend proc
 	push.w	r11
 	push.w	r10
@@ -2039,6 +2161,8 @@ l00004E7A:
 	ret.w
 
 ;; xQueueSendFromISR: 4E84
+;;   Called from:
+;;     00004468 (in vRxISR)
 xQueueSendFromISR proc
 	push.w	r11
 	push.w	r10
@@ -2099,7 +2223,10 @@ l4EE8:
 	mov.w	@sp+,r11
 	ret.w
 
-;; xQueueReceive: 00004EF0
+;; xQueueReceive: 4EF0
+;;   Called from:
+;;     000043EC (in x_getchar)
+;;     0000443C (in x_putchar)
 xQueueReceive proc
 	push.w	r11
 	push.w	r10
@@ -2245,7 +2372,9 @@ l00004FEC:
 	mov.w	@sp+,r11
 	ret.w
 
-;; xQueueReceiveFromISR: 00004FF6
+;; xQueueReceiveFromISR: 4FF6
+;;   Called from:
+;;     00004494 (in vTxISR)
 xQueueReceiveFromISR proc
 	push.w	r11
 	push.w	r10
@@ -2340,7 +2469,12 @@ vQueueDelete proc
 	mov.w	@sp+,r11
 	ret.w
 
-;; prvUnlockQueue: 00005092
+;; prvUnlockQueue: 5092
+;;   Called from:
+;;     00004DDA (in xQueueSend)
+;;     00004E38 (in xQueueSend)
+;;     00004F76 (in xQueueReceive)
+;;     00004FAA (in xQueueReceive)
 prvUnlockQueue proc
 	push.w	r11
 	push.w	r10
@@ -2417,7 +2551,9 @@ l00005104:
 	mov.w	@sp+,r11
 	ret.w
 
-;; prvIsQueueEmpty: 0000510C
+;; prvIsQueueEmpty: 510C
+;;   Called from:
+;;     00004F1E (in xQueueReceive)
 prvIsQueueEmpty proc
 	bic.w	#0008,sr
 	add.w	#0001,&0218
@@ -2443,7 +2579,9 @@ l0000512A:
 	mov.w	r14,r15
 	ret.w
 
-;; prvIsQueueFull: 0000512E
+;; prvIsQueueFull: 512E
+;;   Called from:
+;;     00004DAC (in xQueueSend)
 prvIsQueueFull proc
 	bic.w	#0008,sr
 	add.w	#0001,&0218
@@ -2471,7 +2609,11 @@ l00005152:
 	mov.w	r14,r15
 	ret.w
 
-;; pvPortMalloc: 00005156
+;; pvPortMalloc: 5156
+;;   Called from:
+;;     00004ACC (in prvAllocateTCBAndStack)
+;;     00004ADA (in prvAllocateTCBAndStack)
+;;     00004CDA (in xQueueCreate)
 pvPortMalloc proc
 	push.w	r11
 	push.w	r10
@@ -2508,7 +2650,13 @@ l00005186:
 	mov.w	@sp+,r11
 	ret.w
 
-;; vPortFree: 00005192
+;; vPortFree: 5192
+;;   Called from:
+;;     00004AE8 (in prvAllocateTCBAndStack)
+;;     00004B0A (in prvDeleteTCB)
+;;     00004B10 (in prvDeleteTCB)
+;;     00005084 (in vQueueDelete)
+;;     0000508A (in vQueueDelete)
 vPortFree proc
 	ret.w
 
@@ -2517,7 +2665,9 @@ vPortInitialiseBlocks proc
 	mov.w	#0000,&0216
 	ret.w
 
-;; pxPortInitialiseStack: 0000519A
+;; pxPortInitialiseStack: 519A
+;;   Called from:
+;;     000044FC (in xTaskCreate)
 pxPortInitialiseStack proc
 	mov.w	r14,@r15
 	sub.w	#0002,r15
@@ -2550,13 +2700,15 @@ pxPortInitialiseStack proc
 	mov.w	#0000,@r15
 	ret.w
 
-;; xPortStartScheduler: 0000520A
+;; xPortStartScheduler: 520A
+;;   Called from:
+;;     00004730 (in vTaskStartScheduler)
 xPortStartScheduler proc
 	call	528E
-	mov.w	-500E(pc),r12
+	mov.w	00000204,r12
 	mov.w	@r12,sp
 	mov.w	@sp+,r15
-	mov.w	r15,-5000(pc)
+	mov.w	r15,0000021A
 	mov.w	@sp+,r15
 	mov.w	@sp+,r14
 	mov.w	@sp+,r13
@@ -2573,10 +2725,24 @@ xPortStartScheduler proc
 00005234             1F 43 30 41                             .C0A       
 
 ;; vPortEndScheduler: 5238
+;;   Called from:
+;;     0000473C (in vTaskEndScheduler)
 vPortEndScheduler proc
 	ret.w
 
-;; vPortYield: 0000523A
+;; vPortYield: 523A
+;;   Called from:
+;;     00004470 (in vRxISR)
+;;     00004590 (in xTaskCreate)
+;;     000045FA (in vTaskDelete)
+;;     00004650 (in vTaskDelayUntil)
+;;     000046AC (in vTaskDelay)
+;;     000047FC (in xTaskResumeAll)
+;;     000049B6 (in prvIdleTask)
+;;     00004DEA (in xQueueSend)
+;;     00004E74 (in xQueueSend)
+;;     00004F86 (in xQueueReceive)
+;;     00004FE6 (in xQueueReceive)
 vPortYield proc
 	push.w	sr
 	bic.w	#0008,sr
@@ -2592,15 +2758,15 @@ vPortYield proc
 	push.w	r13
 	push.w	r14
 	push.w	r15
-	mov.w	-5040(pc),r14
+	mov.w	0000021A,r14
 	push.w	r14
-	mov.w	-505C(pc),r12
+	mov.w	00000204,r12
 	mov.w	sp,@r12
 	call	4B18
-	mov.w	-5068(pc),r12
+	mov.w	00000204,r12
 	mov.w	@r12,sp
 	mov.w	@sp+,r15
-	mov.w	r15,-505A(pc)
+	mov.w	r15,0000021A
 	mov.w	@sp+,r15
 	mov.w	@sp+,r14
 	mov.w	@sp+,r13
@@ -2615,7 +2781,9 @@ vPortYield proc
 	mov.w	@sp+,r4
 	reti
 
-;; prvSetupTimerInterrupt: 0000528E
+;; prvSetupTimerInterrupt: 528E
+;;   Called from:
+;;     0000520A (in xPortStartScheduler)
 prvSetupTimerInterrupt proc
 	mov.w	#0000,&0160
 	mov.w	#0100,&0160
@@ -2640,16 +2808,16 @@ prvTickISR proc
 	push.w	r13
 	push.w	r14
 	push.w	r15
-	mov.w	-50B6(pc),r14
+	mov.w	021A,r14
 	push.w	r14
-	mov.w	-50D2(pc),r12
+	mov.w	0204,r12
 	mov.w	sp,@r12
 	call	484A
 	call	4B18
-	mov.w	-50E2(pc),r12
+	mov.w	0204,r12
 	mov.w	@r12,sp
 	mov.w	@sp+,r15
-	mov.w	r15,-50D4(pc)
+	mov.w	r15,021A
 	mov.w	@sp+,r15
 	mov.w	@sp+,r14
 	mov.w	@sp+,r13
@@ -2664,7 +2832,10 @@ prvTickISR proc
 	mov.w	@sp+,r4
 	reti
 
-;; printf: 00005308
+;; printf: 5308
+;;   Called from:
+;;     00004070 (in task_idle)
+;;     00004198 (in main)
 printf proc
 	mov.w	#0002,r15
 	add.w	sp,r15
@@ -2674,7 +2845,11 @@ printf proc
 	call	537E
 	ret.w
 
-;; PRINT: 0000531A
+;; PRINT: 531A
+;;   Called from:
+;;     0000556A (in vuprintf)
+;;     00005594 (in vuprintf)
+;;     00005918 (in vuprintf)
 PRINT proc
 	push.w	r11
 	push.w	r10
@@ -2711,7 +2886,12 @@ l00005344:
 	mov.w	@sp+,r11
 	ret.w
 
-;; __write_pad: 0000534A
+;; __write_pad: 534A
+;;   Called from:
+;;     00005532 (in vuprintf)
+;;     00005582 (in vuprintf)
+;;     000055BA (in vuprintf)
+;;     000055DA (in vuprintf)
 __write_pad proc
 	push.w	r11
 	push.w	r10
@@ -2750,7 +2930,9 @@ l00005376:
 	mov.w	@sp+,r11
 	ret.w
 
-;; vuprintf: 0000537E
+;; vuprintf: 537E
+;;   Called from:
+;;     00005314 (in printf)
 vuprintf proc
 	push.w	r11
 	push.w	r10
@@ -3541,7 +3723,9 @@ l5924:
 	mov.w	@sp+,r11
 	ret.w
 
-;; memchr: 0000593E
+;; memchr: 593E
+;;   Called from:
+;;     0000572A (in vuprintf)
 memchr proc
 	push.w	r11
 	mov.w	r15,r11
@@ -3574,7 +3758,9 @@ l0000595E:
 	mov.w	@sp+,r11
 	ret.w
 
-;; strncpy: 00005962
+;; strncpy: 5962
+;;   Called from:
+;;     000049D6 (in prvInitialiseTCBVariables)
 strncpy proc
 	push.w	r11
 	mov.w	r15,r11
@@ -3614,7 +3800,12 @@ l0000598E:
 	mov.w	@sp+,r11
 	ret.w
 
-;; memcpy: 00005994
+;; memcpy: 5994
+;;   Called from:
+;;     00004E00 (in xQueueSend)
+;;     00004EA0 (in xQueueSendFromISR)
+;;     00004F5C (in xQueueReceive)
+;;     0000502C (in xQueueReceiveFromISR)
 memcpy proc
 	push.w	r11
 	push.w	r10
@@ -3770,7 +3961,9 @@ l00005A60:
 	mov.w	@sp+,r11
 	ret.w
 
-;; memset: 00005A68
+;; memset: 5A68
+;;   Called from:
+;;     00004AF6 (in prvAllocateTCBAndStack)
 memset proc
 	push.w	r11
 	push.w	r10
@@ -3855,6 +4048,8 @@ l5AD8:
 	jmp	5AD8
 
 ;; fn00005ADC: 00005ADC
+;;   Called from:
+;;     00004258 (in msp430_compute_modulator_bits)
 fn00005ADC proc
 	mov.w	r12,&0130
 	mov.w	r10,&0138
@@ -3868,6 +4063,8 @@ fn00005ADC proc
 	ret.w
 
 ;; fn00005B04: 00005B04
+;;   Called from:
+;;     00004238 (in msp430_compute_modulator_bits)
 fn00005B04 proc
 	mov.w	#0000,r8
 	bit.w	#8000,r13
@@ -3921,6 +4118,10 @@ l00005B4C:
 	ret.w
 
 ;; fn00005B4E: 00005B4E
+;;   Called from:
+;;     00005682 (in vuprintf)
+;;     000056AE (in vuprintf)
+;;     00005B26 (in fn00005B04)
 fn00005B4E proc
 	xor.w	r15,r15
 	xor.w	r14,r14

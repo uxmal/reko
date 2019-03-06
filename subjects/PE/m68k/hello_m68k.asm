@@ -254,7 +254,7 @@ l00001690:
 
 l00001698:
 	move.l	a2,-(a7)
-	jsr.l	$06E6(pc)                                            ; 00001D80
+	jsr.l	00001D80                                             ; $06E6(pc)
 	addq.w	#$04,a7
 	andi.w	#$EEFF,$000E(a2)
 	moveq	#$00,d2
@@ -271,7 +271,7 @@ l000016B8:
 
 l000016C0:
 	move.l	a2,-(a7)
-	jsr.l	$06BE(pc)                                            ; 00001D80
+	jsr.l	00001D80                                             ; $06BE(pc)
 	addq.w	#$04,a7
 
 l000016C8:
@@ -433,6 +433,9 @@ l00001C34:
 	rts
 
 ;; fn00001C40: 00001C40
+;;   Called from:
+;;     00001CAA (in fn00001C84)
+;;     00001CF2 (in fn00001CC4)
 fn00001C40 proc
 	link	a6,#$0000
 	movea.l	$000C(a6),a1
@@ -452,7 +455,7 @@ l00001C4E:
 l00001C60:
 	move.l	a1,-(a7)
 	move.l	$0008(a6),-(a7)
-	jsr.l	$022E(pc)                                            ; 00001E94
+	jsr.l	00001E94                                             ; $022E(pc)
 	addq.w	#$08,a7
 
 l00001C6C:
@@ -491,7 +494,7 @@ l00001CA4:
 	move.l	d6,-(a7)
 	move.l	d4,-(a7)
 	move.l	d3,-(a7)
-	jsr.l	-$006A(pc)                                           ; 00001C40
+	jsr.l	00001C40                                             ; -$006A(pc)
 	lea	$000C(a7),a7
 	move.l	d5,d0
 	subq.l	#$01,d5
@@ -527,7 +530,7 @@ l00001CE4:
 	move.b	(a0),d0
 	extb.l	d0
 	move.l	d0,-(a7)
-	jsr.l	-$00B2(pc)                                           ; 00001C40
+	jsr.l	00001C40                                             ; -$00B2(pc)
 	lea	$000C(a7),a7
 	move.l	d5,d0
 	subq.l	#$01,d5
@@ -553,6 +556,9 @@ fn00001D0C proc
 00001D22       00 00                                       ..           
 
 ;; fn00001D24: 00001D24
+;;   Called from:
+;;     00001E32 (in fn00001E04)
+;;     00001E4C (in fn00001E04)
 fn00001D24 proc
 	link	a6,#$0000
 	move.l	a2,-(a7)
@@ -563,7 +569,7 @@ fn00001D24 proc
 l00001D32:
 	moveq	#$00,d2
 	move.l	d2,-(a7)
-	jsr.l	$00CE(pc)                                            ; 00001E04
+	jsr.l	00001E04                                             ; $00CE(pc)
 	addq.w	#$04,a7
 	movea.l	(a7)+,a2
 	unlk	a6
@@ -572,7 +578,7 @@ l00001D32:
 
 l00001D44:
 	move.l	a2,-(a7)
-	jsr.l	$003A(pc)                                            ; 00001D80
+	jsr.l	00001D80                                             ; $003A(pc)
 	addq.w	#$04,a7
 	tst.l	d0
 	beq	$00001D58
@@ -606,6 +612,11 @@ l00001D78:
 	rts
 
 ;; fn00001D80: 00001D80
+;;   Called from:
+;;     0000169A (in fn00001680)
+;;     000016C2 (in fn00001680)
+;;     00001D46 (in fn00001D24)
+;;     00002098 (in fn00002068)
 fn00001D80 proc
 	link	a6,#$0000
 	movem.l	d3-d4/a2,-(a7)
@@ -667,11 +678,14 @@ fn00001DF4 proc
 	link	a6,#$0000
 	moveq	#$01,d2
 	move.l	d2,-(a7)
-	jsr.l	$0008(pc)                                            ; 00001E04
+	jsr.l	00001E04                                             ; $0008(pc)
 	unlk	a6
 	rts
 
 ;; fn00001E04: 00001E04
+;;   Called from:
+;;     00001D36 (in fn00001D24)
+;;     00001DFC (in fn00001DF4)
 fn00001E04 proc
 	link	a6,#$0000
 	movem.l	d3-d7/a2,-(a7)
@@ -697,7 +711,7 @@ l00001E26:
 
 l00001E30:
 	move.l	a2,-(a7)
-	jsr.l	-$010E(pc)                                           ; 00001D24
+	jsr.l	00001D24                                             ; -$010E(pc)
 	addq.w	#$04,a7
 	cmp.l	d7,d0
 	beq	$00001E58
@@ -716,7 +730,7 @@ l00001E44:
 
 l00001E4A:
 	move.l	a2,-(a7)
-	jsr.l	-$0128(pc)                                           ; 00001D24
+	jsr.l	00001D24                                             ; -$0128(pc)
 	addq.w	#$04,a7
 	cmp.l	d7,d0
 	bne	$00001E58
@@ -753,6 +767,8 @@ l00001E70:
 00001E90 4E 75 00 00                                     Nu..           
 
 ;; fn00001E94: 00001E94
+;;   Called from:
+;;     00001C66 (in fn00001C40)
 fn00001E94 proc
 	link	a6,#$FFFC
 	movem.l	d3-d5/a2-a3,-(a7)
@@ -815,7 +831,7 @@ l00001F08:
 
 l00001F14:
 	move.l	a3,-(a7)
-	jsr.l	$00FE(pc)                                            ; 00002014
+	jsr.l	00002014                                             ; $00FE(pc)
 	addq.w	#$04,a7
 
 l00001F1C:
@@ -918,7 +934,7 @@ fn00001FD8 proc
 
 l00001FF2:
 	move.l	d4,-(a7)
-	jsr.l	$0074(pc)                                            ; 00002068
+	jsr.l	00002068                                             ; $0074(pc)
 	addq.w	#$04,a7
 	cmp.l	d5,d0
 	beq	$00002000
@@ -939,6 +955,8 @@ l00002008:
 00002012       00 00                                       ..           
 
 ;; fn00002014: 00002014
+;;   Called from:
+;;     00001F16 (in fn00001E94)
 fn00002014 proc
 	link	a6,#$0000
 	move.l	a2,-(a7)
@@ -972,6 +990,8 @@ l00002058:
 	rts
 
 ;; fn00002068: 00002068
+;;   Called from:
+;;     00001FF4 (in fn00001FD8)
 fn00002068 proc
 	link	a6,#$0000
 	move.l	d3,-(a7)
@@ -997,11 +1017,11 @@ l00002090:
 
 l00002096:
 	move.l	a2,-(a7)
-	jsr.l	-$0318(pc)                                           ; 00001D80
+	jsr.l	00001D80                                             ; -$0318(pc)
 	addq.w	#$04,a7
 	move.l	d0,d3
 	move.l	a2,-(a7)
-	jsr.l	$004E(pc)                                            ; 000020F0
+	jsr.l	000020F0                                             ; $004E(pc)
 	addq.w	#$04,a7
 	move.l	$0010(a2),-(a7)
 	jsr.l	$00A2(a5)
@@ -1045,6 +1065,8 @@ l000020E0:
 	rts
 
 ;; fn000020F0: 000020F0
+;;   Called from:
+;;     000020A2 (in fn00002068)
 fn000020F0 proc
 	link	a6,#$0000
 	move.l	a2,-(a7)
@@ -1183,7 +1205,7 @@ fn00002294 proc
 	move.l	d2,-(a7)
 	move.l	d2,-(a7)
 	move.l	$0008(a6),-(a7)
-	jsr.l	$00B2(pc)                                            ; 00002354
+	jsr.l	00002354                                             ; $00B2(pc)
 	unlk	a6
 	rts
 000022AA                               00 00 4E 56 00 00           ..NV..
@@ -1196,11 +1218,11 @@ fn000022C4 proc
 	move.l	a2,-(a7)
 	pea	-$02E4(a5)
 	pea	-$02E8(a5)
-	jsr.l	$00E2(pc)                                            ; 000023B4
+	jsr.l	000023B4                                             ; $00E2(pc)
 	addq.w	#$08,a7
 	pea	-$02EC(a5)
 	pea	-$02F0(a5)
-	jsr.l	$00D4(pc)                                            ; 000023B4
+	jsr.l	000023B4                                             ; $00D4(pc)
 	addq.w	#$04,a7
 	move.w	#$A89F,-(a7)
 	move.b	#$01,-(a7)
@@ -1235,6 +1257,8 @@ l0000231C:
 00002350 4E 75 00 00                                     Nu..           
 
 ;; fn00002354: 00002354
+;;   Called from:
+;;     000022A2 (in fn00002294)
 fn00002354 proc
 	link	a6,#$0000
 	move.b	$0013(a6),-$0564(a5)
@@ -1248,19 +1272,19 @@ l00002364:
 l0000236A:
 	move.l	-$02C8(a5),-(a7)
 	move.l	-$02C4(a5),-(a7)
-	jsr.l	$0042(pc)                                            ; 000023B4
+	jsr.l	000023B4                                             ; $0042(pc)
 	addq.w	#$08,a7
 
 l00002378:
 	pea	-$02D8(a5)
 	pea	-$02E0(a5)
-	jsr.l	$0034(pc)                                            ; 000023B4
+	jsr.l	000023B4                                             ; $0034(pc)
 	addq.w	#$08,a7
 
 l00002386:
 	pea	-$02D0(a5)
 	pea	-$02D4(a5)
-	jsr.l	$0026(pc)                                            ; 000023B4
+	jsr.l	000023B4                                             ; $0026(pc)
 	addq.w	#$08,a7
 	tst.l	$0010(a6)
 	bne	$000023AE
@@ -1282,6 +1306,12 @@ l000023AE:
 000023B2       00 00                                       ..           
 
 ;; fn000023B4: 000023B4
+;;   Called from:
+;;     000022D2 (in fn000022C4)
+;;     000022E0 (in fn000022C4)
+;;     00002372 (in fn00002354)
+;;     00002380 (in fn00002354)
+;;     0000238E (in fn00002354)
 fn000023B4 proc
 	link	a6,#$0000
 	movem.l	d3-d5,-(a7)
@@ -1319,9 +1349,9 @@ l000023DE:
 ;; fn000023F8: 000023F8
 fn000023F8 proc
 	link	a6,#$0000
-	jsr.l	$001C(pc)                                            ; 00002418
+	jsr.l	00002418                                             ; $001C(pc)
 	move.l	$0008(a6),-(a7)
-	jsr.l	$0038(pc)                                            ; 0000243C
+	jsr.l	0000243C                                             ; $0038(pc)
 	addq.w	#$04,a7
 	pea	$000000FF
 	movea.l	-$0508(a5),a0
@@ -1330,10 +1360,12 @@ fn000023F8 proc
 	rts
 
 ;; fn00002418: 00002418
+;;   Called from:
+;;     000023FC (in fn000023F8)
 fn00002418 proc
 	link	a6,#$0000
 	pea	$000000FC
-	jsr.l	$001C(pc)                                            ; 0000243C
+	jsr.l	0000243C                                             ; $001C(pc)
 	addq.w	#$04,a7
 	movea.l	-$03F4(a5),a0
 	move.l	a0,d0
@@ -1344,11 +1376,15 @@ l0000242E:
 
 l00002430:
 	pea	$000000FF
-	jsr.l	$0008(pc)                                            ; 0000243C
+	jsr.l	0000243C                                             ; $0008(pc)
 	unlk	a6
 	rts
 
 ;; fn0000243C: 0000243C
+;;   Called from:
+;;     00002404 (in fn000023F8)
+;;     00002420 (in fn00002418)
+;;     00002434 (in fn00002418)
 fn0000243C proc
 	link	a6,#$0000
 	move.l	a2,-(a7)
@@ -1408,11 +1444,13 @@ fn000024B0 proc
 	link	a6,#$0000
 	move.l	-$053C(a5),-(a7)
 	move.l	$0008(a6),-(a7)
-	jsr.l	$0008(pc)                                            ; 000024C4
+	jsr.l	000024C4                                             ; $0008(pc)
 	unlk	a6
 	rts
 
 ;; fn000024C4: 000024C4
+;;   Called from:
+;;     000024BC (in fn000024B0)
 fn000024C4 proc
 	link	a6,#$0000
 	move.l	d3,-(a7)
@@ -1436,7 +1474,7 @@ l000024E0:
 
 l000024EA:
 	move.l	d3,-(a7)
-	jsr.l	$0024(pc)                                            ; 00002510
+	jsr.l	00002510                                             ; $0024(pc)
 	addq.w	#$04,a7
 	tst.l	d0
 	bne	$00002506
@@ -1447,7 +1485,7 @@ l000024F6:
 
 l000024FA:
 	move.l	d3,-(a7)
-	jsr.l	$0148(pc)                                            ; 00002644
+	jsr.l	00002644                                             ; $0148(pc)
 	addq.w	#$04,a7
 	tst.l	d0
 	bne	$000024EA
@@ -1460,13 +1498,15 @@ l00002506:
 0000250E                                           00 00               ..
 
 ;; fn00002510: 00002510
+;;   Called from:
+;;     000024EC (in fn000024C4)
 fn00002510 proc
 	link	a6,#$0000
 	move.l	d3,-(a7)
 	move.l	a2,-(a7)
 	move.l	$0008(a6),d3
 	move.l	d3,-(a7)
-	jsr.l	$0292(pc)                                            ; 000027B0
+	jsr.l	000027B0                                             ; $0292(pc)
 	addq.w	#$04,a7
 	tst.l	d0
 	movea.l	d0,a2
@@ -1474,7 +1514,7 @@ fn00002510 proc
 
 l0000252A:
 	move.l	d3,-(a7)
-	jsr.l	$0374(pc)                                            ; 000028A0
+	jsr.l	000028A0                                             ; $0374(pc)
 	addq.w	#$04,a7
 	moveq	#-$01,d2
 	cmp.l	d0,d2
@@ -1482,14 +1522,14 @@ l0000252A:
 
 l00002538:
 	move.l	d3,-(a7)
-	jsr.l	$0276(pc)                                            ; 000027B0
+	jsr.l	000027B0                                             ; $0276(pc)
 	addq.w	#$04,a7
 	tst.l	d0
 	movea.l	d0,a2
 	bne	$0000254A
 
 l00002546:
-	jsr.l	$025A(pc)                                            ; 000027A0
+	jsr.l	000027A0                                             ; $025A(pc)
 
 l0000254A:
 	movea.l	(a2),a0
@@ -1506,7 +1546,7 @@ l0000254A:
 l00002566:
 	move.l	d3,-(a7)
 	move.l	a2,-(a7)
-	jsr.l	$004A(pc)                                            ; 000025B4
+	jsr.l	000025B4                                             ; $004A(pc)
 	addq.w	#$08,a7
 	tst.l	d0
 	movea.l	d0,a0
@@ -1540,6 +1580,8 @@ l000025A8:
 000025B2       00 00                                       ..           
 
 ;; fn000025B4: 000025B4
+;;   Called from:
+;;     0000256A (in fn00002510)
 fn000025B4 proc
 	link	a6,#$0000
 	move.l	a2,-(a7)
@@ -1555,7 +1597,7 @@ fn000025B4 proc
 	bls	$00002608
 
 l000025DA:
-	jsr.l	$0162(pc)                                            ; 0000273C
+	jsr.l	0000273C                                             ; $0162(pc)
 	tst.l	d0
 	movea.l	d0,a0
 	beq	$00002608
@@ -1594,6 +1636,8 @@ fn00002610 proc
 00002640 4E 75 00 00                                     Nu..           
 
 ;; fn00002644: 00002644
+;;   Called from:
+;;     000024FC (in fn000024C4)
 fn00002644 proc
 	link	a6,#$0000
 	movea.l	-$02CC(a5),a0
@@ -1633,13 +1677,18 @@ l00002664:
 00002730 FA EC 4C DF 0C 18 4E 5E 4E 75 00 00             ..L...N^Nu..   
 
 ;; fn0000273C: 0000273C
+;;   Called from:
+;;     000025DA (in fn000025B4)
+;;     00002BD6 (in fn00002BB4)
+;;     00002BE2 (in fn00002BB4)
+;;     00002BEE (in fn00002BB4)
 fn0000273C proc
 	link	a6,#$0000
 	tst.l	-$0530(a5)
 	bne	$0000274E
 
 l00002746:
-	jsr.l	$0016(pc)                                            ; 0000275C
+	jsr.l	0000275C                                             ; $0016(pc)
 	tst.l	d0
 	beq	$00002758
 
@@ -1653,6 +1702,8 @@ l00002758:
 	rts
 
 ;; fn0000275C: 0000275C
+;;   Called from:
+;;     00002746 (in fn0000273C)
 fn0000275C proc
 	link	a6,#$0000
 	move.l	#$00001000,d0
@@ -1692,6 +1743,10 @@ l00002794:
 	rts
 
 ;; fn000027A0: 000027A0
+;;   Called from:
+;;     00002546 (in fn00002510)
+;;     00002AD0 (in fn00002A54)
+;;     00002B36 (in fn00002B18)
 fn000027A0 proc
 	link	a6,#$0000
 	moveq	#$12,d2
@@ -1701,6 +1756,9 @@ fn000027A0 proc
 	rts
 
 ;; fn000027B0: 000027B0
+;;   Called from:
+;;     0000251E (in fn00002510)
+;;     0000253A (in fn00002510)
 fn000027B0 proc
 	link	a6,#$0000
 	movem.l	d3-d6/a2-a4,-(a7)
@@ -1831,6 +1889,8 @@ l00002894:
 0000289E                                           00 00               ..
 
 ;; fn000028A0: 000028A0
+;;   Called from:
+;;     0000252C (in fn00002510)
 fn000028A0 proc
 	link	a6,#$0000
 	movem.l	d3-d7/a2,-(a7)
@@ -1858,7 +1918,7 @@ l000028CA:
 l000028D6:
 	move.l	d3,-(a7)
 	move.l	d4,-(a7)
-	jsr.l	$017A(pc)                                            ; 00002A54
+	jsr.l	00002A54                                             ; $017A(pc)
 	addq.w	#$08,a7
 	cmp.l	d6,d0
 	bne	$000028FC
@@ -1984,7 +2044,7 @@ l000029AA:
 l000029B4:
 	move.l	d3,-(a7)
 	move.l	d5,-(a7)
-	jsr.l	$0010(pc)                                            ; 000029C8
+	jsr.l	000029C8                                             ; $0010(pc)
 	addq.w	#$08,a7
 	movem.l	(a7)+,d3-d7/a2
 	unlk	a6
@@ -1992,6 +2052,8 @@ l000029B4:
 000029C6                   00 00                               ..       
 
 ;; fn000029C8: 000029C8
+;;   Called from:
+;;     000029B8 (in fn000028A0)
 fn000029C8 proc
 	link	a6,#$0000
 	movem.l	d3-d5,-(a7)
@@ -2044,14 +2106,14 @@ l00002A20:
 	move.l	d4,$0004(a1)
 	move.l	d3,-(a7)
 	move.l	d5,-(a7)
-	jsr.l	$001C(pc)                                            ; 00002A54
+	jsr.l	00002A54                                             ; $001C(pc)
 	addq.w	#$08,a7
 	tst.l	d0
 	beq	$00002A4C
 
 l00002A42:
 	move.l	d5,-(a7)
-	jsr.l	$009C(pc)                                            ; 00002AE0
+	jsr.l	00002AE0                                             ; $009C(pc)
 	addq.w	#$04,a7
 
 l00002A4A:
@@ -2063,6 +2125,9 @@ l00002A4C:
 	rts
 
 ;; fn00002A54: 00002A54
+;;   Called from:
+;;     000028DA (in fn000028A0)
+;;     00002A38 (in fn000029C8)
 fn00002A54 proc
 	link	a6,#$0000
 	movem.l	d3-d5/a2,-(a7)
@@ -2114,13 +2179,13 @@ l00002ABE:
 	add.l	d3,$0004(a2)
 	move.l	d3,-(a7)
 	move.l	a1,-(a7)
-	jsr.l	$00EE(pc)                                            ; 00002BB4
+	jsr.l	00002BB4                                             ; $00EE(pc)
 	addq.w	#$08,a7
 	tst.l	d0
 	beq	$00002AD4
 
 l00002AD0:
-	jsr.l	-$0330(pc)                                           ; 000027A0
+	jsr.l	000027A0                                             ; -$0330(pc)
 
 l00002AD4:
 	moveq	#$00,d0
@@ -2130,6 +2195,8 @@ l00002AD4:
 00002ADE                                           00 00               ..
 
 ;; fn00002AE0: 00002AE0
+;;   Called from:
+;;     00002A44 (in fn000029C8)
 fn00002AE0 proc
 	link	a6,#$0000
 	move.l	d3,-(a7)
@@ -2172,7 +2239,7 @@ l00002B24:
 	beq	$00002B3A
 
 l00002B36:
-	jsr.l	-$0396(pc)                                           ; 000027A0
+	jsr.l	000027A0                                             ; -$0396(pc)
 
 l00002B3A:
 	move.l	$0004(a2),d0
@@ -2212,6 +2279,8 @@ l00002B78:
 00002BB0 4E 75 00 00                                     Nu..           
 
 ;; fn00002BB4: 00002BB4
+;;   Called from:
+;;     00002AC6 (in fn00002A54)
 fn00002BB4 proc
 	link	a6,#$FFE8
 	move.l	a2,-(a7)
@@ -2223,17 +2292,17 @@ fn00002BB4 proc
 	move.l	d2,-$0008(a6)
 	lea	-$0014(a6),a0
 	move.l	a0,-$0018(a6)
-	jsr.l	-$049A(pc)                                           ; 0000273C
+	jsr.l	0000273C                                             ; -$049A(pc)
 	move.l	d0,-$0014(a6)
 	beq	$00002DE8
 
 l00002BE2:
-	jsr.l	-$04A6(pc)                                           ; 0000273C
+	jsr.l	0000273C                                             ; -$04A6(pc)
 	move.l	d0,-$0010(a6)
 	beq	$00002DE8
 
 l00002BEE:
-	jsr.l	-$04B2(pc)                                           ; 0000273C
+	jsr.l	0000273C                                             ; -$04B2(pc)
 	move.l	d0,-$000C(a6)
 	beq	$00002DE8
 
@@ -2241,7 +2310,7 @@ l00002BFA:
 	pea	-$0004(a6)
 	movea.l	$0008(a6),a2
 	move.l	a2,-(a7)
-	jsr.l	$02A4(pc)                                            ; 00002EA8
+	jsr.l	00002EA8                                             ; $02A4(pc)
 	addq.w	#$08,a7
 	tst.l	d0
 	bne	$00002C28
@@ -2312,7 +2381,7 @@ l00002C92:
 	move.l	(a0),-(a7)
 	move.l	$000C(a6),-(a7)
 	move.l	a3,-(a7)
-	jsr.l	$0176(pc)                                            ; 00002E18
+	jsr.l	00002E18                                             ; $0176(pc)
 	lea	$0010(a7),a7
 	pea	-$0018(a6)
 	move.l	a3,-(a7)
@@ -2343,7 +2412,7 @@ l00002C92:
 00002DA0 00 0C 2F 0B                                     ../.           
 
 l00002DA4:
-	jsr.l	$0074(pc)                                            ; 00002E18
+	jsr.l	00002E18                                             ; $0074(pc)
 	lea	$0010(a7),a7
 	movea.l	-$0534(a5),a0
 	move.l	$0004(a0),d0
@@ -2397,6 +2466,9 @@ l00002E0E:
 	rts
 
 ;; fn00002E18: 00002E18
+;;   Called from:
+;;     00002CA2 (in fn00002BB4)
+;;     00002DA4 (in fn00002BB4)
 fn00002E18 proc
 	link	a6,#$0000
 	move.l	a2,-(a7)
@@ -2460,6 +2532,8 @@ l00002E9A:
 00002EA6                   00 00                               ..       
 
 ;; fn00002EA8: 00002EA8
+;;   Called from:
+;;     00002C04 (in fn00002BB4)
 fn00002EA8 proc
 	link	a6,#$0000
 	lea	-$052C(a5),a0

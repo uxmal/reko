@@ -20,6 +20,10 @@
 0800:0120 01                                              .              
 
 ;; __exit: 0800:0121
+;;   Called from:
+;;     0800:01F5 (in _abort)
+;;     0800:01F5 (in fn0800_01E9)
+;;     0800:032A (in _exit)
 __exit proc
 	mov	ds,cs:[01F8]
 	call	01A5
@@ -84,6 +88,8 @@ fn0800_0162 proc
 	ret
 
 ;; __restorezero: 0800:01A5
+;;   Called from:
+;;     0800:0126 (in __exit)
 __restorezero proc
 	push	ds
 	mov	ax,2500
@@ -109,6 +115,10 @@ __restorezero proc
 0800:01D2       C7 06 96 00 00 00 CB C3                     ........     
 
 ;; fn0800_01DA: 0800:01DA
+;;   Called from:
+;;     0800:014C (in __exit)
+;;     0800:01EE (in _abort)
+;;     0800:01EE (in fn0800_01E9)
 fn0800_01DA proc
 	mov	ah,40
 	mov	bx,0002
@@ -116,6 +126,9 @@ fn0800_01DA proc
 	ret
 
 ;; _abort: 0800:01E2
+;;   Called from:
+;;     0800:03E7 (in fn0800_03E7)
+;;     0800:0454 (in __setenvp)
 _abort proc
 	mov	cx,001E
 	nop
@@ -131,6 +144,19 @@ fn0800_01E9 proc
 	add	[bx+si],al
 
 ;; _f3: 0800:01FA
+;;   Called from:
+;;     0800:01F8 (in _abort)
+;;     0800:01F8 (in fn0800_01E9)
+;;     0800:0202 (in _f2)
+;;     0800:0205 (in _f2)
+;;     0800:0208 (in _f2)
+;;     0800:020B (in _f2)
+;;     0800:020E (in _f2)
+;;     0800:0211 (in _f2)
+;;     0800:0214 (in _f2)
+;;     0800:0217 (in _f2)
+;;     0800:021A (in _f2)
+;;     0800:021D (in _f2)
 _f3 proc
 	push	bp
 	mov	bp,sp
@@ -138,6 +164,17 @@ _f3 proc
 	ret
 
 ;; _f2: 0800:01FF
+;;   Called from:
+;;     0800:0225 (in fn0800_0222)
+;;     0800:0228 (in fn0800_0222)
+;;     0800:022B (in fn0800_0222)
+;;     0800:022E (in fn0800_0222)
+;;     0800:0231 (in fn0800_0222)
+;;     0800:0234 (in fn0800_0222)
+;;     0800:0237 (in fn0800_0222)
+;;     0800:023A (in fn0800_0222)
+;;     0800:023D (in fn0800_0222)
+;;     0800:0240 (in fn0800_0222)
 _f2 proc
 	push	bp
 	mov	bp,sp
@@ -155,6 +192,16 @@ _f2 proc
 	ret
 
 ;; fn0800_0222: 0800:0222
+;;   Called from:
+;;     0800:0248 (in _f0)
+;;     0800:024B (in _f0)
+;;     0800:024E (in _f0)
+;;     0800:0251 (in _f0)
+;;     0800:0254 (in _f0)
+;;     0800:0257 (in _f0)
+;;     0800:025A (in _f0)
+;;     0800:025D (in _f0)
+;;     0800:0260 (in _f0)
 fn0800_0222 proc
 	push	bp
 	mov	bp,sp
@@ -172,6 +219,8 @@ fn0800_0222 proc
 	ret
 
 ;; _f0: 0800:0245
+;;   Called from:
+;;     0800:029C (in _main)
 _f0 proc
 	push	bp
 	mov	bp,sp
@@ -241,6 +290,11 @@ l0800_02B9:
 	ret
 
 ;; __IOERROR: 0800:02C5
+;;   Called from:
+;;     0800:0AC8 (in __read)
+;;     0800:0C21 (in __write)
+;;     0800:0C4B (in _lseek)
+;;     0800:0DC4 (in _eof)
 __IOERROR proc
 	push	bp
 	mov	bp,sp
@@ -368,6 +422,9 @@ fn0800_038D proc
 	dec	cx
 
 ;; fn0800_0393: 0800:0393
+;;   Called from:
+;;     0800:0392 (in fn0800_038D)
+;;     0800:0392 (in __setargv)
 fn0800_0393 proc
 	rep movsb
 
@@ -409,6 +466,9 @@ l0800_03BB:
 	jmp	03A3
 
 ;; fn0800_03BF: 0800:03BF
+;;   Called from:
+;;     0800:03A3 (in fn0800_0393)
+;;     0800:03AA (in fn0800_0393)
 fn0800_03BF proc
 	or	ax,ax
 	jz	03CA
@@ -454,6 +514,10 @@ l0800_03E6:
 	ret
 
 ;; fn0800_03E7: 0800:03E7
+;;   Called from:
+;;     0800:036F (in __setargv)
+;;     0800:0385 (in __setargv)
+;;     0800:03FF (in fn0800_0393)
 fn0800_03E7 proc
 	jmp	01E2
 
@@ -554,6 +618,10 @@ l0800_0468:
 0800:0490 C3                                              .              
 
 ;; ___pull_free_block: 0800:0491
+;;   Called from:
+;;     0800:05C2 (in _malloc)
+;;     0800:15FC (in fn0800_15CF)
+;;     0800:1630 (in fn0800_1606)
 ___pull_free_block proc
 	push	bp
 	mov	bp,sp
@@ -583,6 +651,8 @@ l0800_04BB:
 	ret
 
 ;; fn0800_04BF: 0800:04BF
+;;   Called from:
+;;     0800:05B4 (in _malloc)
 fn0800_04BF proc
 	push	bp
 	mov	bp,sp
@@ -622,6 +692,8 @@ l0800_04F5:
 	ret
 
 ;; fn0800_04F9: 0800:04F9
+;;   Called from:
+;;     0800:05D9 (in _malloc)
 fn0800_04F9 proc
 	push	bp
 	mov	bp,sp
@@ -660,6 +732,8 @@ l0800_0533:
 	ret
 
 ;; fn0800_0536: 0800:0536
+;;   Called from:
+;;     0800:0597 (in _malloc)
 fn0800_0536 proc
 	push	bp
 	mov	bp,sp
@@ -697,6 +771,10 @@ l0800_056D:
 	ret
 
 ;; _malloc: 0800:0570
+;;   Called from:
+;;     0800:0426 (in __setenvp)
+;;     0800:0444 (in __setenvp)
+;;     0800:09A0 (in _setvbuf)
 _malloc proc
 	push	bp
 	mov	bp,sp
@@ -781,6 +859,8 @@ l0800_05DF:
 	ret
 
 ;; ___brk: 0800:05E3
+;;   Called from:
+;;     0800:0641 (in _brk)
 ___brk proc
 	push	bp
 	mov	bp,sp
@@ -805,6 +885,9 @@ l0800_0605:
 	ret
 
 ;; ___sbrk: 0800:0607
+;;   Called from:
+;;     0800:050B (in fn0800_04F9)
+;;     0800:0548 (in fn0800_0536)
 ___sbrk proc
 	push	bp
 	mov	bp,sp
@@ -836,6 +919,10 @@ l0800_0639:
 	ret
 
 ;; _brk: 0800:063B
+;;   Called from:
+;;     0800:1614 (in fn0800_1606)
+;;     0800:164B (in fn0800_1606)
+;;     0800:1655 (in fn0800_1606)
 _brk proc
 	push	bp
 	mov	bp,sp
@@ -851,6 +938,8 @@ l0800_0647:
 0800:0650 52 50 E8 B2 FF 8B E5 EB 00 5D C3                RP.......].    
 
 ;; fn0800_065B: 0800:065B
+;;   Called from:
+;;     0800:06C3 (in _fseek)
 fn0800_065B proc
 	push	bp
 	mov	bp,sp
@@ -901,6 +990,8 @@ l0800_069A:
 	ret	0002
 
 ;; _fseek: 0800:06A2
+;;   Called from:
+;;     0800:0960 (in _setvbuf)
 _fseek proc
 	push	bp
 	mov	bp,sp
@@ -973,6 +1064,9 @@ l0800_0703:
 0800:0750 FE 8B 46 FC EB 00 5E 8B E5 5D C3                ..F...^..].    
 
 ;; fn0800_075B: 0800:075B
+;;   Called from:
+;;     0800:0790 (in fn0800_0782)
+;;     0800:0888 (in _fgetc)
 fn0800_075B proc
 	push	si
 	push	di
@@ -1006,6 +1100,8 @@ l0800_077F:
 	ret
 
 ;; fn0800_0782: 0800:0782
+;;   Called from:
+;;     0800:0830 (in _fgetc)
 fn0800_0782 proc
 	push	bp
 	mov	bp,sp
@@ -1225,6 +1321,8 @@ l0800_08E2:
 0800:08F0 00 C3                                           ..             
 
 ;; _isatty: 0800:08F2
+;;   Called from:
+;;     0800:0855 (in _fgetc)
 _isatty proc
 	push	bp
 	mov	bp,sp
@@ -1237,6 +1335,8 @@ _isatty proc
 	ret
 
 ;; _setvbuf: 0800:0904
+;;   Called from:
+;;     0800:0879 (in _fgetc)
 _setvbuf proc
 	push	bp
 	mov	bp,sp
@@ -1368,6 +1468,8 @@ l0800_09D2:
 0800:09F0 0B FF 75 EC 5F 5E C3                            ..u._^.        
 
 ;; _read: 0800:09F7
+;;   Called from:
+;;     0800:07A2 (in fn0800_0782)
 _read proc
 	push	bp
 	mov	bp,sp
@@ -1495,6 +1597,10 @@ l0800_0AAD:
 	ret
 
 ;; __read: 0800:0AB3
+;;   Called from:
+;;     0800:0898 (in _fgetc)
+;;     0800:0A23 (in _read)
+;;     0800:0A72 (in _read)
 __read proc
 	push	bp
 	mov	bp,sp
@@ -1518,6 +1624,8 @@ l0800_0ACD:
 	ret
 
 ;; _write: 0800:0ACF
+;;   Called from:
+;;     0800:0E28 (in _fflush)
 _write proc
 	push	bp
 	mov	bp,sp
@@ -1669,6 +1777,12 @@ l0800_0BDC:
 	ret
 
 ;; __write: 0800:0BE2
+;;   Called from:
+;;     0800:0AFC (in _write)
+;;     0800:0B64 (in _write)
+;;     0800:0BB2 (in _write)
+;;     0800:0F2B (in _fputc)
+;;     0800:0F43 (in _fputc)
 __write proc
 	push	bp
 	mov	bp,sp
@@ -1713,6 +1827,11 @@ l0800_0C26:
 	ret
 
 ;; _lseek: 0800:0C28
+;;   Called from:
+;;     0800:06EA (in _fseek)
+;;     0800:0A95 (in _read)
+;;     0800:0BFD (in __write)
+;;     0800:1D5C (in _tell)
 _lseek proc
 	push	bp
 	mov	bp,sp
@@ -1741,6 +1860,8 @@ l0800_0C51:
 	ret
 
 ;; __LONGTOA: 0800:0C53
+;;   Called from:
+;;     0800:1303 (in __VPRINTER)
 __LONGTOA proc
 	push	bp
 	mov	bp,sp
@@ -1850,6 +1971,8 @@ l0800_0CCA:
 0800:0D50 21 B9 27 00 90 BA B8 04 B4 40 CD 21 E9 83 F4    !.'......@.!...
 
 ;; _eof: 0800:0D5F
+;;   Called from:
+;;     0800:08A8 (in _fgetc)
 _eof proc
 	push	bp
 	mov	bp,sp
@@ -1929,6 +2052,11 @@ l0800_0DC9:
 	ret
 
 ;; _fflush: 0800:0DCD
+;;   Called from:
+;;     0800:06AA (in _fseek)
+;;     0800:0771 (in fn0800_075B)
+;;     0800:0EB1 (in _fputc)
+;;     0800:0EF3 (in _fputc)
 _fflush proc
 	push	bp
 	mov	bp,sp
@@ -2011,6 +2139,10 @@ l0800_0E47:
 	ret
 
 ;; _printf: 0800:0E4B
+;;   Called from:
+;;     0800:026F (in _main)
+;;     0800:028A (in _main)
+;;     0800:02BD (in _main)
 _printf proc
 	push	bp
 	mov	bp,sp
@@ -2047,6 +2179,8 @@ l0800_0E7B:
 	ret
 
 ;; _fputc: 0800:0E7D
+;;   Called from:
+;;     0800:0E74 (in __fputc)
 _fputc proc
 	push	bp
 	mov	bp,sp
@@ -2210,10 +2344,15 @@ l0800_0F66:
 0800:1040 5D C2 06 00                                     ]...           
 
 ;; __REALCVT: 0800:1044
+;;   Called from:
+;;     0800:1418 (in __VPRINTER)
 __REALCVT proc
 	jmp	word ptr [05E0]
 
 ;; fn0800_1048: 0800:1048
+;;   Called from:
+;;     0800:133C (in __VPRINTER)
+;;     0800:1344 (in __VPRINTER)
 fn0800_1048 proc
 	push	bp
 	mov	bp,sp
@@ -2244,6 +2383,8 @@ l0800_106F:
 	ret	0002
 
 ;; __VPRINTER: 0800:1073
+;;   Called from:
+;;     0800:0E5D (in _printf)
 __VPRINTER proc
 	push	bp
 	mov	bp,sp
@@ -2256,6 +2397,10 @@ __VPRINTER proc
 	jmp	10CD
 
 ;; fn0800_108C: 0800:108C
+;;   Called from:
+;;     0800:13B8 (in __VPRINTER)
+;;     0800:1437 (in __VPRINTER)
+;;     0800:1465 (in __VPRINTER)
 fn0800_108C proc
 	push	di
 	mov	cx,FFFF
@@ -2271,6 +2416,15 @@ l0800_1094:
 	ret
 
 ;; fn0800_1099: 0800:1099
+;;   Called from:
+;;     0800:12E9 (in __VPRINTER)
+;;     0800:14C5 (in __VPRINTER)
+;;     0800:14D7 (in __VPRINTER)
+;;     0800:14DE (in __VPRINTER)
+;;     0800:14FE (in __VPRINTER)
+;;     0800:1509 (in __VPRINTER)
+;;     0800:152B (in __VPRINTER)
+;;     0800:156A (in __VPRINTER)
 fn0800_1099 proc
 	mov	[di],al
 	inc	di
@@ -2278,6 +2432,11 @@ fn0800_1099 proc
 	jle	10CC
 
 ;; fn0800_10A1: 0800:10A1
+;;   Called from:
+;;     0800:109F (in fn0800_1099)
+;;     0800:10EE (in __VPRINTER)
+;;     0800:151E (in __VPRINTER)
+;;     0800:1578 (in __VPRINTER)
 fn0800_10A1 proc
 	push	bx
 	push	cx
@@ -3063,6 +3222,8 @@ l0800_158E:
 	ret	0008
 
 ;; fn0800_1596: 0800:1596
+;;   Called from:
+;;     0800:1691 (in fn0800_165F)
 fn0800_1596 proc
 	push	bp
 	mov	bp,sp
@@ -3095,6 +3256,8 @@ l0800_15CB:
 	ret
 
 ;; fn0800_15CF: 0800:15CF
+;;   Called from:
+;;     0800:16A2 (in fn0800_165F)
 fn0800_15CF proc
 	push	bp
 	mov	bp,sp
@@ -3131,6 +3294,8 @@ l0800_15FB:
 	ret
 
 ;; fn0800_1606: 0800:1606
+;;   Called from:
+;;     0800:16C7 (in _free)
 fn0800_1606 proc
 	push	si
 	mov	ax,[062C]
@@ -3186,6 +3351,8 @@ l0800_165D:
 	ret
 
 ;; fn0800_165F: 0800:165F
+;;   Called from:
+;;     0800:16CD (in _free)
 fn0800_165F proc
 	push	bp
 	mov	bp,sp
@@ -3238,6 +3405,8 @@ l0800_16A7:
 	ret
 
 ;; _free: 0800:16AD
+;;   Called from:
+;;     0800:0970 (in _setvbuf)
 _free proc
 	push	bp
 	mov	bp,sp
@@ -3271,6 +3440,8 @@ l0800_16D1:
 	ret
 
 ;; _scanf: 0800:16D4
+;;   Called from:
+;;     0800:027B (in _main)
 _scanf proc
 	push	bp
 	mov	bp,sp
@@ -3292,6 +3463,8 @@ l0800_16F1:
 	ret
 
 ;; __scanner: 0800:16F3
+;;   Called from:
+;;     0800:16EA (in _scanf)
 __scanner proc
 	push	bp
 	mov	bp,sp
@@ -3304,6 +3477,11 @@ __scanner proc
 0800:1707                      90                                .       
 
 ;; fn0800_1708: 0800:1708
+;;   Called from:
+;;     0800:187E (in __scanner)
+;;     0800:1935 (in __scanner)
+;;     0800:19CE (in __scanner)
+;;     0800:1A74 (in __scanner)
 fn0800_1708 proc
 	mov	di,[bp+0C]
 	test	byte ptr [bp-29],20
@@ -3573,6 +3751,9 @@ l0800_1895:
 	call	1898
 
 ;; fn0800_1898: 0800:1898
+;;   Called from:
+;;     0800:1895 (in __scanner)
+;;     0800:1895 (in __scanner)
 fn0800_1898 proc
 	jmp	1B06
 0800:189B                                  FF 76 08 50 FF            .v.P.
@@ -3662,6 +3843,9 @@ l0800_196C:
 	call	196F
 
 ;; fn0800_196F: 0800:196F
+;;   Called from:
+;;     0800:196C (in __scanner)
+;;     0800:196C (in __scanner)
 fn0800_196F proc
 	jmp	1B06
 0800:1972       F6 46 D7 01 75 06 E8 8D FD FF 46 D8 81 66   .F..u.....F..f
@@ -3897,6 +4081,20 @@ l0800_1AE5:
 	inc	word ptr [bp-28]
 
 ;; fn0800_1AEB: 0800:1AEB
+;;   Called from:
+;;     0800:1764 (in __scanner)
+;;     0800:1785 (in __scanner)
+;;     0800:1788 (in __scanner)
+;;     0800:17AB (in __scanner)
+;;     0800:17E6 (in __scanner)
+;;     0800:1892 (in __scanner)
+;;     0800:1905 (in __scanner)
+;;     0800:1A03 (in __scanner)
+;;     0800:1ADD (in __scanner)
+;;     0800:1AE3 (in __scanner)
+;;     0800:1AE8 (in __scanner)
+;;     0800:1B2A (in fn0800_1B06)
+;;     0800:1B89 (in fn0800_1B2C)
 fn0800_1AEB proc
 	push	word ptr [bp+08]
 	mov	ax,FFFF
@@ -3908,12 +4106,20 @@ fn0800_1AEB proc
 	sbb	word ptr [bp-28],00
 
 ;; fn0800_1AFF: 0800:1AFF
+;;   Called from:
+;;     0800:188F (in __scanner)
+;;     0800:1969 (in __scanner)
+;;     0800:1A60 (in __scanner)
+;;     0800:1AFB (in fn0800_1AEB)
 fn0800_1AFF proc
 	pop	es
 	mov	ax,[bp-28]
 	jmp	1B8C
 
 ;; fn0800_1B06: 0800:1B06
+;;   Called from:
+;;     0800:1898 (in fn0800_1898)
+;;     0800:196F (in fn0800_196F)
 fn0800_1B06 proc
 	inc	word ptr [bp-26]
 	push	word ptr [bp+08]
@@ -3945,6 +4151,9 @@ l0800_1B29:
 	jmp	1AEB
 
 ;; fn0800_1B2C: 0800:1B2C
+;;   Called from:
+;;     0800:18AF (in fn0800_18AF)
+;;     0800:18CF (in fn0800_18CF)
 fn0800_1B2C proc
 	sub	dx,dx
 	mov	cx,0004
@@ -4029,18 +4238,29 @@ l0800_1B8C:
 	ret
 
 ;; __scantod: 0800:1B92
+;;   Called from:
+;;     0800:1920 (in __scanner)
 __scantod proc
 	jmp	word ptr [05E2]
 
 ;; __scanrslt: 0800:1B96
+;;   Called from:
+;;     0800:1955 (in __scanner)
 __scanrslt proc
 	jmp	word ptr [05E4]
 
 ;; __scanpop: 0800:1B9A
+;;   Called from:
+;;     0800:195E (in __scanner)
+;;     0800:1964 (in __scanner)
 __scanpop proc
 	jmp	word ptr [05E6]
 
 ;; fn0800_1B9E: 0800:1B9E
+;;   Called from:
+;;     0800:1CAB (in __scantol)
+;;     0800:1CD1 (in __scantol)
+;;     0800:1CFD (in __scantol)
 fn0800_1B9E proc
 	push	bx
 	sub	bl,30
@@ -4086,6 +4306,8 @@ l0800_1BCB:
 	ret
 
 ;; __scantol: 0800:1BCC
+;;   Called from:
+;;     0800:1869 (in __scanner)
 __scantol proc
 	push	bp
 	mov	bp,sp

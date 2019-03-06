@@ -39,9 +39,11 @@
 ;;; Segment .init (00000000004003E0)
 
 ;; _init: 00000000004003E0
+;;   Called from:
+;;     000000000040057E (in __libc_csu_init)
 _init proc
 	sub	rsp,08
-	mov	rax,[rip+00200C0D]                                     ; 0000000000600FF8
+	mov	rax,[0000000000600FF8]                                 ; [rip+00200C0D]
 	test	rax,rax
 	jz	00000000004003F5
 
@@ -78,6 +80,8 @@ _start proc
 000000000040046A                               66 0F 1F 44 00 00           f..D..
 
 ;; deregister_tm_clones: 0000000000400470
+;;   Called from:
+;;     00000000004004ED (in __do_global_dtors_aux)
 deregister_tm_clones proc
 	mov	eax,00601047
 	push	rbp
@@ -102,6 +106,9 @@ l0000000000400491:
 0000000000400499                            0F 1F 80 00 00 00 00          .......
 
 ;; register_tm_clones: 00000000004004A0
+;;   Called from:
+;;     0000000000400520 (in frame_dummy)
+;;     0000000000400528 (in frame_dummy)
 register_tm_clones proc
 	mov	eax,00601040
 	push	rbp
@@ -132,7 +139,7 @@ l00000000004004CE:
 
 ;; __do_global_dtors_aux: 00000000004004E0
 __do_global_dtors_aux proc
-	cmp	byte ptr [rip+00200B59],00                             ; 0000000000601040
+	cmp	[0000000000601040],00                                  ; [rip+00200B59]
 	jnz	00000000004004FA
 
 l00000000004004E9:
@@ -140,7 +147,7 @@ l00000000004004E9:
 	mov	rbp,rsp
 	call	0000000000400470
 	pop	rbp
-	mov	byte ptr [rip+00200B46],01                             ; 0000000000601040
+	mov	[0000000000601040],01                                  ; [rip+00200B46]
 
 l00000000004004FA:
 	ret
@@ -148,7 +155,7 @@ l00000000004004FA:
 
 ;; frame_dummy: 0000000000400500
 frame_dummy proc
-	cmp	qword ptr [rip+00200918],00                            ; 0000000000600E20
+	cmp	[0000000000600E20],00                                  ; [rip+00200918]
 	jz	0000000000400528
 
 l000000000040050A:
@@ -169,6 +176,8 @@ l0000000000400528:
 	jmp	00000000004004A0
 
 ;; f: 000000000040052D
+;;   Called from:
+;;     0000000000400546 (in main)
 f proc
 	push	rbp
 	mov	rbp,rsp
@@ -196,9 +205,9 @@ __libc_csu_init proc
 	push	r13
 	mov	r13,rdx
 	push	r12
-	lea	r12,[rip+002008A8]                                     ; 0000000000600E10
+	lea	r12,[0000000000600E10]                                 ; [rip+002008A8]
 	push	rbp
-	lea	rbp,[rip+002008A8]                                     ; 0000000000600E18
+	lea	rbp,[0000000000600E18]                                 ; [rip+002008A8]
 	push	rbx
 	sub	rbp,r12
 	xor	ebx,ebx

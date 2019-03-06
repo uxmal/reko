@@ -38,6 +38,8 @@
 ;;; Segment .init (00000000004003C8)
 
 ;; _init: 00000000004003C8
+;;   Called from:
+;;     0000000000400660 (in __libc_csu_init)
 _init proc
 	sub	rsp,08
 	call	000000000040043C
@@ -68,9 +70,11 @@ _start proc
 000000000040043A                               90 90                       ..   
 
 ;; call_gmon_start: 000000000040043C
+;;   Called from:
+;;     00000000004003CC (in _init)
 call_gmon_start proc
 	sub	rsp,08
-	mov	rax,[rip+00200B99]                                     ; 0000000000600FE0
+	mov	rax,[0000000000600FE0]                                 ; [rip+00200B99]
 	test	rax,rax
 	jz	000000000040044E
 
@@ -83,6 +87,8 @@ l000000000040044E:
 0000000000400453          90 90 90 90 90 90 90 90 90 90 90 90 90    .............
 
 ;; deregister_tm_clones: 0000000000400460
+;;   Called from:
+;;     00000000004004DD (in __do_global_dtors_aux)
 deregister_tm_clones proc
 	mov	eax,0060103F
 	push	rbp
@@ -107,6 +113,9 @@ l0000000000400481:
 0000000000400489                            0F 1F 80 00 00 00 00          .......
 
 ;; register_tm_clones: 0000000000400490
+;;   Called from:
+;;     0000000000400510 (in frame_dummy)
+;;     0000000000400518 (in frame_dummy)
 register_tm_clones proc
 	mov	eax,00601038
 	push	rbp
@@ -137,7 +146,7 @@ l00000000004004BE:
 
 ;; __do_global_dtors_aux: 00000000004004D0
 __do_global_dtors_aux proc
-	cmp	byte ptr [rip+00200B61],00                             ; 0000000000601038
+	cmp	[0000000000601038],00                                  ; [rip+00200B61]
 	jnz	00000000004004EA
 
 l00000000004004D9:
@@ -145,7 +154,7 @@ l00000000004004D9:
 	mov	rbp,rsp
 	call	0000000000400460
 	pop	rbp
-	mov	byte ptr [rip+00200B4E],01                             ; 0000000000601038
+	mov	[0000000000601038],01                                  ; [rip+00200B4E]
 
 l00000000004004EA:
 	ret
@@ -153,7 +162,7 @@ l00000000004004EA:
 
 ;; frame_dummy: 00000000004004F0
 frame_dummy proc
-	cmp	qword ptr [rip+00200910],00                            ; 0000000000600E08
+	cmp	[0000000000600E08],00                                  ; [rip+00200910]
 	jz	0000000000400518
 
 l00000000004004FA:
@@ -175,6 +184,8 @@ l0000000000400518:
 000000000040051D                                        90 90 90              ...
 
 ;; verify: 0000000000400520
+;;   Called from:
+;;     00000000004005F9 (in main)
 verify proc
 	push	rbp
 	mov	rbp,rsp
@@ -290,8 +301,8 @@ l000000000040061D:
 __libc_csu_init proc
 	mov	[rsp-28],rbp
 	mov	[rsp-20],r12
-	lea	rbp,[rip+002007CF]                                     ; 0000000000600E00
-	lea	r12,[rip+002007C0]                                     ; 0000000000600DF8
+	lea	rbp,[0000000000600E00]                                 ; [rip+002007CF]
+	lea	r12,[0000000000600DF8]                                 ; [rip+002007C0]
 	mov	[rsp-18],r13
 	mov	[rsp-10],r14
 	mov	[rsp-08],r15
