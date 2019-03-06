@@ -1,6 +1,8 @@
 ;;; Segment .text (00400220)
 
 ;; fn00400220: 00400220
+;;   Called from:
+;;     00403D54 (in fn00403CA0)
 fn00400220 proc
 	stwu	r1,-64(r1)
 	mflr	r12
@@ -24,6 +26,8 @@ l00400254:
 	blr
 
 ;; fn00400268: 00400268
+;;   Called from:
+;;     00400240 (in fn00400220)
 fn00400268 proc
 	stw	r3,24(r1)
 	stw	r4,28(r1)
@@ -63,6 +67,9 @@ fn00400268 proc
 	blr
 
 ;; fn004002F8: 004002F8
+;;   Called from:
+;;     004002A8 (in fn00400268)
+;;     00403400 (in fn004033C4)
 fn004002F8 proc
 	stwu	r1,-64(r1)
 	stmw	r30,56(r1)
@@ -168,6 +175,9 @@ l00400418:
 	blr
 
 ;; fn00400430: 00400430
+;;   Called from:
+;;     004002D8 (in fn00400268)
+;;     00403430 (in fn004033C4)
 fn00400430 proc
 	cmpwi	cr1,r3,+0000
 	mflr	r12
@@ -214,6 +224,10 @@ l004004A0:
 	blr
 
 ;; fn004004B4: 004004B4
+;;   Called from:
+;;     004002C4 (in fn00400268)
+;;     0040335C (in fn004032FC)
+;;     0040341C (in fn004033C4)
 fn004004B4 proc
 	stwu	r1,-704(r1)
 	stmw	r13,624(r1)
@@ -287,6 +301,8 @@ l00400578:
 00400590 48 00 01 60 48 00 01 64 48 00 01 94 48 00 01 A0 H..`H..dH...H...
 
 ;; fn004005A0: 004005A0
+;;   Called from:
+;;     0040057C (in fn004004B4)
 fn004005A0 proc
 	mflr	r0
 	add	r0,r0,r11
@@ -475,6 +491,11 @@ l00400DEC:
 	blr
 
 ;; fn00400E04: 00400E04
+;;   Called from:
+;;     004005DC (in fn004004B4)
+;;     00400600 (in fn004004B4)
+;;     00400ED8 (in fn00400E9C)
+;;     00400F4C (in fn00400F00)
 fn00400E04 proc
 	stwu	r1,-64(r1)
 	stw	r31,56(r1)
@@ -612,6 +633,10 @@ fn00400F88 proc
 	blr
 
 ;; fn00400F9C: 00400F9C
+;;   Called from:
+;;     004003B0 (in fn004002F8)
+;;     004029B4 (in fn0040298C)
+;;     00403504 (in fn00403450)
 fn00400F9C proc
 	lwz	r4,100(r2)
 	mflr	r12
@@ -625,6 +650,8 @@ fn00400F9C proc
 	blr
 
 ;; fn00400FC4: 00400FC4
+;;   Called from:
+;;     00400FB0 (in fn00400F9C)
 fn00400FC4 proc
 	stwu	r1,-64(r1)
 	stmw	r30,56(r1)
@@ -680,6 +707,8 @@ l00401048:
 	blr
 
 ;; fn0040105C: 0040105C
+;;   Called from:
+;;     00401008 (in fn00400FC4)
 fn0040105C proc
 	mflr	r12
 	stwu	r1,-72(r1)
@@ -763,6 +792,8 @@ l00401128:
 	blr
 
 ;; fn0040115C: 0040115C
+;;   Called from:
+;;     00401108 (in fn0040105C)
 fn0040115C proc
 	stwu	r1,-72(r1)
 	stmw	r29,56(r1)
@@ -812,6 +843,10 @@ l004011E4:
 	blr
 
 ;; fn004011FC: 004011FC
+;;   Called from:
+;;     004013CC (in fn00401380)
+;;     004013F8 (in fn00401380)
+;;     00402AA4 (in fn00402A24)
 fn004011FC proc
 	stwu	r1,-64(r1)
 	stw	r31,56(r1)
@@ -876,6 +911,12 @@ l00401298:
 	blr
 
 ;; fn004012B0: 004012B0
+;;   Called from:
+;;     0040045C (in fn00400430)
+;;     00400498 (in fn00400430)
+;;     00401238 (in fn004011FC)
+;;     004031B8 (in fn00403170)
+;;     004034B8 (in fn00403450)
 fn004012B0 proc
 	stwu	r1,-72(r1)
 	stmw	r29,56(r1)
@@ -948,6 +989,9 @@ fn0040135C proc
 	blr
 
 ;; fn00401380: 00401380
+;;   Called from:
+;;     0040121C (in fn004011FC)
+;;     0040136C (in fn0040135C)
 fn00401380 proc
 	stwu	r1,-80(r1)
 	stmw	r27,56(r1)
@@ -1027,6 +1071,9 @@ l00401428:
 00401470 4E 80 00 20                                     N..            
 
 ;; fn00401474: 00401474
+;;   Called from:
+;;     00400310 (in fn004002F8)
+;;     0040166C (in fn00401598)
 fn00401474 proc
 	lwz	r4,116(r2)
 	ori	r5,r3,0000
@@ -1151,6 +1198,9 @@ l00401584:
 	blr
 
 ;; fn00401598: 00401598
+;;   Called from:
+;;     00400E5C (in fn00400E04)
+;;     004033A4 (in fn004032FC)
 fn00401598 proc
 	stwu	r1,-80(r1)
 	stmw	r27,60(r1)
@@ -1336,6 +1386,8 @@ fn0040178C proc
 004017E0 38 21 00 38 7D 88 03 A6 38 60 00 00 4E 80 00 20 8!.8}...8`..N.. 
 
 ;; fn004017F0: 004017F0
+;;   Called from:
+;;     00401020 (in fn00400FC4)
 fn004017F0 proc
 	lwz	r4,128(r2)
 	mflr	r12
@@ -1393,6 +1445,11 @@ l00401838:
 004019C0 BB 41 00 3C 38 21 00 58 4E 80 00 20             .A.<8!.XN..    
 
 ;; fn004019CC: 004019CC
+;;   Called from:
+;;     0040119C (in fn0040115C)
+;;     00402D18 (in fn00402CE0)
+;;     00402D30 (in fn00402CE0)
+;;     00402D48 (in fn00402CE0)
 fn004019CC proc
 	stwu	r1,-64(r1)
 	stw	r31,56(r1)
@@ -1428,6 +1485,8 @@ l00401A10:
 	blr
 
 ;; fn00401A34: 00401A34
+;;   Called from:
+;;     004019EC (in fn004019CC)
 fn00401A34 proc
 	mflr	r12
 	stwu	r1,-56(r1)
@@ -1471,6 +1530,10 @@ l00401A98:
 	blr
 
 ;; fn00401AB4: 00401AB4
+;;   Called from:
+;;     004010B4 (in fn0040105C)
+;;     00401EB4 (in fn00401DD8)
+;;     00402BD0 (in fn00402BA0)
 fn00401AB4 proc
 	mflr	r12
 	stwu	r1,-56(r1)
@@ -1484,6 +1547,8 @@ fn00401AB4 proc
 	blr
 
 ;; fn00401ADC: 00401ADC
+;;   Called from:
+;;     0040108C (in fn0040105C)
 fn00401ADC proc
 	stwu	r1,-88(r1)
 	stmw	r25,60(r1)
@@ -1662,6 +1727,8 @@ l00401CC8:
 	blr
 
 ;; fn00401CE8: 00401CE8
+;;   Called from:
+;;     00401CD0 (in fn00401ADC)
 fn00401CE8 proc
 	stwu	r1,-72(r1)
 	stmw	r29,56(r1)
@@ -1743,6 +1810,9 @@ l00401DC0:
 	blr
 
 ;; fn00401DD8: 00401DD8
+;;   Called from:
+;;     00401B48 (in fn00401ADC)
+;;     00401D90 (in fn00401CE8)
 fn00401DD8 proc
 	stwu	r1,-80(r1)
 	stmw	r28,60(r1)
@@ -1821,6 +1891,8 @@ l00401EBC:
 	blr
 
 ;; fn00401ED4: 00401ED4
+;;   Called from:
+;;     00401DA0 (in fn00401CE8)
 fn00401ED4 proc
 	stwu	r1,-64(r1)
 	stmw	r30,56(r1)
@@ -1855,6 +1927,9 @@ l00401F14:
 	blr
 
 ;; fn00401F40: 00401F40
+;;   Called from:
+;;     00401074 (in fn0040105C)
+;;     004010A0 (in fn0040105C)
 fn00401F40 proc
 	lwz	r7,104(r2)
 	stwu	r1,-16(r1)
@@ -1995,6 +2070,8 @@ l004020AC:
 	blr
 
 ;; fn004020BC: 004020BC
+;;   Called from:
+;;     0040126C (in fn004011FC)
 fn004020BC proc
 	lwz	r4,116(r2)
 	stwu	r1,-152(r1)
@@ -2123,6 +2200,12 @@ l00402220:
 	blr
 
 ;; fn00402248: 00402248
+;;   Called from:
+;;     004012F8 (in fn004012B0)
+;;     004016C4 (in fn00401598)
+;;     00401724 (in fn00401598)
+;;     00402B7C (in fn00402A24)
+;;     00403698 (in fn00403618)
 fn00402248 proc
 	lwz	r6,116(r2)
 	ori	r10,r3,0000
@@ -2276,6 +2359,8 @@ l004023EC:
 	blr
 
 ;; fn00402404: 00402404
+;;   Called from:
+;;     00403D40 (in fn00403CA0)
 fn00402404 proc
 	mflr	r12
 	lwz	r3,168(r2)
@@ -2328,6 +2413,9 @@ l00402480:
 004024E0 81 81 00 40 38 21 00 38 7D 88 03 A6 4E 80 00 20 ...@8!.8}...N.. 
 
 ;; fn004024F0: 004024F0
+;;   Called from:
+;;     00403588 (in fn00403574)
+;;     004035B4 (in fn004035A0)
 fn004024F0 proc
 	cmpwi	cr1,r4,+0000
 	mflr	r12
@@ -2396,6 +2484,12 @@ l00402574:
 00402620 7D 88 03 A6 38 21 00 50 4E 80 00 20             }...8!.PN..    
 
 ;; fn0040262C: 0040262C
+;;   Called from:
+;;     0040241C (in fn00402404)
+;;     00402428 (in fn00402404)
+;;     00402534 (in fn004024F0)
+;;     00402540 (in fn004024F0)
+;;     0040254C (in fn004024F0)
 fn0040262C proc
 	stwu	r1,-72(r1)
 	stmw	r29,56(r1)
@@ -2437,6 +2531,8 @@ l0040267C:
 004026B0 7D 88 03 A6 4E 80 00 20                         }...N..        
 
 ;; fn004026B8: 004026B8
+;;   Called from:
+;;     004016F4 (in fn00401598)
 fn004026B8 proc
 	stwu	r1,-160(r1)
 	stmw	r26,136(r1)
@@ -2675,6 +2771,8 @@ l00402964:
 	blr
 
 ;; fn0040298C: 0040298C
+;;   Called from:
+;;     00401680 (in fn00401598)
 fn0040298C proc
 	lwz	r4,76(r2)
 	mflr	r12
@@ -2842,6 +2940,9 @@ l00402B84:
 	blr
 
 ;; fn00402BA0: 00402BA0
+;;   Called from:
+;;     00403214 (in fn00403170)
+;;     00403A38 (in fn00403A0C)
 fn00402BA0 proc
 	cmplwi	cr1,r3,0000
 	mflr	r12
@@ -2902,6 +3003,8 @@ l00402C38:
 	blr
 
 ;; fn00402C4C: 00402C4C
+;;   Called from:
+;;     00401AC4 (in fn00401AB4)
 fn00402C4C proc
 	mflr	r12
 	stwu	r1,-64(r1)
@@ -2930,6 +3033,8 @@ fn00402C4C proc
 00402CD0 4E 80 00 20 38 21 00 38 38 60 FF FF 4E 80 00 20 N.. 8!.88`..N.. 
 
 ;; fn00402CE0: 00402CE0
+;;   Called from:
+;;     00401EA4 (in fn00401DD8)
 fn00402CE0 proc
 	mflr	r12
 	stwu	r1,-112(r1)
@@ -3014,6 +3119,8 @@ l00402DD4:
 00402DE0 48 00 00 EC 48 00 01 5C 48 00 01 84             H...H..\H...   
 
 ;; fn00402DEC: 00402DEC
+;;   Called from:
+;;     00402DD8 (in fn00402CE0)
 fn00402DEC proc
 	mflr	r0
 	add	r0,r0,r11
@@ -3165,6 +3272,10 @@ l00403058:
 	blr
 
 ;; fn00403070: 00403070
+;;   Called from:
+;;     00402E60 (in fn00402CE0)
+;;     00402E8C (in fn00402CE0)
+;;     00402EB8 (in fn00402CE0)
 fn00403070 proc
 	lwz	r9,4(r3)
 	andi.	r7,r9,0003
@@ -3215,6 +3326,13 @@ l004030FC:
 	blr
 
 ;; fn00403104: 00403104
+;;   Called from:
+;;     004021D8 (in fn004020BC)
+;;     00402354 (in fn00402248)
+;;     00402928 (in fn004026B8)
+;;     00403848 (in fn00403744)
+;;     0040392C (in fn00403898)
+;;     004039AC (in fn00403898)
 fn00403104 proc
 	lwz	r4,164(r2)
 	lwz	r8,228(r2)
@@ -3257,6 +3375,8 @@ l0040316C:
 	blr
 
 ;; fn00403170: 00403170
+;;   Called from:
+;;     004023C8 (in fn00402398)
 fn00403170 proc
 	stwu	r1,-64(r1)
 	stmw	r30,56(r1)
@@ -3334,6 +3454,8 @@ l0040322C:
 	blr
 
 ;; fn00403248: 00403248
+;;   Called from:
+;;     0040256C (in fn004024F0)
 fn00403248 proc
 	mflr	r12
 	stwu	r1,-56(r1)
@@ -3346,6 +3468,8 @@ fn00403248 proc
 	blr
 
 ;; fn0040326C: 0040326C
+;;   Called from:
+;;     00402B84 (in fn00402A24)
 fn0040326C proc
 	mflr	r12
 	stwu	r1,-56(r1)
@@ -3365,6 +3489,9 @@ fn0040326C proc
 	blr
 
 ;; fn004032AC: 004032AC
+;;   Called from:
+;;     00402B34 (in fn00402A24)
+;;     004037A8 (in fn00403744)
 fn004032AC proc
 	cmplwi	cr1,r3,0000
 	beq	cr1,$004032F8
@@ -3402,6 +3529,9 @@ l004032F8:
 	blr
 
 ;; fn004032FC: 004032FC
+;;   Called from:
+;;     00402B28 (in fn00402A24)
+;;     00402B68 (in fn00402A24)
 fn004032FC proc
 	mflr	r12
 	stw	r3,24(r1)
@@ -3461,6 +3591,8 @@ l004033AC:
 	blr
 
 ;; fn004033C4: 004033C4
+;;   Called from:
+;;     00402A98 (in fn00402A24)
 fn004033C4 proc
 	mflr	r12
 	stw	r3,24(r1)
@@ -3499,6 +3631,8 @@ fn004033C4 proc
 	blr
 
 ;; fn00403450: 00403450
+;;   Called from:
+;;     00402A74 (in fn00402A24)
 fn00403450 proc
 	stwu	r1,-80(r1)
 	stmw	r27,56(r1)
@@ -3603,6 +3737,8 @@ l0040355C:
 	blr
 
 ;; fn00403574: 00403574
+;;   Called from:
+;;     00403D5C (in fn00403CA0)
 fn00403574 proc
 	mflr	r12
 	stwu	r1,-56(r1)
@@ -3617,6 +3753,9 @@ fn00403574 proc
 	blr
 
 ;; fn004035A0: 004035A0
+;;   Called from:
+;;     00403294 (in fn0040326C)
+;;     00403BE8 (in fn00403B08)
 fn004035A0 proc
 	mflr	r12
 	stwu	r1,-56(r1)
@@ -3631,6 +3770,8 @@ fn004035A0 proc
 	blr
 
 ;; fn004035CC: 004035CC
+;;   Called from:
+;;     00402C60 (in fn00402C4C)
 fn004035CC proc
 	mflr	r12
 	stwu	r1,-56(r1)
@@ -3657,6 +3798,11 @@ l00403600:
 	blr
 
 ;; fn00403618: 00403618
+;;   Called from:
+;;     00402C6C (in fn00402C4C)
+;;     0040327C (in fn0040326C)
+;;     004035DC (in fn004035CC)
+;;     00403604 (in fn004035CC)
 fn00403618 proc
 	mflr	r12
 	lwz	r8,236(r2)
@@ -3712,6 +3858,8 @@ l004036A0:
 	blr
 
 ;; fn004036B0: 004036B0
+;;   Called from:
+;;     00402D6C (in fn00402CE0)
 fn004036B0 proc
 	lwz	r10,104(r2)
 	lwz	r11,0(r10)
@@ -3774,6 +3922,8 @@ l0040373C:
 	blr
 
 ;; fn00403744: 00403744
+;;   Called from:
+;;     004031FC (in fn00403170)
 fn00403744 proc
 	lbz	r4,0(r3)
 	mflr	r12
@@ -3892,6 +4042,8 @@ l00403880:
 	blr
 
 ;; fn00403898: 00403898
+;;   Called from:
+;;     004031D4 (in fn00403170)
 fn00403898 proc
 	lwz	r4,116(r2)
 	stwu	r1,-152(r1)
@@ -4016,6 +4168,9 @@ l004039E4:
 	blr
 
 ;; fn00403A0C: 00403A0C
+;;   Called from:
+;;     004031C8 (in fn00403170)
+;;     004034C4 (in fn00403450)
 fn00403A0C proc
 	stwu	r1,-64(r1)
 	stw	r31,56(r1)
@@ -4061,6 +4216,8 @@ l00403A60:
 00403B00 38 60 FF FF 4E 80 00 20                         8`..N..        
 
 ;; fn00403B08: 00403B08
+;;   Called from:
+;;     00403288 (in fn0040326C)
 fn00403B08 proc
 	stwu	r1,-72(r1)
 	stmw	r29,56(r1)
@@ -4083,6 +4240,8 @@ l00403B28:
 00403B80 48 00 00 2C                                     H..,           
 
 ;; fn00403B84: 00403B84
+;;   Called from:
+;;     00403B2C (in fn00403B08)
 fn00403B84 proc
 	mflr	r0
 	add	r0,r0,r11
@@ -4137,6 +4296,8 @@ l00403BF0:
 	blr
 
 ;; fn00403C20: 00403C20
+;;   Called from:
+;;     00403BB0 (in fn00403B08)
 fn00403C20 proc
 	lwz	r4,240(r2)
 	lwz	r10,244(r2)
@@ -4185,6 +4346,8 @@ Win32CrtStartup proc
 	blr
 
 ;; fn00403CA0: 00403CA0
+;;   Called from:
+;;     00403C88 (in Win32CrtStartup)
 fn00403CA0 proc
 	lwz	r4,212(r2)
 	stwu	r1,-112(r1)
@@ -4247,6 +4410,8 @@ l00403D38:
 	blr
 
 ;; fn00403D7C: 00403D7C
+;;   Called from:
+;;     00403D20 (in fn00403CA0)
 fn00403D7C proc
 	cmplwi	cr1,r3,0000
 	beq	cr1,$00403DCC
@@ -4286,6 +4451,8 @@ l00403DCC:
 00403DD0 60 83 00 00 4E 80 00 20                         `...N..        
 
 ;; fn00403DD8: 00403DD8
+;;   Called from:
+;;     00403C78 (in Win32CrtStartup)
 fn00403DD8 proc
 	ori	r3,r1,0000
 	blr
@@ -4316,6 +4483,13 @@ fn00403ED4 proc
 00403F00 60 81 00 00 7C 69 03 A6 4E 80 04 20 00 00 00 00 `...|i..N.. ....
 
 ;; fn00403F10: 00403F10
+;;   Called from:
+;;     00401814 (in fn004017F0)
+;;     004022BC (in fn00402248)
+;;     00402668 (in fn0040262C)
+;;     00402C80 (in fn00402C4C)
+;;     004035F8 (in fn004035CC)
+;;     00403C00 (in fn00403B08)
 fn00403F10 proc
 	lwz	r0,0(r12)
 	stw	r2,20(r1)
@@ -4324,6 +4498,8 @@ fn00403F10 proc
 	bcctr	14,00
 
 ;; fn00403F24: 00403F24
+;;   Called from:
+;;     0040391C (in fn00403898)
 fn00403F24 proc
 	lwz	r12,336(r2)
 	lwz	r0,0(r12)
@@ -4333,6 +4509,9 @@ fn00403F24 proc
 	bcctr	14,00
 
 ;; fn00403F3C: 00403F3C
+;;   Called from:
+;;     004021C8 (in fn004020BC)
+;;     00403990 (in fn00403898)
 fn00403F3C proc
 	lwz	r12,284(r2)
 	lwz	r0,0(r12)
@@ -4342,6 +4521,8 @@ fn00403F3C proc
 	bcctr	14,00
 
 ;; fn00403F54: 00403F54
+;;   Called from:
+;;     004037F0 (in fn00403744)
 fn00403F54 proc
 	lwz	r12,332(r2)
 	lwz	r0,0(r12)
@@ -4351,6 +4532,8 @@ fn00403F54 proc
 	bcctr	14,00
 
 ;; fn00403F6C: 00403F6C
+;;   Called from:
+;;     00403838 (in fn00403744)
 fn00403F6C proc
 	lwz	r12,328(r2)
 	lwz	r0,0(r12)
@@ -4360,6 +4543,8 @@ fn00403F6C proc
 	bcctr	14,00
 
 ;; fn00403F84: 00403F84
+;;   Called from:
+;;     00403254 (in fn00403248)
 fn00403F84 proc
 	lwz	r12,260(r2)
 	lwz	r0,0(r12)
@@ -4369,6 +4554,9 @@ fn00403F84 proc
 	bcctr	14,00
 
 ;; fn00403F9C: 00403F9C
+;;   Called from:
+;;     00402464 (in fn00402404)
+;;     00402AC0 (in fn00402A24)
 fn00403F9C proc
 	lwz	r12,296(r2)
 	lwz	r0,0(r12)
@@ -4378,6 +4566,8 @@ fn00403F9C proc
 	bcctr	14,00
 
 ;; fn00403FB4: 00403FB4
+;;   Called from:
+;;     00402AD8 (in fn00402A24)
 fn00403FB4 proc
 	lwz	r12,324(r2)
 	lwz	r0,0(r12)
@@ -4387,6 +4577,8 @@ fn00403FB4 proc
 	bcctr	14,00
 
 ;; fn00403FCC: 00403FCC
+;;   Called from:
+;;     00402B40 (in fn00402A24)
 fn00403FCC proc
 	lwz	r12,320(r2)
 	lwz	r0,0(r12)
@@ -4396,6 +4588,8 @@ fn00403FCC proc
 	bcctr	14,00
 
 ;; fn00403FE4: 00403FE4
+;;   Called from:
+;;     00402794 (in fn004026B8)
 fn00403FE4 proc
 	lwz	r12,316(r2)
 	lwz	r0,0(r12)
@@ -4405,6 +4599,8 @@ fn00403FE4 proc
 	bcctr	14,00
 
 ;; fn00403FFC: 00403FFC
+;;   Called from:
+;;     004027F8 (in fn004026B8)
 fn00403FFC proc
 	lwz	r12,312(r2)
 	lwz	r0,0(r12)
@@ -4414,6 +4610,9 @@ fn00403FFC proc
 	bcctr	14,00
 
 ;; fn00404014: 00404014
+;;   Called from:
+;;     0040286C (in fn004026B8)
+;;     00402918 (in fn004026B8)
 fn00404014 proc
 	lwz	r12,308(r2)
 	lwz	r0,0(r12)
@@ -4423,6 +4622,8 @@ fn00404014 proc
 	bcctr	14,00
 
 ;; fn0040402C: 0040402C
+;;   Called from:
+;;     004028C0 (in fn004026B8)
 fn0040402C proc
 	lwz	r12,304(r2)
 	lwz	r0,0(r12)
@@ -4432,6 +4633,9 @@ fn0040402C proc
 	bcctr	14,00
 
 ;; fn00404044: 00404044
+;;   Called from:
+;;     00402434 (in fn00402404)
+;;     00402448 (in fn00402404)
 fn00404044 proc
 	lwz	r12,300(r2)
 	lwz	r0,0(r12)
@@ -4441,6 +4645,8 @@ fn00404044 proc
 	bcctr	14,00
 
 ;; fn0040405C: 0040405C
+;;   Called from:
+;;     00402328 (in fn00402248)
 fn0040405C proc
 	lwz	r12,292(r2)
 	lwz	r0,0(r12)
@@ -4450,6 +4656,8 @@ fn0040405C proc
 	bcctr	14,00
 
 ;; fn00404074: 00404074
+;;   Called from:
+;;     00402150 (in fn004020BC)
 fn00404074 proc
 	lwz	r12,288(r2)
 	lwz	r0,0(r12)
@@ -4459,6 +4667,8 @@ fn00404074 proc
 	bcctr	14,00
 
 ;; fn0040408C: 0040408C
+;;   Called from:
+;;     00401BCC (in fn00401ADC)
 fn0040408C proc
 	lwz	r12,276(r2)
 	lwz	r0,0(r12)
@@ -4468,6 +4678,8 @@ fn0040408C proc
 	bcctr	14,00
 
 ;; fn004040A4: 004040A4
+;;   Called from:
+;;     00401BF8 (in fn00401ADC)
 fn004040A4 proc
 	lwz	r12,264(r2)
 	lwz	r0,0(r12)
@@ -4477,6 +4689,8 @@ fn004040A4 proc
 	bcctr	14,00
 
 ;; fn004040BC: 004040BC
+;;   Called from:
+;;     00401C28 (in fn00401ADC)
 fn004040BC proc
 	lwz	r12,256(r2)
 	lwz	r0,0(r12)
@@ -4486,6 +4700,8 @@ fn004040BC proc
 	bcctr	14,00
 
 ;; fn004040D4: 004040D4
+;;   Called from:
+;;     00401C54 (in fn00401ADC)
 fn004040D4 proc
 	lwz	r12,272(r2)
 	lwz	r0,0(r12)
@@ -4495,6 +4711,8 @@ fn004040D4 proc
 	bcctr	14,00
 
 ;; fn004040EC: 004040EC
+;;   Called from:
+;;     00401C64 (in fn00401ADC)
 fn004040EC proc
 	lwz	r12,268(r2)
 	lwz	r0,0(r12)
@@ -4504,6 +4722,9 @@ fn004040EC proc
 	bcctr	14,00
 
 ;; fn00404104: 00404104
+;;   Called from:
+;;     00401A44 (in fn00401A34)
+;;     00401D24 (in fn00401CE8)
 fn00404104 proc
 	lwz	r12,252(r2)
 	lwz	r0,0(r12)
@@ -4513,6 +4734,8 @@ fn00404104 proc
 	bcctr	14,00
 
 ;; fn0040411C: 0040411C
+;;   Called from:
+;;     00401E38 (in fn00401DD8)
 fn0040411C proc
 	lwz	r12,280(r2)
 	lwz	r0,0(r12)
@@ -4522,6 +4745,8 @@ fn0040411C proc
 	bcctr	14,00
 
 ;; fn00404134: 00404134
+;;   Called from:
+;;     00401F08 (in fn00401ED4)
 fn00404134 proc
 	lwz	r12,248(r2)
 	lwz	r0,0(r12)

@@ -99,6 +99,8 @@
 ;;; Segment .init (00000588)
 
 ;; _init: 00000588
+;;   Called from:
+;;     000008FC (in __libc_csu_init)
 _init proc
 	lui	r28,+0002
 	addiu	r28,r28,-00007B08
@@ -169,6 +171,8 @@ l00000664:
 0000066C                                     00 00 00 00             ....
 
 ;; deregister_tm_clones: 00000670
+;;   Called from:
+;;     000007A8 (in __do_global_dtors_aux)
 deregister_tm_clones proc
 	lui	r28,+0002
 	addiu	r28,r28,-00007BF0
@@ -192,6 +196,8 @@ l000006A0:
 	nop
 
 ;; register_tm_clones: 000006A8
+;;   Called from:
+;;     000007E8 (in frame_dummy)
 register_tm_clones proc
 	lui	r28,+0002
 	addiu	r28,r28,-00007C28
@@ -472,6 +478,8 @@ calloc proc
 ;;; Segment .fini (00000A10)
 
 ;; _fini: 00000A10
+;;   Called from:
+;;     00000A0C (in calloc)
 _fini proc
 	lui	r28,+0002
 	addiu	r28,r28,-00007F90

@@ -40,9 +40,11 @@
 ;;; Segment .init (0000000000400428)
 
 ;; _init: 0000000000400428
+;;   Called from:
+;;     000000000040073C (in __libc_csu_init)
 _init proc
 	sub	rsp,08
-	mov	rax,[rip+00200BC5]                                     ; 0000000000600FF8
+	mov	rax,[0000000000600FF8]                                 ; [rip+00200BC5]
 	test	rax,rax
 	jz	000000000040043A
 
@@ -74,11 +76,13 @@ _start proc
 	mov	r8,+00400780
 	mov	rcx,+00400710
 	mov	rdi,+00400660
-	call	qword ptr [rip+00200B46]                              ; 0000000000600FF0
+	call	[0000000000600FF0]                                    ; [rip+00200B46]
 	hlt
 00000000004004AB                                  0F 1F 44 00 00            ..D..
 
 ;; deregister_tm_clones: 00000000004004B0
+;;   Called from:
+;;     000000000040052D (in __do_global_dtors_aux)
 deregister_tm_clones proc
 	push	rbp
 	mov	eax,00601040
@@ -103,6 +107,8 @@ l00000000004004D8:
 00000000004004DA                               66 0F 1F 44 00 00           f..D..
 
 ;; register_tm_clones: 00000000004004E0
+;;   Called from:
+;;     0000000000400555 (in frame_dummy)
 register_tm_clones proc
 	mov	esi,00601040
 	push	rbp
@@ -133,14 +139,14 @@ l0000000000400518:
 
 ;; __do_global_dtors_aux: 0000000000400520
 __do_global_dtors_aux proc
-	cmp	byte ptr [rip+00200B19],00                             ; 0000000000601040
+	cmp	[0000000000601040],00                                  ; [rip+00200B19]
 	jnz	0000000000400540
 
 l0000000000400529:
 	push	rbp
 	mov	rbp,rsp
 	call	00000000004004B0
-	mov	byte ptr [rip+00200B07],01                             ; 0000000000601040
+	mov	[0000000000601040],01                                  ; [rip+00200B07]
 	pop	rbp
 	ret
 000000000040053B                                  0F 1F 44 00 00            ..D..
@@ -158,6 +164,8 @@ frame_dummy proc
 0000000000400557                      66 0F 1F 84 00 00 00 00 00        f........
 
 ;; my1: 0000000000400560
+;;   Called from:
+;;     0000000000400631 (in branches)
 my1 proc
 	push	rbp
 	mov	rbp,rsp
@@ -298,6 +306,9 @@ main proc
 00000000004006E9                            0F 1F 80 00 00 00 00          .......
 
 ;; __llvm_retpoline_r11: 00000000004006F0
+;;   Called from:
+;;     00000000004006A7 (in main)
+;;     00000000004006C1 (in main)
 __llvm_retpoline_r11 proc
 	call	0000000000400700
 
@@ -307,6 +318,8 @@ l00000000004006F5:
 00000000004006FC                                     0F 1F 40 00             ..@.
 
 ;; fn0000000000400700: 0000000000400700
+;;   Called from:
+;;     00000000004006F0 (in __llvm_retpoline_r11)
 fn0000000000400700 proc
 	mov	[rsp],r11
 	ret
@@ -319,9 +332,9 @@ __libc_csu_init proc
 	mov	r15d,edi
 	push	r13
 	push	r12
-	lea	r12,[rip+002006EE]                                     ; 0000000000600E10
+	lea	r12,[0000000000600E10]                                 ; [rip+002006EE]
 	push	rbp
-	lea	rbp,[rip+002006EE]                                     ; 0000000000600E18
+	lea	rbp,[0000000000600E18]                                 ; [rip+002006EE]
 	push	rbx
 	mov	r14,rsi
 	mov	r13,rdx

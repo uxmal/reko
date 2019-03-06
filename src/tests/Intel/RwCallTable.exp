@@ -18,6 +18,8 @@ l0C00_0014	dw	0x0022
 l0C00_0016	dw	0x002C
 
 ;; fn0C00_0018: 0C00:0018
+;;   Called from:
+;;     0C00:000A (in fn0C00_0000)
 fn0C00_0018 proc
 	mov	ax,[si+02]
 	add	ax,[si+04]
@@ -25,6 +27,8 @@ fn0C00_0018 proc
 	ret
 
 ;; fn0C00_0022: 0C00:0022
+;;   Called from:
+;;     0C00:000A (in fn0C00_0000)
 fn0C00_0022 proc
 	mov	ax,[si+02]
 	sub	ax,[si+04]
@@ -32,6 +36,9 @@ fn0C00_0022 proc
 	ret
 
 ;; fn0C00_002C: 0C00:002C
+;;   Called from:
+;;     0C00:0000 (in fn0C00_0000)
+;;     0C00:000A (in fn0C00_0000)
 fn0C00_002C proc
 	mov	ax,[si+02]
 	and	ax,[bx+04]

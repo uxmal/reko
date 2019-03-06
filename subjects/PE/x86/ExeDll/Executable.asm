@@ -1,6 +1,8 @@
 ;;; Segment .text (00401000)
 
 ;; fn00401000: 00401000
+;;   Called from:
+;;     00401253 (in Win32CrtStartup)
 fn00401000 proc
 	push	dword ptr [00402004]
 	call	dword ptr [00402010]
@@ -23,12 +25,19 @@ fn00401000 proc
 00401047                      CC CC CC CC CC CC CC CC CC        .........
 
 ;; fn00401050: 00401050
+;;   Called from:
+;;     0040107A (in fn00401060)
+;;     0040173F (in fn0040173F)
 fn00401050 proc
 	mov	eax,00403378
 	ret
 00401056                   CC CC CC CC CC CC CC CC CC CC       ..........
 
 ;; fn00401060: 00401060
+;;   Called from:
+;;     00401018 (in fn00401000)
+;;     0040102B (in fn00401000)
+;;     0040103C (in fn00401000)
 fn00401060 proc
 	push	ebp
 	mov	ebp,esp
@@ -249,6 +258,8 @@ fn004012D8 proc
 004013F0 40 00 E8 E1 FE FF FF 8B E5 5D C3                @........].    
 
 ;; fn004013FB: 004013FB
+;;   Called from:
+;;     0040158D (in fn00401544)
 fn004013FB proc
 	push	ebp
 	mov	ebp,esp
@@ -296,6 +307,8 @@ l0040143B:
 	jmp	00401438
 
 ;; fn0040143F: 0040143F
+;;   Called from:
+;;     00401187 (in Win32CrtStartup)
 fn0040143F proc
 	call	00401B98
 	test	eax,eax
@@ -335,6 +348,8 @@ l00401470:
 	ret
 
 ;; fn00401474: 00401474
+;;   Called from:
+;;     0040116D (in Win32CrtStartup)
 fn00401474 proc
 	push	ebp
 	mov	ebp,esp
@@ -455,6 +470,10 @@ l0040153C:
 	int	03
 
 ;; fn00401544: 00401544
+;;   Called from:
+;;     00401204 (in Win32CrtStartup)
+;;     00401229 (in Win32CrtStartup)
+;;     00401543 (in fn004014AD)
 fn00401544 proc
 	push	08
 	push	004024F8
@@ -506,6 +525,8 @@ l004015C8:
 	ret
 
 ;; fn004015CE: 004015CE
+;;   Called from:
+;;     004011F0 (in Win32CrtStartup)
 fn004015CE proc
 	push	ebp
 	mov	ebp,esp
@@ -527,6 +548,8 @@ l004015E9:
 	ret
 
 ;; fn004015EB: 004015EB
+;;   Called from:
+;;     00401279 (in Win32CrtStartup)
 fn004015EB proc
 	push	ebp
 	mov	ebp,esp
@@ -551,6 +574,8 @@ l0040160F:
 	ret
 
 ;; fn00401613: 00401613
+;;   Called from:
+;;     00401654 (in fn0040164E)
 fn00401613 proc
 	push	ebp
 	mov	ebp,esp
@@ -596,6 +621,8 @@ fn0040164E proc
 	ret
 
 ;; fn00401663: 00401663
+;;   Called from:
+;;     004012CE (in Win32CrtStartup)
 fn00401663 proc
 	push	ebp
 	mov	ebp,esp
@@ -708,6 +735,9 @@ l00401731:
 	int	03
 
 ;; fn00401739: 00401739
+;;   Called from:
+;;     00401738 (in fn00401718)
+;;     0040174D (in fn0040173F)
 fn00401739 proc
 	mov	eax,00403360
 	ret
@@ -732,16 +762,24 @@ fn0040175C proc
 	ret
 
 ;; fn00401768: 00401768
+;;   Called from:
+;;     004011F6 (in Win32CrtStartup)
 fn00401768 proc
 	mov	eax,00403388
 	ret
 
 ;; fn0040176E: 0040176E
+;;   Called from:
+;;     0040121D (in Win32CrtStartup)
 fn0040176E proc
 	mov	eax,00403384
 	ret
 
 ;; fn00401774: 00401774
+;;   Called from:
+;;     00401179 (in Win32CrtStartup)
+;;     0040153E (in fn004014AD)
+;;     00401733 (in fn00401718)
 fn00401774 proc
 	push	ebp
 	mov	ebp,esp
@@ -828,6 +866,8 @@ l00401889:
 	ret
 
 ;; fn0040188F: 0040188F
+;;   Called from:
+;;     0040125D (in Win32CrtStartup)
 fn0040188F proc
 	push	00
 	call	dword ptr [00402040]
@@ -915,11 +955,17 @@ l00401948:
 00401970 72 EA 5F 5E 5B C3                               r._^[.         
 
 ;; fn00401976: 00401976
+;;   Called from:
+;;     00401216 (in Win32CrtStartup)
+;;     00401939 (in fn00401920)
 fn00401976 proc
 	jmp	dword ptr [004020D0]
 0040197C                                     CC CC CC CC             ....
 
 ;; fn00401980: 00401980
+;;   Called from:
+;;     00401166 (in Win32CrtStartup)
+;;     0040154B (in fn00401544)
 fn00401980 proc
 	push	004019DB
 	push	dword ptr fs:[00000000]
@@ -944,6 +990,9 @@ fn00401980 proc
 	repne ret
 
 ;; fn004019C6: 004019C6
+;;   Called from:
+;;     004012C8 (in Win32CrtStartup)
+;;     004015C8 (in fn00401544)
 fn004019C6 proc
 	mov	ecx,[ebp-10]
 	mov	fs:[00000000],ecx
@@ -961,6 +1010,8 @@ fn004019C6 proc
 004019F0 04 30 40 00 E8 B3 01 00 00 83 C4 18 5D C3       .0@.........]. 
 
 ;; fn004019FE: 004019FE
+;;   Called from:
+;;     00401484 (in fn00401474)
 fn004019FE proc
 	push	ebp
 	mov	ebp,esp
@@ -1136,6 +1187,10 @@ l00401B91:
 	ret
 
 ;; fn00401B98: 00401B98
+;;   Called from:
+;;     0040143F (in fn0040143F)
+;;     004014C0 (in fn004014AD)
+;;     004015D1 (in fn004015CE)
 fn00401B98 proc
 	xor	eax,eax
 	cmp	[00403014],eax
@@ -1159,6 +1214,12 @@ fn00401BA4 proc
 00401C42       FF 25 2C 20 40 00                           .%, @.       
 
 ;; fn00401C48: 00401C48
+;;   Called from:
+;;     00401489 (in fn00401474)
+;;     00401496 (in fn00401474)
+;;     004014A1 (in fn00401474)
+;;     00401600 (in fn004015EB)
+;;     00401608 (in fn004015EB)
 fn00401C48 proc
 	mov	al,01
 	ret

@@ -22,6 +22,8 @@
 0800:0140 00 FF 36 6D 00 FF 36 6B 00 E8 12 01 50 E8 0A 8A ..6m..6k....P...
 
 ;; fn0800_0150: 0800:0150
+;;   Called from:
+;;     0800:8B2F (in fn0800_8B0D)
 fn0800_0150 proc
 	mov	es,cs:[025A]
 	push	si
@@ -34,10 +36,14 @@ fn0800_0150 proc
 	ret
 
 ;; fn0800_0163: 0800:0163
+;;   Called from:
+;;     0800:8B39 (in fn0800_8B0D)
 fn0800_0163 proc
 	ret
 
 ;; fn0800_0164: 0800:0164
+;;   Called from:
+;;     0800:8B51 (in fn0800_8B0D)
 fn0800_0164 proc
 	mov	bp,sp
 	mov	ah,4C
@@ -74,6 +80,8 @@ fn0800_0176 proc
 	ret
 
 ;; fn0800_01B9: 0800:01B9
+;;   Called from:
+;;     0800:8B36 (in fn0800_8B0D)
 fn0800_01B9 proc
 	push	ds
 	mov	ax,2500
@@ -98,6 +106,8 @@ fn0800_01B9 proc
 	ret
 
 ;; fn0800_01E6: 0800:01E6
+;;   Called from:
+;;     0800:015D (in fn0800_0150)
 fn0800_01E6 proc
 	cmp	si,26FC
 	jz	01F0
@@ -348,6 +358,8 @@ l0800_03FE	dw	0x0335
 l0800_0400	dw	0x0335
 
 ;; fn0800_0402: 0800:0402
+;;   Called from:
+;;     0800:02F0 (in main)
 fn0800_0402 proc
 	push	si
 	push	di
@@ -540,6 +552,8 @@ l0800_053E:
 	ret
 
 ;; fn0800_0541: 0800:0541
+;;   Called from:
+;;     0800:02F3 (in main)
 fn0800_0541 proc
 	push	bp
 	mov	bp,sp
@@ -1219,6 +1233,10 @@ l0800_099F	dw	0x068B
 l0800_09A1	dw	0x0694
 
 ;; fn0800_09A3: 0800:09A3
+;;   Called from:
+;;     0800:0981 (in fn0800_0541)
+;;     0800:5EBD (in fn0800_5E64)
+;;     0800:670F (in fn0800_669C)
 fn0800_09A3 proc
 	push	bp
 	mov	bp,sp
@@ -1384,6 +1402,12 @@ l0800_0A7C:
 	ret
 
 ;; fn0800_0ABC: 0800:0ABC
+;;   Called from:
+;;     0800:10EE (in fn0800_0DE8)
+;;     0800:12BC (in fn0800_112D)
+;;     0800:1869 (in fn0800_12E2)
+;;     0800:19B6 (in fn0800_18D9)
+;;     0800:1CAE (in fn0800_19EE)
 fn0800_0ABC proc
 	push	bp
 	mov	bp,sp
@@ -1467,6 +1491,9 @@ l0800_0B47:
 	ret
 
 ;; fn0800_0B79: 0800:0B79
+;;   Called from:
+;;     0800:035E (in main)
+;;     0800:0AE7 (in fn0800_0ABC)
 fn0800_0B79 proc
 	push	bp
 	mov	bp,sp
@@ -1549,6 +1576,9 @@ l0800_0BE7:
 	ret
 
 ;; fn0800_0C08: 0800:0C08
+;;   Called from:
+;;     0800:832A (in fn0800_831D)
+;;     0800:8418 (in fn0800_8407)
 fn0800_0C08 proc
 	push	bp
 	mov	bp,sp
@@ -1576,6 +1606,10 @@ l0800_0C24:
 	ret
 
 ;; fn0800_0C29: 0800:0C29
+;;   Called from:
+;;     0800:0466 (in fn0800_0402)
+;;     0800:05A4 (in fn0800_0541)
+;;     0800:06D5 (in fn0800_0541)
 fn0800_0C29 proc
 	push	bp
 	mov	bp,sp
@@ -1615,6 +1649,13 @@ l0800_0C5D:
 	ret
 
 ;; fn0800_0C6C: 0800:0C6C
+;;   Called from:
+;;     0800:04D4 (in fn0800_0402)
+;;     0800:07D8 (in fn0800_0541)
+;;     0800:0839 (in fn0800_0541)
+;;     0800:2EBD (in fn0800_2DE2)
+;;     0800:2FA2 (in fn0800_2DE2)
+;;     0800:3141 (in fn0800_2DE2)
 fn0800_0C6C proc
 	push	bp
 	mov	bp,sp
@@ -1641,6 +1682,12 @@ l0800_0C91:
 	ret
 
 ;; fn0800_0C93: 0800:0C93
+;;   Called from:
+;;     0800:0E8E (in fn0800_0DE8)
+;;     0800:11A4 (in fn0800_112D)
+;;     0800:15E0 (in fn0800_12E2)
+;;     0800:1945 (in fn0800_18D9)
+;;     0800:1AB6 (in fn0800_19EE)
 fn0800_0C93 proc
 	push	bp
 	mov	bp,sp
@@ -1749,6 +1796,32 @@ l0800_0D0D:
 	ret
 
 ;; fn0800_0D24: 0800:0D24
+;;   Called from:
+;;     0800:0447 (in fn0800_0402)
+;;     0800:048C (in fn0800_0402)
+;;     0800:05C9 (in fn0800_0541)
+;;     0800:0653 (in fn0800_0541)
+;;     0800:06C3 (in fn0800_0541)
+;;     0800:06ED (in fn0800_0541)
+;;     0800:073D (in fn0800_0541)
+;;     0800:07A0 (in fn0800_0541)
+;;     0800:1368 (in fn0800_12E2)
+;;     0800:1924 (in fn0800_18D9)
+;;     0800:1A3A (in fn0800_19EE)
+;;     0800:1D63 (in fn0800_1CF6)
+;;     0800:1DA4 (in fn0800_1CF6)
+;;     0800:1E53 (in fn0800_1CF6)
+;;     0800:2605 (in fn0800_24FE)
+;;     0800:3718 (in fn0800_3678)
+;;     0800:3881 (in fn0800_37DF)
+;;     0800:3DAC (in fn0800_3C99)
+;;     0800:3E19 (in fn0800_3DCF)
+;;     0800:3EE4 (in fn0800_3E9A)
+;;     0800:4093 (in fn0800_4047)
+;;     0800:414A (in fn0800_4110)
+;;     0800:418C (in fn0800_4152)
+;;     0800:4261 (in fn0800_4234)
+;;     0800:4336 (in fn0800_4311)
 fn0800_0D24 proc
 	push	bp
 	mov	bp,sp
@@ -1810,6 +1883,10 @@ l0800_0D92:
 	ret
 
 ;; fn0800_0DA9: 0800:0DA9
+;;   Called from:
+;;     0800:0D34 (in fn0800_0D24)
+;;     0800:0D47 (in fn0800_0D24)
+;;     0800:0D5A (in fn0800_0D24)
 fn0800_0DA9 proc
 	push	bp
 	mov	bp,sp
@@ -1832,6 +1909,10 @@ l0800_0DCC:
 	ret
 
 ;; fn0800_0DCE: 0800:0DCE
+;;   Called from:
+;;     0800:040D (in fn0800_0402)
+;;     0800:04A9 (in fn0800_0402)
+;;     0800:0603 (in fn0800_0541)
 fn0800_0DCE proc
 	push	ds
 	mov	ax,0121
@@ -1848,6 +1929,8 @@ fn0800_0DCE proc
 	ret
 
 ;; fn0800_0DE8: 0800:0DE8
+;;   Called from:
+;;     0800:0321 (in main)
 fn0800_0DE8 proc
 	push	si
 	mov	bx,[2A23]
@@ -2257,6 +2340,8 @@ l0800_1129	dw	0x0FCC
 l0800_112B	dw	0x0FED
 
 ;; fn0800_112D: 0800:112D
+;;   Called from:
+;;     0800:0330 (in main)
 fn0800_112D proc
 	push	si
 	mov	bx,[2A23]
@@ -2489,6 +2574,8 @@ l0800_12DE	dw	0x1208
 l0800_12E0	dw	0x1229
 
 ;; fn0800_12E2: 0800:12E2
+;;   Called from:
+;;     0800:0326 (in main)
 fn0800_12E2 proc
 	push	bp
 	mov	bp,sp
@@ -3234,6 +3321,8 @@ l0800_18A9:
 	ret
 
 ;; fn0800_18D9: 0800:18D9
+;;   Called from:
+;;     0800:032B (in main)
 fn0800_18D9 proc
 	push	bp
 	mov	bp,sp
@@ -3387,6 +3476,8 @@ l0800_19D8:
 	ret
 
 ;; fn0800_19EE: 0800:19EE
+;;   Called from:
+;;     0800:0335 (in main)
 fn0800_19EE proc
 	push	bp
 	mov	bp,sp
@@ -3874,6 +3965,11 @@ l0800_1CF0:
 	ret
 
 ;; fn0800_1CF6: 0800:1CF6
+;;   Called from:
+;;     0800:147B (in fn0800_12E2)
+;;     0800:1558 (in fn0800_12E2)
+;;     0800:192E (in fn0800_18D9)
+;;     0800:1A8E (in fn0800_19EE)
 fn0800_1CF6 proc
 	push	bp
 	mov	bp,sp
@@ -4035,6 +4131,10 @@ l0800_1E59:
 	ret
 
 ;; fn0800_1E5E: 0800:1E5E
+;;   Called from:
+;;     0800:1551 (in fn0800_12E2)
+;;     0800:18C2 (in fn0800_12E2)
+;;     0800:19D8 (in fn0800_18D9)
 fn0800_1E5E proc
 	push	si
 	les	bx,[2E51]
@@ -4140,6 +4240,8 @@ l0800_1F19:
 	ret
 
 ;; fn0800_1F5C: 0800:1F5C
+;;   Called from:
+;;     0800:14C1 (in fn0800_12E2)
 fn0800_1F5C proc
 	push	bp
 	mov	bp,sp
@@ -4311,6 +4413,8 @@ l0800_2043:
 	ret
 
 ;; fn0800_2085: 0800:2085
+;;   Called from:
+;;     0800:14F5 (in fn0800_12E2)
 fn0800_2085 proc
 	push	bp
 	mov	bp,sp
@@ -4540,6 +4644,8 @@ l0800_21C1:
 	ret
 
 ;; fn0800_2201: 0800:2201
+;;   Called from:
+;;     0800:19A7 (in fn0800_18D9)
 fn0800_2201 proc
 	push	bp
 	mov	bp,sp
@@ -4668,6 +4774,8 @@ l0800_22F9:
 	ret
 
 ;; fn0800_22FE: 0800:22FE
+;;   Called from:
+;;     0800:195D (in fn0800_18D9)
 fn0800_22FE proc
 	push	bp
 	mov	bp,sp
@@ -4787,6 +4895,9 @@ l0800_23E7:
 	ret
 
 ;; fn0800_23EC: 0800:23EC
+;;   Called from:
+;;     0800:1503 (in fn0800_12E2)
+;;     0800:1951 (in fn0800_18D9)
 fn0800_23EC proc
 	push	bp
 	mov	bp,sp
@@ -4961,6 +5072,9 @@ l0800_249F:
 	ret
 
 ;; fn0800_24FE: 0800:24FE
+;;   Called from:
+;;     0800:1AC2 (in fn0800_19EE)
+;;     0800:23F9 (in fn0800_23EC)
 fn0800_24FE proc
 	push	bp
 	mov	bp,sp
@@ -5184,6 +5298,12 @@ l0800_267D:
 	ret
 
 ;; fn0800_2688: 0800:2688
+;;   Called from:
+;;     0800:2073 (in fn0800_1F5C)
+;;     0800:21EF (in fn0800_2085)
+;;     0800:22A5 (in fn0800_2201)
+;;     0800:23AC (in fn0800_22FE)
+;;     0800:24F3 (in fn0800_23EC)
 fn0800_2688 proc
 	push	bp
 	mov	bp,sp
@@ -5356,6 +5476,9 @@ l0800_27DF:
 0800:2830 46 96 50 E8 FB 00 83 C4 08 8B E5 5D C3          F.P........].  
 
 ;; fn0800_283D: 0800:283D
+;;   Called from:
+;;     0800:14AC (in fn0800_12E2)
+;;     0800:15EB (in fn0800_12E2)
 fn0800_283D proc
 	push	bp
 	mov	bp,sp
@@ -5517,6 +5640,9 @@ l0800_2927:
 	ret
 
 ;; fn0800_2931: 0800:2931
+;;   Called from:
+;;     0800:14D9 (in fn0800_12E2)
+;;     0800:15F9 (in fn0800_12E2)
 fn0800_2931 proc
 	push	bp
 	mov	bp,sp
@@ -5637,6 +5763,10 @@ l0800_29BD:
 	ret
 
 ;; fn0800_29C5: 0800:29C5
+;;   Called from:
+;;     0800:19CB (in fn0800_18D9)
+;;     0800:1CC3 (in fn0800_19EE)
+;;     0800:2C8E (in fn0800_29C5)
 fn0800_29C5 proc
 	push	bp
 	mov	bp,sp
@@ -6077,6 +6207,8 @@ l0800_2C6A:
 	ret
 
 ;; fn0800_2C9A: 0800:2C9A
+;;   Called from:
+;;     0800:02DD (in main)
 fn0800_2C9A proc
 	push	si
 	xor	cx,cx
@@ -6121,6 +6253,12 @@ l0800_2CCD:
 	ret
 
 ;; fn0800_2CCF: 0800:2CCF
+;;   Called from:
+;;     0800:1426 (in fn0800_12E2)
+;;     0800:143F (in fn0800_12E2)
+;;     0800:1E3F (in fn0800_1CF6)
+;;     0800:1E8B (in fn0800_1E5E)
+;;     0800:2D7B (in fn0800_2D0A)
 fn0800_2CCF proc
 	push	bp
 	mov	bp,sp
@@ -6157,6 +6295,8 @@ l0800_2D04:
 	ret
 
 ;; fn0800_2D0A: 0800:2D0A
+;;   Called from:
+;;     0800:5444 (in fn0800_5374)
 fn0800_2D0A proc
 	push	bp
 	mov	bp,sp
@@ -6247,6 +6387,11 @@ l0800_2D97:
 	ret
 
 ;; fn0800_2DBF: 0800:2DBF
+;;   Called from:
+;;     0800:02FB (in main)
+;;     0800:1565 (in fn0800_12E2)
+;;     0800:1938 (in fn0800_18D9)
+;;     0800:1A84 (in fn0800_19EE)
 fn0800_2DBF proc
 	push	bp
 	mov	bp,sp
@@ -6262,6 +6407,17 @@ fn0800_2DBF proc
 	ret
 
 ;; fn0800_2DE2: 0800:2DE2
+;;   Called from:
+;;     0800:10F9 (in fn0800_0DE8)
+;;     0800:12C7 (in fn0800_112D)
+;;     0800:152C (in fn0800_12E2)
+;;     0800:189C (in fn0800_12E2)
+;;     0800:29E4 (in fn0800_29C5)
+;;     0800:2E99 (in fn0800_2DE2)
+;;     0800:2F45 (in fn0800_2DE2)
+;;     0800:2FFB (in fn0800_2DE2)
+;;     0800:30E4 (in fn0800_2DE2)
+;;     0800:319B (in fn0800_2DE2)
 fn0800_2DE2 proc
 	push	bp
 	mov	bp,sp
@@ -6879,6 +7035,8 @@ l0800_31A7:
 	ret
 
 ;; fn0800_31B4: 0800:31B4
+;;   Called from:
+;;     0800:307B (in fn0800_2DE2)
 fn0800_31B4 proc
 	push	bp
 	mov	bp,sp
@@ -7035,6 +7193,8 @@ l0800_32B4:
 0800:32C7                      5F 5E 8B E5 5D C3                 _^..].  
 
 ;; fn0800_32CD: 0800:32CD
+;;   Called from:
+;;     0800:31F5 (in fn0800_31B4)
 fn0800_32CD proc
 	push	bp
 	mov	bp,sp
@@ -7140,6 +7300,8 @@ l0800_3353:
 	ret
 
 ;; fn0800_335C: 0800:335C
+;;   Called from:
+;;     0800:300C (in fn0800_2DE2)
 fn0800_335C proc
 	push	bp
 	mov	bp,sp
@@ -7222,6 +7384,13 @@ l0800_33C7:
 	ret
 
 ;; fn0800_33CD: 0800:33CD
+;;   Called from:
+;;     0800:2F0B (in fn0800_2DE2)
+;;     0800:305E (in fn0800_2DE2)
+;;     0800:3092 (in fn0800_2DE2)
+;;     0800:3323 (in fn0800_32CD)
+;;     0800:3373 (in fn0800_335C)
+;;     0800:36F4 (in fn0800_3678)
 fn0800_33CD proc
 	push	bp
 	mov	bp,sp
@@ -7356,6 +7525,10 @@ l0800_3473:
 	ret
 
 ;; fn0800_3479: 0800:3479
+;;   Called from:
+;;     0800:2E09 (in fn0800_2DE2)
+;;     0800:3340 (in fn0800_32CD)
+;;     0800:343A (in fn0800_33CD)
 fn0800_3479 proc
 	push	bp
 	mov	bp,sp
@@ -7478,6 +7651,20 @@ l0800_3503:
 	ret
 
 ;; fn0800_3509: 0800:3509
+;;   Called from:
+;;     0800:0CA6 (in fn0800_0C93)
+;;     0800:1490 (in fn0800_12E2)
+;;     0800:15C4 (in fn0800_12E2)
+;;     0800:1BF4 (in fn0800_19EE)
+;;     0800:1C23 (in fn0800_19EE)
+;;     0800:2A11 (in fn0800_29C5)
+;;     0800:30FB (in fn0800_2DE2)
+;;     0800:31C9 (in fn0800_31B4)
+;;     0800:3278 (in fn0800_31B4)
+;;     0800:37A0 (in fn0800_3764)
+;;     0800:37F0 (in fn0800_37DF)
+;;     0800:39BF (in fn0800_3992)
+;;     0800:3CAB (in fn0800_3C99)
 fn0800_3509 proc
 	push	bp
 	mov	bp,sp
@@ -7592,6 +7779,16 @@ l0800_359A:
 	ret
 
 ;; fn0800_35A3: 0800:35A3
+;;   Called from:
+;;     0800:0AD1 (in fn0800_0ABC)
+;;     0800:14A1 (in fn0800_12E2)
+;;     0800:15D5 (in fn0800_12E2)
+;;     0800:1C5B (in fn0800_19EE)
+;;     0800:2A21 (in fn0800_29C5)
+;;     0800:31DA (in fn0800_31B4)
+;;     0800:3388 (in fn0800_335C)
+;;     0800:381D (in fn0800_37DF)
+;;     0800:39EC (in fn0800_3992)
 fn0800_35A3 proc
 	push	bp
 	mov	bp,sp
@@ -7706,6 +7903,11 @@ l0800_3634:
 	ret
 
 ;; fn0800_363D: 0800:363D
+;;   Called from:
+;;     0800:38CA (in fn0800_388C)
+;;     0800:38F9 (in fn0800_388C)
+;;     0800:3AA0 (in fn0800_3992)
+;;     0800:3AB0 (in fn0800_3992)
 fn0800_363D proc
 	push	bp
 	mov	bp,sp
@@ -7740,6 +7942,10 @@ l0800_3662:
 	ret
 
 ;; fn0800_3678: 0800:3678
+;;   Called from:
+;;     0800:0E4C (in fn0800_0DE8)
+;;     0800:1189 (in fn0800_112D)
+;;     0800:1C2E (in fn0800_19EE)
 fn0800_3678 proc
 	push	bp
 	mov	bp,sp
@@ -7885,6 +8091,9 @@ l0800_375D:
 	ret
 
 ;; fn0800_3764: 0800:3764
+;;   Called from:
+;;     0800:0E7C (in fn0800_0DE8)
+;;     0800:1192 (in fn0800_112D)
 fn0800_3764 proc
 	push	si
 	push	di
@@ -7962,6 +8171,11 @@ l0800_37BB:
 	ret
 
 ;; fn0800_37BE: 0800:37BE
+;;   Called from:
+;;     0800:0E5C (in fn0800_0DE8)
+;;     0800:1583 (in fn0800_12E2)
+;;     0800:1AA8 (in fn0800_19EE)
+;;     0800:3BD3 (in fn0800_3BC3)
 fn0800_37BE proc
 	push	bp
 	mov	bp,sp
@@ -7981,6 +8195,9 @@ fn0800_37BE proc
 	ret
 
 ;; fn0800_37DF: 0800:37DF
+;;   Called from:
+;;     0800:10E5 (in fn0800_0DE8)
+;;     0800:12B3 (in fn0800_112D)
 fn0800_37DF proc
 	push	bp
 	mov	bp,sp
@@ -8088,6 +8305,9 @@ l0800_3887:
 	ret
 
 ;; fn0800_388C: 0800:388C
+;;   Called from:
+;;     0800:0E7F (in fn0800_0DE8)
+;;     0800:1195 (in fn0800_112D)
 fn0800_388C proc
 	push	bp
 	mov	bp,sp
@@ -8192,6 +8412,10 @@ l0800_392E:
 	ret
 
 ;; fn0800_395B: 0800:395B
+;;   Called from:
+;;     0800:3909 (in fn0800_388C)
+;;     0800:391D (in fn0800_388C)
+;;     0800:3AC0 (in fn0800_3992)
 fn0800_395B proc
 	push	bp
 	mov	bp,sp
@@ -8221,6 +8445,8 @@ l0800_3984:
 	ret
 
 ;; fn0800_3992: 0800:3992
+;;   Called from:
+;;     0800:0ECF (in fn0800_0DE8)
 fn0800_3992 proc
 	push	bp
 	mov	bp,sp
@@ -8441,6 +8667,27 @@ l0800_3ADD:
 	ret
 
 ;; fn0800_3B0A: 0800:3B0A
+;;   Called from:
+;;     0800:0FC1 (in fn0800_0DE8)
+;;     0800:10AF (in fn0800_0DE8)
+;;     0800:1836 (in fn0800_12E2)
+;;     0800:3C31 (in fn0800_3BC3)
+;;     0800:3C76 (in fn0800_3BC3)
+;;     0800:3CFF (in fn0800_3C99)
+;;     0800:3D54 (in fn0800_3C99)
+;;     0800:4B15 (in fn0800_46FE)
+;;     0800:4C0A (in fn0800_4BB1)
+;;     0800:4FFD (in fn0800_4F2C)
+;;     0800:50AB (in fn0800_4F2C)
+;;     0800:52D0 (in fn0800_51A9)
+;;     0800:5337 (in fn0800_51A9)
+;;     0800:53D4 (in fn0800_5374)
+;;     0800:6423 (in fn0800_5E64)
+;;     0800:6869 (in fn0800_67BF)
+;;     0800:7166 (in fn0800_6F20)
+;;     0800:722E (in fn0800_6F20)
+;;     0800:7542 (in fn0800_741D)
+;;     0800:75BB (in fn0800_741D)
 fn0800_3B0A proc
 	push	bp
 	mov	bp,sp
@@ -8544,6 +8791,8 @@ l0800_3BBF:
 	ret
 
 ;; fn0800_3BC3: 0800:3BC3
+;;   Called from:
+;;     0800:1EEF (in fn0800_1E5E)
 fn0800_3BC3 proc
 	push	bp
 	mov	bp,sp
@@ -8628,6 +8877,9 @@ fn0800_3BC3 proc
 	ret
 
 ;; fn0800_3C99: 0800:3C99
+;;   Called from:
+;;     0800:1F13 (in fn0800_1E5E)
+;;     0800:24D8 (in fn0800_23EC)
 fn0800_3C99 proc
 	push	bp
 	mov	bp,sp
@@ -8776,6 +9028,20 @@ l0800_3DB2:
 	ret
 
 ;; fn0800_3DCF: 0800:3DCF
+;;   Called from:
+;;     0800:3E33 (in fn0800_3E27)
+;;     0800:3E44 (in fn0800_3E27)
+;;     0800:3F16 (in fn0800_3F0A)
+;;     0800:3F27 (in fn0800_3F0A)
+;;     0800:3FB9 (in fn0800_3FAD)
+;;     0800:3FCA (in fn0800_3FAD)
+;;     0800:49BD (in fn0800_46FE)
+;;     0800:49EB (in fn0800_46FE)
+;;     0800:51E5 (in fn0800_51A9)
+;;     0800:52EC (in fn0800_51A9)
+;;     0800:7459 (in fn0800_741D)
+;;     0800:757A (in fn0800_741D)
+;;     0800:8367 (in fn0800_8359)
 fn0800_3DCF proc
 	push	bp
 	mov	bp,sp
@@ -8825,6 +9091,29 @@ l0800_3E1F:
 	ret
 
 ;; fn0800_3E27: 0800:3E27
+;;   Called from:
+;;     0800:1382 (in fn0800_12E2)
+;;     0800:1DB2 (in fn0800_1CF6)
+;;     0800:1DC2 (in fn0800_1CF6)
+;;     0800:1ECB (in fn0800_1E5E)
+;;     0800:3E69 (in fn0800_3E5D)
+;;     0800:3E7D (in fn0800_3E5D)
+;;     0800:3F64 (in fn0800_3F58)
+;;     0800:3F78 (in fn0800_3F58)
+;;     0800:4C44 (in fn0800_4BB1)
+;;     0800:540C (in fn0800_5374)
+;;     0800:541D (in fn0800_5374)
+;;     0800:542E (in fn0800_5374)
+;;     0800:5E07 (in fn0800_5DCE)
+;;     0800:5E18 (in fn0800_5DCE)
+;;     0800:6895 (in fn0800_67BF)
+;;     0800:6A10 (in fn0800_67BF)
+;;     0800:7AD3 (in fn0800_7A02)
+;;     0800:7B67 (in fn0800_7A02)
+;;     0800:7B78 (in fn0800_7A02)
+;;     0800:7CB4 (in fn0800_7C78)
+;;     0800:7CE1 (in fn0800_7C78)
+;;     0800:7CF2 (in fn0800_7C78)
 fn0800_3E27 proc
 	push	bp
 	mov	bp,sp
@@ -8850,6 +9139,51 @@ fn0800_3E27 proc
 	ret
 
 ;; fn0800_3E5D: 0800:3E5D
+;;   Called from:
+;;     0800:1D31 (in fn0800_1CF6)
+;;     0800:1D8A (in fn0800_1CF6)
+;;     0800:25E1 (in fn0800_24FE)
+;;     0800:261E (in fn0800_24FE)
+;;     0800:2633 (in fn0800_24FE)
+;;     0800:265D (in fn0800_24FE)
+;;     0800:3A43 (in fn0800_3992)
+;;     0800:3A71 (in fn0800_3992)
+;;     0800:3AE3 (in fn0800_3992)
+;;     0800:4C63 (in fn0800_4C55)
+;;     0800:4C96 (in fn0800_4C55)
+;;     0800:4CCC (in fn0800_4C55)
+;;     0800:4D04 (in fn0800_4C55)
+;;     0800:4D20 (in fn0800_4C55)
+;;     0800:4D34 (in fn0800_4C55)
+;;     0800:4DCE (in fn0800_4C55)
+;;     0800:4E0D (in fn0800_4C55)
+;;     0800:4E49 (in fn0800_4C55)
+;;     0800:4F3A (in fn0800_4F2C)
+;;     0800:4F75 (in fn0800_4F2C)
+;;     0800:4F89 (in fn0800_4F2C)
+;;     0800:503C (in fn0800_4F2C)
+;;     0800:506A (in fn0800_4F2C)
+;;     0800:5205 (in fn0800_51A9)
+;;     0800:5397 (in fn0800_5374)
+;;     0800:53AB (in fn0800_5374)
+;;     0800:53F7 (in fn0800_5374)
+;;     0800:6A26 (in fn0800_67BF)
+;;     0800:6A36 (in fn0800_67BF)
+;;     0800:6A50 (in fn0800_67BF)
+;;     0800:6B0C (in fn0800_6AD4)
+;;     0800:6B40 (in fn0800_6AD4)
+;;     0800:6B76 (in fn0800_6AD4)
+;;     0800:6BAE (in fn0800_6AD4)
+;;     0800:6BCA (in fn0800_6AD4)
+;;     0800:6BDE (in fn0800_6AD4)
+;;     0800:6C99 (in fn0800_6AD4)
+;;     0800:6CEC (in fn0800_6AD4)
+;;     0800:6F2E (in fn0800_6F20)
+;;     0800:6F8E (in fn0800_6F20)
+;;     0800:7061 (in fn0800_6F20)
+;;     0800:71BF (in fn0800_6F20)
+;;     0800:71ED (in fn0800_6F20)
+;;     0800:7479 (in fn0800_741D)
 fn0800_3E5D proc
 	push	bp
 	mov	bp,sp
@@ -8875,6 +9209,9 @@ fn0800_3E5D proc
 	ret
 
 ;; fn0800_3E9A: 0800:3E9A
+;;   Called from:
+;;     0800:51BB (in fn0800_51A9)
+;;     0800:742F (in fn0800_741D)
 fn0800_3E9A proc
 	push	bp
 	mov	bp,sp
@@ -8934,6 +9271,10 @@ l0800_3EEA:
 	ret
 
 ;; fn0800_3F0A: 0800:3F0A
+;;   Called from:
+;;     0800:0FD4 (in fn0800_0DE8)
+;;     0800:1210 (in fn0800_112D)
+;;     0800:682B (in fn0800_67BF)
 fn0800_3F0A proc
 	push	bp
 	mov	bp,sp
@@ -8969,6 +9310,18 @@ fn0800_3F0A proc
 	ret
 
 ;; fn0800_3F58: 0800:3F58
+;;   Called from:
+;;     0800:0F07 (in fn0800_0DE8)
+;;     0800:11E7 (in fn0800_112D)
+;;     0800:1733 (in fn0800_12E2)
+;;     0800:17DD (in fn0800_12E2)
+;;     0800:4783 (in fn0800_46FE)
+;;     0800:4F9D (in fn0800_4F2C)
+;;     0800:50C4 (in fn0800_4F2C)
+;;     0800:5240 (in fn0800_51A9)
+;;     0800:69D3 (in fn0800_67BF)
+;;     0800:6FD4 (in fn0800_6F20)
+;;     0800:7174 (in fn0800_6F20)
 fn0800_3F58 proc
 	push	bp
 	mov	bp,sp
@@ -9004,6 +9357,37 @@ fn0800_3F58 proc
 	ret
 
 ;; fn0800_3FAD: 0800:3FAD
+;;   Called from:
+;;     0800:473D (in fn0800_46FE)
+;;     0800:47D3 (in fn0800_46FE)
+;;     0800:47E3 (in fn0800_46FE)
+;;     0800:4826 (in fn0800_46FE)
+;;     0800:4834 (in fn0800_46FE)
+;;     0800:4845 (in fn0800_46FE)
+;;     0800:4856 (in fn0800_46FE)
+;;     0800:4867 (in fn0800_46FE)
+;;     0800:4878 (in fn0800_46FE)
+;;     0800:4889 (in fn0800_46FE)
+;;     0800:489A (in fn0800_46FE)
+;;     0800:48AB (in fn0800_46FE)
+;;     0800:49D3 (in fn0800_46FE)
+;;     0800:521B (in fn0800_51A9)
+;;     0800:5F28 (in fn0800_5E64)
+;;     0800:5F39 (in fn0800_5E64)
+;;     0800:5F86 (in fn0800_5E64)
+;;     0800:5F97 (in fn0800_5E64)
+;;     0800:5FA8 (in fn0800_5E64)
+;;     0800:5FB9 (in fn0800_5E64)
+;;     0800:5FCA (in fn0800_5E64)
+;;     0800:5FDB (in fn0800_5E64)
+;;     0800:5FEC (in fn0800_5E64)
+;;     0800:5FFA (in fn0800_5E64)
+;;     0800:600B (in fn0800_5E64)
+;;     0800:601C (in fn0800_5E64)
+;;     0800:602D (in fn0800_5E64)
+;;     0800:609E (in fn0800_5E64)
+;;     0800:60AF (in fn0800_5E64)
+;;     0800:748F (in fn0800_741D)
 fn0800_3FAD proc
 	push	bp
 	mov	bp,sp
@@ -9032,6 +9416,22 @@ fn0800_3FAD proc
 0800:4010 C4 04 0A C0 75 F0 8B 56 06 8B 46 04 5D C3       ....u..V..F.]. 
 
 ;; fn0800_401E: 0800:401E
+;;   Called from:
+;;     0800:40A8 (in fn0800_409C)
+;;     0800:40B7 (in fn0800_409C)
+;;     0800:48C0 (in fn0800_46FE)
+;;     0800:4939 (in fn0800_46FE)
+;;     0800:498F (in fn0800_46FE)
+;;     0800:4BED (in fn0800_4BB1)
+;;     0800:4C4B (in fn0800_4BB1)
+;;     0800:689C (in fn0800_67BF)
+;;     0800:74A8 (in fn0800_741D)
+;;     0800:77C2 (in fn0800_75EA)
+;;     0800:77D3 (in fn0800_75EA)
+;;     0800:77E4 (in fn0800_75EA)
+;;     0800:7936 (in fn0800_75EA)
+;;     0800:7948 (in fn0800_75EA)
+;;     0800:8350 (in fn0800_831D)
 fn0800_401E proc
 	push	bp
 	mov	bp,sp
@@ -9053,6 +9453,26 @@ fn0800_401E proc
 	ret
 
 ;; fn0800_4047: 0800:4047
+;;   Called from:
+;;     0800:402F (in fn0800_401E)
+;;     0800:403F (in fn0800_401E)
+;;     0800:40CE (in fn0800_40BF)
+;;     0800:40E4 (in fn0800_40BF)
+;;     0800:4A7B (in fn0800_46FE)
+;;     0800:51EC (in fn0800_51A9)
+;;     0800:52F3 (in fn0800_51A9)
+;;     0800:612B (in fn0800_5E64)
+;;     0800:61A5 (in fn0800_5E64)
+;;     0800:61E7 (in fn0800_5E64)
+;;     0800:622B (in fn0800_5E64)
+;;     0800:6258 (in fn0800_5E64)
+;;     0800:697A (in fn0800_67BF)
+;;     0800:72B6 (in fn0800_6F20)
+;;     0800:7460 (in fn0800_741D)
+;;     0800:7581 (in fn0800_741D)
+;;     0800:795A (in fn0800_75EA)
+;;     0800:796C (in fn0800_75EA)
+;;     0800:8648 (in fn0800_8624)
 fn0800_4047 proc
 	push	bp
 	mov	bp,sp
@@ -9102,6 +9522,59 @@ l0800_4099:
 	ret
 
 ;; fn0800_409C: 0800:409C
+;;   Called from:
+;;     0800:0F8D (in fn0800_0DE8)
+;;     0800:0FA3 (in fn0800_0DE8)
+;;     0800:1472 (in fn0800_12E2)
+;;     0800:1802 (in fn0800_12E2)
+;;     0800:1818 (in fn0800_12E2)
+;;     0800:184F (in fn0800_12E2)
+;;     0800:48D2 (in fn0800_46FE)
+;;     0800:48E4 (in fn0800_46FE)
+;;     0800:4C1C (in fn0800_4BB1)
+;;     0800:4C2E (in fn0800_4BB1)
+;;     0800:4C88 (in fn0800_4C55)
+;;     0800:4CB4 (in fn0800_4C55)
+;;     0800:4CD4 (in fn0800_4C55)
+;;     0800:4D12 (in fn0800_4C55)
+;;     0800:4D60 (in fn0800_4C55)
+;;     0800:4D7C (in fn0800_4C55)
+;;     0800:4DD6 (in fn0800_4C55)
+;;     0800:4E61 (in fn0800_4C55)
+;;     0800:4FCA (in fn0800_4F2C)
+;;     0800:502E (in fn0800_4F2C)
+;;     0800:5054 (in fn0800_4F2C)
+;;     0800:5088 (in fn0800_4F2C)
+;;     0800:50FB (in fn0800_4F2C)
+;;     0800:513C (in fn0800_4F2C)
+;;     0800:520D (in fn0800_51A9)
+;;     0800:6901 (in fn0800_67BF)
+;;     0800:6994 (in fn0800_67BF)
+;;     0800:69EF (in fn0800_67BF)
+;;     0800:6AC8 (in fn0800_67BF)
+;;     0800:6B32 (in fn0800_6AD4)
+;;     0800:6B5E (in fn0800_6AD4)
+;;     0800:6B7E (in fn0800_6AD4)
+;;     0800:6BBC (in fn0800_6AD4)
+;;     0800:6C10 (in fn0800_6AD4)
+;;     0800:6C2C (in fn0800_6AD4)
+;;     0800:6C60 (in fn0800_6AD4)
+;;     0800:6CA1 (in fn0800_6AD4)
+;;     0800:7012 (in fn0800_6F20)
+;;     0800:7090 (in fn0800_6F20)
+;;     0800:70A4 (in fn0800_6F20)
+;;     0800:70B8 (in fn0800_6F20)
+;;     0800:71B1 (in fn0800_6F20)
+;;     0800:71D7 (in fn0800_6F20)
+;;     0800:720B (in fn0800_6F20)
+;;     0800:7323 (in fn0800_6F20)
+;;     0800:7381 (in fn0800_6F20)
+;;     0800:73FE (in fn0800_73AC)
+;;     0800:7481 (in fn0800_741D)
+;;     0800:7789 (in fn0800_75EA)
+;;     0800:779F (in fn0800_75EA)
+;;     0800:77B1 (in fn0800_75EA)
+;;     0800:7924 (in fn0800_75EA)
 fn0800_409C proc
 	push	bp
 	mov	bp,sp
@@ -9119,6 +9592,43 @@ fn0800_409C proc
 	ret
 
 ;; fn0800_40BF: 0800:40BF
+;;   Called from:
+;;     0800:48F5 (in fn0800_46FE)
+;;     0800:4906 (in fn0800_46FE)
+;;     0800:4917 (in fn0800_46FE)
+;;     0800:4928 (in fn0800_46FE)
+;;     0800:494A (in fn0800_46FE)
+;;     0800:495B (in fn0800_46FE)
+;;     0800:496D (in fn0800_46FE)
+;;     0800:497E (in fn0800_46FE)
+;;     0800:49FE (in fn0800_46FE)
+;;     0800:4A0F (in fn0800_46FE)
+;;     0800:4B56 (in fn0800_46FE)
+;;     0800:4B67 (in fn0800_46FE)
+;;     0800:4B78 (in fn0800_46FE)
+;;     0800:4B89 (in fn0800_46FE)
+;;     0800:5232 (in fn0800_51A9)
+;;     0800:5297 (in fn0800_51A9)
+;;     0800:6145 (in fn0800_5E64)
+;;     0800:62CC (in fn0800_5E64)
+;;     0800:62DD (in fn0800_5E64)
+;;     0800:62EE (in fn0800_5E64)
+;;     0800:62FF (in fn0800_5E64)
+;;     0800:6310 (in fn0800_5E64)
+;;     0800:633E (in fn0800_5E64)
+;;     0800:635D (in fn0800_5E64)
+;;     0800:6467 (in fn0800_5E64)
+;;     0800:6476 (in fn0800_5E64)
+;;     0800:64A4 (in fn0800_5E64)
+;;     0800:64B3 (in fn0800_5E64)
+;;     0800:64EC (in fn0800_5E64)
+;;     0800:6513 (in fn0800_5E64)
+;;     0800:6524 (in fn0800_5E64)
+;;     0800:65C8 (in fn0800_5E64)
+;;     0800:65E7 (in fn0800_5E64)
+;;     0800:6612 (in fn0800_5E64)
+;;     0800:6646 (in fn0800_5E64)
+;;     0800:74F4 (in fn0800_741D)
 fn0800_40BF proc
 	push	bp
 	mov	bp,sp
@@ -9145,6 +9655,13 @@ fn0800_40BF proc
 0800:4100 C4 06 C4 5E 04 FF 46 04 26 80 3F 00 75 E1 5D C3 ...^..F.&.?.u.].
 
 ;; fn0800_4110: 0800:4110
+;;   Called from:
+;;     0800:1E25 (in fn0800_1CF6)
+;;     0800:2D6B (in fn0800_2D0A)
+;;     0800:3B81 (in fn0800_3B0A)
+;;     0800:5B9E (in fn0800_5B15)
+;;     0800:5BE4 (in fn0800_5B15)
+;;     0800:80A8 (in fn0800_7FDC)
 fn0800_4110 proc
 	push	bp
 	mov	bp,sp
@@ -9182,6 +9699,18 @@ l0800_4150:
 	ret
 
 ;; fn0800_4152: 0800:4152
+;;   Called from:
+;;     0800:145C (in fn0800_12E2)
+;;     0800:1F46 (in fn0800_1E5E)
+;;     0800:3B99 (in fn0800_3B0A)
+;;     0800:578F (in fn0800_55E8)
+;;     0800:5936 (in fn0800_579B)
+;;     0800:5D68 (in fn0800_5D2F)
+;;     0800:6055 (in fn0800_5E64)
+;;     0800:6737 (in fn0800_669C)
+;;     0800:6803 (in fn0800_67BF)
+;;     0800:6CD9 (in fn0800_6AD4)
+;;     0800:73CE (in fn0800_73AC)
 fn0800_4152 proc
 	push	bp
 	mov	bp,sp
@@ -9219,6 +9748,25 @@ l0800_4192:
 	ret
 
 ;; fn0800_4194: 0800:4194
+;;   Called from:
+;;     0800:0E9C (in fn0800_0DE8)
+;;     0800:100F (in fn0800_0DE8)
+;;     0800:11B2 (in fn0800_112D)
+;;     0800:124B (in fn0800_112D)
+;;     0800:1260 (in fn0800_112D)
+;;     0800:160D (in fn0800_12E2)
+;;     0800:16EB (in fn0800_12E2)
+;;     0800:1D46 (in fn0800_1CF6)
+;;     0800:3A19 (in fn0800_3992)
+;;     0800:3BF6 (in fn0800_3BC3)
+;;     0800:3D28 (in fn0800_3C99)
+;;     0800:4AF7 (in fn0800_46FE)
+;;     0800:4EF6 (in fn0800_4C55)
+;;     0800:5309 (in fn0800_51A9)
+;;     0800:5355 (in fn0800_51A9)
+;;     0800:5B3F (in fn0800_5B15)
+;;     0800:5DD8 (in fn0800_5DCE)
+;;     0800:5DF4 (in fn0800_5DCE)
 fn0800_4194 proc
 	push	bp
 	mov	bp,sp
@@ -9264,6 +9812,18 @@ fn0800_4194 proc
 0800:4230 8B E5 5D C3                                     ..].           
 
 ;; fn0800_4234: 0800:4234
+;;   Called from:
+;;     0800:0E6C (in fn0800_0DE8)
+;;     0800:13D9 (in fn0800_12E2)
+;;     0800:1593 (in fn0800_12E2)
+;;     0800:15AD (in fn0800_12E2)
+;;     0800:1C6B (in fn0800_19EE)
+;;     0800:2FE2 (in fn0800_2DE2)
+;;     0800:389C (in fn0800_388C)
+;;     0800:38B3 (in fn0800_388C)
+;;     0800:3BE3 (in fn0800_3BC3)
+;;     0800:3CD0 (in fn0800_3C99)
+;;     0800:3DBC (in fn0800_3C99)
 fn0800_4234 proc
 	push	bp
 	mov	bp,sp
@@ -9295,6 +9855,12 @@ l0800_4267:
 	ret
 
 ;; fn0800_4271: 0800:4271
+;;   Called from:
+;;     0800:3E0D (in fn0800_3DCF)
+;;     0800:3ED8 (in fn0800_3E9A)
+;;     0800:4087 (in fn0800_4047)
+;;     0800:413E (in fn0800_4110)
+;;     0800:4180 (in fn0800_4152)
 fn0800_4271 proc
 	push	bp
 	mov	bp,sp
@@ -9400,6 +9966,20 @@ l0800_430A:
 	ret
 
 ;; fn0800_4311: 0800:4311
+;;   Called from:
+;;     0800:09DA (in fn0800_09A3)
+;;     0800:1DD5 (in fn0800_1CF6)
+;;     0800:1DEB (in fn0800_1CF6)
+;;     0800:2D18 (in fn0800_2D0A)
+;;     0800:3B41 (in fn0800_3B0A)
+;;     0800:5460 (in fn0800_5374)
+;;     0800:547F (in fn0800_5374)
+;;     0800:606B (in fn0800_5E64)
+;;     0800:76B4 (in fn0800_75EA)
+;;     0800:76D3 (in fn0800_75EA)
+;;     0800:76F2 (in fn0800_75EA)
+;;     0800:7711 (in fn0800_75EA)
+;;     0800:7730 (in fn0800_75EA)
 fn0800_4311 proc
 	push	bp
 	mov	bp,sp
@@ -9430,6 +10010,19 @@ l0800_433C:
 	ret
 
 ;; fn0800_4346: 0800:4346
+;;   Called from:
+;;     0800:0AB0 (in fn0800_09A3)
+;;     0800:1F54 (in fn0800_1E5E)
+;;     0800:2DB2 (in fn0800_2D0A)
+;;     0800:3BB9 (in fn0800_3B0A)
+;;     0800:5588 (in fn0800_5374)
+;;     0800:5594 (in fn0800_5374)
+;;     0800:621A (in fn0800_5E64)
+;;     0800:79BC (in fn0800_75EA)
+;;     0800:79C8 (in fn0800_75EA)
+;;     0800:79D4 (in fn0800_75EA)
+;;     0800:79E0 (in fn0800_75EA)
+;;     0800:79EC (in fn0800_75EA)
 fn0800_4346 proc
 	push	bp
 	mov	bp,sp
@@ -9441,6 +10034,8 @@ fn0800_4346 proc
 	ret
 
 ;; fn0800_4357: 0800:4357
+;;   Called from:
+;;     0800:2A68 (in fn0800_29C5)
 fn0800_4357 proc
 	push	bp
 	mov	bp,sp
@@ -9536,6 +10131,11 @@ l0800_43D2:
 	ret
 
 ;; fn0800_43D4: 0800:43D4
+;;   Called from:
+;;     0800:5A32 (in fn0800_5A24)
+;;     0800:7A22 (in fn0800_7A02)
+;;     0800:7A31 (in fn0800_7A02)
+;;     0800:7A40 (in fn0800_7A02)
 fn0800_43D4 proc
 	push	bp
 	mov	bp,sp
@@ -9570,6 +10170,10 @@ l0800_4419:
 	ret
 
 ;; fn0800_441C: 0800:441C
+;;   Called from:
+;;     0800:7A69 (in fn0800_7A02)
+;;     0800:7A78 (in fn0800_7A02)
+;;     0800:7A87 (in fn0800_7A02)
 fn0800_441C proc
 	push	bp
 	mov	bp,sp
@@ -9730,6 +10334,9 @@ l0800_454A:
 	ret
 
 ;; fn0800_4550: 0800:4550
+;;   Called from:
+;;     0800:4544 (in fn0800_441C)
+;;     0800:5A83 (in fn0800_5A24)
 fn0800_4550 proc
 	push	bp
 	mov	bp,sp
@@ -9801,6 +10408,8 @@ l0800_45DC:
 	ret
 
 ;; fn0800_45E2: 0800:45E2
+;;   Called from:
+;;     0800:459D (in fn0800_4550)
 fn0800_45E2 proc
 	push	bp
 	mov	bp,sp
@@ -9848,6 +10457,8 @@ l0800_4631:
 	ret
 
 ;; fn0800_463B: 0800:463B
+;;   Called from:
+;;     0800:452E (in fn0800_441C)
 fn0800_463B proc
 	push	bp
 	mov	bp,sp
@@ -9961,6 +10572,8 @@ l0800_46F5:
 	ret
 
 ;; fn0800_46FE: 0800:46FE
+;;   Called from:
+;;     0800:121B (in fn0800_112D)
 fn0800_46FE proc
 	push	bp
 	mov	bp,sp
@@ -10442,6 +11055,8 @@ l0800_4B37:
 	ret
 
 ;; fn0800_4B97: 0800:4B97
+;;   Called from:
+;;     0800:1222 (in fn0800_112D)
 fn0800_4B97 proc
 	push	word ptr [29E5]
 	push	word ptr [29E3]
@@ -10459,6 +11074,8 @@ l0800_4BAD:
 	ret
 
 ;; fn0800_4BB1: 0800:4BB1
+;;   Called from:
+;;     0800:1229 (in fn0800_112D)
 fn0800_4BB1 proc
 	push	word ptr [29E5]
 	push	word ptr [29E3]
@@ -10525,6 +11142,8 @@ l0800_4BC7:
 	ret
 
 ;; fn0800_4C55: 0800:4C55
+;;   Called from:
+;;     0800:1230 (in fn0800_112D)
 fn0800_4C55 proc
 	push	bp
 	mov	bp,sp
@@ -11054,6 +11673,8 @@ l0800_50E6:
 	ret
 
 ;; fn0800_518F: 0800:518F
+;;   Called from:
+;;     0800:1237 (in fn0800_112D)
 fn0800_518F proc
 	push	word ptr [29E5]
 	push	word ptr [29E3]
@@ -11071,6 +11692,8 @@ l0800_51A5:
 	ret
 
 ;; fn0800_51A9: 0800:51A9
+;;   Called from:
+;;     0800:123E (in fn0800_112D)
 fn0800_51A9 proc
 	push	bp
 	mov	bp,sp
@@ -11285,6 +11908,15 @@ l0800_536D:
 	ret
 
 ;; fn0800_5374: 0800:5374
+;;   Called from:
+;;     0800:11FC (in fn0800_112D)
+;;     0800:1C86 (in fn0800_19EE)
+;;     0800:4AB5 (in fn0800_46FE)
+;;     0800:4BAD (in fn0800_4B97)
+;;     0800:4C51 (in fn0800_4BB1)
+;;     0800:5163 (in fn0800_4F2C)
+;;     0800:51A5 (in fn0800_518F)
+;;     0800:5255 (in fn0800_51A9)
 fn0800_5374 proc
 	push	bp
 	mov	bp,sp
@@ -11561,6 +12193,8 @@ l0800_55E1:
 	ret
 
 ;; fn0800_55E8: 0800:55E8
+;;   Called from:
+;;     0800:5570 (in fn0800_5374)
 fn0800_55E8 proc
 	push	bp
 	mov	bp,sp
@@ -11778,6 +12412,8 @@ l0800_5766:
 	ret
 
 ;; fn0800_579B: 0800:579B
+;;   Called from:
+;;     0800:5577 (in fn0800_5374)
 fn0800_579B proc
 	jmp	58F2
 
@@ -11995,6 +12631,8 @@ l0800_590D:
 	ret
 
 ;; fn0800_593F: 0800:593F
+;;   Called from:
+;;     0800:5866 (in fn0800_579B)
 fn0800_593F proc
 	mov	ax,0001
 	push	ax
@@ -12024,6 +12662,9 @@ l0800_5974:
 	ret
 
 ;; fn0800_5975: 0800:5975
+;;   Called from:
+;;     0800:5835 (in fn0800_579B)
+;;     0800:58B7 (in fn0800_579B)
 fn0800_5975 proc
 	mov	word ptr [2E2B],0000
 	mov	ax,0001
@@ -12098,6 +12739,8 @@ l0800_59FA:
 	ret
 
 ;; fn0800_5A0F: 0800:5A0F
+;;   Called from:
+;;     0800:5870 (in fn0800_579B)
 fn0800_5A0F proc
 	mov	ax,0004
 	push	ax
@@ -12110,6 +12753,10 @@ fn0800_5A0F proc
 	ret
 
 ;; fn0800_5A24: 0800:5A24
+;;   Called from:
+;;     0800:55FA (in fn0800_55E8)
+;;     0800:5609 (in fn0800_55E8)
+;;     0800:5618 (in fn0800_55E8)
 fn0800_5A24 proc
 	push	bp
 	mov	bp,sp
@@ -12168,6 +12815,10 @@ l0800_5A89:
 	ret
 
 ;; fn0800_5A8D: 0800:5A8D
+;;   Called from:
+;;     0800:5638 (in fn0800_55E8)
+;;     0800:56F3 (in fn0800_55E8)
+;;     0800:5702 (in fn0800_55E8)
 fn0800_5A8D proc
 	push	bp
 	mov	bp,sp
@@ -12242,6 +12893,16 @@ l0800_5AF8:
 	ret
 
 ;; fn0800_5B15: 0800:5B15
+;;   Called from:
+;;     0800:5656 (in fn0800_55E8)
+;;     0800:579E (in fn0800_579B)
+;;     0800:57FF (in fn0800_579B)
+;;     0800:5820 (in fn0800_579B)
+;;     0800:5881 (in fn0800_579B)
+;;     0800:59FA (in fn0800_5975)
+;;     0800:5C54 (in fn0800_5C39)
+;;     0800:5C5C (in fn0800_5C39)
+;;     0800:5CEC (in fn0800_5CD9)
 fn0800_5B15 proc
 	push	bp
 	mov	bp,sp
@@ -12367,6 +13028,10 @@ l0800_5C0B:
 	ret
 
 ;; fn0800_5C1A: 0800:5C1A
+;;   Called from:
+;;     0800:54E9 (in fn0800_5374)
+;;     0800:550C (in fn0800_5374)
+;;     0800:5521 (in fn0800_5374)
 fn0800_5C1A proc
 	push	bp
 	mov	bp,sp
@@ -12389,6 +13054,13 @@ l0800_5C30:
 	ret
 
 ;; fn0800_5C39: 0800:5C39
+;;   Called from:
+;;     0800:5622 (in fn0800_55E8)
+;;     0800:5A3C (in fn0800_5A24)
+;;     0800:5A65 (in fn0800_5A24)
+;;     0800:5AE3 (in fn0800_5A8D)
+;;     0800:5AFD (in fn0800_5A8D)
+;;     0800:5C31 (in fn0800_5C1A)
 fn0800_5C39 proc
 	push	bp
 	mov	bp,sp
@@ -12469,6 +13141,24 @@ l0800_5CD1:
 	ret
 
 ;; fn0800_5CD9: 0800:5CD9
+;;   Called from:
+;;     0800:57D3 (in fn0800_579B)
+;;     0800:57E1 (in fn0800_579B)
+;;     0800:57EF (in fn0800_579B)
+;;     0800:580E (in fn0800_579B)
+;;     0800:58EC (in fn0800_579B)
+;;     0800:5943 (in fn0800_593F)
+;;     0800:5953 (in fn0800_593F)
+;;     0800:5961 (in fn0800_593F)
+;;     0800:597F (in fn0800_5975)
+;;     0800:598D (in fn0800_5975)
+;;     0800:599A (in fn0800_5975)
+;;     0800:59A8 (in fn0800_5975)
+;;     0800:59C1 (in fn0800_5975)
+;;     0800:59CF (in fn0800_5975)
+;;     0800:59EE (in fn0800_5975)
+;;     0800:5A13 (in fn0800_5A0F)
+;;     0800:5C28 (in fn0800_5C1A)
 fn0800_5CD9 proc
 	push	bp
 	mov	bp,sp
@@ -12521,6 +13211,13 @@ l0800_5D29:
 	ret
 
 ;; fn0800_5D2F: 0800:5D2F
+;;   Called from:
+;;     0800:565E (in fn0800_55E8)
+;;     0800:5725 (in fn0800_55E8)
+;;     0800:57A6 (in fn0800_579B)
+;;     0800:5852 (in fn0800_579B)
+;;     0800:5889 (in fn0800_579B)
+;;     0800:58D4 (in fn0800_579B)
 fn0800_5D2F proc
 	push	bp
 	mov	bp,sp
@@ -12585,6 +13282,10 @@ l0800_5D9E:
 	ret
 
 ;; fn0800_5DCE: 0800:5DCE
+;;   Called from:
+;;     0800:4B9F (in fn0800_4B97)
+;;     0800:4BB9 (in fn0800_4BB1)
+;;     0800:5197 (in fn0800_518F)
 fn0800_5DCE proc
 	push	bp
 	mov	bp,sp
@@ -12674,6 +13375,8 @@ l0800_5E5F:
 	ret
 
 ;; fn0800_5E64: 0800:5E64
+;;   Called from:
+;;     0800:0FDF (in fn0800_0DE8)
 fn0800_5E64 proc
 	push	bp
 	mov	bp,sp
@@ -13563,6 +14266,8 @@ l0800_6673:
 0800:6690 08 73 05 B8 FF FF 5D C3 33 C0 5D C3             .s....].3.].   
 
 ;; fn0800_669C: 0800:669C
+;;   Called from:
+;;     0800:0FE6 (in fn0800_0DE8)
 fn0800_669C proc
 	push	bp
 	mov	bp,sp
@@ -13743,6 +14448,8 @@ l0800_67A1:
 	ret
 
 ;; fn0800_67BF: 0800:67BF
+;;   Called from:
+;;     0800:0FED (in fn0800_0DE8)
 fn0800_67BF proc
 	push	bp
 	mov	bp,sp
@@ -14055,6 +14762,8 @@ l0800_6AA4:
 	ret
 
 ;; fn0800_6AD4: 0800:6AD4
+;;   Called from:
+;;     0800:0FF4 (in fn0800_0DE8)
 fn0800_6AD4 proc
 	push	bp
 	mov	bp,sp
@@ -14890,6 +15599,8 @@ l0800_734D:
 	ret
 
 ;; fn0800_73AC: 0800:73AC
+;;   Called from:
+;;     0800:0FFB (in fn0800_0DE8)
 fn0800_73AC proc
 	push	word ptr [29E1]
 	push	word ptr [29DF]
@@ -14934,6 +15645,8 @@ fn0800_73AC proc
 	ret
 
 ;; fn0800_741D: 0800:741D
+;;   Called from:
+;;     0800:1002 (in fn0800_0DE8)
 fn0800_741D proc
 	push	bp
 	mov	bp,sp
@@ -15138,6 +15851,16 @@ l0800_75E3:
 	ret
 
 ;; fn0800_75EA: 0800:75EA
+;;   Called from:
+;;     0800:0F36 (in fn0800_0DE8)
+;;     0800:1758 (in fn0800_12E2)
+;;     0800:62A5 (in fn0800_5E64)
+;;     0800:67B1 (in fn0800_669C)
+;;     0800:68C0 (in fn0800_67BF)
+;;     0800:6930 (in fn0800_67BF)
+;;     0800:70E9 (in fn0800_6F20)
+;;     0800:7414 (in fn0800_73AC)
+;;     0800:74BA (in fn0800_741D)
 fn0800_75EA proc
 	push	bp
 	mov	bp,sp
@@ -15538,6 +16261,8 @@ l0800_79FD:
 	ret
 
 ;; fn0800_7A02: 0800:7A02
+;;   Called from:
+;;     0800:7852 (in fn0800_75EA)
 fn0800_7A02 proc
 	push	bp
 	mov	bp,sp
@@ -15840,6 +16565,8 @@ l0800_7C73:
 	ret
 
 ;; fn0800_7C78: 0800:7C78
+;;   Called from:
+;;     0800:7857 (in fn0800_75EA)
 fn0800_7C78 proc
 	push	bp
 	mov	bp,sp
@@ -16111,6 +16838,8 @@ l0800_7EAA:
 	ret
 
 ;; fn0800_7EAF: 0800:7EAF
+;;   Called from:
+;;     0800:7CC7 (in fn0800_7C78)
 fn0800_7EAF proc
 	push	bp
 	mov	bp,sp
@@ -16295,6 +17024,9 @@ l0800_7FD8:
 	ret
 
 ;; fn0800_7FDC: 0800:7FDC
+;;   Called from:
+;;     0800:7A46 (in fn0800_7A02)
+;;     0800:7C8F (in fn0800_7C78)
 fn0800_7FDC proc
 	push	bp
 	mov	bp,sp
@@ -16658,6 +17390,11 @@ l0800_82ED:
 	ret
 
 ;; fn0800_831D: 0800:831D
+;;   Called from:
+;;     0800:8148 (in fn0800_7FDC)
+;;     0800:815A (in fn0800_7FDC)
+;;     0800:816A (in fn0800_7FDC)
+;;     0800:82F6 (in fn0800_7FDC)
 fn0800_831D proc
 	push	bp
 	mov	bp,sp
@@ -16692,6 +17429,15 @@ l0800_8334:
 	ret
 
 ;; fn0800_8359: 0800:8359
+;;   Called from:
+;;     0800:7B04 (in fn0800_7A02)
+;;     0800:7B24 (in fn0800_7A02)
+;;     0800:7BB2 (in fn0800_7A02)
+;;     0800:7DBF (in fn0800_7C78)
+;;     0800:7ECE (in fn0800_7EAF)
+;;     0800:7F0A (in fn0800_7EAF)
+;;     0800:7F5D (in fn0800_7EAF)
+;;     0800:7FA5 (in fn0800_7EAF)
 fn0800_8359 proc
 	push	bp
 	mov	bp,sp
@@ -16721,6 +17467,10 @@ fn0800_8359 proc
 	ret
 
 ;; fn0800_83A1: 0800:83A1
+;;   Called from:
+;;     0800:7A96 (in fn0800_7A02)
+;;     0800:7AA5 (in fn0800_7A02)
+;;     0800:7AB4 (in fn0800_7A02)
 fn0800_83A1 proc
 	push	bp
 	mov	bp,sp
@@ -16783,6 +17533,10 @@ l0800_8401:
 	ret
 
 ;; fn0800_8407: 0800:8407
+;;   Called from:
+;;     0800:7AEE (in fn0800_7A02)
+;;     0800:7B8A (in fn0800_7A02)
+;;     0800:7B99 (in fn0800_7A02)
 fn0800_8407 proc
 	push	bp
 	mov	bp,sp
@@ -16838,6 +17592,10 @@ l0800_845F:
 	ret
 
 ;; fn0800_8465: 0800:8465
+;;   Called from:
+;;     0800:780B (in fn0800_75EA)
+;;     0800:7821 (in fn0800_75EA)
+;;     0800:783D (in fn0800_75EA)
 fn0800_8465 proc
 	push	bp
 	mov	bp,sp
@@ -16863,6 +17621,13 @@ l0800_847F:
 	ret
 
 ;; fn0800_8489: 0800:8489
+;;   Called from:
+;;     0800:7AC2 (in fn0800_7A02)
+;;     0800:83D0 (in fn0800_83A1)
+;;     0800:83F2 (in fn0800_83A1)
+;;     0800:8439 (in fn0800_8407)
+;;     0800:8459 (in fn0800_8407)
+;;     0800:8481 (in fn0800_8465)
 fn0800_8489 proc
 	push	bp
 	mov	bp,sp
@@ -16973,6 +17738,21 @@ l0800_8547:
 	ret
 
 ;; fn0800_854B: 0800:854B
+;;   Called from:
+;;     0800:7D0A (in fn0800_7C78)
+;;     0800:7D36 (in fn0800_7C78)
+;;     0800:7D54 (in fn0800_7C78)
+;;     0800:7D70 (in fn0800_7C78)
+;;     0800:7D9A (in fn0800_7C78)
+;;     0800:7DED (in fn0800_7C78)
+;;     0800:7E16 (in fn0800_7C78)
+;;     0800:7E25 (in fn0800_7C78)
+;;     0800:7EC8 (in fn0800_7EAF)
+;;     0800:7F04 (in fn0800_7EAF)
+;;     0800:7F40 (in fn0800_7EAF)
+;;     0800:7F53 (in fn0800_7EAF)
+;;     0800:7F9D (in fn0800_7EAF)
+;;     0800:8477 (in fn0800_8465)
 fn0800_854B proc
 	push	bp
 	mov	bp,sp
@@ -17077,6 +17857,16 @@ l0800_85FC:
 	ret
 
 ;; fn0800_8600: 0800:8600
+;;   Called from:
+;;     0800:7D14 (in fn0800_7C78)
+;;     0800:7D60 (in fn0800_7C78)
+;;     0800:7D7C (in fn0800_7C78)
+;;     0800:7DA6 (in fn0800_7C78)
+;;     0800:7DF6 (in fn0800_7C78)
+;;     0800:7ED6 (in fn0800_7EAF)
+;;     0800:7F12 (in fn0800_7EAF)
+;;     0800:7F65 (in fn0800_7EAF)
+;;     0800:7FAD (in fn0800_7EAF)
 fn0800_8600 proc
 	push	bp
 	mov	bp,sp
@@ -17099,6 +17889,20 @@ l0800_861B:
 	ret
 
 ;; fn0800_8624: 0800:8624
+;;   Called from:
+;;     0800:7866 (in fn0800_75EA)
+;;     0800:7B2C (in fn0800_7A02)
+;;     0800:7BEB (in fn0800_7A02)
+;;     0800:7C51 (in fn0800_7A02)
+;;     0800:7C6D (in fn0800_7A02)
+;;     0800:7E3E (in fn0800_7C78)
+;;     0800:7EA4 (in fn0800_7C78)
+;;     0800:84B9 (in fn0800_8489)
+;;     0800:84C7 (in fn0800_8489)
+;;     0800:84D9 (in fn0800_8489)
+;;     0800:857C (in fn0800_854B)
+;;     0800:858E (in fn0800_854B)
+;;     0800:861C (in fn0800_8600)
 fn0800_8624 proc
 	push	bp
 	mov	bp,sp
@@ -17141,6 +17945,8 @@ l0800_8678:
 	ret
 
 ;; fn0800_867A: 0800:867A
+;;   Called from:
+;;     0800:09F6 (in fn0800_09A3)
 fn0800_867A proc
 	push	bp
 	mov	bp,sp
@@ -17493,17 +18299,24 @@ l0800_87E8:
 	retf
 
 ;; fn0800_87EF: 0800:87EF
+;;   Called from:
+;;     0800:8690 (in fn0800_867A)
 fn0800_87EF proc
 	call	87F4
 	mov	bx,ax
 
 ;; fn0800_87F4: 0800:87F4
+;;   Called from:
+;;     0800:87EF (in fn0800_87EF)
+;;     0800:87F2 (in fn0800_87EF)
 fn0800_87F4 proc
 	lodsw
 	xchg	al,ah
 	ret
 
 ;; fn0800_87F8: 0800:87F8
+;;   Called from:
+;;     0800:7747 (in fn0800_75EA)
 fn0800_87F8 proc
 	push	di
 	cld
@@ -17546,6 +18359,8 @@ l0800_882C:
 	ret
 
 ;; fn0800_8832: 0800:8832
+;;   Called from:
+;;     0800:810D (in fn0800_7FDC)
 fn0800_8832 proc
 	push	si
 	push	di
@@ -17605,6 +18420,9 @@ l0800_8897:
 	ret
 
 ;; fn0800_889A: 0800:889A
+;;   Called from:
+;;     0800:8834 (in fn0800_8832)
+;;     0800:886C (in fn0800_8832)
 fn0800_889A proc
 	push	si
 	push	di
@@ -17779,6 +18597,9 @@ l0800_89A5:
 	ret
 
 ;; fn0800_89A8: 0800:89A8
+;;   Called from:
+;;     0800:8174 (in fn0800_7FDC)
+;;     0800:8197 (in fn0800_7FDC)
 fn0800_89A8 proc
 	push	bp
 	mov	bp,sp
@@ -17962,6 +18783,9 @@ l0800_8AED:
 0800:8B00 72 04 33 C0 EB 04 50 E8 5A 02 5D C3 C3          r.3...P.Z.]..  
 
 ;; fn0800_8B0D: 0800:8B0D
+;;   Called from:
+;;     0800:8B64 (in fn0800_8B5A)
+;;     0800:8B76 (in fn0800_8B69)
 fn0800_8B0D proc
 	push	bp
 	mov	bp,sp
@@ -18012,6 +18836,9 @@ l0800_8B55:
 	ret	0006
 
 ;; fn0800_8B5A: 0800:8B5A
+;;   Called from:
+;;     0800:0DA1 (in fn0800_0D24)
+;;     0800:0DE1 (in fn0800_0DCE)
 fn0800_8B5A proc
 	push	bp
 	mov	bp,sp
@@ -18040,6 +18867,8 @@ fn0800_8B69 proc
 0800:8B90 50 E8 79 FF C3                                  P.y..          
 
 ;; fn0800_8B95: 0800:8B95
+;;   Called from:
+;;     0800:976F (in fn0800_9764)
 fn0800_8B95 proc
 	push	bp
 	mov	bp,sp
@@ -18052,6 +18881,8 @@ fn0800_8B95 proc
 	ret
 
 ;; fn0800_8BA8: 0800:8BA8
+;;   Called from:
+;;     0800:9779 (in fn0800_9764)
 fn0800_8BA8 proc
 	push	bp
 	mov	bp,sp
@@ -18064,6 +18895,17 @@ fn0800_8BA8 proc
 	ret
 
 ;; fn0800_8BBB: 0800:8BBB
+;;   Called from:
+;;     0800:038F (in main)
+;;     0800:03AB (in main)
+;;     0800:B904 (in fn0800_B6D6)
+;;     0800:B925 (in fn0800_B6D6)
+;;     0800:C1BD (in fn0800_C177)
+;;     0800:C1E9 (in fn0800_C177)
+;;     0800:C1FF (in fn0800_C177)
+;;     0800:C250 (in fn0800_C177)
+;;     0800:C294 (in fn0800_C177)
+;;     0800:C2D8 (in fn0800_C177)
 fn0800_8BBB proc
 	pop	cx
 	push	cs
@@ -18072,6 +18914,12 @@ fn0800_8BBB proc
 	jmp	8BD8
 
 ;; fn0800_8BC2: 0800:8BC2
+;;   Called from:
+;;     0800:0BAF (in fn0800_0B79)
+;;     0800:0BC5 (in fn0800_0B79)
+;;     0800:0C03 (in fn0800_0B79)
+;;     0800:4598 (in fn0800_4550)
+;;     0800:81D3 (in fn0800_7FDC)
 fn0800_8BC2 proc
 	pop	cx
 	push	cs
@@ -18080,6 +18928,16 @@ fn0800_8BC2 proc
 	jmp	8BD8
 
 ;; fn0800_8BCA: 0800:8BCA
+;;   Called from:
+;;     0800:0373 (in main)
+;;     0800:038A (in main)
+;;     0800:03A6 (in main)
+;;     0800:C1A6 (in fn0800_C177)
+;;     0800:C1D3 (in fn0800_C177)
+;;     0800:C21C (in fn0800_C177)
+;;     0800:C266 (in fn0800_C177)
+;;     0800:C283 (in fn0800_C177)
+;;     0800:C2C1 (in fn0800_C177)
 fn0800_8BCA proc
 	pop	cx
 	push	cs
@@ -18089,6 +18947,10 @@ fn0800_8BCA proc
 0800:8BD2       59 0E 51 B9 03 00                           Y.Q...       
 
 ;; fn0800_8BD8: 0800:8BD8
+;;   Called from:
+;;     0800:8BC0 (in fn0800_8BBB)
+;;     0800:8BC8 (in fn0800_8BC2)
+;;     0800:8BD0 (in fn0800_8BCA)
 fn0800_8BD8 proc
 	push	bp
 	push	si
@@ -18202,6 +19064,19 @@ l0800_8C65:
 	jmp	8C56
 
 ;; fn0800_8C69: 0800:8C69
+;;   Called from:
+;;     0800:47FA (in fn0800_46FE)
+;;     0800:4E2B (in fn0800_4C55)
+;;     0800:4F42 (in fn0800_4F2C)
+;;     0800:5096 (in fn0800_4F2C)
+;;     0800:56BD (in fn0800_55E8)
+;;     0800:5C72 (in fn0800_5C39)
+;;     0800:5F4E (in fn0800_5E64)
+;;     0800:60BB (in fn0800_5E64)
+;;     0800:6F36 (in fn0800_6F20)
+;;     0800:6F96 (in fn0800_6F20)
+;;     0800:7219 (in fn0800_6F20)
+;;     0800:A222 (in fn0800_A215)
 fn0800_8C69 proc
 	pop	bx
 	push	cs
@@ -18227,6 +19102,15 @@ l0800_8C81:
 	retf
 
 ;; fn0800_8C8A: 0800:8C8A
+;;   Called from:
+;;     0800:1626 (in fn0800_12E2)
+;;     0800:1682 (in fn0800_12E2)
+;;     0800:1FFD (in fn0800_1F5C)
+;;     0800:25EF (in fn0800_24FE)
+;;     0800:273D (in fn0800_2688)
+;;     0800:2765 (in fn0800_2688)
+;;     0800:279A (in fn0800_2688)
+;;     0800:4A98 (in fn0800_46FE)
 fn0800_8C8A proc
 	pop	bx
 	push	cs
@@ -18252,6 +19136,27 @@ l0800_8CA2:
 	retf
 
 ;; fn0800_8CAA: 0800:8CAA
+;;   Called from:
+;;     0800:0F0F (in fn0800_0DE8)
+;;     0800:11EF (in fn0800_112D)
+;;     0800:173B (in fn0800_12E2)
+;;     0800:17E5 (in fn0800_12E2)
+;;     0800:3A4B (in fn0800_3992)
+;;     0800:478B (in fn0800_46FE)
+;;     0800:4B2A (in fn0800_46FE)
+;;     0800:4FA5 (in fn0800_4F2C)
+;;     0800:4FC5 (in fn0800_4F2C)
+;;     0800:50F6 (in fn0800_4F2C)
+;;     0800:5248 (in fn0800_51A9)
+;;     0800:6141 (in fn0800_5E64)
+;;     0800:631F (in fn0800_5E64)
+;;     0800:6354 (in fn0800_5E64)
+;;     0800:643A (in fn0800_5E64)
+;;     0800:65B9 (in fn0800_5E64)
+;;     0800:6603 (in fn0800_5E64)
+;;     0800:7287 (in fn0800_6F20)
+;;     0800:72A0 (in fn0800_6F20)
+;;     0800:731E (in fn0800_6F20)
 fn0800_8CAA proc
 	pop	bx
 	push	cs
@@ -18277,6 +19182,10 @@ l0800_8CC2:
 	retf
 
 ;; fn0800_8CCB: 0800:8CCB
+;;   Called from:
+;;     0800:A253 (in fn0800_A215)
+;;     0800:AC02 (in fn0800_ABA3)
+;;     0800:ADF8 (in fn0800_AD85)
 fn0800_8CCB proc
 	pop	es
 	push	cs
@@ -18333,6 +19242,29 @@ l0800_8D15:
 	retf
 
 ;; fn0800_8D2B: 0800:8D2B
+;;   Called from:
+;;     0800:8D6C (in fn0800_8D64)
+;;     0800:8E4C (in fn0800_8E29)
+;;     0800:8E65 (in fn0800_8E52)
+;;     0800:8F7A (in fn0800_8F50)
+;;     0800:8F92 (in fn0800_8F7F)
+;;     0800:980B (in fn0800_97F8)
+;;     0800:A2C7 (in fn0800_A2A3)
+;;     0800:A417 (in fn0800_A401)
+;;     0800:A554 (in fn0800_A53C)
+;;     0800:A569 (in fn0800_A559)
+;;     0800:A598 (in fn0800_A57F)
+;;     0800:A60D (in fn0800_A59D)
+;;     0800:A845 (in fn0800_A817)
+;;     0800:A872 (in fn0800_A84A)
+;;     0800:B127 (in fn0800_B113)
+;;     0800:B183 (in fn0800_B140)
+;;     0800:B197 (in fn0800_B140)
+;;     0800:B2E8 (in fn0800_B2A0)
+;;     0800:B994 (in fn0800_B97F)
+;;     0800:BA61 (in fn0800_BA4A)
+;;     0800:C648 (in fn0800_C632)
+;;     0800:C7B0 (in fn0800_C779)
 fn0800_8D2B proc
 	push	bp
 	mov	bp,sp
@@ -18371,6 +19303,8 @@ l0800_8D58:
 	ret	0002
 
 ;; fn0800_8D64: 0800:8D64
+;;   Called from:
+;;     0800:8AEA (in fn0800_8ACF)
 fn0800_8D64 proc
 	push	bp
 	mov	bp,sp
@@ -18384,6 +19318,8 @@ fn0800_8D64 proc
 	ret	0002
 
 ;; fn0800_8D76: 0800:8D76
+;;   Called from:
+;;     0800:A9D6 (in fn0800_A96D)
 fn0800_8D76 proc
 	push	bp
 	mov	bp,sp
@@ -18396,6 +19332,9 @@ fn0800_8D76 proc
 	ret
 
 ;; fn0800_8D87: 0800:8D87
+;;   Called from:
+;;     0800:8E22 (in fn0800_8E09)
+;;     0800:9A43 (in fn0800_9828)
 fn0800_8D87 proc
 	push	bp
 	mov	bp,sp
@@ -18492,6 +19431,8 @@ l0800_8DF7:
 	ret	000E
 
 ;; fn0800_8E09: 0800:8E09
+;;   Called from:
+;;     0800:8EA5 (in fn0800_8E6A)
 fn0800_8E09 proc
 	push	bp
 	mov	bp,sp
@@ -18511,6 +19452,14 @@ fn0800_8E09 proc
 	ret	0006
 
 ;; fn0800_8E29: 0800:8E29
+;;   Called from:
+;;     0800:97C4 (in fn0800_97B6)
+;;     0800:AD15 (in fn0800_ACB3)
+;;     0800:B446 (in fn0800_B324)
+;;     0800:B55A (in fn0800_B4BE)
+;;     0800:B600 (in fn0800_B4BE)
+;;     0800:BA2F (in fn0800_B97F)
+;;     0800:C671 (in fn0800_C632)
 fn0800_8E29 proc
 	push	bp
 	mov	bp,sp
@@ -18538,6 +19487,8 @@ l0800_8E50:
 	ret
 
 ;; fn0800_8E52: 0800:8E52
+;;   Called from:
+;;     0800:3704 (in fn0800_3678)
 fn0800_8E52 proc
 	push	bp
 	mov	bp,sp
@@ -18561,6 +19512,8 @@ l0800_8E68:
 	ret
 
 ;; fn0800_8E6A: 0800:8E6A
+;;   Called from:
+;;     0800:A69F (in fn0800_A614)
 fn0800_8E6A proc
 	push	bp
 	mov	bp,sp
@@ -18616,6 +19569,16 @@ l0800_8E95:
 0800:8F10 46 08 8B E5 5D C2 08 00                         F...]...       
 
 ;; fn0800_8F18: 0800:8F18
+;;   Called from:
+;;     0800:0BFE (in fn0800_0B79)
+;;     0800:81CE (in fn0800_7FDC)
+;;     0800:ABBF (in fn0800_ABA3)
+;;     0800:AD9D (in fn0800_AD85)
+;;     0800:C088 (in fn0800_C04F)
+;;     0800:C0A1 (in fn0800_C04F)
+;;     0800:C134 (in fn0800_C04F)
+;;     0800:C14F (in fn0800_C04F)
+;;     0800:C4B5 (in fn0800_C379)
 fn0800_8F18 proc
 	push	si
 	xchg	ax,si
@@ -18642,6 +19605,12 @@ l0800_8F28:
 	ret
 
 ;; fn0800_8F2F: 0800:8F2F
+;;   Called from:
+;;     0800:A1E7 (in fn0800_A1D6)
+;;     0800:A1FA (in fn0800_A1D6)
+;;     0800:A267 (in fn0800_A215)
+;;     0800:A27A (in fn0800_A215)
+;;     0800:B0B3 (in fn0800_B0A1)
 fn0800_8F2F proc
 	push	cx
 	mov	ch,al
@@ -18666,6 +19635,10 @@ l0800_8F4F:
 	ret
 
 ;; fn0800_8F50: 0800:8F50
+;;   Called from:
+;;     0800:AB27 (in fn0800_AAB3)
+;;     0800:B9C1 (in fn0800_B97F)
+;;     0800:BA0C (in fn0800_B97F)
 fn0800_8F50 proc
 	push	bp
 	mov	bp,sp
@@ -18703,6 +19676,18 @@ l0800_8F7D:
 	ret
 
 ;; fn0800_8F7F: 0800:8F7F
+;;   Called from:
+;;     0800:0DC6 (in fn0800_0DA9)
+;;     0800:10DD (in fn0800_0DE8)
+;;     0800:1119 (in fn0800_0DE8)
+;;     0800:12AB (in fn0800_112D)
+;;     0800:18BC (in fn0800_12E2)
+;;     0800:1CA2 (in fn0800_19EE)
+;;     0800:1CEA (in fn0800_19EE)
+;;     0800:385D (in fn0800_37DF)
+;;     0800:394F (in fn0800_388C)
+;;     0800:3C8F (in fn0800_3BC3)
+;;     0800:3D88 (in fn0800_3C99)
 fn0800_8F7F proc
 	push	bp
 	mov	bp,sp
@@ -18726,6 +19711,8 @@ l0800_8F95:
 	ret
 
 ;; fn0800_8F97: 0800:8F97
+;;   Called from:
+;;     0800:BF33 (in fn0800_BF18)
 fn0800_8F97 proc
 	push	bp
 	mov	bp,sp
@@ -18737,6 +19724,11 @@ fn0800_8F97 proc
 	jmp	8FC6
 
 ;; fn0800_8FAB: 0800:8FAB
+;;   Called from:
+;;     0800:9110 (in fn0800_8F97)
+;;     0800:91D3 (in fn0800_8F97)
+;;     0800:9275 (in fn0800_8F97)
+;;     0800:9327 (in fn0800_8F97)
 fn0800_8FAB proc
 	les	di,[bp+10]
 	test	byte ptr [bp-01],20
@@ -18996,6 +19988,9 @@ l0800_9127:
 	call	912A
 
 ;; fn0800_912A: 0800:912A
+;;   Called from:
+;;     0800:9127 (in fn0800_8F97)
+;;     0800:9127 (in fn0800_8F97)
 fn0800_912A proc
 	jmp	93C5
 0800:912D                                        FF 76 0A              .v.
@@ -19089,6 +20084,9 @@ l0800_920B:
 	call	920E
 
 ;; fn0800_920E: 0800:920E
+;;   Called from:
+;;     0800:920B (in fn0800_8F97)
+;;     0800:920B (in fn0800_8F97)
 fn0800_920E proc
 	jmp	93C5
 0800:9211    F6 46 FF 01 75 06 E8 91 FD FF 46 FC 81 66 F6  .F..u.....F..f.
@@ -19330,6 +20328,23 @@ l0800_93A0:
 	inc	word ptr [bp-04]
 
 ;; fn0800_93A6: 0800:93A6
+;;   Called from:
+;;     0800:9016 (in fn0800_8F97)
+;;     0800:903F (in fn0800_8F97)
+;;     0800:9042 (in fn0800_8F97)
+;;     0800:9067 (in fn0800_8F97)
+;;     0800:906C (in fn0800_8F97)
+;;     0800:906C (in fn0800_8F97)
+;;     0800:906C (in fn0800_8F97)
+;;     0800:9075 (in fn0800_8F97)
+;;     0800:9124 (in fn0800_8F97)
+;;     0800:919E (in fn0800_8F97)
+;;     0800:92AE (in fn0800_8F97)
+;;     0800:9398 (in fn0800_8F97)
+;;     0800:939E (in fn0800_8F97)
+;;     0800:93A3 (in fn0800_8F97)
+;;     0800:93ED (in fn0800_93C5)
+;;     0800:9450 (in fn0800_93EF)
 fn0800_93A6 proc
 	push	word ptr [bp+0A]
 	push	word ptr [bp+08]
@@ -19341,12 +20356,20 @@ fn0800_93A6 proc
 	sbb	word ptr [bp-04],00
 
 ;; fn0800_93BE: 0800:93BE
+;;   Called from:
+;;     0800:9121 (in fn0800_8F97)
+;;     0800:9208 (in fn0800_8F97)
+;;     0800:9313 (in fn0800_8F97)
+;;     0800:93BA (in fn0800_93A6)
 fn0800_93BE proc
 	pop	es
 	mov	ax,[bp-04]
 	jmp	9453
 
 ;; fn0800_93C5: 0800:93C5
+;;   Called from:
+;;     0800:912A (in fn0800_912A)
+;;     0800:920E (in fn0800_920E)
 fn0800_93C5 proc
 	inc	word ptr [bp-06]
 	push	word ptr [bp+0A]
@@ -19380,6 +20403,9 @@ l0800_93EC:
 	jmp	93A6
 
 ;; fn0800_93EF: 0800:93EF
+;;   Called from:
+;;     0800:9145 (in fn0800_9145)
+;;     0800:9169 (in fn0800_9169)
 fn0800_93EF proc
 	sub	dx,dx
 	mov	cx,0004
@@ -19488,6 +20514,10 @@ l0800_9481	dw	0x90A4
 l0800_9483	dw	0x90AA
 
 ;; fn0800_9485: 0800:9485
+;;   Called from:
+;;     0800:95A2 (in fn0800_94B0)
+;;     0800:95CC (in fn0800_94B0)
+;;     0800:95FC (in fn0800_94B0)
 fn0800_9485 proc
 	push	bx
 	sub	bl,30
@@ -19531,6 +20561,8 @@ l0800_94AF:
 	ret
 
 ;; fn0800_94B0: 0800:94B0
+;;   Called from:
+;;     0800:90FB (in fn0800_8F97)
 fn0800_94B0 proc
 	push	bp
 	mov	bp,sp
@@ -19844,6 +20876,9 @@ fn0800_9667 proc
 0800:9760 8B E5 5D C3                                     ..].           
 
 ;; fn0800_9764: 0800:9764
+;;   Called from:
+;;     0800:0305 (in main)
+;;     0800:033C (in main)
 fn0800_9764 proc
 	push	bp
 	mov	bp,sp
@@ -19889,6 +20924,8 @@ l0800_97AC:
 	ret
 
 ;; fn0800_97B6: 0800:97B6
+;;   Called from:
+;;     0800:AD3E (in fn0800_AD2F)
 fn0800_97B6 proc
 	push	bp
 	mov	bp,sp
@@ -19904,6 +20941,9 @@ fn0800_97B6 proc
 	ret
 
 ;; fn0800_97CC: 0800:97CC
+;;   Called from:
+;;     0800:0C36 (in fn0800_0C29)
+;;     0800:0C79 (in fn0800_0C6C)
 fn0800_97CC proc
 	push	bp
 	mov	bp,sp
@@ -19937,6 +20977,8 @@ l0800_97F6:
 	ret
 
 ;; fn0800_97F8: 0800:97F8
+;;   Called from:
+;;     0800:A6A4 (in fn0800_A614)
 fn0800_97F8 proc
 	push	bp
 	mov	bp,sp
@@ -19960,12 +21002,18 @@ l0800_980E:
 	ret
 
 ;; fn0800_9810: 0800:9810
+;;   Called from:
+;;     0800:9A7A (in fn0800_9828)
+;;     0800:9A83 (in fn0800_9828)
 fn0800_9810 proc
 	mov	al,dh
 	call	9817
 	mov	al,dl
 
 ;; fn0800_9817: 0800:9817
+;;   Called from:
+;;     0800:9812 (in fn0800_9810)
+;;     0800:9815 (in fn0800_9810)
 fn0800_9817 proc
 	aam	10
 	xchg	al,ah
@@ -19973,6 +21021,9 @@ fn0800_9817 proc
 	xchg	al,ah
 
 ;; fn0800_9820: 0800:9820
+;;   Called from:
+;;     0800:981B (in fn0800_9817)
+;;     0800:981E (in fn0800_9817)
 fn0800_9820 proc
 	add	al,90
 	daa
@@ -19982,6 +21033,9 @@ fn0800_9820 proc
 	ret
 
 ;; fn0800_9828: 0800:9828
+;;   Called from:
+;;     0800:B305 (in fn0800_B2EF)
+;;     0800:BEBF (in fn0800_BEA2)
 fn0800_9828 proc
 	push	bp
 	mov	bp,sp
@@ -19994,6 +21048,10 @@ fn0800_9828 proc
 	jmp	988C
 
 ;; fn0800_9842: 0800:9842
+;;   Called from:
+;;     0800:9AF4 (in fn0800_9828)
+;;     0800:9B54 (in fn0800_9828)
+;;     0800:9B86 (in fn0800_9828)
 fn0800_9842 proc
 	push	di
 	mov	cx,FFFF
@@ -20009,6 +21067,14 @@ l0800_984A:
 	ret
 
 ;; fn0800_984F: 0800:984F
+;;   Called from:
+;;     0800:9BDA (in fn0800_9828)
+;;     0800:9BEB (in fn0800_9828)
+;;     0800:9BF1 (in fn0800_9828)
+;;     0800:9C10 (in fn0800_9828)
+;;     0800:9C1B (in fn0800_9828)
+;;     0800:9C3E (in fn0800_9828)
+;;     0800:9C8D (in fn0800_9828)
 fn0800_984F proc
 	mov	ss:[di],al
 	inc	di
@@ -20016,6 +21082,11 @@ fn0800_984F proc
 	jnz	988B
 
 ;; fn0800_9858: 0800:9858
+;;   Called from:
+;;     0800:9856 (in fn0800_984F)
+;;     0800:98AE (in fn0800_9828)
+;;     0800:9C31 (in fn0800_9828)
+;;     0800:9C9C (in fn0800_9828)
 fn0800_9858 proc
 	push	bx
 	push	cx
@@ -20789,6 +21860,8 @@ l0800_9CE2	dw	0x9927
 l0800_9CE4	dw	0x992D
 
 ;; fn0800_9CE6: 0800:9CE6
+;;   Called from:
+;;     0800:8E9D (in fn0800_8E6A)
 fn0800_9CE6 proc
 	push	bp
 	mov	bp,sp
@@ -20819,6 +21892,8 @@ fn0800_9CE6 proc
 0800:9D40 00                                              .              
 
 ;; fn0800_9D41: 0800:9D41
+;;   Called from:
+;;     0800:9E8D (in fn0800_9E75)
 fn0800_9D41 proc
 	cmp	dx,cs:[9D35]
 	jz	9D7F
@@ -20868,6 +21943,8 @@ l0800_9D9D:
 	ret
 
 ;; fn0800_9DA4: 0800:9DA4
+;;   Called from:
+;;     0800:9E92 (in fn0800_9E75)
 fn0800_9DA4 proc
 	mov	ds,dx
 	push	ds
@@ -20924,6 +22001,10 @@ l0800_9DFF:
 	mov	es:[0002],ax
 
 ;; fn0800_9E15: 0800:9E15
+;;   Called from:
+;;     0800:9D70 (in fn0800_9D41)
+;;     0800:9E11 (in fn0800_9DA4)
+;;     0800:9FEF (in fn0800_9F9F)
 fn0800_9E15 proc
 	mov	bx,ds
 	cmp	bx,[0006]
@@ -20943,6 +22024,8 @@ l0800_9E36:
 	ret
 
 ;; fn0800_9E3E: 0800:9E3E
+;;   Called from:
+;;     0800:9DEA (in fn0800_9DA4)
 fn0800_9E3E proc
 	mov	ax,cs:[9D39]
 	or	ax,ax
@@ -20969,6 +22052,12 @@ l0800_9E67:
 	ret
 
 ;; fn0800_9E75: 0800:9E75
+;;   Called from:
+;;     0800:434F (in fn0800_4346)
+;;     0800:A075 (in fn0800_A006)
+;;     0800:A0BF (in fn0800_A080)
+;;     0800:A65A (in fn0800_A614)
+;;     0800:BB09 (in fn0800_BA89)
 fn0800_9E75 proc
 	push	bp
 	mov	bp,sp
@@ -20998,6 +22087,8 @@ l0800_9E95:
 	ret
 
 ;; fn0800_9E9E: 0800:9E9E
+;;   Called from:
+;;     0800:9FDE (in fn0800_9F9F)
 fn0800_9E9E proc
 	push	ax
 	mov	ds,cs:[9D3B]
@@ -21051,6 +22142,8 @@ l0800_9EFE:
 	ret
 
 ;; fn0800_9F02: 0800:9F02
+;;   Called from:
+;;     0800:9FD9 (in fn0800_9F9F)
 fn0800_9F02 proc
 	push	ax
 	xor	bx,bx
@@ -21105,6 +22198,8 @@ l0800_9F58:
 	ret
 
 ;; fn0800_9F5C: 0800:9F5C
+;;   Called from:
+;;     0800:9FE3 (in fn0800_9F9F)
 fn0800_9F5C proc
 	mov	bx,dx
 	sub	[0000],ax
@@ -21120,6 +22215,8 @@ fn0800_9F5C proc
 	ret
 
 ;; fn0800_9F7F: 0800:9F7F
+;;   Called from:
+;;     0800:BB4D (in fn0800_BA89)
 fn0800_9F7F proc
 	push	bp
 	mov	bp,sp
@@ -21128,6 +22225,9 @@ fn0800_9F7F proc
 	jmp	9F92
 
 ;; fn0800_9F89: 0800:9F89
+;;   Called from:
+;;     0800:431D (in fn0800_4311)
+;;     0800:A013 (in fn0800_A006)
 fn0800_9F89 proc
 	push	bp
 	mov	bp,sp
@@ -21135,6 +22235,9 @@ fn0800_9F89 proc
 	mov	ax,[bp+04]
 
 ;; fn0800_9F92: 0800:9F92
+;;   Called from:
+;;     0800:9F87 (in fn0800_9F7F)
+;;     0800:9F8F (in fn0800_9F89)
 fn0800_9F92 proc
 	mov	cx,ax
 	or	cx,dx
@@ -21144,6 +22247,10 @@ fn0800_9F92 proc
 	jz	9FFD
 
 ;; fn0800_9F9F: 0800:9F9F
+;;   Called from:
+;;     0800:9F9D (in fn0800_9F92)
+;;     0800:9F9D (in fn0800_9F92)
+;;     0800:9F9D (in fn0800_9F92)
 fn0800_9F9F proc
 	add	ax,0013
 	adc	dx,00
@@ -21358,6 +22465,9 @@ l0800_A0CB:
 0800:A160 5D C3                                           ].             
 
 ;; fn0800_A162: 0800:A162
+;;   Called from:
+;;     0800:A205 (in fn0800_A1D6)
+;;     0800:A292 (in fn0800_A215)
 fn0800_A162 proc
 	push	bp
 	mov	bp,sp
@@ -21422,6 +22532,9 @@ l0800_A1D1:
 	ret	0004
 
 ;; fn0800_A1D6: 0800:A1D6
+;;   Called from:
+;;     0800:9D9D (in fn0800_9D41)
+;;     0800:A0D8 (in fn0800_A080)
 fn0800_A1D6 proc
 	push	bp
 	mov	bp,sp
@@ -21459,6 +22572,12 @@ l0800_A213:
 	ret
 
 ;; fn0800_A215: 0800:A215
+;;   Called from:
+;;     0800:9EA8 (in fn0800_9E9E)
+;;     0800:9EC1 (in fn0800_9E9E)
+;;     0800:9EDA (in fn0800_9E9E)
+;;     0800:9F14 (in fn0800_9F02)
+;;     0800:9F48 (in fn0800_9F02)
 fn0800_A215 proc
 	push	bp
 	mov	bp,sp
@@ -21529,6 +22648,9 @@ l0800_A29F:
 	ret
 
 ;; fn0800_A2A3: 0800:A2A3
+;;   Called from:
+;;     0800:B209 (in fn0800_B140)
+;;     0800:B22F (in fn0800_B140)
 fn0800_A2A3 proc
 	push	bp
 	mov	bp,sp
@@ -21562,18 +22684,27 @@ l0800_A2CA:
 	ret
 
 ;; fn0800_A2CC: 0800:A2CC
+;;   Called from:
+;;     0800:9B3E (in fn0800_9828)
 fn0800_A2CC proc
 	jmp	word ptr [26F4]
 
 ;; fn0800_A2D0: 0800:A2D0
+;;   Called from:
+;;     0800:91BE (in fn0800_8F97)
 fn0800_A2D0 proc
 	jmp	word ptr [26F6]
 
 ;; fn0800_A2D4: 0800:A2D4
+;;   Called from:
+;;     0800:91F4 (in fn0800_8F97)
 fn0800_A2D4 proc
 	jmp	word ptr [26F8]
 
 ;; fn0800_A2D8: 0800:A2D8
+;;   Called from:
+;;     0800:91FD (in fn0800_8F97)
+;;     0800:9203 (in fn0800_8F97)
 fn0800_A2D8 proc
 	jmp	word ptr [26FA]
 0800:A2DC                                     00 00 8F 06             ....
@@ -21641,6 +22772,8 @@ l0800_A394:
 0800:A400 26                                              &              
 
 ;; fn0800_A401: 0800:A401
+;;   Called from:
+;;     0800:A1AA (in fn0800_A162)
 fn0800_A401 proc
 	push	bp
 	mov	bp,sp
@@ -21672,6 +22805,8 @@ l0800_A41B:
 0800:A470 C3                                              .              
 
 ;; fn0800_A471: 0800:A471
+;;   Called from:
+;;     0800:C4A7 (in fn0800_C379)
 fn0800_A471 proc
 	push	bp
 	mov	bp,sp
@@ -21768,6 +22903,9 @@ l0800_A4E0:
 0800:A4F0 7F FF 59 59 5D C3                               ..YY].         
 
 ;; fn0800_A4F6: 0800:A4F6
+;;   Called from:
+;;     0800:3852 (in fn0800_37DF)
+;;     0800:3D7D (in fn0800_3C99)
 fn0800_A4F6 proc
 	push	bp
 	mov	bp,sp
@@ -21813,6 +22951,11 @@ l0800_A53A:
 	ret
 
 ;; fn0800_A53C: 0800:A53C
+;;   Called from:
+;;     0800:A502 (in fn0800_A4F6)
+;;     0800:A52B (in fn0800_A4F6)
+;;     0800:B165 (in fn0800_B140)
+;;     0800:B25F (in fn0800_B140)
 fn0800_A53C proc
 	push	bp
 	mov	bp,sp
@@ -21838,6 +22981,8 @@ l0800_A557:
 	ret
 
 ;; fn0800_A559: 0800:A559
+;;   Called from:
+;;     0800:A66F (in fn0800_A614)
 fn0800_A559 proc
 	push	bp
 	mov	bp,sp
@@ -21864,6 +23009,9 @@ l0800_A57D:
 	ret
 
 ;; fn0800_A57F: 0800:A57F
+;;   Called from:
+;;     0800:A579 (in fn0800_A559)
+;;     0800:B1D7 (in fn0800_B140)
 fn0800_A57F proc
 	push	bp
 	mov	bp,sp
@@ -21887,6 +23035,8 @@ l0800_A59B:
 	ret
 
 ;; fn0800_A59D: 0800:A59D
+;;   Called from:
+;;     0800:AF76 (in fn0800_AED6)
 fn0800_A59D proc
 	push	bp
 	mov	bp,sp
@@ -21975,6 +23125,33 @@ l0800_A610:
 	ret
 
 ;; fn0800_A614: 0800:A614
+;;   Called from:
+;;     0800:0DBA (in fn0800_0DA9)
+;;     0800:10BF (in fn0800_0DE8)
+;;     0800:10CD (in fn0800_0DE8)
+;;     0800:110E (in fn0800_0DE8)
+;;     0800:1287 (in fn0800_112D)
+;;     0800:1295 (in fn0800_112D)
+;;     0800:1545 (in fn0800_12E2)
+;;     0800:185D (in fn0800_12E2)
+;;     0800:18B1 (in fn0800_12E2)
+;;     0800:18CD (in fn0800_12E2)
+;;     0800:19E3 (in fn0800_18D9)
+;;     0800:1C93 (in fn0800_19EE)
+;;     0800:1CD8 (in fn0800_19EE)
+;;     0800:2F23 (in fn0800_2DE2)
+;;     0800:3843 (in fn0800_37DF)
+;;     0800:3936 (in fn0800_388C)
+;;     0800:3944 (in fn0800_388C)
+;;     0800:3A30 (in fn0800_3992)
+;;     0800:3A5E (in fn0800_3992)
+;;     0800:3A89 (in fn0800_3992)
+;;     0800:3AD0 (in fn0800_3992)
+;;     0800:3AFC (in fn0800_3992)
+;;     0800:3C84 (in fn0800_3BC3)
+;;     0800:3D60 (in fn0800_3C99)
+;;     0800:3D6E (in fn0800_3C99)
+;;     0800:AA18 (in fn0800_A96D)
 fn0800_A614 proc
 	push	bp
 	mov	bp,sp
@@ -22063,6 +23240,16 @@ l0800_A6B2:
 	ret
 
 ;; fn0800_A6B7: 0800:A6B7
+;;   Called from:
+;;     0800:A63E (in fn0800_A614)
+;;     0800:A89E (in fn0800_A877)
+;;     0800:ACC0 (in fn0800_ACB3)
+;;     0800:AE37 (in fn0800_AE10)
+;;     0800:B374 (in fn0800_B324)
+;;     0800:B3C0 (in fn0800_B324)
+;;     0800:B40F (in fn0800_B324)
+;;     0800:B52C (in fn0800_B4BE)
+;;     0800:B5A5 (in fn0800_B4BE)
 fn0800_A6B7 proc
 	push	bp
 	mov	bp,sp
@@ -22166,6 +23353,8 @@ l0800_A77A:
 	ret
 
 ;; fn0800_A77D: 0800:A77D
+;;   Called from:
+;;     0800:2E32 (in fn0800_2DE2)
 fn0800_A77D proc
 	push	bp
 	mov	bp,sp
@@ -22262,6 +23451,9 @@ l0800_A811:
 	ret
 
 ;; fn0800_A817: 0800:A817
+;;   Called from:
+;;     0800:33E0 (in fn0800_33CD)
+;;     0800:3651 (in fn0800_363D)
 fn0800_A817 proc
 	push	bp
 	mov	bp,sp
@@ -22302,6 +23494,8 @@ l0800_A848:
 	ret
 
 ;; fn0800_A84A: 0800:A84A
+;;   Called from:
+;;     0800:3483 (in fn0800_3479)
 fn0800_A84A proc
 	push	bp
 	mov	bp,sp
@@ -22340,6 +23534,8 @@ l0800_A875:
 	ret
 
 ;; fn0800_A877: 0800:A877
+;;   Called from:
+;;     0800:A6C3 (in fn0800_A6B7)
 fn0800_A877 proc
 	push	bp
 	mov	bp,sp
@@ -22383,6 +23579,8 @@ l0800_A8AF:
 	ret
 
 ;; fn0800_A8B7: 0800:A8B7
+;;   Called from:
+;;     0800:A983 (in fn0800_A96D)
 fn0800_A8B7 proc
 	push	bp
 	mov	bp,sp
@@ -22501,6 +23699,8 @@ l0800_A967:
 	ret	000C
 
 ;; fn0800_A96D: 0800:A96D
+;;   Called from:
+;;     0800:AAAC (in fn0800_AA7E)
 fn0800_A96D proc
 	push	bp
 	mov	bp,sp
@@ -22607,6 +23807,8 @@ l0800_AA2E:
 	ret	000E
 
 ;; fn0800_AA34: 0800:AA34
+;;   Called from:
+;;     0800:AA84 (in fn0800_AA7E)
 fn0800_AA34 proc
 	push	bp
 	mov	bp,sp
@@ -22651,6 +23853,13 @@ l0800_AA7A:
 	ret
 
 ;; fn0800_AA7E: 0800:AA7E
+;;   Called from:
+;;     0800:1336 (in fn0800_12E2)
+;;     0800:190A (in fn0800_18D9)
+;;     0800:1A20 (in fn0800_19EE)
+;;     0800:382D (in fn0800_37DF)
+;;     0800:39FC (in fn0800_3992)
+;;     0800:4246 (in fn0800_4234)
 fn0800_AA7E proc
 	push	bp
 	mov	bp,sp
@@ -22683,6 +23892,9 @@ l0800_AAAF:
 	ret
 
 ;; fn0800_AAB3: 0800:AAB3
+;;   Called from:
+;;     0800:ABE2 (in fn0800_ABA3)
+;;     0800:AC1F (in fn0800_ABA3)
 fn0800_AAB3 proc
 	push	bp
 	mov	bp,sp
@@ -22825,6 +24037,8 @@ l0800_AB9A:
 	ret	000A
 
 ;; fn0800_ABA3: 0800:ABA3
+;;   Called from:
+;;     0800:4126 (in fn0800_4110)
 fn0800_ABA3 proc
 	push	bp
 	mov	bp,sp
@@ -22914,6 +24128,10 @@ l0800_AC2B:
 	ret
 
 ;; fn0800_AC31: 0800:AC31
+;;   Called from:
+;;     0800:ACE0 (in fn0800_ACB3)
+;;     0800:AD5F (in fn0800_AD2F)
+;;     0800:AD71 (in fn0800_AD2F)
 fn0800_AC31 proc
 	push	bp
 	mov	bp,sp
@@ -22997,6 +24215,96 @@ l0800_ACAA:
 	ret	0004
 
 ;; fn0800_ACB3: 0800:ACB3
+;;   Called from:
+;;     0800:139D (in fn0800_12E2)
+;;     0800:170B (in fn0800_12E2)
+;;     0800:179C (in fn0800_12E2)
+;;     0800:1B82 (in fn0800_19EE)
+;;     0800:1D23 (in fn0800_1CF6)
+;;     0800:1D7C (in fn0800_1CF6)
+;;     0800:1E0B (in fn0800_1CF6)
+;;     0800:1EBD (in fn0800_1E5E)
+;;     0800:1F2C (in fn0800_1E5E)
+;;     0800:25D3 (in fn0800_24FE)
+;;     0800:2DA6 (in fn0800_2D0A)
+;;     0800:3C17 (in fn0800_3BC3)
+;;     0800:3C5C (in fn0800_3BC3)
+;;     0800:3CE7 (in fn0800_3C99)
+;;     0800:3D1C (in fn0800_3C99)
+;;     0800:3EFC (in fn0800_3E9A)
+;;     0800:3F44 (in fn0800_3F0A)
+;;     0800:3F98 (in fn0800_3F58)
+;;     0800:41BA (in fn0800_4194)
+;;     0800:41E1 (in fn0800_4194)
+;;     0800:472F (in fn0800_46FE)
+;;     0800:4775 (in fn0800_46FE)
+;;     0800:47C5 (in fn0800_46FE)
+;;     0800:4818 (in fn0800_46FE)
+;;     0800:49AA (in fn0800_46FE)
+;;     0800:4AAF (in fn0800_46FE)
+;;     0800:4AE9 (in fn0800_46FE)
+;;     0800:4B47 (in fn0800_46FE)
+;;     0800:4BDB (in fn0800_4BB1)
+;;     0800:4DAA (in fn0800_4C55)
+;;     0800:4DFF (in fn0800_4C55)
+;;     0800:4E38 (in fn0800_4C55)
+;;     0800:4FE1 (in fn0800_4F2C)
+;;     0800:5019 (in fn0800_4F2C)
+;;     0800:5128 (in fn0800_4F2C)
+;;     0800:515D (in fn0800_4F2C)
+;;     0800:5182 (in fn0800_4F2C)
+;;     0800:5285 (in fn0800_51A9)
+;;     0800:52B1 (in fn0800_51A9)
+;;     0800:55BF (in fn0800_5374)
+;;     0800:5C05 (in fn0800_5B15)
+;;     0800:5E38 (in fn0800_5DCE)
+;;     0800:5E52 (in fn0800_5DCE)
+;;     0800:5F1A (in fn0800_5E64)
+;;     0800:6086 (in fn0800_5E64)
+;;     0800:61D5 (in fn0800_5E64)
+;;     0800:6206 (in fn0800_5E64)
+;;     0800:6293 (in fn0800_5E64)
+;;     0800:62BB (in fn0800_5E64)
+;;     0800:63C7 (in fn0800_5E64)
+;;     0800:63DD (in fn0800_5E64)
+;;     0800:6456 (in fn0800_5E64)
+;;     0800:6493 (in fn0800_5E64)
+;;     0800:64C9 (in fn0800_5E64)
+;;     0800:6502 (in fn0800_5E64)
+;;     0800:653A (in fn0800_5E64)
+;;     0800:681D (in fn0800_67BF)
+;;     0800:684C (in fn0800_67BF)
+;;     0800:687F (in fn0800_67BF)
+;;     0800:691A (in fn0800_67BF)
+;;     0800:69C5 (in fn0800_67BF)
+;;     0800:6A02 (in fn0800_67BF)
+;;     0800:6AB4 (in fn0800_67BF)
+;;     0800:6F65 (in fn0800_6F20)
+;;     0800:6F80 (in fn0800_6F20)
+;;     0800:6FBE (in fn0800_6F20)
+;;     0800:7053 (in fn0800_6F20)
+;;     0800:707E (in fn0800_6F20)
+;;     0800:70CF (in fn0800_6F20)
+;;     0800:7123 (in fn0800_6F20)
+;;     0800:7142 (in fn0800_6F20)
+;;     0800:719C (in fn0800_6F20)
+;;     0800:7307 (in fn0800_6F20)
+;;     0800:736D (in fn0800_6F20)
+;;     0800:7398 (in fn0800_6F20)
+;;     0800:73E8 (in fn0800_73AC)
+;;     0800:74E2 (in fn0800_741D)
+;;     0800:7526 (in fn0800_741D)
+;;     0800:755E (in fn0800_741D)
+;;     0800:7907 (in fn0800_75EA)
+;;     0800:798E (in fn0800_75EA)
+;;     0800:79B0 (in fn0800_75EA)
+;;     0800:7A5A (in fn0800_7A02)
+;;     0800:7CA3 (in fn0800_7C78)
+;;     0800:8026 (in fn0800_7FDC)
+;;     0800:8039 (in fn0800_7FDC)
+;;     0800:8313 (in fn0800_7FDC)
+;;     0800:BA75 (in fn0800_BA67)
+;;     0800:BAF0 (in fn0800_BA89)
 fn0800_ACB3 proc
 	push	bp
 	mov	bp,sp
@@ -23067,6 +24375,42 @@ l0800_AD2C:
 	ret
 
 ;; fn0800_AD2F: 0800:AD2F
+;;   Called from:
+;;     0800:13AB (in fn0800_12E2)
+;;     0800:2D2A (in fn0800_2D0A)
+;;     0800:41A0 (in fn0800_4194)
+;;     0800:41C6 (in fn0800_4194)
+;;     0800:47A9 (in fn0800_46FE)
+;;     0800:4A2E (in fn0800_46FE)
+;;     0800:4A47 (in fn0800_46FE)
+;;     0800:4A5E (in fn0800_46FE)
+;;     0800:4A90 (in fn0800_46FE)
+;;     0800:4ACC (in fn0800_46FE)
+;;     0800:4D8A (in fn0800_4C55)
+;;     0800:4EE6 (in fn0800_4C55)
+;;     0800:4F53 (in fn0800_4F2C)
+;;     0800:5109 (in fn0800_4F2C)
+;;     0800:5319 (in fn0800_51A9)
+;;     0800:5345 (in fn0800_51A9)
+;;     0800:5383 (in fn0800_5374)
+;;     0800:5B4F (in fn0800_5B15)
+;;     0800:6239 (in fn0800_5E64)
+;;     0800:63EB (in fn0800_5E64)
+;;     0800:6961 (in fn0800_67BF)
+;;     0800:69A2 (in fn0800_67BF)
+;;     0800:6C6E (in fn0800_6AD4)
+;;     0800:6E9B (in fn0800_6AD4)
+;;     0800:6F47 (in fn0800_6F20)
+;;     0800:6FEB (in fn0800_6F20)
+;;     0800:7020 (in fn0800_6F20)
+;;     0800:72D9 (in fn0800_6F20)
+;;     0800:7597 (in fn0800_741D)
+;;     0800:75C9 (in fn0800_741D)
+;;     0800:7752 (in fn0800_75EA)
+;;     0800:7767 (in fn0800_75EA)
+;;     0800:78D8 (in fn0800_75EA)
+;;     0800:7C0E (in fn0800_7A02)
+;;     0800:7E61 (in fn0800_7C78)
 fn0800_AD2F proc
 	push	bp
 	mov	bp,sp
@@ -23116,6 +24460,8 @@ l0800_AD7B:
 	ret
 
 ;; fn0800_AD85: 0800:AD85
+;;   Called from:
+;;     0800:4168 (in fn0800_4152)
 fn0800_AD85 proc
 	push	bp
 	mov	bp,sp
@@ -23202,6 +24548,9 @@ l0800_AE0A:
 	ret
 
 ;; fn0800_AE10: 0800:AE10
+;;   Called from:
+;;     0800:AE5A (in fn0800_AE4C)
+;;     0800:AF4E (in fn0800_AED6)
 fn0800_AE10 proc
 	push	bp
 	mov	bp,sp
@@ -23242,6 +24591,8 @@ l0800_AE47:
 	ret
 
 ;; fn0800_AE4C: 0800:AE4C
+;;   Called from:
+;;     0800:AF38 (in fn0800_AED6)
 fn0800_AE4C proc
 	push	bp
 	mov	bp,sp
@@ -23301,6 +24652,11 @@ l0800_AEBE:
 	ret	0004
 
 ;; fn0800_AEC2: 0800:AEC2
+;;   Called from:
+;;     0800:3DF9 (in fn0800_3DCF)
+;;     0800:3EC4 (in fn0800_3E9A)
+;;     0800:A7CC (in fn0800_A77D)
+;;     0800:AB80 (in fn0800_AAB3)
 fn0800_AEC2 proc
 	push	bp
 	mov	bp,sp
@@ -23315,6 +24671,8 @@ fn0800_AEC2 proc
 	ret
 
 ;; fn0800_AED6: 0800:AED6
+;;   Called from:
+;;     0800:AECF (in fn0800_AEC2)
 fn0800_AED6 proc
 	push	bp
 	mov	bp,sp
@@ -23442,6 +24800,8 @@ l0800_AFBD:
 0800:AFC0 1E B8 58 23 50 E8 0E FF 59 59 C3                ..X#P...YY.    
 
 ;; fn0800_AFCB: 0800:AFCB
+;;   Called from:
+;;     0800:C385 (in fn0800_C379)
 fn0800_AFCB proc
 	push	bp
 	mov	bp,sp
@@ -23529,6 +24889,9 @@ l0800_B035:
 	ret
 
 ;; fn0800_B03B: 0800:B03B
+;;   Called from:
+;;     0800:9D05 (in fn0800_9CE6)
+;;     0800:B5C3 (in fn0800_B4BE)
 fn0800_B03B proc
 	push	bp
 	mov	bp,sp
@@ -23560,6 +24923,8 @@ l0800_B053:
 	ret
 
 ;; fn0800_B05F: 0800:B05F
+;;   Called from:
+;;     0800:B093 (in fn0800_B083)
 fn0800_B05F proc
 	push	bp
 	mov	bp,sp
@@ -23597,6 +24962,8 @@ l0800_B080:
 	ret
 
 ;; fn0800_B083: 0800:B083
+;;   Called from:
+;;     0800:C476 (in fn0800_C379)
 fn0800_B083 proc
 	push	bp
 	mov	bp,sp
@@ -23613,6 +24980,8 @@ fn0800_B083 proc
 	ret
 
 ;; fn0800_B0A1: 0800:B0A1
+;;   Called from:
+;;     0800:B105 (in fn0800_B0F3)
 fn0800_B0A1 proc
 	push	bp
 	mov	bp,sp
@@ -23684,6 +25053,13 @@ l0800_B0ED:
 	ret
 
 ;; fn0800_B0F3: 0800:B0F3
+;;   Called from:
+;;     0800:0AA4 (in fn0800_09A3)
+;;     0800:2109 (in fn0800_2085)
+;;     0800:2271 (in fn0800_2201)
+;;     0800:2378 (in fn0800_22FE)
+;;     0800:5D86 (in fn0800_5D2F)
+;;     0800:825A (in fn0800_7FDC)
 fn0800_B0F3 proc
 	push	bp
 	mov	bp,sp
@@ -23700,6 +25076,9 @@ fn0800_B0F3 proc
 	ret
 
 ;; fn0800_B113: 0800:B113
+;;   Called from:
+;;     0800:B1CA (in fn0800_B140)
+;;     0800:B1E6 (in fn0800_B140)
 fn0800_B113 proc
 	push	bp
 	mov	bp,sp
@@ -23723,6 +25102,8 @@ l0800_B12A:
 	ret	0006
 
 ;; fn0800_B12E: 0800:B12E
+;;   Called from:
+;;     0800:B23E (in fn0800_B140)
 fn0800_B12E proc
 	push	bp
 	mov	bp,sp
@@ -23735,6 +25116,8 @@ fn0800_B12E proc
 	ret	0002
 
 ;; fn0800_B140: 0800:B140
+;;   Called from:
+;;     0800:A9A8 (in fn0800_A96D)
 fn0800_B140 proc
 	push	bp
 	mov	bp,sp
@@ -23963,6 +25346,8 @@ l0800_B29A:
 	ret
 
 ;; fn0800_B2A0: 0800:B2A0
+;;   Called from:
+;;     0800:B1F9 (in fn0800_B140)
 fn0800_B2A0 proc
 	push	bp
 	mov	bp,sp
@@ -24012,6 +25397,38 @@ l0800_B2EB:
 	ret
 
 ;; fn0800_B2EF: 0800:B2EF
+;;   Called from:
+;;     0800:02EA (in main)
+;;     0800:03E3 (in main)
+;;     0800:0B1D (in fn0800_0ABC)
+;;     0800:0B41 (in fn0800_0ABC)
+;;     0800:0B4C (in fn0800_0ABC)
+;;     0800:0CD6 (in fn0800_0C93)
+;;     0800:0D18 (in fn0800_0C93)
+;;     0800:0D74 (in fn0800_0D24)
+;;     0800:0D8C (in fn0800_0D24)
+;;     0800:0D97 (in fn0800_0D24)
+;;     0800:0DD8 (in fn0800_0DCE)
+;;     0800:0E0E (in fn0800_0DE8)
+;;     0800:0E24 (in fn0800_0DE8)
+;;     0800:0E36 (in fn0800_0DE8)
+;;     0800:0E41 (in fn0800_0DE8)
+;;     0800:1153 (in fn0800_112D)
+;;     0800:1169 (in fn0800_112D)
+;;     0800:1174 (in fn0800_112D)
+;;     0800:1305 (in fn0800_12E2)
+;;     0800:131B (in fn0800_12E2)
+;;     0800:1326 (in fn0800_12E2)
+;;     0800:188F (in fn0800_12E2)
+;;     0800:18FA (in fn0800_18D9)
+;;     0800:1A10 (in fn0800_19EE)
+;;     0800:30C3 (in fn0800_2DE2)
+;;     0800:6EF7 (in fn0800_6EE6)
+;;     0800:6F07 (in fn0800_6EFF)
+;;     0800:6F18 (in fn0800_6EFF)
+;;     0800:77EF (in fn0800_75EA)
+;;     0800:79F7 (in fn0800_75EA)
+;;     0800:81DD (in fn0800_7FDC)
 fn0800_B2EF proc
 	push	bp
 	mov	bp,sp
@@ -24029,6 +25446,9 @@ fn0800_B2EF proc
 	ret
 
 ;; fn0800_B30A: 0800:B30A
+;;   Called from:
+;;     0800:4076 (in fn0800_4047)
+;;     0800:B669 (in fn0800_B4BE)
 fn0800_B30A proc
 	push	bp
 	mov	bp,sp
@@ -24045,6 +25465,9 @@ fn0800_B30A proc
 	ret
 
 ;; fn0800_B324: 0800:B324
+;;   Called from:
+;;     0800:B31C (in fn0800_B30A)
+;;     0800:B4EA (in fn0800_B4BE)
 fn0800_B324 proc
 	push	bp
 	mov	bp,sp
@@ -24257,6 +25680,9 @@ l0800_B4A8:
 0800:B4B0 6C 23 50 FF 76 04 E8 6B FE 83 C4 06 5D C3       l#P.v..k....]. 
 
 ;; fn0800_B4BE: 0800:B4BE
+;;   Called from:
+;;     0800:ADC0 (in fn0800_AD85)
+;;     0800:ADDD (in fn0800_AD85)
 fn0800_B4BE proc
 	push	bp
 	mov	bp,sp
@@ -24534,6 +25960,13 @@ l0800_B6A0:
 	ret	000A
 
 ;; fn0800_B6A8: 0800:B6A8
+;;   Called from:
+;;     0800:B720 (in fn0800_B6D6)
+;;     0800:B772 (in fn0800_B6D6)
+;;     0800:B7BD (in fn0800_B6D6)
+;;     0800:B7FC (in fn0800_B6D6)
+;;     0800:B861 (in fn0800_B6D6)
+;;     0800:B8D4 (in fn0800_B6D6)
 fn0800_B6A8 proc
 	push	bp
 	mov	bp,sp
@@ -24567,6 +26000,10 @@ l0800_B6CF:
 	ret	0008
 
 ;; fn0800_B6D6: 0800:B6D6
+;;   Called from:
+;;     0800:B935 (in fn0800_B6D6)
+;;     0800:B944 (in fn0800_B6D6)
+;;     0800:B97A (in fn0800_B95E)
 fn0800_B6D6 proc
 	push	bp
 	mov	bp,sp
@@ -24888,6 +26325,8 @@ l0800_B956:
 	ret	0006
 
 ;; fn0800_B95E: 0800:B95E
+;;   Called from:
+;;     0800:60EC (in fn0800_5E64)
 fn0800_B95E proc
 	push	bp
 	mov	bp,sp
@@ -24909,6 +26348,9 @@ l0800_B97D:
 	ret
 
 ;; fn0800_B97F: 0800:B97F
+;;   Called from:
+;;     0800:AE7C (in fn0800_AE4C)
+;;     0800:AF63 (in fn0800_AED6)
 fn0800_B97F proc
 	push	bp
 	mov	bp,sp
@@ -25044,6 +26486,9 @@ l0800_BA44:
 	ret
 
 ;; fn0800_BA4A: 0800:BA4A
+;;   Called from:
+;;     0800:386D (in fn0800_37DF)
+;;     0800:3D98 (in fn0800_3C99)
 fn0800_BA4A proc
 	push	bp
 	mov	bp,sp
@@ -25070,6 +26515,13 @@ l0800_BA64:
 	ret
 
 ;; fn0800_BA67: 0800:BA67
+;;   Called from:
+;;     0800:0F69 (in fn0800_0DE8)
+;;     0800:0F77 (in fn0800_0DE8)
+;;     0800:1083 (in fn0800_0DE8)
+;;     0800:1091 (in fn0800_0DE8)
+;;     0800:17BF (in fn0800_12E2)
+;;     0800:3C3F (in fn0800_3BC3)
 fn0800_BA67 proc
 	push	bp
 	mov	bp,sp
@@ -25093,6 +26545,8 @@ l0800_BA87:
 	ret
 
 ;; fn0800_BA89: 0800:BA89
+;;   Called from:
+;;     0800:AA08 (in fn0800_A96D)
 fn0800_BA89 proc
 	push	bp
 	mov	bp,sp
@@ -25325,6 +26779,8 @@ l0800_BC31:
 0800:BC40 00 2C BC 2C BC 22 BC 2C BC                      .,.,.".,.      
 
 ;; fn0800_BC49: 0800:BC49
+;;   Called from:
+;;     0800:BE5C (in fn0800_BE3B)
 fn0800_BC49 proc
 	push	bp
 	mov	bp,sp
@@ -25455,6 +26911,9 @@ l0800_BD04:
 0800:BE30 BD 08 BD 89 BD 48 BD E6 BD 89 BD                .....H.....    
 
 ;; fn0800_BE3B: 0800:BE3B
+;;   Called from:
+;;     0800:352B (in fn0800_3509)
+;;     0800:35C5 (in fn0800_35A3)
 fn0800_BE3B proc
 	push	bp
 	mov	bp,sp
@@ -25479,6 +26938,10 @@ fn0800_BE3B proc
 0800:BEA0 0A 00                                           ..             
 
 ;; fn0800_BEA2: 0800:BEA2
+;;   Called from:
+;;     0800:070D (in fn0800_0541)
+;;     0800:321F (in fn0800_31B4)
+;;     0800:37D7 (in fn0800_37BE)
 fn0800_BEA2 proc
 	push	bp
 	mov	bp,sp
@@ -25504,6 +26967,10 @@ fn0800_BEA2 proc
 0800:BF10 C4 5E 06 26 FF 0F 5D C3                         .^.&..].       
 
 ;; fn0800_BF18: 0800:BF18
+;;   Called from:
+;;     0800:0726 (in fn0800_0541)
+;;     0800:075C (in fn0800_0541)
+;;     0800:0775 (in fn0800_0541)
 fn0800_BF18 proc
 	push	bp
 	mov	bp,sp
@@ -25528,6 +26995,8 @@ fn0800_BF18 proc
 0800:BF50 0D BF 50 B8 E5 BE 50 E8 3D D0 83 C4 10 5D C3    ..P...P.=....].
 
 ;; fn0800_BF5F: 0800:BF5F
+;;   Called from:
+;;     0800:8EB3 (in fn0800_8E6A)
 fn0800_BF5F proc
 	push	bp
 	mov	bp,sp
@@ -25588,6 +27057,12 @@ l0800_BF96:
 	ret
 
 ;; fn0800_BF9E: 0800:BF9E
+;;   Called from:
+;;     0800:04C9 (in fn0800_0402)
+;;     0800:2F84 (in fn0800_2DE2)
+;;     0800:BBDE (in fn0800_BB98)
+;;     0800:C44B (in fn0800_C379)
+;;     0800:C45E (in fn0800_C379)
 fn0800_BF9E proc
 	push	bp
 	mov	bp,sp
@@ -25622,6 +27097,14 @@ l0800_BFBC:
 	ret
 
 ;; fn0800_BFC7: 0800:BFC7
+;;   Called from:
+;;     0800:0424 (in fn0800_0402)
+;;     0800:05EB (in fn0800_0541)
+;;     0800:9CF0 (in fn0800_9CE6)
+;;     0800:BBAD (in fn0800_BB98)
+;;     0800:BCAA (in fn0800_BC49)
+;;     0800:C39D (in fn0800_C379)
+;;     0800:C4E3 (in fn0800_C379)
 fn0800_BFC7 proc
 	push	bp
 	mov	bp,sp
@@ -25653,6 +27136,8 @@ l0800_BFE3:
 	ret
 
 ;; fn0800_BFE6: 0800:BFE6
+;;   Called from:
+;;     0800:2BB1 (in fn0800_29C5)
 fn0800_BFE6 proc
 	push	bp
 	mov	bp,sp
@@ -25697,6 +27182,11 @@ l0800_C018:
 	ret
 
 ;; fn0800_C01E: 0800:C01E
+;;   Called from:
+;;     0800:BBC3 (in fn0800_BB98)
+;;     0800:BCD0 (in fn0800_BC49)
+;;     0800:C48E (in fn0800_C379)
+;;     0800:C52A (in fn0800_C379)
 fn0800_C01E proc
 	push	bp
 	mov	bp,sp
@@ -25739,6 +27229,8 @@ l0800_C044:
 	ret
 
 ;; fn0800_C04F: 0800:C04F
+;;   Called from:
+;;     0800:9788 (in fn0800_9764)
 fn0800_C04F proc
 	push	bp
 	mov	bp,sp
@@ -26137,6 +27629,9 @@ l0800_C377:
 	ret
 
 ;; fn0800_C379: 0800:C379
+;;   Called from:
+;;     0800:C056 (in fn0800_C04F)
+;;     0800:C17A (in fn0800_C177)
 fn0800_C379 proc
 	push	bp
 	mov	bp,sp
@@ -26366,6 +27861,9 @@ l0800_C54E:
 	ret
 
 ;; fn0800_C553: 0800:C553
+;;   Called from:
+;;     0800:C120 (in fn0800_C04F)
+;;     0800:C2A5 (in fn0800_C177)
 fn0800_C553 proc
 	push	bp
 	mov	bp,sp
@@ -26520,6 +28018,9 @@ l0800_C62D:
 	ret	0008
 
 ;; fn0800_C632: 0800:C632
+;;   Called from:
+;;     0800:A75B (in fn0800_A6B7)
+;;     0800:B690 (in fn0800_B4BE)
 fn0800_C632 proc
 	push	bp
 	mov	bp,sp
@@ -26711,6 +28212,14 @@ l0800_C773:
 	ret
 
 ;; fn0800_C779: 0800:C779
+;;   Called from:
+;;     0800:B46D (in fn0800_B324)
+;;     0800:B48A (in fn0800_B324)
+;;     0800:B570 (in fn0800_B4BE)
+;;     0800:B616 (in fn0800_B4BE)
+;;     0800:C68D (in fn0800_C632)
+;;     0800:C709 (in fn0800_C632)
+;;     0800:C756 (in fn0800_C632)
 fn0800_C779 proc
 	push	bp
 	mov	bp,sp
@@ -26963,6 +28472,8 @@ fn1483_0ADC proc
 1483:0C10 87                                              .              
 
 ;; fn1483_0C11: 1483:0C11
+;;   Called from:
+;;     1483:0C55 (in fn1483_0C55)
 fn1483_0C11 proc
 	mov	dx,8000
 	push	cx
@@ -27009,6 +28520,9 @@ l1483_0C4D:
 	cmp	al,11
 
 ;; fn1483_0C55: 1483:0C55
+;;   Called from:
+;;     1483:0C53 (in fn1483_0C11)
+;;     1483:0C96 (in fn1483_0C91)
 fn1483_0C55 proc
 	jnz	0C11
 
@@ -27022,6 +28536,8 @@ l1483_0C57:
 1483:0C60 56 50 03 02 67 6A 86 16 40 03 6E 03             VP..gj..@.n.   
 
 ;; fn1483_0C6C: 1483:0C6C
+;;   Called from:
+;;     1483:0C22 (in fn1483_0C11)
 fn1483_0C6C proc
 	cld
 	daa
@@ -27044,6 +28560,10 @@ l1483_0C87:
 	add	ax,ax
 
 ;; fn1483_0C91: 1483:0C91
+;;   Called from:
+;;     1483:0C8F (in fn1483_0C6C)
+;;     1483:0D04 (in fn1483_0CFC)
+;;     1483:0D04 (in fn1483_0CFC)
 fn1483_0C91 proc
 	pop	es
 	adc	dx,ax
@@ -27058,10 +28578,15 @@ l1483_0C9D:
 	add	[bx+si+2203],cx
 
 ;; fn1483_0CA0: 1483:0CA0
+;;   Called from:
+;;     1483:0C85 (in fn1483_0C6C)
 fn1483_0CA0 proc
 	and	al,[3101]
 
 ;; fn1483_0CA1: 1483:0CA1
+;;   Called from:
+;;     1483:0C9D (in fn1483_0C91)
+;;     1483:0CA0 (in fn1483_0CA0)
 fn1483_0CA1 proc
 	push	es
 	add	[bx+di],si
@@ -27112,10 +28637,15 @@ l1483_0CF8:
 	rcr	byte ptr [bx+si],AC
 
 ;; fn1483_0CFA: 1483:0CFA
+;;   Called from:
+;;     1483:0D40 (in fn1483_0D3F)
 fn1483_0CFA proc
 	sbb	[si+D832],ch
 
 ;; fn1483_0CFC: 1483:0CFC
+;;   Called from:
+;;     1483:0CF9 (in fn1483_0D3F)
+;;     1483:0CFA (in fn1483_0CFA)
 fn1483_0CFC proc
 	xor	bl,al
 	mov	al,[bx+di]
@@ -27123,6 +28653,9 @@ fn1483_0CFC proc
 	jcxz	0C91
 
 ;; fn1483_0D06: 1483:0D06
+;;   Called from:
+;;     1483:0D02 (in fn1483_0CFC)
+;;     1483:0D04 (in fn1483_0CFC)
 fn1483_0D06 proc
 	sbb	[bx+E209],dx
 	sub	ax,5EF1
@@ -27149,6 +28682,8 @@ l1483_0D2B:
 1483:0D30 19 76 04 D3 12 D0 76 08 7D 03 38 5F 7A AE 28    .v....v.}.8_z.(
 
 ;; fn1483_0D3F: 1483:0D3F
+;;   Called from:
+;;     1483:0ADC (in fn1483_0ADC)
 fn1483_0D3F proc
 	push	ax
 	jpe	0CFA
@@ -27584,6 +29119,8 @@ l1483_1B7F:
 	xor	[2CF2],cl
 
 ;; fn1483_1B91: 1483:1B91
+;;   Called from:
+;;     1483:1B57 (in fn1483_1BB9)
 fn1483_1B91 proc
 	repne sub	al,28
 	xor	ax,2EF9
@@ -27605,10 +29142,15 @@ fn1483_1B91 proc
 	and	al,0A
 
 ;; fn1483_1BB8: 1483:1BB8
+;;   Called from:
+;;     1483:0C6E (in fn1483_0C6C)
 fn1483_1BB8 proc
 	or	al,[si]
 
 ;; fn1483_1BB9: 1483:1BB9
+;;   Called from:
+;;     1483:1BB7 (in fn1483_1B91)
+;;     1483:1BB8 (in fn1483_1BB8)
 fn1483_1BB9 proc
 	add	al,73
 	add	bp,cx

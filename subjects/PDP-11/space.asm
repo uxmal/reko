@@ -28,9 +28,11 @@ l0000		dw	0x0000
 0210 6A 00 28 00 02 01 C1 15                         j.(.....       
 
 ;; fn0218: 0218
+;;   Called from:
+;;     1DAE (in fn1DAE)
 fn0218 proc
 	clr	r1
-	mov	1B8E(pc),r0
+	mov	@#1DAC,r0
 	beq	0222
 
 l0220:
@@ -51,7 +53,7 @@ l0222:
 	mov	sp,0012(sp)
 	emt	#FD
 	mov	0002(sp),r4
-	tst	1B5C(pc)
+	tst	@#1DAC
 	bne	028E
 
 l0252:
@@ -69,7 +71,7 @@ l0264:
 
 l026A:
 	mov	#0200,@#0026
-	tst	5178(pc)
+	tst	@#53EC
 	beq	028E
 
 l0276:
@@ -97,12 +99,12 @@ l028E:
 
 l029C:
 	sub	#00B2,r4
-	mov	r4,5182(pc)
+	mov	r4,@#5426
 	mov	r4,r3
-	sub	5140(pc),r4
+	sub	@#53EA,r4
 	bic	#0001,r4
 	mov	r4,-(sp)
-	mov	513A(pc),r2
+	mov	@#53EE,r2
 	beq	0372
 
 l02B6:
@@ -146,7 +148,7 @@ l02DE:
 	blos	0372
 
 l030E:
-	tst	1A9A(pc)
+	tst	@#1DAC
 	beq	0332
 
 l0314:
@@ -156,7 +158,7 @@ l0314:
 	bne	0332
 
 l0320:
-	cmp	@sp,50C8(pc)
+	cmp	@sp,@#53EC
 	bcs	0332
 
 l0326:
@@ -178,7 +180,7 @@ l0332:
 	mov	@r0,007A(r3)
 	mov	#0202,@#0020
 	bis	#2000,@#0024
-	jsr	pc,1990(pc)
+	jsr	pc,@#1CFA
 	tst	0075(r3)
 	beq	03B2
 
@@ -212,6 +214,10 @@ l03B2:
 0460 10 00 EF 01 77 00 42 0F                         ....w.B.       
 
 ;; fn0468: 0468
+;;   Called from:
+;;     0476 (in fn0472)
+;;     049E (in fn0472)
+;;     04C6 (in fn0472)
 fn0468 proc
 	movb	(r3)+,r0
 	beq	04F8
@@ -226,8 +232,8 @@ l0470:
 ;; fn0472: 0472
 fn0472 proc
 	mov	#05E4,r3
-	jsr	pc,FFEE(pc)
-	mov	4FA8(pc),r3
+	jsr	pc,@#0468
+	mov	@#5426,r3
 	mov	007A(r3),-(sp)
 	mov	007C(r3),r0
 	mov	000E(r3),r3
@@ -238,12 +244,12 @@ l048C:
 	mov	@r3,r0
 
 l0490:
-	jsr	pc,0094(pc)
+	jsr	pc,@#0528
 	mov	(sp)+,r0
-	jsr	pc,008E(pc)
+	jsr	pc,@#0528
 	mov	#05EF,r3
-	jsr	pc,FFC6(pc)
-	mov	@4F80(pc),r0
+	jsr	pc,@#0468
+	mov	@(5426),r0
 	bne	04B2
 
 l04A8:
@@ -257,7 +263,7 @@ l04B0:
 	br	04B6
 
 l04B2:
-	jsr	pc,0044(pc)
+	jsr	pc,@#04FA
 
 l04B6:
 	cmp	r1,#003D
@@ -269,7 +275,7 @@ l04BC:
 
 l04C2:
 	mov	#0601,r3
-	jsr	pc,FF9E(pc)
+	jsr	pc,@#0468
 	mov	0010(sp),r1
 	setflags	#01
 	movb	#0018,r0
@@ -311,6 +317,9 @@ l04F8:
 	rts	pc
 
 ;; fn04FA: 04FA
+;;   Called from:
+;;     04B2 (in fn0472)
+;;     050E (in fn04FA)
 fn04FA proc
 	mov	r0,-(sp)
 	clr	r0
@@ -326,7 +335,7 @@ l0506:
 	beq	0512
 
 l050E:
-	jsr	pc,FFE8(pc)
+	jsr	pc,@#04FA
 
 l0512:
 	movb	(sp)+,r0
@@ -339,6 +348,9 @@ l0518:
 	rts	pc
 
 ;; fn051A: 051A
+;;   Called from:
+;;     052C (in fn0528)
+;;     0532 (in fn0528)
 fn051A proc
 	mov	r0,r3
 	clr	r0
@@ -353,11 +365,14 @@ l0522:
 	br	051E
 
 ;; fn0528: 0528
+;;   Called from:
+;;     0490 (in fn0472)
+;;     0496 (in fn0472)
 fn0528 proc
 	mov	#0028,r2
-	jsr	pc,FFEA(pc)
+	jsr	pc,@#051A
 	mov	r3,-(sp)
-	jsr	pc,FFE4(pc)
+	jsr	pc,@#051A
 	mov	r3,-(sp)
 	mov	#0003,r3
 
@@ -416,8 +431,11 @@ l0572:
 0660 01 01 01 15 40 14 41 12 0A 01 26 0A 26 15 05 01 ....@.A...&.&...
 
 ;; fn0670: 0670
+;;   Called from:
+;;     3C00 (in fn3B3C)
+;;     3D5A (in fn3B3C)
 fn0670 proc
-	mov	4DB2(pc),r4
+	mov	@#5426,r4
 	add	#002A,r4
 	mov	(sp)+,@r4
 	mov	(sp)+,r0
@@ -632,12 +650,16 @@ l07FE:
 0810 8C 89 FC 01 80 11 03 01                         ........       
 
 ;; fn0818: 0818
+;;   Called from:
+;;     1DF0 (in fn1DAE)
+;;     2460 (in fn243A)
+;;     25EE (in fn243A)
 fn0818 proc
 	mov	r5,r0
 	add	@r5,r0
 	add	@r5,r0
 	tst	(r0)+
-	jsr	pc,0982(pc)
+	jsr	pc,@#11A6
 	sub	#004E,sp
 	mov	#53F0,r0
 	jmp	@(r0)+
@@ -680,12 +702,15 @@ fn0818 proc
 0A60 80 11 03 01                                     ....           
 
 ;; fn0A64: 0A64
+;;   Called from:
+;;     1E3A (in fn1DAE)
+;;     24FE (in fn243A)
 fn0A64 proc
 	mov	r5,r0
 	add	@r5,r0
 	add	@r5,r0
 	tst	(r0)+
-	jsr	pc,0736(pc)
+	jsr	pc,@#11A6
 	mov	#5414,r0
 	jmp	@(r0)+
 0A76                   C2 9C A2 00 F7 09 2A 0A 33 0A       ......*.3.
@@ -694,6 +719,9 @@ fn0A64 proc
 0AA0 03 02 77 09 D8 03 94 89 04 10 80 15 58 00       ..w.........X. 
 
 ;; fn0AAE: 0AAE
+;;   Called from:
+;;     3C14 (in fn3B3C)
+;;     3D6A (in fn3B3C)
 fn0AAE proc
 	mov	0002(r5),r4
 	mov	0002(r4),-(sp)
@@ -705,6 +733,8 @@ fn0AAE proc
 	rts	pc
 
 ;; fn0AC4: 0AC4
+;;   Called from:
+;;     3ABA (in fn395C)
 fn0AC4 proc
 	mov	#0101,-(sp)
 	br	0AE6
@@ -713,19 +743,35 @@ fn0AC4 proc
 0AE0 02 01                                           ..             
 
 ;; fn0AE2: 0AE2
+;;   Called from:
+;;     1E08 (in fn1DAE)
+;;     1F82 (in fn1DAE)
+;;     2486 (in fn243A)
+;;     2AD8 (in fn243A)
+;;     2B22 (in fn243A)
+;;     2B34 (in fn243A)
+;;     2B66 (in fn243A)
+;;     3490 (in fn3220)
+;;     3D94 (in fn3B3C)
 fn0AE2 proc
 	mov	#0202,-(sp)
 
 ;; fn0AE6: 0AE6
+;;   Called from:
+;;     0AC8 (in fn0AC4)
+;;     0AE2 (in fn0AE2)
 fn0AE6 proc
 	mov	r3,-(sp)
-	mov	493A(pc),r3
+	mov	@#5426,r3
 	clr	-(sp)
 	movb	0004(sp),@sp
 	cmp	@sp,#0001
 	beq	0B02
 
 ;; fn0AF8: 0AF8
+;;   Called from:
+;;     0AF6 (in fn0AE6)
+;;     0AF6 (in fn0AE6)
 fn0AF8 proc
 	cmp	@sp,#0008
 	beq	0B02
@@ -734,6 +780,11 @@ l0AFE:
 	add	#0003,@sp
 
 ;; fn0B02: 0B02
+;;   Called from:
+;;     0AF6 (in fn0AE6)
+;;     0AF6 (in fn0AE6)
+;;     0AFC (in fn0AF8)
+;;     0AFE (in fn0AF8)
 fn0B02 proc
 	cmp	0004(sp),0005(sp)
 	adc	@sp
@@ -758,11 +809,30 @@ l0B22:
 	jmp	@(sp)+
 
 ;; fn0B3E: 0B3E
+;;   Called from:
+;;     41B0 (in fn4180)
+;;     41D4 (in fn4180)
+;;     41F8 (in fn4180)
 fn0B3E proc
 	mov	#0202,-(sp)
 	br	0B60
 
 ;; fn0B44: 0B44
+;;   Called from:
+;;     1E28 (in fn1DAE)
+;;     24A6 (in fn243A)
+;;     2AF8 (in fn243A)
+;;     2B2E (in fn243A)
+;;     43A4 (in fn4230)
+;;     43B0 (in fn4230)
+;;     4402 (in fn4230)
+;;     440E (in fn4230)
+;;     4460 (in fn4230)
+;;     446C (in fn4230)
+;;     44BC (in fn4230)
+;;     44C8 (in fn4230)
+;;     4518 (in fn4230)
+;;     4524 (in fn4230)
 fn0B44 proc
 	mov	#0101,-(sp)
 	br	0B60
@@ -770,9 +840,12 @@ fn0B44 proc
 0B50 E6 15 01 04 05 01 E6 15 08 08 02 01 E6 15 04 04 ................
 
 ;; fn0B60: 0B60
+;;   Called from:
+;;     0B42 (in fn0B3E)
+;;     0B48 (in fn0B44)
 fn0B60 proc
 	mov	r3,-(sp)
-	mov	48C0(pc),r3
+	mov	@#5426,r3
 	clr	-(sp)
 	movb	0004(sp),@sp
 	cmp	@sp,#0001
@@ -819,7 +892,7 @@ l0BC6:
 	jsr	pc,@(sp)+
 	mov	r3,-(sp)
 	mov	r0,-(sp)
-	mov	4856(pc),r3
+	mov	@#5426,r3
 	movb	0053(r3),r0
 	add	r0,0044(r3)
 	mov	(sp)+,r0
@@ -888,6 +961,8 @@ l0C64:
 0CF0 56 0A F7 01                                     V...           
 
 ;; fn0CF4: 0CF4
+;;   Called from:
+;;     4190 (in fn4180)
 fn0CF4 proc
 	cmp	#0001,@r5
 	beq	0CFE
@@ -908,14 +983,14 @@ l0CFE:
 	mov	#0003,-(sp)
 	mov	sp,r5
 	mov	r0,-(sp)
-	jsr	pc,08B2(pc)
+	jsr	pc,@#15CC
 	mov	(sp)+,r0
 	tst	(sp)+
 	mov	@sp,r1
 	asl	r1
 	add	(sp)+,r1
 	mov	(sp)+,r2
-	jsr	pc,0014(pc)
+	jsr	pc,@#0D3E
 	movb	#002D,(r0)+
 	add	#0D4F,r1
 	movb	(r1)+,(r0)+
@@ -925,6 +1000,9 @@ l0CFE:
 	mov	(sp)+,r2
 
 ;; fn0D3E: 0D3E
+;;   Called from:
+;;     0D26 (in fn0CF4)
+;;     0D3C (in fn0CF4)
 fn0D3E proc
 	swab	r2
 
@@ -939,6 +1017,9 @@ l0D46:
 	movb	r2,(r0)+
 
 ;; fn0D50: 0D50
+;;   Called from:
+;;     0CFC (in fn0CF4)
+;;     0D4E (in fn0D3E)
 fn0D50 proc
 	rts	pc
 	bic	r5,@r2
@@ -959,9 +1040,57 @@ fn0D50 proc
 	mov	#12AA,-(sp)
 
 ;; fn0D7A: 0D7A
+;;   Called from:
+;;     263E (in fn243A)
+;;     2660 (in fn243A)
+;;     2682 (in fn243A)
+;;     26A4 (in fn243A)
+;;     26C6 (in fn243A)
+;;     26E8 (in fn243A)
+;;     270A (in fn243A)
+;;     272C (in fn243A)
+;;     274E (in fn243A)
+;;     2770 (in fn243A)
+;;     2792 (in fn243A)
+;;     27B4 (in fn243A)
+;;     27D6 (in fn243A)
+;;     27F8 (in fn243A)
+;;     281A (in fn243A)
+;;     283C (in fn243A)
+;;     285E (in fn243A)
+;;     2880 (in fn243A)
+;;     28A2 (in fn243A)
+;;     28C4 (in fn243A)
+;;     28E6 (in fn243A)
+;;     2908 (in fn243A)
+;;     292A (in fn243A)
+;;     294C (in fn243A)
+;;     296E (in fn243A)
+;;     2990 (in fn243A)
+;;     29B2 (in fn243A)
+;;     29D4 (in fn243A)
+;;     29F6 (in fn243A)
+;;     2A18 (in fn243A)
+;;     2A3A (in fn243A)
+;;     2A66 (in fn243A)
+;;     2A7C (in fn243A)
+;;     2AD2 (in fn243A)
+;;     2AEC (in fn243A)
+;;     2B1A (in fn243A)
+;;     2B5E (in fn243A)
+;;     2BFA (in fn2B90)
+;;     2C0E (in fn2B90)
+;;     2C3A (in fn2B90)
+;;     2C5A (in fn2B90)
+;;     3AB2 (in fn395C)
+;;     4398 (in fn4230)
+;;     43F6 (in fn4230)
+;;     4454 (in fn4230)
+;;     44B0 (in fn4230)
+;;     450C (in fn4230)
 fn0D7A proc
-	jsr	r3,04BE(pc)
-	jsr	pc,06DC(pc)
+	jsr	r3,@#123C
+	jsr	pc,@#145E
 	bne	0D88
 
 l0D84:
@@ -990,7 +1119,7 @@ l0D9A:
 
 l0DAC:
 	trap	#A0
-	jsr	pc,0518(pc)
+	jsr	pc,@#12CA
 
 l0DB2:
 	mov	001A(r3),001C(r3)
@@ -1000,9 +1129,14 @@ l0DB2:
 0DC4             E6 15 AA 12                             ....       
 
 ;; fn0DC8: 0DC8
+;;   Called from:
+;;     1E00 (in fn1DAE)
+;;     1E1C (in fn1DAE)
+;;     2480 (in fn243A)
+;;     249A (in fn243A)
 fn0DC8 proc
-	jsr	r3,0470(pc)
-	jsr	pc,068E(pc)
+	jsr	r3,@#123C
+	jsr	pc,@#145E
 	bne	0DD6
 
 l0DD2:
@@ -1030,13 +1164,16 @@ l0DF2:
 	trap	#A0
 
 l0DF4:
-	jmp	0CA6(pc)
+	jmp	@#1A9E
 0DF8                         01 17 01 01 01 15 40 14         ......@.
 0E00 41 12 82 15 83 15 33 01 00 15 01 0A FA 01       A.....3....... 
 
 ;; fn0E0E: 0E0E
+;;   Called from:
+;;     3B7A (in fn3B3C)
+;;     3BA0 (in fn3B3C)
 fn0E0E proc
-	mov	4614(pc),r4
+	mov	@#5426,r4
 	add	#002A,r4
 	mov	(sp)+,@r4
 	mov	(sp)+,r2
@@ -1083,9 +1220,67 @@ l0EA2:
 	br	0EDA
 
 ;; fn0EA8: 0EA8
+;;   Called from:
+;;     1E0C (in fn1DAE)
+;;     1E2C (in fn1DAE)
+;;     1F86 (in fn1DAE)
+;;     248A (in fn243A)
+;;     24AA (in fn243A)
+;;     2642 (in fn243A)
+;;     2664 (in fn243A)
+;;     2686 (in fn243A)
+;;     26A8 (in fn243A)
+;;     26CA (in fn243A)
+;;     26EC (in fn243A)
+;;     270E (in fn243A)
+;;     2730 (in fn243A)
+;;     2752 (in fn243A)
+;;     2774 (in fn243A)
+;;     2796 (in fn243A)
+;;     27B8 (in fn243A)
+;;     27DA (in fn243A)
+;;     27FC (in fn243A)
+;;     281E (in fn243A)
+;;     2840 (in fn243A)
+;;     2862 (in fn243A)
+;;     2884 (in fn243A)
+;;     28A6 (in fn243A)
+;;     28C8 (in fn243A)
+;;     28EA (in fn243A)
+;;     290C (in fn243A)
+;;     292E (in fn243A)
+;;     2950 (in fn243A)
+;;     2972 (in fn243A)
+;;     2994 (in fn243A)
+;;     29B6 (in fn243A)
+;;     29D8 (in fn243A)
+;;     29FA (in fn243A)
+;;     2A1C (in fn243A)
+;;     2A3E (in fn243A)
+;;     2A6A (in fn243A)
+;;     2A80 (in fn243A)
+;;     2ADC (in fn243A)
+;;     2AFC (in fn243A)
+;;     2B38 (in fn243A)
+;;     2B6A (in fn243A)
+;;     2BFE (in fn2B90)
+;;     2C12 (in fn2B90)
+;;     2C3E (in fn2B90)
+;;     2C5E (in fn2B90)
+;;     3494 (in fn3220)
+;;     3ABE (in fn395C)
+;;     3D98 (in fn3B3C)
+;;     41B4 (in fn4180)
+;;     41D8 (in fn4180)
+;;     41FC (in fn4180)
+;;     43B4 (in fn4230)
+;;     4412 (in fn4230)
+;;     4470 (in fn4230)
+;;     44CC (in fn4230)
+;;     4528 (in fn4230)
 fn0EA8 proc
 	mov	r3,-(sp)
-	mov	4578(pc),r3
+	mov	@#5426,r3
 	clr	0044(r3)
 	tst	0074(r3)
 	bne	0EC2
@@ -1099,7 +1294,7 @@ l0EC2:
 	jsr	pc,@(sp)+
 	mov	#0EF4,-(sp)
 	mov	r3,-(sp)
-	mov	4558(pc),r3
+	mov	@#5426,r3
 	tst	0074(r3)
 	bne	0EDA
 
@@ -1117,11 +1312,30 @@ l0EDA:
 0EF4             5C 00 C1 15                             \...       
 
 ;; fn0EF8: 0EF8
+;;   Called from:
+;;     243A (in fn243A)
+;;     2B90 (in fn2B90)
+;;     2E20 (in fn2E20)
+;;     2EC4 (in fn2EC4)
+;;     3220 (in fn3220)
+;;     34AC (in fn34AC)
+;;     395C (in fn395C)
+;;     3B3C (in fn3B3C)
+;;     3E12 (in fn3E12)
+;;     3F42 (in fn3F42)
+;;     4030 (in fn4030)
+;;     4072 (in fn4072)
+;;     413C (in fn413C)
+;;     4180 (in fn4180)
+;;     4230 (in fn4230)
+;;     4534 (in fn4534)
+;;     457C (in fn457C)
+;;     45C8 (in fn45C8)
 fn0EF8 proc
 	clr	r1
 	cmp	(sp)+,r0
 	mov	(r4)+,r0
-	mov	4524(pc),r3
+	mov	@#5426,r3
 	movb	0074(r3),-(sp)
 	mov	000E(r3),-(sp)
 	mov	@r3,-(sp)
@@ -1159,13 +1373,17 @@ l0F32:
 l0F34:
 	jsr	pc,@r4
 	cmp	(sp)+,(sp)+
-	mov	44EA(pc),r4
+	mov	@#5426,r4
 	mov	(sp)+,@r4
 	mov	(sp)+,000E(r4)
 	movb	(sp)+,0074(r4)
 	rts	pc
 
 ;; fn0F48: 0F48
+;;   Called from:
+;;     3B5A (in fn3B3C)
+;;     3BE2 (in fn3B3C)
+;;     3D3C (in fn3B3C)
 fn0F48 proc
 	cmp	@r5,#0002
 	bne	0F98
@@ -1227,44 +1445,64 @@ l0F9A:
 	rts	pc
 
 ;; fn0F9C: 0F9C
+;;   Called from:
+;;     2B84 (in fn243A)
 fn0F9C proc
-	jmp	040A(pc)
+	jmp	@#13AA
 0FA0 E6 15 AA 12                                     ....           
 
 ;; fn0FA4: 0FA4
+;;   Called from:
+;;     1F7A (in fn1DAE)
+;;     3488 (in fn3220)
+;;     3D8C (in fn3B3C)
 fn0FA4 proc
 	mov	#1020,-(sp)
 	br	0FB2
 0FAA                               E6 15 AA 12                 .... 
 
 ;; fn0FAE: 0FAE
+;;   Called from:
+;;     41A4 (in fn4180)
+;;     41C8 (in fn4180)
+;;     41EC (in fn4180)
 fn0FAE proc
 	mov	#101E,-(sp)
 
 ;; fn0FB2: 0FB2
+;;   Called from:
+;;     0FA8 (in fn0FA4)
+;;     0FAE (in fn0FAE)
 fn0FB2 proc
 	mov	r3,-(sp)
 	mov	sp,r3
 	add	#000C,r3
 	mov	r3,-(sp)
-	mov	4466(pc),r3
+	mov	@#5426,r3
 	mov	(sp)+,0064(r3)
 	tst	0014(r3)
 	beq	0FCC
 
 ;; fn0FCA: 0FCA
+;;   Called from:
+;;     0FC8 (in fn0FB2)
+;;     0FC8 (in fn0FB2)
 fn0FCA proc
 	trap	#9A
 
 ;; fn0FCC: 0FCC
+;;   Called from:
+;;     0FC8 (in fn0FB2)
+;;     0FC8 (in fn0FB2)
+;;     0FCA (in fn0FCA)
 fn0FCC proc
 	mov	0002(sp),0014(r3)
 	mov	0006(sp),001C(r3)
 	mov	(sp)+,r3
 	tst	(sp)+
 	mov	(sp)+,@sp
-	jsr	r3,025A(pc)
-	mov	4440(pc),r3
+	jsr	r3,@#123C
+	mov	@#5426,r3
 	mov	001C(r3),001A(r3)
 	mov	001C(r3),0018(r3)
 	mov	(sp)+,0012(r3)
@@ -1273,12 +1511,14 @@ fn0FCC proc
 	mov	#1014,0060(r3)
 	mov	#0001,0062(r3)
 	mov	000C(r3),0058(r3)
-	jmp	0A8E(pc)
+	jmp	@#1AA2
 1014             F3 0A 62 00 01 02 87 00 AC 89 00 00     ..b.........
 1020 00 80 C4 1D 00 44 C4 65 2A 00 8C 15 09 01 C4 1D .....D.e*.......
 1030 F4 43 C4 65 2A 00 8C 15 B6 15 02 00 B6 15 02 00 .C.e*...........
 
 ;; fn1040: 1040
+;;   Called from:
+;;     0ABA (in fn0AAE)
 fn1040 proc
 	mov	(sp)+,r0
 	mov	(sp)+,r1
@@ -1360,8 +1600,11 @@ l1086:
 11A0 30 00 00 30 00 00                               0..0..         
 
 ;; fn11A6: 11A6
+;;   Called from:
+;;     0820 (in fn0818)
+;;     0A6C (in fn0A64)
 fn11A6 proc
-	mov	427C(pc),r3
+	mov	@#5426,r3
 	mov	r0,0064(r3)
 	mov	000C(r3),0058(r3)
 	mov	#541C,r0
@@ -1401,7 +1644,7 @@ l11DC:
 
 l11E4:
 	tst	(sp)+
-	mov	423C(pc),r3
+	mov	@#5426,r3
 	rts	pc
 11EC                                     F7 35 80 00             .5..
 11F0 38 42 03 03 F3 1F 42 42 72 00 58 00 B3 89 F7 35 8B....BBr.X....5
@@ -1411,6 +1654,10 @@ l11E4:
 1230 E5 02 57 20 03 00 01 02 C3 89 58 00             ..W ......X.   
 
 ;; fn123C: 123C
+;;   Called from:
+;;     0D7A (in fn0D7A)
+;;     0DC8 (in fn0DC8)
+;;     0FDE (in fn0FCC)
 fn123C proc
 	mov	r2,-(sp)
 	mov	sp,r2
@@ -1435,7 +1682,7 @@ fn123C proc
 
 ;; fn12AC: 12AC
 fn12AC proc
-	mov	4176(pc),r3
+	mov	@#5426,r3
 	movb	r2,00A2(r3)
 	tst	0014(r3)
 	beq	12BC
@@ -1444,12 +1691,14 @@ l12BA:
 	trap	#9A
 
 l12BC:
-	jsr	pc,0160(pc)
+	jsr	pc,@#1420
 	mov	r0,0014(r3)
 	bit	#0800,@r0
 	rts	pc
 
 ;; fn12CA: 12CA
+;;   Called from:
+;;     0DAE (in fn0D7A)
 fn12CA proc
 	mov	r5,-(sp)
 	mov	r4,-(sp)
@@ -1496,7 +1745,7 @@ l1314:
 	bne	131E
 
 l131A:
-	jsr	pc,0048(pc)
+	jsr	pc,@#1366
 
 l131E:
 	tst	@r4
@@ -1507,7 +1756,7 @@ l1322:
 	beq	132A
 
 l1326:
-	jsr	pc,003C(pc)
+	jsr	pc,@#1366
 
 l132A:
 	tst	@r4
@@ -1535,12 +1784,15 @@ l134C:
 
 l1352:
 	movb	(r1)+,r0
-	jsr	pc,0018(pc)
+	jsr	pc,@#1370
 	br	134C
 135A                               73 20 1C 00 E3 83           s ....
 1360 84 15 85 15 87 00                               ......         
 
 ;; fn1366: 1366
+;;   Called from:
+;;     131A (in fn12CA)
+;;     1326 (in fn12CA)
 fn1366 proc
 	tst	@r4
 	bpl	1370
@@ -1553,6 +1805,10 @@ l136E:
 	rts	pc
 
 ;; fn1370: 1370
+;;   Called from:
+;;     1354 (in fn12CA)
+;;     1368 (in fn1366)
+;;     136C (in fn1366)
 fn1370 proc
 	mov	000E(r4),r2
 	add	0002(r4),r2
@@ -1563,14 +1819,14 @@ fn1370 proc
 
 l1386:
 	clr	000E(r4)
-	jmp	04A8(pc)
+	jmp	@#1836
 138E                                           80 00               ..
 1390 D6 0B 84 11 02 01 C4 15 F0 13 C0 15 F2 13 E9 88 ................
 13A0 C0 15 F4 13 E9 88 00 15 E9 88                   ..........     
 
 l13AA:
 	bis	#0001,@#002B
-	mov	4072(pc),r3
+	mov	@#5426,r3
 	inc	0066(r3)
 	mov	0004(r3),r4
 
@@ -1592,7 +1848,7 @@ l13CE:
 	br	13BC
 
 l13D6:
-	jsr	pc,@09D0(pc)
+	jsr	pc,@(1DAA)
 	br	13BC
 
 l13DC:
@@ -1614,6 +1870,9 @@ l13EE:
 13F0 F2 13 00 00 53 54 4F 50 20 2D 2D 20 80 00       ....STOP -- .. 
 
 ;; fn13FE: 13FE
+;;   Called from:
+;;     1526 (in fn14A8)
+;;     4686 (in fn45F6)
 fn13FE proc
 	emt	#A0
 	emt	#A1
@@ -1634,6 +1893,11 @@ fn13FE proc
 	rts	pc
 
 ;; fn1420: 1420
+;;   Called from:
+;;     12BC (in fn12AC)
+;;     1482 (in fn145E)
+;;     14B6 (in fn14A8)
+;;     158A (in fn14A8)
 fn1420 proc
 	tst	r2
 	ble	142A
@@ -1686,8 +1950,11 @@ l145C:
 	rts	pc
 
 ;; fn145E: 145E
+;;   Called from:
+;;     0D7E (in fn0D7A)
+;;     0DCC (in fn0DC8)
 fn145E proc
-	mov	3FC4(pc),r3
+	mov	@#5426,r3
 	mov	sp,r0
 	add	#0016,r0
 	mov	r0,0064(r3)
@@ -1703,7 +1970,7 @@ l1478:
 	mov	(sp)+,0012(r3)
 	mov	@(sp)+,r2
 	mov	r0,-(sp)
-	jsr	pc,FF9A(pc)
+	jsr	pc,@#1420
 	mov	r0,0014(r3)
 	bit	#0800,@r0
 	jsr	pc,@(sp)+
@@ -1711,7 +1978,7 @@ l1478:
 	bne	149A
 
 l1496:
-	jsr	pc,315C(pc)
+	jsr	pc,@#45F6
 
 l149A:
 	mov	0002(r3),001A(r3)
@@ -1723,9 +1990,9 @@ fn14A8 proc
 	mov	r5,-(sp)
 	mov	r4,-(sp)
 	mov	r2,-(sp)
-	mov	3F74(pc),r3
+	mov	@#5426,r3
 	movb	r2,00A2(r3)
-	jsr	pc,FF66(pc)
+	jsr	pc,@#1420
 	mov	r0,0014(r3)
 	bit	#0800,@r0
 	beq	15A0
@@ -1735,7 +2002,7 @@ l14C4:
 	bmi	15C4
 
 l14C8:
-	jsr	pc,0864(pc)
+	jsr	pc,@#1D30
 	bit	#0200,@r4
 	beq	1526
 
@@ -1761,7 +2028,7 @@ l14EE:
 	bhi	1526
 
 l14F6:
-	jsr	pc,033C(pc)
+	jsr	pc,@#1836
 	br	14EE
 
 l14FC:
@@ -1778,13 +2045,13 @@ l150E:
 	mov	sp,0064(r3)
 
 l1518:
-	jsr	pc,031A(pc)
+	jsr	pc,@#1836
 	br	1518
 151E                                           20 15                .
 1520 B3 95 A2 00 84 15                               ......         
 
 l1526:
-	jsr	pc,FED4(pc)
+	jsr	pc,@#13FE
 	mov	0004(r4),r5
 	asl	r5
 	mov	0002(r4),r2
@@ -1842,7 +2109,7 @@ l1586:
 	beq	1580
 
 l158A:
-	jsr	pc,FE92(pc)
+	jsr	pc,@#1420
 	cmp	@sp,0002(r0)
 	bcc	1580
 
@@ -1884,6 +2151,8 @@ l15C4:
 	br	1574
 
 ;; fn15CC: 15CC
+;;   Called from:
+;;     0D16 (in fn0CF4)
 fn15CC proc
 	cmp	#0003,@r5
 	beq	15D6
@@ -1951,7 +2220,7 @@ l16E6:
 	beq	16F8
 
 l16EC:
-	jsr	pc,0146(pc)
+	jsr	pc,@#1836
 	clr	0018(r4)
 	bic	#0002,@r4
 
@@ -1969,7 +2238,7 @@ l170A:
 	beq	1718
 
 l1710:
-	jsr	pc,01AA(pc)
+	jsr	pc,@#18BE
 	dec	0016(r4)
 
 l1718:
@@ -1984,6 +2253,8 @@ fn171E proc
 	dec	r2
 
 ;; fn172C: 172C
+;;   Called from:
+;;     172A (in fn171E)
 fn172C proc
 	mov	0014(r0),r3
 	clr	r1
@@ -2012,7 +2283,7 @@ l174A:
 l174C:
 	bis	r4,r1
 	mov	(sp)+,r5
-	mov	3CD2(pc),r3
+	mov	@#5426,r3
 	mov	r1,005E(r3)
 	mov	0014(r0),005C(r3)
 	asl	r2
@@ -2043,6 +2314,12 @@ l176C:
 1830 0C 01 87 00 0A 80                               ......         
 
 ;; fn1836: 1836
+;;   Called from:
+;;     138A (in fn1370)
+;;     14F6 (in fn14A8)
+;;     1518 (in fn14A8)
+;;     16EC (in fn16DA)
+;;     1D80 (in fn1D30)
 fn1836 proc
 	mov	r0,-(sp)
 	mov	0016(r4),0018(r4)
@@ -2063,7 +2340,7 @@ l1856:
 	trap	#A3
 
 l1860:
-	jsr	pc,009C(pc)
+	jsr	pc,@#1900
 	mov	#099E,-(sp)
 	mov	#8890,-(sp)
 	bis	0011(r4),@sp
@@ -2079,6 +2356,8 @@ l1860:
 18B0 00 02 02 00 B4 0A 16 00 02 0A 80 15 87 00       .............. 
 
 ;; fn18BE: 18BE
+;;   Called from:
+;;     1710 (in fn16DA)
 fn18BE proc
 	mov	r0,-(sp)
 	tst	0018(r4)
@@ -2089,7 +2368,7 @@ l18C6:
 	bcc	1932
 
 l18CE:
-	jsr	pc,002E(pc)
+	jsr	pc,@#1900
 	mov	#099E,-(sp)
 	mov	#8880,-(sp)
 	bis	0011(r4),@sp
@@ -2102,16 +2381,24 @@ l18CE:
 18F4             0F 87                                   ..         
 
 ;; fn18F6: 18F6
+;;   Called from:
+;;     1938 (in fn1932)
 fn18F6 proc
 	inc	0016(r4)
 	clr	r2
 	mov	(sp)+,r0
 
 ;; fn18FE: 18FE
+;;   Called from:
+;;     18FC (in fn18F6)
+;;     190E (in fn1900)
 fn18FE proc
 	rts	pc
 
 ;; fn1900: 1900
+;;   Called from:
+;;     1860 (in fn1836)
+;;     18CE (in fn18BE)
 fn1900 proc
 	mov	#099E,-(sp)
 	mov	#88A0,-(sp)
@@ -2140,6 +2427,11 @@ l1930:
 	trap	#97
 
 ;; fn1932: 1932
+;;   Called from:
+;;     18CC (in fn18BE)
+;;     1924 (in fn1900)
+;;     192E (in fn1900)
+;;     1930 (in fn1900)
 fn1932 proc
 	bit	#0008,001C(r4)
 	bne	18F6
@@ -2154,9 +2446,12 @@ l1948:
 	trap	#98
 
 l194A:
-	jmp	F544(pc)
+	jmp	@#0E92
 
 ;; fn194E: 194E
+;;   Called from:
+;;     1ACC (in fn1AA2)
+;;     1AD8 (in fn1AA2)
 fn194E proc
 	clr	r1
 	bis	@0012(r3),r1
@@ -2165,7 +2460,7 @@ fn194E proc
 
 ;; fn195A: 195A
 fn195A proc
-	jsr	pc,000C(pc)
+	jsr	pc,@#196A
 	movb	@r0,r0
 	rts	pc
 
@@ -2174,16 +2469,25 @@ fn1962 proc
 	movb	#2020,r0
 
 ;; fn1966: 1966
+;;   Called from:
+;;     1996 (in fn197A)
 fn1966 proc
 	movb	r0,@001C(r3)
 
 ;; fn196A: 196A
+;;   Called from:
+;;     195A (in fn195A)
 fn196A proc
 	mov	001C(r3),r0
 	cmp	r0,0018(r3)
 	bcc	1978
 
 ;; fn1974: 1974
+;;   Called from:
+;;     1972 (in fn1966)
+;;     1972 (in fn1962)
+;;     1972 (in fn1962)
+;;     1972 (in fn196A)
 fn1974 proc
 	inc	001C(r3)
 
@@ -2205,7 +2509,7 @@ l1988:
 
 l1992:
 	movb	#000D,r0
-	jsr	pc,FFCC(pc)
+	jsr	pc,@#1966
 	jmp	@0060(r3)
 
 l199E:
@@ -2239,10 +2543,13 @@ l1A9E:
 	clr	0056(r3)
 
 ;; fn1AA2: 1AA2
+;;   Called from:
+;;     1010 (in fn0FCC)
+;;     1A9E (in fn0DC8)
 fn1AA2 proc
 	clr	001E(r3)
 	jsr	pc,@(sp)+
-	mov	397A(pc),r3
+	mov	@#5426,r3
 	clr	0046(r3)
 	tst	@0014(r3)
 	bmi	1ABA
@@ -2255,7 +2562,7 @@ l1ABA:
 	mov	0012(r3),0042(r3)
 	clr	005C(r3)
 	clr	r2
-	jsr	pc,FE7E(pc)
+	jsr	pc,@#194E
 	movb	r1,r0
 	bmi	1AD8
 
@@ -2264,7 +2571,7 @@ l1AD4:
 	br	1AE0
 
 l1AD8:
-	jsr	pc,FE72(pc)
+	jsr	pc,@#194E
 	bic	#FF80,r0
 
 l1AE0:
@@ -2305,6 +2612,8 @@ l1AE0:
 1CF0 EE 1A E4 1A E8 1A EA 1A E6 1A                   ..........     
 
 ;; fn1CFA: 1CFA
+;;   Called from:
+;;     0366 (in fn0218)
 fn1CFA proc
 	rts	pc
 
@@ -2330,6 +2639,8 @@ fn1CFC proc
 1D26                   83 15 82 15 81 15 80 15 87 00       ..........
 
 ;; fn1D30: 1D30
+;;   Called from:
+;;     14C8 (in fn14A8)
 fn1D30 proc
 	mov	r0,r4
 	bit	#4000,@r0
@@ -2383,7 +2694,7 @@ l1D74:
 	bis	#8000,@r2
 
 l1D80:
-	jsr	pc,FAB2(pc)
+	jsr	pc,@#1836
 
 l1D84:
 	rts	pc
@@ -2393,1381 +2704,1387 @@ l1D84:
 
 ;; fn1DAE: 1DAE
 fn1DAE proc
-	jsr	r4,E466(pc)
+	jsr	r4,@#0218
 	bic	@#15FF,@000E(sp)
 	bit	@(r1)+,@-(r4)
 	mov	#48BA,r5
-	jsr	pc,23BE(pc)
-	inc	@3660(pc)
-	clr	3AAC(pc)
-	inc	@3658(pc)
-	clr	36F6(pc)
-	clr	36F4(pc)
-	inc	@364C(pc)
-	clr	36EE(pc)
-	inc	@3644(pc)
-	mov	#0001,36E6(pc)
-	inc	@363A(pc)
+	jsr	pc,@#4180
+	inc	@(5426)
+	clr	@#5876
+	inc	@(5426)
+	clr	@#54C8
+	clr	@#54CA
+	inc	@(5426)
+	clr	@#54CC
+	inc	@(5426)
+	mov	#0001,@#54CC
+	inc	@(5426)
 	mov	#48BC,r5
-	jsr	pc,EA24(pc)
-	inc	@362E(pc)
+	jsr	pc,@#0818
+	inc	@(5426)
 	mov	#48A4,-(sp)
 	mov	#4810,-(sp)
-	jsr	pc,EFC4(pc)
+	jsr	pc,@#0DC8
 	mov	#5878,-(sp)
-	jsr	pc,ECD6(pc)
-	jsr	pc,F098(pc)
-	inc	@3612(pc)
+	jsr	pc,@#0AE2
+	jsr	pc,@#0EA8
+	inc	@(5426)
 	mov	#48A4,-(sp)
 	mov	#4813,-(sp)
-	jsr	pc,EFA8(pc)
+	jsr	pc,@#0DC8
 	mov	#489E,-(sp)
 	mov	#587A,-(sp)
-	jsr	pc,ED18(pc)
-	jsr	pc,F078(pc)
-	mov	#0018,@35F0(pc)
+	jsr	pc,@#0B44
+	jsr	pc,@#0EA8
+	mov	#0018,@(5424)
 	mov	#48C8,r5
-	jsr	pc,EC26(pc)
-	inc	@35E4(pc)
+	jsr	pc,@#0A64
+	inc	@(5426)
 	mov	#48BA,r5
-	jsr	pc,0D46(pc)
-	inc	@35D8(pc)
-	mov	#0013,367C(pc)
+	jsr	pc,@#2B90
+	inc	@(5426)
+	mov	#0013,@#54CE
 
 l1E54:
-	mov	#001B,@35CC(pc)
-	dec	3672(pc)
-	inc	@35C4(pc)
-	cmp	366A(pc),#000C
+	mov	#001B,@(5424)
+	dec	@#54D0
+	inc	@(5426)
+	cmp	@#54D0,#000C
 	bge	1E74
 
 l1E6A:
-	inc	@35B8(pc)
-	mov	#0012,365C(pc)
+	inc	@(5426)
+	mov	#0012,@#54CE
 
 l1E74:
-	mov	#001E,@35AC(pc)
-	mov	#0032,3646(pc)
-	inc	@35A2(pc)
-	clr	364A(pc)
-	inc	@359A(pc)
-	mov	#FFFF,3642(pc)
-	inc	@3590(pc)
-	mov	#FFFF,363A(pc)
-	inc	@3586(pc)
-	mov	#0001,3632(pc)
+	mov	#001E,@(5424)
+	mov	#0032,@#54C4
+	inc	@(5426)
+	clr	@#54D2
+	inc	@(5426)
+	mov	#FFFF,@#54D2
+	inc	@(5426)
+	mov	#FFFF,@#54D4
+	inc	@(5426)
+	mov	#0001,@#54D6
 
 l1EA6:
-	mov	#0023,@357A(pc)
-	mov	#0001,3628(pc)
+	mov	#0023,@(5424)
+	mov	#0001,@#54D8
 	mov	#487E,r5
 
 l1EB6:
-	mov	#0024,@356A(pc)
-	mov	3618(pc),r1
+	mov	#0024,@(5424)
+	mov	@#54D8,r1
 	add	(r5)+,r1
 	asl	r1
 	mov	#0001,58C2(r1)
-	inc	@3558(pc)
-	cmp	3608(pc),#0004
+	inc	@(5426)
+	cmp	@#54DA,#0004
 	bgt	1EEA
 
 l1ED6:
-	mov	#0027,@354A(pc)
+	mov	#0027,@(5424)
 	mov	#000A,5A3E(r1)
-	inc	@3540(pc)
+	inc	@(5426)
 	clr	5A66(r1)
 
 l1EEA:
-	mov	#0029,@3536(pc)
-	inc	35E6(pc)
-	cmp	35E2(pc),#000A
+	mov	#0029,@(5424)
+	inc	@#54DA
+	cmp	@#54DA,#000A
 	ble	1EB6
 
 l1EFC:
-	inc	35D8(pc)
-	cmp	35D4(pc),#0005
+	inc	@#54D8
+	cmp	@#54D8,#0005
 	ble	1EA6
 
 l1F08:
-	inc	@351A(pc)
+	inc	@(5426)
 	mov	#48BA,r5
-	jsr	pc,211C(pc)
-	inc	@350E(pc)
-	mov	#0001,35BA(pc)
+	jsr	pc,@#4030
+	inc	@(5426)
+	mov	#0001,@#54D6
 	mov	#0050,r4
 	mov	#5464,r5
 
 l1F26:
-	mov	#002C,@34FA(pc)
+	mov	#002C,@(5424)
 	movb	#003D,(r5)+
-	mov	#002D,@34F0(pc)
+	mov	#002D,@(5424)
 	dec	r4
 	bgt	1F26
 
 l1F3A:
-	inc	@34E8(pc)
+	inc	@(5426)
 	mov	#48D0,r5
-	jsr	pc,22EA(pc)
-	inc	@34DC(pc)
+	jsr	pc,@#4230
+	inc	@(5426)
 	mov	#48DA,r5
-	jsr	pc,22DE(pc)
-	inc	@34D0(pc)
+	jsr	pc,@#4230
+	inc	@(5426)
 	mov	#48E4,r5
-	jsr	pc,22D2(pc)
-	inc	@34C4(pc)
+	jsr	pc,@#4230
+	inc	@(5426)
 	mov	#48EE,r5
-	jsr	pc,22C6(pc)
-	inc	@34B8(pc)
+	jsr	pc,@#4230
+	inc	@(5426)
 	mov	#4898,-(sp)
 	mov	#4876,-(sp)
 	mov	#54DC,-(sp)
-	jsr	pc,F026(pc)
+	jsr	pc,@#0FA4
 	mov	#5878,-(sp)
-	jsr	pc,EB5C(pc)
-	jsr	pc,EF1E(pc)
-	inc	@3498(pc)
+	jsr	pc,@#0AE2
+	jsr	pc,@#0EA8
+	inc	@(5426)
 	mov	#48F8,r5
-	jsr	pc,229A(pc)
-	inc	@348C(pc)
+	jsr	pc,@#4230
+	inc	@(5426)
 	mov	#4902,r5
-	jsr	pc,228E(pc)
-	inc	@3480(pc)
-	mov	#0002,3534(pc)
-	inc	@3476(pc)
-	mov	#0005,352C(pc)
-	inc	@346C(pc)
-	mov	3512(pc),3524(pc)
-	mov	#0038,@3460(pc)
-	inc	@345C(pc)
-	mov	#0004,38EA(pc)
-	inc	@3452(pc)
-	mov	#FFFF,38E2(pc)
-	inc	@3448(pc)
+	jsr	pc,@#4230
+	inc	@(5426)
+	mov	#0002,@#54DE
+	inc	@(5426)
+	mov	#0005,@#54E0
+	inc	@(5426)
+	mov	@#54D0,@#54E2
+	mov	#0038,@(5424)
+	inc	@(5426)
+	mov	#0004,@#58B8
+	inc	@(5426)
+	mov	#FFFF,@#58BA
+	inc	@(5426)
 	mov	#48BA,r5
-	jsr	pc,0EDE(pc)
+	jsr	pc,@#2EC4
 
 l1FE6:
-	mov	#003C,@343A(pc)
-	clr	34D4(pc)
-	inc	@3432(pc)
-	mov	#0050,34EC(pc)
-	inc	@3428(pc)
-	clr	34E6(pc)
-	inc	@3420(pc)
-	mov	#0018,34DE(pc)
-	inc	@3416(pc)
-	mov	#0001,34C2(pc)
+	mov	#003C,@(5424)
+	clr	@#54C4
+	inc	@(5426)
+	mov	#0050,@#54E4
+	inc	@(5426)
+	clr	@#54E8
+	inc	@(5426)
+	mov	#0018,@#54E8
+	inc	@(5426)
+	mov	#0001,@#54D6
 	mov	#000A,r4
 	mov	#5450,r5
 
 l201E:
-	mov	#0041,@3402(pc)
+	mov	#0041,@(5424)
 	clr	(r5)+
-	mov	#0042,@33FA(pc)
+	mov	#0042,@(5424)
 	dec	r4
 	bgt	201E
 
 l2030:
-	inc	@33F2(pc)
-	mov	#0001,34A0(pc)
-	mov	#0002,34B6(pc)
+	inc	@(5426)
+	mov	#0001,@#54D8
+	mov	#0002,@#54F4
 
 l2040:
-	mov	#0044,@33E0(pc)
-	mov	#0001,348C(pc)
-	mov	#000A,34AA(pc)
-	mov	#487E,3462(pc)
-	mov	#0006,3496(pc)
-	mov	#5450,3458(pc)
+	mov	#0044,@(5424)
+	mov	#0001,@#54D6
+	mov	#000A,@#54FA
+	mov	#487E,@#54B8
+	mov	#0006,@#54F2
+	mov	#5450,@#54BA
 
 l2064:
-	mov	#0045,@33BC(pc)
-	mov	346C(pc),r0
-	add	@3448(pc),r0
+	mov	#0045,@(5424)
+	mov	@#54DA,r0
+	add	@(54BA),r0
 	asl	r0
 	tst	58C2(r0)
 	bne	207E
 
 l207A:
-	jmp	026C(pc)
+	jmp	@#22EA
 
 l207E:
-	mov	#0047,@33A2(pc)
-	inc	343C(pc)
-	inc	@339A(pc)
-	mov	3452(pc),345A(pc)
-	add	345E(pc),3454(pc)
-	inc	@338A(pc)
-	mov	3444(pc),r0
-	sub	3452(pc),r0
-	mov	r0,3446(pc)
-	inc	@337A(pc)
-	cmp	r0,343A(pc)
+	mov	#0047,@(5424)
+	inc	@#54C4
+	inc	@(5426)
+	mov	@#54E2,@#54EA
+	add	@#54F4,@#54EA
+	inc	@(5426)
+	mov	@#54E4,r0
+	sub	@#54F6,r0
+	mov	r0,@#54EE
+	inc	@(5426)
+	cmp	r0,@#54EA
 	bge	20BA
 
 l20B2:
-	inc	@3370(pc)
-	mov	r0,3430(pc)
+	inc	@(5426)
+	mov	r0,@#54EA
 
 l20BA:
-	mov	#004C,@3366(pc)
-	mov	3416(pc),r1
-	add	@33F2(pc),r1
+	mov	#004C,@(5424)
+	mov	@#54DA,r1
+	add	@(54BA),r1
 	asl	r1
-	mov	341E(pc),r0
+	mov	@#54EC,r0
 	mov	r0,5926(r1)
-	inc	@3350(pc)
-	mov	3414(pc),598A(r1)
-	inc	@3346(pc)
-	cmp	r0,3404(pc)
+	inc	@(5426)
+	mov	@#54EE,598A(r1)
+	inc	@(5426)
+	cmp	r0,@#54E8
 	ble	20EE
 
 l20E6:
-	inc	@333C(pc)
-	mov	r0,33FA(pc)
+	inc	@(5426)
+	mov	r0,@#54E8
 
 l20EE:
-	mov	#0050,@3332(pc)
-	mov	33F4(pc),r0
-	cmp	r0,33EA(pc)
+	mov	#0050,@(5424)
+	mov	@#54EC,r0
+	cmp	r0,@#54E6
 	bge	2106
 
 l20FE:
-	inc	@3324(pc)
-	mov	r0,33E0(pc)
+	inc	@(5426)
+	mov	r0,@#54E6
 
 l2106:
-	mov	#0052,@331A(pc)
-	mov	33CA(pc),r0
-	cmp	r0,@33A8(pc)
+	mov	#0052,@(5424)
+	mov	@#54DA,r0
+	cmp	r0,@(54BC)
 	ble	211E
 
 l2116:
-	inc	@330C(pc)
-	mov	r0,@339E(pc)
+	inc	@(5426)
+	mov	r0,@(54BC)
 
 l211E:
-	mov	#0054,@3302(pc)
-	cmp	33B2(pc),#0003
+	mov	#0054,@(5424)
+	cmp	@#54DA,#0003
 	beq	2138
 
 l212C:
-	inc	@32F6(pc)
+	inc	@(5426)
 	mov	#490C,r5
-	jsr	pc,2004(pc)
+	jsr	pc,@#413C
 
 l2138:
-	mov	#0056,@32E8(pc)
-	tst	338C(pc)
+	mov	#0056,@(5424)
+	tst	@#54CE
 	bgt	219A
 
 l2144:
-	mov	#0058,@32DC(pc)
-	cmp	338C(pc),#0002
+	mov	#0058,@(5424)
+	cmp	@#54DA,#0002
 	bgt	215E
 
 l2152:
-	inc	@32D0(pc)
+	inc	@(5426)
 	mov	#4910,r5
-	jsr	pc,20D2(pc)
+	jsr	pc,@#4230
 
 l215E:
-	mov	#005A,@32C2(pc)
-	cmp	3372(pc),#0003
+	mov	#005A,@(5424)
+	cmp	@#54DA,#0003
 	bne	2178
 
 l216C:
-	inc	@32B6(pc)
+	inc	@(5426)
 	mov	#491A,r5
-	jsr	pc,20B8(pc)
+	jsr	pc,@#4230
 
 l2178:
-	mov	#005C,@32A8(pc)
-	cmp	3358(pc),#0004
+	mov	#005C,@(5424)
+	cmp	@#54DA,#0004
 	blt	2192
 
 l2186:
-	inc	@329C(pc)
+	inc	@(5426)
 	mov	#4924,r5
-	jsr	pc,209E(pc)
+	jsr	pc,@#4230
 
 l2192:
-	mov	#005E,@328E(pc)
+	mov	#005E,@(5424)
 	br	21E8
 
 l219A:
-	mov	#005F,@3286(pc)
-	cmp	3336(pc),#0002
+	mov	#005F,@(5424)
+	cmp	@#54DA,#0002
 	bgt	21B4
 
 l21A8:
-	inc	@327A(pc)
+	inc	@(5426)
 	mov	#492E,r5
-	jsr	pc,207C(pc)
+	jsr	pc,@#4230
 
 l21B4:
-	mov	#0061,@326C(pc)
-	cmp	331C(pc),#0003
+	mov	#0061,@(5424)
+	cmp	@#54DA,#0003
 	bne	21CE
 
 l21C2:
-	inc	@3260(pc)
+	inc	@(5426)
 	mov	#4938,r5
-	jsr	pc,2062(pc)
+	jsr	pc,@#4230
 
 l21CE:
-	mov	#0063,@3252(pc)
-	cmp	3302(pc),#0004
+	mov	#0063,@(5424)
+	cmp	@#54DA,#0004
 	blt	21E8
 
 l21DC:
-	inc	@3246(pc)
+	inc	@(5426)
 	mov	#4942,r5
-	jsr	pc,2048(pc)
+	jsr	pc,@#4230
 
 l21E8:
-	mov	#0065,@3238(pc)
-	tst	32D6(pc)
+	mov	#0065,@(5424)
+	tst	@#54C8
 	beq	220C
 
 l21F4:
-	mov	#0067,@322C(pc)
-	mov	32F0(pc),32F0(pc)
-	inc	32EC(pc)
+	mov	#0067,@(5424)
+	mov	@#54EE,@#54EE
+	inc	@#54F0
 	mov	#494C,r5
-	jsr	pc,2024(pc)
+	jsr	pc,@#4230
 
 l220C:
-	mov	#0068,@3214(pc)
+	mov	#0068,@(5424)
 	mov	#4956,r5
-	jsr	pc,1F22(pc)
-	inc	@3208(pc)
-	tst	32B0(pc)
+	jsr	pc,@#413C
+	inc	@(5426)
+	tst	@#54D2
 	beq	22B4
 
 l2224:
-	mov	#006B,@31FC(pc)
+	mov	#006B,@(5424)
 	mov	#48BA,r5
-	jsr	pc,0C92(pc)
-	inc	@31F0(pc)
+	jsr	pc,@#2EC4
+	inc	@(5426)
 	mov	#495A,r5
-	jsr	pc,0FE2(pc)
-	inc	@31E4(pc)
+	jsr	pc,@#3220
+	inc	@(5426)
 	mov	#48BA,r5
-	jsr	pc,18F2(pc)
-	inc	@31D8(pc)
+	jsr	pc,@#3B3C
+	inc	@(5426)
 	mov	#48BA,r5
-	jsr	pc,0C6E(pc)
-	inc	@31CC(pc)
+	jsr	pc,@#2EC4
+	inc	@(5426)
 	mov	#495A,r5
-	jsr	pc,0FBE(pc)
-	inc	@31C0(pc)
+	jsr	pc,@#3220
+	inc	@(5426)
 	mov	#48BA,r5
-	jsr	pc,18CE(pc)
-	inc	@31B4(pc)
-	cmp	3278(pc),#0001
+	jsr	pc,@#3B3C
+	inc	@(5426)
+	cmp	@#54EE,#0001
 	beq	229A
 
 l227A:
-	mov	#0073,@31A6(pc)
+	mov	#0073,@(5424)
 	mov	#495E,r5
-	jsr	pc,1224(pc)
-	inc	@319A(pc)
+	jsr	pc,@#34AC
+	inc	@(5426)
 	mov	#48BA,r5
-	jsr	pc,1B7E(pc)
-	inc	@318E(pc)
+	jsr	pc,@#3E12
+	inc	@(5426)
 	br	22B4
 
 l229A:
-	mov	#0076,@3186(pc)
+	mov	#0076,@(5424)
 	mov	#48BA,r5
-	jsr	pc,16B4(pc)
-	inc	@317A(pc)
+	jsr	pc,@#395C
+	inc	@(5426)
 	mov	#4956,r5
-	jsr	pc,0186(pc)
+	jsr	pc,@#243A
 
 l22B4:
-	mov	#0078,@316C(pc)
-	inc	@3168(pc)
-	cmp	3212(pc),3208(pc)
+	mov	#0078,@(5424)
+	inc	@(5426)
+	cmp	@#54D4,@#54CA
 	beq	22EA
 
 l22C6:
-	mov	#007B,@315A(pc)
-	mov	#0003,3220(pc)
-	sub	31F6(pc),321A(pc)
+	mov	#007B,@(5424)
+	mov	#0003,@#54F0
+	sub	@#54CC,@#54F0
 	mov	#4964,r5
-	jsr	pc,0B40(pc)
-	inc	@3142(pc)
-	mov	31E4(pc),31EA(pc)
+	jsr	pc,@#2E20
+	inc	@(5426)
+	mov	@#54CC,@#54D2
 
 l22EA:
-	mov	#007D,@3136(pc)
-	add	#0002,31C4(pc)
-	add	#0006,31F8(pc)
-	add	#0002,31BA(pc)
-	dec	31F6(pc)
+	mov	#007D,@(5424)
+	add	#0002,@#54B8
+	add	#0006,@#54F2
+	add	#0002,@#54BA
+	dec	@#54FC
 	ble	230C
 
 l2308:
-	jmp	FD58(pc)
+	jmp	@#2064
 
 l230C:
-	add	#0002,31E4(pc)
-	inc	31C4(pc)
-	cmp	31C0(pc),#0005
+	add	#0002,@#54F4
+	inc	@#54DA
+	cmp	@#54DA,#0005
 	bgt	2322
 
 l231E:
-	jmp	FD1E(pc)
+	jmp	@#2040
 
 l2322:
-	inc	@3100(pc)
-	clr	319E(pc)
-	clr	319C(pc)
-	inc	@30F4(pc)
-	cmp	31B4(pc),#0002
+	inc	@(5426)
+	clr	@#54C8
+	clr	@#54CA
+	inc	@(5426)
+	cmp	@#54EA,#0002
 	bne	2390
 
 l233A:
-	mov	#0081,@30E6(pc)
-	mov	#0001,3192(pc)
+	mov	#0081,@(5424)
+	mov	#0001,@#54D6
 
 l2346:
-	mov	#0082,@30DA(pc)
-	mov	#0001,3188(pc)
+	mov	#0082,@(5424)
+	mov	#0001,@#54D8
 	mov	#0004,r4
 	mov	#487E,r5
 
 l235A:
-	mov	#0083,@30C6(pc)
-	mov	3174(pc),r1
+	mov	#0083,@(5424)
+	mov	@#54D8,r1
 	mov	r1,r0
 	add	(r5)+,r0
 	asl	r0
 	clr	5A3E(r0)
-	mov	#0084,@30B2(pc)
+	mov	#0084,@(5424)
 	dec	r4
 	bgt	235A
 
 l2378:
 	inc	r1
-	mov	r1,315A(pc)
+	mov	r1,@#54D8
 	cmp	r1,#0005
 	ble	2346
 
 l2384:
-	inc	@309E(pc)
+	inc	@(5426)
 	mov	#48BA,r5
-	jsr	pc,1A82(pc)
+	jsr	pc,@#3E12
 
 l2390:
-	mov	#0086,@3090(pc)
-	mov	#0001,3136(pc)
-	inc	@3086(pc)
-	mov	#0001,3132(pc)
+	mov	#0086,@(5424)
+	mov	#0001,@#54D0
+	inc	@(5426)
+	mov	#0001,@#54D6
 	mov	#000A,r3
 	mov	#5450,r4
 	mov	#5A2C,r5
 
 l23B2:
-	mov	#0088,@306E(pc)
+	mov	#0088,@(5424)
 	mov	(r4)+,(r5)+
-	mov	#0089,@3066(pc)
+	mov	#0089,@(5424)
 	dec	r3
 	bgt	23B2
 
 l23C4:
-	inc	@305E(pc)
-	cmp	311A(pc),#0002
+	inc	@(5426)
+	cmp	@#54E6,#0002
 	ble	23E6
 
 l23D0:
-	mov	#008C,@3050(pc)
-	cmp	310E(pc),#0049
+	mov	#008C,@(5424)
+	cmp	@#54E8,#0049
 	bge	23E6
 
 l23DE:
-	mov	#008E,@3042(pc)
+	mov	#008E,@(5424)
 	br	2406
 
 l23E6:
-	mov	#008F,@303A(pc)
-	dec	30F4(pc)
-	inc	@3032(pc)
-	neg	30E8(pc)
-	inc	@302A(pc)
-	mov	#4080,30C6(pc)
-	clr	30C4(pc)
+	mov	#008F,@(5424)
+	dec	@#54E4
+	inc	@(5426)
+	neg	@#54E0
+	inc	@(5426)
+	mov	#4080,@#54C6
+	clr	@#54CA
 
 l2406:
-	mov	#0092,@301A(pc)
-	add	30D0(pc),30D0(pc)
-	inc	@3010(pc)
-	neg	30B4(pc)
-	inc	@3008(pc)
-	mov	30A2(pc),r0
+	mov	#0092,@(5424)
+	add	@#54E0,@#54E0
+	inc	@(5426)
+	neg	@#54CE
+	inc	@(5426)
+	mov	@#54C4,r0
 	bne	2428
 
 l2424:
-	jmp	FA2C(pc)
+	jmp	@#1E54
 
 l2428:
-	mov	#0096,@2FF8(pc)
-	mov	r0,3094(pc)
-	inc	@2FF0(pc)
-	jmp	FBAC(pc)
+	mov	#0096,@(5424)
+	mov	r0,@#54C6
+	inc	@(5426)
+	jmp	@#1FE6
 
 ;; fn243A: 243A
+;;   Called from:
+;;     22B0 (in fn1DAE)
 fn243A proc
-	jsr	r4,EABA(pc)
+	jsr	r4,@#0EF8
 	bic	-(r5),@-(r0)
-	mov	#0007,@2FE0(pc)
-	mov	342C(pc),3252(pc)
-	inc	@2FD6(pc)
+	mov	#0007,@(5424)
+	mov	@#5876,@#569C
+	inc	@(5426)
 	mov	#4D88,r5
-	jsr	pc,1BD8(pc)
-	inc	@2FCA(pc)
+	jsr	pc,@#4030
+	inc	@(5426)
 	mov	#4D8A,r5
-	jsr	pc,E3B4(pc)
-	inc	@2FBE(pc)
-	mov	#0001,3236(pc)
+	jsr	pc,@#0818
+	inc	@(5426)
+	mov	#0001,@#56A2
 	mov	#5508,r5
 
 l2472:
-	mov	#000B,@2FAE(pc)
+	mov	#000B,@(5424)
 	mov	#4D82,-(sp)
 	mov	#499C,-(sp)
-	jsr	pc,E944(pc)
+	jsr	pc,@#0DC8
 	mov	r5,-(sp)
-	jsr	pc,E658(pc)
-	jsr	pc,EA1A(pc)
-	inc	@2F94(pc)
+	jsr	pc,@#0AE2
+	jsr	pc,@#0EA8
+	inc	@(5426)
 	mov	#4D82,-(sp)
 	mov	#499F,-(sp)
-	jsr	pc,E92A(pc)
+	jsr	pc,@#0DC8
 	mov	#4D7E,-(sp)
 	mov	#5668,-(sp)
-	jsr	pc,E69A(pc)
-	jsr	pc,E9FA(pc)
-	inc	@2F74(pc)
-	mov	#0001,31EE(pc)
+	jsr	pc,@#0B44
+	jsr	pc,@#0EA8
+	inc	@(5426)
+	mov	#0001,@#56A4
 	mov	#001E,r2
 	mov	#5668,r3
 	mov	#4D3E,r4
 
 l24C4:
-	mov	#000E,@2F5C(pc)
-	mov	31D6(pc),r1
+	mov	#000E,@(5424)
+	mov	@#56A4,r1
 	mov	r1,r0
 	add	(r4)+,r0
 	movb	(r3)+,551D(r0)
-	mov	#000F,@2F4A(pc)
+	mov	#000F,@(5424)
 	dec	r2
 	bgt	24C4
 
 l24E0:
-	mov	#0010,@2F40(pc)
+	mov	#0010,@(5424)
 	add	#0002,r5
 	inc	r1
-	mov	r1,31B4(pc)
+	mov	r1,@#56A4
 	cmp	r1,#000A
 	ble	2472
 
 l24F6:
-	inc	@2F2C(pc)
+	inc	@(5426)
 	mov	#4D96,r5
-	jsr	pc,E562(pc)
-	inc	@2F20(pc)
-	mov	336C(pc),3010(pc)
-	inc	@2F16(pc)
-	mov	#0001,3190(pc)
+	jsr	pc,@#0A64
+	inc	@(5426)
+	mov	@#5876,@#551A
+	inc	@(5426)
+	mov	#0001,@#56A4
 	mov	#001E,r3
 	mov	#5898,r4
 	mov	#4D3E,r5
 
 l2522:
-	mov	#0014,@2EFE(pc)
+	mov	#0014,@(5424)
 	mov	(r5)+,r0
 	movb	(r4)+,5528(r0)
-	mov	#0015,@2EF2(pc)
+	mov	#0015,@(5424)
 	dec	r3
 	bgt	2522
 
 l2538:
-	mov	#0016,@2EE8(pc)
-	clr	3160(pc)
-	inc	@2EE0(pc)
-	mov	#0001,3158(pc)
+	mov	#0016,@(5424)
+	clr	@#56A2
+	inc	@(5426)
+	mov	#0001,@#56A2
 	mov	#550A,r5
 
 l2550:
-	mov	#0018,@2ED0(pc)
+	mov	#0018,@(5424)
 	cmp	FFFE(r5),@r5
 	bge	25C4
 
 l255C:
-	mov	#001A,@2EC4(pc)
+	mov	#001A,@(5424)
 	mov	FFFE(r5),r0
-	inc	@2EBC(pc)
+	inc	@(5426)
 	mov	@r5,FFFE(r5)
-	inc	@2EB4(pc)
+	inc	@(5426)
 	mov	r0,@r5
-	inc	@2EAE(pc)
-	mov	#0001,3124(pc)
-	inc	@2EA4(pc)
-	mov	#0001,311E(pc)
-	mov	#001E,311E(pc)
+	inc	@(5426)
+	mov	#0001,@#56A0
+	inc	@(5426)
+	mov	#0001,@#56A4
+	mov	#001E,@#56AA
 	mov	#4D3E,r3
 	mov	#5668,r4
 
 l2596:
-	mov	#001F,@2E8A(pc)
-	mov	3104(pc),r2
+	mov	#001F,@(5424)
+	mov	@#56A4,r2
 	add	(r3)+,r2
 	movb	551D(r2),@r4
-	inc	@2E7C(pc)
+	inc	@(5426)
 	movb	551E(r2),551D(r2)
-	inc	@2E72(pc)
+	inc	@(5426)
 	movb	(r4)+,551E(r2)
-	mov	#0022,@2E68(pc)
-	dec	30EA(pc)
+	mov	#0022,@(5424)
+	dec	@#56AC
 	bgt	2596
 
 l25C4:
-	mov	#0023,@2E5C(pc)
+	mov	#0023,@(5424)
 	add	#0002,r5
-	inc	30D2(pc)
-	cmp	30CE(pc),#000A
+	inc	@#56A4
+	cmp	@#56A4,#000A
 	ble	2550
 
 l25DA:
-	inc	@2E48(pc)
-	tst	30C0(pc)
+	inc	@(5426)
+	tst	@#56A2
 	bne	2538
 
 l25E4:
-	mov	#0026,@2E3C(pc)
+	mov	#0026,@(5424)
 	mov	#4D9E,r5
-	jsr	pc,E226(pc)
-	inc	@2E30(pc)
-	mov	327C(pc),r2
-	cmp	r2,327A(pc)
+	jsr	pc,@#0818
+	inc	@(5426)
+	mov	@#5876,r2
+	cmp	r2,@#5878
 	ble	2604
 
 l2600:
-	jmp	0446(pc)
+	jmp	@#2A4A
 
 l2604:
-	mov	#0029,@2E1C(pc)
+	mov	#0029,@(5424)
 	mov	r2,r1
 	sxt	r0
 	div	#00C8,r0
-	mov	r0,3260(pc)
+	mov	r0,@#5876
 	mov	r0,r2
-	inc	@2E0A(pc)
-	cmp	@2EE6(pc),#0001
+	inc	@(5426)
+	cmp	@(5506),#0001
 	bne	2628
 
 l2624:
-	jmp	045C(pc)
+	jmp	@#2A84
 
 l2628:
-	mov	#002C,@2DF8(pc)
+	mov	#002C,@(5424)
 	tst	r2
 	bne	2646
 
 l2632:
-	inc	@2DF0(pc)
+	inc	@(5426)
 	mov	#4D7C,-(sp)
 	mov	#49E0,-(sp)
-	jsr	pc,E738(pc)
-	jsr	pc,E862(pc)
+	jsr	pc,@#0D7A
+	jsr	pc,@#0EA8
 
 l2646:
-	mov	#002E,@2DDA(pc)
-	cmp	3226(pc),#0001
+	mov	#002E,@(5424)
+	cmp	@#5876,#0001
 	bne	2668
 
 l2654:
-	inc	@2DCE(pc)
+	inc	@(5426)
 	mov	#4D7C,-(sp)
 	mov	#49FA,-(sp)
-	jsr	pc,E716(pc)
-	jsr	pc,E840(pc)
+	jsr	pc,@#0D7A
+	jsr	pc,@#0EA8
 
 l2668:
-	mov	#0030,@2DB8(pc)
-	cmp	3204(pc),#0002
+	mov	#0030,@(5424)
+	cmp	@#5876,#0002
 	bne	268A
 
 l2676:
-	inc	@2DAC(pc)
+	inc	@(5426)
 	mov	#4D7C,-(sp)
 	mov	#4A17,-(sp)
-	jsr	pc,E6F4(pc)
-	jsr	pc,E81E(pc)
+	jsr	pc,@#0D7A
+	jsr	pc,@#0EA8
 
 l268A:
-	mov	#0032,@2D96(pc)
-	cmp	31E2(pc),#0003
+	mov	#0032,@(5424)
+	cmp	@#5876,#0003
 	bne	26AC
 
 l2698:
-	inc	@2D8A(pc)
+	inc	@(5426)
 	mov	#4D7C,-(sp)
 	mov	#4A31,-(sp)
-	jsr	pc,E6D2(pc)
-	jsr	pc,E7FC(pc)
+	jsr	pc,@#0D7A
+	jsr	pc,@#0EA8
 
 l26AC:
-	mov	#0034,@2D74(pc)
-	cmp	31C0(pc),#0004
+	mov	#0034,@(5424)
+	cmp	@#5876,#0004
 	bne	26CE
 
 l26BA:
-	inc	@2D68(pc)
+	inc	@(5426)
 	mov	#4D7C,-(sp)
 	mov	#4A4A,-(sp)
-	jsr	pc,E6B0(pc)
-	jsr	pc,E7DA(pc)
+	jsr	pc,@#0D7A
+	jsr	pc,@#0EA8
 
 l26CE:
-	mov	#0036,@2D52(pc)
-	cmp	319E(pc),#0005
+	mov	#0036,@(5424)
+	cmp	@#5876,#0005
 	bne	26F0
 
 l26DC:
-	inc	@2D46(pc)
+	inc	@(5426)
 	mov	#4D7C,-(sp)
 	mov	#4A69,-(sp)
-	jsr	pc,E68E(pc)
-	jsr	pc,E7B8(pc)
+	jsr	pc,@#0D7A
+	jsr	pc,@#0EA8
 
 l26F0:
-	mov	#0038,@2D30(pc)
-	cmp	317C(pc),#0006
+	mov	#0038,@(5424)
+	cmp	@#5876,#0006
 	bne	2712
 
 l26FE:
-	inc	@2D24(pc)
+	inc	@(5426)
 	mov	#4D7C,-(sp)
 	mov	#4A8A,-(sp)
-	jsr	pc,E66C(pc)
-	jsr	pc,E796(pc)
+	jsr	pc,@#0D7A
+	jsr	pc,@#0EA8
 
 l2712:
-	mov	#003A,@2D0E(pc)
-	cmp	315A(pc),#0007
+	mov	#003A,@(5424)
+	cmp	@#5876,#0007
 	bne	2734
 
 l2720:
-	inc	@2D02(pc)
+	inc	@(5426)
 	mov	#4D7C,-(sp)
 	mov	#4AA4,-(sp)
-	jsr	pc,E64A(pc)
-	jsr	pc,E774(pc)
+	jsr	pc,@#0D7A
+	jsr	pc,@#0EA8
 
 l2734:
-	mov	#003C,@2CEC(pc)
-	cmp	3138(pc),#0008
+	mov	#003C,@(5424)
+	cmp	@#5876,#0008
 	bne	2756
 
 l2742:
-	inc	@2CE0(pc)
+	inc	@(5426)
 	mov	#4D7C,-(sp)
 	mov	#4ACB,-(sp)
-	jsr	pc,E628(pc)
-	jsr	pc,E752(pc)
+	jsr	pc,@#0D7A
+	jsr	pc,@#0EA8
 
 l2756:
-	mov	#003E,@2CCA(pc)
-	cmp	3116(pc),#0009
+	mov	#003E,@(5424)
+	cmp	@#5876,#0009
 	bne	2778
 
 l2764:
-	inc	@2CBE(pc)
+	inc	@(5426)
 	mov	#4D7C,-(sp)
 	mov	#4ADD,-(sp)
-	jsr	pc,E606(pc)
-	jsr	pc,E730(pc)
+	jsr	pc,@#0D7A
+	jsr	pc,@#0EA8
 
 l2778:
-	mov	#0040,@2CA8(pc)
-	cmp	30F4(pc),#000A
+	mov	#0040,@(5424)
+	cmp	@#5876,#000A
 	bne	279A
 
 l2786:
-	inc	@2C9C(pc)
+	inc	@(5426)
 	mov	#4D7C,-(sp)
 	mov	#4AF4,-(sp)
-	jsr	pc,E5E4(pc)
-	jsr	pc,E70E(pc)
+	jsr	pc,@#0D7A
+	jsr	pc,@#0EA8
 
 l279A:
-	mov	#0042,@2C86(pc)
-	cmp	30D2(pc),#000B
+	mov	#0042,@(5424)
+	cmp	@#5876,#000B
 	bne	27BC
 
 l27A8:
-	inc	@2C7A(pc)
+	inc	@(5426)
 	mov	#4D7C,-(sp)
 	mov	#4B0E,-(sp)
-	jsr	pc,E5C2(pc)
-	jsr	pc,E6EC(pc)
+	jsr	pc,@#0D7A
+	jsr	pc,@#0EA8
 
 l27BC:
-	mov	#0044,@2C64(pc)
-	cmp	30B0(pc),#000C
+	mov	#0044,@(5424)
+	cmp	@#5876,#000C
 	bne	27DE
 
 l27CA:
-	inc	@2C58(pc)
+	inc	@(5426)
 	mov	#4D7C,-(sp)
 	mov	#4B29,-(sp)
-	jsr	pc,E5A0(pc)
-	jsr	pc,E6CA(pc)
+	jsr	pc,@#0D7A
+	jsr	pc,@#0EA8
 
 l27DE:
-	mov	#0046,@2C42(pc)
-	cmp	308E(pc),#000D
+	mov	#0046,@(5424)
+	cmp	@#5876,#000D
 	bne	2800
 
 l27EC:
-	inc	@2C36(pc)
+	inc	@(5426)
 	mov	#4D7C,-(sp)
 	mov	#4B42,-(sp)
-	jsr	pc,E57E(pc)
-	jsr	pc,E6A8(pc)
+	jsr	pc,@#0D7A
+	jsr	pc,@#0EA8
 
 l2800:
-	mov	#0048,@2C20(pc)
-	cmp	306C(pc),#000E
+	mov	#0048,@(5424)
+	cmp	@#5876,#000E
 	bne	2822
 
 l280E:
-	inc	@2C14(pc)
+	inc	@(5426)
 	mov	#4D7C,-(sp)
 	mov	#4B5B,-(sp)
-	jsr	pc,E55C(pc)
-	jsr	pc,E686(pc)
+	jsr	pc,@#0D7A
+	jsr	pc,@#0EA8
 
 l2822:
-	mov	#004A,@2BFE(pc)
-	cmp	304A(pc),#000F
+	mov	#004A,@(5424)
+	cmp	@#5876,#000F
 	bne	2844
 
 l2830:
-	inc	@2BF2(pc)
+	inc	@(5426)
 	mov	#4D7C,-(sp)
 	mov	#4B7C,-(sp)
-	jsr	pc,E53A(pc)
-	jsr	pc,E664(pc)
+	jsr	pc,@#0D7A
+	jsr	pc,@#0EA8
 
 l2844:
-	mov	#004C,@2BDC(pc)
-	cmp	3028(pc),#0010
+	mov	#004C,@(5424)
+	cmp	@#5876,#0010
 	bne	2866
 
 l2852:
-	inc	@2BD0(pc)
+	inc	@(5426)
 	mov	#4D7C,-(sp)
 	mov	#4B9D,-(sp)
-	jsr	pc,E518(pc)
-	jsr	pc,E642(pc)
+	jsr	pc,@#0D7A
+	jsr	pc,@#0EA8
 
 l2866:
-	mov	#004E,@2BBA(pc)
-	cmp	3006(pc),#0011
+	mov	#004E,@(5424)
+	cmp	@#5876,#0011
 	bne	2888
 
 l2874:
-	inc	@2BAE(pc)
+	inc	@(5426)
 	mov	#4D7C,-(sp)
 	mov	#4BB9,-(sp)
-	jsr	pc,E4F6(pc)
-	jsr	pc,E620(pc)
+	jsr	pc,@#0D7A
+	jsr	pc,@#0EA8
 
 l2888:
-	mov	#0050,@2B98(pc)
-	cmp	2FE4(pc),#0012
+	mov	#0050,@(5424)
+	cmp	@#5876,#0012
 	bne	28AA
 
 l2896:
-	inc	@2B8C(pc)
+	inc	@(5426)
 	mov	#4D7C,-(sp)
 	mov	#4BD8,-(sp)
-	jsr	pc,E4D4(pc)
-	jsr	pc,E5FE(pc)
+	jsr	pc,@#0D7A
+	jsr	pc,@#0EA8
 
 l28AA:
-	mov	#0052,@2B76(pc)
-	cmp	2FC2(pc),#0013
+	mov	#0052,@(5424)
+	cmp	@#5876,#0013
 	bne	28CC
 
 l28B8:
-	inc	@2B6A(pc)
+	inc	@(5426)
 	mov	#4D7C,-(sp)
 	mov	#4BF2,-(sp)
-	jsr	pc,E4B2(pc)
-	jsr	pc,E5DC(pc)
+	jsr	pc,@#0D7A
+	jsr	pc,@#0EA8
 
 l28CC:
-	mov	#0054,@2B54(pc)
-	cmp	2FA0(pc),#0014
+	mov	#0054,@(5424)
+	cmp	@#5876,#0014
 	bne	28EE
 
 l28DA:
-	inc	@2B48(pc)
+	inc	@(5426)
 	mov	#4D7C,-(sp)
 	mov	#4C07,-(sp)
-	jsr	pc,E490(pc)
-	jsr	pc,E5BA(pc)
+	jsr	pc,@#0D7A
+	jsr	pc,@#0EA8
 
 l28EE:
-	mov	#0056,@2B32(pc)
-	cmp	2F7E(pc),#0015
+	mov	#0056,@(5424)
+	cmp	@#5876,#0015
 	bne	2910
 
 l28FC:
-	inc	@2B26(pc)
+	inc	@(5426)
 	mov	#4D7C,-(sp)
 	mov	#4C24,-(sp)
-	jsr	pc,E46E(pc)
-	jsr	pc,E598(pc)
+	jsr	pc,@#0D7A
+	jsr	pc,@#0EA8
 
 l2910:
-	mov	#0058,@2B10(pc)
-	cmp	2F5C(pc),#0016
+	mov	#0058,@(5424)
+	cmp	@#5876,#0016
 	bne	2932
 
 l291E:
-	inc	@2B04(pc)
+	inc	@(5426)
 	mov	#4D7C,-(sp)
 	mov	#4C36,-(sp)
-	jsr	pc,E44C(pc)
-	jsr	pc,E576(pc)
+	jsr	pc,@#0D7A
+	jsr	pc,@#0EA8
 
 l2932:
-	mov	#005A,@2AEE(pc)
-	cmp	2F3A(pc),#0017
+	mov	#005A,@(5424)
+	cmp	@#5876,#0017
 	bne	2954
 
 l2940:
-	inc	@2AE2(pc)
+	inc	@(5426)
 	mov	#4D7C,-(sp)
 	mov	#4C4F,-(sp)
-	jsr	pc,E42A(pc)
-	jsr	pc,E554(pc)
+	jsr	pc,@#0D7A
+	jsr	pc,@#0EA8
 
 l2954:
-	mov	#005C,@2ACC(pc)
-	cmp	2F18(pc),#0018
+	mov	#005C,@(5424)
+	cmp	@#5876,#0018
 	bne	2976
 
 l2962:
-	inc	@2AC0(pc)
+	inc	@(5426)
 	mov	#4D7C,-(sp)
 	mov	#4C65,-(sp)
-	jsr	pc,E408(pc)
-	jsr	pc,E532(pc)
+	jsr	pc,@#0D7A
+	jsr	pc,@#0EA8
 
 l2976:
-	mov	#005E,@2AAA(pc)
-	cmp	2EF6(pc),#0019
+	mov	#005E,@(5424)
+	cmp	@#5876,#0019
 	bne	2998
 
 l2984:
-	inc	@2A9E(pc)
+	inc	@(5426)
 	mov	#4D7C,-(sp)
 	mov	#4C7A,-(sp)
-	jsr	pc,E3E6(pc)
-	jsr	pc,E510(pc)
+	jsr	pc,@#0D7A
+	jsr	pc,@#0EA8
 
 l2998:
-	mov	#0060,@2A88(pc)
-	cmp	2ED4(pc),#001A
+	mov	#0060,@(5424)
+	cmp	@#5876,#001A
 	bne	29BA
 
 l29A6:
-	inc	@2A7C(pc)
+	inc	@(5426)
 	mov	#4D7C,-(sp)
 	mov	#4C99,-(sp)
-	jsr	pc,E3C4(pc)
-	jsr	pc,E4EE(pc)
+	jsr	pc,@#0D7A
+	jsr	pc,@#0EA8
 
 l29BA:
-	mov	#0062,@2A66(pc)
-	cmp	2EB2(pc),#001B
+	mov	#0062,@(5424)
+	cmp	@#5876,#001B
 	bne	29DC
 
 l29C8:
-	inc	@2A5A(pc)
+	inc	@(5426)
 	mov	#4D7C,-(sp)
 	mov	#4CAF,-(sp)
-	jsr	pc,E3A2(pc)
-	jsr	pc,E4CC(pc)
+	jsr	pc,@#0D7A
+	jsr	pc,@#0EA8
 
 l29DC:
-	mov	#0064,@2A44(pc)
-	cmp	2E90(pc),#001C
+	mov	#0064,@(5424)
+	cmp	@#5876,#001C
 	bne	29FE
 
 l29EA:
-	inc	@2A38(pc)
+	inc	@(5426)
 	mov	#4D7C,-(sp)
 	mov	#4CC6,-(sp)
-	jsr	pc,E380(pc)
-	jsr	pc,E4AA(pc)
+	jsr	pc,@#0D7A
+	jsr	pc,@#0EA8
 
 l29FE:
-	mov	#0066,@2A22(pc)
-	cmp	2E6E(pc),#001D
+	mov	#0066,@(5424)
+	cmp	@#5876,#001D
 	bne	2A20
 
 l2A0C:
-	inc	@2A16(pc)
+	inc	@(5426)
 	mov	#4D7C,-(sp)
 	mov	#4CE1,-(sp)
-	jsr	pc,E35E(pc)
-	jsr	pc,E488(pc)
+	jsr	pc,@#0D7A
+	jsr	pc,@#0EA8
 
 l2A20:
-	mov	#0068,@2A00(pc)
-	cmp	2E4C(pc),#001E
+	mov	#0068,@(5424)
+	cmp	@#5876,#001E
 	blt	2A42
 
 l2A2E:
-	inc	@29F4(pc)
+	inc	@(5426)
 	mov	#4D7C,-(sp)
 	mov	#4D03,-(sp)
-	jsr	pc,E33C(pc)
-	jsr	pc,E466(pc)
+	jsr	pc,@#0D7A
+	jsr	pc,@#0EA8
 
 l2A42:
-	mov	#006A,@29DE(pc)
+	mov	#006A,@(5424)
 	br	2A6E
 
 l2A4A:
-	mov	#006B,@29D6(pc)
-	cmp	@2AB2(pc),#0001
+	mov	#006B,@(5424)
+	cmp	@(5506),#0001
 	beq	2A84
 
 l2A58:
-	mov	#006D,@29C8(pc)
+	mov	#006D,@(5424)
 	mov	#4D7C,-(sp)
 	mov	#4D20,-(sp)
-	jsr	pc,E310(pc)
-	jsr	pc,E43A(pc)
+	jsr	pc,@#0D7A
+	jsr	pc,@#0EA8
 
 l2A6E:
-	mov	#006E,@29B2(pc)
+	mov	#006E,@(5424)
 	mov	#4D7C,-(sp)
 	mov	#49A3,-(sp)
-	jsr	pc,E2FA(pc)
-	jsr	pc,E424(pc)
+	jsr	pc,@#0D7A
+	jsr	pc,@#0EA8
 
 l2A84:
-	mov	#006F,@299C(pc)
-	mov	#0001,2C14(pc)
+	mov	#006F,@(5424)
+	mov	#0001,@#56A2
 	mov	#5508,r5
 
 l2A94:
-	mov	#0070,@298C(pc)
-	mov	#0001,2C06(pc)
+	mov	#0070,@(5424)
+	mov	#0001,@#56A4
 	mov	#001E,r2
 	mov	#4D3E,r3
 	mov	#5668,r4
 
 l2AAC:
-	mov	#0071,@2974(pc)
-	mov	2BEE(pc),r0
+	mov	#0071,@(5424)
+	mov	@#56A4,r0
 	add	(r3)+,r0
 	movb	551D(r0),(r4)+
-	mov	#0072,@2964(pc)
+	mov	#0072,@(5424)
 	dec	r2
 	bgt	2AAC
 
 l2AC6:
-	inc	@295C(pc)
+	inc	@(5426)
 	mov	#4D82,-(sp)
 	mov	#499C,-(sp)
-	jsr	pc,E2A4(pc)
+	jsr	pc,@#0D7A
 	mov	r5,-(sp)
-	jsr	pc,E006(pc)
-	jsr	pc,E3C8(pc)
-	inc	@2942(pc)
+	jsr	pc,@#0AE2
+	jsr	pc,@#0EA8
+	inc	@(5426)
 	mov	#4D82,-(sp)
 	mov	#499F,-(sp)
-	jsr	pc,E28A(pc)
+	jsr	pc,@#0D7A
 	mov	#4D7E,-(sp)
 	mov	#5668,-(sp)
-	jsr	pc,E048(pc)
-	jsr	pc,E3A8(pc)
-	inc	@2922(pc)
-	cmp	@29FE(pc),#0001
+	jsr	pc,@#0B44
+	jsr	pc,@#0EA8
+	inc	@(5426)
+	cmp	@(5506),#0001
 	beq	2B3C
 
 l2B0C:
-	mov	#0077,@2914(pc)
+	mov	#0077,@(5424)
 	mov	#4D7C,-(sp)
 	mov	#49D4,-(sp)
-	jsr	pc,E25C(pc)
+	jsr	pc,@#0D7A
 	mov	#56A4,-(sp)
-	jsr	pc,DFBC(pc)
+	jsr	pc,@#0AE2
 	mov	#4D7E,-(sp)
 	mov	#5668,-(sp)
-	jsr	pc,E012(pc)
+	jsr	pc,@#0B44
 	mov	r5,-(sp)
-	jsr	pc,DFAA(pc)
-	jsr	pc,E36C(pc)
+	jsr	pc,@#0AE2
+	jsr	pc,@#0EA8
 
 l2B3C:
-	mov	#0078,@28E4(pc)
+	mov	#0078,@(5424)
 	add	#0002,r5
-	inc	2B5A(pc)
-	cmp	2B56(pc),#000A
+	inc	@#56A4
+	cmp	@#56A4,#000A
 	ble	2A94
 
 l2B52:
-	inc	@28D0(pc)
+	inc	@(5426)
 	mov	#4D7C,-(sp)
 	mov	#4984,-(sp)
-	jsr	pc,E218(pc)
+	jsr	pc,@#0D7A
 	mov	#569E,-(sp)
-	jsr	pc,DF78(pc)
-	jsr	pc,E33A(pc)
-	mov	#007B,@28B2(pc)
+	jsr	pc,@#0AE2
+	jsr	pc,@#0EA8
+	mov	#007B,@(5424)
 	mov	#4D88,r5
-	jsr	pc,1A4C(pc)
-	inc	@28A6(pc)
+	jsr	pc,@#45C8
+	inc	@(5426)
 	mov	#4D88,r5
-	jsr	pc,E414(pc)
-	mov	#00A1,@2898(pc)
+	jsr	pc,@#0F9C
+	mov	#00A1,@(5424)
 	rts	pc
 
 ;; fn2B90: 2B90
+;;   Called from:
+;;     1E46 (in fn1DAE)
 fn2B90 proc
-	jsr	r4,E364(pc)
+	jsr	r4,@#0EF8
 	bic	15FF(sp),@-(r2)
 	reset
 	cmp	-(r2),@r2
 	mov	#501C,r5
-	jsr	pc,19D8(pc)
-	inc	@287E(pc)
+	jsr	pc,@#457C
+	inc	@(5426)
 	mov	#501C,r5
-	jsr	pc,1480(pc)
-	inc	@2872(pc)
-	mov	#0001,2AFE(pc)
+	jsr	pc,@#4030
+	inc	@(5426)
+	mov	#0001,@#56B6
 	mov	#001E,r4
 	mov	#5898,r5
 
 l2BC2:
-	mov	#0008,@285E(pc)
+	mov	#0008,@(5424)
 	movb	#0020,(r5)+
-	mov	#0009,@2854(pc)
+	mov	#0009,@(5424)
 	dec	r4
 	bgt	2BC2
 
 l2BD6:
-	inc	@284C(pc)
+	inc	@(5426)
 	mov	#501E,r5
-	jsr	pc,155A(pc)
-	inc	@2840(pc)
+	jsr	pc,@#413C
+	inc	@(5426)
 	mov	#5022,r5
-	jsr	pc,1484(pc)
-	inc	@2834(pc)
+	jsr	pc,@#4072
+	inc	@(5426)
 	mov	#5006,-(sp)
 	mov	#4DE6,-(sp)
-	jsr	pc,E17C(pc)
-	jsr	pc,E2A6(pc)
-	inc	@2820(pc)
+	jsr	pc,@#0D7A
+	jsr	pc,@#0EA8
+	inc	@(5426)
 	mov	#5006,-(sp)
 	mov	#4F12,-(sp)
-	jsr	pc,E168(pc)
-	jsr	pc,E292(pc)
-	inc	@280C(pc)
+	jsr	pc,@#0D7A
+	jsr	pc,@#0EA8
+	inc	@(5426)
 	mov	#5028,r5
-	jsr	pc,151A(pc)
-	inc	@2800(pc)
+	jsr	pc,@#413C
+	inc	@(5426)
 	mov	#502C,r5
-	jsr	pc,1444(pc)
-	inc	@27F4(pc)
+	jsr	pc,@#4072
+	inc	@(5426)
 	mov	#5006,-(sp)
 	mov	#4FA0,-(sp)
-	jsr	pc,E13C(pc)
-	jsr	pc,E266(pc)
-	inc	@27E0(pc)
+	jsr	pc,@#0D7A
+	jsr	pc,@#0EA8
+	inc	@(5426)
 	mov	#5032,r5
-	jsr	pc,1424(pc)
-	inc	@27D4(pc)
+	jsr	pc,@#4072
+	inc	@(5426)
 	mov	#5006,-(sp)
 	mov	#4FBD,-(sp)
-	jsr	pc,E11C(pc)
-	jsr	pc,E246(pc)
-	inc	@27C0(pc)
-	mov	#0001,2A4E(pc)
-	inc	@27B6(pc)
-	mov	#0002,2A46(pc)
-	inc	@27AC(pc)
-	mov	#0001,2A3E(pc)
-	inc	@27A2(pc)
-	mov	#000A,2A36(pc)
+	jsr	pc,@#0D7A
+	jsr	pc,@#0EA8
+	inc	@(5426)
+	mov	#0001,@#56B8
+	inc	@(5426)
+	mov	#0002,@#56BA
+	inc	@(5426)
+	mov	#0001,@#56BC
+	inc	@(5426)
+	mov	#000A,@#56BE
 
 l2C8A:
-	mov	#0017,@2796(pc)
-	tst	2A2A(pc)
+	mov	#0017,@(5424)
+	tst	@#56BE
 	ble	2CA2
 
 l2C96:
-	inc	@278C(pc)
+	inc	@(5426)
 	mov	#5038,r5
-	jsr	pc,158E(pc)
+	jsr	pc,@#4230
 
 l2CA2:
-	mov	#0019,@277E(pc)
-	tst	2A12(pc)
+	mov	#0019,@(5424)
+	tst	@#56BE
 	bge	2CBA
 
 l2CAE:
-	inc	@2774(pc)
+	inc	@(5426)
 	mov	#5042,r5
-	jsr	pc,1576(pc)
+	jsr	pc,@#4230
 
 l2CBA:
-	mov	#001B,@2766(pc)
-	tst	29FA(pc)
+	mov	#001B,@(5424)
+	tst	@#56BE
 	ble	2CD2
 
 l2CC6:
-	inc	@275C(pc)
+	inc	@(5426)
 	mov	#504C,r5
-	jsr	pc,155E(pc)
+	jsr	pc,@#4230
 
 l2CD2:
-	mov	#001D,@274E(pc)
-	tst	29E2(pc)
+	mov	#001D,@(5424)
+	tst	@#56BE
 	bge	2CEA
 
 l2CDE:
-	inc	@2744(pc)
+	inc	@(5426)
 	mov	#5056,r5
-	jsr	pc,1546(pc)
+	jsr	pc,@#4230
 
 l2CEA:
-	mov	#001F,@2736(pc)
+	mov	#001F,@(5424)
 	mov	#501E,r5
-	jsr	pc,1444(pc)
-	inc	@272A(pc)
-	tst	29BE(pc)
+	jsr	pc,@#413C
+	inc	@(5426)
+	tst	@#56BE
 	ble	2D0E
 
 l2D02:
-	inc	@2720(pc)
+	inc	@(5426)
 	mov	#5060,r5
-	jsr	pc,1522(pc)
+	jsr	pc,@#4230
 
 l2D0E:
-	mov	#0022,@2712(pc)
-	tst	29A6(pc)
+	mov	#0022,@(5424)
+	tst	@#56BE
 	bge	2D26
 
 l2D1A:
-	inc	@2708(pc)
+	inc	@(5426)
 	mov	#506A,r5
-	jsr	pc,150A(pc)
+	jsr	pc,@#4230
 
 l2D26:
-	mov	#0024,@26FA(pc)
+	mov	#0024,@(5424)
 	mov	#5028,r5
-	jsr	pc,1408(pc)
-	inc	@26EE(pc)
+	jsr	pc,@#413C
+	inc	@(5426)
 	mov	#501C,r5
-	jsr	pc,2D50(pc)
+	jsr	pc,@#5A90
 	movb	r0,r1
-	movb	r1,2970(pc)
-	mov	#0026,@26DA(pc)
+	movb	r1,@#56B6
+	mov	#0026,@(5424)
 	cmp	r1,#000D
 	beq	2E18
 
 l2D52:
-	mov	#0028,@26CE(pc)
+	mov	#0028,@(5424)
 	cmp	r1,#0020
 	blt	2DC4
 
 l2D5E:
-	mov	#002A,@26C2(pc)
+	mov	#002A,@(5424)
 	cmp	r1,#007F
 	beq	2D96
 
 l2D6A:
-	mov	#002C,@26B6(pc)
-	mov	2946(pc),r2
+	mov	#002C,@(5424)
+	mov	@#56BA,r2
 	cmp	r2,#001F
 	beq	2DC4
 
 l2D7A:
-	mov	#002E,@26A6(pc)
+	mov	#002E,@(5424)
 	movb	r1,5897(r2)
-	inc	@269E(pc)
-	mov	r2,292E(pc)
-	inc	292A(pc)
-	inc	@2692(pc)
+	inc	@(5426)
+	mov	r2,@#56BA
+	inc	@#56BA
+	inc	@(5426)
 	br	2DC4
 
 l2D96:
-	mov	#0031,@268A(pc)
-	dec	291A(pc)
-	inc	@2682(pc)
-	tst	2912(pc)
+	mov	#0031,@(5424)
+	dec	@#56BA
+	inc	@(5426)
+	tst	@#56BA
 	bgt	2DB4
 
 l2DAA:
-	inc	@2678(pc)
-	mov	#0001,2906(pc)
+	inc	@(5426)
+	mov	#0001,@#56B8
 
 l2DB4:
-	mov	#0034,@266C(pc)
-	mov	28FC(pc),r0
+	mov	#0034,@(5424)
+	mov	@#56BA,r0
 	movb	#0020,5897(r0)
 
 l2DC4:
-	mov	#0035,@265C(pc)
+	mov	#0035,@(5424)
 	mov	#5074,r5
-	jsr	pc,145E(pc)
-	inc	@2650(pc)
-	neg	28E4(pc)
-	inc	@2648(pc)
-	add	28DA(pc),28DC(pc)
-	inc	@263E(pc)
-	cmp	28D4(pc),#003C
+	jsr	pc,@#4230
+	inc	@(5426)
+	neg	@#56BE
+	inc	@(5426)
+	add	@#56BC,@#56BE
+	inc	@(5426)
+	cmp	@#56C0,#003C
 	ble	2DF8
 
 l2DF0:
-	inc	@2632(pc)
-	neg	28C4(pc)
+	inc	@(5426)
+	neg	@#56BC
 
 l2DF8:
-	mov	#003A,@2628(pc)
-	cmp	28BE(pc),#0008
+	mov	#003A,@(5424)
+	cmp	@#56C0,#0008
 	bge	2E0E
 
 l2E06:
-	inc	@261C(pc)
-	neg	28AE(pc)
+	inc	@(5426)
+	neg	@#56BC
 
 l2E0E:
-	mov	#003C,@2612(pc)
-	jmp	FE72(pc)
+	mov	#003C,@(5424)
+	jmp	@#2C8A
 
 l2E18:
-	mov	#003D,@2608(pc)
+	mov	#003D,@(5424)
 	rts	pc
 
 ;; fn2E20: 2E20
+;;   Called from:
+;;     22DC (in fn1DAE)
 fn2E20 proc
-	jsr	r4,E0D4(pc)
+	jsr	r4,@#0EF8
 	bis	r1,@15FF(sp)
 	bpt
 	cmp	#15F7,@0001(r2)
@@ -3776,69 +4093,73 @@ fn2E20 proc
 	mov	#56C6,r5
 
 l2E3A:
-	mov	#0004,@25E6(pc)
+	mov	#0004,@(5424)
 	movb	#003D,(r5)+
-	mov	#0005,@25DC(pc)
+	mov	#0005,@(5424)
 	dec	r4
 	bgt	2E3A
 
 l2E4E:
-	inc	@25D4(pc)
+	inc	@(5426)
 	mov	#5096,r5
-	jsr	pc,13D6(pc)
-	inc	@25C8(pc)
-	tst	@2862(pc)
+	jsr	pc,@#4230
+	inc	@(5426)
+	tst	@(56C4)
 	ble	2EB8
 
 l2E64:
-	mov	#0009,@25BC(pc)
+	mov	#0009,@(5424)
 	mov	#50A0,r5
-	jsr	pc,12CA(pc)
-	inc	@25B0(pc)
-	mov	#0001,285C(pc)
+	jsr	pc,@#413C
+	inc	@(5426)
+	mov	#0001,@#56D6
 
 l2E7C:
-	mov	#000B,@25A4(pc)
-	mov	2852(pc),r1
+	mov	#000B,@(5424)
+	mov	@#56D8,r1
 	dec	r1
 	mul	#0005,r1
 	inc	r1
-	mov	r1,2848(pc)
+	mov	r1,@#56DA
 	mov	#50A4,r5
-	jsr	pc,1396(pc)
-	mov	#000C,@2586(pc)
-	inc	2834(pc)
-	cmp	2830(pc),@281A(pc)
+	jsr	pc,@#4230
+	mov	#000C,@(5424)
+	inc	@#56D8
+	cmp	@#56D8,@(56C2)
 	ble	2E7C
 
 l2EAC:
-	inc	@2576(pc)
+	inc	@(5426)
 	mov	#50AE,r5
-	jsr	pc,1284(pc)
+	jsr	pc,@#413C
 
 l2EB8:
-	mov	#000E,@2568(pc)
-	inc	@2564(pc)
+	mov	#000E,@(5424)
+	inc	@(5426)
 	rts	pc
 
 ;; fn2EC4: 2EC4
+;;   Called from:
+;;     1FE2 (in fn1DAE)
+;;     222E (in fn1DAE)
+;;     2252 (in fn1DAE)
 fn2EC4 proc
-	jsr	r4,E030(pc)
+	jsr	r4,@#0EF8
 	bis	r2,15FF(r2)
 	illegal
 	cmp	(r5)+,(sp)+
 	mov	#50FA,r5
-	jsr	pc,2BB8(pc)
+	jsr	pc,@#5A90
 	movb	r0,r2
-	movb	r2,2806(pc)
-	inc	@2544(pc)
+	movb	r2,@#56E4
+	inc	@(5426)
 	tst	r2
 	bge	2EEA
-	jmp	01AC(pc)
-	mov	#000D,@2536(pc)
+	jmp	@#3096
+	mov	#000D,@(5424)
 	cmp	r2,#0020
 	beq	2F98
-	mov	#000F,@252A(pc)
+	mov	#000F,@(5424)
 	clr	r0
 	cmp	r2,#002C
 	bne	2F06
@@ -3849,8 +4170,8 @@ fn2EC4 proc
 	dec	r1
 	bis	r1,r0
 	beq	2F18
-	jmp	0148(pc)
-	mov	#0011,@2508(pc)
+	jmp	@#3060
+	mov	#0011,@(5424)
 	clr	r0
 	cmp	r2,#002E
 	bne	2F28
@@ -3861,8 +4182,8 @@ fn2EC4 proc
 	dec	r1
 	bis	r1,r0
 	beq	2F3A
-	jmp	0144(pc)
-	mov	#0013,@24E6(pc)
+	jmp	@#307E
+	mov	#0013,@(5424)
 	clr	r0
 	cmp	r2,#0041
 	bne	2F4A
@@ -3873,12 +4194,12 @@ fn2EC4 proc
 	dec	r1
 	bis	r1,r0
 	beq	2F64
-	inc	@24CA(pc)
+	inc	@(5426)
 	mov	#50FC,r5
-	jsr	pc,F4D6(pc)
-	mov	#0015,@24BC(pc)
+	jsr	pc,@#243A
+	mov	#0015,@(5424)
 	clr	r0
-	movb	2774(pc),r2
+	movb	@#56E4,r2
 	cmp	r2,#005A
 	beq	2F78
 	dec	r0
@@ -3888,387 +4209,392 @@ fn2EC4 proc
 	dec	r1
 	bit	r0,r1
 	beq	2F8A
-	jmp	010C(pc)
-	mov	#0017,@2496(pc)
+	jmp	@#3096
+	mov	#0017,@(5424)
 	mov	#5100,r5
-	jsr	pc,F4A2(pc)
-	mov	#0018,@2488(pc)
-	cmp	2920(pc),#0001
+	jsr	pc,@#243A
+	mov	#0018,@(5424)
+	cmp	@#58C2,#0001
 	beq	3096
-	mov	#001A,@247A(pc)
-	mov	#0001,2734(pc)
-	mov	#000D,273E(pc)
-	mov	#001B,@2468(pc)
-	mov	#0001,2724(pc)
+	mov	#001A,@(5424)
+	mov	#0001,@#56E4
+	mov	#000D,@#56F4
+	mov	#001B,@(5424)
+	mov	#0001,@#56E6
 	mov	#50DC,r5
-	mov	#001C,@2458(pc)
-	mov	2714(pc),r2
+	mov	#001C,@(5424)
+	mov	@#56E6,r2
 	add	(r5)+,r2
 	asl	r2
 	mov	5A3E(r2),r0
 	mov	r0,r3
-	mov	r3,270A(pc)
-	inc	@2442(pc)
+	mov	r3,@#56EA
+	inc	@(5426)
 	tst	r3
 	beq	301A
-	mov	#001F,@2438(pc)
-	mov	26F6(pc),r3
-	add	2700(pc),r3
-	mov	r3,26F0(pc)
-	inc	@2428(pc)
-	cmp	28B8(pc),r3
+	mov	#001F,@(5424)
+	mov	@#56E8,r3
+	add	@#56F6,r3
+	mov	r3,@#56EA
+	inc	@(5426)
+	cmp	@#58BA,r3
 	bne	301A
-	mov	#0022,@241C(pc)
+	mov	#0022,@(5424)
 	mov	r0,r1
 	dec	r1
 	mov	r1,5A3E(r2)
-	inc	@2410(pc)
-	jmp	01B4(pc)
-	mov	#0024,@2406(pc)
-	inc	26C4(pc)
-	cmp	26C0(pc),#0004
+	inc	@(5426)
+	jmp	@#31CE
+	mov	#0024,@(5424)
+	inc	@#56E8
+	cmp	@#56E8,#0004
 	ble	2FC8
-	add	#000D,26C4(pc)
-	inc	26B0(pc)
-	cmp	26AC(pc),#0005
+	add	#000D,@#56F4
+	inc	@#56E6
+	cmp	@#56E6,#0005
 	ble	2FB8
-	inc	@23E4(pc)
-	mov	2874(pc),2876(pc)
-	inc	@23DA(pc)
-	clr	2870(pc)
-	inc	@23D2(pc)
-	mov	#0001,2868(pc)
-	inc	@23C8(pc)
+	inc	@(5426)
+	mov	@#58BA,@#58BC
+	inc	@(5426)
+	clr	@#58C0
+	inc	@(5426)
+	mov	#0001,@#58C0
+	inc	@(5426)
 	br	3096
-	mov	#0029,@23C0(pc)
-	cmp	2850(pc),#0004
+	mov	#0029,@(5424)
+	cmp	@#58BA,#0004
 	blt	3096
-	mov	#002B,@23B2(pc)
-	dec	2842(pc)
-	inc	@23AA(pc)
+	mov	#002B,@(5424)
+	dec	@#58BA
+	inc	@(5426)
 	br	3096
-	mov	#002D,@23A2(pc)
-	cmp	2832(pc),#004C
+	mov	#002D,@(5424)
+	cmp	@#58BA,#004C
 	bgt	3096
-	mov	#002F,@2394(pc)
-	inc	2824(pc)
-	mov	#0030,@238A(pc)
-	tst	2822(pc)
+	mov	#002F,@(5424)
+	inc	@#58BA
+	mov	#0030,@(5424)
+	tst	@#58C2
 	bne	30A6
-	jmp	0128(pc)
-	mov	#0032,@237A(pc)
-	cmp	2810(pc),#0015
+	jmp	@#31CE
+	mov	#0032,@(5424)
+	cmp	@#58C0,#0015
 	blt	30E2
-	mov	#0034,@236C(pc)
-	mov	2802(pc),2630(pc)
-	inc	262C(pc)
+	mov	#0034,@(5424)
+	mov	@#58C0,@#56EE
+	inc	@#56F0
 	mov	#5104,r5
-	jsr	pc,1164(pc)
-	inc	@2356(pc)
-	clr	27EE(pc)
-	inc	@234E(pc)
-	clr	27E4(pc)
-	inc	@2346(pc)
+	jsr	pc,@#4230
+	inc	@(5426)
+	clr	@#58C2
+	inc	@(5426)
+	clr	@#58C0
+	inc	@(5426)
 	br	31CE
-	mov	#0038,@233E(pc)
-	inc	27D4(pc)
-	inc	@2336(pc)
-	mov	27CC(pc),25FC(pc)
-	inc	25F8(pc)
+	mov	#0038,@(5424)
+	inc	@#58C0
+	inc	@(5426)
+	mov	@#58C0,@#56F0
+	inc	@#56F2
 	mov	#510E,r5
-	jsr	pc,112E(pc)
-	inc	@2320(pc)
-	mov	#0001,25DC(pc)
-	mov	#003B,@2314(pc)
-	mov	#0001,25CE(pc)
+	jsr	pc,@#4230
+	inc	@(5426)
+	mov	#0001,@#56E6
+	mov	#003B,@(5424)
+	mov	#0001,@#56E4
 	mov	#50DC,r5
-	mov	#003C,@2304(pc)
-	mov	25C2(pc),r3
+	mov	#003C,@(5424)
+	mov	@#56E8,r3
 	mov	r3,r1
 	add	(r5)+,r1
 	asl	r1
 	mov	5926(r1),r2
-	mov	r2,25B8(pc)
-	inc	@22EE(pc)
+	mov	r2,@#56EC
+	inc	@(5426)
 	mov	598A(r1),r4
-	mov	r4,25AE(pc)
-	inc	@22E2(pc)
+	mov	r4,@#56EE
+	inc	@(5426)
 	tst	58C2(r1)
 	beq	3196
-	mov	#0040,@22D6(pc)
-	cmp	r4,276C(pc)
+	mov	#0040,@(5424)
+	cmp	r4,@#58C0
 	bne	3196
-	mov	#0042,@22CA(pc)
+	mov	#0042,@(5424)
 	mov	r2,r0
 	add	#0002,r0
-	mov	2758(pc),r1
+	mov	@#58BE,r1
 	cmp	r1,r0
 	beq	31CE
-	mov	#0044,@22B6(pc)
+	mov	#0044,@(5424)
 	mov	r2,r0
 	add	#0003,r0
 	cmp	r1,r0
 	beq	31CE
-	mov	#0046,@22A6(pc)
+	mov	#0046,@(5424)
 	cmp	r3,#0003
 	ble	3196
-	mov	#0048,@229A(pc)
+	mov	#0048,@(5424)
 	mov	r2,r0
 	add	#0004,r0
 	cmp	r1,r0
 	beq	31CE
-	mov	#004A,@228A(pc)
-	inc	2546(pc)
-	cmp	2542(pc),#000A
+	mov	#004A,@(5424)
+	inc	@#56E6
+	cmp	@#56E6,#000A
 	ble	311C
-	inc	253C(pc)
-	cmp	2538(pc),#0005
+	inc	@#56E8
+	cmp	@#56E8,#0005
 	ble	310C
-	inc	@226E(pc)
-	cmp	2704(pc),#0001
+	inc	@(5426)
+	cmp	@#58C0,#0001
 	beq	31CE
-	mov	#004D,@2260(pc)
+	mov	#004D,@(5424)
 	mov	#5118,r5
-	jsr	pc,1062(pc)
-	mov	#004E,@2252(pc)
-	cmp	26E4(pc),26E0(pc)
+	jsr	pc,@#4230
+	mov	#004E,@(5424)
+	cmp	@#58BC,@#58B8
 	beq	3218
-	mov	#0050,@2244(pc)
-	mov	26D4(pc),26D4(pc)
-	inc	@223A(pc)
+	mov	#0050,@(5424)
+	mov	@#58BA,@#58BA
+	inc	@(5426)
 	mov	#5100,r5
-	jsr	pc,0F48(pc)
-	inc	@222E(pc)
-	mov	26BE(pc),24F6(pc)
-	sub	#0002,24F0(pc)
+	jsr	pc,@#413C
+	inc	@(5426)
+	mov	@#58BA,@#56F2
+	sub	#0002,@#56F2
 	mov	#5122,r5
-	jsr	pc,1024(pc)
-	inc	@2216(pc)
+	jsr	pc,@#4230
+	inc	@(5426)
 	mov	#50FC,r5
-	jsr	pc,0F24(pc)
-	mov	#0054,@2208(pc)
+	jsr	pc,@#413C
+	mov	#0054,@(5424)
 	rts	pc
 
 ;; fn3220: 3220
+;;   Called from:
+;;     223A (in fn1DAE)
+;;     225E (in fn1DAE)
 fn3220 proc
-	jsr	r4,DCD4(pc)
+	jsr	r4,@#0EF8
 	bis	r4,@-(r4)
-	mov	#0009,@21FA(pc)
-	tst	2692(pc)
+	mov	#0009,@(5424)
+	tst	@#58C2
 	bne	3236
 
 l3232:
-	jmp	0228(pc)
+	jmp	@#345E
 
 l3236:
-	mov	#000B,@21EA(pc)
-	mov	#0001,24CC(pc)
+	mov	#000B,@(5424)
+	mov	#0001,@#570C
 
 l3242:
-	mov	#000C,@21DE(pc)
-	mov	#0001,24C2(pc)
-	mov	#513E,24B2(pc)
+	mov	#000C,@(5424)
+	mov	#0001,@#570E
+	mov	#513E,@#5704
 
 l3254:
-	mov	#000D,@21CC(pc)
-	mov	24B0(pc),r3
+	mov	#000D,@(5424)
+	mov	@#570E,r3
 	mov	r3,r1
-	add	@24A2(pc),r1
+	add	@(5706),r1
 	asl	r1
 	tst	58C2(r1)
 	beq	3358
 
 l326C:
-	mov	#000F,@21B4(pc)
+	mov	#000F,@(5424)
 	mov	5926(r1),r2
-	mov	r2,2498(pc)
-	inc	@21A8(pc)
-	mov	598A(r1),2490(pc)
-	inc	@219E(pc)
+	mov	r2,@#5712
+	inc	@(5426)
+	mov	598A(r1),@#5712
+	inc	@(5426)
 	mov	r2,r0
 	add	#0002,r0
-	mov	262C(pc),r1
+	mov	@#58BE,r1
 	cmp	r1,r0
 	beq	32C2
 
 l3296:
-	mov	#0013,@218A(pc)
+	mov	#0013,@(5424)
 	mov	r2,r0
 	add	#0003,r0
 	cmp	r1,r0
 	beq	32C2
 
 l32A6:
-	mov	#0015,@217A(pc)
+	mov	#0015,@(5424)
 	cmp	r3,#0003
 	ble	3358
 
 l32B2:
-	mov	#0017,@216E(pc)
+	mov	#0017,@(5424)
 	mov	r2,r0
 	add	#0004,r0
 	cmp	r1,r0
 	bne	3358
 
 l32C2:
-	mov	#0019,@215E(pc)
-	mov	25F4(pc),r1
+	mov	#0019,@(5424)
+	mov	@#58C0,r1
 	inc	r1
-	cmp	r1,2442(pc)
+	cmp	r1,@#5714
 	bne	3358
 
 l32D4:
-	mov	#001B,@214C(pc)
-	mov	r1,2438(pc)
+	mov	#001B,@(5424)
+	mov	r1,@#5716
 	mov	#515E,r5
-	jsr	pc,0C5C(pc)
-	inc	@213C(pc)
-	clr	25D4(pc)
-	inc	@2134(pc)
-	clr	25CA(pc)
-	inc	@212C(pc)
-	mov	2410(pc),r1
+	jsr	pc,@#3F42
+	inc	@(5426)
+	clr	@#58C2
+	inc	@(5426)
+	clr	@#58C0
+	inc	@(5426)
+	mov	@#570E,r1
 	mov	r1,r0
-	add	@2402(pc),r0
+	add	@(5706),r0
 	asl	r0
 	clr	58C2(r0)
-	inc	@2118(pc)
+	inc	@(5426)
 	cmp	r1,#0003
 	ble	331E
 
 l3314:
-	inc	@210E(pc)
-	add	#000A,2558(pc)
+	inc	@(5426)
+	add	#000A,@#5874
 
 l331E:
-	mov	#0021,@2102(pc)
-	cmp	23E6(pc),#0003
+	mov	#0021,@(5424)
+	cmp	@#570E,#0003
 	bne	3336
 
 l332C:
-	inc	@20F6(pc)
-	add	#0014,2540(pc)
+	inc	@(5426)
+	add	#0014,@#5874
 
 l3336:
-	mov	#0023,@20EA(pc)
-	cmp	23CE(pc),#0003
+	mov	#0023,@(5424)
+	cmp	@#570E,#0003
 	bge	334E
 
 l3344:
-	inc	@20DE(pc)
-	add	#001E,2528(pc)
+	inc	@(5426)
+	add	#001E,@#5874
 
 l334E:
-	mov	#0025,@20D2(pc)
-	jmp	0106(pc)
+	mov	#0025,@(5424)
+	jmp	@#345E
 
 l3358:
-	mov	#0026,@20C8(pc)
-	add	#0002,23A2(pc)
-	inc	23A8(pc)
-	cmp	23A4(pc),#000A
+	mov	#0026,@(5424)
+	add	#0002,@#5704
+	inc	@#5710
+	cmp	@#5710,#000A
 	bgt	3374
 
 l3370:
-	jmp	FEE0(pc)
+	jmp	@#3254
 
 l3374:
-	inc	2396(pc)
-	cmp	2392(pc),#0005
+	inc	@#570E
+	cmp	@#570E,#0005
 	bgt	3384
 
 l3380:
-	jmp	FEBE(pc)
+	jmp	@#3242
 
 l3384:
-	inc	@209E(pc)
-	tst	2536(pc)
+	inc	@(5426)
+	tst	@#58C2
 	beq	345E
 
 l338E:
-	mov	#0029,@2092(pc)
-	mov	#0001,2376(pc)
-	mov	#5A18,2368(pc)
-	mov	#59F0,2364(pc)
-	mov	#5A04,2360(pc)
+	mov	#0029,@(5424)
+	mov	#0001,@#570E
+	mov	#5A18,@#5706
+	mov	#59F0,@#5708
+	mov	#5A04,@#570A
 
 l33AC:
-	mov	#002A,@2074(pc)
-	tst	@2352(pc)
+	mov	#002A,@(5424)
+	tst	@(5708)
 	beq	343A
 
 l33B8:
-	mov	#002C,@2068(pc)
-	mov	@2348(pc),234E(pc)
-	inc	@205E(pc)
-	mov	@2340(pc),2346(pc)
-	inc	@2054(pc)
-	cmp	24E8(pc),233A(pc)
+	mov	#002C,@(5424)
+	mov	@(570A),@#5710
+	inc	@(5426)
+	mov	@(570C),@#5712
+	inc	@(5426)
+	cmp	@#58BE,@#5710
 	bne	343A
 
 l33DA:
-	mov	#0030,@2046(pc)
-	cmp	24DC(pc),232E(pc)
+	mov	#0030,@(5424)
+	cmp	@#58C0,@#5712
 	bne	343A
 
 l33E8:
-	mov	#0032,@2038(pc)
+	mov	#0032,@(5424)
 	mov	#5164,r5
-	jsr	pc,0B4C(pc)
-	inc	@202C(pc)
-	mov	24C2(pc),2318(pc)
-	inc	2314(pc)
+	jsr	pc,@#3F42
+	inc	@(5426)
+	mov	@#58C0,@#5716
+	inc	@#5718
 	mov	#516A,r5
-	jsr	pc,0E24(pc)
-	inc	@2016(pc)
-	clr	@22F6(pc)
-	inc	@200E(pc)
-	clr	@22F0(pc)
-	inc	@2006(pc)
-	clr	@22E4(pc)
-	inc	@1FFE(pc)
-	clr	2494(pc)
-	inc	@1FF6(pc)
-	clr	248E(pc)
-	inc	@1FEE(pc)
+	jsr	pc,@#4230
+	inc	@(5426)
+	clr	@(570A)
+	inc	@(5426)
+	clr	@(570C)
+	inc	@(5426)
+	clr	@(5708)
+	inc	@(5426)
+	clr	@#58C0
+	inc	@(5426)
+	clr	@#58C2
+	inc	@(5426)
 	br	345E
 
 l343A:
-	mov	#003A,@1FE6(pc)
-	add	#0002,22C2(pc)
-	add	#0002,22BE(pc)
-	add	#0002,22BA(pc)
-	inc	22BA(pc)
-	cmp	22B6(pc),#000A
+	mov	#003A,@(5424)
+	add	#0002,@#5706
+	add	#0002,@#5708
+	add	#0002,@#570A
+	inc	@#5710
+	cmp	@#5710,#000A
 	ble	33AC
 
 l345E:
-	mov	#003B,@1FC2(pc)
-	cmp	@2296(pc),240C(pc)
+	mov	#003B,@(5424)
+	cmp	@(56FE),@#5874
 	beq	34A4
 
 l346C:
-	mov	#003D,@1FB4(pc)
-	mov	2400(pc),@2286(pc)
-	inc	@1FAA(pc)
+	mov	#003D,@(5424)
+	mov	@#5876,@(56FC)
+	inc	@(5426)
 	mov	#5158,-(sp)
 	mov	#5136,-(sp)
 	mov	#5700,-(sp)
-	jsr	pc,DB18(pc)
+	jsr	pc,@#0FA4
 	mov	#5876,-(sp)
-	jsr	pc,D64E(pc)
-	jsr	pc,DA10(pc)
-	inc	@1F8A(pc)
+	jsr	pc,@#0AE2
+	jsr	pc,@#0EA8
+	inc	@(5426)
 	mov	#5174,r5
-	jsr	pc,0D8C(pc)
+	jsr	pc,@#4230
 
 l34A4:
-	mov	#0040,@1F7C(pc)
+	mov	#0040,@(5424)
 	rts	pc
 
 ;; fn34AC: 34AC
+;;   Called from:
+;;     2284 (in fn1DAE)
 fn34AC proc
-	jsr	r4,DA48(pc)
+	jsr	r4,@#0EF8
 	bis	r5,@15FF(sp)
 	illegal
 	mov	@15F7(r5),@-(sp)
@@ -4276,517 +4602,522 @@ fn34AC proc
 	cmp	@r1,15F7(r2)
 	illegal
 	cmp	@r2,@r4
-	mov	#5A2C,2258(pc)
-	mov	#518E,2254(pc)
-	mov	#000C,@1F50(pc)
-	mov	@2248(pc),r1
-	mov	r1,2254(pc)
-	inc	@1F44(pc)
+	mov	#5A2C,@#5720
+	mov	#518E,@#5722
+	mov	#000C,@(5424)
+	mov	@(5722),r1
+	mov	r1,@#5732
+	inc	@(5426)
 	mov	r1,r0
-	add	@223C(pc),r0
+	add	@(5724),r0
 	asl	r0
 	tst	58C2(r0)
 	bne	34F4
-	jmp	011C(pc)
-	mov	#000F,@1F2C(pc)
-	clr	2236(pc)
-	inc	@1F24(pc)
-	mov	#0001,222E(pc)
+	jmp	@#3610
+	mov	#000F,@(5424)
+	clr	@#5734
+	inc	@(5426)
+	mov	#0001,@#5734
 	mov	#5A18,r5
-	mov	#0011,@1F14(pc)
+	mov	#0011,@(5424)
 	tst	(r5)+
 	bne	352E
-	mov	#0013,@1F0A(pc)
-	tst	2214(pc)
+	mov	#0013,@(5424)
+	tst	@#5734
 	bne	352E
-	mov	#0015,@1EFE(pc)
-	mov	220A(pc),2206(pc)
-	mov	#0016,@1EF2(pc)
-	inc	21FE(pc)
-	cmp	21FA(pc),#000A
+	mov	#0015,@(5424)
+	mov	@#5736,@#5732
+	mov	#0016,@(5424)
+	inc	@#5736
+	cmp	@#5736,#000A
 	ble	350C
-	inc	@1EE2(pc)
-	tst	21EC(pc)
+	inc	@(5426)
+	tst	@#5734
 	beq	3610
-	mov	#0019,@1ED6(pc)
+	mov	#0019,@(5424)
 	mov	#51AE,r5
-	jsr	pc,D9F0(pc)
+	jsr	pc,@#0F48
 	mov	r1,-(sp)
 	mov	r0,-(sp)
 	mov	#6666,-(sp)
 	mov	#4066,-(sp)
-	jsr	pc,D8A6(pc)
+	jsr	pc,@#0E0E
 	blt	3610
-	mov	#001B,@1EB6(pc)
-	add	2346(pc),2340(pc)
-	inc	@1EAC(pc)
-	add	2342(pc),2338(pc)
-	inc	@1EA2(pc)
-	mov	#0002,21AE(pc)
-	inc	@1E98(pc)
-	cmp	21A0(pc),#0003
+	mov	#001B,@(5424)
+	add	@#58BA,@#58B4
+	inc	@(5426)
+	add	@#58C0,@#58B6
+	inc	@(5426)
+	mov	#0002,@#5736
+	inc	@(5426)
+	cmp	@#5732,#0003
 	ble	35A0
-	inc	@1E8C(pc)
-	mov	#0003,2198(pc)
-	mov	#0020,@1E80(pc)
+	inc	@(5426)
+	mov	#0003,@#5736
+	mov	#0020,@(5424)
 	mov	#51AE,r5
-	jsr	pc,D99A(pc)
+	jsr	pc,@#0F48
 	mov	r1,-(sp)
 	mov	r0,-(sp)
-	mov	2182(pc),-(sp)
-	jsr	pc,D04E(pc)
-	jsr	pc,D0B2(pc)
-	mov	(sp)+,2188(pc)
-	mov	(sp)+,2186(pc)
+	mov	@#5738,-(sp)
+	jsr	pc,@#0608
+	jsr	pc,@#0670
+	mov	(sp)+,@#574A
+	mov	(sp)+,@#574C
 	mov	#51B4,r5
-	jsr	pc,D4E0(pc)
-	mov	r0,2166(pc)
-	inc	@1E50(pc)
-	add	#0002,215C(pc)
-	inc	@1E46(pc)
-	mov	214E(pc),r2
-	add	@213C(pc),r2
+	jsr	pc,@#0AAE
+	mov	r0,@#5738
+	inc	@(5426)
+	add	#0002,@#5736
+	inc	@(5426)
+	mov	@#5732,r2
+	add	@(5724),r2
 	asl	r2
-	mov	214A(pc),r0
+	mov	@#5738,r0
 	add	5926(r2),r0
-	mov	213E(pc),r3
+	mov	@#5734,r3
 	asl	r3
 	mov	r0,59EE(r3)
-	inc	@1E26(pc)
+	inc	@(5426)
 	mov	598A(r2),5A02(r3)
-	inc	@1E1C(pc)
+	inc	@(5426)
 	mov	#FFFF,5A16(r3)
-	mov	#0025,@1E10(pc)
-	add	#0002,2106(pc)
-	add	#0002,2102(pc)
-	dec	212A(pc)
+	mov	#0025,@(5424)
+	add	#0002,@#5720
+	add	#0002,@#5722
+	dec	@#5750
 	ble	362C
-	jmp	FEA4(pc)
-	inc	@1DF6(pc)
-	mov	#0001,20FA(pc)
-	mov	#000A,2116(pc)
-	mov	#5A18,20E6(pc)
-	mov	#59F0,20E2(pc)
-	mov	#5A04,20DE(pc)
-	mov	#0027,@1DD2(pc)
-	tst	@20D0(pc)
+	jmp	@#34D0
+	inc	@(5426)
+	mov	#0001,@#572E
+	mov	#000A,@#5750
+	mov	#5A18,@#5726
+	mov	#59F0,@#5728
+	mov	#5A04,@#572A
+	mov	#0027,@(5424)
+	tst	@(5728)
 	bne	365E
-	jmp	02D6(pc)
-	mov	#0029,@1DC2(pc)
-	mov	@20C2(pc),r0
-	mov	r0,20CE(pc)
-	inc	@1DB6(pc)
-	mov	@20B8(pc),r1
-	mov	r1,20C4(pc)
-	inc	@1DAA(pc)
+	jmp	@#3934
+	mov	#0029,@(5424)
+	mov	@(572A),r0
+	mov	r0,@#573A
+	inc	@(5426)
+	mov	@(572C),r1
+	mov	r1,@#573C
+	inc	@(5426)
 	cmp	r0,#004F
 	ble	3686
-	jmp	027E(pc)
-	mov	#002D,@1D9A(pc)
+	jmp	@#3904
+	mov	#002D,@(5424)
 	tst	r0
 	bgt	3694
-	jmp	0270(pc)
-	mov	#002F,@1D8C(pc)
+	jmp	@#3904
+	mov	#002F,@(5424)
 	cmp	r1,#0013
 	ble	36A4
-	jmp	0260(pc)
-	mov	#0031,@1D7C(pc)
+	jmp	@#3904
+	mov	#0031,@(5424)
 	tst	r1
 	bgt	36B2
-	jmp	0252(pc)
-	mov	#0033,@1D6E(pc)
-	cmp	@206C(pc),#0001
+	jmp	@#3904
+	mov	#0033,@(5424)
+	cmp	@(5728),#0001
 	beq	374E
-	mov	#0035,@1D60(pc)
-	sub	21F0(pc),r0
-	mov	r0,2070(pc)
-	inc	@1D54(pc)
+	mov	#0035,@(5424)
+	sub	@#58BA,r0
+	mov	r0,@#573E
+	inc	@(5426)
 	tst	r0
 	bge	36E2
-	inc	@1D4C(pc)
-	mov	r0,2060(pc)
-	neg	205C(pc)
-	mov	#0038,@1D3E(pc)
-	cmp	2052(pc),#0007
+	inc	@(5426)
+	mov	r0,@#573E
+	neg	@#573E
+	mov	#0038,@(5424)
+	cmp	@#573E,#0007
 	blt	375C
-	mov	#003A,@1D30(pc)
-	mov	@2026(pc),-(sp)
-	jsr	pc,CF0A(pc)
-	mov	(sp)+,203E(pc)
-	mov	(sp)+,203C(pc)
-	inc	@1D1C(pc)
-	mov	2034(pc),-(sp)
-	mov	202E(pc),-(sp)
+	mov	#003A,@(5424)
+	mov	@(5720),-(sp)
+	jsr	pc,@#0608
+	mov	(sp)+,@#5740
+	mov	(sp)+,@#5742
+	inc	@(5426)
+	mov	@#5742,-(sp)
+	mov	@#5740,-(sp)
 	clr	-(sp)
 	mov	#4348,-(sp)
-	jsr	pc,D038(pc)
-	mov	(sp)+,2020(pc)
-	mov	(sp)+,201E(pc)
-	inc	@1CFE(pc)
+	jsr	pc,@#0754
+	mov	(sp)+,@#5740
+	mov	(sp)+,@#5742
+	inc	@(5426)
 	mov	#51AE,r5
-	jsr	pc,D818(pc)
+	jsr	pc,@#0F48
 	mov	r1,-(sp)
 	mov	r0,-(sp)
-	mov	200A(pc),-(sp)
-	mov	2004(pc),-(sp)
-	jsr	pc,D6CE(pc)
+	mov	@#5742,-(sp)
+	mov	@#5740,-(sp)
+	jsr	pc,@#0E0E
 	bgt	3746
-	jmp	01BE(pc)
-	mov	#003E,@1CDA(pc)
+	jmp	@#3904
+	mov	#003E,@(5424)
 	br	375C
-	mov	#003F,@1CD2(pc)
+	mov	#003F,@(5424)
 	mov	#51B8,r5
-	jsr	pc,0AD4(pc)
-	mov	#0040,@1CC4(pc)
-	mov	#0001,@1FC0(pc)
-	inc	@1CBA(pc)
-	mov	1FCC(pc),r0
+	jsr	pc,@#4230
+	mov	#0040,@(5424)
+	mov	#0001,@(5726)
+	inc	@(5426)
+	mov	@#573C,r0
 	dec	r0
-	mov	r0,1FC6(pc)
-	inc	@1CAC(pc)
+	mov	r0,@#573C
+	inc	@(5426)
 	cmp	r0,#0001
 	beq	3808
-	mov	#0044,@1CA0(pc)
+	mov	#0044,@(5424)
 	cmp	r0,#0002
 	beq	3872
-	mov	#0046,@1C94(pc)
+	mov	#0046,@(5424)
 	mov	#51C2,r5
-	jsr	pc,09A2(pc)
-	inc	@1C88(pc)
+	jsr	pc,@#413C
+	inc	@(5426)
 	mov	#51C6,r5
-	jsr	pc,0A8A(pc)
-	inc	@1C7C(pc)
+	jsr	pc,@#4230
+	inc	@(5426)
 	mov	#51D0,r5
-	jsr	pc,098A(pc)
-	inc	@1C70(pc)
-	tst	2108(pc)
+	jsr	pc,@#413C
+	inc	@(5426)
+	tst	@#58C2
 	bne	37C0
-	jmp	015E(pc)
-	mov	#004B,@1C60(pc)
-	cmp	1F70(pc),20F2(pc)
+	jmp	@#391E
+	mov	#004B,@(5424)
+	cmp	@#573A,@#58BC
 	beq	37D2
-	jmp	014C(pc)
-	mov	#004D,@1C4E(pc)
-	cmp	1F60(pc),20E2(pc)
+	jmp	@#391E
+	mov	#004D,@(5424)
+	cmp	@#573C,@#58BE
 	beq	37E4
-	jmp	013A(pc)
-	mov	#004F,@1C3C(pc)
-	clr	20D4(pc)
-	inc	@1C34(pc)
-	clr	20CA(pc)
-	inc	@1C2C(pc)
+	jmp	@#391E
+	mov	#004F,@(5424)
+	clr	@#58C2
+	inc	@(5426)
+	clr	@#58C0
+	inc	@(5426)
 	mov	#51D4,r5
-	jsr	pc,0740(pc)
-	inc	@1C20(pc)
+	jsr	pc,@#3F42
+	inc	@(5426)
 	br	3904
-	mov	#0053,@1C18(pc)
-	mov	20A8(pc),r2
-	mov	1F24(pc),r1
+	mov	#0053,@(5424)
+	mov	@#58BA,r2
+	mov	@#573A,r1
 	cmp	r1,r2
 	beq	383E
-	mov	#0055,@1C06(pc)
+	mov	#0055,@(5424)
 	mov	r2,r0
 	dec	r0
 	cmp	r1,r0
 	beq	383E
-	mov	#0057,@1BF8(pc)
+	mov	#0057,@(5424)
 	mov	r2,r0
 	inc	r0
 	cmp	r1,r0
 	beq	383E
-	mov	#0059,@1BEA(pc)
+	mov	#0059,@(5424)
 	br	3904
-	mov	#005A,@1BE2(pc)
+	mov	#005A,@(5424)
 	mov	#51DA,r5
-	jsr	pc,0110(pc)
-	inc	@1BD6(pc)
-	mov	@1ECA(pc),r0
+	jsr	pc,@#395C
+	inc	@(5426)
+	mov	@(571E),r0
 	inc	r0
-	mov	r0,@1EC4(pc)
-	inc	@1BC8(pc)
+	mov	r0,@(571E)
+	inc	@(5426)
 	cmp	r0,#0004
 	blt	3904
-	mov	#005E,@1BBC(pc)
+	mov	#005E,@(5424)
 	mov	#51D0,r5
-	jsr	pc,EBC8(pc)
-	mov	#005F,@1BAE(pc)
-	mov	#0001,1EC6(pc)
-	mov	#000D,1ECA(pc)
-	mov	#0060,@1B9C(pc)
-	mov	#0001,1EB6(pc)
+	jsr	pc,@#243A
+	mov	#005F,@(5424)
+	mov	#0001,@#5742
+	mov	#000D,@#574C
+	mov	#0060,@(5424)
+	mov	#0001,@#5744
 	mov	#518E,r5
-	mov	#0061,@1B8C(pc)
-	mov	1EA6(pc),r2
+	mov	#0061,@(5424)
+	mov	@#5744,r2
 	add	(r5)+,r2
 	asl	r2
 	mov	5A3E(r2),r0
 	beq	38D8
-	mov	#0063,@1B78(pc)
-	mov	1E94(pc),r3
-	add	1E98(pc),r3
-	mov	r3,1E8E(pc)
-	inc	@1B68(pc)
-	cmp	r3,1E78(pc)
+	mov	#0063,@(5424)
+	mov	@#5746,r3
+	add	@#574E,r3
+	mov	r3,@#5748
+	inc	@(5426)
+	cmp	r3,@#573A
 	bne	38D8
-	mov	#0066,@1B5C(pc)
+	mov	#0066,@(5424)
 	mov	r0,r1
 	dec	r1
 	mov	r1,5A3E(r2)
-	inc	@1B50(pc)
+	inc	@(5426)
 	br	3904
-	mov	#0068,@1B48(pc)
-	inc	1E64(pc)
-	cmp	1E60(pc),#0004
+	mov	#0068,@(5424)
+	inc	@#5746
+	cmp	@#5746,#0004
 	ble	3894
-	add	#000D,1E5E(pc)
-	inc	1E50(pc)
-	cmp	1E4C(pc),#0005
+	add	#000D,@#574C
+	inc	@#5744
+	cmp	@#5744,#0005
 	ble	3884
-	inc	@1B26(pc)
-	jmp	FE88(pc)
-	mov	#006A,@1B1C(pc)
-	clr	1E2C(pc)
-	inc	@1B14(pc)
-	clr	1E26(pc)
-	inc	@1B0C(pc)
-	clr	@1E0A(pc)
-	mov	#006D,@1B02(pc)
-	mov	1E12(pc),@1E00(pc)
-	inc	@1AF8(pc)
-	mov	1E0A(pc),@1DF8(pc)
-	mov	#006F,@1AEC(pc)
-	add	#0002,1DE8(pc)
-	add	#0002,1DE4(pc)
-	add	#0002,1DE0(pc)
-	dec	1E02(pc)
+	inc	@(5426)
+	jmp	@#378C
+	mov	#006A,@(5424)
+	clr	@#573A
+	inc	@(5426)
+	clr	@#573C
+	inc	@(5426)
+	clr	@(5728)
+	mov	#006D,@(5424)
+	mov	@#573A,@(5728)
+	inc	@(5426)
+	mov	@#573C,@(572A)
+	mov	#006F,@(5424)
+	add	#0002,@#5726
+	add	#0002,@#5728
+	add	#0002,@#572A
+	dec	@#5752
 	ble	3956
-	jmp	FCF8(pc)
-	inc	@1ACC(pc)
+	jmp	@#364E
+	inc	@(5426)
 	rts	pc
 
 ;; fn395C: 395C
+;;   Called from:
+;;     22A4 (in fn1DAE)
 fn395C proc
-	jsr	r4,D598(pc)
+	jsr	r4,@#0EF8
 	bis	pc,@(r4)+
-	mov	#0006,@1ABE(pc)
-	clrb	1DF2(pc)
-	inc	@1AB6(pc)
-	clr	1DEC(pc)
+	mov	#0006,@(5424)
+	clrb	@#575E
+	inc	@(5426)
+	clr	@#5760
 
 l3974:
-	mov	#0008,@1AAC(pc)
-	mov	1DE2(pc),1DE4(pc)
-	inc	1DE0(pc)
-	mov	1F32(pc),1DDC(pc)
-	add	1DD2(pc),1DD6(pc)
+	mov	#0008,@(5424)
+	mov	@#5760,@#5762
+	inc	@#5764
+	mov	@#58BA,@#5764
+	add	@#5760,@#5764
 	mov	#520A,r5
-	jsr	pc,0898(pc)
-	inc	@1A8A(pc)
-	mov	1DC0(pc),1DC6(pc)
-	inc	1DC2(pc)
+	jsr	pc,@#4230
+	inc	@(5426)
+	mov	@#5760,@#5766
+	inc	@#5768
 	mov	#5214,r5
-	jsr	pc,0882(pc)
-	inc	@1A74(pc)
-	mov	1DAA(pc),1DB2(pc)
-	inc	1DAE(pc)
-	mov	1EFA(pc),1DAA(pc)
-	sub	1D9A(pc),1DA4(pc)
+	jsr	pc,@#4230
+	inc	@(5426)
+	mov	@#5760,@#5768
+	inc	@#576A
+	mov	@#58BA,@#576A
+	sub	@#5760,@#576A
 	mov	#521E,r5
-	jsr	pc,0860(pc)
-	inc	@1A52(pc)
-	mov	1EE2(pc),1D94(pc)
-	sub	1D82(pc),1D8E(pc)
+	jsr	pc,@#4230
+	inc	@(5426)
+	mov	@#58BA,@#576C
+	sub	@#5760,@#576C
 	mov	#5228,r5
-	jsr	pc,0848(pc)
-	inc	@1A3A(pc)
-	mov	1ECA(pc),1D7E(pc)
-	add	1D6A(pc),1D78(pc)
+	jsr	pc,@#4230
+	inc	@(5426)
+	mov	@#58BA,@#576E
+	add	@#5760,@#576E
 	mov	#5232,r5
-	jsr	pc,0830(pc)
-	inc	@1A22(pc)
-	cmp	1D58(pc),#0005
+	jsr	pc,@#4230
+	inc	@(5426)
+	cmp	@#5760,#0005
 	beq	3AC2
 
 l3A0C:
-	mov	#000F,@1A14(pc)
-	mov	1D4A(pc),1D6A(pc)
-	add	#0002,1D64(pc)
-	mov	1D60(pc),1D4E(pc)
-	mov	1E92(pc),r0
-	add	1D34(pc),r0
+	mov	#000F,@(5424)
+	mov	@#5760,@#5780
+	add	#0002,@#5780
+	mov	@#5782,@#5770
+	mov	@#58BA,r0
+	add	@#5760,r0
 	inc	r0
-	mov	r0,1D42(pc)
+	mov	r0,@#5774
 	mov	#523C,r5
-	jsr	pc,07F6(pc)
-	inc	@19E8(pc)
-	mov	1D40(pc),1D32(pc)
+	jsr	pc,@#4230
+	inc	@(5426)
+	mov	@#5782,@#5774
 	mov	#5246,r5
-	jsr	pc,07E4(pc)
-	inc	@19D6(pc)
-	mov	1D0C(pc),r0
+	jsr	pc,@#4230
+	inc	@(5426)
+	mov	@#5760,r0
 	inc	r0
 	inc	r0
-	mov	r0,1D1C(pc)
-	mov	1E5A(pc),r0
+	mov	r0,@#5778
+	mov	@#58BA,r0
 	dec	r0
-	sub	1CFA(pc),r0
-	mov	r0,1D10(pc)
+	sub	@#5760,r0
+	mov	r0,@#577A
 	mov	#5250,r5
-	jsr	pc,07BE(pc)
-	inc	@19B0(pc)
-	mov	1E40(pc),r0
-	sub	1CE2(pc),r0
+	jsr	pc,@#4230
+	inc	@(5426)
+	mov	@#58BA,r0
+	sub	@#5760,r0
 	dec	r0
-	mov	r0,1CF8(pc)
+	mov	r0,@#577C
 	mov	#525A,r5
-	jsr	pc,07A4(pc)
-	inc	@1996(pc)
-	mov	1E26(pc),r0
-	add	1CC8(pc),r0
+	jsr	pc,@#4230
+	inc	@(5426)
+	mov	@#58BA,r0
+	add	@#5760,r0
 	inc	r0
-	mov	r0,1CE0(pc)
+	mov	r0,@#577E
 	mov	#5264,r5
-	jsr	pc,078A(pc)
-	inc	@197C(pc)
+	jsr	pc,@#4230
+	inc	@(5426)
 	mov	#5208,-(sp)
 	mov	#51F8,-(sp)
-	jsr	pc,D2C4(pc)
+	jsr	pc,@#0D7A
 	mov	#575E,-(sp)
-	jsr	pc,D006(pc)
-	jsr	pc,D3E6(pc)
+	jsr	pc,@#0AC4
+	jsr	pc,@#0EA8
 
 l3AC2:
-	mov	#0015,@195E(pc)
-	inc	1C94(pc)
-	cmp	1C90(pc),#0005
+	mov	#0015,@(5424)
+	inc	@#5760
+	cmp	@#5760,#0005
 	bgt	3AD8
 
 l3AD4:
-	jmp	FE9C(pc)
+	jmp	@#3974
 
 l3AD8:
-	inc	@194A(pc)
-	mov	#0001,1C7E(pc)
+	inc	@(5426)
+	mov	#0001,@#575E
 
 l3AE2:
-	mov	#0017,@193E(pc)
-	mov	#0001,1C74(pc)
+	mov	#0017,@(5424)
+	mov	#0001,@#5760
 	mov	#0004,r4
 	mov	#51FE,r5
 
 l3AF6:
-	mov	#0018,@192A(pc)
-	mov	1C60(pc),r1
+	mov	#0018,@(5424)
+	mov	@#5760,r1
 	mov	r1,r0
 	add	(r5)+,r0
 	asl	r0
 	mov	#FFFF,5A66(r0)
-	mov	#0019,@1914(pc)
+	mov	#0019,@(5424)
 	dec	r4
 	bgt	3AF6
 
 l3B16:
 	inc	r1
-	mov	r1,1C44(pc)
+	mov	r1,@#5760
 	cmp	r1,#0005
 	ble	3AE2
 
 l3B22:
-	inc	@1900(pc)
-	mov	#0004,1D8E(pc)
-	inc	@18F6(pc)
-	mov	#FFFF,1D86(pc)
-	inc	@18EC(pc)
+	inc	@(5426)
+	mov	#0004,@#58B8
+	inc	@(5426)
+	mov	#FFFF,@#58BA
+	inc	@(5426)
 	rts	pc
 
 ;; fn3B3C: 3B3C
+;;   Called from:
+;;     2246 (in fn1DAE)
+;;     226A (in fn1DAE)
 fn3B3C proc
-	jsr	r4,D3B8(pc)
+	jsr	r4,@#0EF8
 	bis	@r1,@-(sp)
-	mov	#0007,@18DE(pc)
-	cmp	1C3E(pc),#0001
+	mov	#0007,@(5424)
+	cmp	@#578A,#0001
 	beq	3C36
 
 l3B50:
-	mov	#0009,@18D0(pc)
+	mov	#0009,@(5424)
 	mov	#529C,r5
-	jsr	pc,D3EA(pc)
-	mov	r0,1C2A(pc)
-	mov	r1,1C28(pc)
-	inc	@18BC(pc)
-	mov	1C20(pc),-(sp)
-	mov	1C1A(pc),-(sp)
+	jsr	pc,@#0F48
+	mov	r0,@#578C
+	mov	r1,@#578E
+	inc	@(5426)
+	mov	@#578E,-(sp)
+	mov	@#578C,-(sp)
 	mov	#70A4,-(sp)
 	mov	#407D,-(sp)
-	jsr	pc,D290(pc)
+	jsr	pc,@#0E0E
 	blt	3C36
 
 l3B80:
-	mov	#000C,@18A0(pc)
-	mov	#0001,1BFE(pc)
-	inc	@1896(pc)
-	mov	1BFA(pc),-(sp)
-	mov	1BF4(pc),-(sp)
+	mov	#000C,@(5424)
+	mov	#0001,@#5788
+	inc	@(5426)
+	mov	@#578E,-(sp)
+	mov	@#578C,-(sp)
 	mov	#B852,-(sp)
 	mov	#407E,-(sp)
-	jsr	pc,D26A(pc)
+	jsr	pc,@#0E0E
 	blt	3BC2
 
 l3BA6:
-	mov	#000F,@187A(pc)
-	mov	#004C,1BDE(pc)
-	inc	@1870(pc)
-	mov	#FFFF,1BD6(pc)
-	inc	@1866(pc)
+	mov	#000F,@(5424)
+	mov	#004C,@#578E
+	inc	@(5426)
+	mov	#FFFF,@#5790
+	inc	@(5426)
 	br	3BD8
 
 l3BC2:
-	mov	#0012,@185E(pc)
-	mov	#0004,1BC2(pc)
-	inc	@1854(pc)
-	mov	#0001,1BBA(pc)
+	mov	#0012,@(5424)
+	mov	#0004,@#578E
+	inc	@(5426)
+	mov	#0001,@#5790
 
 l3BD8:
-	mov	#0014,@1848(pc)
+	mov	#0014,@(5424)
 	mov	#529C,r5
-	jsr	pc,D362(pc)
-	mov	r0,1BAA(pc)
-	mov	r1,1BA8(pc)
-	inc	@1834(pc)
-	mov	1BA0(pc),-(sp)
-	mov	1B9A(pc),-(sp)
+	jsr	pc,@#0F48
+	mov	r0,@#5794
+	mov	r1,@#5796
+	inc	@(5426)
+	mov	@#5796,-(sp)
+	mov	@#5794,-(sp)
 	clr	-(sp)
 	mov	#4180,-(sp)
-	jsr	pc,CA6C(pc)
-	mov	(sp)+,1B8C(pc)
-	mov	(sp)+,1B8A(pc)
-	inc	@1816(pc)
+	jsr	pc,@#0670
+	mov	(sp)+,@#5794
+	mov	(sp)+,@#5796
+	inc	@(5426)
 	mov	#52A2,r5
-	jsr	pc,CE96(pc)
+	jsr	pc,@#0AAE
 	add	#0013,r0
-	mov	r0,1B78(pc)
-	inc	@1802(pc)
-	cmp	1B70(pc),#0017
+	mov	r0,@#5798
+	inc	@(5426)
+	cmp	@#5798,#0017
 	blt	3C36
 
 l3C2C:
-	inc	@17F6(pc)
-	mov	#0016,1B62(pc)
+	inc	@(5426)
+	mov	#0016,@#5796
 
 l3C36:
-	mov	#0019,@17EA(pc)
-	tst	1B4A(pc)
+	mov	#0019,@(5424)
+	tst	@#578A
 	bne	3C46
 
 l3C42:
-	jmp	01C4(pc)
+	jmp	@#3E0A
 
 l3C46:
-	mov	#001B,@17DA(pc)
-	add	1B42(pc),1B3E(pc)
-	inc	@17D0(pc)
+	mov	#001B,@(5424)
+	add	@#5792,@#578E
+	inc	@(5426)
 	clr	r0
-	cmp	1B34(pc),#0004
+	cmp	@#5790,#0004
 	bge	3C62
 
 l3C60:
@@ -4794,7 +5125,7 @@ l3C60:
 
 l3C62:
 	clr	r1
-	cmp	1B28(pc),#004C
+	cmp	@#5790,#004C
 	ble	3C6E
 
 l3C6C:
@@ -4805,772 +5136,858 @@ l3C6E:
 	beq	3C76
 
 l3C72:
-	jmp	0174(pc)
+	jmp	@#3DEA
 
 l3C76:
-	mov	#001E,@17AA(pc)
-	mov	1B10(pc),1B1C(pc)
-	dec	1B18(pc)
+	mov	#001E,@(5424)
+	mov	@#5790,@#579C
+	dec	@#579E
 	mov	#52A6,r5
-	jsr	pc,05A2(pc)
-	inc	@1794(pc)
-	tst	1C2C(pc)
+	jsr	pc,@#4230
+	inc	@(5426)
+	tst	@#58C2
 	bne	3C9C
 
 l3C98:
-	jmp	016E(pc)
+	jmp	@#3E0A
 
 l3C9C:
-	mov	#0021,@1784(pc)
-	mov	1C18(pc),r1
-	cmp	r1,1AE6(pc)
+	mov	#0021,@(5424)
+	mov	@#58BE,r1
+	cmp	r1,@#5790
 	beq	3CD8
 
 l3CAC:
-	mov	#0023,@1774(pc)
-	mov	1ADA(pc),r0
+	mov	#0023,@(5424)
+	mov	@#5790,r0
 	inc	r0
 	cmp	r1,r0
 	beq	3CD8
 
 l3CBC:
-	mov	#0025,@1764(pc)
-	mov	1ACA(pc),r0
+	mov	#0025,@(5424)
+	mov	@#5790,r0
 	add	#0002,r0
 	cmp	r1,r0
 	beq	3CD8
 
 l3CCE:
-	mov	#0027,@1752(pc)
-	jmp	0132(pc)
+	mov	#0027,@(5424)
+	jmp	@#3E0A
 
 l3CD8:
-	mov	#0028,@1748(pc)
-	mov	1BDE(pc),r0
+	mov	#0028,@(5424)
+	mov	@#58C0,r0
 	inc	r0
-	cmp	r0,1AB0(pc)
+	cmp	r0,@#5798
 	beq	3CEE
 
 l3CEA:
-	jmp	011C(pc)
+	jmp	@#3E0A
 
 l3CEE:
-	mov	#002A,@1732(pc)
-	mov	1A98(pc),1AA6(pc)
-	dec	1AA2(pc)
+	mov	#002A,@(5424)
+	mov	@#5790,@#579E
+	dec	@#57A0
 	mov	#52B0,r5
-	jsr	pc,052A(pc)
-	inc	@171C(pc)
-	mov	1A82(pc),1A92(pc)
-	inc	1A8E(pc)
+	jsr	pc,@#4230
+	inc	@(5426)
+	mov	@#5790,@#57A0
+	inc	@#57A2
 	mov	#52BA,r5
-	jsr	pc,0226(pc)
-	inc	@1706(pc)
-	clr	1B9C(pc)
-	inc	@16FE(pc)
-	clr	1B92(pc)
-	inc	@16F6(pc)
-	clr	1B8E(pc)
-	inc	@16EE(pc)
+	jsr	pc,@#3F42
+	inc	@(5426)
+	clr	@#58C0
+	inc	@(5426)
+	clr	@#58BE
+	inc	@(5426)
+	clr	@#58C2
+	inc	@(5426)
 	mov	#529C,r5
-	jsr	pc,D208(pc)
-	mov	r0,1A50(pc)
-	mov	r1,1A4E(pc)
-	inc	@16DA(pc)
-	mov	1A46(pc),-(sp)
-	mov	1A40(pc),-(sp)
+	jsr	pc,@#0F48
+	mov	r0,@#5794
+	mov	r1,@#5796
+	inc	@(5426)
+	mov	@#5796,-(sp)
+	mov	@#5794,-(sp)
 	clr	-(sp)
 	mov	#4220,-(sp)
-	jsr	pc,C912(pc)
-	mov	(sp)+,1A42(pc)
-	mov	(sp)+,1A40(pc)
+	jsr	pc,@#0670
+	mov	(sp)+,@#57A4
+	mov	(sp)+,@#57A6
 	mov	#52C0,r5
-	jsr	pc,CD40(pc)
+	jsr	pc,@#0AAE
 	mov	r0,r1
 	mul	#0019,r1
 	add	#0032,r1
-	mov	r1,1A1E(pc)
-	inc	@16A6(pc)
+	mov	r1,@#579A
+	inc	@(5426)
 	mov	#5292,-(sp)
 	mov	#528E,-(sp)
 	mov	#5784,-(sp)
-	jsr	pc,D214(pc)
+	jsr	pc,@#0FA4
 	mov	#579A,-(sp)
-	jsr	pc,CD4A(pc)
-	jsr	pc,D10C(pc)
-	inc	@1686(pc)
-	mov	#0001,19F6(pc)
-	mov	#000A,19FE(pc)
+	jsr	pc,@#0AE2
+	jsr	pc,@#0EA8
+	inc	@(5426)
+	mov	#0001,@#579A
+	mov	#000A,@#57A8
 
 l3DAC:
-	mov	#0033,@1674(pc)
+	mov	#0033,@(5424)
 	mov	#52C4,r5
-	jsr	pc,0476(pc)
-	inc	@1668(pc)
+	jsr	pc,@#4230
+	inc	@(5426)
 	mov	#52CE,r5
-	jsr	pc,046A(pc)
-	mov	#0035,@165A(pc)
-	dec	19DA(pc)
+	jsr	pc,@#4230
+	mov	#0035,@(5424)
+	dec	@#57AA
 	bgt	3DAC
 
 l3DD2:
-	inc	@1650(pc)
-	add	19C0(pc),1A9A(pc)
-	inc	@1646(pc)
-	clr	19A6(pc)
-	inc	@163E(pc)
+	inc	@(5426)
+	add	@#579A,@#5874
+	inc	@(5426)
+	clr	@#578A
+	inc	@(5426)
 	br	3E0A
 
 l3DEA:
-	mov	#0039,@1636(pc)
-	mov	199C(pc),19B2(pc)
-	dec	19AE(pc)
+	mov	#0039,@(5424)
+	mov	@#5790,@#57A6
+	dec	@#57A8
 	mov	#52D8,r5
-	jsr	pc,042E(pc)
-	inc	@1620(pc)
-	clr	1980(pc)
+	jsr	pc,@#4230
+	inc	@(5426)
+	clr	@#578A
 
 l3E0A:
-	mov	#003B,@1616(pc)
+	mov	#003B,@(5424)
 	rts	pc
 
 ;; fn3E12: 3E12
+;;   Called from:
+;;     2290 (in fn1DAE)
+;;     238C (in fn1DAE)
 fn3E12 proc
-	jsr	r4,D0E2(pc)
+	jsr	r4,@#0EF8
 	bis	@r3,-(r2)
-	mov	#0005,@1608(pc)
-	mov	#0001,198E(pc)
-	mov	#000D,1992(pc)
+	mov	#0005,@(5424)
+	mov	#0001,@#57B0
+	mov	#000D,@#57BA
 
 l3E2A:
-	mov	#0006,@15F6(pc)
-	mov	#0001,197E(pc)
-	mov	#52EA,1972(pc)
+	mov	#0006,@(5424)
+	mov	#0001,@#57B2
+	mov	#52EA,@#57AC
 
 l3E3C:
-	mov	#0007,@15E4(pc)
-	mov	196C(pc),r2
-	add	@1964(pc),r2
+	mov	#0007,@(5424)
+	mov	@#57B2,r2
+	add	@(57AE),r2
 	asl	r2
 	mov	5A3E(r2),r1
-	mov	r1,1962(pc)
-	inc	@15CE(pc)
+	mov	r1,@#57B6
+	inc	@(5426)
 	mov	5A66(r2),r3
-	mov	r3,1958(pc)
-	inc	@15C2(pc)
+	mov	r3,@#57B8
+	inc	@(5426)
 	cmp	r3,r1
 	beq	3F0E
 
 l3E68:
-	mov	#000B,@15B8(pc)
+	mov	#000B,@(5424)
 	mov	r1,5A66(r2)
-	inc	@15B0(pc)
-	mov	193A(pc),193E(pc)
-	add	193C(pc),1938(pc)
-	inc	@15A0(pc)
+	inc	@(5426)
+	mov	@#57B4,@#57B8
+	add	@#57BC,@#57B8
+	inc	@(5426)
 	cmp	r1,#000A
 	beq	3EB8
 
 l3E8C:
-	mov	#000F,@1594(pc)
+	mov	#000F,@(5424)
 	cmp	r1,#0001
 	beq	3ECA
 
 l3E98:
-	mov	#0011,@1588(pc)
+	mov	#0011,@(5424)
 	tst	r1
 	beq	3EDC
 
 l3EA2:
-	mov	#0013,@157E(pc)
+	mov	#0013,@(5424)
 	mov	#0075,r0
 	sub	r1,r0
-	movb	r0,18FE(pc)
-	inc	@1570(pc)
+	movb	r0,@#57B0
+	inc	@(5426)
 	br	3EE8
 
 l3EB8:
-	mov	#0015,@1568(pc)
-	movb	#0061,18EC(pc)
-	inc	@155E(pc)
+	mov	#0015,@(5424)
+	movb	#0061,@#57AE
+	inc	@(5426)
 	br	3EE8
 
 l3ECA:
-	mov	#0017,@1556(pc)
-	movb	#0069,18DA(pc)
-	inc	@154C(pc)
+	mov	#0017,@(5424)
+	movb	#0069,@#57AE
+	inc	@(5426)
 	br	3EE8
 
 l3EDC:
-	mov	#0019,@1544(pc)
-	movb	#005F,18C8(pc)
+	mov	#0019,@(5424)
+	movb	#005F,@#57AE
 
 l3EE8:
-	mov	#001A,@1538(pc)
+	mov	#001A,@(5424)
 	mov	#52F8,r5
-	jsr	pc,0246(pc)
-	inc	@152C(pc)
+	jsr	pc,@#413C
+	inc	@(5426)
 	mov	#52FC,r5
-	jsr	pc,032E(pc)
-	inc	@1520(pc)
+	jsr	pc,@#4230
+	inc	@(5426)
 	mov	#5306,r5
-	jsr	pc,022E(pc)
+	jsr	pc,@#413C
 
 l3F0E:
-	mov	#001D,@1512(pc)
-	add	#0002,1894(pc)
-	inc	1896(pc)
-	cmp	1892(pc),#0004
+	mov	#001D,@(5424)
+	add	#0002,@#57AC
+	inc	@#57B4
+	cmp	@#57B4,#0004
 	ble	3E3C
 
 l3F26:
-	add	#000D,1890(pc)
-	inc	1882(pc)
-	cmp	187E(pc),#0005
+	add	#000D,@#57BA
+	inc	@#57B2
+	cmp	@#57B2,#0005
 	bgt	3F3C
 
 l3F38:
-	jmp	FEEE(pc)
+	jmp	@#3E2A
 
 l3F3C:
-	inc	@14E6(pc)
+	inc	@(5426)
 	rts	pc
 
 ;; fn3F42: 3F42
+;;   Called from:
+;;     32E2 (in fn3220)
+;;     33F2 (in fn3220)
+;;     3D18 (in fn3B3C)
 fn3F42 proc
-	jsr	r4,CFB2(pc)
+	jsr	r4,@#0EF8
 	bis	@r4,@r2
-	mov	#0005,@14D8(pc)
-	clrb	1874(pc)
-	inc	@14D0(pc)
-	mov	@1866(pc),186C(pc)
-	sub	#0002,1866(pc)
-	inc	@14C0(pc)
+	mov	#0005,@(5424)
+	clrb	@#57C6
+	inc	@(5426)
+	mov	@(57C0),@#57C6
+	sub	#0002,@#57C6
+	inc	@(5426)
 	mov	#532A,r5
-	jsr	pc,05C6(pc)
-	inc	@14B4(pc)
-	mov	#0001,1852(pc)
-	mov	#000A,1852(pc)
+	jsr	pc,@#4534
+	inc	@(5426)
+	mov	#0001,@#57C8
+	mov	#000A,@#57CE
 
 l3F7E:
-	mov	#0009,@14A2(pc)
+	mov	#0009,@(5424)
 	mov	#5312,-(sp)
 	mov	#5328,-(sp)
-	mov	1832(pc),-(sp)
+	mov	@#57C2,-(sp)
 	mov	#57C8,-(sp)
 	mov	#0004,-(sp)
 	mov	sp,r5
-	jsr	pc,0292(pc)
+	jsr	pc,@#4230
 	add	#000A,sp
-	inc	@1480(pc)
+	inc	@(5426)
 	mov	#5318,-(sp)
 	mov	#5328,-(sp)
-	mov	1810(pc),-(sp)
+	mov	@#57C2,-(sp)
 	mov	#57C8,-(sp)
 	mov	#0004,-(sp)
 	mov	sp,r5
-	jsr	pc,0270(pc)
+	jsr	pc,@#4230
 	add	#000A,sp
-	mov	#000B,@145C(pc)
-	dec	1802(pc)
+	mov	#000B,@(5424)
+	dec	@#57D0
 	bgt	3F7E
 
 l3FD0:
-	inc	@1452(pc)
-	cmp	@17EA(pc),#0002
+	inc	@(5426)
+	cmp	@(57C2),#0002
 	bne	4028
 
 l3FDC:
-	mov	#000E,@1444(pc)
-	mov	#0001,17E4(pc)
+	mov	#000E,@(5424)
+	mov	#0001,@#57CA
 
 l3FE8:
-	mov	#000F,@1438(pc)
-	mov	#0001,17DA(pc)
+	mov	#000F,@(5424)
+	mov	#0001,@#57CC
 	mov	#0004,r4
 	mov	#531E,r5
 
 l3FFC:
-	mov	#0010,@1424(pc)
-	mov	17C6(pc),r1
+	mov	#0010,@(5424)
+	mov	@#57CC,r1
 	mov	r1,r0
 	add	(r5)+,r0
 	asl	r0
 	mov	#FFFF,5A66(r0)
-	mov	#0011,@140E(pc)
+	mov	#0011,@(5424)
 	dec	r4
 	bgt	3FFC
 
 l401C:
 	inc	r1
-	mov	r1,17AA(pc)
+	mov	r1,@#57CC
 	cmp	r1,#0005
 	ble	3FE8
 
 l4028:
-	mov	#0012,@13F8(pc)
+	mov	#0012,@(5424)
 	rts	pc
 
 ;; fn4030: 4030
+;;   Called from:
+;;     1F10 (in fn1DAE)
+;;     2454 (in fn243A)
+;;     2BAC (in fn2B90)
 fn4030 proc
-	jsr	r4,CEC4(pc)
+	jsr	r4,@#0EF8
 	bis	@r4,15FF(r0)
 	bpt
 	mov	@pc,@-(r2)
-	movb	#009B,1792(pc)
-	inc	@13E0(pc)
-	movb	#0048,1789(pc)
-	inc	@13D6(pc)
-	movb	#009B,1780(pc)
-	inc	@13CC(pc)
-	movb	#004A,1777(pc)
-	inc	@13C2(pc)
+	movb	#009B,@#57D2
+	inc	@(5426)
+	movb	#0048,@#57D3
+	inc	@(5426)
+	movb	#009B,@#57D4
+	inc	@(5426)
+	movb	#004A,@#57D5
+	inc	@(5426)
 	mov	#533E,r5
-	jsr	pc,04C8(pc)
-	inc	@13B6(pc)
+	jsr	pc,@#4534
+	inc	@(5426)
 	rts	pc
 
 ;; fn4072: 4072
+;;   Called from:
+;;     2BEA (in fn2B90)
+;;     2C2A (in fn2B90)
+;;     2C4A (in fn2B90)
+;;     4356 (in fn4230)
 fn4072 proc
-	jsr	r4,CE82(pc)
+	jsr	r4,@#0EF8
 	bis	@r5,r4
-	mov	#0003,@13A8(pc)
-	mov	@1756(pc),175C(pc)
-	inc	@139E(pc)
-	mov	@174E(pc),1754(pc)
-	inc	@1394(pc)
-	tst	174A(pc)
+	mov	#0003,@(5424)
+	mov	@(57D8),@#57DE
+	inc	@(5426)
+	mov	@(57DA),@#57E0
+	inc	@(5426)
+	tst	@#57E0
 	bge	40A0
 
 l4098:
-	inc	@138A(pc)
-	clr	1740(pc)
+	inc	@(5426)
+	clr	@#57E0
 
 l40A0:
-	mov	#0007,@1380(pc)
-	tst	1738(pc)
+	mov	#0007,@(5424)
+	tst	@#57E2
 	bge	40B4
 
 l40AC:
-	inc	@1376(pc)
-	clr	172E(pc)
+	inc	@(5426)
+	clr	@#57E2
 
 l40B4:
-	mov	#0009,@136C(pc)
-	cmp	1722(pc),#004F
+	mov	#0009,@(5424)
+	cmp	@#57E0,#004F
 	ble	40CC
 
 l40C2:
-	inc	@1360(pc)
-	mov	#004F,1714(pc)
+	inc	@(5426)
+	mov	#004F,@#57DE
 
 l40CC:
-	mov	#000B,@1354(pc)
-	cmp	170C(pc),#0017
+	mov	#000B,@(5424)
+	cmp	@#57E2,#0017
 	ble	40E4
 
 l40DA:
-	inc	@1348(pc)
-	mov	#0017,16FE(pc)
+	inc	@(5426)
+	mov	#0017,@#57E0
 
 l40E4:
-	mov	#000D,@133C(pc)
-	add	#0020,16F0(pc)
-	inc	@1332(pc)
-	neg	16EA(pc)
-	add	#0037,16E4(pc)
-	inc	@1324(pc)
-	movb	#009B,16D4(pc)
-	inc	@131A(pc)
-	movb	#0059,16CB(pc)
-	inc	@1310(pc)
-	movb	16C8(pc),r0
-	movb	r0,16C0(pc)
-	inc	@1304(pc)
-	movb	16BA(pc),r0
-	movb	r0,16B5(pc)
-	inc	@12F8(pc)
+	mov	#000D,@(5424)
+	add	#0020,@#57DE
+	inc	@(5426)
+	neg	@#57E2
+	add	#0037,@#57E0
+	inc	@(5426)
+	movb	#009B,@#57DA
+	inc	@(5426)
+	movb	#0059,@#57DB
+	inc	@(5426)
+	movb	@#57E2,r0
+	movb	r0,@#57DE
+	inc	@(5426)
+	movb	@#57E0,r0
+	movb	r0,@#57DF
+	inc	@(5426)
 	mov	#534E,r5
-	jsr	pc,03FE(pc)
-	inc	@12EC(pc)
+	jsr	pc,@#4534
+	inc	@(5426)
 	rts	pc
 
 ;; fn413C: 413C
+;;   Called from:
+;;     2134 (in fn1DAE)
+;;     2216 (in fn1DAE)
+;;     2BDE (in fn2B90)
+;;     2C1E (in fn2B90)
+;;     2CF4 (in fn2B90)
+;;     2D30 (in fn2B90)
+;;     2E6E (in fn2E20)
+;;     2EB4 (in fn2E20)
+;;     3EF2 (in fn3E12)
+;;     3F0A (in fn3E12)
 fn413C proc
-	jsr	r4,CDB8(pc)
+	jsr	r4,@#0EF8
 	bis	@r5,(r4)+
-	mov	#0003,@12DE(pc)
-	movb	#009B,1698(pc)
-	inc	@12D4(pc)
-	movb	#0046,168F(pc)
-	inc	@12CA(pc)
-	tst	@1684(pc)
+	mov	#0003,@(5424)
+	movb	#009B,@#57E4
+	inc	@(5426)
+	movb	#0046,@#57E5
+	inc	@(5426)
+	tst	@(57E4)
 	bne	416C
 
 l4162:
-	inc	@12C0(pc)
-	movb	#0047,167B(pc)
+	inc	@(5426)
+	movb	#0047,@#57E5
 
 l416C:
-	mov	#0007,@12B4(pc)
+	mov	#0007,@(5424)
 	mov	#5362,r5
-	jsr	pc,03BA(pc)
-	inc	@12A8(pc)
+	jsr	pc,@#4534
+	inc	@(5426)
 	rts	pc
 
 ;; fn4180: 4180
+;;   Called from:
+;;     1DBE (in fn1DAE)
 fn4180 proc
-	jsr	r4,CD74(pc)
+	jsr	r4,@#0EF8
 	bis	@r5,@-(r0)
-	mov	#0005,@129A(pc)
+	mov	#0005,@(5424)
 	mov	#5376,r5
-	jsr	pc,CB60(pc)
-	inc	@128E(pc)
+	jsr	pc,@#0CF4
+	inc	@(5426)
 	mov	#5374,-(sp)
 	mov	#5370,-(sp)
 	mov	#57E8,-(sp)
-	jsr	pc,CE06(pc)
+	jsr	pc,@#0FAE
 	mov	#5374,-(sp)
 	mov	#57FA,-(sp)
-	jsr	pc,C98A(pc)
-	jsr	pc,CCF0(pc)
-	inc	@126A(pc)
+	jsr	pc,@#0B3E
+	jsr	pc,@#0EA8
+	inc	@(5426)
 	mov	#5374,-(sp)
 	mov	#5370,-(sp)
 	mov	#57E8,-(sp)
-	jsr	pc,CDE2(pc)
+	jsr	pc,@#0FAE
 	mov	#5374,-(sp)
 	mov	#57FE,-(sp)
-	jsr	pc,C966(pc)
-	jsr	pc,CCCC(pc)
-	inc	@1246(pc)
+	jsr	pc,@#0B3E
+	jsr	pc,@#0EA8
+	inc	@(5426)
 	mov	#5374,-(sp)
 	mov	#5370,-(sp)
 	mov	#57E8,-(sp)
-	jsr	pc,CDBE(pc)
+	jsr	pc,@#0FAE
 	mov	#5374,-(sp)
 	mov	#5802,-(sp)
-	jsr	pc,C942(pc)
-	jsr	pc,CCA8(pc)
-	mov	#000A,@1220(pc)
-	mov	15F0(pc),r0
-	add	15F0(pc),r0
-	add	15F0(pc),r0
-	mov	r0,16A0(pc)
-	inc	@120C(pc)
-	mov	15DE(pc),r0
-	add	15DE(pc),r0
-	add	15DE(pc),r0
-	mov	r0,168E(pc)
-	inc	@11F8(pc)
+	jsr	pc,@#0B3E
+	jsr	pc,@#0EA8
+	mov	#000A,@(5424)
+	mov	@#57FA,r0
+	add	@#57FE,r0
+	add	@#5802,r0
+	mov	r0,@#58B6
+	inc	@(5426)
+	mov	@#57FC,r0
+	add	@#5800,r0
+	add	@#5804,r0
+	mov	r0,@#58B8
+	inc	@(5426)
 	rts	pc
 
 ;; fn4230: 4230
+;;   Called from:
+;;     1F42 (in fn1DAE)
+;;     1F4E (in fn1DAE)
+;;     1F5A (in fn1DAE)
+;;     1F66 (in fn1DAE)
+;;     1F92 (in fn1DAE)
+;;     1F9E (in fn1DAE)
+;;     215A (in fn1DAE)
+;;     2174 (in fn1DAE)
+;;     218E (in fn1DAE)
+;;     21B0 (in fn1DAE)
+;;     21CA (in fn1DAE)
+;;     21E4 (in fn1DAE)
+;;     2208 (in fn1DAE)
+;;     2C9E (in fn2B90)
+;;     2CB6 (in fn2B90)
+;;     2CCE (in fn2B90)
+;;     2CE6 (in fn2B90)
+;;     2D0A (in fn2B90)
+;;     2D22 (in fn2B90)
+;;     2DCE (in fn2B90)
+;;     2E56 (in fn2E20)
+;;     2E96 (in fn2E20)
+;;     3408 (in fn3220)
+;;     34A0 (in fn3220)
+;;     3994 (in fn395C)
+;;     39AA (in fn395C)
+;;     39CC (in fn395C)
+;;     39E4 (in fn395C)
+;;     39FC (in fn395C)
+;;     3A36 (in fn395C)
+;;     3A48 (in fn395C)
+;;     3A6E (in fn395C)
+;;     3A88 (in fn395C)
+;;     3AA2 (in fn395C)
+;;     3C8A (in fn3B3C)
+;;     3D02 (in fn3B3C)
+;;     3DB6 (in fn3B3C)
+;;     3DC2 (in fn3B3C)
+;;     3DFE (in fn3B3C)
+;;     3EFE (in fn3E12)
+;;     3F9A (in fn3F42)
+;;     3FBC (in fn3F42)
 fn4230 proc
-	jsr	r4,CCC4(pc)
+	jsr	r4,@#0EF8
 	bis	@r5,@15FF(r2)
 	iot
 	mov	pc,@-(r2)
-	mov	@15C8(pc),1614(pc)
-	inc	@11E0(pc)
-	mov	@15C0(pc),160C(pc)
-	inc	@11D6(pc)
-	tst	1602(pc)
+	mov	@(5808),@#5854
+	inc	@(5426)
+	mov	@(580A),@#5856
+	inc	@(5426)
+	tst	@#5856
 	bge	425E
 
 l4256:
-	inc	@11CC(pc)
-	clr	15F8(pc)
+	inc	@(5426)
+	clr	@#5856
 
 l425E:
-	mov	#0008,@11C2(pc)
-	tst	15F0(pc)
+	mov	#0008,@(5424)
+	tst	@#5858
 	bge	4272
 
 l426A:
-	inc	@11B8(pc)
-	clr	15E6(pc)
+	inc	@(5426)
+	clr	@#5858
 
 l4272:
-	mov	#000A,@11AE(pc)
-	cmp	15DA(pc),#004F
+	mov	#000A,@(5424)
+	cmp	@#5856,#004F
 	ble	428A
 
 l4280:
-	inc	@11A2(pc)
-	mov	#004F,15CC(pc)
+	inc	@(5426)
+	mov	#004F,@#5854
 
 l428A:
-	mov	#000C,@1196(pc)
-	cmp	15C4(pc),#0017
+	mov	#000C,@(5424)
+	cmp	@#5858,#0017
 	ble	42A2
 
 l4298:
-	inc	@118A(pc)
-	mov	#0017,15B6(pc)
+	inc	@(5426)
+	mov	#0017,@#5856
 
 l42A2:
-	mov	#000E,@117E(pc)
-	add	#0020,15A8(pc)
-	inc	@1174(pc)
-	neg	15A2(pc)
-	add	#0037,159C(pc)
-	inc	@1166(pc)
-	movb	#009B,154B(pc)
-	inc	@115C(pc)
-	movb	#0059,1542(pc)
-	inc	@1152(pc)
-	movb	1580(pc),r0
-	movb	r0,1537(pc)
-	inc	@1146(pc)
-	movb	1572(pc),r0
-	movb	r0,152C(pc)
-	inc	@113A(pc)
-	movb	#0024,151E(pc)
-	inc	@1130(pc)
-	cmp	@1512(pc),#0001
+	mov	#000E,@(5424)
+	add	#0020,@#5854
+	inc	@(5426)
+	neg	@#5858
+	add	#0037,@#5856
+	inc	@(5426)
+	movb	#009B,@#580F
+	inc	@(5426)
+	movb	#0059,@#5810
+	inc	@(5426)
+	movb	@#5858,r0
+	movb	r0,@#5813
+	inc	@(5426)
+	movb	@#5856,r0
+	movb	r0,@#5814
+	inc	@(5426)
+	movb	#0024,@#580E
+	inc	@(5426)
+	cmp	@(580C),#0001
 	beq	4380
 
 l42FE:
-	mov	#0017,@1122(pc)
-	cmp	@1504(pc),#0005
+	mov	#0017,@(5424)
+	cmp	@(580C),#0005
 	beq	43C0
 
 l430C:
-	mov	#0019,@1114(pc)
-	cmp	@14F6(pc),#0006
+	mov	#0019,@(5424)
+	cmp	@(580C),#0006
 	bne	431E
 
 l431A:
-	jmp	0100(pc)
+	jmp	@#441E
 
 l431E:
-	mov	#001B,@1102(pc)
-	cmp	@14E4(pc),#0007
+	mov	#001B,@(5424)
+	cmp	@(580C),#0007
 	bne	4330
 
 l432C:
-	jmp	014A(pc)
+	jmp	@#447A
 
 l4330:
-	mov	#001D,@10F0(pc)
-	cmp	@14D2(pc),#001E
+	mov	#001D,@(5424)
+	cmp	@(580C),#001E
 	bne	4342
 
 l433E:
-	jmp	0194(pc)
+	jmp	@#44D6
 
 l4342:
-	mov	#001F,@10DE(pc)
-	mov	14BE(pc),-(sp)
-	mov	14B8(pc),-(sp)
+	mov	#001F,@(5424)
+	mov	@#580A,-(sp)
+	mov	@#5808,-(sp)
 	mov	#0002,-(sp)
 	mov	sp,r5
-	jsr	pc,FD18(pc)
+	jsr	pc,@#4072
 	add	#0006,sp
-	inc	@10C4(pc)
-	mov	14A8(pc),-(sp)
-	mov	14A2(pc),-(sp)
+	inc	@(5426)
+	mov	@#580E,-(sp)
+	mov	@#580C,-(sp)
 	mov	#0002,-(sp)
 	mov	sp,r5
-	jsr	pc,01C0(pc)
+	jsr	pc,@#4534
 	add	#0006,sp
-	inc	@10AA(pc)
-	jmp	01AC(pc)
+	inc	@(5426)
+	jmp	@#452C
 
 l4380:
-	mov	#0022,@10A0(pc)
-	movb	@1484(pc),1489(pc)
-	inc	@1096(pc)
+	mov	#0022,@(5424)
+	movb	@(580E),@#5813
+	inc	@(5426)
 	mov	#53A8,-(sp)
 	mov	#5384,-(sp)
-	jsr	pc,C9DE(pc)
+	jsr	pc,@#0D7A
 	mov	#53A8,-(sp)
 	mov	#5810,-(sp)
-	jsr	pc,C79C(pc)
+	jsr	pc,@#0B44
 	mov	#53A6,-(sp)
 	mov	#5815,-(sp)
-	jsr	pc,C790(pc)
-	jsr	pc,CAF0(pc)
-	inc	@106A(pc)
-	jmp	016C(pc)
+	jsr	pc,@#0B44
+	jsr	pc,@#0EA8
+	inc	@(5426)
+	jmp	@#452C
 
 l43C0:
-	mov	#0025,@1060(pc)
-	mov	#0001,148E(pc)
+	mov	#0025,@(5424)
+	mov	#0001,@#5858
 	mov	#0005,r3
-	mov	143A(pc),r4
+	mov	@#580E,r4
 	mov	#5816,r5
 
 l43D8:
-	mov	#0026,@1048(pc)
+	mov	#0026,@(5424)
 	movb	(r4)+,(r5)+
-	mov	#0027,@1040(pc)
+	mov	#0027,@(5424)
 	dec	r3
 	bgt	43D8
 
 l43EA:
-	inc	@1038(pc)
+	inc	@(5426)
 	mov	#53A8,-(sp)
 	mov	#538A,-(sp)
-	jsr	pc,C980(pc)
+	jsr	pc,@#0D7A
 	mov	#53A8,-(sp)
 	mov	#5810,-(sp)
-	jsr	pc,C73E(pc)
+	jsr	pc,@#0B44
 	mov	#53A8,-(sp)
 	mov	#5816,-(sp)
-	jsr	pc,C732(pc)
-	jsr	pc,CA92(pc)
-	inc	@100C(pc)
-	jmp	010E(pc)
+	jsr	pc,@#0B44
+	jsr	pc,@#0EA8
+	inc	@(5426)
+	jmp	@#452C
 
 l441E:
-	mov	#002A,@1002(pc)
-	mov	#0001,1430(pc)
+	mov	#002A,@(5424)
+	mov	#0001,@#5858
 	mov	#0006,r3
-	mov	13DC(pc),r4
+	mov	@#580E,r4
 	mov	#581B,r5
 
 l4436:
-	mov	#002B,@0FEA(pc)
+	mov	#002B,@(5424)
 	movb	(r4)+,(r5)+
-	mov	#002C,@0FE2(pc)
+	mov	#002C,@(5424)
 	dec	r3
 	bgt	4436
 
 l4448:
-	inc	@0FDA(pc)
+	inc	@(5426)
 	mov	#53A8,-(sp)
 	mov	#5391,-(sp)
-	jsr	pc,C922(pc)
+	jsr	pc,@#0D7A
 	mov	#53A8,-(sp)
 	mov	#5810,-(sp)
-	jsr	pc,C6E0(pc)
+	jsr	pc,@#0B44
 	mov	#53AA,-(sp)
 	mov	#581B,-(sp)
-	jsr	pc,C6D4(pc)
-	jsr	pc,CA34(pc)
-	inc	@0FAE(pc)
+	jsr	pc,@#0B44
+	jsr	pc,@#0EA8
+	inc	@(5426)
 	br	452C
 
 l447A:
-	mov	#002F,@0FA6(pc)
-	mov	#0001,13D4(pc)
+	mov	#002F,@(5424)
+	mov	#0001,@#5858
 	mov	#0007,r3
-	mov	1380(pc),r4
+	mov	@#580E,r4
 	mov	#5821,r5
 
 l4492:
-	mov	#0030,@0F8E(pc)
+	mov	#0030,@(5424)
 	movb	(r4)+,(r5)+
-	mov	#0031,@0F86(pc)
+	mov	#0031,@(5424)
 	dec	r3
 	bgt	4492
 
 l44A4:
-	inc	@0F7E(pc)
+	inc	@(5426)
 	mov	#53A8,-(sp)
 	mov	#5398,-(sp)
-	jsr	pc,C8C6(pc)
+	jsr	pc,@#0D7A
 	mov	#53A8,-(sp)
 	mov	#5810,-(sp)
-	jsr	pc,C684(pc)
+	jsr	pc,@#0B44
 	mov	#53AC,-(sp)
 	mov	#5821,-(sp)
-	jsr	pc,C678(pc)
-	jsr	pc,C9D8(pc)
-	inc	@0F52(pc)
+	jsr	pc,@#0B44
+	jsr	pc,@#0EA8
+	inc	@(5426)
 	br	452C
 
 l44D6:
-	mov	#0034,@0F4A(pc)
-	mov	#0001,1378(pc)
+	mov	#0034,@(5424)
+	mov	#0001,@#5858
 	mov	#001E,r3
-	mov	1324(pc),r4
+	mov	@#580E,r4
 	mov	#5828,r5
 
 l44EE:
-	mov	#0035,@0F32(pc)
+	mov	#0035,@(5424)
 	movb	(r4)+,(r5)+
-	mov	#0036,@0F2A(pc)
+	mov	#0036,@(5424)
 	dec	r3
 	bgt	44EE
 
 l4500:
-	inc	@0F22(pc)
+	inc	@(5426)
 	mov	#53A8,-(sp)
 	mov	#539F,-(sp)
-	jsr	pc,C86A(pc)
+	jsr	pc,@#0D7A
 	mov	#53A8,-(sp)
 	mov	#5810,-(sp)
-	jsr	pc,C628(pc)
+	jsr	pc,@#0B44
 	mov	#53AE,-(sp)
 	mov	#5828,-(sp)
-	jsr	pc,C61C(pc)
-	jsr	pc,C97C(pc)
+	jsr	pc,@#0B44
+	jsr	pc,@#0EA8
 
 l452C:
-	mov	#0038,@0EF4(pc)
+	mov	#0038,@(5424)
 	rts	pc
 
 ;; fn4534: 4534
+;;   Called from:
+;;     3F6A (in fn3F42)
+;;     4068 (in fn4030)
+;;     4132 (in fn4072)
+;;     4176 (in fn413C)
+;;     4370 (in fn4230)
+;;     45BE (in fn457C)
+;;     45EC (in fn45C8)
 fn4534 proc
-	jsr	r4,C9C0(pc)
+	jsr	r4,@#0EF8
 	bis	@sp,15FF(r0)
 	bpt
 	illegal
-	mov	#0001,1324(pc)
-	mov	@131A(pc),r4
-	mov	1318(pc),r5
-	mov	#0004,@0ED2(pc)
+	mov	#0001,@#5868
+	mov	@(5864),r4
+	mov	@#5866,r5
+	mov	#0004,@(5424)
 	mov	#53BE,-(sp)
 	mov	#53B8,-(sp)
-	jsr	pc,C81A(pc)
+	jsr	pc,@#0D7A
 	mov	r5,-(sp)
-	jsr	pc,C55E(pc)
-	jsr	pc,C93E(pc)
-	mov	#0005,@0EB6(pc)
+	jsr	pc,@#0AC4
+	jsr	pc,@#0EA8
+	mov	#0005,@(5424)
 	inc	r5
 	dec	r4
 	bgt	454E
-	inc	@0EAC(pc)
+	inc	@(5426)
 	rts	pc
 
 ;; fn457C: 457C
+;;   Called from:
+;;     2BA0 (in fn2B90)
 fn457C proc
-	jsr	r4,C978(pc)
+	jsr	r4,@#0EF8
 	bis	@pc,r0
-	mov	#0003,@0E9E(pc)
-	movb	#009B,12E0(pc)
-	inc	@0E94(pc)
-	movb	#005B,12D7(pc)
-	inc	@0E8A(pc)
-	movb	#003F,12CE(pc)
-	inc	@0E80(pc)
-	movb	#0032,12C5(pc)
-	inc	@0E76(pc)
-	movb	#006C,12BC(pc)
-	inc	@0E6C(pc)
+	mov	#0003,@(5424)
+	movb	#009B,@#586C
+	inc	@(5426)
+	movb	#005B,@#586D
+	inc	@(5426)
+	movb	#003F,@#586E
+	inc	@(5426)
+	movb	#0032,@#586F
+	inc	@(5426)
+	movb	#006C,@#5870
+	inc	@(5426)
 	mov	#53D2,r5
-	jsr	pc,FF72(pc)
-	inc	@0E60(pc)
+	jsr	pc,@#4534
+	inc	@(5426)
 	rts	pc
 
 ;; fn45C8: 45C8
+;;   Called from:
+;;     2B78 (in fn243A)
 fn45C8 proc
-	jsr	r4,C92C(pc)
+	jsr	r4,@#0EF8
 	bis	@pc,@(r0)+
-	mov	#0003,@0E52(pc)
-	movb	#009B,129A(pc)
-	inc	@0E48(pc)
-	movb	#003C,1291(pc)
-	inc	@0E3E(pc)
+	mov	#0003,@(5424)
+	movb	#009B,@#5872
+	inc	@(5426)
+	movb	#003C,@#5873
+	inc	@(5426)
 	mov	#53E4,r5
-	jsr	pc,FF44(pc)
-	inc	@0E32(pc)
+	jsr	pc,@#4534
+	inc	@(5426)
 	rts	pc
 
 ;; fn45F6: 45F6
+;;   Called from:
+;;     1496 (in fn145E)
 fn45F6 proc
 	mov	r5,-(sp)
 	mov	r4,-(sp)
@@ -5668,7 +6085,7 @@ l467C:
 
 l4682:
 	mov	r0,0010(r3)
-	jsr	pc,CD74(pc)
+	jsr	pc,@#13FE
 	mov	0050(r3),r4
 	mov	r5,r1
 	mov	#474C,r0
@@ -5745,6 +6162,8 @@ l4740:
 	rts	pc
 
 ;; fn474C: 474C
+;;   Called from:
+;;     46BA (in fn45F6)
 fn474C proc
 	emt	#E6
 	clr	-(sp)
@@ -6036,6 +6455,8 @@ l47DC:
 ; ...
 
 ;; fn5A90: 5A90
+;;   Called from:
+;;     2D3C (in fn2B90)
 fn5A90 proc
 	tst	(r5)+
 	clr	r0

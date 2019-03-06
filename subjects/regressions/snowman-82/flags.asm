@@ -12,6 +12,8 @@ l0000000000000FAC:
 	ret
 
 ;; bar: 0000000000000FB4
+;;   Called from:
+;;     0000000000000FA6 (in foo)
 bar proc
 	xor	rax,rax
 	ret

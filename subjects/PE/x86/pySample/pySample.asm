@@ -162,6 +162,10 @@ initpySample proc
 100011E0 8A 04 00 00 59 33 C0 5E C3                      ....Y3.^.      
 
 ;; fn100011E9: 100011E9
+;;   Called from:
+;;     100013EA (in fn10001388)
+;;     1000141A (in fn10001388)
+;;     1000143A (in fn10001388)
 fn100011E9 proc
 	mov	eax,[esp+08]
 	push	ebp
@@ -371,6 +375,8 @@ l10001384:
 	ret	000C
 
 ;; fn10001388: 10001388
+;;   Called from:
+;;     100014B6 (in DllMain)
 fn10001388 proc
 	push	10
 	push	100021E8
@@ -509,6 +515,8 @@ l1000147A:
 	ret
 
 ;; fn10001493: 10001493
+;;   Called from:
+;;     10001485 (in fn10001388)
 fn10001493 proc
 	mov	dword ptr [10003008],FFFFFFFF
 	ret
@@ -548,6 +556,8 @@ l100014AA:
 100015C0 10 C9 C3 68 9C 33 00 10 E8 31 03 00 00 59 C3    ...h.3...1...Y.
 
 ;; fn100015CF: 100015CF
+;;   Called from:
+;;     10001672 (in fn1000166E)
 fn100015CF proc
 	push	14
 	push	10002210
@@ -601,6 +611,8 @@ l1000165F:
 	ret
 
 ;; fn10001665: 10001665
+;;   Called from:
+;;     10001657 (in fn100015CF)
 fn10001665 proc
 	push	08
 	call	10001904
@@ -650,6 +662,8 @@ l100016A1:
 100016C0 04 3B F7 72 F1 5F 5E C3 CC CC CC CC CC CC CC CC .;.r._^.........
 
 ;; fn100016D0: 100016D0
+;;   Called from:
+;;     10001758 (in fn10001742)
 fn100016D0 proc
 	mov	ecx,[esp+04]
 	cmp	word ptr [ecx],5A4D
@@ -674,6 +688,8 @@ l100016EB:
 100016F9                            CC CC CC CC CC CC CC          .......
 
 ;; fn10001700: 10001700
+;;   Called from:
+;;     10001769 (in fn10001742)
 fn10001700 proc
 	mov	eax,[esp+04]
 	mov	ecx,[eax+3C]
@@ -718,6 +734,8 @@ l1000173E:
 	ret
 
 ;; fn10001742: 10001742
+;;   Called from:
+;;     100012C4 (in fn100011E9)
 fn10001742 proc
 	push	08
 	push	10002230
@@ -765,6 +783,9 @@ l100017A8:
 100017C0 FF 25 40 20 00 10                               .%@ ..         
 
 ;; fn100017C6: 100017C6
+;;   Called from:
+;;     100013FD (in fn10001388)
+;;     10001411 (in fn10001388)
 fn100017C6 proc
 	cmp	dword ptr [esp+08],01
 	jnz	100017E0
@@ -784,6 +805,10 @@ l100017E0:
 100017E6                   CC CC                               ..       
 
 ;; fn100017E8: 100017E8
+;;   Called from:
+;;     1000138F (in fn10001388)
+;;     100015D6 (in fn100015CF)
+;;     10001749 (in fn10001742)
 fn100017E8 proc
 	push	10001841
 	push	dword ptr fs:[00000000]
@@ -808,6 +833,10 @@ fn100017E8 proc
 	ret
 
 ;; fn1000182D: 1000182D
+;;   Called from:
+;;     1000148D (in fn10001388)
+;;     1000165F (in fn100015CF)
+;;     100017A8 (in fn10001742)
 fn1000182D proc
 	mov	ecx,[ebp-10]
 	mov	fs:[00000000],ecx
@@ -825,6 +854,8 @@ fn1000182D proc
 10001860 83 C4 18 C3                                     ....           
 
 ;; fn10001864: 10001864
+;;   Called from:
+;;     100014A5 (in DllMain)
 fn10001864 proc
 	push	ebp
 	mov	ebp,esp

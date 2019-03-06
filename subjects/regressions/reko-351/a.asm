@@ -3,6 +3,8 @@
 ;;; Segment .text (80000080)
 
 ;; deregister_tm_clones: 80000080
+;;   Called from:
+;;     8000012C (in __do_global_dtors_aux)
 deregister_tm_clones proc
 	link	a6,#$0000
 	move.l	#$80002724,d0
@@ -26,6 +28,9 @@ l800000AA:
 	rts
 
 ;; register_tm_clones: 800000AE
+;;   Called from:
+;;     8000018A (in frame_dummy)
+;;     800001A0 (in frame_dummy)
 register_tm_clones proc
 	link	a6,#$0000
 	move.l	#$80002724,d0
@@ -84,7 +89,7 @@ l80000114:
 	bhi	$80000114
 
 l8000012C:
-	jsr.l	-$00AC(pc)                                           ; 80000080
+	jsr.l	80000080                                             ; -$00AC(pc)
 	lea	$00000000,a0
 	tst.l	a0
 	beq	$80000144
@@ -150,6 +155,8 @@ call_frame_dummy proc
 	rts
 
 ;; sine_taylor: 800001AC
+;;   Called from:
+;;     800004AA (in main)
 sine_taylor proc
 	link	a6,#$FFB0
 	fmove.d	$0008(a6),fp0
@@ -222,6 +229,9 @@ sine_taylor proc
 	rts
 
 ;; factorial: 8000033C
+;;   Called from:
+;;     800003FC (in sine_taylor)
+;;     80000454 (in sine_taylor)
 factorial proc
 	link	a6,#$FFF8
 	moveq	#$01,d0
@@ -247,6 +257,9 @@ l8000036A:
 	rts
 
 ;; pow_int: 80000372
+;;   Called from:
+;;     800003EC (in sine_taylor)
+;;     80000444 (in sine_taylor)
 pow_int proc
 	link	a6,#$FFF4
 	move.l	#$3FF00000,-$000C(a6)
@@ -292,11 +305,11 @@ l800003E0:
 	move.l	-$0004(a6),-(a7)
 	move.l	$000C(a6),-(a7)
 	move.l	$0008(a6),-(a7)
-	jsr.l	-$007A(pc)                                           ; 80000372
+	jsr.l	80000372                                             ; -$007A(pc)
 	lea	$000C(a7),a7
 	fmove.x	fp0,fp2
 	move.l	-$0004(a6),-(a7)
-	jsr.l	-$00C0(pc)                                           ; 8000033C
+	jsr.l	8000033C                                             ; -$00C0(pc)
 	addq.l	#$04,a7
 	fmove.l	d0,fp0
 	fmove.x	fp2,fp1
@@ -321,11 +334,11 @@ l80000438:
 	move.l	-$0004(a6),-(a7)
 	move.l	$000C(a6),-(a7)
 	move.l	$0008(a6),-(a7)
-	jsr.l	-$00D2(pc)                                           ; 80000372
+	jsr.l	80000372                                             ; -$00D2(pc)
 	lea	$000C(a7),a7
 	fmove.x	fp0,fp2
 	move.l	-$0004(a6),-(a7)
-	jsr.l	-$0118(pc)                                           ; 8000033C
+	jsr.l	8000033C                                             ; -$0118(pc)
 	addq.l	#$04,a7
 	fmove.l	d0,fp0
 	fmove.x	fp2,fp1
@@ -352,7 +365,7 @@ main proc
 	link	a6,#$FFFC
 	move.l	#$51EB851F,-(a7)
 	move.l	#$40091EB8,-(a7)
-	jsr.l	-$02FE(pc)                                           ; 800001AC
+	jsr.l	800001AC                                             ; -$02FE(pc)
 	addq.l	#$08,a7
 	move.l	a6,d0
 	subq.l	#$04,d0
@@ -368,6 +381,8 @@ main proc
 	rts
 
 ;; _sin: 800004DE
+;;   Called from:
+;;     800004CE (in main)
 _sin proc
 	link	a6,#$FFDC
 	move.l	$0008(a6),-$0008(a6)

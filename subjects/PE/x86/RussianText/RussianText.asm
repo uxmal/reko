@@ -57,6 +57,9 @@ l0040113C:
 00401150 40 00 E8 2D 01 00 00 C3                         @..-....       
 
 ;; fn00401158: 00401158
+;;   Called from:
+;;     004011DD (in fn004011B0)
+;;     00401203 (in fn004011FC)
 fn00401158 proc
 	mov	eax,[0040208B]
 	mov	edx,fs:[002C]
@@ -129,6 +132,9 @@ l004011D7:
 004011FB                                  90                        .   
 
 ;; fn004011FC: 004011FC
+;;   Called from:
+;;     00401071 (in _GetExceptDLLinfo)
+;;     004011CE (in fn004011B0)
 fn004011FC proc
 	push	ebp
 	mov	ebp,esp
