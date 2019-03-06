@@ -36,20 +36,20 @@ void _init()
 // 00000610: void __start(Stack word32 dwArg00)
 void __start(word32 dwArg00)
 {
-	<anonymous> * r25_23 = *(<anonymous> **) 0x00020A24;
-	word32 sp_24;
-	word32 ra_25;
-	word32 r0_26;
-	word32 r28_27;
-	word32 r4_28;
-	word32 r5_29;
-	word32 r6_30;
-	word32 r1_31;
-	word32 r7_32;
-	word32 r8_33;
-	word32 r2_34;
-	word32 r25_35;
-	r25_23();
+	<anonymous> * r25_24 = *(<anonymous> **) 0x00020A24;
+	word32 sp_25;
+	word32 ra_26;
+	word32 r0_27;
+	word32 r28_28;
+	word32 r4_29;
+	word32 r5_30;
+	word32 r6_31;
+	word32 r1_32;
+	word32 r7_33;
+	word32 r8_34;
+	word32 r2_35;
+	word32 r25_36;
+	r25_24();
 	while (true)
 		;
 }
@@ -222,40 +222,40 @@ void __do_global_ctors_aux()
 // 000009D0: void __libc_start_main(Register ptr32 r28)
 void __libc_start_main(ptr32 r28)
 {
-	<anonymous> * r25_4 = *(r28 - 0x7FF0);
-	word32 sp_8;
-	word32 r28_9;
-	word32 r25_10;
-	word32 ra_11;
-	word32 r15_12;
-	word32 r24_13;
-	r25_4();
+	<anonymous> * r25_5 = *(r28 - 0x7FF0);
+	word32 sp_9;
+	word32 r28_10;
+	word32 r25_11;
+	word32 ra_12;
+	word32 r15_13;
+	word32 r24_14;
+	r25_5();
 }
 
 // 000009E0: void memset(Register ptr32 r28)
 void memset(ptr32 r28)
 {
-	<anonymous> * r25_4 = *(r28 - 0x7FF0);
-	word32 sp_8;
-	word32 r28_9;
-	word32 r25_10;
-	word32 ra_11;
-	word32 r15_12;
-	word32 r24_13;
-	r25_4();
+	<anonymous> * r25_5 = *(r28 - 0x7FF0);
+	word32 sp_9;
+	word32 r28_10;
+	word32 r25_11;
+	word32 ra_12;
+	word32 r15_13;
+	word32 r24_14;
+	r25_5();
 }
 
 // 000009F0: void calloc(Register ptr32 r28)
 void calloc(ptr32 r28)
 {
-	<anonymous> * r25_4 = *(r28 - 0x7FF0);
-	word32 sp_8;
-	word32 r28_9;
-	word32 r25_10;
-	word32 ra_11;
-	word32 r15_12;
-	word32 r24_13;
-	r25_4();
+	<anonymous> * r25_5 = *(r28 - 0x7FF0);
+	word32 sp_9;
+	word32 r28_10;
+	word32 r25_11;
+	word32 ra_12;
+	word32 r15_13;
+	word32 r24_14;
+	r25_5();
 	_fini();
 }
 

@@ -16,7 +16,7 @@ l00000560:
 	branch r1_37 == 0x0000000000000000 l00000590
 // DataOut:
 // DataOut (flags): CC
-// SymbolicIn: r15:fp
+// SymbolicIn: r15:fp - 160
 // LocalsOut: fp(64)
 
 l0000058E:
@@ -138,7 +138,7 @@ l00000600:
 	__libc_start_main(r2_20, qwLocA0, fp - 152, 0x00000820, 0x00000888, Mem15[r15_6 - 16:(ptr32 (fn void ()))], Mem15[r15_6 - 8:(ptr32 void)])
 // DataOut:
 // DataOut (flags): CC
-// SymbolicIn: r15:fp
+// SymbolicIn: r15:fp - 160
 
 
 
@@ -150,10 +150,9 @@ word64 deregister_tm_clones()
 // Trashed: CC r1 r15 r2 r5
 // Preserved:
 deregister_tm_clones_entry:
-// DataOut: r11
+// DataOut: r11 r15
 // DataOut (flags): CC
 // SymbolicIn: r15:fp
-// LocalsOut: fp(64)
 
 l00000648:
 	word64 r2_4 = 0x00002068
@@ -162,7 +161,7 @@ l00000648:
 	branch r1_6 > Mem0[r5_2:byte] l0000066A
 // DataOut: r11 r15
 // DataOut (flags): CC
-// SymbolicIn: r15:fp
+// SymbolicIn: r15:fp - 160
 
 l0000066A:
 	word64 r1_23 = Mem0[0x00002030:word64]
@@ -234,7 +233,6 @@ register_tm_clones_entry:
 // DataOut:
 // DataOut (flags): CC
 // SymbolicIn: r15:fp
-// LocalsOut: fp(64)
 
 l00000680:
 	word64 r3_4 = 0x00002068 - 0x00002068
@@ -242,7 +240,7 @@ l00000680:
 	branch (r3_4 >> 3) + r1_6 != 0x0000000000000000 l000006A8
 // DataOut:
 // DataOut (flags): CC
-// SymbolicIn: r15:fp
+// SymbolicIn: r15:fp - 160
 
 l000006A8:
 	word64 r1_26 = Mem0[0x00002050:word64]
@@ -323,7 +321,7 @@ l000006C8:
 	branch Mem0[r11_18:byte] != 0x00 l00000712
 // DataOut: r11 r13 r15
 // DataOut (flags): CC
-// SymbolicIn: r15:fp
+// SymbolicIn: r15:fp - 160
 
 l000006E6:
 	branch Mem0[r13_16:byte] == Mem0[0x00002028:byte] l00000708
@@ -400,7 +398,7 @@ l00000720:
 	branch Mem0[r13_10:byte] != Mem0[r2_12:byte] l0000074C
 // DataOut: r15
 // DataOut (flags): CC
-// SymbolicIn: r15:fp
+// SymbolicIn: r15:fp - 160
 
 l00000740:
 	branch CC_14 l00000680
@@ -462,7 +460,7 @@ l00000768:
 	branch DPB(r2, dwLocA4_23, 0) >u 0x0000000000000001 l00000792
 // DataOut:
 // DataOut (flags): CC
-// SymbolicIn: r15:fp
+// SymbolicIn: r15:fp - 160
 // LocalsOut: fp(64) Local -00A4(0)
 
 l00000792:
@@ -536,7 +534,7 @@ l000007E0:
 	return
 // DataOut:
 // DataOut (flags): CC
-// SymbolicIn: r15:fp
+// SymbolicIn: r15:fp - 160
 
 main_exit:
 // DataOut:
@@ -564,7 +562,7 @@ l00000820:
 	branch CC_37 l00000876
 // DataOut: r1 r11
 // DataOut (flags): CC
-// SymbolicIn: r15:fp
+// SymbolicIn: r15:fp - 160
 // LocalsOut: fp(64)
 
 l00000856:
@@ -639,7 +637,6 @@ __libc_csu_fini_entry:
 // DataOut:
 // DataOut (flags): CC
 // SymbolicIn: r15:fp
-// LocalsOut: fp(64)
 
 l00000888:
 	word64 r15_3
@@ -650,7 +647,7 @@ l00000888:
 	return
 // DataOut:
 // DataOut (flags): CC
-// SymbolicIn: r15:fp
+// SymbolicIn: r15:fp - 160
 
 __libc_csu_fini_exit:
 // DataOut:
@@ -692,7 +689,7 @@ l00000890:
 	return
 // DataOut:
 // DataOut (flags): CC
-// SymbolicIn: r15:fp
+// SymbolicIn: r15:fp - 160
 
 _fini_exit:
 // DataOut:

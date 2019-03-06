@@ -235,16 +235,16 @@ word32 fn00001278(ptr32 dwArg04)
 // 0000127C: Register (ptr32 Eq_433) fn0000127C()
 Eq_433 * fn0000127C()
 {
-	ptr32 a7_3 = globals->ptr2B88;
-	struct Eq_433 * v8_8 = *(a7_3 - 0x04);
-	struct Eq_25 * v6_5 = *(a7_3 - 0x08);
-	if (v8_8->dw0004 != 0x00)
+	ptr32 a7_5 = globals->ptr2B88;
+	struct Eq_433 * v7_10 = *(a7_5 - 0x04);
+	struct Eq_25 * v5_7 = *(a7_5 - 0x08);
+	if (v7_10->dw0004 != 0x00)
 		execPrivate1();
 	CloseLibrary(globals->ptr2B90);
-	if (v6_5 != null)
-		fn0000126C(v6_5);
-	FreeMem(v8_8, v8_8->dw0000);
-	return v8_8;
+	if (v5_7 != null)
+		fn0000126C(v5_7);
+	FreeMem(v7_10, v7_10->dw0000);
+	return v7_10;
 }
 
 // 000012D0: Register word32 fn000012D0(Stack ptr32 dwArg04)

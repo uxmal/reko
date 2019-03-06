@@ -173,11 +173,11 @@ void pow_int(real64 rArg04, int32 dwArg0C)
 // 800003BC: void sine_taylor(Stack real64 rArg04, Stack int32 dwArg0C)
 void sine_taylor(real64 rArg04, int32 dwArg0C)
 {
-	word32 dwArg04_5 = (word32) rArg04;
+	word32 dwArg04_7 = (word32) rArg04;
 	int32 dwLoc08_24 = 0x03;
 	while (dwLoc08_24 - dwArg0C <= 0x00)
 	{
-		rLoc28 = DPB(rLoc28, dwArg04_5, 0);
+		rLoc28 = DPB(rLoc28, dwArg04_7, 0);
 		pow_int(rLoc28, dwLoc08_24);
 		factorial(dwLoc08_24);
 		dwLoc08_24 += 0x04;
@@ -185,7 +185,7 @@ void sine_taylor(real64 rArg04, int32 dwArg0C)
 	int32 dwLoc08_133 = 0x05;
 	while (dwLoc08_133 - dwArg0C <= 0x00)
 	{
-		rLoc28 = DPB(rLoc28, dwArg04_5, 0);
+		rLoc28 = DPB(rLoc28, dwArg04_7, 0);
 		pow_int(rLoc28, dwLoc08_133);
 		factorial(dwLoc08_133);
 		dwLoc08_133 += 0x04;

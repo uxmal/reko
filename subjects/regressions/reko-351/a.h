@@ -697,7 +697,7 @@ T_163: (in dwArg0C : int32)
   Class: Eq_163
   DataType: int32
   OrigDataType: int32
-T_164: (in dwArg04_5 : word32)
+T_164: (in dwArg04_7 : word32)
   Class: Eq_164
   DataType: word32
   OrigDataType: word32
@@ -725,7 +725,7 @@ T_170: (in rLoc28 : real64)
   Class: Eq_153
   DataType: real64
   OrigDataType: real64
-T_171: (in DPB(rLoc28, dwArg04_5, 0) : real64)
+T_171: (in DPB(rLoc28, dwArg04_7, 0) : real64)
   Class: Eq_153
   DataType: real64
   OrigDataType: real64
@@ -773,7 +773,7 @@ T_182: (in dwLoc08_24 - dwArg0C > 0x00000000 : bool)
   Class: Eq_182
   DataType: bool
   OrigDataType: bool
-T_183: (in DPB(rLoc28, dwArg04_5, 0) : real64)
+T_183: (in DPB(rLoc28, dwArg04_7, 0) : real64)
   Class: Eq_153
   DataType: real64
   OrigDataType: real64

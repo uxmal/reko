@@ -167,7 +167,7 @@ T_5: (in globals->b0001 & 0xBF : byte)
   Class: Eq_3
   DataType: byte
   OrigDataType: byte
-T_6: (in Mem18[0x0001:byte] : byte)
+T_6: (in Mem20[0x0001:byte] : byte)
   Class: Eq_3
   DataType: byte
   OrigDataType: byte

@@ -7,13 +7,13 @@ void fn0200(word16 r4, word16 r5, word16 pc)
 // Preserved:
 // Terminates process
 fn0200_entry:
+	word16 sp_1 = fp
 // DataOut: pc r4 r5
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
 l0200:
 	PRINT(0x0F9A)
-	word16 sp_116 = fp
 	word16 r2_29 = 0x0002
 	word16 r3_112 = 0x0000
 // DataOut: pc r2 r3 r4 r5
@@ -323,7 +323,7 @@ l040A:
 	word16 r4_176
 	word16 r5_177
 	word16 r3_178 = fn0486(r3_112, r4, r5, bArg00, out r4_176, out r5_177)
-	word16 sp_179 = sp_116 - 0x0001
+	word16 sp_179 = sp_1 - 0x0001
 	Mem180[sp_179:byte] = 0x01
 	Mem181[sp_179 + 0x0001:byte] = 0x18
 	word16 r4_184
@@ -493,15 +493,14 @@ word16 fn04A0(word16 r4, word16 pc, ptr16 & r4Out, ptr16 & r5Out)
 fn04A0_entry:
 	*r4Out = r4
 	*r5Out = r5
-// DataOut: pc r1 r4 r5
+	word16 sp_1 = fp
+// DataOut: pc r1 r4 r5 sp
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: fp(16)
 
 l04A0:
 	word16 v5_4 = Mem0[pc + 0x0A52:word16] & Mem0[0x0EF4:word16]
 	Mem5[pc + 0x0A52:word16] = v5_4
-	word16 sp_1 = fp
 	branch v5_4 == 0x0000 l04AA
 // DataOut: pc r1 r4 r5 sp
 // DataOut (flags): 
@@ -1106,13 +1105,12 @@ word16 fn06D6(word16 r1, word16 r4, word16 r5, word16 pc)
 // Trashed: NZVC r0 r1 r2 r3 r4 r5
 // Preserved: sp
 fn06D6_entry:
-// DataOut: pc r1 r4 r5
+	word16 sp_1 = fp
+// DataOut: pc r1 r4 r5 sp
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: fp(16)
 
 l06D6:
-	word16 sp_1 = fp
 	word16 r2_25 = Mem0[0x0F06:word16]
 // DataOut: pc r1 r2 r4 r5 sp
 // DataOut (flags): 
@@ -1303,15 +1301,14 @@ fn07A6_entry:
 	*r4Out = r4
 	*r5Out = r5
 	*r3Out = r3
-// DataOut: pc r1 r3 r4 r5
+	word16 sp_1 = fp
+// DataOut: pc r1 r3 r4 r5 sp
 // DataOut (flags): 
 // SymbolicIn: sp:fp
-// LocalsOut: fp(16)
 
 l07A6:
 	word16 v5_3 = Mem0[0x0F1C:word16] - 0x0001
 	Mem4[0x0F1E:word16] = v5_3
-	word16 sp_1 = fp
 	byte NZV_101 = cond(v5_3)
 	branch v5_3 == 0x0000 l07B0
 // DataOut: pc r1 r3 r4 r5 sp

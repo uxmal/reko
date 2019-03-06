@@ -7,10 +7,10 @@
 // 0200: void fn0200(Register (ptr16 byte) r4, Register Eq_3 r5, Register (ptr16 Eq_4) pc)
 void fn0200(byte * r4, Eq_3 r5, Eq_4 * pc)
 {
+	ptr16 sp_1 = fp;
 	do
 	{
 		PRINT(&globals->b0F9A);
-		ptr16 sp_116 = fp;
 		struct Eq_12 * r2_29 = &globals->t0002;
 		Eq_14 r3_112 = 0x00;
 		do
@@ -177,7 +177,7 @@ l03E6:
 			byte * r4_176;
 			Eq_3 r5_177;
 			Eq_14 r3_178 = fn0486(r3_112, r4, r5, bArg00, out r4_176, out r5_177);
-			struct Eq_336 * sp_179 = sp_116 - 0x01;
+			struct Eq_336 * sp_179 = sp_1 - 0x01;
 			sp_179->b0000 = 0x01;
 			sp_179->b0001 = 0x18;
 			byte * r4_184;
@@ -255,9 +255,9 @@ Eq_225 fn04A0(byte * r4, Eq_4 * pc, ptr16 & r4Out, ptr16 & r5Out)
 {
 	*r4Out = r4;
 	*r5Out = r5;
+	struct Eq_532 * sp_1 = fp;
 	cui16 v5_4 = pc->w0A52 & globals->w0EF4;
 	pc->w0A52 = v5_4;
-	struct Eq_542 * sp_1 = fp;
 	if (v5_4 != 0x00)
 		return r1;
 	Eq_3 r5_119 = globals->t0F04;
@@ -649,9 +649,9 @@ Eq_14 fn07A6(byte * r4, Eq_4 * pc, ptr16 & r3Out, ptr16 & r4Out, ptr16 & r5Out)
 	*r4Out = r4;
 	*r5Out = r5;
 	*r3Out = r3;
+	Eq_3 sp_1 = fp;
 	word16 v5_3 = globals->w0F1C - 0x01;
 	globals->w0F1E = v5_3;
-	Eq_3 sp_1 = fp;
 	Eq_1501 NZV_101 = cond(v5_3);
 	if (v5_3 == 0x00)
 	{

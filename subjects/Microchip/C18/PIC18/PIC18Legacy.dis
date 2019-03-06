@@ -22,7 +22,7 @@ l00000000:
 // SymbolicIn: STKPTR:fp
 
 l00013A:
-	Mem18[0x0001:byte] = Data[0x0001:byte] & 0xBF
+	Mem20[0x0001:byte] = Data[0x0001:byte] & 0xBF
 	Stack[0x01] = 0x00014A
 	fn00000E(0x0000, 0x000000)
 // DataOut:
