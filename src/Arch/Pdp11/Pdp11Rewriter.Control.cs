@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -96,13 +96,26 @@ namespace Reko.Arch.Pdp11
 
         private void RewriteJsr()
         {
-            var regLink = (RegisterOperand)instr.op1;
             //$TODO: do something with regLink.
             var callDst = RewriteJmpSrc(instr.op2);
             if (callDst != null)
             {
-                this.rtlc = InstrClass.Transfer| InstrClass.Call;
-                m.Call(callDst, 2);
+                var regLink = binder.EnsureRegister(((RegisterOperand)instr.op1).Register);
+                if (regLink.Storage != Registers.pc)
+                {
+                    var sp = binder.EnsureRegister(Registers.sp);
+                    m.Assign(sp, m.ISubS(sp, 2));
+                    m.Assign(m.Mem16(sp), regLink);
+
+                    m.Assign(regLink, instr.Address + instr.Length);
+                    this.rtlc = InstrClass.Transfer;
+                    m.Goto(callDst);
+                }
+                else
+                {
+                    this.rtlc = InstrClass.Transfer | InstrClass.Call;
+                    m.Call(callDst, 2);
+                }
             }
             else
             {
@@ -153,9 +166,8 @@ namespace Reko.Arch.Pdp11
                 var reg = binder.EnsureRegister(regLink.Register);
                 m.Assign(tmp, reg);
                 m.Assign(reg, m.Mem(regLink.Width, sp));
-                m.Assign(sp, m.IAdd(sp, reg.DataType.Size));
-                m.Call(tmp, 0);
-                m.Return(0, 0);
+                m.Assign(sp, m.IAddS(sp, reg.DataType.Size));
+                m.Goto(tmp);
             }
         }
 
