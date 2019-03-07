@@ -435,12 +435,11 @@ namespace Reko.UnitTests.Arch.Pdp11
         {
             BuildTest(0x0085);
             AssertCode(
-              "0|T--|0200(2): 5 instructions",
+              "0|T--|0200(2): 4 instructions",
               "1|L--|v2 = r5",
               "2|L--|r5 = Mem0[sp:word16]",
-              "3|L--|sp = sp + 0x0002",
-              "4|T--|call v2 (0)",
-              "5|T--|return (0,0)");
+              "3|L--|sp = sp + 2",
+              "4|T--|goto v2");
         }
 
         [Test]
@@ -660,6 +659,18 @@ namespace Reko.UnitTests.Arch.Pdp11
                 "2|L--|Mem0[Mem0[r2:ptr16]:ptr16] = 0202",
                 "3|L--|NZ = cond(0x0202)",
                 "4|L--|V = false");
+        }
+
+        [Test]
+        public void Pdp11rw_jsr_r4()
+        {
+            BuildTest(0x0937, 0xC9C0);  // jsr r4,CBC4
+            AssertCode(
+                "0|T--|0200(4): 4 instructions",
+                "1|L--|sp = sp - 2",
+                "2|L--|Mem0[sp:word16] = r4",
+                "3|L--|r4 = 0204",
+                "4|T--|goto CBC4");
         }
     }
 }
