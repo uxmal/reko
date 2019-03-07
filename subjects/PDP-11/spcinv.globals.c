@@ -4,8 +4,8 @@
 
 #include "spcinv.h"
 
-Eq_835 g_tFFFFFFFF;
-Eq_12 g_t0001 = 
+Eq_765 g_tFFFFFFFF;
+Eq_11 g_t0001 = 
 	{
 		0x00,
 		
@@ -14,7 +14,7 @@ Eq_12 g_t0001 =
 		},
 		0x00,
 	};
-Eq_12 g_t0002 = 
+Eq_11 g_t0002 = 
 	{
 		0x00,
 		
@@ -23,86 +23,68 @@ Eq_12 g_t0002 =
 		},
 		0x00,
 	};
-Eq_474 g_t0003 = 
+Eq_421 g_t0003 = 
 	{
-		
-		{
-			0x0D
-		},
+		&g_t000D,
 		
 		{
 			0x00
 		},
 	};
-Eq_661 g_t000A = 
+Eq_618 g_t000A = 
 	{
 		0x0E30,
 		0x0000,
 		0x0005,
 	};
+Eq_1335 g_t000D = 
+	{
+		
+		{
+			L'\x00'
+		},
+	};
 cui16 g_w0024 = 0x0000;
 word16 g_w02C6 = 0x2E2C;
-Eq_135 g_t02CB = 
+Eq_130 g_t02CB = 
 	{
 		0x00
 	};
+byte * g_ptr0420 = &g_b1121;
 <anonymous> g_t0456 = <code>;
+byte * g_ptr0482 = &g_b1122;
+byte * g_ptr05B8 = &g_b1116;
+byte * g_ptr0624 = &g_b1121;
+byte * g_ptr066A = &g_b1116;
+byte * g_ptr077E = &g_b1121;
+byte * g_ptr078E = &g_b111B;
+byte * g_ptr083C = &g_b112B;
+byte * g_ptr0A64 = &g_b1121;
 word16 g_w0A6A = 0x0000;
+byte * g_ptr0A78 = &g_b1155;
+byte * g_ptr0A84 = &g_b1121;
 word16 g_w0AB2 = 0x0087;
 ui16 g_w0AB4 = 0x0000;
+byte * g_ptr0ABA = &g_b111E;
+byte * g_ptr0B34 = &g_b1121;
 word16 g_w0B5A = 0x0087;
 word16 g_w0B5C = 0x0000;
 word16 g_w0B5E = 0x0000;
 byte g_b0BC6 = 0x87;
 word16 g_w0BC8 = 0x0020;
+byte * g_ptr0CC2 = &g_b1111;
 word16 g_w0DA8 = 0x0087;
 word16 g_w0DAA = 0x0000;
-Eq_2727 g_a0DAC[6] = 
+struct Eq_324 * g_a0DAC[6] = 
 	{
-		
-		{
-			
-			{
-				0xE0
-			},
-		},
-		
-		{
-			
-			{
-				0xF0
-			},
-		},
-		
-		{
-			
-			{
-				0x00
-			},
-		},
-		
-		{
-			
-			{
-				0x10
-			},
-		},
-		
-		{
-			
-			{
-				0x20
-			},
-		},
-		
-		{
-			
-			{
-				0x30
-			},
-		},
+		&g_a0DE0,
+		&g_a0DF0,
+		&g_a0E00,
+		&g_a0E10,
+		&g_a0E20,
+		&g_a0E30,
 	};
-Eq_2728 g_a0DB8[6] = 
+Eq_2292 g_a0DB8[6] = 
 	{
 		
 		{
@@ -159,35 +141,35 @@ word16 g_a0DD4[6] =
 		0x000A,
 		0x0005,
 	};
-ptr16 g_a0DE0[] = 
+word16 g_a0DE0[] = 
 	{
 	};
-ptr16 g_a0DF0[] = 
+word16 g_a0DF0[] = 
 	{
 	};
-ptr16 g_a0E00[] = 
+word16 g_a0E00[] = 
 	{
 	};
-ptr16 g_a0E10[] = 
+word16 g_a0E10[] = 
 	{
 	};
-ptr16 g_a0E20[] = 
+word16 g_a0E20[] = 
 	{
 	};
-ptr16 g_a0E30[] = 
+word16 g_a0E30[] = 
 	{
 	};
 byte g_b0E56 = 0x00;
-Eq_2737 g_a0EE6[] = 
+Eq_2301 g_a0EE6[] = 
 	{
 	};
-Eq_2736 g_a0EE9[] = 
+Eq_2300 g_a0EE9[] = 
 	{
 	};
 ci8 g_a0EEC[] = 
 	{
 	};
-Eq_2740 g_a0EF0[] = 
+Eq_2304 g_a0EF0[] = 
 	{
 	};
 byte g_a0EF3[] = 
@@ -199,49 +181,42 @@ word16 g_w0EF8 = 0x0000;
 <anonymous> * g_ptr0EFA = null;
 word16 g_w0EFC = 0x0000;
 word16 g_w0EFE = 0x0000;
-Eq_3 g_t0F00 = 
+Eq_2 g_t0F00 = 
 	{
 		0x00
 	};
-Eq_3 g_t0F02 = 
+Eq_2 g_t0F02 = 
 	{
 		0x00
 	};
-Eq_3 g_t0F04 = 
+Eq_2 g_t0F04 = 
 	{
 		0x00
 	};
-byte g_b0F05 = 0x00;
-struct Eq_12 * g_ptr0F06 = &g_t0002;
-Eq_14 g_t0F08 = 
+struct Eq_11 * g_ptr0F06 = &g_t0002;
+int16 g_w0F08 = 0;
+struct Eq_765 * g_ptr0F0A = &g_tFFFFFFFF;
+Eq_511 g_t0F0C = 
 	{
-		0x00
-	};
-struct Eq_835 * g_ptr0F0A = &g_tFFFFFFFF;
-Eq_14 g_t0F0C = 
-	{
-		0x01
+		1
 	};
 cui16 g_w0F0E = 0x0000;
 ci16 g_w0F10 = 0x0000;
 word16 g_w0F12 = 0x0000;
-Eq_452 g_t0F14 = 
+Eq_399 g_t0F14 = 
 	{
 		L'\x00'
 	};
 word16 g_w0F16 = 0x0000;
-Eq_276 g_t0F18 = 
-	{
-		0x00
-	};
-struct Eq_474 * g_ptr0F1A = null;
+ci16 g_w0F18 = 0x0000;
+struct Eq_421 * g_ptr0F1A = null;
 word16 g_w0F1C = 0x0000;
 word16 g_w0F1E = 0x0000;
 ci16 g_w0F20 = 0x0000;
 word16 g_w0F22 = 0x0000;
 byte g_b0F24 = 0x00;
 word16 g_w0F26 = 0x0407;
-Eq_3 g_t0F28 = 
+Eq_2 g_t0F28 = 
 	{
 		0x04
 	};
@@ -250,10 +225,16 @@ word16 g_a0F2A[] =
 	};
 char g_b0F9A = '\x0D';
 char g_b0FDA = '\x0D';
+byte g_b1111 = 0x1B;
+byte g_b1116 = 0x1B;
+byte g_b111B = 0x0A;
+byte g_b111E = 0x1B;
+byte g_b1121 = 0x00;
+byte g_b1122 = 0x08;
+byte g_b112B = 0x08;
 byte g_b112D = 0x2F;
 byte g_b1131 = 0x5C;
-byte g_b1159 = 0x20;
-byte g_b115A = 0x00;
+byte g_b1155 = 0x20;
 word16 g_w1166 = 0x0000;
 word16 g_w1168 = 0x0000;
 word16 g_w116A = 0x0000;
@@ -263,5 +244,5 @@ ui16 g_w1170 = 0x0000;
 word16 g_w1172 = 0x0000;
 ui16 g_w1174 = 0x0000;
 byte g_b1178 = 0x00;
-Eq_835 g_tFFFF;
+Eq_765 g_tFFFF;
 

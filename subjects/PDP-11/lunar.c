@@ -310,9 +310,9 @@ l053A:
 	r4 = globals->ptr0072;
 	if (r4 >= null)
 	{
-		ci16 v43_141 = 0x0A - r4;
-		NZV = cond(v43_141);
-		if (v43_141 > 0x00)
+		ci16 v44_141 = 0x0A - r4;
+		NZV = cond(v44_141);
+		if (v44_141 > 0x00)
 		{
 			if (r4 > &globals->w037A)
 			{
@@ -495,10 +495,10 @@ l0888:
 					fn0790();
 					return;
 				}
-				ci16 v65_229 = 64936 - r4_17;
-				if (v65_229 <= 0x00)
+				ci16 v66_229 = 64936 - r4_17;
+				if (v66_229 <= 0x00)
 				{
-					if (v65_229 <= 0x00)
+					if (v66_229 <= 0x00)
 						goto l0904;
 					globals->w34CA = 0x23FE;
 					word16 r4_285;
@@ -780,9 +780,9 @@ void fn0B06(word16 * r3, word16 * r5)
 			ptr16 sp_165 = fp;
 			do
 			{
-				cu16 v10_41 = globals->w0070 & 0x7F;
-				globals->w0070 = v10_41;
-			} while (v10_41 != 0x00);
+				cu16 v11_41 = globals->w0070 & 0x7F;
+				globals->w0070 = v11_41;
+			} while (v11_41 != 0x00);
 			if (globals->w07BA == 0x00)
 				goto l0BD0;
 			ci16 r3_110 = globals->w2610 - globals->ptr34B4;
@@ -811,10 +811,10 @@ void fn0B06(word16 * r3, word16 * r5)
 			}
 			*(fp - 0x04) = -*(fp - 0x04);
 			fn0C36(0x00, *(fp - 0x04));
-			ci16 v39_148 = *(fp - 0x04);
+			ci16 v40_148 = *(fp - 0x04);
 			ci16 r2_154 = -*(fp - 0x02);
 			if (r2_154 != 0x00)
-				fn0C36(r2_154, v39_148);
+				fn0C36(r2_154, v40_148);
 			ci16 * r4_157 = fn13AA(ptrLoc02);
 			0x0B8E = 2959;
 		} while (0x0B8E != 0x00);
@@ -912,9 +912,9 @@ void fn0C76()
 	fn1578(out r4_8);
 	do
 	{
-		cu16 v8_10 = globals->w0070 & 0x07;
-		globals->w0070 = v8_10;
-	} while (v8_10 != 0x00);
+		cu16 v9_10 = globals->w0070 & 0x07;
+		globals->w0070 = v9_10;
+	} while (v9_10 != 0x00);
 	word16 r4_15;
 	fn1578(out r4_15);
 }
@@ -1136,11 +1136,11 @@ l0EFE:
 		r5->w0002 = 0x00;
 l0EF0:
 		++globals->w0046;
-		ci16 v28_49 = wLoc02_19 - 0x01;
+		ci16 v29_49 = wLoc02_19 - 0x01;
 		++r5;
 		*r5Out = r5;
-		wLoc02_19 = v28_49;
-	} while (v28_49 > 0x00);
+		wLoc02_19 = v29_49;
+	} while (v29_49 > 0x00);
 	return r0_31;
 }
 
@@ -1164,10 +1164,10 @@ void fn0F04()
 		wchar_t r3_112;
 		*(fp - 0x02) = (union Eq_25 *) r4_11;
 		Eq_25 r4_47 = fn100C(*r0_34);
-		Eq_25 v21_49 = *(fp - 0x02);
+		Eq_25 v22_49 = *(fp - 0x02);
 		*(fp - 0x02) = r0_34 + 0x01;
-		r4_11 = v21_49;
-		ci16 r1_56 = r4_47 - v21_49;
+		r4_11 = v22_49;
+		ci16 r1_56 = r4_47 - v22_49;
 		if (r1_56 <= 0x00)
 		{
 			word16 r3_110;
@@ -1212,10 +1212,10 @@ void fn103C(word16 r0, Eq_2656 * r3, Eq_2657 * r5, Eq_2658 * wArg00)
 		int16 r4_83 = (r4_76 >> 0x01) + wArg00->w0002;
 		globals->w0084 = wArg00->w0004;
 		r5->w0004 = r4_83;
-		cup16 v30_88 = r3->w0002 - r3->w0000;
-		if (v30_88 != 0x00)
+		cup16 v31_88 = r3->w0002 - r3->w0000;
+		if (v31_88 != 0x00)
 		{
-			if (v30_88 <= 0x00)
+			if (v31_88 <= 0x00)
 				globals->w0046 += ~0x15;
 			else
 				globals->w0046 += 22;
@@ -1812,11 +1812,11 @@ ci16 * fn13AA(ci16 * ptrArg00)
 	word16 * r0_62 = globals->a013E;
 	while (true)
 	{
-		word16 * v22_66 = *r0_62;
+		word16 * v23_66 = *r0_62;
 		word16 * r0_67 = r0_62 + 0x01;
-		if (v22_66 == null)
+		if (v23_66 == null)
 			break;
-		*v22_66 = *r0_67;
+		*v23_66 = *r0_67;
 		r0_62 = r0_67 + 0x01;
 	}
 	while (true)
