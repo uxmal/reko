@@ -3349,8 +3349,8 @@ proc_exit:
             #region Expected
 @"test_entry:
 	def r2
-	r1_2 = r2
 	def r1
+	r1_2 = r2
 	r2_5 = r1
 l1:
 	Mem3[0x00123400:byte] = (byte) r1_2

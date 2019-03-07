@@ -82,10 +82,10 @@ fn0C00_0000_entry:
 	def bx
 	def Mem0
 	def si
-	// succ:  l0C00_0000
-l0C00_0000:
 	sp_2 = fp
 	Top_3 = 0
+	// succ:  l0C00_0000
+l0C00_0000:
 	bx_7 = Mem0[ds:bx + 0x0004:word16]
 	cx_8 = Mem0[ds:bx_7 + 0x0002:word16]
 	SCZO_9 = cond(cx_8 - 0x0000)

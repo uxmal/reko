@@ -13,10 +13,10 @@
 // return address size: 4
 define fn10000000
 fn10000000_entry:
-	// succ:  l10000000
-l10000000:
 	esp = fp
 	Top = 0
+	// succ:  l10000000
+l10000000:
 	esp = esp - 0x0000000C
 	SCZO = cond(esp)
 	eax = eax ^ eax

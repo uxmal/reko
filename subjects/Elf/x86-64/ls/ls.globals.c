@@ -6,15 +6,15 @@
 
 word32 g_dwFFBED370;
 word64 g_qw0001;
-Eq_2728 g_t000A;
-Eq_3848 g_t0020;
-Eq_3848 g_t003A;
+Eq_2717 g_t000A;
+Eq_3876 g_t0020;
+Eq_3876 g_t003A;
 char g_b0065;
-Eq_1610 g_t4021F0 = Unexpected function type (fn void ((ptr64 void)))
+Eq_1606 g_t4021F0 = Unexpected function type (fn void ((ptr64 void)))
 ;
-Eq_1609 g_t402640 = Unexpected function type (fn (ptr64 void) (int32))
+Eq_1605 g_t402640 = Unexpected function type (fn (ptr64 void) (int32))
 ;
-Eq_4187 g_t4028C0 = Unexpected function type (fn int32 (int32, (ptr64 (ptr64 char)), (ptr64 (ptr64 char))))
+Eq_4209 g_t4028C0 = Unexpected function type (fn int32 (int32, (ptr64 (ptr64 char)), (ptr64 (ptr64 char))))
 ;
 <anonymous> g_t404990 = <code>;
 int32 g_dw4049D0 = -2614295;
@@ -22,9 +22,9 @@ Eq_51 g_t40A200 = Unexpected function type (fn void ((ptr64 void)))
 ;
 <anonymous> g_t40AC70 = <code>;
 <anonymous> g_t410800 = <code>;
-Eq_4190 g_t411E60 = Unexpected function type (fn void ())
+Eq_4212 g_t411E60 = Unexpected function type (fn void ())
 ;
-Eq_4191 g_t411ED0 = Unexpected function type (fn void ())
+Eq_4213 g_t411ED0 = Unexpected function type (fn void ())
 ;
 <anonymous> * g_a411F40[] = 
 	{
@@ -56,7 +56,7 @@ word32 g_a412CC0[13] =
 		0x00000000,
 	};
 word32 g_dw412CF0 = 0x00000000;
-Eq_21499 g_a412D00[] = 
+Eq_21475 g_a412D00[] = 
 	{
 	};
 word32 g_a412EC0[] = 
@@ -86,7 +86,7 @@ Eq_8 g_a413040[] =
 Eq_1088 g_t413080 = 
 	{
 	};
-Eq_21489 g_a4135E0[] = 
+Eq_21465 g_a4135E0[] = 
 	{
 	};
 word32 g_a4136B0[] = 
@@ -138,11 +138,11 @@ Eq_16 g_t415EF8 =
 			0x66, 0x66, 0x66, 0x3F, 0xCD, 0xCC, 0x8C, 0x3F, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x3F, 
 		}
 	};
-Eq_13009 g_t415EFC = 
+Eq_13012 g_t415EFC = 
 	{
 		1.1F
 	};
-Eq_13018 g_t415F00 = 
+Eq_13021 g_t415F00 = 
 	{
 		0.0F
 	};
@@ -153,11 +153,11 @@ Eq_18 g_t415F04 =
 			0x00, 0x00, 0x80, 0x3F, 0x00, 0x00, 0x80, 0x5F, 0x00, 0x00, 0x00, 0x5F, 0x00, 0x00, 0x00, 0x00, 
 		}
 	};
-Eq_13293 g_t415F08 = 
+Eq_13296 g_t415F08 = 
 	{
 		1.844674e+19F
 	};
-Eq_13293 g_t415F0C = 
+Eq_13296 g_t415F0C = 
 	{
 		9.223372e+18F
 	};
@@ -171,7 +171,7 @@ ui32 g_a415F50[] =
 Eq_8 g_a415F60[] = 
 	{
 	};
-Eq_15057 g_t415F84 = 
+Eq_15060 g_t415F84 = 
 	{
 		10.0F
 	};
@@ -226,7 +226,7 @@ Eq_8 g_t61A3E8 =
 	};
 word64 g_qw61A3F0 = 0x0000000000000001;
 byte * g_ptr61A3F8 = &g_b413C07;
-struct Eq_3545 g_t61A400 = 
+struct Eq_3530 g_t61A400 = 
 	{
 		
 		{
@@ -238,7 +238,7 @@ struct Eq_3545 g_t61A400 =
 		},
 	};
 word64 g_qw61A408 = 0x0000000000000000;
-struct Eq_3545 g_t61A410 = 
+struct Eq_3530 g_t61A410 = 
 	{
 		
 		{
@@ -249,7 +249,7 @@ struct Eq_3545 g_t61A410 =
 			4273972
 		},
 	};
-struct Eq_3545 g_t61A420 = 
+struct Eq_3530 g_t61A420 = 
 	{
 		
 		{
@@ -265,7 +265,7 @@ Eq_8 g_t61A458 =
 	{
 		4275215
 	};
-struct Eq_3545 g_t61A550 = 
+struct Eq_3530 g_t61A550 = 
 	{
 		
 		{
@@ -276,7 +276,7 @@ struct Eq_3545 g_t61A550 =
 			4275275
 		},
 	};
-Eq_426 g_t61A560 = 
+Eq_420 g_t61A560 = 
 	{
 		1
 	};
@@ -285,7 +285,6 @@ byte g_b61A569 = 0x01;
 char g_b61A56A = '?';
 word32 g_dw61A56C = 0x00000001;
 uint64 g_qw61A570 = 0x0000000000415DF8;
-ptr64 g_ptr61A578 = 0x0000000000409E40;
 word32 g_dw61A580 = 0x00000001;
 Eq_8 g_t61A5D8 = 
 	{
@@ -293,11 +292,11 @@ Eq_8 g_t61A5D8 =
 	};
 word64 g_qw61A5E0 = 0x0000000000000100;
 word64 g_qw61A5E8 = 0x000000000061B220;
-Eq_18806 g_t61A5F0 = 
+Eq_18786 g_t61A5F0 = 
 	{
 		1
 	};
-Eq_17395 g_t61A600 = 
+Eq_17438 g_t61A600 = 
 	{
 		&g_strC34C00
 	};
@@ -323,7 +322,7 @@ Eq_8 g_t61A748 =
 	{
 		0
 	};
-Eq_1606 g_t61AF00 = 
+Eq_1602 g_t61AF00 = 
 	{
 	};
 word64 g_qw61AF10 = 0x0000000000000000;
@@ -332,7 +331,7 @@ Eq_8 g_t61AF18 =
 		0
 	};
 int64 g_qw61AF20 = 0;
-Eq_1606 g_t61AF60 = 
+Eq_1602 g_t61AF60 = 
 	{
 	};
 Eq_8 g_t61AF78 = 
@@ -340,7 +339,7 @@ Eq_8 g_t61AF78 =
 		0
 	};
 word64 * g_ptr61AF80 = null;
-Eq_1606 g_t61AFC0 = 
+Eq_1602 g_t61AFC0 = 
 	{
 	};
 Eq_8 g_t61B018 = 
@@ -406,7 +405,7 @@ byte g_b61B129 = 0x00;
 up32 g_dw61B12C = 0x00000000;
 byte g_b61B130 = 0x00;
 word32 g_dw61B134 = 0x00000000;
-Eq_426 g_t61B138 = 
+Eq_420 g_t61B138 = 
 	{
 		0
 	};
@@ -418,7 +417,7 @@ byte g_b61B147 = 0x00;
 word32 g_dw61B148 = 0x00000000;
 word32 g_dw61B14C = 0x00000000;
 up32 g_dw61B150 = 0x00000000;
-Eq_4717 g_t61B154 = 
+Eq_4743 g_t61B154 = 
 	{
 		0
 	};
@@ -497,6 +496,6 @@ Eq_8 g_t61B358 =
 		0
 	};
 char g_strC34C00[];
-Eq_2728 g_tC34C10;
-Eq_2728 g_tC34C50;
+Eq_2717 g_tC34C10;
+Eq_2717 g_tC34C50;
 

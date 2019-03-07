@@ -10,9 +10,9 @@
 // return address size: 2
 define fn0C00_0000
 fn0C00_0000_entry:
+	sp = fp
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp = fp
 	call fn0C00_000F (retsize: 2;)
 	call fn0C00_0010 (retsize: 2;)
 	ecx = ecx ^ ecx
@@ -31,9 +31,9 @@ fn0C00_0000_exit:
 // return address size: 2
 define fn0C00_000F
 fn0C00_000F_entry:
+	sp = fp
 	// succ:  l0C00_000F
 l0C00_000F:
-	sp = fp
 	return
 	// succ:  fn0C00_000F_exit
 fn0C00_000F_exit:
@@ -52,9 +52,9 @@ fn0C00_000F_exit:
 // return address size: 2
 define fn0C00_0010
 fn0C00_0010_entry:
+	sp = fp
 	// succ:  l0C00_0010
 l0C00_0010:
-	sp = fp
 	ch = ch ^ ch
 	SZO = cond(ch)
 	C = false

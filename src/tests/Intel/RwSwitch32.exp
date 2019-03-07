@@ -14,10 +14,10 @@
 // return address size: 4
 define fn10000000
 fn10000000_entry:
-	// succ:  l10000000
-l10000000:
 	esp = fp
 	Top = 0
+	// succ:  l10000000
+l10000000:
 	eax = Mem0[esp + 0x00000004:word32]
 	SCZO = cond(eax - 0x00000003)
 	branch Test(UGT,CZ) l10000048

@@ -79,6 +79,16 @@ namespace Reko.Analysis
 			Procedure.ExitBlock.Statements.Clear();
 		}
 
+        private int LastDefPosition(StatementList stmts)
+        {
+            for (int i = stmts.Count - 1; i >= 0; --i)
+            {
+                if (stmts[i].Instruction is DefInstruction)
+                    return i;
+            }
+            return -1;
+        }
+
         /// <summary>
         /// If there is no defined SSA identifier for <paramref name="id"/>
         /// identifier, then create DefInstruction in the <paramref name="b"/>
@@ -94,9 +104,21 @@ namespace Reko.Analysis
             if (Identifiers.TryGetValue(id, out var sid))
                 return sid;
             sid = Identifiers.Add(id, null, null, false);
-            sid.DefStatement = b.Statements.Add(
+            var stm = new Statement(
                 b.Address.ToLinear(),
-                new DefInstruction(id));
+                new DefInstruction(id),
+                b);
+            sid.DefStatement = stm;
+
+            if (b == b.Procedure.EntryBlock)
+            {
+                int defPos = LastDefPosition(b.Statements) + 1;
+                b.Statements.Insert(defPos, stm);
+            }
+            else
+            {
+                b.Statements.Add(stm);
+            }
             return sid;
         }
 

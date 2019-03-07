@@ -8,10 +8,10 @@
 // return address size: 2
 define fn0C00_0000
 fn0C00_0000_entry:
-	// succ:  l0C00_0000
-l0C00_0000:
 	sp = fp
 	Top = 0
+	// succ:  l0C00_0000
+l0C00_0000:
 	bx = 0x1234
 	call fn0C00_000C (retsize: 2;)
 	bx = 0x5678
@@ -37,10 +37,10 @@ fn0C00_0000_exit:
 // return address size: 2
 define fn0C00_000C
 fn0C00_000C_entry:
-	// succ:  l0C00_000C
-l0C00_000C:
 	sp = fp
 	Top = 0
+	// succ:  l0C00_000C
+l0C00_000C:
 	SCZO = cond(Mem0[ds:bx:word16] - 0x007B)
 	branch Test(LE,SZO) l0C00_0014
 	// succ:  l0C00_0011 l0C00_0014
@@ -71,6 +71,8 @@ fn0C00_000C_exit:
 // return address size: 0
 define fn0C00_0018
 fn0C00_0018_entry:
+	sp = fp
+	Top = 0
 	goto l0C00_0018
 	// succ:  l0C00_0018
 l0C00_0014_in_fn0C00_0018:
@@ -80,8 +82,6 @@ l0C00_0014_in_fn0C00_0018:
 	return
 	// succ:  fn0C00_0018_exit
 l0C00_0018:
-	sp = fp
-	Top = 0
 	bx = bx + 0x0004
 	SCZO = cond(bx)
 	goto l0C00_0014_in_fn0C00_0018

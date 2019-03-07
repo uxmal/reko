@@ -16,10 +16,10 @@
 // return address size: 4
 define fn10000000
 fn10000000_entry:
-	// succ:  l10000000
-l10000000:
 	esp = fp
 	Top = 0
+	// succ:  l10000000
+l10000000:
 	edi = Mem0[0x1000002C:word32]
 	esi = 0x00000003
 	ebx = GetDC

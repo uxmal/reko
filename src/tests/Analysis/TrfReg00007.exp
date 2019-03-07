@@ -1,7 +1,7 @@
 fn0C00_0000 SCZO al Top
 const al:0x20 Top:0
     fn0C00_0000_entry sp:fp
-    l0C00_0000 sp:fp
+    l0C00_0000 sp:fp Top:0
     l0C00_0007 al:0x20 sp:fp Top:0
     l0C00_000B al:0x20 sp:fp Top:0
     fn0C00_0000_exit al:0x20 sp:fp Top:0
@@ -9,7 +9,7 @@ const al:0x20 Top:0
 fn0C00_000C SCZO Top
 const Top:0
     fn0C00_000C_entry sp:fp
-    l0C00_000C sp:fp
+    l0C00_000C sp:fp Top:0
     l0C00_0010 sp:fp Top:0
     l0C00_0014 sp:fp Top:0
     fn0C00_000C_exit sp:fp Top:0

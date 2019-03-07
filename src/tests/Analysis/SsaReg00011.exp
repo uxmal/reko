@@ -18,10 +18,10 @@ Top_5: orig: Top
 define fn0C00_0000
 fn0C00_0000_entry:
 	def fp
-	// succ:  l0C00_0000
-l0C00_0000:
 	sp_2 = fp
 	Top_3 = 0
+	// succ:  l0C00_0000
+l0C00_0000:
 	call fn0C00_0004 (retsize: 2;)
 		uses: sp:sp_2,Top:Top_3
 		defs: sp:sp_4,Top:Top_5
@@ -183,10 +183,10 @@ Z_48: orig: Z
 define fn0C00_0004
 fn0C00_0004_entry:
 	def fp
-	// succ:  l0C00_0004
-l0C00_0004:
 	sp_2 = fp
 	Top_3 = 0
+	// succ:  l0C00_0004
+l0C00_0004:
 	ax_4 = 0x4DE1
 	es_5 = ax_4
 	bx_6 = 0x0FFF

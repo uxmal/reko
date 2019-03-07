@@ -19,10 +19,10 @@
 // return address size: 2
 define fn0C00_0000
 fn0C00_0000_entry:
-	// succ:  l0C00_0000
-l0C00_0000:
 	sp = fp
 	Top = 0
+	// succ:  l0C00_0000
+l0C00_0000:
 	si = Mem0[ds:0x0100:word16]
 	cx = Mem0[ds:si:word16]
 	si = si + 0x0001

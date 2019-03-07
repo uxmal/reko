@@ -185,10 +185,10 @@ fn0C00_0000_entry:
 	def fp
 	def ds
 	def Mem0
-	// succ:  l0C00_0000
-l0C00_0000:
 	sp_2 = fp
 	Top_3 = 0
+	// succ:  l0C00_0000
+l0C00_0000:
 	ax_6 = Mem0[ds:0x0200:word16]
 	dx_7 = Mem0[ds:0x0202:word16]
 	cx_8 = Mem0[ds:0x0204:word16]

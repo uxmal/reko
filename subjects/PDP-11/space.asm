@@ -1022,22 +1022,9 @@ l0D46:
 ;;     0D4E (in fn0D3E)
 fn0D50 proc
 	rts	pc
-	bic	r5,@r2
-	bic	@(r1)+,@sp
-	bic	@r1,r5
-	bic	r5,@r5
-	bic	r5,(r2)+
-	bis	@r1,(r0)+
-	bic	r5,@r5
-	bic	@-(r1),@(r1)+
-	bic	@554A(r1),(r5)+
-	bic	r5,@r4
-	bic	@(r5)+,(r5)+
-	bic	(r5)+,(r3)+
-	bic	@5443(r5),(r0)+
-	bic	@4456(r5),@sp
-	bic	@r5,r5
-	mov	#12AA,-(sp)
+0D52       4A 41 4E 46 45 42 4D 41 52 41 50 52 4D 41   JANFEBMARAPRMA
+0D60 59 4A 55 4E 4A 55 4C 41 55 47 53 45 50 4F 43 54 YJUNJULAUGSEPOCT
+0D70 4E 4F 56 44 45 43 E6 15 AA 12                   NOVDEC....     
 
 ;; fn0D7A: 0D7A
 ;;   Called from:

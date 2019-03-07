@@ -37,10 +37,10 @@ fn0C00_0000_entry:
 	def fp
 	def ds
 	def Mem0
-	// succ:  l0C00_0000
-l0C00_0000:
 	sp_2 = fp
 	Top_3 = 0
+	// succ:  l0C00_0000
+l0C00_0000:
 	ax_6 = Mem0[ds:0x0100:word16]
 	call fn0C00_000C (retsize: 2;)
 		uses: ax:ax_6,ds:ds,sp:sp_2,Top:Top_3
@@ -101,10 +101,10 @@ fn0C00_000C_entry:
 	def ax
 	def ss
 	def ds
-	// succ:  l0C00_000C
-l0C00_000C:
 	sp_2 = fp
 	Top_3 = 0
+	// succ:  l0C00_000C
+l0C00_000C:
 	sp_4 = sp_2 - 2
 	Mem7[ss:sp_4:word16] = ax
 	al_9 = Mem7[ds:0x0104:byte]

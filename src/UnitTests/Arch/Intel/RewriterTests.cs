@@ -164,9 +164,9 @@ namespace Reko.UnitTests.Arch.Intel
 			Assert.AreEqual(3, proc.ControlGraph.Blocks.Count);		// Entry, code, Exit
 
             Block block = new List<Block>(proc.ControlGraph.Successors(proc.EntryBlock))[0];
-			Assert.AreEqual(7, block.Statements.Count);
+			Assert.AreEqual(5, block.Statements.Count);
 			Assignment instr1 = (Assignment) block.Statements[0].Instruction;
-			Assert.AreEqual("ax = 0x0000", block.Statements[2].Instruction.ToString());
+			Assert.AreEqual("ax = 0x0000", block.Statements[0].Instruction.ToString());
 
 			Assert.AreSame(new List<Block>(proc.ControlGraph.Successors(block))[0], proc.ExitBlock);
 		}

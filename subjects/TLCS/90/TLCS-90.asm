@@ -208,8 +208,8 @@ fn03AA proc
 ;; fn03B2: 03B2
 ;;   Called from:
 ;;     034E (in fn034E)
+;;     03AF (in fn0350)
 ;;     03B0 (in fn039D)
-;;     03B0 (in fn0350)
 fn03B2 proc
 	srl	h
 	rr	l

@@ -161,7 +161,7 @@ T_6: (in globals->b0001 & 0xBF : byte)
   Class: Eq_4
   DataType: byte
   OrigDataType: byte
-T_7: (in Data19[0x0001:byte] : byte)
+T_7: (in Data21[0x0001:byte] : byte)
   Class: Eq_4
   DataType: byte
   OrigDataType: byte
@@ -169,7 +169,7 @@ T_8: (in 00014A : ptr32)
   Class: Eq_8
   DataType: ptr32
   OrigDataType: ptr32
-T_9: (in Data19 : (arr Eq_240))
+T_9: (in Data21 : (arr Eq_240))
   Class: Eq_9
   DataType: (ptr8 (arr Eq_240))
   OrigDataType: (ptr8 (struct (0 (arr T_240) a0000)))
@@ -177,7 +177,7 @@ T_10: (in 0x01 : byte)
   Class: Eq_10
   DataType: byte
   OrigDataType: byte
-T_11: (in Data19[0x01] : ptr32)
+T_11: (in Data21[0x01] : ptr32)
   Class: Eq_8
   DataType: ptr32
   OrigDataType: ptr32

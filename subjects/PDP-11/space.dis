@@ -2,9 +2,9 @@
 // Return size: 0
 define fn0218
 fn0218_entry:
+	sp = fp
 	// succ:  l0218
 l0218:
-	sp = fp
 	r1 = 0x0000
 	C = false
 	V = false
@@ -389,9 +389,9 @@ fn0218_exit:
 // Return size: 2
 define fn0468
 fn0468_entry:
+	sp = fp
 	// succ:  l0468
 l0468:
-	sp = fp
 	v4 = Mem0[r3:byte]
 	r3 = r3 + 0x0001
 	r0 = (int16) v4
@@ -416,9 +416,9 @@ fn0468_exit:
 // Return size: 0
 define fn0472
 fn0472_entry:
+	sp = fp
 	// succ:  l0472
 l0472:
-	sp = fp
 	r3 = 0x05E4
 	NZ = cond(r3)
 	V = false
@@ -559,9 +559,9 @@ fn0472_exit:
 // Return size: 2
 define fn04FA
 fn04FA_entry:
+	sp = fp
 	// succ:  l04FA
 l04FA:
-	sp = fp
 	sp = sp - 0x0002
 	Mem0[sp:word16] = r0
 	NZ = cond(r0)
@@ -612,13 +612,13 @@ fn04FA_exit:
 // Return size: 0
 define fn051A
 fn051A_entry:
+	sp = fp
 	goto l051A
 	// succ:  l051A
 l04F8_in_fn051A:
 	return
 	// succ:  fn051A_exit
 l051A:
-	sp = fp
 	r3 = r0
 	NZ = cond(r3)
 	V = false
@@ -647,13 +647,13 @@ fn051A_exit:
 // Return size: 0
 define fn0528
 fn0528_entry:
+	sp = fp
 	goto l0528
 	// succ:  l0528
 l04F8_in_fn0528:
 	return
 	// succ:  fn0528_exit
 l0528:
-	sp = fp
 	r2 = 0x0028
 	NZ = cond(r2)
 	V = false
@@ -700,9 +700,9 @@ fn0528_exit:
 // Return size: 2
 define fn054C
 fn054C_entry:
+	sp = fp
 	// succ:  l054C
 l054C:
-	sp = fp
 	Mem0[r3 + 0x00A0:byte] = r0
 	NZ = cond(r0)
 	V = false
@@ -759,9 +759,9 @@ fn054C_exit:
 // Return size: 0
 define fn0670
 fn0670_entry:
+	sp = fp
 	// succ:  l0670
 l0670:
-	sp = fp
 	r4 = Mem0[0x5424:word16]
 	NZ = cond(r4)
 	V = false
@@ -1087,9 +1087,9 @@ fn0670_exit:
 // Return size: 2
 define fn07BA
 fn07BA_entry:
+	sp = fp
 	// succ:  l07BA
 l07BA:
-	sp = fp
 	r3 = r3 << 1
 	NZVC = cond(r3)
 	r4 = __rol(r4, r4)
@@ -1181,9 +1181,9 @@ fn07BA_exit:
 // Return size: 0
 define fn0818
 fn0818_entry:
+	sp = fp
 	// succ:  l0818
 l0818:
-	sp = fp
 	r0 = r5
 	NZ = cond(r0)
 	V = false
@@ -1216,9 +1216,9 @@ fn0818_exit:
 // Return size: 0
 define fn0A64
 fn0A64_entry:
+	sp = fp
 	// succ:  l0A64
 l0A64:
-	sp = fp
 	r0 = r5
 	NZ = cond(r0)
 	V = false
@@ -1249,9 +1249,9 @@ fn0A64_exit:
 // Return size: 2
 define fn0AAE
 fn0AAE_entry:
+	sp = fp
 	// succ:  l0AAE
 l0AAE:
-	sp = fp
 	r4 = Mem0[r5 + 0x0002:word16]
 	NZ = cond(r4)
 	V = false
@@ -1287,9 +1287,9 @@ fn0AAE_exit:
 // Return size: 0
 define fn0AC4
 fn0AC4_entry:
+	sp = fp
 	// succ:  l0AC4
 l0AC4:
-	sp = fp
 	sp = sp - 0x0002
 	Mem0[sp:word16] = 0x0101
 	NZ = cond(0x0101)
@@ -1306,9 +1306,9 @@ fn0AC4_exit:
 // Return size: 0
 define fn0AE2
 fn0AE2_entry:
+	sp = fp
 	// succ:  l0AE2
 l0AE2:
-	sp = fp
 	sp = sp - 0x0002
 	Mem0[sp:word16] = 0x0202
 	NZ = cond(0x0202)
@@ -1325,9 +1325,9 @@ fn0AE2_exit:
 // Return size: 0
 define fn0AE6
 fn0AE6_entry:
+	sp = fp
 	// succ:  l0AE6
 l0AE6:
-	sp = fp
 	sp = sp - 0x0002
 	Mem0[sp:word16] = r3
 	NZ = cond(r3)
@@ -1396,11 +1396,11 @@ fn0AE6_exit:
 // Return size: 0
 define fn0AF8
 fn0AF8_entry:
+	sp = fp
 	// succ:  l0AF8
 l0AF8:
-	sp = v3
-	v4 = 0x0008 - Mem0[sp:word16]
-	NZVC = cond(v4)
+	v3 = 0x0008 - Mem0[sp:word16]
+	NZVC = cond(v3)
 	branch Test(EQ,Z) l0B02
 	goto l0AFE
 	// succ:  l0AFE l0AFC_thunk_fn0B02
@@ -1409,9 +1409,9 @@ l0AFC_thunk_fn0B02:
 	return
 	// succ:  fn0AF8_exit
 l0AFE:
-	v7 = Mem0[sp:word16] + 0x0003
-	Mem0[sp:word16] = v7
-	NZVC = cond(v7)
+	v6 = Mem0[sp:word16] + 0x0003
+	Mem0[sp:word16] = v6
+	NZVC = cond(v6)
 	// succ:  l0AFE_thunk_fn0B02
 l0AFE_thunk_fn0B02:
 	call fn0B02 (retsize: 0;)
@@ -1424,85 +1424,85 @@ fn0AF8_exit:
 // Return size: 0
 define fn0B02
 fn0B02_entry:
+	sp = fp
 	// succ:  l0B02
 l0B02:
-	sp = v3
-	v4 = Mem0[sp + 0x0005:word16] - Mem0[sp + 0x0004:word16]
-	NZVC = cond(v4)
-	v7 = Mem0[sp:word16] + C
-	Mem0[sp:word16] = v7
-	NZVC = cond(v7)
-	v8 = Mem0[sp:word16]
+	v3 = Mem0[sp + 0x0005:word16] - Mem0[sp + 0x0004:word16]
+	NZVC = cond(v3)
+	v6 = Mem0[sp:word16] + C
+	Mem0[sp:word16] = v6
+	NZVC = cond(v6)
+	v7 = Mem0[sp:word16]
 	sp = sp + 0x0002
-	Mem0[r3 + 0x00A4:word16] = v8
-	NZ = cond(v8)
+	Mem0[r3 + 0x00A4:word16] = v7
+	NZ = cond(v7)
 	V = false
-	v12 = Mem0[r3 + 0x0074:byte]
-	v12 = v12 & v12
-	NZ = cond(v12)
+	v11 = Mem0[r3 + 0x0074:byte]
+	v11 = v11 & v11
+	NZ = cond(v11)
 	C = false
 	V = false
 	branch Test(EQ,Z) l0B22
 	// succ:  l0B14 l0B22
 l0B14:
-	v14 = Mem0[sp:word16]
+	v13 = Mem0[sp:word16]
 	sp = sp + 0x0002
-	v15 = v14
-	v15 = v15 & v15
-	NZ = cond(v15)
+	v14 = v13
+	v14 = v14 & v14
+	NZ = cond(v14)
 	C = false
+	V = false
+	v15 = Mem0[sp:word16]
+	sp = sp + 0x0002
+	Mem0[r3 + 0x0052:word16] = v15
+	NZ = cond(v15)
 	V = false
 	v16 = Mem0[sp:word16]
 	sp = sp + 0x0002
-	Mem0[r3 + 0x0052:word16] = v16
+	Mem0[r3 + 0x0044:word16] = v16
 	NZ = cond(v16)
 	V = false
 	v17 = Mem0[sp:word16]
 	sp = sp + 0x0002
-	Mem0[r3 + 0x0044:word16] = v17
-	NZ = cond(v17)
-	V = false
-	v18 = Mem0[sp:word16]
-	sp = sp + 0x0002
-	call v18 (retsize: 2;)
-	v20 = Mem0[r4:word16]
+	call v17 (retsize: 2;)
+	v19 = Mem0[r4:word16]
 	r4 = r4 + 0x0002
-	call v20 (retsize: 2;)
+	call v19 (retsize: 2;)
 	return
 	// succ:  fn0B02_exit
 l0B22:
-	v21 = Mem0[sp + 0x0002:word16]
-	Mem0[r3 + 0x0052:word16] = v21
+	v20 = Mem0[sp + 0x0002:word16]
+	Mem0[r3 + 0x0052:word16] = v20
+	NZ = cond(v20)
+	V = false
+	v21 = Mem0[sp + 0x0006:word16]
+	Mem0[r3 + 0x0044:word16] = v21
 	NZ = cond(v21)
 	V = false
-	v22 = Mem0[sp + 0x0006:word16]
-	Mem0[r3 + 0x0044:word16] = v22
-	NZ = cond(v22)
+	v22 = Mem0[sp:word16]
+	sp = sp + 0x0002
+	r3 = v22
+	NZ = cond(r3)
 	V = false
 	v23 = Mem0[sp:word16]
 	sp = sp + 0x0002
-	r3 = v23
-	NZ = cond(r3)
-	V = false
-	v24 = Mem0[sp:word16]
-	sp = sp + 0x0002
-	v25 = v24
-	v25 = v25 & v25
-	NZ = cond(v25)
+	v24 = v23
+	v24 = v24 & v24
+	NZ = cond(v24)
 	C = false
 	V = false
-	v26 = Mem0[sp + 0x0004:word16]
+	v25 = Mem0[sp + 0x0004:word16]
+	Mem0[sp + 0x0002:word16] = v25
+	NZ = cond(v25)
+	V = false
+	v26 = Mem0[sp:word16]
+	sp = sp + 0x0002
 	Mem0[sp + 0x0002:word16] = v26
 	NZ = cond(v26)
 	V = false
 	v27 = Mem0[sp:word16]
 	sp = sp + 0x0002
-	Mem0[sp + 0x0002:word16] = v27
-	NZ = cond(v27)
-	V = false
-	v28 = Mem0[sp:word16]
-	sp = sp + 0x0002
-	call v28 (retsize: 2;)
+	call v27 (retsize: 2;)
 	return
 	// succ:  fn0B02_exit
 fn0B02_exit:
@@ -1512,9 +1512,9 @@ fn0B02_exit:
 // Return size: 0
 define fn0B3E
 fn0B3E_entry:
+	sp = fp
 	// succ:  l0B3E
 l0B3E:
-	sp = fp
 	sp = sp - 0x0002
 	Mem0[sp:word16] = 0x0202
 	NZ = cond(0x0202)
@@ -1531,9 +1531,9 @@ fn0B3E_exit:
 // Return size: 0
 define fn0B44
 fn0B44_entry:
+	sp = fp
 	// succ:  l0B44
 l0B44:
-	sp = fp
 	sp = sp - 0x0002
 	Mem0[sp:word16] = 0x0101
 	NZ = cond(0x0101)
@@ -1550,9 +1550,9 @@ fn0B44_exit:
 // Return size: 0
 define fn0B60
 fn0B60_entry:
+	sp = fp
 	// succ:  l0B60
 l0B60:
-	sp = v3
 	sp = sp - 0x0002
 	Mem0[sp:word16] = r3
 	NZ = cond(r3)
@@ -1566,64 +1566,64 @@ l0B60:
 	V = false
 	N = false
 	Z = true
-	v10 = Mem0[sp + 0x0004:byte]
-	Mem0[sp:byte] = v10
-	NZ = cond(v10)
+	v9 = Mem0[sp + 0x0004:byte]
+	Mem0[sp:byte] = v9
+	NZ = cond(v9)
 	V = false
-	v11 = 0x0001 - Mem0[sp:word16]
-	NZVC = cond(v11)
+	v10 = 0x0001 - Mem0[sp:word16]
+	NZVC = cond(v10)
 	branch Test(EQ,Z) l0B7C
 	// succ:  l0B72 l0B7C
 l0B72:
-	v13 = 0x0008 - Mem0[sp:word16]
-	NZVC = cond(v13)
+	v12 = 0x0008 - Mem0[sp:word16]
+	NZVC = cond(v12)
 	branch Test(EQ,Z) l0B7C
 	// succ:  l0B78 l0B7C
 l0B78:
-	v14 = Mem0[sp:word16] + 0x0003
-	Mem0[sp:word16] = v14
-	NZVC = cond(v14)
+	v13 = Mem0[sp:word16] + 0x0003
+	Mem0[sp:word16] = v13
+	NZVC = cond(v13)
 	// succ:  l0B7C
 l0B7C:
-	v15 = Mem0[sp + 0x0005:word16] - Mem0[sp + 0x0004:word16]
+	v14 = Mem0[sp + 0x0005:word16] - Mem0[sp + 0x0004:word16]
+	NZVC = cond(v14)
+	v15 = Mem0[sp:word16] + C
+	Mem0[sp:word16] = v15
 	NZVC = cond(v15)
-	v16 = Mem0[sp:word16] + C
-	Mem0[sp:word16] = v16
-	NZVC = cond(v16)
-	v17 = Mem0[sp:word16]
+	v16 = Mem0[sp:word16]
 	sp = sp + 0x0002
-	Mem0[r3 + 0x00A4:word16] = v17
-	NZ = cond(v17)
+	Mem0[r3 + 0x00A4:word16] = v16
+	NZ = cond(v16)
 	V = false
-	v18 = Mem0[r3 + 0x0074:byte]
-	v18 = v18 & v18
-	NZ = cond(v18)
+	v17 = Mem0[r3 + 0x0074:byte]
+	v17 = v17 & v17
+	NZ = cond(v17)
 	C = false
 	V = false
 	branch Test(EQ,Z) l0BA4
 	// succ:  l0B8E l0BA4
 l0B8E:
-	v19 = Mem0[sp:word16]
+	v18 = Mem0[sp:word16]
 	sp = sp + 0x0002
-	v20 = v19
-	v20 = v20 & v20
-	NZ = cond(v20)
+	v19 = v18
+	v19 = v19 & v19
+	NZ = cond(v19)
 	C = false
+	V = false
+	v20 = Mem0[sp:word16]
+	sp = sp + 0x0002
+	Mem0[r3 + 0x0052:word16] = v20
+	NZ = cond(v20)
 	V = false
 	v21 = Mem0[sp:word16]
 	sp = sp + 0x0002
-	Mem0[r3 + 0x0052:word16] = v21
+	Mem0[r3 + 0x0044:word16] = v21
 	NZ = cond(v21)
 	V = false
-	v22 = Mem0[sp:word16]
+	v22 = Mem0[Mem0[sp:ptr16]:word16]
 	sp = sp + 0x0002
-	Mem0[r3 + 0x0044:word16] = v22
+	Mem0[r3 + 0x005A:word16] = v22
 	NZ = cond(v22)
-	V = false
-	v23 = Mem0[Mem0[sp:ptr16]:word16]
-	sp = sp + 0x0002
-	Mem0[r3 + 0x005A:word16] = v23
-	NZ = cond(v23)
 	V = false
 	Mem0[r3 + 0x007E:word16] = 0x0BEC
 	NZ = cond(0x0BEC)
@@ -1638,56 +1638,56 @@ l0BA4:
 	r0 = sp
 	NZ = cond(r0)
 	V = false
+	v34 = Mem0[r0:word16]
+	r0 = r0 + 0x0002
 	v35 = Mem0[r0:word16]
 	r0 = r0 + 0x0002
-	v36 = Mem0[r0:word16]
+	v36 = v35 - v34
+	NZVC = cond(v36)
+	v37 = Mem0[r0:word16]
 	r0 = r0 + 0x0002
-	v37 = v36 - v35
-	NZVC = cond(v37)
+	Mem0[r3 + 0x0052:word16] = v37
+	NZ = cond(v37)
+	V = false
 	v38 = Mem0[r0:word16]
 	r0 = r0 + 0x0002
-	Mem0[r3 + 0x0052:word16] = v38
+	Mem0[r3 + 0x007E:word16] = v38
 	NZ = cond(v38)
 	V = false
 	v39 = Mem0[r0:word16]
 	r0 = r0 + 0x0002
-	Mem0[r3 + 0x007E:word16] = v39
+	Mem0[r3 + 0x0044:word16] = v39
 	NZ = cond(v39)
 	V = false
-	v40 = Mem0[r0:word16]
+	v40 = Mem0[Mem0[r0:ptr16]:word16]
 	r0 = r0 + 0x0002
-	Mem0[r3 + 0x0044:word16] = v40
+	Mem0[r3 + 0x005A:word16] = v40
 	NZ = cond(v40)
 	V = false
-	v41 = Mem0[Mem0[r0:ptr16]:word16]
-	r0 = r0 + 0x0002
-	Mem0[r3 + 0x005A:word16] = v41
-	NZ = cond(v41)
+	v41 = Mem0[sp:word16]
+	sp = sp + 0x0002
+	r0 = v41
+	NZ = cond(r0)
 	V = false
 	v42 = Mem0[sp:word16]
 	sp = sp + 0x0002
-	r0 = v42
-	NZ = cond(r0)
-	V = false
-	v43 = Mem0[sp:word16]
-	sp = sp + 0x0002
-	Mem0[sp + 0x0006:word16] = v43
-	NZ = cond(v43)
+	Mem0[sp + 0x0006:word16] = v42
+	NZ = cond(v42)
 	V = false
 	sp = sp + 0x0006
 	NZVC = cond(sp)
 	// succ:  l0BC4
 l0BC4:
-	v34 = Mem0[sp:word16]
+	v33 = Mem0[sp:word16]
 	sp = sp + 0x0002
-	r3 = v34
+	r3 = v33
 	NZ = cond(r3)
 	V = false
 	// succ:  l0BC6
 l0BC6:
-	v24 = Mem0[sp:word16]
+	v23 = Mem0[sp:word16]
 	sp = sp + 0x0002
-	call v24 (retsize: 2;)
+	call v23 (retsize: 2;)
 	sp = sp - 0x0002
 	Mem0[sp:word16] = r3
 	NZ = cond(r3)
@@ -1702,37 +1702,37 @@ l0BC6:
 	r0 = (int16) Mem0[r3 + 0x0053:byte]
 	NZ = cond(r0)
 	V = false
-	v26 = Mem0[r3 + 0x0044:word16] + r0
-	Mem0[r3 + 0x0044:word16] = v26
-	NZVC = cond(v26)
-	v27 = Mem0[sp:word16]
+	v25 = Mem0[r3 + 0x0044:word16] + r0
+	Mem0[r3 + 0x0044:word16] = v25
+	NZVC = cond(v25)
+	v26 = Mem0[sp:word16]
 	sp = sp + 0x0002
-	r0 = v27
+	r0 = v26
 	NZ = cond(r0)
 	V = false
-	v28 = Mem0[r3 + 0x005A:word16] - 0x0001
-	Mem0[r3 + 0x005A:word16] = v28
-	NZV = cond(v28)
+	v27 = Mem0[r3 + 0x005A:word16] - 0x0001
+	Mem0[r3 + 0x005A:word16] = v27
+	NZV = cond(v27)
 	branch Test(NE,Z) l0BC4
 	// succ:  l0BE0 l0BC4
 l0BE0:
-	v30 = Mem0[sp:word16]
+	v29 = Mem0[sp:word16]
 	sp = sp - 0x0002
-	Mem0[sp:word16] = v30
+	Mem0[sp:word16] = v29
+	NZ = cond(v29)
+	V = false
+	v30 = Mem0[r3 + 0x007E:word16]
+	Mem0[sp + 0x0002:word16] = v30
 	NZ = cond(v30)
 	V = false
-	v31 = Mem0[r3 + 0x007E:word16]
-	Mem0[sp + 0x0002:word16] = v31
-	NZ = cond(v31)
+	v31 = Mem0[sp:word16]
+	sp = sp + 0x0002
+	r3 = v31
+	NZ = cond(r3)
 	V = false
 	v32 = Mem0[sp:word16]
 	sp = sp + 0x0002
-	r3 = v32
-	NZ = cond(r3)
-	V = false
-	v33 = Mem0[sp:word16]
-	sp = sp + 0x0002
-	call v33 (retsize: 2;)
+	call v32 (retsize: 2;)
 	return
 	// succ:  fn0B60_exit
 fn0B60_exit:
@@ -1742,6 +1742,7 @@ fn0B60_exit:
 // Return size: 2
 define fn0C4A
 fn0C4A_entry:
+	sp = fp
 	goto l0C4A
 	// succ:  l0C4A
 l0C44:
@@ -1754,7 +1755,6 @@ l0C44:
 	call v18 (retsize: 2;)
 	// succ:  l0C4A
 l0C4A:
-	sp = fp
 	r0 = r0 - 0x0001
 	NZV = cond(r0)
 	branch Test(GT,N) l0C64
@@ -1816,9 +1816,9 @@ fn0C4A_exit:
 // Return size: 0
 define fn0CF4
 fn0CF4_entry:
+	sp = fp
 	// succ:  l0CF4
 l0CF4:
-	sp = fp
 	v5 = Mem0[r5:word16] - 0x0001
 	NZVC = cond(v5)
 	branch Test(EQ,Z) l0CFE
@@ -1949,9 +1949,9 @@ fn0CF4_exit:
 // Return size: 0
 define fn0D3E
 fn0D3E_entry:
+	sp = fp
 	// succ:  l0D3E
 l0D3E:
-	sp = fp
 	r2 = __swab(r2)
 	NZ = cond(r2)
 	C = false
@@ -1986,12 +1986,14 @@ fn0D3E_exit:
 
 
 // fn0D50
-// Return size: 0
+// Return size: 2
 define fn0D50
 fn0D50_entry:
+	sp = fp
 	// succ:  l0D50
 l0D50:
-	sp = v3
+	return
+	// succ:  fn0D50_exit
 fn0D50_exit:
 
 
@@ -1999,9 +2001,9 @@ fn0D50_exit:
 // Return size: 2
 define fn0D7A
 fn0D7A_entry:
+	sp = fp
 	// succ:  l0D7A
 l0D7A:
-	sp = fp
 	call fn123C (retsize: 2;)
 	call fn145E (retsize: 2;)
 	branch Test(NE,Z) l0D88
@@ -2080,9 +2082,9 @@ fn0D7A_exit:
 // Return size: 0
 define fn0DC8
 fn0DC8_entry:
+	sp = fp
 	// succ:  l0DC8
 l0DC8:
-	sp = fp
 	call fn123C (retsize: 2;)
 	call fn145E (retsize: 2;)
 	branch Test(NE,Z) l0DD6
@@ -2152,9 +2154,9 @@ fn0DC8_exit:
 // Return size: 0
 define fn0E0E
 fn0E0E_entry:
+	sp = fp
 	// succ:  l0E0E
 l0E0E:
-	sp = fp
 	r4 = Mem0[0x5424:word16]
 	NZ = cond(r4)
 	V = false
@@ -2219,9 +2221,9 @@ fn0E0E_exit:
 // Return size: 2
 define fn0EA8
 fn0EA8_entry:
+	sp = fp
 	// succ:  l0EA8
 l0EA8:
-	sp = fp
 	sp = sp - 0x0002
 	Mem0[sp:word16] = r3
 	NZ = cond(r3)
@@ -2326,9 +2328,9 @@ fn0EA8_exit:
 // Return size: 2
 define fn0EF8
 fn0EF8_entry:
+	sp = fp
 	// succ:  l0EF8
 l0EF8:
-	sp = fp
 	r1 = 0x0000
 	C = false
 	V = false
@@ -2470,9 +2472,9 @@ fn0EF8_exit:
 // Return size: 2
 define fn0F48
 fn0F48_entry:
+	sp = fp
 	// succ:  l0F48
 l0F48:
-	sp = fp
 	v5 = 0x0002 - Mem0[r5:word16]
 	NZVC = cond(v5)
 	branch Test(NE,Z) l0F98
@@ -2597,9 +2599,9 @@ fn0F48_exit:
 // Return size: 0
 define fn0F9C
 fn0F9C_entry:
+	sp = fp
 	// succ:  l0F9C
 l0F9C:
-	sp = fp
 	// succ:  l13AA
 l13AA:
 	v5 = Mem0[0x002B:word16] | 0x0001
@@ -2680,9 +2682,9 @@ fn0F9C_exit:
 // Return size: 0
 define fn0FA4
 fn0FA4_entry:
+	sp = fp
 	// succ:  l0FA4
 l0FA4:
-	sp = fp
 	sp = sp - 0x0002
 	Mem0[sp:word16] = 0x1020
 	NZ = cond(0x1020)
@@ -2699,9 +2701,9 @@ fn0FA4_exit:
 // Return size: 0
 define fn0FAE
 fn0FAE_entry:
+	sp = fp
 	// succ:  l0FAE
 l0FAE:
-	sp = fp
 	sp = sp - 0x0002
 	Mem0[sp:word16] = 0x101E
 	NZ = cond(0x101E)
@@ -2718,9 +2720,9 @@ fn0FAE_exit:
 // Return size: 0
 define fn0FB2
 fn0FB2_entry:
+	sp = fp
 	// succ:  l0FB2
 l0FB2:
-	sp = fp
 	sp = sp - 0x0002
 	Mem0[sp:word16] = r3
 	NZ = cond(r3)
@@ -2803,9 +2805,9 @@ fn0FB2_exit:
 // Return size: 0
 define fn0FCA
 fn0FCA_entry:
+	sp = fp
 	// succ:  l0FCA
 l0FCA:
-	sp = v3
 	__syscall(0x899A)
 	// succ:  l0FCA_thunk_fn0FCC
 l0FCA_thunk_fn0FCC:
@@ -2819,56 +2821,56 @@ fn0FCA_exit:
 // Return size: 0
 define fn0FCC
 fn0FCC_entry:
+	sp = fp
 	// succ:  l0FCC
 l0FCC:
-	sp = v3
-	v4 = Mem0[sp + 0x0002:word16]
-	Mem0[r3 + 0x0014:word16] = v4
-	NZ = cond(v4)
+	v3 = Mem0[sp + 0x0002:word16]
+	Mem0[r3 + 0x0014:word16] = v3
+	NZ = cond(v3)
 	V = false
-	v8 = Mem0[sp + 0x0006:word16]
-	Mem0[r3 + 0x001C:word16] = v8
-	NZ = cond(v8)
+	v7 = Mem0[sp + 0x0006:word16]
+	Mem0[r3 + 0x001C:word16] = v7
+	NZ = cond(v7)
+	V = false
+	v8 = Mem0[sp:word16]
+	sp = sp + 0x0002
+	r3 = v8
+	NZ = cond(r3)
 	V = false
 	v9 = Mem0[sp:word16]
 	sp = sp + 0x0002
-	r3 = v9
-	NZ = cond(r3)
-	V = false
-	v10 = Mem0[sp:word16]
-	sp = sp + 0x0002
-	v11 = v10
-	v11 = v11 & v11
-	NZ = cond(v11)
+	v10 = v9
+	v10 = v10 & v10
+	NZ = cond(v10)
 	C = false
 	V = false
-	v13 = Mem0[sp:word16]
+	v12 = Mem0[sp:word16]
 	sp = sp + 0x0002
-	Mem0[sp:word16] = v13
-	NZ = cond(v13)
+	Mem0[sp:word16] = v12
+	NZ = cond(v12)
 	V = false
 	call fn123C (retsize: 2;)
 	r3 = Mem0[0x5424:word16]
 	NZ = cond(r3)
 	V = false
+	v13 = Mem0[r3 + 0x001C:word16]
+	Mem0[r3 + 0x001A:word16] = v13
+	NZ = cond(v13)
+	V = false
 	v14 = Mem0[r3 + 0x001C:word16]
-	Mem0[r3 + 0x001A:word16] = v14
+	Mem0[r3 + 0x0018:word16] = v14
 	NZ = cond(v14)
 	V = false
-	v15 = Mem0[r3 + 0x001C:word16]
-	Mem0[r3 + 0x0018:word16] = v15
+	v15 = Mem0[sp:word16]
+	sp = sp + 0x0002
+	Mem0[r3 + 0x0012:word16] = v15
 	NZ = cond(v15)
 	V = false
-	v16 = Mem0[sp:word16]
+	v16 = Mem0[Mem0[sp:ptr16]:word16]
 	sp = sp + 0x0002
-	Mem0[r3 + 0x0012:word16] = v16
-	NZ = cond(v16)
-	V = false
-	v17 = Mem0[Mem0[sp:ptr16]:word16]
-	sp = sp + 0x0002
-	v18 = Mem0[r3 + 0x0018:word16] + v17
-	Mem0[r3 + 0x0018:word16] = v18
-	NZVC = cond(v18)
+	v17 = Mem0[r3 + 0x0018:word16] + v16
+	Mem0[r3 + 0x0018:word16] = v17
+	NZVC = cond(v17)
 	Mem0[r3 + 0x0056:word16] = r3
 	NZ = cond(r3)
 	V = false
@@ -2878,9 +2880,9 @@ l0FCC:
 	Mem0[r3 + 0x0062:word16] = 0x0001
 	NZ = cond(0x0001)
 	V = false
-	v20 = Mem0[r3 + 0x000C:word16]
-	Mem0[r3 + 0x0058:word16] = v20
-	NZ = cond(v20)
+	v19 = Mem0[r3 + 0x000C:word16]
+	Mem0[r3 + 0x0058:word16] = v19
+	NZ = cond(v19)
 	V = false
 	// succ:  l1010_thunk_fn1AA2
 l1010_thunk_fn1AA2:
@@ -2894,9 +2896,9 @@ fn0FCC_exit:
 // Return size: 0
 define fn1040
 fn1040_entry:
+	sp = fp
 	// succ:  l1040
 l1040:
-	sp = fp
 	v3 = Mem0[sp:word16]
 	sp = sp + 0x0002
 	r0 = v3
@@ -3017,9 +3019,9 @@ fn1040_exit:
 // Return size: 2
 define fn11A6
 fn11A6_entry:
+	sp = fp
 	// succ:  l11A6
 l11A6:
-	sp = fp
 	r3 = Mem0[0x5424:word16]
 	NZ = cond(r3)
 	V = false
@@ -3129,9 +3131,9 @@ fn11A6_exit:
 // Return size: 0
 define fn123C
 fn123C_entry:
+	sp = fp
 	// succ:  l123C
 l123C:
-	sp = fp
 	sp = sp - 0x0002
 	Mem0[sp:word16] = r2
 	NZ = cond(r2)
@@ -3200,9 +3202,9 @@ fn123C_exit:
 // Return size: 2
 define fn12AC
 fn12AC_entry:
+	sp = fp
 	// succ:  l12AC
 l12AC:
-	sp = fp
 	r3 = Mem0[0x5424:word16]
 	NZ = cond(r3)
 	V = false
@@ -3237,9 +3239,9 @@ fn12AC_exit:
 // Return size: 2
 define fn12CA
 fn12CA_entry:
+	sp = fp
 	// succ:  l12CA
 l12CA:
-	sp = fp
 	sp = sp - 0x0002
 	Mem0[sp:word16] = r5
 	NZ = cond(r5)
@@ -3414,9 +3416,9 @@ fn12CA_exit:
 // Return size: 2
 define fn1366
 fn1366_entry:
+	sp = fp
 	// succ:  l1366
 l1366:
-	sp = fp
 	v5 = Mem0[r4:byte]
 	v5 = v5 & v5
 	NZ = cond(v5)
@@ -3444,13 +3446,13 @@ fn1366_exit:
 // Return size: 0
 define fn1370
 fn1370_entry:
+	sp = fp
 	goto l1370
 	// succ:  l1370
 l136E:
 	return
 	// succ:  fn1370_exit
 l1370:
-	sp = fp
 	r2 = Mem0[r4 + 0x000E:word16]
 	NZ = cond(r2)
 	V = false
@@ -3486,9 +3488,9 @@ fn1370_exit:
 // Return size: 2
 define fn13FE
 fn13FE_entry:
+	sp = fp
 	// succ:  l13FE
 l13FE:
-	sp = fp
 	__syscall(0x88A0)
 	__syscall(0x88A1)
 	__syscall(0x88A2)
@@ -3514,9 +3516,9 @@ fn13FE_exit:
 // Return size: 2
 define fn1420
 fn1420_entry:
+	sp = fp
 	// succ:  l1420
 l1420:
-	sp = fp
 	v4 = r2
 	v4 = v4 & v4
 	NZ = cond(v4)
@@ -3608,9 +3610,9 @@ fn1420_exit:
 // Return size: 2
 define fn145E
 fn145E_entry:
+	sp = fp
 	// succ:  l145E
 l145E:
-	sp = fp
 	r3 = Mem0[0x5424:word16]
 	NZ = cond(r3)
 	V = false
@@ -3693,9 +3695,9 @@ fn145E_exit:
 // Return size: 2
 define fn14A8
 fn14A8_entry:
+	sp = fp
 	// succ:  l14A8
 l14A8:
-	sp = fp
 	sp = sp - 0x0002
 	Mem0[sp:word16] = r5
 	NZ = cond(r5)
@@ -4037,9 +4039,9 @@ fn14A8_exit:
 // Return size: 2
 define fn15CC
 fn15CC_entry:
+	sp = fp
 	// succ:  l15CC
 l15CC:
-	sp = fp
 	v5 = Mem0[r5:word16] - 0x0003
 	NZVC = cond(v5)
 	branch Test(EQ,Z) l15D6
@@ -4139,9 +4141,9 @@ fn15CC_exit:
 // Return size: 2
 define fn16DA
 fn16DA_entry:
+	sp = fp
 	// succ:  l16DA
 l16DA:
-	sp = fp
 	Mem0[r4 + 0x000E:word16] = r2
 	NZ = cond(r2)
 	V = false
@@ -4213,9 +4215,9 @@ fn16DA_exit:
 // Return size: 2
 define fn171E
 fn171E_entry:
+	sp = fp
 	// succ:  l171E
 l171E:
-	sp = fp
 	r2 = Mem0[Mem0[r3 + 0x0012:ptr16]:word16]
 	NZ = cond(r2)
 	V = false
@@ -4239,9 +4241,9 @@ fn171E_exit:
 // Return size: 2
 define fn172C
 fn172C_entry:
+	sp = fp
 	// succ:  l172C
 l172C:
-	sp = fp
 	r3 = Mem0[r0 + 0x0014:word16]
 	NZ = cond(r3)
 	V = false
@@ -4346,9 +4348,9 @@ fn172C_exit:
 // Return size: 0
 define fn1836
 fn1836_entry:
+	sp = fp
 	// succ:  l1836
 l1836:
-	sp = fp
 	sp = sp - 0x0002
 	Mem0[sp:word16] = r0
 	NZ = cond(r0)
@@ -4434,9 +4436,9 @@ fn1836_exit:
 // Return size: 0
 define fn18BE
 fn18BE_entry:
+	sp = fp
 	// succ:  l18BE
 l18BE:
-	sp = fp
 	sp = sp - 0x0002
 	Mem0[sp:word16] = r0
 	NZ = cond(r0)
@@ -4505,9 +4507,9 @@ fn18BE_exit:
 // Return size: 2
 define fn18F6
 fn18F6_entry:
+	sp = fp
 	// succ:  l18F6
 l18F6:
-	sp = fp
 	v5 = Mem0[r4 + 0x0016:word16] + 0x0001
 	Mem0[r4 + 0x0016:word16] = v5
 	NZV = cond(v5)
@@ -4535,9 +4537,9 @@ fn18F6_exit:
 // Return size: 2
 define fn18FE
 fn18FE_entry:
+	sp = fp
 	// succ:  l18FE
 l18FE:
-	sp = fp
 	return
 	// succ:  fn18FE_exit
 l18FE:
@@ -4548,9 +4550,9 @@ fn18FE_exit:
 // Return size: 2
 define fn1900
 fn1900_entry:
+	sp = fp
 	// succ:  l1900
 l1900:
-	sp = fp
 	sp = sp - 0x0002
 	Mem0[sp:word16] = 0x099E
 	NZ = cond(0x099E)
@@ -4630,6 +4632,7 @@ fn1900_exit:
 // Return size: 0
 define fn1932
 fn1932_entry:
+	sp = fp
 	goto l1932
 	// succ:  l1932
 l0E92:
@@ -4644,9 +4647,9 @@ l0E92:
 	Mem0[sp:word16] = r3
 	NZ = cond(r3)
 	V = false
-	v13 = Mem0[r3 + 0x0074:byte]
-	v13 = v13 & v13
-	NZ = cond(v13)
+	v12 = Mem0[r3 + 0x0074:byte]
+	v12 = v12 & v12
+	NZ = cond(v12)
 	C = false
 	V = false
 	branch Test(NE,Z) l0EDA_in_fn1900
@@ -4672,18 +4675,18 @@ l0EDA_in_fn1900:
 	V = false
 	N = false
 	Z = true
-	v14 = Mem0[r3 + 0x0058:word16]
-	Mem0[r3 + 0x000C:word16] = v15
-	NZ = cond(v16)
+	v13 = Mem0[r3 + 0x0058:word16]
+	Mem0[r3 + 0x000C:word16] = v14
+	NZ = cond(v15)
 	V = false
 	Mem0[r3 + 0x00A2:byte] = 0x00
 	C = false
 	V = false
 	N = false
 	Z = true
-	v17 = Mem0[sp:word16]
+	v16 = Mem0[sp:word16]
 	sp = sp + 0x0002
-	r3 = v18
+	r3 = v17
 	NZ = cond(r3)
 	V = false
 	return
@@ -4704,27 +4707,26 @@ l0EDA_in_fn1900:
 	V = false
 	N = false
 	Z = true
-	v19 = Mem0[r3 + 0x0058:word16]
-	Mem0[r3 + 0x000C:word16] = v20
-	NZ = cond(v21)
+	v18 = Mem0[r3 + 0x0058:word16]
+	Mem0[r3 + 0x000C:word16] = v19
+	NZ = cond(v20)
 	V = false
 	Mem0[r3 + 0x00A2:byte] = 0x00
 	C = false
 	V = false
 	N = false
 	Z = true
-	v22 = Mem0[sp:word16]
+	v21 = Mem0[sp:word16]
 	sp = sp + 0x0002
-	r3 = v23
+	r3 = v22
 	NZ = cond(r3)
 	V = false
 	return
 	// succ:  fn1932_exit
 l1932:
-	sp = v3
-	v5 = Mem0[r4 + 0x001C:word16] & 0x0008
-	Mem0[r4 + 0x001C:word16] = v5
-	NZ = cond(v5)
+	v4 = Mem0[r4 + 0x001C:word16] & 0x0008
+	Mem0[r4 + 0x001C:word16] = v4
+	NZ = cond(v4)
 	V = false
 	branch Test(NE,Z) l1938_thunk_fn18F6
 	goto l193A
@@ -4734,9 +4736,9 @@ l1938_thunk_fn18F6:
 	return
 	// succ:  fn1932_exit
 l193A:
-	v9 = Mem0[r4:word16] | 0x1000
-	Mem0[r4:word16] = v9
-	NZ = cond(v9)
+	v8 = Mem0[r4:word16] | 0x1000
+	Mem0[r4:word16] = v8
+	NZ = cond(v8)
 	V = false
 	Mem0[r3 + 0x0072:word16] = 0x0000
 	C = false
@@ -4761,9 +4763,9 @@ fn1932_exit:
 // Return size: 2
 define fn194E
 fn194E_entry:
+	sp = fp
 	// succ:  l194E
 l194E:
-	sp = fp
 	r1 = 0x0000
 	C = false
 	V = false
@@ -4784,9 +4786,9 @@ fn194E_exit:
 // Return size: 2
 define fn195A
 fn195A_entry:
+	sp = fp
 	// succ:  l195A
 l195A:
-	sp = fp
 	call fn196A (retsize: 2;)
 	r0 = (int16) Mem0[r0:byte]
 	NZ = cond(r0)
@@ -4800,9 +4802,9 @@ fn195A_exit:
 // Return size: 2
 define fn1962
 fn1962_entry:
+	sp = fp
 	// succ:  l1962
 l1962:
-	sp = fp
 	r0 = (int16) 0x20
 	NZ = cond(r0)
 	V = false
@@ -4831,9 +4833,9 @@ fn1962_exit:
 // Return size: 0
 define fn1966
 fn1966_entry:
+	sp = fp
 	// succ:  l1966
 l1966:
-	sp = fp
 	Mem0[Mem0[r3 + 0x001C:byte]:ptr16] = r0
 	NZ = cond(r0)
 	V = false
@@ -4858,9 +4860,9 @@ fn1966_exit:
 // Return size: 0
 define fn196A
 fn196A_entry:
+	sp = fp
 	// succ:  l196A
 l196A:
-	sp = fp
 	r0 = Mem0[r3 + 0x001C:word16]
 	NZ = cond(r0)
 	V = false
@@ -4882,12 +4884,12 @@ fn196A_exit:
 // Return size: 0
 define fn1974
 fn1974_entry:
+	sp = fp
 	// succ:  l1974
 l1974:
-	sp = v3
-	v5 = Mem0[r3 + 0x001C:word16] + 0x0001
-	Mem0[r3 + 0x001C:word16] = v5
-	NZV = cond(v5)
+	v4 = Mem0[r3 + 0x001C:word16] + 0x0001
+	Mem0[r3 + 0x001C:word16] = v4
+	NZV = cond(v4)
 	// succ:  l1978
 l1978:
 	return
@@ -4899,9 +4901,9 @@ fn1974_exit:
 // Return size: 2
 define fn197A
 fn197A_entry:
+	sp = fp
 	// succ:  l197A
 l197A:
-	sp = fp
 	v6 = Mem0[r3 + 0x0046:word16] - Mem0[r3 + 0x001C:word16]
 	NZVC = cond(v6)
 	branch Test(UGE,C) l1988
@@ -4964,17 +4966,17 @@ fn197A_exit:
 // Return size: 0
 define fn1AA2
 fn1AA2_entry:
+	sp = fp
 	// succ:  l1AA2
 l1AA2:
-	sp = v3
 	Mem0[r3 + 0x001E:word16] = 0x0000
 	C = false
 	V = false
 	N = false
 	Z = true
-	v9 = Mem0[sp:word16]
+	v8 = Mem0[sp:word16]
 	sp = sp + 0x0002
-	call v9 (retsize: 2;)
+	call v8 (retsize: 2;)
 	r3 = Mem0[0x5424:word16]
 	NZ = cond(r3)
 	V = false
@@ -4983,9 +4985,9 @@ l1AA2:
 	V = false
 	N = false
 	Z = true
-	v11 = Mem0[Mem0[r3 + 0x0014:ptr16]:word16]
-	v11 = v11 & v11
-	NZ = cond(v11)
+	v10 = Mem0[Mem0[r3 + 0x0014:ptr16]:word16]
+	v10 = v10 & v10
+	NZ = cond(v10)
 	C = false
 	V = false
 	branch Test(LT,N) l1ABA
@@ -4994,13 +4996,13 @@ l1AB6:
 	call Mem0[r3 + 0x0060:ptr16] (retsize: 2;)
 	// succ:  l1ABA
 l1ABA:
-	v12 = Mem0[r3 + 0x0050:word16]
-	Mem0[r3 + 0x0020:word16] = v12
-	NZ = cond(v12)
+	v11 = Mem0[r3 + 0x0050:word16]
+	Mem0[r3 + 0x0020:word16] = v11
+	NZ = cond(v11)
 	V = false
-	v13 = Mem0[r3 + 0x0012:word16]
-	Mem0[r3 + 0x0042:word16] = v13
-	NZ = cond(v13)
+	v12 = Mem0[r3 + 0x0012:word16]
+	Mem0[r3 + 0x0042:word16] = v12
+	NZ = cond(v12)
 	V = false
 	Mem0[r3 + 0x005C:word16] = 0x0000
 	C = false
@@ -5043,9 +5045,9 @@ fn1AA2_exit:
 // Return size: 2
 define fn1CFA
 fn1CFA_entry:
+	sp = fp
 	// succ:  l1CFA
 l1CFA:
-	sp = fp
 	return
 	// succ:  fn1CFA_exit
 fn1CFA_exit:
@@ -5055,9 +5057,9 @@ fn1CFA_exit:
 // Return size: 2
 define fn1CFC
 fn1CFC_entry:
+	sp = fp
 	// succ:  l1CFC
 l1CFC:
-	sp = fp
 	sp = sp - 0x0002
 	Mem0[sp:word16] = r0
 	NZ = cond(r0)
@@ -5140,9 +5142,9 @@ fn1CFC_exit:
 // Return size: 2
 define fn1D30
 fn1D30_entry:
+	sp = fp
 	// succ:  l1D30
 l1D30:
-	sp = fp
 	r4 = r0
 	NZ = cond(r4)
 	V = false
@@ -5255,9 +5257,9 @@ fn1D30_exit:
 // Return size: 0
 define fn1DAE
 fn1DAE_entry:
+	sp = fp
 	// succ:  l1DAE
 l1DAE:
-	sp = fp
 	call fn0218 (retsize: 2;)
 	v6 = Mem0[Mem0[sp + 0x000E:ptr16]:word16] & ~Mem0[0x15FF:word16]
 	Mem0[Mem0[sp + 0x000E:ptr16]:word16] = v6
@@ -6712,9 +6714,9 @@ fn1DAE_exit:
 // Return size: 2
 define fn243A
 fn243A_entry:
+	sp = fp
 	// succ:  l243A
 l243A:
-	sp = fp
 	call fn0EF8 (retsize: 2;)
 	r5 = r5 - 0x0002
 	r0 = r0 - 0x0002
@@ -8261,9 +8263,9 @@ fn243A_exit:
 // Return size: 2
 define fn2B90
 fn2B90_entry:
+	sp = fp
 	// succ:  l2B90
 l2B90:
-	sp = fp
 	call fn0EF8 (retsize: 2;)
 	r2 = r2 - 0x0002
 	v7 = Mem0[Mem0[r2:ptr16]:word16] & ~Mem0[sp + 0x15FF:word16]
@@ -8851,9 +8853,9 @@ fn2B90_exit:
 // Return size: 2
 define fn2E20
 fn2E20_entry:
+	sp = fp
 	// succ:  l2E20
 l2E20:
-	sp = fp
 	call fn0EF8 (retsize: 2;)
 	v6 = Mem0[Mem0[sp + 0x15FF:ptr16]:word16] | r1
 	Mem0[Mem0[sp + 0x15FF:ptr16]:word16] = v6
@@ -9002,9 +9004,9 @@ fn2E20_exit:
 // Return size: 0
 define fn2EC4
 fn2EC4_entry:
+	sp = fp
 	// succ:  l2EC4
 l2EC4:
-	sp = fp
 	call fn0EF8 (retsize: 2;)
 	v6 = Mem0[r2 + 0x15FF:word16] | r2
 	Mem0[r2 + 0x15FF:word16] = v6
@@ -9017,9 +9019,9 @@ fn2EC4_exit:
 // Return size: 2
 define fn3220
 fn3220_entry:
+	sp = fp
 	// succ:  l3220
 l3220:
-	sp = fp
 	call fn0EF8 (retsize: 2;)
 	r4 = r4 - 0x0002
 	v6 = Mem0[Mem0[r4:ptr16]:word16] | r4
@@ -9599,9 +9601,9 @@ fn3220_exit:
 // Return size: 0
 define fn34AC
 fn34AC_entry:
+	sp = fp
 	// succ:  l34AC
 l34AC:
-	sp = fp
 	call fn0EF8 (retsize: 2;)
 	v6 = Mem0[Mem0[sp + 0x15FF:ptr16]:word16] | r5
 	Mem0[Mem0[sp + 0x15FF:ptr16]:word16] = v6
@@ -9614,9 +9616,9 @@ fn34AC_exit:
 // Return size: 2
 define fn395C
 fn395C_entry:
+	sp = fp
 	// succ:  l395C
 l395C:
-	sp = fp
 	call fn0EF8 (retsize: 2;)
 	v6 = Mem0[Mem0[r4:word16]:ptr16] | 0x3962
 	Mem0[r4:word16] = v6
@@ -10001,9 +10003,9 @@ fn395C_exit:
 // Return size: 2
 define fn3B3C
 fn3B3C_entry:
+	sp = fp
 	// succ:  l3B3C
 l3B3C:
-	sp = fp
 	call fn0EF8 (retsize: 2;)
 	sp = sp - 0x0002
 	v7 = Mem0[Mem0[sp:ptr16]:word16] | Mem0[r1:word16]
@@ -10658,9 +10660,9 @@ fn3B3C_exit:
 // Return size: 2
 define fn3E12
 fn3E12_entry:
+	sp = fp
 	// succ:  l3E12
 l3E12:
-	sp = fp
 	call fn0EF8 (retsize: 2;)
 	r2 = r2 - 0x0002
 	v8 = Mem0[r2:word16] | Mem0[r3:word16]
@@ -10921,9 +10923,9 @@ fn3E12_exit:
 // Return size: 2
 define fn3F42
 fn3F42_entry:
+	sp = fp
 	// succ:  l3F42
 l3F42:
-	sp = fp
 	call fn0EF8 (retsize: 2;)
 	v8 = Mem0[r2:word16] | Mem0[r4:word16]
 	Mem0[r2:word16] = v8
@@ -11138,9 +11140,9 @@ fn3F42_exit:
 // Return size: 2
 define fn4030
 fn4030_entry:
+	sp = fp
 	// succ:  l4030
 l4030:
-	sp = fp
 	call fn0EF8 (retsize: 2;)
 	v8 = Mem0[r0 + 0x15FF:word16] | Mem0[r4:word16]
 	Mem0[r0 + 0x15FF:word16] = v8
@@ -11207,9 +11209,9 @@ fn4030_exit:
 // Return size: 2
 define fn4072
 fn4072_entry:
+	sp = fp
 	// succ:  l4072
 l4072:
-	sp = fp
 	call fn0EF8 (retsize: 2;)
 	r4 = r4 | Mem0[r5:word16]
 	NZ = cond(r4)
@@ -11412,9 +11414,9 @@ fn4072_exit:
 // Return size: 2
 define fn413C
 fn413C_entry:
+	sp = fp
 	// succ:  l413C
 l413C:
-	sp = fp
 	call fn0EF8 (retsize: 2;)
 	v8 = Mem0[r4:word16] | Mem0[r5:word16]
 	Mem0[r4:word16] = v8
@@ -11487,9 +11489,9 @@ fn413C_exit:
 // Return size: 2
 define fn4180
 fn4180_entry:
+	sp = fp
 	// succ:  l4180
 l4180:
-	sp = fp
 	call fn0EF8 (retsize: 2;)
 	r0 = r0 - 0x0002
 	v8 = Mem0[Mem0[r0:ptr16]:word16] | Mem0[r5:word16]
@@ -11636,9 +11638,9 @@ fn4180_exit:
 // Return size: 2
 define fn4230
 fn4230_entry:
+	sp = fp
 	// succ:  l4230
 l4230:
-	sp = fp
 	call fn0EF8 (retsize: 2;)
 	v8 = Mem0[Mem0[r2 + 0x15FF:ptr16]:word16] | Mem0[r5:word16]
 	Mem0[Mem0[r2 + 0x15FF:ptr16]:word16] = v8
@@ -12330,9 +12332,9 @@ fn4230_exit:
 // Return size: 0
 define fn4534
 fn4534_entry:
+	sp = fp
 	// succ:  l4534
 l4534:
-	sp = fp
 	call fn0EF8 (retsize: 2;)
 	v7 = Mem0[r0 + 0x15FF:word16] | Mem0[sp:word16]
 	Mem0[r0 + 0x15FF:word16] = v7
@@ -12346,9 +12348,9 @@ fn4534_exit:
 // Return size: 2
 define fn457C
 fn457C_entry:
+	sp = fp
 	// succ:  l457C
 l457C:
-	sp = fp
 	call fn0EF8 (retsize: 2;)
 	r0 = r0 | Mem0[pc:word16]
 	NZ = cond(r0)
@@ -12421,9 +12423,9 @@ fn457C_exit:
 // Return size: 2
 define fn45C8
 fn45C8_entry:
+	sp = fp
 	// succ:  l45C8
 l45C8:
-	sp = fp
 	call fn0EF8 (retsize: 2;)
 	v7 = Mem0[Mem0[r0:word16]:ptr16] | Mem0[pc:word16]
 	Mem0[r0:word16] = v7
@@ -12471,9 +12473,9 @@ fn45C8_exit:
 // Return size: 2
 define fn45F6
 fn45F6_entry:
+	sp = fp
 	// succ:  l45F6
 l45F6:
-	sp = fp
 	sp = sp - 0x0002
 	Mem0[sp:word16] = r5
 	NZ = cond(r5)
@@ -12821,9 +12823,9 @@ fn45F6_exit:
 // Return size: 2
 define fn474C
 fn474C_entry:
+	sp = fp
 	// succ:  l474C
 l474C:
-	sp = fp
 	LOCK()
 	sp = sp - 0x0002
 	Mem0[sp:word16] = 0x0000
@@ -13020,9 +13022,9 @@ fn474C_exit:
 // Return size: 2
 define fn5A90
 fn5A90_entry:
+	sp = fp
 	// succ:  l5A90
 l5A90:
-	sp = fp
 	v4 = Mem0[r5:word16]
 	r5 = r5 + 0x0002
 	v5 = v4

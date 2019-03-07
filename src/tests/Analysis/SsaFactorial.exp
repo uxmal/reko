@@ -75,10 +75,10 @@ fn0C00_0000_entry:
 	def ss
 	def ds
 	def ax
-	// succ:  l0C00_0000
-l0C00_0000:
 	sp_2 = fp
 	Top_3 = 0
+	// succ:  l0C00_0000
+l0C00_0000:
 	cx_4 = 0x0064
 	sp_5 = sp_2 - 2
 	Mem7[ss:sp_5:word16] = cx_4
@@ -281,10 +281,10 @@ fn0C00_000F_entry:
 	def ss
 	def dx
 	def C
-	// succ:  l0C00_000F
-l0C00_000F:
 	sp_2 = fp
 	Top_3 = 0
+	// succ:  l0C00_000F
+l0C00_000F:
 	sp_4 = sp_2 - 2
 	Mem7[ss:sp_4:word16] = bp
 	bp_8 = sp_4

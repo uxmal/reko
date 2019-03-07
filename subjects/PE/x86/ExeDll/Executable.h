@@ -51,9 +51,9 @@ Eq_89: DWORD
 	T_1051 (in ProcessorFeature : DWORD)
 	T_1052 (in 0x00000017 : word32)
 	T_1254 (in 0x0000000A : word32)
-Eq_90: (fn void ())
-	T_90 (in fn00401663 : ptr32)
-	T_91 (in signature of fn00401663 : void)
+Eq_92: (fn void ())
+	T_92 (in fn00401663 : ptr32)
+	T_93 (in signature of fn00401663 : void)
 Eq_95: (union "Eq_95" (int8 u0) ((ptr32 Eq_1415) u1))
 	T_95 (in stackArg4 : Eq_95)
 	T_96 (in <invalid> : void)
@@ -814,26 +814,26 @@ T_89: (in eax : Eq_89)
   Class: Eq_89
   DataType: Eq_89
   OrigDataType: DWORD
-T_90: (in fn00401663 : ptr32)
+T_90: (in Top_163 : int8)
   Class: Eq_90
-  DataType: (ptr32 Eq_90)
-  OrigDataType: (ptr32 (fn T_92 ()))
-T_91: (in signature of fn00401663 : void)
+  DataType: int8
+  OrigDataType: int8
+T_91: (in 0 : int8)
   Class: Eq_90
-  DataType: (ptr32 Eq_90)
-  OrigDataType: 
-T_92: (in fn00401663() : void)
+  DataType: int8
+  OrigDataType: int8
+T_92: (in fn00401663 : ptr32)
   Class: Eq_92
+  DataType: (ptr32 Eq_92)
+  OrigDataType: (ptr32 (fn T_94 ()))
+T_93: (in signature of fn00401663 : void)
+  Class: Eq_92
+  DataType: (ptr32 Eq_92)
+  OrigDataType: 
+T_94: (in fn00401663() : void)
+  Class: Eq_94
   DataType: void
   OrigDataType: void
-T_93: (in Top_163 : int8)
-  Class: Eq_93
-  DataType: int8
-  OrigDataType: int8
-T_94: (in 0 : int8)
-  Class: Eq_93
-  DataType: int8
-  OrigDataType: int8
 T_95: (in stackArg4 : Eq_95)
   Class: Eq_95
   DataType: Eq_95
@@ -6180,7 +6180,7 @@ typedef Eq_66 * (Eq_67)();
 
 typedef DWORD Eq_89;
 
-typedef void (Eq_90)();
+typedef void (Eq_92)();
 
 typedef union Eq_95 {
 	int8 u0;

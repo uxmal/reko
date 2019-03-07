@@ -2,9 +2,9 @@
 // Return size: 4
 define fn10000000
 fn10000000_entry:
+	esp = fp
 	// succ:  l10000000
 l10000000:
-	esp = fp
 	ecx = Mem0[esi + 0x0000006C:word32]
 	SZO = cond(ecx & ecx)
 	C = false
@@ -36,9 +36,9 @@ fn10000000_exit:
 // Return size: 4
 define fn1000006E
 fn1000006E_entry:
+	esp = fp
 	// succ:  l1000006E
 l1000006E:
-	esp = fp
 	return
 	// succ:  fn1000006E_exit
 fn1000006E_exit:
@@ -46,9 +46,9 @@ fn1000006E_exit:
 // Return size: 4
 define fn1000006F
 fn1000006F_entry:
+	esp = fp
 	// succ:  l1000006F
 l1000006F:
-	esp = fp
 	return
 	// succ:  fn1000006F_exit
 fn1000006F_exit:

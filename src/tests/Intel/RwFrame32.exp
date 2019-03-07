@@ -10,10 +10,10 @@
 // return address size: 4
 define fn10000000
 fn10000000_entry:
-	// succ:  l10000000
-l10000000:
 	esp = fp
 	Top = 0
+	// succ:  l10000000
+l10000000:
 	eax = Mem0[0x10003420:word32]
 	esp = esp - 4
 	Mem0[esp:word32] = eax
@@ -45,10 +45,10 @@ fn10000000_exit:
 // return address size: 4
 define fn10000017
 fn10000017_entry:
-	// succ:  l10000017
-l10000017:
 	esp = fp
 	Top = 0
+	// succ:  l10000017
+l10000017:
 	esp = esp - 4
 	Mem0[esp:word32] = ebp
 	ebp = esp

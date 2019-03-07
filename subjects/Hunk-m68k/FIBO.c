@@ -246,19 +246,19 @@ word32 fn00001278(Eq_372 dwArg04, ptr32 & d1Out, ptr32 & a1Out, ptr32 & a5Out)
 // 0000127C: Register Eq_372 fn0000127C(Register Eq_372 d2, Register out ptr32 d1Out, Register out (ptr32 Eq_374) a1Out, Register out (ptr32 Eq_374) a5Out)
 Eq_372 fn0000127C(Eq_372 d2, ptr32 & d1Out, struct Eq_374 & a1Out, struct Eq_374 & a5Out)
 {
-	ptr32 a7_4 = globals->ptr3E94;
-	struct Eq_374 * v8_9 = *(a7_4 - 0x04);
-	struct Eq_25 * v6_6 = *(a7_4 - 0x08);
-	ptr32 d1_12 = v8_9->ptr0004;
-	if (d1_12 != 0x00)
+	ptr32 a7_6 = globals->ptr3E94;
+	struct Eq_374 * v7_11 = *(a7_6 - 0x04);
+	struct Eq_25 * v5_8 = *(a7_6 - 0x08);
+	ptr32 d1_14 = v7_11->ptr0004;
+	if (d1_14 != 0x00)
 		execPrivate1();
 	CloseLibrary(globals->ptr3E9C);
-	if (v6_6 != null)
-		fn0000126C(v6_6);
-	FreeMem(v8_9, v8_9->dw0000);
-	d1Out = d1_12;
-	a1Out = v8_9;
-	a5Out = v8_9;
+	if (v5_8 != null)
+		fn0000126C(v5_8);
+	FreeMem(v7_11, v7_11->dw0000);
+	d1Out = d1_14;
+	a1Out = v7_11;
+	a5Out = v7_11;
 	return d2;
 }
 

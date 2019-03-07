@@ -100,13 +100,13 @@ DWORD Win32CrtStartup()
 // Trashed: eax
 // Preserved:
 Win32CrtStartup_entry:
+	int8 Top_163 = 0
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l004012CE:
 	fn00401663()
-	int8 Top_163 = 0
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

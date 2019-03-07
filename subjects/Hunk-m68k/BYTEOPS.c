@@ -239,16 +239,16 @@ word32 fn00001278(Eq_372 dwArg04)
 // 0000127C: Register (ptr32 Eq_445) fn0000127C(Register Eq_372 d2)
 struct Eq_445 * fn0000127C(Eq_372 d2)
 {
-	ptr32 a7_4 = globals->ptr2B88;
-	struct Eq_445 * v8_9 = *(a7_4 - 0x04);
-	struct Eq_25 * v6_6 = *(a7_4 - 0x08);
-	if (v8_9->dw0004 != 0x00)
+	ptr32 a7_6 = globals->ptr2B88;
+	struct Eq_445 * v7_11 = *(a7_6 - 0x04);
+	struct Eq_25 * v5_8 = *(a7_6 - 0x08);
+	if (v7_11->dw0004 != 0x00)
 		execPrivate1();
 	CloseLibrary(globals->ptr2B90);
-	if (v6_6 != null)
-		fn0000126C(v6_6);
-	FreeMem(v8_9, v8_9->dw0000);
-	return v8_9;
+	if (v5_8 != null)
+		fn0000126C(v5_8);
+	FreeMem(v7_11, v7_11->dw0000);
+	return v7_11;
 }
 
 // 000012D0: Register word32 fn000012D0(Register int32 d2, Register (ptr32 Eq_487) a2, Register (ptr32 Eq_488) a3, Stack Eq_372 dwArg04)

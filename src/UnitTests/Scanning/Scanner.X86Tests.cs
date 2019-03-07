@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -124,10 +124,10 @@ namespace Reko.UnitTests.Scanning
 // Return size: 2
 define fn0C00_0000
 fn0C00_0000_entry:
-	// succ:  l0C00_0000
-l0C00_0000:
 	sp = fp
 	Top = 0
+	// succ:  l0C00_0000
+l0C00_0000:
 	branch cx == 0x0000 l0C00_0002
 	// succ:  l0C00_0000_1 l0C00_0002
 l0C00_0000_1:

@@ -24,10 +24,10 @@
 // return address size: 2
 define fn0C00_0000
 fn0C00_0000_entry:
-	// succ:  l0C00_0000
-l0C00_0000:
 	sp = fp
 	Top = 0
+	// succ:  l0C00_0000
+l0C00_0000:
 	bx = Mem0[ds:0x003E:word16]
 	cx = Mem0[ds:0x003E:word16]
 	bx = bx & 0x0007

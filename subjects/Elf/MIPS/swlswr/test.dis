@@ -75,10 +75,10 @@ __start_entry:
 // SymbolicIn:
 
 l00000610:
-	word32 r8_18 = Mem0[0x00020A60:word32]
-	word32 r25_23 = Mem22[0x00020A24:word32]
-	call r25_23 (retsize: 0;)
-		uses: r2:r2,r25:r25_23,r4:Mem0[0x00020A68:word32],r5:dwArg00,r6:fp + 4,r7:Mem0[0x00020A64:word32],r8:r8_18,Stack +0010:r8_18,Stack +0014:r2,Stack +0018:fp + -40,Stack +0028:dwArg00
+	word32 r8_19 = Mem0[0x00020A60:word32]
+	word32 r25_24 = Mem23[0x00020A24:word32]
+	call r25_24 (retsize: 0;)
+		uses: r2:r2,r25:r25_24,r4:Mem0[0x00020A68:word32],r5:dwArg00,r6:fp + 4,r7:Mem0[0x00020A64:word32],r8:r8_19,Stack +0010:r8_19,Stack +0014:r2,Stack +0018:fp + -40,Stack +0028:dwArg00
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -598,9 +598,9 @@ __libc_start_main_entry:
 // SymbolicIn:
 
 l000009D0:
-	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
-	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:12,r25:r25_5
+	word32 r25_6 = Mem0[r28 - 0x00007FF0:word32]
+	call r25_6 (retsize: 0;)
+		uses: r15:ra,r24:12,r25:r25_6
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -626,9 +626,9 @@ memset_entry:
 // SymbolicIn:
 
 l000009E0:
-	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
-	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:11,r25:r25_5
+	word32 r25_6 = Mem0[r28 - 0x00007FF0:word32]
+	call r25_6 (retsize: 0;)
+		uses: r15:ra,r24:11,r25:r25_6
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -648,9 +648,9 @@ calloc_entry:
 // SymbolicIn:
 
 l000009F0:
-	word32 r25_5 = Mem0[r28 - 0x00007FF0:word32]
-	call r25_5 (retsize: 0;)
-		uses: r15:ra,r24:9,r25:r25_5
+	word32 r25_6 = Mem0[r28 - 0x00007FF0:word32]
+	call r25_6 (retsize: 0;)
+		uses: r15:ra,r24:9,r25:r25_6
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

@@ -58,8 +58,8 @@ word32 fn00401040(word32 eax, word32 ecx, struct Eq_60 * ebp, word32 * esi)
 // 004012C9: Register Eq_131 Win32CrtStartup()
 Eq_131 Win32CrtStartup()
 {
-	fn0040165E();
 	int8 Top_163 = 0x00;
+	fn0040165E();
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	Eq_137 stackArg4 = <invalid>;

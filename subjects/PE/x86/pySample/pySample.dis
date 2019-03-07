@@ -224,13 +224,13 @@ word32 fn100011E9(word32 edx, word32 ebx, word32 ebp, word32 esi, word32 edi, wo
 // Trashed: SCZO eax ebx ecx edi edx esi Top
 // Preserved: ebp esp
 fn100011E9_entry:
+	int8 Top_101 = 0
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l100011E9:
 	word32 eax_14
-	int8 Top_101 = 0
 	word32 ebp_147 = 0x00000000
 	branch dwArg08 != 0x00000000 l10001202
 // DataOut:
@@ -977,12 +977,12 @@ void fn10001680(word32 esi, word32 edi)
 // Trashed: SCZO eax esi esp Top
 // Preserved: edi
 fn10001680_entry:
+	int8 Top_25 = 0
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l10001680:
-	int8 Top_25 = 0
 	word32 esp_21 = fp - 8
 	word32 esi_13 = 0x100021D8
 	branch true l100016A1

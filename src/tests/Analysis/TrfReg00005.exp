@@ -1,13 +1,13 @@
 fn0C00_0000 SCZO ah al bx cl cx di es Top
 const ah:<invalid> al:0x00 bx:<invalid> cl:0x00 cx:<invalid> di:<invalid> es:<invalid> Top:0
     fn0C00_0000_entry sp:fp
-    l0C00_0000 sp:fp
+    l0C00_0000 sp:fp Top:0
     fn0C00_0000_exit ah:<invalid> al:0x00 bx:<invalid> cl:0x00 cx:<invalid> di:<invalid> es:<invalid> sp:fp Top:0
 
 fn0C00_000C SCZO ah al bx cl cx di es Top
 const ah:<invalid> al:0x00 bx:<invalid> cl:0x00 cx:<invalid> di:<invalid> Top:0
     fn0C00_000C_entry sp:fp
-    l0C00_000C sp:fp
+    l0C00_000C sp:fp Top:0
     l0C00_0019 al:0x00 cx:<invalid> di:<invalid> es:ds sp:fp Top:0
     l0C00_0019_1 al:0x00 cx:<invalid> di:<invalid> es:ds sp:fp Top:0
     l0C00_001B al:0x00 cx:<invalid> di:<invalid> es:ds sp:fp Top:0

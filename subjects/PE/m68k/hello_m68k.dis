@@ -2,9 +2,9 @@
 // Return size: 4
 void Win32CrtStartup()
 Win32CrtStartup_entry:
+	a7 = fp
 	// succ:  l00001004
 l00001004:
-	a7 = fp
 	Z = __btst(d0, d1)
 	v6 = (byte) d0 | 0x00
 	d0 = DPB(d0, v6, 0)
@@ -88,9 +88,9 @@ Win32CrtStartup_exit:
 // Return size: 4
 define fn00001498
 fn00001498_entry:
+	a7 = fp
 	// succ:  l00001498
 l00001498:
-	a7 = fp
 	return
 	// succ:  fn00001498_exit
 fn00001498_exit:
@@ -100,9 +100,9 @@ fn00001498_exit:
 // Return size: 0
 define fn0000149C
 fn0000149C_entry:
+	a7 = fp
 	// succ:  l0000149C
 l0000149C:
-	a7 = fp
 	a7 = a7 - 0x00000004
 	CVZNX = cond(a7)
 	a7 = a7 - 4
@@ -163,9 +163,9 @@ fn0000149C_exit:
 // Return size: 4
 define fn000014E8
 fn000014E8_entry:
+	a7 = fp
 	// succ:  l000014E8
 l000014E8:
-	a7 = fp
 	a7 = a7 - 4
 	Mem0[a7:word32] = a3
 	a7 = a7 - 4
@@ -367,9 +367,9 @@ fn000014E8_exit:
 // Return size: 4
 define fn000015E8
 fn000015E8_entry:
+	a7 = fp
 	// succ:  l000015E8
 l000015E8:
-	a7 = fp
 	a7 = a7 - 0x00000004
 	Mem0[a7:word32] = a6
 	a6 = a7
@@ -506,9 +506,9 @@ fn000015E8_exit:
 // Return size: 4
 define fn00001680
 fn00001680_entry:
+	a7 = fp
 	// succ:  l00001680
 l00001680:
-	a7 = fp
 	a7 = a7 - 0x00000004
 	Mem0[a7:word32] = a6
 	a6 = a7
@@ -586,9 +586,9 @@ fn00001680_exit:
 // Return size: 4
 define fn000016D0
 fn000016D0_entry:
+	a7 = fp
 	// succ:  l000016D0
 l000016D0:
-	a7 = fp
 	a7 = a7 - 0x00000004
 	Mem0[a7:word32] = a6
 	a6 = a7
@@ -753,9 +753,9 @@ fn000016D0_exit:
 // Return size: 4
 define fn00001C40
 fn00001C40_entry:
+	a7 = fp
 	// succ:  l00001C40
 l00001C40:
-	a7 = fp
 	a7 = a7 - 0x00000004
 	Mem0[a7:word32] = a6
 	a6 = a7
@@ -831,9 +831,9 @@ fn00001C40_exit:
 // Return size: 4
 define fn00001C84
 fn00001C84_entry:
+	a7 = fp
 	// succ:  l00001C84
 l00001C84:
-	a7 = fp
 	a7 = a7 - 0x00000004
 	Mem0[a7:word32] = a6
 	a6 = a7
@@ -910,9 +910,9 @@ fn00001C84_exit:
 // Return size: 4
 define fn00001CC4
 fn00001CC4_entry:
+	a7 = fp
 	// succ:  l00001CC4
 l00001CC4:
-	a7 = fp
 	a7 = a7 - 0x00000004
 	Mem0[a7:word32] = a6
 	a6 = a7
@@ -997,9 +997,9 @@ fn00001CC4_exit:
 // Return size: 4
 define fn00001D0C
 fn00001D0C_entry:
+	a7 = fp
 	// succ:  l00001D0C
 l00001D0C:
-	a7 = fp
 	a7 = a7 - 0x00000004
 	Mem0[a7:word32] = a6
 	a6 = a7
@@ -1024,9 +1024,9 @@ fn00001D0C_exit:
 // Return size: 4
 define fn00001D24
 fn00001D24_entry:
+	a7 = fp
 	// succ:  l00001D24
 l00001D24:
-	a7 = fp
 	a7 = a7 - 0x00000004
 	Mem0[a7:word32] = a6
 	a6 = a7
@@ -1124,9 +1124,9 @@ fn00001D24_exit:
 // Return size: 4
 define fn00001D80
 fn00001D80_entry:
+	a7 = fp
 	// succ:  l00001D80
 l00001D80:
-	a7 = fp
 	a7 = a7 - 0x00000004
 	Mem0[a7:word32] = a6
 	a6 = a7
@@ -1240,9 +1240,9 @@ fn00001D80_exit:
 // Return size: 4
 define fn00001DF4
 fn00001DF4_entry:
+	a7 = fp
 	// succ:  l00001DF4
 l00001DF4:
-	a7 = fp
 	a7 = a7 - 0x00000004
 	Mem0[a7:word32] = a6
 	a6 = a7
@@ -1266,9 +1266,9 @@ fn00001DF4_exit:
 // Return size: 4
 define fn00001E04
 fn00001E04_entry:
+	a7 = fp
 	// succ:  l00001E04
 l00001E04:
-	a7 = fp
 	a7 = a7 - 0x00000004
 	Mem0[a7:word32] = a6
 	a6 = a7
@@ -1409,9 +1409,9 @@ fn00001E04_exit:
 // Return size: 4
 define fn00001E94
 fn00001E94_entry:
+	a7 = fp
 	// succ:  l00001E94
 l00001E94:
-	a7 = fp
 	a7 = a7 - 0x00000004
 	Mem0[a7:word32] = a6
 	a6 = a7
@@ -1711,9 +1711,9 @@ fn00001E94_exit:
 // Return size: 4
 define fn00001FD8
 fn00001FD8_entry:
+	a7 = fp
 	// succ:  l00001FD8
 l00001FD8:
-	a7 = fp
 	a7 = a7 - 0x00000004
 	Mem0[a7:word32] = a6
 	a6 = a7
@@ -1784,9 +1784,9 @@ fn00001FD8_exit:
 // Return size: 4
 define fn00002014
 fn00002014_entry:
+	a7 = fp
 	// succ:  l00002014
 l00002014:
-	a7 = fp
 	a7 = a7 - 0x00000004
 	Mem0[a7:word32] = a6
 	a6 = a7
@@ -1851,9 +1851,9 @@ fn00002014_exit:
 // Return size: 4
 define fn00002068
 fn00002068_entry:
+	a7 = fp
 	// succ:  l00002068
 l00002068:
-	a7 = fp
 	a7 = a7 - 0x00000004
 	Mem0[a7:word32] = a6
 	a6 = a7
@@ -1996,9 +1996,9 @@ fn00002068_exit:
 // Return size: 4
 define fn000020F0
 fn000020F0_entry:
+	a7 = fp
 	// succ:  l000020F0
 l000020F0:
-	a7 = fp
 	a7 = a7 - 0x00000004
 	Mem0[a7:word32] = a6
 	a6 = a7
@@ -2060,9 +2060,9 @@ fn000020F0_exit:
 // Return size: 4
 define fn000021F0
 fn000021F0_entry:
+	a7 = fp
 	// succ:  l000021F0
 l000021F0:
-	a7 = fp
 	a7 = a7 - 0x00000004
 	Mem0[a7:word32] = a6
 	a6 = a7
@@ -2160,9 +2160,9 @@ fn000021F0_exit:
 // Return size: 4
 define fn00002264
 fn00002264_entry:
+	a7 = fp
 	// succ:  l00002264
 l00002264:
-	a7 = fp
 	a7 = a7 - 0x00000004
 	Mem0[a7:word32] = a6
 	a6 = a7
@@ -2231,9 +2231,9 @@ fn00002264_exit:
 // Return size: 4
 define fn00002294
 fn00002294_entry:
+	a7 = fp
 	// succ:  l00002294
 l00002294:
-	a7 = fp
 	a7 = a7 - 0x00000004
 	Mem0[a7:word32] = a6
 	a6 = a7
@@ -2266,9 +2266,9 @@ fn00002294_exit:
 // Return size: 4
 define fn000022C4
 fn000022C4_entry:
+	a7 = fp
 	// succ:  l000022C4
 l000022C4:
-	a7 = fp
 	a7 = a7 - 0x00000004
 	Mem0[a7:word32] = a6
 	a6 = a7
@@ -2355,9 +2355,9 @@ fn000022C4_exit:
 // Return size: 4
 define fn00002354
 fn00002354_entry:
+	a7 = fp
 	// succ:  l00002354
 l00002354:
-	a7 = fp
 	a7 = a7 - 0x00000004
 	Mem0[a7:word32] = a6
 	a6 = a7
@@ -2438,9 +2438,9 @@ fn00002354_exit:
 // Return size: 4
 define fn000023B4
 fn000023B4_entry:
+	a7 = fp
 	// succ:  l000023B4
 l000023B4:
-	a7 = fp
 	a7 = a7 - 0x00000004
 	Mem0[a7:word32] = a6
 	a6 = a7
@@ -2502,9 +2502,9 @@ fn000023B4_exit:
 // Return size: 4
 define fn000023F8
 fn000023F8_entry:
+	a7 = fp
 	// succ:  l000023F8
 l000023F8:
-	a7 = fp
 	a7 = a7 - 0x00000004
 	Mem0[a7:word32] = a6
 	a6 = a7
@@ -2533,9 +2533,9 @@ fn000023F8_exit:
 // Return size: 4
 define fn00002418
 fn00002418_entry:
+	a7 = fp
 	// succ:  l00002418
 l00002418:
-	a7 = fp
 	a7 = a7 - 0x00000004
 	Mem0[a7:word32] = a6
 	a6 = a7
@@ -2568,9 +2568,9 @@ fn00002418_exit:
 // Return size: 4
 define fn0000243C
 fn0000243C_entry:
+	a7 = fp
 	// succ:  l0000243C
 l0000243C:
-	a7 = fp
 	a7 = a7 - 0x00000004
 	Mem0[a7:word32] = a6
 	a6 = a7
@@ -2659,9 +2659,9 @@ fn0000243C_exit:
 // Return size: 4
 define fn000024B0
 fn000024B0_entry:
+	a7 = fp
 	// succ:  l000024B0
 l000024B0:
-	a7 = fp
 	a7 = a7 - 0x00000004
 	Mem0[a7:word32] = a6
 	a6 = a7
@@ -2689,9 +2689,9 @@ fn000024B0_exit:
 // Return size: 4
 define fn000024C4
 fn000024C4_entry:
+	a7 = fp
 	// succ:  l000024C4
 l000024C4:
-	a7 = fp
 	a7 = a7 - 0x00000004
 	Mem0[a7:word32] = a6
 	a6 = a7
@@ -2790,9 +2790,9 @@ fn000024C4_exit:
 // Return size: 4
 define fn00002510
 fn00002510_entry:
+	a7 = fp
 	// succ:  l00002510
 l00002510:
-	a7 = fp
 	a7 = a7 - 0x00000004
 	Mem0[a7:word32] = a6
 	a6 = a7
@@ -2957,9 +2957,9 @@ fn00002510_exit:
 // Return size: 4
 define fn000025B4
 fn000025B4_entry:
+	a7 = fp
 	// succ:  l000025B4
 l000025B4:
-	a7 = fp
 	a7 = a7 - 0x00000004
 	Mem0[a7:word32] = a6
 	a6 = a7
@@ -3053,9 +3053,9 @@ fn000025B4_exit:
 // Return size: 4
 define fn00002610
 fn00002610_entry:
+	a7 = fp
 	// succ:  l00002610
 l00002610:
-	a7 = fp
 	a7 = a7 - 0x00000004
 	Mem0[a7:word32] = a6
 	a6 = a7
@@ -3077,9 +3077,9 @@ fn00002610_exit:
 // Return size: 4
 define fn00002644
 fn00002644_entry:
+	a7 = fp
 	// succ:  l00002644
 l00002644:
-	a7 = fp
 	a7 = a7 - 0x00000004
 	Mem0[a7:word32] = a6
 	a6 = a7
@@ -3125,9 +3125,9 @@ fn00002644_exit:
 // Return size: 4
 define fn0000273C
 fn0000273C_entry:
+	a7 = fp
 	// succ:  l0000273C
 l0000273C:
-	a7 = fp
 	a7 = a7 - 0x00000004
 	Mem0[a7:word32] = a6
 	a6 = a7
@@ -3165,9 +3165,9 @@ fn0000273C_exit:
 // Return size: 4
 define fn0000275C
 fn0000275C_entry:
+	a7 = fp
 	// succ:  l0000275C
 l0000275C:
-	a7 = fp
 	a7 = a7 - 0x00000004
 	Mem0[a7:word32] = a6
 	a6 = a7
@@ -3237,9 +3237,9 @@ fn0000275C_exit:
 // Return size: 4
 define fn000027A0
 fn000027A0_entry:
+	a7 = fp
 	// succ:  l000027A0
 l000027A0:
-	a7 = fp
 	a7 = a7 - 0x00000004
 	Mem0[a7:word32] = a6
 	a6 = a7
@@ -3263,9 +3263,9 @@ fn000027A0_exit:
 // Return size: 4
 define fn000027B0
 fn000027B0_entry:
+	a7 = fp
 	// succ:  l000027B0
 l000027B0:
-	a7 = fp
 	a7 = a7 - 0x00000004
 	Mem0[a7:word32] = a6
 	a6 = a7
@@ -3534,9 +3534,9 @@ fn000027B0_exit:
 // Return size: 4
 define fn000028A0
 fn000028A0_entry:
+	a7 = fp
 	// succ:  l000028A0
 l000028A0:
-	a7 = fp
 	a7 = a7 - 0x00000004
 	Mem0[a7:word32] = a6
 	a6 = a7
@@ -3872,9 +3872,9 @@ fn000028A0_exit:
 // Return size: 4
 define fn000029C8
 fn000029C8_entry:
+	a7 = fp
 	// succ:  l000029C8
 l000029C8:
-	a7 = fp
 	a7 = a7 - 0x00000004
 	Mem0[a7:word32] = a6
 	a6 = a7
@@ -4019,9 +4019,9 @@ fn000029C8_exit:
 // Return size: 4
 define fn00002A54
 fn00002A54_entry:
+	a7 = fp
 	// succ:  l00002A54
 l00002A54:
-	a7 = fp
 	a7 = a7 - 0x00000004
 	Mem0[a7:word32] = a6
 	a6 = a7
@@ -4157,9 +4157,9 @@ fn00002A54_exit:
 // Return size: 4
 define fn00002AE0
 fn00002AE0_entry:
+	a7 = fp
 	// succ:  l00002AE0
 l00002AE0:
-	a7 = fp
 	a7 = a7 - 0x00000004
 	Mem0[a7:word32] = a6
 	a6 = a7
@@ -4213,9 +4213,9 @@ fn00002AE0_exit:
 // Return size: 4
 define fn00002B18
 fn00002B18_entry:
+	a7 = fp
 	// succ:  l00002B18
 l00002B18:
-	a7 = fp
 	a7 = a7 - 0x00000004
 	Mem0[a7:word32] = a6
 	a6 = a7
@@ -4310,9 +4310,9 @@ fn00002B18_exit:
 // Return size: 4
 define fn00002BB4
 fn00002BB4_entry:
+	a7 = fp
 	// succ:  l00002BB4
 l00002BB4:
-	a7 = fp
 	a7 = a7 - 0x00000004
 	Mem0[a7:word32] = a6
 	a6 = a7
@@ -4634,9 +4634,9 @@ fn00002BB4_exit:
 // Return size: 4
 define fn00002E18
 fn00002E18_entry:
+	a7 = fp
 	// succ:  l00002E18
 l00002E18:
-	a7 = fp
 	a7 = a7 - 0x00000004
 	Mem0[a7:word32] = a6
 	a6 = a7
@@ -4772,9 +4772,9 @@ fn00002E18_exit:
 // Return size: 4
 define fn00002EA8
 fn00002EA8_entry:
+	a7 = fp
 	// succ:  l00002EA8
 l00002EA8:
-	a7 = fp
 	a7 = a7 - 0x00000004
 	Mem0[a7:word32] = a6
 	a6 = a7
@@ -4892,9 +4892,9 @@ fn00002EA8_exit:
 // Return size: 4
 define fn00003340
 fn00003340_entry:
+	a7 = fp
 	// succ:  l00003340
 l00003340:
-	a7 = fp
 	a7 = a7 - 0x00000004
 	Mem0[a7:word32] = a6
 	a6 = a7

@@ -9,10 +9,10 @@
 // return address size: 4
 define fn10000008
 fn10000008_entry:
-	// succ:  l10000008
-l10000008:
 	esp = fp
 	Top = 0
+	// succ:  l10000008
+l10000008:
 	esp = esp - 4
 	Mem0[esp:word32] = 0x00000008
 	eax = malloc(Mem0[esp:size_t])

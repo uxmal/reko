@@ -2,10 +2,10 @@
 // Return size: 2
 define fn0C00_0000
 fn0C00_0000_entry:
-	// succ:  l0C00_0000
-l0C00_0000:
 	sp = fp
 	Top = 0
+	// succ:  l0C00_0000
+l0C00_0000:
 	ebx = 0x00000020
 	eax = 0x00000064
 	edx_eax = (int64) eax

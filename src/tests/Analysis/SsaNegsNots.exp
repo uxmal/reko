@@ -136,10 +136,10 @@ fn0C00_0000_entry:
 	def eax
 	def ds
 	def bx
-	// succ:  l0C00_0000
-l0C00_0000:
 	sp_2 = fp
 	Top_3 = 0
+	// succ:  l0C00_0000
+l0C00_0000:
 	eax_5 = -eax
 	SCZO_6 = cond(eax_5)
 	C_7 = eax_5 == 0x00000000

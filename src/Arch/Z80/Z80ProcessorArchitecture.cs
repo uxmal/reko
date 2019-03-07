@@ -84,10 +84,9 @@ namespace Reko.Arch.Z80
 
         public override int? GetOpcodeNumber(string name)
         {
-            Opcode result;
             if (string.Compare(name, "ex", StringComparison.InvariantCultureIgnoreCase) == 0)
                 return (int)Opcode.ex_af;
-            if (!Enum.TryParse(name, true, out result))
+            if (!Enum.TryParse(name, true, out Opcode result))
                 return null;
             return (int)result;
         }
@@ -109,7 +108,7 @@ namespace Reko.Arch.Z80
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
-            throw new NotImplementedException();
+            return Registers.regsByName.TryGetValue(name, out reg);
         }
 
         public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
@@ -262,7 +261,7 @@ namespace Reko.Arch.Z80
 
         internal static RegisterStorage[] All;
         internal static Dictionary<StorageDomain, RegisterStorage[]> SubRegisters;
-        private static Dictionary<string, RegisterStorage> regsByName;
+        internal static Dictionary<string, RegisterStorage> regsByName;
         private static RegisterStorage[] regsByStorage;
 
         static Registers()

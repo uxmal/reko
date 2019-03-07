@@ -1017,18 +1017,18 @@ T_146: (in ediOut : Eq_140)
   Class: Eq_140
   DataType: Eq_140
   OrigDataType: ptr32
-T_147: (in eax_14 : word32)
+T_147: (in Top_101 : int8)
+  Class: Eq_147
+  DataType: int8
+  OrigDataType: int8
+T_148: (in 0 : int8)
+  Class: Eq_147
+  DataType: int8
+  OrigDataType: int8
+T_149: (in eax_14 : word32)
   Class: Eq_135
   DataType: word32
   OrigDataType: word32
-T_148: (in Top_101 : int8)
-  Class: Eq_148
-  DataType: int8
-  OrigDataType: int8
-T_149: (in 0 : int8)
-  Class: Eq_148
-  DataType: int8
-  OrigDataType: int8
 T_150: (in ebp_147 : Eq_150)
   Class: Eq_150
   DataType: Eq_150

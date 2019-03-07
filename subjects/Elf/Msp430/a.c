@@ -692,7 +692,7 @@ void prvIdleTask(word20 pc, word20 sr)
 	{
 		sr = prvCheckTasksWaitingTermination(pc, sr);
 		if (0x0224 <u 0x00)
-			vPortYield(pc, sr, out sr, out r4_44, out r5_45, out r6_46, out r7_47, out r8_48, out r9_49, out r10_50, out r11_51);
+			vPortYield(pc, sr, out sr, out r4_43, out r5_44, out r6_45, out r7_46, out r8_47, out r9_48, out r10_49, out r11_50);
 	}
 }
 

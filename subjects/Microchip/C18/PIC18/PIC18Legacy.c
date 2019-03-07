@@ -8,7 +8,7 @@
 void fn00000000(byte TABLAT)
 {
 	globals->b0001 &= 191;
-	Data19[0x01].ptr0000 = 330;
+	Data21[0x01].ptr0000 = 330;
 	fn00000E(TABLAT, 0x00, 0x00);
 }
 

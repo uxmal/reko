@@ -60,10 +60,10 @@ fn0C00_0000_entry:
 	def fp
 	def ss
 	def Mem0
-	// succ:  l0C00_0000
-l0C00_0000:
 	sp_2 = fp
 	Top_3 = 0
+	// succ:  l0C00_0000
+l0C00_0000:
 	bp_4 = sp_2
 	ax_7 = Mem0[ss:bp_4 + 0x0006:word16]
 	ax_8 = ax_7 | ax_7

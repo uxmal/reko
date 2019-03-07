@@ -2,9 +2,9 @@
 // Return size: 0
 define fn00200089
 fn00200089_entry:
+	xsp = fp
 	// succ:  l00200089
 l00200089:
-	xsp = fp
 	call fn0020060C (retsize: 4;)
 	v3 = Mem0[0x00006F86:byte] | 1 << 0x06
 	Mem0[0x00006F86:byte] = v3
@@ -333,9 +333,9 @@ fn00200089_exit:
 // Return size: 4
 define fn002004F2
 fn002004F2_entry:
+	xsp = fp
 	// succ:  l002004F2
 l002004F2:
-	xsp = fp
 	xsp = xsp - 4
 	Mem0[xsp:word32] = xwa
 	v4 = 0x00
@@ -364,9 +364,9 @@ fn002004F2_exit:
 // Return size: 4
 define fn0020050A
 fn0020050A_entry:
+	xsp = fp
 	// succ:  l0020050A
 l0020050A:
-	xsp = fp
 	xsp = xsp - 4
 	Mem0[xsp:word32] = xhl
 	xsp = xsp - 4
@@ -407,9 +407,9 @@ fn0020050A_exit:
 // Return size: 4
 define fn00200532
 fn00200532_entry:
+	xsp = fp
 	// succ:  l00200532
 l00200532:
-	xsp = fp
 	xsp = xsp - 4
 	Mem0[xsp:word32] = xhl
 	xsp = xsp - 4
@@ -458,9 +458,9 @@ fn00200532_exit:
 // Return size: 4
 define fn00200557
 fn00200557_entry:
+	xsp = fp
 	// succ:  l00200557
 l00200557:
-	xsp = fp
 	xsp = xsp - 4
 	Mem0[xsp:word32] = xhl
 	xsp = xsp - 4
@@ -544,9 +544,9 @@ fn00200557_exit:
 // Return size: 4
 define fn002005B8
 fn002005B8_entry:
+	xsp = fp
 	// succ:  l002005B8
 l002005B8:
-	xsp = fp
 	xbc = 0x00009000
 	hl = 0x04C0
 	// succ:  l002005C0
@@ -586,9 +586,9 @@ fn002005B8_exit:
 // Return size: 4
 define fn002005F5
 fn002005F5_entry:
+	xsp = fp
 	// succ:  l002005F5
 l002005F5:
-	xsp = fp
 	xsp = xsp - 2
 	Mem0[xsp:word16] = sr
 	__ldf(0x03)
@@ -618,9 +618,9 @@ fn002005F5_exit:
 // Return size: 4
 define fn0020060C
 fn0020060C_entry:
+	xsp = fp
 	// succ:  l0020060C
 l0020060C:
-	xsp = fp
 	v3 = Mem0[0x00006F91:byte]
 	N = true
 	SZHVC = cond(v3 - 0x00)

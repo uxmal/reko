@@ -8,10 +8,10 @@
 // return address size: 2
 define fn0C00_0000
 fn0C00_0000_entry:
-	// succ:  l0C00_0000
-l0C00_0000:
 	sp = fp
 	Top = 0
+	// succ:  l0C00_0000
+l0C00_0000:
 	Top = Top - 1
 	ST[Top:real64] = Mem0[ds:0x0300:real64]
 	Top = Top - 1

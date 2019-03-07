@@ -60,8 +60,8 @@ void initpySample()
 // 100011E9: Register word32 fn100011E9(Register Eq_136 edx, Register Eq_137 ebx, Register (ptr32 Eq_138) ebp, Register Eq_136 esi, Register Eq_140 edi, Stack word32 dwArg08, Register out (ptr32 word32) ecxOut, Register out Eq_136 edxOut, Register out Eq_137 ebxOut, Register out Eq_136 esiOut, Register out Eq_140 ediOut)
 word32 fn100011E9(Eq_136 edx, Eq_137 ebx, struct Eq_138 * ebp, Eq_136 esi, Eq_140 edi, word32 dwArg08, word32 & ecxOut, union Eq_136 & edxOut, union Eq_137 & ebxOut, union Eq_136 & esiOut, LPVOID & ediOut)
 {
-	word32 eax_14;
 	int8 Top_101 = 0x00;
+	word32 eax_14;
 	Eq_150 ebp_147 = 0x00;
 	if (dwArg08 == 0x00)
 	{

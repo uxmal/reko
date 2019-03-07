@@ -24,10 +24,10 @@
 // return address size: 4
 define fn10000000
 fn10000000_entry:
-	// succ:  l10000000
-l10000000:
 	esp = fp
 	Top = 0
+	// succ:  l10000000
+l10000000:
 	esp = esp - 4
 	Mem0[esp:word32] = ebx
 	esp = esp - 4
@@ -363,10 +363,10 @@ fn10000000_exit:
 // return address size: 4
 define fn10000233
 fn10000233_entry:
-	// succ:  l10000233
-l10000233:
 	esp = fp
 	Top = 0
+	// succ:  l10000233
+l10000233:
 	Mem0[0x00123400:word32] = 0x10004AE0
 	eax = Mem0[esp + 0x00000004:word32]
 	return
@@ -383,10 +383,10 @@ fn10000233_exit:
 // return address size: 4
 define fn10000242
 fn10000242_entry:
-	// succ:  l10000242
-l10000242:
 	esp = fp
 	Top = 0
+	// succ:  l10000242
+l10000242:
 	Mem0[0x00123400:word32] = 0x10004EA0
 	eax = Mem0[esp + 0x00000004:word32]
 	return
@@ -403,10 +403,10 @@ fn10000242_exit:
 // return address size: 4
 define fn10000251
 fn10000251_entry:
-	// succ:  l10000251
-l10000251:
 	esp = fp
 	Top = 0
+	// succ:  l10000251
+l10000251:
 	Mem0[0x00123400:word32] = 0x1000022D
 	eax = Mem0[esp + 0x00000004:word32]
 	return
@@ -423,10 +423,10 @@ fn10000251_exit:
 // return address size: 4
 define fn10000260
 fn10000260_entry:
-	// succ:  l10000260
-l10000260:
 	esp = fp
 	Top = 0
+	// succ:  l10000260
+l10000260:
 	Mem0[0x00123400:word32] = 0x10005A80
 	eax = Mem0[esp + 0x00000004:word32]
 	return
@@ -443,10 +443,10 @@ fn10000260_exit:
 // return address size: 4
 define fn1000026F
 fn1000026F_entry:
-	// succ:  l1000026F
-l1000026F:
 	esp = fp
 	Top = 0
+	// succ:  l1000026F
+l1000026F:
 	Mem0[0x00123400:word32] = 0x1000A450
 	eax = Mem0[esp + 0x00000004:word32]
 	return
@@ -463,10 +463,10 @@ fn1000026F_exit:
 // return address size: 4
 define fn1000027E
 fn1000027E_entry:
-	// succ:  l1000027E
-l1000027E:
 	esp = fp
 	Top = 0
+	// succ:  l1000027E
+l1000027E:
 	Mem0[0x00123400:word32] = 0x1000A700
 	eax = Mem0[esp + 0x00000004:word32]
 	return
@@ -483,10 +483,10 @@ fn1000027E_exit:
 // return address size: 4
 define fn1000028D
 fn1000028D_entry:
-	// succ:  l1000028D
-l1000028D:
 	esp = fp
 	Top = 0
+	// succ:  l1000028D
+l1000028D:
 	Mem0[0x00123400:word32] = 0x1000B860
 	eax = Mem0[esp + 0x00000004:word32]
 	return
@@ -503,10 +503,10 @@ fn1000028D_exit:
 // return address size: 4
 define fn1000029C
 fn1000029C_entry:
-	// succ:  l1000029C
-l1000029C:
 	esp = fp
 	Top = 0
+	// succ:  l1000029C
+l1000029C:
 	Mem0[0x00123400:word32] = 0x1000D460
 	eax = Mem0[esp + 0x00000004:word32]
 	return
@@ -523,10 +523,10 @@ fn1000029C_exit:
 // return address size: 4
 define fn100002AB
 fn100002AB_entry:
-	// succ:  l100002AB
-l100002AB:
 	esp = fp
 	Top = 0
+	// succ:  l100002AB
+l100002AB:
 	Mem0[0x00123400:word32] = 0x1000D510
 	eax = Mem0[esp + 0x00000004:word32]
 	return
@@ -544,10 +544,10 @@ fn100002AB_exit:
 // return address size: 4
 define fn100002BA
 fn100002BA_entry:
-	// succ:  l100002BA
-l100002BA:
 	esp = fp
 	Top = 0
+	// succ:  l100002BA
+l100002BA:
 	Mem0[0x00123400:word32] = 0x1000D580
 	eax = Mem0[esp + 0x00000008:word32]
 	eax = eax + Mem0[esp + 0x00000004:word32]
@@ -566,10 +566,10 @@ fn100002BA_exit:
 // return address size: 4
 define fn100002CD
 fn100002CD_entry:
-	// succ:  l100002CD
-l100002CD:
 	esp = fp
 	Top = 0
+	// succ:  l100002CD
+l100002CD:
 	Mem0[0x00123400:word32] = 0x1000D5E0
 	eax = Mem0[esp + 0x00000004:word32]
 	return
@@ -587,10 +587,10 @@ fn100002CD_exit:
 // return address size: 4
 define fn100002DC
 fn100002DC_entry:
-	// succ:  l100002DC
-l100002DC:
 	esp = fp
 	Top = 0
+	// succ:  l100002DC
+l100002DC:
 	Mem0[0x00123400:word32] = 0x10025160
 	eax = Mem0[esp + 0x00000008:word32]
 	eax = eax + Mem0[esp + 0x00000004:word32]
@@ -610,10 +610,10 @@ fn100002DC_exit:
 // return address size: 4
 define fn100002EF
 fn100002EF_entry:
-	// succ:  l100002EF
-l100002EF:
 	esp = fp
 	Top = 0
+	// succ:  l100002EF
+l100002EF:
 	Mem0[0x00123400:word32] = 0x10000267
 	edx = Mem0[0x20000000:word32]
 	eax = Mem0[esp + 0x00000004:word32]
@@ -641,10 +641,10 @@ fn100002EF_exit:
 // return address size: 4
 define fn1000032A
 fn1000032A_entry:
-	// succ:  l1000032A
-l1000032A:
 	esp = fp
 	Top = 0
+	// succ:  l1000032A
+l1000032A:
 	return
 	// succ:  fn1000032A_exit
 fn1000032A_exit:
@@ -660,10 +660,10 @@ fn1000032A_exit:
 // return address size: 4
 define fn1000032B
 fn1000032B_entry:
-	// succ:  l1000032B
-l1000032B:
 	esp = fp
 	Top = 0
+	// succ:  l1000032B
+l1000032B:
 	Mem0[0x00123400:word32] = 0x10032760
 	edx = Mem0[0x20000000:word32]
 	eax = Mem0[esp + 0x00000004:word32]

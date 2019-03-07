@@ -201,7 +201,8 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void Liv_CreateBareMinimum()
 		{
-            ssa = new SsaState(null);
+            var pb = new ProcedureBuilder();
+            ssa = new SsaState(pb.Procedure);
             Identifier id0 = new Identifier("foo", PrimitiveType.Word32, new TemporaryStorage("foo", 1, PrimitiveType.Word32));
             Identifier id1 = new Identifier("bar", PrimitiveType.Word32, new TemporaryStorage("bar", 1, PrimitiveType.Word32));
             Identifier phi = new Identifier("i_3", PrimitiveType.Word32, null);
@@ -219,8 +220,9 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void Liv_CreateIncInitialValue()
 		{
-            ssa = new SsaState(null);
-			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(ssa, null);
+            var pb = new ProcedureBuilder();
+            ssa = new SsaState(pb.Procedure);
+            LinearInductionVariableFinder liv = new LinearInductionVariableFinder(ssa, null);
 			liv.Context.InitialValue = Constant.Word32(0);
 			liv.Context.PhiStatement = new Statement(0, null, null);
 			liv.Context.PhiIdentifier = new Identifier("foo_0", PrimitiveType.Word32, null);

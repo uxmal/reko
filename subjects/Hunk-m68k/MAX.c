@@ -242,19 +242,19 @@ word32 fn00001278(Eq_369 dwArg04, ptr32 & a1Out, ptr32 & a5Out)
 // 0000127C: Register word32 fn0000127C(Register Eq_369 d2, Register out (ptr32 Eq_370) a1Out, Register out (ptr32 Eq_370) a5Out)
 word32 fn0000127C(Eq_369 d2, struct Eq_370 & a1Out, struct Eq_370 & a5Out)
 {
-	ptr32 a7_4 = globals->ptr3D90;
-	struct Eq_370 * v8_9 = *(a7_4 - 0x04);
-	struct Eq_25 * v6_6 = *(a7_4 - 0x08);
-	word32 d1_12 = v8_9->dw0004;
-	if (d1_12 != 0x00)
+	ptr32 a7_6 = globals->ptr3D90;
+	struct Eq_370 * v7_11 = *(a7_6 - 0x04);
+	struct Eq_25 * v5_8 = *(a7_6 - 0x08);
+	word32 d1_14 = v7_11->dw0004;
+	if (d1_14 != 0x00)
 		execPrivate1();
 	CloseLibrary(globals->ptr3D98);
-	if (v6_6 != null)
-		fn0000126C(v6_6);
-	FreeMem(v8_9, v8_9->dw0000);
-	a1Out = v8_9;
-	a5Out = v8_9;
-	return d1_12;
+	if (v5_8 != null)
+		fn0000126C(v5_8);
+	FreeMem(v7_11, v7_11->dw0000);
+	a1Out = v7_11;
+	a5Out = v7_11;
+	return d1_14;
 }
 
 // 000012D0: Register word32 fn000012D0(Register Eq_500 d2, Register Eq_501 a2, Register (ptr32 Eq_502) a3, Stack Eq_369 dwArg04, Register out ptr32 a1Out, Register out ptr32 a5Out)

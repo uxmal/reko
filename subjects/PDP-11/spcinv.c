@@ -35,9 +35,9 @@ Eq_11 fn0486(Eq_11 r0, Eq_11 r1, Eq_160 r4, Eq_2 r5, Eq_2 bArg00, ptr16 & r4Out,
 // 04A0: Register Eq_2 fn04A0(Register Eq_11 r1, Register Eq_160 r4, Register (ptr16 Eq_3) pc)
 Eq_2 fn04A0(Eq_11 r1, Eq_160 r4, struct Eq_3 * pc)
 {
+	Eq_2 sp_106 = fp;
 	cui16 v5_5 = pc->w0A52 & globals->w0EF4;
 	pc->w0A52 = v5_5;
-	Eq_2 sp_106 = fp;
 	if (v5_5 != 0x00)
 		return r5;
 	Eq_2 r5_10;
@@ -427,9 +427,9 @@ l07A0:
 // 07A6: Register Eq_11 fn07A6(Register Eq_160 r4, Register (ptr16 Eq_3) pc, Register out Eq_11 r1Out, Register out Eq_2 r5Out)
 Eq_11 fn07A6(Eq_160 r4, struct Eq_3 * pc, union Eq_11 & r1Out, union Eq_2 & r5Out)
 {
+	Eq_2 sp_122 = fp;
 	ci16 v5_4 = globals->w0F1C - 0x01;
 	globals->w0F1E = v5_4;
-	Eq_2 sp_122 = fp;
 	if (v5_4 == 0x00)
 	{
 		globals->w0F1E = globals->w0F26;

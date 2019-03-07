@@ -95,10 +95,10 @@ fn0C00_0000_entry:
 	def fp
 	def bx
 	def ds
-	// succ:  l0C00_0000
-l0C00_0000:
 	sp_2 = fp
 	Top_3 = 0
+	// succ:  l0C00_0000
+l0C00_0000:
 	SCZO_5 = cond(bx - 0x0000)
 	Z_6 = SLICE(SCZO_5, bool, 2) (alias)
 	SZO_10 = SLICE(SCZO_5, bool, 4) (alias)

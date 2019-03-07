@@ -2,10 +2,10 @@
 // Return size: 2
 define fn0C00_0000
 fn0C00_0000_entry:
-	// succ:  l0C00_0000
-l0C00_0000:
 	sp = fp
 	Top = 0
+	// succ:  l0C00_0000
+l0C00_0000:
 	bx = Mem0[ds:bx + 0x0002:word16]
 	SCZO = cond(bx - ax)
 	branch Test(GT,SZO) l0C00_000F

@@ -239,15 +239,15 @@ void fn00001278(int32 dwArg04)
 // 0000127C: void fn0000127C(Register int32 d2)
 void fn0000127C(int32 d2)
 {
-	ptr32 a7_4 = globals->ptr1494;
-	struct Eq_447 * v8_9 = *(a7_4 - 0x04);
-	struct Eq_25 * v6_6 = *(a7_4 - 0x08);
-	if (v8_9->dw0004 != 0x00)
+	ptr32 a7_6 = globals->ptr1494;
+	struct Eq_447 * v7_11 = *(a7_6 - 0x04);
+	struct Eq_25 * v5_8 = *(a7_6 - 0x08);
+	if (v7_11->dw0004 != 0x00)
 		execPrivate1();
 	CloseLibrary(globals->ptr149C);
-	if (v6_6 != null)
-		fn0000126C(v6_6);
-	FreeMem(v8_9, v8_9->dw0000);
+	if (v5_8 != null)
+		fn0000126C(v5_8);
+	FreeMem(v7_11, v7_11->dw0000);
 }
 
 // 000012D0: void fn000012D0(Register int32 d2, Register (ptr32 Eq_3) a2, Register (ptr32 Eq_485) a3, Stack int32 dwArg04)

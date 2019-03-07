@@ -106,10 +106,10 @@ fn0C00_0000_entry:
 	def ds
 	def Mem0
 	def si
-	// succ:  l0C00_0000
-l0C00_0000:
 	sp_2 = fp
 	Top_3 = 0
+	// succ:  l0C00_0000
+l0C00_0000:
 	ax_4 = 0x0000
 	SZO_5 = cond(ax_4)
 	C_6 = false

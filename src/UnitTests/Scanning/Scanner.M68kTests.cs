@@ -123,9 +123,9 @@ namespace Reko.UnitTests.Scanning
 // return address size: 4
 define fn00100000
 fn00100000_entry:
+	a7 = fp
 	// succ:  l00100000
 l00100000:
-	a7 = fp
 	a7 = a7 - 4
 	v4 = d0
 	Mem0[a7:word32] = v4
@@ -177,9 +177,9 @@ fn00100000_exit:
 // return address size: 4
 define fn00001020
 fn00001020_entry:
+	a7 = fp
 	// succ:  l00001020
 l00001020:
-	a7 = fp
 	a0 = 0x00003E94
 	d0 = 0x00000030
 	CVZN = cond(d0)

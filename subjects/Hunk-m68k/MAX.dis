@@ -542,11 +542,11 @@ fn0000127C_entry:
 // SymbolicIn:
 
 l0000127C:
-	word32 a7_4 = Mem0[0x00003D90:word32]
-	word32 v8_9 = Mem0[a7_4 - 4:word32]
-	word32 v6_6 = Mem0[a7_4 - 8:word32]
-	word32 d1_12 = Mem0[v8_9 + 4:word32]
-	branch d1_12 == 0x00000000 l0000129E
+	word32 a7_6 = Mem0[0x00003D90:word32]
+	word32 v7_11 = Mem0[a7_6 - 4:word32]
+	word32 v5_8 = Mem0[a7_6 - 8:word32]
+	word32 d1_14 = Mem0[v7_11 + 4:word32]
+	branch d1_14 == 0x00000000 l0000129E
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -559,22 +559,22 @@ l00001296:
 
 l0000129E:
 	CloseLibrary(Mem0[0x00003D98:word32])
-	branch v6_6 == 0x00000000 l000012B0
+	branch v5_8 == 0x00000000 l000012B0
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000012AE:
-	fn0000126C(v6_6)
+	fn0000126C(v5_8)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000012B0:
-	FreeMem(v8_9, Mem0[v8_9:word32])
-	a1Out = v8_9
-	a5Out = v8_9
-	return d1_12
+	FreeMem(v7_11, Mem0[v7_11:word32])
+	a1Out = v7_11
+	a5Out = v7_11
+	return d1_14
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

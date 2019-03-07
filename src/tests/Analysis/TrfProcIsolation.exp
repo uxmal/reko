@@ -1,19 +1,19 @@
 fn0C00_0000 SCZO ax Top
 const ax:<invalid> Top:0
     fn0C00_0000_entry sp:fp
-    l0C00_0000 sp:fp
+    l0C00_0000 sp:fp Top:0
     l0C00_000E_thunk_fn0C00_000F ax:<invalid> di:di sp:fp Top:0
     fn0C00_0000_exit ax:<invalid> di:di sp:fp Top:0
 
 fn0C00_000F Top
 const Top:0
     fn0C00_000F_entry sp:fp
-    l0C00_000F sp:fp
+    l0C00_000F sp:fp Top:0
     fn0C00_000F_exit sp:fp Top:0
 
 fn0C00_0014 SCZO ax di Top
 const ax:<invalid> di:0x0000 Top:0
     fn0C00_0014_entry sp:fp
-    l0C00_0014 sp:fp
+    l0C00_0014 sp:fp Top:0
     fn0C00_0014_exit ax:ax - 0x0001 di:0x0000 sp:fp Top:0
 

@@ -196,7 +196,7 @@ l040A:
 	r0_326 = fn0AE8(r0_307, fn0AB6(r0_307, r1_305, r4_308, r5_309, Mem317[sp_310 + 0xFFFD:byte], Mem317[sp_310 + 0xFFFE:byte], out r5_321), r5_321, Mem317[sp_310 + 0xFFFD:word16], out r4_327, out r5_328)
 	Mem334[r1_305 - 0x0002:word16] = r4_327
 	sp_329 = <invalid>
-	fn0AE8(r0_326, r4_327, r5_328, Mem334[sp_329 + -2:word16], out r4_420, out r5_421)
+	fn0AE8(r0_326, r4_327, r5_328, Mem334[sp_329 + -2:word16], out r4_416, out r5_417)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -213,8 +213,8 @@ l0386:
 // SymbolicIn:
 
 l038E:
-	r2_409 = PHI((r2_159, l0388), (r2_236, l0386))
-	Mem402 = PHI((Mem94, l0388), (Mem248, l0386))
+	r2_405 = PHI((r2_159, l0388), (r2_236, l0386))
+	Mem398 = PHI((Mem94, l0388), (Mem248, l0386))
 	r1_349 = PHI((r1_145, l0388), (r1_230, l0386))
 	r4_348 = PHI((r4_100, l0388), (r4_238, l0386))
 	r5_347 = PHI((r5_141, l0388), (r5_239, l0386))
@@ -224,21 +224,21 @@ l038E:
 // SymbolicIn:
 
 l0392:
-	r2_408 = PHI((r2_409, l038E), (r2_236, l039A))
-	r1_407 = PHI((r1_349, l038E), (r1_230, l039A))
-	r5_406 = PHI((r5_352, l038E), (r5_239, l039A))
-	r4_403 = PHI((r4_351, l038E), (r4_238, l039A))
-	Mem401 = PHI((Mem402, l038E), (Mem248, l039A))
+	r2_404 = PHI((r2_405, l038E), (r2_236, l039A))
+	r1_403 = PHI((r1_349, l038E), (r1_230, l039A))
+	r5_402 = PHI((r5_352, l038E), (r5_239, l039A))
+	r4_399 = PHI((r4_351, l038E), (r4_238, l039A))
+	Mem397 = PHI((Mem398, l038E), (Mem248, l039A))
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l02A6:
-	r2_159 = PHI((r2_159, l0388), (r2_236, l0394), (r2_408, l0392))
-	r1_145 = PHI((r1_145, l0388), (r1_230, l0394), (r1_407, l0392))
-	r5_141 = PHI((r5_141, l0388), (r5_239, l0394), (r5_406, l0392))
-	r4_100 = PHI((r4_100, l0388), (r4_238, l0394), (r4_403, l0392))
-	Mem85 = PHI((Mem94, l0388), (Mem248, l0394), (Mem401, l0392))
+	r2_159 = PHI((r2_159, l0388), (r2_236, l0394), (r2_404, l0392))
+	r1_145 = PHI((r1_145, l0388), (r1_230, l0394), (r1_403, l0392))
+	r5_141 = PHI((r5_141, l0388), (r5_239, l0394), (r5_402, l0392))
+	r4_100 = PHI((r4_100, l0388), (r4_238, l0394), (r4_399, l0392))
+	Mem85 = PHI((Mem94, l0388), (Mem248, l0394), (Mem397, l0392))
 	branch TTYIN(out r0_83) l02FC
 // DataOut:
 // DataOut (flags):
@@ -470,6 +470,7 @@ word16 fn04A0(word16 r1, word16 r4, word16 pc)
 // Trashed: NZV r3 r5
 // Preserved: C r0 r1 r2 r4 sp
 fn04A0_entry:
+	word16 sp_106 = fp
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -477,7 +478,6 @@ fn04A0_entry:
 l04A0:
 	word16 v5_5 = Mem0[pc + 0x0A52:word16] & Mem0[0x0EF4:word16]
 	Mem6[pc + 0x0A52:word16] = v5_5
-	word16 sp_106 = fp
 	branch v5_5 == 0x0000 l04AA
 // DataOut:
 // DataOut (flags):
@@ -1063,12 +1063,12 @@ void fn06D6(word16 r1, word16 r4, word16 r5, word16 pc)
 // Trashed: NZV r2 r3
 // Preserved: C r0 r1 r4 r5 sp
 fn06D6_entry:
+	word16 sp_106 = fp
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l06D6:
-	word16 sp_106 = fp
 	word16 r2_220 = Mem0[0x0F06:word16]
 // DataOut:
 // DataOut (flags):
@@ -1261,6 +1261,7 @@ word16 fn07A6(word16 r4, word16 pc, ptr16 & r1Out, ptr16 & r5Out)
 // Trashed: NZVC r0 r1 r2 r3 r5
 // Preserved: r4 sp
 fn07A6_entry:
+	word16 sp_122 = fp
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1268,7 +1269,6 @@ fn07A6_entry:
 l07A6:
 	word16 v5_4 = Mem0[0x0F1C:word16] - 0x0001
 	Mem5[0x0F1E:word16] = v5_4
-	word16 sp_122 = fp
 	branch v5_4 == 0x0000 l07B0
 // DataOut:
 // DataOut (flags):

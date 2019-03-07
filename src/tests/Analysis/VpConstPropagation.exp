@@ -33,10 +33,10 @@ define fn0C00_0000
 fn0C00_0000_entry:
 	def fp
 	def ds
-	// succ:  l0C00_0000
-l0C00_0000:
 	sp_2 = fp
 	Top_3 = 0
+	// succ:  l0C00_0000
+l0C00_0000:
 	ax_4 = 0x0000
 	SZO_5 = cond(ax_4)
 	C_6 = false
@@ -77,10 +77,10 @@ define fn0C00_0000
 fn0C00_0000_entry:
 	def fp
 	def ds
-	// succ:  l0C00_0000
-l0C00_0000:
 	sp_2 = fp
 	Top_3 = 0
+	// succ:  l0C00_0000
+l0C00_0000:
 	ax_4 = 0x0000
 	SZO_5 = cond(0x0000)
 	C_6 = false

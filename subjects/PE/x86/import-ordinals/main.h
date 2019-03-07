@@ -34,9 +34,9 @@ Eq_131: DWORD
 	T_893 (in ProcessorFeature : DWORD)
 	T_894 (in 0x00000017 : word32)
 	T_1075 (in 0x0000000A : word32)
-Eq_132: (fn void ())
-	T_132 (in fn0040165E : ptr32)
-	T_133 (in signature of fn0040165E : void)
+Eq_134: (fn void ())
+	T_134 (in fn0040165E : ptr32)
+	T_135 (in signature of fn0040165E : void)
 Eq_137: (union "Eq_137" (int8 u0) ((ptr32 Eq_1235) u1))
 	T_137 (in stackArg4 : Eq_137)
 	T_138 (in <invalid> : void)
@@ -901,26 +901,26 @@ T_131: (in eax : Eq_131)
   Class: Eq_131
   DataType: Eq_131
   OrigDataType: DWORD
-T_132: (in fn0040165E : ptr32)
+T_132: (in Top_163 : int8)
   Class: Eq_132
-  DataType: (ptr32 Eq_132)
-  OrigDataType: (ptr32 (fn T_134 ()))
-T_133: (in signature of fn0040165E : void)
+  DataType: int8
+  OrigDataType: int8
+T_133: (in 0 : int8)
   Class: Eq_132
-  DataType: (ptr32 Eq_132)
-  OrigDataType: 
-T_134: (in fn0040165E() : void)
+  DataType: int8
+  OrigDataType: int8
+T_134: (in fn0040165E : ptr32)
   Class: Eq_134
+  DataType: (ptr32 Eq_134)
+  OrigDataType: (ptr32 (fn T_136 ()))
+T_135: (in signature of fn0040165E : void)
+  Class: Eq_134
+  DataType: (ptr32 Eq_134)
+  OrigDataType: 
+T_136: (in fn0040165E() : void)
+  Class: Eq_136
   DataType: void
   OrigDataType: void
-T_135: (in Top_163 : int8)
-  Class: Eq_135
-  DataType: int8
-  OrigDataType: int8
-T_136: (in 0 : int8)
-  Class: Eq_135
-  DataType: int8
-  OrigDataType: int8
 T_137: (in stackArg4 : Eq_137)
   Class: Eq_137
   DataType: Eq_137
@@ -5359,7 +5359,7 @@ typedef void (Eq_120)(word32 *, word32, ptr32, word32 *, word32);
 
 typedef DWORD Eq_131;
 
-typedef void (Eq_132)();
+typedef void (Eq_134)();
 
 typedef union Eq_137 {
 	int8 u0;

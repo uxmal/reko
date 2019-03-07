@@ -9,10 +9,10 @@
 // return address size: 2
 define fn0C00_0000
 fn0C00_0000_entry:
-	// succ:  l0C00_0000
-l0C00_0000:
 	sp = fp
 	Top = 0
+	// succ:  l0C00_0000
+l0C00_0000:
 	call fn0C00_0008 (retsize: 2;)
 	Mem0[ds:0x0306:word16] = ax
 	return
@@ -32,10 +32,10 @@ fn0C00_0000_exit:
 // return address size: 2
 define fn0C00_0008
 fn0C00_0008_entry:
-	// succ:  l0C00_0008
-l0C00_0008:
 	sp = fp
 	Top = 0
+	// succ:  l0C00_0008
+l0C00_0008:
 	Mem0[ds:0x0300:word16] = sp
 	Mem0[ds:0x0302:word16] = ss
 	Mem0[ds:0x0308:word16] = bx

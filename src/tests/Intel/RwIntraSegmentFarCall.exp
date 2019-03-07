@@ -9,10 +9,10 @@
 // return address size: 2
 define fn0C00_0000
 fn0C00_0000_entry:
-	// succ:  l0C00_0000
-l0C00_0000:
 	sp = fp
 	Top = 0
+	// succ:  l0C00_0000
+l0C00_0000:
 	sp = sp - 2
 	Mem0[ss:sp:word16] = 0x0D00
 	sp = sp - 2
@@ -52,10 +52,10 @@ fn0C00_0000_exit:
 // return address size: 4
 define fn0C00_0020
 fn0C00_0020_entry:
-	// succ:  l0C00_0020
-l0C00_0020:
 	sp = fp
 	Top = 0
+	// succ:  l0C00_0020
+l0C00_0020:
 	sp = sp - 2
 	Mem0[ss:sp:word16] = bp
 	bp = sp
@@ -86,10 +86,10 @@ fn0C00_0020_exit:
 // return address size: 4
 define fn0C00_002E
 fn0C00_002E_entry:
-	// succ:  l0C00_002E
-l0C00_002E:
 	sp = fp
 	Top = 0
+	// succ:  l0C00_002E
+l0C00_002E:
 	sp = sp - 2
 	Mem0[ss:sp:word16] = bp
 	bp = sp

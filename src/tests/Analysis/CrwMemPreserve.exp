@@ -54,10 +54,10 @@ memfoo_entry:
 	def ds
 	def bx
 	def cx
-	// succ:  l0C00_0017
-l0C00_0017:
 	sp_2 = fp
 	Top_3 = 0
+	// succ:  l0C00_0017
+l0C00_0017:
 	Mem6[ds:0x0400:word16] = ax
 	Mem8[ds:0x0402:word16] = bx
 	Mem10[ds:0x0404:word16] = cx
@@ -102,10 +102,10 @@ membar_entry:
 	def fp
 	def ax
 	def ds
-	// succ:  l0C00_0040
-l0C00_0040:
 	sp_2 = fp
 	Top_3 = 0
+	// succ:  l0C00_0040
+l0C00_0040:
 	Mem7[ds:0x0500:word16] = ax
 	bx_8 = Mem7[ds:0x1000:word16]
 	ax_9 = Mem7[ds:bx_8:word16]

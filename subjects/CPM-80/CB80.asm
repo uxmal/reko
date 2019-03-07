@@ -2983,6 +2983,7 @@ fn156F proc
 
 ;; fn15B0: 15B0
 ;;   Called from:
+;;     15AF (in fn1494)
 ;;     15AF (in fn156F)
 fn15B0 proc
 	nop

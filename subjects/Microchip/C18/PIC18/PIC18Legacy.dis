@@ -22,8 +22,8 @@ l00000000:
 // SymbolicIn:
 
 l00013A:
-	Data19[0x0001:byte] = Data[0x0001:byte] & 0xBF
-	Data19[0x01] = 0x00014A
+	Data21[0x0001:byte] = Data[0x0001:byte] & 0xBF
+	Data21[0x01] = 0x00014A
 	fn00000E(TABLAT, 0x0000, 0x000000)
 // DataOut:
 // DataOut (flags):

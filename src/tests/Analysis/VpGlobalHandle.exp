@@ -105,9 +105,9 @@ fn10000000_entry:
 	def fp
 	def esi
 	def edi
+	esp_2 = fp
 	// succ:  l10000000
 l10000000:
-	esp_2 = fp
 	esp_3 = esp_2 - 4
 	Mem5[esp_3:word32] = esi
 	esi_6 = Mem5[esp_3 + 0x00000008:word32]
@@ -240,9 +240,9 @@ fn10000000_entry:
 	def esi
 	def edi
 	def dwArg04
+	esp_2 = fp
 	// succ:  l10000000
 l10000000:
-	esp_2 = fp
 	esp_3 = fp - 4
 	dwLoc04_31 = esi
 	esi_6 = dwArg04
