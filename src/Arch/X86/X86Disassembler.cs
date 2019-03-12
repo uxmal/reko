@@ -1425,13 +1425,13 @@ namespace Reko.Arch.X86
 		{
             s_invalid = Instr(Opcode.illegal, InstrClass.Invalid);
             s_nyi = nyi("This could be invalid or it could be not yet implemented");
-            s_aOpRec = CreateOnebyteOprecs();
+            s_aOpRec = CreateOnebyteDecoders();
             s_aOpRec0F = CreateTwobyteOprecs();
             s_aOpRec0F38 = Create0F38Oprecs();
             s_aOpRec0F3A = Create0F3AOprecs();
 
-            s_aOpRecGrp = CreateGroupOprecs();
-            s_aFpDecoders = CreateFpuOprecs();
+            s_aOpRecGrp = CreateGroupDecoders();
+            s_aFpDecoders = CreateFpuDecoders();
             s_mpVex = CreateVexMapping();
             Debug.Assert(s_aFpDecoders.Length == 8 * 0x48);
 		}

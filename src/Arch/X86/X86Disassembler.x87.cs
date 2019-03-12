@@ -141,7 +141,7 @@ namespace Reko.Arch.X86
             }
         }
 
-        private static Decoder[] CreateFpuOprecs()
+        private static Decoder[] CreateFpuDecoders()
         {
             return new Decoder[]  
 			{

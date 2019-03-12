@@ -30,12 +30,12 @@ namespace Reko.Arch.Xtensa
 {
     public class XtensaDisassembler : DisassemblerBase<XtensaInstruction>
     {
-        private static OpRecBase[] oprecs;
-        private static int[] b4const;
-        private static int[] b4constu;
+        private static readonly OpRecBase[] deocders;
+        private static readonly int[] b4const;
+        private static readonly int[] b4constu;
 
-        private XtensaArchitecture arch;
-        private EndianImageReader rdr;
+        private readonly XtensaArchitecture arch;
+        private readonly EndianImageReader rdr;
         private State state;
 
         public XtensaDisassembler(XtensaArchitecture arch, EndianImageReader rdr)
@@ -104,7 +104,7 @@ namespace Reko.Arch.Xtensa
             XtensaInstruction instr;
             try
             {
-                instr = oprecs[state.op0].Decode(this);
+                instr = deocders[state.op0].Decode(this);
             }
             catch
             {
@@ -1167,7 +1167,7 @@ namespace Reko.Arch.Xtensa
                 new OpRec(Opcodes.call8, "c"),
                 new OpRec(Opcodes.call12, "c"));
 
-            oprecs = new OpRecBase[]
+            deocders = new OpRecBase[]
             {
                 oprecQRST,
                 new OpRec(Opcodes.l32r, "Rt,p"),

@@ -308,7 +308,7 @@ namespace Reko.Arch.X86
             }
         }
 
-        public class ThreeByteOpRec : Decoder
+        public class ThreeByteDecoder : Decoder
         {
             public override bool Decode(X86Disassembler disasm, byte op)
             {
