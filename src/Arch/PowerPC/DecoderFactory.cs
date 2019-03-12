@@ -74,7 +74,7 @@ namespace Reko.Arch.PowerPC
                     { 449, Instr(Opcode.cror, I1,I2,I3) },
                     { 0x0C1, Instr(Opcode.crxor, I1,I2,I3) },
                     { 0x121, Instr(Opcode.creqv, I1,I2,I3) },
-                    { 0x210, new XlOpRecAux(Opcode.bcctr, Opcode.bctrl, I1,I2)}
+                    { 0x210, new XlDecoderAux(Opcode.bcctr, Opcode.bctrl, I1,I2)}
                 }),
                 Instr(Opcode.rlwimi, r2,r1,I3,I4,I5),
                 Instr(Opcode.rlwinm, C,r2,r1,I3,I4,I5),
