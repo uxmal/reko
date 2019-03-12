@@ -205,19 +205,19 @@ namespace Reko.Arch.PowerPC
 
         public class XDecoder : Decoder
         {
-            private readonly Dictionary<uint, Decoder> xOpRecs;
+            private readonly Dictionary<uint, Decoder> xDecoders;
 
-            public XDecoder(Dictionary<uint, Decoder> xOpRecs)
+            public XDecoder(Dictionary<uint, Decoder> xDecoders)
             {
-                this.xOpRecs = xOpRecs;
+                this.xDecoders = xDecoders;
             }
 
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
                 var xOp = (wInstr >> 1) & 0x3FF;
-                if (xOpRecs.TryGetValue(xOp, out var opRec))
+                if (xDecoders.TryGetValue(xOp, out var decoder))
                 {
-                    return opRec.Decode(dasm, wInstr);
+                    return decoder.Decode(dasm, wInstr);
                 }
                 else
                 {
@@ -229,21 +229,21 @@ namespace Reko.Arch.PowerPC
 
         public class FpuDecoder : Decoder
         {
-            private readonly Dictionary<uint, Decoder> fpuOpRecs;
+            private readonly Dictionary<uint, Decoder> decoders;
             private readonly int shift;
             private readonly uint mask;
 
-            public FpuDecoder(int shift, uint mask, Dictionary<uint, Decoder> fpuOpRecs)
+            public FpuDecoder(int shift, uint mask, Dictionary<uint, Decoder> decoders)
             {
                 this.shift = shift;
                 this.mask = mask;
-                this.fpuOpRecs = fpuOpRecs;
+                this.decoders = decoders;
             }
 
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
                 var x = (wInstr >> shift) & mask;
-                if (fpuOpRecs.TryGetValue(x, out Decoder opRec))
+                if (decoders.TryGetValue(x, out Decoder opRec))
                 {
                     return opRec.Decode(dasm, wInstr);
                 }
