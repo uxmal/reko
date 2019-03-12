@@ -346,6 +346,7 @@
     <Compile Include="Lib\UbjsonMarker.cs" />
     <Compile Include="Lib\UbjsonWriter.cs" />
     <Compile Include="Lib\WildPatternMatcher.cs" />
+    <Compile Include="Machine\Mutator.cs" />
     <Compile Include="NativeInterface\CustomAnsiStringMarshaler.cs" />
     <Compile Include="NativeInterface\ILibraryLoader.cs" />
     <Compile Include="NativeInterface\INativeArchitecture.cs" />

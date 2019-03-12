@@ -78,7 +78,7 @@ namespace Reko.Arch.PowerPC
             this.cr = new RegisterStorage("cr", 0x4C, 0, wordWidth);
             this.acc = new RegisterStorage("acc", 0x4D, 0, PrimitiveType.Word64);
 
-            // gp regs  0..1F
+            // gp regs   0..1F
             // fpu regs 20..3F
             // CR regs  40..47
             // vectors  80..FF

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -1226,7 +1226,7 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0x1000002c, //"vsldoi\tv0,v0,v0,0");
                           "0|L--|00100000(4): 1 instructions",
                           "1|L--|v0 = __vsldoi(v0, v0, 0x00000000)");
-            AssertCode(0x101f038c, //"vspltisw\tv0,-1");
+            AssertCode(0x101f038c, //"vspltisw\tv0,140");
                           "0|L--|00100000(4): 1 instructions",
                           "1|L--|v0 = __vspltisw(-1)");
             AssertCode(0x114948ab, //"vperm\tv10,v9,v9,v2");
@@ -2098,7 +2098,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         public void PPCRw_vcfpsxws128()
         {
             Given_Xenon();
-            AssertCode(0x1AC0FA35,   // vcfpsxws128	v54,v63,+00
+            AssertCode(0x1AC0FA35,   // vcfpsxws128	v54,v63,+0
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|v54 = __vcfpsxws(v63, 0)");
         }
