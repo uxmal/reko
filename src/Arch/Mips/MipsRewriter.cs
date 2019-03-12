@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /*
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -38,15 +38,14 @@ namespace Reko.Arch.Mips
     /// </summary>
     public partial class MipsRewriter : IEnumerable<RtlInstructionCluster>
     {
-        private EndianImageReader rdr;
-        private IEnumerator<MipsInstruction> dasm;
-        private IStorageBinder binder;
+        private readonly EndianImageReader rdr;
+        private readonly IEnumerator<MipsInstruction> dasm;
+        private readonly IStorageBinder binder;
+        private readonly MipsProcessorArchitecture arch;
+        private readonly IRewriterHost host;
+        private readonly ExpressionValueComparer cmp;
         private RtlEmitter m;
         private InstrClass rtlc;
-        private List<RtlInstruction> rtlInstructions;
-        private MipsProcessorArchitecture arch;
-        private IRewriterHost host;
-        private ExpressionValueComparer cmp;
 
         public MipsRewriter(MipsProcessorArchitecture arch, EndianImageReader rdr, IEnumerable<MipsInstruction> instrs, IStorageBinder binder, IRewriterHost host)
         {
@@ -63,7 +62,7 @@ namespace Reko.Arch.Mips
             while (dasm.MoveNext())
             {
                 var instr = dasm.Current;
-                this.rtlInstructions = new List<RtlInstruction>();
+                var rtlInstructions = new List<RtlInstruction>();
                 this.rtlc = InstrClass.Linear;
                 this.m = new RtlEmitter(rtlInstructions);
                 switch (instr.opcode)
@@ -271,7 +270,7 @@ namespace Reko.Arch.Mips
         }
 
 #if DEBUG
-        private static HashSet<Opcode> seen = new HashSet<Opcode>();
+        private static readonly HashSet<Opcode> seen = new HashSet<Opcode>();
 
         private void EmitUnitTest()
         {
@@ -322,20 +321,15 @@ namespace Reko.Arch.Mips
 
         private Expression RewriteOperand0(MachineOperand op)
         {
-            if (op is RegisterOperand regOp)
+            switch (op)
             {
+            case RegisterOperand regOp:
                 if (regOp.Register.Number == 0)
                     return Constant.Zero(regOp.Register.DataType);
                 return binder.EnsureRegister(regOp.Register);
-            }
-            var immOp = op as ImmediateOperand;
-            if (immOp != null)
-            {
+            case ImmediateOperand immOp:
                 return immOp.Value;
-            }
-            var indOp = op as IndirectOperand;
-            if (indOp != null)
-            {
+            case IndirectOperand indOp:
                 Expression ea;
                 Identifier baseReg = binder.EnsureRegister(indOp.Base);
                 if (indOp.Offset == 0)
@@ -346,8 +340,7 @@ namespace Reko.Arch.Mips
                     ea = m.ISub(baseReg, -indOp.Offset);
                 return m.Mem(indOp.Width, ea);
             }
-            var addrOp = op as AddressOperand;
-            if (addrOp != null)
+            if (op is AddressOperand addrOp)
             {
                 return addrOp.Address;
             }

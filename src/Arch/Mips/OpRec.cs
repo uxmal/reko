@@ -26,63 +26,96 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using static Reko.Arch.Mips.MipsDisassembler;
 
 namespace Reko.Arch.Mips
 {
-    abstract class OpRec 
+    abstract class Decoder 
     {
         internal abstract MipsInstruction Decode(uint wInstr, MipsDisassembler dasm);
     }
 
-    class AOpRec : OpRec
+    class InstrDecoder : Decoder
     {
-        internal Opcode opcode;
-        internal string format;
+        private readonly InstrClass iclass;
+        private readonly Opcode opcode;
+        private readonly Mutator<MipsDisassembler> [] mutators;
 
-        public AOpRec(Opcode opcode, string format)
+        public InstrDecoder(Opcode opcode, params Mutator<MipsDisassembler> [] mutators)
         {
+            this.iclass = InstrClass.Linear;
             this.opcode = opcode;
-            this.format = format;
+            this.mutators = mutators;
+        }
+
+        public InstrDecoder(InstrClass iclass, Opcode opcode, params Mutator<MipsDisassembler>[] mutators)
+        {
+            this.iclass = iclass;
+            this.opcode = opcode;
+            this.mutators = mutators;
         }
 
         internal override MipsInstruction Decode(uint wInstr, MipsDisassembler dasm)
         {
-            return dasm.DecodeOperands(wInstr, opcode, InstrClass.Linear, format);
+            foreach (var m in mutators)
+            {
+                if (!m(wInstr, dasm))
+                {
+                    return new MipsInstruction
+                    {
+                        iclass = InstrClass.Invalid,
+                        opcode = Opcode.illegal
+                    };
+                }
+            }
+            return new MipsInstruction
+            {
+                opcode = opcode,
+                iclass = iclass,
+                Address = dasm.addr,
+                Length = 4,
+                op1 = dasm.ops.Count > 0 ? dasm.ops[0] : null,
+                op2 = dasm.ops.Count > 1 ? dasm.ops[1] : null,
+                op3 = dasm.ops.Count > 2 ? dasm.ops[2] : null,
+            };
         }
     }
 
     /// <summary>
     /// This instruction encoding is only valid on 64-bit MIPS architecture.
     /// </summary>
-    class A64OpRec : OpRec
+    class A64Decoder : InstrDecoder
     {
-        internal Opcode opcode;
-        internal string format;
+        private readonly Opcode opcode;
+        private readonly Mutator<MipsDisassembler>[] mutators;
 
-        public A64OpRec(Opcode opcode, string format)
+        public A64Decoder(Opcode opcode, params Mutator<MipsDisassembler>[] mutators) : base(opcode, mutators)
         {
             this.opcode = opcode;
-            this.format = format;
+            this.mutators = mutators;
         }
 
         internal override MipsInstruction Decode(uint wInstr, MipsDisassembler dasm)
         {
             if (dasm.arch.PointerType.Size == 8)
-                return dasm.DecodeOperands(wInstr, opcode, InstrClass.Linear, format);
+                return base.Decode(wInstr, dasm);
             else
-                return dasm.DecodeOperands(wInstr, Opcode.illegal, InstrClass.Invalid, "");
+                return new MipsInstruction
+                {
+                    iclass = InstrClass.Invalid,
+                    opcode = Opcode.illegal
+                };
         }
     }
 
-    class SllOprec : AOpRec
+    class SllDecoder : InstrDecoder
     {
-        public SllOprec(Opcode opcode, string format) : base(opcode, format) { }
+        public SllDecoder(Opcode opcode, params Mutator<MipsDisassembler>[] mutators) : base(opcode, mutators) { }
 
         internal override MipsInstruction Decode(uint wInstr, MipsDisassembler dasm)
         {
             var instr = base.Decode(wInstr, dasm);
-            var imm = instr.op3 as ImmediateOperand;
-            if (imm != null && imm.Value.IsIntegerZero)
+            if (instr.op3 is ImmediateOperand imm && imm.Value.IsIntegerZero)
                 return new MipsInstruction {
                     Address = instr.Address,
                     Length = instr.Length,
@@ -92,13 +125,13 @@ namespace Reko.Arch.Mips
         }
     }
 
-    class MaskDecoder : OpRec
+    class MaskDecoder : Decoder
     {
-        private int shift;
-        private uint mask;
-        private OpRec[] decoders;
+        private readonly int shift;
+        private readonly uint mask;
+        private readonly Decoder[] decoders;
 
-        public MaskDecoder(int shift, uint mask, params OpRec[] decoders)
+        public MaskDecoder(int shift, uint mask, params Decoder[] decoders)
         {
             this.shift = shift;
             this.mask = mask;
@@ -112,13 +145,13 @@ namespace Reko.Arch.Mips
         }
     }
 
-    class SparseMaskDecoder : OpRec
+    class SparseMaskDecoder : Decoder
     {
-        private int shift;
-        private uint mask;
-        private Dictionary<uint, OpRec> decoders;
+        private readonly int shift;
+        private readonly uint mask;
+        private readonly Dictionary<uint, Decoder> decoders;
 
-        public SparseMaskDecoder(int shift, uint mask, Dictionary<uint, OpRec> decoders)
+        public SparseMaskDecoder(int shift, uint mask, Dictionary<uint, Decoder> decoders)
         {
             this.shift = shift;
             this.mask = mask;
@@ -134,232 +167,231 @@ namespace Reko.Arch.Mips
                 return new MipsInstruction { opcode = Opcode.illegal };
         }
     }
-    class SpecialOpRec : OpRec
+    class SpecialDecoder : Decoder
     {
-        private static OpRec[] specialOpRecs = new OpRec[] 
+        private static Decoder[] specialDecoders = new Decoder[] 
         {
-            new SllOprec(Opcode.sll, "R3,R2,s"),
+            new SllDecoder(Opcode.sll, R3,R2,s),
             new MaskDecoder(16, 1, 
-                new AOpRec(Opcode.movf, "R2,R1,C18"),
-                new AOpRec(Opcode.movt, "R2,R1,C18")),
-            new AOpRec(Opcode.srl, "R3,R2,s"),
-            new AOpRec(Opcode.sra, "R3,R2,s"),
+                new InstrDecoder(Opcode.movf, R2,R1,C18),
+                new InstrDecoder(Opcode.movt, R2,R1,C18)),
+            new InstrDecoder(Opcode.srl, R3,R2,s),
+            new InstrDecoder(Opcode.sra, R3,R2,s),
  
-            new AOpRec(Opcode.sllv, "R3,R2,R1"),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.srlv, "R3,R2,R1"),
-            new AOpRec(Opcode.srav, "R3,R2,R1"),
+            new InstrDecoder(Opcode.sllv, R3,R2,R1),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.srlv, R3,R2,R1),
+            new InstrDecoder(Opcode.srav, R3,R2,R1),
 
-            new AOpRec(Opcode.jr, "R1"),
-            new AOpRec(Opcode.jalr, "R3,R1"),
-            new AOpRec(Opcode.movz, "R3,R1,R2"),
-            new AOpRec(Opcode.movn, "R3,R1,R2"),
-            new AOpRec(Opcode.syscall, "B"),
-            new AOpRec(Opcode.@break, "B"),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.sync, "s"), 
+            new InstrDecoder(Opcode.jr, R1),
+            new InstrDecoder(Opcode.jalr, R3,R1),
+            new InstrDecoder(Opcode.movz, R3,R1,R2),
+            new InstrDecoder(Opcode.movn, R3,R1,R2),
+            new InstrDecoder(Opcode.syscall, B),
+            new InstrDecoder(Opcode.@break, B),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.sync, s), 
             // 10
-            new AOpRec(Opcode.mfhi, "R3"),
-            new AOpRec(Opcode.mthi, "R1"),
-            new AOpRec(Opcode.mflo, "R3"),
-            new AOpRec(Opcode.mtlo, "R1"),
-            new A64OpRec(Opcode.dsllv, "R3,R2,R1"),
-            new AOpRec(Opcode.illegal, ""),
-            new A64OpRec(Opcode.dsrlv, "R3,R2,R1"),
-            new A64OpRec(Opcode.dsrav, "R3,R2,R1"),
+            new InstrDecoder(Opcode.mfhi, R3),
+            new InstrDecoder(Opcode.mthi, R1),
+            new InstrDecoder(Opcode.mflo, R3),
+            new InstrDecoder(Opcode.mtlo, R1),
+            new A64Decoder(Opcode.dsllv, R3,R2,R1),
+            new InstrDecoder(Opcode.illegal),
+            new A64Decoder(Opcode.dsrlv, R3,R2,R1),
+            new A64Decoder(Opcode.dsrav, R3,R2,R1),
 
-            new AOpRec(Opcode.mult, "R1,R2"),
-            new AOpRec(Opcode.multu, "R1,R2"),
-            new AOpRec(Opcode.div, "R1,R2"),
-            new AOpRec(Opcode.divu, "R1,R2"),
-            new A64OpRec(Opcode.dmult, "R1,R2"),
-            new A64OpRec(Opcode.dmultu, "R1,R2"),
-            new A64OpRec(Opcode.ddiv, "R1,R2"),
-            new A64OpRec(Opcode.ddivu, "R1,R2"),
+            new InstrDecoder(Opcode.mult, R1,R2),
+            new InstrDecoder(Opcode.multu, R1,R2),
+            new InstrDecoder(Opcode.div, R1,R2),
+            new InstrDecoder(Opcode.divu, R1,R2),
+            new A64Decoder(Opcode.dmult, R1,R2),
+            new A64Decoder(Opcode.dmultu, R1,R2),
+            new A64Decoder(Opcode.ddiv, R1,R2),
+            new A64Decoder(Opcode.ddivu, R1,R2),
             // 20
-            new AOpRec(Opcode.add, "R3,R1,R2"),
-            new AOpRec(Opcode.addu, "R3,R1,R2"),
-            new AOpRec(Opcode.sub, "R3,R1,R2"),
-            new AOpRec(Opcode.subu, "R3,R1,R2"),
-            new AOpRec(Opcode.and, "R3,R1,R2"),
-            new AOpRec(Opcode.or, "R3,R1,R2"),
-            new AOpRec(Opcode.xor, "R3,R1,R2"),
-            new AOpRec(Opcode.nor, "R3,R1,R2"),
+            new InstrDecoder(Opcode.add, R3,R1,R2),
+            new InstrDecoder(Opcode.addu, R3,R1,R2),
+            new InstrDecoder(Opcode.sub, R3,R1,R2),
+            new InstrDecoder(Opcode.subu, R3,R1,R2),
+            new InstrDecoder(Opcode.and, R3,R1,R2),
+            new InstrDecoder(Opcode.or, R3,R1,R2),
+            new InstrDecoder(Opcode.xor, R3,R1,R2),
+            new InstrDecoder(Opcode.nor, R3,R1,R2),
  
-            new AOpRec(Opcode.illegal, ""), 
-            new AOpRec(Opcode.illegal, ""), 
-            new AOpRec(Opcode.slt, "R3,R1,R2"),
-            new AOpRec(Opcode.sltu, "R3,R1,R2"),
-            new A64OpRec(Opcode.dadd, "R3,R1,R2"),
-            new A64OpRec(Opcode.daddu, "R3,R1,R2"),
-            new A64OpRec(Opcode.dsub, "R3,R1,R2"),
-            new A64OpRec(Opcode.dsubu, "R3,R1,R2"),
+            new InstrDecoder(Opcode.illegal), 
+            new InstrDecoder(Opcode.illegal), 
+            new InstrDecoder(Opcode.slt, R3,R1,R2),
+            new InstrDecoder(Opcode.sltu, R3,R1,R2),
+            new A64Decoder(Opcode.dadd, R3,R1,R2),
+            new A64Decoder(Opcode.daddu, R3,R1,R2),
+            new A64Decoder(Opcode.dsub, R3,R1,R2),
+            new A64Decoder(Opcode.dsubu, R3,R1,R2),
             // 30
-            new AOpRec(Opcode.tge, "R1,R2,T"),
-            new AOpRec(Opcode.tgeu, "R1,R2,T"),
-            new AOpRec(Opcode.tlt, "R1,R2,T"),
-            new AOpRec(Opcode.tltu, "R1,R2,T"),
-            new AOpRec(Opcode.teq, "R1,R2,T"),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.tne, "R1,R2,T"),
-            new AOpRec(Opcode.illegal, ""),
+            new InstrDecoder(Opcode.tge, R1,R2,T),
+            new InstrDecoder(Opcode.tgeu, R1,R2,T),
+            new InstrDecoder(Opcode.tlt, R1,R2,T),
+            new InstrDecoder(Opcode.tltu, R1,R2,T),
+            new InstrDecoder(Opcode.teq, R1,R2,T),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.tne, R1,R2,T),
+            new InstrDecoder(Opcode.illegal),
 
-            new A64OpRec(Opcode.dsll, "R3,R2,s"),
-            new AOpRec(Opcode.illegal, ""),
-            new A64OpRec(Opcode.dsrl, "R3,R2,s"),
-            new A64OpRec(Opcode.dsra, "R3,R2,s"),
-            new A64OpRec(Opcode.dsll32, "R3,R2,s"),
-            new AOpRec(Opcode.illegal, ""), 
-            new A64OpRec(Opcode.dsrl32, "R3,R2,s"),
-            new A64OpRec(Opcode.dsra32, "R3,R2,s"),
+            new A64Decoder(Opcode.dsll, R3,R2,s),
+            new InstrDecoder(Opcode.illegal),
+            new A64Decoder(Opcode.dsrl, R3,R2,s),
+            new A64Decoder(Opcode.dsra, R3,R2,s),
+            new A64Decoder(Opcode.dsll32, R3,R2,s),
+            new InstrDecoder(Opcode.illegal), 
+            new A64Decoder(Opcode.dsrl32, R3,R2,s),
+            new A64Decoder(Opcode.dsra32, R3,R2,s),
         };
         internal override MipsInstruction Decode(uint wInstr, MipsDisassembler dasm)
         {
-            Debug.Assert(specialOpRecs.Length == 64, specialOpRecs.Length.ToString());
-            var decoder = specialOpRecs[wInstr & 0x3F];
-            // Debug.Print("  SpecialOpRec {0:X8} => oprec {1} {2}", wInstr, wInstr & 0x3F, opRec == null ? "(null!)" : "");
+            Debug.Assert(specialDecoders.Length == 64, specialDecoders.Length.ToString());
+            var decoder = specialDecoders[wInstr & 0x3F];
+            // Debug.Print("  SpecialDecoder {0:X8} => decoder {1} {2}", wInstr, wInstr & 0x3F, decoder == null ? "(null!)" : "");
             return decoder.Decode(wInstr, dasm);
         }
     }
 
-    class Special3OpRec : OpRec
+    class Special3Decoder : Decoder
     {
-        private static OpRec[] specialOpRecs = new OpRec[]
+        private static Decoder[] specialDecoders = new Decoder[]
         {
             // 00
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
 
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
 
             // 10
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
 
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
 
             // 20
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
 
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
 
             // 30
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new Version6OpRec(
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.ll, "R2,ew")),
-            new Version6OpRec(
-                new AOpRec(Opcode.illegal, ""),
-                new A64OpRec(Opcode.lld, "R2,el")),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new Version6Decoder(
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.ll, R2,ew)),
+            new Version6Decoder(
+                new InstrDecoder(Opcode.illegal),
+                new A64Decoder(Opcode.lld, R2,el)),
 
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.rdhwr, "R2,H"),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.rdhwr, R2,H),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
         };
 
         internal override MipsInstruction Decode(uint wInstr, MipsDisassembler dasm)
         {
-            Debug.Assert(specialOpRecs.Length == 64, specialOpRecs.Length.ToString());
-            var decoder = specialOpRecs[wInstr & 0x3F];
-            // Debug.Print("  Special3OpRec {0:X8} => oprec {1} {2}", wInstr, wInstr & 0x3F, opRec == null ? "(null!)" : "");
+            Debug.Assert(specialDecoders.Length == 64, specialDecoders.Length.ToString());
+            var decoder = specialDecoders[wInstr & 0x3F];
+            // Debug.Print("  Special3Decoder {0:X8} => decoder {1} {2}", wInstr, wInstr & 0x3F, decoder == null ? "(null!)" : "");
             return decoder.Decode(wInstr, dasm);
         }
     }
 
-    class CondOpRec : OpRec
+    class CondDecoder : Decoder
     {
-        static OpRec[] decoders = 
+        static Decoder[] decoders = 
         {
-            new AOpRec(Opcode.bltz,    "R1,j"),
-            new AOpRec(Opcode.bgez,    "R1,j"),
-            new AOpRec(Opcode.bltzl,   "R1,j"),
-            new AOpRec(Opcode.bgezl,   "R1,j"),
+            new InstrDecoder(Opcode.bltz,  R1,j),
+            new InstrDecoder(Opcode.bgez,  R1,j),
+            new InstrDecoder(Opcode.bltzl, R1,j),
+            new InstrDecoder(Opcode.bgezl, R1,j),
 
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
 
-            new AOpRec(Opcode.tgei,    "R1,I"),
-            new AOpRec(Opcode.tgeiu,   "R1,I"),
-            new AOpRec(Opcode.tlti,    "R1,I"),
-            new AOpRec(Opcode.tltiu,   "R1,I"),
+            new InstrDecoder(Opcode.tgei,    R1,I),
+            new InstrDecoder(Opcode.tgeiu,   R1,I),
+            new InstrDecoder(Opcode.tlti,    R1,I),
+            new InstrDecoder(Opcode.tltiu,   R1,I),
 
-            new AOpRec(Opcode.teqi,     "R1,I"),
-            new AOpRec(Opcode.illegal,  ""),
-            new AOpRec(Opcode.tnei,     "R1,I"),
-            new AOpRec(Opcode.illegal,  ""),
+            new InstrDecoder(Opcode.teqi,    R1,I),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.tnei,    R1,I),
+            new InstrDecoder(Opcode.illegal),
             
-            new AOpRec(Opcode.bltzal,  "R1,j"),
-            new AOpRec(Opcode.bgezal,  "R1,j"),
-            new AOpRec(Opcode.bltzall, "R1,j"),
-            new AOpRec(Opcode.bgezall, "R1,j"),
+            new InstrDecoder(Opcode.bltzal,  R1,j),
+            new InstrDecoder(Opcode.bgezal,  R1,j),
+            new InstrDecoder(Opcode.bltzall, R1,j),
+            new InstrDecoder(Opcode.bgezall, R1,j),
 
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
 
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
 
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
+            new InstrDecoder(Opcode.illegal),
         };
 
         internal override MipsInstruction Decode(uint wInstr, MipsDisassembler dasm)
@@ -369,44 +401,42 @@ namespace Reko.Arch.Mips
         }
     }
 
-    internal class CoprocessorOpRec : OpRec
+    internal class CoprocessorDecoder : Decoder
     {
-        private OpRec[] oprecs;
+        private readonly Decoder[] decoders;
 
-        public CoprocessorOpRec(params OpRec[] oprecs)
+        public CoprocessorDecoder(params Decoder[] decoders)
         {
-            this.oprecs = oprecs;
+            this.decoders = decoders;
         }
 
         internal override MipsInstruction Decode(uint wInstr, MipsDisassembler dasm)
         {
-            return oprecs[(wInstr>>21) & 0x1F].Decode(wInstr, dasm);
+            return decoders[(wInstr>>21) & 0x1F].Decode(wInstr, dasm);
         }
     }
 
-    internal class FpuOpRec : OpRec
+    internal class FpuDecoder : Decoder
     {
-        private OpRec[] oprecs;
-        private PrimitiveType size;
+        private readonly Decoder[] decoders;
 
-        public FpuOpRec(PrimitiveType size, params OpRec[] oprecs)
+        public FpuDecoder(PrimitiveType size, params Decoder[] decoders)
         {
-            this.size = size;
-            this.oprecs = oprecs;
+            this.decoders = decoders;
         }
 
         internal override MipsInstruction Decode(uint wInstr, MipsDisassembler dasm)
         {
-            return oprecs[wInstr & 0x3F].Decode(wInstr, dasm);
+            return decoders[wInstr & 0x3F].Decode(wInstr, dasm);
         }
     }
 
-    internal class BcNRec : OpRec
+    internal class BcNDecoder : Decoder
     {
-        private Opcode opFalse;
-        private Opcode opTrue;
+        private readonly Decoder opFalse;
+        private readonly Decoder opTrue;
 
-        public BcNRec(Opcode f, Opcode t)
+        public BcNDecoder(Decoder f, Decoder t)
         {
             this.opFalse = f;
             this.opTrue = t;
@@ -414,28 +444,28 @@ namespace Reko.Arch.Mips
 
         internal override MipsInstruction Decode(uint wInstr, MipsDisassembler dasm)
         {
-            var opcode = ((wInstr & (1u << 16)) != 0) ? opTrue : opFalse;
-            return dasm.DecodeOperands(wInstr, opcode, InstrClass.ConditionalTransfer|InstrClass.Delay, "c18,j");
+            var decoder = ((wInstr & (1u << 16)) != 0) ? opTrue : opFalse;
+            return decoder.Decode(wInstr, dasm);
         }
     }
 
-    internal class Version6OpRec : OpRec
+    internal class Version6Decoder : Decoder
     {
-        OpRec preV6Oprec;
-        OpRec v6Oprec;
+        private readonly Decoder preV6Odecoder;
+        private readonly Decoder v6Odecoder;
 
-        public Version6OpRec(OpRec preOprec, OpRec postOprec)
+        public Version6Decoder(Decoder preDecoder, Decoder postDecoder)
         {
-            this.preV6Oprec = preOprec;
-            this.v6Oprec = postOprec;
+            this.preV6Odecoder = preDecoder;
+            this.v6Odecoder = postDecoder;
         }
 
         internal override MipsInstruction Decode(uint wInstr, MipsDisassembler dasm)
         {
             if (dasm.isVersion6OrLater)
-                return v6Oprec.Decode(wInstr, dasm);
+                return v6Odecoder.Decode(wInstr, dasm);
             else
-                return preV6Oprec.Decode(wInstr, dasm);
+                return preV6Odecoder.Decode(wInstr, dasm);
         }
     }
 }
