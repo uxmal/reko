@@ -300,7 +300,6 @@ namespace Reko.UnitTests.Arch.Intel
                0x8B, 0x1C, 0x24,        // mov ebx,[esp]
                0xC3                     // ret
             });
-            var range = new AddressRange(Address.Ptr32(0x2300), Address.Ptr32(0x2305));
             var cluster = arch.InlineCall(Address.Ptr16(0x1000), Address.Ptr32(0x2305), mem.CreateLeReader(0), arch.CreateFrame());
             Assert.AreEqual(1, cluster.Count);
             Assert.AreEqual("ebx = 00002305", cluster[0].ToString());
