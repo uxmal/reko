@@ -33,8 +33,6 @@ namespace Reko.Arch.i8051
     // http://www.keil.com/support/man/docs/is51/is51_instructions.htm
     public class i8051Disassembler : Core.DisassemblerBase<i8051Instruction>
     {
-        private delegate bool Mutator(uint uInstr, i8051Disassembler dasm);
-
         private readonly i8051Architecture arch;
         private readonly EndianImageReader rdr;
         private readonly List<MachineOperand> ops;
@@ -329,9 +327,9 @@ $@"    [Test]
         {
             private readonly Opcode opcode;
             private readonly InstrClass iclass;
-            private readonly Mutator[] mutators;
+            private readonly Mutator<i8051Disassembler>[] mutators;
 
-            public InstrDecoder(Opcode opcode, InstrClass iclass, params Mutator[] mutators)
+            public InstrDecoder(Opcode opcode, InstrClass iclass, params Mutator<i8051Disassembler>[] mutators)
             {
                 this.opcode = opcode;
                 this.iclass = iclass;
@@ -363,12 +361,12 @@ $@"    [Test]
             }
         }
 
-        private static InstrDecoder Instr(Opcode opcode, params Mutator[] mutators)
+        private static InstrDecoder Instr(Opcode opcode, params Mutator<i8051Disassembler>[] mutators)
         {
             return new InstrDecoder(opcode, InstrClass.Linear, mutators);
         }
 
-        private static InstrDecoder Instr(Opcode opcode, InstrClass iclass, params Mutator[] mutators)
+        private static InstrDecoder Instr(Opcode opcode, InstrClass iclass, params Mutator<i8051Disassembler>[] mutators)
         {
             return new InstrDecoder(opcode, iclass, mutators);
         }

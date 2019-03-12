@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Lib;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -28,8 +29,6 @@ using System.Text;
 
 namespace Reko.Arch.Arm.AArch64
 {
-    using Mutator = Func<uint, AArch64Disassembler, bool>;
-
     public partial class AArch64Disassembler
     {
         public abstract class Decoder
@@ -203,9 +202,9 @@ namespace Reko.Arch.Arm.AArch64
             private readonly Opcode opcode;
             private readonly InstrClass iclass;
             private readonly VectorData vectorData;
-            private readonly Mutator[] mutators;
+            private readonly Mutator<AArch64Disassembler>[] mutators;
 
-            public InstrDecoder(Opcode opcode, InstrClass iclass, VectorData vectorData, params Mutator[] mutators)
+            public InstrDecoder(Opcode opcode, InstrClass iclass, VectorData vectorData, params Mutator<AArch64Disassembler>[] mutators)
             {
                 this.opcode = opcode;
                 this.iclass = iclass;

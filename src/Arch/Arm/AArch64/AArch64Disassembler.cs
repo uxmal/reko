@@ -31,8 +31,6 @@ using System.Text;
 
 namespace Reko.Arch.Arm.AArch64
 {
-    using Mutator = Func<uint, AArch64Disassembler, bool>;
-
     public partial class AArch64Disassembler : DisassemblerBase<AArch64Instruction>
     {
         private const uint RegisterMask = 0b11111;
@@ -220,7 +218,7 @@ namespace Reko.Arch.Arm.AArch64
 
 
         // 32-bit register.
-        private static Mutator W(int pos, int size) {
+        private static Mutator<AArch64Disassembler> W(int pos, int size) {
             var fields = new[]
             {
                 new Bitfield(pos, size)
@@ -232,14 +230,14 @@ namespace Reko.Arch.Arm.AArch64
                 return true;
             };
         }
-        private static Mutator W_0 = W(0, 5);
-        private static Mutator W_5 = W(5, 5);
-        private static Mutator W_10 = W(10, 5);
-        private static Mutator W_16 = W(16, 5);
+        private static Mutator<AArch64Disassembler> W_0 = W(0, 5);
+        private static Mutator<AArch64Disassembler> W_5 = W(5, 5);
+        private static Mutator<AArch64Disassembler> W_10 = W(10, 5);
+        private static Mutator<AArch64Disassembler> W_16 = W(16, 5);
 
         // 32-bit register - but use stack register instead of w31
 
-        private static Mutator Ws(int pos, int size)
+        private static Mutator<AArch64Disassembler> Ws(int pos, int size)
         {
             var fields = new[]
             {
@@ -252,13 +250,13 @@ namespace Reko.Arch.Arm.AArch64
                 return true;
             };
         }
-        private static Mutator Ws_0 = Ws(0, 5);
-        private static Mutator Ws_5 = Ws(5, 5);
-        private static Mutator Ws_16 = Ws(16, 5);
+        private static Mutator<AArch64Disassembler> Ws_0 = Ws(0, 5);
+        private static Mutator<AArch64Disassembler> Ws_5 = Ws(5, 5);
+        private static Mutator<AArch64Disassembler> Ws_16 = Ws(16, 5);
 
 
         // 64-bit register.
-        private static Mutator X(int pos, int size)
+        private static Mutator<AArch64Disassembler> X(int pos, int size)
         {
             var fields = new[]
             {
@@ -271,10 +269,10 @@ namespace Reko.Arch.Arm.AArch64
                 return true;
             };
         }
-        private static Mutator X_0 = X(0, 5);
-        private static Mutator X_5 = X(5, 5);
-        private static Mutator X_10 = X(10, 5);
-        private static Mutator X_16 = X(16, 5);
+        private static Mutator<AArch64Disassembler> X_0 = X(0, 5);
+        private static Mutator<AArch64Disassembler> X_5 = X(5, 5);
+        private static Mutator<AArch64Disassembler> X_10 = X(10, 5);
+        private static Mutator<AArch64Disassembler> X_16 = X(16, 5);
 
         // Instructions that use sp rather than x31:
         //  autda
@@ -306,7 +304,7 @@ namespace Reko.Arch.Arm.AArch64
 
         // 64-bit register - but use stack register instead of x31
 
-        private static Mutator Xs(int pos, int size)
+        private static Mutator<AArch64Disassembler> Xs(int pos, int size)
         {
             var fields = new[]
             {
@@ -319,12 +317,12 @@ namespace Reko.Arch.Arm.AArch64
                 return true;
             };
         }
-        private static Mutator Xs_0 = Xs(0, 5);
-        private static Mutator Xs_5 = Xs(5, 5);
-        private static Mutator Xs_16 = Xs(16, 5);
+        private static Mutator<AArch64Disassembler> Xs_0 = Xs(0, 5);
+        private static Mutator<AArch64Disassembler> Xs_5 = Xs(5, 5);
+        private static Mutator<AArch64Disassembler> Xs_16 = Xs(16, 5);
 
         // 8-bit SIMD register.
-        private static Mutator B(int pos, int size)
+        private static Mutator<AArch64Disassembler> B(int pos, int size)
         {
             var fields = new[]
             {
@@ -339,7 +337,7 @@ namespace Reko.Arch.Arm.AArch64
         }
 
         // 16-bit SIMD register.
-        private static Mutator H(int pos, int size)
+        private static Mutator<AArch64Disassembler> H(int pos, int size)
         {
             var field = new Bitfield(pos, size);
             return (u, d) =>
@@ -351,7 +349,7 @@ namespace Reko.Arch.Arm.AArch64
         }
 
         // 16-bit SIMD/FPU register or zero if field = 0b00000
-        private static Mutator Hz(int pos, int size)
+        private static Mutator<AArch64Disassembler> Hz(int pos, int size)
         {
             var field = new Bitfield(pos, size);
             return (u, d) =>
@@ -372,7 +370,7 @@ namespace Reko.Arch.Arm.AArch64
         }
 
         // 32-bit SIMD/FPU register.
-        private static Mutator S(int pos, int size)
+        private static Mutator<AArch64Disassembler> S(int pos, int size)
         {
             var field = new Bitfield(pos, size);
             return (u, d) =>
@@ -382,12 +380,12 @@ namespace Reko.Arch.Arm.AArch64
                 return true;
             };
         }
-        private static Mutator S_0 = S(0, 5);
-        private static Mutator S_5 = S(5, 5);
-        private static Mutator S_16 = S(16, 5);
+        private static Mutator<AArch64Disassembler> S_0 = S(0, 5);
+        private static Mutator<AArch64Disassembler> S_5 = S(5, 5);
+        private static Mutator<AArch64Disassembler> S_16 = S(16, 5);
 
         // 32-bit SIMD/FPU register or zero if field = 0b00000
-        private static Mutator Sz(int pos, int size)
+        private static Mutator<AArch64Disassembler> Sz(int pos, int size)
         {
             var field = new Bitfield(pos, size);
             return (u, d) =>
@@ -410,7 +408,7 @@ namespace Reko.Arch.Arm.AArch64
 
 
         // 64-bit SIMD register.
-        private static Mutator D(int pos, int size)
+        private static Mutator<AArch64Disassembler> D(int pos, int size)
         {
             var field = new Bitfield(pos, size);
             return (u, d) =>
@@ -422,7 +420,7 @@ namespace Reko.Arch.Arm.AArch64
         }
 
         // 64-bit SIMD/FPU register or zero if field = 0b00000
-        private static Mutator Dz(int pos, int size)
+        private static Mutator<AArch64Disassembler> Dz(int pos, int size)
         {
             var field = new Bitfield(pos, size);
             return (u, d) =>
@@ -444,7 +442,7 @@ namespace Reko.Arch.Arm.AArch64
 
 
         // 128-bit SIMD register.
-        private static Mutator Q(int pos, int size)
+        private static Mutator<AArch64Disassembler> Q(int pos, int size)
         {
             var bitfield = new Bitfield(pos, size);
             return (u, d) =>
@@ -458,7 +456,7 @@ namespace Reko.Arch.Arm.AArch64
         // Picks either a Dx or a Qx SIMD register depending on whether the
         // 'Q' bit is set. The q() mutator must be called first for this to 
         // work correctly.
-        private static Mutator V(int pos, int size)
+        private static Mutator<AArch64Disassembler> V(int pos, int size)
         {
             var bitfield = new Bitfield(pos, size);
             return (u, d) =>
@@ -471,7 +469,7 @@ namespace Reko.Arch.Arm.AArch64
         }
 
         // Picks a V register and an element arrangement
-        private static Mutator Vr(int pos, int size, VectorData[] elementArrangement, int sizePos = 22)
+        private static Mutator<AArch64Disassembler> Vr(int pos, int size, VectorData[] elementArrangement, int sizePos = 22)
         {
             var bitfield = new Bitfield(pos, size);
             return (u, d) =>
@@ -489,7 +487,7 @@ namespace Reko.Arch.Arm.AArch64
             };
         }
 
-        private static Mutator Vmr(int pos, int size, int count, VectorData[] elementArrangement, int sizePos = 22)
+        private static Mutator<AArch64Disassembler> Vmr(int pos, int size, int count, VectorData[] elementArrangement, int sizePos = 22)
         {
             var bitfield = new Bitfield(pos, size);
             return (u, d) =>
@@ -506,7 +504,7 @@ namespace Reko.Arch.Arm.AArch64
             };
         }
 
-        private static Mutator Vmrx(int pos, int size, int count, int bitsize)
+        private static Mutator<AArch64Disassembler> Vmrx(int pos, int size, int count, int bitsize)
         {
             var bitfield = new Bitfield(pos, size);
             var idxFields = new[]
@@ -562,7 +560,7 @@ namespace Reko.Arch.Arm.AArch64
 
         // Picks a V register and an element arrangement from packed field
         // (used in `dup` and `mov` for vectors)
-        private static Mutator Vrs(int pos, int size, int sizePos, int sizeLength, bool useIndex, bool usePrevSize)
+        private static Mutator<AArch64Disassembler> Vrs(int pos, int size, int sizePos, int sizeLength, bool useIndex, bool usePrevSize)
         {
             var bfReg = new Bitfield(pos, size);
             var bfSize = new Bitfield(sizePos, sizeLength);
@@ -598,7 +596,7 @@ namespace Reko.Arch.Arm.AArch64
             };
         }
 
-        private static Mutator Vri(int pos, int len, PrimitiveType dt, VectorData et, int idx)
+        private static Mutator<AArch64Disassembler> Vri(int pos, int len, PrimitiveType dt, VectorData et, int idx)
         {
             var field = new Bitfield(pos, len);
             return (u, d) =>
@@ -614,7 +612,7 @@ namespace Reko.Arch.Arm.AArch64
         }
 
         // Extended register, depending on the option field.
-        private static Mutator Rx(int pos, int size, int optionPos, int optionSize)
+        private static Mutator<AArch64Disassembler> Rx(int pos, int size, int optionPos, int optionSize)
         {
             var regField = new Bitfield(pos, size);
             var optionField = new Bitfield(optionPos, optionSize);
@@ -631,7 +629,7 @@ namespace Reko.Arch.Arm.AArch64
         }
 
         // Extension to apply.
-        private static Mutator Ex(int posOption, int sizeOption, int posSh, int sizeSh)
+        private static Mutator<AArch64Disassembler> Ex(int posOption, int sizeOption, int posSh, int sizeSh)
         {
             var optionField = new Bitfield(posOption, sizeOption);
             var shField = new Bitfield(posSh, sizeSh);
@@ -660,7 +658,7 @@ namespace Reko.Arch.Arm.AArch64
  
 
         // Unsigned immediate
-        private static Mutator U(int pos, int size, PrimitiveType dt, int sh = 0)
+        private static Mutator<AArch64Disassembler> U(int pos, int size, PrimitiveType dt, int sh = 0)
         {
             var fields = new Bitfield[]
             {
@@ -675,7 +673,7 @@ namespace Reko.Arch.Arm.AArch64
         }
 
         // Unsigned immediate (encoded for logical instructions)
-        private static Mutator Ul(int offset, PrimitiveType dt, int sh = 0)
+        private static Mutator<AArch64Disassembler> Ul(int offset, PrimitiveType dt, int sh = 0)
         {
             return (u, d) =>
             {
@@ -689,7 +687,7 @@ namespace Reko.Arch.Arm.AArch64
         }
 
         // Signed immediate
-        private static Mutator I(int pos, int size, PrimitiveType dt, int sh = 0)
+        private static Mutator<AArch64Disassembler> I(int pos, int size, PrimitiveType dt, int sh = 0)
         {
             var fields = new Bitfield[]
             {
@@ -704,7 +702,7 @@ namespace Reko.Arch.Arm.AArch64
         }
 
         // Shifted immediate
-        private static Mutator I(int pos1, int len1, int pos2, int len2, PrimitiveType dt, int sh)
+        private static Mutator<AArch64Disassembler> I(int pos1, int len1, int pos2, int len2, PrimitiveType dt, int sh)
         {
             var fields = new[]
             {
@@ -720,7 +718,7 @@ namespace Reko.Arch.Arm.AArch64
         }
 
         // 16-bit Floating point immediate
-        private static Mutator If16(int pos, int length)
+        private static Mutator<AArch64Disassembler> If16(int pos, int length)
         {
             var bitfield = new Bitfield(pos, length);
             return (u, d) =>
@@ -734,7 +732,7 @@ namespace Reko.Arch.Arm.AArch64
         }
 
         // 32-bit Floating point immediate
-        private static Mutator If32(int pos, int length)
+        private static Mutator<AArch64Disassembler> If32(int pos, int length)
         {
             var bitfield = new Bitfield(pos, length);
             return (u, d) =>
@@ -747,7 +745,7 @@ namespace Reko.Arch.Arm.AArch64
             };
         }
 
-        private static Mutator If32(int pos1, int length1, int pos2, int length2)
+        private static Mutator<AArch64Disassembler> If32(int pos1, int length1, int pos2, int length2)
         {
             var bitfields = new[]
             {
@@ -767,7 +765,7 @@ namespace Reko.Arch.Arm.AArch64
         /// <summary>
         /// Create a mutator for a modified SIMD integer immediate.
         /// </summary>
-        private static Mutator Is64(int pos1, int length1, int pos2, int length2, int opPos, int opLength, int cmodePos, int cmodeLength)
+        private static Mutator<AArch64Disassembler> Is64(int pos1, int length1, int pos2, int length2, int opPos, int opLength, int cmodePos, int cmodeLength)
         {
             var bitfields = new[]
             {
@@ -789,7 +787,7 @@ namespace Reko.Arch.Arm.AArch64
         }
 
         // 64-bit Floating point immediate
-        private static Mutator If64(int pos, int length)
+        private static Mutator<AArch64Disassembler> If64(int pos, int length)
         {
             var bitfield = new Bitfield(pos, length);
             return (u, d) =>
@@ -851,7 +849,7 @@ namespace Reko.Arch.Arm.AArch64
         }
 
         // Fixed point scale.
-        private static Mutator Fxs(int pos, int len)
+        private static Mutator<AArch64Disassembler> Fxs(int pos, int len)
         {
             var field = new Bitfield(pos, len);
             return (u, d) =>
@@ -865,7 +863,7 @@ namespace Reko.Arch.Arm.AArch64
 
 
         // PC-Relative offset
-        private static Mutator PcRel(int pos1, int size1, int pos2, int size2)
+        private static Mutator<AArch64Disassembler> PcRel(int pos1, int size1, int pos2, int size2)
         {
             var fields = new[]
             {
@@ -881,7 +879,7 @@ namespace Reko.Arch.Arm.AArch64
             };
         }
         // Jump displacement from address of current instruction
-        private static Mutator J(int pos, int size)
+        private static Mutator<AArch64Disassembler> J(int pos, int size)
         {
             var fields = new Bitfield[]
             {
@@ -897,7 +895,7 @@ namespace Reko.Arch.Arm.AArch64
         }
 
         // Scaled immediate offset
-        private static Mutator Mo(PrimitiveType dt, int baseRegOff, int posOff, int lenOff)
+        private static Mutator<AArch64Disassembler> Mo(PrimitiveType dt, int baseRegOff, int posOff, int lenOff)
         {
             var offsetField = new Bitfield(posOff, lenOff);
             int shift = ShiftFromSize(dt);
@@ -933,7 +931,7 @@ namespace Reko.Arch.Arm.AArch64
         }
 
         // Unscaled immediate offset
-        private static Mutator Mu(PrimitiveType dt, int baseRegOff, int posOff, int lenOff)
+        private static Mutator<AArch64Disassembler> Mu(PrimitiveType dt, int baseRegOff, int posOff, int lenOff)
         {
             var offsetField = new Bitfield(posOff, lenOff);
             return (u, d) =>
@@ -952,7 +950,7 @@ namespace Reko.Arch.Arm.AArch64
         }
 
 
-        private static Mutator Mpost(PrimitiveType dt)
+        private static Mutator<AArch64Disassembler> Mpost(PrimitiveType dt)
         {
             return (u, d) =>
             {
@@ -968,7 +966,7 @@ namespace Reko.Arch.Arm.AArch64
             };
         }
 
-        private static Mutator MpostPair(PrimitiveType dt)
+        private static Mutator<AArch64Disassembler> MpostPair(PrimitiveType dt)
         {
             var shift = ShiftFromSize(dt);
             return (u, d) =>
@@ -986,7 +984,7 @@ namespace Reko.Arch.Arm.AArch64
             };
         }
 
-        private static Mutator MvmrPpost(int elems)
+        private static Mutator<AArch64Disassembler> MvmrPpost(int elems)
         {
             return (u, d) =>
             {
@@ -1001,7 +999,7 @@ namespace Reko.Arch.Arm.AArch64
             };
         }
 
-        private static Mutator Mpre(PrimitiveType dt)
+        private static Mutator<AArch64Disassembler> Mpre(PrimitiveType dt)
         {
             return (u, d) =>
             {
@@ -1018,7 +1016,7 @@ namespace Reko.Arch.Arm.AArch64
         }
 
         // Prefix form used for LDP / STP instructions.
-        private static Mutator MprePair(PrimitiveType dt)
+        private static Mutator<AArch64Disassembler> MprePair(PrimitiveType dt)
         {
             var shift = ShiftFromSize(dt);
             return (u, d) =>
@@ -1036,7 +1034,7 @@ namespace Reko.Arch.Arm.AArch64
             };
         }
 
-        private static Mutator Mlit(PrimitiveType dt)
+        private static Mutator<AArch64Disassembler> Mlit(PrimitiveType dt)
         {
             return (u, d) =>
             {
@@ -1048,7 +1046,7 @@ namespace Reko.Arch.Arm.AArch64
         }
 
         // [Xn,Xn] or [Xn,Wn,sxtb] indexed mode
-        private static Mutator Mr(PrimitiveType dt)
+        private static Mutator<AArch64Disassembler> Mr(PrimitiveType dt)
         {
             var sh = ShiftFromSize(dt);
             return (u, d) =>
@@ -1077,7 +1075,7 @@ namespace Reko.Arch.Arm.AArch64
         }
 
         // Single base register access.
-        private static Mutator Mb(PrimitiveType dt, int pos, int len)
+        private static Mutator<AArch64Disassembler> Mb(PrimitiveType dt, int pos, int len)
         {
             var field = new Bitfield(pos, len);
             return (u, d) =>
@@ -1096,7 +1094,7 @@ namespace Reko.Arch.Arm.AArch64
         /// Creates a mutator for a condition operand
         /// </summary>
         /// <returns></returns>
-        private static Mutator C(int pos, int size)
+        private static Mutator<AArch64Disassembler> C(int pos, int size)
         {
             var field = new Bitfield(pos, size);
             return (u, d) =>
@@ -1107,7 +1105,7 @@ namespace Reko.Arch.Arm.AArch64
             };
         }
 
-        private static Mutator sc(int pos, int length)
+        private static Mutator<AArch64Disassembler> sc(int pos, int length)
         {
             var field = new Bitfield(pos, length);
             return (u, d) =>
@@ -1125,7 +1123,7 @@ namespace Reko.Arch.Arm.AArch64
         }
 
 
-        private static Mutator sh(int pos, int length)
+        private static Mutator<AArch64Disassembler> sh(int pos, int length)
         {
             var field = new Bitfield(pos, length);
             return (u, d) =>
@@ -1137,7 +1135,7 @@ namespace Reko.Arch.Arm.AArch64
             };
         }
 
-        private static Mutator si(int pos1, int len1, int pos2, int len2)
+        private static Mutator<AArch64Disassembler> si(int pos1, int len1, int pos2, int len2)
         {
             var bfShtype = new Bitfield(pos1, len1);
             var bfShamt = new Bitfield(pos2, len2);
@@ -1180,7 +1178,7 @@ namespace Reko.Arch.Arm.AArch64
         //        return Invalid();
         //    }
         //}
-        private static Mutator Bm(int posS, int posR)
+        private static Mutator<AArch64Disassembler> Bm(int posS, int posR)
         {
             return (u, d) =>
             {
@@ -1199,7 +1197,7 @@ namespace Reko.Arch.Arm.AArch64
 
 
         // bit which determines whether or not to use Qx or Dx registers in SIMD
-        private static Mutator q(int offset)
+        private static Mutator<AArch64Disassembler> q(int offset)
         {
             return (u, d) => { d.state.useQ = Bits.IsBitSet(u, offset); return true; };
         }
@@ -1211,7 +1209,7 @@ namespace Reko.Arch.Arm.AArch64
         }
 
         // Arrangement specifier tells us how words are packed
-        private static Mutator As(int pos, int length)
+        private static Mutator<AArch64Disassembler> As(int pos, int length)
         {
             var bitfield = new Bitfield(pos, length);
             return (u, d) =>
@@ -1234,7 +1232,7 @@ namespace Reko.Arch.Arm.AArch64
             };
         }
 
-        private static Mutator x(string message)
+        private static Mutator<AArch64Disassembler> x(string message)
         {
             return (u, d) =>
             {
@@ -1366,7 +1364,7 @@ namespace Reko.Arch.Arm.AArch64
             return true;
         }
 
-        private static Mutator Sysreg(params (int pos, int len)[] fields)
+        private static Mutator<AArch64Disassembler> Sysreg(params (int pos, int len)[] fields)
         {
             var bitfields = fields.Select(f => new Bitfield(f.pos, f.len)).ToArray();
             return (u, d) =>
@@ -1468,17 +1466,17 @@ namespace Reko.Arch.Arm.AArch64
 
         // Factory methods for different kinds of decoders.
 
-        private static Decoder Instr(Opcode opcode, params Mutator [] mutators)
+        private static Decoder Instr(Opcode opcode, params Mutator<AArch64Disassembler> [] mutators)
         {
             return new InstrDecoder(opcode, InstrClass.Linear, VectorData.Invalid, mutators);
         }
 
-        private static Decoder Instr(Opcode opcode, InstrClass iclass, params Mutator[] mutators)
+        private static Decoder Instr(Opcode opcode, InstrClass iclass, params Mutator<AArch64Disassembler>[] mutators)
         {
             return new InstrDecoder(opcode, iclass, VectorData.Invalid, mutators);
         }
 
-        private static Decoder Instr(Opcode opcode, VectorData vectorData, params Mutator[] mutators)
+        private static Decoder Instr(Opcode opcode, VectorData vectorData, params Mutator<AArch64Disassembler>[] mutators)
         {
             return new InstrDecoder(opcode, InstrClass.Linear, vectorData, mutators);
         }

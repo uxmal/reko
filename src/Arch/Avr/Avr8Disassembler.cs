@@ -32,8 +32,6 @@ namespace Reko.Arch.Avr
     // Opcode map: https://en.wikipedia.org/wiki/Atmel_AVR_instruction_set
     public class Avr8Disassembler : DisassemblerBase<AvrInstruction>
     {
-        public delegate bool Mutator(uint uInstr, Avr8Disassembler dasm);
-
         private readonly static Decoder[] decoders;
         private readonly static Decoder invalid;
 
@@ -68,7 +66,7 @@ namespace Reko.Arch.Avr
 
         #region Mutators
 
-        private static Mutator Inc(RegisterStorage reg)
+        private static Mutator<Avr8Disassembler> Inc(RegisterStorage reg)
         {
             return (u, d) => {
                 d.ops.Add(new MemoryOperand(PrimitiveType.Byte)
@@ -80,11 +78,11 @@ namespace Reko.Arch.Avr
                 return true;
             };
         }
-        private static readonly Mutator IncX = Inc(Avr8Architecture.x);
-        private static readonly Mutator IncY = Inc(Avr8Architecture.y);
-        private static readonly Mutator IncZ = Inc(Avr8Architecture.z);
+        private static readonly Mutator<Avr8Disassembler> IncX = Inc(Avr8Architecture.x);
+        private static readonly Mutator<Avr8Disassembler> IncY = Inc(Avr8Architecture.y);
+        private static readonly Mutator<Avr8Disassembler> IncZ = Inc(Avr8Architecture.z);
 
-        private static Mutator Dec(RegisterStorage reg)
+        private static Mutator<Avr8Disassembler> Dec(RegisterStorage reg)
         {
             return (u, d) => {
                 d.ops.Add(new MemoryOperand(PrimitiveType.Byte)
@@ -97,9 +95,9 @@ namespace Reko.Arch.Avr
             };
         }
 
-        private static Mutator DecX = Dec(Avr8Architecture.x);
-        private static Mutator DecY = Dec(Avr8Architecture.y);
-        private static Mutator DecZ = Dec(Avr8Architecture.z);
+        private static Mutator<Avr8Disassembler> DecX = Dec(Avr8Architecture.x);
+        private static Mutator<Avr8Disassembler> DecY = Dec(Avr8Architecture.y);
+        private static Mutator<Avr8Disassembler> DecZ = Dec(Avr8Architecture.z);
 
         // I/O location
         private static bool A(uint wInstr, Avr8Disassembler dasm)
@@ -284,12 +282,12 @@ namespace Reko.Arch.Avr
 
         #endregion
 
-        private static InstrDecoder Instr(Opcode opcode, params Mutator[] mutators)
+        private static InstrDecoder Instr(Opcode opcode, params Mutator<Avr8Disassembler>[] mutators)
         {
             return new InstrDecoder(opcode, InstrClass.Linear, mutators);
         }
 
-        private static InstrDecoder Instr(Opcode opcode, InstrClass iclass, params Mutator[] mutators)
+        private static InstrDecoder Instr(Opcode opcode, InstrClass iclass, params Mutator<Avr8Disassembler>[] mutators)
         {
             return new InstrDecoder(opcode, iclass, mutators);
         }
@@ -763,9 +761,9 @@ namespace Reko.Arch.Avr
         {
             private readonly Opcode opcode;
             private readonly InstrClass iclass;
-            private readonly Mutator[] mutators;
+            private readonly Mutator<Avr8Disassembler>[] mutators;
 
-            public InstrDecoder(Opcode opcode, InstrClass iclass, params Mutator [] mutators)
+            public InstrDecoder(Opcode opcode, InstrClass iclass, params Mutator<Avr8Disassembler>[] mutators)
             {
                 this.opcode = opcode;
                 this.iclass = iclass;

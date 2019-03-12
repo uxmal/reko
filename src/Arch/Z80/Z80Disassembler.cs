@@ -50,7 +50,7 @@ namespace Reko.Arch.Z80
         {
             this.addr = rdr.Address;
             if (!rdr.TryReadByte(out byte op))
-                return Invalid();
+                return null;
 
             this.instr = new Z80Instruction();
             this.ops.Clear();
