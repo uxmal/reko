@@ -48,16 +48,14 @@ namespace Reko.Arch.Z80
 
         public override Z80Instruction DisassembleInstruction()
         {
-            if (!rdr.IsValid)
-                return null;
             this.addr = rdr.Address;
-            this.instr = new Z80Instruction();
             if (!rdr.TryReadByte(out byte op))
                 return Invalid();
 
+            this.instr = new Z80Instruction();
             this.ops.Clear();
             this.IndexRegister = null;
-            var decoder = oprecs[op];
+            var decoder = decoders[op];
             instr = decoder.Decode(this, op);
             if (instr == null)
                 return Invalid();
@@ -183,12 +181,12 @@ namespace Reko.Arch.Z80
                 }
                 else
                 {
-                    return oprecs[op].Decode(dasm, op);
+                    return decoders[op].Decode(dasm, op);
                 }
             }
         }
 
-        private class CbPrefixOpRec : Decoder
+        private class CbPrefixDecoder : Decoder
         {
             static readonly Opcode[] cbOpcodes = new Opcode[] {
                 Opcode.rlc,
@@ -247,9 +245,9 @@ namespace Reko.Arch.Z80
                     return disasm.Invalid();
                 Decoder decoder = null;
                 if (0x40 <= op2 && op2 < 0x80)
-                    decoder = edOprecs[op2 - 0x40];
+                    decoder = edDecoders[op2 - 0x40];
                 else if (0xA0 <= op2 && op2 < 0xC0)
-                    decoder = edOprecs[op2 - 0x60];
+                    decoder = edDecoders[op2 - 0x60];
                 else
                     return disasm.Invalid();
                 return decoder.Decode(disasm, op2);
@@ -482,7 +480,7 @@ namespace Reko.Arch.Z80
         /// http://wikiti.brandonw.net/index.php?title=Z80_Instruction_Set
         /// http://www.zophar.net/fileuploads/2/10807fvllz/z80-1.txt
         /// </summary>
-        private static readonly Decoder[] oprecs = new Decoder[]
+        private static readonly Decoder[] decoders = new Decoder[]
         {
             // 00
             Instr(Opcode.nop, Opcode.nop, InstrClass.Zero|InstrClass.Linear|InstrClass.Padding),
@@ -725,7 +723,7 @@ namespace Reko.Arch.Z80
             Instr(Opcode.illegal, Opcode.ret, C, InstrClass.ConditionalTransfer),
             Instr(Opcode.illegal, Opcode.ret, InstrClass.Transfer),
             Instr(Opcode.jz, Opcode.jp, C, A,InstrClass.ConditionalTransfer),
-            new CbPrefixOpRec(),
+            new CbPrefixDecoder(),
             Instr(Opcode.illegal, Opcode.call, C, A,InstrClass.ConditionalTransfer|InstrClass.Call),
             Instr( Opcode.illegal, Opcode.call, A, InstrClass.Transfer|InstrClass.Call),
             Instr(Opcode.aci, Opcode.adc, a,Ib),
@@ -789,7 +787,7 @@ namespace Reko.Arch.Z80
             Instr(Opcode.illegal, Opcode.rst, x(0x38), InstrClass.Transfer|InstrClass.Call),
         };
 
-        private static readonly Decoder[] edOprecs = new Decoder[] 
+        private static readonly Decoder[] edDecoders = new Decoder[] 
         {
             // 40
             Instr(Opcode.illegal, Opcode.@in, r,mc), 
