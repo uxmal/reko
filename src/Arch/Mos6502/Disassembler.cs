@@ -33,125 +33,210 @@ namespace Reko.Arch.Mos6502
     // 65816 = http://www.zophar.net/fileuploads/2/10538ivwiu/65816info.txt
     public class Disassembler : DisassemblerBase<Instruction>
     {
-        private EndianImageReader rdr;
+        private readonly EndianImageReader rdr;
         private Instruction instr;
+        private readonly List<Operand> ops;
 
         public Disassembler(EndianImageReader rdr)
         {
             this.rdr = rdr;
+            this.ops = new List<Operand>();
         }
 
         public override Instruction DisassembleInstruction()
         {
-            if (!rdr.IsValid)
-                return null;
             var addr = rdr.Address;
-            var op = rdr.ReadByte();
-            var opRec = decoders[op];
-            var fmt = opRec.Format;
-            Operand operand = null;
-            for (int i = 0; i < fmt.Length; ++i)
+            if (!rdr.TryReadByte(out byte op))
+                return null;
+            ops.Clear();
+            var decoder = decoders[op];
+            var mutators = decoder.Mutators;
+            var iclass = decoder.IClass;
+            var opcode = decoder.Code;
+            for (int i = 0; i < mutators.Length; ++i)
             {
-                operand = null;
-                switch (fmt[i++])
+                if (!mutators[i](op, this))
                 {
-                case '#':
-                    operand = new Operand(PrimitiveType.Byte)
-                    {
-                        Mode = AddressMode.Immediate,
-                        Offset = rdr.Read(PrimitiveType.Byte)
-                    };
+                    iclass = InstrClass.Invalid;
+                    opcode = Opcode.illegal;
                     break;
-                case 'a':
-                    operand = new Operand(PrimitiveType.Byte)
-                    {
-                        Mode = AddressMode.Accumulator,
-                        Register = Registers.a,
-                    };
-                    break;
-                case 'x':
-                    operand = new Operand(PrimitiveType.Byte)
-                    {
-                        Mode = AddressMode.IndexedIndirect,
-                        Register = Registers.x,
-                        Offset = rdr.Read(PrimitiveType.Byte)
-                    };
-                    break;
-                case 'z':
-                    operand = new Operand(PrimitiveType.Byte)
-                    {
-                        Mode = AddressMode.ZeroPage,
-                        Register = null,
-                        Offset = rdr.Read(PrimitiveType.Byte)
-                    };
-                    if (i < fmt.Length)
-                    {
-                        if (fmt[i] == 'x')
-                            operand.Register = Registers.x;
-                        if (fmt[i] == 'y')
-                            operand.Register = Registers.y;
-                        ++i;
-                    }
-                    break;
-                case 'i':
-                    operand = Indirect();
-                    break;
-                case 'I':
-                    switch (fmt[i++])
-                    {
-                    case 'x':
-                        operand = new Operand(PrimitiveType.Byte)
-                        {
-                            Mode = AddressMode.IndexedIndirect,
-                            Register = Registers.x,
-                            Offset = rdr.Read(PrimitiveType.Byte)
-                        };
-                        break;
-
-                    case 'y':
-                        operand = new Operand(PrimitiveType.Byte)
-                        {
-                            Mode = AddressMode.IndirectIndexed,
-                            Register = Registers.y,
-                            Offset = rdr.Read(PrimitiveType.Byte)
-                        };
-                        break;
-                    }
-                    break;
-                case 'A':
-                    operand = AbsoluteOperand(fmt, ref i);
-                    break;
-                case 'j':
-                    short offset = rdr.ReadSByte();
-                    operand = new Operand(PrimitiveType.Ptr16)
-                    {
-                        Mode = AddressMode.Immediate,
-                        Offset = Constant.Create(
-                            PrimitiveType.Ptr16,
-                            (rdr.Address.ToUInt16() + offset)),
-                    };
-                    break;
-                default: throw new NotImplementedException(string.Format("Unknown format character {0}.", fmt[i - 1]));
                 }
             }
+
             this.instr = new Instruction
             {
-                Code = opRec.Code,
-                IClass = opRec.IClass,
-                Operand = operand,
+                Code = opcode,
+                IClass = iclass,
+                Operand = ops.Count > 0 ? ops[0] : null,
                 Address = addr,
                 Length = (int)(rdr.Address - addr),
             };
             return instr;
         }
 
-        private Operand Indirect()
+        private static bool Imm(uint uInstr, Disassembler dasm)
         {
-            return new Operand(PrimitiveType.Byte)
+            if (!dasm.rdr.TryRead(PrimitiveType.Byte, out Constant offset))
+                return false;
+            dasm.ops.Add(new Operand(PrimitiveType.Byte)
+            {
+                Mode = AddressMode.Immediate,
+                Offset = offset
+            });
+            return true;
+        }
+
+        private static bool a(uint uInstr, Disassembler dasm)
+        {
+            dasm.ops.Add(new Operand(PrimitiveType.Byte)
+            {
+                Mode = AddressMode.Accumulator,
+                Register = Registers.a,
+            });
+            return true;
+        }
+
+        private static bool x(uint uInstr, Disassembler dasm)
+        {
+            if (!dasm.rdr.TryRead(PrimitiveType.Byte, out Constant offset))
+                return false;
+            dasm.ops.Add(new Operand(PrimitiveType.Byte)
+            {
+                Mode = AddressMode.IndexedIndirect,
+                Register = Registers.x,
+                Offset = offset
+            });
+            return true;
+        }
+
+        private static bool z(uint uInstr, Disassembler dasm)
+        {
+            if (!dasm.rdr.TryRead(PrimitiveType.Byte, out Constant offset))
+                return false;
+            dasm.ops.Add(new Operand(PrimitiveType.Byte)
+            {
+                Mode = AddressMode.ZeroPage,
+                Register = null,
+                Offset = offset
+            });
+            return true;
+        }
+
+        private static bool zx(uint uInstr, Disassembler dasm)
+        {
+            if (!dasm.rdr.TryRead(PrimitiveType.Byte, out Constant offset))
+                return false;
+            dasm.ops.Add(new Operand(PrimitiveType.Byte)
+            {
+                Mode = AddressMode.ZeroPage,
+                Register = Registers.x,
+                Offset = offset
+            });
+            return true;
+        }
+
+        private static bool zy(uint uInstr, Disassembler dasm)
+        {
+            if (!dasm.rdr.TryRead(PrimitiveType.Byte, out Constant offset))
+                return false;
+            dasm.ops.Add(new Operand(PrimitiveType.Byte)
+            {
+                Mode = AddressMode.ZeroPage,
+                Register = Registers.x,
+                Offset = offset
+            });
+            return true;
+        }
+
+        private static bool i(uint uInstr, Disassembler dasm)
+        {
+            if (!dasm.rdr.TryRead(PrimitiveType.Word16, out Constant offset))
+                return false;
+            dasm.ops.Add(new Operand(PrimitiveType.Byte)
             {
                 Mode = AddressMode.Indirect,
-                Offset = rdr.Read(PrimitiveType.Word16)
-            };
+                Offset = offset
+            });
+            return true;
+        }
+
+        private static bool Ix(uint uInstr, Disassembler dasm)
+        {
+            if (!dasm.rdr.TryRead(PrimitiveType.Byte, out Constant offset))
+                return false;
+            dasm.ops.Add(new Operand(PrimitiveType.Byte)
+            {
+                Mode = AddressMode.IndexedIndirect,
+                Register = Registers.x,
+                Offset = offset
+            });
+            return true;
+        }
+
+        private static bool Iy(uint uInstr, Disassembler dasm)
+        {
+            if (!dasm.rdr.TryRead(PrimitiveType.Byte, out Constant offset))
+                return false;
+            dasm.ops.Add(new Operand(PrimitiveType.Byte)
+            {
+                Mode = AddressMode.IndirectIndexed,
+                Register = Registers.y,
+                Offset = offset
+            });
+            return true;
+        }
+
+        private static bool A(uint uInstr, Disassembler dasm)
+        {
+            if (!dasm.rdr.TryRead(PrimitiveType.Word16, out Constant offset))
+                return false;
+            dasm.ops.Add(new Operand(PrimitiveType.Byte)
+            {
+                Mode = AddressMode.Absolute,
+                Register = null,
+                Offset = offset
+            });
+            return true;
+        }
+
+        private static bool Ax(uint uInstr, Disassembler dasm)
+        {
+            if (!dasm.rdr.TryRead(PrimitiveType.Word16, out Constant offset))
+                return false;
+            dasm.ops.Add(new Operand(PrimitiveType.Byte)
+            {
+                Mode = AddressMode.AbsoluteX,
+                Register = Registers.x,
+                Offset = offset
+            });
+            return true;
+        }
+
+        private static bool Ay(uint uInstr, Disassembler dasm)
+        {
+            if (!dasm.rdr.TryRead(PrimitiveType.Word16, out Constant offset))
+                return false;
+            dasm.ops.Add(new Operand(PrimitiveType.Byte)
+            {
+                Mode = AddressMode.AbsoluteY,
+                Register = Registers.y,
+                Offset = offset
+            });
+            return true;
+        }
+
+        private static bool j(uint uInstr, Disassembler dasm)
+        {
+            if (!dasm.rdr.TryReadByte(out byte bOff))
+                return false;
+            dasm.ops.Add(new Operand(PrimitiveType.Ptr16)
+            {
+                Mode = AddressMode.Immediate,
+                Offset = Constant.Create(
+                    PrimitiveType.Ptr16,
+                    (dasm.rdr.Address.ToUInt16() + (sbyte) bOff)),
+            });
+            return true;
         }
 
         private Operand AbsoluteOperand(string fmt, ref int i)
@@ -189,297 +274,304 @@ namespace Reko.Arch.Mos6502
 
         private class Decoder
         {
-            public Opcode Code;
-            public InstrClass IClass;
-            public string Format;
+            public readonly InstrClass IClass;
+            public readonly Opcode Code;
+            public readonly Mutator<Disassembler> [] Mutators;
 
-            public Decoder(Opcode code, string fmt, InstrClass iclass = InstrClass.Linear)
+            public Decoder(Opcode code, params Mutator<Disassembler>[] mutators)
             {
+                this.IClass = InstrClass.Linear;
                 this.Code = code;
+                this.Mutators = mutators;
+            }
+
+            public Decoder(InstrClass iclass, Opcode code, params Mutator<Disassembler>[] mutators)
+            {
                 this.IClass = iclass;
-                this.Format = fmt;
+                this.Code = code;
+                this.Mutators = mutators;
             }
         }
 
-        private static Decoder[] decoders = new Decoder[] {
+        private static readonly Decoder[] decoders = new Decoder[] {
             // 00
-new Decoder(Opcode.brk, "", InstrClass.Padding|InstrClass.Zero),
-    new Decoder(Opcode.ora, "Ix"),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.ora, "z"),
-    new Decoder(Opcode.asl, "z"),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.php, ""),
-    new Decoder(Opcode.ora, "#"),
-    new Decoder(Opcode.asl, "a"),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.ora, "A"),
-    new Decoder(Opcode.asl, "A"),
-    new Decoder(Opcode.illegal, ""),
+new Decoder(InstrClass.Padding|InstrClass.Zero, Opcode.brk),
+    new Decoder(Opcode.ora, Ix),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.ora, z),
+    new Decoder(Opcode.asl, z),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.php),
+    new Decoder(Opcode.ora, Imm),
+    new Decoder(Opcode.asl, a),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.ora, A),
+    new Decoder(Opcode.asl, A),
+    new Decoder(Opcode.illegal),
 
             // 10
-new Decoder(Opcode.bpl, "j", InstrClass.ConditionalTransfer),
-    new Decoder(Opcode.ora, "Iy"),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.ora, "zx"),
-    new Decoder(Opcode.asl, "zx"),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.clc, ""),
-    new Decoder(Opcode.ora, "Ay"),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.ora, "Ax"),
-    new Decoder(Opcode.asl, "Ax"),
-    new Decoder(Opcode.illegal, ""),
+new Decoder(InstrClass.ConditionalTransfer, Opcode.bpl, j),
+    new Decoder(Opcode.ora, Iy),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.ora, zx),
+    new Decoder(Opcode.asl, zx),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.clc),
+    new Decoder(Opcode.ora, Ay),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.ora, Ax),
+    new Decoder(Opcode.asl, Ax),
+    new Decoder(Opcode.illegal),
             // 20
-new Decoder(Opcode.jsr, "A", InstrClass.Transfer|InstrClass.Call),
-    new Decoder(Opcode.and, "Ix"),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.bit, "z"),
-    new Decoder(Opcode.and, "z"),
-    new Decoder(Opcode.rol, "z"),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.plp, ""),
-    new Decoder(Opcode.and, "#"),
-    new Decoder(Opcode.rol, "a"),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.bit, "A"),
-    new Decoder(Opcode.and, "A"),
-    new Decoder(Opcode.rol, "A"),
-    new Decoder(Opcode.illegal, ""),
+new Decoder(InstrClass.Transfer|InstrClass.Call, Opcode.jsr, A),
+    new Decoder(Opcode.and, Ix),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.bit, z),
+    new Decoder(Opcode.and, z),
+    new Decoder(Opcode.rol, z),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.plp),
+    new Decoder(Opcode.and, Imm),
+    new Decoder(Opcode.rol, a),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.bit, A),
+    new Decoder(Opcode.and, A),
+    new Decoder(Opcode.rol, A),
+    new Decoder(Opcode.illegal),
         // 30
-new Decoder(Opcode.bmi, "j", InstrClass.ConditionalTransfer),
-    new Decoder(Opcode.and, "Iy"),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.and, "zx"),
-    new Decoder(Opcode.rol, "zx"),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.sec, ""),
-    new Decoder(Opcode.and, "Ay"),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.and, "Ax"),
-    new Decoder(Opcode.rol, "Ax"),
-    new Decoder(Opcode.illegal, ""),
+new Decoder(InstrClass.ConditionalTransfer, Opcode.bmi, j),
+    new Decoder(Opcode.and, Iy),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.and, zx),
+    new Decoder(Opcode.rol, zx),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.sec),
+    new Decoder(Opcode.and, Ay),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.and, Ax),
+    new Decoder(Opcode.rol, Ax),
+    new Decoder(Opcode.illegal),
  // 40
-new Decoder(Opcode.rti, "", InstrClass.Transfer),
-    new Decoder(Opcode.eor, "Ix"),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.eor, "z"),
-    new Decoder(Opcode.lsr, "z"),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.pha, ""),
-    new Decoder(Opcode.eor, "#"),
-    new Decoder(Opcode.lsr, "a"),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.jmp, "A", InstrClass.Transfer),
-    new Decoder(Opcode.eor, "A"),
-    new Decoder(Opcode.lsr, "A"),
-    new Decoder(Opcode.illegal, ""),
+new Decoder(InstrClass.Transfer, Opcode.rti),
+    new Decoder(Opcode.eor, Ix),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.eor, z),
+    new Decoder(Opcode.lsr, z),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.pha),
+    new Decoder(Opcode.eor, Imm),
+    new Decoder(Opcode.lsr, a),
+    new Decoder(Opcode.illegal),
+    new Decoder(InstrClass.Transfer, Opcode.jmp, A),
+    new Decoder(Opcode.eor, A),
+    new Decoder(Opcode.lsr, A),
+    new Decoder(Opcode.illegal),
  // 50
-new Decoder(Opcode.bvc, "j", InstrClass.ConditionalTransfer),
-    new Decoder(Opcode.eor, "Iy"),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.eor, "zx"),
-    new Decoder(Opcode.lsr, "zx"),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.cli, ""),
-    new Decoder(Opcode.eor, "Ay"),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.eor, "Ax"),
-    new Decoder(Opcode.lsr, "Ax"),
-    new Decoder(Opcode.illegal, ""),
+new Decoder(InstrClass.ConditionalTransfer, Opcode.bvc, j),
+    new Decoder(Opcode.eor, Iy),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.eor, zx),
+    new Decoder(Opcode.lsr, zx),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.cli),
+    new Decoder(Opcode.eor, Ay),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.eor, Ax),
+    new Decoder(Opcode.lsr, Ax),
+    new Decoder(Opcode.illegal),
  	// 60
-new Decoder(Opcode.rts, "", InstrClass.Transfer),
-    new Decoder(Opcode.adc, "Ix"),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.adc, "z"),
-    new Decoder(Opcode.ror, "z"),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.pla, ""),
-    new Decoder(Opcode.adc, "#"),
-    new Decoder(Opcode.ror, "a"),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.jmp, "i", InstrClass.Transfer),	
-    new Decoder(Opcode.adc, "A"),
-    new Decoder(Opcode.ror, "A"),
-    new Decoder(Opcode.illegal, ""),
+new Decoder(InstrClass.Transfer, Opcode.rts),
+    new Decoder(Opcode.adc, Ix),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.adc, z),
+    new Decoder(Opcode.ror, z),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.pla),
+    new Decoder(Opcode.adc, Imm),
+    new Decoder(Opcode.ror, a),
+    new Decoder(Opcode.illegal),
+    new Decoder(InstrClass.Transfer, Opcode.jmp, i),	
+    new Decoder(Opcode.adc, A),
+    new Decoder(Opcode.ror, A),
+    new Decoder(Opcode.illegal),
  	// 70
-new Decoder(Opcode.bvs, "j", InstrClass.ConditionalTransfer),
-    new Decoder(Opcode.adc, "Iy"),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.adc, "zx"),
-    new Decoder(Opcode.ror, "zx"),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.sei, ""),
-    new Decoder(Opcode.adc, "Ay"),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.adc, "Ax"),
-    new Decoder(Opcode.ror, "Ax"),
-    new Decoder(Opcode.illegal, ""),
+new Decoder(InstrClass.ConditionalTransfer, Opcode.bvs, j),
+    new Decoder(Opcode.adc, Iy),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.adc, zx),
+    new Decoder(Opcode.ror, zx),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.sei),
+    new Decoder(Opcode.adc, Ay),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.adc, Ax),
+    new Decoder(Opcode.ror, Ax),
+    new Decoder(Opcode.illegal),
  	// 80
-new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.sta, "Ix"),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.sty, "z"),
-    new Decoder(Opcode.sta, "z"),
-    new Decoder(Opcode.stx, "z"),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.dey, ""),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.txa, ""),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.sty, "A"),
-    new Decoder(Opcode.sta, "A"),
-    new Decoder(Opcode.stx, "A"),
-    new Decoder(Opcode.illegal, ""),
+new Decoder(Opcode.illegal),
+    new Decoder(Opcode.sta, Ix),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.sty, z),
+    new Decoder(Opcode.sta, z),
+    new Decoder(Opcode.stx, z),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.dey),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.txa),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.sty, A),
+    new Decoder(Opcode.sta, A),
+    new Decoder(Opcode.stx, A),
+    new Decoder(Opcode.illegal),
  	// 90
-new Decoder(Opcode.bcc, "j", InstrClass.ConditionalTransfer),
- 	new Decoder(Opcode.sta, "Iy"),
- 	new Decoder(Opcode.illegal, ""),
- 	new Decoder(Opcode.illegal, ""),
- 	new Decoder(Opcode.sty, "zx"),
- 	new Decoder(Opcode.sta, "zx"),
- 	new Decoder(Opcode.stx, "zy"),
- 	new Decoder(Opcode.illegal, ""),
- 	new Decoder(Opcode.tya, ""),
- 	new Decoder(Opcode.sta, "Ay"),
- 	new Decoder(Opcode.txs, ""),
- 	new Decoder(Opcode.illegal, ""),
- 	new Decoder(Opcode.illegal, ""),
-  	new Decoder(Opcode.sta, "Ax"),
- 	new Decoder(Opcode.illegal, ""),
- 	new Decoder(Opcode.illegal, ""),
+new Decoder(InstrClass.ConditionalTransfer, Opcode.bcc, j),
+ 	new Decoder(Opcode.sta, Iy),
+ 	new Decoder(Opcode.illegal),
+ 	new Decoder(Opcode.illegal),
+ 	new Decoder(Opcode.sty, zx),
+ 	new Decoder(Opcode.sta, zx),
+ 	new Decoder(Opcode.stx, zy),
+ 	new Decoder(Opcode.illegal),
+ 	new Decoder(Opcode.tya),
+ 	new Decoder(Opcode.sta, Ay),
+ 	new Decoder(Opcode.txs),
+ 	new Decoder(Opcode.illegal),
+ 	new Decoder(Opcode.illegal),
+  	new Decoder(Opcode.sta, Ax),
+ 	new Decoder(Opcode.illegal),
+ 	new Decoder(Opcode.illegal),
 
 // A0
-new Decoder(Opcode.ldy, "#"),
-    new Decoder(Opcode.lda, "Ix"),
-    new Decoder(Opcode.ldx, "#"),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.ldy, "z"),
-    new Decoder(Opcode.lda, "z"),
-    new Decoder(Opcode.ldx, "z"),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.tay, ""),
-    new Decoder(Opcode.lda, "#"),
-    new Decoder(Opcode.tax, ""),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.ldy, "A"),
-    new Decoder(Opcode.lda, "A"),
-    new Decoder(Opcode.ldx, "A"),
-    new Decoder(Opcode.illegal, ""),
+new Decoder(Opcode.ldy, Imm),
+    new Decoder(Opcode.lda, Ix),
+    new Decoder(Opcode.ldx, Imm),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.ldy, z),
+    new Decoder(Opcode.lda, z),
+    new Decoder(Opcode.ldx, z),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.tay),
+    new Decoder(Opcode.lda, Imm),
+    new Decoder(Opcode.tax),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.ldy, A),
+    new Decoder(Opcode.lda, A),
+    new Decoder(Opcode.ldx, A),
+    new Decoder(Opcode.illegal),
  	// B0
-new Decoder(Opcode.bcs, "j", InstrClass.ConditionalTransfer),
-    new Decoder(Opcode.lda, "Iy"),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.ldy, "zx"),
-    new Decoder(Opcode.lda, "zx"),
-    new Decoder(Opcode.ldx, "zy"),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.clv, ""),
-    new Decoder(Opcode.lda, "Ay"),
-    new Decoder(Opcode.tsx, ""),
-    new Decoder(Opcode.illegal, ""),
-    new Decoder(Opcode.ldy, "Ax"),
-    new Decoder(Opcode.lda, "Ax"),
-    new Decoder(Opcode.ldx, "Ay"),
-    new Decoder(Opcode.illegal, ""),
+new Decoder(InstrClass.ConditionalTransfer, Opcode.bcs, j),
+    new Decoder(Opcode.lda, Iy),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.ldy, zx),
+    new Decoder(Opcode.lda, zx),
+    new Decoder(Opcode.ldx, zy),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.clv),
+    new Decoder(Opcode.lda, Ay),
+    new Decoder(Opcode.tsx),
+    new Decoder(Opcode.illegal),
+    new Decoder(Opcode.ldy, Ax),
+    new Decoder(Opcode.lda, Ax),
+    new Decoder(Opcode.ldx, Ay),
+    new Decoder(Opcode.illegal),
     
     // C0
-    new Decoder(Opcode.cpy, "#"),
-        new Decoder(Opcode.cmp, "Ix"),
-        new Decoder(Opcode.illegal, ""),
-        new Decoder(Opcode.illegal, ""),
-        new Decoder(Opcode.cpy, "z"),
-        new Decoder(Opcode.cmp, "z"),
-        new Decoder(Opcode.dec, "z"),
-        new Decoder(Opcode.illegal, ""),
-        new Decoder(Opcode.iny, ""),
-        new Decoder(Opcode.cmp, "#"),
-        new Decoder(Opcode.dex, ""),
-        new Decoder(Opcode.illegal, ""),
-        new Decoder(Opcode.cpy, "A"),
-        new Decoder(Opcode.cmp, "A"),
-        new Decoder(Opcode.dec, "A"),
-        new Decoder(Opcode.illegal, ""),
+    new Decoder(Opcode.cpy, Imm),
+        new Decoder(Opcode.cmp, Ix),
+        new Decoder(Opcode.illegal),
+        new Decoder(Opcode.illegal),
+        new Decoder(Opcode.cpy, z),
+        new Decoder(Opcode.cmp, z),
+        new Decoder(Opcode.dec, z),
+        new Decoder(Opcode.illegal),
+        new Decoder(Opcode.iny),
+        new Decoder(Opcode.cmp, Imm),
+        new Decoder(Opcode.dex),
+        new Decoder(Opcode.illegal),
+        new Decoder(Opcode.cpy, A),
+        new Decoder(Opcode.cmp, A),
+        new Decoder(Opcode.dec, A),
+        new Decoder(Opcode.illegal),
  
         // D0
-        new Decoder(Opcode.bne, "j", InstrClass.ConditionalTransfer),
-        new Decoder(Opcode.cmp, "Iy"),
-        new Decoder(Opcode.illegal, ""),
-        new Decoder(Opcode.illegal, ""),
-        new Decoder(Opcode.illegal, ""),
-        new Decoder(Opcode.cmp, "zx"),
-        new Decoder(Opcode.dec, "zx"),
-        new Decoder(Opcode.illegal, ""),
-        new Decoder(Opcode.cld, ""),
-        new Decoder(Opcode.cmp, "Ay"),
-        new Decoder(Opcode.illegal, ""),
-        new Decoder(Opcode.illegal, ""),
-        new Decoder(Opcode.illegal, ""),
-        new Decoder(Opcode.cmp, "Ax"),
-        new Decoder(Opcode.dec, "Ax"),
-        new Decoder(Opcode.illegal, ""),
+        new Decoder(InstrClass.ConditionalTransfer, Opcode.bne, j),
+        new Decoder(Opcode.cmp, Iy),
+        new Decoder(Opcode.illegal),
+        new Decoder(Opcode.illegal),
+        new Decoder(Opcode.illegal),
+        new Decoder(Opcode.cmp, zx),
+        new Decoder(Opcode.dec, zx),
+        new Decoder(Opcode.illegal),
+        new Decoder(Opcode.cld),
+        new Decoder(Opcode.cmp, Ay),
+        new Decoder(Opcode.illegal),
+        new Decoder(Opcode.illegal),
+        new Decoder(Opcode.illegal),
+        new Decoder(Opcode.cmp, Ax),
+        new Decoder(Opcode.dec, Ax),
+        new Decoder(Opcode.illegal),
 
         // E0
-        new Decoder(Opcode.cpx, "#"),
-        new Decoder(Opcode.sbc, "Ix"),
-        new Decoder(Opcode.illegal, ""),
-        new Decoder(Opcode.illegal, ""),
-        new Decoder(Opcode.cpx, "z"),
-        new Decoder(Opcode.sbc, "z"),
-        new Decoder(Opcode.inc, "z"),
-        new Decoder(Opcode.illegal, ""),
-        new Decoder(Opcode.inx, ""),
-        new Decoder(Opcode.sbc, "#"),
-        new Decoder(Opcode.nop, ""),
-        new Decoder(Opcode.illegal, ""),
-        new Decoder(Opcode.cpx, "A"),
-        new Decoder(Opcode.sbc, "A"),
-        new Decoder(Opcode.inc, "A"),
-        new Decoder(Opcode.illegal, ""),
+        new Decoder(Opcode.cpx, Imm),
+        new Decoder(Opcode.sbc, Ix),
+        new Decoder(Opcode.illegal),
+        new Decoder(Opcode.illegal),
+        new Decoder(Opcode.cpx, z),
+        new Decoder(Opcode.sbc, z),
+        new Decoder(Opcode.inc, z),
+        new Decoder(Opcode.illegal),
+        new Decoder(Opcode.inx),
+        new Decoder(Opcode.sbc, Imm),
+        new Decoder(Opcode.nop),
+        new Decoder(Opcode.illegal),
+        new Decoder(Opcode.cpx, A),
+        new Decoder(Opcode.sbc, A),
+        new Decoder(Opcode.inc, A),
+        new Decoder(Opcode.illegal),
  
         // F0
-        new Decoder(Opcode.beq, "j", InstrClass.ConditionalTransfer),
-        new Decoder(Opcode.sbc, "Iy"),
-        new Decoder(Opcode.illegal, ""),
-        new Decoder(Opcode.illegal, ""),
-        new Decoder(Opcode.illegal, ""),
-        new Decoder(Opcode.sbc, "zx"),
-        new Decoder(Opcode.inc, "zx"),
-        new Decoder(Opcode.illegal, ""),
-        new Decoder(Opcode.sed, ""),
-        new Decoder(Opcode.sbc, "Ay"),
-        new Decoder(Opcode.illegal, ""),
-        new Decoder(Opcode.illegal, ""),
-        new Decoder(Opcode.illegal, ""),
-        new Decoder(Opcode.sbc, "Ax"),
-        new Decoder(Opcode.inc, "Ax"),
-        new Decoder(Opcode.illegal, ""),
+        new Decoder(InstrClass.ConditionalTransfer, Opcode.beq, j),
+        new Decoder(Opcode.sbc, Iy),
+        new Decoder(Opcode.illegal),
+        new Decoder(Opcode.illegal),
+        new Decoder(Opcode.illegal),
+        new Decoder(Opcode.sbc, zx),
+        new Decoder(Opcode.inc, zx),
+        new Decoder(Opcode.illegal),
+        new Decoder(Opcode.sed),
+        new Decoder(Opcode.sbc, Ay),
+        new Decoder(Opcode.illegal),
+        new Decoder(Opcode.illegal),
+        new Decoder(Opcode.illegal),
+        new Decoder(Opcode.sbc, Ax),
+        new Decoder(Opcode.inc, Ax),
+        new Decoder(Opcode.illegal),
         };
     }
 }
