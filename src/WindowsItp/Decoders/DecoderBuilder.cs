@@ -1,4 +1,5 @@
 using Reko.Core.Lib;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +31,7 @@ namespace Reko.WindowsItp.Decoders
     {
         public override Decoder Instr(Opcode opcode, string format)
         {
-            var mutators = new List<Mutator>();
+            var mutators = new List<Mutator<Disassembler>>();
             for (int i = 0; i < format.Length; ++i)
             {
                 switch (format[i])

@@ -13,8 +13,8 @@ namespace Reko.WindowsItp.Decoders
 {
     public class Disassembler : IEnumerable<TestInstruction>
     {
-        private static RegisterStorage[] Registers;
-        private static RegisterOperand[] RegOps;
+        private static readonly RegisterStorage[] Registers;
+        private static readonly RegisterOperand[] RegOps;
 
         private readonly EndianImageReader rdr;
         private readonly Decoder root;
@@ -141,7 +141,7 @@ namespace Reko.WindowsItp.Decoders
             return n;
         }
 
-        public static Mutator Reg(int n)
+        public static Mutator<Disassembler> Reg(int n)
         {
             var regField = new Bitfield(n, 4);
             return (u, d) =>
