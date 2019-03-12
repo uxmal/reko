@@ -315,6 +315,11 @@ namespace Reko.UnitTests.Core
                 throw new NotImplementedException();
             }
 
+            public RtlInstructionCluster InlineInstructions(AddressRange addrCaller, EndianImageReader rdrProcedureNody, IStorageBinder binder)
+            {
+                throw new NotImplementedException();
+            }
+
             #endregion
         }
 

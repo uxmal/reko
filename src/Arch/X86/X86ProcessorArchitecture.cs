@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,7 +50,7 @@ namespace Reko.Arch.X86
 
     /// <summary>
     /// Processor architecture definition for the Intel x86 family. Currently supported processors are 8086/7,
-    /// 80186/7, 80286/7, 80386/7, 80486, and Pentium,  x86-64
+    /// 80186/7, 80286/7, 80386/7, 80486, Pentium, and x86-64.
     /// </summary>
     [Designer("Reko.Arch.X86.Design.X86ArchitectureDesigner,Reko.Arch.X86.Design")]
 	public class IntelArchitecture : ProcessorArchitecture

@@ -1,4 +1,4 @@
-#region License
+﻿#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -126,6 +126,7 @@ namespace Reko.Arch.X86
                 {
                     if (arch.WordWidth.Size > 2)
                     {
+                        // call bx doesn't work on 32- or 64-bit architectures.
                         rtlc = InstrClass.Invalid;
                         m.Invalid();
                         return;

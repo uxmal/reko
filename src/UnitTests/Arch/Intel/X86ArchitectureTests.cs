@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -289,6 +289,21 @@ namespace Reko.UnitTests.Arch.Intel
             Assert.AreEqual(
                 Opcode.mov,
                 (Opcode)arch.GetOpcodeNumber("mov"));
+        }
+
+        [Test(Description = "Inline calls to __x86.get_pc_thunk.bx")]
+        public void X86Arch_Inline_x86get_pc_thunk_bx()
+        {
+            arch = new X86ArchitectureFlat32("x86-protected-32");
+            var mem = new MemoryArea(Address.Ptr32(0x1000), new byte[]
+            {
+               0x8B, 0x1C, 0x24,        // mov ebx,[esp]
+               0xC3                     // ret
+            });
+            var range = new AddressRange(Address.Ptr32(0x2300), Address.Ptr32(0x2305));
+            var cluster = arch.InlineCall(Address.Ptr16(0x1000), Address.Ptr32(0x2305), mem.CreateLeReader(0), arch.CreateFrame());
+            Assert.AreEqual(1, cluster.Count);
+            Assert.AreEqual("ebx = 00002305", cluster[0].ToString());
         }
     }
 }

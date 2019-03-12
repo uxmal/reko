@@ -219,15 +219,15 @@ namespace Reko.Core.Serialization
         {
             if (!string.IsNullOrEmpty(name))
                 return name;
-            var stack = storage as StackStorage;
-            if (stack != null)
-                return NamingPolicy.Instance.StackArgumentName(dataType, stack.StackOffset, name);
-            var seq = storage as SequenceStorage;
-            if (seq != null)
-                return seq.Name;
-            var reg = storage as RegisterStorage;
-            if (reg != null)
+            switch (storage)
+            {
+            case RegisterStorage reg:
                 return reg.Name;
+            case StackStorage stack:
+                return NamingPolicy.Instance.StackArgumentName(dataType, stack.StackOffset, name);
+            case SequenceStorage seq:
+                return seq.Name;
+            }
             throw new NotImplementedException();
         }
 
