@@ -15,6 +15,26 @@ namespace Reko.Arch.PowerPC
         public abstract class Decoder
         {
             public abstract PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr);
+
+            public static PowerPcInstruction DecodeOperands(
+                uint wInstr, 
+                PowerPcDisassembler dasm, 
+                InstrClass iclass,
+                Opcode opcode,
+                Mutator<PowerPcDisassembler>[] mutators)
+            {
+                foreach (var m in mutators)
+                {
+                    if (!m(wInstr, dasm))
+                    {
+                        return new PowerPcInstruction(Opcode.illegal)
+                        {
+                            iclass = InstrClass.Invalid
+                        };
+                    }
+                }
+                return dasm.MakeInstruction(iclass, opcode);
+            }
         }
 
         public class InvalidDecoder : Decoder
@@ -90,49 +110,49 @@ namespace Reko.Arch.PowerPC
             }
         }
 
-        public class DOpRec : Decoder
+        public class InstrDecoder : Decoder
         {
             public readonly Opcode opcode;
             public readonly InstrClass iclass;
-            public readonly string opFmt;
+            public readonly Mutator<PowerPcDisassembler>[] mutators;
 
-            public DOpRec(Opcode opcode, string opFmt, InstrClass iclass = InstrClass.Linear)
+            public InstrDecoder(Opcode opcode, Mutator<PowerPcDisassembler> [] mutators, InstrClass iclass = InstrClass.Linear)
             {
                 this.opcode = opcode;
                 this.iclass = iclass;
-                this.opFmt = opFmt;
+                this.mutators = mutators;
             }
 
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
-                return dasm.DecodeOperands(opcode, iclass, wInstr, opFmt);
+                return DecodeOperands(wInstr, dasm, iclass, opcode, mutators);
             }
         }
 
-        public class DSOpRec : Decoder
+        public class DSDecoder : Decoder
         {
             public readonly Opcode opcode0;
             public readonly Opcode opcode1;
             public readonly InstrClass iclass;
-            public readonly string opFmt;
+            public readonly Mutator<PowerPcDisassembler> []mutators;
 
-            public DSOpRec(Opcode opcode0, Opcode opcode1, string opFmt, InstrClass iclass = InstrClass.Linear)
+            public DSDecoder(Opcode opcode0, Opcode opcode1, params Mutator<PowerPcDisassembler> [] mutators)
             {
                 this.opcode0 = opcode0;
                 this.opcode1 = opcode1;
-                this.iclass = iclass;
-                this.opFmt = opFmt;
+                this.iclass = InstrClass.Linear;
+                this.mutators = mutators;
             }
 
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
                 Opcode opcode = ((wInstr & 1) == 0) ? opcode0 : opcode1;
                 wInstr &= ~3u;
-                return dasm.DecodeOperands(opcode, iclass, wInstr, opFmt);
+                return DecodeOperands(wInstr & ~3u, dasm, iclass, opcode, mutators);
             }
         }
 
-        public class MDOpRec : Decoder
+        public class MDDecoder : Decoder
         {
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
@@ -168,36 +188,36 @@ namespace Reko.Arch.PowerPC
             }
         }
 
-        public class AOpRec : Decoder
+        public class ADecoder : Decoder
         {
-            private readonly Dictionary<uint, DOpRec> xOpRecs;
+            private readonly Dictionary<uint, InstrDecoder> xDecoders;
 
-            public AOpRec(Dictionary<uint, DOpRec> xOpRecs)
+            public ADecoder(Dictionary<uint, InstrDecoder> xDecoders)
             {
-                this.xOpRecs = xOpRecs;
+                this.xDecoders = xDecoders;
             }
 
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
-                return xOpRecs[(wInstr >> 1) & 0x3FF].Decode(dasm, wInstr);
+                return xDecoders[(wInstr >> 1) & 0x3FF].Decode(dasm, wInstr);
             }
         }
 
-        public class XOpRec : Decoder
+        public class XDecoder : Decoder
         {
-            private Dictionary<uint, Decoder> xOpRecs;
+            private readonly Dictionary<uint, Decoder> xDecoders;
 
-            public XOpRec(Dictionary<uint, Decoder> xOpRecs)
+            public XDecoder(Dictionary<uint, Decoder> xDecoders)
             {
-                this.xOpRecs = xOpRecs;
+                this.xDecoders = xDecoders;
             }
 
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
                 var xOp = (wInstr >> 1) & 0x3FF;
-                if (xOpRecs.TryGetValue(xOp, out var opRec))
+                if (xDecoders.TryGetValue(xOp, out var decoder))
                 {
-                    return opRec.Decode(dasm, wInstr);
+                    return decoder.Decode(dasm, wInstr);
                 }
                 else
                 {
@@ -207,37 +227,42 @@ namespace Reko.Arch.PowerPC
             }
         }
 
-        public class FpuOpRec : Decoder
+        public class FpuDecoder : Decoder
         {
-            private readonly Dictionary<uint, Decoder> fpuOpRecs;
+            private readonly Dictionary<uint, Decoder> decoders;
             private readonly int shift;
             private readonly uint mask;
 
-            public FpuOpRec(int shift, uint mask, Dictionary<uint, Decoder> fpuOpRecs)
+            public FpuDecoder(int shift, uint mask, Dictionary<uint, Decoder> decoders)
             {
                 this.shift = shift;
                 this.mask = mask;
-                this.fpuOpRecs = fpuOpRecs;
+                this.decoders = decoders;
             }
 
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
                 var x = (wInstr >> shift) & mask;
-                if (fpuOpRecs.TryGetValue(x, out Decoder opRec))
+                if (decoders.TryGetValue(x, out Decoder decoder))
                 {
-                    return opRec.Decode(dasm, wInstr);
+                    return decoder.Decode(dasm, wInstr);
                 }
                 else
-                    return new PowerPcInstruction(Opcode.illegal);
+                {
+                    return new PowerPcInstruction(Opcode.illegal)
+                    {
+                        iclass = InstrClass.Invalid
+                    };
+                }
             }
         }
 
-        public class XlOpRecAux : DOpRec
+        public class XlDecoderAux : InstrDecoder
         {
             private readonly Opcode opLink;
 
-            public XlOpRecAux(Opcode opcode, Opcode opLink, string opFmt)
-                : base(opcode, opFmt)
+            public XlDecoderAux(Opcode opcode, Opcode opLink, params Mutator<PowerPcDisassembler> [] mutators)
+                : base(opcode, mutators)
             {
                 this.opLink = opLink;
             }
@@ -247,30 +272,19 @@ namespace Reko.Arch.PowerPC
                 bool link = (wInstr & 1) != 0;
                 var opcode = link ? this.opLink : this.opcode;
                 var iclass = link ? InstrClass.Transfer | InstrClass.Call : InstrClass.Transfer;
-                return dasm.DecodeOperands(opcode, iclass, wInstr, opFmt);
+                foreach (var m in mutators)
+                {
+                    if (!m(wInstr, dasm))
+                        return new PowerPcInstruction(Opcode.illegal)
+                        {
+                            iclass = InstrClass.Invalid
+                        };
+                }
+                return dasm.MakeInstruction(iclass, opcode);
             }
         }
 
-        public class FpuOpRecAux : Decoder
-        {
-            private readonly Opcode opcode;
-            private readonly InstrClass iclass;
-            private readonly string opFmt;
-
-            public FpuOpRecAux(Opcode opcode, string opFmt, InstrClass iclass = InstrClass.Linear)
-            {
-                this.opcode = opcode;
-                this.iclass = iclass;
-                this.opFmt = opFmt;
-            }
-
-            public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
-            {
-                return dasm.DecodeOperands(opcode, iclass, wInstr, opFmt);
-            }
-        }
-
-        public class IOpRec : Decoder
+        public class IDecoder : Decoder
         {
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
@@ -288,7 +302,7 @@ namespace Reko.Arch.PowerPC
             }
         }
 
-        public class BOpRec : Decoder
+        public class BDecoder : Decoder
         {
             private static readonly Opcode[] opcBdnzf =
             {
@@ -463,9 +477,9 @@ namespace Reko.Arch.PowerPC
             }
         }
 
-        public class BclrOpRec : Decoder
+        public class BclrDecoder : Decoder
         {
-            public BclrOpRec()
+            public BclrDecoder()
             {
             }
 
@@ -512,9 +526,9 @@ namespace Reko.Arch.PowerPC
             }
         }
 
-        public class XfxOpRec : DOpRec
+        public class XfxDecoder : InstrDecoder
         {
-            public XfxOpRec(Opcode opcode, string fmt) : base(opcode, fmt)
+            public XfxDecoder(Opcode opcode, params Mutator<PowerPcDisassembler>[] mutators) : base(opcode, mutators)
             {
             }
 
@@ -531,11 +545,11 @@ namespace Reko.Arch.PowerPC
             }
         }
 
-        public class SprOpRec : Decoder
+        public class SprDecoder : Decoder
         {
             private readonly bool to;
 
-            public SprOpRec(bool to)
+            public SprDecoder(bool to)
             {
                 this.to = to;
             }
@@ -565,9 +579,9 @@ namespace Reko.Arch.PowerPC
             }
         }
 
-        public class CmpOpRec : DOpRec
+        public class CmpDecoder : InstrDecoder
         {
-            public CmpOpRec(Opcode op, string format) : base(op, format)
+            public CmpDecoder(Opcode op, params Mutator<PowerPcDisassembler>[] mutators) : base(op, mutators)
             { }
 
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
@@ -582,31 +596,31 @@ namespace Reko.Arch.PowerPC
                 case Opcode.cmpl: op = l ? Opcode.cmpl : Opcode.cmplw; break;
                 case Opcode.cmpli: op = l ? Opcode.cmpli : Opcode.cmplwi; break;
                 }
-                return dasm.DecodeOperands(op, iclass, wInstr, opFmt);
+                return DecodeOperands(wInstr, dasm, iclass, op, mutators);
             }
         }
 
-        public class VXOpRec : Decoder
+        public class VXDecoder : Decoder
         {
-            private Dictionary<uint, Decoder> vxOpRecs;
-            private Dictionary<uint, Decoder> vaOpRecs;
+            private Dictionary<uint, Decoder> vxDecoders;
+            private Dictionary<uint, Decoder> vaDecoders;
 
-            public VXOpRec(Dictionary<uint, Decoder> vxOpRecs, Dictionary<uint, Decoder> vaOpRecs)
+            public VXDecoder(Dictionary<uint, Decoder> vxDecoders, Dictionary<uint, Decoder> vaDecoders)
             {
-                this.vxOpRecs = vxOpRecs;
-                this.vaOpRecs = vaOpRecs;
+                this.vxDecoders = vxDecoders;
+                this.vaDecoders = vaDecoders;
             }
 
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
                 var xOp = wInstr & 0x7FFu;
-                if (vxOpRecs.TryGetValue(xOp, out Decoder opRec))
+                if (vxDecoders.TryGetValue(xOp, out Decoder decoder))
                 {
-                    return opRec.Decode(dasm, wInstr);
+                    return decoder.Decode(dasm, wInstr);
                 }
-                else if (vaOpRecs.TryGetValue(wInstr & 0x3Fu, out opRec))
+                else if (vaDecoders.TryGetValue(wInstr & 0x3Fu, out decoder))
                 {
-                    return opRec.Decode(dasm, wInstr);
+                    return decoder.Decode(dasm, wInstr);
                 }
                 else
                 {
@@ -616,9 +630,9 @@ namespace Reko.Arch.PowerPC
             }
         }
 
-        public class XSOpRec : DOpRec
+        public class XSDecoder : InstrDecoder
         {
-            public XSOpRec(Opcode opcode, string format) : base(opcode, format) { }
+            public XSDecoder(Opcode opcode, params Mutator<PowerPcDisassembler>[] mutators) : base(opcode, mutators) { }
 
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
@@ -628,17 +642,16 @@ namespace Reko.Arch.PowerPC
                     c += 32;
                 instr.op3 = new ImmediateOperand(Constant.Byte((byte)c));
                 return instr;
-
             }
         }
 
-        public class XX3OpRec : Decoder
+        public class XX3Decoder : Decoder
         {
-            private Dictionary<uint, Decoder> decoders;
+            private readonly Dictionary<uint, Decoder> decoders;
 
-            public XX3OpRec(Dictionary<uint, Decoder> xoprecs)
+            public XX3Decoder(Dictionary<uint, Decoder> decoders)
             {
-                this.decoders = xoprecs;
+                this.decoders = decoders;
             }
 
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
@@ -683,7 +696,10 @@ namespace Reko.Arch.PowerPC
 
             public static PowerPcInstruction DecodeVperm128(PowerPcDisassembler dasm, uint wInstr)
             {
-                var instr = dasm.DecodeOperands(Opcode.vperm128, InstrClass.Linear, wInstr, "Wd,Wa,Wb");
+                var instr = Decoder.DecodeOperands(
+                    wInstr, dasm, 
+                    InstrClass.Linear, Opcode.vperm128,
+                    new Mutator<PowerPcDisassembler>[] { Wd, Wa, Wb });
                 instr.op4 = dasm.VRegFromBits((wInstr >> 6) & 7);
                 return instr;
             }

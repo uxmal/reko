@@ -99,38 +99,31 @@ namespace Reko.Arch.PowerPC
                 opcode,
                 setsCR0 ? "." : "");
             writer.WriteOpcode(op);
-            if (op1 != null)
-            {
-                writer.Tab();
-                op1.Write(writer, options);
-                if (op2 != null)
-                {
-                    writer.WriteChar(',');
-                    op2.Write(writer, options);
-                    if (op3 != null)
-                    {
-                        writer.WriteChar(',');
-                        op3.Write(writer, options);
-                        if (op4 != null)
-                        {
-                            writer.WriteChar(',');
-                            op4.Write(writer, options);
-                            if (op5 != null)
-                            {
-                                writer.WriteChar(',');
-                                op5.Write(writer, options);
-                            }
-                        }
-                    }
-                }
-            }
-        }
+            if (op1 == null)
+                return;
+            
+            writer.Tab();
+            op1.Write(writer, options);
+            if (op2 == null)
+                return;
 
-        public uint DefCc()
-        {
-            if (setsCR0)
-                return 0xF;
-            return 0;
+            writer.WriteChar(',');
+            op2.Write(writer, options);
+            if (op3 == null)
+                return;
+
+            writer.WriteChar(',');
+            op3.Write(writer, options);
+            if (op4 == null)
+                return;
+
+            writer.WriteChar(',');
+            op4.Write(writer, options);
+            if (op5 == null)
+                return;
+
+            writer.WriteChar(',');
+            op5.Write(writer, options);
         }
 
         static PowerPcInstruction()

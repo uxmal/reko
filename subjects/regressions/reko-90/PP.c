@@ -18705,8 +18705,8 @@ void fn1483_0ADB()
 {
 }
 
-// 1483:0ADC: void fn1483_0ADC(Register word16 ax, Register byte ch, Register byte cl, Register byte dh, Register byte dl, Register byte bl, Register byte bh, Register word16 bp, Register word16 si, Register word16 di, Register selector es, Register selector ds, Stack word16 wArg00, Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06, Stack word16 wArg08, Stack word16 wArg0A, Stack word16 wArg0C, Stack word16 wArg0E)
-void fn1483_0ADC(word16 ax, byte ch, byte cl, byte dh, byte dl, byte bl, byte bh, word16 bp, word16 si, word16 di, selector es, selector ds, word16 wArg00, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, word16 wArg0A, word16 wArg0C, word16 wArg0E)
+// 1483:0ADC: void fn1483_0ADC(Register word16 ax, Register byte ch, Register byte cl, Register byte dh, Register byte dl, Register byte bl, Register byte bh, Register word16 bp, Register word16 si, Register word16 di, Register selector es, Register selector ds, Register byte FPUF, Stack word16 wArg00, Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06, Stack word16 wArg08, Stack word16 wArg0A, Stack word16 wArg0C, Stack word16 wArg0E)
+void fn1483_0ADC(word16 ax, byte ch, byte cl, byte dh, byte dl, byte bl, byte bh, word16 bp, word16 si, word16 di, selector es, selector ds, byte FPUF, word16 wArg00, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, word16 wArg0A, word16 wArg0C, word16 wArg0E)
 {
 	word16 cx_22 = DPB(cx, ch, 8);
 	word16 bx_12 = DPB(bx, bl, 0);
@@ -18714,17 +18714,18 @@ void fn1483_0ADC(word16 ax, byte ch, byte cl, byte dh, byte dl, byte bl, byte bh
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg8 = <invalid>;
-	selector es_31;
-	int8 Top_34;
-	ST40[Top_34 + 0x00:real64] = Mem0[es_31:fn1483_0D3F(ax, ch, cx_22, dh, dx_19, bl, bx_12, bp, si, di, es, ds, wLoc02, wArg00, wArg02, wArg04, stackArg8, wArg0A, out es_31, out Top_34) + 0xE086:real32] - ST[Top_34 + 0x00:real64];
+	selector es_32;
+	int8 Top_35;
+	ST45[Top_35 + 0x00:real64] = Mem0[es_32:fn1483_0D3F(ax, ch, cx_22, dh, dx_19, bl, bx_12, bp, si, di, es, ds, FPUF, wLoc02, wArg00, wArg02, wArg04, stackArg8, wArg0A, out es_32, out Top_35) + 0xE086:real32] - ST[Top_35 + 0x00:real64];
 }
 
-// 1483:0C11: Register int8 fn1483_0C11(Register byte al, Register word16 cx, Register word16 si, Register word16 di, Register selector es)
-int8 fn1483_0C11(byte al, word16 cx, word16 si, word16 di, selector es)
+// 1483:0C11: Register int8 fn1483_0C11(Register byte al, Register word32 ecx, Register word16 bx, Register word16 bp, Register word16 si, Register word16 di, Register selector es, Register selector ds)
+int8 fn1483_0C11(byte al, word32 ecx, word16 bx, word16 bp, word16 si, word16 di, selector es, selector ds)
 {
+	word16 bx_43 = (word16) ebx;
 	if (al != Mem11[ss:si + 0x00:byte])
 	{
-		word16 ax_28 = DPB(ax, al + 0x01, 0);
+		word32 eax_28 = DPB(eax, al + 0x01, 0);
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
 		// Failed to bind call argument.
@@ -18734,13 +18735,64 @@ int8 fn1483_0C11(byte al, word16 cx, word16 si, word16 di, selector es)
 		word16 stackArg0 = <invalid>;
 		word16 stackArg2 = <invalid>;
 		word16 stackArg4 = <invalid>;
-		return fn1483_0C55(ax_28, ds, stackArg0, stackArg2, stackArg4);
+		return fn1483_0C55((word16) eax_28, ds, stackArg0, stackArg2, stackArg4);
 	}
 	else
 	{
+		word32 ecx_60 = DPB(ecx, cx - 0x01, 0);
 		if (al - 0x8C - (al <u Mem11[ss:si + 0x00:byte]) != 0x00 && cx != 0x01)
-			return fn1483_0C6C(0x55, 0x1955, cx - 0x01, 0x8000, bx, bp, si, di, es, ds);
-		Mem55[es:di + 0x00:word16] = 0x1955;
+		{
+			__daa(0x55, &0x55);
+			word16 dx_68 = <invalid>;
+			word16 bx_65;
+			word16 di_66;
+			selector ds_67;
+			selector es_70;
+			word16 si_71;
+			ui32 dh_ax_152 = SEQ(SLICE(dx_68, byte, 8), fn1483_1BB8(0x55, 0x1955, ecx_60, 0x8000, bx_43, bp, si, di, es, ds, out cx_192, out dl_193, out bx_65, out si_71, out di_66, out es_70, out ds_67)) + SEQ(Mem44[ds_67:si_71 + 5244:byte], Mem44[ds_67:bx_65 + 0x3303:word16]);
+			selector ss_73 = <invalid>;
+			word16 sp_72 = <invalid>;
+			word16 di_79 = di_66 + Mem44[ds_67:bx_65 + 0x00:word16];
+			word16 ax_80 = (word16) dh_ax_152;
+			word16 sp_96 = Mem44[ss_73:sp_72 + 0x00:word16];
+			word16 v23_99 = Mem44[ds_67:ax_80 + 0x020E + di_79:word16] + di_79;
+			Mem100[ds_67:ax_80 + 0x020E + di_79:word16] = v23_99;
+			word32 ecx_69 = <invalid>;
+			word16 cx_102 = (word16) ecx_69;
+			byte al_105 = (byte) (bx_65 - 0x0903 - (SLICE(dh_ax_152, byte, 16) <u 0x00));
+			byte ch_123 = SLICE(cx_102 - 0x01, byte, 8);
+			word32 ecx_135 = DPB(ecx_69, cx_102 - 0x01, 0);
+			if (v23_99 != 0x00 && cx_102 != 0x01)
+			{
+				int8 Top_112;
+				fn1483_0CA0(al_105, Mem100[ss_73:sp_96 + 0x02:word16], Mem100[ss_73:sp_96 + 0x04:word16], Mem100[ss_73:sp_96 + 0x06:word16], out Top_112);
+				return Top_112;
+			}
+			else
+			{
+				word16 ax_120 = Mem100[ds_67:ax_80 + 0x00:word16];
+				Mem122[ss_73:sp_96 + 0x00:word16] = si_71;
+				Mem127[es_70:di_79 + 0x00:byte] = Mem122[ds_67:si_71 + 0x00:byte];
+				word32 ecx_136 = DPB(ecx_135, ch_123 + (byte) ax_120, 8);
+				// Failed to bind call argument.
+				// Please report this issue at https://github.com/uxmal/reko
+				// Failed to bind call argument.
+				// Please report this issue at https://github.com/uxmal/reko
+				// Failed to bind call argument.
+				// Please report this issue at https://github.com/uxmal/reko
+				// Failed to bind call argument.
+				// Please report this issue at https://github.com/uxmal/reko
+				selector stackArg0 = <invalid>;
+				word16 stackArg2 = <invalid>;
+				word16 stackArg4 = <invalid>;
+				word16 stackArg6 = <invalid>;
+				int8 Top_143;
+				fn1483_0C91(ax_120 * 0x02, (byte) ecx_136, (word16) ecx_136, ax_80, si_71 + 0x01, ds_67, stackArg0, stackArg2, stackArg4, stackArg6, out es_201, out Top_143);
+				return Top_143;
+			}
+		}
+		else
+			Mem145[es:di + 0x00:word16] = 0x1955;
 	}
 }
 
@@ -18748,65 +18800,15 @@ int8 fn1483_0C11(byte al, word16 cx, word16 si, word16 di, selector es)
 int8 fn1483_0C55(word16 ax, selector ds, word16 wArg00, word16 wArg02, word16 wArg04)
 {
 	if (Z)
-		return fn1483_0C11((byte) ax, cx, si, di, es);
+		return fn1483_0C11((byte) ax, ecx, bx, bp, si, di, es, ds);
 	return 0x00;
 }
 
-// 1483:0C6C: Register int8 fn1483_0C6C(Register byte al, Register byte ah, Register word32 ecx, Register word16 dx, Register word16 bx, Register word16 bp, Register word16 si, Register word16 di, Register selector es, Register selector ds)
-int8 fn1483_0C6C(byte al, byte ah, word32 ecx, word16 dx, word16 bx, word16 bp, word16 si, word16 di, selector es, selector ds)
+// 1483:0C91: Register word16 fn1483_0C91(Register byte al, Register byte ch, Register byte cl, Register word16 bx, Register word16 si, Register selector ds, Stack selector psegArg00, Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06, Register out ptr16 esOut, Register out ptr16 TopOut)
+word16 fn1483_0C91(byte al, byte ch, byte cl, word16 bx, word16 si, selector ds, selector psegArg00, word16 wArg02, word16 wArg04, word16 wArg06, ptr16 & esOut, ptr16 & TopOut)
 {
-	word16 ax_14 = DPB(ax, al, 0);
-	word32 ecx_19 = DPB(ecx, cx, 0);
-	__daa(al, &al);
-	word16 bx_25;
-	word16 di_26;
-	selector ds_27;
-	selector es_30;
-	word16 si_31;
-	word16 ax_23 = fn1483_1BB8(al, ax_14, ecx_19, dx, bx, bp, si, di, es, ds, out cx_134, out dl_135, out bx_25, out si_31, out di_26, out es_30, out ds_27);
-	word16 dx_28 = <invalid>;
-	selector ss_33 = <invalid>;
-	word16 sp_32 = <invalid>;
-	word16 di_40 = di_26 + Mem0[ds_27:bx_25 + 0x00:word16];
-	word16 ax_41 = (word16) (SEQ(SLICE(dx_28, byte, 8), ax_23) + SEQ(Mem0[ds_27:si_31 + 5244:byte], Mem0[ds_27:bx_25 + 0x3303:word16]));
-	word16 sp_59 = Mem0[ss_33:sp_32 + 0x00:word16];
-	word16 v17_62 = Mem0[ds_27:ax_41 + 0x020E + di_40:word16] + di_40;
-	Mem63[ds_27:ax_41 + 0x020E + di_40:word16] = v17_62;
-	word32 ecx_29 = <invalid>;
-	word16 cx_65 = (word16) ecx_29;
-	byte ch_85 = SLICE(cx_65 - 0x01, byte, 8);
-	word32 ecx_102 = DPB(ecx_29, cx_65 - 0x01, 0);
-	if (v17_62 != 0x00 && cx_65 != 0x01)
-		return fn1483_0CA0(Mem63[ss_33:sp_59 + 0x02:word16], Mem63[ss_33:sp_59 + 0x04:word16], Mem63[ss_33:sp_59 + 0x06:word16]);
-	word16 ax_82 = Mem63[ds_27:ax_41 + 0x00:word16];
-	Mem84[ss_33:sp_59 + 0x00:word16] = si_31;
-	Mem89[es_30:di_40 + 0x00:byte] = Mem84[ds_27:si_31 + 0x00:byte];
-	word32 ecx_103 = DPB(ecx_102, ch_85 + (byte) ax_82, 8);
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	selector stackArg0 = <invalid>;
-	word16 stackArg2 = <invalid>;
-	word16 stackArg4 = <invalid>;
-	word16 stackArg6 = <invalid>;
-	int8 Top_105;
-	fn1483_0C91(ax_82 * 0x02, (byte) ecx_103, (word16) ecx_103, ax_41, bp_24, si_31 + 0x01, di_40 + 0x01, ds_27, stackArg0, stackArg2, stackArg4, stackArg6, out es_140, out Top_105);
-	return Top_105;
-}
-
-// 1483:0C91: Register word16 fn1483_0C91(Register byte al, Register byte ch, Register byte cl, Register word16 bx, Register word16 bp, Register word16 si, Register word16 di, Register selector ds, Stack selector psegArg00, Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06, Register out ptr16 esOut, Register out ptr16 TopOut)
-word16 fn1483_0C91(byte al, byte ch, byte cl, word16 bx, word16 bp, word16 si, word16 di, selector ds, selector psegArg00, word16 wArg02, word16 wArg04, word16 wArg06, ptr16 & esOut, ptr16 & TopOut)
-{
-	byte ah_46 = SLICE(ax, byte, 8);
 	byte al_12 = (byte) ax;
-	word16 ax_49 = DPB(ax, ah_46, 8);
 	word16 cx_23 = DPB(cx, ch, 8);
-	byte bl_45 = (byte) bx;
 	byte al_14 = al_12 + ch;
 	word16 ax_19 = DPB(ax, al_14, 0);
 	if (!OVERFLOW(al_14))
@@ -18824,94 +18826,103 @@ word16 fn1483_0C91(byte al, byte ch, byte cl, word16 bx, word16 bp, word16 si, w
 	}
 	else if (Mem0[ds:bx + si:word16] *s 0x18 == 0x00 && cx_23 != 0x01)
 	{
-		word16 dx_39 = Mem0[ds:si + 5950:word16] *s 0x0C62;
-		Mem43[ds:bx + 0x00:byte] = v13;
-		byte bl_47 = bl_45 + ah_46;
-		word16 bx_51 = DPB(bx, bl_47, 0);
-		Mem53[ds:bx_51 - 0x56 + di:byte] = __rol(Mem43[ds:bx_51 - 0x56 + di:byte], 226);
-		Mem55[ss:bp + 0x7B:word16] = __ror(Mem53[ss:bp + 0x7B:word16], 0x01);
-		Mem60[ds:bx_51 + 0x00:byte] = v21;
-		word16 bx_67 = DPB(bx, bl_47 & Mem60[ds:bx_51 + 0x00:byte], 0);
-		Mem64[psegArg00:di + 0x00:byte] = (byte) (ax_49 - 12972);
-		Mem70[ds:bx_67 + 0x00:word16] = v23;
-		Mem75[ds:di + 0x15:word16] = ax_49 - ~0x4234;
-		word16 bx_82;
-		int8 Top_83;
-		fn1483_4FE0();
-		Mem87[ds:~0x081C:word16] = v26;
-		Mem91[ds:bx_82 + (di + 0x01):word16] = v27;
-		__inw(0x8B);
+		int8 Top_43;
+		word16 di_41 = fn1483_0CA0(al_14, wArg02, wArg04, wArg06, out Top_43);
 		esOut = <invalid>;
-		TopOut = Top_83;
-		return di + 0x01;
+		TopOut = Top_43;
+		return di_41;
 	}
 	else
 	{
-		Mem106[ds:bx + 0x2203 + si:word16] = Mem0[ds:bx + 0x2203 + si:word16] + (cx_23 - 0x01);
-		int8 Top_114;
-		word16 di_112 = fn1483_0CA1(wArg02, wArg04, wArg06, out Top_114);
+		Mem49[ds:bx + 0x2203 + si:word16] = Mem0[ds:bx + 0x2203 + si:word16] + (cx_23 - 0x01);
+		int8 Top_57;
+		word16 di_55 = fn1483_0CA0(al_14, wArg02, wArg04, wArg06, out Top_57);
 		esOut = <invalid>;
-		TopOut = Top_114;
-		return di_112;
+		TopOut = Top_57;
+		return di_55;
 	}
 }
 
-// 1483:0CA0: Register int8 fn1483_0CA0(Stack word16 wArg00, Stack word16 wArg02, Stack word16 wArg04)
-int8 fn1483_0CA0(word16 wArg00, word16 wArg02, word16 wArg04)
+// 1483:0CA0: Register word16 fn1483_0CA0(Register byte al, Stack word16 wArg00, Stack word16 wArg02, Stack word16 wArg04, Register out ptr16 TopOut)
+word16 fn1483_0CA0(byte al, word16 wArg00, word16 wArg02, word16 wArg04, ptr16 & TopOut)
 {
-	int8 Top_17;
-	fn1483_0CA1(wArg00, wArg02, wArg04, out Top_17);
-	return Top_17;
-}
-
-// 1483:0CA1: Register word16 fn1483_0CA1(Stack word16 wArg00, Stack word16 wArg02, Stack word16 wArg04, Register out ptr16 TopOut)
-word16 fn1483_0CA1(word16 wArg00, word16 wArg02, word16 wArg04, ptr16 & TopOut)
-{
-	Mem90[ds:bx + di:word16] = Mem88[ds:bx + di:word16] + si;
+	ax_96 = DPB(ax, al, 0);
 	fn1483_FD4E();
-	ah_111 = SLICE(ax_97, byte, 8);
-	bl_110 = (byte) bx_94;
-	ax_113 = DPB(ax_97, ah_111, 8);
-	dx_104 = Mem90[ds:si + 5950:word16] *s 0x0C62;
-	Mem108[ds:bx_94 + 0x00:byte] = v13;
-	bl_112 = bl_110 + ah_111;
-	bx_115 = DPB(bx_94, bl_112, 0);
-	Mem117[ds:bx_115 - 0x56 + di:byte] = __rol(Mem108[ds:bx_115 - 0x56 + di:byte], 226);
-	Mem119[ss:bp + 0x7B:word16] = __ror(Mem117[ss:bp + 0x7B:word16], 0x01);
-	Mem124[ds:bx_115 + 0x00:byte] = v21;
-	bx_131 = DPB(bx_94, bl_112 & Mem124[ds:bx_115 + 0x00:byte], 0);
-	Mem128[es:di + 0x00:byte] = (byte) (ax_113 - 12972);
-	Mem134[ds:bx_131 + 0x00:word16] = v23;
-	Mem139[ds:di + 0x15:word16] = ax_113 - ~0x4234;
+	ah_115 = SLICE(ax_100, byte, 8);
+	bl_114 = (byte) bx_101;
+	ax_117 = DPB(ax_100, ah_115, 8);
+	dx_108 = Mem0[ds:si + 5950:word16] *s 0x0C62;
+	Mem112[ds:bx_101 + 0x00:byte] = v22;
+	bl_116 = bl_114 + ah_115;
+	bx_119 = DPB(bx_101, bl_116, 0);
+	Mem121[ds:bx_119 - 0x56 + di:byte] = __rol(Mem112[ds:bx_119 - 0x56 + di:byte], 226);
+	Mem123[ss:bp + 0x7B:word16] = __ror(Mem121[ss:bp + 0x7B:word16], 0x01);
+	Mem128[ds:bx_119 + 0x00:byte] = v28;
+	bx_135 = DPB(bx_101, bl_116 & Mem128[ds:bx_119 + 0x00:byte], 0);
+	Mem132[es:di + 0x00:byte] = (byte) (ax_117 - 12972);
+	Mem138[ds:bx_135 + 0x00:word16] = v29;
+	Mem143[ds:di + 0x15:word16] = ax_117 - ~0x4234;
 	fn1483_4FE0();
-	Mem151[ds:~0x081C:word16] = v26;
-	Mem155[ds:bx_143 + (di + 0x01):word16] = v27;
+	Mem155[ds:~0x081C:word16] = v31;
+	Mem159[ds:bx_148 + (di + 0x01):word16] = v32;
 	__inw(0x8B);
-	TopOut = Top_147;
+	TopOut = Top_151;
 	return <invalid>;
 }
 
-// 1483:0CFA: Register word16 fn1483_0CFA(Register byte al, Register byte ch, Register byte bl, Register word16 si, Register selector ds, Stack selector psegArg00, Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06, Stack word16 wArg08, Stack word16 wArg0E, Register out ptr16 esOut, Register out ptr16 TopOut)
-word16 fn1483_0CFA(byte al, byte ch, byte bl, word16 si, selector ds, selector psegArg00, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, word16 wArg0E, ptr16 & esOut, ptr16 & TopOut)
+// 1483:0CED: Register word16 fn1483_0CED(Register word16 ax, Register word16 bx, Register word16 si, Register word16 di, Register selector es, Register selector ds, Stack word16 wArg00, Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06, Stack word16 wArg08, Stack word16 wArg0A, Stack word16 wArg10, Register out ptr16 esOut, Register out ptr16 TopOut)
+word16 fn1483_0CED(word16 ax, word16 bx, word16 si, word16 di, selector es, selector ds, word16 wArg00, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, word16 wArg0A, word16 wArg10, ptr16 & esOut, ptr16 & TopOut)
+{
+	byte bl_17 = (byte) bx;
+	byte al_30 = (byte) ax;
+	word16 si_8 = si + Mem0[ds:di + 0x00:word16];
+	word16 v8_10 = Mem0[ds:bx + ~0x081D + si_8:word16] + fp;
+	Mem11[ds:bx + ~0x081D + si_8:word16] = v8_10;
+	Mem15[es:di + 0x00:word16] = ax;
+	bool C_26 = SLICE(cond(v8_10), bool, 1);
+	word16 bx_24 = DPB(bx, bl_17 + 0x01, 0);
+	if (bl_17 != 0x01)
+	{
+		esOut = es;
+		TopOut = 0x00;
+		return di + 0x02;
+	}
+	else
+	{
+		Mem27[ds:bx_24 + si_8:byte] = __rcr(Mem15[ds:bx_24 + si_8:byte], 0xAC, C_26);
+		selector es_37;
+		int8 Top_40;
+		word16 di_35 = fn1483_0CFC(al_30, bl_17 + 0x01, wArg02, wArg04, wArg06, wArg08, wArg0A, wArg10, out es_37, out Top_40);
+		esOut = es_37;
+		TopOut = Top_40;
+		return di_35;
+	}
+}
+
+// 1483:0CFA: Register word16 fn1483_0CFA(Register byte al, Register byte ch, Register byte bl, Register word16 si, Register selector ds, Stack word16 wArg00, Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06, Stack word16 wArg08, Stack word16 wArg0E, Register out ptr16 esOut, Register out ptr16 TopOut)
+word16 fn1483_0CFA(byte al, byte ch, byte bl, word16 si, selector ds, word16 wArg00, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, word16 wArg0E, ptr16 & esOut, ptr16 & TopOut)
 {
 	Mem10[ds:si + 55346:byte] = Mem0[ds:si + 55346:byte] - ch - C;
 	selector es_21;
 	int8 Top_24;
-	word16 di_19 = fn1483_0CFC(al, bl, psegArg00, wArg02, wArg04, wArg06, wArg08, wArg0E, out es_21, out Top_24);
+	word16 di_19 = fn1483_0CFC(al, bl, wArg00, wArg02, wArg04, wArg06, wArg08, wArg0E, out es_21, out Top_24);
 	esOut = es_21;
 	TopOut = Top_24;
 	return di_19;
 }
 
-// 1483:0CFC: Register word16 fn1483_0CFC(Register byte al, Register byte bl, Stack selector psegArg00, Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06, Stack word16 wArg08, Stack word16 wArg0E, Register out ptr16 esOut, Register out ptr16 TopOut)
-word16 fn1483_0CFC(byte al, byte bl, selector psegArg00, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, word16 wArg0E, ptr16 & esOut, ptr16 & TopOut)
+// 1483:0CFC: Register word16 fn1483_0CFC(Register byte al, Register byte bl, Stack word16 wArg00, Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06, Stack word16 wArg08, Stack word16 wArg0E, Register out ptr16 esOut, Register out ptr16 TopOut)
+word16 fn1483_0CFC(byte al, byte bl, word16 wArg00, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, word16 wArg0E, ptr16 & esOut, ptr16 & TopOut)
 {
 	bx_52 = DPB(bx, bl ^ al, 0);
 	ax_57 = DPB(ax, Mem0[ds:bx_52 + di:byte], 0);
 	Mem55[ss:bp + si:word16] = ~0x2E00;
 	if (cx == 0x00)
 	{
-		di_68 = fn1483_0C91(ax_57, ch_58, cx_59, bx_52, bp, si, di, ds, psegArg00, wArg02, wArg04, wArg06, out es_64, out Top_66);
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		stackArg0 = <invalid>;
+		di_68 = fn1483_0C91(ax_57, ch_58, cx_59, bx_52, si, ds, stackArg0, wArg02, wArg04, wArg06, out es_64, out Top_66);
 		esOut = es_64;
 		TopOut = Top_66;
 		return di_68;
@@ -18927,7 +18938,7 @@ word16 fn1483_0CFC(byte al, byte bl, selector psegArg00, word16 wArg02, word16 w
 		stackArg2 = <invalid>;
 		stackArg10 = <invalid>;
 		stackArg12 = <invalid>;
-		di_77 = fn1483_0D06(ax_57, dx, bx_52, ds, fs, psegArg00, stackArg2, wArg04, wArg08, stackArg10, stackArg12, wArg0E);
+		di_77 = fn1483_0D06(ax_57, dx, bx_52, ds, fs, wArg00, stackArg2, wArg04, wArg08, stackArg10, stackArg12, wArg0E);
 		esOut = es;
 		TopOut = 0x00;
 		return di_77;
@@ -18947,8 +18958,8 @@ word16 fn1483_0D06(word16 ax, word16 dx, word16 bx, selector ds, selector fs, wo
 	return di;
 }
 
-// 1483:0D3F: Register word16 fn1483_0D3F(Register word16 ax, Register byte ch, Register byte cl, Register byte dh, Register byte dl, Register byte bl, Register byte bh, Register word16 bp, Register word16 si, Register word16 di, Register selector es, Register selector ds, Stack word16 wArg00, Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06, Stack word16 wArg08, Stack word16 wArg0C, Register out ptr16 esOut, Register out ptr16 TopOut)
-word16 fn1483_0D3F(word16 ax, byte ch, byte cl, byte dh, byte dl, byte bl, byte bh, word16 bp, word16 si, word16 di, selector es, selector ds, word16 wArg00, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, word16 wArg0C, ptr16 & esOut, ptr16 & TopOut)
+// 1483:0D3F: Register word16 fn1483_0D3F(Register word16 ax, Register byte ch, Register byte cl, Register byte dh, Register byte dl, Register byte bl, Register byte bh, Register word16 bp, Register word16 si, Register word16 di, Register selector es, Register selector ds, Register byte FPUF, Stack word16 wArg00, Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06, Stack word16 wArg08, Stack word16 wArg0C, Register out ptr16 esOut, Register out ptr16 TopOut)
+word16 fn1483_0D3F(word16 ax, byte ch, byte cl, byte dh, byte dl, byte bl, byte bh, word16 bp, word16 si, word16 di, selector es, selector ds, byte FPUF, word16 wArg00, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, word16 wArg0C, ptr16 & esOut, ptr16 & TopOut)
 {
 	byte al_13 = (byte) ax;
 	if (P)
@@ -18960,127 +18971,235 @@ word16 fn1483_0D3F(word16 ax, byte ch, byte cl, byte dh, byte dl, byte bl, byte 
 		TopOut = Top_23;
 		return di_18;
 	}
+	ui16 ax_ch_503 = SEQ(DPB(ax, al_13 + ch, 0), ch) - SEQ(64616, Mem7[ds:(bx_33 + 0x02) + si:byte]);
+	byte ch_34 = (byte) ax_ch_503;
+	word16 ax_38 = SLICE(ax_ch_503, word16, 8);
+	word16 bx_33 = DPB(bx, 0xB4, 0);
+	word16 cx_104 = DPB(cx, ch_34, 8);
+	cx_104 = DPB(cx, ch_34, 8);
+	word16 cx_106 = DPB(cx_104, ch_34, 8);
+	byte ah_62 = SLICE(ax_38, byte, 8);
+	word16 dx_90 = DPB(dx, dh ^ 0x17, 8);
+	if ((dh ^ 0x17) < 0x00)
+	{
+		// Failed to bind call argument.
+		// Please report this issue at https://github.com/uxmal/reko
+		word16 stackArg0 = <invalid>;
+		int8 Top_51;
+		selector es_56;
+		word16 di_49 = fn1483_0CED(ax_38, bx_33, si, di, es, ds, stackArg0, ax, wArg00, wArg02, wArg04, wArg06, wArg0C, out es_56, out Top_51);
+		esOut = es_56;
+		TopOut = Top_51;
+		return di_49;
+	}
+	word16 ax_96 = DPB(ax_38, ah_62 + Mem40[ds:di + 0x00:byte], 8);
+	word16 v19_68 = Mem67[ds:bx_33 + 0x43 + si:word16];
+	Mem70[ds:bx_33 + 0x43 + si:word16] = bp;
+	Mem73[ds:di + 0x00:byte] = Mem70[ds:di + 0x00:byte] << 0x68;
+	word16 v22_75 = -Mem73[ss:v19_68 - 0x06 + 0x00:word16];
+	Mem76[ss:v19_68 - 0x06 + 0x00:word16] = v22_75;
+	word16 bp_186 = v19_68;
+	if (OVERFLOW(v22_75))
+		__syscall(0x04);
+	bool S_403;
+	Mem85[ds:si + 0x5C87:byte] = ch_34;
+	word16 sp_94;
+	word16 ax_97;
+	word16 cx_107;
+	word16 bx_109;
+	word16 dx_110;
+	int8 Top_117;
+	byte SCZDOP_120;
+	fn1483_8A82();
+	Mem123[ss:sp_94 - 0x02 + 0x00:word16] = ax_97;
+	Mem125[ss:sp_94 - 0x04 + 0x00:word16] = cx_107;
+	Mem127[ss:sp_94 - 0x06 + 0x00:word16] = dx_110;
+	Mem129[ss:sp_94 - 0x08 + 0x00:word16] = bx_109;
+	Mem131[ss:sp_94 - 0x0A + 0x00:word16] = sp_94;
+	Mem133[ss:sp_94 - 0x0C + 0x00:word16] = v19_68;
+	Mem135[ss:sp_94 - 0x0E + 0x00:word16] = si;
+	Mem137[ss:sp_94 - 0x0010 + 0x00:word16] = di;
+	word16 bx_139 = bx_109 + Mem137[ds:(bx_109 - 121) + di:word16] + SCZDOP_120;
+	byte dh_141 = SLICE(dx_110, byte, 8);
+	Mem144[ss:v19_68 + 0xF512 + di:byte] = Mem137[ss:v19_68 + 0xF512 + di:byte] + dh_141 + (bx_139 <u 0x00);
+	Mem147[ds:bx_139 + 0x7D:byte] = Mem144[ds:bx_139 + 0x7D:byte] & (byte) ax_97;
+	byte ch_153 = SLICE(cx_107, byte, 8);
+	word16 ax_160 = __aad(si);
+	word16 ax_156 = DPB(ax_97 - 0x8747, (byte) (ax_97 - 0x8747) + ch_153 + (ax_97 <u 0x8747), 0);
+	word16 v31_161 = Mem147[ds:ax_156 + ~0x66A2:word16];
+	Mem162[ds:ax_156 + ~0x66A2:word16] = ax_156;
+	Mem166[ss:sp_94 - 0x0012 + 0x00:word16] = sp_94 - 0x0010;
+	word16 bx_173 = bx_139 + Mem166[ds:bx_139 + v31_161:word16];
+	byte al_167 = (byte) ax_160;
+	byte bh_384 = SLICE(bx_173, byte, 8);
+	byte al_174 = al_167 + 0x2A + ch_153;
+	byte cl_189 = (byte) (cx_107 - 0x01);
+	byte ah_379 = SLICE(ax_160, byte, 8);
+	word16 si_163 = v31_161;
+	word16 dx_194 = DPB(dx_110, dh_141 - SLICE(bx_139, byte, 8) - (al_167 <u 0x2A), 8);
+	byte bl_179 = (byte) bx_173;
+	bx_173 = DPB(bx_173, bh_384, 8);
+	word16 ax_227 = DPB(ax_160, al_174, 0);
+	al_167 = al_174;
+	word16 sp_176 = sp_94 - 0x0010;
+	word16 cx_219 = DPB(DPB(cx_107 - 0x01, cl_189, 0), cl_189, 0);
+	if (!(sp_94 - 0x0012) || cx_107 == 0x01)
+	{
+		byte v36_381 = Mem166[ds:bx_173 + 0x28 + di:byte] - ah_379 - (sp_94 - 0x0012);
+		Mem382[ds:bx_173 + 0x28 + di:byte] = v36_381;
+		Mem387[ds:v31_161 + 0x5A:byte] = Mem382[ds:v31_161 + 0x5A:byte] - bh_384 - (v36_381 <u 0x00);
+	}
 	else
 	{
-		ui16 ax_ch_297 = SEQ(DPB(ax, al_13 + ch, 0), ch) - SEQ(64616, Mem7[ds:(bx_33 + 0x02) + si:byte]);
-		byte ch_34 = (byte) ax_ch_297;
-		word16 ax_38 = SLICE(ax_ch_297, word16, 8);
-		word16 bx_33 = DPB(bx, 0xB4, 0);
-		word16 cx_118 = DPB(cx, ch_34, 8);
-		cx_118 = DPB(cx, ch_34, 8);
-		word16 cx_125 = DPB(cx_118, ch_34, 8);
-		byte al_66 = (byte) ax_38;
-		byte ah_81 = SLICE(ax_38, byte, 8);
-		word16 dx_109 = DPB(dx, dh ^ 0x17, 8);
-		if ((dh ^ 0x17) < 0x00)
+		byte v37_180 = Mem166[ds:bx_173 + v31_161:byte] - bl_179;
+		Mem181[ds:bx_173 + v31_161:byte] = v37_180;
+		byte CZ_184 = SLICE(cond(v37_180), bool, 2);
+		if (v37_180 < 0x00)
 		{
-			word16 si_47 = si + Mem40[ds:di + 0x00:word16];
-			word16 v37_48 = Mem40[ds:bx_33 + ~0x081D + si_47:word16] + (fp - 0x04);
-			Mem49[ds:bx_33 + ~0x081D + si_47:word16] = v37_48;
-			Mem52[es:di + 0x00:word16] = ax_38;
-			bool C_62 = SLICE(cond(v37_48), bool, 1);
-			word16 bx_60 = DPB(bx, 181, 0);
-			if (true)
+			while (true)
 			{
-				esOut = es;
-				TopOut = 0x00;
-				return di + 0x02;
-			}
-			else
-			{
-				Mem63[ds:bx_60 + si_47:byte] = __rcr(Mem52[ds:bx_60 + si_47:byte], 0xAC, C_62);
-				selector es_73;
-				int8 Top_76;
-				word16 di_71 = fn1483_0CFC(al_66, 181, ax, wArg00, wArg02, wArg04, wArg06, wArg0C, out es_73, out Top_76);
-				esOut = es_73;
-				TopOut = Top_76;
-				return di_71;
-			}
-		}
-		else
-		{
-			word16 ax_115 = DPB(ax_38, ah_81 + Mem40[ds:di + 0x00:byte], 8);
-			word16 v19_87 = Mem86[ds:bx_33 + 0x43 + si:word16];
-			Mem89[ds:bx_33 + 0x43 + si:word16] = bp;
-			Mem92[ds:di + 0x00:byte] = Mem89[ds:di + 0x00:byte] << 0x68;
-			word16 v22_94 = -Mem92[ss:v19_87 - 0x06 + 0x00:word16];
-			Mem95[ss:v19_87 - 0x06 + 0x00:word16] = v22_94;
-			if (OVERFLOW(v22_94))
-				__syscall(0x04);
-			Mem104[ds:si + 0x5C87:byte] = ch_34;
-			word16 sp_113;
-			word16 ax_116;
-			word16 cx_126;
-			word16 bx_128;
-			word16 dx_129;
-			int8 Top_136;
-			byte SCZDOP_137;
-			fn1483_8A82();
-			Mem140[ss:sp_113 - 0x02 + 0x00:word16] = ax_116;
-			Mem142[ss:sp_113 - 0x04 + 0x00:word16] = cx_126;
-			Mem144[ss:sp_113 - 0x06 + 0x00:word16] = dx_129;
-			Mem146[ss:sp_113 - 0x08 + 0x00:word16] = bx_128;
-			Mem148[ss:sp_113 - 0x0A + 0x00:word16] = sp_113;
-			Mem150[ss:sp_113 - 0x0C + 0x00:word16] = v19_87;
-			Mem152[ss:sp_113 - 0x0E + 0x00:word16] = si;
-			Mem154[ss:sp_113 - 0x0010 + 0x00:word16] = di;
-			word16 bx_156 = bx_128 + Mem154[ds:(bx_128 - 121) + di:word16] + SCZDOP_137;
-			Mem161[ss:v19_87 + 0xF512 + di:byte] = Mem154[ss:v19_87 + 0xF512 + di:byte] + SLICE(dx_129, byte, 8) + (bx_156 <u 0x00);
-			Mem164[ds:bx_156 + 0x7D:byte] = Mem161[ds:bx_156 + 0x7D:byte] & (byte) ax_116;
-			word16 ax_177 = __aad(si);
-			word16 ax_173 = DPB(ax_116 - 0x8747, (byte) (ax_116 - 0x8747) + SLICE(cx_126, byte, 8) + (ax_116 <u 0x8747), 0);
-			word16 v31_178 = Mem164[ds:ax_173 + ~0x66A2:word16];
-			Mem179[ds:ax_173 + ~0x66A2:word16] = ax_173;
-			Mem183[ss:sp_113 - 0x0012 + 0x00:word16] = sp_113 - 0x0010;
-			bx_190 = bx_156 + Mem183[ds:bx_156 + v31_178:word16];
-			byte bh_205 = SLICE(bx_190, byte, 8);
-			byte al_184 = (byte) ax_177;
-			byte ah_200 = SLICE(ax_177, byte, 8);
-			byte bl_196 = (byte) bx_190;
-			word16 bx_190 = DPB(bx_190, bh_205, 8);
-			word16 sp_193 = sp_113 - 0x0010;
-			byte cl_237 = (byte) (cx_126 - 0x01);
-			if (!(sp_113 - 0x0012) || cx_126 == 0x01)
-			{
-				byte v36_202 = Mem183[ds:bx_190 + 0x28 + di:byte] - ah_200 - (sp_113 - 0x0012);
-				Mem203[ds:bx_190 + 0x28 + di:byte] = v36_202;
-				Mem208[ds:v31_178 + 0x5A:byte] = Mem203[ds:v31_178 + 0x5A:byte] - bh_205 - (v36_202 <u 0x00);
-			}
-			else
-				Mem198[ds:bx_190 + v31_178:byte] = Mem183[ds:bx_190 + v31_178:byte] - bl_196;
-			byte v40_216 = Mem215[ds:di + 0x2D:byte] - (al_184 | 0x3F);
-			Mem217[ds:di + 0x2D:byte] = v40_216;
-			Mem221[es:di + 0x00:byte] = al_184 | 0x3F;
-			if (v40_216 < 0x00)
-			{
-				Mem224[es:di + 0x01:byte] = al_184 | 0x3F;
-				if (v40_216 >= 0x00)
+				byte dl_237 = (byte) dx_194;
+				dx_194 = DPB(dx_194, dl_237, 0);
+				word16 dx_336 = DPB(dx_194, dl_237, 0);
+				word16 cx_220 = DPB(cx_219, cl_189, 0);
+				word16 cx_221 = DPB(cx_219, cl_189, 0);
+				if (!CZ_184)
+					break;
+				Mem191[ss:bp_186 + di:byte] = Mem188[ss:bp_186 + di:byte] ^ cl_189;
+				S_403 = SLICE(cond(Mem191[ss:bp_186 + di:byte]), bool, 0);
+				__inw(dx_194);
+				if (Mem191[ss:bp_186 + di:byte] != 0x00)
+					goto l1483_0DA8;
+				word16 cx_489;
+				ST199[Top_117 + 0x00:real64] = __rndint(ST198[Top_117 + 0x00:real64]);
+				word16 sp_202 = sp_176 + 0x02;
+				es = Mem191[ss:sp_176 + 0x00:selector];
+				Mem211[ss:sp_202 - 414 + 0x00:word16] = sp_202 - 0x1C;
+				++si_163;
+				byte ah_216 = SLICE(sp_202 + 36356, byte, 8) | Mem211[ss:(sp_202 + 0x0BE9) + si_163:byte];
+				++bx_173;
+				ax_227 = DPB(sp_202 + 36356, ah_216, 8);
+				cl_189 = (byte) (cx_221 - 0x01);
+				byte ch_261 = SLICE(cx_221 - 0x01, byte, 8);
+				ds = bx_173;
+				bp_186 = sp_202 - 0x1C;
+				byte bl_224 = (byte) bx_173;
+				sp_176 = sp_202 - 414;
+				byte al_260 = (byte) ax_227;
+				cx_219 = DPB(cx_221 - 0x01, cl_189, 0);
+				word16 cx_266 = DPB(cx_489, ch_261, 8);
+				if (ah_216 != 0x00 || cx_221 == 0x01)
 				{
-					Mem232[ss:sp_113 - 0x0012 + 0x00:word16] = cs;
-					Mem235[ss:0x0B01:word16] = es;
-					Mem239[ds:0x8C00:byte] = Mem235[ds:0x8C00:byte] + cl_237;
-					Mem243[ss:v19_87 + 0x8CC3:word16] = __ror(Mem239[ss:v19_87 + 0x8CC3:word16], cl_237);
-					esOut = es;
-					TopOut = Top_136;
-					return di + 0x02;
+					word16 ax_340;
+					Mem230[bx_173:bx_173 + si_163:word16] = Mem211[bx_173:bx_173 + si_163:word16] + ax_227;
+					Mem233[ss:sp_202 - 0x08 + 0x00:byte] = Mem230[bx_173:si_163 + 0x00:byte];
+					Mem236[ss:sp_202 - 0x07 + 0x00:word16] = 0x00;
+					Mem239[ss:sp_202 + 0x0DFA:byte] = v56_238;
+					Mem242[ss:sp_202 - 0x01A0 + 0x00:word16] = es;
+					Mem243[ss:sp_202 - 0x18 + 0x00:word16] = ss;
+					ui16 v57_v56_504 = SEQ(Mem243[ss:sp_202 + 0x011B:byte], Mem236[ss:sp_202 + 0x0DFA:byte]) + SEQ(232, dl_237);
+					Mem246[ss:sp_202 + 0x011B:byte] = SLICE(v57_v56_504, byte, 8);
+					Mem252[ss:sp_202 - 0x01A2 + 0x00:word16] = cs;
+					byte cl_254 = cl_189 - Mem252[bx_173:si_163 + 0x5F:byte];
+					Mem256[bx_173:si_163 + 25415:byte] = Mem252[bx_173:si_163 + 25415:byte] ^ cl_254;
+					Mem259[ss:sp_202 - 0x01A4 + 0x00:word16] = si_163 + 0x01;
+					byte al_262 = al_260 | ch_261;
+					word16 si_232 = si_163 + 0x01;
+					word16 di_234 = 0x00;
+					byte v56_238 = (byte) v57_v56_504;
+					cx_489 = DPB(cx_221 - 0x01, cl_254, 0);
+					word16 ax_272 = DPB(ax_227, al_262, 0);
+					word16 ax_341 = DPB(ax_340, al_262, 0);
+					if (al_262 == 0x00)
+					{
+						while (cx_266 != 0x00)
+						{
+							word16 si_301 = si_232 + 0x02;
+							word16 cx_322;
+							word16 ax_314 = DPB(__aad(Mem270[bx_173:si_232 + 0x00:word16] + dx_336), 0x00, 8);
+							do
+							{
+								ax_314 = DPB(ax_680, Mem310[bx_173:si_301 + 0x00:byte], 0);
+								di_234 += ax_314;
+								Mem320[es:di_234 + 0x00:word16] = Mem310[es:di_234 + 0x00:word16] + dx_336;
+								++si_301;
+								--cx_322;
+								ax_680 = ax_314;
+							} while (cx_322 != 0x00);
+							al_262 = Mem320[bx_173:si_301 + 0x00:byte];
+							ax_272 = DPB(ax_680, al_262, 0);
+							si_232 = si_301 + 0x01;
+							cx_266 = DPB(cx_322, al_262, 0);
+						}
+						word16 si_271 = Mem270[bx_173:0x9004:word16];
+						Mem276[bx_173:0x0300:word16] = Mem270[bx_173:0x0300:word16] + DPB(ax_272, al_262 | 0x20, 0);
+						__cli();
+						Mem279[bx_173:0x8602:word16] = Mem276[bx_173:0x8602:word16] + dx_336;
+						int8 Top_296;
+						fn3024_8E10();
+						esOut = es;
+						TopOut = Top_296;
+						return di_234;
+					}
+					else
+					{
+						Mem328[ss:sp_202 - 422 + 0x00:word16] = cs;
+						ax_340 = DPB(ax_272, FPUF, 8);
+						if ((ch_261 | al_262) == 0x00)
+							__outw(dx_336, ax_341 + 0xE80C);
+						esOut = es;
+						TopOut = Top_117;
+						return 0x00;
+					}
 				}
-				Mem247[ss:v19_87 + v31_178:word16] = -Mem224[ss:v19_87 + v31_178:word16];
-				__cli();
-				Mem251[ds:bx_190 + 0x45 + (di + 0x01):word16] = Mem247[ss:sp_113 - 0x0010 + 0x00:word16];
-				Mem257[ds:bx_190 + 0xC079 + v31_178:word16] = Mem251[ds:bx_190 + 0xC079 + v31_178:word16] + (v19_87 + 0x01);
-				sp_193 = sp_113 - 0x0C;
+				Mem226[bx_173:bx_173 + si_163:byte] = Mem211[bx_173:bx_173 + si_163:byte] + bl_224;
+				CZ_184 = SLICE(cond(ax_227 - (sp_202 - 0x1C)), bool, 2);
 			}
-			Mem270[ds:bx_190 + (di + 0x01):byte] = Mem263[ds:bx_190 + (di + 0x01):byte] >>u 0x01;
-			Mem273[ds:bx_190 + 0x02 + (di + 0x01):byte] = Mem270[ds:bx_190 + 0x02 + (di + 0x01):byte] + cl_237;
-			word16 sp_265 = sp_193 + 0x02;
-			Mem277[ss:sp_265 - 0x02 + 0x00:word16] = es;
-			Mem280[ds:0x03BC:byte] = Mem277[ds:0x03BC:byte] + cl_237;
-			Mem294[ds:v31_178 + 36563:byte] = Mem280[ds:v31_178 + 36563:byte] + cl_237;
+			ptr32 ds_bp_360 = Mem188[ss:bp_186 + di:segptr32];
+			word16 sp_361 = sp_176 - 0x02;
+			Mem363[ss:sp_361 + 0x00:word16] = es;
+			int8 Top_373;
+			fn1483_E62A();
 			esOut = es;
-			TopOut = Top_136;
-			return di + 0x02;
+			TopOut = Top_373;
+			return di;
 		}
 	}
+	byte al_391 = al_167 | 0x3F;
+	byte v39_396 = Mem395[ds:di + 0x2D:byte] - al_391;
+	Mem397[ds:di + 0x2D:byte] = v39_396;
+	Mem401[es:di + 0x00:byte] = al_391;
+	S_403 = SLICE(cond(v39_396), bool, 0);
+	++di;
+	if (v39_396 < 0x00)
+	{
+		Mem404[es:di + 0x01:byte] = al_391;
+		di += 0x02;
+l1483_0DA8:
+		if (S_403)
+		{
+l1483_0DBF:
+			Mem464[ss:sp_176 - 0x02 + 0x00:word16] = cs;
+			Mem470[ss:0x0B01:word16] = es;
+			Mem474[ds:0x8C00:byte] = Mem470[ds:0x8C00:byte] + cl_189;
+			Mem479[ss:bp_186 + 0x8CC3:word16] = __ror(Mem474[ss:bp_186 + 0x8CC3:word16], cl_189);
+			esOut = es;
+			TopOut = Top_117;
+			return di;
+		}
+		Mem422[ss:bp_186 + si_163:word16] = -Mem412[ss:bp_186 + si_163:word16];
+		__cli();
+		--di;
+		Mem430[ds:bx_173 + 0x45 + di:word16] = Mem422[ss:sp_176 + 0x00:word16];
+		word16 bp_434 = bp_186 + 0x01;
+		Mem436[ds:bx_173 + 0xC079 + si_163:word16] = Mem430[ds:bx_173 + 0xC079 + si_163:word16] + bp_434;
+		sp_176 += 0x04;
+		bp_186 = bp_434 - 0x01;
+	}
+	Mem449[ds:bx_173 + di:byte] = Mem442[ds:bx_173 + di:byte] >>u 0x01;
+	Mem455[ds:bx_173 + 0x02 + di:byte] = Mem449[ds:bx_173 + 0x02 + di:byte] + cl_189;
+	sp_176 += 0x02;
+	goto l1483_0DBF;
 }
 
 // 1483:1104: void fn1483_1104(Register word16 ax, Register byte dl, Register word16 bx, Register word16 bp, Register word16 si, Register word16 di, Register selector es, Register selector ds)

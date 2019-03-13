@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
+ * Copyright (C) 1999-2019 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -377,6 +377,11 @@ namespace Reko.UnitTests.Mocks
             return new MemoryAccess(FpuStackBase, e, PrimitiveType.Real64);
         }
 
+
+        public RtlInstructionCluster InlineInstructions(AddressRange addrCaller, EndianImageReader rdrProcedureNody, IStorageBinder binder)
+        {
+            throw new NotImplementedException();
+        }
         #endregion
     }
 

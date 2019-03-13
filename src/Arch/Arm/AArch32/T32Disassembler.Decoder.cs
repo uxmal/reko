@@ -30,8 +30,6 @@ using System.Text;
 
 namespace Reko.Arch.Arm.AArch32
 {
-    using Mutator = Func<uint, T32Disassembler, bool>;
-
     public partial class T32Disassembler
     {
         #region Decoder classes
@@ -255,9 +253,9 @@ namespace Reko.Arch.Arm.AArch32
         {
             private readonly Opcode opcode;
             private readonly InstrClass iclass;
-            private readonly Mutator[] mutators;
+            private readonly Mutator<T32Disassembler>[] mutators;
 
-            public InstrDecoder2(Opcode opcode, InstrClass iclass, params Mutator[] mutators)
+            public InstrDecoder2(Opcode opcode, InstrClass iclass, params Mutator<T32Disassembler>[] mutators)
             {
                 this.opcode = opcode;
                 this.iclass = iclass;

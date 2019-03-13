@@ -35,8 +35,6 @@ namespace Reko.Core
     /// <typeparam name="TInstr"></typeparam>
     public abstract class DisassemblerBase<TInstr> : IDisposable, IEnumerable<TInstr>
     {
-        protected delegate bool Mutator<TDasm>(uint uInstr, TDasm dasm);
-
         public IEnumerator<TInstr> GetEnumerator()
         {
             for (;;)

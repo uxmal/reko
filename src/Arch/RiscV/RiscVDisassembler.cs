@@ -33,7 +33,7 @@ namespace Reko.Arch.RiscV
 {
     public class RiscVDisassembler : DisassemblerBase<RiscVInstruction>
     {
-        private static readonly Decoder[] opRecs;
+        private static readonly Decoder[] decoders;
         private static readonly Decoder[] w32decoders;
         private static readonly Decoder[] compressed0;
         private static readonly Decoder[] compressed1;
@@ -41,8 +41,8 @@ namespace Reko.Arch.RiscV
         private static readonly int[] compressedRegs;
         private static readonly Decoder invalid;
 
-        private RiscVArchitecture arch;
-        private EndianImageReader rdr;
+        private readonly RiscVArchitecture arch;
+        private readonly EndianImageReader rdr;
         private Address addrInstr;
         private State state;
 
@@ -60,7 +60,7 @@ namespace Reko.Arch.RiscV
             {
                 return null;
             }
-            var instr = opRecs[hInstr & 0x3].Decode(this, hInstr);
+            var instr = decoders[hInstr & 0x3].Decode(this, hInstr);
             instr.Address = addrInstr;
             instr.Length = (int) (rdr.Address - addrInstr);
             instr.iclass |= hInstr == 0 ? InstrClass.Zero : 0;
@@ -96,34 +96,108 @@ namespace Reko.Arch.RiscV
             return instr;
         }
 
-        private RiscVInstruction DecodeWideOperands(Opcode opcode, InstrClass iclass, string fmt, uint wInstr)
+        //private RiscVInstruction DecodeWideOperands(Opcode opcode, InstrClass iclass, Mutator<RiscVDisassembler>[] fmt, uint wInstr)
+        //{
+        //    for (int i = 0; i < fmt.Length; ++i)
+        //    {
+        //        MachineOperand op;
+        //        switch (fmt[i++])
+        //        {
+        //        default: throw new InvalidOperationException(string.Format("Unsupported operand code {0}", fmt[i - 1]));
+        //        case ',': continue;
+        //   return BuildInstruction(opcode, iclass, ops);
+        // 
+        private static bool r1(uint wInstr, RiscVDisassembler dasm)
         {
-            var ops = new List<MachineOperand>();
-            for (int i = 0; i < fmt.Length; ++i)
+            var op = dasm.GetRegister(wInstr, 15);
+            dasm.state.ops.Add(op);
+            return true;
+        }
+
+        private static bool r2(uint wInstr, RiscVDisassembler dasm)
+        {
+            var op = dasm.GetRegister(wInstr, 20);
+            dasm.state.ops.Add(op);
+            return true;
+        }
+
+        private static bool d(uint wInstr, RiscVDisassembler dasm)
+        {
+            var op = dasm.GetRegister(wInstr, 7);
+            dasm.state.ops.Add(op);
+            return true;
+        }
+
+        private static bool i(uint wInstr, RiscVDisassembler dasm)
+        {
+            var op = dasm.GetImmediate(wInstr, 20, 's');
+            dasm.state.ops.Add(op);
+            return true;
+        }
+
+        private static bool B(uint wInstr, RiscVDisassembler dasm)
+        { 
+            var op = dasm.GetBranchTarget(wInstr);
+            dasm.state.ops.Add(op);
+            return true;
+        }
+
+        private static Mutator<RiscVDisassembler> Ff(int bitPos)
+        {
+            return (u, d) =>
             {
-                MachineOperand op;
-                switch (fmt[i++])
-                {
-                default: throw new InvalidOperationException(string.Format("Unsupported operand code {0}", fmt[i - 1]));
-                case ',': continue;
-                case '1': op = GetRegister(wInstr, 15); break;
-                case '2': op = GetRegister(wInstr, 20); break;
-                case 'd': op = GetRegister(wInstr, 7); break;
-                case 'i': op = GetImmediate(wInstr, 20, 's'); break;
-                case 'B': op = GetBranchTarget(wInstr); break;
-                case 'F': op = GetFpuRegister(wInstr, fmt[i++]); break;
-                case 'J': op = GetJumpTarget(wInstr); break;
-                case 'I': op = GetImmediate(wInstr, 12, fmt[i++]); break;
-                case 'S': op = GetSImmediate(wInstr); break;
-                case 'L': // signed offset used in loads
-                    op = GetImmediate(wInstr, 20, 's');
-                    break;
-                case 'z': op = GetShiftAmount(wInstr, 5); break;
-                case 'Z': op = GetShiftAmount(wInstr, 6); break;
-                }
-                ops.Add(op);
-            }
-            return BuildInstruction(opcode, iclass, ops);
+                var op = d.GetFpuRegister(u, bitPos);
+                d.state.ops.Add(op);
+                return true;
+            };
+        }
+        private static readonly Mutator<RiscVDisassembler> F1 = Ff(15);
+        private static readonly Mutator<RiscVDisassembler> F2 = Ff(20);
+        private static readonly Mutator<RiscVDisassembler> F3 = Ff(27);
+        private static readonly Mutator<RiscVDisassembler> Fd = Ff(7);
+
+        private static bool J (uint u, RiscVDisassembler d)
+        {
+            var offset = Bitfield.ReadSignedFields(j_bitfields, u) << 1;
+            d.state.ops.Add(AddressOperand.Create(d.addrInstr + offset));
+            return true;
+        }
+
+        private static bool Iu(uint wInstr, RiscVDisassembler dasm)
+        {
+            uint u = wInstr >> 12;
+            var op = ImmediateOperand.Word32(u);
+            dasm.state.ops.Add(op);
+            return true;
+        }
+
+        private static bool Ss(uint wInstr, RiscVDisassembler dasm)
+        {
+            var op = dasm.GetSImmediate(wInstr);
+            dasm.state.ops.Add(op);
+            return true;
+        }
+
+        // signed offset used in loads
+        private static bool Ls(uint wInstr, RiscVDisassembler dasm)
+        {
+            var op = dasm.GetImmediate(wInstr, 20, 's');
+            dasm.state.ops.Add(op);
+            return true;
+        }
+
+        private static bool z(uint wInstr, RiscVDisassembler dasm)
+        {
+            var op = dasm.GetShiftAmount(wInstr, 5);
+            dasm.state.ops.Add(op);
+            return true;
+        }
+
+        private static bool Z(uint wInstr, RiscVDisassembler dasm)
+        {
+            var op = dasm.GetShiftAmount(wInstr, 6);
+            dasm.state.ops.Add(op);
+            return true;
         }
 
         private RegisterOperand GetRegister(uint wInstr, int bitPos)
@@ -132,18 +206,9 @@ namespace Reko.Arch.RiscV
             return new RegisterOperand(reg);
         }
 
-        private RegisterOperand GetFpuRegister(uint wInstr, char bitPos)
+        private RegisterOperand GetFpuRegister(uint wInstr, int bitPos)
         {
-            int pos;
-            switch (bitPos)
-            {
-            case '1': pos = 15; break;
-            case '2': pos = 20; break;
-            case '3': pos = 27; break;
-            case 'd': pos = 7; break;
-            default: throw new InvalidOperationException();
-            }
-            var reg = arch.GetRegister(32 + ((int)(wInstr >> pos) & 0x1F));
+            var reg = arch.GetRegister(32 + ((int)(wInstr >> bitPos) & 0x1F));
             return new RegisterOperand(reg);
         }
 
@@ -294,9 +359,9 @@ namespace Reko.Arch.RiscV
         {
             private readonly InstrClass iclass;
             private readonly Opcode opcode;
-            private readonly Mutator[] mutators;
+            private readonly Mutator<RiscVDisassembler>[] mutators;
 
-            internal CDecoder(InstrClass iclass, Opcode opcode, params Mutator[] mutators)
+            internal CDecoder(InstrClass iclass, Opcode opcode, params Mutator<RiscVDisassembler>[] mutators)
             {
                 this.iclass = iclass;
                 this.opcode = opcode;
@@ -321,40 +386,55 @@ namespace Reko.Arch.RiscV
         {
             private readonly Opcode opcode;
             private readonly InstrClass iclass;
-            private readonly string fmt;
+            private readonly Mutator<RiscVDisassembler> [] mutators;
 
-            public WInstrDecoderOld(Opcode opcode, string fmt) : this(opcode, InstrClass.Linear, fmt)
+            public WInstrDecoderOld(Opcode opcode, params Mutator<RiscVDisassembler>[] mutators) : this(InstrClass.Linear, opcode, mutators)
             {
             }
 
-            public WInstrDecoderOld(Opcode opcode, InstrClass iclass, string fmt)
+            public WInstrDecoderOld(InstrClass iclass, Opcode opcode, params Mutator<RiscVDisassembler>[] mutators)
             {
-                this.opcode = opcode;
                 this.iclass = iclass;
-                this.fmt = fmt;
+                this.opcode = opcode;
+                this.mutators = mutators;
             }
-
 
             public override RiscVInstruction Decode(RiscVDisassembler dasm, uint wInstr)
             {
-                return dasm.DecodeWideOperands(opcode, iclass, fmt, wInstr);
+                dasm.state.instr.iclass = this.iclass;
+                dasm.state.instr.opcode = opcode;
+                dasm.state.ops.Clear();
+                foreach (var m in mutators)
+                {
+                    if (!m(wInstr, dasm))
+                        return dasm.MakeInvalid();
+                }
+                return dasm.MakeInstruction();
             }
         }
 
-        public class FpuOpRec : Decoder
+        public class FpuDecoder : Decoder
         {
-            private readonly string fmt;
+            private readonly Mutator<RiscVDisassembler>[] mutators;
             private readonly Opcode opcode;
 
-            public FpuOpRec(Opcode opcode, string fmt)
+            public FpuDecoder(Opcode opcode, params Mutator<RiscVDisassembler>[] mutators)
             {
                 this.opcode = opcode;
-                this.fmt = fmt;
+                this.mutators = mutators;
             }
 
             public override RiscVInstruction Decode(RiscVDisassembler dasm, uint wInstr)
             {
-                return dasm.DecodeWideOperands(opcode, InstrClass.Linear, fmt, wInstr);
+                dasm.state.instr.iclass = InstrClass.Linear;
+                dasm.state.instr.opcode = opcode;
+                dasm.state.ops.Clear();
+                foreach (var m in mutators)
+                {
+                    if (!m(wInstr, dasm))
+                        return dasm.MakeInvalid();
+                }
+                return dasm.MakeInstruction();
             }
         }
 
@@ -378,13 +458,13 @@ namespace Reko.Arch.RiscV
             }
         }
 
-        public class SparseMaskOpRec : Decoder
+        public class SparseMaskDecoder : Decoder
         {
             private readonly int mask;
             private readonly int shift;
             private readonly Dictionary<int, Decoder> subcodes;
 
-            public SparseMaskOpRec(int shift, int mask, Dictionary<int, Decoder> subcodes)
+            public SparseMaskDecoder(int shift, int mask, Dictionary<int, Decoder> subcodes)
             {
                 this.mask = mask;
                 this.shift = shift;
@@ -417,21 +497,19 @@ namespace Reko.Arch.RiscV
             }
         }
 
-        public class ShiftOpRec : Decoder
+        public class ShiftDecoder : Decoder
         {
-            private readonly Opcode[] rl_ra;
-            private readonly string fmt;
+            private readonly Decoder[] decoders;
 
-            public ShiftOpRec(string fmt, params Opcode[] rl_ra)
+            public ShiftDecoder(params Decoder[] decoders)
             {
-                this.rl_ra = rl_ra;
-                this.fmt = fmt;
+                this.decoders = decoders;
             }
 
             public override RiscVInstruction Decode(RiscVDisassembler dasm, uint wInstr)
             {
-                var opcode = rl_ra[bit(wInstr, 30) ? 1 : 0];
-                return dasm.DecodeWideOperands(opcode, InstrClass.Linear, fmt, wInstr);
+                var decoder = decoders[bit(wInstr, 30) ? 1 : 0];
+                return decoder.Decode(dasm, wInstr);
             }
         }
 
@@ -493,24 +571,24 @@ namespace Reko.Arch.RiscV
 
         #endregion
 
-        private static WInstrDecoderOld Instr(Opcode opcode, string format)
+        private static WInstrDecoderOld Instr(Opcode opcode, params Mutator<RiscVDisassembler>[] mutators)
         {
-            return new WInstrDecoderOld(opcode, InstrClass.Linear, format);
+            return new WInstrDecoderOld(InstrClass.Linear, opcode, mutators);
         }
 
-        private static WInstrDecoderOld Instr(InstrClass iclass, Opcode opcode, string format)
+        private static WInstrDecoderOld Instr(InstrClass iclass, Opcode opcode, params Mutator<RiscVDisassembler> [] mutators)
         {
-            return new WInstrDecoderOld(opcode, iclass, format);
+            return new WInstrDecoderOld(iclass, opcode, mutators);
         }
 
         // Compact instruction decoder
 
-        private static CDecoder CInstr(Opcode opcode, params Mutator[] mutators)
+        private static CDecoder CInstr(Opcode opcode, params Mutator<RiscVDisassembler>[] mutators)
         {
             return new CDecoder(InstrClass.Linear, opcode, mutators);
         }
 
-        private static CDecoder CInstr(InstrClass iclass, Opcode opcode, params Mutator[] mutator)
+        private static CDecoder CInstr(InstrClass iclass, Opcode opcode, params Mutator<RiscVDisassembler>[] mutator)
         {
             return new CDecoder(iclass, opcode, mutator);
         }
@@ -537,7 +615,7 @@ namespace Reko.Arch.RiscV
 
         #region Mutators
         // Integer register
-        private static Mutator R(int bitPos)
+        private static Mutator<RiscVDisassembler> R(int bitPos)
         {
             var regMask = new Bitfield(bitPos, 5);
             return (u, d) =>
@@ -551,12 +629,12 @@ namespace Reko.Arch.RiscV
 
         // Registers specified at fixed positions.
 
-        private static readonly Mutator Rd = R(7);
-        private static readonly Mutator R1 = R(15);
-        private static readonly Mutator R2 = R(20);
+        private static readonly Mutator<RiscVDisassembler> Rd = R(7);
+        private static readonly Mutator<RiscVDisassembler> R1 = R(15);
+        private static readonly Mutator<RiscVDisassembler> R2 = R(20);
 
         // Floating point register
-        private static Mutator F(int bitPos)
+        private static Mutator<RiscVDisassembler> F(int bitPos)
         {
             var regMask = new Bitfield(bitPos, 5);
             return (u, d) =>
@@ -567,14 +645,13 @@ namespace Reko.Arch.RiscV
                 return true;
             };
         }
-
-        private static readonly Mutator Fd = F(7);
-        private static readonly Mutator F1 = F(15);
-        private static readonly Mutator F2 = F(20);
-        private static readonly Mutator F3 = F(27);
+        //private static readonly Mutator<RiscVDisassembler> Fd = F(7);
+        //private static readonly Mutator<RiscVDisassembler> F1 = F(15);
+        //private static readonly Mutator<RiscVDisassembler> F2 = F(20);
+        //private static readonly Mutator<RiscVDisassembler> F3 = F(27);
 
         // Compressed format register (r')
-        private static Mutator Rc(int bitPos)
+        private static Mutator<RiscVDisassembler> Rc(int bitPos)
         {
             var regMask = new Bitfield(bitPos, 3);
             return (u, d) =>
@@ -587,7 +664,7 @@ namespace Reko.Arch.RiscV
         }
 
         // Compressed format floating point register (fr')
-        private static Mutator Fc(int bitPos)
+        private static Mutator<RiscVDisassembler> Fc(int bitPos)
         {
             var regMask = new Bitfield(bitPos, 3);
             return (u, d) =>
@@ -600,7 +677,7 @@ namespace Reko.Arch.RiscV
         }
 
         // Unsigned immediate
-        private static Mutator Imm(int bitPos1, int length1)
+        private static Mutator<RiscVDisassembler> Imm(int bitPos1, int length1)
         {
             var mask = new Bitfield(bitPos1, length1);
             return (u, d) =>
@@ -611,7 +688,7 @@ namespace Reko.Arch.RiscV
             };
         }
 
-        private static Mutator Imm(params (int pos, int len) [] fields)
+        private static Mutator<RiscVDisassembler> Imm(params (int pos, int len) [] fields)
         {
             var masks = fields
                 .Select(field => new Bitfield(field.pos, field.len))
@@ -626,7 +703,7 @@ namespace Reko.Arch.RiscV
         }
 
         // Immediate with a shift
-        private static Mutator ImmSh(int sh, params (int pos, int len)[] fields)
+        private static Mutator<RiscVDisassembler> ImmSh(int sh, params (int pos, int len)[] fields)
         {
             var masks = fields
                 .Select(field => new Bitfield(field.pos, field.len))
@@ -640,7 +717,7 @@ namespace Reko.Arch.RiscV
             };
         }
 
-        private static Mutator ImmB(params (int pos, int len)[] fields)
+        private static Mutator<RiscVDisassembler> ImmB(params (int pos, int len)[] fields)
         {
             var masks = fields
                 .Select(field => new Bitfield(field.pos, field.len))
@@ -654,7 +731,7 @@ namespace Reko.Arch.RiscV
             };
         }
 
-        private static Mutator ImmS(params (int pos, int len)[] fields)
+        private static Mutator<RiscVDisassembler> ImmS(params (int pos, int len)[] fields)
         {
             var masks = fields
                 .Select(field => new Bitfield(field.pos, field.len))
@@ -669,7 +746,7 @@ namespace Reko.Arch.RiscV
         }
 
         // Signed immediate with a shift
-        private static Mutator ImmShS(int sh, params (int pos, int len)[] fields)
+        private static Mutator<RiscVDisassembler> ImmShS(int sh, params (int pos, int len)[] fields)
         {
             var masks = fields
                 .Select(field => new Bitfield(field.pos, field.len))
@@ -684,11 +761,11 @@ namespace Reko.Arch.RiscV
         }
 
         // Common immediate fields
-        private static readonly Mutator I20s = ImmS((20, 12));
-        private static readonly Mutator I12 = Imm(12, 20);
+        private static readonly Mutator<RiscVDisassembler> I20s = ImmS((20, 12));
+        private static readonly Mutator<RiscVDisassembler> I12 = Imm(12, 20);
 
         // PC-relative displacement with shift.
-        private static Mutator PcRel(int sh, params (int pos, int len)[] fields)
+        private static Mutator<RiscVDisassembler> PcRel(int sh, params (int pos, int len)[] fields)
         {
             var masks = fields
                 .Select(field => new Bitfield(field.pos, field.len))
@@ -703,7 +780,7 @@ namespace Reko.Arch.RiscV
         }
 
         // Memory operand format, where offset is not scaled
-        private static Mutator Mem(PrimitiveType dt, int regOffset, params (int pos, int len)[] fields)
+        private static Mutator<RiscVDisassembler> Mem(PrimitiveType dt, int regOffset, params (int pos, int len)[] fields)
         {
             var baseRegMask = new Bitfield(regOffset, 5);
             var masks = fields
@@ -725,7 +802,7 @@ namespace Reko.Arch.RiscV
 
 
         // Memory operand format, where offset is scaled by the register size
-        private static Mutator Mems(PrimitiveType dt, int regOffset, params (int pos, int len)[] fields)
+        private static Mutator<RiscVDisassembler> Mems(PrimitiveType dt, int regOffset, params (int pos, int len)[] fields)
         {
             var baseRegMask = new Bitfield(regOffset, 5);
             var masks = fields
@@ -746,7 +823,7 @@ namespace Reko.Arch.RiscV
         }
 
         // Memory operand format used for compressed instructions
-        private static Mutator Memc(PrimitiveType dt, int regOffset, params (int pos, int len)[] fields)
+        private static Mutator<RiscVDisassembler> Memc(PrimitiveType dt, int regOffset, params (int pos, int len)[] fields)
         {
             var baseRegMask = new Bitfield(regOffset, 3);
             var masks = fields
@@ -773,29 +850,23 @@ namespace Reko.Arch.RiscV
             new Bitfield(20, 1),
             new Bitfield(21, 10)
         };
-        private static bool J(uint u, RiscVDisassembler d) 
-        {
-            var offset = Bitfield.ReadSignedFields(j_bitfields, u) << 1;
-            d.state.ops.Add(AddressOperand.Create(d.addrInstr + offset));
-            return true;
-        }
 
         #endregion
 
         static RiscVDisassembler()
         {
-            invalid = new WInstrDecoderOld(Opcode.invalid, "");
+            invalid = new WInstrDecoderOld(Opcode.invalid);
 
             var loads = new Decoder[]
             {
-                new WInstrDecoderOld(Opcode.lb, "d,1,Ls"),
-                new WInstrDecoderOld(Opcode.lh, "d,1,Ls"),
-                new WInstrDecoderOld(Opcode.lw, "d,1,Ls"),
-                new WInstrDecoderOld(Opcode.ld, "d,1,Ls"),
+                new WInstrDecoderOld(Opcode.lb, d,r1,Ls),
+                new WInstrDecoderOld(Opcode.lh, d,r1,Ls),
+                new WInstrDecoderOld(Opcode.lw, d,r1,Ls),
+                new WInstrDecoderOld(Opcode.ld, d,r1,Ls),
 
-                new WInstrDecoderOld(Opcode.lbu, "d,1,Ls"),
-                new WInstrDecoderOld(Opcode.lhu, "d,1,Ls"),
-                new WInstrDecoderOld(Opcode.lwu, "d,1,Ls"),    // 64
+                new WInstrDecoderOld(Opcode.lbu, d,r1,Ls),
+                new WInstrDecoderOld(Opcode.lhu, d,r1,Ls),
+                new WInstrDecoderOld(Opcode.lwu, d,r1,Ls),    // 64
                 Nyi(""),
             };
 
@@ -814,10 +885,10 @@ namespace Reko.Arch.RiscV
 
             var stores = new Decoder[]
             {
-                new WInstrDecoderOld(Opcode.sb, "2,1,Ss"),
-                new WInstrDecoderOld(Opcode.sh, "2,1,Ss"),
-                new WInstrDecoderOld(Opcode.sw, "2,1,Ss"),
-                new WInstrDecoderOld(Opcode.sd, "2,1,Ss"),
+                new WInstrDecoderOld(Opcode.sb, r2,r1,Ss),
+                new WInstrDecoderOld(Opcode.sh, r2,r1,Ss),
+                new WInstrDecoderOld(Opcode.sw, r2,r1,Ss),
+                new WInstrDecoderOld(Opcode.sd, r2,r1,Ss),
 
                 invalid,
                 invalid,
@@ -840,28 +911,36 @@ namespace Reko.Arch.RiscV
 
             var op = new Decoder[]
             {
-                new ShiftOpRec( "d,1,2", Opcode.add, Opcode.sub),
+                new ShiftDecoder(
+                    new WInstrDecoderOld(Opcode.add, d,r1,r2),
+                    new WInstrDecoderOld(Opcode.sub, d,r1,r2)),
                 CInstr(Opcode.sll, Rd,R1,R2),
                 CInstr(Opcode.slt, Rd,R1,R2),
                 CInstr(Opcode.sltu, Rd,R1,R2),
 
                 CInstr(Opcode.xor, Rd,R1,R2),
-                new ShiftOpRec("d,1,2", Opcode.srl, Opcode.sra),
+                new ShiftDecoder(
+                    new WInstrDecoderOld(Opcode.srl, d,r1,r2),
+                    new WInstrDecoderOld(Opcode.sra, d,r1,r2)),
                 CInstr(Opcode.or, Rd,R1,R2),
                 CInstr(Opcode.and, Rd,R1,R2),
             };
 
             var opimm = new Decoder[]
             {
-                new WInstrDecoderOld(Opcode.addi, "d,1,i"),
-                new ShiftOpRec("d,1,z", Opcode.slli, Opcode.invalid),
-                new WInstrDecoderOld(Opcode.slti, "d,1,i"),
-                new WInstrDecoderOld(Opcode.sltiu, "d,1,i"),
+                new WInstrDecoderOld(Opcode.addi, d,r1,i),
+                new ShiftDecoder(
+                    new WInstrDecoderOld(Opcode.slli, d,r1,z),
+                    new WInstrDecoderOld(InstrClass.Invalid, Opcode.invalid)),
+                new WInstrDecoderOld(Opcode.slti, d,r1,i),
+                new WInstrDecoderOld(Opcode.sltiu, d,r1,i),
 
-                new WInstrDecoderOld(Opcode.xori, "d,1,i"),
-                new ShiftOpRec("d,1,z", Opcode.srli, Opcode.srai),
-                new WInstrDecoderOld(Opcode.ori, "d,1,i"),
-                new WInstrDecoderOld(Opcode.andi, "d,1,i"),
+                new WInstrDecoderOld(Opcode.xori, d,r1,i),
+                new ShiftDecoder(
+                    new WInstrDecoderOld(Opcode.srli, d,r1,z),
+                    new WInstrDecoderOld(Opcode.srai, d,r1,z)),
+                new WInstrDecoderOld(Opcode.ori, d,r1,i),
+                new WInstrDecoderOld(Opcode.andi, d,r1,i),
             };
 
             var opimm32 = new Decoder[]
@@ -870,51 +949,59 @@ namespace Reko.Arch.RiscV
                 CInstr(Opcode.slliw, Rd,R1,Imm(20, 5)),
                 Nyi(""),
                 Nyi(""),
-                                           
+ 
                 Nyi(""),
-                new ShiftOpRec("d,1,Z", Opcode.srliw, Opcode.sraiw),
+                new ShiftDecoder(
+                    new WInstrDecoderOld(Opcode.srliw, d,r1,Z),
+                    new WInstrDecoderOld(Opcode.sraiw, d,r1,Z)),
                 Nyi(""),
                 Nyi(""),
             };
 
             var op32 = new Decoder[]
             {
-                new ShiftOpRec("d,1,2", Opcode.addw, Opcode.subw),
-                new ShiftOpRec("d,1,2", Opcode.sllw, Opcode.invalid),
+                new ShiftDecoder(
+                    new WInstrDecoderOld(Opcode.addw, d,r1,r2),
+                    new WInstrDecoderOld(Opcode.subw, d,r1,r2)),
+                new ShiftDecoder(
+                    new WInstrDecoderOld(Opcode.sllw, d,r1,r2),
+                    new WInstrDecoderOld(InstrClass.Invalid, Opcode.invalid)),
                 Nyi(""),
                 Nyi(""),
 
                 Nyi(""),
-                new ShiftOpRec("d,1,2", Opcode.srlw, Opcode.sraw),
+                new ShiftDecoder(
+                    new WInstrDecoderOld(Opcode.srlw, d,r1,r2),
+                    new WInstrDecoderOld(Opcode.sraw, d,r1,r2)),
                 Nyi(""),
                 Nyi(""),
             };
 
             var opfp = new Dictionary<int, Decoder>
             {
-                { 0x00, new FpuOpRec(Opcode.fadd_s, "Fd,F1,F2") },
-                { 0x01, new FpuOpRec(Opcode.fadd_d, "Fd,F1,F2") },
-                { 0x21, new FpuOpRec(Opcode.fcvt_d_s, "Fd,F1") },
-                { 0x50, new SparseMaskOpRec(12, 7, new Dictionary<int, Decoder>
+                { 0x00, new FpuDecoder(Opcode.fadd_s, Fd,F1,F2) },
+                { 0x01, new FpuDecoder(Opcode.fadd_d, Fd,F1,F2) },
+                { 0x21, new FpuDecoder(Opcode.fcvt_d_s, Fd,F1) },
+                { 0x50, new SparseMaskDecoder(12, 7, new Dictionary<int, Decoder>
                     {
-                        { 2, new WInstrDecoderOld(Opcode.feq_s, "d,F1,F2") }
+                        { 2, new WInstrDecoderOld(Opcode.feq_s, d,F1,F2) }
                     })
                 },
-                { 0x71, new FpuOpRec(Opcode.fmv_d_x, "Fd,1") },
-                { 0x78, new FpuOpRec(Opcode.fmv_s_x, "Fd,1") },
+                { 0x71, new FpuDecoder(Opcode.fmv_d_x, Fd,r1) },
+                { 0x78, new FpuDecoder(Opcode.fmv_s_x, Fd,r1) },
             };
 
             var branches = new Decoder[]
             {
-                new WInstrDecoderOld(Opcode.beq, InstrClass.ConditionalTransfer, "1,2,B"),
-                new WInstrDecoderOld(Opcode.bne, InstrClass.ConditionalTransfer, "1,2,B"),
+                new WInstrDecoderOld(InstrClass.ConditionalTransfer, Opcode.beq, r1,r2,B),
+                new WInstrDecoderOld(InstrClass.ConditionalTransfer, Opcode.bne, r1,r2,B),
                 Nyi(""),
                 Nyi(""),
 
-                new WInstrDecoderOld(Opcode.blt, InstrClass.ConditionalTransfer, "1,2,B"),
-                new WInstrDecoderOld(Opcode.bge, InstrClass.ConditionalTransfer, "1,2,B"),
-                new WInstrDecoderOld(Opcode.bltu, InstrClass.ConditionalTransfer, "1,2,B"),
-                new WInstrDecoderOld(Opcode.bgeu, InstrClass.ConditionalTransfer, "1,2,B"),
+                new WInstrDecoderOld(InstrClass.ConditionalTransfer, Opcode.blt,  r1,r2,B),
+                new WInstrDecoderOld(InstrClass.ConditionalTransfer, Opcode.bge,  r1,r2,B),
+                new WInstrDecoderOld(InstrClass.ConditionalTransfer, Opcode.bltu, r1,r2,B),
+                new WInstrDecoderOld(InstrClass.ConditionalTransfer, Opcode.bgeu, r1,r2,B),
             };
 
             w32decoders = new Decoder[]
@@ -926,7 +1013,7 @@ namespace Reko.Arch.RiscV
                 Nyi("misc-mem"),
 
                 new MaskDecoder(12, 7, opimm),
-                new WInstrDecoderOld(Opcode.auipc, "d,Iu"),
+                new WInstrDecoderOld(Opcode.auipc, d,Iu),
                 new MaskDecoder(12, 7, opimm32),
                 Nyi("48-bit instruction"),
 
@@ -944,7 +1031,7 @@ namespace Reko.Arch.RiscV
 
                          CInstr(Opcode.xor, Rd,R1,R2),
                          CInstr(Opcode.srl, Rd,R1,R2),
-                         CInstr(Opcode.or, Rd,R1,R2),
+                         CInstr(Opcode.or,  Rd,R1,R2),
                          CInstr(Opcode.and, Rd,R1,R2)),
                     new MaskDecoder(12, 7,
                          CInstr(Opcode.sub, Rd,R1,R2),
@@ -956,8 +1043,8 @@ namespace Reko.Arch.RiscV
                          CInstr(Opcode.sra, Rd,R1,R2),
                          Nyi("op - 20 - 0b110"),
                          Nyi("op - 20 - 0b111"))),
-                new WInstrDecoderOld(Opcode.lui, "d,Iu"),
-                new SparseMaskOpRec(25, 0x7F, new Dictionary<int, Decoder>
+                new WInstrDecoderOld(Opcode.lui, d,Iu),
+                new SparseMaskDecoder(25, 0x7F, new Dictionary<int, Decoder>
                 {
                     { 1, new MaskDecoder(12, 7,
                         CInstr(Opcode.mulw, Rd,R1,R2),
@@ -989,20 +1076,20 @@ namespace Reko.Arch.RiscV
                 CInstr(Opcode.fnmsub_s, Fd,F1,F2,F3),
                 CInstr(Opcode.fnmadd_s, Fd,F1,F2,F3),
 
-                new SparseMaskOpRec(25, 0x7F, opfp),
+                new SparseMaskDecoder(25, 0x7F, opfp),
                 Nyi("Reserved"),
                 Nyi("custom-2"),
                 Nyi("48-bit instruction"),
 
                 new MaskDecoder(12, 7, branches),
-                new WInstrDecoderOld(Opcode.jalr, InstrClass.Transfer, "d,1,i"),
+                new WInstrDecoderOld(InstrClass.Transfer, Opcode.jalr, d,r1,i),
                 Nyi("Reserved"),
                 CInstr(InstrClass.Transfer|InstrClass.Call, Opcode.jal, Rd,J),
 
                 Nyi("system"),
                 Nyi("Reserved"),
                 Nyi("custom-3"),
-                Nyi(">= 80-bit instruction"),
+                Nyi(">= 80-bit instruction")
             };
 
             compressedRegs = new int[8]
@@ -1102,7 +1189,7 @@ namespace Reko.Arch.RiscV
                 CInstr(Opcode.c_sdsp, R(2), ImmSh(3, (7,3),(10,3))),
             };
 
-            opRecs = new Decoder[] 
+            decoders = new Decoder[] 
             {
                 new MaskDecoder(13, 7, compressed0),
                 new MaskDecoder(13, 7, compressed1),
@@ -1111,6 +1198,4 @@ namespace Reko.Arch.RiscV
             };
         }
     }
-
-    internal delegate bool Mutator(uint wInstr, RiscVDisassembler dasm);
 }

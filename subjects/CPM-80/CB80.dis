@@ -1480,7 +1480,7 @@ l08FD:
 // SymbolicIn:
 
 l08FD_thunk_fn0920:
-	bool C_11 = fn0920()
+	fn0920()
 	spOut = sp_7
 	return C_11
 // DataOut:
@@ -1494,11 +1494,11 @@ fn08FD_exit:
 
 
 
-bool fn0920()
+void fn0920()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
-// LiveOut: C
+// LiveOut:
 // Trashed: SZPC bc de f hl sp
 // Preserved:
 fn0920_entry:
@@ -1514,7 +1514,7 @@ l0920:
 
 l0928_thunk_fn092A:
 	fn092A()
-	return C_15
+	return
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2532,29 +2532,29 @@ fn100A_entry:
 // SymbolicIn:
 
 l100A:
-	branch (0x00 - (Mem34[0x14FF:byte] <u 0x0E) & SLICE(DPB(af, 0x00 - (Mem20[0x16A8:byte] <u 0xFF) & SLICE(DPB(af, 0x00 - (Mem5[0x16A8:byte] <u 0x03) & SLICE(af, byte, 8), 0), byte, 8), 0), byte, 8)) >>u 0x01 >=u 0x00 l104D
+	branch (0x00 - (Mem35[0x14FF:byte] <u 0x0E) & SLICE(DPB(af, 0x00 - (Mem21[0x16A8:byte] <u 0xFF) & SLICE(DPB(af, 0x00 - (Mem6[0x16A8:byte] <u 0x03) & SLICE(af, byte, 8), 0), byte, 8), 0), byte, 8)) >>u 0x01 >=u 0x00 l104D
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l104D:
-	byte a_50 = Mem34[0x14FF:byte]
-	word16 af_55 = DPB(af, a_50, 0)
-	word16 af_66 = DPB(af, a_50, 0)
-	branch a_50 != 0x00 l105E
+	byte a_51 = Mem35[0x14FF:byte]
+	word16 af_56 = DPB(af, a_51, 0)
+	word16 af_67 = DPB(af, a_51, 0)
+	branch a_51 != 0x00 l105E
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l1052_thunk_fn1055:
-	fn1055(af_55)
+	fn1055(af_56)
 	return
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l1052_thunk_fn1055:
-	fn1055(af_66)
+	fn1055(af_67)
 	return
 // DataOut:
 // DataOut (flags):
@@ -2566,18 +2566,18 @@ fn100A_exit:
 // SymbolicIn:
 
 l1032:
-	byte a_77 = Mem34[0x14FF:byte]
-	Mem79[0x14FF:byte] = a_77 + 0x01
-	byte a_88 = Mem79[0x16A8:byte]
-	Mem89[DPB(DPB(af, a_77 + 0x01, 0), 0x00, 8) + 0x14FF:byte] = a_88
+	byte a_78 = Mem35[0x14FF:byte]
+	Mem80[0x14FF:byte] = a_78 + 0x01
+	byte a_89 = Mem80[0x16A8:byte]
+	Mem90[DPB(DPB(af, a_78 + 0x01, 0), 0x00, 8) + 0x14FF:byte] = a_89
 	fn045B()
-	Mem96[0x16A8:byte] = a_88
+	Mem97[0x16A8:byte] = a_89
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l1002:
-	af = DPB(af, 0x00 - (Mem96[0x16A8:byte] <u 0x21), 0) (alias)
+	af = DPB(af, 0x00 - (Mem97[0x16A8:byte] <u 0x21), 0) (alias)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2668,7 +2668,7 @@ void fn1078(word16 af)
 // Trashed: SZPC af bc de f hl sp
 // Preserved:
 fn1078_entry:
-	word16 af_19 = DPB(af, a, 0)
+	word16 af_20 = DPB(af, a, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2681,18 +2681,17 @@ l1078:
 // SymbolicIn:
 
 l105E:
-	Mem22[v3 - 0x0002:word16] = DPB(af_19, 0x00 - (Mem10[0x16A8:byte] <u 0x03), 0)
-	byte a_34 = 0x00 - (Mem22[0x16A8:byte] <u 0xFF) & Mem22[v3 + 0x0003:byte]
-	a = a_34 >>u 0x01
-	af_19 = DPB(af_19, a_34 >>u 0x01, 0) (alias)
-	word16 af_40 = DPB(af_19, a_34 >>u 0x01, 0)
-	branch a_34 >>u 0x01 >=u 0x00 l1081
+	byte a_35 = 0x00 - (Mem23[0x16A8:byte] <u 0xFF) & SLICE(DPB(af_20, 0x00 - (Mem10[0x16A8:byte] <u 0x03), 0), byte, 8)
+	a = a_35 >>u 0x01
+	af_20 = DPB(af_20, a_35 >>u 0x01, 0) (alias)
+	word16 af_41 = DPB(af_20, a_35 >>u 0x01, 0)
+	branch a_35 >>u 0x01 >=u 0x00 l1081
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l1075_thunk_fn1081:
-	fn1081(af_40)
+	fn1081(af_41)
 	return
 // DataOut:
 // DataOut (flags):
@@ -2714,6 +2713,7 @@ void fn1081(word16 af)
 // Preserved:
 fn1081_entry:
 	word16 af_21 = DPB(af, a, 0)
+	word16 sp_174 = fp
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2721,7 +2721,6 @@ fn1081_entry:
 l1081:
 	fn045B()
 	Mem10[0x16A8:byte] = a
-	word16 sp_174 = v3
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3239,6 +3238,7 @@ word16 fn1279(word16 af, ptr16 & spOut)
 // Trashed: SZPC af bc f hl sp
 // Preserved:
 fn1279_entry:
+	word16 sp_2 = fp
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3248,7 +3248,6 @@ l1279:
 	Mem10[0x16A8:byte] = a
 	fn1262()
 	byte a_17 = Mem10[0x16A8:byte]
-	word16 sp_2 = fp
 	word16 af_100 = DPB(af, a_17, 0)
 	af_100 = DPB(af, a_17, 0) (alias)
 	word16 af_102 = DPB(af_100, a_17, 0)
@@ -3336,6 +3335,7 @@ word16 fn12D8(word16 af, ptr16 & spOut)
 // Trashed: SZPC af bc f hl sp
 // Preserved:
 fn12D8_entry:
+	word16 sp_2 = fp
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3345,7 +3345,6 @@ l12D8:
 	Mem10[0x16A8:byte] = a
 	fn1262()
 	byte a_17 = Mem10[0x16A8:byte]
-	word16 sp_2 = fp
 	word16 af_51 = DPB(af, a_17, 0)
 	branch a_17 != 0x28 l12F4
 // DataOut:
@@ -3504,9 +3503,9 @@ fn1326_entry:
 // SymbolicIn:
 
 l1326:
-	uint16 v13_25 = SEQ(h, l) >>u 0x01
-	h = SLICE(v13_25, byte, 8)
-	l = (byte) v13_25
+	uint16 v13_24 = SEQ(h, l) >>u 0x01
+	h = SLICE(v13_24, byte, 8)
+	l = (byte) v13_24
 	c = c - 0x01
 	branch c != 0x00 l1326
 // DataOut:
@@ -3696,13 +3695,7 @@ void fn140B()
 // MayUse: 
 // LiveOut:
 // Trashed:
-// Preserved:
-// Terminates process
-fn140B_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
+// Preserved: sp
 fn140B_entry:
 // DataOut:
 // DataOut (flags):
@@ -3714,45 +3707,58 @@ l140B:
 // SymbolicIn:
 
 l1493_thunk_fn1494:
-	fn1494()
+	fn1494(a)
+	return
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+fn140B_exit:
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 
 
-void fn1494()
+void fn1494(byte a)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse: 
+// MayUse:  a:[0..7]
 // LiveOut:
-// Trashed:
-// Preserved:
-// Terminates process
-fn1494_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
+// Trashed: b bc f
+// Preserved: sp
 fn1494_entry:
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l1494:
+	Mem5[0x0000:byte] = a
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l15AF_thunk_fn15B0:
+	fn15B0(de)
+	return
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+fn1494_exit:
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 
 
-void fn156F()
+void fn156F(word16 de)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse: 
+// MayUse:  de:[0..15]
 // LiveOut:
-// Trashed:
-// Preserved: sp
+// Trashed: SZPC bc de f hl sp
+// Preserved:
 fn156F_entry:
 // DataOut:
 // DataOut (flags):
@@ -3764,7 +3770,7 @@ l156F:
 // SymbolicIn:
 
 l15AF_thunk_fn15B0:
-	fn15B0()
+	fn15B0(de)
 	return
 // DataOut:
 // DataOut (flags):
@@ -3777,25 +3783,13 @@ fn156F_exit:
 
 
 
-void fn15B0()
+void fn15B0(word16 de)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse: 
+// MayUse:  de:[0..15]
 // LiveOut:
-// Trashed:
+// Trashed: SZPC b bc d de f h hl sp
 // Preserved:
-l1691_thunk_fn092A:
-	fn092A()
-	return
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
-fn15B0_exit:
-// DataOut:
-// DataOut (flags):
-// SymbolicIn:
-
 fn15B0_entry:
 // DataOut:
 // DataOut (flags):
@@ -3814,19 +3808,33 @@ l1647:
 // SymbolicIn:
 
 l164C:
-	branch fn08EC(out sp_86) l1494
+	byte a_66 = Mem0[de:byte]
+	branch fn08EC(out sp_71) l1494
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l1683_thunk_fn1494:
-	fn1494()
+	fn1494(a_66)
+	return
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l1686:
 	fn140B()
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+l1691_thunk_fn092A:
+	fn092A()
+	return
+// DataOut:
+// DataOut (flags):
+// SymbolicIn:
+
+fn15B0_exit:
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

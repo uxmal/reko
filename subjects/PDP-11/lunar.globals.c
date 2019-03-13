@@ -91,14 +91,8 @@ Eq_5 g_t0072 =
 		L'\x00'
 	};
 cui16 g_w0074 = 0x0000;
-Eq_5 g_t0076 = 
-	{
-		L'\x00'
-	};
-Eq_5 g_t0078 = 
-	{
-		L'\x00'
-	};
+ui16 g_w0076 = 0x0000;
+ui16 g_w0078 = 0x0000;
 Eq_23 g_t007A = 
 	{
 		L'\x00'
@@ -119,7 +113,7 @@ cui16 g_w008A = 0x0000;
 cui16 g_w008C = 0x0000;
 cui16 g_w008E = 0x0000;
 cui16 g_w0090 = 0x0000;
-struct Eq_632 * g_ptr0092 = null;
+struct Eq_627 * g_ptr0092 = null;
 word16 g_w0096 = 0x00CE;
 struct Eq_683 * g_ptr009E = &g_ptr009E;
 ci16 g_w00A0 = 0x0000;
@@ -130,11 +124,11 @@ cui16 g_w00A8 = 0x0000;
 wchar_t g_w00AA = L'\x00';
 int16 g_w00AC = 0;
 ci16 g_w00AE = 0x0000;
-struct Eq_1432 * g_ptr00B0 = &g_ptr00B0;
+struct Eq_1482 * g_ptr00B0 = &g_ptr00B0;
 word16 * g_a013E[] = 
 	{
 	};
-Eq_419 g_t021C = 
+Eq_409 g_t021C = 
 	{
 		
 		{
@@ -148,10 +142,10 @@ Eq_419 g_t021C =
 word16 g_w07BA = 0x0000;
 word16 g_w0C72 = 0x0000;
 word16 g_w0F70 = 0x0A9F;
-struct Eq_3190 * g_a168C[] = 
+struct Eq_3251 * g_a168C[] = 
 	{
 	};
-struct Eq_3195 * g_a1696[] = 
+struct Eq_3256 * g_a1696[] = 
 	{
 	};
 word16 g_a182A[] = 
@@ -159,14 +153,14 @@ word16 g_a182A[] =
 	};
 word16 g_w182C = 0x0000;
 word16 g_w182E = 0x0000;
-Eq_2441 g_t1F96 = 
+Eq_2487 g_t1F96 = 
 	{
 		0x0000,
 		0x0000,
 		0,
 	};
 word16 g_w25AA = 0x0000;
-Eq_3215 g_t25B8 = 
+Eq_3276 g_t25B8 = 
 	{
 		
 		{
@@ -194,10 +188,10 @@ Eq_5 g_t26AE =
 		L'\x00'
 	};
 cui16 g_w27A8 = 0x0000;
-Eq_3432 g_a27B0[] = 
+Eq_3515 g_a27B0[] = 
 	{
 	};
-Eq_3256 g_t2814 = 
+Eq_3339 g_t2814 = 
 	{
 		0x30
 	};
@@ -205,7 +199,7 @@ ci16 g_w28F0 = 0x030C;
 Eq_5 g_a28F2[] = 
 	{
 	};
-Eq_3439 g_a28F8[] = 
+Eq_3522 g_a28F8[] = 
 	{
 	};
 Eq_5 g_t34B4 = 

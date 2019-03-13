@@ -220,12 +220,12 @@ namespace Reko.Core.Serialization
                 return name;
             switch (storage)
             {
+            case RegisterStorage reg:
+                return reg.Name;
             case StackStorage stack:
                 return NamingPolicy.Instance.StackArgumentName(dataType, stack.StackOffset, name);
             case SequenceStorage seq:
                 return seq.Name;
-            case RegisterStorage reg:
-                return reg.Name;
             default:
                 throw new NotImplementedException();
             }

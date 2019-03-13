@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -31,9 +31,9 @@ namespace Reko.Arch.PowerPC
 {
     public class PowerPcCallingConvention : CallingConvention
     {
-        private PowerPcArchitecture arch;
-        private RegisterStorage[] iregs;
-        private RegisterStorage[] fregs;
+        private readonly PowerPcArchitecture arch;
+        private readonly RegisterStorage[] iregs;
+        private readonly RegisterStorage[] fregs;
 
         public PowerPcCallingConvention(PowerPcArchitecture arch)
         {
@@ -60,8 +60,7 @@ namespace Reko.Arch.PowerPC
             for (int iArg = 0; iArg < dtParams.Count; ++iArg)
             {
                 var dtArg = dtParams[iArg];
-                var prim = dtArg as PrimitiveType;
-                if (prim != null && prim.Domain == Domain.Real)
+                if (dtArg is PrimitiveType prim && prim.Domain == Domain.Real)
                 {
                     if (fr >= fregs.Length)
                     {

@@ -1,4 +1,6 @@
+using Reko.Core;
 using Reko.Core.Lib;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +9,6 @@ using System.Threading.Tasks;
 
 namespace Reko.WindowsItp.Decoders
 {
-    public delegate bool Mutator(uint uInstr, Disassembler dasm);
-
     public abstract class Decoder
     {
         public abstract TestInstruction Decode(uint wInstr, Disassembler dasm);
@@ -52,14 +52,14 @@ namespace Reko.WindowsItp.Decoders
     public class ThreadedDecoder : Decoder
     {
         private readonly Opcode opcode;
-        private readonly Mutator[] mutators;
+        private readonly Mutator<Disassembler>[] mutators;
 
-        public ThreadedDecoder(Opcode opcode, params Mutator[] mutators)
+        public ThreadedDecoder(Opcode opcode, params Mutator<Disassembler> [] mutators)
         {
             this.opcode = opcode;
             this.mutators = mutators;
         }
-
+         
         public override TestInstruction Decode(uint wInstr, Disassembler dasm)
         {
             foreach (var mutator in mutators)

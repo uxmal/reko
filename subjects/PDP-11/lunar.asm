@@ -1127,6 +1127,7 @@ l0AEC:
 ;; fn0AF6: 0AF6
 ;;   Called from:
 ;;     0AF2 (in fn0A94)
+;;     0B66 (in fn0B06)
 ;;     0B70 (in fn0B06)
 fn0AF6 proc
 	tst	(sp)+

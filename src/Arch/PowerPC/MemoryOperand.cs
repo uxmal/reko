@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -37,8 +37,8 @@ namespace Reko.Arch.PowerPC
             this.Offset = offset;
         }
 
-        public RegisterStorage BaseRegister { get; private set; }
-        public Constant Offset { get; private set; } 
+        public RegisterStorage BaseRegister { get; }
+        public Constant Offset { get; } 
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {

@@ -34,8 +34,6 @@ using static Reko.Arch.Arm.AArch32.ArmVectorData;
 
 namespace Reko.Arch.Arm.AArch32
 {
-    using Mutator = System.Func<uint, A32Disassembler, bool>;
-
     public partial class A32Disassembler : DisassemblerBase<AArch32Instruction>
     {
         private static readonly Decoder rootDecoder;
@@ -354,7 +352,7 @@ namespace Reko.Arch.Arm.AArch32
             return ImmediateOperand.Word32(n);
         }
 
-        private static Mutator vW(int pos1, int size1, int pos2, int size2)
+        private static Mutator<A32Disassembler> vW(int pos1, int size1, int pos2, int size2)
         {
             var fields = new[]
             {
@@ -369,18 +367,18 @@ namespace Reko.Arch.Arm.AArch32
             };
         }
 
-        private static Mutator vi(int offset)
+        private static Mutator<A32Disassembler> vi(int offset)
         {
             return (u, d) => { d.state.vectorData = d.VectorElementInteger(offset); return true; };
         }
 
-        private static Mutator vf(int offset)
+        private static Mutator<A32Disassembler> vf(int offset)
         {
             return (u, d) => { d.state.vectorData = d.VectorElementFloat(offset); return true; };
         }
 
         // bit which determines whether or not to use Qx or Dx registers in SIMD
-        private static Mutator q(int offset)
+        private static Mutator<A32Disassembler> q(int offset)
         {
             return (u, d) => { d.state.useQ = Bits.IsBitSet(u, offset); return true; };
         }
@@ -388,23 +386,23 @@ namespace Reko.Arch.Arm.AArch32
         /// <summary>
         /// Sets the writeback Bits.IsBitSet.
         /// </summary>
-        private static Mutator w(int offset)
+        private static Mutator<A32Disassembler> w(int offset)
         {
             return (u, d) => { d.state.writeback = Bits.IsBitSet(u, offset); return true; };
         }
 
         // sets user bit (LDM user / STM user)
-        private static Mutator u => (u, d) =>
+        private static Mutator<A32Disassembler> u => (u, d) =>
             { d.state.userStmLdm = true; return true; };
 
         /// <summary>
         /// 12-Bits.IsBitSet encoded immediate at offset 0
         /// </summary>
-        private static Mutator I =>
+        private static Mutator<A32Disassembler> I =>
             (u, d) => { d.state.ops.Add(d.DecodeImm12(u)); return true; };
 
         // 24-bits at offset 0.
-        private static Mutator J =>
+        private static Mutator<A32Disassembler> J =>
             (u, d) =>
             {
                 var offset = 8 + (((int)u << 8) >> 6);
@@ -413,7 +411,7 @@ namespace Reko.Arch.Arm.AArch32
             };
 
         // 24-bits at offset 0.
-        private static Mutator V =>
+        private static Mutator<A32Disassembler> V =>
             (u, d) =>
             {
                 var imm = u & 0x00FFFFFF;
@@ -422,7 +420,7 @@ namespace Reko.Arch.Arm.AArch32
             };
 
         // 24-bits + extra H bit
-        private static Mutator X =>
+        private static Mutator<A32Disassembler> X =>
             (u, d) =>
             {
                 var offset = 8 + (((int)u << 8) >> 6);
@@ -432,7 +430,7 @@ namespace Reko.Arch.Arm.AArch32
             };
 
         // immediate low 12 bits + extra 4 bits
-        private static Mutator Y =>
+        private static Mutator<A32Disassembler> Y =>
             (u, d) =>
             {
                 var imm = (u & 0xFFF) | ((u >> 4) & 0xF000);
@@ -441,7 +439,7 @@ namespace Reko.Arch.Arm.AArch32
             };
 
         // immediate low 12 bits + extra 4 bits
-        private static Mutator Yh =>
+        private static Mutator<A32Disassembler> Yh =>
             (u, d) =>
             {
                 var imm = (u & 0xFFF) | ((u >> 4) & 0xF000);
@@ -450,7 +448,7 @@ namespace Reko.Arch.Arm.AArch32
             };
 
         // register at a 4-bit multiple offset
-        private static Mutator r(int offset)
+        private static Mutator<A32Disassembler> r(int offset)
         {
             offset *= 4;
             return (u, d) => {
@@ -463,7 +461,7 @@ namespace Reko.Arch.Arm.AArch32
         /// <summary>
         /// rp - Register pair
         /// </summary>
-        private static Mutator rp(int offset)
+        private static Mutator<A32Disassembler> rp(int offset)
         {
             offset *= 4;
             return (u, d) =>
@@ -484,7 +482,7 @@ namespace Reko.Arch.Arm.AArch32
         }
 
         // Banked register
-        private static Mutator rb(int pos1, int size1, int pos2, int size2, int pos3, int size3)
+        private static Mutator<A32Disassembler> rb(int pos1, int size1, int pos2, int size2, int pos3, int size3)
         {
             var fields = new[]
 {
@@ -507,7 +505,7 @@ namespace Reko.Arch.Arm.AArch32
         }
 
         // Vector register
-        private static Mutator W(int pos1, int size1, int pos2, int size2)
+        private static Mutator<A32Disassembler> W(int pos1, int size1, int pos2, int size2)
         {
             var fields = new[]
             {
@@ -540,7 +538,7 @@ namespace Reko.Arch.Arm.AArch32
         /// <summary>
         /// Set the SIMD vector index
         /// </summary>
-        private static Mutator Ix(int pos, int size)
+        private static Mutator<A32Disassembler> Ix(int pos, int size)
         {
             var fields = new[]
             {
@@ -580,7 +578,7 @@ namespace Reko.Arch.Arm.AArch32
         }
 
         // Simple base register access.
-        private static Mutator M(int offset, PrimitiveType dt)
+        private static Mutator<A32Disassembler> M(int offset, PrimitiveType dt)
         {
             return (u, d) =>
             {
@@ -595,7 +593,7 @@ namespace Reko.Arch.Arm.AArch32
 
 
         // 12-bit offset
-        private static Mutator Mo(PrimitiveType dt)
+        private static Mutator<A32Disassembler> Mo(PrimitiveType dt)
         {
             return (u, d) =>
             {
@@ -608,7 +606,7 @@ namespace Reko.Arch.Arm.AArch32
             };
         }
 
-        private static Mutator M_(PrimitiveType dt)
+        private static Mutator<A32Disassembler> M_(PrimitiveType dt)
         {
             return (u, d) =>
             {
@@ -622,7 +620,7 @@ namespace Reko.Arch.Arm.AArch32
         }
 
         // offset split in hi-lo nybbles.
-        private static Mutator Mh(PrimitiveType dt, bool allowWriteback = true)
+        private static Mutator<A32Disassembler> Mh(PrimitiveType dt, bool allowWriteback = true)
         {
             return (u, d) =>
             {
@@ -639,7 +637,7 @@ namespace Reko.Arch.Arm.AArch32
         }
 
         // Memory access with register offset
-        private static Mutator Mx(PrimitiveType dt)
+        private static Mutator<A32Disassembler> Mx(PrimitiveType dt)
         {
             return (wInstr, d) =>
             {
@@ -656,7 +654,7 @@ namespace Reko.Arch.Arm.AArch32
         }
 
         // Memory access with 8-bit immediate offset (possibly shifted)
-        private static Mutator Mi(int shift, PrimitiveType dt)
+        private static Mutator<A32Disassembler> Mi(int shift, PrimitiveType dt)
         {
             return (u, d) =>
             {
@@ -700,7 +698,7 @@ namespace Reko.Arch.Arm.AArch32
 
 
         // Multiple registers
-        private static Mutator Mr(int pos, int size) {
+        private static Mutator<A32Disassembler> Mr(int pos, int size) {
             var bitfields = new[]
             {
                 new Bitfield(pos, size)
@@ -717,7 +715,7 @@ namespace Reko.Arch.Arm.AArch32
             {  new Bitfield(22, 1), new Bitfield(12, 4)
         };
 
-        private static Mutator Md(int pos, int size)
+        private static Mutator<A32Disassembler> Md(int pos, int size)
         {
             var bitfields = new[]
             {
@@ -734,7 +732,7 @@ namespace Reko.Arch.Arm.AArch32
             };
         }
 
-        private static Mutator Ms(int pos, int size)
+        private static Mutator<A32Disassembler> Ms(int pos, int size)
         {
             var bitfields = new[]
             {
@@ -751,7 +749,7 @@ namespace Reko.Arch.Arm.AArch32
             };
         }
 
-        private static Mutator SR =>
+        private static Mutator<A32Disassembler> SR =>
             (u, d) =>
             {
                 var sr = Bits.IsBitSet(u, 22) ? Registers.spsr : Registers.cpsr;
@@ -760,7 +758,7 @@ namespace Reko.Arch.Arm.AArch32
             };
 
         // Single precision register
-        private static Mutator S(int pos1, int size1, int pos2, int size2)
+        private static Mutator<A32Disassembler> S(int pos1, int size1, int pos2, int size2)
         {
             var fields = new[]
             {
@@ -775,7 +773,7 @@ namespace Reko.Arch.Arm.AArch32
             };
         }
 
-        private static Mutator D(int pos1, int size1, int pos2, int size2)
+        private static Mutator<A32Disassembler> D(int pos1, int size1, int pos2, int size2)
         {
             var fields = new[]
             {
@@ -790,7 +788,7 @@ namespace Reko.Arch.Arm.AArch32
             };
         }
 
-        private static Mutator Q(int pos1, int size1, int pos2, int size2)
+        private static Mutator<A32Disassembler> Q(int pos1, int size1, int pos2, int size2)
         {
             var fields = new[]
             {
@@ -813,7 +811,7 @@ namespace Reko.Arch.Arm.AArch32
         //}
 
         // Endianness
-        private static Mutator E(int pos, int size)
+        private static Mutator<A32Disassembler> E(int pos, int size)
         {
             var fields = new[]
             {
@@ -830,7 +828,7 @@ namespace Reko.Arch.Arm.AArch32
         /// <summary>
         /// Immediate value
         /// </summary>
-        private static Mutator i(int pos, int size)
+        private static Mutator<A32Disassembler> i(int pos, int size)
         {
             var fields = new[]
             {
@@ -844,7 +842,7 @@ namespace Reko.Arch.Arm.AArch32
             };
         }
 
-        private static Mutator i(int pos1, int size1, int pos2, int size2)
+        private static Mutator<A32Disassembler> i(int pos1, int size1, int pos2, int size2)
         {
             var fields = new[]
             {
@@ -860,7 +858,7 @@ namespace Reko.Arch.Arm.AArch32
         }
 
         // Add 1 to the immediate at pos:size.
-        private static Mutator i_p1(int pos, int size)
+        private static Mutator<A32Disassembler> i_p1(int pos, int size)
         {
             var fields = new[]
             {
@@ -874,7 +872,7 @@ namespace Reko.Arch.Arm.AArch32
             };
         }
 
-        private static Mutator ih(int pos, int size)
+        private static Mutator<A32Disassembler> ih(int pos, int size)
         {
             var fields = new[]
             {
@@ -891,7 +889,7 @@ namespace Reko.Arch.Arm.AArch32
         /// <summary>
         /// Modified SIMD immediate
         /// </summary>
-        private static Mutator Is(int pos1, int size1, int pos2, int size2, int pos3, int size3)
+        private static Mutator<A32Disassembler> Is(int pos1, int size1, int pos2, int size2, int pos3, int size3)
         {
             var fields = new[]
             {
@@ -912,7 +910,7 @@ namespace Reko.Arch.Arm.AArch32
         /// <summary>
         /// Compute vector element type from cmode(0:2)
         /// </summary>
-        private static Mutator DtFromCmode(int pos, int len)
+        private static Mutator<A32Disassembler> DtFromCmode(int pos, int len)
         {
             var field = new Bitfield(pos, len);
             return (u, d) =>
@@ -933,14 +931,14 @@ namespace Reko.Arch.Arm.AArch32
         };
 
         // use bit 20 to determine if sets flags
-        private static Mutator s =>
+        private static Mutator<A32Disassembler> s =>
             (u, d) => {
                 d.state.updateFlags = ((u >> 20) & 1) != 0;
                 return true;
             };
 
         // Coprocessor #
-        private static Mutator CP(int n)
+        private static Mutator<A32Disassembler> CP(int n)
         {
             return (u, d) =>
             {
@@ -950,7 +948,7 @@ namespace Reko.Arch.Arm.AArch32
         }
 
         // Coprocessor register
-        private static Mutator CR(int offset)
+        private static Mutator<A32Disassembler> CR(int offset)
         {
             return (u, d) => {
                 d.state.ops.Add(d.CoprocessorRegister(u, offset));
@@ -959,7 +957,7 @@ namespace Reko.Arch.Arm.AArch32
         }
 
         // '>i' immediate shift
-        private static Mutator Shi =>
+        private static Mutator<A32Disassembler> Shi =>
             (u, d) =>
             {
                 int sh;
@@ -972,7 +970,7 @@ namespace Reko.Arch.Arm.AArch32
             };
 
         // >R:  rotation as encoded in uxtb / stxb and  friends
-        private static Mutator ShR(int pos, int size)
+        private static Mutator<A32Disassembler> ShR(int pos, int size)
         {
             var bitfields = new Bitfield[]
             {
@@ -997,7 +995,7 @@ namespace Reko.Arch.Arm.AArch32
         /// <summary>
         /// Not yet implemented decoder.
         /// </summary>
-        private static Mutator x(string message)
+        private static Mutator<A32Disassembler> x(string message)
         {
             return (u, d) =>
             {
@@ -1014,7 +1012,7 @@ namespace Reko.Arch.Arm.AArch32
         }
 
         // >r : register shift
-        private static Mutator Shr =>
+        private static Mutator<A32Disassembler> Shr =>
             (u, d) => {
                 (d.state.shiftOp, d.state.shiftValue) = d.DecodeRegShift(u);
                 return true;
@@ -1022,7 +1020,7 @@ namespace Reko.Arch.Arm.AArch32
 
 
         // Ba => barrier
-        private static Mutator Ba(int pos, int size)
+        private static Mutator<A32Disassembler> Ba(int pos, int size)
         {
             var bitfield = new[] { new Bitfield(pos, size) };
             return (u, d) =>
@@ -1035,7 +1033,7 @@ namespace Reko.Arch.Arm.AArch32
 
         // BFI / BFC bit field pair. It's encoded as lsb,msb but needs to be 
         // decoded as lsb,width
-        private static Mutator B(int lsbPos, int lsbSize, int msbPos, int msbSize)
+        private static Mutator<A32Disassembler> B(int lsbPos, int lsbSize, int msbPos, int msbSize)
         {
             var lsbField = new[]
             {
@@ -1082,17 +1080,17 @@ namespace Reko.Arch.Arm.AArch32
 
 
 
-        private static Decoder Instr(Opcode opcode, params Mutator[] mutators)
+        private static Decoder Instr(Opcode opcode, params Mutator<A32Disassembler>[] mutators)
         {
             return new InstrDecoder(opcode, InstrClass.Linear, ArmVectorData.INVALID, mutators);
         }
 
-        private static Decoder Instr(Opcode opcode, InstrClass iclass, params Mutator[] mutators)
+        private static Decoder Instr(Opcode opcode, InstrClass iclass, params Mutator<A32Disassembler>[] mutators)
         {
             return new InstrDecoder(opcode, iclass, ArmVectorData.INVALID, mutators);
         }
 
-        private static Decoder Instr(Opcode opcode, ArmVectorData vec, params Mutator[] mutators)
+        private static Decoder Instr(Opcode opcode, ArmVectorData vec, params Mutator<A32Disassembler>[] mutators)
         {
             return new InstrDecoder(opcode, InstrClass.Linear, vec, mutators);
         }

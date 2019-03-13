@@ -473,7 +473,6 @@ namespace Reko.Core
         public abstract FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf);
         public abstract FlagGroupStorage GetFlagGroup(string name);
         public abstract string GrfToString(RegisterStorage flagRegister, string prefix, uint grf);
-
         public virtual List<RtlInstruction> InlineCall(Address addrCallee, Address addrContinuation, EndianImageReader rdr, IStorageBinder binder)
         {
             return null;

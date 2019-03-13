@@ -184,11 +184,11 @@ namespace Reko.Arch.Pdp11
             }
         }
 
-        class FnOpRec : Decoder
+        class FnDecoder : Decoder
         {
             private Func<ushort, Pdp11Disassembler, Pdp11Instruction> fn;
 
-            public FnOpRec(Func<ushort, Pdp11Disassembler, Pdp11Instruction> fn)
+            public FnDecoder(Func<ushort, Pdp11Disassembler, Pdp11Instruction> fn)
             {
                 this.fn = fn;
             }
@@ -244,7 +244,7 @@ namespace Reko.Arch.Pdp11
                 Instr(Opcode.ash, E,r),
                 Instr(Opcode.ashc, E,r),
                 Instr(Opcode.xor, E,r),
-                new FnOpRec(FpuArithmetic),
+                new FnDecoder(FpuArithmetic),
                 illegal,
                 Instr(Opcode.sob , r,I)
             };

@@ -30,8 +30,6 @@ using System.Diagnostics;
 namespace Reko.Arch.Arm.AArch32
 {
 
-    using Mutator = Func<uint, T32Disassembler, bool>;
-
     /// <summary>
     /// Disassembles machine code in the ARM T32 encoding into 
     /// ARM32 instructions.
@@ -946,7 +944,7 @@ namespace Reko.Arch.Arm.AArch32
 
         #region Mutators
 
-        private static Mutator q(int bitPos)
+        private static Mutator<T32Disassembler> q(int bitPos)
         {
             return (u, d) =>
             {
@@ -1118,7 +1116,7 @@ namespace Reko.Arch.Arm.AArch32
 
         // Immediate mutators
 
-        private static Mutator Imm(int pos1, int length1, int pos2, int length2)
+        private static Mutator<T32Disassembler> Imm(int pos1, int length1, int pos2, int length2)
         {
             var bitfields = new []
             {
@@ -1133,7 +1131,7 @@ namespace Reko.Arch.Arm.AArch32
             };
         }
 
-        private static Mutator ImmM1(int pos, int length)
+        private static Mutator<T32Disassembler> ImmM1(int pos, int length)
         {
             var bitfield = new Bitfield(pos, length);
             return (u, d) =>
@@ -1144,7 +1142,7 @@ namespace Reko.Arch.Arm.AArch32
             };
         }
 
-        private static Mutator LslImm(int pos1, int length1, int pos2, int length2)
+        private static Mutator<T32Disassembler> LslImm(int pos1, int length1, int pos2, int length2)
         {
             var bitfields = new[]
             {
@@ -1214,7 +1212,7 @@ namespace Reko.Arch.Arm.AArch32
 
         // Memory access mutators
 
-        private static Mutator MemIdx(int posBaseReg, int posIdxReg, PrimitiveType dt)
+        private static Mutator<T32Disassembler> MemIdx(int posBaseReg, int posIdxReg, PrimitiveType dt)
         {
             return (u, d) =>
             {
@@ -1267,7 +1265,7 @@ namespace Reko.Arch.Arm.AArch32
             return new InstrDecoder(opcode, iclass, format);
         }
 
-        private static InstrDecoder2 Instr(Opcode opcode, params Mutator[] mutators)
+        private static InstrDecoder2 Instr(Opcode opcode, params Mutator<T32Disassembler>[] mutators)
         {
             return new InstrDecoder2(opcode, InstrClass.Linear, mutators);
         }

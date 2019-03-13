@@ -34,10 +34,11 @@ namespace Reko.Arch.Mips
     {
         internal readonly MipsProcessorArchitecture arch;
         internal readonly bool isVersion6OrLater;
-        private MipsInstruction instrCur;
-        private Address addr;
         private readonly EndianImageReader rdr;
         private readonly PrimitiveType signedWord;
+        internal readonly List<MachineOperand> ops;
+        private MipsInstruction instrCur;
+        internal Address addr;
 
         public MipsDisassembler(MipsProcessorArchitecture arch, EndianImageReader imageReader, bool isVersion6OrLater)
         {
@@ -45,6 +46,7 @@ namespace Reko.Arch.Mips
             this.rdr = imageReader;
             this.isVersion6OrLater = isVersion6OrLater;
             this.signedWord = PrimitiveType.Create(Domain.SignedInt, arch.WordWidth.BitSize);
+            this.ops = new List<MachineOperand>();
         }
 
         public override MipsInstruction DisassembleInstruction()
@@ -54,13 +56,14 @@ namespace Reko.Arch.Mips
             {
                 return null;
             }
-            var opRec = opRecs[wInstr >> 26];
+            this.ops.Clear();
+            var decoder = decoders[wInstr >> 26];
             try
             {
-                if (opRec == null)
+                if (decoder == null)
                     instrCur = new MipsInstruction { opcode = Opcode.illegal };
                 else
-                    instrCur = opRec.Decode(wInstr, this);
+                    instrCur = decoder.Decode(wInstr, this);
             }
             catch
             {
@@ -91,406 +94,408 @@ namespace Reko.Arch.Mips
             });
         }
 
-        private static OpRec[] opRecs;
+        internal static readonly Decoder[] decoders;
 
         static MipsDisassembler()
         {
-            var cop1_s = new FpuOpRec(PrimitiveType.Real32,
-                new AOpRec(Opcode.add_s, "F4,F3,F2"),
-                new AOpRec(Opcode.sub_s, "F4,F3,F2"),
-                new AOpRec(Opcode.mul_s, "F4,F3,F2"),
-                new AOpRec(Opcode.div_s, "F4,F3,F2"),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.mov_s, "F4,F3"),
-                new AOpRec(Opcode.neg_s, "F4,F3"),
+            var cop1_s = new FpuDecoder(PrimitiveType.Real32,
+                new InstrDecoder(Opcode.add_s, F4,F3,F2),
+                new InstrDecoder(Opcode.sub_s, F4,F3,F2),
+                new InstrDecoder(Opcode.mul_s, F4,F3,F2),
+                new InstrDecoder(Opcode.div_s, F4,F3,F2),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.mov_s, F4,F3),
+                new InstrDecoder(Opcode.neg_s, F4,F3),
 
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
 
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
 
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
 
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
 
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
 
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.c_eq_s, "c8,F3,F2"),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.c_eq_s, c8,F3,F2),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
 
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.c_lt_s, "c8,F3,F2"),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.c_le_s, "c8,F3,F2"),
-                new AOpRec(Opcode.illegal, ""));
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.c_lt_s, c8,F3,F2),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.c_le_s, c8,F3,F2),
+                new InstrDecoder(Opcode.illegal));
 
-            var cop1_d = new FpuOpRec(PrimitiveType.Real64,
+            var cop1_d = new FpuDecoder(PrimitiveType.Real64,
                 // fn 00
-                new AOpRec(Opcode.add_d, "F4,F3,F2"),
-                new AOpRec(Opcode.sub_d, "F4,F3,F2"),
-                new AOpRec(Opcode.mul_d, "F4,F3,F2"),
-                new AOpRec(Opcode.div_d, "F4,F3,F2"),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.mov_d, "F4,F3"),
-                new AOpRec(Opcode.neg_d, "F4,F3"),
+                new InstrDecoder(Opcode.add_d, F4,F3,F2),
+                new InstrDecoder(Opcode.sub_d, F4,F3,F2),
+                new InstrDecoder(Opcode.mul_d, F4,F3,F2),
+                new InstrDecoder(Opcode.div_d, F4,F3,F2),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.mov_d, F4,F3),
+                new InstrDecoder(Opcode.neg_d, F4,F3),
 
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.trunc_l_d, "F4,F3"),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.trunc_l_d, F4,F3),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
 
                 // fn 10
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
 
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
 
                 // fn 20
-                new AOpRec(Opcode.cvt_s_d, "F4,F3"),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.cvt_w_d, "F4,F3"),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
+                new InstrDecoder(Opcode.cvt_s_d, F4,F3),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.cvt_w_d, F4,F3),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
 
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
 
                 // fn 30
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.c_eq_d, "c8,F3,F2"),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.c_eq_d, c8,F3,F2),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
 
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.c_lt_d, "c8,F3,F2"),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.c_le_d, "c8,F3,F2"),
-                new AOpRec(Opcode.illegal, ""));
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.c_lt_d, c8,F3,F2),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.c_le_d, c8,F3,F2),
+                new InstrDecoder(Opcode.illegal));
 
-            var cop1_w = new FpuOpRec(PrimitiveType.Int64,
+            var cop1_w = new FpuDecoder(PrimitiveType.Int64,
                 // fn 00
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
 
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
 
                 // fn 10
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
 
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
 
                 // fn 20
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
 
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
 
                 // fn 30
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
 
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.c_lt_d, "c8,F3,F2"),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""));
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.c_lt_d, c8,F3,F2),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal));
 
-            var cop1_l = new FpuOpRec(PrimitiveType.Int64,
+            var cop1_l = new FpuDecoder(PrimitiveType.Int64,
                 // fn 00
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
 
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
 
                 // fn 10
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
 
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
 
                 // fn 20
-                new AOpRec(Opcode.cvt_s_l, "F4,F3"),
-                new AOpRec(Opcode.cvt_d_l, "F4,F3"),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
+                new InstrDecoder(Opcode.cvt_s_l, F4,F3),
+                new InstrDecoder(Opcode.cvt_d_l, F4,F3),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
 
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
 
                 // fn 30
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
 
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""));
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal));
 
-            var cop0_C0_decoder = new SparseMaskDecoder(0, 0x3F, new Dictionary<uint, OpRec>
+            var cop0_C0_decoder = new SparseMaskDecoder(0, 0x3F, new Dictionary<uint, Decoder>
             {
-                { 0x01, new AOpRec(Opcode.tlbr , "") },
-                { 0x02, new AOpRec(Opcode.tlbwi, "") },
-                { 0x06, new AOpRec(Opcode.tlbwr, "") },
-                { 0x08, new AOpRec(Opcode.tlbp , "") },
-                { 0x18, new AOpRec(Opcode.eret , "") },
-                { 0x20, new AOpRec(Opcode.wait , "") },
+                { 0x01, new InstrDecoder(Opcode.tlbr ) },
+                { 0x02, new InstrDecoder(Opcode.tlbwi) },
+                { 0x06, new InstrDecoder(Opcode.tlbwr) },
+                { 0x08, new InstrDecoder(Opcode.tlbp ) },
+                { 0x18, new InstrDecoder(Opcode.eret ) },
+                { 0x20, new InstrDecoder(Opcode.wait ) },
             });
-            var cop1 = new CoprocessorOpRec(
-                new AOpRec(Opcode.mfc1, "R2,F3"),
-                new A64OpRec(Opcode.dmfc1, "R2,F3"),
-                new AOpRec(Opcode.cfc1, "R2,f3"),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.mtc1, "R2,F3"),
-                new A64OpRec(Opcode.dmtc1, "R2,F3"),
-                new AOpRec(Opcode.ctc1, "R2,f3"),
-                new AOpRec(Opcode.illegal, ""),
+            var cop1 = new CoprocessorDecoder(
+                new InstrDecoder(Opcode.mfc1, R2,F3),
+                new A64Decoder(Opcode.dmfc1, R2,F3),
+                new InstrDecoder(Opcode.cfc1, R2,f3),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.mtc1, R2,F3),
+                new A64Decoder(Opcode.dmtc1, R2,F3),
+                new InstrDecoder(Opcode.ctc1, R2,f3),
+                new InstrDecoder(Opcode.illegal),
 
-                new BcNRec(Opcode.bc1f, Opcode.bc1t),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
+                new BcNDecoder(
+                    new InstrDecoder(InstrClass.ConditionalTransfer | InstrClass.Delay, Opcode.bc1f, c18,j),
+                    new InstrDecoder(InstrClass.ConditionalTransfer | InstrClass.Delay, Opcode.bc1t, c18,j)),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
 
                 cop1_s,
                 cop1_d,
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
                 cop1_w,
                 cop1_l,
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
 
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""));
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal),
+                new InstrDecoder(Opcode.illegal));
 
-            var special2 = new SparseMaskDecoder(0, 0x3F, new Dictionary<uint, OpRec>
+            var special2 = new SparseMaskDecoder(0, 0x3F, new Dictionary<uint, Decoder>
             {
-                { 0x2, new Version6OpRec(
-                    new AOpRec(Opcode.mul, "R3,R1,R2"),
-                    new AOpRec(Opcode.illegal, ""))
+                { 0x2, new Version6Decoder(
+                    new InstrDecoder(Opcode.mul, R3,R1,R2),
+                    new InstrDecoder(Opcode.illegal))
                 }
             });
-            opRecs = new OpRec[]
+            decoders = new Decoder[]
             {
-                new SpecialOpRec(),
-                new CondOpRec(),
-                new AOpRec(Opcode.j, "J"),
-                new AOpRec(Opcode.jal, "J"),
-                new AOpRec(Opcode.beq, "R1,R2,j"),
-                new AOpRec(Opcode.bne, "R1,R2,j"),
-                new AOpRec(Opcode.blez, "R1,j"),
-                new AOpRec(Opcode.bgtz, "R1,j"),
+                new SpecialDecoder(),
+                new CondDecoder(),
+                new InstrDecoder(Opcode.j, J),
+                new InstrDecoder(Opcode.jal, J),
+                new InstrDecoder(Opcode.beq, R1,R2,j),
+                new InstrDecoder(Opcode.bne, R1,R2,j),
+                new InstrDecoder(Opcode.blez, R1,j),
+                new InstrDecoder(Opcode.bgtz, R1,j),
 
-                new AOpRec(Opcode.addi, "R2,R1,I"),
-                new AOpRec(Opcode.addiu, "R2,R1,I"),
-                new AOpRec(Opcode.slti, "R2,R1,I"),
-                new AOpRec(Opcode.sltiu, "R2,R1,I"),
+                new InstrDecoder(Opcode.addi, R2,R1,I),
+                new InstrDecoder(Opcode.addiu, R2,R1,I),
+                new InstrDecoder(Opcode.slti, R2,R1,I),
+                new InstrDecoder(Opcode.sltiu, R2,R1,I),
 
-                new AOpRec(Opcode.andi, "R2,R1,U"),
-                new AOpRec(Opcode.ori, "R2,R1,U"),
-                new AOpRec(Opcode.xori, "R2,R1,U"),
-                new AOpRec(Opcode.lui, "R2,i"),
+                new InstrDecoder(Opcode.andi, R2,R1,U),
+                new InstrDecoder(Opcode.ori, R2,R1,U),
+                new InstrDecoder(Opcode.xori, R2,R1,U),
+                new InstrDecoder(Opcode.lui, R2,i),
                 // 10
-                new CoprocessorOpRec(
-                    new AOpRec(Opcode.mfc0, "R2,R3"),
-                    new AOpRec(Opcode.dmfc0, "R2,R3"),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.mtc0, "R2,R3"),
-                    new AOpRec(Opcode.dmtc0, "R2,R3"),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
+                new CoprocessorDecoder(
+                    new InstrDecoder(Opcode.mfc0, R2,R3),
+                    new InstrDecoder(Opcode.dmfc0, R2,R3),
+                    new InstrDecoder(Opcode.illegal),
+                    new InstrDecoder(Opcode.illegal),
+                    new InstrDecoder(Opcode.mtc0, R2,R3),
+                    new InstrDecoder(Opcode.dmtc0, R2,R3),
+                    new InstrDecoder(Opcode.illegal),
+                    new InstrDecoder(Opcode.illegal),
 
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
+                    new InstrDecoder(Opcode.illegal),
+                    new InstrDecoder(Opcode.illegal),
+                    new InstrDecoder(Opcode.illegal),
+                    new InstrDecoder(Opcode.illegal),
+                    new InstrDecoder(Opcode.illegal),
+                    new InstrDecoder(Opcode.illegal),
+                    new InstrDecoder(Opcode.illegal),
+                    new InstrDecoder(Opcode.illegal),
 
                     cop0_C0_decoder,
                     cop0_C0_decoder,
@@ -512,204 +517,286 @@ namespace Reko.Arch.Mips
                // 11: COP1 encodings
                 cop1,
 
-               new CoprocessorOpRec(  // 12: COP2 
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
+               new CoprocessorDecoder(  // 12: COP2 
+                    new InstrDecoder(Opcode.illegal),
+                    new InstrDecoder(Opcode.illegal),
+                    new InstrDecoder(Opcode.illegal),
+                    new InstrDecoder(Opcode.illegal),
+                    new InstrDecoder(Opcode.illegal),
+                    new InstrDecoder(Opcode.illegal),
+                    new InstrDecoder(Opcode.illegal),
+                    new InstrDecoder(Opcode.illegal),
 
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
+                    new InstrDecoder(Opcode.illegal),
+                    new InstrDecoder(Opcode.illegal),
+                    new InstrDecoder(Opcode.illegal),
+                    new InstrDecoder(Opcode.illegal),
+                    new InstrDecoder(Opcode.illegal),
+                    new InstrDecoder(Opcode.illegal),
+                    new InstrDecoder(Opcode.illegal),
+                    new InstrDecoder(Opcode.illegal),
 
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
+                    new InstrDecoder(Opcode.illegal),
+                    new InstrDecoder(Opcode.illegal),
+                    new InstrDecoder(Opcode.illegal),
+                    new InstrDecoder(Opcode.illegal),
+                    new InstrDecoder(Opcode.illegal),
+                    new InstrDecoder(Opcode.illegal),
+                    new InstrDecoder(Opcode.illegal),
+                    new InstrDecoder(Opcode.illegal),
 
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, "")),
+                    new InstrDecoder(Opcode.illegal),
+                    new InstrDecoder(Opcode.illegal),
+                    new InstrDecoder(Opcode.illegal),
+                    new InstrDecoder(Opcode.illegal),
+                    new InstrDecoder(Opcode.illegal),
+                    new InstrDecoder(Opcode.illegal),
+                    new InstrDecoder(Opcode.illegal),
+                    new InstrDecoder(Opcode.illegal)),
                 null,   // COP1X
-                new AOpRec(Opcode.beql, "R1,R2,j"),
-                new AOpRec(Opcode.bnel, "R1,R2,j"),
-                new AOpRec(Opcode.blezl, "R1,j"),
-                new AOpRec(Opcode.bgtzl, "R1,j"),
+                new InstrDecoder(Opcode.beql, R1,R2,j),
+                new InstrDecoder(Opcode.bnel, R1,R2,j),
+                new InstrDecoder(Opcode.blezl, R1,j),
+                new InstrDecoder(Opcode.bgtzl, R1,j),
 
-                new A64OpRec(Opcode.daddi, "R2,R1,I"),
-                new A64OpRec(Opcode.daddiu, "R2,R1,I"),
-                new A64OpRec(Opcode.ldl, "R2,El"),
-                new A64OpRec(Opcode.ldr, "R2,El"),
+                new A64Decoder(Opcode.daddi, R2,R1,I),
+                new A64Decoder(Opcode.daddiu, R2,R1,I),
+                new A64Decoder(Opcode.ldl, R2,El),
+                new A64Decoder(Opcode.ldr, R2,El),
 
                 special2,
                 null,
                 null,
-                new Special3OpRec(), 
+                new Special3Decoder(), 
 
                 // 20
-                new AOpRec(Opcode.lb, "R2,EB"),
-                new AOpRec(Opcode.lh, "R2,EH"),
-                new AOpRec(Opcode.lwl, "R2,Ew"),
-                new AOpRec(Opcode.lw, "R2,Ew"),
+                new InstrDecoder(Opcode.lb, R2,EB),
+                new InstrDecoder(Opcode.lh, R2,EH),
+                new InstrDecoder(Opcode.lwl, R2,Ew),
+                new InstrDecoder(Opcode.lw, R2,Ew),
 
-                new AOpRec(Opcode.lbu, "R2,Eb"),
-                new AOpRec(Opcode.lhu, "R2,Eh"),
-                new AOpRec(Opcode.lwr, "R2,Ew"),
-                new A64OpRec(Opcode.lwu, "R2,Ew"),
+                new InstrDecoder(Opcode.lbu, R2,Eb),
+                new InstrDecoder(Opcode.lhu, R2,Eh),
+                new InstrDecoder(Opcode.lwr, R2,Ew),
+                new A64Decoder(Opcode.lwu, R2,Ew),
 
-                new AOpRec(Opcode.sb, "R2,Eb"),
-                new AOpRec(Opcode.sh, "R2,Eh"),
-                new AOpRec(Opcode.swl, "R2,Ew"),
-                new AOpRec(Opcode.sw, "R2,Ew"),
+                new InstrDecoder(Opcode.sb, R2,Eb),
+                new InstrDecoder(Opcode.sh, R2,Eh),
+                new InstrDecoder(Opcode.swl, R2,Ew),
+                new InstrDecoder(Opcode.sw, R2,Ew),
 
-                new AOpRec(Opcode.sdl, "R2,Ew"),
-                new AOpRec(Opcode.sdr, "R2,Ew"),
-                new AOpRec(Opcode.swr, "R2,Ew"),
+                new InstrDecoder(Opcode.sdl, R2,Ew),
+                new InstrDecoder(Opcode.sdr, R2,Ew),
+                new InstrDecoder(Opcode.swr, R2,Ew),
                 null,
 
                 // 30
-                new Version6OpRec(
-                    new AOpRec(Opcode.ll, "R2,Ew"),
-                    new AOpRec(Opcode.illegal, "")),
-                new AOpRec(Opcode.lwc1, "F2,Ew"),
+                new Version6Decoder(
+                    new InstrDecoder(Opcode.ll, R2,Ew),
+                    new InstrDecoder(Opcode.illegal)),
+                new InstrDecoder(Opcode.lwc1, F2,Ew),
                 null,
-                new AOpRec(Opcode.pref, "R2,Ew"),
+                new InstrDecoder(Opcode.pref, R2,Ew),
 
-                new Version6OpRec(
-                    new A64OpRec(Opcode.lld, "R2,El"),
-                    new AOpRec(Opcode.illegal, "")),
-                new AOpRec(Opcode.ldc1, "F2,El"),
+                new Version6Decoder(
+                    new A64Decoder(Opcode.lld, R2,El),
+                    new InstrDecoder(Opcode.illegal)),
+                new InstrDecoder(Opcode.ldc1, F2,El),
                 null,
-                new A64OpRec(Opcode.ld, "R2,El"),
+                new A64Decoder(Opcode.ld, R2,El),
 
-                new Version6OpRec(
-                    new AOpRec(Opcode.sc, "R2,Ew"),
-                    new AOpRec(Opcode.illegal, "")),
-                new AOpRec(Opcode.swc1, "F2,Ew"),
+                new Version6Decoder(
+                    new InstrDecoder(Opcode.sc, R2,Ew),
+                    new InstrDecoder(Opcode.illegal)),
+                new InstrDecoder(Opcode.swc1, F2,Ew),
                 null,
                 null,
 
-                new Version6OpRec(
-                    new A64OpRec(Opcode.scd, "R2,El"),
-                    new AOpRec(Opcode.illegal, "")),
-                new A64OpRec(Opcode.sdc1, "F2,El"),
+                new Version6Decoder(
+                    new A64Decoder(Opcode.scd, R2,El),
+                    new InstrDecoder(Opcode.illegal)),
+                new A64Decoder(Opcode.sdc1, F2,El),
                 null,
-                new A64OpRec(Opcode.sd, "R2,El")
+                new A64Decoder(Opcode.sd, R2,El)
             };
         }
 
-        public MipsInstruction DecodeOperands(uint wInstr, Opcode opcode, InstrClass iclass, string opFmt)
+        //public MipsInstruction DecodeOperands(uint wInstr, Opcode opcode, InstrClass iclass, string opFmt)
+        //{
+        //    var ops = new List<MachineOperand>();
+        //    MachineOperand op = null;
+        //    for (int i = 0; i < opFmt.Length; ++i)
+        //    {
+        //        switch (opFmt[i])
+        //        {
+        //        default: throw new NotImplementedException(string.Format("Operator format {0}", opFmt[i]));
+        //        case ',':
+        //            continue;
+        internal static Mutator<MipsDisassembler> R(int offset)
         {
-            var ops = new List<MachineOperand>();
-            MachineOperand op = null;
-            for (int i = 0; i < opFmt.Length; ++i)
+            return (u, d) =>
             {
-                switch (opFmt[i])
-                {
-                default: throw new NotImplementedException(string.Format("Operator format {0}", opFmt[i]));
-                case ',':
-                    continue;
-                case 'R':
-                    switch (opFmt[++i])
-                    {
-                    case '1': op = Reg(wInstr >> 21); break;
-                    case '2': op = Reg(wInstr >> 16); break;
-                    case '3': op = Reg(wInstr >> 11); break;
-                    //case '4': op = MemOff(wInstr >> 6, wInstr); break;
-                    default: throw new NotImplementedException(string.Format("Register field {0}.", opFmt[i]));
-                    }
-                    break;
-                case 'F':
-                    switch (opFmt[++i])
-                    {
-                    case '1': op = FReg(wInstr >> 21); break;
-                    case '2': op = FReg(wInstr >> 16); break;
-                    case '3': op = FReg(wInstr >> 11); break;
-                    case '4': op = FReg(wInstr >> 6); break;
-                    default: throw new NotImplementedException(string.Format("Register field {0}.", opFmt[i]));
-                    }
-                    break;
-                case 'f': // FPU control register
-                    RegisterOperand fcreg;
-                    switch (opFmt[++i])
-                    {
-                    case '1': if (!TryGetFCReg(wInstr >> 21, out fcreg)) return null; op = fcreg; break;
-                    case '2': if (!TryGetFCReg(wInstr >> 16, out fcreg)) return null; op = fcreg; break;
-                    case '3': if (!TryGetFCReg(wInstr >> 11, out fcreg)) return null; op = fcreg; break;
-                    //case '4': op = MemOff(wInstr >> 6, wInstr); break;
-                    default: throw new NotImplementedException(string.Format("Register field {0}.", opFmt[i]));
-                    }
-                    break;
-                case 'I':
-                    op = new ImmediateOperand(Constant.Create(this.signedWord, (short)wInstr));
-                    break;
-                case 'U':
-                    op = new ImmediateOperand(Constant.Create(arch.WordWidth, (ushort) wInstr));
-                    break;
-                case 'i':
-                    op = ImmediateOperand.Int16((short) wInstr);
-                    break;
-                case 'j':
-                    op = RelativeBranch(wInstr);
-                    break;
-                case 'J':
-                    op = LargeBranch(wInstr);
-                    break;
-                case 'B':
-                    op = ImmediateOperand.Word32((wInstr >> 6) & 0xFFFFF);
-                    break;
-                case 's':   // Shift amount or sync type
-                    op = ImmediateOperand.Byte((byte)((wInstr >> 6) & 0x1F));
-                    break;
-                case 'E':   // effective address w 16-bit offset
-                    op = Ea(wInstr, opFmt[++i], 21, (short)wInstr);
-                    break;
-                case 'e':   // effective address w 9-bit offset
-                    op = Ea(wInstr, opFmt[++i], 21, (short)(((short)wInstr) >> 7));
-                    break;
-                case 'T':   // trap code
-                    op = ImmediateOperand.Word16((ushort)((wInstr >> 6) & 0x03FF));
-                    break;
-                case 'c':   // condition code
-                    op = CCodeFlag(wInstr, opFmt, ref i);
-                    break;
-                case 'C': // FPU condition code
-                    op = FpuCCodeFlag(wInstr, opFmt, ref i);
-                    break;
-                case 'H':   // hardware register, see instruction rdhwr
-                    op = ImmediateOperand.Byte((byte)((wInstr >> 11) & 0x1f));
-                    break;
-                }
-                ops.Add(op);
-            }
-            return new MipsInstruction
-            {
-                opcode = opcode,
-                iclass = iclass,
-                Address = addr,
-                Length = 4,
-                op1 = ops.Count > 0 ? ops[0] : null,
-                op2 = ops.Count > 1 ? ops[1] : null,
-                op3 = ops.Count > 2 ? ops[2] : null,
+                var op = d.Reg(u >> offset);
+                d.ops.Add(op);
+                return true;
             };
+        }
+        internal static readonly Mutator<MipsDisassembler> R1 = R(21);
+        internal static readonly Mutator<MipsDisassembler> R2 = R(16);
+        internal static readonly Mutator<MipsDisassembler> R3 = R(11);
+        internal static readonly Mutator<MipsDisassembler> R4 = R(6);
+
+        internal static Mutator<MipsDisassembler> F(int offset)
+        {
+            return (u, d) =>
+            {
+                var op = d.FReg(u >> offset);
+                d.ops.Add(op);
+                return true;
+            };
+        }
+        internal static readonly Mutator<MipsDisassembler> F1 = F(21);
+        internal static readonly Mutator<MipsDisassembler> F2 = F(16);
+        internal static readonly Mutator<MipsDisassembler> F3 = F(11);
+        internal static readonly Mutator<MipsDisassembler> F4 = F(6);
+        
+        // FPU control register
+        internal static Mutator<MipsDisassembler> Fcreg(int offset)
+        {
+            return (u, d) =>
+            {
+                if (!d.TryGetFCReg(u >> offset, out RegisterOperand fcreg))
+                    return false;
+                d.ops.Add(fcreg);
+                return true;
+            };
+        }
+        internal static readonly Mutator<MipsDisassembler> f1 = Fcreg(21);
+        internal static readonly Mutator<MipsDisassembler> f2 = Fcreg(16);
+        internal static readonly Mutator<MipsDisassembler> f3 = Fcreg(11);
+
+        internal static bool I(uint wInstr, MipsDisassembler dasm)
+        {
+            var op = new ImmediateOperand(Constant.Create(dasm.signedWord, (short) wInstr));
+            dasm.ops.Add(op);
+            return true;
+        }
+
+        internal static bool U(uint wInstr, MipsDisassembler dasm)
+        {
+            var op = new ImmediateOperand(Constant.Create(dasm.arch.WordWidth, (ushort) wInstr));
+            dasm.ops.Add(op);
+            return true;
+        }
+
+        internal static bool i(uint wInstr, MipsDisassembler dasm)
+        {
+            var op = ImmediateOperand.Int16((short) wInstr);
+            dasm.ops.Add(op);
+            return true;
+        }
+
+        internal static bool j(uint wInstr, MipsDisassembler dasm)
+        {
+            var op = dasm.RelativeBranch(wInstr);
+            dasm.ops.Add(op);
+            return true;
+        }
+
+        internal static bool J(uint wInstr, MipsDisassembler dasm)
+        {
+            var op = dasm.LargeBranch(wInstr);
+            dasm.ops.Add(op);
+            return true;
+        }
+
+        internal static bool B(uint wInstr, MipsDisassembler dasm)
+        {
+            var op = ImmediateOperand.Word32((wInstr >> 6) & 0xFFFFF);
+            dasm.ops.Add(op);
+            return true;
+        }
+
+        // Shift amount or sync type
+        internal static bool s(uint wInstr, MipsDisassembler dasm)
+        {
+            var op = ImmediateOperand.Byte((byte) ((wInstr >> 6) & 0x1F));
+            dasm.ops.Add(op);
+            return true;
+        }
+
+        // effective address w 16-bit offset
+        internal static Mutator<MipsDisassembler> E(PrimitiveType size)
+        {
+            return (u, d) =>
+            {
+                var op = d.Ea(u, size, 21, (short) u);
+                d.ops.Add(op);
+                return true;
+            };
+        }
+        internal static readonly Mutator<MipsDisassembler> Eb = E(PrimitiveType.Byte);
+        internal static readonly Mutator<MipsDisassembler> EB = E(PrimitiveType.SByte);
+        internal static readonly Mutator<MipsDisassembler> Eh = E(PrimitiveType.Word16);
+        internal static readonly Mutator<MipsDisassembler> EH = E(PrimitiveType.Int16); 
+        internal static readonly Mutator<MipsDisassembler> Ew = E(PrimitiveType.Word32);
+        internal static readonly Mutator<MipsDisassembler> EW = E(PrimitiveType.Int32); 
+        internal static readonly Mutator<MipsDisassembler> El = E(PrimitiveType.Word64);
+        internal static readonly Mutator<MipsDisassembler> EL = E(PrimitiveType.Int64);
+
+        // effective address w 9-bit offset
+        internal static Mutator<MipsDisassembler> e(PrimitiveType size)
+        {
+            return (u, d) =>
+            {
+                var op = d.Ea(u, size, 21, (short) (((short) u) >> 7));
+                d.ops.Add(op);
+                return true;
+            };
+        }
+        internal static readonly Mutator<MipsDisassembler> ew = e(PrimitiveType.Word32);
+        internal static readonly Mutator<MipsDisassembler> el = e(PrimitiveType.Word64);
+
+
+        // trap code
+        internal static bool T(uint wInstr, MipsDisassembler dasm)
+        {
+            var op = ImmediateOperand.Word16((ushort) ((wInstr >> 6) & 0x03FF));
+            dasm.ops.Add(op);
+            return true;
+        }
+
+        // condition code
+        internal static Mutator<MipsDisassembler> c(int bitPos)
+        {
+            return (u, d) =>
+            {
+                var op = d.CCodeFlag(u, bitPos);
+                d.ops.Add(op);
+                return true;
+            };
+        }
+        internal static readonly Mutator<MipsDisassembler> c8 = c(8);
+        internal static readonly Mutator<MipsDisassembler> c18 = c(18);
+
+        // FPU condition code
+        internal static Mutator<MipsDisassembler> C(int bitPos)
+        {
+            return (u, d) =>
+            {
+                var op = d.FpuCCodeFlag(u, bitPos);
+                d.ops.Add(op);
+                return true;
+            };
+        }
+        internal static Mutator<MipsDisassembler> C18 = C(18);
+
+        // hardware register, see instruction rdhwr
+        internal static bool H(uint wInstr, MipsDisassembler dasm)
+        {
+            var op = ImmediateOperand.Byte((byte) ((wInstr >> 11) & 0x1f));
+            dasm.ops.Add(op);
+            return true;
         }
 
         private RegisterOperand Reg(uint regNumber)
@@ -724,8 +811,7 @@ namespace Reko.Arch.Mips
 
         private bool TryGetFCReg(uint regNumber, out RegisterOperand op)
         {
-            RegisterStorage fcreg;
-            if (arch.fpuCtrlRegs.TryGetValue(regNumber & 0x1F, out fcreg))
+            if (arch.fpuCtrlRegs.TryGetValue(regNumber & 0x1F, out RegisterStorage fcreg))
             {
                 op = new RegisterOperand(fcreg);
                 return true;
@@ -737,28 +823,15 @@ namespace Reko.Arch.Mips
             }
         }
 
-        private RegisterOperand CCodeFlag(uint wInstr, string fmt, ref int i)
+        private RegisterOperand CCodeFlag(uint wInstr, int regPos)
         {
-            int pos = 0;
-            while (Char.IsDigit(fmt[++i]))
-            {
-                pos = pos * 10 + fmt[i] - '0';
-            }
-            var regNo = (wInstr >> pos) & 0x7;
+            var regNo = (wInstr >> regPos) & 0x7;
             return new RegisterOperand(arch.ccRegs[regNo]);
         }
 
-        private RegisterOperand FpuCCodeFlag(uint wInstr, string fmt, ref int i)
+        private RegisterOperand FpuCCodeFlag(uint wInstr, int regPos)
         {
-            int pos = 0;
-            ++i;
-            while (i < fmt.Length && Char.IsDigit(fmt[i]))
-            {
-                pos = pos * 10 + fmt[i] - '0';
-                ++i;
-            }
-            var regNo = (wInstr >> pos) & 0x7;
-            --i;
+            var regNo = (wInstr >> regPos) & 0x7;
             return new RegisterOperand(arch.fpuCcRegs[regNo]);
         }
 
@@ -777,21 +850,8 @@ namespace Reko.Arch.Mips
                 Address.Create(arch.PointerType, linAddr));
         }
 
-        private IndirectOperand Ea(uint wInstr, char wCode, int shift, short offset)
+        private IndirectOperand Ea(uint wInstr, PrimitiveType dataWidth, int shift, short offset)
         {
-            PrimitiveType dataWidth;
-            switch (wCode)
-            {
-            default: throw new NotSupportedException(string.Format("Unknown width code '{0}'.", wCode));
-            case 'b': dataWidth = PrimitiveType.Byte; break;
-            case 'B': dataWidth = PrimitiveType.SByte; break;
-            case 'h': dataWidth = PrimitiveType.Word16; break;
-            case 'H': dataWidth = PrimitiveType.Int16; break;
-            case 'w': dataWidth = PrimitiveType.Word32; break;
-            case 'W': dataWidth = PrimitiveType.Int32; break;
-            case 'l': dataWidth = PrimitiveType.Word64; break;
-            case 'L': dataWidth = PrimitiveType.Int64; break;
-            }
             var baseReg = arch.GetRegister((int)(wInstr >> shift) & 0x1F);
             return new IndirectOperand(dataWidth, offset, baseReg);
         }

@@ -48,9 +48,9 @@ namespace Reko.Arch.X86
         {
             public readonly InstrClass iclass;
             public readonly Opcode opcode;       // mnemonic for the decoded instruction
-            public readonly Mutator[] mutators;  // mutators for decoding operands to this instruction
+            public readonly Mutator<X86Disassembler>[] mutators;  // mutators for decoding operands to this instruction
 
-            public InstructionDecoder(Opcode op, InstrClass icl, params Mutator [] mutators)
+            public InstructionDecoder(Opcode op, InstrClass icl, params Mutator<X86Disassembler> [] mutators)
             {
                 this.iclass = icl;
                 this.opcode = op;
@@ -81,8 +81,8 @@ namespace Reko.Arch.X86
         /// </summary>
         public class Alternative64Decoder : Decoder
         {
-            private Decoder decoder32;
-            private Decoder decoder64;
+            private readonly Decoder decoder32;
+            private readonly Decoder decoder64;
 
             public Alternative64Decoder(Decoder decoder32, Decoder decoder64)
             {
@@ -105,7 +105,7 @@ namespace Reko.Arch.X86
         /// </summary>
         public class Rex_or_InstructionDecoder : InstructionDecoder
         {
-            public Rex_or_InstructionDecoder(Opcode op, Mutator mutator)
+            public Rex_or_InstructionDecoder(Opcode op, Mutator<X86Disassembler> mutator)
                 : base(op, InstrClass.Linear, mutator)
             {
             }
@@ -157,9 +157,9 @@ namespace Reko.Arch.X86
         public class GroupDecoder : Decoder
         {
             public readonly int Group;
-            public readonly Mutator[] mutators;
+            public readonly Mutator<X86Disassembler>[] mutators;
 
-            public GroupDecoder(int group, params Mutator [] mutators)
+            public GroupDecoder(int group, params Mutator<X86Disassembler>[] mutators)
             {
                 this.Group = group;
                 this.mutators = mutators;
@@ -215,8 +215,8 @@ namespace Reko.Arch.X86
         /// </summary>
         public class Group7Decoder : Decoder
         {
-            private Decoder memDecoder;
-            private Decoder[] regDecoders;
+            private readonly Decoder memDecoder;
+            private readonly Decoder[] regDecoders;
 
             public Group7Decoder(
                 Decoder memDecoder,
@@ -308,7 +308,7 @@ namespace Reko.Arch.X86
             }
         }
 
-        public class ThreeByteOpRec : Decoder
+        public class ThreeByteDecoder : Decoder
         {
             public override bool Decode(X86Disassembler disasm, byte op)
             {
@@ -543,7 +543,7 @@ namespace Reko.Arch.X86
         /// </summary>
         public class InterruptDecoder : InstructionDecoder
         {
-            public InterruptDecoder(Opcode op, Mutator mutator) : base(op, InstrClass.Linear, mutator)
+            public InterruptDecoder(Opcode op, Mutator<X86Disassembler> mutator) : base(op, InstrClass.Linear, mutator)
             {
             }
 

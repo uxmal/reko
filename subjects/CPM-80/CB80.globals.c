@@ -4,6 +4,7 @@
 
 #include "CB80.h"
 
+byte g_b0000 = 0x00;
 word16 g_w0006 = 0x0000;
 byte g_b0080 = 0x00;
 Eq_675 g_t0103 = 
@@ -22,7 +23,7 @@ Eq_468 g_t138B =
 	{
 		0x00
 	};
-Eq_2423 g_t138C = 
+Eq_2421 g_t138C = 
 	{
 		0x00
 	};
@@ -71,7 +72,7 @@ Eq_468 g_t1520 =
 	{
 		0x00
 	};
-struct Eq_2269 * g_ptr1521 = null;
+struct Eq_2267 * g_ptr1521 = null;
 byte g_b1529 = 0x00;
 word16 g_w1640 = 0x0000;
 byte g_b1645 = 0x30;
@@ -225,12 +226,12 @@ Eq_63 g_t1696 =
 	{
 		0x17
 	};
-Eq_1661 g_t1697 = 
+Eq_1659 g_t1697 = 
 	{
 		0xB7
 	};
 cu8 g_b16A6 = 0x23;
-Eq_2423 g_t16A7 = 
+Eq_2421 g_t16A7 = 
 	{
 		0x7E
 	};

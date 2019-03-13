@@ -150,9 +150,9 @@ namespace Reko.Arch.X86
                 s_invalid,
                 Instr(Opcode.getsec, InstrClass.System),
 
-                new ThreeByteOpRec(), // 0F 38
+                new ThreeByteDecoder(), // 0F 38
                 s_invalid,
-                new ThreeByteOpRec(), // 0F 3A
+                new ThreeByteDecoder(), // 0F 3A
                 s_invalid,
                 s_invalid,
                 s_invalid,

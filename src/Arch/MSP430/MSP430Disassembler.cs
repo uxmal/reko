@@ -30,8 +30,6 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.Msp430
 {
-    delegate bool Mutator<TDasm>(uint uInstr, TDasm dasm);
-
     public class Msp430Disassembler : DisassemblerBase<Msp430Instruction>
     {
         private readonly EndianImageReader rdr;
@@ -589,7 +587,7 @@ namespace Reko.Arch.Msp430
 
         private class SubDecoder : Decoder
         {
-            private Dictionary<int, Decoder> decoders;
+            private readonly Dictionary<int, Decoder> decoders;
             private readonly ushort mask;
             private readonly int sh;
 
