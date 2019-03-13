@@ -38,4 +38,14 @@
       <HintPath>..\..\..\external\NUnit-2.6.3\nunit.framework.dll</HintPath>
     </Reference>
   </ItemGroup>
+  
+  <!-- Copy dependencies to the `tools` directory.-->
+  <Target Name="CopyToTools" AfterTargets="CopyFilesToOutputDirectory">
+    <Copy SourceFiles="$(ProjectDir)$(OutDir)$(TargetFileName)" DestinationFolder="$(SolutionDir)tools" />
+    <Copy Condition="Exists('$(ProjectDir)$(OutDir)$(TargetFileName).config')" SourceFiles="$(ProjectDir)$(OutDir)$(TargetFileName).config" DestinationFolder="$(SolutionDir)tools" />
+    <Copy SourceFiles="$(ProjectDir)$(OutDir)Reko.Core.dll" DestinationFolder="$(SolutionDir)tools" />
+    <Copy SourceFiles="$(SolutionDir)..\external\docopt.net-0.6.1.4\DocoptNet.dll" DestinationFolder="$(SolutionDir)tools" />
+    <Copy SourceFiles="@(ConfigurationFiles)" DestinationFolder="$(SolutionDir)tools" SkipUnchangedFiles="true" />
+  </Target>
+
 </Project>
