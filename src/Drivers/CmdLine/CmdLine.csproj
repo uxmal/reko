@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>net472;netcoreapp2.0</TargetFrameworks>
@@ -281,8 +281,8 @@
       <Name>LGSymLoader</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="$(SolutionDir)Drivers\Common.items"/>
-  <Import Project="$(SolutionDir)Drivers\PreBuild.targets"/>
+  <Import Project="$(ProjectDir)..\Common.items"/>
+  <Import Project="$(ProjectDir)..\PreBuild.targets"/>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.-->
 </Project>
