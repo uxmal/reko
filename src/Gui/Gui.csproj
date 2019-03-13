@@ -15,7 +15,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\Decompiler\Decompiler.csproj" />
-    <ProjectReference Include="..\tools\xslt\xslt.csproj" />
   </ItemGroup>
   <Target Name="GenerateCsFiles" BeforeTargets="CoreCompile">
     <Exec Condition=" '$(OS)' == 'Unix' And Exists('$(ProjectDir)../tools/xslt.exe') " Command="mono $(ProjectDir)../tools/xslt.exe $(ProjectDir)cmdids.xslt $(ProjectDir)decompiler-menus.xml $(ProjectDir)CmdIds.cs" />
