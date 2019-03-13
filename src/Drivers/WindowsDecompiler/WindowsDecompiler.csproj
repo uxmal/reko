@@ -13,10 +13,6 @@
     <StartupObject />
   </PropertyGroup>
 
-  <Target Name="GenerateCsFiles" BeforeTargets="CoreCompile">
-    <Exec Condition=" '$(OS)' == 'Unix' And Exists('$(ProjectDir)../../tools/xslt.exe')" Command="mono $(ProjectDir)../../tools/xslt.exe $(ProjectDir)Forms/decompiler-menus.xslt $(ProjectDir)../../Gui/decompiler-menus.xml $(ProjectDir)Forms/DecompilerMenus.cs" />
-    <Exec Condition=" '$(OS)' != 'Unix' And Exists('$(ProjectDir)../../tools/xslt.exe')" Command="&quot;$(SolutionDir)tools\xslt.exe&quot; &quot;$(ProjectDir)Forms\decompiler-menus.xslt&quot; &quot;$(ProjectDir)..\..\Gui\decompiler-menus.xml&quot; &quot;$(ProjectDir)Forms\DecompilerMenus.cs&quot;" />
-  </Target>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj" />
     <ProjectReference Include="..\..\Gui\Gui.csproj" />
@@ -87,6 +83,13 @@
     </ProjectReference>
     <ProjectReference Include="..\..\Native\NativeProxy.csproj">
     </ProjectReference>
+    <ProjectReference Include="..\..\ImageLoaders\Dol\Dol.csproj" />
+    <ProjectReference Include="..\..\ImageLoaders\Elf\Elf.csproj" />
+    <ProjectReference Include="..\..\ImageLoaders\MachO\MachO.csproj" />
+    <ProjectReference Include="..\..\ImageLoaders\MzExe\MzExe.csproj" />
+    <ProjectReference Include="..\..\ImageLoaders\Omf\Omf.csproj" />
+    <ProjectReference Include="..\..\ImageLoaders\XexLoader\Xex.csproj" />
+    <ProjectReference Include="..\..\Native\NativeProxy.csproj" />
     <ProjectReference Include="..\..\UserInterfaces\WindowsForms\WindowsForms.csproj">
     </ProjectReference>
   </ItemGroup>
