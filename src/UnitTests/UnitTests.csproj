@@ -138,7 +138,7 @@
     <ProjectReference Include="..\Libraries\Microchip\Utils\Microchip.Utils.csproj">
     </ProjectReference>
     <ProjectReference Include="..\Libraries\Python\Python.csproj" />
-    <ProjectReference Include="..\Arch\Tms7000\Tms7000.csproj" />
+
     <ProjectReference Include="..\Native\NativeProxy.csproj" />
     <ProjectReference Include="..\Symbols\LGSymLoader\LGSymLoader.csproj" />
   </ItemGroup>
