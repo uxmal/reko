@@ -1,7 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\packages\NUnit3TestAdapter.3.13.0\build\net35\NUnit3TestAdapter.props" Condition="Exists('..\packages\NUnit3TestAdapter.3.13.0\build\net35\NUnit3TestAdapter.props')" />
-  <Import Project="..\packages\NUnit.3.11.0\build\NUnit.props" Condition="Exists('..\packages\NUnit.3.11.0\build\NUnit.props')" />
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -137,6 +135,7 @@
     </ProjectReference>
     <ProjectReference Include="..\Libraries\Microchip\Utils\Microchip.Utils.csproj">
     </ProjectReference>
+
     <ProjectReference Include="..\Libraries\Python\Python.csproj" />
 
     <ProjectReference Include="..\Native\NativeProxy.csproj" />
