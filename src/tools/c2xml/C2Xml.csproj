@@ -34,9 +34,6 @@
     <Reference Include="DocoptNet">
       <HintPath>..\..\..\external\docopt.net-0.6.1.4\DocoptNet.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework">
-      <HintPath>..\..\..\external\NUnit-2.6.3\nunit.framework.dll</HintPath>
-    </Reference>
   </ItemGroup>
   
   <!-- Copy dependencies to the `tools` directory.-->
