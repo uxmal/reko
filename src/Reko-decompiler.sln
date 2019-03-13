@@ -392,6 +392,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UserInterfaces", "UserInterfaces", "{589E436C-6150-4033-9305-3B455A94B9C2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gui", "Gui\Gui.csproj", "{1CA14C64-92E8-452E-A380-637F3DBB4D28}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C4EF0F8B-B8BC-4BBD-91E6-F11D2335F901} = {C4EF0F8B-B8BC-4BBD-91E6-F11D2335F901}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WindowsForms", "UserInterfaces\WindowsForms\WindowsForms.csproj", "{60CC0C65-E629-4923-9112-2A46371C90AF}"
 EndProject
