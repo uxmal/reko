@@ -16,13 +16,4 @@
     <ProjectReference Include="..\UnitTests.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="nunit.framework">
-      <HintPath>..\..\..\external\NUnit-2.6.3\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="Rhino.Mocks">
-      <HintPath>..\..\..\..\..\..\idocx\Build\External\Rhino.Mocks.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>

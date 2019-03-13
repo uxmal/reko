@@ -18,7 +18,7 @@
   </ItemGroup>
   <Target Name="GenerateCsFiles" BeforeTargets="CoreCompile">
     <Exec Condition=" '$(OS)' == 'Unix' And Exists('$(ProjectDir)../tools/xslt.exe') " Command="mono $(ProjectDir)../tools/xslt.exe $(ProjectDir)cmdids.xslt $(ProjectDir)decompiler-menus.xml $(ProjectDir)CmdIds.cs" />
-    <Exec Condition=" '$(OS)' != 'Unix' And Exists('$(ProjectDir)../tools/xslt.exe') " Command="&quot;$(SolutionDir)tools\xslt.exe&quot; &quot;$(ProjectDir)cmdids.xslt&quot; &quot;$(ProjectDir)decompiler-menus.xml&quot; &quot;$(ProjectDir)CmdIds.cs&quot;" />
+    <Exec Condition=" '$(OS)' != 'Unix' And Exists('$(ProjectDir)../tools/xslt.exe') " Command="&quot;$(ProjectDir)..\tools\xslt.exe&quot; &quot;$(ProjectDir)cmdids.xslt&quot; &quot;$(ProjectDir)decompiler-menus.xml&quot; &quot;$(ProjectDir)CmdIds.cs&quot;" />
   </Target>
 </Project>
   <Target Name="GenerateCsFiles" BeforeTargets="CoreCompile">

@@ -5,7 +5,6 @@ loaded dynamically (using the services provided by IConfigurationService).
 -->
 <Project>
   <Target Name="CopyAllTheFiles" AfterTargets="CopyFilesToOutputDirectory">
-    <Message Importance="high" Text="=== HEURKAPETE Configuration $(Configuration) @@ $(TargetDir) @@ $(TargetFramework)" />
     <Message Importance="high" Text="Copying Decompiler metadata files to $(TargetDir)" />
     <Copy SourceFiles="@(DecompilerMetadata)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Message Importance="high" Text="Copying ImageLoaders to $(TargetDir)" />
