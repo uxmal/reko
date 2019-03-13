@@ -10,10 +10,10 @@
     <StartupObject />
     <RootNamespace>Reko.Tools.Xslt</RootNamespace>
     <AssemblyName>xslt</AssemblyName>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <!-- Copy dependencies to the `tools` directory.-->
   <Target Name="CopyToTools" AfterTargets="CopyFilesToOutputDirectory">
-    <Message Text="Project dir = $(ProjectDir)" />
     <Copy SourceFiles="$(ProjectDir)$(OutDir)$(TargetFileName)" DestinationFolder="$(ProjectDir).." />
   </Target>
 </Project>
