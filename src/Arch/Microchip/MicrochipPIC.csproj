@@ -7,12 +7,7 @@
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
   <RootNamespace>Reko.Arch.MicrochipPIC</RootNamespace><AssemblyName>Reko.Arch.MicrochipPIC</AssemblyName></PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Core.csproj"/>
-    <ProjectReference Include="..\..\Libraries\Microchip\Utils\Microchip.Utils.csproj"/>
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="nunit.framework">
-      <HintPath>..\..\..\external\NUnit-2.6.3\nunit.framework.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\..\Core\Core.csproj" />
+    <ProjectReference Include="..\..\Libraries\Microchip\Utils\Microchip.Utils.csproj" />
   </ItemGroup>
 </Project>
