@@ -3796,9 +3796,9 @@ Eq_14: (union "Eq_14" (bool u0) (char u1) ((ptr64 char) u2) ((ptr64 wchar_t) u3)
 	T_19705 (in 0x0000000000000000 : word64)
 	T_19707 (in rsi *s rdx : int64)
 	T_19708 (in 0x0000000000000000 : word64)
-	T_19712 (in (uint64) (0xFFFFFFFFAAAAAAAA % rdx) : uint64)
+	T_19712 (in (uint64) (0x00000000AAAAAAAA % rdx) : uint64)
 	T_19713 (in rax_121 : Eq_14)
-	T_19716 (in (uint64) (0xFFFFFFFFAAAAAAAA /u rdx) : uint64)
+	T_19716 (in (uint64) (0x00000000AAAAAAAA /u rdx) : uint64)
 	T_19722 (in Mem134[fp - 24 + 0x0000000000000000:word64] : word64)
 	T_19725 (in rax_138 : Eq_14)
 	T_19728 (in Mem134[rsi + 0x0000000000000000:word64] : word64)
@@ -87647,15 +87647,15 @@ T_19709: (in rcx_109 != 0x0000000000000000 : bool)
   Class: Eq_19709
   DataType: bool
   OrigDataType: bool
-T_19710: (in 0xFFFFFFFFAAAAAAAA : uint128)
+T_19710: (in 0x00000000AAAAAAAA : uint128)
   Class: Eq_19710
   DataType: uint128
   OrigDataType: uint128
-T_19711: (in 0xFFFFFFFFAAAAAAAA % rdx : word128)
+T_19711: (in 0x00000000AAAAAAAA % rdx : word128)
   Class: Eq_19711
   DataType: ui128
   OrigDataType: ui128
-T_19712: (in (uint64) (0xFFFFFFFFAAAAAAAA % rdx) : uint64)
+T_19712: (in (uint64) (0x00000000AAAAAAAA % rdx) : uint64)
   Class: Eq_14
   DataType: Eq_14
   OrigDataType: uint64
@@ -87663,15 +87663,15 @@ T_19713: (in rax_121 : Eq_14)
   Class: Eq_14
   DataType: Eq_14
   OrigDataType: uint64
-T_19714: (in 0xFFFFFFFFAAAAAAAA : uint128)
+T_19714: (in 0x00000000AAAAAAAA : uint128)
   Class: Eq_19714
   DataType: uint128
   OrigDataType: uint128
-T_19715: (in 0xFFFFFFFFAAAAAAAA /u rdx : word64)
+T_19715: (in 0x00000000AAAAAAAA /u rdx : word64)
   Class: Eq_19715
   DataType: uint64
   OrigDataType: uint64
-T_19716: (in (uint64) (0xFFFFFFFFAAAAAAAA /u rdx) : uint64)
+T_19716: (in (uint64) (0x00000000AAAAAAAA /u rdx) : uint64)
   Class: Eq_14
   DataType: Eq_14
   OrigDataType: uint64

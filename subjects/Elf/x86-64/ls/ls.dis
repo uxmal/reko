@@ -22191,8 +22191,8 @@ l0000000000410D45:
 // LocalsOut: fp(64)
 
 l0000000000410D0B:
-	rdx = (uint64) (0xFFFFFFFFAAAAAAAA % rdx)
-	word64 rax_121 = (uint64) (0xFFFFFFFFAAAAAAAA /u rdx)
+	rdx = (uint64) (0x00000000AAAAAAAA % rdx)
+	word64 rax_121 = (uint64) (0x00000000AAAAAAAA /u rdx)
 	branch rcx_109 >=u rax_121 l0000000000410D5C
 // DataOut: ebp fs r13d r14 r15 r8 rax rbp rbx rcx rdi rdx rsi rsp
 // DataOut (flags): 

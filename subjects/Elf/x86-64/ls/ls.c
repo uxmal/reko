@@ -10597,8 +10597,8 @@ Eq_14 fn0000000000410C90(Eq_14 rdx, Eq_14 rsi, Eq_14 rdi, Eq_5349 & r8Out)
 			Eq_14 rcx_109 = *rsi;
 			if (rdi != 0x00)
 			{
-				rdx = (uint64) (0xFFFFFFFFAAAAAAAA % rdx);
-				Eq_14 rax_121 = (uint64) (0xFFFFFFFFAAAAAAAA /u rdx);
+				rdx = (uint64) (0xAAAAAAAA % rdx);
+				Eq_14 rax_121 = (uint64) (0xAAAAAAAA /u rdx);
 				if (rcx_109 >= rax_121)
 				{
 					*(fp - 0x0018) = (union Eq_14 *) rax_121;
