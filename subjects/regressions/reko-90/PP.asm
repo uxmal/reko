@@ -28535,10 +28535,7 @@ l1483_0C57:
 1483:0C5D                                        41 01 4B              A.K
 1483:0C60 56 50 03 02 67 6A 86 16 40 03 6E 03             VP..gj..@.n.   
 
-;; fn1483_0C6C: 1483:0C6C
-;;   Called from:
-;;     1483:0C22 (in fn1483_0C11)
-fn1483_0C6C proc
+l1483_0C6C:
 	cld
 	daa
 	call	1BB8
@@ -28561,7 +28558,7 @@ l1483_0C87:
 
 ;; fn1483_0C91: 1483:0C91
 ;;   Called from:
-;;     1483:0C8F (in fn1483_0C6C)
+;;     1483:0C8F (in fn1483_0C11)
 ;;     1483:0D04 (in fn1483_0CFC)
 ;;     1483:0D04 (in fn1483_0CFC)
 fn1483_0C91 proc
@@ -28579,17 +28576,11 @@ l1483_0C9D:
 
 ;; fn1483_0CA0: 1483:0CA0
 ;;   Called from:
-;;     1483:0C85 (in fn1483_0C6C)
+;;     1483:0C85 (in fn1483_0C11)
+;;     1483:0C9B (in fn1483_0C91)
+;;     1483:0C9D (in fn1483_0C91)
 fn1483_0CA0 proc
 	and	al,[3101]
-
-;; fn1483_0CA1: 1483:0CA1
-;;   Called from:
-;;     1483:0C9D (in fn1483_0C91)
-;;     1483:0CA0 (in fn1483_0CA0)
-fn1483_0CA1 proc
-	push	es
-	add	[bx+di],si
 	add	ah,[bx+si]
 	call	FD4E
 
@@ -28625,7 +28616,10 @@ l1483_0CE5:
 	mov	ax,bx
 1483:0CE7                      B9 08 00 D1 E8 73                 .....s  
 
-l1483_0CED:
+;; fn1483_0CED: 1483:0CED
+;;   Called from:
+;;     1483:0D50 (in fn1483_0D3F)
+fn1483_0CED proc
 	add	si,[di]
 	add	[bx+si+F7E2],sp
 	stosw
@@ -28644,7 +28638,7 @@ fn1483_0CFA proc
 
 ;; fn1483_0CFC: 1483:0CFC
 ;;   Called from:
-;;     1483:0CF9 (in fn1483_0D3F)
+;;     1483:0CF9 (in fn1483_0CED)
 ;;     1483:0CFA (in fn1483_0CFA)
 fn1483_0CFC proc
 	xor	bl,al
@@ -28742,6 +28736,8 @@ l1483_0D9A:
 
 l1483_0D9B:
 	jl	0DF7
+
+l1483_0D9D:
 	or	al,3F
 	sbb	[di+2D],al
 	mov	dl,99
@@ -28750,6 +28746,8 @@ l1483_0D9B:
 
 l1483_0DA7:
 	stosb
+
+l1483_0DA8:
 	jns	0DBE
 
 l1483_0DAA:
@@ -28775,50 +28773,130 @@ l1483_0DBF:
 	push	es
 	inc	di
 	add	[03BC],cl
-
-l1483_0DC2:
-	push	cs
-	mov	sp,0B03
-
-l1483_0DC5:
 	or	ax,[0E00]
-
-l1483_0DC6:
-	push	es
-	add	[8C00],cl
-
-l1483_0DC9:
 	add	[si+8ED3],cl
-
-l1483_0DCB:
-	ror	word ptr [bp+8CC3],cl
-
-l1483_0DCD:
 	ret
-1483:0DCE                                           8C                  .
-
-l1483_0DCF:
-	retf	DA8E
+	mov	dx,cs
+	mov	ds,dx
 1483:0DD2       30 8B 0E 89 8B F1 83 B9 60 EE 02 8B FE D1   0.......`.....
 1483:0DE0 E9 FD F3 A5 53 B8 35 00 50 8B 2E 0A 00 03 16 CE ....S.5.P.......
-1483:0DF0 CB B8 00 10 18 3B C5 76 1B C5 2B 06 E8 2B D8 2B .....;.v..+..+.+
-1483:0E00 D0 2E C5 34 B1 03 C3 D3 E0 8B C8 D1 E0 48 48 8B ...4.........HH.
-1483:0E10 F0 8B F8 0B 30 0B ED 75 8F D9 FC 07 8E DB 83 EC ....0..u........
-1483:0E20 1C 8B EC 81 EC 80 01 8B C4 43 55 05 A0 8F 46 0A .........CU...F.
-1483:0E30 A2 05 0C E1 BE 11 00 AC 88 46 14 33 FF 89 7E 15 .........F.3..~.
-1483:0E40 10 96 16 0E 06 8C 56 04 80 93 37 01 E8 32 60 01 ......V...7..2`.
-1483:0E50 0E 1A 8C 5E 00 30 8C 46 63 56 08 E8 74 7B 0E 9F ...^.0.FcV..t{..
-1483:0E60 0A E8 75 0C 05 0C E8 6F 1D 14 E0 1D 12 EB 22 82 ..u....o......".
-1483:0E70 13 D2 23 9F 3E 14 CB 04 0E 9F 8E 5E 9C 0D 04 00 ..#.>......^....
+1483:0DF0 CB B8 00                                        ...            
+
+l1483_0DF3:
+	adc	[bx+si],bl
+	cmp	ax,bp
+
+l1483_0DF7:
+	jbe	0E14
+
+l1483_0DF9:
+	lds	bp,[bp+di]
+	push	es
+	call	E62A
+	sub	dx,ax
+	lds	si,cs:[si]
+	mov	cl,03
+	ret
+1483:0E07                      D3 E0 8B C8 D1 E0 48 48 8B        ......HH.
+1483:0E10 F0 8B F8 0B                                     ....           
+
+l1483_0E14:
+	xor	[bp+di],cl
+	in	ax,dx
+	jnz	0DA8
+
+l1483_0E19:
+	frndint
+	pop	es
+	mov	ds,bx
+	sub	sp,1C
+	mov	bp,sp
+	sub	sp,0180
+	mov	ax,sp
+	inc	bx
+	push	bp
+	add	ax,8FA0
+	inc	si
+	or	ah,[bp+si+0C05]
+	loope	0DF3
+
+l1483_0E35:
+	adc	[bx+si],ax
+	lodsb
+	mov	[bp+14],al
+	xor	di,di
+	mov	[bp+15],di
+	adc	[bp+0E16],dl
+	push	es
+	mov	[bp+04],ss
+	adc	byte ptr [bp+di+0137],E8
+	xor	ah,[bx+si+01]
+	push	cs
+	sbb	cl,[si+005E]
+	xor	[si+6346],cl
+	push	si
+	or	al,ch
+	jz	0ED9
+
+l1483_0E5E:
+	push	cs
+	lahf
+	or	ch,al
+	jnz	0E70
+
+l1483_0E64:
+	add	ax,E80C
+	outsw
+	sbb	ax,E014
+	sbb	ax,EB12
+	and	al,[bp+si+D213]
+
+l1483_0E70:
+	adc	dx,dx
+
+l1483_0E72:
+	and	bx,[bx+143E]
+	retf
+1483:0E77                      04 0E 9F 8E 5E 9C 0D 04 00        ....^....
 1483:0E80 88 A5 C9 3B B0 55 BE 1A 55 BE 0F 1A 8A 4E 15 06 ...;.U..U....N..
 1483:0E90 87 AD 16 C3 05 AD 16 2E 58 18 BC FF 4E 12 75 A4 ........X...N.u.
 1483:0EA0 8B DF 83 E7 0F 81 C7 00 80 B1 04 D3 EB 8C C0 03 ................
 1483:0EB0 C3 2D 00 08 8E C0 8B DE 83 E6 0F 0F 62 D8 0F 8E .-..........b...
 1483:0EC0 D8 E9 FE 4E 14 74 03 E9 59 FF 1F 1E 07 0E 1F 8C ...N.t..Y.......
-1483:0ED0 C2 32 ED BE A0 02 AC 8A C8 E3 13 AD 03 C2 B5 2A .2.............*
-1483:0EE0 D5 C3 32 E4 AC 03 F8 26 01 15 E2 F8 EB E8 0C 20 ..2....&....... 
-1483:0EF0 8B 36 04 90 3E 01 06 00 03 FA 01 16 02 86 AD EA .6..>...........
-1483:0F00 10 8E 24 30 DA 33 26 DB FA 8B 01 E6 8E D7 FB 2E ..$0.3&.........
+1483:0ED0 C2 32 ED BE A0 02                               .2....         
+
+l1483_0ED6:
+	lodsb
+	mov	cl,al
+
+l1483_0ED9:
+	jcxz	0EEE
+
+l1483_0EDB:
+	lodsw
+	add	ax,dx
+	mov	ch,2A
+	aad	C3
+	xor	ah,ah
+
+l1483_0EE4:
+	lodsb
+	add	di,ax
+	add	es:[di],dx
+	loop	0EE4
+
+l1483_0EEC:
+	jmp	0ED6
+
+l1483_0EEE:
+	or	al,20
+	mov	si,[9004]
+	add	ds:[0300],ax
+	cli
+	add	[8602],dx
+	lodsw
+	jmp	far 3024:8E10
+1483:0F04             DA 33 26 DB FA 8B 01 E6 8E D7 FB 2E     .3&.........
 1483:0F10 FF 2F F3 01 BE 12 10 16 CF BF 04 05 9E 13 7C CF ./............|.
 1483:0F20 1E 98 16 18 8B C5 8A 6E 7C 15 38 99 16 18 89 46 .......n|.8....F
 1483:0F30 88 BA 46 56 16 06 94 17 9F 4A 17 69 52 17 93 F9 ..FV.....J.iR...
@@ -29143,7 +29221,7 @@ fn1483_1B91 proc
 
 ;; fn1483_1BB8: 1483:1BB8
 ;;   Called from:
-;;     1483:0C6E (in fn1483_0C6C)
+;;     1483:0C6E (in fn1483_0C11)
 fn1483_1BB8 proc
 	or	al,[si]
 

@@ -739,12 +739,12 @@ l07E0:
 ;;   Called from:
 ;;     07AA (in fn0754)
 ;;     07E4 (in fn07BA)
-;;     07E4 (in fn07BA)
 fn07E6 proc
 	add	r0,r2
 
 ;; fn07E8: 07E8
 ;;   Called from:
+;;     07E4 (in fn07BA)
 ;;     07E6 (in fn07E6)
 ;;     080E (in fn0754)
 fn07E8 proc

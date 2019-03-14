@@ -702,9 +702,12 @@ l0800_112E: warning: Non-integral switch expression
 00013A: error: PIC Hardware stack underflow.
 === PDP-11\lunar.lda
 *** PDP-11\lunar.lda
-0B70: warning: Procedure fn0B06 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+168A: warning: Procedure fn1674 previously had a return address of 0 bytes on the stack, but now seems to have a return address of 2 bytes on the stack.
+0AFE: warning: Procedure fn0B06 previously had a return address of 0 bytes on the stack, but now seems to have a return address of 2 bytes on the stack.
 0AF2: warning: Procedure fn0A94 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0896: warning: Unable to determine size of call or jump table; there may be more than 2 entries.
+0790: warning: Procedure fn0856 previously had a return address of 0 bytes on the stack, but now seems to have a return address of 2 bytes on the stack.
+078C: warning: Procedure fn053A previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 083E: error: An error occurred while processing instruction at address 083E.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -737,21 +740,14 @@ l0800_112E: warning: Non-integral switch expression
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
-fn0AF6: error: An error occurred during data flow analysis.
+0B66: error: An error occurred while processing instruction at address 0B66.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 55
-   at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 176
-   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 91
-   at Reko.Core.Code.InstructionVisitorBase.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 214
-   at Reko.Core.Expressions.MemoryAccess.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 76
-   at Reko.Analysis.DeadCode.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 183
-   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 87
-   at Reko.Analysis.DeadCode.Eliminate() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 128
-   at Reko.Analysis.DeadCode.Eliminate(Procedure proc, SsaState ssa) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 110
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 100
-fn0AF6_exit: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 0000013E: warning: Expected sizes of arrays to have been determined by now
 0000168C: warning: Expected sizes of arrays to have been determined by now
 00001696: warning: Expected sizes of arrays to have been determined by now
@@ -770,13 +766,12 @@ fn0AF6_exit: warning: Phi functions will be ignored by type analysis. This may b
 000034E0: warning: Expected sizes of arrays to have been determined by now
 === PDP-11\space.dcproject
 *** PDP-11\space.dcproject
+0EF2: warning: Procedure fn1900 previously had a return address of 0 bytes on the stack, but now seems to have a return address of 2 bytes on the stack.
 46BE: warning: Unable to determine size of call or jump table; there may be more than 2 entries.
-1924: warning: Procedure fn1900 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-1930: warning: Procedure fn1900 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-192E: warning: Procedure fn1900 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 136E: warning: Procedure fn1370 previously had a return address of 0 bytes on the stack, but now seems to have a return address of 2 bytes on the stack.
 243A: warning: Procedure fn243A previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 07B6: warning: Procedure fn0754 previously had a return address of 0 bytes on the stack, but now seems to have a return address of 2 bytes on the stack.
+07E6: warning: Procedure fn07BA previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 07E4: warning: Procedure fn07BA previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 07E4: warning: Procedure fn07BA previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 fn07E8: error: An error occurred during data flow analysis.
@@ -815,7 +810,7 @@ fn07E8_exit: warning: Phi functions will be ignored by type analysis. This may b
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 85
 02DE: error: An error occurred while processing the statement Mem125[r4_64 - 0x003E + 0x0000:byte] = 0x0000.
-    Not handling (ptr16 (struct (0 T_3728 t0000))) and (union (cu16 u0) (ptr16 u1)) yet
+    Not handling (ptr16 (struct (0 T_3730 t0000))) and (union (cu16 u0) (ptr16 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -1350,80 +1345,34 @@ fn03B2: warning: Structure analysis stopped making progress, quitting. Please re
 00007E1E: error: Instruction acbd	(fp),-(r0),-(r2),0000F189 too complex to rewrite.
 00007E4A: error: Instruction acbd	(fp),-(r0),-(r2),0000F1B5 too complex to rewrite.
 00007ED3: error: Instruction acbd	-(r6),(r5),(fp),0000E43B too complex to rewrite.
-0000968F: error: Instruction acbd	#0.5625,(pc)+,-08(fp)[r4],00009992 too complex to rewrite.
-00009E95: error: Instruction acbd	#0.5625,+2184CF02(r11),+40C6(r5),0000B1A2 too complex to rewrite.
-0000A37D: error: Instruction acbf	53DDA383,0000A053,-6B30FD05(fp),000073A9 too complex to rewrite.
-0000AC19: error: Instruction acbf	-60820000(r7),000192F4,-2300(fp),0000A77C too complex to rewrite.
-0000C590: error: Instruction acbf	+0150(r5),+5A53(r0),(r0)+,00012529 too complex to rewrite.
+0000968F: error: Instruction acbd	#0.5625,@(pc)+,@-08(fp)[r4],00009992 too complex to rewrite.
+00009E95: error: Instruction acbd	#0.5625,@+2184CF02(r11),@+40C6(r5),0000B1A2 too complex to rewrite.
+0000A37D: error: Instruction acbf	53DDA383,@0000A053,@-6B30FD05(fp),000073A9 too complex to rewrite.
+0000AC19: error: Instruction acbf	-60820000(r7),@000192F4,@-2300(fp),0000A77C too complex to rewrite.
+0000B65D: error: Instruction acbd	@-102F0002(fp),-3B(r2),@04FC0969,000086CE too complex to rewrite.
+0000C590: error: Instruction acbf	@+0150(r5),@+5A53(r0),@(r0)+,00012529 too complex to rewrite.
 0000C83E: error: Instruction acbf	#40.0,-18(fp),r2,0000CA08 too complex to rewrite.
-0000FEBF: error: Instruction acbd	#0.8125,(pc)+,+05EB(r3),000102C2 too complex to rewrite.
-00010F1B: error: Instruction acbd	08126320,+0150(r5),-373A(sp),0001622A too complex to rewrite.
-00010F68: error: Instruction acbd	0712636D,-21B0(r5),+01C8(r6),0000ECC9 too complex to rewrite.
-00011A1F: error: Instruction acbf	-081E(r0),+0000(r5),r1,00017BC3 too complex to rewrite.
-000145BC: error: Instruction acbf	#2.5,(pc)+,+05EB(r5),000149BF too complex to rewrite.
-00015E51: error: Instruction acbf	#7.0,D0060D57,+0088(r6),0001670B too complex to rewrite.
-0000C35C: warning: Call target address 40009A48 is invalid.
-00013E1B: warning: Procedure fn0001325E previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-00013DF0: warning: Procedure fn0001325E previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-00013D9B: warning: Procedure fn0001325E previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-00013286: warning: Procedure fn0001325E previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0001328A: warning: Procedure fn0001325E previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-000132B4: warning: Procedure fn0001325E previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-00010700: warning: Call target address 4000E3D8 is invalid.
-00010183: warning: Procedure fn000100F4 previously had a return address of 0 bytes on the stack, but now seems to have a return address of 4 bytes on the stack.
-000101A8: warning: Call target address 4000E3D8 is invalid.
-000105EE: warning: Procedure fn000105B1 previously had a return address of 0 bytes on the stack, but now seems to have a return address of 4 bytes on the stack.
-000105B0: warning: Procedure fn000101C8 previously had a return address of 0 bytes on the stack, but now seems to have a return address of 4 bytes on the stack.
-0000BD15: warning: Procedure fn0000BC8A previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+0000FEBF: error: Instruction acbd	#0.8125,@(pc)+,+05EB(r3),000102C2 too complex to rewrite.
+00010E7E: error: Instruction acbd	@EF9F6A83,-02(r5)[r8],@5DF0ACDE,00010D0D too complex to rewrite.
+00010F1B: error: Instruction acbd	@08126320,@+0150(r5),@-373A(sp),0001622A too complex to rewrite.
+00010F68: error: Instruction acbd	@0712636D,@-21B0(r5),+01C8(r6),0000ECC9 too complex to rewrite.
+00011A1F: error: Instruction acbf	@-081E(r0),+0000(r5),r1,00017BC3 too complex to rewrite.
+000145BC: error: Instruction acbf	#2.5,@(pc)+,+05EB(r5),000149BF too complex to rewrite.
+00015E51: error: Instruction acbf	#7.0,@D0060D57,+0088(r6),0001670B too complex to rewrite.
+0000ACAB: warning: Call target address 00000003 is invalid.
+0000AC4E: warning: Call target address 00000003 is invalid.
 0000A9E4: warning: Call target address 40009A48 is invalid.
-000105C1: error: An error occurred while processing instruction at address 000105C1.
-    The given key was not present in the dictionary.
-       at System.ThrowHelper.ThrowKeyNotFoundException()
-   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
-   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
-   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
-000101C3: error: An error occurred while processing instruction at address 000101C3.
-    The given key was not present in the dictionary.
-       at System.ThrowHelper.ThrowKeyNotFoundException()
-   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
-   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
-   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
-000101C3: error: An error occurred while processing instruction at address 000101C3.
-    The given key was not present in the dictionary.
-       at System.ThrowHelper.ThrowKeyNotFoundException()
-   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
-   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
-   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
-000105C1: error: An error occurred while processing instruction at address 000105C1.
-    The given key was not present in the dictionary.
-       at System.ThrowHelper.ThrowKeyNotFoundException()
-   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
-   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
-   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
-000105BF: error: An error occurred while processing instruction at address 000105BF.
-    The given key was not present in the dictionary.
-       at System.ThrowHelper.ThrowKeyNotFoundException()
-   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
-   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
-   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
-00010FB6: error: An error occurred while processing instruction at address 00010FB6.
-    The given key was not present in the dictionary.
-       at System.ThrowHelper.ThrowKeyNotFoundException()
-   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
-   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
-   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
+00013E26: warning: Call target address 00000002 is invalid.
+00014418: warning: Call target address 00000002 is invalid.
+00011B27: warning: Call target address 00000002 is invalid.
+00011B34: warning: Call target address 00000002 is invalid.
+00011B41: warning: Call target address 00000002 is invalid.
+00011B4E: warning: Call target address 00000002 is invalid.
+00011B7D: warning: Call target address 00000002 is invalid.
+00010700: warning: Call target address 4000E3D8 is invalid.
+000101A8: warning: Call target address 4000E3D8 is invalid.
+0000BD15: warning: Procedure fn0000BC8A previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+0000C35C: warning: Call target address 40009A48 is invalid.
 00010FC5: error: An error occurred while processing instruction at address 00010FC5.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1440,91 +1389,8 @@ fn03B2: warning: Structure analysis stopped making progress, quitting. Please re
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
-0001104E: error: An error occurred while processing instruction at address 0001104E.
-    The given key was not present in the dictionary.
-       at System.ThrowHelper.ThrowKeyNotFoundException()
-   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
-   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
-   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
-00012E96: error: An error occurred while processing instruction at address 00012E96.
-    The given key was not present in the dictionary.
-       at System.ThrowHelper.ThrowKeyNotFoundException()
-   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
-   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
-   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
-0001490C: error: An error occurred while processing instruction at address 0001490C.
-    The given key was not present in the dictionary.
-       at System.ThrowHelper.ThrowKeyNotFoundException()
-   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
-   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
-   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
-0001748E: error: An error occurred while processing instruction at address 0001748E.
-    The given key was not present in the dictionary.
-       at System.ThrowHelper.ThrowKeyNotFoundException()
-   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
-   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
-   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
-00019280: error: An error occurred while processing instruction at address 00019280.
-    The given key was not present in the dictionary.
-       at System.ThrowHelper.ThrowKeyNotFoundException()
-   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
-   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
-   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
-fn000101BB: error: An error occurred during data flow analysis.
-    The given key was not present in the dictionary.
-       at System.ThrowHelper.ThrowKeyNotFoundException()
-   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 55
-   at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 176
-   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 91
-   at Reko.Core.Code.InstructionVisitorBase.VisitApplication(Application appl) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 152
-   at Reko.Core.Expressions.Application.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 60
-   at Reko.Core.Code.InstructionVisitorBase.VisitSideEffect(SideEffect side) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 120
-   at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
-   at Reko.Analysis.DeadCode.Eliminate() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 128
-   at Reko.Analysis.DeadCode.Eliminate(Procedure proc, SsaState ssa) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 110
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 100
-fn000101BC: error: An error occurred during data flow analysis.
-    The given key was not present in the dictionary.
-       at System.ThrowHelper.ThrowKeyNotFoundException()
-   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Analysis.SsaIdentifierCollection.get_Item(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaIdentifierCollection.cs:line 55
-   at Reko.Analysis.DeadCode.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 176
-   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 91
-   at Reko.Core.Code.InstructionVisitorBase.VisitTestCondition(TestCondition tc) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 253
-   at Reko.Core.Expressions.TestCondition.Accept(IExpressionVisitor visitor) in D:\dev\uxmal\reko\master\src\Core\Expressions\TestCondition.cs:line 66
-   at Reko.Core.Code.InstructionVisitorBase.VisitBranch(Branch b) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 77
-   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Analysis.DeadCode.Eliminate() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 128
-   at Reko.Analysis.DeadCode.Eliminate(Procedure proc, SsaState ssa) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 110
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 100
-fn000105B1: error: An error occurred during data flow analysis.
-    Index was outside the bounds of the array.
-       at Reko.Analysis.SsaTransform.LocateDefinedVariables.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 399
-   at Reko.Core.Expressions.Identifier.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 91
-   at Reko.Analysis.SsaTransform.LocateDefinedVariables.VisitApplication(Application app) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 332
-   at Reko.Core.Expressions.Application.Accept(IExpressionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 60
-   at Reko.Core.Code.InstructionVisitorBase.VisitSideEffect(SideEffect side) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionVisitor.cs:line 120
-   at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
-   at Reko.Analysis.SsaTransform.LocateDefinedVariables.LocateDefs(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 286
-   at Reko.Analysis.SsaTransform.LocateAllDefinedVariables(Dictionary`2[] defOrig) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 110
-   at Reko.Analysis.SsaTransform.PlacePhiFunctions() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 138
-   at Reko.Analysis.SsaTransform.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 219
-   at Reko.Analysis.SsaTransform..ctor(ProgramDataFlow programFlow, Procedure proc, IImportResolver importResolver, DominatorGraph`1 gr, HashSet`1 implicitRegs) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 67
-   at Reko.Analysis.DataFlowAnalysis.BuildSsaTransform(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 163
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
-0000981E: error: An error occurred while processing the statement branch Mem174[r4_178 + Mem174[r3_172 + 4:word32] - 0x00000002 + 0x00000000:byte] == 0x22 l00009824.
-    Not handling (ptr32 (struct (0 T_418 t0000))) and (union (int32 u0) (ptr32 u1)) yet
+0000981E: error: An error occurred while processing the statement branch Mem203[r4_228 + Mem203[r3_219 + 4:word32] - 0x00000002 + 0x00000000:byte] == 0x22 l00009824.
+    Not handling (ptr32 (struct (0 T_494 t0000))) and (union (int32 u0) (ptr32 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -1536,66 +1402,6 @@ fn000105B1: error: An error occurred during data flow analysis.
    at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 158
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 85
-fn000105B1: error: An error occurred while rewriting procedure to high-level language.
-    The given key was not present in the dictionary.
-       at System.ThrowHelper.ThrowKeyNotFoundException()
-   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 217
-   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 115
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 71
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 482
-00010ABC: error: Failed to write global variable g_t10ABC.
-    Index was outside the bounds of the array.
-       at Reko.Core.MemoryArea.ReadLeInt32(Byte[] abImage, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 450
-   at Reko.Core.MemoryArea.ReadLeUInt32(Byte[] img, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 560
-   at Reko.Core.MemoryArea.ReadLe(Byte[] abImage, Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 223
-   at Reko.Core.MemoryArea.ReadLe(Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 158
-   at Reko.Core.ImageReader.ReadLe(PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\ImageReader.cs:line 187
-   at Reko.Core.LeImageReader.Read(PrimitiveType dataType) in D:\dev\uxmal\reko\master\src\Core\EndianImageReader.cs:line 200
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 211
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 88
-   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 318
-   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 85
-00010BBC: error: Failed to write global variable g_t10BBC.
-    Index was outside the bounds of the array.
-       at Reko.Core.MemoryArea.ReadLeInt32(Byte[] abImage, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 450
-   at Reko.Core.MemoryArea.ReadLeUInt32(Byte[] img, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 560
-   at Reko.Core.MemoryArea.ReadLe(Byte[] abImage, Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 223
-   at Reko.Core.MemoryArea.ReadLe(Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 158
-   at Reko.Core.ImageReader.ReadLe(PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\ImageReader.cs:line 187
-   at Reko.Core.LeImageReader.Read(PrimitiveType dataType) in D:\dev\uxmal\reko\master\src\Core\EndianImageReader.cs:line 200
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 211
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 88
-   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 318
-   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 85
-00010ABC: error: Failed to write global variable g_t10ABC.
-    Index was outside the bounds of the array.
-       at Reko.Core.MemoryArea.ReadLeInt32(Byte[] abImage, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 450
-   at Reko.Core.MemoryArea.ReadLeUInt32(Byte[] img, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 560
-   at Reko.Core.MemoryArea.ReadLe(Byte[] abImage, Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 223
-   at Reko.Core.MemoryArea.ReadLe(Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 158
-   at Reko.Core.ImageReader.ReadLe(PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\ImageReader.cs:line 187
-   at Reko.Core.LeImageReader.Read(PrimitiveType dataType) in D:\dev\uxmal\reko\master\src\Core\EndianImageReader.cs:line 200
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 211
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 88
-   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 318
-   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 85
-00010BBC: error: Failed to write global variable g_t10BBC.
-    Index was outside the bounds of the array.
-       at Reko.Core.MemoryArea.ReadLeInt32(Byte[] abImage, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 450
-   at Reko.Core.MemoryArea.ReadLeUInt32(Byte[] img, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 560
-   at Reko.Core.MemoryArea.ReadLe(Byte[] abImage, Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 223
-   at Reko.Core.MemoryArea.ReadLe(Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 158
-   at Reko.Core.ImageReader.ReadLe(PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\ImageReader.cs:line 187
-   at Reko.Core.LeImageReader.Read(PrimitiveType dataType) in D:\dev\uxmal\reko\master\src\Core\EndianImageReader.cs:line 200
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 211
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 88
-   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 318
-   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 85
 === i8051\rtl8188efw.dcproject
 === regressions\angr-148\test
 === regressions\reko-121\m68k_jump.dcproject
@@ -1631,18 +1437,20 @@ Borland C v3 runtime detected
 1483:1DB0: warning: x86 instruction 'phsubsw' is not supported yet.
 1483:254A: warning: x86 instruction 'ud0' is not supported yet.
 1483:254F: warning: x86 instruction 'ud0' is not supported yet.
+1483:0D6F: warning: Call target address 1483:8A82 is invalid.
+1483:0DCF: warning: Procedure fn1483_0D3F previously had a return address of 0 bytes on the stack, but now seems to have a return address of 4 bytes on the stack.
+1483:0DFC: warning: Call target address 1483:E62A is invalid.
+1483:0E06: warning: Procedure fn1483_0D3F previously had a return address of 0 bytes on the stack, but now seems to have a return address of 2 bytes on the stack.
+1483:0E06: warning: Multiple different values of stack delta in procedure fn1483_0D3F when processing RET instruction; was -9582 previously.
+1483:0E76: warning: Procedure fn1483_0D3F previously had a return address of 0 bytes on the stack, but now seems to have a return address of 4 bytes on the stack.
+1483:0E76: warning: Multiple different values of stack delta in procedure fn1483_0D3F when processing RET instruction; was -9582 previously.
+1483:0EFF: warning: Call target address 3024:8E10 is invalid.
+1483:0D2B: warning: Procedure fn1483_0CFA previously had a return address of 0 bytes on the stack, but now seems to have a return address of 2 bytes on the stack.
 1483:0CA6: warning: Call target address 1483:FD4E is invalid.
 1483:0CD2: warning: Call target address 1483:4FE0 is invalid.
-1483:0C8F: warning: Procedure fn1483_0C6C previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-1483:0C53: warning: Procedure fn1483_0C11 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+1483:0CE6: warning: Procedure fn1483_0C91 previously had a return address of 0 bytes on the stack, but now seems to have a return address of 2 bytes on the stack.
+1483:0C5C: warning: Procedure fn1483_0C55 previously had a return address of 0 bytes on the stack, but now seems to have a return address of 2 bytes on the stack.
 1483:0CA6: warning: Call target address 1483:FD4E is invalid.
-1483:0C9D: warning: Procedure fn1483_0C91 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-1483:0CA0: warning: Procedure fn1483_0CA0 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-1483:0D6F: warning: Call target address 1483:8A82 is invalid.
-1483:0D04: warning: Procedure fn1483_0CFC previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-1483:0D02: warning: Procedure fn1483_0CFA previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-1483:0DCF: warning: Procedure fn1483_0D3F previously had a return address of 2 bytes on the stack, but now seems to have a return address of 4 bytes on the stack.
-1483:0DCF: warning: Multiple different values of stack delta in procedure fn1483_0D3F when processing RET instruction; was 2 previously.
 0800:906C: error: An error occurred while processing instruction at address 0800:906C.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
@@ -1668,14 +1476,6 @@ Borland C v3 runtime detected
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 0800:9F9D: error: An error occurred while processing instruction at address 0800:9F9D.
-    The given key was not present in the dictionary.
-       at System.ThrowHelper.ThrowKeyNotFoundException()
-   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 152
-   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
-   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
-1483:0CA6: error: An error occurred while processing instruction at address 1483:0CA6.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
@@ -1728,7 +1528,7 @@ fn0800_9F92: error: An error occurred during data flow analysis.
    at Reko.Analysis.DeadCode.Eliminate() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 128
    at Reko.Analysis.DeadCode.Eliminate(Procedure proc, SsaState ssa) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 110
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 100
-fn1483_0CA1: error: An error occurred during data flow analysis.
+fn1483_0CA0: error: An error occurred during data flow analysis.
     The given key was not present in the dictionary.
        at System.ThrowHelper.ThrowKeyNotFoundException()
    at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
@@ -1804,10 +1604,20 @@ fn0800_9F92_exit: warning: Phi functions will be ignored by type analysis. This 
    at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 146
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 54
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 85
+1483:0DF5: error: An error occurred while processing the statement CZ_421 = cond(ax_535 - (sp_516 - 0x001C)) (alias).
+    Not handling (memptr T_45051 (struct 019E (0 word16 w0000))) and (memptr T_45051 (struct 019E (0 word16 w0000))) yet
+       at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 382
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 227
+   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
+   at Reko.Typing.ExpressionTypeDescender.VisitConditionOf(ConditionOf cof, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 442
+   at Reko.Core.Expressions.ConditionOf.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\ConditionOf.cs:line 66
+   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 146
+   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 54
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 85
 l0800_0663: warning: Non-integral switch expression
 l0800_906A: warning: Non-integral switch expression
 === regressions\snowman-51\switch.dcproject
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 56 binaries in 79.32 seconds ---
+Decompiled 56 binaries in 73.63 seconds ---

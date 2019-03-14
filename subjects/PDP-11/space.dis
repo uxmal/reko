@@ -1006,8 +1006,8 @@ l07E0:
 // DataOut (flags): 
 // SymbolicIn: sp:fp r3:<invalid> r4:<invalid> r0:<invalid>
 
-l07E4_thunk_fn07E6:
-	fn07E6(r0, r2)
+l07E4_thunk_fn07E8:
+	fn07E8(wArg02, wArg04)
 	return
 // DataOut:
 // DataOut (flags): 
@@ -3926,7 +3926,7 @@ l1836:
 // SymbolicIn: sp:fp
 
 l184A:
-	Mem78[r4 + 0x001A:word16] = Mem10[r4 + 0x0016:word16]
+	Mem79[r4 + 0x001A:word16] = Mem10[r4 + 0x0016:word16]
 // DataOut: r1 r3 r4
 // DataOut (flags): C
 // SymbolicIn: sp:fp - 0x0002 -2(fp):r0
@@ -3940,8 +3940,8 @@ l1850:
 // SymbolicIn: sp:fp - 0x0002 -2(fp):r0
 
 l1856:
-	Mem68[r4:word16] = Mem22[r4:word16] & ~0x8000
-	Mem69[r4 + 0x0018:word16] = 0x0000
+	Mem69[r4:word16] = Mem22[r4:word16] & ~0x8000
+	Mem70[r4 + 0x0018:word16] = 0x0000
 	__syscall(0x89A3)
 // DataOut: r1 r3 r4
 // DataOut (flags): C
@@ -3951,30 +3951,30 @@ l1860:
 	word16 r3_30
 	word16 r4_31
 	word16 r2_32 = fn1900(r3, r4, out r3_30, out r4_31)
-	Mem34[fp - 0x0004:word16] = 0x099E
-	Mem36[fp - 0x0006:word16] = 0x8890
-	Mem38[fp - 0x0006:word16] = Mem36[fp - 0x0006:word16] | Mem36[r4_31 + 0x0011:word16]
-	Mem40[fp - 0x0008:word16] = 0x1888
-	Mem42[fp - 0x000A:word16] = 0x0001
-	Mem44[fp - 0x000C:word16] = 0x0100
-	Mem47[fp - 0x000E:word16] = Mem44[r4_31 + 0x0002:word16]
-	word16 sp_51
-	word16 r0_52
-	byte NZ_53
-	bool V_54
-	word16 r4_55
-	byte NZV_56
-	byte NZVC_57
-	bool C_58
-	bool Z_59
-	bool N_60
-	word16 pc_61
-	word16 r3_62
-	word16 r2_63
-	call Mem47[fp - 0x0006:word16] (retsize: 2; depth: 2 FPU: 2;)
-		uses: C_17,N_25,NZ_49,NZV_27,NZVC_28,r0_48,r2_32,r3_30,r4_31,sp_46,V_50,wLoc02_4,Z_24
-		defs: C_58,N_60,NZ_53,NZV_56,NZVC_57,pc_61,r0_52,r2_63,r3_62,r4_55,sp_51,V_54,Z_59
-	return r0_52
+	Mem35[fp - 0x0002:word16] = 0x099E
+	Mem37[fp - 0x0004:word16] = 0x8890
+	Mem39[fp - 0x0004:word16] = Mem37[fp - 0x0004:word16] | Mem37[r4_31 + 0x0011:word16]
+	Mem41[fp - 0x0006:word16] = 0x1888
+	Mem43[fp - 0x0008:word16] = 0x0001
+	Mem45[fp - 0x000A:word16] = 0x0100
+	Mem48[fp - 0x000C:word16] = Mem45[r4_31 + 0x0002:word16]
+	word16 sp_52
+	word16 r0_53
+	byte NZ_54
+	bool V_55
+	word16 r4_56
+	byte NZV_57
+	byte NZVC_58
+	bool C_59
+	bool Z_60
+	bool N_61
+	word16 pc_62
+	word16 r3_63
+	word16 r2_64
+	call Mem48[fp - 0x0004:word16] (retsize: 2; depth: 2 FPU: 2;)
+		uses: C_17,N_25,NZ_50,NZV_27,NZVC_28,r0_49,r2_32,r3_30,r4_31,sp_47,V_51,wLoc02_4,Z_24
+		defs: C_59,N_61,NZ_54,NZV_57,NZVC_58,pc_62,r0_53,r2_64,r3_63,r4_56,sp_52,V_55,Z_60
+	return r0_53
 // DataOut: r0 r1 r2 r3 r4 sp
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0002 -2(fp):r0
@@ -3982,7 +3982,7 @@ l1860:
 fn1836_exit:
 // DataOut: r0 r2 r3 r4 sp
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> r0:<invalid> r4:<invalid> r2:0x0000 r3:<invalid> -14(fp):<invalid> -12(fp):0x0100 -10(fp):0x0001 -8(fp):0x1888 -6(fp):<invalid> -4(fp):0x099E -2(fp):r0
+// SymbolicIn: sp:<invalid> r0:<invalid> r4:<invalid> r2:0x0000 r3:<invalid> -12(fp):<invalid> -10(fp):0x0100 -8(fp):0x0001 -6(fp):0x1888 -4(fp):<invalid> -2(fp):<invalid>
 
 
 
@@ -4012,10 +4012,10 @@ l18C6:
 // SymbolicIn: sp:fp - 0x0002 -2(fp):r0
 
 l18CC_thunk_fn1932:
-	word16 r3_72
-	word16 r4_73
-	fn1932(r3, r4, out r3_72, out r4_73)
-	return r3_72
+	word16 r3_73
+	word16 r4_74
+	fn1932(r3, r4, out r3_73, out r4_74)
+	return r3_73
 // DataOut: r3 r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0002 -2(fp):r0
@@ -4024,29 +4024,29 @@ l18CE:
 	word16 r3_30
 	word16 r4_31
 	word16 r2_32 = fn1900(r3, r4, out r3_30, out r4_31)
-	Mem34[fp - 0x0004:word16] = 0x099E
-	Mem36[fp - 0x0006:word16] = 0x8880
-	Mem38[fp - 0x0006:word16] = Mem36[fp - 0x0006:word16] | Mem36[r4_31 + 0x0011:word16]
-	Mem40[fp - 0x0008:word16] = 0x18F4
-	Mem42[fp - 0x000A:word16] = 0x0000
-	Mem45[fp - 0x000C:word16] = 0x0100
-	Mem48[fp - 0x000E:word16] = Mem45[r4_31 + 0x0002:word16]
-	word16 sp_53
-	word16 r0_54
-	byte NZ_55
-	bool V_56
-	word16 r4_57
-	bool C_58
-	bool Z_59
-	byte NZVC_60
-	word16 pc_61
-	bool N_62
-	word16 r3_63
-	word16 r2_64
-	call Mem48[fp - 0x0006:word16] (retsize: 2; depth: 2 FPU: 2;)
-		uses: C_43,N_11,NZ_50,NZVC_15,pc,r0_49,r2_32,r3_30,r4_31,sp_47,V_51,wLoc02_4,Z_10
-		defs: C_58,N_62,NZ_55,NZVC_60,pc_61,r0_54,r2_64,r3_63,r4_57,sp_53,V_56,Z_59
-	return r3_63
+	Mem35[fp - 0x0002:word16] = 0x099E
+	Mem37[fp - 0x0004:word16] = 0x8880
+	Mem39[fp - 0x0004:word16] = Mem37[fp - 0x0004:word16] | Mem37[r4_31 + 0x0011:word16]
+	Mem41[fp - 0x0006:word16] = 0x18F4
+	Mem43[fp - 0x0008:word16] = 0x0000
+	Mem46[fp - 0x000A:word16] = 0x0100
+	Mem49[fp - 0x000C:word16] = Mem46[r4_31 + 0x0002:word16]
+	word16 sp_54
+	word16 r0_55
+	byte NZ_56
+	bool V_57
+	word16 r4_58
+	bool C_59
+	bool Z_60
+	byte NZVC_61
+	word16 pc_62
+	bool N_63
+	word16 r3_64
+	word16 r2_65
+	call Mem49[fp - 0x0004:word16] (retsize: 2; depth: 2 FPU: 2;)
+		uses: C_44,N_11,NZ_51,NZVC_15,pc,r0_50,r2_32,r3_30,r4_31,sp_48,V_52,wLoc02_4,Z_10
+		defs: C_59,N_63,NZ_56,NZVC_61,pc_62,r0_55,r2_65,r3_64,r4_58,sp_54,V_57,Z_60
+	return r3_64
 // DataOut: r3 r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0002 -2(fp):r0
@@ -4054,7 +4054,7 @@ l18CE:
 fn18BE_exit:
 // DataOut: r3 r4
 // DataOut (flags): 
-// SymbolicIn: sp:<invalid> r0:<invalid> r2:0x0000 r4:<invalid> r3:<invalid> -14(fp):<invalid> -12(fp):0x0100 -10(fp):0x0000 -8(fp):0x18F4 -6(fp):<invalid> -4(fp):0x099E -2(fp):r0
+// SymbolicIn: sp:<invalid> r0:<invalid> r2:0x0000 r4:<invalid> r3:<invalid> -12(fp):<invalid> -10(fp):0x0100 -8(fp):0x0000 -6(fp):0x18F4 -4(fp):<invalid> -2(fp):<invalid>
 
 
 
@@ -4254,7 +4254,7 @@ l1932:
 // SymbolicIn: sp:fp
 
 l1938_thunk_fn18F6:
-	return fn18F6(r4, wLoc02)
+	return fn18F6(r4, wArg00)
 // DataOut: r1 r2 r3 r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp
