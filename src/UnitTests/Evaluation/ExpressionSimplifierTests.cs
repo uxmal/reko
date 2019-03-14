@@ -38,6 +38,7 @@ namespace Reko.UnitTests.Evaluation
         private Identifier foo;
         private ProcedureBuilder m;
         private PseudoProcedure rolc_8;
+        private Mock<IProcessorArchitecture> arch;
 
         [SetUp]
         public void Setup()
@@ -48,11 +49,11 @@ namespace Reko.UnitTests.Evaluation
 
         private void Given_ExpressionSimplifier()
         {
-            SsaIdentifierCollection ssaIds = BuildSsaIdentifiers();
+            var ssaIds = BuildSsaIdentifiers();
             var listener = new FakeDecompilerEventListener();
             var segmentMap = new SegmentMap(Address.Ptr32(0));
             var importResolver = new Mock<IImportResolver>();
-            var ssaCtx = new SsaEvaluationContext(null, ssaIds, importResolver.Object);
+            var ssaCtx = new SsaEvaluationContext(arch?.Object, ssaIds, importResolver.Object);
             simplifier = new ExpressionSimplifier(segmentMap, ssaCtx, listener);
         }
 
@@ -215,6 +216,14 @@ namespace Reko.UnitTests.Evaluation
             Given_ExpressionSimplifier();
             var expr = m.Le0(m.ISub(m.Word32(0x02), foo));
             Assert.AreEqual("foo_0 >= 0x00000002", expr.Accept(simplifier).ToString());
+        }
+
+        [Test]
+        public void Exs_ConstantSequence_BigEndian()
+        {
+            Given_ExpressionSimplifier();
+            var expr = m.Seq(m.Word32(0x3FF00000), m.Word32(0));
+            Assert.AreEqual("0x3FF0000000000000", expr.Accept(simplifier).ToString());
         }
     }
 }

@@ -595,25 +595,26 @@ namespace Reko.Evaluation
                     eNew = e;
                 return eNew;
             }).ToArray();
+            //$TODO: handle sequences of more than two consts. 
             if (newSeq.Length == 2)
             {
                 if (newSeq[0] is Constant c1 && newSeq[1] is Constant c2)
                 {
-                PrimitiveType tHead = (PrimitiveType)c1.DataType;
-                PrimitiveType tTail = (PrimitiveType)c2.DataType;
-                PrimitiveType t;
-                Changed = true;
-                if (tHead.Domain == Domain.Selector)			//$REVIEW: seems to require Address, SegmentedAddress?
-                {
-                    t = PrimitiveType.Create(Domain.Pointer, tHead.BitSize + tTail.BitSize);
-                    return ctx.MakeSegmentedAddress(c1, c2);
+                    PrimitiveType tHead = (PrimitiveType) c1.DataType;
+                    PrimitiveType tTail = (PrimitiveType) c2.DataType;
+                    PrimitiveType t;
+                    Changed = true;
+                    if (tHead.Domain == Domain.Selector)            //$REVIEW: seems to require Address, SegmentedAddress?
+                    {
+                        t = PrimitiveType.Create(Domain.Pointer, tHead.BitSize + tTail.BitSize);
+                        return ctx.MakeSegmentedAddress(c1, c2);
+                    }
+                    else
+                    {
+                        t = PrimitiveType.Create(tHead.Domain, tHead.BitSize + tTail.BitSize);
+                        return Constant.Create(t, (c1.ToUInt64() << tHead.BitSize) | c2.ToUInt64());
+                    }
                 }
-                else
-                {
-                    t = PrimitiveType.Create(tHead.Domain, tHead.BitSize + tTail.BitSize);
-                    return Constant.Create(t, c1.ToInt32() << tHead.BitSize | c2.ToInt32());
-                }
-            }
             }
             if (newSeq.Take(newSeq.Length-1).All(e => e.IsZero))
             {
