@@ -238,9 +238,16 @@ namespace Reko.Arch.Vax
             {
                 callDst = addr += 2;
             }
+            else if (callDst is MemoryAccess mem)
+            {
+                callDst = mem.EffectiveAddress;
+                callDst = m.IAddS(callDst, 2);
+            }
             else
             {
-                callDst = m.IAddS(callDst, 2);
+                rtlc = InstrClass.Invalid;
+                m.Invalid();
+                return;
             }
             m.Call(callDst, 4);
         }
@@ -252,9 +259,16 @@ namespace Reko.Arch.Vax
             {
                 callDst = addr += 2;
             }
-            else
+            else if (callDst is MemoryAccess mem)
             {
+                callDst = mem.EffectiveAddress;
                 callDst = m.IAddS(callDst, 2);
+            }
+            else 
+            {
+                rtlc = InstrClass.Invalid;
+                m.Invalid();
+                return;
             }
             m.Call(callDst, 4);
         }
@@ -297,12 +311,18 @@ namespace Reko.Arch.Vax
 
         private void RewriteJmp()
         {
-            m.Goto(RewriteSrcOp(0, PrimitiveType.Word32));
+            var e = RewriteSrcOp(0, PrimitiveType.Word32);
+            if (e is MemoryAccess mem)
+                e = mem.EffectiveAddress;
+            m.Goto(e);
         }
 
         private void RewriteJsb()
         {
-            m.Call(RewriteSrcOp(0, PrimitiveType.Word32), 4);
+            var e = RewriteSrcOp(0, PrimitiveType.Word32);
+            if (e is MemoryAccess mem)
+                e = mem.EffectiveAddress;
+            m.Call(e, 4);
         }
 
         private void RewriteRei()

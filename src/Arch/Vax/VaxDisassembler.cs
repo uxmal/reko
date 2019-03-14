@@ -171,16 +171,29 @@ namespace Reko.Arch.Vax
 
         private MachineOperand DisplacementOperand(PrimitiveType width, RegisterStorage reg, Constant c, byte bSpecifier)
         {
+            bool deferred = ((bSpecifier >> 4) & 0x1) != 0;
+
             if (reg.Number == 15)
             {
-                return AddressOperand.Ptr32(
-                    (uint)((int)rdr.Address.ToLinear() + c.ToInt32()));
+                    var addr = Address.Ptr32((uint) ((int) rdr.Address.ToLinear() + c.ToInt32()));
+                if (!deferred)
+                {
+                    return AddressOperand.Create(addr);
+                }
+                else
+                {
+                    return new MemoryOperand(width)
+                    {
+                        Offset = addr.ToConstant(),
+                        Deferred = true
+                    };
+                }
             }
             return new MemoryOperand(width)
             {
                 Base = reg,
                 Offset = c,
-                Deferred = ((bSpecifier >> 4) & 0x1) != 0
+                Deferred = deferred
             };
         }
 

@@ -83,6 +83,7 @@ namespace Reko.Analysis
                 abc.Transform();
             }
         }
+
         public AdjacentBranchCollector(Procedure proc, DecompilerEventListener listener)
         {
             this.proc = proc;

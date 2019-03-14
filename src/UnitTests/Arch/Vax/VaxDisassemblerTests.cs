@@ -131,6 +131,10 @@ namespace Reko.UnitTests.Arch.Vax
             AssertCode("Invalid\t", 0xD0, 0x50, 0x03);
         }
 
-
+        [Test]
+        public void VaxDis_calls_DisplacementDeferred()
+        {
+            AssertCode("calls\t#03,@00106F82", 0xFB, 0x03, 0xFF, 0x7B, 0x6F, 0x00, 0x00);
+        }
     }
 }

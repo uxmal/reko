@@ -682,6 +682,15 @@ namespace Reko.UnitTests.Arch.Vax
         }
 
         [Test]
+        public void VaxRw_calls_DisplacementDeferred()
+        {
+            BuildTest(0xFB, 0x03, 0xFF, 0x7B, 0x6F, 0x00, 0x00);    // calls #03,@00106F82
+            AssertCode(
+                "0|T--|00010000(7): 1 instructions",
+                "1|T--|call Mem0[0x00016F82:word32] + 2 (4)");
+        }
+
+        [Test]
         public void VaxRw_clrb()
         {
             BuildTest(0x94, 0x50);	// clrb	r0
@@ -1233,23 +1242,40 @@ namespace Reko.UnitTests.Arch.Vax
                 "3|L--|CVZN = cond(v3)");
         }
 
-
         [Test]
         public void VaxRw_jmp()
         {
-            BuildTest(0x17, 0xFF, 0xF2, 0xFB, 0xFF, 0x3F);	// jmp	40008000
+            BuildTest(0x17, 0xEF, 0xF2, 0xFB, 0xFF, 0x3F);	// jmp	40008000
             AssertCode(
                 "0|T--|00010000(6): 1 instructions",
                 "1|T--|goto 4000FBF8");
         }
 
         [Test]
+        public void VaxRw_jmp_deferred()
+        {
+            BuildTest(0x17, 0xFF, 0xF2, 0xFB, 0xFF, 0x3F);	// jmp	40008000
+            AssertCode(
+                "0|T--|00010000(6): 1 instructions",
+                "1|T--|goto Mem0[0x4000FBF8:word32]");
+        }
+
+        [Test]
         public void VaxRw_jsb()
+        {
+            BuildTest(0x16, 0xEF, 0xBD, 0x12, 0x01, 0x00);	// jsb	000192C8
+            AssertCode(
+                "0|T--|00010000(6): 1 instructions",
+                "1|T--|call 000212C3 (4)");
+        }
+
+        [Test]
+        public void VaxRw_jsb_indirect()
         {
             BuildTest(0x16, 0xFF, 0xBD, 0x12, 0x01, 0x00);	// jsb	000192C8
             AssertCode(
                 "0|T--|00010000(6): 1 instructions",
-                "1|T--|call 000212C3 (4)");
+                "1|T--|call Mem0[0x000212C3:word32] (4)");
         }
 
         [Test]

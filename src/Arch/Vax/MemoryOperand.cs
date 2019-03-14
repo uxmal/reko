@@ -39,9 +39,16 @@ namespace Reko.Arch.Vax
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
+            if (Deferred)
+            {
+                writer.WriteString("@");
+            }
             if (Offset != null)
             {
-                writer.WriteString(FormatSignedValue(Offset));
+                if (Base != null)
+                    writer.WriteString(FormatSignedValue(Offset));
+                else
+                    writer.WriteString(FormatUnsignedValue(Offset));
             }
             if (AutoDecrement)
             {
