@@ -816,11 +816,15 @@ namespace Reko.Analysis
 
             public override SsaIdentifier ReadVariable(SsaBlockState bs)
             {
-                var ss = outer.factory.Create(outer.ssa.Procedure.Frame.EnsureIdentifier(seq.Head), stm);
-                var head = ss.ReadVariable(bs);
-                ss = outer.factory.Create(outer.ssa.Procedure.Frame.EnsureIdentifier(seq.Tail), stm);
-                var tail = ss.ReadVariable(bs);
-                return Fuse(head, tail);
+                var sids = seq.Elements
+                    .Select(e =>
+                    {
+                        var ss = outer.factory.Create(outer.ssa.Procedure.Frame.EnsureIdentifier(e), stm);
+                        var sid = ss.ReadVariable(bs);
+                        return sid;
+                    })
+                    .ToArray();
+                return Fuse(sids);
             }
 
             public override SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs)
@@ -830,35 +834,38 @@ namespace Reko.Analysis
                 throw new InvalidOperationException();
             }
 
-            public SsaIdentifier Fuse(SsaIdentifier head, SsaIdentifier tail)
+            public SsaIdentifier Fuse(SsaIdentifier [] sids)
             {
-                if (head.DefStatement.Instruction is AliasAssignment aassHead &&
-                    tail.DefStatement.Instruction is AliasAssignment aassTail)
+                if (sids.Length == 2 && 
+                    sids[0].DefStatement.Instruction is AliasAssignment aassHead &&
+                    sids[1].DefStatement.Instruction is AliasAssignment aassTail)
                 {
                     if (aassHead.Src is Slice eHead && aassTail.Src is Cast eTail)
                     {
                         return ssaIds[(Identifier) eHead.Expression];
                     }
                 }
-                if (head.DefStatement.Instruction is DefInstruction defHead &&
-                    tail.DefStatement.Instruction is DefInstruction defTail)
+                if (sids.All(s => s.DefStatement.Instruction is DefInstruction))
                 {
                     // All subregisters came in from caller, so create an
                     // alias statement.
-                    var seq = new MkSequence(this.id.DataType, head.Identifier, tail.Identifier);
+                    var seq = new MkSequence(this.id.DataType, sids.Select(s => s.Identifier).ToArray());
                     var ass = new AliasAssignment(id, seq);
-                    var stm = head.DefStatement.Block.Statements.Add(
-                        head.DefStatement.LinearAddress,
+                    var stm = sids[0].DefStatement.Block.Statements.Add(
+                        sids[0].DefStatement.LinearAddress,
                         ass);
                     var sidTo = ssaIds.Add(ass.Dst, stm, ass.Src, false);
                     ass.Dst = sidTo.Identifier;
-                    head.Uses.Add(stm);
-                    tail.Uses.Add(stm);
+                    foreach (var sid in sids)
+                    {
+                        sid.Uses.Add(stm);
+                    }
                     return sidTo;
                 }
 
-                if (head.DefStatement.Instruction is Assignment assHead &&
-                    tail.DefStatement.Instruction is Assignment assTail)
+                if (sids.Length == 2 && 
+                    sids[0].DefStatement.Instruction is Assignment assHead &&
+                    sids[1].DefStatement.Instruction is Assignment assTail)
                 {
                     // If x_2 = Slice(y_3); z_4 = (cast) y_3 return y_3
                     if (assHead.Src is Slice slHead &&
@@ -871,28 +878,31 @@ namespace Reko.Analysis
                 }
 
                 // Unrelated assignments; insert alias right before use.
-                return FuseIntoMkSequence(head, tail);
+                return FuseIntoMkSequence(sids);
             }
 
-            private SsaIdentifier FuseIntoMkSequence(SsaIdentifier head, SsaIdentifier tail)
+            private SsaIdentifier FuseIntoMkSequence(SsaIdentifier [] sids)
             {
-                var seq = new MkSequence(this.id.DataType, head.Identifier, tail.Identifier);
+                var seq = new MkSequence(this.id.DataType, sids.Select(s => s.Identifier).ToArray());
                 var ass = new AliasAssignment(this.id, seq);
                 var iStm = this.stm.Block.Statements.IndexOf(this.stm);
                 var stm = this.stm.Block.Statements.Insert(iStm, this.stm.LinearAddress, ass);
                 var sidTo = ssaIds.Add(ass.Dst, stm, ass.Src, false);
                 ass.Dst = sidTo.Identifier;
-                head.Uses.Add(stm);
-                tail.Uses.Add(stm);
+                foreach (var sid in sids)
+                {
+                    sid.Uses.Add(stm);
+                }
                 return sidTo;
             }
 
             public override Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid, bool performProbe)
             {
-                var ss = outer.factory.Create(outer.ssa.Procedure.Frame.EnsureIdentifier(seq.Head), stm);
-                ss.WriteVariable(bs, sid, performProbe);
-                ss = outer.factory.Create(outer.ssa.Procedure.Frame.EnsureIdentifier(seq.Tail), stm);
-                ss.WriteVariable(bs, sid, performProbe);
+                foreach (var stg in seq.Elements)
+                {
+                    var ss = outer.factory.Create(outer.ssa.Procedure.Frame.EnsureIdentifier(stg), stm);
+                    ss.WriteVariable(bs, sid, performProbe);
+                }
                 return sid.Identifier;
             }
         }

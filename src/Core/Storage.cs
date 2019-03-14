@@ -27,6 +27,7 @@ using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Reko.Core
 {
@@ -119,6 +120,36 @@ namespace Reko.Core
         }
 
         public abstract void Write(TextWriter writer);
+
+        public class ArrayComparer : IEqualityComparer<Storage[]>
+        {
+            public bool Equals(Storage[] x, Storage[] y)
+            {
+                if (x == null && y == null)
+                    return true;
+                if (x == null || y == null)
+                    return false;
+                if (x.Length != y.Length)
+                    return false;
+                for (int i = 0; i < x.Length; ++i)
+                {
+                    if (!x[i].Equals(y[i]))
+                        return false;
+                }
+                return true;
+            }
+
+            public int GetHashCode(Storage[] obj)
+            {
+                var h = 0;
+                for (int i = 0; i < obj.Length; ++i)
+                {
+                    h = h * 23 ^ obj[i].GetHashCode();
+                }
+                return h;
+            }
+        }
+
     }
 
     public enum StorageDomain
@@ -640,26 +671,26 @@ namespace Reko.Core
 
     public class SequenceStorage : Storage
     {
-        public SequenceStorage(DataType dt, Storage head, Storage tail)
-            : base("Sequence", dt)
+        public SequenceStorage(params Storage[] elements) : this(
+            PrimitiveType.CreateWord(elements.Sum(e => (int)e.BitSize)), 
+            elements)
         {
-            this.Head = head;
-            this.Tail = tail;
-            this.BitSize = (ulong) dt.BitSize;
-            this.Name = $"{head.Name}:{tail.Name}";
         }
 
-        public SequenceStorage(string name, Storage head, Storage tail, DataType dt)
+        public SequenceStorage(DataType dt, params Storage [] elements)
+            : this(string.Join(":", elements.Select(e => e.Name)), dt, elements)
+        {
+        }
+
+        public SequenceStorage(string name, DataType dt, params Storage [] elements)
             : base("Sequence", dt)
         {
-            this.Head = head;
-            this.Tail = tail;
+            this.Elements = elements;
             this.BitSize = (ulong) dt.BitSize;
             this.Name = name;
         }
 
-        public Storage Head { get; private set; }
-        public Storage Tail { get; private set; }
+        public Storage[] Elements { get; }
 
         public override T Accept<T>(StorageVisitor<T> visitor)
         {
@@ -675,13 +706,12 @@ namespace Reko.Core
         {
             if (this == that)
                 return true;
-            if (this.Head.Domain == that.Domain)
+            foreach (var e in Elements)
             {
-                return this.Head.Covers(that);
-            }
-            if (this.Tail.Domain == that.Domain)
-            {
-                return this.Tail.Covers(that);
+                if (e.Domain == that.Domain)
+                {
+                    return e.Covers(that);
+                }
             }
             return false;
         }
@@ -690,37 +720,48 @@ namespace Reko.Core
         {
             if (!(obj is SequenceStorage that))
                 return false;
-            return Head.Equals(that.Head) && Tail.Equals(that.Tail);
+            if (this.Elements.Length != that.Elements.Length)
+                return false;
+            for (int i = 0; i < this.Elements.Length; ++i)
+            { 
+                if (!this.Elements[i].Equals(that.Elements[i]))
+                    return false;
+            }
+            return true;
         }
 
         public override bool Exceeds(Storage that)
         {
             if (this == that)
                 return true;
-            if (this.Head.Domain == that.Domain)
+            for (int i = 0; i < this.Elements.Length; ++i)
             {
-                return this.Head.Exceeds(that);
-            }
-            if (this.Tail.Domain == that.Domain)
-            {
-                return this.Tail.Exceeds(that);
+                var e = this.Elements[i];
+                if (e.Domain == that.Domain)
+                    return e.Exceeds(that);
             }
             return false;
         }
 
         public override int GetHashCode()
         {
-            return GetType().GetHashCode() ^ Head.GetHashCode() ^ (3 * Tail.GetHashCode());
+            return GetType().GetHashCode() ^
+                Elements.Length.GetHashCode() * 9 ^
+                Elements[0].GetHashCode() * 17 ^
+                Elements[1].GetHashCode() * 33;
         }
 
         public override int OffsetOf(Storage stgSub)
         {
-            int off = Tail.OffsetOf(stgSub);
-            if (off != -1)
-                return off;
-            off = Head.OffsetOf(stgSub);
-            if (off != -1)
-                return off + (int)Tail.BitSize;
+            int offPrev = 0;
+            for (int i = Elements.Length - 1; i >= 0; --i)
+            {
+                var e = Elements[i];
+                int off = e.OffsetOf(stgSub);
+                if (off != -1)
+                    return off + offPrev;
+                offPrev += (int)e.BitSize;
+            }
             return -1;
         }
 
@@ -728,13 +769,12 @@ namespace Reko.Core
         {
             if (this == that)
                 return true;
-            if (this.Head.Domain == that.Domain)
+            foreach (var stg in Elements)
             {
-                return this.Head.OverlapsWith(that);
-            }
-            if (this.Tail.Domain == that.Domain)
-            {
-                return this.Tail.OverlapsWith(that);
+                if (stg.Domain == that.Domain)
+                {
+                    return stg.OverlapsWith(that);
+                }
             }
             return false;
         }

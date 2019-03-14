@@ -1213,8 +1213,10 @@ namespace Reko.Scanning
                 state.SetValue(reg, Constant.Invalid);
                 break;
             case SequenceStorage seq:
-                TrashVariable(seq.Head);
-                TrashVariable(seq.Tail);
+                foreach (var e in seq.Elements)
+                {
+                    TrashVariable(e);
+                }
                 break;
             }
         }

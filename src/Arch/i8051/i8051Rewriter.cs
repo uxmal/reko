@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -448,7 +448,7 @@ namespace Reko.Arch.i8051
                 }
                 return e;
             case SequenceOperand seq:
-                return binder.EnsureSequence(seq.Sequence.DataType, seq.Sequence.Name, seq.Sequence.Head, seq.Sequence.Tail);
+                return binder.EnsureSequence(seq.Sequence.DataType, seq.Sequence.Name, seq.Sequence.Elements);
             default:
                 throw new NotImplementedException($"Not implemented {op.GetType().Name}.");
             }

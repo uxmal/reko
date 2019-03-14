@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -23,6 +23,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Reko.Core
 {
@@ -33,7 +34,7 @@ namespace Reko.Core
     {
         private Dictionary<RegisterStorage, Identifier> regs;
         private Dictionary<RegisterStorage, Dictionary<uint, Identifier>> grfs;
-        private Dictionary<Storage, Dictionary<Storage, Identifier>> seqs;
+        private Dictionary<Storage[], Identifier> seqs;
         private Dictionary<int, Identifier> fpus;
         private List<Identifier> ids;
 
@@ -41,7 +42,7 @@ namespace Reko.Core
         {
             this.regs = new Dictionary<RegisterStorage, Identifier>();
             this.grfs = new Dictionary<RegisterStorage, Dictionary<uint, Identifier>>();
-            this.seqs = new Dictionary<Storage, Dictionary<Storage, Identifier>>();
+            this.seqs = new Dictionary<Storage[], Identifier>(new Storage.ArrayComparer());
             this.fpus = new Dictionary<int, Identifier>();
             this.ids = new List<Identifier>();
         }
@@ -100,7 +101,7 @@ namespace Reko.Core
             switch (stg)
             {
             case RegisterStorage reg: return EnsureRegister(reg);
-            case SequenceStorage seq: return EnsureSequence(seq.DataType, seq.Name, seq.Head, seq.Tail);
+            case SequenceStorage seq: return EnsureSequence(seq.DataType, seq.Name, seq.Elements);
             default: throw new NotImplementedException();
             }
         }
@@ -122,35 +123,32 @@ namespace Reko.Core
             return id;
         }
 
-        public Identifier EnsureSequence(DataType dataType, Storage head, Storage tail)
+        public Identifier EnsureSequence(DataType dataType, params Storage [] elements)
         {
-            if (!this.seqs.TryGetValue(head, out var seqs))
+            var stg = new SequenceStorage(elements);
+            if (this.seqs.TryGetValue(elements, out var idSeq))
             {
-                seqs = new Dictionary<Storage, Identifier>();
-                this.seqs.Add(head, seqs);
+                return idSeq;
             }
-            if (seqs.TryGetValue(tail, out var id))
-                return id;
-            var seq = new SequenceStorage(dataType, head, tail);
-            id = new Identifier(string.Format("{0}_{1}", head.Name, tail.Name), dataType, seq);
-            seqs.Add(tail, id);
+            var name = string.Join("_", elements.Select(e => e.Name));
+            var seq = new SequenceStorage(dataType, elements);
+            var id = new Identifier(name, dataType, seq);
+            seqs.Add(seq.Elements, id);
             ids.Add(id);
             return id;
         }
 
 
-        public Identifier EnsureSequence(DataType dataType, string name, Storage head, Storage tail)
+        public Identifier EnsureSequence(DataType dataType, string name, params Storage [] elements)
         {
-            if (!this.seqs.TryGetValue(head, out var seqs))
+            var stg = new SequenceStorage(elements);
+            if (this.seqs.TryGetValue(elements, out var idSeq))
             {
-                seqs = new Dictionary<Storage, Identifier>();
-                this.seqs.Add(head, seqs);
+                return idSeq;
             }
-            if (seqs.TryGetValue(tail, out var id))
-                return id;
-            var seq = new SequenceStorage(name, head, tail, dataType);
-            id = new Identifier(name, dataType, seq);
-            seqs.Add(tail, id);
+            var seq = new SequenceStorage(dataType, elements);
+            var id = new Identifier(name, dataType, seq);
+            seqs.Add(seq.Elements, id);
             ids.Add(id);
             return id;
         }
@@ -192,7 +190,7 @@ namespace Reko.Core
 
         Identifier StorageVisitor<Identifier>.VisitSequenceStorage(SequenceStorage seq)
         {
-            return EnsureSequence(PrimitiveType.CreateWord((int)seq.BitSize), seq.Head, seq.Tail);
+            return EnsureSequence(PrimitiveType.CreateWord((int)seq.BitSize), seq.Elements);
         }
 
         Identifier StorageVisitor<Identifier>.VisitStackArgumentStorage(StackArgumentStorage stack)

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -99,17 +99,17 @@ namespace Reko.Core
         public int ReturnAddressSize { get; set; }
         public bool ReturnAddressKnown { get; set; }
 
-        public Identifier CreateSequence(DataType dt, Storage head, Storage tail)
+        public Identifier CreateSequence(DataType dt, params Storage [] elements)
         {
-            Identifier id = new Identifier(string.Format("{0}_{1}", head.Name, tail.Name), dt, new
-                SequenceStorage(dt, head, tail));
+            var name = string.Join("_", elements.Select(e => e.Name));
+            var id = new Identifier(name, dt, new SequenceStorage(dt, elements));
             identifiers.Add(id);
             return id;
         }
 
-        public Identifier CreateSequence(DataType dt, string name, Storage head, Storage tail)
+        public Identifier CreateSequence(DataType dt, string name, params Storage[] elements)
         {
-            var id = new Identifier(name, dt, new SequenceStorage(dt, head, tail));
+            var id = new Identifier(name, dt, new SequenceStorage(dt, elements));
             identifiers.Add(id);
             return id;
         }
@@ -124,11 +124,9 @@ namespace Reko.Core
                 return EnsureFlagGroup(grf);
             case SequenceStorage seq:
                 return EnsureSequence(
-                    PrimitiveType.CreateWord(
-                        (int)(seq.Head.BitSize + seq.Tail.BitSize)),
+                    seq.DataType,
                     seq.Name,
-                    seq.Head,
-                    seq.Tail);
+                    seq.Elements);
             case FpuStackStorage fp:
                 return EnsureFpuStackVariable(fp.FpuStackOffset, fp.DataType);
             case StackStorage st:
@@ -230,22 +228,22 @@ namespace Reko.Core
 			return idOut;
 		}
 
-		public Identifier EnsureSequence(DataType dt, Storage head, Storage tail)
+		public Identifier EnsureSequence(DataType dt, params Storage [] elements)
         {
-			Identifier idSeq = FindSequence(head, tail);
+			Identifier idSeq = FindSequence(elements);
 			if (idSeq == null)
 			{
-				idSeq = CreateSequence(dt, head, tail);
+				idSeq = CreateSequence(dt, elements);
 			}
 			return idSeq;
 		}
 
-        public Identifier EnsureSequence(DataType dt, string name, Storage head, Storage tail)
+        public Identifier EnsureSequence(DataType dt, string name, params Storage [] elements)
         {
-            Identifier idSeq = FindSequence(head, tail);
+            Identifier idSeq = FindSequence(elements);
             if (idSeq == null)
             {
-                idSeq = CreateSequence(dt, name, head, tail);
+                idSeq = CreateSequence(dt, name, elements);
             }
             return idSeq;
         }
@@ -330,16 +328,24 @@ namespace Reko.Core
 			throw new ArgumentOutOfRangeException("id", "Identifier must be an argument.");
 		}
 
-		public Identifier FindSequence(Storage n1, Storage n2)
-		{
-			foreach (Identifier id in identifiers)
-			{
-				SequenceStorage seq = id.Storage as SequenceStorage;
-				if (seq != null && seq.Head == n1 && seq.Tail == n2)
-					return id;
-			}
-			return null;
-		}
+        public Identifier FindSequence(Storage[] elements)
+        {
+            foreach (Identifier id in identifiers)
+            {
+                if (id.Storage is SequenceStorage seq &&
+                    seq.Elements.Length == elements.Length)
+                {
+                    var allSame = true;
+                    for (int i = 0; allSame && i < seq.Elements.Length; ++i)
+                    {
+                        allSame &= seq.Elements[i].Equals(elements[i]);
+                    }
+                    if (allSame)
+                        return id;
+                }
+            }
+            return null;
+        }
 
 		/// <summary>
 		/// Returns the number of bytes the stack arguments consume on the stack.

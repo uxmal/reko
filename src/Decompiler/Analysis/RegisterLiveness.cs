@@ -952,9 +952,13 @@ namespace Reko.Analysis
 
             public bool VisitSequenceStorage(SequenceStorage seq)
 			{
-				var f = seq.Head.Accept(this);
-				if (!f)
-					f = seq.Tail.Accept(this);
+                bool f = false;
+                foreach (var e in seq.Elements)
+                {
+                    f = e.Accept(this);
+                    if (f)
+                        break;
+                }
                 return f;
 			}
 

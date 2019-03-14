@@ -90,8 +90,8 @@ namespace Reko.UnitTests.Environments.Msdos
             Assert.AreEqual("msdos_get_disk_transfer_area_address", svc.Name);
             Assert.AreEqual(0, svc.Signature.Parameters.Length);
             SequenceStorage seq = (SequenceStorage)svc.Signature.ReturnValue.Storage;
-            Assert.AreEqual("es", seq.Head.Name);
-            Assert.AreEqual("bx", seq.Tail.Name);
+            Assert.AreEqual("es", seq.Elements[0].Name);
+            Assert.AreEqual("bx", seq.Elements[1].Name);
         }
 
         [Test]

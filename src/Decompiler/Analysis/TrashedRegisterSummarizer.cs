@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -150,8 +150,10 @@ namespace Reko.Analysis
             var seq = storage as SequenceStorage;
             if (seq != null)
             {
-                changed |= SetConstant(seq.Head, constant);
-                changed |= SetConstant(seq.Tail, constant);
+                foreach (var e in seq.Elements)
+                {
+                    changed |= SetConstant(e, constant);
+                }
             }
             Constant old;
             if (!pf.Constants.TryGetValue(storage, out old))
@@ -181,8 +183,10 @@ namespace Reko.Analysis
             var seq = s as SequenceStorage;
             if (seq != null)
             {
-                Trash(seq.Head);
-                Trash(seq.Tail);
+                foreach (var e in seq.Elements)
+                {
+                    Trash(e);
+                }
             }
         }
     }

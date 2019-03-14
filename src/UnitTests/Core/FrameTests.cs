@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -107,8 +107,8 @@ namespace Reko.UnitTests.Core
 			using (FileUnitTester fut = new FileUnitTester("Core/FrSequenceAccess.txt"))
 			{
 				f.Write(fut.TextWriter);
-				fut.TextWriter.WriteLine("Head({0}) = {1}", dx_ax.Name, vDx_ax.Head.Name);
-				fut.TextWriter.WriteLine("Tail({0}) = {1}", dx_ax.Name, vDx_ax.Tail.Name);
+				fut.TextWriter.WriteLine("Head({0}) = {1}", dx_ax.Name, vDx_ax.Elements[0].Name);
+				fut.TextWriter.WriteLine("Tail({0}) = {1}", dx_ax.Name, vDx_ax.Elements[1].Name);
 
 				fut.AssertFilesEqual();
 			}

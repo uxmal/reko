@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Reko.Core.Types;
+using Reko.Core.Machine;
 
 namespace Reko.Core
 {
@@ -39,8 +40,8 @@ namespace Reko.Core
         Identifier EnsureFlagGroup(RegisterStorage flagRegister, uint flagGroupBits, string name, DataType dataType);
         Identifier EnsureFpuStackVariable(int v, DataType dataType);
         Identifier EnsureOutArgument(Identifier idOrig, DataType outArgumentPointer);
-        Identifier EnsureSequence(DataType dataType, Storage head, Storage tail);
-        Identifier EnsureSequence(DataType dataType, string name, Storage head, Storage tail);
+        Identifier EnsureSequence(DataType dataType, params Storage[] elements);
+        Identifier EnsureSequence(DataType dataType, string name, params Storage [] elements);
         Identifier EnsureStackVariable(int offset, DataType dataType);
         Identifier CreateTemporary(DataType dt);
         Identifier CreateTemporary(string name, DataType dt);

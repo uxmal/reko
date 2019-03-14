@@ -361,9 +361,8 @@ namespace Reko.Scanning
         public Identifier VisitSequenceStorage(SequenceStorage seq)
         {
             var dt = this.dt;
-            var hd = (Identifier) seq.Head.Accept(this);
-            var tl = (Identifier) seq.Tail.Accept(this);
-            return procCalling.Frame.EnsureSequence(dt, hd.Storage, tl.Storage);
+            var clones = seq.Elements.Select(e => e.Accept(this).Storage);
+            return procCalling.Frame.EnsureSequence(dt, clones.ToArray());
         }
 
         public Identifier VisitStackArgumentStorage(StackArgumentStorage stack)

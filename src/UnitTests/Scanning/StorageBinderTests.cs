@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -44,6 +44,18 @@ namespace Reko.UnitTests.Scanning
             Assert.AreSame(grf, grf2);
             var grf3 = stgb.EnsureFlagGroup(flagReg2, 0x05, "cz", PrimitiveType.Byte);
             Assert.AreNotSame(grf, grf3);
+        }
+
+        [Test]
+        public void Stgb_Sequence()
+        {
+            var stgb = new StorageBinder();
+            var r1 = RegisterStorage.Reg32("r1", 1);
+            var r2 = RegisterStorage.Reg32("r2", 2);
+            var r3 = RegisterStorage.Reg32("r3", 3);
+            var seqA = stgb.EnsureSequence(PrimitiveType.CreateWord(96), r1, r2, r3);
+            var seqB = stgb.EnsureSequence(PrimitiveType.CreateWord(96), r1, r2, r3);
+            Assert.AreSame(seqA, seqB);
         }
     }
 }

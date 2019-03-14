@@ -230,8 +230,10 @@ namespace Reko.Analysis
             {
                 if (id.Storage is SequenceStorage seq)
                 {
-                    yield return ssa.Procedure.Frame.EnsureIdentifier(seq.Head);
-                    yield return ssa.Procedure.Frame.EnsureIdentifier(seq.Tail);
+                    foreach (var e in seq.Elements)
+                    {
+                        yield return ssa.Procedure.Frame.EnsureIdentifier(e);
+                    }
                 }
                 else
                 {

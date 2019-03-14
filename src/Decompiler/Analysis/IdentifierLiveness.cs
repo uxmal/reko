@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -229,18 +229,20 @@ namespace Reko.Analysis
 
 		public Storage VisitSequenceStorage(SequenceStorage seq)
 		{
-			seq.Head.Accept(this);
-			seq.Tail.Accept(this);
-	  		if (define)
-			{
-				defBitSize = (int)(seq.Head.BitSize + seq.Tail.BitSize);
-				defOffset = 0;
-			}
-			else
-			{
-				//$NOTimplemented: what happens in cases like es_bx = AAAABBBB
-				// but only es is live out? AAAA but not BBBB should be live then.
-			}
+            foreach (var e in seq.Elements)
+            {
+                e.Accept(this);
+            }
+            if (define)
+            {
+                defBitSize = (int) seq.BitSize;
+                defOffset = 0;
+            }
+            else
+            {
+                //$NOTimplemented: what happens in cases like es_bx = AAAABBBB
+                // but only es is live out? AAAA but not BBBB should be live then.
+            }
             return null;
 		}
 

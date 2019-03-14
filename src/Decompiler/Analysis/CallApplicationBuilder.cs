@@ -152,11 +152,11 @@ namespace Reko.Analysis
 
         public Expression VisitSequenceStorage(SequenceStorage seq)
         {
-            var exps = new Storage[] { seq.Head, seq.Tail }
+            var exps = seq.Elements
                 .Select(stg => stg.Accept(this))
                 .ToArray();
             return new MkSequence(
-                PrimitiveType.CreateWord(exps.Sum(e => e.DataType.BitSize)),
+                seq.DataType,
                 exps);
         }
 

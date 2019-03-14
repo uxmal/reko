@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -104,6 +104,7 @@ namespace Reko.Analysis
             // Look for hi:lo = a * C
             if (!(instr is Assignment ass) ||
                 !(ass.Dst.Storage is SequenceStorage dst) ||
+                dst.Elements.Length != 2 ||
                 !(ass.Src is BinaryExpression bin) ||
                 !(bin.Operator is IMulOperator) ||
                 !(bin.Right is Constant cRight) ||
@@ -113,7 +114,7 @@ namespace Reko.Analysis
             }
 
             this.idOrig = ass.Dst;
-            this.idDst = FindAlias(ass.Dst, dst.Head);
+            this.idDst = FindAlias(ass.Dst, dst.Elements[0]);
             if (idDst == null)
                 return false;
 
