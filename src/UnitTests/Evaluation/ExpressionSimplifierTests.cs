@@ -47,6 +47,18 @@ namespace Reko.UnitTests.Evaluation
             this.rolc_8 = new PseudoProcedure(PseudoProcedure.RolC, PrimitiveType.Byte, 3);
         }
 
+        private void Given_LittleEndianArchitecture()
+        {
+            arch = new Mock<IProcessorArchitecture>();
+            arch.Setup(a => a.Endianness).Returns(EndianServices.Little);
+        }
+
+        private void Given_BigEndianArchitecture()
+        {
+            arch = new Mock<IProcessorArchitecture>();
+            arch.Setup(a => a.Endianness).Returns(EndianServices.Big);
+        }
+
         private void Given_ExpressionSimplifier()
         {
             var ssaIds = BuildSsaIdentifiers();
