@@ -295,7 +295,8 @@ namespace Reko.Scanning
                     // We just created a block in a foreign procedure. 
                     blocks.Remove(addrDest);
                     block.Procedure.RemoveBlock(block);
-                    procDest = (Procedure)ScanProcedure(block.Procedure.Architecture, addrDest, null, state);
+                    procDest = Program.EnsureProcedure(block.Procedure.Architecture, addrDest, null);
+                    EnqueueProcedure(block.Procedure.Architecture, addrDest);
                     var blockThunk = CreateCallRetThunk(addrSrc, proc, procDest);
                     var wi = CreatePromoteWorkItem(addrDest, block, procDest);
                     procQueue.Enqueue(PriorityBlockPromote, wi);
