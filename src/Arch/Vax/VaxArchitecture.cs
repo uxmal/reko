@@ -58,6 +58,9 @@ namespace Reko.Arch.Vax
             Registers.pc,
         };
 
+        private static Dictionary<string, RegisterStorage> regsByName = regs
+            .ToDictionary(r => r.Name);
+
         private Dictionary<uint, FlagGroupStorage> flagGroups;
 
         public VaxArchitecture(string name) : base(name)
@@ -192,7 +195,7 @@ namespace Reko.Arch.Vax
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
-            throw new NotImplementedException();
+            return regsByName.TryGetValue(name, out reg);
         }
 
         public override bool TryParseAddress(string txtAddr, out Address addr)
