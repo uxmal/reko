@@ -580,19 +580,26 @@ namespace Reko.Arch.Vax
                         load = m.Mem(width, ea);
                     if (memOp.AutoIncrement)
                     {
-                        if (memOp.AutoIncrement)
-                        {
-                            reg = binder.EnsureRegister(memOp.Base);
-                            int inc = (memOp.Deferred) ? 4 : width.Size;
-                            m.Assign(reg, m.IAdd(reg, inc));
-                        }
+                        reg = binder.EnsureRegister(memOp.Base);
+                        int inc = (memOp.Deferred) ? 4 : width.Size;
+                        m.Assign(reg, m.IAdd(reg, inc));
                     }
                     return load;
                 }
                 else
                 {
+                    ea = arch.MakeAddressFromConstant(memOp.Offset);
+                    Expression load;
+                    if (memOp.Deferred)
+                    {
+                        load = m.Mem(width, m.Mem32(ea));
+                    }
+                    else
+                    { 
+                        load = m.Mem(width, ea);
+                    }
+                    return load;
                 }
-                break;
             case AddressOperand addrOp:
                 return addrOp.Address;
             }
@@ -645,9 +652,10 @@ namespace Reko.Arch.Vax
             if (memOp != null)
             {
                 Expression ea;
+                Identifier reg = null;
                 if (memOp.Base != null)
                 {
-                    var reg = binder.EnsureRegister(memOp.Base);
+                    reg = binder.EnsureRegister(memOp.Base);
                     if (memOp.AutoDecrement)
                     {
                         m.Assign(reg, m.ISub(reg, width.Size));
@@ -657,25 +665,26 @@ namespace Reko.Arch.Vax
                     {
                         ea = m.IAdd(ea, memOp.Offset);
                     }
-                    var tmp = binder.CreateTemporary(width);
-                    m.Assign(tmp, fn(m.Mem(width, ea)));
-                    Expression load; 
-                    if (memOp.Deferred)
-                        load = m.Mem(width, m.Mem32(ea));
-                    else
-                        load = m.Mem(width, ea);
-                    m.Assign(load, tmp);
-
-                    if (memOp.AutoIncrement)
-                    {
-                        int inc = (memOp.Deferred) ? 4 : width.Size;
-                        m.Assign(reg, m.IAdd(reg, inc));
-                    }
-                    return tmp;
                 }
                 else
                 {
+                    ea = arch.MakeAddressFromConstant(memOp.Offset);
                 }
+                var tmp = binder.CreateTemporary(width);
+                m.Assign(tmp, fn(m.Mem(width, ea)));
+                Expression load; 
+                if (memOp.Deferred)
+                    load = m.Mem(width, m.Mem32(ea));
+                else
+                    load = m.Mem(width, ea);
+                m.Assign(load, tmp);
+
+                if (reg != null && memOp.AutoIncrement)
+                {
+                    int inc = (memOp.Deferred) ? 4 : width.Size;
+                    m.Assign(reg, m.IAdd(reg, inc));
+                }
+                return tmp;
             }
             throw new NotImplementedException(op.GetType().Name);
         }
