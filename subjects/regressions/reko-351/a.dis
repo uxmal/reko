@@ -511,8 +511,8 @@ main_entry:
 // SymbolicIn:
 
 l8000049A:
-	sine_taylor(1374396351.0)
-	_sin(1374396351.0, 1.8446744072626e+19, fp - 0x00000008)
+	sine_taylor(4.61425307021499e+18)
+	_sin(4.61425307021499e+18, 4.56906395155395e+18, fp - 0x00000008)
 	return
 // DataOut:
 // DataOut (flags):
@@ -572,7 +572,7 @@ l80000530:
 	dwLoc20_121 = v23_57 + 0x00000003
 	rLoc14_123 = (real64) ((real96) (real64) ((real96) (real64) ((real96) (real64) ((real96) rLoc14_123 * (real80) ((real96) v23_57)) * (real80) ((real96) (v23_57 + 0x00000001))) * (real80) ((real96) (v23_57 + 0x00000002))) * (real80) ((real96) (v23_57 + 0x00000003)))
 	rLoc0C_122 = SEQ(dwArg04_110, dwArg08_112) (alias)
-	rLoc14_123 = 0x000000003FF00000 (alias)
+	rLoc14_123 = 0x3FF0000000000000 (alias)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

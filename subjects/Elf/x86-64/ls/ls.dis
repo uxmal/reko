@@ -19490,7 +19490,7 @@ l0000000000410DAC:
 // SymbolicIn:
 
 l0000000000410D0B:
-	rax_59 = (uint64) (0xFFFFFFFFAAAAAAAA /u r8)
+	rax_59 = (uint64) (0x00000000AAAAAAAA /u r8)
 	branch rcx >=u rax_59 l0000000000410D5C
 // DataOut:
 // DataOut (flags):

@@ -3695,7 +3695,7 @@ Eq_8: (union "Eq_8" (int32 u0) (byte u1) (word128 u2) ((ptr64 char) u3) ((ptr64 
 	T_20098 (in rcx : word64)
 	T_20099 (in rsi *s rcx : int64)
 	T_20100 (in 0x0000000000000000 : word64)
-	T_20105 (in (uint64) (0xFFFFFFFFAAAAAAAA /u r8) : uint64)
+	T_20105 (in (uint64) (0x00000000AAAAAAAA /u r8) : uint64)
 	T_20106 (in rax_59 : word64)
 	T_20112 (in Mem63[rsp - 8 + 0x0000000000000000:word64] : word64)
 	T_20119 (in rcx + (rcx + 0x0000000000000001 >>u 0x0000000000000001) : word64)
@@ -88485,7 +88485,7 @@ T_20101: (in rcx != 0x0000000000000000 : bool)
   Class: Eq_20101
   DataType: bool
   OrigDataType: bool
-T_20102: (in 0xFFFFFFFFAAAAAAAA : uint128)
+T_20102: (in 0x00000000AAAAAAAA : uint128)
   Class: Eq_20102
   DataType: uint128
   OrigDataType: uint128
@@ -88493,11 +88493,11 @@ T_20103: (in r8 : word64)
   Class: Eq_20103
   DataType: Eq_20103
   OrigDataType: (union (int64 u1) (uint64 u0))
-T_20104: (in 0xFFFFFFFFAAAAAAAA /u r8 : word64)
+T_20104: (in 0x00000000AAAAAAAA /u r8 : word64)
   Class: Eq_20104
   DataType: uint64
   OrigDataType: uint64
-T_20105: (in (uint64) (0xFFFFFFFFAAAAAAAA /u r8) : uint64)
+T_20105: (in (uint64) (0x00000000AAAAAAAA /u r8) : uint64)
   Class: Eq_8
   DataType: Eq_8
   OrigDataType: uint64

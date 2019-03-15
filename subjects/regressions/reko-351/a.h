@@ -47,7 +47,7 @@ Eq_233: (union "Eq_233" ((ptr32 word32) u0) ((ref int32) u1))
 Eq_247: (union "Eq_247" (real64 u0) (real96 u1))
 	T_247 (in rLoc14_123 : Eq_247)
 	T_272 (in (real64) ((real96) (real64) ((real96) (real64) ((real96) (real64) ((real96) rLoc14_123 * (real80) ((real96) v23_57)) * (real80) ((real96) (v23_57 + 0x00000001))) * (real80) ((real96) (v23_57 + 0x00000002))) * (real80) ((real96) (v23_57 + 0x00000003))) : real64)
-	T_274 (in 0x000000003FF00000 : word64)
+	T_274 (in 0x3FF0000000000000 : word64)
 Eq_250: (union "Eq_250" (real80 u0) (real96 u1))
 	T_250 (in (real80) (real96) v23_57 : real80)
 Eq_257: (union "Eq_257" (real80 u0) (real96 u1))
@@ -861,11 +861,11 @@ T_201: (in signature of sine_taylor : void)
   Class: Eq_200
   DataType: (ptr32 Eq_200)
   OrigDataType: 
-T_202: (in 1374396351.0 : real64)
+T_202: (in 4.61425307021499e+18 : real64)
   Class: Eq_150
   DataType: real64
   OrigDataType: real64
-T_203: (in sine_taylor(1374396351.0) : void)
+T_203: (in sine_taylor(4.61425307021499e+18) : void)
   Class: Eq_203
   DataType: void
   OrigDataType: void
@@ -889,11 +889,11 @@ T_208: (in tArg14 : Eq_208)
   Class: Eq_208
   DataType: Eq_208
   OrigDataType: (union ((ptr32 (struct (0 T_229 t0000))) u1) ((ref int32) u0))
-T_209: (in 1374396351.0 : real64)
+T_209: (in 4.61425307021499e+18 : real64)
   Class: Eq_206
   DataType: real64
   OrigDataType: real64
-T_210: (in 1.8446744072626e+19 : real64)
+T_210: (in 4.56906395155395e+18 : real64)
   Class: Eq_207
   DataType: real64
   OrigDataType: real64
@@ -909,7 +909,7 @@ T_213: (in fp - 0x00000008 : word32)
   Class: Eq_208
   DataType: Eq_208
   OrigDataType: (union (ptr32 u0) ((ref int32) u1))
-T_214: (in _sin(1374396351.0, 1.8446744072626e+19, fp - 0x00000008) : void)
+T_214: (in _sin(4.61425307021499e+18, 4.56906395155395e+18, fp - 0x00000008) : void)
   Class: Eq_214
   DataType: void
   OrigDataType: void
@@ -1149,7 +1149,7 @@ T_273: (in SEQ(dwArg04_110, dwArg08_112) : real64)
   Class: Eq_238
   DataType: real64
   OrigDataType: real64
-T_274: (in 0x000000003FF00000 : word64)
+T_274: (in 0x3FF0000000000000 : word64)
   Class: Eq_247
   DataType: real64
   OrigDataType: word64

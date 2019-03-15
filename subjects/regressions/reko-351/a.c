@@ -148,8 +148,8 @@ void sine_taylor(real64 rArg04, int32 dwArg0C)
 // 8000049A: void main()
 void main()
 {
-	sine_taylor(1374396351.0);
-	_sin(1374396351.0, 1.8446744072626e+19, fp - 0x08);
+	sine_taylor(4.61425307021499e+18);
+	_sin(4.61425307021499e+18, 4.56906395155395e+18, fp - 0x08);
 }
 
 // 800004DE: void _sin(Stack real64 rArg04, Stack real64 rArg0C, Stack Eq_208 tArg14)
@@ -171,7 +171,7 @@ void _sin(real64 rArg04, real64 rArg0C, Eq_208 tArg14)
 		dwLoc20_121 = v23_57 + 0x03;
 		rLoc14_123.u0 = (real64) ((real96) (real64) ((real96) (real64) ((real96) (real64) ((real96) rLoc14_123 * (real80) ((real96) v23_57)) * (real80) ((real96) (v23_57 + 0x01))) * (real80) ((real96) (v23_57 + 0x02))) * (real80) ((real96) (v23_57 + 0x03)));
 		rLoc0C_122 = SEQ(dwArg04_110, dwArg08_112);
-		rLoc14_123.u0 = 0x3FF00000;
+		rLoc14_123.u0 = 0x3FF0000000000000;
 	}
 }
 

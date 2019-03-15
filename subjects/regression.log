@@ -533,7 +533,7 @@ safe_read: error: An error occurred while rewriting procedure to high-level lang
 Parameter name: index
        at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
    at System.Collections.Generic.List`1.get_Item(Int32 index)
-   at Reko.Core.Block.get_ThenBlock() in D:\dev\uxmal\reko\master\src\Core\Block.cs:line 70
+   at Reko.Core.Block.get_ThenBlock() in D:\dev\uxmal\reko\master\src\Core\Block.cs:line 68
    at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
    at Reko.Structure.CompoundConditionCoalescer.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
    at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
@@ -1075,13 +1075,14 @@ fn0EF8: warning: Structure analysis stopped making progress, quitting. Please re
 hello_m68k.exe: warning: Win32 M68k main procedure finder not supported.
 error: An error occurred during decompilation. System.NotSupportedException: Constants of type uispr48 are not supported.
    at Reko.Core.Expressions.Constant.Create(DataType dt, Int64 value) in D:\dev\uxmal\reko\master\src\Core\Expressions\Constant.cs:line 138
-   at Reko.Evaluation.ExpressionSimplifier.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.cs:line 628
+   at Reko.Core.Expressions.Constant.Create(DataType dt, UInt64 value) in D:\dev\uxmal\reko\master\src\Core\Expressions\Constant.cs:line 43
+   at Reko.Evaluation.ExpressionSimplifier.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.cs:line 629
    at Reko.Core.Expressions.MkSequence.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MkSequence.cs:line 53
    at Reko.Analysis.ValuePropagator.VisitAssignment(Assignment a) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 103
    at Reko.Core.Code.Assignment.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 49
    at Reko.Analysis.ValuePropagator.Transform(Statement stm) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 95
    at Reko.Analysis.ValuePropagator.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 86
-   at Reko.Analysis.DataFlowAnalysis.ConvertToSsa(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 444
+   at Reko.Analysis.DataFlowAnalysis.ConvertToSsa(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 442
    at System.Linq.Enumerable.WhereSelectListIterator`2.MoveNext()
    at System.Linq.Buffer`1..ctor(IEnumerable`1 source)
    at System.Linq.Enumerable.ToArray[TSource](IEnumerable`1 source)
@@ -2216,4 +2217,4 @@ Parameter name: key
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 56 binaries in 58.83 seconds ---
+Decompiled 56 binaries in 49.47 seconds ---
