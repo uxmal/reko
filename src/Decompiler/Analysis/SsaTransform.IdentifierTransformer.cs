@@ -221,8 +221,12 @@ namespace Reko.Analysis
                 }
                 else
                 {
-                    var stmLast = block.Statements.Last();
-                    stmNew = block.Statements.Add(stmLast.LinearAddress, ass);
+                    ulong uAddr;
+                    if (block.Statements.Count == 0)
+                        uAddr = block.Address.ToLinear();
+                    else
+                        uAddr = block.Statements.Last().LinearAddress;
+                    stmNew = block.Statements.Add(uAddr, ass);
                 }
 
                 var sidTo = ssaIds.Add(ass.Dst, stmNew, ass.Src, false);
@@ -671,6 +675,8 @@ namespace Reko.Analysis
 
             public override SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs)
             {
+                if (stm.LinearAddress == 0x65C) //$DEBUG
+                    stm.ToString();
                 var ints = bs.currentStackDef.GetIntervalsOverlappingWith(offsetInterval)
                     .OrderBy(i => i.Key.Start)
                     .ThenBy(i => i.Key.End - i.Key.Start)
@@ -689,9 +695,11 @@ namespace Reko.Analysis
                     {
                         // Found a gap in the interval tree that isn't defined
                         // in this block. Look for the gap in another block.
-                        this.offsetInterval = Interval.Create(offsetLo, intFrom.Start);
+                        var intv = Interval.Create(offsetLo, intFrom.Start);
+                        this.offsetInterval = intv;
                         var sidR = ReadVariableRecursive(bs);
-                        sequence.Add((sidR, offsetInterval));
+                        sequence.Add((sidR, intv));
+                        offsetLo = intFrom.Start;
                     }
                     if (offsetLo < intFrom.End)
                     {
