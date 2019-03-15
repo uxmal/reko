@@ -202,16 +202,16 @@ void main()
 // 800004DE: void _sin(Stack real64 rArg04, Stack real64 rArg0C, Stack Eq_203 tArg14)
 void _sin(real64 rArg04, real64 rArg0C, Eq_203 tArg14)
 {
-	Eq_214 rLoc0C_23 = DPB(rLoc0C, SLICE(rArg04, word32, 32), 32);
-	Eq_218 v9_26 = (real64) ((real80) rLoc0C_23 * rLoc0C_23);
+	real64 rLoc0C_23 = DPB(rLoc0C, SLICE(rArg04, word32, 32), 32);
+	real64 v9_26 = (real64) ((real80) rLoc0C_23 * rLoc0C_23);
 	int32 dwLoc20_100 = 0x01;
 	while ((real64) ((real80) rLoc0C_23 / rLoc14) >= rArg0C)
 	{
 		*tArg14 = (word32) *tArg14 + 0x01;
 		int32 v23_65 = dwLoc20_100 + 0x01;
-		rLoc0C_23.u0 = (real64) ((real80) (real64) ((real80) rLoc0C_23 * v9_26) * v9_26);
+		rLoc0C_23 = (real64) ((real80) (real64) ((real80) rLoc0C_23 * v9_26) * v9_26);
 		dwLoc20_100 = v23_65 + 0x03;
-		rLoc14.u0 = (real64) ((real80) (real64) ((real80) (real64) ((real80) (real64) ((real80) rLoc14 * (real80) v23_65) * (real80) (v23_65 + 0x01)) * (real80) (v23_65 + 0x02)) * (real80) (v23_65 + 0x03));
+		rLoc14 = (real64) ((real80) (real64) ((real80) (real64) ((real80) (real64) ((real80) rLoc14 * (real80) v23_65) * (real80) (v23_65 + 0x01)) * (real80) (v23_65 + 0x02)) * (real80) (v23_65 + 0x03));
 	}
 }
 

@@ -6166,7 +6166,7 @@ l000000000040B548:
 		free(rax_43);
 		return 0x00;
 	}
-	Eq_11813 xmm1_155 = DPB(xmm1, rbp_110->r0008, 0);
+	real128 xmm1_155 = DPB(xmm1, rbp_110->r0008, 0);
 	if (rbp_110->b0010 == 0x00)
 	{
 		word128 xmm0_217;
@@ -6296,7 +6296,7 @@ uint64 fn000000000040B710(Eq_1072 rsi, Eq_14 rdi, ptr64 & rsiOut, ptr64 & r8Out)
 	*rsiOut = rsi;
 	*r8Out = r8;
 	struct Eq_1071 * rbp_15 = *((word64) rdi + 0x0028);
-	Eq_12027 xmm1_19 = DPB(xmm1, rbp_15->r0008, 0);
+	real128 xmm1_19 = DPB(xmm1, rbp_15->r0008, 0);
 	if (rbp_15->b0010 == 0x00)
 	{
 		word128 xmm0_246;
@@ -6429,18 +6429,18 @@ l000000000040BB2E:
 			eax_117 = ~0x00;
 			return eax_117;
 		}
-		Eq_12245 xmm0_279;
+		real128 xmm0_279;
 		fn000000000040ADB0((word64) rdi + 0x0028, r8);
 		Eq_14 rax_271 = *((word64) rdi + 0x0010);
 		struct Eq_1071 * rdx_274 = *((word64) rdi + 0x0028);
 		ui32 eax_272 = (word32) rax_271;
-		Eq_12260 xmm2_278 = DPB(xmm2, rdx_274->r0008, 0);
+		real128 xmm2_278 = DPB(xmm2, rdx_274->r0008, 0);
 		if (rax_271 >= 0x00)
-			xmm0_279.u1 = DPB(xmm0_157, (real32) rax_271, 0);
+			xmm0_279 = DPB(xmm0_157, (real32) rax_271, 0);
 		else
 		{
 			real32 v44_370 = (real32) (rax_271 >> 0x01 | (uint64) (eax_272 & 0x01));
-			xmm0_279.u1 = DPB(xmm0_157, v44_370 + DPB(xmm0_157, v44_370, 0), 0);
+			xmm0_279 = DPB(xmm0_157, v44_370 + DPB(xmm0_157, v44_370, 0), 0);
 		}
 		word128 xmm1_287;
 		Eq_11883 rax_281 = *((word64) rdi + 0x0018);
@@ -6457,7 +6457,7 @@ l000000000040BB2E:
 		real32 v37_301 = (real32) xmm0_279 * rdx_274->r000C;
 		word128 xmm0_302 = DPB(xmm0_279, v37_301, 0);
 		if (rdx_274->b0010 == 0x00)
-			xmm0_302 = (word128) DPB(xmm0_279, v37_301 * xmm2_278, 0);
+			xmm0_302 = DPB(xmm0_279, v37_301 * xmm2_278, 0);
 		if ((real32) xmm0_302 >= globals->t415F08)
 			goto l000000000040BB2E;
 		Eq_1072 rsi_314;
@@ -8163,7 +8163,7 @@ l000000000040BED4:
 		rax_645 = ϕ(rax_640, rax_816);
 		SCZO_646 = cond(dwLocB0_35 - 0x01);
 		Z_647 = (bool) SCZO_646;
-		rLoc1_648 = rLoc1_633 * globals->t415F84;
+		rLoc1_648 = rLoc1_633 * globals->r415F84;
 		if (dwLocB0_35 != 0x01)
 		{
 			rLoc2_687.u0 = (real64) globals->r415F90;
@@ -8335,7 +8335,7 @@ l000000000040BED4:
 		ah_666 = ϕ(ah_611, ah_611, ah_707, ah_707);
 		ax_667 = ϕ(ax_612, ax_612, ax_708, ax_708);
 		al_668 = ϕ(al_638, al_638, al_709, al_709);
-		rLoc1_669 = rLoc1_657 / globals->t415F84;
+		rLoc1_669 = rLoc1_657 / globals->r415F84;
 		r14_670 = qwLocB8_38;
 		rcx_671.u0 = 4284184;
 		rdx_672 = ~0x00;

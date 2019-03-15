@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (FFBED370 word32 dwFFBED370) (1 int32 dw0001) (65 char b0065) (4021F0 Eq_1173 t4021F0) (402640 Eq_1172 t402640) (4028C0 Eq_3431 t4028C0) (40A200 Eq_49 t40A200) (410800 code t410800) (411E60 Eq_3434 t411E60) (411ED0 Eq_3435 t411ED0) (411F40 (arr (ptr64 code)) a411F40) (412C00 (arr word32) a412C00) (412C38 (str char) str412C38) (412C60 (arr word32) a412C60) (412C95 (str char) str412C95) (412CA0 Eq_3260 t412CA0) (412CA7 (str char) str412CA7) (412CC0 (arr word32 13) a412CC0) (412CF0 word32 dw412CF0) (412EC0 (arr word32) a412EC0) (412F50 (arr word32) a412F50) (412FB0 (arr word32) a412FB0) (413010 (arr word32) a413010) (413080 Eq_792 t413080) (4135E0 (arr Eq_14) a4135E0) (4136B0 (arr word32) a4136B0) (413700 (arr word64) a413700) (413733 byte b413733) (413736 (str char) str413736) (41373F (str char) str41373F) (41375A (str char) str41375A) (413766 (str char) str413766) (413769 (str char) str413769) (413774 (str char) str413774) (413779 (str char) str413779) (4137B1 byte b4137B1) (413800 (str char) str413800) (41381C (str char) str41381C) (41382E (str char) str41382E) (41383C (str char) str41383C) (413844 (str char) str413844) (4138E1 (str char) str4138E1) (4138E4 (str char) str4138E4) (4138F5 (str char) str4138F5) (41397F (str char) str41397F) (413992 (str char) str413992) (413A21 (str char) str413A21) (413C07 byte b413C07) (415BC8 (str char) str415BC8) (415C58 (str char) str415C58) (415D68 (str char) str415D68) (415E6A byte b415E6A) (415EE0 Eq_11543 t415EE0) (415EF4 Eq_11553 t415EF4) (415EF8 Eq_11549 t415EF8) (415EFC Eq_11570 t415EFC) (415F00 Eq_11576 t415F00) (415F04 Eq_11589 t415F04) (415F08 Eq_11855 t415F08) (415F0C Eq_11855 t415F0C) (415F18 (str char) str415F18) (415F1E (str char) str415F1E) (415F24 (str char) str415F24) (415F2E (str char) str415F2E) (415F50 (arr ui32) a415F50) (415F84 Eq_14220 t415F84) (415F90 real80 r415F90) (415FA0 void v415FA0) (415FD8 byte b415FD8) (415FE0 byte b415FE0) (416068 (arr (ptr64 code)) a416068) (416460 (arr word32) a416460) (4164E8 (arr (ptr64 code)) a4164E8) (416919 (str char) str416919) (416B48 (ptr64 code) ptr416B48) (416BE0 (str char) str416BE0) (416BF0 (str char) str416BF0) (416C18 (arr (ptr64 code)) a416C18) (416DC8 (str char) str416DC8) (416E38 (arr (ptr64 code)) a416E38) (416FE8 (str char) str416FE8) (417002 (str char) str417002) (417012 (str char) str417012) (61A3A8 (ptr64 void) ptr61A3A8) (61A3C0 byte b61A3C0) (61A3C4 Eq_14 t61A3C4) (61A3D0 Eq_14 t61A3D0) (61A3D8 Eq_14 t61A3D8) (61A3E0 word64 qw61A3E0) (61A3E8 Eq_14 t61A3E8) (61A3F0 word64 qw61A3F0) (61A3F8 (ptr64 byte) ptr61A3F8) (61A400 (struct "Eq_2848" (0 Eq_14 t0000) (8 Eq_14 t0008)) t61A400) (61A408 word64 qw61A408) (61A410 (struct "Eq_2848") t61A410) (61A420 (struct "Eq_2848") t61A420) (61A450 word64 qw61A450) (61A458 Eq_14 t61A458) (61A550 (struct "Eq_2848") t61A550) (61A560 Eq_14 t61A560) (61A568 byte b61A568) (61A569 byte b61A569) (61A56A char b61A56A) (61A56C word32 dw61A56C) (61A580 word32 dw61A580) (61A5A0 Eq_18624 t61A5A0) (61A5D8 Eq_14 t61A5D8) (61A5E0 word64 qw61A5E0) (61A5E8 word64 qw61A5E8) (61A5F0 Eq_18636 t61A5F0) (61A600 Eq_17747 t61A600) (61A610 Eq_14 t61A610) (61A620 word32 dw61A620) (61A640 Eq_14 t61A640) (61A648 Eq_14 t61A648) (61A650 Eq_14 t61A650) (61A660 Eq_14 t61A660) (61A668 Eq_14 t61A668) (61A670 Eq_14 t61A670) (61A678 Eq_14 t61A678) (61A748 up64 qw61A748) (61AF00 Eq_1169 t61AF00) (61AF10 word64 qw61AF10) (61AF18 (ptr64 Eq_1834) ptr61AF18) (61AF20 int64 qw61AF20) (61AF60 Eq_1169 t61AF60) (61AF78 (ptr64 Eq_2142) ptr61AF78) (61AF80 up64 qw61AF80) (61AFC0 Eq_1169 t61AFC0) (61B018 Eq_2142 t61B018) (61B020 Eq_14 t61B020) (61B028 Eq_14 t61B028) (61B030 word32 dw61B030) (61B034 word32 dw61B034) (61B038 word32 dw61B038) (61B040 (arr word32) a61B040) (61B0C0 byte b61B0C0) (61B0C1 byte b61B0C1) (61B0C8 uint64 qw61B0C8) (61B0D0 byte b61B0D0) (61B0D8 uint64 qw61B0D8) (61B0E0 (ptr64 Eq_2315) ptr61B0E0) (61B0E8 (ptr64 Eq_2315) ptr61B0E8) (61B0F0 byte b61B0F0) (61B0F8 Eq_14 t61B0F8) (61B100 Eq_14 t61B100) (61B108 word32 dw61B108) (61B10C byte b61B10C) (61B10D byte b61B10D) (61B10E byte b61B10E) (61B110 word32 dw61B110) (61B114 byte b61B114) (61B115 byte b61B115) (61B118 Eq_14 t61B118) (61B120 Eq_14 t61B120) (61B128 byte b61B128) (61B129 byte b61B129) (61B12C word32 dw61B12C) (61B130 byte b61B130) (61B134 word32 dw61B134) (61B138 Eq_14 t61B138) (61B140 word32 dw61B140) (61B144 byte b61B144) (61B145 byte b61B145) (61B146 byte b61B146) (61B147 byte b61B147) (61B148 word32 dw61B148) (61B14C word32 dw61B14C) (61B150 up32 dw61B150) (61B154 Eq_14 t61B154) (61B158 Eq_14 t61B158) (61B15C Eq_14 t61B15C) (61B160 Eq_14 t61B160) (61B164 Eq_14 t61B164) (61B168 Eq_14 t61B168) (61B16C Eq_14 t61B16C) (61B170 Eq_14 t61B170) (61B174 Eq_14 t61B174) (61B178 Eq_14 t61B178) (61B17C byte b61B17C) (61B17D byte b61B17D) (61B180 Eq_14 t61B180) (61B188 Eq_14 t61B188) (61B190 Eq_14 t61B190) (61B198 byte b61B198) (61B1A0 uint64 qw61B1A0) (61B1A8 Eq_14 t61B1A8) (61B1B0 Eq_14 t61B1B0) (61B1B8 ui64 qw61B1B8) (61B1C0 Eq_14 t61B1C0) (61B1C8 Eq_14 t61B1C8) (61B1E8 Eq_14 t61B1E8) (61B1F8 Eq_14 t61B1F8) (61B200 Eq_14 t61B200) (61B320 word32 dw61B320) (61B348 word64 qw61B348) (61B350 word64 qw61B350) (61B358 Eq_14 t61B358) (C34C00 (str char) strC34C00))
+Eq_1: (struct "Globals" (FFBED370 word32 dwFFBED370) (1 int32 dw0001) (65 char b0065) (4021F0 Eq_1173 t4021F0) (402640 Eq_1172 t402640) (4028C0 Eq_3431 t4028C0) (40A200 Eq_49 t40A200) (410800 code t410800) (411E60 Eq_3434 t411E60) (411ED0 Eq_3435 t411ED0) (411F40 (arr (ptr64 code)) a411F40) (412C00 (arr word32) a412C00) (412C38 (str char) str412C38) (412C60 (arr word32) a412C60) (412C95 (str char) str412C95) (412CA0 Eq_3260 t412CA0) (412CA7 (str char) str412CA7) (412CC0 (arr word32 13) a412CC0) (412CF0 word32 dw412CF0) (412EC0 (arr word32) a412EC0) (412F50 (arr word32) a412F50) (412FB0 (arr word32) a412FB0) (413010 (arr word32) a413010) (413080 Eq_792 t413080) (4135E0 (arr Eq_14) a4135E0) (4136B0 (arr word32) a4136B0) (413700 (arr word64) a413700) (413733 byte b413733) (413736 (str char) str413736) (41373F (str char) str41373F) (41375A (str char) str41375A) (413766 (str char) str413766) (413769 (str char) str413769) (413774 (str char) str413774) (413779 (str char) str413779) (4137B1 byte b4137B1) (413800 (str char) str413800) (41381C (str char) str41381C) (41382E (str char) str41382E) (41383C (str char) str41383C) (413844 (str char) str413844) (4138E1 (str char) str4138E1) (4138E4 (str char) str4138E4) (4138F5 (str char) str4138F5) (41397F (str char) str41397F) (413992 (str char) str413992) (413A21 (str char) str413A21) (413C07 byte b413C07) (415BC8 (str char) str415BC8) (415C58 (str char) str415C58) (415D68 (str char) str415D68) (415E6A byte b415E6A) (415EE0 Eq_11543 t415EE0) (415EF4 Eq_11553 t415EF4) (415EF8 Eq_11549 t415EF8) (415EFC Eq_11570 t415EFC) (415F00 Eq_11576 t415F00) (415F04 Eq_11589 t415F04) (415F08 Eq_11855 t415F08) (415F0C Eq_11855 t415F0C) (415F18 (str char) str415F18) (415F1E (str char) str415F1E) (415F24 (str char) str415F24) (415F2E (str char) str415F2E) (415F50 (arr ui32) a415F50) (415F84 real32 r415F84) (415F90 real80 r415F90) (415FA0 void v415FA0) (415FD8 byte b415FD8) (415FE0 byte b415FE0) (416068 (arr (ptr64 code)) a416068) (416460 (arr word32) a416460) (4164E8 (arr (ptr64 code)) a4164E8) (416919 (str char) str416919) (416B48 (ptr64 code) ptr416B48) (416BE0 (str char) str416BE0) (416BF0 (str char) str416BF0) (416C18 (arr (ptr64 code)) a416C18) (416DC8 (str char) str416DC8) (416E38 (arr (ptr64 code)) a416E38) (416FE8 (str char) str416FE8) (417002 (str char) str417002) (417012 (str char) str417012) (61A3A8 (ptr64 void) ptr61A3A8) (61A3C0 byte b61A3C0) (61A3C4 Eq_14 t61A3C4) (61A3D0 Eq_14 t61A3D0) (61A3D8 Eq_14 t61A3D8) (61A3E0 word64 qw61A3E0) (61A3E8 Eq_14 t61A3E8) (61A3F0 word64 qw61A3F0) (61A3F8 (ptr64 byte) ptr61A3F8) (61A400 (struct "Eq_2848" (0 Eq_14 t0000) (8 Eq_14 t0008)) t61A400) (61A408 word64 qw61A408) (61A410 (struct "Eq_2848") t61A410) (61A420 (struct "Eq_2848") t61A420) (61A450 word64 qw61A450) (61A458 Eq_14 t61A458) (61A550 (struct "Eq_2848") t61A550) (61A560 Eq_14 t61A560) (61A568 byte b61A568) (61A569 byte b61A569) (61A56A char b61A56A) (61A56C word32 dw61A56C) (61A580 word32 dw61A580) (61A5A0 Eq_18624 t61A5A0) (61A5D8 Eq_14 t61A5D8) (61A5E0 word64 qw61A5E0) (61A5E8 word64 qw61A5E8) (61A5F0 Eq_18636 t61A5F0) (61A600 Eq_17747 t61A600) (61A610 Eq_14 t61A610) (61A620 word32 dw61A620) (61A640 Eq_14 t61A640) (61A648 Eq_14 t61A648) (61A650 Eq_14 t61A650) (61A660 Eq_14 t61A660) (61A668 Eq_14 t61A668) (61A670 Eq_14 t61A670) (61A678 Eq_14 t61A678) (61A748 up64 qw61A748) (61AF00 Eq_1169 t61AF00) (61AF10 word64 qw61AF10) (61AF18 (ptr64 Eq_1834) ptr61AF18) (61AF20 int64 qw61AF20) (61AF60 Eq_1169 t61AF60) (61AF78 (ptr64 Eq_2142) ptr61AF78) (61AF80 up64 qw61AF80) (61AFC0 Eq_1169 t61AFC0) (61B018 Eq_2142 t61B018) (61B020 Eq_14 t61B020) (61B028 Eq_14 t61B028) (61B030 word32 dw61B030) (61B034 word32 dw61B034) (61B038 word32 dw61B038) (61B040 (arr word32) a61B040) (61B0C0 byte b61B0C0) (61B0C1 byte b61B0C1) (61B0C8 uint64 qw61B0C8) (61B0D0 byte b61B0D0) (61B0D8 uint64 qw61B0D8) (61B0E0 (ptr64 Eq_2315) ptr61B0E0) (61B0E8 (ptr64 Eq_2315) ptr61B0E8) (61B0F0 byte b61B0F0) (61B0F8 Eq_14 t61B0F8) (61B100 Eq_14 t61B100) (61B108 word32 dw61B108) (61B10C byte b61B10C) (61B10D byte b61B10D) (61B10E byte b61B10E) (61B110 word32 dw61B110) (61B114 byte b61B114) (61B115 byte b61B115) (61B118 Eq_14 t61B118) (61B120 Eq_14 t61B120) (61B128 byte b61B128) (61B129 byte b61B129) (61B12C word32 dw61B12C) (61B130 byte b61B130) (61B134 word32 dw61B134) (61B138 Eq_14 t61B138) (61B140 word32 dw61B140) (61B144 byte b61B144) (61B145 byte b61B145) (61B146 byte b61B146) (61B147 byte b61B147) (61B148 word32 dw61B148) (61B14C word32 dw61B14C) (61B150 up32 dw61B150) (61B154 Eq_14 t61B154) (61B158 Eq_14 t61B158) (61B15C Eq_14 t61B15C) (61B160 Eq_14 t61B160) (61B164 Eq_14 t61B164) (61B168 Eq_14 t61B168) (61B16C Eq_14 t61B16C) (61B170 Eq_14 t61B170) (61B174 Eq_14 t61B174) (61B178 Eq_14 t61B178) (61B17C byte b61B17C) (61B17D byte b61B17D) (61B180 Eq_14 t61B180) (61B188 Eq_14 t61B188) (61B190 Eq_14 t61B190) (61B198 byte b61B198) (61B1A0 uint64 qw61B1A0) (61B1A8 Eq_14 t61B1A8) (61B1B0 Eq_14 t61B1B0) (61B1B8 ui64 qw61B1B8) (61B1C0 Eq_14 t61B1C0) (61B1C8 Eq_14 t61B1C8) (61B1E8 Eq_14 t61B1E8) (61B1F8 Eq_14 t61B1F8) (61B200 Eq_14 t61B200) (61B320 word32 dw61B320) (61B348 word64 qw61B348) (61B350 word64 qw61B350) (61B358 Eq_14 t61B358) (C34C00 (str char) strC34C00))
 	globals_t (in globals : (ptr64 (struct "Globals")))
 Eq_14: (union "Eq_14" (bool u0) (char u1) ((ptr64 char) u2) ((ptr64 wchar_t) u3) ((ptr64 int32) u4) ((ptr64 FILE) u5) ((ptr64 security_context_t) u6) ((ptr64 void) u7) (size_t u8) (time_t u9) (Eq_21175 u10) (Eq_21176 u11))
 	T_14 (in rsi : Eq_14)
@@ -5163,7 +5163,7 @@ Eq_2203: (struct "Eq_2203" (0 Eq_2219 t0000) (4 real32 r0004) (8 real32 r0008) (
 	T_12551 (in Mem110[rdi + 0x0000000000000028:word64] : word64)
 	T_12558 (in rdx_115 : (ptr64 Eq_2203))
 	T_12561 (in Mem110[rdi + 0x0000000000000028:word64] : word64)
-Eq_2219: (union "Eq_2219" (byte u0) (real32 u1) (real128 u2))
+Eq_2219: (union "Eq_2219" (byte u0) (real32 u1))
 	T_2219 (in 0x0A : byte)
 	T_2222 (in Mem1273[rax_1258 + 0x0000000000000000:byte] : byte)
 	T_12619 (in Mem110[rdx_115 + 0x0000000000000000:real32] : real32)
@@ -6870,16 +6870,11 @@ Eq_11802: (fn byte ((ptr64 word64), Eq_14))
 	T_11803 (in signature of fn000000000040ADB0 : void)
 	T_12246 (in fn000000000040ADB0 : ptr64)
 	T_12538 (in fn000000000040ADB0 : ptr64)
-Eq_11813: (union "Eq_11813" (real32 u0) (word128 u1))
-	T_11813 (in xmm1_155 : Eq_11813)
-	T_11818 (in DPB(xmm1, Mem111[rbp_110 + 0x0000000000000008:real32], 0) : word128)
 Eq_11827: (fn Eq_14 (Eq_1072, ptr64, ptr64))
 	T_11827 (in fn000000000040ABC0 : ptr64)
 	T_11828 (in signature of fn000000000040ABC0 : void)
 	T_12041 (in fn000000000040ABC0 : ptr64)
-Eq_11846: (union "Eq_11846" (real32 u0) (word128 u1))
-	T_11846 (in DPB(xmm0, v33_250, 0) : word128)
-Eq_11855: (union "Eq_11855" (real32 u0) (real64 u1) (up32 u2))
+Eq_11855: (union "Eq_11855" (real32 u0) (up32 u1))
 	T_11855 (in v26_221 : Eq_11855)
 	T_11857 (in Mem111[0x0000000000415F0C:real32] : real32)
 	T_11861 (in Mem111[0x0000000000415F0C:real32] : real32)
@@ -6942,11 +6937,6 @@ Eq_11915: (struct "Eq_11915" 0010 (0 word64 qw0000))
 	T_12013 (in Mem0[rbp_104 + 0x0000000000000000:word64] + 0x0000000000000008 : word64)
 Eq_11982: (struct "Eq_11982" (8 word64 qw0008))
 	T_11982 (in rbx_115 : (ptr64 Eq_11982))
-Eq_12027: (union "Eq_12027" (real32 u0) (word128 u1))
-	T_12027 (in xmm1_19 : Eq_12027)
-	T_12032 (in DPB(xmm1, Mem0[rbp_15 + 0x0000000000000008:real32], 0) : word128)
-Eq_12064: (union "Eq_12064" (real32 u0) (word128 u1))
-	T_12064 (in DPB(xmm0, v28_285, 0) : word128)
 Eq_12078: (union "Eq_12078" (int64 u0) (uint64 u1))
 	T_12078 (in DPB(rsi, v16_251 - Mem0[0x0000000000415F0C:real32], 0) : word64)
 Eq_12101: (fn Eq_14 (Eq_14, word32, Eq_14, Eq_14, ptr64))
@@ -6959,25 +6949,10 @@ Eq_12188: (fn Eq_14 (Eq_14, word32, (ptr64 Eq_14), Eq_14, Eq_14, ptr64))
 	T_12189 (in signature of fn000000000040ACB0 : void)
 	T_12407 (in fn000000000040ACB0 : ptr64)
 	T_12465 (in fn000000000040ACB0 : ptr64)
-Eq_12223: (union "Eq_12223" (real32 u0) (word128 u1))
-	T_12223 (in DPB(xmm0, v27_394, 0) : word128)
-Eq_12239: (union "Eq_12239" (real32 u0) (word128 u1))
-	T_12239 (in DPB(xmm1, v46_382, 0) : word128)
-Eq_12245: (union "Eq_12245" (real32 u0) (word128 u1))
-	T_12245 (in xmm0_279 : Eq_12245)
-	T_12354 (in DPB(xmm0_157, v44_370 + DPB(xmm0_157, v44_370, 0), 0) : word128)
-	T_12356 (in DPB(xmm0_157, (real32) rax_271, 0) : word128)
-Eq_12260: (union "Eq_12260" (real32 u0) (word128 u1))
-	T_12260 (in xmm2_278 : Eq_12260)
-	T_12265 (in DPB(xmm2, Mem0[rdx_274 + 0x0000000000000008:real32], 0) : word128)
 Eq_12268: (struct "Eq_12268" (0 Eq_14 t0000) (8 Eq_14 t0008))
 	T_12268 (in qwLoc20 : word64)
 Eq_12291: (union "Eq_12291" (int64 u0) (uint64 u1))
 	T_12291 (in rdi + 0x0000000000000018 : word64)
-Eq_12352: (union "Eq_12352" (real32 u0) (word128 u1))
-	T_12352 (in DPB(xmm0_157, v44_370, 0) : word128)
-Eq_12367: (union "Eq_12367" (real32 u0) (word128 u1))
-	T_12367 (in DPB(xmm1_165, v41_358, 0) : word128)
 Eq_12416: (union "Eq_12416" (uint128 u0) (real32 u1))
 	T_12416 (in (real32) xmm1_287 : real32)
 	T_12420 (in DPB(xmm2, Mem0[rdx_274 + 0x0000000000000008:real32] * xmm0_279, 0) : word128)
@@ -7011,8 +6986,6 @@ Eq_12494: (union "Eq_12494" (int64 u0) (uint64 u1))
 	T_12494 (in 0x0000000000000001 : word64)
 Eq_12505: (union "Eq_12505" (int64 u0) (uint64 u1))
 	T_12505 (in rax_103 - 0x0000000000000001 : word64)
-Eq_12514: (union "Eq_12514" (real32 u0) (word128 u1))
-	T_12514 (in DPB(xmm0, v26_289, 0) : word128)
 Eq_12517: (union "Eq_12517" (int64 u0) (uint64 u1))
 	T_12517 (in rax_103 - 0x0000000000000001 : word64)
 Eq_12521: (union "Eq_12521" (int64 u0) (uint64 u1))
@@ -7022,19 +6995,11 @@ Eq_12521: (union "Eq_12521" (int64 u0) (uint64 u1))
 	T_12552 (in 0x0000000000000000 : word64)
 	T_12556 (in Mem110[rdi + 0x0000000000000010:word64] : word64)
 	T_12562 (in 0x0000000000000000 : word64)
-Eq_12531: (union "Eq_12531" (real32 u0) (word128 u1))
-	T_12531 (in DPB(xmm1, v34_277, 0) : word128)
-Eq_12572: (union "Eq_12572" (real32 u0) (word128 u1))
-	T_12572 (in DPB(xmm0_111, v37_265, 0) : word128)
-Eq_12587: (union "Eq_12587" (real32 u0) (word128 u1))
-	T_12587 (in DPB(xmm1_122, v39_253, 0) : word128)
 Eq_12589: (union "Eq_12589" (uint128 u0) (real32 u1))
 	T_12589 (in DPB(xmm1_122, v39_253 + DPB(xmm1_122, v39_253, 0), 0) : word128)
 	T_12590 (in xmm1_177 : Eq_12589)
 	T_12592 (in DPB(xmm1_122, (real32) rdx_170, 0) : word128)
 	T_12631 (in rax_162->t0000 * xmm0_169 : real32)
-Eq_12616: (union "Eq_12616" (real32 u0) (real128 u1))
-	T_12616 (in (real32) xmm1_122 : real32)
 Eq_12623: (union "Eq_12623" (int64 u0) (uint64 u1))
 	T_12623 (in rdi + 0x0000000000000018 : word64)
 Eq_12697: (union "Eq_12697" (uint32 u0) (uint64 u1))
@@ -7325,7 +7290,7 @@ Eq_13053: (union "Eq_13053" (real64 u0) (up64 u1) (word32 u2))
 	T_14159 (in PHI((rLoc2_916, l000000000040BF03), (rLoc2_930, l000000000040C660)) : real64)
 	T_14160 (in rLoc2_837 : real64)
 	T_14163 (in PHI((rLoc1_907, l000000000040BF03), (rLoc1_931, l000000000040C660)) : real64)
-	T_14221 (in rLoc1_633 * globals->t415F84 : real64)
+	T_14221 (in rLoc1_633 * globals->r415F84 : real64)
 	T_14222 (in rLoc1_648 : real64)
 	T_14231 (in rLoc1_820 : real64)
 	T_14243 (in rLoc1_819 : real64)
@@ -7348,7 +7313,7 @@ Eq_13053: (union "Eq_13053" (real64 u0) (up64 u1) (word32 u2))
 	T_14889 (in rLoc1_738 : real64)
 	T_14890 (in rLoc1_739 : real64)
 	T_14891 (in rLoc1_657 : real64)
-	T_14916 (in rLoc1_657 / globals->t415F84 : real64)
+	T_14916 (in rLoc1_657 / globals->r415F84 : real64)
 	T_14945 (in (real64) Mem0[0x0000000000415F90:real80] : real64)
 	T_14953 (in (real64) Mem0[0x0000000000415F0C:real32] : real64)
 	T_14954 (in rLoc2_692 : real64)
@@ -7617,9 +7582,6 @@ Eq_14022: (fn Eq_14 (Eq_14, Eq_14, Eq_14))
 	T_19481 (in memcpy : ptr64)
 	T_19787 (in memcpy : ptr64)
 	T_20603 (in memcpy : ptr64)
-Eq_14220: (union "Eq_14220" (real32 u0) (real64 u1))
-	T_14220 (in Mem0[0x0000000000415F84:real32] : real32)
-	T_14915 (in Mem0[0x0000000000415F84:real32] : real32)
 Eq_14235: (struct "Eq_14235" 0001 (0 (arr Eq_14235) a0000))
 	T_14235 (in Mem0[rax_816 - 0x0000000000000001 + r15_630:byte] : byte)
 	T_21139
@@ -56059,10 +56021,10 @@ T_11812: (in 0x0000000000000000 : uint64)
   Class: Eq_14
   DataType: bool
   OrigDataType: uint64
-T_11813: (in xmm1_155 : Eq_11813)
+T_11813: (in xmm1_155 : real128)
   Class: Eq_11813
-  DataType: Eq_11813
-  OrigDataType: (union (real32 u1) (word128 u0))
+  DataType: real128
+  OrigDataType: real128
 T_11814: (in xmm1 : word128)
   Class: Eq_11814
   DataType: word128
@@ -56081,7 +56043,7 @@ T_11817: (in Mem111[rbp_110 + 0x0000000000000008:real32] : real32)
   OrigDataType: real32
 T_11818: (in DPB(xmm1, Mem111[rbp_110 + 0x0000000000000008:real32], 0) : word128)
   Class: Eq_11813
-  DataType: Eq_11813
+  DataType: real128
   OrigDataType: word128
 T_11819: (in 0x0000000000000010 : word64)
   Class: Eq_11819
@@ -56193,8 +56155,8 @@ T_11845: (in xmm0 : word128)
   OrigDataType: word128
 T_11846: (in DPB(xmm0, v33_250, 0) : word128)
   Class: Eq_11846
-  DataType: Eq_11846
-  OrigDataType: (union (real32 u0) (word128 u1))
+  DataType: real128
+  OrigDataType: real128
 T_11847: (in v33_250 + DPB(xmm0, v33_250, 0) : real32)
   Class: Eq_11847
   DataType: real32
@@ -56915,10 +56877,10 @@ T_12026: (in Mem0[rdi + 0x0000000000000028:word64] : word64)
   Class: Eq_1071
   DataType: (ptr64 Eq_1071)
   OrigDataType: word64
-T_12027: (in xmm1_19 : Eq_12027)
+T_12027: (in xmm1_19 : real128)
   Class: Eq_12027
-  DataType: Eq_12027
-  OrigDataType: (union (real32 u1) (word128 u0))
+  DataType: real128
+  OrigDataType: real128
 T_12028: (in xmm1 : word128)
   Class: Eq_12028
   DataType: word128
@@ -56937,7 +56899,7 @@ T_12031: (in Mem0[rbp_15 + 0x0000000000000008:real32] : real32)
   OrigDataType: real32
 T_12032: (in DPB(xmm1, Mem0[rbp_15 + 0x0000000000000008:real32], 0) : word128)
   Class: Eq_12027
-  DataType: Eq_12027
+  DataType: real128
   OrigDataType: word128
 T_12033: (in 0x0000000000000010 : word64)
   Class: Eq_12033
@@ -57065,8 +57027,8 @@ T_12063: (in xmm0 : word128)
   OrigDataType: word128
 T_12064: (in DPB(xmm0, v28_285, 0) : word128)
   Class: Eq_12064
-  DataType: Eq_12064
-  OrigDataType: (union (real32 u0) (word128 u1))
+  DataType: real128
+  OrigDataType: real128
 T_12065: (in v28_285 + DPB(xmm0, v28_285, 0) : real32)
   Class: Eq_12065
   DataType: real32
@@ -57701,8 +57663,8 @@ T_12222: (in xmm0 : word128)
   OrigDataType: word128
 T_12223: (in DPB(xmm0, v27_394, 0) : word128)
   Class: Eq_12223
-  DataType: Eq_12223
-  OrigDataType: (union (real32 u0) (word128 u1))
+  DataType: real128
+  OrigDataType: real128
 T_12224: (in v27_394 + DPB(xmm0, v27_394, 0) : real32)
   Class: Eq_12224
   DataType: real32
@@ -57765,8 +57727,8 @@ T_12238: (in xmm1 : word128)
   OrigDataType: word128
 T_12239: (in DPB(xmm1, v46_382, 0) : word128)
   Class: Eq_12239
-  DataType: Eq_12239
-  OrigDataType: (union (real32 u0) (word128 u1))
+  DataType: real128
+  OrigDataType: real128
 T_12240: (in v46_382 + DPB(xmm1, v46_382, 0) : real32)
   Class: Eq_12240
   DataType: real32
@@ -57787,10 +57749,10 @@ T_12244: (in DPB(xmm1, (real32) rax_158, 0) : word128)
   Class: Eq_12241
   DataType: word128
   OrigDataType: word128
-T_12245: (in xmm0_279 : Eq_12245)
+T_12245: (in xmm0_279 : real128)
   Class: Eq_12245
-  DataType: Eq_12245
-  OrigDataType: word128
+  DataType: real128
+  OrigDataType: real128
 T_12246: (in fn000000000040ADB0 : ptr64)
   Class: Eq_11802
   DataType: (ptr64 Eq_11802)
@@ -57847,10 +57809,10 @@ T_12259: (in (word32) rax_271 : word32)
   Class: Eq_12258
   DataType: ui32
   OrigDataType: word32
-T_12260: (in xmm2_278 : Eq_12260)
+T_12260: (in xmm2_278 : real128)
   Class: Eq_12260
-  DataType: Eq_12260
-  OrigDataType: (union (real32 u1) (word128 u0))
+  DataType: real128
+  OrigDataType: real128
 T_12261: (in xmm2 : word128)
   Class: Eq_12261
   DataType: word128
@@ -57869,7 +57831,7 @@ T_12264: (in Mem0[rdx_274 + 0x0000000000000008:real32] : real32)
   OrigDataType: real32
 T_12265: (in DPB(xmm2, Mem0[rdx_274 + 0x0000000000000008:real32], 0) : word128)
   Class: Eq_12260
-  DataType: Eq_12260
+  DataType: real128
   OrigDataType: word128
 T_12266: (in 0x0000000000000000 : word64)
   Class: Eq_14
@@ -58217,15 +58179,15 @@ T_12351: (in (real32) (rax_271 >>u 0x0000000000000001 | (uint64) (eax_272 & 0x00
   OrigDataType: real32
 T_12352: (in DPB(xmm0_157, v44_370, 0) : word128)
   Class: Eq_12352
-  DataType: Eq_12352
-  OrigDataType: (union (real32 u0) (word128 u1))
+  DataType: real128
+  OrigDataType: real128
 T_12353: (in v44_370 + DPB(xmm0_157, v44_370, 0) : real32)
   Class: Eq_12353
   DataType: real32
   OrigDataType: real32
 T_12354: (in DPB(xmm0_157, v44_370 + DPB(xmm0_157, v44_370, 0), 0) : word128)
   Class: Eq_12245
-  DataType: Eq_12245
+  DataType: real128
   OrigDataType: word128
 T_12355: (in (real32) rax_271 : real32)
   Class: Eq_12355
@@ -58233,7 +58195,7 @@ T_12355: (in (real32) rax_271 : real32)
   OrigDataType: real32
 T_12356: (in DPB(xmm0_157, (real32) rax_271, 0) : word128)
   Class: Eq_12245
-  DataType: Eq_12245
+  DataType: real128
   OrigDataType: word128
 T_12357: (in v41_358 : real32)
   Class: Eq_12357
@@ -58277,8 +58239,8 @@ T_12366: (in (real32) (rax_281 >>u 0x0000000000000001 | (uint64) (eax_282 & 0x00
   OrigDataType: real32
 T_12367: (in DPB(xmm1_165, v41_358, 0) : word128)
   Class: Eq_12367
-  DataType: Eq_12367
-  OrigDataType: (union (real32 u0) (word128 u1))
+  DataType: real128
+  OrigDataType: real128
 T_12368: (in v41_358 + DPB(xmm1_165, v41_358, 0) : real32)
   Class: Eq_12368
   DataType: real32
@@ -58865,8 +58827,8 @@ T_12513: (in xmm0 : word128)
   OrigDataType: word128
 T_12514: (in DPB(xmm0, v26_289, 0) : word128)
   Class: Eq_12514
-  DataType: Eq_12514
-  OrigDataType: (union (real32 u0) (word128 u1))
+  DataType: real128
+  OrigDataType: real128
 T_12515: (in v26_289 + DPB(xmm0, v26_289, 0) : real32)
   Class: Eq_12515
   DataType: real32
@@ -58933,8 +58895,8 @@ T_12530: (in xmm1 : word128)
   OrigDataType: word128
 T_12531: (in DPB(xmm1, v34_277, 0) : word128)
   Class: Eq_12531
-  DataType: Eq_12531
-  OrigDataType: (union (real32 u0) (word128 u1))
+  DataType: real128
+  OrigDataType: real128
 T_12532: (in v34_277 + DPB(xmm1, v34_277, 0) : real32)
   Class: Eq_12532
   DataType: real32
@@ -59097,8 +59059,8 @@ T_12571: (in (real32) (rdx_159 >>u 0x0000000000000001 | (uint64) (edx_160 & 0x00
   OrigDataType: real32
 T_12572: (in DPB(xmm0_111, v37_265, 0) : word128)
   Class: Eq_12572
-  DataType: Eq_12572
-  OrigDataType: (union (real32 u0) (word128 u1))
+  DataType: real128
+  OrigDataType: real128
 T_12573: (in v37_265 + DPB(xmm0_111, v37_265, 0) : real32)
   Class: Eq_12573
   DataType: real32
@@ -59157,8 +59119,8 @@ T_12586: (in (real32) (rdx_170 >>u 0x0000000000000001 | (uint64) (edx_171 & 0x00
   OrigDataType: real32
 T_12587: (in DPB(xmm1_122, v39_253, 0) : word128)
   Class: Eq_12587
-  DataType: Eq_12587
-  OrigDataType: (union (real32 u0) (word128 u1))
+  DataType: real128
+  OrigDataType: real128
 T_12588: (in v39_253 + DPB(xmm1_122, v39_253, 0) : real32)
   Class: Eq_12588
   DataType: real32
@@ -59273,8 +59235,8 @@ T_12615: (in DPB(xmm0_169, v32_190 * Mem110[rax_162 + 0x0000000000000008:real32]
   OrigDataType: word128
 T_12616: (in (real32) xmm1_122 : real32)
   Class: Eq_12616
-  DataType: Eq_12616
-  OrigDataType: (union (real32 u0) (real128 u1))
+  DataType: real32
+  OrigDataType: real32
 T_12617: (in 0x0000000000000000 : word64)
   Class: Eq_12617
   DataType: word64
@@ -59286,7 +59248,7 @@ T_12618: (in rdx_115 + 0x0000000000000000 : word64)
 T_12619: (in Mem110[rdx_115 + 0x0000000000000000:real32] : real32)
   Class: Eq_2219
   DataType: Eq_2219
-  OrigDataType: (union (byte u2) (real32 u0) (real128 u1))
+  OrigDataType: real32
 T_12620: (in (real32) xmm1_122 * rdx_115->t0000 : real32)
   Class: Eq_12489
   DataType: Eq_12489
@@ -59330,7 +59292,7 @@ T_12629: (in rax_162 + 0x0000000000000000 : word64)
 T_12630: (in Mem110[rax_162 + 0x0000000000000000:real32] : real32)
   Class: Eq_2219
   DataType: Eq_2219
-  OrigDataType: (union (real32 u0) (real128 u1))
+  OrigDataType: real32
 T_12631: (in rax_162->t0000 * xmm0_169 : real32)
   Class: Eq_12589
   DataType: Eq_12589
@@ -60806,7 +60768,7 @@ T_12998: (in 0000000000415F08 : ptr64)
 T_12999: (in Mem0[0x0000000000415F08:real32] : real32)
   Class: Eq_11855
   DataType: Eq_11855
-  OrigDataType: (union (real32 u0) (real64 u1))
+  OrigDataType: real32
 T_13000: (in rLoc1_499 + globals->t415F08 : real64)
   Class: Eq_12993
   DataType: real64
@@ -60958,7 +60920,7 @@ T_13036: (in 0000000000415F08 : ptr64)
 T_13037: (in Mem0[0x0000000000415F08:real32] : real32)
   Class: Eq_11855
   DataType: Eq_11855
-  OrigDataType: (union (real32 u0) (real64 u1))
+  OrigDataType: real32
 T_13038: (in rLoc2_1136 + globals->t415F08 : real64)
   Class: Eq_13010
   DataType: real64
@@ -61046,7 +61008,7 @@ T_13058: (in 0000000000415F08 : ptr64)
 T_13059: (in Mem0[0x0000000000415F08:real32] : real32)
   Class: Eq_11855
   DataType: Eq_11855
-  OrigDataType: (union (real32 u0) (real64 u1))
+  OrigDataType: real32
 T_13060: (in rLoc3_507 + globals->t415F08 : real64)
   Class: Eq_13053
   DataType: Eq_13053
@@ -64202,7 +64164,7 @@ T_13847: (in 0000000000415F08 : ptr64)
 T_13848: (in Mem0[0x0000000000415F08:real32] : real32)
   Class: Eq_11855
   DataType: Eq_11855
-  OrigDataType: (union (real32 u0) (real64 u1))
+  OrigDataType: real32
 T_13849: (in rLoc2_885 + globals->t415F08 : real64)
   Class: Eq_13844
   DataType: real64
@@ -64978,7 +64940,7 @@ T_14041: (in 0000000000415F08 : ptr64)
 T_14042: (in Mem0[0x0000000000415F08:real32] : real32)
   Class: Eq_11855
   DataType: Eq_11855
-  OrigDataType: (union (real32 u0) (real64 u1))
+  OrigDataType: real32
 T_14043: (in rLoc2_873 + globals->t415F08 : real64)
   Class: Eq_13053
   DataType: Eq_13053
@@ -65685,13 +65647,13 @@ T_14218: (in Z_647 : bool)
   OrigDataType: bool
 T_14219: (in 0000000000415F84 : ptr64)
   Class: Eq_14219
-  DataType: (ptr64 Eq_14220)
+  DataType: (ptr64 real32)
   OrigDataType: (ptr64 (struct (0 T_14220 t0000)))
 T_14220: (in Mem0[0x0000000000415F84:real32] : real32)
   Class: Eq_14220
-  DataType: Eq_14220
-  OrigDataType: (union (real32 u0) (real64 u1))
-T_14221: (in rLoc1_633 * globals->t415F84 : real64)
+  DataType: real32
+  OrigDataType: real32
+T_14221: (in rLoc1_633 * globals->r415F84 : real64)
   Class: Eq_13053
   DataType: Eq_13053
   OrigDataType: real64
@@ -68465,13 +68427,13 @@ T_14913: (in al_709 : byte)
   OrigDataType: 
 T_14914: (in 0000000000415F84 : ptr64)
   Class: Eq_14914
-  DataType: (ptr64 Eq_14220)
+  DataType: (ptr64 real32)
   OrigDataType: (ptr64 (struct (0 T_14915 t0000)))
 T_14915: (in Mem0[0x0000000000415F84:real32] : real32)
   Class: Eq_14220
-  DataType: Eq_14220
-  OrigDataType: (union (real32 u0) (real64 u1))
-T_14916: (in rLoc1_657 / globals->t415F84 : real64)
+  DataType: real32
+  OrigDataType: real32
+T_14916: (in rLoc1_657 / globals->r415F84 : real64)
   Class: Eq_13053
   DataType: Eq_13053
   OrigDataType: real64
@@ -69078,7 +69040,7 @@ T_15066: (in 0000000000415F08 : ptr64)
 T_15067: (in Mem0[0x0000000000415F08:real32] : real32)
   Class: Eq_11855
   DataType: Eq_11855
-  OrigDataType: (union (real32 u0) (real64 u1))
+  OrigDataType: real32
 T_15068: (in rLoc2_744 + globals->t415F08 : real64)
   Class: Eq_13053
   DataType: Eq_13053
@@ -69698,7 +69660,7 @@ T_15221: (in 0000000000415F08 : ptr64)
 T_15222: (in Mem0[0x0000000000415F08:real32] : real32)
   Class: Eq_11855
   DataType: Eq_11855
-  OrigDataType: (union (real32 u0) (real64 u1))
+  OrigDataType: real32
 T_15223: (in rLoc1_738 + globals->t415F08 : real64)
   Class: Eq_13053
   DataType: Eq_13053
@@ -73370,7 +73332,7 @@ T_16139: (in 0000000000415F08 : ptr64)
 T_16140: (in Mem0[0x0000000000415F08:real32] : real32)
   Class: Eq_11855
   DataType: Eq_11855
-  OrigDataType: (union (real32 u0) (real64 u1))
+  OrigDataType: real32
 T_16141: (in rLoc2_1066 + globals->t415F08 : real64)
   Class: Eq_13053
   DataType: Eq_13053
@@ -73818,7 +73780,7 @@ T_16251: (in 0000000000415F08 : ptr64)
 T_16252: (in Mem0[0x0000000000415F08:real32] : real32)
   Class: Eq_11855
   DataType: Eq_11855
-  OrigDataType: (union (real32 u0) (real64 u1))
+  OrigDataType: real32
 T_16253: (in rLoc1_1060 + globals->t415F08 : real64)
   Class: Eq_13053
   DataType: Eq_13053
@@ -94383,7 +94345,7 @@ struct Globals {
 	char str415F24[];	// 415F24
 	char str415F2E[];	// 415F2E
 	ui32 a415F50[];	// 415F50
-	Eq_14220 t415F84;	// 415F84
+	real32 r415F84;	// 415F84
 	real80 r415F90;	// 415F90
 	void v415FA0;	// 415FA0
 	byte b415FD8;	// 415FD8
@@ -95110,7 +95072,6 @@ typedef struct Eq_2203 {
 typedef union Eq_2219 {
 	byte u0;
 	real32 u1;
-	real128 u2;
 } Eq_2219;
 
 typedef void (Eq_2223)(char *, char *, Eq_2227, char *);
@@ -97244,22 +97205,11 @@ typedef struct Eq_11769 {	// size: 16 10
 
 typedef byte (Eq_11802)(word64 *, Eq_14);
 
-typedef union Eq_11813 {
-	real32 u0;
-	word128 u1;
-} Eq_11813;
-
 typedef Eq_14 (Eq_11827)(Eq_1072, ptr64, ptr64);
-
-typedef union Eq_11846 {
-	real32 u0;
-	word128 u1;
-} Eq_11846;
 
 typedef union Eq_11855 {
 	real32 u0;
-	real64 u1;
-	up32 u2;
+	up32 u1;
 } Eq_11855;
 
 typedef Eq_14 (Eq_11872)(Eq_14, Eq_14);
@@ -97277,16 +97227,6 @@ typedef struct Eq_11982 {
 	word64 qw0008;	// 8
 } Eq_11982;
 
-typedef union Eq_12027 {
-	real32 u0;
-	word128 u1;
-} Eq_12027;
-
-typedef union Eq_12064 {
-	real32 u0;
-	word128 u1;
-} Eq_12064;
-
 typedef union Eq_12078 {
 	int64 u0;
 	uint64 u1;
@@ -97295,26 +97235,6 @@ typedef union Eq_12078 {
 typedef Eq_14 (Eq_12101)(Eq_14, word32, Eq_14, Eq_14, ptr64);
 
 typedef Eq_14 (Eq_12188)(Eq_14, word32, Eq_14 *, Eq_14, Eq_14, ptr64);
-
-typedef union Eq_12223 {
-	real32 u0;
-	word128 u1;
-} Eq_12223;
-
-typedef union Eq_12239 {
-	real32 u0;
-	word128 u1;
-} Eq_12239;
-
-typedef union Eq_12245 {
-	real32 u0;
-	word128 u1;
-} Eq_12245;
-
-typedef union Eq_12260 {
-	real32 u0;
-	word128 u1;
-} Eq_12260;
 
 typedef struct Eq_12268 {
 	Eq_14 t0000;	// 0
@@ -97325,16 +97245,6 @@ typedef union Eq_12291 {
 	int64 u0;
 	uint64 u1;
 } Eq_12291;
-
-typedef union Eq_12352 {
-	real32 u0;
-	word128 u1;
-} Eq_12352;
-
-typedef union Eq_12367 {
-	real32 u0;
-	word128 u1;
-} Eq_12367;
 
 typedef union Eq_12416 {
 	uint128 u0;
@@ -97375,11 +97285,6 @@ typedef union Eq_12505 {
 	uint64 u1;
 } Eq_12505;
 
-typedef union Eq_12514 {
-	real32 u0;
-	word128 u1;
-} Eq_12514;
-
 typedef union Eq_12517 {
 	int64 u0;
 	uint64 u1;
@@ -97390,30 +97295,10 @@ typedef union Eq_12521 {
 	uint64 u1;
 } Eq_12521;
 
-typedef union Eq_12531 {
-	real32 u0;
-	word128 u1;
-} Eq_12531;
-
-typedef union Eq_12572 {
-	real32 u0;
-	word128 u1;
-} Eq_12572;
-
-typedef union Eq_12587 {
-	real32 u0;
-	word128 u1;
-} Eq_12587;
-
 typedef union Eq_12589 {
 	uint128 u0;
 	real32 u1;
 } Eq_12589;
-
-typedef union Eq_12616 {
-	real32 u0;
-	real128 u1;
-} Eq_12616;
 
 typedef union Eq_12623 {
 	int64 u0;
@@ -97534,11 +97419,6 @@ typedef union Eq_13977 {
 } Eq_13977;
 
 typedef Eq_14 (Eq_14022)(Eq_14, Eq_14, Eq_14);
-
-typedef union Eq_14220 {
-	real32 u0;
-	real64 u1;
-} Eq_14220;
 
 typedef struct Eq_14235 {	// size: 1 1
 	Eq_14235 a0000[];	// 0

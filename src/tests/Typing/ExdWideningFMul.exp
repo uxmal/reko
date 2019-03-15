@@ -1,0 +1,18 @@
+// Equivalence classes ////////////
+// Type Variables ////////////
+globals_t: (in globals : (ptr32 (struct "Globals")))
+  Class: Eq_1
+  DataType: 
+  OrigDataType: 
+T_2: (in idLeft : word64)
+  Class: Eq_2
+  DataType: real64
+  OrigDataType: real64
+T_3: (in idRight : word64)
+  Class: Eq_3
+  DataType: real64
+  OrigDataType: real64
+T_4: (in idLeft * idRight : real96)
+  Class: Eq_4
+  DataType: real96
+  OrigDataType: real96

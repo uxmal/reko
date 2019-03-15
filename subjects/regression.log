@@ -51,11 +51,11 @@ fn092A_exit: warning: Phi functions will be ignored by type analysis. This may b
 00008200: error: The method or operation is not implemented.
 0000951A: error: An error occurred while processing the statement Mem29[r3_24 + 0x00000000:word32] = Mem0[r3_24 - r4_10 + 0x00000000:word32].
     Not handling (ptr32 (struct (0 T_7353 t0000))) and (ptr32 (struct (0 (arr T_9507) a0000))) yet
-       at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 376
+       at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 377
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 227
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 563
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 496
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 564
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 497
    at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
    at Reko.Typing.TypeCollector.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 241
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 87
@@ -117,8 +117,15 @@ fn092A_exit: warning: Phi functions will be ignored by type analysis. This may b
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 85
 100007E0: warning: Expected sizes of arrays to have been determined by now
 1000002C: warning: Expected sizes of arrays to have been determined by now
-1000002C: warning: Expected sizes of arrays to have been determined by now
-100007E0: warning: Expected sizes of arrays to have been determined by now
+error: An error occurred during decompilation. System.IO.IOException: The requested operation cannot be performed on a file with a user-mapped section open.
+
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access)
+   at Reko.CmdLine.CmdLineHost.CreateTextWriter(String filename) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineHost.cs:line 40
+   at Reko.CmdLine.CmdLineHost.WriteDecompiledCode(Program program, Action`1 writer) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineHost.cs:line 69
+   at Reko.DecompilerDriver.WriteDecompilerProducts() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 502
+   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 177
 === Elf\MIPS\swlswr\test
 === Elf\Msp430\a.out
 *** Elf\Msp430\a.out
@@ -269,35 +276,35 @@ Parameter name: bitOffset
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 80
 000000000040401D: error: An error occurred while processing the statement word64 rax_1464 = Mem1462[rax_1441 - 0x0000000000000008 + 0x0000000000000000:word64].
     Not handling (ptr64 (struct (0 T_2255 t0000))) and (union (int64 u0) (ptr64 u1)) yet
-       at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
+       at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 396
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 563
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 496
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 564
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 497
    at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
    at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 184
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 85
 0000000000406158: error: An error occurred while processing the statement branch Mem0[rax_141 - 0x0000000000000018 + 0x0000000000000000:byte] != 0x00 l0000000000406164.
     Not handling (ptr64 (struct (0 T_5577 t0000))) and (union (ui64 u0) (ptr64 u1)) yet
-       at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
+       at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 396
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 563
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 496
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 564
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 497
    at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
-   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 324
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 325
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
    at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 158
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 85
 0000000000406C64: error: An error occurred while processing the statement Mem0[rdx - 0x0000000000000001 + 0x0000000000000000:byte] = 0x20.
     Not handling (ptr64 (struct (0 T_6698 t0000))) and (union (uint64 u0) (ptr64 u1)) yet
-       at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
+       at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 396
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 563
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 496
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 564
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 497
    at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
    at Reko.Typing.TypeCollector.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 245
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 87
@@ -320,13 +327,13 @@ Parameter name: bitOffset
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 85
 000000000040A2DA: error: An error occurred while processing the statement branch Mem0[rax_20 - 0x0000000000000001 + 0x0000000000000000:byte] == 0x2F l000000000040A2EE.
     Not handling (ptr64 (struct (0 T_10558 t0000))) and (union (ui64 u0) (ptr64 u1)) yet
-       at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
+       at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 396
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 563
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 496
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 564
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 497
    at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
-   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 324
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 325
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
    at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 158
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
@@ -686,7 +693,7 @@ l0000000000400E2D: warning: Non-integral switch expression
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 0800:0BA1: error: An error occurred while processing the statement word16 di_165 = si_105 - (fp - 0x0084).
     Not handling mp16 and mp16 yet
-       at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 382
+       at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 383
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 227
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
    at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 184
@@ -791,10 +798,10 @@ fn07E8: error: An error occurred during data flow analysis.
 fn07E8_exit: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
 0D22: error: An error occurred while processing the statement word16 r1_67 = (fp - 0x0006 << 1) + (fp - 0x0006).
     Not handling ptr16 and (union (cui16 u1) (ptr16 u0)) yet
-       at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 376
+       at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 377
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 227
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
-   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 325
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 326
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
    at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 184
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
@@ -811,11 +818,11 @@ fn07E8_exit: warning: Phi functions will be ignored by type analysis. This may b
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 85
 02DE: error: An error occurred while processing the statement Mem125[r4_64 - 0x003E + 0x0000:byte] = 0x0000.
     Not handling (ptr16 (struct (0 T_3730 t0000))) and (union (cu16 u0) (ptr16 u1)) yet
-       at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
+       at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 396
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 563
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 496
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 564
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 497
    at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
    at Reko.Typing.TypeCollector.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 245
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 87
@@ -1391,13 +1398,13 @@ fn03B2: warning: Structure analysis stopped making progress, quitting. Please re
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 219
 0000981E: error: An error occurred while processing the statement branch Mem203[r4_228 + Mem203[r3_219 + 4:word32] - 0x00000002 + 0x00000000:byte] == 0x22 l00009824.
     Not handling (ptr32 (struct (0 T_494 t0000))) and (union (int32 u0) (ptr32 u1)) yet
-       at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
+       at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 396
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 563
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 496
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 564
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 497
    at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
-   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 324
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 325
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
    at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 158
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
@@ -1569,20 +1576,20 @@ fn1483_1BB9: error: An error occurred during data flow analysis.
 fn0800_9F92_exit: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
 0800:BBF7: error: An error occurred while processing the statement branch Mem0[ptrArg02 - 0x0001 + 0x0000:byte] != 0x2E l0800_BBFC.
     Not handling (ptr32 (struct (0 T_42007 t0000))) and (union (ptr32 u1) (segptr32 u0)) yet
-       at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
+       at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 396
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 563
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 496
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 564
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 497
    at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
-   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 324
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 325
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
    at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 158
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 85
 0800:C743: error: An error occurred while processing the statement si_251 = wLoc06_165 - (fp - 0x0090).
     Not handling mp16 and mp16 yet
-       at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 382
+       at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 383
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 227
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
    at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 146
@@ -1590,7 +1597,7 @@ fn0800_9F92_exit: warning: Phi functions will be ignored by type analysis. This 
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 85
 0800:C6E6: error: An error occurred while processing the statement word16 dx_281 = v26_276 - (fp - 0x0090).
     Not handling mp16 and mp16 yet
-       at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 382
+       at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 383
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 227
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
    at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 184
@@ -1598,7 +1605,7 @@ fn0800_9F92_exit: warning: Phi functions will be ignored by type analysis. This 
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 85
 0800:C700: error: An error occurred while processing the statement si_251 = v26_276 - (fp - 0x0090).
     Not handling mp16 and mp16 yet
-       at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 382
+       at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 383
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 227
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
    at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 146
@@ -1606,10 +1613,10 @@ fn0800_9F92_exit: warning: Phi functions will be ignored by type analysis. This 
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 85
 1483:0DF5: error: An error occurred while processing the statement CZ_421 = cond(ax_535 - (sp_516 - 0x001C)) (alias).
     Not handling (memptr T_45051 (struct 019E (0 word16 w0000))) and (memptr T_45051 (struct 019E (0 word16 w0000))) yet
-       at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 382
+       at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 383
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 227
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
-   at Reko.Typing.ExpressionTypeDescender.VisitConditionOf(ConditionOf cof, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 442
+   at Reko.Typing.ExpressionTypeDescender.VisitConditionOf(ConditionOf cof, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 443
    at Reko.Core.Expressions.ConditionOf.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\ConditionOf.cs:line 66
    at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 146
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 54
@@ -1620,4 +1627,4 @@ l0800_906A: warning: Non-integral switch expression
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 56 binaries in 69.39 seconds ---
+Decompiled 56 binaries in 68.02 seconds ---

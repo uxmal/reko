@@ -30,20 +30,10 @@ Eq_199: (fn void (real64, real64, Eq_203))
 Eq_203: (union "Eq_203" ((ptr32 word32) u0) ((ref int32) u1))
 	T_203 (in tArg14 : Eq_203)
 	T_212 (in fp - 0x00000008 : word32)
-Eq_214: (union "Eq_214" (real64 u0) (real80 u1))
-	T_214 (in rLoc0C_23 : Eq_214)
-	T_217 (in DPB(rLoc0C, SLICE(rArg04, word32, 32), 32) : real64)
-	T_240 (in (real64) ((real80) (real64) ((real80) rLoc0C_23 * v9_26) * v9_26) : real64)
-Eq_218: (union "Eq_218" (real64 u0) (real80 u1))
-	T_218 (in v9_26 : Eq_218)
-	T_221 (in (real64) ((real80) rLoc0C_23 * rLoc0C_23) : real64)
 Eq_225: (ref int32)
 	T_225 (in tArg14 + 0x00000000 : word32)
 Eq_230: (union "Eq_230" ((ptr32 word32) u0) ((ref int32) u1))
 	T_230 (in tArg14 + 0x00000000 : word32)
-Eq_243: (union "Eq_243" (real64 u0) (real80 u1))
-	T_243 (in rLoc14 : real64)
-	T_264 (in (real64) ((real80) (real64) ((real80) (real64) ((real80) (real64) ((real80) rLoc14 * (real80) v23_65) * (real80) (v23_65 + 0x00000001)) * (real80) (v23_65 + 0x00000002)) * (real80) (v23_65 + 0x00000003)) : real64)
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
@@ -897,9 +887,9 @@ T_213: (in _sin(DPB(rLoc1C, 0x40091EB8, 0), DPB(rLoc14, 0x3F689374, 0), fp - 0x0
   Class: Eq_213
   DataType: void
   OrigDataType: void
-T_214: (in rLoc0C_23 : Eq_214)
+T_214: (in rLoc0C_23 : real64)
   Class: Eq_214
-  DataType: Eq_214
+  DataType: real64
   OrigDataType: real64
 T_215: (in rLoc0C : real64)
   Class: Eq_215
@@ -911,12 +901,12 @@ T_216: (in SLICE(rArg04, word32, 32) : word32)
   OrigDataType: word32
 T_217: (in DPB(rLoc0C, SLICE(rArg04, word32, 32), 32) : real64)
   Class: Eq_214
-  DataType: Eq_214
+  DataType: real64
   OrigDataType: real64
-T_218: (in v9_26 : Eq_218)
+T_218: (in v9_26 : real64)
   Class: Eq_218
-  DataType: Eq_218
-  OrigDataType: (union (real64 u0) (real80 u1))
+  DataType: real64
+  OrigDataType: real64
 T_219: (in (real80) rLoc0C_23 : real80)
   Class: Eq_219
   DataType: real80
@@ -927,7 +917,7 @@ T_220: (in (real80) rLoc0C_23 * rLoc0C_23 : real80)
   OrigDataType: real80
 T_221: (in (real64) ((real80) rLoc0C_23 * rLoc0C_23) : real64)
   Class: Eq_218
-  DataType: Eq_218
+  DataType: real64
   OrigDataType: real64
 T_222: (in dwLoc20_100 : int32)
   Class: Eq_222
@@ -1003,7 +993,7 @@ T_239: (in (real80) (real64) ((real80) rLoc0C_23 * v9_26) * v9_26 : real80)
   OrigDataType: real80
 T_240: (in (real64) ((real80) (real64) ((real80) rLoc0C_23 * v9_26) * v9_26) : real64)
   Class: Eq_214
-  DataType: Eq_214
+  DataType: real64
   OrigDataType: real64
 T_241: (in 0x00000003 : word32)
   Class: Eq_241
@@ -1015,7 +1005,7 @@ T_242: (in v23_65 + 0x00000003 : word32)
   OrigDataType: int32
 T_243: (in rLoc14 : real64)
   Class: Eq_243
-  DataType: Eq_243
+  DataType: real64
   OrigDataType: real64
 T_244: (in (real80) rLoc14 : real80)
   Class: Eq_244
@@ -1099,7 +1089,7 @@ T_263: (in (real80) (real64) ((real80) (real64) ((real80) (real64) ((real80) rLo
   OrigDataType: real80
 T_264: (in (real64) ((real80) (real64) ((real80) (real64) ((real80) (real64) ((real80) rLoc14 * (real80) v23_65) * (real80) (v23_65 + 0x00000001)) * (real80) (v23_65 + 0x00000002)) * (real80) (v23_65 + 0x00000003)) : real64)
   Class: Eq_243
-  DataType: Eq_243
+  DataType: real64
   OrigDataType: real64
 T_265: (in (real80) rLoc0C_23 : real80)
   Class: Eq_265
@@ -1224,25 +1214,10 @@ typedef union Eq_203 {
 	<anonymous> u1;
 } Eq_203;
 
-typedef union Eq_214 {
-	real64 u0;
-	real80 u1;
-} Eq_214;
-
-typedef union Eq_218 {
-	real64 u0;
-	real80 u1;
-} Eq_218;
-
 typedef int32 & Eq_225;
 
 typedef union Eq_230 {
 	word32 * u0;
 	<anonymous> u1;
 } Eq_230;
-
-typedef union Eq_243 {
-	real64 u0;
-	real80 u1;
-} Eq_243;
 

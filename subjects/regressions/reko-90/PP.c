@@ -16564,7 +16564,7 @@ Eq_43719 fn1483_0ADC(Eq_43720 al, byte ah, Eq_43722 cx, Eq_43722 dx, byte bl, by
 	word16 si_24;
 	struct Eq_43737 Eq_43738::* di_25;
 	struct Eq_43738 * es_26;
-	Eq_43739 rArg0_27;
+	real64 rArg0_27;
 	word16 ax_28 = fn1483_0D3F(al, ah, cx, dx, bl, bh, bp, si, di, es, ds, fs, wLoc02, wArg00, wArg02, wArg04, wArg06, rArg0, out cx_20, out dx_21, out bx_22, out bp_23, out si_24, out di_25, out es_26, out rArg0_27);
 	Eq_43719 rArg0_31 = (es_26->*di_25).rE086 - rArg0_27;
 	(ss->*fp).wDA90 = ax_28;

@@ -133,7 +133,7 @@ namespace Reko.Core.Expressions
                 binExp.Operator == Operator.FMul ||
                 binExp.Operator == Operator.FDiv)
             {
-                dt = PrimitiveType.Create(Domain.Real, dtLeft.BitSize);
+                dt = PrimitiveType.Create(Domain.Real, binExp.DataType.BitSize);
             }
             else if (binExp.Operator == Operator.Shr)
             {

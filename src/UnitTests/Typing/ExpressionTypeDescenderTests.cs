@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -306,6 +306,16 @@ namespace Reko.UnitTests.Typing
                 m.Conditional(PrimitiveType.Word32, id, id1, id2),
                 PrimitiveType.Word32,
                 "Typing/ExdConditional.txt");
+        }
+
+        [Test]
+        public void ExdWideningFMul()
+        {
+            var idLeft = Id("idLeft", PrimitiveType.Word64);
+            var idRight = Id("idRight", PrimitiveType.Word64);
+            var fmul = m.FMul(idLeft, idRight);
+            fmul.DataType = PrimitiveType.Real96;
+            RunTest(fmul, PrimitiveType.Real96, "Typing/ExdWideningFMul.txt");
         }
     }
 }
