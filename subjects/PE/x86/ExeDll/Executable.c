@@ -615,7 +615,8 @@ void fn004019FE(word32 edx)
 		globals->dw40336C = 0x01;
 		__cpuid(0x00, 0x00, &0x00, &0x01, &0x00, &edx);
 		__cpuid(0x01, 0x00, &0x01, &0x01, &0x00, &edx);
-		Eq_1297 bLoc14_258 = dwLoc14 & 0x00;
+		byte bLoc14_258 = SLICE(dwLoc14 & 0x00, byte, 0);
+		bLoc14_258 = SLICE(dwLoc14 & 0x00, byte, 0);
 		if ((edx ^ 0x49656E69 | 1818588270 | 0x756E6546) == 0x00 && (0x00 == 0x000106C0 || (0x00 == 0x00020660 || (0x00 == 0x00020670 || (0x00 == 0x00030650 || (0x00 == 0x00030660 || false))))))
 		{
 			ui32 edi_100 = globals->dw403370;
@@ -627,7 +628,8 @@ void fn004019FE(word32 edx)
 		if (false)
 		{
 			__cpuid(0x07, 0x00, &0x07, &0x01, &0x00, &edx);
-			bLoc14_258.u0 = 0x01;
+			bLoc14_258 = 0x01;
+			bLoc14_258 = 0x01;
 			if (0x00 != 0x00)
 				globals->dw403370 = edi_101 | 0x02;
 		}

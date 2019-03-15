@@ -10,7 +10,7 @@ struct Eq_4 * g_ptr0004;
 word32 g_a0008[];
 ui32 g_a0010[];
 byte g_b16B0 = 0x65;
-Eq_4862 g_t2B15 = 
+Eq_4868 g_t2B15 = 
 	{
 		
 		{

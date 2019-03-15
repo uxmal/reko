@@ -139,7 +139,7 @@ word16 fn0800_01DA(word16 cx, word16 dx, selector ds)
 // Trashed: C ax bx Top
 // Preserved: sp
 fn0800_01DA_entry:
-	word32 ds_dx_9 = SEQ(ds, dx)
+	char * ds_dx_9 = SEQ(ds, dx)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1652,10 +1652,10 @@ l0800_06BD:
 // SymbolicIn:
 
 l0800_06C2:
-	dwArg04_120 = SEQ(wArg06, v14_45)
-	ui32 v16_v14_111 = dwArg04_120 - (int32) fn0800_065B(ds, wArg02)
-	word16 v14_45 = (word16) v16_v14_111
-	wArg06 = SLICE(v16_v14_111, word16, 16)
+	ui32 dwArg04_120 = SEQ(wArg06, v14_45)
+	wArg06 = SLICE(dwArg04_120, word16, 16) (alias)
+	wArg04 = SLICE(dwArg04_120, word16, 0) (alias)
+	word16 v14_45 = (word16) (dwArg04_120 - (int32) fn0800_065B(ds, wArg02))
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1665,7 +1665,7 @@ l0800_06CD:
 	Mem60[ds:wArg02:word16] = 0x0000
 	Mem62[ds:wArg02 + 0x000A:word16] = Mem60[ds:wArg02 + 0x0008:word16]
 	word16 dx_82
-	word16 ax_79 = _lseek(ds, (int16) Mem74[ds:wArg02 + 0x0004:byte], dwArg04_120, wArg06, wArg08, out dx_82)
+	word16 ax_79 = _lseek(ds, (int16) Mem74[ds:wArg02 + 0x0004:byte], wArg04, wArg06, SLICE(wArg08, byte, 0), out dx_82)
 	branch dx_82 != 0xFFFF l0800_06FF
 // DataOut:
 // DataOut (flags):
@@ -2299,7 +2299,7 @@ l0800_0A55:
 
 l0800_0A87:
 	word16 cx_81 = -cx_112
-	_lseek(ds, wArg02, cx_81, 0x0000 - (cx_81 == 0x0000), 0x0002, out dx_96)
+	_lseek(ds, wArg02, cx_81, 0x0000 - (cx_81 == 0x0000), 0x02, out dx_96)
 	Mem105[ds:(wArg02 << 0x0001) + 0x0482:word16] = Mem92[ds:(wArg02 << 0x0001) + 0x0482:word16] | 0x0200
 // DataOut:
 // DataOut (flags):
@@ -2624,7 +2624,7 @@ l0800_0BE2:
 // SymbolicIn:
 
 l0800_0BF2:
-	_lseek(ds, wArg02, 0x0000, 0x0000, 0x0002, out dx_101)
+	_lseek(ds, wArg02, 0x0000, 0x0000, 0x02, out dx_102)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3121,7 +3121,7 @@ fn0800_0E64_entry:
 
 l0800_0E64:
 	Mem12[ds:wArg04:word16] = Mem7[ds:wArg04:word16] - 0x0001
-	_fputc(ds, (int16) bArg02, wArg04)
+	_fputc(ds, SLICE((int16) bArg02, byte, 0), wArg04)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -7323,7 +7323,7 @@ fn0800_1D4E_entry:
 // SymbolicIn:
 
 l0800_1D4E:
-	_lseek(ds, wArg02, 0x0000, 0x0000, 0x0001, out dx_40)
+	_lseek(ds, wArg02, 0x0000, 0x0000, 0x01, out dx_41)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

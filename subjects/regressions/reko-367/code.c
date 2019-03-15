@@ -17,13 +17,17 @@ real96 fn80000132(word32 d2, real96 rArg04, real96 rArg10)
 	word32 dwLoc10_62 = SLICE(fp0_12, word32, 64);
 	word32 dwLoc0C_63 = SLICE(fp0_12, word32, 32);
 	word32 dwLoc08_64 = SLICE(fp0_12, word32, 0);
-	word32 dwLoc14_59;
-	for (dwLoc14_59 = 0x00; (real96) dwLoc14_59 < rArg10; ++dwLoc14_59)
+	word32 dwLoc14_59 = 0x00;
+	while (true)
 	{
-		real96 fp0_49 = SEQ(dwLoc10_62, dwLoc0C_63, dwLoc08_64) * rArg04;
+		real96 rLoc10_71 = SEQ(dwLoc10_62, dwLoc0C_63, dwLoc08_64);
+		if ((real96) dwLoc14_59 >= rArg10)
+			break;
+		real96 fp0_49 = rLoc10_71 * rArg04;
 		dwLoc10_62 = SLICE(fp0_49, word32, 64);
 		dwLoc0C_63 = SLICE(fp0_49, word32, 32);
 		dwLoc08_64 = SLICE(fp0_49, word32, 0);
+		++dwLoc14_59;
 	}
 	return SEQ(dwLoc10_62, dwLoc0C_63, dwLoc08_64);
 }
@@ -35,13 +39,17 @@ real96 fn8000018E(word32 d2, real96 rArg04)
 	word32 dwLoc10_62 = SLICE(fp0_12, word32, 64);
 	word32 dwLoc0C_63 = SLICE(fp0_12, word32, 32);
 	word32 dwLoc08_64 = SLICE(fp0_12, word32, 0);
-	int32 dwLoc14_59;
-	for (dwLoc14_59 = 0x01; (real96) dwLoc14_59 <= rArg04; ++dwLoc14_59)
+	int32 dwLoc14_59 = 0x01;
+	while (true)
 	{
-		real96 fp1_49 = SEQ(dwLoc10_62, dwLoc0C_63, dwLoc08_64) * (real80) ((real96) dwLoc14_59);
+		real96 rLoc10_71 = SEQ(dwLoc10_62, dwLoc0C_63, dwLoc08_64);
+		if ((real96) dwLoc14_59 > rArg04)
+			break;
+		real96 fp1_49 = rLoc10_71 * (real80) ((real96) dwLoc14_59);
 		dwLoc10_62 = SLICE(fp1_49, word32, 64);
 		dwLoc0C_63 = SLICE(fp1_49, word32, 32);
 		dwLoc08_64 = SLICE(fp1_49, word32, 0);
+		++dwLoc14_59;
 	}
 	return SEQ(dwLoc10_62, dwLoc0C_63, dwLoc08_64);
 }
@@ -53,15 +61,19 @@ real96 fn800001F2(word32 d2, real96 rArg04)
 	word32 dwLoc0C_113 = SLICE(rArg04, word32, 32);
 	word32 dwLoc08_114 = SLICE(rArg04, word32, 0);
 	real96 rLoc1C_109 = *(real96 *) 0x80000514;
-	int32 dwLoc20_110;
-	for (dwLoc20_110 = 0x03; dwLoc20_110 <= 100; dwLoc20_110 += 0x02)
+	int32 dwLoc20_110 = 0x03;
+	while (true)
 	{
+		real96 rLoc10_127 = SEQ(dwLoc10_112, dwLoc0C_113, dwLoc08_114);
+		if (dwLoc20_110 > 100)
+			break;
 		real96 fp0_91 = (real96) (real80) ((real96) (real80) fn80000132(d2, rArg04, (real96) dwLoc20_110) / (real80) fn8000018E(d2, (real96) dwLoc20_110)) * rLoc1C_109;
-		real96 fp1_93 = SEQ(dwLoc10_112, dwLoc0C_113, dwLoc08_114) + (real80) fp0_91;
+		real96 fp1_93 = rLoc10_127 + (real80) fp0_91;
 		dwLoc10_112 = SLICE(fp1_93, word32, 64);
 		dwLoc0C_113 = SLICE(fp1_93, word32, 32);
 		dwLoc08_114 = SLICE(fp1_93, word32, 0);
 		rLoc1C_109 = fp0_91;
+		dwLoc20_110 += 0x02;
 	}
 	return SEQ(dwLoc10_112, dwLoc0C_113, dwLoc08_114);
 }
@@ -74,15 +86,19 @@ real96 fn800002AE(word32 d2, real96 rArg04)
 	word32 dwLoc0C_112 = SLICE(fp0_15, word32, 32);
 	word32 dwLoc08_113 = SLICE(fp0_15, word32, 0);
 	real96 rLoc1C_108 = *(real96 *) 0x8000052C;
-	int32 dwLoc20_109;
-	for (dwLoc20_109 = 0x02; dwLoc20_109 <= 100; dwLoc20_109 += 0x02)
+	int32 dwLoc20_109 = 0x02;
+	while (true)
 	{
+		real96 rLoc10_126 = SEQ(dwLoc10_111, dwLoc0C_112, dwLoc08_113);
+		if (dwLoc20_109 > 100)
+			break;
 		real96 fp0_91 = (real96) (real80) ((real96) (real80) fn80000132(d2, rArg04, (real96) dwLoc20_109) / (real80) fn8000018E(d2, (real96) dwLoc20_109)) * rLoc1C_108;
-		real96 fp1_93 = SEQ(dwLoc10_111, dwLoc0C_112, dwLoc08_113) + (real80) fp0_91;
+		real96 fp1_93 = rLoc10_126 + (real80) fp0_91;
 		dwLoc10_111 = SLICE(fp1_93, word32, 64);
 		dwLoc0C_112 = SLICE(fp1_93, word32, 32);
 		dwLoc08_113 = SLICE(fp1_93, word32, 0);
 		rLoc1C_108 = fp0_91;
+		dwLoc20_109 += 0x02;
 	}
 	return SEQ(dwLoc10_111, dwLoc0C_112, dwLoc08_113);
 }

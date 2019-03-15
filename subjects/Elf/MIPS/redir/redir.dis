@@ -8203,6 +8203,8 @@ request_save_line_entry:
 l00404458:
 	word32 r7_121
 	word32 r3_101
+	byte bArg0B_152 = SLICE(r6, byte, 0)
+	word24 nArg08_153 = SLICE(r6, word24, 8)
 	branch r4 != 0x00000000 l00404458_ds_t
 // DataOut:
 // DataOut (flags):
@@ -8238,8 +8240,8 @@ l00404544_ds_t:
 // SymbolicIn:
 
 l0040463C:
-	Mem65[r4 + 4 + (Mem49[r4 + 0x00000558:word32] + 1296):byte] = (byte) (word32) r6
-	memcpy(Mem65[r4 + 4 + ((Mem65[r4 + 0x00000558:word32] << 0x02) + 1040):word32], r5, r6)
+	Mem65[r4 + 4 + (Mem49[r4 + 0x00000558:word32] + 1296):byte] = (byte) (word32) bArg0B_152
+	memcpy(Mem65[r4 + 4 + ((Mem65[r4 + 0x00000558:word32] << 0x02) + 1040):word32], r5, SEQ(nArg08_153, bArg0B_152))
 	r3_101 = <invalid>
 	r7_121 = <invalid>
 // DataOut:
@@ -8264,7 +8266,7 @@ l004045DC:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(2, Mem49[0x10000880:word32] + -23708, Mem49[0x10000880:word32] + -23760, 87, fp + -48, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_179, out r4_180, out r5_181, out r6_182, out r7_121)
+	print_log(2, Mem49[0x10000880:word32] + -23708, Mem49[0x10000880:word32] + -23760, 87, fp + -48, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_184, out r4_185, out r5_186, out r6_187, out r7_121)
 	Mem105[r4 + 0x00000558:word32] = Mem49[r4 + 0x00000558:word32] + -1
 	r3_101 = r4
 // DataOut:
@@ -8289,7 +8291,7 @@ l004044F0:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(2, Mem108[0x10000880:word32] + -23740, Mem108[0x10000880:word32] + -23760, 80, fp + -48, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_101, out r4_172, out r5_173, out r6_174, out r7_121)
+	print_log(2, Mem108[0x10000880:word32] + -23740, Mem108[0x10000880:word32] + -23760, 80, fp + -48, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_101, out r4_177, out r5_178, out r6_179, out r7_121)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -10974,10 +10976,12 @@ server_new_entry:
 // SymbolicIn:
 
 l00406BF0:
-	word32 r7_122
-	word32 r6_121
-	word32 r3_118
-	word32 r2_115
+	word32 r7_125
+	word32 r6_124
+	word32 r3_121
+	word32 r2_118
+	uint16 wArg06_112 = SLICE(r5, uint16, 0)
+	uint16 wArg06_113 = SLICE(r5, uint16, 0)
 	word32 r2_30 = malloc(36)
 	word32 r7_28 = <invalid>
 	word32 r6_27 = <invalid>
@@ -10999,18 +11003,18 @@ l00406C7C:
 	Mem49[r2_30 + 0x00000004:word32] = r6
 	bzero(r2_30 + 8, 16)
 	Mem65[r2_30 + 0x00000008:word16] = 0x0002
-	word32 r2_67 = (word32) r5
+	word32 r2_67 = (word32) wArg06_112
 	Mem68[r2_30 + 0x0000000A:word16] = (word16) r2_67
 	word32 r7_59 = <invalid>
 	word32 r6_58 = <invalid>
 	word32 r5_57 = <invalid>
 	word32 r2_76
 	call inet_addr (retsize: 0;)
-		uses: r2:r2_67,r25:inet_addr,r28:0x10008860,r3:r2_30,r30:fp + -48,r4:r4,r5:r5_57,r6:r6_58,r7:r7_59,ra:ra,sp:fp + -48,Stack +0010:0x10008860,Stack +0018:r2_30,Stack +0024:r30,Stack +0028:ra,Stack +0030:r4,Stack +0034:r5,Stack +0036:r5,Stack +0038:r6,Stack +003C:r7
+		uses: r2:r2_67,r25:inet_addr,r28:0x10008860,r3:r2_30,r30:fp + -48,r4:r4,r5:r5_57,r6:r6_58,r7:r7_59,ra:ra,sp:fp + -48,Stack +0010:0x10008860,Stack +0018:r2_30,Stack +0024:r30,Stack +0028:ra,Stack +0030:r4,Stack +0034:r5,Stack +0036:wArg06_113,Stack +0038:r6,Stack +003C:r7
 		defs: r2:r2_76,r6:r6_74,r7:r7_75
 	Mem81[r2_30 + 0x0000000C:word32] = r2_76
-	r3_118 = r2_76
-	r2_115 = r2_30
+	r3_121 = r2_76
+	r2_118 = r2_30
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -11033,17 +11037,17 @@ l00406C4C:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(0x00000000, Mem83[0x10000880:word32] + -22672, r6_27, r7_28, fp + -48, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_118, out r4_89, out r5_90, out r6_121, out r7_122)
-	r2_115 = 0x00000000
+	print_log(0x00000000, Mem83[0x10000880:word32] + -22672, r6_27, r7_28, fp + -48, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_121, out r4_89, out r5_90, out r6_124, out r7_125)
+	r2_118 = 0x00000000
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00406D38:
-	r3Out = r3_118
-	r6Out = r6_121
-	r7Out = r7_122
-	return r2_115
+	r3Out = r3_121
+	r6Out = r6_124
+	r7Out = r7_125
+	return r2_118
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

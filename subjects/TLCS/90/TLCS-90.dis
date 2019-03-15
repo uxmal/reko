@@ -1633,11 +1633,13 @@ fn0F9A_exit:
 void fn164F(word16 af, byte c, byte b, byte h, word16 ix, word16 wArg13, word16 wArg1A, word16 wArg1B)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  a:[0..7] af:[0..7] b:[0..7] c:[0..7] h:[0..7] ix:[0..15] Stack +0013:[0..15] Stack +001A:[0..15] Stack +001B:[0..15]
+// MayUse:  a:[0..7] af:[0..7] b:[0..7] c:[0..7] h:[0..7] ix:[0..15] Stack +0013:[0..15] Stack +001A:[0..7] Stack +001B:[0..15]
 // LiveOut:
 // Trashed: SZHVNC af bc de hl ix sp
 // Preserved:
 fn164F_entry:
+	byte bArg1B_236 = SLICE(wArg1B, byte, 0)
+	byte bArg1A_235 = SLICE(wArg1A, byte, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1654,7 +1656,7 @@ l164F:
 	word16 hl_75
 	word16 ix_76
 	word16 sp_77
-	word16 af_72 = fn02F4(DPB(af, a_40, 8), a_22, b - v14_17 - (a_22 <u 0x00), wArg13, SLICE(DPB(DPB(DPB(wArg1B + 1, v14_17, 8), a_33, 0), a_40, 8), byte, 8), ix, wArg1A, out bc_73, out de_74, out hl_75, out ix_76, out sp_77)
+	word16 af_72 = fn02F4(DPB(af, a_40, 8), a_22, b - v14_17 - (a_22 <u 0x00), wArg13, SLICE(DPB(DPB(DPB(wArg1B + 1, v14_17, 8), a_33, 0), a_40, 8), byte, 8), ix, SEQ(bArg1B_236, bArg1A_235), out bc_73, out de_74, out hl_75, out ix_76, out sp_77)
 	byte c_213 = (byte) bc_73
 	byte b_214 = SLICE(bc_73, byte, 8)
 	byte h_215 = SLICE(hl_75, byte, 8)

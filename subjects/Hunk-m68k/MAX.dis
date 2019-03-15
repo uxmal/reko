@@ -6684,6 +6684,7 @@ l00003B96:
 	word32 d1_101
 	word32 d2_72 = __swap(d5_19)
 	word32 d3_73 = __swap(d7_13)
+	dwLoc24 = SLICE(dwLoc24, word16, 0) (alias)
 	branch (word16) (d2_72 - d3_73) != 0x0000 l00003BA8
 // DataOut:
 // DataOut (flags):
@@ -6709,6 +6710,8 @@ l00003BB2:
 
 l00003BB8:
 	word32 d4_110 = __swap(d5_19 - __swap(d7_13) *u (word16) d1_101)
+	word16 wLoc22_419 = SLICE(dwLoc24, word16, 0)
+	dwLoc24 = SLICE(dwLoc24, word16, 0) (alias)
 	word32 d2_103 = d1_101 *u (word16) d7_13
 	word32 d4_116 = DPB(d4_110, (word16) d6_95, 0)
 	branch (word16) d4_110 != 0x0000 l00003BD8
@@ -6791,6 +6794,7 @@ l00003C36:
 	d5_19 = DPB(d5_248, (word16) d6_249, 0)
 	d6_17 = DPB(d6_249, 0x0000, 0)
 	bLoc26_339 = true
+	dwLoc24 = SEQ((word16) d1_101, wLoc22_419)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

@@ -8,7 +8,7 @@
 int32 g_dw0004;
 FILE * g_ptr01C4;
 Eq_2331 g_t0695;
-Eq_8659 g_t40A8B0 = 
+Eq_8668 g_t40A8B0 = 
 	{
 		
 		{
@@ -20,7 +20,7 @@ Eq_8659 g_t40A8B0 =
 			0
 		},
 	};
-Eq_9593 g_t40A8C0 = 
+Eq_9602 g_t40A8C0 = 
 	{
 		
 		{
@@ -80,8 +80,8 @@ int32 * g_ptr100008C0 = &g_dw10000014;
 time_t * g_ptr100008F4 = &g_t10000018;
 time_t * g_ptr1000090C = &g_t10000020;
 FILE ** g_ptr10000914 = &g_ptr01C4;
-struct Eq_9593 * g_ptr10000924 = &g_t40A8C0;
-struct Eq_8659 * g_ptr1000095C = &g_t40A8B0;
+struct Eq_9602 * g_ptr10000924 = &g_t40A8C0;
+struct Eq_8668 * g_ptr1000095C = &g_t40A8B0;
 char * (* g_ptr100009C8)[] = &g_a100007E0;
 FILE ** g_ptr10000A20 = &g_ptr10000AA8;
 int32 * g_ptr10000A28 = &g_dw1000001C;

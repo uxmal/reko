@@ -1558,6 +1558,7 @@ l00002516:
 					Eq_599 d1_101;
 					Eq_599 d2_72 = __swap(d5_19);
 					Eq_599 d3_73 = __swap(d7_13);
+					dwLoc24.u0 = SLICE(dwLoc24, word16, 0);
 					if ((word16) (d2_72 - d3_73) == 0x00)
 						d1_101.u0 = 0x0000FFFF;
 					else
@@ -1566,6 +1567,8 @@ l00002516:
 					while (true)
 					{
 						Eq_599 d4_110 = __swap(d5_19 - __swap(d7_13) * (word16) d1_101);
+						word16 wLoc22_419 = SLICE(dwLoc24, word16, 0);
+						dwLoc24.u0 = SLICE(dwLoc24, word16, 0);
 						uint32 d2_103 = d1_101 * (word16) d7_13;
 						up32 d4_116 = DPB(d4_110, (word16) d6_95, 0);
 						if ((word16) d4_110 != 0x00 || d2_103 - d4_116 <= 0x00)
@@ -1596,13 +1599,14 @@ l00002516:
 					d5_19 = DPB(d5_248, (word16) d6_249, 0);
 					d6_17 = DPB(d6_249, 0x00, 0);
 					bLoc26_339.u0 = true;
+					dwLoc24 = SEQ((word16) d1_101, wLoc22_419);
 				}
 				Eq_599 d6_205 = __swap(DPB(d6_167, (word16) d5_170, 0));
 				d0 = DPB(dwLoc24, (word16) d1_101, 0);
 				Eq_599 d5_206 = __swap(d5_170);
 				if (v35_63 != 0x00)
 				{
-					Eq_3711 d7_213 = DPB(d7_13, v35_63 - 0x01, 0);
+					Eq_3717 d7_213 = DPB(d7_13, v35_63 - 0x01, 0);
 					do
 					{
 						d5_206 >>= 0x01;

@@ -305,9 +305,12 @@ Eq_21 Win32CrtStartup()
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
 	Eq_21 stackArg8 = <invalid>;
+	Eq_21 stackArg28 = <invalid>;
 	Eq_21 stackArg32 = <invalid>;
-	word64 rax_6 = fn000000014000186C(stackArg8, qwLoc20, dwLoc18, stackArg32);
+	word64 rax_6 = fn000000014000186C(stackArg8, qwLoc20, dwLoc18, stackArg28, stackArg32);
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
@@ -318,8 +321,8 @@ Eq_21 Win32CrtStartup()
 	return <invalid>;
 }
 
-// 0000000140001448: Register Eq_21 fn0000000140001448(Stack Eq_604 tArg00, Stack Eq_605 tArg08)
-Eq_21 fn0000000140001448(Eq_604 tArg00, Eq_605 tArg08)
+// 0000000140001448: Register Eq_21 fn0000000140001448(Stack Eq_606 tArg00, Stack Eq_21 tArg08)
+Eq_21 fn0000000140001448(Eq_606 tArg00, Eq_21 tArg08)
 {
 	SetUnhandledExceptionFilter(tLoc28);
 	UnhandledExceptionFilter(tLoc28);
@@ -331,9 +334,11 @@ Eq_21 fn0000000140001448(Eq_604 tArg00, Eq_605 tArg08)
 // 000000014000147C: Register word64 fn000000014000147C(Register Eq_13 rcx, Register word64 rbx, Register word64 rsi, Register word64 rdi, Stack word64 qwArg00, Stack Eq_21 qwArg08, Register out ptr64 rcxOut, Register out ptr64 rdxOut, Register out ptr64 r8Out)
 word64 fn000000014000147C(Eq_13 rcx, word64 rbx, word64 rsi, word64 rdi, word64 qwArg00, Eq_21 qwArg08, ptr64 & rcxOut, ptr64 & rdxOut, ptr64 & r8Out)
 {
+	word32 dwLoc34_63 = SLICE(qwLoc38, word32, 32);
+	word64 qwLoc38_64 = SEQ(dwLoc34_63, tLoc38);
 	if (IsProcessorFeaturePresent(tLoc38) == 0x00)
 	{
-		fn0000000140001550(&globals->t400030E0, rbx, rsi, rdi, qwLoc38);
+		fn0000000140001550(&globals->t400030E0, rbx, rsi, rdi, qwLoc38_64);
 		globals->qw400031D8 = qwArg00;
 		globals->ptr40003178 = fp + 0x08;
 		globals->qw40003050 = globals->qw400031D8;
@@ -342,26 +347,26 @@ word64 fn000000014000147C(Eq_13 rcx, word64 rbx, word64 rsi, word64 rdi, word64 
 		globals->dw40003044 = 0x01;
 		globals->dw40003058 = 0x01;
 		globals->qw40003060 = 0x02;
-		word64 rax_69 = DPB(0x08, fn0000000140001448(tLoc40, qwLoc38), 0);
+		word64 rax_71 = DPB(0x08, fn0000000140001448(tLoc40, tLoc38), 0);
 		rcxOut = rcx_50;
 		rdxOut = rdx_51;
 		r8Out = r8_15;
-		return rax_69;
+		return rax_71;
 	}
 	else
 		__fastfail(0x02);
 }
 
-// 0000000140001550: void fn0000000140001550(Register (ptr64 Eq_638) rcx, Register word64 rbx, Register word64 rsi, Register word64 rdi, Stack Eq_605 qwArg08)
-void fn0000000140001550(struct Eq_638 * rcx, word64 rbx, word64 rsi, word64 rdi, Eq_605 qwArg08)
+// 0000000140001550: void fn0000000140001550(Register (ptr64 Eq_645) rcx, Register word64 rbx, Register word64 rsi, Register word64 rdi, Stack word64 qwArg08)
+void fn0000000140001550(struct Eq_645 * rcx, word64 rbx, word64 rsi, word64 rdi, word64 qwArg08)
 {
 	RtlCaptureContext(tLoc58);
-	Eq_686 rsi_15 = rcx->t00F8;
+	Eq_692 rsi_15 = rcx->t00F8;
 	uint64 rdi_16 = 0x00;
 	do
 	{
 		word32 edi_53 = (word32) rdi_16;
-		Eq_706 rax_25 = RtlLookupFunctionEntry(rsi_15, fp + 0x08, null);
+		Eq_712 rax_25 = RtlLookupFunctionEntry(rsi_15, fp + 0x08, null);
 		if (rax_25 == null)
 			return;
 		ui64 v16_30 = qwLoc20 & 0x00;
@@ -594,16 +599,17 @@ word64 fn0000000140001854(Eq_201 rax, Eq_201 rcx, int32 * rbx)
 	return rdx_10;
 }
 
-// 000000014000186C: Register word64 fn000000014000186C(Stack Eq_21 qwArg08, Stack ui64 qwArg10, Stack Eq_585 qwArg18, Stack Eq_21 qwArg20)
-word64 fn000000014000186C(Eq_21 qwArg08, ui64 qwArg10, Eq_585 qwArg18, Eq_21 qwArg20)
+// 000000014000186C: Register word64 fn000000014000186C(Stack Eq_21 qwArg08, Stack ui64 qwArg10, Stack Eq_586 qwArg18, Stack Eq_21 dwArg1C, Stack Eq_21 qwArg20)
+word64 fn000000014000186C(Eq_21 qwArg08, ui64 qwArg10, Eq_586 qwArg18, Eq_21 dwArg1C, Eq_21 qwArg20)
 {
+	word32 dwArg1C_65 = SLICE(qwArg18, word32, 32);
 	Eq_13 rax_14 = globals->t40003000;
 	if (rax_14 == 769630770)
 	{
 		GetSystemTimeAsFileTime(tLoc28);
 		ui64 v14_26 = qwArg10 & 0x00 ^ (uint64) GetCurrentThreadId() ^ (uint64) GetCurrentProcessId();
 		QueryPerformanceCounter(tLoc28);
-		ui64 rax_35 = (uint64) dwArg18 << 0x20 ^ qwArg18 ^ v14_26 ^ fp + 0x08;
+		ui64 rax_35 = (uint64) dwArg18 << 0x20 ^ SEQ(dwArg1C_65, dwArg18) ^ v14_26 ^ fp + 0x08;
 		rax_14 = rax_35 & 0xFFFFFFFF;
 		if ((rax_35 & 0xFFFFFFFF) == 769630770)
 			rax_14.u0 = 769630771;
@@ -662,32 +668,41 @@ void fn000000014000196C()
 {
 }
 
-// 0000000140001974: Register Eq_1118 fn0000000140001974(Register word32 ecx, Register (ptr64 int32) rbx, Register ptr64 rbp, Stack Eq_238 qwArg00, Stack Eq_21 qwArg08, Stack word64 qwArg10, Register out Eq_241 rcxOut, Register out Eq_242 rdxOut, Register out Eq_243 r8Out)
-Eq_1118 fn0000000140001974(word32 ecx, int32 * rbx, ptr64 rbp, Eq_238 qwArg00, Eq_21 qwArg08, word64 qwArg10, union Eq_241 & rcxOut, union Eq_242 & rdxOut, union Eq_243 & r8Out)
+// 0000000140001974: Register Eq_1127 fn0000000140001974(Register word32 ecx, Register (ptr64 int32) rbx, Register ptr64 rbp, Stack Eq_238 qwArg00, Stack Eq_21 qwArg08, Stack word64 qwArg10, Register out Eq_241 rcxOut, Register out Eq_242 rdxOut, Register out Eq_243 r8Out)
+Eq_1127 fn0000000140001974(word32 ecx, int32 * rbx, ptr64 rbp, Eq_238 qwArg00, Eq_21 qwArg08, word64 qwArg10, union Eq_241 & rcxOut, union Eq_242 & rdxOut, union Eq_243 & r8Out)
 {
+	word32 dwLoc05C4_106 = SLICE(ptrLoc05C8, word32, 32);
 	word32 ebx_99 = (word32) (uint64) ecx;
+	Eq_353 ptrLoc05C8_107 = SEQ(dwLoc05C4_106, tLoc05C8);
+	word32 dwLoc05C4_110 = SLICE(ptrLoc05C8_107, word32, 32);
+	word32 dwLoc05C4_119 = SLICE(ptrLoc05C8_107, word32, 32);
+	word32 dwLoc05C4_125 = SLICE(ptrLoc05C8_107, word32, 32);
 	if (IsProcessorFeaturePresent(tLoc05C8) == 0x00)
 	{
 		globals->dw40003610 &= 0x00;
-		memset(ptrLoc05C8, dwLoc05C0, tLoc05B8);
-		RtlCaptureContext(ptrLoc05C8);
-		Eq_706 rax_27 = RtlLookupFunctionEntry(qwLoc03E0, fp + 0x10, null);
+		memset(ptrLoc05C8_107, dwLoc05C0, tLoc05B8);
+		RtlCaptureContext(SEQ(dwLoc05C4_110, tLoc05C8));
+		Eq_712 rax_27 = RtlLookupFunctionEntry(qwLoc03E0, fp + 0x10, null);
+		Eq_353 ptrLoc05C8_124 = SEQ(dwLoc05C4_125, tLoc05C8);
 		if (rax_27 != null)
+		{
 			KERNEL32.dll!RtlVirtualUnwind();
-		memset(ptrLoc05C8, dwLoc05C0, tLoc05B8);
-		Eq_622 eax_69 = IsDebuggerPresent();
-		SetUnhandledExceptionFilter(ptrLoc05C8);
-		Eq_614 eax_80 = UnhandledExceptionFilter(ptrLoc05C8);
-		Eq_1118 rax_137 = DPB(fp - 0x04D8, eax_80, 0);
+			ptrLoc05C8_124 = SEQ(dwLoc05C4_119, tLoc05C8);
+		}
+		memset(ptrLoc05C8_124, dwLoc05C0, tLoc05B8);
+		Eq_624 eax_69 = IsDebuggerPresent();
+		SetUnhandledExceptionFilter(ptrLoc05C8_124);
+		Eq_616 eax_80 = UnhandledExceptionFilter(ptrLoc05C8_124);
+		Eq_1127 rax_145 = DPB(fp - 0x04D8, eax_80, 0);
 		if (eax_80 == 0x00)
 		{
-			rax_137.u0 = (uint64) (0x00 - (-(eax_69 == 0x01) == 0x00));
-			globals->dw40003610 &= (word32) rax_137;
+			rax_145.u0 = (uint64) (0x00 - (-(eax_69 == 0x01) == 0x00));
+			globals->dw40003610 &= (word32) rax_145;
 		}
 		rcxOut = fp - 0x0588;
 		rdxOut.u0 = 0x00;
 		r8Out.u0 = 0x98;
-		return rax_137;
+		return rax_145;
 	}
 	else
 		__fastfail((word32) (uint64) ebx_99);
@@ -702,10 +717,10 @@ uint64 fn0000000140001ABC()
 // 0000000140001AC0: void fn0000000140001AC0(Register word64 rax)
 void fn0000000140001AC0(word64 rax)
 {
-	struct Eq_1197 * rax_8 = DPB(rax, GetModuleHandleW(tLoc28), 0);
+	struct Eq_1220 * rax_8 = DPB(rax, GetModuleHandleW(tLoc28), 0);
 	if (rax_8 == null || rax_8->w0000 != 23117)
 		return;
-	struct Eq_1211 * rax_18 = rax_8 + (int64) rax_8->dw003C / 0x0040;
+	struct Eq_1234 * rax_18 = rax_8 + (int64) rax_8->dw003C / 0x0040;
 	if (rax_18->dw0000 != 0x4550 || (rax_18->w0018 != 0x020B || rax_18->dw0084 <= 0x0E))
 		;
 }
@@ -716,16 +731,16 @@ void fn0000000140001B14(Eq_353 tArg00)
 	SetUnhandledExceptionFilter(tArg00);
 }
 
-// 0000000140001B24: void fn0000000140001B24(Register (ptr64 (ptr64 Eq_1238)) rcx, Register (ptr64 int32) rbx, Register word64 rsi, Register word64 rdi)
-void fn0000000140001B24(struct Eq_1238 ** rcx, int32 * rbx, word64 rsi, word64 rdi)
+// 0000000140001B24: void fn0000000140001B24(Register (ptr64 (ptr64 Eq_1261)) rcx, Register (ptr64 int32) rbx, Register word64 rsi, Register word64 rdi)
+void fn0000000140001B24(struct Eq_1261 ** rcx, int32 * rbx, word64 rsi, word64 rdi)
 {
-	struct Eq_1238 * rax_6 = *rcx;
+	struct Eq_1261 * rax_6 = *rcx;
 	if (rax_6->dw0000 != ~0x1F928C9C || rax_6->dw0018 != 0x04)
 		return;
 	uint64 rcx_11 = (uint64) rax_6->dw0020;
 	word32 ecx_15 = (word32) rcx_11;
 	rcx_11 = DPB(rcx_11, ecx_15, 0);
-	struct Eq_1260 * rax_20 = DPB(rax_6, rcx_11 + ~0x1993051F, 0);
+	struct Eq_1283 * rax_20 = DPB(rax_6, rcx_11 + ~0x1993051F, 0);
 	if (rcx_11 > ~0x19930521 && ecx_15 != 0x01994000)
 		return;
 	api-ms-win-crt-runtime-l1-1-0.dll!terminate();
@@ -775,10 +790,10 @@ void fn0000000140001BF4()
 	globals->ptr40002190();
 }
 
-// 0000000140001BFC: void fn0000000140001BFC(Register word32 edx, Register Eq_762 ebx, Stack Eq_21 qwArg08, Stack Eq_21 qwArg10, Stack Eq_21 qwArg18)
-void fn0000000140001BFC(word32 edx, Eq_762 ebx, Eq_21 qwArg08, Eq_21 qwArg10, Eq_21 qwArg18)
+// 0000000140001BFC: void fn0000000140001BFC(Register word32 edx, Register Eq_768 ebx, Stack Eq_21 qwArg08, Stack Eq_21 qwArg10, Stack Eq_21 qwArg18)
+void fn0000000140001BFC(word32 edx, Eq_768 ebx, Eq_21 qwArg08, Eq_21 qwArg10, Eq_21 qwArg18)
 {
-	Eq_1311 ebx_137 = (word32) rbx;
+	word32 ebx_137 = (word32) rbx;
 	globals->dw4000301C = 0x02;
 	__cpuid(0x00, 0x00, &0x00, &ebx_137, &0x00, &edx);
 	globals->dw40003018 = 0x01;
@@ -786,7 +801,8 @@ void fn0000000140001BFC(word32 edx, Eq_762 ebx, Eq_21 qwArg08, Eq_21 qwArg10, Eq
 	ui32 edx_52 = (word32) rdx_163;
 	ui32 r8d_108 = (word32) (uint64) globals->dw40003614;
 	__cpuid(0x01, 0x00, &0x01, &ebx_137, &0x00, &edx_52);
-	Eq_1311 bLoc20_235 = dwLoc20 & 0x00;
+	byte bLoc20_235 = SLICE(dwLoc20 & 0x00, byte, 0);
+	bLoc20_235 = SLICE(dwLoc20 & 0x00, byte, 0);
 	word32 r11d_96 = (word32) (uint64) ((word32) (uint64) ((word32) (uint64) ((word32) (uint64) ebx_137 ^ 1752462657) | (word32) ((uint64) ((word32) ((uint64) edx) ^ 0x69746E65))) | 0x444D4163);
 	uint64 rdx_163 = DPB(rdx_163, edx_52, 0);
 	rdx_163 = DPB(rdx_163, edx_52, 0);
@@ -813,7 +829,7 @@ l0000000140001CDE:
 		}
 		if (true)
 		{
-			ebx_137.u0 = 0x00010001;
+			ebx_137 = 0x00010001;
 			if (!__bt(0x00010001, 0xFFFCF9B0))
 				goto l0000000140001CDE;
 		}
@@ -827,7 +843,8 @@ l0000000140001CE9:
 	if (false)
 	{
 		__cpuid(0x07, 0x00, &0x07, &ebx_137, &0x00, &edx_52);
-		bLoc20_235 = ebx_137;
+		bLoc20_235 = SLICE(ebx_137, byte, 0);
+		bLoc20_235 = SLICE(ebx_137, byte, 0);
 		if (!__bt(ebx_137, 0x09))
 			globals->dw40003614 = (word32) (uint64) (r8d_108 | 0x02);
 	}
@@ -864,14 +881,14 @@ void fn0000000140001DD0()
 {
 }
 
-// 0000000140001E7C: void fn0000000140001E7C(Register int64 rdx, Register word64 rbx, Register word64 rsi, Register word64 rdi, Register (ptr64 Eq_1552) r9)
-void fn0000000140001E7C(int64 rdx, word64 rbx, word64 rsi, word64 rdi, struct Eq_1552 * r9)
+// 0000000140001E7C: void fn0000000140001E7C(Register int64 rdx, Register word64 rbx, Register word64 rsi, Register word64 rdi, Register (ptr64 Eq_1580) r9)
+void fn0000000140001E7C(int64 rdx, word64 rbx, word64 rsi, word64 rdi, struct Eq_1580 * r9)
 {
 	fn0000000140001E9C(rdx, r9, rbx, rsi, rdi, r9->ptr0038, qwLoc30);
 }
 
-// 0000000140001E9C: void fn0000000140001E9C(Register int64 rcx, Register (ptr64 Eq_1552) rdx, Register word64 rbx, Register word64 rsi, Register word64 rdi, Register (ptr64 Eq_1560) r8, Stack word64 qwArg00)
-void fn0000000140001E9C(int64 rcx, struct Eq_1552 * rdx, word64 rbx, word64 rsi, word64 rdi, struct Eq_1560 * r8, word64 qwArg00)
+// 0000000140001E9C: void fn0000000140001E9C(Register int64 rcx, Register (ptr64 Eq_1580) rdx, Register word64 rbx, Register word64 rsi, Register word64 rdi, Register (ptr64 Eq_1588) r8, Stack word64 qwArg00)
+void fn0000000140001E9C(int64 rcx, struct Eq_1580 * rdx, word64 rbx, word64 rsi, word64 rdi, struct Eq_1588 * r8, word64 qwArg00)
 {
 	word32 r11d_29 = (word32) (uint64) ((word32) (uint64) r8->dw0000 & ~0x07);
 	int64 r9_13 = rcx;
@@ -879,7 +896,7 @@ void fn0000000140001E9C(int64 rcx, struct Eq_1552 * rdx, word64 rbx, word64 rsi,
 	if ((r8->dw0000 & 0x04) != 0x00)
 		r10_16 = (int64) r8->dw0004 + rcx & (int64) ((word32) ((uint64) (-((word32) ((uint64) r8->dw0008)))));
 	word64 rdx_33 = (int64) r11d_29 + r10_16;
-	struct Eq_1590 * rcx_37 = (uint64) rdx->ptr0010->dw0008 + rdx->qw0008;
+	struct Eq_1618 * rcx_37 = (uint64) rdx->ptr0010->dw0008 + rdx->qw0008;
 	if ((rcx_37->b0003 & 0x0F) != 0x00)
 		r9_13 = rcx + (uint64) ((word32) rcx_37->b0003 & ~0x0F);
 	Eq_13 r9_48 = r9_13 ^ rdx_33;

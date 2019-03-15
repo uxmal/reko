@@ -48,6 +48,7 @@ l80000132:
 
 l8000014A:
 	branch (real96) dwLoc14_59 >= rArg10 l80000172
+	real96 rLoc10_71 = SEQ(dwLoc10_62, dwLoc0C_63, dwLoc08_64)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -64,7 +65,7 @@ fn80000132_exit:
 // SymbolicIn:
 
 l8000015A:
-	real96 fp0_49 = SEQ(dwLoc10_62, dwLoc0C_63, dwLoc08_64) * rArg04
+	real96 fp0_49 = rLoc10_71 * rArg04
 	dwLoc10_62 = SLICE(fp0_49, word32, 64) (alias)
 	dwLoc0C_63 = SLICE(fp0_49, word32, 32) (alias)
 	dwLoc08_64 = SLICE(fp0_49, word32, 0) (alias)
@@ -99,6 +100,7 @@ l8000018E:
 
 l800001A8:
 	branch (real96) dwLoc14_59 > rArg04 l800001D4
+	real96 rLoc10_71 = SEQ(dwLoc10_62, dwLoc0C_63, dwLoc08_64)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -115,7 +117,7 @@ fn8000018E_exit:
 // SymbolicIn:
 
 l800001B8:
-	real96 fp1_49 = SEQ(dwLoc10_62, dwLoc0C_63, dwLoc08_64) * (real80) ((real96) dwLoc14_59)
+	real96 fp1_49 = rLoc10_71 * (real80) ((real96) dwLoc14_59)
 	dwLoc10_62 = SLICE(fp1_49, word32, 64) (alias)
 	dwLoc0C_63 = SLICE(fp1_49, word32, 32) (alias)
 	dwLoc08_64 = SLICE(fp1_49, word32, 0) (alias)
@@ -150,6 +152,7 @@ l800001F2:
 
 l8000021C:
 	branch dwLoc20_110 > 100 l8000028A
+	real96 rLoc10_127 = SEQ(dwLoc10_112, dwLoc0C_113, dwLoc08_114)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -167,7 +170,7 @@ fn800001F2_exit:
 
 l80000224:
 	real96 fp0_91 = (real96) (real80) ((real96) (real80) fn80000132(d2, rArg04, (real96) dwLoc20_110) / (real80) fn8000018E(d2, (real96) dwLoc20_110)) * rLoc1C_109
-	real96 fp1_93 = SEQ(dwLoc10_112, dwLoc0C_113, dwLoc08_114) + (real80) fp0_91
+	real96 fp1_93 = rLoc10_127 + (real80) fp0_91
 	dwLoc10_112 = SLICE(fp1_93, word32, 64) (alias)
 	dwLoc0C_113 = SLICE(fp1_93, word32, 32) (alias)
 	dwLoc08_114 = SLICE(fp1_93, word32, 0) (alias)
@@ -204,6 +207,7 @@ l800002AE:
 
 l800002DA:
 	branch dwLoc20_109 > 100 l80000348
+	real96 rLoc10_126 = SEQ(dwLoc10_111, dwLoc0C_112, dwLoc08_113)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -221,7 +225,7 @@ fn800002AE_exit:
 
 l800002E2:
 	real96 fp0_91 = (real96) (real80) ((real96) (real80) fn80000132(d2, rArg04, (real96) dwLoc20_109) / (real80) fn8000018E(d2, (real96) dwLoc20_109)) * rLoc1C_108
-	real96 fp1_93 = SEQ(dwLoc10_111, dwLoc0C_112, dwLoc08_113) + (real80) fp0_91
+	real96 fp1_93 = rLoc10_126 + (real80) fp0_91
 	dwLoc10_111 = SLICE(fp1_93, word32, 64) (alias)
 	dwLoc0C_112 = SLICE(fp1_93, word32, 32) (alias)
 	dwLoc08_113 = SLICE(fp1_93, word32, 0) (alias)

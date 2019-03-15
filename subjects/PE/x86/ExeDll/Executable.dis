@@ -1663,7 +1663,8 @@ l00401A24:
 	Mem41[0x0040336C:word32] = 0x00000001
 	__cpuid(0x00000000, 0x00000000, &0x00000000, &0x00000001, &0x00000000, &edx)
 	__cpuid(0x00000001, 0x00000000, &0x00000001, &0x00000001, &0x00000000, &edx)
-	byte bLoc14_258 = dwLoc14 & 0x00000000
+	byte bLoc14_258 = SLICE(dwLoc14 & 0x00000000, byte, 0)
+	bLoc14_258 = SLICE(dwLoc14 & 0x00000000, byte, 0) (alias)
 	branch (edx ^ 0x49656E69 | 0x6C65746E | 0x756E6546) != 0x00000000 l00401ACE
 // DataOut:
 // DataOut (flags):
@@ -1727,7 +1728,8 @@ l00401AD4:
 
 l00401AE9:
 	__cpuid(0x00000007, 0x00000000, &0x00000007, &0x00000001, &0x00000000, &edx)
-	bLoc14_258 = 0x00000001
+	bLoc14_258 = 0x01 (alias)
+	bLoc14_258 = 0x01 (alias)
 	branch 0x00000000 == 0x00000000 l00401B1B
 // DataOut:
 // DataOut (flags):
