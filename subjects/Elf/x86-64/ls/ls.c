@@ -6002,7 +6002,7 @@ uint64 fn000000000040B710(Eq_1493 rsi, Eq_8 rdi, Eq_16 xmm0, Eq_17 xmm1, ptr64 &
 {
 	ui32 esi_25 = (word32) rsi;
 	Eq_8 rbp_15 = *((word32) rdi + 0x0028);
-	Eq_13467 xmm1_18 = DPB(xmm1, *((word32) rbp_15 + 0x08), 0);
+	real128 xmm1_18 = DPB(xmm1, *((word32) rbp_15 + 0x08), 0);
 	if (*((word32) rbp_15 + 0x0010) == 0x00)
 	{
 		word128 xmm0_35;
@@ -6847,7 +6847,7 @@ l000000000040BED4:
 				goto l000000000040C218;
 			}
 		}
-		*(Top - (union Eq_14242 *) 0x01) = (union Eq_14242 *) (*(Top - (union Eq_14242 *) 0x01) * globals->t415F84);
+		*(Top - (union Eq_14242 *) 0x01) = (union Eq_14242 *) (*(Top - (union Eq_14242 *) 0x01) * globals->r415F84);
 		if (eax_32 != 0x01)
 		{
 			*(Top - (union Eq_14242 *) 0x02) = (union Eq_14242 *) (real64) globals->r415F90;
@@ -6902,7 +6902,7 @@ l000000000040BED4:
 					*(Top - (union Eq_14242 *) 0x01) = (union Eq_14242 *) (*(Top - (union Eq_14242 *) 0x01) + globals->t415F08);
 			}
 		}
-		*(Top - (union Eq_14242 *) 0x01) = (union Eq_14242 *) (*(Top - (union Eq_14242 *) 0x01) / globals->t415F84);
+		*(Top - (union Eq_14242 *) 0x01) = (union Eq_14242 *) (*(Top - (union Eq_14242 *) 0x01) / globals->r415F84);
 		__sprintf_chk(rsi, 0x01, ~0x00, "%.0Lf", 0x00);
 		r14_1028.u0 = 0x00;
 		r15_1034 = (uint64) strlen(rsi);

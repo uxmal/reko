@@ -171,10 +171,7 @@ ui32 g_a415F50[] =
 Eq_8 g_a415F60[] = 
 	{
 	};
-Eq_15060 g_t415F84 = 
-	{
-		10.0F
-	};
+real32 g_r415F84 = 10.0F;
 real80 g_r415F90 = 
 	{
 		0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x3E, 0x40, 

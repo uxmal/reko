@@ -268,8 +268,9 @@ namespace Reko.Typing
                     binExp.Operator == Operator.FMul ||
                     binExp.Operator == Operator.FDiv)
             {
-                var dt = PrimitiveType.Create(Domain.Real, tv.DataType.BitSize);
+                var dt = PrimitiveType.Create(Domain.Real, eLeft.DataType.BitSize);
                 MeetDataType(eLeft, dt);
+                dt = PrimitiveType.Create(Domain.Real, eRight.DataType.BitSize);
                 MeetDataType(eRight, dt);
             }
             else if (binExp.Operator is SignedIntOperator)

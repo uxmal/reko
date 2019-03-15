@@ -231,5 +231,15 @@ namespace Reko.UnitTests.Typing
                 "Typing/ExaUsrGlobals_Addr32.txt");
         }
 
+        [Test(Description = "Operand sizes of a widening multiplication shouldn't affect the size of the product.")]
+        public void ExaWideningFMul()
+        {
+            var idLeft = Id("idLeft", PrimitiveType.Word64);
+            var idRight = Id("idRight", PrimitiveType.Word64);
+            var fmul = m.FMul(idLeft, idRight);
+            fmul.DataType = PrimitiveType.Real96;
+            RunTest(fmul, "Typing/ExaWideningFMul.txt");
+        }
+
     }
 }

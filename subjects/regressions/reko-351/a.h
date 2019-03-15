@@ -35,27 +35,10 @@ Eq_204: (fn void (real64, real64, Eq_208))
 Eq_208: (union "Eq_208" ((ptr32 word32) u0) ((ref int32) u1))
 	T_208 (in tArg14 : Eq_208)
 	T_213 (in fp - 0x00000008 : word32)
-Eq_219: (union "Eq_219" (real64 u0) (real96 u1))
-	T_219 (in v9_14 : Eq_219)
-	T_224 (in (real64) ((real96) SEQ(dwArg04_110, dwArg08_112) * SEQ(dwArg04_110, dwArg08_112)) : real64)
-Eq_222: (union "Eq_222" (real64 u0) (real96 u1))
-	T_222 (in SEQ(dwArg04_110, dwArg08_112) : real64)
 Eq_228: (ref int32)
 	T_228 (in tArg14 + 0x00000000 : word32)
 Eq_233: (union "Eq_233" ((ptr32 word32) u0) ((ref int32) u1))
 	T_233 (in tArg14 + 0x00000000 : word32)
-Eq_247: (union "Eq_247" (real64 u0) (real96 u1))
-	T_247 (in rLoc14_123 : Eq_247)
-	T_272 (in (real64) ((real96) (real64) ((real96) (real64) ((real96) (real64) ((real96) rLoc14_123 * (real80) ((real96) v23_57)) * (real80) ((real96) (v23_57 + 0x00000001))) * (real80) ((real96) (v23_57 + 0x00000002))) * (real80) ((real96) (v23_57 + 0x00000003))) : real64)
-	T_274 (in 0x3FF0000000000000 : word64)
-Eq_250: (union "Eq_250" (real80 u0) (real96 u1))
-	T_250 (in (real80) (real96) v23_57 : real80)
-Eq_257: (union "Eq_257" (real80 u0) (real96 u1))
-	T_257 (in (real80) (real96) (v23_57 + 0x00000001) : real80)
-Eq_264: (union "Eq_264" (real80 u0) (real96 u1))
-	T_264 (in (real80) (real96) (v23_57 + 0x00000002) : real80)
-Eq_270: (union "Eq_270" (real80 u0) (real96 u1))
-	T_270 (in (real80) (real96) (v23_57 + 0x00000003) : real80)
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
@@ -929,10 +912,10 @@ T_218: (in SLICE(rArg04, word32, 32) : word32)
   Class: Eq_217
   DataType: word32
   OrigDataType: word32
-T_219: (in v9_14 : Eq_219)
+T_219: (in v9_14 : real64)
   Class: Eq_219
-  DataType: Eq_219
-  OrigDataType: (union (real64 u0) (real96 u1))
+  DataType: real64
+  OrigDataType: real64
 T_220: (in SEQ(dwArg04_110, dwArg08_112) : real64)
   Class: Eq_220
   DataType: real64
@@ -943,15 +926,15 @@ T_221: (in (real96) SEQ(dwArg04_110, dwArg08_112) : real96)
   OrigDataType: real96
 T_222: (in SEQ(dwArg04_110, dwArg08_112) : real64)
   Class: Eq_222
-  DataType: Eq_222
-  OrigDataType: (union (real64 u0) (real96 u1))
+  DataType: real64
+  OrigDataType: real64
 T_223: (in (real96) SEQ(dwArg04_110, dwArg08_112) * SEQ(dwArg04_110, dwArg08_112) : real96)
   Class: Eq_223
   DataType: real96
   OrigDataType: real96
 T_224: (in (real64) ((real96) SEQ(dwArg04_110, dwArg08_112) * SEQ(dwArg04_110, dwArg08_112)) : real64)
   Class: Eq_219
-  DataType: Eq_219
+  DataType: real64
   OrigDataType: real64
 T_225: (in dwLoc20_121 : word32)
   Class: Eq_225
@@ -1041,9 +1024,9 @@ T_246: (in v23_57 + 0x00000003 : word32)
   Class: Eq_225
   DataType: word32
   OrigDataType: word32
-T_247: (in rLoc14_123 : Eq_247)
+T_247: (in rLoc14_123 : real64)
   Class: Eq_247
-  DataType: Eq_247
+  DataType: real64
   OrigDataType: real64
 T_248: (in (real96) rLoc14_123 : real96)
   Class: Eq_248
@@ -1055,8 +1038,8 @@ T_249: (in (real96) v23_57 : real96)
   OrigDataType: real96
 T_250: (in (real80) (real96) v23_57 : real80)
   Class: Eq_250
-  DataType: Eq_250
-  OrigDataType: (union (real80 u0) (real96 u1))
+  DataType: real80
+  OrigDataType: real80
 T_251: (in (real96) rLoc14_123 * (real80) ((real96) v23_57) : real96)
   Class: Eq_251
   DataType: real96
@@ -1083,8 +1066,8 @@ T_256: (in (real96) (v23_57 + 0x00000001) : real96)
   OrigDataType: real96
 T_257: (in (real80) (real96) (v23_57 + 0x00000001) : real80)
   Class: Eq_257
-  DataType: Eq_257
-  OrigDataType: (union (real80 u0) (real96 u1))
+  DataType: real80
+  OrigDataType: real80
 T_258: (in (real96) (real64) ((real96) rLoc14_123 * (real80) ((real96) v23_57)) * (real80) ((real96) (v23_57 + 0x00000001)) : real96)
   Class: Eq_258
   DataType: real96
@@ -1111,8 +1094,8 @@ T_263: (in (real96) (v23_57 + 0x00000002) : real96)
   OrigDataType: real96
 T_264: (in (real80) (real96) (v23_57 + 0x00000002) : real80)
   Class: Eq_264
-  DataType: Eq_264
-  OrigDataType: (union (real80 u0) (real96 u1))
+  DataType: real80
+  OrigDataType: real80
 T_265: (in (real96) (real64) ((real96) (real64) ((real96) rLoc14_123 * (real80) ((real96) v23_57)) * (real80) ((real96) (v23_57 + 0x00000001))) * (real80) ((real96) (v23_57 + 0x00000002)) : real96)
   Class: Eq_265
   DataType: real96
@@ -1135,15 +1118,15 @@ T_269: (in (real96) (v23_57 + 0x00000003) : real96)
   OrigDataType: real96
 T_270: (in (real80) (real96) (v23_57 + 0x00000003) : real80)
   Class: Eq_270
-  DataType: Eq_270
-  OrigDataType: (union (real80 u0) (real96 u1))
+  DataType: real80
+  OrigDataType: real80
 T_271: (in (real96) (real64) ((real96) (real64) ((real96) (real64) ((real96) rLoc14_123 * (real80) ((real96) v23_57)) * (real80) ((real96) (v23_57 + 0x00000001))) * (real80) ((real96) (v23_57 + 0x00000002))) * (real80) ((real96) (v23_57 + 0x00000003)) : real96)
   Class: Eq_271
   DataType: real96
   OrigDataType: real96
 T_272: (in (real64) ((real96) (real64) ((real96) (real64) ((real96) (real64) ((real96) rLoc14_123 * (real80) ((real96) v23_57)) * (real80) ((real96) (v23_57 + 0x00000001))) * (real80) ((real96) (v23_57 + 0x00000002))) * (real80) ((real96) (v23_57 + 0x00000003))) : real64)
   Class: Eq_247
-  DataType: Eq_247
+  DataType: real64
   OrigDataType: real64
 T_273: (in SEQ(dwArg04_110, dwArg08_112) : real64)
   Class: Eq_238
@@ -1305,45 +1288,10 @@ typedef union Eq_208 {
 	int32 & u1;
 } Eq_208;
 
-typedef union Eq_219 {
-	real64 u0;
-	real96 u1;
-} Eq_219;
-
-typedef union Eq_222 {
-	real64 u0;
-	real96 u1;
-} Eq_222;
-
 typedef int32 & Eq_228;
 
 typedef union Eq_233 {
 	word32 * u0;
 	int32 & u1;
 } Eq_233;
-
-typedef union Eq_247 {
-	real64 u0;
-	real96 u1;
-} Eq_247;
-
-typedef union Eq_250 {
-	real80 u0;
-	real96 u1;
-} Eq_250;
-
-typedef union Eq_257 {
-	real80 u0;
-	real96 u1;
-} Eq_257;
-
-typedef union Eq_264 {
-	real80 u0;
-	real96 u1;
-} Eq_264;
-
-typedef union Eq_270 {
-	real80 u0;
-	real96 u1;
-} Eq_270;
 

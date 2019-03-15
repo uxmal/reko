@@ -54,8 +54,6 @@ Eq_77: (fn (ptr32 Eq_2) ((ptr32 Eq_4), (ptr32 char), (ptr32 real32), (ptr32 real
 Eq_90: (fn (ptr32 Eq_2) ((ptr32 char), real64))
 	T_90 (in Py_BuildValue : ptr32)
 	T_91 (in signature of Py_BuildValue : void)
-Eq_96: (union "Eq_96" (real32 u0) (real64 u1))
-	T_96 (in rLoc04 : real32)
 Eq_99: PyObject
 	T_99 (in eax : (ptr32 Eq_99))
 	T_102 (in eax_10 : (ptr32 Eq_99))
@@ -815,8 +813,8 @@ T_95: (in (real64) rLoc08 : real64)
   OrigDataType: real64
 T_96: (in rLoc04 : real32)
   Class: Eq_96
-  DataType: Eq_96
-  OrigDataType: (union (real32 u0) (real64 u1))
+  DataType: real32
+  OrigDataType: real32
 T_97: (in (real64) rLoc08 / rLoc04 : real64)
   Class: Eq_92
   DataType: real64
@@ -6016,11 +6014,6 @@ typedef PyObject * (Eq_66)(char *, int32);
 typedef PyObject * (Eq_77)(PyObject *, char *, real32 *, real32 *);
 
 typedef PyObject * (Eq_90)(char *, real64);
-
-typedef union Eq_96 {
-	real32 u0;
-	real64 u1;
-} Eq_96;
 
 typedef PyObject Eq_99;
 
