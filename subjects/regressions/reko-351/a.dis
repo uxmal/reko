@@ -542,13 +542,13 @@ _Z4_sinddRi_entry:
 l800004DE:
 	real64 v9_14 = (real64) ((real96) SEQ(dwArg04_110, dwArg08_112) * SEQ(dwArg04_110, dwArg08_112))
 	word32 dwLoc20_121 = 0x00000002
+	real64 rLoc0C_122 = SEQ(dwArg04_110, dwArg08_112)
+	real64 rLoc14_123 = 0x3FF0000000000000
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l8000051A:
-	real64 rLoc14_123
-	real64 rLoc0C_122
 	branch (real64) ((real96) rLoc0C_122 / rLoc14_123) < rArg0C l8000060E
 // DataOut:
 // DataOut (flags):
@@ -571,8 +571,6 @@ l80000530:
 	rLoc0C_122 = (real64) ((real96) (real64) ((real96) rLoc0C_122 * v9_14) * v9_14)
 	dwLoc20_121 = v23_57 + 0x00000003
 	rLoc14_123 = (real64) ((real96) (real64) ((real96) (real64) ((real96) (real64) ((real96) rLoc14_123 * (real80) ((real96) v23_57)) * (real80) ((real96) (v23_57 + 0x00000001))) * (real80) ((real96) (v23_57 + 0x00000002))) * (real80) ((real96) (v23_57 + 0x00000003)))
-	rLoc0C_122 = SEQ(dwArg04_110, dwArg08_112) (alias)
-	rLoc14_123 = 0x3FF0000000000000 (alias)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

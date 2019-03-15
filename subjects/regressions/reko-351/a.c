@@ -157,21 +157,17 @@ void _sin(real64 rArg04, real64 rArg0C, Eq_208 tArg14)
 {
 	word32 dwArg04_110 = SLICE(rArg04, word32, 0);
 	word32 dwArg08_112 = SLICE(rArg04, word32, 32);
-	real64 v9_14 = (real64) ((real96) SEQ(dwArg04_110, dwArg08_112) * SEQ(dwArg04_110, dwArg08_112));
+	Eq_219 v9_14 = (real64) ((real96) SEQ(dwArg04_110, dwArg08_112) * SEQ(dwArg04_110, dwArg08_112));
 	word32 dwLoc20_121 = 0x02;
-	while (true)
+	real64 rLoc0C_122 = SEQ(dwArg04_110, dwArg08_112);
+	Eq_229 rLoc14_123 = 0x3FF0000000000000;
+	while ((real64) ((real96) rLoc0C_122 / rLoc14_123) >= rArg0C)
 	{
-		real64 rLoc14_123;
-		real64 rLoc0C_122;
-		if ((real64) ((real96) rLoc0C_122 / rLoc14_123) < rArg0C)
-			break;
 		*tArg14 = (word32) *tArg14 + 0x01;
 		word32 v23_57 = dwLoc20_121 + 0x00;
 		rLoc0C_122 = (real64) ((real96) (real64) ((real96) rLoc0C_122 * v9_14) * v9_14);
 		dwLoc20_121 = v23_57 + 0x03;
-		rLoc14_123 = (real64) ((real96) (real64) ((real96) (real64) ((real96) (real64) ((real96) rLoc14_123 * (real80) ((real96) v23_57)) * (real80) ((real96) (v23_57 + 0x01))) * (real80) ((real96) (v23_57 + 0x02))) * (real80) ((real96) (v23_57 + 0x03)));
-		rLoc0C_122 = SEQ(dwArg04_110, dwArg08_112);
-		rLoc14_123 = 1.0;
+		rLoc14_123.u0 = (real64) ((real96) (real64) ((real96) (real64) ((real96) (real64) ((real96) rLoc14_123 * (real80) ((real96) v23_57)) * (real80) ((real96) (v23_57 + 0x01))) * (real80) ((real96) (v23_57 + 0x02))) * (real80) ((real96) (v23_57 + 0x03)));
 	}
 }
 

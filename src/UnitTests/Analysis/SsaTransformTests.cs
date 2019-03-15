@@ -3871,5 +3871,58 @@ proc1_exit:
 
             RunTest_FrameAccesses(sExp, MakeEndiannessCheck);
         }
+
+        [Test]
+        public void SsaSequenceInALoop()
+        {
+            var proc = Given_Procedure(nameof(SsaSequenceInALoop), m =>
+            {
+                var r1 = m.Reg32("r1", 1);
+                var f1 = m.Reg64("f1", 16);
+                var fp0 = m.Register(new RegisterStorage("fp0", 16, 0, PrimitiveType.CreateWord(96)));
+                var fp = m.Frame.FramePointer;
+                m.MStore(m.ISubS(fp, 8), m.Word32(0x3FF00000));
+                m.MStore(m.ISubS(fp, 4), m.Word32(0));
+                m.Assign(r1, 0);
+
+                m.Label("m0");
+                m.Assign(f1, m.Mem64(m.ISubS(fp, 8)));
+                m.Assign(f1, m.FMul(f1, m.Cast(PrimitiveType.Real64, r1)));
+                m.MStore(m.ISubS(fp, 8), f1);
+                m.Assign(r1, m.IAddS(r1, 1));
+                m.BranchIf(m.Ne(r1, 10), "m0");
+
+                m.Label("m1");
+                m.Return();
+            });
+
+            When_RunSsaTransform();
+            When_RenameFrameAccesses();
+
+            var expected =
+            #region Expected
+@"SsaSequenceInALoop_entry:
+	def fp
+l1:
+	dwLoc08_12 = 0x3FF00000
+	dwLoc04_13 = 0x00000000
+	r1_4 = 0x00000000
+	qwLoc08_16 = SEQ(dwLoc04_13, dwLoc08_12)
+m0:
+	qwLoc08_14 = PHI((qwLoc08_16, l1), (qwLoc08_15, m0))
+	r1_8 = PHI((r1_4, l1), (r1_11, m0))
+	Mem6 = PHI((Mem3, l1), (Mem10, m0))
+	f1_7 = qwLoc08_14
+	f1_9 = f1_7 * (real64) r1_8
+	qwLoc08_15 = f1_9
+	r1_11 = r1_8 + 1
+	branch r1_11 != 0x0000000A m0
+m1:
+	return
+SsaSequenceInALoop_exit:
+";
+            #endregion
+            AssertProcedureCode(expected);
+        }
     }
 }

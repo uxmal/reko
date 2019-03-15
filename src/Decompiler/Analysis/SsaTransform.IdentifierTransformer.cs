@@ -173,9 +173,8 @@ namespace Reko.Analysis
                 SsaIdentifier sidUse;
                 if (stgFrom.Covers(stgTo))
                 {
-                    // Defined identifer is "wider" than the storage
-                    // being read. The reader gets a slice of the 
-                    // defined identifier.
+                    // Defined identifier is "wider" than the storage being 
+                    // read. The reader gets a slice of the defined identifier.
                     int offset = stgFrom.OffsetOf(stgTo);
                     if (offset > 0)
                         e = new Slice(id.DataType, sidFrom.Identifier, offset);
@@ -197,7 +196,6 @@ namespace Reko.Analysis
                     e = new DepositBits(sidUse.Identifier, aliasFrom.SsaId.Identifier, (int) stgFrom.BitAddress);
                 }
 
-
                 var ass = new AliasAssignment(id, e);
                 var sidAlias = InsertAfterDefinition(sidFrom.DefStatement, ass);
                 sidUse.Uses.Add(sidAlias.DefStatement);
@@ -209,15 +207,25 @@ namespace Reko.Analysis
 
             /// <summary>
             /// Inserts the assignment <paramref name="ass"/> before the statement
-            /// <paramref name="stm"/>.
+            /// <paramref name="stm"/> if it is in the same block. Otherwise append
+            /// it to the end of the statements in the block.
             /// </summary>
-            public SsaIdentifier InsertBeforeDefinition(Statement stm, Assignment ass)
+            public SsaIdentifier InsertBeforeStatement(Block block, Statement stm, Assignment ass)
             {
-                int i = stm.Block.Statements.IndexOf(stm);
-                var stmBefore = new Statement(stm.LinearAddress, ass, stm.Block);
-                stm.Block.Statements.Insert(i, stmBefore);
+                Statement stmNew;
+                if (stm.Block == block)
+                {
+                    int i = stm.Block.Statements.IndexOf(stm);
+                    stmNew = new Statement(stm.LinearAddress, ass, stm.Block);
+                    stm.Block.Statements.Insert(i, stmNew);
+                }
+                else
+                {
+                    var stmLast = block.Statements.Last();
+                    stmNew = block.Statements.Add(stmLast.LinearAddress, ass);
+                }
 
-                var sidTo = ssaIds.Add(ass.Dst, stmBefore, ass.Src, false);
+                var sidTo = ssaIds.Add(ass.Dst, stmNew, ass.Src, false);
                 ass.Dst = sidTo.Identifier;
                 return sidTo;
             }
@@ -263,27 +271,7 @@ namespace Reko.Analysis
                 return sid;
             }
 
-            private SsaIdentifier AddPhiOperands(SsaIdentifier phi)
-            {
-                // Determine operands from predecessors.
-                var preds = phi.DefStatement.Block.Pred;
-
-                //if (preds.Any(p => !blockstates[p].Visited))
-                //{
-                //    // Haven't visited some of the predecessors yet,
-                //    // so we can't backwalk... yet. 
-                //    ((PhiAssignment) phi.DefStatement.Instruction).Src =
-                //        new PhiFunction(
-                //            phi.Identifier.DataType,
-                //            preds.Select(p => new PhiArgument(p, null)).
-                //                ToArray());
-                //    outer.incompletePhis.Add(phi);
-                //    return phi;
-                //}
-                return AddPhiOperandsCore(phi);
-            }
-
-            public SsaIdentifier AddPhiOperandsCore(SsaIdentifier phi)
+            public SsaIdentifier AddPhiOperands(SsaIdentifier phi)
             {
                 var preds = phi.DefStatement.Block.Pred;
                 var args = preds.Select(p => new PhiArgument(p, ReadVariable(blockstates[p]).Identifier))
@@ -727,7 +715,8 @@ namespace Reko.Analysis
                 {
                     var seq = outer.arch.Endianness.MakeSequence(this.id.DataType, sequence.Select(e => (Expression) MakeSequenceElement(bs, e).Identifier).ToArray());
                     var assSeq = new Assignment(id, seq);
-                    var sidTo = InsertBeforeDefinition(this.stm, assSeq);
+                    SsaIdentifier sidTo = InsertBeforeStatement(bs.Block, this.stm, assSeq);
+
                     foreach (Identifier item in seq.Expressions)
                     {
                         outer.ssa.Identifiers[item].Uses.Add(sidTo.DefStatement);
@@ -830,7 +819,7 @@ namespace Reko.Analysis
             public override SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs)
             {
                 // We shouldn't reach this, as ReadVariable above should have 
-                // broken the sequence into a head and tail read.
+                // broken the sequence into ReadVariable calls to the components.
                 throw new InvalidOperationException();
             }
 

@@ -957,7 +957,7 @@ namespace Reko.Analysis
             {
                 var phiBlock = phi.DefStatement.Block;
                 var x = factory.Create(phi.OriginalIdentifier, phi.DefStatement);
-                x.AddPhiOperandsCore(phi);
+                x.AddPhiOperands(phi);
             }
             incompletePhis.Clear();
         }
