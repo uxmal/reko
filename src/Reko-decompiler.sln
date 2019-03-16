@@ -386,15 +386,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Switch", "Environments\Swit
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
-		Release|Any CPU = Release|Any CPU
+		Debug|Any CPU = Debug|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-		UnixRelease|Any CPU = UnixRelease|Any CPU
+		Release|Any CPU = Release|Any CPU
 		UnixRelease|x64 = UnixRelease|x64
 		UnixRelease|x86 = UnixRelease|x86
+		UnixRelease|Any CPU = UnixRelease|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{5C315C78-1F97-4B16-81AA-917284969DFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
