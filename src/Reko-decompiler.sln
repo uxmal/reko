@@ -382,15 +382,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blackfin", "Arch\Blackfin\B
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
-		Release|Any CPU = Release|Any CPU
+		Debug|Any CPU = Debug|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-		UnixRelease|Any CPU = UnixRelease|Any CPU
+		Release|Any CPU = Release|Any CPU
 		UnixRelease|x64 = UnixRelease|x64
 		UnixRelease|x86 = UnixRelease|x86
+		UnixRelease|Any CPU = UnixRelease|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{5C315C78-1F97-4B16-81AA-917284969DFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
