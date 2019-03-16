@@ -31,16 +31,22 @@ namespace Reko.Gui
 	/// </summary>
 	public class MruList
 	{
-		private int itemsMax;
-		private List<string> items;
+        public struct fileOutputDir
+        {
+            public string filename;
+            public string outputDir;
+        };
+
+        private int itemsMax;
+		private List<fileOutputDir> items;
 
 		public MruList(int itemsMax)
 		{
 			this.itemsMax = itemsMax;
-			this.items = new List<string>(itemsMax);
+			this.items = new List<fileOutputDir>(itemsMax);
 		}
 
-		public IList<string> Items
+		public IList<fileOutputDir> Items
 		{
 			get { return items; }
 		}
@@ -56,9 +62,13 @@ namespace Reko.Gui
 					string line = reader.ReadLine();
 					while (line != null && items.Count < items.Capacity)
 					{
-						this.items.Add(line.TrimEnd('\r', '\n'));
-						line = reader.ReadLine();
-					}
+                        fileOutputDir tmp = new fileOutputDir();
+                        tmp.filename = line.TrimEnd('\r', '\n');
+                        line = reader.ReadLine();
+                        tmp.outputDir = line.TrimEnd('\r', '\n');
+                        this.items.Add(tmp);
+                        line = reader.ReadLine();
+                    }
 				}
 			}
 			catch (FileNotFoundException)
@@ -70,11 +80,12 @@ namespace Reko.Gui
 		{
 			using (var writer = fsSvc.CreateStreamWriter(fileLocation, false, new UTF8Encoding(false)))
 			{
-				foreach (string line in items)
-				{
-					writer.WriteLine(line);
-				}
-			}
+                foreach (fileOutputDir item in items)
+                {
+                    writer.WriteLine(item.filename);
+                    writer.WriteLine(item.outputDir);
+                }
+            }
 		}
 
 		/// <summary>
@@ -82,18 +93,22 @@ namespace Reko.Gui
 		/// </summary>
 		/// <param name="index"></param>
 
-		public void Use(string item)
+		public void Use(string item, string outputDir)
 		{
 			for (int i = 0; i < items.Count; ++i)
 			{
-				if ((string) items[i] == item)
+				if (items[i].filename == item)
 				{
 					items.RemoveAt(i);
 					break;
 				}
 			}
 
-			items.Insert(0, item);
+            fileOutputDir tmp = new fileOutputDir();
+            tmp.filename = item;
+            tmp.outputDir = outputDir;
+
+            items.Insert(0, tmp);
 
 			int itemsToKill = items.Count - itemsMax;
 			if (itemsToKill > 0)

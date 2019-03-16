@@ -202,7 +202,7 @@ namespace Reko.CmdLine
                 pArgs.TryGetValue("--entry", out object oAddrEntry);
 
                 pArgs.TryGetValue("--loader", out object sLoader);
-                var program = decompiler.LoadRawImage((string)pArgs["filename"], new LoadDetails
+                var program = decompiler.LoadRawImage((string)pArgs["filename"], "", new LoadDetails
                 {
                     LoaderName = (string)sLoader,
                     ArchitectureName = (string)pArgs["--arch"],
