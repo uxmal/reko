@@ -14,6 +14,7 @@ Change the assembly versions in `src/tools/xslt/Properties/AssemblyInfo.cs`
 Change the assembly versions in `src/tools/makesigs/Properties/AssemblyInfo.cs`
 Change the appveyor build version in `appevor.yml`
 Change the MSI Installer version in `src/WixInstaller/Properties.wxi`
+Change the MSI Installer version in `src/WixInstaller/WixInstaller.wixproj`
 
 Build from a fresh clone of the Reko repository to make sure all project build without errors.
 Run all unit tests, run all regression tests.
