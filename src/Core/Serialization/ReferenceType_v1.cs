@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -34,5 +34,15 @@ namespace Reko.Core.Serialization
         {
             return visitor.VisitReference(this);
         }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.AppendFormat("ref({0}", Referent);
+            WriteQualifier(Qualifier, sb);
+            sb.Append(")");
+            return sb.ToString();
+        }
+
     }
 }

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -253,6 +253,24 @@ namespace Reko.UnitTests.Core.CLanguage
                 });
             Assert.AreEqual(
                 "fn(__thiscall,arg(ptr(prim(Character,1))),())",
+                nt.DataType.ToString());
+        }
+
+        [Test]
+        public void NamedDataTypeExtractor_reference_to_ptr()
+        {
+            Run(new[] { SType(CTokenType.Char) },
+                new PointerDeclarator
+                {
+                    Pointee = new ReferenceDeclarator
+                    {
+                        Referent = new IdDeclarator
+                        {
+                            Name = "fooReference",
+                        },
+                    }
+                });
+            Assert.AreEqual("ref(ptr(prim(Character,1)))",
                 nt.DataType.ToString());
         }
     }

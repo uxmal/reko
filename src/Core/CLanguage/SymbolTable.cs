@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -33,11 +33,16 @@ namespace Reko.Core.CLanguage
     {
         private IPlatform platform;
 
-        public SymbolTable(IPlatform platform) : this(platform, new Dictionary<string, SerializedType>())
+        public SymbolTable(IPlatform platform) : this(platform,
+            new Dictionary<string, PrimitiveType_v1>(),
+            new Dictionary<string, SerializedType>())
         {
         }
 
-        public SymbolTable(IPlatform platform, Dictionary<string, SerializedType> namedTypes)
+        public SymbolTable(
+            IPlatform platform,
+            Dictionary<string, PrimitiveType_v1> primitiveTypes,
+            Dictionary<string, SerializedType> namedTypes)
         {
             this.platform = platform;
 
@@ -48,6 +53,7 @@ namespace Reko.Core.CLanguage
             this.Constants = new Dictionary<string, int>();
             this.Procedures = new List<ProcedureBase_v1>();
             this.Variables = new List<GlobalDataItem_v2>();
+            this.PrimitiveTypes = primitiveTypes;
             this.NamedTypes = namedTypes;
             this.Sizer = new TypeSizer(this.NamedTypes);
         }
@@ -58,6 +64,7 @@ namespace Reko.Core.CLanguage
         public Dictionary<string, SerializedEnumType> EnumsSeen { get; private set; }
         public Dictionary<string, int> Constants { get; private set; }
         public Dictionary<string, SerializedType> NamedTypes { get; private set; }
+        public Dictionary<string, PrimitiveType_v1> PrimitiveTypes { get; private set; }
         public List<ProcedureBase_v1> Procedures { get; private set; }
         public List<GlobalDataItem_v2> Variables { get; private set; }
 

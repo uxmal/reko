@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -74,7 +74,7 @@ namespace Reko.Core.CLanguage
             CTokenType.Signed, CTokenType.Unsigned,CTokenType.Struct, CTokenType.Union,
             CTokenType.Enum, CTokenType._Far, CTokenType._Near);
         static BitArray startOfDeclarator = NewBitArray(
-            CTokenType.Star, CTokenType.LParen, CTokenType.LBracket, CTokenType.Semicolon);
+            CTokenType.Star, CTokenType.Ampersand, CTokenType.LParen, CTokenType.LBracket, CTokenType.Semicolon);
 
 
         private static BitArray NewBitArray(params CTokenType[] val)
@@ -226,11 +226,13 @@ namespace Reko.Core.CLanguage
         {
             int i = 0;
             CToken x = lexer.Peek(i);
-            while (x.Type == CTokenType.Star || x.Type == CTokenType.LParen || x.Type == CTokenType.Const || 
+            while (x.Type == CTokenType.Star || x.Type == CTokenType.Ampersand || x.Type == CTokenType.LParen || x.Type == CTokenType.Const ||
                    x.Type == CTokenType.Volatile || x.Type == CTokenType.__Ptr64 ||
                    x.Type == CTokenType.__Fastcall || x.Type == CTokenType.__Stdcall ||
                    x.Type == CTokenType.__Thiscall || x.Type == CTokenType.__Cdecl)
+            {
                 x = lexer.Peek(++i);
+            }
             if (x.Type != CTokenType.Id)
                 return true;
             if (!IsTypeName(x))
@@ -240,7 +242,7 @@ namespace Reko.Core.CLanguage
                 x.Type != CTokenType.Comma;
         }
 
-        // return true if '*', '(', '[', ';', noTypeIdent
+        // return true if '*', '&' '(', '[', ';', noTypeIdent
         bool IsDeclarator()
         {
             var token = lexer.Peek(0);
@@ -841,6 +843,8 @@ IGNORE tab + cr + lf
                 break;
             case CTokenType.Star:
                 return Parse_Pointer();
+            case CTokenType.Ampersand:
+                return Parse_Reference();
             case CTokenType.__Stdcall:
             case CTokenType.__Thiscall:
             case CTokenType.__Cdecl:
@@ -904,6 +908,22 @@ IGNORE tab + cr + lf
             }
             var declarator = Parse_Declarator();
             return grammar.PointerDeclarator(declarator, tqs);
+        }
+
+        Declarator Parse_Reference()
+        {
+            ExpectToken(CTokenType.Ampersand);
+            List<TypeQualifier> tqs = null;
+            var tq = Parse_TypeQualifier();
+            while (tq != null)
+            {
+                if (tqs == null)
+                    tqs = new List<TypeQualifier>();
+                tqs.Add(tq);
+                tq = Parse_TypeQualifier();
+            }
+            var declarator = Parse_Declarator();
+            return grammar.ReferenceDeclarator(declarator, tqs);
         }
 
         Declarator Parse_AbstractPointer()

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -148,11 +148,6 @@ namespace Reko.Core.CLanguage
         public Declarator IdDeclarator(string name)
         {
             return new IdDeclarator { Name = name };
-        }
-
-        public PointerDeclarator PointerDeclarator()
-        {
-            return new PointerDeclarator { };
         }
 
         public Stat IfStatement(CExpression expr, Stat consequence, Stat alternative)
@@ -326,10 +321,21 @@ namespace Reko.Core.CLanguage
             return new FunctionDeclarator { Declarator = decl, Parameters = parameters };
         }
 
+        public PointerDeclarator PointerDeclarator()
+        {
+            return new PointerDeclarator { };
+        }
+
         public Declarator PointerDeclarator(Declarator decl, List<TypeQualifier> tqs)
         {
             return new PointerDeclarator { TypeQualifierList = tqs, Pointee = decl};
         }
+
+        public Declarator ReferenceDeclarator(Declarator decl, List<TypeQualifier> tqs)
+        {
+            return new ReferenceDeclarator { TypeQualifierList = tqs, Referent = decl };
+        }
+
 
         public Declarator CallConventionDeclarator(CTokenType conv, Declarator decl)
         {
@@ -403,6 +409,6 @@ namespace Reko.Core.CLanguage
                 Name = s,
             };
         }
-    }
 
+    }
 }

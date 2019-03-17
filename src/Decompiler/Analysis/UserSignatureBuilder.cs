@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -144,7 +144,7 @@ namespace Reko.Analysis
                 var lexer = new CLexer(new StringReader(fnDecl + ";"));
                 var symbols = program.CreateSymbolTable();
                 var oldProcs = symbols.Procedures.Count;
-                var cstate = new ParserState(symbols.NamedTypes.Keys);
+                var cstate = new ParserState(symbols);
                 var cParser = new CParser(cstate, lexer);
                 var decl = cParser.Parse_ExternalDecl();
                 if (decl == null)
@@ -174,7 +174,7 @@ namespace Reko.Analysis
                 var lexer = new CLexer(new StringReader(txtGlobal + ";"));
                 var symbols = program.CreateSymbolTable();
                 var oldVars = symbols.Variables.Count;
-                var cstate = new ParserState(symbols.NamedTypes.Keys);
+                var cstate = new ParserState(symbols);
                 var cParser = new CParser(cstate, lexer);
                 var decl = cParser.Parse_ExternalDecl();
                 if (decl == null)

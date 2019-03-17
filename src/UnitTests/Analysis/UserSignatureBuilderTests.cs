@@ -234,5 +234,16 @@ namespace Reko.UnitTests.Analysis
             var usb = new UserSignatureBuilder(program);
             usb.BuildSignature(Address.Ptr32(0x1000), proc);
         }
+
+        [Test]
+        public void Usb_Word32()
+        {
+            Given_Procedure(0x1000);
+            Given_UserSignature(0x1000, "void test(word32 foo)");
+            var usb = new UserSignatureBuilder(program);
+            usb.BuildSignature(Address.Ptr32(0x1000), proc);
+            Assert.AreEqual("(fn void (word32))", proc.Signature.ToString());
+            Assert.AreSame(PrimitiveType.Word32, proc.Signature.Parameters[0].DataType);
+        }
     }
 }

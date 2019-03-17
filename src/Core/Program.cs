@@ -214,14 +214,16 @@ namespace Reko.Core
         /// </returns>
         public virtual SymbolTable CreateSymbolTable()
         {
+            var dtSer = new DataTypeSerializer();
+            var primitiveTypes = PrimitiveType.AllTypes
+                .ToDictionary(d => d.Key, d => (PrimitiveType_v1) d.Value.Accept(dtSer));
             var namedTypes = new Dictionary<string, SerializedType>();
             var typedefs = EnvironmentMetadata.Types;
-            var dtSer = new DataTypeSerializer();
             foreach (var typedef in typedefs)
             {
-                namedTypes.Add(typedef.Key, typedef.Value.Accept(dtSer));
+                namedTypes[typedef.Key] = typedef.Value.Accept(dtSer);
             }
-            return new SymbolTable(Platform, namedTypes);
+            return new SymbolTable(Platform, primitiveTypes, namedTypes);
         }
 
         public ProcedureSerializer CreateProcedureSerializer()

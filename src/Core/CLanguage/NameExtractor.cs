@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -58,6 +58,11 @@ namespace Reko.Core.CLanguage
         public string VisitPointer(PointerDeclarator pointer)
         {
             return pointer.Pointee.Accept(this);
+        }
+
+        public string VisitReference(ReferenceDeclarator reference)
+        {
+            return reference.Referent.Accept(this);
         }
 
         public string VisitFunction(FunctionDeclarator function)

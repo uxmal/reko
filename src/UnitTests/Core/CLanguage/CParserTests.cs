@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -1274,6 +1274,25 @@ int x = 3;
                 "(decl (attr reko::returns (Register Comma StringLiteral d0)) " +
                   "Bool ((init-decl (func _DATAINIT " +
                   "(((attr reko::arg (Register Comma StringLiteral a5)) Long a5))))))",
+                decl.ToString());
+        }
+
+        [Test]
+        public void CParser_ExternalTypes()
+        {
+            Lex("word32 fn00401410(Eq_25 ebp, Eq_26 dwArg04, word32 dwArg08, " +
+                "Eq_25 dwArg0C, ptr32 & ebxOut, ptr32 & esiOut);");
+            parserState.Typedefs.UnionWith(new[]{
+                "Eq_25", "Eq_26", "ptr32", "word32" });
+            var decl = parser.Parse_ExternalDecl();
+            Assert.AreEqual(
+                "(decl word32 ((init-decl (func fn00401410 (" +
+                    "(Eq_25 ebp) " +
+                    "(Eq_26 dwArg04) " +
+                    "(word32 dwArg08) " +
+                    "(Eq_25 dwArg0C) " +
+                    "(ptr32 (ref ebxOut)) " +
+                    "(ptr32 (ref esiOut)))))))",
                 decl.ToString());
         }
     }
