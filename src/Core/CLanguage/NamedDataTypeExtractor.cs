@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -134,6 +134,31 @@ namespace Reko.Core.CLanguage
             };
         }
 
+        public Func<NamedDataType, NamedDataType> VisitReference(ReferenceDeclarator reference)
+        {
+            Func<NamedDataType, NamedDataType> fn;
+            if (reference.Referent!= null)
+            {
+                fn = reference.Referent.Accept(this);
+            }
+            else
+            {
+                fn = f => f;
+            }
+            return (nt) =>
+            {
+                var size = PointerSize();
+                nt.DataType = new ReferenceType_v1
+                {
+                    Referent = nt.DataType,
+                    Size = size,
+                    //$TODO: Qualifier
+                };
+                nt.Size = PointerSize();
+                return fn(nt);
+            };
+        }
+
         private int PointerSize()
         {
             if (specs.OfType<TypeQualifier>()
@@ -195,7 +220,8 @@ namespace Reko.Core.CLanguage
             else
             {
                 var ntde = new NamedDataTypeExtractor(platform, decl.DeclSpecs, symbolTable);
-                var nt = ConvertArrayToPointer(ntde.GetNameAndType(decl.Declarator));
+                var ntTmp = ntde.GetNameAndType(decl.Declarator);
+                var nt = ConvertArrayToPointer(ntTmp);
                 var kind = GetArgumentKindFromAttributes("arg", decl.Attributes);
                 return new Argument_v1
                 {
@@ -390,6 +416,11 @@ namespace Reko.Core.CLanguage
 
         public SerializedType VisitTypedef(TypeDefName typeDefName)
         {
+            if (symbolTable.PrimitiveTypes.TryGetValue(typeDefName.Name, out var prim))
+            {
+                byteSize = prim.ByteSize;
+                return prim;
+            }
             if (!symbolTable.NamedTypes.TryGetValue(typeDefName.Name, out var type))
             {
                 throw new ApplicationException(string.Format(

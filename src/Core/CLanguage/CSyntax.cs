@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -283,6 +283,7 @@ namespace Reko.Core.CLanguage
         T VisitArray(ArrayDeclarator array);
         T VisitField(FieldDeclarator field);
         T VisitPointer(PointerDeclarator pointer);
+        T VisitReference(ReferenceDeclarator pointer);
         T VisitFunction(FunctionDeclarator function);
         T VisitCallConvention(CallConventionDeclarator callConvention);
     }
@@ -372,6 +373,33 @@ namespace Reko.Core.CLanguage
             sb.AppendFormat(" {0})", Pointee);
             return sb.ToString();
         }
+    }
+
+    public class ReferenceDeclarator : Declarator
+    {
+        public Declarator Referent;
+        public List<TypeQualifier> TypeQualifierList;
+
+        public override T Accept<T>(DeclaratorVisitor<T> visitor)
+        {
+            return visitor.VisitReference(this);
+        }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.Append("(ref");
+            if (TypeQualifierList != null && TypeQualifierList.Count > 0)
+            {
+                foreach (var tq in TypeQualifierList)
+                {
+                    sb.AppendFormat(" {0}", tq);
+                }
+            }
+            sb.AppendFormat(" {0})", Referent);
+            return sb.ToString();
+        }
+
     }
 
     public class IdDeclarator : Declarator

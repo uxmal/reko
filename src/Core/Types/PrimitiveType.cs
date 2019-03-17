@@ -67,7 +67,11 @@ namespace Reko.Core.Types
 	/// </remarks>
 	public class PrimitiveType : DataType
 	{
-		private readonly int bitSize;
+        private static Dictionary<PrimitiveType, PrimitiveType> cache;
+        private static Dictionary<string, PrimitiveType> lookupByName;
+        private static Dictionary<int, Domain> mpBitWidthToAllowableDomain;
+
+        private readonly int bitSize;
         private readonly int byteSize;
 		
 		private PrimitiveType(Domain dom, int bitSize, string name)
@@ -77,6 +81,8 @@ namespace Reko.Core.Types
             this.byteSize = (bitSize + (BitsPerByte-1)) / BitsPerByte;
 			this.Name = name;
 		}
+
+        public Domain Domain { get; private set; }
 
         public override void Accept(IDataTypeVisitor v)
         {
@@ -162,8 +168,6 @@ namespace Reko.Core.Types
 
         public static PrimitiveType CreateWord(uint bitSize)
             => CreateWord((int)bitSize);
-
-        public Domain Domain { get; private set; }
 
 		public override bool Equals(object obj)
 		{
@@ -278,9 +282,7 @@ namespace Reko.Core.Types
 			set => throw new InvalidOperationException("Size of a primitive type cannot be changed."); 
 		}
 
-		private static Dictionary<PrimitiveType,PrimitiveType> cache;
-        private static Dictionary<string, PrimitiveType> lookupByName;
-        private static Dictionary<int, Domain> mpBitWidthToAllowableDomain;
+        public static Dictionary<string, PrimitiveType> AllTypes => lookupByName;
 
         static PrimitiveType()
         {
