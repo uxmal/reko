@@ -117,15 +117,8 @@ fn092A_exit: warning: Phi functions will be ignored by type analysis. This may b
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 85
 100007E0: warning: Expected sizes of arrays to have been determined by now
 1000002C: warning: Expected sizes of arrays to have been determined by now
-error: An error occurred during decompilation. System.IO.IOException: The requested operation cannot be performed on a file with a user-mapped section open.
-
-   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
-   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
-   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access)
-   at Reko.CmdLine.CmdLineHost.CreateTextWriter(String filename) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineHost.cs:line 40
-   at Reko.CmdLine.CmdLineHost.WriteDecompiledCode(Program program, Action`1 writer) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineHost.cs:line 69
-   at Reko.DecompilerDriver.WriteDecompilerProducts() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 502
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 177
+1000002C: warning: Expected sizes of arrays to have been determined by now
+100007E0: warning: Expected sizes of arrays to have been determined by now
 === Elf\MIPS\swlswr\test
 === Elf\Msp430\a.out
 *** Elf\Msp430\a.out
@@ -1627,4 +1620,4 @@ l0800_906A: warning: Non-integral switch expression
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 56 binaries in 68.02 seconds ---
+Decompiled 56 binaries in 94.57 seconds ---

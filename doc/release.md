@@ -16,6 +16,7 @@ Change the appveyor build version in `appevor.yml`
 Change the MSI Installer version in `src/WixInstaller/Properties.wxi`
 
 Build from a fresh clone of the Reko repository to make sure all project build without errors.
+Run all unit tests, run all regression tests.
 Commit changes and push to GitHub, triggering the CI builds on AppVeyor and Travis-CI.
 Make sure CI tests are are passing.
 
