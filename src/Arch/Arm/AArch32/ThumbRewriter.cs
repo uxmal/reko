@@ -173,7 +173,7 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
-            public bool MoveNext()
+        public bool MoveNext()
         {
                 m.Instructions = new List<RtlInstruction>();
                 int n = native.GetCount();

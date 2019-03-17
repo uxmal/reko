@@ -1808,4 +1808,4 @@ l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 56 binaries in 74.63 seconds ---
+Decompiled 56 binaries in 93.18 seconds ---

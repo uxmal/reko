@@ -32,7 +32,7 @@ namespace Reko.Core.Rtl
     /// </summary>
     public class RtlEmitter : ExpressionEmitter
     {
-        public List<RtlInstruction> Instructions { get; set; }
+        public List<RtlInstruction> Instructions { get; }
 
         public RtlEmitter(List<RtlInstruction> instrs)
         {
