@@ -32,12 +32,13 @@ namespace Reko.Core.Rtl
     /// </summary>
     public class RtlEmitter : ExpressionEmitter
     {
-        public List<RtlInstruction> Instructions { get; }
-
         public RtlEmitter(List<RtlInstruction> instrs)
         {
             this.Instructions = instrs;
         }
+
+        public List<RtlInstruction> Instructions { get; set; }
+
 
         /// <summary>
         /// Generates a RtlAssignment ('dst = src' in the C language family).
