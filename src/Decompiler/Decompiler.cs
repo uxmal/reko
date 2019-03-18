@@ -48,6 +48,7 @@ namespace Reko
         void ReconstructTypes();
         void StructureProgram();
         void WriteDecompilerProducts();
+        void ExtractResources();
 
         void Assemble(string file, Assembler asm);
     }
@@ -89,6 +90,7 @@ namespace Reko
             try
             {
                 Load(filename, loader);
+                ExtractResources();
                 ScanPrograms();
                 AnalyzeDataFlow();
                 ReconstructTypes();
@@ -292,11 +294,119 @@ namespace Reko
             return project;
         }
 
-		/// <summary>
-		/// Extracts type information from the typeless rewritten programs.
-		/// </summary>
-		/// <param name="host"></param>
-		/// <param name="ivs"></param>
+        public void ExtractResources()
+        {
+            foreach (var program in project.Programs)
+            {
+                if (program.User.ExtractResources)
+                {
+                    ExtractResources(program);
+                }
+            }
+        }
+
+        public void ExtractResources(Program program)
+        {
+            var prg = program.Resources;
+            if (prg == null)
+                return;
+            var fsSvc = services.RequireService<IFileSystemService>();
+            var resourceDir = program.ResourcesDirectory;
+            if (prg.Name == "PE resources")
+            {
+                try
+                {
+                    fsSvc.CreateDirectory(resourceDir);
+                }
+                catch (Exception ex)
+                {
+                    var diagSvc = services.RequireService<IDiagnosticsService>();
+                    diagSvc.Error(ex, $"Unable to create directory '{0}'.");
+                    return;
+                }
+                foreach (ProgramResourceGroup pr in prg.Resources)
+                {
+                    switch (pr.Name)
+                    {
+                    case "CURSOR":
+                        {
+                            if (!WriteResourceFile(fsSvc, resourceDir, "Cursor", ".cur", pr))
+                                return;
+                        }
+                        break;
+                    case "BITMAP":
+                        {
+                            if (!WriteResourceFile(fsSvc, resourceDir, "Bitmap", ".bmp", pr))
+                                return;
+                        }
+                        break;
+                    case "ICON":
+                        {
+                            if (!WriteResourceFile(fsSvc, resourceDir, "Icon", ".ico", pr))
+                                return;
+                        }
+                        break;
+                    case "FONT":
+                        {
+                            if (!WriteResourceFile(fsSvc, resourceDir, "Font", ".bin", pr))
+                                return;
+                        }
+                        break;
+                    case "NEWBITMAP":
+                        {
+                            if (!WriteResourceFile(fsSvc, resourceDir, "NewBitmap", ".bmp", pr))
+                                return;
+                        }
+                        break;
+
+                    default:
+                        break;
+                    }
+                }
+            }
+        }
+
+        private bool WriteResourceFile(IFileSystemService fsSvc, string outputDir, string ResourceType, string ext, ProgramResourceGroup pr)
+        {
+            var dirPath = Path.Combine(outputDir, ResourceType);
+            try
+            {
+                fsSvc.CreateDirectory(dirPath);
+            }
+            catch (Exception ex)
+            {
+                var diagSvc = services.RequireService<IDiagnosticsService>();
+                diagSvc.Error(ex, $"Unable to create directory '{dirPath}'.");
+                return false;
+            }
+            string path = "";
+            try
+            {
+                foreach (ProgramResourceGroup pr1 in pr.Resources)
+                {
+                    foreach (ProgramResourceInstance pr2 in pr1.Resources)
+                    {
+                        path = Path.Combine(dirPath, pr1.Name + ext);
+                        fsSvc.WriteAllBytes(path, pr2.Bytes);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                var diagSvc = services.RequireService<IDiagnosticsService>();
+                diagSvc.Error(ex, $"Unable to write file '{path}'");
+                return false;
+            }
+            return true;
+        }
+
+
+
+        /// <summary>
+        /// Extracts type information from the typeless rewritten programs.
+        /// </summary>
+        /// <param name="host"></param>
+        /// <param name="ivs"></param>
         public void ReconstructTypes()
         {
             foreach (var program in Project.Programs.Where(p => p.NeedsTypeReconstruction))

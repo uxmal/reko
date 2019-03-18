@@ -122,12 +122,7 @@ namespace Reko.Gui.Forms
             {
                 return false;
             }
-
-            foreach (var program in Decompiler.Project.Programs)
-            {
-                // Process the resources and save as files
-                ProcessResources(program);
-            }
+            Decompiler.ExtractResources();
 
             var browserSvc = Services.RequireService<IProjectBrowserService>();
             browserSvc.Load(Decompiler.Project);
@@ -143,7 +138,7 @@ namespace Reko.Gui.Forms
             svc.StartBackgroundWork("Loading program", delegate()
             {
                 Program program = Decompiler.LoadRawImage(file, details);
-                ProcessResources(program);
+                Decompiler.ExtractResources();
             });
             var browserSvc = Services.RequireService<IProjectBrowserService>();
             if (Decompiler.Project != null)
@@ -190,101 +185,6 @@ namespace Reko.Gui.Forms
                 Decompiler != null &&
                 Decompiler.Project != null &&
                 Decompiler.Project.Programs.Any(p => p.NeedsScanning);
-        }
-
-        private void ProcessResources(Program program)
-        {
-            var prg = program.Resources;
-            if (prg == null)
-                return;
-            var fsSvc = Services.RequireService<IFileSystemService>();
-            var resourceDir = program.ResourcesDirectory;
-            if (prg.Name == "PE resources")
-            {
-                try
-                {
-                    fsSvc.CreateDirectory(resourceDir);
-                }
-                catch (Exception ex)
-                {
-                    var diagSvc = Services.RequireService<IDiagnosticsService>();
-                    diagSvc.Error(ex, $"Unable to create directory '{0}'.");
-                    return;
-                }
-                foreach (ProgramResourceGroup pr in prg.Resources)
-                {
-                    switch (pr.Name)
-                    {
-                    case "CURSOR":
-                        {
-                            if (!WriteResourceFile(fsSvc, resourceDir, "Cursor", ".cur", pr))
-                                return;
-                        }
-                        break;
-                    case "BITMAP":
-                        {
-                            if (!WriteResourceFile(fsSvc, resourceDir, "Bitmap", ".bmp", pr))
-                                return;
-                        }
-                        break;
-                    case "ICON":
-                        {
-                            if (!WriteResourceFile(fsSvc, resourceDir, "Icon", ".ico", pr))
-                                return;
-                        }
-                        break;
-                    case "FONT":
-                        {
-                            if (!WriteResourceFile(fsSvc, resourceDir, "Font", ".bin", pr))
-                                return;
-                        }
-                        break;
-                    case "NEWBITMAP":
-                        {
-                            if (!WriteResourceFile(fsSvc, resourceDir, "NewBitmap", ".bmp", pr))
-                                return;
-                        }
-                        break;
-
-                    default:
-                        break;
-                    }
-                }
-            }
-        }
-
-        private bool WriteResourceFile(IFileSystemService fsSvc, string outputDir, string ResourceType, string ext, ProgramResourceGroup pr)
-        {
-            var dirPath = Path.Combine(outputDir, ResourceType);
-            try
-            {
-                fsSvc.CreateDirectory(dirPath);
-            }
-             catch (Exception ex)
-            {
-                var diagSvc = Services.RequireService<IDiagnosticsService>();
-                diagSvc.Error(ex, $"Unable to create directory '{dirPath}'.");
-                return false;
-            }
-            string path = "";
-            try
-            {
-                foreach (ProgramResourceGroup pr1 in pr.Resources)
-                {
-                    foreach (ProgramResourceInstance pr2 in pr1.Resources)
-                    {
-                        path = Path.Combine(dirPath, pr1.Name + ext);
-                        fsSvc.WriteAllBytes(path, pr2.Bytes);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                var diagSvc = Services.RequireService<IDiagnosticsService>();
-                diagSvc.Error(ex, $"Unable to write file '{path}'");
-                return false;
-            }
-            return true;
         }
     }
 }

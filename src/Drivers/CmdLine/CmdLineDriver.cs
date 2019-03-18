@@ -148,12 +148,12 @@ namespace Reko.CmdLine
             pArgs.TryGetValue("--loader", out object loader);
             try
             {
-                decompiler.Load((string)pArgs["filename"], (string)loader);
-                if (!pArgs.TryGetValue("extract-resources", out var oExtractResources) || 
-                    ((string) oExtractResources != "no" && (string) oExtractResources != "false"))
-                {
-                    //$TODO: write resources to resource directory. Happens in IDecompiler?
-                }
+                decompiler.Load((string) pArgs["filename"], (string) loader);
+
+                decompiler.Project.Programs[0].User.ExtractResources =
+                   !pArgs.TryGetValue("extract-resources", out var oExtractResources) ||
+                   ((string) oExtractResources != "no" && (string) oExtractResources != "false");
+
                 if (pArgs.TryGetValue("heuristics", out var oHeur))
                 {
                     decompiler.Project.Programs[0].User.Heuristics = ((string[])oHeur).ToSortedSet();
@@ -173,6 +173,7 @@ namespace Reko.CmdLine
                 {
                     decompiler.Project.Programs[0].User.ShowBytesInDisassembly = true;
                 }
+                decompiler.ExtractResources();
                 decompiler.ScanPrograms();
                 if (!pArgs.ContainsKey("scan-only"))
                 {
