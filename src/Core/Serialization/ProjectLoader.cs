@@ -232,7 +232,10 @@ namespace Reko.Core.Serialization
         {
             var binAbsPath = ConvertToAbsolutePath(projectFilePath, sInput.Filename);
             var bytes = loader.LoadImageBytes(ConvertToAbsolutePath(projectFilePath, sInput.Filename), 0);
-            var sUser = sInput.User ?? new UserData_v4();
+            var sUser = sInput.User ?? new UserData_v4
+            {
+                ExtractResources = true,
+            };
             var address = LoadAddress(sUser, this.arch);
             var archOptions = XmlOptions.LoadIntoDictionary(sUser.Processor?.Options, StringComparer.OrdinalIgnoreCase);
             Program program;
@@ -427,6 +430,7 @@ namespace Reko.Core.Serialization
             }
             program.User.ShowAddressesInDisassembly = sUser.ShowAddressesInDisassembly;
             program.User.ShowBytesInDisassembly = sUser.ShowBytesInDisassembly;
+            program.User.ExtractResources = sUser.ExtractResources;
         }
 
         private Annotation LoadAnnotation(Annotation_v3 annotation)

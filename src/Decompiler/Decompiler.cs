@@ -284,7 +284,7 @@ namespace Reko
         {
             program.Filename = fileNameWithPath;
             program.EnsureFilenames(fileNameWithPath);
-
+            program.User.ExtractResources = true;
             var project = new Project
             {
                 Programs = { program },

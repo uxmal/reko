@@ -655,6 +655,7 @@ namespace Reko.UnitTests.Core.Serialization
         <item key=""Name2"">Sue</item>
       </platform>
       <registerValues />
+      <extractResources>false</extractResources>
     </user>
   </input>
 </project>";

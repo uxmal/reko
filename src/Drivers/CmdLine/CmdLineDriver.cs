@@ -149,6 +149,11 @@ namespace Reko.CmdLine
             try
             {
                 decompiler.Load((string)pArgs["filename"], (string)loader);
+                if (!pArgs.TryGetValue("extract-resources", out var oExtractResources) || 
+                    ((string) oExtractResources != "no" && (string) oExtractResources != "false"))
+                {
+                    //$TODO: write resources to resource directory. Happens in IDecompiler?
+                }
                 if (pArgs.TryGetValue("heuristics", out var oHeur))
                 {
                     decompiler.Project.Programs[0].User.Heuristics = ((string[])oHeur).ToSortedSet();
@@ -359,6 +364,17 @@ namespace Reko.CmdLine
                 {
                     parsedArgs["scan-only"] = true;
                 }
+                else if (args[i] == "--extract-resources")
+                {
+                    if (i < args.Length - 1)
+                    {
+                        parsedArgs["extract-resources"] = args[++i];
+                    }
+                    else
+                    {
+                        parsedArgs["extract-resources"] = "yes";
+                    }
+                }
                 else if (arg.StartsWith("-"))
                 {
                     w.WriteLine("error: unrecognized option {0}", arg);
@@ -433,13 +449,15 @@ namespace Reko.CmdLine
             w.WriteLine("                          to one of the following formats:");
             DumpRawFiles(config, w, "    {0,-25} {1}");
             w.WriteLine(" --entry <address>        Use <address> as an entry point to the program.");
+            w.WriteLine(" --extract-resources <flag>  If <flag> is true, extract any embedded");
+            w.WriteLine("                          resources (defaults to true).");
             w.WriteLine(" --reg <regInit>          Set register to value, where regInit is formatted as");
             w.WriteLine("                          reg_name:value, e.g. sp:FF00");
-            w.WriteLine(" --heuristic <h1>[,<h2>...] Use one of the following heuristics to examine");
+            w.WriteLine(" --heuristic <h1>[,<h2>...]  Use one of the following heuristics to examine");
             w.WriteLine("                          the binary:");
             w.WriteLine("    shingle               Use shingle assembler to discard data ");
             w.WriteLine(" --metadata <filename>    Use the file <filename> as a source of metadata");
-            w.WriteLine(" --scan-only              Only scans the binary to find instructios, forgoing");
+            w.WriteLine(" --scan-only              Only scans the binary to find instructions, forgoing");
             w.WriteLine("                          full decompilation.");
             w.WriteLine(" --time-limit <s>         Limit execution time to s seconds");
             //           01234567890123456789012345678901234567890123456789012345678901234567890123456789

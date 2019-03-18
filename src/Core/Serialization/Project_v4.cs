@@ -163,6 +163,10 @@ namespace Reko.Core.Serialization
         [XmlElement("dasmBytes")]
         [DefaultValue(false)]
         public bool ShowBytesInDisassembly;
+
+        [XmlElement("extractResources")]
+        [DefaultValue(true)]
+        public bool ExtractResources;
     }
 
     public class PlatformOptions_v4

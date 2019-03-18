@@ -97,6 +97,7 @@ namespace Reko.Core.Serialization
                     RegisterValues = SerializeRegisterValues(program.User.RegisterValues),
                     ShowAddressesInDisassembly = program.User.ShowAddressesInDisassembly,
                     ShowBytesInDisassembly = program.User.ShowBytesInDisassembly,
+                    ExtractResources = program.User.ExtractResources,
                 },
                 DisassemblyFilename =  ConvertToProjectRelativePath(projectAbsPath, program.DisassemblyFilename),
                 IntermediateFilename = ConvertToProjectRelativePath(projectAbsPath, program.IntermediateFilename),
