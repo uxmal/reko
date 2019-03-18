@@ -262,6 +262,7 @@ namespace Reko.Core.Serialization
             program.OutputFilename = ConvertToAbsolutePath(projectFilePath, sInput.OutputFilename);
             program.TypesFilename = ConvertToAbsolutePath(projectFilePath, sInput.TypesFilename);
             program.GlobalsFilename = ConvertToAbsolutePath(projectFilePath, sInput.GlobalsFilename);
+            program.ResourcesDirectory = ConvertToAbsolutePath(projectFilePath, sInput.ResourcesDirectory);
             program.EnsureFilenames(program.Filename);
             program.User.LoadAddress = address;
             ProgramLoaded.Fire(this, new ProgramEventArgs(program));

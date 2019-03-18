@@ -21,23 +21,24 @@
 using Reko.Core.Assemblers;
 using Reko.Core;
 using Reko.Core.Serialization;
+using Reko.Core.Services;
 using Reko.Core.Configuration;
 using Reko.Gui;
 using Reko.Loading;
 using System;
 using System.ComponentModel;
 using System.ComponentModel.Design;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using System.IO;
 
 namespace Reko.Gui.Forms
 {
     public interface InitialPageInteractor : IPhasePageInteractor
     {
-        bool OpenBinary(string file, string outputDir);
-        bool OpenBinaryAs(string file, string outputDir, LoadDetails details);
-        bool Assemble(string file, string outputDir, Assembler asm);
+        bool OpenBinary(string file);
+        bool OpenBinaryAs(string file, LoadDetails details);
+        bool Assemble(string file, Assembler asm);
     }
 
     /// <summary>
@@ -107,7 +108,7 @@ namespace Reko.Gui.Forms
         /// </summary>
         /// <param name="file"></param>
         /// <returns>True if the opened file was a Reko project.</returns>
-        public bool OpenBinary(string file, string outputDir)
+        public bool OpenBinary(string file)
         {
             var ldr = Services.RequireService<ILoader>();
             this.Decompiler = CreateDecompiler(ldr);
@@ -115,17 +116,18 @@ namespace Reko.Gui.Forms
             bool isOldProject = false;
             svc.StartBackgroundWork("Loading program", delegate ()
             {
-                isOldProject = Decompiler.Load(file, outputDir);
+                isOldProject = Decompiler.Load(file);
             });
             if (Decompiler.Project == null)
             {
                 return false;
             }
 
-            ProgramResourceGroup prg = Decompiler.Project.Programs[0].Resources;
-
-            // Process the resources adn save as files
-            ProcessResources(prg, outputDir);
+            foreach (var program in Decompiler.Project.Programs)
+            {
+                // Process the resources and save as files
+                ProcessResources(program);
+            }
 
             var browserSvc = Services.RequireService<IProjectBrowserService>();
             browserSvc.Load(Decompiler.Project);
@@ -133,18 +135,15 @@ namespace Reko.Gui.Forms
             return isOldProject;
         }
 
-        public bool OpenBinaryAs(string file, string outputDir, LoadDetails details)
+        public bool OpenBinaryAs(string file, LoadDetails details)
         {
             var ldr = Services.RequireService<ILoader>();
             this.Decompiler = CreateDecompiler(ldr);
             IWorkerDialogService svc = Services.RequireService<IWorkerDialogService>();
             svc.StartBackgroundWork("Loading program", delegate()
             {
-                Program program = Decompiler.LoadRawImage(file, outputDir, details);
-                ProgramResourceGroup prg = program.Resources;
-
-                // Process the resources adn save as files
-                ProcessResources(prg, outputDir);
+                Program program = Decompiler.LoadRawImage(file, details);
+                ProcessResources(program);
             });
             var browserSvc = Services.RequireService<IProjectBrowserService>();
             if (Decompiler.Project != null)
@@ -168,14 +167,14 @@ namespace Reko.Gui.Forms
             }
         }
 
-        public bool Assemble(string file, string outputDir, Assembler asm)
+        public bool Assemble(string file, Assembler asm)
         {
             var ldr = Services.RequireService<ILoader>();
             this.Decompiler = CreateDecompiler(ldr);
             var svc = Services.RequireService<IWorkerDialogService>();
             svc.StartBackgroundWork("Loading program", delegate()
             {
-                Decompiler.Assemble(file, outputDir, asm);
+                Decompiler.Assemble(file, asm);
             });
             if (Decompiler.Project == null)
                 return false;
@@ -193,77 +192,99 @@ namespace Reko.Gui.Forms
                 Decompiler.Project.Programs.Any(p => p.NeedsScanning);
         }
 
-        private void ProcessResources(ProgramResourceGroup prg, string outputDir)
+        private void ProcessResources(Program program)
         {
-            try
+            var prg = program.Resources;
+            if (prg == null)
+                return;
+            var fsSvc = Services.RequireService<IFileSystemService>();
+            var resourceDir = program.ResourcesDirectory;
+            if (prg.Name == "PE resources")
             {
-                if (prg.Name == "PE resources")
+                try
                 {
-                    // Create the dir
-                    Directory.CreateDirectory(outputDir + "\\resources");
-                    foreach (ProgramResourceGroup pr in prg.Resources)
+                    fsSvc.CreateDirectory(resourceDir);
+                }
+                catch (Exception ex)
+                {
+                    var diagSvc = Services.RequireService<IDiagnosticsService>();
+                    diagSvc.Error(ex, $"Unable to create directory '{0}'.");
+                    return;
+                }
+                foreach (ProgramResourceGroup pr in prg.Resources)
+                {
+                    switch (pr.Name)
                     {
-                        switch (pr.Name)
+                    case "CURSOR":
                         {
-                            case "CURSOR":
-                            {
-                                WriteResourceFile(outputDir + "\\resources", "Cursor", ".cur", pr);
-                            }
-                            break;
-                            case "BITMAP":
-                            {
-                                WriteResourceFile(outputDir + "\\resources", "Bitmap", ".bmp", pr);
-                            }
-                            break;
-                            case "ICON":
-                            {
-                                WriteResourceFile(outputDir + "\\resources", "Icon", ".ico", pr);
-                            }
-                            break;
-                            case "FONT":
-                            {
-                                WriteResourceFile(outputDir + "\\resources", "Font", ".bin", pr);
-                            }
-                            break;
-                            case "NEWBITMAP":
-                            {
-                                WriteResourceFile(outputDir + "\\resources", "NewBitmap", ".bmp", pr);
-                            }
-                            break;
-
-                            default:
-                                break;
+                            if (!WriteResourceFile(fsSvc, resourceDir, "Cursor", ".cur", pr))
+                                return;
                         }
+                        break;
+                    case "BITMAP":
+                        {
+                            if (!WriteResourceFile(fsSvc, resourceDir, "Bitmap", ".bmp", pr))
+                                return;
+                        }
+                        break;
+                    case "ICON":
+                        {
+                            if (!WriteResourceFile(fsSvc, resourceDir, "Icon", ".ico", pr))
+                                return;
+                        }
+                        break;
+                    case "FONT":
+                        {
+                            if (!WriteResourceFile(fsSvc, resourceDir, "Font", ".bin", pr))
+                                return;
+                        }
+                        break;
+                    case "NEWBITMAP":
+                        {
+                            if (!WriteResourceFile(fsSvc, resourceDir, "NewBitmap", ".bmp", pr))
+                                return;
+                        }
+                        break;
+
+                    default:
+                        break;
                     }
                 }
-            }
-            catch (Exception)
-            {
-
             }
         }
 
-        private void WriteResourceFile(string outputDir, string ResourceType, string ext, ProgramResourceGroup pr)
+        private bool WriteResourceFile(IFileSystemService fsSvc, string outputDir, string ResourceType, string ext, ProgramResourceGroup pr)
         {
-            Directory.CreateDirectory(outputDir + "\\" + ResourceType);
-            foreach (ProgramResourceGroup pr1 in pr.Resources)
+            var dirPath = Path.Combine(outputDir, ResourceType);
+            try
             {
-                foreach (ProgramResourceInstance pr2 in pr1.Resources)
+                fsSvc.CreateDirectory(dirPath);
+            }
+             catch (Exception ex)
+            {
+                var diagSvc = Services.RequireService<IDiagnosticsService>();
+                diagSvc.Error(ex, $"Unable to create directory '{dirPath}'.");
+                return false;
+            }
+            string path = "";
+            try
+            {
+                foreach (ProgramResourceGroup pr1 in pr.Resources)
                 {
-                    // write the bytes to file
-                    try
+                    foreach (ProgramResourceInstance pr2 in pr1.Resources)
                     {
-                        using (var fs = new FileStream(outputDir + "\\" + ResourceType + "\\" + pr1.Name + ext, FileMode.Create, FileAccess.Write))
-                        {
-                            fs.Write(pr2.Bytes, 0, pr2.Bytes.Length);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-
+                        path = Path.Combine(dirPath, pr1.Name + ext);
+                        fsSvc.WriteAllBytes(path, pr2.Bytes);
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                var diagSvc = Services.RequireService<IDiagnosticsService>();
+                diagSvc.Error(ex, $"Unable to write file '{path}'");
+                return false;
+            }
+            return true;
         }
     }
 }

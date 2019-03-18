@@ -40,8 +40,8 @@ namespace Reko
     {
         Project Project { get; }
 
-        bool Load(string fileName, string outputDir, string loader=null);
-        Program LoadRawImage(string file, string outputDir, LoadDetails raw);
+        bool Load(string fileName, string loader=null);
+        Program LoadRawImage(string file, LoadDetails raw);
         void ScanPrograms();
         ProcedureBase ScanProcedure(ProgramAddress paddr, IProcessorArchitecture arch);
         void AnalyzeDataFlow();
@@ -49,7 +49,7 @@ namespace Reko
         void StructureProgram();
         void WriteDecompilerProducts();
 
-        void Assemble(string file, string outputDir, Assembler asm);
+        void Assemble(string file, Assembler asm);
     }
 
 	/// <summary>
@@ -187,11 +187,10 @@ namespace Reko
         /// specified instead, we create a simple project for the file.
         /// </summary>
         /// <param name="fileName">The filename to load.</param>
-        /// <param name="outputDir">Directory the output files are placed.</param>
         /// <param name="loaderName">Optional .NET class name of a custom
         /// image loader</param>
         /// <returns>True if what was loaded was an actual project</returns>
-        public bool Load(string fileName, string outputDir, string loaderName = null)
+        public bool Load(string fileName, string loaderName = null)
         {
             eventListener.ShowStatus("Loading source program.");
             byte[] image = loader.LoadImageBytes(fileName, 0);
@@ -206,7 +205,7 @@ namespace Reko
             else
             {
                 var program = loader.LoadExecutable(fileName, image, loaderName, null);
-                this.Project = CreateDefaultProject(fileName, outputDir, program);
+                this.Project = CreateDefaultProject(fileName, program);
                 this.Project.LoadedMetadata = program.Platform.CreateMetadata();
                 program.EnvironmentMetadata = this.Project.LoadedMetadata;
                 isProject = false;
@@ -256,38 +255,35 @@ namespace Reko
             }
         }
 
-        public void Assemble(string fileName, string outputDir, Assembler asm)
+        public void Assemble(string fileName, Assembler asm)
         {
             eventListener.ShowStatus("Assembling program.");
             var program = loader.AssembleExecutable(fileName, asm, null);
-            Project = CreateDefaultProject(fileName, outputDir, program);
+            Project = CreateDefaultProject(fileName, program);
             eventListener.ShowStatus("Assembled program.");
         }
 
         /// <summary>
-        /// Loads a program into memory, but performs no relocations.
+        /// Loads a program into memory using the additional information in 
+        /// <paramref name="raw"/>. Use this to open files with insufficient or
+        /// no metadata.
         /// </summary>
-        /// <param name="fileName"></param>
-        /// <param name="arch"></param>
-        /// <param name="platform"></param>
-        public Program LoadRawImage(string fileName, string outputDir, LoadDetails raw)
+        /// <param name="fileName">Name of the file to be loaded.</param>
+        /// <param name="raw">Extra metadata supllied by the user.</param>
+        public Program LoadRawImage(string fileName, LoadDetails raw)
         {
             eventListener.ShowStatus("Loading raw bytes.");
             byte[] image = loader.LoadImageBytes(fileName, 0);
             var program = loader.LoadRawImage(fileName, image, null, raw);
-            Project = CreateDefaultProject(fileName, outputDir, program);
+            Project = CreateDefaultProject(fileName, program);
             eventListener.ShowStatus("Raw bytes loaded.");
             return program;
         }
 
-        protected Project CreateDefaultProject(string fileNameWithPath, string outputDir, Program program)
+        protected Project CreateDefaultProject(string fileNameWithPath, Program program)
         {
             program.Filename = fileNameWithPath;
-
-            FileInfo fif = new FileInfo(fileNameWithPath);
-            string fileName = fif.Name;
-
-            program.EnsureFilenames(outputDir + "\\" + fileName);
+            program.EnsureFilenames(fileNameWithPath);
 
             var project = new Project
             {

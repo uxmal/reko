@@ -74,7 +74,7 @@ namespace Reko.Core.Serialization
                         .ToList(),
                     Processor = SerializeProcessorOptions(program.User, program.Architecture),
                     PlatformOptions = SerializePlatformOptions(program.User, program.Platform),
-                    LoadAddress = program.User.LoadAddress != null ? program.User.LoadAddress.ToString() : null,
+                    LoadAddress = program.User.LoadAddress?.ToString(),
                     Calls = program.User.Calls
                         .Select(uc => SerializeUserCall(program, uc.Value))
                         .Where(uc => uc != null)
@@ -103,6 +103,7 @@ namespace Reko.Core.Serialization
                 OutputFilename =       ConvertToProjectRelativePath(projectAbsPath, program.OutputFilename),
                 TypesFilename =        ConvertToProjectRelativePath(projectAbsPath, program.TypesFilename),
                 GlobalsFilename =      ConvertToProjectRelativePath(projectAbsPath, program.GlobalsFilename),
+                ResourcesDirectory =   ConvertToProjectRelativePath(projectAbsPath, program.ResourcesDirectory),
             };
         }
 
@@ -240,15 +241,13 @@ namespace Reko.Core.Serialization
         {
             if (value == null)
                 return null;
-            var sValue = value as string;
-            if (sValue != null)
+            if (value is string sValue)
             {
                 var el = doc.CreateElement("item", SerializedLibrary.Namespace_v4);
                 el.InnerXml = (string)value;
                 return el;
             }
-            var dict = value as IDictionary;
-            if (dict != null)
+            if (value is IDictionary dict)
             {
                 var el = doc.CreateElement("dict", SerializedLibrary.Namespace_v4);
                 foreach (DictionaryEntry de in dict)
@@ -259,8 +258,7 @@ namespace Reko.Core.Serialization
                 }
                 return el;
             }
-            var ienum = value as IEnumerable;
-            if (ienum != null)
+            if (value is IEnumerable ienum)
             {
                 var el = doc.CreateElement("list", SerializedLibrary.Namespace_v4);
                 foreach (var oValue in ienum)

@@ -43,6 +43,7 @@ namespace Reko.UnitTests.Gui.Forms
         private Mock<IDecompiler> dec;
         private Mock<DecompilerHost> host;
         private Mock<ILowLevelViewService> memSvc;
+        private Mock<IFileSystemService> fsSvc;
         private Program program;
         private Project project;
 
@@ -57,6 +58,7 @@ namespace Reko.UnitTests.Gui.Forms
             uiSvc = new FakeShellUiService();
             host = new Mock<DecompilerHost>();
             memSvc = new Mock<ILowLevelViewService>();
+            fsSvc = new Mock<IFileSystemService>();
             var mem = new MemoryArea(Address.Ptr32(0x10000), new byte[1000]);
             var imageMap = new SegmentMap(
                 mem.BaseAddress,
@@ -78,6 +80,7 @@ namespace Reko.UnitTests.Gui.Forms
             sc.AddService<ILowLevelViewService>(memSvc.Object);
             sc.AddService<ILoader>(loader.Object);
             sc.AddService<DecompilerHost>(host.Object);
+            sc.AddService<IFileSystemService>(fsSvc.Object);
 
             i = new TestInitialPageInteractor(sc, dec.Object);
 

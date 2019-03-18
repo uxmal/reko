@@ -88,6 +88,9 @@ namespace Reko.Core.Serialization
         [XmlElement("global-vars")]
         public string GlobalsFilename;
 
+        [XmlElement("resources")]
+        public string ResourcesDirectory;
+
         [XmlElement("user")]
         public UserData_v4 User;
 

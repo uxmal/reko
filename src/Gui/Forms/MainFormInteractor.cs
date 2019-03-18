@@ -65,7 +65,6 @@ namespace Reko.Gui.Forms
 
         private MruList mru;
         private string projectFileName;
-        private string projectOutputDir;
         private IServiceContainer sc;
         private IConfigurationService config;
         private ICommandTarget subWindowCommandTarget;
@@ -220,9 +219,9 @@ namespace Reko.Gui.Forms
             get { return form; }
         }
 
-        public void OpenBinary(string file, string outputDir)
+        public void OpenBinary(string file)
         {
-            OpenBinary(file, outputDir, (f) => pageInitial.OpenBinary(f, outputDir));
+            OpenBinary(file, (f) => pageInitial.OpenBinary(f));
         }
 
         /// <summary>
@@ -230,15 +229,16 @@ namespace Reko.Gui.Forms
         /// </summary>
         /// <param name="file"></param>
         /// <param name="openAction"></param>
-        public void OpenBinary(string file, string outputDir, Func<string,bool> openAction)
+        public void OpenBinary(string file, Func<string,bool> openAction)
         {
             try
             {
                 CloseProject();
                 SwitchInteractor(InitialPageInteractor);
-                openAction(file);
-                ProjectFileName = file;
-                ProjectOutputDir = outputDir;
+                if (openAction(file))
+                {
+                    ProjectFileName = file;
+                }
             }
             catch (Exception ex)
             {
@@ -263,14 +263,14 @@ namespace Reko.Gui.Forms
                 // Create the dir
                 DirectoryInfo di = Directory.CreateDirectory(outputDir);
 
-                RememberFilenameInMru(fileName, outputDir);
-                uiSvc.WithWaitCursor(() => OpenBinary(fileName, outputDir, (f) => pageInitial.OpenBinary(f, outputDir)));
+                RememberFilenameInMru(fileName);
+                uiSvc.WithWaitCursor(() => OpenBinary(fileName, (f) => pageInitial.OpenBinary(f)));
             }
         }
 
-        private void RememberFilenameInMru(string fileName, string outputDir)
+        private void RememberFilenameInMru(string fileName)
         {
-            mru.Use(fileName, outputDir);
+            mru.Use(fileName);
             mru.Save(Services.RequireService<IFileSystemService>(), MruListFile);
         }
 
@@ -292,7 +292,7 @@ namespace Reko.Gui.Forms
             {
                 var metadata = projectLoader.LoadMetadataFile(fileName);
                 decompilerSvc.Decompiler.Project.MetadataFiles.Add(metadata);
-                //RememberFilenameInMru(fileName);
+                RememberFilenameInMru(fileName);
             }
             catch (Exception e)
             {
@@ -313,8 +313,8 @@ namespace Reko.Gui.Forms
                 var typeName = dlg.SelectedArchitectureTypeName;
                 var t = Type.GetType(typeName, true);
                 var asm = (Assembler) t.GetConstructor(Type.EmptyTypes).Invoke(null);
-                OpenBinary(dlg.FileName.Text, "", (f) => pageInitial.Assemble(f, "", asm));
-                RememberFilenameInMru(dlg.FileName.Text, "");
+                OpenBinary(dlg.FileName.Text, (f) => pageInitial.Assemble(f, asm));
+                RememberFilenameInMru(dlg.FileName.Text);
             }
             catch (Exception e)
             {
@@ -371,7 +371,7 @@ namespace Reko.Gui.Forms
                     EntryPoint = entry,
                 };
 
-                OpenBinary(dlg.FileName.Text, "", (f) =>pageInitial.OpenBinaryAs(f, "",details));
+                OpenBinary(dlg.FileName.Text, (f) =>pageInitial.OpenBinaryAs(f, details));
             }
             catch (Exception ex)
             {
@@ -398,7 +398,6 @@ namespace Reko.Gui.Forms
             diagnosticsSvc.ClearDiagnostics();
             decompilerSvc.Decompiler = null;
             this.ProjectFileName = null;
-            this.ProjectOutputDir = null;
         }
 
         private void CloseAllDocumentWindows()
@@ -531,12 +530,6 @@ namespace Reko.Gui.Forms
         {
             get { return projectFileName; }
             set { projectFileName = value; }
-        }
-
-        public string ProjectOutputDir
-        {
-            get { return projectOutputDir; }
-            set { projectOutputDir = value; }
         }
 
         public void EditFind()
@@ -699,8 +692,7 @@ namespace Reko.Gui.Forms
                 if (newName == null)
                     return false;
                 ProjectFileName = newName;
-                ProjectOutputDir = ProjectFileName+ ".reko";
-                RememberFilenameInMru(newName, ProjectOutputDir);
+                RememberFilenameInMru(newName);
             }
 
             var fsSvc = Services.RequireService<IFileSystemService>();
@@ -846,7 +838,7 @@ namespace Reko.Gui.Forms
             if (0 <= iMru && iMru < mru.Items.Count)
             {
                 cmdStatus.Status = MenuStatus.Visible | MenuStatus.Enabled;
-                cmdText.Text = string.Format("&{0} {1}", iMru + 1, mru.Items[iMru].filename);
+                cmdText.Text = string.Format("&{0} {1}", iMru + 1, mru.Items[iMru]);
                 return true;
             }
             return false;
@@ -923,10 +915,9 @@ namespace Reko.Gui.Forms
             int iMru = cmdId - CmdIds.FileMru;
             if (0 <= iMru && iMru < mru.Items.Count)
             {
-                string file = mru.Items[iMru].filename;
-                string outputDir = mru.Items[iMru].outputDir;
-                OpenBinary(file, outputDir, (f) => pageInitial.OpenBinary(file, outputDir));
-                RememberFilenameInMru(file, outputDir);
+                string file = mru.Items[iMru];
+                OpenBinary(file, (f) => pageInitial.OpenBinary(file));
+                RememberFilenameInMru(file);
                 return true;
             }
             return false;

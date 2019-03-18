@@ -31,25 +31,16 @@ namespace Reko.Gui
 	/// </summary>
 	public class MruList
 	{
-        public struct fileOutputDir
-        {
-            public string filename;
-            public string outputDir;
-        };
-
         private int itemsMax;
-		private List<fileOutputDir> items;
+        private List<string> items;
 
 		public MruList(int itemsMax)
 		{
 			this.itemsMax = itemsMax;
-			this.items = new List<fileOutputDir>(itemsMax);
+			this.items = new List<string>(itemsMax);
 		}
 
-		public IList<fileOutputDir> Items
-		{
-			get { return items; }
-		}
+        public IList<string> Items => items;
 
 		public void Load(IFileSystemService fsSvc, string fileLocation)
 		{
@@ -57,16 +48,12 @@ namespace Reko.Gui
                 return;     // Save ourselves the pain of an exception.
 			try
 			{
-				using (var reader = new StreamReader(fileLocation, new UTF8Encoding(false)))
+				using (var reader = fsSvc.CreateStreamReader(fileLocation, new UTF8Encoding(false)))
 				{
 					string line = reader.ReadLine();
 					while (line != null && items.Count < items.Capacity)
 					{
-                        fileOutputDir tmp = new fileOutputDir();
-                        tmp.filename = line.TrimEnd('\r', '\n');
-                        line = reader.ReadLine();
-                        tmp.outputDir = line.TrimEnd('\r', '\n');
-                        this.items.Add(tmp);
+                        items.Add(line.TrimEnd('\r', '\n'));
                         line = reader.ReadLine();
                     }
 				}
@@ -80,10 +67,9 @@ namespace Reko.Gui
 		{
 			using (var writer = fsSvc.CreateStreamWriter(fileLocation, false, new UTF8Encoding(false)))
 			{
-                foreach (fileOutputDir item in items)
+                foreach (var item in Items)
                 {
-                    writer.WriteLine(item.filename);
-                    writer.WriteLine(item.outputDir);
+                    writer.WriteLine(item);
                 }
             }
 		}
@@ -93,22 +79,15 @@ namespace Reko.Gui
 		/// </summary>
 		/// <param name="index"></param>
 
-		public void Use(string item, string outputDir)
+		public void Use(string item)
 		{
-			for (int i = 0; i < items.Count; ++i)
-			{
-				if (items[i].filename == item)
-				{
-					items.RemoveAt(i);
-					break;
-				}
-			}
+            var i = items.IndexOf(item);
+            if (i >= 0)
+            {
+                items.RemoveAt(i);
+            }
 
-            fileOutputDir tmp = new fileOutputDir();
-            tmp.filename = item;
-            tmp.outputDir = outputDir;
-
-            items.Insert(0, tmp);
+            items.Insert(0, item);
 
 			int itemsToKill = items.Count - itemsMax;
 			if (itemsToKill > 0)
