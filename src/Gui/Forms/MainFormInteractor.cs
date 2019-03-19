@@ -257,12 +257,6 @@ namespace Reko.Gui.Forms
             var fileName = uiSvc.ShowOpenFileDialog(null);
             if (fileName != null)
             {
-                // Get the users output directory
-                string outputDir = fileName + ".reko";
-
-                // Create the dir
-                DirectoryInfo di = Directory.CreateDirectory(outputDir);
-
                 RememberFilenameInMru(fileName);
                 uiSvc.WithWaitCursor(() => OpenBinary(fileName, (f) => pageInitial.OpenBinary(f)));
             }
