@@ -18,6 +18,8 @@
  */
 #endregion
 
+using System;
+using System.Text;
 using Reko.Core;
 using Reko.Core.Machine;
 
@@ -28,10 +30,12 @@ namespace Reko.Arch.PaRisc
         public InstrClass IClass { get; set; }
         public Opcode Opcode { get; set; }
         public MachineOperand[] Operands { get; set; }
+        public bool Annul { get; internal set; }
 
         public override InstrClass InstructionClass => IClass;
 
         public override int OpcodeAsInteger => (int) Opcode;
+
 
         public override MachineOperand GetOperand(int i)
         {
@@ -40,7 +44,7 @@ namespace Reko.Arch.PaRisc
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            writer.WriteOpcode(Opcode.ToString());
+            WriteMnemonic(writer);
             if (Operands.Length == 0)
                 return;
             writer.Tab();
@@ -57,6 +61,15 @@ namespace Reko.Arch.PaRisc
                 return;
             writer.WriteChar(',');
             Operands[3].Write(writer, options);
+        }
+
+        private void WriteMnemonic(MachineInstructionWriter writer)
+        {
+            var sb = new StringBuilder();
+            sb.Append(Opcode.ToString());
+            if (Annul)
+                sb.Append(",n");
+            writer.WriteOpcode(sb.ToString());
         }
     }
 }

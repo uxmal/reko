@@ -19,8 +19,10 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -40,6 +42,7 @@ namespace Reko.Arch.PaRisc
 
         private Address addr;
         private readonly List<MachineOperand> ops;
+        private bool annul;
 
         public PaRiscDisassembler(PaRiscArchitecture arch, EndianImageReader rdr)
         {
@@ -52,17 +55,42 @@ namespace Reko.Arch.PaRisc
         {
             this.addr = rdr.Address;
             this.ops.Clear();
+            this.annul = false;
+
             if (!rdr.TryReadBeUInt32(out uint uInstr))
                 return null;
             var instr = rootDecoder.Decode(uInstr, this);
             instr.Address = this.addr;
             instr.Length = (int) (rdr.Address - addr);
+            instr.IClass |= uInstr == 0 ? InstrClass.Zero : 0;
             return instr;
         }
 
+        /// <summary>
+        /// PA Risc instruction bits are numbers from the MSB to LSB.
+        /// </summary>
+        private static Bitfield PaRiscBitField(int bitPos, int bitLength)
+        {
+            return new Bitfield(32 - (bitPos + bitLength), bitLength);
+        }
+
+        private static Mutator<PaRiscDisassembler> u(int bitPos, int bitLength, PrimitiveType dt)
+        {
+            var field = PaRiscBitField(bitPos, bitLength);
+            return (u, d) =>
+            {
+                var v = field.Read(u);
+                d.ops.Add(new ImmediateOperand(Constant.Create(dt, v)));
+                return true;
+            };
+        }
+        private static Mutator<PaRiscDisassembler> u8(int bitPos, int bitLength) => u(bitPos, bitLength, PrimitiveType.Byte);
+        private static Mutator<PaRiscDisassembler> u16(int bitPos, int bitLength) => u(bitPos, bitLength, PrimitiveType.Word16);
+
+
         private static Mutator<PaRiscDisassembler> r(int bitPos, int bitLength)
         {
-            var field = new Bitfield(32 - (bitPos + bitLength), bitLength);
+            var field = PaRiscBitField(bitPos, bitLength);
             return (u, d) =>
             {
                 var iReg = field.Read(u);
@@ -72,12 +100,12 @@ namespace Reko.Arch.PaRisc
         }
         private static readonly Mutator<PaRiscDisassembler> r1 = r(11, 5);
         private static readonly Mutator<PaRiscDisassembler> r2 = r(6, 5);
-        private static readonly Mutator<PaRiscDisassembler> rt = r(27, 5);
+        private static readonly Mutator<PaRiscDisassembler> rt0 = r(27, 5);
 
         private static Mutator<PaRiscDisassembler> cf(int bitPos, ConditionOperand[] conds)
         {
             Debug.Assert(conds.Length == 16);
-            var field = new Bitfield(32 - (bitPos + 4), 4);
+            var field = PaRiscBitField(bitPos, 4);
             return (u, d) =>
             {
                 var iCond = field.Read(u);
@@ -113,6 +141,81 @@ namespace Reko.Arch.PaRisc
             new ConditionOperand(ConditionType.Nsv, "nsv"),
             new ConditionOperand(ConditionType.Even, "ev"),
         });
+        private static Mutator<PaRiscDisassembler> cf16_log = cf(16, new[]
+        {
+            new ConditionOperand(ConditionType.Never, ""),
+            new ConditionOperand(ConditionType.Eq, "="),
+            new ConditionOperand(ConditionType.Lt, "<"),
+            new ConditionOperand(ConditionType.Le, "<="),
+
+            null,
+            null,
+            null,
+            new ConditionOperand(ConditionType.Odd, "od"),
+
+            new ConditionOperand(ConditionType.Tr, "tr"),
+            new ConditionOperand(ConditionType.Ne, "<>"),
+            new ConditionOperand(ConditionType.Ge, ">="),
+            new ConditionOperand(ConditionType.Gt, ">"),
+
+            null,
+            null,
+            null,
+            new ConditionOperand(ConditionType.Even, "ev"),
+        });
+
+        // Register indirect with displacement
+        private static Mutator<PaRiscDisassembler> M(PrimitiveType dt, int dispPos, int dispLen, int baseRegPos, int spacePos)
+        {
+            var dispField = PaRiscBitField(dispPos, dispLen);
+            var baseRegField = PaRiscBitField(baseRegPos, 5);
+            var spaceRegField = PaRiscBitField(spacePos, 2);
+            return (u, d) =>
+            {
+                var disp = dispField.ReadSigned(u);
+                var iBaseReg = baseRegField.Read(u);
+                var iSpaceReg = spaceRegField.Read(u);
+                d.ops.Add(MemoryOperand.Indirect(dt, disp, Registers.GpRegs[iBaseReg], Registers.SpaceRegs[iSpaceReg]));
+                return true;
+            };
+        }
+
+        // Register indirect indexed
+        private static Mutator<PaRiscDisassembler> Mx(PrimitiveType dt, int baseRegPos, int idxRegPos)
+        {
+            var baseRegField = PaRiscBitField(baseRegPos, 5);
+            var idxRegField = PaRiscBitField(idxRegPos, 5);
+            return (u, d) =>
+            {
+                var iBaseReg = baseRegField.Read(u);
+                var iIdxReg = idxRegField.Read(u);
+                d.ops.Add(MemoryOperand.Indexed(dt, Registers.GpRegs[iBaseReg], Registers.GpRegs[iIdxReg]));
+                return true;
+            };
+
+        }
+
+        private static Mutator<PaRiscDisassembler> PcRel(params (int bitPos,int bitLength)[] flds)
+        {
+            var fields = flds.Select(x => PaRiscBitField(x.bitPos, x.bitLength)).ToArray();
+            return (u, d) =>
+            {
+                var offset = Bitfield.ReadSignedFields(fields, u) + 8;
+                var addrDst = d.addr + offset;
+                d.ops.Add(AddressOperand.Create(addrDst));
+                return true;
+            };
+        }
+
+        private static Mutator<PaRiscDisassembler> Annul(int bitPos)
+        {
+            return (u, d) =>
+            {
+                d.annul = Bits.IsBitSet(u, 31 - bitPos);
+                return true;
+
+            };
+        }
 
         private abstract class Decoder
         {
@@ -143,7 +246,8 @@ namespace Reko.Arch.PaRisc
                 {
                     IClass = iclass,
                     Opcode = opcode,
-                    Operands = dasm.ops.ToArray()
+                    Operands = dasm.ops.ToArray(),
+                    Annul = dasm.annul
                 };
             }
         }
@@ -168,17 +272,24 @@ namespace Reko.Arch.PaRisc
 
         private class NyiDecoder : Decoder
         {
+            private readonly Opcode mnemonic;
             private readonly string message;
 
-            public NyiDecoder(string message)
+            public NyiDecoder(Opcode mnemonic, string message)
             {
+                this.mnemonic = mnemonic;
                 this.message = message;
             }
 
             public override PaRiscInstruction Decode(uint uInstr, PaRiscDisassembler dasm)
             {
                 EmitUnitTest(uInstr);
-                return invalid.Decode(uInstr, dasm);
+                return new PaRiscInstruction
+                {
+                    IClass = 0,
+                    Opcode = mnemonic,
+                    Operands = new MachineOperand[0]
+                };
             }
 
             [Conditional("DEBUG")]
@@ -211,7 +322,7 @@ namespace Reko.Arch.PaRisc
             params Decoder[] decoders)
         {
             Debug.Assert(1 << bitLength == decoders.Length, $"Expected {1 << bitLength} decoders but saw {decoders.Length}");
-            return new MaskDecoder(new Bitfield(32 - (bitPos + bitLength), bitLength), decoders);
+            return new MaskDecoder(PaRiscBitField(bitPos, bitLength), decoders);
         }
 
         private static MaskDecoder Mask(
@@ -225,52 +336,73 @@ namespace Reko.Arch.PaRisc
             {
                 decoders[i] = d;
             }
-            return new MaskDecoder(new Bitfield(32 - (bitPos + bitLength), bitLength), decoders);
+            return new MaskDecoder(PaRiscBitField(bitPos, bitLength), decoders);
         }
 
         private static NyiDecoder Nyi(string message)
         {
-            return new NyiDecoder(message);
+            return new NyiDecoder(Opcode.invalid, message);
         }
+
+        private static NyiDecoder Nyi(Opcode opcode, string message)
+        {
+            return new NyiDecoder(opcode, message);
+        }
+
 
         static PaRiscDisassembler()
         {
             invalid = Instr(Opcode.invalid, InstrClass.Invalid);
 
-            var systemOp = Nyi("systemOp");
+            var systemOp = Mask(19, 8, invalid,
+                (0x00, Instr(Opcode.@break, InstrClass.Call|InstrClass.Transfer, u8(27,5), u16(6,13))),
+                (0x20, Nyi(Opcode.sync, "")),
+                (0x20, Nyi(Opcode.syncdma, "")),
+                (0x60, Nyi(Opcode.rfi, "")),
+                (0x65, Nyi(Opcode.rfir, "")),
+                (0x6B, Nyi(Opcode.ssm, "")),
+                (0x73, Nyi(Opcode.rsm, "")),
+                (0xC3, Nyi(Opcode.mtsm, "")),
+                (0x85, Nyi(Opcode.ldsid, "")),
+                (0xC1, Nyi(Opcode.mtsp, "")),
+                (0x25, Nyi(Opcode.mfsp, "")),
+                (0xC2, Nyi(Opcode.mtctl, "")),
+                (0x45, Nyi(Opcode.mfctl, "")));
+
             var memMgmt = Nyi("memMgmt");
+
             var arithLog = Mask(20, 6, invalid,
-                (0x18, Instr(Opcode.add, r1,r2,rt,cf16_add)),
-                (0x38, Nyi("addo")),
-                (0x1C, Nyi("addc")),
-                (0x3C, Nyi("addco")),
-                (0x19, Nyi("sh1add")),
-                (0x39, Nyi("sh1addo")),
-                (0x1A, Nyi("sh2add")),
-                (0x3A, Nyi("sh2addo")),
-                (0x1B, Nyi("sh3add")),
-                (0x3B, Nyi("sh3addo")),
-                (0x10, Nyi("sub")),
-                (0x30, Nyi("subo")),
-                (0x13, Nyi("subt")),
-                (0x33, Nyi("subto")),
-                (0x14, Nyi("subb")),
-                (0x34, Nyi("subbo")),
-                (0x11, Nyi("ds")),
-                (0x00, Nyi("andcm")),
-                (0x08, Nyi("and")),
-                (0x09, Nyi("or")),
-                (0x0A, Nyi("xor")),
-                (0x0E, Nyi("uxor")),
-                (0x22, Nyi("comclr")),
-                (0x26, Nyi("uaddcm")),
-                (0x27, Nyi("uaddcmt")),
-                (0x28, Nyi("addl")),
-                (0x29, Nyi("sh1addl")),
-                (0x2A, Nyi("sh2addl")),
-                (0x2B, Nyi("sh3addl")),
-                (0x2E, Nyi("dcor")),
-                (0x2F, Nyi("idcor")));
+                (0x18, Instr(Opcode.add, r1,r2,rt0,cf16_add)),
+                (0x38, Nyi(Opcode.addo, "")),
+                (0x1C, Nyi(Opcode.addc, "")),
+                (0x3C, Nyi(Opcode.addco, "")),
+                (0x19, Nyi(Opcode.sh1add, "")),
+                (0x39, Nyi(Opcode.sh1addo, "")),
+                (0x1A, Nyi(Opcode.sh2add, "")),
+                (0x3A, Nyi(Opcode.sh2addo, "")),
+                (0x1B, Nyi(Opcode.sh3add, "")),
+                (0x3B, Nyi(Opcode.sh3addo, "")),
+                (0x10, Nyi(Opcode.sub, "")),
+                (0x30, Nyi(Opcode.subo, "")),
+                (0x13, Nyi(Opcode.subt, "")),
+                (0x33, Nyi(Opcode.subto, "")),
+                (0x14, Nyi(Opcode.subb, "")),
+                (0x34, Nyi(Opcode.subbo, "")),
+                (0x11, Nyi(Opcode.ds, "")),
+                (0x00, Nyi(Opcode.andcm, "")),
+                (0x08, Nyi(Opcode.and, "")),
+                (0x09, Instr(Opcode.or, cf16_log,r2,r1,rt0)),
+                (0x0A, Nyi(Opcode.xor, "")),
+                (0x0E, Nyi(Opcode.uxor, "")),
+                (0x22, Nyi(Opcode.comclr, "")),
+                (0x26, Nyi(Opcode.uaddcm, "")),
+                (0x27, Nyi(Opcode.uaddcmt, "")),
+                (0x28, Nyi(Opcode.addl, "")),
+                (0x29, Nyi(Opcode.sh1addl, "")),
+                (0x2A, Nyi(Opcode.sh2addl, "")),
+                (0x2B, Nyi(Opcode.sh3addl, "")),
+                (0x2E, Nyi(Opcode.dcor, "")),
+                (0x2F, Nyi(Opcode.idcor, "")));
 
             var indexMem = Nyi("indexMem");
             var spopN = Nyi("spopN");
@@ -283,8 +415,17 @@ namespace Reko.Arch.PaRisc
             var addi = Nyi("addi");
             var extract = Nyi("extract");
             var deposit = Nyi("deposit");
-            var branch = Nyi("branch");
 
+            var branch = Mask(16, 3,
+                Nyi(Opcode.bl, ""),
+                Nyi(Opcode.gate, ""),
+                Nyi(Opcode.blr, ""),
+                Nyi(Opcode.blrpush, ""),
+
+                invalid,
+                Instr(Opcode.bl, PcRel((31,1),(11,5),(19,11),(6,5)),Annul(30)),
+                Instr(Opcode.bv, Mx(PrimitiveType.Ptr32, 6, 11), Annul(30)),
+                Nyi(Opcode.bve, ""));
 
             rootDecoder = Mask(0, 6,
                 systemOp,
@@ -293,34 +434,34 @@ namespace Reko.Arch.PaRisc
                 indexMem,
 
                 spopN,
-                Nyi("diag"),
-                Nyi("fmpyadd"),
+                Nyi(Opcode.diag, ""),
+                Nyi(Opcode.fmpyadd, ""),
                 invalid,
 
-                Nyi("ldil"),
+                Nyi(Opcode.ldil, ""),
                 coprW,
-                Nyi("addil"),
+                Nyi(Opcode.addil, ""),
                 coprDw,
 
-                Nyi("copr"),
-                Nyi("ldo"),
+                Nyi(Opcode.copr, ""),
+                Nyi(Opcode.ldo, ""),
                 floatDecoder,
                 productSpecific,
 
-                Nyi("ldb"),
-                Nyi("ldh"),
-                Nyi("ldw"),
-                Nyi("ldwm"),
+                Nyi(Opcode.ldb, ""),
+                Nyi(Opcode.ldh, ""),
+                Instr(Opcode.ldw, M(PrimitiveType.Word32, 18,14, 6, 16), r1),
+                Nyi(Opcode.ldwm, ""),
 
                 invalid,
                 invalid,
                 invalid,
                 invalid,
 
-                Nyi("stb"),
-                Nyi("sth"),
-                Nyi("stw"),
-                Nyi("stwm"),
+                Nyi(Opcode.stb, ""),
+                Nyi(Opcode.sth, ""),
+                Nyi(Opcode.stw, ""),
+                Nyi(Opcode.stwm, ""),
 
                 invalid,
                 invalid,
@@ -328,20 +469,20 @@ namespace Reko.Arch.PaRisc
                 invalid,
 
                 // 20
-                Nyi("combt"),
-                Nyi("comibt"),
-                Nyi("combf"),
-                Nyi("comibf"),
+                Nyi(Opcode.combt, ""),
+                Nyi(Opcode.comibt, ""),
+                Nyi(Opcode.combf, ""),
+                Nyi(Opcode.comibf, ""),
 
-                Nyi("comiclr"),
+                Nyi(Opcode.comiclr, ""),
                 subi,
-                Nyi("fmpysub"),
+                Nyi(Opcode.fmpysub, ""),
                 invalid,
 
-                Nyi("addbt"),
-                Nyi("addibt"),
-                Nyi("addbf"),
-                Nyi("addibf"),
+                Nyi(Opcode.addbt, ""),
+                Nyi(Opcode.addibt, ""),
+                Nyi(Opcode.addbf, ""),
+                Nyi(Opcode.addibf, ""),
 
                 addit,
                 addi,
@@ -349,18 +490,18 @@ namespace Reko.Arch.PaRisc
                 invalid,
 
                 // 30
-                Nyi("bvb"),
-                Nyi("bb"),
-                Nyi("movb"),
-                Nyi("movib"),
+                Nyi(Opcode.bvb, ""),
+                Nyi(Opcode.bb, ""),
+                Nyi(Opcode.movb, ""),
+                Nyi(Opcode.movib, ""),
 
                 extract,
                 deposit,
                 invalid,
                 invalid,
 
-                Nyi("be"),
-                Nyi("ble"),
+                Nyi(Opcode.be, ""),
+                Nyi(Opcode.ble, ""),
                 branch,
                 invalid,
 

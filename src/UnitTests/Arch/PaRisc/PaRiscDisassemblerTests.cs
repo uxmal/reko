@@ -62,163 +62,49 @@ namespace Reko.UnitTests.Arch.PaRisc
             AssertCode("add\tgr1,gr7,gr4,tr", "08E18624");
         }
 
-        /*
 
     // memMgmt
     [Test]
+    [Ignore("Format is complex; try simpler ones first")]
     public void PaRiscDis_058C7910()
         {
             AssertCode("@@@", "058C7910");
         }
 
-        // systemOp
+
         [Test]
-        public void PaRiscDis_00000000()
+        public void PaRiscDis_break()
         {
-            AssertCode("@@@", "00000000");
+            AssertCode("break\t00,0000", "00000000");
         }
 
-        // systemOp
-        [Test]
-        public void PaRiscDis_00000340()
-        {
-            AssertCode("@@@", "00000340");
-        }
-
-        // systemOp
-        [Test]
-        public void PaRiscDis_00000005()
-        {
-            AssertCode("@@@", "00000005");
-        }
-
-        // systemOp
-        [Test]
-        public void PaRiscDis_000005B4()
-        {
-            AssertCode("@@@", "000005B4");
-        }
-
-        // systemOp
-        [Test]
-        public void PaRiscDis_00000045()
-        {
-            AssertCode("@@@", "00000045");
-        }
-
-        // systemOp
-        [Test]
-        public void PaRiscDis_00000368()
-        {
-            AssertCode("@@@", "00000368");
-        }
-
-        // systemOp
-        [Test]
-        public void PaRiscDis_0000002F()
-        {
-            AssertCode("@@@", "0000002F");
-        }
-
-        // systemOp
-        [Test]
-        public void PaRiscDis_00000424()
-        {
-            AssertCode("@@@", "00000424");
-        }
-
-        // systemOp
-        [Test]
-        public void PaRiscDis_00000014()
-        {
-            AssertCode("@@@", "00000014");
-        }
-
-        // systemOp
-        [Test]
-        public void PaRiscDis_00000804()
-        {
-            AssertCode("@@@", "00000804");
-        }
-
-        // systemOp
-        [Test]
-        public void PaRiscDis_000003B6()
-        {
-            AssertCode("@@@", "000003B6");
-        }
-
-        // systemOp
-        [Test]
-        public void PaRiscDis_000007DC()
-        {
-            AssertCode("@@@", "000007DC");
-        }
-
-        // systemOp
-        [Test]
-        public void PaRiscDis_00000002()
-        {
-            AssertCode("@@@", "00000002");
-        }
-
-        // systemOp
-        [Test]
-        public void PaRiscDis_00000E50()
-        {
-            AssertCode("@@@", "00000E50");
-        }
-
-        // systemOp
-        [Test]
-        public void PaRiscDis_00000C60()
-        {
-            AssertCode("@@@", "00000C60");
-        }
-
-        // systemOp
-        [Test]
-        public void PaRiscDis_00000007()
-        {
-            AssertCode("@@@", "00000007");
-        }
-
-        // systemOp
-        [Test]
-        public void PaRiscDis_0000003E()
-        {
-            AssertCode("@@@", "0000003E");
-        }
-
-        
-        // branch
-        [Test]
-        public void PaRiscDis_E800A3D8()
-        {
-            AssertCode("@@@", "E800A3D8");
-        }
-
-        // or
-        [Test]
-        public void PaRiscDis_08000240()
-        {
-            AssertCode("@@@", "08000240");
-        }
-
-        // ldw
-        [Test]
-        public void PaRiscDis_4BC23FD1()
-        {
-            AssertCode("@@@", "4BC23FD1");
-        }
 
         // branch
         [Test]
-        public void PaRiscDis_E840D002()
+        public void PaRiscDis_bl()
         {
-            AssertCode("@@@", "E840D002");
+            AssertCode("bl\t00101EC8", "E800A3D8");
         }
 
+        [Test]
+        public void PaRiscDis_nop()
+        {
+            AssertCode("or\tgr0,gr0,gr0", "08000240");
+        }
+
+        [Test]
+        public void PaRiscDis_ldw()
+        {
+            AssertCode("ldw\t-47(gr30,sr0),gr2", "4BC23FD1");
+        }
+
+        [Test]
+        public void PaRiscDis_bv_n()
+        {
+            AssertCode("bv,n\tgr0(gr2)", "E840D002");
+        }
+
+        /*
         // ldw
         [Test]
         public void PaRiscDis_4B753D21()
