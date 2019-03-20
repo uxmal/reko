@@ -160,6 +160,8 @@
     <Compile Include="Arch\Intel\FastcallConventionTests.cs" />
     <Compile Include="Arch\M6800\M6812DisassemblerTests.cs" />
     <Compile Include="Arch\M6800\M6812RewriterTests.cs" />
+    <Compile Include="Arch\PaRisc\PaRiscDisassemblerTests.cs" />
+    <Compile Include="Arch\PaRisc\PaRiscRewriterTests.cs" />
     <Compile Include="Arch\Pdp11\Pdp11ArchitectureTests.cs" />
     <Compile Include="Arch\PowerPC\PowerPcDisassemblerTests.750.cs" />
     <Compile Include="Arch\Rl78\Rl78DisassemblerTests.cs" />
@@ -822,6 +824,10 @@
     <ProjectReference Include="..\Arch\MSP430\MSP430.csproj">
       <Project>{ff9e9894-f7e2-464d-b288-4157b864d053}</Project>
       <Name>MSP430</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\arch\PaRisc\PaRisc.csproj">
+      <Project>{C57B1AD7-336A-4CE6-8A8C-836760029EBB}</Project>
+      <Name>PaRisc</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\Pdp11\Pdp11.csproj">
       <Project>{CD10A2C6-246C-4CBB-8E92-86579714795A}</Project>
