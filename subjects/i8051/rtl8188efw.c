@@ -8,23 +8,23 @@
 void fn0000(byte R1)
 {
 	globals->b001D = 0x00;
-	byte SP_14;
-	byte R1_15;
-	bool P_16;
-	byte A_17;
-	byte R7_18;
-	byte CAOP_19;
+	byte SP_n;
+	byte R1_n;
+	bool P_n;
+	byte A_n;
+	byte R7_n;
+	byte CAOP_n;
 	fn4EF3();
 	globals->b0157 = 0x05;
-	bcu8 A_24 = *(bcu8 *) 33002;
-	if ((A_24 >> 0x02 & 0x01) == 0x00)
+	bcu8 A_n = *(bcu8 *) 33002;
+	if ((A_n >> 0x02 & 0x01) == 0x00)
 	{
-		byte SP_31;
-		byte R1_32;
-		bool P_33;
-		byte A_34;
-		byte R7_35;
-		byte CAOP_36;
+		byte SP_n;
+		byte R1_n;
+		bool P_n;
+		byte A_n;
+		byte R7_n;
+		byte CAOP_n;
 		fn4AC0();
 	}
 }

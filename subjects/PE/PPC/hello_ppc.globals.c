@@ -4,19 +4,19 @@
 
 #include "hello_ppc.h"
 
-Eq_3345 g_tFFFFFFE9;
-Eq_237 g_tFFFFFFFC;
-Eq_2531 g_tFFFFFFFD;
-Eq_2531 g_tFFFFFFFE;
+Eq_n g_tFFFFFFE9;
+Eq_n g_tFFFFFFFC;
+Eq_n g_tFFFFFFFD;
+Eq_n g_tFFFFFFFE;
 <anonymous> * g_ptrFFFFFFFF;
-Eq_237 g_t0001;
-Eq_237 g_t0002;
+Eq_n g_t0001;
+Eq_n g_t0002;
 int32 g_dw0003;
-Eq_3345 g_t0016;
+Eq_n g_t0016;
 ui32 g_dw0120;
 word32 g_dw092C;
 byte g_b0BFF;
-Eq_2061 g_t1000;
-Eq_2061 g_t1008;
+Eq_n g_t1000;
+Eq_n g_t1008;
 int32 g_dw1FF8;
 

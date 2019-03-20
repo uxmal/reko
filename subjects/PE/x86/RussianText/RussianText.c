@@ -20,26 +20,26 @@ void fn0040110B(word32 eax)
 {
 	if (globals->dw40208B >= 0x00)
 	{
-		ptr32 esp_19;
-		byte SCZO_20;
-		bool C_21;
-		word32 eax_22;
-		byte SZO_23;
-		bool Z_24;
+		ptr32 esp_n;
+		byte SCZO_n;
+		bool C_n;
+		word32 eax_n;
+		byte SZO_n;
+		bool Z_n;
 		__CRTL_TLS_GetValue();
-		if (eax_22 != 0x00)
+		if (eax_n != 0x00)
 		{
-			*(esp_19 - 0x04) = eax_22;
-			*(esp_19 - 0x08) = 0x08;
-			*(esp_19 - 0x0C) = (HANDLE *) GetProcessHeap();
-			Eq_41 eax_36 = HeapFree(*(esp_19 - 0x0C), *(esp_19 - 0x08), *(esp_19 - 0x04));
-			*(esp_19 - 0x04) = globals->dw40208B;
-			word32 esp_41;
-			byte SCZO_42;
-			bool C_43;
-			word32 eax_44;
-			byte SZO_45;
-			bool Z_46;
+			*(esp_n - 0x04) = eax_n;
+			*(esp_n - 0x08) = 0x08;
+			*(esp_n - 0x0C) = (HANDLE *) GetProcessHeap();
+			Eq_n eax_n = HeapFree(*(esp_n - 0x0C), *(esp_n - 0x08), *(esp_n - 0x04));
+			*(esp_n - 0x04) = globals->dw40208B;
+			word32 esp_n;
+			byte SCZO_n;
+			bool C_n;
+			word32 eax_n;
+			byte SZO_n;
+			bool Z_n;
 			__CRTL_TLS_ExitThread();
 		}
 	}
@@ -71,24 +71,24 @@ void fn00401180()
 // 004011B0: void fn004011B0(Stack word32 dwArg04)
 void fn004011B0(word32 dwArg04)
 {
-	ptr32 esp_29 = fp + ~0x0F;
-	word32 ebx_11 = dwArg04;
+	ptr32 esp_n = fp + ~0x0F;
+	word32 ebx_n = dwArg04;
 	if (dwArg04 == 0x00 && dwArg04 == 0x00)
 	{
 		fn004011FC(fp - 0x0C);
-		esp_29 = fp + ~0x0B;
-		ebx_11 = dwLoc08;
+		esp_n = fp + ~0x0B;
+		ebx_n = dwLoc08;
 	}
-	size_t * esp_30 = esp_29 - 0x04;
-	*esp_30 = (uint32) 0x9C;
-	*(esp_30 - 0x04) = ebx_11;
-	*(esp_30 - 0x08) = fn00401158();
-	memcpy(*(esp_30 - 0x08), *(esp_30 - 0x04), *esp_30);
+	size_t * esp_n = esp_n - 0x04;
+	*esp_n = (uint32) 0x9C;
+	*(esp_n - 0x04) = ebx_n;
+	*(esp_n - 0x08) = fn00401158();
+	memcpy(*(esp_n - 0x08), *(esp_n - 0x04), *esp_n);
 	_InitTermAndUnexPtrs();
 }
 
-// 004011FC: void fn004011FC(Stack (ptr32 Eq_4) dwArg04)
-void fn004011FC(Eq_4 * dwArg04)
+// 004011FC: void fn004011FC(Stack (ptr32 Eq_n) dwArg04)
+void fn004011FC(Eq_n * dwArg04)
 {
 	globals->dw4020F8 = fn00401158() + 0x1C;
 	dwArg04->dw0000 = 0x82727349;
