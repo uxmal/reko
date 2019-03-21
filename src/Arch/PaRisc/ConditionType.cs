@@ -37,6 +37,10 @@ namespace Reko.Arch.PaRisc
         Uv,
         Vnz,
         Nsv,
-        Even
+        Even,
+        Ult,
+        Ule,
+        Uge,
+        Ugt
     }
 }

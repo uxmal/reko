@@ -111,5 +111,18 @@ namespace Reko.Arch.PaRisc
         mfctl,
         bve,
         blrpush,
+
+        ldd,
+        ldda,
+        ldcd,
+        ldwa,
+        ldcw,
+        std,
+        stby,
+        stdby,
+        stwa,
+        stda,
+        cmpb,
+        cstd,
     }
 }

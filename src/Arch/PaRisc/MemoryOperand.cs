@@ -42,14 +42,14 @@ namespace Reko.Arch.PaRisc
             this.Space= spaceReg;
         }
 
-        public static MemoryOperand Indirect(PrimitiveType dt, int offset, RegisterStorage baseReg, RegisterStorage spaceReg)
+        public static MemoryOperand Indirect(PrimitiveType dt, int offset, RegisterStorage baseReg, RegisterStorage spaceReg = null)
         {
             return new MemoryOperand(dt, offset, baseReg, null, spaceReg);
         }
 
-        public static MemoryOperand Indexed(PrimitiveType dt, RegisterStorage baseReg, RegisterStorage idxReg)
+        public static MemoryOperand Indexed(PrimitiveType dt, RegisterStorage baseReg, RegisterStorage idxReg, RegisterStorage spaceReg = null)
         {
-            return new MemoryOperand(dt, 0, baseReg, idxReg, null);
+            return new MemoryOperand(dt, 0, baseReg, idxReg, spaceReg);
         }
 
         public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
@@ -57,15 +57,15 @@ namespace Reko.Arch.PaRisc
             var sb = new StringBuilder();
             if (Index != null)
             {
-                sb.AppendFormat("{0}({1}", Index.Name, Base.Name);
+                sb.AppendFormat("{0}(", Index.Name, Base.Name);
             }
             else
             {
-                sb.AppendFormat("{0}({1}", Offset, Base.Name);
+                sb.AppendFormat("{0}(", Offset, Base.Name);
             }
             if (Space != null)
-                sb.AppendFormat(",{0}", Space.Name);
-            sb.Append(")");
+                sb.AppendFormat("{0},", Space.Name);
+            sb.AppendFormat("{0})", Base.Name);
             writer.WriteString(sb.ToString());
         }
     }

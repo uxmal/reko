@@ -43,6 +43,8 @@ namespace Reko.Arch.PaRisc
         private Address addr;
         private readonly List<MachineOperand> ops;
         private bool annul;
+        private ConditionOperand cond;
+        private int coprocessor;
 
         public PaRiscDisassembler(PaRiscArchitecture arch, EndianImageReader rdr)
         {
@@ -56,6 +58,8 @@ namespace Reko.Arch.PaRisc
             this.addr = rdr.Address;
             this.ops.Clear();
             this.annul = false;
+            this.cond = null;
+            this.coprocessor = -1;
 
             if (!rdr.TryReadBeUInt32(out uint uInstr))
                 return null;
@@ -67,16 +71,21 @@ namespace Reko.Arch.PaRisc
         }
 
         /// <summary>
-        /// PA Risc instruction bits are numbers from the MSB to LSB.
+        /// PA Risc instruction bits are numbered from the MSB to LSB.
         /// </summary>
-        private static Bitfield PaRiscBitField(int bitPos, int bitLength)
+        private static Bitfield BeField(int bitPos, int bitLength)
         {
             return new Bitfield(32 - (bitPos + bitLength), bitLength);
         }
 
+        private static Bitfield[] BeFields(params (int bitPos, int bitLength)[] flds)
+        {
+            return flds.Select(f => BeField(f.bitPos, f.bitLength)).ToArray();
+        }
+
         private static Mutator<PaRiscDisassembler> u(int bitPos, int bitLength, PrimitiveType dt)
         {
-            var field = PaRiscBitField(bitPos, bitLength);
+            var field = BeField(bitPos, bitLength);
             return (u, d) =>
             {
                 var v = field.Read(u);
@@ -87,10 +96,22 @@ namespace Reko.Arch.PaRisc
         private static Mutator<PaRiscDisassembler> u8(int bitPos, int bitLength) => u(bitPos, bitLength, PrimitiveType.Byte);
         private static Mutator<PaRiscDisassembler> u16(int bitPos, int bitLength) => u(bitPos, bitLength, PrimitiveType.Word16);
 
+        private static Mutator<PaRiscDisassembler> s(int bitPos, int bitLength, PrimitiveType dt)
+        {
+            var field = BeField(bitPos, bitLength);
+            return (u, d) =>
+            {
+                var v = field.ReadSigned(u);
+                d.ops.Add(new ImmediateOperand(Constant.Create(dt, v)));
+                return true;
+            };
+        }
+        private static Mutator<PaRiscDisassembler> s32(int bitPos, int bitLength) => u(bitPos, bitLength, PrimitiveType.Int32);
+
 
         private static Mutator<PaRiscDisassembler> r(int bitPos, int bitLength)
         {
-            var field = PaRiscBitField(bitPos, bitLength);
+            var field = BeField(bitPos, bitLength);
             return (u, d) =>
             {
                 var iReg = field.Read(u);
@@ -102,10 +123,30 @@ namespace Reko.Arch.PaRisc
         private static readonly Mutator<PaRiscDisassembler> r2 = r(6, 5);
         private static readonly Mutator<PaRiscDisassembler> rt0 = r(27, 5);
 
-        private static Mutator<PaRiscDisassembler> cf(int bitPos, ConditionOperand[] conds)
+        private static Mutator<PaRiscDisassembler> reg(RegisterStorage r)
         {
-            Debug.Assert(conds.Length == 16);
-            var field = PaRiscBitField(bitPos, 4);
+            return (u, d) =>
+            {
+                d.ops.Add(new RegisterOperand(r));
+                return true;
+            };
+        }
+
+        private static Mutator<PaRiscDisassembler> sr(int bitPos)
+        {
+            var field = BeField(bitPos, 3);
+            return (u, d) =>
+            {
+                var iReg = field.Read(u);
+                d.ops.Add(new RegisterOperand(Registers.SpaceRegs[iReg]));
+                return true;
+            };
+        }
+
+        private static Mutator<PaRiscDisassembler> cf(int bitPos, int bitLen, ConditionOperand[] conds)
+        {
+            Debug.Assert(conds.Length == (1 << bitLen));
+            var field = BeField(bitPos, bitLen);
             return (u, d) =>
             {
                 var iCond = field.Read(u);
@@ -114,62 +155,100 @@ namespace Reko.Arch.PaRisc
                     return false;
                 if (cond.Type != ConditionType.Never)
                 {
-                    d.ops.Add(cond);
+                    d.cond = cond;
                 }
                 return true;
             };
         }
-        private static Mutator<PaRiscDisassembler> cf16_add = cf(16, new[]
+        private static Mutator<PaRiscDisassembler> cf16_add = cf(16, 4, new[]
         {
-            new ConditionOperand(ConditionType.Never, ""),
-            new ConditionOperand(ConditionType.Eq, "="),
-            new ConditionOperand(ConditionType.Lt, "<"),
-            new ConditionOperand(ConditionType.Le, "<="),
+            ConditionOperand.Never,
+            ConditionOperand.Eq,
+            ConditionOperand.Lt,
+            ConditionOperand.Le,
 
-            new ConditionOperand(ConditionType.Nuv, "nuv"),
-            new ConditionOperand(ConditionType.Znv, "znv"),
-            new ConditionOperand(ConditionType.Sv, "sv"),
-            new ConditionOperand(ConditionType.Odd, "od"),
+            ConditionOperand.Nuv,
+            ConditionOperand.Znv,
+            ConditionOperand.Sv,
+            ConditionOperand.Odd,
 
-            new ConditionOperand(ConditionType.Tr, "tr"),
-            new ConditionOperand(ConditionType.Ne, "<>"),
-            new ConditionOperand(ConditionType.Ge, ">="),
-            new ConditionOperand(ConditionType.Gt, ">"),
+            ConditionOperand.Tr,
+            ConditionOperand.Ne,
+            ConditionOperand.Ge,
+            ConditionOperand.Gt,
 
-            new ConditionOperand(ConditionType.Uv, "uv"),
-            new ConditionOperand(ConditionType.Vnz, "vnz"),
-            new ConditionOperand(ConditionType.Nsv, "nsv"),
-            new ConditionOperand(ConditionType.Even, "ev"),
+            ConditionOperand.Uv,
+            ConditionOperand.Vnz,
+            ConditionOperand.Nsv,
+            ConditionOperand.Even,
         });
-        private static Mutator<PaRiscDisassembler> cf16_log = cf(16, new[]
+        private static Mutator<PaRiscDisassembler> cf16_log = cf(16, 4, new[]
         {
-            new ConditionOperand(ConditionType.Never, ""),
-            new ConditionOperand(ConditionType.Eq, "="),
-            new ConditionOperand(ConditionType.Lt, "<"),
-            new ConditionOperand(ConditionType.Le, "<="),
+            ConditionOperand.Never,
+            ConditionOperand.Eq,
+            ConditionOperand.Lt,
+            ConditionOperand.Le,
 
             null,
             null,
             null,
-            new ConditionOperand(ConditionType.Odd, "od"),
+            ConditionOperand.Odd,
 
-            new ConditionOperand(ConditionType.Tr, "tr"),
-            new ConditionOperand(ConditionType.Ne, "<>"),
-            new ConditionOperand(ConditionType.Ge, ">="),
-            new ConditionOperand(ConditionType.Gt, ">"),
+            ConditionOperand.Tr,
+            ConditionOperand.Ne,
+            ConditionOperand.Ge,
+            ConditionOperand.Gt,
 
             null,
             null,
             null,
-            new ConditionOperand(ConditionType.Even, "ev"),
+            ConditionOperand.Even,
+        });
+        private static Mutator<PaRiscDisassembler> cf16_cmp32_t = cf(16, 3, new[]
+        {
+            ConditionOperand.Never,
+            ConditionOperand.Eq,
+            ConditionOperand.Lt,
+            ConditionOperand.Le,
+
+            ConditionOperand.Ult,
+            ConditionOperand.Ule,
+            ConditionOperand.Sv,
+            ConditionOperand.Odd,
+        });
+        private static Mutator<PaRiscDisassembler> cf16_cmp32_f = cf(16, 3, new[]
+        {
+            ConditionOperand.Tr,
+            ConditionOperand.Ne,
+            ConditionOperand.Ge,
+            ConditionOperand.Gt,
+
+            ConditionOperand.Uge,
+            ConditionOperand.Ugt,
+            ConditionOperand.Nsv,
+            ConditionOperand.Even,
         });
 
-        // Register indirect with displacement
+        // Register indirect with displacement with space register
+        private static Mutator<PaRiscDisassembler> M(PrimitiveType dt, int baseRegPos, Bitfield [] dispFields, Func<uint,Bitfield[],uint> permutator)
+        {
+            var baseRegField = BeField(baseRegPos, 5);
+            var totalLength = dispFields.Sum(f => f.Length);
+            return (u, d) =>
+            {
+                var disp = (int) Bits.SignExtend(permutator(u, dispFields), totalLength);
+                var iBaseReg = baseRegField.Read(u);
+                d.ops.Add(MemoryOperand.Indirect(dt, disp, Registers.GpRegs[iBaseReg]));
+                return true;
+            };
+        }
+
+        // Register indirect with displacement with space register
         private static Mutator<PaRiscDisassembler> M(PrimitiveType dt, int dispPos, int dispLen, int baseRegPos, int spacePos)
         {
-            var dispField = PaRiscBitField(dispPos, dispLen);
-            var baseRegField = PaRiscBitField(baseRegPos, 5);
-            var spaceRegField = PaRiscBitField(spacePos, 2);
+            var dispField = BeField(dispPos, dispLen);
+            var baseRegField = BeField(baseRegPos, 5);
+            var spaceRegField = BeField(spacePos, 2);
             return (u, d) =>
             {
                 var disp = dispField.ReadSigned(u);
@@ -180,11 +259,26 @@ namespace Reko.Arch.PaRisc
             };
         }
 
+        // Register indirect, with offset in multiple fields, shifted by the element size
+        private static Mutator<PaRiscDisassembler> Msh(PrimitiveType dt, Bitfield[] fields, int baseRegPos, int spacePos)
+        {
+            var baseRegField = BeField(baseRegPos, 5);
+            var spaceRegField = BeField(spacePos, 2);
+            return (u, d) =>
+            {
+                var disp = Bitfield.ReadSignedFields(fields, u) * dt.Size;
+                var iBaseReg = baseRegField.Read(u);
+                var iSpaceReg = spaceRegField.Read(u);
+                d.ops.Add(MemoryOperand.Indirect(dt, disp, Registers.GpRegs[iBaseReg], Registers.SpaceRegs[iSpaceReg]));
+                return true;
+            };
+        }
+
         // Register indirect indexed
         private static Mutator<PaRiscDisassembler> Mx(PrimitiveType dt, int baseRegPos, int idxRegPos)
         {
-            var baseRegField = PaRiscBitField(baseRegPos, 5);
-            var idxRegField = PaRiscBitField(idxRegPos, 5);
+            var baseRegField = BeField(baseRegPos, 5);
+            var idxRegField = BeField(idxRegPos, 5);
             return (u, d) =>
             {
                 var iBaseReg = baseRegField.Read(u);
@@ -192,15 +286,28 @@ namespace Reko.Arch.PaRisc
                 d.ops.Add(MemoryOperand.Indexed(dt, Registers.GpRegs[iBaseReg], Registers.GpRegs[iIdxReg]));
                 return true;
             };
-
         }
 
-        private static Mutator<PaRiscDisassembler> PcRel(params (int bitPos,int bitLength)[] flds)
+        private static Mutator<PaRiscDisassembler> Mx(PrimitiveType dt, int baseRegPos, int idxRegPos, int spaceRegPos)
         {
-            var fields = flds.Select(x => PaRiscBitField(x.bitPos, x.bitLength)).ToArray();
+            var baseRegField = BeField(baseRegPos, 5);
+            var idxRegField = BeField(idxRegPos, 5);
+            var spaceRegField = BeField(spaceRegPos, 2);
             return (u, d) =>
             {
-                var offset = Bitfield.ReadSignedFields(fields, u) + 8;
+                var iBaseReg = baseRegField.Read(u);
+                var iIdxReg = idxRegField.Read(u);
+                var iSpaceRegField = spaceRegField.Read(u);
+                d.ops.Add(MemoryOperand.Indexed(dt, Registers.GpRegs[iBaseReg], Registers.GpRegs[iIdxReg], Registers.SpaceRegs[iSpaceRegField]));
+                return true;
+            };
+        }
+        private static Mutator<PaRiscDisassembler> PcRel(Func<uint, Bitfield[],uint> permutator, Bitfield[] fields)
+        {
+            int totalWidth = fields.Sum(f => f.Length);
+            return (u, d) =>
+            {
+                var offset = (int)Bits.SignExtend(permutator(u, fields), totalWidth) * 4 + 8;
                 var addrDst = d.addr + offset;
                 d.ops.Add(AddressOperand.Create(addrDst));
                 return true;
@@ -217,9 +324,96 @@ namespace Reko.Arch.PaRisc
             };
         }
 
+        private static Mutator<PaRiscDisassembler> cop(int bitPos, int bitLength)
+        {
+            var field = BeField(bitPos, bitLength);
+            return (u, d) =>
+            {
+                d.coprocessor = (int) field.Read(u);
+                return true;
+            };
+        }
+
+        private static bool Eq0(uint u) => u == 0;
+
+        private static uint assemble_12(uint u, Bitfield[] fields)
+        {
+            // return(cat(y,x{10},x{0..9}))
+            var x = fields[0].Read(u);
+            var y = fields[1].Read(u);
+            var p = y;
+            p = (p << fields[0].Length) 
+                | ((x << 10) & 0b1_00000_00000)
+                | ((x >> 1) & 0b0_11111_11111);
+            return p;
+        }
+
+        private static uint assemble_16(uint u, Bitfield[] fields)
+        {
+            //$TODO: 64-bit
+            //if (PSW[W])
+            //    return (cat(z, xor(z, x{ 0}),xor(z, x{ 1}),y,0{ 0..1}))
+            var y = fields[1].Read(u);
+            return Bits.SignExtend(y, 13);
+        }
+
+        private static uint assemble_17(uint u, Bitfield[] fields)
+        {
+            var x = fields[0].Read(u);
+            var y = fields[1].Read(u);
+            var z = fields[2].Read(u);
+            var p = z;
+            p = (p << fields[0].Length) | x;
+            p = (p << fields[1].Length)
+                | ((y << 10) & 0b1_00000_00000)
+                | ((y >> 1)  & 0b0_11111_11111);
+            return p;
+        }
+
+        private static uint assemble_22(uint u, Bitfield[] fields)
+        {
+            var a = fields[0].Read(u);
+            var b = fields[1].Read(u);
+            var c = fields[2].Read(u);
+            var d = fields[3].Read(u);
+            var p = d;
+            p = (p << fields[0].Length) | a;
+            p = (p << fields[1].Length) | b;
+            p = (p << fields[2].Length)
+                | ((c << 10) & 0b1_00000_00000)
+                | ((c >> 1) & 0b0_11111_11111);
+            return p;
+        }
+
         private abstract class Decoder
         {
             public abstract PaRiscInstruction Decode(uint uInstr, PaRiscDisassembler dasm);
+
+            protected void DumpMaskedInstruction(uint wInstr, uint shMask, string tag)
+            {
+                var hibit = 0x80000000u;
+                var sb = new StringBuilder();
+                for (int i = 0; i < 32; ++i)
+                {
+                    if ((shMask & hibit) != 0)
+                    {
+                        sb.Append((wInstr & hibit) != 0 ? '1' : '0');
+                    }
+                    else
+                    {
+                        sb.Append((wInstr & hibit) != 0 ? ':' : '.');
+                    }
+                    shMask <<= 1;
+                    wInstr <<= 1;
+                }
+                if (!string.IsNullOrEmpty(tag))
+                {
+                    sb.AppendFormat(" {0}", tag);
+                }
+                Debug.Print(sb.ToString());
+            }
+
+
         }
 
         private class InstrDecoder : Decoder
@@ -246,6 +440,8 @@ namespace Reko.Arch.PaRisc
                 {
                     IClass = iclass,
                     Opcode = opcode,
+                    Coprocessor = dasm.coprocessor,
+                    Condition = dasm.cond,
                     Operands = dasm.ops.ToArray(),
                     Annul = dasm.annul
                 };
@@ -265,8 +461,34 @@ namespace Reko.Arch.PaRisc
 
             public override PaRiscInstruction Decode(uint uInstr, PaRiscDisassembler dasm)
             {
+                base.DumpMaskedInstruction(uInstr, bitfield.Mask << bitfield.Position, "");
                 uint code = bitfield.Read(uInstr);
                 return decoders[code].Decode(uInstr, dasm);
+            }
+        }
+
+        private class ConditionalDecoder : Decoder
+        {
+            private readonly Bitfield field;
+            private readonly Predicate<uint> predicate;
+            private readonly Decoder trueDecoder;
+            private readonly Decoder falseDecoder;
+
+            public ConditionalDecoder(int bitPos, int bitLength, Predicate<uint> predicate, Decoder trueDecoder, Decoder falseDecoder)
+            {
+                this.field = BeField(bitPos, bitLength);
+                this.predicate = predicate;
+                this.trueDecoder = trueDecoder;
+                this.falseDecoder = falseDecoder;
+            }
+
+            public override PaRiscInstruction Decode(uint uInstr, PaRiscDisassembler dasm)
+            {
+                base.DumpMaskedInstruction(uInstr, field.Mask << field.Position, "");
+                var u = field.Read(uInstr);
+                var cond = predicate(u);
+                var decoder = cond ? trueDecoder : falseDecoder;
+                return decoder.Decode(uInstr, dasm);
             }
         }
 
@@ -278,12 +500,22 @@ namespace Reko.Arch.PaRisc
             public NyiDecoder(Opcode mnemonic, string message)
             {
                 this.mnemonic = mnemonic;
-                this.message = message;
+                this.message = !string.IsNullOrEmpty(message) ? message : mnemonic.ToString();
             }
 
             public override PaRiscInstruction Decode(uint uInstr, PaRiscDisassembler dasm)
             {
-                EmitUnitTest(uInstr);
+                dasm.EmitUnitTest(
+                    dasm.arch.Name,
+                    uInstr.ToString("X8"),
+                    message,
+                    "PaRiscDis",
+                    dasm.addr,
+                    Console =>
+                    {
+                        Console.WriteLine($"    AssertCode(\"@@@\", 0x{uInstr:X8});");
+                        Console.WriteLine();
+                    });
                 return new PaRiscInstruction
                 {
                     IClass = 0,
@@ -295,6 +527,7 @@ namespace Reko.Arch.PaRisc
             [Conditional("DEBUG")]
             private void EmitUnitTest(uint wInstr)
             {
+                Console.WriteLine("    // Reko: a decoder for hppa instruction {0} at address(.*?) has not");
                 Console.WriteLine("    // {0}", message);
                 Console.WriteLine("    [Test]");
                 Console.WriteLine("    public void PaRiscDis_{0:X8}()", wInstr);
@@ -322,7 +555,7 @@ namespace Reko.Arch.PaRisc
             params Decoder[] decoders)
         {
             Debug.Assert(1 << bitLength == decoders.Length, $"Expected {1 << bitLength} decoders but saw {decoders.Length}");
-            return new MaskDecoder(PaRiscBitField(bitPos, bitLength), decoders);
+            return new MaskDecoder(BeField(bitPos, bitLength), decoders);
         }
 
         private static MaskDecoder Mask(
@@ -336,7 +569,17 @@ namespace Reko.Arch.PaRisc
             {
                 decoders[i] = d;
             }
-            return new MaskDecoder(PaRiscBitField(bitPos, bitLength), decoders);
+            return new MaskDecoder(BeField(bitPos, bitLength), decoders);
+        }
+
+        private static ConditionalDecoder Cond(
+            int bitPos,
+            int bitLength,
+            Predicate<uint> predicate,
+            Decoder trueDecoder,
+            Decoder falseDecoder)
+        {
+            return new ConditionalDecoder(bitPos, bitLength, predicate, trueDecoder, falseDecoder);
         }
 
         private static NyiDecoder Nyi(string message)
@@ -363,8 +606,10 @@ namespace Reko.Arch.PaRisc
                 (0x6B, Nyi(Opcode.ssm, "")),
                 (0x73, Nyi(Opcode.rsm, "")),
                 (0xC3, Nyi(Opcode.mtsm, "")),
-                (0x85, Nyi(Opcode.ldsid, "")),
-                (0xC1, Nyi(Opcode.mtsp, "")),
+                (0x85, Cond(16,2, Eq0,
+                    Instr(Opcode.ldsid, r2,rt0),
+                    Instr(Opcode.ldsid, sr(16),rt0))),
+                (0xC1, Instr(Opcode.mtsp, r(11,5),sr(16))),
                 (0x25, Nyi(Opcode.mfsp, "")),
                 (0xC2, Nyi(Opcode.mtctl, "")),
                 (0x45, Nyi(Opcode.mfctl, "")));
@@ -404,10 +649,36 @@ namespace Reko.Arch.PaRisc
                 (0x2E, Nyi(Opcode.dcor, "")),
                 (0x2F, Nyi(Opcode.idcor, "")));
 
-            var indexMem = Nyi("indexMem");
+            var indexMem = Mask(19, 1,  // opc=3
+                Mask(22, 4, invalid,
+                    (0x0, Nyi(Opcode.ldb, "(index")),
+                    (0x1, Nyi(Opcode.ldh, "(index")),
+                    (0x2, Nyi(Opcode.ldw, "(index")),
+                    (0x3, Nyi(Opcode.ldd, "(index")),
+                    (0x4, Nyi(Opcode.ldda, "(index")),
+                    (0x5, Nyi(Opcode.ldcd, "(index")),
+                    (0x6, Nyi(Opcode.ldwa, "(index")),
+                    (0x7, Nyi(Opcode.ldcw, "(index"))),
+                Mask(22, 4, invalid,
+                    (0x0, Nyi(Opcode.ldb, "(short")),
+                    (0x1, Nyi(Opcode.ldh, "(short")),
+                    (0x2, Instr(Opcode.ldw, M(PrimitiveType.Word32, 11,5, 6, 16), rt0)), //$TODO: cache completeion hints
+                    (0x3, Nyi(Opcode.ldd, "(short")),
+                    (0x4, Nyi(Opcode.ldda, "(short")),
+                    (0x5, Nyi(Opcode.ldcd, "(short")),
+                    (0x6, Nyi(Opcode.ldwa, "(short")),
+                    (0x7, Nyi(Opcode.ldcw, "(short")),
+                    (0x8, Nyi(Opcode.stb, "(short")),
+                    (0x9, Instr(Opcode.sth, M(PrimitiveType.Word16, 11, 5, 6, 16), rt0)),
+                    (0xA, Instr(Opcode.stw, M(PrimitiveType.Word32, 11, 5, 6, 16), rt0)),
+                    (0xB, Nyi(Opcode.std, "(short")),
+                    (0xC, Nyi(Opcode.stby, "(short")),
+                    (0xD, Nyi(Opcode.stdby, "(short")),
+                    (0xE, Nyi(Opcode.stwa, "(short")),
+                    (0xF, Nyi(Opcode.stda, "(short"))));
+
             var spopN = Nyi("spopN");
             var coprW = Nyi("coprW");
-            var coprDw = Nyi("coprDw");
             var floatDecoder = Nyi("floatDecoder");
             var productSpecific = Nyi("productSpecific");
             var subi = Nyi("subi");
@@ -417,13 +688,13 @@ namespace Reko.Arch.PaRisc
             var deposit = Nyi("deposit");
 
             var branch = Mask(16, 3,
-                Nyi(Opcode.bl, ""),
+                Instr(Opcode.bl, PcRel(assemble_17, BeFields((11,5),(19,11),(31,1))),r2, Annul(30)),
                 Nyi(Opcode.gate, ""),
-                Nyi(Opcode.blr, ""),
+                Instr(Opcode.blr, r1,r2,Annul(30)),
                 Nyi(Opcode.blrpush, ""),
 
                 invalid,
-                Instr(Opcode.bl, PcRel((31,1),(11,5),(19,11),(6,5)),Annul(30)),
+                Instr(Opcode.bl, PcRel(assemble_22, BeFields((6,5),(11,5),(19,11),(31,1))),reg(Registers.GpRegs[2]), Annul(30)),
                 Instr(Opcode.bv, Mx(PrimitiveType.Ptr32, 6, 11), Annul(30)),
                 Nyi(Opcode.bve, ""));
 
@@ -438,16 +709,19 @@ namespace Reko.Arch.PaRisc
                 Nyi(Opcode.fmpyadd, ""),
                 invalid,
 
-                Nyi(Opcode.ldil, ""),
+                Instr(Opcode.ldil, u(11, 21, PrimitiveType.Word32), r2),
                 coprW,
                 Nyi(Opcode.addil, ""),
-                coprDw,
+                Mask(19, 1,
+                    Instr(Opcode.cstd, cop(23, 3), rt0,Mx(PrimitiveType.Real64,6,11,16)),
+                    Instr(Opcode.cstd, cop(23, 3), rt0,Msh(PrimitiveType.Real64,BeFields((11,5)), 6, 16))),
 
                 Nyi(Opcode.copr, ""),
-                Nyi(Opcode.ldo, ""),
+                Instr(Opcode.ldo, M(PrimitiveType.Word32, 6, BeFields((16,2),(18,14)), assemble_16),r1),
                 floatDecoder,
                 productSpecific,
-
+                
+                // 10
                 Nyi(Opcode.ldb, ""),
                 Nyi(Opcode.ldh, ""),
                 Instr(Opcode.ldw, M(PrimitiveType.Word32, 18,14, 6, 16), r1),
@@ -458,9 +732,9 @@ namespace Reko.Arch.PaRisc
                 invalid,
                 invalid,
 
-                Nyi(Opcode.stb, ""),
-                Nyi(Opcode.sth, ""),
-                Nyi(Opcode.stw, ""),
+                Instr(Opcode.stb, r1,M(PrimitiveType.Byte, 6, BeFields((16,2), (18,14)),assemble_16)),
+                Instr(Opcode.sth, r1,M(PrimitiveType.Word16, 6, BeFields((16,2), (18,14)),assemble_16)),
+                Instr(Opcode.stw, r1,M(PrimitiveType.Word32, 18, 14, 6, 16)),
                 Nyi(Opcode.stwm, ""),
 
                 invalid,
@@ -469,7 +743,7 @@ namespace Reko.Arch.PaRisc
                 invalid,
 
                 // 20
-                Nyi(Opcode.combt, ""),
+                Instr(Opcode.cmpb, cf16_cmp32_t,r1,r2,PcRel(assemble_12, BeFields((19,11),(31,1))), Annul(30)),
                 Nyi(Opcode.comibt, ""),
                 Nyi(Opcode.combf, ""),
                 Nyi(Opcode.comibf, ""),
@@ -482,7 +756,7 @@ namespace Reko.Arch.PaRisc
                 Nyi(Opcode.addbt, ""),
                 Nyi(Opcode.addibt, ""),
                 Nyi(Opcode.addbf, ""),
-                Nyi(Opcode.addibf, ""),
+                Instr(Opcode.addibf, s32(11,5),r2,PcRel(assemble_12, BeFields((19,11),(31,1))),Annul(30)),
 
                 addit,
                 addi,
@@ -500,8 +774,8 @@ namespace Reko.Arch.PaRisc
                 invalid,
                 invalid,
 
-                Nyi(Opcode.be, ""),
-                Nyi(Opcode.ble, ""),
+                Instr(Opcode.be, Msh(PrimitiveType.Ptr32, BeFields((11,5),(19,11),(31,1)),6,16),Annul(30)),
+                Instr(Opcode.ble, Msh(PrimitiveType.Ptr32, BeFields((11,5),(19,11),(31,1)),6,16),Annul(30)),
                 branch,
                 invalid,
 

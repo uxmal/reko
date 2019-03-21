@@ -35,7 +35,7 @@ namespace Reko.Arch.PaRisc
         static Registers()
         {
             var factory = new StorageFactory();
-            GpRegs = factory.RangeOfReg32(32, "gr{0}");
+            GpRegs = factory.RangeOfReg32(32, "r{0}");
             SpaceRegs = factory.RangeOfReg32(8, "sr{0}");
         }
     }

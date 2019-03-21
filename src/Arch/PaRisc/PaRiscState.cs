@@ -32,17 +32,19 @@ namespace Reko.Arch.PaRisc
 {
     public class PaRiscState : ProcessorState
     {
-        public override IProcessorArchitecture Architecture
+        private PaRiscArchitecture arch;
+
+        public PaRiscState(PaRiscArchitecture arch)
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
+            this.arch = arch;
         }
+
+        public override IProcessorArchitecture Architecture => arch;
 
         public override ProcessorState Clone()
         {
-            throw new NotImplementedException();
+            var state = new PaRiscState(arch);
+            return state;
         }
 
         public override Constant GetRegister(RegisterStorage r)
@@ -62,7 +64,6 @@ namespace Reko.Arch.PaRisc
 
         public override void OnProcedureEntered()
         {
-            throw new NotImplementedException();
         }
 
         public override void OnProcedureLeft(FunctionType procedureSignature)
@@ -72,12 +73,10 @@ namespace Reko.Arch.PaRisc
 
         public override void SetInstructionPointer(Address addr)
         {
-            throw new NotImplementedException();
         }
 
         public override void SetRegister(RegisterStorage r, Constant v)
         {
-            throw new NotImplementedException();
         }
     }
 }

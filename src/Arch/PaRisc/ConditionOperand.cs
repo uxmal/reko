@@ -43,5 +43,30 @@ namespace Reko.Arch.PaRisc
         {
             writer.WriteString(Display);
         }
+
+        public static readonly ConditionOperand Never = new ConditionOperand(ConditionType.Never, "");
+        public static readonly ConditionOperand Eq = new ConditionOperand(ConditionType.Eq, "=");
+        public static readonly ConditionOperand Lt = new ConditionOperand(ConditionType.Lt, "<");
+        public static readonly ConditionOperand Le = new ConditionOperand(ConditionType.Le, "<=");
+
+        public static readonly ConditionOperand Nuv = new ConditionOperand(ConditionType.Nuv, "nuv");
+        public static readonly ConditionOperand Znv = new ConditionOperand(ConditionType.Znv, "znv");
+        public static readonly ConditionOperand Sv = new ConditionOperand(ConditionType.Sv, "sv");
+        public static readonly ConditionOperand Odd = new ConditionOperand(ConditionType.Odd, "od");
+
+        public static readonly ConditionOperand Tr = new ConditionOperand(ConditionType.Tr, "tr");
+        public static readonly ConditionOperand Ne = new ConditionOperand(ConditionType.Ne, "<>");
+        public static readonly ConditionOperand Ge = new ConditionOperand(ConditionType.Ge, ">=");
+        public static readonly ConditionOperand Gt = new ConditionOperand(ConditionType.Gt, ">");
+
+        public static readonly ConditionOperand Uv = new ConditionOperand(ConditionType.Uv, "uv");
+        public static readonly ConditionOperand Vnz = new ConditionOperand(ConditionType.Vnz, "vnz");
+        public static readonly ConditionOperand Nsv = new ConditionOperand(ConditionType.Nsv, "nsv");
+        public static readonly ConditionOperand Even = new ConditionOperand(ConditionType.Even, "ev");
+
+        public static readonly ConditionOperand Ult = new ConditionOperand(ConditionType.Ult, "<<");
+        public static readonly ConditionOperand Ule = new ConditionOperand(ConditionType.Ule, "<<=");
+        public static readonly ConditionOperand Uge = new ConditionOperand(ConditionType.Uge, ">>=");
+        public static readonly ConditionOperand Ugt = new ConditionOperand(ConditionType.Ugt, ">>");
     }
 }

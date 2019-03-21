@@ -29,6 +29,8 @@ namespace Reko.Arch.PaRisc
     {
         public InstrClass IClass { get; set; }
         public Opcode Opcode { get; set; }
+        public int Coprocessor { get; set; }
+        public ConditionOperand Condition { get; set; }
         public MachineOperand[] Operands { get; set; }
         public bool Annul { get; internal set; }
 
@@ -67,6 +69,8 @@ namespace Reko.Arch.PaRisc
         {
             var sb = new StringBuilder();
             sb.Append(Opcode.ToString());
+            if (Condition != null)
+                sb.AppendFormat(",{0}", Condition.Display);
             if (Annul)
                 sb.Append(",n");
             writer.WriteOpcode(sb.ToString());

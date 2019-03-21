@@ -39,6 +39,7 @@ namespace Reko.Arch.PaRisc
             WordWidth = PrimitiveType.Word32;
             PointerType = PrimitiveType.Ptr32;
             FramePointerType = PrimitiveType.Ptr32;
+            StackRegister = Registers.GpRegs[30];
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
@@ -83,7 +84,7 @@ namespace Reko.Arch.PaRisc
 
         public override ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new PaRiscState(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
@@ -148,7 +149,7 @@ namespace Reko.Arch.PaRisc
 
         public override bool TryParseAddress(string txtAddr, out Address addr)
         {
-            throw new NotImplementedException();
+            return Address.TryParse32(txtAddr, out addr);
         }
 
         public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)

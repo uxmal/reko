@@ -26,6 +26,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Reko.Core;
 using Reko.Core.Rtl;
+using Reko.Core.Types;
 
 namespace Reko.Arch.PaRisc
 {
@@ -60,7 +61,11 @@ namespace Reko.Arch.PaRisc
                 var instrs = new List<RtlInstruction>();
                 m = new RtlEmitter(instrs);
                 switch (instr.Opcode)
-                { }
+                {
+                default: 
+                case Opcode.@break: RewriteBreak(); break;
+
+                }
                 yield return new RtlInstructionCluster(instr.Address, instr.Length, instrs.ToArray())
                 {
                     Class = iclass,
@@ -71,6 +76,11 @@ namespace Reko.Arch.PaRisc
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        private void RewriteBreak()
+        {
+            m.SideEffect(host.PseudoProcedure("__break", VoidType.Instance));
         }
     }
 }
