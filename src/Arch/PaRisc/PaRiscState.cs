@@ -49,17 +49,16 @@ namespace Reko.Arch.PaRisc
 
         public override Constant GetRegister(RegisterStorage r)
         {
-            throw new NotImplementedException();
+            return Constant.Invalid;
         }
 
         public override void OnAfterCall(FunctionType sigCallee)
         {
-            throw new NotImplementedException();
         }
 
         public override CallSite OnBeforeCall(Identifier stackReg, int returnAddressSize)
         {
-            throw new NotImplementedException();
+            return new CallSite(0, 0);
         }
 
         public override void OnProcedureEntered()
@@ -68,7 +67,6 @@ namespace Reko.Arch.PaRisc
 
         public override void OnProcedureLeft(FunctionType procedureSignature)
         {
-            throw new NotImplementedException();
         }
 
         public override void SetInstructionPointer(Address addr)

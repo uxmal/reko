@@ -36,11 +36,13 @@ namespace Reko.Arch.PaRisc
         public PaRiscArchitecture(string archId) : base(archId)
         {
             InstructionBitSize = 32;
-            WordWidth = PrimitiveType.Word32;
-            PointerType = PrimitiveType.Ptr32;
-            FramePointerType = PrimitiveType.Ptr32;
             StackRegister = Registers.GpRegs[30];
+            Options = new Dictionary<string, object>();
+            SetOptionDependentProperties();
         }
+
+        public Dictionary<string, object> Options { get; }
+
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
@@ -124,23 +126,64 @@ namespace Reko.Arch.PaRisc
 
         public override RegisterStorage[] GetRegisters()
         {
-            throw new NotImplementedException();
+            return Registers.GpRegs;
         }
 
         public override string GrfToString(uint grf)
         {
-            throw new NotImplementedException();
+            return "";
+        }
+
+        public bool Is64Bit()
+        {
+            return
+                Options.TryGetValue("WordSize", out var oWordSize) &&
+                int.TryParse(oWordSize.ToString(), out var wordSize) &&
+                wordSize == 64;
+        }
+
+        public override void LoadUserOptions(Dictionary<string, object> options)
+        {
+            if (options == null)
+                return;
+            foreach (var option in options)
+            {
+                this.Options[option.Key] = option.Value;
+            }
+            SetOptionDependentProperties();
         }
 
         public override Address MakeAddressFromConstant(Constant c)
         {
-            throw new NotImplementedException();
+            return Address.Ptr32(c.ToUInt32());
         }
 
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
         {
             throw new NotImplementedException();
         }
+
+        public override Dictionary<string, object> SaveUserOptions()
+        {
+            return Options;
+        }
+
+        private void SetOptionDependentProperties()
+        {
+            if (Is64Bit())
+            {
+                WordWidth = PrimitiveType.Word64;
+                PointerType = PrimitiveType.Ptr64;
+                FramePointerType = PrimitiveType.Ptr64;
+            }
+            else
+            {
+                WordWidth = PrimitiveType.Word32;
+                PointerType = PrimitiveType.Ptr32;
+                FramePointerType = PrimitiveType.Ptr32;
+            }
+        }
+
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)
         {

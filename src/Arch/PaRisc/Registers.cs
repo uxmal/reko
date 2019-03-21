@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,14 +30,28 @@ namespace Reko.Arch.PaRisc
 {
     public class Registers
     {
-        public static RegisterStorage[] GpRegs;
-        public static RegisterStorage[] SpaceRegs;
+        public static readonly RegisterStorage[] GpRegs;
+        public static readonly RegisterStorage[] SpaceRegs;
+        public static readonly RegisterStorage[] FpRegs;
+        public static readonly RegisterStorage[] FpLefts;
+        public static readonly RegisterStorage[] FpRights;
+        public static readonly RegisterStorage[] FpRegs32;
 
         static Registers()
         {
             var factory = new StorageFactory();
             GpRegs = factory.RangeOfReg32(32, "r{0}");
             SpaceRegs = factory.RangeOfReg32(8, "sr{0}");
+            FpRegs = factory.RangeOfReg64(32, "fr{0}");
+            FpLefts = FpRegs
+                .Select(fr => new RegisterStorage(fr.Name + "L", fr.Number, 32, PrimitiveType.Word32))
+                .ToArray();
+            FpRights = FpRegs
+                .Select(fr => new RegisterStorage(fr.Name + "R", fr.Number, 0, PrimitiveType.Word32))
+                .ToArray();
+            //$BUG: triple-check the formatting of 6-bit floating point
+            // register identifiers.
+            FpRegs32 = FpLefts.Concat(FpRights).ToArray();
         }
     }
 }

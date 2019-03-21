@@ -36,6 +36,16 @@ namespace Reko.Core
 
         public Dictionary<string, RegisterStorage> NamesToRegisters { get; } = new Dictionary<string, RegisterStorage>();
 
+        /// <summary>
+        /// Create a single register.
+        /// </summary>
+        /// <param name="format">Format string used to generate the register name. Use {0} to 
+        /// inject the current register number.
+        /// </param>
+        /// <param name="size">
+        /// A <see cref="PrimitiveType"/> describing the size of the register.
+        /// </param>
+        /// <returns>A freshly created register.</returns>
         public RegisterStorage Reg(string format, PrimitiveType size)
         {
             var name = string.Format(format, iReg);
@@ -50,16 +60,26 @@ namespace Reko.Core
             return reg;
         }
 
+        /// <summary>
+        /// Create a 16-bit register.
+        /// </summary>
         public RegisterStorage Reg16(string format)
         {
             return Reg(format, PrimitiveType.Word16);
         }
 
+        /// <summary>
+        /// Create a 32-bit register.
+        /// </summary>
         public RegisterStorage Reg32(string format)
         {
             return Reg(format, PrimitiveType.Word32);
         }
 
+        /// <summary>
+        /// Creates an array of <paramref name="count"/> registers of size
+        /// <paramref name="size"/>. 
+        /// </summary>
         public RegisterStorage[] RangeOfReg(int count, Func<int, string> formatter, PrimitiveType size)
         {
             return Enumerable.Range(0, count)
@@ -67,9 +87,15 @@ namespace Reko.Core
                 .ToArray();
         }
 
+        /// <summary>
+        /// Creates an array of 32-bit registers.
+        /// </summary>
         public RegisterStorage[] RangeOfReg32(int count, string format)
             => RangeOfReg(count, n => string.Format(format, n), PrimitiveType .Word32);
 
+        /// <summary>
+        /// Creates an array of 64-bit registers.
+        /// </summary>
         public RegisterStorage[] RangeOfReg64(int count, string format)
             => RangeOfReg(count, n => string.Format(format, n), PrimitiveType.Word64);
     }

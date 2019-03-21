@@ -29,10 +29,17 @@ namespace Reko.Arch.PaRisc
     {
         public InstrClass IClass { get; set; }
         public Opcode Opcode { get; set; }
+        // Completers
         public int Coprocessor { get; set; }
+        public bool Zero { get; set; }
+        public SignExtension Sign { get; set; }
+        public BaseRegMod BaseReg { get; set; }
+        public bool Annul { get; set; }
+        public FpFormat FpFmt { get; set; }
+
         public ConditionOperand Condition { get; set; }
+
         public MachineOperand[] Operands { get; set; }
-        public bool Annul { get; internal set; }
 
         public override InstrClass InstructionClass => IClass;
 
@@ -68,12 +75,35 @@ namespace Reko.Arch.PaRisc
         private void WriteMnemonic(MachineInstructionWriter writer)
         {
             var sb = new StringBuilder();
-            sb.Append(Opcode.ToString());
+            sb.Append(Opcode.ToString().Replace('_',','));
+            if (FpFmt != FpFormat.None)
+                sb.AppendFormat(",{0}", FpFmt);
+            if (Zero)
+                sb.Append(",z");
+            if (Sign != SignExtension.None)
+                sb.AppendFormat(",{0}", Sign);
             if (Condition != null)
                 sb.AppendFormat(",{0}", Condition.Display);
+            if (BaseReg != BaseRegMod.None)
+                sb.AppendFormat(",{0}", BaseReg);
             if (Annul)
                 sb.Append(",n");
             writer.WriteOpcode(sb.ToString());
         }
+    }
+
+    public enum SignExtension
+    {
+        None, s, u
+    }
+
+    public enum BaseRegMod
+    {
+        None, ma, mb, o
+    }
+
+    public enum FpFormat
+    {
+        None, sgl,dbl,quad 
     }
 }

@@ -41,6 +41,61 @@ namespace Reko.Arch.PaRisc
         Ult,
         Ule,
         Uge,
-        Ugt
+        Ugt,
+
+        Eq64,
+        Lt64,
+        Le64,
+        Nuv64,
+        Znv64,
+        Sv64,
+        Odd64,
+        Ne64,
+        Ge64,
+        Gt64,
+        Uv64,
+        Vnz64,
+        Nsv64,
+        Even64,
+
+        FpFalseQ,
+        FpFalse,
+        Fp2,
+        Fp3,
+
+        Fp4,
+        Fp5,
+        Fp6,
+        Fp7,
+
+        Fp8,
+        Fp9,
+        Fp10,
+        Fp11,
+
+        Fp12,
+        Fp13,
+        Fp14,
+        Fp15,
+
+        Fp16,
+        Fp17,
+        Fp18,
+        Fp19,
+
+        Fp20,
+        Fp21,
+        Fp22,
+        Fp23,
+
+        Fp24,
+        Fp25,
+        Fp26,
+        Fp27,
+
+        Fp28,
+        Fp29,
+        Fp30,
+        Fp31,
     }
 }

@@ -68,5 +68,26 @@ namespace Reko.Arch.PaRisc
         public static readonly ConditionOperand Ule = new ConditionOperand(ConditionType.Ule, "<<=");
         public static readonly ConditionOperand Uge = new ConditionOperand(ConditionType.Uge, ">>=");
         public static readonly ConditionOperand Ugt = new ConditionOperand(ConditionType.Ugt, ">>");
+
+        public static readonly ConditionOperand Never64 = new ConditionOperand(ConditionType.Never, "");
+        public static readonly ConditionOperand Eq64 = new ConditionOperand(ConditionType.Eq64, "*=");
+        public static readonly ConditionOperand Lt64 = new ConditionOperand(ConditionType.Lt64, "*<");
+        public static readonly ConditionOperand Le64 = new ConditionOperand(ConditionType.Le64, "*<=");
+
+        public static readonly ConditionOperand Nuv64 = new ConditionOperand(ConditionType.Nuv64, "*nuv");
+        public static readonly ConditionOperand Znv64 = new ConditionOperand(ConditionType.Znv64, "*znv");
+        public static readonly ConditionOperand Sv64 = new ConditionOperand(ConditionType.Sv64, "*sv");
+        public static readonly ConditionOperand Odd64 = new ConditionOperand(ConditionType.Odd64, "*od");
+
+        public static readonly ConditionOperand Tr64 = new ConditionOperand(ConditionType.Tr, "*tr");
+        public static readonly ConditionOperand Ne64 = new ConditionOperand(ConditionType.Ne64, "*<>");
+        public static readonly ConditionOperand Ge64 = new ConditionOperand(ConditionType.Ge64, "*>=");
+        public static readonly ConditionOperand Gt64 = new ConditionOperand(ConditionType.Gt64, "*>");
+
+        public static readonly ConditionOperand Uv64 = new ConditionOperand(ConditionType.Uv64, "*uv");
+        public static readonly ConditionOperand Vnz64 = new ConditionOperand(ConditionType.Vnz64, "*vnz");
+        public static readonly ConditionOperand Nsv64 = new ConditionOperand(ConditionType.Nsv64, "*nsv");
+        public static readonly ConditionOperand Even64 = new ConditionOperand(ConditionType.Even64, "*ev");
+
     }
 }

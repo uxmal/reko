@@ -60,9 +60,29 @@ namespace Reko.ImageLoaders.HpSom
             switch (aux.type)
             {
             case aux_id_type.exec_aux_header:
-                return LoadExecSegments(rdr);
+                var program = LoadExecSegments(rdr);
+                SetProgramOptions(somHeader, program);
+                return program;
             default:
                 throw new BadImageFormatException();
+            }
+        }
+
+        private void SetProgramOptions(SOM_Header somHeader, Program program)
+        {
+            if (somHeader.system_id == 0x214)
+            {
+                program.Architecture.LoadUserOptions(new Dictionary<string, object>
+                {
+                    { "WordSize", 64 }
+                });
+            }
+            else
+            {
+                program.Architecture.LoadUserOptions(new Dictionary<string, object>
+                {
+                    { "WordSize", 32 }
+                });
             }
         }
 

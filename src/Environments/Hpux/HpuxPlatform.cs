@@ -44,12 +44,14 @@ namespace Reko.Environments.Hpux
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
-            throw new NotImplementedException();
+            return new HashSet<RegisterStorage>
+            {
+            };
         }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {
-            throw new NotImplementedException();
+            return new HashSet<RegisterStorage>();
         }
 
         public override SystemService FindService(int vector, ProcessorState state)

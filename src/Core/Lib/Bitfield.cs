@@ -63,7 +63,7 @@ namespace Reko.Core.Lib
 
         public override string ToString()
         {
-            return $"[{Position}..{Position + Length}";
+            return $"[{Position}..{Position + Length})";
         }
     }
 }
