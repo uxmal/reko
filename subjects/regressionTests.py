@@ -30,10 +30,14 @@ parser.add_option("-o", "--check-output", dest="check_output",
 parser.add_option("-p", "--platform", dest="platform",
                   help="define platform (x86, x64)",
                   default="x64")
+parser.add_option("--strip-suffixes", dest="strip_suffixes",
+                  help="strip number suffixes from SSA identifiers (yes, no)",
+                  default="yes")
 (options, dirs) = parser.parse_args()
 if len(dirs) == 0:
     dirs = [script_dir]
 (options, args) = parser.parse_args()
+options.strip_suffixes = (options.strip_suffixes != 'no')
 
 reko_cmdline_dir = os.path.abspath(script_dir + "/../src/Drivers/CmdLine")
 
@@ -255,8 +259,9 @@ if __name__ == '__main__':
         sys.stdout.write(output)
 
     save_weights(new_weights, WEIGHTS_FILENAME)
-    print("Stripping SSA identifier numbers")
-    strip_id_nums(dirs)
+    if options.strip_suffixes:
+        print("Stripping SSA identifier numbers")
+        strip_id_nums(dirs)
     if options.check_output:
         check_output_files()
 
