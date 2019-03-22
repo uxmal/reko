@@ -4,7 +4,7 @@
 
 #include "spcinv.h"
 
-Eq_9 g_t0001 = 
+Eq_n g_t0001 = 
 	{
 		0x00,
 		
@@ -13,7 +13,7 @@ Eq_9 g_t0001 =
 		},
 		0x00,
 	};
-Eq_9 g_t0002 = 
+Eq_n g_t0002 = 
 	{
 		0x00,
 		
@@ -22,7 +22,7 @@ Eq_9 g_t0002 =
 		},
 		0x00,
 	};
-Eq_410 g_t0003 = 
+Eq_n g_t0003 = 
 	{
 		&g_t000D,
 		
@@ -30,13 +30,13 @@ Eq_410 g_t0003 =
 			0x00
 		},
 	};
-Eq_617 g_t000A = 
+Eq_n g_t000A = 
 	{
 		0x0E30,
 		0x0000,
 		0x0005,
 	};
-Eq_1332 g_t000D = 
+Eq_n g_t000D = 
 	{
 		
 		{
@@ -45,7 +45,7 @@ Eq_1332 g_t000D =
 	};
 cui16 g_w0024 = 0x0000;
 word16 g_w02C6 = 0x2E2C;
-Eq_126 g_t02CB = 
+Eq_n g_t02CB = 
 	{
 		0x00
 	};
@@ -69,12 +69,12 @@ word16 g_w0AB2 = 0x0087;
 ui16 g_w0AB4 = 0x0000;
 byte * g_ptr0ABA = &g_b111E;
 byte * g_ptr0B34 = &g_b1121;
-Eq_61 g_t0B5A = 
+Eq_n g_t0B5A = 
 	{
 		0x87
 	};
 word16 g_w0B5C = 0x0000;
-Eq_61 g_t0B5E = 
+Eq_n g_t0B5E = 
 	{
 		0x00
 	};
@@ -83,7 +83,7 @@ word16 g_w0BC8 = 0x0020;
 byte * g_ptr0CC2 = &g_b1111;
 word16 g_w0DA8 = 0x0087;
 word16 g_w0DAA = 0x0000;
-Eq_2311 g_a0DAC[6] = 
+Eq_n g_a0DAC[6] = 
 	{
 		
 		{
@@ -128,7 +128,7 @@ Eq_2311 g_a0DAC[6] =
 			},
 		},
 	};
-Eq_2312 g_a0DB8[6] = 
+Eq_n g_a0DB8[6] = 
 	{
 		
 		{
@@ -203,20 +203,20 @@ word16 g_a0E20[] =
 word16 g_a0E30[] = 
 	{
 	};
-Eq_2121 g_t0E56 = 
+Eq_n g_t0E56 = 
 	{
 		0x00,
 	};
-Eq_2321 g_a0EE6[] = 
+Eq_n g_a0EE6[] = 
 	{
 	};
-Eq_2320 g_a0EE9[] = 
+Eq_n g_a0EE9[] = 
 	{
 	};
 ci8 g_a0EEC[] = 
 	{
 	};
-Eq_2324 g_a0EF0[] = 
+Eq_n g_a0EF0[] = 
 	{
 	};
 byte g_a0EF3[] = 
@@ -228,49 +228,49 @@ word16 g_w0EF8 = 0x0000;
 <anonymous> * g_ptr0EFA = null;
 word16 g_w0EFC = 0x0000;
 word16 g_w0EFE = 0x0000;
-Eq_2 g_t0F00 = 
+Eq_n g_t0F00 = 
 	{
 		0x00
 	};
-Eq_2 g_t0F02 = 
+Eq_n g_t0F02 = 
 	{
 		0x00
 	};
-Eq_2 g_t0F04 = 
+Eq_n g_t0F04 = 
 	{
 		0x00
 	};
-struct Eq_9 * g_ptr0F06 = &g_t0002;
-struct Eq_11 * g_ptr0F08 = null;
-Eq_61 g_t0F0A = 
+struct Eq_n * g_ptr0F06 = &g_t0002;
+struct Eq_n * g_ptr0F08 = null;
+Eq_n g_t0F0A = 
 	{
 		0xFF
 	};
-Eq_504 g_t0F0C = 
+Eq_n g_t0F0C = 
 	{
 		1
 	};
 cui16 g_w0F0E = 0x0000;
 ci16 g_w0F10 = 0x0000;
 ci16 g_w0F12 = 0x0000;
-Eq_384 g_t0F14 = 
+Eq_n g_t0F14 = 
 	{
 		L'\x00'
 	};
 word16 g_w0F16 = 0x0000;
 ci16 g_w0F18 = 0x0000;
-struct Eq_410 * g_ptr0F1A = null;
+struct Eq_n * g_ptr0F1A = null;
 word16 g_w0F1C = 0x0000;
 ci16 g_w0F1E = 0x0000;
 ci16 g_w0F20 = 0x0000;
 word16 g_w0F22 = 0x0000;
 byte g_b0F24 = 0x00;
 ci16 g_w0F26 = 0x0407;
-Eq_2 g_t0F28 = 
+Eq_n g_t0F28 = 
 	{
 		0x04
 	};
-Eq_2318 g_a0F2A[] = 
+Eq_n g_a0F2A[] = 
 	{
 	};
 char g_b0F9A = '\x0D';

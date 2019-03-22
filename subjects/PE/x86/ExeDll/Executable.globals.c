@@ -4,15 +4,15 @@
 
 #include "Executable.h"
 
-Eq_779 g_t0100;
-Eq_779 g_t5A4D;
+Eq_n g_t0100;
+Eq_n g_t5A4D;
 word16 g_w400000 = 0x5A4D;
-struct Eq_779 * g_ptr40003C = &g_t0100;
+struct Eq_n * g_ptr40003C = &g_t0100;
 LONG g_t4018DF(struct _EXCEPTION_POINTERS * ExceptionInfo) = Unexpected function type (fn LONG ((ptr32 (struct "_EXCEPTION_POINTERS"))))
 ;
 <anonymous> * g_ptr4020D0 = fn00401BA4;
-Eq_210 g_t4020DC = null;
-Eq_210 g_t4020EC = null;
+Eq_n g_t4020DC = null;
+Eq_n g_t4020EC = null;
 word32 g_a4024C8[1] = 
 	{
 		0x00000000,

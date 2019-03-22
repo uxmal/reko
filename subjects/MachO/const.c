@@ -7,8 +7,8 @@
 // 00000004: void _f(Register (ptr32 byte) eax, Stack word32 dwArg00, Stack word32 dwArg04)
 void _f(byte * eax, word32 dwArg00, word32 dwArg04)
 {
-	byte al_5 = (byte) eax;
-	*eax += al_5;
-	*eax += al_5;
+	byte al_n = (byte) eax;
+	*eax += al_n;
+	*eax += al_n;
 }
 

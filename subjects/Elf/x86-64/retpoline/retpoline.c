@@ -7,14 +7,14 @@
 // 0000000000400428: Register ptr64 _init()
 ptr64 _init()
 {
-	ptr64 rax_15 = __gmon_start__;
+	ptr64 rax_n = __gmon_start__;
 	if (__gmon_start__ != 0x00)
 		__gmon_start__();
-	return rax_15;
+	return rax_n;
 }
 
-// 0000000000400480: void _start(Register (ptr64 Eq_9) rdx, Stack Eq_10 qwArg00)
-void _start(void (* rdx)(), Eq_10 qwArg00)
+// 0000000000400480: void _start(Register (ptr64 Eq_n) rdx, Stack Eq_n qwArg00)
+void _start(void (* rdx)(), Eq_n qwArg00)
 {
 	__align((char *) fp + 0x08);
 	__libc_start_main(&globals->t400660, qwArg00, (char *) fp + 0x08, &globals->t400710, &globals->t400780, rdx, fp);
@@ -69,13 +69,13 @@ void branches(int32 esi, int32 edi)
 {
 	if ((word32) (uint64) edi >= esi || ((word32) ((uint64) ((word32) ((uint64) edi) << 0x01)) >= (word32) ((uint64) ((word32) ((uint64) esi) << 0x01)) || ((word32) ((uint64) (edi *s 0x03)) >= (word32) ((uint64) (esi *s 0x03)) || (word32) ((uint64) ((word32) ((uint64) edi) << 0x02)) >= (word32) ((uint64) ((word32) ((uint64) esi) << 0x02)))))
 		return;
-	uint64 rax_59 = (uint64) (word32) (uint64) esi;
-	int32 eax_66 = (int32) ((int64) (word32) rax_59 / 0x02);
-	void * rax_84 = DPB(rax_59, eax_66, 0);
-	if ((word32) (uint64) (int32) ((int64) (word32) (uint64) (word32) (uint64) edi / 0x02) >= eax_66)
+	uint64 rax_n = (uint64) (word32) (uint64) esi;
+	int32 eax_n = (int32) ((int64) (word32) rax_n / 0x02);
+	void * rax_n = DPB(rax_n, eax_n, 0);
+	if ((word32) (uint64) (int32) ((int64) (word32) (uint64) (word32) (uint64) edi / 0x02) >= eax_n)
 		return;
 	my1((word32) (uint64) esi, (word32) (uint64) edi);
-	free(rax_84);
+	free(rax_n);
 }
 
 // 0000000000400660: void main()
@@ -103,17 +103,17 @@ void fn0000000000400700(word64 qwArg00)
 // 0000000000400710: void __libc_csu_init(Register word64 rdx, Register word64 rbx, Register word64 rbp, Register word64 rsi, Register word32 edi, Register word64 r12, Register word64 r13, Register word64 r14, Register word64 r15)
 void __libc_csu_init(word64 rdx, word64 rbx, word64 rbp, word64 rsi, word32 edi, word64 r12, word64 r13, word64 r14, word64 r15)
 {
-	word32 r15d_83 = (word32) (uint64) edi;
-	int64 rbp_29 = 0x00600E18 - 0x00600E10;
-	word64 rax_33 = _init();
-	if (rbp_29 >> 0x03 != 0x00)
+	word32 r15d_n = (word32) (uint64) edi;
+	int64 rbp_n = 0x00600E18 - 0x00600E10;
+	word64 rax_n = _init();
+	if (rbp_n >> 0x03 != 0x00)
 	{
-		Eq_193 rbx_41 = 0x00;
+		Eq_n rbx_n = 0x00;
 		do
 		{
-			(*((char *) globals->a600E10 + rbx_41 * 0x08))();
-			rbx_41 = (word64) rbx_41.u1 + 0x01;
-		} while (rbp_29 >> 0x03 != rbx_41);
+			(*((char *) globals->a600E10 + rbx_n * 0x08))();
+			rbx_n = (word64) rbx_n.u1 + 0x01;
+		} while (rbp_n >> 0x03 != rbx_n);
 	}
 }
 

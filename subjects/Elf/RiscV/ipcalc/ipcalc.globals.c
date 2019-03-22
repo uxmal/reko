@@ -9,7 +9,7 @@ void g_v10898 = ??void??;
 void g_v108B0 = ??void??;
 void g_v108C0 = ??void??;
 void g_v108D0 = ??void??;
-Eq_64 g_t108E0 = 
+Eq_n g_t108E0 = 
 	{
 	};
 void g_v10BE0 = ??void??;
@@ -54,7 +54,7 @@ void g_v115A8 = ??void??;
 char g_str115C8[] = "%.2x";
 char g_str115D0[] = "/dev/urandom";
 void g_v115E0 = ??void??;
-Eq_3454 g_t11780 = 
+Eq_n g_t11780 = 
 	{
 		0x31,
 		0x00,
@@ -98,7 +98,7 @@ char g_str11D18[] = "COUNTRY=%s\n";
 char g_str11D28[] = "CITY=\"%s\"\n";
 char g_str11D38[] = "CITY=%s\n";
 char g_str11D48[] = "COORDINATES=\"%s\"\n";
-Eq_3454 g_t12660 = 
+Eq_n g_t12660 = 
 	{
 		0x32,
 		0x00,
@@ -114,17 +114,17 @@ char g_str12AE8[] = "GeoIP_id_by_ipnum";
 char g_str12B00[] = "GeoIP_id_by_ipnum_v6";
 char g_str12B18[] = "GeoIP_record_by_ipnum_v6";
 char g_str12B38[] = "GeoIP_code_by_id";
-Eq_189 g_t12B50 = 
+Eq_n g_t12B50 = 
 	{
 		0x69
 	};
 word64 g_qw12B58 = 0x6F6E20646C756F63;
 word64 g_qw12B60 = 0x7320646E69662074;
-Eq_186 g_t12B68 = 
+Eq_n g_t12B68 = 
 	{
 		1868721529
 	};
-Eq_187 g_t12B70 = 
+Eq_n g_t12B70 = 
 	{
 		1768693870
 	};

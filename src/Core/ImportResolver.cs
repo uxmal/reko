@@ -36,7 +36,7 @@ namespace Reko.Core
         ExternalProcedure ResolveProcedure(string moduleName, int ordinal, IPlatform platform);
         Expression ResolveImport(string moduleName, string globalName, IPlatform platform);
         Expression ResolveImport(string moduleName, int ordinal, IPlatform platform);
-        Expression  ResolveToImportedValue(Statement stm, Constant c);
+        Expression ResolveToImportedValue(Statement stm, Constant c);
     }
 
     /// <summary>

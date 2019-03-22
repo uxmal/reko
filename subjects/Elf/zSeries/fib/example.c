@@ -4,38 +4,38 @@
 
 #include "example.h"
 
-// 00000560: FlagGroup byte _init(Register word64 r4, Register word64 r6, Register word64 r7, Register word64 r8, Register word64 r9, Register word64 r10, Register word64 r11, Register word64 r12, Register word64 r13, Register Eq_12 r14, Register out Eq_13 r1Out, Register out Eq_14 r6Out, Register out Eq_15 r8Out, Register out Eq_16 r9Out, Register out Eq_17 r10Out, Register out Eq_18 r11Out, Register out Eq_19 r12Out, Register out Eq_20 r13Out, Register out Eq_21 r15Out)
-byte _init(word64 r4, word64 r6, word64 r7, word64 r8, word64 r9, word64 r10, word64 r11, word64 r12, word64 r13, Eq_12 r14, union Eq_13 & r1Out, union Eq_14 & r6Out, union Eq_15 & r8Out, union Eq_16 & r9Out, union Eq_17 & r10Out, union Eq_18 & r11Out, union Eq_19 & r12Out, union Eq_20 & r13Out, union Eq_21 & r15Out)
+// 00000560: FlagGroup byte _init(Register word64 r4, Register word64 r6, Register word64 r7, Register word64 r8, Register word64 r9, Register word64 r10, Register word64 r11, Register word64 r12, Register word64 r13, Register Eq_n r14, Register out Eq_n r1Out, Register out Eq_n r6Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out Eq_n r12Out, Register out Eq_n r13Out, Register out Eq_n r15Out)
+byte _init(word64 r4, word64 r6, word64 r7, word64 r8, word64 r9, word64 r10, word64 r11, word64 r12, word64 r13, Eq_n r14, union Eq_n & r1Out, union Eq_n & r6Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, union Eq_n & r12Out, union Eq_n & r13Out, union Eq_n & r15Out)
 {
-	Eq_22 r1_37 = DPB(fp - 0x00A0, 8248, 0) + 0x00;
-	Eq_31 r15_33 = fp - 0x0140;
-	word64 r12_35 = DPB(r12, 0x2000, 0);
-	Eq_22 r1_38 = r1_37;
-	if (r1_37 != 0x00)
-		r1_37();
-	Eq_40 v16_58 = (word64) r15_33 + 0x00D0;
-	Eq_43 r4_57 = *((word64) r15_33 + 0x0110);
-	Eq_21 r15_78;
-	Eq_14 r6_79;
-	Eq_15 r8_81;
-	Eq_16 r9_82;
-	Eq_17 r10_83;
-	Eq_18 r11_84;
-	Eq_19 r12_85;
-	Eq_20 r13_86;
-	Eq_13 r1_89;
-	byte CC_91;
-	r4_57();
-	r1Out = r1_89;
-	r6Out = r6_79;
-	r8Out = r8_81;
-	r9Out = r9_82;
-	r10Out = r10_83;
-	r11Out = r11_84;
-	r12Out = r12_85;
-	r13Out = r13_86;
-	r15Out = r15_78;
-	return CC_91;
+	Eq_n r1_n = DPB(fp - 0x00A0, 8248, 0) + 0x00;
+	Eq_n r15_n = fp - 0x0140;
+	word64 r12_n = DPB(r12, 0x2000, 0);
+	Eq_n r1_n = r1_n;
+	if (r1_n != 0x00)
+		r1_n();
+	Eq_n v16_n = (word64) r15_n + 0x00D0;
+	Eq_n r4_n = *((word64) r15_n + 0x0110);
+	Eq_n r15_n;
+	Eq_n r6_n;
+	Eq_n r8_n;
+	Eq_n r9_n;
+	Eq_n r10_n;
+	Eq_n r11_n;
+	Eq_n r12_n;
+	Eq_n r13_n;
+	Eq_n r1_n;
+	byte CC_n;
+	r4_n();
+	r1Out = r1_n;
+	r6Out = r6_n;
+	r8Out = r8_n;
+	r9Out = r9_n;
+	r10Out = r10_n;
+	r11Out = r11_n;
+	r12Out = r12_n;
+	r13Out = r13_n;
+	r15Out = r15_n;
+	return CC_n;
 }
 
 // 000005C0: void __cxa_finalize()
@@ -48,75 +48,75 @@ void __libc_start_main()
 {
 }
 
-// 00000600: void _start(Register word64 r2, Register word64 r5, Register word64 r6, Register Eq_60 r14)
-void _start(word64 r2, word64 r5, word64 r6, Eq_60 r14)
+// 00000600: void _start(Register word64 r2, Register word64 r5, Register word64 r6, Register Eq_n r14)
+void _start(word64 r2, word64 r5, word64 r6, Eq_n r14)
 {
-	Eq_61 r15_7 = fp - 0x00A0 & ~0x0F;
-	*(r15_7 - 0x00B0) = 0x00;
-	*(r15_7 - 0x0010) = r14;
-	*(r15_7 - 0x08) = r15_7 - 0x00B0;
-	__libc_start_main(DPB(r2, 0x2040, 0) + 0x00, qwLocA0, fp - 0x0098, DPB(r5, 0x0820, 0), DPB(r6, 0x0888, 0), *(r15_7 - 0x0010), *(r15_7 - 0x08));
+	Eq_n r15_n = fp - 0x00A0 & ~0x0F;
+	*(r15_n - 0x00B0) = 0x00;
+	*(r15_n - 0x0010) = r14;
+	*(r15_n - 0x08) = r15_n - 0x00B0;
+	__libc_start_main(DPB(r2, 0x2040, 0) + 0x00, qwLocA0, fp - 0x0098, DPB(r5, 0x0820, 0), DPB(r6, 0x0888, 0), *(r15_n - 0x0010), *(r15_n - 0x08));
 }
 
-// 00000648: Register (ptr64 byte) deregister_tm_clones(Register (ptr64 byte) r1, Register word64 r2, Register word64 r5, Register Eq_119 r14, Register out Eq_120 r2Out, Register out Eq_121 r5Out, Register out Eq_122 r15Out)
-byte * deregister_tm_clones(byte * r1, word64 r2, word64 r5, Eq_119 r14, union Eq_120 & r2Out, union Eq_121 & r5Out, union Eq_122 & r15Out)
+// 00000648: Register (ptr64 byte) deregister_tm_clones(Register (ptr64 byte) r1, Register word64 r2, Register word64 r5, Register Eq_n r14, Register out Eq_n r2Out, Register out Eq_n r5Out, Register out Eq_n r15Out)
+byte * deregister_tm_clones(byte * r1, word64 r2, word64 r5, Eq_n r14, union Eq_n & r2Out, union Eq_n & r5Out, union Eq_n & r15Out)
 {
-	word64 r2_8 = DPB(r2, 0x2068, 0);
-	union Eq_129 * r5_4 = DPB(r5, 0x08C8, 0);
-	Eq_129 r1_10 = DPB(r1, 0x2068, 0) + 0x07 - r2_8;
-	if (r1_10 > *r5_4)
+	word64 r2_n = DPB(r2, 0x2068, 0);
+	union Eq_n * r5_n = DPB(r5, 0x08C8, 0);
+	Eq_n r1_n = DPB(r1, 0x2068, 0) + 0x07 - r2_n;
+	if (r1_n > *r5_n)
 	{
-		Eq_139 r1_14 = *DPB(r1_10, 0x2030, 0);
-		if (r1_14 != 0x00)
+		Eq_n r1_n = *DPB(r1_n, 0x2030, 0);
+		if (r1_n != 0x00)
 		{
-			Eq_122 r15_17;
-			Eq_121 r5_18;
-			byte * r1_19;
-			Eq_120 r2_20;
-			r1_14();
-			r2Out = r2_20;
-			r5Out = r5_18;
-			r15Out = r15_17;
-			return r1_19;
+			Eq_n r15_n;
+			Eq_n r5_n;
+			byte * r1_n;
+			Eq_n r2_n;
+			r1_n();
+			r2Out = r2_n;
+			r5Out = r5_n;
+			r15Out = r15_n;
+			return r1_n;
 		}
 		else
 		{
-			Eq_122 r15_24;
-			Eq_121 r5_25;
-			byte * r1_26;
-			Eq_120 r2_27;
+			Eq_n r15_n;
+			Eq_n r5_n;
+			byte * r1_n;
+			Eq_n r2_n;
 			r14();
-			r2Out = r2_27;
-			r5Out = r5_25;
-			r15Out = r15_24;
-			return r1_26;
+			r2Out = r2_n;
+			r5Out = r5_n;
+			r15Out = r15_n;
+			return r1_n;
 		}
 	}
 	else
 	{
-		Eq_122 r15_30;
-		Eq_121 r5_31;
-		byte * r1_32;
-		Eq_120 r2_33;
+		Eq_n r15_n;
+		Eq_n r5_n;
+		byte * r1_n;
+		Eq_n r2_n;
 		r14();
-		r2Out = r2_33;
-		r5Out = r5_31;
-		r15Out = r15_30;
-		return r1_32;
+		r2Out = r2_n;
+		r5Out = r5_n;
+		r15Out = r15_n;
+		return r1_n;
 	}
 }
 
-// 00000680: void register_tm_clones(Register Eq_159 r1, Register (ptr64 byte) r2, Register word64 r3, Register Eq_162 r14)
-void register_tm_clones(Eq_159 r1, byte * r2, word64 r3, Eq_162 r14)
+// 00000680: void register_tm_clones(Register Eq_n r1, Register (ptr64 byte) r2, Register word64 r3, Register Eq_n r14)
+void register_tm_clones(Eq_n r1, byte * r2, word64 r3, Eq_n r14)
 {
-	int64 r3_7 = DPB(r3, 0x2068, 0) - DPB(r1, 0x2068, 0);
-	uint64 r1_9 = r3_7 >> 0x03 >> 0x003F;
-	uint64 r3_10 = (r3_7 >> 0x03) + r1_9;
-	if (r3_10 != 0x00)
+	int64 r3_n = DPB(r3, 0x2068, 0) - DPB(r1, 0x2068, 0);
+	uint64 r1_n = r3_n >> 0x03 >> 0x003F;
+	uint64 r3_n = (r3_n >> 0x03) + r1_n;
+	if (r3_n != 0x00)
 	{
-		Eq_179 r1_15 = DPB(r1_9, 0x2050, 0) + 0x00;
-		if (r1_15 != 0x00)
-			r1_15();
+		Eq_n r1_n = DPB(r1_n, 0x2050, 0) + 0x00;
+		if (r1_n != 0x00)
+			r1_n();
 		else
 			r14();
 	}
@@ -127,138 +127,138 @@ void register_tm_clones(Eq_159 r1, byte * r2, word64 r3, Eq_162 r14)
 // 000006C8: void __do_global_dtors_aux(Register word64 r1, Register word64 r2, Register word64 r4, Register word64 r5, Register word64 r11, Register word64 r12, Register word64 r13, Register word64 r14)
 void __do_global_dtors_aux(word64 r1, word64 r2, word64 r4, word64 r5, word64 r11, word64 r12, word64 r13, word64 r14)
 {
-	byte * r13_17 = DPB(r13, 0x08D0, 0);
-	Eq_198 r15_18 = fp - 0x0140;
-	byte * r11_19 = DPB(r11, 0x2068, 0);
-	if (*r11_19 == 0x00)
+	byte * r13_n = DPB(r13, 0x08D0, 0);
+	Eq_n r15_n = fp - 0x0140;
+	byte * r11_n = DPB(r11, 0x2068, 0);
+	if (*r11_n == 0x00)
 	{
-		byte * r1_22 = DPB(r1, 0x2028, 0);
-		if (*r13_17 != *r1_22)
+		byte * r1_n = DPB(r1, 0x2028, 0);
+		if (*r13_n != *r1_n)
 		{
-			word64 r1_24 = DPB(r1, 8288, 0);
+			word64 r1_n = DPB(r1, 8288, 0);
 			__cxa_finalize();
 		}
-		r1 = deregister_tm_clones(r1_22, r2, r5, 0x070E, out r2, out r5, out r15_18);
-		*r11_19 = 0x01;
+		r1 = deregister_tm_clones(r1_n, r2, r5, 0x070E, out r2, out r5, out r15_n);
+		*r11_n = 0x01;
 	}
-	Eq_210 v12_54 = (word64) r15_18 + 0x00F8;
-	Eq_213 r4_53 = *((word64) r15_18 + 0x0110);
-	r4_53();
+	Eq_n v12_n = (word64) r15_n + 0x00F8;
+	Eq_n r4_n = *((word64) r15_n + 0x0110);
+	r4_n();
 }
 
-// 00000720: void frame_dummy(Register Eq_159 r1, Register word64 r2, Register word64 r3, Register word64 r13, Register word64 r14)
-void frame_dummy(Eq_159 r1, word64 r2, word64 r3, word64 r13, word64 r14)
+// 00000720: void frame_dummy(Register Eq_n r1, Register word64 r2, Register word64 r3, Register word64 r13, Register word64 r14)
+void frame_dummy(Eq_n r1, word64 r2, word64 r3, word64 r13, word64 r14)
 {
-	byte * r13_11 = DPB(r13, 0x08D8, 0);
-	byte * r2_14 = DPB(r2, 0x1E18, 0);
-	word64 qwLoc38_54 = r13;
-	word64 qwLoc30_55 = r14;
-	Eq_256 qwLoc28_56 = fp - 0x00A0;
-	Eq_260 r15_12 = fp - 0x0140;
-	Eq_263 CC_15 = cond(*r13_11 - *r2_14);
-	if (*r13_11 == *r2_14)
+	byte * r13_n = DPB(r13, 0x08D8, 0);
+	byte * r2_n = DPB(r2, 0x1E18, 0);
+	word64 qwLoc38_n = r13;
+	word64 qwLoc30_n = r14;
+	Eq_n qwLoc28_n = fp - 0x00A0;
+	Eq_n r15_n = fp - 0x0140;
+	Eq_n CC_n = cond(*r13_n - *r2_n);
+	if (*r13_n == *r2_n)
 	{
 l00000740:
-		Eq_288 v8_17 = (word64) r15_12 + 0x0108;
-		r13_11 = (byte *) *v8_17;
-		Eq_162 r14_21 = *((word64) v8_17 + 0x08);
-		r15_12 = *((word64) v8_17 + 0x0010);
-		if (CC_15)
+		Eq_n v8_n = (word64) r15_n + 0x0108;
+		r13_n = (byte *) *v8_n;
+		Eq_n r14_n = *((word64) v8_n + 0x08);
+		r15_n = *((word64) v8_n + 0x0010);
+		if (CC_n)
 		{
-			register_tm_clones(r1, r2_14, r3, r14_21);
+			register_tm_clones(r1, r2_n, r3, r14_n);
 			return;
 		}
 	}
-	Eq_159 r1_38 = *DPB(r1, 0x2048, 0);
-	r1 = r1_38;
-	CC_15 = cond(r1_38);
-	if (r1_38 != 0x00)
-		r1_38();
+	Eq_n r1_n = *DPB(r1, 0x2048, 0);
+	r1 = r1_n;
+	CC_n = cond(r1_n);
+	if (r1_n != 0x00)
+		r1_n();
 	goto l00000740;
 }
 
-// 00000768: Register int64 fib(Register int64 r2, Register word64 r10, Register Eq_306 r11, Register word64 r12, Register word64 r13, Register Eq_309 r14, Register out Eq_310 r10Out, Register out Eq_311 r11Out, Register out Eq_312 r12Out, Register out Eq_313 r13Out)
-int64 fib(int64 r2, word64 r10, Eq_306 r11, word64 r12, word64 r13, Eq_309 r14, union Eq_310 & r10Out, union Eq_311 & r11Out, union Eq_312 & r12Out, union Eq_313 & r13Out)
+// 00000768: Register int64 fib(Register int64 r2, Register word64 r10, Register Eq_n r11, Register word64 r12, Register word64 r13, Register Eq_n r14, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out Eq_n r12Out, Register out Eq_n r13Out)
+int64 fib(int64 r2, word64 r10, Eq_n r11, word64 r12, word64 r13, Eq_n r14, union Eq_n & r10Out, union Eq_n & r11Out, union Eq_n & r12Out, union Eq_n & r13Out)
 {
-	word64 r1_68;
-	word32 dwLocA4_106 = (word32) r2;
-	Eq_317 r11_21 = fp - 0x0148;
-	if (DPB(r2, dwLocA4_106, 0) <= 0x01)
-		r1_68 = DPB(r2, dwLocA4_106, 0);
+	word64 r1_n;
+	word32 dwLocA4_n = (word32) r2;
+	Eq_n r11_n = fp - 0x0148;
+	if (DPB(r2, dwLocA4_n, 0) <= 0x01)
+		r1_n = DPB(r2, dwLocA4_n, 0);
 	else
 	{
-		word64 r10_36;
-		Eq_306 r11_37;
-		word64 r12_38;
-		word64 r13_39;
-		word64 r10_57;
-		word64 r2_62 = fib((int64) (*((word64) r11_37.u1 + 0x00A4) - 0x02), DPB(r10_36, (word32) fib((int64) (dwLocA4_106 - 0x01), r10, fp - 0x0148, r12, r13, 0x07A8, out r10_36, out r11_37, out r12_38, out r13_39), 0), r11_37, r12_38, r13_39, 1988, out r10_57, out r11_21, out r12_118, out r13_119);
-		r1_68 = DPB(r2_62, (word32) (r2_62 + r10_57), 0);
+		word64 r10_n;
+		Eq_n r11_n;
+		word64 r12_n;
+		word64 r13_n;
+		word64 r10_n;
+		word64 r2_n = fib((int64) (*((word64) r11_n.u1 + 0x00A4) - 0x02), DPB(r10_n, (word32) fib((int64) (dwLocA4_n - 0x01), r10, fp - 0x0148, r12, r13, 0x07A8, out r10_n, out r11_n, out r12_n, out r13_n), 0), r11_n, r12_n, r13_n, 1988, out r10_n, out r11_n, out r12_n, out r13_n);
+		r1_n = DPB(r2_n, (word32) (r2_n + r10_n), 0);
 	}
-	Eq_363 v19_78 = (word64) r11_21 + 0x00F8;
-	int64 r1_73 = (int64) (word32) r1_68;
-	Eq_369 r4_77 = *((word64) r11_21 + 0x0118);
-	Eq_310 r10_91;
-	Eq_311 r11_92;
-	Eq_312 r12_93;
-	Eq_313 r13_94;
-	int64 r2_96;
-	r4_77();
-	r10Out = r10_91;
-	r11Out = r11_92;
-	r12Out = r12_93;
-	r13Out = r13_94;
-	return r2_96;
+	Eq_n v19_n = (word64) r11_n + 0x00F8;
+	int64 r1_n = (int64) (word32) r1_n;
+	Eq_n r4_n = *((word64) r11_n + 0x0118);
+	Eq_n r10_n;
+	Eq_n r11_n;
+	Eq_n r12_n;
+	Eq_n r13_n;
+	int64 r2_n;
+	r4_n();
+	r10Out = r10_n;
+	r11Out = r11_n;
+	r12Out = r12_n;
+	r13Out = r13_n;
+	return r2_n;
 }
 
 // 000007E0: void main(Register word64 r2, Register word64 r3, Register word64 r10, Register word64 r11, Register word64 r12, Register word64 r13, Register word64 r14)
 void main(word64 r2, word64 r3, word64 r10, word64 r11, word64 r12, word64 r13, word64 r14)
 {
-	word64 r10_29;
-	struct Eq_386 * r11_30;
-	int64 r1_40 = (int64) (word32) fib(0x0A, r10, fp - 336, r12, r13, 0x0806, out r10_29, out r11_30, out r12_71, out r13_72);
-	Eq_403 r4_42 = r11_30->t0120;
-	r4_42();
+	word64 r10_n;
+	struct Eq_n * r11_n;
+	int64 r1_n = (int64) (word32) fib(0x0A, r10, fp - 336, r12, r13, 0x0806, out r10_n, out r11_n, out r12_n, out r13_n);
+	Eq_n r4_n = r11_n->t0120;
+	r4_n();
 }
 
 // 00000820: void __libc_csu_init(Register word64 r2, Register word64 r3, Register word64 r4, Register word64 r6, Register word64 r7, Register word64 r8, Register word64 r9, Register word64 r10, Register word64 r11, Register word64 r12, Register word64 r13, Register word64 r14)
 void __libc_csu_init(word64 r2, word64 r3, word64 r4, word64 r6, word64 r7, word64 r8, word64 r9, word64 r10, word64 r11, word64 r12, word64 r13, word64 r14)
 {
-	union Eq_458 * r1_125 = DPB(r1_39, 7688, 0);
-	int64 r11_55 = DPB(r11_41, 0x1E10, 0) - r1_125 >> 0x03;
-	word64 r1_39;
-	word64 r11_41;
-	word64 r8_49;
-	word64 r9_50;
-	word64 r10_40;
-	word64 r12_42;
-	word64 r13_43;
-	struct Eq_435 * r15_45;
-	word64 r6_127;
-	if (!_init(r4, r6, r7, r4, r3, r2, r11, r12, r13, 0x083C, out r1_39, out r6_127, out r8_49, out r9_50, out r10_40, out r11_41, out r12_42, out r13_43, out r15_45))
+	union Eq_n * r1_n = DPB(r1_n, 7688, 0);
+	int64 r11_n = DPB(r11_n, 0x1E10, 0) - r1_n >> 0x03;
+	word64 r1_n;
+	word64 r11_n;
+	word64 r8_n;
+	word64 r9_n;
+	word64 r10_n;
+	word64 r12_n;
+	word64 r13_n;
+	struct Eq_n * r15_n;
+	word64 r6_n;
+	if (!_init(r4, r6, r7, r4, r3, r2, r11, r12, r13, 0x083C, out r1_n, out r6_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out r15_n))
 	{
-		union Eq_458 * r7_56 = r1_125;
+		union Eq_n * r7_n = r1_n;
 		do
 		{
-			Eq_458 r1_59 = *r7_56;
-			word64 r11_76;
-			r1_59();
-			r11_55 = r11_76 - 0x01;
-		} while (r11_76 != 0x01);
+			Eq_n r1_n = *r7_n;
+			word64 r11_n;
+			r1_n();
+			r11_n = r11_n - 0x01;
+		} while (r11_n != 0x01);
 	}
-	word64 v17_93 = (char *) r15_45 + 0x00D8;
-	Eq_453 r4_92 = r15_45->t0110;
-	r4_92();
+	word64 v17_n = (char *) r15_n + 0x00D8;
+	Eq_n r4_n = r15_n->t0110;
+	r4_n();
 }
 
-// 00000888: void __libc_csu_fini(Register Eq_467 r14)
-void __libc_csu_fini(Eq_467 r14)
+// 00000888: void __libc_csu_fini(Register Eq_n r14)
+void __libc_csu_fini(Eq_n r14)
 {
 	r14();
 }
 
-// 00000890: void _fini(Register word64 r6, Register word64 r7, Register word64 r8, Register word64 r9, Register word64 r10, Register word64 r11, Register word64 r12, Register word64 r13, Register Eq_476 r14)
-void _fini(word64 r6, word64 r7, word64 r8, word64 r9, word64 r10, word64 r11, word64 r12, word64 r13, Eq_476 r14)
+// 00000890: void _fini(Register word64 r6, Register word64 r7, Register word64 r8, Register word64 r9, Register word64 r10, Register word64 r11, Register word64 r12, Register word64 r13, Register Eq_n r14)
+void _fini(word64 r6, word64 r7, word64 r8, word64 r9, word64 r10, word64 r11, word64 r12, word64 r13, Eq_n r14)
 {
 	r14();
 }

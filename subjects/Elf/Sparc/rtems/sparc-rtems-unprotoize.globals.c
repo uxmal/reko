@@ -4,14 +4,14 @@
 
 #include "sparc-rtems-unprotoize.h"
 
-Eq_621 g_tFFFFFFFF;
+Eq_n g_tFFFFFFFF;
 ptr32 g_ptr0001;
-Eq_161 g_t0008;
+Eq_n g_t0008;
 word32 g_dw000C;
-Eq_4659 g_t007B;
-Eq_2 g_t16EE4 = Unexpected function type (fn void ())
+Eq_n g_t007B;
+Eq_n g_t16EE4 = Unexpected function type (fn void ())
 ;
-Eq_161 g_t16F14 = 
+Eq_n g_t16F14 = 
 	{
 		'\x00'
 	};
@@ -19,11 +19,11 @@ char g_str17218[] = "";
 char g_str17268[] = "%s: ";
 char g_str17270[] = ": %s\n";
 int8 g_b17468 = 46;
-Eq_161 g_t1753C = 
+Eq_n g_t1753C = 
 	{
 		'\x00'
 	};
-Eq_161 g_a17540[] = 
+Eq_n g_a17540[] = 
 	{
 	};
 int8 g_b17838 = 99;
@@ -58,7 +58,7 @@ char g_str17AC0[] = "%s: option `-W %s' doesn't allow an argument\n";
 char g_str17AF0[] = "installation problem, cannot exec `%s'";
 char g_str17B28[] = "%s: ";
 char g_str17B30[] = ": %s\n";
-Eq_161 g_t27ED0 = 
+Eq_n g_t27ED0 = 
 	{
 		'\x00'
 	};
@@ -66,73 +66,73 @@ word32 g_dw27F20 = 0x00000000;
 word32 g_dw27F24 = 0x00017098;
 word32 g_dw27F28 = 0x00000000;
 word32 g_dw27F2C = 0x00000000;
-Eq_161 g_t27F3C = 
+Eq_n g_t27F3C = 
 	{
 		'\x00'
 	};
 word32 g_dw27F44 = 0x00000000;
 ui32 g_dw27F48 = 0x00000000;
 ui32 g_dw27F4C = 0x00000000;
-Eq_161 g_t27F50 = 
+Eq_n g_t27F50 = 
 	{
 		'\x00'
 	};
-Eq_161 g_t27F54 = 
+Eq_n g_t27F54 = 
 	{
 		'\x00'
 	};
-Eq_4546 g_t28000 = 
+Eq_n g_t28000 = 
 	{
 		null,
 	};
 char * g_ptr28028 = &g_str178B0;
 <anonymous> * g_ptr2802C = print_and_abort;
 int32 g_dw28030 = 1;
-Eq_161 g_t28064 = 
+Eq_n g_t28064 = 
 	{
 		'\x00'
 	};
 ptr32 * g_ptr28068 = &g_ptr0001;
 word32 g_dw2806C = 0x00000000;
 word32 g_dw28070 = 0x00000001;
-Eq_6517 g_t28074 = 
+Eq_n g_t28074 = 
 	{
 		'\x00'
 	};
 char * g_ptr28078 = &g_str17AF0;
-Eq_3477 g_t28120 = 
+Eq_n g_t28120 = 
 	{
 		null
 	};
-Eq_161 g_t28130 = 
+Eq_n g_t28130 = 
 	{
 		'\x00'
 	};
-Eq_3477 g_t28140 = 
+Eq_n g_t28140 = 
 	{
 		null
 	};
 char * g_ptr28150 = null;
-Eq_161 g_t28160 = 
+Eq_n g_t28160 = 
 	{
 		'\x00'
 	};
-Eq_161 g_t28180 = 
+Eq_n g_t28180 = 
 	{
 		'\x00'
 	};
-Eq_161 g_t28190 = 
+Eq_n g_t28190 = 
 	{
 		'\x00'
 	};
 word32 g_dw281A0 = 0x00000000;
-Eq_3477 g_t281C0 = 
+Eq_n g_t281C0 = 
 	{
 		null
 	};
 up32 g_dw281D0 = 0x00000000;
 ui32 g_dw281E0 = 0x00000000;
-Eq_161 g_t281F0 = 
+Eq_n g_t281F0 = 
 	{
 		'\x00'
 	};
@@ -140,44 +140,44 @@ up32 g_dw28200 = 0x00000000;
 up32 g_dw28210 = 0x00000000;
 int8 * g_ptr28220 = null;
 int32 g_dw28230 = 0;
-Eq_799 g_t28240 = 
+Eq_n g_t28240 = 
 	{
 		0x00000000,
 		0x00000000,
 		null,
 	};
-Eq_161 g_t2B270 = 
+Eq_n g_t2B270 = 
 	{
 		'\x00'
 	};
 ui32 g_dw2B280 = 0x00000000;
 up32 g_dw2B290 = 0x00000000;
-Eq_161 g_t2B2A0 = 
+Eq_n g_t2B2A0 = 
 	{
 		'\x00'
 	};
 char * g_ptr2B2B0 = null;
-Eq_161 g_t2B2C0 = 
+Eq_n g_t2B2C0 = 
 	{
 		'\x00'
 	};
 word32 g_dw2B2D0 = 0x00000000;
-Eq_161 g_t2B2E0 = 
+Eq_n g_t2B2E0 = 
 	{
 		'\x00'
 	};
 ptr32 * g_ptr2B2F0 = null;
 ptr32 * g_ptr2B300 = null;
-Eq_161 g_t2B310 = 
+Eq_n g_t2B310 = 
 	{
 		'\x00'
 	};
 word64 g_qw2B400 = 0x0000000000000000;
-struct Eq_734 * g_ptr2B408 = null;
+struct Eq_n * g_ptr2B408 = null;
 ptr32 g_ptr2B40C = 0x00000000;
-Eq_173 g_t2B640 = 
+Eq_n g_t2B640 = 
 	{
 	};
 char * g_ptr2B760 = null;
-struct Eq_650 * g_ptr2B764 = null;
+struct Eq_n * g_ptr2B764 = null;
 

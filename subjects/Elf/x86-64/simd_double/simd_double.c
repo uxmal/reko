@@ -7,14 +7,14 @@
 // 00000000000005A0: Register ptr64 _init()
 ptr64 _init()
 {
-	ptr64 rax_15 = __gmon_start__;
+	ptr64 rax_n = __gmon_start__;
 	if (__gmon_start__ != 0x00)
 		__gmon_start__();
-	return rax_15;
+	return rax_n;
 }
 
-// 0000000000000620: void _start(Register (ptr64 Eq_9) rdx, Stack Eq_10 qwArg00)
-void _start(void (* rdx)(), Eq_10 qwArg00)
+// 0000000000000620: void _start(Register (ptr64 Eq_n) rdx, Stack Eq_n qwArg00)
+void _start(void (* rdx)(), Eq_n qwArg00)
 {
 	__align((char *) fp + 0x08);
 	__libc_start_main(&globals->t0898, qwArg00, (char *) fp + 0x08, &globals->t0A70, &globals->t0AE0, rdx, fp);
@@ -32,9 +32,9 @@ void deregister_tm_clones(ptr64 rbp)
 // 0000000000000690: void register_tm_clones(Register word64 rbp)
 void register_tm_clones(word64 rbp)
 {
-	int64 rsi_8 = 2101320 - 2101320;
-	Eq_48 rsi_13 = (rsi_8 >> 0x03) + ((rsi_8 >> 0x03) >> 0x3F);
-	if (rsi_13 >> 0x01 == 0x00 || _ITM_registerTMCloneTable == null)
+	int64 rsi_n = 2101320 - 2101320;
+	Eq_n rsi_n = (rsi_n >> 0x03) + ((rsi_n >> 0x03) >> 0x3F);
+	if (rsi_n >> 0x01 == 0x00 || _ITM_registerTMCloneTable == null)
 		return;
 	_ITM_registerTMCloneTable();
 }
@@ -56,25 +56,25 @@ void frame_dummy(word64 rbp)
 	register_tm_clones(rbp);
 }
 
-// 000000000000072A: Register (ptr64 void) _mm_malloc(Register ptr64 rbp, Register uint64 rsi, Register Eq_91 rdi)
-void * _mm_malloc(ptr64 rbp, uint64 rsi, Eq_91 rdi)
+// 000000000000072A: Register (ptr64 void) _mm_malloc(Register ptr64 rbp, Register uint64 rsi, Register Eq_n rdi)
+void * _mm_malloc(ptr64 rbp, uint64 rsi, Eq_n rdi)
 {
-	void * rax_39;
-	uint64 qwLoc28_51 = rsi;
+	void * rax_n;
+	uint64 qwLoc28_n = rsi;
 	if (rsi == 0x01)
-		rax_39 = malloc(rdi);
+		rax_n = malloc(rdi);
 	else
 	{
 		if (rsi == 0x02 || rsi == 0x04)
-			qwLoc28_51 = 0x08;
-		word64 rax_31;
+			qwLoc28_n = 0x08;
+		word64 rax_n;
 		posix_memalign();
-		if ((word32) rax_31 == 0x00)
-			rax_39 = qwLoc10;
+		if ((word32) rax_n == 0x00)
+			rax_n = qwLoc10;
 		else
-			rax_39 = null;
+			rax_n = null;
 	}
-	return rax_39;
+	return rax_n;
 }
 
 // 000000000000078D: void _mm_free(Register (ptr64 (arr real64)) rdi)
@@ -87,79 +87,79 @@ void _mm_free(real64 (* rdi)[])
 void vec_add(word64 rdi, word64 qwArg00)
 {
 	__align(fp);
-	uint64 rax_29 = (uint64) ((uint128) (uint64) rdi /u globals->qw0B00);
-	if (rax_29 <= 0x00)
+	uint64 rax_n = (uint64) ((uint128) (uint64) rdi /u globals->qw0B00);
+	if (rax_n <= 0x00)
 		;
 }
 
-// 0000000000000898: void main(Register Eq_132 xmm0)
-void main(Eq_132 xmm0)
+// 0000000000000898: void main(Register Eq_n xmm0)
+void main(Eq_n xmm0)
 {
-	real64 rax_14[] = _mm_malloc(fp - 0x08, 0x20, 0x2000);
-	real64 rax_26[] = _mm_malloc(fp - 0x08, 0x20, 0x2000);
-	real64 rax_38[] = _mm_malloc(fp - 0x08, 0x20, 0x2000);
-	Eq_154 qwLoc10_198 = 0x00;
-	while (qwLoc10_198 < 0x0400)
+	real64 rax_n[] = _mm_malloc(fp - 0x08, 0x20, 0x2000);
+	real64 rax_n[] = _mm_malloc(fp - 0x08, 0x20, 0x2000);
+	real64 rax_n[] = _mm_malloc(fp - 0x08, 0x20, 0x2000);
+	Eq_n qwLoc10_n = 0x00;
+	while (qwLoc10_n < 0x0400)
 	{
-		real64 * rcx_54 = rax_14 + qwLoc10_198;
-		ui32 eax_61 = (word32) qwLoc10_198;
-		if (qwLoc10_198 >= 0x00)
-			xmm0 = DPB(xmm0, (real64) qwLoc10_198, 0);
+		real64 * rcx_n = rax_n + qwLoc10_n;
+		ui32 eax_n = (word32) qwLoc10_n;
+		if (qwLoc10_n >= 0x00)
+			xmm0 = DPB(xmm0, (real64) qwLoc10_n, 0);
 		else
 		{
-			real64 v26_66 = (real64) (qwLoc10_198 >> 0x01 | (uint64) (eax_61 & 0x01));
-			xmm0 = DPB(xmm0, v26_66 + v26_66, 0);
+			real64 v26_n = (real64) (qwLoc10_n >> 0x01 | (uint64) (eax_n & 0x01));
+			xmm0 = DPB(xmm0, v26_n + v26_n, 0);
 		}
-		*rcx_54 = (real64) xmm0;
-		qwLoc10_198 = (word64) qwLoc10_198 + 0x01;
+		*rcx_n = (real64) xmm0;
+		qwLoc10_n = (word64) qwLoc10_n + 0x01;
 	}
-	Eq_166 qwLoc18_204 = 0x00;
-	while (qwLoc18_204 < 0x0400)
+	Eq_n qwLoc18_n = 0x00;
+	while (qwLoc18_n < 0x0400)
 	{
-		ui32 eax_97 = (word32) ((word64) qwLoc18_204 + 0x01);
-		real64 * rcx_91 = rax_26 + qwLoc18_204;
-		if (qwLoc18_204 >= 0x01)
-			xmm0 = DPB(xmm0, (real64) ((word64) qwLoc18_204 + 0x01), 0);
+		ui32 eax_n = (word32) ((word64) qwLoc18_n + 0x01);
+		real64 * rcx_n = rax_n + qwLoc18_n;
+		if (qwLoc18_n >= 0x01)
+			xmm0 = DPB(xmm0, (real64) ((word64) qwLoc18_n + 0x01), 0);
 		else
 		{
-			real64 v19_102 = (real64) ((word64) qwLoc18_204 + 0x01 >> 0x01 | (uint64) (eax_97 & 0x01));
-			xmm0 = DPB(xmm0, v19_102 + v19_102, 0);
+			real64 v19_n = (real64) ((word64) qwLoc18_n + 0x01 >> 0x01 | (uint64) (eax_n & 0x01));
+			xmm0 = DPB(xmm0, v19_n + v19_n, 0);
 		}
-		*rcx_91 = (real64) xmm0;
-		qwLoc18_204 = (word64) qwLoc18_204 + 0x01;
+		*rcx_n = (real64) xmm0;
+		qwLoc18_n = (word64) qwLoc18_n + 0x01;
 	}
-	uint64 qwLoc20_210;
-	for (qwLoc20_210 = 0x00; qwLoc20_210 < 0x0400; ++qwLoc20_210)
+	uint64 qwLoc20_n;
+	for (qwLoc20_n = 0x00; qwLoc20_n < 0x0400; ++qwLoc20_n)
 	{
 		xmm0 = __xorpd(xmm0, xmm0);
-		rax_38[qwLoc20_210] = (real64) xmm0;
+		rax_n[qwLoc20_n] = (real64) xmm0;
 	}
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word64 stackArg0 = <invalid>;
 	vec_add(0x0400, stackArg0);
-	up64 qwLoc28_219;
-	for (qwLoc28_219 = 0x00; qwLoc28_219 < 0x0400; ++qwLoc28_219)
+	up64 qwLoc28_n;
+	for (qwLoc28_n = 0x00; qwLoc28_n < 0x0400; ++qwLoc28_n)
 		printf("%g\n", 0x00);
-	_mm_free(rax_14);
-	_mm_free(rax_26);
-	_mm_free(rax_38);
+	_mm_free(rax_n);
+	_mm_free(rax_n);
+	_mm_free(rax_n);
 }
 
 // 0000000000000A70: void __libc_csu_init(Register word64 rdx, Register word64 rbx, Register word64 rbp, Register word64 rsi, Register word32 edi, Register word64 r12, Register word64 r13, Register word64 r14, Register word64 r15)
 void __libc_csu_init(word64 rdx, word64 rbx, word64 rbp, word64 rsi, word32 edi, word64 r12, word64 r13, word64 r14, word64 r15)
 {
-	word32 r15d_83 = (word32) (uint64) edi;
-	int64 rbp_29 = 0x00200DF0 - 2100712;
-	word64 rax_33 = _init();
-	if (rbp_29 >> 0x03 != 0x00)
+	word32 r15d_n = (word32) (uint64) edi;
+	int64 rbp_n = 0x00200DF0 - 2100712;
+	word64 rax_n = _init();
+	if (rbp_n >> 0x03 != 0x00)
 	{
-		Eq_283 rbx_41 = 0x00;
+		Eq_n rbx_n = 0x00;
 		do
 		{
-			(*((char *) globals->a200DE8 + rbx_41 * 0x08))();
-			rbx_41 = (word64) rbx_41.u1 + 0x01;
-		} while (rbp_29 >> 0x03 != rbx_41);
+			(*((char *) globals->a200DE8 + rbx_n * 0x08))();
+			rbx_n = (word64) rbx_n.u1 + 0x01;
+		} while (rbp_n >> 0x03 != rbx_n);
 	}
 }
 

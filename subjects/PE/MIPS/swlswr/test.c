@@ -15,8 +15,8 @@ word32 fn00011000(word32 dwArg00, word32 dwArg04, word32 dwArg08, word32 dwArg0C
 	return 0x00;
 }
 
-// 000110A0: Register Eq_46 Win32CrtStartup()
-Eq_46 Win32CrtStartup()
+// 000110A0: Register Eq_n Win32CrtStartup()
+Eq_n Win32CrtStartup()
 {
 	fn000111C4(r2, r9, ra);
 	// Failed to bind call argument.
@@ -34,8 +34,8 @@ Eq_46 Win32CrtStartup()
 	return fn000110E8(ra, stackArg0, stackArg4, stackArg8, stackArg12);
 }
 
-// 000110E8: Register Eq_69 fn000110E8(Register word32 ra, Stack word32 dwArg00, Stack word32 dwArg04, Stack word32 dwArg08, Stack word32 dwArg0C)
-Eq_69 fn000110E8(word32 ra, word32 dwArg00, word32 dwArg04, word32 dwArg08, word32 dwArg0C)
+// 000110E8: Register Eq_n fn000110E8(Register word32 ra, Stack word32 dwArg00, Stack word32 dwArg04, Stack word32 dwArg08, Stack word32 dwArg0C)
+Eq_n fn000110E8(word32 ra, word32 dwArg00, word32 dwArg04, word32 dwArg08, word32 dwArg0C)
 {
 	fn000114E4(ra);
 	// Failed to bind call argument.
@@ -52,51 +52,51 @@ Eq_69 fn000110E8(word32 ra, word32 dwArg00, word32 dwArg04, word32 dwArg08, word
 	word32 stackArg12 = <invalid>;
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	word32 ra_30;
-	Eq_69 r2_25 = fn00011000(stackArg0, stackArg4, stackArg8, stackArg12, out ra_30);
+	word32 ra_n;
+	Eq_n r2_n = fn00011000(stackArg0, stackArg4, stackArg8, stackArg12, out ra_n);
 	word32 stackArg0 = <invalid>;
-	fn00011278(r2_25, r2_25, ra_30, stackArg0);
-	return r2_25;
+	fn00011278(r2_n, r2_n, ra_n, stackArg0);
+	return r2_n;
 }
 
-// 0001116C: void fn0001116C(Register (ptr32 Eq_92) r2, Register (ptr32 (ptr32 word32)) r4, Register word32 r30, Register word32 ra)
-void fn0001116C(struct Eq_92 * r2, word32 ** r4, word32 r30, word32 ra)
+// 0001116C: void fn0001116C(Register (ptr32 Eq_n) r2, Register (ptr32 (ptr32 word32)) r4, Register word32 r30, Register word32 ra)
+void fn0001116C(struct Eq_n * r2, word32 ** r4, word32 r30, word32 ra)
 {
 	r2->ptrFFFFFFEC = r4;
 	r2->ptrFFFFFFF0 = r2->ptrFFFFFFEC;
 	r2->dwFFFFFFF4 = **r2->ptrFFFFFFEC;
-	word32 r8_18 = r2->dwFFFFFFF4;
-	r2->dwFFFFFFE8 = r8_18;
+	word32 r8_n = r2->dwFFFFFFF4;
+	r2->dwFFFFFFE8 = r8_n;
 	XcptFilter();
 }
 
 // 000111C4: void fn000111C4(Register word32 r2, Register ui32 r9, Register word32 ra)
 void fn000111C4(word32 r2, ui32 r9, word32 ra)
 {
-	ui32 r8_7 = globals->dw13030;
-	ui32 r8_11 = r8_7;
-	if (r8_7 != 0x00)
+	ui32 r8_n = globals->dw13030;
+	ui32 r8_n = r8_n;
+	if (r8_n != 0x00)
 	{
-		r9 = r8_7;
-		r8_11 = 0xB064;
-		if (r8_7 != 0xB064)
+		r9 = r8_n;
+		r8_n = 0xB064;
+		if (r8_n != 0xB064)
 		{
-			globals->dw13034 = ~r8_7;
+			globals->dw13034 = ~r8_n;
 			return;
 		}
 	}
-	uint32 r2_21;
-	COREDLL.dll!Ordinal_2696();
-	ui32 r8_29 = r2_21 >> 0x10 ^ r2_21 + 0xFFFF;
-	ui32 dwLoc0C_57 = r8_29;
-	if (r8_29 == 0x00)
-		dwLoc0C_57 = 0xB064;
-	globals->dw13030 = dwLoc0C_57;
-	globals->dw13034 = ~dwLoc0C_57;
+	uint32 r2_n;
+	COREDLL.dll!Ordinal_n();
+	ui32 r8_n = r2_n >> 0x10 ^ r2_n + 0xFFFF;
+	ui32 dwLoc0C_n = r8_n;
+	if (r8_n == 0x00)
+		dwLoc0C_n = 0xB064;
+	globals->dw13030 = dwLoc0C_n;
+	globals->dw13034 = ~dwLoc0C_n;
 }
 
-// 00011278: void fn00011278(Register Eq_69 r2, Register Eq_69 r4, Register word32 ra, Stack word32 dwArg00)
-void fn00011278(Eq_69 r2, Eq_69 r4, word32 ra, word32 dwArg00)
+// 00011278: void fn00011278(Register Eq_n r2, Register Eq_n r4, Register word32 ra, Stack word32 dwArg00)
+void fn00011278(Eq_n r2, Eq_n r4, word32 ra, word32 dwArg00)
 {
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
@@ -110,8 +110,8 @@ void fn00011278(Eq_69 r2, Eq_69 r4, word32 ra, word32 dwArg00)
 	fn000112A8(r2, r4, 0x00, 0x00, ra, stackArg0, stackArg4, stackArg8);
 }
 
-// 000112A8: void fn000112A8(Register Eq_69 r2, Register Eq_69 r4, Register int32 r5, Register int32 r6, Register word32 ra, Stack word32 dwArg00, Stack word32 dwArg04, Stack word32 dwArg08)
-void fn000112A8(Eq_69 r2, Eq_69 r4, int32 r5, int32 r6, word32 ra, word32 dwArg00, word32 dwArg04, word32 dwArg08)
+// 000112A8: void fn000112A8(Register Eq_n r2, Register Eq_n r4, Register int32 r5, Register int32 r6, Register word32 ra, Stack word32 dwArg00, Stack word32 dwArg04, Stack word32 dwArg08)
+void fn000112A8(Eq_n r2, Eq_n r4, int32 r5, int32 r6, word32 ra, word32 dwArg00, word32 dwArg04, word32 dwArg08)
 {
 	globals->b13038 = (byte) (r6 << 0x18 >> 0x18);
 	if (r5 != 0x00)
@@ -143,8 +143,8 @@ l00011374:
 		do
 		{
 			globals->t1303C = (word32) globals->t1303C - 0x04;
-			Eq_196 r9_42 = globals->t1303C;
-			if ((word32) (r9_42 < globals->t13040) != 0x00)
+			Eq_n r9_n = globals->t1303C;
+			if ((word32) (r9_n < globals->t13040) != 0x00)
 			{
 				free(globals->t13040);
 				globals->t1303C.u0 = 0x00;
@@ -152,13 +152,13 @@ l00011374:
 				goto l00011374;
 			}
 		} while (*globals->t1303C == null);
-		<anonymous> * r8_69 = *globals->t1303C;
-		r8_69();
+		<anonymous> * r8_n = *globals->t1303C;
+		r8_n();
 	}
 }
 
-// 000113D8: void fn000113D8(Register Eq_69 r2, Register Eq_69 r4, Register word32 ra, Stack word32 dwArg00)
-void fn000113D8(Eq_69 r2, Eq_69 r4, word32 ra, word32 dwArg00)
+// 000113D8: void fn000113D8(Register Eq_n r2, Register Eq_n r4, Register word32 ra, Stack word32 dwArg00)
+void fn000113D8(Eq_n r2, Eq_n r4, word32 ra, word32 dwArg00)
 {
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
@@ -172,8 +172,8 @@ void fn000113D8(Eq_69 r2, Eq_69 r4, word32 ra, word32 dwArg00)
 	fn000112A8(r2, r4, 0x01, 0x00, ra, stackArg0, stackArg4, stackArg8);
 }
 
-// 00011408: void fn00011408(Register Eq_69 r2, Register word32 ra)
-void fn00011408(Eq_69 r2, word32 ra)
+// 00011408: void fn00011408(Register Eq_n r2, Register word32 ra)
+void fn00011408(Eq_n r2, word32 ra)
 {
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
@@ -187,8 +187,8 @@ void fn00011408(Eq_69 r2, word32 ra)
 	fn000112A8(r2, 0x00, 0x00, 0x01, ra, stackArg0, stackArg4, stackArg8);
 }
 
-// 00011434: void fn00011434(Register Eq_69 r2, Register word32 ra)
-void fn00011434(Eq_69 r2, word32 ra)
+// 00011434: void fn00011434(Register Eq_n r2, Register word32 ra)
+void fn00011434(Eq_n r2, word32 ra)
 {
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
@@ -211,12 +211,12 @@ int32 fn00011460()
 // 0001147C: void fn0001147C(Register (ptr32 word32) r4, Register (ptr32 word32) r5, Register word32 ra, Stack word32 dwArg00, Stack word32 dwArg04)
 void fn0001147C(word32 * r4, word32 * r5, word32 ra, word32 dwArg00, word32 dwArg04)
 {
-	word32 * dwArg00_33 = r4;
-	while ((word32) (dwArg00_33 < r5) != 0x00)
+	word32 * dwArg00_n = r4;
+	while ((word32) (dwArg00_n < r5) != 0x00)
 	{
-		if (*dwArg00_33 != 0x00)
+		if (*dwArg00_n != 0x00)
 			fn00000000();
-		++dwArg00_33;
+		++dwArg00_n;
 	}
 }
 
@@ -242,55 +242,55 @@ void fn000114E4(word32 ra)
 // 0001152C: Register word32 fn0001152C(Register word32 r2, Register word32 r4, Register word32 r5, Register word32 ra, Stack word32 dwArg00)
 word32 fn0001152C(word32 r2, word32 r4, word32 r5, word32 ra, word32 dwArg00)
 {
-	Eq_196 r8_10 = globals->t13040;
-	Eq_196 r8_13 = globals->t1303C;
-	struct Eq_324 * sp_3 = fp + -0x0038;
-	Eq_12 dwLoc20_117 = 0x00;
-	Eq_330 r8_19 = r8_13 - r8_10;
-	if (r8_19 >= 0x00)
+	Eq_n r8_n = globals->t13040;
+	Eq_n r8_n = globals->t1303C;
+	struct Eq_n * sp_n = fp + -0x0038;
+	Eq_n dwLoc20_n = 0x00;
+	Eq_n r8_n = r8_n - r8_n;
+	if (r8_n >= 0x00)
 	{
-		if (r8_10 != 0x00)
+		if (r8_n != 0x00)
 		{
-			Eq_12 r2_31;
+			Eq_n r2_n;
 			msize();
-			dwLoc20_117 = r2_31;
+			dwLoc20_n = r2_n;
 		}
-		if ((word32) (dwLoc20_117 < (word32) r8_19 + 0x04) != 0x00)
+		if ((word32) (dwLoc20_n < (word32) r8_n + 0x04) != 0x00)
 		{
-			if (r8_10 == 0x00)
+			if (r8_n == 0x00)
 			{
 				malloc(0x0010);
-				sp_3 = fp + ~0x3B;
+				sp_n = fp + ~0x3B;
 			}
 			else
 			{
-				Eq_12 dwLoc18_125 = dwLoc20_117 << 0x01;
-				if ((word32) (dwLoc20_117 < 0x0201) == 0x00)
-					dwLoc18_125 = (word32) dwLoc20_117 + 0x0200;
-				if ((word32) (dwLoc20_117 < dwLoc18_125) != 0x00)
+				Eq_n dwLoc18_n = dwLoc20_n << 0x01;
+				if ((word32) (dwLoc20_n < 0x0201) == 0x00)
+					dwLoc18_n = (word32) dwLoc20_n + 0x0200;
+				if ((word32) (dwLoc20_n < dwLoc18_n) != 0x00)
 				{
-					realloc(r8_10, dwLoc18_125);
-					sp_3 = fp + ~0x3B;
+					realloc(r8_n, dwLoc18_n);
+					sp_n = fp + ~0x3B;
 				}
-				if (sp_3->t0014 == 0x00 && (word32) (sp_3->t0018 < sp_3->t0024) != 0x00)
+				if (sp_n->t0014 == 0x00 && (word32) (sp_n->t0018 < sp_n->t0024) != 0x00)
 				{
-					sp_3 = (struct Eq_324 *) ((char *) sp_3 - 0x04);
-					sp_3->t0014 = realloc(sp_3->t001C, sp_3->t0024);
+					sp_n = (struct Eq_n *) ((char *) sp_n - 0x04);
+					sp_n->t0014 = realloc(sp_n->t001C, sp_n->t0024);
 				}
 			}
-			if (sp_3->t0014 == 0x00)
+			if (sp_n->t0014 == 0x00)
 			{
-				sp_3->ptr002C = null;
+				sp_n->ptr002C = null;
 				return dwLoc0C;
 			}
-			sp_3->t0028 = (word32) sp_3->t0014 + ((sp_3->t0028 - sp_3->t001C >> 0x02) << 0x02);
-			sp_3->t001C = sp_3->t0014;
+			sp_n->t0028 = (word32) sp_n->t0014 + ((sp_n->t0028 - sp_n->t001C >> 0x02) << 0x02);
+			sp_n->t001C = sp_n->t0014;
 		}
-		*sp_3->t0028 = sp_3->ptr0038;
-		sp_3->t0028 = (word32) sp_3->t0028 + 0x04;
-		globals->t1303C = sp_3->t0028;
-		globals->t13040 = sp_3->t001C;
-		sp_3->ptr002C = sp_3->ptr0038;
+		*sp_n->t0028 = sp_n->ptr0038;
+		sp_n->t0028 = (word32) sp_n->t0028 + 0x04;
+		globals->t1303C = sp_n->t0028;
+		globals->t13040 = sp_n->t001C;
+		sp_n->ptr002C = sp_n->ptr0038;
 		return dwLoc0C;
 	}
 	else

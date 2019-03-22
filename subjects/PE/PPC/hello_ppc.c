@@ -4,8 +4,8 @@
 
 #include "hello_ppc.h"
 
-// 00400220: Register Eq_2 fn00400220(Register Eq_2 r2, Register word32 r13, Register word32 r14, Register word32 r15, Register word32 r16, Register word32 r17, Register word32 r18, Register word32 r19, Register word32 r20, Register word32 r21, Register word32 r22, Register word32 r23, Register word32 r24, Register ptr32 r25, Register ptr32 r26, Register Eq_17 r27, Register Eq_17 r28, Register Eq_17 r29, Register Eq_17 r30, Register (ptr32 ptr32) r31, Register word32 lr, Stack Eq_2 dwArg08, Stack Eq_2 dwArg18, Stack Eq_2 dwArg1C, Register out Eq_26 r3Out, Register out ptr32 r29Out, Register out ptr32 r30Out, Register out ptr32 r31Out)
-Eq_2 fn00400220(Eq_2 r2, word32 r13, word32 r14, word32 r15, word32 r16, word32 r17, word32 r18, word32 r19, word32 r20, word32 r21, word32 r22, word32 r23, word32 r24, ptr32 r25, ptr32 r26, Eq_17 r27, Eq_17 r28, Eq_17 r29, Eq_17 r30, ptr32 * r31, word32 lr, Eq_2 dwArg08, Eq_2 dwArg18, Eq_2 dwArg1C, union Eq_26 & r3Out, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
+// 00400220: Register Eq_n fn00400220(Register Eq_n r2, Register word32 r13, Register word32 r14, Register word32 r15, Register word32 r16, Register word32 r17, Register word32 r18, Register word32 r19, Register word32 r20, Register word32 r21, Register word32 r22, Register word32 r23, Register word32 r24, Register ptr32 r25, Register ptr32 r26, Register Eq_n r27, Register Eq_n r28, Register Eq_n r29, Register Eq_n r30, Register (ptr32 ptr32) r31, Register word32 lr, Stack Eq_n dwArg08, Stack Eq_n dwArg18, Stack Eq_n dwArg1C, Register out Eq_n r3Out, Register out ptr32 r29Out, Register out ptr32 r30Out, Register out ptr32 r31Out)
+Eq_n fn00400220(Eq_n r2, word32 r13, word32 r14, word32 r15, word32 r16, word32 r17, word32 r18, word32 r19, word32 r20, word32 r21, word32 r22, word32 r23, word32 r24, ptr32 r25, ptr32 r26, Eq_n r27, Eq_n r28, Eq_n r29, Eq_n r30, ptr32 * r31, word32 lr, Eq_n dwArg08, Eq_n dwArg18, Eq_n dwArg1C, union Eq_n & r3Out, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
 {
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
@@ -25,28 +25,28 @@ Eq_2 fn00400220(Eq_2 r2, word32 r13, word32 r14, word32 r15, word32 r16, word32 
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_2 stackArg8 = <invalid>;
-	Eq_2 stackArg24 = (struct Eq_6095 *) <invalid>;
-	Eq_2 stackArg28 = (struct Eq_6095 *) <invalid>;
-	Eq_2 stackArg32 = (struct Eq_6095 *) <invalid>;
-	Eq_2 stackArg36 = (struct Eq_6095 *) <invalid>;
-	Eq_2 stackArg40 = (struct Eq_6095 *) <invalid>;
-	Eq_2 stackArg44 = (struct Eq_6095 *) <invalid>;
-	Eq_2 stackArg48 = (struct Eq_6095 *) <invalid>;
-	Eq_2 stackArg52 = (struct Eq_6095 *) <invalid>;
-	ptr32 r29_56;
-	ptr32 r30_58;
-	ptr32 r31_59;
-	Eq_2 r2_46 = fn00400268(r2, *((word32) r2 + 0x0044), r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, r26, r27, r28, r29, r30, r31, lr, stackArg8, stackArg24, stackArg28, stackArg32, stackArg36, stackArg40, stackArg44, stackArg48, stackArg52, out r29_56, out r30_58, out r31_59);
+	Eq_n stackArg8 = <invalid>;
+	Eq_n stackArg24 = (struct Eq_n *) <invalid>;
+	Eq_n stackArg28 = (struct Eq_n *) <invalid>;
+	Eq_n stackArg32 = (struct Eq_n *) <invalid>;
+	Eq_n stackArg36 = (struct Eq_n *) <invalid>;
+	Eq_n stackArg40 = (struct Eq_n *) <invalid>;
+	Eq_n stackArg44 = (struct Eq_n *) <invalid>;
+	Eq_n stackArg48 = (struct Eq_n *) <invalid>;
+	Eq_n stackArg52 = (struct Eq_n *) <invalid>;
+	ptr32 r29_n;
+	ptr32 r30_n;
+	ptr32 r31_n;
+	Eq_n r2_n = fn00400268(r2, *((word32) r2 + 0x0044), r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, r26, r27, r28, r29, r30, r31, lr, stackArg8, stackArg24, stackArg28, stackArg32, stackArg36, stackArg40, stackArg44, stackArg48, stackArg52, out r29_n, out r30_n, out r31_n);
 	r3Out.u0 = 0x00;
-	r29Out = r29_56;
-	r30Out = r30_58;
-	r31Out = r31_59;
-	return r2_46;
+	r29Out = r29_n;
+	r30Out = r30_n;
+	r31Out = r31_n;
+	return r2_n;
 }
 
-// 00400268: Register Eq_2 fn00400268(Register Eq_2 r2, Register (ptr32 byte) r3, Register word32 r13, Register word32 r14, Register word32 r15, Register word32 r16, Register word32 r17, Register word32 r18, Register word32 r19, Register word32 r20, Register word32 r21, Register word32 r22, Register word32 r23, Register word32 r24, Register ptr32 r25, Register ptr32 r26, Register Eq_17 r27, Register Eq_17 r28, Register Eq_17 r29, Register Eq_17 r30, Register (ptr32 ptr32) r31, Register word32 lr, Stack Eq_2 dwArg08, Stack Eq_2 dwArg18, Stack Eq_2 dwArg1C, Stack Eq_2 dwArg20, Stack Eq_2 dwArg24, Stack Eq_2 dwArg28, Stack Eq_2 dwArg2C, Stack Eq_2 dwArg30, Stack Eq_2 dwArg34, Register out ptr32 r29Out, Register out ptr32 r30Out, Register out ptr32 r31Out)
-Eq_2 fn00400268(Eq_2 r2, byte * r3, word32 r13, word32 r14, word32 r15, word32 r16, word32 r17, word32 r18, word32 r19, word32 r20, word32 r21, word32 r22, word32 r23, word32 r24, ptr32 r25, ptr32 r26, Eq_17 r27, Eq_17 r28, Eq_17 r29, Eq_17 r30, ptr32 * r31, word32 lr, Eq_2 dwArg08, Eq_2 dwArg18, Eq_2 dwArg1C, Eq_2 dwArg20, Eq_2 dwArg24, Eq_2 dwArg28, Eq_2 dwArg2C, Eq_2 dwArg30, Eq_2 dwArg34, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
+// 00400268: Register Eq_n fn00400268(Register Eq_n r2, Register (ptr32 byte) r3, Register word32 r13, Register word32 r14, Register word32 r15, Register word32 r16, Register word32 r17, Register word32 r18, Register word32 r19, Register word32 r20, Register word32 r21, Register word32 r22, Register word32 r23, Register word32 r24, Register ptr32 r25, Register ptr32 r26, Register Eq_n r27, Register Eq_n r28, Register Eq_n r29, Register Eq_n r30, Register (ptr32 ptr32) r31, Register word32 lr, Stack Eq_n dwArg08, Stack Eq_n dwArg18, Stack Eq_n dwArg1C, Stack Eq_n dwArg20, Stack Eq_n dwArg24, Stack Eq_n dwArg28, Stack Eq_n dwArg2C, Stack Eq_n dwArg30, Stack Eq_n dwArg34, Register out ptr32 r29Out, Register out ptr32 r30Out, Register out ptr32 r31Out)
+Eq_n fn00400268(Eq_n r2, byte * r3, word32 r13, word32 r14, word32 r15, word32 r16, word32 r17, word32 r18, word32 r19, word32 r20, word32 r21, word32 r22, word32 r23, word32 r24, ptr32 r25, ptr32 r26, Eq_n r27, Eq_n r28, Eq_n r29, Eq_n r30, ptr32 * r31, word32 lr, Eq_n dwArg08, Eq_n dwArg18, Eq_n dwArg1C, Eq_n dwArg20, Eq_n dwArg24, Eq_n dwArg28, Eq_n dwArg2C, Eq_n dwArg30, Eq_n dwArg34, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
 {
 	v11->t0000 = r29;
 	v11->t0004 = r30;
@@ -59,43 +59,43 @@ Eq_2 fn00400268(Eq_2 r2, byte * r3, word32 r13, word32 r14, word32 r15, word32 r
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	struct Eq_98 * r31_34 = *((word32) r2 + 0x0048);
-	Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-	Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-	Eq_2 stackArg32 = (struct Eq_6095 *) <invalid>;
-	Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-	Eq_17 r3_45;
-	Eq_17 r31_46;
-	ptr32 r25_55;
-	ptr32 r26_56;
-	Eq_17 r27_57;
-	Eq_17 r28_58;
-	Eq_17 r29_59;
-	struct Eq_113 * r3_100;
-	Eq_17 r30_101;
-	Eq_17 r31_102;
-	Eq_2 r2_125 = fn00400430(fn004004B4(fn004002F8(r2, (char *) r31_34 + 0x0020, r25, r26, r27, r28, r29, r30, (char *) r31_34 + 0x0020, lr, stackArg8, out r3_45, out r25_55, out r26_56, out r27_57, out r28_58, out r29_59, out r31_46), r31_46, r3, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25_55, r26_56, r27_57, r28_58, r29_59, r3_45, r31_46, lr, stackArg8, stackArg32, out r3_100, out r25_167, out r26_168, out r27_169, out r28_170, out r29_171, out r30_101, out r31_102), r30_101, r31_102, r3_100, r30_101, stackArg8);
+	struct Eq_n * r31_n = *((word32) r2 + 0x0048);
+	Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+	Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+	Eq_n stackArg32 = (struct Eq_n *) <invalid>;
+	Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+	Eq_n r3_n;
+	Eq_n r31_n;
+	ptr32 r25_n;
+	ptr32 r26_n;
+	Eq_n r27_n;
+	Eq_n r28_n;
+	Eq_n r29_n;
+	struct Eq_n * r3_n;
+	Eq_n r30_n;
+	Eq_n r31_n;
+	Eq_n r2_n = fn00400430(fn004004B4(fn004002F8(r2, (char *) r31_n + 0x0020, r25, r26, r27, r28, r29, r30, (char *) r31_n + 0x0020, lr, stackArg8, out r3_n, out r25_n, out r26_n, out r27_n, out r28_n, out r29_n, out r31_n), r31_n, r3, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25_n, r26_n, r27_n, r28_n, r29_n, r3_n, r31_n, lr, stackArg8, stackArg32, out r3_n, out r25_n, out r26_n, out r27_n, out r28_n, out r29_n, out r30_n, out r31_n), r30_n, r31_n, r3_n, r30_n, stackArg8);
 	r29Out = dwLoc10;
 	r30Out = dwLoc0C;
 	r31Out = dwLoc08;
-	return r2_125;
+	return r2_n;
 }
 
-// 004002F8: Register Eq_2 fn004002F8(Register Eq_2 r2, Register Eq_17 r3, Register ptr32 r25, Register ptr32 r26, Register Eq_17 r27, Register Eq_17 r28, Register Eq_17 r29, Register Eq_17 r30, Register Eq_17 r31, Register word32 lr, Stack Eq_2 dwArg08, Register out Eq_173 r3Out, Register out ptr32 r25Out, Register out ptr32 r26Out, Register out Eq_17 r27Out, Register out Eq_17 r28Out, Register out Eq_17 r29Out, Register out Eq_2 r31Out)
-Eq_2 fn004002F8(Eq_2 r2, Eq_17 r3, ptr32 r25, ptr32 r26, Eq_17 r27, Eq_17 r28, Eq_17 r29, Eq_17 r30, Eq_17 r31, word32 lr, Eq_2 dwArg08, union Eq_173 & r3Out, ptr32 & r25Out, ptr32 & r26Out, union Eq_17 & r27Out, union Eq_17 & r28Out, union Eq_17 & r29Out, union Eq_2 & r31Out)
+// 004002F8: Register Eq_n fn004002F8(Register Eq_n r2, Register Eq_n r3, Register ptr32 r25, Register ptr32 r26, Register Eq_n r27, Register Eq_n r28, Register Eq_n r29, Register Eq_n r30, Register Eq_n r31, Register word32 lr, Stack Eq_n dwArg08, Register out Eq_n r3Out, Register out ptr32 r25Out, Register out ptr32 r26Out, Register out Eq_n r27Out, Register out Eq_n r28Out, Register out Eq_n r29Out, Register out Eq_n r31Out)
+Eq_n fn004002F8(Eq_n r2, Eq_n r3, ptr32 r25, ptr32 r26, Eq_n r27, Eq_n r28, Eq_n r29, Eq_n r30, Eq_n r31, word32 lr, Eq_n dwArg08, union Eq_n & r3Out, ptr32 & r25Out, ptr32 & r26Out, union Eq_n & r27Out, union Eq_n & r28Out, union Eq_n & r29Out, union Eq_n & r31Out)
 {
 	v3->t0000 = r30;
 	v3->t0004 = r31;
-	Eq_17 r31_13 = r3;
+	Eq_n r31_n = r3;
 	if (fn00401474(r2, *((word32) r3 + 0x0010)) != 0x00)
 	{
-		int32 r10_36;
-		struct Eq_98 * r11_26 = *((word32) r2 + 0x0048);
-		if (r3 == (char *) r11_26 + 0x0020)
-			r10_36 = 0x00;
+		int32 r10_n;
+		struct Eq_n * r11_n = *((word32) r2 + 0x0048);
+		if (r3 == (char *) r11_n + 0x0020)
+			r10_n = 0x00;
 		else
 		{
-			if (r3 != (char *) r11_26 + 0x0040)
+			if (r3 != (char *) r11_n + 0x0040)
 			{
 				r3Out.u0 = 0x00;
 				r25Out = r25;
@@ -103,30 +103,30 @@ Eq_2 fn004002F8(Eq_2 r2, Eq_17 r3, ptr32 r25, ptr32 r26, Eq_17 r27, Eq_17 r28, E
 				r27Out = r27;
 				r28Out = r28;
 				r29Out = r29;
-				&r31Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
+				&r31Out.u0->dw0000 = (struct Eq_n *) <invalid>;
 				return r2;
 			}
-			r10_36 = 0x01;
+			r10_n = 0x01;
 		}
-		word32 * r4_40 = *((word32) r2 + 0x004C);
-		++*r4_40;
+		word32 * r4_n = *((word32) r2 + 0x004C);
+		++*r4_n;
 		if ((*((word32) r3 + 0x0C) & 0x010C) == 0x00)
 		{
-			Eq_17 r30_48[] = *((word32) r2 + 0x0050);
-			int32 r10_50 = r10_36 << 0x02;
-			Eq_17 r11_100 = r30_48[r10_50 / 0x04];
-			struct Eq_220 * r30_52 = r30_48 + r10_50 / 0x04;
-			if (r11_100 == 0x00)
+			Eq_n r30_n[] = *((word32) r2 + 0x0050);
+			int32 r10_n = r10_n << 0x02;
+			Eq_n r11_n = r30_n[r10_n / 0x04];
+			struct Eq_n * r30_n = r30_n + r10_n / 0x04;
+			if (r11_n == 0x00)
 			{
 				// Failed to bind call argument.
 				// Please report this issue at https://github.com/uxmal/reko
-				Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-				Eq_17 r3_77;
-				union Eq_17 * r30_78;
-				r2 = fn00400F9C(r2, 0x00001000, r25, r26, r27, r28, r29, r30_52, r3, lr, stackArg8, out r3_77, out r25, out r26, out r27, out r28, out r29, out r30_78, out r31_13);
-				*r30_78 = (union Eq_17 *) r3_77;
-				r11_100 = r3_77;
-				if (r3_77 == 0x00)
+				Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+				Eq_n r3_n;
+				union Eq_n * r30_n;
+				r2 = fn00400F9C(r2, 0x00001000, r25, r26, r27, r28, r29, r30_n, r3, lr, stackArg8, out r3_n, out r25, out r26, out r27, out r28, out r29, out r30_n, out r31_n);
+				*r30_n = (union Eq_n *) r3_n;
+				r11_n = r3_n;
+				if (r3_n == 0x00)
 				{
 					r3Out.u0 = 0x00;
 					r25Out = r25;
@@ -134,22 +134,22 @@ Eq_2 fn004002F8(Eq_2 r2, Eq_17 r3, ptr32 r25, ptr32 r26, Eq_17 r27, Eq_17 r28, E
 					r27Out = r27;
 					r28Out = r28;
 					r29Out = r29;
-					&r31Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
+					&r31Out.u0->dw0000 = (struct Eq_n *) <invalid>;
 					return r2;
 				}
 			}
-			*((word32) r31_13 + 0x0C) |= 0x1102;
-			*((word32) r31_13 + 0x08) = r11_100;
-			((word32) r31_13 + 0x0018)->u0 = 0x00001000;
-			*((word32) r31_13 + 0x04) = 0x00001000;
-			*r31_13 = r11_100;
+			*((word32) r31_n + 0x0C) |= 0x1102;
+			*((word32) r31_n + 0x08) = r11_n;
+			((word32) r31_n + 0x0018)->u0 = 0x00001000;
+			*((word32) r31_n + 0x04) = 0x00001000;
+			*r31_n = r11_n;
 			r3Out.u0 = 0x01;
 			r25Out = r25;
 			r26Out = r26;
 			r27Out = r27;
 			r28Out = r28;
 			r29Out = r29;
-			&r31Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
+			&r31Out.u0->dw0000 = (struct Eq_n *) <invalid>;
 			return r2;
 		}
 		else
@@ -160,7 +160,7 @@ Eq_2 fn004002F8(Eq_2 r2, Eq_17 r3, ptr32 r25, ptr32 r26, Eq_17 r27, Eq_17 r28, E
 			r27Out = r27;
 			r28Out = r28;
 			r29Out = r29;
-			&r31Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
+			&r31Out.u0->dw0000 = (struct Eq_n *) <invalid>;
 			return r2;
 		}
 	}
@@ -172,13 +172,13 @@ Eq_2 fn004002F8(Eq_2 r2, Eq_17 r3, ptr32 r25, ptr32 r26, Eq_17 r27, Eq_17 r28, E
 		r27Out = r27;
 		r28Out = r28;
 		r29Out = r29;
-		&r31Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
+		&r31Out.u0->dw0000 = (struct Eq_n *) <invalid>;
 		return r2;
 	}
 }
 
-// 00400430: Register Eq_2 fn00400430(Register Eq_2 r2, Register Eq_17 r3, Register Eq_17 r4, Register (ptr32 Eq_113) r29, Register Eq_17 r30, Stack Eq_2 dwArg08)
-Eq_2 fn00400430(Eq_2 r2, Eq_17 r3, Eq_17 r4, struct Eq_113 * r29, Eq_17 r30, Eq_2 dwArg08)
+// 00400430: Register Eq_n fn00400430(Register Eq_n r2, Register Eq_n r3, Register Eq_n r4, Register (ptr32 Eq_n) r29, Register Eq_n r30, Stack Eq_n dwArg08)
+Eq_n fn00400430(Eq_n r2, Eq_n r3, Eq_n r4, struct Eq_n * r29, Eq_n r30, Eq_n dwArg08)
 {
 	if (r3 != 0x00)
 	{
@@ -186,28 +186,28 @@ Eq_2 fn00400430(Eq_2 r2, Eq_17 r3, Eq_17 r4, struct Eq_113 * r29, Eq_17 r30, Eq_
 		{
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-			struct Eq_356 * r31_48;
-			r2 = fn004012B0(r2, r4, r29, r30, r4, stackArg8, out r3_106, out r29_107, out r30_108, out r31_48);
-			ui32 r4_61 = r31_48->dw000C;
-			r31_48->dw0018 = 0x00;
-			r31_48->dw0000 = 0x00;
-			r31_48->dw0008 = 0x00;
-			r31_48->dw000C = r4_61 & -0x00001101;
+			Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+			struct Eq_n * r31_n;
+			r2 = fn004012B0(r2, r4, r29, r30, r4, stackArg8, out r3_n, out r29_n, out r30_n, out r31_n);
+			ui32 r4_n = r31_n->dw000C;
+			r31_n->dw0018 = 0x00;
+			r31_n->dw0000 = 0x00;
+			r31_n->dw0008 = 0x00;
+			r31_n->dw000C = r4_n & -0x00001101;
 		}
 	}
 	else if ((*((word32) r4 + 0x0C) & 0x1000) != 0x00)
 	{
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-		r2 = fn004012B0(r2, r4, r29, r30, r4, stackArg8, out r3_110, out r29_111, out r30_112, out r31_113);
+		Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+		r2 = fn004012B0(r2, r4, r29, r30, r4, stackArg8, out r3_n, out r29_n, out r30_n, out r31_n);
 	}
 	return r2;
 }
 
-// 004004B4: Register Eq_2 fn004004B4(Register Eq_2 r2, Register Eq_17 r3, Register (ptr32 byte) r4, Register word32 r13, Register word32 r14, Register word32 r15, Register word32 r16, Register word32 r17, Register word32 r18, Register word32 r19, Register word32 r20, Register word32 r21, Register word32 r22, Register word32 r23, Register word32 r24, Register ptr32 r25, Register ptr32 r26, Register Eq_17 r27, Register Eq_17 r28, Register Eq_17 r29, Register Eq_17 r30, Register Eq_17 r31, Register word32 lr, Stack Eq_2 dwArg08, Stack Eq_2 dwArg20, Register out Eq_152 r3Out, Register out ptr32 r25Out, Register out ptr32 r26Out, Register out ptr32 r27Out, Register out ptr32 r28Out, Register out ptr32 r29Out, Register out ptr32 r30Out, Register out ptr32 r31Out)
-Eq_2 fn004004B4(Eq_2 r2, Eq_17 r3, byte * r4, word32 r13, word32 r14, word32 r15, word32 r16, word32 r17, word32 r18, word32 r19, word32 r20, word32 r21, word32 r22, word32 r23, word32 r24, ptr32 r25, ptr32 r26, Eq_17 r27, Eq_17 r28, Eq_17 r29, Eq_17 r30, Eq_17 r31, word32 lr, Eq_2 dwArg08, Eq_2 dwArg20, union Eq_152 & r3Out, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
+// 004004B4: Register Eq_n fn004004B4(Register Eq_n r2, Register Eq_n r3, Register (ptr32 byte) r4, Register word32 r13, Register word32 r14, Register word32 r15, Register word32 r16, Register word32 r17, Register word32 r18, Register word32 r19, Register word32 r20, Register word32 r21, Register word32 r22, Register word32 r23, Register word32 r24, Register ptr32 r25, Register ptr32 r26, Register Eq_n r27, Register Eq_n r28, Register Eq_n r29, Register Eq_n r30, Register Eq_n r31, Register word32 lr, Stack Eq_n dwArg08, Stack Eq_n dwArg20, Register out Eq_n r3Out, Register out ptr32 r25Out, Register out ptr32 r26Out, Register out ptr32 r27Out, Register out ptr32 r28Out, Register out ptr32 r29Out, Register out ptr32 r30Out, Register out ptr32 r31Out)
+Eq_n fn004004B4(Eq_n r2, Eq_n r3, byte * r4, word32 r13, word32 r14, word32 r15, word32 r16, word32 r17, word32 r18, word32 r19, word32 r20, word32 r21, word32 r22, word32 r23, word32 r24, ptr32 r25, ptr32 r26, Eq_n r27, Eq_n r28, Eq_n r29, Eq_n r30, Eq_n r31, word32 lr, Eq_n dwArg08, Eq_n dwArg20, union Eq_n & r3Out, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
 {
 	v3->dw0000 = r13;
 	v3->dw0004 = r14;
@@ -228,45 +228,45 @@ Eq_2 fn004004B4(Eq_2 r2, Eq_17 r3, byte * r4, word32 r13, word32 r14, word32 r15
 	v3->t0040 = r29;
 	v3->t0044 = r30;
 	v3->t0048 = r31;
-	Eq_17 r31_198 = (int32) (int8) (word32) *r4;
-	byte * r23_193 = r4 + 0x01;
-	int32 dwLoc0284_306 = 0x00;
-	if (r31_198 != 0x00)
+	Eq_n r31_n = (int32) (int8) (word32) *r4;
+	byte * r23_n = r4 + 0x01;
+	int32 dwLoc0284_n = 0x00;
+	if (r31_n != 0x00)
 	{
-		ptr32 r26_170 = fp + -0x0280;
-		struct Eq_493 * r14_84 = *((word32) r2 + 0x0054);
-		word16 (** r16_85)[] = *((word32) r2 + 88);
+		ptr32 r26_n = fp + -0x0280;
+		struct Eq_n * r14_n = *((word32) r2 + 0x0054);
+		word16 (** r16_n)[] = *((word32) r2 + 88);
 		while (true)
 		{
-			int32 r10_105;
-			if (r31_198 > 0x001F && r31_198 < 121)
-				r10_105 = (int32) (int8) (word32) Mem89[r14_84 + -0x001C + r31_198:byte] & 0x0F;
+			int32 r10_n;
+			if (r31_n > 0x001F && r31_n < 121)
+				r10_n = (int32) (int8) (word32) Mem89[r14_n + -0x001C + r31_n:byte] & 0x0F;
 			else
-				r10_105 = 0x00;
-			int32 r4_122 = (int32) (int8) ((int32) (int8) (word32) *((byte) (r14_84->aFFFFFFE4 + 0x0020 + dwLoc0284_306) + r10_105 * 0x08) >> 0x04);
-			dwLoc0284_306 = r4_122;
+				r10_n = 0x00;
+			int32 r4_n = (int32) (int8) ((int32) (int8) (word32) *((byte) (r14_n->aFFFFFFE4 + 0x0020 + dwLoc0284_n) + r10_n * 0x08) >> 0x04);
+			dwLoc0284_n = r4_n;
 			Mem237 = Mem125;
-			if (r4_122 < 0x08)
+			if (r4_n < 0x08)
 			{
-				lr = fn004005A0(r4_122 << 0x02, lr);
-				if (((word32) *((char *) *r16_85 + (r31_198 & 0xFF) * 0x02) & 0x8000) != 0x00)
+				lr = fn004005A0(r4_n << 0x02, lr);
+				if (((word32) *((char *) *r16_n + (r31_n & 0xFF) * 0x02) & 0x8000) != 0x00)
 				{
 					// Failed to bind call argument.
 					// Please report this issue at https://github.com/uxmal/reko
-					Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-					r2 = fn00400E04(r2, r31_198, r3, fp + -0x0288, r25, r26_170, r27, r28, r29, r30, lr, stackArg8, out r25, out r26_170, out r27, out r28, out r29, out r30);
-					++r23_193;
-					r31_198 = (int32) (int8) (word32) *r23_193;
+					Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+					r2 = fn00400E04(r2, r31_n, r3, fp + -0x0288, r25, r26_n, r27, r28, r29, r30, lr, stackArg8, out r25, out r26_n, out r27, out r28, out r29, out r30);
+					++r23_n;
+					r31_n = (int32) (int8) (word32) *r23_n;
 				}
 				// Failed to bind call argument.
 				// Please report this issue at https://github.com/uxmal/reko
-				Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-				r2 = fn00400E04(r2, r31_198, r3, fp + -0x0288, r25, r26_170, r27, r28, r29, r30, lr, stackArg8, out r25, out r26_170, out r27, out r28, out r29, out r30);
+				Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+				r2 = fn00400E04(r2, r31_n, r3, fp + -0x0288, r25, r26_n, r27, r28, r29, r30, lr, stackArg8, out r25, out r26_n, out r27, out r28, out r29, out r30);
 				Mem237 = Mem201;
 			}
-			++r23_193;
-			r31_198 = (int32) (int8) (word32) *r23_193;
-			if (r31_198 == 0x00)
+			++r23_n;
+			r31_n = (int32) (int8) (word32) *r23_n;
+			if (r31_n == 0x00)
 				break;
 		}
 	}
@@ -297,34 +297,34 @@ void fn00400838(word32 r11, word32 lr)
 {
 }
 
-// 00400E04: Register Eq_2 fn00400E04(Register Eq_2 r2, Register Eq_17 r3, Register Eq_17 r4, Register Eq_17 r5, Register ptr32 r25, Register ptr32 r26, Register Eq_17 r27, Register Eq_17 r28, Register Eq_17 r29, Register Eq_17 r30, Register word32 lr, Stack Eq_2 dwArg08, Register out ptr32 r25Out, Register out ptr32 r26Out, Register out Eq_17 r27Out, Register out Eq_17 r28Out, Register out Eq_17 r29Out, Register out Eq_17 r30Out)
-Eq_2 fn00400E04(Eq_2 r2, Eq_17 r3, Eq_17 r4, Eq_17 r5, ptr32 r25, ptr32 r26, Eq_17 r27, Eq_17 r28, Eq_17 r29, Eq_17 r30, word32 lr, Eq_2 dwArg08, ptr32 & r25Out, ptr32 & r26Out, union Eq_17 & r27Out, union Eq_17 & r28Out, union Eq_17 & r29Out, union Eq_17 & r30Out)
+// 00400E04: Register Eq_n fn00400E04(Register Eq_n r2, Register Eq_n r3, Register Eq_n r4, Register Eq_n r5, Register ptr32 r25, Register ptr32 r26, Register Eq_n r27, Register Eq_n r28, Register Eq_n r29, Register Eq_n r30, Register word32 lr, Stack Eq_n dwArg08, Register out ptr32 r25Out, Register out ptr32 r26Out, Register out Eq_n r27Out, Register out Eq_n r28Out, Register out Eq_n r29Out, Register out Eq_n r30Out)
+Eq_n fn00400E04(Eq_n r2, Eq_n r3, Eq_n r4, Eq_n r5, ptr32 r25, ptr32 r26, Eq_n r27, Eq_n r28, Eq_n r29, Eq_n r30, word32 lr, Eq_n dwArg08, ptr32 & r25Out, ptr32 & r26Out, union Eq_n & r27Out, union Eq_n & r28Out, union Eq_n & r29Out, union Eq_n & r30Out)
 {
-	int32 r11_47;
-	int32 r5_10 = *((word32) r4 + 0x04);
-	*((word32) r4 + 0x04) = r5_10 + -0x01;
-	Eq_17 r31_33 = r5;
-	if (r5_10 > 0x00)
+	int32 r11_n;
+	int32 r5_n = *((word32) r4 + 0x04);
+	*((word32) r4 + 0x04) = r5_n + -0x01;
+	Eq_n r31_n = r5;
+	if (r5_n > 0x00)
 	{
 		(*r4)->u0 = (byte) (int32) (int8) r3;
-		Eq_17 r6_52 = *r4;
-		word32 r7_53 = (word32) *r6_52;
-		*r4 = (word32) r6_52 + 0x01;
-		r11_47 = (int32) (int16) ((int32) (int8) r7_53 & 0xFF);
+		Eq_n r6_n = *r4;
+		word32 r7_n = (word32) *r6_n;
+		*r4 = (word32) r6_n + 0x01;
+		r11_n = (int32) (int16) ((int32) (int8) r7_n & 0xFF);
 	}
 	else
 	{
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-		int32 r3_31;
-		r2 = fn00401598(r2, r3, r4, r25, r26, r27, r28, r29, r30, r5, lr, stackArg8, out r3_31, out r25, out r26, out r27, out r28, out r29, out r30, out r31_33);
-		r11_47 = r3_31;
+		Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+		int32 r3_n;
+		r2 = fn00401598(r2, r3, r4, r25, r26, r27, r28, r29, r30, r5, lr, stackArg8, out r3_n, out r25, out r26, out r27, out r28, out r29, out r30, out r31_n);
+		r11_n = r3_n;
 	}
-	if (r11_47 == -0x01)
-		r31_33->u0 = -0x01;
+	if (r11_n == -0x01)
+		r31_n->u0 = -0x01;
 	else
-		*r31_33 = (word32) *r31_33 + 0x01;
+		*r31_n = (word32) *r31_n + 0x01;
 	r25Out = r25;
 	r26Out = r26;
 	r27Out = r27;
@@ -334,53 +334,53 @@ Eq_2 fn00400E04(Eq_2 r2, Eq_17 r3, Eq_17 r4, Eq_17 r5, ptr32 r25, ptr32 r26, Eq_
 	return r2;
 }
 
-// 00400E9C: void fn00400E9C(Register Eq_2 r2, Register Eq_17 r3, Register int32 r4, Register Eq_17 r5, Register Eq_17 r6, Register ptr32 r25, Register ptr32 r26, Register Eq_17 r27, Register word32 r28, Register word32 r29, Register word32 r30, Register word32 r31, Register word32 lr, Stack word32 dwArg08)
-void fn00400E9C(Eq_2 r2, Eq_17 r3, int32 r4, Eq_17 r5, Eq_17 r6, ptr32 r25, ptr32 r26, Eq_17 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, word32 dwArg08)
+// 00400E9C: void fn00400E9C(Register Eq_n r2, Register Eq_n r3, Register int32 r4, Register Eq_n r5, Register Eq_n r6, Register ptr32 r25, Register ptr32 r26, Register Eq_n r27, Register word32 r28, Register word32 r29, Register word32 r30, Register word32 r31, Register word32 lr, Stack word32 dwArg08)
+void fn00400E9C(Eq_n r2, Eq_n r3, int32 r4, Eq_n r5, Eq_n r6, ptr32 r25, ptr32 r26, Eq_n r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, word32 dwArg08)
 {
 	v3->dw0000 = r28;
 	v3->dw0004 = r29;
 	v3->dw0008 = r30;
 	v3->dw000C = r31;
-	Eq_17 r28_25 = r3;
-	Eq_17 r29_27 = r5;
-	Eq_17 r30_29 = r6;
-	int32 r31_31 = r4 + -0x01;
+	Eq_n r28_n = r3;
+	Eq_n r29_n = r5;
+	Eq_n r30_n = r6;
+	int32 r31_n = r4 + -0x01;
 	if (r4 > 0x00)
 	{
 		do
 		{
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-			r2 = fn00400E04(r2, r28_25, r29_27, r30_29, r25, r26, r27, r28_25, r29_27, r30_29, lr, stackArg8, out r25, out r26, out r27, out r28_25, out r29_27, out r30_29);
-			r31_31 = r31_129 + -0x01;
-			r31_129 = r31_31;
-		} while (r31_129 > 0x00);
+			Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+			r2 = fn00400E04(r2, r28_n, r29_n, r30_n, r25, r26, r27, r28_n, r29_n, r30_n, lr, stackArg8, out r25, out r26, out r27, out r28_n, out r29_n, out r30_n);
+			r31_n = r31_n + -0x01;
+			r31_n = r31_n;
+		} while (r31_n > 0x00);
 	}
 }
 
-// 00400F00: void fn00400F00(Register Eq_2 r2, Register (ptr32 byte) r3, Register int32 r4, Register Eq_17 r5, Register Eq_17 r6, Register ptr32 r25, Register ptr32 r26, Register Eq_17 r27, Register word32 r28, Register word32 r29, Register word32 r30, Register word32 r31, Register word32 lr, Stack word32 dwArg08)
-void fn00400F00(Eq_2 r2, byte * r3, int32 r4, Eq_17 r5, Eq_17 r6, ptr32 r25, ptr32 r26, Eq_17 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, word32 dwArg08)
+// 00400F00: void fn00400F00(Register Eq_n r2, Register (ptr32 byte) r3, Register int32 r4, Register Eq_n r5, Register Eq_n r6, Register ptr32 r25, Register ptr32 r26, Register Eq_n r27, Register word32 r28, Register word32 r29, Register word32 r30, Register word32 r31, Register word32 lr, Stack word32 dwArg08)
+void fn00400F00(Eq_n r2, byte * r3, int32 r4, Eq_n r5, Eq_n r6, ptr32 r25, ptr32 r26, Eq_n r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, word32 dwArg08)
 {
 	v3->dw0000 = r28;
 	v3->dw0004 = r29;
 	v3->dw0008 = r30;
 	v3->dw000C = r31;
-	byte * r30_25 = r3;
-	Eq_17 r28_27 = r5;
-	Eq_17 r29_29 = r6;
-	int32 r31_31 = r4 + -0x01;
+	byte * r30_n = r3;
+	Eq_n r28_n = r5;
+	Eq_n r29_n = r6;
+	int32 r31_n = r4 + -0x01;
 	if (r4 > 0x00)
 	{
 		do
 		{
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-			r2 = fn00400E04(r2, (int32) (int8) (word32) *r30_25, r28_27, r29_29, r25, r26, r27, r28_27, r29_29, r30_25 + 0x01, lr, stackArg8, out r25, out r26, out r27, out r28_27, out r29_29, out r30_25);
-			r31_31 = r31_134 + -0x01;
-			r31_134 = r31_31;
-		} while (r31_134 > 0x00);
+			Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+			r2 = fn00400E04(r2, (int32) (int8) (word32) *r30_n, r28_n, r29_n, r25, r26, r27, r28_n, r29_n, r30_n + 0x01, lr, stackArg8, out r25, out r26, out r27, out r28_n, out r29_n, out r30_n);
+			r31_n = r31_n + -0x01;
+			r31_n = r31_n;
+		} while (r31_n > 0x00);
 	}
 }
 
@@ -396,74 +396,74 @@ void fn00400F88(word32 * r3)
 	*r3 += 0x04;
 }
 
-// 00400F9C: Register Eq_2 fn00400F9C(Register Eq_2 r2, Register Eq_17 r3, Register ptr32 r25, Register ptr32 r26, Register Eq_17 r27, Register Eq_17 r28, Register Eq_17 r29, Register (ptr32 Eq_220) r30, Register Eq_17 r31, Register word32 lr, Stack Eq_2 dwArg08, Register out ptr32 r3Out, Register out ptr32 r25Out, Register out ptr32 r26Out, Register out ptr32 r27Out, Register out Eq_319 r28Out, Register out ptr32 r29Out, Register out ptr32 r30Out, Register out (ptr32 Eq_322) r31Out)
-Eq_2 fn00400F9C(Eq_2 r2, Eq_17 r3, ptr32 r25, ptr32 r26, Eq_17 r27, Eq_17 r28, Eq_17 r29, struct Eq_220 * r30, Eq_17 r31, word32 lr, Eq_2 dwArg08, ptr32 & r3Out, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, union Eq_319 & r28Out, ptr32 & r29Out, ptr32 & r30Out, struct Eq_322 & r31Out)
+// 00400F9C: Register Eq_n fn00400F9C(Register Eq_n r2, Register Eq_n r3, Register ptr32 r25, Register ptr32 r26, Register Eq_n r27, Register Eq_n r28, Register Eq_n r29, Register (ptr32 Eq_n) r30, Register Eq_n r31, Register word32 lr, Stack Eq_n dwArg08, Register out ptr32 r3Out, Register out ptr32 r25Out, Register out ptr32 r26Out, Register out ptr32 r27Out, Register out Eq_n r28Out, Register out ptr32 r29Out, Register out ptr32 r30Out, Register out (ptr32 Eq_n) r31Out)
+Eq_n fn00400F9C(Eq_n r2, Eq_n r3, ptr32 r25, ptr32 r26, Eq_n r27, Eq_n r28, Eq_n r29, struct Eq_n * r30, Eq_n r31, word32 lr, Eq_n dwArg08, ptr32 & r3Out, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, union Eq_n & r28Out, ptr32 & r29Out, ptr32 & r30Out, struct Eq_n & r31Out)
 {
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-	ptr32 r25_26;
-	ptr32 r26_27;
-	ptr32 r27_28;
-	Eq_319 r28_29;
-	ptr32 r29_30;
-	ptr32 r3_31;
-	ptr32 r30_32;
-	struct Eq_322 * r31_33;
-	Eq_2 r2_25 = fn00400FC4(r2, r3, **((word32) r2 + 100), r25, r26, r27, r28, r29, r30, r31, lr, stackArg8, out r3_31, out r25_26, out r26_27, out r27_28, out r28_29, out r29_30, out r30_32, out r31_33);
-	r3Out = r3_31;
-	r25Out = r25_26;
-	r26Out = r26_27;
-	r27Out = r27_28;
-	r28Out = r28_29;
-	r29Out = r29_30;
-	r30Out = r30_32;
-	r31Out = r31_33;
-	return r2_25;
+	Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+	ptr32 r25_n;
+	ptr32 r26_n;
+	ptr32 r27_n;
+	Eq_n r28_n;
+	ptr32 r29_n;
+	ptr32 r3_n;
+	ptr32 r30_n;
+	struct Eq_n * r31_n;
+	Eq_n r2_n = fn00400FC4(r2, r3, **((word32) r2 + 100), r25, r26, r27, r28, r29, r30, r31, lr, stackArg8, out r3_n, out r25_n, out r26_n, out r27_n, out r28_n, out r29_n, out r30_n, out r31_n);
+	r3Out = r3_n;
+	r25Out = r25_n;
+	r26Out = r26_n;
+	r27Out = r27_n;
+	r28Out = r28_n;
+	r29Out = r29_n;
+	r30Out = r30_n;
+	r31Out = r31_n;
+	return r2_n;
 }
 
-// 00400FC4: Register Eq_2 fn00400FC4(Register Eq_2 r2, Register Eq_17 r3, Register word32 r4, Register ptr32 r25, Register ptr32 r26, Register Eq_17 r27, Register Eq_17 r28, Register Eq_17 r29, Register (ptr32 Eq_220) r30, Register Eq_17 r31, Register word32 lr, Stack Eq_2 dwArg08, Register out Eq_857 r3Out, Register out ptr32 r25Out, Register out ptr32 r26Out, Register out Eq_17 r27Out, Register out Eq_17 r28Out, Register out Eq_17 r29Out, Register out Eq_2 r30Out, Register out Eq_2 r31Out)
-Eq_2 fn00400FC4(Eq_2 r2, Eq_17 r3, word32 r4, ptr32 r25, ptr32 r26, Eq_17 r27, Eq_17 r28, Eq_17 r29, struct Eq_220 * r30, Eq_17 r31, word32 lr, Eq_2 dwArg08, union Eq_857 & r3Out, ptr32 & r25Out, ptr32 & r26Out, union Eq_17 & r27Out, union Eq_17 & r28Out, union Eq_17 & r29Out, union Eq_2 & r30Out, union Eq_2 & r31Out)
+// 00400FC4: Register Eq_n fn00400FC4(Register Eq_n r2, Register Eq_n r3, Register word32 r4, Register ptr32 r25, Register ptr32 r26, Register Eq_n r27, Register Eq_n r28, Register Eq_n r29, Register (ptr32 Eq_n) r30, Register Eq_n r31, Register word32 lr, Stack Eq_n dwArg08, Register out Eq_n r3Out, Register out ptr32 r25Out, Register out ptr32 r26Out, Register out Eq_n r27Out, Register out Eq_n r28Out, Register out Eq_n r29Out, Register out Eq_n r30Out, Register out Eq_n r31Out)
+Eq_n fn00400FC4(Eq_n r2, Eq_n r3, word32 r4, ptr32 r25, ptr32 r26, Eq_n r27, Eq_n r28, Eq_n r29, struct Eq_n * r30, Eq_n r31, word32 lr, Eq_n dwArg08, union Eq_n & r3Out, ptr32 & r25Out, ptr32 & r26Out, union Eq_n & r27Out, union Eq_n & r28Out, union Eq_n & r29Out, union Eq_n & r30Out, union Eq_n & r31Out)
 {
 	v3->ptr0000 = r30;
 	v3->t0004 = r31;
-	word32 r30_15 = r4;
+	word32 r30_n = r4;
 	if (r3 <= -0x0020)
 	{
-		struct Eq_220 * r31_23 = (word32) r3 + 0x07 & -0x08;
+		struct Eq_n * r31_n = (word32) r3 + 0x07 & -0x08;
 		do
 		{
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-			Eq_857 r3_38;
-			Eq_2 r2_49 = fn0040105C(r2, r31_23, r25, r26, r27, r28, r29, r30_15, r31_23, lr, stackArg8, out r3_38, out r25, out r26, out r27, out r28, out r29, out r30_15, out r31_23);
-			if (r3_38 != 0x00 || r30_15 == 0x00)
+			Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+			Eq_n r3_n;
+			Eq_n r2_n = fn0040105C(r2, r31_n, r25, r26, r27, r28, r29, r30_n, r31_n, lr, stackArg8, out r3_n, out r25, out r26, out r27, out r28, out r29, out r30_n, out r31_n);
+			if (r3_n != 0x00 || r30_n == 0x00)
 			{
-				r3Out = r3_38;
+				r3Out = r3_n;
 				r25Out = r25;
 				r26Out = r26;
 				r27Out = r27;
 				r28Out = r28;
 				r29Out = r29;
-				&r30Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-				&r31Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-				return r2_49;
+				&r30Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+				&r31Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+				return r2_n;
 			}
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-			word32 r3_71;
-			r2 = fn004017F0(r2_49, r31_23, stackArg8, out r3_71);
-		} while (r3_71 != 0x00);
+			Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+			word32 r3_n;
+			r2 = fn004017F0(r2_n, r31_n, stackArg8, out r3_n);
+		} while (r3_n != 0x00);
 		r3Out.u0 = 0x00;
 		r25Out = r25;
 		r26Out = r26;
 		r27Out = r27;
 		r28Out = r28;
 		r29Out = r29;
-		&r30Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-		&r31Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
+		&r30Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+		&r31Out.u0->dw0000 = (struct Eq_n *) <invalid>;
 		return r2;
 	}
 	else
@@ -474,80 +474,80 @@ Eq_2 fn00400FC4(Eq_2 r2, Eq_17 r3, word32 r4, ptr32 r25, ptr32 r26, Eq_17 r27, E
 		r27Out = r27;
 		r28Out = r28;
 		r29Out = r29;
-		&r30Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-		&r31Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
+		&r30Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+		&r31Out.u0->dw0000 = (struct Eq_n *) <invalid>;
 		return r2;
 	}
 }
 
-// 0040105C: Register Eq_2 fn0040105C(Register Eq_2 r2, Register (ptr32 Eq_220) r3, Register ptr32 r25, Register ptr32 r26, Register Eq_17 r27, Register Eq_17 r28, Register Eq_17 r29, Register word32 r30, Register (ptr32 Eq_220) r31, Register word32 lr, Stack Eq_2 dwArg08, Register out Eq_926 r3Out, Register out ptr32 r25Out, Register out ptr32 r26Out, Register out Eq_17 r27Out, Register out Eq_17 r28Out, Register out (ptr32 Eq_220) r29Out, Register out Eq_2 r30Out, Register out Eq_2 r31Out)
-Eq_2 fn0040105C(Eq_2 r2, struct Eq_220 * r3, ptr32 r25, ptr32 r26, Eq_17 r27, Eq_17 r28, Eq_17 r29, word32 r30, struct Eq_220 * r31, word32 lr, Eq_2 dwArg08, union Eq_926 & r3Out, ptr32 & r25Out, ptr32 & r26Out, union Eq_17 & r27Out, union Eq_17 & r28Out, struct Eq_220 & r29Out, union Eq_2 & r30Out, union Eq_2 & r31Out)
+// 0040105C: Register Eq_n fn0040105C(Register Eq_n r2, Register (ptr32 Eq_n) r3, Register ptr32 r25, Register ptr32 r26, Register Eq_n r27, Register Eq_n r28, Register Eq_n r29, Register word32 r30, Register (ptr32 Eq_n) r31, Register word32 lr, Stack Eq_n dwArg08, Register out Eq_n r3Out, Register out ptr32 r25Out, Register out ptr32 r26Out, Register out Eq_n r27Out, Register out Eq_n r28Out, Register out (ptr32 Eq_n) r29Out, Register out Eq_n r30Out, Register out Eq_n r31Out)
+Eq_n fn0040105C(Eq_n r2, struct Eq_n * r3, ptr32 r25, ptr32 r26, Eq_n r27, Eq_n r28, Eq_n r29, word32 r30, struct Eq_n * r31, word32 lr, Eq_n dwArg08, union Eq_n & r3Out, ptr32 & r25Out, ptr32 & r26Out, union Eq_n & r27Out, union Eq_n & r28Out, struct Eq_n & r29Out, union Eq_n & r30Out, union Eq_n & r31Out)
 {
 	v5->t0000 = r29;
 	v5->dw0004 = r30;
 	v5->ptr0008 = r31;
-	struct Eq_956 * r3_23 = fn00401F40(r2, r3);
-	struct Eq_220 * r30_114 = r3;
-	struct Eq_956 * r31_105 = r3_23;
-	if (r3_23 == null)
+	struct Eq_n * r3_n = fn00401F40(r2, r3);
+	struct Eq_n * r30_n = r3;
+	struct Eq_n * r31_n = r3_n;
+	if (r3_n == null)
 	{
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-		struct Eq_220 * r29_52;
-		int32 r3_53;
-		r2 = fn00401ADC(r2, r3, r25, r26, r27, r28, r29, r3, r3_23, lr, stackArg8, out r3_53, out r25, out r26, out r27, out r28, out r29_52, out r30_114);
-		if (r3_53 == -0x01)
+		Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+		struct Eq_n * r29_n;
+		int32 r3_n;
+		r2 = fn00401ADC(r2, r3, r25, r26, r27, r28, r29, r3, r3_n, lr, stackArg8, out r3_n, out r25, out r26, out r27, out r28, out r29_n, out r30_n);
+		if (r3_n == -0x01)
 		{
 			r3Out.u0 = 0x00;
 			r25Out = r25;
 			r26Out = r26;
 			r27Out = r27;
 			r28Out = r28;
-			r29Out = r29_52;
-			&r30Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-			&r31Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
+			r29Out = r29_n;
+			&r30Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+			&r31Out.u0->dw0000 = (struct Eq_n *) <invalid>;
 			return r2;
 		}
-		struct Eq_956 * r3_76 = fn00401F40(r2, r30_114);
-		r31_105 = r3_76;
-		if (r3_76 == null)
+		struct Eq_n * r3_n = fn00401F40(r2, r30_n);
+		r31_n = r3_n;
+		if (r3_n == null)
 		{
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-			r2 = fn00401AB4(r2, r29_52, r30_114, stackArg8, out r29_237, out r30_114);
+			Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+			r2 = fn00401AB4(r2, r29_n, r30_n, stackArg8, out r29_n, out r30_n);
 		}
 	}
-	int32 r29_110 = -0x04;
-	if ((*((char *) r31_105->ptr0000 + 0x04) & -0x04) - (r31_105->dw0004 & -0x04) - r30_114 != 0x08)
+	int32 r29_n = -0x04;
+	if ((*((char *) r31_n->ptr0000 + 0x04) & -0x04) - (r31_n->dw0004 & -0x04) - r30_n != 0x08)
 	{
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-		struct Eq_1061 * r3_122;
-		r2 = fn0040115C(r2, r31_105, r30_114, -0x04, r30_114, r31_105, stackArg8, out r3_122, out r29_110, out r31_105);
-		if (r3_122 != null)
-			r3_122->dw0004 = r3_122->dw0004 & -0x03 | 0x01;
+		Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+		struct Eq_n * r3_n;
+		r2 = fn0040115C(r2, r31_n, r30_n, -0x04, r30_n, r31_n, stackArg8, out r3_n, out r29_n, out r31_n);
+		if (r3_n != null)
+			r3_n->dw0004 = r3_n->dw0004 & -0x03 | 0x01;
 	}
-	struct Eq_220 * r5_147 = r31_105->ptr0000;
-	struct Eq_1041 * r6_149 = *((word32) r2 + 0x0068);
-	ui32 r4_151 = r31_105->dw0004 & r29_110;
-	r31_105->dw0004 = r4_151;
-	r6_149->ptr0004 = r5_147;
-	r3Out = (r4_151 & r29_110) + 0x08;
+	struct Eq_n * r5_n = r31_n->ptr0000;
+	struct Eq_n * r6_n = *((word32) r2 + 0x0068);
+	ui32 r4_n = r31_n->dw0004 & r29_n;
+	r31_n->dw0004 = r4_n;
+	r6_n->ptr0004 = r5_n;
+	r3Out = (r4_n & r29_n) + 0x08;
 	r25Out = r25;
 	r26Out = r26;
 	r27Out = r27;
 	r28Out = r28;
 	r29Out = dwLoc10;
-	&r30Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-	&r31Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
+	&r30Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+	&r31Out.u0->dw0000 = (struct Eq_n *) <invalid>;
 	return r2;
 }
 
-// 0040115C: Register Eq_2 fn0040115C(Register Eq_2 r2, Register (ptr32 Eq_956) r3, Register (ptr32 Eq_220) r4, Register int32 r29, Register (ptr32 Eq_220) r30, Register (ptr32 Eq_956) r31, Stack Eq_2 dwArg08, Register out (ptr32 Eq_220) r3Out, Register out Eq_2 r29Out, Register out Eq_2 r31Out)
-Eq_2 fn0040115C(Eq_2 r2, struct Eq_956 * r3, struct Eq_220 * r4, int32 r29, struct Eq_220 * r30, struct Eq_956 * r31, Eq_2 dwArg08, struct Eq_220 & r3Out, union Eq_2 & r29Out, union Eq_2 & r31Out)
+// 0040115C: Register Eq_n fn0040115C(Register Eq_n r2, Register (ptr32 Eq_n) r3, Register (ptr32 Eq_n) r4, Register int32 r29, Register (ptr32 Eq_n) r30, Register (ptr32 Eq_n) r31, Stack Eq_n dwArg08, Register out (ptr32 Eq_n) r3Out, Register out Eq_n r29Out, Register out Eq_n r31Out)
+Eq_n fn0040115C(Eq_n r2, struct Eq_n * r3, struct Eq_n * r4, int32 r29, struct Eq_n * r30, struct Eq_n * r31, Eq_n dwArg08, struct Eq_n & r3Out, union Eq_n & r29Out, union Eq_n & r31Out)
 {
 	v3->dw0000 = r29;
 	v3->ptr0004 = r30;
@@ -556,256 +556,256 @@ Eq_2 fn0040115C(Eq_2 r2, struct Eq_956 * r3, struct Eq_220 * r4, int32 r29, stru
 	{
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-		struct Eq_220 * r3_33;
-		r2 = fn004019CC(r2, stackArg8, out r3_33);
-		if (r3_33 != null)
+		Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+		struct Eq_n * r3_n;
+		r2 = fn004019CC(r2, stackArg8, out r3_n);
+		if (r3_n != null)
 		{
-			struct Eq_1130 * r29_60 = r4 + (r3->dw0004 & -0x04) / 0x08;
-			r3_33->ptr0004 = (struct Eq_973 *) &r29_60->ptr0008;
-			r29_60->ptr0008 = r3_33;
-			r3_33->ptr0000 = (struct Eq_220 *) r3->ptr0000;
-			r3->ptr0000 = (Eq_2004 (**)[]) r3_33;
-			r3Out = r3_33;
-			&r29Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-			&r31Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
+			struct Eq_n * r29_n = r4 + (r3->dw0004 & -0x04) / 0x08;
+			r3_n->ptr0004 = (struct Eq_n *) &r29_n->ptr0008;
+			r29_n->ptr0008 = r3_n;
+			r3_n->ptr0000 = (struct Eq_n *) r3->ptr0000;
+			r3->ptr0000 = (Eq_n (**)[]) r3_n;
+			r3Out = r3_n;
+			&r29Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+			&r31Out.u0->dw0000 = (struct Eq_n *) <invalid>;
 			return r2;
 		}
 	}
 	r3Out = null;
-	&r29Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-	&r31Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
+	&r29Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+	&r31Out.u0->dw0000 = (struct Eq_n *) <invalid>;
 	return r2;
 }
 
-// 004011FC: Register Eq_2 fn004011FC(Register Eq_2 r2, Register Eq_17 r3, Register (ptr32 Eq_113) r29, Register Eq_17 r30, Stack Eq_2 dwArg08, Register out Eq_1159 r3Out, Register out Eq_2 r27Out, Register out Eq_2 r28Out, Register out Eq_1162 r29Out, Register out ptr32 r30Out, Register out Eq_2 r31Out)
-Eq_2 fn004011FC(Eq_2 r2, Eq_17 r3, struct Eq_113 * r29, Eq_17 r30, Eq_2 dwArg08, union Eq_1159 & r3Out, union Eq_2 & r27Out, union Eq_2 & r28Out, union Eq_1162 & r29Out, ptr32 & r30Out, union Eq_2 & r31Out)
+// 004011FC: Register Eq_n fn004011FC(Register Eq_n r2, Register Eq_n r3, Register (ptr32 Eq_n) r29, Register Eq_n r30, Stack Eq_n dwArg08, Register out Eq_n r3Out, Register out Eq_n r27Out, Register out Eq_n r28Out, Register out Eq_n r29Out, Register out ptr32 r30Out, Register out Eq_n r31Out)
+Eq_n fn004011FC(Eq_n r2, Eq_n r3, struct Eq_n * r29, Eq_n r30, Eq_n dwArg08, union Eq_n & r3Out, union Eq_n & r27Out, union Eq_n & r28Out, union Eq_n & r29Out, ptr32 & r30Out, union Eq_n & r31Out)
 {
 	if (r3 != 0x00)
 	{
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-		Eq_1162 r29_19;
-		word32 r3_20;
-		ptr32 r30_21;
-		struct Eq_1171 * r31_22;
-		Eq_2 r2_28 = fn004012B0(r2, r3, r29, r30, r3, stackArg8, out r3_20, out r29_19, out r30_21, out r31_22);
-		if (r3_20 == 0x00)
+		Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+		Eq_n r29_n;
+		word32 r3_n;
+		ptr32 r30_n;
+		struct Eq_n * r31_n;
+		Eq_n r2_n = fn004012B0(r2, r3, r29, r30, r3, stackArg8, out r3_n, out r29_n, out r30_n, out r31_n);
+		if (r3_n == 0x00)
 		{
-			if ((r31_22->dw000C & 0x4000) == 0x00)
+			if ((r31_n->dw000C & 0x4000) == 0x00)
 			{
 				r3Out.u0 = 0x00;
-				&r27Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-				&r28Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-				r29Out = r29_19;
-				r30Out = r30_21;
-				&r31Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-				return r2_28;
+				&r27Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+				&r28Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+				r29Out = r29_n;
+				r30Out = r30_n;
+				&r31Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+				return r2_n;
 			}
 			else
 			{
 				// Failed to bind call argument.
 				// Please report this issue at https://github.com/uxmal/reko
-				Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-				Eq_1162 r29_45;
-				word32 r3_46;
-				ptr32 r30_47;
-				Eq_2 r2_56 = fn004020BC(r2_28, r31_22->ptr0010, r29_19, r30_21, r31_22, stackArg8, out r3_46, out r29_45, out r30_47);
-				Eq_1159 r3_135 = -0x01;
-				if (r3_46 == 0x00)
-					r3_135.u0 = 0x00;
-				r3Out = r3_135;
-				&r27Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-				&r28Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-				r29Out = r29_45;
-				r30Out = r30_47;
-				&r31Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-				return r2_56;
+				Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+				Eq_n r29_n;
+				word32 r3_n;
+				ptr32 r30_n;
+				Eq_n r2_n = fn004020BC(r2_n, r31_n->ptr0010, r29_n, r30_n, r31_n, stackArg8, out r3_n, out r29_n, out r30_n);
+				Eq_n r3_n = -0x01;
+				if (r3_n == 0x00)
+					r3_n.u0 = 0x00;
+				r3Out = r3_n;
+				&r27Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+				&r28Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+				r29Out = r29_n;
+				r30Out = r30_n;
+				&r31Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+				return r2_n;
 			}
 		}
 		else
 		{
 			r3Out.u0 = -0x01;
-			&r27Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-			&r28Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-			r29Out = r29_19;
-			r30Out = r30_21;
-			&r31Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-			return r2_28;
+			&r27Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+			&r28Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+			r29Out = r29_n;
+			r30Out = r30_n;
+			&r31Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+			return r2_n;
 		}
 	}
 	else
 	{
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-		Eq_1159 r3_79;
-		Eq_1162 r29_86;
-		ptr32 r30_87;
-		Eq_2 r2_88 = fn00401380(r2, 0x00, r27, r28, r29, r30, r3, stackArg8, out r3_79, out r29_86, out r30_87);
-		r3Out = r3_79;
-		&r27Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-		&r28Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-		r29Out = r29_86;
-		r30Out = r30_87;
-		&r31Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-		return r2_88;
+		Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+		Eq_n r3_n;
+		Eq_n r29_n;
+		ptr32 r30_n;
+		Eq_n r2_n = fn00401380(r2, 0x00, r27, r28, r29, r30, r3, stackArg8, out r3_n, out r29_n, out r30_n);
+		r3Out = r3_n;
+		&r27Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+		&r28Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+		r29Out = r29_n;
+		r30Out = r30_n;
+		&r31Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+		return r2_n;
 	}
 }
 
-// 004012B0: Register Eq_2 fn004012B0(Register Eq_2 r2, Register Eq_17 r3, Register (ptr32 Eq_113) r29, Register Eq_17 r30, Register Eq_17 r31, Stack Eq_2 dwArg08, Register out Eq_365 r3Out, Register out ptr32 r29Out, Register out ptr32 r30Out, Register out ptr32 r31Out)
-Eq_2 fn004012B0(Eq_2 r2, Eq_17 r3, struct Eq_113 * r29, Eq_17 r30, Eq_17 r31, Eq_2 dwArg08, union Eq_365 & r3Out, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
+// 004012B0: Register Eq_n fn004012B0(Register Eq_n r2, Register Eq_n r3, Register (ptr32 Eq_n) r29, Register Eq_n r30, Register Eq_n r31, Stack Eq_n dwArg08, Register out Eq_n r3Out, Register out ptr32 r29Out, Register out ptr32 r30Out, Register out ptr32 r31Out)
+Eq_n fn004012B0(Eq_n r2, Eq_n r3, struct Eq_n * r29, Eq_n r30, Eq_n r31, Eq_n dwArg08, union Eq_n & r3Out, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
 {
 	v3->ptr0000 = r29;
 	v3->t0004 = r30;
 	v3->t0008 = r31;
-	Eq_17 r31_16 = r3;
-	ui32 r11_17 = *((word32) r3 + 0x0C);
-	Eq_365 r29_24 = 0x00;
-	if ((r11_17 & 0x03) == 0x02 && (r11_17 & 0x0108) != 0x00)
+	Eq_n r31_n = r3;
+	ui32 r11_n = *((word32) r3 + 0x0C);
+	Eq_n r29_n = 0x00;
+	if ((r11_n & 0x03) == 0x02 && (r11_n & 0x0108) != 0x00)
 	{
-		Eq_17 r4_27 = *((word32) r3 + 0x08);
-		struct Eq_220 * r30_29 = *r3 - r4_27;
-		if (r30_29 > null)
+		Eq_n r4_n = *((word32) r3 + 0x08);
+		struct Eq_n * r30_n = *r3 - r4_n;
+		if (r30_n > null)
 		{
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-			word32 r3_36;
-			word32 r30_46;
-			r2 = fn00402248(r2, *((word32) r3 + 0x0010), r4_27, r30_29, null, r30_29, r3, stackArg8, out r3_36, out r29_24, out r30_46, out r31_16);
-			if (r3_36 == r30_46)
+			Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+			word32 r3_n;
+			word32 r30_n;
+			r2 = fn00402248(r2, *((word32) r3 + 0x0010), r4_n, r30_n, null, r30_n, r3, stackArg8, out r3_n, out r29_n, out r30_n, out r31_n);
+			if (r3_n == r30_n)
 			{
-				ui32 r11_57 = *((word32) r31_16 + 0x0C);
-				if ((r11_57 & 0x80) != 0x00)
-					*((word32) r31_16 + 0x0C) = r11_57 & -0x03;
+				ui32 r11_n = *((word32) r31_n + 0x0C);
+				if ((r11_n & 0x80) != 0x00)
+					*((word32) r31_n + 0x0C) = r11_n & -0x03;
 			}
 			else
 			{
-				*((word32) r31_16 + 0x0C) |= 0x20;
-				r29_24.u0 = -0x01;
+				*((word32) r31_n + 0x0C) |= 0x20;
+				r29_n.u0 = -0x01;
 			}
 		}
 	}
-	Eq_17 r4_67 = *((word32) r31_16 + 0x08);
-	*((word32) r31_16 + 0x04) = 0x00;
-	*r31_16 = r4_67;
-	r3Out = r29_24;
+	Eq_n r4_n = *((word32) r31_n + 0x08);
+	*((word32) r31_n + 0x04) = 0x00;
+	*r31_n = r4_n;
+	r3Out = r29_n;
 	r29Out = dwLoc10;
 	r30Out = dwLoc0C;
 	r31Out = dwLoc08;
 	return r2;
 }
 
-// 0040135C: void fn0040135C(Register Eq_2 r2, Register word32 r27, Register word32 r28, Register (ptr32 Eq_113) r29, Register Eq_17 r30, Register Eq_17 r31, Stack word32 dwArg08)
-void fn0040135C(Eq_2 r2, word32 r27, word32 r28, struct Eq_113 * r29, Eq_17 r30, Eq_17 r31, word32 dwArg08)
+// 0040135C: void fn0040135C(Register Eq_n r2, Register word32 r27, Register word32 r28, Register (ptr32 Eq_n) r29, Register Eq_n r30, Register Eq_n r31, Stack word32 dwArg08)
+void fn0040135C(Eq_n r2, word32 r27, word32 r28, struct Eq_n * r29, Eq_n r30, Eq_n r31, word32 dwArg08)
 {
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-	fn00401380(r2, 0x01, r27, r28, r29, r30, r31, stackArg8, out r3_33, out r29_34, out r30_35);
+	Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+	fn00401380(r2, 0x01, r27, r28, r29, r30, r31, stackArg8, out r3_n, out r29_n, out r30_n);
 }
 
-// 00401380: Register Eq_2 fn00401380(Register Eq_2 r2, Register Eq_17 r3, Register word32 r27, Register word32 r28, Register (ptr32 Eq_113) r29, Register Eq_17 r30, Register Eq_17 r31, Stack Eq_2 dwArg08, Register out (ptr32 Eq_113) r3Out, Register out ptr32 r29Out, Register out ptr32 r30Out)
-Eq_2 fn00401380(Eq_2 r2, Eq_17 r3, word32 r27, word32 r28, struct Eq_113 * r29, Eq_17 r30, Eq_17 r31, Eq_2 dwArg08, struct Eq_113 & r3Out, ptr32 & r29Out, ptr32 & r30Out)
+// 00401380: Register Eq_n fn00401380(Register Eq_n r2, Register Eq_n r3, Register word32 r27, Register word32 r28, Register (ptr32 Eq_n) r29, Register Eq_n r30, Register Eq_n r31, Stack Eq_n dwArg08, Register out (ptr32 Eq_n) r3Out, Register out ptr32 r29Out, Register out ptr32 r30Out)
+Eq_n fn00401380(Eq_n r2, Eq_n r3, word32 r27, word32 r28, struct Eq_n * r29, Eq_n r30, Eq_n r31, Eq_n dwArg08, struct Eq_n & r3Out, ptr32 & r29Out, ptr32 & r30Out)
 {
 	v3->dw0000 = r27;
 	v3->dw0004 = r28;
 	v3->ptr0008 = r29;
 	v3->t000C = r30;
 	v3->t0010 = r31;
-	Eq_17 r4_23 = *((word32) r2 + 0x0048);
-	struct Eq_1379 * r27_22 = *((word32) r2 + 0x006C);
-	Eq_17 r31_100 = r4_23;
-	Eq_17 r30_102 = r3;
-	struct Eq_113 * r29_105 = null;
-	struct Eq_113 * r28_108 = null;
-	if (r27_22->dw0000 >= r4_23)
+	Eq_n r4_n = *((word32) r2 + 0x0048);
+	struct Eq_n * r27_n = *((word32) r2 + 0x006C);
+	Eq_n r31_n = r4_n;
+	Eq_n r30_n = r3;
+	struct Eq_n * r29_n = null;
+	struct Eq_n * r28_n = null;
+	if (r27_n->dw0000 >= r4_n)
 	{
 		do
 		{
-			if (r30_102 == 0x01 && (*((word32) r31_100 + 0x0C) & 131) != 0x00)
+			if (r30_n == 0x01 && (*((word32) r31_n + 0x0C) & 131) != 0x00)
 			{
 				// Failed to bind call argument.
 				// Please report this issue at https://github.com/uxmal/reko
-				Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-				int32 r3_92;
-				r2 = fn004011FC(r2, r31_100, r29_105, r30_102, stackArg8, out r3_92, out r27_22, out r28_108, out r29_105, out r30_102, out r31_100);
-				if (r3_92 != -0x01)
-					++r29_105;
+				Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+				int32 r3_n;
+				r2 = fn004011FC(r2, r31_n, r29_n, r30_n, stackArg8, out r3_n, out r27_n, out r28_n, out r29_n, out r30_n, out r31_n);
+				if (r3_n != -0x01)
+					++r29_n;
 			}
-			else if (r30_102 == 0x00 && (*((word32) r31_100 + 0x0C) & 0x02) != 0x00)
+			else if (r30_n == 0x00 && (*((word32) r31_n + 0x0C) & 0x02) != 0x00)
 			{
 				// Failed to bind call argument.
 				// Please report this issue at https://github.com/uxmal/reko
-				Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-				int32 r3_76;
-				r2 = fn004011FC(r2, r31_100, r29_105, r30_102, stackArg8, out r3_76, out r27_22, out r28_108, out r29_105, out r30_102, out r31_100);
-				if (r3_76 == -0x01)
-					r28_108 = (struct Eq_113 *) -0x01;
+				Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+				int32 r3_n;
+				r2 = fn004011FC(r2, r31_n, r29_n, r30_n, stackArg8, out r3_n, out r27_n, out r28_n, out r29_n, out r30_n, out r31_n);
+				if (r3_n == -0x01)
+					r28_n = (struct Eq_n *) -0x01;
 			}
-			r31_100 = (word32) r31_100 + 0x0020;
-		} while (r27_22->dw0000 >= r31_100);
+			r31_n = (word32) r31_n + 0x0020;
+		} while (r27_n->dw0000 >= r31_n);
 	}
-	struct Eq_113 * r3_107 = r29_105;
-	if (r30_102 != 0x01)
-		r3_107 = r28_108;
-	r3Out = r3_107;
+	struct Eq_n * r3_n = r29_n;
+	if (r30_n != 0x01)
+		r3_n = r28_n;
+	r3Out = r3_n;
 	r29Out = dwLoc10;
 	r30Out = dwLoc0C;
 	return r2;
 }
 
-// 00401474: Register (ptr32 Eq_220) fn00401474(Register Eq_2 r2, Register (ptr32 Eq_220) r3)
-struct Eq_220 * fn00401474(Eq_2 r2, struct Eq_220 * r3)
+// 00401474: Register (ptr32 Eq_n) fn00401474(Register Eq_n r2, Register (ptr32 Eq_n) r3)
+struct Eq_n * fn00401474(Eq_n r2, struct Eq_n * r3)
 {
 	if (**((word32) r2 + 116) > r3)
 		return (int32) (int8) (word32) Mem0[Mem0[r2 + 0x0078:word32] + r3:byte] & 0x40;
 	return null;
 }
 
-// 004014A4: void fn004014A4(Register (ptr32 Eq_1468) r2, Register (arr Eq_1505) r3, Register (ptr32 word16) r4, Register int32 r5)
-void fn004014A4(struct Eq_1468 * r2, Eq_1505 r3[], word16 * r4, int32 r5)
+// 004014A4: void fn004014A4(Register (ptr32 Eq_n) r2, Register (arr Eq_n) r3, Register (ptr32 word16) r4, Register int32 r5)
+void fn004014A4(struct Eq_n * r2, Eq_n r3[], word16 * r4, int32 r5)
 {
-	int32 r3_28 = 0x00;
+	int32 r3_n = 0x00;
 	if (r3 != null && r5 == 0x00)
 		return;
 	if (r3 != null)
 	{
 		if (r5 > 0x00)
 		{
-			int32 ctr_13;
+			int32 ctr_n;
 			do
 			{
-				int32 r11_16 = (word32) *r4;
-				if (r11_16 >= 0x0100)
+				int32 r11_n = (word32) *r4;
+				if (r11_n >= 0x0100)
 				{
 					*r2->ptr007C = 0x002A;
 					return;
 				}
-				(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&r3[r3_28].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00] = (Eq_1505) (byte) (int32) (int8) (r11_16 & 0xFF);
+				(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&r3[r3_n].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00] = (Eq_n) (byte) (int32) (int8) (r11_n & 0xFF);
 				++r4;
 				if ((word32) *r4 == 0x00)
 					return;
-				++r3_28;
-				--ctr_13;
-			} while (ctr_13 != 0x00);
+				++r3_n;
+				--ctr_n;
+			} while (ctr_n != 0x00);
 		}
 	}
 	else
 	{
-		word16 * r11_39 = r4;
+		word16 * r11_n = r4;
 		do
 		{
-			r11_39 = r11_87 + 0x01;
-			r11_87 = r11_39;
-		} while ((word32) *r11_87 != 0x00);
+			r11_n = r11_n + 0x01;
+			r11_n = r11_n;
+		} while ((word32) *r11_n != 0x00);
 	}
 }
 
-// 00401554: void fn00401554(Register (ptr32 Eq_1528) r2, Register (ptr32 byte) r3, Register ui32 r4)
-void fn00401554(struct Eq_1528 * r2, byte * r3, ui32 r4)
+// 00401554: void fn00401554(Register (ptr32 Eq_n) r2, Register (ptr32 byte) r3, Register ui32 r4)
+void fn00401554(struct Eq_n * r2, byte * r3, ui32 r4)
 {
 	if (r3 == null)
 		return;
@@ -815,149 +815,149 @@ void fn00401554(struct Eq_1528 * r2, byte * r3, ui32 r4)
 		*r2->ptr007C = 0x002A;
 }
 
-// 00401598: Register Eq_2 fn00401598(Register Eq_2 r2, Register Eq_17 r3, Register Eq_17 r4, Register ptr32 r25, Register ptr32 r26, Register Eq_17 r27, Register Eq_17 r28, Register Eq_17 r29, Register Eq_17 r30, Register Eq_17 r31, Register word32 lr, Stack Eq_2 dwArg08, Register out Eq_649 r3Out, Register out ptr32 r25Out, Register out ptr32 r26Out, Register out Eq_2 r27Out, Register out Eq_2 r28Out, Register out Eq_2 r29Out, Register out Eq_2 r30Out, Register out Eq_2 r31Out)
-Eq_2 fn00401598(Eq_2 r2, Eq_17 r3, Eq_17 r4, ptr32 r25, ptr32 r26, Eq_17 r27, Eq_17 r28, Eq_17 r29, Eq_17 r30, Eq_17 r31, word32 lr, Eq_2 dwArg08, union Eq_649 & r3Out, ptr32 & r25Out, ptr32 & r26Out, union Eq_2 & r27Out, union Eq_2 & r28Out, union Eq_2 & r29Out, union Eq_2 & r30Out, union Eq_2 & r31Out)
+// 00401598: Register Eq_n fn00401598(Register Eq_n r2, Register Eq_n r3, Register Eq_n r4, Register ptr32 r25, Register ptr32 r26, Register Eq_n r27, Register Eq_n r28, Register Eq_n r29, Register Eq_n r30, Register Eq_n r31, Register word32 lr, Stack Eq_n dwArg08, Register out Eq_n r3Out, Register out ptr32 r25Out, Register out ptr32 r26Out, Register out Eq_n r27Out, Register out Eq_n r28Out, Register out Eq_n r29Out, Register out Eq_n r30Out, Register out Eq_n r31Out)
+Eq_n fn00401598(Eq_n r2, Eq_n r3, Eq_n r4, ptr32 r25, ptr32 r26, Eq_n r27, Eq_n r28, Eq_n r29, Eq_n r30, Eq_n r31, word32 lr, Eq_n dwArg08, union Eq_n & r3Out, ptr32 & r25Out, ptr32 & r26Out, union Eq_n & r27Out, union Eq_n & r28Out, union Eq_n & r29Out, union Eq_n & r30Out, union Eq_n & r31Out)
 {
 	v3->t0000 = r27;
 	v3->t0004 = r28;
 	v3->t0008 = r29;
 	v3->t000C = r30;
 	v3->t0010 = r31;
-	Eq_17 r31_195 = r4;
-	ui32 r10_23 = *((word32) r4 + 0x0C);
-	Eq_17 r27_147 = r3;
-	struct Eq_220 * r30_151 = *((word32) r4 + 0x0010);
-	if ((r10_23 & 0x82) == 0x00 || (r10_23 & 0x40) != 0x00)
+	Eq_n r31_n = r4;
+	ui32 r10_n = *((word32) r4 + 0x0C);
+	Eq_n r27_n = r3;
+	struct Eq_n * r30_n = *((word32) r4 + 0x0010);
+	if ((r10_n & 0x82) == 0x00 || (r10_n & 0x40) != 0x00)
 	{
-		*((word32) r4 + 0x0C) = r10_23 | 0x20;
+		*((word32) r4 + 0x0C) = r10_n | 0x20;
 		r3Out.u0 = -0x01;
 		r25Out = r25;
 		r26Out = r26;
-		&r27Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-		&r28Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-		&r29Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-		&r30Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-		&r31Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
+		&r27Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+		&r28Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+		&r29Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+		&r30Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+		&r31Out.u0->dw0000 = (struct Eq_n *) <invalid>;
 		return r2;
 	}
 	else
 	{
-		if ((r10_23 & 0x01) != 0x00)
+		if ((r10_n & 0x01) != 0x00)
 		{
-			ui32 r4_56 = *((word32) r4 + 0x0C);
+			ui32 r4_n = *((word32) r4 + 0x0C);
 			*((word32) r4 + 0x04) = 0x00;
-			if ((r4_56 & 0x10) == 0x00)
+			if ((r4_n & 0x10) == 0x00)
 			{
-				*((word32) r4 + 0x0C) = r4_56 | 0x20;
+				*((word32) r4 + 0x0C) = r4_n | 0x20;
 				r3Out.u0 = -0x01;
 				r25Out = r25;
 				r26Out = r26;
-				&r27Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-				&r28Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-				&r29Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-				&r30Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-				&r31Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
+				&r27Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+				&r28Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+				&r29Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+				&r30Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+				&r31Out.u0->dw0000 = (struct Eq_n *) <invalid>;
 				return r2;
 			}
-			ui32 r10_77 = *((word32) r4 + 0x0C);
+			ui32 r10_n = *((word32) r4 + 0x0C);
 			*r4 = *((word32) r4 + 0x08);
-			*((word32) r4 + 0x0C) = r10_77 & -0x02;
-			r10_23 = r10_77 & -0x02;
+			*((word32) r4 + 0x0C) = r10_n & -0x02;
+			r10_n = r10_n & -0x02;
 		}
-		ui32 r10_84 = r10_23 | 0x02;
-		*((word32) r4 + 0x0C) = r10_84;
-		*((word32) r4 + 0x0C) = r10_84 & -0x0011;
-		ui32 r10_90 = *((word32) r4 + 0x0C);
+		ui32 r10_n = r10_n | 0x02;
+		*((word32) r4 + 0x0C) = r10_n;
+		*((word32) r4 + 0x0C) = r10_n & -0x0011;
+		ui32 r10_n = *((word32) r4 + 0x0C);
 		*((word32) r4 + 0x04) = 0x00;
-		struct Eq_220 * r28_148 = null;
-		if ((r10_90 & 0x010C) == 0x00)
+		struct Eq_n * r28_n = null;
+		if ((r10_n & 0x010C) == 0x00)
 		{
-			struct Eq_98 * r11_98 = *((word32) r2 + 0x0048);
-			if (r4 != (char *) r11_98 + 0x0020 && r4 != (char *) r11_98 + 0x0040 || fn00401474(r2, r30_151) == 0x00)
+			struct Eq_n * r11_n = *((word32) r2 + 0x0048);
+			if (r4 != (char *) r11_n + 0x0020 && r4 != (char *) r11_n + 0x0040 || fn00401474(r2, r30_n) == 0x00)
 			{
 				// Failed to bind call argument.
 				// Please report this issue at https://github.com/uxmal/reko
-				Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-				r2 = fn0040298C(r2, r4, r25, r26, r3, 0x00, r29, r30_151, lr, stackArg8, out r25, out r26, out r27_147, out r28_148, out r30_151);
+				Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+				r2 = fn0040298C(r2, r4, r25, r26, r3, 0x00, r29, r30_n, lr, stackArg8, out r25, out r26, out r27_n, out r28_n, out r30_n);
 			}
 		}
-		struct Eq_220 * r29_193;
+		struct Eq_n * r29_n;
 		if ((*((word32) r4 + 0x0C) & 0x0108) != 0x00)
 		{
-			Eq_17 r4_202 = *((word32) r4 + 0x08);
-			Eq_17 r5_203 = *((word32) r4 + 0x0018);
-			r29_193 = *r4 - r4_202;
-			*r4 = (word32) r4_202 + 0x01;
-			*((word32) r4 + 0x04) = (word32) r5_203 - 0x01;
-			if (r29_193 > null)
+			Eq_n r4_n = *((word32) r4 + 0x08);
+			Eq_n r5_n = *((word32) r4 + 0x0018);
+			r29_n = *r4 - r4_n;
+			*r4 = (word32) r4_n + 0x01;
+			*((word32) r4 + 0x04) = (word32) r5_n - 0x01;
+			if (r29_n > null)
 			{
 				// Failed to bind call argument.
 				// Please report this issue at https://github.com/uxmal/reko
-				Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-				struct Eq_220 * r3_247;
-				r2 = fn00402248(r2, r30_151, *((word32) r4 + 0x08), r29_193, r29_193, r30_151, r4, stackArg8, out r3_247, out r29_193, out r30_470, out r31_195);
-				r28_148 = r3_247;
+				Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+				struct Eq_n * r3_n;
+				r2 = fn00402248(r2, r30_n, *((word32) r4 + 0x08), r29_n, r29_n, r30_n, r4, stackArg8, out r3_n, out r29_n, out r30_n, out r31_n);
+				r28_n = r3_n;
 			}
-			else if (((int32) (int8) (word32) Mem209[Mem209[r2 + 0x0078:word32] + r30_151:byte] & 0x20) != 0x00)
+			else if (((int32) (int8) (word32) Mem209[Mem209[r2 + 0x0078:word32] + r30_n:byte] & 0x20) != 0x00)
 			{
 				// Failed to bind call argument.
 				// Please report this issue at https://github.com/uxmal/reko
-				Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-				r2 = fn004026B8(r2, r30_151, 0x00, 0x02, r26, r27_147, r28_148, r29_193, r30_151, r4, stackArg8, out r26, out r27_147, out r28_148, out r29_193, out r31_195);
+				Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+				r2 = fn004026B8(r2, r30_n, 0x00, 0x02, r26, r27_n, r28_n, r29_n, r30_n, r4, stackArg8, out r26, out r27_n, out r28_n, out r29_n, out r31_n);
 			}
-			(*((word32) r31_195 + 0x08))->u0 = (byte) (int32) (int8) r27_147;
+			(*((word32) r31_n + 0x08))->u0 = (byte) (int32) (int8) r27_n;
 		}
 		else
 		{
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-			struct Eq_220 * r3_184;
-			r2 = fn00402248(r2, r30_151, fp + -0x0018, (struct Eq_220 *) 0x01, (struct Eq_220 *) 0x01, r30_151, r4, stackArg8, out r3_184, out r29_193, out r30_468, out r31_195);
-			r28_148 = r3_184;
+			Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+			struct Eq_n * r3_n;
+			r2 = fn00402248(r2, r30_n, fp + -0x0018, (struct Eq_n *) 0x01, (struct Eq_n *) 0x01, r30_n, r4, stackArg8, out r3_n, out r29_n, out r30_n, out r31_n);
+			r28_n = r3_n;
 		}
-		if (r28_148 == r29_193)
+		if (r28_n == r29_n)
 		{
-			r3Out = r27_147 & 0xFF;
+			r3Out = r27_n & 0xFF;
 			r25Out = r25;
 			r26Out = r26;
-			&r27Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-			&r28Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-			&r29Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-			&r30Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-			&r31Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
+			&r27Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+			&r28Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+			&r29Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+			&r30Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+			&r31Out.u0->dw0000 = (struct Eq_n *) <invalid>;
 			return r2;
 		}
 		else
 		{
-			*((word32) r31_195 + 0x0C) |= 0x20;
+			*((word32) r31_n + 0x0C) |= 0x20;
 			r3Out.u0 = -0x01;
 			r25Out = r25;
 			r26Out = r26;
-			&r27Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-			&r28Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-			&r29Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-			&r30Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-			&r31Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
+			&r27Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+			&r28Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+			&r29Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+			&r30Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+			&r31Out.u0->dw0000 = (struct Eq_n *) <invalid>;
 			return r2;
 		}
 	}
 }
 
-// 0040178C: void fn0040178C(Register (ptr32 Eq_1813) r2, Register word32 r3)
-void fn0040178C(struct Eq_1813 * r2, word32 r3)
+// 0040178C: void fn0040178C(Register (ptr32 Eq_n) r2, Register word32 r3)
+void fn0040178C(struct Eq_n * r2, word32 r3)
 {
 	*r2->ptr0080 = r3;
 }
 
-// 004017F0: Register Eq_2 fn004017F0(Register Eq_2 r2, Register (ptr32 Eq_220) r3, Stack Eq_2 dwArg08, Register out Eq_907 r3Out)
-Eq_2 fn004017F0(Eq_2 r2, struct Eq_220 * r3, Eq_2 dwArg08, union Eq_907 & r3Out)
+// 004017F0: Register Eq_n fn004017F0(Register Eq_n r2, Register (ptr32 Eq_n) r3, Stack Eq_n dwArg08, Register out Eq_n r3Out)
+Eq_n fn004017F0(Eq_n r2, struct Eq_n * r3, Eq_n dwArg08, union Eq_n & r3Out)
 {
 	if (**((word32) r2 + 0x0080) != null)
 	{
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2 stackArg20 = (struct Eq_6095 *) <invalid>;
+		Eq_n stackArg20 = (struct Eq_n *) <invalid>;
 		fn00403F10(r2, **((word32) r2 + 0x0080), stackArg20);
 		r2 = dwLoc24;
 		if (r3 != null)
@@ -970,78 +970,78 @@ Eq_2 fn004017F0(Eq_2 r2, struct Eq_220 * r3, Eq_2 dwArg08, union Eq_907 & r3Out)
 	return r2;
 }
 
-// 004019CC: Register Eq_2 fn004019CC(Register Eq_2 r2, Stack Eq_2 dwArg08, Register out (ptr32 Eq_220) r3Out)
-Eq_2 fn004019CC(Eq_2 r2, Eq_2 dwArg08, struct Eq_220 & r3Out)
+// 004019CC: Register Eq_n fn004019CC(Register Eq_n r2, Stack Eq_n dwArg08, Register out (ptr32 Eq_n) r3Out)
+Eq_n fn004019CC(Eq_n r2, Eq_n dwArg08, struct Eq_n & r3Out)
 {
-	struct Eq_1041 * r31_8 = *((word32) r2 + 0x0068);
-	if (r31_8->ptr0008 == null)
+	struct Eq_n * r31_n = *((word32) r2 + 0x0068);
+	if (r31_n->ptr0008 == null)
 	{
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-		word32 r3_20;
-		r2 = fn00401A34(r2, stackArg8, out r3_20);
-		if (r3_20 == 0x00)
+		Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+		word32 r3_n;
+		r2 = fn00401A34(r2, stackArg8, out r3_n);
+		if (r3_n == 0x00)
 		{
 			r3Out = null;
 			return r2;
 		}
 	}
-	struct Eq_220 * r4_26 = r31_8->ptr0008;
-	r31_8->ptr0008 = r4_26->ptr0000;
-	r3Out = r4_26;
+	struct Eq_n * r4_n = r31_n->ptr0008;
+	r31_n->ptr0008 = r4_n->ptr0000;
+	r3Out = r4_n;
 	return r2;
 }
 
-// 00401A34: Register Eq_2 fn00401A34(Register Eq_2 r2, Stack Eq_2 dwArg08, Register out Eq_1872 r3Out)
-Eq_2 fn00401A34(Eq_2 r2, Eq_2 dwArg08, union Eq_1872 & r3Out)
+// 00401A34: Register Eq_n fn00401A34(Register Eq_n r2, Stack Eq_n dwArg08, Register out Eq_n r3Out)
+Eq_n fn00401A34(Eq_n r2, Eq_n dwArg08, union Eq_n & r3Out)
 {
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_2 stackArg20 = (struct Eq_6095 *) <invalid>;
+	Eq_n stackArg20 = (struct Eq_n *) <invalid>;
 	fn00404104(r2, stackArg20);
 	if (true)
 	{
 		dwLoc24->ptr0068->dw0008 = 0x00001000;
-		struct Eq_1893 * r10_18 = (struct Eq_1893 *) 0x1000;
-		struct Eq_1893 * r11_22 = (struct Eq_1893 *) 0x1008;
+		struct Eq_n * r10_n = (struct Eq_n *) 0x1000;
+		struct Eq_n * r11_n = (struct Eq_n *) 0x1008;
 		if (true)
 		{
 			do
 			{
-				r10_18->ptr0000 = r11_74;
-				r10_18 = r11_74;
-				r11_22 = (struct Eq_1893 *) ((char *) &r11_74->ptr0000 + 0x08);
-				r11_74 = r11_22;
-			} while (r11_74 < (struct Eq_1893 *) 0x00001FF8);
+				r10_n->ptr0000 = r11_n;
+				r10_n = r11_n;
+				r11_n = (struct Eq_n *) ((char *) &r11_n->ptr0000 + 0x08);
+				r11_n = r11_n;
+			} while (r11_n < (struct Eq_n *) 0x00001FF8);
 		}
 		*(int32 *) 0x00001FF8 = 0x00;
 		r3Out.u0 = 0x01;
-		return (struct Eq_6095 *) <invalid>;
+		return (struct Eq_n *) <invalid>;
 	}
 	else
 	{
 		r3Out.u0 = 0x00;
-		return (struct Eq_6095 *) <invalid>;
+		return (struct Eq_n *) <invalid>;
 	}
 }
 
-// 00401AB4: Register Eq_2 fn00401AB4(Register Eq_2 r2, Register (ptr32 Eq_220) r29, Register (ptr32 Eq_220) r30, Stack Eq_2 dwArg08, Register out ptr32 r29Out, Register out Eq_1032 r30Out)
-Eq_2 fn00401AB4(Eq_2 r2, struct Eq_220 * r29, struct Eq_220 * r30, Eq_2 dwArg08, ptr32 & r29Out, union Eq_1032 & r30Out)
+// 00401AB4: Register Eq_n fn00401AB4(Register Eq_n r2, Register (ptr32 Eq_n) r29, Register (ptr32 Eq_n) r30, Stack Eq_n dwArg08, Register out ptr32 r29Out, Register out Eq_n r30Out)
+Eq_n fn00401AB4(Eq_n r2, struct Eq_n * r29, struct Eq_n * r30, Eq_n dwArg08, ptr32 & r29Out, union Eq_n & r30Out)
 {
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-	ptr32 r29_18;
-	Eq_1032 r30_20;
-	Eq_2 r2_17 = fn00402C4C(r2, 0x0012, r29, r30, stackArg8, out r29_18, out r30_20);
-	r29Out = r29_18;
-	r30Out = r30_20;
-	return r2_17;
+	Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+	ptr32 r29_n;
+	Eq_n r30_n;
+	Eq_n r2_n = fn00402C4C(r2, 0x0012, r29, r30, stackArg8, out r29_n, out r30_n);
+	r29Out = r29_n;
+	r30Out = r30_n;
+	return r2_n;
 }
 
-// 00401ADC: Register Eq_2 fn00401ADC(Register Eq_2 r2, Register (ptr32 Eq_220) r3, Register ptr32 r25, Register ptr32 r26, Register Eq_17 r27, Register Eq_17 r28, Register Eq_17 r29, Register (ptr32 Eq_220) r30, Register (ptr32 Eq_956) r31, Register word32 lr, Stack Eq_2 dwArg08, Register out Eq_1001 r3Out, Register out Eq_2 r25Out, Register out Eq_2 r26Out, Register out Eq_2 r27Out, Register out Eq_2 r28Out, Register out Eq_2 r29Out, Register out Eq_2 r30Out)
-Eq_2 fn00401ADC(Eq_2 r2, struct Eq_220 * r3, ptr32 r25, ptr32 r26, Eq_17 r27, Eq_17 r28, Eq_17 r29, struct Eq_220 * r30, struct Eq_956 * r31, word32 lr, Eq_2 dwArg08, union Eq_1001 & r3Out, union Eq_2 & r25Out, union Eq_2 & r26Out, union Eq_2 & r27Out, union Eq_2 & r28Out, union Eq_2 & r29Out, union Eq_2 & r30Out)
+// 00401ADC: Register Eq_n fn00401ADC(Register Eq_n r2, Register (ptr32 Eq_n) r3, Register ptr32 r25, Register ptr32 r26, Register Eq_n r27, Register Eq_n r28, Register Eq_n r29, Register (ptr32 Eq_n) r30, Register (ptr32 Eq_n) r31, Register word32 lr, Stack Eq_n dwArg08, Register out Eq_n r3Out, Register out Eq_n r25Out, Register out Eq_n r26Out, Register out Eq_n r27Out, Register out Eq_n r28Out, Register out Eq_n r29Out, Register out Eq_n r30Out)
+Eq_n fn00401ADC(Eq_n r2, struct Eq_n * r3, ptr32 r25, ptr32 r26, Eq_n r27, Eq_n r28, Eq_n r29, struct Eq_n * r30, struct Eq_n * r31, word32 lr, Eq_n dwArg08, union Eq_n & r3Out, union Eq_n & r25Out, union Eq_n & r26Out, union Eq_n & r27Out, union Eq_n & r28Out, union Eq_n & r29Out, union Eq_n & r30Out)
 {
 	v3->ptr0000 = r25;
 	v3->ptr0004 = r26;
@@ -1050,398 +1050,398 @@ Eq_2 fn00401ADC(Eq_2 r2, struct Eq_220 * r3, ptr32 r25, ptr32 r26, Eq_17 r27, Eq
 	v3->t0010 = r29;
 	v3->ptr0014 = r30;
 	v3->ptr0018 = r31;
-	struct Eq_1950 * r25_28 = *((word32) r2 + 0x0098);
-	struct Eq_1954 * r28_114 = *((word32) r2 + 0x0094);
-	Eq_1958 r30_112 = r25_28->t0004;
-	Eq_1958 r11_33 = r25_28->t0004;
-	Eq_1958 r27_113 = -0x01;
-	struct Eq_956 * r26_232 = (char *) &r3->ptr0004 + 0x0B & -0x08;
-	if (r11_33 < r28_114->dw0000)
+	struct Eq_n * r25_n = *((word32) r2 + 0x0098);
+	struct Eq_n * r28_n = *((word32) r2 + 0x0094);
+	Eq_n r30_n = r25_n->t0004;
+	Eq_n r11_n = r25_n->t0004;
+	Eq_n r27_n = -0x01;
+	struct Eq_n * r26_n = (char *) &r3->ptr0004 + 0x0B & -0x08;
+	if (r11_n < r28_n->dw0000)
 	{
-		r31 = r11_33 << 0x04;
-		struct Eq_956 * r29_105 = *((word32) r2 + 0x008C);
+		r31 = r11_n << 0x04;
+		struct Eq_n * r29_n = *((word32) r2 + 0x008C);
 		do
 		{
-			if (Mem39[Mem39[Mem39[r29_105 + 0x00:word32] + 0x00:word32] + r31:word32] != 0x00)
+			if (Mem39[Mem39[Mem39[r29_n + 0x00:word32] + 0x00:word32] + r31:word32] != 0x00)
 			{
 				// Failed to bind call argument.
 				// Please report this issue at https://github.com/uxmal/reko
-				Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-				int32 r3_71;
-				r2 = fn00401DD8(r2, r30_112, r26_232, r26_232, r27_113, r28_114, r29_105, r30_112, r31, lr, stackArg8, out r3_71, out r26_232, out r27_113, out r28_114, out r29_105, out r30_112, out r31);
-				if (r3_71 != -0x01)
+				Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+				int32 r3_n;
+				r2 = fn00401DD8(r2, r30_n, r26_n, r26_n, r27_n, r28_n, r29_n, r30_n, r31, lr, stackArg8, out r3_n, out r26_n, out r27_n, out r28_n, out r29_n, out r30_n, out r31);
+				if (r3_n != -0x01)
 				{
-					r25_28->t0004 = r30_112;
+					r25_n->t0004 = r30_n;
 					r3Out.u0 = 0x00;
-					&r25Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-					&r26Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-					&r27Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-					&r28Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-					&r29Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-					&r30Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
+					&r25Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+					&r26Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+					&r27Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+					&r28Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+					&r29Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+					&r30Out.u0->dw0000 = (struct Eq_n *) <invalid>;
 					return r2;
 				}
 			}
-			if (Mem39[Mem39[Mem39[r29_105 + 0x00:word32] + 0x00:word32] + r31:word32] == 0x00)
+			if (Mem39[Mem39[Mem39[r29_n + 0x00:word32] + 0x00:word32] + r31:word32] == 0x00)
 			{
-				r27_113 = r30_112;
+				r27_n = r30_n;
 				break;
 			}
-			r30_112 = (word32) r30_112.u0 + 0x01;
+			r30_n = (word32) r30_n.u0 + 0x01;
 			++r31;
-		} while (r30_112 < r28_114->dw0000);
+		} while (r30_n < r28_n->dw0000);
 	}
-	struct Eq_956 ** r29_125 = *((word32) r2 + 0x008C);
-	int32 r11_127 = r28_114->dw0000;
-	struct Eq_956 * r9_128 = *r29_125;
-	if (r27_113 == -0x01)
+	struct Eq_n ** r29_n = *((word32) r2 + 0x008C);
+	int32 r11_n = r28_n->dw0000;
+	struct Eq_n * r9_n = *r29_n;
+	if (r27_n == -0x01)
 	{
-		struct Eq_956 * r31_131 = r11_127 + 0x0020 << 0x04;
-		if (r9_128 != null)
+		struct Eq_n * r31_n = r11_n + 0x0020 << 0x04;
+		if (r9_n != null)
 		{
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			Eq_2 stackArg20 = (struct Eq_6095 *) <invalid>;
+			Eq_n stackArg20 = (struct Eq_n *) <invalid>;
 			r2 = fn0040408C(r2, stackArg20)->t0014;
-			r9_128 = (struct Eq_956 *) *r29_125;
+			r9_n = (struct Eq_n *) *r29_n;
 		}
-		if (r9_128 == null || (word32) (*(*(*((word32) r2 + 0x0098)))) != 0x00)
+		if (r9_n == null || (word32) (*(*(*((word32) r2 + 0x0098)))) != 0x00)
 		{
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			Eq_2 stackArg20 = (struct Eq_6095 *) <invalid>;
+			Eq_n stackArg20 = (struct Eq_n *) <invalid>;
 			fn004040A4(r2, stackArg20);
-			if (r31_131 == null)
+			if (r31_n == null)
 			{
 				r3Out.u0 = -0x01;
-				&r25Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-				&r26Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-				&r27Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-				&r28Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-				&r29Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-				&r30Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
+				&r25Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+				&r26Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+				&r27Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+				&r28Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+				&r29Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+				&r30Out.u0->dw0000 = (struct Eq_n *) <invalid>;
 				return dwLoc44;
 			}
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			Eq_2 stackArg20 = (struct Eq_6095 *) <invalid>;
-			struct Eq_2136 * r1_165 = fn004040BC(dwLoc44, stackArg20);
-			r2 = r1_165->t0014;
-			if (*r29_125 != null)
+			Eq_n stackArg20 = (struct Eq_n *) <invalid>;
+			struct Eq_n * r1_n = fn004040BC(dwLoc44, stackArg20);
+			r2 = r1_n->t0014;
+			if (*r29_n != null)
 			{
-				r1_165->dw0038 = r28_114->dw0000;
+				r1_n->dw0038 = r28_n->dw0000;
 				// Failed to bind call argument.
 				// Please report this issue at https://github.com/uxmal/reko
 				// Failed to bind call argument.
 				// Please report this issue at https://github.com/uxmal/reko
-				Eq_2 stackArg20 = (struct Eq_6095 *) <invalid>;
-				Eq_2 stackArg20 = (struct Eq_6095 *) <invalid>;
+				Eq_n stackArg20 = (struct Eq_n *) <invalid>;
+				Eq_n stackArg20 = (struct Eq_n *) <invalid>;
 				r2 = fn004040EC(fn004040D4(r2, stackArg20)->ptr0014, stackArg20)->t0014;
 			}
-			*r29_125 = (struct Eq_956 **) r31_131;
-			r9_128 = (struct Eq_956 *) *r29_125;
+			*r29_n = (struct Eq_n **) r31_n;
+			r9_n = (struct Eq_n *) *r29_n;
 		}
-		r31 = r31_131;
-		int32 r11_205 = 0x00;
-		Eq_2182 r10_207[] = (char *) r9_128->ptr0000 + (r28_114->dw0000 << 0x04);
-		int32 ctr_209;
-		for (ctr_209 = 0x0020; ctr_209 != 0x00; --ctr_209)
+		r31 = r31_n;
+		int32 r11_n = 0x00;
+		Eq_n r10_n[] = (char *) r9_n->ptr0000 + (r28_n->dw0000 << 0x04);
+		int32 ctr_n;
+		for (ctr_n = 0x0020; ctr_n != 0x00; --ctr_n)
 		{
-			(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&r10_207[r11_205].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00] = (Eq_2182) 0x00;
-			int32 r11_215 = r11_205 + 0x04;
-			(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&r10_207[r11_215].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00] = (Eq_2182) 0x00;
-			(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&r10_207[r11_215 + 0x04].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00] = (Eq_2182) 0x00;
-			(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&r10_207[r11_215 + 0x08].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00] = (Eq_2182) 0x00;
-			r11_205 = r11_215 + 0x0C;
+			(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&r10_n[r11_n].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00] = (Eq_n) 0x00;
+			int32 r11_n = r11_n + 0x04;
+			(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&r10_n[r11_n].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00] = (Eq_n) 0x00;
+			(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&r10_n[r11_n + 0x04].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00] = (Eq_n) 0x00;
+			(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&r10_n[r11_n + 0x08].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00] = (Eq_n) 0x00;
+			r11_n = r11_n + 0x0C;
 		}
-		Eq_1958 r4_225 = r28_114->dw0000;
-		r28_114->dw0000 = (word32) r4_225.u0 + 0x0020;
-		r27_113 = r4_225;
+		Eq_n r4_n = r28_n->dw0000;
+		r28_n->dw0000 = (word32) r4_n.u0 + 0x0020;
+		r27_n = r4_n;
 	}
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-	Eq_1001 r3_273;
-	Eq_2 r2_271 = fn00401CE8(r2, r27_113, r26_232, r26_232, r27_113, r28_114, r29_125, r30_112, r31, lr, stackArg8, out r3_273);
-	r3Out = r3_273;
-	&r25Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-	&r26Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-	&r27Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-	&r28Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-	&r29Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-	&r30Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-	return r2_271;
+	Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+	Eq_n r3_n;
+	Eq_n r2_n = fn00401CE8(r2, r27_n, r26_n, r26_n, r27_n, r28_n, r29_n, r30_n, r31, lr, stackArg8, out r3_n);
+	r3Out = r3_n;
+	&r25Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+	&r26Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+	&r27Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+	&r28Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+	&r29Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+	&r30Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+	return r2_n;
 }
 
-// 00401CE8: Register Eq_2 fn00401CE8(Register Eq_2 r2, Register Eq_1958 r3, Register (ptr32 Eq_956) r4, Register (ptr32 Eq_956) r26, Register Eq_1958 r27, Register (ptr32 Eq_1954) r28, Register (ptr32 (ptr32 Eq_956)) r29, Register Eq_1958 r30, Register (ptr32 Eq_956) r31, Register word32 lr, Stack Eq_2 dwArg08, Register out Eq_2077 r3Out)
-Eq_2 fn00401CE8(Eq_2 r2, Eq_1958 r3, struct Eq_956 * r4, struct Eq_956 * r26, Eq_1958 r27, struct Eq_1954 * r28, struct Eq_956 ** r29, Eq_1958 r30, struct Eq_956 * r31, word32 lr, Eq_2 dwArg08, union Eq_2077 & r3Out)
+// 00401CE8: Register Eq_n fn00401CE8(Register Eq_n r2, Register Eq_n r3, Register (ptr32 Eq_n) r4, Register (ptr32 Eq_n) r26, Register Eq_n r27, Register (ptr32 Eq_n) r28, Register (ptr32 (ptr32 Eq_n)) r29, Register Eq_n r30, Register (ptr32 Eq_n) r31, Register word32 lr, Stack Eq_n dwArg08, Register out Eq_n r3Out)
+Eq_n fn00401CE8(Eq_n r2, Eq_n r3, struct Eq_n * r4, struct Eq_n * r26, Eq_n r27, struct Eq_n * r28, struct Eq_n ** r29, Eq_n r30, struct Eq_n * r31, word32 lr, Eq_n dwArg08, union Eq_n & r3Out)
 {
 	v3->ptr0000 = r29;
 	v3->t0004 = r30;
 	v3->ptr0008 = r31;
-	struct Eq_956 * r31_24 = (word32) **((word32) r2 + 144) + 0x0FFF & -0x00001000;
-	if (r4 > r31_24)
-		r31_24 = r4;
+	struct Eq_n * r31_n = (word32) **((word32) r2 + 144) + 0x0FFF & -0x00001000;
+	if (r4 > r31_n)
+		r31_n = r4;
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_2 stackArg20 = (struct Eq_6095 *) <invalid>;
+	Eq_n stackArg20 = (struct Eq_n *) <invalid>;
 	fn00404104(r2, stackArg20);
-	int32 r3_31 = &r31_24->dw0004 + 0x01;
-	Eq_2 r2_124 = dwLoc34;
-	if (r3_31 != 0x00)
+	int32 r3_n = &r31_n->dw0004 + 0x01;
+	Eq_n r2_n = dwLoc34;
+	if (r3_n != 0x00)
 	{
-		struct Eq_2249 * r8_51;
-		Eq_5984 r11_47[] = ***((word32) dwLoc34 + 0x008C);
-		if ((r3_31 & 0x03) != 0x00)
+		struct Eq_n * r8_n;
+		Eq_n r11_n[] = ***((word32) dwLoc34 + 0x008C);
+		if ((r3_n & 0x03) != 0x00)
 		{
-			r11_47[r3].dw0000 = r3_31 + 0x07 & -0x08;
-			r8_51 = (struct Eq_2249 *) &(r11_47 + (r3 << 0x04) / 0x0010)->dw0000;
+			r11_n[r3].dw0000 = r3_n + 0x07 & -0x08;
+			r8_n = (struct Eq_n *) &(r11_n + (r3 << 0x04) / 0x0010)->dw0000;
 		}
 		else
 		{
-			r11_47[r3].dw0000 = r3_31;
-			r8_51 = (struct Eq_2249 *) &(r11_47 + (r3 << 0x04) / 0x0010)->dw0000;
+			r11_n[r3].dw0000 = r3_n;
+			r8_n = (struct Eq_n *) &(r11_n + (r3 << 0x04) / 0x0010)->dw0000;
 		}
-		r8_51->dw000C = r3_31;
-		r8_51->ptr0008 = r31_24;
-		r8_51->dw0004 = 0x00;
+		r8_n->dw000C = r3_n;
+		r8_n->ptr0008 = r31_n;
+		r8_n->dw0004 = 0x00;
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-		word32 r3_91;
-		ui32 r30_92;
-		word32 r31_93;
-		Eq_2 r2_86 = fn00401DD8(dwLoc34, r3, r4, r26, r27, r28, r4, r3, r31_24, lr, stackArg8, out r3_91, out r26_216, out r27_217, out r28_218, out r29_219, out r30_92, out r31_93);
-		if (r3_91 == 0x00)
+		Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+		word32 r3_n;
+		ui32 r30_n;
+		word32 r31_n;
+		Eq_n r2_n = fn00401DD8(dwLoc34, r3, r4, r26, r27, r28, r4, r3, r31_n, lr, stackArg8, out r3_n, out r26_n, out r27_n, out r28_n, out r29_n, out r30_n, out r31_n);
+		if (r3_n == 0x00)
 		{
 			r3Out.u0 = 0x00;
-			return r2_86;
+			return r2_n;
 		}
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-		r2_124 = fn00401ED4(r2_86, r30_92, r30_92, r31_93, stackArg8);
+		Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+		r2_n = fn00401ED4(r2_n, r30_n, r30_n, r31_n, stackArg8);
 	}
 	r3Out.u0 = -0x01;
-	return r2_124;
+	return r2_n;
 }
 
-// 00401DD8: Register Eq_2 fn00401DD8(Register Eq_2 r2, Register Eq_1958 r3, Register (ptr32 Eq_956) r4, Register (ptr32 Eq_956) r26, Register Eq_1958 r27, Register (ptr32 Eq_1954) r28, Register (ptr32 Eq_956) r29, Register Eq_1958 r30, Register (ptr32 Eq_956) r31, Register word32 lr, Stack Eq_2 dwArg08, Register out Eq_2022 r3Out, Register out (ptr32 Eq_956) r26Out, Register out Eq_1958 r27Out, Register out Eq_2 r28Out, Register out Eq_2 r29Out, Register out Eq_2 r30Out, Register out Eq_2 r31Out)
-Eq_2 fn00401DD8(Eq_2 r2, Eq_1958 r3, struct Eq_956 * r4, struct Eq_956 * r26, Eq_1958 r27, struct Eq_1954 * r28, struct Eq_956 * r29, Eq_1958 r30, struct Eq_956 * r31, word32 lr, Eq_2 dwArg08, union Eq_2022 & r3Out, struct Eq_956 & r26Out, union Eq_1958 & r27Out, union Eq_2 & r28Out, union Eq_2 & r29Out, union Eq_2 & r30Out, union Eq_2 & r31Out)
+// 00401DD8: Register Eq_n fn00401DD8(Register Eq_n r2, Register Eq_n r3, Register (ptr32 Eq_n) r4, Register (ptr32 Eq_n) r26, Register Eq_n r27, Register (ptr32 Eq_n) r28, Register (ptr32 Eq_n) r29, Register Eq_n r30, Register (ptr32 Eq_n) r31, Register word32 lr, Stack Eq_n dwArg08, Register out Eq_n r3Out, Register out (ptr32 Eq_n) r26Out, Register out Eq_n r27Out, Register out Eq_n r28Out, Register out Eq_n r29Out, Register out Eq_n r30Out, Register out Eq_n r31Out)
+Eq_n fn00401DD8(Eq_n r2, Eq_n r3, struct Eq_n * r4, struct Eq_n * r26, Eq_n r27, struct Eq_n * r28, struct Eq_n * r29, Eq_n r30, struct Eq_n * r31, word32 lr, Eq_n dwArg08, union Eq_n & r3Out, struct Eq_n & r26Out, union Eq_n & r27Out, union Eq_n & r28Out, union Eq_n & r29Out, union Eq_n & r30Out, union Eq_n & r31Out)
 {
 	v3->ptr0000 = r28;
 	v3->ptr0004 = r29;
 	v3->t0008 = r30;
 	v3->ptr000C = r31;
-	Eq_5986 (*** r29_19)[] = *((word32) r2 + 0x008C);
-	Eq_5986 r5_25[] = **r29_19;
-	struct Eq_2344 * r11_27 = &(r5_25 + (r3 << 0x04) / 0x0010)->dw0000;
-	word32 r8_28 = r11_27->dw0004;
-	struct Eq_1954 * r9_29 = r11_27->ptr0008;
-	int32 r30_30 = (char *) &r4->dw0004 + 0x03 & -0x08;
-	int32 r10_31 = r9_29 - r8_28;
-	struct Eq_973 * r8_37 = r8_28 + (r5_25)[r3].dw0000;
-	if (r30_30 > r10_31)
+	Eq_n (*** r29_n)[] = *((word32) r2 + 0x008C);
+	Eq_n r5_n[] = **r29_n;
+	struct Eq_n * r11_n = &(r5_n + (r3 << 0x04) / 0x0010)->dw0000;
+	word32 r8_n = r11_n->dw0004;
+	struct Eq_n * r9_n = r11_n->ptr0008;
+	int32 r30_n = (char *) &r4->dw0004 + 0x03 & -0x08;
+	int32 r10_n = r9_n - r8_n;
+	struct Eq_n * r8_n = r8_n + (r5_n)[r3].dw0000;
+	if (r30_n > r10_n)
 	{
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2 stackArg20 = (struct Eq_6095 *) <invalid>;
+		Eq_n stackArg20 = (struct Eq_n *) <invalid>;
 		fn0040411C(r2, stackArg20);
-		Eq_5986 r10_52[] = **r29_19;
-		r28 = &(r9_29 + (r30_30 - r10_31) / 0x0010)->dw0000 + 0x02 & -0x08;
+		Eq_n r10_n[] = **r29_n;
+		r28 = &(r9_n + (r30_n - r10_n) / 0x0010)->dw0000 + 0x02 & -0x08;
 		r2 = dwLoc3C;
-		r11_27 = (struct Eq_2344 *) &(r10_52 + (r3 << 0x04) / 0x0010)->dw0000;
+		r11_n = (struct Eq_n *) &(r10_n + (r3 << 0x04) / 0x0010)->dw0000;
 		if ((word32) ***((word32) dwLoc3C + 0x0098) != 0x00)
 		{
 			r3Out.u0 = -0x01;
 			r26Out = r26;
 			r27Out = r27;
-			&r28Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-			&r29Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-			&r30Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-			&r31Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
+			&r28Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+			&r29Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+			&r30Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+			&r31Out.u0->dw0000 = (struct Eq_n *) <invalid>;
 			return dwLoc3C;
 		}
-		r11_27->ptr0008 = r28;
-		r8_37 = r11_27->dw0004 + (r10_52)[r3].dw0000;
+		r11_n->ptr0008 = r28;
+		r8_n = r11_n->dw0004 + (r10_n)[r3].dw0000;
 	}
-	r11_27->dw0004 += r30_30;
+	r11_n->dw0004 += r30_n;
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-	struct Eq_956 * r26_86;
-	Eq_1958 r27_87;
-	struct Eq_220 * r29_89;
-	word32 r3_90;
-	struct Eq_220 * r30_91;
-	Eq_2 r2_107 = fn00402CE0(r2, r8_37, r30_30, r26, r27, r28, r29_19, r30_30, r3 << 0x04, lr, stackArg8, out r3_90, out r26_86, out r27_87, out r29_89, out r30_91);
-	if (r3_90 != 0x00)
+	Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+	struct Eq_n * r26_n;
+	Eq_n r27_n;
+	struct Eq_n * r29_n;
+	word32 r3_n;
+	struct Eq_n * r30_n;
+	Eq_n r2_n = fn00402CE0(r2, r8_n, r30_n, r26, r27, r28, r29_n, r30_n, r3 << 0x04, lr, stackArg8, out r3_n, out r26_n, out r27_n, out r29_n, out r30_n);
+	if (r3_n != 0x00)
 	{
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-		r2_107 = fn00401AB4(r2_107, r29_89, r30_91, stackArg8, out r29_215, out r30_216);
+		Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+		r2_n = fn00401AB4(r2_n, r29_n, r30_n, stackArg8, out r29_n, out r30_n);
 	}
 	r3Out.u0 = 0x00;
-	r26Out = r26_86;
-	r27Out = r27_87;
-	&r28Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-	&r29Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-	&r30Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-	&r31Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-	return r2_107;
+	r26Out = r26_n;
+	r27Out = r27_n;
+	&r28Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+	&r29Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+	&r30Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+	&r31Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+	return r2_n;
 }
 
-// 00401ED4: Register Eq_2 fn00401ED4(Register Eq_2 r2, Register ui32 r3, Register ui32 r30, Register word32 r31, Stack Eq_2 dwArg08)
-Eq_2 fn00401ED4(Eq_2 r2, ui32 r3, ui32 r30, word32 r31, Eq_2 dwArg08)
+// 00401ED4: Register Eq_n fn00401ED4(Register Eq_n r2, Register ui32 r3, Register ui32 r30, Register word32 r31, Stack Eq_n dwArg08)
+Eq_n fn00401ED4(Eq_n r2, ui32 r3, ui32 r30, word32 r31, Eq_n dwArg08)
 {
 	v3->dw0000 = r30;
 	v3->dw0004 = r31;
-	Eq_5988 (*** r30_13)[] = *((word32) r2 + 0x008C);
-	Eq_5988 (** r11_16)[] = *r30_13;
-	if (*((char *) *r11_16 + r3 * 0x10) != 0x00)
+	Eq_n (*** r30_n)[] = *((word32) r2 + 0x008C);
+	Eq_n (** r11_n)[] = *r30_n;
+	if (*((char *) *r11_n + r3 * 0x10) != 0x00)
 	{
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2 stackArg20 = (struct Eq_6095 *) <invalid>;
+		Eq_n stackArg20 = (struct Eq_n *) <invalid>;
 		r2 = fn00404134(r2, stackArg20)->t0014;
-		r11_16 = (Eq_5988 (**)[]) *r30_13;
+		r11_n = (Eq_n (**)[]) *r30_n;
 	}
-	Eq_5988 r11_36[] = *r11_16;
-	r11_36[r3].dw0000 = 0x00;
-	struct Eq_2494 * r31_41 = &(r11_36 + (r3 << 0x04) / 0x0010)->dw0000;
-	r31_41->dw0004 = 0x00;
-	r31_41->dw0008 = 0x00;
+	Eq_n r11_n[] = *r11_n;
+	r11_n[r3].dw0000 = 0x00;
+	struct Eq_n * r31_n = &(r11_n + (r3 << 0x04) / 0x0010)->dw0000;
+	r31_n->dw0004 = 0x00;
+	r31_n->dw0008 = 0x00;
 	return r2;
 }
 
-// 00401F40: Register (ptr32 Eq_220) fn00401F40(Register Eq_2 r2, Register (ptr32 Eq_220) r3)
-struct Eq_220 * fn00401F40(Eq_2 r2, struct Eq_220 * r3)
+// 00401F40: Register (ptr32 Eq_n) fn00401F40(Register Eq_n r2, Register (ptr32 Eq_n) r3)
+struct Eq_n * fn00401F40(Eq_n r2, struct Eq_n * r3)
 {
-	struct Eq_1041 * r7_5 = *((word32) r2 + 0x0068);
-	struct Eq_220 * r4_107 = null;
-	struct Eq_220 * r11_14 = r7_5->ptr0004;
-	if (r7_5->ptr0004 != (char *) (&r7_5->ptr0008) + 0x04)
+	struct Eq_n * r7_n = *((word32) r2 + 0x0068);
+	struct Eq_n * r4_n = null;
+	struct Eq_n * r11_n = r7_n->ptr0004;
+	if (r7_n->ptr0004 != (char *) (&r7_n->ptr0008) + 0x04)
 	{
 		do
 		{
-			if ((r11_14->ptr0004 & 0x03) == 0x01)
+			if ((r11_n->ptr0004 & 0x03) == 0x01)
 			{
 				while (true)
 				{
-					struct Eq_220 * r10_25 = r11_14->ptr0000;
-					struct Eq_973 * r9_27 = r10_25->ptr0004;
-					if ((r9_27 & -0x04) - (r11_14->ptr0004 & -0x04) + -0x08 >= r3)
+					struct Eq_n * r10_n = r11_n->ptr0000;
+					struct Eq_n * r9_n = r10_n->ptr0004;
+					if ((r9_n & -0x04) - (r11_n->ptr0004 & -0x04) + -0x08 >= r3)
 						break;
-					if ((r9_27 & 0x03) != 0x01)
+					if ((r9_n & 0x03) != 0x01)
 						goto l00401FC0;
-					r11_14->ptr0000 = r10_25->ptr0000;
-					r10_25->ptr0000 = r7_5->ptr0008;
-					r7_5->ptr0008 = r10_25;
+					r11_n->ptr0000 = r10_n->ptr0000;
+					r10_n->ptr0000 = r7_n->ptr0008;
+					r7_n->ptr0008 = r10_n;
 				}
-				r4_107 = r11_14;
-				return r4_107;
+				r4_n = r11_n;
+				return r4_n;
 			}
 l00401FC0:
-			r11_14 = r11_14->ptr0000;
-		} while (r11_14 != (char *) (&r7_5->ptr0008) + 0x04);
+			r11_n = r11_n->ptr0000;
+		} while (r11_n != (char *) (&r7_n->ptr0008) + 0x04);
 	}
-	struct Eq_220 * r11_50;
-	for (r11_50 = r7_5->ptr0000; r7_5->ptr0004 != r11_50; r11_50 = r11_50->ptr0000)
+	struct Eq_n * r11_n;
+	for (r11_n = r7_n->ptr0000; r7_n->ptr0004 != r11_n; r11_n = r11_n->ptr0000)
 	{
-		if ((r11_50->ptr0004 & 0x03) == 0x01)
+		if ((r11_n->ptr0004 & 0x03) == 0x01)
 		{
 			do
 			{
-				struct Eq_220 * r10_67 = r11_50->ptr0000;
-				struct Eq_973 * r9_69 = r10_67->ptr0004;
-				if ((r9_69 & -0x04) - (r11_50->ptr0004 & -0x04) + -0x08 >= r3)
+				struct Eq_n * r10_n = r11_n->ptr0000;
+				struct Eq_n * r9_n = r10_n->ptr0004;
+				if ((r9_n & -0x04) - (r11_n->ptr0004 & -0x04) + -0x08 >= r3)
 				{
-					r4_107 = r11_50;
-					return r4_107;
+					r4_n = r11_n;
+					return r4_n;
 				}
-				if ((r9_69 & 0x03) != 0x01)
+				if ((r9_n & 0x03) != 0x01)
 					goto l00402064;
-				r11_50->ptr0000 = r10_67->ptr0000;
-				r10_67->ptr0000 = r7_5->ptr0008;
-				r7_5->ptr0008 = r10_67;
-			} while (r7_5->ptr0004 != r10_67);
-			r7_5->ptr0004 = r11_50;
-			if ((r11_50->ptr0000->ptr0004 & -0x04) - (r11_50->ptr0004 & -0x04) + -0x08 >= r3)
-				r4_107 = r11_50;
-			return r4_107;
+				r11_n->ptr0000 = r10_n->ptr0000;
+				r10_n->ptr0000 = r7_n->ptr0008;
+				r7_n->ptr0008 = r10_n;
+			} while (r7_n->ptr0004 != r10_n);
+			r7_n->ptr0004 = r11_n;
+			if ((r11_n->ptr0000->ptr0004 & -0x04) - (r11_n->ptr0004 & -0x04) + -0x08 >= r3)
+				r4_n = r11_n;
+			return r4_n;
 		}
 l00402064:
 	}
-	return r4_107;
+	return r4_n;
 }
 
-// 004020BC: Register Eq_2 fn004020BC(Register Eq_2 r2, Register (ptr32 Eq_220) r3, Register Eq_1162 r29, Register ptr32 r30, Register (ptr32 Eq_1171) r31, Stack Eq_2 dwArg08, Register out Eq_1228 r3Out, Register out Eq_2 r29Out, Register out Eq_2 r30Out)
-Eq_2 fn004020BC(Eq_2 r2, struct Eq_220 * r3, Eq_1162 r29, ptr32 r30, struct Eq_1171 * r31, Eq_2 dwArg08, union Eq_1228 & r3Out, union Eq_2 & r29Out, union Eq_2 & r30Out)
+// 004020BC: Register Eq_n fn004020BC(Register Eq_n r2, Register (ptr32 Eq_n) r3, Register Eq_n r29, Register ptr32 r30, Register (ptr32 Eq_n) r31, Stack Eq_n dwArg08, Register out Eq_n r3Out, Register out Eq_n r29Out, Register out Eq_n r30Out)
+Eq_n fn004020BC(Eq_n r2, struct Eq_n * r3, Eq_n r29, ptr32 r30, struct Eq_n * r31, Eq_n dwArg08, union Eq_n & r3Out, union Eq_n & r29Out, union Eq_n & r30Out)
 {
-	struct Eq_220 * r4_8 = **((word32) r2 + 116);
+	struct Eq_n * r4_n = **((word32) r2 + 116);
 	v5->t0000 = r29;
 	v5->ptr0004 = r30;
 	v5->ptr0008 = r31;
-	if (r3 < r4_8)
+	if (r3 < r4_n)
 	{
-		word32 r11_29 = (int32) (int8) (word32) Mem25[Mem25[r2 + 0x0078:word32] + r3:byte];
-		if ((r11_29 & 0x01) != 0x00)
+		word32 r11_n = (int32) (int8) (word32) Mem25[Mem25[r2 + 0x0078:word32] + r3:byte];
+		if ((r11_n & 0x01) != 0x00)
 		{
-			if ((r11_29 & 0x40) != 0x00)
+			if ((r11_n & 0x40) != 0x00)
 			{
 				r3Out.u0 = 0x00;
-				&r29Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-				&r30Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
+				&r29Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+				&r30Out.u0->dw0000 = (struct Eq_n *) <invalid>;
 				return r2;
 			}
 			else
 			{
-				int32 r11_62 = 0x00;
-				int32 ctr_64;
-				for (ctr_64 = 0x05; ctr_64 != 0x00; --ctr_64)
+				int32 r11_n = 0x00;
+				int32 ctr_n;
+				for (ctr_n = 0x05; ctr_n != 0x00; --ctr_n)
 				{
-					(&fp->aFFFFFFA0->dw0000)[r11_62] = (struct Eq_2725) 0x00;
-					int32 r11_70 = r11_62 + 0x04;
-					(&fp->aFFFFFFA0->dw0000)[r11_70] = (struct Eq_2725) 0x00;
-					(&fp->aFFFFFFA0->dw0000)[r11_70 + 0x04] = (struct Eq_2725) 0x00;
-					(&fp->aFFFFFFA0->dw0000)[r11_70 + 0x08] = (struct Eq_2725) 0x00;
-					r11_62 = r11_70 + 0x0C;
+					(&fp->aFFFFFFA0->dw0000)[r11_n] = (struct Eq_n) 0x00;
+					int32 r11_n = r11_n + 0x04;
+					(&fp->aFFFFFFA0->dw0000)[r11_n] = (struct Eq_n) 0x00;
+					(&fp->aFFFFFFA0->dw0000)[r11_n + 0x04] = (struct Eq_n) 0x00;
+					(&fp->aFFFFFFA0->dw0000)[r11_n + 0x08] = (struct Eq_n) 0x00;
+					r11_n = r11_n + 0x0C;
 				}
 				// Failed to bind call argument.
 				// Please report this issue at https://github.com/uxmal/reko
-				Eq_2 stackArg20 = (struct Eq_6095 *) <invalid>;
+				Eq_n stackArg20 = (struct Eq_n *) <invalid>;
 				fn00404074(r2, stackArg20);
-				if (fp == (struct Eq_2725 *) ~0x5F)
+				if (fp == (struct Eq_n *) ~0x5F)
 				{
-					int32 r11_100 = 0x00;
-					int32 ctr_109;
-					for (ctr_109 = 0x05; ctr_109 != 0x00; --ctr_109)
+					int32 r11_n = 0x00;
+					int32 ctr_n;
+					for (ctr_n = 0x05; ctr_n != 0x00; --ctr_n)
 					{
-						(&fp->aFFFFFFA0->dw0000)[r11_100] = (struct Eq_2725) 0x00;
-						int32 r11_102 = r11_100 + 0x04;
-						(&fp->aFFFFFFA0->dw0000)[r11_102] = (struct Eq_2725) 0x00;
-						(&fp->aFFFFFFA0->dw0000)[r11_102 + 0x04] = (struct Eq_2725) 0x00;
-						(&fp->aFFFFFFA0->dw0000)[r11_102 + 0x08] = (struct Eq_2725) 0x00;
-						r11_100 = r11_102 + 0x0C;
+						(&fp->aFFFFFFA0->dw0000)[r11_n] = (struct Eq_n) 0x00;
+						int32 r11_n = r11_n + 0x04;
+						(&fp->aFFFFFFA0->dw0000)[r11_n] = (struct Eq_n) 0x00;
+						(&fp->aFFFFFFA0->dw0000)[r11_n + 0x04] = (struct Eq_n) 0x00;
+						(&fp->aFFFFFFA0->dw0000)[r11_n + 0x08] = (struct Eq_n) 0x00;
+						r11_n = r11_n + 0x0C;
 					}
 					// Failed to bind call argument.
 					// Please report this issue at https://github.com/uxmal/reko
-					Eq_2 stackArg20 = (struct Eq_6095 *) <invalid>;
+					Eq_n stackArg20 = (struct Eq_n *) <invalid>;
 					fn00403F3C(dwLoc84, stackArg20);
-					if (fp == (struct Eq_2725 *) ~0x5F)
+					if (fp == (struct Eq_n *) ~0x5F)
 					{
 						r3Out.u0 = 0x00;
-						&r29Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-						&r30Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
+						&r29Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+						&r30Out.u0->dw0000 = (struct Eq_n *) <invalid>;
 						return dwLoc84;
 					}
 					else
 					{
 						fn00403104(dwLoc84, &fp->aFFFFFFA0->dw0000);
 						r3Out.u0 = -0x01;
-						&r29Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-						&r30Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
+						&r29Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+						&r30Out.u0->dw0000 = (struct Eq_n *) <invalid>;
 						return dwLoc84;
 					}
 				}
@@ -1449,83 +1449,83 @@ Eq_2 fn004020BC(Eq_2 r2, struct Eq_220 * r3, Eq_1162 r29, ptr32 r30, struct Eq_1
 				{
 					**((word32) dwLoc84 + 0x007C) = 0x05;
 					r3Out.u0 = -0x01;
-					&r29Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-					&r30Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
+					&r29Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+					&r30Out.u0->dw0000 = (struct Eq_n *) <invalid>;
 					return dwLoc84;
 				}
 			}
 		}
 	}
-	int32 * r5_35 = *((word32) r2 + 0x00A4);
+	int32 * r5_n = *((word32) r2 + 0x00A4);
 	**((word32) r2 + 0x007C) = 0x09;
-	*r5_35 = 0x00;
+	*r5_n = 0x00;
 	r3Out.u0 = -0x01;
-	&r29Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-	&r30Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
+	&r29Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+	&r30Out.u0->dw0000 = (struct Eq_n *) <invalid>;
 	return r2;
 }
 
-// 00402248: Register Eq_2 fn00402248(Register Eq_2 r2, Register (ptr32 Eq_220) r3, Register Eq_17 r4, Register (ptr32 Eq_220) r5, Register (ptr32 Eq_220) r29, Register (ptr32 Eq_220) r30, Register Eq_17 r31, Stack Eq_2 dwArg08, Register out Eq_1306 r3Out, Register out (ptr32 Eq_220) r29Out, Register out (ptr32 Eq_220) r30Out, Register out Eq_17 r31Out)
-Eq_2 fn00402248(Eq_2 r2, struct Eq_220 * r3, Eq_17 r4, struct Eq_220 * r5, struct Eq_220 * r29, struct Eq_220 * r30, Eq_17 r31, Eq_2 dwArg08, union Eq_1306 & r3Out, struct Eq_220 & r29Out, struct Eq_220 & r30Out, union Eq_17 & r31Out)
+// 00402248: Register Eq_n fn00402248(Register Eq_n r2, Register (ptr32 Eq_n) r3, Register Eq_n r4, Register (ptr32 Eq_n) r5, Register (ptr32 Eq_n) r29, Register (ptr32 Eq_n) r30, Register Eq_n r31, Stack Eq_n dwArg08, Register out Eq_n r3Out, Register out (ptr32 Eq_n) r29Out, Register out (ptr32 Eq_n) r30Out, Register out Eq_n r31Out)
+Eq_n fn00402248(Eq_n r2, struct Eq_n * r3, Eq_n r4, struct Eq_n * r5, struct Eq_n * r29, struct Eq_n * r30, Eq_n r31, Eq_n dwArg08, union Eq_n & r3Out, struct Eq_n & r29Out, struct Eq_n & r30Out, union Eq_n & r31Out)
 {
-	struct Eq_220 * r6_8 = **((word32) r2 + 116);
+	struct Eq_n * r6_n = **((word32) r2 + 116);
 	v11->ptr0000 = r29;
 	v11->ptr0004 = r30;
 	v11->t0008 = r31;
-	if (r3 < r6_8)
+	if (r3 < r6_n)
 	{
-		word32 r11_126 = (int32) (int8) (word32) Mem24[Mem24[r2 + 0x0078:word32] + r3:byte];
-		if ((r11_126 & 0x01) != 0x00 && (r11_126 & 0x10) == 0x00)
+		word32 r11_n = (int32) (int8) (word32) Mem24[Mem24[r2 + 0x0078:word32] + r3:byte];
+		if ((r11_n & 0x01) != 0x00 && (r11_n & 0x10) == 0x00)
 		{
-			Eq_2 r2_101;
-			struct Eq_2817 * r3_66;
-			if ((r11_126 & 0x40) != 0x00)
+			Eq_n r2_n;
+			struct Eq_n * r3_n;
+			if ((r11_n & 0x40) != 0x00)
 			{
-				struct Eq_2882 * r31_78 = *((word32) *((word32) r2 + 0x009C) + r3 * 0x04);
-				struct Eq_2889 * r30_80 = r31_78->ptr0004;
-				r31_78->t0010 = r4;
-				r31_78->ptr000C = r5;
+				struct Eq_n * r31_n = *((word32) *((word32) r2 + 0x009C) + r3 * 0x04);
+				struct Eq_n * r30_n = r31_n->ptr0004;
+				r31_n->t0010 = r4;
+				r31_n->ptr000C = r5;
 				// Failed to bind call argument.
 				// Please report this issue at https://github.com/uxmal/reko
-				Eq_2 stackArg20 = (struct Eq_6095 *) <invalid>;
-				r2_101 = fn00403F10(r2, r30_80->ptr0010, stackArg20)->t0014;
-				r3_66 = (int32) (int16) r31_78;
-				if (r3_66 != null)
-					r3_66 = (int32) r31_78->w0002;
+				Eq_n stackArg20 = (struct Eq_n *) <invalid>;
+				r2_n = fn00403F10(r2, r30_n->ptr0010, stackArg20)->t0014;
+				r3_n = (int32) (int16) r31_n;
+				if (r3_n != null)
+					r3_n = (int32) r31_n->w0002;
 				else
-					r11_126 = r5 - r31_78->ptr000C;
+					r11_n = r5 - r31_n->ptr000C;
 			}
 			else
 			{
 				// Failed to bind call argument.
 				// Please report this issue at https://github.com/uxmal/reko
-				Eq_2 stackArg20 = (struct Eq_6095 *) <invalid>;
-				r3_66 = fp + -0x0060;
-				r2_101 = fn0040405C(r2, stackArg20)->t0014;
-				r11_126 = dwLoc38;
+				Eq_n stackArg20 = (struct Eq_n *) <invalid>;
+				r3_n = fp + -0x0060;
+				r2_n = fn0040405C(r2, stackArg20)->t0014;
+				r11_n = dwLoc38;
 			}
-			if (r3_66 != null)
+			if (r3_n != null)
 			{
-				fn00403104(r2_101, r3_66);
+				fn00403104(r2_n, r3_n);
 				r3Out.u0 = -0x01;
 				r29Out = dwLoc10;
 				r30Out = dwLoc0C;
 				r31Out = dwLoc08;
-				return r2_101;
+				return r2_n;
 			}
 			else
 			{
-				r3Out = r11_126;
+				r3Out = r11_n;
 				r29Out = dwLoc10;
 				r30Out = dwLoc0C;
 				r31Out = dwLoc08;
-				return r2_101;
+				return r2_n;
 			}
 		}
 	}
-	int32 * r5_37 = *((word32) r2 + 0x00A4);
+	int32 * r5_n = *((word32) r2 + 0x00A4);
 	**((word32) r2 + 0x007C) = 0x09;
-	*r5_37 = 0x00;
+	*r5_n = 0x00;
 	r3Out.u0 = -0x01;
 	r29Out = r29;
 	r30Out = r30;
@@ -1533,137 +1533,137 @@ Eq_2 fn00402248(Eq_2 r2, struct Eq_220 * r3, Eq_17 r4, struct Eq_220 * r5, struc
 	return r2;
 }
 
-// 00402398: void fn00402398(Register Eq_2 r2, Register ptr32 r28, Register word32 r29, Register word32 r30, Register word32 r31, Stack word32 dwArg08)
-void fn00402398(Eq_2 r2, ptr32 r28, word32 r29, word32 r30, word32 r31, word32 dwArg08)
+// 00402398: void fn00402398(Register Eq_n r2, Register ptr32 r28, Register word32 r29, Register word32 r30, Register word32 r31, Stack word32 dwArg08)
+void fn00402398(Eq_n r2, ptr32 r28, word32 r29, word32 r30, word32 r31, word32 dwArg08)
 {
 	v3->dw0000 = r29;
 	v3->dw0004 = r30;
 	v3->dw0008 = r31;
-	word32 r4_17 = *((word32) r2 + 0x0048);
-	struct Eq_113 * r29_16 = *((word32) r2 + 0x006C);
-	Eq_17 r31_19 = r4_17 + 0x0060;
-	int32 r30_23 = 0x00;
-	if (r29_16->dw0000 >= r4_17 + 0x0060)
+	word32 r4_n = *((word32) r2 + 0x0048);
+	struct Eq_n * r29_n = *((word32) r2 + 0x006C);
+	Eq_n r31_n = r4_n + 0x0060;
+	int32 r30_n = 0x00;
+	if (r29_n->dw0000 >= r4_n + 0x0060)
 	{
 		do
 		{
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-			int32 r3_33;
-			word32 r31_35;
-			r2 = fn00403170(r2, r31_19, r28, r29_16, r30_23, r31_19, stackArg8, out r3_33, out r28, out r29_16, out r30_23, out r31_35);
-			if (r3_33 != -0x01)
-				++r30_23;
-			r31_19 = r31_35 + 0x0020;
-		} while (r29_16->dw0000 >= r31_35 + 0x0020);
+			Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+			int32 r3_n;
+			word32 r31_n;
+			r2 = fn00403170(r2, r31_n, r28, r29_n, r30_n, r31_n, stackArg8, out r3_n, out r28, out r29_n, out r30_n, out r31_n);
+			if (r3_n != -0x01)
+				++r30_n;
+			r31_n = r31_n + 0x0020;
+		} while (r29_n->dw0000 >= r31_n + 0x0020);
 	}
 }
 
-// 00402404: Register Eq_2 fn00402404(Register Eq_2 r2, Register (ptr32 Eq_3010) r29, Register (ptr32 int32) r30, Register (ptr32 ptr32) r31, Stack Eq_2 dwArg08, Register out ptr32 r29Out, Register out ptr32 r30Out)
-Eq_2 fn00402404(Eq_2 r2, struct Eq_3010 * r29, int32 * r30, ptr32 * r31, Eq_2 dwArg08, ptr32 & r29Out, ptr32 & r30Out)
+// 00402404: Register Eq_n fn00402404(Register Eq_n r2, Register (ptr32 Eq_n) r29, Register (ptr32 int32) r30, Register (ptr32 ptr32) r31, Stack Eq_n dwArg08, Register out ptr32 r29Out, Register out ptr32 r30Out)
+Eq_n fn00402404(Eq_n r2, struct Eq_n * r29, int32 * r30, ptr32 * r31, Eq_n dwArg08, ptr32 & r29Out, ptr32 & r30Out)
 {
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
+	Eq_n stackArg8 = (struct Eq_n *) <invalid>;
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	struct Eq_3010 * r29_17;
-	int32 * r30_18;
-	ptr32 * r31_19;
-	Eq_2 r2_23 = fn0040262C(r2, *((word32) r2 + 0x00A8), *((word32) r2 + 0x00AC), r29, r30, r31, stackArg8, out r29_17, out r30_18, out r31_19);
-	Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-	Eq_2 stackArg20 = (struct Eq_6095 *) <invalid>;
-	Eq_2 stackArg20 = (struct Eq_6095 *) <invalid>;
-	ptr32 r29_28;
-	ptr32 r30_29;
-	Eq_2 r2_52 = fn00404044(fn00404044(fn0040262C(r2_23, *((word32) r2_23 + 0x00B0), *((word32) r2_23 + 0x00B4), r29_17, r30_18, r31_19, stackArg8, out r29_28, out r30_29, out r31_92), stackArg20)->t0014, stackArg20)->t0014;
+	struct Eq_n * r29_n;
+	int32 * r30_n;
+	ptr32 * r31_n;
+	Eq_n r2_n = fn0040262C(r2, *((word32) r2 + 0x00A8), *((word32) r2 + 0x00AC), r29, r30, r31, stackArg8, out r29_n, out r30_n, out r31_n);
+	Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+	Eq_n stackArg20 = (struct Eq_n *) <invalid>;
+	Eq_n stackArg20 = (struct Eq_n *) <invalid>;
+	ptr32 r29_n;
+	ptr32 r30_n;
+	Eq_n r2_n = fn00404044(fn00404044(fn0040262C(r2_n, *((word32) r2_n + 0x00B0), *((word32) r2_n + 0x00B4), r29_n, r30_n, r31_n, stackArg8, out r29_n, out r30_n, out r31_n), stackArg20)->t0014, stackArg20)->t0014;
 	if (~0x06F1 != 0x00)
 	{
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2 stackArg20 = (struct Eq_6095 *) <invalid>;
-		struct Eq_3078 * r1_59 = fn00403F9C(r2_52, stackArg20);
-		r2_52 = r1_59->t0014;
+		Eq_n stackArg20 = (struct Eq_n *) <invalid>;
+		struct Eq_n * r1_n = fn00403F9C(r2_n, stackArg20);
+		r2_n = r1_n->t0014;
 		if (false)
-			**((word32) r2_52 + 0x00B8) = r1_59->dw0038;
+			**((word32) r2_n + 0x00B8) = r1_n->dw0038;
 	}
-	r29Out = r29_28;
-	r30Out = r30_29;
-	return r2_52;
+	r29Out = r29_n;
+	r30Out = r30_n;
+	return r2_n;
 }
 
-// 004024F0: Register Eq_2 fn004024F0(Register Eq_2 r2, Register (ptr32 int32) r3, Register int32 r4, Register (ptr32 ptr32) r5, Register (ptr32 Eq_3010) r29, Register (ptr32 Eq_3102) r30, Register (ptr32 (ptr32 code)) r31, Stack Eq_2 dwArg08, Register out ptr32 r29Out, Register out ptr32 r31Out)
-Eq_2 fn004024F0(Eq_2 r2, int32 * r3, int32 r4, ptr32 * r5, struct Eq_3010 * r29, struct Eq_3102 * r30, <anonymous> ** r31, Eq_2 dwArg08, ptr32 & r29Out, ptr32 & r31Out)
+// 004024F0: Register Eq_n fn004024F0(Register Eq_n r2, Register (ptr32 int32) r3, Register int32 r4, Register (ptr32 ptr32) r5, Register (ptr32 Eq_n) r29, Register (ptr32 Eq_n) r30, Register (ptr32 (ptr32 code)) r31, Stack Eq_n dwArg08, Register out ptr32 r29Out, Register out ptr32 r31Out)
+Eq_n fn004024F0(Eq_n r2, int32 * r3, int32 r4, ptr32 * r5, struct Eq_n * r29, struct Eq_n * r30, <anonymous> ** r31, Eq_n dwArg08, ptr32 & r29Out, ptr32 & r31Out)
 {
-	byte * r4_9 = *((word32) r2 + 112);
+	byte * r4_n = *((word32) r2 + 112);
 	v8->ptr0000 = r30;
 	v8->ptr0004 = r31;
-	*r4_9 = (byte) (int32) (int8) r5;
-	int32 * r30_20 = r3;
-	ptr32 * r31_22 = r5;
+	*r4_n = (byte) (int32) (int8) r5;
+	int32 * r30_n = r3;
+	ptr32 * r31_n = r5;
 	if (r4 == 0x00)
 	{
-		<anonymous> *** r3_28 = **((word32) r2 + 188);
-		if (r3_28 != null)
+		<anonymous> *** r3_n = **((word32) r2 + 188);
+		if (r3_n != null)
 		{
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-			r2 = fn0040262C(r2, r3_28, **((word32) r2 + 0x00C0), r29, r3, r5, stackArg8, out r29, out r30_20, out r31_22);
+			Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+			r2 = fn0040262C(r2, r3_n, **((word32) r2 + 0x00C0), r29, r3, r5, stackArg8, out r29, out r30_n, out r31_n);
 		}
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-		r2 = fn0040262C(r2, *((word32) r2 + 0x00C4), *((word32) r2 + 200), r29, r30_20, r31_22, stackArg8, out r29, out r30_20, out r31_22);
+		Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+		r2 = fn0040262C(r2, *((word32) r2 + 0x00C4), *((word32) r2 + 200), r29, r30_n, r31_n, stackArg8, out r29, out r30_n, out r31_n);
 	}
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-	ptr32 r29_66;
-	word32 r30_67;
-	word32 r31_68;
-	Eq_2 r2_124 = fn0040262C(r2, *((word32) r2 + 0x00CC), *((word32) r2 + 0x00D0), r29, r30_20, r31_22, stackArg8, out r29_66, out r30_67, out r31_68);
-	if (r31_68 == 0x00)
+	Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+	ptr32 r29_n;
+	word32 r30_n;
+	word32 r31_n;
+	Eq_n r2_n = fn0040262C(r2, *((word32) r2 + 0x00CC), *((word32) r2 + 0x00D0), r29, r30_n, r31_n, stackArg8, out r29_n, out r30_n, out r31_n);
+	if (r31_n == 0x00)
 	{
-		struct Eq_3180 * r11_76 = **((word32) r2_124 + 212);
-		if (r11_76 != null)
-			r11_76->dw000E = r30_67;
+		struct Eq_n * r11_n = **((word32) r2_n + 212);
+		if (r11_n != null)
+			r11_n->dw000E = r30_n;
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-		r2_124 = fn00403248(r2_124, stackArg8);
+		Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+		r2_n = fn00403248(r2_n, stackArg8);
 	}
-	r29Out = r29_66;
+	r29Out = r29_n;
 	r31Out = dwLoc04;
-	return r2_124;
+	return r2_n;
 }
 
-// 0040262C: Register Eq_2 fn0040262C(Register Eq_2 r2, Register (ptr32 (ptr32 (ptr32 code))) r3, Register (ptr32 (ptr32 (ptr32 code))) r4, Register (ptr32 Eq_3010) r29, Register (ptr32 int32) r30, Register (ptr32 ptr32) r31, Stack Eq_2 dwArg08, Register out ptr32 r29Out, Register out ptr32 r30Out, Register out ptr32 r31Out)
-Eq_2 fn0040262C(Eq_2 r2, <anonymous> *** r3, <anonymous> *** r4, struct Eq_3010 * r29, int32 * r30, ptr32 * r31, Eq_2 dwArg08, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
+// 0040262C: Register Eq_n fn0040262C(Register Eq_n r2, Register (ptr32 (ptr32 (ptr32 code))) r3, Register (ptr32 (ptr32 (ptr32 code))) r4, Register (ptr32 Eq_n) r29, Register (ptr32 int32) r30, Register (ptr32 ptr32) r31, Stack Eq_n dwArg08, Register out ptr32 r29Out, Register out ptr32 r30Out, Register out ptr32 r31Out)
+Eq_n fn0040262C(Eq_n r2, <anonymous> *** r3, <anonymous> *** r4, struct Eq_n * r29, int32 * r30, ptr32 * r31, Eq_n dwArg08, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
 {
 	v3->ptr0000 = r29;
 	v3->ptr0004 = r30;
 	v3->ptr0008 = r31;
-	<anonymous> *** r30_16 = r3;
+	<anonymous> *** r30_n = r3;
 	if (r4 > r3)
 	{
 		do
 		{
-			<anonymous> ** r31_25 = *r30_16;
-			if (r31_25 != null && r31_25 != (<anonymous> **) -0x01)
+			<anonymous> ** r31_n = *r30_n;
+			if (r31_n != null && r31_n != (<anonymous> **) -0x01)
 			{
 				// Failed to bind call argument.
 				// Please report this issue at https://github.com/uxmal/reko
-				Eq_2 stackArg20 = (struct Eq_6095 *) <invalid>;
-				r2 = fn00403F10(r2, r31_25, stackArg20)->t0014;
+				Eq_n stackArg20 = (struct Eq_n *) <invalid>;
+				r2 = fn00403F10(r2, r31_n, stackArg20)->t0014;
 			}
-			r30_16 = (<anonymous> ***) ((char *) r30_16 + 0x04);
-		} while (r4 > r30_16);
+			r30_n = (<anonymous> ***) ((char *) r30_n + 0x04);
+		} while (r4 > r30_n);
 	}
 	r29Out = dwLoc10;
 	r30Out = dwLoc0C;
@@ -1671,8 +1671,8 @@ Eq_2 fn0040262C(Eq_2 r2, <anonymous> *** r3, <anonymous> *** r4, struct Eq_3010 
 	return r2;
 }
 
-// 004026B8: Register Eq_2 fn004026B8(Register Eq_2 r2, Register (ptr32 Eq_220) r3, Register int32 r4, Register int32 r5, Register ptr32 r26, Register Eq_17 r27, Register (ptr32 Eq_220) r28, Register (ptr32 Eq_220) r29, Register (ptr32 Eq_220) r30, Register Eq_17 r31, Stack Eq_2 dwArg08, Register out ptr32 r26Out, Register out Eq_17 r27Out, Register out Eq_2 r28Out, Register out Eq_2 r29Out, Register out Eq_2 r31Out)
-Eq_2 fn004026B8(Eq_2 r2, struct Eq_220 * r3, int32 r4, int32 r5, ptr32 r26, Eq_17 r27, struct Eq_220 * r28, struct Eq_220 * r29, struct Eq_220 * r30, Eq_17 r31, Eq_2 dwArg08, ptr32 & r26Out, union Eq_17 & r27Out, union Eq_2 & r28Out, union Eq_2 & r29Out, union Eq_2 & r31Out)
+// 004026B8: Register Eq_n fn004026B8(Register Eq_n r2, Register (ptr32 Eq_n) r3, Register int32 r4, Register int32 r5, Register ptr32 r26, Register Eq_n r27, Register (ptr32 Eq_n) r28, Register (ptr32 Eq_n) r29, Register (ptr32 Eq_n) r30, Register Eq_n r31, Stack Eq_n dwArg08, Register out ptr32 r26Out, Register out Eq_n r27Out, Register out Eq_n r28Out, Register out Eq_n r29Out, Register out Eq_n r31Out)
+Eq_n fn004026B8(Eq_n r2, struct Eq_n * r3, int32 r4, int32 r5, ptr32 r26, Eq_n r27, struct Eq_n * r28, struct Eq_n * r29, struct Eq_n * r30, Eq_n r31, Eq_n dwArg08, ptr32 & r26Out, union Eq_n & r27Out, union Eq_n & r28Out, union Eq_n & r29Out, union Eq_n & r31Out)
 {
 	v3->ptr0000 = r26;
 	v3->t0004 = r27;
@@ -1680,14 +1680,14 @@ Eq_2 fn004026B8(Eq_2 r2, struct Eq_220 * r3, int32 r4, int32 r5, ptr32 r26, Eq_1
 	v3->ptr000C = r29;
 	v3->ptr0010 = r30;
 	v3->t0014 = r31;
-	struct Eq_3249 * r1_136 = (char *) fp - 0x00A0;
-	int32 r29_105 = r4;
+	struct Eq_n * r1_n = (char *) fp - 0x00A0;
+	int32 r29_n = r4;
 	if (**((word32) r2 + 116) > r3)
 	{
-		word32 r11_39 = (int32) (int8) (word32) Mem35[Mem35[r2 + 0x0078:word32] + r3:byte];
-		if ((r11_39 & 0x01) != 0x00 && (r11_39 & 0x40) == 0x00)
+		word32 r11_n = (int32) (int8) (word32) Mem35[Mem35[r2 + 0x0078:word32] + r3:byte];
+		if ((r11_n & 0x01) != 0x00 && (r11_n & 0x40) == 0x00)
 		{
-			struct Eq_2817 * r3_130;
+			struct Eq_n * r3_n;
 			if (r5 != 0x00)
 			{
 				if (r5 != 0x01)
@@ -1697,222 +1697,222 @@ Eq_2 fn004026B8(Eq_2 r2, struct Eq_220 * r3, int32 r4, int32 r5, ptr32 r26, Eq_1
 						**((word32) r2 + 0x007C) = 22;
 						r26Out = r26;
 						r27Out = r27;
-						&r28Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-						&r29Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-						&r31Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
+						&r28Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+						&r29Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+						&r31Out.u0->dw0000 = (struct Eq_n *) <invalid>;
 						return r2;
 					}
-					int32 r11_108 = 0x00;
-					int32 ctr_110;
-					for (ctr_110 = 0x05; ctr_110 != 0x00; --ctr_110)
+					int32 r11_n = 0x00;
+					int32 ctr_n;
+					for (ctr_n = 0x05; ctr_n != 0x00; --ctr_n)
 					{
-						(&fp->aFFFFFF98->dw0000)[r11_108] = (struct Eq_3250) 0x00;
-						int32 r11_116 = r11_108 + 0x04;
-						(&fp->aFFFFFF98->dw0000)[r11_116] = (struct Eq_3250) 0x00;
-						(&fp->aFFFFFF98->dw0000)[r11_116 + 0x04] = (struct Eq_3250) 0x00;
-						(&fp->aFFFFFF98->dw0000)[r11_116 + 0x08] = (struct Eq_3250) 0x00;
-						r11_108 = r11_116 + 0x0C;
+						(&fp->aFFFFFF98->dw0000)[r11_n] = (struct Eq_n) 0x00;
+						int32 r11_n = r11_n + 0x04;
+						(&fp->aFFFFFF98->dw0000)[r11_n] = (struct Eq_n) 0x00;
+						(&fp->aFFFFFF98->dw0000)[r11_n + 0x04] = (struct Eq_n) 0x00;
+						(&fp->aFFFFFF98->dw0000)[r11_n + 0x08] = (struct Eq_n) 0x00;
+						r11_n = r11_n + 0x0C;
 					}
 					// Failed to bind call argument.
 					// Please report this issue at https://github.com/uxmal/reko
-					Eq_2 stackArg20 = (struct Eq_6095 *) <invalid>;
-					r1_136 = fn00403FFC(r2, stackArg20);
-					r3_130 = (struct Eq_2817 *) &fp->aFFFFFF98->dw0000;
-					r2 = r1_136->t0014;
-					r29_105 = r4 + dwLoc4C;
+					Eq_n stackArg20 = (struct Eq_n *) <invalid>;
+					r1_n = fn00403FFC(r2, stackArg20);
+					r3_n = (struct Eq_n *) &fp->aFFFFFF98->dw0000;
+					r2 = r1_n->t0014;
+					r29_n = r4 + dwLoc4C;
 				}
 				else
 				{
-					int32 r11_71 = 0x00;
-					int32 ctr_73;
-					for (ctr_73 = 0x05; ctr_73 != 0x00; --ctr_73)
+					int32 r11_n = 0x00;
+					int32 ctr_n;
+					for (ctr_n = 0x05; ctr_n != 0x00; --ctr_n)
 					{
-						(&fp->aFFFFFF98->dw0000)[r11_71] = (struct Eq_3250) 0x00;
-						int32 r11_79 = r11_71 + 0x04;
-						(&fp->aFFFFFF98->dw0000)[r11_79] = (struct Eq_3250) 0x00;
-						(&fp->aFFFFFF98->dw0000)[r11_79 + 0x04] = (struct Eq_3250) 0x00;
-						(&fp->aFFFFFF98->dw0000)[r11_79 + 0x08] = (struct Eq_3250) 0x00;
-						r11_71 = r11_79 + 0x0C;
+						(&fp->aFFFFFF98->dw0000)[r11_n] = (struct Eq_n) 0x00;
+						int32 r11_n = r11_n + 0x04;
+						(&fp->aFFFFFF98->dw0000)[r11_n] = (struct Eq_n) 0x00;
+						(&fp->aFFFFFF98->dw0000)[r11_n + 0x04] = (struct Eq_n) 0x00;
+						(&fp->aFFFFFF98->dw0000)[r11_n + 0x08] = (struct Eq_n) 0x00;
+						r11_n = r11_n + 0x0C;
 					}
 					// Failed to bind call argument.
 					// Please report this issue at https://github.com/uxmal/reko
-					Eq_2 stackArg20 = (struct Eq_6095 *) <invalid>;
-					r1_136 = fn00403FE4(r2, stackArg20);
-					r3_130 = (struct Eq_2817 *) &fp->aFFFFFF98->dw0000;
-					r2 = r1_136->t0014;
-					r29_105 = r4 + dwLoc3A;
+					Eq_n stackArg20 = (struct Eq_n *) <invalid>;
+					r1_n = fn00403FE4(r2, stackArg20);
+					r3_n = (struct Eq_n *) &fp->aFFFFFF98->dw0000;
+					r2 = r1_n->t0014;
+					r29_n = r4 + dwLoc3A;
 				}
 			}
 			else
-				r3_130 = null;
-			if (r3_130 == null)
+				r3_n = null;
+			if (r3_n == null)
 			{
-				struct Eq_2817 * r31_146 = (char *) &r1_136->t0014 + 0x0024;
-				int32 r11_147 = 0x00;
-				int32 ctr_149;
-				for (ctr_149 = 0x05; ctr_149 != 0x00; --ctr_149)
+				struct Eq_n * r31_n = (char *) &r1_n->t0014 + 0x0024;
+				int32 r11_n = 0x00;
+				int32 ctr_n;
+				for (ctr_n = 0x05; ctr_n != 0x00; --ctr_n)
 				{
-					r31_146[r11_147 / 0x0032] = 0x00;
-					int32 r11_154 = r11_147 + 0x04;
-					r31_146[r11_154 / 0x0032] = 0x00;
-					r31_146[(r11_154 + 0x04) / 0x0032] = 0x00;
-					r31_146[(r11_154 + 0x08) / 0x0032] = 0x00;
-					r11_147 = r11_154 + 0x0C;
+					r31_n[r11_n / 0x0032] = 0x00;
+					int32 r11_n = r11_n + 0x04;
+					r31_n[r11_n / 0x0032] = 0x00;
+					r31_n[(r11_n + 0x04) / 0x0032] = 0x00;
+					r31_n[(r11_n + 0x08) / 0x0032] = 0x00;
+					r11_n = r11_n + 0x0C;
 				}
-				struct Eq_2882 * r27_165[] = *((word32) r2 + 0x009C);
-				struct Eq_2882 * r4_169 = r27_165[r3];
-				r31_146->dw002E = r29_105;
-				r31_146->w0018 = (word16) (int32) (int16) r4_169;
-				r31_146->w002C = 0x01;
+				struct Eq_n * r27_n[] = *((word32) r2 + 0x009C);
+				struct Eq_n * r4_n = r27_n[r3];
+				r31_n->dw002E = r29_n;
+				r31_n->w0018 = (word16) (int32) (int16) r4_n;
+				r31_n->w002C = 0x01;
 				// Failed to bind call argument.
 				// Please report this issue at https://github.com/uxmal/reko
-				Eq_2 stackArg20 = (struct Eq_6095 *) <invalid>;
-				r3_130 = r31_146;
-				word32 * r27_177 = r27_165 + (r3 << 0x02) / 0x04;
+				Eq_n stackArg20 = (struct Eq_n *) <invalid>;
+				r3_n = r31_n;
+				word32 * r27_n = r27_n + (r3 << 0x02) / 0x04;
 				r2 = fn00404014(r2, stackArg20)->t0014;
-				if (r31_146 == (struct Eq_2817 *) -0x0027)
+				if (r31_n == (struct Eq_n *) -0x0027)
 				{
-					int32 r11_187 = 0x00;
-					int32 ctr_189;
-					for (ctr_189 = 0x05; ctr_189 != 0x00; --ctr_189)
+					int32 r11_n = 0x00;
+					int32 ctr_n;
+					for (ctr_n = 0x05; ctr_n != 0x00; --ctr_n)
 					{
-						r31_146[r11_187 / 0x0032] = 0x00;
-						int32 r11_194 = r11_187 + 0x04;
-						r31_146[r11_194 / 0x0032] = 0x00;
-						r31_146[(r11_194 + 0x04) / 0x0032] = 0x00;
-						r31_146[(r11_194 + 0x08) / 0x0032] = 0x00;
-						r11_187 = r11_194 + 0x0C;
+						r31_n[r11_n / 0x0032] = 0x00;
+						int32 r11_n = r11_n + 0x04;
+						r31_n[r11_n / 0x0032] = 0x00;
+						r31_n[(r11_n + 0x04) / 0x0032] = 0x00;
+						r31_n[(r11_n + 0x08) / 0x0032] = 0x00;
+						r11_n = r11_n + 0x0C;
 					}
-					word32 r4_204 = *r27_177;
-					r31_146->dw001C = r29_105;
-					r31_146->w0018 = (word16) (int32) (int16) r4_204;
+					word32 r4_n = *r27_n;
+					r31_n->dw001C = r29_n;
+					r31_n->w0018 = (word16) (int32) (int16) r4_n;
 					// Failed to bind call argument.
 					// Please report this issue at https://github.com/uxmal/reko
-					Eq_2 stackArg20 = (struct Eq_6095 *) <invalid>;
-					r3_130 = r31_146;
+					Eq_n stackArg20 = (struct Eq_n *) <invalid>;
+					r3_n = r31_n;
 					r2 = fn0040402C(r2, stackArg20)->t0014;
-					if (r31_146 == null)
+					if (r31_n == null)
 					{
-						int32 r11_219 = 0x00;
-						int32 ctr_221;
-						for (ctr_221 = 0x05; ctr_221 != 0x00; --ctr_221)
+						int32 r11_n = 0x00;
+						int32 ctr_n;
+						for (ctr_n = 0x05; ctr_n != 0x00; --ctr_n)
 						{
-							r31_146[r11_219 / 0x0032] = 0x00;
-							int32 r11_226 = r11_219 + 0x04;
-							r31_146[r11_226 / 0x0032] = 0x00;
-							r31_146[(r11_226 + 0x04) / 0x0032] = 0x00;
-							r31_146[(r11_226 + 0x08) / 0x0032] = 0x00;
-							r11_219 = r11_226 + 0x0C;
+							r31_n[r11_n / 0x0032] = 0x00;
+							int32 r11_n = r11_n + 0x04;
+							r31_n[r11_n / 0x0032] = 0x00;
+							r31_n[(r11_n + 0x04) / 0x0032] = 0x00;
+							r31_n[(r11_n + 0x08) / 0x0032] = 0x00;
+							r11_n = r11_n + 0x0C;
 						}
-						word32 r27_236 = *r27_177;
-						r31_146->w002C = 0x01;
-						r31_146->dw002E = r29_105;
-						r31_146->w0018 = (word16) (int32) (int16) r27_236;
+						word32 r27_n = *r27_n;
+						r31_n->w002C = 0x01;
+						r31_n->dw002E = r29_n;
+						r31_n->w0018 = (word16) (int32) (int16) r27_n;
 						// Failed to bind call argument.
 						// Please report this issue at https://github.com/uxmal/reko
-						Eq_2 stackArg20 = (struct Eq_6095 *) <invalid>;
-						r3_130 = r31_146;
+						Eq_n stackArg20 = (struct Eq_n *) <invalid>;
+						r3_n = r31_n;
 						r2 = fn00404014(r2, stackArg20)->t0014;
 					}
 				}
 			}
-			if (r3_130 == null)
+			if (r3_n == null)
 			{
 				r26Out = dwLoc18;
 				r27Out = dwLoc14;
-				&r28Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-				&r29Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-				&r31Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
+				&r28Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+				&r29Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+				&r31Out.u0->dw0000 = (struct Eq_n *) <invalid>;
 				return r2;
 			}
 			else
 			{
-				fn00403104(r2, r3_130);
+				fn00403104(r2, r3_n);
 				r26Out = dwLoc18;
 				r27Out = dwLoc14;
-				&r28Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-				&r29Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-				&r31Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
+				&r28Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+				&r29Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+				&r31Out.u0->dw0000 = (struct Eq_n *) <invalid>;
 				return r2;
 			}
 		}
 	}
-	int32 * r5_47 = *((word32) r2 + 0x00A4);
+	int32 * r5_n = *((word32) r2 + 0x00A4);
 	**((word32) r2 + 0x007C) = 0x09;
-	*r5_47 = 0x00;
+	*r5_n = 0x00;
 	r26Out = r26;
 	r27Out = r27;
-	&r28Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-	&r29Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-	&r31Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
+	&r28Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+	&r29Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+	&r31Out.u0->dw0000 = (struct Eq_n *) <invalid>;
 	return r2;
 }
 
-// 0040298C: Register Eq_2 fn0040298C(Register Eq_2 r2, Register Eq_17 r3, Register ptr32 r25, Register ptr32 r26, Register Eq_17 r27, Register Eq_17 r28, Register Eq_17 r29, Register (ptr32 Eq_220) r30, Register word32 lr, Stack Eq_2 dwArg08, Register out ptr32 r25Out, Register out ptr32 r26Out, Register out ptr32 r27Out, Register out Eq_1694 r28Out, Register out ptr32 r30Out)
-Eq_2 fn0040298C(Eq_2 r2, Eq_17 r3, ptr32 r25, ptr32 r26, Eq_17 r27, Eq_17 r28, Eq_17 r29, struct Eq_220 * r30, word32 lr, Eq_2 dwArg08, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, union Eq_1694 & r28Out, ptr32 & r30Out)
+// 0040298C: Register Eq_n fn0040298C(Register Eq_n r2, Register Eq_n r3, Register ptr32 r25, Register ptr32 r26, Register Eq_n r27, Register Eq_n r28, Register Eq_n r29, Register (ptr32 Eq_n) r30, Register word32 lr, Stack Eq_n dwArg08, Register out ptr32 r25Out, Register out ptr32 r26Out, Register out ptr32 r27Out, Register out Eq_n r28Out, Register out ptr32 r30Out)
+Eq_n fn0040298C(Eq_n r2, Eq_n r3, ptr32 r25, ptr32 r26, Eq_n r27, Eq_n r28, Eq_n r29, struct Eq_n * r30, word32 lr, Eq_n dwArg08, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, union Eq_n & r28Out, ptr32 & r30Out)
 {
-	word32 * r4_5 = *((word32) r2 + 0x004C);
-	++*r4_5;
+	word32 * r4_n = *((word32) r2 + 0x004C);
+	++*r4_n;
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-	ptr32 r25_31;
-	ptr32 r26_32;
-	ptr32 r27_33;
-	Eq_1694 r28_34;
-	ptr32 r3_36;
-	ptr32 r30_37;
-	struct Eq_3600 * r31_38;
-	Eq_2 r2_30 = fn00400F9C(r2, 0x00001000, r25, r26, r27, r28, r29, r30, r3, lr, stackArg8, out r3_36, out r25_31, out r26_32, out r27_33, out r28_34, out r29_101, out r30_37, out r31_38);
-	r31_38->ptr0008 = r3_36;
-	if (r3_36 != 0x00)
+	Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+	ptr32 r25_n;
+	ptr32 r26_n;
+	ptr32 r27_n;
+	Eq_n r28_n;
+	ptr32 r3_n;
+	ptr32 r30_n;
+	struct Eq_n * r31_n;
+	Eq_n r2_n = fn00400F9C(r2, 0x00001000, r25, r26, r27, r28, r29, r30, r3, lr, stackArg8, out r3_n, out r25_n, out r26_n, out r27_n, out r28_n, out r29_n, out r30_n, out r31_n);
+	r31_n->ptr0008 = r3_n;
+	if (r3_n != 0x00)
 	{
-		ui32 r4_57 = r31_38->dw000C;
-		r31_38->dw0018 = 0x00001000;
-		r31_38->dw000C = r4_57 | 0x08;
+		ui32 r4_n = r31_n->dw000C;
+		r31_n->dw0018 = 0x00001000;
+		r31_n->dw000C = r4_n | 0x08;
 	}
 	else
 	{
-		ui32 r4_50 = r31_38->dw000C;
-		r31_38->ptr0008 = &r31_38->dw000C + 0x02;
-		r31_38->dw000C = r4_50 | 0x04;
-		r31_38->dw0018 = 0x01;
+		ui32 r4_n = r31_n->dw000C;
+		r31_n->ptr0008 = &r31_n->dw000C + 0x02;
+		r31_n->dw000C = r4_n | 0x04;
+		r31_n->dw0018 = 0x01;
 	}
-	ptr32 r4_66 = r31_38->ptr0008;
-	r31_38->dw0004 = 0x00;
-	r31_38->ptr0000 = r4_66;
-	r25Out = r25_31;
-	r26Out = r26_32;
-	r27Out = r27_33;
-	r28Out = r28_34;
-	r30Out = r30_37;
-	return r2_30;
+	ptr32 r4_n = r31_n->ptr0008;
+	r31_n->dw0004 = 0x00;
+	r31_n->ptr0000 = r4_n;
+	r25Out = r25_n;
+	r26Out = r26_n;
+	r27Out = r27_n;
+	r28Out = r28_n;
+	r30Out = r30_n;
+	return r2_n;
 }
 
-// 00402A24: void fn00402A24(Register Eq_2 r2, Register Eq_17 r3, Register Eq_17 r4, Register Eq_17 r5, Register ui32 r11, Register word32 r13, Register word32 r14, Register word32 r15, Register word32 r16, Register word32 r17, Register word32 r18, Register word32 r19, Register word32 r20, Register word32 r21, Register word32 r22, Register word32 r23, Register word32 r24, Register ptr32 r25, Register ptr32 r26, Register word32 r27, Register word32 r28, Register word32 r29, Register Eq_17 r30, Register word32 r31, Register word32 lr, Stack word32 dwArg08)
-void fn00402A24(Eq_2 r2, Eq_17 r3, Eq_17 r4, Eq_17 r5, ui32 r11, word32 r13, word32 r14, word32 r15, word32 r16, word32 r17, word32 r18, word32 r19, word32 r20, word32 r21, word32 r22, word32 r23, word32 r24, ptr32 r25, ptr32 r26, word32 r27, word32 r28, word32 r29, Eq_17 r30, word32 r31, word32 lr, word32 dwArg08)
+// 00402A24: void fn00402A24(Register Eq_n r2, Register Eq_n r3, Register Eq_n r4, Register Eq_n r5, Register ui32 r11, Register word32 r13, Register word32 r14, Register word32 r15, Register word32 r16, Register word32 r17, Register word32 r18, Register word32 r19, Register word32 r20, Register word32 r21, Register word32 r22, Register word32 r23, Register word32 r24, Register ptr32 r25, Register ptr32 r26, Register word32 r27, Register word32 r28, Register word32 r29, Register Eq_n r30, Register word32 r31, Register word32 lr, Stack word32 dwArg08)
+void fn00402A24(Eq_n r2, Eq_n r3, Eq_n r4, Eq_n r5, ui32 r11, word32 r13, word32 r14, word32 r15, word32 r16, word32 r17, word32 r18, word32 r19, word32 r20, word32 r21, word32 r22, word32 r23, word32 r24, ptr32 r25, ptr32 r26, word32 r27, word32 r28, word32 r29, Eq_n r30, word32 r31, word32 lr, word32 dwArg08)
 {
-	Eq_17 r31_159;
-	struct Eq_220 * r30_158;
-	struct Eq_220 * r29_157;
-	Eq_2 r2_156;
+	Eq_n r31_n;
+	struct Eq_n * r30_n;
+	struct Eq_n * r29_n;
+	Eq_n r2_n;
 	v3->dw0000 = r27;
 	v3->dw0004 = r28;
 	v3->dw0008 = r29;
 	v3->t000C = r30;
 	v3->dw0010 = r31;
-	Eq_17 r28_22 = r4;
-	Eq_17 r27_234 = r3;
-	Eq_17 r29_236 = r5;
+	Eq_n r28_n = r4;
+	Eq_n r27_n = r3;
+	Eq_n r29_n = r5;
 	if (**((word32) r2 + 212) != null)
 	{
-		struct Eq_98 * r31_219 = *((word32) r2 + 0x0048);
-		if ((r31_219->ptr004C & 0x010C) == 0x00)
+		struct Eq_n * r31_n = *((word32) r2 + 0x0048);
+		if ((r31_n->ptr004C & 0x010C) == 0x00)
 		{
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-			r2 = fn00403450(r2, (char *) r31_219 + 0x0040, null, 0x04, 0x00, r25, r26, r3, r4, r5, r30, r31_219, lr, stackArg8, out r25, out r26, out r27_234, out r28_22, out r29_236, out r31_219);
+			Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+			r2 = fn00403450(r2, (char *) r31_n + 0x0040, null, 0x04, 0x00, r25, r26, r3, r4, r5, r30, r31_n, lr, stackArg8, out r25, out r26, out r27_n, out r28_n, out r29_n, out r31_n);
 		}
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
@@ -1934,35 +1934,35 @@ void fn00402A24(Eq_2 r2, Eq_17 r3, Eq_17 r4, Eq_17 r5, ui32 r11, word32 r13, wor
 		// Please report this issue at https://github.com/uxmal/reko
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_17 r30_260 = (char *) r31_219 + 0x0040;
-		Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-		Eq_2 stackArg24 = (struct Eq_6095 *) <invalid>;
-		Eq_2 stackArg28 = (struct Eq_6095 *) <invalid>;
-		Eq_2 stackArg32 = (struct Eq_6095 *) <invalid>;
-		Eq_2 stackArg36 = (struct Eq_6095 *) <invalid>;
-		Eq_2 stackArg40 = (struct Eq_6095 *) <invalid>;
-		Eq_2 stackArg44 = (struct Eq_6095 *) <invalid>;
-		Eq_2 stackArg48 = (struct Eq_6095 *) <invalid>;
-		Eq_2 stackArg52 = (struct Eq_6095 *) <invalid>;
-		Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-		struct Eq_113 * r29_299;
-		Eq_17 r30_301;
-		r2_156 = fn004011FC(fn004033C4(r2, r30_260, *((word32) r2 + 0x00D8), r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, r26, r27_234, r28_22, r29_236, r30_260, r31_219, lr, stackArg8, stackArg24, stackArg28, stackArg32, stackArg36, stackArg40, stackArg44, stackArg48, stackArg52, out r29_299, out r30_301, out r31_159), r30_301, r29_299, r30_301, stackArg8, out r3_422, out r27_423, out r28_424, out r29_157, out r30_158, out r31_425);
+		Eq_n r30_n = (char *) r31_n + 0x0040;
+		Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+		Eq_n stackArg24 = (struct Eq_n *) <invalid>;
+		Eq_n stackArg28 = (struct Eq_n *) <invalid>;
+		Eq_n stackArg32 = (struct Eq_n *) <invalid>;
+		Eq_n stackArg36 = (struct Eq_n *) <invalid>;
+		Eq_n stackArg40 = (struct Eq_n *) <invalid>;
+		Eq_n stackArg44 = (struct Eq_n *) <invalid>;
+		Eq_n stackArg48 = (struct Eq_n *) <invalid>;
+		Eq_n stackArg52 = (struct Eq_n *) <invalid>;
+		Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+		struct Eq_n * r29_n;
+		Eq_n r30_n;
+		r2_n = fn004011FC(fn004033C4(r2, r30_n, *((word32) r2 + 0x00D8), r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, r26, r27_n, r28_n, r29_n, r30_n, r31_n, lr, stackArg8, stackArg24, stackArg28, stackArg32, stackArg36, stackArg40, stackArg44, stackArg48, stackArg52, out r29_n, out r30_n, out r31_n), r30_n, r29_n, r30_n, stackArg8, out r3_n, out r27_n, out r28_n, out r29_n, out r30_n, out r31_n);
 	}
 	else
 	{
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2 stackArg20 = (struct Eq_6095 *) <invalid>;
-		struct Eq_3078 * r1_40 = fn00403F9C(r2, stackArg20);
-		Eq_2 r2_43 = r1_40->t0014;
+		Eq_n stackArg20 = (struct Eq_n *) <invalid>;
+		struct Eq_n * r1_n = fn00403F9C(r2, stackArg20);
+		Eq_n r2_n = r1_n->t0014;
 		if (false)
 		{
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			Eq_2 stackArg20 = (struct Eq_6095 *) <invalid>;
-			r1_40 = fn00403FB4(r2_43, stackArg20);
-			r2_43 = r1_40->t0014;
+			Eq_n stackArg20 = (struct Eq_n *) <invalid>;
+			r1_n = fn00403FB4(r2_n, stackArg20);
+			r2_n = r1_n->t0014;
 			if (fp == ~0x021F)
 				r11 = *(ui32 *) 288 & 0xFF;
 			else
@@ -1988,21 +1988,21 @@ void fn00402A24(Eq_2 r2, Eq_17 r3, Eq_17 r4, Eq_17 r5, ui32 r11, word32 r13, wor
 			// Please report this issue at https://github.com/uxmal/reko
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-			Eq_2 stackArg24 = (struct Eq_6095 *) <invalid>;
-			Eq_2 stackArg28 = (struct Eq_6095 *) <invalid>;
-			Eq_2 stackArg32 = (struct Eq_6095 *) <invalid>;
-			Eq_2 stackArg36 = (struct Eq_6095 *) <invalid>;
-			Eq_2 stackArg40 = (struct Eq_6095 *) <invalid>;
-			Eq_2 stackArg44 = (struct Eq_6095 *) <invalid>;
-			Eq_2 stackArg48 = (struct Eq_6095 *) <invalid>;
-			Eq_2 stackArg52 = (struct Eq_6095 *) <invalid>;
-			Eq_2 r2_183 = fn004032FC(r2_43, *((word32) r2_43 + 0x00D8), r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, r26, r3, r4, r5, r30, &r1_40->dw0038 + 0x02, lr, stackArg8, stackArg24, stackArg28, stackArg32, stackArg36, stackArg40, stackArg44, stackArg48, stackArg52, out r3_448, out r29_157, out r30_158, out r31_159);
-			fn004032AC(r31_159);
+			Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+			Eq_n stackArg24 = (struct Eq_n *) <invalid>;
+			Eq_n stackArg28 = (struct Eq_n *) <invalid>;
+			Eq_n stackArg32 = (struct Eq_n *) <invalid>;
+			Eq_n stackArg36 = (struct Eq_n *) <invalid>;
+			Eq_n stackArg40 = (struct Eq_n *) <invalid>;
+			Eq_n stackArg44 = (struct Eq_n *) <invalid>;
+			Eq_n stackArg48 = (struct Eq_n *) <invalid>;
+			Eq_n stackArg52 = (struct Eq_n *) <invalid>;
+			Eq_n r2_n = fn004032FC(r2_n, *((word32) r2_n + 0x00D8), r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, r26, r3, r4, r5, r30, &r1_n->dw0038 + 0x02, lr, stackArg8, stackArg24, stackArg28, stackArg32, stackArg36, stackArg40, stackArg44, stackArg48, stackArg52, out r3_n, out r29_n, out r30_n, out r31_n);
+			fn004032AC(r31_n);
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			Eq_2 stackArg20 = (struct Eq_6095 *) <invalid>;
-			r2_156 = fn00403FCC(r2_183, stackArg20)->t0014;
+			Eq_n stackArg20 = (struct Eq_n *) <invalid>;
+			r2_n = fn00403FCC(r2_n, stackArg20)->t0014;
 		}
 		else
 		{
@@ -2026,54 +2026,54 @@ void fn00402A24(Eq_2 r2, Eq_17 r3, Eq_17 r4, Eq_17 r5, ui32 r11, word32 r13, wor
 			// Please report this issue at https://github.com/uxmal/reko
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-			Eq_2 stackArg24 = (struct Eq_6095 *) <invalid>;
-			Eq_2 stackArg28 = (struct Eq_6095 *) <invalid>;
-			Eq_2 stackArg32 = (struct Eq_6095 *) <invalid>;
-			Eq_2 stackArg36 = (struct Eq_6095 *) <invalid>;
-			Eq_2 stackArg40 = (struct Eq_6095 *) <invalid>;
-			Eq_2 stackArg44 = (struct Eq_6095 *) <invalid>;
-			Eq_2 stackArg48 = (struct Eq_6095 *) <invalid>;
-			Eq_2 stackArg52 = (struct Eq_6095 *) <invalid>;
-			Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-			struct Eq_220 * r29_131;
-			struct Eq_220 * r3_132;
-			struct Eq_220 * r30_133;
-			Eq_17 r31_134;
-			r2_156 = fn00402248(fn004032FC(r2_43, *((word32) r2_43 + 0x00D8), r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, r26, r3, r4, r5, r30, &r1_40->dw0038 + 0x02, lr, stackArg8, stackArg24, stackArg28, stackArg32, stackArg36, stackArg40, stackArg44, stackArg48, stackArg52, out r3_132, out r29_131, out r30_133, out r31_134), (struct Eq_220 *) 0x02, r31_134, r3_132, r29_131, r30_133, r31_134, stackArg8, out r3_438, out r29_157, out r30_158, out r31_159);
+			Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+			Eq_n stackArg24 = (struct Eq_n *) <invalid>;
+			Eq_n stackArg28 = (struct Eq_n *) <invalid>;
+			Eq_n stackArg32 = (struct Eq_n *) <invalid>;
+			Eq_n stackArg36 = (struct Eq_n *) <invalid>;
+			Eq_n stackArg40 = (struct Eq_n *) <invalid>;
+			Eq_n stackArg44 = (struct Eq_n *) <invalid>;
+			Eq_n stackArg48 = (struct Eq_n *) <invalid>;
+			Eq_n stackArg52 = (struct Eq_n *) <invalid>;
+			Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+			struct Eq_n * r29_n;
+			struct Eq_n * r3_n;
+			struct Eq_n * r30_n;
+			Eq_n r31_n;
+			r2_n = fn00402248(fn004032FC(r2_n, *((word32) r2_n + 0x00D8), r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, r26, r3, r4, r5, r30, &r1_n->dw0038 + 0x02, lr, stackArg8, stackArg24, stackArg28, stackArg32, stackArg36, stackArg40, stackArg44, stackArg48, stackArg52, out r3_n, out r29_n, out r30_n, out r31_n), (struct Eq_n *) 0x02, r31_n, r3_n, r29_n, r30_n, r31_n, stackArg8, out r3_n, out r29_n, out r30_n, out r31_n);
 		}
 	}
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-	fn0040326C(r2_156, r29_157, r30_158, r31_159, lr, stackArg8);
+	Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+	fn0040326C(r2_n, r29_n, r30_n, r31_n, lr, stackArg8);
 }
 
-// 00402BA0: Register Eq_2 fn00402BA0(Register Eq_2 r2, Register Eq_17 r3, Register (ptr32 Eq_220) r29, Register Eq_3988 r30, Register Eq_17 r31, Stack Eq_2 dwArg08, Register out (ptr32 Eq_220) r29Out, Register out Eq_3992 r30Out, Register out (ptr32 Eq_3993) r31Out)
-Eq_2 fn00402BA0(Eq_2 r2, Eq_17 r3, struct Eq_220 * r29, Eq_3988 r30, Eq_17 r31, Eq_2 dwArg08, struct Eq_220 & r29Out, union Eq_3992 & r30Out, struct Eq_3993 & r31Out)
+// 00402BA0: Register Eq_n fn00402BA0(Register Eq_n r2, Register Eq_n r3, Register (ptr32 Eq_n) r29, Register Eq_n r30, Register Eq_n r31, Stack Eq_n dwArg08, Register out (ptr32 Eq_n) r29Out, Register out Eq_n r30Out, Register out (ptr32 Eq_n) r31Out)
+Eq_n fn00402BA0(Eq_n r2, Eq_n r3, struct Eq_n * r29, Eq_n r30, Eq_n r31, Eq_n dwArg08, struct Eq_n & r29Out, union Eq_n & r30Out, struct Eq_n & r31Out)
 {
 	v7->t0000 = r30;
 	v7->t0004 = r31;
 	if (r3 != 0x00)
 	{
-		struct Eq_220 * r31_17 = *((word32) r3 - 0x08);
-		int32 r30_19 = -0x04;
-		if ((r31_17->ptr0004 & -0x04) != (word32) r3 - 0x08)
+		struct Eq_n * r31_n = *((word32) r3 - 0x08);
+		int32 r30_n = -0x04;
+		if ((r31_n->ptr0004 & -0x04) != (word32) r3 - 0x08)
 		{
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-			r2 = fn00401AB4(r2, r29, (struct Eq_220 *) -0x04, stackArg8, out r29, out r30_19);
+			Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+			r2 = fn00401AB4(r2, r29, (struct Eq_n *) -0x04, stackArg8, out r29, out r30_n);
 		}
-		int32 * r10_46 = *((word32) r2 + 220);
-		struct Eq_973 * r11_49 = r31_17->ptr0004 & -0x03 | 0x01;
-		r31_17->ptr0004 = r11_49;
-		int32 r10_51 = *r10_46;
-		if (r10_51 != -0x01)
+		int32 * r10_n = *((word32) r2 + 220);
+		struct Eq_n * r11_n = r31_n->ptr0004 & -0x03 | 0x01;
+		r31_n->ptr0004 = r11_n;
+		int32 r10_n = *r10_n;
+		if (r10_n != -0x01)
 		{
-			struct Eq_1041 * r9_54 = *((word32) r2 + 0x0068);
-			if (r9_54->ptr0004->ptr0004 > r11_49 && (((r31_17->ptr0000)->ptr0004 & r30_19) - (r11_49 & r30_19)) + -0x08 >= r10_51)
-				r9_54->ptr0004 = r31_17;
+			struct Eq_n * r9_n = *((word32) r2 + 0x0068);
+			if (r9_n->ptr0004->ptr0004 > r11_n && (((r31_n->ptr0000)->ptr0004 & r30_n) - (r11_n & r30_n)) + -0x08 >= r10_n)
+				r9_n->ptr0004 = r31_n;
 		}
 	}
 	r29Out = r29;
@@ -2082,32 +2082,32 @@ Eq_2 fn00402BA0(Eq_2 r2, Eq_17 r3, struct Eq_220 * r29, Eq_3988 r30, Eq_17 r31, 
 	return r2;
 }
 
-// 00402C4C: Register Eq_2 fn00402C4C(Register Eq_2 r2, Register Eq_17 r3, Register (ptr32 Eq_220) r29, Register (ptr32 Eq_220) r30, Stack Eq_2 dwArg08, Register out ptr32 r29Out, Register out ptr32 r30Out)
-Eq_2 fn00402C4C(Eq_2 r2, Eq_17 r3, struct Eq_220 * r29, struct Eq_220 * r30, Eq_2 dwArg08, ptr32 & r29Out, ptr32 & r30Out)
+// 00402C4C: Register Eq_n fn00402C4C(Register Eq_n r2, Register Eq_n r3, Register (ptr32 Eq_n) r29, Register (ptr32 Eq_n) r30, Stack Eq_n dwArg08, Register out ptr32 r29Out, Register out ptr32 r30Out)
+Eq_n fn00402C4C(Eq_n r2, Eq_n r3, struct Eq_n * r29, struct Eq_n * r30, Eq_n dwArg08, ptr32 & r29Out, ptr32 & r30Out)
 {
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-	Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
+	Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+	Eq_n stackArg8 = (struct Eq_n *) <invalid>;
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	struct Eq_220 * r29_21;
-	struct Eq_220 * r30_23;
-	Eq_17 r31_24;
-	ptr32 r29_42;
-	ptr32 r30_44;
-	Eq_2 r2_41 = fn00403618(fn004035CC(r2, r29, r30, r3, stackArg8, out r29_21, out r30_23, out r31_24), r31_24, r29_21, r30_23, r31_24, stackArg8, out r29_42, out r30_44, out r31_73);
-	Eq_2 stackArg20 = (struct Eq_6095 *) <invalid>;
-	fn00403F10(r2_41, **((word32) r2_41 + 224), stackArg20);
-	r29Out = r29_42;
-	r30Out = r30_44;
+	struct Eq_n * r29_n;
+	struct Eq_n * r30_n;
+	Eq_n r31_n;
+	ptr32 r29_n;
+	ptr32 r30_n;
+	Eq_n r2_n = fn00403618(fn004035CC(r2, r29, r30, r3, stackArg8, out r29_n, out r30_n, out r31_n), r31_n, r29_n, r30_n, r31_n, stackArg8, out r29_n, out r30_n, out r31_n);
+	Eq_n stackArg20 = (struct Eq_n *) <invalid>;
+	fn00403F10(r2_n, **((word32) r2_n + 224), stackArg20);
+	r29Out = r29_n;
+	r30Out = r30_n;
 	return dwLoc2C;
 }
 
-// 00402CE0: Register Eq_2 fn00402CE0(Register Eq_2 r2, Register (ptr32 Eq_973) r3, Register int32 r4, Register (ptr32 Eq_956) r26, Register Eq_1958 r27, Register (ptr32 Eq_1954) r28, Register (ptr32 (ptr32 (ptr32 (arr Eq_5986)))) r29, Register int32 r30, Register ui32 r31, Register word32 lr, Stack Eq_2 dwArg08, Register out Eq_2396 r3Out, Register out Eq_2 r26Out, Register out Eq_2 r27Out, Register out Eq_2 r29Out, Register out Eq_2 r30Out)
-Eq_2 fn00402CE0(Eq_2 r2, struct Eq_973 * r3, int32 r4, struct Eq_956 * r26, Eq_1958 r27, struct Eq_1954 * r28, Eq_5986 (*** r29)[], int32 r30, ui32 r31, word32 lr, Eq_2 dwArg08, union Eq_2396 & r3Out, union Eq_2 & r26Out, union Eq_2 & r27Out, union Eq_2 & r29Out, union Eq_2 & r30Out)
+// 00402CE0: Register Eq_n fn00402CE0(Register Eq_n r2, Register (ptr32 Eq_n) r3, Register int32 r4, Register (ptr32 Eq_n) r26, Register Eq_n r27, Register (ptr32 Eq_n) r28, Register (ptr32 (ptr32 (ptr32 (arr Eq_n)))) r29, Register int32 r30, Register ui32 r31, Register word32 lr, Stack Eq_n dwArg08, Register out Eq_n r3Out, Register out Eq_n r26Out, Register out Eq_n r27Out, Register out Eq_n r29Out, Register out Eq_n r30Out)
+Eq_n fn00402CE0(Eq_n r2, struct Eq_n * r3, int32 r4, struct Eq_n * r26, Eq_n r27, struct Eq_n * r28, Eq_n (*** r29)[], int32 r30, ui32 r31, word32 lr, Eq_n dwArg08, union Eq_n & r3Out, union Eq_n & r26Out, union Eq_n & r27Out, union Eq_n & r29Out, union Eq_n & r30Out)
 {
 	v5->ptr0000 = r26;
 	v5->t0004 = r27;
@@ -2117,96 +2117,96 @@ Eq_2 fn00402CE0(Eq_2 r2, struct Eq_973 * r3, int32 r4, struct Eq_956 * r26, Eq_1
 	v5->dw0014 = r31;
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-	word32 * dwLoc28_287 = fp + -0x0038;
-	struct Eq_220 * r3_41;
-	Eq_2 r2_127 = fn004019CC(r2, stackArg8, out r3_41);
-	if (r3_41 != null)
+	Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+	word32 * dwLoc28_n = fp + -0x0038;
+	struct Eq_n * r3_n;
+	Eq_n r2_n = fn004019CC(r2, stackArg8, out r3_n);
+	if (r3_n != null)
 	{
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-		word32 r3_55;
-		r2_127 = fn004019CC(r2_127, stackArg8, out r3_55);
-		if (r3_55 == 0x00)
+		Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+		word32 r3_n;
+		r2_n = fn004019CC(r2_n, stackArg8, out r3_n);
+		if (r3_n == 0x00)
 			goto l00403014;
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-		word32 r3_69;
-		r2_127 = fn004019CC(r2_127, stackArg8, out r3_69);
-		if (r3_69 != 0x00)
+		Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+		word32 r3_n;
+		r2_n = fn004019CC(r2_n, stackArg8, out r3_n);
+		if (r3_n != 0x00)
 		{
-			struct Eq_220 * r30_104;
-			int32 r3_87 = fn004036B0(r2_127, r3, fp + -0x0024);
-			if (r3_87 == 0x00)
+			struct Eq_n * r30_n;
+			int32 r3_n = fn004036B0(r2_n, r3, fp + -0x0024);
+			if (r3_n == 0x00)
 			{
 				if ((dwLoc24->ptr0004 & 0x03) != 0x02)
 					goto l00403014;
-				r30_104 = dwLoc24;
+				r30_n = dwLoc24;
 			}
 			else
 			{
-				dwLoc28_287 = fp + -0x0034;
-				r30_104 = r3_41;
+				dwLoc28_n = fp + -0x0034;
+				r30_n = r3_n;
 			}
-			struct Eq_1041 * r31_165;
-			r30_104->ptr0004 = r3;
-			r30_104->ptr0004 = r3 & -0x03 | 0x01;
-			r3->ptr0000 = r30_104;
-			if (r3_87 < 0x01)
+			struct Eq_n * r31_n;
+			r30_n->ptr0004 = r3;
+			r30_n->ptr0004 = r3 & -0x03 | 0x01;
+			r3->ptr0000 = r30_n;
+			if (r3_n < 0x01)
 			{
-				fn00402DEC(r3_87 + 0x03 << 0x02, lr);
-				r31_165 = (struct Eq_1041 *) *((word32) r2_127 + 0x0068);
-				r31_165->dw0010 = r3 + r4 / 0x04;
-				fn00403070(r30_104, r4, (char *) &r31_165->ptr0008 + 0x04, fp + -0x0028);
-				r31_165->ptr0004 = r30_104;
-				r31_165->ptr0000 = r30_104;
+				fn00402DEC(r3_n + 0x03 << 0x02, lr);
+				r31_n = (struct Eq_n *) *((word32) r2_n + 0x0068);
+				r31_n->dw0010 = r3 + r4 / 0x04;
+				fn00403070(r30_n, r4, (char *) &r31_n->ptr0008 + 0x04, fp + -0x0028);
+				r31_n->ptr0004 = r30_n;
+				r31_n->ptr0000 = r30_n;
 				goto l00402FB8;
 			}
 			if ((dwLoc24->ptr0004 & 0x03) == 0x02)
 			{
-				r31_165 = (struct Eq_1041 *) *((word32) r2_127 + 0x0068);
-				struct Eq_220 * r5_166 = dwLoc24->ptr0000;
-				if (r5_166 == (char *) (&r31_165->ptr0008) + 0x04)
+				r31_n = (struct Eq_n *) *((word32) r2_n + 0x0068);
+				struct Eq_n * r5_n = dwLoc24->ptr0000;
+				if (r5_n == (char *) (&r31_n->ptr0008) + 0x04)
 				{
-					int32 r11_175 = (r30_104->ptr0004 & -0x04) + r4;
-					if (r31_165->dw0010 < r11_175)
-						r31_165->dw0010 = r11_175;
+					int32 r11_n = (r30_n->ptr0004 & -0x04) + r4;
+					if (r31_n->dw0010 < r11_n)
+						r31_n->dw0010 = r11_n;
 				}
-				fn00403070(r30_104, r4, r5_166, fp + -0x0028);
-				fn00403070(dwLoc24, (dwLoc24->ptr0000->ptr0004 & -0x04) - (dwLoc24->ptr0004 & -0x04), r30_104, fp + -0x0028);
+				fn00403070(r30_n, r4, r5_n, fp + -0x0028);
+				fn00403070(dwLoc24, (dwLoc24->ptr0000->ptr0004 & -0x04) - (dwLoc24->ptr0004 & -0x04), r30_n, fp + -0x0028);
 l00402FB8:
-				if ((r31_165->ptr0004->ptr0004 & -0x04) > r3 && (((r30_104->ptr0000)->ptr0004 & -0x04) - (r30_104->ptr0004 & -0x04)) + -0x08 >= *(*((word32) r2_127 + 220)))
-					r31_165->ptr0004 = r30_104;
+				if ((r31_n->ptr0004->ptr0004 & -0x04) > r3 && (((r30_n->ptr0000)->ptr0004 & -0x04) - (r30_n->ptr0004 & -0x04)) + -0x08 >= *(*((word32) r2_n + 220)))
+					r31_n->ptr0004 = r30_n;
 				r3Out.u0 = 0x00;
-				&r26Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-				&r27Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-				&r29Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-				&r30Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-				return r2_127;
+				&r26Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+				&r27Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+				&r29Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+				&r30Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+				return r2_n;
 			}
 		}
 	}
 l00403014:
-	struct Eq_220 ** r11_125 = *dwLoc28_287;
-	if (r11_125 != null)
+	struct Eq_n ** r11_n = *dwLoc28_n;
+	if (r11_n != null)
 	{
-		struct Eq_1041 * r4_129 = *((word32) r2_127 + 0x0068);
+		struct Eq_n * r4_n = *((word32) r2_n + 0x0068);
 		do
 		{
-			*r11_125 = (struct Eq_220 **) r4_129->ptr0008;
-			r4_129->ptr0008 = *dwLoc28_287;
-			++dwLoc28_287;
-			r11_125 = *dwLoc28_287;
-		} while (r11_125 != null);
+			*r11_n = (struct Eq_n **) r4_n->ptr0008;
+			r4_n->ptr0008 = *dwLoc28_n;
+			++dwLoc28_n;
+			r11_n = *dwLoc28_n;
+		} while (r11_n != null);
 	}
 	r3Out.u0 = -0x01;
-	&r26Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-	&r27Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-	&r29Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-	&r30Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-	return r2_127;
+	&r26Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+	&r27Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+	&r29Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+	&r30Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+	return r2_n;
 }
 
 // 00402DEC: void fn00402DEC(Register ui32 r11, Register word32 lr)
@@ -2214,77 +2214,77 @@ void fn00402DEC(ui32 r11, word32 lr)
 {
 }
 
-// 00403070: void fn00403070(Register (ptr32 Eq_220) r3, Register int32 r4, Register (ptr32 Eq_220) r5, Register (ptr32 (ptr32 (ptr32 Eq_220))) r6)
-void fn00403070(struct Eq_220 * r3, int32 r4, struct Eq_220 * r5, struct Eq_220 *** r6)
+// 00403070: void fn00403070(Register (ptr32 Eq_n) r3, Register int32 r4, Register (ptr32 Eq_n) r5, Register (ptr32 (ptr32 (ptr32 Eq_n))) r6)
+void fn00403070(struct Eq_n * r3, int32 r4, struct Eq_n * r5, struct Eq_n *** r6)
 {
-	struct Eq_973 * r9_5 = r3->ptr0004;
-	if ((r9_5 & 0x03) != 0x02)
+	struct Eq_n * r9_n = r3->ptr0004;
+	if ((r9_n & 0x03) != 0x02)
 	{
-		struct Eq_973 * r10_10 = r5->ptr0004;
-		if ((r10_10 & 0x03) == 0x02)
+		struct Eq_n * r10_n = r5->ptr0004;
+		if ((r10_n & 0x03) == 0x02)
 		{
-			struct Eq_973 * r4_35 = (r9_5 & -0x04) + r4;
-			r5->ptr0004 = r4_35;
-			r5->ptr0004 = r4_35 & -0x02 | 0x02;
+			struct Eq_n * r4_n = (r9_n & -0x04) + r4;
+			r5->ptr0004 = r4_n;
+			r5->ptr0004 = r4_n & -0x02 | 0x02;
 		}
 		else
 		{
-			struct Eq_973 * r4_17 = (r9_5 & -0x04) + r4;
-			if ((r10_10 & -0x04) != r4_17)
+			struct Eq_n * r4_n = (r9_n & -0x04) + r4;
+			if ((r10_n & -0x04) != r4_n)
 			{
-				struct Eq_220 ** r4_22 = *r6;
-				struct Eq_220 * r8_24 = *r4_22;
-				*r6 = (struct Eq_220 ***) ((char *) r4_22 + 0x04);
-				r8_24->ptr0004 = r4_17;
-				r8_24->ptr0004 = r4_17 & -0x02 | 0x02;
-				r3->ptr0000 = r8_24;
-				r3 = r8_24;
+				struct Eq_n ** r4_n = *r6;
+				struct Eq_n * r8_n = *r4_n;
+				*r6 = (struct Eq_n ***) ((char *) r4_n + 0x04);
+				r8_n->ptr0004 = r4_n;
+				r8_n->ptr0004 = r4_n & -0x02 | 0x02;
+				r3->ptr0000 = r8_n;
+				r3 = r8_n;
 			}
 		}
 	}
 	r3->ptr0000 = r5;
 }
 
-// 00403104: void fn00403104(Register Eq_2 r2, Register (ptr32 Eq_2817) r3)
-void fn00403104(Eq_2 r2, struct Eq_2817 * r3)
+// 00403104: void fn00403104(Register Eq_n r2, Register (ptr32 Eq_n) r3)
+void fn00403104(Eq_n r2, struct Eq_n * r3)
 {
-	struct Eq_4418 * r8_6 = *((word32) r2 + 228);
-	int32 r3_9 = (int32) (int16) r3;
-	**((word32) r2 + 0x00A4) = r3_9;
-	int32 r10_14 = 0x00;
-	struct Eq_4418 * r11_15 = r8_6;
+	struct Eq_n * r8_n = *((word32) r2 + 228);
+	int32 r3_n = (int32) (int16) r3;
+	**((word32) r2 + 0x00A4) = r3_n;
+	int32 r10_n = 0x00;
+	struct Eq_n * r11_n = r8_n;
 	do
 	{
-		if ((int32) r11_15->w0000 == r3_9)
+		if ((int32) r11_n->w0000 == r3_n)
 		{
-			**((word32) r2 + 0x007C) = (word32) r8_6->a0002[r10_14].w0000;
+			**((word32) r2 + 0x007C) = (word32) r8_n->a0002[r10_n].w0000;
 			return;
 		}
-		r11_15 = &r11_15->a0002->w0000 + 0x01;
-		++r10_14;
-	} while (r11_15 < r8_6 + 0x00B8);
+		r11_n = &r11_n->a0002->w0000 + 0x01;
+		++r10_n;
+	} while (r11_n < r8_n + 0x00B8);
 	**((word32) r2 + 0x007C) = 22;
 }
 
-// 00403170: Register Eq_2 fn00403170(Register Eq_2 r2, Register Eq_17 r3, Register ptr32 r28, Register (ptr32 Eq_113) r29, Register int32 r30, Register Eq_17 r31, Stack Eq_2 dwArg08, Register out Eq_2987 r3Out, Register out ptr32 r28Out, Register out (ptr32 Eq_113) r29Out, Register out Eq_2 r30Out, Register out Eq_2 r31Out)
-Eq_2 fn00403170(Eq_2 r2, Eq_17 r3, ptr32 r28, struct Eq_113 * r29, int32 r30, Eq_17 r31, Eq_2 dwArg08, union Eq_2987 & r3Out, ptr32 & r28Out, struct Eq_113 & r29Out, union Eq_2 & r30Out, union Eq_2 & r31Out)
+// 00403170: Register Eq_n fn00403170(Register Eq_n r2, Register Eq_n r3, Register ptr32 r28, Register (ptr32 Eq_n) r29, Register int32 r30, Register Eq_n r31, Stack Eq_n dwArg08, Register out Eq_n r3Out, Register out ptr32 r28Out, Register out (ptr32 Eq_n) r29Out, Register out Eq_n r30Out, Register out Eq_n r31Out)
+Eq_n fn00403170(Eq_n r2, Eq_n r3, ptr32 r28, struct Eq_n * r29, int32 r30, Eq_n r31, Eq_n dwArg08, union Eq_n & r3Out, ptr32 & r28Out, struct Eq_n & r29Out, union Eq_n & r30Out, union Eq_n & r31Out)
 {
 	v3->dw0000 = r30;
 	v3->t0004 = r31;
-	Eq_17 r31_113 = r3;
-	int32 r11_14 = *((word32) r3 + 0x0C);
-	Eq_2987 r30_112 = -0x01;
-	if ((r11_14 & 0x40) != 0x00)
+	Eq_n r31_n = r3;
+	int32 r11_n = *((word32) r3 + 0x0C);
+	Eq_n r30_n = -0x01;
+	if ((r11_n & 0x40) != 0x00)
 	{
 		*((word32) r3 + 0x0C) = 0x00;
 		r3Out.u0 = -0x01;
 		r28Out = r28;
 		r29Out = r29;
-		&r30Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-		&r31Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
+		&r30Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+		&r31Out.u0->dw0000 = (struct Eq_n *) <invalid>;
 		return r2;
 	}
-	if ((r11_14 & 131) != 0x00)
+	if ((r11_n & 131) != 0x00)
 	{
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
@@ -2292,64 +2292,64 @@ Eq_2 fn00403170(Eq_2 r2, Eq_17 r3, ptr32 r28, struct Eq_113 * r29, int32 r30, Eq
 		// Please report this issue at https://github.com/uxmal/reko
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-		Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-		Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-		struct Eq_220 * r29_28;
-		Eq_3988 r3_29;
-		Eq_17 r31_31;
-		word32 r29_52;
-		word32 r30_54;
-		int32 r3_67;
-		r2 = fn00403898(fn00403A0C(fn004012B0(r2, r3, r29, -0x01, r3, stackArg8, out r3_29, out r29_28, out r30_241, out r31_31), r31_31, r29_28, r3_29, stackArg8, out r29_52, out r30_54), *((word32) r31_31 + 0x0010), r28, r29_52, r30_54, r31_31, stackArg8, out r3_67, out r28, out r29, out r30_112, out r31_113);
-		if (r3_67 < 0x00)
+		Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+		Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+		Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+		struct Eq_n * r29_n;
+		Eq_n r3_n;
+		Eq_n r31_n;
+		word32 r29_n;
+		word32 r30_n;
+		int32 r3_n;
+		r2 = fn00403898(fn00403A0C(fn004012B0(r2, r3, r29, -0x01, r3, stackArg8, out r3_n, out r29_n, out r30_n, out r31_n), r31_n, r29_n, r3_n, stackArg8, out r29_n, out r30_n), *((word32) r31_n + 0x0010), r28, r29_n, r30_n, r31_n, stackArg8, out r3_n, out r28, out r29, out r30_n, out r31_n);
+		if (r3_n < 0x00)
 		{
-			r30_112.u0 = -0x01;
+			r30_n.u0 = -0x01;
 			goto l0040322C;
 		}
-		Eq_17 r3_84 = *((word32) r31_113 + 0x001C);
-		if (r3_84 != 0x00)
+		Eq_n r3_n = *((word32) r31_n + 0x001C);
+		if (r3_n != 0x00)
 		{
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-			word32 r3_88;
-			struct Eq_220 * r29_96;
-			Eq_17 r31_98;
-			Eq_3988 r30_104;
-			Eq_2 r2_95 = fn00403744(r2, r3_84, r29, r30_112, r31_113, stackArg8, out r3_88, out r29_96, out r30_104, out r31_98);
-			if (r3_88 != 0x00)
-				r30_104.u0 = -0x01;
+			Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+			word32 r3_n;
+			struct Eq_n * r29_n;
+			Eq_n r31_n;
+			Eq_n r30_n;
+			Eq_n r2_n = fn00403744(r2, r3_n, r29, r30_n, r31_n, stackArg8, out r3_n, out r29_n, out r30_n, out r31_n);
+			if (r3_n != 0x00)
+				r30_n.u0 = -0x01;
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-			r2 = fn00402BA0(r2_95, *((word32) r31_98 + 0x001C), r29_96, r30_104, r31_98, stackArg8, out r29, out r30_112, out r31_113);
-			((word32) r31_113 + 0x001C)->u0 = 0x00;
+			Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+			r2 = fn00402BA0(r2_n, *((word32) r31_n + 0x001C), r29_n, r30_n, r31_n, stackArg8, out r29, out r30_n, out r31_n);
+			((word32) r31_n + 0x001C)->u0 = 0x00;
 l0040322C:
-			*((word32) r31_113 + 0x0C) = 0x00;
-			r3Out = r30_112;
+			*((word32) r31_n + 0x0C) = 0x00;
+			r3Out = r30_n;
 			r28Out = r28;
 			r29Out = r29;
-			&r30Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-			&r31Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
+			&r30Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+			&r31Out.u0->dw0000 = (struct Eq_n *) <invalid>;
 			return r2;
 		}
 	}
 	goto l0040322C;
 }
 
-// 00403248: Register Eq_2 fn00403248(Register Eq_2 r2, Stack Eq_2 dwArg08)
-Eq_2 fn00403248(Eq_2 r2, Eq_2 dwArg08)
+// 00403248: Register Eq_n fn00403248(Register Eq_n r2, Stack Eq_n dwArg08)
+Eq_n fn00403248(Eq_n r2, Eq_n dwArg08)
 {
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_2 stackArg20 = (struct Eq_6095 *) <invalid>;
+	Eq_n stackArg20 = (struct Eq_n *) <invalid>;
 	fn00403F84(r2, stackArg20);
 	return dwLoc24;
 }
 
-// 0040326C: void fn0040326C(Register Eq_2 r2, Register (ptr32 Eq_220) r29, Register (ptr32 Eq_220) r30, Register Eq_17 r31, Register word32 lr, Stack Eq_2 dwArg08)
-void fn0040326C(Eq_2 r2, struct Eq_220 * r29, struct Eq_220 * r30, Eq_17 r31, word32 lr, Eq_2 dwArg08)
+// 0040326C: void fn0040326C(Register Eq_n r2, Register (ptr32 Eq_n) r29, Register (ptr32 Eq_n) r30, Register Eq_n r31, Register word32 lr, Stack Eq_n dwArg08)
+void fn0040326C(Eq_n r2, struct Eq_n * r29, struct Eq_n * r30, Eq_n r31, word32 lr, Eq_n dwArg08)
 {
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
@@ -2357,42 +2357,42 @@ void fn0040326C(Eq_2 r2, struct Eq_220 * r29, struct Eq_220 * r30, Eq_17 r31, wo
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-	Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-	Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-	ptr32 r29_21;
-	word32 r30_23;
-	word32 r31_24;
-	struct Eq_3102 * r30_35;
-	<anonymous> ** r31_36;
-	struct Eq_3010 * r29_41;
-	fn004035A0(fn00403B08(fn00403618(r2, 0x0A, r29, r30, r31, stackArg8, out r29_21, out r30_23, out r31_24), (struct Eq_3102 *) 22, r29_21, r30_23, r31_24, lr, stackArg8, out r29_41, out r30_35, out r31_36), (int32 *) 0x03, r29_41, r30_35, r31_36, stackArg8, out r29_67, out r31_68);
+	Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+	Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+	Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+	ptr32 r29_n;
+	word32 r30_n;
+	word32 r31_n;
+	struct Eq_n * r30_n;
+	<anonymous> ** r31_n;
+	struct Eq_n * r29_n;
+	fn004035A0(fn00403B08(fn00403618(r2, 0x0A, r29, r30, r31, stackArg8, out r29_n, out r30_n, out r31_n), (struct Eq_n *) 22, r29_n, r30_n, r31_n, lr, stackArg8, out r29_n, out r30_n, out r31_n), (int32 *) 0x03, r29_n, r30_n, r31_n, stackArg8, out r29_n, out r31_n);
 }
 
-// 004032AC: void fn004032AC(Register Eq_17 r3)
-void fn004032AC(Eq_17 r3)
+// 004032AC: void fn004032AC(Register Eq_n r3)
+void fn004032AC(Eq_n r3)
 {
 	if (r3 != 0x00 && (int32) ((int8) ((word32) (*r3))) != 0x00)
 	{
-		byte * r11_10 = (word32) r3 + 0x01;
-		word32 r10_11 = (word32) *r3;
+		byte * r11_n = (word32) r3 + 0x01;
+		word32 r10_n = (word32) *r3;
 		do
 		{
-			word32 r4_14 = (word32) *r11_10;
-			++r11_10;
-			*r11_10 = (byte) r10_11;
-			r10_11 = r4_14;
-		} while (r4_14 != 0x00);
-		int32 r10_21 = r11_10 - r3;
-		int32 r9_23 = 0x00FF;
-		if (r10_21 < 0x00FF)
-			r9_23 = r10_21;
-		r3->u0 = (byte) (int32) (int8) r9_23;
+			word32 r4_n = (word32) *r11_n;
+			++r11_n;
+			*r11_n = (byte) r10_n;
+			r10_n = r4_n;
+		} while (r4_n != 0x00);
+		int32 r10_n = r11_n - r3;
+		int32 r9_n = 0x00FF;
+		if (r10_n < 0x00FF)
+			r9_n = r10_n;
+		r3->u0 = (byte) (int32) (int8) r9_n;
 	}
 }
 
-// 004032FC: Register Eq_2 fn004032FC(Register Eq_2 r2, Register (ptr32 byte) r4, Register word32 r13, Register word32 r14, Register word32 r15, Register word32 r16, Register word32 r17, Register word32 r18, Register word32 r19, Register word32 r20, Register word32 r21, Register word32 r22, Register word32 r23, Register word32 r24, Register ptr32 r25, Register ptr32 r26, Register Eq_17 r27, Register Eq_17 r28, Register Eq_17 r29, Register Eq_17 r30, Register ptr32 r31, Register word32 lr, Stack Eq_2 dwArg08, Stack Eq_2 dwArg18, Stack Eq_2 dwArg1C, Stack Eq_2 dwArg20, Stack Eq_2 dwArg24, Stack Eq_2 dwArg28, Stack Eq_2 dwArg2C, Stack Eq_2 dwArg30, Stack Eq_2 dwArg34, Register out Eq_17 r3Out, Register out Eq_17 r29Out, Register out ptr32 r30Out, Register out ptr32 r31Out)
-Eq_2 fn004032FC(Eq_2 r2, byte * r4, word32 r13, word32 r14, word32 r15, word32 r16, word32 r17, word32 r18, word32 r19, word32 r20, word32 r21, word32 r22, word32 r23, word32 r24, ptr32 r25, ptr32 r26, Eq_17 r27, Eq_17 r28, Eq_17 r29, Eq_17 r30, ptr32 r31, word32 lr, Eq_2 dwArg08, Eq_2 dwArg18, Eq_2 dwArg1C, Eq_2 dwArg20, Eq_2 dwArg24, Eq_2 dwArg28, Eq_2 dwArg2C, Eq_2 dwArg30, Eq_2 dwArg34, union Eq_17 & r3Out, union Eq_17 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
+// 004032FC: Register Eq_n fn004032FC(Register Eq_n r2, Register (ptr32 byte) r4, Register word32 r13, Register word32 r14, Register word32 r15, Register word32 r16, Register word32 r17, Register word32 r18, Register word32 r19, Register word32 r20, Register word32 r21, Register word32 r22, Register word32 r23, Register word32 r24, Register ptr32 r25, Register ptr32 r26, Register Eq_n r27, Register Eq_n r28, Register Eq_n r29, Register Eq_n r30, Register ptr32 r31, Register word32 lr, Stack Eq_n dwArg08, Stack Eq_n dwArg18, Stack Eq_n dwArg1C, Stack Eq_n dwArg20, Stack Eq_n dwArg24, Stack Eq_n dwArg28, Stack Eq_n dwArg2C, Stack Eq_n dwArg30, Stack Eq_n dwArg34, Register out Eq_n r3Out, Register out Eq_n r29Out, Register out ptr32 r30Out, Register out ptr32 r31Out)
+Eq_n fn004032FC(Eq_n r2, byte * r4, word32 r13, word32 r14, word32 r15, word32 r16, word32 r17, word32 r18, word32 r19, word32 r20, word32 r21, word32 r22, word32 r23, word32 r24, ptr32 r25, ptr32 r26, Eq_n r27, Eq_n r28, Eq_n r29, Eq_n r30, ptr32 r31, word32 lr, Eq_n dwArg08, Eq_n dwArg18, Eq_n dwArg1C, Eq_n dwArg20, Eq_n dwArg24, Eq_n dwArg28, Eq_n dwArg2C, Eq_n dwArg30, Eq_n dwArg34, union Eq_n & r3Out, union Eq_n & r29Out, ptr32 & r30Out, ptr32 & r31Out)
 {
 	v13->t0000 = r30;
 	v13->ptr0004 = r31;
@@ -2400,40 +2400,40 @@ Eq_2 fn004032FC(Eq_2 r2, byte * r4, word32 r13, word32 r14, word32 r15, word32 r
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-	Eq_2 stackArg32 = (struct Eq_6095 *) <invalid>;
-	ptr32 r25_74;
-	ptr32 r26_75;
-	Eq_17 r27_76;
-	Eq_17 r28_77;
-	Eq_17 r3_79;
-	Eq_17 r31_81;
-	Eq_17 r29_108;
-	Eq_2 r2_115 = fn004004B4(r2, fp + -0x0028, r4, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, r26, r27, r28, r29, r30, fp + -0x0028, lr, stackArg8, stackArg32, out r3_79, out r25_74, out r26_75, out r27_76, out r28_77, out r29_108, out r30_199, out r31_81);
-	int32 r4_95 = *((word32) r31_81 + 0x04);
-	*((word32) r31_81 + 0x04) = r4_95 + -0x01;
-	Eq_17 r30_110 = r3_79;
-	if (r4_95 > 0x00)
+	Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+	Eq_n stackArg32 = (struct Eq_n *) <invalid>;
+	ptr32 r25_n;
+	ptr32 r26_n;
+	Eq_n r27_n;
+	Eq_n r28_n;
+	Eq_n r3_n;
+	Eq_n r31_n;
+	Eq_n r29_n;
+	Eq_n r2_n = fn004004B4(r2, fp + -0x0028, r4, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, r26, r27, r28, r29, r30, fp + -0x0028, lr, stackArg8, stackArg32, out r3_n, out r25_n, out r26_n, out r27_n, out r28_n, out r29_n, out r30_n, out r31_n);
+	int32 r4_n = *((word32) r31_n + 0x04);
+	*((word32) r31_n + 0x04) = r4_n + -0x01;
+	Eq_n r30_n = r3_n;
+	if (r4_n > 0x00)
 	{
-		(*r31_81)->u0 = 0x00;
-		*r31_81 = (word32) *r31_81 + 0x01;
+		(*r31_n)->u0 = 0x00;
+		*r31_n = (word32) *r31_n + 0x01;
 	}
 	else
 	{
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-		r2_115 = fn00401598(r2_115, 0x00, r31_81, r25_74, r26_75, r27_76, r28_77, r29_108, r3_79, r31_81, lr, stackArg8, out r3_201, out r25_122, out r26_121, out r27_106, out r28_107, out r29_108, out r30_110, out r31_202);
+		Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+		r2_n = fn00401598(r2_n, 0x00, r31_n, r25_n, r26_n, r27_n, r28_n, r29_n, r3_n, r31_n, lr, stackArg8, out r3_n, out r25_n, out r26_n, out r27_n, out r28_n, out r29_n, out r30_n, out r31_n);
 	}
-	r3Out = r30_110;
-	r29Out = r29_108;
+	r3Out = r30_n;
+	r29Out = r29_n;
 	r30Out = dwLoc08;
 	r31Out = dwLoc04;
-	return r2_115;
+	return r2_n;
 }
 
-// 004033C4: Register Eq_2 fn004033C4(Register Eq_2 r2, Register Eq_17 r3, Register (ptr32 byte) r4, Register word32 r13, Register word32 r14, Register word32 r15, Register word32 r16, Register word32 r17, Register word32 r18, Register word32 r19, Register word32 r20, Register word32 r21, Register word32 r22, Register word32 r23, Register word32 r24, Register ptr32 r25, Register ptr32 r26, Register Eq_17 r27, Register Eq_17 r28, Register Eq_17 r29, Register Eq_17 r30, Register (ptr32 Eq_98) r31, Register word32 lr, Stack Eq_2 dwArg08, Stack Eq_2 dwArg18, Stack Eq_2 dwArg1C, Stack Eq_2 dwArg20, Stack Eq_2 dwArg24, Stack Eq_2 dwArg28, Stack Eq_2 dwArg2C, Stack Eq_2 dwArg30, Stack Eq_2 dwArg34, Register out ptr32 r29Out, Register out ptr32 r30Out, Register out ptr32 r31Out)
-Eq_2 fn004033C4(Eq_2 r2, Eq_17 r3, byte * r4, word32 r13, word32 r14, word32 r15, word32 r16, word32 r17, word32 r18, word32 r19, word32 r20, word32 r21, word32 r22, word32 r23, word32 r24, ptr32 r25, ptr32 r26, Eq_17 r27, Eq_17 r28, Eq_17 r29, Eq_17 r30, struct Eq_98 * r31, word32 lr, Eq_2 dwArg08, Eq_2 dwArg18, Eq_2 dwArg1C, Eq_2 dwArg20, Eq_2 dwArg24, Eq_2 dwArg28, Eq_2 dwArg2C, Eq_2 dwArg30, Eq_2 dwArg34, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
+// 004033C4: Register Eq_n fn004033C4(Register Eq_n r2, Register Eq_n r3, Register (ptr32 byte) r4, Register word32 r13, Register word32 r14, Register word32 r15, Register word32 r16, Register word32 r17, Register word32 r18, Register word32 r19, Register word32 r20, Register word32 r21, Register word32 r22, Register word32 r23, Register word32 r24, Register ptr32 r25, Register ptr32 r26, Register Eq_n r27, Register Eq_n r28, Register Eq_n r29, Register Eq_n r30, Register (ptr32 Eq_n) r31, Register word32 lr, Stack Eq_n dwArg08, Stack Eq_n dwArg18, Stack Eq_n dwArg1C, Stack Eq_n dwArg20, Stack Eq_n dwArg24, Stack Eq_n dwArg28, Stack Eq_n dwArg2C, Stack Eq_n dwArg30, Stack Eq_n dwArg34, Register out ptr32 r29Out, Register out ptr32 r30Out, Register out ptr32 r31Out)
+Eq_n fn004033C4(Eq_n r2, Eq_n r3, byte * r4, word32 r13, word32 r14, word32 r15, word32 r16, word32 r17, word32 r18, word32 r19, word32 r20, word32 r21, word32 r22, word32 r23, word32 r24, ptr32 r25, ptr32 r26, Eq_n r27, Eq_n r28, Eq_n r29, Eq_n r30, struct Eq_n * r31, word32 lr, Eq_n dwArg08, Eq_n dwArg18, Eq_n dwArg1C, Eq_n dwArg20, Eq_n dwArg24, Eq_n dwArg28, Eq_n dwArg2C, Eq_n dwArg30, Eq_n dwArg34, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
 {
 	v13->t0000 = r29;
 	v13->t0004 = r30;
@@ -2446,179 +2446,179 @@ Eq_2 fn004033C4(Eq_2 r2, Eq_17 r3, byte * r4, word32 r13, word32 r14, word32 r15
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-	Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-	Eq_2 stackArg32 = (struct Eq_6095 *) <invalid>;
-	Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-	Eq_17 r3_44;
-	Eq_17 r31_45;
-	ptr32 r25_54;
-	ptr32 r26_55;
-	Eq_17 r27_56;
-	Eq_17 r28_57;
-	Eq_17 r29_58;
-	struct Eq_113 * r3_99;
-	Eq_17 r30_100;
-	Eq_17 r31_101;
-	Eq_2 r2_124 = fn00400430(fn004004B4(fn004002F8(r2, r3, r25, r26, r27, r28, r29, r30, r3, lr, stackArg8, out r3_44, out r25_54, out r26_55, out r27_56, out r28_57, out r29_58, out r31_45), r31_45, r4, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25_54, r26_55, r27_56, r28_57, r29_58, r3_44, r31_45, lr, stackArg8, stackArg32, out r3_99, out r25_166, out r26_167, out r27_168, out r28_169, out r29_170, out r30_100, out r31_101), r30_100, r31_101, r3_99, r30_100, stackArg8);
+	Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+	Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+	Eq_n stackArg32 = (struct Eq_n *) <invalid>;
+	Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+	Eq_n r3_n;
+	Eq_n r31_n;
+	ptr32 r25_n;
+	ptr32 r26_n;
+	Eq_n r27_n;
+	Eq_n r28_n;
+	Eq_n r29_n;
+	struct Eq_n * r3_n;
+	Eq_n r30_n;
+	Eq_n r31_n;
+	Eq_n r2_n = fn00400430(fn004004B4(fn004002F8(r2, r3, r25, r26, r27, r28, r29, r30, r3, lr, stackArg8, out r3_n, out r25_n, out r26_n, out r27_n, out r28_n, out r29_n, out r31_n), r31_n, r4, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25_n, r26_n, r27_n, r28_n, r29_n, r3_n, r31_n, lr, stackArg8, stackArg32, out r3_n, out r25_n, out r26_n, out r27_n, out r28_n, out r29_n, out r30_n, out r31_n), r30_n, r31_n, r3_n, r30_n, stackArg8);
 	r29Out = dwLoc10;
 	r30Out = dwLoc0C;
 	r31Out = dwLoc08;
-	return r2_124;
+	return r2_n;
 }
 
-// 00403450: Register Eq_2 fn00403450(Register Eq_2 r2, Register Eq_17 r3, Register (ptr32 Eq_113) r4, Register Eq_17 r5, Register Eq_17 r6, Register ptr32 r25, Register ptr32 r26, Register Eq_17 r27, Register Eq_17 r28, Register Eq_17 r29, Register Eq_17 r30, Register (ptr32 Eq_98) r31, Register word32 lr, Stack Eq_2 dwArg08, Register out ptr32 r25Out, Register out ptr32 r26Out, Register out Eq_2 r27Out, Register out Eq_2 r28Out, Register out Eq_2 r29Out, Register out Eq_2 r31Out)
-Eq_2 fn00403450(Eq_2 r2, Eq_17 r3, struct Eq_113 * r4, Eq_17 r5, Eq_17 r6, ptr32 r25, ptr32 r26, Eq_17 r27, Eq_17 r28, Eq_17 r29, Eq_17 r30, struct Eq_98 * r31, word32 lr, Eq_2 dwArg08, ptr32 & r25Out, ptr32 & r26Out, union Eq_2 & r27Out, union Eq_2 & r28Out, union Eq_2 & r29Out, union Eq_2 & r31Out)
+// 00403450: Register Eq_n fn00403450(Register Eq_n r2, Register Eq_n r3, Register (ptr32 Eq_n) r4, Register Eq_n r5, Register Eq_n r6, Register ptr32 r25, Register ptr32 r26, Register Eq_n r27, Register Eq_n r28, Register Eq_n r29, Register Eq_n r30, Register (ptr32 Eq_n) r31, Register word32 lr, Stack Eq_n dwArg08, Register out ptr32 r25Out, Register out ptr32 r26Out, Register out Eq_n r27Out, Register out Eq_n r28Out, Register out Eq_n r29Out, Register out Eq_n r31Out)
+Eq_n fn00403450(Eq_n r2, Eq_n r3, struct Eq_n * r4, Eq_n r5, Eq_n r6, ptr32 r25, ptr32 r26, Eq_n r27, Eq_n r28, Eq_n r29, Eq_n r30, struct Eq_n * r31, word32 lr, Eq_n dwArg08, ptr32 & r25Out, ptr32 & r26Out, union Eq_n & r27Out, union Eq_n & r28Out, union Eq_n & r29Out, union Eq_n & r31Out)
 {
 	v3->t0000 = r27;
 	v3->t0004 = r28;
 	v3->t0008 = r29;
 	v3->t000C = r30;
 	v3->ptr0010 = r31;
-	Eq_17 r28_108 = r6;
+	Eq_n r28_n = r6;
 	if (r5 != 0x04 && (r6 == 0x00 || (r6 > 0x7FFFFFFF || r5 != 0x00 && r5 != 0x0040)))
 	{
 		r25Out = r25;
 		r26Out = r26;
-		&r27Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-		&r28Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-		&r29Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-		&r31Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
+		&r27Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+		&r28Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+		&r29Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+		&r31Out.u0->dw0000 = (struct Eq_n *) <invalid>;
 		return r2;
 	}
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-	Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-	struct Eq_220 * r29_48;
-	Eq_3988 r30_50;
-	ui32 r30_73;
-	Eq_17 r29_121;
-	Eq_17 r31_112;
-	Eq_2 r2_104 = fn00403A0C(fn004012B0(r2, r3, r4, r5, r3, stackArg8, out r3_295, out r29_48, out r30_50, out r31_112), r31_112, r29_48, r30_50, stackArg8, out r29_121, out r30_73);
-	ui32 r11_84 = *((word32) r31_112 + 0x0C);
-	*((word32) r31_112 + 0x0C) = r11_84 & -0x0000390D;
-	if ((r30_73 & 0x04) != 0x00)
+	Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+	Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+	struct Eq_n * r29_n;
+	Eq_n r30_n;
+	ui32 r30_n;
+	Eq_n r29_n;
+	Eq_n r31_n;
+	Eq_n r2_n = fn00403A0C(fn004012B0(r2, r3, r4, r5, r3, stackArg8, out r3_n, out r29_n, out r30_n, out r31_n), r31_n, r29_n, r30_n, stackArg8, out r29_n, out r30_n);
+	ui32 r11_n = *((word32) r31_n + 0x0C);
+	*((word32) r31_n + 0x0C) = r11_n & -0x0000390D;
+	if ((r30_n & 0x04) != 0x00)
 	{
-		*((word32) r31_112 + 0x0C) = r11_84 & -0x0000390D | 0x04;
-		r29_121 = (word32) r31_112 + 0x0014;
-		r28_108.u0 = 0x01;
+		*((word32) r31_n + 0x0C) = r11_n & -0x0000390D | 0x04;
+		r29_n = (word32) r31_n + 0x0014;
+		r28_n.u0 = 0x01;
 	}
-	else if (r29_121 == 0x00)
+	else if (r29_n == 0x00)
 	{
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-		Eq_17 r3_110;
-		r2_104 = fn00400F9C(r2_104, r6, r25, r26, 0x00, r6, r29_121, r30_73 & 0x04, r31_112, lr, stackArg8, out r3_110, out r25, out r26, out r27_298, out r28_108, out r29_299, out r30_300, out r31_112);
-		r29_121 = r3_110;
-		if (r3_110 == 0x00)
+		Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+		Eq_n r3_n;
+		r2_n = fn00400F9C(r2_n, r6, r25, r26, 0x00, r6, r29_n, r30_n & 0x04, r31_n, lr, stackArg8, out r3_n, out r25, out r26, out r27_n, out r28_n, out r29_n, out r30_n, out r31_n);
+		r29_n = r3_n;
+		if (r3_n == 0x00)
 		{
-			word32 * r4_126 = *((word32) r2_104 + 0x004C);
-			++*r4_126;
+			word32 * r4_n = *((word32) r2_n + 0x004C);
+			++*r4_n;
 l0040355C:
 			r25Out = r25;
 			r26Out = r26;
-			&r27Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-			&r28Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-			&r29Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-			&r31Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-			return r2_104;
+			&r27Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+			&r28Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+			&r29Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+			&r31Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+			return r2_n;
 		}
-		*((word32) r31_112 + 0x0C) |= 0x08;
+		*((word32) r31_n + 0x0C) |= 0x08;
 	}
 	else
-		*((word32) r31_112 + 0x0C) = r11_84 & -0x0000390D | 0x0100;
-	*((word32) r31_112 + 0x08) = r29_121;
-	*((word32) r31_112 + 0x0018) = r28_108;
-	*r31_112 = r29_121;
-	*((word32) r31_112 + 0x04) = 0x00;
+		*((word32) r31_n + 0x0C) = r11_n & -0x0000390D | 0x0100;
+	*((word32) r31_n + 0x08) = r29_n;
+	*((word32) r31_n + 0x0018) = r28_n;
+	*r31_n = r29_n;
+	*((word32) r31_n + 0x04) = 0x00;
 	goto l0040355C;
 }
 
-// 00403574: void fn00403574(Register Eq_2 r2, Register (ptr32 int32) r3, Register (ptr32 Eq_3010) r29, Register (ptr32 Eq_3102) r30, Register (ptr32 (ptr32 code)) r31, Stack Eq_2 dwArg08)
-void fn00403574(Eq_2 r2, int32 * r3, struct Eq_3010 * r29, struct Eq_3102 * r30, <anonymous> ** r31, Eq_2 dwArg08)
+// 00403574: void fn00403574(Register Eq_n r2, Register (ptr32 int32) r3, Register (ptr32 Eq_n) r29, Register (ptr32 Eq_n) r30, Register (ptr32 (ptr32 code)) r31, Stack Eq_n dwArg08)
+void fn00403574(Eq_n r2, int32 * r3, struct Eq_n * r29, struct Eq_n * r30, <anonymous> ** r31, Eq_n dwArg08)
 {
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-	fn004024F0(r2, r3, 0x00, null, r29, r30, r31, stackArg8, out r29_34, out r31_35);
+	Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+	fn004024F0(r2, r3, 0x00, null, r29, r30, r31, stackArg8, out r29_n, out r31_n);
 }
 
-// 004035A0: Register Eq_2 fn004035A0(Register Eq_2 r2, Register (ptr32 int32) r3, Register (ptr32 Eq_3010) r29, Register (ptr32 Eq_3102) r30, Register (ptr32 (ptr32 code)) r31, Stack Eq_2 dwArg08, Register out (ptr32 Eq_4621) r29Out, Register out ptr32 r31Out)
-Eq_2 fn004035A0(Eq_2 r2, int32 * r3, struct Eq_3010 * r29, struct Eq_3102 * r30, <anonymous> ** r31, Eq_2 dwArg08, struct Eq_4621 & r29Out, ptr32 & r31Out)
+// 004035A0: Register Eq_n fn004035A0(Register Eq_n r2, Register (ptr32 int32) r3, Register (ptr32 Eq_n) r29, Register (ptr32 Eq_n) r30, Register (ptr32 (ptr32 code)) r31, Stack Eq_n dwArg08, Register out (ptr32 Eq_n) r29Out, Register out ptr32 r31Out)
+Eq_n fn004035A0(Eq_n r2, int32 * r3, struct Eq_n * r29, struct Eq_n * r30, <anonymous> ** r31, Eq_n dwArg08, struct Eq_n & r29Out, ptr32 & r31Out)
 {
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-	struct Eq_4621 * r29_19;
-	ptr32 r31_22;
-	Eq_2 r2_18 = fn004024F0(r2, r3, 0x01, null, r29, r30, r31, stackArg8, out r29_19, out r31_22);
-	r29Out = r29_19;
-	r31Out = r31_22;
-	return r2_18;
+	Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+	struct Eq_n * r29_n;
+	ptr32 r31_n;
+	Eq_n r2_n = fn004024F0(r2, r3, 0x01, null, r29, r30, r31, stackArg8, out r29_n, out r31_n);
+	r29Out = r29_n;
+	r31Out = r31_n;
+	return r2_n;
 }
 
-// 004035CC: Register Eq_2 fn004035CC(Register Eq_2 r2, Register (ptr32 Eq_220) r29, Register (ptr32 Eq_220) r30, Register Eq_17 r31, Stack Eq_2 dwArg08, Register out ptr32 r29Out, Register out ptr32 r30Out, Register out ptr32 r31Out)
-Eq_2 fn004035CC(Eq_2 r2, struct Eq_220 * r29, struct Eq_220 * r30, Eq_17 r31, Eq_2 dwArg08, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
+// 004035CC: Register Eq_n fn004035CC(Register Eq_n r2, Register (ptr32 Eq_n) r29, Register (ptr32 Eq_n) r30, Register Eq_n r31, Stack Eq_n dwArg08, Register out ptr32 r29Out, Register out ptr32 r30Out, Register out ptr32 r31Out)
+Eq_n fn004035CC(Eq_n r2, struct Eq_n * r29, struct Eq_n * r30, Eq_n r31, Eq_n dwArg08, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
 {
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-	struct Eq_220 * r29_21;
-	struct Eq_220 * r30_23;
-	Eq_17 r31_24;
-	Eq_2 r2_20 = fn00403618(r2, 252, r29, r30, r31, stackArg8, out r29_21, out r30_23, out r31_24);
-	if (**((word32) r2_20 + 232) != null)
+	Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+	struct Eq_n * r29_n;
+	struct Eq_n * r30_n;
+	Eq_n r31_n;
+	Eq_n r2_n = fn00403618(r2, 252, r29, r30, r31, stackArg8, out r29_n, out r30_n, out r31_n);
+	if (**((word32) r2_n + 232) != null)
 	{
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2 stackArg20 = (struct Eq_6095 *) <invalid>;
-		r2_20 = fn00403F10(r2_20, **((word32) r2_20 + 232), stackArg20)->t0014;
+		Eq_n stackArg20 = (struct Eq_n *) <invalid>;
+		r2_n = fn00403F10(r2_n, **((word32) r2_n + 232), stackArg20)->t0014;
 	}
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-	ptr32 r29_54;
-	ptr32 r30_56;
-	ptr32 r31_57;
-	Eq_2 r2_53 = fn00403618(r2_20, 0x00FF, r29_21, r30_23, r31_24, stackArg8, out r29_54, out r30_56, out r31_57);
-	r29Out = r29_54;
-	r30Out = r30_56;
-	r31Out = r31_57;
-	return r2_53;
+	Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+	ptr32 r29_n;
+	ptr32 r30_n;
+	ptr32 r31_n;
+	Eq_n r2_n = fn00403618(r2_n, 0x00FF, r29_n, r30_n, r31_n, stackArg8, out r29_n, out r30_n, out r31_n);
+	r29Out = r29_n;
+	r30Out = r30_n;
+	r31Out = r31_n;
+	return r2_n;
 }
 
-// 00403618: Register Eq_2 fn00403618(Register Eq_2 r2, Register Eq_17 r3, Register (ptr32 Eq_220) r29, Register (ptr32 Eq_220) r30, Register Eq_17 r31, Stack Eq_2 dwArg08, Register out (ptr32 Eq_220) r29Out, Register out (ptr32 Eq_220) r30Out, Register out Eq_17 r31Out)
-Eq_2 fn00403618(Eq_2 r2, Eq_17 r3, struct Eq_220 * r29, struct Eq_220 * r30, Eq_17 r31, Eq_2 dwArg08, struct Eq_220 & r29Out, struct Eq_220 & r30Out, union Eq_17 & r31Out)
+// 00403618: Register Eq_n fn00403618(Register Eq_n r2, Register Eq_n r3, Register (ptr32 Eq_n) r29, Register (ptr32 Eq_n) r30, Register Eq_n r31, Stack Eq_n dwArg08, Register out (ptr32 Eq_n) r29Out, Register out (ptr32 Eq_n) r30Out, Register out Eq_n r31Out)
+Eq_n fn00403618(Eq_n r2, Eq_n r3, struct Eq_n * r29, struct Eq_n * r30, Eq_n r31, Eq_n dwArg08, struct Eq_n & r29Out, struct Eq_n & r30Out, union Eq_n & r31Out)
 {
-	struct Eq_5023 * r8_7 = *((word32) r2 + 0x00EC);
-	int32 r10_13 = 0x00;
-	struct Eq_5023 * r11_14 = r8_7;
-	while (r11_14->a0000[0x00] != r3)
+	struct Eq_n * r8_n = *((word32) r2 + 0x00EC);
+	int32 r10_n = 0x00;
+	struct Eq_n * r11_n = r8_n;
+	while (r11_n->a0000[0x00] != r3)
 	{
-		r11_14 = (struct Eq_5023 *) (r11_14->a0004 + 0x01);
-		++r10_13;
-		if (r11_14 >= r8_7 + 88)
+		r11_n = (struct Eq_n *) (r11_n->a0004 + 0x01);
+		++r10_n;
+		if (r11_n >= r8_n + 88)
 			break;
 	}
-	struct Eq_5030 * r11_26 = r10_13 << 0x03;
-	if (Mem10[r8_7 + r11_26:word32] == r3)
+	struct Eq_n * r11_n = r10_n << 0x03;
+	if (Mem10[r8_n + r11_n:word32] == r3)
 	{
-		word32 r4_34 = Mem10[r8_7 + 0x04 + r11_26:word32];
-		struct Eq_220 * r5_40 = null;
-		if ((word32) (byte) (word32) *r4_34 != 0x00)
+		word32 r4_n = Mem10[r8_n + 0x04 + r11_n:word32];
+		struct Eq_n * r5_n = null;
+		if ((word32) (byte) (word32) *r4_n != 0x00)
 		{
 			do
-				r5_40 = (struct Eq_220 *) ((char *) &r5_40->ptr0000 + 0x01);
-			while ((word32) Mem38[r4_34 + r5_40:byte] != 0x00);
+				r5_n = (struct Eq_n *) ((char *) &r5_n->ptr0000 + 0x01);
+			while ((word32) Mem38[r4_n + r5_n:byte] != 0x00);
 		}
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-		r2 = fn00402248(r2, (struct Eq_220 *) 0x02, r4_34, r5_40, r29, r30, r31, stackArg8, out r3_146, out r29, out r30, out r31);
+		Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+		r2 = fn00402248(r2, (struct Eq_n *) 0x02, r4_n, r5_n, r29, r30, r31, stackArg8, out r3_n, out r29, out r30, out r31);
 	}
 	r29Out = r29;
 	r30Out = r30;
@@ -2626,107 +2626,107 @@ Eq_2 fn00403618(Eq_2 r2, Eq_17 r3, struct Eq_220 * r29, struct Eq_220 * r30, Eq_
 	return r2;
 }
 
-// 004036B0: Register (ptr32 Eq_973) fn004036B0(Register Eq_2 r2, Register (ptr32 Eq_973) r3, Register (ptr32 (ptr32 Eq_220)) r4)
-struct Eq_973 * fn004036B0(Eq_2 r2, struct Eq_973 * r3, struct Eq_220 ** r4)
+// 004036B0: Register (ptr32 Eq_n) fn004036B0(Register Eq_n r2, Register (ptr32 Eq_n) r3, Register (ptr32 (ptr32 Eq_n)) r4)
+struct Eq_n * fn004036B0(Eq_n r2, struct Eq_n * r3, struct Eq_n ** r4)
 {
-	struct Eq_1041 * r10_5 = *((word32) r2 + 0x0068);
-	struct Eq_220 * r11_6 = r10_5->ptr0000;
-	if (r11_6 == (char *) (&r10_5->ptr0008) + 0x04)
-		return (struct Eq_973 *) -0x03;
-	if ((r11_6->ptr0004 & -0x04) > r3)
-		return (struct Eq_973 *) -0x01;
-	if ((r10_5->dw0010 & -0x04) <= r3)
-		return (struct Eq_973 *) -0x02;
-	struct Eq_220 * r10_17 = r11_6;
+	struct Eq_n * r10_n = *((word32) r2 + 0x0068);
+	struct Eq_n * r11_n = r10_n->ptr0000;
+	if (r11_n == (char *) (&r10_n->ptr0008) + 0x04)
+		return (struct Eq_n *) -0x03;
+	if ((r11_n->ptr0004 & -0x04) > r3)
+		return (struct Eq_n *) -0x01;
+	if ((r10_n->dw0010 & -0x04) <= r3)
+		return (struct Eq_n *) -0x02;
+	struct Eq_n * r10_n = r11_n;
 	while (true)
 	{
-		struct Eq_220 * r11_20 = r10_17->ptr0000;
-		if ((r11_20->ptr0004 & -0x04) > r3)
+		struct Eq_n * r11_n = r10_n->ptr0000;
+		if ((r11_n->ptr0004 & -0x04) > r3)
 			break;
-		r10_17 = r11_20;
+		r10_n = r11_n;
 	}
-	*r4 = (struct Eq_220 **) r10_17;
-	struct Eq_973 * r11_29 = null;
-	if ((r10_17->ptr0004 & -0x04) != r3)
-		r11_29 = (struct Eq_973 *) 0x01;
-	return r11_29;
+	*r4 = (struct Eq_n **) r10_n;
+	struct Eq_n * r11_n = null;
+	if ((r10_n->ptr0004 & -0x04) != r3)
+		r11_n = (struct Eq_n *) 0x01;
+	return r11_n;
 }
 
-// 00403744: Register Eq_2 fn00403744(Register Eq_2 r2, Register Eq_17 r3, Register (ptr32 Eq_113) r29, Register Eq_2987 r30, Register Eq_17 r31, Stack Eq_2 dwArg08, Register out Eq_4571 r3Out, Register out (ptr32 Eq_113) r29Out, Register out Eq_2987 r30Out, Register out Eq_17 r31Out)
-Eq_2 fn00403744(Eq_2 r2, Eq_17 r3, struct Eq_113 * r29, Eq_2987 r30, Eq_17 r31, Eq_2 dwArg08, union Eq_4571 & r3Out, struct Eq_113 & r29Out, union Eq_2987 & r30Out, union Eq_17 & r31Out)
+// 00403744: Register Eq_n fn00403744(Register Eq_n r2, Register Eq_n r3, Register (ptr32 Eq_n) r29, Register Eq_n r30, Register Eq_n r31, Stack Eq_n dwArg08, Register out Eq_n r3Out, Register out (ptr32 Eq_n) r29Out, Register out Eq_n r30Out, Register out Eq_n r31Out)
+Eq_n fn00403744(Eq_n r2, Eq_n r3, struct Eq_n * r29, Eq_n r30, Eq_n r31, Eq_n dwArg08, union Eq_n & r3Out, struct Eq_n & r29Out, union Eq_n & r30Out, union Eq_n & r31Out)
 {
-	int32 r4_9 = (int32) (int8) (word32) *r3;
+	int32 r4_n = (int32) (int8) (word32) *r3;
 	v9->ptr0000 = r29;
 	v9->t0004 = r30;
 	v9->t0008 = r31;
-	if (r4_9 != 0x00)
+	if (r4_n != 0x00)
 	{
-		int32 r11_25 = 0x00;
+		int32 r11_n = 0x00;
 		if ((word32) *r3 != 0x00)
 		{
 			do
-				++r11_25;
-			while ((word32) *((word32) r3 + r11_25) != 0x00);
+				++r11_n;
+			while ((word32) *((word32) r3 + r11_n) != 0x00);
 		}
-		if (r11_25 < 0x0100)
+		if (r11_n < 0x0100)
 		{
-			int32 r11_50 = 0x00;
+			int32 r11_n = 0x00;
 			do
 			{
-				word32 r4_54 = (word32) *((word32) r3 + r11_50);
-				fp->aFFFFFEA0[r11_50] = (byte) r4_54;
-				++r11_50;
-			} while (r4_54 != 0x00);
+				word32 r4_n = (word32) *((word32) r3 + r11_n);
+				fp->aFFFFFEA0[r11_n] = (byte) r4_n;
+				++r11_n;
+			} while (r4_n != 0x00);
 			fn004032AC(fp->aFFFFFEA0);
-			int32 r11_72 = 0x00;
-			int32 ctr_74;
-			for (ctr_74 = 0x05; ctr_74 != 0x00; --ctr_74)
+			int32 r11_n = 0x00;
+			int32 ctr_n;
+			for (ctr_n = 0x05; ctr_n != 0x00; --ctr_n)
 			{
-				(&fp->aFFFFFFA0->dw0000)[r11_72] = (struct Eq_5178) 0x00;
-				int32 r11_80 = r11_72 + 0x04;
-				(&fp->aFFFFFFA0->dw0000)[r11_80] = (struct Eq_5178) 0x00;
-				(&fp->aFFFFFFA0->dw0000)[r11_80 + 0x04] = (struct Eq_5178) 0x00;
-				(&fp->aFFFFFFA0->dw0000)[r11_80 + 0x08] = (struct Eq_5178) 0x00;
-				r11_72 = r11_80 + 0x0C;
+				(&fp->aFFFFFFA0->dw0000)[r11_n] = (struct Eq_n) 0x00;
+				int32 r11_n = r11_n + 0x04;
+				(&fp->aFFFFFFA0->dw0000)[r11_n] = (struct Eq_n) 0x00;
+				(&fp->aFFFFFFA0->dw0000)[r11_n + 0x04] = (struct Eq_n) 0x00;
+				(&fp->aFFFFFFA0->dw0000)[r11_n + 0x08] = (struct Eq_n) 0x00;
+				r11_n = r11_n + 0x0C;
 			}
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			Eq_2 stackArg20 = (struct Eq_6095 *) <invalid>;
-			Eq_2 r2_126 = fn00403F54(r2, stackArg20)->t0014;
-			if (fp == (struct Eq_5178 *) ~0x5F)
+			Eq_n stackArg20 = (struct Eq_n *) <invalid>;
+			Eq_n r2_n = fn00403F54(r2, stackArg20)->t0014;
+			if (fp == (struct Eq_n *) ~0x5F)
 			{
-				int32 r11_101 = 0x00;
-				int32 ctr_103;
-				for (ctr_103 = 0x05; ctr_103 != 0x00; --ctr_103)
+				int32 r11_n = 0x00;
+				int32 ctr_n;
+				for (ctr_n = 0x05; ctr_n != 0x00; --ctr_n)
 				{
-					(&fp->aFFFFFFA0->dw0000)[r11_101] = (struct Eq_5178) 0x00;
-					int32 r11_108 = r11_101 + 0x04;
-					(&fp->aFFFFFFA0->dw0000)[r11_108] = (struct Eq_5178) 0x00;
-					(&fp->aFFFFFFA0->dw0000)[r11_108 + 0x04] = (struct Eq_5178) 0x00;
-					(&fp->aFFFFFFA0->dw0000)[r11_108 + 0x08] = (struct Eq_5178) 0x00;
-					r11_101 = r11_108 + 0x0C;
+					(&fp->aFFFFFFA0->dw0000)[r11_n] = (struct Eq_n) 0x00;
+					int32 r11_n = r11_n + 0x04;
+					(&fp->aFFFFFFA0->dw0000)[r11_n] = (struct Eq_n) 0x00;
+					(&fp->aFFFFFFA0->dw0000)[r11_n + 0x04] = (struct Eq_n) 0x00;
+					(&fp->aFFFFFFA0->dw0000)[r11_n + 0x08] = (struct Eq_n) 0x00;
+					r11_n = r11_n + 0x0C;
 				}
 				// Failed to bind call argument.
 				// Please report this issue at https://github.com/uxmal/reko
-				Eq_2 stackArg20 = (struct Eq_6095 *) <invalid>;
-				r2_126 = fn00403F6C(r2_126, stackArg20)->t0014;
+				Eq_n stackArg20 = (struct Eq_n *) <invalid>;
+				r2_n = fn00403F6C(r2_n, stackArg20)->t0014;
 			}
-			if (fp == (struct Eq_5178 *) ~0x5F)
+			if (fp == (struct Eq_n *) ~0x5F)
 			{
 				r3Out.u0 = 0x00;
 				r29Out = dwLoc10;
 				r30Out = dwLoc0C;
 				r31Out = dwLoc08;
-				return r2_126;
+				return r2_n;
 			}
 			else
 			{
-				fn00403104(r2_126, &fp->aFFFFFFA0->dw0000);
+				fn00403104(r2_n, &fp->aFFFFFFA0->dw0000);
 				r3Out.u0 = -0x01;
 				r29Out = dwLoc10;
 				r30Out = dwLoc0C;
 				r31Out = dwLoc08;
-				return r2_126;
+				return r2_n;
 			}
 		}
 	}
@@ -2738,159 +2738,159 @@ Eq_2 fn00403744(Eq_2 r2, Eq_17 r3, struct Eq_113 * r29, Eq_2987 r30, Eq_17 r31, 
 	return r2;
 }
 
-// 00403898: Register Eq_2 fn00403898(Register Eq_2 r2, Register (ptr32 Eq_220) r3, Register ptr32 r28, Register word32 r29, Register word32 r30, Register Eq_17 r31, Stack Eq_2 dwArg08, Register out Eq_4510 r3Out, Register out Eq_2 r28Out, Register out Eq_2 r29Out, Register out Eq_2 r30Out, Register out Eq_2 r31Out)
-Eq_2 fn00403898(Eq_2 r2, struct Eq_220 * r3, ptr32 r28, word32 r29, word32 r30, Eq_17 r31, Eq_2 dwArg08, union Eq_4510 & r3Out, union Eq_2 & r28Out, union Eq_2 & r29Out, union Eq_2 & r30Out, union Eq_2 & r31Out)
+// 00403898: Register Eq_n fn00403898(Register Eq_n r2, Register (ptr32 Eq_n) r3, Register ptr32 r28, Register word32 r29, Register word32 r30, Register Eq_n r31, Stack Eq_n dwArg08, Register out Eq_n r3Out, Register out Eq_n r28Out, Register out Eq_n r29Out, Register out Eq_n r30Out, Register out Eq_n r31Out)
+Eq_n fn00403898(Eq_n r2, struct Eq_n * r3, ptr32 r28, word32 r29, word32 r30, Eq_n r31, Eq_n dwArg08, union Eq_n & r3Out, union Eq_n & r28Out, union Eq_n & r29Out, union Eq_n & r30Out, union Eq_n & r31Out)
 {
-	struct Eq_220 * r4_8 = **((word32) r2 + 116);
+	struct Eq_n * r4_n = **((word32) r2 + 116);
 	v5->ptr0000 = r28;
 	v5->dw0004 = r29;
 	v5->dw0008 = r30;
 	v5->t000C = r31;
-	struct Eq_2817 * r3_131 = null;
-	if (r4_8 > r3)
+	struct Eq_n * r3_n = null;
+	if (r4_n > r3)
 	{
-		Eq_1461 (* r28_30)[] = *((word32) r2 + 0x0078);
-		word32 r28_32 = r3 + r28_30;
-		word32 r11_34 = (int32) (int8) (word32) Mem29[r28_30 + r3:byte];
-		if ((r11_34 & 0x01) != 0x00)
+		Eq_n (* r28_n)[] = *((word32) r2 + 0x0078);
+		word32 r28_n = r3 + r28_n;
+		word32 r11_n = (int32) (int8) (word32) Mem29[r28_n + r3:byte];
+		if ((r11_n & 0x01) != 0x00)
 		{
-			if ((r11_34 & 0x40) == 0x00)
+			if ((r11_n & 0x40) == 0x00)
 			{
-				struct Eq_2882 * r10_60[] = *((word32) r2 + 0x009C);
-				if (r10_60[r3] == (struct Eq_2882 *) -0x01)
-					r10_60[r3] = null;
+				struct Eq_n * r10_n[] = *((word32) r2 + 0x009C);
+				if (r10_n[r3] == (struct Eq_n *) -0x01)
+					r10_n[r3] = null;
 				else
 				{
 					// Failed to bind call argument.
 					// Please report this issue at https://github.com/uxmal/reko
-					Eq_2 stackArg20 = (struct Eq_6095 *) <invalid>;
+					Eq_n stackArg20 = (struct Eq_n *) <invalid>;
 					fn00403F24(r2, stackArg20);
-					if (fp != (struct Eq_5362 *) ~0x5F)
+					if (fp != (struct Eq_n *) ~0x5F)
 					{
 						fn00403104(dwLoc84, &fp->aFFFFFFA0->dw0000);
 						r3Out.u0 = -0x01;
-						&r28Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-						&r29Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-						&r30Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-						&r31Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
+						&r28Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+						&r29Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+						&r30Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+						&r31Out.u0->dw0000 = (struct Eq_n *) <invalid>;
 						return dwLoc84;
 					}
-					int32 r11_78 = 0x00;
-					int32 ctr_80;
-					for (ctr_80 = 0x05; ctr_80 != 0x00; --ctr_80)
+					int32 r11_n = 0x00;
+					int32 ctr_n;
+					for (ctr_n = 0x05; ctr_n != 0x00; --ctr_n)
 					{
-						(&fp->aFFFFFFA0->dw0000)[r11_78] = (struct Eq_5362) 0x00;
-						int32 r11_85 = r11_78 + 0x04;
-						(&fp->aFFFFFFA0->dw0000)[r11_85] = (struct Eq_5362) 0x00;
-						(&fp->aFFFFFFA0->dw0000)[r11_85 + 0x04] = (struct Eq_5362) 0x00;
-						(&fp->aFFFFFFA0->dw0000)[r11_85 + 0x08] = (struct Eq_5362) 0x00;
-						r11_78 = r11_85 + 0x0C;
+						(&fp->aFFFFFFA0->dw0000)[r11_n] = (struct Eq_n) 0x00;
+						int32 r11_n = r11_n + 0x04;
+						(&fp->aFFFFFFA0->dw0000)[r11_n] = (struct Eq_n) 0x00;
+						(&fp->aFFFFFFA0->dw0000)[r11_n + 0x04] = (struct Eq_n) 0x00;
+						(&fp->aFFFFFFA0->dw0000)[r11_n + 0x08] = (struct Eq_n) 0x00;
+						r11_n = r11_n + 0x0C;
 					}
 					// Failed to bind call argument.
 					// Please report this issue at https://github.com/uxmal/reko
-					Eq_2 stackArg20 = (struct Eq_6095 *) <invalid>;
-					r3_131 = (struct Eq_2817 *) &fp->aFFFFFFA0->dw0000;
+					Eq_n stackArg20 = (struct Eq_n *) <invalid>;
+					r3_n = (struct Eq_n *) &fp->aFFFFFFA0->dw0000;
 					r2 = fn00403F3C(dwLoc84, stackArg20)->t0014;
 				}
 			}
-			*r28_32 = 0x00;
-			if (r3_131 == null)
+			*r28_n = 0x00;
+			if (r3_n == null)
 			{
 				r3Out.u0 = 0x00;
-				&r28Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-				&r29Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-				&r30Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-				&r31Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
+				&r28Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+				&r29Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+				&r30Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+				&r31Out.u0->dw0000 = (struct Eq_n *) <invalid>;
 				return r2;
 			}
 			else
 			{
-				fn00403104(r2, r3_131);
+				fn00403104(r2, r3_n);
 				r3Out.u0 = -0x01;
-				&r28Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-				&r29Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-				&r30Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-				&r31Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
+				&r28Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+				&r29Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+				&r30Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+				&r31Out.u0->dw0000 = (struct Eq_n *) <invalid>;
 				return r2;
 			}
 		}
 	}
-	int32 * r5_40 = *((word32) r2 + 0x00A4);
+	int32 * r5_n = *((word32) r2 + 0x00A4);
 	**((word32) r2 + 0x007C) = 0x09;
-	*r5_40 = 0x00;
+	*r5_n = 0x00;
 	r3Out.u0 = -0x01;
-	&r28Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-	&r29Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-	&r30Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-	&r31Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
+	&r28Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+	&r29Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+	&r30Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+	&r31Out.u0->dw0000 = (struct Eq_n *) <invalid>;
 	return r2;
 }
 
-// 00403A0C: Register Eq_2 fn00403A0C(Register Eq_2 r2, Register Eq_17 r3, Register (ptr32 Eq_220) r29, Register Eq_3988 r30, Stack Eq_2 dwArg08, Register out (ptr32 Eq_220) r29Out, Register out Eq_3988 r30Out)
-Eq_2 fn00403A0C(Eq_2 r2, Eq_17 r3, struct Eq_220 * r29, Eq_3988 r30, Eq_2 dwArg08, struct Eq_220 & r29Out, union Eq_3988 & r30Out)
+// 00403A0C: Register Eq_n fn00403A0C(Register Eq_n r2, Register Eq_n r3, Register (ptr32 Eq_n) r29, Register Eq_n r30, Stack Eq_n dwArg08, Register out (ptr32 Eq_n) r29Out, Register out Eq_n r30Out)
+Eq_n fn00403A0C(Eq_n r2, Eq_n r3, struct Eq_n * r29, Eq_n r30, Eq_n dwArg08, struct Eq_n & r29Out, union Eq_n & r30Out)
 {
-	ui32 r11_9 = *((word32) r3 + 0x0C);
-	if ((r11_9 & 131) != 0x00 && (r11_9 & 0x08) != 0x00)
+	ui32 r11_n = *((word32) r3 + 0x0C);
+	if ((r11_n & 131) != 0x00 && (r11_n & 0x08) != 0x00)
 	{
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-		struct Eq_5438 * r31_23;
-		r2 = fn00402BA0(r2, *((word32) r3 + 0x08), r29, r30, r3, stackArg8, out r29, out r30, out r31_23);
-		ui32 r4_39 = r31_23->dw000C;
-		r31_23->dw0000 = 0x00;
-		r31_23->dw0008 = 0x00;
-		r31_23->dw0004 = 0x00;
-		r31_23->dw000C = r4_39 & -0x09;
+		Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+		struct Eq_n * r31_n;
+		r2 = fn00402BA0(r2, *((word32) r3 + 0x08), r29, r30, r3, stackArg8, out r29, out r30, out r31_n);
+		ui32 r4_n = r31_n->dw000C;
+		r31_n->dw0000 = 0x00;
+		r31_n->dw0008 = 0x00;
+		r31_n->dw0004 = 0x00;
+		r31_n->dw000C = r4_n & -0x09;
 	}
 	r29Out = r29;
 	r30Out = r30;
 	return r2;
 }
 
-// 00403B08: Register Eq_2 fn00403B08(Register Eq_2 r2, Register (ptr32 Eq_3102) r3, Register ptr32 r29, Register word32 r30, Register word32 r31, Register word32 lr, Stack Eq_2 dwArg08, Register out ptr32 r29Out, Register out Eq_2 r30Out, Register out Eq_2 r31Out)
-Eq_2 fn00403B08(Eq_2 r2, struct Eq_3102 * r3, ptr32 r29, word32 r30, word32 r31, word32 lr, Eq_2 dwArg08, ptr32 & r29Out, union Eq_2 & r30Out, union Eq_2 & r31Out)
+// 00403B08: Register Eq_n fn00403B08(Register Eq_n r2, Register (ptr32 Eq_n) r3, Register ptr32 r29, Register word32 r30, Register word32 r31, Register word32 lr, Stack Eq_n dwArg08, Register out ptr32 r29Out, Register out Eq_n r30Out, Register out Eq_n r31Out)
+Eq_n fn00403B08(Eq_n r2, struct Eq_n * r3, ptr32 r29, word32 r30, word32 r31, word32 lr, Eq_n dwArg08, ptr32 & r29Out, union Eq_n & r30Out, union Eq_n & r31Out)
 {
 	v3->ptr0000 = r29;
 	v3->dw0004 = r30;
 	v3->dw0008 = r31;
-	if (r3 >= (struct Eq_3102 *) 0x17)
+	if (r3 >= (struct Eq_n *) 0x17)
 	{
 		r29Out = r29;
-		&r30Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-		&r31Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
+		&r30Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+		&r31Out.u0->dw0000 = (struct Eq_n *) <invalid>;
 		return r2;
 	}
 	else
 	{
 		fn00403B84((char *) r3 - 0x02 << 0x02, lr);
-		struct Eq_3010 * r3_37 = fn00403C20(r2, r3);
-		struct Eq_3010 * r29_41 = r3_37;
-		<anonymous> ** r31_42 = r3_37->ptr0008;
-		if (r31_42 != (<anonymous> **) 0x01)
+		struct Eq_n * r3_n = fn00403C20(r2, r3);
+		struct Eq_n * r29_n = r3_n;
+		<anonymous> ** r31_n = r3_n->ptr0008;
+		if (r31_n != (<anonymous> **) 0x01)
 		{
-			if (r31_42 == null)
+			if (r31_n == null)
 			{
 				// Failed to bind call argument.
 				// Please report this issue at https://github.com/uxmal/reko
-				Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-				r2 = fn004035A0(r2, (int32 *) 0x03, r3_37, r3, r31_42, stackArg8, out r29_41, out r31_42);
+				Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+				r2 = fn004035A0(r2, (int32 *) 0x03, r3_n, r3, r31_n, stackArg8, out r29_n, out r31_n);
 			}
-			r29_41->ptr0008 = null;
+			r29_n->ptr0008 = null;
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			Eq_2 stackArg20 = (struct Eq_6095 *) <invalid>;
-			fn00403F10(r2, r31_42, stackArg20);
+			Eq_n stackArg20 = (struct Eq_n *) <invalid>;
+			fn00403F10(r2, r31_n, stackArg20);
 			r29Out = dwLoc10;
-			&r30Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-			&r31Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
+			&r30Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+			&r31Out.u0->dw0000 = (struct Eq_n *) <invalid>;
 			return dwLoc34;
 		}
 		else
 		{
 			r29Out = dwLoc10;
-			&r30Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
-			&r31Out.u0->dw0000 = (struct Eq_6095 *) <invalid>;
+			&r30Out.u0->dw0000 = (struct Eq_n *) <invalid>;
+			&r31Out.u0->dw0000 = (struct Eq_n *) <invalid>;
 			return r2;
 		}
 	}
@@ -2901,22 +2901,22 @@ void fn00403B84(ui32 r11, word32 lr)
 {
 }
 
-// 00403C20: Register (ptr32 Eq_3102) fn00403C20(Register Eq_2 r2, Register (ptr32 Eq_3102) r3)
-struct Eq_3102 * fn00403C20(Eq_2 r2, struct Eq_3102 * r3)
+// 00403C20: Register (ptr32 Eq_n) fn00403C20(Register Eq_n r2, Register (ptr32 Eq_n) r3)
+struct Eq_n * fn00403C20(Eq_n r2, struct Eq_n * r3)
 {
-	struct Eq_3102 * r10_6 = *((word32) r2 + 244);
-	struct Eq_3102 * r11_11 = r10_6;
-	struct Eq_3102 * r10_10 = r10_6 + *(*((word32) r2 + 0x00F0));
-	while (r11_11->dw0004 != r3)
+	struct Eq_n * r10_n = *((word32) r2 + 244);
+	struct Eq_n * r11_n = r10_n;
+	struct Eq_n * r10_n = r10_n + *(*((word32) r2 + 0x00F0));
+	while (r11_n->dw0004 != r3)
 	{
-		++r11_11;
-		if (r10_10 <= r11_11)
+		++r11_n;
+		if (r10_n <= r11_n)
 			break;
 	}
-	struct Eq_3102 * r10_22 = r11_11;
-	if (r11_11->dw0004 != r3)
-		r10_22 = null;
-	return r10_22;
+	struct Eq_n * r10_n = r11_n;
+	if (r11_n->dw0004 != r3)
+		r10_n = null;
+	return r10_n;
 }
 
 // 00403C6C: void Win32CrtStartup()
@@ -2925,20 +2925,20 @@ void Win32CrtStartup()
 	**((word32) r2 + 0x0154) = fn00403DD8();
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
+	Eq_n stackArg8 = (struct Eq_n *) <invalid>;
 	fn00403CA0(r2, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, r26, r27, r28, r29, r30, r31, lr, stackArg8);
 }
 
-// 00403CA0: void fn00403CA0(Register Eq_2 r2, Register word32 r13, Register word32 r14, Register word32 r15, Register word32 r16, Register word32 r17, Register word32 r18, Register word32 r19, Register word32 r20, Register word32 r21, Register word32 r22, Register word32 r23, Register word32 r24, Register ptr32 r25, Register ptr32 r26, Register Eq_17 r27, Register Eq_17 r28, Register word32 r29, Register word32 r30, Register word32 r31, Register word32 lr, Stack Eq_2 dwArg08)
-void fn00403CA0(Eq_2 r2, word32 r13, word32 r14, word32 r15, word32 r16, word32 r17, word32 r18, word32 r19, word32 r20, word32 r21, word32 r22, word32 r23, word32 r24, ptr32 r25, ptr32 r26, Eq_17 r27, Eq_17 r28, word32 r29, word32 r30, word32 r31, word32 lr, Eq_2 dwArg08)
+// 00403CA0: void fn00403CA0(Register Eq_n r2, Register word32 r13, Register word32 r14, Register word32 r15, Register word32 r16, Register word32 r17, Register word32 r18, Register word32 r19, Register word32 r20, Register word32 r21, Register word32 r22, Register word32 r23, Register word32 r24, Register ptr32 r25, Register ptr32 r26, Register Eq_n r27, Register Eq_n r28, Register word32 r29, Register word32 r30, Register word32 r31, Register word32 lr, Stack Eq_n dwArg08)
+void fn00403CA0(Eq_n r2, word32 r13, word32 r14, word32 r15, word32 r16, word32 r17, word32 r18, word32 r19, word32 r20, word32 r21, word32 r22, word32 r23, word32 r24, ptr32 r25, ptr32 r26, Eq_n r27, Eq_n r28, word32 r29, word32 r30, word32 r31, word32 lr, Eq_n dwArg08)
 {
-	struct Eq_3180 * r4_8 = **((word32) r2 + 212);
+	struct Eq_n * r4_n = **((word32) r2 + 212);
 	v5->dw0000 = r29;
 	v5->dw0004 = r30;
 	v5->dw0008 = r31;
-	struct Eq_3010 * r29_22 = *((word32) r2 + 344);
-	r29_22->dw0000 = 0x00;
-	if (r4_8 == null)
+	struct Eq_n * r29_n = *((word32) r2 + 344);
+	r29_n->dw0000 = 0x00;
+	if (r4_n == null)
 	{
 		**((word32) r2 + 0x015C) = 0x01;
 		r13 = *(word32 *) 0x092C;
@@ -2955,19 +2955,19 @@ void fn00403CA0(Eq_2 r2, word32 r13, word32 r14, word32 r15, word32 r16, word32 
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	ptr32 * r31_62 = *((word32) r2 + 0x0160);
-	Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-	Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-	Eq_2 stackArg24 = (struct Eq_6095 *) <invalid>;
-	Eq_2 stackArg28 = (struct Eq_6095 *) <invalid>;
-	Eq_2 stackArg8 = (struct Eq_6095 *) <invalid>;
-	Eq_17 r29_68;
-	Eq_17 r30_70;
-	struct Eq_3010 * r29_131;
-	int32 * r3_132;
-	struct Eq_3102 * r30_133;
-	<anonymous> ** r31_134;
-	fn00403574(fn00400220(fn00402404(r2, r29_22, *((word32) r2 + 0x015C), r31_62, stackArg8, out r29_68, out r30_70), r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, r26, r27, r28, r29_68, r30_70, r31_62, lr, stackArg8, stackArg24, stackArg28, out r3_132, out r29_131, out r30_133, out r31_134), r3_132, r29_131, r30_133, r31_134, stackArg8);
+	ptr32 * r31_n = *((word32) r2 + 0x0160);
+	Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+	Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+	Eq_n stackArg24 = (struct Eq_n *) <invalid>;
+	Eq_n stackArg28 = (struct Eq_n *) <invalid>;
+	Eq_n stackArg8 = (struct Eq_n *) <invalid>;
+	Eq_n r29_n;
+	Eq_n r30_n;
+	struct Eq_n * r29_n;
+	int32 * r3_n;
+	struct Eq_n * r30_n;
+	<anonymous> ** r31_n;
+	fn00403574(fn00400220(fn00402404(r2, r29_n, *((word32) r2 + 0x015C), r31_n, stackArg8, out r29_n, out r30_n), r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, r26, r27, r28, r29_n, r30_n, r31_n, lr, stackArg8, stackArg24, stackArg28, out r3_n, out r29_n, out r30_n, out r31_n), r3_n, r29_n, r30_n, r31_n, stackArg8);
 }
 
 // 00403D7C: void fn00403D7C(Register (ptr32 byte) r3)
@@ -2975,25 +2975,25 @@ void fn00403D7C(byte * r3)
 {
 	if (r3 != null)
 	{
-		word32 r8_6 = (word32) *r3;
-		if (r8_6 != 0x00)
+		word32 r8_n = (word32) *r3;
+		if (r8_n != 0x00)
 		{
-			word32 r11_14 = r8_6;
-			byte * r10_11 = r3;
-			if (r8_6 != 0x00)
+			word32 r11_n = r8_n;
+			byte * r10_n = r3;
+			if (r8_n != 0x00)
 			{
-				byte * r10_12 = r3 + -0x01 + 0x01;
-				byte * r9_13 = r3 + 0x01;
+				byte * r10_n = r3 + -0x01 + 0x01;
+				byte * r9_n = r3 + 0x01;
 				do
 				{
-					*r10_12 = (byte) (word32) *r9_13;
-					r11_14 += -0x01;
-					++r9_13;
-					++r10_12;
-				} while (r11_14 != 0x00);
-				r10_11 = r10_12 + 0x01;
+					*r10_n = (byte) (word32) *r9_n;
+					r11_n += -0x01;
+					++r9_n;
+					++r10_n;
+				} while (r11_n != 0x00);
+				r10_n = r10_n + 0x01;
 			}
-			*r10_11 = 0x00;
+			*r10_n = 0x00;
 		}
 	}
 }
@@ -3004,236 +3004,236 @@ ptr32 fn00403DD8()
 	return fp;
 }
 
-// 00403ED4: void fn00403ED4(Register (ptr32 Eq_5730) r2, Register word32 r3)
-void fn00403ED4(struct Eq_5730 * r2, word32 r3)
+// 00403ED4: void fn00403ED4(Register (ptr32 Eq_n) r2, Register word32 r3)
+void fn00403ED4(struct Eq_n * r2, word32 r3)
 {
 	r2->ptr0164->dw0004 = r3;
 }
 
-// 00403F10: Register word32 fn00403F10(Register Eq_2 r2, Register (ptr32 (ptr32 code)) r12, Stack Eq_2 dwArg14)
-word32 fn00403F10(Eq_2 r2, <anonymous> ** r12, Eq_2 dwArg14)
+// 00403F10: Register word32 fn00403F10(Register Eq_n r2, Register (ptr32 (ptr32 code)) r12, Stack Eq_n dwArg14)
+word32 fn00403F10(Eq_n r2, <anonymous> ** r12, Eq_n dwArg14)
 {
-	<anonymous> * r0_5 = *r12;
-	word32 r1_10;
-	r0_5();
-	return r1_10;
+	<anonymous> * r0_n = *r12;
+	word32 r1_n;
+	r0_n();
+	return r1_n;
 }
 
-// 00403F24: void fn00403F24(Register Eq_2 r2, Stack Eq_2 dwArg14)
-void fn00403F24(Eq_2 r2, Eq_2 dwArg14)
+// 00403F24: void fn00403F24(Register Eq_n r2, Stack Eq_n dwArg14)
+void fn00403F24(Eq_n r2, Eq_n dwArg14)
 {
-	<anonymous> ** r12_5 = *((word32) r2 + 336);
-	<anonymous> * r0_6 = *r12_5;
-	r0_6();
+	<anonymous> ** r12_n = *((word32) r2 + 336);
+	<anonymous> * r0_n = *r12_n;
+	r0_n();
 }
 
-// 00403F3C: Register word32 fn00403F3C(Register Eq_2 r2, Stack Eq_2 dwArg14)
-word32 fn00403F3C(Eq_2 r2, Eq_2 dwArg14)
+// 00403F3C: Register word32 fn00403F3C(Register Eq_n r2, Stack Eq_n dwArg14)
+word32 fn00403F3C(Eq_n r2, Eq_n dwArg14)
 {
-	<anonymous> ** r12_5 = *((word32) r2 + 0x011C);
-	<anonymous> * r0_6 = *r12_5;
-	word32 r1_10;
-	r0_6();
-	return r1_10;
+	<anonymous> ** r12_n = *((word32) r2 + 0x011C);
+	<anonymous> * r0_n = *r12_n;
+	word32 r1_n;
+	r0_n();
+	return r1_n;
 }
 
-// 00403F54: Register word32 fn00403F54(Register Eq_2 r2, Stack Eq_2 dwArg14)
-word32 fn00403F54(Eq_2 r2, Eq_2 dwArg14)
+// 00403F54: Register word32 fn00403F54(Register Eq_n r2, Stack Eq_n dwArg14)
+word32 fn00403F54(Eq_n r2, Eq_n dwArg14)
 {
-	<anonymous> ** r12_5 = *((word32) r2 + 332);
-	<anonymous> * r0_6 = *r12_5;
-	word32 r1_10;
-	r0_6();
-	return r1_10;
+	<anonymous> ** r12_n = *((word32) r2 + 332);
+	<anonymous> * r0_n = *r12_n;
+	word32 r1_n;
+	r0_n();
+	return r1_n;
 }
 
-// 00403F6C: Register word32 fn00403F6C(Register Eq_2 r2, Stack Eq_2 dwArg14)
-word32 fn00403F6C(Eq_2 r2, Eq_2 dwArg14)
+// 00403F6C: Register word32 fn00403F6C(Register Eq_n r2, Stack Eq_n dwArg14)
+word32 fn00403F6C(Eq_n r2, Eq_n dwArg14)
 {
-	<anonymous> ** r12_5 = *((word32) r2 + 0x0148);
-	<anonymous> * r0_6 = *r12_5;
-	word32 r1_10;
-	r0_6();
-	return r1_10;
+	<anonymous> ** r12_n = *((word32) r2 + 0x0148);
+	<anonymous> * r0_n = *r12_n;
+	word32 r1_n;
+	r0_n();
+	return r1_n;
 }
 
-// 00403F84: void fn00403F84(Register Eq_2 r2, Stack Eq_2 dwArg14)
-void fn00403F84(Eq_2 r2, Eq_2 dwArg14)
+// 00403F84: void fn00403F84(Register Eq_n r2, Stack Eq_n dwArg14)
+void fn00403F84(Eq_n r2, Eq_n dwArg14)
 {
-	<anonymous> ** r12_5 = *((word32) r2 + 0x0104);
-	<anonymous> * r0_6 = *r12_5;
-	r0_6();
+	<anonymous> ** r12_n = *((word32) r2 + 0x0104);
+	<anonymous> * r0_n = *r12_n;
+	r0_n();
 }
 
-// 00403F9C: Register word32 fn00403F9C(Register Eq_2 r2, Stack Eq_2 dwArg14)
-word32 fn00403F9C(Eq_2 r2, Eq_2 dwArg14)
+// 00403F9C: Register word32 fn00403F9C(Register Eq_n r2, Stack Eq_n dwArg14)
+word32 fn00403F9C(Eq_n r2, Eq_n dwArg14)
 {
-	<anonymous> ** r12_5 = *((word32) r2 + 0x0128);
-	<anonymous> * r0_6 = *r12_5;
-	word32 r1_10;
-	r0_6();
-	return r1_10;
+	<anonymous> ** r12_n = *((word32) r2 + 0x0128);
+	<anonymous> * r0_n = *r12_n;
+	word32 r1_n;
+	r0_n();
+	return r1_n;
 }
 
-// 00403FB4: Register word32 fn00403FB4(Register Eq_2 r2, Stack Eq_2 dwArg14)
-word32 fn00403FB4(Eq_2 r2, Eq_2 dwArg14)
+// 00403FB4: Register word32 fn00403FB4(Register Eq_n r2, Stack Eq_n dwArg14)
+word32 fn00403FB4(Eq_n r2, Eq_n dwArg14)
 {
-	<anonymous> ** r12_5 = *((word32) r2 + 0x0144);
-	<anonymous> * r0_6 = *r12_5;
-	word32 r1_10;
-	r0_6();
-	return r1_10;
+	<anonymous> ** r12_n = *((word32) r2 + 0x0144);
+	<anonymous> * r0_n = *r12_n;
+	word32 r1_n;
+	r0_n();
+	return r1_n;
 }
 
-// 00403FCC: Register word32 fn00403FCC(Register Eq_2 r2, Stack Eq_2 dwArg14)
-word32 fn00403FCC(Eq_2 r2, Eq_2 dwArg14)
+// 00403FCC: Register word32 fn00403FCC(Register Eq_n r2, Stack Eq_n dwArg14)
+word32 fn00403FCC(Eq_n r2, Eq_n dwArg14)
 {
-	<anonymous> ** r12_5 = *((word32) r2 + 0x0140);
-	<anonymous> * r0_6 = *r12_5;
-	word32 r1_10;
-	r0_6();
-	return r1_10;
+	<anonymous> ** r12_n = *((word32) r2 + 0x0140);
+	<anonymous> * r0_n = *r12_n;
+	word32 r1_n;
+	r0_n();
+	return r1_n;
 }
 
-// 00403FE4: Register word32 fn00403FE4(Register Eq_2 r2, Stack Eq_2 dwArg14)
-word32 fn00403FE4(Eq_2 r2, Eq_2 dwArg14)
+// 00403FE4: Register word32 fn00403FE4(Register Eq_n r2, Stack Eq_n dwArg14)
+word32 fn00403FE4(Eq_n r2, Eq_n dwArg14)
 {
-	<anonymous> ** r12_5 = *((word32) r2 + 0x013C);
-	<anonymous> * r0_6 = *r12_5;
-	word32 r1_10;
-	r0_6();
-	return r1_10;
+	<anonymous> ** r12_n = *((word32) r2 + 0x013C);
+	<anonymous> * r0_n = *r12_n;
+	word32 r1_n;
+	r0_n();
+	return r1_n;
 }
 
-// 00403FFC: Register word32 fn00403FFC(Register Eq_2 r2, Stack Eq_2 dwArg14)
-word32 fn00403FFC(Eq_2 r2, Eq_2 dwArg14)
+// 00403FFC: Register word32 fn00403FFC(Register Eq_n r2, Stack Eq_n dwArg14)
+word32 fn00403FFC(Eq_n r2, Eq_n dwArg14)
 {
-	<anonymous> ** r12_5 = *((word32) r2 + 0x0138);
-	<anonymous> * r0_6 = *r12_5;
-	word32 r1_10;
-	r0_6();
-	return r1_10;
+	<anonymous> ** r12_n = *((word32) r2 + 0x0138);
+	<anonymous> * r0_n = *r12_n;
+	word32 r1_n;
+	r0_n();
+	return r1_n;
 }
 
-// 00404014: Register word32 fn00404014(Register Eq_2 r2, Stack Eq_2 dwArg14)
-word32 fn00404014(Eq_2 r2, Eq_2 dwArg14)
+// 00404014: Register word32 fn00404014(Register Eq_n r2, Stack Eq_n dwArg14)
+word32 fn00404014(Eq_n r2, Eq_n dwArg14)
 {
-	<anonymous> ** r12_5 = *((word32) r2 + 0x0134);
-	<anonymous> * r0_6 = *r12_5;
-	word32 r1_10;
-	r0_6();
-	return r1_10;
+	<anonymous> ** r12_n = *((word32) r2 + 0x0134);
+	<anonymous> * r0_n = *r12_n;
+	word32 r1_n;
+	r0_n();
+	return r1_n;
 }
 
-// 0040402C: Register word32 fn0040402C(Register Eq_2 r2, Stack Eq_2 dwArg14)
-word32 fn0040402C(Eq_2 r2, Eq_2 dwArg14)
+// 0040402C: Register word32 fn0040402C(Register Eq_n r2, Stack Eq_n dwArg14)
+word32 fn0040402C(Eq_n r2, Eq_n dwArg14)
 {
-	<anonymous> ** r12_5 = *((word32) r2 + 0x0130);
-	<anonymous> * r0_6 = *r12_5;
-	word32 r1_10;
-	r0_6();
-	return r1_10;
+	<anonymous> ** r12_n = *((word32) r2 + 0x0130);
+	<anonymous> * r0_n = *r12_n;
+	word32 r1_n;
+	r0_n();
+	return r1_n;
 }
 
-// 00404044: Register word32 fn00404044(Register Eq_2 r2, Stack Eq_2 dwArg14)
-word32 fn00404044(Eq_2 r2, Eq_2 dwArg14)
+// 00404044: Register word32 fn00404044(Register Eq_n r2, Stack Eq_n dwArg14)
+word32 fn00404044(Eq_n r2, Eq_n dwArg14)
 {
-	<anonymous> ** r12_5 = *((word32) r2 + 300);
-	<anonymous> * r0_6 = *r12_5;
-	word32 r1_10;
-	r0_6();
-	return r1_10;
+	<anonymous> ** r12_n = *((word32) r2 + 300);
+	<anonymous> * r0_n = *r12_n;
+	word32 r1_n;
+	r0_n();
+	return r1_n;
 }
 
-// 0040405C: Register word32 fn0040405C(Register Eq_2 r2, Stack Eq_2 dwArg14)
-word32 fn0040405C(Eq_2 r2, Eq_2 dwArg14)
+// 0040405C: Register word32 fn0040405C(Register Eq_n r2, Stack Eq_n dwArg14)
+word32 fn0040405C(Eq_n r2, Eq_n dwArg14)
 {
-	<anonymous> ** r12_5 = *((word32) r2 + 292);
-	<anonymous> * r0_6 = *r12_5;
-	word32 r1_10;
-	r0_6();
-	return r1_10;
+	<anonymous> ** r12_n = *((word32) r2 + 292);
+	<anonymous> * r0_n = *r12_n;
+	word32 r1_n;
+	r0_n();
+	return r1_n;
 }
 
-// 00404074: void fn00404074(Register Eq_2 r2, Stack Eq_2 dwArg14)
-void fn00404074(Eq_2 r2, Eq_2 dwArg14)
+// 00404074: void fn00404074(Register Eq_n r2, Stack Eq_n dwArg14)
+void fn00404074(Eq_n r2, Eq_n dwArg14)
 {
-	<anonymous> ** r12_5 = *((word32) r2 + 288);
-	<anonymous> * r0_6 = *r12_5;
-	r0_6();
+	<anonymous> ** r12_n = *((word32) r2 + 288);
+	<anonymous> * r0_n = *r12_n;
+	r0_n();
 }
 
-// 0040408C: Register word32 fn0040408C(Register Eq_2 r2, Stack Eq_2 dwArg14)
-word32 fn0040408C(Eq_2 r2, Eq_2 dwArg14)
+// 0040408C: Register word32 fn0040408C(Register Eq_n r2, Stack Eq_n dwArg14)
+word32 fn0040408C(Eq_n r2, Eq_n dwArg14)
 {
-	<anonymous> ** r12_5 = *((word32) r2 + 0x0114);
-	<anonymous> * r0_6 = *r12_5;
-	word32 r1_10;
-	r0_6();
-	return r1_10;
+	<anonymous> ** r12_n = *((word32) r2 + 0x0114);
+	<anonymous> * r0_n = *r12_n;
+	word32 r1_n;
+	r0_n();
+	return r1_n;
 }
 
-// 004040A4: void fn004040A4(Register Eq_2 r2, Stack Eq_2 dwArg14)
-void fn004040A4(Eq_2 r2, Eq_2 dwArg14)
+// 004040A4: void fn004040A4(Register Eq_n r2, Stack Eq_n dwArg14)
+void fn004040A4(Eq_n r2, Eq_n dwArg14)
 {
-	<anonymous> ** r12_5 = *((word32) r2 + 0x0108);
-	<anonymous> * r0_6 = *r12_5;
-	r0_6();
+	<anonymous> ** r12_n = *((word32) r2 + 0x0108);
+	<anonymous> * r0_n = *r12_n;
+	r0_n();
 }
 
-// 004040BC: Register word32 fn004040BC(Register Eq_2 r2, Stack Eq_2 dwArg14)
-word32 fn004040BC(Eq_2 r2, Eq_2 dwArg14)
+// 004040BC: Register word32 fn004040BC(Register Eq_n r2, Stack Eq_n dwArg14)
+word32 fn004040BC(Eq_n r2, Eq_n dwArg14)
 {
-	<anonymous> ** r12_5 = *((word32) r2 + 0x0100);
-	<anonymous> * r0_6 = *r12_5;
-	word32 r1_10;
-	r0_6();
-	return r1_10;
+	<anonymous> ** r12_n = *((word32) r2 + 0x0100);
+	<anonymous> * r0_n = *r12_n;
+	word32 r1_n;
+	r0_n();
+	return r1_n;
 }
 
-// 004040D4: Register word32 fn004040D4(Register Eq_2 r2, Stack Eq_2 dwArg14)
-word32 fn004040D4(Eq_2 r2, Eq_2 dwArg14)
+// 004040D4: Register word32 fn004040D4(Register Eq_n r2, Stack Eq_n dwArg14)
+word32 fn004040D4(Eq_n r2, Eq_n dwArg14)
 {
-	<anonymous> ** r12_5 = *((word32) r2 + 0x0110);
-	<anonymous> * r0_6 = *r12_5;
-	word32 r1_10;
-	r0_6();
-	return r1_10;
+	<anonymous> ** r12_n = *((word32) r2 + 0x0110);
+	<anonymous> * r0_n = *r12_n;
+	word32 r1_n;
+	r0_n();
+	return r1_n;
 }
 
-// 004040EC: Register word32 fn004040EC(Register (ptr32 Eq_2168) r2, Stack Eq_2 dwArg14)
-word32 fn004040EC(struct Eq_2168 * r2, Eq_2 dwArg14)
+// 004040EC: Register word32 fn004040EC(Register (ptr32 Eq_n) r2, Stack Eq_n dwArg14)
+word32 fn004040EC(struct Eq_n * r2, Eq_n dwArg14)
 {
-	<anonymous> ** r12_5 = r2->ptr010C;
-	<anonymous> * r0_6 = *r12_5;
-	word32 r1_10;
-	r0_6();
-	return r1_10;
+	<anonymous> ** r12_n = r2->ptr010C;
+	<anonymous> * r0_n = *r12_n;
+	word32 r1_n;
+	r0_n();
+	return r1_n;
 }
 
-// 00404104: void fn00404104(Register Eq_2 r2, Stack Eq_2 dwArg14)
-void fn00404104(Eq_2 r2, Eq_2 dwArg14)
+// 00404104: void fn00404104(Register Eq_n r2, Stack Eq_n dwArg14)
+void fn00404104(Eq_n r2, Eq_n dwArg14)
 {
-	<anonymous> ** r12_5 = *((word32) r2 + 252);
-	<anonymous> * r0_6 = *r12_5;
-	r0_6();
+	<anonymous> ** r12_n = *((word32) r2 + 252);
+	<anonymous> * r0_n = *r12_n;
+	r0_n();
 }
 
-// 0040411C: void fn0040411C(Register Eq_2 r2, Stack Eq_2 dwArg14)
-void fn0040411C(Eq_2 r2, Eq_2 dwArg14)
+// 0040411C: void fn0040411C(Register Eq_n r2, Stack Eq_n dwArg14)
+void fn0040411C(Eq_n r2, Eq_n dwArg14)
 {
-	<anonymous> ** r12_5 = *((word32) r2 + 0x0118);
-	<anonymous> * r0_6 = *r12_5;
-	r0_6();
+	<anonymous> ** r12_n = *((word32) r2 + 0x0118);
+	<anonymous> * r0_n = *r12_n;
+	r0_n();
 }
 
-// 00404134: Register word32 fn00404134(Register Eq_2 r2, Stack Eq_2 dwArg14)
-word32 fn00404134(Eq_2 r2, Eq_2 dwArg14)
+// 00404134: Register word32 fn00404134(Register Eq_n r2, Stack Eq_n dwArg14)
+word32 fn00404134(Eq_n r2, Eq_n dwArg14)
 {
-	<anonymous> ** r12_5 = *((word32) r2 + 0x00F8);
-	<anonymous> * r0_6 = *r12_5;
-	word32 r1_10;
-	r0_6();
-	return r1_10;
+	<anonymous> ** r12_n = *((word32) r2 + 0x00F8);
+	<anonymous> * r0_n = *r12_n;
+	word32 r1_n;
+	r0_n();
+	return r1_n;
 }
 

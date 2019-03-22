@@ -4,60 +4,60 @@
 
 #include "a.h"
 
-// 80000080: Register word32 deregister_tm_clones(Register ptr32 a6, Register out Eq_4 d1Out, Register out ptr32 a6Out, Register out ptr32 a7Out)
-word32 deregister_tm_clones(ptr32 a6, union Eq_4 & d1Out, ptr32 & a6Out, ptr32 & a7Out)
+// 80000080: Register word32 deregister_tm_clones(Register ptr32 a6, Register out Eq_n d1Out, Register out ptr32 a6Out, Register out ptr32 a7Out)
+word32 deregister_tm_clones(ptr32 a6, union Eq_n & d1Out, ptr32 & a6Out, ptr32 & a7Out)
 {
-	ptr32 * a6_23 = fp - 0x04;
-	word32 d0_24 = 0x03;
-	Eq_4 d1_11 = 0x06;
+	ptr32 * a6_n = fp - 0x04;
+	word32 d0_n = 0x03;
+	Eq_n d1_n = 0x06;
 	if (false && 0x00 != 0x00)
 		null();
-	ptr32 a6_32 = *a6_23;
-	d1Out = d1_11;
-	a6Out = a6_32;
-	a7Out = a6_23 + 0x01;
-	return d0_24;
+	ptr32 a6_n = *a6_n;
+	d1Out = d1_n;
+	a6Out = a6_n;
+	a7Out = a6_n + 0x01;
+	return d0_n;
 }
 
 // 800000AE: void register_tm_clones(Register word32 a6)
 void register_tm_clones(word32 a6)
 {
-	int32 d0_12 = 0x00;
+	int32 d0_n = 0x00;
 	if (true)
-		d0_12 = 0x01;
-	int32 d0_18 = d0_12 >> 0x01;
-	if (d0_18 != 0x00 && 0x00 != 0x00)
+		d0_n = 0x01;
+	int32 d0_n = d0_n >> 0x01;
+	if (d0_n != 0x00 && 0x00 != 0x00)
 		null();
 }
 
 // 800000E4: void __do_global_dtors_aux(Register word32 d1, Register word32 d2, Register word32 a2, Register word32 a6)
 void __do_global_dtors_aux(word32 d1, word32 d2, word32 a2, word32 a6)
 {
-	ptr32 a6_40 = fp - 0x04;
-	ptr32 a7_12 = fp - 0x0C;
+	ptr32 a6_n = fp - 0x04;
+	ptr32 a7_n = fp - 0x0C;
 	if (globals->b80002724 == 0x00)
 	{
-		uint32 d0_21 = globals->dw80002726;
-		<anonymous> * a2_20[] = globals->a80002714;
-		up32 d2_25 = 0x00;
-		if (d0_21 < 0x00)
+		uint32 d0_n = globals->dw80002726;
+		<anonymous> * a2_n[] = globals->a80002714;
+		up32 d2_n = 0x00;
+		if (d0_n < 0x00)
 		{
 			do
 			{
-				uint32 d0_31 = d0_21 + 0x01;
-				globals->dw80002726 = d0_31;
-				<anonymous> * a0_37 = a2_20[d0_31];
-				a0_37();
-				d0_21 = globals->dw80002726;
-			} while (d2_25 - d0_21 > 0x00);
+				uint32 d0_n = d0_n + 0x01;
+				globals->dw80002726 = d0_n;
+				<anonymous> * a0_n = a2_n[d0_n];
+				a0_n();
+				d0_n = globals->dw80002726;
+			} while (d2_n - d0_n > 0x00);
 		}
-		word32 d1_54;
-		word32 a6_56;
-		ptr32 a7_57;
-		word32 d0_53 = deregister_tm_clones(a6_40, out d1_54, out a6_56, out a7_57);
+		word32 d1_n;
+		word32 a6_n;
+		ptr32 a7_n;
+		word32 d0_n = deregister_tm_clones(a6_n, out d1_n, out a6_n, out a7_n);
 		if (0x00 != 0x00)
 		{
-			*(a7_57 - 0x04) = 0x8000065C;
+			*(a7_n - 0x04) = 0x8000065C;
 			null();
 		}
 		globals->b80002724 = 0x01;
@@ -72,29 +72,29 @@ void call___do_global_dtors_aux()
 // 80000160: void frame_dummy(Register word32 d0, Register word32 a1, Register word32 a6)
 void frame_dummy(word32 d0, word32 a1, word32 a6)
 {
-	word32 * a6_18 = fp - 0x04;
-	ptr32 a7_25 = fp - 0x04;
+	word32 * a6_n = fp - 0x04;
+	ptr32 a7_n = fp - 0x04;
 	if (0x00 != 0x00)
 	{
-		word32 a7_17;
+		word32 a7_n;
 		null();
 		dwLoc08 = 0x8000272A;
 		dwLoc0C = 0x8000065C;
-		a7_25 = a7_17 + 0x08;
+		a7_n = a7_n + 0x08;
 	}
 	if (globals->dw8000271C != 0x00 && 0x00 != 0x00)
 	{
-		ptr32 * a7_38 = a7_25 - 0x04;
-		*a7_38 = 0x8000271C;
-		word32 * a6_44;
+		ptr32 * a7_n = a7_n - 0x04;
+		*a7_n = 0x8000271C;
+		word32 * a6_n;
 		null();
-		word32 a6_51 = *a6_44;
-		register_tm_clones(a6_51);
+		word32 a6_n = *a6_n;
+		register_tm_clones(a6_n);
 	}
 	else
 	{
-		word32 a6_65 = *a6_18;
-		register_tm_clones(a6_65);
+		word32 a6_n = *a6_n;
+		register_tm_clones(a6_n);
 	}
 }
 
@@ -111,37 +111,37 @@ void sine_taylor(real64 rArg04)
 // 8000033C: void factorial(Stack int32 dwArg04)
 void factorial(int32 dwArg04)
 {
-	int32 dwLoc08_35 = 0x02;
-	while (dwLoc08_35 - dwArg04 <= 0x00)
-		++dwLoc08_35;
+	int32 dwLoc08_n = 0x02;
+	while (dwLoc08_n - dwArg04 <= 0x00)
+		++dwLoc08_n;
 }
 
 // 80000372: void pow_int(Stack real64 rArg04, Stack int32 dwArg0C)
 void pow_int(real64 rArg04, int32 dwArg0C)
 {
-	int32 dwLoc08_49 = 0x00;
-	while (dwLoc08_49 - dwArg0C < 0x00)
-		++dwLoc08_49;
+	int32 dwLoc08_n = 0x00;
+	while (dwLoc08_n - dwArg0C < 0x00)
+		++dwLoc08_n;
 }
 
 // 800003BC: void sine_taylor(Stack real64 rArg04, Stack int32 dwArg0C)
 void sine_taylor(real64 rArg04, int32 dwArg0C)
 {
-	word32 dwArg04_123 = SLICE(rArg04, word32, 0);
-	word32 dwArg08_125 = SLICE(rArg04, word32, 32);
-	int32 dwLoc08_127 = 0x03;
-	while (dwLoc08_127 - dwArg0C <= 0x00)
+	word32 dwArg04_n = SLICE(rArg04, word32, 0);
+	word32 dwArg08_n = SLICE(rArg04, word32, 32);
+	int32 dwLoc08_n = 0x03;
+	while (dwLoc08_n - dwArg0C <= 0x00)
 	{
-		pow_int(SEQ(dwArg04_123, dwArg08_125), dwLoc08_127);
-		factorial(dwLoc08_127);
-		dwLoc08_127 += 0x04;
+		pow_int(SEQ(dwArg04_n, dwArg08_n), dwLoc08_n);
+		factorial(dwLoc08_n);
+		dwLoc08_n += 0x04;
 	}
-	int32 dwLoc08_130 = 0x05;
-	while (dwLoc08_130 - dwArg0C <= 0x00)
+	int32 dwLoc08_n = 0x05;
+	while (dwLoc08_n - dwArg0C <= 0x00)
 	{
-		pow_int(SEQ(dwArg04_123, dwArg08_125), dwLoc08_130);
-		factorial(dwLoc08_130);
-		dwLoc08_130 += 0x04;
+		pow_int(SEQ(dwArg04_n, dwArg08_n), dwLoc08_n);
+		factorial(dwLoc08_n);
+		dwLoc08_n += 0x04;
 	}
 }
 
@@ -152,38 +152,38 @@ void main()
 	_sin(4.61425307021499e+18, 4.56906395155395e+18, fp - 0x08);
 }
 
-// 800004DE: void _sin(Stack real64 rArg04, Stack real64 rArg0C, Stack Eq_208 tArg14)
-void _sin(real64 rArg04, real64 rArg0C, Eq_208 tArg14)
+// 800004DE: void _sin(Stack real64 rArg04, Stack real64 rArg0C, Stack Eq_n tArg14)
+void _sin(real64 rArg04, real64 rArg0C, Eq_n tArg14)
 {
-	word32 dwArg04_110 = SLICE(rArg04, word32, 0);
-	word32 dwArg08_112 = SLICE(rArg04, word32, 32);
-	real64 v9_14 = (real64) ((real96) SEQ(dwArg04_110, dwArg08_112) * SEQ(dwArg04_110, dwArg08_112));
-	word32 dwLoc20_121 = 0x02;
-	real64 rLoc0C_122 = SEQ(dwArg04_110, dwArg08_112);
-	real64 rLoc14_123 = 1.0;
-	while ((real64) ((real96) rLoc0C_122 / rLoc14_123) >= rArg0C)
+	word32 dwArg04_n = SLICE(rArg04, word32, 0);
+	word32 dwArg08_n = SLICE(rArg04, word32, 32);
+	real64 v9_n = (real64) ((real96) SEQ(dwArg04_n, dwArg08_n) * SEQ(dwArg04_n, dwArg08_n));
+	word32 dwLoc20_n = 0x02;
+	real64 rLoc0C_n = SEQ(dwArg04_n, dwArg08_n);
+	real64 rLoc14_n = 1.0;
+	while ((real64) ((real96) rLoc0C_n / rLoc14_n) >= rArg0C)
 	{
 		*tArg14 = (word32) *tArg14 + 0x01;
-		word32 v23_57 = dwLoc20_121 + 0x00;
-		rLoc0C_122 = (real64) ((real96) (real64) ((real96) rLoc0C_122 * v9_14) * v9_14);
-		dwLoc20_121 = v23_57 + 0x03;
-		rLoc14_123 = (real64) ((real96) (real64) ((real96) (real64) ((real96) (real64) ((real96) rLoc14_123 * (real80) ((real96) v23_57)) * (real80) ((real96) (v23_57 + 0x01))) * (real80) ((real96) (v23_57 + 0x02))) * (real80) ((real96) (v23_57 + 0x03)));
+		word32 v23_n = dwLoc20_n + 0x00;
+		rLoc0C_n = (real64) ((real96) (real64) ((real96) rLoc0C_n * v9_n) * v9_n);
+		dwLoc20_n = v23_n + 0x03;
+		rLoc14_n = (real64) ((real96) (real64) ((real96) (real64) ((real96) (real64) ((real96) rLoc14_n * (real80) ((real96) v23_n)) * (real80) ((real96) (v23_n + 0x01))) * (real80) ((real96) (v23_n + 0x02))) * (real80) ((real96) (v23_n + 0x03)));
 	}
 }
 
 // 80000624: void __do_global_ctors_aux(Register word32 a2, Register word32 a6)
 void __do_global_ctors_aux(word32 a2, word32 a6)
 {
-	<anonymous> * a0_12 = globals->ptr8000270C;
-	ptr32 a6_21 = fp - 0x04;
-	ptr32 a7_19 = fp - 0x08;
-	ptr32 a2_13 = 0x8000270C;
-	while (a0_12 != (<anonymous> *) -0x01)
+	<anonymous> * a0_n = globals->ptr8000270C;
+	ptr32 a6_n = fp - 0x04;
+	ptr32 a7_n = fp - 0x08;
+	ptr32 a2_n = 0x8000270C;
+	while (a0_n != (<anonymous> *) -0x01)
 	{
-		ptr32 a2_24;
-		a0_12();
-		a0_12 = (<anonymous> *) *(a2_24 - 0x04);
-		a2_13 = a2_24 - 0x04;
+		ptr32 a2_n;
+		a0_n();
+		a0_n = (<anonymous> *) *(a2_n - 0x04);
+		a2_n = a2_n - 0x04;
 	}
 }
 

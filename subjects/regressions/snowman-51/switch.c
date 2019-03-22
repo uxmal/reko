@@ -22,8 +22,8 @@ char * get(uint32 n)
 	}
 }
 
-// 10071080: Register Eq_13 DllMain(Stack Eq_14 hModule, Stack Eq_15 dwReason, Stack Eq_16 lpReserved)
-Eq_13 DllMain(Eq_14 hModule, Eq_15 dwReason, Eq_16 lpReserved)
+// 10071080: Register Eq_n DllMain(Stack Eq_n hModule, Stack Eq_n dwReason, Stack Eq_n lpReserved)
+Eq_n DllMain(Eq_n hModule, Eq_n dwReason, Eq_n lpReserved)
 {
 	return 0x01;
 }

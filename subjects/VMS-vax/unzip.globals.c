@@ -4,14 +4,14 @@
 
 #include "unzip.h"
 
-Eq_4383 g_t0001;
-Eq_2016 g_t0002;
-Eq_4383 g_t0003;
-Eq_620 g_t0004;
-Eq_8212 g_t0007;
-Eq_8212 g_t004F;
-Eq_4383 g_t0063;
-Eq_29774 g_a0974[];
+Eq_n g_t0001;
+Eq_n g_t0002;
+Eq_n g_t0003;
+Eq_n g_t0004;
+Eq_n g_t0007;
+Eq_n g_t004F;
+Eq_n g_t0063;
+Eq_n g_a0974[];
 word32 g_dw0A20;
 word32 g_dw0A38;
 byte g_b1001 = 0x00;
@@ -21,7 +21,7 @@ byte g_b1A01 = 0x00;
 byte g_b1C01 = 0x69;
 byte g_b1E01 = 0x72;
 byte g_b2001 = 0x74;
-struct Eq_2573 g_t4001 = 
+struct Eq_n g_t4001 = 
 	{
 		0x00,
 		0x00,
@@ -36,7 +36,7 @@ struct Eq_2573 g_t4001 =
 		},
 		0x0000,
 	};
-struct Eq_2573 g_t4341 = 
+struct Eq_n g_t4341 = 
 	{
 		0x00,
 		0x00,
@@ -51,7 +51,7 @@ struct Eq_2573 g_t4341 =
 		},
 		0x0000,
 	};
-struct Eq_2573 g_t4453 = 
+struct Eq_n g_t4453 = 
 	{
 		0x00,
 		0x00,
@@ -66,7 +66,7 @@ struct Eq_2573 g_t4453 =
 		},
 		0x0000,
 	};
-struct Eq_2573 g_t4704 = 
+struct Eq_n g_t4704 = 
 	{
 		0x00,
 		0x00,
@@ -81,7 +81,7 @@ struct Eq_2573 g_t4704 =
 		},
 		0x0000,
 	};
-struct Eq_2573 g_t470F = 
+struct Eq_n g_t470F = 
 	{
 		0x00,
 		0x00,
@@ -140,7 +140,7 @@ word32 g_dw1930C = 0x00001000;
 ptr32 g_ptr1932C = 0x00000908;
 ptr32 g_ptr19330 = 0x000003C0;
 ptr32 g_ptr19344 = 0x000006D8;
-Eq_29774 (* g_ptr1934C)[] = &g_a0974;
+Eq_n (* g_ptr1934C)[] = &g_a0974;
 word32 g_dw19350 = 0x00000A2C;
 byte * g_ptr19354 = &g_b1001;
 byte * g_ptr19358 = &g_b1601;

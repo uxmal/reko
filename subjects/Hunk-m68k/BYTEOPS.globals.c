@@ -4,38 +4,38 @@
 
 #include "BYTEOPS.h"
 
-struct Eq_116 * g_ptr0000;
-Eq_765 g_t0001;
-struct Eq_4 * g_ptr0004;
+struct Eq_n * g_ptr0000;
+Eq_n g_t0001;
+struct Eq_n * g_ptr0004;
 word32 g_a0008[];
 ui32 g_a0010[];
 ptr32 g_ptr2B88 = 0x00000000;
-struct Eq_4 * g_ptr2B8C = &g_t4000;
-struct Eq_25 * g_ptr2B90 = null;
-union Eq_3 * g_ptr2B94 = &g_t10202;
-union Eq_3 * g_ptr2B98 = &g_t3030303;
+struct Eq_n * g_ptr2B8C = &g_t4000;
+struct Eq_n * g_ptr2B90 = null;
+union Eq_n * g_ptr2B94 = &g_t10202;
+union Eq_n * g_ptr2B98 = &g_t3030303;
 int32 g_dw2B9C = 67372036;
 int32 g_dw2BA0 = 67372036;
 int32 g_dw2BA4 = 84215045;
 word32 g_dw2BB0 = 0x05050505;
 ptr32 g_ptr2BB4 = 0x06060606;
 int32 g_dw2BB8 = 101058054;
-struct Eq_2874 * g_ptr2BBC = &g_t6060606;
-struct Eq_4 * g_ptr2BC0 = &g_t6060606;
-Eq_3344 g_t2BC4 = 
+struct Eq_n * g_ptr2BBC = &g_t6060606;
+struct Eq_n * g_ptr2BC0 = &g_t6060606;
+Eq_n g_t2BC4 = 
 	{
 		
 		{
 		},
 	};
 word32 g_dw2CC8;
-Eq_520 g_t2CD0;
+Eq_n g_t2CD0;
 word32 g_dw2CD4;
-struct Eq_488 * g_ptr2CE0;
-struct Eq_487 * g_ptr2CE8;
-struct Eq_487 * g_ptr2CF0;
-Eq_4 g_t4000;
-Eq_3 g_t10202;
-Eq_3 g_t3030303;
-Eq_2874 g_t6060606;
+struct Eq_n * g_ptr2CE0;
+struct Eq_n * g_ptr2CE8;
+struct Eq_n * g_ptr2CF0;
+Eq_n g_t4000;
+Eq_n g_t10202;
+Eq_n g_t3030303;
+Eq_n g_t6060606;
 

@@ -13,94 +13,94 @@ void fn80000000(word32 d2)
 // 80000132: Register real96 fn80000132(Register word32 d2, Stack real96 rArg04, Stack real96 rArg10)
 real96 fn80000132(word32 d2, real96 rArg04, real96 rArg10)
 {
-	real96 fp0_12 = *(real96 *) 0x800004FC;
-	word32 dwLoc10_62 = SLICE(fp0_12, word32, 64);
-	word32 dwLoc0C_63 = SLICE(fp0_12, word32, 32);
-	word32 dwLoc08_64 = SLICE(fp0_12, word32, 0);
-	word32 dwLoc14_59 = 0x00;
+	real96 fp0_n = *(real96 *) 0x800004FC;
+	word32 dwLoc10_n = SLICE(fp0_n, word32, 64);
+	word32 dwLoc0C_n = SLICE(fp0_n, word32, 32);
+	word32 dwLoc08_n = SLICE(fp0_n, word32, 0);
+	word32 dwLoc14_n = 0x00;
 	while (true)
 	{
-		real96 rLoc10_71 = SEQ(dwLoc10_62, dwLoc0C_63, dwLoc08_64);
-		if ((real96) dwLoc14_59 >= rArg10)
+		real96 rLoc10_n = SEQ(dwLoc10_n, dwLoc0C_n, dwLoc08_n);
+		if ((real96) dwLoc14_n >= rArg10)
 			break;
-		real96 fp0_49 = rLoc10_71 * rArg04;
-		dwLoc10_62 = SLICE(fp0_49, word32, 64);
-		dwLoc0C_63 = SLICE(fp0_49, word32, 32);
-		dwLoc08_64 = SLICE(fp0_49, word32, 0);
-		++dwLoc14_59;
+		real96 fp0_n = rLoc10_n * rArg04;
+		dwLoc10_n = SLICE(fp0_n, word32, 64);
+		dwLoc0C_n = SLICE(fp0_n, word32, 32);
+		dwLoc08_n = SLICE(fp0_n, word32, 0);
+		++dwLoc14_n;
 	}
-	return SEQ(dwLoc10_62, dwLoc0C_63, dwLoc08_64);
+	return SEQ(dwLoc10_n, dwLoc0C_n, dwLoc08_n);
 }
 
 // 8000018E: Register real96 fn8000018E(Register word32 d2, Stack real96 rArg04)
 real96 fn8000018E(word32 d2, real96 rArg04)
 {
-	real96 fp0_12 = *(real96 *) 0x80000508;
-	word32 dwLoc10_62 = SLICE(fp0_12, word32, 64);
-	word32 dwLoc0C_63 = SLICE(fp0_12, word32, 32);
-	word32 dwLoc08_64 = SLICE(fp0_12, word32, 0);
-	int32 dwLoc14_59 = 0x01;
+	real96 fp0_n = *(real96 *) 0x80000508;
+	word32 dwLoc10_n = SLICE(fp0_n, word32, 64);
+	word32 dwLoc0C_n = SLICE(fp0_n, word32, 32);
+	word32 dwLoc08_n = SLICE(fp0_n, word32, 0);
+	int32 dwLoc14_n = 0x01;
 	while (true)
 	{
-		real96 rLoc10_71 = SEQ(dwLoc10_62, dwLoc0C_63, dwLoc08_64);
-		if ((real96) dwLoc14_59 > rArg04)
+		real96 rLoc10_n = SEQ(dwLoc10_n, dwLoc0C_n, dwLoc08_n);
+		if ((real96) dwLoc14_n > rArg04)
 			break;
-		real96 fp1_49 = rLoc10_71 * (real80) ((real96) dwLoc14_59);
-		dwLoc10_62 = SLICE(fp1_49, word32, 64);
-		dwLoc0C_63 = SLICE(fp1_49, word32, 32);
-		dwLoc08_64 = SLICE(fp1_49, word32, 0);
-		++dwLoc14_59;
+		real96 fp1_n = rLoc10_n * (real80) ((real96) dwLoc14_n);
+		dwLoc10_n = SLICE(fp1_n, word32, 64);
+		dwLoc0C_n = SLICE(fp1_n, word32, 32);
+		dwLoc08_n = SLICE(fp1_n, word32, 0);
+		++dwLoc14_n;
 	}
-	return SEQ(dwLoc10_62, dwLoc0C_63, dwLoc08_64);
+	return SEQ(dwLoc10_n, dwLoc0C_n, dwLoc08_n);
 }
 
 // 800001F2: Register real96 fn800001F2(Register word32 d2, Stack real96 rArg04)
 real96 fn800001F2(word32 d2, real96 rArg04)
 {
-	word32 dwLoc10_112 = SLICE(rArg04, word32, 64);
-	word32 dwLoc0C_113 = SLICE(rArg04, word32, 32);
-	word32 dwLoc08_114 = SLICE(rArg04, word32, 0);
-	real96 rLoc1C_109 = *(real96 *) 0x80000514;
-	int32 dwLoc20_110 = 0x03;
+	word32 dwLoc10_n = SLICE(rArg04, word32, 64);
+	word32 dwLoc0C_n = SLICE(rArg04, word32, 32);
+	word32 dwLoc08_n = SLICE(rArg04, word32, 0);
+	real96 rLoc1C_n = *(real96 *) 0x80000514;
+	int32 dwLoc20_n = 0x03;
 	while (true)
 	{
-		real96 rLoc10_127 = SEQ(dwLoc10_112, dwLoc0C_113, dwLoc08_114);
-		if (dwLoc20_110 > 100)
+		real96 rLoc10_n = SEQ(dwLoc10_n, dwLoc0C_n, dwLoc08_n);
+		if (dwLoc20_n > 100)
 			break;
-		real96 fp0_91 = (real96) (real80) ((real96) (real80) fn80000132(d2, rArg04, (real96) dwLoc20_110) / (real80) fn8000018E(d2, (real96) dwLoc20_110)) * rLoc1C_109;
-		real96 fp1_93 = rLoc10_127 + (real80) fp0_91;
-		dwLoc10_112 = SLICE(fp1_93, word32, 64);
-		dwLoc0C_113 = SLICE(fp1_93, word32, 32);
-		dwLoc08_114 = SLICE(fp1_93, word32, 0);
-		rLoc1C_109 = fp0_91;
-		dwLoc20_110 += 0x02;
+		real96 fp0_n = (real96) (real80) ((real96) (real80) fn80000132(d2, rArg04, (real96) dwLoc20_n) / (real80) fn8000018E(d2, (real96) dwLoc20_n)) * rLoc1C_n;
+		real96 fp1_n = rLoc10_n + (real80) fp0_n;
+		dwLoc10_n = SLICE(fp1_n, word32, 64);
+		dwLoc0C_n = SLICE(fp1_n, word32, 32);
+		dwLoc08_n = SLICE(fp1_n, word32, 0);
+		rLoc1C_n = fp0_n;
+		dwLoc20_n += 0x02;
 	}
-	return SEQ(dwLoc10_112, dwLoc0C_113, dwLoc08_114);
+	return SEQ(dwLoc10_n, dwLoc0C_n, dwLoc08_n);
 }
 
 // 800002AE: Register real96 fn800002AE(Register word32 d2, Stack real96 rArg04)
 real96 fn800002AE(word32 d2, real96 rArg04)
 {
-	real96 fp0_15 = *(real96 *) 0x80000520;
-	word32 dwLoc10_111 = SLICE(fp0_15, word32, 64);
-	word32 dwLoc0C_112 = SLICE(fp0_15, word32, 32);
-	word32 dwLoc08_113 = SLICE(fp0_15, word32, 0);
-	real96 rLoc1C_108 = *(real96 *) 0x8000052C;
-	int32 dwLoc20_109 = 0x02;
+	real96 fp0_n = *(real96 *) 0x80000520;
+	word32 dwLoc10_n = SLICE(fp0_n, word32, 64);
+	word32 dwLoc0C_n = SLICE(fp0_n, word32, 32);
+	word32 dwLoc08_n = SLICE(fp0_n, word32, 0);
+	real96 rLoc1C_n = *(real96 *) 0x8000052C;
+	int32 dwLoc20_n = 0x02;
 	while (true)
 	{
-		real96 rLoc10_126 = SEQ(dwLoc10_111, dwLoc0C_112, dwLoc08_113);
-		if (dwLoc20_109 > 100)
+		real96 rLoc10_n = SEQ(dwLoc10_n, dwLoc0C_n, dwLoc08_n);
+		if (dwLoc20_n > 100)
 			break;
-		real96 fp0_91 = (real96) (real80) ((real96) (real80) fn80000132(d2, rArg04, (real96) dwLoc20_109) / (real80) fn8000018E(d2, (real96) dwLoc20_109)) * rLoc1C_108;
-		real96 fp1_93 = rLoc10_126 + (real80) fp0_91;
-		dwLoc10_111 = SLICE(fp1_93, word32, 64);
-		dwLoc0C_112 = SLICE(fp1_93, word32, 32);
-		dwLoc08_113 = SLICE(fp1_93, word32, 0);
-		rLoc1C_108 = fp0_91;
-		dwLoc20_109 += 0x02;
+		real96 fp0_n = (real96) (real80) ((real96) (real80) fn80000132(d2, rArg04, (real96) dwLoc20_n) / (real80) fn8000018E(d2, (real96) dwLoc20_n)) * rLoc1C_n;
+		real96 fp1_n = rLoc10_n + (real80) fp0_n;
+		dwLoc10_n = SLICE(fp1_n, word32, 64);
+		dwLoc0C_n = SLICE(fp1_n, word32, 32);
+		dwLoc08_n = SLICE(fp1_n, word32, 0);
+		rLoc1C_n = fp0_n;
+		dwLoc20_n += 0x02;
 	}
-	return SEQ(dwLoc10_111, dwLoc0C_112, dwLoc08_113);
+	return SEQ(dwLoc10_n, dwLoc0C_n, dwLoc08_n);
 }
 
 // 8000036C: void fn8000036C(Register word32 d2, Stack real96 rArg04)
@@ -113,11 +113,11 @@ void fn8000036C(word32 d2, real96 rArg04)
 // 800003CC: void fn800003CC(Register word32 d2)
 void fn800003CC(word32 d2)
 {
-	real96 fp0_8 = *(real96 *) 0x80000538;
-	fn80000132(d2, fp0_8, fp0_8);
-	fn8000018E(d2, fp0_8);
-	fn800001F2(d2, fp0_8);
-	fn800002AE(d2, fp0_8);
-	fn8000036C(d2, fp0_8);
+	real96 fp0_n = *(real96 *) 0x80000538;
+	fn80000132(d2, fp0_n, fp0_n);
+	fn8000018E(d2, fp0_n);
+	fn800001F2(d2, fp0_n);
+	fn800002AE(d2, fp0_n);
+	fn8000036C(d2, fp0_n);
 }
 

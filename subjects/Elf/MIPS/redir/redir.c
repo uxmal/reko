@@ -7,18 +7,16 @@
 // 004001BC: void _init(Register word32 ra)
 void _init(word32 ra)
 {
-	ptr32 r25_12 = globals->ptr1000087C;
-	(r25_12 + 0x072C)();
-	struct Eq_8 * r25_16 = globals->ptr10000880;
-	(*((char *) r25_16 - 25584))();
+	globals->t40072C();
+	globals->t409C10();
 }
 
 // 00400230: void __start(Stack word32 dwArg00)
 void __start(word32 dwArg00)
 {
-	word32 r2_17 = *(word32 *) 0x100107A0;
-	<anonymous> * r25_19 = *(<anonymous> **) 0x100107F8;
-	r25_19();
+	word32 r2_n = *(word32 *) 0x100107A0;
+	<anonymous> * r25_n = *(<anonymous> **) 0x100107F8;
+	r25_n();
 	while (true)
 		;
 }
@@ -26,1277 +24,1277 @@ void __start(word32 dwArg00)
 // 00400290: void strcpy(Register (ptr32 word32) r1, Register word32 r2, Register word32 r3, Register word32 r4, Register ptr32 r28, Register word32 ra)
 void strcpy(word32 * r1, word32 r2, word32 r3, word32 r4, ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	word32 r4_350;
-	word32 r2_352;
-	word32 r3_354;
-	r25_6();
-	<anonymous> * r25_13 = *(r28 - 0x7FF0);
-	word32 r4_355;
-	word32 r2_356;
-	word32 r3_357;
-	r25_13();
-	<anonymous> * r25_19 = *(r28 - 0x7FF0);
-	word32 r4_358;
-	word32 r2_359;
-	word32 r3_360;
-	r25_19();
-	<anonymous> * r25_25 = *(r28 - 0x7FF0);
-	word32 r4_361;
-	word32 r2_362;
-	word32 r3_363;
-	r25_25();
-	<anonymous> * r25_31 = *(r28 - 0x7FF0);
-	word32 r4_364;
-	word32 r2_365;
-	word32 r3_366;
-	r25_31();
-	<anonymous> * r25_37 = *(r28 - 0x7FF0);
-	word32 r4_367;
-	word32 r2_368;
-	word32 r3_369;
-	r25_37();
-	<anonymous> * r25_43 = *(r28 - 0x7FF0);
-	word32 r4_370;
-	word32 r2_371;
-	word32 r3_372;
-	r25_43();
-	<anonymous> * r25_49 = *(r28 - 0x7FF0);
-	word32 r4_373;
-	word32 r2_374;
-	word32 r3_375;
-	r25_49();
-	<anonymous> * r25_55 = *(r28 - 0x7FF0);
-	word32 r4_376;
-	word32 r2_377;
-	word32 r3_378;
-	r25_55();
-	<anonymous> * r25_61 = *(r28 - 0x7FF0);
-	word32 r4_379;
-	word32 r2_380;
-	word32 r3_381;
-	r25_61();
-	<anonymous> * r25_67 = *(r28 - 0x7FF0);
-	word32 r4_382;
-	word32 r2_383;
-	word32 r3_384;
-	r25_67();
-	<anonymous> * r25_73 = *(r28 - 0x7FF0);
-	word32 r4_385;
-	word32 r2_386;
-	word32 r3_387;
-	r25_73();
-	<anonymous> * r25_79 = *(r28 - 0x7FF0);
-	word32 r4_388;
-	word32 r2_389;
-	word32 r3_390;
-	r25_79();
-	<anonymous> * r25_85 = *(r28 - 0x7FF0);
-	word32 r4_391;
-	word32 r2_392;
-	word32 r3_393;
-	r25_85();
-	<anonymous> * r25_91 = *(r28 - 0x7FF0);
-	word32 r4_394;
-	word32 r2_395;
-	word32 r3_396;
-	r25_91();
-	<anonymous> * r25_97 = *(r28 - 0x7FF0);
-	word32 r4_397;
-	word32 r2_398;
-	word32 r3_399;
-	r25_97();
-	<anonymous> * r25_103 = *(r28 - 0x7FF0);
-	word32 r4_400;
-	word32 r2_401;
-	word32 r3_402;
-	r25_103();
-	<anonymous> * r25_109 = *(r28 - 0x7FF0);
-	word32 r4_403;
-	word32 r2_404;
-	word32 r3_405;
-	r25_109();
-	<anonymous> * r25_115 = *(r28 - 0x7FF0);
-	word32 r4_406;
-	word32 r2_407;
-	word32 r3_408;
-	r25_115();
-	<anonymous> * r25_121 = *(r28 - 0x7FF0);
-	word32 r4_409;
-	word32 r2_410;
-	word32 r3_411;
-	r25_121();
-	<anonymous> * r25_127 = *(r28 - 0x7FF0);
-	word32 r4_412;
-	word32 r2_413;
-	word32 r3_414;
-	r25_127();
-	<anonymous> * r25_133 = *(r28 - 0x7FF0);
-	word32 r4_415;
-	word32 r2_416;
-	word32 r3_417;
-	r25_133();
-	<anonymous> * r25_139 = *(r28 - 0x7FF0);
-	word32 r4_418;
-	word32 r2_419;
-	word32 r3_420;
-	r25_139();
-	<anonymous> * r25_145 = *(r28 - 0x7FF0);
-	word32 r4_421;
-	word32 r2_422;
-	word32 r3_423;
-	r25_145();
-	<anonymous> * r25_151 = *(r28 - 0x7FF0);
-	word32 r4_424;
-	word32 r2_425;
-	word32 r3_426;
-	r25_151();
-	<anonymous> * r25_157 = *(r28 - 0x7FF0);
-	word32 r4_427;
-	word32 r2_428;
-	word32 r3_429;
-	r25_157();
-	<anonymous> * r25_163 = *(r28 - 0x7FF0);
-	word32 r4_430;
-	word32 r2_431;
-	word32 r3_432;
-	r25_163();
-	<anonymous> * r25_169 = *(r28 - 0x7FF0);
-	word32 r4_433;
-	word32 r2_434;
-	word32 r3_435;
-	r25_169();
-	<anonymous> * r25_175 = *(r28 - 0x7FF0);
-	word32 r4_436;
-	word32 r2_437;
-	word32 r3_438;
-	r25_175();
-	<anonymous> * r25_181 = *(r28 - 0x7FF0);
-	word32 r4_439;
-	word32 r2_440;
-	word32 r3_441;
-	r25_181();
-	<anonymous> * r25_187 = *(r28 - 0x7FF0);
-	word32 r4_442;
-	word32 r2_443;
-	word32 r3_444;
-	r25_187();
-	<anonymous> * r25_193 = *(r28 - 0x7FF0);
-	word32 r4_445;
-	word32 r2_446;
-	word32 r3_447;
-	r25_193();
-	<anonymous> * r25_199 = *(r28 - 0x7FF0);
-	word32 r4_448;
-	word32 r2_449;
-	word32 r3_450;
-	r25_199();
-	<anonymous> * r25_205 = *(r28 - 0x7FF0);
-	word32 r4_451;
-	word32 r2_452;
-	word32 r3_453;
-	r25_205();
-	<anonymous> * r25_211 = *(r28 - 0x7FF0);
-	word32 r4_454;
-	word32 r2_455;
-	word32 r3_456;
-	r25_211();
-	<anonymous> * r25_217 = *(r28 - 0x7FF0);
-	word32 r4_457;
-	word32 r2_458;
-	word32 r3_459;
-	r25_217();
-	<anonymous> * r25_223 = *(r28 - 0x7FF0);
-	word32 r4_460;
-	word32 r2_461;
-	word32 r3_462;
-	r25_223();
-	<anonymous> * r25_229 = *(r28 - 0x7FF0);
-	word32 r4_463;
-	word32 r2_464;
-	word32 r3_465;
-	r25_229();
-	<anonymous> * r25_235 = *(r28 - 0x7FF0);
-	word32 r4_466;
-	word32 r2_467;
-	word32 r3_468;
-	r25_235();
-	<anonymous> * r25_241 = *(r28 - 0x7FF0);
-	word32 r4_469;
-	word32 r2_470;
-	word32 r3_471;
-	r25_241();
-	<anonymous> * r25_247 = *(r28 - 0x7FF0);
-	word32 r4_472;
-	word32 r2_473;
-	word32 r3_474;
-	r25_247();
-	<anonymous> * r25_253 = *(r28 - 0x7FF0);
-	word32 r4_475;
-	word32 r2_476;
-	word32 r3_477;
-	r25_253();
-	<anonymous> * r25_259 = *(r28 - 0x7FF0);
-	word32 r4_478;
-	word32 r2_479;
-	word32 r3_480;
-	r25_259();
-	<anonymous> * r25_265 = *(r28 - 0x7FF0);
-	word32 r4_481;
-	word32 r2_482;
-	word32 r3_483;
-	r25_265();
-	<anonymous> * r25_271 = *(r28 - 0x7FF0);
-	word32 r4_484;
-	word32 r2_485;
-	word32 r3_486;
-	r25_271();
-	<anonymous> * r25_277 = *(r28 - 0x7FF0);
-	word32 r4_487;
-	word32 r2_488;
-	word32 r3_489;
-	r25_277();
-	<anonymous> * r25_283 = *(r28 - 0x7FF0);
-	word32 r4_490;
-	word32 r2_491;
-	word32 r3_492;
-	r25_283();
-	<anonymous> * r25_289 = *(r28 - 0x7FF0);
-	word32 r4_493;
-	word32 r2_494;
-	word32 r3_495;
-	r25_289();
-	<anonymous> * r25_295 = *(r28 - 0x7FF0);
-	word32 r4_496;
-	word32 r2_497;
-	word32 r3_498;
-	r25_295();
-	<anonymous> * r25_301 = *(r28 - 0x7FF0);
-	word32 r4_499;
-	word32 r2_500;
-	word32 r3_501;
-	r25_301();
-	<anonymous> * r25_307 = *(r28 - 0x7FF0);
-	word32 r4_502;
-	word32 r2_503;
-	word32 r3_504;
-	r25_307();
-	<anonymous> * r25_313 = *(r28 - 0x7FF0);
-	word32 r4_505;
-	word32 r2_506;
-	word32 r3_507;
-	r25_313();
-	<anonymous> * r25_319 = *(r28 - 0x7FF0);
-	word32 r4_508;
-	word32 r2_509;
-	word32 r3_510;
-	r25_319();
-	<anonymous> * r25_325 = *(r28 - 0x7FF0);
-	word32 r4_511;
-	word32 r2_512;
-	word32 r3_513;
-	r25_325();
-	<anonymous> * r25_331 = *(r28 - 0x7FF0);
-	word32 r4_514;
-	word32 r2_515;
-	word32 r3_516;
-	r25_331();
-	<anonymous> * r25_337 = *(r28 - 0x7FF0);
-	r25_337();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 	__do_global_dtors_aux(r1, r4, ra);
 }
 
 // 004002A0: void printf(Register ptr32 r28, Register word32 ra)
 void printf(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 004002B0: void recv(Register ptr32 r28, Register word32 ra)
 void recv(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 004002C0: void connect(Register ptr32 r28, Register word32 ra)
 void connect(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 004002D0: void strerror(Register (ptr32 word32) r1, Register word32 r2, Register word32 r3, Register word32 r4, Register ptr32 r28, Register word32 ra)
 void strerror(word32 * r1, word32 r2, word32 r3, word32 r4, ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	word32 r4_326;
-	word32 r2_328;
-	word32 r3_330;
-	r25_6();
-	<anonymous> * r25_13 = *(r28 - 0x7FF0);
-	word32 r4_331;
-	word32 r2_332;
-	word32 r3_333;
-	r25_13();
-	<anonymous> * r25_19 = *(r28 - 0x7FF0);
-	word32 r4_334;
-	word32 r2_335;
-	word32 r3_336;
-	r25_19();
-	<anonymous> * r25_25 = *(r28 - 0x7FF0);
-	word32 r4_337;
-	word32 r2_338;
-	word32 r3_339;
-	r25_25();
-	<anonymous> * r25_31 = *(r28 - 0x7FF0);
-	word32 r4_340;
-	word32 r2_341;
-	word32 r3_342;
-	r25_31();
-	<anonymous> * r25_37 = *(r28 - 0x7FF0);
-	word32 r4_343;
-	word32 r2_344;
-	word32 r3_345;
-	r25_37();
-	<anonymous> * r25_43 = *(r28 - 0x7FF0);
-	word32 r4_346;
-	word32 r2_347;
-	word32 r3_348;
-	r25_43();
-	<anonymous> * r25_49 = *(r28 - 0x7FF0);
-	word32 r4_349;
-	word32 r2_350;
-	word32 r3_351;
-	r25_49();
-	<anonymous> * r25_55 = *(r28 - 0x7FF0);
-	word32 r4_352;
-	word32 r2_353;
-	word32 r3_354;
-	r25_55();
-	<anonymous> * r25_61 = *(r28 - 0x7FF0);
-	word32 r4_355;
-	word32 r2_356;
-	word32 r3_357;
-	r25_61();
-	<anonymous> * r25_67 = *(r28 - 0x7FF0);
-	word32 r4_358;
-	word32 r2_359;
-	word32 r3_360;
-	r25_67();
-	<anonymous> * r25_73 = *(r28 - 0x7FF0);
-	word32 r4_361;
-	word32 r2_362;
-	word32 r3_363;
-	r25_73();
-	<anonymous> * r25_79 = *(r28 - 0x7FF0);
-	word32 r4_364;
-	word32 r2_365;
-	word32 r3_366;
-	r25_79();
-	<anonymous> * r25_85 = *(r28 - 0x7FF0);
-	word32 r4_367;
-	word32 r2_368;
-	word32 r3_369;
-	r25_85();
-	<anonymous> * r25_91 = *(r28 - 0x7FF0);
-	word32 r4_370;
-	word32 r2_371;
-	word32 r3_372;
-	r25_91();
-	<anonymous> * r25_97 = *(r28 - 0x7FF0);
-	word32 r4_373;
-	word32 r2_374;
-	word32 r3_375;
-	r25_97();
-	<anonymous> * r25_103 = *(r28 - 0x7FF0);
-	word32 r4_376;
-	word32 r2_377;
-	word32 r3_378;
-	r25_103();
-	<anonymous> * r25_109 = *(r28 - 0x7FF0);
-	word32 r4_379;
-	word32 r2_380;
-	word32 r3_381;
-	r25_109();
-	<anonymous> * r25_115 = *(r28 - 0x7FF0);
-	word32 r4_382;
-	word32 r2_383;
-	word32 r3_384;
-	r25_115();
-	<anonymous> * r25_121 = *(r28 - 0x7FF0);
-	word32 r4_385;
-	word32 r2_386;
-	word32 r3_387;
-	r25_121();
-	<anonymous> * r25_127 = *(r28 - 0x7FF0);
-	word32 r4_388;
-	word32 r2_389;
-	word32 r3_390;
-	r25_127();
-	<anonymous> * r25_133 = *(r28 - 0x7FF0);
-	word32 r4_391;
-	word32 r2_392;
-	word32 r3_393;
-	r25_133();
-	<anonymous> * r25_139 = *(r28 - 0x7FF0);
-	word32 r4_394;
-	word32 r2_395;
-	word32 r3_396;
-	r25_139();
-	<anonymous> * r25_145 = *(r28 - 0x7FF0);
-	word32 r4_397;
-	word32 r2_398;
-	word32 r3_399;
-	r25_145();
-	<anonymous> * r25_151 = *(r28 - 0x7FF0);
-	word32 r4_400;
-	word32 r2_401;
-	word32 r3_402;
-	r25_151();
-	<anonymous> * r25_157 = *(r28 - 0x7FF0);
-	word32 r4_403;
-	word32 r2_404;
-	word32 r3_405;
-	r25_157();
-	<anonymous> * r25_163 = *(r28 - 0x7FF0);
-	word32 r4_406;
-	word32 r2_407;
-	word32 r3_408;
-	r25_163();
-	<anonymous> * r25_169 = *(r28 - 0x7FF0);
-	word32 r4_409;
-	word32 r2_410;
-	word32 r3_411;
-	r25_169();
-	<anonymous> * r25_175 = *(r28 - 0x7FF0);
-	word32 r4_412;
-	word32 r2_413;
-	word32 r3_414;
-	r25_175();
-	<anonymous> * r25_181 = *(r28 - 0x7FF0);
-	word32 r4_415;
-	word32 r2_416;
-	word32 r3_417;
-	r25_181();
-	<anonymous> * r25_187 = *(r28 - 0x7FF0);
-	word32 r4_418;
-	word32 r2_419;
-	word32 r3_420;
-	r25_187();
-	<anonymous> * r25_193 = *(r28 - 0x7FF0);
-	word32 r4_421;
-	word32 r2_422;
-	word32 r3_423;
-	r25_193();
-	<anonymous> * r25_199 = *(r28 - 0x7FF0);
-	word32 r4_424;
-	word32 r2_425;
-	word32 r3_426;
-	r25_199();
-	<anonymous> * r25_205 = *(r28 - 0x7FF0);
-	word32 r4_427;
-	word32 r2_428;
-	word32 r3_429;
-	r25_205();
-	<anonymous> * r25_211 = *(r28 - 0x7FF0);
-	word32 r4_430;
-	word32 r2_431;
-	word32 r3_432;
-	r25_211();
-	<anonymous> * r25_217 = *(r28 - 0x7FF0);
-	word32 r4_433;
-	word32 r2_434;
-	word32 r3_435;
-	r25_217();
-	<anonymous> * r25_223 = *(r28 - 0x7FF0);
-	word32 r4_436;
-	word32 r2_437;
-	word32 r3_438;
-	r25_223();
-	<anonymous> * r25_229 = *(r28 - 0x7FF0);
-	word32 r4_439;
-	word32 r2_440;
-	word32 r3_441;
-	r25_229();
-	<anonymous> * r25_235 = *(r28 - 0x7FF0);
-	word32 r4_442;
-	word32 r2_443;
-	word32 r3_444;
-	r25_235();
-	<anonymous> * r25_241 = *(r28 - 0x7FF0);
-	word32 r4_445;
-	word32 r2_446;
-	word32 r3_447;
-	r25_241();
-	<anonymous> * r25_247 = *(r28 - 0x7FF0);
-	word32 r4_448;
-	word32 r2_449;
-	word32 r3_450;
-	r25_247();
-	<anonymous> * r25_253 = *(r28 - 0x7FF0);
-	word32 r4_451;
-	word32 r2_452;
-	word32 r3_453;
-	r25_253();
-	<anonymous> * r25_259 = *(r28 - 0x7FF0);
-	word32 r4_454;
-	word32 r2_455;
-	word32 r3_456;
-	r25_259();
-	<anonymous> * r25_265 = *(r28 - 0x7FF0);
-	word32 r4_457;
-	word32 r2_458;
-	word32 r3_459;
-	r25_265();
-	<anonymous> * r25_271 = *(r28 - 0x7FF0);
-	word32 r4_460;
-	word32 r2_461;
-	word32 r3_462;
-	r25_271();
-	<anonymous> * r25_277 = *(r28 - 0x7FF0);
-	word32 r4_463;
-	word32 r2_464;
-	word32 r3_465;
-	r25_277();
-	<anonymous> * r25_283 = *(r28 - 0x7FF0);
-	word32 r4_466;
-	word32 r2_467;
-	word32 r3_468;
-	r25_283();
-	<anonymous> * r25_289 = *(r28 - 0x7FF0);
-	word32 r4_469;
-	word32 r2_470;
-	word32 r3_471;
-	r25_289();
-	<anonymous> * r25_295 = *(r28 - 0x7FF0);
-	word32 r4_472;
-	word32 r2_473;
-	word32 r3_474;
-	r25_295();
-	<anonymous> * r25_301 = *(r28 - 0x7FF0);
-	word32 r4_475;
-	word32 r2_476;
-	word32 r3_477;
-	r25_301();
-	<anonymous> * r25_307 = *(r28 - 0x7FF0);
-	word32 r4_478;
-	word32 r2_479;
-	word32 r3_480;
-	r25_307();
-	<anonymous> * r25_313 = *(r28 - 0x7FF0);
-	r25_313();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 	__do_global_dtors_aux(r1, r4, ra);
 }
 
 // 004002E0: void __xpg_basename(Register ptr32 r28, Register word32 ra)
 void __xpg_basename(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 004002F0: void snprintf(Register ptr32 r28, Register word32 ra)
 void snprintf(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 00400300: void getpid(Register ptr32 r28, Register word32 ra)
 void getpid(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 00400310: void fgets(Register ptr32 r28, Register word32 ra)
 void fgets(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 00400320: void memcpy(Register ptr32 r28, Register word32 ra)
 void memcpy(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 00400330: void tolower(Register ptr32 r28, Register word32 ra)
 void tolower(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 00400340: void malloc(Register ptr32 r28, Register word32 ra)
 void malloc(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 00400350: void vsnprintf(Register (ptr32 word32) r1, Register word32 r2, Register word32 r3, Register word32 r4, Register ptr32 r28, Register word32 ra)
 void vsnprintf(word32 * r1, word32 r2, word32 r3, word32 r4, ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	word32 r4_278;
-	word32 r2_280;
-	word32 r3_282;
-	r25_6();
-	<anonymous> * r25_13 = *(r28 - 0x7FF0);
-	word32 r4_283;
-	word32 r2_284;
-	word32 r3_285;
-	r25_13();
-	<anonymous> * r25_19 = *(r28 - 0x7FF0);
-	word32 r4_286;
-	word32 r2_287;
-	word32 r3_288;
-	r25_19();
-	<anonymous> * r25_25 = *(r28 - 0x7FF0);
-	word32 r4_289;
-	word32 r2_290;
-	word32 r3_291;
-	r25_25();
-	<anonymous> * r25_31 = *(r28 - 0x7FF0);
-	word32 r4_292;
-	word32 r2_293;
-	word32 r3_294;
-	r25_31();
-	<anonymous> * r25_37 = *(r28 - 0x7FF0);
-	word32 r4_295;
-	word32 r2_296;
-	word32 r3_297;
-	r25_37();
-	<anonymous> * r25_43 = *(r28 - 0x7FF0);
-	word32 r4_298;
-	word32 r2_299;
-	word32 r3_300;
-	r25_43();
-	<anonymous> * r25_49 = *(r28 - 0x7FF0);
-	word32 r4_301;
-	word32 r2_302;
-	word32 r3_303;
-	r25_49();
-	<anonymous> * r25_55 = *(r28 - 0x7FF0);
-	word32 r4_304;
-	word32 r2_305;
-	word32 r3_306;
-	r25_55();
-	<anonymous> * r25_61 = *(r28 - 0x7FF0);
-	word32 r4_307;
-	word32 r2_308;
-	word32 r3_309;
-	r25_61();
-	<anonymous> * r25_67 = *(r28 - 0x7FF0);
-	word32 r4_310;
-	word32 r2_311;
-	word32 r3_312;
-	r25_67();
-	<anonymous> * r25_73 = *(r28 - 0x7FF0);
-	word32 r4_313;
-	word32 r2_314;
-	word32 r3_315;
-	r25_73();
-	<anonymous> * r25_79 = *(r28 - 0x7FF0);
-	word32 r4_316;
-	word32 r2_317;
-	word32 r3_318;
-	r25_79();
-	<anonymous> * r25_85 = *(r28 - 0x7FF0);
-	word32 r4_319;
-	word32 r2_320;
-	word32 r3_321;
-	r25_85();
-	<anonymous> * r25_91 = *(r28 - 0x7FF0);
-	word32 r4_322;
-	word32 r2_323;
-	word32 r3_324;
-	r25_91();
-	<anonymous> * r25_97 = *(r28 - 0x7FF0);
-	word32 r4_325;
-	word32 r2_326;
-	word32 r3_327;
-	r25_97();
-	<anonymous> * r25_103 = *(r28 - 0x7FF0);
-	word32 r4_328;
-	word32 r2_329;
-	word32 r3_330;
-	r25_103();
-	<anonymous> * r25_109 = *(r28 - 0x7FF0);
-	word32 r4_331;
-	word32 r2_332;
-	word32 r3_333;
-	r25_109();
-	<anonymous> * r25_115 = *(r28 - 0x7FF0);
-	word32 r4_334;
-	word32 r2_335;
-	word32 r3_336;
-	r25_115();
-	<anonymous> * r25_121 = *(r28 - 0x7FF0);
-	word32 r4_337;
-	word32 r2_338;
-	word32 r3_339;
-	r25_121();
-	<anonymous> * r25_127 = *(r28 - 0x7FF0);
-	word32 r4_340;
-	word32 r2_341;
-	word32 r3_342;
-	r25_127();
-	<anonymous> * r25_133 = *(r28 - 0x7FF0);
-	word32 r4_343;
-	word32 r2_344;
-	word32 r3_345;
-	r25_133();
-	<anonymous> * r25_139 = *(r28 - 0x7FF0);
-	word32 r4_346;
-	word32 r2_347;
-	word32 r3_348;
-	r25_139();
-	<anonymous> * r25_145 = *(r28 - 0x7FF0);
-	word32 r4_349;
-	word32 r2_350;
-	word32 r3_351;
-	r25_145();
-	<anonymous> * r25_151 = *(r28 - 0x7FF0);
-	word32 r4_352;
-	word32 r2_353;
-	word32 r3_354;
-	r25_151();
-	<anonymous> * r25_157 = *(r28 - 0x7FF0);
-	word32 r4_355;
-	word32 r2_356;
-	word32 r3_357;
-	r25_157();
-	<anonymous> * r25_163 = *(r28 - 0x7FF0);
-	word32 r4_358;
-	word32 r2_359;
-	word32 r3_360;
-	r25_163();
-	<anonymous> * r25_169 = *(r28 - 0x7FF0);
-	word32 r4_361;
-	word32 r2_362;
-	word32 r3_363;
-	r25_169();
-	<anonymous> * r25_175 = *(r28 - 0x7FF0);
-	word32 r4_364;
-	word32 r2_365;
-	word32 r3_366;
-	r25_175();
-	<anonymous> * r25_181 = *(r28 - 0x7FF0);
-	word32 r4_367;
-	word32 r2_368;
-	word32 r3_369;
-	r25_181();
-	<anonymous> * r25_187 = *(r28 - 0x7FF0);
-	word32 r4_370;
-	word32 r2_371;
-	word32 r3_372;
-	r25_187();
-	<anonymous> * r25_193 = *(r28 - 0x7FF0);
-	word32 r4_373;
-	word32 r2_374;
-	word32 r3_375;
-	r25_193();
-	<anonymous> * r25_199 = *(r28 - 0x7FF0);
-	word32 r4_376;
-	word32 r2_377;
-	word32 r3_378;
-	r25_199();
-	<anonymous> * r25_205 = *(r28 - 0x7FF0);
-	word32 r4_379;
-	word32 r2_380;
-	word32 r3_381;
-	r25_205();
-	<anonymous> * r25_211 = *(r28 - 0x7FF0);
-	word32 r4_382;
-	word32 r2_383;
-	word32 r3_384;
-	r25_211();
-	<anonymous> * r25_217 = *(r28 - 0x7FF0);
-	word32 r4_385;
-	word32 r2_386;
-	word32 r3_387;
-	r25_217();
-	<anonymous> * r25_223 = *(r28 - 0x7FF0);
-	word32 r4_388;
-	word32 r2_389;
-	word32 r3_390;
-	r25_223();
-	<anonymous> * r25_229 = *(r28 - 0x7FF0);
-	word32 r4_391;
-	word32 r2_392;
-	word32 r3_393;
-	r25_229();
-	<anonymous> * r25_235 = *(r28 - 0x7FF0);
-	word32 r4_394;
-	word32 r2_395;
-	word32 r3_396;
-	r25_235();
-	<anonymous> * r25_241 = *(r28 - 0x7FF0);
-	word32 r4_397;
-	word32 r2_398;
-	word32 r3_399;
-	r25_241();
-	<anonymous> * r25_247 = *(r28 - 0x7FF0);
-	word32 r4_400;
-	word32 r2_401;
-	word32 r3_402;
-	r25_247();
-	<anonymous> * r25_253 = *(r28 - 0x7FF0);
-	word32 r4_403;
-	word32 r2_404;
-	word32 r3_405;
-	r25_253();
-	<anonymous> * r25_259 = *(r28 - 0x7FF0);
-	word32 r4_406;
-	word32 r2_407;
-	word32 r3_408;
-	r25_259();
-	<anonymous> * r25_265 = *(r28 - 0x7FF0);
-	r25_265();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 	__do_global_dtors_aux(r1, r4, ra);
 }
 
 // 00400360: void strtoul(Register ptr32 r28, Register word32 ra)
 void strtoul(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 00400370: void socket(Register ptr32 r28, Register word32 ra)
 void socket(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 00400380: void select(Register ptr32 r28, Register word32 ra)
 void select(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 00400390: void fflush(Register ptr32 r28, Register word32 ra)
 void fflush(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 004003A0: void strncasecmp(Register ptr32 r28, Register word32 ra)
 void strncasecmp(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 004003B0: void bzero(Register ptr32 r28, Register word32 ra)
 void bzero(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 004003C0: void send(Register ptr32 r28, Register word32 ra)
 void send(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 004003D0: void accept(Register ptr32 r28, Register word32 ra)
 void accept(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 004003E0: void rename(Register ptr32 r28, Register word32 ra)
 void rename(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 004003F0: void strrchr(Register ptr32 r28, Register word32 ra)
 void strrchr(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 00400400: void fprintf(Register ptr32 r28, Register word32 ra)
 void fprintf(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 00400410: void strcat(Register ptr32 r28, Register word32 ra)
 void strcat(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 00400420: void bind(Register ptr32 r28, Register word32 ra)
 void bind(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 00400430: void inet_addr(Register ptr32 r28, Register word32 ra)
 void inet_addr(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 00400440: void signal(Register ptr32 r28, Register word32 ra)
 void signal(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 00400450: void read(Register (ptr32 word32) r1, Register word32 r2, Register word32 r3, Register word32 r4, Register ptr32 r28, Register word32 ra)
 void read(word32 * r1, word32 r2, word32 r3, word32 r4, ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	word32 r4_182;
-	word32 r2_184;
-	word32 r3_186;
-	r25_6();
-	<anonymous> * r25_13 = *(r28 - 0x7FF0);
-	word32 r4_187;
-	word32 r2_188;
-	word32 r3_189;
-	r25_13();
-	<anonymous> * r25_19 = *(r28 - 0x7FF0);
-	word32 r4_190;
-	word32 r2_191;
-	word32 r3_192;
-	r25_19();
-	<anonymous> * r25_25 = *(r28 - 0x7FF0);
-	word32 r4_193;
-	word32 r2_194;
-	word32 r3_195;
-	r25_25();
-	<anonymous> * r25_31 = *(r28 - 0x7FF0);
-	word32 r4_196;
-	word32 r2_197;
-	word32 r3_198;
-	r25_31();
-	<anonymous> * r25_37 = *(r28 - 0x7FF0);
-	word32 r4_199;
-	word32 r2_200;
-	word32 r3_201;
-	r25_37();
-	<anonymous> * r25_43 = *(r28 - 0x7FF0);
-	word32 r4_202;
-	word32 r2_203;
-	word32 r3_204;
-	r25_43();
-	<anonymous> * r25_49 = *(r28 - 0x7FF0);
-	word32 r4_205;
-	word32 r2_206;
-	word32 r3_207;
-	r25_49();
-	<anonymous> * r25_55 = *(r28 - 0x7FF0);
-	word32 r4_208;
-	word32 r2_209;
-	word32 r3_210;
-	r25_55();
-	<anonymous> * r25_61 = *(r28 - 0x7FF0);
-	word32 r4_211;
-	word32 r2_212;
-	word32 r3_213;
-	r25_61();
-	<anonymous> * r25_67 = *(r28 - 0x7FF0);
-	word32 r4_214;
-	word32 r2_215;
-	word32 r3_216;
-	r25_67();
-	<anonymous> * r25_73 = *(r28 - 0x7FF0);
-	word32 r4_217;
-	word32 r2_218;
-	word32 r3_219;
-	r25_73();
-	<anonymous> * r25_79 = *(r28 - 0x7FF0);
-	word32 r4_220;
-	word32 r2_221;
-	word32 r3_222;
-	r25_79();
-	<anonymous> * r25_85 = *(r28 - 0x7FF0);
-	word32 r4_223;
-	word32 r2_224;
-	word32 r3_225;
-	r25_85();
-	<anonymous> * r25_91 = *(r28 - 0x7FF0);
-	word32 r4_226;
-	word32 r2_227;
-	word32 r3_228;
-	r25_91();
-	<anonymous> * r25_97 = *(r28 - 0x7FF0);
-	word32 r4_229;
-	word32 r2_230;
-	word32 r3_231;
-	r25_97();
-	<anonymous> * r25_103 = *(r28 - 0x7FF0);
-	word32 r4_232;
-	word32 r2_233;
-	word32 r3_234;
-	r25_103();
-	<anonymous> * r25_109 = *(r28 - 0x7FF0);
-	word32 r4_235;
-	word32 r2_236;
-	word32 r3_237;
-	r25_109();
-	<anonymous> * r25_115 = *(r28 - 0x7FF0);
-	word32 r4_238;
-	word32 r2_239;
-	word32 r3_240;
-	r25_115();
-	<anonymous> * r25_121 = *(r28 - 0x7FF0);
-	word32 r4_241;
-	word32 r2_242;
-	word32 r3_243;
-	r25_121();
-	<anonymous> * r25_127 = *(r28 - 0x7FF0);
-	word32 r4_244;
-	word32 r2_245;
-	word32 r3_246;
-	r25_127();
-	<anonymous> * r25_133 = *(r28 - 0x7FF0);
-	word32 r4_247;
-	word32 r2_248;
-	word32 r3_249;
-	r25_133();
-	<anonymous> * r25_139 = *(r28 - 0x7FF0);
-	word32 r4_250;
-	word32 r2_251;
-	word32 r3_252;
-	r25_139();
-	<anonymous> * r25_145 = *(r28 - 0x7FF0);
-	word32 r4_253;
-	word32 r2_254;
-	word32 r3_255;
-	r25_145();
-	<anonymous> * r25_151 = *(r28 - 0x7FF0);
-	word32 r4_256;
-	word32 r2_257;
-	word32 r3_258;
-	r25_151();
-	<anonymous> * r25_157 = *(r28 - 0x7FF0);
-	word32 r4_259;
-	word32 r2_260;
-	word32 r3_261;
-	r25_157();
-	<anonymous> * r25_163 = *(r28 - 0x7FF0);
-	word32 r4_262;
-	word32 r2_263;
-	word32 r3_264;
-	r25_163();
-	<anonymous> * r25_169 = *(r28 - 0x7FF0);
-	r25_169();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
+	r25_n();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 	__do_global_dtors_aux(r1, r4, ra);
 }
 
 // 00400460: void strncmp(Register ptr32 r28, Register word32 ra)
 void strncmp(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 00400470: void strncpy(Register ptr32 r28, Register word32 ra)
 void strncpy(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 00400480: void unlink(Register ptr32 r28, Register word32 ra)
 void unlink(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 00400490: void strcasecmp(Register ptr32 r28, Register word32 ra)
 void strcasecmp(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 004004A0: void listen(Register ptr32 r28, Register word32 ra)
 void listen(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 004004B0: void fork(Register ptr32 r28, Register word32 ra)
 void fork(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 004004C0: void gettimeofday(Register ptr32 r28, Register word32 ra)
 void gettimeofday(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 004004D0: void fopen(Register ptr32 r28, Register word32 ra)
 void fopen(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 004004E0: void ftell(Register ptr32 r28, Register word32 ra)
 void ftell(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 004004F0: void fclose(Register ptr32 r28, Register word32 ra)
 void fclose(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 00400500: void inet_ntoa(Register ptr32 r28, Register word32 ra)
 void inet_ntoa(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 00400510: void time(Register ptr32 r28, Register word32 ra)
 void time(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 00400520: void strcspn(Register ptr32 r28, Register word32 ra)
 void strcspn(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 00400530: void strsep(Register ptr32 r28, Register word32 ra)
 void strsep(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 00400540: void getsockopt(Register ptr32 r28, Register word32 ra)
 void getsockopt(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 00400550: void strftime(Register ptr32 r28, Register word32 ra)
 void strftime(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 00400560: void __errno_location(Register ptr32 r28, Register word32 ra)
 void __errno_location(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 00400570: void exit(Register ptr32 r28, Register word32 ra)
 void exit(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 00400580: void gmtime(Register ptr32 r28, Register word32 ra)
 void gmtime(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 00400590: void strspn(Register ptr32 r28, Register word32 ra)
 void strspn(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 004005A0: void strlen(Register ptr32 r28, Register word32 ra)
 void strlen(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 004005B0: void __uClibc_start_main(Register ptr32 r28, Register word32 ra)
 void __uClibc_start_main(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 004005C0: void toupper(Register ptr32 r28, Register word32 ra)
 void toupper(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 004005D0: void strchr(Register ptr32 r28, Register word32 ra)
 void strchr(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 004005E0: void close(Register ptr32 r28, Register word32 ra)
 void close(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 004005F0: void strpbrk(Register ptr32 r28, Register word32 ra)
 void strpbrk(ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 }
 
 // 00400600: void free(Register (ptr32 word32) r1, Register word32 r2, Register word32 r3, Register word32 r4, Register ptr32 r28, Register word32 ra)
 void free(word32 * r1, word32 r2, word32 r3, word32 r4, ptr32 r28, word32 ra)
 {
-	<anonymous> * r25_6 = *(r28 - 0x7FF0);
-	r25_6();
+	<anonymous> * r25_n = *(r28 - 0x7FF0);
+	r25_n();
 	__do_global_dtors_aux(r1, r4, ra);
 }
 
@@ -1305,21 +1303,21 @@ void __do_global_dtors_aux(word32 * r1, word32 r4, word32 ra)
 {
 	if (globals->ptr10000878->dw0008 == 0x00)
 	{
-		<anonymous> ** r3_17 = globals->ptr10000878->ptr0004;
-		if (*r3_17 != null)
+		<anonymous> ** r3_n = globals->ptr10000878->ptr0004;
+		if (*r3_n != null)
 		{
-			<anonymous> ** r2_20 = (char *) r3_17 + 0x04;
+			<anonymous> ** r2_n = (char *) r3_n + 0x04;
 			while (true)
 			{
-				struct Eq_2087 * r1_25 = globals->ptr10000878;
-				<anonymous> * r25_23 = *r3_17;
-				r1_25->ptr0004 = r2_20;
-				r25_23();
-				r3_17 = globals->ptr10000878->ptr0004;
-				r1 = (word32 *) &r1_25->ptr0004;
-				if (*r3_17 == null)
+				struct Eq_n * r1_n = globals->ptr10000878;
+				<anonymous> * r25_n = *r3_n;
+				r1_n->ptr0004 = r2_n;
+				r25_n();
+				r3_n = globals->ptr10000878->ptr0004;
+				r1 = (word32 *) &r1_n->ptr0004;
+				if (*r3_n == null)
 					break;
-				r2_20 = (<anonymous> **) ((char *) r3_17 + 0x04);
+				r2_n = (<anonymous> **) ((char *) r3_n + 0x04);
 			}
 		}
 		if (__deregister_frame_info != null)
@@ -1356,11 +1354,11 @@ void handle_stop(word32 r1, word32 r4, word32 ra, word32 dwArg00)
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_2149 stackArg0 = <invalid>;
-	Eq_2149 stackArg4 = <invalid>;
-	Eq_2149 stackArg8 = <invalid>;
-	Eq_2149 stackArg12 = <invalid>;
-	print_log((int32 *) 0x03, (char *) globals->ptr10000880 - 0x0000622C, (char *) globals->ptr10000880 - 0x00006208, 0x0050, fp + -0x0030, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_49, out r4_50, out r5_51, out r6_52, out r7_53);
+	Eq_n stackArg0 = <invalid>;
+	Eq_n stackArg4 = <invalid>;
+	Eq_n stackArg8 = <invalid>;
+	Eq_n stackArg12 = <invalid>;
+	print_log((int32 *) 0x03, 0x00409DD4, 4234744, 0x0050, fp + -0x0030, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 	*globals->ptr100008C0 = 0x01;
 }
 
@@ -1375,19 +1373,19 @@ void handle_log_rotate(word32 r4, word32 r30, word32 ra, word32 dwArg00)
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_2149 stackArg0 = <invalid>;
-	Eq_2149 stackArg4 = <invalid>;
-	Eq_2149 stackArg8 = <invalid>;
-	Eq_2149 stackArg12 = <invalid>;
-	print_log((int32 *) 0x03, (char *) globals->ptr10000880 - 0x000061FC, (char *) globals->ptr10000880 - 25040, 0x005A, fp + -0x0030, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_53, out r4_26, out r5_28, out r6_29, out r7_30);
+	Eq_n stackArg0 = <invalid>;
+	Eq_n stackArg4 = <invalid>;
+	Eq_n stackArg8 = <invalid>;
+	Eq_n stackArg12 = <invalid>;
+	print_log((int32 *) 0x03, 0x00409E04, 0x00409E30, 0x005A, fp + -0x0030, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 	log_rotate(fp + -0x0030, ra);
 }
 
-// 004008D0: void main(Register int32 r4, Register (arr Eq_2149) r5, Register word32 r16, Register word32 r30, Register word32 ra, Stack word32 dwArg00, Stack word32 dwArg04)
-void main(int32 r4, Eq_2149 r5[], word32 r16, word32 r30, word32 ra, word32 dwArg00, word32 dwArg04)
+// 004008D0: void main(Register int32 r4, Register (arr Eq_n) r5, Register word32 r16, Register word32 r30, Register word32 ra, Stack word32 dwArg00, Stack word32 dwArg04)
+void main(int32 r4, Eq_n r5[], word32 r16, word32 r30, word32 ra, word32 dwArg00, word32 dwArg04)
 {
-	FILE ** r1_24 = globals->ptr10000A20;
-	*r1_24 = *globals->ptr10000914;
+	FILE ** r1_n = globals->ptr10000A20;
+	*r1_n = *globals->ptr10000914;
 	signal(0x02, handle_stop);
 	signal(0x01, handle_log_rotate);
 	// Failed to bind call argument.
@@ -1395,71 +1393,71 @@ void main(int32 r4, Eq_2149 r5[], word32 r16, word32 r30, word32 ra, word32 dwAr
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	stackArg0.u0 = <invalid>;
-	Eq_2149 stackArg4 = <invalid>;
-	word32 r6_59;
-	word32 r7_61;
-	properties_load(r5[0x00], 0x00, (char *) fp - 0x01A0, ra, stackArg0, stackArg4, out r3_60, out r6_59, out r7_61);
+	Eq_n stackArg4 = <invalid>;
+	word32 r6_n;
+	word32 r7_n;
+	properties_load(r5[0x00], 0x00, (char *) fp - 0x01A0, ra, stackArg0, stackArg4, out r3_n, out r6_n, out r7_n);
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	stackArg0.u0 = <invalid>;
-	Eq_2149 stackArg4 = <invalid>;
-	word32 r4_67;
-	word32 r5_68;
-	word32 r6_70;
-	word32 r7_72;
-	word32 r3_71 = properties_parse_command_line(r1_24, r4, r5, r6_59, r7_61, r16, (char *) fp - 0x01A0, ra, stackArg0, stackArg4, out r4_67, out r5_68, out r6_70, out r7_72);
-	dwLoc0160_1349 = 0x02;
-	word32 r2_75 = globals->ptr10000A40->dw04BC;
-	if (r2_75 != 0x00)
+	Eq_n stackArg4 = <invalid>;
+	word32 r4_n;
+	word32 r5_n;
+	word32 r6_n;
+	word32 r7_n;
+	word32 r3_n = properties_parse_command_line(r1_n, r4, r5, r6_n, r7_n, r16, (char *) fp - 0x01A0, ra, stackArg0, stackArg4, out r4_n, out r5_n, out r6_n, out r7_n);
+	dwLoc0160_n = 0x02;
+	word32 r2_n = globals->ptr10000A40->dw04BC;
+	if (r2_n != 0x00)
 	{
-		word32 r2_80;
+		word32 r2_n;
 		fork();
-		dwLoc2C_1350 = r2_80;
-		if (r2_80 != 0x00)
+		dwLoc2C_n = r2_n;
+		if (r2_n != 0x00)
 			exit(0x00);
 		close(0x00);
 		close(0x01);
 		close(0x02);
 	}
-	struct Eq_2331 * r2_141 = globals->ptr10000A40;
-	if (r2_141 != (struct Eq_2331 *) 0x0695 && (word32) r2_141->b0695 != 0x00)
+	struct Eq_n * r2_n = globals->ptr10000A40;
+	if (r2_n != (struct Eq_n *) 0x0695 && (word32) r2_n->b0695 != 0x00)
 	{
-		FILE * r2_158 = fopen(&r2_141->b0695, (char *) globals->ptr10000880 - 25020);
-		dwLoc2C_1369 = r2_158;
-		if (r2_158 != null)
+		FILE * r2_n = fopen(&r2_n->b0695, "w");
+		dwLoc2C_n = r2_n;
+		if (r2_n != null)
 		{
 			getpid();
-			fprintf(r2_158, (char *) globals->ptr10000880 - 0x000061B8, 0x00);
-			fclose(r2_158);
+			fprintf(r2_n, "%d\n", 0x00);
+			fclose(r2_n);
 		}
 	}
 	*globals->ptr100008F4 = (time_t *) globals->ptr10000A40->t038C;
-	*globals->ptr100008A0 = (union Eq_2149 *) ((char *) &globals->ptr10000A40->t038C + 0x0011);
+	*globals->ptr100008A0 = (union Eq_n *) ((char *) &globals->ptr10000A40->t038C + 0x0011);
 	*globals->ptr10000A28 = globals->ptr10000A40->dw0684 << 0x0A;
-	time_t * r1_218 = globals->ptr1000090C;
-	*r1_218 = (int32) globals->ptr10000A40->t05EC;
+	time_t * r1_n = globals->ptr1000090C;
+	*r1_n = (int32) globals->ptr10000A40->t05EC;
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	stackArg0.u0 = <invalid>;
-	word32 r5_231;
-	word32 r6_234;
-	word32 r7_238;
-	Eq_2149 r2_246;
+	word32 r5_n;
+	word32 r6_n;
+	word32 r7_n;
+	Eq_n r2_n;
 	__xpg_basename();
-	struct Eq_2331 * r2_252 = globals->ptr10000A40;
-	int32 r2_274 = *globals->ptr10000A28;
-	dwLoc0190_1380 = (char *) &(r2_252->a0004 + 0x01)->ptr0000 + 0x01;
-	word32 r2_256 = globals->ptr10000A40->dw012C;
-	word32 r2_259 = globals->ptr10000A40->dw01C4;
-	struct Eq_2331 * r2_261 = globals->ptr10000A40;
-	word32 r2_265 = globals->ptr10000A40->dw02F4;
-	Eq_2149 r2_268 = *globals->ptr100008A0;
-	Eq_2156 r2_271 = *globals->ptr100008F4;
-	dwLoc20_1387 = r2_274;
-	if (r2_274 < 0x00)
-		dwLoc20_1388 = r2_274 + 0x03FF;
+	struct Eq_n * r2_n = globals->ptr10000A40;
+	int32 r2_n = *globals->ptr10000A28;
+	dwLoc0190_n = (char *) &(r2_n->a0004 + 0x01)->ptr0000 + 0x01;
+	word32 r2_n = globals->ptr10000A40->dw012C;
+	word32 r2_n = globals->ptr10000A40->dw01C4;
+	struct Eq_n * r2_n = globals->ptr10000A40;
+	word32 r2_n = globals->ptr10000A40->dw02F4;
+	Eq_n r2_n = *globals->ptr100008A0;
+	Eq_n r2_n = *globals->ptr100008F4;
+	dwLoc20_n = r2_n;
+	if (r2_n < 0x00)
+		dwLoc20_n = r2_n + 0x03FF;
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
@@ -1468,18 +1466,18 @@ void main(int32 r4, Eq_2149 r5[], word32 r16, word32 r30, word32 ra, word32 dwAr
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_2149 r2_288 = globals->ptr10000A40->t0554;
-	Eq_2149 stackArg0 = <invalid>;
+	Eq_n r2_n = globals->ptr10000A40->t0554;
+	Eq_n stackArg0 = <invalid>;
 	stackArg4.u0 = <invalid>;
-	Eq_2149 stackArg8 = <invalid>;
+	Eq_n stackArg8 = <invalid>;
 	stackArg12.u0 = <invalid>;
-	print_log((int32 *) 0x03, (char *) globals->ptr10000880 - 25008, r2_246, *globals->ptr10000A60, (char *) fp - 0x01A0, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_306, out r4_300, out r5_301, out r6_304, out r7_307);
-	int32 dwLoc0174_1390 = dwLoc20_1389 >> 0x0A;
-	struct Eq_2536 * r2_313 = clist_new((char *) fp - 0x01A0, ra, out r3_315, out r4_311, out r5_312, out r6_314, out r7_316);
-	if (r2_313 != null)
+	print_log((int32 *) 0x03, 4234832, r2_n, *globals->ptr10000A60, (char *) fp - 0x01A0, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+	int32 dwLoc0174_n = dwLoc20_n >> 0x0A;
+	struct Eq_n * r2_n = clist_new((char *) fp - 0x01A0, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+	if (r2_n != null)
 	{
-		Eq_2149 r2_343 = slist_new((char *) fp - 0x01A0, ra, out r3_348);
-		if (r2_343 != 0x00)
+		Eq_n r2_n = slist_new((char *) fp - 0x01A0, ra, out r3_n);
+		if (r2_n != 0x00)
 		{
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
@@ -1495,14 +1493,14 @@ void main(int32 r4, Eq_2149 r5[], word32 r16, word32 r30, word32 ra, word32 dwAr
 			// Please report this issue at https://github.com/uxmal/reko
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			Eq_2149 stackArg0 = <invalid>;
+			Eq_n stackArg0 = <invalid>;
 			stackArg4.u0 = <invalid>;
-			Eq_2149 stackArg6 = <invalid>;
+			Eq_n stackArg6 = <invalid>;
 			stackArg8.u0 = <invalid>;
-			Eq_2149 stackArg12 = <invalid>;
-			Eq_2149 stackArg0 = <invalid>;
+			Eq_n stackArg12 = <invalid>;
+			Eq_n stackArg0 = <invalid>;
 			stackArg4.u0 = <invalid>;
-			slist_add(r2_343, server_new((char *) &(globals->ptr10000A40->a0004 + 0x01)->ptr0000 + 0x01, globals->ptr10000A40->dw012C, globals->ptr10000A40->t0554, 0x00, (char *) fp - 0x01A0, ra, stackArg0, stackArg4, stackArg6, stackArg8, stackArg12, out r3_386, out r6_384, out r7_387), stackArg0, stackArg4, out r3_398);
+			slist_add(r2_n, server_new((char *) &(globals->ptr10000A40->a0004 + 0x01)->ptr0000 + 0x01, globals->ptr10000A40->dw012C, globals->ptr10000A40->t0554, 0x00, (char *) fp - 0x01A0, ra, stackArg0, stackArg4, stackArg6, stackArg8, stackArg12, out r3_n, out r6_n, out r7_n), stackArg0, stackArg4, out r3_n);
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
 			// Failed to bind call argument.
@@ -1518,121 +1516,121 @@ void main(int32 r4, Eq_2149 r5[], word32 r16, word32 r30, word32 ra, word32 dwAr
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
 			stackArg0.u0 = <invalid>;
-			Eq_2149 stackArg4 = <invalid>;
+			Eq_n stackArg4 = <invalid>;
 			stackArg6.u0 = <invalid>;
-			Eq_2149 stackArg8 = <invalid>;
+			Eq_n stackArg8 = <invalid>;
 			stackArg12.u0 = <invalid>;
-			Eq_2149 r2_412 = server_new((char *) &(globals->ptr10000A40->a0004 + 0x01)->ptr0000 + 0x01, globals->ptr10000A40->dw01C4, globals->ptr10000A40->t0554, 0x01, (char *) fp - 0x01A0, ra, stackArg0, stackArg4, stackArg6, stackArg8, stackArg12, out r3_414, out r6_413, out r7_415);
-			Eq_2149 stackArg0 = <invalid>;
+			Eq_n r2_n = server_new((char *) &(globals->ptr10000A40->a0004 + 0x01)->ptr0000 + 0x01, globals->ptr10000A40->dw01C4, globals->ptr10000A40->t0554, 0x01, (char *) fp - 0x01A0, ra, stackArg0, stackArg4, stackArg6, stackArg8, stackArg12, out r3_n, out r6_n, out r7_n);
+			Eq_n stackArg0 = <invalid>;
 			stackArg4.u0 = <invalid>;
-			slist_add(r2_343, r2_412, stackArg0, stackArg4, out r3_2434);
+			slist_add(r2_n, r2_n, stackArg0, stackArg4, out r3_n);
 			bzero((char *) fp - 0x0148, 0x0010);
-			word32 r2_444 = (word32) globals->ptr10000A40->w02F6;
-			Eq_2149 r7_439 = <invalid>;
-			Eq_2149 r3_438 = <invalid>;
-			Eq_2149 r6_437 = <invalid>;
-			Eq_2149 r5_435 = <invalid>;
-			word16 wLoc0146_1457 = (word16) r2_444;
-			word32 r2_452;
+			word32 r2_n = (word32) globals->ptr10000A40->w02F6;
+			Eq_n r7_n = <invalid>;
+			Eq_n r3_n = <invalid>;
+			Eq_n r6_n = <invalid>;
+			Eq_n r5_n = <invalid>;
+			word16 wLoc0146_n = (word16) r2_n;
+			word32 r2_n;
 			inet_addr();
-			dwLoc0150_1459 = *((word32) r2_343 + 0x08);
+			dwLoc0150_n = *((word32) r2_n + 0x08);
 			while (true)
 			{
-				r28_465 = 0x10008860;
-				if (dwLoc0150_1460 == null)
+				r28_n = 0x10008860;
+				if (dwLoc0150_n == null)
 					break;
 				// Failed to bind call argument.
 				// Please report this issue at https://github.com/uxmal/reko
 				stackArg0.u0 = <invalid>;
-				if (server_open(dwLoc0150_1460, r16, (char *) fp - 0x01A0, ra, stackArg0, out r3_479, out r5_473, out r6_477, out r7_481) == 0x00)
+				if (server_open(dwLoc0150_n, r16, (char *) fp - 0x01A0, ra, stackArg0, out r3_n, out r5_n, out r6_n, out r7_n) == 0x00)
 				{
 					exit(-0x01);
-					r5_1306 = r5_487;
-					r6_1308 = r6_489;
-					r3_1309 = r3_490;
-					r7_1310 = r7_491;
+					r5_n = r5_n;
+					r6_n = r6_n;
+					r3_n = r3_n;
+					r7_n = r7_n;
 				}
-				dwLoc0150_1487 = dwLoc0150_1460->dw0018;
+				dwLoc0150_n = dwLoc0150_n->dw0018;
 			}
-			r16_509 = r16;
+			r16_n = r16;
 			while (true)
 			{
-				word32 r2_501 = **(r28_498 - 0x7FA0);
-				if (r2_501 != 0x00)
+				word32 r2_n = **(r28_n - 0x7FA0);
+				if (r2_n != 0x00)
 					break;
-				<anonymous> * r25_505 = *(r28_498 - 0x7F30);
-				word32 r2_513;
-				r25_505();
-				dwLoc0160_1488 = 0x00;
-				dwLoc30_1514 = r2_513;
-				dwLoc2C_1516 = 0x00;
-				while ((word32) (dwLoc2C_1517 < 0x0020) != 0x00)
+				<anonymous> * r25_n = *(r28_n - 0x7F30);
+				word32 r2_n;
+				r25_n();
+				dwLoc0160_n = 0x00;
+				dwLoc30_n = r2_n;
+				dwLoc2C_n = 0x00;
+				while ((word32) (dwLoc2C_n < 0x0020) != 0x00)
 				{
-					fp->aFFFFFED0[dwLoc2C_1517] = 0x00;
-					dwLoc2C_1519 = (word32) dwLoc2C_1517.u1 + 0x01;
+					fp->aFFFFFED0[dwLoc2C_n] = 0x00;
+					dwLoc2C_n = (word32) dwLoc2C_n.u1 + 0x01;
 				}
-				dwLoc2C_1520 = (ptr32) fp->aFFFFFF50;
-				dwLoc28_1521 = 0x00;
-				while ((word32) (dwLoc28_1522 < 0x0020) != 0x00)
+				dwLoc2C_n = (ptr32) fp->aFFFFFF50;
+				dwLoc28_n = 0x00;
+				while ((word32) (dwLoc28_n < 0x0020) != 0x00)
 				{
-					fp->aFFFFFF50[dwLoc28_1522] = 0x00;
-					dwLoc28_1524 = (word32) dwLoc28_1522.u1 + 0x01;
+					fp->aFFFFFF50[dwLoc28_n] = 0x00;
+					dwLoc28_n = (word32) dwLoc28_n.u1 + 0x01;
 				}
-				dwLoc0150_1527 = *((word32) r2_343 + 0x08);
-				while (dwLoc0150_1528 != null)
+				dwLoc0150_n = *((word32) r2_n + 0x08);
+				while (dwLoc0150_n != null)
 				{
-					Eq_2829 r2_560 = dwLoc0150_1528->t0000;
-					fp->aFFFFFED0[r2_560 >> 0x05] |= 0x01 << (word32) dwLoc0150_1528->t0000 + 0x001F;
-					if ((word32) (dwLoc0160_1529 < dwLoc0150_1528->t0000) != 0x00)
-						dwLoc0160_1530 = dwLoc0150_1528->t0000;
-					dwLoc0150_1532 = dwLoc0150_1528->dw0018;
+					Eq_n r2_n = dwLoc0150_n->t0000;
+					fp->aFFFFFED0[r2_n >> 0x05] |= 0x01 << (word32) dwLoc0150_n->t0000 + 0x001F;
+					if ((word32) (dwLoc0160_n < dwLoc0150_n->t0000) != 0x00)
+						dwLoc0160_n = dwLoc0150_n->t0000;
+					dwLoc0150_n = dwLoc0150_n->dw0018;
 				}
-				dwLoc0158_1537 = r2_313->t0008;
-				while (dwLoc0158_1538 != null)
+				dwLoc0158_n = r2_n->t0008;
+				while (dwLoc0158_n != null)
 				{
-					if (dwLoc0158_1538->t0000 >= 0x00)
+					if (dwLoc0158_n->t0000 >= 0x00)
 					{
-						if ((word32) (dwLoc0160_1539 < dwLoc0158_1538->t0000) != 0x00)
-							dwLoc0160_1540 = dwLoc0158_1538->t0000;
-						if (dwLoc0158_1538->dw0FAC == 0x00)
+						if ((word32) (dwLoc0160_n < dwLoc0158_n->t0000) != 0x00)
+							dwLoc0160_n = dwLoc0158_n->t0000;
+						if (dwLoc0158_n->dw0FAC == 0x00)
 						{
-							Eq_2897 r2_629 = dwLoc0158_1538->t0000;
-							fp->aFFFFFED0[r2_629 >> 0x05] |= 0x01 << (word32) dwLoc0158_1538->t0000 + 0x001F;
+							Eq_n r2_n = dwLoc0158_n->t0000;
+							fp->aFFFFFED0[r2_n >> 0x05] |= 0x01 << (word32) dwLoc0158_n->t0000 + 0x001F;
 						}
 						else
 						{
-							Eq_2897 r2_610 = dwLoc0158_1538->t0000;
-							fp->aFFFFFF50[r2_610 >> 0x05] |= 0x01 << (word32) dwLoc0158_1538->t0000 + 0x001F;
+							Eq_n r2_n = dwLoc0158_n->t0000;
+							fp->aFFFFFF50[r2_n >> 0x05] |= 0x01 << (word32) dwLoc0158_n->t0000 + 0x001F;
 						}
 					}
-					if (dwLoc0158_1538->t0004 >= 0x00)
+					if (dwLoc0158_n->t0004 >= 0x00)
 					{
-						if ((word32) (dwLoc0160_1543 < dwLoc0158_1538->t0004) != 0x00)
-							dwLoc0160_1545 = dwLoc0158_1538->t0004;
-						if (dwLoc0158_1538->dw178C == 0x00)
+						if ((word32) (dwLoc0160_n < dwLoc0158_n->t0004) != 0x00)
+							dwLoc0160_n = dwLoc0158_n->t0004;
+						if (dwLoc0158_n->dw178C == 0x00)
 						{
-							Eq_2986 r2_682 = dwLoc0158_1538->t0004;
-							fp->aFFFFFED0[r2_682 >> 0x05] |= 0x01 << (word32) dwLoc0158_1538->t0004 + 0x001F;
+							Eq_n r2_n = dwLoc0158_n->t0004;
+							fp->aFFFFFED0[r2_n >> 0x05] |= 0x01 << (word32) dwLoc0158_n->t0004 + 0x001F;
 						}
 						else
 						{
-							Eq_2986 r2_663 = dwLoc0158_1538->t0004;
-							fp->aFFFFFF50[r2_663 >> 0x05] |= 0x01 << (word32) dwLoc0158_1538->t0004 + 0x001F;
+							Eq_n r2_n = dwLoc0158_n->t0004;
+							fp->aFFFFFF50[r2_n >> 0x05] |= 0x01 << (word32) dwLoc0158_n->t0004 + 0x001F;
 						}
 					}
-					dwLoc0158_1548 = dwLoc0158_1538->dw17B8;
+					dwLoc0158_n = dwLoc0158_n->dw17B8;
 				}
-				int32 r2_753;
+				int32 r2_n;
 				select();
-				dwLoc0190_1549 = 0x00;
-				if (r2_753 < 0x00)
+				dwLoc0190_n = 0x00;
+				if (r2_n < 0x00)
 				{
-					r7_774.u0 = <invalid>;
-					r6_772.u0 = <invalid>;
-					r5_770.u0 = <invalid>;
-					r28_775 = 0x10008860;
-					r3_776 = *__errno_location();
-					if (r3_776 == 0x04)
+					r7_n.u0 = <invalid>;
+					r6_n.u0 = <invalid>;
+					r5_n.u0 = <invalid>;
+					r28_n = 0x10008860;
+					r3_n = *__errno_location();
+					if (r3_n == 0x04)
 						continue;
 					// Failed to bind call argument.
 					// Please report this issue at https://github.com/uxmal/reko
@@ -1642,42 +1640,42 @@ void main(int32 r4, Eq_2149 r5[], word32 r16, word32 r30, word32 ra, word32 dwAr
 					// Please report this issue at https://github.com/uxmal/reko
 					// Failed to bind call argument.
 					// Please report this issue at https://github.com/uxmal/reko
-					int32 * r2_782 = __errno_location();
+					int32 * r2_n = __errno_location();
 					stackArg0.u0 = <invalid>;
 					stackArg4.u0 = <invalid>;
-					Eq_2149 stackArg8 = <invalid>;
+					Eq_n stackArg8 = <invalid>;
 					stackArg12.u0 = <invalid>;
-					print_log(null, (char *) globals->ptr10000880 - 24912, *r2_782, strerror(*__errno_location()), (char *) fp - 0x01A0, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_2445, out r4_2446, out r5_2447, out r6_2448, out r7_2449);
+					print_log(null, 0x00409EB0, *r2_n, strerror(*__errno_location()), (char *) fp - 0x01A0, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 					exit(-0x01);
-					r16_787 = r2_782;
-					r5_1332 = r5_825;
-					r6_1335 = r6_827;
-					r7_1338 = r7_829;
-					r3_1341 = r3_828;
+					r16_n = r2_n;
+					r5_n = r5_n;
+					r6_n = r6_n;
+					r7_n = r7_n;
+					r3_n = r3_n;
 				}
-				r28_1321 = 0x10008860;
-				dwLoc0150_1771 = *((word32) r2_343 + 0x08);
-				while (dwLoc0150_1772 != null)
+				r28_n = 0x10008860;
+				dwLoc0150_n = *((word32) r2_n + 0x08);
+				while (dwLoc0150_n != null)
 				{
-					uint32 r2_846 = dwLoc0150_1772->dw0000;
-					r3_847 = r2_846 + 0x1F;
-					if (fp->aFFFFFED0[dwLoc0150_1772->dw0000 >> 0x05] >> r2_846 + 0x1F != 0x01)
+					uint32 r2_n = dwLoc0150_n->dw0000;
+					r3_n = r2_n + 0x1F;
+					if (fp->aFFFFFED0[dwLoc0150_n->dw0000 >> 0x05] >> r2_n + 0x1F != 0x01)
 					{
-						<anonymous> * r25_861 = *(r28_860 - 32552);
-						Eq_2149 r2_868;
-						r25_861();
-						r28_873 = 0x10008860;
-						dwLoc015C_1801 = r2_868;
-						if (r2_868 != 0x00)
+						<anonymous> * r25_n = *(r28_n - 32552);
+						Eq_n r2_n;
+						r25_n();
+						r28_n = 0x10008860;
+						dwLoc015C_n = r2_n;
+						if (r2_n != 0x00)
 						{
 							// Failed to bind call argument.
 							// Please report this issue at https://github.com/uxmal/reko
 							// Failed to bind call argument.
 							// Please report this issue at https://github.com/uxmal/reko
-							Eq_2149 stackArg0 = <invalid>;
+							Eq_n stackArg0 = <invalid>;
 							stackArg4.u0 = <invalid>;
-							r28_886 = 0x10008860;
-							if (clist_add(r2_313, r2_868, stackArg0, stackArg4, out r3_884, out r5_881, out r6_883, out r7_885) == 0x00)
+							r28_n = 0x10008860;
+							if (clist_add(r2_n, r2_n, stackArg0, stackArg4, out r3_n, out r5_n, out r6_n, out r7_n) == 0x00)
 							{
 								// Failed to bind call argument.
 								// Please report this issue at https://github.com/uxmal/reko
@@ -1689,170 +1687,170 @@ void main(int32 r4, Eq_2149 r5[], word32 r16, word32 r30, word32 ra, word32 dwAr
 								// Please report this issue at https://github.com/uxmal/reko
 								// Failed to bind call argument.
 								// Please report this issue at https://github.com/uxmal/reko
-								Eq_2149 stackArg0 = <invalid>;
+								Eq_n stackArg0 = <invalid>;
 								stackArg4.u0 = <invalid>;
 								stackArg8.u0 = <invalid>;
 								stackArg12.u0 = <invalid>;
 								stackArg0.u0 = <invalid>;
-								r3_909 = client_destroy(print_log((int32 *) 0x01, (char *) globals->ptr10000880 - 24884, (char *) globals->ptr10000880 - 24840, 224, (char *) fp - 0x01A0, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_899, out r4_2457, out r5_896, out r6_898, out r7_900), r2_868, (char *) fp - 0x01A0, ra, stackArg0, out r5_906, out r6_908, out r7_910);
-								r28_911 = 0x10008860;
+								r3_n = client_destroy(print_log((int32 *) 0x01, 0x00409ECC, 4235000, 224, (char *) fp - 0x01A0, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n), r2_n, (char *) fp - 0x01A0, ra, stackArg0, out r5_n, out r6_n, out r7_n);
+								r28_n = 0x10008860;
 							}
 						}
 					}
-					dwLoc0150_1803 = dwLoc0150_1772->dw0018;
+					dwLoc0150_n = dwLoc0150_n->dw0018;
 				}
-				dwLoc0158_1804 = r2_313->t0008;
-				while (dwLoc0158_1805 != 0x00)
+				dwLoc0158_n = r2_n->t0008;
+				while (dwLoc0158_n != 0x00)
 				{
-					if (dwLoc0158_1805 != 0x00 && *dwLoc0158_1805 >= 0x00)
+					if (dwLoc0158_n != 0x00 && *dwLoc0158_n >= 0x00)
 					{
-						Eq_2149 r2_933 = *dwLoc0158_1805;
-						r3_934 = (word32) r2_933 + 0x001F;
-						int32 r2_936 = fp->aFFFFFED0[*dwLoc0158_1805 >> 0x05] >> (word32) r2_933 + 0x001F;
-						if (r2_936 != 0x01)
+						Eq_n r2_n = *dwLoc0158_n;
+						r3_n = (word32) r2_n + 0x001F;
+						int32 r2_n = fp->aFFFFFED0[*dwLoc0158_n >> 0x05] >> (word32) r2_n + 0x001F;
+						if (r2_n != 0x01)
 						{
-							<anonymous> * r25_940 = *(r28_939 - 0x7EF8);
-							r25_940();
-							r28_955 = 0x10008860;
-							if (*((word32) dwLoc0158_1805 + 2008) <= 0x00)
+							<anonymous> * r25_n = *(r28_n - 0x7EF8);
+							r25_n();
+							r28_n = 0x10008860;
+							if (*((word32) dwLoc0158_n + 2008) <= 0x00)
 							{
-								if (*dwLoc0158_1805 >= 0x00)
+								if (*dwLoc0158_n >= 0x00)
 								{
-									close(*dwLoc0158_1805);
-									dwLoc0158_1805->u0 = -0x01;
-									r7_992.u0 = <invalid>;
-									r6_990.u0 = <invalid>;
-									r5_988.u0 = <invalid>;
-									r28_993 = 0x10008860;
-									r3_994 = dwLoc0158_1805;
+									close(*dwLoc0158_n);
+									dwLoc0158_n->u0 = -0x01;
+									r7_n.u0 = <invalid>;
+									r6_n.u0 = <invalid>;
+									r5_n.u0 = <invalid>;
+									r28_n = 0x10008860;
+									r3_n = dwLoc0158_n;
 								}
 							}
 							else
 							{
-								<anonymous> * r2_959 = *((word32) dwLoc0158_1805 + 6080);
-								r2_959();
+								<anonymous> * r2_n = *((word32) dwLoc0158_n + 6080);
+								r2_n();
 								// Failed to bind call argument.
 								// Please report this issue at https://github.com/uxmal/reko
 								stackArg0.u0 = <invalid>;
-								dwLoc1C_1835 = r2_959;
-								r3_978 = client_send_request(dwLoc0158_1805, (char *) fp - 0x01A0, ra, stackArg0, out r5_975, out r6_977, out r7_979);
-								r28_980 = 0x10008860;
+								dwLoc1C_n = r2_n;
+								r3_n = client_send_request(dwLoc0158_n, (char *) fp - 0x01A0, ra, stackArg0, out r5_n, out r6_n, out r7_n);
+								r28_n = 0x10008860;
 							}
 						}
 					}
-					if (dwLoc0158_1805 != 0x00 && *((word32) dwLoc0158_1805 + 0x04) >= 0x00)
+					if (dwLoc0158_n != 0x00 && *((word32) dwLoc0158_n + 0x04) >= 0x00)
 					{
-						Eq_2149 r2_1009 = *((word32) dwLoc0158_1805 + 0x04);
-						r3_1010 = (word32) r2_1009 + 0x001F;
-						int32 r2_1012 = fp->aFFFFFED0[*((word32) dwLoc0158_1805 + 0x04) >> 0x05] >> (word32) r2_1009 + 0x001F;
-						if (r2_1012 != 0x01)
+						Eq_n r2_n = *((word32) dwLoc0158_n + 0x04);
+						r3_n = (word32) r2_n + 0x001F;
+						int32 r2_n = fp->aFFFFFED0[*((word32) dwLoc0158_n + 0x04) >> 0x05] >> (word32) r2_n + 0x001F;
+						if (r2_n != 0x01)
 						{
-							<anonymous> * r25_1016 = *(r28_1015 - 32272);
-							r25_1016();
-							r28_1031 = 0x10008860;
-							if (*((word32) dwLoc0158_1805 + 0x0000178C) <= 0x00)
+							<anonymous> * r25_n = *(r28_n - 32272);
+							r25_n();
+							r28_n = 0x10008860;
+							if (*((word32) dwLoc0158_n + 0x0000178C) <= 0x00)
 							{
-								if (*((word32) dwLoc0158_1805 + 0x04) >= 0x00)
+								if (*((word32) dwLoc0158_n + 0x04) >= 0x00)
 								{
-									close(*((word32) dwLoc0158_1805 + 0x04));
-									((word32) dwLoc0158_1805 + 0x04)->u0 = -0x01;
-									r7_1058.u0 = <invalid>;
-									r6_1056.u0 = <invalid>;
-									r5_1054.u0 = <invalid>;
-									r28_1059 = 0x10008860;
-									r3_1060 = dwLoc0158_1805;
+									close(*((word32) dwLoc0158_n + 0x04));
+									((word32) dwLoc0158_n + 0x04)->u0 = -0x01;
+									r7_n.u0 = <invalid>;
+									r6_n.u0 = <invalid>;
+									r5_n.u0 = <invalid>;
+									r28_n = 0x10008860;
+									r3_n = dwLoc0158_n;
 								}
 							}
 							else
 							{
-								void (* r2_1035)(struct Eq_3839 *, ptr32, word32, Eq_2149) = *((word32) dwLoc0158_1805 + 0x000017C4);
-								r2_1035();
-								dwLoc18_1868 = r2_1035;
-								r28_1046 = 0x10008860;
+								void (* r2_n)(struct Eq_n *, ptr32, word32, Eq_n) = *((word32) dwLoc0158_n + 0x000017C4);
+								r2_n();
+								dwLoc18_n = r2_n;
+								r28_n = 0x10008860;
 							}
 						}
 					}
-					if (dwLoc0158_1805 != 0x00 && *dwLoc0158_1805 >= 0x00)
+					if (dwLoc0158_n != 0x00 && *dwLoc0158_n >= 0x00)
 					{
-						Eq_2149 r2_1075 = *dwLoc0158_1805;
-						r3_1076 = (word32) r2_1075 + 0x001F;
-						if (fp->aFFFFFF50[*dwLoc0158_1805 >> 0x05] >> (word32) r2_1075 + 0x001F != 0x01)
+						Eq_n r2_n = *dwLoc0158_n;
+						r3_n = (word32) r2_n + 0x001F;
+						if (fp->aFFFFFF50[*dwLoc0158_n >> 0x05] >> (word32) r2_n + 0x001F != 0x01)
 						{
-							void (* r2_1081)(struct Eq_3839 *, ptr32, word32, Eq_2149) = *((word32) dwLoc0158_1805 + 0x000017C4);
-							r2_1081();
-							dwLoc14_1872 = r2_1081;
-							r28_1100 = 0x10008860;
+							void (* r2_n)(struct Eq_n *, ptr32, word32, Eq_n) = *((word32) dwLoc0158_n + 0x000017C4);
+							r2_n();
+							dwLoc14_n = r2_n;
+							r28_n = 0x10008860;
 						}
 					}
-					if (dwLoc0158_1805 != 0x00 && *((word32) dwLoc0158_1805 + 0x04) >= 0x00)
+					if (dwLoc0158_n != 0x00 && *((word32) dwLoc0158_n + 0x04) >= 0x00)
 					{
-						Eq_2149 r2_1113 = *((word32) dwLoc0158_1805 + 0x04);
-						r3_1114 = (word32) r2_1113 + 0x001F;
-						int32 r2_1116 = fp->aFFFFFF50[*((word32) dwLoc0158_1805 + 0x04) >> 0x05] >> (word32) r2_1113 + 0x001F;
-						if (r2_1116 != 0x01)
+						Eq_n r2_n = *((word32) dwLoc0158_n + 0x04);
+						r3_n = (word32) r2_n + 0x001F;
+						int32 r2_n = fp->aFFFFFF50[*((word32) dwLoc0158_n + 0x04) >> 0x05] >> (word32) r2_n + 0x001F;
+						if (r2_n != 0x01)
 						{
-							<anonymous> * r25_1120 = *(r28_1119 - 32432);
-							r25_1120();
-							r28_1135 = 0x10008860;
+							<anonymous> * r25_n = *(r28_n - 32432);
+							r25_n();
+							r28_n = 0x10008860;
 						}
 					}
-					if (dwLoc0158_1805 != 0x00)
+					if (dwLoc0158_n != 0x00)
 					{
-						if (*((word32) dwLoc0158_1805 + 0x04) < 0x00)
+						if (*((word32) dwLoc0158_n + 0x04) < 0x00)
 						{
-							r2_1142 = *dwLoc0158_1805;
-							if (r2_1142 >= 0x00)
+							r2_n = *dwLoc0158_n;
+							if (r2_n >= 0x00)
 								goto l004019C0;
 							goto l00401A80;
 						}
 l004019C0:
-						if (*((word32) dwLoc0158_1805 + 0x04) < 0x00 && *dwLoc0158_1805 >= 0x00)
+						if (*((word32) dwLoc0158_n + 0x04) < 0x00 && *dwLoc0158_n >= 0x00)
 						{
-							r2_1150 = (int32) *((word32) dwLoc0158_1805 + 0x0000178C);
-							if (r2_1150 > 0x00)
+							r2_n = (int32) *((word32) dwLoc0158_n + 0x0000178C);
+							if (r2_n > 0x00)
 								goto l00401A08;
 							goto l00401A80;
 						}
 l00401A08:
-						r2_1154 = *dwLoc0158_1805;
-						if (r2_1154 < 0x00)
+						r2_n = *dwLoc0158_n;
+						if (r2_n < 0x00)
 						{
-							r2_1156 = *((word32) dwLoc0158_1805 + 0x04);
-							if (r2_1156 < 0x00)
+							r2_n = *((word32) dwLoc0158_n + 0x04);
+							if (r2_n < 0x00)
 								goto l00401A50;
-							r2_1158 = (int32) *((word32) dwLoc0158_1805 + 0x0FAC);
-							if (r2_1158 > 0x00)
+							r2_n = (int32) *((word32) dwLoc0158_n + 0x0FAC);
+							if (r2_n > 0x00)
 								goto l00401A50;
 							goto l00401A80;
 						}
 l00401A50:
-						<anonymous> * r25_1167 = *(r28_1166 - 32712);
-						int32 r2_1184;
-						r25_1167();
-						r28_1208 = 0x10008860;
-						r2_1209 = (word32) (r2_1184 < 0x03);
-						if (r2_1209 == 0x00)
+						<anonymous> * r25_n = *(r28_n - 32712);
+						int32 r2_n;
+						r25_n();
+						r28_n = 0x10008860;
+						r2_n = (word32) (r2_n < 0x03);
+						if (r2_n == 0x00)
 						{
 l00401A80:
-							<anonymous> * r25_1215 = *(r28_1214 - 32332);
-							r25_1215();
-							r28_1231 = 0x10008860;
-							dwLoc0158_2105 = 0x00;
+							<anonymous> * r25_n = *(r28_n - 32332);
+							r25_n();
+							r28_n = 0x10008860;
+							dwLoc0158_n = 0x00;
 						}
 					}
-					if (dwLoc0158_2106 == null)
+					if (dwLoc0158_n == null)
 						break;
-					dwLoc0158_2107 = dwLoc0158_2106->dw17B8;
+					dwLoc0158_n = dwLoc0158_n->dw17B8;
 				}
 			}
-			<anonymous> * r25_1240 = *(r28_498 - 0x7ED0);
-			r25_1240();
+			<anonymous> * r25_n = *(r28_n - 0x7ED0);
+			r25_n();
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
 			stackArg0.u0 = <invalid>;
-			slist_destroy(r2_343, (char *) fp - 0x01A0, ra, stackArg0);
-			if (r2_141 != (struct Eq_2331 *) 0x0695 && (word32) r2_141->b0695 != 0x00)
-				unlink(&r2_141->b0695);
+			slist_destroy(r2_n, (char *) fp - 0x01A0, ra, stackArg0);
+			if (r2_n != (struct Eq_n *) 0x0695 && (word32) r2_n->b0695 != 0x00)
+				unlink(&r2_n->b0695);
 			exit(0x00);
 		}
 		else
@@ -1862,13 +1860,13 @@ l00401A80:
 		exit(-0x01);
 }
 
-// 00401B70: void client_new(Register (ptr32 Eq_2878) r4, Register (ptr32 Eq_2879) r5, Register int32 r6, Register int32 r7, Register ptr32 r30, Register word32 ra, Stack Eq_2149 dwArg00, Stack Eq_2149 dwArg04, Stack Eq_2149 dwArg08, Stack Eq_2149 dwArg0C)
-void client_new(struct Eq_2878 * r4, struct Eq_2879 * r5, int32 r6, int32 r7, ptr32 r30, word32 ra, Eq_2149 dwArg00, Eq_2149 dwArg04, Eq_2149 dwArg08, Eq_2149 dwArg0C)
+// 00401B70: void client_new(Register (ptr32 Eq_n) r4, Register (ptr32 Eq_n) r5, Register int32 r6, Register int32 r7, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00, Stack Eq_n dwArg04, Stack Eq_n dwArg08, Stack Eq_n dwArg0C)
+void client_new(struct Eq_n * r4, struct Eq_n * r5, int32 r6, int32 r7, ptr32 r30, word32 ra, Eq_n dwArg00, Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C)
 {
-	Eq_2149 r2_30 = malloc(6100);
-	Eq_2149 r7_28 = <invalid>;
-	Eq_2149 r6_27 = <invalid>;
-	if (r2_30 == 0x00)
+	Eq_n r2_n = malloc(6100);
+	Eq_n r7_n = <invalid>;
+	Eq_n r6_n = <invalid>;
+	if (r2_n == 0x00)
 	{
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
@@ -1878,32 +1876,32 @@ void client_new(struct Eq_2878 * r4, struct Eq_2879 * r5, int32 r6, int32 r7, pt
 		// Please report this issue at https://github.com/uxmal/reko
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2149 stackArg0 = <invalid>;
-		Eq_2149 stackArg4 = <invalid>;
-		Eq_2149 stackArg8 = <invalid>;
-		Eq_2149 stackArg12 = <invalid>;
-		print_log(null, (char *) globals->ptr10000880 - 0x00006100, r6_27, r7_28, fp + -0x0048, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_298, out r4_293, out r5_294, out r6_295, out r7_296);
+		Eq_n stackArg0 = <invalid>;
+		Eq_n stackArg4 = <invalid>;
+		Eq_n stackArg8 = <invalid>;
+		Eq_n stackArg12 = <invalid>;
+		print_log(null, 0x00409F00, r6_n, r7_n, fp + -0x0048, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 	}
 	else
 	{
-		bzero((word32) r2_30 + 6040, 0x0010);
-		*((word32) r2_30 + 6040) = 0x02;
-		*((word32) r2_30 + 0x0000179A) = (word16) (word32) r4->w0002;
-		*((word32) r2_30 + 6044) = r4->dw0004;
-		*r2_30 = accept(r6, (word32) r2_30 + 6040, fp + -0x0020);
-		*((word32) r2_30 + 6056) = 0x02;
-		*((word32) r2_30 + 0x000017AA) = (word16) (word32) r5->w0002;
-		*((word32) r2_30 + 6060) = r5->dw0004;
-		*((word32) r2_30 + 0x00001790) = r7;
+		bzero((word32) r2_n + 6040, 0x0010);
+		*((word32) r2_n + 6040) = 0x02;
+		*((word32) r2_n + 0x0000179A) = (word16) (word32) r4->w0002;
+		*((word32) r2_n + 6044) = r4->dw0004;
+		*r2_n = accept(r6, (word32) r2_n + 6040, fp + -0x0020);
+		*((word32) r2_n + 6056) = 0x02;
+		*((word32) r2_n + 0x000017AA) = (word16) (word32) r5->w0002;
+		*((word32) r2_n + 6060) = r5->dw0004;
+		*((word32) r2_n + 0x00001790) = r7;
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2149 stackArg0 = <invalid>;
-		word32 r5_102;
-		word32 r6_103;
-		word32 r7_104;
-		Eq_2149 r2_105 = open_destination((word32) r2_30 + 6056, r16, fp + -0x0048, ra, stackArg0, out r5_102, out r6_103, out r7_104);
-		*((word32) r2_30 + 0x04) = r2_105;
-		if (*((word32) r2_30 + 0x04) < 0x00)
+		Eq_n stackArg0 = <invalid>;
+		word32 r5_n;
+		word32 r6_n;
+		word32 r7_n;
+		Eq_n r2_n = open_destination((word32) r2_n + 6056, r16, fp + -0x0048, ra, stackArg0, out r5_n, out r6_n, out r7_n);
+		*((word32) r2_n + 0x04) = r2_n;
+		if (*((word32) r2_n + 0x04) < 0x00)
 		{
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
@@ -1913,17 +1911,17 @@ void client_new(struct Eq_2878 * r4, struct Eq_2879 * r5, int32 r6, int32 r7, pt
 			// Please report this issue at https://github.com/uxmal/reko
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			Eq_2149 stackArg0 = <invalid>;
-			Eq_2149 stackArg4 = <invalid>;
-			Eq_2149 stackArg8 = <invalid>;
-			Eq_2149 stackArg12 = <invalid>;
-			print_log((int32 *) 0x01, (char *) globals->ptr10000880 - 24792, (char *) globals->ptr10000880 - 24748, 55, fp + -0x0048, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_368, out r4_369, out r5_370, out r6_371, out r7_372);
-			close(*r2_30);
-			free(r2_30);
+			Eq_n stackArg0 = <invalid>;
+			Eq_n stackArg4 = <invalid>;
+			Eq_n stackArg8 = <invalid>;
+			Eq_n stackArg12 = <invalid>;
+			print_log((int32 *) 0x01, 0x00409F28, 0x00409F54, 55, fp + -0x0048, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+			close(*r2_n);
+			free(r2_n);
 		}
 		else
 		{
-			word32 r2_121;
+			word32 r2_n;
 			inet_ntoa();
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
@@ -1933,72 +1931,72 @@ void client_new(struct Eq_2878 * r4, struct Eq_2879 * r5, int32 r6, int32 r7, pt
 			// Please report this issue at https://github.com/uxmal/reko
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			Eq_2149 r2_126 = *r2_30;
-			Eq_2149 r2_129 = *((word32) r2_30 + 0x04);
-			Eq_2149 stackArg0 = <invalid>;
-			Eq_2149 stackArg4 = <invalid>;
-			Eq_2149 stackArg8 = <invalid>;
-			Eq_2149 stackArg12 = <invalid>;
-			print_log((int32 *) 0x03, (char *) globals->ptr10000880 - 0x000060A0, (char *) globals->ptr10000880 - 24748, 0x003D, fp + -0x0048, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_359, out r4_360, out r5_361, out r6_362, out r7_363);
-			*((word32) r2_30 + 2008) = 0x00;
-			*((word32) r2_30 + 0x0FAC) = 0x00;
-			*((word32) r2_30 + 0x0000178C) = 0x00;
-			*((word32) r2_30 + 0x0FB0) = (word32) r2_30 + 2012;
-			*((word32) r2_30 + 0x00001788) = (word32) r2_30 + 4024;
-			((word32) r2_30 + 6036)->u0 = 0x00;
-			((word32) r2_30 + 4020)->u0 = 0x00;
-			*((word32) r2_30 + 6076) = 0x00;
-			((word32) r2_30 + 0x000017B8)->u0 = 0x00;
-			*((word32) r2_30 + 6088) = time(null);
-			*((word32) r2_30 + 0x000017CC) = time(null);
-			*((word32) r2_30 + 6096) = time(null);
+			Eq_n r2_n = *r2_n;
+			Eq_n r2_n = *((word32) r2_n + 0x04);
+			Eq_n stackArg0 = <invalid>;
+			Eq_n stackArg4 = <invalid>;
+			Eq_n stackArg8 = <invalid>;
+			Eq_n stackArg12 = <invalid>;
+			print_log((int32 *) 0x03, 0x00409F60, 0x00409F54, 0x003D, fp + -0x0048, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+			*((word32) r2_n + 2008) = 0x00;
+			*((word32) r2_n + 0x0FAC) = 0x00;
+			*((word32) r2_n + 0x0000178C) = 0x00;
+			*((word32) r2_n + 0x0FB0) = (word32) r2_n + 2012;
+			*((word32) r2_n + 0x00001788) = (word32) r2_n + 4024;
+			((word32) r2_n + 6036)->u0 = 0x00;
+			((word32) r2_n + 4020)->u0 = 0x00;
+			*((word32) r2_n + 6076) = 0x00;
+			((word32) r2_n + 0x000017B8)->u0 = 0x00;
+			*((word32) r2_n + 6088) = time(null);
+			*((word32) r2_n + 0x000017CC) = time(null);
+			*((word32) r2_n + 6096) = time(null);
 			if (r7 != 0x00)
 			{
 				if (r7 == 0x01)
 				{
-					*((word32) r2_30 + 6080) = client_copy_request;
-					*((word32) r2_30 + 0x000017C4) = client_parse_reply;
+					*((word32) r2_n + 6080) = client_copy_request;
+					*((word32) r2_n + 0x000017C4) = client_parse_reply;
 					// Failed to bind call argument.
 					// Please report this issue at https://github.com/uxmal/reko
-					Eq_2149 stackArg0 = <invalid>;
-					client_prepare_connect(r2_30, r16, fp + -0x0048, ra, stackArg0, out r3_232, out r5_228, out r6_229, out r7_230);
+					Eq_n stackArg0 = <invalid>;
+					client_prepare_connect(r2_n, r16, fp + -0x0048, ra, stackArg0, out r3_n, out r5_n, out r6_n, out r7_n);
 					// Failed to bind call argument.
 					// Please report this issue at https://github.com/uxmal/reko
-					Eq_2149 stackArg0 = <invalid>;
-					client_send_request(r2_30, fp + -0x0048, ra, stackArg0, out r5_238, out r6_239, out r7_240);
+					Eq_n stackArg0 = <invalid>;
+					client_send_request(r2_n, fp + -0x0048, ra, stackArg0, out r5_n, out r6_n, out r7_n);
 				}
 			}
 			else
 			{
-				*((word32) r2_30 + 6080) = client_parse_request;
-				*((word32) r2_30 + 0x000017C4) = client_copy_reply;
+				*((word32) r2_n + 6080) = client_parse_request;
+				*((word32) r2_n + 0x000017C4) = client_copy_reply;
 			}
 		}
 	}
 }
 
-// 00402028: Register word32 client_prepare_connect(Register Eq_2149 r4, Register word32 r16, Register ptr32 r30, Register word32 ra, Stack Eq_2149 dwArg00, Register out ptr32 r3Out, Register out ptr32 r5Out, Register out ptr32 r6Out, Register out ptr32 r7Out)
-word32 client_prepare_connect(Eq_2149 r4, word32 r16, ptr32 r30, word32 ra, Eq_2149 dwArg00, ptr32 & r3Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out)
+// 00402028: Register word32 client_prepare_connect(Register Eq_n r4, Register word32 r16, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00, Register out ptr32 r3Out, Register out ptr32 r5Out, Register out ptr32 r6Out, Register out ptr32 r7Out)
+word32 client_prepare_connect(Eq_n r4, word32 r16, ptr32 r30, word32 ra, Eq_n dwArg00, ptr32 & r3Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out)
 {
-	word32 r3_32;
-	word32 r7_33;
-	word32 r5_34;
-	word32 r6_35;
+	word32 r3_n;
+	word32 r7_n;
+	word32 r5_n;
+	word32 r6_n;
 	getsockopt();
-	word32 r2_42;
-	word32 r3_43;
-	word32 r7_44;
-	word32 r5_45;
-	word32 r6_46;
+	word32 r2_n;
+	word32 r3_n;
+	word32 r7_n;
+	word32 r5_n;
+	word32 r6_n;
 	inet_ntoa();
-	word32 r2_54;
+	word32 r2_n;
 	inet_ntoa();
-	word32 r2_66 = (word32) *((word32) r4 + 0x0000179A);
-	Eq_2149 r2_76 = snprintf(fp + -0x0118, 0x0100, (char *) globals->ptr10000880 - 0x0000606C, 0x00);
-	Eq_2149 r3_77 = <invalid>;
-	Eq_2149 dwLoc18_125 = r2_76;
-	if ((word32) (r2_76 < 0x0100) == 0x00)
-		dwLoc18_125.u0 = 0x0100;
+	word32 r2_n = (word32) *((word32) r4 + 0x0000179A);
+	Eq_n r2_n = snprintf(fp + -0x0118, 0x0100, "CONNECT %s:%d HTTP/1.1\r\nHost: %s:%d\r\n\r\n", 0x00);
+	Eq_n r3_n = <invalid>;
+	Eq_n dwLoc18_n = r2_n;
+	if ((word32) (r2_n < 0x0100) == 0x00)
+		dwLoc18_n.u0 = 0x0100;
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
@@ -2007,38 +2005,38 @@ word32 client_prepare_connect(Eq_2149 r4, word32 r16, ptr32 r30, word32 ra, Eq_2
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_2149 stackArg0 = <invalid>;
-	Eq_2149 stackArg4 = <invalid>;
-	Eq_2149 stackArg8 = <invalid>;
-	Eq_2149 stackArg12 = <invalid>;
-	ptr32 r3_104;
-	ptr32 r7_105;
-	ptr32 r5_106;
-	ptr32 r6_107;
-	add_to_request(r3_77, r4, *((word32) r4 + 0x0FB0), fp + -0x0118, dwLoc18_125, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_104, out r5_106, out r6_107, out r7_105);
-	r3Out = r3_104;
-	r5Out = r5_106;
-	r6Out = r6_107;
-	r7Out = r7_105;
+	Eq_n stackArg0 = <invalid>;
+	Eq_n stackArg4 = <invalid>;
+	Eq_n stackArg8 = <invalid>;
+	Eq_n stackArg12 = <invalid>;
+	ptr32 r3_n;
+	ptr32 r7_n;
+	ptr32 r5_n;
+	ptr32 r6_n;
+	add_to_request(r3_n, r4, *((word32) r4 + 0x0FB0), fp + -0x0118, dwLoc18_n, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r5_n, out r6_n, out r7_n);
+	r3Out = r3_n;
+	r5Out = r5_n;
+	r6Out = r6_n;
+	r7Out = r7_n;
 	return 0x00;
 }
 
-// 004021A0: void client_copy_request(Register (ptr32 Eq_3850) r4, Stack word32 dwArg00)
-void client_copy_request(struct Eq_3850 * r4, word32 dwArg00)
+// 004021A0: void client_copy_request(Register (ptr32 Eq_n) r4, Stack word32 dwArg00)
+void client_copy_request(struct Eq_n * r4, word32 dwArg00)
 {
 	memcpy((char *) &r4->t07D8 + 0x04, (char *) r4 + 0x08, r4->t07D8);
 	r4->ptr0FB0 = (char *) &r4->t07D8 + 0x04;
 	r4->t0FAC = r4->t07D8;
 }
 
-// 00402244: void client_parse_request(Register word32 r3, Register Eq_2149 r4, Register word32 r7, Register word32 r30, Register word32 ra, Stack word32 dwArg00)
-void client_parse_request(word32 r3, Eq_2149 r4, word32 r7, word32 r30, word32 ra, word32 dwArg00)
+// 00402244: void client_parse_request(Register word32 r3, Register Eq_n r4, Register word32 r7, Register word32 r30, Register word32 ra, Stack word32 dwArg00)
+void client_parse_request(word32 r3, Eq_n r4, word32 r7, word32 r30, word32 ra, word32 dwArg00)
 {
-	int8 * dwLoc40_539 = (word32) r4 + 0x08;
-	int32 r2_21 = *((word32) r4 + 2008);
-	void * dwLoc28_541 = (word32) r4 + 2012;
-	Eq_2149 dwLoc20_543 = *((word32) r4 + 4020);
-	while (r2_21 > 0x00)
+	int8 * dwLoc40_n = (word32) r4 + 0x08;
+	int32 r2_n = *((word32) r4 + 2008);
+	void * dwLoc28_n = (word32) r4 + 2012;
+	Eq_n dwLoc20_n = *((word32) r4 + 4020);
+	while (r2_n > 0x00)
 	{
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
@@ -2046,22 +2044,22 @@ void client_parse_request(word32 r3, Eq_2149 r4, word32 r7, word32 r30, word32 r
 		// Please report this issue at https://github.com/uxmal/reko
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2149 stackArg0 = <invalid>;
-		Eq_2149 stackArg4 = <invalid>;
-		Eq_2149 stackArg8 = <invalid>;
-		int8 * r2_47 = get_a_line(fp + -0x0810, dwLoc40_539, fp + -0x0818, stackArg0, stackArg4, stackArg8, out r5_48, out r6_49, out r7_53);
-		int32 dwLoc1C_558 = 0x00;
+		Eq_n stackArg0 = <invalid>;
+		Eq_n stackArg4 = <invalid>;
+		Eq_n stackArg8 = <invalid>;
+		int8 * r2_n = get_a_line(fp + -0x0810, dwLoc40_n, fp + -0x0818, stackArg0, stackArg4, stackArg8, out r5_n, out r6_n, out r7_n);
+		int32 dwLoc1C_n = 0x00;
 		if ((word32) bLoc0810 == 0x0A || (word32) bLoc0810 == 0x0D)
-			dwLoc1C_558 = 0x01;
-		Eq_2149 r2_77 = *((word32) r4 + 6036);
-		Eq_2149 r3_101 = r2_77;
-		if (r2_77 != 0x01)
+			dwLoc1C_n = 0x01;
+		Eq_n r2_n = *((word32) r4 + 6036);
+		Eq_n r3_n = r2_n;
+		if (r2_n != 0x01)
 		{
-			if ((word32) (r2_77 < 0x02) != 0x00)
+			if ((word32) (r2_n < 0x02) != 0x00)
 			{
-				if (r2_77 == 0x00)
+				if (r2_n == 0x00)
 				{
-					if (dwLoc1C_558 == 0x00)
+					if (dwLoc1C_n == 0x00)
 					{
 						if (*((word32) r4 + 4020) != 0x00)
 						{
@@ -2073,20 +2071,20 @@ void client_parse_request(word32 r3, Eq_2149 r4, word32 r7, word32 r30, word32 r
 							// Please report this issue at https://github.com/uxmal/reko
 							// Failed to bind call argument.
 							// Please report this issue at https://github.com/uxmal/reko
-							Eq_2149 stackArg0 = <invalid>;
-							Eq_2149 stackArg4 = <invalid>;
-							Eq_2149 stackArg8 = <invalid>;
-							Eq_2149 stackArg12 = <invalid>;
-							print_log((int32 *) 0x04, (char *) globals->ptr10000880 - 0x00005FF8, (char *) globals->ptr10000880 - 24540, 0x00A5, fp + -0x0838, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_421, out r4_722, out r5_723, out r6_420, out r7_422);
+							Eq_n stackArg0 = <invalid>;
+							Eq_n stackArg4 = <invalid>;
+							Eq_n stackArg8 = <invalid>;
+							Eq_n stackArg12 = <invalid>;
+							print_log((int32 *) 0x04, 0x0040A008, 0x0040A024, 0x00A5, fp + -0x0838, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 							// Failed to bind call argument.
 							// Please report this issue at https://github.com/uxmal/reko
 							// Failed to bind call argument.
 							// Please report this issue at https://github.com/uxmal/reko
-							Eq_2149 r2_425 = *((word32) r4 + 4020);
-							Eq_2149 stackArg0 = <invalid>;
-							Eq_2149 stackArg4 = <invalid>;
-							dwLoc20_543 = r2_425;
-							if (request_parse_line(fp + -0x0810, r2_425, fp + -0x0810, fp + -0x0838, ra, stackArg0, stackArg4, out r3_436, out r7_437) == 0x00)
+							Eq_n r2_n = *((word32) r4 + 4020);
+							Eq_n stackArg0 = <invalid>;
+							Eq_n stackArg4 = <invalid>;
+							dwLoc20_n = r2_n;
+							if (request_parse_line(fp + -0x0810, r2_n, fp + -0x0810, fp + -0x0838, ra, stackArg0, stackArg4, out r3_n, out r7_n) == 0x00)
 							{
 								// Failed to bind call argument.
 								// Please report this issue at https://github.com/uxmal/reko
@@ -2096,27 +2094,27 @@ void client_parse_request(word32 r3, Eq_2149 r4, word32 r7, word32 r30, word32 r
 								// Please report this issue at https://github.com/uxmal/reko
 								// Failed to bind call argument.
 								// Please report this issue at https://github.com/uxmal/reko
-								Eq_2149 stackArg0 = <invalid>;
-								Eq_2149 stackArg4 = <invalid>;
-								Eq_2149 stackArg8 = <invalid>;
-								Eq_2149 stackArg12 = <invalid>;
-								print_log((int32 *) 0x04, (char *) globals->ptr10000880 - 0x00005FC4, (char *) globals->ptr10000880 - 24540, 0x00A9, fp + -0x0838, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_451, out r4_730, out r5_449, out r6_450, out r7_452);
+								Eq_n stackArg0 = <invalid>;
+								Eq_n stackArg4 = <invalid>;
+								Eq_n stackArg8 = <invalid>;
+								Eq_n stackArg12 = <invalid>;
+								print_log((int32 *) 0x04, 4235324, 0x0040A024, 0x00A9, fp + -0x0838, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 								// Failed to bind call argument.
 								// Please report this issue at https://github.com/uxmal/reko
-								Eq_2149 stackArg0 = <invalid>;
-								request_destroy(r2_425, stackArg0);
-								dwLoc20_543.u0 = 0x00;
+								Eq_n stackArg0 = <invalid>;
+								request_destroy(r2_n, stackArg0);
+								dwLoc20_n.u0 = 0x00;
 							}
 						}
 						else
 						{
 							// Failed to bind call argument.
 							// Please report this issue at https://github.com/uxmal/reko
-							Eq_2149 stackArg0 = <invalid>;
-							dwLoc20_543 = request_new(fp + -0x0810, fp + -0x0838, ra, stackArg0, out r7_406);
+							Eq_n stackArg0 = <invalid>;
+							dwLoc20_n = request_new(fp + -0x0810, fp + -0x0838, ra, stackArg0, out r7_n);
 						}
-						*((word32) r4 + 4020) = dwLoc20_543;
-						if (dwLoc20_543 != 0x00)
+						*((word32) r4 + 4020) = dwLoc20_n;
+						if (dwLoc20_n != 0x00)
 							((word32) r4 + 6036)->u0 = 0x01;
 						else
 						{
@@ -2128,12 +2126,12 @@ void client_parse_request(word32 r3, Eq_2149 r4, word32 r7, word32 r30, word32 r
 							// Please report this issue at https://github.com/uxmal/reko
 							// Failed to bind call argument.
 							// Please report this issue at https://github.com/uxmal/reko
-							Eq_2149 stackArg0 = <invalid>;
-							Eq_2149 stackArg4 = <invalid>;
-							Eq_2149 stackArg8 = <invalid>;
-							Eq_2149 stackArg12 = <invalid>;
-							Eq_2149 r3_488;
-							print_log((int32 *) 0x03, (char *) globals->ptr10000880 - 24460, (char *) globals->ptr10000880 - 24540, 181, fp + -0x0838, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_488, out r4_749, out r5_750, out r6_751, out r7_752);
+							Eq_n stackArg0 = <invalid>;
+							Eq_n stackArg4 = <invalid>;
+							Eq_n stackArg8 = <invalid>;
+							Eq_n stackArg12 = <invalid>;
+							Eq_n r3_n;
+							print_log((int32 *) 0x03, 0x0040A074, 0x0040A024, 181, fp + -0x0838, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 							// Failed to bind call argument.
 							// Please report this issue at https://github.com/uxmal/reko
 							// Failed to bind call argument.
@@ -2142,11 +2140,11 @@ void client_parse_request(word32 r3, Eq_2149 r4, word32 r7, word32 r30, word32 r
 							// Please report this issue at https://github.com/uxmal/reko
 							// Failed to bind call argument.
 							// Please report this issue at https://github.com/uxmal/reko
-							Eq_2149 stackArg0 = <invalid>;
-							Eq_2149 stackArg4 = <invalid>;
-							Eq_2149 stackArg8 = <invalid>;
-							Eq_2149 stackArg12 = <invalid>;
-							add_to_request(r3_488, r4, dwLoc28_541, fp + -0x0810, 0x00, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_757, out r5_758, out r6_759, out r7_503);
+							Eq_n stackArg0 = <invalid>;
+							Eq_n stackArg4 = <invalid>;
+							Eq_n stackArg8 = <invalid>;
+							Eq_n stackArg12 = <invalid>;
+							add_to_request(r3_n, r4, dwLoc28_n, fp + -0x0810, 0x00, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r5_n, out r6_n, out r7_n);
 							((word32) r4 + 6036)->u0 = 0x02;
 						}
 					}
@@ -2160,17 +2158,17 @@ void client_parse_request(word32 r3, Eq_2149 r4, word32 r7, word32 r30, word32 r
 						// Please report this issue at https://github.com/uxmal/reko
 						// Failed to bind call argument.
 						// Please report this issue at https://github.com/uxmal/reko
-						Eq_2149 stackArg0 = <invalid>;
-						Eq_2149 stackArg4 = <invalid>;
-						Eq_2149 stackArg8 = <invalid>;
-						Eq_2149 stackArg12 = <invalid>;
-						add_to_request(r2_77, r4, dwLoc28_541, fp + -0x0810, 0x00, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_388, out r5_715, out r6_716, out r7_389);
+						Eq_n stackArg0 = <invalid>;
+						Eq_n stackArg4 = <invalid>;
+						Eq_n stackArg8 = <invalid>;
+						Eq_n stackArg12 = <invalid>;
+						add_to_request(r2_n, r4, dwLoc28_n, fp + -0x0810, 0x00, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r5_n, out r6_n, out r7_n);
 					}
 				}
 			}
-			else if (r2_77 != 0x02)
+			else if (r2_n != 0x02)
 			{
-				if (r2_77 == 0x03)
+				if (r2_n == 0x03)
 				{
 					// Failed to bind call argument.
 					// Please report this issue at https://github.com/uxmal/reko
@@ -2180,13 +2178,13 @@ void client_parse_request(word32 r3, Eq_2149 r4, word32 r7, word32 r30, word32 r
 					// Please report this issue at https://github.com/uxmal/reko
 					// Failed to bind call argument.
 					// Please report this issue at https://github.com/uxmal/reko
-					Eq_2149 stackArg0 = <invalid>;
-					Eq_2149 stackArg4 = <invalid>;
-					Eq_2149 stackArg8 = <invalid>;
-					Eq_2149 stackArg12 = <invalid>;
-					dwLoc28_541 = add_to_request(r2_77, r4, dwLoc28_541, fp + -0x0810, 0x00, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_742, out r5_743, out r6_744, out r7_362);
-					*((byte) dwLoc20_543.u0 + 0x0554) = *((byte) dwLoc20_543.u0 + 0x0554);
-					if (*((byte) dwLoc20_543.u0 + 0x0554) == 0x00)
+					Eq_n stackArg0 = <invalid>;
+					Eq_n stackArg4 = <invalid>;
+					Eq_n stackArg8 = <invalid>;
+					Eq_n stackArg12 = <invalid>;
+					dwLoc28_n = add_to_request(r2_n, r4, dwLoc28_n, fp + -0x0810, 0x00, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r5_n, out r6_n, out r7_n);
+					*((byte) dwLoc20_n.u0 + 0x0554) = *((byte) dwLoc20_n.u0 + 0x0554);
+					if (*((byte) dwLoc20_n.u0 + 0x0554) == 0x00)
 						((word32) r4 + 6036)->u0 = 0x00;
 				}
 			}
@@ -2200,36 +2198,36 @@ void client_parse_request(word32 r3, Eq_2149 r4, word32 r7, word32 r30, word32 r
 				// Please report this issue at https://github.com/uxmal/reko
 				// Failed to bind call argument.
 				// Please report this issue at https://github.com/uxmal/reko
-				Eq_2149 stackArg0 = <invalid>;
-				Eq_2149 stackArg4 = <invalid>;
-				Eq_2149 stackArg8 = <invalid>;
-				Eq_2149 stackArg12 = <invalid>;
-				dwLoc28_541 = add_to_request(r2_77, r4, dwLoc28_541, fp + -0x0810, 0x00, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_305, out r5_736, out r6_737, out r7_306);
-				if (dwLoc1C_558 != 0x00)
+				Eq_n stackArg0 = <invalid>;
+				Eq_n stackArg4 = <invalid>;
+				Eq_n stackArg8 = <invalid>;
+				Eq_n stackArg12 = <invalid>;
+				dwLoc28_n = add_to_request(r2_n, r4, dwLoc28_n, fp + -0x0810, 0x00, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r5_n, out r6_n, out r7_n);
+				if (dwLoc1C_n != 0x00)
 				{
-					if (dwLoc20_543 != 0x00 && *((byte) dwLoc20_543.u0 + 0x0554) == 0x00)
+					if (dwLoc20_n != 0x00 && *((byte) dwLoc20_n.u0 + 0x0554) == 0x00)
 						((word32) r4 + 6036)->u0 = 0x00;
 					else
 						((word32) r4 + 6036)->u0 = 0x03;
 				}
 				else if ((word32) true == 0x00)
 				{
-					Eq_2149 r3_323 = <invalid>;
-					if (strncasecmp((char *) globals->ptr10000880 - 0x0000600C, fp + -0x0810, 0x0A) == 0x00)
+					Eq_n r3_n = <invalid>;
+					if (strncasecmp(&globals->t409FF4, fp + -0x0810, 0x0A) == 0x00)
 					{
 						// Failed to bind call argument.
 						// Please report this issue at https://github.com/uxmal/reko
 						// Failed to bind call argument.
 						// Please report this issue at https://github.com/uxmal/reko
-						Eq_2149 stackArg0 = <invalid>;
-						Eq_2149 stackArg4 = <invalid>;
-						request_get_content_length(r3_323, dwLoc20_543, fp + -0x0810, fp + -0x0838, ra, stackArg0, stackArg4, out r7_336);
+						Eq_n stackArg0 = <invalid>;
+						Eq_n stackArg4 = <invalid>;
+						request_get_content_length(r3_n, dwLoc20_n, fp + -0x0810, fp + -0x0838, ra, stackArg0, stackArg4, out r7_n);
 					}
 				}
 			}
 			goto l00402A34;
 		}
-		if (dwLoc1C_558 != 0x00)
+		if (dwLoc1C_n != 0x00)
 		{
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
@@ -2239,20 +2237,20 @@ void client_parse_request(word32 r3, Eq_2149 r4, word32 r7, word32 r30, word32 r
 			// Please report this issue at https://github.com/uxmal/reko
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			Eq_2149 stackArg0 = <invalid>;
-			Eq_2149 stackArg4 = <invalid>;
-			Eq_2149 stackArg8 = <invalid>;
-			Eq_2149 stackArg12 = <invalid>;
-			print_log((int32 *) 0x02, (char *) globals->ptr10000880 - 0x00005F4C, (char *) globals->ptr10000880 - 24540, 0x00C3, fp + -0x0838, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_284, out r4_280, out r5_282, out r6_283, out r7_285);
+			Eq_n stackArg0 = <invalid>;
+			Eq_n stackArg4 = <invalid>;
+			Eq_n stackArg8 = <invalid>;
+			Eq_n stackArg12 = <invalid>;
+			print_log((int32 *) 0x02, 4235444, 0x0040A024, 0x00C3, fp + -0x0838, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 			((word32) r4 + 6036)->u0 = 0x00;
 			return;
 		}
 		if ((word32) true == 0x00)
 		{
-			r3_101.u0 = <invalid>;
-			if (strncasecmp(fp + -0x0810, (char *) globals->ptr10000880 - 24644, 0x06) != 0x00)
+			r3_n.u0 = <invalid>;
+			if (strncasecmp(fp + -0x0810, "host: ", 0x06) != 0x00)
 				goto l004027F8;
-			if (dwLoc20_543 == 0x00)
+			if (dwLoc20_n == 0x00)
 			{
 				// Failed to bind call argument.
 				// Please report this issue at https://github.com/uxmal/reko
@@ -2262,11 +2260,11 @@ void client_parse_request(word32 r3, Eq_2149 r4, word32 r7, word32 r30, word32 r
 				// Please report this issue at https://github.com/uxmal/reko
 				// Failed to bind call argument.
 				// Please report this issue at https://github.com/uxmal/reko
-				Eq_2149 stackArg0 = <invalid>;
-				Eq_2149 stackArg4 = <invalid>;
-				Eq_2149 stackArg8 = <invalid>;
-				Eq_2149 stackArg12 = <invalid>;
-				print_log((int32 *) 0x02, (char *) globals->ptr10000880 - 24636, (char *) globals->ptr10000880 - 24540, 0x00CC, fp + -0x0838, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_269, out r4_789, out r5_790, out r6_791, out r7_270);
+				Eq_n stackArg0 = <invalid>;
+				Eq_n stackArg4 = <invalid>;
+				Eq_n stackArg8 = <invalid>;
+				Eq_n stackArg12 = <invalid>;
+				print_log((int32 *) 0x02, 0x00409FC4, 0x0040A024, 0x00CC, fp + -0x0838, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 			}
 			else
 			{
@@ -2274,18 +2272,14 @@ void client_parse_request(word32 r3, Eq_2149 r4, word32 r7, word32 r30, word32 r
 				// Please report this issue at https://github.com/uxmal/reko
 				// Failed to bind call argument.
 				// Please report this issue at https://github.com/uxmal/reko
-				Eq_2149 stackArg0 = <invalid>;
-				Eq_2149 stackArg4 = <invalid>;
-				word32 r3_184;
-				request_get_host(r3_101, dwLoc20_543, fp + -0x0810, fp + -0x0838, ra, stackArg0, stackArg4, out r3_184, out r5_182, out r6_183, out r7_185);
+				Eq_n stackArg0 = <invalid>;
+				Eq_n stackArg4 = <invalid>;
+				word32 r3_n;
+				request_get_host(r3_n, dwLoc20_n, fp + -0x0810, fp + -0x0838, ra, stackArg0, stackArg4, out r3_n, out r5_n, out r6_n, out r7_n);
 				// Failed to bind call argument.
 				// Please report this issue at https://github.com/uxmal/reko
-				Eq_2149 stackArg0 = <invalid>;
-				request_make_url(r3_184, dwLoc20_543, ra, stackArg0);
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
+				Eq_n stackArg0 = <invalid>;
+				request_make_url(r3_n, dwLoc20_n, ra, stackArg0);
 				// Failed to bind call argument.
 				// Please report this issue at https://github.com/uxmal/reko
 				// Failed to bind call argument.
@@ -2304,21 +2298,25 @@ void client_parse_request(word32 r3, Eq_2149 r4, word32 r7, word32 r30, word32 r
 				// Please report this issue at https://github.com/uxmal/reko
 				// Failed to bind call argument.
 				// Please report this issue at https://github.com/uxmal/reko
-				Eq_2149 r2_203 = strlen((byte) dwLoc20_543.u0 + 0x0214);
-				Eq_2149 stackArg0 = <invalid>;
-				Eq_2149 stackArg4 = <invalid>;
-				Eq_2149 stackArg8 = <invalid>;
-				Eq_2149 stackArg12 = <invalid>;
-				Eq_2149 stackArg0 = <invalid>;
-				Eq_2149 stackArg4 = <invalid>;
-				Eq_2149 stackArg8 = <invalid>;
-				Eq_2149 stackArg0 = <invalid>;
-				Eq_2149 stackArg4 = <invalid>;
-				Eq_2149 stackArg8 = <invalid>;
-				Eq_2149 stackArg12 = <invalid>;
-				word32 r7_223;
-				Eq_2149 r3_235;
-				dwLoc28_541 = add_to_request(r3_235, r4, request_add_lines(dwLoc20_543, r4, add_to_request(r2_203, r4, dwLoc28_541, (byte) dwLoc20_543.u0 + 0x0214, r2_203, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_222, out r5_773, out r6_774, out r7_223), r7_223, fp + -0x0838, ra, stackArg0, stackArg4, stackArg8, out r3_235), fp + -0x0810, 0x00, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_782, out r5_783, out r6_784, out r7_251);
+				// Failed to bind call argument.
+				// Please report this issue at https://github.com/uxmal/reko
+				// Failed to bind call argument.
+				// Please report this issue at https://github.com/uxmal/reko
+				Eq_n r2_n = strlen((byte) dwLoc20_n.u0 + 0x0214);
+				Eq_n stackArg0 = <invalid>;
+				Eq_n stackArg4 = <invalid>;
+				Eq_n stackArg8 = <invalid>;
+				Eq_n stackArg12 = <invalid>;
+				Eq_n stackArg0 = <invalid>;
+				Eq_n stackArg4 = <invalid>;
+				Eq_n stackArg8 = <invalid>;
+				Eq_n stackArg0 = <invalid>;
+				Eq_n stackArg4 = <invalid>;
+				Eq_n stackArg8 = <invalid>;
+				Eq_n stackArg12 = <invalid>;
+				word32 r7_n;
+				Eq_n r3_n;
+				dwLoc28_n = add_to_request(r3_n, r4, request_add_lines(dwLoc20_n, r4, add_to_request(r2_n, r4, dwLoc28_n, (byte) dwLoc20_n.u0 + 0x0214, r2_n, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r5_n, out r6_n, out r7_n), r7_n, fp + -0x0838, ra, stackArg0, stackArg4, stackArg8, out r3_n), fp + -0x0810, 0x00, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r5_n, out r6_n, out r7_n);
 				((word32) r4 + 6036)->u0 = 0x02;
 			}
 			goto l00402A34;
@@ -2326,8 +2324,8 @@ void client_parse_request(word32 r3, Eq_2149 r4, word32 r7, word32 r30, word32 r
 l004027F8:
 		if ((word32) true == 0x00)
 		{
-			r3_101.u0 = <invalid>;
-			if (strncasecmp((char *) globals->ptr10000880 - 0x00006020, fp + -0x0810, 0x0A) != 0x00)
+			r3_n.u0 = <invalid>;
+			if (strncasecmp(&globals->t409FE0, fp + -0x0810, 0x0A) != 0x00)
 				goto l00402894;
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
@@ -2341,13 +2339,13 @@ l004027F8:
 			// Please report this issue at https://github.com/uxmal/reko
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			Eq_2149 stackArg0 = <invalid>;
-			Eq_2149 stackArg4 = <invalid>;
-			Eq_2149 stackArg0 = <invalid>;
-			Eq_2149 stackArg4 = <invalid>;
-			Eq_2149 stackArg8 = <invalid>;
-			Eq_2149 stackArg11 = <invalid>;
-			request_save_line(request_get_content_length(r3_101, dwLoc20_543, fp + -0x0810, fp + -0x0838, ra, stackArg0, stackArg4, out r7_159), dwLoc20_543, fp + -0x0810, 0x00, fp + -0x0838, ra, stackArg0, stackArg4, stackArg8, stackArg11, out r7_172);
+			Eq_n stackArg0 = <invalid>;
+			Eq_n stackArg4 = <invalid>;
+			Eq_n stackArg0 = <invalid>;
+			Eq_n stackArg4 = <invalid>;
+			Eq_n stackArg8 = <invalid>;
+			Eq_n stackArg11 = <invalid>;
+			request_save_line(request_get_content_length(r3_n, dwLoc20_n, fp + -0x0810, fp + -0x0838, ra, stackArg0, stackArg4, out r7_n), dwLoc20_n, fp + -0x0810, 0x00, fp + -0x0838, ra, stackArg0, stackArg4, stackArg8, stackArg11, out r7_n);
 		}
 		else
 		{
@@ -2360,25 +2358,25 @@ l00402894:
 			// Please report this issue at https://github.com/uxmal/reko
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			Eq_2149 stackArg0 = <invalid>;
-			Eq_2149 stackArg4 = <invalid>;
-			Eq_2149 stackArg8 = <invalid>;
-			Eq_2149 stackArg11 = <invalid>;
-			request_save_line(r3_101, dwLoc20_543, fp + -0x0810, 0x00, fp + -0x0838, ra, stackArg0, stackArg4, stackArg8, stackArg11, out r7_147);
+			Eq_n stackArg0 = <invalid>;
+			Eq_n stackArg4 = <invalid>;
+			Eq_n stackArg8 = <invalid>;
+			Eq_n stackArg11 = <invalid>;
+			request_save_line(r3_n, dwLoc20_n, fp + -0x0810, 0x00, fp + -0x0838, ra, stackArg0, stackArg4, stackArg8, stackArg11, out r7_n);
 		}
 l00402A34:
-		dwLoc40_539 = r2_47;
+		dwLoc40_n = r2_n;
 	}
 }
 
-// 00402A60: Register (ptr32 void) add_to_request(Register Eq_2149 r3, Register Eq_2149 r4, Register (ptr32 void) r5, Register (ptr32 void) r6, Register Eq_2149 r7, Register word32 ra, Stack Eq_2149 dwArg00, Stack Eq_2149 dwArg04, Stack Eq_2149 dwArg08, Stack Eq_2149 dwArg0C, Register out Eq_2149 r3Out, Register out Eq_2149 r5Out, Register out Eq_2149 r6Out, Register out Eq_2149 r7Out)
-void * add_to_request(Eq_2149 r3, Eq_2149 r4, void * r5, void * r6, Eq_2149 r7, word32 ra, Eq_2149 dwArg00, Eq_2149 dwArg04, Eq_2149 dwArg08, Eq_2149 dwArg0C, union Eq_2149 & r3Out, union Eq_2149 & r5Out, union Eq_2149 & r6Out, union Eq_2149 & r7Out)
+// 00402A60: Register (ptr32 void) add_to_request(Register Eq_n r3, Register Eq_n r4, Register (ptr32 void) r5, Register (ptr32 void) r6, Register Eq_n r7, Register word32 ra, Stack Eq_n dwArg00, Stack Eq_n dwArg04, Stack Eq_n dwArg08, Stack Eq_n dwArg0C, Register out Eq_n r3Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out)
+void * add_to_request(Eq_n r3, Eq_n r4, void * r5, void * r6, Eq_n r7, word32 ra, Eq_n dwArg00, Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, union Eq_n & r3Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out)
 {
-	Eq_2149 r7_102;
-	Eq_2149 r6_101;
-	void * r2_106;
-	Eq_2149 r3_104;
-	Eq_2149 r5_100;
+	Eq_n r7_n;
+	Eq_n r6_n;
+	void * r2_n;
+	Eq_n r3_n;
+	Eq_n r5_n;
 	if (r5 == null)
 	{
 		// Failed to bind call argument.
@@ -2389,12 +2387,12 @@ void * add_to_request(Eq_2149 r3, Eq_2149 r4, void * r5, void * r6, Eq_2149 r7, 
 		// Please report this issue at https://github.com/uxmal/reko
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2149 stackArg0 = <invalid>;
-		Eq_2149 stackArg4 = <invalid>;
-		Eq_2149 stackArg8 = <invalid>;
-		Eq_2149 stackArg12 = <invalid>;
-		print_log((int32 *) 0x01, (char *) globals->ptr10000880 - 24348, (char *) globals->ptr10000880 - 0x00005EEC, 0x0100, fp + -0x0028, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_104, out r4_99, out r5_100, out r6_101, out r7_102);
-		r2_106 = null;
+		Eq_n stackArg0 = <invalid>;
+		Eq_n stackArg4 = <invalid>;
+		Eq_n stackArg8 = <invalid>;
+		Eq_n stackArg12 = <invalid>;
+		print_log((int32 *) 0x01, 0x0040A0E4, 0x0040A114, 0x0100, fp + -0x0028, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+		r2_n = null;
 	}
 	else if (r6 != null && r7 > 0x00)
 	{
@@ -2402,11 +2400,11 @@ void * add_to_request(Eq_2149 r3, Eq_2149 r4, void * r5, void * r6, Eq_2149 r7, 
 		if ((word32) (*((word32) r4 + 0x0FAC) < 2000) != 0x00)
 		{
 			memcpy(r5, r6, r7);
-			r7_102.u0 = <invalid>;
-			r6_101.u0 = <invalid>;
-			r5_100.u0 = <invalid>;
-			r3_104 = r7;
-			r2_106 = r5 + r7;
+			r7_n.u0 = <invalid>;
+			r6_n.u0 = <invalid>;
+			r5_n.u0 = <invalid>;
+			r3_n = r7;
+			r2_n = r5 + r7;
 		}
 		else
 		{
@@ -2418,13 +2416,13 @@ void * add_to_request(Eq_2149 r3, Eq_2149 r4, void * r5, void * r6, Eq_2149 r7, 
 			// Please report this issue at https://github.com/uxmal/reko
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			Eq_2149 stackArg0 = <invalid>;
-			Eq_2149 stackArg4 = <invalid>;
-			Eq_2149 stackArg8 = <invalid>;
-			Eq_2149 stackArg12 = <invalid>;
-			print_log((int32 *) 0x01, (char *) globals->ptr10000880 - 24248, (char *) globals->ptr10000880 - 0x00005EEC, 0x010F, fp + -0x0028, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_104, out r4_151, out r5_100, out r6_101, out r7_102);
+			Eq_n stackArg0 = <invalid>;
+			Eq_n stackArg4 = <invalid>;
+			Eq_n stackArg8 = <invalid>;
+			Eq_n stackArg12 = <invalid>;
+			print_log((int32 *) 0x01, 0x0040A148, 0x0040A114, 0x010F, fp + -0x0028, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 			*((word32) r4 + 0x0FAC) = 0x00;
-			r2_106 = null;
+			r2_n = null;
 		}
 	}
 	else
@@ -2437,88 +2435,88 @@ void * add_to_request(Eq_2149 r3, Eq_2149 r4, void * r5, void * r6, Eq_2149 r7, 
 		// Please report this issue at https://github.com/uxmal/reko
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2149 stackArg0 = <invalid>;
-		Eq_2149 stackArg4 = <invalid>;
-		Eq_2149 stackArg8 = <invalid>;
-		Eq_2149 stackArg12 = <invalid>;
-		print_log((int32 *) 0x02, (char *) globals->ptr10000880 - 24284, (char *) globals->ptr10000880 - 0x00005EEC, 0x0105, fp + -0x0028, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_104, out r4_146, out r5_100, out r6_101, out r7_102);
-		r2_106 = r5;
+		Eq_n stackArg0 = <invalid>;
+		Eq_n stackArg4 = <invalid>;
+		Eq_n stackArg8 = <invalid>;
+		Eq_n stackArg12 = <invalid>;
+		print_log((int32 *) 0x02, 4235556, 0x0040A114, 0x0105, fp + -0x0028, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+		r2_n = r5;
 	}
-	r3Out = r3_104;
-	r5Out = r5_100;
-	r6Out = r6_101;
-	r7Out = r7_102;
-	return r2_106;
+	r3Out = r3_n;
+	r5Out = r5_n;
+	r6Out = r6_n;
+	r7Out = r7_n;
+	return r2_n;
 }
 
-// 00402C1C: Register (ptr32 int8) get_a_line(Register (ptr32 byte) r4, Register (ptr32 int8) r5, Register (ptr32 int32) r6, Stack Eq_2149 dwArg00, Stack Eq_2149 dwArg04, Stack Eq_2149 dwArg08, Register out (ptr32 int8) r5Out, Register out Eq_2149 r6Out, Register out Eq_2149 r7Out)
-int8 * get_a_line(byte * r4, int8 * r5, int32 * r6, Eq_2149 dwArg00, Eq_2149 dwArg04, Eq_2149 dwArg08, int8 & r5Out, union Eq_2149 & r6Out, union Eq_2149 & r7Out)
+// 00402C1C: Register (ptr32 int8) get_a_line(Register (ptr32 byte) r4, Register (ptr32 int8) r5, Register (ptr32 int32) r6, Stack Eq_n dwArg00, Stack Eq_n dwArg04, Stack Eq_n dwArg08, Register out (ptr32 int8) r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out)
+int8 * get_a_line(byte * r4, int8 * r5, int32 * r6, Eq_n dwArg00, Eq_n dwArg04, Eq_n dwArg08, int8 & r5Out, union Eq_n & r6Out, union Eq_n & r7Out)
 {
-	byte * dwArg00_107 = r4;
-	int8 * dwArg04_108 = r5;
-	while (*r6 > 0x00 && ((word32) (*dwArg04_108) != 0x0A && (word32) (*dwArg04_108) != 0x0D))
+	byte * dwArg00_n = r4;
+	int8 * dwArg04_n = r5;
+	while (*r6 > 0x00 && ((word32) (*dwArg04_n) != 0x0A && (word32) (*dwArg04_n) != 0x0D))
 	{
-		*dwArg00_107 = (byte) (word32) *dwArg04_108;
+		*dwArg00_n = (byte) (word32) *dwArg04_n;
 		*r6 += -0x01;
 		r5 = fp + 0x04;
-		++dwArg04_108;
-		++dwArg00_107;
+		++dwArg04_n;
+		++dwArg00_n;
 	}
-	if (*r6 > 0x00 && ((word32) (*dwArg04_108) == 0x0A || (word32) (*dwArg04_108) == 0x0D))
+	if (*r6 > 0x00 && ((word32) (*dwArg04_n) == 0x0A || (word32) (*dwArg04_n) == 0x0D))
 	{
-		*dwArg00_107 = (byte) (word32) *dwArg04_108;
+		*dwArg00_n = (byte) (word32) *dwArg04_n;
 		*r6 += -0x01;
 		r5 = fp + 0x04;
-		++dwArg04_108;
-		++dwArg00_107;
+		++dwArg04_n;
+		++dwArg00_n;
 	}
-	if (*r6 > 0x00 && ((word32) (*dwArg04_108) == 0x0A || (word32) (*dwArg04_108) == 0x0D))
+	if (*r6 > 0x00 && ((word32) (*dwArg04_n) == 0x0A || (word32) (*dwArg04_n) == 0x0D))
 	{
-		*dwArg00_107 = (byte) (word32) *dwArg04_108;
+		*dwArg00_n = (byte) (word32) *dwArg04_n;
 		*r6 += -0x01;
 		r5 = fp + 0x04;
-		++dwArg04_108;
-		++dwArg00_107;
+		++dwArg04_n;
+		++dwArg00_n;
 	}
-	*dwArg00_107 = 0x00;
+	*dwArg00_n = 0x00;
 	r5Out = r5;
 	r6Out.u0 = <invalid>;
 	r7Out.u0 = <invalid>;
-	return dwArg04_108;
+	return dwArg04_n;
 }
 
-// 00402E44: void client_read_request(Register (ptr32 Eq_4829) r4, Register word32 r30, Register word32 ra, Stack word32 dwArg00)
-void client_read_request(struct Eq_4829 * r4, word32 r30, word32 ra, word32 dwArg00)
+// 00402E44: void client_read_request(Register (ptr32 Eq_n) r4, Register word32 r30, Register word32 ra, Stack word32 dwArg00)
+void client_read_request(struct Eq_n * r4, word32 r30, word32 ra, word32 dwArg00)
 {
 	r4->t17CC = time(null);
-	word32 r2_44;
+	word32 r2_n;
 	recv();
-	r4->dw07D8 = r2_44;
+	r4->dw07D8 = r2_n;
 }
 
-// 00402EF8: Register Eq_2149 client_send_request(Register Eq_2149 r4, Register ptr32 r30, Register word32 ra, Stack Eq_2149 dwArg00, Register out Eq_2149 r5Out, Register out Eq_2149 r6Out, Register out Eq_2149 r7Out)
-Eq_2149 client_send_request(Eq_2149 r4, ptr32 r30, word32 ra, Eq_2149 dwArg00, union Eq_2149 & r5Out, union Eq_2149 & r6Out, union Eq_2149 & r7Out)
+// 00402EF8: Register Eq_n client_send_request(Register Eq_n r4, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out)
+Eq_n client_send_request(Eq_n r4, ptr32 r30, word32 ra, Eq_n dwArg00, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out)
 {
-	Eq_2149 r2_22 = time(null);
-	*((word32) r4 + 0x000017CC) = r2_22;
-	Eq_2149 r7_127 = <invalid>;
-	Eq_2149 r5_123 = <invalid>;
-	Eq_2149 r6_125 = <invalid>;
-	Eq_2149 r3_119 = r2_22;
+	Eq_n r2_n = time(null);
+	*((word32) r4 + 0x000017CC) = r2_n;
+	Eq_n r7_n = <invalid>;
+	Eq_n r5_n = <invalid>;
+	Eq_n r6_n = <invalid>;
+	Eq_n r3_n = r2_n;
 	if (*((word32) r4 + 0x0FAC) > 0x00)
 	{
-		int32 r2_47;
+		int32 r2_n;
 		send();
-		if (r2_47 == *((word32) r4 + 0x0FAC))
+		if (r2_n == *((word32) r4 + 0x0FAC))
 		{
 			*((word32) r4 + 0x0FAC) = 0x00;
 			*((word32) r4 + 0x0FB0) = (word32) r4 + 2012;
-			r3_119 = r4;
+			r3_n = r4;
 		}
 		else
 		{
-			*((word32) r4 + 0x0FB0) = (word32) *((word32) r4 + 0x0FB0) + r2_47;
-			*((word32) r4 + 0x0FAC) -= r2_47;
+			*((word32) r4 + 0x0FB0) = (word32) *((word32) r4 + 0x0FB0) + r2_n;
+			*((word32) r4 + 0x0FAC) -= r2_n;
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
 			// Failed to bind call argument.
@@ -2527,120 +2525,120 @@ Eq_2149 client_send_request(Eq_2149 r4, ptr32 r30, word32 ra, Eq_2149 dwArg00, u
 			// Please report this issue at https://github.com/uxmal/reko
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			Eq_2149 stackArg0 = <invalid>;
-			Eq_2149 stackArg4 = <invalid>;
-			Eq_2149 stackArg8 = <invalid>;
-			Eq_2149 stackArg12 = <invalid>;
-			print_log((int32 *) 0x04, (char *) globals->ptr10000880 - 24204, (char *) globals->ptr10000880 - 24172, 333, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_119, out r4_79, out r5_123, out r6_125, out r7_127);
+			Eq_n stackArg0 = <invalid>;
+			Eq_n stackArg4 = <invalid>;
+			Eq_n stackArg8 = <invalid>;
+			Eq_n stackArg12 = <invalid>;
+			print_log((int32 *) 0x04, 0x0040A174, 0x0040A194, 333, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 		}
 	}
-	r5Out = r5_123;
-	r6Out = r6_125;
-	r7Out = r7_127;
-	return r3_119;
+	r5Out = r5_n;
+	r6Out = r6_n;
+	r7Out = r7_n;
+	return r3_n;
 }
 
-// 0040307C: void client_read_reply(Register (ptr32 Eq_4917) r4, Stack word32 dwArg00)
-void client_read_reply(struct Eq_4917 * r4, word32 dwArg00)
+// 0040307C: void client_read_reply(Register (ptr32 Eq_n) r4, Stack word32 dwArg00)
+void client_read_reply(struct Eq_n * r4, word32 dwArg00)
 {
 	r4->t17D0 = time(null);
 	r4->t178C = read(r4->dw0004, &r4->dw0004 + 1005, 1999);
 	r4->ptr1788 = &r4->dw0004 + 1005;
 }
 
-// 00403140: void client_parse_reply(Register (ptr32 Eq_3839) r4, Register word32 r30, Register word32 ra, Stack word32 dwArg00)
-void client_parse_reply(struct Eq_3839 * r4, word32 r30, word32 ra, word32 dwArg00)
+// 00403140: void client_parse_reply(Register (ptr32 Eq_n) r4, Register word32 r30, Register word32 ra, Stack word32 dwArg00)
+void client_parse_reply(struct Eq_n * r4, word32 r30, word32 ra, word32 dwArg00)
 {
 	if (r4->dw178C > 0x00)
 	{
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2149 stackArg0 = <invalid>;
+		Eq_n stackArg0 = <invalid>;
 		if (client_check_reply_http(r4, stackArg0) == 0x00)
 		{
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			Eq_2149 stackArg0 = <invalid>;
+			Eq_n stackArg0 = <invalid>;
 			client_copy_reply(r4, fp + -0x0028, ra, stackArg0);
 		}
 	}
 }
 
-// 004031DC: void client_copy_reply(Register (ptr32 Eq_3839) r4, Register ptr32 r30, Register word32 ra, Stack Eq_2149 dwArg00)
-void client_copy_reply(struct Eq_3839 * r4, ptr32 r30, word32 ra, Eq_2149 dwArg00)
+// 004031DC: void client_copy_reply(Register (ptr32 Eq_n) r4, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00)
+void client_copy_reply(struct Eq_n * r4, ptr32 r30, word32 ra, Eq_n dwArg00)
 {
 	if (r4->dw178C > 0x00)
 	{
 		r4->t17D0 = time(null);
-		int32 r2_45;
+		int32 r2_n;
 		send();
-		if (r2_45 == r4->dw178C)
+		if (r2_n == r4->dw178C)
 		{
-			r4->ptr1788 = (struct Eq_4333 *) ((char *) r4 + 4024);
+			r4->ptr1788 = (struct Eq_n *) ((char *) r4 + 4024);
 			r4->dw178C = 0x00;
 		}
 		else
 		{
-			r4->ptr1788 += r2_45;
-			r4->dw178C -= r2_45;
+			r4->ptr1788 += r2_n;
+			r4->dw178C -= r2_n;
 		}
 	}
 }
 
-// 00403318: Register word32 client_check_reply_http(Register (ptr32 Eq_3839) r4, Stack Eq_2149 dwArg00)
-word32 client_check_reply_http(struct Eq_3839 * r4, Eq_2149 dwArg00)
+// 00403318: Register word32 client_check_reply_http(Register (ptr32 Eq_n) r4, Stack Eq_n dwArg00)
+word32 client_check_reply_http(struct Eq_n * r4, Eq_n dwArg00)
 {
-	struct Eq_4333 * dwLoc18_184 = r4->ptr1788;
-	int32 dwLoc14_185 = r4->dw178C;
-	while (dwLoc14_185 > 0x00 && ((word32) dwLoc18_184->t0000 == 0x0A || (word32) dwLoc18_184->t0000 == 0x0D))
+	struct Eq_n * dwLoc18_n = r4->ptr1788;
+	int32 dwLoc14_n = r4->dw178C;
+	while (dwLoc14_n > 0x00 && ((word32) dwLoc18_n->t0000 == 0x0A || (word32) dwLoc18_n->t0000 == 0x0D))
 	{
-		++dwLoc18_184;
-		dwLoc14_185 += -0x01;
+		++dwLoc18_n;
+		dwLoc14_n += -0x01;
 	}
-	int32 r2_157;
-	if ((word32) (dwLoc14_185 < 0x05) == 0x00 && strncasecmp(dwLoc18_184, (char *) globals->ptr10000880 - 0x00005E58, 0x04) == 0x00)
+	int32 r2_n;
+	if ((word32) (dwLoc14_n < 0x05) == 0x00 && strncasecmp(dwLoc18_n, "HTTP", 0x04) == 0x00)
 	{
 		r4->ptr17C4 = client_copy_reply;
 		do
 		{
-			if (dwLoc14_185 <= 0x00)
+			if (dwLoc14_n <= 0x00)
 			{
-				r4->ptr1788 = (struct Eq_4333 *) ((char *) r4 + 4024);
+				r4->ptr1788 = (struct Eq_n *) ((char *) r4 + 4024);
 				r4->dw178C = 0x00;
-				r2_157 = 0x01;
-				return r2_157;
+				r2_n = 0x01;
+				return r2_n;
 			}
-			while (dwLoc14_185 > 0x00 && ((word32) dwLoc18_184->t0000 != 0x0A && (word32) dwLoc18_184->t0000 != 0x0D))
+			while (dwLoc14_n > 0x00 && ((word32) dwLoc18_n->t0000 != 0x0A && (word32) dwLoc18_n->t0000 != 0x0D))
 			{
-				dwLoc14_185 += -0x01;
-				++dwLoc18_184;
+				dwLoc14_n += -0x01;
+				++dwLoc18_n;
 			}
-			if ((word32) (dwLoc14_185 < 0x02) != 0x00 || (word32) dwLoc18_184->t0000 != 0x0A && (word32) dwLoc18_184->t0000 != 0x0D || (word32) dwLoc18_184[0x01] != 0x0A && (word32) dwLoc18_184[0x01] != 0x0D)
+			if ((word32) (dwLoc14_n < 0x02) != 0x00 || (word32) dwLoc18_n->t0000 != 0x0A && (word32) dwLoc18_n->t0000 != 0x0D || (word32) dwLoc18_n[0x01] != 0x0A && (word32) dwLoc18_n[0x01] != 0x0D)
 				continue;
-			struct Eq_5103 * dwLoc18_209 = dwLoc18_184 + 0x01;
-			dwLoc14_185 += -0x02;
-			dwLoc18_184 = (struct Eq_4333 *) &dwLoc18_209->b0001;
-		} while ((word32) (dwLoc14_185 < 0x02) != 0x00 || (word32) dwLoc18_209->b0001 != 0x0A && (word32) dwLoc18_209->b0001 != 0x0D || (word32) dwLoc18_209->b0002 != 0x0A && (word32) dwLoc18_209->b0002 != 0x0D);
-		if (dwLoc14_185 > ~0x01)
+			struct Eq_n * dwLoc18_n = dwLoc18_n + 0x01;
+			dwLoc14_n += -0x02;
+			dwLoc18_n = (struct Eq_n *) &dwLoc18_n->b0001;
+		} while ((word32) (dwLoc14_n < 0x02) != 0x00 || (word32) dwLoc18_n->b0001 != 0x0A && (word32) dwLoc18_n->b0001 != 0x0D || (word32) dwLoc18_n->b0002 != 0x0A && (word32) dwLoc18_n->b0002 != 0x0D);
+		if (dwLoc14_n > ~0x01)
 		{
-			r4->ptr1788 = (struct Eq_4333 *) (&dwLoc18_209->b0002 + 0x01);
-			r4->dw178C = dwLoc14_185 + -0x02;
-			r2_157 = 0x00;
+			r4->ptr1788 = (struct Eq_n *) (&dwLoc18_n->b0002 + 0x01);
+			r4->dw178C = dwLoc14_n + -0x02;
+			r2_n = 0x00;
 		}
 		else
 		{
-			r4->ptr1788 = (struct Eq_4333 *) ((char *) r4 + 4024);
+			r4->ptr1788 = (struct Eq_n *) ((char *) r4 + 4024);
 			r4->dw178C = 0x00;
-			r2_157 = 0x01;
+			r2_n = 0x01;
 		}
 	}
 	else
-		r2_157 = 0x00;
-	return r2_157;
+		r2_n = 0x00;
+	return r2_n;
 }
 
-// 004036BC: void client_close(Register Eq_2149 r4, Stack Eq_2149 dwArg00)
-void client_close(Eq_2149 r4, Eq_2149 dwArg00)
+// 004036BC: void client_close(Register Eq_n r4, Stack Eq_n dwArg00)
+void client_close(Eq_n r4, Eq_n dwArg00)
 {
 	if (r4 != 0x00)
 	{
@@ -2657,18 +2655,18 @@ void client_close(Eq_2149 r4, Eq_2149 dwArg00)
 	}
 }
 
-// 00403794: Register Eq_2149 client_destroy(Register word32 r2, Register Eq_2149 r4, Register ptr32 r30, Register word32 ra, Stack Eq_2149 dwArg00, Register out Eq_2149 r5Out, Register out Eq_2149 r6Out, Register out Eq_2149 r7Out)
-Eq_2149 client_destroy(word32 r2, Eq_2149 r4, ptr32 r30, word32 ra, Eq_2149 dwArg00, union Eq_2149 & r5Out, union Eq_2149 & r6Out, union Eq_2149 & r7Out)
+// 00403794: Register Eq_n client_destroy(Register word32 r2, Register Eq_n r4, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out)
+Eq_n client_destroy(word32 r2, Eq_n r4, ptr32 r30, word32 ra, Eq_n dwArg00, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out)
 {
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_2149 stackArg0 = <invalid>;
+	Eq_n stackArg0 = <invalid>;
 	client_close(r4, stackArg0);
 	if (*((word32) r4 + 4020) != 0x00)
 	{
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2149 stackArg0 = <invalid>;
+		Eq_n stackArg0 = <invalid>;
 		request_destroy(*((word32) r4 + 4020), stackArg0);
 	}
 	free(r4);
@@ -2678,13 +2676,13 @@ Eq_2149 client_destroy(word32 r2, Eq_2149 r4, ptr32 r30, word32 ra, Eq_2149 dwAr
 	return <invalid>;
 }
 
-// 00403840: void client_check_activ(Register (ptr32 Eq_5218) r4, Register Eq_2149 r5, Register word32 r30, Register word32 ra, Stack word32 dwArg00, Stack word32 dwArg04)
-void client_check_activ(struct Eq_5218 * r4, Eq_2149 r5, word32 r30, word32 ra, word32 dwArg00, word32 dwArg04)
+// 00403840: void client_check_activ(Register (ptr32 Eq_n) r4, Register Eq_n r5, Register word32 r30, Register word32 ra, Stack word32 dwArg00, Stack word32 dwArg04)
+void client_check_activ(struct Eq_n * r4, Eq_n r5, word32 r30, word32 ra, word32 dwArg00, word32 dwArg04)
 {
-	Eq_2149 dwArg04_126 = r5;
+	Eq_n dwArg04_n = r5;
 	if (r5 < 0x00)
-		dwArg04_126 = time(null);
-	if ((word32) (*globals->ptr1000090C < dwArg04_126 - r4->dw17CC) != 0x00)
+		dwArg04_n = time(null);
+	if ((word32) (*globals->ptr1000090C < dwArg04_n - r4->dw17CC) != 0x00)
 	{
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
@@ -2694,13 +2692,13 @@ void client_check_activ(struct Eq_5218 * r4, Eq_2149 r5, word32 r30, word32 ra, 
 		// Please report this issue at https://github.com/uxmal/reko
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2149 stackArg0 = <invalid>;
-		Eq_2149 stackArg4 = <invalid>;
-		Eq_2149 stackArg8 = <invalid>;
-		Eq_2149 stackArg12 = <invalid>;
-		print_log((int32 *) 0x03, (char *) globals->ptr10000880 - 24144, (char *) globals->ptr10000880 - 0x00005E20, 0x01D3, fp + -0x0040, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_173, out r4_174, out r5_175, out r6_176, out r7_177);
+		Eq_n stackArg0 = <invalid>;
+		Eq_n stackArg4 = <invalid>;
+		Eq_n stackArg8 = <invalid>;
+		Eq_n stackArg12 = <invalid>;
+		print_log((int32 *) 0x03, 0x0040A1B0, 0x0040A1E0, 0x01D3, fp + -0x0040, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 	}
-	if ((word32) (*globals->ptr1000090C < dwArg04_126 - r4->t17D0) != 0x00)
+	if ((word32) (*globals->ptr1000090C < dwArg04_n - r4->t17D0) != 0x00)
 	{
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
@@ -2710,23 +2708,23 @@ void client_check_activ(struct Eq_5218 * r4, Eq_2149 r5, word32 r30, word32 ra, 
 		// Please report this issue at https://github.com/uxmal/reko
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2149 stackArg0 = <invalid>;
-		Eq_2149 stackArg4 = <invalid>;
-		Eq_2149 stackArg8 = <invalid>;
-		Eq_2149 stackArg12 = <invalid>;
-		print_log((int32 *) 0x03, (char *) globals->ptr10000880 - 0x00005E0C, (char *) globals->ptr10000880 - 0x00005E20, 0x01D9, fp + -0x0040, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_182, out r4_183, out r5_184, out r6_185, out r7_186);
+		Eq_n stackArg0 = <invalid>;
+		Eq_n stackArg4 = <invalid>;
+		Eq_n stackArg8 = <invalid>;
+		Eq_n stackArg12 = <invalid>;
+		print_log((int32 *) 0x03, 0x0040A1F4, 0x0040A1E0, 0x01D9, fp + -0x0040, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 	}
 }
 
-// 00403A1C: Register int32 open_destination(Register (ptr32 Eq_3645) r4, Register word32 r16, Register ptr32 r30, Register word32 ra, Stack Eq_2149 dwArg00, Register out Eq_2149 r5Out, Register out Eq_2149 r6Out, Register out Eq_2149 r7Out)
-int32 open_destination(struct sockaddr * r4, word32 r16, ptr32 r30, word32 ra, Eq_2149 dwArg00, union Eq_2149 & r5Out, union Eq_2149 & r6Out, union Eq_2149 & r7Out)
+// 00403A1C: Register int32 open_destination(Register (ptr32 Eq_n) r4, Register word32 r16, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out)
+int32 open_destination(struct sockaddr * r4, word32 r16, ptr32 r30, word32 ra, Eq_n dwArg00, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out)
 {
-	Eq_2149 r7_144;
-	Eq_2149 r6_141;
-	Eq_2149 r5_140;
-	int32 r2_146;
-	int32 r2_27 = socket(0x02, 0x02, 0x06);
-	if (r2_27 < 0x00)
+	Eq_n r7_n;
+	Eq_n r6_n;
+	Eq_n r5_n;
+	int32 r2_n;
+	int32 r2_n = socket(0x02, 0x02, 0x06);
+	if (r2_n < 0x00)
 	{
 		__errno_location();
 		strerror(*__errno_location());
@@ -2738,19 +2736,19 @@ int32 open_destination(struct sockaddr * r4, word32 r16, ptr32 r30, word32 ra, E
 		// Please report this issue at https://github.com/uxmal/reko
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2149 stackArg0 = <invalid>;
-		Eq_2149 stackArg4 = <invalid>;
-		Eq_2149 stackArg8 = <invalid>;
-		Eq_2149 stackArg12 = <invalid>;
-		print_log((int32 *) 0x01, (char *) globals->ptr10000880 - 0x00005DDC, (char *) globals->ptr10000880 - 0x00005DAC, 0x01E9, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_143, out r4_139, out r5_140, out r6_141, out r7_144);
-		r2_146 = -0x01;
+		Eq_n stackArg0 = <invalid>;
+		Eq_n stackArg4 = <invalid>;
+		Eq_n stackArg8 = <invalid>;
+		Eq_n stackArg12 = <invalid>;
+		print_log((int32 *) 0x01, 0x0040A224, 0x0040A254, 0x01E9, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+		r2_n = -0x01;
 	}
 	else
 	{
-		r7_144.u0 = <invalid>;
-		r6_141.u0 = <invalid>;
-		r5_140.u0 = <invalid>;
-		if (connect(r2_27, r4, 0x0010) < 0x00)
+		r7_n.u0 = <invalid>;
+		r6_n.u0 = <invalid>;
+		r5_n.u0 = <invalid>;
+		if (connect(r2_n, r4, 0x0010) < 0x00)
 		{
 			__errno_location();
 			strerror(*__errno_location());
@@ -2762,30 +2760,30 @@ int32 open_destination(struct sockaddr * r4, word32 r16, ptr32 r30, word32 ra, E
 			// Please report this issue at https://github.com/uxmal/reko
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			Eq_2149 stackArg0 = <invalid>;
-			Eq_2149 stackArg4 = <invalid>;
-			Eq_2149 stackArg8 = <invalid>;
-			Eq_2149 stackArg12 = <invalid>;
-			print_log((int32 *) 0x01, (char *) globals->ptr10000880 - 0x00005D98, (char *) globals->ptr10000880 - 0x00005DAC, 0x01F0, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_188, out r4_189, out r5_140, out r6_141, out r7_144);
-			r2_146 = -0x01;
+			Eq_n stackArg0 = <invalid>;
+			Eq_n stackArg4 = <invalid>;
+			Eq_n stackArg8 = <invalid>;
+			Eq_n stackArg12 = <invalid>;
+			print_log((int32 *) 0x01, 0x0040A268, 0x0040A254, 0x01F0, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+			r2_n = -0x01;
 		}
 		else
-			r2_146 = r2_27;
+			r2_n = r2_n;
 	}
-	r5Out = r5_140;
-	r6Out = r6_141;
-	r7Out = r7_144;
-	return r2_146;
+	r5Out = r5_n;
+	r6Out = r6_n;
+	r7Out = r7_n;
+	return r2_n;
 }
 
-// 00403C00: Register Eq_2149 clist_new(Register ptr32 r30, Register word32 ra, Register out Eq_2149 r3Out, Register out Eq_2149 r4Out, Register out Eq_2149 r5Out, Register out Eq_2149 r6Out, Register out Eq_2149 r7Out)
-Eq_2149 clist_new(ptr32 r30, word32 ra, union Eq_2149 & r3Out, union Eq_2149 & r4Out, union Eq_2149 & r5Out, union Eq_2149 & r6Out, union Eq_2149 & r7Out)
+// 00403C00: Register Eq_n clist_new(Register ptr32 r30, Register word32 ra, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out)
+Eq_n clist_new(ptr32 r30, word32 ra, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out)
 {
-	Eq_2149 r2_32;
-	Eq_2149 r2_19 = malloc(0x0C);
-	Eq_2149 r5_21 = <invalid>;
-	Eq_2149 r4_17 = <invalid>;
-	if (r2_19 == 0x00)
+	Eq_n r2_n;
+	Eq_n r2_n = malloc(0x0C);
+	Eq_n r5_n = <invalid>;
+	Eq_n r4_n = <invalid>;
+	if (r2_n == 0x00)
 	{
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
@@ -2795,30 +2793,30 @@ Eq_2149 clist_new(ptr32 r30, word32 ra, union Eq_2149 & r3Out, union Eq_2149 & r
 		// Please report this issue at https://github.com/uxmal/reko
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2149 stackArg0 = <invalid>;
-		Eq_2149 stackArg4 = <invalid>;
-		Eq_2149 stackArg8 = <invalid>;
-		Eq_2149 stackArg12 = <invalid>;
-		print_log(null, (char *) globals->ptr10000880 - 0x00005D60, r6, r7, fp + -0x0030, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_74, out r4_17, out r5_21, out r6_75, out r7_76);
-		r2_32.u0 = 0x00;
+		Eq_n stackArg0 = <invalid>;
+		Eq_n stackArg4 = <invalid>;
+		Eq_n stackArg8 = <invalid>;
+		Eq_n stackArg12 = <invalid>;
+		print_log(null, 0x0040A2A0, r6, r7, fp + -0x0030, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+		r2_n.u0 = 0x00;
 	}
 	else
 	{
-		((word32) r2_19 + 0x08)->u0 = 0x00;
-		r2_19->u0 = 0x00;
-		((word32) r2_19 + 0x04)->u0 = 0x00;
-		r2_32 = r2_19;
+		((word32) r2_n + 0x08)->u0 = 0x00;
+		r2_n->u0 = 0x00;
+		((word32) r2_n + 0x04)->u0 = 0x00;
+		r2_n = r2_n;
 	}
 	r3Out.u0 = <invalid>;
-	r4Out = r4_17;
-	r5Out = r5_21;
+	r4Out = r4_n;
+	r5Out = r5_n;
 	r6Out.u0 = <invalid>;
 	r7Out.u0 = <invalid>;
-	return r2_32;
+	return r2_n;
 }
 
-// 00403CBC: Register (ptr32 Eq_2536) clist_add(Register (ptr32 Eq_2536) r4, Register Eq_2149 r5, Stack Eq_2149 dwArg00, Stack Eq_2149 dwArg04, Register out (ptr32 Eq_2536) r3Out, Register out Eq_2149 r5Out, Register out Eq_2149 r6Out, Register out Eq_2149 r7Out)
-struct Eq_2536 * clist_add(struct Eq_2536 * r4, Eq_2149 r5, Eq_2149 dwArg00, Eq_2149 dwArg04, struct Eq_2536 & r3Out, union Eq_2149 & r5Out, union Eq_2149 & r6Out, union Eq_2149 & r7Out)
+// 00403CBC: Register (ptr32 Eq_n) clist_add(Register (ptr32 Eq_n) r4, Register Eq_n r5, Stack Eq_n dwArg00, Stack Eq_n dwArg04, Register out (ptr32 Eq_n) r3Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out)
+struct Eq_n * clist_add(struct Eq_n * r4, Eq_n r5, Eq_n dwArg00, Eq_n dwArg04, struct Eq_n & r3Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out)
 {
 	if (r4->t0008 != 0x00)
 	{
@@ -2827,23 +2825,23 @@ struct Eq_2536 * clist_add(struct Eq_2536 * r4, Eq_2149 r5, Eq_2149 dwArg00, Eq_
 	}
 	*((word32) r5 + 6076) = 0x00;
 	r4->t0008 = r5;
-	r4->ptr0000 = (struct Eq_2536 *) ((char *) &r4->ptr0000->ptr0000 + 0x01);
-	struct Eq_2536 * r3_40 = r4;
+	r4->ptr0000 = (struct Eq_n *) ((char *) &r4->ptr0000->ptr0000 + 0x01);
+	struct Eq_n * r3_n = r4;
 	if ((word32) (r4->ptr0004 < r4->ptr0000) != 0x00)
 	{
-		r3_40 = r4->ptr0000;
-		r4->ptr0004 = r3_40;
+		r3_n = r4->ptr0000;
+		r4->ptr0004 = r3_n;
 	}
-	struct Eq_2536 * r2_51 = r4->ptr0000;
-	r3Out = r3_40;
+	struct Eq_n * r2_n = r4->ptr0000;
+	r3Out = r3_n;
 	r5Out.u0 = <invalid>;
 	r6Out.u0 = <invalid>;
 	r7Out.u0 = <invalid>;
-	return r2_51;
+	return r2_n;
 }
 
-// 00403DBC: Register Eq_2149 clist_remove(Register Eq_2149 r4, Register Eq_2149 r5, Stack Eq_2149 dwArg00, Stack Eq_2149 dwArg04)
-Eq_2149 clist_remove(Eq_2149 r4, Eq_2149 r5, Eq_2149 dwArg00, Eq_2149 dwArg04)
+// 00403DBC: Register Eq_n clist_remove(Register Eq_n r4, Register Eq_n r5, Stack Eq_n dwArg00, Stack Eq_n dwArg04)
+Eq_n clist_remove(Eq_n r4, Eq_n r5, Eq_n dwArg00, Eq_n dwArg04)
 {
 	if (r5 != 0x00)
 	{
@@ -2858,54 +2856,54 @@ Eq_2149 clist_remove(Eq_2149 r4, Eq_2149 r5, Eq_2149 dwArg00, Eq_2149 dwArg04)
 	return <invalid>;
 }
 
-// 00403EC0: void clist_find_fdin(Register (ptr32 Eq_5556) r4, Register word32 r5, Stack word32 dwArg00, Stack word32 dwArg04)
-void clist_find_fdin(struct Eq_5556 * r4, word32 r5, word32 dwArg00, word32 dwArg04)
+// 00403EC0: void clist_find_fdin(Register (ptr32 Eq_n) r4, Register word32 r5, Stack word32 dwArg00, Stack word32 dwArg04)
+void clist_find_fdin(struct Eq_n * r4, word32 r5, word32 dwArg00, word32 dwArg04)
 {
-	struct Eq_5560 * dwLoc10_38 = r4->ptr0008;
-	while (dwLoc10_38 != null && dwLoc10_38->dw0000 != r5)
-		dwLoc10_38 = dwLoc10_38->ptr17B8;
+	struct Eq_n * dwLoc10_n = r4->ptr0008;
+	while (dwLoc10_n != null && dwLoc10_n->dw0000 != r5)
+		dwLoc10_n = dwLoc10_n->ptr17B8;
 }
 
-// 00403F5C: void clist_find_fdout(Register (ptr32 Eq_5573) r4, Register word32 r5, Stack word32 dwArg00, Stack word32 dwArg04)
-void clist_find_fdout(struct Eq_5573 * r4, word32 r5, word32 dwArg00, word32 dwArg04)
+// 00403F5C: void clist_find_fdout(Register (ptr32 Eq_n) r4, Register word32 r5, Stack word32 dwArg00, Stack word32 dwArg04)
+void clist_find_fdout(struct Eq_n * r4, word32 r5, word32 dwArg00, word32 dwArg04)
 {
-	struct Eq_5577 * dwLoc10_38 = r4->ptr0008;
-	while (dwLoc10_38 != null && dwLoc10_38->dw0004 != r5)
-		dwLoc10_38 = dwLoc10_38->ptr17B8;
+	struct Eq_n * dwLoc10_n = r4->ptr0008;
+	while (dwLoc10_n != null && dwLoc10_n->dw0004 != r5)
+		dwLoc10_n = dwLoc10_n->ptr17B8;
 }
 
-// 00403FF8: void clist_delete(Register Eq_2149 r4, Register Eq_2149 r5, Register ptr32 r30, Register word32 ra, Stack Eq_2149 dwArg00, Stack Eq_2149 dwArg04)
-void clist_delete(Eq_2149 r4, Eq_2149 r5, ptr32 r30, word32 ra, Eq_2149 dwArg00, Eq_2149 dwArg04)
+// 00403FF8: void clist_delete(Register Eq_n r4, Register Eq_n r5, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00, Stack Eq_n dwArg04)
+void clist_delete(Eq_n r4, Eq_n r5, ptr32 r30, word32 ra, Eq_n dwArg00, Eq_n dwArg04)
 {
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_2149 stackArg0 = <invalid>;
-	Eq_2149 stackArg4 = <invalid>;
+	Eq_n stackArg0 = <invalid>;
+	Eq_n stackArg4 = <invalid>;
 	clist_remove(r4, r5, stackArg0, stackArg4);
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_2149 stackArg0 = <invalid>;
-	client_destroy(r2, r5, fp + -0x0028, ra, stackArg0, out r5_44, out r6_45, out r7_46);
+	Eq_n stackArg0 = <invalid>;
+	client_destroy(r2, r5, fp + -0x0028, ra, stackArg0, out r5_n, out r6_n, out r7_n);
 }
 
-// 00404070: void clist_close_all(Register Eq_2149 r4, Register ptr32 r30, Register word32 ra, Stack Eq_2149 dwArg00)
-void clist_close_all(Eq_2149 r4, ptr32 r30, word32 ra, Eq_2149 dwArg00)
+// 00404070: void clist_close_all(Register Eq_n r4, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00)
+void clist_close_all(Eq_n r4, ptr32 r30, word32 ra, Eq_n dwArg00)
 {
-	Eq_2149 dwLoc18_42 = *((word32) r4 + 0x08);
-	while (dwLoc18_42 != 0x00)
+	Eq_n dwLoc18_n = *((word32) r4 + 0x08);
+	while (dwLoc18_n != 0x00)
 	{
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2149 stackArg0 = <invalid>;
-		client_close(dwLoc18_42, stackArg0);
-		dwLoc18_42 = *((word32) dwLoc18_42 + 0x000017B8);
+		Eq_n stackArg0 = <invalid>;
+		client_close(dwLoc18_n, stackArg0);
+		dwLoc18_n = *((word32) dwLoc18_n + 0x000017B8);
 	}
 }
 
-// 00404108: void clist_destroy_all(Register Eq_2149 r4, Register ptr32 r30, Register word32 ra, Stack Eq_2149 dwArg00)
-void clist_destroy_all(Eq_2149 r4, ptr32 r30, word32 ra, Eq_2149 dwArg00)
+// 00404108: void clist_destroy_all(Register Eq_n r4, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00)
+void clist_destroy_all(Eq_n r4, ptr32 r30, word32 ra, Eq_n dwArg00)
 {
 	while (*((word32) r4 + 0x08) != 0x00)
 	{
@@ -2913,32 +2911,32 @@ void clist_destroy_all(Eq_2149 r4, ptr32 r30, word32 ra, Eq_2149 dwArg00)
 		// Please report this issue at https://github.com/uxmal/reko
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2149 stackArg0 = <invalid>;
-		Eq_2149 stackArg4 = <invalid>;
+		Eq_n stackArg0 = <invalid>;
+		Eq_n stackArg4 = <invalid>;
 		clist_delete(r4, *((word32) r4 + 0x08), fp + -0x0030, ra, stackArg0, stackArg4);
 	}
 }
 
-// 004041B0: void clist_destroy(Register Eq_2149 r4, Register word32 r30, Register word32 ra, Stack word32 dwArg00)
-void clist_destroy(Eq_2149 r4, word32 r30, word32 ra, word32 dwArg00)
+// 004041B0: void clist_destroy(Register Eq_n r4, Register word32 r30, Register word32 ra, Stack word32 dwArg00)
+void clist_destroy(Eq_n r4, word32 r30, word32 ra, word32 dwArg00)
 {
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_2149 stackArg0 = <invalid>;
+	Eq_n stackArg0 = <invalid>;
 	clist_close_all(r4, fp + -0x0028, ra, stackArg0);
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_2149 stackArg0 = <invalid>;
+	Eq_n stackArg0 = <invalid>;
 	clist_destroy_all(r4, fp + -0x0028, ra, stackArg0);
 	free(r4);
 }
 
-// 00404240: Register Eq_2149 request_new(Register Eq_4100 r4, Register ptr32 r30, Register word32 ra, Stack Eq_2149 dwArg00, Register out Eq_2149 r7Out)
-Eq_2149 request_new(Eq_4100 r4, ptr32 r30, word32 ra, Eq_2149 dwArg00, union Eq_2149 & r7Out)
+// 00404240: Register Eq_n request_new(Register Eq_n r4, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00, Register out Eq_n r7Out)
+Eq_n request_new(Eq_n r4, ptr32 r30, word32 ra, Eq_n dwArg00, union Eq_n & r7Out)
 {
-	Eq_2149 r2_59;
-	Eq_2149 r2_21 = malloc(0x055C);
-	if (r2_21 == 0x00)
+	Eq_n r2_n;
+	Eq_n r2_n = malloc(0x055C);
+	if (r2_n == 0x00)
 	{
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
@@ -2948,58 +2946,58 @@ Eq_2149 request_new(Eq_4100 r4, ptr32 r30, word32 ra, Eq_2149 dwArg00, union Eq_
 		// Please report this issue at https://github.com/uxmal/reko
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2149 stackArg0 = <invalid>;
-		Eq_2149 stackArg4 = <invalid>;
-		Eq_2149 stackArg8 = <invalid>;
-		Eq_2149 stackArg12 = <invalid>;
-		print_log(null, (char *) globals->ptr10000880 - 23800, r6, r7, fp + -0x0030, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_70, out r4_67, out r5_69, out r6_109, out r7_110);
-		r2_59.u0 = 0x00;
+		Eq_n stackArg0 = <invalid>;
+		Eq_n stackArg4 = <invalid>;
+		Eq_n stackArg8 = <invalid>;
+		Eq_n stackArg12 = <invalid>;
+		print_log(null, 0x0040A308, r6, r7, fp + -0x0030, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+		r2_n.u0 = 0x00;
 		goto l00404364;
 	}
-	r2_21->u0 = 0x00;
-	*((word32) r2_21 + 0x0114) = 0x00;
-	*((word32) r2_21 + 788) = 0x00;
-	*((word32) r2_21 + 0x0214) = 0x00;
-	*((word32) r2_21 + 0x0014) = 0x00;
-	*((word32) r2_21 + 0x0414) = 0x00;
-	*((word32) r2_21 + 0x0558) = -0x01;
-	*((word32) r2_21 + 0x0554) = 0x00;
+	r2_n->u0 = 0x00;
+	*((word32) r2_n + 0x0114) = 0x00;
+	*((word32) r2_n + 788) = 0x00;
+	*((word32) r2_n + 0x0214) = 0x00;
+	*((word32) r2_n + 0x0014) = 0x00;
+	*((word32) r2_n + 0x0414) = 0x00;
+	*((word32) r2_n + 0x0558) = -0x01;
+	*((word32) r2_n + 0x0554) = 0x00;
 	if (r4 != 0x00)
 	{
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2149 stackArg0 = <invalid>;
-		Eq_2149 stackArg4 = <invalid>;
-		if (request_parse_line(r4, r2_21, r4, fp + -0x0030, ra, stackArg0, stackArg4, out r3_113, out r7_114) == 0x00)
+		Eq_n stackArg0 = <invalid>;
+		Eq_n stackArg4 = <invalid>;
+		if (request_parse_line(r4, r2_n, r4, fp + -0x0030, ra, stackArg0, stackArg4, out r3_n, out r7_n) == 0x00)
 		{
-			r2_59.u0 = 0x00;
+			r2_n.u0 = 0x00;
 l00404364:
 			r7Out.u0 = <invalid>;
-			return r2_59;
+			return r2_n;
 		}
 	}
-	r2_59 = r2_21;
+	r2_n = r2_n;
 	goto l00404364;
 }
 
-// 00404378: Register Eq_4100 request_parse_line(Register Eq_4100 r2, Register Eq_2149 r4, Register Eq_4100 r5, Register ptr32 r30, Register word32 ra, Stack Eq_2149 dwArg00, Stack Eq_2149 dwArg04, Register out Eq_2149 r3Out, Register out Eq_2149 r7Out)
-Eq_4100 request_parse_line(Eq_4100 r2, Eq_2149 r4, Eq_4100 r5, ptr32 r30, word32 ra, Eq_2149 dwArg00, Eq_2149 dwArg04, union Eq_2149 & r3Out, union Eq_2149 & r7Out)
+// 00404378: Register Eq_n request_parse_line(Register Eq_n r2, Register Eq_n r4, Register Eq_n r5, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00, Stack Eq_n dwArg04, Register out Eq_n r3Out, Register out Eq_n r7Out)
+Eq_n request_parse_line(Eq_n r2, Eq_n r4, Eq_n r5, ptr32 r30, word32 ra, Eq_n dwArg00, Eq_n dwArg04, union Eq_n & r3Out, union Eq_n & r7Out)
 {
-	Eq_4100 r2_57;
+	Eq_n r2_n;
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_2149 stackArg0 = <invalid>;
-	Eq_2149 stackArg4 = <invalid>;
-	word32 r2_25 = get_method(r4, r5, r6, fp + -0x0030, ra, stackArg0, stackArg4, out r5_23);
-	Eq_2149 stackArg0 = <invalid>;
+	Eq_n stackArg0 = <invalid>;
+	Eq_n stackArg4 = <invalid>;
+	word32 r2_n = get_method(r4, r5, r6, fp + -0x0030, ra, stackArg0, stackArg4, out r5_n);
+	Eq_n stackArg0 = <invalid>;
 	if (is_a_method(r4, stackArg0) == 0x00)
-		r2_57.u0 = 0x00;
+		r2_n.u0 = 0x00;
 	else
 	{
 		// Failed to bind call argument.
@@ -3010,25 +3008,25 @@ Eq_4100 request_parse_line(Eq_4100 r2, Eq_2149 r4, Eq_4100 r5, ptr32 r30, word32
 		// Please report this issue at https://github.com/uxmal/reko
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2149 stackArg0 = <invalid>;
-		Eq_2149 stackArg4 = <invalid>;
-		Eq_2149 stackArg0 = <invalid>;
-		Eq_2149 stackArg4 = <invalid>;
-		get_version((word32) r4 + 788, get_uri((word32) r4 + 0x0114, r2_25, r6, fp + -0x0030, ra, stackArg0, stackArg4), r6, fp + -0x0030, ra, stackArg0, stackArg4);
-		r2_57.u0 = 0x01;
+		Eq_n stackArg0 = <invalid>;
+		Eq_n stackArg4 = <invalid>;
+		Eq_n stackArg0 = <invalid>;
+		Eq_n stackArg4 = <invalid>;
+		get_version((word32) r4 + 788, get_uri((word32) r4 + 0x0114, r2_n, r6, fp + -0x0030, ra, stackArg0, stackArg4), r6, fp + -0x0030, ra, stackArg0, stackArg4);
+		r2_n.u0 = 0x01;
 	}
 	r3Out.u0 = <invalid>;
 	r7Out.u0 = <invalid>;
-	return r2_57;
+	return r2_n;
 }
 
-// 00404458: Register Eq_2149 request_save_line(Register Eq_2149 r3, Register Eq_2149 r4, Register (ptr32 void) r5, Register Eq_2149 r6, Register ptr32 r30, Register word32 ra, Stack Eq_2149 dwArg00, Stack Eq_2149 dwArg04, Stack Eq_2149 dwArg08, Stack Eq_2149 bArg0B, Register out Eq_2149 r7Out)
-Eq_2149 request_save_line(Eq_2149 r3, Eq_2149 r4, void * r5, Eq_2149 r6, ptr32 r30, word32 ra, Eq_2149 dwArg00, Eq_2149 dwArg04, Eq_2149 dwArg08, Eq_2149 bArg0B, union Eq_2149 & r7Out)
+// 00404458: Register Eq_n request_save_line(Register Eq_n r3, Register Eq_n r4, Register (ptr32 void) r5, Register Eq_n r6, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00, Stack Eq_n dwArg04, Stack Eq_n dwArg08, Stack Eq_n bArg0B, Register out Eq_n r7Out)
+Eq_n request_save_line(Eq_n r3, Eq_n r4, void * r5, Eq_n r6, ptr32 r30, word32 ra, Eq_n dwArg00, Eq_n dwArg04, Eq_n dwArg08, Eq_n bArg0B, union Eq_n & r7Out)
 {
-	Eq_2149 r7_121;
-	Eq_2149 r3_101;
-	byte bArg0B_152 = SLICE(r6, byte, 0);
-	word24 nArg08_153 = SLICE(r6, word24, 8);
+	Eq_n r7_n;
+	Eq_n r3_n;
+	byte bArg0B_n = SLICE(r6, byte, 0);
+	word24 nArg08_n = SLICE(r6, word24, 8);
 	if (r4 == 0x00)
 	{
 		// Failed to bind call argument.
@@ -3039,11 +3037,11 @@ Eq_2149 request_save_line(Eq_2149 r3, Eq_2149 r4, void * r5, Eq_2149 r6, ptr32 r
 		// Please report this issue at https://github.com/uxmal/reko
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2149 stackArg0 = <invalid>;
-		Eq_2149 stackArg4 = <invalid>;
-		Eq_2149 stackArg8 = <invalid>;
-		Eq_2149 stackArg12 = <invalid>;
-		print_log((int32 *) 0x02, (char *) globals->ptr10000880 - 23656, (char *) globals->ptr10000880 - 0x00005CD0, 0x004B, fp + -0x0030, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_101, out r4_133, out r5_134, out r6_135, out r7_121);
+		Eq_n stackArg0 = <invalid>;
+		Eq_n stackArg4 = <invalid>;
+		Eq_n stackArg8 = <invalid>;
+		Eq_n stackArg12 = <invalid>;
+		print_log((int32 *) 0x02, 0x0040A398, 0x0040A330, 0x004B, fp + -0x0030, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 	}
 	else if ((word32) (*((word32) r4 + 0x0558) < 0x003F) == 0x00)
 	{
@@ -3055,11 +3053,11 @@ Eq_2149 request_save_line(Eq_2149 r3, Eq_2149 r4, void * r5, Eq_2149 r6, ptr32 r
 		// Please report this issue at https://github.com/uxmal/reko
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2149 stackArg0 = <invalid>;
-		Eq_2149 stackArg4 = <invalid>;
-		Eq_2149 stackArg8 = <invalid>;
-		Eq_2149 stackArg12 = <invalid>;
-		print_log((int32 *) 0x02, (char *) globals->ptr10000880 - 0x00005CBC, (char *) globals->ptr10000880 - 0x00005CD0, 0x0050, fp + -0x0030, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_101, out r4_177, out r5_178, out r6_179, out r7_121);
+		Eq_n stackArg0 = <invalid>;
+		Eq_n stackArg4 = <invalid>;
+		Eq_n stackArg8 = <invalid>;
+		Eq_n stackArg12 = <invalid>;
+		print_log((int32 *) 0x02, 0x0040A344, 0x0040A330, 0x0050, fp + -0x0030, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 	}
 	else
 	{
@@ -3075,28 +3073,28 @@ Eq_2149 request_save_line(Eq_2149 r3, Eq_2149 r4, void * r5, Eq_2149 r6, ptr32 r
 			// Please report this issue at https://github.com/uxmal/reko
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			Eq_2149 stackArg0 = <invalid>;
-			Eq_2149 stackArg4 = <invalid>;
-			Eq_2149 stackArg8 = <invalid>;
-			Eq_2149 stackArg12 = <invalid>;
-			print_log((int32 *) 0x02, (char *) globals->ptr10000880 - 0x00005C9C, (char *) globals->ptr10000880 - 0x00005CD0, 0x0057, fp + -0x0030, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_184, out r4_185, out r5_186, out r6_187, out r7_121);
+			Eq_n stackArg0 = <invalid>;
+			Eq_n stackArg4 = <invalid>;
+			Eq_n stackArg8 = <invalid>;
+			Eq_n stackArg12 = <invalid>;
+			print_log((int32 *) 0x02, 0x0040A364, 0x0040A330, 0x0057, fp + -0x0030, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 			*((word32) r4 + 0x0558) = (word32) *((word32) r4 + 0x0558) - 0x01;
-			r3_101 = r4;
+			r3_n = r4;
 		}
 		else
 		{
-			(word32) r4 + 0x04 + ((word32) (*((word32) r4 + 0x0558)) + 0x0510) = (byte *) (byte) (word32) bArg0B_152;
-			memcpy(*((word32) ((word32) r4 + 0x04) + (*((word32) r4 + 0x0558) * 0x04 + 1040)), r5, SEQ(nArg08_153, bArg0B_152));
-			r3_101.u0 = <invalid>;
-			r7_121.u0 = <invalid>;
+			(word32) r4 + 0x04 + ((word32) (*((word32) r4 + 0x0558)) + 0x0510) = (byte *) (byte) (word32) bArg0B_n;
+			memcpy(*((word32) ((word32) r4 + 0x04) + (*((word32) r4 + 0x0558) * 0x04 + 1040)), r5, SEQ(nArg08_n, bArg0B_n));
+			r3_n.u0 = <invalid>;
+			r7_n.u0 = <invalid>;
 		}
 	}
-	r7Out = r7_121;
-	return r3_101;
+	r7Out = r7_n;
+	return r3_n;
 }
 
-// 004046C4: void request_make_url(Register word32 r3, Register Eq_2149 r4, Register word32 ra, Stack Eq_2149 dwArg00)
-void request_make_url(word32 r3, Eq_2149 r4, word32 ra, Eq_2149 dwArg00)
+// 004046C4: void request_make_url(Register word32 r3, Register Eq_n r4, Register word32 ra, Stack Eq_n dwArg00)
+void request_make_url(word32 r3, Eq_n r4, word32 ra, Eq_n dwArg00)
 {
 	if (r4 == 0x00)
 	{
@@ -3108,107 +3106,107 @@ void request_make_url(word32 r3, Eq_2149 r4, word32 ra, Eq_2149 dwArg00)
 		// Please report this issue at https://github.com/uxmal/reko
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2149 stackArg0 = <invalid>;
-		Eq_2149 stackArg4 = <invalid>;
-		Eq_2149 stackArg8 = <invalid>;
-		Eq_2149 stackArg12 = <invalid>;
-		print_log((int32 *) 0x02, (char *) globals->ptr10000880 - 0x00005C3C, (char *) globals->ptr10000880 - 0x00005C18, 0x0066, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_122, out r4_117, out r5_119, out r6_120, out r7_121);
+		Eq_n stackArg0 = <invalid>;
+		Eq_n stackArg4 = <invalid>;
+		Eq_n stackArg8 = <invalid>;
+		Eq_n stackArg12 = <invalid>;
+		print_log((int32 *) 0x02, 4236228, 4236264, 0x0066, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 	}
-	else if (strncasecmp((word32) r4 + 0x0114, (char *) globals->ptr10000880 - 23556, 0x07) == 0x00)
-		snprintf((word32) r4 + 0x0214, 0x0100, (char *) globals->ptr10000880 - 0x00005BFC, 0x00);
+	else if (strncasecmp((word32) r4 + 0x0114, "http://", 0x07) == 0x00)
+		snprintf((word32) r4 + 0x0214, 0x0100, "%s %s %s\r\n", 0x00);
 	else if ((word32) *((word32) r4 + 0x0114) == 0x002F)
-		snprintf((word32) r4 + 0x0214, 0x0100, (char *) globals->ptr10000880 - 23536, 0x00);
+		snprintf((word32) r4 + 0x0214, 0x0100, "%s http://%s%s %s\r\n", 0x00);
 	else
-		snprintf((word32) r4 + 0x0214, 0x0100, (char *) globals->ptr10000880 - 0x00005BDC, 0x00);
+		snprintf((word32) r4 + 0x0214, 0x0100, "%s http://%s/%s %s\r\n", 0x00);
 }
 
-// 004048DC: Register (ptr32 void) request_add_lines(Register Eq_2149 r4, Register Eq_2149 r5, Register (ptr32 void) r6, Register word32 r7, Register ptr32 r30, Register word32 ra, Stack Eq_2149 dwArg00, Stack Eq_2149 dwArg04, Stack Eq_2149 dwArg08, Register out Eq_4483 r3Out)
-void * request_add_lines(Eq_2149 r4, Eq_2149 r5, void * r6, word32 r7, ptr32 r30, word32 ra, Eq_2149 dwArg00, Eq_2149 dwArg04, Eq_2149 dwArg08, union Eq_4483 & r3Out)
+// 004048DC: Register (ptr32 void) request_add_lines(Register Eq_n r4, Register Eq_n r5, Register (ptr32 void) r6, Register word32 r7, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00, Stack Eq_n dwArg04, Stack Eq_n dwArg08, Register out Eq_n r3Out)
+void * request_add_lines(Eq_n r4, Eq_n r5, void * r6, word32 r7, ptr32 r30, word32 ra, Eq_n dwArg00, Eq_n dwArg04, Eq_n dwArg08, union Eq_n & r3Out)
 {
-	ptr32 r28_128 = 0x10008860;
-	void * dwArg08_156 = r6;
-	Eq_4483 dwLoc18_157 = 0x00;
+	ptr32 r28_n = 0x10008860;
+	void * dwArg08_n = r6;
+	Eq_n dwLoc18_n = 0x00;
 	while (true)
 	{
-		Eq_4483 r3_137 = dwLoc18_157;
-		if ((word32) (*((word32) r4 + 0x0558) < dwLoc18_157) != 0x00)
+		Eq_n r3_n = dwLoc18_n;
+		if ((word32) (*((word32) r4 + 0x0558) < dwLoc18_n) != 0x00)
 			break;
-		if (*((word32) ((word32) r4 + 0x04) + (dwLoc18_157 * 0x04 + 1040)) != 0x00)
+		if (*((word32) ((word32) r4 + 0x04) + (dwLoc18_n * 0x04 + 1040)) != 0x00)
 		{
-			word32 r3_40 = (word32) ((word32) r4 + 0x04 + ((word32) dwLoc18_157 + 0x0510));
-			word32 r2_43 = (word32) ((word32) *((word32) r5 + 0x0FAC) + r3_40 < 2000);
-			if (r2_43 != 0x00)
+			word32 r3_n = (word32) ((word32) r4 + 0x04 + ((word32) dwLoc18_n + 0x0510));
+			word32 r2_n = (word32) ((word32) *((word32) r5 + 0x0FAC) + r3_n < 2000);
+			if (r2_n != 0x00)
 			{
-				*((word32) r5 + 0x0FAC) = (word32) *((word32) r5 + 0x0FAC) + (word32) (((word32) r4 + 0x04) + ((word32) dwLoc18_157 + 0x0510));
-				word32 r2_84 = (word32) ((word32) r4 + 0x04 + ((word32) dwLoc18_157 + 0x0510));
-				<anonymous> * r25_88 = *(r28_128 - 32280);
-				r25_88();
-				r28_128 = 0x10008860;
-				dwArg08_156 = (void *) ((char *) dwArg08_156 + (word32) (((word32) r4 + 0x04) + ((word32) dwLoc18_157 + 0x0510)));
+				*((word32) r5 + 0x0FAC) = (word32) *((word32) r5 + 0x0FAC) + (word32) (((word32) r4 + 0x04) + ((word32) dwLoc18_n + 0x0510));
+				word32 r2_n = (word32) ((word32) r4 + 0x04 + ((word32) dwLoc18_n + 0x0510));
+				<anonymous> * r25_n = *(r28_n - 32280);
+				r25_n();
+				r28_n = 0x10008860;
+				dwArg08_n = (void *) ((char *) dwArg08_n + (word32) (((word32) r4 + 0x04) + ((word32) dwLoc18_n + 0x0510)));
 			}
 			else
 			{
-				<anonymous> * r25_51 = *(r28_128 - 32372);
-				r25_51();
-				r28_128 = 0x10008860;
+				<anonymous> * r25_n = *(r28_n - 32372);
+				r25_n();
+				r28_n = 0x10008860;
 			}
 		}
-		dwLoc18_157 = (word32) dwLoc18_157.u0 + 0x01;
+		dwLoc18_n = (word32) dwLoc18_n.u0 + 0x01;
 	}
 	while (*((word32) r4 + 0x0558) >= 0x00)
 	{
-		Eq_4483 r3_119 = *((word32) r4 + 0x0558);
-		*((word32) r4 + 0x0558) = (word32) r3_119.u0 - 0x01;
-		ptr32 r2_124 = (word32) r4 + 0x04 + ((r3_119 << 0x02) + 1040);
-		<anonymous> * r25_129 = *(r28_128 - 32724);
-		r25_129();
-		r28_128 = 0x10008860;
+		Eq_n r3_n = *((word32) r4 + 0x0558);
+		*((word32) r4 + 0x0558) = (word32) r3_n.u0 - 0x01;
+		ptr32 r2_n = (word32) r4 + 0x04 + ((r3_n << 0x02) + 1040);
+		<anonymous> * r25_n = *(r28_n - 32724);
+		r25_n();
+		r28_n = 0x10008860;
 	}
-	r3Out = r3_137;
-	return dwArg08_156;
+	r3Out = r3_n;
+	return dwArg08_n;
 }
 
-// 00404B34: Register Eq_4100 get_method(Register Eq_2149 r4, Register Eq_4100 r5, Register word32 r6, Register ptr32 r30, Register word32 ra, Stack Eq_2149 dwArg00, Stack Eq_2149 dwArg04, Register out Eq_2149 r5Out)
-Eq_4100 get_method(Eq_2149 r4, Eq_4100 r5, word32 r6, ptr32 r30, word32 ra, Eq_2149 dwArg00, Eq_2149 dwArg04, union Eq_2149 & r5Out)
+// 00404B34: Register Eq_n get_method(Register Eq_n r4, Register Eq_n r5, Register word32 r6, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00, Stack Eq_n dwArg04, Register out Eq_n r5Out)
+Eq_n get_method(Eq_n r4, Eq_n r5, word32 r6, ptr32 r30, word32 ra, Eq_n dwArg00, Eq_n dwArg04, union Eq_n & r5Out)
 {
-	union Eq_11477 * r2_26;
+	union Eq_n * r2_n;
 	strsep();
-	strncpy(r4, r2_26, 0x0100);
-	Eq_2149 r5_37 = <invalid>;
-	r5Out = r5_37;
+	strncpy(r4, r2_n, 0x0100);
+	Eq_n r5_n = <invalid>;
+	r5Out = r5_n;
 	return r5;
 }
 
-// 00404BC8: Register word32 get_uri(Register Eq_2149 r4, Register word32 r5, Register word32 r6, Register ptr32 r30, Register word32 ra, Stack Eq_2149 dwArg00, Stack Eq_2149 dwArg04)
-word32 get_uri(Eq_2149 r4, word32 r5, word32 r6, ptr32 r30, word32 ra, Eq_2149 dwArg00, Eq_2149 dwArg04)
+// 00404BC8: Register word32 get_uri(Register Eq_n r4, Register word32 r5, Register word32 r6, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00, Stack Eq_n dwArg04)
+word32 get_uri(Eq_n r4, word32 r5, word32 r6, ptr32 r30, word32 ra, Eq_n dwArg00, Eq_n dwArg04)
 {
-	union Eq_11477 * r2_26;
+	union Eq_n * r2_n;
 	strsep();
-	strncpy(r4, r2_26, 0x0100);
+	strncpy(r4, r2_n, 0x0100);
 	return r5;
 }
 
-// 00404C5C: void get_version(Register Eq_2149 r4, Register word32 r5, Register word32 r6, Register ptr32 r30, Register word32 ra, Stack Eq_2149 dwArg00, Stack Eq_2149 dwArg04)
-void get_version(Eq_2149 r4, word32 r5, word32 r6, ptr32 r30, word32 ra, Eq_2149 dwArg00, Eq_2149 dwArg04)
+// 00404C5C: void get_version(Register Eq_n r4, Register word32 r5, Register word32 r6, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00, Stack Eq_n dwArg04)
+void get_version(Eq_n r4, word32 r5, word32 r6, ptr32 r30, word32 ra, Eq_n dwArg00, Eq_n dwArg04)
 {
-	union Eq_11477 * r2_26;
+	union Eq_n * r2_n;
 	strsep();
-	strncpy(r4, r2_26, 0x0100);
+	strncpy(r4, r2_n, 0x0100);
 }
 
-// 00404CF0: Register (ptr32 Eq_11477) request_get_host(Register Eq_2149 r3, Register Eq_2149 r4, Register (ptr32 Eq_11477) r5, Register ptr32 r30, Register word32 ra, Stack Eq_2149 dwArg00, Stack Eq_2149 dwArg04, Register out Eq_4428 r3Out, Register out Eq_2149 r5Out, Register out Eq_2149 r6Out, Register out Eq_2149 r7Out)
-union Eq_11477 * request_get_host(Eq_2149 r3, Eq_2149 r4, union Eq_11477 * r5, ptr32 r30, word32 ra, Eq_2149 dwArg00, Eq_2149 dwArg04, union Eq_4428 & r3Out, union Eq_2149 & r5Out, union Eq_2149 & r6Out, union Eq_2149 & r7Out)
+// 00404CF0: Register (ptr32 Eq_n) request_get_host(Register Eq_n r3, Register Eq_n r4, Register (ptr32 Eq_n) r5, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00, Stack Eq_n dwArg04, Register out Eq_n r3Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out)
+union Eq_n * request_get_host(Eq_n r3, Eq_n r4, union Eq_n * r5, ptr32 r30, word32 ra, Eq_n dwArg00, Eq_n dwArg04, union Eq_n & r3Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out)
 {
-	Eq_4428 r3_134;
-	Eq_2149 r5_124;
-	Eq_2149 r6_127;
-	union Eq_11477 * r2_140;
-	Eq_2149 r7_128;
+	Eq_n r3_n;
+	Eq_n r5_n;
+	Eq_n r6_n;
+	union Eq_n * r2_n;
+	Eq_n r7_n;
 	if (r4 != 0x00 && r4 != -0x0014)
 	{
-		union Eq_11477 * r2_51 = strpbrk(r5, (char *) globals->ptr10000880 - 23444);
-		union Eq_11477 * dwLoc18_205 = r2_51;
-		if (r2_51 == null)
+		union Eq_n * r2_n = strpbrk(r5, " \t");
+		union Eq_n * dwLoc18_n = r2_n;
+		if (r2_n == null)
 		{
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
@@ -3218,19 +3216,19 @@ union Eq_11477 * request_get_host(Eq_2149 r3, Eq_2149 r4, union Eq_11477 * r5, p
 			// Please report this issue at https://github.com/uxmal/reko
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			Eq_2149 stackArg0 = <invalid>;
-			Eq_2149 stackArg4 = <invalid>;
-			Eq_2149 stackArg8 = <invalid>;
-			Eq_2149 stackArg12 = <invalid>;
-			print_log((int32 *) 0x02, (char *) globals->ptr10000880 - 23440, (char *) globals->ptr10000880 - 23400, 191, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_134, out r4_268, out r5_124, out r6_127, out r7_128);
-			r2_140 = null;
+			Eq_n stackArg0 = <invalid>;
+			Eq_n stackArg4 = <invalid>;
+			Eq_n stackArg8 = <invalid>;
+			Eq_n stackArg12 = <invalid>;
+			print_log((int32 *) 0x02, 0x0040A470, 4236440, 191, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+			r2_n = null;
 			goto l00404FAC;
 		}
-		while ((word32) (dwLoc18_205 < &r5->u0 + 0x0100) != 0x00 && ((word32) (*dwLoc18_205) == 0x0020 || (word32) (*dwLoc18_205) == 0x09))
-			dwLoc18_205 = (union Eq_11477 *) ((char *) dwLoc18_205 + 0x01);
-		union Eq_11477 * r2_96 = strpbrk(dwLoc18_205, (char *) globals->ptr10000880 - 23448);
-		dwLoc14 = r2_96;
-		if (r2_96 == null)
+		while ((word32) (dwLoc18_n < &r5->u0 + 0x0100) != 0x00 && ((word32) (*dwLoc18_n) == 0x0020 || (word32) (*dwLoc18_n) == 0x09))
+			dwLoc18_n = (union Eq_n *) ((char *) dwLoc18_n + 0x01);
+		union Eq_n * r2_n = strpbrk(dwLoc18_n, " \n\r");
+		dwLoc14 = r2_n;
+		if (r2_n == null)
 		{
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
@@ -3240,15 +3238,15 @@ union Eq_11477 * request_get_host(Eq_2149 r3, Eq_2149 r4, union Eq_11477 * r5, p
 			// Please report this issue at https://github.com/uxmal/reko
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			Eq_2149 stackArg0 = <invalid>;
-			Eq_2149 stackArg4 = <invalid>;
-			Eq_2149 stackArg8 = <invalid>;
-			Eq_2149 stackArg12 = <invalid>;
-			print_log((int32 *) 0x02, (char *) globals->ptr10000880 - 0x00005B54, (char *) globals->ptr10000880 - 23400, 0x00C6, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_134, out r4_273, out r5_124, out r6_127, out r7_128);
-			r2_140 = null;
+			Eq_n stackArg0 = <invalid>;
+			Eq_n stackArg4 = <invalid>;
+			Eq_n stackArg8 = <invalid>;
+			Eq_n stackArg12 = <invalid>;
+			print_log((int32 *) 0x02, 0x0040A4AC, 4236440, 0x00C6, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+			r2_n = null;
 			goto l00404FAC;
 		}
-		if ((word32) (r2_96 - dwLoc18_205 < 0x0101) == 0x00)
+		if ((word32) (r2_n - dwLoc18_n < 0x0101) == 0x00)
 		{
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
@@ -3258,21 +3256,21 @@ union Eq_11477 * request_get_host(Eq_2149 r3, Eq_2149 r4, union Eq_11477 * r5, p
 			// Please report this issue at https://github.com/uxmal/reko
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			Eq_2149 stackArg0 = <invalid>;
-			Eq_2149 stackArg4 = <invalid>;
-			Eq_2149 stackArg8 = <invalid>;
-			Eq_2149 stackArg12 = <invalid>;
-			print_log((int32 *) 0x02, (char *) globals->ptr10000880 - 23344, (char *) globals->ptr10000880 - 23400, 202, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_134, out r4_278, out r5_124, out r6_127, out r7_128);
-			r2_140 = null;
+			Eq_n stackArg0 = <invalid>;
+			Eq_n stackArg4 = <invalid>;
+			Eq_n stackArg8 = <invalid>;
+			Eq_n stackArg12 = <invalid>;
+			print_log((int32 *) 0x02, 0x0040A4D0, 4236440, 202, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+			r2_n = null;
 			goto l00404FAC;
 		}
-		strncpy((word32) r4 + 0x0014, dwLoc18_205, r2_96 - dwLoc18_205);
-		int32 r2_133 = r2_96 - dwLoc18_205;
-		(word32) r4 + 0x04 + (r2_133 + 0x0010) = (byte *) 0x00;
-		r7_128.u0 = <invalid>;
-		r6_127.u0 = <invalid>;
-		r5_124.u0 = <invalid>;
-		r3_134 = r2_133 + 0x0010;
+		strncpy((word32) r4 + 0x0014, dwLoc18_n, r2_n - dwLoc18_n);
+		int32 r2_n = r2_n - dwLoc18_n;
+		(word32) r4 + 0x04 + (r2_n + 0x0010) = (byte *) 0x00;
+		r7_n.u0 = <invalid>;
+		r6_n.u0 = <invalid>;
+		r5_n.u0 = <invalid>;
+		r3_n = r2_n + 0x0010;
 	}
 	else
 	{
@@ -3284,31 +3282,31 @@ union Eq_11477 * request_get_host(Eq_2149 r3, Eq_2149 r4, union Eq_11477 * r5, p
 		// Please report this issue at https://github.com/uxmal/reko
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2149 stackArg0 = <invalid>;
-		Eq_2149 stackArg4 = <invalid>;
-		Eq_2149 stackArg8 = <invalid>;
-		Eq_2149 stackArg12 = <invalid>;
-		print_log((int32 *) 0x02, (char *) globals->ptr10000880 - 23312, (char *) globals->ptr10000880 - 23400, 0x00D0, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_134, out r4_263, out r5_124, out r6_127, out r7_128);
+		Eq_n stackArg0 = <invalid>;
+		Eq_n stackArg4 = <invalid>;
+		Eq_n stackArg8 = <invalid>;
+		Eq_n stackArg12 = <invalid>;
+		print_log((int32 *) 0x02, 0x0040A4F0, 4236440, 0x00D0, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 	}
-	r2_140 = dwLoc14;
+	r2_n = dwLoc14;
 l00404FAC:
-	r3Out = r3_134;
-	r5Out = r5_124;
-	r6Out = r6_127;
-	r7Out = r7_128;
-	return r2_140;
+	r3Out = r3_n;
+	r5Out = r5_n;
+	r6Out = r6_n;
+	r7Out = r7_n;
+	return r2_n;
 }
 
-// 00404FC0: Register Eq_2149 request_get_content_length(Register Eq_2149 r3, Register Eq_2149 r4, Register (ptr32 Eq_11477) r5, Register ptr32 r30, Register word32 ra, Stack Eq_2149 dwArg00, Stack Eq_2149 dwArg04, Register out Eq_2149 r7Out)
-Eq_2149 request_get_content_length(Eq_2149 r3, Eq_2149 r4, union Eq_11477 * r5, ptr32 r30, word32 ra, Eq_2149 dwArg00, Eq_2149 dwArg04, union Eq_2149 & r7Out)
+// 00404FC0: Register Eq_n request_get_content_length(Register Eq_n r3, Register Eq_n r4, Register (ptr32 Eq_n) r5, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00, Stack Eq_n dwArg04, Register out Eq_n r7Out)
+Eq_n request_get_content_length(Eq_n r3, Eq_n r4, union Eq_n * r5, ptr32 r30, word32 ra, Eq_n dwArg00, Eq_n dwArg04, union Eq_n & r7Out)
 {
-	Eq_2149 r3_127;
-	Eq_2149 r7_125;
+	Eq_n r3_n;
+	Eq_n r7_n;
 	if (r4 != 0x00 && r4 != -0x0014)
 	{
-		union Eq_11477 * r2_51 = strpbrk(r5, (char *) globals->ptr10000880 - 23444);
-		union Eq_11477 * dwLoc18_197 = r2_51;
-		if (r2_51 == null)
+		union Eq_n * r2_n = strpbrk(r5, " \t");
+		union Eq_n * dwLoc18_n = r2_n;
+		if (r2_n == null)
 		{
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
@@ -3318,17 +3316,17 @@ Eq_2149 request_get_content_length(Eq_2149 r3, Eq_2149 r4, union Eq_11477 * r5, 
 			// Please report this issue at https://github.com/uxmal/reko
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			Eq_2149 stackArg0 = <invalid>;
-			Eq_2149 stackArg4 = <invalid>;
-			Eq_2149 stackArg8 = <invalid>;
-			Eq_2149 stackArg12 = <invalid>;
-			print_log((int32 *) 0x02, (char *) globals->ptr10000880 - 0x00005A9C, (char *) globals->ptr10000880 - 23268, 226, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_127, out r4_177, out r5_178, out r6_181, out r7_125);
+			Eq_n stackArg0 = <invalid>;
+			Eq_n stackArg4 = <invalid>;
+			Eq_n stackArg8 = <invalid>;
+			Eq_n stackArg12 = <invalid>;
+			print_log((int32 *) 0x02, 4236644, 0x0040A51C, 226, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 			goto l00405250;
 		}
-		while ((word32) (dwLoc18_197 < &r5->u0 + 0x0100) != 0x00 && ((word32) (*dwLoc18_197) == 0x0020 || (word32) (*dwLoc18_197) == 0x09))
-			dwLoc18_197 = (union Eq_11477 *) ((char *) dwLoc18_197 + 0x01);
-		union Eq_11477 * r2_96 = strpbrk(dwLoc18_197, (char *) globals->ptr10000880 - 23448);
-		if (r2_96 == null)
+		while ((word32) (dwLoc18_n < &r5->u0 + 0x0100) != 0x00 && ((word32) (*dwLoc18_n) == 0x0020 || (word32) (*dwLoc18_n) == 0x09))
+			dwLoc18_n = (union Eq_n *) ((char *) dwLoc18_n + 0x01);
+		union Eq_n * r2_n = strpbrk(dwLoc18_n, " \n\r");
+		if (r2_n == null)
 		{
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
@@ -3338,14 +3336,14 @@ Eq_2149 request_get_content_length(Eq_2149 r3, Eq_2149 r4, union Eq_11477 * r5, 
 			// Please report this issue at https://github.com/uxmal/reko
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			Eq_2149 stackArg0 = <invalid>;
-			Eq_2149 stackArg4 = <invalid>;
-			Eq_2149 stackArg8 = <invalid>;
-			Eq_2149 stackArg12 = <invalid>;
-			print_log((int32 *) 0x02, (char *) globals->ptr10000880 - 0x00005B54, (char *) globals->ptr10000880 - 23268, 0x00EB, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_127, out r4_260, out r5_261, out r6_262, out r7_125);
+			Eq_n stackArg0 = <invalid>;
+			Eq_n stackArg4 = <invalid>;
+			Eq_n stackArg8 = <invalid>;
+			Eq_n stackArg12 = <invalid>;
+			print_log((int32 *) 0x02, 0x0040A4AC, 0x0040A51C, 0x00EB, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 			goto l00405250;
 		}
-		if ((word32) (r2_96 - dwLoc18_197 < 0x0101) == 0x00)
+		if ((word32) (r2_n - dwLoc18_n < 0x0101) == 0x00)
 		{
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
@@ -3355,17 +3353,17 @@ Eq_2149 request_get_content_length(Eq_2149 r3, Eq_2149 r4, union Eq_11477 * r5, 
 			// Please report this issue at https://github.com/uxmal/reko
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			Eq_2149 stackArg0 = <invalid>;
-			Eq_2149 stackArg4 = <invalid>;
-			Eq_2149 stackArg8 = <invalid>;
-			Eq_2149 stackArg12 = <invalid>;
-			print_log((int32 *) 0x02, (char *) globals->ptr10000880 - 23344, (char *) globals->ptr10000880 - 23268, 0x00F0, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_127, out r4_267, out r5_268, out r6_269, out r7_125);
+			Eq_n stackArg0 = <invalid>;
+			Eq_n stackArg4 = <invalid>;
+			Eq_n stackArg8 = <invalid>;
+			Eq_n stackArg12 = <invalid>;
+			print_log((int32 *) 0x02, 0x0040A4D0, 0x0040A51C, 0x00F0, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 			goto l00405250;
 		}
-		Eq_2149 r2_122 = strtoul(dwLoc18_197, fp + -0x0014, 0x0A);
-		*((word32) r4 + 0x0554) = r2_122;
-		r7_125.u0 = <invalid>;
-		r3_127 = r2_122;
+		Eq_n r2_n = strtoul(dwLoc18_n, fp + -0x0014, 0x0A);
+		*((word32) r4 + 0x0554) = r2_n;
+		r7_n.u0 = <invalid>;
+		r3_n = r2_n;
 	}
 	else
 	{
@@ -3377,50 +3375,50 @@ Eq_2149 request_get_content_length(Eq_2149 r3, Eq_2149 r4, union Eq_11477 * r5, 
 		// Please report this issue at https://github.com/uxmal/reko
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2149 stackArg0 = <invalid>;
-		Eq_2149 stackArg4 = <invalid>;
-		Eq_2149 stackArg8 = <invalid>;
-		Eq_2149 stackArg12 = <invalid>;
-		print_log((int32 *) 0x02, (char *) globals->ptr10000880 - 23240, (char *) globals->ptr10000880 - 23268, 0x00F6, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_127, out r4_34, out r5_35, out r6_41, out r7_125);
+		Eq_n stackArg0 = <invalid>;
+		Eq_n stackArg4 = <invalid>;
+		Eq_n stackArg8 = <invalid>;
+		Eq_n stackArg12 = <invalid>;
+		print_log((int32 *) 0x02, 4236600, 0x0040A51C, 0x00F6, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 	}
 l00405250:
-	r7Out = r7_125;
-	return r3_127;
+	r7Out = r7_n;
+	return r3_n;
 }
 
-// 00405264: Register int32 is_a_method(Register Eq_2149 r4, Stack Eq_2149 dwArg00)
-int32 is_a_method(Eq_2149 r4, Eq_2149 dwArg00)
+// 00405264: Register int32 is_a_method(Register Eq_n r4, Stack Eq_n dwArg00)
+int32 is_a_method(Eq_n r4, Eq_n dwArg00)
 {
-	ui32 dwLoc18_57 = 0x00;
+	ui32 dwLoc18_n = 0x00;
 	do
 	{
-		int32 r2_45;
-		if (globals->ptr100009C8[dwLoc18_57] == null)
+		int32 r2_n;
+		if (globals->ptr100009C8[dwLoc18_n] == null)
 		{
-			r2_45 = 0x00;
-			return r2_45;
+			r2_n = 0x00;
+			return r2_n;
 		}
-		++dwLoc18_57;
-	} while (strncmp(globals->ptr100009C8[dwLoc18_57], r4, 0x0014) != 0x00);
-	r2_45 = 0x01;
-	return r2_45;
+		++dwLoc18_n;
+	} while (strncmp(globals->ptr100009C8[dwLoc18_n], r4, 0x0014) != 0x00);
+	r2_n = 0x01;
+	return r2_n;
 }
 
-// 00405328: Register Eq_2149 request_destroy(Register Eq_2149 r4, Stack Eq_2149 dwArg00)
-Eq_2149 request_destroy(Eq_2149 r4, Eq_2149 dwArg00)
+// 00405328: Register Eq_n request_destroy(Register Eq_n r4, Stack Eq_n dwArg00)
+Eq_n request_destroy(Eq_n r4, Eq_n dwArg00)
 {
 	while (*((word32) r4 + 0x0558) >= 0x00)
 	{
-		int32 r3_23 = *((word32) r4 + 0x0558);
-		*((word32) r4 + 0x0558) = r3_23 + -0x01;
-		free(*((word32) ((word32) r4 + 0x04) + (r3_23 * 0x04 + 1040)));
+		int32 r3_n = *((word32) r4 + 0x0558);
+		*((word32) r4 + 0x0558) = r3_n + -0x01;
+		free(*((word32) ((word32) r4 + 0x04) + (r3_n * 0x04 + 1040)));
 	}
 	free(r4);
 	return <invalid>;
 }
 
-// 004053F0: void properties_parse_int(Register (ptr32 Eq_11477) r4, Register (ptr32 int8) r5, Register word32 r30, Register word32 ra, Stack word32 dwArg00, Stack word32 dwArg04)
-void properties_parse_int(union Eq_11477 * r4, int8 * r5, word32 r30, word32 ra, word32 dwArg00, word32 dwArg04)
+// 004053F0: void properties_parse_int(Register (ptr32 Eq_n) r4, Register (ptr32 int8) r5, Register word32 r30, Register word32 ra, Stack word32 dwArg00, Stack word32 dwArg04)
+void properties_parse_int(union Eq_n * r4, int8 * r5, word32 r30, word32 ra, word32 dwArg00, word32 dwArg04)
 {
 	strtoul(r4, fp + -0x0018, 0x00);
 	if ((word32) *dwLoc18 != 0x00 && dwLoc18 != r5)
@@ -3433,38 +3431,37 @@ void properties_parse_int(union Eq_11477 * r4, int8 * r5, word32 r30, word32 ra,
 		// Please report this issue at https://github.com/uxmal/reko
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2149 stackArg0 = <invalid>;
-		Eq_2149 stackArg4 = <invalid>;
-		Eq_2149 stackArg8 = <invalid>;
-		Eq_2149 stackArg12 = <invalid>;
-		print_log((int32 *) 0x02, (char *) globals->ptr10000880 - 23152, (char *) globals->ptr10000880 - 0x00005A58, 0x001F, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_55, out r4_51, out r5_52, out r6_53, out r7_56);
+		Eq_n stackArg0 = <invalid>;
+		Eq_n stackArg4 = <invalid>;
+		Eq_n stackArg8 = <invalid>;
+		Eq_n stackArg12 = <invalid>;
+		print_log((int32 *) 0x02, 0x0040A590, 0x0040A5A8, 0x001F, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 	}
 }
 
-// 004054D0: Register int32 properties_load(Register Eq_2149 r4, Register Eq_2149 r5, Register ptr32 r30, Register word32 ra, Stack Eq_2149 dwArg00, Stack Eq_2149 dwArg04, Register out Eq_2149 r3Out, Register out Eq_2149 r6Out, Register out Eq_2149 r7Out)
-int32 properties_load(Eq_2149 r4, Eq_2149 r5, ptr32 r30, word32 ra, Eq_2149 dwArg00, Eq_2149 dwArg04, union Eq_2149 & r3Out, union Eq_2149 & r6Out, union Eq_2149 & r7Out)
+// 004054D0: Register int32 properties_load(Register Eq_n r4, Register Eq_n r5, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00, Stack Eq_n dwArg04, Register out Eq_n r3Out, Register out Eq_n r6Out, Register out Eq_n r7Out)
+int32 properties_load(Eq_n r4, Eq_n r5, ptr32 r30, word32 ra, Eq_n dwArg00, Eq_n dwArg04, union Eq_n & r3Out, union Eq_n & r6Out, union Eq_n & r7Out)
 {
-	int32 r2_501;
-	struct Eq_8 * r2_19 = globals->ptr10000880;
-	Eq_2149 r6_25 = (word32) r2_19->bFFFFA5E8;
-	Eq_2149 r7_26 = (word32) r2_19->bFFFFA5E9;
-	Eq_2149 dwArg04_553 = r5;
-	Eq_2149 r3_18 = fp + -0x0040;
-	word32 r4_22 = r2_19->dwFFFFA5E0;
-	word32 r5_24 = r2_19->dwFFFFA5E4;
-	byte bLoc38_556 = (byte) r6_25;
-	byte bLoc37_557 = (byte) r7_26;
-	int32 dwLoc30_558 = 0x00;
+	int32 r2_n;
+	Eq_n r6_n = (word32) globals->b40A5E8;
+	Eq_n r7_n = (word32) globals->b40A5E9;
+	Eq_n dwArg04_n = r5;
+	Eq_n r3_n = fp + -0x0040;
+	word32 r4_n = globals->dw40A5E0;
+	word32 r5_n = globals->dw40A5E4;
+	byte bLoc38_n = (byte) r6_n;
+	byte bLoc37_n = (byte) r7_n;
+	int32 dwLoc30_n = 0x00;
 	if (r4 == 0x00)
 	{
-		r2_501 = 0x00;
+		r2_n = 0x00;
 		goto l00405CBC;
 	}
 	if (r5 == 0x00)
 	{
-		Eq_2149 r2_52 = malloc((word32) strlen(r4) + 0x0B);
-		dwArg04_553 = r2_52;
-		if (r2_52 == 0x00)
+		Eq_n r2_n = malloc((word32) strlen(r4) + 0x0B);
+		dwArg04_n = r2_n;
+		if (r2_n == 0x00)
 		{
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
@@ -3474,29 +3471,29 @@ int32 properties_load(Eq_2149 r4, Eq_2149 r5, ptr32 r30, word32 ra, Eq_2149 dwAr
 			// Please report this issue at https://github.com/uxmal/reko
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			Eq_2149 stackArg0 = <invalid>;
-			Eq_2149 stackArg4 = <invalid>;
-			Eq_2149 stackArg8 = <invalid>;
-			Eq_2149 stackArg12 = <invalid>;
-			print_log((int32 *) 0x01, &globals->ptr10000880->bFFFFA5E9 + 0x03, &globals->ptr10000880->bFFFFA5E9 + 0x001B, 0x0039, fp + -0x0170, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_18, out r4_770, out r5_771, out r6_25, out r7_26);
-			r2_501 = 0x00;
+			Eq_n stackArg0 = <invalid>;
+			Eq_n stackArg4 = <invalid>;
+			Eq_n stackArg8 = <invalid>;
+			Eq_n stackArg12 = <invalid>;
+			print_log((int32 *) 0x01, 0x0040A5EC, 0x0040A604, 0x0039, fp + -0x0170, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+			r2_n = 0x00;
 			goto l00405CBC;
 		}
-		Eq_2149 dwLoc48_562;
-		strcpy(r2_52, r4);
-		dwLoc30_558 = 0x01;
-		struct Eq_6689 * r2_78 = strrchr(r2_52, 0x002F);
-		if (r2_78 != null)
+		Eq_n dwLoc48_n;
+		strcpy(r2_n, r4);
+		dwLoc30_n = 0x01;
+		struct Eq_n * r2_n = strrchr(r2_n, 0x002F);
+		if (r2_n != null)
 		{
-			r2_78->b0001 = 0x00;
-			dwLoc48_562 = &r2_78->b0001;
+			r2_n->b0001 = 0x00;
+			dwLoc48_n = &r2_n->b0001;
 		}
 		else
-			dwLoc48_562 = r2_52;
-		strcpy(dwLoc48_562, fp + -0x0040);
+			dwLoc48_n = r2_n;
+		strcpy(dwLoc48_n, fp + -0x0040);
 	}
-	FILE * r2_124 = fopen(dwArg04_553, &globals->ptr10000880->bFFFFA5E9 + 0x002B);
-	if (r2_124 == null)
+	FILE * r2_n = fopen(dwArg04_n, "r");
+	if (r2_n == null)
 	{
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
@@ -3506,48 +3503,48 @@ int32 properties_load(Eq_2149 r4, Eq_2149 r5, ptr32 r30, word32 ra, Eq_2149 dwAr
 		// Please report this issue at https://github.com/uxmal/reko
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2149 stackArg0 = <invalid>;
-		Eq_2149 stackArg4 = <invalid>;
-		Eq_2149 stackArg8 = <invalid>;
-		Eq_2149 stackArg12 = <invalid>;
-		print_log((int32 *) 0x01, &globals->ptr10000880->bFFFFA5E9 + 0x002F, &globals->ptr10000880->bFFFFA5E9 + 0x001B, 0x004B, fp + -0x0170, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_18, out r4_776, out r5_777, out r6_25, out r7_26);
-		r2_501 = 0x00;
+		Eq_n stackArg0 = <invalid>;
+		Eq_n stackArg4 = <invalid>;
+		Eq_n stackArg8 = <invalid>;
+		Eq_n stackArg12 = <invalid>;
+		print_log((int32 *) 0x01, 4236824, 0x0040A604, 0x004B, fp + -0x0170, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+		r2_n = 0x00;
 	}
 	else
 	{
-		if (dwLoc30_558 != 0x00)
-			free(dwArg04_553);
+		if (dwLoc30_n != 0x00)
+			free(dwArg04_n);
 		while (true)
 		{
-			char * r2_158 = fgets(fp + -0x0148, 0x00FF, r2_124);
-			if (r2_158 == null)
+			char * r2_n = fgets(fp + -0x0148, 0x00FF, r2_n);
+			if (r2_n == null)
 				break;
-			char * r2_173 = strchr(r2_158, 0x0A);
-			if (r2_173 != null)
-				*r2_173 = 0x00;
-			char * r2_194 = strchr(r2_158, 0x0023);
-			Eq_2149 r7_200 = <invalid>;
-			Eq_2149 r6_198 = <invalid>;
-			Eq_2149 r3_196 = <invalid>;
-			if (r2_194 != null)
-				*r2_194 = 0x00;
-			int32 r2_219;
-			word32 r6_223;
-			word32 r7_225;
+			char * r2_n = strchr(r2_n, 0x0A);
+			if (r2_n != null)
+				*r2_n = 0x00;
+			char * r2_n = strchr(r2_n, 0x0023);
+			Eq_n r7_n = <invalid>;
+			Eq_n r6_n = <invalid>;
+			Eq_n r3_n = <invalid>;
+			if (r2_n != null)
+				*r2_n = 0x00;
+			int32 r2_n;
+			word32 r6_n;
+			word32 r7_n;
 			strspn();
-			char * r2_229 = r2_158 + r2_219;
-			if ((word32) *r2_229 != 0x00)
+			char * r2_n = r2_n + r2_n;
+			if ((word32) *r2_n != 0x00)
 			{
-				int32 r2_242;
+				int32 r2_n;
 				strcspn();
-				char * r2_249 = r2_229 + r2_242;
-				dwLoc24 = r2_229;
-				dwLoc20 = r2_249;
-				char * r2_259 = strchr(r2_249, 0x003D);
-				Eq_2149 r7_262 = <invalid>;
-				Eq_2149 r6_261 = <invalid>;
-				Eq_2149 r3_260 = <invalid>;
-				if (r2_259 == null)
+				char * r2_n = r2_n + r2_n;
+				dwLoc24 = r2_n;
+				dwLoc20 = r2_n;
+				char * r2_n = strchr(r2_n, 0x003D);
+				Eq_n r7_n = <invalid>;
+				Eq_n r6_n = <invalid>;
+				Eq_n r3_n = <invalid>;
+				if (r2_n == null)
 				{
 					// Failed to bind call argument.
 					// Please report this issue at https://github.com/uxmal/reko
@@ -3557,53 +3554,52 @@ int32 properties_load(Eq_2149 r4, Eq_2149 r5, ptr32 r30, word32 ra, Eq_2149 dwAr
 					// Please report this issue at https://github.com/uxmal/reko
 					// Failed to bind call argument.
 					// Please report this issue at https://github.com/uxmal/reko
-					Eq_2149 stackArg0 = <invalid>;
-					Eq_2149 stackArg4 = <invalid>;
-					Eq_2149 stackArg8 = <invalid>;
-					Eq_2149 stackArg12 = <invalid>;
-					print_log((int32 *) 0x02, &globals->ptr10000880->bFFFFA5E9 + 0x005F, &globals->ptr10000880->bFFFFA5E9 + 0x001B, 110, fp + -0x0170, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_782, out r4_783, out r5_784, out r6_785, out r7_786);
+					Eq_n stackArg0 = <invalid>;
+					Eq_n stackArg4 = <invalid>;
+					Eq_n stackArg8 = <invalid>;
+					Eq_n stackArg12 = <invalid>;
+					print_log((int32 *) 0x02, 0x0040A648, 0x0040A604, 110, fp + -0x0170, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 					dwLoc0160 = fp + -0x0148;
 				}
 				else
 				{
-					int32 r2_276;
-					word32 r6_278;
-					word32 r7_279;
+					int32 r2_n;
+					word32 r6_n;
+					word32 r7_n;
 					strspn();
-					union Eq_11477 * r2_283 = r2_259 + 0x01 + r2_276;
-					int32 r2_294;
+					union Eq_n * r2_n = r2_n + 0x01 + r2_n;
+					int32 r2_n;
 					strcspn();
-					byte * r2_301 = (char *) r2_283 + r2_294;
-					*r2_301 = 0x00;
-					*r2_249 = 0x00;
-					dwLoc1C = r2_283;
+					byte * r2_n = (char *) r2_n + r2_n;
+					*r2_n = 0x00;
+					*r2_n = 0x00;
+					dwLoc1C = r2_n;
 					dwLoc2C = 0x00;
 					dwLoc014C = 0x00;
 					while ((word32) (globals->ptr10000A40 + ((dwLoc014C * 0x14 - dwLoc014C << 0x03) + 0x08) / 0x0696)->a0004[0x00].ptr0000 != 0x0020 && dwLoc2C == 0x00)
 					{
-						Eq_2149 r7_372 = <invalid>;
-						Eq_2149 r6_370 = <invalid>;
-						if (strcasecmp(r2_229, globals->ptr10000A40->a0004[dwLoc014C * 0x14 - dwLoc014C].ptr0000) == 0x00)
+						Eq_n r7_n = <invalid>;
+						Eq_n r6_n = <invalid>;
+						if (strcasecmp(r2_n, globals->ptr10000A40->a0004[dwLoc014C * 0x14 - dwLoc014C].ptr0000) == 0x00)
 						{
-							Eq_6914 r2_386 = globals->ptr10000A40->a0004[dwLoc014C * 0x14 - dwLoc014C].t0004;
+							Eq_n r2_n = globals->ptr10000A40->a0004[dwLoc014C * 0x14 - dwLoc014C].t0004;
 							dwLoc2C = 0x01;
-							dwLoc18 = r2_386;
-							if (r2_386 != 0x01)
+							dwLoc18 = r2_n;
+							if (r2_n != 0x01)
 							{
-								if ((word32) (r2_386 < 0x01) == 0x00)
+								if ((word32) (r2_n < 0x01) == 0x00)
 								{
-									if (r2_386 == 0x02)
-										globals->ptr10000A40->a0004->ptr0000.a0004[dwLoc014C * 0x14 - dwLoc014C + 0x0011].t0004 = (word32) (strchr((char *) globals->ptr10000880 - 0x00005A40, (word32) *r2_283) > null);
+									if (r2_n == 0x02)
+										globals->ptr10000A40->a0004->ptr0000.a0004[dwLoc014C * 0x14 - dwLoc014C + 0x0011].t0004 = (word32) (strchr("1yY", (word32) *r2_n) > null);
 								}
 								else
-									strncpy((char *) &(globals->ptr10000A40->a0004 + 0x01)->ptr0000 + 0x01 + (dwLoc014C * 0x14 - dwLoc014C << 0x03), r2_283, 0x0014);
+									strncpy((char *) &(globals->ptr10000A40->a0004 + 0x01)->ptr0000 + 0x01 + (dwLoc014C * 0x14 - dwLoc014C << 0x03), r2_n, 0x0014);
 							}
 							else
 							{
-								ptr32 r25_392 = globals->ptr1000087C;
-								word32 r2_397;
-								(r25_392 + 21488)();
-								globals->ptr10000A40->a0004->ptr0000.a0004[dwLoc014C * 0x14 - dwLoc014C + 0x0011].t0004 = r2_397;
+								word32 r2_n;
+								globals->t4053F0();
+								globals->ptr10000A40->a0004->ptr0000.a0004[dwLoc014C * 0x14 - dwLoc014C + 0x0011].t0004 = r2_n;
 							}
 						}
 						++dwLoc014C;
@@ -3618,234 +3614,233 @@ int32 properties_load(Eq_2149 r4, Eq_2149 r5, ptr32 r30, word32 ra, Eq_2149 dwAr
 						// Please report this issue at https://github.com/uxmal/reko
 						// Failed to bind call argument.
 						// Please report this issue at https://github.com/uxmal/reko
-						Eq_2149 stackArg0 = <invalid>;
-						Eq_2149 stackArg4 = <invalid>;
-						Eq_2149 stackArg8 = <invalid>;
-						Eq_2149 stackArg12 = <invalid>;
-						print_log((int32 *) 0x01, (char *) globals->ptr10000880 - 23100, &globals->ptr10000880->bFFFFA5E9 + 0x001B, 0x008E, fp + -0x0170, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_791, out r4_792, out r5_793, out r6_794, out r7_795);
-						dwLoc0160 = r2_229;
+						Eq_n stackArg0 = <invalid>;
+						Eq_n stackArg4 = <invalid>;
+						Eq_n stackArg8 = <invalid>;
+						Eq_n stackArg12 = <invalid>;
+						print_log((int32 *) 0x01, 0x0040A5C4, 0x0040A604, 0x008E, fp + -0x0170, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+						dwLoc0160 = r2_n;
 					}
 				}
 			}
 		}
-		fclose(r2_124);
-		r7_26.u0 = <invalid>;
-		r6_25.u0 = <invalid>;
-		r3_18.u0 = <invalid>;
-		r2_501 = 0x01;
+		fclose(r2_n);
+		r7_n.u0 = <invalid>;
+		r6_n.u0 = <invalid>;
+		r3_n.u0 = <invalid>;
+		r2_n = 0x01;
 	}
 l00405CBC:
-	r3Out = r3_18;
-	r6Out = r6_25;
-	r7Out = r7_26;
-	return r2_501;
+	r3Out = r3_n;
+	r6Out = r6_n;
+	r7Out = r7_n;
+	return r2_n;
 }
 
-// 00405CD0: Register int32 properties_parse_command_line(Register (ptr32 (ptr32 Eq_2254)) r1, Register int32 r4, Register (arr Eq_2149) r5, Register word32 r6, Register word32 r7, Register word32 r16, Register ptr32 r30, Register word32 ra, Stack Eq_2149 dwArg00, Stack Eq_2149 dwArg04, Register out Eq_2149 r4Out, Register out Eq_2149 r5Out, Register out Eq_2149 r6Out, Register out Eq_2149 r7Out)
-int32 properties_parse_command_line(FILE ** r1, int32 r4, Eq_2149 r5[], word32 r6, word32 r7, word32 r16, ptr32 r30, word32 ra, Eq_2149 dwArg00, Eq_2149 dwArg04, union Eq_2149 & r4Out, union Eq_2149 & r5Out, union Eq_2149 & r6Out, union Eq_2149 & r7Out)
+// 00405CD0: Register int32 properties_parse_command_line(Register (ptr32 (ptr32 Eq_n)) r1, Register int32 r4, Register (arr Eq_n) r5, Register word32 r6, Register word32 r7, Register word32 r16, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00, Stack Eq_n dwArg04, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out)
+int32 properties_parse_command_line(FILE ** r1, int32 r4, Eq_n r5[], word32 r6, word32 r7, word32 r16, ptr32 r30, word32 ra, Eq_n dwArg00, Eq_n dwArg04, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out)
 {
-	ptr32 r28_134 = 0x10008860;
-	int32 dwLoc28_395 = 0x00;
-	r5_216 = r5;
+	ptr32 r28_n = 0x10008860;
+	int32 dwLoc28_n = 0x00;
+	r5_n = r5;
 	while (true)
 	{
-		Eq_2149 (* r5_216)[];
-		int32 r3_182 = r4;
-		if ((word32) (dwLoc28_395 < r4) == 0x00)
+		Eq_n (* r5_n)[];
+		int32 r3_n = r4;
+		if ((word32) (dwLoc28_n < r4) == 0x00)
 			break;
-		if ((word32) *r5[dwLoc28_395] == 0x002D)
+		if ((word32) *r5[dwLoc28_n] == 0x002D)
 		{
-			struct Eq_7043 * dwLoc18_402;
-			byte bLoc1C_399 = (byte) (word32) *((word32) r5[dwLoc28_395] + 0x01);
-			if ((word32) bLoc1C_399 != 0x00 && (word32) (*((word32) r5[dwLoc28_395] + 0x02)) != 0x00)
-				dwLoc18_402 = (word32) r5[dwLoc28_395] + 0x02;
-			else if ((word32) (dwLoc28_395 < r4) != 0x00)
+			struct Eq_n * dwLoc18_n;
+			byte bLoc1C_n = (byte) (word32) *((word32) r5[dwLoc28_n] + 0x01);
+			if ((word32) bLoc1C_n != 0x00 && (word32) (*((word32) r5[dwLoc28_n] + 0x02)) != 0x00)
+				dwLoc18_n = (word32) r5[dwLoc28_n] + 0x02;
+			else if ((word32) (dwLoc28_n < r4) != 0x00)
 			{
-				++dwLoc28_395;
-				dwLoc18_402 = (struct Eq_7043 *) r5[dwLoc28_395 + 0x01];
+				++dwLoc28_n;
+				dwLoc18_n = (struct Eq_n *) r5[dwLoc28_n + 0x01];
 			}
 			else
-				dwLoc18_402 = *(r28_134 - 0x7FE0) + -22928;
-			int32 r3_76 = (word32) bLoc1C_399;
-			if (r3_76 == 0x0068)
+				dwLoc18_n = *(r28_n - 0x7FE0) + -22928;
+			int32 r3_n = (word32) bLoc1C_n;
+			if (r3_n == 0x0068)
 			{
-				<anonymous> * r25_81 = *(r28_134 - 0x7DC4);
-				r25_81();
+				<anonymous> * r25_n = *(r28_n - 0x7DC4);
+				r25_n();
 				exit(0x00);
-				r28_134 = r28_120;
-				r5_216 = r5_115;
-				r6 = r6_118;
-				r7 = r7_119;
+				r28_n = r28_n;
+				r5_n = r5_n;
+				r6 = r6_n;
+				r7 = r7_n;
 			}
 			dwLoc20 = 0x00;
 			dwLoc24 = 0x00;
 			while (true)
 			{
-				int32 r3_137 = (word32) (*(r28_134 - 32288) + ((dwLoc24 * 0x14 - dwLoc24 << 0x03) + 0x08))->b0004;
-				if (r3_137 == 0x0020 || dwLoc20 != 0x00)
+				int32 r3_n = (word32) (*(r28_n - 32288) + ((dwLoc24 * 0x14 - dwLoc24 << 0x03) + 0x08))->b0004;
+				if (r3_n == 0x0020 || dwLoc20 != 0x00)
 					break;
-				if ((word32) bLoc1C_399 != (word32) (*(r28_134 - 32288) + ((dwLoc24 * 0x14 - dwLoc24 << 0x03) + 0x08))->b0004)
+				if ((word32) bLoc1C_n != (word32) (*(r28_n - 32288) + ((dwLoc24 * 0x14 - dwLoc24 << 0x03) + 0x08))->b0004)
 				{
-					int32 r3_209 = *((char *) *(r28_134 - 32288) + ((dwLoc24 * 0x14 - dwLoc24) * 0x08 + 0x08));
-					if (r3_209 != 0x02)
+					int32 r3_n = *((char *) *(r28_n - 32288) + ((dwLoc24 * 0x14 - dwLoc24) * 0x08 + 0x08));
+					if (r3_n != 0x02)
 						goto l004061C8;
-					word32 r2_211 = (word32) bLoc1C_399;
-					<anonymous> * r25_213 = *(r28_134 - 32668);
-					word32 r5_217;
-					word32 r2_218;
-					word32 r6_221;
-					word32 r7_223;
-					r25_213();
-					struct Eq_7188 * r1_235 = globals->ptr10000A40 + ((dwLoc24 * 0x14 - dwLoc24 << 0x03) + 0x08) / 0x0696;
-					word32 r2_236 = (word32) r1_235->b0004;
-					word32 r2_242;
+					word32 r2_n = (word32) bLoc1C_n;
+					<anonymous> * r25_n = *(r28_n - 32668);
+					word32 r5_n;
+					word32 r2_n;
+					word32 r6_n;
+					word32 r7_n;
+					r25_n();
+					struct Eq_n * r1_n = globals->ptr10000A40 + ((dwLoc24 * 0x14 - dwLoc24 << 0x03) + 0x08) / 0x0696;
+					word32 r2_n = (word32) r1_n->b0004;
+					word32 r2_n;
 					toupper();
-					r28_134 = 0x10008860;
-					if (r2_218 != r2_242)
+					r28_n = 0x10008860;
+					if (r2_n != r2_n)
 						goto l004061C8;
 				}
-				Eq_7140 r2_261 = *((char *) *(r28_134 - 32288) + ((dwLoc24 * 0x14 - dwLoc24) * 0x08 + 0x08));
+				Eq_n r2_n = *((char *) *(r28_n - 32288) + ((dwLoc24 * 0x14 - dwLoc24) * 0x08 + 0x08));
 				dwLoc20 = 0x01;
-				dwLoc14 = r2_261;
-				if (r2_261 != 0x01)
+				dwLoc14 = r2_n;
+				if (r2_n != 0x01)
 				{
-					if ((word32) (r2_261 < 0x01) == 0x00)
+					if ((word32) (r2_n < 0x01) == 0x00)
 					{
-						if (r2_261 == 0x02)
+						if (r2_n == 0x02)
 						{
-							(*(r28_134 - 32288) + 0x04)->a0090[dwLoc24 * 0x14 - dwLoc24].dw0000 = (word32) *((char *) **(r28_134 - 32244) + (word32) bLoc1C_399 * 0x02) + 0x00010000;
-							dwLoc28_395 += -0x01;
+							(*(r28_n - 32288) + 0x04)->a0090[dwLoc24 * 0x14 - dwLoc24].dw0000 = (word32) *((char *) **(r28_n - 32244) + (word32) bLoc1C_n * 0x02) + 0x00010000;
+							dwLoc28_n += -0x01;
 						}
 					}
 					else
 					{
-						ui32 r2_303 = dwLoc24 * 0x14 - dwLoc24;
-						ui32 r2_307 = (r2_303 << 0x03) + (*(r28_134 - 32288) + 0x0D);
-						<anonymous> * r25_311 = *(r28_134 - 0x7ED4);
-						r25_311();
-						r28_134 = 0x10008860;
+						ui32 r2_n = dwLoc24 * 0x14 - dwLoc24;
+						ui32 r2_n = (r2_n << 0x03) + (*(r28_n - 32288) + 0x0D);
+						<anonymous> * r25_n = *(r28_n - 0x7ED4);
+						r25_n();
+						r28_n = 0x10008860;
 					}
 				}
 				else
 				{
-					ptr32 r25_267 = *(r28_134 - 0x7FE4);
-					word32 r2_275;
-					(r25_267 + 21488)();
-					globals->ptr10000A40->a0004->ptr0000.a0004[dwLoc24 * 0x14 - dwLoc24 + 0x0011].t0004 = r2_275;
-					r28_134 = 0x10008860;
+					ptr32 r25_n = *(r28_n - 0x7FE4);
+					word32 r2_n;
+					(r25_n + 21488)();
+					globals->ptr10000A40->a0004->ptr0000.a0004[dwLoc24 * 0x14 - dwLoc24 + 0x0011].t0004 = r2_n;
+					r28_n = 0x10008860;
 				}
 l004061C8:
 				++dwLoc24;
 			}
 			if (dwLoc20 == 0x00)
 			{
-				word32 r2_148 = (word32) bLoc1C_399;
-				<anonymous> * r25_159 = *(r28_134 - 32372);
-				r25_159();
+				word32 r2_n = (word32) bLoc1C_n;
+				<anonymous> * r25_n = *(r28_n - 32372);
+				r25_n();
 				// Failed to bind call argument.
 				// Please report this issue at https://github.com/uxmal/reko
-				Eq_2149 stackArg0 = <invalid>;
-				r3_182 = properties_print_usage(r5[0x00], fp + -0x0048, ra, stackArg0);
+				Eq_n stackArg0 = <invalid>;
+				r3_n = properties_print_usage(r5[0x00], fp + -0x0048, ra, stackArg0);
 				break;
 			}
 		}
-		++dwLoc28_395;
+		++dwLoc28_n;
 	}
 	r4Out.u0 = <invalid>;
 	r5Out.u0 = <invalid>;
 	r6Out.u0 = <invalid>;
 	r7Out.u0 = <invalid>;
-	return r3_182;
+	return r3_n;
 }
 
-// 0040628C: Register Eq_2149 properties_print_usage(Register Eq_2149 r4, Register ptr32 r30, Register word32 ra, Stack Eq_2149 dwArg00)
-Eq_2149 properties_print_usage(Eq_2149 r4, ptr32 r30, word32 ra, Eq_2149 dwArg00)
+// 0040628C: Register Eq_n properties_print_usage(Register Eq_n r4, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00)
+Eq_n properties_print_usage(Eq_n r4, ptr32 r30, word32 ra, Eq_n dwArg00)
 {
-	Eq_2149 r6_116;
-	Eq_2149 r5_113;
+	Eq_n r6_n;
+	Eq_n r5_n;
 	if (r4 != 0x00 && (word32) (*r4) != 0x00)
 	{
-		printf(&globals->ptr10000880->bFFFFA5E9 + 0x00C3, 0x00);
-		r6_116.u0 = <invalid>;
-		r5_113.u0 = <invalid>;
+		printf("Usage: %s -h ", 0x00);
+		r6_n.u0 = <invalid>;
+		r5_n.u0 = <invalid>;
 	}
 	else
 	{
-		printf(&globals->ptr10000880->bFFFFA5E9 + 211, 0x00);
-		r6_116.u0 = <invalid>;
-		r5_113.u0 = <invalid>;
+		printf("Usage: redir -h ", 0x00);
+		r6_n.u0 = <invalid>;
+		r5_n.u0 = <invalid>;
 	}
-	ui32 dwLoc18_244 = 0x00;
-	while ((word32) (globals->ptr10000A40 + ((dwLoc18_244 * 0x14 - dwLoc18_244 << 0x03) + 0x08) / 0x0696)->a0004[0x00].ptr0000 != 0x0020)
+	ui32 dwLoc18_n = 0x00;
+	while ((word32) (globals->ptr10000A40 + ((dwLoc18_n * 0x14 - dwLoc18_n << 0x03) + 0x08) / 0x0696)->a0004[0x00].ptr0000 != 0x0020)
 	{
-		if (globals->ptr10000A40->a0004[dwLoc18_244 * 0x14 - dwLoc18_244].t0004 == 0x02)
+		if (globals->ptr10000A40->a0004[dwLoc18_n * 0x14 - dwLoc18_n].t0004 == 0x02)
 		{
-			if ((word32) *((char *) *globals->ptr10000A6C + (word32) (((globals->ptr10000A40 + ((dwLoc18_244 * 0x14 - dwLoc18_244 << 0x03) + 0x08) / 0x0696)->a0004))[0x00].ptr0000 * 0x02) != 0x00010000)
+			if ((word32) *((char *) *globals->ptr10000A6C + (word32) (((globals->ptr10000A40 + ((dwLoc18_n * 0x14 - dwLoc18_n << 0x03) + 0x08) / 0x0696)->a0004))[0x00].ptr0000 * 0x02) != 0x00010000)
 			{
-				struct Eq_7441 * r1_168 = globals->ptr10000A40 + ((dwLoc18_244 * 0x14 - dwLoc18_244 << 0x03) + 0x08) / 0x0696;
-				word32 r2_169 = (word32) r1_168->b0004;
-				word32 r2_174;
+				struct Eq_n * r1_n = globals->ptr10000A40 + ((dwLoc18_n * 0x14 - dwLoc18_n << 0x03) + 0x08) / 0x0696;
+				word32 r2_n = (word32) r1_n->b0004;
+				word32 r2_n;
 				tolower();
-				dwLoc14 = r2_174;
+				dwLoc14 = r2_n;
 			}
 			else
 			{
-				struct Eq_7421 * r1_145 = globals->ptr10000A40 + ((dwLoc18_244 * 0x14 - dwLoc18_244 << 0x03) + 0x08) / 0x0696;
-				word32 r2_146 = (word32) r1_145->b0004;
-				word32 r2_151;
+				struct Eq_n * r1_n = globals->ptr10000A40 + ((dwLoc18_n * 0x14 - dwLoc18_n << 0x03) + 0x08) / 0x0696;
+				word32 r2_n = (word32) r1_n->b0004;
+				word32 r2_n;
 				toupper();
-				dwLoc14 = r2_151;
+				dwLoc14 = r2_n;
 			}
-			printf(&globals->ptr10000880->bFFFFA5E9 + 0x00E7, 0x00);
-			r6_116.u0 = <invalid>;
-			r5_113.u0 = <invalid>;
+			printf("-%c|%c ", 0x00);
+			r6_n.u0 = <invalid>;
+			r5_n.u0 = <invalid>;
 		}
 		else
 		{
-			printf(&globals->ptr10000880->bFFFFA5E9 + 0x00EF, 0x00);
-			r6_116.u0 = <invalid>;
-			r5_113.u0 = <invalid>;
+			printf("-%c %s ", 0x00);
+			r6_n.u0 = <invalid>;
+			r5_n.u0 = <invalid>;
 		}
-		++dwLoc18_244;
+		++dwLoc18_n;
 	}
-	printf(&globals->ptr10000880->bFFFFA5E9 + 0x00F7, 0x00);
-	Eq_2149 r3_220 = <invalid>;
-	return r3_220;
+	printf("\n", 0x00);
+	Eq_n r3_n = <invalid>;
+	return r3_n;
 }
 
-// 00406610: Register word32 print_log(Register Eq_2156 r4, Register ptr32 r5, Register Eq_2149 r6, Register Eq_2149 r7, Register ptr32 r30, Register word32 ra, Stack Eq_2149 dwArg00, Stack Eq_2149 dwArg04, Stack Eq_2149 dwArg08, Stack Eq_2149 dwArg0C, Register out Eq_2156 r3Out, Register out Eq_2156 r4Out, Register out ptr32 r5Out, Register out Eq_2149 r6Out, Register out Eq_2149 r7Out)
-word32 print_log(Eq_2156 r4, ptr32 r5, Eq_2149 r6, Eq_2149 r7, ptr32 r30, word32 ra, Eq_2149 dwArg00, Eq_2149 dwArg04, Eq_2149 dwArg08, Eq_2149 dwArg0C, time_t & r3Out, time_t & r4Out, ptr32 & r5Out, union Eq_2149 & r6Out, union Eq_2149 & r7Out)
+// 00406610: Register word32 print_log(Register Eq_n r4, Register ptr32 r5, Register Eq_n r6, Register Eq_n r7, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00, Stack Eq_n dwArg04, Stack Eq_n dwArg08, Stack Eq_n dwArg0C, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out ptr32 r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out)
+word32 print_log(Eq_n r4, ptr32 r5, Eq_n r6, Eq_n r7, ptr32 r30, word32 ra, Eq_n dwArg00, Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, time_t & r3Out, time_t & r4Out, ptr32 & r5Out, union Eq_n & r6Out, union Eq_n & r7Out)
 {
-	Eq_2156 r3_25 = *globals->ptr100008F4;
-	word32 r2_26 = (word32) (r3_25 < r4);
-	if (r2_26 == 0x00)
+	Eq_n r3_n = *globals->ptr100008F4;
+	word32 r2_n = (word32) (r3_n < r4);
+	if (r2_n == 0x00)
 	{
-		word32 r2_40;
-		word32 r3_41;
+		word32 r2_n;
+		word32 r3_n;
 		vsnprintf();
-		ptr32 r25_50 = globals->ptr1000087C;
-		(r25_50 + 27004)();
+		globals->t40697C();
 	}
-	r3Out = r3_25;
+	r3Out = r3_n;
 	r4Out = r4;
 	r5Out = r5;
 	r6Out = r6;
 	r7Out = r7;
-	return r2_26;
+	return r2_n;
 }
 
-// 004066E8: Register Eq_2149 open_log(Register (ptr32 char) r4, Register ptr32 r30, Register word32 ra, Stack Eq_2149 dwArg00, Register out Eq_2149 r5Out, Register out Eq_2149 r6Out, Register out Eq_2149 r7Out)
-Eq_2149 open_log(char * r4, ptr32 r30, word32 ra, Eq_2149 dwArg00, union Eq_2149 & r5Out, union Eq_2149 & r6Out, union Eq_2149 & r7Out)
+// 004066E8: Register Eq_n open_log(Register (ptr32 char) r4, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out)
+Eq_n open_log(char * r4, ptr32 r30, word32 ra, Eq_n dwArg00, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out)
 {
-	Eq_2149 r6_103;
-	Eq_2149 r5_102;
-	Eq_2149 r3_100;
+	Eq_n r6_n;
+	Eq_n r5_n;
+	Eq_n r3_n;
 	if ((word32) **globals->ptr100008A0 != 0x00 && (word32) (*(*globals->ptr100008A0)) != 0x002D)
 	{
 		*globals->ptr10000A20 = (FILE **) fopen(*globals->ptr100008A0, r4);
-		r6_103.u0 = <invalid>;
-		r5_102.u0 = <invalid>;
-		r3_100.u0 = <invalid>;
+		r6_n.u0 = <invalid>;
+		r5_n.u0 = <invalid>;
+		r3_n.u0 = <invalid>;
 		if (*globals->ptr10000A20 == null)
 		{
 			*globals->ptr10000A20 = *globals->ptr10000914;
@@ -3857,25 +3852,25 @@ Eq_2149 open_log(char * r4, ptr32 r30, word32 ra, Eq_2149 dwArg00, union Eq_2149
 			// Please report this issue at https://github.com/uxmal/reko
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			Eq_2149 stackArg0 = <invalid>;
-			Eq_2149 stackArg4 = <invalid>;
-			Eq_2149 stackArg8 = <invalid>;
-			Eq_2149 stackArg12 = <invalid>;
-			print_log(null, &globals->ptr10000880->bFFFFA5E9 + 0x011B, *globals->ptr100008A0, r7, fp + -0x0028, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_100, out r4_112, out r5_102, out r6_103, out r7_113);
+			Eq_n stackArg0 = <invalid>;
+			Eq_n stackArg4 = <invalid>;
+			Eq_n stackArg8 = <invalid>;
+			Eq_n stackArg12 = <invalid>;
+			print_log(null, 0x0040A704, *globals->ptr100008A0, r7, fp + -0x0028, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 		}
 	}
 	else
 	{
 		*globals->ptr10000A20 = *globals->ptr10000914;
-		strcpy(*globals->ptr100008A0, &globals->ptr10000880->bFFFFA5E9 + 339);
-		r6_103.u0 = <invalid>;
-		r5_102.u0 = <invalid>;
-		r3_100.u0 = <invalid>;
+		strcpy(*globals->ptr100008A0, 0x0040A73C);
+		r6_n.u0 = <invalid>;
+		r5_n.u0 = <invalid>;
+		r3_n.u0 = <invalid>;
 	}
-	r5Out = r5_102;
-	r6Out = r6_103;
+	r5Out = r5_n;
+	r6Out = r6_n;
 	r7Out.u0 = <invalid>;
-	return r3_100;
+	return r3_n;
 }
 
 // 00406848: void log_rotate(Register ptr32 r30, Register word32 ra)
@@ -3885,38 +3880,38 @@ void log_rotate(ptr32 r30, word32 ra)
 	if ((word32) **globals->ptr100008A0 != 0x00 && (word32) (*(*globals->ptr100008A0)) != 0x002D)
 	{
 		strcpy(fp + -0x0110, *globals->ptr100008A0);
-		Eq_2149 r3_50 = <invalid>;
+		Eq_n r3_n = <invalid>;
 		rename();
 	}
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_2149 stackArg0 = <invalid>;
-	open_log(&globals->ptr10000880->bFFFFA5E9 + 343, fp + -0x0128, ra, stackArg0, out r5_91, out r6_92, out r7_93);
+	Eq_n stackArg0 = <invalid>;
+	open_log("w", fp + -0x0128, ra, stackArg0, out r5_n, out r6_n, out r7_n);
 }
 
-// 0040697C: void log_string(Register word32 r1, Register (ptr32 Eq_2254) r4, Register word32 r5, Register word32 r7, Register word32 r16, Register word32 r17, Register word32 r30, Register word32 ra, Register word32 hi, Stack word32 dwArg00)
+// 0040697C: void log_string(Register word32 r1, Register (ptr32 Eq_n) r4, Register word32 r5, Register word32 r7, Register word32 r16, Register word32 r17, Register word32 r30, Register word32 ra, Register word32 hi, Stack word32 dwArg00)
 void log_string(word32 r1, FILE * r4, word32 r5, word32 r7, word32 r16, word32 r17, word32 r30, word32 ra, word32 hi, word32 dwArg00)
 {
 	gettimeofday(fp + -0x0028, null);
-	Eq_2149 r3_36 = <invalid>;
-	Eq_2149 r7_34 = <invalid>;
-	Eq_2149 r6_32 = <invalid>;
-	Eq_2149 r5_30 = <invalid>;
-	struct tm * r2_47;
+	Eq_n r3_n = <invalid>;
+	Eq_n r7_n = <invalid>;
+	Eq_n r6_n = <invalid>;
+	Eq_n r5_n = <invalid>;
+	struct tm * r2_n;
 	gmtime();
-	strftime(fp + -0x0048, 0x001C, &globals->ptr10000880->bFFFFA5E9 + 355, r2_47);
-	fprintf(r4, &globals->ptr10000880->bFFFFA5E9 + 0x0177, 0x00);
+	strftime(fp + -0x0048, 0x001C, "%Y-%m-%d %H:%M:%S", r2_n);
+	fprintf(r4, "%s:%s.%03d:%s\n", 0x00);
 	fflush(r4);
 	++globals->ptr10000878->dw0824;
-	word32 lo_93 = (word32) (dwLoc24 *s 274877907);
-	int32 r2_77 = (SLICE(dwLoc24 *s 274877907, word32, 32) >> 0x06) - (dwLoc24 >> 0x1F);
+	word32 lo_n = (word32) (dwLoc24 *s 274877907);
+	int32 r2_n = (SLICE(dwLoc24 *s 274877907, word32, 32) >> 0x06) - (dwLoc24 >> 0x1F);
 	if (*globals->ptr10000A28 != 0x00)
 	{
-		int32 r2_115 = *globals->ptr10000A28;
-		int32 dwLoc20_187 = r2_115;
-		if (r2_115 < 0x00)
-			dwLoc20_187 = r2_115 + 0x03FF;
-		if ((word32) (dwLoc20_187 >> 0x0A < (globals->ptr10000878)->dw0824) != 0x00)
+		int32 r2_n = *globals->ptr10000A28;
+		int32 dwLoc20_n = r2_n;
+		if (r2_n < 0x00)
+			dwLoc20_n = r2_n + 0x03FF;
+		if ((word32) (dwLoc20_n >> 0x0A < (globals->ptr10000878)->dw0824) != 0x00)
 		{
 			if ((word32) (ftell(r4) < *globals->ptr10000A28) == 0x00)
 				log_rotate(fp + -0x0068, ra);
@@ -3926,19 +3921,19 @@ void log_string(word32 r1, FILE * r4, word32 r5, word32 r7, word32 r16, word32 r
 	}
 }
 
-// 00406BF0: Register Eq_2149 server_new(Register word32 r4, Register word32 r5, Register Eq_2149 r6, Register int32 r7, Register ptr32 r30, Register word32 ra, Stack Eq_2149 dwArg00, Stack Eq_2149 dwArg04, Stack Eq_2149 wArg06, Stack Eq_2149 dwArg08, Stack Eq_2149 dwArg0C, Register out ptr32 r3Out, Register out ptr32 r6Out, Register out ptr32 r7Out)
-Eq_2149 server_new(word32 r4, word32 r5, Eq_2149 r6, int32 r7, ptr32 r30, word32 ra, Eq_2149 dwArg00, Eq_2149 dwArg04, Eq_2149 wArg06, Eq_2149 dwArg08, Eq_2149 dwArg0C, ptr32 & r3Out, ptr32 & r6Out, ptr32 & r7Out)
+// 00406BF0: Register Eq_n server_new(Register word32 r4, Register word32 r5, Register Eq_n r6, Register int32 r7, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00, Stack Eq_n dwArg04, Stack Eq_n wArg06, Stack Eq_n dwArg08, Stack Eq_n dwArg0C, Register out ptr32 r3Out, Register out ptr32 r6Out, Register out ptr32 r7Out)
+Eq_n server_new(word32 r4, word32 r5, Eq_n r6, int32 r7, ptr32 r30, word32 ra, Eq_n dwArg00, Eq_n dwArg04, Eq_n wArg06, Eq_n dwArg08, Eq_n dwArg0C, ptr32 & r3Out, ptr32 & r6Out, ptr32 & r7Out)
 {
-	ptr32 r7_125;
-	ptr32 r6_124;
-	ptr32 r3_121;
-	Eq_2149 r2_118;
-	uint16 wArg06_112 = SLICE(r5, uint16, 0);
-	uint16 wArg06_113 = SLICE(r5, uint16, 0);
-	Eq_2149 r2_30 = malloc(0x0024);
-	Eq_2149 r7_28 = <invalid>;
-	Eq_2149 r6_27 = <invalid>;
-	if (r2_30 == 0x00)
+	ptr32 r7_n;
+	ptr32 r6_n;
+	ptr32 r3_n;
+	Eq_n r2_n;
+	uint16 wArg06_n = SLICE(r5, uint16, 0);
+	uint16 wArg06_n = SLICE(r5, uint16, 0);
+	Eq_n r2_n = malloc(0x0024);
+	Eq_n r7_n = <invalid>;
+	Eq_n r6_n = <invalid>;
+	if (r2_n == 0x00)
 	{
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
@@ -3948,49 +3943,49 @@ Eq_2149 server_new(word32 r4, word32 r5, Eq_2149 r6, int32 r7, ptr32 r30, word32
 		// Please report this issue at https://github.com/uxmal/reko
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2149 stackArg0 = <invalid>;
-		Eq_2149 stackArg4 = <invalid>;
-		Eq_2149 stackArg8 = <invalid>;
-		Eq_2149 stackArg12 = <invalid>;
-		print_log(null, &globals->ptr10000880->bFFFFA5E9 + 0x0187, r6_27, r7_28, fp + -0x0030, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_121, out r4_89, out r5_90, out r6_124, out r7_125);
-		r2_118.u0 = 0x00;
+		Eq_n stackArg0 = <invalid>;
+		Eq_n stackArg4 = <invalid>;
+		Eq_n stackArg8 = <invalid>;
+		Eq_n stackArg12 = <invalid>;
+		print_log(null, 0x0040A770, r6_n, r7_n, fp + -0x0030, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+		r2_n.u0 = 0x00;
 	}
 	else
 	{
-		*r2_30 = -0x01;
-		*((word32) r2_30 + 0x0020) = r7;
-		((word32) r2_30 + 0x0018)->u0 = 0x00;
-		((word32) r2_30 + 0x001C)->u0 = 0x00;
-		*((word32) r2_30 + 0x04) = r6;
-		bzero((word32) r2_30 + 0x08, 0x0010);
-		((word32) r2_30 + 0x08)->u0 = 0x02;
-		word32 r2_67 = (word32) wArg06_112;
-		*((word32) r2_30 + 0x0A) = (word16) r2_67;
-		Eq_2149 r7_59 = <invalid>;
-		Eq_2149 r6_58 = <invalid>;
-		Eq_2149 r5_57 = <invalid>;
-		ptr32 r2_76;
+		*r2_n = -0x01;
+		*((word32) r2_n + 0x0020) = r7;
+		((word32) r2_n + 0x0018)->u0 = 0x00;
+		((word32) r2_n + 0x001C)->u0 = 0x00;
+		*((word32) r2_n + 0x04) = r6;
+		bzero((word32) r2_n + 0x08, 0x0010);
+		((word32) r2_n + 0x08)->u0 = 0x02;
+		word32 r2_n = (word32) wArg06_n;
+		*((word32) r2_n + 0x0A) = (word16) r2_n;
+		Eq_n r7_n = <invalid>;
+		Eq_n r6_n = <invalid>;
+		Eq_n r5_n = <invalid>;
+		ptr32 r2_n;
 		inet_addr();
-		*((word32) r2_30 + 0x0C) = r2_76;
-		r3_121 = r2_76;
-		r2_118 = r2_30;
+		*((word32) r2_n + 0x0C) = r2_n;
+		r3_n = r2_n;
+		r2_n = r2_n;
 	}
-	r3Out = r3_121;
-	r6Out = r6_124;
-	r7Out = r7_125;
-	return r2_118;
+	r3Out = r3_n;
+	r6Out = r6_n;
+	r7Out = r7_n;
+	return r2_n;
 }
 
-// 00406D4C: Register int32 server_open(Register (ptr32 Eq_2704) r4, Register word32 r16, Register ptr32 r30, Register word32 ra, Stack Eq_2149 dwArg00, Register out (ptr32 Eq_2704) r3Out, Register out ptr32 r5Out, Register out ptr32 r6Out, Register out ptr32 r7Out)
-int32 server_open(struct Eq_2704 * r4, word32 r16, ptr32 r30, word32 ra, Eq_2149 dwArg00, struct Eq_2704 & r3Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out)
+// 00406D4C: Register int32 server_open(Register (ptr32 Eq_n) r4, Register word32 r16, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00, Register out (ptr32 Eq_n) r3Out, Register out ptr32 r5Out, Register out ptr32 r6Out, Register out ptr32 r7Out)
+int32 server_open(struct Eq_n * r4, word32 r16, ptr32 r30, word32 ra, Eq_n dwArg00, struct Eq_n & r3Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out)
 {
-	ptr32 r7_111;
-	ptr32 r6_108;
-	ptr32 r5_107;
-	struct Eq_2704 * r3_110;
-	int32 r2_113;
-	int32 r2_27 = socket(0x02, 0x02, 0x06);
-	if (r2_27 < 0x00)
+	ptr32 r7_n;
+	ptr32 r6_n;
+	ptr32 r5_n;
+	struct Eq_n * r3_n;
+	int32 r2_n;
+	int32 r2_n = socket(0x02, 0x02, 0x06);
+	if (r2_n < 0x00)
 	{
 		__errno_location();
 		strerror(*__errno_location());
@@ -4002,19 +3997,19 @@ int32 server_open(struct Eq_2704 * r4, word32 r16, ptr32 r30, word32 ra, Eq_2149
 		// Please report this issue at https://github.com/uxmal/reko
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2149 stackArg0 = <invalid>;
-		Eq_2149 stackArg4 = <invalid>;
-		Eq_2149 stackArg8 = <invalid>;
-		Eq_2149 stackArg12 = <invalid>;
-		print_log((int32 *) 0x01, &globals->ptr10000880->bFFFFA5E9 + 0x01B3, &globals->ptr10000880->bFFFFA5E9 + 0x01DF, 0x0031, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_110, out r4_204, out r5_107, out r6_108, out r7_111);
-		r2_113 = 0x00;
+		Eq_n stackArg0 = <invalid>;
+		Eq_n stackArg4 = <invalid>;
+		Eq_n stackArg8 = <invalid>;
+		Eq_n stackArg12 = <invalid>;
+		print_log((int32 *) 0x01, 4237212, 0x0040A7C8, 0x0031, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+		r2_n = 0x00;
 	}
 	else
 	{
-		Eq_2149 r7_47 = <invalid>;
-		Eq_2149 r3_46 = <invalid>;
-		Eq_2149 r6_44 = <invalid>;
-		if (bind(r2_27, &r4->dw0000 + 0x02, 0x0010) < 0x00)
+		Eq_n r7_n = <invalid>;
+		Eq_n r3_n = <invalid>;
+		Eq_n r6_n = <invalid>;
+		if (bind(r2_n, &r4->dw0000 + 0x02, 0x0010) < 0x00)
 		{
 			__errno_location();
 			strerror(*__errno_location());
@@ -4026,18 +4021,18 @@ int32 server_open(struct Eq_2704 * r4, word32 r16, ptr32 r30, word32 ra, Eq_2149
 			// Please report this issue at https://github.com/uxmal/reko
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			Eq_2149 stackArg0 = <invalid>;
-			Eq_2149 stackArg4 = <invalid>;
-			Eq_2149 stackArg8 = <invalid>;
-			Eq_2149 stackArg12 = <invalid>;
-			print_log((int32 *) 0x01, &globals->ptr10000880->bFFFFA5E9 + 0x01EB, &globals->ptr10000880->bFFFFA5E9 + 0x01DF, 55, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_110, out r4_256, out r5_107, out r6_108, out r7_111);
-			r2_113 = 0x00;
+			Eq_n stackArg0 = <invalid>;
+			Eq_n stackArg4 = <invalid>;
+			Eq_n stackArg8 = <invalid>;
+			Eq_n stackArg12 = <invalid>;
+			print_log((int32 *) 0x01, 0x0040A7D4, 0x0040A7C8, 55, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+			r2_n = 0x00;
 		}
 		else
 		{
-			int32 r2_57;
+			int32 r2_n;
 			listen();
-			if (r2_57 < 0x00)
+			if (r2_n < 0x00)
 			{
 				__errno_location();
 				strerror(*__errno_location());
@@ -4049,30 +4044,30 @@ int32 server_open(struct Eq_2704 * r4, word32 r16, ptr32 r30, word32 ra, Eq_2149
 				// Please report this issue at https://github.com/uxmal/reko
 				// Failed to bind call argument.
 				// Please report this issue at https://github.com/uxmal/reko
-				Eq_2149 stackArg0 = <invalid>;
-				Eq_2149 stackArg4 = <invalid>;
-				Eq_2149 stackArg8 = <invalid>;
-				Eq_2149 stackArg12 = <invalid>;
-				print_log((int32 *) 0x01, &globals->ptr10000880->bFFFFA5E9 + 0x0213, &globals->ptr10000880->bFFFFA5E9 + 0x01DF, 0x0041, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_110, out r4_261, out r5_107, out r6_108, out r7_111);
-				r2_113 = 0x00;
+				Eq_n stackArg0 = <invalid>;
+				Eq_n stackArg4 = <invalid>;
+				Eq_n stackArg8 = <invalid>;
+				Eq_n stackArg12 = <invalid>;
+				print_log((int32 *) 0x01, 0x0040A7FC, 0x0040A7C8, 0x0041, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+				r2_n = 0x00;
 			}
 			else
 			{
-				r4->dw0000 = r2_27;
-				r3_110 = r4;
-				r2_113 = 0x01;
+				r4->dw0000 = r2_n;
+				r3_n = r4;
+				r2_n = 0x01;
 			}
 		}
 	}
-	r3Out = r3_110;
-	r5Out = r5_107;
-	r6Out = r6_108;
-	r7Out = r7_111;
-	return r2_113;
+	r3Out = r3_n;
+	r5Out = r5_n;
+	r6Out = r6_n;
+	r7Out = r7_n;
+	return r2_n;
 }
 
-// 00406FF8: void server_close(Register Eq_2149 r4, Stack Eq_2149 dwArg00)
-void server_close(Eq_2149 r4, Eq_2149 dwArg00)
+// 00406FF8: void server_close(Register Eq_n r4, Stack Eq_n dwArg00)
+void server_close(Eq_n r4, Eq_n dwArg00)
 {
 	if (r4 != 0x00 && *r4 > 0x00)
 	{
@@ -4081,8 +4076,8 @@ void server_close(Eq_2149 r4, Eq_2149 dwArg00)
 	}
 }
 
-// 0040708C: void server_destroy(Register Eq_2149 r4, Register ptr32 r30, Register word32 ra, Stack Eq_2149 dwArg00)
-void server_destroy(Eq_2149 r4, ptr32 r30, word32 ra, Eq_2149 dwArg00)
+// 0040708C: void server_destroy(Register Eq_n r4, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00)
+void server_destroy(Eq_n r4, ptr32 r30, word32 ra, Eq_n dwArg00)
 {
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
@@ -4092,24 +4087,24 @@ void server_destroy(Eq_2149 r4, ptr32 r30, word32 ra, Eq_2149 dwArg00)
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_2149 stackArg0 = <invalid>;
-	Eq_2149 stackArg4 = <invalid>;
-	Eq_2149 stackArg8 = <invalid>;
-	Eq_2149 stackArg12 = <invalid>;
-	print_log((int32 *) 0x04, &globals->ptr10000880->bFFFFA5E9 + 0x0233, &globals->ptr10000880->bFFFFA5E9 + 0x024F, 0x005A, fp + -0x0030, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_64, out r4_65, out r5_29, out r6_30, out r7_31);
+	Eq_n stackArg0 = <invalid>;
+	Eq_n stackArg4 = <invalid>;
+	Eq_n stackArg8 = <invalid>;
+	Eq_n stackArg12 = <invalid>;
+	print_log((int32 *) 0x04, 4237340, 0x0040A838, 0x005A, fp + -0x0030, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_2149 stackArg0 = <invalid>;
+	Eq_n stackArg0 = <invalid>;
 	server_close(r4, stackArg0);
 	free(r4);
 }
 
-// 00407150: Register Eq_2149 slist_new(Register ptr32 r30, Register word32 ra, Register out Eq_2149 r3Out)
-Eq_2149 slist_new(ptr32 r30, word32 ra, union Eq_2149 & r3Out)
+// 00407150: Register Eq_n slist_new(Register ptr32 r30, Register word32 ra, Register out Eq_n r3Out)
+Eq_n slist_new(ptr32 r30, word32 ra, union Eq_n & r3Out)
 {
-	Eq_2149 r2_32;
-	Eq_2149 r2_19 = malloc(0x0C);
-	if (r2_19 == 0x00)
+	Eq_n r2_n;
+	Eq_n r2_n = malloc(0x0C);
+	if (r2_n == 0x00)
 	{
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
@@ -4119,26 +4114,26 @@ Eq_2149 slist_new(ptr32 r30, word32 ra, union Eq_2149 & r3Out)
 		// Please report this issue at https://github.com/uxmal/reko
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2149 stackArg0 = <invalid>;
-		Eq_2149 stackArg4 = <invalid>;
-		Eq_2149 stackArg8 = <invalid>;
-		Eq_2149 stackArg12 = <invalid>;
-		print_log(null, &globals->ptr10000880->bFFFFA5E9 + 0x0267, r6, r7, fp + -0x0030, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_70, out r4_39, out r5_41, out r6_71, out r7_72);
-		r2_32.u0 = 0x00;
+		Eq_n stackArg0 = <invalid>;
+		Eq_n stackArg4 = <invalid>;
+		Eq_n stackArg8 = <invalid>;
+		Eq_n stackArg12 = <invalid>;
+		print_log(null, 0x0040A850, r6, r7, fp + -0x0030, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+		r2_n.u0 = 0x00;
 	}
 	else
 	{
-		((word32) r2_19 + 0x08)->u0 = 0x00;
-		*r2_19 = 0x00;
-		((word32) r2_19 + 0x04)->u0 = 0x00;
-		r2_32 = r2_19;
+		((word32) r2_n + 0x08)->u0 = 0x00;
+		*r2_n = 0x00;
+		((word32) r2_n + 0x04)->u0 = 0x00;
+		r2_n = r2_n;
 	}
 	r3Out.u0 = <invalid>;
-	return r2_32;
+	return r2_n;
 }
 
-// 0040720C: Register Eq_2149 slist_add(Register Eq_2149 r4, Register Eq_2149 r5, Stack Eq_2149 dwArg00, Stack Eq_2149 dwArg04, Register out Eq_2149 r3Out)
-Eq_2149 slist_add(Eq_2149 r4, Eq_2149 r5, Eq_2149 dwArg00, Eq_2149 dwArg04, union Eq_2149 & r3Out)
+// 0040720C: Register Eq_n slist_add(Register Eq_n r4, Register Eq_n r5, Stack Eq_n dwArg00, Stack Eq_n dwArg04, Register out Eq_n r3Out)
+Eq_n slist_add(Eq_n r4, Eq_n r5, Eq_n dwArg00, Eq_n dwArg04, union Eq_n & r3Out)
 {
 	if (*((word32) r4 + 0x08) != 0x00)
 	{
@@ -4148,19 +4143,19 @@ Eq_2149 slist_add(Eq_2149 r4, Eq_2149 r5, Eq_2149 dwArg00, Eq_2149 dwArg04, unio
 	((word32) r5 + 0x001C)->u0 = 0x00;
 	*((word32) r4 + 0x08) = r5;
 	*r4 = (word32) *r4 + 0x01;
-	Eq_2149 r3_40 = r4;
+	Eq_n r3_n = r4;
 	if ((word32) (*((word32) r4 + 0x04) < *r4) != 0x00)
 	{
-		r3_40 = *r4;
-		*((word32) r4 + 0x04) = r3_40;
+		r3_n = *r4;
+		*((word32) r4 + 0x04) = r3_n;
 	}
-	Eq_2149 r2_51 = *r4;
-	r3Out = r3_40;
-	return r2_51;
+	Eq_n r2_n = *r4;
+	r3Out = r3_n;
+	return r2_n;
 }
 
-// 0040730C: void slist_remove(Register Eq_2149 r4, Register Eq_2149 r5, Stack Eq_2149 dwArg00, Stack Eq_2149 dwArg04)
-void slist_remove(Eq_2149 r4, Eq_2149 r5, Eq_2149 dwArg00, Eq_2149 dwArg04)
+// 0040730C: void slist_remove(Register Eq_n r4, Register Eq_n r5, Stack Eq_n dwArg00, Stack Eq_n dwArg04)
+void slist_remove(Eq_n r4, Eq_n r5, Eq_n dwArg00, Eq_n dwArg04)
 {
 	if (r5 != 0x00)
 	{
@@ -4174,23 +4169,23 @@ void slist_remove(Eq_2149 r4, Eq_2149 r5, Eq_2149 dwArg00, Eq_2149 dwArg04)
 	}
 }
 
-// 00407410: void slist_find_fd(Register (ptr32 Eq_8232) r4, Register word32 r5, Stack word32 dwArg00, Stack word32 dwArg04)
-void slist_find_fd(struct Eq_8232 * r4, word32 r5, word32 dwArg00, word32 dwArg04)
+// 00407410: void slist_find_fd(Register (ptr32 Eq_n) r4, Register word32 r5, Stack word32 dwArg00, Stack word32 dwArg04)
+void slist_find_fd(struct Eq_n * r4, word32 r5, word32 dwArg00, word32 dwArg04)
 {
-	struct Eq_8236 * dwLoc10_38 = r4->ptr0008;
-	while (dwLoc10_38 != null && dwLoc10_38->dw0000 != r5)
-		dwLoc10_38 = dwLoc10_38->ptr0018;
+	struct Eq_n * dwLoc10_n = r4->ptr0008;
+	while (dwLoc10_n != null && dwLoc10_n->dw0000 != r5)
+		dwLoc10_n = dwLoc10_n->ptr0018;
 }
 
-// 004074AC: void slist_delete(Register Eq_2149 r2, Register Eq_2149 r4, Register Eq_2149 r5, Register word32 r6, Register word32 r7, Register ptr32 r30, Register word32 ra, Stack Eq_2149 dwArg00, Stack Eq_2149 dwArg04)
-void slist_delete(Eq_2149 r2, Eq_2149 r4, Eq_2149 r5, word32 r6, word32 r7, ptr32 r30, word32 ra, Eq_2149 dwArg00, Eq_2149 dwArg04)
+// 004074AC: void slist_delete(Register Eq_n r2, Register Eq_n r4, Register Eq_n r5, Register word32 r6, Register word32 r7, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00, Stack Eq_n dwArg04)
+void slist_delete(Eq_n r2, Eq_n r4, Eq_n r5, word32 r6, word32 r7, ptr32 r30, word32 ra, Eq_n dwArg00, Eq_n dwArg04)
 {
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_2149 stackArg0 = <invalid>;
-	Eq_2149 stackArg4 = <invalid>;
+	Eq_n stackArg0 = <invalid>;
+	Eq_n stackArg4 = <invalid>;
 	slist_remove(r4, r5, stackArg0, stackArg4);
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
@@ -4200,33 +4195,33 @@ void slist_delete(Eq_2149 r2, Eq_2149 r4, Eq_2149 r5, word32 r6, word32 r7, ptr3
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_2149 stackArg0 = <invalid>;
-	Eq_2149 stackArg4 = <invalid>;
-	Eq_2149 stackArg8 = <invalid>;
-	Eq_2149 stackArg12 = <invalid>;
-	print_log((int32 *) 0x02, &globals->ptr10000880->bFFFFA5E9 + 0x0293, &globals->ptr10000880->bFFFFA5E9 + 0x02AF, 0x0055, fp + -0x0030, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_72, out r4_73, out r5_42, out r6_44, out r7_45);
+	Eq_n stackArg0 = <invalid>;
+	Eq_n stackArg4 = <invalid>;
+	Eq_n stackArg8 = <invalid>;
+	Eq_n stackArg12 = <invalid>;
+	print_log((int32 *) 0x02, 4237436, 4237464, 0x0055, fp + -0x0030, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_2149 stackArg0 = <invalid>;
+	Eq_n stackArg0 = <invalid>;
 	server_destroy(r5, fp + -0x0030, ra, stackArg0);
 }
 
-// 00407568: void slist_close_all(Register Eq_2149 r4, Register ptr32 r30, Register word32 ra, Stack Eq_2149 dwArg00)
-void slist_close_all(Eq_2149 r4, ptr32 r30, word32 ra, Eq_2149 dwArg00)
+// 00407568: void slist_close_all(Register Eq_n r4, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00)
+void slist_close_all(Eq_n r4, ptr32 r30, word32 ra, Eq_n dwArg00)
 {
-	Eq_2149 dwLoc18_42 = *((word32) r4 + 0x08);
-	while (dwLoc18_42 != 0x00)
+	Eq_n dwLoc18_n = *((word32) r4 + 0x08);
+	while (dwLoc18_n != 0x00)
 	{
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2149 stackArg0 = <invalid>;
-		server_close(dwLoc18_42, stackArg0);
-		dwLoc18_42 = *((word32) dwLoc18_42 + 0x0018);
+		Eq_n stackArg0 = <invalid>;
+		server_close(dwLoc18_n, stackArg0);
+		dwLoc18_n = *((word32) dwLoc18_n + 0x0018);
 	}
 }
 
-// 00407600: void slist_destroy_all(Register Eq_2149 r4, Register ptr32 r30, Register word32 ra, Stack Eq_2149 dwArg00)
-void slist_destroy_all(Eq_2149 r4, ptr32 r30, word32 ra, Eq_2149 dwArg00)
+// 00407600: void slist_destroy_all(Register Eq_n r4, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00)
+void slist_destroy_all(Eq_n r4, ptr32 r30, word32 ra, Eq_n dwArg00)
 {
 	while (*((word32) r4 + 0x08) != 0x00)
 	{
@@ -4234,23 +4229,23 @@ void slist_destroy_all(Eq_2149 r4, ptr32 r30, word32 ra, Eq_2149 dwArg00)
 		// Please report this issue at https://github.com/uxmal/reko
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_2149 r2_24 = *((word32) r4 + 0x08);
-		Eq_2149 stackArg0 = <invalid>;
-		Eq_2149 stackArg4 = <invalid>;
-		slist_delete(r2_24, r4, r2_24, r6, r7, fp + -0x0030, ra, stackArg0, stackArg4);
+		Eq_n r2_n = *((word32) r4 + 0x08);
+		Eq_n stackArg0 = <invalid>;
+		Eq_n stackArg4 = <invalid>;
+		slist_delete(r2_n, r4, r2_n, r6, r7, fp + -0x0030, ra, stackArg0, stackArg4);
 	}
 }
 
-// 004076A8: void slist_destroy(Register Eq_2149 r4, Register ptr32 r30, Register word32 ra, Stack Eq_2149 dwArg00)
-void slist_destroy(Eq_2149 r4, ptr32 r30, word32 ra, Eq_2149 dwArg00)
+// 004076A8: void slist_destroy(Register Eq_n r4, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00)
+void slist_destroy(Eq_n r4, ptr32 r30, word32 ra, Eq_n dwArg00)
 {
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_2149 stackArg0 = <invalid>;
+	Eq_n stackArg0 = <invalid>;
 	slist_close_all(r4, fp + -0x0028, ra, stackArg0);
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_2149 stackArg0 = <invalid>;
+	Eq_n stackArg0 = <invalid>;
 	slist_destroy_all(r4, fp + -0x0028, ra, stackArg0);
 	free(r4);
 }
@@ -4258,130 +4253,130 @@ void slist_destroy(Eq_2149 r4, ptr32 r30, word32 ra, Eq_2149 dwArg00)
 // 00407740: void __fixunsdfsi(Register word64 f12, Register word64 f13, Register word32 FCSR)
 void __fixunsdfsi(word64 f12, word64 f13, word32 FCSR)
 {
-	Eq_8353 f12_f13_13 = SEQ(f12, f13);
+	Eq_n f12_f13_n = SEQ(f12, f13);
 }
 
-// 004077E0: void _fpadd_parts(Register (ptr32 Eq_8358) r4, Register (ptr32 Eq_8359) r5, Register (ptr32 Eq_8360) r6)
-void _fpadd_parts(struct Eq_8358 * r4, struct Eq_8359 * r5, struct Eq_8360 * r6)
+// 004077E0: void _fpadd_parts(Register (ptr32 Eq_n) r4, Register (ptr32 Eq_n) r5, Register (ptr32 Eq_n) r6)
+void _fpadd_parts(struct Eq_n * r4, struct Eq_n * r5, struct Eq_n * r6)
 {
-	Eq_8361 r7_10 = r4->t0000;
-	if ((word32) (r7_10 < 0x02) != 0x00)
+	Eq_n r7_n = r4->t0000;
+	if ((word32) (r7_n < 0x02) != 0x00)
 		return;
-	Eq_8370 r4_15 = r5->t0000;
-	if ((word32) (r4_15 < 0x02) != 0x00)
+	Eq_n r4_n = r5->t0000;
+	if ((word32) (r4_n < 0x02) != 0x00)
 		return;
-	if ((r7_10 ^ 0x04) != 0x00)
+	if ((r7_n ^ 0x04) != 0x00)
 	{
-		if ((r4_15 ^ 0x04) == 0x00)
+		if ((r4_n ^ 0x04) == 0x00)
 			return;
-		if ((r4_15 ^ 0x02) != 0x00)
+		if ((r4_n ^ 0x02) != 0x00)
 		{
-			if ((r7_10 ^ 0x02) != 0x00)
+			if ((r7_n ^ 0x02) != 0x00)
 			{
-				int32 r8_27 = r4->dw0008;
-				int32 r7_179 = r5->dw0008;
-				Eq_8427 r10_29 = r4->t000C;
-				int32 r2_30 = r8_27 - r7_179;
-				uint32 r9_31 = r5->dw000C;
-				if (r2_30 < 0x00)
-					r2_30 = -r2_30;
-				if ((word32) (r2_30 < 0x0020) != 0x00)
+				int32 r8_n = r4->dw0008;
+				int32 r7_n = r5->dw0008;
+				Eq_n r10_n = r4->t000C;
+				int32 r2_n = r8_n - r7_n;
+				uint32 r9_n = r5->dw000C;
+				if (r2_n < 0x00)
+					r2_n = -r2_n;
+				if ((word32) (r2_n < 0x0020) != 0x00)
 				{
-					word32 r2_41 = (word32) (r7_179 < r8_27);
-					word32 r2_42;
-					if (r2_41 != 0x00)
+					word32 r2_n = (word32) (r7_n < r8_n);
+					word32 r2_n;
+					if (r2_n != 0x00)
 					{
-						int32 r7_44 = r8_27 - r7_179;
+						int32 r7_n = r8_n - r7_n;
 						while (true)
 						{
-							uint32 r3_46 = r9_31 >> 0x01;
-							uint32 r2_47 = r9_31 + 0x01;
-							r7_44 += -0x01;
-							if (r7_44 == 0x00)
+							uint32 r3_n = r9_n >> 0x01;
+							uint32 r2_n = r9_n + 0x01;
+							r7_n += -0x01;
+							if (r7_n == 0x00)
 								break;
-							r9_31 = r2_47 | r3_46;
+							r9_n = r2_n | r3_n;
 						}
-						r9_31 = r2_47 | r3_46;
-						r7_179 = r8_27;
-						r2_42 = (word32) (r8_27 < r8_27);
+						r9_n = r2_n | r3_n;
+						r7_n = r8_n;
+						r2_n = (word32) (r8_n < r8_n);
 					}
 					else
-						r2_42 = (word32) (r8_27 < r7_179);
-					if (r2_42 != 0x00)
+						r2_n = (word32) (r8_n < r7_n);
+					if (r2_n != 0x00)
 					{
 						while (true)
 						{
-							++r8_27;
-							uint32 r2_59 = r10_29 >> 0x01;
-							uint32 r3_60 = (word32) r10_29.u1 + 0x01;
-							if ((word32) (r8_27 < r7_179) == 0x00)
+							++r8_n;
+							uint32 r2_n = r10_n >> 0x01;
+							uint32 r3_n = (word32) r10_n.u1 + 0x01;
+							if ((word32) (r8_n < r7_n) == 0x00)
 								break;
-							r10_29 = r3_60 | r2_59;
+							r10_n = r3_n | r2_n;
 						}
-						r10_29 = r3_60 | r2_59;
+						r10_n = r3_n | r2_n;
 					}
 				}
 				else
 				{
-					word32 r2_37 = (word32) (r7_179 < r8_27);
-					if (r2_37 != 0x00)
-						r9_31 = 0x00;
+					word32 r2_n = (word32) (r7_n < r8_n);
+					if (r2_n != 0x00)
+						r9_n = 0x00;
 					else
 					{
-						r8_27 = r7_179;
-						r10_29.u0 = 0x00;
+						r8_n = r7_n;
+						r10_n.u0 = 0x00;
 					}
 				}
-				Eq_8427 r7_102;
-				int32 r4_75 = r4->dw0004;
-				if (r4_75 != r5->dw0004)
+				Eq_n r7_n;
+				int32 r4_n = r4->dw0004;
+				if (r4_n != r5->dw0004)
 				{
-					Eq_8427 r3_104;
-					if (r4_75 == 0x00)
-						r3_104 = r10_29 - r9_31;
+					Eq_n r3_n;
+					if (r4_n == 0x00)
+						r3_n = r10_n - r9_n;
 					else
-						r3_104 = r9_31 - r10_29;
-					if (r3_104 >= 0x00)
+						r3_n = r9_n - r10_n;
+					if (r3_n >= 0x00)
 					{
-						r6->dw0008 = r8_27;
-						r6->t000C = r3_104;
+						r6->dw0008 = r8_n;
+						r6->t000C = r3_n;
 						r6->dw0004 = 0x00;
 					}
 					else
 					{
 						r6->dw0004 = 0x01;
-						r6->dw0008 = r8_27;
-						r6->t000C = -r3_104;
+						r6->dw0008 = r8_n;
+						r6->t000C = -r3_n;
 					}
-					r7_102 = r6->t000C;
-					if ((word32) (r7_102 > 0xC0000001) == 0x00)
+					r7_n = r6->t000C;
+					if ((word32) (r7_n > 0xC0000001) == 0x00)
 					{
 						while (true)
 						{
 							r6->dw0008 += -0x01;
-							Eq_8427 r5_129 = r7_102 << 0x01;
-							r6->t000C = r5_129;
-							if ((word32) (r5_129 > 0xC0000001) != 0x00)
+							Eq_n r5_n = r7_n << 0x01;
+							r6->t000C = r5_n;
+							if ((word32) (r5_n > 0xC0000001) != 0x00)
 								break;
-							r7_102 = r5_129;
+							r7_n = r5_n;
 						}
-						r7_102 = r5_129;
+						r7_n = r5_n;
 					}
 				}
 				else
 				{
-					r6->dw0004 = r4_75;
-					r6->dw0008 = r8_27;
-					Eq_8427 r2_90 = (word32) r10_29.u0 + r9_31;
-					r6->t000C = r2_90;
-					r7_102 = r2_90;
+					r6->dw0004 = r4_n;
+					r6->dw0008 = r8_n;
+					Eq_n r2_n = (word32) r10_n.u0 + r9_n;
+					r6->t000C = r2_n;
+					r7_n = r2_n;
 				}
-				if (r7_102 < 0x00)
+				if (r7_n < 0x00)
 				{
 					r6->t0000.u0 = 0x03;
-					int32 r2_148 = r6->dw0008;
-					r6->t000C = (word32) r7_102 + 0x01 | r7_102 >> 0x01;
-					r6->dw0008 = r2_148 + 0x01;
+					int32 r2_n = r6->dw0008;
+					r6->t000C = (word32) r7_n + 0x01 | r7_n >> 0x01;
+					r6->dw0008 = r2_n + 0x01;
 				}
 				else
 					r6->t0000.u0 = 0x03;
@@ -4389,51 +4384,48 @@ void _fpadd_parts(struct Eq_8358 * r4, struct Eq_8359 * r5, struct Eq_8360 * r6)
 		}
 		else
 		{
-			if ((r7_10 ^ 0x02) != 0x00)
+			if ((r7_n ^ 0x02) != 0x00)
 				return;
-			r6->t0000 = r7_10;
+			r6->t0000 = r7_n;
 			r6->dw0004 = r4->dw0004;
 			r6->dw0008 = r4->dw0008;
 			r6->t000C = r4->t000C;
 			r6->dw0004 = r4->dw0004 + r5->dw0004;
 		}
 	}
-	else if ((r4_15 ^ 0x04) != 0x00 || r4->dw0004 == r5->dw0004)
+	else if ((r4_n ^ 0x04) != 0x00 || r4->dw0004 == r5->dw0004)
 		;
 }
 
 // 00407A38: void __addsf3(Register word32 r2, Register word32 r6, Register word32 r16, Register word32 r17, Register word32 ra, Register word64 f12, Register word64 f14)
 void __addsf3(word32 r2, word32 r6, word32 r16, word32 r17, word32 ra, word64 f12, word64 f14)
 {
-	__unpack_f(fp + -0x0018, fp + -0x0048, out r3_70, out r5_71, out r6_27, out r7_72, out r8_73);
-	word32 r2_39 = __unpack_f(fp + -0x0014, fp + -0x0038, out r3_74, out r5_75, out r6_76, out r7_77, out r8_78);
-	ptr32 r25_41 = globals->ptr1000087C;
-	struct Eq_8668 * r2_50;
-	(r25_41 + 0x000077E0)();
-	__pack_f(r2_50);
+	__unpack_f(fp + -0x0018, fp + -0x0048, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n);
+	struct Eq_n * r2_n;
+	globals->t4077E0();
+	__pack_f(r2_n);
 }
 
 // 00407AE0: void __subsf3(Register word32 r2, Register word32 r6, Register word32 r16, Register word32 r17, Register word32 ra, Register word64 f12, Register word64 f14)
 void __subsf3(word32 r2, word32 r6, word32 r16, word32 r17, word32 ra, word64 f12, word64 f14)
 {
-	__unpack_f(fp + -0x0018, fp + -0x0048, out r3_75, out r5_76, out r6_29, out r7_77, out r8_78);
-	__unpack_f(fp + -0x0014, fp + -0x0038, out r3_79, out r5_80, out r6_81, out r7_82, out r8_83);
-	ptr32 r25_41 = globals->ptr1000087C;
-	struct Eq_8668 * r2_52;
-	(r25_41 + 0x000077E0)();
-	__pack_f(r2_52);
+	__unpack_f(fp + -0x0018, fp + -0x0048, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n);
+	__unpack_f(fp + -0x0014, fp + -0x0038, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n);
+	struct Eq_n * r2_n;
+	globals->t4077E0();
+	__pack_f(r2_n);
 }
 
 // 00407BA0: void __mulsf3(Register word32 r2, Register word32 r3, Register word32 r6, Register word32 r7, Register word32 r16, Register word32 r17, Register word32 ra, Register word32 hi, Register word32 lo, Register word64 f12, Register word64 f14)
 void __mulsf3(word32 r2, word32 r3, word32 r6, word32 r7, word32 r16, word32 r17, word32 ra, word32 hi, word32 lo, word64 f12, word64 f14)
 {
-	struct Eq_8668 * r4_153;
-	__unpack_f(fp + -0x0018, fp + -0x0048, out r3_31, out r5_509, out r6_33, out r7_29, out r8_510);
-	__unpack_f(fp + -0x0014, fp + -0x0038, out r3_511, out r5_43, out r6_47, out r7_512, out r8_513);
+	struct Eq_n * r4_n;
+	__unpack_f(fp + -0x0018, fp + -0x0048, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n);
+	__unpack_f(fp + -0x0014, fp + -0x0038, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n);
 	if ((word32) (dwLoc48 < 0x02) != 0x00)
 	{
 l00407C64:
-		r4_153 = fp + -0x0048;
+		r4_n = fp + -0x0048;
 		goto l00407DA4;
 	}
 	else
@@ -4442,14 +4434,14 @@ l00407C64:
 		{
 			if ((dwLoc48 ^ 0x04) == 0x00)
 			{
-				r4_153 = globals->ptr1000095C;
+				r4_n = globals->ptr1000095C;
 				if ((dwLoc38 ^ 0x02) != 0x00)
 					goto l00407C64;
 				goto l00407DA4;
 			}
 			if ((dwLoc38 ^ 0x04) == 0x00)
 			{
-				r4_153 = globals->ptr1000095C;
+				r4_n = globals->ptr1000095C;
 				if ((dwLoc48 ^ 0x02) != 0x00)
 					goto l00407C8C;
 				goto l00407DA4;
@@ -4458,54 +4450,54 @@ l00407C64:
 				goto l00407C64;
 			if ((dwLoc38 ^ 0x02) != 0x00)
 			{
-				uint32 r4_112;
-				Eq_8813 hi_lo_63 = dwLoc3C * dwLoc2C;
-				int32 hi_73 = SLICE(hi_lo_63, word32, 32);
-				uint32 lo_75 = (word32) hi_lo_63;
-				Eq_8821 r6_104 = hi_73 >> 0x00;
-				if (hi_73 >> 0x00 < 0x00)
+				uint32 r4_n;
+				Eq_n hi_lo_n = dwLoc3C * dwLoc2C;
+				int32 hi_n = SLICE(hi_lo_n, word32, 32);
+				uint32 lo_n = (word32) hi_lo_n;
+				Eq_n r6_n = hi_n >> 0x00;
+				if (hi_n >> 0x00 < 0x00)
 				{
-					r4_112 = lo_75;
-					Eq_8832 r2_84 = (hi_73 >> 0x00) + 0x01;
+					r4_n = lo_n;
+					Eq_n r2_n = (hi_n >> 0x00) + 0x01;
 					while (true)
 					{
-						if (r2_84 != 0x00)
+						if (r2_n != 0x00)
 						{
-							r6_104 >>= 0x01;
-							r4_112 = r4_112 >> 0x01 | 0x80000000;
+							r6_n >>= 0x01;
+							r4_n = r4_n >> 0x01 | 0x80000000;
 						}
 						else
-							r6_104 >>= 0x01;
-						if (r6_104 >= 0x00)
+							r6_n >>= 0x01;
+						if (r6_n >= 0x00)
 							break;
-						r2_84 = (word32) r6_104 + 0x01;
+						r2_n = (word32) r6_n + 0x01;
 					}
 				}
 				else
-					r4_112 = lo_75;
-				if ((word32) (r6_104 > 0x3FFFFFFF) == 0x00)
+					r4_n = lo_n;
+				if ((word32) (r6_n > 0x3FFFFFFF) == 0x00)
 				{
 					while (true)
 					{
-						r6_104 <<= 0x01;
-						if (r4_112 != 0x80000000)
-							r6_104 |= 0x01;
-						if ((word32) (r6_104 > 0x3FFFFFFF) != 0x00)
+						r6_n <<= 0x01;
+						if (r4_n != 0x80000000)
+							r6_n |= 0x01;
+						if ((word32) (r6_n > 0x3FFFFFFF) != 0x00)
 							break;
-						r4_112 <<= 0x01;
+						r4_n <<= 0x01;
 					}
-					r4_112 <<= 0x01;
+					r4_n <<= 0x01;
 				}
-				if (r6_104 == 0x3F && (r6_104 != 0x80 || r4_112 != 0x00))
+				if (r6_n == 0x3F && (r6_n != 0x80 || r4_n != 0x00))
 					;
-				r4_153 = fp + -0x0028;
+				r4_n = fp + -0x0028;
 l00407DA4:
-				__pack_f(r4_153);
+				__pack_f(r4_n);
 				return;
 			}
 		}
 l00407C8C:
-		r4_153 = fp + -0x0038;
+		r4_n = fp + -0x0038;
 		goto l00407DA4;
 	}
 }
@@ -4513,9 +4505,9 @@ l00407C8C:
 // 00407DD0: void __divsf3(Register word32 r2, Register word32 r3, Register word32 r6, Register word32 r7, Register word32 r8, Register word32 r16, Register word32 r17, Register word32 ra, Register word64 f12, Register word64 f14)
 void __divsf3(word32 r2, word32 r3, word32 r6, word32 r7, word32 r8, word32 r16, word32 r17, word32 ra, word64 f12, word64 f14)
 {
-	struct Eq_8668 * r4_111;
-	__unpack_f(fp + -0x0018, fp + -0x0038, out r3_33, out r5_327, out r6_27, out r7_35, out r8_29);
-	__unpack_f(fp + -0x0014, fp + -0x0028, out r3_47, out r5_43, out r6_328, out r7_48, out r8_329);
+	struct Eq_n * r4_n;
+	__unpack_f(fp + -0x0018, fp + -0x0038, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n);
+	__unpack_f(fp + -0x0014, fp + -0x0028, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n);
 	if ((word32) (dwLoc38 < 0x02) == 0x00)
 	{
 		if ((word32) (dwLoc28 < 0x02) == 0x00)
@@ -4523,55 +4515,55 @@ void __divsf3(word32 r2, word32 r3, word32 r6, word32 r7, word32 r8, word32 r16,
 			if ((dwLoc38 ^ 0x04) != 0x00 && (dwLoc38 ^ 0x02) != 0x00)
 			{
 				if ((dwLoc28 ^ 0x04) == 0x00)
-					r4_111 = fp + -0x0038;
+					r4_n = fp + -0x0038;
 				else if ((dwLoc28 ^ 0x02) == 0x00)
-					r4_111 = fp + -0x0038;
+					r4_n = fp + -0x0038;
 				else
 				{
-					uint32 r4_209 = dwLoc2C;
-					word32 r5_208 = (word32) (dwLoc2C < dwLoc1C);
-					if (r5_208 != 0x00)
+					uint32 r4_n = dwLoc2C;
+					word32 r5_n = (word32) (dwLoc2C < dwLoc1C);
+					if (r5_n != 0x00)
 					{
-						r4_209 = dwLoc2C << 0x01;
-						r5_208 = (word32) (dwLoc2C << 0x01 < dwLoc1C);
+						r4_n = dwLoc2C << 0x01;
+						r5_n = (word32) (dwLoc2C << 0x01 < dwLoc1C);
 					}
-					uint32 r2_81 = 0x40000000;
-					ui32 r6_82 = 0x00;
+					uint32 r2_n = 0x40000000;
+					ui32 r6_n = 0x00;
 					while (true)
 					{
-						if (r5_208 == 0x00)
+						if (r5_n == 0x00)
 						{
-							r6_82 |= r2_81;
-							r4_209 -= dwLoc1C;
+							r6_n |= r2_n;
+							r4_n -= dwLoc1C;
 						}
-						r4_209 <<= 0x01;
-						r2_81 >>= 0x01;
-						if (r2_81 == 0x00)
+						r4_n <<= 0x01;
+						r2_n >>= 0x01;
+						if (r2_n == 0x00)
 							break;
-						r5_208 = (word32) (r4_209 < dwLoc1C);
+						r5_n = (word32) (r4_n < dwLoc1C);
 					}
-					if (r6_82 == 0x3F)
+					if (r6_n == 0x3F)
 					{
-						ui32 r2_101 = r6_82 + 0x80;
-						if (r2_101 != 0x00 || r4_209 != 0x00)
+						ui32 r2_n = r6_n + 0x80;
+						if (r2_n != 0x00 || r4_n != 0x00)
 							;
 					}
-					r4_111 = fp + -0x0038;
+					r4_n = fp + -0x0038;
 				}
 			}
 			else
 			{
-				r4_111 = globals->ptr1000095C;
+				r4_n = globals->ptr1000095C;
 				if (dwLoc38 != dwLoc28)
-					r4_111 = fp + -0x0038;
+					r4_n = fp + -0x0038;
 			}
 		}
 		else
-			r4_111 = fp + -0x0028;
+			r4_n = fp + -0x0028;
 	}
 	else
-		r4_111 = fp + -0x0038;
-	__pack_f(r4_111);
+		r4_n = fp + -0x0038;
+	__pack_f(r4_n);
 }
 
 // 00407F70: void __floatsisf(Register word32 r1, Register uint32 r4, Register word32 r5, Register word32 r6, Register word32 ra, Register word64 f0)
@@ -4579,25 +4571,25 @@ void __floatsisf(word32 r1, uint32 r4, word32 r5, word32 r6, word32 ra, word64 f
 {
 	if (r4 != 0x00)
 	{
-		uint32 dwLoc0C_91;
+		uint32 dwLoc0C_n;
 		if (r4 >> 0x1F != 0x00)
 		{
 			if (r4 == 0x80000000)
 				return;
-			uint32 r2_24 = -r4;
-			dwLoc0C_91 = r2_24;
+			uint32 r2_n = -r4;
+			dwLoc0C_n = r2_n;
 		}
 		else
-			dwLoc0C_91 = r4;
-		uint32 r6_28 = dwLoc0C_91;
-		if ((word32) (dwLoc0C_91 > 0x3FFFFFFF) == 0x00)
+			dwLoc0C_n = r4;
+		uint32 r6_n = dwLoc0C_n;
+		if ((word32) (dwLoc0C_n > 0x3FFFFFFF) == 0x00)
 		{
 			while (true)
 			{
-				uint32 r3_36 = r6_28 << 0x01;
-				if ((word32) (r3_36 > 0x3FFFFFFF) != 0x00)
+				uint32 r3_n = r6_n << 0x01;
+				if ((word32) (r3_n > 0x3FFFFFFF) != 0x00)
 					break;
-				r6_28 = r3_36;
+				r6_n = r3_n;
 			}
 		}
 	}
@@ -4607,7 +4599,7 @@ void __floatsisf(word32 r1, uint32 r4, word32 r5, word32 r6, word32 ra, word64 f
 // 00408040: void __fixsfsi(Register word32 r2, Register word32 r3, Register word32 ra, Register word64 f12)
 void __fixsfsi(word32 r2, word32 r3, word32 ra, word64 f12)
 {
-	__unpack_f(fp + -0x0010, fp + -0x0020, out r3_71, out r5_18, out r6_72, out r7_73, out r8_74);
+	__unpack_f(fp + -0x0010, fp + -0x0020, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n);
 	if ((dwLoc20 ^ 0x02) != 0x00 && ((word32) (dwLoc20 < 0x02) == 0x00 && ((dwLoc20 ^ 0x04) == 0x00 || dwLoc18 >= 0x00 && (word32) (dwLoc18 < 0x001F) == 0x00)))
 		;
 }
@@ -4615,33 +4607,33 @@ void __fixsfsi(word32 r2, word32 r3, word32 ra, word64 f12)
 // 00408100: void __extendsfdf2(Register word32 r2, Register word32 r3, Register word32 r6, Register word32 r7, Register word32 ra, Register word64 f12)
 void __extendsfdf2(word32 r2, word32 r3, word32 r6, word32 r7, word32 ra, word64 f12)
 {
-	__unpack_f(fp + -0x0010, fp + -0x0020, out r3_59, out r5_60, out r6_61, out r7_62, out r8_63);
+	__unpack_f(fp + -0x0010, fp + -0x0020, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n);
 	__make_dp(dwLoc1C, dwLoc18, ra, dwLoc14 >> 0x02, dwLoc14 << 0x1E);
 }
 
-// 00408180: void _fpadd_parts(Register (ptr32 Eq_9113) r4, Register (ptr32 Eq_9114) r5, Register (ptr32 Eq_9115) r6)
-void _fpadd_parts(struct Eq_9113 * r4, struct Eq_9114 * r5, struct Eq_9115 * r6)
+// 00408180: void _fpadd_parts(Register (ptr32 Eq_n) r4, Register (ptr32 Eq_n) r5, Register (ptr32 Eq_n) r6)
+void _fpadd_parts(struct Eq_n * r4, struct Eq_n * r5, struct Eq_n * r6)
 {
-	Eq_9116 r7_10 = r4->t0000;
-	struct Eq_9115 * r13_15 = r6;
-	if ((word32) (r7_10 < 0x02) != 0x00)
+	Eq_n r7_n = r4->t0000;
+	struct Eq_n * r13_n = r6;
+	if ((word32) (r7_n < 0x02) != 0x00)
 		return;
-	Eq_9126 r4_18 = r5->t0000;
-	if ((word32) (r4_18 < 0x02) != 0x00)
+	Eq_n r4_n = r5->t0000;
+	if ((word32) (r4_n < 0x02) != 0x00)
 		return;
-	if ((r7_10 ^ 0x04) == 0x00)
+	if ((r7_n ^ 0x04) == 0x00)
 	{
-		if ((r4_18 ^ 0x04) != 0x00 || r4->dw0004 == r5->dw0004)
+		if ((r4_n ^ 0x04) != 0x00 || r4->dw0004 == r5->dw0004)
 			return;
 		return;
 	}
-	if ((r4_18 ^ 0x04) == 0x00)
+	if ((r4_n ^ 0x04) == 0x00)
 		return;
-	if ((r4_18 ^ 0x02) == 0x00)
+	if ((r4_n ^ 0x02) == 0x00)
 	{
-		if ((r7_10 ^ 0x02) != 0x00)
+		if ((r7_n ^ 0x02) != 0x00)
 			return;
-		r6->t0000 = r7_10;
+		r6->t0000 = r7_n;
 		r6->dw0004 = r4->dw0004;
 		r6->dw0008 = r4->dw0008;
 		r6->dw000C = r4->dw000C;
@@ -4650,217 +4642,214 @@ void _fpadd_parts(struct Eq_9113 * r4, struct Eq_9114 * r5, struct Eq_9115 * r6)
 		r6->dw0004 = r4->dw0004 + r5->dw0004;
 		return;
 	}
-	if ((r7_10 ^ 0x02) == 0x00)
+	if ((r7_n ^ 0x02) == 0x00)
 		return;
-	int32 r12_136 = r4->dw0008;
-	int32 r7_268 = r5->dw0008;
-	Eq_9189 r10_120 = r4->t0010;
-	Eq_9195 r11_113 = r4->t0014;
-	int32 r2_34 = r12_136 - r7_268;
-	uint32 r8_124 = r5->dw0010;
-	Eq_9195 r9_109 = r5->t0014;
-	if (r2_34 < 0x00)
-		r2_34 = -r2_34;
-	if ((word32) (r2_34 < 0x0040) != 0x00)
+	int32 r12_n = r4->dw0008;
+	int32 r7_n = r5->dw0008;
+	Eq_n r10_n = r4->t0010;
+	Eq_n r11_n = r4->t0014;
+	int32 r2_n = r12_n - r7_n;
+	uint32 r8_n = r5->dw0010;
+	Eq_n r9_n = r5->t0014;
+	if (r2_n < 0x00)
+		r2_n = -r2_n;
+	if ((word32) (r2_n < 0x0040) != 0x00)
 	{
-		word32 r2_48 = (word32) (r7_268 < r12_136);
-		word32 r2_49;
-		if (r2_48 != 0x00)
+		word32 r2_n = (word32) (r7_n < r12_n);
+		word32 r2_n;
+		if (r2_n != 0x00)
 		{
-			int32 r7_53 = r12_136 - r7_268;
+			int32 r7_n = r12_n - r7_n;
 			while (true)
 			{
-				ui32 r5_60 = r9_109 >> 0x01 | r8_124 << 0x1F;
-				uint32 r3_62 = (word32) r9_109.u1 + 0x01;
-				r7_53 += -0x01;
-				r8_124 |= r8_124 >> 0x01;
-				if (r7_53 == 0x00)
+				ui32 r5_n = r9_n >> 0x01 | r8_n << 0x1F;
+				uint32 r3_n = (word32) r9_n.u1 + 0x01;
+				r7_n += -0x01;
+				r8_n |= r8_n >> 0x01;
+				if (r7_n == 0x00)
 					break;
-				r9_109 = r3_62 | r5_60;
+				r9_n = r3_n | r5_n;
 			}
-			r9_109 = r3_62 | r5_60;
-			r7_268 = r12_136;
-			r2_49 = (word32) (r12_136 < r12_136);
+			r9_n = r3_n | r5_n;
+			r7_n = r12_n;
+			r2_n = (word32) (r12_n < r12_n);
 		}
 		else
-			r2_49 = (word32) (r12_136 < r7_268);
-		if (r2_49 != 0x00)
+			r2_n = (word32) (r12_n < r7_n);
+		if (r2_n != 0x00)
 		{
 			while (true)
 			{
-				++r12_136;
-				ui32 r5_81 = r11_113 >> 0x01 | r10_120 << 0x1F;
-				uint32 r3_86 = (word32) r11_113.u1 + 0x01;
-				r10_120 |= r10_120 >> 0x01;
-				if ((word32) (r12_136 < r7_268) == 0x00)
+				++r12_n;
+				ui32 r5_n = r11_n >> 0x01 | r10_n << 0x1F;
+				uint32 r3_n = (word32) r11_n.u1 + 0x01;
+				r10_n |= r10_n >> 0x01;
+				if ((word32) (r12_n < r7_n) == 0x00)
 					break;
-				r11_113 = r3_86 | r5_81;
+				r11_n = r3_n | r5_n;
 			}
-			r11_113 = r3_86 | r5_81;
+			r11_n = r3_n | r5_n;
 		}
 	}
 	else
 	{
-		word32 r2_42 = (word32) (r7_268 < r12_136);
-		if (r2_42 != 0x00)
+		word32 r2_n = (word32) (r7_n < r12_n);
+		if (r2_n != 0x00)
 		{
-			r8_124 = 0x00;
-			r9_109.u0 = 0x00;
+			r8_n = 0x00;
+			r9_n.u0 = 0x00;
 		}
 		else
 		{
-			r12_136 = r7_268;
-			r10_120.u0 = 0x00;
-			r11_113.u0 = 0x00;
+			r12_n = r7_n;
+			r10_n.u0 = 0x00;
+			r11_n.u0 = 0x00;
 		}
 	}
-	int32 r6_102 = r4->dw0004;
-	if (r6_102 == r5->dw0004)
+	int32 r6_n = r4->dw0004;
+	if (r6_n == r5->dw0004)
 	{
-		r6->dw0004 = r6_102;
-		r6->dw0008 = r12_136;
-		word32 r3_118 = r11_113 + r9_109;
-		r6->t0010 = (word32) r10_120.u0 + r8_124 + (word32) (r3_118 < r9_109);
-		r6->t0014 = r3_118;
+		r6->dw0004 = r6_n;
+		r6->dw0008 = r12_n;
+		word32 r3_n = r11_n + r9_n;
+		r6->t0010 = (word32) r10_n.u0 + r8_n + (word32) (r3_n < r9_n);
+		r6->t0014 = r3_n;
 		goto l00408490;
 	}
-	uint32 r2_141 = (word32) (r9_109 < r11_113);
-	Eq_9189 r4_144;
-	Eq_9195 r5_142 = r9_109 - r11_113;
-	uint32 r4_143 = r8_124 - r10_120;
-	if (r6_102 == 0x00)
+	uint32 r2_n = (word32) (r9_n < r11_n);
+	Eq_n r4_n;
+	Eq_n r5_n = r9_n - r11_n;
+	uint32 r4_n = r8_n - r10_n;
+	if (r6_n == 0x00)
 	{
-		r5_142 = r11_113 - r9_109;
-		r4_144 = r10_120 - r8_124 - (word32) (r11_113 < r9_109);
+		r5_n = r11_n - r9_n;
+		r4_n = r10_n - r8_n - (word32) (r11_n < r9_n);
 	}
 	else
-		r4_144 = r4_143 - r2_141;
-	if (r4_144 >= 0x00)
+		r4_n = r4_n - r2_n;
+	if (r4_n >= 0x00)
 	{
-		r6->dw0008 = r12_136;
-		r6->t0010 = r4_144;
-		r6->t0014 = r5_142;
+		r6->dw0008 = r12_n;
+		r6->t0010 = r4_n;
+		r6->t0014 = r5_n;
 		r6->dw0004 = 0x00;
 	}
 	else
 	{
 		r6->dw0004 = 0x01;
-		r6->dw0008 = r12_136;
-		Eq_9195 r5_153 = -r5_142;
-		r6->t0010 = -r4_144 - (word32) (r5_153 > 0x00);
-		r6->t0014 = r5_153;
+		r6->dw0008 = r12_n;
+		Eq_n r5_n = -r5_n;
+		r6->t0010 = -r4_n - (word32) (r5_n > 0x00);
+		r6->t0014 = r5_n;
 	}
-	Eq_9195 r9_171 = r6->t0014;
-	Eq_9189 r8_170 = r6->t0010;
-	up32 r4_176 = (word32) r8_170 - 0x01 + (word32) (r9_171 < 0x00);
-	if ((word32) (r4_176 > 0x0FFFFFFF) == 0x00)
+	Eq_n r9_n = r6->t0014;
+	Eq_n r8_n = r6->t0010;
+	up32 r4_n = (word32) r8_n - 0x01 + (word32) (r9_n < 0x00);
+	if ((word32) (r4_n > 0x0FFFFFFF) == 0x00)
 	{
-		uint32 r2_179;
-		if (r4_176 == 0x0FFFFFFF)
+		uint32 r2_n;
+		if (r4_n == 0x0FFFFFFF)
 		{
-			if ((word32) (r9_171 < 0x00) == 0x00)
+			if ((word32) (r9_n < 0x00) == 0x00)
 				goto l00408490;
 l0040840C:
-			r2_179 = r9_171 >> 0x1F;
+			r2_n = r9_n >> 0x1F;
 		}
 		else
-			r2_179 = r9_171 >> 0x1F;
-		ui32 r6_186 = r8_170 << 0x01;
+			r2_n = r9_n >> 0x1F;
+		ui32 r6_n = r8_n << 0x01;
 		while (true)
 		{
-			Eq_9195 r7_194 = r9_171 << 0x01;
-			Eq_9189 r6_189 = r6_186 | r2_179;
-			r13_15->dw0008 += -0x01;
-			r13_15->t0010 = r6_189;
-			r13_15->t0014 = r7_194;
-			uint32 r4_199 = (word32) r6_189 - 0x01 + (word32) (r7_194 < 0x00);
-			if ((word32) (r4_199 > 0x0FFFFFFF) != 0x00)
+			Eq_n r7_n = r9_n << 0x01;
+			Eq_n r6_n = r6_n | r2_n;
+			r13_n->dw0008 += -0x01;
+			r13_n->t0010 = r6_n;
+			r13_n->t0014 = r7_n;
+			uint32 r4_n = (word32) r6_n - 0x01 + (word32) (r7_n < 0x00);
+			if ((word32) (r4_n > 0x0FFFFFFF) != 0x00)
 				break;
-			word32 r11_207 = (word32) (r7_194 < 0x00);
-			r8_170 = r6_189;
-			if (r4_199 != 0x0FFFFFFF)
+			word32 r11_n = (word32) (r7_n < 0x00);
+			r8_n = r6_n;
+			if (r4_n != 0x0FFFFFFF)
 			{
-				r9_171 = r7_194;
+				r9_n = r7_n;
 				goto l0040840C;
 			}
-			r9_171 = r7_194;
-			if (r11_207 == 0x00)
+			r9_n = r7_n;
+			if (r11_n == 0x00)
 				break;
-			r2_179 = r7_194 >> 0x1F;
-			r6_186 = r6_189 << 0x01;
+			r2_n = r7_n >> 0x1F;
+			r6_n = r6_n << 0x01;
 		}
 	}
 l00408490:
-	if ((word32) (r13_15->t0010 > 0x1FFFFFFF) != 0x00)
+	if ((word32) (r13_n->t0010 > 0x1FFFFFFF) != 0x00)
 	{
-		r13_15->t0000.u0 = 0x03;
-		Eq_9189 r4_221 = r13_15->t0010;
-		Eq_9195 r5_222 = r13_15->t0014;
-		int32 r6_230 = r13_15->dw0008;
-		r13_15->t0010 = r4_221 | r4_221 >> 0x01;
-		r13_15->t0014 = (word32) r5_222.u1 + 0x01 | (r5_222 >> 0x01 | r4_221 << 0x1F);
-		r13_15->dw0008 = r6_230 + 0x01;
+		r13_n->t0000.u0 = 0x03;
+		Eq_n r4_n = r13_n->t0010;
+		Eq_n r5_n = r13_n->t0014;
+		int32 r6_n = r13_n->dw0008;
+		r13_n->t0010 = r4_n | r4_n >> 0x01;
+		r13_n->t0014 = (word32) r5_n.u1 + 0x01 | (r5_n >> 0x01 | r4_n << 0x1F);
+		r13_n->dw0008 = r6_n + 0x01;
 	}
 	else
-		r13_15->t0000.u0 = 0x03;
+		r13_n->t0000.u0 = 0x03;
 }
 
 // 004084FC: void __adddf3(Register word32 r16, Register word32 r17, Register word32 r18, Register word32 ra, Register word64 f12, Register word64 f13, Register word64 f14, Register word64 f15)
 void __adddf3(word32 r16, word32 r17, word32 r18, word32 ra, word64 f12, word64 f13, word64 f14, word64 f15)
 {
-	__unpack_d(fp + -0x0028, fp + -112, out r3_36, out r5_96, out r6_39, out r7_38, out r8_40, out r9_97, out r10_98, out r11_99, out r12_100, out r13_101, out r14_102, out r15_103, out r24_104);
-	word32 r3_49;
-	word32 r7_51;
-	word32 r8_53;
-	word32 r2_50 = __unpack_d(fp + -0x0020, fp + -88, out r3_49, out r5_105, out r6_106, out r7_51, out r8_53, out r9_107, out r10_108, out r11_109, out r12_110, out r13_111, out r14_112, out r15_113, out r24_114);
-	struct Eq_8 * r25_57 = globals->ptr10000880;
-	struct Eq_9602 * r2_64;
-	(*((char *) r25_57 - 32384))();
-	__pack_d(r2_64);
+	__unpack_d(fp + -0x0028, fp + -112, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out r14_n, out r15_n, out r24_n);
+	word32 r3_n;
+	word32 r7_n;
+	word32 r8_n;
+	struct Eq_n * r2_n;
+	globals->t408180();
+	__pack_d(r2_n);
 }
 
 // 004085CC: void __subdf3(Register word32 r16, Register word32 r17, Register word32 r18, Register word32 ra, Register word64 f12, Register word64 f13, Register word64 f14, Register word64 f15)
 void __subdf3(word32 r16, word32 r17, word32 r18, word32 ra, word64 f12, word64 f13, word64 f14, word64 f15)
 {
-	__unpack_d(fp + -0x0028, fp + -112, out r3_36, out r5_101, out r6_39, out r7_38, out r8_40, out r9_102, out r10_103, out r11_104, out r12_105, out r13_106, out r14_107, out r15_108, out r24_109);
-	word32 r3_49;
-	word32 r7_51;
-	word32 r8_53;
-	__unpack_d(fp + -0x0020, fp + -88, out r3_49, out r5_110, out r6_111, out r7_51, out r8_53, out r9_112, out r10_113, out r11_114, out r12_115, out r13_116, out r14_117, out r15_118, out r24_119);
-	struct Eq_8 * r25_57 = globals->ptr10000880;
-	struct Eq_9602 * r2_67;
-	(*((char *) r25_57 - 32384))();
-	__pack_d(r2_67);
+	__unpack_d(fp + -0x0028, fp + -112, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out r14_n, out r15_n, out r24_n);
+	word32 r3_n;
+	word32 r7_n;
+	word32 r8_n;
+	__unpack_d(fp + -0x0020, fp + -88, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out r14_n, out r15_n, out r24_n);
+	struct Eq_n * r2_n;
+	globals->t408180();
+	__pack_d(r2_n);
 }
 
 // 004086B0: void __muldf3(Register word32 r9, Register word32 r10, Register word32 r11, Register word32 r12, Register word32 r13, Register word32 r14, Register word32 r15, Register word32 r16, Register word32 r17, Register word32 r18, Register word32 r19, Register word32 r20, Register word32 r21, Register word32 r22, Register word32 r24, Register word32 ra, Register word32 hi, Register word32 lo, Register word64 f12, Register word64 f13, Register word64 f14, Register word64 f15)
 void __muldf3(word32 r9, word32 r10, word32 r11, word32 r12, word32 r13, word32 r14, word32 r15, word32 r16, word32 r17, word32 r18, word32 r19, word32 r20, word32 r21, word32 r22, word32 r24, word32 ra, word32 hi, word32 lo, word64 f12, word64 f13, word64 f14, word64 f15)
 {
-	struct Eq_9602 * r4_403;
-	__unpack_d(fp + -0x0040, fp + -0x0088, out r3_44, out r5_1260, out r6_47, out r7_46, out r8_48, out r9_54, out r10_56, out r11_52, out r12_66, out r13_58, out r14_61, out r15_68, out r24_63);
-	__unpack_d(fp + -0x0038, fp + -112, out r3_1261, out r5_81, out r6_78, out r7_77, out r8_79, out r9_83, out r10_84, out r11_82, out r12_88, out r13_85, out r14_86, out r15_89, out r24_87);
+	struct Eq_n * r4_n;
+	__unpack_d(fp + -0x0040, fp + -0x0088, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out r14_n, out r15_n, out r24_n);
+	__unpack_d(fp + -0x0038, fp + -112, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out r14_n, out r15_n, out r24_n);
 	if ((word32) (dwLoc88 < 0x02) != 0x00)
 	{
 l004087A8:
-		r4_403 = fp + -0x0088;
+		r4_n = fp + -0x0088;
 		goto l00408B58;
 	}
 	if ((word32) (dwLoc70 < 0x02) != 0x00)
 	{
 l004087D0:
-		r4_403 = fp + -112;
+		r4_n = fp + -112;
 		goto l00408B58;
 	}
 	if ((dwLoc88 ^ 0x04) == 0x00)
 	{
-		r4_403 = globals->ptr10000924;
+		r4_n = globals->ptr10000924;
 		if ((dwLoc70 ^ 0x02) != 0x00)
 			goto l004087A8;
 		goto l00408B58;
 	}
 	if ((dwLoc70 ^ 0x04) == 0x00)
 	{
-		r4_403 = globals->ptr10000924;
+		r4_n = globals->ptr10000924;
 		if ((dwLoc88 ^ 0x02) != 0x00)
 			goto l004087D0;
 		goto l00408B58;
@@ -4869,119 +4858,119 @@ l004087D0:
 		goto l004087A8;
 	if ((dwLoc70 ^ 0x02) == 0x00)
 		goto l004087D0;
-	uint32 r16_176;
-	Eq_9823 hi_lo_126 = (dwLoc60 >> 0x00) * (dwLoc74 + -0x01);
-	Eq_9831 hi_lo_132 = (dwLoc5C + -0x01) * (dwLoc78 >> 0x00);
-	up32 lo_129 = (word32) hi_lo_126;
-	up32 lo_135 = (word32) hi_lo_132;
-	up32 r21_146 = lo_129 + lo_135;
-	uint32 r24_141 = SLICE(hi_lo_126, word32, 32) + (word32) ((dwLoc60 >> 0x00) *s dwLoc78) + (word32) ((dwLoc74 + -0x01) *s 0x00);
-	Eq_9856 hi_lo_157 = (dwLoc5C + -0x01) * (dwLoc74 + -0x01);
-	Eq_9860 hi_lo_163 = (dwLoc60 >> 0x00) * (dwLoc78 >> 0x00);
-	word32 lo_170 = (word32) ((dwLoc78 >> 0x00) *s 0x00);
-	uint32 r20_150 = r24_141 + ((SLICE(hi_lo_132, word32, 32) + (word32) ((dwLoc5C + -0x01) *s 0x00)) + (word32) ((dwLoc78 >> 0x00) *s dwLoc60)) + (word32) (r21_146 < lo_135);
-	int32 dwLoc30_807 = 0x00;
-	Eq_9886 lo_160 = (word32) hi_lo_157;
-	word32 r16_162 = SLICE(hi_lo_157, word32, 32) + (word32) ((dwLoc5C + -0x01) *s dwLoc78);
-	uint32 lo_166 = (word32) hi_lo_163;
-	word32 r18_172 = SLICE(hi_lo_163, word32, 32) + (word32) ((dwLoc60 >> 0x00) *s 0x00) + lo_170;
-	word32 lo_174 = (word32) ((dwLoc74 + -0x01) *s dwLoc60);
-	if ((word32) (r20_150 < r24_141) != 0x00)
+	uint32 r16_n;
+	Eq_n hi_lo_n = (dwLoc60 >> 0x00) * (dwLoc74 + -0x01);
+	Eq_n hi_lo_n = (dwLoc5C + -0x01) * (dwLoc78 >> 0x00);
+	up32 lo_n = (word32) hi_lo_n;
+	up32 lo_n = (word32) hi_lo_n;
+	up32 r21_n = lo_n + lo_n;
+	uint32 r24_n = SLICE(hi_lo_n, word32, 32) + (word32) ((dwLoc60 >> 0x00) *s dwLoc78) + (word32) ((dwLoc74 + -0x01) *s 0x00);
+	Eq_n hi_lo_n = (dwLoc5C + -0x01) * (dwLoc74 + -0x01);
+	Eq_n hi_lo_n = (dwLoc60 >> 0x00) * (dwLoc78 >> 0x00);
+	word32 lo_n = (word32) ((dwLoc78 >> 0x00) *s 0x00);
+	uint32 r20_n = r24_n + ((SLICE(hi_lo_n, word32, 32) + (word32) ((dwLoc5C + -0x01) *s 0x00)) + (word32) ((dwLoc78 >> 0x00) *s dwLoc60)) + (word32) (r21_n < lo_n);
+	int32 dwLoc30_n = 0x00;
+	Eq_n lo_n = (word32) hi_lo_n;
+	word32 r16_n = SLICE(hi_lo_n, word32, 32) + (word32) ((dwLoc5C + -0x01) *s dwLoc78);
+	uint32 lo_n = (word32) hi_lo_n;
+	word32 r18_n = SLICE(hi_lo_n, word32, 32) + (word32) ((dwLoc60 >> 0x00) *s 0x00) + lo_n;
+	word32 lo_n = (word32) ((dwLoc74 + -0x01) *s dwLoc60);
+	if ((word32) (r20_n < r24_n) != 0x00)
 	{
-		r16_176 = r16_162 + lo_174;
+		r16_n = r16_n + lo_n;
 		goto l00408924;
 	}
 	else
 	{
-		r16_176 = r16_162 + lo_174;
-		if (r24_141 == r20_150)
+		r16_n = r16_n + lo_n;
+		if (r24_n == r20_n)
 		{
-			word32 r2_179 = (word32) (r21_146 < lo_129);
-			if (r2_179 != 0x00)
+			word32 r2_n = (word32) (r21_n < lo_n);
+			if (r2_n != 0x00)
 			{
 l00408924:
-				dwLoc30_807 = 0x01;
+				dwLoc30_n = 0x01;
 				goto l00408934;
 			}
 		}
 l00408934:
-		uint32 r10_199 = r16_176 + (lo_170 + -0x01) + (word32) (lo_160 < 0x00);
-		int32 dwLoc2C_814 = 0x00;
-		if ((word32) (r10_199 < r16_176) != 0x00)
+		uint32 r10_n = r16_n + (lo_n + -0x01) + (word32) (lo_n < 0x00);
+		int32 dwLoc2C_n = 0x00;
+		if ((word32) (r10_n < r16_n) != 0x00)
 		{
 l00408978:
-			dwLoc30_807 += (word32) false;
-			dwLoc2C_814 = 0x01;
+			dwLoc30_n += (word32) false;
+			dwLoc2C_n = 0x01;
 			goto l00408998;
 		}
 		else
 		{
-			if (r16_176 == r10_199)
+			if (r16_n == r10_n)
 			{
-				word32 r2_202 = (word32) (lo_160 < lo_160);
-				if (r2_202 != 0x00)
+				word32 r2_n = (word32) (lo_n < lo_n);
+				if (r2_n != 0x00)
 					goto l00408978;
 			}
 l00408998:
-			Eq_9886 r7_266;
-			uint32 r5_228 = (r20_150 >> 0x00) + -0x01 + lo_166;
-			uint32 r13_247 = dwLoc2C_814 + r5_228;
-			Eq_9949 r12_253 = dwLoc30_807 + (r18_172 + (word32) (r5_228 < lo_166)) + (word32) (r13_247 < r5_228);
-			uint32 r6_263 = r10_199;
-			if ((word32) (r12_253 > 0x1FFFFFFF) != 0x00)
+			Eq_n r7_n;
+			uint32 r5_n = (r20_n >> 0x00) + -0x01 + lo_n;
+			uint32 r13_n = dwLoc2C_n + r5_n;
+			Eq_n r12_n = dwLoc30_n + (r18_n + (word32) (r5_n < lo_n)) + (word32) (r13_n < r5_n);
+			uint32 r6_n = r10_n;
+			if ((word32) (r12_n > 0x1FFFFFFF) != 0x00)
 			{
-				r7_266 = lo_160;
+				r7_n = lo_n;
 				do
 				{
-					r12_253 >>= 0x01;
-					r13_247 = r13_247 >> 0x01 | r12_253 << 0x1F;
-					word32 r4_285 = (word32) (r12_253 > 0x1FFFFFFF);
-					if (r13_247 != 0x01)
+					r12_n >>= 0x01;
+					r13_n = r13_n >> 0x01 | r12_n << 0x1F;
+					word32 r4_n = (word32) (r12_n > 0x1FFFFFFF);
+					if (r13_n != 0x01)
 					{
-						r6_263 = r6_263 >> 0x01 | 0x80000000;
-						r7_266 = r7_266 >> 0x01 | r6_263 << 0x1F;
+						r6_n = r6_n >> 0x01 | 0x80000000;
+						r7_n = r7_n >> 0x01 | r6_n << 0x1F;
 					}
-				} while (r4_285 != 0x00);
+				} while (r4_n != 0x00);
 			}
 			else
-				r7_266 = lo_160;
-			if ((word32) (r12_253 > 0x0FFFFFFF) == 0x00)
+				r7_n = lo_n;
+			if ((word32) (r12_n > 0x0FFFFFFF) == 0x00)
 			{
 				while (true)
 				{
-					Eq_9949 r12_332 = r12_253 << 0x01 | r13_247 >> 0x1F;
-					r13_247 <<= 0x01;
-					if ((r7_266 | r6_263 + 0x80000000) != 0x00)
-						r13_247 |= 0x01;
-					r12_253 = r12_332;
-					r6_263 = r6_263 << 0x01 | r7_266 >> 0x1F;
-					if ((word32) (r12_332 > 0x0FFFFFFF) != 0x00)
+					Eq_n r12_n = r12_n << 0x01 | r13_n >> 0x1F;
+					r13_n <<= 0x01;
+					if ((r7_n | r6_n + 0x80000000) != 0x00)
+						r13_n |= 0x01;
+					r12_n = r12_n;
+					r6_n = r6_n << 0x01 | r7_n >> 0x1F;
+					if ((word32) (r12_n > 0x0FFFFFFF) != 0x00)
 						break;
-					r7_266 <<= 0x01;
+					r7_n <<= 0x01;
 				}
-				r7_266 <<= 0x01;
+				r7_n <<= 0x01;
 			}
-			if (r12_253 != 0x00)
+			if (r12_n != 0x00)
 			{
 l00408B44:
 				goto l00408B48;
 			}
-			Eq_10000 r5_366 = r13_247 + 0x00FF;
-			if (r5_366 == 0x0080)
+			Eq_n r5_n = r13_n + 0x00FF;
+			if (r5_n == 0x0080)
 			{
-				if ((r13_247 + 0x0100 | r12_253) != 0x00)
+				if ((r13_n + 0x0100 | r12_n) != 0x00)
 				{
 l00408B38:
 					goto l00408B44;
 				}
-				ui32 r2_382 = r7_266 | r6_263;
-				if (r2_382 != 0x00)
+				ui32 r2_n = r7_n | r6_n;
+				if (r2_n != 0x00)
 					goto l00408B38;
 			}
 l00408B48:
-			r4_403 = fp + -88;
+			r4_n = fp + -88;
 l00408B58:
-			__pack_d(r4_403);
+			__pack_d(r4_n);
 		}
 	}
 }
@@ -4989,110 +4978,110 @@ l00408B58:
 // 00408BA0: void __divdf3(Register word32 r9, Register word32 r10, Register word32 r11, Register word32 r12, Register word32 r13, Register word32 r14, Register word32 r15, Register word32 r16, Register word32 r17, Register word32 r18, Register word32 ra, Register word64 f12, Register word64 f13, Register word64 f14, Register word64 f15)
 void __divdf3(word32 r9, word32 r10, word32 r11, word32 r12, word32 r13, word32 r14, word32 r15, word32 r16, word32 r17, word32 r18, word32 ra, word64 f12, word64 f13, word64 f14, word64 f15)
 {
-	struct Eq_9602 * r4_201;
-	__unpack_d(fp + -0x0028, fp + -88, out r3_36, out r5_568, out r6_39, out r7_38, out r8_40, out r9_46, out r10_50, out r11_52, out r12_54, out r13_56, out r14_48, out r15_44, out r24_569);
-	__unpack_d(fp + -0x0020, fp + -0x0040, out r3_63, out r5_69, out r6_570, out r7_65, out r8_67, out r9_71, out r10_73, out r11_74, out r12_75, out r13_76, out r14_72, out r15_571, out r24_572);
+	struct Eq_n * r4_n;
+	__unpack_d(fp + -0x0028, fp + -88, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out r14_n, out r15_n, out r24_n);
+	__unpack_d(fp + -0x0020, fp + -0x0040, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out r14_n, out r15_n, out r24_n);
 	if ((word32) (dwLoc58 < 0x02) != 0x00)
 	{
-		r4_201 = fp + -88;
+		r4_n = fp + -88;
 		goto l00408DDC;
 	}
 	if ((word32) (dwLoc40 < 0x02) != 0x00)
 	{
-		r4_201 = fp + -0x0040;
+		r4_n = fp + -0x0040;
 		goto l00408DDC;
 	}
 	if ((dwLoc58 ^ 0x04) == 0x00 || (dwLoc58 ^ 0x02) == 0x00)
 	{
-		r4_201 = globals->ptr10000924;
+		r4_n = globals->ptr10000924;
 		if (dwLoc58 != dwLoc40)
-			r4_201 = fp + -88;
+			r4_n = fp + -88;
 		goto l00408DDC;
 	}
 	if ((dwLoc40 ^ 0x04) == 0x00)
 	{
-		r4_201 = fp + -88;
+		r4_n = fp + -88;
 		goto l00408DDC;
 	}
 	if ((dwLoc40 ^ 0x02) == 0x00)
 	{
-		r4_201 = fp + -88;
+		r4_n = fp + -88;
 		goto l00408DDC;
 	}
-	uint32 r4_101 = dwLoc48;
-	uint32 r5_102 = dwLoc44;
-	word32 r14_104 = (word32) (dwLoc48 < dwLoc30);
-	if (r14_104 != 0x00)
+	uint32 r4_n = dwLoc48;
+	uint32 r5_n = dwLoc44;
+	word32 r14_n = (word32) (dwLoc48 < dwLoc30);
+	if (r14_n != 0x00)
 	{
 l00408CEC:
-		r4_101 = dwLoc48 << 0x01 | dwLoc44 >> 0x1F;
-		r5_102 = dwLoc44 << 0x01;
-		r14_104 = (word32) (r4_101 < dwLoc30);
+		r4_n = dwLoc48 << 0x01 | dwLoc44 >> 0x1F;
+		r5_n = dwLoc44 << 0x01;
+		r14_n = (word32) (r4_n < dwLoc30);
 		goto l00408D08;
 	}
 	else
 	{
 		if (dwLoc30 == dwLoc48)
 		{
-			word32 r2_108 = (word32) (dwLoc44 < dwLoc2C);
-			if (r2_108 != 0x00)
+			word32 r2_n = (word32) (dwLoc44 < dwLoc2C);
+			if (r2_n != 0x00)
 				goto l00408CEC;
 		}
 l00408D08:
-		uint32 r10_121 = 0x10000000;
-		Eq_10185 r11_122 = 0x00;
-		ui32 r12_123 = 0x00;
-		ui32 r13_124 = 0x00;
+		uint32 r10_n = 0x10000000;
+		Eq_n r11_n = 0x00;
+		ui32 r12_n = 0x00;
+		ui32 r13_n = 0x00;
 l00408D18:
-		if (r14_104 == 0x00)
+		if (r14_n == 0x00)
 		{
-			uint32 r2_130;
-			if (dwLoc30 != r4_101)
+			uint32 r2_n;
+			if (dwLoc30 != r4_n)
 			{
-				r2_130 = (word32) (r5_102 < dwLoc2C);
+				r2_n = (word32) (r5_n < dwLoc2C);
 				goto l00408D38;
 			}
-			if ((word32) (r5_102 < dwLoc2C) == 0x00)
+			if ((word32) (r5_n < dwLoc2C) == 0x00)
 			{
-				r2_130 = (word32) (r5_102 < dwLoc2C);
+				r2_n = (word32) (r5_n < dwLoc2C);
 l00408D38:
-				r5_102 -= dwLoc2C;
-				r12_123 |= r10_121;
-				r4_101 = r4_101 - dwLoc30 - r2_130;
-				r13_124 |= r11_122;
+				r5_n -= dwLoc2C;
+				r12_n |= r10_n;
+				r4_n = r4_n - dwLoc30 - r2_n;
+				r13_n |= r11_n;
 				goto l00408D4C;
 			}
 		}
 l00408D4C:
-		uint32 r6_163 = r4_101 << 0x01 | r5_102 >> 0x1F;
-		r11_122 = r11_122 >> 0x01 | r10_121 << 0x1F;
-		r10_121 >>= 0x01;
-		uint32 r7_165 = r5_102 << 0x01;
-		r4_101 = r6_163;
-		r14_104 = (word32) (r6_163 < dwLoc30);
-		if ((r11_122 | r10_121) == 0x00)
+		uint32 r6_n = r4_n << 0x01 | r5_n >> 0x1F;
+		r11_n = r11_n >> 0x01 | r10_n << 0x1F;
+		r10_n >>= 0x01;
+		uint32 r7_n = r5_n << 0x01;
+		r4_n = r6_n;
+		r14_n = (word32) (r6_n < dwLoc30);
+		if ((r11_n | r10_n) == 0x00)
 		{
-			if (r12_123 == 0x00)
+			if (r12_n == 0x00)
 			{
-				int32 r5_177 = r13_124 + 0x00FF;
-				if (r5_177 != 0x0080)
+				int32 r5_n = r13_n + 0x00FF;
+				if (r5_n != 0x0080)
 					goto l00408DD0;
-				if ((r13_124 + 0x0100 | r12_123) != 0x00)
+				if ((r13_n + 0x0100 | r12_n) != 0x00)
 				{
 l00408DC4:
 					goto l00408DD0;
 				}
-				ui32 r2_185 = r7_165 | r6_163;
-				if (r2_185 != 0x00)
+				ui32 r2_n = r7_n | r6_n;
+				if (r2_n != 0x00)
 					goto l00408DC4;
 			}
 l00408DD0:
-			r4_201 = fp + -88;
+			r4_n = fp + -88;
 l00408DDC:
-			__pack_d(r4_201);
+			__pack_d(r4_n);
 			return;
 		}
-		r5_102 = r7_165;
+		r5_n = r7_n;
 		goto l00408D18;
 	}
 }
@@ -5100,8 +5089,8 @@ l00408DDC:
 // 00408E10: void __eqdf2(Register word32 r16, Register word32 r17, Register word32 r18, Register word32 ra, Register word64 f12, Register word64 f13, Register word64 f14, Register word64 f15)
 void __eqdf2(word32 r16, word32 r17, word32 r18, word32 ra, word64 f12, word64 f13, word64 f14, word64 f15)
 {
-	__unpack_d(fp + -0x0028, fp + -88, out r3_36, out r5_107, out r6_39, out r7_38, out r8_40, out r9_108, out r10_109, out r11_110, out r12_111, out r13_112, out r14_113, out r15_114, out r24_115);
-	__unpack_d(fp + -0x0020, fp + -0x0040, out r3_116, out r5_55, out r6_52, out r7_51, out r8_53, out r9_117, out r10_118, out r11_119, out r12_120, out r13_121, out r14_122, out r15_123, out r24_124);
+	__unpack_d(fp + -0x0028, fp + -88, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out r14_n, out r15_n, out r24_n);
+	__unpack_d(fp + -0x0020, fp + -0x0040, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out r14_n, out r15_n, out r24_n);
 	if ((word32) (dwLoc58 < 0x02) == 0x00 && (word32) (dwLoc40 < 0x02) == 0x00)
 		__fpcmp_parts_d(fp + -88, fp + -0x0040);
 }
@@ -5109,8 +5098,8 @@ void __eqdf2(word32 r16, word32 r17, word32 r18, word32 ra, word64 f12, word64 f
 // 00408EE0: void __nedf2(Register word32 r16, Register word32 r17, Register word32 r18, Register word32 ra, Register word64 f12, Register word64 f13, Register word64 f14, Register word64 f15)
 void __nedf2(word32 r16, word32 r17, word32 r18, word32 ra, word64 f12, word64 f13, word64 f14, word64 f15)
 {
-	__unpack_d(fp + -0x0028, fp + -88, out r3_36, out r5_107, out r6_39, out r7_38, out r8_40, out r9_108, out r10_109, out r11_110, out r12_111, out r13_112, out r14_113, out r15_114, out r24_115);
-	__unpack_d(fp + -0x0020, fp + -0x0040, out r3_116, out r5_55, out r6_52, out r7_51, out r8_53, out r9_117, out r10_118, out r11_119, out r12_120, out r13_121, out r14_122, out r15_123, out r24_124);
+	__unpack_d(fp + -0x0028, fp + -88, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out r14_n, out r15_n, out r24_n);
+	__unpack_d(fp + -0x0020, fp + -0x0040, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out r14_n, out r15_n, out r24_n);
 	if ((word32) (dwLoc58 < 0x02) == 0x00 && (word32) (dwLoc40 < 0x02) == 0x00)
 		__fpcmp_parts_d(fp + -88, fp + -0x0040);
 }
@@ -5118,8 +5107,8 @@ void __nedf2(word32 r16, word32 r17, word32 r18, word32 ra, word64 f12, word64 f
 // 00408FB0: void __gedf2(Register word32 r16, Register word32 r17, Register word32 r18, Register word32 ra, Register word64 f12, Register word64 f13, Register word64 f14, Register word64 f15)
 void __gedf2(word32 r16, word32 r17, word32 r18, word32 ra, word64 f12, word64 f13, word64 f14, word64 f15)
 {
-	__unpack_d(fp + -0x0028, fp + -88, out r3_36, out r5_107, out r6_39, out r7_38, out r8_40, out r9_108, out r10_109, out r11_110, out r12_111, out r13_112, out r14_113, out r15_114, out r24_115);
-	__unpack_d(fp + -0x0020, fp + -0x0040, out r3_116, out r5_55, out r6_52, out r7_51, out r8_53, out r9_117, out r10_118, out r11_119, out r12_120, out r13_121, out r14_122, out r15_123, out r24_124);
+	__unpack_d(fp + -0x0028, fp + -88, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out r14_n, out r15_n, out r24_n);
+	__unpack_d(fp + -0x0020, fp + -0x0040, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out r14_n, out r15_n, out r24_n);
 	if ((word32) (dwLoc58 < 0x02) == 0x00 && (word32) (dwLoc40 < 0x02) == 0x00)
 		__fpcmp_parts_d(fp + -88, fp + -0x0040);
 }
@@ -5127,40 +5116,40 @@ void __gedf2(word32 r16, word32 r17, word32 r18, word32 ra, word64 f12, word64 f
 // 00409080: void __ltdf2(Register word32 r16, Register word32 r17, Register word32 r18, Register word32 ra, Register word64 f12, Register word64 f13, Register word64 f14, Register word64 f15)
 void __ltdf2(word32 r16, word32 r17, word32 r18, word32 ra, word64 f12, word64 f13, word64 f14, word64 f15)
 {
-	__unpack_d(fp + -0x0028, fp + -88, out r3_36, out r5_107, out r6_39, out r7_38, out r8_40, out r9_108, out r10_109, out r11_110, out r12_111, out r13_112, out r14_113, out r15_114, out r24_115);
-	__unpack_d(fp + -0x0020, fp + -0x0040, out r3_116, out r5_55, out r6_52, out r7_51, out r8_53, out r9_117, out r10_118, out r11_119, out r12_120, out r13_121, out r14_122, out r15_123, out r24_124);
+	__unpack_d(fp + -0x0028, fp + -88, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out r14_n, out r15_n, out r24_n);
+	__unpack_d(fp + -0x0020, fp + -0x0040, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out r14_n, out r15_n, out r24_n);
 	if ((word32) (dwLoc58 < 0x02) == 0x00 && (word32) (dwLoc40 < 0x02) == 0x00)
 		__fpcmp_parts_d(fp + -88, fp + -0x0040);
 }
 
-// 00409150: void __floatsidf(Register word32 r1, Register Eq_10616 r4, Register word32 r5, Register word32 r6, Register word32 ra, Register word64 f0, Register word64 f1)
-void __floatsidf(word32 r1, Eq_10616 r4, word32 r5, word32 r6, word32 ra, word64 f0, word64 f1)
+// 00409150: void __floatsidf(Register word32 r1, Register Eq_n r4, Register word32 r5, Register word32 r6, Register word32 ra, Register word64 f0, Register word64 f1)
+void __floatsidf(word32 r1, Eq_n r4, word32 r5, word32 r6, word32 ra, word64 f0, word64 f1)
 {
 	if (r4 != 0x00)
 	{
-		Eq_10616 dwLoc0C_109;
-		Eq_10625 dwLoc10_108;
+		Eq_n dwLoc0C_n;
+		Eq_n dwLoc10_n;
 		if (r4 >> 0x1F != 0x00)
 		{
 			if (r4 == 0x80000000)
 				return;
-			Eq_10616 r2_28 = -r4;
-			dwLoc10_108 = r2_28 >> 0x1F;
-			dwLoc0C_109 = r2_28;
+			Eq_n r2_n = -r4;
+			dwLoc10_n = r2_n >> 0x1F;
+			dwLoc0C_n = r2_n;
 		}
 		else
 		{
-			dwLoc10_108 = r4 >> 0x1F;
-			dwLoc0C_109 = r4;
+			dwLoc10_n = r4 >> 0x1F;
+			dwLoc0C_n = r4;
 		}
-		if ((word32) (dwLoc10_108 > 0x0FFFFFFF) == 0x00)
+		if ((word32) (dwLoc10_n > 0x0FFFFFFF) == 0x00)
 		{
 			do
 			{
-				Eq_10625 r2_48 = dwLoc10_108 << 0x01 | dwLoc0C_109 >> 0x1F;
-				dwLoc10_108 = r2_48;
-				dwLoc0C_109 <<= 0x01;
-			} while ((word32) (r2_48 > 0x0FFFFFFF) == 0x00);
+				Eq_n r2_n = dwLoc10_n << 0x01 | dwLoc0C_n >> 0x1F;
+				dwLoc10_n = r2_n;
+				dwLoc0C_n <<= 0x01;
+			} while ((word32) (r2_n > 0x0FFFFFFF) == 0x00);
 		}
 	}
 	__pack_d(fp + -0x0020);
@@ -5169,7 +5158,7 @@ void __floatsidf(word32 r1, Eq_10616 r4, word32 r5, word32 r6, word32 ra, word64
 // 00409250: void __negdf2(Register word32 ra, Register word64 f12, Register word64 f13)
 void __negdf2(word32 ra, word64 f12, word64 f13)
 {
-	__unpack_d(fp + -0x0010, fp + -0x0028, out r3_49, out r5_26, out r6_24, out r7_50, out r8_51, out r9_52, out r10_53, out r11_54, out r12_55, out r13_56, out r14_57, out r15_58, out r24_59);
+	__unpack_d(fp + -0x0010, fp + -0x0028, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out r14_n, out r15_n, out r24_n);
 	__pack_d(fp + -0x0028);
 }
 
@@ -5182,86 +5171,86 @@ void __make_dp(word32 r5, word32 r6, word32 ra, uint32 dwArg10, ui32 dwArg14)
 // 00409330: void __truncdfsf2(Register word32 r7, Register word32 ra, Register word64 f12, Register word64 f13)
 void __truncdfsf2(word32 r7, word32 ra, word64 f12, word64 f13)
 {
-	ui32 r7_43;
-	__unpack_d(fp + -0x0010, fp + -0x0028, out r3_87, out r5_88, out r6_89, out r7_90, out r8_91, out r9_92, out r10_93, out r11_94, out r12_95, out r13_96, out r14_97, out r15_98, out r24_99);
-	ui32 r5_40 = dwLoc14 >> 0x1E | dwLoc18 << 0x02;
+	ui32 r7_n;
+	__unpack_d(fp + -0x0010, fp + -0x0028, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r12_n, out r13_n, out r14_n, out r15_n, out r24_n);
+	ui32 r5_n = dwLoc14 >> 0x1E | dwLoc18 << 0x02;
 	if ((dwLoc14 + 0x3FFFFFFF | dwLoc18) != 0x00)
-		r7_43 = r5_40 | 0x01;
+		r7_n = r5_n | 0x01;
 	else
-		r7_43 = r5_40;
-	__make_fp(dwLoc24, dwLoc20, r7_43, ra);
+		r7_n = r5_n;
+	__make_fp(dwLoc24, dwLoc20, r7_n, ra);
 }
 
-// 004093E0: void __pack_f(Register (ptr32 Eq_8668) r4)
-void __pack_f(struct Eq_8668 * r4)
+// 004093E0: void __pack_f(Register (ptr32 Eq_n) r4)
+void __pack_f(struct Eq_n * r4)
 {
-	Eq_10768 r3_7 = r4->t0000;
-	Eq_10772 r4_22 = r4->t000C;
-	if ((word32) (r3_7 < 0x02) != 0x00)
+	Eq_n r3_n = r4->t0000;
+	Eq_n r4_n = r4->t000C;
+	if ((word32) (r3_n < 0x02) != 0x00)
 		return;
-	if ((r3_7 ^ 0x04) == 0x00)
+	if ((r3_n ^ 0x04) == 0x00)
 		return;
-	if ((r3_7 ^ 0x02) == 0x00)
+	if ((r3_n ^ 0x02) == 0x00)
 		return;
-	if (r4_22 == 0x00)
+	if (r4_n == 0x00)
 		return;
-	int32 r5_16 = r4->dw0008;
-	if ((word32) (r5_16 < -0x007E) == 0x00)
+	int32 r5_n = r4->dw0008;
+	if ((word32) (r5_n < -0x007E) == 0x00)
 	{
-		word32 r2_18 = (word32) (r5_16 < 0x0080);
-		if (r2_18 == 0x00)
+		word32 r2_n = (word32) (r5_n < 0x0080);
+		if (r2_n == 0x00)
 			return;
-		if (r4_22 == 0x3F)
+		if (r4_n == 0x3F)
 		{
-			if (r4_22 != 0x80)
-				r4_22 = (word32) r4_22 + 0x0040;
+			if (r4_n != 0x80)
+				r4_n = (word32) r4_n + 0x0040;
 		}
 		else
-			r4_22 = (word32) r4_22 + 0x003F;
+			r4_n = (word32) r4_n + 0x003F;
 	}
 	else
 	{
-		ui32 r4_44;
-		int32 r2_36 = -0x007E - r5_16;
-		ui32 r3_41 = (word32) ((word32) r4_22 + ((0x01 << r2_36) + -0x01) > 0x00);
-		uint32 r4_42 = r4_22 >> r2_36;
-		if ((word32) (r2_36 < 0x001A) == 0x00)
-			r4_44 = 0x00;
+		ui32 r4_n;
+		int32 r2_n = -0x007E - r5_n;
+		ui32 r3_n = (word32) ((word32) r4_n + ((0x01 << r2_n) + -0x01) > 0x00);
+		uint32 r4_n = r4_n >> r2_n;
+		if ((word32) (r2_n < 0x001A) == 0x00)
+			r4_n = 0x00;
 		else
-			r4_44 = r4_42 | r3_41;
+			r4_n = r4_n | r3_n;
 	}
 }
 
-// 00409540: Register int32 __unpack_f(Register (ptr32 Eq_8627) r4, Register (ptr32 Eq_8626) r5, Register out Eq_8627 r3Out, Register out Eq_8628 r5Out, Register out Eq_2149 r6Out, Register out Eq_2149 r7Out, Register out Eq_2149 r8Out)
-int32 __unpack_f(union Eq_8627 * r4, struct Eq_8626 * r5, union Eq_8627 & r3Out, union Eq_8628 & r5Out, union Eq_2149 & r6Out, union Eq_2149 & r7Out, union Eq_2149 & r8Out)
+// 00409540: Register int32 __unpack_f(Register (ptr32 Eq_n) r4, Register (ptr32 Eq_n) r5, Register out Eq_n r3Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r8Out)
+int32 __unpack_f(union Eq_n * r4, struct Eq_n * r5, union Eq_n & r3Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r8Out)
 {
-	Eq_8627 r3_6 = *r4;
-	r5->dw0004 = r3_6 >> 0x1F;
-	Eq_10852 r4_13 = (r3_6 >> 0x17) + 0xFF;
-	if (r4_13 != 0x00)
+	Eq_n r3_n = *r4;
+	r5->dw0004 = r3_n >> 0x1F;
+	Eq_n r4_n = (r3_n >> 0x17) + 0xFF;
+	if (r4_n != 0x00)
 	{
-		if (r4_13 != 0x00FF)
+		if (r4_n != 0x00FF)
 		{
-			ui32 r3_18 = (word32) r3_6.u1 + 0x007FFFFF << 0x07;
-			r5->t000C = r3_18 | 0x40000000;
-			r5->t0008 = (word32) r4_13.u1 - 0x007F;
+			ui32 r3_n = (word32) r3_n.u1 + 0x007FFFFF << 0x07;
+			r5->t000C = r3_n | 0x40000000;
+			r5->t0008 = (word32) r4_n.u1 - 0x007F;
 			r5->dw0000 = 0x03;
-			r3Out = r3_18 | 0x40000000;
-			r5Out = (word32) r3_6.u1 + 0x007FFFFF;
+			r3Out = r3_n | 0x40000000;
+			r5Out = (word32) r3_n.u1 + 0x007FFFFF;
 			r6Out.u0 = <invalid>;
 			r7Out.u0 = <invalid>;
 			r8Out.u0 = <invalid>;
 			return 0x03;
 		}
-		else if (r3_6 != 0x007FFFFF)
+		else if (r3_n != 0x007FFFFF)
 		{
-			if (r3_6 != 0x008FFFFF)
+			if (r3_n != 0x008FFFFF)
 				r5->dw0000 = 0x01;
 			else
 				r5->dw0000 = 0x00;
-			r5->t000C = (word32) r3_6.u1 + 0x007FFFFF;
-			r3Out = r3_6;
-			r5Out = (word32) r3_6.u1 + 0x007FFFFF;
+			r5->t000C = (word32) r3_n.u1 + 0x007FFFFF;
+			r3Out = r3_n;
+			r5Out = (word32) r3_n.u1 + 0x007FFFFF;
 			r6Out.u0 = <invalid>;
 			r7Out.u0 = <invalid>;
 			r8Out.u0 = <invalid>;
@@ -5270,51 +5259,51 @@ int32 __unpack_f(union Eq_8627 * r4, struct Eq_8626 * r5, union Eq_8627 & r3Out,
 		else
 		{
 			r5->dw0000 = 0x04;
-			r3Out = r3_6;
-			r5Out = (word32) r3_6.u1 + 0x007FFFFF;
+			r3Out = r3_n;
+			r5Out = (word32) r3_n.u1 + 0x007FFFFF;
 			r6Out.u0 = <invalid>;
 			r7Out.u0 = <invalid>;
 			r8Out.u0 = <invalid>;
 			return 0x04;
 		}
 	}
-	else if (r3_6 != 0x007FFFFF)
+	else if (r3_n != 0x007FFFFF)
 	{
-		Eq_8628 r5_40 = (word32) r3_6.u1 + 0x007FFFFF << 0x07;
+		Eq_n r5_n = (word32) r3_n.u1 + 0x007FFFFF << 0x07;
 		r5->t0008.u0 = -0x007E;
-		Eq_8627 r3_42 = -0x007E;
-		int32 r2_44 = (word32) (r5_40 > 0x3FFFFFFF);
-		if (r2_44 == 0x00)
+		Eq_n r3_n = -0x007E;
+		int32 r2_n = (word32) (r5_n > 0x3FFFFFFF);
+		if (r2_n == 0x00)
 		{
 			r5->dw0000 = 0x03;
-			r3_42.u0 = 0x3FFFFFFF;
-			int32 r4_50 = -0x007F;
+			r3_n.u0 = 0x3FFFFFFF;
+			int32 r4_n = -0x007F;
 			while (true)
 			{
-				r5_40 <<= 0x01;
-				r2_44 = (word32) (r5_40 > 0x3FFFFFFF);
-				if (r2_44 != 0x00)
+				r5_n <<= 0x01;
+				r2_n = (word32) (r5_n > 0x3FFFFFFF);
+				if (r2_n != 0x00)
 					break;
-				r4_50 += -0x01;
+				r4_n += -0x01;
 			}
-			Eq_10868 r4_57 = r4_50 + 0x00;
-			r5->t0008 = r4_57;
+			Eq_n r4_n = r4_n + 0x00;
+			r5->t0008 = r4_n;
 		}
 		else
 			r5->dw0000 = 0x03;
-		r5->t000C = r5_40;
-		r3Out = r3_42;
-		r5Out = r5_40;
+		r5->t000C = r5_n;
+		r3Out = r3_n;
+		r5Out = r5_n;
 		r6Out.u0 = <invalid>;
 		r7Out.u0 = <invalid>;
 		r8Out.u0 = <invalid>;
-		return r2_44;
+		return r2_n;
 	}
 	else
 	{
 		r5->dw0000 = 0x02;
-		r3Out = r3_6;
-		r5Out = (word32) r3_6.u1 + 0x007FFFFF;
+		r3Out = r3_n;
+		r5Out = (word32) r3_n.u1 + 0x007FFFFF;
 		r6Out.u0 = <invalid>;
 		r7Out.u0 = <invalid>;
 		r8Out.u0 = <invalid>;
@@ -5328,109 +5317,109 @@ void __make_fp(word32 r5, word32 r6, ui32 r7, word32 ra)
 	__pack_f(fp + -0x0018);
 }
 
-// 00409680: void __pack_d(Register (ptr32 Eq_9602) r4)
-void __pack_d(struct Eq_9602 * r4)
+// 00409680: void __pack_d(Register (ptr32 Eq_n) r4)
+void __pack_d(struct Eq_n * r4)
 {
-	Eq_10966 r3_9 = r4->t0000;
-	uint32 r10_10 = r4->dw0010;
-	Eq_10974 r11_11 = r4->t0014;
-	if ((word32) (r3_9 < 0x02) != 0x00)
+	Eq_n r3_n = r4->t0000;
+	uint32 r10_n = r4->dw0010;
+	Eq_n r11_n = r4->t0014;
+	if ((word32) (r3_n < 0x02) != 0x00)
 		return;
-	if ((r3_9 ^ 0x04) == 0x00)
+	if ((r3_n ^ 0x04) == 0x00)
 		return;
-	if ((r3_9 ^ 0x02) == 0x00 || (r11_11 | r10_10) == 0x00)
+	if ((r3_n ^ 0x02) == 0x00 || (r11_n | r10_n) == 0x00)
 		return;
-	int32 r4_18 = r4->dw0008;
-	if ((word32) (r4_18 < -1022) == 0x00)
+	int32 r4_n = r4->dw0008;
+	if ((word32) (r4_n < -1022) == 0x00)
 	{
-		word32 r2_20 = (word32) (r4_18 < 0x0400);
-		if (r2_20 == 0x00)
+		word32 r2_n = (word32) (r4_n < 0x0400);
+		if (r2_n == 0x00)
 			return;
-		if (r10_10 != 0x00 || r11_11 != 0x007F)
-			r10_10 += (word32) (r11_11 < 0x00);
+		if (r10_n != 0x00 || r11_n != 0x007F)
+			r10_n += (word32) (r11_n < 0x00);
 		else
 		{
-			if (((word32) r11_11.u1 + 0x0100 | r10_10) == 0x00)
+			if (((word32) r11_n.u1 + 0x0100 | r10_n) == 0x00)
 				return;
-			r10_10 += (word32) (r11_11 < 0x00);
+			r10_n += (word32) (r11_n < 0x00);
 		}
 	}
 	else
 	{
-		uint32 r10_101;
-		Eq_11007 r11_102;
-		int32 r4_64 = -1022 - r4_18;
-		if ((word32) (r4_64 < 0x0039) == 0x00)
+		uint32 r10_n;
+		Eq_n r11_n;
+		int32 r4_n = -1022 - r4_n;
+		if ((word32) (r4_n < 0x0039) == 0x00)
 		{
-			r10_101 = 0x00;
-			r11_102.u0 = 0x00;
+			r10_n = 0x00;
+			r11_n.u0 = 0x00;
 		}
 		else
 		{
-			int32 r5_74;
-			ui32 r2_67 = 0x01 << r4_64;
-			if (((word32) r11_11.u1 + (r2_67 + -0x01) | r10_10 + (r2_67 + -0x01 >> 0x1F)) != 0x00)
-				r5_74 = 0x01;
+			int32 r5_n;
+			ui32 r2_n = 0x01 << r4_n;
+			if (((word32) r11_n.u1 + (r2_n + -0x01) | r10_n + (r2_n + -0x01 >> 0x1F)) != 0x00)
+				r5_n = 0x01;
 			else
-				r5_74 = 0x00;
-			uint32 r15_80;
-			uint32 r14_88;
-			if (r4_64 << 0x1A < 0x00)
+				r5_n = 0x00;
+			uint32 r15_n;
+			uint32 r14_n;
+			if (r4_n << 0x1A < 0x00)
 			{
-				r15_80 = r10_10 >> r4_64;
-				r14_88 = 0x00;
+				r15_n = r10_n >> r4_n;
+				r14_n = 0x00;
 			}
 			else
 			{
-				if (r4_64 << 0x1A != 0x00)
+				if (r4_n << 0x1A != 0x00)
 				{
-					uint32 r15_81 = r11_11 >> r4_64;
-					r15_80 = r15_81 | r10_10 << -r4_64;
+					uint32 r15_n = r11_n >> r4_n;
+					r15_n = r15_n | r10_n << -r4_n;
 				}
 				else
-					r15_80 = r11_11 >> r4_64;
-				r14_88 = r10_10 >> r4_64;
+					r15_n = r11_n >> r4_n;
+				r14_n = r10_n >> r4_n;
 			}
-			r10_101 = r14_88;
-			r11_102 = r15_80 | r5_74;
+			r10_n = r14_n;
+			r11_n = r15_n | r5_n;
 		}
-		if (r10_101 == 0x00)
+		if (r10_n == 0x00)
 		{
-			Eq_11041 r5_112 = (word32) r11_102.u0 + 0x00FF;
-			if (r5_112 == 0x0080)
+			Eq_n r5_n = (word32) r11_n.u0 + 0x00FF;
+			if (r5_n == 0x0080)
 			{
-				if (((word32) r11_102.u0 + 0x0100 | r10_101) == 0x00)
+				if (((word32) r11_n.u0 + 0x0100 | r10_n) == 0x00)
 					return;
-				r10_101 += (word32) (r11_102 < 0x00);
+				r10_n += (word32) (r11_n < 0x00);
 				return;
 			}
 		}
-		r10_101 += (word32) (r11_102 < 0x00);
+		r10_n += (word32) (r11_n < 0x00);
 	}
 }
 
-// 00409930: Register int32 __unpack_d(Register (ptr32 Eq_9519) r4, Register (ptr32 Eq_9520) r5, Register out Eq_9521 r3Out, Register out Eq_9522 r5Out, Register out Eq_9523 r6Out, Register out Eq_2149 r7Out, Register out Eq_9525 r8Out, Register out Eq_9522 r9Out, Register out Eq_2149 r10Out, Register out Eq_2149 r11Out, Register out Eq_2149 r12Out, Register out Eq_2149 r13Out, Register out Eq_2149 r14Out, Register out Eq_2149 r15Out, Register out Eq_2149 r24Out)
-int32 __unpack_d(struct Eq_9519 * r4, struct Eq_9520 * r5, union Eq_9521 & r3Out, union Eq_9522 & r5Out, union Eq_9523 & r6Out, union Eq_2149 & r7Out, union Eq_9525 & r8Out, union Eq_9522 & r9Out, union Eq_2149 & r10Out, union Eq_2149 & r11Out, union Eq_2149 & r12Out, union Eq_2149 & r13Out, union Eq_2149 & r14Out, union Eq_2149 & r15Out, union Eq_2149 & r24Out)
+// 00409930: Register int32 __unpack_d(Register (ptr32 Eq_n) r4, Register (ptr32 Eq_n) r5, Register out Eq_n r3Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out Eq_n r12Out, Register out Eq_n r13Out, Register out Eq_n r14Out, Register out Eq_n r15Out, Register out Eq_n r24Out)
+int32 __unpack_d(struct Eq_n * r4, struct Eq_n * r5, union Eq_n & r3Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r11Out, union Eq_n & r12Out, union Eq_n & r13Out, union Eq_n & r14Out, union Eq_n & r15Out, union Eq_n & r24Out)
 {
-	uint32 r2_9 = r4->dw0000;
-	Eq_9521 r3_10 = r4->t0004;
-	r5->dw0004 = (r2_9 >> 0x1F) + 0x01;
-	Eq_11119 r7_17 = (r2_9 >> 0x14) + 0x07FF;
-	if (r7_17 != 0x00)
+	uint32 r2_n = r4->dw0000;
+	Eq_n r3_n = r4->t0004;
+	r5->dw0004 = (r2_n >> 0x1F) + 0x01;
+	Eq_n r7_n = (r2_n >> 0x14) + 0x07FF;
+	if (r7_n != 0x00)
 	{
-		if (r7_17 != 0x07FF)
+		if (r7_n != 0x07FF)
 		{
-			r5->t0010 = r2_9 + 0x000FFFFF << 0x08 | (word32) r3_10 - 0x01 >> 0x18 | 0x10000000;
-			Eq_9522 r5_30 = (word32) r3_10 - 0x01 << 0x08;
-			r5->t0014 = r5_30;
-			r5->t0008 = (word32) r7_17.u1 - 0x03FF;
+			r5->t0010 = r2_n + 0x000FFFFF << 0x08 | (word32) r3_n - 0x01 >> 0x18 | 0x10000000;
+			Eq_n r5_n = (word32) r3_n - 0x01 << 0x08;
+			r5->t0014 = r5_n;
+			r5->t0008 = (word32) r7_n.u1 - 0x03FF;
 			r5->dw0000 = 0x03;
 			r3Out.u0 = 0x00;
-			r5Out = r5_30;
-			r6Out = (word32) r7_17.u1 - 0x03FF;
+			r5Out = r5_n;
+			r6Out = (word32) r7_n.u1 - 0x03FF;
 			r7Out.u0 = <invalid>;
-			r8Out = r2_9 + 0x000FFFFF;
-			r9Out = (word32) r3_10 - 0x01;
+			r8Out = r2_n + 0x000FFFFF;
+			r9Out = (word32) r3_n - 0x01;
 			r10Out.u0 = <invalid>;
 			r11Out.u0 = <invalid>;
 			r12Out.u0 = <invalid>;
@@ -5442,21 +5431,21 @@ int32 __unpack_d(struct Eq_9519 * r4, struct Eq_9520 * r5, union Eq_9521 & r3Out
 		}
 		else
 		{
-			Eq_9523 r6_39 = (word32) r3_10 - 0x01 >> 0x18;
-			if (((word32) r3_10 - 0x01 | r2_9 + 0x000FFFFF) != 0x00)
+			Eq_n r6_n = (word32) r3_n - 0x01 >> 0x18;
+			if (((word32) r3_n - 0x01 | r2_n + 0x000FFFFF) != 0x00)
 			{
-				if (((word32) r3_10 - 0x01 | r2_9 + 0x0017FFFF) != 0x00)
+				if (((word32) r3_n - 0x01 | r2_n + 0x0017FFFF) != 0x00)
 					r5->dw0000 = 0x01;
 				else
 					r5->dw0000 = 0x00;
-				r5->t0010 = r2_9 + 0x000FFFFF;
-				r5->t0014 = (word32) r3_10 - 0x01;
-				r3Out = (word32) r3_10 - 0x01;
+				r5->t0010 = r2_n + 0x000FFFFF;
+				r5->t0014 = (word32) r3_n - 0x01;
+				r3Out = (word32) r3_n - 0x01;
 				r5Out.u0 = -0x01;
-				r6Out = r6_39;
+				r6Out = r6_n;
 				r7Out.u0 = <invalid>;
-				r8Out = r2_9 + 0x000FFFFF;
-				r9Out = (word32) r3_10 - 0x01;
+				r8Out = r2_n + 0x000FFFFF;
+				r9Out = (word32) r3_n - 0x01;
 				r10Out.u0 = <invalid>;
 				r11Out.u0 = <invalid>;
 				r12Out.u0 = <invalid>;
@@ -5469,12 +5458,12 @@ int32 __unpack_d(struct Eq_9519 * r4, struct Eq_9520 * r5, union Eq_9521 & r3Out
 			else
 			{
 				r5->dw0000 = 0x04;
-				r3Out = r3_10;
+				r3Out = r3_n;
 				r5Out.u0 = -0x01;
-				r6Out = r6_39;
+				r6Out = r6_n;
 				r7Out.u0 = <invalid>;
-				r8Out = r2_9 + 0x000FFFFF;
-				r9Out = (word32) r3_10 - 0x01;
+				r8Out = r2_n + 0x000FFFFF;
+				r9Out = (word32) r3_n - 0x01;
 				r10Out.u0 = <invalid>;
 				r11Out.u0 = <invalid>;
 				r12Out.u0 = <invalid>;
@@ -5486,39 +5475,39 @@ int32 __unpack_d(struct Eq_9519 * r4, struct Eq_9520 * r5, union Eq_9521 & r3Out
 			}
 		}
 	}
-	else if (((word32) r3_10 - 0x01 | r2_9 + 0x000FFFFF) != 0x00)
+	else if (((word32) r3_n - 0x01 | r2_n + 0x000FFFFF) != 0x00)
 	{
 		r5->t0008.u0 = -1022;
-		Eq_9525 r8_63 = r2_9 + 0x000FFFFF << 0x08 | (word32) r3_10 - 0x01 >> 0x18;
-		Eq_9522 r9_64 = (word32) r3_10 - 0x01 << 0x08;
-		Eq_9521 r3_109 = -1022;
-		int32 r2_68 = (word32) (r8_63 > 0x0FFFFFFF);
-		if (r2_68 == 0x00)
+		Eq_n r8_n = r2_n + 0x000FFFFF << 0x08 | (word32) r3_n - 0x01 >> 0x18;
+		Eq_n r9_n = (word32) r3_n - 0x01 << 0x08;
+		Eq_n r3_n = -1022;
+		int32 r2_n = (word32) (r8_n > 0x0FFFFFFF);
+		if (r2_n == 0x00)
 		{
 			r5->dw0000 = 0x03;
 			while (true)
 			{
-				Eq_11135 r2_80 = r5->t0008;
-				r8_63 = r8_63 << 0x01 | r9_64 >> 0x1F;
-				r9_64 <<= 0x01;
-				r2_68 = (word32) r2_80.u0 - 0x01;
-				r3_109 = (word32) (r8_63 > 0x0FFFFFFF);
-				if (r3_109 != 0x00)
+				Eq_n r2_n = r5->t0008;
+				r8_n = r8_n << 0x01 | r9_n >> 0x1F;
+				r9_n <<= 0x01;
+				r2_n = (word32) r2_n.u0 - 0x01;
+				r3_n = (word32) (r8_n > 0x0FFFFFFF);
+				if (r3_n != 0x00)
 					break;
-				r5->t0008 = (word32) r2_80.u0 - 0x01;
+				r5->t0008 = (word32) r2_n.u0 - 0x01;
 			}
-			r5->t0008 = (word32) r2_80.u0 - 0x01;
+			r5->t0008 = (word32) r2_n.u0 - 0x01;
 		}
 		else
 			r5->dw0000 = 0x03;
-		r5->t0010 = r8_63;
-		r5->t0014 = r9_64;
-		r3Out = r3_109;
+		r5->t0010 = r8_n;
+		r5->t0014 = r9_n;
+		r3Out = r3_n;
 		r5Out.u0 = -0x01;
 		r6Out.u0 = 0x00;
 		r7Out.u0 = <invalid>;
-		r8Out = r8_63;
-		r9Out = r9_64;
+		r8Out = r8_n;
+		r9Out = r9_n;
 		r10Out.u0 = <invalid>;
 		r11Out.u0 = <invalid>;
 		r12Out.u0 = <invalid>;
@@ -5526,17 +5515,17 @@ int32 __unpack_d(struct Eq_9519 * r4, struct Eq_9520 * r5, union Eq_9521 & r3Out
 		r14Out.u0 = <invalid>;
 		r15Out.u0 = <invalid>;
 		r24Out.u0 = <invalid>;
-		return r2_68;
+		return r2_n;
 	}
 	else
 	{
 		r5->dw0000 = 0x02;
-		r3Out = r3_10;
+		r3Out = r3_n;
 		r5Out.u0 = -0x01;
 		r6Out.u0 = 0x00;
 		r7Out.u0 = <invalid>;
-		r8Out = r2_9 + 0x000FFFFF;
-		r9Out = (word32) r3_10 - 0x01;
+		r8Out = r2_n + 0x000FFFFF;
+		r9Out = (word32) r3_n - 0x01;
 		r10Out.u0 = <invalid>;
 		r11Out.u0 = <invalid>;
 		r12Out.u0 = <invalid>;
@@ -5548,72 +5537,72 @@ int32 __unpack_d(struct Eq_9519 * r4, struct Eq_9520 * r5, union Eq_9521 & r3Out
 	}
 }
 
-// 00409A90: void __fpcmp_parts_d(Register (ptr32 Eq_10339) r4, Register (ptr32 Eq_10340) r5)
-void __fpcmp_parts_d(struct Eq_10339 * r4, struct Eq_10340 * r5)
+// 00409A90: void __fpcmp_parts_d(Register (ptr32 Eq_n) r4, Register (ptr32 Eq_n) r5)
+void __fpcmp_parts_d(struct Eq_n * r4, struct Eq_n * r5)
 {
-	Eq_11286 r6_6 = r4->t0000;
-	if ((word32) (r6_6 < 0x02) != 0x00)
+	Eq_n r6_n = r4->t0000;
+	if ((word32) (r6_n < 0x02) != 0x00)
 		return;
-	Eq_11295 r3_9 = r5->t0000;
-	if ((word32) (r3_9 < 0x02) != 0x00)
+	Eq_n r3_n = r5->t0000;
+	if ((word32) (r3_n < 0x02) != 0x00)
 		return;
-	if ((r6_6 ^ 0x04) != 0x00)
+	if ((r6_n ^ 0x04) != 0x00)
 	{
-		if ((r3_9 ^ 0x04) == 0x00)
+		if ((r3_n ^ 0x04) == 0x00)
 			return;
-		if ((r6_6 ^ 0x02) != 0x00)
+		if ((r6_n ^ 0x02) != 0x00)
 		{
-			if ((r3_9 ^ 0x02) == 0x00)
+			if ((r3_n ^ 0x02) == 0x00)
 				return;
 			if (r4->dw0004 != r5->dw0004)
 				return;
-			int32 r6_19 = r4->dw0008;
-			int32 r3_20 = r5->dw0008;
-			if ((word32) (r3_20 < r6_19) != 0x00)
+			int32 r6_n = r4->dw0008;
+			int32 r3_n = r5->dw0008;
+			if ((word32) (r3_n < r6_n) != 0x00)
 				return;
-			if ((word32) (r6_19 < r3_20) != 0x00)
+			if ((word32) (r6_n < r3_n) != 0x00)
 				return;
-			up32 r7_27 = r4->dw0010;
-			up32 r6_28 = r5->dw0010;
-			if ((word32) (r6_28 < r7_27) != 0x00)
+			up32 r7_n = r4->dw0010;
+			up32 r6_n = r5->dw0010;
+			if ((word32) (r6_n < r7_n) != 0x00)
 				return;
-			word32 r2_32;
-			if (r7_27 == r6_28)
+			word32 r2_n;
+			if (r7_n == r6_n)
 			{
 				if ((word32) (r5->dw0014 < r4->dw0014) != 0x00)
 					return;
-				r2_32 = (word32) (r7_27 < r6_28);
+				r2_n = (word32) (r7_n < r6_n);
 			}
 			else
-				r2_32 = (word32) (r7_27 < r6_28);
-			if (r2_32 != 0x00 || r6_28 == r7_27 && (word32) (r4->dw0014 < r5->dw0014) != 0x00)
+				r2_n = (word32) (r7_n < r6_n);
+			if (r2_n != 0x00 || r6_n == r7_n && (word32) (r4->dw0014 < r5->dw0014) != 0x00)
 				;
 		}
-		else if ((r3_9 ^ 0x02) == 0x00)
+		else if ((r3_n ^ 0x02) == 0x00)
 			;
 	}
-	else if ((r3_9 ^ 0x04) != 0x00)
+	else if ((r3_n ^ 0x04) != 0x00)
 		;
 }
 
 // 00409C10: void __do_global_ctors_aux(Register word32 r16, Register word32 r17, Register word32 ra)
 void __do_global_ctors_aux(word32 r16, word32 r17, word32 ra)
 {
-	struct Eq_2087 * r2_11 = globals->ptr10000878;
-	<anonymous> * r2_12 = (char *) &r2_11->ptr0854 + 0x04;
-	<anonymous> * r25_17 = r2_11->ptr0854;
-	int32 r3_18 = -0x01;
-	if (r25_17 != (<anonymous> *) -0x01)
+	struct Eq_n * r2_n = globals->ptr10000878;
+	<anonymous> * r2_n = (char *) &r2_n->ptr0854 + 0x04;
+	<anonymous> * r25_n = r2_n->ptr0854;
+	int32 r3_n = -0x01;
+	if (r25_n != (<anonymous> *) -0x01)
 	{
-		word32 * r16_20 = &r2_11->ptr0854;
+		word32 * r16_n = &r2_n->ptr0854;
 		while (true)
 		{
-			r25_17();
-			r16_20 += -0x01;
-			r2_12 = *r16_20;
-			if (r2_12 == (<anonymous> *) -0x01)
+			r25_n();
+			r16_n += -0x01;
+			r2_n = *r16_n;
+			if (r2_n == (<anonymous> *) -0x01)
 				break;
-			r25_17 = r2_12;
+			r25_n = r2_n;
 		}
 	}
 }
@@ -5626,7 +5615,6 @@ void init_dummy()
 // 00409CB0: void _fini(Register word32 ra)
 void _fini(word32 ra)
 {
-	ptr32 r25_12 = globals->ptr1000087C;
-	(r25_12 + 0x0620)();
+	globals->t400620();
 }
 

@@ -5,9 +5,9 @@
 #include "pySample.h"
 
 word32 g_dwFFFFFFFF;
-Eq_306 g_t10002098 = null;
-Eq_307 g_t1000209C = null;
-Eq_247 g_t100020A0 = null;
+Eq_n g_t10002098 = null;
+Eq_n g_t1000209C = null;
+Eq_n g_t100020A0 = null;
 word32 g_dw100020A8 = 0x00000000;
 word32 g_dw100020CC = 0x00000000;
 char g_str100020E0[] = "fdiv(a, b) = a / b";
@@ -32,7 +32,7 @@ word32 g_a100021D8[1] =
 	};
 ui32 g_dw10003000 = 0xBB40E64E;
 ui32 g_dw10003004 = 0x44BF19B1;
-Eq_136 g_t10003008 = 
+Eq_n g_t10003008 = 
 	{
 		0xFFFFFFFF
 	};
@@ -77,7 +77,7 @@ PyMethodDef g_methods[5] =
 int32 g_dw10003070 = 0;
 word32 * g_ptr100033A4 = null;
 word32 g_dw100033A8 = 0x00000000;
-Eq_191 g_t100033AC = 0;
+Eq_n g_t100033AC = 0;
 word32 * g_ptr100033B0 = null;
 word32 * g_ptr100033B4 = null;
 <anonymous> * g_ptr100033B8 = null;

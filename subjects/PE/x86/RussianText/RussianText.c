@@ -4,8 +4,8 @@
 
 #include "RussianText.h"
 
-// 00401071: void _GetExceptDLLinfo(Stack (ptr32 Eq_2) dwArg04)
-void _GetExceptDLLinfo(struct Eq_2 * dwArg04)
+// 00401071: void _GetExceptDLLinfo(Stack (ptr32 Eq_n) dwArg04)
+void _GetExceptDLLinfo(struct Eq_n * dwArg04)
 {
 	fn004011FC(dwArg04);
 }
@@ -20,18 +20,18 @@ void fn0040110B(word32 eax)
 {
 	if (globals->dw40208B >= 0x00)
 	{
-		uint32 v5_7 = globals->dw40208B;
-		ptr32 esp_10;
-		word32 eax_12;
-		int8 Top_13;
+		uint32 v5_n = globals->dw40208B;
+		ptr32 esp_n;
+		word32 eax_n;
+		int8 Top_n;
 		__CRTL_TLS_GetValue();
-		if (eax_12 != 0x00)
+		if (eax_n != 0x00)
 		{
-			*(esp_10 - 0x04) = eax_12;
-			*(esp_10 - 0x08) = 0x08;
-			*(esp_10 - 0x0C) = (HANDLE *) GetProcessHeap();
-			Eq_41 eax_26 = HeapFree(*(esp_10 - 0x0C), *(esp_10 - 0x08), *(esp_10 - 0x04));
-			*(esp_10 - 0x04) = globals->dw40208B;
+			*(esp_n - 0x04) = eax_n;
+			*(esp_n - 0x08) = 0x08;
+			*(esp_n - 0x0C) = (HANDLE *) GetProcessHeap();
+			Eq_n eax_n = HeapFree(*(esp_n - 0x0C), *(esp_n - 0x08), *(esp_n - 0x04));
+			*(esp_n - 0x04) = globals->dw40208B;
 			__CRTL_TLS_ExitThread();
 		}
 	}
@@ -63,24 +63,24 @@ void fn00401180()
 // 004011B0: void fn004011B0(Stack word32 dwArg04)
 void fn004011B0(word32 dwArg04)
 {
-	ptr32 esp_37 = fp + ~0x0F;
-	word32 ebx_12 = dwArg04;
+	ptr32 esp_n = fp + ~0x0F;
+	word32 ebx_n = dwArg04;
 	if (dwArg04 == 0x00 && dwArg04 == 0x00)
 	{
 		fn004011FC(fp - 0x0C);
-		esp_37 = fp + ~0x0B;
-		ebx_12 = dwLoc08;
+		esp_n = fp + ~0x0B;
+		ebx_n = dwLoc08;
 	}
-	size_t * esp_40 = esp_37 - 0x04;
-	*esp_40 = (uint32) 0x9C;
-	*(esp_40 - 0x04) = ebx_12;
-	*(esp_40 - 0x08) = fn00401158();
-	memcpy(*(esp_40 - 0x08), *(esp_40 - 0x04), *esp_40);
+	size_t * esp_n = esp_n - 0x04;
+	*esp_n = (uint32) 0x9C;
+	*(esp_n - 0x04) = ebx_n;
+	*(esp_n - 0x08) = fn00401158();
+	memcpy(*(esp_n - 0x08), *(esp_n - 0x04), *esp_n);
 	_InitTermAndUnexPtrs();
 }
 
-// 004011FC: void fn004011FC(Stack (ptr32 Eq_2) dwArg04)
-void fn004011FC(struct Eq_2 * dwArg04)
+// 004011FC: void fn004011FC(Stack (ptr32 Eq_n) dwArg04)
+void fn004011FC(struct Eq_n * dwArg04)
 {
 	globals->dw4020F8 = fn00401158() + 0x1C;
 	dwArg04->dw0000 = 0x82727349;

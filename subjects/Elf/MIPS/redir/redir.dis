@@ -11,12 +11,10 @@ _init_entry:
 // SymbolicIn:
 
 l004001BC:
-	word32 r25_12 = Mem11[0x1000087C:word32]
-	call r25_12 + 1836 (retsize: 0;)
-		uses: r25:r25_12 + 1836,Stack +0010:0x10008860,Stack +0018:0x10008860,Stack +001C:ra
-	word32 r25_16 = Mem11[0x10000880:word32]
-	call r25_16 + -25584 (retsize: 0;)
-		uses: r25:r25_16 + -25584,Stack +0010:0x10008860,Stack +0018:0x10008860,Stack +001C:ra
+	call 0x0040072C (retsize: 0;)
+		uses: r25:0x0040072C,Stack +0010:0x10008860,Stack +0018:0x10008860,Stack +001C:ra
+	call 0x00409C10 (retsize: 0;)
+		uses: r25:0x00409C10,Stack +0010:0x10008860,Stack +0018:0x10008860,Stack +001C:ra
 	return
 // DataOut:
 // DataOut (flags):
@@ -3129,7 +3127,7 @@ l004007B0:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(3, Mem17[0x10000880:word32] + -25132, Mem17[0x10000880:word32] + -25096, 80, fp + -48, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_49, out r4_50, out r5_51, out r6_52, out r7_53)
+	print_log(3, 0x00409DD4, 0x00409DF8, 80, fp + -48, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_49, out r4_50, out r5_51, out r6_52, out r7_53)
 	Mem35[Mem17[0x100008C0:word32]:word32] = 1
 	return
 // DataOut:
@@ -3168,7 +3166,7 @@ l0040083C:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(3, Mem17[0x10000880:word32] + -25084, Mem17[0x10000880:word32] + -25040, 90, fp + -48, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_53, out r4_26, out r5_28, out r6_29, out r7_30)
+	print_log(3, 0x00409E04, 0x00409E30, 90, fp + -48, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_53, out r4_26, out r5_28, out r6_29, out r7_30)
 	log_rotate(fp + -48, ra)
 	return
 // DataOut:
@@ -3318,7 +3316,7 @@ l00400A74_ds_f:
 // SymbolicIn:
 
 l00400A8C:
-	word32 r2_158 = fopen(r2_141 + 1685, Mem144[0x10000880:word32] + -25020)
+	word32 r2_158 = fopen(r2_141 + 1685, 0x00409E44)
 	dwLoc2C_1369 = r2_158
 	branch r2_158 == 0x00000000 l00400A8C_ds_t
 // DataOut:
@@ -3337,7 +3335,7 @@ l00400A8C_ds_f:
 
 l00400AC4:
 	getpid()
-	fprintf(r2_158, Mem167[0x10000880:word32] + -25016, 0x00000000)
+	fprintf(r2_158, 0x00409E48, 0x00000000)
 	fclose(r2_158)
 // DataOut:
 // DataOut (flags):
@@ -3357,7 +3355,7 @@ l00400B20:
 	word32 r7_238
 	word32 r2_246
 	call __xpg_basename (retsize: 0;)
-		uses: r1:r1_218,r16:r16,r2:r5,r25:__xpg_basename,r28:0x10008860,r3:open_log(Mem219[0x10000880:word32] + -25012, fp + -416, ra, stackArg0, out r5_231, out r6_234, out r7_238),r30:fp + -416,r4:Mem219[r5:word32],r5:r5_231,r6:r6_234,r7:r7_238,ra:ra,sp:fp + -416,Stack +0010:r2_252 + 13,Stack +0014:r2_256,Stack +0018:r2_259,Stack +001C:r2_261 + 469,Stack +0020:r2_265,Stack +0024:r2_268,Stack +0028:r2_271,Stack +002C:dwLoc0174,Stack +0030:dwLoc0170,Stack +0038:0x10008860,Stack +0040:2,Stack +0044:dwLoc015C,Stack +0048:dwLoc0158,Stack +004C:dwLoc0154,Stack +0050:dwLoc0150,Stack +0054:dwLoc014C,Stack +0058:wLoc0148,Stack +005A:wLoc0146,Stack +005C:dwLoc0144,Stack +0068:r2_141 + 1685,Stack +0170:dwLoc30,Stack +0174:dwLoc2C_1377,Stack +0178:dwLoc28,Stack +017C:r2_246,Stack +0180:r2_274,Stack +0184:dwLoc1C,Stack +0188:dwLoc18,Stack +018C:dwLoc14,Stack +0194:r16,Stack +0198:r30,Stack +019C:ra,Stack +01A0:r4,Stack +01A4:r5
+		uses: r1:r1_218,r16:r16,r2:r5,r25:__xpg_basename,r28:0x10008860,r3:open_log(0x00409E4C, fp + -416, ra, stackArg0, out r5_231, out r6_234, out r7_238),r30:fp + -416,r4:Mem219[r5:word32],r5:r5_231,r6:r6_234,r7:r7_238,ra:ra,sp:fp + -416,Stack +0010:r2_252 + 13,Stack +0014:r2_256,Stack +0018:r2_259,Stack +001C:r2_261 + 469,Stack +0020:r2_265,Stack +0024:r2_268,Stack +0028:r2_271,Stack +002C:dwLoc0174,Stack +0030:dwLoc0170,Stack +0038:0x10008860,Stack +0040:2,Stack +0044:dwLoc015C,Stack +0048:dwLoc0158,Stack +004C:dwLoc0154,Stack +0050:dwLoc0150,Stack +0054:dwLoc014C,Stack +0058:wLoc0148,Stack +005A:wLoc0146,Stack +005C:dwLoc0144,Stack +0068:r2_141 + 1685,Stack +0170:dwLoc30,Stack +0174:dwLoc2C_1377,Stack +0178:dwLoc28,Stack +017C:r2_246,Stack +0180:r2_274,Stack +0184:dwLoc1C,Stack +0188:dwLoc18,Stack +018C:dwLoc14,Stack +0194:r16,Stack +0198:r30,Stack +019C:ra,Stack +01A0:r4,Stack +01A4:r5
 		defs: r2:r2_246
 	word32 r2_252 = Mem251[0x10000A40:word32]
 	word32 r2_274 = Mem272[Mem272[0x10000A28:word32]:word32]
@@ -3404,7 +3402,7 @@ l00400C88:
 	stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	stackArg12 = <invalid>
-	print_log(3, Mem289[0x10000880:word32] + -25008, r2_246, Mem289[Mem289[0x10000A60:word32]:word32], fp + -416, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_306, out r4_300, out r5_301, out r6_304, out r7_307)
+	print_log(3, 0x00409E50, r2_246, Mem289[Mem289[0x10000A60:word32]:word32], fp + -416, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_306, out r4_300, out r5_301, out r6_304, out r7_307)
 	word32 dwLoc0174_1390 = dwLoc20_1389 >> 0x0A
 	word32 r2_313 = clist_new(fp + -416, ra, out r3_315, out r4_311, out r5_312, out r6_314, out r7_316)
 	branch r2_313 != 0x00000000 l00400C88_ds_t
@@ -3972,7 +3970,7 @@ l00401548:
 	stackArg8 = <invalid>
 	stackArg12 = <invalid>
 	stackArg0 = <invalid>
-	r3_909 = client_destroy(print_log(1, Mem874[0x10000880:word32] + -24884, Mem874[0x10000880:word32] + -24840, 224, fp + -416, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_899, out r4_2457, out r5_896, out r6_898, out r7_900), r2_868, fp + -416, ra, stackArg0, out r5_906, out r6_908, out r7_910)
+	r3_909 = client_destroy(print_log(1, 0x00409ECC, 0x00409EF8, 224, fp + -416, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_899, out r4_2457, out r5_896, out r6_898, out r7_900), r2_868, fp + -416, ra, stackArg0, out r5_906, out r6_908, out r7_910)
 	r28_911 = 0x10008860
 // DataOut:
 // DataOut (flags):
@@ -4628,7 +4626,7 @@ l004013C4:
 	stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	stackArg12 = <invalid>
-	print_log(0x00000000, Mem717[0x10000880:word32] + -24912, Mem717[r2_782:word32], strerror(Mem717[__errno_location():word32]), fp + -416, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_2445, out r4_2446, out r5_2447, out r6_2448, out r7_2449)
+	print_log(0x00000000, 0x00409EB0, Mem717[r2_782:word32], strerror(Mem717[__errno_location():word32]), fp + -416, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_2445, out r4_2446, out r5_2447, out r6_2448, out r7_2449)
 	exit(-1)
 	r16_787 = r2_782
 	r5_1332 = r5_825
@@ -4818,7 +4816,7 @@ l00401DDC:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(3, Mem130[0x10000880:word32] + -24736, Mem130[0x10000880:word32] + -24748, 61, fp + -72, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_359, out r4_360, out r5_361, out r6_362, out r7_363)
+	print_log(3, 0x00409F60, 0x00409F54, 61, fp + -72, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_359, out r4_360, out r5_361, out r6_362, out r7_363)
 	Mem147[r2_30 + 0x000007D8:word32] = 0x00000000
 	Mem149[r2_30 + 0x00000FAC:word32] = 0x00000000
 	Mem151[r2_30 + 0x0000178C:word32] = 0x00000000
@@ -4912,7 +4910,7 @@ l00401D48:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(1, Mem249[0x10000880:word32] + -24792, Mem249[0x10000880:word32] + -24748, 55, fp + -72, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_368, out r4_369, out r5_370, out r6_371, out r7_372)
+	print_log(1, 0x00409F28, 0x00409F54, 55, fp + -72, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_368, out r4_369, out r5_370, out r6_371, out r7_372)
 	close(Mem249[r2_30:word32])
 	free(r2_30)
 // DataOut:
@@ -4937,7 +4935,7 @@ l00401BCC:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(0x00000000, Mem287[0x10000880:word32] + -24832, r6_27, r7_28, fp + -72, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_298, out r4_293, out r5_294, out r6_295, out r7_296)
+	print_log(0x00000000, 0x00409F00, r6_27, r7_28, fp + -72, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_298, out r4_293, out r5_294, out r6_295, out r7_296)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4988,7 +4986,7 @@ l00402028:
 		uses: r16:r2_42,r2:r4,r25:inet_ntoa,r28:0x10008860,r3:r3_43,r30:fp + -320,r4:Mem24[r4 + 0x0000179C:word32],r5:r5_45,r6:r6_46,r7:r7_44,ra:ra,sp:fp + -320,Stack +0010:fp + -24,Stack +0014:r2_54,Stack +0018:r2_66,Stack +0020:0x10008860,Stack +0127:bLoc19,Stack +0128:16,Stack +0134:r16,Stack +0138:r30,Stack +013C:ra,Stack +0140:r4
 		defs: r2:r2_54
 	word32 r2_66 = (word32) Mem64[r4 + 0x0000179A:uint16]
-	word32 r2_76 = snprintf(fp + -280, 256, Mem67[0x10000880:word32] + -24684, 0x00000000)
+	word32 r2_76 = snprintf(fp + -280, 256, 0x00409F94, 0x00000000)
 	word32 r3_77 = <invalid>
 	word32 dwLoc18_125 = r2_76
 	branch (word32) (r2_76 < 256) != 0x00000000 l00402028_ds_t
@@ -5202,7 +5200,7 @@ l00402660_ds_f:
 
 l00402674:
 	r3_101 = <invalid>
-	branch strncasecmp(fp + -2064, Mem78[0x10000880:word32] + -24644, 6) != 0x00000000 l00402674_ds_t
+	branch strncasecmp(fp + -2064, 0x00409FBC, 6) != 0x00000000 l00402674_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -5230,7 +5228,7 @@ l004027F8_ds_f:
 
 l0040280C:
 	r3_101 = <invalid>
-	branch strncasecmp(Mem78[0x10000880:word32] + -24608, fp + -2064, 10) != 0x00000000 l0040280C_ds_t
+	branch strncasecmp(0x00409FE0, fp + -2064, 10) != 0x00000000 l0040280C_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -5376,7 +5374,7 @@ l004026B8:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(2, Mem78[0x10000880:word32] + -24636, Mem78[0x10000880:word32] + -24540, 204, fp + -2104, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_269, out r4_789, out r5_790, out r6_791, out r7_270)
+	print_log(2, 0x00409FC4, 0x0040A024, 204, fp + -2104, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_269, out r4_789, out r5_790, out r6_791, out r7_270)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -5399,7 +5397,7 @@ l00402614:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(2, Mem78[0x10000880:word32] + -24396, Mem78[0x10000880:word32] + -24540, 195, fp + -2104, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_284, out r4_280, out r5_282, out r6_283, out r7_285)
+	print_log(2, 0x0040A0B4, 0x0040A024, 195, fp + -2104, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_284, out r4_280, out r5_282, out r6_283, out r7_285)
 	Mem288[r4 + 0x00001794:word32] = 0x00000000
 // DataOut:
 // DataOut (flags):
@@ -5474,7 +5472,7 @@ l00402950_ds_f:
 
 l00402964:
 	word32 r3_323 = <invalid>
-	branch strncasecmp(Mem308[0x10000880:word32] + -24588, fp + -2064, 10) != 0x00000000 l00402964_ds_t
+	branch strncasecmp(0x00409FF4, fp + -2064, 10) != 0x00000000 l00402964_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -5700,7 +5698,7 @@ l00402428:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(4, Mem78[0x10000880:word32] + -24568, Mem78[0x10000880:word32] + -24540, 165, fp + -2104, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_421, out r4_722, out r5_723, out r6_420, out r7_422)
+	print_log(4, 0x0040A008, 0x0040A024, 165, fp + -2104, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_421, out r4_722, out r5_723, out r6_420, out r7_422)
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
@@ -5737,7 +5735,7 @@ l0040249C:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(4, Mem426[0x10000880:word32] + -24516, Mem426[0x10000880:word32] + -24540, 169, fp + -2104, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_451, out r4_730, out r5_449, out r6_450, out r7_452)
+	print_log(4, 0x0040A03C, 0x0040A024, 169, fp + -2104, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_451, out r4_730, out r5_449, out r6_450, out r7_452)
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word32 stackArg0 = <invalid>
@@ -5773,7 +5771,7 @@ l00402550:
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
 	word32 r3_488
-	print_log(3, Mem473[0x10000880:word32] + -24460, Mem473[0x10000880:word32] + -24540, 181, fp + -2104, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_488, out r4_749, out r5_750, out r6_751, out r7_752)
+	print_log(3, 0x0040A074, 0x0040A024, 181, fp + -2104, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_488, out r4_749, out r5_750, out r6_751, out r7_752)
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
@@ -5915,7 +5913,7 @@ l00402B08:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(2, Mem21[0x10000880:word32] + -24284, Mem21[0x10000880:word32] + -24300, 261, fp + -40, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_104, out r4_146, out r5_100, out r6_101, out r7_102)
+	print_log(2, 0x0040A124, 0x0040A114, 261, fp + -40, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_104, out r4_146, out r5_100, out r6_101, out r7_102)
 	r2_106 = r5
 // DataOut:
 // DataOut (flags):
@@ -5956,7 +5954,7 @@ l00402BC0:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(1, Mem54[0x10000880:word32] + -24248, Mem54[0x10000880:word32] + -24300, 271, fp + -40, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_104, out r4_151, out r5_100, out r6_101, out r7_102)
+	print_log(1, 0x0040A148, 0x0040A114, 271, fp + -40, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_104, out r4_151, out r5_100, out r6_101, out r7_102)
 	Mem74[r4 + 0x00000FAC:word32] = 0x00000000
 	r2_106 = 0x00000000
 // DataOut:
@@ -5997,7 +5995,7 @@ l00402AA0:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(1, Mem21[0x10000880:word32] + -24348, Mem21[0x10000880:word32] + -24300, 256, fp + -40, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_104, out r4_99, out r5_100, out r6_101, out r7_102)
+	print_log(1, 0x0040A0E4, 0x0040A114, 256, fp + -40, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_104, out r4_99, out r5_100, out r6_101, out r7_102)
 	r2_106 = 0x00000000
 // DataOut:
 // DataOut (flags):
@@ -6335,7 +6333,7 @@ l00402FDC:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(4, Mem70[0x10000880:word32] + -24204, Mem70[0x10000880:word32] + -24172, 333, fp + -56, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_119, out r4_79, out r5_123, out r6_125, out r7_127)
+	print_log(4, 0x0040A174, 0x0040A194, 333, fp + -56, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_119, out r4_79, out r5_123, out r6_125, out r7_127)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -6674,7 +6672,7 @@ l004033D0_ds_f:
 // SymbolicIn:
 
 l004033E4:
-	branch strncasecmp(dwLoc18_184, Mem23[0x10000880:word32] + -24152, 4) != 0x00000000 l004033E4_ds_t
+	branch strncasecmp(dwLoc18_184, 0x0040A1A8, 4) != 0x00000000 l004033E4_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -7222,7 +7220,7 @@ l004038C8:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(3, Mem55[0x10000880:word32] + -24144, Mem55[0x10000880:word32] + -24096, 467, fp + -64, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_173, out r4_174, out r5_175, out r6_176, out r7_177)
+	print_log(3, 0x0040A1B0, 0x0040A1E0, 467, fp + -64, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_173, out r4_174, out r5_175, out r6_176, out r7_177)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -7256,7 +7254,7 @@ l00403978:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(3, Mem95[0x10000880:word32] + -24076, Mem95[0x10000880:word32] + -24096, 473, fp + -64, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_182, out r4_183, out r5_184, out r6_185, out r7_186)
+	print_log(3, 0x0040A1F4, 0x0040A1E0, 473, fp + -64, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_182, out r4_183, out r5_184, out r6_185, out r7_186)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -7342,7 +7340,7 @@ l00403B3C:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(1, Mem81[0x10000880:word32] + -23960, Mem81[0x10000880:word32] + -23980, 496, fp + -56, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_188, out r4_189, out r5_140, out r6_141, out r7_144)
+	print_log(1, 0x0040A268, 0x0040A254, 496, fp + -56, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_188, out r4_189, out r5_140, out r6_141, out r7_144)
 	r2_146 = -1
 // DataOut:
 // DataOut (flags):
@@ -7368,7 +7366,7 @@ l00403A78:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(1, Mem130[0x10000880:word32] + -24028, Mem130[0x10000880:word32] + -23980, 489, fp + -56, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_143, out r4_139, out r5_140, out r6_141, out r7_144)
+	print_log(1, 0x0040A224, 0x0040A254, 489, fp + -56, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_143, out r4_139, out r5_140, out r6_141, out r7_144)
 	r2_146 = -1
 // DataOut:
 // DataOut (flags):
@@ -7444,7 +7442,7 @@ l00403C4C:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(0x00000000, Mem33[0x10000880:word32] + -23904, r6, r7, fp + -48, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_74, out r4_17, out r5_21, out r6_75, out r7_76)
+	print_log(0x00000000, 0x0040A2A0, r6, r7, fp + -48, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_74, out r4_17, out r5_21, out r6_75, out r7_76)
 	r2_32 = 0x00000000
 // DataOut:
 // DataOut (flags):
@@ -8089,7 +8087,7 @@ l00404290:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(0x00000000, Mem61[0x10000880:word32] + -23800, r6, r7, fp + -48, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_70, out r4_67, out r5_69, out r6_109, out r7_110)
+	print_log(0x00000000, 0x0040A308, r6, r7, fp + -48, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_70, out r4_67, out r5_69, out r6_109, out r7_110)
 	r2_59 = 0x00000000
 // DataOut:
 // DataOut (flags):
@@ -8266,7 +8264,7 @@ l004045DC:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(2, Mem49[0x10000880:word32] + -23708, Mem49[0x10000880:word32] + -23760, 87, fp + -48, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_184, out r4_185, out r5_186, out r6_187, out r7_121)
+	print_log(2, 0x0040A364, 0x0040A330, 87, fp + -48, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_184, out r4_185, out r5_186, out r6_187, out r7_121)
 	Mem105[r4 + 0x00000558:word32] = Mem49[r4 + 0x00000558:word32] + -1
 	r3_101 = r4
 // DataOut:
@@ -8291,7 +8289,7 @@ l004044F0:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(2, Mem108[0x10000880:word32] + -23740, Mem108[0x10000880:word32] + -23760, 80, fp + -48, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_101, out r4_177, out r5_178, out r6_179, out r7_121)
+	print_log(2, 0x0040A344, 0x0040A330, 80, fp + -48, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_101, out r4_177, out r5_178, out r6_179, out r7_121)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -8314,7 +8312,7 @@ l00404494:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(2, Mem19[0x10000880:word32] + -23656, Mem19[0x10000880:word32] + -23760, 75, fp + -48, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_101, out r4_133, out r5_134, out r6_135, out r7_121)
+	print_log(2, 0x0040A398, 0x0040A330, 75, fp + -48, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_101, out r4_133, out r5_134, out r6_135, out r7_121)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -8357,7 +8355,7 @@ l004046C4_ds_t:
 // SymbolicIn:
 
 l00404738:
-	branch strncasecmp(r4 + 276, Mem15[0x10000880:word32] + -23556, 7) != 0x00000000 l00404738_ds_t
+	branch strncasecmp(r4 + 276, 0x0040A3FC, 7) != 0x00000000 l00404738_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -8379,7 +8377,7 @@ l004047D4_ds_t:
 // SymbolicIn:
 
 l0040485C:
-	snprintf(r4 + 532, 256, Mem47[0x10000880:word32] + -23516, 0x00000000)
+	snprintf(r4 + 532, 256, 0x0040A424, 0x00000000)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -8390,7 +8388,7 @@ l004047D4_ds_f:
 // SymbolicIn:
 
 l004047EC:
-	snprintf(r4 + 532, 256, Mem72[0x10000880:word32] + -23536, 0x00000000)
+	snprintf(r4 + 532, 256, 0x0040A410, 0x00000000)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -8401,7 +8399,7 @@ l00404738_ds_f:
 // SymbolicIn:
 
 l00404774:
-	snprintf(r4 + 532, 256, Mem94[0x10000880:word32] + -23548, 0x00000000)
+	snprintf(r4 + 532, 256, 0x0040A404, 0x00000000)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -8424,7 +8422,7 @@ l004046F8:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(2, Mem15[0x10000880:word32] + -23612, Mem15[0x10000880:word32] + -23576, 102, fp + -56, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_122, out r4_117, out r5_119, out r6_120, out r7_121)
+	print_log(2, 0x0040A3C4, 0x0040A3E8, 102, fp + -56, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_122, out r4_117, out r5_119, out r6_120, out r7_121)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -8610,7 +8608,7 @@ get_method_entry:
 l00404B34:
 	word32 r2_26
 	call strsep (retsize: 0;)
-		uses: r2:fp + 4,r25:strsep,r28:0x10008860,r30:fp + -48,r4:fp + 4,r5:Mem17[0x10000880:word32] + -23452,r6:r6,ra:ra,sp:fp + -48,Stack +0010:0x10008860,Stack +0018:r2_26,Stack +0024:r30,Stack +0028:ra,Stack +0030:r4,Stack +0034:r5
+		uses: r2:fp + 4,r25:strsep,r28:0x10008860,r30:fp + -48,r4:fp + 4,r5:0x0040A464,r6:r6,ra:ra,sp:fp + -48,Stack +0010:0x10008860,Stack +0018:r2_26,Stack +0024:r30,Stack +0028:ra,Stack +0030:r4,Stack +0034:r5
 		defs: r2:r2_26
 	strncpy(r4, r2_26, 256)
 	word32 r5_37 = <invalid>
@@ -8642,7 +8640,7 @@ get_uri_entry:
 l00404BC8:
 	word32 r2_26
 	call strsep (retsize: 0;)
-		uses: r2:fp + 4,r25:strsep,r28:0x10008860,r30:fp + -48,r4:fp + 4,r5:Mem17[0x10000880:word32] + -23452,r6:r6,ra:ra,sp:fp + -48,Stack +0010:0x10008860,Stack +0018:r2_26,Stack +0024:r30,Stack +0028:ra,Stack +0030:r4,Stack +0034:r5
+		uses: r2:fp + 4,r25:strsep,r28:0x10008860,r30:fp + -48,r4:fp + 4,r5:0x0040A464,r6:r6,ra:ra,sp:fp + -48,Stack +0010:0x10008860,Stack +0018:r2_26,Stack +0024:r30,Stack +0028:ra,Stack +0030:r4,Stack +0034:r5
 		defs: r2:r2_26
 	strncpy(r4, r2_26, 256)
 	return r5
@@ -8672,7 +8670,7 @@ get_version_entry:
 l00404C5C:
 	word32 r2_26
 	call strsep (retsize: 0;)
-		uses: r2:fp + 4,r25:strsep,r28:0x10008860,r30:fp + -48,r4:fp + 4,r5:Mem17[0x10000880:word32] + -23448,r6:r6,ra:ra,sp:fp + -48,Stack +0010:0x10008860,Stack +0018:r2_26,Stack +0024:r30,Stack +0028:ra,Stack +0030:r4,Stack +0034:r5
+		uses: r2:fp + 4,r25:strsep,r28:0x10008860,r30:fp + -48,r4:fp + 4,r5:0x0040A468,r6:r6,ra:ra,sp:fp + -48,Stack +0010:0x10008860,Stack +0018:r2_26,Stack +0024:r30,Stack +0028:ra,Stack +0030:r4,Stack +0034:r5
 		defs: r2:r2_26
 	strncpy(r4, r2_26, 256)
 	return
@@ -8744,7 +8742,7 @@ l00404F6C:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(2, Mem17[0x10000880:word32] + -23312, Mem17[0x10000880:word32] + -23400, 208, fp + -56, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_134, out r4_263, out r5_124, out r6_127, out r7_128)
+	print_log(2, 0x0040A4F0, 0x0040A498, 208, fp + -56, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_134, out r4_263, out r5_124, out r6_127, out r7_128)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -8755,7 +8753,7 @@ l00404D28_ds_f:
 // SymbolicIn:
 
 l00404D38:
-	word32 r2_51 = strpbrk(r5, Mem17[0x10000880:word32] + -23444)
+	word32 r2_51 = strpbrk(r5, 0x0040A46C)
 	word32 dwLoc18_205 = r2_51
 	branch r2_51 != 0x00000000 l00404D38_ds_t
 // DataOut:
@@ -8827,7 +8825,7 @@ l00404E00:
 // SymbolicIn:
 
 l00404E1C:
-	word32 r2_96 = strpbrk(dwLoc18_205, Mem61[0x10000880:word32] + -23448)
+	word32 r2_96 = strpbrk(dwLoc18_205, 0x0040A468)
 	dwLoc14 = r2_96
 	branch r2_96 != 0x00000000 l00404E1C_ds_t
 // DataOut:
@@ -8886,7 +8884,7 @@ l00404EB0:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(2, Mem144[0x10000880:word32] + -23344, Mem144[0x10000880:word32] + -23400, 202, fp + -56, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_134, out r4_278, out r5_124, out r6_127, out r7_128)
+	print_log(2, 0x0040A4D0, 0x0040A498, 202, fp + -56, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_134, out r4_278, out r5_124, out r6_127, out r7_128)
 	r2_140 = 0x00000000
 // DataOut:
 // DataOut (flags):
@@ -8910,7 +8908,7 @@ l00404E54:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(2, Mem108[0x10000880:word32] + -23380, Mem108[0x10000880:word32] + -23400, 198, fp + -56, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_134, out r4_273, out r5_124, out r6_127, out r7_128)
+	print_log(2, 0x0040A4AC, 0x0040A498, 198, fp + -56, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_134, out r4_273, out r5_124, out r6_127, out r7_128)
 	r2_140 = 0x00000000
 // DataOut:
 // DataOut (flags):
@@ -8934,7 +8932,7 @@ l00404D70:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(2, Mem58[0x10000880:word32] + -23440, Mem58[0x10000880:word32] + -23400, 191, fp + -56, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_134, out r4_268, out r5_124, out r6_127, out r7_128)
+	print_log(2, 0x0040A470, 0x0040A498, 191, fp + -56, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_134, out r4_268, out r5_124, out r6_127, out r7_128)
 	r2_140 = 0x00000000
 // DataOut:
 // DataOut (flags):
@@ -9011,7 +9009,7 @@ l00405210:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(2, Mem17[0x10000880:word32] + -23240, Mem17[0x10000880:word32] + -23268, 246, fp + -56, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_127, out r4_34, out r5_35, out r6_41, out r7_125)
+	print_log(2, 0x0040A538, 0x0040A51C, 246, fp + -56, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_127, out r4_34, out r5_35, out r6_41, out r7_125)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -9022,7 +9020,7 @@ l00404FF8_ds_f:
 // SymbolicIn:
 
 l00405008:
-	word32 r2_51 = strpbrk(r5, Mem17[0x10000880:word32] + -23444)
+	word32 r2_51 = strpbrk(r5, 0x0040A46C)
 	word32 dwLoc18_197 = r2_51
 	branch r2_51 != 0x00000000 l00405008_ds_t
 // DataOut:
@@ -9094,7 +9092,7 @@ l004050D0:
 // SymbolicIn:
 
 l004050EC:
-	word32 r2_96 = strpbrk(dwLoc18_197, Mem61[0x10000880:word32] + -23448)
+	word32 r2_96 = strpbrk(dwLoc18_197, 0x0040A468)
 	branch r2_96 != 0x00000000 l004050EC_ds_t
 // DataOut:
 // DataOut (flags):
@@ -9148,7 +9146,7 @@ l00405180:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(2, Mem136[0x10000880:word32] + -23344, Mem136[0x10000880:word32] + -23268, 240, fp + -56, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_127, out r4_267, out r5_268, out r6_269, out r7_125)
+	print_log(2, 0x0040A4D0, 0x0040A51C, 240, fp + -56, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_127, out r4_267, out r5_268, out r6_269, out r7_125)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -9171,7 +9169,7 @@ l00405124:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(2, Mem108[0x10000880:word32] + -23380, Mem108[0x10000880:word32] + -23268, 235, fp + -56, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_127, out r4_260, out r5_261, out r6_262, out r7_125)
+	print_log(2, 0x0040A4AC, 0x0040A51C, 235, fp + -56, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_127, out r4_260, out r5_261, out r6_262, out r7_125)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -9194,7 +9192,7 @@ l00405040:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(2, Mem58[0x10000880:word32] + -23196, Mem58[0x10000880:word32] + -23268, 226, fp + -56, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_127, out r4_177, out r5_178, out r6_181, out r7_125)
+	print_log(2, 0x0040A564, 0x0040A51C, 226, fp + -56, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_127, out r4_177, out r5_178, out r6_181, out r7_125)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -9418,7 +9416,7 @@ l00405468:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(2, Mem42[0x10000880:word32] + -23152, Mem42[0x10000880:word32] + -23128, 31, fp + -56, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_55, out r4_51, out r5_52, out r6_53, out r7_56)
+	print_log(2, 0x0040A590, 0x0040A5A8, 31, fp + -56, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_55, out r4_51, out r5_52, out r6_53, out r7_56)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -9450,13 +9448,12 @@ properties_load_entry:
 
 l004054D0:
 	word32 r2_501
-	word32 r2_19 = Mem17[0x10000880:word32]
-	word32 r6_25 = (word32) Mem17[r2_19 + 0xFFFFA5E8:int8]
-	word32 r7_26 = (word32) Mem17[r2_19 + 0xFFFFA5E9:int8]
+	word32 r6_25 = (word32) Mem17[0x0040A5E8:int8]
+	word32 r7_26 = (word32) Mem17[0x0040A5E9:int8]
 	word32 dwArg04_553 = r5
 	word32 r3_18 = fp + -64
-	word32 r4_22 = Mem17[r2_19 + -23072:word32]
-	word32 r5_24 = Mem17[r2_19 + 0xFFFFA5E4:word32]
+	word32 r4_22 = Mem17[0x0040A5E0:word32]
+	word32 r5_24 = Mem17[0x0040A5E4:word32]
 	byte bLoc38_556 = (byte) r6_25
 	byte bLoc37_557 = (byte) r7_26
 	word32 dwLoc30_558 = 0x00000000
@@ -9539,7 +9536,7 @@ l00405674:
 // SymbolicIn:
 
 l00405698:
-	word32 r2_124 = fopen(dwArg04_553, Mem112[0x10000880:word32] + -23020)
+	word32 r2_124 = fopen(dwArg04_553, 0x0040A614)
 	branch r2_124 != 0x00000000 l00405698_ds_t
 // DataOut:
 // DataOut (flags):
@@ -9638,7 +9635,7 @@ l00405800:
 	word32 r6_223
 	word32 r7_225
 	call strspn (retsize: 0;)
-		uses: r2:r2_194,r25:strspn,r28:0x10008860,r3:r3_196,r30:fp + -368,r4:r2_158,r5:Mem207[0x10000880:word32] + -22976,r6:r6_198,r7:r7_200,ra:ra,sp:fp + -368,Stack +0010:dwLoc0160_711,Stack +0018:0x10008860,Stack +0020:r2_124,Stack +0024:dwLoc014C_691,Stack +0128:r2_158,Stack +0130:r4_22,Stack +0134:r5_24,Stack +0138:bLoc38_556,Stack +0139:bLoc37_557,Stack +0140:dwLoc30_584,Stack +0144:dwLoc2C_688,Stack +0148:r2_194,Stack +014C:dwLoc24_699,Stack +0150:dwLoc20_705,Stack +0154:dwLoc1C_685,Stack +0158:dwLoc18_694,Stack +0164:r30,Stack +0168:ra,Stack +0170:r4,Stack +0174:dwArg04_575
+		uses: r2:r2_194,r25:strspn,r28:0x10008860,r3:r3_196,r30:fp + -368,r4:r2_158,r5:0x0040A640,r6:r6_198,r7:r7_200,ra:ra,sp:fp + -368,Stack +0010:dwLoc0160_711,Stack +0018:0x10008860,Stack +0020:r2_124,Stack +0024:dwLoc014C_691,Stack +0128:r2_158,Stack +0130:r4_22,Stack +0134:r5_24,Stack +0138:bLoc38_556,Stack +0139:bLoc37_557,Stack +0140:dwLoc30_584,Stack +0144:dwLoc2C_688,Stack +0148:r2_194,Stack +014C:dwLoc24_699,Stack +0150:dwLoc20_705,Stack +0154:dwLoc1C_685,Stack +0158:dwLoc18_694,Stack +0164:r30,Stack +0168:ra,Stack +0170:r4,Stack +0174:dwArg04_575
 		defs: r2:r2_219,r6:r6_223,r7:r7_225
 	word32 r2_229 = r2_158 + r2_219
 	branch (word32) Mem230[r2_229:int8] != 0x00000000 l00405800_ds_t
@@ -9654,7 +9651,7 @@ l00405800_ds_t:
 l00405858:
 	word32 r2_242
 	call strcspn (retsize: 0;)
-		uses: r2:r2_229,r25:strcspn,r28:0x10008860,r3:r2_219,r30:fp + -368,r4:r2_229,r5:Mem234[0x10000880:word32] + -22972,r6:r6_223,r7:r7_225,ra:ra,sp:fp + -368,Stack +0010:dwLoc0160_711,Stack +0018:0x10008860,Stack +0020:r2_124,Stack +0024:dwLoc014C_691,Stack +0128:r2_229,Stack +0130:r4_22,Stack +0134:r5_24,Stack +0138:bLoc38_556,Stack +0139:bLoc37_557,Stack +0140:dwLoc30_584,Stack +0144:dwLoc2C_688,Stack +0148:r2_194,Stack +014C:r2_229,Stack +0150:r2_249,Stack +0154:dwLoc1C_685,Stack +0158:dwLoc18_694,Stack +0164:r30,Stack +0168:ra,Stack +0170:r4,Stack +0174:dwArg04_575
+		uses: r2:r2_229,r25:strcspn,r28:0x10008860,r3:r2_219,r30:fp + -368,r4:r2_229,r5:0x0040A644,r6:r6_223,r7:r7_225,ra:ra,sp:fp + -368,Stack +0010:dwLoc0160_711,Stack +0018:0x10008860,Stack +0020:r2_124,Stack +0024:dwLoc014C_691,Stack +0128:r2_229,Stack +0130:r4_22,Stack +0134:r5_24,Stack +0138:bLoc38_556,Stack +0139:bLoc37_557,Stack +0140:dwLoc30_584,Stack +0144:dwLoc2C_688,Stack +0148:r2_194,Stack +014C:r2_229,Stack +0150:r2_249,Stack +0154:dwLoc1C_685,Stack +0158:dwLoc18_694,Stack +0164:r30,Stack +0168:ra,Stack +0170:r4,Stack +0174:dwArg04_575
 		defs: r2:r2_242
 	word32 r2_249 = r2_229 + r2_242
 	dwLoc24 = r2_229
@@ -9678,12 +9675,12 @@ l00405920:
 	word32 r6_278
 	word32 r7_279
 	call strspn (retsize: 0;)
-		uses: r2:r2_259 + 1,r25:strspn,r28:0x10008860,r3:r3_260,r30:fp + -368,r4:r2_259 + 1,r5:Mem268[0x10000880:word32] + -22976,r6:r6_261,r7:r7_262,ra:ra,sp:fp + -368,Stack +0010:dwLoc0160_711,Stack +0018:0x10008860,Stack +0020:r2_124,Stack +0024:0x00000000,Stack +0128:r2_259 + 1,Stack +0130:r4_22,Stack +0134:r5_24,Stack +0138:bLoc38_556,Stack +0139:bLoc37_557,Stack +0140:dwLoc30_584,Stack +0144:0x00000000,Stack +0148:r2_194,Stack +014C:r2_229,Stack +0150:r2_249,Stack +0154:r2_283,Stack +0158:dwLoc18_694,Stack +0164:r30,Stack +0168:ra,Stack +0170:r4,Stack +0174:dwArg04_575
+		uses: r2:r2_259 + 1,r25:strspn,r28:0x10008860,r3:r3_260,r30:fp + -368,r4:r2_259 + 1,r5:0x0040A640,r6:r6_261,r7:r7_262,ra:ra,sp:fp + -368,Stack +0010:dwLoc0160_711,Stack +0018:0x10008860,Stack +0020:r2_124,Stack +0024:0x00000000,Stack +0128:r2_259 + 1,Stack +0130:r4_22,Stack +0134:r5_24,Stack +0138:bLoc38_556,Stack +0139:bLoc37_557,Stack +0140:dwLoc30_584,Stack +0144:0x00000000,Stack +0148:r2_194,Stack +014C:r2_229,Stack +0150:r2_249,Stack +0154:r2_283,Stack +0158:dwLoc18_694,Stack +0164:r30,Stack +0168:ra,Stack +0170:r4,Stack +0174:dwArg04_575
 		defs: r2:r2_276,r6:r6_278,r7:r7_279
 	word32 r2_283 = r2_259 + 1 + r2_276
 	word32 r2_294
 	call strcspn (retsize: 0;)
-		uses: r2:r2_283,r25:strcspn,r28:0x10008860,r3:r2_276,r30:fp + -368,r4:r2_283,r5:Mem286[0x10000880:word32] + -22976,r6:r6_278,r7:r7_279,ra:ra,sp:fp + -368,Stack +0010:dwLoc0160_711,Stack +0018:0x10008860,Stack +0020:r2_124,Stack +0024:0x00000000,Stack +0128:r2_283,Stack +0130:r4_22,Stack +0134:r5_24,Stack +0138:bLoc38_556,Stack +0139:bLoc37_557,Stack +0140:dwLoc30_584,Stack +0144:0x00000000,Stack +0148:r2_194,Stack +014C:r2_229,Stack +0150:r2_249,Stack +0154:r2_283,Stack +0158:dwLoc18_694,Stack +0164:r30,Stack +0168:ra,Stack +0170:r4,Stack +0174:dwArg04_575
+		uses: r2:r2_283,r25:strcspn,r28:0x10008860,r3:r2_276,r30:fp + -368,r4:r2_283,r5:0x0040A640,r6:r6_278,r7:r7_279,ra:ra,sp:fp + -368,Stack +0010:dwLoc0160_711,Stack +0018:0x10008860,Stack +0020:r2_124,Stack +0024:0x00000000,Stack +0128:r2_283,Stack +0130:r4_22,Stack +0134:r5_24,Stack +0138:bLoc38_556,Stack +0139:bLoc37_557,Stack +0140:dwLoc30_584,Stack +0144:0x00000000,Stack +0148:r2_194,Stack +014C:r2_229,Stack +0150:r2_249,Stack +0154:r2_283,Stack +0158:dwLoc18_694,Stack +0164:r30,Stack +0168:ra,Stack +0170:r4,Stack +0174:dwArg04_575
 		defs: r2:r2_294
 	word32 r2_301 = r2_283 + r2_294
 	Mem304[r2_301:byte] = 0x00
@@ -9751,7 +9748,7 @@ l00405C50:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(1, Mem331[0x10000880:word32] + -23100, Mem331[0x10000880:word32] + -23036, 142, fp + -368, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_791, out r4_792, out r5_793, out r6_794, out r7_795)
+	print_log(1, 0x0040A5C4, 0x0040A604, 142, fp + -368, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_791, out r4_792, out r5_793, out r6_794, out r7_795)
 	dwLoc0160 = r2_229
 // DataOut:
 // DataOut (flags):
@@ -9795,10 +9792,9 @@ l00405A70_ds_t:
 // SymbolicIn:
 
 l00405B54:
-	word32 r25_392 = Mem387[0x1000087C:word32]
 	word32 r2_397
-	call r25_392 + 21488 (retsize: 0;)
-		uses: r2:1,r25:r25_392 + 21488,r3:r2_386,r4:r2_283,r5:0x00000000,r6:r6_370,r7:r7_372,Stack +0010:dwLoc0160_711,Stack +0018:0x10008860,Stack +0020:r2_124,Stack +0024:dwLoc014C_640,Stack +0128:r2_301,Stack +0130:r4_22,Stack +0134:r5_24,Stack +0138:bLoc38_556,Stack +0139:bLoc37_557,Stack +0140:dwLoc30_584,Stack +0144:1,Stack +0148:r2_194,Stack +014C:r2_229,Stack +0150:r2_249,Stack +0154:r2_283,Stack +0158:r2_386,Stack +0164:r30,Stack +0168:ra,Stack +0170:r4,Stack +0174:dwArg04_575
+	call 0x004053F0 (retsize: 0;)
+		uses: r2:1,r25:0x004053F0,r3:r2_386,r4:r2_283,r5:0x00000000,r6:r6_370,r7:r7_372,Stack +0010:dwLoc0160_711,Stack +0018:0x10008860,Stack +0020:r2_124,Stack +0024:dwLoc014C_640,Stack +0128:r2_301,Stack +0130:r4_22,Stack +0134:r5_24,Stack +0138:bLoc38_556,Stack +0139:bLoc37_557,Stack +0140:dwLoc30_584,Stack +0144:1,Stack +0148:r2_194,Stack +014C:r2_229,Stack +0150:r2_249,Stack +0154:r2_283,Stack +0158:r2_386,Stack +0164:r30,Stack +0168:ra,Stack +0170:r4,Stack +0174:dwArg04_575
 		defs: r2:r2_397
 	Mem414[Mem387[0x10000A40:word32] + 4 + ((dwLoc014C * 0x00000014 - dwLoc014C << 0x03) + 144):word32] = r2_397
 // DataOut:
@@ -9844,7 +9840,7 @@ l00405ADC_ds_t:
 // SymbolicIn:
 
 l00405BBC:
-	Mem468[Mem387[0x10000A40:word32] + 4 + ((dwLoc014C * 0x00000014 - dwLoc014C << 0x03) + 144):word32] = (word32) (strchr(Mem387[0x10000880:word32] + -23104, (word32) Mem387[r2_283:int8]) >u 0x00000000)
+	Mem468[Mem387[0x10000A40:word32] + 4 + ((dwLoc014C * 0x00000014 - dwLoc014C << 0x03) + 144):word32] = (word32) (strchr(0x0040A5C0, (word32) Mem387[r2_283:int8]) >u 0x00000000)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -9883,7 +9879,7 @@ l004058D8:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(2, Mem475[0x10000880:word32] + -22968, Mem475[0x10000880:word32] + -23036, 110, fp + -368, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_782, out r4_783, out r5_784, out r6_785, out r7_786)
+	print_log(2, 0x0040A648, 0x0040A604, 110, fp + -368, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_782, out r4_783, out r5_784, out r6_785, out r7_786)
 	dwLoc0160 = fp + -328
 // DataOut:
 // DataOut (flags):
@@ -9937,7 +9933,7 @@ l004056D0:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(1, Mem503[0x10000880:word32] + -23016, Mem503[0x10000880:word32] + -23036, 75, fp + -368, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_18, out r4_776, out r5_777, out r6_25, out r7_26)
+	print_log(1, 0x0040A618, 0x0040A604, 75, fp + -368, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_18, out r4_776, out r5_777, out r6_25, out r7_26)
 	r2_501 = 0x00000000
 // DataOut:
 // DataOut (flags):
@@ -9961,7 +9957,7 @@ l004055B4:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(1, Mem57[0x10000880:word32] + -23060, Mem57[0x10000880:word32] + -23036, 57, fp + -368, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_18, out r4_770, out r5_771, out r6_25, out r7_26)
+	print_log(1, 0x0040A5EC, 0x0040A604, 57, fp + -368, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_18, out r4_770, out r5_771, out r6_25, out r7_26)
 	r2_501 = 0x00000000
 // DataOut:
 // DataOut (flags):
@@ -10454,7 +10450,7 @@ l004062C0_ds_t:
 // SymbolicIn:
 
 l00406304:
-	printf(Mem15[0x10000880:word32] + -22852, 0x00000000)
+	printf(0x0040A6BC, 0x00000000)
 	r6_116 = <invalid>
 	r5_113 = <invalid>
 // DataOut:
@@ -10467,7 +10463,7 @@ l004062C0_ds_f:
 // SymbolicIn:
 
 l004062D8:
-	printf(Mem15[0x10000880:word32] + -22868, 0x00000000)
+	printf(0x0040A6AC, 0x00000000)
 	r6_116 = <invalid>
 	r5_113 = <invalid>
 // DataOut:
@@ -10503,7 +10499,7 @@ l00406374_ds_t:
 // SymbolicIn:
 
 l00406530:
-	printf(Mem57[0x10000880:word32] + -22824, 0x00000000)
+	printf(0x0040A6D8, 0x00000000)
 	r6_116 = <invalid>
 	r5_113 = <invalid>
 // DataOut:
@@ -10556,7 +10552,7 @@ l0040641C:
 // SymbolicIn:
 
 l004064C8:
-	printf(Mem181[0x10000880:word32] + -22832, 0x00000000)
+	printf(0x0040A6D0, 0x00000000)
 	r6_116 = <invalid>
 	r5_113 = <invalid>
 // DataOut:
@@ -10580,7 +10576,7 @@ l0040636C:
 // SymbolicIn:
 
 l004065D0:
-	printf(Mem57[0x10000880:word32] + -22816, 0x00000000)
+	printf(0x0040A6E0, 0x00000000)
 	word32 r3_220 = <invalid>
 	return r3_220
 // DataOut:
@@ -10630,9 +10626,8 @@ l00406664:
 	call vsnprintf (retsize: 0;)
 		uses: r2:fp + -1048,r25:vsnprintf,r28:0x10008860,r3:r3_25,r30:fp + -1080,r4:fp + -1048,r5:1023,r6:r5,r7:fp + 8,ra:ra,sp:fp + -1080,Stack +0010:0x10008860,Stack +0018:fp + 8,Stack +0420:r2_40,Stack +042C:r30,Stack +0430:ra,Stack +0438:r4,Stack +043C:r5,Stack +0440:r6,Stack +0444:r7
 		defs: r2:r2_40,r3:r3_41
-	word32 r25_50 = Mem43[0x1000087C:word32]
-	call r25_50 + 27004 (retsize: 0;)
-		uses: r2:fp + -1048,r25:r25_50 + 27004,r3:r3_41,r4:Mem43[Mem43[0x10000A20:word32]:word32],r5:r4,r6:r2_40,r7:fp + -1048,Stack +0010:0x10008860,Stack +0018:fp + 8,Stack +0420:r2_40,Stack +042C:r30,Stack +0430:ra,Stack +0438:r4,Stack +043C:r5,Stack +0440:r6,Stack +0444:r7
+	call 0x0040697C (retsize: 0;)
+		uses: r2:fp + -1048,r25:0x0040697C,r3:r3_41,r4:Mem43[Mem43[0x10000A20:word32]:word32],r5:r4,r6:r2_40,r7:fp + -1048,Stack +0010:0x10008860,Stack +0018:fp + 8,Stack +0420:r2_40,Stack +042C:r30,Stack +0430:ra,Stack +0438:r4,Stack +043C:r5,Stack +0440:r6,Stack +0444:r7
 		defs: r2:r2_57,r3:r3_58,r4:r4_56,r5:r5_53,r6:r6_54,r7:r7_55
 // DataOut:
 // DataOut (flags):
@@ -10700,7 +10695,7 @@ l0040672C_ds_t:
 
 l004067EC:
 	Mem28[Mem15[0x10000A20:word32]:word32] = Mem15[Mem15[0x10000914:word32]:word32]
-	strcpy(Mem28[Mem28[0x100008A0:word32]:word32], Mem28[0x10000880:word32] + -22724)
+	strcpy(Mem28[Mem28[0x100008A0:word32]:word32], 0x0040A73C)
 	r6_103 = <invalid>
 	r5_102 = <invalid>
 	r3_100 = <invalid>
@@ -10747,7 +10742,7 @@ l00406798:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(0x00000000, Mem67[0x10000880:word32] + -22780, Mem67[Mem67[0x100008A0:word32]:word32], r7, fp + -40, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_100, out r4_112, out r5_102, out r6_103, out r7_113)
+	print_log(0x00000000, 0x0040A704, Mem67[Mem67[0x100008A0:word32]:word32], r7, fp + -40, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_100, out r4_112, out r5_102, out r6_103, out r7_113)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -10817,7 +10812,7 @@ l004068CC:
 	strcpy(fp + -272, Mem12[Mem12[0x100008A0:word32]:word32])
 	word32 r3_50 = <invalid>
 	call rename (retsize: 0;)
-		uses: r2:strcat(fp + -272, Mem12[0x10000880:word32] + -22716),r25:rename,r28:0x10008860,r3:r3_50,r30:fp + -296,r4:Mem12[Mem12[0x100008A0:word32]:word32],r5:fp + -272,ra:ra,sp:fp + -296,Stack +0010:0x10008860,Stack +011C:r30,Stack +0120:ra
+		uses: r2:strcat(fp + -272, 0x0040A744),r25:rename,r28:0x10008860,r3:r3_50,r30:fp + -296,r4:Mem12[Mem12[0x100008A0:word32]:word32],r5:fp + -272,ra:ra,sp:fp + -296,Stack +0010:0x10008860,Stack +011C:r30,Stack +0120:ra
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -10826,7 +10821,7 @@ l00406944:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word32 stackArg0 = <invalid>
-	open_log(Mem12[0x10000880:word32] + -22720, fp + -296, ra, stackArg0, out r5_91, out r6_92, out r7_93)
+	open_log(0x0040A740, fp + -296, ra, stackArg0, out r5_91, out r6_92, out r7_93)
 	return
 // DataOut:
 // DataOut (flags):
@@ -10861,8 +10856,8 @@ l0040697C:
 	call gmtime (retsize: 0;)
 		uses: hi:hi,lo:lo_93,r1:r1,r16:r5,r17:r7,r2:fp + -40,r25:gmtime,r28:0x10008860,r3:r3_36,r30:fp + -104,r4:fp + -40,r5:r5_30,r6:r6_32,r7:r7_34,ra:ra,sp:fp + -104,Stack +0010:r2_77,Stack +0014:r7,Stack +0018:0x10008860,Stack +0044:dwLoc24,Stack +0048:dwLoc20,Stack +0054:r16,Stack +0058:r17,Stack +005C:r30,Stack +0060:ra,Stack +0068:r4
 		defs: r2:r2_47
-	strftime(fp + -72, 28, Mem19[0x10000880:word32] + -22708, r2_47)
-	fprintf(r4, Mem79[0x10000880:word32] + -22688, 0x00000000)
+	strftime(fp + -72, 28, 0x0040A74C, r2_47)
+	fprintf(r4, 0x0040A760, 0x00000000)
 	fflush(r4)
 	Mem111[Mem79[0x10000878:word32] + 2084:word32] = Mem79[Mem79[0x10000878:word32] + 2084:word32] + 1
 	word32 lo_93 = (word32) (dwLoc24 *s 0x10624DD3)
@@ -11037,7 +11032,7 @@ l00406C4C:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(0x00000000, Mem83[0x10000880:word32] + -22672, r6_27, r7_28, fp + -48, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_121, out r4_89, out r5_90, out r6_124, out r7_125)
+	print_log(0x00000000, 0x0040A770, r6_27, r7_28, fp + -48, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_121, out r4_89, out r5_90, out r6_124, out r7_125)
 	r2_118 = 0x00000000
 // DataOut:
 // DataOut (flags):
@@ -11145,7 +11140,7 @@ l00406F34:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(1, Mem97[0x10000880:word32] + -22532, Mem97[0x10000880:word32] + -22584, 65, fp + -56, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_110, out r4_261, out r5_107, out r6_108, out r7_111)
+	print_log(1, 0x0040A7FC, 0x0040A7C8, 65, fp + -56, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_110, out r4_261, out r5_107, out r6_108, out r7_111)
 	r2_113 = 0x00000000
 // DataOut:
 // DataOut (flags):
@@ -11171,7 +11166,7 @@ l00406E74:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(1, Mem146[0x10000880:word32] + -22572, Mem146[0x10000880:word32] + -22584, 55, fp + -56, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_110, out r4_256, out r5_107, out r6_108, out r7_111)
+	print_log(1, 0x0040A7D4, 0x0040A7C8, 55, fp + -56, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_110, out r4_256, out r5_107, out r6_108, out r7_111)
 	r2_113 = 0x00000000
 // DataOut:
 // DataOut (flags):
@@ -11197,7 +11192,7 @@ l00406DA8:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(1, Mem195[0x10000880:word32] + -22628, Mem195[0x10000880:word32] + -22584, 49, fp + -56, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_110, out r4_204, out r5_107, out r6_108, out r7_111)
+	print_log(1, 0x0040A79C, 0x0040A7C8, 49, fp + -56, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_110, out r4_204, out r5_107, out r6_108, out r7_111)
 	r2_113 = 0x00000000
 // DataOut:
 // DataOut (flags):
@@ -11309,7 +11304,7 @@ l0040708C:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(4, Mem18[0x10000880:word32] + -22500, Mem18[0x10000880:word32] + -22472, 90, fp + -48, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_64, out r4_65, out r5_29, out r6_30, out r7_31)
+	print_log(4, 0x0040A81C, 0x0040A838, 90, fp + -48, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_64, out r4_65, out r5_29, out r6_30, out r7_31)
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word32 stackArg0 = <invalid>
@@ -11379,7 +11374,7 @@ l0040719C:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(0x00000000, Mem33[0x10000880:word32] + -22448, r6, r7, fp + -48, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_70, out r4_39, out r5_41, out r6_71, out r7_72)
+	print_log(0x00000000, 0x0040A850, r6, r7, fp + -48, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_70, out r4_39, out r5_41, out r6_71, out r7_72)
 	r2_32 = 0x00000000
 // DataOut:
 // DataOut (flags):
@@ -11679,7 +11674,7 @@ l004074AC:
 	word32 stackArg4 = <invalid>
 	word32 stackArg8 = <invalid>
 	word32 stackArg12 = <invalid>
-	print_log(2, Mem32[0x10000880:word32] + -22404, Mem32[0x10000880:word32] + -22376, 85, fp + -48, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_72, out r4_73, out r5_42, out r6_44, out r7_45)
+	print_log(2, 0x0040A87C, 0x0040A898, 85, fp + -48, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_72, out r4_73, out r5_42, out r6_44, out r7_45)
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word32 stackArg0 = <invalid>
@@ -12437,11 +12432,9 @@ __addsf3_entry:
 
 l00407A38:
 	__unpack_f(fp + -24, fp + -72, out r3_70, out r5_71, out r6_27, out r7_72, out r8_73)
-	word32 r2_39 = __unpack_f(fp + -20, fp + -56, out r3_74, out r5_75, out r6_76, out r7_77, out r8_78)
-	word32 r25_41 = Mem22[0x1000087C:word32]
 	word32 r2_50
-	call r25_41 + 30688 (retsize: 0;)
-		uses: r2:r2_39,r25:r25_41 + 30688,r4:fp + -72,r5:fp + -56,r6:fp + -40,Stack +0010:0x10008860,Stack +0048:(word32) f12,Stack +004C:(word32) f14,Stack +0054:r16,Stack +0058:r17,Stack +005C:ra
+	call 0x004077E0 (retsize: 0;)
+		uses: r2:__unpack_f(fp + -20, fp + -56, out r3_74, out r5_75, out r6_76, out r7_77, out r8_78),r25:0x004077E0,r4:fp + -72,r5:fp + -56,r6:fp + -40,Stack +0010:0x10008860,Stack +0048:(word32) f12,Stack +004C:(word32) f14,Stack +0054:r16,Stack +0058:r17,Stack +005C:ra
 		defs: r2:r2_50
 	__pack_f(r2_50)
 	return
@@ -12471,10 +12464,9 @@ __subsf3_entry:
 l00407AE0:
 	__unpack_f(fp + -24, fp + -72, out r3_75, out r5_76, out r6_29, out r7_77, out r8_78)
 	__unpack_f(fp + -20, fp + -56, out r3_79, out r5_80, out r6_81, out r7_82, out r8_83)
-	word32 r25_41 = Mem22[0x1000087C:word32]
 	word32 r2_52
-	call r25_41 + 30688 (retsize: 0;)
-		uses: r2:dwLoc34 ^ 0x00000001,r25:r25_41 + 30688,r4:fp + -72,r5:fp + -56,r6:fp + -40,Stack +0010:0x10008860,Stack +002C:dwLoc34 ^ 0x00000001,Stack +0048:(word32) f12,Stack +004C:(word32) f14,Stack +0054:r16,Stack +0058:r17,Stack +005C:ra
+	call 0x004077E0 (retsize: 0;)
+		uses: r2:dwLoc34 ^ 0x00000001,r25:0x004077E0,r4:fp + -72,r5:fp + -56,r6:fp + -40,Stack +0010:0x10008860,Stack +002C:dwLoc34 ^ 0x00000001,Stack +0048:(word32) f12,Stack +004C:(word32) f14,Stack +0054:r16,Stack +0058:r17,Stack +005C:ra
 		defs: r2:r2_52
 	__pack_f(r2_52)
 	return
@@ -14116,11 +14108,9 @@ l004084FC:
 	word32 r3_49
 	word32 r7_51
 	word32 r8_53
-	word32 r2_50 = __unpack_d(fp + -32, fp + -88, out r3_49, out r5_105, out r6_106, out r7_51, out r8_53, out r9_107, out r10_108, out r11_109, out r12_110, out r13_111, out r14_112, out r15_113, out r24_114)
-	word32 r25_57 = Mem34[0x10000880:word32]
 	word32 r2_64
-	call r25_57 + -32384 (retsize: 0;)
-		uses: r2:r2_50,r25:r25_57 + -32384,r3:r3_49,r4:fp + -112,r5:fp + -88,r6:fp + -64,r7:r7_51,r8:r8_53,Stack +0010:0x10008860,Stack +0060:f13,Stack +0064:f12,Stack +0068:f15,Stack +006C:f14,Stack +0074:r16,Stack +0078:r17,Stack +007C:r18,Stack +0080:ra
+	call 0x00408180 (retsize: 0;)
+		uses: r2:__unpack_d(fp + -32, fp + -88, out r3_49, out r5_105, out r6_106, out r7_51, out r8_53, out r9_107, out r10_108, out r11_109, out r12_110, out r13_111, out r14_112, out r15_113, out r24_114),r25:0x00408180,r3:r3_49,r4:fp + -112,r5:fp + -88,r6:fp + -64,r7:r7_51,r8:r8_53,Stack +0010:0x10008860,Stack +0060:f13,Stack +0064:f12,Stack +0068:f15,Stack +006C:f14,Stack +0074:r16,Stack +0078:r17,Stack +007C:r18,Stack +0080:ra
 		defs: r2:r2_64
 	__pack_d(r2_64)
 	return
@@ -14153,10 +14143,9 @@ l004085CC:
 	word32 r7_51
 	word32 r8_53
 	__unpack_d(fp + -32, fp + -88, out r3_49, out r5_110, out r6_111, out r7_51, out r8_53, out r9_112, out r10_113, out r11_114, out r12_115, out r13_116, out r14_117, out r15_118, out r24_119)
-	word32 r25_57 = Mem34[0x10000880:word32]
 	word32 r2_67
-	call r25_57 + -32384 (retsize: 0;)
-		uses: r2:dwLoc54 ^ 0x00000001,r25:r25_57 + -32384,r3:r3_49,r4:fp + -112,r5:fp + -88,r6:fp + -64,r7:r7_51,r8:r8_53,Stack +0010:0x10008860,Stack +0034:dwLoc54 ^ 0x00000001,Stack +0060:f13,Stack +0064:f12,Stack +0068:f15,Stack +006C:f14,Stack +0074:r16,Stack +0078:r17,Stack +007C:r18,Stack +0080:ra
+	call 0x00408180 (retsize: 0;)
+		uses: r2:dwLoc54 ^ 0x00000001,r25:0x00408180,r3:r3_49,r4:fp + -112,r5:fp + -88,r6:fp + -64,r7:r7_51,r8:r8_53,Stack +0010:0x10008860,Stack +0034:dwLoc54 ^ 0x00000001,Stack +0060:f13,Stack +0064:f12,Stack +0068:f15,Stack +006C:f14,Stack +0074:r16,Stack +0078:r17,Stack +007C:r18,Stack +0080:ra
 		defs: r2:r2_67
 	__pack_d(r2_67)
 	return
@@ -17333,9 +17322,8 @@ _fini_entry:
 // SymbolicIn:
 
 l00409CB0:
-	word32 r25_12 = Mem11[0x1000087C:word32]
-	call r25_12 + 1568 (retsize: 0;)
-		uses: r25:r25_12 + 1568,Stack +0010:0x10008860,Stack +0018:0x10008860,Stack +001C:ra
+	call 0x00400620 (retsize: 0;)
+		uses: r25:0x00400620,Stack +0010:0x10008860,Stack +0018:0x10008860,Stack +001C:ra
 	return
 // DataOut:
 // DataOut (flags):

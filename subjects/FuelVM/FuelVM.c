@@ -34,9 +34,9 @@ void fn00401000(word32 edx, word32 dwArg04, word32 dwArg08, word32 dwArg0C)
 		Mem109[fp - 0x08 + 0x00:word32] = Mem107[0x0040318C:word32];
 		Mem111[fp - 0x0C + 0x00:word32] = Mem109[0x00403190:word32];
 		Mem113[fp - 0x10 + 0x00:word32] = 0x00;
-		word32 eax_114 = ExtCreateRegion(1004, 0x00, 4198444);
+		word32 eax_n = ExtCreateRegion(1004, 0x00, 4198444);
 		Mem117[fp - 0x08 + 0x00:word32] = 0x01;
-		Mem119[fp - 0x0C + 0x00:word32] = eax_114;
+		Mem119[fp - 0x0C + 0x00:word32] = eax_n;
 		Mem121[fp - 0x10 + 0x00:word32] = dwArg04;
 		SetWindowRgn(1004, 0x00, 4198444);
 		Mem125[fp - 0x08 + 0x00:word32] = 0x01;
@@ -99,17 +99,17 @@ void fn00401000(word32 edx, word32 dwArg04, word32 dwArg08, word32 dwArg0C)
 
 word32 fn004011C2(word32 dwArg04)
 {
-	word32 edi_16 = dwArg04;
-	word32 ecx_11 = ~0x00;
-	if (ecx_11 != 0x00)
+	word32 edi_n = dwArg04;
+	word32 ecx_n = ~0x00;
+	if (ecx_n != 0x00)
 	{
-		edi_16 = edi_33 + 0x01;
-		ecx_11 = ecx_11 - 0x01;
-		word32 edi_33 = edi_16;
-		if (0x00 != Mem0[edi_33 + 0x00:byte])
+		edi_n = edi_n + 0x01;
+		ecx_n = ecx_n - 0x01;
+		word32 edi_n = edi_n;
+		if (0x00 != Mem0[edi_n + 0x00:byte])
 			goto l004011CF;
 	}
-	return ~ecx_11 - 0x01;
+	return ~ecx_n - 0x01;
 }
 
 void fn004011D8()
@@ -128,21 +128,21 @@ void fn004011D8()
 
 void fn00401238(word32 edx)
 {
-	word32 ecx_10 = fn004011C2(4207000);
-	if (ecx_10 >=u 0x07)
+	word32 ecx_n = fn004011C2(4207000);
+	if (ecx_n >=u 0x07)
 	{
-		Mem38[0x004031CD:word32] = ecx_10;
+		Mem38[0x004031CD:word32] = ecx_n;
 		Mem40[fp + ~0x0B:word32] = 4207024;
 		if (fn004011C2(4207000) >=u 0x07)
 		{
 			Mem52[fp + ~0x0B:word32] = edx;
-			word32 ecx_48 = 0x00;
+			word32 ecx_n = 0x00;
 			do
 			{
-				Mem61[ecx_48 + 4207000:byte] = (byte) (Mem52[ecx_48 + 4207000:word32] ^ ecx_48);
-				ecx_48 = ecx_48 + 0x01;
-			} while (ecx_48 <= Mem61[0x004031CD:word32]);
-			Mem70[4207054:word32] = ecx_48;
+				Mem61[ecx_n + 4207000:byte] = (byte) (Mem52[ecx_n + 4207000:word32] ^ ecx_n);
+				ecx_n = ecx_n + 0x01;
+			} while (ecx_n <= Mem61[0x004031CD:word32]);
+			Mem70[4207054:word32] = ecx_n;
 			Mem75[4207048:word32] = Mem70[0x004035FF:word32];
 			fn004011D8();
 			Mem81[fs:0x00:word32] = fp + ~0x0F;

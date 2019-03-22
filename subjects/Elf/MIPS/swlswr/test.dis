@@ -103,9 +103,8 @@ deregister_tm_clones_entry:
 // SymbolicIn:
 
 l00000670:
-	word32 r4_8 = Mem0[0x00010AA8:word32]
 	word32 r2_9 = Mem0[0x00010AA4:word32]
-	branch r2_9 == r4_8 + 2692 l00000670_ds_t
+	branch r2_9 == 0x00010A84 l00000670_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -145,7 +144,7 @@ l00000690_ds_f:
 
 l00000698:
 	call r25_12 (retsize: 0;)
-		uses: r2:r2_9,r25:r25_12,r4:r4_8 + 2692
+		uses: r2:r2_9,r25:r25_12,r4:0x00010A84
 	return
 // DataOut:
 // DataOut (flags):
@@ -171,10 +170,8 @@ register_tm_clones_entry:
 // SymbolicIn:
 
 l000006A8:
-	word32 r4_8 = Mem0[0x00010AA8:word32]
-	word32 r5_11 = Mem0[0x00010AA4:word32] - (r4_8 + 2692)
-	word32 r2_13 = r5_11 >> 0x02 >>u 0x1F
-	word32 r5_14 = r2_13 + (r5_11 >> 0x02)
+	word32 r5_12 = Mem0[0x00010AA4:word32] - 0x00010A84 >> 0x02
+	word32 r5_14 = (r5_12 >>u 0x1F) + r5_12
 	branch r5_14 >> 0x01 == 0x00000000 l000006A8_ds_t
 // DataOut:
 // DataOut (flags):
@@ -215,7 +212,7 @@ l000006DC_ds_f:
 
 l000006E4:
 	call r25_17 (retsize: 0;)
-		uses: r2:r2_13,r25:r25_17,r4:r4_8 + 2692,r5:r5_14 >> 0x01
+		uses: r2:r5_12 >>u 0x1F,r25:r25_17,r4:0x00010A84,r5:r5_14 >> 0x01
 	return
 // DataOut:
 // DataOut (flags):
@@ -241,8 +238,7 @@ __do_global_dtors_aux_entry:
 // SymbolicIn:
 
 l000006F4:
-	word32 r19_10 = Mem9[0x00010AA8:word32]
-	branch (word32) Mem19[r19_10 + 0x00000AF0:byte] != 0x00000000 l000006F4_ds_t
+	branch (word32) Mem19[0x00010AF0:byte] != 0x00000000 l000006F4_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -276,17 +272,15 @@ l0000072C_ds_f:
 
 l00000734:
 	call __cxa_finalize (retsize: 0;)
-		uses: r16:r16,r17:r17,r18:r18,r19:r19_10,r2:r2_24,r25:__cxa_finalize,r28:0x00018A80,r3:r3,r4:Mem19[r2_24:word32],ra:ra,sp:fp + -48,Stack +0010:0x00018A80,Stack +001C:r16,Stack +0020:r17,Stack +0024:r18,Stack +0028:r19,Stack +002C:ra
+		uses: r16:r16,r17:r17,r18:r18,r19:0x00010000,r2:r2_24,r25:__cxa_finalize,r28:0x00018A80,r3:r3,r4:Mem19[r2_24:word32],ra:ra,sp:fp + -48,Stack +0010:0x00018A80,Stack +001C:r16,Stack +0020:r17,Stack +0024:r18,Stack +0028:r19,Stack +002C:ra
 		defs: r4:r4_29
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00000744:
-	word32 r17_37 = Mem19[0x00010AA8:word32]
-	word32 r2_35 = Mem19[0x00010AA8:word32]
-	word32 r2_41 = Mem19[r17_37 + 0x00000AF4:word32]
-	word32 r16_43 = (Mem19[0x00010AB0:word32] - (r2_35 + 2664) >> 0x02) + -1
+	word32 r2_41 = Mem19[0x00010AF4:word32]
+	word32 r16_43 = (Mem19[0x00010AB0:word32] - 0x00010A68 >> 0x02) + -1
 	branch (word32) (r2_41 <u r16_43) == 0x00000000 l00000744_ds_t
 // DataOut:
 // DataOut (flags):
@@ -304,13 +298,13 @@ l00000744_ds_f:
 
 l00000774:
 	word32 r2_48 = r2_41 + 1
-	Mem51[r17_37 + 0x00000AF4:word32] = r2_48
-	word32 r2_53 = r2_35 + 2664 + (r2_48 << 0x02)
+	Mem51[0x00010AF4:word32] = r2_48
+	word32 r2_53 = (r2_48 << 0x02) + 0x00010A68
 	word32 r25_54 = Mem51[r2_53:word32]
 	call r25_54 (retsize: 0;)
 		uses: r2:r2_53,r25:r25_54,r3:r2_48 << 0x02,r4:r4_62,Stack +0010:0x00018A80,Stack +001C:r16,Stack +0020:r17,Stack +0024:r18,Stack +0028:r19,Stack +002C:ra
 		defs: r4:r4_63
-	r2_41 = Mem51[r17_37 + 0x00000AF4:word32]
+	r2_41 = Mem51[0x00010AF4:word32]
 	branch (word32) (r2_41 <u r16_43) != 0x00000000 l00000774_ds_t
 // DataOut:
 // DataOut (flags):
@@ -333,7 +327,7 @@ l000007A0:
 
 l000007A4:
 	deregister_tm_clones()
-	Mem79[r19_10 + 0x00000AF0:byte] = 0x01
+	Mem79[0x00010AF0:byte] = 0x01
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -521,9 +515,9 @@ __do_global_ctors_aux_entry:
 // SymbolicIn:
 
 l00000970:
-	word32 r3_28 = Mem0[0x00010AA8:word32]
+	word32 r3_28 = 0x00010000
 	word32 r2_10 = -1
-	word32 r25_18 = Mem17[r3_28 + 0x00000A60:word32]
+	word32 r25_18 = Mem17[0x00010A60:word32]
 	branch r25_18 == -1 l00000970_ds_t
 // DataOut:
 // DataOut (flags):
@@ -540,7 +534,7 @@ l00000970_ds_f:
 // SymbolicIn:
 
 l000009A4:
-	word32 r16_21 = r3_28 + 2656
+	word32 r16_21 = 0x00010A60
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

@@ -7,8 +7,56 @@
 <anonymous> g_tFFFFFFFF;
 int32 g_dw0004;
 FILE * g_ptr01C4;
-Eq_2331 g_t0695;
-Eq_8668 g_t40A8B0 = 
+Eq_n g_t0695;
+<anonymous> g_t400620 = <code>;
+<anonymous> g_t40072C = <code>;
+<anonymous> g_t4053F0 = <code>;
+<anonymous> g_t40697C = <code>;
+<anonymous> g_t4077E0 = <code>;
+<anonymous> g_t408180 = <code>;
+<anonymous> g_t409C10 = <code>;
+char g_str409E44[] = "w";
+char g_str409E48[] = "%d\n";
+char g_str409F94[] = "CONNECT %s:%d HTTP/1.1\r\nHost: %s:%d\r\n\r\n";
+char g_str409FBC[] = "host: ";
+Eq_n g_t409FE0 = 
+	{
+		
+		{
+			'c'
+		},
+		111,
+	};
+Eq_n g_t409FF4 = 
+	{
+		
+		{
+			'C'
+		},
+		111,
+	};
+char g_str40A1A8[] = "HTTP";
+char g_str40A3FC[] = "http://";
+char g_str40A404[] = "%s %s %s\r\n";
+char g_str40A410[] = "%s http://%s%s %s\r\n";
+char g_str40A424[] = "%s http://%s/%s %s\r\n";
+char g_str40A468[] = " \n\r";
+char g_str40A46C[] = " \t";
+char g_str40A5C0[] = "1yY";
+word32 g_dw40A5E0 = 0x72656469;
+word32 g_dw40A5E4 = 0x722E6366;
+int8 g_b40A5E8 = 103;
+int8 g_b40A5E9 = 0;
+char g_str40A614[] = "r";
+char g_str40A6AC[] = "Usage: %s -h ";
+char g_str40A6BC[] = "Usage: redir -h ";
+char g_str40A6D0[] = "-%c|%c ";
+char g_str40A6D8[] = "-%c %s ";
+char g_str40A6E0[] = "\n";
+char g_str40A740[] = "w";
+char g_str40A74C[] = "%Y-%m-%d %H:%M:%S";
+char g_str40A760[] = "%s:%s.%03d:%s\n";
+Eq_n g_t40A8B0 = 
 	{
 		
 		{
@@ -20,7 +68,7 @@ Eq_8668 g_t40A8B0 =
 			0
 		},
 	};
-Eq_9602 g_t40A8C0 = 
+Eq_n g_t40A8C0 = 
 	{
 		
 		{
@@ -33,23 +81,22 @@ Eq_9602 g_t40A8C0 =
 			0
 		},
 	};
-Eq_8 g_t410000;
-Eq_2087 g_t10000000 = 
+Eq_n g_t10000000 = 
 	{
 		&g_ptr10000860,
 		0,
 		0,
 		&g_tFFFFFFFF,
 	};
-Eq_2149 g_t10000010 = 
+Eq_n g_t10000010 = 
 	{
 		0
 	};
 int32 g_dw10000014 = 0;
-Eq_2156 g_t10000018 = &g_dw0004;
+Eq_n g_t10000018 = &g_dw0004;
 int32 g_dw1000001C = 204800;
-Eq_2402 g_t10000020 = 0;
-Eq_2331 g_t10000024 = 
+Eq_n g_t10000020 = 0;
+Eq_n g_t10000024 = 
 	{
 		
 		{
@@ -72,24 +119,22 @@ char * g_a100007E0[] =
 	{
 	};
 <anonymous> * g_ptr10000860 = null;
-struct Eq_2087 * g_ptr10000878 = &g_t10000000;
-ptr32 g_ptr1000087C = 0x00400000;
-struct Eq_8 * g_ptr10000880 = &g_t410000;
-union Eq_2149 * g_ptr100008A0 = &g_t10000AAC;
+struct Eq_n * g_ptr10000878 = &g_t10000000;
+union Eq_n * g_ptr100008A0 = &g_t10000AAC;
 int32 * g_ptr100008C0 = &g_dw10000014;
 time_t * g_ptr100008F4 = &g_t10000018;
 time_t * g_ptr1000090C = &g_t10000020;
 FILE ** g_ptr10000914 = &g_ptr01C4;
-struct Eq_9602 * g_ptr10000924 = &g_t40A8C0;
-struct Eq_8668 * g_ptr1000095C = &g_t40A8B0;
+struct Eq_n * g_ptr10000924 = &g_t40A8C0;
+struct Eq_n * g_ptr1000095C = &g_t40A8B0;
 char * (* g_ptr100009C8)[] = &g_a100007E0;
 FILE ** g_ptr10000A20 = &g_ptr10000AA8;
 int32 * g_ptr10000A28 = &g_dw1000001C;
-struct Eq_2331 * g_ptr10000A40 = &g_t10000024;
-union Eq_2149 * g_ptr10000A60 = &g_t10000010;
+struct Eq_n * g_ptr10000A40 = &g_t10000024;
+union Eq_n * g_ptr10000A60 = &g_t10000010;
 uint16 (** g_ptr10000A6C)[] = null;
 FILE * g_ptr10000AA8 = null;
-Eq_2149 g_t10000AAC = 
+Eq_n g_t10000AAC = 
 	{
 		0
 	};

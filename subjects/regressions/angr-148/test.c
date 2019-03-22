@@ -7,14 +7,14 @@
 // 00000000004003E0: Register ptr64 _init()
 ptr64 _init()
 {
-	ptr64 rax_15 = __gmon_start__;
+	ptr64 rax_n = __gmon_start__;
 	if (__gmon_start__ != 0x00)
 		__gmon_start__();
-	return rax_15;
+	return rax_n;
 }
 
-// 0000000000400440: void _start(Register (ptr64 Eq_10) rdx, Stack Eq_11 qwArg00)
-void _start(void (* rdx)(), Eq_11 qwArg00)
+// 0000000000400440: void _start(Register (ptr64 Eq_n) rdx, Stack Eq_n qwArg00)
+void _start(void (* rdx)(), Eq_n qwArg00)
 {
 	__align((char *) fp + 0x08);
 	__libc_start_main(&globals->t40053D, qwArg00, (char *) fp + 0x08, &globals->t400550, &globals->t4005C0, rdx, fp);
@@ -54,9 +54,9 @@ void frame_dummy(word64 rdx, word64 rbp, word64 rsi, word64 r8)
 		register_tm_clones(rbp, r8);
 	else
 	{
-		word64 r8_29;
+		word64 r8_n;
 		fn0000000000000000();
-		register_tm_clones(rbp, r8_29);
+		register_tm_clones(rbp, r8_n);
 	}
 }
 
@@ -75,17 +75,17 @@ void main()
 // 0000000000400550: void __libc_csu_init(Register word64 rdx, Register word64 rbx, Register word64 rbp, Register word64 rsi, Register word32 edi, Register word64 r12, Register word64 r13, Register word64 r14, Register word64 r15)
 void __libc_csu_init(word64 rdx, word64 rbx, word64 rbp, word64 rsi, word32 edi, word64 r12, word64 r13, word64 r14, word64 r15)
 {
-	word32 r15d_80 = (word32) (uint64) edi;
-	int64 rbp_29 = 0x00600E18 - 0x00600E10;
-	Eq_108 rbx_30 = 0x00;
-	word64 rax_34 = _init();
-	if (rbp_29 >> 0x03 != 0x00)
+	word32 r15d_n = (word32) (uint64) edi;
+	int64 rbp_n = 0x00600E18 - 0x00600E10;
+	Eq_n rbx_n = 0x00;
+	word64 rax_n = _init();
+	if (rbp_n >> 0x03 != 0x00)
 	{
 		do
 		{
-			(*((char *) globals->a600E10 + rbx_30 * 0x08))();
-			rbx_30 = (word64) rbx_30.u1 + 0x01;
-		} while (rbx_30 != rbp_29 >> 0x03);
+			(*((char *) globals->a600E10 + rbx_n * 0x08))();
+			rbx_n = (word64) rbx_n.u1 + 0x01;
+		} while (rbx_n != rbp_n >> 0x03);
 	}
 }
 

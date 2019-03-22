@@ -11,8 +11,8 @@ void fn0000000000400428()
 		__gmon_start__();
 }
 
-// 0000000000400480: void fn0000000000400480(Register (ptr64 Eq_7) rdx, Stack Eq_8 qwArg00)
-void fn0000000000400480(void (* rdx)(), Eq_8 qwArg00)
+// 0000000000400480: void fn0000000000400480(Register (ptr64 Eq_n) rdx, Stack Eq_n qwArg00)
+void fn0000000000400480(void (* rdx)(), Eq_n qwArg00)
 {
 	__align((char *) fp + 0x08);
 	__libc_start_main(&globals->t400660, qwArg00, (char *) fp + 0x08, &globals->t400710, &globals->t400780, rdx, fp);
