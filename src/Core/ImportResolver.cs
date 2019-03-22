@@ -36,7 +36,7 @@ namespace Reko.Core
         ExternalProcedure ResolveProcedure(string moduleName, int ordinal, IPlatform platform);
         Expression ResolveImport(string moduleName, string globalName, IPlatform platform);
         Expression ResolveImport(string moduleName, int ordinal, IPlatform platform);
-        ProcedureConstant ResolveToImportedProcedureConstant(Statement stm, Constant c);
+        Expression ResolveToImportedValue(Statement stm, Constant c);
     }
 
     /// <summary>
@@ -248,7 +248,7 @@ namespace Reko.Core
             }
     }
 
-        public ProcedureConstant ResolveToImportedProcedureConstant(Statement stm, Constant c)
+        public Expression ResolveToImportedValue(Statement stm, Constant c)
         {
             var addrInstruction = program.SegmentMap.MapLinearAddressToAddress(stm.LinearAddress);
             var addrImportThunk = program.Platform.MakeAddressFromConstant(c);
@@ -262,6 +262,16 @@ namespace Reko.Core
                 if (! program.Procedures.TryGetValue(sym.Address, out var proc))
                     return null;
                 return new ProcedureConstant(program.Platform.PointerType, proc);
+            }
+            else if (impref.SymbolType == SymbolType.Data)
+            {
+                // Read an address sized value at the given address.
+                if (!program.SegmentMap.TryFindSegment(impref.ReferenceAddress, out ImageSegment seg))
+                    return null;
+                var dt = program.Architecture.PointerType;
+                if (!program.Architecture.TryRead(seg.MemoryArea, impref.ReferenceAddress, dt, out Constant cIndirect))
+                    return Constant.Invalid;
+                return cIndirect;
             }
             else
             {

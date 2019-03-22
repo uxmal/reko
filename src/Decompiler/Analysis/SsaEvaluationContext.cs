@@ -74,7 +74,7 @@ namespace Reko.Analysis
         {
             if (access.EffectiveAddress is Constant c)
             {
-                var pc = importResolver.ResolveToImportedProcedureConstant(this.Statement, c);
+                var pc = importResolver.ResolveToImportedValue(this.Statement, c);
                 if (pc != null)
                     return pc;
             }
