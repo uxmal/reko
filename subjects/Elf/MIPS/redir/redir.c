@@ -11,12 +11,12 @@ void _init()
 	word32 r28_n;
 	word32 r25_n;
 	word32 ra_n;
-	(globals->ptr1000087C + 0x072C)();
+	globals->t40072C();
 	word32 sp_n;
 	word32 r28_n;
 	word32 r25_n;
 	word32 ra_n;
-	(globals->ptr10000880 + -25584)();
+	globals->t409C10();
 }
 
 // 00400230: void __start(Stack word32 dwArg00)
@@ -3357,7 +3357,7 @@ void request_get_host(int32 r4, up32 r5, word32 dwArg00, word32 dwArg04)
 				if ((word32) (r2_n - dwLoc18_n < 0x0101) != 0x00)
 				{
 					strncpy(r4_n, r5_n, r6_n);
-					Mem210[r4 + 0x04 + ((r2_n - dwLoc18_n) + 0x0010):byte] = 0x00;
+					Mem209[r4 + 0x04 + ((r2_n - dwLoc18_n) + 0x0010):byte] = 0x00;
 				}
 				else
 					print_log(r4_n, sp_n->dw0000, sp_n->dw0004, sp_n->dw0008, sp_n->dw000C);
@@ -3568,7 +3568,7 @@ void properties_load(word32 r4, word32 r5, word32 dwArg00, word32 dwArg04)
 								word32 r3_n;
 								word32 r6_n;
 								word32 r7_n;
-								(globals->ptr1000087C + 21488)();
+								globals->t4053F0();
 								((char *) globals->ptr10000A40 + 0x04)[(dwLoc014C_n * 0x14 - dwLoc014C_n) * 0x08 + 144] = (char) r2_n;
 							}
 						}
@@ -3670,7 +3670,7 @@ void properties_parse_command_line(int32 r4, Eq_n * r5[], word32 dwArg00, word32
 					word32 r1_n;
 					word32 r6_n;
 					word32 r7_n;
-					(globals->ptr1000087C + 21488)();
+					globals->t4053F0();
 					((char *) globals->ptr10000A40 + 0x04)[(dwLoc24_n * 0x14 - dwLoc24_n) * 0x08 + 144] = (char) r2_n;
 				}
 l004061C8:
@@ -3767,7 +3767,7 @@ void print_log(int32 r4, word32 dwArg00, word32 dwArg04, word32 dwArg08, word32 
 		word32 r4_n;
 		word32 r2_n;
 		word32 r3_n;
-		(globals->ptr1000087C + 27004)();
+		globals->t40697C();
 	}
 }
 
@@ -4212,7 +4212,7 @@ void __addsf3(word64 f12, word64 f14)
 	word64 f14_n;
 	word32 r6_n;
 	word32 r2_n;
-	(globals->ptr1000087C + 0x000077E0)();
+	globals->t4077E0();
 	__pack_f(r4_n);
 }
 
@@ -4245,7 +4245,7 @@ void __subsf3(word64 f12, word64 f14)
 	word64 f14_n;
 	word32 r2_n;
 	word32 r6_n;
-	(globals->ptr1000087C + 0x000077E0)();
+	globals->t4077E0();
 	__pack_f(r4_n);
 }
 
@@ -4676,7 +4676,7 @@ void __adddf3()
 	word32 r16_n;
 	word32 r4_n;
 	word32 r5_n;
-	(globals->ptr10000880 + -32384)();
+	globals->t408180();
 	__pack_d(r4_n);
 }
 
@@ -4721,7 +4721,7 @@ void __subdf3()
 	word32 r16_n;
 	word32 r4_n;
 	word32 r5_n;
-	(globals->ptr10000880 + -32384)();
+	globals->t408180();
 	__pack_d(r4_n);
 }
 
@@ -5494,6 +5494,6 @@ void _fini()
 	word32 r28_n;
 	word32 r25_n;
 	word32 ra_n;
-	(globals->ptr1000087C + 0x0620)();
+	globals->t400620();
 }
 

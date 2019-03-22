@@ -8,6 +8,13 @@ Eq_n g_tFFFFFFEC;
 <anonymous> g_tFFFFFFFF;
 word32 g_dw01C4;
 Eq_n g_t0695;
+<anonymous> g_t400620 = <code>;
+<anonymous> g_t40072C = <code>;
+<anonymous> g_t4053F0 = <code>;
+<anonymous> g_t40697C = <code>;
+<anonymous> g_t4077E0 = <code>;
+<anonymous> g_t408180 = <code>;
+<anonymous> g_t409C10 = <code>;
 Eq_n g_t10000000 = 
 	{
 		&g_ptr10000860,
@@ -35,8 +42,6 @@ word32 g_a100007E0[] =
 	};
 <anonymous> * g_ptr10000860 = null;
 struct Eq_n * g_ptr10000878 = &g_t10000000;
-ptr32 g_ptr1000087C = 0x00400000;
-ptr32 g_ptr10000880 = 0x00410000;
 int8 ** g_ptr100008A0 = &g_ptr10000AAC;
 int32 * g_ptr100008C0 = &g_dw10000014;
 int32 * g_ptr100008F4 = &g_dw10000018;

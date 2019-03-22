@@ -57,8 +57,8 @@ void __start(word32 dwArg00)
 // 00000670: void deregister_tm_clones()
 void deregister_tm_clones()
 {
-	word32 r2_n = globals->dw10AA4;
-	if (r2_n == globals->ptr10AA8 + 2692)
+	int32 r2_n = globals->dw10AA4;
+	if (r2_n == 68228)
 		return;
 	<anonymous> * r25_n = globals->ptr10AE4;
 	if (r25_n == null)
@@ -75,9 +75,8 @@ void deregister_tm_clones()
 // 000006A8: void register_tm_clones()
 void register_tm_clones()
 {
-	int32 r5_n = globals->dw10AA4 - (globals->ptr10AA8 + 2692);
-	Eq_n r2_n = r5_n >> 0x02 >> 0x1F;
-	if (r2_n + (r5_n >> 0x02) >> 0x01 == 0x00)
+	Eq_n r5_n = globals->dw10AA4 - 68228 >> 0x02;
+	if ((r5_n >>u 0x1F) + r5_n >> 0x01 == 0x00)
 		return;
 	<anonymous> * r25_n = globals->ptr10AD4;
 	if (r25_n == null)
@@ -94,8 +93,8 @@ void register_tm_clones()
 // 000006F4: void __do_global_dtors_aux()
 void __do_global_dtors_aux()
 {
-	struct Eq_n * r19_n = globals->ptr10AA8;
-	if ((word32) r19_n[2800] == 0x00)
+	struct Eq_n * r19_n = (struct Eq_n *) 0x00010000;
+	if ((word32) globals->b10AF0 == 0x00)
 	{
 		if (__cxa_finalize != 0x00)
 		{
@@ -111,12 +110,10 @@ void __do_global_dtors_aux()
 			word32 r3_n;
 			__cxa_finalize();
 		}
-		struct Eq_n * r17_n = globals->ptr10AA8;
-		struct Eq_n * r2_n = globals->ptr10AA8;
-		Eq_n r2_n = r17_n[0x0AF4];
-		Eq_n r16_n = (globals->dw10AB0 - (r2_n + 2664) >> 0x02) + -0x01;
-		word32 r18_n = r2_n + 2664;
-		if ((word32) (r2_n < r16_n) != 0x00)
+		Eq_n r2_n = globals->t10AF4;
+		struct Eq_n * r17_n = (struct Eq_n *) 0x00010000;
+		ip32 r18_n = 68200;
+		if ((word32) (r2_n < (word32) (globals->dw10AB0 - 68200 >> 0x02) - 0x01) != 0x00)
 		{
 			do
 			{
@@ -137,7 +134,7 @@ void __do_global_dtors_aux()
 			} while ((word32) (r2_n < r16_n) != 0x00);
 		}
 		deregister_tm_clones();
-		r19_n[2800] = (struct Eq_n) 0x01;
+		r19_n->b0AF0 = 0x01;
 	}
 }
 
@@ -200,8 +197,7 @@ void __libc_csu_fini()
 // 00000970: void __do_global_ctors_aux()
 void __do_global_ctors_aux()
 {
-	struct Eq_n * r3_n = globals->ptr10AA8;
-	<anonymous> * r25_n = r3_n[2656];
+	<anonymous> * r25_n = globals->ptr10A60;
 	if (r25_n != (<anonymous> *) -0x01)
 	{
 		do
