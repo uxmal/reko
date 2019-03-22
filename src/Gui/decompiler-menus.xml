@@ -74,7 +74,7 @@
   <!-- Commands ========================================================== -->
 
 	<cmd id="FileOpen" cmdSet="Reko" container="FileOpen" image="0">_Open...</cmd>
-  <cmd id="FileOpenAs" cmdSet="Reko" container="FileOpenAs">Op_en As (raw)...</cmd>
+  <cmd id="FileOpenAs" cmdSet="Reko" container="FileOpenAs">Op_en As...</cmd>
 	<cmd id="FileSave" cmdSet="Reko" container="FileSave" image="1">_Save</cmd>
   <cmd id="FileAddBinary" cmdSet="Reko" container="FileAddBinary">Add _binary file...</cmd>
   <cmd id="FileAddMetadata" cmdSet="Reko" container="FileAddMetadata">Add _metadata file...</cmd>
