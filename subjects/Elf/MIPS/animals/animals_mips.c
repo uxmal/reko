@@ -4,54 +4,54 @@
 
 #include "animals_mips.h"
 
-// 00003E5C: void _init(Register (ptr32 Eq_2) ra)
-void _init(Eq_2 * ra)
+// 00003E5C: void _init(Register (ptr32 Eq_n) ra)
+void _init(Eq_n * ra)
 {
-	<anonymous> * r2_11 = globals->ptr18F50;
-	if (r2_11 == null)
+	<anonymous> * r2_n = globals->ptr18F50;
+	if (r2_n == null)
 	{
-		word32 sp_23;
-		word32 r28_24;
-		word32 r25_25;
-		struct Eq_20 * ra_26;
-		word32 r2_27;
+		word32 sp_n;
+		word32 r28_n;
+		word32 r25_n;
+		struct Eq_n * ra_n;
+		word32 r2_n;
 		(ra->ptr14EA0 + 0x000040A4)();
-		word32 sp_33;
-		word32 r28_34;
-		word32 r25_35;
-		word32 ra_36;
-		word32 r2_37;
-		(ra_26->ptr14E7C + 0x00007360)();
+		word32 sp_n;
+		word32 r28_n;
+		word32 r25_n;
+		word32 ra_n;
+		word32 r2_n;
+		(ra_n->ptr14E7C + 0x00007360)();
 	}
 	else
 	{
-		<anonymous> * r25_12 = globals->ptr18F50;
-		word32 sp_13;
-		word32 r28_14;
-		word32 r25_15;
-		word32 ra_16;
-		word32 r2_17;
-		r25_12();
+		<anonymous> * r25_n = globals->ptr18F50;
+		word32 sp_n;
+		word32 r28_n;
+		word32 r25_n;
+		word32 ra_n;
+		word32 r2_n;
+		r25_n();
 	}
 }
 
-// 00003EE0: void __start(Register (ptr32 Eq_38) ra, Stack word32 dwArg00)
-void __start(Eq_38 * ra, word32 dwArg00)
+// 00003EE0: void __start(Register (ptr32 Eq_n) ra, Stack word32 dwArg00)
+void __start(Eq_n * ra, word32 dwArg00)
 {
-	<anonymous> * r25_23 = ra->ptr1508C;
-	word32 sp_24;
-	word32 ra_25;
-	word32 r0_26;
-	word32 r28_27;
-	word32 r4_28;
-	word32 r5_29;
-	word32 r6_30;
-	word32 r1_31;
-	word32 r7_32;
-	word32 r8_33;
-	word32 r2_34;
-	word32 r25_35;
-	r25_23();
+	<anonymous> * r25_n = ra->ptr1508C;
+	word32 sp_n;
+	word32 ra_n;
+	word32 r0_n;
+	word32 r28_n;
+	word32 r4_n;
+	word32 r5_n;
+	word32 r6_n;
+	word32 r1_n;
+	word32 r7_n;
+	word32 r8_n;
+	word32 r2_n;
+	word32 r25_n;
+	r25_n();
 	while (true)
 		;
 }
@@ -59,91 +59,91 @@ void __start(Eq_38 * ra, word32 dwArg00)
 // 00003F40: void deregister_tm_clones()
 void deregister_tm_clones()
 {
-	word32 r2_8 = globals->dw18D24;
-	if (r2_8 == globals->ptr18D28 + -0x000072FC)
+	word32 r2_n = globals->dw18D24;
+	if (r2_n == globals->ptr18D28 + -0x000072FC)
 		return;
-	<anonymous> * r25_18 = globals->ptr18F5C;
-	if (r25_18 == null)
+	<anonymous> * r25_n = globals->ptr18F5C;
+	if (r25_n == null)
 		return;
-	word32 sp_19;
-	word32 r28_20;
-	word32 r25_21;
-	word32 r4_22;
-	word32 r2_23;
-	word32 ra_24;
-	r25_18();
+	word32 sp_n;
+	word32 r28_n;
+	word32 r25_n;
+	word32 r4_n;
+	word32 r2_n;
+	word32 ra_n;
+	r25_n();
 }
 
 // 00003F78: void register_tm_clones()
 void register_tm_clones()
 {
-	int32 r5_10 = globals->dw18D24 - (globals->ptr18D28 + -0x000072FC);
-	Eq_84 r2_12 = r5_10 >> 0x02 >> 0x1F;
-	if (r2_12 + (r5_10 >> 0x02) >> 0x01 == 0x00)
+	int32 r5_n = globals->dw18D24 - (globals->ptr18D28 + -0x000072FC);
+	Eq_n r2_n = r5_n >> 0x02 >> 0x1F;
+	if (r2_n + (r5_n >> 0x02) >> 0x01 == 0x00)
 		return;
-	<anonymous> * r25_22 = globals->ptr18F4C;
-	if (r25_22 == null)
+	<anonymous> * r25_n = globals->ptr18F4C;
+	if (r25_n == null)
 		return;
-	word32 sp_23;
-	word32 r28_24;
-	word32 r25_25;
-	word32 r4_26;
-	word32 r5_27;
-	word32 r2_28;
-	r25_22();
+	word32 sp_n;
+	word32 r28_n;
+	word32 r25_n;
+	word32 r4_n;
+	word32 r5_n;
+	word32 r2_n;
+	r25_n();
 }
 
 // 00003FC4: void __do_global_dtors_aux()
 void __do_global_dtors_aux()
 {
-	ptr32 r19_10 = globals->ptr18D28;
-	if ((word32) *(r19_10 - 0x7050) != 0x00)
+	ptr32 r19_n = globals->ptr18D28;
+	if ((word32) *(r19_n - 0x7050) != 0x00)
 		return;
-	<anonymous> * r2_43 = globals->ptr18F8C;
-	if (r2_43 != null)
+	<anonymous> * r2_n = globals->ptr18F8C;
+	if (r2_n != null)
 	{
-		<anonymous> * r25_101 = globals->ptr18F8C;
-		word32 sp_104;
-		word32 r28_105;
-		word32 r25_106;
-		word32 ra_108;
-		word32 r18_109;
-		word32 r17_110;
-		word32 r16_111;
-		word32 r2_112;
-		word32 r4_113;
-		word32 r3_114;
-		r25_101();
+		<anonymous> * r25_n = globals->ptr18F8C;
+		word32 sp_n;
+		word32 r28_n;
+		word32 r25_n;
+		word32 ra_n;
+		word32 r18_n;
+		word32 r17_n;
+		word32 r16_n;
+		word32 r2_n;
+		word32 r4_n;
+		word32 r3_n;
+		r25_n();
 	}
-	ptr32 r17_52 = globals->ptr18D28;
-	ptr32 r2_50 = globals->ptr18D28;
-	Eq_128 r2_56 = *(r17_52 - 0x704C);
-	Eq_128 r16_58 = (globals->dw18D30 - (r2_50 + -29572) >> 0x02) + -0x01;
-	word32 r18_54 = r2_50 + -29572;
-	if ((word32) (r2_56 < r16_58) != 0x00)
+	ptr32 r17_n = globals->ptr18D28;
+	ptr32 r2_n = globals->ptr18D28;
+	Eq_n r2_n = *(r17_n - 0x704C);
+	Eq_n r16_n = (globals->dw18D30 - (r2_n + -29572) >> 0x02) + -0x01;
+	word32 r18_n = r2_n + -29572;
+	if ((word32) (r2_n < r16_n) != 0x00)
 	{
 		do
 		{
-			uint32 r2_78 = (word32) r2_56.u1 + 0x01;
-			*(r17_52 - 0x704C) = r2_78;
-			<anonymous> ** r2_81 = r18_54 + (r2_78 << 0x02);
-			<anonymous> * r25_82 = *r2_81;
-			word32 sp_83;
-			word32 r28_84;
-			word32 r25_85;
-			word32 ra_87;
-			Eq_128 r16_90;
-			word32 r2_91;
-			word32 r4_92;
-			word32 r3_93;
-			r25_82();
-			r2_56 = *(r17_52 - 0x704C);
-		} while ((word32) (r2_56 < r16_90) != 0x00);
+			uint32 r2_n = (word32) r2_n.u1 + 0x01;
+			*(r17_n - 0x704C) = r2_n;
+			<anonymous> ** r2_n = r18_n + (r2_n << 0x02);
+			<anonymous> * r25_n = *r2_n;
+			word32 sp_n;
+			word32 r28_n;
+			word32 r25_n;
+			word32 ra_n;
+			Eq_n r16_n;
+			word32 r2_n;
+			word32 r4_n;
+			word32 r3_n;
+			r25_n();
+			r2_n = *(r17_n - 0x704C);
+		} while ((word32) (r2_n < r16_n) != 0x00);
 	}
 	if (true)
 		deregister_tm_clones();
 	else
-		*(r19_10 - 0x7050) = 0x01;
+		*(r19_n - 0x7050) = 0x01;
 }
 
 // 000040A4: void frame_dummy()
@@ -157,23 +157,23 @@ void main(code * r5, code * dwArg00, code * dwArg04)
 {
 }
 
-// 00004334: void __static_initialization_and_destruction_0(Register int32 r4, Register int32 r5)
-void __static_initialization_and_destruction_0(int32 r4, int32 r5)
+// 00004334: void __static_initialization_and_destruction_n(Register int32 r4, Register int32 r5)
+void __static_initialization_and_destruction_n(int32 r4, int32 r5)
 {
 	if (true && true)
 	{
-		word32 sp_40;
-		word32 r28_41;
-		word32 r25_42;
-		word32 ra_43;
-		word32 r30_44;
-		word32 r4_45;
-		word32 r5_46;
-		word32 r3_47;
-		word32 r2_48;
-		word32 r6_49;
+		word32 sp_n;
+		word32 r28_n;
+		word32 r25_n;
+		word32 ra_n;
+		word32 r30_n;
+		word32 r4_n;
+		word32 r5_n;
+		word32 r3_n;
+		word32 r2_n;
+		word32 r6_n;
 		_ZNSt8ios_base4InitC1Ev();
-		__cxa_atexit(r4_54, r5_53, r6_51);
+		__cxa_atexit(r4_n, r5_n, r6_n);
 	}
 }
 
@@ -185,28 +185,28 @@ void _GLOBAL__sub_I_main()
 // 00004430: void ()
 void ()
 {
-	word32 sp_21;
-	word32 r28_22;
-	word32 r25_23;
-	word32 ra_24;
-	word32 r30_25;
-	word32 r4_26;
-	word32 r2_27;
-	word32 r5_28;
+	word32 sp_n;
+	word32 r28_n;
+	word32 r25_n;
+	word32 ra_n;
+	word32 r30_n;
+	word32 r4_n;
+	word32 r2_n;
+	word32 r5_n;
 	_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc();
 }
 
 // 00004490: void ()
 void ()
 {
-	word32 sp_21;
-	word32 r28_22;
-	word32 r25_23;
-	word32 ra_24;
-	word32 r30_25;
-	word32 r4_26;
-	word32 r2_27;
-	word32 r5_28;
+	word32 sp_n;
+	word32 r28_n;
+	word32 r25_n;
+	word32 ra_n;
+	word32 r30_n;
+	word32 r4_n;
+	word32 r2_n;
+	word32 r5_n;
 	_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc();
 }
 
@@ -224,35 +224,35 @@ void _ZN5HumanC1ENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE(code * r4,
 // 000045C8: void ()
 void ()
 {
-	word32 sp_21;
-	word32 r28_22;
-	word32 r25_23;
-	word32 ra_24;
-	word32 r30_25;
-	word32 r4_26;
-	word32 r2_27;
-	word32 r5_28;
-	word32 r3_29;
+	word32 sp_n;
+	word32 r28_n;
+	word32 r25_n;
+	word32 ra_n;
+	word32 r30_n;
+	word32 r4_n;
+	word32 r2_n;
+	word32 r5_n;
+	word32 r3_n;
 	_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc();
-	word32 sp_38;
-	word32 r28_39;
-	word32 r25_40;
-	word32 ra_41;
-	word32 r30_42;
-	word32 r4_43;
-	word32 r2_44;
-	word32 r5_45;
-	word32 r3_46;
+	word32 sp_n;
+	word32 r28_n;
+	word32 r25_n;
+	word32 ra_n;
+	word32 r30_n;
+	word32 r4_n;
+	word32 r2_n;
+	word32 r5_n;
+	word32 r3_n;
 	_ZStlsIcSt11char_traitsIcESaIcEERSt13basic_ostreamIT_T0_ES7_RKNSt7__cxx1112basic_stringIS4_S5_T1_EE();
-	word32 sp_54;
-	word32 r28_55;
-	word32 r25_56;
-	word32 ra_57;
-	word32 r30_58;
-	word32 r4_59;
-	word32 r2_60;
-	word32 r5_61;
-	word32 r3_62;
+	word32 sp_n;
+	word32 r28_n;
+	word32 r25_n;
+	word32 ra_n;
+	word32 r30_n;
+	word32 r4_n;
+	word32 r2_n;
+	word32 r5_n;
+	word32 r3_n;
 	_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc();
 }
 
@@ -274,12 +274,12 @@ void _ZSt11make_uniqueI3DogJEENSt9_MakeUniqIT_E15__single_objectEDpOT0_(code * r
 // 00004834: void _ZNSt10unique_ptrI3DogSt14default_deleteIS0_EED1Ev(Register (ptr32 code) r4, Register (ptr32 code) r5, Stack (ptr32 code) dwArg00)
 void _ZNSt10unique_ptrI3DogSt14default_deleteIS0_EED1Ev(code * r4, code * r5, code * dwArg00)
 {
-	<anonymous> * r2_18 = globals->ptr18D88;
+	<anonymous> * r2_n = globals->ptr18D88;
 	if (true)
 		_ZNSt15__uniq_ptr_implI3DogSt14default_deleteIS0_EEC1EPS0_(r4, r5, dwLoc28, dwLoc24);
 	else
 	{
-		if (*r2_18 != 0x00)
+		if (*r2_n != 0x00)
 		{
 			if (true)
 			{
@@ -292,25 +292,25 @@ void _ZNSt10unique_ptrI3DogSt14default_deleteIS0_EED1Ev(code * r4, code * r5, co
 				return;
 			}
 		}
-		*r2_18 = 0x00;
+		*r2_n = 0x00;
 	}
 }
 
 // 000048EC: void _ZNSt10unique_ptrI6AnimalSt14default_deleteIS0_EEaSI3DogS1_IS5_EEENSt9enable_ifIXsrSt6__and_IJS8_IJSt14is_convertibleINS_IT_T0_E7pointerEPS0_ESt6__not_ISt8is_arrayISA_EESt5__or_IJS8_IJSt12is_referenceIS2_ESt7is_sameIS2_SB_EEES8_IJSG_ISM_ES9_ISB_S2_EEEEEEESt13is_assignableIRS2_OSB_EEE5valueERS3_E4typeEOSC_(Register (ptr32 code) r5, Stack (ptr32 code) dwArg00, Stack (ptr32 code) dwArg04)
 void _ZNSt10unique_ptrI6AnimalSt14default_deleteIS0_EEaSI3DogS1_IS5_EEENSt9enable_ifIXsrSt6__and_IJS8_IJSt14is_convertibleINS_IT_T0_E7pointerEPS0_ESt6__not_ISt8is_arrayISA_EESt5__or_IJS8_IJSt12is_referenceIS2_ESt7is_sameIS2_SB_EEES8_IJSG_ISM_ES9_ISB_S2_EEEEEEESt13is_assignableIRS2_OSB_EEE5valueERS3_E4typeEOSC_(code * r5, code * dwArg00, code * dwArg04)
 {
-	<anonymous> * r2_19 = globals->ptr18D94;
+	<anonymous> * r2_n = globals->ptr18D94;
 	if (true)
 		_ZNSt10unique_ptrI3DogSt14default_deleteIS0_EE7releaseEv(r5, r5, dwLoc28);
 	else if (true)
 	{
-		<anonymous> * r5_61 = _ZNSt10unique_ptrI6AnimalSt14default_deleteIS0_EE5resetEPS0_(r2_19, dwLoc28, dwLoc24);
+		<anonymous> * r5_n = _ZNSt10unique_ptrI6AnimalSt14default_deleteIS0_EE5resetEPS0_(r2_n, dwLoc28, dwLoc24);
 	}
 	else if (true)
 		_ZNSt10unique_ptrI3DogSt14default_deleteIS0_EE11get_deleterEv(dwLoc28);
 	else
 	{
-		<anonymous> * r2_40 = globals->ptr18D9C;
+		<anonymous> * r2_n = globals->ptr18D9C;
 		if (true)
 			_ZSt7forwardISt14default_deleteI3DogEEOT_RNSt16remove_referenceIS3_E4typeE(dwLoc28);
 		else if (true)
@@ -319,7 +319,7 @@ void _ZNSt10unique_ptrI6AnimalSt14default_deleteIS0_EEaSI3DogS1_IS5_EEENSt9enabl
 		{
 			if (false)
 				return;
-			_ZNSt10unique_ptrI6AnimalSt14default_deleteIS0_EED1Ev(r2_40, dwLoc28);
+			_ZNSt10unique_ptrI6AnimalSt14default_deleteIS0_EED1Ev(r2_n, dwLoc28);
 		}
 	}
 }
@@ -337,12 +337,12 @@ void _ZSt11make_uniqueI3CatJEENSt9_MakeUniqIT_E15__single_objectEDpOT0_(code * r
 // 00004AD4: void _ZNSt10unique_ptrI3CatSt14default_deleteIS0_EED1Ev(Register (ptr32 code) r4, Register (ptr32 code) r5, Stack (ptr32 code) dwArg00)
 void _ZNSt10unique_ptrI3CatSt14default_deleteIS0_EED1Ev(code * r4, code * r5, code * dwArg00)
 {
-	<anonymous> * r2_18 = globals->ptr18DB0;
+	<anonymous> * r2_n = globals->ptr18DB0;
 	if (true)
 		_ZNSt15__uniq_ptr_implI3CatSt14default_deleteIS0_EEC1EPS0_(r4, r5, dwLoc28, dwLoc24);
 	else
 	{
-		if (*r2_18 != 0x00)
+		if (*r2_n != 0x00)
 		{
 			if (true)
 			{
@@ -355,25 +355,25 @@ void _ZNSt10unique_ptrI3CatSt14default_deleteIS0_EED1Ev(code * r4, code * r5, co
 				return;
 			}
 		}
-		*r2_18 = 0x00;
+		*r2_n = 0x00;
 	}
 }
 
 // 00004B8C: void _ZNSt10unique_ptrI6AnimalSt14default_deleteIS0_EEaSI3CatS1_IS5_EEENSt9enable_ifIXsrSt6__and_IJS8_IJSt14is_convertibleINS_IT_T0_E7pointerEPS0_ESt6__not_ISt8is_arrayISA_EESt5__or_IJS8_IJSt12is_referenceIS2_ESt7is_sameIS2_SB_EEES8_IJSG_ISM_ES9_ISB_S2_EEEEEEESt13is_assignableIRS2_OSB_EEE5valueERS3_E4typeEOSC_(Register (ptr32 code) r5, Stack (ptr32 code) dwArg00, Stack (ptr32 code) dwArg04)
 void _ZNSt10unique_ptrI6AnimalSt14default_deleteIS0_EEaSI3CatS1_IS5_EEENSt9enable_ifIXsrSt6__and_IJS8_IJSt14is_convertibleINS_IT_T0_E7pointerEPS0_ESt6__not_ISt8is_arrayISA_EESt5__or_IJS8_IJSt12is_referenceIS2_ESt7is_sameIS2_SB_EEES8_IJSG_ISM_ES9_ISB_S2_EEEEEEESt13is_assignableIRS2_OSB_EEE5valueERS3_E4typeEOSC_(code * r5, code * dwArg00, code * dwArg04)
 {
-	<anonymous> * r2_19 = globals->ptr18DBC;
+	<anonymous> * r2_n = globals->ptr18DBC;
 	if (true)
 		_ZNSt10unique_ptrI3CatSt14default_deleteIS0_EE7releaseEv(r5, r5, dwLoc28);
 	else if (true)
 	{
-		<anonymous> * r5_61 = _ZNSt10unique_ptrI6AnimalSt14default_deleteIS0_EE5resetEPS0_(r2_19, dwLoc28, dwLoc24);
+		<anonymous> * r5_n = _ZNSt10unique_ptrI6AnimalSt14default_deleteIS0_EE5resetEPS0_(r2_n, dwLoc28, dwLoc24);
 	}
 	else if (true)
 		_ZNSt10unique_ptrI3CatSt14default_deleteIS0_EE11get_deleterEv(dwLoc28);
 	else
 	{
-		<anonymous> * r2_40 = globals->ptr18DC0;
+		<anonymous> * r2_n = globals->ptr18DC0;
 		if (true)
 			_ZSt7forwardISt14default_deleteI3CatEEOT_RNSt16remove_referenceIS3_E4typeE(dwLoc28);
 		else if (true)
@@ -382,7 +382,7 @@ void _ZNSt10unique_ptrI6AnimalSt14default_deleteIS0_EEaSI3CatS1_IS5_EEENSt9enabl
 		{
 			if (false)
 				return;
-			_ZNSt10unique_ptrI6AnimalSt14default_deleteIS0_EED1Ev(r2_40, dwLoc28);
+			_ZNSt10unique_ptrI6AnimalSt14default_deleteIS0_EED1Ev(r2_n, dwLoc28);
 		}
 	}
 }
@@ -400,44 +400,44 @@ void _ZSt11make_uniqueI5HumanJRPcEENSt9_MakeUniqIT_E15__single_objectEDpOT0_(cod
 // 00004E78: void _ZNSt10unique_ptrI5HumanSt14default_deleteIS0_EED1Ev(Register (ptr32 code) r4, Register (ptr32 code) r5, Stack (ptr32 code) dwArg00)
 void _ZNSt10unique_ptrI5HumanSt14default_deleteIS0_EED1Ev(code * r4, code * r5, code * dwArg00)
 {
-	<anonymous> * r2_18 = globals->ptr18DD4;
+	<anonymous> * r2_n = globals->ptr18DD4;
 	if (true)
 		_ZNSt15__uniq_ptr_implI5HumanSt14default_deleteIS0_EEC1EPS0_(r4, r5, dwLoc28, dwLoc24);
 	else
 	{
-		if (*r2_18 != null)
+		if (*r2_n != null)
 		{
 			if (true)
 			{
 				_ZNSt10unique_ptrI5HumanSt14default_deleteIS0_EE11get_deleterEv(dwLoc28);
 				return;
 			}
-			<anonymous> * r2_51 = *r2_18;
+			<anonymous> * r2_n = *r2_n;
 			if (true)
 			{
-				<anonymous> * r5_59 = _ZNKSt14default_deleteI5HumanEclEPS0_(r2_51, dwLoc28, dwLoc24);
+				<anonymous> * r5_n = _ZNKSt14default_deleteI5HumanEclEPS0_(r2_n, dwLoc28, dwLoc24);
 				return;
 			}
 		}
-		*r2_18 = null;
+		*r2_n = null;
 	}
 }
 
 // 00004F30: void _ZNSt10unique_ptrI6AnimalSt14default_deleteIS0_EEaSI5HumanS1_IS5_EEENSt9enable_ifIXsrSt6__and_IJS8_IJSt14is_convertibleINS_IT_T0_E7pointerEPS0_ESt6__not_ISt8is_arrayISA_EESt5__or_IJS8_IJSt12is_referenceIS2_ESt7is_sameIS2_SB_EEES8_IJSG_ISM_ES9_ISB_S2_EEEEEEESt13is_assignableIRS2_OSB_EEE5valueERS3_E4typeEOSC_(Register (ptr32 code) r5, Stack (ptr32 code) dwArg00, Stack (ptr32 code) dwArg04)
 void _ZNSt10unique_ptrI6AnimalSt14default_deleteIS0_EEaSI5HumanS1_IS5_EEENSt9enable_ifIXsrSt6__and_IJS8_IJSt14is_convertibleINS_IT_T0_E7pointerEPS0_ESt6__not_ISt8is_arrayISA_EESt5__or_IJS8_IJSt12is_referenceIS2_ESt7is_sameIS2_SB_EEES8_IJSG_ISM_ES9_ISB_S2_EEEEEEESt13is_assignableIRS2_OSB_EEE5valueERS3_E4typeEOSC_(code * r5, code * dwArg00, code * dwArg04)
 {
-	<anonymous> * r2_19 = globals->ptr18DE0;
+	<anonymous> * r2_n = globals->ptr18DE0;
 	if (true)
 		_ZNSt10unique_ptrI5HumanSt14default_deleteIS0_EE7releaseEv(r5, r5, dwLoc28);
 	else if (true)
 	{
-		<anonymous> * r5_61 = _ZNSt10unique_ptrI6AnimalSt14default_deleteIS0_EE5resetEPS0_(r2_19, dwLoc28, dwLoc24);
+		<anonymous> * r5_n = _ZNSt10unique_ptrI6AnimalSt14default_deleteIS0_EE5resetEPS0_(r2_n, dwLoc28, dwLoc24);
 	}
 	else if (true)
 		_ZNSt10unique_ptrI5HumanSt14default_deleteIS0_EE11get_deleterEv(dwLoc28);
 	else
 	{
-		<anonymous> * r2_40 = globals->ptr18DE4;
+		<anonymous> * r2_n = globals->ptr18DE4;
 		if (true)
 			_ZSt7forwardISt14default_deleteI5HumanEEOT_RNSt16remove_referenceIS3_E4typeE(dwLoc28);
 		else if (true)
@@ -446,7 +446,7 @@ void _ZNSt10unique_ptrI6AnimalSt14default_deleteIS0_EEaSI5HumanS1_IS5_EEENSt9ena
 		{
 			if (false)
 				return;
-			_ZNSt10unique_ptrI6AnimalSt14default_deleteIS0_EED1Ev(r2_40, dwLoc28);
+			_ZNSt10unique_ptrI6AnimalSt14default_deleteIS0_EED1Ev(r2_n, dwLoc28);
 		}
 	}
 }
@@ -478,7 +478,7 @@ void _ZNSt10unique_ptrI6AnimalSt14default_deleteIS0_EE11get_deleterEv(code * dwA
 // 00005114: Register int32 _ZNKSt14default_deleteI6AnimalEclEPS0_(Stack (ptr32 code) dwArg00, Stack (ptr32 code) dwArg04)
 int32 _ZNKSt14default_deleteI6AnimalEclEPS0_(code * dwArg00, code * dwArg04)
 {
-	(~0x45223501, ~0x45223501, sp_6->ptr0010, sp_6->dw0014);
+	(~0x45223501, ~0x45223501, sp_n->ptr0010, sp_n->dw0014);
 	return 0x04;
 }
 
@@ -509,7 +509,7 @@ void _ZNSt10unique_ptrI3DogSt14default_deleteIS0_EE11get_deleterEv(code * dwArg0
 // 00005288: void _ZNKSt14default_deleteI3DogEclEPS0_(Stack (ptr32 code) dwArg00, Stack (ptr32 code) dwArg04)
 void _ZNKSt14default_deleteI3DogEclEPS0_(code * dwArg00, code * dwArg04)
 {
-	(~0x45223501, ~0x45223501, sp_6->ptr0010, sp_6->dw0014);
+	(~0x45223501, ~0x45223501, sp_n->ptr0010, sp_n->dw0014);
 }
 
 // 000052E8: Register (ptr32 code) _ZNSt10unique_ptrI6AnimalSt14default_deleteIS0_EE5resetEPS0_(Register (ptr32 code) r5, Stack (ptr32 code) dwArg00, Stack (ptr32 code) dwArg04)
@@ -559,7 +559,7 @@ void _ZNSt10unique_ptrI3CatSt14default_deleteIS0_EE11get_deleterEv(code * dwArg0
 // 00005598: void _ZNKSt14default_deleteI3CatEclEPS0_(Stack (ptr32 code) dwArg00, Stack (ptr32 code) dwArg04)
 void _ZNKSt14default_deleteI3CatEclEPS0_(code * dwArg00, code * dwArg04)
 {
-	(~0x45223501, ~0x45223501, sp_6->ptr0010, sp_6->dw0014);
+	(~0x45223501, ~0x45223501, sp_n->ptr0010, sp_n->dw0014);
 }
 
 // 000055F8: void _ZNSt10unique_ptrI3CatSt14default_deleteIS0_EE7releaseEv(Register (ptr32 code) r4, Register (ptr32 code) r5, Stack (ptr32 code) dwArg00)
@@ -605,14 +605,14 @@ void _ZNSt10unique_ptrI5HumanSt14default_deleteIS0_EE11get_deleterEv(code * dwAr
 void Human::~Human()
 {
 	*r4 = (char *) globals->ptr18D6C + 0x08;
-	word32 sp_25;
-	word32 r28_26;
-	word32 r25_27;
-	word32 ra_28;
-	word32 r30_29;
-	word32 r4_30;
-	word32 r2_31;
-	word32 r3_32;
+	word32 sp_n;
+	word32 r28_n;
+	word32 r25_n;
+	word32 ra_n;
+	word32 r30_n;
+	word32 r4_n;
+	word32 r2_n;
+	word32 r3_n;
 	_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEED1Ev();
 }
 
@@ -1219,36 +1219,36 @@ void _ZNSt10_Head_baseILj0EP5HumanLb0EE7_M_headERKS2_(word32 dwArg00)
 {
 }
 
-// 000072B0: void __libc_csu_init(Register (ptr32 Eq_2) ra)
-void __libc_csu_init(Eq_2 * ra)
+// 000072B0: void __libc_csu_init(Register (ptr32 Eq_n) ra)
+void __libc_csu_init(Eq_n * ra)
 {
 	if (true)
 		_init(ra);
 	else
 	{
-		word32 * r16_45 = globals->ptr18F34;
-		if (globals->dw18F38 - r16_45 >> 0x02 != 0x00)
+		word32 * r16_n = globals->ptr18F34;
+		if (globals->dw18F38 - r16_n >> 0x02 != 0x00)
 		{
 			while (true)
 			{
-				<anonymous> * r25_68 = *r16_45;
-				word32 sp_73;
-				word32 r28_74;
-				word32 r25_75;
-				word32 r21_76;
-				word32 r6_77;
-				word32 r20_78;
-				word32 r5_79;
-				word32 r19_80;
-				word32 r4_81;
-				word32 r18_82;
-				word32 r16_83;
-				word32 ra_84;
-				word32 r17_85;
-				r25_68();
-				if (r18_82 == r17_85)
+				<anonymous> * r25_n = *r16_n;
+				word32 sp_n;
+				word32 r28_n;
+				word32 r25_n;
+				word32 r21_n;
+				word32 r6_n;
+				word32 r20_n;
+				word32 r5_n;
+				word32 r19_n;
+				word32 r4_n;
+				word32 r18_n;
+				word32 r16_n;
+				word32 ra_n;
+				word32 r17_n;
+				r25_n();
+				if (r18_n == r17_n)
 					break;
-				r16_45 = r16_83 + 0x04;
+				r16_n = r16_n + 0x04;
 			}
 		}
 	}
@@ -1262,32 +1262,32 @@ void __libc_csu_fini()
 // 00007360: void __do_global_ctors_aux()
 void __do_global_ctors_aux()
 {
-	ptr32 r3_7 = globals->ptr18D28;
-	<anonymous> * r25_17 = *(r3_7 - 0x738C);
-	if (r25_17 != (<anonymous> *) -0x01)
+	ptr32 r3_n = globals->ptr18D28;
+	<anonymous> * r25_n = *(r3_n - 0x738C);
+	if (r25_n != (<anonymous> *) -0x01)
 	{
 		do
 		{
-			word32 sp_30;
-			word32 r28_31;
-			word32 r25_32;
-			word32 r3_33;
-			word32 r2_34;
-			word32 ra_35;
-			word32 r17_36;
-			int32 * r16_37;
-			r25_17();
-		} while (*r16_37 != -0x01);
+			word32 sp_n;
+			word32 r28_n;
+			word32 r25_n;
+			word32 r3_n;
+			word32 r2_n;
+			word32 ra_n;
+			word32 r17_n;
+			int32 * r16_n;
+			r25_n();
+		} while (*r16_n != -0x01);
 	}
 }
 
-// 000074B0: void _fini(Register (ptr32 Eq_2361) ra)
-void _fini(Eq_2361 * ra)
+// 000074B0: void _fini(Register (ptr32 Eq_n) ra)
+void _fini(Eq_n * ra)
 {
-	word32 sp_16;
-	word32 r28_17;
-	word32 r25_18;
-	word32 ra_19;
+	word32 sp_n;
+	word32 r28_n;
+	word32 r25_n;
+	word32 ra_n;
 	(ra->ptr11864 + 0x00003FC4)();
 }
 

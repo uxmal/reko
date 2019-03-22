@@ -9,18 +9,18 @@ void fn0000000000400428()
 {
 	if (__gmon_start__ != 0x00)
 	{
-		word64 rsp_14;
-		byte SCZO_15;
-		word64 rax_16;
-		byte SZO_17;
-		bool C_18;
-		bool Z_19;
+		word64 rsp_n;
+		byte SCZO_n;
+		word64 rax_n;
+		byte SZO_n;
+		bool C_n;
+		bool Z_n;
 		__gmon_start__();
 	}
 }
 
-// 0000000000400480: void fn0000000000400480(Register (ptr64 Eq_13) rdx, Stack Eq_14 qwArg00)
-void fn0000000000400480( * rdx, Eq_14 qwArg00)
+// 0000000000400480: void fn0000000000400480(Register (ptr64 Eq_n) rdx, Stack Eq_n qwArg00)
+void fn0000000000400480( * rdx, Eq_n qwArg00)
 {
 	__align((char *) fp + 0x08);
 	__libc_start_main(&globals->t400660, qwArg00, (char *) fp + 0x08, &globals->t400710, &globals->t400780, rdx, fp);
@@ -32,17 +32,17 @@ void fn00000000004004B0(word64 r8)
 {
 	if (r8 == 0x00601040 || 0x00 == 0x00)
 		return;
-	word64 rsp_39;
-	word64 rbp_40;
-	word32 eax_41;
-	word64 rax_42;
-	word64 r8_43;
-	byte SCZO_44;
-	bool Z_45;
-	byte SZO_46;
-	bool C_47;
-	word32 edi_48;
-	word64 rdi_49;
+	word64 rsp_n;
+	word64 rbp_n;
+	word32 eax_n;
+	word64 rax_n;
+	word64 r8_n;
+	byte SCZO_n;
+	bool Z_n;
+	byte SZO_n;
+	bool C_n;
+	word32 edi_n;
+	word64 rdi_n;
 	null();
 }
 

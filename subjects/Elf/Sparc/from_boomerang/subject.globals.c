@@ -4,7 +4,7 @@
 
 #include "subject.h"
 
-Eq_2 g_t10CB8 = Unexpected function type (fn void ())
+Eq_n g_t10CB8 = Unexpected function type (fn void ())
 ;
 char g_str10CF8[] = "Pass\n";
 char g_str10D00[] = "Failed!\n";

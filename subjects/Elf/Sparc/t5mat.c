@@ -6,130 +6,130 @@
 
 void t5mat_(word32 f2, word32 f3, word32 f4, word32 f6, word32 o0, word32 o1, word32 o2, word32 o3, word32 dwArg5C, word32 dwArg60, word32 dwArg64, word32 dwArg68, word32 dwArg6C, word32 dwArg70, word32 dwArg74, word32 dwArg78, word32 dwArg7C, word32 dwArg80, word32 dwArg84, word32 dwArg88, word32 dwArg8C, word32 dwArg90, word32 dwArg94, word32 dwArg98, word32 dwArg9C, word32 dwArgA0, word32 dwArgA4, word32 dwArgA8, word32 dwArgAC, word32 dwArgB0, word32 dwArgB4, word32 dwArgB8, word32 dwArgBC, word32 dwArgC0)
 {
-	word32 l0_118;
-	word32 i4_30 = Mem0[0x0804B000:word32];
-	word32 i0_113 = o0;
-	word32 i1_112 = o1;
-	word32 i2_111 = o2;
-	word32 i3_10 = o3;
-	if (i4_30 - Mem0[0x0804D008:word32] != 0x00)
+	word32 l0_n;
+	word32 i4_n = Mem0[0x0804B000:word32];
+	word32 i0_n = o0;
+	word32 i1_n = o1;
+	word32 i2_n = o2;
+	word32 i3_n = o3;
+	if (i4_n - Mem0[0x0804D008:word32] != 0x00)
 	{
-		word32 g0_243 = 0x00 - i4_30 - Mem0[0x0804D008:word32];
-		if (g0_243 != 0x00)
+		word32 g0_n = 0x00 - i4_n - Mem0[0x0804D008:word32];
+		if (g0_n != 0x00)
 		{
 			while (true)
 			{
-				word32 sp_260;
-				word32 o0_262;
-				word32 o1_264;
-				word32 o2_266;
-				word32 o3_268;
-				word32 i4_269;
-				word32 o4_270;
-				word32 i5_271;
-				word32 o5_272;
-				word32 i6_273;
-				word32 i7_274;
-				word32 o7_275;
-				word32 l7_276;
-				word32 l4_277;
-				word32 l2_278;
-				word32 l5_279;
-				word32 l6_280;
-				word32 l3_281;
-				word32 g0_282;
-				byte NZVC_283;
-				bool Z_284;
-				word32 l0_285;
-				word32 l1_286;
-				byte NZV_287;
+				word32 sp_n;
+				word32 o0_n;
+				word32 o1_n;
+				word32 o2_n;
+				word32 o3_n;
+				word32 i4_n;
+				word32 o4_n;
+				word32 i5_n;
+				word32 o5_n;
+				word32 i6_n;
+				word32 i7_n;
+				word32 o7_n;
+				word32 l7_n;
+				word32 l4_n;
+				word32 l2_n;
+				word32 l5_n;
+				word32 l6_n;
+				word32 l3_n;
+				word32 g0_n;
+				byte NZVC_n;
+				bool Z_n;
+				word32 l0_n;
+				word32 l1_n;
+				byte NZV_n;
 				apcad_();
-				if (Mem0[i5_271 + 0x0804B0D0:word32] <= 0x00)
+				if (Mem0[i5_n + 0x0804B0D0:word32] <= 0x00)
 					break;
-				if (i4_269 > 0x1A)
+				if (i4_n > 0x1A)
 				{
-					l0_118 = Mem0[0x0804B0DC:word32];
+					l0_n = Mem0[0x0804B0DC:word32];
 					goto l080480D0;
 				}
 			}
-			word32 sp_329;
-			word32 i0_330;
-			word32 o0_331;
-			word32 i1_332;
-			word32 o1_333;
-			word32 i2_334;
-			word32 o2_335;
-			word32 i3_336;
-			word32 o3_337;
-			word32 i4_338;
-			word32 o4_339;
-			word32 i5_340;
-			word32 o5_341;
-			word32 i6_342;
-			word32 i7_343;
-			word32 o7_344;
-			word32 l7_345;
-			word32 l4_346;
-			word32 l2_347;
-			word32 l5_348;
-			word32 l6_349;
-			word32 l3_350;
-			word32 g0_351;
-			byte NZVC_352;
-			bool Z_353;
-			word32 l0_354;
-			word32 l1_355;
-			byte NZV_356;
-			word32 f2_357;
-			word32 f3_358;
-			word32 f4_359;
-			word32 f6_360;
+			word32 sp_n;
+			word32 i0_n;
+			word32 o0_n;
+			word32 i1_n;
+			word32 o1_n;
+			word32 i2_n;
+			word32 o2_n;
+			word32 i3_n;
+			word32 o3_n;
+			word32 i4_n;
+			word32 o4_n;
+			word32 i5_n;
+			word32 o5_n;
+			word32 i6_n;
+			word32 i7_n;
+			word32 o7_n;
+			word32 l7_n;
+			word32 l4_n;
+			word32 l2_n;
+			word32 l5_n;
+			word32 l6_n;
+			word32 l3_n;
+			word32 g0_n;
+			byte NZVC_n;
+			bool Z_n;
+			word32 l0_n;
+			word32 l1_n;
+			byte NZV_n;
+			word32 f2_n;
+			word32 f3_n;
+			word32 f4_n;
+			word32 f6_n;
 			__s_cat();
-			word32 sp_365;
-			word32 i0_366;
-			word32 o0_367;
-			word32 i1_368;
-			word32 o1_369;
-			word32 i2_370;
-			word32 o2_371;
-			word32 i3_372;
-			word32 o3_373;
-			word32 i4_374;
-			word32 o4_375;
-			word32 i5_376;
-			word32 o5_377;
-			word32 i6_378;
-			word32 i7_379;
-			word32 o7_380;
-			word32 l7_381;
-			word32 l4_382;
-			word32 l2_383;
-			word32 l5_384;
-			word32 l6_385;
-			word32 l3_386;
-			word32 g0_387;
-			byte NZVC_388;
-			bool Z_389;
-			word32 l0_390;
-			word32 l1_391;
-			byte NZV_392;
-			word32 f2_393;
-			word32 f3_394;
-			word32 f4_395;
-			word32 f6_396;
+			word32 sp_n;
+			word32 i0_n;
+			word32 o0_n;
+			word32 i1_n;
+			word32 o1_n;
+			word32 i2_n;
+			word32 o2_n;
+			word32 i3_n;
+			word32 o3_n;
+			word32 i4_n;
+			word32 o4_n;
+			word32 i5_n;
+			word32 o5_n;
+			word32 i6_n;
+			word32 i7_n;
+			word32 o7_n;
+			word32 l7_n;
+			word32 l4_n;
+			word32 l2_n;
+			word32 l5_n;
+			word32 l6_n;
+			word32 l3_n;
+			word32 g0_n;
+			byte NZVC_n;
+			bool Z_n;
+			word32 l0_n;
+			word32 l1_n;
+			byte NZV_n;
+			word32 f2_n;
+			word32 f3_n;
+			word32 f4_n;
+			word32 f6_n;
 			aperss_();
 			Mem399[0x0804B000:word32] = 0x00 - Mem0[0x0804D008:word32];
 		}
 		else
-			Mem425[0x0804B000:word32] = i4_30;
+			Mem425[0x0804B000:word32] = i4_n;
 	}
 	else
 	{
-		l0_118 = Mem0[0x0804B0DC:word32];
+		l0_n = Mem0[0x0804B0DC:word32];
 l080480D0:
-		word32 i4_233;
-		word32 l5_234 = t5matp_(f2, f3, f4, f6, i0_113, i1_112, i2_111, i3_10, dwArg44, dwArg4C, (l0_118 << 0x02) + 0x0804EC24, (Mem0[0x0804B0E0:word32] << 0x02) + 0x0804EC24, (Mem0[0x0804B0E4:word32] << 0x02) + 0x0804EC24, (Mem0[0x0804B0E8:word32] << 0x02) + 0x0804EC24, (Mem0[0x0804B0EC:word32] << 0x02) + 0x0804EC24, (Mem0[0x0804B0F0:word32] << 0x02) + 0x0804EC24, (Mem0[0x0804B0F4:word32] << 0x02) + 140540324, (Mem0[0x0804B0F8:word32] << 0x02) + 140540324, (Mem0[0x0804B0FC:word32] << 0x02) + 140540324, (Mem0[0x0804B100:word32] << 0x02) + 140540324, (Mem0[0x0804B104:word32] << 0x02) + 140540324, (Mem0[0x0804B108:word32] << 0x02) + 140540324, (Mem0[0x0804B10C:word32] << 0x02) + 140540324, (Mem0[0x0804B110:word32] << 0x02) + 140540324, (Mem0[0x0804B114:word32] << 0x02) + 140540324, (Mem0[0x0804B118:word32] << 0x02) + 140540324, (Mem0[134525212:word32] << 0x02) + 140540324, (Mem0[0x0804B120:word32] << 0x02) + 140540324, (Mem0[0x0804B124:word32] << 0x02) + 140540324, (Mem0[134525224:word32] << 0x02) + 140540324, (Mem0[134525228:word32] << 0x02) + 140540324, (Mem0[134525232:word32] << 0x02) + 140540324, (Mem0[0x0804B134:word32] << 0x02) + 140540324, out i4_233);
-		Mem235[l5_234 + 0x00:word32] = i4_233;
+		word32 i4_n;
+		word32 l5_n = t5matp_(f2, f3, f4, f6, i0_n, i1_n, i2_n, i3_n, dwArg44, dwArg4C, (l0_n << 0x02) + 0x0804EC24, (Mem0[0x0804B0E0:word32] << 0x02) + 0x0804EC24, (Mem0[0x0804B0E4:word32] << 0x02) + 0x0804EC24, (Mem0[0x0804B0E8:word32] << 0x02) + 0x0804EC24, (Mem0[0x0804B0EC:word32] << 0x02) + 0x0804EC24, (Mem0[0x0804B0F0:word32] << 0x02) + 0x0804EC24, (Mem0[0x0804B0F4:word32] << 0x02) + 140540324, (Mem0[0x0804B0F8:word32] << 0x02) + 140540324, (Mem0[0x0804B0FC:word32] << 0x02) + 140540324, (Mem0[0x0804B100:word32] << 0x02) + 140540324, (Mem0[0x0804B104:word32] << 0x02) + 140540324, (Mem0[0x0804B108:word32] << 0x02) + 140540324, (Mem0[0x0804B10C:word32] << 0x02) + 140540324, (Mem0[0x0804B110:word32] << 0x02) + 140540324, (Mem0[0x0804B114:word32] << 0x02) + 140540324, (Mem0[0x0804B118:word32] << 0x02) + 140540324, (Mem0[134525212:word32] << 0x02) + 140540324, (Mem0[0x0804B120:word32] << 0x02) + 140540324, (Mem0[0x0804B124:word32] << 0x02) + 140540324, (Mem0[134525224:word32] << 0x02) + 140540324, (Mem0[134525228:word32] << 0x02) + 140540324, (Mem0[134525232:word32] << 0x02) + 140540324, (Mem0[0x0804B134:word32] << 0x02) + 140540324, out i4_n);
+		Mem235[l5_n + 0x00:word32] = i4_n;
 	}
 	return;
 }
@@ -138,1193 +138,1193 @@ word32 t5matp_(word32 f2, word32 f3, word32 f4, word32 f6, word32 o0, word32 o1,
 {
 t5matp__entry:
 l08048520:
-	word32 l3_210 = dwArg74 + ~0x03
-	word32 f1_2187 = dwArg80 + ~0x03
-	word32 i4_47
+	word32 l3_n = dwArg74 + ~0x03
+	word32 f1_n = dwArg80 + ~0x03
+	word32 i4_n
 	*i4Out = dwArg90 + ~0x03
-	word32 l1_1251 = dwArg9C + ~0x03
-	word32 o7_2201 = dwArgA8 + ~0x03
+	word32 l1_n = dwArg9C + ~0x03
+	word32 o7_n = dwArgA8 + ~0x03
 	branch Mem0[dwArg5C + 0x00:word32] > 0x00 l08048520_ds_t
 l08048520_ds_f:
 	goto l080485D8
 l08048520_ds_t:
 	goto l080486D8
 l080485D8:
-	word32 o0_1180
-	word32 o3_1151 = 0x08048328
-	word32 o2_162 = Mem0[0x0804B0A8:word32]
-	word32 o0_163 = Mem0[o0 + 0x00:word32]
-	branch o0_163 >= 0x03 l080485D8_ds_t
+	word32 o0_n
+	word32 o3_n = 0x08048328
+	word32 o2_n = Mem0[0x0804B0A8:word32]
+	word32 o0_n = Mem0[o0 + 0x00:word32]
+	branch o0_n >= 0x03 l080485D8_ds_t
 l080485D8_ds_f:
 	goto l08048608
 l080485D8_ds_t:
 	goto l08048620
 l08048608:
-	branch o0_163 == 0x01 l08048608_ds_t
+	branch o0_n == 0x01 l08048608_ds_t
 l08048608_ds_f:
 	goto l08048610
 l08048608_ds_t:
 	goto l080486E0
 l08048610:
-	branch o0_163 == 0x02 l08048610_ds_t
+	branch o0_n == 0x02 l08048610_ds_t
 	goto l08048618
 l08048610_ds_t:
 	goto l08048640
 l08048618:
-	o0_1180 = o2
+	o0_n = o2
 	goto l080486E4
 l08048620:
-	branch o0_163 == 0x03 l08048620_ds_t
+	branch o0_n == 0x03 l08048620_ds_t
 l08048620_ds_f:
 	goto l08048630
 l08048620_ds_t:
 	goto l08049250
 l08048630:
-	branch o0_163 == 0x04 l08048630_ds_t
+	branch o0_n == 0x04 l08048630_ds_t
 	goto l08048638
 l08048630_ds_t:
 	goto l0804869C
 l08048638:
-	o0_1180 = o2
+	o0_n = o2
 	goto l080486E4
 l08048640:
-	word32 o5_574 = Mem0[o2 + 0x00:word32]
-	word32 o1_578 = Mem0[o1 + 0x00:word32]
-	word32 f7_577 = Mem0[0x08048344:real32]
-	branch o5_574 - o1_578 < 0x00 l08048640_ds_t
+	word32 o5_n = Mem0[o2 + 0x00:word32]
+	word32 o1_n = Mem0[o1 + 0x00:word32]
+	word32 f7_n = Mem0[0x08048344:real32]
+	branch o5_n - o1_n < 0x00 l08048640_ds_t
 l08048640_ds_f:
 	goto l08048668
 l08048640_ds_t:
 	goto l080486D8
 l08048668:
-	word32 g0_584 = o1_578 - o5_574
-	word32 f0_1171 = g0_584
-	branch g0_584 > 0x00 l08048668_ds_t
+	word32 g0_n = o1_n - o5_n
+	word32 f0_n = g0_n
+	branch g0_n > 0x00 l08048668_ds_t
 l08048668_ds_f:
 	goto l08048674
 l08048668_ds_t:
 	goto l080486D8
 l08048674:
-	word32 f5_592 = Mem0[0x08048348:real32]
-	word32 o0_598 = (o3 + ~0x03)[o1_578 * 0x08]
+	word32 f5_n = Mem0[0x08048348:real32]
+	word32 o0_n = (o3 + ~0x03)[o1_n * 0x08]
 	goto l08048D44
 l0804869C:
-	word32 o0_1201 = Mem0[o2 + 0x00:word32]
-	word32 o1_1202 = Mem0[o1 + 0x00:word32]
-	word32 o5_1197 = 0x0804B1A4
-	branch o0_1201 - o1_1202 < 0x00 l0804869C_ds_t
+	word32 o0_n = Mem0[o2 + 0x00:word32]
+	word32 o1_n = Mem0[o1 + 0x00:word32]
+	word32 o5_n = 0x0804B1A4
+	branch o0_n - o1_n < 0x00 l0804869C_ds_t
 l0804869C_ds_f:
 	goto l080486C0
 l0804869C_ds_t:
 	goto l080486D8
 l080486C0:
-	word32 g0_1212 = o1_1202 - o0_1201
-	word32 i5_1211 = o1_1202
-	word32 f0_1213 = g0_1212
-	branch g0_1212 <= 0x00 l080486C0_ds_t
+	word32 g0_n = o1_n - o0_n
+	word32 i5_n = o1_n
+	word32 f0_n = g0_n
+	branch g0_n <= 0x00 l080486C0_ds_t
 	goto l080486D8
 l080486C0_ds_t:
-	word32 f5_1217 = Mem0[0x080483F0:real32]
+	word32 f5_n = Mem0[0x080483F0:real32]
 	goto l08049590
 l080486D8:
 	return dwArgAC + ~0x03
 	return dwArgAC + ~0x03
 l080486E0:
-	o0_1180 = o2
+	o0_n = o2
 l080486E4:
-	word32 g1_173 = Mem0[o0_1180 + 0x00:word32]
-	word32 o2_177 = Mem0[o1 + 0x00:word32]
-	word32 f1_174 = g1_173
-	word32 f5_176 = Mem0[134513436:real32]
-	branch g1_173 - o2_177 < 0x00 l080486E4_ds_t
+	word32 g1_n = Mem0[o0_n + 0x00:word32]
+	word32 o2_n = Mem0[o1 + 0x00:word32]
+	word32 f1_n = g1_n
+	word32 f5_n = Mem0[134513436:real32]
+	branch g1_n - o2_n < 0x00 l080486E4_ds_t
 l080486E4_ds_f:
 	goto l08048700
 l080486E4_ds_t:
 	goto l080486D8
 l08048700:
-	branch o2_177 - g1_173 > 0x00 l08048700_ds_t
+	branch o2_n - g1_n > 0x00 l08048700_ds_t
 l08048700_ds_f:
-	word32 o2_186 = o2_177 << 0x03
+	word32 o2_n = o2_n << 0x03
 	goto l08048710
 l08048700_ds_t:
 	goto l080486D8
 l08048710:
-	word32 f7_190 = Mem0[0x08048328:real32]
-	word32 o0_195 = (o3 + ~0x03)[o2_177 * 0x08]
+	word32 f7_n = Mem0[0x08048328:real32]
+	word32 o0_n = (o3 + ~0x03)[o2_n * 0x08]
 	goto l08048750
 l08048738:
-	Mem451[o5_310 + o0_231:real32] = f5_176
+	Mem451[o5_n + o0_n:real32] = f5_n
 l0804873C:
-	branch f17_277 + 0x01 - g1_304 > 0x00 l0804873C_ds_t
+	branch f17_n + 0x01 - g1_n > 0x00 l0804873C_ds_t
 l0804873C_ds_f:
-	o2_186 = o2_186 + 0x08
+	o2_n = o2_n + 0x08
 	goto l0804874C
 l0804873C_ds_t:
 	goto l080486D8
 l0804874C:
-	o0_195 = Mem273[o2_186 + 134513444:word32]
+	o0_n = Mem273[o2_n + 134513444:word32]
 l08048750:
-	word32 o0_231 = o0_195 << 0x02
-	word32 f8_232 = o0_231
-	word32 f5_234 = Mem0[dwArg7C + ~0x03 + o0_231:real32]
-	word32 f0_237 = f2
-	word32 f15_239 = Mem0[dwArg78 + ~0x03 + o0_231:real32]
+	word32 o0_n = o0_n << 0x02
+	word32 f8_n = o0_n
+	word32 f5_n = Mem0[dwArg7C + ~0x03 + o0_n:real32]
+	word32 f0_n = f2
+	word32 f15_n = Mem0[dwArg78 + ~0x03 + o0_n:real32]
 	branch f2 > f3 l08048750_ds_t
 	goto l08048770
 l08048750_ds_t:
-	f0_237 = f3
+	f0_n = f3
 l08048770:
-	word32 f3_251 = f5_234 - f0_237 * f3
-	word32 f11_254 = Mem0[f7_190 + 0x08:real32]
-	word32 f3_258 = Mem0[f11_254 + 0x0C:real32] * f3_251
-	Mem263[dwArgA4 + ~0x03 + o0_231:real32] = f5_234
-	word32 f4_256 = f0_237 * f0_237 * f0_237 * f5_234
-	word32 o3_255 = f11_254
-	word32 f2_260 = f3_251 - (f0_237 * f0_237) * f4 - f4_256 + f3_258
-	word32 f4_262 = f4_256 - f0_237
-	word32 f5_264 = Mem263[f11_254 + 0x0014:real32]
-	branch f2_260 < f4_262 l08048770_ds_t
+	word32 f3_n = f5_n - f0_n * f3
+	word32 f11_n = Mem0[f7_n + 0x08:real32]
+	word32 f3_n = Mem0[f11_n + 0x0C:real32] * f3_n
+	Mem263[dwArgA4 + ~0x03 + o0_n:real32] = f5_n
+	word32 f4_n = f0_n * f0_n * f0_n * f5_n
+	word32 o3_n = f11_n
+	word32 f2_n = f3_n - (f0_n * f0_n) * f4 - f4_n + f3_n
+	word32 f4_n = f4_n - f0_n
+	word32 f5_n = Mem263[f11_n + 0x0014:real32]
+	branch f2_n < f4_n l08048770_ds_t
 	goto l080487D0
 l08048770_ds_t:
-	f2_260 = f4_262
+	f2_n = f4_n
 l080487D0:
-	word32 f3_281
-	Mem273[dwArgA4 + ~0x03 + o0_231:real32] = f5_264
-	word32 f2_271 = f4_262 - f2_260 * f3_258
-	word32 f17_277 = Mem273[f11_254 + 0x001C:real32]
-	branch f3_258 > f2_271 l080487D0_ds_t
+	word32 f3_n
+	Mem273[dwArgA4 + ~0x03 + o0_n:real32] = f5_n
+	word32 f2_n = f4_n - f2_n * f3_n
+	word32 f17_n = Mem273[f11_n + 0x001C:real32]
+	branch f3_n > f2_n l080487D0_ds_t
 	goto l080487FC
 l080487D0_ds_t:
-	f3_281 = Mem273[dwArgAC + ~0x03 + o0_231:real32]
+	f3_n = Mem273[dwArgAC + ~0x03 + o0_n:real32]
 	goto l08048858
 l080487FC:
-	o3_255 = Mem273[f11_254 + 0x0028:real32] (alias)
-	word32 f2_532 = (f2_271 / f3_258 + f4_262) * (f6 + Mem273[(dwArg84 + ~0x03) + o0_231:real32]) * f3_258 + f4_262
-	branch o0_231 < f2_532 l080487FC_ds_t
+	o3_n = Mem273[f11_n + 0x0028:real32] (alias)
+	word32 f2_n = (f2_n / f3_n + f4_n) * (f6 + Mem273[(dwArg84 + ~0x03) + o0_n:real32]) * f3_n + f4_n
+	branch o0_n < f2_n l080487FC_ds_t
 	goto l08048840
 l080487FC_ds_t:
 l08048840:
-	f3_281 = Mem273[dwArgAC + ~0x03 + o0_231:real32]
-	f2_271 = f3_281 * f2_532
-	f8_232 = f2_271 + f4_262
-	o0_231 = f8_232 (alias)
+	f3_n = Mem273[dwArgAC + ~0x03 + o0_n:real32]
+	f2_n = f3_n * f2_n
+	f8_n = f2_n + f4_n
+	o0_n = f8_n (alias)
 l08048858:
-	word32 g1_304
-	word32 o5_310
-	word32 o3_309
-	word32 f0_289 = f1_174 * f2_271
-	word32 f7_286 = Mem273[o3_255 + 0x001C:real32]
-	word32 f3_295 = f0_289 + (f3_281 - f1_174) * f4_262
-	branch f7_286 >= f2_271 l08048858_ds_t
+	word32 g1_n
+	word32 o5_n
+	word32 o3_n
+	word32 f0_n = f1_n * f2_n
+	word32 f7_n = Mem273[o3_n + 0x001C:real32]
+	word32 f3_n = f0_n + (f3_n - f1_n) * f4_n
+	branch f7_n >= f2_n l08048858_ds_t
 l08048858_ds_f:
-	f1_174 = Mem273[l3_210 + o0_231:real32]
-	g1_304 = f1_174 (alias)
+	f1_n = Mem273[l3_n + o0_n:real32]
+	g1_n = f1_n (alias)
 	goto l08048890
 l08048858_ds_t:
-	f1_174 = Mem273[l3_210 + o0_231:real32]
-	g1_304 = f1_174 (alias)
+	f1_n = Mem273[l3_n + o0_n:real32]
+	g1_n = f1_n (alias)
 	goto l080488F0
 l08048890:
-	word32 f5_455 = Mem273[0x0804B0B0:real32]
-	word32 f6_454 = f6 - f1_174
-	word32 f3_466 = f6_454 * f3_295 / f8_232
-	o3_309 = Mem273[Mem273[dwArg98 + ~0x03 + o0_231:real32] + 0x0C:real32] (alias)
-	o5_310 = Mem273[dwArgA4 + ~0x03 + o0_231:real32] (alias)
-	Mem480[Mem273[f15_239 + o0_231:real32] + o0_231:real32] = f5_455
-	f4 = f5_455 + f4_262
-	f3 = (f3_466 - f0_289) * f5_455 / f6_454
-	f2 = f0_289 * (f3_466 + ((f2_271 / f3_295) / f4) * f1_174) / f4 + f3
+	word32 f5_n = Mem273[0x0804B0B0:real32]
+	word32 f6_n = f6 - f1_n
+	word32 f3_n = f6_n * f3_n / f8_n
+	o3_n = Mem273[Mem273[dwArg98 + ~0x03 + o0_n:real32] + 0x0C:real32] (alias)
+	o5_n = Mem273[dwArgA4 + ~0x03 + o0_n:real32] (alias)
+	Mem480[Mem273[f15_n + o0_n:real32] + o0_n:real32] = f5_n
+	f4 = f5_n + f4_n
+	f3 = (f3_n - f0_n) * f5_n / f6_n
+	f2 = f0_n * (f3_n + ((f2_n / f3_n) / f4) * f1_n) / f4 + f3
 	goto l0804896C
 l080488F0:
-	word32 f5_485 = f7_286 * f7_286
-	word32 f4_491 = f5_485 * f4_262
-	word32 f11_503 = Mem273[f15_239 + o0_231:real32]
-	f4 = f4_491 / f5_485
-	word32 f9_509 = Mem273[f11_503 + 0x0C:real32]
-	word32 f3_493 = Mem273[o3_255 + 0x0048:real32] - f1_174
-	l3_210 = Mem273[o3_255 + 0x001C:real32] (alias)
-	o5_310 = Mem273[dwArgA4 + ~0x03 + o0_231:real32] (alias)
-	Mem518[f9_509 + o0_231:real32] = f5_485
-	f3 = (f9_509 - f0_289) * f4 / f6
-	o3_309 = f11_503 (alias)
-	f2 = f0_289 * ((((f3_295 - f7_286 * f2_271) + f4_491) * f3_493) / f8_232 + (f4 / (f6 + f3_493)) * f1_174) / f5_485 + f3
+	word32 f5_n = f7_n * f7_n
+	word32 f4_n = f5_n * f4_n
+	word32 f11_n = Mem273[f15_n + o0_n:real32]
+	f4 = f4_n / f5_n
+	word32 f9_n = Mem273[f11_n + 0x0C:real32]
+	word32 f3_n = Mem273[o3_n + 0x0048:real32] - f1_n
+	l3_n = Mem273[o3_n + 0x001C:real32] (alias)
+	o5_n = Mem273[dwArgA4 + ~0x03 + o0_n:real32] (alias)
+	Mem518[f9_n + o0_n:real32] = f5_n
+	f3 = (f9_n - f0_n) * f4 / f6
+	o3_n = f11_n (alias)
+	f2 = f0_n * ((((f3_n - f7_n * f2_n) + f4_n) * f3_n) / f8_n + (f4 / (f6 + f3_n)) * f1_n) / f5_n + f3
 l0804896C:
-	word32 f0_313 = f3 * f2
-	word32 f11_316 = Mem273[o3_309 + 0x005C:real32]
-	f6 = f0_313 + f4
-	branch f6 != Mem273[o3_309 + 0x0054:real32] l0804896C_ds_t
+	word32 f0_n = f3 * f2
+	word32 f11_n = Mem273[o3_n + 0x005C:real32]
+	f6 = f0_n + f4
+	branch f6 != Mem273[o3_n + 0x0054:real32] l0804896C_ds_t
 	goto l0804899C
 l0804896C_ds_t:
 	goto l08048738
 l0804899C:
-	branch f0_313 >= f2 l0804899C_ds_t
+	branch f0_n >= f2 l0804899C_ds_t
 	goto l080489B0
 l0804899C_ds_t:
-	word32 f5_380 = Mem273[f11_316 + 100:real32]
+	word32 f5_n = Mem273[f11_n + 100:real32]
 	goto l080489E8
 l080489B0:
-	word32 f5_370 = Mem273[f11_316 + 0x00AC:real32]
-	word32 f5_374 = f5_370 * f5_370
-	Mem379[o5_310 + o0_231:real32] = f5_374
-	f2 = (f3 - f4 * (f0_313 * f2)) / f5_374 * f3
+	word32 f5_n = Mem273[f11_n + 0x00AC:real32]
+	word32 f5_n = f5_n * f5_n
+	Mem379[o5_n + o0_n:real32] = f5_n
+	f2 = (f3 - f4 * (f0_n * f2)) / f5_n * f3
 	goto l0804873C
 l080489E8:
-	word32 f3_382 = f6 * f3
-	word32 f2_416 = ((((((((f3_382 + f2) * f6 + f4) * f6 + f3_382) * f6 + f4) * f6 + f3_382) * f6 + f4) * f6 + f3_382) * f6 + f0_313) * f6
-	word32 f4_410 = (f6 * f5_380 + f4) * f6
-	word32 f5_419 = Mem273[Mem273[Mem273[f11_316 + 0x0088:real32] + 0x001C:real32] + 144:real32]
-	f1_174 = f2_416 + f3_382
-	word32 f0_441 = f6 * f4_410 + f5_419
-	Mem449[o5_310 + o0_231:real32] = f5_419
-	f4 = f4_410 * f1_174
-	f3 = f0_441 * f0_441
-	g1_304 = f1_174 (alias)
-	f2 = ((((((((f4_410 + f2_416) * f6 + f3_382) * f6 + f4_410) * f6 + f3_382) * f6 + f4_410) * f6 + f3_382) * f6 + f0_313) * f0_441 - f4) / f3 * f5_419
+	word32 f3_n = f6 * f3
+	word32 f2_n = ((((((((f3_n + f2) * f6 + f4) * f6 + f3_n) * f6 + f4) * f6 + f3_n) * f6 + f4) * f6 + f3_n) * f6 + f0_n) * f6
+	word32 f4_n = (f6 * f5_n + f4) * f6
+	word32 f5_n = Mem273[Mem273[Mem273[f11_n + 0x0088:real32] + 0x001C:real32] + 144:real32]
+	f1_n = f2_n + f3_n
+	word32 f0_n = f6 * f4_n + f5_n
+	Mem449[o5_n + o0_n:real32] = f5_n
+	f4 = f4_n * f1_n
+	f3 = f0_n * f0_n
+	g1_n = f1_n (alias)
+	f2 = ((((((((f4_n + f2_n) * f6 + f3_n) * f6 + f4_n) * f6 + f3_n) * f6 + f4_n) * f6 + f3_n) * f6 + f0_n) * f0_n - f4) / f3 * f5_n
 	goto l0804873C
 l08048AF0:
-	f4_710 = f1_886 * f4_1000 + Mem686[o3_1003 + 224:real32]
-	f2_712 = (((((((((f1_886 * f2_1009 + f3_1054) * f1_886 + f4_1000) * f1_886 + f3_1054) * f1_886 + f4_1000) * f1_886 + f3_1054) * f1_886 + f4_1000) * f1_886 + f3_1054) * f1_886 + f4_1000) * f1_886 + f3_1054) / f4_710
-	o3_1003 = Mem686[o3_1003 + 0x001C:real32] (alias)
-	f0_711 = f2_712 + f3_1054
+	f4_n = f1_n * f4_n + Mem686[o3_n + 224:real32]
+	f2_n = (((((((((f1_n * f2_n + f3_n) * f1_n + f4_n) * f1_n + f3_n) * f1_n + f4_n) * f1_n + f3_n) * f1_n + f4_n) * f1_n + f3_n) * f1_n + f4_n) * f1_n + f3_n) / f4_n
+	o3_n = Mem686[o3_n + 0x001C:real32] (alias)
+	f0_n = f2_n + f3_n
 l08048B7C:
-	word32 o5_740
-	Mem719[dwArg8C + ~0x03 + o0_625:real32] = Mem686[o3_1003 + 0x0118:real32]
-	word32 f2_721 = f3_1054 - f0_711 * f2_712
-	word32 f11_722 = Mem719[o3_1003 + 0x011C:real32]
-	word32 f1_724 = f4_710 * f2_721
-	branch f1_724 > Mem719[(dwArgAC + ~0x03) + o0_625:real32] l08048B7C_ds_t
+	word32 o5_n
+	Mem719[dwArg8C + ~0x03 + o0_n:real32] = Mem686[o3_n + 0x0118:real32]
+	word32 f2_n = f3_n - f0_n * f2_n
+	word32 f11_n = Mem719[o3_n + 0x011C:real32]
+	word32 f1_n = f4_n * f2_n
+	branch f1_n > Mem719[(dwArgAC + ~0x03) + o0_n:real32] l08048B7C_ds_t
 	goto l08048BB8
 l08048B7C_ds_t:
 	goto l080491E0
 l08048BB8:
-	word32 f5_812 = Mem719[f11_722 + 292:real32]
-	word32 f3_811 = f1_724 * f3_1054
-	word32 f4_815 = f5_812 * f4_710
-	word32 f11_819 = Mem719[f11_722 + 0x001C:real32]
-	word32 f3_821 = Mem719[f11_722 + 300:real32] * f3_811
-	f6 = f1_724 * f1_724
-	f4_710 = f1_724 * f4_815 + f5_812
-	word32 f5_831 = Mem719[f11_819 + 0x0134:real32] * f5_812
-	word32 f11_829 = Mem719[f11_819 + 0x0138:real32]
-	Mem838[dwArg90 + ~0x03 + o0_625:real32] = f5_831
-	f3_1054 = f4_710 - f6 * f3_821 + f5_831
-	word32 f2_837 = (f3_811 + f2_721 - f4_815 + f3_821) / f3_1054
-	branch f1_724 <= f4_710 l08048BB8_ds_t
+	word32 f5_n = Mem719[f11_n + 292:real32]
+	word32 f3_n = f1_n * f3_n
+	word32 f4_n = f5_n * f4_n
+	word32 f11_n = Mem719[f11_n + 0x001C:real32]
+	word32 f3_n = Mem719[f11_n + 300:real32] * f3_n
+	f6 = f1_n * f1_n
+	f4_n = f1_n * f4_n + f5_n
+	word32 f5_n = Mem719[f11_n + 0x0134:real32] * f5_n
+	word32 f11_n = Mem719[f11_n + 0x0138:real32]
+	Mem838[dwArg90 + ~0x03 + o0_n:real32] = f5_n
+	f3_n = f4_n - f6 * f3_n + f5_n
+	word32 f2_n = (f3_n + f2_n - f4_n + f3_n) / f3_n
+	branch f1_n <= f4_n l08048BB8_ds_t
 	goto l08048C30
 l08048BB8_ds_t:
-	o5_740 = Mem838[dwArg78 + ~0x03 + o0_625:real32] (alias)
+	o5_n = Mem838[dwArg78 + ~0x03 + o0_n:real32] (alias)
 	goto l08048C58
 l08048C30:
-	o5_740 = Mem838[dwArg78 + ~0x03 + o0_625:real32] (alias)
-	Mem849[dwArg90 + ~0x03 + o0_625:real32] = Mem838[f11_829 + 0x0160:real32]
-	word32 f2_840 = f1_724 + f2_837
-	f3_1054 = f2_840 * f2_840
+	o5_n = Mem838[dwArg78 + ~0x03 + o0_n:real32] (alias)
+	Mem849[dwArg90 + ~0x03 + o0_n:real32] = Mem838[f11_n + 0x0160:real32]
+	word32 f2_n = f1_n + f2_n
+	f3_n = f2_n * f2_n
 l08048C58:
-	word32 f3_748 = f6 * f6 * f3_1054
-	word32 f2_750 = f6 * f3_1054 + f4_710 + f3_748
-	branch f2_750 > f4_710 l08048C58_ds_t
+	word32 f3_n = f6 * f6 * f3_n
+	word32 f2_n = f6 * f3_n + f4_n + f3_n
+	branch f2_n > f4_n l08048C58_ds_t
 	goto l08048C90
 l08048C58_ds_t:
 l08048C90:
-	word32 f5_756 = Mem719[dwArg90 + ~0x03 + o0_625:real32]
-	word32 f11_754 = Mem719[0x0804B1A4:real32]
-	Mem759[dwArg90 + ~0x03 + o0_625:real32] = f5_756
-	word32 f2_758 = f2_750 + f5_756
-	word32 f0_763 = f2_758
-	branch f2_758 > f3_748 l08048C90_ds_t
+	word32 f5_n = Mem719[dwArg90 + ~0x03 + o0_n:real32]
+	word32 f11_n = Mem719[0x0804B1A4:real32]
+	Mem759[dwArg90 + ~0x03 + o0_n:real32] = f5_n
+	word32 f2_n = f2_n + f5_n
+	word32 f0_n = f2_n
+	branch f2_n > f3_n l08048C90_ds_t
 	goto l08048CBC
 l08048C90_ds_t:
-	f0_763 = f3_748
+	f0_n = f3_n
 l08048CBC:
-	word32 f5_770 = f0_763 * f0_763
-	word32 f3_774 = f5_770 * f3_748
-	word32 f11_777 = Mem759[f11_754 + 0x08:real32]
-	Mem786[dwArgA4 + ~0x03 + o0_625:real32] = f5_770
-	word32 f4_779 = f0_763 * f0_763 * f0_763 * f5_770
-	f3 = f6 * f3_774
-	o3_1151 = f11_777 (alias)
-	word32 f2_783 = f2_758 - f0_763 * f4_710 - f3_774 - f4_779 + f3
-	f4 = f4_779 - f0_763
-	word32 f5_787 = Mem786[f11_777 + 0x0014:real32]
-	branch f2_783 < f4 l08048CBC_ds_t
+	word32 f5_n = f0_n * f0_n
+	word32 f3_n = f5_n * f3_n
+	word32 f11_n = Mem759[f11_n + 0x08:real32]
+	Mem786[dwArgA4 + ~0x03 + o0_n:real32] = f5_n
+	word32 f4_n = f0_n * f0_n * f0_n * f5_n
+	f3 = f6 * f3_n
+	o3_n = f11_n (alias)
+	word32 f2_n = f2_n - f0_n * f4_n - f3_n - f4_n + f3
+	f4 = f4_n - f0_n
+	word32 f5_n = Mem786[f11_n + 0x0014:real32]
+	branch f2_n < f4 l08048CBC_ds_t
 	goto l08048D1C
 l08048CBC_ds_t:
-	f2_783 = f4
+	f2_n = f4
 l08048D1C:
-	word32 g0_796 = f1_724 + 0x01 - o5_740
-	word32 f9_794 = Mem786[dwArgA4 + ~0x03 + o0_625:real32]
-	f0_1171 = g0_796 (alias)
-	f2 = f4 - f2_783 * f3
-	branch g0_796 > 0x00 l08048D1C_ds_t
+	word32 g0_n = f1_n + 0x01 - o5_n
+	word32 f9_n = Mem786[dwArgA4 + ~0x03 + o0_n:real32]
+	f0_n = g0_n (alias)
+	f2 = f4 - f2_n * f3
+	branch g0_n > 0x00 l08048D1C_ds_t
 l08048D1C_ds_f:
-	Mem803[dwArgA4 + ~0x03 + o0_625:real32] = f5_787
+	Mem803[dwArgA4 + ~0x03 + o0_n:real32] = f5_n
 	goto l08048D40
 l08048D1C_ds_t:
-	Mem806[dwArgA4 + ~0x03 + o0_625:real32] = f5_787
+	Mem806[dwArgA4 + ~0x03 + o0_n:real32] = f5_n
 	goto l080486D8
 l08048D40:
-	o0_598 = Mem803[f9_794 + 134513452:word32]
+	o0_n = Mem803[f9_n + 134513452:word32]
 l08048D44:
-	word32 o7_1169
-	word32 o0_625 = o0_598 << 0x02
-	word32 f7_1162 = f5_592
-	word32 f17_632 = Mem0[dwArg78 + ~0x03 + o0_625:real32]
-	word32 f5_634 = Mem0[o3_1151 + 0x0028:real32]
+	word32 o7_n
+	word32 o0_n = o0_n << 0x02
+	word32 f7_n = f5_n
+	word32 f17_n = Mem0[dwArg78 + ~0x03 + o0_n:real32]
+	word32 f5_n = Mem0[o3_n + 0x0028:real32]
 	branch f2 > f3 l08048D44_ds_t
 	goto l08048D68
 l08048D44_ds_t:
-	o7_1169 = Mem0[dwArgAC + ~0x03 + o0_625:real32] (alias)
+	o7_n = Mem0[dwArgAC + ~0x03 + o0_n:real32] (alias)
 	goto l08048DC4
 l08048D68:
-	f4 = f4 / f5_634
-	word32 f11_1150 = Mem0[dwArg90 + ~0x03 + o0_625:real32]
+	f4 = f4 / f5_n
+	word32 f11_n = Mem0[dwArg90 + ~0x03 + o0_n:real32]
 	f3 = f4 + f3
-	o3_1151 = f11_1150 (alias)
-	f7_1162 = f7_577
-	word32 f2_1163 = f3 * (f3 + f2) * f6 + f4
-	branch f3 < f2_1163 l08048D68_ds_t
+	o3_n = f11_n (alias)
+	f7_n = f7_n
+	word32 f2_n = f3 * (f3 + f2) * f6 + f4
+	branch f3 < f2_n l08048D68_ds_t
 	goto l08048DB0
 l08048D68_ds_t:
 l08048DB0:
-	f2 = Mem0[f11_1150 + 0x0030:real32] * f2_1163
-	o7_1169 = Mem0[dwArgAC + ~0x03 + o0_625:real32] (alias)
-	f0_1171 = f2 + f4
+	f2 = Mem0[f11_n + 0x0030:real32] * f2_n
+	o7_n = Mem0[dwArgAC + ~0x03 + o0_n:real32] (alias)
+	f0_n = f2 + f4
 l08048DC4:
-	word32 f3_1054
-	word32 o3_1003
-	word32 f4_1000
-	word32 f2_1114
-	word32 f1_646 = f7_1162 * f2
-	word32 f11_653 = Mem0[o3_1151 + 0x004C:real32]
-	word32 f3_657 = f1_646 + (f3 - Mem0[o3_1151 + 0x001C:real32]) * f4
-	branch o0_625 >= f2 l08048DC4_ds_t
+	word32 f3_n
+	word32 o3_n
+	word32 f4_n
+	word32 f2_n
+	word32 f1_n = f7_n * f2
+	word32 f11_n = Mem0[o3_n + 0x004C:real32]
+	word32 f3_n = f1_n + (f3 - Mem0[o3_n + 0x001C:real32]) * f4
+	branch o0_n >= f2 l08048DC4_ds_t
 l08048DC4_ds_f:
-	word32 f1_1095 = f1_646 / f3_657
+	word32 f1_n = f1_n / f3_n
 	goto l08048DF8
 l08048DC4_ds_t:
-	word32 f1_1116 = f1_646 / f3_657
+	word32 f1_n = f1_n / f3_n
 	goto l08048E44
 l08048DF8:
-	word32 f5_1097 = Mem0[dwArg78 + ~0x03 + o0_625:real32]
-	f6 = o0_625 * f6
-	word32 f5_1109 = f5_1097 - f1_1095
-	o3_1003 = Mem0[f11_653 + 0x001C:real32] (alias)
-	Mem1115[o7_1169 + o0_625:real32] = f5_1109
-	f3_1054 = f3_657 + f5_1097
-	f4_1000 = (f6 + f4) * f5_1109 / f0_1171
-	f2_1114 = f4_1000 + (((f2 * f3_657) / f4) / f3_1054) * f1_1095
+	word32 f5_n = Mem0[dwArg78 + ~0x03 + o0_n:real32]
+	f6 = o0_n * f6
+	word32 f5_n = f5_n - f1_n
+	o3_n = Mem0[f11_n + 0x001C:real32] (alias)
+	Mem1115[o7_n + o0_n:real32] = f5_n
+	f3_n = f3_n + f5_n
+	f4_n = (f6 + f4) * f5_n / f0_n
+	f2_n = f4_n + (((f2 * f3_n) / f4) / f3_n) * f1_n
 	goto l08048EB8
 l08048E44:
-	word32 f5_1121 = o0_625 * o0_625
-	word32 f4_1126 = f5_1121 * f4
-	word32 f3_1131 = o0_625 * o0_625 * o0_625 * f5_1121
-	f4_1000 = f4_1126 - f1_1116
-	word32 f5_1142 = f5_1121 + f6
-	o3_1003 = Mem0[dwArg98 + ~0x03 + o0_625:real32] (alias)
-	Mem1148[o7_1169 + o0_625:real32] = f5_1142
-	f3_1054 = f3_1131 * f5_1121 / f4_1000 / f5_1142 * f1_1116
-	f2_1114 = (o0_625 * f2 + f3_657 - f4_1126 + f3_1131) / f0_1171 * f4_1000 + f3_1054
+	word32 f5_n = o0_n * o0_n
+	word32 f4_n = f5_n * f4
+	word32 f3_n = o0_n * o0_n * o0_n * f5_n
+	f4_n = f4_n - f1_n
+	word32 f5_n = f5_n + f6
+	o3_n = Mem0[dwArg98 + ~0x03 + o0_n:real32] (alias)
+	Mem1148[o7_n + o0_n:real32] = f5_n
+	f3_n = f3_n * f5_n / f4_n / f5_n * f1_n
+	f2_n = (o0_n * f2 + f3_n - f4_n + f3_n) / f0_n * f4_n + f3_n
 l08048EB8:
-	word32 f2_1009
-	word32 f5_1047
-	word32 f0_667 = f6 * f2_1114
-	word32 f1_671 = f0_667 + f3_1054
-	branch f1_671 != f4_1000 l08048EB8_ds_t
+	word32 f2_n
+	word32 f5_n
+	word32 f0_n = f6 * f2_n
+	word32 f1_n = f0_n + f3_n
+	branch f1_n != f4_n l08048EB8_ds_t
 	goto l08048EE8
 l08048EB8_ds_t:
-	word32 f5_1087 = Mem0[o3_1003 + 0x00D0:real32]
+	word32 f5_n = Mem0[o3_n + 0x00D0:real32]
 	goto l08048FB8
 l08048EE8:
-	word32 f5_1038 = Mem0[o3_1003 + 0x00B0:real32]
-	branch f0_667 >= f2_1114 l08048EE8_ds_t
+	word32 f5_n = Mem0[o3_n + 0x00B0:real32]
+	branch f0_n >= f2_n l08048EE8_ds_t
 l08048EE8_ds_f:
-	o3_1003 = Mem0[o3_1003 + 0x001C:real32] (alias)
+	o3_n = Mem0[o3_n + 0x001C:real32] (alias)
 	goto l08048F00
 l08048EE8_ds_t:
-	word32 f11_1048 = Mem0[o3_1003 + 0x001C:real32]
-	o3_1003 = f11_1048 (alias)
+	word32 f11_n = Mem0[o3_n + 0x001C:real32]
+	o3_n = f11_n (alias)
 	goto l08048F20
 l08048F00:
-	Mem1046[f17_632 + o0_625:real32] = f5_1038
-	f4_1000 = f0_667 * f4_1000 + f5_1038
-	f2_1009 = (f0_667 * f2_1114 + f3_1054) / f4_1000
-	f5_1047 = Mem1046[f17_632 + o0_625:real32]
+	Mem1046[f17_n + o0_n:real32] = f5_n
+	f4_n = f0_n * f4_n + f5_n
+	f2_n = (f0_n * f2_n + f3_n) / f4_n
+	f5_n = Mem1046[f17_n + o0_n:real32]
 	goto l08048FD4
 l08048F20:
-	word32 f5_1052 = Mem0[f11_1048 + 100:real32]
-	Mem1085[f17_632 + o0_625:real32] = f5_1052
-	word32 f3_1051 = f1_671 * f3_1054
-	f4_1000 = f1_671 * f4_1000 + f5_1052
-	f3_1054 = f3_1051
-	f2_1009 = (((((((((f3_1051 + f2_1114) * f1_671 + f4_1000) * f1_671 + f3_1051) * f1_671 + f4_1000) * f1_671 + f3_1051) * f1_671 + f4_1000) * f1_671 + f3_1051) * f1_671 + f4_1000) * f1_671 + f3_1051) / f4_1000 + f3_1051
-	f5_1047 = Mem1085[f17_632 + o0_625:real32]
+	word32 f5_n = Mem0[f11_n + 100:real32]
+	Mem1085[f17_n + o0_n:real32] = f5_n
+	word32 f3_n = f1_n * f3_n
+	f4_n = f1_n * f4_n + f5_n
+	f3_n = f3_n
+	f2_n = (((((((((f3_n + f2_n) * f1_n + f4_n) * f1_n + f3_n) * f1_n + f4_n) * f1_n + f3_n) * f1_n + f4_n) * f1_n + f3_n) * f1_n + f4_n) * f1_n + f3_n) / f4_n + f3_n
+	f5_n = Mem1085[f17_n + o0_n:real32]
 	goto l08048FD4
 l08048FB8:
-	Mem1093[f17_632 + o0_625:real32] = f5_1087
-	f2_1009 = (f1_671 + f2_1114) * f3_1054 + f4_1000
-	f5_1047 = Mem1093[f17_632 + o0_625:real32]
+	Mem1093[f17_n + o0_n:real32] = f5_n
+	f2_n = (f1_n + f2_n) * f3_n + f4_n
+	f5_n = Mem1093[f17_n + o0_n:real32]
 l08048FD4:
-	Mem685[0x0804B1A4:real32] = Mem0[o3_1003 + 0x0014:real32]
-	Mem686[dwArgA0 + ~0x03 + o0_625:real32] = f5_1047
-	word32 f7_692 = Mem686[o3_1003 + 0x001C:real32]
-	branch f3_1054 > f2_1009 l08048FD4_ds_t
+	Mem685[0x0804B1A4:real32] = Mem0[o3_n + 0x0014:real32]
+	Mem686[dwArgA0 + ~0x03 + o0_n:real32] = f5_n
+	word32 f7_n = Mem686[o3_n + 0x001C:real32]
+	branch f3_n > f2_n l08048FD4_ds_t
 	goto l08049000
 l08048FD4_ds_t:
 	goto l080491A8
 l08049000:
-	word32 f0_927 = f7_692 * f2_1009
-	f3_1054 = f0_927 + (f3_1054 - f7_692) * f4_1000
-	f4_1000 = f4_1000 - f0_927 / f3_1054
-	word32 f0_937 = f6 * f2_1009 * f4_1000
-	word32 f1_939 = f0_937 + f2_1009
-	branch f1_939 != f3_1054 l08049000_ds_t
+	word32 f0_n = f7_n * f2_n
+	f3_n = f0_n + (f3_n - f7_n) * f4_n
+	f4_n = f4_n - f0_n / f3_n
+	word32 f0_n = f6 * f2_n * f4_n
+	word32 f1_n = f0_n + f2_n
+	branch f1_n != f3_n l08049000_ds_t
 	goto l08049050
 l08049000_ds_t:
-	word32 f5_1017 = Mem686[o3_1003 + 0x00D0:real32]
+	word32 f5_n = Mem686[o3_n + 0x00D0:real32]
 	goto l08049168
 l08049050:
-	word32 f5_948 = Mem686[o3_1003 + 0x00B0:real32]
-	branch f0_937 >= f2_1009 l08049050_ds_t
+	word32 f5_n = Mem686[o3_n + 0x00B0:real32]
+	branch f0_n >= f2_n l08049050_ds_t
 l08049050_ds_f:
-	word32 f11_949 = Mem686[o3_1003 + 0x001C:real32]
+	word32 f11_n = Mem686[o3_n + 0x001C:real32]
 	goto l08049068
 l08049050_ds_t:
-	word32 f11_968 = Mem686[o3_1003 + 0x001C:real32]
+	word32 f11_n = Mem686[o3_n + 0x001C:real32]
 	goto l080490AC
 l08049068:
-	o3_1003 = Mem686[f11_949 + 0x0014:real32] (alias)
-	Mem959[dwArgA0 + ~0x03 + o0_625:real32] = f5_948
-	f4_1000 = f0_937 * f4_1000 + f5_948
-	word32 f5_960 = Mem959[dwArgA0 + ~0x03 + o0_625:real32]
-	f2_1009 = f3_1054 - (f0_937 * f2_1009 + f3_1054) / f4_1000
-	branch f2_1009 < f5_960 l08049068_ds_t
+	o3_n = Mem686[f11_n + 0x0014:real32] (alias)
+	Mem959[dwArgA0 + ~0x03 + o0_n:real32] = f5_n
+	f4_n = f0_n * f4_n + f5_n
+	word32 f5_n = Mem959[dwArgA0 + ~0x03 + o0_n:real32]
+	f2_n = f3_n - (f0_n * f2_n + f3_n) / f4_n
+	branch f2_n < f5_n l08049068_ds_t
 	goto l080490A0
 l08049068_ds_t:
-	f2_1009 = f5_960
+	f2_n = f5_n
 l080490A0:
-	Mem965[0x0804B1A4:real32] = f5_960
+	Mem965[0x0804B1A4:real32] = f5_n
 	goto l080491A8
 l080490AC:
-	word32 f5_972 = Mem686[f11_968 + 100:real32]
-	o3_1003 = Mem686[dwArg94 + ~0x03 + o0_625:real32] (alias)
-	Mem1007[dwArgA0 + ~0x03 + o0_625:real32] = f5_972
-	word32 f3_971 = f1_939 * f3_1054
-	f4_1000 = f1_939 * f4_1000 + f5_972
-	word32 f5_1008 = Mem1007[dwArgA0 + ~0x03 + o0_625:real32]
-	f3_1054 = f3_971
-	f2_1009 = f5_1008 - ((((((((((f3_971 + f2_1009) * f1_939 + f4_1000) * f1_939 + f3_971) * f1_939 + f4_1000) * f1_939 + f3_971) * f1_939 + f4_1000) * f1_939 + f3_971) * f1_939 + f4_1000) * f1_939 + f3_971) / f4_1000 + f3_971)
-	branch f2_1009 < f3_971 l080490AC_ds_t
+	word32 f5_n = Mem686[f11_n + 100:real32]
+	o3_n = Mem686[dwArg94 + ~0x03 + o0_n:real32] (alias)
+	Mem1007[dwArgA0 + ~0x03 + o0_n:real32] = f5_n
+	word32 f3_n = f1_n * f3_n
+	f4_n = f1_n * f4_n + f5_n
+	word32 f5_n = Mem1007[dwArgA0 + ~0x03 + o0_n:real32]
+	f3_n = f3_n
+	f2_n = f5_n - ((((((((((f3_n + f2_n) * f1_n + f4_n) * f1_n + f3_n) * f1_n + f4_n) * f1_n + f3_n) * f1_n + f4_n) * f1_n + f3_n) * f1_n + f4_n) * f1_n + f3_n) / f4_n + f3_n)
+	branch f2_n < f3_n l080490AC_ds_t
 	goto l0804915C
 l080490AC_ds_t:
-	f2_1009 = f3_971
+	f2_n = f3_n
 l0804915C:
-	Mem1014[0x0804B1A4:real32] = f5_1008
+	Mem1014[0x0804B1A4:real32] = f5_n
 	goto l080491A8
 l08049168:
-	Mem1024[dwArgA0 + ~0x03 + o0_625:real32] = f5_1017
-	word32 f5_1025 = Mem1024[dwArgA0 + ~0x03 + o0_625:real32]
-	f2_1009 = f3_1054 - ((f1_939 + f2_1009) * f3_1054 + f4_1000)
-	branch f2_1009 < f4_1000 l08049168_ds_t
+	Mem1024[dwArgA0 + ~0x03 + o0_n:real32] = f5_n
+	word32 f5_n = Mem1024[dwArgA0 + ~0x03 + o0_n:real32]
+	f2_n = f3_n - ((f1_n + f2_n) * f3_n + f4_n)
+	branch f2_n < f4_n l08049168_ds_t
 	goto l080491A0
 l08049168_ds_t:
-	f2_1009 = f4_1000
+	f2_n = f4_n
 l080491A0:
-	Mem1031[0x0804B1A4:real32] = f5_1025
+	Mem1031[0x0804B1A4:real32] = f5_n
 l080491A8:
-	word32 f4_710
-	word32 f2_712
-	word32 f0_711
-	word32 f0_702 = f6 * f2_1009
-	branch f0_702 >= f4_1000 l080491A8_ds_t
+	word32 f4_n
+	word32 f2_n
+	word32 f0_n
+	word32 f0_n = f6 * f2_n
+	branch f0_n >= f4_n l080491A8_ds_t
 l080491A8_ds_f:
 	goto l080491C8
 l080491A8_ds_t:
-	word32 f1_886 = f0_702 + f3_1054
+	word32 f1_n = f0_n + f3_n
 	goto l08048AF0
 l080491C8:
-	f4_710 = f0_702 * f4_1000
-	f2_712 = f0_702 * f2_1009 + f3_1054
-	f0_711 = f4_710 / f2_712
+	f4_n = f0_n * f4_n
+	f2_n = f0_n * f2_n + f3_n
+	f0_n = f4_n / f2_n
 	goto l08048B7C
 l080491E0:
-	branch f1_724 > f2_721 l080491E0_ds_t
+	branch f1_n > f2_n l080491E0_ds_t
 	goto l080491F4
 l080491E0_ds_t:
 	goto l0804920C
 l080491F4:
-	Mem859[dwArg90 + ~0x03 + o0_625:real32] = Mem719[f11_722 + 0x0140:real32]
-	o5_740 = Mem859[dwArg78 + ~0x03 + o0_625:real32] (alias)
+	Mem859[dwArg90 + ~0x03 + o0_n:real32] = Mem719[f11_n + 0x0140:real32]
+	o5_n = Mem859[dwArg78 + ~0x03 + o0_n:real32] (alias)
 	goto l08048C58
 l0804920C:
-	branch f1_724 > f2_721 l0804920C_ds_t
+	branch f1_n > f2_n l0804920C_ds_t
 	goto l08049220
 l0804920C_ds_t:
-	word32 f5_872 = Mem719[f11_722 + 0x0154:real32]
+	word32 f5_n = Mem719[f11_n + 0x0154:real32]
 	goto l08049238
 l08049220:
-	Mem869[dwArg90 + ~0x03 + o0_625:real32] = Mem719[f11_722 + 332:real32]
-	o5_740 = Mem869[dwArg78 + ~0x03 + o0_625:real32] (alias)
+	Mem869[dwArg90 + ~0x03 + o0_n:real32] = Mem719[f11_n + 332:real32]
+	o5_n = Mem869[dwArg78 + ~0x03 + o0_n:real32] (alias)
 	goto l08048C58
 l08049238:
-	Mem876[dwArg90 + ~0x03 + o0_625:real32] = f5_872
-	o5_740 = Mem876[dwArg78 + ~0x03 + o0_625:real32] (alias)
+	Mem876[dwArg90 + ~0x03 + o0_n:real32] = f5_n
+	o5_n = Mem876[dwArg78 + ~0x03 + o0_n:real32] (alias)
 	goto l08048C58
 l08049250:
-	word32 o5_2150 = Mem0[o2 + 0x00:word32]
-	word32 o1_2154 = Mem0[o1 + 0x00:word32]
-	word32 f5_2149 = Mem0[0x08048344:real32]
-	branch o5_2150 - o1_2154 < 0x00 l08049250_ds_t
+	word32 o5_n = Mem0[o2 + 0x00:word32]
+	word32 o1_n = Mem0[o1 + 0x00:word32]
+	word32 f5_n = Mem0[0x08048344:real32]
+	branch o5_n - o1_n < 0x00 l08049250_ds_t
 l08049250_ds_f:
-	word32 l0_2159 = o1_2154
+	word32 l0_n = o1_n
 	goto l08049274
 l08049250_ds_t:
 	goto l080486D8
 l08049274:
-	branch o1_2154 - o5_2150 > 0x00 l08049274_ds_t
+	branch o1_n - o5_n > 0x00 l08049274_ds_t
 l08049274_ds_f:
 	goto l08049280
 l08049274_ds_t:
 	goto l080486D8
 l08049280:
-	word32 o0_2173 = (o3 + ~0x03)[o1_2154 * 0x08]
+	word32 o0_n = (o3 + ~0x03)[o1_n * 0x08]
 	goto l08049480
 l080492A8:
-	word32 f3_2394 = Mem0[dwArg7C + ~0x03 + o0_2219:real32]
-	word32 f2_2396 = f1_2187 * f2
-	f6 = f2_2396 + f3_2394
-	word32 f11_2405 = Mem0[Mem0[dwArg78 + ~0x03 + o0_2219:real32] + 0x01AC:real32]
-	word32 f4_2402 = Mem0[o3_1151 + 0x019C:real32] * f4
-	word32 f3_2411 = (f6 * f3_2394 + Mem0[f11_2405 + 0x01A4:real32]) * f6
-	f4 = f6 * f4_2402
-	word32 f5_2410 = Mem0[f11_2405 + 0x01B0:real32]
-	word32 f0_2408 = f4_2402 + f2_2396
-	word32 f3_2423 = ((f4 + f3_2411) * f6 + f5_2410) * f6
-	word32 f5_2426 = f0_2408 * f5_2410
-	f3 = f5_2426 + f6 * f3_2423 + f4
-	f2_2217 = ((f3_2411 + f2_2396) * f0_2408 + f3_2423 + f4) / f3
-	o3_1151 = Mem0[Mem0[Mem0[f11_2405 + 444:real32] + 0x01C4:real32] + 0x01CC:real32] (alias)
-	f0_2205 = f2_2217 + f5_2426
-	branch f1_2187 <= f4 l080492A8_ds_t
+	word32 f3_n = Mem0[dwArg7C + ~0x03 + o0_n:real32]
+	word32 f2_n = f1_n * f2
+	f6 = f2_n + f3_n
+	word32 f11_n = Mem0[Mem0[dwArg78 + ~0x03 + o0_n:real32] + 0x01AC:real32]
+	word32 f4_n = Mem0[o3_n + 0x019C:real32] * f4
+	word32 f3_n = (f6 * f3_n + Mem0[f11_n + 0x01A4:real32]) * f6
+	f4 = f6 * f4_n
+	word32 f5_n = Mem0[f11_n + 0x01B0:real32]
+	word32 f0_n = f4_n + f2_n
+	word32 f3_n = ((f4 + f3_n) * f6 + f5_n) * f6
+	word32 f5_n = f0_n * f5_n
+	f3 = f5_n + f6 * f3_n + f4
+	f2_n = ((f3_n + f2_n) * f0_n + f3_n + f4) / f3
+	o3_n = Mem0[Mem0[Mem0[f11_n + 444:real32] + 0x01C4:real32] + 0x01CC:real32] (alias)
+	f0_n = f2_n + f5_n
+	branch f1_n <= f4 l080492A8_ds_t
 	goto l08049358
 l080492A8_ds_t:
-	Mem2463[dwArg94 + ~0x03 + o0_2219:real32] = f1_2187
+	Mem2463[dwArg94 + ~0x03 + o0_n:real32] = f1_n
 	goto l0804937C
 l08049358:
-	f2_2217 = f3 * f2_2217 + f4
-	branch f0_2205 < f2_2217 l08049358_ds_t
+	f2_n = f3 * f2_n + f4
+	branch f0_n < f2_n l08049358_ds_t
 	goto l08049378
 l08049358_ds_t:
-	f0_2205 = f2_2217
+	f0_n = f2_n
 l08049378:
-	Mem2460[dwArg94 + ~0x03 + o0_2219:real32] = f1_2187
+	Mem2460[dwArg94 + ~0x03 + o0_n:real32] = f1_n
 l0804937C:
-	f1_2187 = Mem0[dwArg78 + ~0x03 + o0_2219:real32]
+	f1_n = Mem0[dwArg78 + ~0x03 + o0_n:real32]
 l08049380:
-	f4 = f0_2205 * f0_2205 * f4
-	word32 f9_2225 = Mem0[o3_1151 + 0x016C:real32]
-	word32 f2_2230 = f0_2205 * f2_2217 + f3 + f4
-	word32 o1_2226 = f9_2225
-	word32 f0_2233 = f2_2230
-	branch f2_2230 > f3 l08049380_ds_t
+	f4 = f0_n * f0_n * f4
+	word32 f9_n = Mem0[o3_n + 0x016C:real32]
+	word32 f2_n = f0_n * f2_n + f3 + f4
+	word32 o1_n = f9_n
+	word32 f0_n = f2_n
+	branch f2_n > f3 l08049380_ds_t
 	goto l080493B4
 l08049380_ds_t:
-	f0_2233 = f3
+	f0_n = f3
 l080493B4:
-	word32 l1_2275
-	word32 f7_2237 = Mem0[l3_210 + o0_2219:real32]
-	l3_210 = Mem0[o3_1151 + 464:real32] (alias)
-	branch f3 >= f2_2230 l080493B4_ds_t
+	word32 l1_n
+	word32 f7_n = Mem0[l3_n + o0_n:real32]
+	l3_n = Mem0[o3_n + 464:real32] (alias)
+	branch f3 >= f2_n l080493B4_ds_t
 	goto l080493CC
 l080493B4_ds_t:
-	l1_2275 = Mem0[dwArgAC + ~0x03 + o0_2219:real32] (alias)
+	l1_n = Mem0[dwArgAC + ~0x03 + o0_n:real32] (alias)
 	goto l080493F0
 l080493CC:
-	f9_2225 = Mem0[o3_1151 + 0x01D4:real32]
-	f7_2237 = Mem0[o7_2201 + o0_2219:real32]
-	f2_2230 = f2_2230 * f3
-	o1_2226 = f9_2225 (alias)
-	branch f2_2230 > f4 l080493CC_ds_t
+	f9_n = Mem0[o3_n + 0x01D4:real32]
+	f7_n = Mem0[o7_n + o0_n:real32]
+	f2_n = f2_n * f3
+	o1_n = f9_n (alias)
+	branch f2_n > f4 l080493CC_ds_t
 	goto l080493EC
 l080493CC_ds_t:
 	goto l0804954C
 l080493EC:
-	l1_2275 = Mem0[dwArgAC + ~0x03 + o0_2219:real32] (alias)
+	l1_n = Mem0[dwArgAC + ~0x03 + o0_n:real32] (alias)
 l080493F0:
-	word32 f1_2284 = f2_2230 - f8_2220
-	word32 f5_2287 = Mem0[f1_2284 + o0_2219:real32]
-	o7_2201 = Mem0[dwArgA0 + ~0x03 + o0_2219:real32] (alias)
-	o5_2150 = Mem0[dwArg90 + ~0x03 + o0_2219:real32] (alias)
-	Mem2295[dwArg98 + ~0x03 + o0_2219:real32] = f5_2287
-	word32 f3_2288 = f1_2284 * (f7_2237 * f0_2233 - f6)
-	f4 = f8_2220 * f9_2225 + f5_2287
-	f1_2187 = f3_2288 - f8_2220
-	word32 f5_2296 = Mem2295[l1_2275 + o0_2219:real32]
-	o3_1151 = Mem2295[dwArg98 + ~0x03 + o0_2219:real32] (alias)
-	branch f1_2187 * ((f2_2230 + f3_2288) / f4) < f5_2296 l080493F0_ds_t
+	word32 f1_n = f2_n - f8_n
+	word32 f5_n = Mem0[f1_n + o0_n:real32]
+	o7_n = Mem0[dwArgA0 + ~0x03 + o0_n:real32] (alias)
+	o5_n = Mem0[dwArg90 + ~0x03 + o0_n:real32] (alias)
+	Mem2295[dwArg98 + ~0x03 + o0_n:real32] = f5_n
+	word32 f3_n = f1_n * (f7_n * f0_n - f6)
+	f4 = f8_n * f9_n + f5_n
+	f1_n = f3_n - f8_n
+	word32 f5_n = Mem2295[l1_n + o0_n:real32]
+	o3_n = Mem2295[dwArg98 + ~0x03 + o0_n:real32] (alias)
+	branch f1_n * ((f2_n + f3_n) / f4) < f5_n l080493F0_ds_t
 	goto l0804944C
 l080493F0_ds_t:
 l0804944C:
-	Mem2302[dwArg98 + ~0x03 + o0_2219:real32] = f5_2296
-	Mem2307[dwArg88 + ~0x03 + o0_2219:real32] = f5_2296
-	Mem2309[dwArg84 + ~0x03 + o0_2219:real32] = f5_2149
-	f2 = f1_2187 * f9_2225
-	f3 = f6 + (f1_2187 - f5_2149) * f0_2233
+	Mem2302[dwArg98 + ~0x03 + o0_n:real32] = f5_n
+	Mem2307[dwArg88 + ~0x03 + o0_n:real32] = f5_n
+	Mem2309[dwArg84 + ~0x03 + o0_n:real32] = f5_n
+	f2 = f1_n * f9_n
+	f3 = f6 + (f1_n - f5_n) * f0_n
 	goto l0804946C
 l0804944C_ds_f:
-	word32 o1_2266 = o1_2226 + 0x08
+	word32 o1_n = o1_n + 0x08
 	goto l0804947C
 l0804944C_ds_t:
 	goto l080486D8
 l0804946C:
-	l0_2159 = l0_2159 + 0x01
-	branch l0_2159 - o5_2150 > 0x00 l0804944C_ds_t
+	l0_n = l0_n + 0x01
+	branch l0_n - o5_n > 0x00 l0804944C_ds_t
 	goto l0804944C_ds_f
 l0804947C:
-	o0_2173 = Mem0[o1_2266 + 134513444:word32]
+	o0_n = Mem0[o1_n + 134513444:word32]
 l08049480:
-	word32 f2_2217
-	word32 f8_2220
-	word32 o0_2219
-	word32 f0_2205 = o2_162 - 0x02
-	branch o2_162 == 0x02 l08049480_ds_t
+	word32 f2_n
+	word32 f8_n
+	word32 o0_n
+	word32 f0_n = o2_n - 0x02
+	branch o2_n == 0x02 l08049480_ds_t
 l08049480_ds_f:
-	o0_2219 = o0_2173 << 0x02
-	f8_2220 = o0_2219 (alias)
+	o0_n = o0_n << 0x02
+	f8_n = o0_n (alias)
 	goto l0804948C
 l08049480_ds_t:
-	o0_2219 = o0_2173 << 0x02
-	f8_2220 = o0_2219 (alias)
+	o0_n = o0_n << 0x02
+	f8_n = o0_n (alias)
 	goto l080492A8
 l0804948C:
-	branch o2_162 - 0x02 > f2 l0804948C_ds_t
+	branch o2_n - 0x02 > f2 l0804948C_ds_t
 	goto l080494A8
 l0804948C_ds_t:
-	word32 f5_2387 = Mem0[o3_1151 + 404:real32]
+	word32 f5_n = Mem0[o3_n + 404:real32]
 	goto l0804953C
 l080494A8:
-	branch o2_162 - 0x02 <= f2 l080494A8_ds_t
+	branch o2_n - 0x02 <= f2 l080494A8_ds_t
 	goto l080494BC
 l080494A8_ds_t:
 	goto l080494D4
 l080494BC:
-	Mem2354[dwArg94 + ~0x03 + o0_2219:real32] = Mem0[o3_1151 + 0x0018:real32]
-	f2_2217 = (o2_162 - 0x02) * f2 + f3
-	f1_2187 = Mem2354[dwArg78 + ~0x03 + o0_2219:real32]
+	Mem2354[dwArg94 + ~0x03 + o0_n:real32] = Mem0[o3_n + 0x0018:real32]
+	f2_n = (o2_n - 0x02) * f2 + f3
+	f1_n = Mem2354[dwArg78 + ~0x03 + o0_n:real32]
 	goto l08049380
 l080494D4:
-	word32 f5_2360 = (o2_162 - 0x02) * (o2_162 - 0x02)
-	word32 f4_2365 = f5_2360 * f4
-	word32 f3_2370 = (o2_162 - 0x02) * (o2_162 - 0x02) * (o2_162 - 0x02) * f5_2360
-	f6 = (o2_162 - 0x02) * (o2_162 - 0x02)
-	f4 = (o2_162 - 0x02) * f4_2365 + f5_2360
-	o3_1151 = Mem0[Mem0[Mem0[o3_1151 + 388:real32] + 0x001C:real32] + 400:real32] (alias)
-	Mem2384[dwArg94 + ~0x03 + o0_2219:real32] = f5_2360
-	f3 = f4 - f6 * f3_2370
-	f2_2217 = ((o2_162 - 0x02) * f2 + f3 + f4_2365 - f3_2370) / f3 + f5_2360
-	f1_2187 = Mem2384[dwArg78 + ~0x03 + o0_2219:real32]
+	word32 f5_n = (o2_n - 0x02) * (o2_n - 0x02)
+	word32 f4_n = f5_n * f4
+	word32 f3_n = (o2_n - 0x02) * (o2_n - 0x02) * (o2_n - 0x02) * f5_n
+	f6 = (o2_n - 0x02) * (o2_n - 0x02)
+	f4 = (o2_n - 0x02) * f4_n + f5_n
+	o3_n = Mem0[Mem0[Mem0[o3_n + 388:real32] + 0x001C:real32] + 400:real32] (alias)
+	Mem2384[dwArg94 + ~0x03 + o0_n:real32] = f5_n
+	f3 = f4 - f6 * f3_n
+	f2_n = ((o2_n - 0x02) * f2 + f3 + f4_n - f3_n) / f3 + f5_n
+	f1_n = Mem2384[dwArg78 + ~0x03 + o0_n:real32]
 	goto l08049380
 l0804953C:
-	Mem2389[dwArg94 + ~0x03 + o0_2219:real32] = f5_2387
-	f2_2217 = (o2_162 - 0x02) / f2
-	f1_2187 = Mem2389[dwArg78 + ~0x03 + o0_2219:real32]
+	Mem2389[dwArg94 + ~0x03 + o0_n:real32] = f5_n
+	f2_n = (o2_n - 0x02) / f2
+	f1_n = Mem2389[dwArg78 + ~0x03 + o0_n:real32]
 	goto l08049380
 l0804954C:
-	word32 f9_2323 = Mem0[dwArgA0 + ~0x03 + o0_2219:real32]
-	word32 f5_2325 = Mem0[dwArg94 + ~0x03 + o0_2219:real32]
-	Mem2328[dwArg98 + ~0x03 + o0_2219:real32] = f5_2325
-	Mem2333[dwArg88 + ~0x03 + o0_2219:real32] = f5_2325
-	Mem2336[dwArg84 + ~0x03 + o0_2219:real32] = Mem2333[dwArg90 + ~0x03 + o0_2219:real32]
-	f3 = (f1_2187 - f4) * f0_2233
-	o1_2226 = f9_2323 (alias)
-	f2 = f1_2187 * f9_2323 + f3
+	word32 f9_n = Mem0[dwArgA0 + ~0x03 + o0_n:real32]
+	word32 f5_n = Mem0[dwArg94 + ~0x03 + o0_n:real32]
+	Mem2328[dwArg98 + ~0x03 + o0_n:real32] = f5_n
+	Mem2333[dwArg88 + ~0x03 + o0_n:real32] = f5_n
+	Mem2336[dwArg84 + ~0x03 + o0_n:real32] = Mem2333[dwArg90 + ~0x03 + o0_n:real32]
+	f3 = (f1_n - f4) * f0_n
+	o1_n = f9_n (alias)
+	f2 = f1_n * f9_n + f3
 	goto l0804946C
 l08049590:
-	word32 f7_1219 = Mem0[134513532:real32]
-	word32 f7_1225 = Mem0[0x08048344:real32]
-	word32 o1_1226 = o1_1202 << 0x03
+	word32 f7_n = Mem0[134513532:real32]
+	word32 f7_n = Mem0[0x08048344:real32]
+	word32 o1_n = o1_n << 0x03
 	goto l08049654
 l080495C8:
-	word32 f7_1565 = Mem1490[f11_1510 + 188:real32]
-	word32 f5_1566 = f7_1565 * f7_1565
-	word32 f4_1572 = f5_1566 * f4_1484
-	word32 f3_1576 = f7_1565 * f7_1565 * f7_1565 * f5_1566
-	f4 = f4_1572 - f0_1561
-	word32 f5_1587 = f5_1566 + f6
-	o5_1197 = Mem1490[f11_1510 + 0x004C:real32] (alias)
-	o3_1151 = Mem1490[dwArg98 + ~0x03 + o0_1259:real32] (alias)
-	o1_1526 = Mem1490[0x0804B0AC:real32] (alias)
-	Mem1594[f15_1478 + o0_1259:real32] = f5_1587
-	f3 = f3_1576 * f5_1566 / f4 / f5_1587 * f0_1561
-	f2 = (f7_1225 * f2_1488 + f3_1514 - f4_1572 + f3_1576) / f8_1260 * f4 + f3
+	word32 f7_n = Mem1490[f11_n + 188:real32]
+	word32 f5_n = f7_n * f7_n
+	word32 f4_n = f5_n * f4_n
+	word32 f3_n = f7_n * f7_n * f7_n * f5_n
+	f4 = f4_n - f0_n
+	word32 f5_n = f5_n + f6
+	o5_n = Mem1490[f11_n + 0x004C:real32] (alias)
+	o3_n = Mem1490[dwArg98 + ~0x03 + o0_n:real32] (alias)
+	o1_n = Mem1490[0x0804B0AC:real32] (alias)
+	Mem1594[f15_n + o0_n:real32] = f5_n
+	f3 = f3_n * f5_n / f4 / f5_n * f0_n
+	f2 = (f7_n * f2_n + f3_n - f4_n + f3_n) / f8_n * f4 + f3
 l0804963C:
-	i5_1211 = i5_1211 + 0x01
-	word32 g0_1531 = i5_1211 - o0_1201
-	f0_1213 = g0_1531 (alias)
-	branch g0_1531 > 0x00 l0804963C_ds_t
+	i5_n = i5_n + 0x01
+	word32 g0_n = i5_n - o0_n
+	f0_n = g0_n (alias)
+	branch g0_n > 0x00 l0804963C_ds_t
 l0804963C_ds_f:
-	o1_1226 = o1_1526 + 0x08
+	o1_n = o1_n + 0x08
 	goto l08049650
 l0804963C_ds_t:
 	goto l080486D8
 l08049650:
 l08049654:
-	word32 f2_1276
-	word32 f0_1274
-	word32 f4_1273
-	word32 f1_1271
-	word32 o0_1258 = Mem0[o1_1226 + 134513444:word32]
-	word32 o0_1259 = o0_1258 << 0x02
-	word32 f8_1260 = o0_1258 << 0x02
-	word32 f0_1263 = f0_1213 * f2
-	branch f0_1263 >= f4 l08049654_ds_t
+	word32 f2_n
+	word32 f0_n
+	word32 f4_n
+	word32 f1_n
+	word32 o0_n = Mem0[o1_n + 134513444:word32]
+	word32 o0_n = o0_n << 0x02
+	word32 f8_n = o0_n << 0x02
+	word32 f0_n = f0_n * f2
+	branch f0_n >= f4 l08049654_ds_t
 l08049654_ds_f:
-	f1_1271 = f0_1263 + f3
+	f1_n = f0_n + f3
 	goto l08049684
 l08049654_ds_t:
-	f1_1271 = f0_1263 + f3
+	f1_n = f0_n + f3
 	goto l0804969C
 l08049684:
-	f4_1273 = f0_1263 * f4
-	f2_1276 = f0_1263 * f2 + f3
-	f0_1274 = f4_1273 / f2_1276
+	f4_n = f0_n * f4
+	f2_n = f0_n * f2 + f3
+	f0_n = f4_n / f2_n
 	goto l08049728
 l0804969C:
-	f4_1273 = f1_1271 * f4 + Mem0[o3_1151 + 224:real32]
-	f2_1276 = (((((((((f1_1271 * f2 + f3) * f1_1271 + f4) * f1_1271 + f3) * f1_1271 + f4) * f1_1271 + f3) * f1_1271 + f4) * f1_1271 + f3) * f1_1271 + f4) * f1_1271 + f3) / f4_1273
-	o3_1151 = Mem0[o3_1151 + 0x001C:real32] (alias)
-	f0_1274 = f2_1276 + f3
+	f4_n = f1_n * f4 + Mem0[o3_n + 224:real32]
+	f2_n = (((((((((f1_n * f2 + f3) * f1_n + f4) * f1_n + f3) * f1_n + f4) * f1_n + f3) * f1_n + f4) * f1_n + f3) * f1_n + f4) * f1_n + f3) / f4_n
+	o3_n = Mem0[o3_n + 0x001C:real32] (alias)
+	f0_n = f2_n + f3
 l08049728:
-	word32 f3_1288
-	(dwArg8C + ~0x03)[o0_1258 * 0x04] = Mem0[o3_1151 + 0x0118:real32]
-	word32 f2_1285 = f0_1274 * f2_1276 * f3
-	branch f4_1273 <= f2_1285 l08049728_ds_t
+	word32 f3_n
+	(dwArg8C + ~0x03)[o0_n * 0x04] = Mem0[o3_n + 0x0118:real32]
+	word32 f2_n = f0_n * f2_n * f3
+	branch f4_n <= f2_n l08049728_ds_t
 	goto l08049754
 l08049728_ds_t:
-	f3_1288 = (dwArg78 + ~0x03)[o0_1258 * 0x04]
+	f3_n = (dwArg78 + ~0x03)[o0_n * 0x04]
 	goto l08049760
 l08049754:
-	f3_1288 = (dwArg78 + ~0x03)[o0_1258 * 0x04]
-	(dwArg7C + ~0x03)[o0_1258 * 0x04] = (dwArg8C + ~0x03)[o0_1258 * 0x04]
+	f3_n = (dwArg78 + ~0x03)[o0_n * 0x04]
+	(dwArg7C + ~0x03)[o0_n * 0x04] = (dwArg8C + ~0x03)[o0_n * 0x04]
 l08049760:
-	word32 f0_1293 = f3_1288
-	branch f3_1288 > f2_1285 l08049760_ds_t
+	word32 f0_n = f3_n
+	branch f3_n > f2_n l08049760_ds_t
 	goto l08049778
 l08049760_ds_t:
-	f0_1293 = f2_1285
+	f0_n = f2_n
 l08049778:
-	word32 f5_1300 = f0_1293 * f0_1293
-	word32 f3_1304 = f5_1300 * f3_1288
-	word32 f11_1307 = Mem1283[o3_1151 + 0x08:real32]
-	(dwArgA4 + ~0x03)[o0_1258 * 0x04] = f5_1300
-	word32 f4_1309 = f0_1293 * f0_1293 * f0_1293 * f5_1300
-	word32 f3_1311 = f1_1271 * f3_1304
-	word32 o3_1308 = f11_1307
-	word32 f2_1313 = f2_1285 - f0_1293 * f4_1273 - f3_1304 - f4_1309 + f3_1311
-	word32 f4_1315 = f4_1309 - f0_1293
-	word32 f5_1317 = Mem1316[f11_1307 + 0x0014:real32]
-	branch f2_1313 < f4_1315 l08049778_ds_t
+	word32 f5_n = f0_n * f0_n
+	word32 f3_n = f5_n * f3_n
+	word32 f11_n = Mem1283[o3_n + 0x08:real32]
+	(dwArgA4 + ~0x03)[o0_n * 0x04] = f5_n
+	word32 f4_n = f0_n * f0_n * f0_n * f5_n
+	word32 f3_n = f1_n * f3_n
+	word32 o3_n = f11_n
+	word32 f2_n = f2_n - f0_n * f4_n - f3_n - f4_n + f3_n
+	word32 f4_n = f4_n - f0_n
+	word32 f5_n = Mem1316[f11_n + 0x0014:real32]
+	branch f2_n < f4_n l08049778_ds_t
 	goto l080497D8
 l08049778_ds_t:
-	f2_1313 = f4_1315
+	f2_n = f4_n
 l080497D8:
-	word32 f2_1343
-	(dwArgA4 + ~0x03)[o0_1258 * 0x04] = f5_1317
-	word32 f2_1324 = f4_1315 - f2_1313 * f3_1311
-	word32 f0_1326 = f1_1271 * f3_1311
-	word32 f1_1330 = f0_1326 + f2_1324
-	branch f1_1330 != f4_1315 l080497D8_ds_t
+	word32 f2_n
+	(dwArgA4 + ~0x03)[o0_n * 0x04] = f5_n
+	word32 f2_n = f4_n - f2_n * f3_n
+	word32 f0_n = f1_n * f3_n
+	word32 f1_n = f0_n + f2_n
+	branch f1_n != f4_n l080497D8_ds_t
 	goto l08049810
 l080497D8_ds_t:
-	word32 f5_2084 = Mem1328[f11_1307 + 0x00D0:real32]
+	word32 f5_n = Mem1328[f11_n + 0x00D0:real32]
 	goto l080498E4
 l08049810:
-	o3_1308 = f7_1225 (alias)
-	branch f0_1326 >= f2_1324 l08049810_ds_t
+	o3_n = f7_n (alias)
+	branch f0_n >= f2_n l08049810_ds_t
 	goto l08049830
 l08049810_ds_t:
-	word32 f5_2046 = Mem1328[f7_1225 + 100:real32]
+	word32 f5_n = Mem1328[f7_n + 100:real32]
 	goto l08049850
 l08049830:
-	word32 f5_2040 = Mem1328[f7_1225 + 0x00B0:real32]
-	l1_1251[o0_1258 * 0x04] = f5_2040
-	f4_1315 = f0_1326 * f4_1315 + f5_2040
-	f2_1343 = (f0_1326 * f2_1324 + f3_1311) / f4_1315
+	word32 f5_n = Mem1328[f7_n + 0x00B0:real32]
+	l1_n[o0_n * 0x04] = f5_n
+	f4_n = f0_n * f4_n + f5_n
+	f2_n = (f0_n * f2_n + f3_n) / f4_n
 	goto l080498FC
 l08049850:
-	o3_1308 = Mem1328[f7_1225 + 0x001C:real32] (alias)
-	l1_1251[o0_1258 * 0x04] = f5_2046
-	word32 f3_2048 = f1_1330 * f3_1311
-	f4_1315 = f1_1330 * f4_1315 + f5_2046
-	f3_1311 = f3_2048
-	f2_1343 = (((((((((f3_2048 + f2_1324) * f1_1330 + f4_1315) * f1_1330 + f3_2048) * f1_1330 + f4_1315) * f1_1330 + f3_2048) * f1_1330 + f4_1315) * f1_1330 + f3_2048) * f1_1330 + f4_1315) * f1_1330 + f3_2048) / f4_1315 + f3_2048
+	o3_n = Mem1328[f7_n + 0x001C:real32] (alias)
+	l1_n[o0_n * 0x04] = f5_n
+	word32 f3_n = f1_n * f3_n
+	f4_n = f1_n * f4_n + f5_n
+	f3_n = f3_n
+	f2_n = (((((((((f3_n + f2_n) * f1_n + f4_n) * f1_n + f3_n) * f1_n + f4_n) * f1_n + f3_n) * f1_n + f4_n) * f1_n + f3_n) * f1_n + f4_n) * f1_n + f3_n) / f4_n + f3_n
 	goto l080498FC
 l080498E4:
-	l1_1251[o0_1258 * 0x04] = f5_2084
-	f2_1343 = (f1_1330 + f2_1324) * f3_1311 + f4_1315
+	l1_n[o0_n * 0x04] = f5_n
+	f2_n = (f1_n + f2_n) * f3_n + f4_n
 l080498FC:
-	word32 f2_1357
-	word32 o3_1359
-	word32 f0_1346 = o2_162 - 0x02
-	branch o2_162 == 0x02 l080498FC_ds_t
+	word32 f2_n
+	word32 o3_n
+	word32 f0_n = o2_n - 0x02
+	branch o2_n == 0x02 l080498FC_ds_t
 	goto l08049908
 l080498FC_ds_t:
-	word32 f3_1962 = (dwArg7C + ~0x03)[o0_1258 * 0x04]
+	word32 f3_n = (dwArg7C + ~0x03)[o0_n * 0x04]
 	goto l080499F0
 l08049908:
-	word32 f2_1903 = f3_1311 * f2_1343
-	branch f4_1315 <= f2_1903 l08049908_ds_t
+	word32 f2_n = f3_n * f2_n
+	branch f4_n <= f2_n l08049908_ds_t
 	goto l08049928
 l08049908_ds_t:
-	f1_1330 = (dwArg7C + ~0x03)[o0_1258 * 0x04]
+	f1_n = (dwArg7C + ~0x03)[o0_n * 0x04]
 	goto l08049934
 l08049928:
-	(dwArg7C + ~0x03)[o0_1258 * 0x04] = (dwArg8C + ~0x03)[o0_1258 * 0x04]
-	f1_1330 = (dwArg7C + ~0x03)[o0_1258 * 0x04]
+	(dwArg7C + ~0x03)[o0_n * 0x04] = (dwArg8C + ~0x03)[o0_n * 0x04]
+	f1_n = (dwArg7C + ~0x03)[o0_n * 0x04]
 l08049934:
-	branch o2_162 - 0x02 > f2_1903 l08049934_ds_t
+	branch o2_n - 0x02 > f2_n l08049934_ds_t
 	goto l0804994C
 l08049934_ds_t:
-	word32 f5_1951 = Mem1328[o3_1308 + 404:real32]
+	word32 f5_n = Mem1328[o3_n + 404:real32]
 	goto l080499E0
 l0804994C:
-	branch o2_162 - 0x02 <= f2_1903 l0804994C_ds_t
+	branch o2_n - 0x02 <= f2_n l0804994C_ds_t
 	goto l08049960
 l0804994C_ds_t:
 	goto l08049978
 l08049960:
-	(dwArg94 + ~0x03)[o0_1258 * 0x04] = Mem1328[o3_1308 + 0x0018:real32]
-	f2_1357 = (o2_162 - 0x02) * f2_1903 + f3_1311
-	o3_1359 = (dwArg78 + ~0x03)[o0_1258 * 0x04] (alias)
+	(dwArg94 + ~0x03)[o0_n * 0x04] = Mem1328[o3_n + 0x0018:real32]
+	f2_n = (o2_n - 0x02) * f2_n + f3_n
+	o3_n = (dwArg78 + ~0x03)[o0_n * 0x04] (alias)
 	goto l08049AC4
 l08049978:
-	word32 f5_1925 = (o2_162 - 0x02) * (o2_162 - 0x02)
-	word32 f4_1930 = f5_1925 * f4_1315
-	word32 f3_1935 = (o2_162 - 0x02) * (o2_162 - 0x02) * (o2_162 - 0x02) * f5_1925
-	f6 = (o2_162 - 0x02) * (o2_162 - 0x02)
-	f4_1315 = (o2_162 - 0x02) * f4_1930 + f5_1925
-	(dwArg94 + ~0x03)[o0_1258 * 0x04] = f5_1925
-	f3_1311 = f4_1315 - f6 * f3_1935
-	f2_1357 = ((o2_162 - 0x02) * f2_1903 + f3_1311 + f4_1930 - f3_1935) / f3_1311 + f5_1925
-	o3_1359 = (dwArg78 + ~0x03)[o0_1258 * 0x04] (alias)
+	word32 f5_n = (o2_n - 0x02) * (o2_n - 0x02)
+	word32 f4_n = f5_n * f4_n
+	word32 f3_n = (o2_n - 0x02) * (o2_n - 0x02) * (o2_n - 0x02) * f5_n
+	f6 = (o2_n - 0x02) * (o2_n - 0x02)
+	f4_n = (o2_n - 0x02) * f4_n + f5_n
+	(dwArg94 + ~0x03)[o0_n * 0x04] = f5_n
+	f3_n = f4_n - f6 * f3_n
+	f2_n = ((o2_n - 0x02) * f2_n + f3_n + f4_n - f3_n) / f3_n + f5_n
+	o3_n = (dwArg78 + ~0x03)[o0_n * 0x04] (alias)
 	goto l08049AC4
 l080499E0:
-	(dwArg94 + ~0x03)[o0_1258 * 0x04] = f5_1951
-	f2_1357 = (o2_162 - 0x02) / f2_1903
-	o3_1359 = (dwArg78 + ~0x03)[o0_1258 * 0x04] (alias)
+	(dwArg94 + ~0x03)[o0_n * 0x04] = f5_n
+	f2_n = (o2_n - 0x02) / f2_n
+	o3_n = (dwArg78 + ~0x03)[o0_n * 0x04] (alias)
 	goto l08049AC4
 l080499F0:
-	word32 f2_1964 = f1_1330 * f2_1343
-	f6 = f2_1964 + f3_1962
-	word32 f11_1973 = Mem1328[f7_1219 + 0x01AC:real32]
-	word32 f4_1970 = f4_1315 * Mem1328[o3_1308 + 0x019C:real32]
-	word32 f3_1979 = (f6 * f3_1962 + Mem1328[f11_1973 + 0x01A4:real32]) * f6
-	f4_1315 = f6 * f4_1970
-	word32 f5_1978 = Mem1328[f11_1973 + 0x01B0:real32]
-	word32 f0_1976 = f4_1970 + f2_1964
-	word32 f3_1991 = ((f4_1315 + f3_1979) * f6 + f5_1978) * f6
-	word32 f5_1994 = f0_1976 * f5_1978
-	f3_1311 = f5_1994 + f6 * f3_1991 + f4_1315
-	f2_1357 = ((f3_1979 + f2_1964) * f0_1976 + f3_1991 + f4_1315) / f3_1311
-	f0_1346 = f2_1357 + f5_1994
-	branch f1_1330 <= f4_1315 l080499F0_ds_t
+	word32 f2_n = f1_n * f2_n
+	f6 = f2_n + f3_n
+	word32 f11_n = Mem1328[f7_n + 0x01AC:real32]
+	word32 f4_n = f4_n * Mem1328[o3_n + 0x019C:real32]
+	word32 f3_n = (f6 * f3_n + Mem1328[f11_n + 0x01A4:real32]) * f6
+	f4_n = f6 * f4_n
+	word32 f5_n = Mem1328[f11_n + 0x01B0:real32]
+	word32 f0_n = f4_n + f2_n
+	word32 f3_n = ((f4_n + f3_n) * f6 + f5_n) * f6
+	word32 f5_n = f0_n * f5_n
+	f3_n = f5_n + f6 * f3_n + f4_n
+	f2_n = ((f3_n + f2_n) * f0_n + f3_n + f4_n) / f3_n
+	f0_n = f2_n + f5_n
+	branch f1_n <= f4_n l080499F0_ds_t
 	goto l08049A9C
 l080499F0_ds_t:
-	(dwArg94 + ~0x03)[o0_1258 * 0x04] = f1_1330
+	(dwArg94 + ~0x03)[o0_n * 0x04] = f1_n
 	goto l08049AC0
 l08049A9C:
-	f2_1357 = f3_1311 * f2_1357 + f4_1315
-	branch f0_1346 < f2_1357 l08049A9C_ds_t
+	f2_n = f3_n * f2_n + f4_n
+	branch f0_n < f2_n l08049A9C_ds_t
 	goto l08049ABC
 l08049A9C_ds_t:
-	f0_1346 = f2_1357
+	f0_n = f2_n
 l08049ABC:
-	(dwArg94 + ~0x03)[o0_1258 * 0x04] = f1_1330
+	(dwArg94 + ~0x03)[o0_n * 0x04] = f1_n
 l08049AC0:
-	o3_1359 = (dwArg78 + ~0x03)[o0_1258 * 0x04] (alias)
+	o3_n = (dwArg78 + ~0x03)[o0_n * 0x04] (alias)
 l08049AC4:
-	word32 f5_1375
-	word32 f7_1361 = Mem1328[o3_1359 + 0x0014:real32]
-	(dwArgA0 + ~0x03)[o0_1258 * 0x04] = l1_1251[o0_1258 * 0x04]
-	Mem1363[o5_1197 + 0x00:real32] = f7_1361
-	branch f3_1311 > f2_1357 l08049AC4_ds_t
+	word32 f5_n
+	word32 f7_n = Mem1328[o3_n + 0x0014:real32]
+	(dwArgA0 + ~0x03)[o0_n * 0x04] = l1_n[o0_n * 0x04]
+	Mem1363[o5_n + 0x00:real32] = f7_n
+	branch f3_n > f2_n l08049AC4_ds_t
 	goto l08049AF4
 l08049AC4_ds_t:
-	f5_1375 = (dwArgAC + ~0x03)[o0_1258 * 0x04]
+	f5_n = (dwArgAC + ~0x03)[o0_n * 0x04]
 	goto l08049CA4
 l08049AF4:
-	word32 f0_1792 = f1_1330 * f2_1357
-	f3_1311 = f0_1792 + ((dwArgAC + ~0x03)[o0_1258 * 0x04] - f1_1330) * f4_1315
-	word32 f2_1795 = f7_1219 * f2_1357
-	f4_1315 = f4_1315 - f0_1792 / f3_1311
-	f0_1346 = f2_1795 * f4_1315
-	word32 f1_1805 = f0_1346 + f7_1219
-	o3_1359 = f7_1225 (alias)
-	branch f1_1805 != f3_1311 l08049AF4_ds_t
+	word32 f0_n = f1_n * f2_n
+	f3_n = f0_n + ((dwArgAC + ~0x03)[o0_n * 0x04] - f1_n) * f4_n
+	word32 f2_n = f7_n * f2_n
+	f4_n = f4_n - f0_n / f3_n
+	f0_n = f2_n * f4_n
+	word32 f1_n = f0_n + f7_n
+	o3_n = f7_n (alias)
+	branch f1_n != f3_n l08049AF4_ds_t
 	goto l08049B4C
 l08049AF4_ds_t:
-	word32 f5_1883 = Mem1363[f7_1225 + 0x00D0:real32]
+	word32 f5_n = Mem1363[f7_n + 0x00D0:real32]
 	goto l08049C64
 l08049B4C:
-	branch f0_1346 >= f2_1795 l08049B4C_ds_t
+	branch f0_n >= f2_n l08049B4C_ds_t
 	goto l08049B60
 l08049B4C_ds_t:
-	word32 f5_1834 = Mem1363[f7_1225 + 100:real32]
+	word32 f5_n = Mem1363[f7_n + 100:real32]
 	goto l08049BA8
 l08049B60:
-	word32 f5_1817 = Mem1363[f7_1225 + 0x00B0:real32]
-	o3_1359 = Mem1363[f7_1225 + 0x0014:real32] (alias)
-	(dwArgA0 + ~0x03)[o0_1258 * 0x04] = f5_1817
-	f4_1315 = f0_1346 * f4_1315 + f5_1817
-	word32 f5_1826 = (dwArgA0 + ~0x03)[o0_1258 * 0x04]
-	f2_1357 = f3_1311 - (f0_1346 * f2_1795 + f3_1311) / f4_1315
-	branch f2_1357 < f5_1826 l08049B60_ds_t
+	word32 f5_n = Mem1363[f7_n + 0x00B0:real32]
+	o3_n = Mem1363[f7_n + 0x0014:real32] (alias)
+	(dwArgA0 + ~0x03)[o0_n * 0x04] = f5_n
+	f4_n = f0_n * f4_n + f5_n
+	word32 f5_n = (dwArgA0 + ~0x03)[o0_n * 0x04]
+	f2_n = f3_n - (f0_n * f2_n + f3_n) / f4_n
+	branch f2_n < f5_n l08049B60_ds_t
 	goto l08049B9C
 l08049B60_ds_t:
-	f2_1357 = f5_1826
+	f2_n = f5_n
 l08049B9C:
-	Mem1831[o5_1197 + 0x00:real32] = f5_1826
-	f5_1375 = (dwArgAC + ~0x03)[o0_1258 * 0x04]
+	Mem1831[o5_n + 0x00:real32] = f5_n
+	f5_n = (dwArgAC + ~0x03)[o0_n * 0x04]
 	goto l08049CA4
 l08049BA8:
-	o3_1359 = (dwArg94 + ~0x03)[o0_1258 * 0x04] (alias)
-	(dwArgA0 + ~0x03)[o0_1258 * 0x04] = f5_1834
-	word32 f3_1836 = f1_1805 * f3_1311
-	f4_1315 = f1_1805 * f4_1315 + f5_1834
-	word32 f5_1874 = (dwArgA0 + ~0x03)[o0_1258 * 0x04]
-	f3_1311 = f3_1836
-	f2_1357 = f5_1874 - ((((((((((f3_1836 + f2_1795) * f1_1805 + f4_1315) * f1_1805 + f3_1836) * f1_1805 + f4_1315) * f1_1805 + f3_1836) * f1_1805 + f4_1315) * f1_1805 + f3_1836) * f1_1805 + f4_1315) * f1_1805 + f3_1836) / f4_1315 + f3_1836)
-	branch f2_1357 < f3_1836 l08049BA8_ds_t
+	o3_n = (dwArg94 + ~0x03)[o0_n * 0x04] (alias)
+	(dwArgA0 + ~0x03)[o0_n * 0x04] = f5_n
+	word32 f3_n = f1_n * f3_n
+	f4_n = f1_n * f4_n + f5_n
+	word32 f5_n = (dwArgA0 + ~0x03)[o0_n * 0x04]
+	f3_n = f3_n
+	f2_n = f5_n - ((((((((((f3_n + f2_n) * f1_n + f4_n) * f1_n + f3_n) * f1_n + f4_n) * f1_n + f3_n) * f1_n + f4_n) * f1_n + f3_n) * f1_n + f4_n) * f1_n + f3_n) / f4_n + f3_n)
+	branch f2_n < f3_n l08049BA8_ds_t
 	goto l08049C58
 l08049BA8_ds_t:
-	f2_1357 = f3_1836
+	f2_n = f3_n
 l08049C58:
-	Mem1880[o5_1197 + 0x00:real32] = f5_1874
-	f5_1375 = (dwArgAC + ~0x03)[o0_1258 * 0x04]
+	Mem1880[o5_n + 0x00:real32] = f5_n
+	f5_n = (dwArgAC + ~0x03)[o0_n * 0x04]
 	goto l08049CA4
 l08049C64:
-	(dwArgA0 + ~0x03)[o0_1258 * 0x04] = f5_1883
-	word32 f5_1891 = (dwArgA0 + ~0x03)[o0_1258 * 0x04]
-	f2_1357 = f3_1311 - ((f1_1805 + f2_1795) * f3_1311 + f4_1315)
-	branch f2_1357 < f4_1315 l08049C64_ds_t
+	(dwArgA0 + ~0x03)[o0_n * 0x04] = f5_n
+	word32 f5_n = (dwArgA0 + ~0x03)[o0_n * 0x04]
+	f2_n = f3_n - ((f1_n + f2_n) * f3_n + f4_n)
+	branch f2_n < f4_n l08049C64_ds_t
 	goto l08049C9C
 l08049C64_ds_t:
-	f2_1357 = f4_1315
+	f2_n = f4_n
 l08049C9C:
-	Mem1897[o5_1197 + 0x00:real32] = f5_1891
-	f5_1375 = (dwArgAC + ~0x03)[o0_1258 * 0x04]
+	Mem1897[o5_n + 0x00:real32] = f5_n
+	f5_n = (dwArgAC + ~0x03)[o0_n * 0x04]
 l08049CA4:
-	word32 f2_1401
-	word32 g1_1396
-	word32 f2_1380 = f3_1311 - f2_1357
-	word32 f11_1382 = Mem1363[o3_1359 + 0x011C:real32]
-	word32 f1_1384 = f4_1315 * f2_1380
-	branch f1_1384 > f5_1375 l08049CA4_ds_t
+	word32 f2_n
+	word32 g1_n
+	word32 f2_n = f3_n - f2_n
+	word32 f11_n = Mem1363[o3_n + 0x011C:real32]
+	word32 f1_n = f4_n * f2_n
+	branch f1_n > f5_n l08049CA4_ds_t
 	goto l08049CD0
 l08049CA4_ds_t:
 	goto l08049F5C
 l08049CD0:
-	word32 f5_1721 = Mem1363[f11_1382 + 292:real32]
-	word32 f3_1720 = f1_1384 * f3_1311
-	word32 f4_1725 = f5_1721 * f4_1315
-	word32 f11_1729 = Mem1363[f11_1382 + 0x001C:real32]
-	word32 f3_1731 = Mem1363[f11_1382 + 300:real32] * f3_1720
-	f6 = f1_1384 * f1_1384
-	f4_1315 = f1_1384 * f4_1725 + f5_1721
-	word32 f5_1741 = Mem1363[f11_1729 + 0x0134:real32] * f5_1721
-	word32 f11_1739 = Mem1363[f11_1729 + 0x0138:real32]
-	(dwArg90 + ~0x03)[o0_1258 * 0x04] = f5_1741
-	f3_1311 = f4_1315 - f6 * f3_1731 + f5_1741
-	f0_1346 = f1_1384 * f1_1384
-	f2_1401 = (f3_1720 + f2_1380 - f4_1725 + f3_1731) / f3_1311
-	branch f1_1384 <= f4_1315 l08049CD0_ds_t
+	word32 f5_n = Mem1363[f11_n + 292:real32]
+	word32 f3_n = f1_n * f3_n
+	word32 f4_n = f5_n * f4_n
+	word32 f11_n = Mem1363[f11_n + 0x001C:real32]
+	word32 f3_n = Mem1363[f11_n + 300:real32] * f3_n
+	f6 = f1_n * f1_n
+	f4_n = f1_n * f4_n + f5_n
+	word32 f5_n = Mem1363[f11_n + 0x0134:real32] * f5_n
+	word32 f11_n = Mem1363[f11_n + 0x0138:real32]
+	(dwArg90 + ~0x03)[o0_n * 0x04] = f5_n
+	f3_n = f4_n - f6 * f3_n + f5_n
+	f0_n = f1_n * f1_n
+	f2_n = (f3_n + f2_n - f4_n + f3_n) / f3_n
+	branch f1_n <= f4_n l08049CD0_ds_t
 	goto l08049D48
 l08049CD0_ds_t:
-	g1_1396 = (dwArg78 + ~0x03)[o0_1258 * 0x04] (alias)
+	g1_n = (dwArg78 + ~0x03)[o0_n * 0x04] (alias)
 	goto l08049D70
 l08049D48:
-	word32 f2_1750 = f1_1384 + f2_1401
-	g1_1396 = (dwArg78 + ~0x03)[o0_1258 * 0x04] (alias)
-	(dwArg90 + ~0x03)[o0_1258 * 0x04] = Mem1748[f11_1739 + 0x0160:real32]
-	f3_1311 = f2_1750 * f2_1750
-	f2_1401 = f4_1315 - f3_1311 * f2_1750
+	word32 f2_n = f1_n + f2_n
+	g1_n = (dwArg78 + ~0x03)[o0_n * 0x04] (alias)
+	(dwArg90 + ~0x03)[o0_n * 0x04] = Mem1748[f11_n + 0x0160:real32]
+	f3_n = f2_n * f2_n
+	f2_n = f4_n - f3_n * f2_n
 l08049D70:
-	word32 f4_1410 = f0_1346 * f0_1346 * f4_1315
-	word32 f2_1412 = f0_1346 * f2_1401 + f3_1311 + f4_1410
-	branch f2_1412 > f3_1311 l08049D70_ds_t
+	word32 f4_n = f0_n * f0_n * f4_n
+	word32 f2_n = f0_n * f2_n + f3_n + f4_n
+	branch f2_n > f3_n l08049D70_ds_t
 	goto l08049DA4
 l08049D70_ds_t:
 l08049DA4:
-	word32 f5_1419 = (dwArg90 + ~0x03)[o0_1258 * 0x04]
-	word32 f11_1417 = Mem1363[o5_1197 + 0x00:real32]
-	(dwArg90 + ~0x03)[o0_1258 * 0x04] = f5_1419
-	word32 f2_1421 = f2_1412 + f5_1419
-	branch f2_1421 >= f3_1311 l08049DA4_ds_t
+	word32 f5_n = (dwArg90 + ~0x03)[o0_n * 0x04]
+	word32 f11_n = Mem1363[o5_n + 0x00:real32]
+	(dwArg90 + ~0x03)[o0_n * 0x04] = f5_n
+	word32 f2_n = f2_n + f5_n
+	branch f2_n >= f3_n l08049DA4_ds_t
 	goto l08049DD0
 l08049DA4_ds_t:
 	goto l08049DDC
 l08049DD0:
-	(dwArg84 + ~0x03)[o0_1258 * 0x04] = (dwArg90 + ~0x03)[o0_1258 * 0x04]
+	(dwArg84 + ~0x03)[o0_n * 0x04] = (dwArg90 + ~0x03)[o0_n * 0x04]
 l08049DDC:
-	word32 f5_1430
-	branch f3_1311 >= f2_1421 l08049DDC_ds_t
+	word32 f5_n
+	branch f3_n >= f2_n l08049DDC_ds_t
 	goto l08049DF0
 l08049DDC_ds_t:
-	f5_1430 = (dwArgAC + ~0x03)[o0_1258 * 0x04]
+	f5_n = (dwArgAC + ~0x03)[o0_n * 0x04]
 	goto l08049DFC
 l08049DF0:
-	(dwArg84 + ~0x03)[o0_1258 * 0x04] = g1_1396[o0_1258 * 0x04]
-	f5_1430 = (dwArgAC + ~0x03)[o0_1258 * 0x04]
+	(dwArg84 + ~0x03)[o0_n * 0x04] = g1_n[o0_n * 0x04]
+	f5_n = (dwArgAC + ~0x03)[o0_n * 0x04]
 l08049DFC:
-	word32 f2_1432 = f3_1311 - f2_1421
-	word32 f0_1435 = f2_1432 * f3_1311
-	word32 o3_1434 = Mem1422[f11_1417 + 0x01DC:real32]
-	word32 f5_1439 = (dwArg84 + ~0x03)[o0_1258 * 0x04]
-	word32 f3_1440 = f3_1311 * f5_1430 * f0_1435
-	branch f2_1432 < f3_1440 l08049DFC_ds_t
+	word32 f2_n = f3_n - f2_n
+	word32 f0_n = f2_n * f3_n
+	word32 o3_n = Mem1422[f11_n + 0x01DC:real32]
+	word32 f5_n = (dwArg84 + ~0x03)[o0_n * 0x04]
+	word32 f3_n = f3_n * f5_n * f0_n
+	branch f2_n < f3_n l08049DFC_ds_t
 	goto l08049E2C
 l08049DFC_ds_t:
-	f2_1432 = f3_1440
+	f2_n = f3_n
 l08049E2C:
-	(dwArg84 + ~0x03)[o0_1258 * 0x04] = f5_1439
-	word32 f4_1453 = f0_1435 * f0_1435 * f4_1410
-	word32 f2_1455 = f0_1435 * f2_1432 + f3_1440 + f4_1453
-	word32 f1_1446 = (dwArg78 + ~0x03)[o0_1258 * 0x04]
-	word32 f0_1458 = f2_1455
-	branch f2_1455 > f3_1440 l08049E2C_ds_t
+	(dwArg84 + ~0x03)[o0_n * 0x04] = f5_n
+	word32 f4_n = f0_n * f0_n * f4_n
+	word32 f2_n = f0_n * f2_n + f3_n + f4_n
+	word32 f1_n = (dwArg78 + ~0x03)[o0_n * 0x04]
+	word32 f0_n = f2_n
+	branch f2_n > f3_n l08049E2C_ds_t
 	goto l08049E68
 l08049E2C_ds_t:
-	f0_1458 = f3_1440
+	f0_n = f3_n
 l08049E68:
-	word32 f5_1471
-	branch f3_1440 >= f2_1455 l08049E68_ds_t
+	word32 f5_n
+	branch f3_n >= f2_n l08049E68_ds_t
 	goto l08049E80
 l08049E68_ds_t:
 	goto l08049EA4
 l08049E80:
-	f2_1455 = f2_1455 * f3_1440
-	branch f2_1455 > f4_1453 l08049E80_ds_t
+	f2_n = f2_n * f3_n
+	branch f2_n > f4_n l08049E80_ds_t
 	goto l08049EA4
 l08049E80_ds_t:
 	goto l0804A10C
 l08049EA4:
-	branch f3_1440 > f2_1455 l08049EA4_ds_t
+	branch f3_n > f2_n l08049EA4_ds_t
 	goto l08049EB8
 l08049EA4_ds_t:
 	goto l08049FCC
 l08049EB8:
-	branch f3_1440 > f2_1455 l08049EB8_ds_t
+	branch f3_n > f2_n l08049EB8_ds_t
 	goto l08049ED0
 l08049EB8_ds_t:
 	goto l08049FCC
 l08049ED0:
-	word32 f1_1653 = f2_1455 - f7_1225
-	word32 f5_1655 = f1_1653[o0_1258 * 0x04]
-	word32 f3_1656 = f1_1653 * (f3_1440 * f0_1458 - f4_1453)
-	f4_1453 = f7_1225 * f6 + f5_1655
-	f2_1455 = f2_1455 + f3_1656
-	word32 f1_1661 = f2_1455 / f4_1453
-	o3_1434 = Mem1444[(dwArgAC + ~0x03)[o0_1258 * 0x04] + 0x01E0:real32] (alias)
-	f3_1440 = fabs(f1_1661 - f3_1656)
-	branch f3_1440 != f5_1655 l08049ED0_ds_t
+	word32 f1_n = f2_n - f7_n
+	word32 f5_n = f1_n[o0_n * 0x04]
+	word32 f3_n = f1_n * (f3_n * f0_n - f4_n)
+	f4_n = f7_n * f6 + f5_n
+	f2_n = f2_n + f3_n
+	word32 f1_n = f2_n / f4_n
+	o3_n = Mem1444[(dwArgAC + ~0x03)[o0_n * 0x04] + 0x01E0:real32] (alias)
+	f3_n = fabs(f1_n - f3_n)
+	branch f3_n != f5_n l08049ED0_ds_t
 	goto l08049F2C
 l08049ED0_ds_t:
 	goto l08049FCC
 l08049F2C:
-	(dwArg98 + ~0x03)[o0_1258 * 0x04] = f3_1440
-	word32 f3_1673 = f1_1661 - (dwArg98 + ~0x03)[o0_1258 * 0x04]
-	(dwArg88 + ~0x03)[o0_1258 * 0x04] = f5_1655
-	(dwArg84 + ~0x03)[o0_1258 * 0x04] = (dwArg90 + ~0x03)[o0_1258 * 0x04]
-	f3_1440 = f3_1673 * f0_1458
-	f2_1455 = f1_1661 * f6 + f3_1440
-	f5_1471 = (dwArg98 + ~0x03)[o0_1258 * 0x04]
+	(dwArg98 + ~0x03)[o0_n * 0x04] = f3_n
+	word32 f3_n = f1_n - (dwArg98 + ~0x03)[o0_n * 0x04]
+	(dwArg88 + ~0x03)[o0_n * 0x04] = f5_n
+	(dwArg84 + ~0x03)[o0_n * 0x04] = (dwArg90 + ~0x03)[o0_n * 0x04]
+	f3_n = f3_n * f0_n
+	f2_n = f1_n * f6 + f3_n
+	f5_n = (dwArg98 + ~0x03)[o0_n * 0x04]
 	goto l08049FE8
 l08049F5C:
-	branch f1_1384 > f2_1380 l08049F5C_ds_t
+	branch f1_n > f2_n l08049F5C_ds_t
 	goto l08049F70
 l08049F5C_ds_t:
 	goto l08049F88
 l08049F70:
-	(dwArg90 + ~0x03)[o0_1258 * 0x04] = Mem1363[f11_1382 + 0x0140:real32]
-	f2_1401 = f1_1384 * f2_1380 + f3_1311
-	g1_1396 = (dwArg78 + ~0x03)[o0_1258 * 0x04] (alias)
+	(dwArg90 + ~0x03)[o0_n * 0x04] = Mem1363[f11_n + 0x0140:real32]
+	f2_n = f1_n * f2_n + f3_n
+	g1_n = (dwArg78 + ~0x03)[o0_n * 0x04] (alias)
 	goto l08049D70
 l08049F88:
-	branch f1_1384 > f2_1380 l08049F88_ds_t
+	branch f1_n > f2_n l08049F88_ds_t
 	goto l08049F9C
 l08049F88_ds_t:
-	word32 f5_1782 = Mem1363[f11_1382 + 0x0154:real32]
+	word32 f5_n = Mem1363[f11_n + 0x0154:real32]
 	goto l08049FB4
 l08049F9C:
-	(dwArg90 + ~0x03)[o0_1258 * 0x04] = Mem1363[f11_1382 + 332:real32]
-	f2_1401 = f1_1384 * f2_1380 + f3_1311
-	g1_1396 = (dwArg78 + ~0x03)[o0_1258 * 0x04] (alias)
+	(dwArg90 + ~0x03)[o0_n * 0x04] = Mem1363[f11_n + 332:real32]
+	f2_n = f1_n * f2_n + f3_n
+	g1_n = (dwArg78 + ~0x03)[o0_n * 0x04] (alias)
 	goto l08049D70
 l08049FB4:
-	(dwArg90 + ~0x03)[o0_1258 * 0x04] = f5_1782
-	f2_1401 = f1_1384 * f2_1380 + f3_1311
-	g1_1396 = (dwArg78 + ~0x03)[o0_1258 * 0x04] (alias)
+	(dwArg90 + ~0x03)[o0_n * 0x04] = f5_n
+	f2_n = f1_n * f2_n + f3_n
+	g1_n = (dwArg78 + ~0x03)[o0_n * 0x04] (alias)
 	goto l08049D70
 l08049FCC:
-	(dwArg98 + ~0x03)[o0_1258 * 0x04] = (dwArgA0 + ~0x03)[o0_1258 * 0x04]
-	f4_1453 = f4_1453 + (f2_1455 - f3_1440) / f0_1458
-	f5_1471 = (dwArg98 + ~0x03)[o0_1258 * 0x04]
+	(dwArg98 + ~0x03)[o0_n * 0x04] = (dwArgA0 + ~0x03)[o0_n * 0x04]
+	f4_n = f4_n + (f2_n - f3_n) / f0_n
+	f5_n = (dwArg98 + ~0x03)[o0_n * 0x04]
 l08049FE8:
-	word32 f3_1498
-	word32 f1_1475 = (dwArgAC + ~0x03)[o0_1258 * 0x04]
-	word32 f15_1478 = (dwArg78 + ~0x03)[o0_1258 * 0x04]
-	(dwArg88 + ~0x03)[o0_1258 * 0x04] = f5_1471
-	word32 f11_1485 = Mem1480[o3_1434 + 0x0028:real32]
-	f1_1475[o0_1258 * 0x04] = f7_1225
-	word32 f4_1484 = f0_1458 * f4_1453
-	word32 f2_1488 = f4_1484 + (f2_1455 * f6 - f0_1458) * f3_1440
-	l1_1251 = Mem1490[f11_1485 + 0x001C:real32] (alias)
-	branch f3_1440 > f2_1488 l08049FE8_ds_t
+	word32 f3_n
+	word32 f1_n = (dwArgAC + ~0x03)[o0_n * 0x04]
+	word32 f15_n = (dwArg78 + ~0x03)[o0_n * 0x04]
+	(dwArg88 + ~0x03)[o0_n * 0x04] = f5_n
+	word32 f11_n = Mem1480[o3_n + 0x0028:real32]
+	f1_n[o0_n * 0x04] = f7_n
+	word32 f4_n = f0_n * f4_n
+	word32 f2_n = f4_n + (f2_n * f6 - f0_n) * f3_n
+	l1_n = Mem1490[f11_n + 0x001C:real32] (alias)
+	branch f3_n > f2_n l08049FE8_ds_t
 	goto l0804A038
 l08049FE8_ds_t:
-	f3_1498 = (dwArgAC + ~0x03)[o0_1258 * 0x04]
+	f3_n = (dwArgAC + ~0x03)[o0_n * 0x04]
 	goto l0804A08C
 l0804A038:
-	word32 f2_1605 = (f2_1488 / f3_1440 + f4_1484) * (f6 + (dwArg84 + ~0x03)[o0_1258 * 0x04]) * f3_1440 + f4_1484
-	branch o0_1258 << 0x02 < f2_1605 l0804A038_ds_t
+	word32 f2_n = (f2_n / f3_n + f4_n) * (f6 + (dwArg84 + ~0x03)[o0_n * 0x04]) * f3_n + f4_n
+	branch o0_n << 0x02 < f2_n l0804A038_ds_t
 	goto l0804A074
 l0804A038_ds_t:
 l0804A074:
-	f3_1498 = (dwArgAC + ~0x03)[o0_1258 * 0x04]
-	f2_1488 = f3_1498 * f2_1605
-	f8_1260 = f2_1488 + f4_1484
-	o0_1259 = f8_1260 (alias)
+	f3_n = (dwArgAC + ~0x03)[o0_n * 0x04]
+	f2_n = f3_n * f2_n
+	f8_n = f2_n + f4_n
+	o0_n = f8_n (alias)
 l0804A08C:
-	word32 o1_1526
-	word32 f0_1503 = f1_1475 * f2_1488
-	word32 f11_1510 = Mem1490[f11_1485 + 0x004C:real32]
-	word32 f3_1514 = f0_1503 + (f3_1498 - f1_1475) * f4_1484
-	o5_1197 = Mem1490[f11_1510 + 0x0050:real32] (alias)
-	branch f7_1225 >= f2_1488 l0804A08C_ds_t
+	word32 o1_n
+	word32 f0_n = f1_n * f2_n
+	word32 f11_n = Mem1490[f11_n + 0x004C:real32]
+	word32 f3_n = f0_n + (f3_n - f1_n) * f4_n
+	o5_n = Mem1490[f11_n + 0x0050:real32] (alias)
+	branch f7_n >= f2_n l0804A08C_ds_t
 l0804A08C_ds_f:
-	word32 f0_1539 = f0_1503 / f3_1514
+	word32 f0_n = f0_n / f3_n
 	goto l0804A0C0
 l0804A08C_ds_t:
-	word32 f0_1561 = f0_1503 / f3_1514
+	word32 f0_n = f0_n / f3_n
 	goto l080495C8
 l0804A0C0:
-	word32 f5_1541 = Mem1490[dwArg78 + ~0x03 + o0_1259:real32]
-	f6 = f7_1225 * f6
-	word32 f5_1554 = f5_1541 - f0_1539
-	Mem1560[f15_1478 + o0_1259:real32] = f5_1554
-	f3 = f3_1514 + f5_1541
-	f4 = (f6 + f4_1484) * f5_1554 / f8_1260
-	o1_1526 = f5_1217 (alias)
-	o3_1151 = f7_1225 (alias)
-	f2 = f4 + (((f2_1488 * f3_1514) / f4_1484) / f3) * f0_1539
+	word32 f5_n = Mem1490[dwArg78 + ~0x03 + o0_n:real32]
+	f6 = f7_n * f6
+	word32 f5_n = f5_n - f0_n
+	Mem1560[f15_n + o0_n:real32] = f5_n
+	f3 = f3_n + f5_n
+	f4 = (f6 + f4_n) * f5_n / f8_n
+	o1_n = f5_n (alias)
+	o3_n = f7_n (alias)
+	f2 = f4 + (((f2_n * f3_n) / f4_n) / f3) * f0_n
 	goto l0804963C
 l0804A10C:
-	word32 f5_1694 = (dwArg94 + ~0x03)[o0_1258 * 0x04]
-	(dwArg98 + ~0x03)[o0_1258 * 0x04] = f5_1694
-	(dwArg88 + ~0x03)[o0_1258 * 0x04] = f5_1694
-	(dwArg84 + ~0x03)[o0_1258 * 0x04] = (dwArg90 + ~0x03)[o0_1258 * 0x04]
-	f3_1440 = (f1_1446 - f4_1453) * f0_1458
-	f2_1455 = f1_1446 * f6 + f3_1440
-	f5_1471 = (dwArg98 + ~0x03)[o0_1258 * 0x04]
+	word32 f5_n = (dwArg94 + ~0x03)[o0_n * 0x04]
+	(dwArg98 + ~0x03)[o0_n * 0x04] = f5_n
+	(dwArg88 + ~0x03)[o0_n * 0x04] = f5_n
+	(dwArg84 + ~0x03)[o0_n * 0x04] = (dwArg90 + ~0x03)[o0_n * 0x04]
+	f3_n = (f1_n - f4_n) * f0_n
+	f2_n = f1_n * f6 + f3_n
+	f5_n = (dwArg98 + ~0x03)[o0_n * 0x04]
 	goto l08049FE8
 t5matp__exit:
 }

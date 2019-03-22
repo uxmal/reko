@@ -4,15 +4,15 @@
 
 #include "MATRIXMU.h"
 
-struct Eq_114 * g_ptr0000;
-struct Eq_4 * g_ptr0004;
+struct Eq_n * g_ptr0000;
+struct Eq_n * g_ptr0004;
 word32 g_a0008[];
 ui32 g_a0010[];
 ptr32 g_ptr1494 = 0x00000000;
-struct Eq_4 * g_ptr1498 = null;
-struct Eq_25 * g_ptr149C = null;
-struct Eq_59 * g_ptr14A0 = null;
-struct Eq_59 * g_ptr14A4 = null;
+struct Eq_n * g_ptr1498 = null;
+struct Eq_n * g_ptr149C = null;
+struct Eq_n * g_ptr14A0 = null;
+struct Eq_n * g_ptr14A4 = null;
 int32 g_dw14A8 = 0;
 int32 g_dw14AC;
 int32 g_dw14B0;
@@ -21,5 +21,5 @@ ptr32 g_ptr14C0;
 int32 g_dw14C4;
 word32 g_dw14CC;
 word32 g_dw14D4;
-struct Eq_524 * g_ptr14D8;
+struct Eq_n * g_ptr14D8;
 

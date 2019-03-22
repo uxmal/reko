@@ -25,7 +25,7 @@ void test2(word32 dwArg04)
 		test1("5", 0x06, "7", globals->r4020E4);
 }
 
-// 004010B0: void indirect_call_test3(Stack (ptr32 Eq_51) c)
+// 004010B0: void indirect_call_test3(Stack (ptr32 Eq_n) c)
 void indirect_call_test3(cdecl_class * c)
 {
 	c->vtbl->method04(c, 1000);
@@ -43,8 +43,8 @@ void test5()
 	globals->gbl_c->vtbl->method04(globals->gbl_c, 999, globals->r4020EC);
 }
 
-// 00401120: void test6(Stack Eq_62 c, Stack int32 a, Stack int32 b)
-void test6(Eq_62 c, int32 a, int32 b)
+// 00401120: void test6(Stack Eq_n c, Stack int32 a, Stack int32 b)
+void test6(Eq_n c, int32 a, int32 b)
 {
 	c->vtbl->method04(c, c->vtbl->sum(c, a, b));
 }
@@ -69,45 +69,45 @@ void nested_if_blocks_test8(real64 rArg04, real64 rArg0)
 // 00401230: void loop_test9(Stack real32 rArg04, FpuStack real64 rArg0)
 void loop_test9(real32 rArg04, real64 rArg0)
 {
-	int32 dwLoc08_10 = 0x00;
-	while (globals->gbl_thiscall->vtbl->modify_double(globals->gbl_thiscall, dwLoc08_10, (real64) rArg04) > (real64) dwLoc08_10)
+	int32 dwLoc08_n = 0x00;
+	while (globals->gbl_thiscall->vtbl->modify_double(globals->gbl_thiscall, dwLoc08_n, (real64) rArg04) > (real64) dwLoc08_n)
 	{
 		globals->gbl_thiscall->vtbl->set_double(globals->gbl_thiscall, (real64) rArg04);
-		++dwLoc08_10;
+		++dwLoc08_n;
 	}
 }
 
 // 004012A0: void const_div_test10(Stack word32 dwArg04)
 void const_div_test10(word32 dwArg04)
 {
-	uint32 eax_16 = 0x0A;
-	uint32 ecx_19 = 0x03;
+	uint32 eax_n = 0x0A;
+	uint32 ecx_n = 0x03;
 	if (dwArg04 != 0x00)
 	{
-		eax_16 = 0x03;
-		ecx_19 = 0x01;
+		eax_n = 0x03;
+		ecx_n = 0x01;
 	}
-	globals->dw40301C = ecx_19;
-	globals->dw403020 = eax_16;
+	globals->dw40301C = ecx_n;
+	globals->dw403020 = eax_n;
 }
 
 // 004012D0: void loop_test11(Stack real64 rArg04)
 void loop_test11(real64 rArg04)
 {
-	int32 dwLoc08_28;
-	for (dwLoc08_28 = 0x05; dwLoc08_28 > 0x00; --dwLoc08_28)
+	int32 dwLoc08_n;
+	for (dwLoc08_n = 0x05; dwLoc08_n > 0x00; --dwLoc08_n)
 	{
-		int32 eax_32 = dwLoc08_28 & 0x80000001;
-		if (eax_32 < 0x00)
-			eax_32 = (eax_32 - 0x01 | ~0x01) + 0x01;
-		if (eax_32 == 0x00)
+		int32 eax_n = dwLoc08_n & 0x80000001;
+		if (eax_n < 0x00)
+			eax_n = (eax_n - 0x01 | ~0x01) + 0x01;
+		if (eax_n == 0x00)
 			loop_test9((real32) rArg04, rArg0);
 		else
 			nested_if_blocks_test8(rArg04, rArg0);
 	}
 }
 
-// 00401330: void nested_structs_test12(Stack (ptr32 Eq_243) dwArg04)
+// 00401330: void nested_structs_test12(Stack (ptr32 Eq_n) dwArg04)
 void nested_structs_test12(nested_structs_type * dwArg04)
 {
 	dwArg04->a = 0x01;
@@ -116,7 +116,7 @@ void nested_structs_test12(nested_structs_type * dwArg04)
 	dwArg04->d = 0x04;
 }
 
-// 00401360: void nested_structs_test13(Stack (ptr32 Eq_260) str)
+// 00401360: void nested_structs_test13(Stack (ptr32 Eq_n) str)
 void nested_structs_test13(nested_structs_type * str)
 {
 	nested_structs_test12(str);

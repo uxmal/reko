@@ -7,18 +7,18 @@
 word32 g_dwFFBED370;
 int32 g_dw0001;
 char g_b0065;
-Eq_1173 g_t4021F0 = Unexpected function type (fn void ((ptr64 void)))
+Eq_n g_t4021F0 = Unexpected function type (fn void ((ptr64 void)))
 ;
-Eq_1172 g_t402640 = Unexpected function type (fn (ptr64 void) (int32))
+Eq_n g_t402640 = Unexpected function type (fn (ptr64 void) (int32))
 ;
-Eq_3431 g_t4028C0 = Unexpected function type (fn int32 (int32, (ptr64 (ptr64 char)), (ptr64 (ptr64 char))))
+Eq_n g_t4028C0 = Unexpected function type (fn int32 (int32, (ptr64 (ptr64 char)), (ptr64 (ptr64 char))))
 ;
-Eq_49 g_t40A200 = Unexpected function type (fn void ((ptr64 void)))
+Eq_n g_t40A200 = Unexpected function type (fn void ((ptr64 void)))
 ;
 <anonymous> g_t410800 = <code>;
-Eq_3434 g_t411E60 = Unexpected function type (fn void ())
+Eq_n g_t411E60 = Unexpected function type (fn void ())
 ;
-Eq_3435 g_t411ED0 = Unexpected function type (fn void ())
+Eq_n g_t411ED0 = Unexpected function type (fn void ())
 ;
 <anonymous> * g_a411F40[] = 
 	{
@@ -31,7 +31,7 @@ word32 g_a412C60[] =
 	{
 	};
 char g_str412C95[] = "sort_files";
-Eq_3260 g_t412CA0 = 
+Eq_n g_t412CA0 = 
 	{
 		'p'
 	};
@@ -65,10 +65,10 @@ word32 g_a412FB0[] =
 word32 g_a413010[] = 
 	{
 	};
-Eq_792 g_t413080 = 
+Eq_n g_t413080 = 
 	{
 	};
-Eq_14 g_a4135E0[] = 
+Eq_n g_a4135E0[] = 
 	{
 	};
 word32 g_a4136B0[] = 
@@ -102,7 +102,7 @@ char g_str415BC8[] = "abcdfghiklmnopqrstuvw:xABCDFGHI:LNQRST:UXZ1";
 char g_str415C58[] = "sizeof (struct dev_ino) <= __extension__ ({ struct obstack const *__o = (&dev_ino_obstack); (unsigned) (__o->next_free - __o->object_base); })";
 char g_str415D68[] = "hash_get_n_entries (active_dir_set) == 0";
 byte g_b415E6A = 0x50;
-Eq_11543 g_t415EE0 = 
+Eq_n g_t415EE0 = 
 	{
 		
 		{
@@ -127,40 +127,40 @@ Eq_11543 g_t415EE0 =
 			1.414F
 		},
 	};
-Eq_11553 g_t415EF4 = 
+Eq_n g_t415EF4 = 
 	{
 		
 		{
 			0xCD, 0xCC, 0xCC, 0x3D, 0x66, 0x66, 0x66, 0x3F, 0xCD, 0xCC, 0x8C, 0x3F, 0x00, 0x00, 0x00, 0x00, 
 		}
 	};
-Eq_11549 g_t415EF8 = 
+Eq_n g_t415EF8 = 
 	{
 		
 		{
 			0x66, 0x66, 0x66, 0x3F, 0xCD, 0xCC, 0x8C, 0x3F, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x3F, 
 		}
 	};
-Eq_11570 g_t415EFC = 
+Eq_n g_t415EFC = 
 	{
 		1.1F
 	};
-Eq_11576 g_t415F00 = 
+Eq_n g_t415F00 = 
 	{
 		0.0F
 	};
-Eq_11589 g_t415F04 = 
+Eq_n g_t415F04 = 
 	{
 		
 		{
 			0x00, 0x00, 0x80, 0x3F, 0x00, 0x00, 0x80, 0x5F, 0x00, 0x00, 0x00, 0x5F, 0x00, 0x00, 0x00, 0x00, 
 		}
 	};
-Eq_11855 g_t415F08 = 
+Eq_n g_t415F08 = 
 	{
 		1.844674e+19F
 	};
-Eq_11855 g_t415F0C = 
+Eq_n g_t415F0C = 
 	{
 		9.223372e+18F
 	};
@@ -204,26 +204,26 @@ char g_str417002[] = "CHARSETALIASDIR";
 char g_str417012[] = "%50s %50s";
 void * g_ptr61A3A8 = null;
 byte g_b61A3C0 = 0x01;
-Eq_14 g_t61A3C4 = 
+Eq_n g_t61A3C4 = 
 	{
 		true
 	};
-Eq_14 g_t61A3D0 = 
+Eq_n g_t61A3D0 = 
 	{
 		true
 	};
-Eq_14 g_t61A3D8 = 
+Eq_n g_t61A3D8 = 
 	{
 		true
 	};
 word64 g_qw61A3E0 = 0x0000000000000002;
-Eq_14 g_t61A3E8 = 
+Eq_n g_t61A3E8 = 
 	{
 		true
 	};
 word64 g_qw61A3F0 = 0x0000000000000001;
 byte * g_ptr61A3F8 = &g_b413C07;
-struct Eq_2848 g_t61A400 = 
+struct Eq_n g_t61A400 = 
 	{
 		
 		{
@@ -235,7 +235,7 @@ struct Eq_2848 g_t61A400 =
 		},
 	};
 word64 g_qw61A408 = 0x0000000000000000;
-struct Eq_2848 g_t61A410 = 
+struct Eq_n g_t61A410 = 
 	{
 		
 		{
@@ -246,7 +246,7 @@ struct Eq_2848 g_t61A410 =
 			true
 		},
 	};
-struct Eq_2848 g_t61A420 = 
+struct Eq_n g_t61A420 = 
 	{
 		
 		{
@@ -258,11 +258,11 @@ struct Eq_2848 g_t61A420 =
 		},
 	};
 word64 g_qw61A450 = 0x0000000000000005;
-Eq_14 g_t61A458 = 
+Eq_n g_t61A458 = 
 	{
 		true
 	};
-struct Eq_2848 g_t61A550 = 
+struct Eq_n g_t61A550 = 
 	{
 		
 		{
@@ -273,7 +273,7 @@ struct Eq_2848 g_t61A550 =
 			true
 		},
 	};
-Eq_14 g_t61A560 = 
+Eq_n g_t61A560 = 
 	{
 		true
 	};
@@ -282,7 +282,7 @@ byte g_b61A569 = 0x01;
 char g_b61A56A = '?';
 word32 g_dw61A56C = 0x00000001;
 word32 g_dw61A580 = 0x00000001;
-Eq_18624 g_t61A5A0 = 
+Eq_n g_t61A5A0 = 
 	{
 		0x00000006,
 		0x00000000,
@@ -295,77 +295,77 @@ Eq_18624 g_t61A5A0 =
 			false
 		},
 	};
-Eq_14 g_t61A5D8 = 
+Eq_n g_t61A5D8 = 
 	{
 		true
 	};
 word64 g_qw61A5E0 = 0x0000000000000100;
 word64 g_qw61A5E8 = 0x000000000061B220;
-Eq_18636 g_t61A5F0 = 
+Eq_n g_t61A5F0 = 
 	{
 		1
 	};
-Eq_17747 g_t61A600 = 
+Eq_n g_t61A600 = 
 	{
 		&g_strC34C00
 	};
-Eq_14 g_t61A610 = 
+Eq_n g_t61A610 = 
 	{
 		true
 	};
 word32 g_dw61A620 = 0x00C34C20;
-Eq_14 g_t61A640 = 
+Eq_n g_t61A640 = 
 	{
 		true
 	};
-Eq_14 g_t61A648 = 
+Eq_n g_t61A648 = 
 	{
 		true
 	};
-Eq_14 g_t61A650 = 
+Eq_n g_t61A650 = 
 	{
 		true
 	};
-Eq_14 g_t61A660 = 
+Eq_n g_t61A660 = 
 	{
 		false
 	};
-Eq_14 g_t61A668 = 
+Eq_n g_t61A668 = 
 	{
 		false
 	};
-Eq_14 g_t61A670 = 
+Eq_n g_t61A670 = 
 	{
 		false
 	};
-Eq_14 g_t61A678 = 
+Eq_n g_t61A678 = 
 	{
 		false
 	};
 up64 g_qw61A748 = 0x0000000000000000;
-Eq_1169 g_t61AF00 = 
+Eq_n g_t61AF00 = 
 	{
 	};
 word64 g_qw61AF10 = 0x0000000000000000;
-struct Eq_1834 * g_ptr61AF18 = null;
+struct Eq_n * g_ptr61AF18 = null;
 int64 g_qw61AF20 = 0;
-Eq_1169 g_t61AF60 = 
+Eq_n g_t61AF60 = 
 	{
 	};
-union Eq_2142 * g_ptr61AF78 = null;
+union Eq_n * g_ptr61AF78 = null;
 up64 g_qw61AF80 = 0x0000000000000000;
-Eq_1169 g_t61AFC0 = 
+Eq_n g_t61AFC0 = 
 	{
 	};
-Eq_2142 g_t61B018 = 
+Eq_n g_t61B018 = 
 	{
 		0
 	};
-Eq_14 g_t61B020 = 
+Eq_n g_t61B020 = 
 	{
 		false
 	};
-Eq_14 g_t61B028 = 
+Eq_n g_t61B028 = 
 	{
 		false
 	};
@@ -380,14 +380,14 @@ byte g_b61B0C1 = 0x00;
 uint64 g_qw61B0C8 = 0x0000000000000000;
 byte g_b61B0D0 = 0x00;
 uint64 g_qw61B0D8 = 0x0000000000000000;
-struct Eq_2315 * g_ptr61B0E0 = null;
-struct Eq_2315 * g_ptr61B0E8 = null;
+struct Eq_n * g_ptr61B0E0 = null;
+struct Eq_n * g_ptr61B0E8 = null;
 byte g_b61B0F0 = 0x00;
-Eq_14 g_t61B0F8 = 
+Eq_n g_t61B0F8 = 
 	{
 		false
 	};
-Eq_14 g_t61B100 = 
+Eq_n g_t61B100 = 
 	{
 		false
 	};
@@ -398,11 +398,11 @@ byte g_b61B10E = 0x00;
 word32 g_dw61B110 = 0x00000000;
 byte g_b61B114 = 0x00;
 byte g_b61B115 = 0x00;
-Eq_14 g_t61B118 = 
+Eq_n g_t61B118 = 
 	{
 		false
 	};
-Eq_14 g_t61B120 = 
+Eq_n g_t61B120 = 
 	{
 		false
 	};
@@ -411,7 +411,7 @@ byte g_b61B129 = 0x00;
 word32 g_dw61B12C = 0x00000000;
 byte g_b61B130 = 0x00;
 word32 g_dw61B134 = 0x00000000;
-Eq_14 g_t61B138 = 
+Eq_n g_t61B138 = 
 	{
 		false
 	};
@@ -423,95 +423,95 @@ byte g_b61B147 = 0x00;
 word32 g_dw61B148 = 0x00000000;
 word32 g_dw61B14C = 0x00000000;
 up32 g_dw61B150 = 0x00000000;
-Eq_14 g_t61B154 = 
+Eq_n g_t61B154 = 
 	{
 		false
 	};
-Eq_14 g_t61B158 = 
+Eq_n g_t61B158 = 
 	{
 		false
 	};
-Eq_14 g_t61B15C = 
+Eq_n g_t61B15C = 
 	{
 		false
 	};
-Eq_14 g_t61B160 = 
+Eq_n g_t61B160 = 
 	{
 		false
 	};
-Eq_14 g_t61B164 = 
+Eq_n g_t61B164 = 
 	{
 		false
 	};
-Eq_14 g_t61B168 = 
+Eq_n g_t61B168 = 
 	{
 		false
 	};
-Eq_14 g_t61B16C = 
+Eq_n g_t61B16C = 
 	{
 		false
 	};
-Eq_14 g_t61B170 = 
+Eq_n g_t61B170 = 
 	{
 		false
 	};
-Eq_14 g_t61B174 = 
+Eq_n g_t61B174 = 
 	{
 		false
 	};
-Eq_14 g_t61B178 = 
+Eq_n g_t61B178 = 
 	{
 		false
 	};
 byte g_b61B17C = 0x00;
 byte g_b61B17D = 0x00;
-Eq_14 g_t61B180 = 
+Eq_n g_t61B180 = 
 	{
 		false
 	};
-Eq_14 g_t61B188 = 
+Eq_n g_t61B188 = 
 	{
 		false
 	};
-Eq_14 g_t61B190 = 
+Eq_n g_t61B190 = 
 	{
 		false
 	};
 byte g_b61B198 = 0x00;
 uint64 g_qw61B1A0 = 0x0000000000000000;
-Eq_14 g_t61B1A8 = 
+Eq_n g_t61B1A8 = 
 	{
 		false
 	};
-Eq_14 g_t61B1B0 = 
+Eq_n g_t61B1B0 = 
 	{
 		false
 	};
 ui64 g_qw61B1B8 = 0x0000000000000000;
-Eq_14 g_t61B1C0 = 
+Eq_n g_t61B1C0 = 
 	{
 		false
 	};
-Eq_14 g_t61B1C8 = 
+Eq_n g_t61B1C8 = 
 	{
 		false
 	};
-Eq_14 g_t61B1E8 = 
+Eq_n g_t61B1E8 = 
 	{
 		false
 	};
-Eq_14 g_t61B1F8 = 
+Eq_n g_t61B1F8 = 
 	{
 		false
 	};
-Eq_14 g_t61B200 = 
+Eq_n g_t61B200 = 
 	{
 		false
 	};
 word32 g_dw61B320 = 0x00000000;
 word64 g_qw61B348 = 0x0000000000000000;
 word64 g_qw61B350 = 0x0000000000000000;
-Eq_14 g_t61B358 = 
+Eq_n g_t61B358 = 
 	{
 		false
 	};

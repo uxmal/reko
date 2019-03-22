@@ -4,8 +4,8 @@
 
 #include "subject.h"
 
-// 00010958: void _start(Register (ptr32 Eq_2) g1, Register (ptr32 Eq_3) o7, Register ui32 fsr, Stack int32 dwArg40)
-void _start( * g1, Eq_3 * o7, ui32 fsr, int32 dwArg40)
+// 00010958: void _start(Register (ptr32 Eq_n) g1, Register (ptr32 Eq_n) o7, Register ui32 fsr, Stack int32 dwArg40)
+void _start( * g1, Eq_n * o7, ui32 fsr, int32 dwArg40)
 {
 	globals->ptr20E60 = fp + 0x44;
 	globals->ptr20E3C = fp + 0x44 + ((dwArg40 << 0x02) + 0x04);
@@ -69,127 +69,127 @@ void func8()
 // 00010B0C: Register int32 main(Register int32 o0)
 int32 main(int32 o0)
 {
-	word32 o0_159 = 0x01;
+	word32 o0_n = 0x01;
 	if (o0 <= 0x01)
-		o0_159 = 0x00;
-	word32 o0_155;
-	if (o0_159 != 0x00)
-		o0_155 = 68188;
+		o0_n = 0x00;
+	word32 o0_n;
+	if (o0_n != 0x00)
+		o0_n = 68188;
 	else
-		o0_155 = 68212;
-	word32 o3_150;
-	if (o0_159 != 0x00)
-		o3_150 = 68236;
+		o0_n = 68212;
+	word32 o3_n;
+	if (o0_n != 0x00)
+		o3_n = 68236;
 	else
-		o3_150 = 0x00010AA4;
-	word32 o2_145;
-	if (o0_159 != 0x00)
-		o2_145 = 68284;
+		o3_n = 0x00010AA4;
+	word32 o2_n;
+	if (o0_n != 0x00)
+		o2_n = 68284;
 	else
-		o2_145 = 68308;
-	word32 o1_140;
-	if (o0_159 != 0x00)
-		o1_140 = 68332;
+		o2_n = 68308;
+	word32 o1_n;
+	if (o0_n != 0x00)
+		o1_n = 68332;
 	else
-		o1_140 = 0x00010B04;
-	word32 i1_105;
-	Eq_81 Z_38;
-	if (o0_159 != 0x00)
+		o1_n = 0x00010B04;
+	word32 i1_n;
+	Eq_n Z_n;
+	if (o0_n != 0x00)
 	{
-		if (o0_155 != 68188 || (o3_150 != 68236 || (o2_145 != 68284 || o1_140 != 68332)))
+		if (o0_n != 68188 || (o3_n != 68236 || (o2_n != 68284 || o1_n != 68332)))
 		{
-			i1_105 = 0x00;
-			Z_38 = cond(0x00);
+			i1_n = 0x00;
+			Z_n = cond(0x00);
 			goto l00010C44;
 		}
-		i1_105 = 0x01;
+		i1_n = 0x01;
 	}
-	else if (o0_155 == 68212 && (o3_150 == 0x00010AA4 && (o2_145 == 68308 && o1_140 == 0x00010B04)))
-		i1_105 = 0x01;
+	else if (o0_n == 68212 && (o3_n == 0x00010AA4 && (o2_n == 68308 && o1_n == 0x00010B04)))
+		i1_n = 0x01;
 	else
-		i1_105 = 0x00;
-	Z_38 = cond(i1_105);
+		i1_n = 0x00;
+	Z_n = cond(i1_n);
 l00010C44:
-	if (!Z_38)
+	if (!Z_n)
 		printf("Pass\n");
 	else
 		printf("Failed!\n");
-	int32 i0_42 = 0x00;
-	if (i1_105 == 0x00)
-		i0_42 = 0x01;
-	return i0_42;
+	int32 i0_n = 0x00;
+	if (i1_n == 0x00)
+		i0_n = 0x01;
+	return i0_n;
 }
 
-// 00010C80: void _init(Register (ptr32 Eq_3) o7)
-void _init(Eq_3 * o7)
+// 00010C80: void _init(Register (ptr32 Eq_n) o7)
+void _init(Eq_n * o7)
 {
 	fn00010C90(o7);
 }
 
-// 00010C90: void fn00010C90(Register (ptr32 Eq_3) o7)
-void fn00010C90(Eq_3 * o7)
+// 00010C90: void fn00010C90(Register (ptr32 Eq_n) o7)
+void fn00010C90(Eq_n * o7)
 {
-	struct Eq_125 * o0_5 = o7 + o7->dw0008 / 0x0C;
-	word32 l0_6 = o0_5->dwFFFFFFF8;
-	if (l0_6 == 0x00)
+	struct Eq_n * o0_n = o7 + o7->dw0008 / 0x0C;
+	word32 l0_n = o0_n->dwFFFFFFF8;
+	if (l0_n == 0x00)
 		return;
-	word32 sp_11;
-	word32 o0_12;
-	word32 o7_13;
-	word32 l0_14;
-	word32 g0_15;
-	byte NZVC_16;
-	byte Z_17;
-	word32 i7_18;
-	word32 i0_19;
-	word32 o1_20;
-	word32 i1_21;
-	word32 o2_22;
-	word32 i2_23;
-	word32 o3_24;
-	word32 i3_25;
-	word32 o4_26;
-	word32 i4_27;
-	word32 o5_28;
-	word32 i5_29;
-	word32 i6_30;
+	word32 sp_n;
+	word32 o0_n;
+	word32 o7_n;
+	word32 l0_n;
+	word32 g0_n;
+	byte NZVC_n;
+	byte Z_n;
+	word32 i7_n;
+	word32 i0_n;
+	word32 o1_n;
+	word32 i1_n;
+	word32 o2_n;
+	word32 i2_n;
+	word32 o3_n;
+	word32 i3_n;
+	word32 o4_n;
+	word32 i4_n;
+	word32 o5_n;
+	word32 i5_n;
+	word32 i6_n;
 	fn81C7E008();
 }
 
-// 00010CB8: void _fini(Register (ptr32 Eq_158) o7)
-void _fini(Eq_158 * o7)
+// 00010CB8: void _fini(Register (ptr32 Eq_n) o7)
+void _fini(Eq_n * o7)
 {
 	fn00010CC8(o7);
 }
 
-// 00010CC8: void fn00010CC8(Register (ptr32 Eq_158) o7)
-void fn00010CC8(Eq_158 * o7)
+// 00010CC8: void fn00010CC8(Register (ptr32 Eq_n) o7)
+void fn00010CC8(Eq_n * o7)
 {
-	struct Eq_163 * o0_5 = o7 + o7->dw0008 / 0x0C;
-	<anonymous> * l0_6 = o0_5->ptrFFFFFFFC;
-	if (l0_6 == null)
+	struct Eq_n * o0_n = o7 + o7->dw0008 / 0x0C;
+	<anonymous> * l0_n = o0_n->ptrFFFFFFFC;
+	if (l0_n == null)
 		return;
-	word32 sp_11;
-	word32 o0_12;
-	word32 o7_13;
-	word32 l0_14;
-	word32 g0_15;
-	byte NZVC_16;
-	byte Z_17;
-	word32 i7_18;
-	word32 i0_19;
-	word32 o1_20;
-	word32 i1_21;
-	word32 o2_22;
-	word32 i2_23;
-	word32 o3_24;
-	word32 i3_25;
-	word32 o4_26;
-	word32 i4_27;
-	word32 o5_28;
-	word32 i5_29;
-	word32 i6_30;
-	l0_6();
+	word32 sp_n;
+	word32 o0_n;
+	word32 o7_n;
+	word32 l0_n;
+	word32 g0_n;
+	byte NZVC_n;
+	byte Z_n;
+	word32 i7_n;
+	word32 i0_n;
+	word32 o1_n;
+	word32 i1_n;
+	word32 o2_n;
+	word32 i2_n;
+	word32 o3_n;
+	word32 i3_n;
+	word32 o4_n;
+	word32 i4_n;
+	word32 o5_n;
+	word32 i5_n;
+	word32 i6_n;
+	l0_n();
 }
 
 // 00020D40: void atexit()

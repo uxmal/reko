@@ -4,8 +4,8 @@
 
 #include "spcinv.h"
 
-Eq_765 g_tFFFFFFFF;
-Eq_11 g_t0001 = 
+Eq_n g_tFFFFFFFF;
+Eq_n g_t0001 = 
 	{
 		0x00,
 		
@@ -14,7 +14,7 @@ Eq_11 g_t0001 =
 		},
 		0x00,
 	};
-Eq_11 g_t0002 = 
+Eq_n g_t0002 = 
 	{
 		0x00,
 		
@@ -23,7 +23,7 @@ Eq_11 g_t0002 =
 		},
 		0x00,
 	};
-Eq_421 g_t0003 = 
+Eq_n g_t0003 = 
 	{
 		&g_t000D,
 		
@@ -31,13 +31,13 @@ Eq_421 g_t0003 =
 			0x00
 		},
 	};
-Eq_618 g_t000A = 
+Eq_n g_t000A = 
 	{
 		0x0E30,
 		0x0000,
 		0x0005,
 	};
-Eq_1335 g_t000D = 
+Eq_n g_t000D = 
 	{
 		
 		{
@@ -46,7 +46,7 @@ Eq_1335 g_t000D =
 	};
 cui16 g_w0024 = 0x0000;
 word16 g_w02C6 = 0x2E2C;
-Eq_130 g_t02CB = 
+Eq_n g_t02CB = 
 	{
 		0x00
 	};
@@ -75,7 +75,7 @@ word16 g_w0BC8 = 0x0020;
 byte * g_ptr0CC2 = &g_b1111;
 word16 g_w0DA8 = 0x0087;
 word16 g_w0DAA = 0x0000;
-struct Eq_324 * g_a0DAC[6] = 
+struct Eq_n * g_a0DAC[6] = 
 	{
 		&g_a0DE0,
 		&g_a0DF0,
@@ -84,7 +84,7 @@ struct Eq_324 * g_a0DAC[6] =
 		&g_a0E20,
 		&g_a0E30,
 	};
-Eq_2292 g_a0DB8[6] = 
+Eq_n g_a0DB8[6] = 
 	{
 		
 		{
@@ -160,16 +160,16 @@ word16 g_a0E30[] =
 	{
 	};
 byte g_b0E56 = 0x00;
-Eq_2301 g_a0EE6[] = 
+Eq_n g_a0EE6[] = 
 	{
 	};
-Eq_2300 g_a0EE9[] = 
+Eq_n g_a0EE9[] = 
 	{
 	};
 ci8 g_a0EEC[] = 
 	{
 	};
-Eq_2304 g_a0EF0[] = 
+Eq_n g_a0EF0[] = 
 	{
 	};
 byte g_a0EF3[] = 
@@ -181,42 +181,42 @@ word16 g_w0EF8 = 0x0000;
 <anonymous> * g_ptr0EFA = null;
 word16 g_w0EFC = 0x0000;
 word16 g_w0EFE = 0x0000;
-Eq_2 g_t0F00 = 
+Eq_n g_t0F00 = 
 	{
 		0x00
 	};
-Eq_2 g_t0F02 = 
+Eq_n g_t0F02 = 
 	{
 		0x00
 	};
-Eq_2 g_t0F04 = 
+Eq_n g_t0F04 = 
 	{
 		0x00
 	};
-struct Eq_11 * g_ptr0F06 = &g_t0002;
+struct Eq_n * g_ptr0F06 = &g_t0002;
 int16 g_w0F08 = 0;
-struct Eq_765 * g_ptr0F0A = &g_tFFFFFFFF;
-Eq_511 g_t0F0C = 
+struct Eq_n * g_ptr0F0A = &g_tFFFFFFFF;
+Eq_n g_t0F0C = 
 	{
 		1
 	};
 cui16 g_w0F0E = 0x0000;
 ci16 g_w0F10 = 0x0000;
 word16 g_w0F12 = 0x0000;
-Eq_399 g_t0F14 = 
+Eq_n g_t0F14 = 
 	{
 		L'\x00'
 	};
 word16 g_w0F16 = 0x0000;
 ci16 g_w0F18 = 0x0000;
-struct Eq_421 * g_ptr0F1A = null;
+struct Eq_n * g_ptr0F1A = null;
 word16 g_w0F1C = 0x0000;
 word16 g_w0F1E = 0x0000;
 ci16 g_w0F20 = 0x0000;
 word16 g_w0F22 = 0x0000;
 byte g_b0F24 = 0x00;
 word16 g_w0F26 = 0x0407;
-Eq_2 g_t0F28 = 
+Eq_n g_t0F28 = 
 	{
 		0x04
 	};
@@ -244,5 +244,5 @@ ui16 g_w1170 = 0x0000;
 word16 g_w1172 = 0x0000;
 ui16 g_w1174 = 0x0000;
 byte g_b1178 = 0x00;
-Eq_765 g_tFFFF;
+Eq_n g_tFFFF;
 
