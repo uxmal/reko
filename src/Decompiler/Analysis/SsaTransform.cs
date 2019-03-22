@@ -863,6 +863,7 @@ namespace Reko.Analysis
                 var sid = ssa.Identifiers[id];
                 if (sid.DefExpression is Constant cOther)
                 {
+                    // Replace id + c  where id = cOther with c
                     c = bin.Operator.ApplyConstants(cOther, c);
                     sid.Uses.Remove(stmCur);
                 }
@@ -878,7 +879,7 @@ namespace Reko.Analysis
 
             if (c != null)
             {
-                var e = importResolver.ResolveToImportedProcedureConstant(stmCur, c);
+                var e = importResolver.ResolveToImportedValue(stmCur, c);
                 if (e != null)
                     return e;
                 ea = c;

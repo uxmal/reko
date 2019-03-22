@@ -134,7 +134,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
             var addrGot = Address.Ptr32(uAddrBeginningOfGot);
             var addrLocalGotEnd = addrGot + numberoflocalPointers * PointerByteSize;
-            loader.ConstructGotEntries(program, symbols, addrGot, addrLocalGotEnd);
+            loader.ConstructGotEntries(program, symbols, addrGot, addrLocalGotEnd, true);
         }
 
         /// <summary>
@@ -212,6 +212,9 @@ namespace Reko.ImageLoaders.Elf.Relocators
             case MIPSrt.R_MIPS_NONE: return symbol;
             case MIPSrt.R_MIPS_REL32:
                 break;
+                default:
+                    mask = 0;
+                    break;
                 /*
                 R_MIPS_NONE      0  none     local    none
                 R_MIPS_16        1  V–half16 external S + sign–extend(A)

@@ -1773,7 +1773,7 @@ proc1_exit:
             var addr = Address.Ptr32(0x00031234);
             importReferences.Add(addr, new NamedImportReference(
                 addr, "COREDLL.DLL", "fnFoo", SymbolType.ExternalProcedure));
-            importResolver.Setup(i => i.ResolveToImportedProcedureConstant(
+            importResolver.Setup(i => i.ResolveToImportedValue(
                 It.IsAny<Statement>(),
                 It.Is<Constant>(c => c.ToUInt32() == 0x00031234)))
                 .Returns(new ProcedureConstant(

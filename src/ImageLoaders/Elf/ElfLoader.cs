@@ -493,7 +493,7 @@ namespace Reko.ImageLoaders.Elf
 
             var gotStart = got.Address;
             var gotEnd = got.EndAddress;
-            ConstructGotEntries(program, symbols, gotStart, gotEnd);
+            ConstructGotEntries(program, symbols, gotStart, gotEnd, false);
         }
 
         /// <summary>
@@ -505,7 +505,7 @@ namespace Reko.ImageLoaders.Elf
         /// <param name="symbols"></param>
         /// <param name="gotStart"></param>
         /// <param name="gotEnd"></param>
-        public void ConstructGotEntries(Program program, SortedList<Address, ImageSymbol> symbols, Address gotStart, Address gotEnd)
+        public void ConstructGotEntries(Program program, SortedList<Address, ImageSymbol> symbols, Address gotStart, Address gotEnd, bool makeGlobals)
         {
             Debug.Print("== Constructing GOT entries ==");
             var rdr = program.CreateImageReader(program.Architecture, gotStart);
@@ -522,19 +522,34 @@ namespace Reko.ImageLoaders.Elf
                     {
                         ImageSymbol gotSym = CreateGotSymbol(addrGot, symbol.Name);
                         symbols[addrGot] = gotSym;
-                        DebugEx.PrintIf(ElfImageLoader.trace.TraceVerbose, "{0}+{1:X4}: Found GOT entry {2}, referring to symbol at {3}", 
-                            gotStart, addrGot-gotStart, gotSym, symbol);
-                            program.ImportReferences.Add(
-                                addrGot, 
-                                new NamedImportReference(
-                                    addrGot, 
-                                    null, 
-                                    symbol.Name,
-                                    symbol.Type));
-                        }
+                        DebugEx.PrintIf(ElfImageLoader.trace.TraceVerbose, "{0}+{1:X4}: Found GOT entry {2}, referring to symbol at {3}",
+                            gotStart, addrGot - gotStart, gotSym, symbol);
+                        program.ImportReferences.Add(
+                            addrGot,
+                            new NamedImportReference(
+                                addrGot,
+                                null,
+                                symbol.Name,
+                                symbol.Type));
                     }
                 }
+                else if (makeGlobals)
+                {
+                    // This GOT entry has no corresponding symbol. It's likely a global
+                    // variable with no name.
+                    ImageSymbol gotDataSym = ImageSymbol.Create(SymbolType.Data, this.Architecture, addrGot);
+                    DebugEx.PrintIf(ElfImageLoader.trace.TraceVerbose, "{0}+{1:X4}: GOT entry with no symbol, assuming local data {2}",
+                        gotStart, addrGot - gotStart, addrGot);
+                    program.ImportReferences.Add(
+                        addrGot,
+                        new NamedImportReference(
+                            addrGot,
+                            null,
+                            null,
+                            gotDataSym.Type));
+                }
             }
+        }
 
         public ImageSymbol CreateGotSymbol(Address addrGot, string name)
         {

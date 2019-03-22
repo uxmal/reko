@@ -76,7 +76,7 @@ namespace Reko.Analysis
                 // Search imported procedures only in Global Memory
                 access.MemoryId.Storage == MemoryStorage.Instance)
             {
-                var pc = importResolver.ResolveToImportedProcedureConstant(this.Statement, c);
+                var pc = importResolver.ResolveToImportedValue(this.Statement, c);
                 if (pc != null)
                     return pc;
             }

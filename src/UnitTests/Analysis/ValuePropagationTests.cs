@@ -1157,7 +1157,7 @@ SsaProcedureBuilder_exit:
                 PrimitiveType.Ptr32,
                 new ExternalProcedure("callee", sigCallee));
             // Add our new found knowledge to the import resolver.
-            importResolver.Setup(i => i.ResolveToImportedProcedureConstant(
+            importResolver.Setup(i => i.ResolveToImportedValue(
                 It.IsNotNull<Statement>(),
                 uAddrGotSlot)).
                 Returns(callee);
