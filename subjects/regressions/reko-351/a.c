@@ -9,17 +9,17 @@ void deregister_tm_clones()
 {
 	if (false && 0x00 != 0x00)
 	{
-		word32 a7_39;
-		word32 a6_40;
-		word32 d0_41;
-		byte CVZN_42;
-		byte CVZNX_43;
-		word32 d1_44;
-		bool C_45;
-		word32 a0_46;
-		byte ZN_47;
-		bool V_48;
-		bool Z_49;
+		word32 a7_n;
+		word32 a6_n;
+		word32 d0_n;
+		byte CVZN_n;
+		byte CVZNX_n;
+		word32 d1_n;
+		bool C_n;
+		word32 a0_n;
+		byte ZN_n;
+		bool V_n;
+		bool Z_n;
 		null();
 	}
 }
@@ -27,23 +27,23 @@ void deregister_tm_clones()
 // 800000AE: void register_tm_clones()
 void register_tm_clones()
 {
-	int32 d0_11 = 0x00;
+	int32 d0_n = 0x00;
 	if (true)
-		d0_11 = 0x01;
-	int32 d0_15 = d0_11 >> 0x01;
-	if (d0_15 != 0x00 && 0x00 != 0x00)
+		d0_n = 0x01;
+	int32 d0_n = d0_n >> 0x01;
+	if (d0_n != 0x00 && 0x00 != 0x00)
 	{
-		word32 a7_49;
-		word32 a6_50;
-		word32 d0_51;
-		byte CVZN_52;
-		byte CVZNX_53;
-		bool N_54;
-		bool Z_55;
-		word32 a0_56;
-		byte ZN_57;
-		bool C_58;
-		bool V_59;
+		word32 a7_n;
+		word32 a6_n;
+		word32 d0_n;
+		byte CVZN_n;
+		byte CVZNX_n;
+		bool N_n;
+		bool Z_n;
+		word32 a0_n;
+		byte ZN_n;
+		bool C_n;
+		bool V_n;
 		null();
 	}
 }
@@ -53,46 +53,46 @@ void __do_global_dtors_aux()
 {
 	if (globals->b80002724 == 0x00)
 	{
-		uint32 d0_100 = globals->dw80002726;
-		<anonymous> * a2_101[] = globals->a80002714;
-		while (d0_100 < 0x00)
+		uint32 d0_n = globals->dw80002726;
+		<anonymous> * a2_n[] = globals->a80002714;
+		while (d0_n < 0x00)
 		{
-			uint32 d0_102 = d0_100 + 0x01;
-			globals->dw80002726 = d0_102;
-			<anonymous> * a0_107 = a2_101[d0_102];
-			word32 a7_108;
-			word32 a6_109;
-			byte CVZN_111;
-			word32 d2_112;
-			byte ZN_113;
-			bool C_114;
-			bool V_115;
-			bool Z_116;
-			word32 d0_117;
-			byte CVZNX_118;
-			byte VZ_119;
-			word32 a0_120;
-			byte CZ_121;
-			a0_107();
-			d0_100 = globals->dw80002726;
+			uint32 d0_n = d0_n + 0x01;
+			globals->dw80002726 = d0_n;
+			<anonymous> * a0_n = a2_n[d0_n];
+			word32 a7_n;
+			word32 a6_n;
+			byte CVZN_n;
+			word32 d2_n;
+			byte ZN_n;
+			bool C_n;
+			bool V_n;
+			bool Z_n;
+			word32 d0_n;
+			byte CVZNX_n;
+			byte VZ_n;
+			word32 a0_n;
+			byte CZ_n;
+			a0_n();
+			d0_n = globals->dw80002726;
 		}
 		deregister_tm_clones();
 		if (0x00 != 0x00)
 		{
-			word32 a7_85;
-			word32 a6_86;
-			word32 a2_87;
-			byte CVZN_88;
-			word32 d2_89;
-			byte ZN_90;
-			bool C_91;
-			bool V_92;
-			bool Z_93;
-			word32 d0_94;
-			byte CVZNX_95;
-			byte VZ_96;
-			word32 a0_97;
-			byte CZ_98;
+			word32 a7_n;
+			word32 a6_n;
+			word32 a2_n;
+			byte CVZN_n;
+			word32 d2_n;
+			byte ZN_n;
+			bool C_n;
+			bool V_n;
+			bool Z_n;
+			word32 d0_n;
+			byte CVZNX_n;
+			byte VZ_n;
+			word32 a0_n;
+			byte CZ_n;
 			null();
 		}
 		globals->b80002724 = 0x01;
@@ -109,34 +109,34 @@ void frame_dummy()
 {
 	if (0x00 != 0x00)
 	{
-		word32 a7_83;
-		word32 a6_84;
-		word32 a0_85;
-		byte ZN_86;
-		bool C_87;
-		bool V_88;
-		bool Z_89;
-		word32 a1_90;
-		byte CVZN_91;
-		word32 d0_92;
-		byte CVZNX_93;
-		bool N_94;
+		word32 a7_n;
+		word32 a6_n;
+		word32 a0_n;
+		byte ZN_n;
+		bool C_n;
+		bool V_n;
+		bool Z_n;
+		word32 a1_n;
+		byte CVZN_n;
+		word32 d0_n;
+		byte CVZNX_n;
+		bool N_n;
 		null();
 	}
 	if (globals->dw8000271C != 0x00 && 0x00 != 0x00)
 	{
-		word32 a7_64;
-		word32 a6_65;
-		word32 a0_66;
-		byte ZN_67;
-		bool C_68;
-		bool V_69;
-		bool Z_70;
-		word32 a1_71;
-		byte CVZN_72;
-		word32 d0_73;
-		byte CVZNX_74;
-		bool N_75;
+		word32 a7_n;
+		word32 a6_n;
+		word32 a0_n;
+		byte ZN_n;
+		bool C_n;
+		bool V_n;
+		bool Z_n;
+		word32 a1_n;
+		byte CVZN_n;
+		word32 d0_n;
+		byte CVZNX_n;
+		bool N_n;
 		null();
 		register_tm_clones();
 	}
@@ -157,38 +157,38 @@ void sine_taylor(real64 rArg04)
 // 8000033C: void factorial(Stack int32 dwArg04)
 void factorial(int32 dwArg04)
 {
-	int32 dwLoc08_15 = 0x02;
-	while (dwLoc08_15 - dwArg04 <= 0x00)
-		++dwLoc08_15;
+	int32 dwLoc08_n = 0x02;
+	while (dwLoc08_n - dwArg04 <= 0x00)
+		++dwLoc08_n;
 }
 
 // 80000372: void pow_int(Stack real64 rArg04, Stack int32 dwArg0C)
 void pow_int(real64 rArg04, int32 dwArg0C)
 {
-	int32 dwLoc08_16 = 0x00;
-	while (dwLoc08_16 - dwArg0C < 0x00)
-		++dwLoc08_16;
+	int32 dwLoc08_n = 0x00;
+	while (dwLoc08_n - dwArg0C < 0x00)
+		++dwLoc08_n;
 }
 
 // 800003BC: void sine_taylor(Stack real64 rArg04, Stack int32 dwArg0C)
 void sine_taylor(real64 rArg04, int32 dwArg0C)
 {
-	word32 dwArg04_7 = (word32) rArg04;
-	int32 dwLoc08_24 = 0x03;
-	while (dwLoc08_24 - dwArg0C <= 0x00)
+	word32 dwArg04_n = (word32) rArg04;
+	int32 dwLoc08_n = 0x03;
+	while (dwLoc08_n - dwArg0C <= 0x00)
 	{
-		rLoc28 = DPB(rLoc28, dwArg04_7, 0);
-		pow_int(rLoc28, dwLoc08_24);
-		factorial(dwLoc08_24);
-		dwLoc08_24 += 0x04;
+		rLoc28 = DPB(rLoc28, dwArg04_n, 0);
+		pow_int(rLoc28, dwLoc08_n);
+		factorial(dwLoc08_n);
+		dwLoc08_n += 0x04;
 	}
-	int32 dwLoc08_133 = 0x05;
-	while (dwLoc08_133 - dwArg0C <= 0x00)
+	int32 dwLoc08_n = 0x05;
+	while (dwLoc08_n - dwArg0C <= 0x00)
 	{
-		rLoc28 = DPB(rLoc28, dwArg04_7, 0);
-		pow_int(rLoc28, dwLoc08_133);
-		factorial(dwLoc08_133);
-		dwLoc08_133 += 0x04;
+		rLoc28 = DPB(rLoc28, dwArg04_n, 0);
+		pow_int(rLoc28, dwLoc08_n);
+		factorial(dwLoc08_n);
+		dwLoc08_n += 0x04;
 	}
 }
 
@@ -199,39 +199,39 @@ void main()
 	_sin(DPB(rLoc1C, 0x40091EB8, 0), DPB(rLoc14, 1063818100, 0), fp - 0x08);
 }
 
-// 800004DE: void _sin(Stack real64 rArg04, Stack real64 rArg0C, Stack Eq_203 tArg14)
-void _sin(real64 rArg04, real64 rArg0C, Eq_203 tArg14)
+// 800004DE: void _sin(Stack real64 rArg04, Stack real64 rArg0C, Stack Eq_n tArg14)
+void _sin(real64 rArg04, real64 rArg0C, Eq_n tArg14)
 {
-	real64 rLoc0C_23 = DPB(rLoc0C, SLICE(rArg04, word32, 32), 32);
-	real64 v9_26 = (real64) ((real80) rLoc0C_23 * rLoc0C_23);
-	int32 dwLoc20_100 = 0x01;
-	while ((real64) ((real80) rLoc0C_23 / rLoc14) >= rArg0C)
+	real64 rLoc0C_n = DPB(rLoc0C, SLICE(rArg04, word32, 32), 32);
+	real64 v9_n = (real64) ((real80) rLoc0C_n * rLoc0C_n);
+	int32 dwLoc20_n = 0x01;
+	while ((real64) ((real80) rLoc0C_n / rLoc14) >= rArg0C)
 	{
 		*tArg14 = (word32) *tArg14 + 0x01;
-		int32 v23_65 = dwLoc20_100 + 0x01;
-		rLoc0C_23 = (real64) ((real80) (real64) ((real80) rLoc0C_23 * v9_26) * v9_26);
-		dwLoc20_100 = v23_65 + 0x03;
-		rLoc14 = (real64) ((real80) (real64) ((real80) (real64) ((real80) (real64) ((real80) rLoc14 * (real80) v23_65) * (real80) (v23_65 + 0x01)) * (real80) (v23_65 + 0x02)) * (real80) (v23_65 + 0x03));
+		int32 v23_n = dwLoc20_n + 0x01;
+		rLoc0C_n = (real64) ((real80) (real64) ((real80) rLoc0C_n * v9_n) * v9_n);
+		dwLoc20_n = v23_n + 0x03;
+		rLoc14 = (real64) ((real80) (real64) ((real80) (real64) ((real80) (real64) ((real80) rLoc14 * (real80) v23_n) * (real80) (v23_n + 0x01)) * (real80) (v23_n + 0x02)) * (real80) (v23_n + 0x03));
 	}
 }
 
 // 80000624: void __do_global_ctors_aux()
 void __do_global_ctors_aux()
 {
-	<anonymous> * a0_12 = globals->ptr8000270C;
-	if (a0_12 != (<anonymous> *) -0x01)
+	<anonymous> * a0_n = globals->ptr8000270C;
+	if (a0_n != (<anonymous> *) -0x01)
 	{
 		do
 		{
-			word32 a7_26;
-			word32 a6_27;
-			ptr32 a2_28;
-			byte CVZN_29;
-			word32 a0_30;
-			word32 d0_31;
-			bool Z_32;
-			a0_12();
-		} while (*(a2_28 - 0x04) != -0x01);
+			word32 a7_n;
+			word32 a6_n;
+			ptr32 a2_n;
+			byte CVZN_n;
+			word32 a0_n;
+			word32 d0_n;
+			bool Z_n;
+			a0_n();
+		} while (*(a2_n - 0x04) != -0x01);
 	}
 }
 

@@ -13,44 +13,44 @@ void fn80000000()
 // 80000132: Register real80 fn80000132(Stack real96 rArg04, Stack real96 rArg10)
 real80 fn80000132(real96 rArg04, real96 rArg10)
 {
-	word32 dwLoc14_16 = 0x00;
-	while ((real96) (real80) dwLoc14_16 < rArg10)
-		++dwLoc14_16;
+	word32 dwLoc14_n = 0x00;
+	while ((real96) (real80) dwLoc14_n < rArg10)
+		++dwLoc14_n;
 	return (real80) DPB(rLoc24, dwLoc10, 0);
 }
 
 // 8000018E: Register real80 fn8000018E(Stack real96 rArg04)
 real80 fn8000018E(real96 rArg04)
 {
-	int32 dwLoc14_18 = 0x01;
-	while ((real96) (real80) dwLoc14_18 <= rArg04)
-		++dwLoc14_18;
+	int32 dwLoc14_n = 0x01;
+	while ((real96) (real80) dwLoc14_n <= rArg04)
+		++dwLoc14_n;
 	return (real80) DPB(rLoc24, dwLoc10, 0);
 }
 
 // 800001F2: void fn800001F2(Stack real96 rArg04)
 void fn800001F2(real96 rArg04)
 {
-	int32 dwLoc20_25;
-	for (dwLoc20_25 = 0x03; dwLoc20_25 <= 100; dwLoc20_25 += 0x02)
+	int32 dwLoc20_n;
+	for (dwLoc20_n = 0x03; dwLoc20_n <= 100; dwLoc20_n += 0x02)
 	{
-		fn80000132((real96) (real80) rArg04, (real96) (real80) dwLoc20_25);
-		fn8000018E((real96) (real80) dwLoc20_25);
+		fn80000132((real96) (real80) rArg04, (real96) (real80) dwLoc20_n);
+		fn8000018E((real96) (real80) dwLoc20_n);
 	}
 }
 
-// 800002AE: Register real80 fn800002AE(Stack real96 rArg04, Register out Eq_53 fp2Out)
-real80 fn800002AE(real96 rArg04, Eq_53 & fp2Out)
+// 800002AE: Register real80 fn800002AE(Stack real96 rArg04, Register out Eq_n fp2Out)
+real80 fn800002AE(real96 rArg04, Eq_n & fp2Out)
 {
-	int32 dwLoc20_24;
-	for (dwLoc20_24 = 0x02; dwLoc20_24 <= 100; dwLoc20_24 += 0x02)
+	int32 dwLoc20_n;
+	for (dwLoc20_n = 0x02; dwLoc20_n <= 100; dwLoc20_n += 0x02)
 	{
-		fn80000132((real96) (real80) rArg04, (real96) (real80) dwLoc20_24);
-		real96 v19_59 = (real96) (real80) dwLoc20_24;
-		fn8000018E(v19_59);
-		rLoc3C = v19_59;
+		fn80000132((real96) (real80) rArg04, (real96) (real80) dwLoc20_n);
+		real96 v19_n = (real96) (real80) dwLoc20_n;
+		fn8000018E(v19_n);
+		rLoc3C = v19_n;
 	}
-	real80 fp2_102;
+	real80 fp2_n;
 	*fp2Out = fp2;
 	return (real80) DPB(rLoc3C, dwLoc10, 0);
 }
@@ -59,19 +59,19 @@ real80 fn800002AE(real96 rArg04, Eq_53 & fp2Out)
 void fn8000036C(real96 rArg04)
 {
 	fn800001F2((real96) (real80) rArg04);
-	real80 fp2_28;
-	fn800002AE((real96) (real80) rArg04, out fp2_28);
+	real80 fp2_n;
+	fn800002AE((real96) (real80) rArg04, out fp2_n);
 }
 
 // 800003CC: void fn800003CC()
 void fn800003CC()
 {
-	real96 v6_9 = (real96) (real80) *(real96 *) 0x80000538;
-	fn80000132((real96) (real80) v6_9, (real96) (real80) v6_9);
-	fn8000018E((real96) (real80) v6_9);
-	fn800001F2((real96) (real80) v6_9);
-	real80 fp2_40;
-	fn800002AE((real96) (real80) v6_9, out fp2_40);
-	fn8000036C((real96) (real80) v6_9);
+	real96 v6_n = (real96) (real80) *(real96 *) 0x80000538;
+	fn80000132((real96) (real80) v6_n, (real96) (real80) v6_n);
+	fn8000018E((real96) (real80) v6_n);
+	fn800001F2((real96) (real80) v6_n);
+	real80 fp2_n;
+	fn800002AE((real96) (real80) v6_n, out fp2_n);
+	fn8000036C((real96) (real80) v6_n);
 }
 

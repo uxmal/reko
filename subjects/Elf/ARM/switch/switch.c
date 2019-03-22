@@ -7,11 +7,11 @@
 // 000082F0: Register word32 _init(Register out ptr32 r10Out)
 word32 _init(ptr32 & r10Out)
 {
-	word32 r10_5;
+	word32 r10_n;
 	*r10Out = call_gmon_start();
 	frame_dummy();
-	word32 sp_6;
-	return __do_global_ctors_aux(out sp_6);
+	word32 sp_n;
+	return __do_global_ctors_aux(out sp_n);
 }
 
 // 00008314: void abort()
@@ -24,7 +24,7 @@ void __libc_start_main()
 {
 }
 
-// 00008334: void _start(Stack int32 dwArg00, Stack (ptr32 Eq_19) ptrArg08, Stack (ptr32 Eq_20) ptrArg0C, Stack (ptr32 void) ptrArg10)
+// 00008334: void _start(Stack int32 dwArg00, Stack (ptr32 Eq_n) ptrArg08, Stack (ptr32 Eq_n) ptrArg0C, Stack (ptr32 void) ptrArg10)
 void _start(int32 dwArg00,  * ptrArg08,  * ptrArg0C, void)
 {
 	__libc_start_main(globals->ptr8364, dwArg00, fp + 0x04, globals->ptr8368, ptrArg08, ptrArg0C, ptrArg10);
@@ -34,44 +34,44 @@ void _start(int32 dwArg00,  * ptrArg08,  * ptrArg0C, void)
 // 0000836C: Register word32 call_gmon_start()
 word32 call_gmon_start()
 {
-	ptr32 r10_10 = 0x8380 + globals->dw8394;
-	<anonymous> * r3_11 = r10_10 + globals->dw8398;
-	if (r3_11 == null)
+	ptr32 r10_n = 0x8380 + globals->dw8394;
+	<anonymous> * r3_n = r10_n + globals->dw8398;
+	if (r3_n == null)
 		return r10;
-	word32 sp_25;
-	word32 r10_26;
-	word32 lr_27;
-	word32 pc_28;
-	word32 r3_29;
-	byte NZCV_30;
-	byte Z_31;
-	r3_11();
-	return r10_26;
+	word32 sp_n;
+	word32 r10_n;
+	word32 lr_n;
+	word32 pc_n;
+	word32 r3_n;
+	byte NZCV_n;
+	byte Z_n;
+	r3_n();
+	return r10_n;
 }
 
 // 0000839C: void __do_global_dtors_aux()
 void __do_global_dtors_aux()
 {
-	byte * r5_10 = globals->ptr83F4;
-	if ((word32) *r5_10 != 0x00)
+	byte * r5_n = globals->ptr83F4;
+	if ((word32) *r5_n != 0x00)
 		return;
-	<anonymous> *** r4_28 = globals->ptr83F8;
-	<anonymous> * r2_30 = **r4_28;
-	if (r2_30 == null)
-		*r5_10 = 0x01;
+	<anonymous> *** r4_n = globals->ptr83F8;
+	<anonymous> * r2_n = **r4_n;
+	if (r2_n == null)
+		*r5_n = 0x01;
 	else
 	{
-		*r4_28 = (<anonymous> ***) ((char *) *r4_28 + 0x04);
-		word32 sp_37;
-		word32 r4_38;
-		word32 r5_39;
-		word32 lr_40;
-		word32 pc_41;
-		word32 r3_42;
-		byte NZCV_43;
-		byte Z_44;
-		word32 r2_45;
-		r2_30();
+		*r4_n = (<anonymous> ***) ((char *) *r4_n + 0x04);
+		word32 sp_n;
+		word32 r4_n;
+		word32 r5_n;
+		word32 lr_n;
+		word32 pc_n;
+		word32 r3_n;
+		byte NZCV_n;
+		byte Z_n;
+		word32 r2_n;
+		r2_n();
 	}
 }
 
@@ -83,18 +83,18 @@ void call___do_global_dtors_aux()
 // 00008404: void frame_dummy()
 void frame_dummy()
 {
-	word32 * r0_3 = globals->ptr8424;
-	if (*r0_3 == 0x00)
+	word32 * r0_n = globals->ptr8424;
+	if (*r0_n == 0x00)
 		return;
-	word32 r3_14 = globals->dw8428;
-	if (r3_14 == 0x00)
+	word32 r3_n = globals->dw8428;
+	if (r3_n == 0x00)
 		return;
-	word32 sp_17;
-	word32 r0_18;
-	word32 pc_19;
-	word32 r3_20;
-	byte NZCV_21;
-	byte Z_22;
+	word32 sp_n;
+	word32 r0_n;
+	word32 pc_n;
+	word32 r3_n;
+	byte NZCV_n;
+	byte Z_n;
 	fn00000000();
 }
 
@@ -103,28 +103,28 @@ void call_frame_dummy()
 {
 }
 
-// 00008434: Register Eq_125 frobulate(Register Eq_125 r0, Stack Eq_125 dwArg00, Register out ptr32 fpOut)
-Eq_125 frobulate(Eq_125 r0, Eq_125 dwArg00, ptr32 & fpOut)
+// 00008434: Register Eq_n frobulate(Register Eq_n r0, Stack Eq_n dwArg00, Register out ptr32 fpOut)
+Eq_n frobulate(Eq_n r0, Eq_n dwArg00, ptr32 & fpOut)
 {
-	word32 fp_25;
+	word32 fp_n;
 	*fpOut = dwArg00;
 	return __divsi3(r0 * r0, 1337);
 }
 
-// 00008470: Register word32 bazulate(Register Eq_125 r0, Register Eq_125 r1)
-word32 bazulate(Eq_125 r0, Eq_125 r1)
+// 00008470: Register word32 bazulate(Register Eq_n r0, Register Eq_n r1)
+word32 bazulate(Eq_n r0, Eq_n r1)
 {
-	ptr32 fp_23;
-	word32 r0_28 = __divsi3(r0 + r1, frobulate(r0, r1, out fp_23));
-	word32 * fp_32;
-	__divsi3(r0_28, frobulate(*(fp_23 - 0x0018), r1, out fp_32));
-	return *fp_32;
+	ptr32 fp_n;
+	word32 r0_n = __divsi3(r0 + r1, frobulate(r0, r1, out fp_n));
+	word32 * fp_n;
+	__divsi3(r0_n, frobulate(*(fp_n - 0x0018), r1, out fp_n));
+	return *fp_n;
 }
 
-// 000084D4: Register word32 switcheroo(Register Eq_125 r0)
-word32 switcheroo(Eq_125 r0)
+// 000084D4: Register word32 switcheroo(Register Eq_n r0)
+word32 switcheroo(Eq_n r0)
 {
-	ptr32 fp_19;
+	ptr32 fp_n;
 	switch (r0)
 	{
 	case 0x00:
@@ -133,39 +133,39 @@ word32 switcheroo(Eq_125 r0)
 	case 0x02:
 	case 0x03:
 	case 0x04:
-		frobulate(r0, r0, out fp_19);
+		frobulate(r0, r0, out fp_n);
 		break;
 	case 0x05:
 	case 0x07:
 l00008540:
-		fp_19 = bazulate(0x00, 0x00);
+		fp_n = bazulate(0x00, 0x00);
 		break;
 	case 0x06:
-		frobulate(r0 - 0x03, r0, out fp_19);
+		frobulate(r0 - 0x03, r0, out fp_n);
 		break;
 	case 0x08:
 		bazulate(r0, r0);
 		goto l00008540;
 	}
-	return *(fp_19 - -0x04);
+	return *(fp_n - -0x04);
 }
 
-// 0000855C: void main(Register Eq_125 r0)
-void main(Eq_125 r0)
+// 0000855C: void main(Register Eq_n r0)
+void main(Eq_n r0)
 {
 	switcheroo(r0);
 }
 
-// 00008588: Register Eq_125 __divsi3(Register Eq_125 r0, Register Eq_125 r1)
-Eq_125 __divsi3(Eq_125 r0, Eq_125 r1)
+// 00008588: Register Eq_n __divsi3(Register Eq_n r0, Register Eq_n r1)
+Eq_n __divsi3(Eq_n r0, Eq_n r1)
 {
-	Eq_125 r1_103;
-	int32 ip_4 = r0 ^ r1;
-	Eq_195 r3_105 = 0x01;
-	Eq_125 r2_112 = 0x00;
-	r1_103 = r1;
+	Eq_n r1_n;
+	int32 ip_n = r0 ^ r1;
+	Eq_n r3_n = 0x01;
+	Eq_n r2_n = 0x00;
+	r1_n = r1;
 	if (r1 < 0x00)
-		r1_103 = 0x00 - r1;
+		r1_n = 0x00 - r1;
 	if (r1 == 0x00)
 	{
 		__div0(r0);
@@ -175,71 +175,71 @@ Eq_125 __divsi3(Eq_125 r0, Eq_125 r1)
 	{
 		if (r0 < 0x00)
 			r0 = 0x00 - r0;
-		if (r0 >= r1_103)
+		if (r0 >= r1_n)
 		{
 			do
 			{
-				Eq_217 C_131 = cond(r1_103 - 0x10000000);
-				if (r1_103 < 0x10000000)
-					C_131 = cond(r1_103 - r0);
-				if (!C_131)
+				Eq_n C_n = cond(r1_n - 0x10000000);
+				if (r1_n < 0x10000000)
+					C_n = cond(r1_n - r0);
+				if (!C_n)
 				{
-					r1_103 <<= 0x04;
-					r3_105 <<= 0x04;
+					r1_n <<= 0x04;
+					r3_n <<= 0x04;
 				}
-			} while (C_131);
+			} while (C_n);
 			do
 			{
-				Eq_230 C_124 = cond(r1_103 - 0x80000000);
-				if (r1_103 < 0x80000000)
-					C_124 = cond(r1_103 - r0);
-				if (!C_124)
+				Eq_n C_n = cond(r1_n - 0x80000000);
+				if (r1_n < 0x80000000)
+					C_n = cond(r1_n - r0);
+				if (!C_n)
 				{
-					r1_103 <<= 0x01;
-					r3_105 <<= 0x01;
+					r1_n <<= 0x01;
+					r3_n <<= 0x01;
 				}
-			} while (C_124);
+			} while (C_n);
 			do
 			{
-				if (r0 >= r1_103)
+				if (r0 >= r1_n)
 				{
-					r0 -= r1_103;
-					r2_112 |= r3_105;
+					r0 -= r1_n;
+					r2_n |= r3_n;
 				}
-				if (r0 >= r1_103 >> 0x01)
+				if (r0 >= r1_n >> 0x01)
 				{
-					r0 -= r1_103 >> 0x01;
-					r2_112 |= r3_105 >> 0x01;
+					r0 -= r1_n >> 0x01;
+					r2_n |= r3_n >> 0x01;
 				}
-				if (r0 >= r1_103 >> 0x02)
+				if (r0 >= r1_n >> 0x02)
 				{
-					r0 -= r1_103 >> 0x02;
-					r2_112 |= r3_105 >> 0x02;
+					r0 -= r1_n >> 0x02;
+					r2_n |= r3_n >> 0x02;
 				}
-				if (r0 >= r1_103 >> 0x03)
+				if (r0 >= r1_n >> 0x03)
 				{
-					r0 -= r1_103 >> 0x03;
-					r2_112 |= r3_105 >> 0x03;
+					r0 -= r1_n >> 0x03;
+					r2_n |= r3_n >> 0x03;
 				}
-				Eq_268 Z_100 = cond(r0);
+				Eq_n Z_n = cond(r0);
 				if (r0 != 0x00)
 				{
-					r3_105 >>= 0x04;
-					Z_100 = cond(r3_105);
+					r3_n >>= 0x04;
+					Z_n = cond(r3_n);
 				}
-				if (!Z_100)
-					r1_103 >>= 0x04;
-			} while (Z_100);
+				if (!Z_n)
+					r1_n >>= 0x04;
+			} while (Z_n);
 		}
-		Eq_125 r0_35 = r2_112;
-		if (ip_4 < 0x00)
-			r0_35 = 0x00 - r2_112;
-		return r0_35;
+		Eq_n r0_n = r2_n;
+		if (ip_n < 0x00)
+			r0_n = 0x00 - r2_n;
+		return r0_n;
 	}
 }
 
-// 00008638: void __div0(Register Eq_125 r0)
-void __div0(Eq_125 r0)
+// 00008638: void __div0(Register Eq_n r0)
+void __div0(Eq_n r0)
 {
 	__syscall(0x00900014);
 	if (r0 >= 1000)
@@ -250,75 +250,75 @@ void __div0(Eq_125 r0)
 // 00008654: void __libc_csu_init()
 void __libc_csu_init()
 {
-	ptr32 r10_17;
-	Eq_291 r4_18 = _init(out r10_17);
-	int32 r2_20 = globals->dw86AC;
-	<anonymous> * r1_21[] = r10_17 + globals->dw86A8;
-	int32 r3_23 = r10_17 + r2_20 - r1_21;
-	if (r4_18 >= r3_23 >> 0x02)
+	ptr32 r10_n;
+	Eq_n r4_n = _init(out r10_n);
+	int32 r2_n = globals->dw86AC;
+	<anonymous> * r1_n[] = r10_n + globals->dw86A8;
+	int32 r3_n = r10_n + r2_n - r1_n;
+	if (r4_n >= r3_n >> 0x02)
 		return;
-	word32 sp_47;
-	word32 r4_48;
-	word32 r5_49;
-	word32 r6_50;
-	word32 r10_51;
-	word32 lr_52;
-	word32 pc_53;
-	word32 r3_54;
-	word32 r2_55;
-	word32 r1_56;
-	byte NZCV_57;
-	byte C_58;
-	r1_21[r4_18]();
+	word32 sp_n;
+	word32 r4_n;
+	word32 r5_n;
+	word32 r6_n;
+	word32 r10_n;
+	word32 lr_n;
+	word32 pc_n;
+	word32 r3_n;
+	word32 r2_n;
+	word32 r1_n;
+	byte NZCV_n;
+	byte C_n;
+	r1_n[r4_n]();
 }
 
 // 000086B0: void __libc_csu_fini()
 void __libc_csu_fini()
 {
-	ptr32 r10_15 = 0x86C8 + globals->dw8700;
-	int32 r2_14 = globals->dw8708;
-	<anonymous> * r1_16[] = r10_15 + globals->dw8704;
-	int32 r3_18 = r10_15 + r2_14 - r1_16;
-	int32 r4_22 = (r3_18 >> 0x02) - 0x01;
-	if (r3_18 >> 0x02 == 0x00)
+	ptr32 r10_n = 0x86C8 + globals->dw8700;
+	int32 r2_n = globals->dw8708;
+	<anonymous> * r1_n[] = r10_n + globals->dw8704;
+	int32 r3_n = r10_n + r2_n - r1_n;
+	int32 r4_n = (r3_n >> 0x02) - 0x01;
+	if (r3_n >> 0x02 == 0x00)
 		_fini();
 	else
 	{
-		word32 sp_37;
-		word32 r4_38;
-		word32 r5_39;
-		word32 r10_40;
-		word32 lr_41;
-		word32 pc_42;
-		word32 r3_43;
-		word32 r2_44;
-		word32 r1_45;
-		byte NZCV_46;
-		byte Z_47;
-		r1_16[r4_22]();
+		word32 sp_n;
+		word32 r4_n;
+		word32 r5_n;
+		word32 r10_n;
+		word32 lr_n;
+		word32 pc_n;
+		word32 r3_n;
+		word32 r2_n;
+		word32 r1_n;
+		byte NZCV_n;
+		byte Z_n;
+		r1_n[r4_n]();
 	}
 }
 
 // 0000870C: Register word32 __do_global_ctors_aux(Register out ptr32 spOut)
 word32 __do_global_ctors_aux(ptr32 & spOut)
 {
-	<anonymous> * r2_9 = *(globals->ptr8740 - 0x04);
-	if (r2_9 != (<anonymous> *) 0x01)
+	<anonymous> * r2_n = *(globals->ptr8740 - 0x04);
+	if (r2_n != (<anonymous> *) 0x01)
 	{
-		word32 sp_27;
-		word32 r4_28;
-		word32 lr_29;
-		word32 r3_30;
-		word32 pc_31;
-		word32 r2_32;
-		byte NZCV_33;
-		byte Z_34;
-		r2_9();
-		return r4_28;
+		word32 sp_n;
+		word32 r4_n;
+		word32 lr_n;
+		word32 r3_n;
+		word32 pc_n;
+		word32 r2_n;
+		byte NZCV_n;
+		byte Z_n;
+		r2_n();
+		return r4_n;
 	}
 	else
 	{
-		word32 sp_23;
+		word32 sp_n;
 		*spOut = fp;
 		return r4;
 	}

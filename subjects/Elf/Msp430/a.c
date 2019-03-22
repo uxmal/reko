@@ -4,301 +4,301 @@
 
 #include "a.h"
 
-// 09B2: void __write_char(Register (ptr20 Eq_2) pc)
-void __write_char(Eq_2 * pc)
+// 09B2: void __write_char(Register (ptr20 Eq_n) pc)
+void __write_char(Eq_n * pc)
 {
 }
 
-// 00004000: void fn00004000(Register (ptr20 Eq_2) pc, Register ui20 sr)
-void fn00004000(Eq_2 * pc, ui20 sr)
+// 00004000: void fn00004000(Register (ptr20 Eq_n) pc, Register ui20 sr)
+void fn00004000(Eq_n * pc, ui20 sr)
 {
 	*(ptr16 *) 288 = 0x5A80;
-	byte * r15_28 = (byte *) 0x5B78;
-	Eq_10 r14_27 = 0x0200;
-	Eq_10 r13_5 = 0x021C;
-	if (r13_5 != r14_27)
+	byte * r15_n = (byte *) 0x5B78;
+	Eq_n r14_n = 0x0200;
+	Eq_n r13_n = 0x021C;
+	if (r13_n != r14_n)
 	{
 		do
 		{
-			*r14_27 = *r15_28;
-			++r15_28;
-			++r14_27;
-		} while (r14_27 >= r13_5);
+			*r14_n = *r15_n;
+			++r15_n;
+			++r14_n;
+		} while (r14_n >= r13_n);
 	}
-	Eq_15 r15_11 = 0x021C;
-	Eq_15 r13_12 = 2484;
-	if (r13_12 != r15_11)
+	Eq_n r15_n = 0x021C;
+	Eq_n r13_n = 2484;
+	if (r13_n != r15_n)
 	{
 		do
 		{
-			*r15_11 = 0x00;
-			++r15_11;
-		} while (r15_11 >= r13_12);
+			*r15_n = 0x00;
+			++r15_n;
+		} while (r15_n >= r13_n);
 	}
 	main(pc, sr);
 }
 
-// 4048: void task_idle(Register (ptr20 Eq_2) pc, Register ui20 sr, Register Eq_45 r8)
-void task_idle(Eq_2 * pc, ui20 sr, Eq_45 r8)
+// 4048: void task_idle(Register (ptr20 Eq_n) pc, Register ui20 sr, Register Eq_n r8)
+void task_idle(Eq_n * pc, ui20 sr, Eq_n r8)
 {
-	word20 r15_12;
-	ui20 sr_13 = xTaskGetTickCount(sr, out r15_12);
-	Eq_54 r10_15 = r15_12 + 1000;
+	word20 r15_n;
+	ui20 sr_n = xTaskGetTickCount(sr, out r15_n);
+	Eq_n r10_n = r15_n + 1000;
 	while (true)
 	{
-		Eq_67 r15_30;
-		sr_13 = xTaskGetTickCount(sr_13, out r15_30);
-		if (r10_15 - r15_30 >= 0x01)
+		Eq_n r15_n;
+		sr_n = xTaskGetTickCount(sr_n, out r15_n);
+		if (r10_n - r15_n >= 0x01)
 			break;
-		word20 r11_42;
-		r8 = printf(pc, r8, out r11_42);
-		r10_15 = r11_42 + 1000;
+		word20 r11_n;
+		r8 = printf(pc, r8, out r11_n);
+		r10_n = r11_n + 1000;
 	}
 }
 
-// 4096: void task_1(Register (ptr20 Eq_2) pc, Register ui20 sr)
-void task_1(Eq_2 * pc, ui20 sr)
+// 4096: void task_n(Register (ptr20 Eq_n) pc, Register ui20 sr)
+void task_n(Eq_n * pc, ui20 sr)
 {
-	word20 r15_5;
-	ui20 sr_11 = xTaskGetTickCount(sr, out r15_5);
+	word20 r15_n;
+	ui20 sr_n = xTaskGetTickCount(sr, out r15_n);
 	while (true)
 	{
-		*(union Eq_82 *) 0x31 = *(union Eq_82 *) 0x31 ^ 0x01;
-		word20 r11_17;
-		sr_11 = vTaskDelayUntil(pc, putchar(pc, sr_11, 88, out r11_17), 500, fp - 0x02);
+		*(union Eq_n *) 0x31 = *(union Eq_n *) 0x31 ^ 0x01;
+		word20 r11_n;
+		sr_n = vTaskDelayUntil(pc, putchar(pc, sr_n, 88, out r11_n), 500, fp - 0x02);
 	}
 }
 
-// 40BC: void task_2(Register (ptr20 Eq_2) pc, Register ui20 sr)
-void task_2(Eq_2 * pc, ui20 sr)
+// 40BC: void task_n(Register (ptr20 Eq_n) pc, Register ui20 sr)
+void task_n(Eq_n * pc, ui20 sr)
 {
-	word20 r15_5;
-	ui20 sr_11 = xTaskGetTickCount(sr, out r15_5);
+	word20 r15_n;
+	ui20 sr_n = xTaskGetTickCount(sr, out r15_n);
 	while (true)
 	{
-		*(union Eq_82 *) 0x31 = *(union Eq_82 *) 0x31 ^ 0x02;
-		word20 r11_17;
-		sr_11 = vTaskDelayUntil(pc, putchar(pc, sr_11, 0x59, out r11_17), 0xFA, fp - 0x02);
+		*(union Eq_n *) 0x31 = *(union Eq_n *) 0x31 ^ 0x02;
+		word20 r11_n;
+		sr_n = vTaskDelayUntil(pc, putchar(pc, sr_n, 0x59, out r11_n), 0xFA, fp - 0x02);
 	}
 }
 
-// 40E2: void task_3(Register (ptr20 Eq_2) pc, Register ui20 sr)
-void task_3(Eq_2 * pc, ui20 sr)
+// 40E2: void task_n(Register (ptr20 Eq_n) pc, Register ui20 sr)
+void task_n(Eq_n * pc, ui20 sr)
 {
-	word20 r15_5;
-	ui20 sr_11 = xTaskGetTickCount(sr, out r15_5);
+	word20 r15_n;
+	ui20 sr_n = xTaskGetTickCount(sr, out r15_n);
 	while (true)
 	{
-		*(union Eq_82 *) 0x31 = *(union Eq_82 *) 0x31 ^ 0x04;
-		word20 r11_17;
-		sr_11 = vTaskDelayUntil(pc, putchar(pc, sr_11, 0x5A, out r11_17), 0x19, fp - 0x02);
+		*(union Eq_n *) 0x31 = *(union Eq_n *) 0x31 ^ 0x04;
+		word20 r11_n;
+		sr_n = vTaskDelayUntil(pc, putchar(pc, sr_n, 0x5A, out r11_n), 0x19, fp - 0x02);
 	}
 }
 
-// 414C: void main(Register (ptr20 Eq_2) pc, Register ui20 sr)
-void main(Eq_2 * pc, ui20 sr)
+// 414C: void main(Register (ptr20 Eq_n) pc, Register ui20 sr)
+void main(Eq_n * pc, ui20 sr)
 {
 	__set_stackpointer(0x0A00);
 	*(ptr16 *) 288 = 0x5A80;
 	*(ptr16 *) 0x56 = ~0x1F;
 	*(ptr16 *) 0x57 = 0x07;
 	*(ptr16 *) 0x32 = 0x07;
-	((union Eq_82 *) 0x31)->u0 = 0x07;
-	Eq_45 r8_18;
-	ui20 sr_19 = init_uart_isr(pc, sr, out r8_18);
+	((union Eq_n *) 0x31)->u0 = 0x07;
+	Eq_n r8_n;
+	ui20 sr_n = init_uart_isr(pc, sr, out r8_n);
 	uart_putchar_isr_mode(0x00);
-	word20 r11_27;
-	printf(pc, r8_18, out r11_27);
+	word20 r11_n;
+	printf(pc, r8_n, out r11_n);
 	uart_putchar_isr_mode(0x01);
-	word20 r15_38;
-	word20 r15_48;
-	word20 r15_58;
-	word20 r15_68;
-	vTaskStartScheduler(pc, xTaskCreate(pc, xTaskCreate(pc, xTaskCreate(pc, xTaskCreate(pc, sr_19, out r15_38), out r15_48), out r15_58), out r15_68));
+	word20 r15_n;
+	word20 r15_n;
+	word20 r15_n;
+	word20 r15_n;
+	vTaskStartScheduler(pc, xTaskCreate(pc, xTaskCreate(pc, xTaskCreate(pc, xTaskCreate(pc, sr_n, out r15_n), out r15_n), out r15_n), out r15_n));
 	while (true)
 		;
 }
 
-// 420E: Register ui20 msp430_compute_modulator_bits(Register ui20 sr, Register Eq_220 r12, Register Eq_221 r13, Register Eq_222 r14, Register Eq_222 r15, Register out Eq_224 r4Out, Register out Eq_225 r15Out)
-ui20 msp430_compute_modulator_bits(ui20 sr, Eq_220 r12, Eq_221 r13, Eq_222 r14, Eq_222 r15, Eq_224 & r4Out, Eq_225 & r15Out)
+// 420E: Register ui20 msp430_compute_modulator_bits(Register ui20 sr, Register Eq_n r12, Register Eq_n r13, Register Eq_n r14, Register Eq_n r15, Register out Eq_n r4Out, Register out Eq_n r15Out)
+ui20 msp430_compute_modulator_bits(ui20 sr, Eq_n r12, Eq_n r13, Eq_n r14, Eq_n r15, Eq_n & r4Out, Eq_n & r15Out)
 {
-	union Eq_231 * v16_39 = fp->ptr0002;
-	Eq_231 r12_46 = fn00005B04(r14, r15, r12, r13);
-	word20 r15_67;
-	Eq_240 r8_74 = fn00005ADC(r14, r15, r12_46, 0x00, out r15_67) - r12;
-	Eq_252 r9_77 = r15_67 - r13 - (r8_74 < 0x00);
-	if (v16_39 != null)
-		*v16_39 = (union Eq_231 *) r12_46;
-	Eq_259 r7_118 = 0x00;
-	Eq_261 r10_119 = 0x00;
-	Eq_263 r11_120 = 0x00;
-	Eq_265 r6_121 = 0x00;
+	union Eq_n * v16_n = fp->ptr0002;
+	Eq_n r12_n = fn00005B04(r14, r15, r12, r13);
+	word20 r15_n;
+	Eq_n r8_n = fn00005ADC(r14, r15, r12_n, 0x00, out r15_n) - r12;
+	Eq_n r9_n = r15_n - r13 - (r8_n < 0x00);
+	if (v16_n != null)
+		*v16_n = (union Eq_n *) r12_n;
+	Eq_n r7_n = 0x00;
+	Eq_n r10_n = 0x00;
+	Eq_n r11_n = 0x00;
+	Eq_n r6_n = 0x00;
 	do
 	{
-		r10_119 += r8_74;
-		Eq_292 r14_99 = (r14 ^ ~0x00) + 0x01;
-		r11_120 = r11_120 + r9_77 + (r10_119 <u 0x00);
-		if (r11_120 * 0x02 + (r10_119 * 0x02 <u 0x00) - ((r15 ^ ~0x00) + (r14_99 <u 0x00)) - (r10_119 * 0x02 - r14_99 <u 0x00) < 0x00)
+		r10_n += r8_n;
+		Eq_n r14_n = (r14 ^ ~0x00) + 0x01;
+		r11_n = r11_n + r9_n + (r10_n <u 0x00);
+		if (r11_n * 0x02 + (r10_n * 0x02 <u 0x00) - ((r15 ^ ~0x00) + (r14_n <u 0x00)) - (r10_n * 0x02 - r14_n <u 0x00) < 0x00)
 		{
-			r10_119 += r14;
-			r11_120 = r11_120 + r15 + (r10_119 <u 0x00);
-			Eq_279 r15_157 = 0x01;
-			Eq_265 r14_158 = r6_121;
-			if (r6_121 != 0x00)
+			r10_n += r14;
+			r11_n = r11_n + r15 + (r10_n <u 0x00);
+			Eq_n r15_n = 0x01;
+			Eq_n r14_n = r6_n;
+			if (r6_n != 0x00)
 			{
 				do
 				{
-					r15_157 *= 0x02;
-					--r14_158;
-				} while (r14_158 != 0x00);
+					r15_n *= 0x02;
+					--r14_n;
+				} while (r14_n != 0x00);
 			}
-			r7_118 |= r15_157;
+			r7_n |= r15_n;
 		}
-		r6_121 = (word24) r6_121 + 0x01;
-	} while (r6_121 >= 0x08);
-	word20 r15_124;
-	*r15Out = r7_118;
-	word20 r4_129;
+		r6_n = (word24) r6_n + 0x01;
+	} while (r6_n >= 0x08);
+	word20 r15_n;
+	*r15Out = r7_n;
+	word20 r4_n;
 	*r4Out = r4;
 	return sr;
 }
 
-// 42CC: Register ui20 init_uart_isr(Register (ptr20 Eq_2) pc, Register ui20 sr, Register out Eq_179 r8Out)
-ui20 init_uart_isr(Eq_2 * pc, ui20 sr, Eq_179 & r8Out)
+// 42CC: Register ui20 init_uart_isr(Register (ptr20 Eq_n) pc, Register ui20 sr, Register out Eq_n r8Out)
+ui20 init_uart_isr(Eq_n * pc, ui20 sr, Eq_n & r8Out)
 {
-	Eq_326 v17_41 = fp->t0006;
+	Eq_n v17_n = fp->t0006;
 	++globals->ptr0218;
-	word20 r6_50;
-	word20 r7_51;
-	word20 r8_52;
-	word20 r9_53;
-	word20 r10_54;
-	Eq_326 r11_55;
-	Eq_342 r15_56;
-	ui20 sr_57 = xQueueCreate(pc, sr & ~0x08, v17_41, out r6_50, out r7_51, out r8_52, out r9_53, out r10_54, out r11_55, out r15_56);
-	globals->a021C = r15_56;
-	ui20 r6_61;
-	Eq_222 r7_62;
-	Eq_222 r8_63;
-	Eq_220 r9_64;
-	Eq_221 r10_65;
-	word20 r11_66;
-	Eq_375 r15_67;
-	ui20 sr_68 = xQueueCreate(pc, sr_57, r11_55, out r6_61, out r7_62, out r8_63, out r9_64, out r10_65, out r11_66, out r15_67);
-	globals->t021E = r15_67;
-	((union Eq_388 *) 0x78)->u1 = 0x01;
-	*(union Eq_388 *) 0x78 |= 0x10;
-	*(union Eq_397 *) 121 = r6_61 & 0x30;
-	union Eq_410 * r4_82;
-	Eq_401 r15_83;
-	ui20 sr_102 = msp430_compute_modulator_bits(sr_68, r9_64, r10_65, r7_62, r8_63, out r4_82, out r15_83);
-	*(union Eq_410 *) 0x7C = *r4_82;
-	*(union Eq_421 *) 0x7D = __swpb(*r4_82) & ~0x00;
-	*(union Eq_401 *) 0x7B = r15_83;
-	*(union Eq_427 *) 0x05 |= 0x30;
-	((union Eq_388 *) 0x78)->u0 = 0x10;
-	*(union Eq_435 *) 0x1B |= ~0x3F;
-	*(union Eq_440 *) 0x01 |= 0x30;
+	word20 r6_n;
+	word20 r7_n;
+	word20 r8_n;
+	word20 r9_n;
+	word20 r10_n;
+	Eq_n r11_n;
+	Eq_n r15_n;
+	ui20 sr_n = xQueueCreate(pc, sr & ~0x08, v17_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r15_n);
+	globals->a021C = r15_n;
+	ui20 r6_n;
+	Eq_n r7_n;
+	Eq_n r8_n;
+	Eq_n r9_n;
+	Eq_n r10_n;
+	word20 r11_n;
+	Eq_n r15_n;
+	ui20 sr_n = xQueueCreate(pc, sr_n, r11_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r15_n);
+	globals->t021E = r15_n;
+	((union Eq_n *) 0x78)->u1 = 0x01;
+	*(union Eq_n *) 0x78 |= 0x10;
+	*(union Eq_n *) 121 = r6_n & 0x30;
+	union Eq_n * r4_n;
+	Eq_n r15_n;
+	ui20 sr_n = msp430_compute_modulator_bits(sr_n, r9_n, r10_n, r7_n, r8_n, out r4_n, out r15_n);
+	*(union Eq_n *) 0x7C = *r4_n;
+	*(union Eq_n *) 0x7D = __swpb(*r4_n) & ~0x00;
+	*(union Eq_n *) 0x7B = r15_n;
+	*(union Eq_n *) 0x05 |= 0x30;
+	((union Eq_n *) 0x78)->u0 = 0x10;
+	*(union Eq_n *) 0x1B |= ~0x3F;
+	*(union Eq_n *) 0x01 |= 0x30;
 	if (0x0218 != 0x00)
 	{
 		globals->ptr0218 += ~0x00;
 		if (globals->ptr0218 == 0x00)
-			sr_102 |= 0x08;
+			sr_n |= 0x08;
 	}
-	word20 r8_116;
+	word20 r8_n;
 	*r8Out = r8;
-	return sr_102;
+	return sr_n;
 }
 
-// 4380: void getchar(Register (ptr20 Eq_2) pc, Register ui20 sr)
-void getchar(Eq_2 * pc, ui20 sr)
+// 4380: void getchar(Register (ptr20 Eq_n) pc, Register ui20 sr)
+void getchar(Eq_n * pc, ui20 sr)
 {
 	x_getchar(pc, sr, 100, fp - 0x02) == 0x00;
 }
 
-// 439C: void uart_putchar_isr_mode(Register Eq_184 r15)
-void uart_putchar_isr_mode(Eq_184 r15)
+// 439C: void uart_putchar_isr_mode(Register Eq_n r15)
+void uart_putchar_isr_mode(Eq_n r15)
 {
 	globals->a0200 = r15;
 }
 
-// 43A2: Register ui20 putchar(Register (ptr20 Eq_2) pc, Register ui20 sr, Register Eq_97 r15, Register out Eq_98 r11Out)
-ui20 putchar(Eq_2 * pc, ui20 sr, Eq_97 r15, Eq_98 & r11Out)
+// 43A2: Register ui20 putchar(Register (ptr20 Eq_n) pc, Register ui20 sr, Register Eq_n r15, Register out Eq_n r11Out)
+ui20 putchar(Eq_n * pc, ui20 sr, Eq_n r15, Eq_n & r11Out)
 {
-	Eq_97 r11_12 = r15;
+	Eq_n r11_n = r15;
 	if (r15 == 0x0A)
-		sr = putchar(pc, sr, 0x0D, out r11_12);
-	Eq_484 r15_20;
+		sr = putchar(pc, sr, 0x0D, out r11_n);
+	Eq_n r15_n;
 	if (0x0200 == 0x00)
 	{
 		do
 			;
 		while ((121 & 0x01) == 0x00);
-		*(union Eq_97 *) 0x7F = r11_12;
-		r15_20.u1 = 0x01;
+		*(union Eq_n *) 0x7F = r11_n;
+		r15_n.u1 = 0x01;
 	}
 	else
-		sr = x_putchar(pc, sr, 100, r11_12, out r15_20);
-	word20 r11_26;
+		sr = x_putchar(pc, sr, 100, r11_n, out r15_n);
+	word20 r11_n;
 	*r11Out = r11;
 	return sr;
 }
 
-// 43E4: Register Eq_467 x_getchar(Register (ptr20 Eq_2) pc, Register ui20 sr, Register Eq_466 r14, Register Eq_467 r15)
-Eq_467 x_getchar(Eq_2 * pc, ui20 sr, Eq_466 r14, Eq_467 r15)
+// 43E4: Register Eq_n x_getchar(Register (ptr20 Eq_n) pc, Register ui20 sr, Register Eq_n r14, Register Eq_n r15)
+Eq_n x_getchar(Eq_n * pc, ui20 sr, Eq_n r14, Eq_n r15)
 {
-	Eq_511 r15_9;
-	xQueueReceive(pc, sr, r14, r15, 0x021C, out r15_9);
-	if (r15_9 == 0x00)
+	Eq_n r15_n;
+	xQueueReceive(pc, sr, r14, r15, 0x021C, out r15_n);
+	if (r15_n == 0x00)
 		return 0x00;
 	return 0x01;
 }
 
-// 43FC: Register ui20 x_putchar(Register (ptr20 Eq_2) pc, Register ui20 sr, Register Eq_492 r14, Register Eq_97 r15, Register out Eq_494 r15Out)
-ui20 x_putchar(Eq_2 * pc, ui20 sr, Eq_492 r14, Eq_97 r15, Eq_494 & r15Out)
+// 43FC: Register ui20 x_putchar(Register (ptr20 Eq_n) pc, Register ui20 sr, Register Eq_n r14, Register Eq_n r15, Register out Eq_n r15Out)
+ui20 x_putchar(Eq_n * pc, ui20 sr, Eq_n r14, Eq_n r15, Eq_n & r15Out)
 {
 	++globals->ptr0218;
-	ui20 sr_11 = sr & ~0x08;
+	ui20 sr_n = sr & ~0x08;
 	if (0x0220 != 0x01)
 	{
-		Eq_544 r15_45;
-		sr_11 = xQueueSend(pc, sr_11, r14, fp - 0x02, 0x021E, out r15_45);
-		if (0x0220 != 0x01 || r15_45 != 0x01)
+		Eq_n r15_n;
+		sr_n = xQueueSend(pc, sr_n, r14, fp - 0x02, 0x021E, out r15_n);
+		if (0x0220 != 0x01 || r15_n != 0x01)
 		{
 l00004420:
 			if (0x0218 != 0x00)
 			{
 				globals->ptr0218 += ~0x00;
 				if (globals->ptr0218 == 0x00)
-					sr_11 |= 0x08;
+					sr_n |= 0x08;
 			}
-			word20 r15_25;
+			word20 r15_n;
 			*r15Out = 0x01;
-			return sr_11;
+			return sr_n;
 		}
-		word20 r15_54;
-		sr_11 = xQueueReceive(pc, sr_11, 0x00, fp - 0x02, 0x021E, out r15_54);
+		word20 r15_n;
+		sr_n = xQueueReceive(pc, sr_n, 0x00, fp - 0x02, 0x021E, out r15_n);
 	}
 	globals->ptr0220 = 0x00;
-	*(union Eq_97 *) 0x7F = r15;
+	*(union Eq_n *) 0x7F = r15;
 	goto l00004420;
 }
 
-// 4450: void vRxISR(Register (ptr20 Eq_2) pc, Register ui20 sr)
-void vRxISR(Eq_2 * pc, ui20 sr)
+// 4450: void vRxISR(Register (ptr20 Eq_n) pc, Register ui20 sr)
+void vRxISR(Eq_n * pc, ui20 sr)
 {
-	Eq_589 r15_24;
-	ui20 sr_25 = xQueueSendFromISR(sr, fp - 0x0A, 0x021C, out r15_24);
-	if (r15_24 != 0x00)
+	Eq_n r15_n;
+	ui20 sr_n = xQueueSendFromISR(sr, fp - 0x0A, 0x021C, out r15_n);
+	if (r15_n != 0x00)
 	{
-		word20 r5_58;
-		word20 r6_59;
-		word20 r7_60;
-		word20 r8_61;
-		word20 r9_62;
-		word20 r10_63;
-		word20 r11_64;
-		vPortYield(pc, sr_25, out r5_58, out r6_59, out r7_60, out r8_61, out r9_62, out r10_63, out r11_64);
+		word20 r5_n;
+		word20 r6_n;
+		word20 r7_n;
+		word20 r8_n;
+		word20 r9_n;
+		word20 r10_n;
+		word20 r11_n;
+		vPortYield(pc, sr_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n);
 	}
 }
 
@@ -308,225 +308,225 @@ void vTxISR(ui20 sr)
 	if (xQueueReceiveFromISR(sr, fp - 0x0A, 0x021E) != 0x01)
 		globals->ptr0220 = 0x01;
 	else
-		*(union Eq_97 *) 0x7F = bLoc0A;
+		*(union Eq_n *) 0x7F = bLoc0A;
 }
 
-// 44B4: Register ui20 xTaskCreate(Register (ptr20 Eq_2) pc, Register ui20 sr, Register out Eq_206 r15Out)
-ui20 xTaskCreate(Eq_2 * pc, ui20 sr, Eq_206 & r15Out)
+// 44B4: Register ui20 xTaskCreate(Register (ptr20 Eq_n) pc, Register ui20 sr, Register out Eq_n r15Out)
+ui20 xTaskCreate(Eq_n * pc, ui20 sr, Eq_n & r15Out)
 {
-	Eq_650 r10_104;
-	Eq_651 r5_42;
-	Eq_652 r6_43;
-	Eq_653 r7_44;
-	Eq_654 r8_45;
-	byte * r9_46;
-	Eq_656 r10_47;
-	Eq_657 r15_48;
-	ui20 sr_106 = prvAllocateTCBAndStack(pc, sr, out r5_42, out r6_43, out r7_44, out r8_45, out r9_46, out r10_47, out r15_48);
-	Eq_657 r11_113 = r15_48;
-	if (r15_48 != 0x00)
+	Eq_n r10_n;
+	Eq_n r5_n;
+	Eq_n r6_n;
+	Eq_n r7_n;
+	Eq_n r8_n;
+	byte * r9_n;
+	Eq_n r10_n;
+	Eq_n r15_n;
+	ui20 sr_n = prvAllocateTCBAndStack(pc, sr, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r15_n);
+	Eq_n r11_n = r15_n;
+	if (r15_n != 0x00)
 	{
-		r11_113 = prvInitialiseTCBVariables(r8_45, r9_46, r10_47, r15_48);
-		*r11_113 = pxPortInitialiseStack(r7_44, r6_43, (word24) *((word24) r11_113 + 0x02) + *((word24) r11_113 + 0x0024) * 0x02 - 0x02);
+		r11_n = prvInitialiseTCBVariables(r8_n, r9_n, r10_n, r15_n);
+		*r11_n = pxPortInitialiseStack(r7_n, r6_n, (word24) *((word24) r11_n + 0x02) + *((word24) r11_n + 0x0024) * 0x02 - 0x02);
 		++globals->ptr0218;
 		++globals->ptr0206;
-		sr_106 &= ~0x08;
+		sr_n &= ~0x08;
 		if (0x0206 != 0x01)
 		{
-			if (0x020E == 0x00 && r8_45 < globals->t0208)
-				globals->t0202 = r11_113;
+			if (0x020E == 0x00 && r8_n < globals->t0208)
+				globals->t0202 = r11_n;
 		}
 		else
 		{
-			globals->t0202 = r11_113;
-			r11_113 = prvInitialiseTaskLists();
+			globals->t0202 = r11_n;
+			r11_n = prvInitialiseTaskLists();
 		}
-		Eq_654 v25_136 = *((word24) r11_113 + 0x06);
-		if (522 >= v25_136)
-			globals->t020A = v25_136;
-		((word24) r11_113 + 0x04)->u0 = 0x0214;
+		Eq_n v25_n = *((word24) r11_n + 0x06);
+		if (522 >= v25_n)
+			globals->t020A = v25_n;
+		((word24) r11_n + 0x04)->u0 = 0x0214;
 		++globals->ptr0214;
-		*((word24) r11_113 + 0x08) = 0x00;
-		if (0x020C >= v25_136)
-			globals->t020C = v25_136;
-		vListInsertEnd((word24) r11_113 + 0x08, v25_136 * 0x10 + 0x0222);
-		r10_104.u0 = 0x01;
+		*((word24) r11_n + 0x08) = 0x00;
+		if (0x020C >= v25_n)
+			globals->t020C = v25_n;
+		vListInsertEnd((word24) r11_n + 0x08, v25_n * 0x10 + 0x0222);
+		r10_n.u0 = 0x01;
 		if (0x0218 != 0x00)
 		{
 			globals->ptr0218 += ~0x00;
 			if (globals->ptr0218 == 0x00)
-				sr_106 |= 0x08;
+				sr_n |= 0x08;
 		}
 	}
 	else
-		r10_104.u0 = ~0x00;
-	if (r10_104 == 0x01)
+		r10_n.u0 = ~0x00;
+	if (r10_n == 0x01)
 	{
-		if (r5_42 != 0x00)
-			*r5_42 = r11_113;
-		if (0x020E != 0x00 && globals->t0208 >= r8_45)
+		if (r5_n != 0x00)
+			*r5_n = r11_n;
+		if (0x020E != 0x00 && globals->t0208 >= r8_n)
 		{
-			word20 r5_99;
-			word20 r6_100;
-			word20 r7_101;
-			word20 r8_102;
-			word20 r9_103;
-			word20 r11_105;
-			sr_106 = vPortYield(pc, sr_106, out r5_99, out r6_100, out r7_101, out r8_102, out r9_103, out r10_104, out r11_105);
+			word20 r5_n;
+			word20 r6_n;
+			word20 r7_n;
+			word20 r8_n;
+			word20 r9_n;
+			word20 r11_n;
+			sr_n = vPortYield(pc, sr_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n);
 		}
 	}
-	word20 r15_68;
-	*r15Out = r10_104;
-	return sr_106;
+	word20 r15_n;
+	*r15Out = r10_n;
+	return sr_n;
 }
 
-// 45B6: void vTaskDelete(Register (ptr20 Eq_2) pc, Register ui20 sr, Register Eq_820 r15)
-void vTaskDelete(Eq_2 * pc, ui20 sr, Eq_820 r15)
+// 45B6: void vTaskDelete(Register (ptr20 Eq_n) pc, Register ui20 sr, Register Eq_n r15)
+void vTaskDelete(Eq_n * pc, ui20 sr, Eq_n r15)
 {
 	++globals->ptr0218;
-	ui20 sr_14 = sr & ~0x08;
-	Eq_820 r11_18 = r15;
+	ui20 sr_n = sr & ~0x08;
+	Eq_n r11_n = r15;
 	if (r15 == 0x00)
-		r11_18.u0 = 0x0202;
-	Eq_793 r10_23 = (word16) r11_18.u0 + 0x08;
-	vListRemove(r10_23);
-	if (*((word16) r11_18.u0 + 0x001A) != 0x00)
-		vListRemove((word16) r11_18.u0 + 0x0012);
-	vListInsertEnd(r10_23, 662);
+		r11_n.u0 = 0x0202;
+	Eq_n r10_n = (word16) r11_n.u0 + 0x08;
+	vListRemove(r10_n);
+	if (*((word16) r11_n.u0 + 0x001A) != 0x00)
+		vListRemove((word16) r11_n.u0 + 0x0012);
+	vListInsertEnd(r10_n, 662);
 	++globals->ptr0204;
 	if (0x0218 != 0x00)
 	{
 		globals->ptr0218 += ~0x00;
 		if (globals->ptr0218 == 0x00)
-			sr_14 |= 0x08;
+			sr_n |= 0x08;
 	}
 	if (r15 == 0x00)
 	{
-		word20 r5_58;
-		word20 r6_59;
-		word20 r7_60;
-		word20 r8_61;
-		word20 r9_62;
-		word20 r10_63;
-		word20 r11_64;
-		vPortYield(pc, sr_14, out r5_58, out r6_59, out r7_60, out r8_61, out r9_62, out r10_63, out r11_64);
+		word20 r5_n;
+		word20 r6_n;
+		word20 r7_n;
+		word20 r8_n;
+		word20 r9_n;
+		word20 r10_n;
+		word20 r11_n;
+		vPortYield(pc, sr_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n);
 	}
 }
 
-// 461A: Register ui20 vTaskDelayUntil(Register (ptr20 Eq_2) pc, Register ui20 sr, Register Eq_91 r14, Register Eq_92 r15)
-ui20 vTaskDelayUntil(Eq_2 * pc, ui20 sr, Eq_91 r14, Eq_92 r15)
+// 461A: Register ui20 vTaskDelayUntil(Register (ptr20 Eq_n) pc, Register ui20 sr, Register Eq_n r14, Register Eq_n r15)
+ui20 vTaskDelayUntil(Eq_n * pc, ui20 sr, Eq_n r14, Eq_n r15)
 {
-	ui20 sr_17 = vTaskSuspendAll(sr);
-	Eq_654 v8_19 = *r15;
-	Eq_898 r10_15 = 0x00;
-	word20 r11_21 = r14 + v8_19;
-	if (0x0208 >= v8_19)
+	ui20 sr_n = vTaskSuspendAll(sr);
+	Eq_n v8_n = *r15;
+	Eq_n r10_n = 0x00;
+	word20 r11_n = r14 + v8_n;
+	if (0x0208 >= v8_n)
 	{
-		if (r11_21 < v8_19)
+		if (r11_n < v8_n)
 			goto l00004640;
 	}
-	else if (r11_21 >= v8_19)
+	else if (r11_n >= v8_n)
 		goto l0000463E;
-	if (0x0208 < r11_21)
+	if (0x0208 < r11_n)
 		goto l00004640;
 l0000463E:
-	r10_15.u1 = 0x01;
+	r10_n.u1 = 0x01;
 l00004640:
-	*r15 = r11_21;
-	if (r10_15 != 0x00)
+	*r15 = r11_n;
+	if (r10_n != 0x00)
 	{
-		Eq_914 r15_78;
-		struct Eq_915 * r14_77;
+		Eq_n r15_n;
+		struct Eq_n * r14_n;
 		vListRemove(522);
-		globals->t020A = r11_21;
-		if (r11_21 >= 0x0208)
+		globals->t020A = r11_n;
+		if (r11_n >= 0x0208)
 		{
-			r14_77 = &globals->t020A;
-			r15_78.u0 = 644;
+			r14_n = &globals->t020A;
+			r15_n.u0 = 644;
 		}
 		else
 		{
-			r14_77 = &globals->t020A;
-			r15_78.u0 = 0x0282;
+			r14_n = &globals->t020A;
+			r15_n.u0 = 0x0282;
 		}
-		vListInsert(r14_77, r15_78);
+		vListInsert(r14_n, r15_n);
 	}
-	word20 r5_34;
-	word20 r6_35;
-	word20 r7_36;
-	word20 r8_37;
-	word20 r9_38;
-	word20 r10_39;
-	word20 r11_40;
-	Eq_930 r15_41;
-	ui20 sr_42 = xTaskResumeAll(pc, sr_17, out r5_34, out r6_35, out r7_36, out r8_37, out r9_38, out r10_39, out r11_40, out r15_41);
-	if (r15_41 == 0x00)
+	word20 r5_n;
+	word20 r6_n;
+	word20 r7_n;
+	word20 r8_n;
+	word20 r9_n;
+	word20 r10_n;
+	word20 r11_n;
+	Eq_n r15_n;
+	ui20 sr_n = xTaskResumeAll(pc, sr_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r15_n);
+	if (r15_n == 0x00)
 	{
-		word20 r5_59;
-		word20 r6_60;
-		word20 r7_61;
-		word20 r8_62;
-		word20 r9_63;
-		word20 r10_64;
-		word20 r11_65;
-		sr_42 = vPortYield(pc, sr_42, out r5_59, out r6_60, out r7_61, out r8_62, out r9_63, out r10_64, out r11_65);
+		word20 r5_n;
+		word20 r6_n;
+		word20 r7_n;
+		word20 r8_n;
+		word20 r9_n;
+		word20 r10_n;
+		word20 r11_n;
+		sr_n = vPortYield(pc, sr_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n);
 	}
-	return sr_42;
+	return sr_n;
 }
 
-// 469E: void vTaskDelay(Register (ptr20 Eq_2) pc, Register ui20 sr, Register Eq_982 r15)
-void vTaskDelay(Eq_2 * pc, ui20 sr, Eq_982 r15)
+// 469E: void vTaskDelay(Register (ptr20 Eq_n) pc, Register ui20 sr, Register Eq_n r15)
+void vTaskDelay(Eq_n * pc, ui20 sr, Eq_n r15)
 {
-	Eq_983 r15_21 = 0x00;
+	Eq_n r15_n = 0x00;
 	if (r15 != 0x00)
 	{
-		Eq_914 r15_65;
-		struct Eq_915 * r14_64;
-		ui20 sr_51 = vTaskSuspendAll(sr);
+		Eq_n r15_n;
+		struct Eq_n * r14_n;
+		ui20 sr_n = vTaskSuspendAll(sr);
 		vListRemove(522);
-		Eq_654 r11_52 = (word20) r15.u0 + 0x0208;
-		globals->t020A = r11_52;
-		if (r11_52 >= 0x0208)
+		Eq_n r11_n = (word20) r15.u0 + 0x0208;
+		globals->t020A = r11_n;
+		if (r11_n >= 0x0208)
 		{
-			r14_64 = &globals->t020A;
-			r15_65.u0 = 644;
+			r14_n = &globals->t020A;
+			r15_n.u0 = 644;
 		}
 		else
 		{
-			r14_64 = &globals->t020A;
-			r15_65.u0 = 0x0282;
+			r14_n = &globals->t020A;
+			r15_n.u0 = 0x0282;
 		}
-		vListInsert(r14_64, r15_65);
-		word20 r5_68;
-		word20 r6_69;
-		word20 r7_70;
-		word20 r8_71;
-		word20 r9_72;
-		word20 r10_73;
-		word20 r11_74;
-		sr = xTaskResumeAll(pc, sr_51, out r5_68, out r6_69, out r7_70, out r8_71, out r9_72, out r10_73, out r11_74, out r15_21);
+		vListInsert(r14_n, r15_n);
+		word20 r5_n;
+		word20 r6_n;
+		word20 r7_n;
+		word20 r8_n;
+		word20 r9_n;
+		word20 r10_n;
+		word20 r11_n;
+		sr = xTaskResumeAll(pc, sr_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r15_n);
 	}
-	if (r15_21 == 0x00)
+	if (r15_n == 0x00)
 	{
-		word20 r5_43;
-		word20 r6_44;
-		word20 r7_45;
-		word20 r8_46;
-		word20 r9_47;
-		word20 r10_48;
-		word20 r11_49;
-		vPortYield(pc, sr, out r5_43, out r6_44, out r7_45, out r8_46, out r9_47, out r10_48, out r11_49);
+		word20 r5_n;
+		word20 r6_n;
+		word20 r7_n;
+		word20 r8_n;
+		word20 r9_n;
+		word20 r10_n;
+		word20 r11_n;
+		vPortYield(pc, sr, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n);
 	}
 }
 
-// 4702: Register ui20 vTaskStartScheduler(Register (ptr20 Eq_2) pc, Register ui20 sr)
-ui20 vTaskStartScheduler(Eq_2 * pc, ui20 sr)
+// 4702: Register ui20 vTaskStartScheduler(Register (ptr20 Eq_n) pc, Register ui20 sr)
+ui20 vTaskStartScheduler(Eq_n * pc, ui20 sr)
 {
 	if (0x0202 != 0x00)
 	{
-		Eq_1046 r15_30;
-		sr = xTaskCreate(pc, sr, out r15_30);
-		if (r15_30 == 0x01)
+		Eq_n r15_n;
+		sr = xTaskCreate(pc, sr, out r15_n);
+		if (r15_n == 0x01)
 		{
 			globals->ptr020E = 0x01;
 			globals->t0208.u0 = 0x00;
@@ -549,48 +549,48 @@ ui20 vTaskSuspendAll(ui20 sr)
 {
 	++globals->ptr0218;
 	++globals->ptr0210;
-	ui20 sr_13 = sr & ~0x08;
+	ui20 sr_n = sr & ~0x08;
 	if (0x0218 != 0x00)
 	{
 		globals->ptr0218 += ~0x00;
 		if (globals->ptr0218 == 0x00)
-			sr_13 |= 0x08;
+			sr_n |= 0x08;
 	}
-	return sr_13;
+	return sr_n;
 }
 
-// 475C: Register ui20 xTaskResumeAll(Register (ptr20 Eq_2) pc, Register ui20 sr, Register out Eq_936 r5Out, Register out Eq_937 r6Out, Register out Eq_938 r7Out, Register out Eq_939 r8Out, Register out Eq_940 r9Out, Register out Eq_941 r10Out, Register out Eq_942 r11Out, Register out Eq_943 r15Out)
-ui20 xTaskResumeAll(Eq_2 * pc, ui20 sr, Eq_936 & r5Out, Eq_937 & r6Out, Eq_938 & r7Out, Eq_939 & r8Out, Eq_940 & r9Out, Eq_941 & r10Out, Eq_942 & r11Out, Eq_943 & r15Out)
+// 475C: Register ui20 xTaskResumeAll(Register (ptr20 Eq_n) pc, Register ui20 sr, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out Eq_n r15Out)
+ui20 xTaskResumeAll(Eq_n * pc, ui20 sr, Eq_n & r5Out, Eq_n & r6Out, Eq_n & r7Out, Eq_n & r8Out, Eq_n & r9Out, Eq_n & r10Out, Eq_n & r11Out, Eq_n & r15Out)
 {
 	*r5Out = r5;
 	*r6Out = r6;
 	*r7Out = r7;
 	++globals->ptr0218;
 	globals->ptr0210 += ~0x00;
-	Eq_1115 r8_123 = 0x00;
-	ui20 sr_127 = sr & ~0x08;
+	Eq_n r8_n = 0x00;
+	ui20 sr_n = sr & ~0x08;
 	if (globals->ptr0210 == 0x00 && 0x0206 != 0x00)
 	{
-		Eq_1130 r9_111 = 0x00;
+		Eq_n r9_n = 0x00;
 		while (true)
 		{
-			Eq_1132 r11_140;
+			Eq_n r11_n;
 			if (646 != 0x00)
-				r11_140 = globals->ptr028A->t0006;
+				r11_n = globals->ptr028A->t0006;
 			else
-				r11_140.u0 = 0x00;
-			if (r11_140 == 0x00)
+				r11_n.u0 = 0x00;
+			if (r11_n == 0x00)
 				break;
-			vListRemove((word16) r11_140.u0 + 0x0012);
-			Eq_793 r10_89 = (word16) r11_140.u0 + 0x08;
-			vListRemove(r10_89);
-			*((word16) r11_140.u0 + 0x08) = 0x00;
-			Eq_654 v14_95 = *((word16) r11_140.u0 + 0x06);
-			if (0x020C >= v14_95)
-				globals->t020C = v14_95;
-			vListInsertEnd(r10_89, v14_95 * 0x10 + 0x0222);
-			if (globals->t0208 >= *((word16) r11_140.u0 + 0x06))
-				r9_111.u1 = 0x01;
+			vListRemove((word16) r11_n.u0 + 0x0012);
+			Eq_n r10_n = (word16) r11_n.u0 + 0x08;
+			vListRemove(r10_n);
+			*((word16) r11_n.u0 + 0x08) = 0x00;
+			Eq_n v14_n = *((word16) r11_n.u0 + 0x06);
+			if (0x020C >= v14_n)
+				globals->t020C = v14_n;
+			vListInsertEnd(r10_n, v14_n * 0x10 + 0x0222);
+			if (globals->t0208 >= *((word16) r11_n.u0 + 0x06))
+				r9_n.u1 = 0x01;
 		}
 		if (0x0212 != 0x00)
 		{
@@ -602,52 +602,52 @@ ui20 xTaskResumeAll(Eq_2 * pc, ui20 sr, Eq_936 & r5Out, Eq_937 & r6Out, Eq_938 &
 					globals->ptr0212 += ~0x00;
 				} while (globals->ptr0212 != 0x00);
 			}
-			r9_111.u1 = 0x01;
+			r9_n.u1 = 0x01;
 		}
-		if (r9_111 == 0x01)
+		if (r9_n == 0x01)
 		{
-			word20 r5_120;
-			word20 r6_121;
-			word20 r7_122;
-			word20 r9_124;
-			word20 r10_125;
-			word20 r11_126;
-			sr_127 = vPortYield(pc, sr_127, out r5_120, out r6_121, out r7_122, out r8_123, out r9_124, out r10_125, out r11_126);
+			word20 r5_n;
+			word20 r6_n;
+			word20 r7_n;
+			word20 r9_n;
+			word20 r10_n;
+			word20 r11_n;
+			sr_n = vPortYield(pc, sr_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n);
 		}
 	}
 	if (0x0218 != 0x00)
 	{
 		globals->ptr0218 += ~0x00;
 		if (globals->ptr0218 == 0x00)
-			sr_127 |= 0x08;
+			sr_n |= 0x08;
 	}
-	word20 r15_45;
-	*r15Out = r8_123;
-	word20 r8_48;
+	word20 r15_n;
+	*r15Out = r8_n;
+	word20 r8_n;
 	*r8Out = r8;
-	word20 r9_51;
+	word20 r9_n;
 	*r9Out = r9;
-	word20 r10_54;
+	word20 r10_n;
 	*r10Out = r10;
-	word20 r11_57;
+	word20 r11_n;
 	*r11Out = r11;
-	return sr_127;
+	return sr_n;
 }
 
-// 481E: Register ui20 xTaskGetTickCount(Register ui20 sr, Register out Eq_51 r15Out)
-ui20 xTaskGetTickCount(ui20 sr, Eq_51 & r15Out)
+// 481E: Register ui20 xTaskGetTickCount(Register ui20 sr, Register out Eq_n r15Out)
+ui20 xTaskGetTickCount(ui20 sr, Eq_n & r15Out)
 {
 	++globals->ptr0218;
-	ui20 sr_11 = sr & ~0x08;
-	word20 r15_8;
+	ui20 sr_n = sr & ~0x08;
+	word20 r15_n;
 	*r15Out = 0x0208;
 	if (globals->ptr0218 != 0x00)
 	{
 		globals->ptr0218 += ~0x00;
 		if (globals->ptr0218 == 0x00)
-			sr_11 |= 0x08;
+			sr_n |= 0x08;
 	}
-	return sr_11;
+	return sr_n;
 }
 
 // 4834: void uxTaskGetNumberOfTasks(Register word20 sr)
@@ -674,140 +674,140 @@ void vTaskIncrementTick()
 		}
 		while (true)
 		{
-			Eq_1295 r11_35;
-			Eq_1296 r15_31 = 0x0282;
-			if (*r15_31 != 0x00)
-				r11_35 = *((word24) *((word24) *((word24) r15_31 + 0x02) + 0x02) + 0x06);
+			Eq_n r11_n;
+			Eq_n r15_n = 0x0282;
+			if (*r15_n != 0x00)
+				r11_n = *((word24) *((word24) *((word24) r15_n + 0x02) + 0x02) + 0x06);
 			else
-				r11_35.u0 = 0x00;
-			if (r11_35 == 0x00 || 0x0208 >= *((word24) r11_35 + 0x08))
+				r11_n.u0 = 0x00;
+			if (r11_n == 0x00 || 0x0208 >= *((word24) r11_n + 0x08))
 				break;
-			Eq_793 r10_43 = (word24) r11_35 + 0x08;
-			vListRemove(r10_43);
-			if (*((word24) r11_35 + 0x001A) != 0x00)
-				vListRemove((word24) r11_35 + 0x0012);
-			*((word24) r11_35 + 0x08) = 0x00;
-			Eq_654 v18_52 = *((word24) r11_35 + 0x06);
-			if (0x020C >= v18_52)
-				globals->t020C = v18_52;
-			vListInsertEnd(r10_43, v18_52 * 0x10 + 0x0222);
+			Eq_n r10_n = (word24) r11_n + 0x08;
+			vListRemove(r10_n);
+			if (*((word24) r11_n + 0x001A) != 0x00)
+				vListRemove((word24) r11_n + 0x0012);
+			*((word24) r11_n + 0x08) = 0x00;
+			Eq_n v18_n = *((word24) r11_n + 0x06);
+			if (0x020C >= v18_n)
+				globals->t020C = v18_n;
+			vListInsertEnd(r10_n, v18_n * 0x10 + 0x0222);
 		}
 	}
 	else
 		++globals->ptr0212;
 }
 
-// 48DA: Register word20 vTaskPlaceOnEventList(Register Eq_914 r15)
-word20 vTaskPlaceOnEventList(Eq_914 r15)
+// 48DA: Register word20 vTaskPlaceOnEventList(Register Eq_n r15)
+word20 vTaskPlaceOnEventList(Eq_n r15)
 {
-	Eq_914 r15_29;
-	struct Eq_915 * r14_28;
-	Eq_654 r11_15 = vListInsert(&globals->ptr0214, r15) + 0x0208;
+	Eq_n r15_n;
+	struct Eq_n * r14_n;
+	Eq_n r11_n = vListInsert(&globals->ptr0214, r15) + 0x0208;
 	vListRemove(522);
-	globals->t020A = r11_15;
-	if (r11_15 >= 0x0208)
+	globals->t020A = r11_n;
+	if (r11_n >= 0x0208)
 	{
-		r14_28 = &globals->t020A;
-		r15_29.u0 = 644;
+		r14_n = &globals->t020A;
+		r15_n.u0 = 644;
 	}
 	else
 	{
-		r14_28 = &globals->t020A;
-		r15_29.u0 = 0x0282;
+		r14_n = &globals->t020A;
+		r15_n.u0 = 0x0282;
 	}
-	vListInsert(r14_28, r15_29);
+	vListInsert(r14_n, r15_n);
 	return r11;
 }
 
-// 4930: Register word20 xTaskRemoveFromEventList(Register (ptr20 Eq_1382) r15, Register out Eq_1383 r11Out, Register out Eq_1384 r15Out)
-word20 xTaskRemoveFromEventList(Eq_1382 * r15, Eq_1383 & r11Out, Eq_1384 & r15Out)
+// 4930: Register word20 xTaskRemoveFromEventList(Register (ptr20 Eq_n) r15, Register out Eq_n r11Out, Register out Eq_n r15Out)
+word20 xTaskRemoveFromEventList(Eq_n * r15, Eq_n & r11Out, Eq_n & r15Out)
 {
-	Eq_1385 r10_13;
+	Eq_n r10_n;
 	if (r15->w0000 != 0x00)
-		r10_13 = r15->ptr0002->ptr0002->t0006;
+		r10_n = r15->ptr0002->ptr0002->t0006;
 	else
-		r10_13.u0 = 0x00;
-	Eq_794 r15_21;
-	Eq_793 r14_20;
-	vListRemove((word16) r10_13.u0 + 0x0012);
+		r10_n.u0 = 0x00;
+	Eq_n r15_n;
+	Eq_n r14_n;
+	vListRemove((word16) r10_n.u0 + 0x0012);
 	if (0x0210 == 0x00)
 	{
-		vListRemove((word16) r10_13.u0 + 0x08);
-		*((word16) r10_13.u0 + 0x08) = 0x00;
-		Eq_654 v13_45 = *((word16) r10_13.u0 + 0x06);
-		if (0x020C >= v13_45)
-			globals->t020C = v13_45;
-		r15_21 = v13_45 * 0x10 + 0x0222;
-		r14_20 = (word16) r10_13.u0 + 0x08;
+		vListRemove((word16) r10_n.u0 + 0x08);
+		*((word16) r10_n.u0 + 0x08) = 0x00;
+		Eq_n v13_n = *((word16) r10_n.u0 + 0x06);
+		if (0x020C >= v13_n)
+			globals->t020C = v13_n;
+		r15_n = v13_n * 0x10 + 0x0222;
+		r14_n = (word16) r10_n.u0 + 0x08;
 	}
 	else
 	{
-		r14_20 = (word16) r10_13.u0 + 0x0012;
-		r15_21.u0 = 646;
+		r14_n = (word16) r10_n.u0 + 0x0012;
+		r15_n.u0 = 646;
 	}
-	vListInsertEnd(r14_20, r15_21);
-	if (globals->t0208 >= *((word16) r10_13.u0 + 0x06))
+	vListInsertEnd(r14_n, r15_n);
+	if (globals->t0208 >= *((word16) r10_n.u0 + 0x06))
 	{
-		word20 r15_37;
+		word20 r15_n;
 		*r15Out = 0x01;
 	}
 	else
 	{
-		word20 r15_38;
+		word20 r15_n;
 		*r15Out = 0x00;
 	}
-	word20 r11_34;
+	word20 r11_n;
 	*r11Out = r11;
 	return r10;
 }
 
-// 49AC: void prvIdleTask(Register (ptr20 Eq_2) pc, Register ui20 sr)
-void prvIdleTask(Eq_2 * pc, ui20 sr)
+// 49AC: void prvIdleTask(Register (ptr20 Eq_n) pc, Register ui20 sr)
+void prvIdleTask(Eq_n * pc, ui20 sr)
 {
 	while (true)
 	{
 		sr = prvCheckTasksWaitingTermination(pc, sr);
 		if (0x0222 < 0x02)
 		{
-			word20 r5_22;
-			word20 r6_23;
-			word20 r7_24;
-			word20 r8_25;
-			word20 r9_26;
-			word20 r10_27;
-			word20 r11_28;
-			sr = vPortYield(pc, sr, out r5_22, out r6_23, out r7_24, out r8_25, out r9_26, out r10_27, out r11_28);
+			word20 r5_n;
+			word20 r6_n;
+			word20 r7_n;
+			word20 r8_n;
+			word20 r9_n;
+			word20 r10_n;
+			word20 r11_n;
+			sr = vPortYield(pc, sr, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n);
 		}
 	}
 }
 
-// 49BE: Register word20 prvInitialiseTCBVariables(Register Eq_654 r12, Register (ptr20 byte) r13, Register Eq_656 r14, Register Eq_657 r15)
-word20 prvInitialiseTCBVariables(Eq_654 r12, byte * r13, Eq_656 r14, Eq_657 r15)
+// 49BE: Register word20 prvInitialiseTCBVariables(Register Eq_n r12, Register (ptr20 byte) r13, Register Eq_n r14, Register Eq_n r15)
+word20 prvInitialiseTCBVariables(Eq_n r12, byte * r13, Eq_n r14, Eq_n r15)
 {
 	*((word24) r15 + 0x0024) = r14;
-	Eq_1480 r11_24 = strncpy(0x08, r13, (word24) r15 + 0x001C);
-	*((word24) r11_24 + 0x0023) = 0x00;
-	Eq_654 r10_15 = r12;
+	Eq_n r11_n = strncpy(0x08, r13, (word24) r15 + 0x001C);
+	*((word24) r11_n + 0x0023) = 0x00;
+	Eq_n r10_n = r12;
 	if (r12 < 0x04)
-		r10_15.u0 = 0x03;
-	*((word24) r11_24 + 0x06) = r10_15;
-	vListInitialiseItem((word24) r11_24 + 0x08);
-	vListInitialiseItem((word24) r11_24 + 0x0012);
-	*((word24) r11_24 + 0x0E) = r11_24;
-	((word24) r11_24 + 0x0012)->u0 = 0x04 - r10_15;
-	*((word24) r11_24 + 0x0018) = r11_24;
+		r10_n.u0 = 0x03;
+	*((word24) r11_n + 0x06) = r10_n;
+	vListInitialiseItem((word24) r11_n + 0x08);
+	vListInitialiseItem((word24) r11_n + 0x0012);
+	*((word24) r11_n + 0x0E) = r11_n;
+	((word24) r11_n + 0x0012)->u0 = 0x04 - r10_n;
+	*((word24) r11_n + 0x0018) = r11_n;
 	return r11;
 }
 
 // 4A12: Register word20 prvInitialiseTaskLists()
 word20 prvInitialiseTaskLists()
 {
-	Eq_1523 r11_15 = 0x00;
+	Eq_n r11_n = 0x00;
 	do
 	{
-		Eq_1525 r11_14 = vListInitialise(r11_15 * 0x10 + 0x0222);
-		r11_15 = (word24) r11_14 + 0x01;
-	} while (r11_14 >= ~0x02);
+		Eq_n r11_n = vListInitialise(r11_n * 0x10 + 0x0222);
+		r11_n = (word24) r11_n + 0x01;
+	} while (r11_n >= ~0x02);
 	vListInitialise(0x0262);
 	vListInitialise(0x0272);
 	vListInitialise(646);
@@ -817,31 +817,31 @@ word20 prvInitialiseTaskLists()
 	return r11;
 }
 
-// 4A5E: Register ui20 prvCheckTasksWaitingTermination(Register (ptr20 Eq_2) pc, Register ui20 sr)
-ui20 prvCheckTasksWaitingTermination(Eq_2 * pc, ui20 sr)
+// 4A5E: Register ui20 prvCheckTasksWaitingTermination(Register (ptr20 Eq_n) pc, Register ui20 sr)
+ui20 prvCheckTasksWaitingTermination(Eq_n * pc, ui20 sr)
 {
 	if (0x0204 != 0x00)
 	{
-		ui20 sr_28 = vTaskSuspendAll(sr);
-		word20 r5_33;
-		word20 r6_34;
-		word20 r7_35;
-		word20 r8_36;
-		word20 r9_37;
-		word20 r10_38;
-		Eq_1571 r11_39;
-		word20 r15_40;
-		sr = xTaskResumeAll(pc, sr_28, out r5_33, out r6_34, out r7_35, out r8_36, out r9_37, out r10_38, out r11_39, out r15_40);
-		if (r11_39 == 0x00)
+		ui20 sr_n = vTaskSuspendAll(sr);
+		word20 r5_n;
+		word20 r6_n;
+		word20 r7_n;
+		word20 r8_n;
+		word20 r9_n;
+		word20 r10_n;
+		Eq_n r11_n;
+		word20 r15_n;
+		sr = xTaskResumeAll(pc, sr_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r15_n);
+		if (r11_n == 0x00)
 		{
-			Eq_1585 r11_50;
+			Eq_n r11_n;
 			++globals->ptr0218;
 			sr &= ~0x08;
 			if (662 != 0x00)
-				r11_50 = globals->ptr029A->t0006;
+				r11_n = globals->ptr029A->t0006;
 			else
-				r11_50.u1 = 0x00;
-			vListRemove((word16) r11_50.u1 + 0x08);
+				r11_n.u1 = 0x00;
+			vListRemove((word16) r11_n.u1 + 0x08);
 			globals->ptr0206 += ~0x00;
 			globals->ptr0204 += ~0x00;
 			if (0x0218 != 0x00)
@@ -850,57 +850,57 @@ ui20 prvCheckTasksWaitingTermination(Eq_2 * pc, ui20 sr)
 				if (globals->ptr0218 == 0x00)
 					sr |= 0x08;
 			}
-			prvDeleteTCB(r11_50);
+			prvDeleteTCB(r11_n);
 		}
 	}
 	return sr;
 }
 
-// 4AC2: Register ui20 prvAllocateTCBAndStack(Register (ptr20 Eq_2) pc, Register ui20 sr, Register out Eq_663 r5Out, Register out Eq_664 r6Out, Register out Eq_665 r7Out, Register out Eq_666 r8Out, Register out Eq_667 r9Out, Register out Eq_668 r10Out, Register out Eq_669 r15Out)
-ui20 prvAllocateTCBAndStack(Eq_2 * pc, ui20 sr, Eq_663 & r5Out, Eq_664 & r6Out, Eq_665 & r7Out, Eq_666 & r8Out, Eq_667 & r9Out, Eq_668 & r10Out, Eq_669 & r15Out)
+// 4AC2: Register ui20 prvAllocateTCBAndStack(Register (ptr20 Eq_n) pc, Register ui20 sr, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r15Out)
+ui20 prvAllocateTCBAndStack(Eq_n * pc, ui20 sr, Eq_n & r5Out, Eq_n & r6Out, Eq_n & r7Out, Eq_n & r8Out, Eq_n & r9Out, Eq_n & r10Out, Eq_n & r15Out)
 {
-	word20 r5_13;
-	word20 r6_14;
-	word20 r7_15;
-	word20 r8_16;
-	word20 r9_17;
-	ui20 r10_18;
-	word20 r11_19;
-	Eq_1641 r15_20;
-	ui20 sr_21 = pvPortMalloc(pc, sr, 0x26, out r5_13, out r6_14, out r7_15, out r8_16, out r9_17, out r10_18, out r11_19, out r15_20);
-	Eq_1641 r11_22 = r15_20;
-	if (r15_20 != 0x00)
+	word20 r5_n;
+	word20 r6_n;
+	word20 r7_n;
+	word20 r8_n;
+	word20 r9_n;
+	ui20 r10_n;
+	word20 r11_n;
+	Eq_n r15_n;
+	ui20 sr_n = pvPortMalloc(pc, sr, 0x26, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r15_n);
+	Eq_n r11_n = r15_n;
+	if (r15_n != 0x00)
 	{
-		word20 r5_55;
-		word20 r6_56;
-		word20 r7_57;
-		word20 r8_58;
-		word20 r9_59;
-		Eq_1679 r10_60;
-		struct Eq_1680 * r11_61;
-		Eq_1681 r15_62;
-		sr_21 = pvPortMalloc(pc, sr_21, r10_18 * 0x02, out r5_55, out r6_56, out r7_57, out r8_58, out r9_59, out r10_60, out r11_61, out r15_62);
-		r11_61->t0002 = r15_62;
-		if (r15_62 == 0x00)
+		word20 r5_n;
+		word20 r6_n;
+		word20 r7_n;
+		word20 r8_n;
+		word20 r9_n;
+		Eq_n r10_n;
+		struct Eq_n * r11_n;
+		Eq_n r15_n;
+		sr_n = pvPortMalloc(pc, sr_n, r10_n * 0x02, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r15_n);
+		r11_n->t0002 = r15_n;
+		if (r15_n == 0x00)
 		{
 			vPortFree();
-			r11_22.u1 = 0x00;
+			r11_n.u1 = 0x00;
 		}
 		else
 		{
-			word20 r9_74;
-			sr_21 = memset(sr_21, r10_60, 0xA5, r15_62, out r9_74, out r11_22);
+			word20 r9_n;
+			sr_n = memset(sr_n, r10_n, 0xA5, r15_n, out r9_n, out r11_n);
 		}
 	}
-	word20 r15_38;
-	*r15Out = r11_22;
-	word20 r10_41;
+	word20 r15_n;
+	*r15Out = r11_n;
+	word20 r10_n;
 	*r10Out = r10;
-	return sr_21;
+	return sr_n;
 }
 
-// 4B02: void prvDeleteTCB(Register Eq_1585 r15)
-void prvDeleteTCB(Eq_1585 r15)
+// 4B02: void prvDeleteTCB(Register Eq_n r15)
+void prvDeleteTCB(Eq_n r15)
 {
 	vPortFree();
 	vPortFree();
@@ -913,16 +913,16 @@ void vTaskSwitchContext()
 	{
 		while (globals->a0222[0x020C] == 0x00)
 			globals->t020C = (word24) globals->t020C + 0x0000FFFF;
-		Eq_1730 r13_21 = 0x0222;
-		(word24) r13_21 + 0x020C * 0x10 + 0x04 = (ui20) ((word24) r13_21 + 0x020C * 0x10 + 0x04 + 0x02);
-		if ((word24) r13_21 + 0x020C * 0x10 + 0x04 == ((word24) r13_21 + 0x020C * 0x10) + 0x02)
+		Eq_n r13_n = 0x0222;
+		(word24) r13_n + 0x020C * 0x10 + 0x04 = (ui20) ((word24) r13_n + 0x020C * 0x10 + 0x04 + 0x02);
+		if ((word24) r13_n + 0x020C * 0x10 + 0x04 == ((word24) r13_n + 0x020C * 0x10) + 0x02)
 			globals->a0226[0x020C] = *((word128) globals->a0226[0x020C] + 0x02);
 		globals->t0202 = globals->a0226[0x020C].ptr0004->w0002;
 	}
 }
 
-// 4BD4: Register word20 vListInitialise(Register Eq_1528 r15)
-word20 vListInitialise(Eq_1528 r15)
+// 4BD4: Register word20 vListInitialise(Register Eq_n r15)
+word20 vListInitialise(Eq_n r15)
 {
 	*((word24) r15 + 0x02) = (word24) r15 + 0x06;
 	*((word24) r15 + 0x04) = (word24) r15 + 0x06;
@@ -935,410 +935,410 @@ word20 vListInitialise(Eq_1528 r15)
 	return r11;
 }
 
-// 4C00: void vListInitialiseItem(Register (ptr20 Eq_1502) r15)
-void vListInitialiseItem(Eq_1502 * r15)
+// 4C00: void vListInitialiseItem(Register (ptr20 Eq_n) r15)
+void vListInitialiseItem(Eq_n * r15)
 {
 	r15->w0008 = 0x00;
 }
 
-// 4C06: void vListInsertEnd(Register Eq_793 r14, Register Eq_794 r15)
-void vListInsertEnd(Eq_793 r14, Eq_794 r15)
+// 4C06: void vListInsertEnd(Register Eq_n r14, Register Eq_n r15)
+void vListInsertEnd(Eq_n r14, Eq_n r15)
 {
-	Eq_793 v5_5 = *((word24) r15 + 0x04);
-	*((word24) r14 + 0x02) = *((word24) v5_5 + 0x02);
+	Eq_n v5_n = *((word24) r15 + 0x04);
+	*((word24) r14 + 0x02) = *((word24) v5_n + 0x02);
 	*((word24) r14 + 0x04) = *((word24) r15 + 0x04);
-	*((word24) *((word24) v5_5 + 0x02) + 0x04) = r14;
-	*((word24) v5_5 + 0x02) = r14;
+	*((word24) *((word24) v5_n + 0x02) + 0x04) = r14;
+	*((word24) v5_n + 0x02) = r14;
 	*((word24) r15 + 0x04) = r14;
 	*((word24) r14 + 0x08) = r15;
 	*r15 = (word24) *r15 + 0x01;
 }
 
-// 4C32: Register word20 vListInsert(Register (ptr24 Eq_915) r14, Register Eq_914 r15)
-word20 vListInsert(Eq_915 * r14, Eq_914 r15)
+// 4C32: Register word20 vListInsert(Register (ptr24 Eq_n) r14, Register Eq_n r15)
+word20 vListInsert(Eq_n * r14, Eq_n r15)
 {
-	struct Eq_915 * r13_13;
-	cup16 v6_9 = r14->w0000;
-	if (v6_9 != ~0x00)
+	struct Eq_n * r13_n;
+	cup16 v6_n = r14->w0000;
+	if (v6_n != ~0x00)
 	{
-		struct Eq_915 * v10_40 = *((word24) r15 + 0x02);
-		r13_13 = v10_40;
-		if (v6_9 < *v10_40->t0002)
+		struct Eq_n * v10_n = *((word24) r15 + 0x02);
+		r13_n = v10_n;
+		if (v6_n < *v10_n->t0002)
 		{
 			do
 			{
-				struct Eq_915 * v15_49 = r13_13->t0002;
-				r13_13 = v15_49;
-			} while (v6_9 < *v15_49->t0002);
+				struct Eq_n * v15_n = r13_n->t0002;
+				r13_n = v15_n;
+			} while (v6_n < *v15_n->t0002);
 		}
 	}
 	else
 	{
-		struct Eq_915 * v18_57 = *((word24) r15 + 0x02);
-		r13_13 = v18_57;
-		if (*v18_57->t0002 >= ~0x00)
+		struct Eq_n * v18_n = *((word24) r15 + 0x02);
+		r13_n = v18_n;
+		if (*v18_n->t0002 >= ~0x00)
 		{
 			do
 			{
-				struct Eq_915 * v21_65 = r13_13->t0002;
-				r13_13 = v21_65;
-			} while (*v21_65->t0002 >= v6_9);
+				struct Eq_n * v21_n = r13_n->t0002;
+				r13_n = v21_n;
+			} while (*v21_n->t0002 >= v6_n);
 		}
 	}
-	r14->t0002 = r13_13->t0002;
+	r14->t0002 = r13_n->t0002;
 	*((word24) r14->t0002 + 0x04) = r14;
-	r14->ptr0004 = r13_13;
-	r13_13->t0002 = r14;
+	r14->ptr0004 = r13_n;
+	r13_n->t0002 = r14;
 	r14->t0008 = r15;
 	*r15 = (word24) *r15 + 0x01;
 	return r11;
 }
 
-// 4C98: void vListRemove(Register Eq_793 r15)
-void vListRemove(Eq_793 r15)
+// 4C98: void vListRemove(Register Eq_n r15)
+void vListRemove(Eq_n r15)
 {
-	Eq_793 v5_5 = *((word24) r15 + 0x02);
-	*((word24) v5_5 + 0x04) = *((word24) r15 + 0x04);
-	Eq_793 v8_11 = *((word24) r15 + 0x04);
-	*((word24) v8_11 + 0x02) = v5_5;
-	Eq_794 v11_16 = *((word24) r15 + 0x08);
-	if (*((word24) v11_16 + 0x04) == r15)
-		*((word24) v11_16 + 0x04) = v8_11;
+	Eq_n v5_n = *((word24) r15 + 0x02);
+	*((word24) v5_n + 0x04) = *((word24) r15 + 0x04);
+	Eq_n v8_n = *((word24) r15 + 0x04);
+	*((word24) v8_n + 0x02) = v5_n;
+	Eq_n v11_n = *((word24) r15 + 0x08);
+	if (*((word24) v11_n + 0x04) == r15)
+		*((word24) v11_n + 0x04) = v8_n;
 	((word24) r15 + 0x08)->u0 = 0x00;
-	*v11_16 = (word24) *v11_16 + 0x0000FFFF;
+	*v11_n = (word24) *v11_n + 0x0000FFFF;
 }
 
-// 4CC4: Register ui20 xQueueCreate(Register (ptr20 Eq_2) pc, Register ui20 sr, Register Eq_326 r15, Register out Eq_349 r6Out, Register out Eq_350 r7Out, Register out Eq_351 r8Out, Register out Eq_352 r9Out, Register out Eq_353 r10Out, Register out Eq_354 r11Out, Register out Eq_355 r15Out)
-ui20 xQueueCreate(Eq_2 * pc, ui20 sr, Eq_326 r15, Eq_349 & r6Out, Eq_350 & r7Out, Eq_351 & r8Out, Eq_352 & r9Out, Eq_353 & r10Out, Eq_354 & r11Out, Eq_355 & r15Out)
+// 4CC4: Register ui20 xQueueCreate(Register (ptr20 Eq_n) pc, Register ui20 sr, Register Eq_n r15, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out Eq_n r15Out)
+ui20 xQueueCreate(Eq_n * pc, ui20 sr, Eq_n r15, Eq_n & r6Out, Eq_n & r7Out, Eq_n & r8Out, Eq_n & r9Out, Eq_n & r10Out, Eq_n & r11Out, Eq_n & r15Out)
 {
 	*r6Out = r6;
 	*r7Out = r7;
 	*r8Out = r8;
 	if (r15 != 0x00)
 	{
-		word20 r5_51;
-		word20 r6_52;
-		word20 r7_53;
-		word20 r8_54;
-		word20 r9_55;
-		word20 r10_56;
-		word20 r11_57;
-		Eq_2012 r15_58;
-		sr = pvPortMalloc(pc, sr, 0x32, out r5_51, out r6_52, out r7_53, out r8_54, out r9_55, out r10_56, out r11_57, out r15_58);
-		if (r15_58 != 0x00)
+		word20 r5_n;
+		word20 r6_n;
+		word20 r7_n;
+		word20 r8_n;
+		word20 r9_n;
+		word20 r10_n;
+		word20 r11_n;
+		Eq_n r15_n;
+		sr = pvPortMalloc(pc, sr, 0x32, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r15_n);
+		if (r15_n != 0x00)
 			;
 	}
-	word20 r15_32;
+	word20 r15_n;
 	*r15Out = 0x00;
-	word20 r9_35;
+	word20 r9_n;
 	*r9Out = r9;
-	word20 r10_38;
+	word20 r10_n;
 	*r10Out = r10;
-	word20 r11_41;
+	word20 r11_n;
 	*r11Out = r11;
 	return sr;
 }
 
-// 4D7E: Register ui20 xQueueSend(Register (ptr20 Eq_2) pc, Register ui20 sr, Register Eq_492 r13, Register Eq_467 r14, Register Eq_518 r15, Register out Eq_552 r15Out)
-ui20 xQueueSend(Eq_2 * pc, ui20 sr, Eq_492 r13, Eq_467 r14, Eq_518 r15, Eq_552 & r15Out)
+// 4D7E: Register ui20 xQueueSend(Register (ptr20 Eq_n) pc, Register ui20 sr, Register Eq_n r13, Register Eq_n r14, Register Eq_n r15, Register out Eq_n r15Out)
+ui20 xQueueSend(Eq_n * pc, ui20 sr, Eq_n r13, Eq_n r14, Eq_n r15, Eq_n & r15Out)
 {
-	ui20 sr_19 = vTaskSuspendAll(sr) & ~0x08;
+	ui20 sr_n = vTaskSuspendAll(sr) & ~0x08;
 	++globals->ptr0218;
 	*((word24) r15 + 0x002E) = (word24) *((word24) r15 + 0x002E) + 0x01;
 	*((word24) r15 + 0x0030) = (word24) *((word24) r15 + 0x0030) + 0x01;
-	Eq_518 r11_12 = r15;
-	Eq_467 r9_14 = r14;
+	Eq_n r11_n = r15;
+	Eq_n r9_n = r14;
 	if (0x0218 != 0x00)
 	{
 		globals->ptr0218 += ~0x00;
 		if (globals->ptr0218 == 0x00)
-			sr_19 |= 0x08;
+			sr_n |= 0x08;
 	}
-	Eq_2070 r15_33;
-	ui20 sr_190 = prvIsQueueFull(sr_19, r15, out r15_33);
-	if (r15_33 != 0x00 && r13 != 0x00)
+	Eq_n r15_n;
+	ui20 sr_n = prvIsQueueFull(sr_n, r15, out r15_n);
+	if (r15_n != 0x00 && r13 != 0x00)
 	{
-		Eq_518 r11_163 = vTaskPlaceOnEventList((word24) r15 + 0x08);
+		Eq_n r11_n = vTaskPlaceOnEventList((word24) r15 + 0x08);
 		++globals->ptr0218;
-		word20 r15_168;
-		word20 r5_170;
-		word20 r6_171;
-		word20 r7_172;
-		word20 r8_173;
-		word20 r10_175;
-		Eq_2126 r15_177;
-		ui20 sr_178 = xTaskResumeAll(pc, prvUnlockQueue(sr_190 & ~0x08, r11_163, out r15_168), out r5_170, out r6_171, out r7_172, out r8_173, out r9_14, out r10_175, out r11_12, out r15_177);
-		if (r15_177 == 0x00)
+		word20 r15_n;
+		word20 r5_n;
+		word20 r6_n;
+		word20 r7_n;
+		word20 r8_n;
+		word20 r10_n;
+		Eq_n r15_n;
+		ui20 sr_n = xTaskResumeAll(pc, prvUnlockQueue(sr_n & ~0x08, r11_n, out r15_n), out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r15_n);
+		if (r15_n == 0x00)
 		{
-			word20 r5_212;
-			word20 r6_213;
-			word20 r7_214;
-			word20 r8_215;
-			word20 r10_217;
-			sr_178 = vPortYield(pc, sr_178, out r5_212, out r6_213, out r7_214, out r8_215, out r9_14, out r10_217, out r11_12);
+			word20 r5_n;
+			word20 r6_n;
+			word20 r7_n;
+			word20 r8_n;
+			word20 r10_n;
+			sr_n = vPortYield(pc, sr_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n);
 		}
-		sr_190 = vTaskSuspendAll(sr_178) & ~0x08;
+		sr_n = vTaskSuspendAll(sr_n) & ~0x08;
 		++globals->ptr0218;
-		*((word24) r11_12 + 0x002E) = (word24) *((word24) r11_12 + 0x002E) + 0x01;
-		*((word24) r11_12 + 0x0030) = (word24) *((word24) r11_12 + 0x0030) + 0x01;
+		*((word24) r11_n + 0x002E) = (word24) *((word24) r11_n + 0x002E) + 0x01;
+		*((word24) r11_n + 0x0030) = (word24) *((word24) r11_n + 0x0030) + 0x01;
 		if (0x0218 != 0x00)
 		{
 			globals->ptr0218 += ~0x00;
 			if (globals->ptr0218 == 0x00)
-				sr_190 |= 0x08;
+				sr_n |= 0x08;
 		}
 		if (0x0218 != 0x00)
 		{
 			globals->ptr0218 += ~0x00;
 			if (globals->ptr0218 == 0x00)
-				sr_190 |= 0x08;
+				sr_n |= 0x08;
 		}
 	}
 	++globals->ptr0218;
-	ui20 sr_125 = sr_190 & ~0x08;
-	if (*((word24) r11_12 + 0x0028) >= *((word24) r11_12 + 0x002A))
+	ui20 sr_n = sr_n & ~0x08;
+	if (*((word24) r11_n + 0x0028) >= *((word24) r11_n + 0x002A))
 	{
-		word20 r10_132;
-		sr_125 = memcpy(sr_125, *((word24) r11_12 + 44), r9_14, *((word24) r11_12 + 0x04), out r10_132, out r11_12);
-		*((word24) r11_12 + 0x0028) = (word24) *((word24) r11_12 + 0x0028) + 0x01;
-		word20 r15_141 = Mem137[r11_12 + 0x04:word16] + Mem137[r11_12 + 44:word16];
-		*((word24) r11_12 + 0x04) = r15_141;
-		if (r15_141 < *((word24) r11_12 + 0x02))
-			*((word24) r11_12 + 0x04) = *r11_12;
-		*((word24) r11_12 + 0x0030) = (word24) *((word24) r11_12 + 0x0030) + 0x01;
+		word20 r10_n;
+		sr_n = memcpy(sr_n, *((word24) r11_n + 44), r9_n, *((word24) r11_n + 0x04), out r10_n, out r11_n);
+		*((word24) r11_n + 0x0028) = (word24) *((word24) r11_n + 0x0028) + 0x01;
+		word20 r15_n = Mem137[r11_n + 0x04:word16] + Mem137[r11_n + 44:word16];
+		*((word24) r11_n + 0x04) = r15_n;
+		if (r15_n < *((word24) r11_n + 0x02))
+			*((word24) r11_n + 0x04) = *r11_n;
+		*((word24) r11_n + 0x0030) = (word24) *((word24) r11_n + 0x0030) + 0x01;
 	}
 	if (0x0218 != 0x00)
 	{
 		globals->ptr0218 += ~0x00;
 		if (globals->ptr0218 == 0x00)
-			sr_125 |= 0x08;
+			sr_n |= 0x08;
 	}
-	word20 r10_110;
-	ui20 sr_102;
-	Eq_2193 r15_70;
-	ui20 sr_71 = prvUnlockQueue(sr_125, r11_12, out r15_70);
-	if (r15_70 != 0x00)
+	word20 r10_n;
+	ui20 sr_n;
+	Eq_n r15_n;
+	ui20 sr_n = prvUnlockQueue(sr_n, r11_n, out r15_n);
+	if (r15_n != 0x00)
 	{
-		word20 r5_94;
-		word20 r6_95;
-		word20 r7_96;
-		word20 r8_97;
-		word20 r9_98;
-		word20 r11_100;
-		Eq_2233 r15_101;
-		sr_102 = xTaskResumeAll(pc, sr_71, out r5_94, out r6_95, out r7_96, out r8_97, out r9_98, out r10_110, out r11_100, out r15_101);
-		if (r15_101 == 0x00)
+		word20 r5_n;
+		word20 r6_n;
+		word20 r7_n;
+		word20 r8_n;
+		word20 r9_n;
+		word20 r11_n;
+		Eq_n r15_n;
+		sr_n = xTaskResumeAll(pc, sr_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r15_n);
+		if (r15_n == 0x00)
 		{
-			word20 r5_105;
-			word20 r6_106;
-			word20 r7_107;
-			word20 r8_108;
-			word20 r9_109;
-			word20 r11_111;
-			sr_102 = vPortYield(pc, sr_102, out r5_105, out r6_106, out r7_107, out r8_108, out r9_109, out r10_110, out r11_111);
+			word20 r5_n;
+			word20 r6_n;
+			word20 r7_n;
+			word20 r8_n;
+			word20 r9_n;
+			word20 r11_n;
+			sr_n = vPortYield(pc, sr_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n);
 		}
 	}
 	else
 	{
-		word20 r5_113;
-		word20 r6_114;
-		word20 r7_115;
-		word20 r8_116;
-		word20 r9_117;
-		word20 r11_119;
-		word20 r15_120;
-		sr_102 = xTaskResumeAll(pc, sr_71, out r5_113, out r6_114, out r7_115, out r8_116, out r9_117, out r10_110, out r11_119, out r15_120);
+		word20 r5_n;
+		word20 r6_n;
+		word20 r7_n;
+		word20 r8_n;
+		word20 r9_n;
+		word20 r11_n;
+		word20 r15_n;
+		sr_n = xTaskResumeAll(pc, sr_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r15_n);
 	}
-	word20 r15_82;
-	*r15Out = r10_110;
-	return sr_102;
+	word20 r15_n;
+	*r15Out = r10_n;
+	return sr_n;
 }
 
-// 4E84: Register ui20 xQueueSendFromISR(Register ui20 sr, Register Eq_467 r14, Register Eq_595 r15, Register out Eq_596 r15Out)
-ui20 xQueueSendFromISR(ui20 sr, Eq_467 r14, Eq_595 r15, Eq_596 & r15Out)
+// 4E84: Register ui20 xQueueSendFromISR(Register ui20 sr, Register Eq_n r14, Register Eq_n r15, Register out Eq_n r15Out)
+ui20 xQueueSendFromISR(ui20 sr, Eq_n r14, Eq_n r15, Eq_n & r15Out)
 {
-	Eq_2346 r13_23;
-	Eq_2346 r10_11 = r13;
+	Eq_n r13_n;
+	Eq_n r10_n = r13;
 	if (*((word24) r15 + 0x0028) >= *((word24) r15 + 0x002A))
 	{
-		struct Eq_2356 * r11_46;
-		sr = memcpy(sr, *((word24) r15 + 44), r14, *((word24) r15 + 0x04), out r10_11, out r11_46);
-		++r11_46->w0028;
-		Eq_2375 r15_54 = (word24) r11_46->t0004 + r11_46->w002C;
-		r11_46->t0004 = r15_54;
-		if (r15_54 < r11_46->t0002)
-			r11_46->t0004 = r11_46->t0000;
-		word16 v22_61 = r11_46->w0030;
-		if (v22_61 != ~0x00)
-			r11_46->w0030 = v22_61 + 0x01;
-		else if (r10_11 == 0x00 && r11_46->w0018 != 0x00)
+		struct Eq_n * r11_n;
+		sr = memcpy(sr, *((word24) r15 + 44), r14, *((word24) r15 + 0x04), out r10_n, out r11_n);
+		++r11_n->w0028;
+		Eq_n r15_n = (word24) r11_n->t0004 + r11_n->w002C;
+		r11_n->t0004 = r15_n;
+		if (r15_n < r11_n->t0002)
+			r11_n->t0004 = r11_n->t0000;
+		word16 v22_n = r11_n->w0030;
+		if (v22_n != ~0x00)
+			r11_n->w0030 = v22_n + 0x01;
+		else if (r10_n == 0x00 && r11_n->w0018 != 0x00)
 		{
-			word20 r11_78;
-			Eq_2417 r15_79;
-			r10_11 = xTaskRemoveFromEventList(&r11_46->w0018, out r11_78, out r15_79);
-			if (r15_79 != 0x00)
+			word20 r11_n;
+			Eq_n r15_n;
+			r10_n = xTaskRemoveFromEventList(&r11_n->w0018, out r11_n, out r15_n);
+			if (r15_n != 0x00)
 			{
-				r13_23.u0 = 0x01;
+				r13_n.u0 = 0x01;
 l4EE8:
-				word20 r15_24;
-				*r15Out = r13_23;
+				word20 r15_n;
+				*r15Out = r13_n;
 				return sr;
 			}
 		}
 	}
-	r13_23 = r10_11;
+	r13_n = r10_n;
 	goto l4EE8;
 }
 
-// 4EF0: Register ui20 xQueueReceive(Register (ptr20 Eq_2) pc, Register ui20 sr, Register Eq_466 r13, Register Eq_467 r14, Register Eq_518 r15, Register out Eq_519 r15Out)
-ui20 xQueueReceive(Eq_2 * pc, ui20 sr, Eq_466 r13, Eq_467 r14, Eq_518 r15, Eq_519 & r15Out)
+// 4EF0: Register ui20 xQueueReceive(Register (ptr20 Eq_n) pc, Register ui20 sr, Register Eq_n r13, Register Eq_n r14, Register Eq_n r15, Register out Eq_n r15Out)
+ui20 xQueueReceive(Eq_n * pc, ui20 sr, Eq_n r13, Eq_n r14, Eq_n r15, Eq_n & r15Out)
 {
-	ui20 sr_19 = vTaskSuspendAll(sr) & ~0x08;
+	ui20 sr_n = vTaskSuspendAll(sr) & ~0x08;
 	++globals->ptr0218;
 	*((word24) r15 + 0x002E) = (word24) *((word24) r15 + 0x002E) + 0x01;
 	*((word24) r15 + 0x0030) = (word24) *((word24) r15 + 0x0030) + 0x01;
-	Eq_518 r11_12 = r15;
-	Eq_467 r9_14 = r14;
+	Eq_n r11_n = r15;
+	Eq_n r9_n = r14;
 	if (0x0218 != 0x00)
 	{
 		globals->ptr0218 += ~0x00;
 		if (globals->ptr0218 == 0x00)
-			sr_19 |= 0x08;
+			sr_n |= 0x08;
 	}
-	Eq_2460 r15_33;
-	ui20 sr_190 = prvIsQueueEmpty(sr_19, r15, out r15_33);
-	if (r15_33 != 0x00 && r13 != 0x00)
+	Eq_n r15_n;
+	ui20 sr_n = prvIsQueueEmpty(sr_n, r15, out r15_n);
+	if (r15_n != 0x00 && r13 != 0x00)
 	{
-		Eq_518 r11_163 = vTaskPlaceOnEventList((word24) r15 + 0x0018);
+		Eq_n r11_n = vTaskPlaceOnEventList((word24) r15 + 0x0018);
 		++globals->ptr0218;
-		word20 r15_168;
-		word20 r5_170;
-		word20 r6_171;
-		word20 r7_172;
-		word20 r8_173;
-		word20 r10_175;
-		Eq_2514 r15_177;
-		ui20 sr_178 = xTaskResumeAll(pc, prvUnlockQueue(sr_190 & ~0x08, r11_163, out r15_168), out r5_170, out r6_171, out r7_172, out r8_173, out r9_14, out r10_175, out r11_12, out r15_177);
-		if (r15_177 == 0x00)
+		word20 r15_n;
+		word20 r5_n;
+		word20 r6_n;
+		word20 r7_n;
+		word20 r8_n;
+		word20 r10_n;
+		Eq_n r15_n;
+		ui20 sr_n = xTaskResumeAll(pc, prvUnlockQueue(sr_n & ~0x08, r11_n, out r15_n), out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r15_n);
+		if (r15_n == 0x00)
 		{
-			word20 r5_212;
-			word20 r6_213;
-			word20 r7_214;
-			word20 r8_215;
-			word20 r10_217;
-			sr_178 = vPortYield(pc, sr_178, out r5_212, out r6_213, out r7_214, out r8_215, out r9_14, out r10_217, out r11_12);
+			word20 r5_n;
+			word20 r6_n;
+			word20 r7_n;
+			word20 r8_n;
+			word20 r10_n;
+			sr_n = vPortYield(pc, sr_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n);
 		}
-		sr_190 = vTaskSuspendAll(sr_178) & ~0x08;
+		sr_n = vTaskSuspendAll(sr_n) & ~0x08;
 		++globals->ptr0218;
-		*((word24) r11_12 + 0x002E) = (word24) *((word24) r11_12 + 0x002E) + 0x01;
-		*((word24) r11_12 + 0x0030) = (word24) *((word24) r11_12 + 0x0030) + 0x01;
+		*((word24) r11_n + 0x002E) = (word24) *((word24) r11_n + 0x002E) + 0x01;
+		*((word24) r11_n + 0x0030) = (word24) *((word24) r11_n + 0x0030) + 0x01;
 		if (0x0218 != 0x00)
 		{
 			globals->ptr0218 += ~0x00;
 			if (globals->ptr0218 == 0x00)
-				sr_190 |= 0x08;
+				sr_n |= 0x08;
 		}
 		if (0x0218 != 0x00)
 		{
 			globals->ptr0218 += ~0x00;
 			if (globals->ptr0218 == 0x00)
-				sr_190 |= 0x08;
+				sr_n |= 0x08;
 		}
 	}
 	++globals->ptr0218;
-	ui20 sr_123 = sr_190 & ~0x08;
-	cup16 v14_53 = *((word24) r11_12 + 0x0028);
-	if (v14_53 != 0x00)
+	ui20 sr_n = sr_n & ~0x08;
+	cup16 v14_n = *((word24) r11_n + 0x0028);
+	if (v14_n != 0x00)
 	{
-		Eq_1679 v15_124 = *((word24) r11_12 + 44);
-		word20 r15_128 = Mem51[r11_12 + 0x06:word16] + v15_124;
-		*((word24) r11_12 + 0x06) = r15_128;
-		if (r15_128 < *((word24) r11_12 + 0x02))
-			*((word24) r11_12 + 0x06) = *r11_12;
-		*((word24) r11_12 + 0x0028) = v14_53 + ~0x00;
-		word20 r10_143;
-		sr_123 = memcpy(sr_123, v15_124, *((word24) r11_12 + 0x06), r9_14, out r10_143, out r11_12);
-		*((word24) r11_12 + 0x002E) = (word24) *((word24) r11_12 + 0x002E) + 0x01;
+		Eq_n v15_n = *((word24) r11_n + 44);
+		word20 r15_n = Mem51[r11_n + 0x06:word16] + v15_n;
+		*((word24) r11_n + 0x06) = r15_n;
+		if (r15_n < *((word24) r11_n + 0x02))
+			*((word24) r11_n + 0x06) = *r11_n;
+		*((word24) r11_n + 0x0028) = v14_n + ~0x00;
+		word20 r10_n;
+		sr_n = memcpy(sr_n, v15_n, *((word24) r11_n + 0x06), r9_n, out r10_n, out r11_n);
+		*((word24) r11_n + 0x002E) = (word24) *((word24) r11_n + 0x002E) + 0x01;
 	}
 	if (0x0218 != 0x00)
 	{
 		globals->ptr0218 += ~0x00;
 		if (globals->ptr0218 == 0x00)
-			sr_123 |= 0x08;
+			sr_n |= 0x08;
 	}
-	word20 r10_108;
-	ui20 sr_100;
-	Eq_2579 r15_68;
-	ui20 sr_69 = prvUnlockQueue(sr_123, r11_12, out r15_68);
-	if (r15_68 != 0x00)
+	word20 r10_n;
+	ui20 sr_n;
+	Eq_n r15_n;
+	ui20 sr_n = prvUnlockQueue(sr_n, r11_n, out r15_n);
+	if (r15_n != 0x00)
 	{
-		word20 r5_92;
-		word20 r6_93;
-		word20 r7_94;
-		word20 r8_95;
-		word20 r9_96;
-		word20 r11_98;
-		Eq_2622 r15_99;
-		sr_100 = xTaskResumeAll(pc, sr_69, out r5_92, out r6_93, out r7_94, out r8_95, out r9_96, out r10_108, out r11_98, out r15_99);
-		if (r15_99 == 0x00)
+		word20 r5_n;
+		word20 r6_n;
+		word20 r7_n;
+		word20 r8_n;
+		word20 r9_n;
+		word20 r11_n;
+		Eq_n r15_n;
+		sr_n = xTaskResumeAll(pc, sr_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r15_n);
+		if (r15_n == 0x00)
 		{
-			word20 r5_103;
-			word20 r6_104;
-			word20 r7_105;
-			word20 r8_106;
-			word20 r9_107;
-			word20 r11_109;
-			sr_100 = vPortYield(pc, sr_100, out r5_103, out r6_104, out r7_105, out r8_106, out r9_107, out r10_108, out r11_109);
+			word20 r5_n;
+			word20 r6_n;
+			word20 r7_n;
+			word20 r8_n;
+			word20 r9_n;
+			word20 r11_n;
+			sr_n = vPortYield(pc, sr_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n);
 		}
 	}
 	else
 	{
-		word20 r5_111;
-		word20 r6_112;
-		word20 r7_113;
-		word20 r8_114;
-		word20 r9_115;
-		word20 r11_117;
-		word20 r15_118;
-		sr_100 = xTaskResumeAll(pc, sr_69, out r5_111, out r6_112, out r7_113, out r8_114, out r9_115, out r10_108, out r11_117, out r15_118);
+		word20 r5_n;
+		word20 r6_n;
+		word20 r7_n;
+		word20 r8_n;
+		word20 r9_n;
+		word20 r11_n;
+		word20 r15_n;
+		sr_n = xTaskResumeAll(pc, sr_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r15_n);
 	}
-	word20 r15_80;
-	*r15Out = r10_108;
-	return sr_100;
+	word20 r15_n;
+	*r15Out = r10_n;
+	return sr_n;
 }
 
-// 4FF6: Register Eq_636 xQueueReceiveFromISR(Register ui20 sr, Register Eq_467 r14, Register Eq_636 r15)
-Eq_636 xQueueReceiveFromISR(ui20 sr, Eq_467 r14, Eq_636 r15)
+// 4FF6: Register Eq_n xQueueReceiveFromISR(Register ui20 sr, Register Eq_n r14, Register Eq_n r15)
+Eq_n xQueueReceiveFromISR(ui20 sr, Eq_n r14, Eq_n r15)
 {
-	Eq_636 r15_25;
-	word16 v9_15 = *((word24) r15 + 0x0028);
-	if (v9_15 != 0x00)
+	Eq_n r15_n;
+	word16 v9_n = *((word24) r15 + 0x0028);
+	if (v9_n != 0x00)
 	{
-		Eq_1679 v12_32 = *((word24) r15 + 44);
-		word20 r15_36 = Mem0[r15 + 0x06:word16] + v12_32;
-		*((word24) r15 + 0x06) = r15_36;
-		if (r15_36 < *((word24) r15 + 0x02))
+		Eq_n v12_n = *((word24) r15 + 44);
+		word20 r15_n = Mem0[r15 + 0x06:word16] + v12_n;
+		*((word24) r15 + 0x06) = r15_n;
+		if (r15_n < *((word24) r15 + 0x02))
 			*((word24) r15 + 0x06) = *r15;
-		*((word24) r15 + 0x0028) = v9_15 + ~0x00;
-		word16 * r10_52;
-		struct Eq_2748 * r11_53;
-		memcpy(sr, v12_32, *((word24) r15 + 0x06), r14, out r10_52, out r11_53);
-		word16 v23_55 = r11_53->w002E;
-		if (v23_55 != ~0x00)
-			r11_53->w002E = v23_55 + 0x01;
-		else if (*r10_52 == 0x00 && r11_53->w0008 != 0x00)
+		*((word24) r15 + 0x0028) = v9_n + ~0x00;
+		word16 * r10_n;
+		struct Eq_n * r11_n;
+		memcpy(sr, v12_n, *((word24) r15 + 0x06), r14, out r10_n, out r11_n);
+		word16 v23_n = r11_n->w002E;
+		if (v23_n != ~0x00)
+			r11_n->w002E = v23_n + 0x01;
+		else if (*r10_n == 0x00 && r11_n->w0008 != 0x00)
 		{
-			word20 r11_78;
-			Eq_2785 r15_79;
-			Eq_2346 r10_80 = xTaskRemoveFromEventList(&r11_53->w0008, out r11_78, out r15_79);
-			if (r15_79 != 0x00)
-				r10_80->u0 = 0x01;
+			word20 r11_n;
+			Eq_n r15_n;
+			Eq_n r10_n = xTaskRemoveFromEventList(&r11_n->w0008, out r11_n, out r15_n);
+			if (r15_n != 0x00)
+				r10_n->u0 = 0x01;
 		}
-		r15_25.u0 = 0x01;
+		r15_n.u0 = 0x01;
 	}
 	else
-		r15_25.u0 = 0x00;
-	return r15_25;
+		r15_n.u0 = 0x00;
+	return r15_n;
 }
 
 // 5068: void uxQueueMessagesWaiting(Register word20 sr, Register word20 r15)
@@ -1359,123 +1359,123 @@ void vQueueDelete(word20 r15)
 	vPortFree();
 }
 
-// 5092: Register ui20 prvUnlockQueue(Register ui20 sr, Register Eq_518 r15, Register out Eq_2133 r15Out)
-ui20 prvUnlockQueue(ui20 sr, Eq_518 r15, Eq_2133 & r15Out)
+// 5092: Register ui20 prvUnlockQueue(Register ui20 sr, Register Eq_n r15, Register out Eq_n r15Out)
+ui20 prvUnlockQueue(ui20 sr, Eq_n r15, Eq_n & r15Out)
 {
 	++globals->ptr0218;
-	ci16 v8_16 = *((word24) r15 + 0x0030);
-	*((word24) r15 + 0x0030) = v8_16 + ~0x00;
-	Eq_518 r11_23 = r15;
-	Eq_2346 r10_10 = 0x00;
-	ui20 sr_12 = sr & ~0x08;
-	if (v8_16 >= ~0x00)
+	ci16 v8_n = *((word24) r15 + 0x0030);
+	*((word24) r15 + 0x0030) = v8_n + ~0x00;
+	Eq_n r11_n = r15;
+	Eq_n r10_n = 0x00;
+	ui20 sr_n = sr & ~0x08;
+	if (v8_n >= ~0x00)
 	{
 		*((word24) r15 + 0x0030) = ~0x00;
 		if (*((word24) r15 + 0x0018) != 0x00)
 		{
-			Eq_2857 r15_84;
-			r10_10 = xTaskRemoveFromEventList((word24) r15 + 0x0018, out r11_23, out r15_84);
-			if (r15_84 != 0x00)
-				r10_10.u0 = 0x01;
+			Eq_n r15_n;
+			r10_n = xTaskRemoveFromEventList((word24) r15 + 0x0018, out r11_n, out r15_n);
+			if (r15_n != 0x00)
+				r10_n.u0 = 0x01;
 		}
 	}
 	if (0x0218 != 0x00)
 	{
 		globals->ptr0218 += ~0x00;
 		if (globals->ptr0218 == 0x00)
-			sr_12 |= 0x08;
+			sr_n |= 0x08;
 	}
 	++globals->ptr0218;
-	ci16 v13_31 = *((word24) r11_23 + 0x002E);
-	*((word24) r11_23 + 0x002E) = v13_31 + ~0x00;
-	ui20 sr_28 = sr_12 & ~0x08;
-	if (v13_31 >= ~0x00)
+	ci16 v13_n = *((word24) r11_n + 0x002E);
+	*((word24) r11_n + 0x002E) = v13_n + ~0x00;
+	ui20 sr_n = sr_n & ~0x08;
+	if (v13_n >= ~0x00)
 	{
-		*((word24) r11_23 + 0x002E) = ~0x00;
-		if (*((word24) r11_23 + 0x08) != 0x00)
+		*((word24) r11_n + 0x002E) = ~0x00;
+		if (*((word24) r11_n + 0x08) != 0x00)
 		{
-			word20 r11_65;
-			Eq_2909 r15_66;
-			r10_10 = xTaskRemoveFromEventList((word24) r11_23 + 0x08, out r11_65, out r15_66);
-			if (r15_66 != 0x00)
-				r10_10.u0 = 0x01;
+			word20 r11_n;
+			Eq_n r15_n;
+			r10_n = xTaskRemoveFromEventList((word24) r11_n + 0x08, out r11_n, out r15_n);
+			if (r15_n != 0x00)
+				r10_n.u0 = 0x01;
 		}
 	}
 	if (0x0218 != 0x00)
 	{
 		globals->ptr0218 += ~0x00;
 		if (globals->ptr0218 == 0x00)
-			sr_28 |= 0x08;
+			sr_n |= 0x08;
 	}
-	word20 r15_44;
-	*r15Out = r10_10;
-	return sr_28;
+	word20 r15_n;
+	*r15Out = r10_n;
+	return sr_n;
 }
 
-// 510C: Register ui20 prvIsQueueEmpty(Register ui20 sr, Register Eq_518 r15, Register out Eq_2466 r15Out)
-ui20 prvIsQueueEmpty(ui20 sr, Eq_518 r15, Eq_2466 & r15Out)
+// 510C: Register ui20 prvIsQueueEmpty(Register ui20 sr, Register Eq_n r15, Register out Eq_n r15Out)
+ui20 prvIsQueueEmpty(ui20 sr, Eq_n r15, Eq_n & r15Out)
 {
 	++globals->ptr0218;
-	ui20 sr_17 = sr & ~0x08;
-	Eq_2941 r14_12 = 0x00;
+	ui20 sr_n = sr & ~0x08;
+	Eq_n r14_n = 0x00;
 	if (*((word24) r15 + 0x0028) == 0x00)
-		r14_12.u1 = 0x01;
+		r14_n.u1 = 0x01;
 	if (0x0218 != 0x00)
 	{
 		globals->ptr0218 += ~0x00;
 		if (globals->ptr0218 == 0x00)
-			sr_17 |= 0x08;
+			sr_n |= 0x08;
 	}
-	word20 r15_18;
-	*r15Out = r14_12;
-	return sr_17;
+	word20 r15_n;
+	*r15Out = r14_n;
+	return sr_n;
 }
 
-// 512E: Register ui20 prvIsQueueFull(Register ui20 sr, Register Eq_518 r15, Register out Eq_2076 r15Out)
-ui20 prvIsQueueFull(ui20 sr, Eq_518 r15, Eq_2076 & r15Out)
+// 512E: Register ui20 prvIsQueueFull(Register ui20 sr, Register Eq_n r15, Register out Eq_n r15Out)
+ui20 prvIsQueueFull(ui20 sr, Eq_n r15, Eq_n & r15Out)
 {
 	++globals->ptr0218;
-	ui20 sr_18 = sr & ~0x08;
-	Eq_2973 r14_13 = 0x00;
+	ui20 sr_n = sr & ~0x08;
+	Eq_n r14_n = 0x00;
 	if (*((word24) r15 + 0x0028) == *((word24) r15 + 0x002A))
-		r14_13.u1 = 0x01;
+		r14_n.u1 = 0x01;
 	if (0x0218 != 0x00)
 	{
 		globals->ptr0218 += ~0x00;
 		if (globals->ptr0218 == 0x00)
-			sr_18 |= 0x08;
+			sr_n |= 0x08;
 	}
-	word20 r15_19;
-	*r15Out = r14_13;
-	return sr_18;
+	word20 r15_n;
+	*r15Out = r14_n;
+	return sr_n;
 }
 
-// 5156: Register ui20 pvPortMalloc(Register (ptr20 Eq_2) pc, Register ui20 sr, Register Eq_1647 r15, Register out Eq_1648 r5Out, Register out Eq_1649 r6Out, Register out Eq_1650 r7Out, Register out Eq_1651 r8Out, Register out Eq_1652 r9Out, Register out Eq_1653 r10Out, Register out Eq_1654 r11Out, Register out Eq_1655 r15Out)
-ui20 pvPortMalloc(Eq_2 * pc, ui20 sr, Eq_1647 r15, Eq_1648 & r5Out, Eq_1649 & r6Out, Eq_1650 & r7Out, Eq_1651 & r8Out, Eq_1652 & r9Out, Eq_1653 & r10Out, Eq_1654 & r11Out, Eq_1655 & r15Out)
+// 5156: Register ui20 pvPortMalloc(Register (ptr20 Eq_n) pc, Register ui20 sr, Register Eq_n r15, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out, Register out Eq_n r15Out)
+ui20 pvPortMalloc(Eq_n * pc, ui20 sr, Eq_n r15, Eq_n & r5Out, Eq_n & r6Out, Eq_n & r7Out, Eq_n & r8Out, Eq_n & r9Out, Eq_n & r10Out, Eq_n & r11Out, Eq_n & r15Out)
 {
-	Eq_1647 r11_15 = r15;
+	Eq_n r11_n = r15;
 	if ((r15 & 0x01) != 0x00)
-		r11_15 = r15 - (r15 & 0x01) + 0x02;
-	Eq_3003 r14_18 = 0x0216;
-	ui20 sr_17 = vTaskSuspendAll(sr);
-	word20 r15_20 = r14_18 + r11_15;
-	if (r15_20 >= 0x0708 && r14_18 >= r15_20)
-		globals->t0216 = r15_20;
-	word20 r15_35;
-	*r15Out = r10_31;
-	word20 r10_38;
+		r11_n = r15 - (r15 & 0x01) + 0x02;
+	Eq_n r14_n = 0x0216;
+	ui20 sr_n = vTaskSuspendAll(sr);
+	word20 r15_n = r14_n + r11_n;
+	if (r15_n >= 0x0708 && r14_n >= r15_n)
+		globals->t0216 = r15_n;
+	word20 r15_n;
+	*r15Out = r10_n;
+	word20 r10_n;
 	*r10Out = r10;
-	word20 r11_41;
+	word20 r11_n;
 	*r11Out = r11;
-	word20 r5_26;
-	word20 r6_27;
-	word20 r7_28;
-	word20 r8_29;
-	word20 r9_30;
-	word20 r10_31;
-	word20 r11_32;
-	word20 r15_33;
-	return xTaskResumeAll(pc, sr_17, out r5_26, out r6_27, out r7_28, out r8_29, out r9_30, out r10_31, out r11_32, out r15_33);
+	word20 r5_n;
+	word20 r6_n;
+	word20 r7_n;
+	word20 r8_n;
+	word20 r9_n;
+	word20 r10_n;
+	word20 r11_n;
+	word20 r15_n;
+	return xTaskResumeAll(pc, sr_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11_n, out r15_n);
 }
 
 // 5192: void vPortFree()
@@ -1489,10 +1489,10 @@ void vPortInitialiseBlocks()
 	globals->t0216.u0 = 0x00;
 }
 
-// 519A: Register (ptr20 Eq_652) pxPortInitialiseStack(Register Eq_653 r13, Register Eq_652 r14, Register (ptr20 Eq_652) r15)
-Eq_652 * pxPortInitialiseStack(Eq_653 r13, Eq_652 r14, Eq_652 * r15)
+// 519A: Register (ptr20 Eq_n) pxPortInitialiseStack(Register Eq_n r13, Register Eq_n r14, Register (ptr20 Eq_n) r15)
+Eq_n * pxPortInitialiseStack(Eq_n r13, Eq_n r14, Eq_n * r15)
 {
-	*r15 = (union Eq_652 *) r14;
+	*r15 = (union Eq_n *) r14;
 	*(r15 - 0x02) = 0x08;
 	*(r15 - 0x04) = 0x4444;
 	*(r15 - 0x06) = 0x5555;
@@ -1505,13 +1505,13 @@ Eq_652 * pxPortInitialiseStack(Eq_653 r13, Eq_652 r14, Eq_652 * r15)
 	*(r15 - 0x14) = 0xCCCC;
 	*(r15 - 22) = ~0x2222;
 	*(r15 - 0x18) = ~0x1111;
-	*(r15 - 0x1A) = (union Eq_653 *) r13;
+	*(r15 - 0x1A) = (union Eq_n *) r13;
 	*(r15 - 0x1C) = 0x00;
 	return r15 - 0x1C;
 }
 
-// 520A: void xPortStartScheduler(Register (ptr20 Eq_2) pc)
-void xPortStartScheduler(Eq_2 * pc)
+// 520A: void xPortStartScheduler(Register (ptr20 Eq_n) pc)
+void xPortStartScheduler(Eq_n * pc)
 {
 	prvSetupTimerInterrupt();
 	pc->wFFFFB000 = **pc->ptrFFFFAFF2;
@@ -1522,44 +1522,44 @@ void vPortEndScheduler()
 {
 }
 
-// 523A: Register ui20 vPortYield(Register (ptr20 Eq_2) pc, Register ui20 sr, Register out Eq_616 r5Out, Register out Eq_617 r6Out, Register out Eq_618 r7Out, Register out Eq_619 r8Out, Register out Eq_620 r9Out, Register out Eq_621 r10Out, Register out Eq_622 r11Out)
-ui20 vPortYield(Eq_2 * pc, ui20 sr, Eq_616 & r5Out, Eq_617 & r6Out, Eq_618 & r7Out, Eq_619 & r8Out, Eq_620 & r9Out, Eq_621 & r10Out, Eq_622 & r11Out)
+// 523A: Register ui20 vPortYield(Register (ptr20 Eq_n) pc, Register ui20 sr, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r11Out)
+ui20 vPortYield(Eq_n * pc, ui20 sr, Eq_n & r5Out, Eq_n & r6Out, Eq_n & r7Out, Eq_n & r8Out, Eq_n & r9Out, Eq_n & r10Out, Eq_n & r11Out)
 {
 	*pc->ptrFFFFAFA4 = fp - 0x001C;
 	vTaskSwitchContext();
-	struct Eq_3162 * v21_55 = *pc->ptrFFFFAF98;
-	pc->wFFFFAFA6 = v21_55->w0000;
-	word20 r11_77;
-	*r11Out = v21_55->w000A;
-	word20 r10_80;
-	*r10Out = v21_55->w000C;
-	word20 r9_83;
-	*r9Out = v21_55->w000E;
-	word20 r8_86;
-	*r8Out = v21_55->w0010;
-	word20 r7_89;
-	*r7Out = v21_55->w0012;
-	word20 r6_92;
-	*r6Out = v21_55->w0014;
-	word20 r5_95;
-	*r5Out = v21_55->w0016;
+	struct Eq_n * v21_n = *pc->ptrFFFFAF98;
+	pc->wFFFFAFA6 = v21_n->w0000;
+	word20 r11_n;
+	*r11Out = v21_n->w000A;
+	word20 r10_n;
+	*r10Out = v21_n->w000C;
+	word20 r9_n;
+	*r9Out = v21_n->w000E;
+	word20 r8_n;
+	*r8Out = v21_n->w0010;
+	word20 r7_n;
+	*r7Out = v21_n->w0012;
+	word20 r6_n;
+	*r6Out = v21_n->w0014;
+	word20 r5_n;
+	*r5Out = v21_n->w0016;
 	return sr & ~0x08;
 }
 
 // 528E: void prvSetupTimerInterrupt()
 void prvSetupTimerInterrupt()
 {
-	((union Eq_3213 *) 0x0160)->u0 = 0x00;
-	((union Eq_3213 *) 0x0160)->u0 = 0x0100;
-	*(union Eq_3213 *) 0x0160 |= 0x04;
+	((union Eq_n *) 0x0160)->u0 = 0x00;
+	((union Eq_n *) 0x0160)->u0 = 0x0100;
+	*(union Eq_n *) 0x0160 |= 0x04;
 	*(ptr16 *) 0x0172 = 0x20;
 	*(ptr16 *) 0x0162 = 0x10;
-	*(union Eq_3213 *) 0x0160 |= 0x04;
-	*(union Eq_3213 *) 0x0160 |= 0x10;
+	*(union Eq_n *) 0x0160 |= 0x04;
+	*(union Eq_n *) 0x0160 |= 0x10;
 }
 
-// 52B4: void prvTickISR(Register (ptr20 Eq_3240) pc)
-void prvTickISR(Eq_3240 * pc)
+// 52B4: void prvTickISR(Register (ptr20 Eq_n) pc)
+void prvTickISR(Eq_n * pc)
 {
 	*pc->ptrFFFFAF2E = fp - 0x001A;
 	vTaskIncrementTick();
@@ -1567,512 +1567,512 @@ void prvTickISR(Eq_3240 * pc)
 	pc->wFFFFAF2C = **pc->ptrFFFFAF1E;
 }
 
-// 5308: Register Eq_45 printf(Register (ptr20 Eq_2) pc, Register Eq_45 r8, Register out Eq_62 r11Out)
-Eq_45 printf(Eq_2 * pc, Eq_45 r8, Eq_62 & r11Out)
+// 5308: Register Eq_n printf(Register (ptr20 Eq_n) pc, Register Eq_n r8, Register out Eq_n r11Out)
+Eq_n printf(Eq_n * pc, Eq_n r8, Eq_n & r11Out)
 {
-	word20 r11_13;
-	return vuprintf(pc, r8, (char *) &fp->t0002 + 0x02, fp->t0002, 17314, out r11_13);
+	word20 r11_n;
+	return vuprintf(pc, r8, (char *) &fp->t0002 + 0x02, fp->t0002, 17314, out r11_n);
 }
 
-// 531A: Register word20 PRINT(Register (ptr20 Eq_2) pc, Register Eq_3286 r14, Register Eq_3272 r15, Register out Eq_3288 r11Out, Register out Eq_3289 r15Out)
-word20 PRINT(Eq_2 * pc, Eq_3286 r14, Eq_3272 r15, Eq_3288 & r11Out, Eq_3289 & r15Out)
+// 531A: Register word20 PRINT(Register (ptr20 Eq_n) pc, Register Eq_n r14, Register Eq_n r15, Register out Eq_n r11Out, Register out Eq_n r15Out)
+word20 PRINT(Eq_n * pc, Eq_n r14, Eq_n r15, Eq_n & r11Out, Eq_n & r15Out)
 {
-	Eq_3272 r10_34 = r15;
-	Eq_3286 r11_11 = r14;
+	Eq_n r10_n = r15;
+	Eq_n r11_n = r14;
 	if (r14 != 0x00)
 	{
 		do
 		{
-			Eq_3294 r15_40 = (int16) *r10_34;
+			Eq_n r15_n = (int16) *r10_n;
 			__write_char(pc);
-			++r10_34;
-			if (r15_40 < 0x00)
+			++r10_n;
+			if (r15_n < 0x00)
 			{
-				word20 r15_51;
+				word20 r15_n;
 				*r15Out = ~0x00;
 				goto l00005344;
 			}
 			++globals->ptr021A;
-			r11_11.u1 = (word20) r11_11.u1 + 0x0000FFFF;
-		} while (r11_11 != 0x00);
+			r11_n.u1 = (word20) r11_n.u1 + 0x0000FFFF;
+		} while (r11_n != 0x00);
 	}
-	word20 r15_32;
+	word20 r15_n;
 	*r15Out = 0x01;
 l00005344:
-	word20 r11_24;
+	word20 r11_n;
 	*r11Out = r11;
 	return r10;
 }
 
-// 534A: Register word20 __write_pad(Register (ptr20 Eq_2) pc, Register Eq_3326 r14, Register Eq_3327 r15, Register out Eq_3328 r10Out, Register out Eq_3329 r11Out)
-word20 __write_pad(Eq_2 * pc, Eq_3326 r14, Eq_3327 r15, Eq_3328 & r10Out, Eq_3329 & r11Out)
+// 534A: Register word20 __write_pad(Register (ptr20 Eq_n) pc, Register Eq_n r14, Register Eq_n r15, Register out Eq_n r10Out, Register out Eq_n r11Out)
+word20 __write_pad(Eq_n * pc, Eq_n r14, Eq_n r15, Eq_n & r10Out, Eq_n & r11Out)
 {
-	Eq_3326 r11_14 = r14;
+	Eq_n r11_n = r14;
 	if (r14 >= 0x01)
 	{
-		Eq_3333 r10_44 = (int16) SLICE(r15, byte, 0);
+		Eq_n r10_n = (int16) SLICE(r15, byte, 0);
 		do
 		{
 			__write_char(pc);
-			if (r10_44 < 0x00)
+			if (r10_n < 0x00)
 				goto l00005376;
 			++globals->ptr021A;
-			r11_14 = (word24) r11_14 + 0x00FF;
-		} while (r11_14 >= 0x01);
+			r11_n = (word24) r11_n + 0x00FF;
+		} while (r11_n >= 0x01);
 	}
 l00005376:
-	word20 r10_29;
+	word20 r10_n;
 	*r10Out = r10;
-	word20 r11_32;
+	word20 r11_n;
 	*r11Out = r11;
 	return r9;
 }
 
-// 537E: Register Eq_45 vuprintf(Register (ptr20 Eq_2) pc, Register Eq_45 r8, Register Eq_3271 r13, Register Eq_3272 r14, Register Eq_3273 r15, Register out Eq_3274 r11Out)
-Eq_45 vuprintf(Eq_2 * pc, Eq_45 r8, Eq_3271 r13, Eq_3272 r14, Eq_3273 r15, Eq_3274 & r11Out)
+// 537E: Register Eq_n vuprintf(Register (ptr20 Eq_n) pc, Register Eq_n r8, Register Eq_n r13, Register Eq_n r14, Register Eq_n r15, Register out Eq_n r11Out)
+Eq_n vuprintf(Eq_n * pc, Eq_n r8, Eq_n r13, Eq_n r14, Eq_n r15, Eq_n & r11Out)
 {
 	globals->ptr021A = 0x00;
 	globals->t09B2 = r15;
-	Eq_3271 r5_100 = r13;
-	Eq_220 wLoc1C_1072 = 0x00;
-	Eq_221 wLoc1A_1075 = 0x00;
-	Eq_3272 r6_101 = r14;
-	r8_102 = r8;
+	Eq_n r5_n = r13;
+	Eq_n wLoc1C_n = 0x00;
+	Eq_n wLoc1A_n = 0x00;
+	Eq_n r6_n = r14;
+	r8_n = r8;
 l53A6:
-	Eq_3272 r6_111;
-	Eq_45 r8_102;
-	Eq_3372 v17_107 = *r6_101;
-	Eq_3372 r7_108 = v17_107;
-	r6_111 = r6_101;
-	if (v17_107 != 0x00)
+	Eq_n r6_n;
+	Eq_n r8_n;
+	Eq_n v17_n = *r6_n;
+	Eq_n r7_n = v17_n;
+	r6_n = r6_n;
+	if (v17_n != 0x00)
 	{
-		r6_111 = r6_101;
-		r6_111 = r6_101;
-		if (v17_107 != 0x25)
+		r6_n = r6_n;
+		r6_n = r6_n;
+		if (v17_n != 0x25)
 		{
 			do
 			{
-				r6_111 = (word20) r6_111 + 0x01;
-				Eq_3372 v19_1147 = *r6_111;
-				r7_108 = v19_1147;
-			} while (v19_1147 != 0x00 && v19_1147 != 0x25);
+				r6_n = (word20) r6_n + 0x01;
+				Eq_n v19_n = *r6_n;
+				r7_n = v19_n;
+			} while (v19_n != 0x00 && v19_n != 0x25);
 		}
 	}
-	Eq_3286 r13_114 = r6_111 - r6_101;
-	if (r13_114 != 0x00)
+	Eq_n r13_n = r6_n - r6_n;
+	if (r13_n != 0x00)
 	{
-		word20 r11_1138;
-		Eq_3389 r15_1139;
-		PRINT(pc, r13_114, r6_101, out r11_1138, out r15_1139);
-		if (r15_1139 < 0x00)
+		word20 r11_n;
+		Eq_n r15_n;
+		PRINT(pc, r13_n, r6_n, out r11_n, out r15_n);
+		if (r15_n < 0x00)
 		{
 l5924:
-			word20 r11_174;
+			word20 r11_n;
 			*r11Out = r11;
 			return r8;
 		}
 	}
-	if (r7_108 != 0x00)
+	if (r7_n != 0x00)
 	{
-		r6_101 = r6_111 + 0x01;
-		byte bLoc1E_1081 = 0x00;
-		Eq_3404 bLoc17_190 = 0x00;
-		Eq_3406 bLoc1D_193 = 0x00;
-		Eq_3404 r11_194 = ~0x00;
-		Eq_3410 bLoc24_197 = 0x00;
+		r6_n = r6_n + 0x01;
+		byte bLoc1E_n = 0x00;
+		Eq_n bLoc17_n = 0x00;
+		Eq_n bLoc1D_n = 0x00;
+		Eq_n r11_n = ~0x00;
+		Eq_n bLoc24_n = 0x00;
 		while (true)
 		{
 l53E8:
-			Eq_3412 r7_1082 = *r6_101;
-			++r6_101;
+			Eq_n r7_n = *r6_n;
+			++r6_n;
 			while (true)
 			{
-				if (r7_1082 == 117 || (r7_1082 | 0x20) == 0x78)
+				if (r7_n == 117 || (r7_n | 0x20) == 0x78)
 				{
-					if ((bLoc1E_1081 & 0x01) != 0x00)
+					if ((bLoc1E_n & 0x01) != 0x00)
 					{
-						r5_100 += 0x04;
-						wLoc1C_1072 = *r5_100;
-						wLoc1A_1075 = *((word24) r5_100 + 0x02);
+						r5_n += 0x04;
+						wLoc1C_n = *r5_n;
+						wLoc1A_n = *((word24) r5_n + 0x02);
 					}
 					else
 					{
-						r5_100 = (word24) r5_100 + 0x02;
-						wLoc1C_1072 = *r5_100;
-						wLoc1A_1075.u0 = 0x00;
+						r5_n = (word24) r5_n + 0x02;
+						wLoc1C_n = *r5_n;
+						wLoc1A_n.u0 = 0x00;
 					}
 				}
-				if (r7_1082 == 0x20)
+				if (r7_n == 0x20)
 					break;
-				if (r7_1082 == 0x23)
+				if (r7_n == 0x23)
 				{
-					bLoc1E_1081 |= 0x08;
+					bLoc1E_n |= 0x08;
 					goto l53E8;
 				}
-				if (r7_1082 == 0x2A)
+				if (r7_n == 0x2A)
 				{
-					Eq_3406 v49_273 = *r5_100;
-					r5_100 += 0x02;
-					bLoc1D_193 = v49_273;
-					if (v49_273 >= 0x00)
+					Eq_n v49_n = *r5_n;
+					r5_n += 0x02;
+					bLoc1D_n = v49_n;
+					if (v49_n >= 0x00)
 						goto l53E8;
-					bLoc1D_193 = (v49_273 ^ ~0x00) + 0x01;
+					bLoc1D_n = (v49_n ^ ~0x00) + 0x01;
 l58A8:
-					bLoc1E_1081 = (bLoc1E_1081 | 0x10) & ~0x20;
+					bLoc1E_n = (bLoc1E_n | 0x10) & ~0x20;
 					goto l53E8;
 				}
-				if (r7_1082 == 0x2D)
+				if (r7_n == 0x2D)
 					goto l58A8;
-				if (r7_1082 == 0x2B)
+				if (r7_n == 0x2B)
 				{
-					bLoc24_197.u1 = 0x2B;
+					bLoc24_n.u1 = 0x2B;
 					goto l53E8;
 				}
-				if (r7_1082 != 0x2E)
+				if (r7_n != 0x2E)
 				{
-					if (r7_1082 == 0x30)
+					if (r7_n == 0x30)
 					{
-						if ((bLoc1E_1081 & 0x10) == 0x00)
-							bLoc1E_1081 |= 0x20;
+						if ((bLoc1E_n & 0x10) == 0x00)
+							bLoc1E_n |= 0x20;
 						goto l53E8;
 					}
-					if (r7_1082 >= ~0x39)
+					if (r7_n >= ~0x39)
 					{
-						Eq_3533 r13_366 = 0x00;
+						Eq_n r13_n = 0x00;
 						do
 						{
-							ui20 r14_374 = r13_366 * 0x02;
-							ui20 r13_382 = r13_366 * 0x04 + r14_374 + r14_374 + r14_374 + (int16) SLICE(r7_1082, byte, 0);
-							Eq_3412 v65_384 = *r6_101;
-							r13_366 = r13_382 + ~0x2F;
-							r7_1082 = v65_384;
-							++r6_101;
-						} while (v65_384 >= ~0x39);
-						bLoc1D_193 = r13_382 + ~0x2F;
+							ui20 r14_n = r13_n * 0x02;
+							ui20 r13_n = r13_n * 0x04 + r14_n + r14_n + r14_n + (int16) SLICE(r7_n, byte, 0);
+							Eq_n v65_n = *r6_n;
+							r13_n = r13_n + ~0x2F;
+							r7_n = v65_n;
+							++r6_n;
+						} while (v65_n >= ~0x39);
+						bLoc1D_n = r13_n + ~0x2F;
 						continue;
 					}
-					if (r7_1082 == 0x68)
+					if (r7_n == 0x68)
 					{
-						bLoc1E_1081 |= 0x04;
+						bLoc1E_n |= 0x04;
 						goto l53E8;
 					}
-					if (r7_1082 == 0x6C)
+					if (r7_n == 0x6C)
 					{
-						bLoc1E_1081 |= 0x01;
+						bLoc1E_n |= 0x01;
 						goto l53E8;
 					}
-					Eq_3272 wLoc20_1004;
-					Eq_3565 r9_1023;
-					if (r7_1082 == 99)
+					Eq_n wLoc20_n;
+					Eq_n r9_n;
+					if (r7_n == 99)
 					{
-						r5_100 += 0x02;
+						r5_n += 0x02;
 						goto l54F6;
 					}
-					Eq_3572 bLoc18_1078;
-					if (r7_1082 == 0x44)
+					Eq_n bLoc18_n;
+					if (r7_n == 0x44)
 					{
-						bLoc1E_1081 |= 0x01;
+						bLoc1E_n |= 0x01;
 l57AE:
-						if ((bLoc1E_1081 & 0x01) != 0x00)
+						if ((bLoc1E_n & 0x01) != 0x00)
 						{
-							r5_100 += 0x04;
-							wLoc1C_1072 = *r5_100;
-							wLoc1A_1075 = *((word24) r5_100 + 0x02);
+							r5_n += 0x04;
+							wLoc1C_n = *r5_n;
+							wLoc1A_n = *((word24) r5_n + 0x02);
 						}
 						else
 						{
-							Eq_220 v186_888 = *r5_100;
-							r5_100 += 0x02;
-							wLoc1C_1072 = v186_888;
-							wLoc1A_1075 = 0x00 - (v186_888 * 0x02 < 0x00) ^ ~0x00;
+							Eq_n v186_n = *r5_n;
+							r5_n += 0x02;
+							wLoc1C_n = v186_n;
+							wLoc1A_n = 0x00 - (v186_n * 0x02 < 0x00) ^ ~0x00;
 						}
-						if (wLoc1A_1075 < 0x00)
+						if (wLoc1A_n < 0x00)
 						{
-							Eq_3916 v181_856 = wLoc1C_1072 ^ ~0x00;
-							wLoc1C_1072 = (word24) v181_856 + 0x01;
-							wLoc1A_1075 = (wLoc1A_1075 ^ ~0x00) + (v181_856 < 0x01);
-							bLoc24_197.u1 = 0x2D;
+							Eq_n v181_n = wLoc1C_n ^ ~0x00;
+							wLoc1C_n = (word24) v181_n + 0x01;
+							wLoc1A_n = (wLoc1A_n ^ ~0x00) + (v181_n < 0x01);
+							bLoc24_n.u1 = 0x2D;
 						}
-						bLoc18_1078.u1 = 0x0A;
+						bLoc18_n.u1 = 0x0A;
 						goto l5620;
 					}
-					if (r7_1082 == 100 || r7_1082 == 0x69)
+					if (r7_n == 100 || r7_n == 0x69)
 						goto l57AE;
-					if (r7_1082 == 0x4F)
+					if (r7_n == 0x4F)
 					{
-						bLoc1E_1081 |= 0x01;
+						bLoc1E_n |= 0x01;
 l57A2:
-						bLoc18_1078.u0 = 0x08;
+						bLoc18_n.u0 = 0x08;
 						goto l561C;
 					}
-					if (r7_1082 == 111)
+					if (r7_n == 111)
 						goto l57A2;
-					if (r7_1082 == 0x70)
+					if (r7_n == 0x70)
 					{
-						r5_100 += 0x02;
-						wLoc1C_1072 = *r5_100;
-						wLoc1A_1075.u0 = 0x00;
-						bLoc18_1078.u1 = 0x10;
-						bLoc1E_1081 |= 0x40;
-						r7_1082.u0 = 0x78;
+						r5_n += 0x02;
+						wLoc1C_n = *r5_n;
+						wLoc1A_n.u0 = 0x00;
+						bLoc18_n.u1 = 0x10;
+						bLoc1E_n |= 0x40;
+						r7_n.u0 = 0x78;
 						goto l561C;
 					}
-					if (r7_1082 != 115)
+					if (r7_n != 115)
 					{
-						if (r7_1082 == 0x55)
+						if (r7_n == 0x55)
 						{
-							bLoc1E_1081 |= 0x01;
+							bLoc1E_n |= 0x01;
 l56FE:
-							bLoc18_1078.u1 = 0x0A;
+							bLoc18_n.u1 = 0x0A;
 							goto l561C;
 						}
-						if (r7_1082 == 117)
+						if (r7_n == 117)
 							goto l56FE;
-						if (r7_1082 != 88 && r7_1082 != 0x78)
+						if (r7_n != 88 && r7_n != 0x78)
 						{
-							if (r7_1082 == 0x00)
+							if (r7_n == 0x00)
 								goto l5924;
 l54F6:
-							wLoc20_1004 = fp - 0x4C;
-							r9_1023.u0 = 0x01;
+							wLoc20_n = fp - 0x4C;
+							r9_n.u0 = 0x01;
 							goto l54F8;
 						}
-						bLoc18_1078.u1 = 0x10;
-						if ((bLoc1E_1081 & 0x08) != 0x00 && (wLoc1C_1072 != 0x00 || wLoc1A_1075 != 0x00))
-							bLoc1E_1081 |= 0x40;
+						bLoc18_n.u1 = 0x10;
+						if ((bLoc1E_n & 0x08) != 0x00 && (wLoc1C_n != 0x00 || wLoc1A_n != 0x00))
+							bLoc1E_n |= 0x40;
 l561C:
-						bLoc24_197.u0 = 0x00;
+						bLoc24_n.u0 = 0x00;
 l5620:
-						bLoc17_190 = r11_194;
-						if (r11_194 >= 0x00)
-							bLoc1E_1081 &= ~0x20;
-						wLoc20_1004 = fp - 0x24;
-						if (wLoc1C_1072 != 0x00 || (wLoc1A_1075 != 0x00 || r11_194 != 0x00))
+						bLoc17_n = r11_n;
+						if (r11_n >= 0x00)
+							bLoc1E_n &= ~0x20;
+						wLoc20_n = fp - 0x24;
+						if (wLoc1C_n != 0x00 || (wLoc1A_n != 0x00 || r11_n != 0x00))
 						{
 							do
 							{
-								byte bLoc16_722 = 0x00;
-								if (wLoc1A_1075 - (wLoc1C_1072 - wLoc14 < 0x00) < 0x00)
-									bLoc16_722 = 0x01;
-								Eq_3710 r4_756;
-								Eq_45 r8_745;
-								word20 r12_746;
-								word20 r13_747;
-								Eq_3714 r14_748;
-								word20 r15_749;
-								fn00005B4E(r8_102, wLoc14, 0x00, wLoc1C_1072, wLoc1A_1075, out r8_745, out r12_746, out r13_747, out r14_748, out r15_749);
-								if (r14_748 >= 0x0A)
-									r4_756 = (word24) r14_748 + 0x0030;
+								byte bLoc16_n = 0x00;
+								if (wLoc1A_n - (wLoc1C_n - wLoc14 < 0x00) < 0x00)
+									bLoc16_n = 0x01;
+								Eq_n r4_n;
+								Eq_n r8_n;
+								word20 r12_n;
+								word20 r13_n;
+								Eq_n r14_n;
+								word20 r15_n;
+								fn00005B4E(r8_n, wLoc14, 0x00, wLoc1C_n, wLoc1A_n, out r8_n, out r12_n, out r13_n, out r14_n, out r15_n);
+								if (r14_n >= 0x0A)
+									r4_n = (word24) r14_n + 0x0030;
 								else
 								{
-									r4_756 = (word24) r14_748 + 0x0057;
-									if (r7_1082 == 88)
-										r4_756 = (word24) r14_748 + 0x0057 & ~0x20;
+									r4_n = (word24) r14_n + 0x0057;
+									if (r7_n == 88)
+										r4_n = (word24) r14_n + 0x0057 & ~0x20;
 								}
-								word16 v128_758 = wLoc20_1004 + ~0x00;
-								*v128_758 = r4_756;
-								Eq_220 r12_775;
-								Eq_221 r13_776;
-								word20 r14_777;
-								word20 r15_778;
-								fn00005B4E(r8_745, wLoc14, 0x00, wLoc1C_1072, wLoc1A_1075, out r8_102, out r12_775, out r13_776, out r14_777, out r15_778);
-								wLoc20_1004 = v128_758;
-								wLoc1C_1072 = r12_775;
-								wLoc1A_1075 = r13_776;
-							} while (bLoc16_722 != 0x00);
-							if (bLoc18_1078 == 0x08 && ((bLoc1E_1081 & 0x08) != 0x00 && r4_756 != 0x30))
+								word16 v128_n = wLoc20_n + ~0x00;
+								*v128_n = r4_n;
+								Eq_n r12_n;
+								Eq_n r13_n;
+								word20 r14_n;
+								word20 r15_n;
+								fn00005B4E(r8_n, wLoc14, 0x00, wLoc1C_n, wLoc1A_n, out r8_n, out r12_n, out r13_n, out r14_n, out r15_n);
+								wLoc20_n = v128_n;
+								wLoc1C_n = r12_n;
+								wLoc1A_n = r13_n;
+							} while (bLoc16_n != 0x00);
+							if (bLoc18_n == 0x08 && ((bLoc1E_n & 0x08) != 0x00 && r4_n != 0x30))
 							{
-								*((word16) v128_758 + 0x0000FFFF) = 0x30;
-								wLoc20_1004 = (word16) v128_758 + 0x0000FFFF;
+								*((word16) v128_n + 0x0000FFFF) = 0x30;
+								wLoc20_n = (word16) v128_n + 0x0000FFFF;
 							}
 						}
-						r9_1023 = fp - 0x4C - bLoc20 + 0x28;
+						r9_n = fp - 0x4C - bLoc20 + 0x28;
 						goto l54FC;
 					}
-					Eq_3272 v149_991 = *r5_100;
-					r5_100 += 0x02;
-					wLoc20_1004 = v149_991;
-					if (v149_991 == 0x00)
-						wLoc20_1004 = fp - 0x4C;
-					if (r11_194 < 0x00)
+					Eq_n v149_n = *r5_n;
+					r5_n += 0x02;
+					wLoc20_n = v149_n;
+					if (v149_n == 0x00)
+						wLoc20_n = fp - 0x4C;
+					if (r11_n < 0x00)
 					{
-						struct Eq_3865 * r15_1031 = wLoc20_1004 - (struct Eq_3866 *) 0x01;
+						struct Eq_n * r15_n = wLoc20_n - (struct Eq_n *) 0x01;
 						do
-							++r15_1031;
-						while (r15_1031->b0000 != 0x00);
-						r9_1023 = r15_1031 - bLoc20;
+							++r15_n;
+						while (r15_n->b0000 != 0x00);
+						r9_n = r15_n - bLoc20;
 						goto l54F8;
 					}
-					Eq_3868 r15_1017;
-					Eq_3565 r11_1018 = memchr((int16) SLICE(r11_194, byte, 0), 0x00, wLoc20_1004, out r15_1017);
-					if (r15_1017 != 0x00)
+					Eq_n r15_n;
+					Eq_n r11_n = memchr((int16) SLICE(r11_n, byte, 0), 0x00, wLoc20_n, out r15_n);
+					if (r15_n != 0x00)
 					{
-						r9_1023 = r15_1017 - bLoc20;
-						if (r11_1018 < r9_1023)
+						r9_n = r15_n - bLoc20;
+						if (r11_n < r9_n)
 							goto l573C;
 					}
 					else
 					{
 l573C:
-						r9_1023 = r11_1018;
+						r9_n = r11_n;
 					}
 l54F8:
-					bLoc24_197.u0 = 0x00;
+					bLoc24_n.u0 = 0x00;
 l54FC:
-					Eq_3565 r11_436 = r9_1023;
-					Eq_3326 r10_439 = bLoc17_190 - r9_1023;
-					if (r10_439 < 0x00)
-						r10_439.u0 = 0x00;
-					if (bLoc24_197 != 0x00)
-						r11_436.u0 = (byte) r9_1023.u0 + 0x01;
-					else if ((bLoc1E_1081 & 0x40) != 0x00)
-						r11_436.u0 = (byte) r9_1023.u0 + 0x02;
-					word20 r11_451 = r11_436 + r10_439;
-					r8_102 = bLoc1E_1081 & 0x30;
-					if (r8_102 == 0x00)
+					Eq_n r11_n = r9_n;
+					Eq_n r10_n = bLoc17_n - r9_n;
+					if (r10_n < 0x00)
+						r10_n.u0 = 0x00;
+					if (bLoc24_n != 0x00)
+						r11_n.u0 = (byte) r9_n.u0 + 0x01;
+					else if ((bLoc1E_n & 0x40) != 0x00)
+						r11_n.u0 = (byte) r9_n.u0 + 0x02;
+					word20 r11_n = r11_n + r10_n;
+					r8_n = bLoc1E_n & 0x30;
+					if (r8_n == 0x00)
 					{
-						Eq_3326 r13_587 = (int16) (SLICE(bLoc1D_193, byte, 0) - SLICE(r11_451, byte, 0));
-						if (r13_587 >= 0x01)
+						Eq_n r13_n = (int16) (SLICE(bLoc1D_n, byte, 0) - SLICE(r11_n, byte, 0));
+						if (r13_n >= 0x01)
 						{
-							Eq_3327 r15_591 = 0x20;
-							__write_pad(pc, r13_587, r15_591, out r10_439, out r11_451);
-							if (r15_591 < 0x00)
+							Eq_n r15_n = 0x20;
+							__write_pad(pc, r13_n, r15_n, out r10_n, out r11_n);
+							if (r15_n < 0x00)
 								goto l5924;
 						}
 					}
-					Eq_3272 r15_549;
-					Eq_3286 r14_545;
-					if (bLoc24_197 == 0x00)
+					Eq_n r15_n;
+					Eq_n r14_n;
+					if (bLoc24_n == 0x00)
 					{
-						if ((bLoc1E_1081 & 0x40) == 0x00)
+						if ((bLoc1E_n & 0x40) == 0x00)
 							goto l5576;
-						r14_545.u0 = 0x02;
-						r15_549 = fp - 0x22;
+						r14_n.u0 = 0x02;
+						r15_n = fp - 0x22;
 					}
 					else
 					{
-						r14_545.u0 = 0x01;
-						r15_549 = fp - 0x24;
+						r14_n.u0 = 0x01;
+						r15_n = fp - 0x24;
 					}
-					Eq_3855 r15_551;
-					r10_439 = PRINT(pc, r14_545, r15_549, out r11_451, out r15_551);
-					if (r15_551 < 0x00)
+					Eq_n r15_n;
+					r10_n = PRINT(pc, r14_n, r15_n, out r11_n, out r15_n);
+					if (r15_n < 0x00)
 						goto l5924;
 l5576:
-					if ((bLoc1E_1081 & 0x30) == 0x20)
+					if ((bLoc1E_n & 0x30) == 0x20)
 					{
-						Eq_3326 r13_532 = (int16) (SLICE(bLoc1D_193, byte, 0) - SLICE(r11_451, byte, 0));
-						if (r13_532 >= 0x01)
+						Eq_n r13_n = (int16) (SLICE(bLoc1D_n, byte, 0) - SLICE(r11_n, byte, 0));
+						if (r13_n >= 0x01)
 						{
-							Eq_3327 r15_536 = 0x30;
-							word20 r11_538;
-							__write_pad(pc, r13_532, r15_536, out r10_439, out r11_538);
-							if (r15_536 < 0x00)
+							Eq_n r15_n = 0x30;
+							word20 r11_n;
+							__write_pad(pc, r13_n, r15_n, out r10_n, out r11_n);
+							if (r15_n < 0x00)
 								goto l5924;
 						}
 					}
-					Eq_3327 r15_482 = 0x30;
-					word20 r10_484;
-					word20 r11_485;
-					word20 r9_486 = __write_pad(pc, r10_439, r15_482, out r10_484, out r11_485);
-					if (r15_482 < 0x00)
+					Eq_n r15_n = 0x30;
+					word20 r10_n;
+					word20 r11_n;
+					word20 r9_n = __write_pad(pc, r10_n, r15_n, out r10_n, out r11_n);
+					if (r15_n < 0x00)
 						goto l5924;
-					word20 r11_497;
-					Eq_3759 r15_498;
-					PRINT(pc, (int16) SLICE(r9_486, byte, 0), wLoc20_1004, out r11_497, out r15_498);
-					if (r15_498 < 0x00)
+					word20 r11_n;
+					Eq_n r15_n;
+					PRINT(pc, (int16) SLICE(r9_n, byte, 0), wLoc20_n, out r11_n, out r15_n);
+					if (r15_n < 0x00)
 						goto l5924;
-					if ((bLoc1E_1081 & 0x10) == 0x00)
+					if ((bLoc1E_n & 0x10) == 0x00)
 						goto l53A6;
-					Eq_3326 r13_515 = (int16) (SLICE(bLoc1D_193, byte, 0) - SLICE(r11_497, byte, 0));
-					if (r13_515 < 0x01)
+					Eq_n r13_n = (int16) (SLICE(bLoc1D_n, byte, 0) - SLICE(r11_n, byte, 0));
+					if (r13_n < 0x01)
 						goto l53A6;
-					Eq_3327 r15_519 = 0x20;
-					word20 r10_520;
-					word20 r11_521;
-					__write_pad(pc, r13_515, r15_519, out r10_520, out r11_521);
-					if (r15_519 < 0x00)
+					Eq_n r15_n = 0x20;
+					word20 r10_n;
+					word20 r11_n;
+					__write_pad(pc, r13_n, r15_n, out r10_n, out r11_n);
+					if (r15_n < 0x00)
 						goto l5924;
 					goto l53A6;
 				}
-				Eq_3412 v58_296 = *r6_101;
-				r7_1082 = v58_296;
-				++r6_101;
-				if (v58_296 == 0x2A)
+				Eq_n v58_n = *r6_n;
+				r7_n = v58_n;
+				++r6_n;
+				if (v58_n == 0x2A)
 				{
-					Eq_3404 v61_343 = *r5_100;
-					r5_100 += 0x02;
-					Eq_3404 r15_345 = v61_343;
-					if (v61_343 < ~0x00)
-						r15_345.u0 = ~0x00;
-					r11_194 = r15_345;
+					Eq_n v61_n = *r5_n;
+					r5_n += 0x02;
+					Eq_n r15_n = v61_n;
+					if (v61_n < ~0x00)
+						r15_n.u0 = ~0x00;
+					r11_n = r15_n;
 					goto l53E8;
 				}
-				Eq_3404 r13_301 = 0x00;
-				if (v58_296 >= ~0x39)
+				Eq_n r13_n = 0x00;
+				if (v58_n >= ~0x39)
 				{
 					do
 					{
-						ui20 r14_324 = r13_301 * 0x02;
-						Eq_3412 v60_334 = *r6_101;
-						r13_301 = r13_301 * 0x04 + r14_324 + r14_324 + r14_324 + (int16) SLICE(r7_1082, byte, 0) + ~0x2F;
-						r7_1082 = v60_334;
-						++r6_101;
-					} while (v60_334 >= ~0x39);
+						ui20 r14_n = r13_n * 0x02;
+						Eq_n v60_n = *r6_n;
+						r13_n = r13_n * 0x04 + r14_n + r14_n + r14_n + (int16) SLICE(r7_n, byte, 0) + ~0x2F;
+						r7_n = v60_n;
+						++r6_n;
+					} while (v60_n >= ~0x39);
 				}
-				Eq_3404 r15_311 = r13_301;
-				if (r13_301 < ~0x00)
-					r15_311.u0 = ~0x00;
-				r11_194 = r15_311;
+				Eq_n r15_n = r13_n;
+				if (r13_n < ~0x00)
+					r15_n.u0 = ~0x00;
+				r11_n = r15_n;
 			}
-			if (bLoc24_197 == 0x00)
-				bLoc24_197.u1 = 0x20;
+			if (bLoc24_n == 0x00)
+				bLoc24_n.u1 = 0x20;
 		}
 	}
 	goto l5924;
 }
 
-// 593E: Register word20 memchr(Register Eq_3872 r13, Register Eq_3873 r14, Register Eq_3272 r15, Register out Eq_3875 r15Out)
-word20 memchr(Eq_3872 r13, Eq_3873 r14, Eq_3272 r15, Eq_3875 & r15Out)
+// 593E: Register word20 memchr(Register Eq_n r13, Register Eq_n r14, Register Eq_n r15, Register out Eq_n r15Out)
+word20 memchr(Eq_n r13, Eq_n r14, Eq_n r15, Eq_n & r15Out)
 {
 	if (r13 != 0x00)
 	{
-		Eq_3272 r14_26 = r15;
+		Eq_n r14_n = r15;
 		do
 		{
-			r14_26 = (word24) r14_26 + 0x01;
-			if (*r14_26 == r14)
+			r14_n = (word24) r14_n + 0x01;
+			if (*r14_n == r14)
 			{
-				word20 r15_39;
-				*r15Out = (word24) r14_26 + 0x0000FFFF;
+				word20 r15_n;
+				*r15Out = (word24) r14_n + 0x0000FFFF;
 				return r11;
 			}
 			r13.u1 = (word20) r13.u1 + 0x0000FFFF;
 		} while (r13 != 0x00);
 	}
-	word20 r15_25;
+	word20 r15_n;
 	*r15Out = 0x00;
 	return r11;
 }
 
-// 5962: Register word20 strncpy(Register Eq_1483 r13, Register (ptr20 byte) r14, Register (ptr24 byte) r15)
-word20 strncpy(Eq_1483 r13, byte * r14, byte * r15)
+// 5962: Register word20 strncpy(Register Eq_n r13, Register (ptr20 byte) r14, Register (ptr24 byte) r15)
+word20 strncpy(Eq_n r13, byte * r14, byte * r15)
 {
 	if (r13 != 0x00)
 	{
-		byte * r12_21 = r15;
+		byte * r12_n = r15;
 		do
 		{
-			*r12_21 = *r14;
+			*r12_n = *r14;
 			++r14;
-			++r12_21;
-			if (*r12_21 == 0x00)
+			++r12_n;
+			if (*r12_n == 0x00)
 			{
-				word20 r13_39;
-				for (r13_39 = (word20) r13.u0 + 0x0000FFFF; r13_39 != 0x00; r13_39 += ~0x00)
+				word20 r13_n;
+				for (r13_n = (word20) r13.u0 + 0x0000FFFF; r13_n != 0x00; r13_n += ~0x00)
 				{
-					*r12_21 = 0x00;
-					++r12_21;
+					*r12_n = 0x00;
+					++r12_n;
 				}
 				return r11;
 			}
@@ -2082,241 +2082,241 @@ word20 strncpy(Eq_1483 r13, byte * r14, byte * r15)
 	return r11;
 }
 
-// 5994: Register ui20 memcpy(Register ui20 sr, Register Eq_1679 r13, Register Eq_467 r14, Register Eq_467 r15, Register out Eq_2157 r10Out, Register out Eq_2158 r11Out)
-ui20 memcpy(ui20 sr, Eq_1679 r13, Eq_467 r14, Eq_467 r15, Eq_2157 & r10Out, Eq_2158 & r11Out)
+// 5994: Register ui20 memcpy(Register ui20 sr, Register Eq_n r13, Register Eq_n r14, Register Eq_n r15, Register out Eq_n r10Out, Register out Eq_n r11Out)
+ui20 memcpy(ui20 sr, Eq_n r13, Eq_n r14, Eq_n r15, Eq_n & r10Out, Eq_n & r11Out)
 {
-	Eq_1679 r11_105 = r13;
-	Eq_467 r13_108 = r15;
-	Eq_467 r12_107 = r14;
+	Eq_n r11_n = r13;
+	Eq_n r13_n = r15;
+	Eq_n r12_n = r14;
 	if (r13 != 0x00 && r15 != r14)
 	{
 		if (r15 >= r14)
 		{
-			ui20 r15_44 = r14 | r15;
-			bool C_119 = (bool) cond(r15_44 & 0x01);
-			if ((r15_44 & 0x01) != 0x00)
+			ui20 r15_n = r14 | r15;
+			bool C_n = (bool) cond(r15_n & 0x01);
+			if ((r15_n & 0x01) != 0x00)
 			{
-				Eq_1679 r14_103;
+				Eq_n r14_n;
 				if (((r14 ^ r15) & 0x01) == 0x00 && r13 < 0x02)
-					r14_103 = 0x02 - (r14 & 0x01);
+					r14_n = 0x02 - (r14 & 0x01);
 				else
-					r14_103 = r13;
-				r11_105 = r13 - r14_103;
+					r14_n = r13;
+				r11_n = r13 - r14_n;
 				do
 				{
-					*r13_108 = *r12_107;
-					r14_103 = (word24) r14_103 + 0x0000FFFF;
-					++r12_107;
-					++r13_108;
-					C_119 = (bool) cond(r14_103);
-				} while (r14_103 != 0x00);
+					*r13_n = *r12_n;
+					r14_n = (word24) r14_n + 0x0000FFFF;
+					++r12_n;
+					++r13_n;
+					C_n = (bool) cond(r14_n);
+				} while (r14_n != 0x00);
 			}
 			sr &= ~0x01;
-			Eq_45 r14_60 = __rcr(r11_105, 0x01, C_119);
-			while (r14_60 != 0x00)
+			Eq_n r14_n = __rcr(r11_n, 0x01, C_n);
+			while (r14_n != 0x00)
 			{
-				*r13_108 = *r12_107;
-				r12_107 += 0x02;
-				r13_108 += 0x02;
-				r14_60 = (word24) r14_60 + 0x0000FFFF;
+				*r13_n = *r12_n;
+				r12_n += 0x02;
+				r13_n += 0x02;
+				r14_n = (word24) r14_n + 0x0000FFFF;
 			}
-			ui20 r14_67;
-			for (r14_67 = r11_105 & 0x01; r14_67 != 0x00; r14_67 += ~0x00)
+			ui20 r14_n;
+			for (r14_n = r11_n & 0x01; r14_n != 0x00; r14_n += ~0x00)
 			{
-				*r13_108 = *r12_107;
-				++r12_107;
-				++r13_108;
+				*r13_n = *r12_n;
+				++r12_n;
+				++r13_n;
 			}
 		}
 		else
 		{
-			word20 r12_133 = r14 + r13;
-			word20 r13_135 = r15 + r13;
-			ui20 r15_137 = r12_133 | r13_135;
-			bool C_141 = (bool) cond(r15_137 & 0x01);
-			if ((r15_137 & 0x01) != 0x00)
+			word20 r12_n = r14 + r13;
+			word20 r13_n = r15 + r13;
+			ui20 r15_n = r12_n | r13_n;
+			bool C_n = (bool) cond(r15_n & 0x01);
+			if ((r15_n & 0x01) != 0x00)
 			{
-				Eq_1679 r14_197;
-				if (((r12_133 ^ r13_135) & 0x01) == 0x00 && r13 < 0x03)
-					r14_197 = r12_133 & 0x01;
+				Eq_n r14_n;
+				if (((r12_n ^ r13_n) & 0x01) == 0x00 && r13 < 0x03)
+					r14_n = r12_n & 0x01;
 				else
-					r14_197 = r13;
-				r11_105 = r13 - r14_197;
+					r14_n = r13;
+				r11_n = r13 - r14_n;
 				do
 				{
-					r12_133 = (word20) r12_133 + 0x0000FFFF;
-					r13_135 = (word20) r13_135 + 0x0000FFFF;
-					*r13_135 = *r12_133;
-					r14_197 = (word24) r14_197 + 0x0000FFFF;
-					C_141 = (bool) cond(r14_197);
-				} while (r14_197 != 0x00);
+					r12_n = (word20) r12_n + 0x0000FFFF;
+					r13_n = (word20) r13_n + 0x0000FFFF;
+					*r13_n = *r12_n;
+					r14_n = (word24) r14_n + 0x0000FFFF;
+					C_n = (bool) cond(r14_n);
+				} while (r14_n != 0x00);
 			}
 			sr &= ~0x01;
-			Eq_45 r14_153 = __rcr(r11_105, 0x01, C_141);
-			while (r14_153 != 0x00)
+			Eq_n r14_n = __rcr(r11_n, 0x01, C_n);
+			while (r14_n != 0x00)
 			{
-				r12_133 -= 0x02;
-				r13_135 -= 0x02;
-				*r13_135 = *r12_133;
-				r14_153 = (word24) r14_153 + 0x0000FFFF;
+				r12_n -= 0x02;
+				r13_n -= 0x02;
+				*r13_n = *r12_n;
+				r14_n = (word24) r14_n + 0x0000FFFF;
 			}
-			ui20 r14_160;
-			for (r14_160 = r11_105 & 0x01; r14_160 != 0x00; r14_160 += ~0x00)
+			ui20 r14_n;
+			for (r14_n = r11_n & 0x01; r14_n != 0x00; r14_n += ~0x00)
 			{
-				r12_133 += ~0x00;
-				r13_135 += ~0x00;
-				*r13_135 = *r12_133;
+				r12_n += ~0x00;
+				r13_n += ~0x00;
+				*r13_n = *r12_n;
 			}
 		}
 	}
-	word20 r10_33;
+	word20 r10_n;
 	*r10Out = r10;
-	word20 r11_36;
+	word20 r11_n;
 	*r11Out = r11;
 	return sr;
 }
 
-// 5A68: Register ui20 memset(Register ui20 sr, Register Eq_1679 r13, Register Eq_410 r14, Register Eq_1681 r15, Register out Eq_1706 r9Out, Register out Eq_1707 r11Out)
-ui20 memset(ui20 sr, Eq_1679 r13, Eq_410 r14, Eq_1681 r15, Eq_1706 & r9Out, Eq_1707 & r11Out)
+// 5A68: Register ui20 memset(Register ui20 sr, Register Eq_n r13, Register Eq_n r14, Register Eq_n r15, Register out Eq_n r9Out, Register out Eq_n r11Out)
+ui20 memset(ui20 sr, Eq_n r13, Eq_n r14, Eq_n r15, Eq_n & r9Out, Eq_n & r11Out)
 {
-	Eq_1681 r14_108 = r15;
+	Eq_n r14_n = r15;
 	if (r13 >= 0x06)
 	{
 		while (r13 != 0x00)
 		{
-			*r14_108 = r14;
-			++r14_108;
+			*r14_n = r14;
+			++r14_n;
 			r13 = (word24) r13 + 0x0000FFFF;
 		}
 	}
 	else
 	{
-		Eq_410 r11_121 = r14;
+		Eq_n r11_n = r14;
 		if (r14 != 0x00)
-			r11_121 = r14 | __swpb(r14);
-		bool C_116 = (bool) cond(r15 & 0x01);
+			r11_n = r14 | __swpb(r14);
+		bool C_n = (bool) cond(r15 & 0x01);
 		if ((r15 & 0x01) != 0x00)
 		{
-			Eq_4213 r15_103 = 0x02 - (r15 & 0x01);
-			Eq_4213 r12_104 = r15_103;
-			r13 -= r15_103;
+			Eq_n r15_n = 0x02 - (r15 & 0x01);
+			Eq_n r12_n = r15_n;
+			r13 -= r15_n;
 			do
 			{
-				*r14_108 = r14;
-				r12_104 = (word24) r12_104 + 0x0000FFFF;
-				++r14_108;
-				C_116 = (bool) cond(r12_104);
-			} while (r12_104 != 0x00);
+				*r14_n = r14;
+				r12_n = (word24) r12_n + 0x0000FFFF;
+				++r14_n;
+				C_n = (bool) cond(r12_n);
+			} while (r12_n != 0x00);
 		}
 		sr &= ~0x01;
-		Eq_45 r12_76 = __rcr(r13, 0x01, C_116);
+		Eq_n r12_n = __rcr(r13, 0x01, C_n);
 		do
 		{
-			*r14_108 = r11_121;
-			r14_108 += 0x02;
-			r12_76 = (word24) r12_76 + 0x0000FFFF;
-		} while (r12_76 != 0x00);
-		Eq_4239 r12_89 = r13 & 0x01;
-		while (r12_89 != 0x00)
+			*r14_n = r11_n;
+			r14_n += 0x02;
+			r12_n = (word24) r12_n + 0x0000FFFF;
+		} while (r12_n != 0x00);
+		Eq_n r12_n = r13 & 0x01;
+		while (r12_n != 0x00)
 		{
-			*r14_108 = r14;
-			++r14_108;
-			r12_89 = (word24) r12_89 + 0x0000FFFF;
+			*r14_n = r14;
+			++r14_n;
+			r12_n = (word24) r12_n + 0x0000FFFF;
 		}
 	}
-	word20 r9_31;
+	word20 r9_n;
 	*r9Out = r9;
-	word20 r11_37;
+	word20 r11_n;
 	*r11Out = r11;
 	return sr;
 }
 
-// 00005ADC: Register Eq_4253 fn00005ADC(Register Eq_222 r10, Register Eq_222 r11, Register Eq_231 r12, Register Eq_231 r13, Register out Eq_247 r15Out)
-Eq_4253 fn00005ADC(Eq_222 r10, Eq_222 r11, Eq_231 r12, Eq_231 r13, Eq_247 & r15Out)
+// 00005ADC: Register Eq_n fn00005ADC(Register Eq_n r10, Register Eq_n r11, Register Eq_n r12, Register Eq_n r13, Register out Eq_n r15Out)
+Eq_n fn00005ADC(Eq_n r10, Eq_n r11, Eq_n r12, Eq_n r13, Eq_n & r15Out)
 {
-	*(union Eq_231 *) 0x0130 = r12;
-	*(union Eq_222 *) 0x0138 = r10;
-	*(union Eq_231 *) 0x0134 = r12;
+	*(union Eq_n *) 0x0130 = r12;
+	*(union Eq_n *) 0x0138 = r10;
+	*(union Eq_n *) 0x0134 = r12;
 	*(ptr16 *) 0x013A = 0x013C;
-	*(union Eq_222 *) 0x0138 = r11;
-	*(union Eq_231 *) 0x0134 = r13;
-	*(union Eq_222 *) 0x0138 = r10;
-	word20 r15_14;
+	*(union Eq_n *) 0x0138 = r11;
+	*(union Eq_n *) 0x0134 = r13;
+	*(union Eq_n *) 0x0138 = r10;
+	word20 r15_n;
 	*r15Out = 0x013A;
 	return 0x013A;
 }
 
-// 00005B04: Register Eq_220 fn00005B04(Register Eq_222 r10, Register Eq_222 r11, Register Eq_220 r12, Register Eq_221 r13)
-Eq_220 fn00005B04(Eq_222 r10, Eq_222 r11, Eq_220 r12, Eq_221 r13)
+// 00005B04: Register Eq_n fn00005B04(Register Eq_n r10, Register Eq_n r11, Register Eq_n r12, Register Eq_n r13)
+Eq_n fn00005B04(Eq_n r10, Eq_n r11, Eq_n r12, Eq_n r13)
 {
-	Eq_45 r8_11 = 0x00;
+	Eq_n r8_n = 0x00;
 	if ((r13 & 0x8000) != 0x00)
 	{
 		r12 = (r12 ^ ~0x00) + 0x01;
 		r13 = (r13 ^ ~0x00) + (r12 < 0x00);
-		r8_11 |= 0x04;
+		r8_n |= 0x04;
 	}
 	if ((r11 & 0x8000) != 0x00)
 	{
 		r10 = (r10 ^ ~0x00) + 0x01;
 		r11 = (r11 ^ ~0x00) + (r10 < 0x00);
-		r8_11 |= 0x08;
+		r8_n |= 0x08;
 	}
-	Eq_1679 r8_26;
-	word20 r13_28;
-	word20 r14_29;
-	word20 r15_30;
-	Eq_220 r12_27;
-	bool C_31 = fn00005B4E(r8_11, r10, r11, r12, r13, out r8_26, out r12_27, out r13_28, out r14_29, out r15_30);
-	Eq_45 r8_32 = __rcr(r8_26, 0x01, C_31);
-	if ((r8_32 & 0x04) != 0x00)
-		r12_27 = (r12_27 ^ ~0x00) + 0x01;
-	if ((r8_32 & 0x08) != 0x00)
-		r12_27 = (r12_27 ^ ~0x00) + 0x01;
-	return r12_27;
+	Eq_n r8_n;
+	word20 r13_n;
+	word20 r14_n;
+	word20 r15_n;
+	Eq_n r12_n;
+	bool C_n = fn00005B4E(r8_n, r10, r11, r12, r13, out r8_n, out r12_n, out r13_n, out r14_n, out r15_n);
+	Eq_n r8_n = __rcr(r8_n, 0x01, C_n);
+	if ((r8_n & 0x04) != 0x00)
+		r12_n = (r12_n ^ ~0x00) + 0x01;
+	if ((r8_n & 0x08) != 0x00)
+		r12_n = (r12_n ^ ~0x00) + 0x01;
+	return r12_n;
 }
 
-// 00005B4E: FlagGroup bool fn00005B4E(Register Eq_45 r8, Register Eq_222 r10, Register Eq_222 r11, Register Eq_220 r12, Register Eq_221 r13, Register out Eq_3723 r8Out, Register out Eq_3724 r12Out, Register out Eq_3725 r13Out, Register out Eq_3726 r14Out, Register out Eq_3727 r15Out)
-bool fn00005B4E(Eq_45 r8, Eq_222 r10, Eq_222 r11, Eq_220 r12, Eq_221 r13, Eq_3723 & r8Out, Eq_3724 & r12Out, Eq_3725 & r13Out, Eq_3726 & r14Out, Eq_3727 & r15Out)
+// 00005B4E: FlagGroup bool fn00005B4E(Register Eq_n r8, Register Eq_n r10, Register Eq_n r11, Register Eq_n r12, Register Eq_n r13, Register out Eq_n r8Out, Register out Eq_n r12Out, Register out Eq_n r13Out, Register out Eq_n r14Out, Register out Eq_n r15Out)
+bool fn00005B4E(Eq_n r8, Eq_n r10, Eq_n r11, Eq_n r12, Eq_n r13, Eq_n & r8Out, Eq_n & r12Out, Eq_n & r13Out, Eq_n & r14Out, Eq_n & r15Out)
 {
-	Eq_222 r15_18;
+	Eq_n r15_n;
 	*r15Out = 0x00;
-	Eq_222 r14_17;
+	Eq_n r14_n;
 	*r14Out = 0x00;
-	bool C_19 = (bool) cond(0x00);
-	Eq_4349 r9_15 = 33;
+	bool C_n = (bool) cond(0x00);
+	Eq_n r9_n = 33;
 	while (true)
 	{
-		r12 = r12 * 0x02 + C_19;
+		r12 = r12 * 0x02 + C_n;
 		*r12Out = r12;
 		r13 = r13 * 0x02 + (r12 < 0x00);
 		*r13Out = r13;
-		--r9_15;
-		Eq_1679 r8_26 = r8 * 0x02 + (r13 < 0x00);
-		*r8Out = r8_26;
-		bool C_30 = (bool) cond(r9_15);
-		if (r9_15 == 0x00)
+		--r9_n;
+		Eq_n r8_n = r8 * 0x02 + (r13 < 0x00);
+		*r8Out = r8_n;
+		bool C_n = (bool) cond(r9_n);
+		if (r9_n == 0x00)
 			break;
-		r8 = __rcr(r8_26, 0x01, C_30);
-		r14_17 = r14_17 * 0x02 + (r8 < 0x00);
-		*r14Out = r14_17;
-		r15_18 = r15_18 * 0x02 + (r14_17 < 0x00);
-		*r15Out = r15_18;
-		C_19 = (bool) cond(r15_18 - r11);
-		if (r15_18 >= r11)
+		r8 = __rcr(r8_n, 0x01, C_n);
+		r14_n = r14_n * 0x02 + (r8 < 0x00);
+		*r14Out = r14_n;
+		r15_n = r15_n * 0x02 + (r14_n < 0x00);
+		*r15Out = r15_n;
+		C_n = (bool) cond(r15_n - r11);
+		if (r15_n >= r11)
 			continue;
-		if (r15_18 == r11)
+		if (r15_n == r11)
 		{
-			C_19 = (bool) cond(r14_17 - r10);
-			if (r14_17 >= r10)
+			C_n = (bool) cond(r14_n - r10);
+			if (r14_n >= r10)
 				continue;
 		}
-		r14_17 -= r10;
-		*r14Out = r14_17;
-		r15_18 = r15_18 - r11 - (r14_17 < 0x00);
-		*r15Out = r15_18;
-		C_19 = (bool) cond(r15_18);
+		r14_n -= r10;
+		*r14Out = r14_n;
+		r15_n = r15_n - r11 - (r14_n < 0x00);
+		*r15Out = r15_n;
+		C_n = (bool) cond(r15_n);
 	}
-	return C_30;
+	return C_n;
 }
 
