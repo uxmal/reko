@@ -101,6 +101,7 @@ namespace Reko.UnitTests.Core.Serialization
                         DisassemblyFilename = "foo.asm",
                         IntermediateFilename = "foo.cod",
                         User = new UserData_v4 {
+                            ExtractResources = true,
                             Procedures =
                             {
                                 new Procedure_v1
@@ -192,6 +193,7 @@ namespace Reko.UnitTests.Core.Serialization
                         User = new UserData
                         {
                             Loader = "CustomLoader",
+                            ExtractResources = true,
                             Procedures =
                             {
                                 {
@@ -571,6 +573,7 @@ namespace Reko.UnitTests.Core.Serialization
         <item key=""Name2"">Sue</item>
       </platform>
       <registerValues />
+      <extractResources>false</extractResources>
     </user>
   </input>
 </project>";
@@ -610,6 +613,7 @@ namespace Reko.UnitTests.Core.Serialization
         <item key=""Name2"">Sue</item>
       </platform>
       <registerValues />
+      <extractResources>false</extractResources>
     </user>
   </input>
 </project>";
@@ -655,6 +659,7 @@ namespace Reko.UnitTests.Core.Serialization
         <item key=""Name2"">Sue</item>
       </platform>
       <registerValues />
+      <extractResources>false</extractResources>
     </user>
   </input>
 </project>";
@@ -674,6 +679,7 @@ namespace Reko.UnitTests.Core.Serialization
                 Platform = platform,
                 User = new UserData
                 {
+                    ExtractResources = true,
                     Globals =
                     {
                         {

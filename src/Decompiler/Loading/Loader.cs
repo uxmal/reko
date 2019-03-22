@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -95,6 +95,8 @@ namespace Reko.Loading
         /// <param name="rawBytes">Image of the executable file.</param>
         /// <param name="loader">.NET Class name of a custom loader (may be null)</param>
         /// <param name="addrLoad">Address into which to load the file.</param>
+        /// <returns>A <see cref="Program"/> if the file format is recognized, or null 
+        /// if the file cannot be recognized.</returns>
         public Program LoadExecutable(string filename, byte[] image, string loader, Address addrLoad)
         {
             ImageLoader imgLoader;
@@ -104,11 +106,15 @@ namespace Reko.Loading
             }
             else
             {
-                imgLoader = FindImageLoader(
-                    filename,
-                    image,
-                    () => CreateDefaultImageLoader(filename, image));
+                imgLoader = FindImageLoader<ImageLoader>(filename, image);
+                if (imgLoader == null)
+                {
+                    imgLoader = CreateDefaultImageLoader(filename, image);
+                }
             }
+            if (imgLoader == null)
+                return null;
+
             if (addrLoad == null)
             {
                 addrLoad = imgLoader.PreferredBaseAddress;     //$REVIEW: Should be a configuration property.
@@ -200,9 +206,9 @@ namespace Reko.Loading
             if (rawFile == null)
             {
                 this.Services.RequireService<DecompilerEventListener>().Warn(
-                    new NullCodeLocation(""),
+                    new NullCodeLocation(filename),
                     "The format of the file is unknown.");
-                return new NullImageLoader(Services, filename, image);
+                return null;
             }
             return CreateRawImageLoader(filename, image, rawFile);
         }
@@ -281,11 +287,11 @@ namespace Reko.Loading
         /// Loads a metadata file into a type library.
         /// </summary>
         /// <param name="fileName"></param>
-        /// <returns></returns>
+        /// <returns>a TypeLibrary instance, or null if the format of the file wasn't recognized.</returns>
         public TypeLibrary LoadMetadata(string fileName, IPlatform platform, TypeLibrary typeLib)
         {
             var rawBytes = LoadImageBytes(fileName, 0);
-            var mdLoader = FindImageLoader<MetadataLoader>(fileName, rawBytes, () => new NullMetadataLoader());
+            var mdLoader = FindImageLoader<MetadataLoader>(fileName, rawBytes);
             var result = mdLoader.Load(platform, typeLib);
             return result;
         }
@@ -314,8 +320,8 @@ namespace Reko.Loading
         /// begining of the program image.
         /// </summary>
         /// <param name="rawBytes"></param>
-        /// <returns>An appropriate image loader if known, a NullLoader if the image format is unknown.</returns>
-        public T FindImageLoader<T>(string filename, byte[] rawBytes, Func<T> defaultLoader)
+        /// <returns>An appropriate image loader if one can be found, otherwise null.
+        public T FindImageLoader<T>(string filename, byte[] rawBytes)
         {
             foreach (LoaderConfiguration e in cfgSvc.GetImageLoaders())
             {
@@ -328,7 +334,7 @@ namespace Reko.Loading
                     return CreateImageLoader<T>(Services, e.TypeName, filename, rawBytes);
                 }
             }
-            return defaultLoader();
+            return default(T);
         }
 
         public bool ImageHasMagicNumber(byte[] image, string magicNumber, string sOffset)

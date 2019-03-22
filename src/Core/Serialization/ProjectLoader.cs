@@ -233,7 +233,10 @@ namespace Reko.Core.Serialization
         {
             var binAbsPath = ConvertToAbsolutePath(projectFilePath, sInput.Filename);
             var bytes = loader.LoadImageBytes(ConvertToAbsolutePath(projectFilePath, sInput.Filename), 0);
-            var sUser = sInput.User ?? new UserData_v4();
+            var sUser = sInput.User ?? new UserData_v4
+            {
+                ExtractResources = true,
+            };
             var address = LoadAddress(sUser, this.arch);
             var archOptions = XmlOptions.LoadIntoDictionary(sUser.Processor?.Options, StringComparer.OrdinalIgnoreCase);
             Program program;
@@ -254,7 +257,9 @@ namespace Reko.Core.Serialization
             }
             else
             {
-                program = loader.LoadExecutable(binAbsPath, bytes, sUser.Loader, address);
+                program = loader.LoadExecutable(binAbsPath, bytes, sUser.Loader, address)
+                    ?? new Program();   // A previous save of the project was able to read the file, 
+                                        // but now we can't...
             }
             LoadUserData(sUser, program, program.User);
             program.Filename = binAbsPath;
@@ -263,6 +268,7 @@ namespace Reko.Core.Serialization
             program.OutputFilename = ConvertToAbsolutePath(projectFilePath, sInput.OutputFilename);
             program.TypesFilename = ConvertToAbsolutePath(projectFilePath, sInput.TypesFilename);
             program.GlobalsFilename = ConvertToAbsolutePath(projectFilePath, sInput.GlobalsFilename);
+            program.ResourcesDirectory = ConvertToAbsolutePath(projectFilePath, sInput.ResourcesDirectory);
             program.EnsureFilenames(program.Filename);
             program.User.LoadAddress = address;
             ProgramLoaded.Fire(this, new ProgramEventArgs(program));
@@ -292,7 +298,9 @@ namespace Reko.Core.Serialization
             }
             else
             {
-                program = loader.LoadExecutable(sInput.Filename, bytes, null, address);
+                program = loader.LoadExecutable(sInput.Filename, bytes, null, address)
+                    ?? new Program();   // A previous save of the project was able to read the file, 
+                                        // but now we can't...
             }
             this.platform = program.Platform;
             program.Filename = ConvertToAbsolutePath(projectFilePath, sInput.Filename);
@@ -427,6 +435,7 @@ namespace Reko.Core.Serialization
             }
             program.User.ShowAddressesInDisassembly = sUser.ShowAddressesInDisassembly;
             program.User.ShowBytesInDisassembly = sUser.ShowBytesInDisassembly;
+            program.User.ExtractResources = sUser.ExtractResources;
         }
 
         private Annotation LoadAnnotation(Annotation_v3 annotation)
@@ -650,7 +659,9 @@ namespace Reko.Core.Serialization
         public MetadataFile LoadMetadataFile(string filename)
         {
             var platform = DeterminePlatform(filename);
-            this.project.LoadedMetadata = loader.LoadMetadata(filename, platform, this.project.LoadedMetadata);
+            this.project.LoadedMetadata = 
+                loader.LoadMetadata(filename, platform, this.project.LoadedMetadata)
+                ?? new TypeLibrary();   // was able to load before, but not now?
             return new MetadataFile
             {
                 Filename = filename,

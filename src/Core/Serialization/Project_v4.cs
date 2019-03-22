@@ -88,6 +88,9 @@ namespace Reko.Core.Serialization
         [XmlElement("global-vars")]
         public string GlobalsFilename;
 
+        [XmlElement("resources")]
+        public string ResourcesDirectory;
+
         [XmlElement("user")]
         public UserData_v4 User;
 
@@ -160,6 +163,10 @@ namespace Reko.Core.Serialization
         [XmlElement("dasmBytes")]
         [DefaultValue(false)]
         public bool ShowBytesInDisassembly;
+
+        [XmlElement("extractResources")]
+        [DefaultValue(true)]
+        public bool ExtractResources;
     }
 
     public class PlatformOptions_v4

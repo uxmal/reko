@@ -219,9 +219,10 @@ namespace Reko.Gui.Forms
             get { return form; }
         }
 
+        //$REFACTOR: only seems to be opened in unit tests?
         public void OpenBinary(string file)
         {
-            OpenBinary(file, (f) => pageInitial.OpenBinary(f));
+            OpenBinary(file, (f) => pageInitial.OpenBinary(f), f => OpenBinaryAs(f));
         }
 
         /// <summary>
@@ -229,13 +230,13 @@ namespace Reko.Gui.Forms
         /// </summary>
         /// <param name="file"></param>
         /// <param name="openAction"></param>
-        public void OpenBinary(string file, Func<string,bool> openAction)
+        public void OpenBinary(string file, Func<string,bool> openAction, Func<string, bool> onFailAction)
         {
             try
             {
                 CloseProject();
                 SwitchInteractor(InitialPageInteractor);
-                if (openAction(file))
+                if (openAction(file) || onFailAction(file))
                 {
                     ProjectFileName = file;
                 }
@@ -248,7 +249,7 @@ namespace Reko.Gui.Forms
             finally
             {
                 Services.RequireService<IStatusBarService>().SetText("");
-        }
+            }
         }
 
         public void OpenBinaryWithPrompt()
@@ -258,7 +259,10 @@ namespace Reko.Gui.Forms
             if (fileName != null)
             {
                 RememberFilenameInMru(fileName);
-                uiSvc.WithWaitCursor(() => OpenBinary(fileName, (f) => pageInitial.OpenBinary(f)));
+                uiSvc.WithWaitCursor(() => OpenBinary(
+                    fileName, 
+                    f => pageInitial.OpenBinary(f),
+                    f => OpenBinaryAs(f)));
             }
         }
 
@@ -307,7 +311,7 @@ namespace Reko.Gui.Forms
                 var typeName = dlg.SelectedArchitectureTypeName;
                 var t = Type.GetType(typeName, true);
                 var asm = (Assembler) t.GetConstructor(Type.EmptyTypes).Invoke(null);
-                OpenBinary(dlg.FileName.Text, (f) => pageInitial.Assemble(f, asm));
+                OpenBinary(dlg.FileName.Text, (f) => pageInitial.Assemble(f, asm), f => false);
                 RememberFilenameInMru(dlg.FileName.Text);
             }
             catch (Exception e)
@@ -317,17 +321,18 @@ namespace Reko.Gui.Forms
             return true;
         }
 
-        public bool OpenBinaryAs()
+        public bool OpenBinaryAs(string initialFilename)
         {
             IOpenAsDialog dlg = null;
             IProcessorArchitecture arch = null;
             try
             {
                 dlg = dlgFactory.CreateOpenAsDialog();
+                dlg.FileName.Text = initialFilename;
                 dlg.Services = sc;
                 dlg.ArchitectureOptions = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
                 if (uiSvc.ShowModalDialog(dlg) != DialogResult.OK)
-                    return true;
+                    return false;
 
                 var rawFileOption = (ListOption)dlg.RawFileTypes.SelectedValue;
                 string archName = null;
@@ -365,10 +370,7 @@ namespace Reko.Gui.Forms
                     EntryPoint = entry,
                 };
 
-                OpenBinary(dlg.FileName.Text, (f) =>
-                    pageInitial.OpenBinaryAs(
-                        f,
-                        details));
+                OpenBinary(dlg.FileName.Text, (f) =>pageInitial.OpenBinaryAs(f, details), f => false);
             }
             catch (Exception ex)
             {
@@ -381,7 +383,7 @@ namespace Reko.Gui.Forms
 
         public void CloseProject()
         {
-            if (decompilerSvc.Decompiler != null && decompilerSvc.Decompiler.Project != null)
+            if (IsDecompilerLoaded)
             {
                 if (uiSvc.Prompt("Do you want to save any changes made to the decompiler project?"))
                 {
@@ -432,8 +434,7 @@ namespace Reko.Gui.Forms
 
         public void RestartRecompilation()
         {
-            if (decompilerSvc.Decompiler == null ||
-                decompilerSvc.Decompiler.Project == null)
+            if (!IsDecompilerLoaded)
                 return;
 
             foreach (var program in decompilerSvc.Decompiler.Project.Programs)
@@ -835,7 +836,7 @@ namespace Reko.Gui.Forms
             if (0 <= iMru && iMru < mru.Items.Count)
             {
                 cmdStatus.Status = MenuStatus.Visible | MenuStatus.Enabled;
-                cmdText.Text = string.Format("&{0} {1}", iMru+1, mru.Items[iMru]);
+                cmdText.Text = string.Format("&{0} {1}", iMru + 1, mru.Items[iMru]);
                 return true;
             }
             return false;
@@ -872,7 +873,7 @@ namespace Reko.Gui.Forms
                 switch (cmdId.ID)
                 {
                 case CmdIds.FileOpen: OpenBinaryWithPrompt(); retval = true; break;
-                case CmdIds.FileOpenAs: retval = OpenBinaryAs(); break;
+                case CmdIds.FileOpenAs: retval = OpenBinaryAs(""); break;
                 case CmdIds.FileAssemble: retval = AssembleFile(); break;
                 case CmdIds.FileSave: Save(); retval = true; break;
                 case CmdIds.FileAddMetadata: AddMetadataFile(); retval = true; break;
@@ -913,7 +914,7 @@ namespace Reko.Gui.Forms
             if (0 <= iMru && iMru < mru.Items.Count)
             {
                 string file = mru.Items[iMru];
-                OpenBinary(file, (f) => pageInitial.OpenBinary(file));
+                OpenBinary(file, (f) => pageInitial.OpenBinary(file), f => OpenBinaryAs(f));
                 RememberFilenameInMru(file);
                 return true;
             }

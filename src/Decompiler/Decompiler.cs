@@ -48,6 +48,7 @@ namespace Reko
         void ReconstructTypes();
         void StructureProgram();
         void WriteDecompilerProducts();
+        void ExtractResources();
 
         void Assemble(string file, Assembler asm);
     }
@@ -89,6 +90,7 @@ namespace Reko
             try
             {
                 Load(filename, loader);
+                ExtractResources();
                 ScanPrograms();
                 AnalyzeDataFlow();
                 ReconstructTypes();
@@ -192,7 +194,7 @@ namespace Reko
         /// <param name="fileName">The filename to load.</param>
         /// <param name="loaderName">Optional .NET class name of a custom
         /// image loader</param>
-        /// <returns>True if what was loaded was an actual project</returns>
+        /// <returns>True if the file could be loaded.</returns>
         public bool Load(string fileName, string loaderName = null)
         {
             eventListener.ShowStatus("Loading source program.");
@@ -200,22 +202,18 @@ namespace Reko
             var projectLoader = new ProjectLoader(this.services, loader, eventListener);
             projectLoader.ProgramLoaded += (s, e) => { RunScriptOnProgramImage(e.Program, e.Program.User.OnLoadedScript); };
             this.Project = projectLoader.LoadProject(fileName, image);
-            bool isProject;
-            if (Project != null)
-            {
-                isProject = true;
-            }
-            else
+            if (Project == null)
             {
                 var program = loader.LoadExecutable(fileName, image, loaderName, null);
+                if (program == null)
+                    return false;
                 this.Project = CreateDefaultProject(fileName, program);
                 this.Project.LoadedMetadata = program.Platform.CreateMetadata();
                 program.EnvironmentMetadata = this.Project.LoadedMetadata;
-                isProject = false;
             }
             BuildImageMaps();
             eventListener.ShowStatus("Source program loaded.");
-            return isProject;
+            return true;
         }
 
         /// <summary>
@@ -267,11 +265,12 @@ namespace Reko
         }
 
         /// <summary>
-        /// Loads a program into memory, but performs no relocations.
+        /// Loads a program into memory using the additional information in 
+        /// <paramref name="raw"/>. Use this to open files with insufficient or
+        /// no metadata.
         /// </summary>
-        /// <param name="fileName"></param>
-        /// <param name="arch"></param>
-        /// <param name="platform"></param>
+        /// <param name="fileName">Name of the file to be loaded.</param>
+        /// <param name="raw">Extra metadata supllied by the user.</param>
         public Program LoadRawImage(string fileName, LoadDetails raw)
         {
             eventListener.ShowStatus("Loading raw bytes.");
@@ -282,11 +281,11 @@ namespace Reko
             return program;
         }
 
-        protected Project CreateDefaultProject(string fileName, Program program)
+        protected Project CreateDefaultProject(string fileNameWithPath, Program program)
         {
-            program.Filename = fileName;
-            program.EnsureFilenames(fileName);
-
+            program.Filename = fileNameWithPath;
+            program.EnsureFilenames(fileNameWithPath);
+            program.User.ExtractResources = true;
             var project = new Project
             {
                 Programs = { program },
@@ -294,11 +293,119 @@ namespace Reko
             return project;
         }
 
-		/// <summary>
-		/// Extracts type information from the typeless rewritten programs.
-		/// </summary>
-		/// <param name="host"></param>
-		/// <param name="ivs"></param>
+        public void ExtractResources()
+        {
+            foreach (var program in project.Programs)
+            {
+                if (program.User.ExtractResources)
+                {
+                    ExtractResources(program);
+                }
+            }
+        }
+
+        public void ExtractResources(Program program)
+        {
+            var prg = program.Resources;
+            if (prg == null)
+                return;
+            var fsSvc = services.RequireService<IFileSystemService>();
+            var resourceDir = program.ResourcesDirectory;
+            if (prg.Name == "PE resources")
+            {
+                try
+                {
+                    fsSvc.CreateDirectory(resourceDir);
+                }
+                catch (Exception ex)
+                {
+                    var diagSvc = services.RequireService<IDiagnosticsService>();
+                    diagSvc.Error(ex, $"Unable to create directory '{0}'.");
+                    return;
+                }
+                foreach (ProgramResourceGroup pr in prg.Resources)
+                {
+                    switch (pr.Name)
+                    {
+                    case "CURSOR":
+                        {
+                            if (!WriteResourceFile(fsSvc, resourceDir, "Cursor", ".cur", pr))
+                                return;
+                        }
+                        break;
+                    case "BITMAP":
+                        {
+                            if (!WriteResourceFile(fsSvc, resourceDir, "Bitmap", ".bmp", pr))
+                                return;
+                        }
+                        break;
+                    case "ICON":
+                        {
+                            if (!WriteResourceFile(fsSvc, resourceDir, "Icon", ".ico", pr))
+                                return;
+                        }
+                        break;
+                    case "FONT":
+                        {
+                            if (!WriteResourceFile(fsSvc, resourceDir, "Font", ".bin", pr))
+                                return;
+                        }
+                        break;
+                    case "NEWBITMAP":
+                        {
+                            if (!WriteResourceFile(fsSvc, resourceDir, "NewBitmap", ".bmp", pr))
+                                return;
+                        }
+                        break;
+
+                    default:
+                        break;
+                    }
+                }
+            }
+        }
+
+        private bool WriteResourceFile(IFileSystemService fsSvc, string outputDir, string ResourceType, string ext, ProgramResourceGroup pr)
+        {
+            var dirPath = Path.Combine(outputDir, ResourceType);
+            try
+            {
+                fsSvc.CreateDirectory(dirPath);
+            }
+            catch (Exception ex)
+            {
+                var diagSvc = services.RequireService<IDiagnosticsService>();
+                diagSvc.Error(ex, $"Unable to create directory '{dirPath}'.");
+                return false;
+            }
+            string path = "";
+            try
+            {
+                foreach (ProgramResourceGroup pr1 in pr.Resources)
+                {
+                    foreach (ProgramResourceInstance pr2 in pr1.Resources)
+                    {
+                        path = Path.Combine(dirPath, pr1.Name + ext);
+                        fsSvc.WriteAllBytes(path, pr2.Bytes);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                var diagSvc = services.RequireService<IDiagnosticsService>();
+                diagSvc.Error(ex, $"Unable to write file '{path}'");
+                return false;
+            }
+            return true;
+        }
+
+
+
+        /// <summary>
+        /// Extracts type information from the typeless rewritten programs.
+        /// </summary>
+        /// <param name="host"></param>
+        /// <param name="ivs"></param>
         public void ReconstructTypes()
         {
             foreach (var program in Project.Programs.Where(p => p.NeedsTypeReconstruction))

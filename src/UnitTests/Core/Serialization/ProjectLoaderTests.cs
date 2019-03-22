@@ -102,7 +102,7 @@ namespace Reko.UnitTests.Core.Serialization
             var typeLib = new TypeLibrary();
             ldr.Setup(l => l.LoadMetadata(It.IsNotNull<string>(), platform.Object, It.IsNotNull<TypeLibrary>()))
                 .Returns(typeLib);
-            oracle.Expect(o => o.QueryPlatform(It.IsNotNull<string>())).Returns(platform.Object).Verifiable();
+            oracle.Setup(o => o.QueryPlatform(It.IsNotNull<string>())).Returns(platform.Object).Verifiable();
             sc.AddService<IOracleService>(oracle.Object);
 
             var prld = new ProjectLoader(sc, ldr.Object, listener.Object);
@@ -120,7 +120,7 @@ namespace Reko.UnitTests.Core.Serialization
             oracle.VerifyAll();
         }
 
-          private void Given_Binary(Mock<ILoader> ldr, IPlatform platform)
+        private void Given_Binary(Mock<ILoader> ldr, IPlatform platform)
         {
             ldr.Setup(l => l.LoadImageBytes(
                 It.IsAny<string>(),
@@ -224,7 +224,7 @@ namespace Reko.UnitTests.Core.Serialization
         public void Prld_PlatformOptions_List()
         {
             var sExp =
-    @"<?xml version=""1.0"" encoding=""utf-8""?>
+@"<?xml version=""1.0"" encoding=""utf-8""?>
 <project xmlns=""http://schemata.jklnet.org/Reko/v4"">
   <arch>testArch</arch>
   <platform>testOS</platform>
@@ -595,6 +595,33 @@ namespace Reko.UnitTests.Core.Serialization
             prld.LoadProject("foo.dcproject", sProject);
 
             listener.Verify();
+        }
+
+        public void Prld_EnableExtractResources()
+        {
+            var sProject = new Project_v4
+            {
+                ArchitectureName = "testArch",
+                PlatformName = "testOS",
+                Inputs =
+                {
+                    new DecompilerInput_v4
+                    {
+                        User = new UserData_v4
+                        {
+                             ExtractResources= true
+                        }
+                    }
+                }
+            };
+
+            var ldr = mockFactory.CreateLoader();
+            Given_TestArch();
+            Given_TestOS();
+            var prld = new ProjectLoader(sc, ldr, listener.Object);
+            var project = prld.LoadProject("foo.dcproject", sProject);
+
+            Assert.IsTrue(project.Programs[0].User.ExtractResources);
         }
     }
 }

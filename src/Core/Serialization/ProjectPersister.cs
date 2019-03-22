@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -49,7 +49,7 @@ namespace Reko.Core.Serialization
         }
 
         /// <summary>
-        /// Takes and absolute path and returns it as a project-relative path.
+        /// Takes an absolute path and returns it as a project-relative path.
         /// </summary>
         /// <param name="projectAbsPath"></param>
         /// <param name="absPath"></param>

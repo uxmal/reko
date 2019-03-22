@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,12 +21,14 @@
 using Reko.Core.Assemblers;
 using Reko.Core;
 using Reko.Core.Serialization;
+using Reko.Core.Services;
 using Reko.Core.Configuration;
 using Reko.Gui;
 using Reko.Loading;
 using System;
 using System.ComponentModel;
 using System.ComponentModel.Design;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -105,29 +107,30 @@ namespace Reko.Gui.Forms
         /// Open the specified file.
         /// </summary>
         /// <param name="file"></param>
-        /// <returns>True if the opened file was a Reko project.</returns>
+        /// <returns>True if the opened file was opened successfully.</returns>
         public bool OpenBinary(string file)
         {
             var ldr = Services.RequireService<ILoader>();
             this.Decompiler = CreateDecompiler(ldr);
             var svc = Services.RequireService<IWorkerDialogService>();
-            bool isOldProject = false;
-            svc.StartBackgroundWork("Loading program", delegate ()
+            bool successfullyLoaded = false;
+            svc.StartBackgroundWork("Loading program", () =>
             {
-                isOldProject = Decompiler.Load(file);
+                successfullyLoaded = Decompiler.Load(file);
             });
-            if (Decompiler.Project == null)
+            if (!successfullyLoaded)
+            {
                 return false;
+            }
+            Decompiler.ExtractResources();
+
             var browserSvc = Services.RequireService<IProjectBrowserService>();
             browserSvc.Load(Decompiler.Project);
             ShowLowLevelWindow();
-            return isOldProject;
+            return true;
         }
 
-        //$TODO: change signature to OpenAs(raw)
-        public bool OpenBinaryAs(
-            string file, 
-            LoadDetails details)
+        public bool OpenBinaryAs(string file, LoadDetails details)
         {
             var ldr = Services.RequireService<ILoader>();
             this.Decompiler = CreateDecompiler(ldr);
@@ -135,6 +138,7 @@ namespace Reko.Gui.Forms
             svc.StartBackgroundWork("Loading program", delegate()
             {
                 Program program = Decompiler.LoadRawImage(file, details);
+                Decompiler.ExtractResources();
             });
             var browserSvc = Services.RequireService<IProjectBrowserService>();
             if (Decompiler.Project != null)

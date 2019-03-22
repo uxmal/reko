@@ -71,10 +71,7 @@ namespace Reko.UnitTests.Loading
 
             Program program = ldr.Object.LoadExecutable("", testImage, null, null);
 
-            Assert.AreEqual("WarningDiagnostic -  - The format of the file is unknown." , eventListener.LastDiagnostic);
-            Assert.AreEqual(0, program.ImageMap.BaseAddress.Offset);
-            Assert.IsNull(program.Architecture);
-            Assert.IsAssignableFrom<DefaultPlatform>(program.Platform);
+            Assert.IsNull(program);
         }
 
         [Test(Description = "Use default settings when loading unknown file formats.")]
@@ -141,7 +138,7 @@ namespace Reko.UnitTests.Loading
             var ldr = new Mock<Loader>(sc);
             ldr.Setup(l => l.LoadImageBytes("", 0)).Returns(testImage);
 
-            var imgLoader = ldr.Object.FindImageLoader<ImageLoader>("", testImage, () => null);
+            var imgLoader = ldr.Object.FindImageLoader<ImageLoader>("", testImage);
 
             Assert.IsInstanceOf<TestImageLoader>(imgLoader);
         }

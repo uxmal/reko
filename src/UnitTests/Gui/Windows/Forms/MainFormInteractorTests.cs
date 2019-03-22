@@ -274,6 +274,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             var program = dcSvc.Object.Decompiler.Project.Programs[0];
             program.User.Procedures.Add(Address.Ptr32(0x12345), p);
             program.User.Heuristics.Add("shingle");
+            program.User.ExtractResources = true;
 
             interactor.Save();
             string s =

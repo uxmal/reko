@@ -56,7 +56,8 @@ namespace Reko.Core
         /// override the file format determination process.</param>
         /// <param name="loadAddress">Address at which to load the binary. This may be null,
         /// in which case the default address of the image loader will be used.</param>
-        /// <returns>Either a successfully loaded <see cref="Reko.Core.Program"/>, or null if 
+        /// <returns>
+        /// Either a successfully loaded <see cref="Reko.Core.Program"/>, or null if 
         /// an appropriate image loader could not be determined or loaded.
         /// </returns>
         Program LoadExecutable(string fileName, byte[] bytes, string loader, Address loadAddress);

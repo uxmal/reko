@@ -31,8 +31,8 @@ namespace Reko.Gui
 	/// </summary>
 	public class MruList
 	{
-		private int itemsMax;
-		private List<string> items;
+        private int itemsMax;
+        private List<string> items;
 
 		public MruList(int itemsMax)
 		{
@@ -40,10 +40,7 @@ namespace Reko.Gui
 			this.items = new List<string>(itemsMax);
 		}
 
-		public IList<string> Items
-		{
-			get { return items; }
-		}
+        public IList<string> Items => items;
 
 		public void Load(IFileSystemService fsSvc, string fileLocation)
 		{
@@ -51,14 +48,14 @@ namespace Reko.Gui
                 return;     // Save ourselves the pain of an exception.
 			try
 			{
-				using (var reader = new StreamReader(fileLocation, new UTF8Encoding(false)))
+				using (var reader = fsSvc.CreateStreamReader(fileLocation, new UTF8Encoding(false)))
 				{
 					string line = reader.ReadLine();
 					while (line != null && items.Count < items.Capacity)
 					{
-						this.items.Add(line.TrimEnd('\r', '\n'));
-						line = reader.ReadLine();
-					}
+                        items.Add(line.TrimEnd('\r', '\n'));
+                        line = reader.ReadLine();
+                    }
 				}
 			}
 			catch (FileNotFoundException)
@@ -70,11 +67,11 @@ namespace Reko.Gui
 		{
 			using (var writer = fsSvc.CreateStreamWriter(fileLocation, false, new UTF8Encoding(false)))
 			{
-				foreach (string line in items)
-				{
-					writer.WriteLine(line);
-				}
-			}
+                foreach (var item in Items)
+                {
+                    writer.WriteLine(item);
+                }
+            }
 		}
 
 		/// <summary>
@@ -84,16 +81,13 @@ namespace Reko.Gui
 
 		public void Use(string item)
 		{
-			for (int i = 0; i < items.Count; ++i)
-			{
-				if ((string) items[i] == item)
-				{
-					items.RemoveAt(i);
-					break;
-				}
-			}
+            var i = items.IndexOf(item);
+            if (i >= 0)
+            {
+                items.RemoveAt(i);
+            }
 
-			items.Insert(0, item);
+            items.Insert(0, item);
 
 			int itemsToKill = items.Count - itemsMax;
 			if (itemsToKill > 0)

@@ -1,1 +1,1 @@
-decompile --heuristic shingle RussianText.exe
+decompile --heuristic shingle --extract-resources no RussianText.exe

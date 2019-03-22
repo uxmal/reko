@@ -299,7 +299,6 @@ namespace Reko.ImageLoaders.MzExe
             List<ProgramResource> items = rsrcLoader.Load();
             program.Resources.Resources.AddRange(items);
             program.Resources.Name = "PE resources";
-
             return program;
         }
 

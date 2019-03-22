@@ -86,6 +86,11 @@ namespace Reko.Core
         /// If set, display bytes in the written disassembly file.
         /// </summary>
         public bool ShowBytesInDisassembly { get; set; }
+
+        /// <summary>
+        /// If set, extract any embedded resources.
+        /// </summary>
+        public bool ExtractResources { get; set; }
     }
 
     public class Annotation

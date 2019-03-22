@@ -339,19 +339,26 @@ namespace Reko.Core
         public string GlobalsFilename { get; set; }
 
         /// <summary>
-        /// Policy to use when giving names to things.
+        /// The name of the directory in which embedded resources will be written.
         /// </summary>
-        public NamingPolicy NamingPolicy { get; set; }
+        public string ResourcesDirectory { get; set; }
 
         public void EnsureFilenames(string fileName)
         {
+            var dir = Path.GetDirectoryName(fileName) ?? "";
             this.DisassemblyFilename = DisassemblyFilename ?? Path.ChangeExtension(fileName, ".asm");
             this.IntermediateFilename = IntermediateFilename ?? Path.ChangeExtension(fileName, ".dis");
             this.OutputFilename = OutputFilename ?? Path.ChangeExtension(fileName, ".c");
             this.TypesFilename = TypesFilename ?? Path.ChangeExtension(fileName, ".h");
             this.GlobalsFilename = GlobalsFilename ?? Path.ChangeExtension(fileName, ".globals.c");
+            this.ResourcesDirectory = ResourcesDirectory ?? Path.Combine(dir, "resources");
         }
-       
+
+        /// <summary>
+        /// Policy to use when giving names to things.
+        /// </summary>
+        public NamingPolicy NamingPolicy { get; set; }
+
         // Convenience functions.
         public EndianImageReader CreateImageReader(IProcessorArchitecture arch, Address addr)
         {

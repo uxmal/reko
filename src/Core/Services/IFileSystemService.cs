@@ -34,13 +34,16 @@ namespace Reko.Core.Services
         Stream CreateFileStream(string filename, FileMode mode, FileAccess access);
         Stream CreateFileStream(string filename, FileMode mode, FileAccess access, FileShare share);
         TextWriter CreateStreamWriter(string filename, bool append, Encoding enc);
+        TextReader CreateStreamReader(string fileLocation, Encoding enc);
 
         XmlWriter CreateXmlWriter(string filename);
+        void CreateDirectory(string dirPath);
         string GetCurrentDirectory();
         bool FileExists(string filePath);
         bool IsPathRooted(string path);
         string MakeRelativePath(string fromPath, string toPath);
         byte[] ReadAllBytes(string filePath);
+        void WriteAllBytes(string path, byte[] bytes);
     }
 
     public class FileSystemServiceImpl : IFileSystemService
@@ -77,12 +80,22 @@ namespace Reko.Core.Services
             return new StreamWriter(filename, append, enc);
         }
 
+        public TextReader CreateStreamReader(string filename, Encoding enc)
+        {
+            return new StreamReader(filename, enc);
+        }
+
         public XmlWriter CreateXmlWriter(string filename)
         {
             return new XmlTextWriter(filename, new UTF8Encoding(false))
             {
                 Formatting = Formatting.Indented
             };
+        }
+
+        public void CreateDirectory(string dirPath)
+        {
+            Directory.CreateDirectory(dirPath);
         }
 
         public string GetCurrentDirectory()
@@ -129,6 +142,11 @@ namespace Reko.Core.Services
         public byte[] ReadAllBytes(string filePath)
         {
             return File.ReadAllBytes(filePath);
+        }
+
+        public void WriteAllBytes(string filePath, byte[] bytes)
+        {
+            File.WriteAllBytes(filePath, bytes);
         }
     }
 }
