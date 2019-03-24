@@ -1,7 +1,4 @@
 language: csharp
-# There is a bug in latest verion of mono.
-# See https://github.com/travis-ci/travis-ci/issues/10221 for details
-mono: 5.14.0
 solution: src/Reko-decompiler.sln
 sudo: required
 
