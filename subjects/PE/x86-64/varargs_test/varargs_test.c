@@ -795,7 +795,6 @@ void fn0000000140001BFC(word32 edx, Eq_n ebx, Eq_n qwArg08, Eq_n qwArg10, Eq_n q
 	ui32 r8d_n = (word32) (uint64) globals->dw40003614;
 	__cpuid(0x01, 0x00, &0x01, &ebx_n, &0x00, &edx_n);
 	byte bLoc20_n = SLICE(dwLoc20 & 0x00, byte, 0);
-	bLoc20_n = SLICE(dwLoc20 & 0x00, byte, 0);
 	word32 r11d_n = (word32) (uint64) ((word32) (uint64) ((word32) (uint64) ((word32) (uint64) ebx_n ^ 1752462657) | (word32) ((uint64) ((word32) ((uint64) edx) ^ 0x69746E65))) | 0x444D4163);
 	uint64 rdx_n = DPB(rdx_n, edx_n, 0);
 	rdx_n = DPB(rdx_n, edx_n, 0);
@@ -836,7 +835,6 @@ l0000000140001CE9:
 	if (false)
 	{
 		__cpuid(0x07, 0x00, &0x07, &ebx_n, &0x00, &edx_n);
-		bLoc20_n = SLICE(ebx_n, byte, 0);
 		bLoc20_n = SLICE(ebx_n, byte, 0);
 		if (!__bt(ebx_n, 0x09))
 			globals->dw40003614 = (word32) (uint64) (r8d_n | 0x02);

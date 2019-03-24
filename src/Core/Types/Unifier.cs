@@ -23,6 +23,7 @@ using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Reko.Core.Types
 {
@@ -731,11 +732,11 @@ namespace Reko.Core.Types
         public UnionType UnifyUnions(UnionType u1, UnionType u2)
 		{
 			UnionType u = new UnionType(null, null);
-			foreach (UnionAlternative a in u1.Alternatives.Values)
+			foreach (UnionAlternative a in u1.Alternatives.Values.ToList())
 			{
 				UnifyIntoUnion(u, a.DataType);
 			}
-			foreach (UnionAlternative a in u2.Alternatives.Values)
+			foreach (UnionAlternative a in u2.Alternatives.Values.ToList())
 			{
 				UnifyIntoUnion(u, a.DataType);
 			}

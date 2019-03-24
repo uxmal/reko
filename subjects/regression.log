@@ -2,7 +2,7 @@
 === Elf\ARM\angr-685\RTOSDemo.axf
 *** Elf\ARM\angr-685\RTOSDemo.axf
 0000951A: error: An error occurred while processing the statement Mem21[r3_14 + 0x00000000:word32] = Mem19[r3_14 - r4_11 + 0x00000000:word32].
-    Not handling (ptr32 (struct (0 T_7538 t0000))) and (ptr32 (struct (0 (arr T_9678) a0000))) yet
+    Not handling (ptr32 (struct (0 T_7538 t0000))) and (ptr32 (struct (0 (arr T_9678) a0000))) yet.
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 377
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 227
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -433,43 +433,43 @@ Parameter name: key
 : warning: Recursion too deep in PtrPrimitiveReplacer
 : error: Error when reconstructing types.
     Way too deep
-       at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 76
-   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 62
-   at Reko.Core.Types.Unifier.IsCompatibleWithPointer(Pointer ptrA, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 171
-   at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 111
-   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 62
-   at Reko.Core.Types.Unifier.IsCompatibleWithPointer(Pointer ptrA, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 171
-   at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 111
-   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 62
-   at Reko.Core.Types.Unifier.IsCompatibleWithPointer(Pointer ptrA, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 171
-   at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 111
-   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 62
-   at Reko.Core.Types.Unifier.IsCompatibleWithPointer(Pointer ptrA, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 171
-   at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 111
-   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 62
-   at Reko.Core.Types.Unifier.IsCompatibleWithPointer(Pointer ptrA, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 171
-   at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 111
-   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 62
-   at Reko.Core.Types.Unifier.IsCompatibleWithPointer(Pointer ptrA, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 171
-   at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 111
-   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 62
-   at Reko.Core.Types.Unifier.IsCompatibleWithPointer(Pointer ptrA, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 171
-   at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 111
-   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 62
-   at Reko.Core.Types.Unifier.IsCompatibleWithPointer(Pointer ptrA, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 171
-   at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 111
-   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 62
-   at Reko.Core.Types.Unifier.IsCompatibleWithPointer(Pointer ptrA, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 171
-   at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 111
-   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 62
-   at Reko.Core.Types.Unifier.IsCompatibleWithPointer(Pointer ptrA, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 171
-   at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 111
-   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 62
-   at Reko.Core.Types.Unifier.IsCompatibleWithPointer(Pointer ptrA, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 171
-   at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 111
-   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 62
-   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 50
-   at Reko.Core.Types.Unifier.UnifyIntoUnion(UnionType u, DataType dt) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 464
+       at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 77
+   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 63
+   at Reko.Core.Types.Unifier.IsCompatibleWithPointer(Pointer ptrA, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 172
+   at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 112
+   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 63
+   at Reko.Core.Types.Unifier.IsCompatibleWithPointer(Pointer ptrA, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 172
+   at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 112
+   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 63
+   at Reko.Core.Types.Unifier.IsCompatibleWithPointer(Pointer ptrA, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 172
+   at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 112
+   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 63
+   at Reko.Core.Types.Unifier.IsCompatibleWithPointer(Pointer ptrA, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 172
+   at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 112
+   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 63
+   at Reko.Core.Types.Unifier.IsCompatibleWithPointer(Pointer ptrA, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 172
+   at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 112
+   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 63
+   at Reko.Core.Types.Unifier.IsCompatibleWithPointer(Pointer ptrA, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 172
+   at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 112
+   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 63
+   at Reko.Core.Types.Unifier.IsCompatibleWithPointer(Pointer ptrA, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 172
+   at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 112
+   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 63
+   at Reko.Core.Types.Unifier.IsCompatibleWithPointer(Pointer ptrA, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 172
+   at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 112
+   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 63
+   at Reko.Core.Types.Unifier.IsCompatibleWithPointer(Pointer ptrA, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 172
+   at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 112
+   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 63
+   at Reko.Core.Types.Unifier.IsCompatibleWithPointer(Pointer ptrA, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 172
+   at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 112
+   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 63
+   at Reko.Core.Types.Unifier.IsCompatibleWithPointer(Pointer ptrA, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 172
+   at Reko.Core.Types.Unifier.DoAreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 112
+   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b, Int32 depth) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 63
+   at Reko.Core.Types.Unifier.AreCompatible(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 51
+   at Reko.Core.Types.Unifier.UnifyIntoUnion(UnionType u, DataType dt) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 465
    at Reko.Typing.TypeTransformer.FactorDuplicateAlternatives(UnionType u) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 81
    at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 430
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
@@ -644,7 +644,7 @@ fn0000000000407EA0: error: An internal error occurred while building the express
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 85
 l0000000000407EED: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
 000000000040A2DA: error: An error occurred while processing the statement branch Mem9[rax_16 - 0x0000000000000001 + 0x0000000000000000:byte] == 0x2F l000000000040A2EE.
-    Not handling (ptr64 (struct (0 T_12083 t0000))) and (union (ui64 u0) (ptr64 u1)) yet
+    Not handling (ptr64 (struct (0 T_12079 t0000))) and (union (ui64 u0) (ptr64 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 396
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -657,7 +657,7 @@ l0000000000407EED: warning: Phi functions will be ignored by type analysis. This
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 85
 000000000040BE61: error: An error occurred while processing the statement ST523[Top - 1 + 0x00:real64] = (real64) rdi.
-    Not handling (ptr8 (struct (0 T_14256 t0000))) and (union (8 u1) (int8 u0)) yet
+    Not handling (ptr8 (struct (0 T_14242 t0000))) and (union (8 u1) (int8 u0)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 396
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -668,7 +668,7 @@ l0000000000407EED: warning: Phi functions will be ignored by type analysis. This
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 87
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 85
 000000000040C39F: error: An error occurred while processing the statement word64 rax_1151 = memcpy(r9_1108 - r15_1097, fp - 0x0000000000000078 + r14_1098, r15_1097).
-    Pulling difference ptr64 and (union ((ptr64 (struct (0 char b0000) (287 T_14987 t0287) (288 T_15203 t0288))) u0) (size_t u1))
+    Pulling difference ptr64 and (union ((ptr64 (struct (0 char b0000) (287 T_14957 t0287) (288 T_15164 t0288))) u0) (size_t u1))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 109
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -678,7 +678,7 @@ l0000000000407EED: warning: Phi functions will be ignored by type analysis. This
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 85
 000000000040D641: error: An error occurred while processing the statement word64 rdx_131 = qwLoc30_289 - qwLoc40_293.
-    Pulling difference (ptr64 (struct (0 T_17133 t0000))) and (union (uint64 u1) (ptr64 u0))
+    Pulling difference (ptr64 (struct (0 T_17086 t0000))) and (union (uint64 u1) (ptr64 u0))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 109
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -686,7 +686,7 @@ l0000000000407EED: warning: Phi functions will be ignored by type analysis. This
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 85
 000000000040DBC3: error: An error occurred while processing the statement word64 rdx_1126 = rdx_1118 - rbx_1029.
-    Pulling difference (ptr64 (struct (0 T_8 t0000))) and (union ((ptr64 (struct (0 (arr T_18078) a0000))) u1) (uint64 u0) (size_t u2))
+    Pulling difference (ptr64 (struct (0 T_8 t0000))) and (union ((ptr64 (struct (0 (arr T_18013) a0000))) u1) (uint64 u0) (size_t u2))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 109
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -855,7 +855,7 @@ l0000000000400E2D: warning: Non-integral switch expression
 000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00002FE6: error: An error occurred while processing the statement branch d0 - d5_830 >=u 0x00000000 l00002F9E.
-    Pulling difference (ptr32 (struct 0004 (0 (ptr32 (struct (0 T_4306 t0000))) ptr0000))) and (union (int32 u0) (uint32 u1))
+    Pulling difference (ptr32 (struct 0004 (0 (ptr32 (struct (0 T_4304 t0000))) ptr0000))) and (union (int32 u0) (uint32 u1))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 109
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -874,7 +874,7 @@ l0000000000400E2D: warning: Non-integral switch expression
 000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000326E: error: An error occurred while processing the statement branch d0 - d5_830 >=u 0x00000000 l00003226.
-    Pulling difference (ptr32 (struct 0004 (0 (ptr32 (struct (0 T_4839 t0000))) ptr0000))) and (union (int32 u0) (uint32 u1))
+    Pulling difference (ptr32 (struct 0004 (0 (ptr32 (struct (0 T_4837 t0000))) ptr0000))) and (union (int32 u0) (uint32 u1))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 109
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -893,7 +893,7 @@ l0000000000400E2D: warning: Non-integral switch expression
 000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000300A: error: An error occurred while processing the statement branch d0 - d5_830 >=u 0x00000000 l00002FC2.
-    Pulling difference (ptr32 (struct 0004 (0 (ptr32 (struct (0 T_4306 t0000))) ptr0000))) and (union (int32 u0) (uint32 u1))
+    Pulling difference (ptr32 (struct 0004 (0 (ptr32 (struct (0 T_4304 t0000))) ptr0000))) and (union (int32 u0) (uint32 u1))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 272
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 109
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -955,7 +955,7 @@ l0000000000400E2D: warning: Non-integral switch expression
 0800:03FF: warning: Procedure __setargv previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:0392: warning: Procedure __setargv previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:0BA1: error: An error occurred while processing the statement word16 di_45 = si_102 - (fp - 0x0084).
-    Not handling mp16 and mp16 yet
+    Not handling mp16 and mp16 yet.
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 383
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 227
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -963,7 +963,7 @@ l0000000000400E2D: warning: Non-integral switch expression
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 85
 0800:1358: error: An error occurred while processing the statement word16 di_327 = di_312 - (fp - 0x008A).
-    Not handling (memptr T_2180 (struct (0 T_3196 t0000))) and mp16 yet
+    Not handling (memptr T_2180 (struct (0 T_3196 t0000))) and mp16 yet.
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 383
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 227
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -1032,7 +1032,7 @@ fn053A: error: An error occurred while rewriting procedure to high-level languag
 07E4: warning: Procedure fn07BA previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 07E4: warning: Procedure fn07BA previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0D22: error: An error occurred while processing the statement word16 r1_53 = (fp - 0x0006 << 1) + (fp - 0x0006).
-    Not handling ptr16 and (union (cui16 u1) (ptr16 u0)) yet
+    Not handling ptr16 and (union (cui16 u1) (ptr16 u0)) yet.
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 377
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 227
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -1052,7 +1052,7 @@ fn053A: error: An error occurred while rewriting procedure to high-level languag
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 85
 02DE: error: An error occurred while processing the statement Mem151[r4_91 - 0x003E + 0x0000:byte] = 0x0000.
-    Not handling (ptr16 (struct (0 T_3647 t0000))) and (union (cu16 u0) (ptr16 u1)) yet
+    Not handling (ptr16 (struct (0 T_3520 t0000))) and (union (cu16 u0) (ptr16 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 396
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -1740,7 +1740,7 @@ Parameter name: key
    at Reko.Analysis.WebBuilder.InsertDeclarations() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 89
    at Reko.Analysis.WebBuilder.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 107
 0800:36CE: error: An error occurred while processing the statement branch Mem71[ptrLoc0A_321 - 0x0001 + 0x0000:byte] != 0x3A l0800_3732.
-    Not handling (ptr32 (struct (0 T_15514 t0000))) and (union (ptr32 u1) (segptr32 u0)) yet
+    Not handling (ptr32 (struct (0 T_15473 t0000))) and (union (ptr32 u1) (segptr32 u0)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 396
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -1754,7 +1754,7 @@ Parameter name: key
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 85
 l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
 0800:9A95: error: An error occurred while processing the statement word16 di_325 = di_311 - (fp - 0x0048).
-    Not handling (memptr T_43925 (struct (0 T_44735 t0000))) and mp16 yet
+    Not handling (memptr T_43992 (struct (0 T_44785 t0000))) and mp16 yet.
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 383
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 227
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -1762,7 +1762,7 @@ l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 85
 0800:BBF7: error: An error occurred while processing the statement branch Mem7[ptrArg02 - 0x0001 + 0x0000:byte] != 0x2E l0800_BBFC.
-    Not handling (ptr32 (struct (0 T_51109 t0000))) and (union (ptr32 u1) (segptr32 u0)) yet
+    Not handling (ptr32 (struct (0 T_51043 t0000))) and (union (ptr32 u1) (segptr32 u0)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 396
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -1775,7 +1775,7 @@ l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 85
 0800:C743: error: An error occurred while processing the statement si_175 = wLoc06_297 - (fp - 0x0090).
-    Not handling mp16 and mp16 yet
+    Not handling mp16 and mp16 yet.
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 383
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 227
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -1783,7 +1783,7 @@ l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 54
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 85
 1483:0C7D: error: An error occurred while processing the statement byte al_105 = (byte) (bx_65 - 0x0903 - (SLICE(dh_ax_152, byte, 16) <u 0x00)).
-    Not handling (memptr T_54067 (struct (0 T_54118 t0000) (3303 T_54110 t3303))) and bool yet
+    Not handling (memptr T_53970 (struct (0 T_54021 t0000) (3303 T_54013 t3303))) and bool yet.
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 383
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 227
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -1793,13 +1793,13 @@ l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 85
 1483:0DF5: error: An error occurred while processing the statement CZ_184 = SLICE(cond(ax_227 - (sp_202 - 0x001C)), bool, 2) (alias).
-    Not handling (memptr T_54850 (struct 019E (0 word16 w0000))) and (memptr T_54850 (struct 019E (0 word16 w0000))) yet
+    Not handling (memptr T_54753 (struct 019E (0 word16 w0000))) and (memptr T_54753 (struct 019E (0 word16 w0000))) yet.
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 383
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 227
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
    at Reko.Typing.ExpressionTypeDescender.VisitConditionOf(ConditionOf cof, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 443
    at Reko.Core.Expressions.ConditionOf.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\ConditionOf.cs:line 66
-   at Reko.Typing.ExpressionTypeDescender.VisitSlice(Slice slice, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 764
+   at Reko.Typing.ExpressionTypeDescender.VisitSlice(Slice slice, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 765
    at Reko.Core.Expressions.Slice.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\Slice.cs:line 61
    at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 146
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 54
@@ -1809,4 +1809,4 @@ l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
 Stripping SSA identifier numbers
-Decompiled 56 binaries in 91.28 seconds ---
+Decompiled 56 binaries in 95.99 seconds ---

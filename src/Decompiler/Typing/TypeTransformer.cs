@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@ namespace Reko.Typing
 	/// legal C-like data types.</summary>
 	/// <remarks>
 	/// Much of the type inference code in this namespace was inspired by the master's thesis
-	/// "Entwicklung eines Typanalysesystem für einen Decompiler", 2004, by Raimar Falke.
+	/// "Entwicklung eines Typanalysesystem fÃ¼r einen Decompiler", 2004, by Raimar Falke.
 	/// </remarks>
 	public class TypeTransformer : IDataTypeVisitor<DataType>
 	{

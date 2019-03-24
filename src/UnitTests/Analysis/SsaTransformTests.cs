@@ -4009,5 +4009,68 @@ SsaSequenceInALoop_exit:
             #endregion
             AssertProcedureCode(expected);
         }
+
+        [Test]
+        public void SsaRepeatedAliasedReadsFromStack()
+        {
+            var sExp =
+@"fp:fp
+    def:  def fp
+    uses: r63_2 = fp
+r63_2: orig: r63
+    def:  r63_2 = fp
+    uses: use r63_2
+Mem0:Mem
+    def:  def Mem0
+r1_4: orig: r1
+    def:  r1_4 = dwArg08
+    uses: use r1_4
+tmp1_5: orig: tmp1
+    def:  tmp1_5 = wArg08_8
+tmp2_6: orig: tmp2
+    def:  tmp2_6 = wArg08_8
+dwArg08:Stack +0008
+    def:  def dwArg08
+    uses: r1_4 = dwArg08
+          wArg08_8 = SLICE(dwArg08, word16, 0) (alias)
+wArg08_8: orig: wArg08
+    def:  wArg08_8 = SLICE(dwArg08, word16, 0) (alias)
+    uses: tmp1_5 = wArg08_8
+          tmp2_6 = wArg08_8
+// proc1
+// Return size: 0
+define proc1
+proc1_entry:
+	def fp
+	def Mem0
+	def dwArg08
+	wArg08_8 = SLICE(dwArg08, word16, 0) (alias)
+	// succ:  l1
+l1:
+	r63_2 = fp
+	r1_4 = dwArg08
+	tmp1_5 = wArg08_8
+	tmp2_6 = wArg08_8
+	return
+	// succ:  proc1_exit
+proc1_exit:
+	use r1_4
+	use r63_2
+======
+";
+            RunTest_FrameAccesses(sExp, m =>
+            {
+                var fp = m.Frame.FramePointer;
+                var r1 = m.Reg32("r1", 1);
+                var sp = m.Register(m.Architecture.StackRegister);
+                var tmp1 = m.Temp(PrimitiveType.Word16, "tmp1");
+                var tmp2 = m.Temp(PrimitiveType.Word16, "tmp2");
+                m.Assign(sp, fp);
+                m.Assign(r1, m.Mem32(m.IAdd(sp, 8)));
+                m.Assign(tmp1, m.Mem16(m.IAdd(sp, 8)));
+                m.Assign(tmp2, m.Mem16(m.IAdd(sp, 8)));
+                m.Return();
+            });
+        }
     }
 }

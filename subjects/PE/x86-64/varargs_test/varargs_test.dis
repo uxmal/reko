@@ -2112,7 +2112,6 @@ l0000000140001BFC:
 	word32 r8d_108 = (word32) (uint64) Mem23[0x0000000140003614:word32]
 	__cpuid(0x00000001, 0x00000000, &0x00000001, &ebx_137, &0x00000000, &edx_52)
 	byte bLoc20_235 = SLICE(dwLoc20 & 0x00000000, byte, 0)
-	bLoc20_235 = SLICE(dwLoc20 & 0x00000000, byte, 0) (alias)
 	word32 r11d_96 = (word32) (uint64) ((word32) (uint64) ((word32) (uint64) ((word32) (uint64) ebx_137 ^ 0x68747541) | (word32) ((uint64) ((word32) ((uint64) edx) ^ 0x69746E65))) | 0x444D4163)
 	word64 rdx_163 = DPB(rdx_163, edx_52, 0)
 	rdx_163 = DPB(rdx_163, edx_52, 0) (alias)
@@ -2198,7 +2197,6 @@ l0000000140001D07:
 
 l0000000140001D17:
 	__cpuid(0x00000007, 0x00000000, &0x00000007, &ebx_137, &0x00000000, &edx_52)
-	bLoc20_235 = SLICE(ebx_137, byte, 0) (alias)
 	bLoc20_235 = SLICE(ebx_137, byte, 0) (alias)
 	branch __bt(ebx_137, 0x09) l0000000140001D3B
 // DataOut:

@@ -758,24 +758,37 @@ namespace Reko.Analysis
                     // Exact match
                     return elem.sid;
                 }
-                var sidSlice = CreateSliceStatement(elem.sid, elem.interval, elem.interval.Start - start, bs);
+                var sidSlice = EnsureSliceStatement(elem.sid, elem.interval, elem.interval.Start - start, bs);
                 return sidSlice;
             }
 
             /// <summary>
-            /// Create a slice statement to extract a subinterval from 
+            /// Create a slice statement to extract a subinterval from, unless one already exists, in
+            /// which case we reuse it.
             /// <paramref name="sidFrom"/>.
             /// </summary>
             /// <remarks>
             /// The source, or defined identifer is "wider" than the destinatior or
             /// used storage. We must provide a slice of the defined identifier.
             /// </remarks>
-            private SsaIdentifier CreateSliceStatement(SsaIdentifier sidFrom, Interval<int> intv, int offset, SsaBlockState bs)
+            private SsaIdentifier EnsureSliceStatement(SsaIdentifier sidFrom, Interval<int> intv, int offset, SsaBlockState bs)
             {
                 var bitSize = (intv.End - intv.Start) * DataType.BitsPerByte;
                 var bitOffset = offset * DataType.BitsPerByte;
                 var idSlice = outer.ssa.Procedure.Frame.EnsureStackVariable(intv.Start, PrimitiveType.CreateWord(bitSize));
                 var e = this.outer.arch.Endianness.MakeSlice(idSlice.DataType, sidFrom.Identifier, bitOffset);
+
+                // Find existing alias of that size.
+                foreach (var use in sidFrom.Uses)
+                {
+                    if (use.Instruction is AliasAssignment alias && 
+                        alias.Src is Slice slice && 
+                        slice.Offset == e.Offset && 
+                        slice.DataType.BitSize == e.DataType.BitSize)
+                    {
+                        return ssaIds[alias.Dst];
+                    }
+                }
                 var sidUse = sidFrom;
 
                 //$TODO: perhaps this alias has already been computed?

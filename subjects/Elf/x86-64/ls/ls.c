@@ -4094,7 +4094,6 @@ Eq_n fn0000000000407EA0(Eq_n rcx, Eq_n dl, Eq_n rbx, Eq_n rbp, word32 esi, Eq_n 
 	r13d_n = (word32) (uint64) esi;
 	rbx_n = rdi;
 	bLoc038C_n = SLICE(edx, byte, 0);
-	bLoc038C_n = SLICE(edx, byte, 0);
 	rcx_n = globals->t61B1B0;
 	r9_n = globals->t61B1C0;
 	if (rcx_n == globals->t61B1B8)
@@ -4108,7 +4107,6 @@ Eq_n fn0000000000407EA0(Eq_n rcx, Eq_n dl, Eq_n rbx, Eq_n rbp, word32 esi, Eq_n 
 		r9_n = rax_n;
 		rcx_n = globals->t61B1B0;
 	}
-	bLoc038C_n = ϕ(bLoc038C_n, bLoc038C_n);
 	rbx_n = ϕ(rbx_n, rbx_n);
 	r9_n = ϕ(r9_n, r9_n);
 	rcx_n = ϕ(rcx_n, rcx_n);
@@ -6387,18 +6385,8 @@ Eq_n fn000000000040BD70(Eq_n rcx, word32 edx, Eq_n rsi, Eq_n rdi, Eq_n r8, struc
 	word32 eax_n = (word32) (uint64) ((word32) (uint64) edx & 0x20);
 	Eq_n rax_n = DPB(rax_n, strlen(r15_n), 0);
 	word32 eax_n = (word32) (uint64) ((word32) (uint64) edx & 0x03);
-	bLocC8_n = SLICE(edx, byte, 0);
-	bLocC8_n = SLICE(edx, byte, 0);
 	byte bLocC8_n = SLICE(edx, byte, 0);
-	bLocC8_n = SLICE(edx, byte, 0);
-	bLocC8_n = SLICE(edx, byte, 0);
-	bLocC8_n = SLICE(edx, byte, 0);
 	word24 nLocC7_n = SLICE(edx, word24, 8);
-	nLocC7_n = SLICE(edx, word24, 8);
-	nLocC7_n = SLICE(edx, word24, 8);
-	nLocC7_n = SLICE(edx, word24, 8);
-	nLocC7_n = SLICE(edx, word24, 8);
-	nLocC7_n = SLICE(edx, word24, 8);
 	ui32 v22_n = ((word32) (uint64) (0x00 - SLICE(cond(eax_n - 0x01), bool, 1)) & ~0x17) + 0x0400;
 	byte * rbp_n = rax_n->ptr0010;
 	Eq_n r11_n = rax_n;
@@ -7980,11 +7968,6 @@ Eq_n fn000000000040D8A0(Eq_n rcx, Eq_n rdx, Eq_n rbx, Eq_n rbp, Eq_n rsi, Eq_n r
 	struct Eq_n * rsp_n = fp - 0x00F8;
 	Eq_n qwLocD0_n = rdi;
 	word56 nLocD7_n = SLICE(rsi, word56, 8);
-	word56 nLocD7_n = SLICE(rsi, word56, 8);
-	word56 nLocD7_n = SLICE(rsi, word56, 8);
-	word56 nLocD7_n = SLICE(rsi, word56, 8);
-	word56 nLocD7_n = SLICE(rsi, word56, 8);
-	word56 nLocD7_n = SLICE(rsi, word56, 8);
 	word32 dwLocC4_n = r8d;
 	word32 dwLoc68_n = r9d;
 	Eq_n qwLocA0_n = qwArg08;
@@ -9108,7 +9091,6 @@ l000000000040EE52:
 									}
 									r9_n = DPB(r9_n, r9b_n, 0);
 									dwLoc04E0 = SLICE(rbx_n, word32, 0);
-									dwLoc04E0 = SLICE(rbx_n, word32, 0);
 									qwLoc04F0 = rcx_n;
 									rsi_n = r15_n;
 									rdi_n = r12_n;
@@ -9362,7 +9344,6 @@ l0000000000410EF0:
 	*rax_n = 0x00;
 	Eq_n rax_n = DPB(rax_n, strtoul(rdi, r15_n, (uint64) r14d_n), 0);
 	word32 dwLoc4C_n = SLICE(rax_n, word32, 32);
-	dwLoc4C_n = SLICE(rax_n, word32, 32);
 	Eq_n r14_n = *r15_n;
 	Eq_n rbx_n = rax_n;
 	if (r14_n != rdi)
@@ -9553,7 +9534,6 @@ l00000000004113C0:
 	*rax_n = 0x00;
 	Eq_n rax_n = DPB(rax_n, __strtoul_internal(rdi, r15_n, (uint64) r14d_n, 0x00), 0);
 	word32 dwLoc4C_n = SLICE(rax_n, word32, 32);
-	dwLoc4C_n = SLICE(rax_n, word32, 32);
 	Eq_n r14_n = *r15_n;
 	Eq_n rbx_n = rax_n;
 	r8 = rax_n;
