@@ -828,11 +828,9 @@ void fn0EA8(struct Eq_n * r3, word16 wArg00)
 	}
 }
 
-// 0EF8: void fn0EF8(Register (ptr16 Eq_n) r4, Register (ptr16 word16) r5, Stack word16 wArg00, Stack Eq_n bArg01)
-void fn0EF8(struct Eq_n * r4, word16 * r5, word16 wArg00, Eq_n bArg01)
+// 0EF8: void fn0EF8(Register (ptr16 Eq_n) r4, Register (ptr16 word16) r5, Stack Eq_n wArg00, Stack Eq_n bArg01)
+void fn0EF8(struct Eq_n * r4, word16 * r5, Eq_n wArg00, Eq_n bArg01)
 {
-	byte bArg01_n = SLICE(wArg00, byte, 8);
-	byte bArg01_n = SLICE(wArg00, byte, 8);
 }
 
 // 0F48: void fn0F48(Register (ptr16 Eq_n) r5)
@@ -1880,166 +1878,220 @@ l0372:
 	EXIT(&globals->b0397);
 }
 
-// 243A: void fn243A(Register word16 r4, Register (ptr16 word16) r5)
-void fn243A(word16 r4, word16 * r5)
+// 243A: void fn243A(Register (ptr16 word16) r5)
+void fn243A(word16 * r5)
 {
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	Eq_n stackArg0 = <invalid>;
 	Eq_n stackArg1 = <invalid>;
-	fn0EF8(&globals->t243E, r5, r4, stackArg1);
+	fn0EF8(&globals->t243E, r5, stackArg0, stackArg1);
 }
 
-// 2B90: void fn2B90(Register word16 r4, Register (ptr16 word16) r5)
-void fn2B90(word16 r4, word16 * r5)
+// 2B90: void fn2B90(Register (ptr16 word16) r5)
+void fn2B90(word16 * r5)
 {
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	Eq_n stackArg0 = <invalid>;
 	Eq_n stackArg1 = <invalid>;
-	fn0EF8(&globals->t2B94, r5, r4, stackArg1);
+	fn0EF8(&globals->t2B94, r5, stackArg0, stackArg1);
 }
 
-// 2E20: void fn2E20(Register word16 r4, Register (ptr16 word16) r5)
-void fn2E20(word16 r4, word16 * r5)
+// 2E20: void fn2E20(Register (ptr16 word16) r5)
+void fn2E20(word16 * r5)
 {
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	Eq_n stackArg0 = <invalid>;
 	Eq_n stackArg1 = <invalid>;
-	fn0EF8(&globals->t2E24, r5, r4, stackArg1);
+	fn0EF8(&globals->t2E24, r5, stackArg0, stackArg1);
 }
 
-// 2EC4: void fn2EC4(Register word16 r4, Register (ptr16 word16) r5)
-void fn2EC4(word16 r4, word16 * r5)
+// 2EC4: void fn2EC4(Register (ptr16 word16) r5)
+void fn2EC4(word16 * r5)
 {
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	Eq_n stackArg0 = <invalid>;
 	Eq_n stackArg1 = <invalid>;
-	fn0EF8(&globals->t2EC8, r5, r4, stackArg1);
+	fn0EF8(&globals->t2EC8, r5, stackArg0, stackArg1);
 }
 
-// 3220: void fn3220(Register word16 r4, Register (ptr16 word16) r5)
-void fn3220(word16 r4, word16 * r5)
+// 3220: void fn3220(Register (ptr16 word16) r5)
+void fn3220(word16 * r5)
 {
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	Eq_n stackArg0 = <invalid>;
 	Eq_n stackArg1 = <invalid>;
-	fn0EF8(&globals->t3224, r5, r4, stackArg1);
+	fn0EF8(&globals->t3224, r5, stackArg0, stackArg1);
 }
 
-// 34AC: void fn34AC(Register word16 r4, Register (ptr16 word16) r5)
-void fn34AC(word16 r4, word16 * r5)
+// 34AC: void fn34AC(Register (ptr16 word16) r5)
+void fn34AC(word16 * r5)
 {
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	Eq_n stackArg0 = <invalid>;
 	Eq_n stackArg1 = <invalid>;
-	fn0EF8(&globals->t34B0, r5, r4, stackArg1);
+	fn0EF8(&globals->t34B0, r5, stackArg0, stackArg1);
 }
 
-// 395C: void fn395C(Register word16 r4, Register (ptr16 word16) r5)
-void fn395C(word16 r4, word16 * r5)
+// 395C: void fn395C(Register (ptr16 word16) r5)
+void fn395C(word16 * r5)
 {
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	Eq_n stackArg0 = <invalid>;
 	Eq_n stackArg1 = <invalid>;
-	fn0EF8(&globals->t3960, r5, r4, stackArg1);
+	fn0EF8(&globals->t3960, r5, stackArg0, stackArg1);
 }
 
-// 3B3C: void fn3B3C(Register word16 r4, Register (ptr16 word16) r5)
-void fn3B3C(word16 r4, word16 * r5)
+// 3B3C: void fn3B3C(Register (ptr16 word16) r5)
+void fn3B3C(word16 * r5)
 {
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	Eq_n stackArg0 = <invalid>;
 	Eq_n stackArg1 = <invalid>;
-	fn0EF8(&globals->t3B40, r5, r4, stackArg1);
+	fn0EF8(&globals->t3B40, r5, stackArg0, stackArg1);
 }
 
-// 3E12: void fn3E12(Register word16 r4, Register (ptr16 word16) r5)
-void fn3E12(word16 r4, word16 * r5)
+// 3E12: void fn3E12(Register (ptr16 word16) r5)
+void fn3E12(word16 * r5)
 {
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	Eq_n stackArg0 = <invalid>;
 	Eq_n stackArg1 = <invalid>;
-	fn0EF8(&globals->t3E16, r5, r4, stackArg1);
+	fn0EF8(&globals->t3E16, r5, stackArg0, stackArg1);
 }
 
-// 3F42: void fn3F42(Register word16 r4, Register (ptr16 word16) r5)
-void fn3F42(word16 r4, word16 * r5)
+// 3F42: void fn3F42(Register (ptr16 word16) r5)
+void fn3F42(word16 * r5)
 {
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	Eq_n stackArg0 = <invalid>;
 	Eq_n stackArg1 = <invalid>;
-	fn0EF8(&globals->t3F46, r5, r4, stackArg1);
+	fn0EF8(&globals->t3F46, r5, stackArg0, stackArg1);
 }
 
-// 4030: void fn4030(Register word16 r4, Register (ptr16 word16) r5)
-void fn4030(word16 r4, word16 * r5)
+// 4030: void fn4030(Register (ptr16 word16) r5)
+void fn4030(word16 * r5)
 {
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	Eq_n stackArg0 = <invalid>;
 	Eq_n stackArg1 = <invalid>;
-	fn0EF8(&globals->t4034, r5, r4, stackArg1);
+	fn0EF8(&globals->t4034, r5, stackArg0, stackArg1);
 }
 
-// 4072: void fn4072(Register word16 r4, Register (ptr16 word16) r5)
-void fn4072(word16 r4, word16 * r5)
+// 4072: void fn4072(Register (ptr16 word16) r5)
+void fn4072(word16 * r5)
 {
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	Eq_n stackArg0 = <invalid>;
 	Eq_n stackArg1 = <invalid>;
-	fn0EF8(&globals->t4076, r5, r4, stackArg1);
+	fn0EF8(&globals->t4076, r5, stackArg0, stackArg1);
 }
 
-// 413C: void fn413C(Register word16 r4, Register (ptr16 word16) r5)
-void fn413C(word16 r4, word16 * r5)
+// 413C: void fn413C(Register (ptr16 word16) r5)
+void fn413C(word16 * r5)
 {
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	Eq_n stackArg0 = <invalid>;
 	Eq_n stackArg1 = <invalid>;
-	fn0EF8(&globals->t4140, r5, r4, stackArg1);
+	fn0EF8(&globals->t4140, r5, stackArg0, stackArg1);
 }
 
-// 4180: void fn4180(Register word16 r4, Register (ptr16 word16) r5)
-void fn4180(word16 r4, word16 * r5)
+// 4180: void fn4180(Register (ptr16 word16) r5)
+void fn4180(word16 * r5)
 {
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	Eq_n stackArg0 = <invalid>;
 	Eq_n stackArg1 = <invalid>;
-	fn0EF8(&globals->t4184, r5, r4, stackArg1);
+	fn0EF8(&globals->t4184, r5, stackArg0, stackArg1);
 }
 
-// 4230: void fn4230(Register word16 r4, Register (ptr16 word16) r5)
-void fn4230(word16 r4, word16 * r5)
+// 4230: void fn4230(Register (ptr16 word16) r5)
+void fn4230(word16 * r5)
 {
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	Eq_n stackArg0 = <invalid>;
 	Eq_n stackArg1 = <invalid>;
-	fn0EF8(&globals->t4234, r5, r4, stackArg1);
+	fn0EF8(&globals->t4234, r5, stackArg0, stackArg1);
 }
 
-// 4534: void fn4534(Register word16 r4, Register (ptr16 word16) r5)
-void fn4534(word16 r4, word16 * r5)
+// 4534: void fn4534(Register (ptr16 word16) r5)
+void fn4534(word16 * r5)
 {
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	Eq_n stackArg0 = <invalid>;
 	Eq_n stackArg1 = <invalid>;
-	fn0EF8(&globals->t4538, r5, r4, stackArg1);
+	fn0EF8(&globals->t4538, r5, stackArg0, stackArg1);
 }
 
-// 457C: void fn457C(Register word16 r4, Register (ptr16 word16) r5)
-void fn457C(word16 r4, word16 * r5)
+// 457C: void fn457C(Register (ptr16 word16) r5)
+void fn457C(word16 * r5)
 {
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	Eq_n stackArg0 = <invalid>;
 	Eq_n stackArg1 = <invalid>;
-	fn0EF8(&globals->t4580, r5, r4, stackArg1);
+	fn0EF8(&globals->t4580, r5, stackArg0, stackArg1);
 }
 
-// 45C8: void fn45C8(Register word16 r4, Register (ptr16 word16) r5)
-void fn45C8(word16 r4, word16 * r5)
+// 45C8: void fn45C8(Register (ptr16 word16) r5)
+void fn45C8(word16 * r5)
 {
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	Eq_n stackArg0 = <invalid>;
 	Eq_n stackArg1 = <invalid>;
-	fn0EF8(&globals->t45CC, r5, r4, stackArg1);
+	fn0EF8(&globals->t45CC, r5, stackArg0, stackArg1);
 }
 
 // 45F6: void fn45F6(Register (ptr16 ci16) r0, Register Eq_n r2, Register (ptr16 Eq_n) r3)

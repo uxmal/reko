@@ -2010,13 +2010,11 @@ fn0EA8_exit:
 void fn0EF8(word16 r4, word16 r5, word16 wArg00, byte bArg01)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r4:[0..15] r5:[0..15] Stack +0000:[0..7]
+// MayUse:  r4:[0..15] r5:[0..15]
 // LiveOut:
 // Trashed: NZVC r0 r1 r3 r4 r5 sp
 // Preserved: r2
 fn0EF8_entry:
-	byte bArg01_129 = SLICE(wArg00, byte, 8)
-	byte bArg01_132 = SLICE(wArg00, byte, 8)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2028,34 +2026,35 @@ l0EF8:
 	word16 v13_14 = Mem0[r4:word16]
 	word16 v19_27 = Mem26[v13_14:word16]
 	word16 v20_31 = Mem30[v13_14 + 0x0002:word16]
+	byte v16_18 = Mem0[r3_17 + 0x0074:byte]
 	Mem35[r3_17:word16] = 0x0000
 	Mem37[r3_17 + 0x000E:word16] = fp - 0x0007
 	word16 v22_42 = Mem39[r5:word16]
 	byte bArg00_128 = SLICE(v17_21, byte, 8)
-	byte bArg00_131 = SLICE(v17_21, byte, 8)
-	byte bLoc01_137 = SLICE(v17_21, byte, 0)
-	bLoc01_137 = SLICE(v17_21, byte, 0) (alias)
-	byte bLoc03_164 = SLICE(v18_24, byte, 0)
-	byte bLoc02_166 = SLICE(v18_24, byte, 8)
-	byte bLoc03_181 = SLICE(v18_24, byte, 0)
-	byte bLoc02_183 = SLICE(v18_24, byte, 8)
-	byte bLoc03_208 = SLICE(v18_24, byte, 0)
-	byte bLoc02_210 = SLICE(v18_24, byte, 8)
-	byte bLoc04_163 = SLICE(v19_27, byte, 8)
-	byte bLoc05_178 = SLICE(v19_27, byte, 0)
-	byte bLoc04_180 = SLICE(v19_27, byte, 8)
-	byte bLoc05_205 = SLICE(v19_27, byte, 0)
-	byte bLoc04_207 = SLICE(v19_27, byte, 8)
+	byte bArg00_130 = SLICE(v17_21, byte, 8)
+	byte bLoc01_135 = SLICE(v17_21, byte, 0)
+	bLoc01_135 = SLICE(v17_21, byte, 0) (alias)
+	byte bLoc03_162 = SLICE(v18_24, byte, 0)
+	byte bLoc02_164 = SLICE(v18_24, byte, 8)
+	byte bLoc03_179 = SLICE(v18_24, byte, 0)
+	byte bLoc02_181 = SLICE(v18_24, byte, 8)
+	byte bLoc03_206 = SLICE(v18_24, byte, 0)
+	byte bLoc02_208 = SLICE(v18_24, byte, 8)
+	byte bLoc04_161 = SLICE(v19_27, byte, 8)
+	byte bLoc05_176 = SLICE(v19_27, byte, 0)
+	byte bLoc04_178 = SLICE(v19_27, byte, 8)
+	byte bLoc05_203 = SLICE(v19_27, byte, 0)
+	byte bLoc04_205 = SLICE(v19_27, byte, 8)
 	word16 r0_32 = v13_14 + 0x0004
-	byte bLoc06_177 = SLICE(v20_31, byte, 8)
-	byte bLoc06_204 = SLICE(v20_31, byte, 8)
-	byte bLoc08_151 = 0x00
-	bLoc08_151 = 0x00 (alias)
+	byte bLoc06_175 = SLICE(v20_31, byte, 8)
+	byte bLoc06_202 = SLICE(v20_31, byte, 8)
+	byte bLoc08_149 = 0x00
+	bLoc08_149 = 0x00 (alias)
 	word16 r5_43 = r5 + 0x0002
 	word16 r1_44 = v22_42
 	branch v22_42 == 0x0000 l0F2C
-	word16 wArg00_127 = SEQ(bArg01_129, bArg00_128)
-	wArg00_127 = SEQ(bArg01_132, bArg00_131)
+	word16 wArg00_127 = SEQ(v16_18, bArg00_128)
+	wArg00_127 = SEQ(v16_18, bArg00_130)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2077,8 +2076,8 @@ l0F20:
 
 l0F22:
 	Mem62[r0_32:word16] = Mem58[r5_43:word16]
-	bLoc08_151 = SLICE(bLoc08_151, byte, 8) (alias)
-	bLoc01_137 = SLICE(bLoc01_137, byte, 0) (alias)
+	bLoc08_149 = SLICE(bLoc08_149, byte, 8) (alias)
+	bLoc01_135 = SLICE(bLoc01_135, byte, 0) (alias)
 	r5_43 = r5_43 + 0x0002
 	r0_32 = r0_32 + 0x0002
 	r1_44 = r1_44 - 0x0001
@@ -2096,33 +2095,33 @@ l0F28:
 
 l0F2C:
 	Mem79[r3_17 + 0x0074:byte] = 0x00
-	byte bLoc08_155 = SLICE(bLoc08_151, byte, 8)
-	byte bLoc08_174 = SLICE(bLoc08_151, byte, 8)
-	byte bLoc01_141 = SLICE(bLoc01_137, byte, 0)
-	byte bLoc01_167 = SLICE(bLoc01_137, byte, 0)
-	byte bLoc01_171 = SLICE(bLoc01_137, byte, 0)
-	byte bLoc01_211 = SLICE(bLoc01_137, byte, 0)
-	byte bArg01_135 = SLICE(wArg00_127, byte, 8)
-	byte bArg00_142 = SLICE(wArg00_127, byte, 0)
-	byte bArg00_169 = SLICE(wArg00_127, byte, 0)
-	byte bArg01_170 = SLICE(wArg00_127, byte, 8)
-	byte bArg00_172 = SLICE(wArg00_127, byte, 0)
+	byte bLoc08_153 = SLICE(bLoc08_149, byte, 8)
+	byte bLoc08_172 = SLICE(bLoc08_149, byte, 8)
+	byte bLoc01_139 = SLICE(bLoc01_135, byte, 0)
+	byte bLoc01_165 = SLICE(bLoc01_135, byte, 0)
+	byte bLoc01_169 = SLICE(bLoc01_135, byte, 0)
+	byte bLoc01_209 = SLICE(bLoc01_135, byte, 0)
+	byte bArg01_133 = SLICE(wArg00_127, byte, 8)
+	byte bArg00_140 = SLICE(wArg00_127, byte, 0)
+	byte bArg00_167 = SLICE(wArg00_127, byte, 0)
+	byte bArg01_168 = SLICE(wArg00_127, byte, 8)
+	byte bArg00_170 = SLICE(wArg00_127, byte, 0)
 	branch 0x00 == 0x00 l0F34
-	word16 wLoc09_156 = SEQ(bLoc08_155, 0x00)
-	word16 wLoc09_175 = SEQ(bLoc08_174, 0x00)
-	byte bLoc08_203 = SLICE(wLoc09_156, byte, 8)
-	byte bLoc08_176 = SLICE(wLoc09_175, byte, 8)
+	word16 wLoc09_154 = SEQ(bLoc08_153, 0x00)
+	word16 wLoc09_173 = SEQ(bLoc08_172, 0x00)
+	byte bLoc08_201 = SLICE(wLoc09_154, byte, 8)
+	byte bLoc08_174 = SLICE(wLoc09_173, byte, 8)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0F34:
 	call r4 + 0x0002 (retsize: 2;)
-		uses: r0:r0_86,Stack +0001:wLoc09_156,Stack +0002:bLoc08_203,Stack +0003:v20_31,Stack +0004:SEQ(bLoc05_205, bLoc06_204),Stack +0005:v19_27,Stack +0006:SEQ(bLoc03_208, bLoc04_207),Stack +0007:v18_24,Stack +0008:SEQ(bLoc01_211, bLoc02_210),Stack +0009:SEQ(bArg00_142, bLoc01_141),Stack +000A:wArg00_127,Stack +000B:bArg01_135
+		uses: r0:r0_86,Stack +0001:wLoc09_154,Stack +0002:bLoc08_201,Stack +0003:v20_31,Stack +0004:SEQ(bLoc05_203, bLoc06_202),Stack +0005:v19_27,Stack +0006:SEQ(bLoc03_206, bLoc04_205),Stack +0007:v18_24,Stack +0008:SEQ(bLoc01_209, bLoc02_208),Stack +0009:SEQ(bArg00_140, bLoc01_139),Stack +000A:wArg00_127,Stack +000B:bArg01_133
 	word16 r4_99 = Mem79[0x5424:word16]
-	Mem102[r4_99:word16] = SEQ(bLoc03_164, bLoc04_163)
-	Mem105[r4_99 + 0x000E:word16] = SEQ(bLoc01_167, bLoc02_166)
-	Mem108[r4_99 + 0x0074:byte] = bArg00_169
+	Mem102[r4_99:word16] = SEQ(bLoc03_162, bLoc04_161)
+	Mem105[r4_99 + 0x000E:word16] = SEQ(bLoc01_165, bLoc02_164)
+	Mem108[r4_99 + 0x0074:byte] = bArg00_167
 	return
 // DataOut:
 // DataOut (flags):
@@ -2130,7 +2129,7 @@ l0F34:
 
 l0F32:
 	call Mem79[r4 + 0x0002:word16] (retsize: 2;)
-		uses: r0:r0_86,Stack +0001:wLoc09_175,Stack +0002:bLoc08_176,Stack +0003:v20_31,Stack +0004:SEQ(bLoc05_178, bLoc06_177),Stack +0005:v19_27,Stack +0006:SEQ(bLoc03_181, bLoc04_180),Stack +0007:v18_24,Stack +0008:SEQ(bLoc01_171, bLoc02_183),Stack +0009:SEQ(bArg00_172, bLoc01_171),Stack +000A:wArg00_127,Stack +000B:bArg01_170
+		uses: r0:r0_86,Stack +0001:wLoc09_173,Stack +0002:bLoc08_174,Stack +0003:v20_31,Stack +0004:SEQ(bLoc05_176, bLoc06_175),Stack +0005:v19_27,Stack +0006:SEQ(bLoc03_179, bLoc04_178),Stack +0007:v18_24,Stack +0008:SEQ(bLoc01_169, bLoc02_181),Stack +0009:SEQ(bArg00_170, bLoc01_169),Stack +000A:wArg00_127,Stack +000B:bArg01_168
 	return
 // DataOut:
 // DataOut (flags):
@@ -4705,10 +4704,10 @@ fn1DAE_exit:
 
 
 
-void fn243A(word16 r4, word16 r5)
+void fn243A(word16 r5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r4:[0..15] r5:[0..15]
+// MayUse:  r5:[0..15]
 // LiveOut:
 // Trashed: NZVC r0 r1 r3 r4 r5 sp
 // Preserved:
@@ -4725,8 +4724,11 @@ l243A:
 l243A_thunk_fn0EF8:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	word16 stackArg0 = <invalid>
 	byte stackArg1 = <invalid>
-	fn0EF8(0x243E, r5, r4, stackArg1)
+	fn0EF8(0x243E, r5, stackArg0, stackArg1)
 	return
 // DataOut:
 // DataOut (flags):
@@ -4739,10 +4741,10 @@ fn243A_exit:
 
 
 
-void fn2B90(word16 r4, word16 r5)
+void fn2B90(word16 r5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r4:[0..15] r5:[0..15]
+// MayUse:  r5:[0..15]
 // LiveOut:
 // Trashed: NZVC r0 r1 r3 r4 r5 sp
 // Preserved:
@@ -4759,8 +4761,11 @@ l2B90:
 l2B90_thunk_fn0EF8:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	word16 stackArg0 = <invalid>
 	byte stackArg1 = <invalid>
-	fn0EF8(0x2B94, r5, r4, stackArg1)
+	fn0EF8(0x2B94, r5, stackArg0, stackArg1)
 	return
 // DataOut:
 // DataOut (flags):
@@ -4773,10 +4778,10 @@ fn2B90_exit:
 
 
 
-void fn2E20(word16 r4, word16 r5)
+void fn2E20(word16 r5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r4:[0..15] r5:[0..15]
+// MayUse:  r5:[0..15]
 // LiveOut:
 // Trashed: NZVC r0 r1 r3 r4 r5 sp
 // Preserved:
@@ -4793,8 +4798,11 @@ l2E20:
 l2E20_thunk_fn0EF8:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	word16 stackArg0 = <invalid>
 	byte stackArg1 = <invalid>
-	fn0EF8(0x2E24, r5, r4, stackArg1)
+	fn0EF8(0x2E24, r5, stackArg0, stackArg1)
 	return
 // DataOut:
 // DataOut (flags):
@@ -4807,10 +4815,10 @@ fn2E20_exit:
 
 
 
-void fn2EC4(word16 r4, word16 r5)
+void fn2EC4(word16 r5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r4:[0..15] r5:[0..15]
+// MayUse:  r5:[0..15]
 // LiveOut:
 // Trashed: NZVC r0 r1 r3 r4 r5 sp
 // Preserved:
@@ -4827,8 +4835,11 @@ l2EC4:
 l2EC4_thunk_fn0EF8:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	word16 stackArg0 = <invalid>
 	byte stackArg1 = <invalid>
-	fn0EF8(0x2EC8, r5, r4, stackArg1)
+	fn0EF8(0x2EC8, r5, stackArg0, stackArg1)
 	return
 // DataOut:
 // DataOut (flags):
@@ -4841,10 +4852,10 @@ fn2EC4_exit:
 
 
 
-void fn3220(word16 r4, word16 r5)
+void fn3220(word16 r5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r4:[0..15] r5:[0..15]
+// MayUse:  r5:[0..15]
 // LiveOut:
 // Trashed: NZVC r0 r1 r3 r4 r5 sp
 // Preserved:
@@ -4861,8 +4872,11 @@ l3220:
 l3220_thunk_fn0EF8:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	word16 stackArg0 = <invalid>
 	byte stackArg1 = <invalid>
-	fn0EF8(0x3224, r5, r4, stackArg1)
+	fn0EF8(0x3224, r5, stackArg0, stackArg1)
 	return
 // DataOut:
 // DataOut (flags):
@@ -4875,10 +4889,10 @@ fn3220_exit:
 
 
 
-void fn34AC(word16 r4, word16 r5)
+void fn34AC(word16 r5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r4:[0..15] r5:[0..15]
+// MayUse:  r5:[0..15]
 // LiveOut:
 // Trashed: NZVC r0 r1 r3 r4 r5 sp
 // Preserved:
@@ -4895,8 +4909,11 @@ l34AC:
 l34AC_thunk_fn0EF8:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	word16 stackArg0 = <invalid>
 	byte stackArg1 = <invalid>
-	fn0EF8(0x34B0, r5, r4, stackArg1)
+	fn0EF8(0x34B0, r5, stackArg0, stackArg1)
 	return
 // DataOut:
 // DataOut (flags):
@@ -4909,10 +4926,10 @@ fn34AC_exit:
 
 
 
-void fn395C(word16 r4, word16 r5)
+void fn395C(word16 r5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r4:[0..15] r5:[0..15]
+// MayUse:  r5:[0..15]
 // LiveOut:
 // Trashed: NZVC r0 r1 r3 r4 r5 sp
 // Preserved:
@@ -4929,8 +4946,11 @@ l395C:
 l395C_thunk_fn0EF8:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	word16 stackArg0 = <invalid>
 	byte stackArg1 = <invalid>
-	fn0EF8(0x3960, r5, r4, stackArg1)
+	fn0EF8(0x3960, r5, stackArg0, stackArg1)
 	return
 // DataOut:
 // DataOut (flags):
@@ -4943,10 +4963,10 @@ fn395C_exit:
 
 
 
-void fn3B3C(word16 r4, word16 r5)
+void fn3B3C(word16 r5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r4:[0..15] r5:[0..15]
+// MayUse:  r5:[0..15]
 // LiveOut:
 // Trashed: NZVC r0 r1 r3 r4 r5 sp
 // Preserved:
@@ -4963,8 +4983,11 @@ l3B3C:
 l3B3C_thunk_fn0EF8:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	word16 stackArg0 = <invalid>
 	byte stackArg1 = <invalid>
-	fn0EF8(0x3B40, r5, r4, stackArg1)
+	fn0EF8(0x3B40, r5, stackArg0, stackArg1)
 	return
 // DataOut:
 // DataOut (flags):
@@ -4977,10 +5000,10 @@ fn3B3C_exit:
 
 
 
-void fn3E12(word16 r4, word16 r5)
+void fn3E12(word16 r5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r4:[0..15] r5:[0..15]
+// MayUse:  r5:[0..15]
 // LiveOut:
 // Trashed: NZVC r0 r1 r3 r4 r5 sp
 // Preserved:
@@ -4997,8 +5020,11 @@ l3E12:
 l3E12_thunk_fn0EF8:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	word16 stackArg0 = <invalid>
 	byte stackArg1 = <invalid>
-	fn0EF8(0x3E16, r5, r4, stackArg1)
+	fn0EF8(0x3E16, r5, stackArg0, stackArg1)
 	return
 // DataOut:
 // DataOut (flags):
@@ -5011,10 +5037,10 @@ fn3E12_exit:
 
 
 
-void fn3F42(word16 r4, word16 r5)
+void fn3F42(word16 r5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r4:[0..15] r5:[0..15]
+// MayUse:  r5:[0..15]
 // LiveOut:
 // Trashed: NZVC r0 r1 r3 r4 r5 sp
 // Preserved:
@@ -5031,8 +5057,11 @@ l3F42:
 l3F42_thunk_fn0EF8:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	word16 stackArg0 = <invalid>
 	byte stackArg1 = <invalid>
-	fn0EF8(0x3F46, r5, r4, stackArg1)
+	fn0EF8(0x3F46, r5, stackArg0, stackArg1)
 	return
 // DataOut:
 // DataOut (flags):
@@ -5045,10 +5074,10 @@ fn3F42_exit:
 
 
 
-void fn4030(word16 r4, word16 r5)
+void fn4030(word16 r5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r4:[0..15] r5:[0..15]
+// MayUse:  r5:[0..15]
 // LiveOut:
 // Trashed: NZVC r0 r1 r3 r4 r5 sp
 // Preserved:
@@ -5065,8 +5094,11 @@ l4030:
 l4030_thunk_fn0EF8:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	word16 stackArg0 = <invalid>
 	byte stackArg1 = <invalid>
-	fn0EF8(0x4034, r5, r4, stackArg1)
+	fn0EF8(0x4034, r5, stackArg0, stackArg1)
 	return
 // DataOut:
 // DataOut (flags):
@@ -5079,10 +5111,10 @@ fn4030_exit:
 
 
 
-void fn4072(word16 r4, word16 r5)
+void fn4072(word16 r5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r4:[0..15] r5:[0..15]
+// MayUse:  r5:[0..15]
 // LiveOut:
 // Trashed: NZVC r0 r1 r3 r4 r5 sp
 // Preserved:
@@ -5099,8 +5131,11 @@ l4072:
 l4072_thunk_fn0EF8:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	word16 stackArg0 = <invalid>
 	byte stackArg1 = <invalid>
-	fn0EF8(0x4076, r5, r4, stackArg1)
+	fn0EF8(0x4076, r5, stackArg0, stackArg1)
 	return
 // DataOut:
 // DataOut (flags):
@@ -5113,10 +5148,10 @@ fn4072_exit:
 
 
 
-void fn413C(word16 r4, word16 r5)
+void fn413C(word16 r5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r4:[0..15] r5:[0..15]
+// MayUse:  r5:[0..15]
 // LiveOut:
 // Trashed: NZVC r0 r1 r3 r4 r5 sp
 // Preserved:
@@ -5133,8 +5168,11 @@ l413C:
 l413C_thunk_fn0EF8:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	word16 stackArg0 = <invalid>
 	byte stackArg1 = <invalid>
-	fn0EF8(0x4140, r5, r4, stackArg1)
+	fn0EF8(0x4140, r5, stackArg0, stackArg1)
 	return
 // DataOut:
 // DataOut (flags):
@@ -5147,10 +5185,10 @@ fn413C_exit:
 
 
 
-void fn4180(word16 r4, word16 r5)
+void fn4180(word16 r5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r4:[0..15] r5:[0..15]
+// MayUse:  r5:[0..15]
 // LiveOut:
 // Trashed: NZVC r0 r1 r3 r4 r5 sp
 // Preserved:
@@ -5167,8 +5205,11 @@ l4180:
 l4180_thunk_fn0EF8:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	word16 stackArg0 = <invalid>
 	byte stackArg1 = <invalid>
-	fn0EF8(0x4184, r5, r4, stackArg1)
+	fn0EF8(0x4184, r5, stackArg0, stackArg1)
 	return
 // DataOut:
 // DataOut (flags):
@@ -5181,10 +5222,10 @@ fn4180_exit:
 
 
 
-void fn4230(word16 r4, word16 r5)
+void fn4230(word16 r5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r4:[0..15] r5:[0..15]
+// MayUse:  r5:[0..15]
 // LiveOut:
 // Trashed: NZVC r0 r1 r3 r4 r5 sp
 // Preserved:
@@ -5201,8 +5242,11 @@ l4230:
 l4230_thunk_fn0EF8:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	word16 stackArg0 = <invalid>
 	byte stackArg1 = <invalid>
-	fn0EF8(0x4234, r5, r4, stackArg1)
+	fn0EF8(0x4234, r5, stackArg0, stackArg1)
 	return
 // DataOut:
 // DataOut (flags):
@@ -5215,10 +5259,10 @@ fn4230_exit:
 
 
 
-void fn4534(word16 r4, word16 r5)
+void fn4534(word16 r5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r4:[0..15] r5:[0..15]
+// MayUse:  r5:[0..15]
 // LiveOut:
 // Trashed: NZVC r0 r1 r3 r4 r5 sp
 // Preserved:
@@ -5235,8 +5279,11 @@ l4534:
 l4534_thunk_fn0EF8:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	word16 stackArg0 = <invalid>
 	byte stackArg1 = <invalid>
-	fn0EF8(0x4538, r5, r4, stackArg1)
+	fn0EF8(0x4538, r5, stackArg0, stackArg1)
 	return
 // DataOut:
 // DataOut (flags):
@@ -5249,10 +5296,10 @@ fn4534_exit:
 
 
 
-void fn457C(word16 r4, word16 r5)
+void fn457C(word16 r5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r4:[0..15] r5:[0..15]
+// MayUse:  r5:[0..15]
 // LiveOut:
 // Trashed: NZVC r0 r1 r3 r4 r5 sp
 // Preserved:
@@ -5269,8 +5316,11 @@ l457C:
 l457C_thunk_fn0EF8:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	word16 stackArg0 = <invalid>
 	byte stackArg1 = <invalid>
-	fn0EF8(0x4580, r5, r4, stackArg1)
+	fn0EF8(0x4580, r5, stackArg0, stackArg1)
 	return
 // DataOut:
 // DataOut (flags):
@@ -5283,10 +5333,10 @@ fn457C_exit:
 
 
 
-void fn45C8(word16 r4, word16 r5)
+void fn45C8(word16 r5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r4:[0..15] r5:[0..15]
+// MayUse:  r5:[0..15]
 // LiveOut:
 // Trashed: NZVC r0 r1 r3 r4 r5 sp
 // Preserved:
@@ -5303,8 +5353,11 @@ l45C8:
 l45C8_thunk_fn0EF8:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	word16 stackArg0 = <invalid>
 	byte stackArg1 = <invalid>
-	fn0EF8(0x45CC, r5, r4, stackArg1)
+	fn0EF8(0x45CC, r5, stackArg0, stackArg1)
 	return
 // DataOut:
 // DataOut (flags):

@@ -3759,7 +3759,7 @@ SsaDpb_exit:
         }
 
         [Test]
-        [Category(Categories.FailedTests)]
+        [Category(Categories.UnitTests)]
         public void SsaOverlappedStackIntervals()
         {
             var proc = Given_Procedure(nameof(SsaOverlappedStackIntervals), m =>

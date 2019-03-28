@@ -618,9 +618,10 @@ void _fseek(struct Eq_n * ds, struct Eq_n Eq_n::* wArg02, Eq_n dwArg04, ui16 wAr
 		if (wArg08 == 0x01 && (ds->*wArg02).w0000 > 0x00)
 		{
 			ui32 dwArg04_n = SEQ(wArg06, v14_n);
-			wArg06 = SLICE(dwArg04_n, word16, 16);
+			ui32 v16_v14_n = dwArg04_n - (int32) fn0800-065B(ds, wArg02);
 			wArg04 = SLICE(dwArg04_n, word16, 0);
-			uint16 v14_n = (word16) (dwArg04_n - (int32) fn0800-065B(ds, wArg02));
+			uint16 v14_n = (word16) v16_v14_n;
+			wArg06 = SLICE(v16_v14_n, word16, 16);
 		}
 		(ds->*wArg02).w0002 &= ~0x01A0;
 		(ds->*wArg02).w0000 = 0x00;

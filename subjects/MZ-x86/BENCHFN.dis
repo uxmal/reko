@@ -1653,9 +1653,10 @@ l0800_06BD:
 
 l0800_06C2:
 	ui32 dwArg04_120 = SEQ(wArg06, v14_45)
-	wArg06 = SLICE(dwArg04_120, word16, 16) (alias)
+	ui32 v16_v14_111 = dwArg04_120 - (int32) fn0800_065B(ds, wArg02)
 	wArg04 = SLICE(dwArg04_120, word16, 0) (alias)
-	word16 v14_45 = (word16) (dwArg04_120 - (int32) fn0800_065B(ds, wArg02))
+	word16 v14_45 = (word16) v16_v14_111
+	wArg06 = SLICE(v16_v14_111, word16, 16)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

@@ -675,8 +675,6 @@ namespace Reko.Analysis
 
             public override SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs)
             {
-                if (stm.LinearAddress == 0x65C) //$DEBUG
-                    stm.ToString();
                 var ints = bs.currentStackDef.GetIntervalsOverlappingWith(offsetInterval)
                     .OrderBy(i => i.Key.Start)
                     .ThenBy(i => i.Key.End - i.Key.Start)
@@ -786,10 +784,20 @@ namespace Reko.Analysis
                     .ToArray();
                 foreach (var i in ints)
                 {
-                    if (this.offsetInterval.Covers(i.Key))
+                    bs.currentStackDef.Delete(i.Key);
+                    if (!this.offsetInterval.Covers(i.Key))
                     {
-                        // None of the bits of interval `i` will shine through
-                        bs.currentStackDef.Delete(i.Key);
+                        // Some of the bits of interval `i` will shine through
+                        if (i.Key.End > offsetInterval.Start && i.Key.Start < offsetInterval.Start)
+                        {
+                            var newInt = Interval.Create(i.Key.Start, offsetInterval.Start);
+                            bs.currentStackDef.Add(newInt, i.Value);
+                        }
+                        if (i.Key.Start < offsetInterval.End && offsetInterval.End < i.Key.End)
+                        {
+                            var newInt = Interval.Create(offsetInterval.End, i.Key.End);
+                            bs.currentStackDef.Add(newInt, i.Value);
+                        }
                     }
                 }
                 bs.currentStackDef.Add(this.offsetInterval, new AliasState(sid, null));
