@@ -3758,6 +3758,39 @@ SsaDpb_exit:
             AssertProcedureCode(expected);
         }
 
+        [Test]
+        [Category(Categories.FailedTests)]
+        public void SsaOverlappedStackIntervals()
+        {
+            var proc = Given_Procedure(nameof(SsaOverlappedStackIntervals), m =>
+            {
+                var fp = m.Frame.FramePointer;
+                m.MStore(m.ISubS(fp, 8), m.Word64(0x1234567800000000));
+                m.MStore(m.Word32(0xAB), m.Mem64(m.ISubS(fp, 8)));
+                m.MStore(m.ISubS(fp, 4), m.Word32(0x12340000));
+                m.MStore(m.Word32(0xCD), m.Mem32(m.ISubS(fp, 4)));
+                m.Return();
+            });
+
+            When_RunSsaTransform();
+            When_RenameFrameAccesses();
+
+            var expected =
+            #region Expected
+@"SsaOverlappedStackIntervals_entry:
+	def fp
+l1:
+	qwLoc08_6 = 0x1234567800000000
+	Mem3[0x000000AB:word64] = qwLoc08_6
+	dwLoc04_7 = 0x12340000
+	Mem5[0x000000CD:word32] = dwLoc04_7
+	return
+SsaOverlappedStackIntervals_exit:
+";
+            #endregion
+            AssertProcedureCode(expected);
+        }
+
         private void MakeEndiannessCheck(ProcedureBuilder m)
         {
             var fp = m.Frame.FramePointer;
