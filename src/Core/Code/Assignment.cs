@@ -28,11 +28,11 @@ namespace Reko.Core.Code
 	/// </summary>
 	public class Assignment : Instruction
 	{
-		public Assignment(Identifier dst, Expression src)
-		{
+        public Assignment(Identifier dst, Expression src)
+        {
             this.Dst = dst ?? throw new ArgumentNullException(nameof(dst));
-			this.Src = src ?? throw new ArgumentNullException(nameof(src));
-		}
+            this.Src = src ?? throw new ArgumentNullException(nameof(src));
+        }
 
         public Identifier Dst { get; set; }
         public Expression Src { get; set; }

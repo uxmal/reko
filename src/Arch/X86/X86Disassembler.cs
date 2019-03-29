@@ -608,6 +608,7 @@ namespace Reko.Arch.X86
             {
                 int i = 0;
                 var width = d.OperandWidth(sWidth, ref i);
+                d.decodingContext.iWidth = width;
                 var op = d.DecodeModRM(width, d.decodingContext.SegmentOverride, d.GpRegFromBits);
                 if (op == null)
                     return false;

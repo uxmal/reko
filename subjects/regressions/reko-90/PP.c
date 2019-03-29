@@ -12401,7 +12401,7 @@ Eq_n fn0800-8CAA(Eq_n ax, cu8 cl, Eq_n dx, Eq_n wArg00, union Eq_n & dxOut)
 Eq_n fn0800-8CCB(Eq_n ax, ci16 cx, Eq_n dx, Eq_n bx, Eq_n psegArg00, union Eq_n & chOut, ptr16 & dxOut)
 {
 	byte dh_n = SLICE(dx, byte, 8);
-	Eq_n cl_n = (byte) cx;
+	byte cl_n = (byte) cx;
 	if (cx >= 0x00)
 	{
 		word16 ax_n = ax + bx;
@@ -12414,13 +12414,13 @@ Eq_n fn0800-8CCB(Eq_n ax, ci16 cx, Eq_n dx, Eq_n bx, Eq_n psegArg00, union Eq_n 
 			dh_n = SLICE((word32) dx + 0x00001000, byte, 8);
 		}
 		chOut.u0 = <invalid>;
-		dxOut = (ptr16) ((word32) DPB(dx, (word16) (cl_n << 0x04) + dh_n, 8) + (ax_n >> 0x04));
+		dxOut = (ptr16) ((word32) DPB(dx, dh_n + (cl_n << 0x04), 8) + (ax_n >> 0x04));
 		return DPB(ax_n >> 0x04, al_n, 0) & 0x0F;
 	}
 	else
 	{
 		cup16 bx_n = ~bx;
-		Eq_n cl_n = (byte) ((bool) (bx_n < 0x01) + ~cx);
+		byte cl_n = (byte) ((bool) (bx_n < 0x01) + ~cx);
 		cup16 ax_n = ax - (bx_n + 0x01);
 		byte al_n = (byte) ax_n;
 		ax_n = DPB(ax_n, al_n, 0);

@@ -13918,7 +13918,7 @@ l000000000040C1BF:
 l000000000040C408:
 	word64 rax_599
 	ST576[Top - 2:real64] = (real64) Mem547[0x0000000000415F0C:real32]
-	word32 v67_577 = ST576[Top - 2:real64]
+	real64 v67_577 = ST576[Top - 2:real64]
 	ST578[Top - 2:real64] = ST576[Top - 1:real64]
 	ST579[Top - 1:real64] = v67_577
 	branch ST579[Top - 2:real64] >=u ST579[Top - 1:real64] l000000000040C6A0
@@ -13929,7 +13929,7 @@ l000000000040C408:
 l000000000040C6A0:
 	word16 wLoc82_1525 = __fstcw()
 	ST586[Top - 2:real64] = ST579[Top - 2:real64] - ST579[Top - 1:real64]
-	word32 v68_587 = ST586[Top - 2:real64]
+	real64 v68_587 = ST586[Top - 2:real64]
 	ST588[Top - 2:real64] = ST586[Top - 1:real64]
 	ST589[Top - 1:real64] = v68_587
 	word32 eax_585 = (word32) wLoc82_1525
@@ -14034,7 +14034,7 @@ l000000000040BEA3:
 l000000000040BEB4:
 	ST703[Top - 4:real64] = ST702[Top - 4:real64]
 	ST706[Top - 4:real64] = ST703[Top - 4:real64] * ST703[Top - 2:real64]
-	word32 v42_707 = ST706[Top - 4:real64]
+	real64 v42_707 = ST706[Top - 4:real64]
 	ST708[Top - 4:real64] = ST706[Top - 1:real64]
 	ST709[Top - 1:real64] = v42_707
 	ebx_1185 = (word32) (uint64) (ebx_1185 + 0x00000001) (alias)
@@ -14058,7 +14058,7 @@ l000000000040BEC1:
 
 l000000000040BEB0:
 	ST721[Top - 3:real64] = ST709[Top - 4:real64]
-	word32 v53_723 = ST721[Top - 3:real64]
+	real64 v53_723 = ST721[Top - 3:real64]
 	ST724[Top - 3:real64] = ST721[Top - 1:real64]
 	ST725[Top - 1:real64] = v53_723
 // DataOut:
@@ -14081,7 +14081,7 @@ l000000000040BED4:
 // SymbolicIn:
 
 l000000000040BF70:
-	word32 v64_742 = ST740[Top - 2:real64]
+	real64 v64_742 = ST740[Top - 2:real64]
 	ST743[Top - 2:real64] = ST740[Top - 1:real64]
 	ST744[Top - 1:real64] = v64_742
 // DataOut:
@@ -14105,7 +14105,7 @@ l000000000040C498:
 l000000000040BEF3:
 	word64 rax_780
 	ST757[Top - 2:real64] = (real64) Mem547[0x0000000000415F0C:real32]
-	word32 v49_758 = ST757[Top - 2:real64]
+	real64 v49_758 = ST757[Top - 2:real64]
 	ST759[Top - 2:real64] = ST757[Top - 1:real64]
 	ST760[Top - 1:real64] = v49_758
 	branch ST760[Top - 2:real64] >=u ST760[Top - 1:real64] l000000000040C660
@@ -14116,7 +14116,7 @@ l000000000040BEF3:
 l000000000040C660:
 	word16 wLoc82_1552 = __fstcw()
 	ST767[Top - 2:real64] = ST760[Top - 2:real64] - ST760[Top - 1:real64]
-	word32 v58_768 = ST767[Top - 2:real64]
+	real64 v58_768 = ST767[Top - 2:real64]
 	ST769[Top - 2:real64] = ST767[Top - 1:real64]
 	ST770[Top - 1:real64] = v58_768
 	word32 eax_766 = (word32) wLoc82_1552
@@ -14185,7 +14185,7 @@ l000000000040BF55:
 
 l000000000040C758:
 	ST842[Top - 2:real64] = ST840[Top - 2:real64] + Mem835[0x0000000000415F08:real32]
-	word32 v60_843 = ST842[Top - 2:real64]
+	real64 v60_843 = ST842[Top - 2:real64]
 	ST844[Top - 2:real64] = ST842[Top - 1:real64]
 	ST845[Top - 1:real64] = v60_843
 // DataOut:
@@ -14193,7 +14193,7 @@ l000000000040C758:
 // SymbolicIn:
 
 l000000000040BF6A:
-	word32 v57_846 = ST840[Top - 2:real64]
+	real64 v57_846 = ST840[Top - 2:real64]
 	ST847[Top - 2:real64] = ST840[Top - 1:real64]
 	ST848[Top - 1:real64] = v57_846
 // DataOut:
@@ -14258,7 +14258,7 @@ l000000000040C001:
 l000000000040C00F:
 	word64 rax_941
 	ST918[Top - 2:real64] = (real64) Mem872[0x0000000000415F0C:real32]
-	word32 v61_919 = ST918[Top - 2:real64]
+	real64 v61_919 = ST918[Top - 2:real64]
 	ST920[Top - 2:real64] = ST918[Top - 1:real64]
 	ST921[Top - 1:real64] = v61_919
 	branch ST921[Top - 2:real64] >=u ST921[Top - 1:real64] l000000000040C720
@@ -14269,7 +14269,7 @@ l000000000040C00F:
 l000000000040C720:
 	word16 wLoc82_1592 = __fstcw()
 	ST928[Top - 2:real64] = ST921[Top - 2:real64] - ST921[Top - 1:real64]
-	word32 v62_929 = ST928[Top - 2:real64]
+	real64 v62_929 = ST928[Top - 2:real64]
 	ST930[Top - 2:real64] = ST928[Top - 1:real64]
 	ST931[Top - 1:real64] = v62_929
 	word32 eax_927 = (word32) wLoc82_1592

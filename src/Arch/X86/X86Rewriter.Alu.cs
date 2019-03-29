@@ -450,7 +450,7 @@ namespace Reko.Arch.X86
 
         private void RewriteExchange()
         {
-            Identifier itmp = binder.CreateTemporary(instrCur.dataWidth);
+            Identifier itmp = binder.CreateTemporary(instrCur.op1.Width);
             m.Assign(itmp, SrcOp(instrCur.op1));
             m.Assign(SrcOp(instrCur.op1), SrcOp(instrCur.op2));
             m.Assign(SrcOp(instrCur.op2), itmp);

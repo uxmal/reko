@@ -378,7 +378,7 @@ namespace Reko.Analysis
         /// and Trashed sets to set the uses and defs sets of the call
         /// instruction. If the called procedure is part of a recursive
         /// nest, or is a "hell node" (a hell node is an indirect call or
-        /// indirect jump that prior Reko passes have been unable to resolve),
+        /// indirect jump that prior passes have been unable to resolve),
         /// we must assume the worst and use all defined registers and 
         /// trash everything. The hope is that, for recursive procedures
         /// at least, we can eliminate some of the uses and defines.

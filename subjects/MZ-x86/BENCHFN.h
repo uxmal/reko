@@ -12249,7 +12249,7 @@ T_2365: (in 0x04 : byte)
   Class: Eq_2365
   DataType: byte
   OrigDataType: byte
-T_2366: (in dh_13 >> 0x04 : word16)
+T_2366: (in dh_13 >> 0x04 : byte)
   Class: Eq_2366
   DataType: uint8
   OrigDataType: uint8
@@ -12329,7 +12329,7 @@ T_2385: (in 0x04 : byte)
   Class: Eq_2385
   DataType: byte
   OrigDataType: byte
-T_2386: (in dl_29 >> 0x04 : word16)
+T_2386: (in dl_29 >> 0x04 : byte)
   Class: Eq_2386
   DataType: uint8
   OrigDataType: uint8
