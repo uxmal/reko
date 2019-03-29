@@ -667,8 +667,8 @@ void fn000000014000196C()
 // 0000000140001974: Register Eq_n fn0000000140001974(Register word32 ecx, Register (ptr64 int32) rbx, Register ptr64 rbp, Stack Eq_n qwArg00, Stack Eq_n qwArg08, Stack word64 qwArg10, Register out Eq_n rcxOut, Register out Eq_n rdxOut, Register out Eq_n r8Out)
 Eq_n fn0000000140001974(word32 ecx, int32 * rbx, ptr64 rbp, Eq_n qwArg00, Eq_n qwArg08, word64 qwArg10, union Eq_n & rcxOut, union Eq_n & rdxOut, union Eq_n & r8Out)
 {
-	word32 ebx_n = (word32) (uint64) ecx;
 	Eq_n ptrLoc05C8_n = SEQ(dwLoc05C4, tLoc05C8);
+	word32 ebx_n = (word32) (uint64) ecx;
 	Eq_n tLoc05C8_n = SLICE(ptrLoc05C8_n, DWORD, 0);
 	word32 dwLoc05C4_n = SLICE(ptrLoc05C8_n, word32, 32);
 	if (IsProcessorFeaturePresent(tLoc05C8) == 0x00)

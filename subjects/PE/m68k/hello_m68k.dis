@@ -116,10 +116,9 @@ fn000014E8_entry:
 l000014E8:
 	Mem14[0x0000:word16] = 0x0000
 	__syscall(0xA9A0)
-	word16 wLoc02_192 = SLICE(a3, word16, 0)
-	branch SEQ(wLoc12, 0x4441) == 0x00000000 l00001592
 	word32 dwLoc12_183 = SEQ(wLoc12, 0x4441)
-	word32 dwLoc02_193 = SEQ(wLoc02_192, wArg00)
+	word32 dwLoc02_193 = SEQ(SLICE(a3, word16, 0), wArg00)
+	branch SEQ(wLoc12, 0x4441) == 0x00000000 l00001592
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

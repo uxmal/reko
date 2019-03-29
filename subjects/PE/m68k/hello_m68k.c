@@ -40,9 +40,8 @@ void fn000014E8(word32 a3, word32 a5, word16 wArg00, int32 dwArg02)
 {
 	0x00 = 0x00;
 	__syscall(43424);
-	word16 wLoc02_n = SLICE(a3, word16, 0);
 	struct Eq_n ** dwLoc12_n = SEQ(wLoc12, 0x4441);
-	word32 dwLoc02_n = SEQ(wLoc02_n, wArg00);
+	word32 dwLoc02_n = SEQ(SLICE(a3, word16, 0), wArg00);
 	if (SEQ(wLoc12, 0x4441) == 0x00)
 	{
 		*(word16 *) 0x0AF0 = ~0x025C;

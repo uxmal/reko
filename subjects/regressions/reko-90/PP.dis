@@ -1296,11 +1296,11 @@ l0800_0659:
 // SymbolicIn:
 
 l0800_0663:
-	word16 bx_541 = si_377 << 0x0001
-	switch (bx_541) { l0800_069D l0800_0716 l0800_0765 l0800_080A l0800_07A9 l0800_074C l0800_066A l0800_0682 l0800_0679 l0800_068B l0800_0694 }
 	segptr32 ptrLoc06_1434 = SEQ(wLoc04, wLoc06)
+	word16 bx_541 = si_377 << 0x0001
 	wLoc04 = SLICE(ptrLoc06_1434, word16, 16) (alias)
 	wLoc06 = SLICE(ptrLoc06_1434, word16, 0) (alias)
+	switch (bx_541) { l0800_069D l0800_0716 l0800_0765 l0800_080A l0800_07A9 l0800_074C l0800_066A l0800_0682 l0800_0679 l0800_068B l0800_0694 }
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1728,8 +1728,8 @@ l0800_06AF_1:
 l0800_06B1:
 	word16 cx_1034 = ~cx_1023
 	word16 cx_1035 = cx_1034 - 0x0001
-	branch cx_1034 <=u 0x0002 l0800_06C9
 	segptr32 ptrLoc06_1445 = SEQ(wLoc04, wLoc06)
+	branch cx_1034 <=u 0x0002 l0800_06C9
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -6519,8 +6519,8 @@ l0800_2201:
 // SymbolicIn:
 
 l0800_22B7:
-	branch dx_128 != wArg02_237 l0800_22EA
 	segptr32 ptrArg02_258 = SEQ(wArg04_241, wArg02_237)
+	branch dx_128 != wArg02_237 l0800_22EA
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -7414,12 +7414,12 @@ l0800_26C3:
 // SymbolicIn:
 
 l0800_26D3:
-	ptrLoc06_353 = SEQ(wLoc04_352, wLoc06_290 + 0x0001)
-	word16 wLoc06_290 = SLICE(ptrLoc06_289, word16, 0)
-	word16 wLoc04_352 = SLICE(ptrLoc06_289, word16, 16)
-	branch Mem82[ptrLoc06_289:byte] != 0x00 l0800_26D3
+	ptrLoc06_289 = SEQ(wLoc04_352, wLoc06_290 + 0x0001)
+	word16 wLoc06_290 = SLICE(ptrLoc06_431, word16, 0)
+	word16 wLoc04_352 = SLICE(ptrLoc06_431, word16, 16)
 	segptr32 ptrLoc06_292 = SEQ(wLoc04_352, wLoc06_290 + 0x0001)
-	ptrLoc06_289 = ptrLoc06_353
+	ptrLoc06_431 = ptrLoc06_289
+	branch Mem82[ptrLoc06_431:byte] != 0x00 l0800_26D3
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -7456,14 +7456,14 @@ l0800_2786:
 // SymbolicIn:
 
 l0800_26E2:
-	ptrLoc06_363 = SEQ(wLoc04_299, wLoc06_297 + 0x0001)
-	word16 wLoc06_297 = SLICE(ptrLoc06_292, word16, 0)
-	word16 wLoc04_299 = SLICE(ptrLoc06_292, word16, 16)
-	branch Mem134[ptrLoc06_292:byte] != 0x00 l0800_26E2
+	ptrLoc06_292 = SEQ(wLoc04_299, wLoc06_297 + 0x0001)
+	word16 wLoc06_297 = SLICE(ptrLoc06_432, word16, 0)
+	word16 wLoc04_299 = SLICE(ptrLoc06_432, word16, 16)
 	segptr32 ptrLoc06_300 = SEQ(wLoc04_299, wLoc06_297 + 0x0001)
 	word16 wLoc06_326 = SLICE(ptrLoc06_300, word16, 0)
 	word16 wLoc04_356 = SLICE(ptrLoc06_300, word16, 16)
-	ptrLoc06_292 = ptrLoc06_363
+	ptrLoc06_432 = ptrLoc06_292
+	branch Mem134[ptrLoc06_432:byte] != 0x00 l0800_26E2
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -8857,8 +8857,8 @@ l0800_2CFD:
 	word16 wArg02_60 = SLICE(ptrArg02, word16, 0)
 	word16 wArg04_66 = SLICE(ptrArg02, word16, 16)
 	si_12 = si_12 - 0x0001
-	branch si_12 != 0x0000 l0800_2CD8
 	word16 wArg08_62 = SEQ(bArg09, bArg08)
+	branch si_12 != 0x0000 l0800_2CD8
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -10586,8 +10586,8 @@ l0800_3425:
 // SymbolicIn:
 
 l0800_3444:
-	branch (wArg02 | wArg04) == 0x0000 l0800_3473
 	segptr32 ptrArg02_328 = SEQ(wArg04, wArg02)
+	branch (wArg02 | wArg04) == 0x0000 l0800_3473
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -10822,8 +10822,8 @@ l0800_34C8:
 // SymbolicIn:
 
 l0800_34D4:
-	branch (wArg02 | wArg04) == 0x0000 l0800_3503
 	segptr32 ptrArg02_284 = SEQ(wArg04, wArg02)
+	branch (wArg02 | wArg04) == 0x0000 l0800_3503
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -11360,11 +11360,11 @@ l0800_36A7:
 // SymbolicIn:
 
 l0800_36B6:
-	branch es_274 != wArg04 l0800_36C6
 	ptrLoc0A_321 = SEQ(es_274, di_56)
 	segptr32 ptrLoc0A_321 = SEQ(es_274, di_56)
 	word16 wLoc08_324 = SLICE(ptrLoc0A_321, word16, 16)
 	word16 wLoc0A_327 = SLICE(ptrLoc0A_321, word16, 0)
+	branch es_274 != wArg04 l0800_36C6
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -11449,11 +11449,11 @@ l0800_3747:
 
 l0800_374E:
 	word16 di_142 = di_121 - 0x0001
-	word16 dx_159 = di_142 | es_139
-	branch dx_159 != 0x0000 l0800_36DF
 	segptr32 ptrLoc0A_335 = SEQ(es_139, di_142)
+	word16 dx_159 = di_142 | es_139
 	word16 wLoc08_361 = SLICE(ptrLoc0A_335, word16, 16)
 	word16 wLoc0A_362 = SLICE(ptrLoc0A_335, word16, 0)
+	branch dx_159 != 0x0000 l0800_36DF
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -13805,8 +13805,8 @@ l0800_4379:
 // SymbolicIn:
 
 l0800_4382:
-	branch Mem27[ptrArg02:byte] != 0x00 l0800_4376
 	ptrArg02 = SEQ(wArg04_124, wArg02_101)
+	branch Mem27[ptrArg02:byte] != 0x00 l0800_4376
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -13848,8 +13848,8 @@ l0800_438A:
 // SymbolicIn:
 
 l0800_4393:
-	branch Mem11[ptrArg02:byte] == 0x00 l0800_43B6
 	ptrArg02 = SEQ(wArg04_128, wArg02_104)
+	branch Mem11[ptrArg02:byte] == 0x00 l0800_43B6
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -13989,16 +13989,16 @@ l0800_441C:
 	word16 di_16 = 0x0000
 	word16 cx_17 = 0x0000
 	word16 si_23 = wArg02
-	branch wArg06 <=u 0x0000 l0800_4452
 	segptr32 ptrArg02_262 = SEQ(psegArg04, wArg02)
+	branch wArg06 <=u 0x0000 l0800_4452
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_4439:
+	ptrArg02_262 = SEQ(psegArg04, wArg02)
+	ptrArg02_262 = SEQ(psegArg04, wArg02)
 	branch (Mem28[psegArg04:si_23:word16] | Mem28[psegArg04:si_23 + 0x0002:word16]) == 0x0000 l0800_4449
-	ptrArg02_262 = SEQ(psegArg04, wArg02)
-	ptrArg02_262 = SEQ(psegArg04, wArg02)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -14050,9 +14050,9 @@ l0800_445E:
 // SymbolicIn:
 
 l0800_4525:
-	branch fn0800_463B(ds, wArg02_283, psegArg04_281, wArg06) == 0x0000 l0800_453B
 	segptr32 ptrArg02_288 = SEQ(psegArg04_281, wArg02_283)
 	word16 wArg02_291 = SLICE(ptrArg02_288, word16, 0)
+	branch fn0800_463B(ds, wArg02_283, psegArg04_281, wArg06) == 0x0000 l0800_453B
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -28263,9 +28263,9 @@ l0800_9927:
 l0800_9C46:
 	word16 di_101
 	selector es_108
+	ptrArg04 = SEQ(psegArg06_1805, si_1134)
+	ptrArg04 = SEQ(psegArg06_1805, si_1134)
 	branch (wLoc04_1325 & 0x0020) != 0x0000 l0800_9C5E
-	ptrArg04 = SEQ(psegArg06_1805, si_1134)
-	ptrArg04 = SEQ(psegArg06_1805, si_1134)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -28311,9 +28311,9 @@ l0800_9C7F:
 
 l0800_9AC5:
 	bool Z_156
+	ptrArg04 = SEQ(psegArg06_1805, si_1134)
+	ptrArg04 = SEQ(psegArg06_1805, si_1134)
 	branch (wLoc04_1325 & 0x0020) != 0x0000 l0800_9AE2
-	ptrArg04 = SEQ(psegArg06_1805, si_1134)
-	ptrArg04 = SEQ(psegArg06_1805, si_1134)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -28390,9 +28390,9 @@ l0800_9AA5:
 
 l0800_9B02:
 	word16 cx_206 = wLoc0C_1328
+	ptrArg04 = SEQ(psegArg06_1805, si_1134)
+	ptrArg04 = SEQ(psegArg06_1805, si_1134)
 	branch wLoc0C_1328 >= 0x0000 l0800_9B15
-	ptrArg04 = SEQ(psegArg06_1805, si_1134)
-	ptrArg04 = SEQ(psegArg06_1805, si_1134)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -28449,9 +28449,9 @@ l0800_9A55:
 	Mem270[ss:sp_269:word16] = Mem265[ss:wArg02:word16]
 	word16 di_266 = fp - 0x0048
 	wArg02 = wArg02 + 0x0002
+	ptrArg04 = SEQ(psegArg06_1805, si_1134)
+	ptrArg04 = SEQ(psegArg06_1805, si_1134)
 	branch (wLoc04_1325 & 0x0020) == 0x0000 l0800_9A80
-	ptrArg04 = SEQ(psegArg06_1805, si_1134)
-	ptrArg04 = SEQ(psegArg06_1805, si_1134)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -28558,9 +28558,9 @@ l0800_9A0A:
 	bx = DPB(bx_455, bh_333, 8) (alias)
 	word16 bx_460 = DPB(bx, bh_333, 8)
 	word16 di_362 = di_361 + 0x0001
+	ptrArg04 = SEQ(psegArg06_1805, si_1134)
+	ptrArg04 = SEQ(psegArg06_1805, si_1134)
 	branch (wLoc04_1325 & 0x0010) == 0x0000 l0800_9A1B
-	ptrArg04 = SEQ(psegArg06_1805, si_1134)
-	ptrArg04 = SEQ(psegArg06_1805, si_1134)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -30744,8 +30744,8 @@ l0800_A2A3:
 	msdos_unknown_2144()
 	word16 dx_33 = (word16) ptrArg06
 	word16 ax_23 = DPB(DPB(ax, 0x44, 8), bArg04, 0)
-	branch C l0800_A2C6
 	word16 wArg04_48 = SEQ(bArg05, bArg04)
+	branch C l0800_A2C6
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -31660,10 +31660,10 @@ fn0800_A6B7_entry:
 l0800_A6B7:
 	word16 bx_107
 	word16 ax_103
-	branch (wArg02 | wArg04) != 0x0000 l0800_A6C9
 	segptr32 ptrArg02_136 = SEQ(wArg04, wArg02)
 	word16 wArg02_137 = SLICE(ptrArg02_136, word16, 0)
 	word16 wArg04_142 = SLICE(ptrArg02_136, word16, 16)
+	branch (wArg02 | wArg04) != 0x0000 l0800_A6C9
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -31708,16 +31708,16 @@ l0800_A770:
 // SymbolicIn:
 
 l0800_A6E4:
-	branch (Mem11[ptrArg02_136 + 0x0002:word16] & 0x0008) != 0x0000 l0800_A701
 	segptr32 ptrArg02_143 = SEQ(wArg04_142, wArg02_137)
+	branch (Mem11[ptrArg02_136 + 0x0002:word16] & 0x0008) != 0x0000 l0800_A701
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_A6EC:
 	dx = wArg02_137 + 0x0005
-	branch Mem11[ptrArg02_136 + 0x000E:word16] != wArg04_142 l0800_A778
 	ptrArg02_143 = SEQ(wArg04_142, wArg02_137)
+	branch Mem11[ptrArg02_136 + 0x000E:word16] != wArg04_142 l0800_A778
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -31871,16 +31871,16 @@ l0800_A798:
 l0800_A7D8:
 	word16 ax_113
 	word16 dx_112
-	branch cx_135 != 0xFFFF l0800_A7F3
 	segptr32 ptrLoc06_166 = SEQ(wLoc04_158, wLoc06_155)
+	branch cx_135 != 0xFFFF l0800_A7F3
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_A7DD:
+	ptrLoc06_166 = SEQ(wLoc04_158, wLoc06_155)
+	ptrLoc06_166 = SEQ(wLoc04_158, wLoc06_155)
 	branch wLoc04_158 != wArg04 l0800_A7F3
-	ptrLoc06_166 = SEQ(wLoc04_158, wLoc06_155)
-	ptrLoc06_166 = SEQ(wLoc04_158, wLoc06_155)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -32131,9 +32131,9 @@ l0800_A8B7:
 	word16 dx_32
 	word16 di_134 = 0x0000
 	byte cl_21 = Mem18[ptrArg0A:byte]
-	branch cl_21 != 0x72 l0800_A8D5
 	segptr32 ptrArg0A_164 = SEQ(wArg0C_165, wArg0A_162 + 0x0001)
 	ptrArg0A_164 = SEQ(wArg0C_165, wArg0A_162 + 0x0001)
+	branch cl_21 != 0x72 l0800_A8D5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -32186,9 +32186,9 @@ l0800_A8F3:
 	word16 wArg0A_169 = SLICE(ptrArg0A_164, word16, 0)
 	word16 wArg0C_171 = SLICE(ptrArg0A_164, word16, 16)
 	cl_21 = Mem18[ptrArg0A_164:byte]
-	branch cl_21 == 0x2B l0800_A914
 	ptrArg0A_172 = SEQ(wArg0C_171, wArg0A_169 + 0x0001)
 	segptr32 ptrArg0A_172 = SEQ(wArg0C_171, wArg0A_169 + 0x0001)
+	branch cl_21 == 0x2B l0800_A914
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -32459,10 +32459,10 @@ l0800_AA42:
 // SymbolicIn:
 
 l0800_AA4C:
-	branch wLoc06_62 <u (word16) (Mem27[ds:0x24E8:word16] *s 0x0014) + 0x2358 l0800_AA42
 	ptrLoc06_61 = SEQ(wLoc04_66, wLoc06_62 + 0x0014)
 	ptrLoc06_61 = SEQ(wLoc04_66, wLoc06_62 + 0x0014)
 	Mem16 = Mem27
+	branch wLoc06_62 <u (word16) (Mem27[ds:0x24E8:word16] *s 0x0014) + 0x2358 l0800_AA42
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -32615,29 +32615,29 @@ l0800_AACA:
 
 l0800_AAD6:
 	word16 di_34 = ax_31
-	branch (Mem21[ptrArg02 + 0x0002:word16] & 0x0040) == 0x0000 l0800_AB50
 	segptr32 ptrArg08_235 = SEQ(wArg0A, wArg08)
+	branch (Mem21[ptrArg02 + 0x0002:word16] & 0x0040) == 0x0000 l0800_AB50
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_AAE3:
-	branch Mem21[ptrArg02 + 0x0006:word16] == 0x0000 l0800_AB50
 	ptrArg08_235 = SEQ(wArg0A, wArg08)
+	branch Mem21[ptrArg02 + 0x0006:word16] == 0x0000 l0800_AB50
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_AAEA:
-	branch Mem21[ptrArg02 + 0x0006:word16] >=u v10_20 l0800_AB50
 	ptrArg08_235 = SEQ(wArg0A, wArg08)
+	branch Mem21[ptrArg02 + 0x0006:word16] >=u v10_20 l0800_AB50
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_AAF3:
-	branch Mem21[ptrArg02:word16] != 0x0000 l0800_AB50
 	ptrArg08_235 = SEQ(wArg0A, wArg08)
+	branch Mem21[ptrArg02:word16] != 0x0000 l0800_AB50
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -32938,15 +32938,15 @@ l0800_AC67:
 	word16 dx_49 = Mem12[ptrArg02 + 0x000C:word16]
 	word16 ax_48 = Mem12[ptrArg02 + 0x000E:word16]
 	word16 wLoc06_114 = dx_49
-	branch Mem51[ptrArg02:word16] >= 0x0000 l0800_ACA3
 	segptr32 ptrLoc06_115 = SEQ(ax_48, dx_49)
+	branch Mem51[ptrArg02:word16] >= 0x0000 l0800_ACA3
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_ACA3:
-	word16 wLoc06_116 = SLICE(ptrLoc06_115, word16, 0)
-	word16 wLoc04_131 = SLICE(ptrLoc06_115, word16, 16)
+	word16 wLoc06_116 = SLICE(ptrLoc06_160, word16, 0)
+	word16 wLoc04_131 = SLICE(ptrLoc06_160, word16, 16)
 	cx_108 = cx_108 - 0x0001
 	branch cx_108 != 0x0000 l0800_AC96
 // DataOut:
@@ -32954,9 +32954,10 @@ l0800_ACA3:
 // SymbolicIn:
 
 l0800_AC96:
-	branch Mem66[ptrLoc06_115:byte] != 0x0A l0800_ACA3
 	ptrLoc06_115 = SEQ(wLoc04_131, wLoc06_116 + 0x0001)
 	ptrLoc06_115 = SEQ(wLoc04_131, wLoc06_116 + 0x0001)
+	ptrLoc06_160 = ptrLoc06_115
+	branch Mem66[ptrLoc06_160:byte] != 0x0A l0800_ACA3
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -33511,8 +33512,8 @@ l0800_AED6:
 	word16 ax_196
 	word16 bp_147 = fp - 2
 	word16 sp_58 = fp - 4
-	branch (wArg02 | wArg04) != 0x0000 l0800_AEE8
 	segptr32 ptrArg02_217 = SEQ(wArg04, wArg02)
+	branch (wArg02 | wArg04) != 0x0000 l0800_AEE8
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -34012,11 +34013,11 @@ l0800_B0A1:
 	word16 ax_33
 	fn0800_8F2F((byte) wArg02, wArg02, wArg08, wArg04, (byte) wArg06, wArg06, out cx_196, out dx_197, out bx_198)
 	bool C_29 = <invalid>
-	branch C_29 l0800_B0BE
 	segptr32 ptrArg02_134 = SEQ(wArg04, wArg02)
 	ptrArg02_134 = SEQ(wArg04, wArg02)
 	segptr32 ptrArg06_137 = SEQ(wArg08, wArg06)
 	ptrArg06_137 = SEQ(wArg08, wArg06)
+	branch C_29 l0800_B0BE
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -34233,9 +34234,9 @@ fn0800_B140_entry:
 
 l0800_B140:
 	word16 si_16 = wArg06
-	branch (wArg06 & 0xC000) != 0x0000 l0800_B15C
 	segptr32 ptrLoc0A_396 = SEQ(si, di)
 	ptrLoc0A_396 = SEQ(si, di)
+	branch (wArg06 & 0xC000) != 0x0000 l0800_B15C
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -34568,9 +34569,9 @@ l0800_B2B9:
 l0800_B2BB:
 	word16 ax_42
 	word16 cx_85 = DPB(wArg06, bArg06_69 & 0xF0, 0)
+	word16 wArg06_74 = SEQ(bArg07_73, bArg06_69)
 	word16 ax_36
 	branch msdos_open_file(ptrArg02, al_10 | bArg06_69 & 0xF0, out ax_36) l0800_B2E7
-	word16 wArg06_74 = SEQ(bArg07_73, bArg06_69)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -35123,8 +35124,8 @@ l0800_B50F:
 // SymbolicIn:
 
 l0800_B625:
-	branch Mem17[ptrArg02 + 0x0006:word16] == 0x0000 l0800_B680
 	segptr32 ptrArg08_484 = SEQ(wArg0A, wArg08)
+	branch Mem17[ptrArg02 + 0x0006:word16] == 0x0000 l0800_B680
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -35850,11 +35851,11 @@ l0800_B9A3:
 // SymbolicIn:
 
 l0800_B9B5:
-	word16 ax_46 = fn0800_8F50(ds, wArg02, SEQ(wArg06, wArg04), wArg08, out ch_346, out dx)
-	branch ax_46 <u 0x0001 l0800_B9DD
 	segptr32 ptrArg04_232 = SEQ(wArg06, wArg04)
+	word16 ax_46 = fn0800_8F50(ds, wArg02, SEQ(wArg06, wArg04), wArg08, out ch_346, out dx)
 	wArg06 = SLICE(ptrArg04_232, word16, 16) (alias)
 	wArg04 = SLICE(ptrArg04_232, word16, 0) (alias)
+	branch ax_46 <u 0x0001 l0800_B9DD
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -36039,8 +36040,8 @@ fn0800_BA67_entry:
 // SymbolicIn:
 
 l0800_BA67:
-	branch fn0800_ACB3(ds, wArg02, wArg04, 0x0000, out cx_76, out dx_77, out bx_26) != 0x0000 l0800_BA87
 	segptr32 ptrArg02_59 = SEQ(wArg04, wArg02)
+	branch fn0800_ACB3(ds, wArg02, wArg04, 0x0000, out cx_76, out dx_77, out bx_26) != 0x0000 l0800_BA87
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -36108,23 +36109,23 @@ l0800_BAB1:
 // SymbolicIn:
 
 l0800_BAB8:
-	branch wArg02_228 != 0x236C l0800_BAC7
 	ptrArg02_230 = SEQ(wArg04_231, wArg02_228)
+	branch wArg02_228 != 0x236C l0800_BAC7
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_BAC7:
-	branch Mem14[ds:0x26B0:word16] != 0x0000 l0800_BADB
 	ptrArg02_230 = SEQ(wArg04_231, wArg02_228)
+	branch Mem14[ds:0x26B0:word16] != 0x0000 l0800_BADB
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_BACE:
+	ptrArg02_230 = SEQ(wArg04_231, wArg02_228)
+	ptrArg02_230 = SEQ(wArg04_231, wArg02_228)
 	branch wArg02_228 != 0x2358 l0800_BADB
-	ptrArg02_230 = SEQ(wArg04_231, wArg02_228)
-	ptrArg02_230 = SEQ(wArg04_231, wArg02_228)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -36432,10 +36433,10 @@ fn0800_BC49_entry:
 // SymbolicIn:
 
 l0800_BC49:
-	branch (wArg06 | wArg08) == 0x0000 l0800_BC62
 	segptr32 ptrArg06_210 = SEQ(wArg08, wArg06)
 	wArg06 = SLICE(ptrArg06_210, word16, 0) (alias)
 	wArg08 = SLICE(ptrArg06_210, word16, 16) (alias)
+	branch (wArg06 | wArg08) == 0x0000 l0800_BC62
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -36447,10 +36448,10 @@ l0800_BC5B:
 // SymbolicIn:
 
 l0800_BC62:
-	branch (wArg0A | wArg0C) == 0x0000 l0800_BC71
 	segptr32 ptrArg0A_215 = SEQ(wArg0C, wArg0A)
 	wArg0A = SLICE(ptrArg0A_215, word16, 0) (alias)
 	wArg0C = SLICE(ptrArg0A_215, word16, 16) (alias)
+	branch (wArg0A | wArg0C) == 0x0000 l0800_BC71
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -36462,10 +36463,10 @@ l0800_BC6A:
 // SymbolicIn:
 
 l0800_BC71:
-	branch (wArg0E | wArg10) == 0x0000 l0800_BC80
 	segptr32 ptrArg0E_222 = SEQ(wArg10, wArg0E)
 	wArg0E = SLICE(ptrArg0E_222, word16, 0) (alias)
 	wArg10 = SLICE(ptrArg0E_222, word16, 16) (alias)
+	branch (wArg0E | wArg10) == 0x0000 l0800_BC80
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -36477,10 +36478,10 @@ l0800_BC79:
 // SymbolicIn:
 
 l0800_BC80:
-	branch (wArg12 | wArg14) == 0x0000 l0800_BC8F
 	segptr32 ptrArg12_231 = SEQ(wArg14, wArg12)
 	wArg12 = SLICE(ptrArg12_231, word16, 0) (alias)
 	wArg14 = SLICE(ptrArg12_231, word16, 16) (alias)
+	branch (wArg12 | wArg14) == 0x0000 l0800_BC8F
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -37635,11 +37636,11 @@ l0800_C379:
 l0800_C397:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	word16 stackArg4 = <invalid>
-	branch fn0800_BFC7(SEQ(dx_21, ax_20), stackArg4, out cx_480) >=u 0x0004 l0800_C3AA
 	segptr32 ptrLoc06_400 = SEQ(dx_21, ax_20)
+	word16 stackArg4 = <invalid>
 	word16 wLoc06_401 = SLICE(ptrLoc06_400, word16, 0)
 	word16 wLoc04_403 = SLICE(ptrLoc06_400, word16, 16)
+	branch fn0800_BFC7(SEQ(dx_21, ax_20), stackArg4, out cx_480) >=u 0x0004 l0800_C3AA
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -37664,9 +37665,9 @@ l0800_C3D1:
 // SymbolicIn:
 
 l0800_C3E5:
-	branch Mem45[es_61:wLoc06_401 + 0x0003:byte] == 0x2D l0800_C404
 	segptr32 ptrLoc06_402 = SEQ(wLoc04_403, wLoc06_401)
 	ptrLoc06_402 = SEQ(wLoc04_403, wLoc06_401)
+	branch Mem45[es_61:wLoc06_401 + 0x0003:byte] == 0x2D l0800_C404
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -38109,12 +38110,12 @@ l0800_C727:
 l0800_C731:
 	word16 si_175
 	word16 ax_126
+	segptr32 ptrLoc06_313 = SEQ(wLoc04_296, wLoc06_297)
 	word16 wLoc0E_309 = SLICE(ptrLoc0E_308, word16, 0)
 	word16 wLoc0C_374 = SLICE(ptrLoc0E_308, word16, 16)
-	branch wLoc08_295 == 0x0000 l0800_C73A
-	segptr32 ptrLoc06_313 = SEQ(wLoc04_296, wLoc06_297)
 	word16 wLoc06_314 = SLICE(ptrLoc06_313, word16, 0)
 	word16 wLoc04_317 = SLICE(ptrLoc06_313, word16, 16)
+	branch wLoc08_295 == 0x0000 l0800_C73A
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -38162,9 +38163,9 @@ l0800_C6B4:
 	word16 v20_127 = wLoc08_295 - 0x0001
 	wLoc08_295 = v20_127
 	byte al_134 = Mem131[ptrLoc0E_308:byte]
+	ptrLoc0E_308 = SEQ(wLoc0C_374, wLoc0E_309 + 0x0001)
+	ptrLoc0E_308 = SEQ(wLoc0C_374, wLoc0E_309 + 0x0001)
 	branch al_134 != 0x0A l0800_C6D1
-	ptrLoc0E_308 = SEQ(wLoc0C_374, wLoc0E_309 + 0x0001)
-	ptrLoc0E_308 = SEQ(wLoc0C_374, wLoc0E_309 + 0x0001)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

@@ -47,8 +47,8 @@ l80000132:
 // SymbolicIn:
 
 l8000014A:
-	branch (real96) dwLoc14_59 >= rArg10 l80000172
 	real96 rLoc10_71 = SEQ(dwLoc10_62, dwLoc0C_63, dwLoc08_64)
+	branch (real96) dwLoc14_59 >= rArg10 l80000172
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -99,8 +99,8 @@ l8000018E:
 // SymbolicIn:
 
 l800001A8:
-	branch (real96) dwLoc14_59 > rArg04 l800001D4
 	real96 rLoc10_71 = SEQ(dwLoc10_62, dwLoc0C_63, dwLoc08_64)
+	branch (real96) dwLoc14_59 > rArg04 l800001D4
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -151,8 +151,8 @@ l800001F2:
 // SymbolicIn:
 
 l8000021C:
-	branch dwLoc20_110 > 100 l8000028A
 	real96 rLoc10_127 = SEQ(dwLoc10_112, dwLoc0C_113, dwLoc08_114)
+	branch dwLoc20_110 > 100 l8000028A
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -206,8 +206,8 @@ l800002AE:
 // SymbolicIn:
 
 l800002DA:
-	branch dwLoc20_109 > 100 l80000348
 	real96 rLoc10_126 = SEQ(dwLoc10_111, dwLoc0C_112, dwLoc08_113)
+	branch dwLoc20_109 > 100 l80000348
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

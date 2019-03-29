@@ -471,8 +471,8 @@ Eq_n fn0800-0541(Eq_n ch, Eq_n di, Eq_n ds)
 		}
 		if (si_n <= 0x0A)
 		{
-			uint16 bx_n = si_n << 0x01;
 			segptr32 ptrLoc06_n = &(wLoc04->*wLoc06);
+			uint16 bx_n = si_n << 0x01;
 			wLoc04 = SLICE(ptrLoc06_n, word16, 16);
 			wLoc06 = SLICE(ptrLoc06_n, word16, 0);
 			switch (bx_n)
@@ -5498,80 +5498,74 @@ word16 fn0800-3678(Eq_n ds, Eq_n ptrArg02, Eq_n wArg04, union Eq_n & dxOut, ptr1
 		es_n.u0 = 0x00;
 	}
 	Eq_n di_n = di_n - 0x01;
-	if ((di_n | es_n) == 0x00)
+	if ((di_n | es_n) != 0x00)
 	{
+		ptrLoc0A_n = SEQ(es_n, di_n);
+		Eq_n ptrLoc0A_n = SEQ(es_n, di_n);
+		word16 wLoc08_n = SLICE(ptrLoc0A_n, word16, 16);
+		word16 wLoc0A_n = SLICE(ptrLoc0A_n, word16, 0);
+		if (es_n != wArg04 || di_n != wArg02)
+		{
+			wLoc08_n = SLICE(ptrLoc0A_n, word16, 16);
+			wLoc0A_n = SLICE(ptrLoc0A_n, word16, 0);
+			if (*(ptrLoc0A_n - 0x01) != 0x3A)
+				goto l0800_n;
+		}
+		ptrLoc06_n = SEQ(wLoc08_n, wLoc0A_n + 0x01);
+	}
 l0800_n:
-		while (true)
-		{
-			struct Eq_n * es_n = SLICE(ptrLoc06_n, selector, 16);
-			byte Eq_n::* di_n = (word16) ptrLoc06_n;
-			word16 cx_n = ~0x00;
-			while (cx_n != 0x00)
-			{
-				++di_n;
-				--cx_n;
-				if (es_n->*di_n != 0x00)
-					break;
-			}
-			word16 cx_n = ~cx_n;
-			byte Eq_n::* di_n = di_n - cx_n;
-			bool Z_n = SLICE(cond(di_n), bool, 2);
-			while (cx_n != 0x00)
-			{
-				Z_n = SLICE(cond(0x5C - es_n->*di_n), bool, 2);
-				++di_n;
-				--cx_n;
-				if (es_n->*di_n != 0x5C)
-					break;
-			}
-			if (!Z_n)
-			{
-				di_n = &Eq_n::b0001;
-				es_n = 0x00;
-			}
-			Eq_n di_n = di_n - 0x01;
-			Eq_n dx_n = di_n | es_n;
-			byte * ptrLoc0A_n = di_n;
-			word16 wLoc08_n = SLICE(ptrLoc0A_n, word16, 16);
-			word16 wLoc0A_n = SLICE(ptrLoc0A_n, word16, 0);
-			if (dx_n == 0x00)
-				break;
-			*ptrLoc0A_n = 0x00;
-			Eq_n ax_n = fn0800-33CD(ds, 0x00, 0x00, 0x10, wArg02, wArg04, out cx_n, out dx_n);
-			if (ax_n != 0x00 && fn0800-8E52(ax_n, ds, SEQ(wArg04, wArg02)) != 0x00)
-			{
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				Eq_n stackArg6 = <invalid>;
-				fn0800-0D24(ds, 0x0E, SEQ(wArg04, wArg02), stackArg6, out cx_n, out dx_n, out bx_n, out si, out di_n, out es_n, out ds, out Top_n);
-			}
-			*ptrLoc0A_n = 0x5C;
-			ptrLoc06_n = SEQ(wLoc08_n, wLoc0A_n + 0x01);
-			Mem102 = Mem265;
-		}
-		dxOut = dx_n;
-		siOut = si;
-		dsOut = ds;
-		return cx_n;
-	}
-	ptrLoc0A_n = SEQ(es_n, di_n);
-	Eq_n ptrLoc0A_n = SEQ(es_n, di_n);
-	word16 wLoc08_n = SLICE(ptrLoc0A_n, word16, 16);
-	word16 wLoc0A_n = SLICE(ptrLoc0A_n, word16, 0);
-	if (es_n == wArg04)
+	while (true)
 	{
-		if (di_n == wArg02)
+		struct Eq_n * es_n = SLICE(ptrLoc06_n, selector, 16);
+		byte Eq_n::* di_n = (word16) ptrLoc06_n;
+		word16 cx_n = ~0x00;
+		while (cx_n != 0x00)
 		{
-l0800_nD0:
-			ptrLoc06_n = SEQ(wLoc08_n, wLoc0A_n + 0x01);
-			goto l0800_n;
+			++di_n;
+			--cx_n;
+			if (es_n->*di_n != 0x00)
+				break;
 		}
+		word16 cx_n = ~cx_n;
+		byte Eq_n::* di_n = di_n - cx_n;
+		bool Z_n = SLICE(cond(di_n), bool, 2);
+		while (cx_n != 0x00)
+		{
+			Z_n = SLICE(cond(0x5C - es_n->*di_n), bool, 2);
+			++di_n;
+			--cx_n;
+			if (es_n->*di_n != 0x5C)
+				break;
+		}
+		if (!Z_n)
+		{
+			di_n = &Eq_n::b0001;
+			es_n = 0x00;
+		}
+		Eq_n di_n = di_n - 0x01;
+		byte * ptrLoc0A_n = di_n;
+		Eq_n dx_n = di_n | es_n;
+		word16 wLoc08_n = SLICE(ptrLoc0A_n, word16, 16);
+		word16 wLoc0A_n = SLICE(ptrLoc0A_n, word16, 0);
+		if (dx_n == 0x00)
+			break;
+		*ptrLoc0A_n = 0x00;
+		Eq_n ax_n = fn0800-33CD(ds, 0x00, 0x00, 0x10, wArg02, wArg04, out cx_n, out dx_n);
+		if (ax_n != 0x00 && fn0800-8E52(ax_n, ds, SEQ(wArg04, wArg02)) != 0x00)
+		{
+			// Failed to bind call argument.
+			// Please report this issue at https://github.com/uxmal/reko
+			Eq_n stackArg6 = <invalid>;
+			fn0800-0D24(ds, 0x0E, SEQ(wArg04, wArg02), stackArg6, out cx_n, out dx_n, out bx_n, out si, out di_n, out es_n, out ds, out Top_n);
+		}
+		*ptrLoc0A_n = 0x5C;
+		ptrLoc06_n = SEQ(wLoc08_n, wLoc0A_n + 0x01);
+		Mem102 = Mem265;
 	}
-	wLoc08_n = SLICE(ptrLoc0A_n, word16, 16);
-	wLoc0A_n = SLICE(ptrLoc0A_n, word16, 0);
-	if (*(ptrLoc0A_n - 0x01) != 0x3A)
-		goto l0800_n;
-	goto l0800_nD0;
+	dxOut = dx_n;
+	siOut = si;
+	dsOut = ds;
+	return cx_n;
 }
 
 // 0800:3764: void fn0800-3764(Register Eq_n si, Register Eq_n di, Register Eq_n ds)
@@ -15605,34 +15599,28 @@ l0800_A77A:
 		goto l0800_A778;
 	}
 	struct Eq_n * ptrArg02_n = SEQ(wArg04_n, wArg02_n);
-	if ((ptrArg02_n->w0002 & 0x08) != 0x00)
-	{
-l0800_A701:
-		ptrArg02_n->w0000 = 0x00;
-		word16 wArg02_n = SLICE(ptrArg02_n, word16, 0);
-		bx_n = (word16) ptrArg02_n;
-		dx = wArg02_n + 0x05;
-		if (ptrArg02_n->w000E == SLICE(ptrArg02_n, word16, 16) && ptrArg02_n->ptr000C == wArg02_n + 0x05)
-		{
-			dx = ptrArg02_n->ptr0008;
-			ptrArg02_n->w000E = ptrArg02_n->w000A;
-			ptrArg02_n->ptr000C = dx;
-		}
-		goto l0800_A778;
-	}
-	else
+	if ((ptrArg02_n->w0002 & 0x08) == 0x00)
 	{
 		dx = wArg02_n + 0x05;
 		ptrArg02_n = SEQ(wArg04_n, wArg02_n);
-		if (ptrArg02_n->t000E == wArg04_n)
+		if (ptrArg02_n->t000E != wArg04_n || ptrArg02_n->w000C != wArg02_n + 0x05)
 		{
-			if (ptrArg02_n->w000C == wArg02_n + 0x05)
-				goto l0800_A701;
-		}
 l0800_A778:
-		ax_n = 0x00;
-		goto l0800_A77A;
+			ax_n = 0x00;
+			goto l0800_A77A;
+		}
 	}
+	ptrArg02_n->w0000 = 0x00;
+	word16 wArg02_n = SLICE(ptrArg02_n, word16, 0);
+	bx_n = (word16) ptrArg02_n;
+	dx = wArg02_n + 0x05;
+	if (ptrArg02_n->w000E == SLICE(ptrArg02_n, word16, 16) && ptrArg02_n->ptr000C == wArg02_n + 0x05)
+	{
+		dx = ptrArg02_n->ptr0008;
+		ptrArg02_n->w000E = ptrArg02_n->w000A;
+		ptrArg02_n->ptr000C = dx;
+	}
+	goto l0800_A778;
 }
 
 // 0800:A77D: Register word16 fn0800_A77D(Register Eq_n ds, Stack word16 wArg02, Stack Eq_n wArg04, Stack ci16 wArg06, Stack (ptr32 Eq_n) ptrArg08, Stack Eq_n wArg0A, Register out Eq_n dxOut)
@@ -15686,14 +15674,11 @@ word16 fn0800_A77D(Eq_n ds, word16 wArg02, Eq_n wArg04, ci16 wArg06, struct Eq_n
 	{
 		ptrLoc06_n = SEQ(wLoc04_n, wLoc06_n);
 		ptrLoc06_n = SEQ(wLoc04_n, wLoc06_n);
-		if (wLoc04_n == wArg04)
+		if (wLoc04_n == wArg04 && wLoc06_n == wArg02)
 		{
-			if (wLoc06_n == wArg02)
-			{
-				dx_n.u0 = 0x00;
-				ax_n = 0x00;
-				goto l0800_A811;
-			}
+			dx_n.u0 = 0x00;
+			ax_n = 0x00;
+			goto l0800_A811;
 		}
 	}
 	*ptrLoc06_n = 0x00;
@@ -15826,17 +15811,14 @@ l0800_A967:
 	cl_n = *ptrArg0A_n;
 	ptrArg0A_n = SEQ(wArg0C_n, wArg0A_n + 0x01);
 	union Eq_n * ptrArg0A_n = SEQ(wArg0C_n, wArg0A_n + 0x01);
-	if (cl_n != 0x2B)
+	if (cl_n == 0x2B || *ptrArg0A_n == 0x2B && (cl_n == 116 || cl_n == 0x62))
 	{
-		if (*ptrArg0A_n != 0x2B || cl_n != 116 && cl_n != 0x62)
-			goto l0800_A92B;
+		if (cl_n == 0x2B)
+			cl_n = *ptrArg0A_n;
+		dx_n = dx_n & ~0x03 | 0x04;
+		di_n = 0x0180;
+		si_n = 0x03;
 	}
-	if (cl_n == 0x2B)
-		cl_n = *ptrArg0A_n;
-	dx_n = dx_n & ~0x03 | 0x04;
-	di_n = 0x0180;
-	si_n = 0x03;
-l0800_A92B:
 	cui16 dx_n;
 	if (cl_n == 116)
 	{
@@ -16192,6 +16174,7 @@ ui16 fn0800_AC31(Eq_n ptrArg02)
 					break;
 				ptrLoc06_n = SEQ(wLoc04_n, wLoc06_n + 0x01);
 				ptrLoc06_n = SEQ(wLoc04_n, wLoc06_n + 0x01);
+				ptrLoc06_n = ptrLoc06_n;
 				if (*ptrLoc06_n == 0x0A)
 					++si_n;
 			}
@@ -16840,8 +16823,8 @@ Eq_n fn0800_B2A0(Eq_n ds, segptr32 ptrArg02, cui16 wArg06, Eq_n bArg07, union Eq
 	}
 	Eq_n ax_n;
 	Eq_n cx_n = DPB(wArg06, bArg06_n & 0xF0, 0);
-	Eq_n ax_n;
 	cui16 wArg06_n = SEQ(bArg07_n, bArg06_n);
+	Eq_n ax_n;
 	if (!msdos_open_file(ptrArg02, al_n | bArg06_n & 0xF0, out ax_n))
 	{
 		SEQ(ds, 0x24EA)[ax_n * 0x02] = wArg06_n & ~0x4700 | 0x8000;
@@ -17479,18 +17462,15 @@ Eq_n fn0800_B97F(Eq_n ds, Eq_n wArg02, Eq_n ptrArg04, Eq_n wArg06, Eq_n wArg08, 
 	{
 		do
 		{
-			Eq_n ax_n = fn0800-8F50(ds, wArg02, SEQ(wArg06, wArg04), wArg08, out ch_n, out dx);
 			segptr32 ptrArg04_n = SEQ(wArg06, wArg04);
+			Eq_n ax_n = fn0800-8F50(ds, wArg02, SEQ(wArg06, wArg04), wArg08, out ch_n, out dx);
 			wArg06 = SLICE(ptrArg04_n, word16, 16);
 			wArg04 = SLICE(ptrArg04_n, word16, 0);
-			if (ax_n < 0x01)
+			if (ax_n < 0x01 || (SEQ(ds, 0x24EA)[wArg02 * 0x02] & 0x4000) == 0x00)
 			{
-l0800_B9DD:
 				ax_n = ax_n;
 				goto l0800_BA44;
 			}
-			if ((SEQ(ds, 0x24EA)[wArg02 * 0x02] & 0x4000) == 0x00)
-				goto l0800_B9DD;
 			Eq_n si_n = (word16) ptrArg04_n;
 			Eq_n cx_n;
 			struct Eq_n * es_n = SLICE(ptrArg04_n, selector, 16);
@@ -18297,100 +18277,95 @@ Eq_n fn0800_C379(Eq_n ds)
 	{
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
 		byte * ptrLoc06_n = SEQ(dx_n, ax_n);
+		Eq_n stackArg4 = <invalid>;
 		struct Eq_n Eq_n::* wLoc06_n = SLICE(ptrLoc06_n, word16, 0);
 		word16 wLoc04_n = SLICE(ptrLoc06_n, word16, 16);
-		if (fn0800_BFC7(SEQ(dx_n, ax_n), stackArg4, out cx_n) < 0x04)
-			goto l0800_C42C;
-		struct Eq_n * es_n = SLICE(ptrLoc06_n, selector, 16);
-		if (((int16) ((int16) *ptrLoc06_n + 0x2251) & 0x0C) == 0x00 || (((int16) ((int16) (es_n->*wLoc06_n).b0001 + 0x2251) & 0x0C) == 0x00 || ((int16) ((int16) (es_n->*wLoc06_n).b0002 + 0x2251) & 0x0C) == 0x00))
-			goto l0800_C42C;
-		struct Eq_n * ptrLoc06_n = SEQ(wLoc04_n, wLoc06_n);
-		ptrLoc06_n = SEQ(wLoc04_n, wLoc06_n);
-		if ((es_n->*wLoc06_n).b0003 != 0x2D)
+		if (fn0800_BFC7(SEQ(dx_n, ax_n), stackArg4, out cx_n) >= 0x04)
 		{
-			if ((es_n->*wLoc06_n).b0003 != 0x2B && ((int16) (es_n->*wLoc06_n).b0003 + 0x2251 & 0x02) == 0x00)
-				goto l0800_C42C;
-		}
-		struct Eq_n Eq_n::* wLoc06_n = SLICE(ptrLoc06_n, word16, 0);
-		word16 wLoc04_n = SLICE(ptrLoc06_n, word16, 16);
-		struct Eq_n * es_n = SLICE(ptrLoc06_n, selector, 16);
-		if (((int16) ((int16) ptrLoc06_n->b0003 + 0x2251) & 0x02) != 0x00 || ((int16) ((int16) (es_n->*wLoc06_n).b0004 + 0x2251) & 0x02) != 0x00)
-		{
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg6 = <invalid>;
-			fn0800_B083(*((word32) ds + 9950), *((word32) ds + 9952), stackArg6, 0x04);
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg4 = <invalid>;
-			fn0800_C01E(SEQ(*((word32) ds + 9948), *((word32) ds + 9946)), stackArg4, SEQ(wLoc04_n, wLoc06_n), 0x03);
-			((word32) ds + 9946)->u1->b0003 = 0x00;
-			Eq_n sp_n = <invalid>;
-			Eq_n dx_n;
-			ss->*((word32) sp_n + 0x02) = fn0800_A471(ds, SEQ(wLoc04_n, (char *) wLoc06_n + 0x03), out dx_n, out bp_n);
-			ss->*sp_n = dx_n;
-			word16 dx_n;
-			Eq_n ax_n = fn0800-8F18(0x0E10, ss->*sp_n, 0x00, ss->*((word32) sp_n + 0x02), out ch_n, out dx_n);
-			*((word32) ds + 9956) = dx_n;
-			*((word32) ds + 0x000026E2) = ax_n;
-			*((word32) ds + 0x000026E6) = 0x00;
-			Eq_n si_n = 0x03;
-			while (Mem231[Mem231[ss:bp_n - 0x04 + 0x00:segptr32] + si_n:byte] != 0x00)
+			struct Eq_n * es_n = SLICE(ptrLoc06_n, selector, 16);
+			if (((int16) ((int16) *ptrLoc06_n + 0x2251) & 0x0C) != 0x00 && (((int16) ((int16) (es_n->*wLoc06_n).b0001 + 0x2251) & 0x0C) != 0x00 && ((int16) ((int16) (es_n->*wLoc06_n).b0002 + 0x2251) & 0x0C) != 0x00))
 			{
-				if ((Mem231[ds:(int16) Mem231[Mem231[ss:bp_n - 0x04 + 0x00:segptr32] + si_n:byte] + 0x2251:byte] & 0x0C) != 0x00)
+				struct Eq_n * ptrLoc06_n = SEQ(wLoc04_n, wLoc06_n);
+				ptrLoc06_n = SEQ(wLoc04_n, wLoc06_n);
+				if ((es_n->*wLoc06_n).b0003 == 0x2D || ((es_n->*wLoc06_n).b0003 == 0x2B || ((int16) (es_n->*wLoc06_n).b0003 + 0x2251 & 0x02) != 0x00))
 				{
-					word16 ax_n = Mem231[ss:bp_n - 0x04 + 0x00:word16] + si_n;
-					ss->*((word32) sp_n + 0x02) = ss->*(bp_n - 0x02);
-					ss->*sp_n = ax_n;
-					// Failed to bind call argument.
-					// Please report this issue at https://github.com/uxmal/reko
-					Eq_n stackArg4 = <invalid>;
-					if (fn0800_BFC7(ss->*sp_n, stackArg4, out cx_n) >= 0x03)
+					struct Eq_n Eq_n::* wLoc06_n = SLICE(ptrLoc06_n, word16, 0);
+					word16 wLoc04_n = SLICE(ptrLoc06_n, word16, 16);
+					struct Eq_n * es_n = SLICE(ptrLoc06_n, selector, 16);
+					if (((int16) ((int16) ptrLoc06_n->b0003 + 0x2251) & 0x02) != 0x00 || ((int16) ((int16) (es_n->*wLoc06_n).b0004 + 0x2251) & 0x02) != 0x00)
 					{
-						Eq_n es_bx_n = ss->*(bp_n - 0x04);
-						struct Eq_n * es_n = SLICE(es_bx_n, selector, 16);
-						if (((int16) Mem262[ds:(int16) Mem262[es_n:(word16) es_bx_n + 0x01 + si_n:byte] + 0x2251:byte] & 0x0C) != 0x00 && ((int16) ((int16) (es_n->*((word32) si_n + ((word16) (ss->*(bp_n - 0x04)) + 0x02))) + 0x2251) & 0x0C) != 0x00)
+						// Failed to bind call argument.
+						// Please report this issue at https://github.com/uxmal/reko
+						Eq_n stackArg6 = <invalid>;
+						fn0800_B083(*((word32) ds + 9950), *((word32) ds + 9952), stackArg6, 0x04);
+						// Failed to bind call argument.
+						// Please report this issue at https://github.com/uxmal/reko
+						Eq_n stackArg4 = <invalid>;
+						fn0800_C01E(SEQ(*((word32) ds + 9948), *((word32) ds + 9946)), stackArg4, SEQ(wLoc04_n, wLoc06_n), 0x03);
+						((word32) ds + 9946)->u1->b0003 = 0x00;
+						Eq_n sp_n = <invalid>;
+						Eq_n dx_n;
+						ss->*((word32) sp_n + 0x02) = fn0800_A471(ds, SEQ(wLoc04_n, (char *) wLoc06_n + 0x03), out dx_n, out bp_n);
+						ss->*sp_n = dx_n;
+						word16 dx_n;
+						Eq_n ax_n = fn0800-8F18(0x0E10, ss->*sp_n, 0x00, ss->*((word32) sp_n + 0x02), out ch_n, out dx_n);
+						*((word32) ds + 9956) = dx_n;
+						*((word32) ds + 0x000026E2) = ax_n;
+						*((word32) ds + 0x000026E6) = 0x00;
+						Eq_n si_n = 0x03;
+						while (Mem231[Mem231[ss:bp_n - 0x04 + 0x00:segptr32] + si_n:byte] != 0x00)
 						{
-							(ss->*((word32) sp_n + 0x02)).u0 = 0x03;
-							word16 ax_n = Mem299[ss:bp_n - 0x04 + 0x00:word16] + si_n;
-							ss->*sp_n = ss->*(bp_n - 0x02);
-							(ss->*(sp_n - 0x02)).t0000 = ax_n;
-							(ss->*(sp_n - 0x04)).t0000 = *((word32) ds + 9952);
-							(ss->*(sp_n - 0x06)).t0000 = *((word32) ds + 9950);
-							// Failed to bind call argument.
-							// Please report this issue at https://github.com/uxmal/reko
-							Eq_n stackArg4 = <invalid>;
-							fn0800_C01E((ss->*(sp_n - 0x06)).t0000, stackArg4, (ss->*(sp_n - 0x02)).t0000, ss->*((word32) sp_n + 0x02));
-							*((word32) *((word32) ds + 9950) + 0x03) = 0x00;
-							*((word32) ds + 0x000026E6) = 0x01;
+							if ((Mem231[ds:(int16) Mem231[Mem231[ss:bp_n - 0x04 + 0x00:segptr32] + si_n:byte] + 0x2251:byte] & 0x0C) != 0x00)
+							{
+								word16 ax_n = Mem231[ss:bp_n - 0x04 + 0x00:word16] + si_n;
+								ss->*((word32) sp_n + 0x02) = ss->*(bp_n - 0x02);
+								ss->*sp_n = ax_n;
+								// Failed to bind call argument.
+								// Please report this issue at https://github.com/uxmal/reko
+								Eq_n stackArg4 = <invalid>;
+								if (fn0800_BFC7(ss->*sp_n, stackArg4, out cx_n) >= 0x03)
+								{
+									Eq_n es_bx_n = ss->*(bp_n - 0x04);
+									struct Eq_n * es_n = SLICE(es_bx_n, selector, 16);
+									if (((int16) Mem262[ds:(int16) Mem262[es_n:(word16) es_bx_n + 0x01 + si_n:byte] + 0x2251:byte] & 0x0C) != 0x00 && ((int16) ((int16) (es_n->*((word32) si_n + ((word16) (ss->*(bp_n - 0x04)) + 0x02))) + 0x2251) & 0x0C) != 0x00)
+									{
+										(ss->*((word32) sp_n + 0x02)).u0 = 0x03;
+										word16 ax_n = Mem299[ss:bp_n - 0x04 + 0x00:word16] + si_n;
+										ss->*sp_n = ss->*(bp_n - 0x02);
+										(ss->*(sp_n - 0x02)).t0000 = ax_n;
+										(ss->*(sp_n - 0x04)).t0000 = *((word32) ds + 9952);
+										(ss->*(sp_n - 0x06)).t0000 = *((word32) ds + 9950);
+										// Failed to bind call argument.
+										// Please report this issue at https://github.com/uxmal/reko
+										Eq_n stackArg4 = <invalid>;
+										fn0800_C01E((ss->*(sp_n - 0x06)).t0000, stackArg4, (ss->*(sp_n - 0x02)).t0000, ss->*((word32) sp_n + 0x02));
+										*((word32) *((word32) ds + 9950) + 0x03) = 0x00;
+										*((word32) ds + 0x000026E6) = 0x01;
+									}
+								}
+								return ss->*bp_n;
+							}
+							si_n = (word32) si_n + 0x01;
 						}
+						return ss->*bp_n;
 					}
-					return ss->*bp_n;
 				}
-				si_n = (word32) si_n + 0x01;
 			}
-			return ss->*bp_n;
 		}
-		goto l0800_C42C;
 	}
-	else
-	{
-l0800_C42C:
-		*((word32) ds + 0x000026E6) = 0x01;
-		*((word32) ds + 9956) = 0x00;
-		((word32) ds + 0x000026E2)->u0 = 18000;
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
-		fn0800_BF9E(SEQ(*((word32) ds + 9948), *((word32) ds + 9946)), stackArg4, SEQ(ds, 9963));
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
-		fn0800_BF9E(SEQ(*((word32) ds + 9952), *((word32) ds + 9950)), stackArg4, SEQ(ds, 9967));
-		return ss->*bp_n;
-	}
+	*((word32) ds + 0x000026E6) = 0x01;
+	*((word32) ds + 9956) = 0x00;
+	((word32) ds + 0x000026E2)->u0 = 18000;
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	Eq_n stackArg4 = <invalid>;
+	fn0800_BF9E(SEQ(*((word32) ds + 9948), *((word32) ds + 9946)), stackArg4, SEQ(ds, 9963));
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	Eq_n stackArg4 = <invalid>;
+	fn0800_BF9E(SEQ(*((word32) ds + 9952), *((word32) ds + 9950)), stackArg4, SEQ(ds, 9967));
+	return ss->*bp_n;
 }
 
 // 0800:C553: Register word16 fn0800_C553(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04, Stack Eq_n wArg06, Stack Eq_n bArg08)
@@ -18476,9 +18451,9 @@ Eq_n fn0800_C632(Eq_n ds, Eq_n wArg02, word16 wArg04, Eq_n wArg06, Eq_n wArg08, 
 				{
 					Eq_n si_n;
 					Eq_n ax_n;
+					byte * ptrLoc06_n = wLoc06_n;
 					word16 wLoc0E_n = SLICE(ptrLoc0E_n, word16, 0);
 					word16 wLoc0C_n = SLICE(ptrLoc0E_n, word16, 16);
-					byte * ptrLoc06_n = wLoc06_n;
 					word16 wLoc06_n = SLICE(ptrLoc06_n, word16, 0);
 					word16 wLoc04_n = SLICE(ptrLoc06_n, word16, 16);
 					if (wLoc08_n == 0x00)

@@ -84,10 +84,10 @@ Eq_21: (union "Eq_21" (word64 u0) (DWORD u1) (UINT u2))
 	T_605 (in eax : Eq_21)
 	T_607 (in tArg08 : Eq_21)
 	T_623 (in uExitCode : UINT)
-	T_628 (in ProcessorFeature : DWORD)
-	T_629 (in tLoc38 : DWORD)
-	T_636 (in tLoc38_68 : Eq_21)
-	T_637 (in SLICE(qwLoc38_63, DWORD, 0) : DWORD)
+	T_628 (in tLoc38 : DWORD)
+	T_630 (in tLoc38_68 : Eq_21)
+	T_631 (in SLICE(qwLoc38_63, DWORD, 0) : DWORD)
+	T_634 (in ProcessorFeature : DWORD)
 	T_762 (in stackArg8 : Eq_21)
 	T_763 (in stackArg16 : Eq_21)
 	T_764 (in stackArg24 : Eq_21)
@@ -97,9 +97,9 @@ Eq_21: (union "Eq_21" (word64 u0) (DWORD u1) (UINT u2))
 	T_794 (in stackArg8 : Eq_21)
 	T_1056 (in GetCurrentThreadId() : DWORD)
 	T_1061 (in GetCurrentProcessId() : DWORD)
-	T_1130 (in tLoc05C8 : DWORD)
-	T_1137 (in tLoc05C8_116 : Eq_21)
-	T_1138 (in SLICE(ptrLoc05C8_106, DWORD, 0) : DWORD)
+	T_1128 (in tLoc05C8 : DWORD)
+	T_1133 (in tLoc05C8_116 : Eq_21)
+	T_1134 (in SLICE(ptrLoc05C8_106, DWORD, 0) : DWORD)
 	T_1286 (in stackArg8 : Eq_21)
 	T_1287 (in stackArg16 : Eq_21)
 Eq_26: (fn void (ui64, ptr64, uint64, word64, word64, word64, ptr64, ptr64, Eq_21, Eq_21, Eq_21, Eq_21))
@@ -334,8 +334,8 @@ Eq_353: (union "Eq_353" ((ptr64 void) u0) (LPTOP_LEVEL_EXCEPTION_FILTER u1) (PCO
 	T_615 (in ExceptionInfo : (ptr64 (struct "_EXCEPTION_POINTERS")))
 	T_689 (in ContextRecord : PCONTEXT)
 	T_690 (in tLoc58 : PCONTEXT)
-	T_1134 (in ptrLoc05C8_106 : Eq_353)
-	T_1136 (in SEQ(dwLoc05C4, tLoc05C8) : (ptr64 void))
+	T_1126 (in ptrLoc05C8_106 : Eq_353)
+	T_1129 (in SEQ(dwLoc05C4, tLoc05C8) : (ptr64 void))
 	T_1149 (in _Dst : (ptr64 void))
 	T_1178 (in SetUnhandledExceptionFilter(ptrLoc05C8_106) : LPTOP_LEVEL_EXCEPTION_FILTER)
 	T_1190 (in SEQ(dwLoc05C4_117, tLoc05C8_116) : (ptr64 void))
@@ -470,18 +470,18 @@ Eq_620: (fn Eq_624 (Eq_606, Eq_21))
 	T_621 (in signature of TerminateProcess : void)
 Eq_624: BOOL
 	T_624 (in TerminateProcess(tArg00, tArg08) : BOOL)
-	T_630 (in IsProcessorFeaturePresent(tLoc38) : BOOL)
-	T_631 (in 0x00000000 : word32)
+	T_635 (in IsProcessorFeaturePresent(tLoc38) : BOOL)
+	T_636 (in 0x00000000 : word32)
 	T_1067 (in QueryPerformanceCounter(tLoc28) : BOOL)
-	T_1131 (in IsProcessorFeaturePresent(tLoc05C8) : BOOL)
-	T_1132 (in 0x00000000 : word32)
+	T_1138 (in IsProcessorFeaturePresent(tLoc05C8) : BOOL)
+	T_1139 (in 0x00000000 : word32)
 	T_1173 (in eax_69 : Eq_624)
 	T_1176 (in IsDebuggerPresent() : BOOL)
 	T_1196 (in 0x00000001 : word32)
-Eq_626: (fn Eq_624 (Eq_21))
-	T_626 (in IsProcessorFeaturePresent : ptr64)
-	T_627 (in signature of IsProcessorFeaturePresent : void)
-	T_1129 (in IsProcessorFeaturePresent : ptr64)
+Eq_632: (fn Eq_624 (Eq_21))
+	T_632 (in IsProcessorFeaturePresent : ptr64)
+	T_633 (in signature of IsProcessorFeaturePresent : void)
+	T_1137 (in IsProcessorFeaturePresent : ptr64)
 Eq_638: (fn void (word32))
 	T_638 (in __fastfail : ptr64)
 	T_639 (in signature of __fastfail : void)
@@ -3175,54 +3175,54 @@ T_625: (in rax : word64)
   Class: Eq_625
   DataType: word64
   OrigDataType: word64
-T_626: (in IsProcessorFeaturePresent : ptr64)
+T_626: (in qwLoc38_63 : word64)
   Class: Eq_626
-  DataType: (ptr64 Eq_626)
-  OrigDataType: (ptr64 (fn T_630 (T_629)))
-T_627: (in signature of IsProcessorFeaturePresent : void)
-  Class: Eq_626
-  DataType: (ptr64 Eq_626)
-  OrigDataType: 
-T_628: (in ProcessorFeature : DWORD)
-  Class: Eq_21
-  DataType: Eq_21
-  OrigDataType: 
-T_629: (in tLoc38 : DWORD)
+  DataType: word64
+  OrigDataType: word64
+T_627: (in dwLoc34 : word32)
+  Class: Eq_627
+  DataType: word32
+  OrigDataType: word32
+T_628: (in tLoc38 : DWORD)
   Class: Eq_21
   DataType: Eq_21
   OrigDataType: DWORD
-T_630: (in IsProcessorFeaturePresent(tLoc38) : BOOL)
-  Class: Eq_624
-  DataType: Eq_624
-  OrigDataType: BOOL
-T_631: (in 0x00000000 : word32)
-  Class: Eq_624
-  DataType: Eq_624
-  OrigDataType: word32
-T_632: (in IsProcessorFeaturePresent(tLoc38) == 0x00000000 : bool)
-  Class: Eq_632
-  DataType: bool
-  OrigDataType: bool
-T_633: (in qwLoc38_63 : word64)
-  Class: Eq_633
+T_629: (in SEQ(dwLoc34, tLoc38) : word64)
+  Class: Eq_626
   DataType: word64
   OrigDataType: word64
-T_634: (in dwLoc34 : word32)
-  Class: Eq_634
-  DataType: word32
-  OrigDataType: word32
-T_635: (in SEQ(dwLoc34, tLoc38) : word64)
-  Class: Eq_633
-  DataType: word64
-  OrigDataType: word64
-T_636: (in tLoc38_68 : Eq_21)
+T_630: (in tLoc38_68 : Eq_21)
   Class: Eq_21
   DataType: Eq_21
   OrigDataType: (union (DWORD u0) (UINT u1))
-T_637: (in SLICE(qwLoc38_63, DWORD, 0) : DWORD)
+T_631: (in SLICE(qwLoc38_63, DWORD, 0) : DWORD)
   Class: Eq_21
   DataType: Eq_21
   OrigDataType: DWORD
+T_632: (in IsProcessorFeaturePresent : ptr64)
+  Class: Eq_632
+  DataType: (ptr64 Eq_632)
+  OrigDataType: (ptr64 (fn T_635 (T_628)))
+T_633: (in signature of IsProcessorFeaturePresent : void)
+  Class: Eq_632
+  DataType: (ptr64 Eq_632)
+  OrigDataType: 
+T_634: (in ProcessorFeature : DWORD)
+  Class: Eq_21
+  DataType: Eq_21
+  OrigDataType: 
+T_635: (in IsProcessorFeaturePresent(tLoc38) : BOOL)
+  Class: Eq_624
+  DataType: Eq_624
+  OrigDataType: BOOL
+T_636: (in 0x00000000 : word32)
+  Class: Eq_624
+  DataType: Eq_624
+  OrigDataType: word32
+T_637: (in IsProcessorFeaturePresent(tLoc38) == 0x00000000 : bool)
+  Class: Eq_637
+  DataType: bool
+  OrigDataType: bool
 T_638: (in __fastfail : ptr64)
   Class: Eq_638
   DataType: (ptr64 Eq_638)
@@ -3246,7 +3246,7 @@ T_642: (in __fastfail(0x00000002) : void)
 T_643: (in fn0000000140001550 : ptr64)
   Class: Eq_643
   DataType: (ptr64 Eq_643)
-  OrigDataType: (ptr64 (fn T_651 (T_650, T_150, T_151, T_152, T_633)))
+  OrigDataType: (ptr64 (fn T_651 (T_650, T_150, T_151, T_152, T_626)))
 T_644: (in signature of fn0000000140001550 : void)
   Class: Eq_643
   DataType: (ptr64 Eq_643)
@@ -3268,7 +3268,7 @@ T_648: (in rdi : word64)
   DataType: word64
   OrigDataType: word64
 T_649: (in qwArg08 : word64)
-  Class: Eq_633
+  Class: Eq_626
   DataType: word64
   OrigDataType: word64
 T_650: (in 00000001400030E0 : ptr64)
@@ -3390,7 +3390,7 @@ T_678: (in 0x0000000000000008 : word64)
 T_679: (in fn0000000140001448 : ptr64)
   Class: Eq_679
   DataType: (ptr64 Eq_679)
-  OrigDataType: (ptr64 (fn T_682 (T_681, T_636)))
+  OrigDataType: (ptr64 (fn T_682 (T_681, T_630)))
 T_680: (in signature of fn0000000140001448 : void)
   Class: Eq_679
   DataType: (ptr64 Eq_679)
@@ -5175,66 +5175,66 @@ T_1125: (in rax : Eq_1125)
   Class: Eq_1125
   DataType: Eq_1125
   OrigDataType: word64
-T_1126: (in ebx_99 : word32)
-  Class: Eq_1126
-  DataType: word32
-  OrigDataType: word32
-T_1127: (in (uint64) ecx : uint64)
-  Class: Eq_1127
-  DataType: uint64
-  OrigDataType: uint64
-T_1128: (in (word32) (uint64) ecx : word32)
-  Class: Eq_1126
-  DataType: word32
-  OrigDataType: word32
-T_1129: (in IsProcessorFeaturePresent : ptr64)
-  Class: Eq_626
-  DataType: (ptr64 Eq_626)
-  OrigDataType: (ptr64 (fn T_1131 (T_1130)))
-T_1130: (in tLoc05C8 : DWORD)
-  Class: Eq_21
-  DataType: Eq_21
-  OrigDataType: DWORD
-T_1131: (in IsProcessorFeaturePresent(tLoc05C8) : BOOL)
-  Class: Eq_624
-  DataType: Eq_624
-  OrigDataType: BOOL
-T_1132: (in 0x00000000 : word32)
-  Class: Eq_624
-  DataType: Eq_624
-  OrigDataType: word32
-T_1133: (in IsProcessorFeaturePresent(tLoc05C8) == 0x00000000 : bool)
-  Class: Eq_1133
-  DataType: bool
-  OrigDataType: bool
-T_1134: (in ptrLoc05C8_106 : Eq_353)
+T_1126: (in ptrLoc05C8_106 : Eq_353)
   Class: Eq_353
   DataType: Eq_353
   OrigDataType: (union ((ptr64 void) u3) (LPTOP_LEVEL_EXCEPTION_FILTER u1) (PCONTEXT u3))
-T_1135: (in dwLoc05C4 : word32)
-  Class: Eq_1135
+T_1127: (in dwLoc05C4 : word32)
+  Class: Eq_1127
   DataType: word32
   OrigDataType: word32
-T_1136: (in SEQ(dwLoc05C4, tLoc05C8) : (ptr64 void))
+T_1128: (in tLoc05C8 : DWORD)
+  Class: Eq_21
+  DataType: Eq_21
+  OrigDataType: DWORD
+T_1129: (in SEQ(dwLoc05C4, tLoc05C8) : (ptr64 void))
   Class: Eq_353
   DataType: Eq_353
   OrigDataType: (ptr64 void)
-T_1137: (in tLoc05C8_116 : Eq_21)
+T_1130: (in ebx_99 : word32)
+  Class: Eq_1130
+  DataType: word32
+  OrigDataType: word32
+T_1131: (in (uint64) ecx : uint64)
+  Class: Eq_1131
+  DataType: uint64
+  OrigDataType: uint64
+T_1132: (in (word32) (uint64) ecx : word32)
+  Class: Eq_1130
+  DataType: word32
+  OrigDataType: word32
+T_1133: (in tLoc05C8_116 : Eq_21)
   Class: Eq_21
   DataType: Eq_21
   OrigDataType: DWORD
-T_1138: (in SLICE(ptrLoc05C8_106, DWORD, 0) : DWORD)
+T_1134: (in SLICE(ptrLoc05C8_106, DWORD, 0) : DWORD)
   Class: Eq_21
   DataType: Eq_21
   OrigDataType: DWORD
-T_1139: (in dwLoc05C4_117 : word32)
-  Class: Eq_1139
+T_1135: (in dwLoc05C4_117 : word32)
+  Class: Eq_1135
   DataType: word32
   OrigDataType: word32
-T_1140: (in SLICE(ptrLoc05C8_106, word32, 32) : word32)
-  Class: Eq_1139
+T_1136: (in SLICE(ptrLoc05C8_106, word32, 32) : word32)
+  Class: Eq_1135
   DataType: word32
   OrigDataType: word32
+T_1137: (in IsProcessorFeaturePresent : ptr64)
+  Class: Eq_632
+  DataType: (ptr64 Eq_632)
+  OrigDataType: (ptr64 (fn T_1138 (T_1128)))
+T_1138: (in IsProcessorFeaturePresent(tLoc05C8) : BOOL)
+  Class: Eq_624
+  DataType: Eq_624
+  OrigDataType: BOOL
+T_1139: (in 0x00000000 : word32)
+  Class: Eq_624
+  DataType: Eq_624
+  OrigDataType: word32
+T_1140: (in IsProcessorFeaturePresent(tLoc05C8) == 0x00000000 : bool)
+  Class: Eq_1140
+  DataType: bool
+  OrigDataType: bool
 T_1141: (in 0000000140003610 : ptr64)
   Class: Eq_1141
   DataType: (ptr64 ui32)
@@ -5262,7 +5262,7 @@ T_1146: (in Mem18[0x0000000140003610:word32] : word32)
 T_1147: (in memset : ptr64)
   Class: Eq_1147
   DataType: (ptr64 Eq_1147)
-  OrigDataType: (ptr64 (fn T_1154 (T_1134, T_1152, T_1153)))
+  OrigDataType: (ptr64 (fn T_1154 (T_1126, T_1152, T_1153)))
 T_1148: (in signature of memset : void)
   Class: Eq_1147
   DataType: (ptr64 Eq_1147)
@@ -5294,7 +5294,7 @@ T_1154: (in memset(ptrLoc05C8_106, dwLoc05C0, tLoc05B8) : (ptr64 void))
 T_1155: (in RtlCaptureContext : ptr64)
   Class: Eq_687
   DataType: (ptr64 Eq_687)
-  OrigDataType: (ptr64 (fn T_1156 (T_1134)))
+  OrigDataType: (ptr64 (fn T_1156 (T_1126)))
 T_1156: (in RtlCaptureContext(ptrLoc05C8_106) : void)
   Class: Eq_691
   DataType: void
@@ -5358,7 +5358,7 @@ T_1170: (in __fastfail((word32) (uint64) ebx_99) : void)
 T_1171: (in memset : ptr64)
   Class: Eq_1147
   DataType: (ptr64 Eq_1147)
-  OrigDataType: (ptr64 (fn T_1172 (T_1134, T_1152, T_1153)))
+  OrigDataType: (ptr64 (fn T_1172 (T_1126, T_1152, T_1153)))
 T_1172: (in memset(ptrLoc05C8_106, dwLoc05C0, tLoc05B8) : (ptr64 void))
   Class: Eq_1154
   DataType: (ptr64 void)
@@ -5382,7 +5382,7 @@ T_1176: (in IsDebuggerPresent() : BOOL)
 T_1177: (in SetUnhandledExceptionFilter : ptr64)
   Class: Eq_608
   DataType: (ptr64 Eq_608)
-  OrigDataType: (ptr64 (fn T_1178 (T_1134)))
+  OrigDataType: (ptr64 (fn T_1178 (T_1126)))
 T_1178: (in SetUnhandledExceptionFilter(ptrLoc05C8_106) : LPTOP_LEVEL_EXCEPTION_FILTER)
   Class: Eq_353
   DataType: Eq_353
@@ -5394,7 +5394,7 @@ T_1179: (in eax_80 : Eq_616)
 T_1180: (in UnhandledExceptionFilter : ptr64)
   Class: Eq_613
   DataType: (ptr64 Eq_613)
-  OrigDataType: (ptr64 (fn T_1181 (T_1134)))
+  OrigDataType: (ptr64 (fn T_1181 (T_1126)))
 T_1181: (in UnhandledExceptionFilter(ptrLoc05C8_106) : LONG)
   Class: Eq_616
   DataType: Eq_616
@@ -7672,7 +7672,7 @@ typedef BOOL (Eq_620)(HANDLE, Eq_21);
 
 typedef BOOL Eq_624;
 
-typedef BOOL (Eq_626)(Eq_21);
+typedef BOOL (Eq_632)(Eq_21);
 
 typedef void (Eq_638)(word32);
 

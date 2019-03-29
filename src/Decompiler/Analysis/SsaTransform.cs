@@ -362,6 +362,8 @@ namespace Reko.Analysis
 
         public override Instruction TransformAssignment(Assignment a)
         {
+            if (ssa.Procedure.Name == "fn0800_441C" && stmCur.LinearAddress == 0x000000000000c469)
+                ssa.ToString(); //$DEBUG
             if (a is AliasAssignment)
                 return a;
             var src = a.Src.Accept(this);

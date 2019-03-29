@@ -737,9 +737,9 @@ fn000000014000147C_entry:
 // SymbolicIn:
 
 l000000014000147C:
-	branch IsProcessorFeaturePresent(tLoc38) == 0x00000000 l000000014000149A
 	word64 qwLoc38_63 = SEQ(dwLoc34, tLoc38)
 	DWORD tLoc38_68 = SLICE(qwLoc38_63, DWORD, 0)
+	branch IsProcessorFeaturePresent(tLoc38) == 0x00000000 l000000014000149A
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1688,11 +1688,11 @@ fn0000000140001974_entry:
 // SymbolicIn:
 
 l0000000140001974:
-	word32 ebx_99 = (word32) (uint64) ecx
-	branch IsProcessorFeaturePresent(tLoc05C8) == 0x00000000 l000000014000199D
 	void * ptrLoc05C8_106 = SEQ(dwLoc05C4, tLoc05C8)
+	word32 ebx_99 = (word32) (uint64) ecx
 	DWORD tLoc05C8_116 = SLICE(ptrLoc05C8_106, DWORD, 0)
 	word32 dwLoc05C4_117 = SLICE(ptrLoc05C8_106, word32, 32)
+	branch IsProcessorFeaturePresent(tLoc05C8) == 0x00000000 l000000014000199D
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

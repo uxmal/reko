@@ -1314,9 +1314,9 @@ fn0AE6_entry:
 
 l0AE6:
 	word16 r3_6 = Mem5[0x5424:word16]
-	branch (uint16) (uint8) bArg00 == 0x0001 l0B02
 	wLoc04_86 = (uint16) (uint8) bArg00
 	word16 wLoc04_86 = (uint16) (uint8) bArg00
+	branch (uint16) (uint8) bArg00 == 0x0001 l0B02
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1336,12 +1336,11 @@ l0AFE:
 l0B02:
 	word16 v15_25 = wLoc04_86 + (wArg01 - SEQ(bArg01_91, bArg00) <u 0x0000)
 	Mem30[r3_6 + 0x00A4:word16] = v15_25
-	byte bLoc03_109 = SLICE(v15_25, byte, 8)
-	branch Mem30[r3_6 + 0x0074:byte] == 0x00 l0B22
 	word16 wArg00_96 = SEQ(bArg01_91, bArg00)
 	word16 wArg02_106 = SEQ(bArg03, bArg02_105)
 	word16 wArg00_114 = SEQ(bArg01_91, bArg00)
 	word16 wArg02_115 = SEQ(bArg03, bArg02_105)
+	byte bLoc03_109 = SLICE(v15_25, byte, 8)
 	byte bArg00_108 = SLICE(wArg00_96, byte, 0)
 	byte bArg01_110 = SLICE(wArg00_96, byte, 8)
 	byte bArg02_111 = SLICE(wArg02_106, byte, 0)
@@ -1350,6 +1349,7 @@ l0B02:
 	byte bArg01_117 = SLICE(wArg00_114, byte, 8)
 	byte bArg02_118 = SLICE(wArg02_115, byte, 0)
 	byte bArg03_120 = SLICE(wArg02_115, byte, 8)
+	branch Mem30[r3_6 + 0x0074:byte] == 0x00 l0B22
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1470,9 +1470,9 @@ fn0B60_entry:
 l0B60:
 	word16 wLoc02_133 = r3
 	word16 r3_112 = Mem5[0x5424:word16]
-	branch (uint16) (uint8) bArg00 == 0x0001 l0B7C
 	wLoc04_139 = (uint16) (uint8) bArg00
 	word16 wLoc04_139 = (uint16) (uint8) bArg00
+	branch (uint16) (uint8) bArg00 == 0x0001 l0B7C
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1495,12 +1495,11 @@ l0B7C:
 	word16 sp_111
 	word16 v22_25 = wLoc04_139 + (wArg01 - SEQ(bArg01_144, bArg00) <u 0x0000)
 	Mem30[r3_112 + 0x00A4:word16] = v22_25
-	word16 wLoc04_148 = v22_25
-	branch Mem30[r3_112 + 0x0074:byte] == 0x00 l0BA4
 	word16 wArg00_151 = SEQ(bArg01_144, bArg00)
 	word16 wArg02_155 = SEQ(bArg03, bArg02_154)
 	word16 wArg00_161 = SEQ(bArg01_144, bArg00)
 	word16 wArg02_162 = SEQ(bArg03, bArg02_154)
+	word16 wLoc04_148 = v22_25
 	bArg00_165 = SLICE(wArg00_151, byte, 0) (alias)
 	byte bArg01_183 = SLICE(wArg00_151, byte, 8)
 	byte bArg02_184 = SLICE(wArg02_155, byte, 0)
@@ -1509,6 +1508,7 @@ l0B7C:
 	byte bArg01_179 = SLICE(wArg00_161, byte, 8)
 	byte bArg02_180 = SLICE(wArg02_162, byte, 0)
 	byte bArg03_168 = SLICE(wArg02_162, byte, 8)
+	branch Mem30[r3_112 + 0x0074:byte] == 0x00 l0BA4
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2006,9 +2006,9 @@ l0EF8:
 	byte bLoc06_183 = SLICE(v20_31, byte, 8)
 	word16 r5_43 = r5 + 0x0002
 	word16 r1_44 = v22_42
-	branch v22_42 == 0x0000 l0F2C
 	word16 wArg00_126 = SEQ(v16_18, bArg00_127)
 	wArg00_126 = SEQ(v16_18, bArg00_127)
+	branch v22_42 == 0x0000 l0F2C
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

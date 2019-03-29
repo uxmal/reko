@@ -222,11 +222,21 @@ namespace Reko.Analysis
                 else
                 {
                     ulong uAddr;
+                    int i = -1;
                     if (block.Statements.Count == 0)
+                    {
                         uAddr = block.Address.ToLinear();
+                    }
                     else
-                        uAddr = block.Statements.Last().LinearAddress;
-                    stmNew = block.Statements.Add(uAddr, ass);
+                    {
+                        i = block.Statements.Count - 1;
+                        if (block.Statements[i].Instruction.IsControlFlow)
+                        {
+                            --i;
+                        }
+                        uAddr = block.Statements[i].LinearAddress;
+                    }
+                    stmNew = block.Statements.Insert(i+1, uAddr, ass);
                 }
 
                 var sidTo = ssaIds.Add(ass.Dst, stmNew, ass.Src, false);
@@ -682,6 +692,12 @@ namespace Reko.Analysis
                     .ToArray();
                 if (ints.Length == 0)
                     return null;
+                if (outer.stmCur.LinearAddress == 0x000000000000c469 ||
+                    outer.stmCur.LinearAddress == 0x000000000000c428)
+                {
+                    outer.ToString();   //$DEBUG
+                }
+
                 // Part of 'id' is defined locally in this block. We now 
                 // walk across the bits of 'id'.
                 int offsetLo = this.offsetInterval.Start;
@@ -718,7 +734,10 @@ namespace Reko.Analysis
                 }
                 else
                 {
-                    var seq = outer.arch.Endianness.MakeSequence(this.id.DataType, sequence.Select(e => (Expression) MakeSequenceElement(bs, e).Identifier).ToArray());
+                    var seq = outer.arch.Endianness.MakeSequence(
+                        this.id.DataType, 
+                        sequence.Select(e => (Expression) MakeSequenceElement(bs, e).Identifier)
+                                            .ToArray());
                     var assSeq = new Assignment(id, seq);
                     SsaIdentifier sidTo = InsertBeforeStatement(bs.Block, this.stm, assSeq);
 
@@ -808,6 +827,8 @@ namespace Reko.Analysis
 
             public override Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid, bool performProbe)
             {
+                if (bs.Block.Name == "l0800_441C")
+                    bs.ToString();  //$DEBUG
                 var ints = bs.currentStackDef
                     .GetIntervalsOverlappingWith(offsetInterval)
                     .ToArray();

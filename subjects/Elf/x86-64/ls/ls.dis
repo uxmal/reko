@@ -14448,9 +14448,9 @@ l000000000040C3AC:
 // SymbolicIn:
 
 l000000000040C242:
-	branch (bLocC8_1506 & 0x80) == 0x00 l000000000040C2BA
 	word32 dwLocC8_1754 = SEQ(nLocC7_1730, bLocC8_1506)
 	byte bLocC8_1756 = SLICE(dwLocC8_1754, byte, 0)
+	branch (bLocC8_1506 & 0x80) == 0x00 l000000000040C2BA
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -19878,9 +19878,9 @@ l0000000000410F94:
 	rbp_233 = DPB(rbp_234, ebp_117, 0) (alias)
 	word64 rbp_249 = DPB(rbp_233, ebp_117, 0)
 	word32 edx_178 = (word32) (uint64) edx_146
-	branch strchr(r8, 0x0000000000000030) == 0x0000000000000000 l0000000000410FCB
 	word64 qwLoc50_374 = SEQ(dwLoc4C_377, edx_146)
 	qwLoc50_374 = SEQ(dwLoc4C_377, edx_146)
+	branch strchr(r8, 0x0000000000000030) == 0x0000000000000000 l0000000000410FCB
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -20254,9 +20254,9 @@ l000000000041146C:
 	word64 rcx_173
 	word64 rax_166
 	word32 edx_179 = (word32) (uint64) edx_147
-	branch strchr(r8, 0x0000000000000030) == 0x0000000000000000 l00000000004114A3
 	word64 qwLoc50_373 = SEQ(dwLoc4C_376, edx_147)
 	qwLoc50_373 = SEQ(dwLoc4C_376, edx_147)
+	branch strchr(r8, 0x0000000000000030) == 0x0000000000000000 l00000000004114A3
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

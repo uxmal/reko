@@ -4072,5 +4072,80 @@ proc1_exit:
                 m.Return();
             });
         }
+
+        [Test]
+        public void SsaAliasedArgumentRead()
+        {
+            var sExp =
+            #region Expected
+@"fp:fp
+    def:  def fp
+Mem0:Mem
+    def:  def Mem0
+si_3: orig: si
+    def:  si_3 = wArg02
+    uses: use si_3
+es_bx_4: orig: es_bx
+    def:  es_bx_4 = ptrArg02_7
+    uses: bx_8 = (word16) es_bx_4 (alias)
+          es_9 = SLICE(es_bx_4, word16, 16) (alias)
+wArg02:Stack +0002
+    def:  def wArg02
+    uses: si_3 = wArg02
+          ptrArg02_7 = SEQ(wArg04, wArg02)
+wArg04:Stack +0004
+    def:  def wArg04
+    uses: ptrArg02_7 = SEQ(wArg04, wArg02)
+ptrArg02_7: orig: ptrArg02
+    def:  ptrArg02_7 = SEQ(wArg04, wArg02)
+    uses: es_bx_4 = ptrArg02_7
+bx_8: orig: bx
+    def:  bx_8 = (word16) es_bx_4 (alias)
+    uses: use bx_8
+es_9: orig: es
+    def:  es_9 = SLICE(es_bx_4, word16, 16) (alias)
+    uses: use es_9
+// proc1
+// Return size: 0
+define proc1
+proc1_entry:
+	def fp
+	def Mem0
+	def wArg02
+	def wArg04
+	// succ:  l1
+l1:
+	si_3 = wArg02
+	ptrArg02_7 = SEQ(wArg04, wArg02)
+	// succ:  m1
+m1:
+	es_bx_4 = ptrArg02_7
+	bx_8 = (word16) es_bx_4 (alias)
+	es_9 = SLICE(es_bx_4, word16, 16) (alias)
+	return
+	// succ:  proc1_exit
+proc1_exit:
+	use bx_8
+	use es_9
+	use si_3
+======
+";
+            #endregion
+
+            RunTest_FrameAccesses(sExp, m =>
+            {
+                var fp = m.Frame.FramePointer;
+                var si = m.Reg16("si", 6);
+                var bx = m.Reg16("bx", 0);
+                var es = m.Reg16("es", 12);
+                var es_bx = m.Frame.EnsureSequence(PrimitiveType.SegPtr32, es.Storage, bx.Storage);
+
+                m.Assign(si, m.Mem16(m.IAdd(fp, 2)));
+
+                m.Label("m1");
+                m.Assign(es_bx, m.Mem(PrimitiveType.SegPtr32, m.IAdd(fp, 2)));
+                m.Return();
+            });
+        }
     }
 }
