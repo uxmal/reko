@@ -170,11 +170,8 @@ void fn0608(<anonymous> * wArg00, byte bArg01, Eq_n wArg02, byte bArg03)
 	Eq_n v17_n = __rol(wLoc04, wLoc04);
 	wLoc04 = v17_n;
 	cui16 r2_n = 0x90;
-	Eq_n bArg02_n = SEQ(bArg03_n, SLICE(bArg02_n, byte, 0));
 	while (true)
 	{
-		byte bArg02_n = SLICE(bArg02_n, byte, 0);
-		bArg02_n.u0 = SLICE(bArg02_n, byte, 0);
 		r1_n = __rol(r1_n, r1_n);
 		if (r1_n < 0x00)
 			break;
@@ -508,42 +505,34 @@ l105E:
 	goto l107E;
 }
 
-// 0AC4: void fn0AC4(Register word16 r3, Register (ptr16 (ptr16 code)) r4, Stack word16 wArg00, Stack byte bArg01, Stack (ptr16 code) wArg02, Stack (ptr16 code) wArg04)
-void fn0AC4(word16 r3, <anonymous> ** r4, word16 wArg00, byte bArg01, <anonymous> * wArg02, <anonymous> * wArg04)
+// 0AC4: void fn0AC4(Register word16 r3, Register (ptr16 (ptr16 code)) r4, Stack byte bArg00, Stack byte bArg01, Stack (ptr16 code) wArg02, Stack (ptr16 code) wArg04)
+void fn0AC4(word16 r3, <anonymous> ** r4, byte bArg00, byte bArg01, <anonymous> * wArg02, <anonymous> * wArg04)
 {
-	byte bArg00_n = SLICE(wLoc01, byte, 8);
-	byte bArg01_n = SLICE(wArg00, byte, 8);
-	cup16 wLoc01_n = SEQ(bArg00_n, 0x01);
-	byte bArg00_n = SLICE(wLoc01_n, byte, 8);
+	cup16 wLoc01_n = SEQ(bArg00, 0x01);
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg3 = <invalid>;
-	fn0AE6(r3, r4, 0x01, wLoc01_n, SEQ(bArg01_n, bArg00_n), stackArg3, wArg02, wArg04);
+	Eq_n stackArg2 = <invalid>;
+	fn0AE6(r3, r4, 0x01, wLoc01_n, stackArg2, bArg01, wArg02, wArg04);
 }
 
-// 0AE2: void fn0AE2(Register word16 r3, Register (ptr16 (ptr16 code)) r4, Stack word16 wArg00, Stack byte bArg01, Stack (ptr16 code) wArg02, Stack (ptr16 code) wArg04)
-void fn0AE2(word16 r3, <anonymous> ** r4, word16 wArg00, byte bArg01, <anonymous> * wArg02, <anonymous> * wArg04)
+// 0AE2: void fn0AE2(Register word16 r3, Register (ptr16 (ptr16 code)) r4, Stack byte bArg00, Stack byte bArg01, Stack (ptr16 code) wArg02, Stack (ptr16 code) wArg04)
+void fn0AE2(word16 r3, <anonymous> ** r4, byte bArg00, byte bArg01, <anonymous> * wArg02, <anonymous> * wArg04)
 {
-	byte bArg00_n = SLICE(wLoc01, byte, 8);
-	byte bArg01_n = SLICE(wArg00, byte, 8);
-	cup16 wLoc01_n = SEQ(bArg00_n, 0x02);
-	byte bArg00_n = SLICE(wLoc01_n, byte, 8);
+	cup16 wLoc01_n = SEQ(bArg00, 0x02);
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg3 = <invalid>;
-	fn0AE6(r3, r4, 0x02, wLoc01_n, SEQ(bArg01_n, bArg00_n), stackArg3, wArg02, wArg04);
+	Eq_n stackArg2 = <invalid>;
+	fn0AE6(r3, r4, 0x02, wLoc01_n, stackArg2, bArg01, wArg02, wArg04);
 }
 
-// 0AE6: void fn0AE6(Register word16 r3, Register (ptr16 (ptr16 code)) r4, Stack Eq_n wArg00, Stack cup16 wArg01, Stack word16 wArg02, Stack Eq_n bArg03, Stack (ptr16 code) wArg04, Stack (ptr16 code) wArg06)
-void fn0AE6(word16 r3, <anonymous> ** r4, Eq_n wArg00, cup16 wArg01, word16 wArg02, Eq_n bArg03, <anonymous> * wArg04, <anonymous> * wArg06)
+// 0AE6: void fn0AE6(Register word16 r3, Register (ptr16 (ptr16 code)) r4, Stack Eq_n wArg00, Stack cup16 wArg01, Stack Eq_n wArg02, Stack byte bArg03, Stack (ptr16 code) wArg04, Stack (ptr16 code) wArg06)
+void fn0AE6(word16 r3, <anonymous> ** r4, Eq_n wArg00, cup16 wArg01, Eq_n wArg02, byte bArg03, <anonymous> * wArg04, <anonymous> * wArg06)
 {
 	byte bArg02_n = SLICE(wArg01, byte, 8);
-	byte bArg02_n = SLICE(wArg01, byte, 8);
 	byte bArg01_n = SLICE(wArg01, byte, 0);
 	byte bArg02_n = SLICE(wArg01, byte, 8);
 	byte bArg01_n = SLICE(wArg01, byte, 0);
 	byte bArg01_n = SLICE(wArg01, byte, 0);
-	bArg03_n = SLICE(bArg03_n, byte, 8);
 	struct Eq_n * r3_n = globals->ptr5424;
 	wLoc04_n = (uint16) (uint8) bArg00;
 	uint16 wLoc04_n = (uint16) (uint8) bArg00;
@@ -554,18 +543,16 @@ void fn0AE6(word16 r3, <anonymous> ** r4, Eq_n wArg00, cup16 wArg01, word16 wArg
 	}
 	uint16 v15_n = wLoc04_n + (wArg01 - SEQ(bArg01_n, bArg00) < 0x00);
 	r3_n->w00A4 = v15_n;
-	byte bArg03_n = SLICE(bArg03_n, byte, 8);
-	byte bArg03_n = SLICE(bArg03_n, byte, 8);
 	byte bLoc03_n = SLICE(v15_n, byte, 8);
 	byte bLoc03_n = SLICE(v15_n, byte, 8);
 	byte bLoc03_n = SLICE(v15_n, byte, 8);
 	word16 wArg00_n = SEQ(bArg01_n, bArg00);
-	word16 wArg02_n = SEQ(bArg03_n, bArg02_n);
+	word16 wArg02_n = SEQ(bArg03, bArg02_n);
 	word16 wArg00_n = SEQ(bArg01_n, bArg00);
-	<anonymous> * wArg02_n = SEQ(bArg03_n, bArg02_n);
+	<anonymous> * wArg02_n = SEQ(bArg03, bArg02_n);
 	byte bArg00_n = SLICE(wArg00_n, byte, 0);
 	byte bArg01_n = SLICE(wArg00_n, byte, 8);
-	byte bArg03_n = SLICE(wArg02_n, byte, 8);
+	byte bArg02_n = SLICE(wArg02_n, byte, 0);
 	byte bArg03_n = SLICE(wArg02_n, byte, 8);
 	byte bArg00_n = SLICE(wArg00_n, byte, 0);
 	byte bArg01_n = SLICE(wArg00_n, byte, 8);
@@ -590,42 +577,34 @@ void fn0AE6(word16 r3, <anonymous> ** r4, Eq_n wArg00, cup16 wArg01, word16 wArg
 	}
 }
 
-// 0B3E: void fn0B3E(Register uint16 r0, Register (ptr16 word16) r3, Stack word16 wArg00, Stack byte bArg01, Stack (ptr16 code) wArg02, Stack (ptr16 word16) ptrArg04)
-void fn0B3E(uint16 r0, word16 * r3, word16 wArg00, byte bArg01, <anonymous> * wArg02, word16 * ptrArg04)
+// 0B3E: void fn0B3E(Register uint16 r0, Register (ptr16 word16) r3, Stack byte bArg00, Stack byte bArg01, Stack (ptr16 code) wArg02, Stack (ptr16 word16) ptrArg04)
+void fn0B3E(uint16 r0, word16 * r3, byte bArg00, byte bArg01, <anonymous> * wArg02, word16 * ptrArg04)
 {
-	byte bArg00_n = SLICE(wLoc01, byte, 8);
-	byte bArg01_n = SLICE(wArg00, byte, 8);
-	cup16 wLoc01_n = SEQ(bArg00_n, 0x02);
-	byte bArg00_n = SLICE(wLoc01_n, byte, 8);
+	cup16 wLoc01_n = SEQ(bArg00, 0x02);
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg3 = <invalid>;
-	fn0B60(r0, r3, 0x02, wLoc01_n, SEQ(bArg01_n, bArg00_n), stackArg3, wArg02, ptrArg04);
+	Eq_n stackArg2 = <invalid>;
+	fn0B60(r0, r3, 0x02, wLoc01_n, stackArg2, bArg01, wArg02, ptrArg04);
 }
 
-// 0B44: void fn0B44(Register uint16 r0, Register (ptr16 word16) r3, Stack word16 wArg00, Stack byte bArg01, Stack (ptr16 code) wArg02, Stack (ptr16 word16) ptrArg04)
-void fn0B44(uint16 r0, word16 * r3, word16 wArg00, byte bArg01, <anonymous> * wArg02, word16 * ptrArg04)
+// 0B44: void fn0B44(Register uint16 r0, Register (ptr16 word16) r3, Stack byte bArg00, Stack byte bArg01, Stack (ptr16 code) wArg02, Stack (ptr16 word16) ptrArg04)
+void fn0B44(uint16 r0, word16 * r3, byte bArg00, byte bArg01, <anonymous> * wArg02, word16 * ptrArg04)
 {
-	byte bArg00_n = SLICE(wLoc01, byte, 8);
-	byte bArg01_n = SLICE(wArg00, byte, 8);
-	cup16 wLoc01_n = SEQ(bArg00_n, 0x01);
-	byte bArg00_n = SLICE(wLoc01_n, byte, 8);
+	cup16 wLoc01_n = SEQ(bArg00, 0x01);
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg3 = <invalid>;
-	fn0B60(r0, r3, 0x01, wLoc01_n, SEQ(bArg01_n, bArg00_n), stackArg3, wArg02, ptrArg04);
+	Eq_n stackArg2 = <invalid>;
+	fn0B60(r0, r3, 0x01, wLoc01_n, stackArg2, bArg01, wArg02, ptrArg04);
 }
 
-// 0B60: void fn0B60(Register uint16 r0, Register (ptr16 word16) r3, Stack Eq_n wArg00, Stack cup16 wArg01, Stack word16 wArg02, Stack Eq_n bArg03, Stack (ptr16 code) wArg04, Stack (ptr16 word16) ptrArg06)
-void fn0B60(uint16 r0, word16 * r3, Eq_n wArg00, cup16 wArg01, word16 wArg02, Eq_n bArg03, <anonymous> * wArg04, word16 * ptrArg06)
+// 0B60: void fn0B60(Register uint16 r0, Register (ptr16 word16) r3, Stack Eq_n wArg00, Stack cup16 wArg01, Stack Eq_n wArg02, Stack byte bArg03, Stack (ptr16 code) wArg04, Stack (ptr16 word16) ptrArg06)
+void fn0B60(uint16 r0, word16 * r3, Eq_n wArg00, cup16 wArg01, Eq_n wArg02, byte bArg03, <anonymous> * wArg04, word16 * ptrArg06)
 {
 	byte bArg02_n = SLICE(wArg01, byte, 8);
 	byte bArg01_n = SLICE(wArg01, byte, 0);
 	byte bArg02_n = SLICE(wArg01, byte, 8);
-	byte bArg02_n = SLICE(wArg01, byte, 8);
 	byte bArg01_n = SLICE(wArg01, byte, 0);
 	byte bArg01_n = SLICE(wArg01, byte, 0);
-	bArg03_n = SLICE(bArg03_n, byte, 8);
 	word16 * wLoc02_n = r3;
 	struct Eq_n * r3_n = globals->ptr5424;
 	wLoc04_n = (uint16) (uint8) bArg00;
@@ -640,19 +619,19 @@ void fn0B60(uint16 r0, word16 * r3, Eq_n wArg00, cup16 wArg01, word16 wArg02, Eq
 	<anonymous> ** sp_n;
 	uint16 v22_n = wLoc04_n + (wArg01 - SEQ(bArg01_n, bArg00) < 0x00);
 	r3_n->w00A4 = v22_n;
-	byte bArg03_n = SLICE(bArg03_n, byte, 8);
-	byte bArg03_n = SLICE(bArg03_n, byte, 8);
 	uint16 wLoc04_n = v22_n;
 	word16 wArg00_n = SEQ(bArg01_n, bArg00);
-	word16 wArg02_n = SEQ(bArg03_n, bArg02_n);
+	word16 wArg02_n = SEQ(bArg03, bArg02_n);
 	word16 wArg00_n = SEQ(bArg01_n, bArg00);
-	<anonymous> * wArg02_n = SEQ(bArg03_n, bArg02_n);
+	<anonymous> * wArg02_n = SEQ(bArg03, bArg02_n);
 	bArg00_n = SLICE(wArg00_n, byte, 0);
 	byte bArg01_n = SLICE(wArg00_n, byte, 8);
-	byte bArg03_n = SLICE(wArg02_n, byte, 8);
+	byte bArg02_n = SLICE(wArg02_n, byte, 0);
+	bArg03_n = SLICE(wArg02_n, byte, 8);
 	byte bArg00_n = SLICE(wArg00_n, byte, 0);
 	byte bArg01_n = SLICE(wArg00_n, byte, 8);
 	byte bArg02_n = SLICE(wArg02_n, byte, 0);
+	byte bArg03_n = SLICE(wArg02_n, byte, 8);
 	if (r3_n->b0074 != 0x00)
 	{
 		r3_n->w0052 = wArg00_n;
@@ -672,8 +651,6 @@ l0BC6:
 		uint16 v36_n = *(sp_n - 0x04);
 		word16 v38_n = r3_n->w005A - 0x01;
 		r3_n->w005A = v38_n;
-		byte bArg03_n = SLICE(wArg02_n, byte, 8);
-		bArg03_n = SLICE(wArg02_n, byte, 8);
 		byte bArg02_n = SLICE(wArg01_n, byte, 8);
 		byte bLoc03_n = SLICE(wLoc04_n, byte, 8);
 		sp_n = sp_n - 0x02;
@@ -699,7 +676,6 @@ l0BC6:
 	}
 	sp_n = sp_n + 0x01;
 	r3_n = *sp_n;
-	wArg02_n = SEQ(SLICE(bArg03_n, byte, 8), SLICE(wArg01_n, byte, 8));
 	goto l0BC6;
 }
 

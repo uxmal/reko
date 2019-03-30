@@ -305,12 +305,9 @@ Eq_n Win32CrtStartup()
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
 	Eq_n stackArg8 = <invalid>;
-	Eq_n stackArg28 = <invalid>;
 	Eq_n stackArg32 = <invalid>;
-	word64 rax_n = fn000000014000186C(stackArg8, qwLoc20, dwLoc18, stackArg28, stackArg32);
+	word64 rax_n = fn000000014000186C(stackArg8, qwLoc20, dwLoc18, dwLoc14, stackArg32);
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
@@ -334,8 +331,8 @@ Eq_n fn0000000140001448(Eq_n tArg00, Eq_n tArg08)
 // 000000014000147C: Register word64 fn000000014000147C(Register Eq_n rcx, Register word64 rbx, Register word64 rsi, Register word64 rdi, Stack word64 qwArg00, Stack Eq_n qwArg08, Register out ptr64 rcxOut, Register out ptr64 rdxOut, Register out ptr64 r8Out)
 word64 fn000000014000147C(Eq_n rcx, word64 rbx, word64 rsi, word64 rdi, word64 qwArg00, Eq_n qwArg08, ptr64 & rcxOut, ptr64 & rdxOut, ptr64 & r8Out)
 {
-	word32 dwLoc34_n = SLICE(qwLoc38, word32, 32);
-	word64 qwLoc38_n = SEQ(dwLoc34_n, tLoc38);
+	word64 qwLoc38_n = SEQ(dwLoc34, tLoc38);
+	Eq_n tLoc38_n = SLICE(qwLoc38_n, DWORD, 0);
 	if (IsProcessorFeaturePresent(tLoc38) == 0x00)
 	{
 		fn0000000140001550(&globals->t400030E0, rbx, rsi, rdi, qwLoc38_n);
@@ -347,7 +344,7 @@ word64 fn000000014000147C(Eq_n rcx, word64 rbx, word64 rsi, word64 rdi, word64 q
 		globals->dw40003044 = 0x01;
 		globals->dw40003058 = 0x01;
 		globals->qw40003060 = 0x02;
-		word64 rax_n = DPB(0x08, fn0000000140001448(tLoc40, tLoc38), 0);
+		word64 rax_n = DPB(0x08, fn0000000140001448(tLoc40, tLoc38_n), 0);
 		rcxOut = rcx_n;
 		rdxOut = rdx_n;
 		r8Out = r8_n;
@@ -599,17 +596,16 @@ word64 fn0000000140001854(Eq_n rax, Eq_n rcx, int32 * rbx)
 	return rdx_n;
 }
 
-// 000000014000186C: Register word64 fn000000014000186C(Stack Eq_n qwArg08, Stack ui64 qwArg10, Stack Eq_n qwArg18, Stack Eq_n dwArg1C, Stack Eq_n qwArg20)
-word64 fn000000014000186C(Eq_n qwArg08, ui64 qwArg10, Eq_n qwArg18, Eq_n dwArg1C, Eq_n qwArg20)
+// 000000014000186C: Register word64 fn000000014000186C(Stack Eq_n qwArg08, Stack ui64 qwArg10, Stack Eq_n qwArg18, Stack word32 dwArg1C, Stack Eq_n qwArg20)
+word64 fn000000014000186C(Eq_n qwArg08, ui64 qwArg10, Eq_n qwArg18, word32 dwArg1C, Eq_n qwArg20)
 {
-	word32 dwArg1C_n = SLICE(qwArg18, word32, 32);
 	Eq_n rax_n = globals->t40003000;
 	if (rax_n == 769630770)
 	{
 		GetSystemTimeAsFileTime(tLoc28);
 		ui64 v14_n = qwArg10 & 0x00 ^ (uint64) GetCurrentThreadId() ^ (uint64) GetCurrentProcessId();
 		QueryPerformanceCounter(tLoc28);
-		ui64 rax_n = (uint64) dwArg18 << 0x20 ^ SEQ(dwArg1C_n, dwArg18) ^ v14_n ^ fp + 0x08;
+		ui64 rax_n = (uint64) dwArg18 << 0x20 ^ SEQ(dwArg1C, dwArg18) ^ v14_n ^ fp + 0x08;
 		rax_n = rax_n & 0xFFFFFFFF;
 		if ((rax_n & 0xFFFFFFFF) == 769630770)
 			rax_n.u0 = 769630771;
@@ -671,23 +667,20 @@ void fn000000014000196C()
 // 0000000140001974: Register Eq_n fn0000000140001974(Register word32 ecx, Register (ptr64 int32) rbx, Register ptr64 rbp, Stack Eq_n qwArg00, Stack Eq_n qwArg08, Stack word64 qwArg10, Register out Eq_n rcxOut, Register out Eq_n rdxOut, Register out Eq_n r8Out)
 Eq_n fn0000000140001974(word32 ecx, int32 * rbx, ptr64 rbp, Eq_n qwArg00, Eq_n qwArg08, word64 qwArg10, union Eq_n & rcxOut, union Eq_n & rdxOut, union Eq_n & r8Out)
 {
-	word32 dwLoc05C4_n = SLICE(ptrLoc05C8, word32, 32);
 	word32 ebx_n = (word32) (uint64) ecx;
-	Eq_n ptrLoc05C8_n = SEQ(dwLoc05C4_n, tLoc05C8);
-	word32 dwLoc05C4_n = SLICE(ptrLoc05C8_n, word32, 32);
-	word32 dwLoc05C4_n = SLICE(ptrLoc05C8_n, word32, 32);
+	Eq_n ptrLoc05C8_n = SEQ(dwLoc05C4, tLoc05C8);
+	Eq_n tLoc05C8_n = SLICE(ptrLoc05C8_n, DWORD, 0);
 	word32 dwLoc05C4_n = SLICE(ptrLoc05C8_n, word32, 32);
 	if (IsProcessorFeaturePresent(tLoc05C8) == 0x00)
 	{
 		globals->dw40003610 &= 0x00;
 		memset(ptrLoc05C8_n, dwLoc05C0, tLoc05B8);
-		RtlCaptureContext(SEQ(dwLoc05C4_n, tLoc05C8));
+		RtlCaptureContext(ptrLoc05C8_n);
 		Eq_n rax_n = RtlLookupFunctionEntry(qwLoc03E0, fp + 0x10, null);
-		Eq_n ptrLoc05C8_n = SEQ(dwLoc05C4_n, tLoc05C8);
 		if (rax_n != null)
 		{
 			KERNEL32.dll!RtlVirtualUnwind();
-			ptrLoc05C8_n = SEQ(dwLoc05C4_n, tLoc05C8);
+			ptrLoc05C8_n = SEQ(dwLoc05C4_n, tLoc05C8_n);
 		}
 		memset(ptrLoc05C8_n, dwLoc05C0, tLoc05B8);
 		Eq_n eax_n = IsDebuggerPresent();

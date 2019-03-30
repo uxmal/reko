@@ -405,7 +405,7 @@ word32 fn00001468(Eq_n d0, Eq_n d1, byte ** a1, Eq_n a3, byte * a5, Eq_n dwArg04
 				if ((d0_n & 0x04) != 0x00)
 				{
 					int32 d0_n = (int32) (&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&(&globals->t2BED)[(int32) *a3_n].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00].a0000)[0x00];
-					d6_n.u0 = 0x00;
+					&d6_n.u0->t0000 = 0x00;
 					d0 = d0_n & 0x04;
 					if ((d0_n & 0x04) != 0x00)
 					{
@@ -953,7 +953,7 @@ l0000216E:
 													{
 														d2_n = (d2_n + 0x03 >>u 0x02 << 0x02) + 0x04;
 														d0 = a7_n->t0034;
-														(*((word32) d2_n - 0x04))->u0 = (word16) d0;
+														**((word32) d2_n - 0x04) = (word16) d0;
 													}
 												}
 												else
@@ -1020,7 +1020,7 @@ l0000216E:
 													{
 														d2_n = (d2_n + 0x03 >>u 0x02 << 0x02) + 0x04;
 														d0 = a7_n->t003C;
-														(*((word32) d2_n - 0x04))->u0 = (word16) d0;
+														**((word32) d2_n - 0x04) = (word16) d0;
 													}
 												}
 												else
@@ -1164,7 +1164,7 @@ l0000216E:
 						else
 						{
 							if (d6_n == ~0x00)
-								d6_n.u0 = 0x01;
+								&d6_n.u0->t0000 = 0x01;
 							union Eq_n * a1_n;
 							if (a7_n->b0049 == 0x00)
 							{
@@ -1647,7 +1647,7 @@ Eq_n fn0000257E(Eq_n d0, Eq_n d1, Eq_n d2, union Eq_n & d1Out)
 		if ((word16) d1_n < 0x80)
 		{
 			d1_n = __rol(d1_n, 0x08);
-			d3_n.u0 = 0x08;
+			&d3_n.u0->t0000 = 0x08;
 		}
 		if ((word16) d1_n < 0x0800)
 		{
@@ -2233,7 +2233,7 @@ Eq_n fn00002F34(Eq_n d0, Eq_n a3, Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, stru
 					{
 						a0_n = 11245 + (DPB(d0_n, *a2_n, 0) & 0xFF);
 						int32 d0_n = (int32) a0_n->t0000;
-						d5_n.u0 = 0x00;
+						&d5_n.u0->t0000 = 0x00;
 						d0_n = d0_n & 0x04;
 						if ((d0_n & 0x04) != 0x00)
 						{
@@ -3034,7 +3034,7 @@ l00003B22:
 		}
 		d1_n = fn00003B28(dwArg04, dwArg08, dwArg10, out d1_n, out d2_n);
 l00003B20:
-		d0_n.u0 = 0x00;
+		&d0_n.u0->t0000 = 0x00;
 		goto l00003B22;
 	}
 }
@@ -3091,9 +3091,8 @@ l00003B42:
 					Eq_n d1_n;
 					Eq_n d2_n = __swap(d5_n);
 					Eq_n d3_n = __swap(d7_n);
-					dwLoc24.u0 = SLICE(dwLoc24, word16, 0);
 					if ((word16) (d2_n - d3_n) == 0x00)
-						d1_n.u0 = 0x0000FFFF;
+						&d1_n.u0->t0000 = 0x0000FFFF;
 					else
 						d1_n = __swap(DPB(__swap(DPB(DPB(d5_n, (uint16) (d5_n % (uint16) d3_n), 16), (uint16) (d5_n /u (uint16) d3_n), 0)), 0x00, 0));
 					Eq_n d6_n = __swap(DPB(d6_n, 0x00, 0));
@@ -3101,7 +3100,6 @@ l00003B42:
 					{
 						Eq_n d4_n = __swap(d5_n - __swap(d7_n) * (word16) d1_n);
 						word16 wLoc22_n = SLICE(dwLoc24, word16, 0);
-						dwLoc24.u0 = SLICE(dwLoc24, word16, 0);
 						uint32 d2_n = d1_n * (word16) d7_n;
 						up32 d4_n = DPB(d4_n, (word16) d6_n, 0);
 						if ((word16) d4_n != 0x00 || d2_n - d4_n <= 0x00)
