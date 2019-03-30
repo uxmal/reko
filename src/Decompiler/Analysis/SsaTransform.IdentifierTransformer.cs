@@ -692,11 +692,7 @@ namespace Reko.Analysis
                     .ToArray();
                 if (ints.Length == 0)
                     return null;
-                if (outer.stmCur.LinearAddress == 0x000000000000c469 ||
-                    outer.stmCur.LinearAddress == 0x000000000000c428)
-                {
-                    outer.ToString();   //$DEBUG
-                }
+
 
                 // Part of 'id' is defined locally in this block. We now 
                 // walk across the bits of 'id'.
@@ -734,7 +730,7 @@ namespace Reko.Analysis
                 }
                 else
                 {
-                    var seq = outer.arch.Endianness.MakeSequence(
+                     var seq = outer.arch.Endianness.MakeSequence(
                         this.id.DataType, 
                         sequence.Select(e => (Expression) MakeSequenceElement(bs, e).Identifier)
                                             .ToArray());
@@ -827,8 +823,6 @@ namespace Reko.Analysis
 
             public override Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid, bool performProbe)
             {
-                if (bs.Block.Name == "l0800_441C")
-                    bs.ToString();  //$DEBUG
                 var ints = bs.currentStackDef
                     .GetIntervalsOverlappingWith(offsetInterval)
                     .ToArray();
