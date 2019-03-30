@@ -676,7 +676,6 @@ void fn0F9A(word16 wArg00)
 void fn164F(word16 af, byte c, byte b, byte h, struct Eq_n * ix, Eq_n wArg13, word16 wArg1A, struct Eq_n * wArg1B)
 {
 	byte bArg1B_n = SLICE(wArg1B, byte, 0);
-	byte bArg1A_n = SLICE(wArg1A, byte, 0);
 	ix->bFFFFFFEC = a;
 	ix->bFFFFFFED = ix->bFFFFFFF9 - h - C;
 	cu8 a_n = ix->bFFFFFFF8 - ix->bFFFFFFFC;
@@ -688,7 +687,7 @@ void fn164F(word16 af, byte c, byte b, byte h, struct Eq_n * ix, Eq_n wArg13, wo
 	word16 hl_n;
 	struct Eq_n * ix_n;
 	struct Eq_n * sp_n;
-	word16 af_n = fn02F4(DPB(af, a_n, 8), a_n, b - v14_n - (a_n < 0x00), wArg13, SLICE(DPB(DPB(DPB(&wArg1B->b0001, v14_n, 8), a_n, 0), a_n, 8), byte, 8), ix, SEQ(bArg1B_n, bArg1A_n), out bc_n, out de_n, out hl_n, out ix_n, out sp_n);
+	word16 af_n = fn02F4(DPB(af, a_n, 8), a_n, b - v14_n - (a_n < 0x00), wArg13, SLICE(DPB(DPB(DPB(&wArg1B->b0001, v14_n, 8), a_n, 0), a_n, 8), byte, 8), ix, SEQ(bArg1B_n, bArg1A), out bc_n, out de_n, out hl_n, out ix_n, out sp_n);
 	Eq_n c_n = (byte) bc_n;
 	Eq_n b_n = SLICE(bc_n, byte, 8);
 	byte h_n = SLICE(hl_n, byte, 8);

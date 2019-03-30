@@ -668,12 +668,9 @@ l0000000140001434:
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
 	word64 stackArg8 = <invalid>
-	word32 stackArg28 = <invalid>
 	word64 stackArg32 = <invalid>
-	word64 rax_6 = fn000000014000186C(stackArg8, qwLoc20, dwLoc18, stackArg28, stackArg32)
+	word64 rax_6 = fn000000014000186C(stackArg8, qwLoc20, dwLoc18, dwLoc14, stackArg32)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -735,20 +732,20 @@ word64 fn000000014000147C(word64 rcx, word64 rbx, word64 rsi, word64 rdi, word64
 // Trashed: SCZO r8 rax rcx rdx
 // Preserved: rsp
 fn000000014000147C_entry:
-	word32 dwLoc34_63 = SLICE(qwLoc38, word32, 32)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000014000147C:
 	branch IsProcessorFeaturePresent(tLoc38) == 0x00000000 l000000014000149A
-	word64 qwLoc38_64 = SEQ(dwLoc34_63, tLoc38)
+	word64 qwLoc38_63 = SEQ(dwLoc34, tLoc38)
+	DWORD tLoc38_68 = SLICE(qwLoc38_63, DWORD, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000014000149A:
-	fn0000000140001550(0x00000001400030E0, rbx, rsi, rdi, qwLoc38_64)
+	fn0000000140001550(0x00000001400030E0, rbx, rsi, rdi, qwLoc38_63)
 	Mem24[0x00000001400031D8:word64] = qwArg00
 	Mem27[0x0000000140003178:word64] = fp + 0x0000000000000008
 	Mem29[0x0000000140003050:word64] = Mem27[0x00000001400031D8:word64]
@@ -757,7 +754,7 @@ l000000014000149A:
 	Mem33[0x0000000140003044:word32] = 0x00000001
 	Mem34[0x0000000140003058:word32] = 0x00000001
 	Mem38[0x0000000140003060:word64] = 0x0000000000000002
-	word64 rax_71 = DPB(0x0000000000000008, fn0000000140001448(tLoc40, tLoc38), 0)
+	word64 rax_71 = DPB(0x0000000000000008, fn0000000140001448(tLoc40, tLoc38_68), 0)
 	rcxOut = rcx_50
 	rdxOut = rdx_51
 	r8Out = r8_15
@@ -1419,12 +1416,11 @@ fn0000000140001854_exit:
 word64 fn000000014000186C(word64 qwArg08, word64 qwArg10, word64 qwArg18, word32 dwArg1C, word64 qwArg20)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  Stack +0010:[0..63] Stack +0018:[0..31]
+// MayUse:  Stack +0010:[0..63] Stack +0018:[0..31] Stack +001C:[0..31]
 // LiveOut: rax
 // Trashed: SCZO rax rcx
 // Preserved: rbp rbx rsp
 fn000000014000186C_entry:
-	word32 dwArg1C_65 = SLICE(qwArg18, word32, 32)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1440,7 +1436,7 @@ l0000000140001894:
 	GetSystemTimeAsFileTime(tLoc28)
 	word64 v14_26 = qwArg10 & 0x0000000000000000 ^ (uint64) GetCurrentThreadId() ^ (uint64) GetCurrentProcessId()
 	QueryPerformanceCounter(tLoc28)
-	word64 rax_35 = (uint64) dwArg18 << 0x0000000000000020 ^ SEQ(dwArg1C_65, dwArg18) ^ v14_26 ^ fp + 0x0000000000000008
+	word64 rax_35 = (uint64) dwArg18 << 0x0000000000000020 ^ SEQ(dwArg1C, dwArg18) ^ v14_26 ^ fp + 0x0000000000000008
 	rax_14 = rax_35 & 0x00000000FFFFFFFF
 	branch (rax_35 & 0x00000000FFFFFFFF) != 0x000000002DDFA232 l00000001400018FC
 // DataOut:
@@ -1687,7 +1683,6 @@ word64 fn0000000140001974(word32 ecx, word64 rbx, word64 rbp, word64 qwArg00, wo
 // Trashed: SCZO r8 rax rcx rdx
 // Preserved: r9 rbp rbx rsp
 fn0000000140001974_entry:
-	word32 dwLoc05C4_106 = SLICE(ptrLoc05C8, word32, 32)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1695,47 +1690,45 @@ fn0000000140001974_entry:
 l0000000140001974:
 	word32 ebx_99 = (word32) (uint64) ecx
 	branch IsProcessorFeaturePresent(tLoc05C8) == 0x00000000 l000000014000199D
-	void * ptrLoc05C8_107 = SEQ(dwLoc05C4_106, tLoc05C8)
-	word32 dwLoc05C4_110 = SLICE(ptrLoc05C8_107, word32, 32)
-	word32 dwLoc05C4_119 = SLICE(ptrLoc05C8_107, word32, 32)
-	word32 dwLoc05C4_125 = SLICE(ptrLoc05C8_107, word32, 32)
+	void * ptrLoc05C8_106 = SEQ(dwLoc05C4, tLoc05C8)
+	DWORD tLoc05C8_116 = SLICE(ptrLoc05C8_106, DWORD, 0)
+	word32 dwLoc05C4_117 = SLICE(ptrLoc05C8_106, word32, 32)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l000000014000199D:
 	Mem18[0x0000000140003610:word32] = Mem7[0x0000000140003610:word32] & 0x00000000
-	memset(ptrLoc05C8_107, dwLoc05C0, tLoc05B8)
-	RtlCaptureContext(SEQ(dwLoc05C4_110, tLoc05C8))
+	memset(ptrLoc05C8_106, dwLoc05C0, tLoc05B8)
+	RtlCaptureContext(ptrLoc05C8_106)
 	word64 rax_27 = RtlLookupFunctionEntry(qwLoc03E0, fp + 0x0000000000000010, 0x0000000000000000)
 	branch rax_27 == 0x0000000000000000 l0000000140001A1A
-	void * ptrLoc05C8_124 = SEQ(dwLoc05C4_125, tLoc05C8)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00000001400019DE:
 	call KERNEL32.dll!RtlVirtualUnwind (retsize: 8;)
-		uses: r8:qwLoc03E0,r9:rax_27,rax:rax_27,rbp:fp - 0x00000000000004C8,rbx:qwLoc03E0,rcx:0x0000000000000000,rdx:qwArg10,rsp:fp - 1480,Stack +0008:tLoc05C8,Stack +000C:dwLoc05C4_119,Stack +0010:dwLoc05C0,Stack +0018:tLoc05B8,Stack +0028:fp - 0x00000000000004D8,Stack +0030:fp + 0x0000000000000020,Stack +0038:fp + 0x0000000000000018,Stack +0040:qwLoc0590 & 0x0000000000000000,Stack +0048:qwLoc0588,Stack +0050:qwLoc0580,Stack +0058:dwLoc0578,Stack +005C:dwLoc0574,Stack +0068:qwLoc0568,Stack +0190:qwLoc0440,Stack +01F0:qwLoc03E0,Stack +05C8:rbp,Stack +05D0:qwArg00,Stack +05D8:rbx,Stack +05E0:qwArg10
-	ptrLoc05C8_124 = SEQ(dwLoc05C4_119, tLoc05C8)
+		uses: r8:qwLoc03E0,r9:rax_27,rax:rax_27,rbp:fp - 0x00000000000004C8,rbx:qwLoc03E0,rcx:0x0000000000000000,rdx:qwArg10,rsp:fp - 1480,Stack +0008:tLoc05C8_116,Stack +000C:dwLoc05C4_117,Stack +0010:dwLoc05C0,Stack +0018:tLoc05B8,Stack +0028:fp - 0x00000000000004D8,Stack +0030:fp + 0x0000000000000020,Stack +0038:fp + 0x0000000000000018,Stack +0040:qwLoc0590 & 0x0000000000000000,Stack +0048:qwLoc0588,Stack +0050:qwLoc0580,Stack +0058:dwLoc0578,Stack +005C:dwLoc0574,Stack +0068:qwLoc0568,Stack +0190:qwLoc0440,Stack +01F0:qwLoc03E0,Stack +05C8:rbp,Stack +05D0:qwArg00,Stack +05D8:rbx,Stack +05E0:qwArg10
+	ptrLoc05C8_106 = SEQ(dwLoc05C4_117, tLoc05C8_116)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000140001A1A:
-	memset(ptrLoc05C8_124, dwLoc05C0, tLoc05B8)
+	memset(ptrLoc05C8_106, dwLoc05C0, tLoc05B8)
 	word32 eax_69 = IsDebuggerPresent()
-	SetUnhandledExceptionFilter(ptrLoc05C8_124)
-	word32 eax_80 = UnhandledExceptionFilter(ptrLoc05C8_124)
-	word64 rax_145 = DPB(fp - 0x00000000000004D8, eax_80, 0)
+	SetUnhandledExceptionFilter(ptrLoc05C8_106)
+	word32 eax_80 = UnhandledExceptionFilter(ptrLoc05C8_106)
+	word64 rax_141 = DPB(fp - 0x00000000000004D8, eax_80, 0)
 	branch eax_80 != 0x00000000 l0000000140001AA8
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000140001A9E:
-	rax_145 = (uint64) (0x00000000 - (-(eax_69 == 0x00000001) == 0x00))
-	Mem89[0x0000000140003610:word32] = Mem76[0x0000000140003610:word32] & (word32) rax_145
+	rax_141 = (uint64) (0x00000000 - (-(eax_69 == 0x00000001) == 0x00))
+	Mem89[0x0000000140003610:word32] = Mem76[0x0000000140003610:word32] & (word32) rax_141
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1744,7 +1737,7 @@ l0000000140001AA8:
 	rcxOut = fp - 0x0000000000000588
 	rdxOut = 0x0000000000000000
 	r8Out = 0x0000000000000098
-	return rax_145
+	return rax_141
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

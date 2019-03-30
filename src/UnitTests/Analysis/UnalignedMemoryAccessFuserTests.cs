@@ -578,18 +578,15 @@ r8:r8
 loc40_3: orig: loc40
     def:  loc40_3 = __swl(loc40, r8)
     uses: bLoc3D_5 = SLICE(loc40_3, byte, 24) (alias)
-loc3D:Local -003D
-    def:  def loc3D
-    uses: nLoc3C_6 = SLICE(loc3D, word24, 8) (alias)
+nLoc3C:Local -003C
+    def:  def nLoc3C
+    uses: loc3D_6 = SEQ(nLoc3C, bLoc3D_5)
 bLoc3D_5: orig: bLoc3D
     def:  bLoc3D_5 = SLICE(loc40_3, byte, 24) (alias)
-    uses: loc3D_7 = SEQ(nLoc3C_6, bLoc3D_5)
-nLoc3C_6: orig: nLoc3C
-    def:  nLoc3C_6 = SLICE(loc3D, word24, 8) (alias)
-    uses: loc3D_7 = SEQ(nLoc3C_6, bLoc3D_5)
+    uses: loc3D_6 = SEQ(nLoc3C, bLoc3D_5)
+loc3D_6: orig: loc3D
+    def:  loc3D_6 = SEQ(nLoc3C, bLoc3D_5)
 loc3D_7: orig: loc3D
-    def:  loc3D_7 = SEQ(nLoc3C_6, bLoc3D_5)
-loc3D_8: orig: loc3D
     def:  loc40_3 = r8
 // ProcedureBuilder
 // Return size: 0
@@ -597,12 +594,11 @@ define ProcedureBuilder
 ProcedureBuilder_entry:
 	def loc40
 	def r8
-	def loc3D
-	nLoc3C_6 = SLICE(loc3D, word24, 8) (alias)
+	def nLoc3C
 	// succ:  l1
 l1:
 	bLoc3D_5 = SLICE(loc40_3, byte, 24) (alias)
-	loc3D_7 = SEQ(nLoc3C_6, bLoc3D_5)
+	loc3D_6 = SEQ(nLoc3C, bLoc3D_5)
 	loc40_3 = r8
 ProcedureBuilder_exit:
 ";

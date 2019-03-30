@@ -104,14 +104,11 @@ l000014E2:
 void fn000014E8(word32 a3, word32 a5, word16 wArg00, word32 dwArg02)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  a3:[0..15] a5:[0..31] Stack +0002:[0..31]
+// MayUse:  a3:[0..15] a5:[0..31] Stack +0000:[0..15] Stack +0002:[0..31]
 // LiveOut:
 // Trashed: CVZNX a0 a1 a2 a3 a7 d0 d1 d2
 // Preserved:
 fn000014E8_entry:
-	word16 wLoc12_183 = SLICE(dwLoc12, word16, 16)
-	word16 wLoc12_186 = SLICE(dwLoc12, word16, 16)
-	word16 wArg00_198 = SLICE(dwLoc02, word16, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -119,11 +116,10 @@ fn000014E8_entry:
 l000014E8:
 	Mem14[0x0000:word16] = 0x0000
 	__syscall(0xA9A0)
-	word16 wLoc02_197 = SLICE(a3, word16, 0)
-	branch SEQ(wLoc12_183, 0x4441) == 0x00000000 l00001592
-	word32 dwLoc02_194 = SEQ(wLoc02_197, wArg00_198)
-	word32 dwLoc12_188 = SEQ(wLoc12_186, 0x4441)
-	dwLoc02_194 = SLICE(dwLoc02_194, word16, 0) (alias)
+	word16 wLoc02_194 = SLICE(a3, word16, 0)
+	branch SEQ(wLoc12, 0x4441) == 0x00000000 l00001592
+	word32 dwLoc12_185 = SEQ(wLoc12, 0x4441)
+	word32 dwLoc02_195 = SEQ(wLoc02_194, wArg00)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -136,7 +132,7 @@ l00001592:
 // SymbolicIn:
 
 l000014FE:
-	word32 a3_23 = Mem14[dwLoc12_188:word32]
+	word32 a3_23 = Mem14[dwLoc12_185:word32]
 	word32 d0_26 = Mem14[a3_23:word32]
 	word32 a2_27 = a5 - d0_26
 	word32 a0_28 = a2_27
@@ -148,10 +144,8 @@ l000014FE:
 
 l0000150E:
 	Mem33[a0_28:word16] = 0x0000
-	dwLoc02_194 = SLICE(dwLoc02_277, word16, 0) (alias)
 	a0_28 = a0_28 + 2
 	d0_29 = d0_29 - 0x00000001
-	dwLoc02_277 = dwLoc02_194
 	branch d0_29 != 0x00000000 l0000150E
 // DataOut:
 // DataOut (flags):
@@ -162,7 +156,6 @@ l00001514:
 	__syscall(0xA02E)
 	word32 d0_47 = Mem41[a3_23 + 8:word32]
 	word32 a2_48 = a2_45 - d0_47
-	dwLoc02_194 = SLICE(dwLoc02_194, word16, 0) (alias)
 	word32 a0_49 = a2_48
 	word32 d0_50 = d0_47 >>u 0x00000001
 	branch d0_47 >>u 0x00000001 == 0x00000000 l00001534
@@ -172,10 +165,8 @@ l00001514:
 
 l0000152E:
 	Mem54[a0_49:word16] = 0x0000
-	dwLoc02_194 = SLICE(dwLoc02_276, word16, 0) (alias)
 	a0_49 = a0_49 + 2
 	d0_50 = d0_50 - 0x00000001
-	dwLoc02_276 = dwLoc02_194
 	branch d0_50 != 0x00000000 l0000152E
 // DataOut:
 // DataOut (flags):
@@ -263,7 +254,7 @@ l00001586:
 // SymbolicIn:
 
 l00001582:
-	Mem161[a2_130:word32] = Mem83[a2_130:word32] + dwLoc02_194
+	Mem161[a2_130:word32] = Mem83[a2_130:word32] + dwLoc02_195
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

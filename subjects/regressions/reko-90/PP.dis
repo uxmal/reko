@@ -3713,7 +3713,7 @@ l0800_13CF:
 	Mem242[ss:sp_108:word16] = 0x4348
 	word16 sp_254 = <invalid>
 	word16 dx_251
-	word16 ax_245 = fn0800_4234(si_107, di_103, ds_104, Mem242[ss:sp_108:word16], Mem242[ss:sp_108 + 0x0002:word16], Mem242[ss:sp_108 + 0x0004:word16], Mem242[ss:sp_108 + 0x0006:word16], out cx_1971, out dx_251, out bp_100, out si_1972, out di_1973, out ds_104)
+	word16 ax_245 = fn0800_4234(si_107, di_103, ds_104, Mem242[ss:sp_108:word16], Mem242[ss:sp_108 + 0x0002:word16], Mem242[ss:sp_108 + 0x0004:word16], Mem242[ss:sp_108 + 0x0006:word16], out cx_1969, out dx_251, out bp_100, out si_1970, out di_1971, out ds_104)
 	Mem262[ds_104:0x29D1:word16] = dx_251
 	Mem263[ds_104:0x29CF:word16] = ax_245
 	Mem264[ds_104:0x29ED:word16] = 0x0000
@@ -3741,22 +3741,16 @@ l0800_13F2:
 	Mem292[ss:sp_283 - 6:word16] = bp_100 - 0x0066
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg4 = <invalid>
-	byte stackArg9 = <invalid>
-	Mem307[ss:bp_100 - 0x0068:byte] = (byte) (fn0800_2CCF(ds_104, Mem292[ss:sp_283 - 6:segptr32], stackArg4, Mem292[ss:sp_283 - 2:word16], Mem292[ss:sp_283:byte], stackArg9, out cl_1963, out dx_1964) >>u 0x08)
+	Mem307[ss:bp_100 - 0x0068:byte] = (byte) (fn0800_2CCF(ds_104, Mem292[ss:sp_283 - 6:segptr32], stackArg4, Mem292[ss:sp_283 - 2:word16], Mem292[ss:sp_283:byte], Mem292[ss:sp_283 + 1:byte], out cl_1962, out dx_1963) >>u 0x08)
 	Mem312[ss:sp_283:word16] = 0x0000
 	Mem315[ss:sp_283 - 2:word16] = 0x0004
 	Mem317[ss:sp_283 - 4:word16] = ss
 	Mem320[ss:sp_283 - 6:word16] = bp_100 - 0x0066
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg4 = <invalid>
-	byte stackArg9 = <invalid>
-	Mem332[ss:bp_100 - 0x0067:byte] = (byte) fn0800_2CCF(ds_104, Mem320[ss:sp_283 - 6:segptr32], stackArg4, Mem320[ss:sp_283 - 2:word16], Mem320[ss:sp_283:byte], stackArg9, out cl_1967, out dx_1968)
+	Mem332[ss:bp_100 - 0x0067:byte] = (byte) fn0800_2CCF(ds_104, Mem320[ss:sp_283 - 6:segptr32], stackArg4, Mem320[ss:sp_283 - 2:word16], Mem320[ss:sp_283:byte], Mem320[ss:sp_283 + 1:byte], out cl_1965, out dx_1966)
 	Mem335[ss:sp_283:word16] = Mem332[ds_104:0x29D1:word16]
 	Mem338[ss:sp_283 - 2:word16] = Mem335[ds_104:0x29CF:word16]
 	Mem344[ss:sp_283 - 4:word16] = 0x0000
@@ -3769,7 +3763,7 @@ l0800_13F2:
 	Mem372[ss:sp_283 - 2:word16] = Mem369[ds_356:0x29CF:word16]
 	Mem375[ss:sp_283 - 4:word16] = Mem372[ds_356:0x29ED:word16]
 	Mem378[ss:sp_283 - 6:word16] = Mem375[ds_356:0x29EB:word16]
-	fn0800_409C(ds_356, Mem378[ss:sp_283 - 6:word16], Mem378[ss:sp_283 - 4:word16], Mem378[ss:sp_283 - 2:word16], Mem378[ss:sp_283:word16], out dx_1969, out ds_104, out Top_1970)
+	fn0800_409C(ds_356, Mem378[ss:sp_283 - 6:word16], Mem378[ss:sp_283 - 4:word16], Mem378[ss:sp_283 - 2:word16], Mem378[ss:sp_283:word16], out dx_1967, out ds_104, out Top_1968)
 	sp_113 = sp_283 + 0x0002
 // DataOut:
 // DataOut (flags):
@@ -3875,7 +3869,7 @@ l0800_14FD:
 	Mem573[ss:sp_442 + 0x0002:word16] = Mem566[ss:bp_438 - 0x0006:word16]
 	Mem576[ss:sp_442:word16] = Mem573[ss:bp_438 - 0x0008:word16]
 	word16 sp_587 = <invalid>
-	cx_1826 = (word16) fn0800_23EC(ds_406, Mem576[ss:sp_442:word16], Mem576[ss:sp_442 + 0x0002:word16], out bp_1976, out si_1977, out di_1824, out ds_406)
+	cx_1826 = (word16) fn0800_23EC(ds_406, Mem576[ss:sp_442:word16], Mem576[ss:sp_442 + 0x0002:word16], out bp_1974, out si_1975, out di_1824, out ds_406)
 	sp_1795 = sp_587 + 0x0004
 // DataOut:
 // DataOut (flags):
@@ -3918,7 +3912,7 @@ l0800_1551:
 	word16 sp_656 = <invalid>
 	Mem665[ss:sp_656 - 2:word16] = 0x0001
 	selector ds_671
-	word16 cx_669 = fn0800_1CF6(ds_652, Mem665[ss:sp_656 - 2:word16], out dx_1979, out bp_1980, out si_1981, out di_1982, out ds_671)
+	word16 cx_669 = fn0800_1CF6(ds_652, Mem665[ss:sp_656 - 2:word16], out dx_1977, out bp_1978, out si_1979, out di_1980, out ds_671)
 	word16 sp_675 = <invalid>
 	Mem684[ss:sp_675:word16] = 0x0001
 	Mem689[ss:sp_675 - 2:word16] = 0x0000
@@ -3947,7 +3941,7 @@ l0800_1551:
 	word16 cx_1700
 	word16 dx_1691
 	selector ds_1652
-	word16 ax_729 = fn0800_4234(si_711, di_709, ds_671, Mem728[ss:sp_675 - 6:word16], Mem728[ss:sp_675 - 4:word16], Mem728[ss:sp_675 - 2:word16], Mem728[ss:sp_675:word16], out cx_1700, out dx_1691, out bp_1985, out si_1651, out di_1669, out ds_1652)
+	word16 ax_729 = fn0800_4234(si_711, di_709, ds_671, Mem728[ss:sp_675 - 6:word16], Mem728[ss:sp_675 - 4:word16], Mem728[ss:sp_675 - 2:word16], Mem728[ss:sp_675:word16], out cx_1700, out dx_1691, out bp_1983, out si_1651, out di_1669, out ds_1652)
 	Mem746[ds_1652:0x29DD:word16] = dx_1691
 	Mem747[ds_1652:0x29DB:word16] = ax_729
 	word16 sp_738 = <invalid>
@@ -3967,7 +3961,7 @@ l0800_1897:
 	word16 sp_1709 = sp_770 + 0x0004
 	word16 di_767
 	word16 si_769
-	branch fn0800_2DE2(cx_1700, dx_1691, si_1651, di_1669, ds_1652, Mem755[ss:sp_749 - 2:segptr32], stackArg4, out ch_1992, out bp_1993, out si_769, out di_767, out ds_1652) == 0x0000 l0800_18A9
+	branch fn0800_2DE2(cx_1700, dx_1691, si_1651, di_1669, ds_1652, Mem755[ss:sp_749 - 2:segptr32], stackArg4, out ch_1990, out bp_1991, out si_769, out di_767, out ds_1652) == 0x0000 l0800_18A9
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3987,7 +3981,7 @@ l0800_15A3:
 	word16 dx_798
 	word16 si_800
 	selector ds_1322
-	word16 ax_792 = fn0800_4234(si_769, di_767, ds_1652, Mem791[ss:sp_770 - 4:word16], Mem791[ss:sp_770 - 2:word16], Mem791[ss:sp_770:word16], Mem791[ss:sp_770 + 2:word16], out cx_2005, out dx_798, out bp_793, out si_800, out di_796, out ds_1322)
+	word16 ax_792 = fn0800_4234(si_769, di_767, ds_1652, Mem791[ss:sp_770 - 4:word16], Mem791[ss:sp_770 - 2:word16], Mem791[ss:sp_770:word16], Mem791[ss:sp_770 + 2:word16], out cx_2003, out dx_798, out bp_793, out si_800, out di_796, out ds_1322)
 	Mem809[ds_1322:0x29E5:word16] = dx_798
 	Mem810[ds_1322:0x29E3:word16] = ax_792
 	word16 sp_801 = <invalid>
@@ -3995,7 +3989,7 @@ l0800_15A3:
 	Mem815[ss:sp_801 + 0x0004:word16] = 0x4541
 	Mem817[ss:sp_801 + 0x0002:word16] = ss
 	Mem820[ss:sp_801:word16] = bp_793 - 0x006E
-	fn0800_3509(si_800, di_796, Mem820[ss:sp_801:word16], Mem820[ss:sp_801 + 2:selector], Mem820[ss:sp_801 + 4:word16], Mem820[ss:sp_801 + 6:word16], out bx_2006)
+	fn0800_3509(si_800, di_796, Mem820[ss:sp_801:word16], Mem820[ss:sp_801 + 2:selector], Mem820[ss:sp_801 + 4:word16], Mem820[ss:sp_801 + 6:word16], out bx_2004)
 	Mem834[ss:sp_801 + 0x0006:word16] = ds_1322
 	Mem837[ss:sp_801 + 0x0004:word16] = 0x4541
 	Mem839[ss:sp_801 + 0x0002:word16] = ss
@@ -4003,7 +3997,7 @@ l0800_15A3:
 	fn0800_35A3(si_800, di_796, Mem842[ss:sp_801:word16], Mem842[ss:sp_801 + 2:selector], Mem842[ss:sp_801 + 4:word16], Mem842[ss:sp_801 + 6:word16])
 	Mem856[ss:sp_801 + 0x0006:word16] = ds_1322
 	Mem859[ss:sp_801 + 0x0004:word16] = 0x4541
-	fn0800_0C93(si_800, di_796, ds_1322, Mem859[ss:sp_801 + 0x0004:word16], Mem859[ss:sp_801 + 0x0006:word16], out dx_2007)
+	fn0800_0C93(si_800, di_796, ds_1322, Mem859[ss:sp_801 + 0x0004:word16], Mem859[ss:sp_801 + 0x0006:word16], out dx_2005)
 	Mem874[ss:sp_801 + 0x0006:word16] = ss
 	Mem877[ss:sp_801 + 0x0004:word16] = bp_793 - 0x006E
 	// Failed to bind call argument.
@@ -4031,7 +4025,7 @@ l0800_15A3:
 	// Please report this issue at https://github.com/uxmal/reko
 	int32 dx_ax_933 = (int32) Mem931[ds_1322:0x29E9:word16]
 	word16 stackArg0 = <invalid>
-	word16 ax_937 = fn0800_8C8A((word16) dx_ax_933, 0x08, SLICE(dx_ax_933, word16, 16), stackArg0, out cl_2011, out dx_2012)
+	word16 ax_937 = fn0800_8C8A((word16) dx_ax_933, 0x08, SLICE(dx_ax_933, word16, 16), stackArg0, out cl_2009, out dx_2010)
 	ptr32 es_di_946 = Mem931[ss:bp_793 - 0x0008:segptr32]
 	word16 sp_941 = <invalid>
 	Mem948[ss:sp_941 - 2:word16] = ax_937
@@ -4058,8 +4052,8 @@ l0800_1632_1:
 
 l0800_1634:
 	word16 cx_963 = ~cx_952
-	word16 di_2041 = di_1830 - cx_963
-	bool Z_976 = SLICE(cond(di_2041), bool, 2)
+	word16 di_2039 = di_1830 - cx_963
+	bool Z_976 = SLICE(cond(di_2039), bool, 2)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4071,10 +4065,10 @@ l0800_163A:
 // SymbolicIn:
 
 l0800_163A_2:
-	Z_976 = SLICE(cond(0x00 - Mem948[es_1829:di_2041:byte]), bool, 2) (alias)
-	di_2041 = di_2041 + 0x0001
+	Z_976 = SLICE(cond(0x00 - Mem948[es_1829:di_2039:byte]), bool, 2) (alias)
+	di_2039 = di_2039 + 0x0001
 	cx_963 = cx_963 - 0x0001
-	branch Mem948[es_1829:di_2041:byte] == 0x00 l0800_163A
+	branch Mem948[es_1829:di_2039:byte] == 0x00 l0800_163A
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4086,14 +4080,14 @@ l0800_163C:
 // SymbolicIn:
 
 l0800_163E:
-	di_2041 = 0x0001
+	di_2039 = 0x0001
 	es_1829 = 0x0000
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_1645:
-	Mem1007[es_1829:di_2041:byte] = (byte) Mem948[ss:sp_941 - 2:word16]
+	Mem1007[es_1829:di_2039:byte] = (byte) Mem948[ss:sp_941 - 2:word16]
 	ptr32 es_di_1020 = Mem1007[ss:bp_793 - 0x0008:segptr32]
 	Mem1023[ss:sp_941 - 2:word16] = (word16) (int32) Mem1007[ds_1322:0x29E9:word16]
 	selector es_1059 = SLICE(es_di_1020, selector, 16)
@@ -4159,7 +4153,7 @@ l0800_166F:
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg0 = <invalid>
 	word16 dx_1095
-	word16 ax_1092 = fn0800_8C8A(Mem1083[ds_1322:0x29E7:word16], 0x08, Mem1083[ds_1322:0x29E9:word16], stackArg0, out cl_2014, out dx_1095)
+	word16 ax_1092 = fn0800_8C8A(Mem1083[ds_1322:0x29E7:word16], 0x08, Mem1083[ds_1322:0x29E9:word16], stackArg0, out cl_2012, out dx_1095)
 	ptr32 es_di_1106 = Mem1083[ss:bp_793 - 0x0008:segptr32]
 	word16 sp_1096 = <invalid>
 	Mem1108[ss:sp_1096 - 2:word16] = ax_1092
@@ -4296,7 +4290,7 @@ l0800_16C6:
 	Mem1288[ss:sp_1096 - 8:word16] = Mem1285[ds_1322:0x29E1:word16]
 	Mem1291[ss:sp_1096 - 10:word16] = Mem1288[ds_1322:0x29DF:word16]
 	word16 di_1231 = 0x0001
-	word16 ax_1292 = fn0800_ACB3(ds_1322, Mem1291[ss:sp_1096 - 10:word16], Mem1291[ss:sp_1096 - 8:word16], Mem1291[ss:sp_1096 - 2:word16], out cx_2015, out dx_2016, out bx_2017)
+	word16 ax_1292 = fn0800_ACB3(ds_1322, Mem1291[ss:sp_1096 - 10:word16], Mem1291[ss:sp_1096 - 8:word16], Mem1291[ss:sp_1096 - 2:word16], out cx_2013, out dx_2014, out bx_2015)
 	word16 sp_1301 = sp_1096
 	branch Mem1291[ds_1322:0x2A09:word16] >=u 0x0000 l0800_171B
 // DataOut:
@@ -4347,7 +4341,7 @@ l0800_1748:
 	Mem1356[ss:sp_1301 - 4:word16] = Mem1353[ds_1322:0x2A07:word16]
 	Mem1359[ss:sp_1301 - 6:word16] = Mem1356[ds_1322:0x2A09:word16]
 	Mem1362[ss:sp_1301 - 8:word16] = Mem1359[ds_1322:0x2A07:word16]
-	fn0800_75EA(ds_1322, Mem1362[ss:sp_1301 - 8:word16], Mem1362[ss:sp_1301 - 6:word16], Mem1362[ss:sp_1301 - 4:word16], Mem1362[ss:sp_1301 - 2:word16], out bp_2025, out si_2026, out ds_1322)
+	fn0800_75EA(ds_1322, Mem1362[ss:sp_1301 - 8:word16], Mem1362[ss:sp_1301 - 6:word16], Mem1362[ss:sp_1301 - 4:word16], Mem1362[ss:sp_1301 - 2:word16], out bp_2023, out si_2024, out ds_1322)
 	word16 sp_1372 = <invalid>
 	sp_1301 = sp_1372 + 0x0008
 	word16 ax_1379 = Mem1362[ds_1322:0x2A05:word16]
@@ -4395,7 +4389,7 @@ l0800_1780:
 	Mem1418[ss:sp_1372 + 0x0002:word16] = dx_1411
 	Mem1421[ss:sp_1372:word16] = Mem1418[ds_1322:0x29E1:word16]
 	Mem1424[ss:sp_1372 - 2:word16] = Mem1421[ds_1322:0x29DF:word16]
-	fn0800_ACB3(ds_1322, Mem1424[ss:sp_1372 - 2:word16], Mem1424[ss:sp_1372:word16], Mem1424[ss:sp_1372 + 6:word16], out cx_2029, out dx_2030, out bx_2031)
+	fn0800_ACB3(ds_1322, Mem1424[ss:sp_1372 - 2:word16], Mem1424[ss:sp_1372:word16], Mem1424[ss:sp_1372 + 6:word16], out cx_2027, out dx_2028, out bx_2029)
 	sp_1301 = sp_1372 + 0x0008
 // DataOut:
 // DataOut (flags):
@@ -4446,7 +4440,7 @@ l0800_17D5:
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg0 = <invalid>
 	word16 dx_1501
-	word16 ax_1498 = fn0800_8CAA(ax_1447, 0x08, fn0800_3F58(ds_1322, Mem1482[ss:sp_1453 - 2:word16], Mem1482[ss:sp_1453:word16], out di_2036, out ds_1322), stackArg0, out dx_1501)
+	word16 ax_1498 = fn0800_8CAA(ax_1447, 0x08, fn0800_3F58(ds_1322, Mem1482[ss:sp_1453 - 2:word16], Mem1482[ss:sp_1453:word16], out di_2034, out ds_1322), stackArg0, out dx_1501)
 	sp_1467 = <invalid>
 	branch dx_1501 != 0x0052 l0800_17F2
 // DataOut:
@@ -4466,12 +4460,12 @@ l0800_17F2:
 	Mem1524[ss:sp_1515 - 4:word16] = 0x524E
 	Mem1526[ss:sp_1515 - 6:word16] = 0x4300
 	selector ds_1531
-	fn0800_409C(ds_1322, Mem1526[ss:sp_1515 - 6:word16], Mem1526[ss:sp_1515 - 4:word16], Mem1526[ss:sp_1515 - 2:word16], Mem1526[ss:sp_1515:word16], out dx_2032, out ds_1531, out Top_2033)
+	fn0800_409C(ds_1322, Mem1526[ss:sp_1515 - 6:word16], Mem1526[ss:sp_1515 - 4:word16], Mem1526[ss:sp_1515 - 2:word16], Mem1526[ss:sp_1515:word16], out dx_2030, out ds_1531, out Top_2031)
 	Mem1543[ss:sp_1515:word16] = Mem1526[ds_1531:0x29D1:word16]
 	Mem1546[ss:sp_1515 - 2:word16] = Mem1543[ds_1531:0x29CF:word16]
 	Mem1549[ss:sp_1515 - 4:word16] = Mem1546[ds_1531:0x2A09:word16]
 	Mem1552[ss:sp_1515 - 6:word16] = Mem1549[ds_1531:0x2A07:word16]
-	fn0800_409C(ds_1531, Mem1552[ss:sp_1515 - 6:word16], Mem1552[ss:sp_1515 - 4:word16], Mem1552[ss:sp_1515 - 2:word16], Mem1552[ss:sp_1515:word16], out dx_2034, out ds_1322, out Top_2035)
+	fn0800_409C(ds_1531, Mem1552[ss:sp_1515 - 6:word16], Mem1552[ss:sp_1515 - 4:word16], Mem1552[ss:sp_1515 - 2:word16], Mem1552[ss:sp_1515:word16], out dx_2032, out ds_1322, out Top_2033)
 	sp_1467 = sp_1515 + 0x0002
 // DataOut:
 // DataOut (flags):
@@ -4485,7 +4479,7 @@ l0800_181E:
 	Mem1582[ss:sp_1571 - 6:word16] = Mem1579[ds_1322:0x29CF:word16]
 	Mem1585[ss:sp_1571 - 8:word16] = Mem1582[ds_1322:0x29E5:word16]
 	Mem1588[ss:sp_1571 - 10:word16] = Mem1585[ds_1322:0x29E3:word16]
-	fn0800_3B0A(Mem1588[ss:sp_1571 - 2:word16], Mem1588[ss:sp_1571:word16], out dx_2038, out bp_2039, out ds_1322)
+	fn0800_3B0A(Mem1588[ss:sp_1571 - 2:word16], Mem1588[ss:sp_1571:word16], out dx_2036, out bp_2037, out ds_1322)
 	word16 sp_1598 = <invalid>
 	sp_1301 = sp_1598 + 0x000C
 // DataOut:
@@ -4504,14 +4498,14 @@ l0800_183F:
 	Mem1619[ss:sp_1611 - 4:word16] = Mem1616[ds_1322:0x29ED:word16]
 	Mem1622[ss:sp_1611 - 6:word16] = Mem1619[ds_1322:0x29EB:word16]
 	selector ds_1627
-	fn0800_409C(ds_1322, Mem1622[ss:sp_1611 - 6:word16], Mem1622[ss:sp_1611 - 4:word16], Mem1622[ss:sp_1611 - 2:word16], Mem1622[ss:sp_1611:word16], out dx_2018, out ds_1627, out Top_2019)
+	fn0800_409C(ds_1322, Mem1622[ss:sp_1611 - 6:word16], Mem1622[ss:sp_1611 - 4:word16], Mem1622[ss:sp_1611 - 2:word16], Mem1622[ss:sp_1611:word16], out dx_2016, out ds_1627, out Top_2017)
 	Mem1639[ss:sp_1611:word16] = Mem1622[ds_1627:0x29E5:word16]
 	Mem1642[ss:sp_1611 - 2:word16] = Mem1639[ds_1627:0x29E3:word16]
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg4 = <invalid>
 	word16 di_1649
-	fn0800_A614(ds_1627, Mem1642[ss:sp_1611 - 2:segptr32], stackArg4, out cx_2021, out dx_2022, out bp_2023, out si_1651, out di_1649, out ds_1652)
+	fn0800_A614(ds_1627, Mem1642[ss:sp_1611 - 2:segptr32], stackArg4, out cx_2019, out dx_2020, out bp_2021, out si_1651, out di_1649, out ds_1652)
 	word16 sp_1647 = <invalid>
 	Mem1660[ss:sp_1647 + 0x0002:word16] = ds_1652
 	Mem1663[ss:sp_1647:word16] = 0x4541
@@ -4531,7 +4525,7 @@ l0800_183F:
 l0800_188A:
 	Mem1696[ss:sp_1647 + 0x0002:word16] = ds_1652
 	Mem1699[ss:sp_1647:word16] = 0x0952
-	fn0800_B2EF(cx_1700, dx_1691, bx_1681, ds_1652, Mem1699[ss:sp_1647:word16], Mem1699[ss:sp_1647 + 2:word16], out si_2027, out di_2028)
+	fn0800_B2EF(cx_1700, dx_1691, bx_1681, ds_1652, Mem1699[ss:sp_1647:word16], Mem1699[ss:sp_1647 + 2:word16], out si_2025, out di_2026)
 	sp_1709 = sp_1647 + 0x0004
 // DataOut:
 // DataOut (flags):
@@ -4545,7 +4539,7 @@ l0800_18A9:
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg4 = <invalid>
 	selector ds_1730
-	fn0800_A614(ds_1652, Mem1720[ss:sp_1715 - 2:segptr32], stackArg4, out cx_1995, out dx_1996, out bp_1997, out si_1998, out di_1999, out ds_1730)
+	fn0800_A614(ds_1652, Mem1720[ss:sp_1715 - 2:segptr32], stackArg4, out cx_1993, out dx_1994, out bp_1995, out si_1996, out di_1997, out ds_1730)
 	word16 sp_1725 = <invalid>
 	Mem1738[ss:sp_1725 + 0x0002:word16] = ds_1730
 	Mem1741[ss:sp_1725:word16] = 0x4477
@@ -4558,7 +4552,7 @@ l0800_18A9:
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg4 = <invalid>
 	selector ds_1780
-	fn0800_A614(ds_1754, Mem1770[ss:sp_1758 - 4:segptr32], stackArg4, out cx_2001, out dx_2002, out bp_1772, out si_2003, out di_2004, out ds_1780)
+	fn0800_A614(ds_1754, Mem1770[ss:sp_1758 - 4:segptr32], stackArg4, out cx_1999, out dx_2000, out bp_1772, out si_2001, out di_2002, out ds_1780)
 	return ds_1780
 // DataOut:
 // DataOut (flags):
@@ -4572,7 +4566,7 @@ l0800_153D:
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg4 = <invalid>
 	selector ds_1811
-	fn0800_A614(ds_406, Mem1801[ss:sp_1797 - 2:segptr32], stackArg4, out cx_1987, out dx_1988, out bp_1803, out si_1989, out di_1990, out ds_1811)
+	fn0800_A614(ds_406, Mem1801[ss:sp_1797 - 2:segptr32], stackArg4, out cx_1985, out dx_1986, out bp_1803, out si_1987, out di_1988, out ds_1811)
 	return ds_1811
 // DataOut:
 // DataOut (flags):
@@ -5720,14 +5714,11 @@ l0800_1DF8:
 	Mem377[ss:sp_303 - 6:word16] = ax_370 + 0x0008
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg4 = <invalid>
-	byte stackArg9 = <invalid>
 	word16 cx_401 = DPB(cx_351, cl_380, 0)
 	byte cl_380
 	word16 dx_381
-	branch fn0800_2CCF(ds_353, Mem377[ss:sp_303 - 6:segptr32], stackArg4, Mem377[ss:sp_303 - 2:word16], Mem377[ss:sp_303:byte], stackArg9, out cl_380, out dx_381) == Mem377[ss:bp_255 - 0x0002:word16] l0800_1E59
+	branch fn0800_2CCF(ds_353, Mem377[ss:sp_303 - 6:segptr32], stackArg4, Mem377[ss:sp_303 - 2:word16], Mem377[ss:sp_303:byte], Mem377[ss:sp_303 + 1:byte], out cl_380, out dx_381) == Mem377[ss:bp_255 - 0x0002:word16] l0800_1E59
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -5739,7 +5730,7 @@ l0800_1E4A:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg6 = <invalid>
-	fn0800_0D24(ds_353, Mem398[ss:sp_303 - 4:word16], Mem398[ss:sp_303 - 2:segptr32], stackArg6, out cx_401, out dx_381, out bx_538, out si_539, out di_352, out es_540, out ds_353, out Top_541)
+	fn0800_0D24(ds_353, Mem398[ss:sp_303 - 4:word16], Mem398[ss:sp_303 - 2:segptr32], stackArg6, out cx_401, out dx_381, out bx_537, out si_538, out di_352, out es_539, out ds_353, out Top_540)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -5780,12 +5771,9 @@ l0800_1E5E:
 	ptr32 es_bx_9 = Mem7[ds:0x2E51:segptr32]
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
 	word16 ax_24 = (DPB(DPB(ax, Mem7[es_bx_9 + 0x0004:byte], 0), 0x00, 8) << 0x08) + DPB(DPB(dx, Mem7[es_bx_9 + 0x0005:byte], 0), 0x00, 8)
 	word16 stackArg4 = <invalid>
-	byte stackArg9 = <invalid>
-	word16 ax_41 = fn0800_2CCF(ds, SEQ(Mem32[ds:0x2E53:word16], Mem32[ds:0x2E51:word16] + 0x0008), stackArg4, ax_24 - 0x0008, 0x00, stackArg9, out cl_315, out dx_316)
+	word16 ax_41 = fn0800_2CCF(ds, SEQ(Mem32[ds:0x2E53:word16], Mem32[ds:0x2E51:word16] + 0x0008), stackArg4, ax_24 - 0x0008, 0x00, 0x00, out cl_315, out dx_316)
 	ptr32 es_bx_54 = Mem40[ds:0x2E51:segptr32]
 	Mem58[es_bx_54 + 0x0006:byte] = (byte) (ax_41 >>u 0x08)
 	Mem60[es_bx_54 + 0x0007:byte] = (byte) ax_41
@@ -6003,10 +5991,10 @@ l0800_1FA3:
 l0800_1FAD:
 	ptr32 es_bx_145 = Mem144[ds:0x2E51:segptr32]
 	word16 ax_171 = (DPB(DPB(ax_117, Mem144[es_bx_145 + 0x0004:byte], 0), 0x00, 8) << 0x08) + DPB(DPB(dx, Mem144[es_bx_145 + 0x0005:byte], 0), 0x00, 8)
-	word16 wArg04_413 = SLICE(ptrArg02, word16, 16)
-	word16 wArg02_416 = SLICE(ptrArg02, word16, 0)
+	word16 wArg04_411 = SLICE(ptrArg02, word16, 16)
+	word16 wArg02_414 = SLICE(ptrArg02, word16, 0)
+	word16 ax_175 = Mem174[ds:0x2E53:word16]
 	word16 dx_177 = Mem174[ds:0x2E51:word16] + ax_171
-	segptr32 ptrLoc06_405 = Mem174[ds:0x2E53:word16]
 	selector es_374 = SLICE(ptrArg02, selector, 16)
 	word16 di_188 = (word16) ptrArg02
 	word16 cx_184 = 0xFFFF
@@ -6015,17 +6003,16 @@ l0800_1FAD:
 // SymbolicIn:
 
 l0800_1FDE:
-	ptrLoc06_405 = SLICE(ptrLoc06_405, word16, 16) (alias)
 	branch cx_184 == 0x0000 l0800_1FE0
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_1FDE_1:
-	di_188 = di_487 + 0x0001
+	di_188 = di_484 + 0x0001
 	cx_184 = cx_184 - 0x0001
-	di_487 = di_188
-	branch Mem179[es_374:di_487:byte] == 0x00 l0800_1FDE
+	di_484 = di_188
+	branch Mem179[es_374:di_484:byte] == 0x00 l0800_1FDE
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -6037,15 +6024,14 @@ l0800_1FE0:
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 ax_211 = ax_207 + (cx_195 + 0x0003)
 	word16 stackArg0 = <invalid>
-	segptr32 ptrLoc06_409 = SEQ(SLICE(ptrLoc06_405, word16, 16), dx_177)
-	Mem230[ptrLoc06_409:byte] = (byte) fn0800_8C8A(ax_211, 0x08, 0x0000 - (ax_207 <u 0x0000) + (ax_211 <u 0x0000), stackArg0, out cl_481, out dx_482)
-	Mem239[ptrLoc06_409 + 0x0001:byte] = (byte) (dx_177 - Mem230[ds:0x2E51:word16]) + SLICE(cx_195 + 0x0003, byte, 0)
+	segptr32 ptrLoc06_407 = SEQ(ax_175, dx_177)
+	Mem230[ptrLoc06_407:byte] = (byte) fn0800_8C8A(ax_211, 0x08, 0x0000 - (ax_207 <u 0x0000) + (ax_211 <u 0x0000), stackArg0, out cl_478, out dx_479)
+	Mem239[ptrLoc06_407 + 0x0001:byte] = (byte) (dx_177 - Mem230[ds:0x2E51:word16]) + SLICE(cx_195 + 0x0003, byte, 0)
 	word16 sp_221 = <invalid>
-	Mem243[ss:sp_221 - 2:word16] = SLICE(ptrLoc06_409, selector, 16)
+	Mem243[ss:sp_221 - 2:word16] = SLICE(ptrLoc06_407, selector, 16)
 	Mem246[ss:sp_221 - 4:word16] = dx_177 + 0x0002
-	word16 wLoc04_427 = SLICE(ptrLoc06_405, word16, 16)
-	word16 bx_229 = (word16) ptrLoc06_409
-	word16 di_247 = wArg02_416
+	word16 bx_229 = (word16) ptrLoc06_407
+	word16 di_247 = wArg02_414
 	word16 cx_251 = 0xFFFF
 // DataOut:
 // DataOut (flags):
@@ -6060,7 +6046,7 @@ l0800_202C:
 l0800_202C_2:
 	di_247 = di_247 + 0x0001
 	cx_251 = cx_251 - 0x0001
-	branch Mem246[wArg04_413:di_247:byte] == 0x00 l0800_202C
+	branch Mem246[wArg04_411:di_247:byte] == 0x00 l0800_202C
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -6089,8 +6075,8 @@ l0800_203F:
 // SymbolicIn:
 
 l0800_2041:
-	byte bLoc08_420 = SLICE(ax_171, byte, 0)
-	byte bLoc0A_421 = SLICE(cx_195 + 0x0003, byte, 0)
+	byte bLoc08_418 = SLICE(ax_171, byte, 0)
+	byte bLoc0A_419 = SLICE(cx_195 + 0x0003, byte, 0)
 	branch cx_286 == 0x0000 l0800_2043
 // DataOut:
 // DataOut (flags):
@@ -6098,17 +6084,17 @@ l0800_2041:
 
 l0800_2043:
 	selector ds_292 = Mem291[ss:sp_221 - 2:selector]
-	Mem298[wLoc04_427:bx_229 + (cx_195 + 0x0003) - 0x0001:byte] = 0x00
+	Mem298[ax_175:bx_229 + (cx_195 + 0x0003) - 0x0001:byte] = 0x00
 	ptr32 es_bx_303 = Mem298[ds_292:0x2E51:segptr32]
 	Mem307[es_bx_303 + 0x0004:byte] = (byte) (ax_171 + (cx_195 + 0x0003) >>u 0x08)
-	Mem310[es_bx_303 + 0x0005:byte] = bLoc08_420 + bLoc0A_421
+	Mem310[es_bx_303 + 0x0005:byte] = bLoc08_418 + bLoc0A_419
 	Mem315[ss:sp_221 - 2:word16] = 0x0000
 	Mem317[ss:sp_221 - 4:word16] = 0x0000
 	Mem319[ss:sp_221 - 6:word16] = 0x0000
 	Mem322[ss:sp_221 - 8:word16] = cx_195 + 0x0003
 	fn0800_2688(ds_292, Mem322[ss:sp_221 - 8:word16], Mem322[ss:sp_221 - 6:word16], Mem322[ss:sp_221 - 4:word16], Mem322[ss:sp_221 - 2:word16])
 	word16 di_336 = Mem322[ss:sp_221:word16]
-	dxOut = wLoc04_427
+	dxOut = ax_175
 	diOut = di_336
 	dsOut = ds_292
 	return dx_177
@@ -6122,7 +6108,7 @@ fn0800_1F5C_exit:
 // SymbolicIn:
 
 l0800_2041_1:
-	Mem347[es_277:di_273:byte] = Mem291[wArg04_413:si_267:byte]
+	Mem347[es_277:di_273:byte] = Mem291[wArg04_411:si_267:byte]
 	si_267 = si_267 + 0x0001
 	di_273 = di_273 + 0x0001
 	cx_286 = cx_286 - 0x0001
@@ -6131,7 +6117,7 @@ l0800_2041_1:
 // SymbolicIn:
 
 l0800_203D_3:
-	Mem357[es_277:di_273:word16] = Mem353[wArg04_413:si_267:word16]
+	Mem357[es_277:di_273:word16] = Mem353[wArg04_411:si_267:word16]
 	si_267 = si_267 + 0x0002
 	di_273 = di_273 + 0x0002
 	cx_265 = cx_265 - 0x0001
@@ -7438,7 +7424,7 @@ l0800_27BE:
 l0800_26C3:
 	word16 dx_149 = wLoc06_273
 	segptr32 ptrLoc06_289 = SEQ(wLoc04_272, wLoc06_273 + 0x0002)
-	segptr32 ptrLoc0E_365 = SEQ(wLoc04_272, wLoc06_273)
+	segptr32 ptrLoc0E_364 = SEQ(wLoc04_272, wLoc06_273)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -7473,8 +7459,8 @@ l0800_2789:
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 ax_100 = wLoc06_293 + 0x0001 - Mem96[ds:0x2E51:word16]
 	word16 stackArg0 = <invalid>
-	Mem119[ptrLoc0E_365:byte] = (byte) fn0800_8C8A(ax_100, 0x08, 0x0000 - (ax_100 <u 0x0000), stackArg0, out cl_108, out dx_432)
-	Mem128[ptrLoc0E_365 + 0x0001:byte] = (byte) (wLoc06_293 + 0x0001 - Mem119[ds:0x2E51:word16])
+	Mem119[ptrLoc0E_364:byte] = (byte) fn0800_8C8A(ax_100, 0x08, 0x0000 - (ax_100 <u 0x0000), stackArg0, out cl_108, out dx_431)
+	Mem128[ptrLoc0E_364 + 0x0001:byte] = (byte) (wLoc06_293 + 0x0001 - Mem119[ds:0x2E51:word16])
 	wLoc06_273 = wLoc06_293 + 0x0001
 	sp_110 = <invalid>
 // DataOut:
@@ -7487,19 +7473,19 @@ l0800_2786:
 // SymbolicIn:
 
 l0800_26E2:
-	ptrLoc06_370 = SEQ(wLoc04_369, wLoc06_297 + 0x0001)
+	ptrLoc06_369 = SEQ(wLoc04_368, wLoc06_297 + 0x0001)
 	word16 wLoc06_297 = SLICE(ptrLoc06_292, word16, 0)
 	word16 wLoc04_299 = SLICE(ptrLoc06_292, word16, 16)
-	word16 wLoc04_369 = SLICE(ptrLoc06_292, word16, 16)
+	word16 wLoc04_368 = SLICE(ptrLoc06_292, word16, 16)
 	branch Mem134[ptrLoc06_292:byte] != 0x00 l0800_26E2
 	segptr32 ptrLoc06_300 = SEQ(wLoc04_299, wLoc06_297 + 0x0001)
 	word16 wLoc06_325 = SLICE(ptrLoc06_300, word16, 0)
 	wLoc06_325 = SLICE(ptrLoc06_300, word16, 0) (alias)
 	wLoc06_325 = SLICE(ptrLoc06_300, word16, 0) (alias)
-	segptr32 ptrLoc06_358 = SLICE(ptrLoc06_300, word16, 16)
-	ptrLoc06_358 = SLICE(ptrLoc06_300, word16, 16) (alias)
-	ptrLoc06_358 = SLICE(ptrLoc06_300, word16, 16) (alias)
-	ptrLoc06_292 = ptrLoc06_370
+	word16 wLoc04_358 = SLICE(ptrLoc06_300, word16, 16)
+	wLoc04_358 = SLICE(ptrLoc06_300, word16, 16) (alias)
+	wLoc04_358 = SLICE(ptrLoc06_300, word16, 16) (alias)
+	ptrLoc06_292 = ptrLoc06_369
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -7535,7 +7521,7 @@ l0800_272E:
 	// Please report this issue at https://github.com/uxmal/reko
 	int32 dx_ax_191 = (int32) SLICE(SEQ(ax_172, ax_166) + dwArg02_315, word16, 16)
 	word16 stackArg0 = <invalid>
-	Mem208[ptrLoc06_300:byte] = (byte) fn0800_8C8A((word16) dx_ax_191, 0x08, SLICE(dx_ax_191, word16, 16), stackArg0, out cl_434, out dx_435)
+	Mem208[ptrLoc06_300:byte] = (byte) fn0800_8C8A((word16) dx_ax_191, 0x08, SLICE(dx_ax_191, word16, 16), stackArg0, out cl_433, out dx_434)
 	ui32 dwArg02_319 = SEQ(SLICE(dwArg02_315, word16, 16), SLICE(dwArg02_315, word16, 0))
 	Mem217[ptrLoc06_300 + 0x0001:byte] = (byte) (int32) SLICE(SEQ(ax_172, ax_166) + dwArg02_319, word16, 16)
 	ui32 dwArg02_322 = SEQ(SLICE(dwArg02_319, word16, 16), SLICE(dwArg02_319, word16, 0))
@@ -7543,7 +7529,7 @@ l0800_272E:
 	// Please report this issue at https://github.com/uxmal/reko
 	int32 dx_ax_268 = SEQ(ax_172, ax_166) + dwArg02_322
 	word16 stackArg0 = <invalid>
-	Mem239[ptrLoc06_300 + 0x0002:byte] = (byte) fn0800_8C8A((word16) dx_ax_268, 0x08, SLICE(dx_ax_268, word16, 16), stackArg0, out cl_437, out dx_149)
+	Mem239[ptrLoc06_300 + 0x0002:byte] = (byte) fn0800_8C8A((word16) dx_ax_268, 0x08, SLICE(dx_ax_268, word16, 16), stackArg0, out cl_436, out dx_149)
 	Mem243[ptrLoc06_300 + 0x0003:byte] = bLoc12_323 + SLICE(dwArg02_322, byte, 0)
 	wArg04 = SLICE(dwArg02_322, word16, 16) (alias)
 	wArg02 = SLICE(dwArg02_322, word16, 0) (alias)
@@ -7553,7 +7539,7 @@ l0800_272E:
 // SymbolicIn:
 
 l0800_2779:
-	ptrLoc06_292 = SEQ(SLICE(ptrLoc06_358, word16, 16), wLoc06_325 + 0x0004)
+	ptrLoc06_292 = SEQ(wLoc04_358, wLoc06_325 + 0x0004)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -8874,43 +8860,39 @@ fn0800_2C9A_exit:
 word16 fn0800_2CCF(selector ds, segptr32 ptrArg02, word16 wArg04, word16 wArg06, word16 wArg08, byte bArg09, ptr16 & clOut, ptr16 & dxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ds:[0..15] Stack +0002:[0..31] Stack +0006:[0..15] Stack +0008:[0..7]
+// MayUse:  ds:[0..15] Stack +0002:[0..31] Stack +0006:[0..15] Stack +0008:[0..7] Stack +0009:[0..7]
 // LiveOut: ax cl dx
 // Trashed: SCZO ax bx cl dx es Top
 // Preserved: bp si sp
 fn0800_2CCF_entry:
-	byte bArg09_73 = SLICE(wArg08, byte, 8)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_2CCF:
 	word16 si_12 = wArg06
-	byte bArg09_75 = SEQ(bArg09_73, bArg08)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_2CFD:
-	byte bArg09_58 = SLICE(bArg09_75, byte, 8)
-	byte bArg09_63 = SLICE(bArg09_75, byte, 8)
-	word16 wArg02_61 = SLICE(ptrArg02, word16, 0)
-	word16 wArg04_68 = SLICE(ptrArg02, word16, 16)
+	word16 wArg02_60 = SLICE(ptrArg02, word16, 0)
+	word16 wArg04_66 = SLICE(ptrArg02, word16, 16)
 	si_12 = si_12 - 0x0001
 	branch si_12 != 0x0000 l0800_2CD8
-	word16 wArg08_64 = SEQ(bArg09_63, bArg08)
+	word16 wArg08_62 = SEQ(bArg09, bArg08)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_2CD8:
-	word16 wArg08_59 = SEQ(bArg09_58, bArg08)
-	word16 ax_39 = Mem22[ds:((DPB(DPB(si_12, bArg08 ^ Mem22[ptrArg02:byte], 0), 0x00, 8) & 0x00FF) << 0x0001) + 0x2A29:word16] ^ wArg08_59 >>u 0x08
+	word16 wArg08_58 = SEQ(bArg09, bArg08)
+	word16 ax_39 = Mem22[ds:((DPB(DPB(si_12, bArg08 ^ Mem22[ptrArg02:byte], 0), 0x00, 8) & 0x00FF) << 0x0001) + 0x2A29:word16] ^ wArg08_58 >>u 0x08
 	cl = 0x08
-	dx = wArg08_59 >>u 0x08
+	dx = wArg08_58 >>u 0x08
 	bArg08 = SLICE(ax_39, byte, 0) (alias)
-	bArg09_75 = SLICE(ax_39, byte, 8) (alias)
-	ptrArg02 = SEQ(wArg04_68, wArg02_61 + 0x0001)
+	bArg09 = SLICE(ax_39, byte, 8) (alias)
+	ptrArg02 = SEQ(wArg04_66, wArg02_60 + 0x0001)
 	Mem22 = Mem43
 // DataOut:
 // DataOut (flags):
@@ -8919,7 +8901,7 @@ l0800_2CD8:
 l0800_2D04:
 	clOut = cl
 	dxOut = dx
-	return wArg08_64
+	return wArg08_62
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -9028,11 +9010,8 @@ l0800_2D55:
 	Mem141[ss:sp_30 - 0x0004:word16] = Mem138[ss:bp_22 - 0x0004:word16]
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg4 = <invalid>
-	byte stackArg9 = <invalid>
-	si_152 = fn0800_2CCF(ds_114, Mem141[ss:sp_30 - 0x0004:segptr32], stackArg4, Mem141[ss:sp_30:word16], Mem141[ss:sp_30 + 0x0002:byte], stackArg9, out cl_252, out dx_253)
+	si_152 = fn0800_2CCF(ds_114, Mem141[ss:sp_30 - 0x0004:segptr32], stackArg4, Mem141[ss:sp_30:word16], Mem141[ss:sp_30 + 0x0002:byte], Mem141[ss:sp_30 + 0x0003:byte], out cl_251, out dx_252)
 	word16 ax_153 = Mem141[ss:bp_22 - 0x0006:word16]
 	word16 dx_154 = Mem141[ss:bp_22 - 0x0008:word16]
 	Mem156[ss:bp_22 + 0x0008:word16] = v29_155
@@ -13337,12 +13316,11 @@ fn0800_409C_exit:
 word16 fn0800_40BF(selector ds, word16 wArg02, byte bArg03, word16 wArg04, word16 wArg06, ptr16 & dxOut, ptr16 & diOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..7] Stack +0004:[0..15] Stack +0006:[0..15]
+// MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..7] Stack +0003:[0..7] Stack +0004:[0..15] Stack +0006:[0..15]
 // LiveOut: ax di ds dx
 // Trashed: SCZO ax bx cx di ds dx es Top
 // Preserved: bp sp
 fn0800_40BF_entry:
-	byte bArg03_81 = SLICE(wArg02, byte, 8)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -13352,15 +13330,15 @@ l0800_40BF:
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg6 = <invalid>
 	selector ds_31
-	fn0800_4047(ds, SLICE(DPB(ax, bArg02 & 0xFF, 0), byte, 0), SEQ(wArg06, wArg04), stackArg6, out cx_94, out dx_95, out bx_96, out di_97, out ds_31, out Top_98)
+	fn0800_4047(ds, SLICE(DPB(ax, bArg02 & 0xFF, 0), byte, 0), SEQ(wArg06, wArg04), stackArg6, out cx_93, out dx_94, out bx_95, out di_96, out ds_31, out Top_97)
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	word16 wArg02_82 = SEQ(bArg03_81, bArg02)
+	word16 wArg02_81 = SEQ(bArg03, bArg02)
 	word16 stackArg6 = <invalid>
 	word16 dx_56
 	word16 di_59
 	selector ds_60
-	word16 ax_53 = fn0800_4047(ds_31, SLICE(DPB(wArg02_82 >>u 0x08, (byte) (wArg02_82 >>u 0x08) & 0xFF, 0), byte, 0), SEQ(wArg06, wArg04), stackArg6, out cx_100, out dx_56, out bx_101, out di_59, out ds_60, out Top_102)
+	word16 ax_53 = fn0800_4047(ds_31, SLICE(DPB(wArg02_81 >>u 0x08, (byte) (wArg02_81 >>u 0x08) & 0xFF, 0), byte, 0), SEQ(wArg06, wArg04), stackArg6, out cx_99, out dx_56, out bx_100, out di_59, out ds_60, out Top_101)
 	dxOut = dx_56
 	diOut = di_59
 	dsOut = ds_60
@@ -13835,13 +13813,13 @@ l0800_4357:
 
 l0800_43B9:
 	word16 wArg02_104 = SLICE(ptrArg02, word16, 0)
-	ptrArg02 = SLICE(ptrArg02, word16, 16) (alias)
-	ptrArg02 = SLICE(ptrArg02, word16, 16) (alias)
-	ptrArg02 = SLICE(ptrArg02, word16, 16) (alias)
+	word16 wArg02_107 = SLICE(ptrArg02, word16, 0)
+	word16 wArg04_131 = SLICE(ptrArg02, word16, 16)
+	word16 wArg04_134 = SLICE(ptrArg02, word16, 16)
 	word16 wArg06_109 = SLICE(ptrArg06, word16, 0)
 	wArg06_109 = SLICE(ptrArg06, word16, 0) (alias)
-	segptr32 ptrArg06_121 = SLICE(ptrArg06, word16, 16)
-	ptrArg06_121 = SLICE(ptrArg06, word16, 16) (alias)
+	word16 wArg08_121 = SLICE(ptrArg06, word16, 16)
+	wArg08_121 = SLICE(ptrArg06, word16, 16) (alias)
 	branch Mem11[ptrArg06:byte] != 0x00 l0800_435C
 // DataOut:
 // DataOut (flags):
@@ -13856,10 +13834,8 @@ l0800_435C:
 // SymbolicIn:
 
 l0800_4379:
-	ptrArg06_121 = SLICE(ptrArg06_121, word16, 16) (alias)
 	word16 wArg02_101 = SLICE(ptrArg02, word16, 0)
-	ptrArg02 = SLICE(ptrArg02, word16, 16) (alias)
-	ptrArg02 = SLICE(ptrArg02, word16, 16) (alias)
+	word16 wArg04_127 = SLICE(ptrArg02, word16, 16)
 	branch Mem27[ptrArg02:byte] == 0x2E l0800_43B6
 // DataOut:
 // DataOut (flags):
@@ -13867,12 +13843,13 @@ l0800_4379:
 
 l0800_4382:
 	branch Mem27[ptrArg02:byte] != 0x00 l0800_4376
+	ptrArg02 = SEQ(wArg04_127, wArg02_101)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_4376:
-	ptrArg02 = SEQ(ptrArg02, wArg02_101 + 0x0001)
+	ptrArg02 = SEQ(wArg04_127, wArg02_101 + 0x0001)
 	Mem27 = Mem36
 // DataOut:
 // DataOut (flags):
@@ -13909,12 +13886,13 @@ l0800_438A:
 
 l0800_4393:
 	branch Mem11[ptrArg02:byte] == 0x00 l0800_43B6
-	ptrArg02 = SEQ(ptrArg02, wArg02_104)
+	ptrArg02 = SEQ(wArg04_131, wArg02_104)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_4399:
+	ptrArg02 = SEQ(wArg04_131, wArg02_104 + 0x0001)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -13931,12 +13909,13 @@ l0800_43A7:
 // SymbolicIn:
 
 l0800_43B3:
+	ptrArg02 = SEQ(wArg04_134, wArg02_107 + 0x0001)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_43B6:
-	ptrArg06 = SEQ(SLICE(ptrArg06_121, word16, 16), wArg06_109 + 0x0001)
+	ptrArg06 = SEQ(wArg08_121, wArg06_109 + 0x0001)
 	Mem11 = Mem73
 // DataOut:
 // DataOut (flags):
@@ -13949,26 +13928,26 @@ l0800_43AF:
 // SymbolicIn:
 
 l0800_43C2:
-	word16 ax_139
+	word16 ax_138
 	branch Mem11[ptrArg02:byte] != 0x00 l0800_43D0
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_43D0:
-	ax_139 = 0x0000
+	ax_138 = 0x0000
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_43CB:
-	ax_139 = 0x0001
+	ax_138 = 0x0001
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_43D2:
-	return ax_139
+	return ax_138
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -14034,13 +14013,11 @@ fn0800_43D4_exit:
 void fn0800_441C(selector ds, segptr32 ptrArg02, selector psegArg04, word16 wArg06)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15] Stack +0006:[0..15]
+// MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..15]
 // LiveOut:
 // Trashed: SCZO ax bx cx dx es Top
 // Preserved: bp di si sp
 fn0800_441C_entry:
-	selector psegArg04_264 = SLICE(ptrArg02, selector, 16)
-	selector psegArg04_310 = SLICE(ptrArg02, selector, 16)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -14050,13 +14027,15 @@ l0800_441C:
 	word16 cx_17 = 0x0000
 	word16 si_23 = wArg02
 	branch wArg06 <=u 0x0000 l0800_4452
-	psegArg04_310 = SEQ(psegArg04_264, wArg02)
+	segptr32 ptrArg02_262 = SEQ(psegArg04, wArg02)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_4439:
-	branch (Mem28[psegArg04_310:si_23:word16] | Mem28[psegArg04_310:si_23 + 0x0002:word16]) == 0x0000 l0800_4449
+	branch (Mem28[psegArg04:si_23:word16] | Mem28[psegArg04:si_23 + 0x0002:word16]) == 0x0000 l0800_4449
+	ptrArg02_262 = SEQ(psegArg04, wArg02)
+	ptrArg02_262 = SEQ(psegArg04, wArg02)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -14070,6 +14049,8 @@ l0800_4445:
 // SymbolicIn:
 
 l0800_4449:
+	wArg02 = SLICE(ptrArg02_262, word16, 0) (alias)
+	psegArg04 = SLICE(ptrArg02_262, selector, 16) (alias)
 	si_23 = si_23 + 0x000C
 	cx_17 = cx_17 + 0x0001
 	branch cx_17 <u wArg06 l0800_4439
@@ -14078,8 +14059,8 @@ l0800_4449:
 // SymbolicIn:
 
 l0800_4452:
-	selector psegArg04_278 = SLICE(psegArg04_310, selector, 16)
-	word16 wArg02_280 = SLICE(psegArg04_310, word16, 0)
+	selector psegArg04_281 = SLICE(ptrArg02_262, selector, 16)
+	word16 wArg02_283 = SLICE(ptrArg02_262, word16, 0)
 	branch di_16 != 0x0000 l0800_4459
 // DataOut:
 // DataOut (flags):
@@ -14092,8 +14073,8 @@ l0800_4459:
 // SymbolicIn:
 
 l0800_4461:
-	selector es_69 = SLICE(psegArg04_310, selector, 16)
-	word16 bx_67 = (word16) (psegArg04_310 + wLoc04 *s 0x000C)
+	selector es_69 = SLICE(ptrArg02_262, selector, 16)
+	word16 bx_67 = (word16) (ptrArg02_262 + wLoc04 *s 0x000C)
 	Mem71[es_69:bx_67 + 0x000A:word16] = Mem60[es_69:bx_67 + 0x000A:word16] + 0x0001
 	return
 // DataOut:
@@ -14106,17 +14087,17 @@ l0800_445E:
 // SymbolicIn:
 
 l0800_4525:
-	branch fn0800_463B(ds, wArg02_280, psegArg04_278, wArg06) == 0x0000 l0800_453B
-	segptr32 ptrArg02_285 = SEQ(psegArg04_278, wArg02_280)
-	word16 wArg02_288 = SLICE(ptrArg02_285, word16, 0)
-	word16 wArg02_289 = SLICE(ptrArg02_285, word16, 0)
-	word16 wArg02_290 = SLICE(ptrArg02_285, word16, 0)
+	branch fn0800_463B(ds, wArg02_283, psegArg04_281, wArg06) == 0x0000 l0800_453B
+	segptr32 ptrArg02_288 = SEQ(psegArg04_281, wArg02_283)
+	word16 wArg02_291 = SLICE(ptrArg02_288, word16, 0)
+	word16 wArg02_292 = SLICE(ptrArg02_288, word16, 0)
+	word16 wArg02_293 = SLICE(ptrArg02_288, word16, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_453B:
-	fn0800_4550(wArg02_280, psegArg04_278, wArg06)
+	fn0800_4550(wArg02_283, psegArg04_281, wArg06)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -14128,19 +14109,19 @@ l0800_4538:
 
 l0800_4478:
 	word16 ax_133 = (word16) (Mem94[ds:0x4658:word16] *s 0x000C)
-	selector es_138 = SLICE(ptrArg02_285, selector, 16)
-	word16 bx_137 = (word16) ptrArg02_285 + ax_133
+	selector es_138 = SLICE(ptrArg02_288, selector, 16)
+	word16 bx_137 = (word16) ptrArg02_288 + ax_133
 	word16 ax_148 = (word16) (Mem142[ds:0x465A:word16] *s 0x000C)
 	word16 ax_139 = Mem94[es_138:bx_137 + 0x0002:word16]
 	word16 dx_140 = Mem94[es_138:bx_137:word16]
-	word16 bx_151 = wArg02_288 + ax_148
+	word16 bx_151 = wArg02_291 + ax_148
 	Mem155[es_138:bx_151:word16] = v23_154
 	ui32 v24_v23_248 = SEQ(Mem155[es_138:bx_151 + 0x0002:word16], Mem146[es_138:bx_151:word16]) + SEQ(ax_139, dx_140)
 	Mem161[es_138:bx_151 + 0x0002:word16] = SLICE(v24_v23_248, word16, 16)
-	word16 bx_163 = wArg02_289 + ax_133
+	word16 bx_163 = wArg02_292 + ax_133
 	Mem164[es_138:bx_163 + 0x0002:word16] = 0x0000
 	Mem165[es_138:bx_163:word16] = 0x0000
-	word16 bx_167 = wArg02_290 + ax_148
+	word16 bx_167 = wArg02_293 + ax_148
 	Mem170[es_138:bx_167 + 0x000A:word16] = Mem165[es_138:bx_167 + 0x000A:word16] + 0x0001
 	word16 cx_134 = ax_133
 	word16 dx_149 = ax_148
@@ -14150,56 +14131,57 @@ l0800_4478:
 // SymbolicIn:
 
 l0800_44DD:
-	selector psegArg04_292 = SLICE(ptrArg02_285, selector, 16)
-	word16 wArg02_293 = SLICE(ptrArg02_285, word16, 0)
-	word16 wArg02_294 = SLICE(ptrArg02_285, word16, 0)
-	selector psegArg04_319 = SLICE(ptrArg02_285, selector, 16)
-	selector es_180 = SLICE(ptrArg02_285, selector, 16)
-	word16 bx_178 = (word16) ptrArg02_285 + dx_149
+	selector psegArg04_295 = SLICE(ptrArg02_288, selector, 16)
+	word16 wArg02_296 = SLICE(ptrArg02_288, word16, 0)
+	word16 wArg02_297 = SLICE(ptrArg02_288, word16, 0)
+	selector psegArg04_322 = SLICE(ptrArg02_288, selector, 16)
+	selector es_180 = SLICE(ptrArg02_288, selector, 16)
+	word16 bx_178 = (word16) ptrArg02_288 + dx_149
 	branch Mem174[es_180:bx_178 + 0x0004:word16] != 0xFFFF l0800_44C3
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_44C3:
-	word16 ax_184 = Mem174[psegArg04_292:bx_178 + 0x0004:word16]
+	word16 ax_184 = Mem174[psegArg04_295:bx_178 + 0x0004:word16]
 	Mem186[ds:0x465A:word16] = ax_184
 	word16 ax_189 = (word16) (ax_184 *s 0x000C)
-	word16 bx_192 = wArg02_293 + ax_189
-	Mem195[psegArg04_292:bx_192 + 0x000A:word16] = Mem186[psegArg04_292:bx_192 + 0x000A:word16] + 0x0001
+	word16 bx_192 = wArg02_296 + ax_189
+	Mem195[psegArg04_295:bx_192 + 0x000A:word16] = Mem186[psegArg04_295:bx_192 + 0x000A:word16] + 0x0001
 	dx_149 = ax_189
-	ptrArg02_285 = SEQ(psegArg04_292, wArg02_293)
+	ptrArg02_288 = SEQ(psegArg04_295, wArg02_296)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_44EB:
 	Mem198[es_180:bx_178 + 0x0004:word16] = Mem174[ds:0x4658:word16]
-	word16 bx_201 = wArg02_294 + ax_133
+	word16 bx_201 = wArg02_297 + ax_133
 	Mem204[es_180:bx_201 + 0x000A:word16] = Mem198[es_180:bx_201 + 0x000A:word16] + 0x0001
-	selector psegArg04_296 = SEQ(psegArg04_319, wArg02_294)
+	segptr32 ptrArg02_298 = SEQ(psegArg04_322, wArg02_297)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_4517:
-	psegArg04_296 = SLICE(psegArg04_296, selector, 16) (alias)
-	word16 wArg02_297 = SLICE(psegArg04_296, word16, 0)
-	psegArg04_278 = SLICE(psegArg04_296, selector, 16) (alias)
-	wArg02_280 = SLICE(psegArg04_296, word16, 0) (alias)
-	word16 bx_212 = (word16) psegArg04_296 + cx_134
-	branch Mem208[SLICE(psegArg04_296, selector, 16):bx_212 + 0x0004:word16] != 0xFFFF l0800_44FD
+	selector psegArg04_299 = SLICE(ptrArg02_298, selector, 16)
+	word16 wArg02_300 = SLICE(ptrArg02_298, word16, 0)
+	psegArg04_281 = SLICE(ptrArg02_298, selector, 16) (alias)
+	wArg02_283 = SLICE(ptrArg02_298, word16, 0) (alias)
+	word16 bx_212 = (word16) ptrArg02_298 + cx_134
+	branch Mem208[SLICE(ptrArg02_298, selector, 16):bx_212 + 0x0004:word16] != 0xFFFF l0800_44FD
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_44FD:
-	word16 ax_218 = Mem208[psegArg04_296:bx_212 + 0x0004:word16]
+	word16 ax_218 = Mem208[psegArg04_299:bx_212 + 0x0004:word16]
 	Mem220[ds:0x4658:word16] = ax_218
 	word16 ax_223 = (word16) (ax_218 *s 0x000C)
-	word16 bx_226 = wArg02_297 + ax_223
-	Mem229[psegArg04_296:bx_226 + 0x000A:word16] = Mem220[psegArg04_296:bx_226 + 0x000A:word16] + 0x0001
+	word16 bx_226 = wArg02_300 + ax_223
+	Mem229[psegArg04_299:bx_226 + 0x000A:word16] = Mem220[psegArg04_299:bx_226 + 0x000A:word16] + 0x0001
 	cx_134 = ax_223
+	ptrArg02_298 = SEQ(psegArg04_299, wArg02_300)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -14701,83 +14683,59 @@ l0800_47F3:
 	Mem557[ss:sp_252 - 2:word16] = Mem540[ds_545:0x29E1:word16]
 	Mem560[ss:sp_252 - 4:word16] = Mem557[ds_545:0x29DF:word16]
 	Mem563[ss:sp_252 - 6:word16] = ax_360
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg3 = <invalid>
 	selector ds_568
-	fn0800_40BF(ds_545, Mem563[ss:sp_252 - 6:byte], stackArg3, Mem563[ss:sp_252 - 4:word16], Mem563[ss:sp_252 - 2:word16], out dx_1640, out di_1641, out ds_568)
+	fn0800_40BF(ds_545, Mem563[ss:sp_252 - 6:byte], Mem563[ss:sp_252 - 5:byte], Mem563[ss:sp_252 - 4:word16], Mem563[ss:sp_252 - 2:word16], out dx_1639, out di_1640, out ds_568)
 	Mem580[ss:sp_252 - 2:word16] = Mem563[ds_568:0x29E1:word16]
 	Mem583[ss:sp_252 - 4:word16] = Mem580[ds_568:0x29DF:word16]
 	Mem586[ss:sp_252 - 6:word16] = ax_381
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg3 = <invalid>
 	selector ds_591
-	fn0800_40BF(ds_568, Mem586[ss:sp_252 - 6:byte], stackArg3, Mem586[ss:sp_252 - 4:word16], Mem586[ss:sp_252 - 2:word16], out dx_1643, out di_1644, out ds_591)
+	fn0800_40BF(ds_568, Mem586[ss:sp_252 - 6:byte], Mem586[ss:sp_252 - 5:byte], Mem586[ss:sp_252 - 4:word16], Mem586[ss:sp_252 - 2:word16], out dx_1641, out di_1642, out ds_591)
 	Mem603[ss:sp_252 - 2:word16] = Mem586[ds_591:0x29E1:word16]
 	Mem606[ss:sp_252 - 4:word16] = Mem603[ds_591:0x29DF:word16]
 	Mem609[ss:sp_252 - 6:word16] = ax_465
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg3 = <invalid>
 	selector ds_614
-	fn0800_40BF(ds_591, Mem609[ss:sp_252 - 6:byte], stackArg3, Mem609[ss:sp_252 - 4:word16], Mem609[ss:sp_252 - 2:word16], out dx_1646, out di_1647, out ds_614)
+	fn0800_40BF(ds_591, Mem609[ss:sp_252 - 6:byte], Mem609[ss:sp_252 - 5:byte], Mem609[ss:sp_252 - 4:word16], Mem609[ss:sp_252 - 2:word16], out dx_1643, out di_1644, out ds_614)
 	Mem626[ss:sp_252 - 2:word16] = Mem609[ds_614:0x29E1:word16]
 	Mem629[ss:sp_252 - 4:word16] = Mem626[ds_614:0x29DF:word16]
 	Mem632[ss:sp_252 - 6:word16] = ax_444
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg3 = <invalid>
 	selector ds_637
-	fn0800_40BF(ds_614, Mem632[ss:sp_252 - 6:byte], stackArg3, Mem632[ss:sp_252 - 4:word16], Mem632[ss:sp_252 - 2:word16], out dx_1649, out di_1650, out ds_637)
+	fn0800_40BF(ds_614, Mem632[ss:sp_252 - 6:byte], Mem632[ss:sp_252 - 5:byte], Mem632[ss:sp_252 - 4:word16], Mem632[ss:sp_252 - 2:word16], out dx_1645, out di_1646, out ds_637)
 	Mem648[ss:sp_252 - 2:word16] = Mem632[ds_637:0x29E1:word16]
 	Mem651[ss:sp_252 - 4:word16] = Mem648[ds_637:0x29DF:word16]
 	Mem656[ss:sp_252 - 6:word16] = 0x0000
 	selector ds_661
-	fn0800_401E(ds_637, Mem656[ss:sp_252 - 6:word16], Mem656[ss:sp_252 - 4:word16], Mem656[ss:sp_252 - 2:word16], out cx_1651, out dx_1652, out bx_1653, out ds_661, out Top_1654)
+	fn0800_401E(ds_637, Mem656[ss:sp_252 - 6:word16], Mem656[ss:sp_252 - 4:word16], Mem656[ss:sp_252 - 2:word16], out cx_1647, out dx_1648, out bx_1649, out ds_661, out Top_1650)
 	Mem673[ss:sp_252 - 2:word16] = Mem656[ds_661:0x29E1:word16]
 	Mem676[ss:sp_252 - 4:word16] = Mem673[ds_661:0x29DF:word16]
 	Mem679[ss:sp_252 - 6:word16] = ax_402
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg3 = <invalid>
 	selector ds_684
-	fn0800_40BF(ds_661, Mem679[ss:sp_252 - 6:byte], stackArg3, Mem679[ss:sp_252 - 4:word16], Mem679[ss:sp_252 - 2:word16], out dx_1656, out di_1657, out ds_684)
+	fn0800_40BF(ds_661, Mem679[ss:sp_252 - 6:byte], Mem679[ss:sp_252 - 5:byte], Mem679[ss:sp_252 - 4:word16], Mem679[ss:sp_252 - 2:word16], out dx_1651, out di_1652, out ds_684)
 	Mem696[ss:sp_252 - 2:word16] = Mem679[ds_684:0x29E1:word16]
 	Mem699[ss:sp_252 - 4:word16] = Mem696[ds_684:0x29DF:word16]
 	Mem702[ss:sp_252 - 6:word16] = ax_423
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg3 = <invalid>
 	selector ds_707
-	fn0800_40BF(ds_684, Mem702[ss:sp_252 - 6:byte], stackArg3, Mem702[ss:sp_252 - 4:word16], Mem702[ss:sp_252 - 2:word16], out dx_1659, out di_1660, out ds_707)
+	fn0800_40BF(ds_684, Mem702[ss:sp_252 - 6:byte], Mem702[ss:sp_252 - 5:byte], Mem702[ss:sp_252 - 4:word16], Mem702[ss:sp_252 - 2:word16], out dx_1653, out di_1654, out ds_707)
 	Mem719[ss:sp_252 - 2:word16] = Mem702[ds_707:0x29E1:word16]
 	Mem722[ss:sp_252 - 4:word16] = Mem719[ds_707:0x29DF:word16]
 	Mem725[ss:sp_252 - 6:word16] = 0x001E
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg3 = <invalid>
 	selector ds_730
-	fn0800_40BF(ds_707, Mem725[ss:sp_252 - 6:byte], stackArg3, Mem725[ss:sp_252 - 4:word16], Mem725[ss:sp_252 - 2:word16], out dx_1662, out di_1663, out ds_730)
+	fn0800_40BF(ds_707, Mem725[ss:sp_252 - 6:byte], Mem725[ss:sp_252 - 5:byte], Mem725[ss:sp_252 - 4:word16], Mem725[ss:sp_252 - 2:word16], out dx_1655, out di_1656, out ds_730)
 	Mem742[ss:sp_252 - 2:word16] = Mem725[ds_730:0x29E1:word16]
 	Mem745[ss:sp_252 - 4:word16] = Mem742[ds_730:0x29DF:word16]
 	Mem748[ss:sp_252 - 6:word16] = ax_339
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg3 = <invalid>
 	selector ds_753
-	fn0800_40BF(ds_730, Mem748[ss:sp_252 - 6:byte], stackArg3, Mem748[ss:sp_252 - 4:word16], Mem748[ss:sp_252 - 2:word16], out dx_1665, out di_1666, out ds_753)
+	fn0800_40BF(ds_730, Mem748[ss:sp_252 - 6:byte], Mem748[ss:sp_252 - 5:byte], Mem748[ss:sp_252 - 4:word16], Mem748[ss:sp_252 - 2:word16], out dx_1657, out di_1658, out ds_753)
 	Mem764[ss:sp_252 - 2:word16] = Mem748[ds_753:0x29E1:word16]
 	Mem767[ss:sp_252 - 4:word16] = Mem764[ds_753:0x29DF:word16]
 	Mem772[ss:sp_252 - 6:word16] = 0x0000
 	selector ds_1044
-	fn0800_401E(ds_753, Mem772[ss:sp_252 - 6:word16], Mem772[ss:sp_252 - 4:word16], Mem772[ss:sp_252 - 2:word16], out cx_1667, out dx_1668, out bx_1669, out ds_1044, out Top_1670)
+	fn0800_401E(ds_753, Mem772[ss:sp_252 - 6:word16], Mem772[ss:sp_252 - 4:word16], Mem772[ss:sp_252 - 2:word16], out cx_1659, out dx_1660, out bx_1661, out ds_1044, out Top_1662)
 	Mem788[ss:sp_252 - 2:word16] = 0x0000
 	Mem795[ss:sp_252 - 4:word16] = 0x0000
 	Mem797[ss:sp_252 - 6:word16] = ax_318 + 0x0020
 	Mem800[ss:sp_252 - 8:word16] = Mem797[ds_1044:0x29E5:word16]
 	Mem803[ss:sp_252 - 10:word16] = Mem800[ds_1044:0x29E3:word16]
-	fn0800_ACB3(ds_1044, Mem803[ss:sp_252 - 10:word16], Mem803[ss:sp_252 - 8:word16], Mem803[ss:sp_252 - 2:word16], out cx_1671, out dx_1672, out bx_1673)
+	fn0800_ACB3(ds_1044, Mem803[ss:sp_252 - 10:word16], Mem803[ss:sp_252 - 8:word16], Mem803[ss:sp_252 - 2:word16], out cx_1663, out dx_1664, out bx_1665)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -14788,7 +14746,7 @@ l0800_49B5:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg4 = <invalid>
-	word16 ax_840 = DPB(fn0800_3DCF(ds_1044, Mem825[ss:sp_252 - 4:segptr32], stackArg4, out ch_1686, out dx_1687, out di_1688, out ds_1044, out Top_1689), 0x00, 8)
+	word16 ax_840 = DPB(fn0800_3DCF(ds_1044, Mem825[ss:sp_252 - 4:segptr32], stackArg4, out ch_1676, out dx_1677, out di_1678, out ds_1044, out Top_1679), 0x00, 8)
 	word16 di_842 = ax_840
 	branch ax_840 == 0x0000 l0800_4A22
 // DataOut:
@@ -14798,7 +14756,7 @@ l0800_49B5:
 l0800_49CB:
 	Mem848[ss:sp_252 - 2:word16] = Mem825[ds_1044:0x29E5:word16]
 	Mem851[ss:sp_252 - 4:word16] = Mem848[ds_1044:0x29E3:word16]
-	word16 ax_852 = fn0800_3FAD(ds_1044, Mem851[ss:sp_252 - 4:word16], Mem851[ss:sp_252 - 2:word16], out ch_1674, out di_842, out ds_1044)
+	word16 ax_852 = fn0800_3FAD(ds_1044, Mem851[ss:sp_252 - 4:word16], Mem851[ss:sp_252 - 2:word16], out ch_1666, out di_842, out ds_1044)
 	word16 si_867 = 0x0000
 	word16 wLoc0C_1479 = di_842
 // DataOut:
@@ -14819,22 +14777,16 @@ l0800_49E3:
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg4 = <invalid>
 	selector ds_896
-	si_867 = si_867 + DPB(fn0800_3DCF(ds_1044, Mem888[ss:sp_252 - 4:segptr32], stackArg4, out ch_1676, out dx_1677, out di_1678, out ds_896, out Top_1679), 0x00, 8)
+	si_867 = si_867 + DPB(fn0800_3DCF(ds_1044, Mem888[ss:sp_252 - 4:segptr32], stackArg4, out ch_1668, out dx_1669, out di_1670, out ds_896, out Top_1671), 0x00, 8)
 	Mem909[ss:sp_252 - 2:word16] = Mem888[ds_896:0x29E1:word16]
 	Mem912[ss:sp_252 - 4:word16] = Mem909[ds_896:0x29DF:word16]
 	Mem914[ss:sp_252 - 6:word16] = si_867
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg3 = <invalid>
 	selector ds_919
-	fn0800_40BF(ds_896, Mem914[ss:sp_252 - 6:byte], stackArg3, Mem914[ss:sp_252 - 4:word16], Mem914[ss:sp_252 - 2:word16], out dx_1681, out di_1682, out ds_919)
+	fn0800_40BF(ds_896, Mem914[ss:sp_252 - 6:byte], Mem914[ss:sp_252 - 5:byte], Mem914[ss:sp_252 - 4:word16], Mem914[ss:sp_252 - 2:word16], out dx_1672, out di_1673, out ds_919)
 	Mem931[ss:sp_252 - 2:word16] = Mem914[ds_919:0x29E1:word16]
 	Mem934[ss:sp_252 - 4:word16] = Mem931[ds_919:0x29DF:word16]
 	Mem937[ss:sp_252 - 6:word16] = ax_852
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg3 = <invalid>
-	fn0800_40BF(ds_919, Mem937[ss:sp_252 - 6:byte], stackArg3, Mem937[ss:sp_252 - 4:word16], Mem937[ss:sp_252 - 2:word16], out dx_1684, out di_842, out ds_1044)
+	fn0800_40BF(ds_919, Mem937[ss:sp_252 - 6:byte], Mem937[ss:sp_252 - 5:byte], Mem937[ss:sp_252 - 4:word16], Mem937[ss:sp_252 - 2:word16], out dx_1674, out di_842, out ds_1044)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -14882,7 +14834,7 @@ l0800_4A56:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg4 = <invalid>
-	di_1012 = 0x0010 - fn0800_AD2F(ds_1044, Mem996[ss:sp_252 - 4:segptr32], stackArg4, out dx_1692) & 0x000F
+	di_1012 = 0x0010 - fn0800_AD2F(ds_1044, Mem996[ss:sp_252 - 4:segptr32], stackArg4, out dx_1682) & 0x000F
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -14893,7 +14845,7 @@ l0800_4A3F:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg4 = <invalid>
-	di_1012 = 0x0200 - fn0800_AD2F(ds_1044, Mem1022[ss:sp_252 - 4:segptr32], stackArg4, out dx_1694)
+	di_1012 = 0x0200 - fn0800_AD2F(ds_1044, Mem1022[ss:sp_252 - 4:segptr32], stackArg4, out dx_1684)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -14911,7 +14863,7 @@ l0800_4A70:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg6 = <invalid>
-	fn0800_4047(ds_1044, Mem1057[ss:sp_252 - 6:byte], Mem1057[ss:sp_252 - 4:segptr32], stackArg6, out cx_1696, out dx_1697, out bx_1698, out di_1012, out ds_1044, out Top_1699)
+	fn0800_4047(ds_1044, Mem1057[ss:sp_252 - 6:byte], Mem1057[ss:sp_252 - 4:segptr32], stackArg6, out cx_1686, out dx_1687, out bx_1688, out di_1012, out ds_1044, out Top_1689)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -14926,17 +14878,17 @@ l0800_4A88:
 	word16 stackArg4 = <invalid>
 	word16 stackArg0 = <invalid>
 	word16 dx_1081
-	fn0800_8C8A(fn0800_AD2F(ds_1044, Mem1077[ss:sp_252 - 4:segptr32], stackArg4, out dx_1081), 0x04, dx_1081, stackArg0, out cl_1702, out dx_1703)
+	fn0800_8C8A(fn0800_AD2F(ds_1044, Mem1077[ss:sp_252 - 4:segptr32], stackArg4, out dx_1081), 0x04, dx_1081, stackArg0, out cl_1692, out dx_1693)
 	word16 sp_1094 = <invalid>
 	Mem1108[ss:sp_1094 - 2:word16] = 0x0000
 	Mem1111[ss:sp_1094 - 4:word16] = dx_154
 	Mem1114[ss:sp_1094 - 6:word16] = ax_151
 	Mem1117[ss:sp_1094 - 8:word16] = Mem1114[ds_1044:0x29E5:word16]
 	Mem1120[ss:sp_1094 - 10:word16] = Mem1117[ds_1044:0x29E3:word16]
-	fn0800_ACB3(ds_1044, Mem1120[ss:sp_1094 - 10:word16], Mem1120[ss:sp_1094 - 8:word16], Mem1120[ss:sp_1094 - 2:word16], out cx_1704, out dx_1705, out bx_1706)
+	fn0800_ACB3(ds_1044, Mem1120[ss:sp_1094 - 10:word16], Mem1120[ss:sp_1094 - 8:word16], Mem1120[ss:sp_1094 - 2:word16], out cx_1694, out dx_1695, out bx_1696)
 	word16 bp_1133
 	selector ds_1137
-	word16 ax_1132 = fn0800_5374(ds_1044, out dx_1707, out bp_1133, out ds_1137)
+	word16 ax_1132 = fn0800_5374(ds_1044, out dx_1697, out bp_1133, out ds_1137)
 	word16 sp_1141 = <invalid>
 	branch ax_1132 == 0x0000 l0800_4AC4
 // DataOut:
@@ -14959,7 +14911,7 @@ l0800_4AC4:
 	Mem1183[ss:sp_1141 - 8:word16] = Mem1180[ds_1137:0x29E5:word16]
 	Mem1186[ss:sp_1141 - 10:word16] = Mem1183[ds_1137:0x29E3:word16]
 	word16 dx_1190
-	word16 ax_1187 = fn0800_ACB3(ds_1137, Mem1186[ss:sp_1141 - 10:word16], Mem1186[ss:sp_1141 - 8:word16], Mem1186[ss:sp_1141 - 2:word16], out cx_1709, out dx_1190, out bx_1710)
+	word16 ax_1187 = fn0800_ACB3(ds_1137, Mem1186[ss:sp_1141 - 10:word16], Mem1186[ss:sp_1141 - 8:word16], Mem1186[ss:sp_1141 - 2:word16], out cx_1699, out dx_1190, out bx_1700)
 	Mem1200[ss:sp_1141 - 2:word16] = Mem1186[ds_1137:0x29E5:word16]
 	Mem1203[ss:sp_1141 - 4:word16] = Mem1200[ds_1137:0x29E3:word16]
 	fn0800_4194(ds_1137, Mem1203[ss:sp_1141 - 4:word16], Mem1203[ss:sp_1141 - 2:word16])
@@ -14972,12 +14924,12 @@ l0800_4AC4:
 	Mem1232[ss:sp_1141 - 12:word16] = Mem1229[ds_1137:0x29E3:word16]
 	word16 bp_1234
 	selector ds_1238
-	fn0800_3B0A(Mem1232[ss:sp_1141 - 4:word16], Mem1232[ss:sp_1141 - 2:word16], out dx_1711, out bp_1234, out ds_1238)
+	fn0800_3B0A(Mem1232[ss:sp_1141 - 4:word16], Mem1232[ss:sp_1141 - 2:word16], out dx_1701, out bp_1234, out ds_1238)
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 di_1249 = Mem1232[ss:bp_1234 - 0x0008:word16]
 	word16 stackArg0 = <invalid>
-	Mem1265[ss:bp_1234 - 0x000A:word16] = fn0800_8CAA(Mem1232[ss:bp_1234 - 0x0008:word16], 0x09, Mem1232[ss:bp_1234 - 0x0006:word16], stackArg0, out dx_1713)
+	Mem1265[ss:bp_1234 - 0x000A:word16] = fn0800_8CAA(Mem1232[ss:bp_1234 - 0x0008:word16], 0x09, Mem1232[ss:bp_1234 - 0x0006:word16], stackArg0, out dx_1703)
 	word16 sp_1260 = <invalid>
 	branch (di_1249 & 0x01FF) == 0x0000 l0800_4B37
 // DataOut:
@@ -14996,40 +14948,28 @@ l0800_4B37:
 	Mem1284[ss:sp_1260 - 6:word16] = 0x0002
 	Mem1288[ss:sp_1260 - 8:word16] = Mem1284[ds_1238:0x29E1:word16]
 	Mem1291[ss:sp_1260 - 10:word16] = Mem1288[ds_1238:0x29DF:word16]
-	fn0800_ACB3(ds_1238, Mem1291[ss:sp_1260 - 10:word16], Mem1291[ss:sp_1260 - 8:word16], Mem1291[ss:sp_1260 - 2:word16], out cx_1714, out dx_1715, out bx_1716)
+	fn0800_ACB3(ds_1238, Mem1291[ss:sp_1260 - 10:word16], Mem1291[ss:sp_1260 - 8:word16], Mem1291[ss:sp_1260 - 2:word16], out cx_1704, out dx_1705, out bx_1706)
 	Mem1305[ss:sp_1260 - 2:word16] = Mem1291[ds_1238:0x29E1:word16]
 	Mem1308[ss:sp_1260 - 4:word16] = Mem1305[ds_1238:0x29DF:word16]
 	Mem1311[ss:sp_1260 - 6:word16] = di_1249 & 0x01FF
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg3 = <invalid>
 	selector ds_1316
-	fn0800_40BF(ds_1238, Mem1311[ss:sp_1260 - 6:byte], stackArg3, Mem1311[ss:sp_1260 - 4:word16], Mem1311[ss:sp_1260 - 2:word16], out dx_1718, out di_1719, out ds_1316)
+	fn0800_40BF(ds_1238, Mem1311[ss:sp_1260 - 6:byte], Mem1311[ss:sp_1260 - 5:byte], Mem1311[ss:sp_1260 - 4:word16], Mem1311[ss:sp_1260 - 2:word16], out dx_1707, out di_1708, out ds_1316)
 	Mem1328[ss:sp_1260 - 2:word16] = Mem1311[ds_1316:0x29E1:word16]
 	Mem1331[ss:sp_1260 - 4:word16] = Mem1328[ds_1316:0x29DF:word16]
 	Mem1335[ss:sp_1260 - 6:word16] = Mem1331[ss:bp_1234 - 0x000A:word16]
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg3 = <invalid>
 	selector ds_1340
-	fn0800_40BF(ds_1316, Mem1335[ss:sp_1260 - 6:byte], stackArg3, Mem1335[ss:sp_1260 - 4:word16], Mem1335[ss:sp_1260 - 2:word16], out dx_1721, out di_1722, out ds_1340)
+	fn0800_40BF(ds_1316, Mem1335[ss:sp_1260 - 6:byte], Mem1335[ss:sp_1260 - 5:byte], Mem1335[ss:sp_1260 - 4:word16], Mem1335[ss:sp_1260 - 2:word16], out dx_1709, out di_1710, out ds_1340)
 	Mem1352[ss:sp_1260 - 2:word16] = Mem1335[ds_1340:0x29E1:word16]
 	Mem1355[ss:sp_1260 - 4:word16] = Mem1352[ds_1340:0x29DF:word16]
 	Mem1358[ss:sp_1260 - 6:word16] = Mem1355[ss:bp_1234 - 0x000C:word16]
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg3 = <invalid>
 	selector ds_1363
-	fn0800_40BF(ds_1340, Mem1358[ss:sp_1260 - 6:byte], stackArg3, Mem1358[ss:sp_1260 - 4:word16], Mem1358[ss:sp_1260 - 2:word16], out dx_1724, out di_1725, out ds_1363)
+	fn0800_40BF(ds_1340, Mem1358[ss:sp_1260 - 6:byte], Mem1358[ss:sp_1260 - 5:byte], Mem1358[ss:sp_1260 - 4:word16], Mem1358[ss:sp_1260 - 2:word16], out dx_1711, out di_1712, out ds_1363)
 	Mem1375[ss:sp_1260 - 2:word16] = Mem1358[ds_1363:0x29E1:word16]
 	Mem1378[ss:sp_1260 - 4:word16] = Mem1375[ds_1363:0x29DF:word16]
 	Mem1381[ss:sp_1260 - 6:word16] = Mem1378[ss:bp_1234 - 0x000E:word16]
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg3 = <invalid>
 	selector ds_1386
 	word16 dx_1387
-	fn0800_40BF(ds_1363, Mem1381[ss:sp_1260 - 6:byte], stackArg3, Mem1381[ss:sp_1260 - 4:word16], Mem1381[ss:sp_1260 - 2:word16], out dx_1387, out di_1727, out ds_1386)
+	fn0800_40BF(ds_1363, Mem1381[ss:sp_1260 - 6:byte], Mem1381[ss:sp_1260 - 5:byte], Mem1381[ss:sp_1260 - 4:word16], Mem1381[ss:sp_1260 - 2:word16], out dx_1387, out di_1713, out ds_1386)
 	dxOut = dx_1387
 	dsOut = ds_1386
 	return 0x0000
@@ -15924,11 +15864,8 @@ l0800_51F5:
 	Mem213[ss:sp_18:word16] = Mem210[ds_198:0x29E1:word16]
 	Mem216[ss:sp_18 - 2:word16] = Mem213[ds_198:0x29DF:word16]
 	Mem218[ss:sp_18 - 4:word16] = ax_194
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg3 = <invalid>
 	selector ds_223
-	word16 ax_219 = fn0800_40BF(ds_198, Mem218[ss:sp_18 - 4:byte], stackArg3, Mem218[ss:sp_18 - 2:word16], Mem218[ss:sp_18:word16], out dx_607, out di_608, out ds_223)
+	word16 ax_219 = fn0800_40BF(ds_198, Mem218[ss:sp_18 - 4:byte], Mem218[ss:sp_18 - 3:byte], Mem218[ss:sp_18 - 2:word16], Mem218[ss:sp_18:word16], out dx_606, out di_607, out ds_223)
 	Mem235[ss:sp_18:word16] = Mem218[ds_223:0x29E5:word16]
 	Mem238[ss:sp_18 - 2:word16] = Mem235[ds_223:0x29E3:word16]
 	// Failed to bind call argument.
@@ -15936,7 +15873,7 @@ l0800_51F5:
 	word16 stackArg0 = <invalid>
 	selector ds_242
 	word16 dx_256
-	word16 ax_253 = fn0800_8CAA(ax_219, 0x08, fn0800_3F58(ds_223, Mem238[ss:sp_18 - 2:word16], Mem238[ss:sp_18:word16], out di_609, out ds_242), stackArg0, out dx_256)
+	word16 ax_253 = fn0800_8CAA(ax_219, 0x08, fn0800_3F58(ds_223, Mem238[ss:sp_18 - 2:word16], Mem238[ss:sp_18:word16], out di_608, out ds_242), stackArg0, out dx_256)
 	word16 sp_257 = <invalid>
 	branch dx_256 != 0x0052 l0800_52BA
 // DataOut:
@@ -15956,7 +15893,7 @@ l0800_52BA:
 	Mem282[ss:sp_257 - 8:word16] = Mem279[ds_242:0x29DF:word16]
 	Mem285[ss:sp_257 - 10:word16] = Mem282[ds_242:0x29E5:word16]
 	Mem288[ss:sp_257 - 12:word16] = Mem285[ds_242:0x29E3:word16]
-	fn0800_3B0A(Mem288[ss:sp_257 - 4:word16], Mem288[ss:sp_257 - 2:word16], out dx_624, out bp_290, out ds)
+	fn0800_3B0A(Mem288[ss:sp_257 - 4:word16], Mem288[ss:sp_257 - 2:word16], out dx_623, out bp_290, out ds)
 	word16 sp_298 = <invalid>
 	sp_11 = sp_298 + 0x000C
 // DataOut:
@@ -15981,20 +15918,17 @@ l0800_5263:
 	Mem343[ss:sp_315 - 6:word16] = dx_336
 	Mem346[ss:sp_315 - 8:word16] = Mem343[ds_311:0x29E1:word16]
 	Mem349[ss:sp_315 - 10:word16] = Mem346[ds_311:0x29DF:word16]
-	fn0800_ACB3(ds_311, Mem349[ss:sp_315 - 10:word16], Mem349[ss:sp_315 - 8:word16], Mem349[ss:sp_315 - 2:word16], out cx_625, out dx_626, out bx_627)
+	fn0800_ACB3(ds_311, Mem349[ss:sp_315 - 10:word16], Mem349[ss:sp_315 - 8:word16], Mem349[ss:sp_315 - 2:word16], out cx_624, out dx_625, out bx_626)
 	Mem363[ss:sp_315 - 2:word16] = Mem349[ds_311:0x29E1:word16]
 	Mem366[ss:sp_315 - 4:word16] = Mem363[ds_311:0x29DF:word16]
 	Mem369[ss:sp_315 - 6:word16] = Mem366[ds_311:0x2A07:word16]
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg3 = <invalid>
-	fn0800_40BF(ds_311, Mem369[ss:sp_315 - 6:byte], stackArg3, Mem369[ss:sp_315 - 4:word16], Mem369[ss:sp_315 - 2:word16], out dx_629, out di_630, out ds)
+	fn0800_40BF(ds_311, Mem369[ss:sp_315 - 6:byte], Mem369[ss:sp_315 - 5:byte], Mem369[ss:sp_315 - 4:word16], Mem369[ss:sp_315 - 2:word16], out dx_627, out di_628, out ds)
 	Mem386[ss:sp_315 - 2:word16] = 0x0001
 	Mem389[ss:sp_315 - 4:word16] = Mem386[ds:0x2A09:word16]
 	Mem392[ss:sp_315 - 6:word16] = Mem389[ds:0x2A07:word16]
 	Mem395[ss:sp_315 - 8:word16] = Mem392[ds:0x29E1:word16]
 	Mem398[ss:sp_315 - 10:word16] = Mem395[ds:0x29DF:word16]
-	fn0800_ACB3(ds, Mem398[ss:sp_315 - 10:word16], Mem398[ss:sp_315 - 8:word16], Mem398[ss:sp_315 - 2:word16], out cx_631, out dx_632, out bx_633)
+	fn0800_ACB3(ds, Mem398[ss:sp_315 - 10:word16], Mem398[ss:sp_315 - 8:word16], Mem398[ss:sp_315 - 2:word16], out cx_629, out dx_630, out bx_631)
 	sp_11 = sp_315
 // DataOut:
 // DataOut (flags):
@@ -16043,7 +15977,7 @@ l0800_5301:
 	Mem469[ss:sp_18 - 6:word16] = Mem466[ds:0x29DF:word16]
 	Mem472[ss:sp_18 - 8:word16] = Mem469[ds:0x29E5:word16]
 	Mem475[ss:sp_18 - 10:word16] = Mem472[ds:0x29E3:word16]
-	fn0800_3B0A(Mem475[ss:sp_18 - 2:word16], Mem475[ss:sp_18:word16], out dx_612, out bp_290, out ds)
+	fn0800_3B0A(Mem475[ss:sp_18 - 2:word16], Mem475[ss:sp_18:word16], out dx_611, out bp_290, out ds)
 	word16 sp_485 = <invalid>
 	sp_11 = sp_485 + 0x000C
 // DataOut:
@@ -16077,11 +16011,11 @@ l0800_52DC:
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg4 = <invalid>
 	selector ds_522
-	Mem530[ss:sp_503 - 0x0004:word16] = fn0800_3DCF(ds, Mem514[ss:sp_503 - 6:segptr32], stackArg4, out ch_614, out dx_615, out di_616, out ds_522, out Top_617)
+	Mem530[ss:sp_503 - 0x0004:word16] = fn0800_3DCF(ds, Mem514[ss:sp_503 - 6:segptr32], stackArg4, out ch_613, out dx_614, out di_615, out ds_522, out Top_616)
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg6 = <invalid>
-	fn0800_4047(ds_522, Mem530[ss:sp_503 - 0x0004:byte], Mem530[ss:sp_503 - 0x0002:segptr32], stackArg6, out cx_619, out dx_620, out bx_621, out di_622, out ds, out Top_623)
+	fn0800_4047(ds_522, Mem530[ss:sp_503 - 0x0004:byte], Mem530[ss:sp_503 - 0x0002:segptr32], stackArg6, out cx_618, out dx_619, out bx_620, out di_621, out ds, out Top_622)
 	si_493 = si_493 + 0x0001
 // DataOut:
 // DataOut (flags):
@@ -17791,13 +17725,13 @@ l0800_5E82:
 // SymbolicIn:
 
 l0800_5E82_1:
-	Z_41 = SLICE(cond(Mem18[ds:si_2646:byte] - Mem18[ds:di_2647:byte]), bool, 2) (alias)
-	si_22 = si_2646 + 0x0001
-	di_21 = di_2647 + 0x0001
+	Z_41 = SLICE(cond(Mem18[ds:si_2627:byte] - Mem18[ds:di_2628:byte]), bool, 2) (alias)
+	si_22 = si_2627 + 0x0001
+	di_21 = di_2628 + 0x0001
 	cx_2197 = cx_2197 - 0x0001
-	si_2646 = si_22
-	di_2647 = di_21
-	branch Mem18[ds:si_2646:byte] != Mem18[ds:di_2647:byte] l0800_5E82
+	si_2627 = si_22
+	di_2628 = di_21
+	branch Mem18[ds:si_2627:byte] != Mem18[ds:di_2628:byte] l0800_5E82
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -18147,7 +18081,7 @@ l0800_6214:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg2 = <invalid>
-	ax_1031 = fn0800_4346(ds_588, stackArg2, Mem760[ss:sp_756:word16], out cx_2558, out dx_2559, out bx_2560, out ds_1019)
+	ax_1031 = fn0800_4346(ds_588, stackArg2, Mem760[ss:sp_756:word16], out cx_2551, out dx_2552, out bx_2553, out ds_1019)
 	sp_1022 = sp_756 + 0x0002
 // DataOut:
 // DataOut (flags):
@@ -18174,20 +18108,17 @@ l0800_6104:
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg6 = <invalid>
 	selector ds_803
-	fn0800_4047(ds_588, Mem795[ss:sp_787 - 4:byte], Mem795[ss:sp_787 - 2:segptr32], stackArg6, out cx_2562, out dx_2563, out bx_2564, out di_2565, out ds_803, out Top_2566)
+	fn0800_4047(ds_588, Mem795[ss:sp_787 - 4:byte], Mem795[ss:sp_787 - 2:segptr32], stackArg6, out cx_2555, out dx_2556, out bx_2557, out di_2558, out ds_803, out Top_2559)
 	Mem812[ss:sp_787:word16] = Mem795[ds_803:0x29E1:word16]
 	Mem815[ss:sp_787 - 2:word16] = Mem812[ds_803:0x29DF:word16]
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg0 = <invalid>
 	word16 sp_823 = <invalid>
-	Mem829[ss:sp_823 - 2:word16] = fn0800_8CAA(Mem815[ss:bp_1069 - 0x0010:word16], 0x04, Mem815[ss:bp_1069 - 0x000E:word16], stackArg0, out dx_2568)
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg3 = <invalid>
+	Mem829[ss:sp_823 - 2:word16] = fn0800_8CAA(Mem815[ss:bp_1069 - 0x0010:word16], 0x04, Mem815[ss:bp_1069 - 0x000E:word16], stackArg0, out dx_2561)
 	word16 di_833
 	selector ds_834
-	fn0800_40BF(ds_803, Mem829[ss:sp_823 - 2:byte], stackArg3, Mem829[ss:sp_823:word16], Mem829[ss:sp_823 + 2:word16], out dx_2570, out di_833, out ds_834)
+	fn0800_40BF(ds_803, Mem829[ss:sp_823 - 2:byte], Mem829[ss:sp_823 - 1:byte], Mem829[ss:sp_823:word16], Mem829[ss:sp_823 + 2:word16], out dx_2562, out di_833, out ds_834)
 	Mem844[ss:bp_1069 - 0x0022:word16] = 0x0000
 // DataOut:
 // DataOut (flags):
@@ -18254,7 +18185,7 @@ l0800_6199:
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg6 = <invalid>
 	word16 di_913
-	fn0800_4047(ds_834, Mem906[ss:sp_823 - 0x0002:byte], Mem906[ss:sp_823:segptr32], stackArg6, out cx_2593, out dx_2594, out bx_2595, out di_913, out ds_834, out Top_2596)
+	fn0800_4047(ds_834, Mem906[ss:sp_823 - 0x0002:byte], Mem906[ss:sp_823:segptr32], stackArg6, out cx_2585, out dx_2586, out bx_2587, out di_913, out ds_834, out Top_2588)
 	Mem921[ss:bp_1069 - 0x0022:word16] = Mem906[ss:bp_1069 - 0x0022:word16] + 0x0001
 	di_833 = di_913 + 0x0004
 	si_2212 = si_2212 + 0x0001
@@ -18270,21 +18201,21 @@ l0800_61B9:
 	Mem946[ss:sp_823 - 0x0002:word16] = ax_939
 	Mem950[ss:sp_823 - 0x0004:word16] = Mem946[ds_834:0x29E1:word16]
 	Mem953[ss:sp_823 - 0x0006:word16] = Mem950[ds_834:0x29DF:word16]
-	word16 ax_954 = fn0800_ACB3(ds_834, Mem953[ss:sp_823 - 0x0006:word16], Mem953[ss:sp_823 - 0x0004:word16], Mem953[ss:sp_823 + 0x0002:word16], out cx_2581, out dx_2582, out bx_2583)
+	word16 ax_954 = fn0800_ACB3(ds_834, Mem953[ss:sp_823 - 0x0006:word16], Mem953[ss:sp_823 - 0x0004:word16], Mem953[ss:sp_823 + 0x0002:word16], out cx_2573, out dx_2574, out bx_2575)
 	Mem967[ss:sp_823 + 0x0002:word16] = Mem953[ds_834:0x29E1:word16]
 	Mem970[ss:sp_823:word16] = Mem967[ds_834:0x29DF:word16]
 	Mem974[ss:sp_823 - 0x0002:word16] = DPB(ax_954, Mem970[ss:bp_1069 - 0x0022:byte], 0)
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg6 = <invalid>
-	fn0800_4047(ds_834, Mem974[ss:sp_823 - 0x0002:byte], Mem974[ss:sp_823:segptr32], stackArg6, out cx_2585, out dx_2586, out bx_2587, out di_740, out ds_588, out Top_2588)
+	fn0800_4047(ds_834, Mem974[ss:sp_823 - 0x0002:byte], Mem974[ss:sp_823:segptr32], stackArg6, out cx_2577, out dx_2578, out bx_2579, out di_740, out ds_588, out Top_2580)
 	Mem990[ss:sp_823 + 0x0002:word16] = 0x0001
 	word16 ax_991 = Mem990[ss:bp_1069 - 0x0022:word16]
 	Mem999[ss:sp_823:word16] = SLICE(cond(ax_991 + 0x0002), bool, 1)
 	Mem1001[ss:sp_823 - 0x0002:word16] = ax_991 + 0x0002
 	Mem1004[ss:sp_823 - 0x0004:word16] = Mem1001[ds_588:0x29E1:word16]
 	Mem1007[ss:sp_823 - 0x0006:word16] = Mem1004[ds_588:0x29DF:word16]
-	fn0800_ACB3(ds_588, Mem1007[ss:sp_823 - 0x0006:word16], Mem1007[ss:sp_823 - 0x0004:word16], Mem1007[ss:sp_823 + 0x0002:word16], out cx_2589, out dx_2590, out bx_2591)
+	fn0800_ACB3(ds_588, Mem1007[ss:sp_823 - 0x0006:word16], Mem1007[ss:sp_823 - 0x0004:word16], Mem1007[ss:sp_823 + 0x0002:word16], out cx_2581, out dx_2582, out bx_2583)
 	sp_1017 = sp_823 + 0x0004
 // DataOut:
 // DataOut (flags):
@@ -18370,47 +18301,32 @@ l0800_6271:
 	Mem1208[ss:sp_1172 + 0x0006:word16] = Mem1194[ds_1168:0x29E1:word16]
 	Mem1211[ss:sp_1172 + 0x0004:word16] = Mem1208[ds_1168:0x29DF:word16]
 	Mem1214[ss:sp_1172 + 0x0002:word16] = Mem1211[ss:bp_1164 - 0x0030:word16]
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg3 = <invalid>
 	selector ds_1219
-	fn0800_40BF(ds_1168, Mem1214[ss:sp_1172 + 0x0002:byte], stackArg3, Mem1214[ss:sp_1172 + 0x0004:word16], Mem1214[ss:sp_1172 + 0x0006:word16], out dx_2533, out di_2534, out ds_1219)
+	fn0800_40BF(ds_1168, Mem1214[ss:sp_1172 + 0x0002:byte], Mem1214[ss:sp_1172 + 0x0003:byte], Mem1214[ss:sp_1172 + 0x0004:word16], Mem1214[ss:sp_1172 + 0x0006:word16], out dx_2532, out di_2533, out ds_1219)
 	Mem1231[ss:sp_1172 + 0x0006:word16] = Mem1214[ds_1219:0x29E1:word16]
 	Mem1234[ss:sp_1172 + 0x0004:word16] = Mem1231[ds_1219:0x29DF:word16]
 	Mem1237[ss:sp_1172 + 0x0002:word16] = Mem1234[ss:bp_1164 - 0x0032:word16]
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg3 = <invalid>
 	selector ds_1242
-	fn0800_40BF(ds_1219, Mem1237[ss:sp_1172 + 0x0002:byte], stackArg3, Mem1237[ss:sp_1172 + 0x0004:word16], Mem1237[ss:sp_1172 + 0x0006:word16], out dx_2536, out di_2537, out ds_1242)
+	fn0800_40BF(ds_1219, Mem1237[ss:sp_1172 + 0x0002:byte], Mem1237[ss:sp_1172 + 0x0003:byte], Mem1237[ss:sp_1172 + 0x0004:word16], Mem1237[ss:sp_1172 + 0x0006:word16], out dx_2534, out di_2535, out ds_1242)
 	Mem1254[ss:sp_1172 + 0x0006:word16] = Mem1237[ds_1242:0x29E1:word16]
 	Mem1257[ss:sp_1172 + 0x0004:word16] = Mem1254[ds_1242:0x29DF:word16]
 	Mem1260[ss:sp_1172 + 0x0002:word16] = Mem1257[ss:bp_1164 - 0x002E:word16]
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg3 = <invalid>
 	selector ds_1265
-	fn0800_40BF(ds_1242, Mem1260[ss:sp_1172 + 0x0002:byte], stackArg3, Mem1260[ss:sp_1172 + 0x0004:word16], Mem1260[ss:sp_1172 + 0x0006:word16], out dx_2539, out di_2540, out ds_1265)
+	fn0800_40BF(ds_1242, Mem1260[ss:sp_1172 + 0x0002:byte], Mem1260[ss:sp_1172 + 0x0003:byte], Mem1260[ss:sp_1172 + 0x0004:word16], Mem1260[ss:sp_1172 + 0x0006:word16], out dx_2536, out di_2537, out ds_1265)
 	Mem1277[ss:sp_1172 + 0x0006:word16] = Mem1260[ds_1265:0x29E1:word16]
 	Mem1280[ss:sp_1172 + 0x0004:word16] = Mem1277[ds_1265:0x29DF:word16]
 	Mem1283[ss:sp_1172 + 0x0002:word16] = Mem1280[ss:bp_1164 - 0x002C:word16]
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg3 = <invalid>
 	selector ds_1288
-	fn0800_40BF(ds_1265, Mem1283[ss:sp_1172 + 0x0002:byte], stackArg3, Mem1283[ss:sp_1172 + 0x0004:word16], Mem1283[ss:sp_1172 + 0x0006:word16], out dx_2542, out di_2543, out ds_1288)
+	fn0800_40BF(ds_1265, Mem1283[ss:sp_1172 + 0x0002:byte], Mem1283[ss:sp_1172 + 0x0003:byte], Mem1283[ss:sp_1172 + 0x0004:word16], Mem1283[ss:sp_1172 + 0x0006:word16], out dx_2538, out di_2539, out ds_1288)
 	Mem1300[ss:sp_1172 + 0x0006:word16] = Mem1283[ds_1288:0x29E1:word16]
 	Mem1303[ss:sp_1172 + 0x0004:word16] = Mem1300[ds_1288:0x29DF:word16]
 	Mem1306[ss:sp_1172 + 0x0002:word16] = Mem1303[ss:bp_1164 - 0x001C:word16]
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg3 = <invalid>
 	selector ds_1311
-	fn0800_40BF(ds_1288, Mem1306[ss:sp_1172 + 0x0002:byte], stackArg3, Mem1306[ss:sp_1172 + 0x0004:word16], Mem1306[ss:sp_1172 + 0x0006:word16], out dx_2545, out di_2546, out ds_1311)
+	fn0800_40BF(ds_1288, Mem1306[ss:sp_1172 + 0x0002:byte], Mem1306[ss:sp_1172 + 0x0003:byte], Mem1306[ss:sp_1172 + 0x0004:word16], Mem1306[ss:sp_1172 + 0x0006:word16], out dx_2540, out di_2541, out ds_1311)
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg0 = <invalid>
-	Mem1333[ss:bp_1164 - 0x0022:word16] = fn0800_8CAA(Mem1306[ds_1311:0x2A03:word16], 0x04, Mem1306[ds_1311:0x2A05:word16], stackArg0, out dx_2548)
+	Mem1333[ss:bp_1164 - 0x0022:word16] = fn0800_8CAA(Mem1306[ds_1311:0x2A03:word16], 0x04, Mem1306[ds_1311:0x2A05:word16], stackArg0, out dx_2543)
 	word16 sp_1328 = <invalid>
 	branch (Mem1333[ds_1311:0x2A03:word16] & 0x000F) == 0x0000 l0800_6333
 // DataOut:
@@ -18427,23 +18343,17 @@ l0800_6333:
 	Mem1349[ss:sp_1328 - 2:word16] = Mem1344[ds_1311:0x29E1:word16]
 	Mem1352[ss:sp_1328 - 4:word16] = Mem1349[ds_1311:0x29DF:word16]
 	Mem1356[ss:sp_1328 - 6:word16] = Mem1352[ss:bp_1164 - 0x0022:word16]
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg3 = <invalid>
 	selector ds_1361
-	fn0800_40BF(ds_1311, Mem1356[ss:sp_1328 - 6:byte], stackArg3, Mem1356[ss:sp_1328 - 4:word16], Mem1356[ss:sp_1328 - 2:word16], out dx_2550, out di_2551, out ds_1361)
+	fn0800_40BF(ds_1311, Mem1356[ss:sp_1328 - 6:byte], Mem1356[ss:sp_1328 - 5:byte], Mem1356[ss:sp_1328 - 4:word16], Mem1356[ss:sp_1328 - 2:word16], out dx_2544, out di_2545, out ds_1361)
 	Mem1373[ss:sp_1328 - 2:word16] = Mem1356[ds_1361:0x29E1:word16]
 	Mem1376[ss:sp_1328 - 4:word16] = Mem1373[ds_1361:0x29DF:word16]
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg0 = <invalid>
 	word16 sp_1384 = <invalid>
-	Mem1393[ss:sp_1384 - 2:word16] = Mem1376[ss:bp_1164 - 0x0022:word16] + fn0800_8CAA(Mem1376[ss:bp_1164 - 0x001C:word16], 0x04, Mem1376[ss:bp_1164 - 0x001A:word16], stackArg0, out dx_2553)
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg3 = <invalid>
+	Mem1393[ss:sp_1384 - 2:word16] = Mem1376[ss:bp_1164 - 0x0022:word16] + fn0800_8CAA(Mem1376[ss:bp_1164 - 0x001C:word16], 0x04, Mem1376[ss:bp_1164 - 0x001A:word16], stackArg0, out dx_2547)
 	selector ds_1398
-	fn0800_40BF(ds_1361, Mem1393[ss:sp_1384 - 2:byte], stackArg3, Mem1393[ss:sp_1384:word16], Mem1393[ss:sp_1384 + 2:word16], out dx_2555, out di_2556, out ds_1398)
+	fn0800_40BF(ds_1361, Mem1393[ss:sp_1384 - 2:byte], Mem1393[ss:sp_1384 - 1:byte], Mem1393[ss:sp_1384:word16], Mem1393[ss:sp_1384 + 2:word16], out dx_2548, out di_2549, out ds_1398)
 	ui32 ax_dx_2222 = SEQ(Mem1393[ss:bp_1164 - 0x0002:word16], Mem1393[ss:bp_1164 - 0x0004:word16]) - SEQ(Mem1393[ds_1398:0x2A05:word16], Mem1393[ds_1398:0x2A03:word16]) + SEQ(Mem1393[ds_1398:0x4E8A:word16], Mem1393[ds_1398:0x4E88:word16])
 	word16 dx_1413 = (word16) ax_dx_2222
 	Mem1421[ss:bp_1164 - 0x0006:word16] = SLICE(ax_dx_2222, word16, 16) + (dx_1413 <u 0x0080)
@@ -18482,13 +18392,13 @@ l0800_63A8:
 	Mem1460[ss:sp_1384 - 2:word16] = bx_1452
 	Mem1464[ss:sp_1384 - 4:word16] = Mem1460[ds_1398:0x29E5:word16]
 	Mem1467[ss:sp_1384 - 6:word16] = Mem1464[ds_1398:0x29E3:word16]
-	fn0800_ACB3(ds_1398, Mem1467[ss:sp_1384 - 6:word16], Mem1467[ss:sp_1384 - 4:word16], Mem1467[ss:sp_1384 + 2:word16], out cx_2571, out dx_2572, out bx_2573)
+	fn0800_ACB3(ds_1398, Mem1467[ss:sp_1384 - 6:word16], Mem1467[ss:sp_1384 - 4:word16], Mem1467[ss:sp_1384 + 2:word16], out cx_2563, out dx_2564, out bx_2565)
 	Mem1480[ss:sp_1384 + 0x0002:word16] = 0x0002
 	Mem1485[ss:sp_1384:word16] = 0x0000
 	Mem1487[ss:sp_1384 - 2:word16] = 0x0000
 	Mem1490[ss:sp_1384 - 4:word16] = Mem1487[ds_1398:0x29E1:word16]
 	Mem1493[ss:sp_1384 - 6:word16] = Mem1490[ds_1398:0x29DF:word16]
-	fn0800_ACB3(ds_1398, Mem1493[ss:sp_1384 - 6:word16], Mem1493[ss:sp_1384 - 4:word16], Mem1493[ss:sp_1384 + 2:word16], out cx_2574, out dx_2575, out bx_2576)
+	fn0800_ACB3(ds_1398, Mem1493[ss:sp_1384 - 6:word16], Mem1493[ss:sp_1384 - 4:word16], Mem1493[ss:sp_1384 + 2:word16], out cx_2566, out dx_2567, out bx_2568)
 	Mem1507[ss:sp_1384 + 0x0002:word16] = Mem1493[ds_1398:0x29E1:word16]
 	Mem1510[ss:sp_1384:word16] = Mem1507[ds_1398:0x29DF:word16]
 	// Failed to bind call argument.
@@ -18508,12 +18418,12 @@ l0800_63A8:
 	Mem1552[ss:sp_1384 - 8:word16] = Mem1549[ds_1398:0x29E3:word16]
 	word16 bp_1554
 	selector ds_1558
-	fn0800_3B0A(Mem1552[ss:sp_1384:word16], Mem1552[ss:sp_1384 + 2:word16], out dx_2578, out bp_1554, out ds_1558)
+	fn0800_3B0A(Mem1552[ss:sp_1384:word16], Mem1552[ss:sp_1384 + 2:word16], out dx_2570, out bp_1554, out ds_1558)
 	Mem1573[ss:bp_1554 - 0x0022:word16] = Mem1552[ss:bp_1554 - 0x0020:word16] & 0x01FF
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg0 = <invalid>
-	fn0800_8CAA(Mem1573[ss:bp_1554 - 0x0020:word16], 0x09, Mem1573[ss:bp_1554 - 0x001E:word16], stackArg0, out dx_2580)
+	fn0800_8CAA(Mem1573[ss:bp_1554 - 0x0020:word16], 0x09, Mem1573[ss:bp_1554 - 0x001E:word16], stackArg0, out dx_2572)
 	word16 sp_1581 = <invalid>
 	branch Mem1573[ss:bp_1554 - 0x0022:word16] == 0x0000 l0800_6446
 // DataOut:
@@ -18531,24 +18441,18 @@ l0800_6446:
 	Mem1602[ss:sp_1581 - 6:word16] = 0x0002
 	Mem1606[ss:sp_1581 - 8:word16] = Mem1602[ds_1558:0x29E1:word16]
 	Mem1609[ss:sp_1581 - 10:word16] = Mem1606[ds_1558:0x29DF:word16]
-	fn0800_ACB3(ds_1558, Mem1609[ss:sp_1581 - 10:word16], Mem1609[ss:sp_1581 - 8:word16], Mem1609[ss:sp_1581 - 2:word16], out cx_2597, out dx_2598, out bx_2599)
+	fn0800_ACB3(ds_1558, Mem1609[ss:sp_1581 - 10:word16], Mem1609[ss:sp_1581 - 8:word16], Mem1609[ss:sp_1581 - 2:word16], out cx_2589, out dx_2590, out bx_2591)
 	Mem1623[ss:sp_1581 - 2:word16] = Mem1609[ds_1558:0x29E1:word16]
 	Mem1626[ss:sp_1581 - 4:word16] = Mem1623[ds_1558:0x29DF:word16]
 	Mem1630[ss:sp_1581 - 6:word16] = Mem1626[ss:bp_1554 - 0x0022:word16]
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg3 = <invalid>
 	word16 di_1634
 	selector ds_1635
-	fn0800_40BF(ds_1558, Mem1630[ss:sp_1581 - 6:byte], stackArg3, Mem1630[ss:sp_1581 - 4:word16], Mem1630[ss:sp_1581 - 2:word16], out dx_2601, out di_1634, out ds_1635)
+	fn0800_40BF(ds_1558, Mem1630[ss:sp_1581 - 6:byte], Mem1630[ss:sp_1581 - 5:byte], Mem1630[ss:sp_1581 - 4:word16], Mem1630[ss:sp_1581 - 2:word16], out dx_2592, out di_1634, out ds_1635)
 	Mem1647[ss:sp_1581 - 2:word16] = Mem1630[ds_1635:0x29E1:word16]
 	Mem1650[ss:sp_1581 - 4:word16] = Mem1647[ds_1635:0x29DF:word16]
 	Mem1652[ss:sp_1581 - 6:word16] = di_1634
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg3 = <invalid>
 	selector ds_1657
-	fn0800_40BF(ds_1635, Mem1652[ss:sp_1581 - 6:byte], stackArg3, Mem1652[ss:sp_1581 - 4:word16], Mem1652[ss:sp_1581 - 2:word16], out dx_2603, out di_2604, out ds_1657)
+	fn0800_40BF(ds_1635, Mem1652[ss:sp_1581 - 6:byte], Mem1652[ss:sp_1581 - 5:byte], Mem1652[ss:sp_1581 - 4:word16], Mem1652[ss:sp_1581 - 2:word16], out dx_2593, out di_2594, out ds_1657)
 	branch Mem1652[ds_1657:0x2A1D:word16] == 0x0000 l0800_64B9
 // DataOut:
 // DataOut (flags):
@@ -18560,23 +18464,17 @@ l0800_6483:
 	Mem1677[ss:sp_1581 - 6:word16] = 0x002E
 	Mem1680[ss:sp_1581 - 8:word16] = Mem1677[ds_1657:0x29E1:word16]
 	Mem1683[ss:sp_1581 - 10:word16] = Mem1680[ds_1657:0x29DF:word16]
-	fn0800_ACB3(ds_1657, Mem1683[ss:sp_1581 - 10:word16], Mem1683[ss:sp_1581 - 8:word16], Mem1683[ss:sp_1581 - 2:word16], out cx_2622, out dx_2623, out bx_2624)
+	fn0800_ACB3(ds_1657, Mem1683[ss:sp_1581 - 10:word16], Mem1683[ss:sp_1581 - 8:word16], Mem1683[ss:sp_1581 - 2:word16], out cx_2609, out dx_2610, out bx_2611)
 	Mem1697[ss:sp_1581 - 2:word16] = Mem1683[ds_1657:0x29E1:word16]
 	Mem1700[ss:sp_1581 - 4:word16] = Mem1697[ds_1657:0x29DF:word16]
 	Mem1703[ss:sp_1581 - 6:word16] = Mem1700[ss:bp_1554 - 0x0022:word16]
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg3 = <invalid>
 	word16 di_1707
 	selector ds_1708
-	fn0800_40BF(ds_1657, Mem1703[ss:sp_1581 - 6:byte], stackArg3, Mem1703[ss:sp_1581 - 4:word16], Mem1703[ss:sp_1581 - 2:word16], out dx_2626, out di_1707, out ds_1708)
+	fn0800_40BF(ds_1657, Mem1703[ss:sp_1581 - 6:byte], Mem1703[ss:sp_1581 - 5:byte], Mem1703[ss:sp_1581 - 4:word16], Mem1703[ss:sp_1581 - 2:word16], out dx_2612, out di_1707, out ds_1708)
 	Mem1720[ss:sp_1581 - 2:word16] = Mem1703[ds_1708:0x29E1:word16]
 	Mem1723[ss:sp_1581 - 4:word16] = Mem1720[ds_1708:0x29DF:word16]
 	Mem1725[ss:sp_1581 - 6:word16] = di_1707
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg3 = <invalid>
-	fn0800_40BF(ds_1708, Mem1725[ss:sp_1581 - 6:byte], stackArg3, Mem1725[ss:sp_1581 - 4:word16], Mem1725[ss:sp_1581 - 2:word16], out dx_2628, out di_2629, out ds_1657)
+	fn0800_40BF(ds_1708, Mem1725[ss:sp_1581 - 6:byte], Mem1725[ss:sp_1581 - 5:byte], Mem1725[ss:sp_1581 - 4:word16], Mem1725[ss:sp_1581 - 2:word16], out dx_2613, out di_2614, out ds_1657)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -18588,43 +18486,34 @@ l0800_64B9:
 	Mem1755[ss:sp_1581 - 8:word16] = Mem1751[ds_1657:0x29E1:word16]
 	Mem1758[ss:sp_1581 - 10:word16] = Mem1755[ds_1657:0x29DF:word16]
 	word16 dx_1762
-	word16 ax_1759 = fn0800_ACB3(ds_1657, Mem1758[ss:sp_1581 - 10:word16], Mem1758[ss:sp_1581 - 8:word16], Mem1758[ss:sp_1581 - 2:word16], out cx_2605, out dx_1762, out bx_2606)
+	word16 ax_1759 = fn0800_ACB3(ds_1657, Mem1758[ss:sp_1581 - 10:word16], Mem1758[ss:sp_1581 - 8:word16], Mem1758[ss:sp_1581 - 2:word16], out cx_2595, out dx_1762, out bx_2596)
 	Mem1771[ss:sp_1581 - 2:word16] = Mem1758[ds_1657:0x29E1:word16]
 	Mem1774[ss:sp_1581 - 4:word16] = Mem1771[ds_1657:0x29DF:word16]
 	Mem1789[ss:sp_1581 - 6:word16] = (DPB(DPB(ax_1759, Mem1774[ds_1657:0x2E75:byte], 0), 0x00, 8) << 0x08) + DPB(DPB(dx_1762, Mem1774[ds_1657:0x2E76:byte], 0), 0x00, 8) - 0x0020
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg3 = <invalid>
 	selector ds_1794
-	fn0800_40BF(ds_1657, Mem1789[ss:sp_1581 - 6:byte], stackArg3, Mem1789[ss:sp_1581 - 4:word16], Mem1789[ss:sp_1581 - 2:word16], out dx_2608, out di_2609, out ds_1794)
+	fn0800_40BF(ds_1657, Mem1789[ss:sp_1581 - 6:byte], Mem1789[ss:sp_1581 - 5:byte], Mem1789[ss:sp_1581 - 4:word16], Mem1789[ss:sp_1581 - 2:word16], out dx_2597, out di_2598, out ds_1794)
 	Mem1807[ss:sp_1581 - 2:word16] = 0x0000
 	Mem1810[ss:sp_1581 - 4:word16] = 0x0000
 	Mem1812[ss:sp_1581 - 6:word16] = 0x001C
 	Mem1815[ss:sp_1581 - 8:word16] = Mem1812[ds_1794:0x29E1:word16]
 	Mem1818[ss:sp_1581 - 10:word16] = Mem1815[ds_1794:0x29DF:word16]
-	fn0800_ACB3(ds_1794, Mem1818[ss:sp_1581 - 10:word16], Mem1818[ss:sp_1581 - 8:word16], Mem1818[ss:sp_1581 - 2:word16], out cx_2610, out dx_2611, out bx_2612)
+	fn0800_ACB3(ds_1794, Mem1818[ss:sp_1581 - 10:word16], Mem1818[ss:sp_1581 - 8:word16], Mem1818[ss:sp_1581 - 2:word16], out cx_2599, out dx_2600, out bx_2601)
 	Mem1832[ss:sp_1581 - 2:word16] = Mem1818[ds_1794:0x29E1:word16]
 	Mem1835[ss:sp_1581 - 4:word16] = Mem1832[ds_1794:0x29DF:word16]
 	Mem1839[ss:sp_1581 - 6:word16] = Mem1835[ss:bp_1554 - 0x0028:word16]
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg3 = <invalid>
 	selector ds_1844
-	fn0800_40BF(ds_1794, Mem1839[ss:sp_1581 - 6:byte], stackArg3, Mem1839[ss:sp_1581 - 4:word16], Mem1839[ss:sp_1581 - 2:word16], out dx_2614, out di_2615, out ds_1844)
+	fn0800_40BF(ds_1794, Mem1839[ss:sp_1581 - 6:byte], Mem1839[ss:sp_1581 - 5:byte], Mem1839[ss:sp_1581 - 4:word16], Mem1839[ss:sp_1581 - 2:word16], out dx_2602, out di_2603, out ds_1844)
 	Mem1856[ss:sp_1581 - 2:word16] = Mem1839[ds_1844:0x29E1:word16]
 	Mem1859[ss:sp_1581 - 4:word16] = Mem1856[ds_1844:0x29DF:word16]
 	Mem1862[ss:sp_1581 - 6:word16] = Mem1859[ss:bp_1554 - 0x002A:word16]
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg3 = <invalid>
 	selector ds_1867
-	fn0800_40BF(ds_1844, Mem1862[ss:sp_1581 - 6:byte], stackArg3, Mem1862[ss:sp_1581 - 4:word16], Mem1862[ss:sp_1581 - 2:word16], out dx_2617, out di_2618, out ds_1867)
+	fn0800_40BF(ds_1844, Mem1862[ss:sp_1581 - 6:byte], Mem1862[ss:sp_1581 - 5:byte], Mem1862[ss:sp_1581 - 4:word16], Mem1862[ss:sp_1581 - 2:word16], out dx_2604, out di_2605, out ds_1867)
 	Mem1880[ss:sp_1581 - 2:word16] = 0x0000
 	Mem1883[ss:sp_1581 - 4:word16] = 0x0000
 	Mem1885[ss:sp_1581 - 6:word16] = 0x000A
 	Mem1888[ss:sp_1581 - 8:word16] = Mem1885[ds_1867:0x29E1:word16]
 	Mem1891[ss:sp_1581 - 10:word16] = Mem1888[ds_1867:0x29DF:word16]
-	fn0800_ACB3(ds_1867, Mem1891[ss:sp_1581 - 10:word16], Mem1891[ss:sp_1581 - 8:word16], Mem1891[ss:sp_1581 - 2:word16], out cx_2619, out dx_2620, out bx_2621)
+	fn0800_ACB3(ds_1867, Mem1891[ss:sp_1581 - 10:word16], Mem1891[ss:sp_1581 - 8:word16], Mem1891[ss:sp_1581 - 2:word16], out cx_2606, out dx_2607, out bx_2608)
 	word16 cx_1912 = Mem1891[ss:bp_1554 - 0x0020:word16]
 	word16 bx_1907 = Mem1891[ss:bp_1554 - 0x0004:word16] + (Mem1891[ss:bp_1554 - 0x0028:word16] << 0x04)
 	word16 cx_1917 = cx_1912 - 0x0020 + Mem1891[ss:bp_1554 - 0x0008:word16]
@@ -18668,17 +18557,14 @@ l0800_659C:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg0 = <invalid>
-	word16 ax_1979 = fn0800_8CAA(Mem1974[ss:bp_1554 - 0x0008:word16], 0x04, Mem1974[ss:bp_1554 - 0x0006:word16], stackArg0, out dx_2631)
+	word16 ax_1979 = fn0800_8CAA(Mem1974[ss:bp_1554 - 0x0008:word16], 0x04, Mem1974[ss:bp_1554 - 0x0006:word16], stackArg0, out dx_2616)
 	Mem1988[ss:bp_1554 - 0x0028:word16] = ax_1979
 	word16 sp_1983 = <invalid>
 	Mem1993[ss:sp_1983 - 2:word16] = Mem1988[ds_1867:0x29E1:word16]
 	Mem1996[ss:sp_1983 - 4:word16] = Mem1993[ds_1867:0x29DF:word16]
 	Mem1998[ss:sp_1983 - 6:word16] = ax_1979
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg3 = <invalid>
 	selector ds_2003
-	fn0800_40BF(ds_1867, Mem1998[ss:sp_1983 - 6:byte], stackArg3, Mem1998[ss:sp_1983 - 4:word16], Mem1998[ss:sp_1983 - 2:word16], out dx_2633, out di_2634, out ds_2003)
+	fn0800_40BF(ds_1867, Mem1998[ss:sp_1983 - 6:byte], Mem1998[ss:sp_1983 - 5:byte], Mem1998[ss:sp_1983 - 4:word16], Mem1998[ss:sp_1983 - 2:word16], out dx_2617, out di_2618, out ds_2003)
 	branch Mem1998[ss:bp_1554 - 0x002A:word16] >=u Mem1998[ss:bp_1554 - 0x0028:word16] l0800_65DC
 // DataOut:
 // DataOut (flags):
@@ -18694,27 +18580,21 @@ l0800_65DC:
 	Mem2023[ss:sp_1983 - 2:word16] = Mem2018[ds_2003:0x29E1:word16]
 	Mem2026[ss:sp_1983 - 4:word16] = Mem2023[ds_2003:0x29DF:word16]
 	Mem2030[ss:sp_1983 - 6:word16] = Mem2026[ss:bp_1554 - 0x002A:word16]
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg3 = <invalid>
 	selector ds_2035
-	fn0800_40BF(ds_2003, Mem2030[ss:sp_1983 - 6:byte], stackArg3, Mem2030[ss:sp_1983 - 4:word16], Mem2030[ss:sp_1983 - 2:word16], out dx_2636, out di_2637, out ds_2035)
+	fn0800_40BF(ds_2003, Mem2030[ss:sp_1983 - 6:byte], Mem2030[ss:sp_1983 - 5:byte], Mem2030[ss:sp_1983 - 4:word16], Mem2030[ss:sp_1983 - 2:word16], out dx_2619, out di_2620, out ds_2035)
 	ui32 dx_ax_2238 = SEQ(Mem2030[ss:bp_1554 - 0x0002:word16], Mem2030[ss:bp_1554 - 0x0004:word16]) + SEQ(Mem2030[ds_2035:0x4E8A:word16], Mem2030[ds_2035:0x4E88:word16])
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 ax_2046 = (word16) dx_ax_2238
 	word16 stackArg0 = <invalid>
-	word16 ax_2056 = fn0800_8CAA(ax_2046 + 0x0020, 0x04, SLICE(dx_ax_2238, word16, 16) + (ax_2046 <u 0x0020), stackArg0, out dx_2639)
+	word16 ax_2056 = fn0800_8CAA(ax_2046 + 0x0020, 0x04, SLICE(dx_ax_2238, word16, 16) + (ax_2046 <u 0x0020), stackArg0, out dx_2622)
 	Mem2065[ss:bp_1554 - 0x002C:word16] = ax_2056
 	word16 sp_2060 = <invalid>
 	Mem2068[ss:sp_2060 - 2:word16] = Mem2065[ds_2035:0x29E1:word16]
 	Mem2071[ss:sp_2060 - 4:word16] = Mem2068[ds_2035:0x29DF:word16]
 	Mem2073[ss:sp_2060 - 6:word16] = ax_2056
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg3 = <invalid>
 	selector ds_2078
-	fn0800_40BF(ds_2035, Mem2073[ss:sp_2060 - 6:byte], stackArg3, Mem2073[ss:sp_2060 - 4:word16], Mem2073[ss:sp_2060 - 2:word16], out dx_2641, out di_2642, out ds_2078)
+	fn0800_40BF(ds_2035, Mem2073[ss:sp_2060 - 6:byte], Mem2073[ss:sp_2060 - 5:byte], Mem2073[ss:sp_2060 - 4:word16], Mem2073[ss:sp_2060 - 2:word16], out dx_2623, out di_2624, out ds_2078)
 	Mem2089[ss:bp_1554 - 0x002E:word16] = Mem2073[ss:bp_1554 - 0x001C:word16] + 0x0080
 	branch Mem2089[ds_2078:0x2A1D:word16] == 0x0000 l0800_662F
 // DataOut:
@@ -18743,11 +18623,8 @@ l0800_663B:
 	Mem2106[ss:sp_2060 - 2:word16] = Mem2101[ds_2078:0x29E1:word16]
 	Mem2109[ss:sp_2060 - 4:word16] = Mem2106[ds_2078:0x29DF:word16]
 	Mem2113[ss:sp_2060 - 6:word16] = Mem2109[ss:bp_1554 - 0x002E:word16]
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg3 = <invalid>
 	selector ds_2118
-	fn0800_40BF(ds_2078, Mem2113[ss:sp_2060 - 6:byte], stackArg3, Mem2113[ss:sp_2060 - 4:word16], Mem2113[ss:sp_2060 - 2:word16], out dx_2644, out di_2645, out ds_2118)
+	fn0800_40BF(ds_2078, Mem2113[ss:sp_2060 - 6:byte], Mem2113[ss:sp_2060 - 5:byte], Mem2113[ss:sp_2060 - 4:word16], Mem2113[ss:sp_2060 - 2:word16], out dx_2625, out di_2626, out ds_2118)
 	ui32 dx_bx_2240 = SEQ(Mem2113[ds_2118:0x2A09:word16], Mem2113[ds_2118:0x2A07:word16]) - SEQ(Mem2113[ss:bp_1554 - 0x0002:word16], Mem2113[ss:bp_1554 - 0x0004:word16])
 	word16 bx_2136 = (word16) dx_bx_2240 - (Mem2113[ss:bp_1554 - 0x0026:word16] << 0x04)
 	word16 dx_2139 = SLICE(dx_bx_2240, word16, 16) - (bx_2136 <u 0x0000)
@@ -20416,10 +20293,7 @@ l0800_7469:
 	Mem277[ss:sp_233 + 0x0006:word16] = Mem263[ds_229:0x29E1:word16]
 	Mem280[ss:sp_233 + 0x0004:word16] = Mem277[ds_229:0x29DF:word16]
 	Mem283[ss:sp_233 + 0x0002:word16] = Mem280[ds_229:0x2A03:word16]
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg3 = <invalid>
-	fn0800_40BF(ds_229, Mem283[ss:sp_233 + 0x0002:byte], stackArg3, Mem283[ss:sp_233 + 0x0004:word16], Mem283[ss:sp_233 + 0x0006:word16], out dx_564, out di_565, out ds)
+	fn0800_40BF(ds_229, Mem283[ss:sp_233 + 0x0002:byte], Mem283[ss:sp_233 + 0x0003:byte], Mem283[ss:sp_233 + 0x0004:word16], Mem283[ss:sp_233 + 0x0006:word16], out dx_563, out di_564, out ds)
 	word16 dx_298 = Mem283[ds:0x2A03:word16]
 	branch Mem283[ds:0x2A05:word16] != Mem283[ss:bp_225 - 0x0002:word16] l0800_754A
 // DataOut:
@@ -20438,7 +20312,7 @@ l0800_754A:
 	Mem314[ss:sp_233 + 0x0002:word16] = Mem311[ds:0x2A03:word16]
 	Mem317[ss:sp_233:word16] = Mem314[ds:0x29E1:word16]
 	Mem320[ss:sp_233 - 2:word16] = Mem317[ds:0x29DF:word16]
-	fn0800_ACB3(ds, Mem320[ss:sp_233 - 2:word16], Mem320[ss:sp_233:word16], Mem320[ss:sp_233 + 6:word16], out cx_579, out dx_580, out bx_581)
+	fn0800_ACB3(ds, Mem320[ss:sp_233 - 2:word16], Mem320[ss:sp_233:word16], Mem320[ss:sp_233 + 6:word16], out cx_578, out dx_579, out bx_580)
 	sp_11 = sp_233 + 0x0008
 // DataOut:
 // DataOut (flags):
@@ -20451,14 +20325,14 @@ l0800_750B:
 	Mem345[ss:sp_233 + 0x0002:word16] = dx_338
 	Mem348[ss:sp_233:word16] = Mem345[ds:0x29E5:word16]
 	Mem351[ss:sp_233 - 2:word16] = Mem348[ds:0x29E3:word16]
-	fn0800_ACB3(ds, Mem351[ss:sp_233 - 2:word16], Mem351[ss:sp_233:word16], Mem351[ss:sp_233 + 6:word16], out cx_582, out dx_583, out bx_584)
+	fn0800_ACB3(ds, Mem351[ss:sp_233 - 2:word16], Mem351[ss:sp_233:word16], Mem351[ss:sp_233 + 6:word16], out cx_581, out dx_582, out bx_583)
 	Mem365[ss:sp_233 + 0x0006:word16] = Mem351[ss:bp_225 - 0x0002:word16]
 	Mem368[ss:sp_233 + 0x0004:word16] = Mem365[ss:bp_225 - 0x0004:word16]
 	Mem371[ss:sp_233 + 0x0002:word16] = Mem368[ds:0x29E1:word16]
 	Mem374[ss:sp_233:word16] = Mem371[ds:0x29DF:word16]
 	Mem377[ss:sp_233 - 2:word16] = Mem374[ds:0x29E5:word16]
 	Mem380[ss:sp_233 - 4:word16] = Mem377[ds:0x29E3:word16]
-	fn0800_3B0A(Mem380[ss:sp_233 + 4:word16], Mem380[ss:sp_233 + 6:word16], out dx_585, out bp_225, out ds)
+	fn0800_3B0A(Mem380[ss:sp_233 + 4:word16], Mem380[ss:sp_233 + 6:word16], out dx_584, out bp_225, out ds)
 	word16 sp_390 = <invalid>
 	sp_11 = sp_390 + 0x000C
 // DataOut:
@@ -20490,7 +20364,7 @@ l0800_758F:
 	Mem432[ss:sp_18 - 6:word16] = Mem429[ds:0x29DF:word16]
 	Mem435[ss:sp_18 - 8:word16] = Mem432[ds:0x29E5:word16]
 	Mem438[ss:sp_18 - 10:word16] = Mem435[ds:0x29E3:word16]
-	fn0800_3B0A(Mem438[ss:sp_18 - 2:word16], Mem438[ss:sp_18:word16], out dx_567, out bp_225, out ds)
+	fn0800_3B0A(Mem438[ss:sp_18 - 2:word16], Mem438[ss:sp_18:word16], out dx_566, out bp_225, out ds)
 	word16 sp_448 = <invalid>
 	sp_11 = sp_448 + 0x000C
 // DataOut:
@@ -20524,11 +20398,11 @@ l0800_756A:
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg4 = <invalid>
 	selector ds_485
-	Mem493[ss:sp_466 - 0x0004:word16] = fn0800_3DCF(ds, Mem477[ss:sp_466 - 6:segptr32], stackArg4, out ch_569, out dx_570, out di_571, out ds_485, out Top_572)
+	Mem493[ss:sp_466 - 0x0004:word16] = fn0800_3DCF(ds, Mem477[ss:sp_466 - 6:segptr32], stackArg4, out ch_568, out dx_569, out di_570, out ds_485, out Top_571)
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg6 = <invalid>
-	fn0800_4047(ds_485, Mem493[ss:sp_466 - 0x0004:byte], Mem493[ss:sp_466 - 0x0002:segptr32], stackArg6, out cx_574, out dx_575, out bx_576, out di_577, out ds, out Top_578)
+	fn0800_4047(ds_485, Mem493[ss:sp_466 - 0x0004:byte], Mem493[ss:sp_466 - 0x0002:segptr32], stackArg6, out cx_573, out dx_574, out bx_575, out di_576, out ds, out Top_577)
 	si_456 = si_456 + 0x0001
 // DataOut:
 // DataOut (flags):
@@ -21148,18 +21022,9 @@ l0800_7A19:
 	fn0800_43D4(0x290F, ds, 0x0010)
 	ds = fn0800_7FDC(ds)
 	fn0800_ACB3(ds, Mem195[ds:0x29E3:word16], Mem192[ds:0x29E5:word16], 0x0000, out cx_851, out dx_852, out bx_853)
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	selector stackArg4 = <invalid>
-	fn0800_441C(ds, 0x290F, stackArg4, 0x0010)
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	selector stackArg4 = <invalid>
-	fn0800_441C(ds, 0x284F, stackArg4, 0x0010)
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	selector stackArg4 = <invalid>
-	fn0800_441C(ds, 0x278F, stackArg4, 0x0010)
+	fn0800_441C(ds, 0x290F, ds, 0x0010)
+	fn0800_441C(ds, 0x284F, ds, 0x0010)
+	fn0800_441C(ds, 0x278F, ds, 0x0010)
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	selector stackArg4 = <invalid>
@@ -21208,7 +21073,7 @@ l0800_7BF5:
 // SymbolicIn:
 
 l0800_7BE3:
-	ax_344 = (word16) fn0800_8624(ds, SLICE(DPB(ax_344, Mem354[ds:si_350 + 0x0000:byte], 0), byte, 0), out di_864, out ds)
+	ax_344 = (word16) fn0800_8624(ds, SLICE(DPB(ax_344, Mem354[ds:si_350 + 0x0000:byte], 0), byte, 0), out di_861, out ds)
 	Mem383[ds:0x4E82:word16] = Mem367[ds:0x4E82:word16] - 0x0001
 	si_350 = si_350 + 0x0001
 // DataOut:
@@ -21222,7 +21087,7 @@ l0800_7BFC:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg4 = <invalid>
-	fn0800_AD2F(ds, SEQ(Mem392[ds:0x29E5:word16], Mem400[ds:0x29E3:word16]), stackArg4, out dx_863)
+	fn0800_AD2F(ds, SEQ(Mem392[ds:0x29E5:word16], Mem400[ds:0x29E3:word16]), stackArg4, out dx_860)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -21233,7 +21098,7 @@ l0800_7BD5:
 // SymbolicIn:
 
 l0800_7ACB:
-	word16 ax_426 = fn0800_3E27(ds, Mem422[ds:0x29DB:word16], Mem343[ds:0x29DD:word16], out cx_860, out dx_861, out di_429, out ds, out Top_433)
+	word16 ax_426 = fn0800_3E27(ds, Mem422[ds:0x29DB:word16], Mem343[ds:0x29DD:word16], out cx_857, out dx_858, out di_429, out ds, out Top_433)
 	Mem439[ds:0x2E47:word16] = ax_426
 	word16 v25_440 = Mem439[ds:0x467A:word16] + ax_426
 	Mem441[ds:0x467A:word16] = v25_440
@@ -21261,7 +21126,7 @@ l0800_7B32:
 l0800_7B24:
 	selector ds_483
 	word16 ax_479 = (word16) fn0800_8359(ds, out ds_483)
-	fn0800_8624(ds_483, SLICE(DPB(ax_479, (byte) ax_479 ^ Mem473[ds_483:0x2E4F:byte], 0), byte, 0), out di_871, out ds)
+	fn0800_8624(ds_483, SLICE(DPB(ax_479, (byte) ax_479 ^ Mem473[ds_483:0x2E4F:byte], 0), byte, 0), out di_868, out ds)
 	Mem470 = Mem498
 // DataOut:
 // DataOut (flags):
@@ -21320,9 +21185,9 @@ l0800_7B56:
 
 l0800_7B5F:
 	selector ds_579
-	Mem589[ds_579:0x2E29:word16] = fn0800_3E27(ds, Mem571[ds:0x29DB:word16], Mem558[ds:0x29DD:word16], out cx_865, out dx_866, out di_867, out ds_579, out Top_868)
+	Mem589[ds_579:0x2E29:word16] = fn0800_3E27(ds, Mem571[ds:0x29DB:word16], Mem558[ds:0x29DD:word16], out cx_862, out dx_863, out di_864, out ds_579, out Top_865)
 	selector ds_600
-	Mem610[ds_600:0x2E2B:word16] = fn0800_3E27(ds_579, Mem592[ds_579:0x29DB:word16], Mem589[ds_579:0x29DD:word16], out cx_869, out dx_870, out di_599, out ds_600, out Top_603)
+	Mem610[ds_600:0x2E2B:word16] = fn0800_3E27(ds_579, Mem592[ds_579:0x29DB:word16], Mem589[ds_579:0x29DD:word16], out cx_866, out dx_867, out di_599, out ds_600, out Top_603)
 	fn0800_8407(ds_600, Mem615[ds_600:0x2E2B:word16], SEQ(ds_600, 0x284F))
 	fn0800_8407(ds_600, Mem634[ds_600:0x2E29:word16], SEQ(ds_600, 0x278F))
 	Mem649[ds_600:0x2E29:word16] = Mem637[ds_600:0x2E29:word16] + 0x0002
@@ -21430,7 +21295,7 @@ l0800_7E7A:
 
 l0800_7C8F:
 	selector ds_122 = fn0800_7FDC(ds)
-	fn0800_ACB3(ds_122, Mem107[ds_122:0x29E3:word16], Mem104[ds_122:0x29E5:word16], 0x0000, out cx_727, out dx_728, out bx_729)
+	fn0800_ACB3(ds_122, Mem107[ds_122:0x29E3:word16], Mem104[ds_122:0x29E5:word16], 0x0000, out cx_735, out dx_736, out bx_737)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -21447,10 +21312,7 @@ l0800_7DCD:
 // SymbolicIn:
 
 l0800_7DE5:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg5 = <invalid>
-	fn0800_854B(ds_122, 0x000F, 0x04, stackArg5)
+	fn0800_854B(ds_122, 0x000F, 0x04, 0x00)
 	fn0800_8600(ds_122, SLICE(DPB(ax_144, 0x00, 0), byte, 0), out ds)
 	word16 ax_169 = Mem155[ds:0x467C:word16]
 	word16 dx_170 = Mem155[ds:0x467A:word16]
@@ -21472,19 +21334,13 @@ l0800_7E0B:
 // SymbolicIn:
 
 l0800_7E1E:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg5 = <invalid>
-	fn0800_854B(ds, 0x0000, 0x01, stackArg5)
+	fn0800_854B(ds, 0x0000, 0x01, 0x00)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_7E11:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg5 = <invalid>
-	fn0800_854B(ds, 0x0001, 0x01, stackArg5)
+	fn0800_854B(ds, 0x0001, 0x01, 0x00)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -21509,7 +21365,7 @@ l0800_7E48:
 // SymbolicIn:
 
 l0800_7E36:
-	ax_187 = (word16) fn0800_8624(ds, SLICE(DPB(ax_187, Mem219[ds:si_215 + 0x0000:byte], 0), byte, 0), out di_748, out ds)
+	ax_187 = (word16) fn0800_8624(ds, SLICE(DPB(ax_187, Mem219[ds:si_215 + 0x0000:byte], 0), byte, 0), out di_752, out ds)
 	Mem248[ds:0x4E82:word16] = Mem232[ds:0x4E82:word16] - 0x0001
 	si_215 = si_215 + 0x0001
 // DataOut:
@@ -21523,7 +21379,7 @@ l0800_7E4F:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg4 = <invalid>
-	fn0800_AD2F(ds, SEQ(Mem257[ds:0x29E5:word16], Mem265[ds:0x29E3:word16]), stackArg4, out dx_746)
+	fn0800_AD2F(ds, SEQ(Mem257[ds:0x29E5:word16], Mem265[ds:0x29E3:word16]), stackArg4, out dx_751)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -21534,7 +21390,7 @@ l0800_7DE2:
 // SymbolicIn:
 
 l0800_7CAC:
-	word16 ax_294 = fn0800_3E27(ds_122, Mem290[ds_122:0x29DB:word16], Mem131[ds_122:0x29DD:word16], out cx_731, out dx_732, out di_733, out ds_122, out Top_734)
+	word16 ax_294 = fn0800_3E27(ds_122, Mem290[ds_122:0x29DB:word16], Mem131[ds_122:0x29DD:word16], out cx_738, out dx_739, out di_740, out ds_122, out Top_741)
 	Mem307[ds_122:0x2E47:word16] = ax_294
 	word16 v25_308 = Mem307[ds_122:0x467A:word16] + ax_294
 	Mem309[ds_122:0x467A:word16] = v25_308
@@ -21547,9 +21403,9 @@ l0800_7CAC:
 
 l0800_7CD9:
 	selector ds_337
-	Mem347[ds_337:0x2E29:word16] = fn0800_3E27(ds_122, Mem329[ds_122:0x29DB:word16], Mem316[ds_122:0x29DD:word16], out cx_737, out dx_738, out di_739, out ds_337, out Top_740)
+	Mem347[ds_337:0x2E29:word16] = fn0800_3E27(ds_122, Mem329[ds_122:0x29DB:word16], Mem316[ds_122:0x29DD:word16], out cx_742, out dx_743, out di_744, out ds_337, out Top_745)
 	selector ds_358
-	word16 ax_354 = fn0800_3E27(ds_337, Mem350[ds_337:0x29DB:word16], Mem347[ds_337:0x29DD:word16], out cx_741, out dx_742, out di_743, out ds_358, out Top_744)
+	word16 ax_354 = fn0800_3E27(ds_337, Mem350[ds_337:0x29DB:word16], Mem347[ds_337:0x29DD:word16], out cx_746, out dx_747, out di_748, out ds_358, out Top_749)
 	Mem367[ds_358:0x2E2B:word16] = ax_354
 	branch Mem367[ds_358:0x2E29:word16] != 0x0000 l0800_7D1D
 // DataOut:
@@ -21563,18 +21419,13 @@ l0800_7D1D:
 // SymbolicIn:
 
 l0800_7D68:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg5 = <invalid>
-	fn0800_854B(ds_358, 0x000F, 0x04, stackArg5)
+	fn0800_854B(ds_358, 0x000F, 0x04, 0x00)
 	selector ds_395
 	fn0800_8600(ds_358, SLICE(DPB(ax_378, Mem377[ds_358:0x2E29:byte] - 0x06, 0), byte, 0), out ds_395)
 	word16 bx_404 = Mem390[ds_395:0x2E2B:word16]
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
 	byte al_409 = Mem390[ds_395:(bx_404 >>u 0x08) + 0x21F2:byte]
-	byte stackArg5 = <invalid>
-	fn0800_854B(ds_395, DPB(DPB(DPB(DPB(ax_391, al_409, 0), 0x00, 8), Mem414[ds_395:(bx_404 >>u 0x08) + 0x21E2:byte], 0), 0x00, 8), SLICE(DPB(DPB(ax_391, al_409, 0), 0x00, 8), byte, 0), stackArg5)
+	word16 ax_413 = DPB(DPB(ax_391, al_409, 0), 0x00, 8)
+	fn0800_854B(ds_395, DPB(DPB(DPB(DPB(ax_391, al_409, 0), 0x00, 8), Mem414[ds_395:(bx_404 >>u 0x08) + 0x21E2:byte], 0), 0x00, 8), SLICE(ax_413, byte, 0), SLICE(ax_413, byte, 8))
 	fn0800_8600(ds_395, SLICE(DPB(ax_423, Mem422[ds_395:0x2E2B:byte] & 0xFF, 0), byte, 0), out ds_122)
 // DataOut:
 // DataOut (flags):
@@ -21582,27 +21433,20 @@ l0800_7D68:
 
 l0800_7D24:
 	word16 bx_451 = Mem367[ds_358:0x2E29:word16]
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
 	byte al_452 = Mem367[ds_358:bx_451 + 0x21DB:byte]
-	byte stackArg5 = <invalid>
-	fn0800_854B(ds_358, DPB(DPB(DPB(DPB(ax_354, al_452, 0), 0x00, 8), Mem457[ds_358:bx_451 + 0x21D4:byte], 0), 0x00, 8), SLICE(DPB(DPB(ax_354, al_452, 0), 0x00, 8), byte, 0), stackArg5)
+	word16 ax_456 = DPB(DPB(ax_354, al_452, 0), 0x00, 8)
+	fn0800_854B(ds_358, DPB(DPB(DPB(DPB(ax_354, al_452, 0), 0x00, 8), Mem457[ds_358:bx_451 + 0x21D4:byte], 0), 0x00, 8), SLICE(ax_456, byte, 0), SLICE(ax_456, byte, 8))
 	word16 bx_473 = Mem465[ds_358:0x2E2B:word16]
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
 	byte al_478 = Mem465[ds_358:(bx_473 >>u 0x08) + 0x21F2:byte]
-	byte stackArg5 = <invalid>
-	fn0800_854B(ds_358, DPB(DPB(DPB(DPB(ax_466, al_478, 0), 0x00, 8), Mem483[ds_358:(bx_473 >>u 0x08) + 0x21E2:byte], 0), 0x00, 8), SLICE(DPB(DPB(ax_466, al_478, 0), 0x00, 8), byte, 0), stackArg5)
+	word16 ax_482 = DPB(DPB(ax_466, al_478, 0), 0x00, 8)
+	fn0800_854B(ds_358, DPB(DPB(DPB(DPB(ax_466, al_478, 0), 0x00, 8), Mem483[ds_358:(bx_473 >>u 0x08) + 0x21E2:byte], 0), 0x00, 8), SLICE(ax_482, byte, 0), SLICE(ax_482, byte, 8))
 	fn0800_8600(ds_358, SLICE(DPB(ax_492, Mem491[ds_358:0x2E2B:byte] & 0xFF, 0), byte, 0), out ds_122)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_7D02:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg5 = <invalid>
-	fn0800_854B(ds_358, 0x0006, 0x03, stackArg5)
+	fn0800_854B(ds_358, 0x0006, 0x03, 0x00)
 	fn0800_8600(ds_358, SLICE(DPB(ax_526, Mem525[ds_358:0x2E2B:byte], 0), byte, 0), out ds_122)
 // DataOut:
 // DataOut (flags):
@@ -21692,10 +21536,7 @@ l0800_7F32:
 // SymbolicIn:
 
 l0800_7EFD:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg5 = <invalid>
-	fn0800_854B(ds, 0x0000, 0x01, stackArg5)
+	fn0800_854B(ds, 0x0000, 0x01, 0x00)
 	selector ds_59
 	word16 ax_55 = (word16) fn0800_8359(ds, out ds_59)
 	fn0800_8600(ds_59, SLICE(DPB(ax_55, (byte) ax_55 ^ Mem45[ds_59:0x2E4F:byte], 0), byte, 0), out ds)
@@ -21723,20 +21564,14 @@ l0800_7F31:
 // SymbolicIn:
 
 l0800_7F38:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg5 = <invalid>
-	fn0800_854B(ds, 0x0017, 0x05, stackArg5)
+	fn0800_854B(ds, 0x0017, 0x05, 0x00)
 	branch si_100 <u 0x0048 l0800_7F8F
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_7F8F:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg5 = <invalid>
-	fn0800_854B(ds, si_100 - 0x000C >>u 0x0002, 0x04, stackArg5)
+	fn0800_854B(ds, si_100 - 0x000C >>u 0x0002, 0x04, 0x00)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -21777,10 +21612,7 @@ l0800_7FC0:
 // SymbolicIn:
 
 l0800_7F4B:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg5 = <invalid>
-	fn0800_854B(ds, 0x000F, 0x04, stackArg5)
+	fn0800_854B(ds, 0x000F, 0x04, 0x00)
 	word16 di_204 = 0x0000
 // DataOut:
 // DataOut (flags):
@@ -21838,10 +21670,7 @@ l0800_7EF6:
 // SymbolicIn:
 
 l0800_7EC1:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg5 = <invalid>
-	fn0800_854B(ds, 0x0000, 0x01, stackArg5)
+	fn0800_854B(ds, 0x0000, 0x01, 0x00)
 	selector ds_293
 	word16 ax_289 = (word16) fn0800_8359(ds, out ds_293)
 	fn0800_8600(ds_293, SLICE(DPB(ax_289, (byte) ax_289 ^ Mem279[ds_293:0x2E4F:byte], 0), byte, 0), out ds)
@@ -22530,10 +22359,7 @@ l0800_847F:
 // SymbolicIn:
 
 l0800_8475:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg5 = <invalid>
-	fn0800_854B(ds, wArg02, SLICE(wArg04, byte, 0), stackArg5)
+	fn0800_854B(ds, wArg02, SLICE(wArg04, byte, 0), SLICE(wArg04, byte, 8))
 	return
 // DataOut:
 // DataOut (flags):
@@ -22698,26 +22524,25 @@ l0800_84B2:
 void fn0800_854B(selector ds, word16 wArg02, word16 wArg04, byte bArg05)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..7]
+// MayUse:  ds:[0..15] ss:[0..15] Stack +0002:[0..15] Stack +0004:[0..7] Stack +0005:[0..7]
 // LiveOut:
 // Trashed: SCZO ax cx Top
 // Preserved: bp bx di ds dx es si sp
 fn0800_854B_entry:
-	byte bArg05_182 = SLICE(wArg04, byte, 8)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_854B:
 	word16 di_160 = 0x0001 << bArg04 - 0x01
-	byte bArg05_185 = SEQ(bArg05_182, bArg04)
+	word16 wArg04_171 = SEQ(bArg05, bArg04)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_85EF:
-	bArg05_185 = SLICE(bArg05_185 - 0x0001, byte, 8) (alias)
-	branch bArg05_185 == 0x0000 l0800_85FC
+	wArg04_171 = wArg04_171 - 0x0001
+	branch wArg04_171 == 0x0000 l0800_85FC
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -22768,8 +22593,6 @@ l0800_8578:
 // SymbolicIn:
 
 l0800_8598:
-	bArg05_185 = SLICE(bArg05_185, byte, 8) (alias)
-	bArg05_185 = SLICE(bArg05_185, byte, 8) (alias)
 	branch Mem79[ds:0x4E82:word16] != 0x0000 l0800_8586
 // DataOut:
 // DataOut (flags):
@@ -28356,9 +28179,9 @@ l0800_9895:
 // SymbolicIn:
 
 l0800_9898:
-	psegArg06_1650 = SLICE(psegArg06_1650, selector, 16) (alias)
-	word16 si_1134 = (word16) psegArg06_1650
-	selector es_1009 = SLICE(psegArg06_1650, selector, 16)
+	selector psegArg06_1805 = SLICE(ptrArg04, selector, 16)
+	word16 si_1134 = (word16) ptrArg04
+	selector es_1009 = SLICE(ptrArg04, selector, 16)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -28462,7 +28285,7 @@ l0800_98F7:
 	word16 dx_347
 	word16 ax_353
 	bx = bx << 0x0001
-	cx_2073 = cx
+	cx_2058 = cx
 	switch (bx << 0x0001) { l0800_9917 l0800_9901 l0800_994C l0800_990C l0800_997A l0800_9987 l0800_99C5 l0800_99CC l0800_99D1 l0800_9935 l0800_99FA l0800_99D8 l0800_99DC l0800_99E0 l0800_9A55 l0800_9B02 l0800_9AA5 l0800_9AC5 l0800_9C46 l0800_9C82 l0800_9C82 l0800_9C82 l0800_9927 l0800_992D }
 // DataOut:
 // DataOut (flags):
@@ -28486,6 +28309,8 @@ l0800_9C46:
 	word16 di_101
 	selector es_108
 	branch (wLoc04_1325 & 0x0020) != 0x0000 l0800_9C5E
+	ptrArg04 = SEQ(psegArg06_1805, si_1134)
+	ptrArg04 = SEQ(psegArg06_1805, si_1134)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -28532,6 +28357,8 @@ l0800_9C7F:
 l0800_9AC5:
 	bool Z_156
 	branch (wLoc04_1325 & 0x0020) != 0x0000 l0800_9AE2
+	ptrArg04 = SEQ(psegArg06_1805, si_1134)
+	ptrArg04 = SEQ(psegArg06_1805, si_1134)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -28600,6 +28427,7 @@ l0800_9AA5:
 	sp_1025 = sp_191 + 2
 	di_142 = fp - 0x0047
 	cx_172 = 0x0001
+	ptrArg04 = SEQ(psegArg06_1805, si_1134)
 	Mem574 = Mem200
 // DataOut:
 // DataOut (flags):
@@ -28608,6 +28436,8 @@ l0800_9AA5:
 l0800_9B02:
 	word16 cx_206 = wLoc0C_1328
 	branch wLoc0C_1328 >= 0x0000 l0800_9B15
+	ptrArg04 = SEQ(psegArg06_1805, si_1134)
+	ptrArg04 = SEQ(psegArg06_1805, si_1134)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -28665,6 +28495,8 @@ l0800_9A55:
 	word16 di_266 = fp - 0x0048
 	wArg02 = wArg02 + 0x0002
 	branch (wLoc04_1325 & 0x0020) == 0x0000 l0800_9A80
+	ptrArg04 = SEQ(psegArg06_1805, si_1134)
+	ptrArg04 = SEQ(psegArg06_1805, si_1134)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -28772,7 +28604,8 @@ l0800_9A0A:
 	word16 bx_460 = DPB(bx, bh_333, 8)
 	word16 di_362 = di_361 + 0x0001
 	branch (wLoc04_1325 & 0x0010) == 0x0000 l0800_9A1B
-	psegArg06_1650 = SEQ(psegArg06_1650, si_1134)
+	ptrArg04 = SEQ(psegArg06_1805, si_1134)
+	ptrArg04 = SEQ(psegArg06_1805, si_1134)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -28785,12 +28618,9 @@ l0800_9A16:
 // SymbolicIn:
 
 l0800_9A1B:
-	psegArg06_1650 = SLICE(psegArg06_1650, selector, 16) (alias)
-	psegArg06_1650 = SLICE(psegArg06_1650, selector, 16) (alias)
-	psegArg06_1650 = SLICE(psegArg06_1650, selector, 16) (alias)
 	wArg02 = di_362
 	ax = ax_353
-	bx_2071 = bx_455
+	bx_2056 = bx_455
 	branch ax_353 != 0x0000 l0800_9A32
 // DataOut:
 // DataOut (flags):
@@ -28798,7 +28628,7 @@ l0800_9A1B:
 
 l0800_9A25:
 	dx = dx_347
-	bx_2072 = bx_455
+	bx_2057 = bx_455
 	branch dx_347 != 0x0000 l0800_9A32
 // DataOut:
 // DataOut (flags):
@@ -28811,7 +28641,7 @@ l0800_9A32:
 // SymbolicIn:
 
 l0800_9A29:
-	bx_2070 = bx
+	bx_2055 = bx
 	branch wLoc0C_1328 != 0x0000 l0800_9A36
 // DataOut:
 // DataOut (flags):
@@ -28829,7 +28659,6 @@ l0800_9A36:
 	Mem461[ss:sp_410 - 12:word16] = bx_460
 	fn0800_8D87(Mem461[ss:sp_410 - 10:byte], Mem461[ss:sp_410 - 8:word16], Mem461[ss:sp_410 - 6:segptr32], Mem461[ss:sp_410 - 2:word16], Mem461[ss:sp_410:word16], out di_142)
 	Mem475[ss:sp_410:word16] = ss
-	psegArg06_1650 = SLICE(psegArg06_1650, selector, 16) (alias)
 	es_140 = Mem475[ss:sp_410:selector]
 	sp_1025 = sp_410 + 2
 	dx_231 = wLoc0C_1328
@@ -28849,7 +28678,6 @@ l0800_9A4F:
 // SymbolicIn:
 
 l0800_9B46:
-	psegArg06_1650 = SLICE(psegArg06_1650, selector, 16) (alias)
 	branch (wLoc04_1325 & 0x0008) == 0x0000 l0800_9B65
 // DataOut:
 // DataOut (flags):
@@ -28863,7 +28691,6 @@ l0800_9B4D:
 // SymbolicIn:
 
 l0800_9B54:
-	psegArg06_1650 = SLICE(psegArg06_1650, selector, 16) (alias)
 	word16 cx_503 = fn0800_9842(di_142, es_140)
 	branch Mem508[es_140:di_142:byte] != 0x2D l0800_9B5E
 // DataOut:
@@ -28877,7 +28704,6 @@ l0800_9B5D:
 // SymbolicIn:
 
 l0800_9B5E:
-	psegArg06_1650 = SLICE(psegArg06_1650, selector, 16) (alias)
 	dx_231 = dx_231 - cx_503
 	branch dx_231 <= 0x0000 l0800_9B65
 // DataOut:
@@ -28892,8 +28718,6 @@ l0800_9B62:
 // SymbolicIn:
 
 l0800_9B65:
-	psegArg06_1650 = SLICE(psegArg06_1650, selector, 16) (alias)
-	psegArg06_1650 = SLICE(psegArg06_1650, selector, 16) (alias)
 	branch Mem528[es_140:di_142:byte] == 0x2D l0800_9B76
 // DataOut:
 // DataOut (flags):
@@ -28913,7 +28737,6 @@ l0800_9B72:
 // SymbolicIn:
 
 l0800_9B76:
-	psegArg06_1650 = SLICE(psegArg06_1650, selector, 16) (alias)
 	branch wLoc10_1324 <= 0x0000 l0800_9B86
 // DataOut:
 // DataOut (flags):
@@ -28939,10 +28762,6 @@ l0800_9B86:
 // SymbolicIn:
 
 l0800_9B89:
-	psegArg06_1650 = SLICE(psegArg06_1650, selector, 16) (alias)
-	psegArg06_1650 = SLICE(psegArg06_1650, selector, 16) (alias)
-	psegArg06_1650 = SLICE(psegArg06_1650, selector, 16) (alias)
-	psegArg06_1650 = SLICE(psegArg06_1650, selector, 16) (alias)
 	word16 si_1206 = di_142
 	word16 bx_578 = wLoc0A_1327
 	ax = wLoc04_1325 & 0x0005
@@ -28974,7 +28793,6 @@ l0800_9BB6:
 
 l0800_9BBB:
 	word16 v40_599 = wLoc10_1324 - 0x0002
-	psegArg06_1650 = SLICE(psegArg06_1650, selector, 16) (alias)
 	wLoc04_1325 = wLoc04_1325 | 0x0040
 	bx_578 = wLoc0A_1327 - 0x0002
 	wLoc10_1324 = v40_599
@@ -29010,7 +28828,6 @@ l0800_9BAF:
 // SymbolicIn:
 
 l0800_9BCC:
-	psegArg06_1650 = SLICE(psegArg06_1650, selector, 16) (alias)
 	cx = cx_172 + wLoc10_1324
 	branch (wLoc04_1325 & 0x0002) != 0x0000 l0800_9BE2
 // DataOut:
@@ -29023,7 +28840,6 @@ l0800_9BD6:
 // SymbolicIn:
 
 l0800_9BDE:
-	psegArg06_1650 = SLICE(psegArg06_1650, selector, 16) (alias)
 	branch bx_578 > cx l0800_9BD8
 // DataOut:
 // DataOut (flags):
@@ -29039,7 +28855,6 @@ l0800_9BD8:
 // SymbolicIn:
 
 l0800_9BE2:
-	psegArg06_1650 = SLICE(psegArg06_1650, selector, 16) (alias)
 	branch (wLoc04_1325 & 0x0040) == 0x0000 l0800_9BF4
 // DataOut:
 // DataOut (flags):
@@ -29054,7 +28869,6 @@ l0800_9BE9:
 // SymbolicIn:
 
 l0800_9BF4:
-	psegArg06_1650 = SLICE(psegArg06_1650, selector, 16) (alias)
 	dx = wLoc10_1324
 	branch wLoc10_1324 <= 0x0000 l0800_9C22
 // DataOut:
@@ -29105,12 +28919,10 @@ l0800_9C15:
 // SymbolicIn:
 
 l0800_9C19:
-	psegArg06_1650 = SLICE(ptrArg04_2075, selector, 16) (alias)
 	ax = DPB(ax, 0x30, 0) (alias)
 	di_1010 = fn0800_984F(0x30, cx_782, cx_714, bx_578, fp - 2, di_1010, es_140)
 	sp_1025 = sp_1025 + 0xFFFE
 	cx_782 = cx_782 - 0x0001
-	ptrArg04_2075 = psegArg06_1650
 	branch cx_782 != 0x0000 l0800_9C19
 // DataOut:
 // DataOut (flags):
@@ -29124,7 +28936,6 @@ l0800_9C20:
 // SymbolicIn:
 
 l0800_9C22:
-	psegArg06_1650 = SLICE(psegArg06_1650, selector, 16) (alias)
 	branch cx == 0x0000 l0800_9C36
 // DataOut:
 // DataOut (flags):
@@ -29140,7 +28951,6 @@ l0800_9C26:
 	byte al_813 = Mem812[ds:si_1206:byte]
 	Mem817[ss:di_1010:byte] = al_813
 	byte v45_820 = bLoc16_1529 - 0x01
-	psegArg06_1650 = SLICE(psegArg06_1650, selector, 16) (alias)
 	ax = DPB(ax, al_813, 0) (alias)
 	si_1206 = si_1206 + 0x0001
 	di_1010 = di_1010 + 0x0001
@@ -29157,7 +28967,6 @@ l0800_9C31:
 // SymbolicIn:
 
 l0800_9C34:
-	psegArg06_1650 = SLICE(psegArg06_1650, selector, 16) (alias)
 	cx = cx - 0x0001
 	Mem812 = Mem821
 	Mem1113 = Mem821
@@ -29167,7 +28976,6 @@ l0800_9C34:
 // SymbolicIn:
 
 l0800_9C36:
-	psegArg06_1650 = SLICE(psegArg06_1650, selector, 16) (alias)
 	bx = bx_578
 	branch bx_578 <= 0x0000 l0800_9C43
 // DataOut:
@@ -29181,12 +28989,10 @@ l0800_9C3A:
 // SymbolicIn:
 
 l0800_9C3C:
-	psegArg06_1650 = SLICE(ptrArg04_2076, selector, 16) (alias)
 	ax = DPB(ax, 0x20, 0) (alias)
 	di_1010 = fn0800_984F(0x20, cx, dx, bx_578, fp - 2, di_1010, es_140)
 	sp_1025 = sp_1025 + 0xFFFE
 	cx = cx - 0x0001
-	ptrArg04_2076 = psegArg06_1650
 	branch cx != 0x0000 l0800_9C3C
 // DataOut:
 // DataOut (flags):
@@ -29203,7 +29009,7 @@ l0800_9A2F:
 // SymbolicIn:
 
 l0800_9935:
-	cx_2074 = cx
+	cx_2059 = cx
 	branch ch_1223 >u 0x00 l0800_9987
 // DataOut:
 // DataOut (flags):
@@ -29284,8 +29090,8 @@ l0800_99B5:
 
 l0800_9990:
 	ch_1223 = 0x02
-	cx_1242 = DPB(cx_2073, 0x02, 8) (alias)
-	cx_1233 = DPB(cx_2073, 0x02, 8) (alias)
+	cx_1242 = DPB(cx_2058, 0x02, 8) (alias)
+	cx_1233 = DPB(cx_2058, 0x02, 8) (alias)
 	wLoc0A_1327 = ax_891
 	ax_1183 = wLoc0A_1327
 	Mem995 = Mem917
@@ -29443,14 +29249,14 @@ l0800_98F4:
 
 l0800_9C82:
 	word16 si_1008 = si_1134
-	es_1009 = psegArg06_1650
+	es_1009 = psegArg06_1805
 	byte al_1011 = 0x25
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_9C8D:
-	di_1010 = fn0800_984F(al_1011, cx, dx, bx, fp - 2, di_1010, psegArg06_1650)
+	di_1010 = fn0800_984F(al_1011, cx, dx, bx, fp - 2, di_1010, psegArg06_1805)
 	byte al_1030 = Mem1005[ds:si_1008:byte]
 	sp_1025 = sp_1025 + 0xFFFE
 	si_1008 = si_1008 + 0x0001
@@ -30972,12 +30778,11 @@ fn0800_A215_exit:
 word16 fn0800_A2A3(selector ds, word16 wArg02, word16 wArg04, byte bArg05, segptr32 ptrArg06, word16 wArg0A, ptr16 & cxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ds:[0..15] Stack +0004:[0..7] Stack +0006:[0..15]
+// MayUse:  ds:[0..15] Stack +0004:[0..15] Stack +0005:[0..7] Stack +0006:[0..15]
 // LiveOut: ax cx
 // Trashed: SCZO ax bx cx dx Top
 // Preserved: bp ds sp
 fn0800_A2A3_entry:
-	byte bArg05_48 = SLICE(wArg04, byte, 8)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -30987,7 +30792,7 @@ l0800_A2A3:
 	word16 dx_33 = (word16) ptrArg06
 	word16 ax_23 = DPB(DPB(ax, 0x44, 8), bArg04, 0)
 	branch C l0800_A2C6
-	byte bArg05_50 = SLICE(SEQ(bArg05_48, bArg04), byte, 8)
+	word16 wArg04_48 = SEQ(bArg05, bArg04)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -30999,7 +30804,7 @@ l0800_A2C6:
 // SymbolicIn:
 
 l0800_A2BA:
-	branch SEQ(bArg05_50, bArg04) != 0x0000 l0800_A2C4
+	branch wArg04_48 != 0x0000 l0800_A2C4
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -32307,10 +32112,10 @@ l0800_A877:
 // SymbolicIn:
 
 l0800_A8A8:
-	ptrLoc06_96 = SLICE(ptrLoc06_86, word16, 16) (alias)
+	wLoc04_87 = SLICE(ptrLoc06_86, word16, 16) (alias)
 	wLoc06_91 = SLICE(ptrLoc06_86, word16, 0) (alias)
 	word16 wLoc06_91 = SLICE(ptrLoc06_86, word16, 0)
-	segptr32 ptrLoc06_96 = SLICE(ptrLoc06_86, word16, 16)
+	word16 wLoc04_87 = SLICE(ptrLoc06_86, word16, 16)
 	si_20 = si_20 - 0x0001
 	branch si_20 != 0x0000 l0800_A88F
 // DataOut:
@@ -32326,7 +32131,7 @@ l0800_A88F:
 
 l0800_A89A:
 	word16 sp_41 = sp_13 - 2
-	Mem42[ss:sp_41:word16] = ptrLoc06_96
+	Mem42[ss:sp_41:word16] = wLoc04_87
 	Mem44[ss:sp_41 - 2:word16] = bx
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
@@ -32334,7 +32139,7 @@ l0800_A89A:
 	// Please report this issue at https://github.com/uxmal/reko
 	segptr32 stackArg2 = <invalid>
 	word16 stackArg4 = <invalid>
-	fn0800_A6B7(ds, stackArg2, stackArg4, out dx_114, out bx, out bp_115)
+	fn0800_A6B7(ds, stackArg2, stackArg4, out dx_113, out bx, out bp_114)
 	word16 sp_45 = <invalid>
 	sp_13 = sp_45 + 4
 // DataOut:
@@ -32342,7 +32147,7 @@ l0800_A89A:
 // SymbolicIn:
 
 l0800_A8A4:
-	ptrLoc06_86 = SEQ(SLICE(ptrLoc06_96, word16, 16), wLoc06_91 + 0x0014)
+	ptrLoc06_86 = SEQ(wLoc04_87, wLoc06_91 + 0x0014)
 	Mem32 = Mem65
 // DataOut:
 // DataOut (flags):
@@ -33207,8 +33012,8 @@ l0800_AC67:
 
 l0800_ACA3:
 	word16 wLoc06_116 = SLICE(ptrLoc06_115, word16, 0)
-	word16 wLoc04_132 = SLICE(ptrLoc06_115, word16, 16)
-	word16 wLoc04_134 = SLICE(ptrLoc06_115, word16, 16)
+	word16 wLoc04_131 = SLICE(ptrLoc06_115, word16, 16)
+	word16 wLoc04_133 = SLICE(ptrLoc06_115, word16, 16)
 	cx_108 = cx_108 - 0x0001
 	branch cx_108 != 0x0000 l0800_AC96
 // DataOut:
@@ -33217,8 +33022,8 @@ l0800_ACA3:
 
 l0800_AC96:
 	branch Mem66[ptrLoc06_115:byte] != 0x0A l0800_ACA3
-	ptrLoc06_115 = SEQ(wLoc04_132, wLoc06_116 + 0x0001)
-	ptrLoc06_115 = SEQ(wLoc04_134, wLoc06_116 + 0x0001)
+	ptrLoc06_115 = SEQ(wLoc04_131, wLoc06_116 + 0x0001)
+	ptrLoc06_115 = SEQ(wLoc04_133, wLoc06_116 + 0x0001)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -33230,15 +33035,11 @@ l0800_ACA2:
 // SymbolicIn:
 
 l0800_AC7E:
-	segptr32 ptrLoc06_120 = SEQ(ax_48, dx_49)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_AC8D:
-	word16 wLoc04_121 = SLICE(ptrLoc06_120, word16, 16)
-	ptrLoc06_120 = SLICE(ptrLoc06_120, word16, 16) (alias)
-	ptrLoc06_120 = SLICE(ptrLoc06_120, word16, 16) (alias)
 	cx_108 = cx_108 - 0x0001
 	branch cx_108 != 0x0000 l0800_AC80
 // DataOut:
@@ -33248,7 +33049,7 @@ l0800_AC8D:
 l0800_AC80:
 	word16 v18_84 = wLoc06_114 - 0x0001
 	wLoc06_114 = v18_84
-	branch Mem85[SEQ(wLoc04_121, v18_84):byte] != 0x0A l0800_AC8D
+	branch Mem85[SEQ(ax_48, v18_84):byte] != 0x0A l0800_AC8D
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -33943,8 +33744,8 @@ fn0800_AFCB_entry:
 // SymbolicIn:
 
 l0800_AFCB:
-	word16 ax_127
 	word16 dx_129
+	word16 ax_127
 	selector es_17 = SLICE(ptrArg02, selector, 16)
 	word16 di_19 = (word16) ptrArg02
 	branch (es_17 | di_19) == 0x0000 l0800_AFFC
@@ -33966,10 +33767,10 @@ l0800_AFE5:
 // SymbolicIn:
 
 l0800_AFE5_1:
-	di_19 = di_263 + 0x0001
+	di_19 = di_257 + 0x0001
 	cx_26 = cx_26 - 0x0001
-	di_263 = di_19
-	branch Mem15[es_17:di_263:byte] == 0x00 l0800_AFE5
+	di_257 = di_19
+	branch Mem15[es_17:di_257:byte] == 0x00 l0800_AFE5
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -33984,9 +33785,9 @@ l0800_AFE7:
 l0800_AFEC:
 	ptr32 es_di_46 = Mem15[ds:0x26AA:segptr32]
 	word16 di_151 = (word16) es_di_46
+	selector es_47 = SLICE(es_di_46, selector, 16)
 	word16 wLoc06_166 = di_151
-	branch (SLICE(es_di_46, selector, 16) | di_151) != 0x0000 l0800_B009
-	segptr32 ptrLoc06_176 = es_di_46
+	branch (es_47 | di_151) != 0x0000 l0800_B009
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -33995,7 +33796,6 @@ l0800_B009:
 	ptr32 es_di_63 = Mem62[ds:di_151:segptr32]
 	selector es_64 = SLICE(es_di_63, selector, 16)
 	word16 di_124 = (word16) es_di_63
-	ptrLoc06_176 = SLICE(ptrLoc06_176, word16, 16) (alias)
 	word16 cx_79 = cx_38 - 0x0001
 	branch (es_64 | di_124) == 0x0000 l0800_AFFC
 // DataOut:
@@ -34030,19 +33830,18 @@ l0800_B025:
 // SymbolicIn:
 
 l0800_B029:
-	ptrLoc06_176 = SLICE(ptrLoc06_176, word16, 16) (alias)
 	branch cx_79 == 0x0000 l0800_B02B
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_B029_1:
-	Z_113 = SLICE(cond(Mem86[ds_159:si_264:byte] - Mem86[es_64:di_124:byte]), bool, 2) (alias)
-	si_160 = si_264 + 0x0001
+	Z_113 = SLICE(cond(Mem86[ds_159:si_258:byte] - Mem86[es_64:di_124:byte]), bool, 2) (alias)
+	si_160 = si_258 + 0x0001
 	di_124 = di_124 + 0x0001
 	cx_79 = cx_79 - 0x0001
-	si_264 = si_160
-	branch Mem86[ds_159:si_264:byte] != Mem86[es_64:di_124:byte] l0800_B029
+	si_258 = si_160
+	branch Mem86[ds_159:si_258:byte] != Mem86[es_64:di_124:byte] l0800_B029
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -34056,8 +33855,7 @@ l0800_B02B:
 l0800_B002:
 	word16 v23_120 = wLoc06_166 + 0x0004
 	wLoc06_166 = v23_120
-	di_151 = (word16) SEQ(SLICE(ptrLoc06_176, word16, 16), v23_120) (alias)
-	ptrLoc06_176 = SEQ(SLICE(ptrLoc06_176, word16, 16), v23_120)
+	di_151 = (word16) SEQ(es_47, v23_120) (alias)
 	Mem62 = Mem121
 // DataOut:
 // DataOut (flags):
@@ -34523,20 +34321,20 @@ l0800_B15C:
 	word16 stackArg8 = <invalid>
 	word16 cx_110
 	word16 ax_42 = fn0800_A53C(ds, SEQ(wArg04, wArg02), 0x00, stackArg8, out cx_110)
-	wLoc0A_426 = SLICE(ptrLoc0A_396, word16, 0) (alias)
-	wLoc0A_426 = SLICE(ptrLoc0A_396, word16, 0) (alias)
-	wLoc0A_426 = SLICE(ptrLoc0A_396, word16, 0) (alias)
-	wLoc0A_426 = SLICE(ptrLoc0A_396, word16, 0) (alias)
-	word16 wLoc0A_426 = SLICE(ptrLoc0A_396, word16, 0)
-	wLoc0A_426 = SLICE(ptrLoc0A_396, word16, 0) (alias)
-	wLoc0A_426 = SLICE(ptrLoc0A_396, word16, 0) (alias)
-	wLoc08_440 = SLICE(ptrLoc0A_396, word16, 16) (alias)
-	wLoc08_440 = SLICE(ptrLoc0A_396, word16, 16) (alias)
-	wLoc08_440 = SLICE(ptrLoc0A_396, word16, 16) (alias)
-	wLoc08_440 = SLICE(ptrLoc0A_396, word16, 16) (alias)
-	word16 wLoc08_440 = SLICE(ptrLoc0A_396, word16, 16)
-	wLoc08_440 = SLICE(ptrLoc0A_396, word16, 16) (alias)
-	wLoc08_440 = SLICE(ptrLoc0A_396, word16, 16) (alias)
+	wLoc0A_428 = SLICE(ptrLoc0A_396, word16, 0) (alias)
+	wLoc0A_428 = SLICE(ptrLoc0A_396, word16, 0) (alias)
+	wLoc0A_428 = SLICE(ptrLoc0A_396, word16, 0) (alias)
+	wLoc0A_428 = SLICE(ptrLoc0A_396, word16, 0) (alias)
+	word16 wLoc0A_428 = SLICE(ptrLoc0A_396, word16, 0)
+	wLoc0A_428 = SLICE(ptrLoc0A_396, word16, 0) (alias)
+	wLoc0A_428 = SLICE(ptrLoc0A_396, word16, 0) (alias)
+	wLoc08_442 = SLICE(ptrLoc0A_396, word16, 16) (alias)
+	wLoc08_442 = SLICE(ptrLoc0A_396, word16, 16) (alias)
+	wLoc08_442 = SLICE(ptrLoc0A_396, word16, 16) (alias)
+	wLoc08_442 = SLICE(ptrLoc0A_396, word16, 16) (alias)
+	word16 wLoc08_442 = SLICE(ptrLoc0A_396, word16, 16)
+	wLoc08_442 = SLICE(ptrLoc0A_396, word16, 16) (alias)
+	wLoc08_442 = SLICE(ptrLoc0A_396, word16, 16) (alias)
 	word16 wLoc04_369 = ax_42
 	branch (si_16 & 0x0100) == 0x0000 l0800_B1F2
 // DataOut:
@@ -34655,12 +34453,9 @@ l0800_B205:
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg2 = <invalid>
-	byte stackArg5 = <invalid>
 	word16 stackArg10 = <invalid>
-	word16 ax_184 = fn0800_A2A3(ds, stackArg2, 0x00, stackArg5, ptrLoc0A_396, stackArg10, out cx_529)
+	word16 ax_184 = fn0800_A2A3(ds, stackArg2, 0x00, 0x00, ptrLoc0A_396, stackArg10, out cx_530)
 	cx_110 = 0x0000
 	branch (ax_184 & 0x0080) == 0x0000 l0800_B237
 // DataOut:
@@ -34691,12 +34486,9 @@ l0800_B220:
 	// Please report this issue at https://github.com/uxmal/reko
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg2 = <invalid>
-	byte stackArg5 = <invalid>
 	word16 stackArg10 = <invalid>
-	fn0800_A2A3(ds, stackArg2, 0x01, stackArg5, (uint32) (uint16) (ax_184 & 0x00FF | 0x0020), stackArg10, out cx_110)
+	fn0800_A2A3(ds, stackArg2, 0x01, 0x00, (uint32) (uint16) (ax_184 & 0x00FF | 0x0020), stackArg10, out cx_110)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -34804,8 +34596,8 @@ l0800_B197:
 
 l0800_B29A:
 	cxOut = cx_110
-	siOut = wLoc08_440
-	diOut = wLoc0A_426
+	siOut = wLoc08_442
+	diOut = wLoc0A_428
 	return (byte) ax_324
 // DataOut:
 // DataOut (flags):
@@ -34828,8 +34620,8 @@ word16 fn0800_B2A0(selector ds, segptr32 ptrArg02, word16 wArg06, byte bArg07, p
 fn0800_B2A0_entry:
 	byte bArg06_68 = SLICE(wArg06, byte, 0)
 	bArg06_68 = SLICE(wArg06, byte, 0) (alias)
-	byte bArg07_74 = SLICE(wArg06, byte, 8)
-	bArg07_74 = SLICE(wArg06, byte, 8) (alias)
+	byte bArg07_73 = SLICE(wArg06, byte, 8)
+	bArg07_73 = SLICE(wArg06, byte, 8) (alias)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -34857,11 +34649,10 @@ l0800_B2B9:
 l0800_B2BB:
 	word16 ax_42
 	byte cl_29 = bArg06_68 & 0xF0
-	byte bArg07_76 = SLICE(bArg07_74, byte, 8)
-	word16 cx_88 = DPB(wArg06, cl_29, 0)
+	word16 cx_87 = DPB(wArg06, cl_29, 0)
 	word16 ax_36
 	branch msdos_open_file(ptrArg02, al_10 | cl_29, out ax_36) l0800_B2E7
-	word16 wArg06_77 = SEQ(bArg07_76, bArg06_68)
+	word16 wArg06_76 = SEQ(bArg07_73, bArg06_68)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -34873,14 +34664,14 @@ l0800_B2E7:
 // SymbolicIn:
 
 l0800_B2CD:
-	Mem55[ds:(ax_36 << 0x0001) + 0x24EA:word16] = wArg06_77 & 0xB8FF | 0x8000
+	Mem55[ds:(ax_36 << 0x0001) + 0x24EA:word16] = wArg06_76 & 0xB8FF | 0x8000
 	ax_42 = ax_36
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_B2EB:
-	cxOut = cx_88
+	cxOut = cx_87
 	return ax_42
 // DataOut:
 // DataOut (flags):
@@ -34972,16 +34763,16 @@ word16 fn0800_B324(selector ds, byte bArg02, segptr32 ptrArg04, word16 wArg06, p
 fn0800_B324_entry:
 	word16 wArg04_313 = SLICE(ptrArg04, word16, 0)
 	word16 wArg06_317 = SLICE(ptrArg04, word16, 16)
-	word16 wArg06_340 = SLICE(ptrArg04, word16, 16)
-	word16 wArg06_347 = SLICE(ptrArg04, word16, 16)
-	word16 wArg04_351 = SLICE(ptrArg04, word16, 0)
+	word16 wArg06_331 = SLICE(ptrArg04, word16, 16)
+	word16 wArg06_335 = SLICE(ptrArg04, word16, 16)
+	word16 wArg04_339 = SLICE(ptrArg04, word16, 0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_B324:
-	word16 ax_127
 	word16 ax_286
+	word16 ax_127
 	Mem14[ds:0x4EE6:byte] = bArg02
 	word16 bp_155 = fp - 2
 	word16 sp_135 = fp - 4
@@ -35019,43 +34810,33 @@ l0800_B421:
 // SymbolicIn:
 
 l0800_B435:
-	fn0800_8E29(ds, (int16) Mem56[es_38:wArg04_313 + 0x0004:byte], 0x0000, 0x0000, 0x02, out cx_431, out dx_432, out bx_433)
+	fn0800_8E29(ds, (int16) Mem56[es_38:wArg04_313 + 0x0004:byte], 0x0000, 0x0000, 0x02, out cx_419, out dx_420, out bx_421)
 	ptrArg04 = SEQ(wArg06_317, wArg04_313)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_B44C:
-	segptr32 ptrArg04_336
-	word16 wArg04_328 = SLICE(ptrArg04, word16, 0)
-	word16 wArg06_329 = SLICE(ptrArg04, word16, 16)
-	ptrArg04_327 = SLICE(ptrArg04, word16, 0) (alias)
-	word16 wArg06_332 = SLICE(ptrArg04, word16, 16)
-	word16 wArg06_337 = SLICE(ptrArg04, word16, 16)
 	branch Mem73[ds:0x4EE6:byte] != 0x0A l0800_B478
-	segptr32 ptrArg04_327 = SEQ(wArg06_329, wArg04_328)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_B453:
 	branch (Mem73[ptrArg04 + 0x0002:word16] & 0x0040) != 0x0000 l0800_B478
-	ptrArg04_327 = SEQ(wArg06_332, ptrArg04_327)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_B45E:
-	ax_127 = fn0800_C779(ds, (int16) Mem92[ptrArg04 + 0x0004:byte], SEQ(ds, 0x26AE), 0x0001, out cx, out dx, out bx_434)
+	ax_127 = fn0800_C779(ds, (int16) Mem92[ptrArg04 + 0x0004:byte], SEQ(ds, 0x26AE), 0x0001, out cx, out dx, out bx_422)
 	branch ax_127 != 0x0001 l0800_B495
-	ptrArg04_336 = SEQ(wArg06_337, ptrArg04_327)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_B478:
-	ptrArg04_336 = SLICE(ptrArg04_327, word16, 16) (alias)
-	ax_127 = fn0800_C779(ds, (int16) Mem118[ptrArg04_327 + 0x0004:byte], SEQ(ds, 0x4EE6), 0x0001, out cx, out dx, out bx_128)
+	ax_127 = fn0800_C779(ds, (int16) Mem118[ptrArg04 + 0x0004:byte], SEQ(ds, 0x4EE6), 0x0001, out cx, out dx, out bx_128)
 	sp_135 = fp - 0x0004
 	branch ax_127 == 0x0001 l0800_B4A3
 // DataOut:
@@ -35063,12 +34844,9 @@ l0800_B478:
 // SymbolicIn:
 
 l0800_B495:
-	word16 wArg04_344 = SLICE(ptrArg04_336, word16, 0)
-	word16 wArg06_345 = SLICE(ptrArg04_336, word16, 16)
 	sp_135 = fp - 0x0004
-	bx_128 = (word16) ptrArg04_336 (alias)
-	branch (Mem140[ptrArg04_336 + 0x0002:word16] & 0x0200) != 0x0000 l0800_B4A3
-	ptrArg04 = SEQ(wArg06_345, wArg04_344)
+	bx_128 = (word16) ptrArg04 (alias)
+	branch (Mem140[ptrArg04 + 0x0002:word16] & 0x0200) != 0x0000 l0800_B4A3
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -35085,7 +34863,7 @@ l0800_B3B6:
 // SymbolicIn:
 
 l0800_B3BC:
-	word16 ax_154 = fn0800_A6B7(ds, bx_31, wArg06_340, out dx, out bx_128, out bp_155)
+	word16 ax_154 = fn0800_A6B7(ds, bx_31, wArg06_331, out dx, out bx_128, out bp_155)
 	word16 sp_160 = <invalid>
 	cx = Mem153[ss:sp_160 + 2:word16]
 	sp_135 = sp_160 + 4
@@ -35125,7 +34903,7 @@ l0800_B409:
 	word16 sp_204 = sp_135 - 2
 	Mem205[ss:sp_204:word16] = Mem189[ss:bp_155 + 0x0008:word16]
 	Mem208[ss:sp_204 - 2:word16] = Mem205[ss:bp_155 + 0x0006:word16]
-	word16 ax_210 = fn0800_A6B7(ds, Mem208[ss:sp_204 - 2:word16], Mem208[ss:sp_204:word16], out dx, out bx_128, out bp_430)
+	word16 ax_210 = fn0800_A6B7(ds, Mem208[ss:sp_204 - 2:word16], Mem208[ss:sp_204:word16], out dx, out bx_128, out bp_418)
 	word16 sp_216 = <invalid>
 	cx = Mem208[ss:sp_216 + 2:word16]
 	sp_135 = sp_216 + 4
@@ -35189,7 +34967,7 @@ l0800_B364:
 // SymbolicIn:
 
 l0800_B36E:
-	word16 ax_267 = fn0800_A6B7(ds, wArg04_351, wArg06_347, out dx, out bx_128, out bp_435)
+	word16 ax_267 = fn0800_A6B7(ds, wArg04_339, wArg06_335, out dx, out bx_128, out bp_423)
 	word16 sp_273 = <invalid>
 	cx = Mem265[ss:sp_273 + 2:word16]
 	sp_135 = sp_273 + 4
@@ -36386,7 +36164,7 @@ word16 fn0800_BA89(selector ds, segptr32 ptrArg02, word16 wArg04, word16 wArg06,
 fn0800_BA89_entry:
 	word16 wArg02_229 = SLICE(ptrArg02, word16, 0)
 	word16 wArg02_230 = SLICE(ptrArg02, word16, 0)
-	segptr32 ptrArg02_232 = SLICE(ptrArg02, word16, 16)
+	word16 wArg04_233 = SLICE(ptrArg02, word16, 16)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -36414,6 +36192,7 @@ l0800_BAA5:
 // SymbolicIn:
 
 l0800_BAB1:
+	segptr32 ptrArg02_232
 	branch Mem14[ds:0x26B2:word16] != 0x0000 l0800_BAC7
 // DataOut:
 // DataOut (flags):
@@ -36421,19 +36200,22 @@ l0800_BAB1:
 
 l0800_BAB8:
 	branch wArg02_230 != 0x236C l0800_BAC7
-	ptrArg02_232 = SEQ(ptrArg02_232, wArg02_230)
+	ptrArg02_232 = SEQ(wArg04_233, wArg02_230)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_BAC7:
 	branch Mem14[ds:0x26B0:word16] != 0x0000 l0800_BADB
+	ptrArg02_232 = SEQ(wArg04_233, wArg02_230)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_BACE:
 	branch wArg02_230 != 0x2358 l0800_BADB
+	ptrArg02_232 = SEQ(wArg04_233, wArg02_230)
+	ptrArg02_232 = SEQ(wArg04_233, wArg02_230)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -36451,53 +36233,44 @@ l0800_BABF:
 // SymbolicIn:
 
 l0800_BADB:
-	word16 wArg04_239 = SLICE(ptrArg02_232, word16, 16)
-	word16 wArg02_243 = SLICE(ptrArg02_232, word16, 0)
-	word16 wArg04_244 = SLICE(ptrArg02_232, word16, 16)
+	word16 wArg04_242 = SLICE(ptrArg02_232, word16, 16)
 	word16 wArg02_246 = SLICE(ptrArg02_232, word16, 0)
 	word16 bx_47 = (word16) ptrArg02_232
 	branch Mem44[ptrArg02_232:word16] == 0x0000 l0800_BAF6
-	segptr32 ptrArg02_242 = SEQ(wArg04_244, wArg02_243)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_BAE4:
-	fn0800_ACB3(ds, bx_47, wArg04_239, 0x0001, out cx, out dx_331, out bx_332)
-	ptrArg02_242 = SEQ(wArg04_239, wArg02_246)
+	fn0800_ACB3(ds, bx_47, wArg04_242, 0x0001, out cx, out dx_325, out bx_326)
+	ptrArg02_232 = SEQ(wArg04_242, wArg02_246)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_BAF6:
-	word16 wArg02_251 = SLICE(ptrArg02_242, word16, 0)
-	word16 wArg04_252 = SLICE(ptrArg02_242, word16, 16)
-	word16 wArg02_254 = SLICE(ptrArg02_242, word16, 0)
-	word16 wArg04_255 = SLICE(ptrArg02_242, word16, 16)
-	branch (Mem81[ptrArg02_242 + 0x0002:word16] & 0x0004) == 0x0000 l0800_BB0E
-	segptr32 ptrArg02_250 = SEQ(wArg04_252, wArg02_251)
-	ptrArg02_250 = SEQ(wArg04_255, wArg02_254)
+	word16 wArg04_251 = SLICE(ptrArg02_232, word16, 16)
+	word16 wArg02_252 = SLICE(ptrArg02_232, word16, 0)
+	branch (Mem81[ptrArg02_232 + 0x0002:word16] & 0x0004) == 0x0000 l0800_BB0E
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_BB01:
-	word16 v18_88 = Mem81[ptrArg02_242 + 0x000A:word16]
-	fn0800_9E75(ds, v18_88, out cx_333, out dx_334, out bx_335, out ds)
+	word16 v18_88 = Mem81[ptrArg02_232 + 0x000A:word16]
+	fn0800_9E75(ds, v18_88, out cx_327, out dx_328, out bx_329, out ds)
 	cx = v18_88
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_BB0E:
-	Mem117[ptrArg02_250 + 0x0002:word16] = Mem112[ptrArg02_250 + 0x0002:word16] & 0xFFF3
-	Mem119[ptrArg02_250 + 0x0006:word16] = 0x0000
-	word16 wArg04_257 = SLICE(ptrArg02_250, word16, 16)
-	Mem123[ptrArg02_250 + 0x000A:word16] = wArg04_257
-	word16 wArg02_258 = SLICE(ptrArg02_250, word16, 0)
-	Mem124[ptrArg02_250 + 0x0008:word16] = wArg02_258 + 0x0005
-	Mem125[ptrArg02_250 + 0x000E:word16] = wArg04_257
-	Mem126[ptrArg02_250 + 0x000C:word16] = wArg02_258 + 0x0005
+	Mem117[ptrArg02_232 + 0x0002:word16] = Mem112[ptrArg02_232 + 0x0002:word16] & 0xFFF3
+	Mem119[ptrArg02_232 + 0x0006:word16] = 0x0000
+	Mem123[ptrArg02_232 + 0x000A:word16] = wArg04_251
+	Mem124[ptrArg02_232 + 0x0008:word16] = wArg02_252 + 0x0005
+	Mem125[ptrArg02_232 + 0x000E:word16] = wArg04_251
+	Mem126[ptrArg02_232 + 0x000C:word16] = wArg02_252 + 0x0005
 	sp_12 = fp - 6
 	branch wArg0A == 0x0002 l0800_BB92
 // DataOut:
@@ -36669,8 +36442,8 @@ void fn0800_BBE9(word16 bp, segptr32 ptrArg02, word16 wArg04)
 fn0800_BBE9_entry:
 	word16 wArg02_62 = SLICE(ptrArg02, word16, 0)
 	word16 wArg02_63 = SLICE(ptrArg02, word16, 0)
-	segptr32 ptrArg02_67 = SLICE(ptrArg02, word16, 16)
-	ptrArg02_67 = SLICE(ptrArg02, word16, 16) (alias)
+	word16 wArg04_67 = SLICE(ptrArg02, word16, 16)
+	wArg04_67 = SLICE(ptrArg02, word16, 16) (alias)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -36689,16 +36462,16 @@ l0800_BBF9:
 
 l0800_BBFC:
 	word16 v12_21 = wArg02_63 - 0x0001
-	word16 ax_28 = (int16) Mem22[SEQ(SLICE(ptrArg02_67, word16, 16), v12_21):byte]
+	word16 ax_28 = (int16) Mem22[SEQ(wArg04_67, v12_21):byte]
 	word16 cx_30 = 0x0004
 	word16 bx_31 = 0xBC39
-	segptr32 ptrArg02_79 = SEQ(SLICE(ptrArg02_67, word16, 16), v12_21)
+	segptr32 ptrArg02_77 = SEQ(wArg04_67, v12_21)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_BC0F:
-	word16 wArg04_76 = SLICE(ptrArg02_79, word16, 16)
+	word16 wArg04_75 = SLICE(ptrArg02_77, word16, 16)
 	word16 ax_34 = Mem29[0x0800:bx_31:word16]
 	branch ax_34 == ax_28 l0800_BC1E
 // DataOut:
@@ -36707,7 +36480,7 @@ l0800_BC0F:
 
 l0800_BC1E:
 	call Mem29[0x0800:bx_31 + 0x0008:word16] (retsize: 2;)
-		uses: ax:ax_34,bx:bx_32,cx:cx_44,sp:fp - 0x0004,Stack +0002:ax_28,Stack +0004:bp,Stack +0008:ptrArg02_79,Stack +000A:wArg04_76,Top:0
+		uses: ax:ax_34,bx:bx_32,cx:cx_44,sp:fp - 0x0004,Stack +0002:ax_28,Stack +0004:bp,Stack +0008:ptrArg02_77,Stack +000A:wArg04_75,Top:0
 	return
 // DataOut:
 // DataOut (flags):
@@ -36816,7 +36589,7 @@ l0800_BC8F:
 	word16 wLoc06_244 = SLICE(ptrLoc06_243, word16, 0)
 	word16 wLoc04_252 = SLICE(ptrLoc06_243, word16, 16)
 	word16 wLoc04_258 = SLICE(ptrLoc06_243, word16, 16)
-	word16 wLoc04_294 = SLICE(ptrLoc06_243, word16, 16)
+	word16 wLoc04_293 = SLICE(ptrLoc06_243, word16, 16)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -36825,14 +36598,14 @@ l0800_BC9D:
 	word16 wArg02_235 = SLICE(ptrArg02, word16, 0)
 	word16 wArg04_237 = SLICE(ptrArg02, word16, 16)
 	word16 wArg02_250 = SLICE(ptrArg02, word16, 0)
-	word16 wArg04_292 = SLICE(ptrArg02, word16, 16)
+	word16 wArg04_291 = SLICE(ptrArg02, word16, 16)
 	branch Mem69[ptrArg02:byte] == 0x20 l0800_BC9A
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_BC9A:
-	ptrArg02 = SEQ(wArg04_292, wArg02_235 + 0x0001)
+	ptrArg02 = SEQ(wArg04_291, wArg02_235 + 0x0001)
 	Mem69 = Mem76
 // DataOut:
 // DataOut (flags):
@@ -36842,7 +36615,7 @@ l0800_BCA6:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg4 = <invalid>
-	word16 ax_88 = fn0800_BFC7(ptrArg02, stackArg4, out cx_384)
+	word16 ax_88 = fn0800_BFC7(ptrArg02, stackArg4, out cx_380)
 	word16 si_100 = ax_88
 	branch ax_88 <= 0x0050 l0800_BCB9
 // DataOut:
@@ -36864,17 +36637,15 @@ l0800_BCB9:
 	word16 dx_133 = fn0800_C01E(SEQ(wLoc04_252, wLoc06_244 + 0x0001), stackArg4, SEQ(wArg04_237, wArg02_250), si_100)
 	Mem146[SEQ(wLoc04_258, v23_141):byte] = 0x00
 	word16 wLoc06_257 = v23_141
-	segptr32 ptrLoc06_262 = SEQ(wLoc04_294, v23_141)
-	segptr32 ptrArg02_372 = SEQ(wArg04_237, wArg02_250)
+	segptr32 ptrArg02_368 = SEQ(wArg04_237, wArg02_250)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_BCE2:
 	word16 v24_153 = wLoc06_257 - 0x0001
-	word16 wLoc04_370 = SLICE(ptrLoc06_262, word16, 16)
 	wLoc06_257 = v24_153
-	word16 ax_160 = (int16) Mem154[SEQ(SLICE(ptrLoc06_262, word16, 16), v24_153):byte]
+	word16 ax_160 = (int16) Mem154[SEQ(wLoc04_293, v24_153):byte]
 	word16 cx_162 = 0x0007
 	word16 bx_163 = 0xBE1F
 // DataOut:
@@ -36882,7 +36653,7 @@ l0800_BCE2:
 // SymbolicIn:
 
 l0800_BCF5:
-	word16 wArg04_281 = SLICE(ptrArg02_372, word16, 16)
+	word16 wArg04_280 = SLICE(ptrArg02_368, word16, 16)
 	word16 ax_166 = Mem161[0x0800:bx_163:word16]
 	branch ax_166 == ax_160 l0800_BD04
 // DataOut:
@@ -36892,7 +36663,7 @@ l0800_BCF5:
 l0800_BD04:
 	word16 bx_176
 	call Mem161[0x0800:bx_163 + 0x000E:word16] (retsize: 2;)
-		uses: ax:ax_166,bx:bx_164,cx:cx_178,dx:dx_133,sp:fp - 0x005E,Stack +0000:si_116,Stack +0002:di,Stack +0004:si,Stack +0058:ax_160,Stack +005A:v24_153,Stack +005C:wLoc04_370,Stack +005E:bp,Stack +0062:ptrArg02_372,Stack +0064:wArg04_281,Stack +0066:wArg06_324,Stack +0068:wArg08_332,Stack +006A:wArg0A_339,Stack +006C:wArg0C_346,Stack +006E:wArg0E_352,Stack +0070:wArg10_358,Stack +0072:wArg12_363,Stack +0074:wArg14_368,Stack +FFFFFFF8:wLoc06_244 + 0x0001,Stack +FFFFFFFA:wLoc04_252,Stack +FFFFFFFC:wArg02_250,Stack +FFFFFFFE:wArg04_237,Top:0
+		uses: ax:ax_166,bx:bx_164,cx:cx_178,dx:dx_133,sp:fp - 0x005E,Stack +0000:si_116,Stack +0002:di,Stack +0004:si,Stack +0058:ax_160,Stack +005A:v24_153,Stack +005C:wLoc04_293,Stack +005E:bp,Stack +0062:ptrArg02_368,Stack +0064:wArg04_280,Stack +0066:wArg06_321,Stack +0068:wArg08_329,Stack +006A:wArg0A_336,Stack +006C:wArg0C_343,Stack +006E:wArg0E_349,Stack +0070:wArg10_355,Stack +0072:wArg12_360,Stack +0074:wArg14_365,Stack +FFFFFFF8:wLoc06_244 + 0x0001,Stack +FFFFFFFA:wLoc04_252,Stack +FFFFFFFC:wArg02_250,Stack +FFFFFFFE:wArg04_237,Top:0
 		defs: bx:bx_176
 	return bx_176
 // DataOut:
@@ -36913,7 +36684,6 @@ l0800_BCFD:
 // SymbolicIn:
 
 l0800_BD02:
-	ptrLoc06_262 = SEQ(wLoc04_370, v24_153)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -37963,10 +37733,10 @@ l0800_C397:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg4 = <invalid>
-	branch fn0800_BFC7(SEQ(dx_21, ax_20), stackArg4, out cx_481) >=u 0x0004 l0800_C3AA
+	branch fn0800_BFC7(SEQ(dx_21, ax_20), stackArg4, out cx_482) >=u 0x0004 l0800_C3AA
 	segptr32 ptrLoc06_400 = SEQ(dx_21, ax_20)
 	word16 wLoc06_401 = SLICE(ptrLoc06_400, word16, 0)
-	segptr32 ptrLoc06_402 = SLICE(ptrLoc06_400, word16, 16)
+	word16 wLoc04_403 = SLICE(ptrLoc06_400, word16, 16)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -37992,7 +37762,8 @@ l0800_C3D1:
 
 l0800_C3E5:
 	branch Mem45[es_61:wLoc06_401 + 0x0003:byte] == 0x2D l0800_C404
-	ptrLoc06_402 = SEQ(ptrLoc06_402, wLoc06_401)
+	segptr32 ptrLoc06_402 = SEQ(wLoc04_403, wLoc06_401)
+	ptrLoc06_402 = SEQ(wLoc04_403, wLoc06_401)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -38010,10 +37781,10 @@ l0800_C3F6:
 // SymbolicIn:
 
 l0800_C404:
-	wLoc06_405 = SLICE(ptrLoc06_402, word16, 0) (alias)
-	word16 wLoc04_411 = SLICE(ptrLoc06_402, word16, 16)
-	wLoc04_411 = SLICE(ptrLoc06_402, word16, 16) (alias)
-	word16 wLoc06_405 = SLICE(ptrLoc06_402, word16, 0)
+	wLoc06_406 = SLICE(ptrLoc06_402, word16, 0) (alias)
+	word16 wLoc04_412 = SLICE(ptrLoc06_402, word16, 16)
+	wLoc04_412 = SLICE(ptrLoc06_402, word16, 16) (alias)
+	word16 wLoc06_406 = SLICE(ptrLoc06_402, word16, 0)
 	selector es_104 = SLICE(ptrLoc06_402, selector, 16)
 	branch ((int16) Mem45[ds:(int16) Mem45[ptrLoc06_402 + 0x0003:byte] + 0x2251:byte] & 0x0002) != 0x0000 l0800_C467
 // DataOut:
@@ -38021,7 +37792,7 @@ l0800_C404:
 // SymbolicIn:
 
 l0800_C418:
-	branch ((int16) Mem45[ds:(int16) Mem45[es_104:wLoc06_405 + 0x0004:byte] + 0x2251:byte] & 0x0002) != 0x0000 l0800_C467
+	branch ((int16) Mem45[ds:(int16) Mem45[es_104:wLoc06_406 + 0x0004:byte] + 0x2251:byte] & 0x0002) != 0x0000 l0800_C467
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -38034,14 +37805,14 @@ l0800_C467:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg4 = <invalid>
-	fn0800_C01E(SEQ(Mem162[ds:0x26DC:word16], Mem165[ds:0x26DA:word16]), stackArg4, SEQ(wLoc04_411, wLoc06_405), 0x0003)
+	fn0800_C01E(SEQ(Mem162[ds:0x26DC:word16], Mem165[ds:0x26DA:word16]), stackArg4, SEQ(wLoc04_412, wLoc06_406), 0x0003)
 	Mem183[Mem168[ds:0x26DA:segptr32] + 0x0003:byte] = 0x00
 	word16 sp_200 = <invalid>
 	word16 dx_197
-	Mem211[ss:sp_200 + 2:word16] = fn0800_A471(ds, SEQ(wLoc04_411, wLoc06_405 + 0x0003), out dx_197, out bp_193)
+	Mem211[ss:sp_200 + 2:word16] = fn0800_A471(ds, SEQ(wLoc04_412, wLoc06_406 + 0x0003), out dx_197, out bp_193)
 	Mem213[ss:sp_200:word16] = dx_197
 	word16 dx_223
-	word16 ax_222 = fn0800_8F18(0x0E10, Mem213[ss:sp_200:word16], 0x0000, Mem213[ss:sp_200 + 2:word16], out ch_486, out dx_223)
+	word16 ax_222 = fn0800_8F18(0x0E10, Mem213[ss:sp_200:word16], 0x0000, Mem213[ss:sp_200 + 2:word16], out ch_487, out dx_223)
 	Mem229[ds:0x26E4:word16] = dx_223
 	Mem230[ds:0x26E2:word16] = ax_222
 	Mem231[ds:0x26E6:word16] = 0x0000
@@ -38080,7 +37851,7 @@ l0800_C4DA:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	word16 stackArg4 = <invalid>
-	branch fn0800_BFC7(Mem262[ss:sp_200:segptr32], stackArg4, out cx_488) <u 0x0003 l0800_C54E
+	branch fn0800_BFC7(Mem262[ss:sp_200:segptr32], stackArg4, out cx_489) <u 0x0003 l0800_C54E
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -38407,7 +38178,7 @@ l0800_C65C:
 // SymbolicIn:
 
 l0800_C668:
-	fn0800_8E29(ds, wArg02, 0x0000, 0x0000, 0x02, out cx_470, out dx_471, out bx_472)
+	fn0800_8E29(ds, wArg02, 0x0000, 0x0000, 0x02, out cx_465, out dx_466, out bx_467)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -38428,8 +38199,8 @@ l0800_C696:
 // SymbolicIn:
 
 l0800_C727:
+	word16 wLoc04_296 = ss
 	word16 wLoc06_297 = fp - 0x0090
-	segptr32 ptrLoc06_312 = SEQ(ss, fp - 0x0090)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -38437,14 +38208,13 @@ l0800_C727:
 l0800_C731:
 	word16 si_175
 	word16 ax_126
-	word16 wLoc04_313 = SLICE(ptrLoc06_312, word16, 16)
 	word16 wLoc0E_309 = SLICE(ptrLoc0E_308, word16, 0)
+	word16 wLoc0C_374 = SLICE(ptrLoc0E_308, word16, 16)
 	word16 wLoc0C_376 = SLICE(ptrLoc0E_308, word16, 16)
-	word16 wLoc0C_378 = SLICE(ptrLoc0E_308, word16, 16)
 	branch wLoc08_295 == 0x0000 l0800_C73A
-	segptr32 ptrLoc06_314 = SEQ(wLoc04_313, wLoc06_297)
-	word16 wLoc04_317 = SLICE(ptrLoc06_314, word16, 16)
-	word16 wLoc04_319 = SLICE(ptrLoc06_314, word16, 16)
+	segptr32 ptrLoc06_313 = SEQ(wLoc04_296, wLoc06_297)
+	word16 wLoc06_314 = SLICE(ptrLoc06_313, word16, 0)
+	word16 wLoc04_317 = SLICE(ptrLoc06_313, word16, 16)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -38458,7 +38228,7 @@ l0800_C73A:
 // SymbolicIn:
 
 l0800_C74E:
-	word16 ax_108 = fn0800_C779(ds, wArg02, SEQ(ss, fp - 0x0090), si_175, out cx_110, out dx_474, out bx)
+	word16 ax_108 = fn0800_C779(ds, wArg02, SEQ(ss, fp - 0x0090), si_175, out cx_110, out dx_469, out bx)
 	dx = ax_108
 	branch ax_108 == si_175 l0800_C770
 // DataOut:
@@ -38493,31 +38263,29 @@ l0800_C6B4:
 	wLoc08_295 = v20_127
 	byte al_134 = Mem131[ptrLoc0E_308:byte]
 	branch al_134 != 0x0A l0800_C6D1
-	segptr32 ptrLoc06_316 = SEQ(wLoc04_317, wLoc06_297)
+	ptrLoc0E_308 = SEQ(wLoc0C_374, wLoc0E_309 + 0x0001)
 	ptrLoc0E_308 = SEQ(wLoc0C_376, wLoc0E_309 + 0x0001)
-	ptrLoc0E_308 = SEQ(wLoc0C_378, wLoc0E_309 + 0x0001)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_C6C7:
-	Mem141[ptrLoc06_314:byte] = 0x0D
-	ptrLoc06_316 = SEQ(wLoc04_319, wLoc06_297 + 0x0001)
+	Mem141[ptrLoc06_313:byte] = 0x0D
+	ptrLoc06_313 = SEQ(wLoc04_317, wLoc06_314 + 0x0001)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_C6D1:
-	Mem152[ptrLoc06_316:byte] = al_134
-	word16 wLoc06_322 = SLICE(ptrLoc06_316, word16, 0)
-	word16 dx_158 = wLoc06_322 + 0x0001 - (fp - 0x0090)
+	Mem152[ptrLoc06_313:byte] = al_134
+	word16 wLoc06_320 = SLICE(ptrLoc06_313, word16, 0)
+	word16 dx_158 = wLoc06_320 + 0x0001 - (fp - 0x0090)
 	word16 bx_161 = 0x0000 - (dx_158 <u 0x0000)
-	word16 wLoc04_381 = SLICE(ptrLoc06_316, word16, 16)
-	word16 wLoc04_383 = SLICE(ptrLoc06_316, word16, 16)
-	wLoc06_297 = wLoc06_322 + 0x0001
+	wLoc04_296 = SLICE(ptrLoc06_313, word16, 16) (alias)
+	wLoc04_296 = SLICE(ptrLoc06_313, word16, 16) (alias)
+	wLoc06_297 = wLoc06_320 + 0x0001
 	bx = bx_161
 	branch bx_161 < 0x0000 l0800_C731
-	ptrLoc06_312 = SEQ(wLoc04_381, wLoc06_322 + 0x0001)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -38530,14 +38298,13 @@ l0800_C6EF:
 
 l0800_C6F1:
 	branch dx_158 <u 0x0080 l0800_C731
-	ptrLoc06_312 = SEQ(wLoc04_383, wLoc06_322 + 0x0001)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_C6F7:
-	si_175 = wLoc06_322 + 0x0001 - (fp - 0x0090)
-	word16 ax_194 = fn0800_C779(ds, wArg02, SEQ(ss, fp - 0x0090), si_175, out cx_196, out dx_475, out bx)
+	si_175 = wLoc06_320 + 0x0001 - (fp - 0x0090)
+	word16 ax_194 = fn0800_C779(ds, wArg02, SEQ(ss, fp - 0x0090), si_175, out cx_196, out dx_470, out bx)
 	dx = ax_194
 	branch ax_194 == si_175 l0800_C727
 // DataOut:
@@ -38574,7 +38341,7 @@ l0800_C76E:
 // SymbolicIn:
 
 l0800_C683:
-	ax_123 = fn0800_C779(ds, wArg02, SEQ(wArg06, wArg04), wArg08, out cx_473, out dx, out bx)
+	ax_123 = fn0800_C779(ds, wArg02, SEQ(wArg06, wArg04), wArg08, out cx_468, out dx, out bx)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

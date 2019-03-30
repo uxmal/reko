@@ -694,8 +694,7 @@ namespace Reko.Analysis
                         // Found a gap in the interval tree that isn't defined
                         // in this block. Look for the gap in another block.
                         var intv = Interval.Create(offsetLo, intFrom.Start);
-                        this.offsetInterval = intv;
-                        var sidR = ReadVariableRecursive(bs);
+                        var sidR = ReadIntervalRecursive(bs, intv);
                         sequence.Add((sidR, intv));
                         offsetLo = intFrom.Start;
                     }
@@ -708,9 +707,9 @@ namespace Reko.Analysis
                 }
                 if (offsetLo < offsetHi)
                 {
-                    this.offsetInterval = Interval.Create(offsetLo, offsetHi);
-                    var sidR = ReadVariableRecursive(bs);
-                    sequence.Add((sidR, offsetInterval));
+                    var intv = Interval.Create(offsetLo, offsetHi);
+                    var sidR = ReadIntervalRecursive(bs, intv);
+                    sequence.Add((sidR, intv));
                 }
                 if (sequence.Count == 1)
                 {
@@ -729,6 +728,23 @@ namespace Reko.Analysis
                     }
                     return sidTo;
                 }
+            }
+
+            private SsaIdentifier ReadIntervalRecursive(
+                SsaBlockState bs,
+                Interval<int> intv)
+            {
+                var curInteval = this.offsetInterval;
+                var curId = this.id;
+                var bitSize = (intv.End - intv.Start) * DataType.BitsPerByte;
+                this.id = outer.ssa.Procedure.Frame.EnsureStackVariable(
+                    intv.Start,
+                    PrimitiveType.CreateWord(bitSize));
+                this.offsetInterval = intv;
+                var sid = ReadVariableRecursive(bs);
+                this.id = curId;
+                this.offsetInterval = curInteval;
+                return sid;
             }
 
             private SsaIdentifier MakeSequenceElement(SsaBlockState bs, (SsaIdentifier sid, Interval<int> interval) elem)

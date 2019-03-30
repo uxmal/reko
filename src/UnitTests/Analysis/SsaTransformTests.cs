@@ -3791,6 +3791,58 @@ SsaOverlappedStackIntervals_exit:
             AssertProcedureCode(expected);
         }
 
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void SsaLocalStackSlice()
+        {
+            var proc = Given_Procedure(nameof(SsaLocalStackSlice), m =>
+            {
+                var fp = m.Frame.FramePointer;
+                var b = m.Reg8("byte", 1);
+                m.Label("b_init");
+                m.BranchIf(m.Eq(b, 0), "b1");
+
+                m.Label("b0");
+                m.Assign(b, m.Byte(0x0));
+                m.Goto("finalize");
+
+                m.Label("b1");
+                m.Assign(b, m.Byte(0x1));
+
+                m.Label("finalize");
+                m.MStore(m.ISubS(fp, 4), b);
+                m.Assign(b, m.And(m.Mem32(m.ISubS(fp, 4)), 0xFF));
+                m.Return();
+            });
+
+            When_RunSsaTransform();
+            When_RenameFrameAccesses();
+
+            var expected =
+            #region Expected
+@"SsaLocalStackSlice_entry:
+	def byte
+	def fp
+	def nLoc03
+b_init:
+	branch byte == 0x00 b1
+b0:
+	byte_3 = 0x00
+	goto finalize
+b1:
+	byte_2 = 0x01
+finalize:
+	byte_4 = PHI((byte_3, b0), (byte_2, b1))
+	bLoc04_9 = byte_4
+	dwLoc04_12 = SEQ(nLoc03, bLoc04_9)
+	byte_8 = dwLoc04_12 & 0x000000FF
+	return
+SsaLocalStackSlice_exit:
+";
+            #endregion
+            AssertProcedureCode(expected);
+        }
+
         private void MakeEndiannessCheck(ProcedureBuilder m)
         {
             var fp = m.Frame.FramePointer;
