@@ -45,7 +45,7 @@ namespace Reko.Analysis
 	/// we can summarize the effects of a procedure, and use that information when
 	/// rewriting call sites to SSA form.
 	/// </remarks>
-    [Obsolete]
+    [Obsolete("", true)]
 	public class RegisterLiveness : InstructionVisitorBase		//$REFACTOR: should be called InterproceduralLiveness
 	{
 		private Program program;
