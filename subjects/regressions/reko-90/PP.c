@@ -205,11 +205,8 @@ void main(Eq_n ds)
 	(ss->*sp_n).u0 = 0x3C;
 	(ss->*(sp_n - 0x02)).t0000 = ss->*(bp_n - 0x02);
 	(ss->*(sp_n - 0x04)).t0000 = ss->*(bp_n - 0x04);
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg0 = <invalid>;
 	Eq_n dx_n;
-	Eq_n ax_n = fn0800-8BCA(stackArg0, (ss->*(sp_n - 0x04)).t0000, (ss->*(sp_n - 0x02)).t0000, ss->*sp_n, ss->*((word32) sp_n + 0x02), out dx_n);
+	Eq_n ax_n = fn0800-8BCA((ss->*(sp_n - 0x04)).t0000, (ss->*(sp_n - 0x02)).t0000, ss->*sp_n, ss->*((word32) sp_n + 0x02), out dx_n);
 	Eq_n sp_n = <invalid>;
 	ss->*(sp_n - 0x02) = dx_n;
 	ss->*(sp_n - 0x04) = ax_n;
@@ -219,19 +216,13 @@ void main(Eq_n ds)
 	(ss->*(sp_n - 0x0C)).u0 = 0x0E10;
 	ss->*(sp_n - 0x0E) = ss->*(bp_n - 0x02);
 	ss->*(sp_n - 0x0010) = ss->*(bp_n - 0x04);
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg0 = <invalid>;
 	Eq_n dx_n;
-	Eq_n ax_n = fn0800-8BCA(stackArg0, ss->*(sp_n - 0x0010), ss->*(sp_n - 0x0E), ss->*(sp_n - 0x0C), ss->*(sp_n - 0x0A), out dx_n);
+	Eq_n ax_n = fn0800-8BCA(ss->*(sp_n - 0x0010), ss->*(sp_n - 0x0E), ss->*(sp_n - 0x0C), ss->*(sp_n - 0x0A), out dx_n);
 	Eq_n sp_n = <invalid>;
 	ss->*(sp_n - 0x02) = dx_n;
 	ss->*(sp_n - 0x04) = ax_n;
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg0 = <invalid>;
 	Eq_n dx_n;
-	Eq_n ax_n = fn0800-8BBB(stackArg0, ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), ss->*sp_n, ss->*((word32) sp_n + 0x02), out cx_n, out dx_n, out bx_n);
+	Eq_n ax_n = fn0800-8BBB(ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), ss->*sp_n, ss->*((word32) sp_n + 0x02), out cx_n, out dx_n, out bx_n);
 	Eq_n sp_n = <invalid>;
 	ss->*(sp_n - 0x02) = dx_n;
 	ss->*(sp_n - 0x04) = ax_n;
@@ -241,20 +232,14 @@ void main(Eq_n ds)
 	(ss->*(sp_n - 0x0C)).u0 = 0x5180;
 	ss->*(sp_n - 0x0E) = ss->*(bp_n - 0x02);
 	ss->*(sp_n - 0x0010) = ss->*(bp_n - 0x04);
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg0 = <invalid>;
 	Eq_n dx_n;
-	Eq_n ax_n = fn0800-8BCA(stackArg0, ss->*(sp_n - 0x0010), ss->*(sp_n - 0x0E), ss->*(sp_n - 0x0C), ss->*(sp_n - 0x0A), out dx_n);
+	Eq_n ax_n = fn0800-8BCA(ss->*(sp_n - 0x0010), ss->*(sp_n - 0x0E), ss->*(sp_n - 0x0C), ss->*(sp_n - 0x0A), out dx_n);
 	Eq_n sp_n = <invalid>;
 	ss->*(sp_n - 0x02) = dx_n;
 	ss->*(sp_n - 0x04) = ax_n;
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg0 = <invalid>;
 	Eq_n cx_n;
 	Eq_n dx_n;
-	Eq_n ax_n = fn0800-8BBB(stackArg0, ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), ss->*sp_n, ss->*((word32) sp_n + 0x02), out cx_n, out dx_n, out bx_n);
+	Eq_n ax_n = fn0800-8BBB(ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), ss->*sp_n, ss->*((word32) sp_n + 0x02), out cx_n, out dx_n, out bx_n);
 	Eq_n sp_n = <invalid>;
 	ss->*(sp_n - 0x02) = dx_n;
 	ss->*(sp_n - 0x04) = ax_n;
@@ -280,21 +265,15 @@ Eq_n fn0800-0402(Eq_n cx, Eq_n dx, Eq_n bx, Eq_n ds)
 	if (*((word32) ds + 0x00002A27) == *((word32) ds + 9882))
 		fn0800-0DCE(cx, dx, bx, ds, out si_n, out di_n);
 	Eq_n es_bx_n = *((word32) ds + 9884);
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
 	struct Eq_n * es_n = SLICE(es_bx_n, selector, 16);
 	struct Eq_n Eq_n::* bx_n = (word16) es_bx_n + (*((word32) ds + 0x00002A27) << 0x02);
-	Eq_n stackArg4 = <invalid>;
 	word16 cx_n;
-	if (fn0800_BFC7(SEQ((es_n->*bx_n).w0002, (es_n->*bx_n).w0000), stackArg4, out cx_n) > 0x01)
+	if (fn0800_BFC7(SEQ((es_n->*bx_n).w0002, (es_n->*bx_n).w0000), out cx_n) > 0x01)
 	{
 		Eq_n es_bx_n = *((word32) ds + 9884);
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
 		struct Eq_n * es_n = SLICE(es_bx_n, selector, 16);
 		struct Eq_n Eq_n::* bx_n = (word16) es_bx_n + (*((word32) ds + 0x00002A27) << 0x02);
-		Eq_n stackArg6 = <invalid>;
-		fn0800-0D24(ds, 0x01, SEQ((es_n->*bx_n).w0002, (es_n->*bx_n).w0000), stackArg6, out cx_n, out dx_n, out bx_n, out si_n, out di_n, out es_n, out ds, out Top_n);
+		fn0800-0D24(ds, 0x01, SEQ((es_n->*bx_n).w0002, (es_n->*bx_n).w0000), out cx_n, out dx_n, out bx_n, out si_n, out di_n, out es_n, out ds, out Top_n);
 	}
 	ui16 ax_n = *((word32) ds + 0x00002A27);
 	byte cl_n;
@@ -306,12 +285,9 @@ Eq_n fn0800-0402(Eq_n cx, Eq_n dx, Eq_n bx, Eq_n ds)
 	if (ax_n >= 0x09)
 	{
 		Eq_n es_bx_n = *((word32) ds + 9884);
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
 		struct Eq_n * es_n = SLICE(es_bx_n, selector, 16);
 		struct Eq_n Eq_n::* bx_n = (word16) es_bx_n + (*((word32) ds + 0x00002A27) << 0x02);
-		Eq_n stackArg6 = <invalid>;
-		fn0800-0D24(ds, 0x01, SEQ((es_n->*bx_n).w0002, (es_n->*bx_n).w0000), stackArg6, out cx_n, out dx_n, out bx_n, out si_n, out di_n, out es_n, out ds, out Top_n);
+		fn0800-0D24(ds, 0x01, SEQ((es_n->*bx_n).w0002, (es_n->*bx_n).w0000), out cx_n, out dx_n, out bx_n, out si_n, out di_n, out es_n, out ds, out Top_n);
 	}
 	++*((word32) ds + 0x00002A27);
 	if (*((word32) ds + 0x00002A25) > 0x02)
@@ -321,16 +297,10 @@ Eq_n fn0800-0402(Eq_n cx, Eq_n dx, Eq_n bx, Eq_n ds)
 		ui16 ax_n = *((word32) ds + 0x00002A27);
 		++*((word32) ds + 0x00002A27);
 		Eq_n es_bx_n = *((word32) ds + 9884);
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
 		struct Eq_n * es_n = SLICE(es_bx_n, selector, 16);
 		struct Eq_n Eq_n::* bx_n = (word16) es_bx_n + (ax_n << 0x02);
-		Eq_n stackArg4 = <invalid>;
-		fn0800_BF9E(SEQ(ds, 0x4348), stackArg4, SEQ((es_n->*bx_n).w0002, (es_n->*bx_n).w0000));
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
-		fn0800-0C6C(ds, SEQ(ds, 0x4348), stackArg4);
+		fn0800_BF9E(SEQ(ds, 0x4348), SEQ((es_n->*bx_n).w0002, (es_n->*bx_n).w0000));
+		fn0800-0C6C(ds, SEQ(ds, 0x4348));
 		word16 di_n = 0x4348;
 		word16 cx_n = ~0x00;
 		while (cx_n != 0x00)
@@ -422,23 +392,17 @@ Eq_n fn0800-0541(Eq_n ch, Eq_n di, Eq_n ds)
 		if (ax_n >= 11)
 		{
 			Eq_n es_bx_n = *((word32) ds + 9884);
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
 			struct Eq_n * es_n = SLICE(es_bx_n, selector, 16);
 			struct Eq_n Eq_n::* bx_n = (word16) es_bx_n + (*((word32) ds + 0x00002A27) << 0x02);
-			Eq_n stackArg6 = <invalid>;
-			fn0800-0D24(ds, 0x02, SEQ((es_n->*bx_n).w0002, (es_n->*bx_n).w0000), stackArg6, out cx, out dx_n, out bx_n, out si_n, out di, out es_n, out ds, out Top_n);
+			fn0800-0D24(ds, 0x02, SEQ((es_n->*bx_n).w0002, (es_n->*bx_n).w0000), out cx, out dx_n, out bx_n, out si_n, out di, out es_n, out ds, out Top_n);
 		}
 		if (si_n < 0x06)
 		{
 			byte * ptrLoc06_n;
 			Eq_n es_bx_n = *((word32) ds + 9884);
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
 			struct Eq_n * es_n = SLICE(es_bx_n, selector, 16);
 			Eq_n bx_n = (word16) es_bx_n + (*((word32) ds + 0x00002A27) << 0x02);
-			Eq_n stackArg4 = <invalid>;
-			if (fn0800_BFC7(SEQ(es_n->*((word32) bx_n + 0x02), es_n->*bx_n), stackArg4, out cx) == 0x02)
+			if (fn0800_BFC7(SEQ(es_n->*((word32) bx_n + 0x02), es_n->*bx_n), out cx) == 0x02)
 			{
 				++*((word32) ds + 0x00002A27);
 				if (*((word32) ds + 0x00002A27) == *((word32) ds + 9882))
@@ -462,12 +426,7 @@ Eq_n fn0800-0541(Eq_n ch, Eq_n di, Eq_n ds)
 			wLoc06 = SLICE(ptrLoc06_n, word16, 0);
 			es_n = SLICE(ptrLoc06_n, selector, 16);
 			if ((int16) *ptrLoc06_n == 0x00)
-			{
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				Eq_n stackArg6 = <invalid>;
-				fn0800-0D24(ds, 0x02, SEQ(ds, 1500), stackArg6, out cx, out dx_n, out bx_n, out si_n, out di, out es_n, out ds, out Top_n);
-			}
+				fn0800-0D24(ds, 0x02, SEQ(ds, 1500), out cx, out dx_n, out bx_n, out si_n, out di, out es_n, out ds, out Top_n);
 		}
 		if (si_n <= 0x0A)
 		{
@@ -499,10 +458,7 @@ Eq_n fn0800-0541(Eq_n ch, Eq_n di, Eq_n ds)
 					byte * ptrLoc06_n = &(wLoc04->*wLoc06);
 					if (cx_n > 0x02)
 					{
-						// Failed to bind call argument.
-						// Please report this issue at https://github.com/uxmal/reko
-						Eq_n stackArg6 = <invalid>;
-						ax_n = fn0800-0D24(ds, 0x03, &(wLoc04->*wLoc06), stackArg6, out cx_n, out dx_n, out bx_n, out si_n, out di_n, out es_n, out ds, out Top_n);
+						ax_n = fn0800-0D24(ds, 0x03, &(wLoc04->*wLoc06), out cx_n, out dx_n, out bx_n, out si_n, out di_n, out es_n, out ds, out Top_n);
 						ptrLoc06_n = &(wLoc04->*wLoc06);
 					}
 					byte cl_n;
@@ -513,35 +469,20 @@ Eq_n fn0800-0541(Eq_n ch, Eq_n di, Eq_n ds)
 					wLoc06 = SLICE(ptrLoc06_n, word16, 0);
 					cx = DPB(cx_n, cl_n, 0);
 					if (ax_n >= 0x06)
-					{
-						// Failed to bind call argument.
-						// Please report this issue at https://github.com/uxmal/reko
-						Eq_n stackArg6 = <invalid>;
-						fn0800-0D24(ds, 0x03, &(wLoc04->*wLoc06), stackArg6, out cx, out dx_n, out bx_n, out si_n, out di_n, out es_n, out ds, out Top_n);
-					}
+						fn0800-0D24(ds, 0x03, &(wLoc04->*wLoc06), out cx, out dx_n, out bx_n, out si_n, out di_n, out es_n, out ds, out Top_n);
 					fn0800_BEA2(cx, dx_n, ds, SEQ(ds, 17009), 2123, ds, out di);
 				}
 				break;
 			case 0x01:
 				cx = (word16) fn0800_BF18(cx, dx_n, bx_n, si_n, di, es_n, ds, 2127, ds, out di);
 				if (*((word32) ds + 11855) == 0x00)
-				{
-					// Failed to bind call argument.
-					// Please report this issue at https://github.com/uxmal/reko
-					Eq_n stackArg6 = <invalid>;
-					fn0800-0D24(ds, 0x04, &(wLoc04->*wLoc06), stackArg6, out cx, out dx_n, out bx_n, out si_n, out di, out es_n, out ds, out Top_n);
-				}
+					fn0800-0D24(ds, 0x04, &(wLoc04->*wLoc06), out cx, out dx_n, out bx_n, out si_n, out di, out es_n, out ds, out Top_n);
 				*((word32) ds + 0x00002A1F) = 0x00;
 				break;
 			case 0x02:
 				cx = (word16) fn0800_BF18(cx, dx_n, bx_n, si_n, di, es_n, ds, 0x0856, ds, out di);
 				if (*((word32) ds + 0x00002A21) > 0x02 || *((word32) ds + 0x00002A21) == 0x00 && *((word32) ds + 0x00002A25) == 0x00)
-				{
-					// Failed to bind call argument.
-					// Please report this issue at https://github.com/uxmal/reko
-					Eq_n stackArg6 = <invalid>;
-					fn0800-0D24(ds, 0x05, &(wLoc04->*wLoc06), stackArg6, out cx, out dx_n, out bx_n, out si_n, out di, out es_n, out ds, out Top_n);
-				}
+					fn0800-0D24(ds, 0x05, &(wLoc04->*wLoc06), out cx, out dx_n, out bx_n, out si_n, out di, out es_n, out ds, out Top_n);
 				break;
 			case 0x03:
 				byte Eq_n::* di_n = wLoc06;
@@ -570,10 +511,7 @@ Eq_n fn0800-0541(Eq_n ch, Eq_n di, Eq_n ds)
 					++si_n;
 					++di_n;
 				}
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				Eq_n stackArg4 = <invalid>;
-				fn0800-0C6C(ds, SEQ(ds, 17022), stackArg4);
+				fn0800-0C6C(ds, SEQ(ds, 17022));
 				di.u0 = 17022;
 				word16 cx_n = ~0x00;
 				while (cx_n != 0x00)
@@ -634,10 +572,7 @@ Eq_n fn0800-0541(Eq_n ch, Eq_n di, Eq_n ds)
 					++si_n;
 					++di_n;
 				}
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				Eq_n stackArg4 = <invalid>;
-				fn0800-0C6C(ds, SEQ(ds, 17123), stackArg4);
+				fn0800-0C6C(ds, SEQ(ds, 17123));
 				di.u0 = 17123;
 				word16 cx_n = ~0x00;
 				while (cx_n != 0x00)
@@ -819,16 +754,10 @@ Eq_n fn0800-0541(Eq_n ch, Eq_n di, Eq_n ds)
 // 0800:09A3: Register Eq_n fn0800-09A3(Register out (ptr16 Eq_n) dsOut)
 Eq_n fn0800-09A3(struct Eq_n & dsOut)
 {
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg2 = <invalid>;
-	Eq_n stackArg4 = <invalid>;
 	union Eq_n Eq_n::* bp_n;
 	Eq_n ds_n;
 	Eq_n dx_n;
-	Eq_n ax_n = fn0800-4311(stackArg2, stackArg4, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
+	Eq_n ax_n = fn0800-4311(out dx_n, out bp_n, out si_n, out di_n, out ds_n);
 	ss->*(bp_n - 0x02) = dx_n;
 	ss->*(bp_n - 0x04) = ax_n;
 	ss->*(bp_n - 0x06) = dx_n;
@@ -946,11 +875,8 @@ Eq_n fn0800-09A3(struct Eq_n & dsOut)
 	fn0800_B0F3((ss->*(sp_n - 0x02)).t0000, ss->*sp_n, ss->*((word32) sp_n + 0x02), ss->*((word32) sp_n + 0x04), ss->*((word32) sp_n + 0x06));
 	ss->*((word32) sp_n + 0x06) = (ss->*(bp_n - 0x02)).t0000;
 	ss->*((word32) sp_n + 0x04) = (ss->*(bp_n - 0x04)).t0000;
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg2 = <invalid>;
 	struct Eq_n * ds_n;
-	fn0800-4346(ds_n, stackArg2, ss->*((word32) sp_n + 0x06), out cx_n, out dx_n, out bx_n, out ds_n);
+	fn0800-4346(ds_n, ss->*((word32) sp_n + 0x06), out cx_n, out dx_n, out bx_n, out ds_n);
 	Eq_n bp_n = (ss->*bp_n).t0000;
 	dsOut = ds_n;
 	return bp_n;
@@ -982,16 +908,16 @@ Eq_n fn0800-0ABC(Eq_n di, Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, union 
 	*((word32) ds + 0x000029EF) = v32_n;
 	ui32 v33_v32_n = SEQ(*((word32) ds + 10737), *((word32) ds + 0x000029EF)) + SEQ(ax_n, dx_n);
 	*((word32) ds + 10737) = SLICE(v33_v32_n, word16, 16);
-	++*((word32) ds + 10771);
+	*((word32) ds + 10771) = (word32) *((word32) ds + 10771) + 0x01;
 	dxOut = dx_n;
 	diOut = di_n;
-	uint16 v30_n = (word16) v31_v30_n;
-	uint16 v32_n = (word16) v33_v32_n;
+	Eq_n v30_n = (word16) v31_v30_n;
+	Eq_n v32_n = (word16) v33_v32_n;
 	return ax_n;
 }
 
-// 0800:0B79: Register Eq_n fn0800-0B79(Stack Eq_n wArg02, Stack Eq_n wArg04, Stack Eq_n dwArg06, Stack Eq_n wArg08)
-Eq_n fn0800-0B79(Eq_n wArg02, Eq_n wArg04, Eq_n dwArg06, Eq_n wArg08)
+// 0800:0B79: Register Eq_n fn0800-0B79(Stack Eq_n wArg02, Stack Eq_n wArg04, Stack Eq_n wArg06, Stack Eq_n wArg08)
+Eq_n fn0800-0B79(Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08)
 {
 	mp16 sp_n = fp - 0x02;
 	if ((wArg02 | wArg04) == 0x00 || ((wArg06 | wArg08) == 0x00 || wArg04 <= wArg08 && (wArg04 != wArg08 || wArg02 <= wArg06)))
@@ -1011,25 +937,19 @@ Eq_n fn0800-0B79(Eq_n wArg02, Eq_n wArg04, Eq_n dwArg06, Eq_n wArg08)
 		(ss->*(sp_n - 0x02)).u0 = 0x0A;
 		ss->*(sp_n - 0x04) = wArg04;
 		ss->*(sp_n - 0x06) = wArg02;
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg0 = <invalid>;
 		Eq_n sp_n = <invalid>;
 		Eq_n dx_n;
-		wArg02 = fn0800-8BC2(stackArg0, ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), ss->*sp_n, out cx_n, out dx_n, out bx_n);
+		wArg02 = fn0800-8BC2(ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), ss->*sp_n, out cx_n, out dx_n, out bx_n);
 		(ss->*((word32) sp_n + 0x06)).u0 = 0x00;
 		(ss->*((word32) sp_n + 0x04)).u0 = 0x0A;
 		ss->*((word32) sp_n + 0x02) = wArg08_n;
 		ss->*sp_n = wArg06_n;
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
 		Eq_n sp_n = <invalid>;
-		Eq_n stackArg0 = <invalid>;
 		wArg04 = dx_n;
 		sp_n = (mp16) ((word32) sp_n + 0x08);
 		wArg08 = dx_n;
 		Eq_n dx_n;
-		wArg06 = fn0800-8BC2(stackArg0, ss->*sp_n, ss->*((word32) sp_n + 0x02), ss->*((word32) sp_n + 0x04), ss->*((word32) sp_n + 0x06), out cx_n, out dx_n, out bx_n);
+		wArg06 = fn0800-8BC2(ss->*sp_n, ss->*((word32) sp_n + 0x02), ss->*((word32) sp_n + 0x04), ss->*((word32) sp_n + 0x06), out cx_n, out dx_n, out bx_n);
 	}
 	union Eq_n Eq_n::* sp_n = sp_n - 0x02;
 	ss->*sp_n = wArg04;
@@ -1039,10 +959,7 @@ Eq_n fn0800-0B79(Eq_n wArg02, Eq_n wArg04, Eq_n dwArg06, Eq_n wArg08)
 	Eq_n ax_n = fn0800-8F18(10000, SLICE(cx_bx_n, word16, 16), 0x00, (word16) cx_bx_n, out ch_n, out dx_n);
 	ss->*(sp_n - 0x04) = dx_n;
 	ss->*(sp_n - 0x06) = ax_n;
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg0 = <invalid>;
-	return fn0800-8BC2(stackArg0, ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), ss->*sp_n, out cx_n, out dx_n, out bx_n);
+	return fn0800-8BC2(ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), ss->*sp_n, out cx_n, out dx_n, out bx_n);
 }
 
 // 0800:0C08: Register word16 fn0800-0C08(Stack Eq_n wArg02)
@@ -1085,8 +1002,8 @@ cup16 fn0800-0C29(Eq_n ds, word16 wArg02, Eq_n wArg04, byte bArg06, union Eq_n &
 	return ax_n;
 }
 
-// 0800:0C6C: void fn0800-0C6C(Register Eq_n ds, Stack (ptr32 byte) ptrArg02, Stack Eq_n wArg04)
-void fn0800-0C6C(Eq_n ds, byte * ptrArg02, Eq_n wArg04)
+// 0800:0C6C: void fn0800-0C6C(Register Eq_n ds, Stack (ptr32 byte) ptrArg02)
+void fn0800-0C6C(Eq_n ds, byte * ptrArg02)
 {
 	while (true)
 	{
@@ -1174,8 +1091,8 @@ word16 fn0800-0C93(Eq_n si, Eq_n di, Eq_n ds, Eq_n wArg02, Eq_n wArg04, union Eq
 	return ax_n;
 }
 
-// 0800:0D24: Register word16 fn0800-0D24(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n ptrArg04, Stack Eq_n wArg06, Register out ptr16 cxOut, Register out ptr16 dxOut, Register out ptr16 bxOut, Register out Eq_n siOut, Register out Eq_n diOut, Register out (ptr16 Eq_n) esOut, Register out Eq_n dsOut, Register out Eq_n TopOut)
-word16 fn0800-0D24(Eq_n ds, Eq_n wArg02, Eq_n ptrArg04, Eq_n wArg06, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut, union Eq_n & siOut, union Eq_n & diOut, struct Eq_n & esOut, union Eq_n & dsOut, union Eq_n & TopOut)
+// 0800:0D24: Register word16 fn0800-0D24(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n ptrArg04, Register out ptr16 cxOut, Register out ptr16 dxOut, Register out ptr16 bxOut, Register out Eq_n siOut, Register out Eq_n diOut, Register out (ptr16 Eq_n) esOut, Register out Eq_n dsOut, Register out Eq_n TopOut)
+word16 fn0800-0D24(Eq_n ds, Eq_n wArg02, Eq_n ptrArg04, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut, union Eq_n & siOut, union Eq_n & diOut, struct Eq_n & esOut, union Eq_n & dsOut, union Eq_n & TopOut)
 {
 	Eq_n ds_n;
 	fn0800-0DA9(ds, *((word32) ds + 10715), *((word32) ds + 0x000029DD), out dx_n, out ds_n);
@@ -1209,16 +1126,13 @@ word16 fn0800-0D24(Eq_n ds, Eq_n wArg02, Eq_n ptrArg04, Eq_n wArg06, ptr16 & cxO
 	return ax_n;
 }
 
-// 0800:0DA9: Register word16 fn0800-0DA9(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04, Register out ptr16 dxOut, Register out Eq_n dsOut)
-word16 fn0800-0DA9(Eq_n ds, Eq_n wArg02, Eq_n wArg04, ptr16 & dxOut, union Eq_n & dsOut)
+// 0800:0DA9: Register word16 fn0800-0DA9(Register Eq_n ds, Stack cui16 wArg02, Stack cui16 wArg04, Register out ptr16 dxOut, Register out Eq_n dsOut)
+word16 fn0800-0DA9(Eq_n ds, cui16 wArg02, cui16 wArg04, ptr16 & dxOut, union Eq_n & dsOut)
 {
 	if ((wArg02 | wArg04) != 0x00)
 	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
 		struct Eq_n Eq_n::* bp_n;
-		Eq_n ax_n = fn0800_A614(ds, SEQ(wArg04, wArg02), stackArg4, out cx, out dx_n, out bp_n, out si_n, out di_n, out ds);
+		Eq_n ax_n = fn0800_A614(ds, SEQ(wArg04, wArg02), out cx, out dx_n, out bp_n, out si_n, out di_n, out ds);
 		Eq_n sp_n = <invalid>;
 		ss->*((word32) sp_n + 0x02) = (ss->*bp_n).w000A;
 		ss->*sp_n = (ss->*bp_n).t0008;
@@ -1253,12 +1167,6 @@ Eq_n fn0800-0DE8(Eq_n cx, Eq_n dx, Eq_n ds)
 	if (*((word32) ds + 0x00002A1F) != 0x00)
 		fn0800_B2EF(cx, dx, bx_n << 0x02, ds, 2255, ds, out si_n, out di_n);
 	fn0800_B2EF(cx, dx, bx_n << 0x02, ds, 2268, ds, out si_n, out di_n);
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg6 = <invalid>;
-	Eq_n stackArg8 = <invalid>;
 	Eq_n ds_n;
 	Eq_n dx_n;
 	Eq_n di_n;
@@ -1267,7 +1175,7 @@ Eq_n fn0800-0DE8(Eq_n cx, Eq_n dx, Eq_n ds)
 	Eq_n dx_n;
 	Eq_n ds_n;
 	Eq_n si_n;
-	Eq_n ax_n = fn0800-4234(fn0800-37BE(fn0800-3678(ds, 17022, ds, out dx_n, out si_n, out ds_n), dx_n, ds_n, 0x4477, ds_n, stackArg6, stackArg8, out di_n), di_n, ds_n, 0x4477, ds_n, 2284, ds_n, out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
+	Eq_n ax_n = fn0800-4234(fn0800-37BE(fn0800-3678(ds, 17022, ds, out dx_n, out si_n, out ds_n), dx_n, ds_n, 0x4477, ds_n, out di_n), di_n, ds_n, 0x4477, ds_n, 2284, ds_n, out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
 	*((word32) ds_n + 0x000029DD) = dx_n;
 	*((word32) ds_n + 10715) = ax_n;
 	Eq_n sp_n = <invalid>;
@@ -1277,14 +1185,11 @@ Eq_n fn0800-0DE8(Eq_n cx, Eq_n dx, Eq_n ds)
 		union Eq_n Eq_n::* sp_n = sp_n - 0x02;
 		ss->*sp_n = ds_n;
 		(ss->*(sp_n - 0x02)).u0 = 0x4541;
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
 		Eq_n sp_n = <invalid>;
 		Eq_n di_n;
 		Eq_n ds_n;
 		Eq_n si_n;
-		if (fn0800-2DE2(cx_n, dx_n, si_n, di_n, ds_n, ss->*(sp_n - 0x02), stackArg4, out ch_n, out bp_n, out si_n, out di_n, out ds_n) == 0x00)
+		if (fn0800-2DE2(cx_n, dx_n, si_n, di_n, ds_n, ss->*(sp_n - 0x02), out ch_n, out bp_n, out si_n, out di_n, out ds_n) == 0x00)
 			break;
 		fn0800-3764(si_n, di_n, ds_n);
 		sp_n.u0 = <invalid>;
@@ -1316,7 +1221,7 @@ Eq_n fn0800-0DE8(Eq_n cx, Eq_n dx, Eq_n ds)
 					si_n.u0 = 0x0E;
 				else
 				{
-					Eq_n bx_n = *((word32) ds_n + 0x00002A23);
+					cu16 bx_n = *((word32) ds_n + 0x00002A23);
 					if (bx_n <= 0x05)
 					{
 						switch (bx_n << 0x01)
@@ -1331,10 +1236,7 @@ Eq_n fn0800-0DE8(Eq_n cx, Eq_n dx, Eq_n ds)
 							{
 								ss->*(sp_n - 0x02) = *((word32) ds_n + 0x000029E5);
 								ss->*(sp_n - 0x04) = *((word32) ds_n + 0x000029E3);
-								// Failed to bind call argument.
-								// Please report this issue at https://github.com/uxmal/reko
-								Eq_n stackArg0 = <invalid>;
-								ax_n = fn0800-8CAA(ax_n, 0x08, fn0800-3F58(ds_n, ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), out di_n, out ds_n), stackArg0, out dx_n);
+								ax_n = fn0800-8CAA(ax_n, 0x08, fn0800-3F58(ds_n, ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), out di_n, out ds_n), out dx_n);
 								sp_n.u0 = <invalid>;
 								if (dx_n == 0x52 && ax_n == 0x4E43)
 									si_n.u0 = 0x04;
@@ -1466,19 +1368,13 @@ Eq_n fn0800-0DE8(Eq_n cx, Eq_n dx, Eq_n ds)
 			union Eq_n Eq_n::* sp_n = sp_n - 0x02;
 			ss->*sp_n = *((word32) ds_n + 0x000029E5);
 			ss->*(sp_n - 0x02) = *((word32) ds_n + 0x000029E3);
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg4 = <invalid>;
 			Eq_n ds_n;
-			fn0800_A614(ds_n, ss->*(sp_n - 0x02), stackArg4, out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
+			fn0800_A614(ds_n, ss->*(sp_n - 0x02), out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
 			Eq_n sp_n = <invalid>;
 			ss->*((word32) sp_n + 0x02) = *((word32) ds_n + 10721);
 			ss->*sp_n = *((word32) ds_n + 10719);
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg4 = <invalid>;
 			Eq_n di_n;
-			fn0800_A614(ds_n, ss->*sp_n, stackArg4, out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
+			fn0800_A614(ds_n, ss->*sp_n, out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
 			Eq_n sp_n = <invalid>;
 			if (si_n > 0x02)
 			{
@@ -1502,11 +1398,8 @@ Eq_n fn0800-0DE8(Eq_n cx, Eq_n dx, Eq_n ds)
 	}
 	ss->*((word32) sp_n + 0x02) = *((word32) ds_n + 0x000029DD);
 	ss->*sp_n = *((word32) ds_n + 10715);
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg4 = <invalid>;
 	Eq_n ds_n;
-	fn0800_A614(ds_n, ss->*sp_n, stackArg4, out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
+	fn0800_A614(ds_n, ss->*sp_n, out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
 	fn0800-8F7F(0x4477, ds_n, SEQ(ds_n, 0x4477));
 	return ds_n;
 }
@@ -1532,13 +1425,10 @@ Eq_n fn0800-112D(Eq_n cx, Eq_n dx, Eq_n ds)
 		union Eq_n Eq_n::* sp_n = sp_n - 0x02;
 		ss->*sp_n = ds;
 		(ss->*(sp_n - 0x02)).u0 = 0x4541;
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
 		Eq_n di_n;
 		Eq_n ds_n;
 		Eq_n si_n;
-		if (fn0800-2DE2(cx, dx, si_n, di_n, ds, ss->*(sp_n - 0x02), stackArg4, out ch_n, out bp_n, out si_n, out di_n, out ds_n) == 0x00)
+		if (fn0800-2DE2(cx, dx, si_n, di_n, ds, ss->*(sp_n - 0x02), out ch_n, out bp_n, out si_n, out di_n, out ds_n) == 0x00)
 			break;
 		fn0800-3764(si_n, di_n, ds_n);
 		sp_n.u0 = <invalid>;
@@ -1573,10 +1463,7 @@ Eq_n fn0800-112D(Eq_n cx, Eq_n dx, Eq_n ds)
 					case 0x01:
 						ss->*(sp_n - 0x02) = *((word32) ds + 0x000029E5);
 						ss->*(sp_n - 0x04) = *((word32) ds + 0x000029E3);
-						// Failed to bind call argument.
-						// Please report this issue at https://github.com/uxmal/reko
-						Eq_n stackArg0 = <invalid>;
-						ax_n = fn0800-8CAA(ax_n, 0x08, fn0800-3F58(ds, ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), out di_n, out ds), stackArg0, out dx_n);
+						ax_n = fn0800-8CAA(ax_n, 0x08, fn0800-3F58(ds, ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), out di_n, out ds), out dx_n);
 						sp_n.u0 = <invalid>;
 						if (dx_n == 0x52 && ax_n == 0x4E43)
 						{
@@ -1644,20 +1531,14 @@ Eq_n fn0800-112D(Eq_n cx, Eq_n dx, Eq_n ds)
 			Eq_n sp_n;
 			ss->*sp_n = *((word32) ds + 0x000029E5);
 			ss->*(sp_n - 0x02) = *((word32) ds + 0x000029E3);
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg4 = <invalid>;
 			Eq_n ds_n;
-			fn0800_A614(ds, ss->*(sp_n - 0x02), stackArg4, out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
+			fn0800_A614(ds, ss->*(sp_n - 0x02), out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
 			Eq_n sp_n = <invalid>;
 			ss->*((word32) sp_n + 0x02) = *((word32) ds_n + 10721);
 			ss->*sp_n = *((word32) ds_n + 10719);
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg4 = <invalid>;
 			Eq_n si_n;
 			Eq_n di_n;
-			fn0800_A614(ds_n, ss->*sp_n, stackArg4, out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds);
+			fn0800_A614(ds_n, ss->*sp_n, out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds);
 			Eq_n sp_n = <invalid>;
 			if (*((word32) ds + 0x00002A25) != 0x02 && si_n == 0x00)
 			{
@@ -1722,11 +1603,8 @@ Eq_n fn0800-12E2(Eq_n cx, Eq_n dx, Eq_n ds)
 					fn0800_ACB3(ds_n, (ss->*(sp_n - 0x02)).t0000, ss->*sp_n, ss->*((word32) sp_n + 0x06), out cx_n, out dx_n, out bx_n);
 					ss->*((word32) sp_n + 0x06) = *((word32) ds_n + 10705);
 					ss->*((word32) sp_n + 0x04) = *((word32) ds_n + 10703);
-					// Failed to bind call argument.
-					// Please report this issue at https://github.com/uxmal/reko
-					Eq_n stackArg4 = <invalid>;
 					Eq_n dx_n;
-					Eq_n ax_n = fn0800_AD2F(ds_n, ss->*((word32) sp_n + 0x04), stackArg4, out dx_n);
+					Eq_n ax_n = fn0800_AD2F(ds_n, ss->*((word32) sp_n + 0x04), out dx_n);
 					*((word32) ds_n + 10733) = dx_n;
 					*((word32) ds_n + 10731) = ax_n;
 				}
@@ -1767,18 +1645,12 @@ Eq_n fn0800-12E2(Eq_n cx, Eq_n dx, Eq_n ds)
 			(ss->*(sp_n - 0x02)).t0000.u0 = 0x04;
 			(ss->*(sp_n - 0x04)).t0000 = ss;
 			(ss->*(sp_n - 0x06)).t0000 = bp_n - 0x66;
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg4 = <invalid>;
-			ss->*(bp_n - 0x68) = (byte) (fn0800-2CCF(ds_n, (ss->*(sp_n - 0x06)).t0000, stackArg4, (ss->*(sp_n - 0x02)).t0000, (ss->*sp_n).t0000, (ss->*sp_n).b0001, out cl_n, out dx_n) >> 0x08);
+			ss->*(bp_n - 0x68) = (byte) (fn0800-2CCF(ds_n, (ss->*(sp_n - 0x06)).t0000, (ss->*(sp_n - 0x02)).t0000, (ss->*sp_n).t0000, (ss->*sp_n).b0001, out cl_n, out dx_n) >> 0x08);
 			(ss->*sp_n).t0000.u0 = 0x00;
 			(ss->*(sp_n - 0x02)).t0000.u0 = 0x04;
 			(ss->*(sp_n - 0x04)).t0000 = ss;
 			(ss->*(sp_n - 0x06)).t0000 = bp_n - 0x66;
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg4 = <invalid>;
-			ss->*(bp_n - 0x67) = (byte) fn0800-2CCF(ds_n, (ss->*(sp_n - 0x06)).t0000, stackArg4, (ss->*(sp_n - 0x02)).t0000, (ss->*sp_n).t0000, (ss->*sp_n).b0001, out cl_n, out dx_n);
+			ss->*(bp_n - 0x67) = (byte) fn0800-2CCF(ds_n, (ss->*(sp_n - 0x06)).t0000, (ss->*(sp_n - 0x02)).t0000, (ss->*sp_n).t0000, (ss->*sp_n).b0001, out cl_n, out dx_n);
 			(ss->*sp_n).t0000 = *((word32) ds_n + 10705);
 			(ss->*(sp_n - 0x02)).t0000 = *((word32) ds_n + 10703);
 			(ss->*(sp_n - 0x04)).t0000.u0 = 0x00;
@@ -1800,10 +1672,7 @@ Eq_n fn0800-12E2(Eq_n cx, Eq_n dx, Eq_n ds)
 		ss->*((word32) sp_n + 0x06) = ds_n;
 		(ss->*((word32) sp_n + 0x04)).u0 = 0x4348;
 		(ss->*((word32) sp_n + 0x02)).u0 = 0x07;
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg6 = <invalid>;
-		fn0800-0D24(ds_n, ss->*((word32) sp_n + 0x02), ss->*((word32) sp_n + 0x04), stackArg6, out cx_n, out dx_n, out bx_n, out si_n, out di_n, out es_n, out ds_n, out Top_n);
+		fn0800-0D24(ds_n, ss->*((word32) sp_n + 0x02), ss->*((word32) sp_n + 0x04), out cx_n, out dx_n, out bx_n, out si_n, out di_n, out es_n, out ds_n, out Top_n);
 		sp_n = (struct Eq_n Eq_n::*) ((word32) sp_n + 0x08);
 	}
 	union Eq_n Eq_n::* sp_n = sp_n - 0x02;
@@ -1820,13 +1689,10 @@ Eq_n fn0800-12E2(Eq_n cx, Eq_n dx, Eq_n ds)
 		union Eq_n Eq_n::* sp_n = sp_n - 0x02;
 		ss->*sp_n = ds_n;
 		(ss->*(sp_n - 0x02)).u0 = 0x4541;
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
 		Eq_n sp_n = <invalid>;
-		Eq_n stackArg4 = <invalid>;
 		sp_n = (struct Eq_n Eq_n::*) ((word32) sp_n + 0x04);
 		union Eq_n Eq_n::* bp_n;
-		if (fn0800-2DE2(cx_n, dx_n, si_n, di_n, ds_n, ss->*(sp_n - 0x02), stackArg4, out ch_n, out bp_n, out si_n, out di_n, out ds_n) == 0x00)
+		if (fn0800-2DE2(cx_n, dx_n, si_n, di_n, ds_n, ss->*(sp_n - 0x02), out ch_n, out bp_n, out si_n, out di_n, out ds_n) == 0x00)
 			break;
 		ss->*((word32) sp_n + 0x02) = ds_n;
 		(ss->*sp_n).u0 = 0x4541;
@@ -1840,22 +1706,16 @@ Eq_n fn0800-12E2(Eq_n cx, Eq_n dx, Eq_n ds)
 		fn0800-35A3(si_n, di_n, (ss->*(sp_n - 0x04)).t0000, (ss->*(sp_n - 0x02)).t0000, ss->*sp_n, ss->*((word32) sp_n + 0x02));
 		ss->*((word32) sp_n + 0x02) = ss;
 		ss->*sp_n = bp_n - 110;
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
 		Eq_n dx_n;
-		Eq_n ax_n = fn0800-283D(ds_n, ss->*sp_n, stackArg4, out dx_n);
+		Eq_n ax_n = fn0800-283D(ds_n, ss->*sp_n, out dx_n);
 		ss->*(bp_n - 0x02) = dx_n;
 		ss->*(bp_n - 0x04) = ax_n;
 		if ((ax_n | dx_n) == 0x00)
 		{
 			ss->*((word32) sp_n + 0x02) = ss;
 			ss->*sp_n = bp_n - 110;
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg4 = <invalid>;
 			Eq_n dx_n;
-			Eq_n ax_n = fn0800-1F5C(ds_n, ss->*sp_n, stackArg4, out dx_n, out di_n, out ds_n);
+			Eq_n ax_n = fn0800-1F5C(ds_n, ss->*sp_n, out dx_n, out di_n, out ds_n);
 			ss->*(bp_n - 0x02) = dx_n;
 			ss->*(bp_n - 0x04) = ax_n;
 		}
@@ -1864,11 +1724,8 @@ Eq_n fn0800-12E2(Eq_n cx, Eq_n dx, Eq_n ds)
 		ss->*sp_n = ss->*(bp_n - 0x04);
 		(ss->*(sp_n - 0x02)).t0000 = ss;
 		(ss->*(sp_n - 0x04)).t0000 = bp_n - 0x84;
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg8 = <invalid>;
 		Eq_n dx_n;
-		Eq_n ax_n = fn0800-2931((ss->*(sp_n - 0x04)).t0000, ss->*sp_n, stackArg8, out dx_n);
+		Eq_n ax_n = fn0800-2931((ss->*(sp_n - 0x04)).t0000, ss->*sp_n, out dx_n);
 		ss->*(bp_n - 0x06) = dx_n;
 		ss->*(bp_n - 0x08) = ax_n;
 		if ((ax_n | dx_n) == 0x00)
@@ -1877,10 +1734,7 @@ Eq_n fn0800-12E2(Eq_n cx, Eq_n dx, Eq_n ds)
 			ss->*sp_n = ss->*(bp_n - 0x04);
 			(ss->*(sp_n - 0x02)).t0000 = ss;
 			(ss->*(sp_n - 0x04)).t0000 = bp_n - 0x84;
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg4 = <invalid>;
-			cx_n = (word16) fn0800-2085(ds_n, (ss->*(sp_n - 0x04)).t0000, stackArg4, ss->*sp_n);
+			cx_n = (word16) fn0800-2085(ds_n, (ss->*(sp_n - 0x04)).t0000, ss->*sp_n);
 			sp_n = (struct Eq_n Eq_n::*) ((word32) sp_n + 0x04);
 		}
 		else
@@ -1916,14 +1770,8 @@ Eq_n fn0800-12E2(Eq_n cx, Eq_n dx, Eq_n ds)
 		(ss->*(sp_n - 0x02)).u0 = 2373;
 		ss->*(sp_n - 0x04) = ds_n;
 		(ss->*(sp_n - 0x06)).u0 = 0x4477;
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg6 = <invalid>;
-		Eq_n stackArg8 = <invalid>;
 		Eq_n di_n;
-		Eq_n si_n = fn0800-37BE(cx_n, dx_n, ds_n, ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), stackArg6, stackArg8, out di_n);
+		Eq_n si_n = fn0800-37BE(cx_n, dx_n, ds_n, ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), out di_n);
 		ss->*sp_n = ds_n;
 		(ss->*(sp_n - 0x02)).u0 = 0x0941;
 		ss->*(sp_n - 0x04) = ds_n;
@@ -1943,14 +1791,11 @@ Eq_n fn0800-12E2(Eq_n cx, Eq_n dx, Eq_n ds)
 			union Eq_n Eq_n::* sp_n = sp_n - 0x02;
 			ss->*sp_n = ds_n;
 			(ss->*(sp_n - 0x02)).u0 = 0x4541;
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
 			Eq_n sp_n = <invalid>;
-			Eq_n stackArg4 = <invalid>;
 			struct Eq_n Eq_n::* sp_n = (word32) sp_n + 0x04;
 			Eq_n di_n;
 			Eq_n si_n;
-			if (fn0800-2DE2(cx_n, dx_n, si_n, di_n, ds_n, ss->*(sp_n - 0x02), stackArg4, out ch_n, out bp_n, out si_n, out di_n, out ds_n) == 0x00)
+			if (fn0800-2DE2(cx_n, dx_n, si_n, di_n, ds_n, ss->*(sp_n - 0x02), out ch_n, out bp_n, out si_n, out di_n, out ds_n) == 0x00)
 				goto l0800_nA9;
 			ss->*((word32) sp_n + 0x02) = ds_n;
 			(ss->*sp_n).u0 = 0x093D;
@@ -1980,20 +1825,14 @@ Eq_n fn0800-12E2(Eq_n cx, Eq_n dx, Eq_n ds)
 			fn0800-0C93(si_n, di_n, ds_n, ss->*((word32) sp_n + 0x04), ss->*((word32) sp_n + 0x06), out dx_n);
 			ss->*((word32) sp_n + 0x06) = ss;
 			ss->*((word32) sp_n + 0x04) = bp_n - 110;
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg4 = <invalid>;
 			Eq_n dx_n;
-			Eq_n ax_n = fn0800-283D(ds_n, ss->*((word32) sp_n + 0x04), stackArg4, out dx_n);
+			Eq_n ax_n = fn0800-283D(ds_n, ss->*((word32) sp_n + 0x04), out dx_n);
 			ss->*((word32) sp_n + 0x06) = dx_n;
 			ss->*((word32) sp_n + 0x04) = ax_n;
 			ss->*((word32) sp_n + 0x02) = ss;
 			ss->*sp_n = bp_n - 0x84;
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg8 = <invalid>;
 			Eq_n dx_n;
-			Eq_n ax_n = fn0800-2931(ss->*sp_n, ss->*((word32) sp_n + 0x04), stackArg8, out dx_n);
+			Eq_n ax_n = fn0800-2931(ss->*sp_n, ss->*((word32) sp_n + 0x04), out dx_n);
 			ss->*(bp_n - 0x06) = dx_n;
 			ss->*(bp_n - 0x08) = ax_n;
 			ss->*((word32) sp_n + 0x06) = *((word32) ds_n + 10705);
@@ -2001,11 +1840,8 @@ Eq_n fn0800-12E2(Eq_n cx, Eq_n dx, Eq_n ds)
 			fn0800-4194(ds_n, ss->*((word32) sp_n + 0x04), ss->*((word32) sp_n + 0x06));
 			*((word32) ds_n + 0x000029E9) = dx_n - (ax_n < 0x04);
 			*((word32) ds_n + 10727) = ax_n - 0x04;
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
 			int32 dx_ax_n = (int32) *((word32) ds_n + 0x000029E9);
-			Eq_n stackArg0 = <invalid>;
-			Eq_n ax_n = fn0800-8C8A((word16) dx_ax_n, 0x08, SLICE(dx_ax_n, word16, 16), stackArg0, out cl_n, out dx_n);
+			Eq_n ax_n = fn0800-8C8A((word16) dx_ax_n, 0x08, SLICE(dx_ax_n, word16, 16), out cl_n, out dx_n);
 			Eq_n es_di_n = ss->*(bp_n - 0x08);
 			Eq_n sp_n = <invalid>;
 			ss->*(sp_n - 0x02) = ax_n;
@@ -2065,11 +1901,8 @@ Eq_n fn0800-12E2(Eq_n cx, Eq_n dx, Eq_n ds)
 				es_n = 0x00;
 			}
 			di_n[0x01] = (byte) (ss->*(sp_n - 0x02));
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg0 = <invalid>;
 			word16 dx_n;
-			Eq_n ax_n = fn0800-8C8A(*((word32) ds_n + 10727), 0x08, *((word32) ds_n + 0x000029E9), stackArg0, out cl_n, out dx_n);
+			Eq_n ax_n = fn0800-8C8A(*((word32) ds_n + 10727), 0x08, *((word32) ds_n + 0x000029E9), out cl_n, out dx_n);
 			Eq_n es_di_n = ss->*(bp_n - 0x08);
 			Eq_n sp_n = <invalid>;
 			ss->*(sp_n - 0x02) = ax_n;
@@ -2148,11 +1981,8 @@ Eq_n fn0800-12E2(Eq_n cx, Eq_n dx, Eq_n ds)
 			{
 				ss->*(sp_n - 0x02) = *((word32) ds_n + 0x000029E5);
 				ss->*(sp_n - 0x04) = *((word32) ds_n + 0x000029E3);
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				Eq_n stackArg0 = <invalid>;
 				word16 dx_n;
-				Eq_n ax_n = fn0800-8CAA(ax_n, 0x08, fn0800-3F58(ds_n, ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), out di_n, out ds_n), stackArg0, out dx_n);
+				Eq_n ax_n = fn0800-8CAA(ax_n, 0x08, fn0800-3F58(ds_n, ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), out di_n, out ds_n), out dx_n);
 				sp_n.u0 = <invalid>;
 				if (dx_n != 0x52 || ax_n != 0x4E43)
 				{
@@ -2174,7 +2004,7 @@ Eq_n fn0800-12E2(Eq_n cx, Eq_n dx, Eq_n ds)
 					if (ax_n != 0x00)
 					{
 						(ss->*((word32) sp_n + 0x06)).u0 = 0x01;
-						Eq_n dx_n = -*((word32) ds_n + 10755);
+						word16 dx_n = -*((word32) ds_n + 10755);
 						ss->*((word32) sp_n + 0x04) = -*((word32) ds_n + 10757) - (dx_n == 0x00);
 						ss->*((word32) sp_n + 0x02) = dx_n;
 						ss->*sp_n = *((word32) ds_n + 10721);
@@ -2199,11 +2029,8 @@ Eq_n fn0800-12E2(Eq_n cx, Eq_n dx, Eq_n ds)
 				{
 					ss->*sp_n = *((word32) ds_n + 0x000029E5);
 					ss->*(sp_n - 0x02) = *((word32) ds_n + 0x000029E3);
-					// Failed to bind call argument.
-					// Please report this issue at https://github.com/uxmal/reko
-					Eq_n stackArg0 = <invalid>;
 					word16 dx_n;
-					Eq_n ax_n = fn0800-8CAA(ax_n, 0x08, fn0800-3F58(ds_n, ss->*(sp_n - 0x02), ss->*sp_n, out di_n, out ds_n), stackArg0, out dx_n);
+					Eq_n ax_n = fn0800-8CAA(ax_n, 0x08, fn0800-3F58(ds_n, ss->*(sp_n - 0x02), ss->*sp_n, out di_n, out ds_n), out dx_n);
 					sp_n.u0 = <invalid>;
 					if (dx_n == 0x52 && ax_n == 0x4E43)
 						goto l0800_nE;
@@ -2242,11 +2069,8 @@ l0800_nE:
 			fn0800-409C(ds_n, ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), ss->*sp_n, out dx_n, out ds_n, out Top_n);
 			ss->*sp_n = *((word32) ds_n + 0x000029E5);
 			ss->*(sp_n - 0x02) = *((word32) ds_n + 0x000029E3);
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg4 = <invalid>;
 			Eq_n di_n;
-			fn0800_A614(ds_n, ss->*(sp_n - 0x02), stackArg4, out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
+			fn0800_A614(ds_n, ss->*(sp_n - 0x02), out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
 			Eq_n sp_n = <invalid>;
 			ss->*((word32) sp_n + 0x02) = ds_n;
 			(ss->*sp_n).u0 = 0x4541;
@@ -2267,11 +2091,8 @@ l0800_nA9:
 		union Eq_n Eq_n::* sp_n = sp_n - 0x02;
 		ss->*sp_n = *((word32) ds_n + 0x000029DD);
 		ss->*(sp_n - 0x02) = *((word32) ds_n + 10715);
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
 		Eq_n ds_n;
-		fn0800_A614(ds_n, ss->*(sp_n - 0x02), stackArg4, out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
+		fn0800_A614(ds_n, ss->*(sp_n - 0x02), out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
 		Eq_n sp_n = <invalid>;
 		ss->*((word32) sp_n + 0x02) = ds_n;
 		(ss->*sp_n).u0 = 0x4477;
@@ -2280,11 +2101,8 @@ l0800_nA9:
 		Eq_n sp_n = <invalid>;
 		ss->*(sp_n - 0x02) = *((word32) ds_n + 10705);
 		ss->*(sp_n - 0x04) = *((word32) ds_n + 10703);
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
 		Eq_n ds_n;
-		fn0800_A614(ds_n, ss->*(sp_n - 0x04), stackArg4, out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
+		fn0800_A614(ds_n, ss->*(sp_n - 0x04), out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
 		return ds_n;
 	}
 	else
@@ -2292,11 +2110,8 @@ l0800_nA9:
 		struct Eq_n Eq_n::* sp_n = sp_n - 0x02;
 		(ss->*sp_n).t0000 = *((word32) ds_n + 10705);
 		(ss->*(sp_n - 0x02)).t0000 = *((word32) ds_n + 10703);
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
 		Eq_n ds_n;
-		fn0800_A614(ds_n, (ss->*(sp_n - 0x02)).t0000, stackArg4, out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
+		fn0800_A614(ds_n, (ss->*(sp_n - 0x02)).t0000, out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
 		return ds_n;
 	}
 }
@@ -2318,10 +2133,7 @@ Eq_n fn0800-18D9(Eq_n cx, Eq_n dx, Eq_n ds)
 		ss->*((word32) sp_n + 0x06) = ds_n;
 		(ss->*((word32) sp_n + 0x04)).u0 = 0x4348;
 		(ss->*((word32) sp_n + 0x02)).u0 = 0x07;
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg6 = <invalid>;
-		fn0800-0D24(ds_n, ss->*((word32) sp_n + 0x02), ss->*((word32) sp_n + 0x04), stackArg6, out cx_n, out dx_n, out bx_n, out si_n, out di_n, out es_n, out ds_n, out Top_n);
+		fn0800-0D24(ds_n, ss->*((word32) sp_n + 0x02), ss->*((word32) sp_n + 0x04), out cx_n, out dx_n, out bx_n, out si_n, out di_n, out es_n, out ds_n, out Top_n);
 	}
 	(ss->*((word32) sp_n + 0x06)).u0 = 0x01;
 	union Eq_n Eq_n::* bp_n;
@@ -2360,10 +2172,7 @@ Eq_n fn0800-18D9(Eq_n cx, Eq_n dx, Eq_n ds)
 		Eq_n sp_n = <invalid>;
 		ss->*((word32) sp_n + 0x02) = ss->*(bp_n - 0x06);
 		ss->*sp_n = ss->*(bp_n - 0x08);
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
-		fn0800-22FE(ds_n, ss->*sp_n, stackArg4);
+		fn0800-22FE(ds_n, ss->*sp_n);
 		Eq_n es_di_n = ss->*(bp_n - 0x04);
 		struct Eq_n * es_n = SLICE(es_di_n, selector, 16);
 		byte Eq_n::* di_n = (word16) es_di_n + 0x02;
@@ -2399,10 +2208,7 @@ Eq_n fn0800-18D9(Eq_n cx, Eq_n dx, Eq_n ds)
 			{
 				ss->*((word32) sp_n + 0x02) = ss->*(bp_n - 0x02);
 				ss->*sp_n = ss->*(bp_n - 0x04);
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				Eq_n stackArg4 = <invalid>;
-				fn0800-2201(ds_n, ss->*sp_n, stackArg4);
+				fn0800-2201(ds_n, ss->*sp_n);
 			}
 		}
 		ss->*((word32) sp_n + 0x02) = ss;
@@ -2415,11 +2221,8 @@ Eq_n fn0800-18D9(Eq_n cx, Eq_n dx, Eq_n ds)
 	Eq_n sp_n = <invalid>;
 	ss->*(sp_n - 0x02) = *((word32) ds_n + 10705);
 	ss->*(sp_n - 0x04) = *((word32) ds_n + 10703);
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg4 = <invalid>;
 	Eq_n ds_n;
-	fn0800_A614(ds_n, ss->*(sp_n - 0x04), stackArg4, out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
+	fn0800_A614(ds_n, ss->*(sp_n - 0x04), out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
 	return ds_n;
 }
 
@@ -2441,10 +2244,7 @@ Eq_n fn0800-19EE(Eq_n cx, Eq_n dx, Eq_n ds)
 		ss->*((word32) sp_n + 0x06) = ds_n;
 		(ss->*((word32) sp_n + 0x04)).u0 = 0x4348;
 		(ss->*((word32) sp_n + 0x02)).u0 = 0x07;
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg6 = <invalid>;
-		fn0800-0D24(ds_n, ss->*((word32) sp_n + 0x02), ss->*((word32) sp_n + 0x04), stackArg6, out cx_n, out dx_n, out bx_n, out si_n, out di_n, out es_n, out ds_n, out Top_n);
+		fn0800-0D24(ds_n, ss->*((word32) sp_n + 0x02), ss->*((word32) sp_n + 0x04), out cx_n, out dx_n, out bx_n, out si_n, out di_n, out es_n, out ds_n, out Top_n);
 	}
 	if (*((word32) ds_n + 0x00002A27) == *((word32) ds_n + 9882))
 	{
@@ -2476,13 +2276,7 @@ Eq_n fn0800-19EE(Eq_n cx, Eq_n dx, Eq_n ds)
 		(ss->*(sp_n - 0x02)).u0 = 0x099B;
 		ss->*(sp_n - 0x04) = ds_n;
 		(ss->*(sp_n - 0x06)).u0 = 0x44DC;
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg6 = <invalid>;
-		Eq_n stackArg8 = <invalid>;
-		si_n = fn0800-37BE(cx_n, dx_n, ds_n, ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), stackArg6, stackArg8, out di_n);
+		si_n = fn0800-37BE(cx_n, dx_n, ds_n, ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), out di_n);
 		sp_n = (struct Eq_n Eq_n::*) ((word32) sp_n + 0x02);
 	}
 	while (true)
@@ -2792,12 +2586,9 @@ Eq_n fn0800-19EE(Eq_n cx, Eq_n dx, Eq_n ds)
 		Eq_n sp_n = <invalid>;
 		ss->*(sp_n - 0x02) = *((word32) ds_n + 10721);
 		ss->*(sp_n - 0x04) = *((word32) ds_n + 10719);
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
 		Eq_n di_n;
 		Eq_n si_n;
-		fn0800_A614(ds_n, ss->*(sp_n - 0x04), stackArg4, out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
+		fn0800_A614(ds_n, ss->*(sp_n - 0x04), out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
 		Eq_n sp_n = <invalid>;
 		si_n = si_n;
 		if (si_n != 0x00)
@@ -2814,11 +2605,8 @@ Eq_n fn0800-19EE(Eq_n cx, Eq_n dx, Eq_n ds)
 	}
 	ss->*((word32) sp_n + 0x0A) = *((word32) ds_n + 10705);
 	ss->*((word32) sp_n + 0x08) = *((word32) ds_n + 10703);
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg4 = <invalid>;
 	Eq_n ds_n;
-	fn0800_A614(ds_n, ss->*((word32) sp_n + 0x08), stackArg4, out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
+	fn0800_A614(ds_n, ss->*((word32) sp_n + 0x08), out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
 	Eq_n sp_n = <invalid>;
 	if (*((word32) ds_n + 0x00002A25) == 0x07)
 	{
@@ -2843,21 +2631,11 @@ word16 fn0800-1CF6(Eq_n ds, Eq_n wArg02, ptr16 & dxOut, union Eq_n & bpOut, ptr1
 	*((word32) ds_n + 10731) = ax_n;
 	fn0800-4194(ds_n, *((word32) ds_n + 10703), *((word32) ds_n + 10705));
 	if (dx_n <= *((word32) ds_n + 10733) && (dx_n < *((word32) ds_n + 10733) || ax_n < *((word32) ds_n + 10731)))
-	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg6 = <invalid>;
-		fn0800-0D24(ds_n, 11, SEQ(ds_n, 0x4348), stackArg6, out cx_n, out dx_n, out bx_n, out si_n, out di_n, out es_n, out ds_n, out Top_n);
-	}
+		fn0800-0D24(ds_n, 11, SEQ(ds_n, 0x4348), out cx_n, out dx_n, out bx_n, out si_n, out di_n, out es_n, out ds_n, out Top_n);
 	Eq_n ax_n = fn0800_ACB3(ds_n, *((word32) ds_n + 10703), *((word32) ds_n + 10705), 0x00, out cx_n, out dx_n, out bx_n);
 	Eq_n ds_n;
 	if (fn0800-3E5D(ds_n, *((word32) ds_n + 10703), *((word32) ds_n + 10705), out ds_n, out Top_n) != 21070 || ax_n != 17217)
-	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg6 = <invalid>;
-		fn0800-0D24(ds_n, 11, SEQ(ds_n, 0x4348), stackArg6, out cx_n, out dx_n, out bx_n, out si_n, out di_n, out es_n, out ds_n, out Top_n);
-	}
+		fn0800-0D24(ds_n, 11, SEQ(ds_n, 0x4348), out cx_n, out dx_n, out bx_n, out si_n, out di_n, out es_n, out ds_n, out Top_n);
 	union Eq_n Eq_n::* bp_n;
 	Eq_n si_n;
 	Eq_n ds_n;
@@ -2867,30 +2645,18 @@ word16 fn0800-1CF6(Eq_n ds, Eq_n wArg02, ptr16 & dxOut, union Eq_n & bpOut, ptr1
 	fn0800-3E27(ds_n, *((word32) ds_n + 10703), *((word32) ds_n + 10705), out cx_n, out dx_n, out di_n, out ds_n, out Top_n);
 	if (wArg02 != 0x00)
 	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg2 = <invalid>;
-		Eq_n stackArg4 = <invalid>;
 		Eq_n sp_n = <invalid>;
 		Eq_n dx_n;
-		Eq_n ax_n = fn0800-4311(stackArg2, stackArg4, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
+		Eq_n ax_n = fn0800-4311(out dx_n, out bp_n, out si_n, out di_n, out ds_n);
 		*((word32) ds_n + 11859) = dx_n;
 		*((word32) ds_n + 11857) = ax_n;
 		sp_n = (ptr16 Eq_n::*) ((word32) sp_n + 0x04);
 	}
 	else
 	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg2 = <invalid>;
-		Eq_n stackArg4 = <invalid>;
 		Eq_n sp_n = <invalid>;
 		Eq_n dx_n;
-		Eq_n ax_n = fn0800-4311(stackArg2, stackArg4, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
+		Eq_n ax_n = fn0800-4311(out dx_n, out bp_n, out si_n, out di_n, out ds_n);
 		*((word32) ds_n + 11859) = dx_n;
 		*((word32) ds_n + 11857) = ax_n;
 		sp_n = (ptr16 Eq_n::*) ((word32) sp_n + 0x04);
@@ -2917,21 +2683,15 @@ word16 fn0800-1CF6(Eq_n ds, Eq_n wArg02, ptr16 & dxOut, union Eq_n & bpOut, ptr1
 	Eq_n ax_n = *((word32) ds_n + 11857);
 	ss->*(sp_n - 0x04) = *((word32) ds_n + 11859);
 	ss->*(sp_n - 0x06) = (word32) ax_n + 0x08;
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg4 = <invalid>;
 	word16 cx_n = DPB(cx_n, cl_n, 0);
 	byte cl_n;
 	ptr16 dx_n;
-	if (fn0800-2CCF(ds_n, ss->*(sp_n - 0x06), stackArg4, ss->*(sp_n - 0x02), (ss->*sp_n).t0000, (ss->*sp_n).b0001, out cl_n, out dx_n) != ss->*(bp_n - 0x02))
+	if (fn0800-2CCF(ds_n, ss->*(sp_n - 0x06), ss->*(sp_n - 0x02), (ss->*sp_n).t0000, (ss->*sp_n).b0001, out cl_n, out dx_n) != ss->*(bp_n - 0x02))
 	{
 		(ss->*sp_n).t0000 = ds_n;
 		(ss->*(sp_n - 0x02)).t0000.u0 = 0x4348;
 		(ss->*(sp_n - 0x04)).t0000.u0 = 0x0D;
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg6 = <invalid>;
-		fn0800-0D24(ds_n, (ss->*(sp_n - 0x04)).t0000, (ss->*(sp_n - 0x02)).t0000, stackArg6, out cx_n, out dx_n, out bx_n, out si_n, out di_n, out es_n, out ds_n, out Top_n);
+		fn0800-0D24(ds_n, (ss->*(sp_n - 0x04)).t0000, (ss->*(sp_n - 0x02)).t0000, out cx_n, out dx_n, out bx_n, out si_n, out di_n, out es_n, out ds_n, out Top_n);
 	}
 	ptr16 si_n = ss->*sp_n;
 	Eq_n bp_n = ss->*bp_n;
@@ -2947,11 +2707,8 @@ word16 fn0800-1CF6(Eq_n ds, Eq_n wArg02, ptr16 & dxOut, union Eq_n & bpOut, ptr1
 Eq_n fn0800-1E5E(Eq_n ds)
 {
 	Eq_n es_bx_n = *((word32) ds + 11857);
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
 	Eq_n ax_n = (DPB(DPB(ax, *((word32) es_bx_n + 0x04), 0), 0x00, 8) << 0x08) + DPB(DPB(dx, *((word32) es_bx_n + 0x05), 0), 0x00, 8);
-	Eq_n stackArg4 = <invalid>;
-	Eq_n ax_n = fn0800-2CCF(ds, SEQ(*((word32) ds + 11859), (word32) *((word32) ds + 11857) + 0x08), stackArg4, ax_n - 0x08, 0x00, 0x00, out cl_n, out dx_n);
+	Eq_n ax_n = fn0800-2CCF(ds, SEQ(*((word32) ds + 11859), (word32) *((word32) ds + 11857) + 0x08), ax_n - 0x08, 0x00, 0x00, out cl_n, out dx_n);
 	Eq_n es_bx_n = *((word32) ds + 11857);
 	*((word32) es_bx_n + 0x06) = (byte) (ax_n >> 0x08);
 	*((word32) es_bx_n + 0x07) = (byte) ax_n;
@@ -2991,16 +2748,13 @@ Eq_n fn0800-1E5E(Eq_n ds)
 	fn0800-4152(ds_n, ss->*(sp_n - 0x0A), ss->*(sp_n - 0x08), ss->*(sp_n - 0x06), ss->*(sp_n - 0x02), ss->*sp_n, out ds_n);
 	ss->*sp_n = *((word32) ds_n + 11859);
 	ss->*(sp_n - 0x02) = *((word32) ds_n + 11857);
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg2 = <invalid>;
 	Eq_n ds_n;
-	fn0800-4346(ds_n, stackArg2, ss->*sp_n, out cx_n, out dx_n, out bx_n, out ds_n);
+	fn0800-4346(ds_n, ss->*sp_n, out cx_n, out dx_n, out bx_n, out ds_n);
 	return ds_n;
 }
 
-// 0800:1F5C: Register word16 fn0800-1F5C(Register Eq_n ds, Stack Eq_n ptrArg02, Stack Eq_n wArg04, Register out (ptr16 Eq_n) dxOut, Register out Eq_n diOut, Register out Eq_n dsOut)
-word16 fn0800-1F5C(Eq_n ds, Eq_n ptrArg02, Eq_n wArg04, struct Eq_n & dxOut, union Eq_n & diOut, union Eq_n & dsOut)
+// 0800:1F5C: Register word16 fn0800-1F5C(Register Eq_n ds, Stack Eq_n wArg02, Register out Eq_n dxOut, Register out Eq_n diOut, Register out Eq_n dsOut)
+word16 fn0800-1F5C(Eq_n ds, Eq_n wArg02, union Eq_n & dxOut, union Eq_n & diOut, union Eq_n & dsOut)
 {
 	struct Eq_n * es_n = SLICE(ptrArg02, selector, 16);
 	byte Eq_n::* di_n = (word16) ptrArg02;
@@ -3064,8 +2818,8 @@ word16 fn0800-1F5C(Eq_n ds, Eq_n ptrArg02, Eq_n wArg04, struct Eq_n & dxOut, uni
 	ui16 ax_n = (DPB(DPB(ax_n, *((word32) es_bx_n + 0x04), 0), 0x00, 8) << 0x08) + DPB(DPB(dx, *((word32) es_bx_n + 0x05), 0), 0x00, 8);
 	struct Eq_n * wArg04_n = SLICE(ptrArg02, word16, 16);
 	byte Eq_n::* wArg02_n = SLICE(ptrArg02, word16, 0);
-	struct Eq_n * ax_n = *((word32) ds + 11859);
-	word16 dx_n = (word16) ((word32) ds + 11857)->u0 + ax_n;
+	Eq_n ax_n = *((word32) ds + 11859);
+	word16 dx_n = (word32) *((word32) ds + 11857) + ax_n;
 	struct Eq_n * es_n = SLICE(ptrArg02, selector, 16);
 	byte Eq_n::* di_n = (word16) ptrArg02;
 	word16 cx_n = ~0x00;
@@ -3079,12 +2833,9 @@ word16 fn0800-1F5C(Eq_n ds, Eq_n ptrArg02, Eq_n wArg04, struct Eq_n & dxOut, uni
 	}
 	word16 cx_n = ~cx_n;
 	cup16 ax_n = dx_n - *((word32) ds + 11857);
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
 	Eq_n ax_n = ax_n + (cx_n + 0x03);
-	Eq_n stackArg0 = <invalid>;
-	struct Eq_n * ptrLoc06_n = dx_n;
-	ptrLoc06_n->b0000 = (byte) fn0800-8C8A(ax_n, 0x08, (bool) (ax_n < 0x00) + (0x00 - (ax_n < 0x00)), stackArg0, out cl_n, out dx_n);
+	struct Eq_n * ptrLoc06_n = SEQ(ax_n, dx_n);
+	ptrLoc06_n->b0000 = (byte) fn0800-8C8A(ax_n, 0x08, (bool) (ax_n < 0x00) + (0x00 - (ax_n < 0x00)), out cl_n, out dx_n);
 	ptrLoc06_n->b0001 = (byte) (dx_n - *((word32) ds + 11857)) + SLICE(cx_n + 0x03, byte, 0);
 	Eq_n sp_n = <invalid>;
 	ss->*(sp_n - 0x02) = SLICE(ptrLoc06_n, selector, 16);
@@ -3140,8 +2891,8 @@ word16 fn0800-1F5C(Eq_n ds, Eq_n ptrArg02, Eq_n wArg04, struct Eq_n & dxOut, uni
 	return dx_n;
 }
 
-// 0800:2085: Register byte fn0800-2085(Register Eq_n ds, Stack Eq_n ptrArg02, Stack Eq_n psegArg04, Stack Eq_n ptrArg06)
-byte fn0800-2085(Eq_n ds, Eq_n ptrArg02, Eq_n psegArg04, Eq_n ptrArg06)
+// 0800:2085: Register byte fn0800-2085(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n ptrArg06)
+byte fn0800-2085(Eq_n ds, Eq_n wArg02, Eq_n ptrArg06)
 {
 	struct Eq_n * psegArg04_n = SLICE(ptrArg02, selector, 16);
 	byte Eq_n::* wArg02_n = SLICE(ptrArg02, word16, 0);
@@ -3312,8 +3063,8 @@ byte fn0800-2085(Eq_n ds, Eq_n ptrArg02, Eq_n psegArg04, Eq_n ptrArg06)
 	return (byte) DPB(cx_n, fn0800-2688(ds, cx_n + 0x04, 0x00, 0x00, 0x00), 0);
 }
 
-// 0800:2201: void fn0800-2201(Register Eq_n ds, Stack Eq_n ptrArg02, Stack Eq_n wArg04)
-void fn0800-2201(Eq_n ds, Eq_n ptrArg02, Eq_n wArg04)
+// 0800:2201: void fn0800-2201(Register Eq_n ds, Stack Eq_n ptrArg02)
+void fn0800-2201(Eq_n ds, Eq_n ptrArg02)
 {
 	Eq_n wArg02_n = SLICE(ptrArg02, word16, 0);
 	Eq_n wArg04_n = SLICE(ptrArg02, word16, 16);
@@ -3369,8 +3120,8 @@ void fn0800-2201(Eq_n ds, Eq_n ptrArg02, Eq_n wArg04)
 		*((word32) ds + 0x000045AA) -= dx_n;
 }
 
-// 0800:22FE: void fn0800-22FE(Register Eq_n ds, Stack Eq_n ptrArg02, Stack Eq_n wArg04)
-void fn0800-22FE(Eq_n ds, Eq_n ptrArg02, Eq_n wArg04)
+// 0800:22FE: void fn0800-22FE(Register Eq_n ds, Stack Eq_n wArg02)
+void fn0800-22FE(Eq_n ds, Eq_n wArg02)
 {
 	Eq_n wArg02_n = SLICE(ptrArg02, word16, 0);
 	Eq_n wArg04_n = SLICE(ptrArg02, word16, 16);
@@ -3424,8 +3175,8 @@ void fn0800-22FE(Eq_n ds, Eq_n ptrArg02, Eq_n wArg04)
 	}
 }
 
-// 0800:23EC: Register byte fn0800-23EC(Register Eq_n ds, Stack Eq_n ptrArg02, Stack Eq_n wArg04, Register out Eq_n bpOut, Register out ptr16 siOut, Register out ptr16 diOut, Register out Eq_n dsOut)
-byte fn0800-23EC(Eq_n ds, Eq_n ptrArg02, Eq_n wArg04, union Eq_n & bpOut, ptr16 & siOut, ptr16 & diOut, union Eq_n & dsOut)
+// 0800:23EC: Register byte fn0800-23EC(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04, Register out Eq_n bpOut, Register out ptr16 siOut, Register out ptr16 diOut, Register out Eq_n dsOut)
+byte fn0800-23EC(Eq_n ds, Eq_n wArg02, Eq_n wArg04, union Eq_n & bpOut, ptr16 & siOut, ptr16 & diOut, union Eq_n & dsOut)
 {
 	segptr32 ptrArg02_n = SEQ(wArg04, wArg02);
 	Eq_n ds_n;
@@ -3539,8 +3290,8 @@ byte fn0800-23EC(Eq_n ds, Eq_n ptrArg02, Eq_n wArg04, union Eq_n & bpOut, ptr16 
 	return fn0800-2688(ds_n, ss->*((word32) sp_n + 0x04), ss->*((word32) sp_n + 0x06), ss->*((word32) sp_n + 0x08), ss->*((word32) sp_n + 0x0A));
 }
 
-// 0800:24FE: Register word16 fn0800-24FE(Register Eq_n ds, Stack Eq_n ptrArg02, Register out (ptr16 Eq_n) dsOut)
-word16 fn0800-24FE(Eq_n ds, Eq_n ptrArg02, struct Eq_n & dsOut)
+// 0800:24FE: Register word16 fn0800-24FE(Register Eq_n ds, Stack Eq_n wArg02, Register out (ptr16 Eq_n) dsOut)
+word16 fn0800-24FE(Eq_n ds, Eq_n wArg02, struct Eq_n & dsOut)
 {
 	struct Eq_n * es_n = SLICE(ptrArg02, selector, 16);
 	byte Eq_n::* di_n = (word16) ptrArg02;
@@ -3630,23 +3381,17 @@ word16 fn0800-24FE(Eq_n ds, Eq_n ptrArg02, struct Eq_n & dsOut)
 		if (es_n->*di_n != 0x00)
 			break;
 	}
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
 	Eq_n ax_n = fn0800_ACB3(ds, *((word32) ds + 10703), *((word32) ds + 10705), 0x00, out cx_n, out dx_n, out bx_n);
-	Eq_n stackArg0 = <invalid>;
 	word16 dx_n;
 	Eq_n ds_n;
-	Eq_n ax_n = fn0800-8C8A(ax_n, 0x08, fn0800-3E5D(ds, *((word32) ds + 10703), *((word32) ds + 10705), out ds_n, out Top_n), stackArg0, out cl_n, out dx_n);
+	Eq_n ax_n = fn0800-8C8A(ax_n, 0x08, fn0800-3E5D(ds, *((word32) ds + 10703), *((word32) ds + 10705), out ds_n, out Top_n), out cl_n, out dx_n);
 	Eq_n sp_n = <invalid>;
 	if (dx_n != 0x52 || ax_n != 0x4E43)
 	{
 		ss->*(sp_n - 0x02) = ds_n;
 		(ss->*(sp_n - 0x04)).u0 = 0x4348;
 		(ss->*(sp_n - 0x06)).u0 = 0x0C;
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg6 = <invalid>;
-		fn0800-0D24(ds_n, ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), stackArg6, out cx_n, out dx_n, out bx_n, out si, out di_n, out es_n, out ds_n, out Top_n);
+		fn0800-0D24(ds_n, ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), out cx_n, out dx_n, out bx_n, out si, out di_n, out es_n, out ds_n, out Top_n);
 	}
 	struct Eq_n * ds_n;
 	if ((ax_n & 0xFF) != 0x00)
@@ -3675,8 +3420,8 @@ word16 fn0800-24FE(Eq_n ds, Eq_n ptrArg02, struct Eq_n & dsOut)
 	return si;
 }
 
-// 0800:2688: Register byte fn0800-2688(Register Eq_n ds, Stack Eq_n dwArg02, Stack Eq_n wArg04, Stack Eq_n wArg06, Stack Eq_n wArg08)
-byte fn0800-2688(Eq_n ds, Eq_n dwArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08)
+// 0800:2688: Register byte fn0800-2688(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04, Stack Eq_n wArg06, Stack Eq_n wArg08)
+byte fn0800-2688(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08)
 {
 	Eq_n es_bx_n = *((word32) ds + 11857);
 	Eq_n sp_n = fp - 0x12;
@@ -3724,19 +3469,13 @@ byte fn0800-2688(Eq_n ds, Eq_n dwArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08)
 			if (ax_n >= wArg08 && (ax_n != wArg08 || ax_n >= wArg06))
 			{
 				ui32 dwArg02_n = SEQ(wArg04, wArg02);
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
 				int32 dx_ax_n = (int32) SLICE(SEQ(ax_n, ax_n) + dwArg02_n, word16, 16);
-				Eq_n stackArg0 = <invalid>;
-				ptrLoc06_n->b0000 = (byte) fn0800-8C8A((word16) dx_ax_n, 0x08, SLICE(dx_ax_n, word16, 16), stackArg0, out cl_n, out dx_n);
+				ptrLoc06_n->b0000 = (byte) fn0800-8C8A((word16) dx_ax_n, 0x08, SLICE(dx_ax_n, word16, 16), out cl_n, out dx_n);
 				ui32 dwArg02_n = SEQ(SLICE(dwArg02_n, word16, 16), SLICE(dwArg02_n, word16, 0));
 				ptrLoc06_n->b0001 = (byte) (int32) SLICE(SEQ(ax_n, ax_n) + dwArg02_n, word16, 16);
 				ui32 dwArg02_n = SEQ(SLICE(dwArg02_n, word16, 16), SLICE(dwArg02_n, word16, 0));
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
 				int32 dx_ax_n = SEQ(ax_n, ax_n) + dwArg02_n;
-				Eq_n stackArg0 = <invalid>;
-				ptrLoc06_n->b0002 = (byte) fn0800-8C8A((word16) dx_ax_n, 0x08, SLICE(dx_ax_n, word16, 16), stackArg0, out cl_n, out dx_n);
+				ptrLoc06_n->b0002 = (byte) fn0800-8C8A((word16) dx_ax_n, 0x08, SLICE(dx_ax_n, word16, 16), out cl_n, out dx_n);
 				ptrLoc06_n->b0003 = bLoc12_n + SLICE(dwArg02_n, byte, 0);
 				wArg04 = SLICE(dwArg02_n, word16, 16);
 				wArg02 = SLICE(dwArg02_n, word16, 0);
@@ -3744,11 +3483,8 @@ byte fn0800-2688(Eq_n ds, Eq_n dwArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08)
 			}
 			ptrLoc06_n = SEQ(wLoc04_n, wLoc06_n + 0x04);
 		}
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
 		Eq_n ax_n = wLoc06_n + 0x01 - *((word32) ds + 11857);
-		Eq_n stackArg0 = <invalid>;
-		ptrLoc0E_n->b0000 = (byte) fn0800-8C8A(ax_n, 0x08, 0x00 - (ax_n < 0x00), stackArg0, out cl_n, out dx_n);
+		ptrLoc0E_n->b0000 = (byte) fn0800-8C8A(ax_n, 0x08, 0x00 - (ax_n < 0x00), out cl_n, out dx_n);
 		ptrLoc0E_n->b0001 = (byte) (wLoc06_n + 0x01 - *((word32) ds + 11857));
 		wLoc06_n = wLoc06_n + 0x01;
 		sp_n.u0 = <invalid>;
@@ -3763,8 +3499,8 @@ byte fn0800-2688(Eq_n ds, Eq_n dwArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08)
 	return cl_n;
 }
 
-// 0800:283D: Register word16 fn0800-283D(Register Eq_n ds, Stack Eq_n ptrArg02, Stack Eq_n wArg04, Register out ptr16 dxOut)
-word16 fn0800-283D(Eq_n ds, Eq_n ptrArg02, Eq_n wArg04, ptr16 & dxOut)
+// 0800:283D: Register word16 fn0800-283D(Register Eq_n ds, Stack Eq_n wArg02, Register out ptr16 dxOut)
+word16 fn0800-283D(Eq_n ds, Eq_n wArg02, ptr16 & dxOut)
 {
 	struct Eq_n * es_n = SLICE(ptrArg02, selector, 16);
 	byte Eq_n::* di_n = (word16) ptrArg02;
@@ -3881,8 +3617,8 @@ word16 fn0800-283D(Eq_n ds, Eq_n ptrArg02, Eq_n wArg04, ptr16 & dxOut)
 	return 0x00;
 }
 
-// 0800:2931: Register word16 fn0800-2931(Stack Eq_n ptrArg02, Stack Eq_n ptrArg06, Stack Eq_n wArg08, Register out ptr16 dxOut)
-word16 fn0800-2931(Eq_n ptrArg02, Eq_n ptrArg06, Eq_n wArg08, ptr16 & dxOut)
+// 0800:2931: Register word16 fn0800-2931(Stack Eq_n wArg02, Stack Eq_n wArg06, Register out ptr16 dxOut)
+word16 fn0800-2931(Eq_n wArg02, Eq_n wArg06, ptr16 & dxOut)
 {
 	struct Eq_n * es_n = SLICE(ptrArg06, selector, 16);
 	byte Eq_n::* di_n = (word16) ptrArg06 + 0x02;
@@ -4000,13 +3736,10 @@ word16 fn0800-29C5(Eq_n cx, Eq_n dx, Eq_n si, Eq_n di, Eq_n ds, union Eq_n & bpO
 	mp16 sp_n = fp - 0x7E;
 	if ((*((word32) ds + 17838) | *((word32) ds + 0x000045B0)) == 0x00 && (*((word32) ds + 0x000045AA) | *((word32) ds + 0x000045AC)) == 0x00)
 	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
 		Eq_n sp_n = <invalid>;
-		Eq_n stackArg4 = <invalid>;
 		cx.u0 = <invalid>;
 		sp_n = (mp16) ((word32) sp_n + 0x04);
-		if (fn0800-2DE2(cx, dx, si, di, ds, SEQ(ds, 0x4541), stackArg4, out ch_n, out bp_n, out si, out di, out ds) == 0x00)
+		if (fn0800-2DE2(cx, dx, si, di, ds, SEQ(ds, 0x4541), out ch_n, out bp_n, out si, out di, out ds) == 0x00)
 		{
 			Eq_n di_n = ss->*((word32) sp_n + 0x04);
 			Eq_n si_n = ss->*((word32) sp_n + 0x06);
@@ -4050,14 +3783,8 @@ word16 fn0800-29C5(Eq_n cx, Eq_n dx, Eq_n si, Eq_n di, Eq_n ds, union Eq_n & bpO
 				ss->*(sp_n - 0x02) = bp_n - 0x78;
 				ss->*(sp_n - 0x04) = *((word32) ds + 0x000045AC);
 				ss->*(sp_n - 0x06) = *((word32) ds + 0x000045AA);
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				Eq_n stackArg4 = <invalid>;
-				Eq_n stackArg8 = <invalid>;
 				dx_n = DPB(dx_n, dl_n, 0);
-				if (fn0800-4357(ss->*(sp_n - 0x06), stackArg4, ss->*(sp_n - 0x02), stackArg8) != 0x00)
+				if (fn0800-4357(ss->*(sp_n - 0x06), ss->*(sp_n - 0x02)) != 0x00)
 				{
 					Eq_n es_bx_n = (ss->*bp_n).t0004;
 					Eq_n dx_n = *((word32) ds + 17838);
@@ -4369,8 +4096,8 @@ Eq_n fn0800-2C9A(Eq_n ds, union Eq_n & dxOut, ptr16 & bxOut)
 	return cx_n;
 }
 
-// 0800:2CCF: Register word16 fn0800-2CCF(Register Eq_n ds, Stack Eq_n ptrArg02, Stack Eq_n wArg04, Stack Eq_n wArg06, Stack Eq_n wArg08, Stack byte bArg09, Register out Eq_n clOut, Register out Eq_n dxOut)
-word16 fn0800-2CCF(Eq_n ds, Eq_n ptrArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08, byte bArg09, union Eq_n & clOut, union Eq_n & dxOut)
+// 0800:2CCF: Register word16 fn0800-2CCF(Register Eq_n ds, Stack Eq_n ptrArg02, Stack Eq_n wArg06, Stack Eq_n bArg08, Stack byte bArg09, Register out Eq_n clOut, Register out Eq_n dxOut)
+word16 fn0800-2CCF(Eq_n ds, Eq_n ptrArg02, Eq_n wArg06, Eq_n bArg08, byte bArg09, union Eq_n & clOut, union Eq_n & dxOut)
 {
 	Eq_n si_n = wArg06;
 	while (true)
@@ -4398,26 +4125,17 @@ word16 fn0800-2CCF(Eq_n ds, Eq_n ptrArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08
 // 0800:2D0A: Register Eq_n fn0800-2D0A(Register out ptr16 dxOut, Register out Eq_n bpOut, Register out (ptr16 Eq_n) dsOut)
 Eq_n fn0800-2D0A(ptr16 & dxOut, union Eq_n & bpOut, struct Eq_n & dsOut)
 {
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg2 = <invalid>;
-	Eq_n stackArg4 = <invalid>;
 	struct Eq_n Eq_n::* bp_n;
 	Eq_n dx_n;
 	Eq_n ds_n;
-	Eq_n ax_n = fn0800-4311(stackArg2, stackArg4, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
+	Eq_n ax_n = fn0800-4311(out dx_n, out bp_n, out si_n, out di_n, out ds_n);
 	ss->*(bp_n - 0x02) = dx_n;
 	ss->*(bp_n - 0x04) = ax_n;
 	Eq_n sp_n = <invalid>;
 	ss->*((word32) sp_n + 0x02) = (ss->*bp_n).t0006;
 	ss->*sp_n = (ss->*bp_n).t0004;
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg4 = <invalid>;
 	Eq_n dx_n;
-	Eq_n ax_n = fn0800_AD2F(ds_n, ss->*sp_n, stackArg4, out dx_n);
+	Eq_n ax_n = fn0800_AD2F(ds_n, ss->*sp_n, out dx_n);
 	(ss->*(bp_n - 0x0A)).t0000 = dx_n;
 	(ss->*(bp_n - 0x0C)).t0000 = ax_n;
 	Eq_n si_n = 0x00;
@@ -4449,10 +4167,7 @@ Eq_n fn0800-2D0A(ptr16 & dxOut, union Eq_n & bpOut, struct Eq_n & dsOut)
 		ss->*sp_n = (ss->*(bp_n - 0x08)).t0000;
 		(ss->*(sp_n - 0x02)).t0000 = (ss->*(bp_n - 0x02)).t0000;
 		(ss->*(sp_n - 0x04)).t0000 = (ss->*(bp_n - 0x04)).t0000;
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
-		si_n = fn0800-2CCF(ds_n, (ss->*(sp_n - 0x04)).t0000, stackArg4, ss->*sp_n, ss->*((word32) sp_n + 0x02), ss->*((word32) sp_n + 0x03), out cl_n, out dx_n);
+		si_n = fn0800-2CCF(ds_n, (ss->*(sp_n - 0x04)).t0000, ss->*sp_n, ss->*((word32) sp_n + 0x02), ss->*((word32) sp_n + 0x03), out cl_n, out dx_n);
 		Eq_n ax_n = (ss->*(bp_n - 0x06)).t0000;
 		Eq_n dx_n = (ss->*(bp_n - 0x08)).t0000;
 		(ss->*bp_n).t0008 = v29_n;
@@ -4469,12 +4184,9 @@ Eq_n fn0800-2D0A(ptr16 & dxOut, union Eq_n & bpOut, struct Eq_n & dsOut)
 	fn0800_ACB3(ds_n, (ss->*(sp_n - 0x06)).t0000, (ss->*(sp_n - 0x04)).t0000, ss->*((word32) sp_n + 0x02), out cx_n, out dx_n, out bx_n);
 	ss->*((word32) sp_n + 0x02) = (ss->*(bp_n - 0x02)).t0000;
 	ss->*sp_n = (ss->*(bp_n - 0x04)).t0000;
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg2 = <invalid>;
 	struct Eq_n * ds_n;
 	ptr16 dx_n;
-	fn0800-4346(ds_n, stackArg2, ss->*((word32) sp_n + 0x02), out cx_n, out dx_n, out bx_n, out ds_n);
+	fn0800-4346(ds_n, ss->*((word32) sp_n + 0x02), out cx_n, out dx_n, out bx_n, out ds_n);
 	Eq_n bp_n = (ss->*bp_n).t0000;
 	dxOut = dx_n;
 	bpOut = bp_n;
@@ -4492,8 +4204,8 @@ void fn0800-2DBF(Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 	*((word32) ds + 0x0000464E) = wArg04;
 }
 
-// 0800:2DE2: Register word16 fn0800-2DE2(Register Eq_n cx, Register Eq_n dx, Register Eq_n si, Register Eq_n di, Register Eq_n ds, Stack Eq_n ptrArg02, Stack Eq_n wArg04, Register out Eq_n chOut, Register out Eq_n bpOut, Register out Eq_n siOut, Register out Eq_n diOut, Register out Eq_n dsOut)
-word16 fn0800-2DE2(Eq_n cx, Eq_n dx, Eq_n si, Eq_n di, Eq_n ds, Eq_n ptrArg02, Eq_n wArg04, union Eq_n & chOut, union Eq_n & bpOut, union Eq_n & siOut, union Eq_n & diOut, union Eq_n & dsOut)
+// 0800:2DE2: Register word16 fn0800-2DE2(Register Eq_n cx, Register Eq_n dx, Register Eq_n si, Register Eq_n di, Register Eq_n ds, Stack Eq_n wArg02, Register out Eq_n chOut, Register out Eq_n bpOut, Register out Eq_n siOut, Register out Eq_n diOut, Register out Eq_n dsOut)
+word16 fn0800-2DE2(Eq_n cx, Eq_n dx, Eq_n si, Eq_n di, Eq_n ds, Eq_n wArg02, union Eq_n & chOut, union Eq_n & bpOut, union Eq_n & siOut, union Eq_n & diOut, union Eq_n & dsOut)
 {
 	Eq_n wArg04_n = SLICE(ptrArg02, word16, 16);
 	Eq_n wArg02_n = SLICE(ptrArg02, word16, 0);
@@ -4515,22 +4227,16 @@ word16 fn0800-2DE2(Eq_n cx, Eq_n dx, Eq_n si, Eq_n di, Eq_n ds, Eq_n ptrArg02, E
 	else
 	{
 		*((word32) ds + 0x00004617) = 0x00;
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg10 = <invalid>;
 		Eq_n dx_n;
-		if ((fn0800_A77D(ds, 0x45B2, ds, 101, SEQ(*((word32) ds + 17949), *((word32) ds + 17947)), stackArg10, out dx_n) | dx_n) == 0x00)
+		if ((fn0800_A77D(ds, 0x45B2, ds, 101, SEQ(*((word32) ds + 17949), *((word32) ds + 17947)), out dx_n) | dx_n) == 0x00)
 		{
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg4 = <invalid>;
 			struct Eq_n Eq_n::* bp_n;
 			Eq_n cx_n;
 			Eq_n di_n;
 			Eq_n dx_n;
 			Eq_n si_n;
 			Eq_n ds_n;
-			fn0800_A614(ds, SEQ(*((word32) ds + 17949), *((word32) ds + 17947)), stackArg4, out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
+			fn0800_A614(ds, SEQ(*((word32) ds + 17949), *((word32) ds + 17947)), out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
 			*((word32) ds_n + 0x00004654) = 0x00;
 			((word32) ds_n + 17949)->u0 = 0x00;
 			((word32) ds_n + 17947)->u0 = 0x00;
@@ -4540,11 +4246,8 @@ word16 fn0800-2DE2(Eq_n cx, Eq_n dx, Eq_n si, Eq_n di, Eq_n ds, Eq_n ptrArg02, E
 			ss->*sp_n = (ss->*bp_n).w0004;
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
 			Eq_n stackArg2 = <invalid>;
-			Eq_n stackArg4 = <invalid>;
-			word16 ax_n = fn0800-2DE2(cx_n, dx_n, si_n, di_n, ds_n, stackArg2, stackArg4, out ch_n, out bp_n, out si_n, out di_n, out ds_n);
+			word16 ax_n = fn0800-2DE2(cx_n, dx_n, si_n, di_n, ds_n, stackArg2, out ch_n, out bp_n, out si_n, out di_n, out ds_n);
 			Eq_n di_n = ss->*((word32) sp_n + 0x04);
 			Eq_n si_n = ss->*((word32) sp_n + 0x06);
 			Eq_n bp_n = (ss->*bp_n).t0000;
@@ -4615,10 +4318,7 @@ word16 fn0800-2DE2(Eq_n cx, Eq_n dx, Eq_n si, Eq_n di, Eq_n ds, Eq_n ptrArg02, E
 		}
 		if ((int16) *((word32) ds + 0x000045B2) == 0x00)
 		{
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg4 = <invalid>;
-			word16 ax_n = fn0800-2DE2(cx_n, dx_n, si_n, di_n, ds, wArg02_n, stackArg4, out ch_n, out bp_n, out si_n, out di_n, out ds_n);
+			word16 ax_n = fn0800-2DE2(cx_n, dx_n, si_n, di_n, ds, wArg02_n, out ch_n, out bp_n, out si_n, out di_n, out ds_n);
 			chOut.u0 = <invalid>;
 			bpOut = bp;
 			siOut = si;
@@ -4636,10 +4336,7 @@ word16 fn0800-2DE2(Eq_n cx, Eq_n dx, Eq_n si, Eq_n di, Eq_n ds, Eq_n ptrArg02, E
 				break;
 		}
 		*((word32) ds + 0x00004619) = ~cx_n - 0x01;
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
-		fn0800-0C6C(ds, SEQ(ds, 0x45B2), stackArg4);
+		fn0800-0C6C(ds, SEQ(ds, 0x45B2));
 		if (*((word32) ds + 0x0000464E) == 0x00)
 		{
 			struct Eq_n * es_n = SLICE(ptrArg02, selector, 16);
@@ -4694,12 +4391,9 @@ word16 fn0800-2DE2(Eq_n cx, Eq_n dx, Eq_n si, Eq_n di, Eq_n ds, Eq_n ptrArg02, E
 			return 0x00;
 		}
 		Eq_n es_bx_n = *((word32) ds + 9884);
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
 		struct Eq_n * es_n = SLICE(es_bx_n, selector, 16);
 		struct Eq_n Eq_n::* bx_n = (word16) es_bx_n + (*((word32) ds + 18002) << 0x02);
-		Eq_n stackArg4 = <invalid>;
-		fn0800_BF9E(SEQ(ds, 0x45B2), stackArg4, SEQ((es_n->*bx_n).w0002, (es_n->*bx_n).w0000));
+		fn0800_BF9E(SEQ(ds, 0x45B2), SEQ((es_n->*bx_n).w0002, (es_n->*bx_n).w0000));
 		di_n.u0 = 0x45B2;
 		word16 cx_n = ~0x00;
 		while (cx_n != 0x00)
@@ -4710,10 +4404,7 @@ word16 fn0800-2DE2(Eq_n cx, Eq_n dx, Eq_n si, Eq_n di, Eq_n ds, Eq_n ptrArg02, E
 				break;
 		}
 		*((word32) ds + 0x00004619) = ~cx_n - 0x01;
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
-		fn0800-0C6C(ds, SEQ(ds, 0x45B2), stackArg4);
+		fn0800-0C6C(ds, SEQ(ds, 0x45B2));
 		ui16 ax_n = *((word32) ds + 18002);
 		*((word32) ds + 0x00004656) = ax_n;
 		*((word32) ds + 0x00004617) = 0x00;
@@ -4737,11 +4428,8 @@ word16 fn0800-2DE2(Eq_n cx, Eq_n dx, Eq_n si, Eq_n di, Eq_n ds, Eq_n ptrArg02, E
 			ss->*((word32) sp_n + 0x04) = (ss->*bp_n).t0004;
 			// Failed to bind call argument.
 			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
 			Eq_n stackArg2 = <invalid>;
-			Eq_n stackArg4 = <invalid>;
-			word16 ax_n = fn0800-2DE2(cx_n, dx_n, si_n, di_n, ds_n, stackArg2, stackArg4, out ch_n, out bp_n, out si_n, out di_n, out ds_n);
+			word16 ax_n = fn0800-2DE2(cx_n, dx_n, si_n, di_n, ds_n, stackArg2, out ch_n, out bp_n, out si_n, out di_n, out ds_n);
 			Eq_n di_n = ss->*((word32) sp_n + 0x08);
 			Eq_n si_n = ss->*((word32) sp_n + 0x0A);
 			Eq_n bp_n = (ss->*bp_n).t0000;
@@ -4815,10 +4503,7 @@ word16 fn0800-2DE2(Eq_n cx, Eq_n dx, Eq_n si, Eq_n di, Eq_n ds, Eq_n ptrArg02, E
 				*((word32) ds + 0x00004654) = 0x01;
 			else
 				++*((word32) ds + 18002);
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg4 = <invalid>;
-			word16 ax_n = fn0800-2DE2(cx, dx, si_n, di_n, ds, wArg02_n, stackArg4, out ch_n, out bp_n, out si_n, out di_n, out ds_n);
+			word16 ax_n = fn0800-2DE2(cx, dx, si_n, di_n, ds, wArg02_n, out ch_n, out bp_n, out si_n, out di_n, out ds_n);
 			chOut.u0 = <invalid>;
 			bpOut = bp;
 			siOut = si;
@@ -4856,10 +4541,7 @@ word16 fn0800-2DE2(Eq_n cx, Eq_n dx, Eq_n si, Eq_n di, Eq_n ds, Eq_n ptrArg02, E
 		++si_n;
 		++di_n;
 	}
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg4 = <invalid>;
-	fn0800-0C6C(ds, SEQ(wArg04_n, wArg02_n), stackArg4);
+	fn0800-0C6C(ds, SEQ(wArg04_n, wArg02_n));
 	Eq_n si_n = wArg02_n;
 	word16 di_n = 0x4348;
 	word16 ax_n = 0x00;
@@ -4936,10 +4618,7 @@ word16 fn0800-2DE2(Eq_n cx, Eq_n dx, Eq_n si, Eq_n di, Eq_n ds, Eq_n ptrArg02, E
 			return 0x01;
 		}
 	}
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg4 = <invalid>;
-	word16 ax_n = fn0800-2DE2(cx_n, dx_n, si_n, di_n, ds, wArg02_n, stackArg4, out ch_n, out bp_n, out si_n, out di_n, out ds_n);
+	word16 ax_n = fn0800-2DE2(cx_n, dx_n, si_n, di_n, ds, wArg02_n, out ch_n, out bp_n, out si_n, out di_n, out ds_n);
 	chOut.u0 = <invalid>;
 	bpOut = bp;
 	siOut = si;
@@ -5083,8 +4762,8 @@ word16 fn0800-32CD(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n psegArg0
 	}
 }
 
-// 0800:335C: void fn0800-335C(Register Eq_n si, Register Eq_n di, Register Eq_n ds, Stack Eq_n ptrArg02, Stack Eq_n wArg04)
-void fn0800-335C(Eq_n si, Eq_n di, Eq_n ds, Eq_n ptrArg02, Eq_n wArg04)
+// 0800:335C: void fn0800-335C(Register Eq_n si, Register Eq_n di, Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04)
+void fn0800-335C(Eq_n si, Eq_n di, Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 {
 	if (fn0800-33CD(ds, fp - 0x10, ss, 0x10, wArg02, wArg04, out cx_n, out dx_n) == 0x00)
 	{
@@ -5149,8 +4828,8 @@ void fn0800-335C(Eq_n si, Eq_n di, Eq_n ds, Eq_n ptrArg02, Eq_n wArg04)
 	}
 }
 
-// 0800:33CD: Register Eq_n fn0800-33CD(Register Eq_n ds, Stack Eq_n ptrArg02, Stack Eq_n wArg04, Stack cui16 wArg06, Stack Eq_n wArg08, Stack Eq_n wArg0A, Register out Eq_n cxOut, Register out ptr16 dxOut)
-Eq_n fn0800-33CD(Eq_n ds, Eq_n ptrArg02, Eq_n wArg04, cui16 wArg06, Eq_n wArg08, Eq_n wArg0A, union Eq_n & cxOut, ptr16 & dxOut)
+// 0800:33CD: Register Eq_n fn0800-33CD(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04, Stack cui16 wArg06, Stack Eq_n wArg08, Stack Eq_n wArg0A, Register out Eq_n cxOut, Register out ptr16 dxOut)
+Eq_n fn0800-33CD(Eq_n ds, Eq_n wArg02, Eq_n wArg04, cui16 wArg06, Eq_n wArg08, Eq_n wArg0A, union Eq_n & cxOut, ptr16 & dxOut)
 {
 	Eq_n cx_n;
 	ptr16 dx_n;
@@ -5247,8 +4926,8 @@ Eq_n fn0800-33CD(Eq_n ds, Eq_n ptrArg02, Eq_n wArg04, cui16 wArg06, Eq_n wArg08,
 	}
 }
 
-// 0800:3479: Register word16 fn0800-3479(Register Eq_n ds, Stack Eq_n ptrArg02, Stack Eq_n wArg04, Stack cui16 wArg06, Register out Eq_n cxOut, Register out Eq_n dxOut)
-word16 fn0800-3479(Eq_n ds, Eq_n ptrArg02, Eq_n wArg04, cui16 wArg06, union Eq_n & cxOut, union Eq_n & dxOut)
+// 0800:3479: Register word16 fn0800-3479(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04, Stack cui16 wArg06, Register out Eq_n cxOut, Register out Eq_n dxOut)
+word16 fn0800-3479(Eq_n ds, Eq_n wArg02, Eq_n wArg04, cui16 wArg06, union Eq_n & cxOut, union Eq_n & dxOut)
 {
 	do
 	{
@@ -5466,8 +5145,8 @@ word16 fn0800-363D(Eq_n ds, Eq_n ptrArg02, Eq_n wArg06, Eq_n wArg08, ptr16 & dxO
 	return;
 }
 
-// 0800:3678: Register word16 fn0800-3678(Register Eq_n ds, Stack Eq_n ptrArg02, Stack Eq_n wArg04, Register out Eq_n dxOut, Register out ptr16 siOut, Register out Eq_n dsOut)
-word16 fn0800-3678(Eq_n ds, Eq_n ptrArg02, Eq_n wArg04, union Eq_n & dxOut, ptr16 & siOut, union Eq_n & dsOut)
+// 0800:3678: Register word16 fn0800-3678(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04, Register out Eq_n dxOut, Register out ptr16 siOut, Register out Eq_n dsOut)
+word16 fn0800-3678(Eq_n ds, Eq_n wArg02, Eq_n wArg04, union Eq_n & dxOut, ptr16 & siOut, union Eq_n & dsOut)
 {
 	segptr32 ptrArg02_n = SEQ(wArg04, wArg02);
 	Eq_n es_n = SLICE(ptrArg02_n, selector, 16);
@@ -5552,12 +5231,7 @@ l0800_n:
 		*ptrLoc0A_n = 0x00;
 		Eq_n ax_n = fn0800-33CD(ds, 0x00, 0x00, 0x10, wArg02, wArg04, out cx_n, out dx_n);
 		if (ax_n != 0x00 && fn0800-8E52(ax_n, ds, SEQ(wArg04, wArg02)) != 0x00)
-		{
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg6 = <invalid>;
-			fn0800-0D24(ds, 0x0E, SEQ(wArg04, wArg02), stackArg6, out cx_n, out dx_n, out bx_n, out si, out di_n, out es_n, out ds, out Top_n);
-		}
+			fn0800-0D24(ds, 0x0E, SEQ(wArg04, wArg02), out cx_n, out dx_n, out bx_n, out si, out di_n, out es_n, out ds, out Top_n);
 		*ptrLoc0A_n = 0x5C;
 		ptrLoc06_n = SEQ(wLoc08_n, wLoc0A_n + 0x01);
 		Mem102 = Mem265;
@@ -5622,8 +5296,8 @@ void fn0800-3764(Eq_n si, Eq_n di, Eq_n ds)
 	}
 }
 
-// 0800:37BE: Register word16 fn0800-37BE(Register Eq_n cx, Register Eq_n dx, Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04, Stack Eq_n wArg06, Stack Eq_n wArg08, Register out ptr16 diOut)
-word16 fn0800-37BE(Eq_n cx, Eq_n dx, Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08, ptr16 & diOut)
+// 0800:37BE: Register word16 fn0800-37BE(Register Eq_n cx, Register Eq_n dx, Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04, Register out ptr16 diOut)
+word16 fn0800-37BE(Eq_n cx, Eq_n dx, Eq_n ds, Eq_n wArg02, Eq_n wArg04, ptr16 & diOut)
 {
 	ptr16 di_n;
 	word16 si_n = fn0800_BEA2(cx, dx, ds, SEQ(wArg04, wArg02), 0x0A2B, ds, out di_n);
@@ -5676,10 +5350,7 @@ Eq_n fn0800-37DF(Eq_n si, Eq_n di, Eq_n ds, union Eq_n & diOut, union Eq_n & dsO
 	{
 		ss->*((word32) sp_n + 0x06) = ss->*(bp_n - 0x02);
 		ss->*((word32) sp_n + 0x04) = ss->*(bp_n - 0x04);
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
-		fn0800_A614(ds_n, ss->*((word32) sp_n + 0x04), stackArg4, out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
+		fn0800_A614(ds_n, ss->*((word32) sp_n + 0x04), out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
 		Eq_n sp_n = <invalid>;
 		(ss->*((word32) sp_n + 0x02)).u0 = 0x0180;
 		ss->*sp_n = ss;
@@ -5700,10 +5371,7 @@ Eq_n fn0800-37DF(Eq_n si, Eq_n di, Eq_n ds, union Eq_n & diOut, union Eq_n & dsO
 		ss->*sp_n = ds_n;
 		(ss->*(sp_n - 0x02)).u0 = 0x44DC;
 		(ss->*(sp_n - 0x04)).u0 = 0x0A;
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg6 = <invalid>;
-		fn0800-0D24(ds_n, ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), stackArg6, out cx_n, out dx_n, out bx_n, out si_n, out di_n, out es_n, out ds_n, out Top_n);
+		fn0800-0D24(ds_n, ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), out cx_n, out dx_n, out bx_n, out si_n, out di_n, out es_n, out ds_n, out Top_n);
 	}
 	diOut = (ss->*sp_n).t0000;
 	dsOut = ds_n;
@@ -5762,23 +5430,17 @@ word16 fn0800-388C(Eq_n si, Eq_n di, Eq_n ds, ptr16 & cxOut, ptr16 & dxOut, unio
 			{
 				ss->*((word32) sp_n + 0x06) = *((word32) ds_n + 0x000029E5);
 				ss->*((word32) sp_n + 0x04) = *((word32) ds_n + 0x000029E3);
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				Eq_n stackArg4 = <invalid>;
 				Eq_n ds_n;
-				fn0800_A614(ds_n, ss->*((word32) sp_n + 0x04), stackArg4, out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
+				fn0800_A614(ds_n, ss->*((word32) sp_n + 0x04), out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
 				Eq_n sp_n = <invalid>;
 				ss->*((word32) sp_n + 0x02) = *((word32) ds_n + 10721);
 				ss->*sp_n = *((word32) ds_n + 10719);
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				Eq_n stackArg4 = <invalid>;
 				union Eq_n Eq_n::* bp_n;
 				ptr16 cx_n;
 				ptr16 di_n;
 				ptr16 si_n;
 				Eq_n ds_n;
-				fn0800_A614(ds_n, ss->*sp_n, stackArg4, out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
+				fn0800_A614(ds_n, ss->*sp_n, out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
 				Eq_n sp_n = <invalid>;
 				ss->*((word32) sp_n + 0x02) = ds_n;
 				(ss->*sp_n).u0 = 0x44DC;
@@ -5887,25 +5549,19 @@ word16 fn0800-3992(Eq_n si, Eq_n di, Eq_n ds, union Eq_n & dxOut, union Eq_n & b
 			{
 				ss->*((word32) sp_n + 0x06) = ss->*(bp_n - 0x02);
 				ss->*((word32) sp_n + 0x04) = ss->*(bp_n - 0x04);
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				Eq_n stackArg0 = <invalid>;
 				Eq_n ds_n;
 				word16 dx_n;
-				Eq_n ax_n = fn0800-8CAA(ax_n, 0x08, fn0800-3E5D(ds_n, ss->*((word32) sp_n + 0x04), ss->*((word32) sp_n + 0x06), out ds_n, out Top_n), stackArg0, out dx_n);
+				Eq_n ax_n = fn0800-8CAA(ax_n, 0x08, fn0800-3E5D(ds_n, ss->*((word32) sp_n + 0x04), ss->*((word32) sp_n + 0x06), out ds_n, out Top_n), out dx_n);
 				Eq_n sp_n = <invalid>;
 				if (dx_n != 0x52 || ax_n != 0x4E43)
 				{
 					ss->*(sp_n - 0x02) = ss->*(bp_n - 0x02);
 					ss->*(sp_n - 0x04) = ss->*(bp_n - 0x04);
-					// Failed to bind call argument.
-					// Please report this issue at https://github.com/uxmal/reko
-					Eq_n stackArg4 = <invalid>;
 					union Eq_n Eq_n::* bp_n;
 					Eq_n dx_n;
 					Eq_n si_n;
 					Eq_n ds_n;
-					fn0800_A614(ds_n, ss->*(sp_n - 0x04), stackArg4, out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
+					fn0800_A614(ds_n, ss->*(sp_n - 0x04), out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
 					Eq_n bp_n = ss->*bp_n;
 					dxOut = dx_n;
 					bpOut = bp_n;
@@ -5922,14 +5578,11 @@ word16 fn0800-3992(Eq_n si, Eq_n di, Eq_n ds, union Eq_n & dxOut, union Eq_n & b
 					{
 						ss->*(sp_n - 0x02) = ss->*(bp_n - 0x02);
 						ss->*(sp_n - 0x04) = ss->*(bp_n - 0x04);
-						// Failed to bind call argument.
-						// Please report this issue at https://github.com/uxmal/reko
-						Eq_n stackArg4 = <invalid>;
 						union Eq_n Eq_n::* bp_n;
 						Eq_n dx_n;
 						Eq_n si_n;
 						Eq_n ds_n;
-						fn0800_A614(ds_n, ss->*(sp_n - 0x04), stackArg4, out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
+						fn0800_A614(ds_n, ss->*(sp_n - 0x04), out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
 						Eq_n bp_n = ss->*bp_n;
 						dxOut = dx_n;
 						bpOut = bp_n;
@@ -5963,14 +5616,11 @@ word16 fn0800-3992(Eq_n si, Eq_n di, Eq_n ds, union Eq_n & dxOut, union Eq_n & b
 							*((word32) ds_n + 10755) = ax_n + 0x12;
 							ss->*(sp_n - 0x02) = ss->*(bp_n - 0x02);
 							ss->*(sp_n - 0x04) = ss->*(bp_n - 0x04);
-							// Failed to bind call argument.
-							// Please report this issue at https://github.com/uxmal/reko
-							Eq_n stackArg4 = <invalid>;
 							union Eq_n Eq_n::* bp_n;
 							Eq_n dx_n;
 							Eq_n si_n;
 							Eq_n ds_n;
-							fn0800_A614(ds_n, ss->*(sp_n - 0x04), stackArg4, out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
+							fn0800_A614(ds_n, ss->*(sp_n - 0x04), out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
 							Eq_n bp_n = ss->*bp_n;
 							dxOut = dx_n;
 							bpOut = bp_n;
@@ -5982,14 +5632,11 @@ word16 fn0800-3992(Eq_n si, Eq_n di, Eq_n ds, union Eq_n & dxOut, union Eq_n & b
 						{
 							ss->*(sp_n - 0x02) = ss->*(bp_n - 0x02);
 							ss->*(sp_n - 0x04) = ss->*(bp_n - 0x04);
-							// Failed to bind call argument.
-							// Please report this issue at https://github.com/uxmal/reko
-							Eq_n stackArg4 = <invalid>;
 							union Eq_n Eq_n::* bp_n;
 							Eq_n dx_n;
 							Eq_n si_n;
 							Eq_n ds_n;
-							fn0800_A614(ds_n, ss->*(sp_n - 0x04), stackArg4, out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
+							fn0800_A614(ds_n, ss->*(sp_n - 0x04), out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
 							Eq_n bp_n = ss->*bp_n;
 							dxOut = dx_n;
 							bpOut = bp_n;
@@ -6004,14 +5651,11 @@ word16 fn0800-3992(Eq_n si, Eq_n di, Eq_n ds, union Eq_n & dxOut, union Eq_n & b
 			{
 				ss->*((word32) sp_n + 0x06) = ss->*(bp_n - 0x02);
 				ss->*((word32) sp_n + 0x04) = ss->*(bp_n - 0x04);
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				Eq_n stackArg4 = <invalid>;
 				union Eq_n Eq_n::* bp_n;
 				Eq_n dx_n;
 				Eq_n si_n;
 				Eq_n ds_n;
-				fn0800_A614(ds_n, ss->*((word32) sp_n + 0x04), stackArg4, out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
+				fn0800_A614(ds_n, ss->*((word32) sp_n + 0x04), out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
 				Eq_n bp_n = ss->*bp_n;
 				dxOut = dx_n;
 				bpOut = bp_n;
@@ -6041,15 +5685,9 @@ cui16 fn0800-3B0A(Eq_n wArg0A, Eq_n wArg0C, ptr16 & dxOut, union Eq_n & bpOut, s
 	{
 		if (wArg0C >= 0x00 && (wArg0C > 0x00 || wArg0A > 65000))
 			;
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg2 = <invalid>;
-		Eq_n stackArg4 = <invalid>;
 		Eq_n dx_n;
 		Eq_n ds_n;
-		Eq_n ax_n = fn0800-4311(stackArg2, stackArg4, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
+		Eq_n ax_n = fn0800-4311(out dx_n, out bp_n, out si_n, out di_n, out ds_n);
 		ss->*(bp_n - 0x02) = dx_n;
 		ss->*(bp_n - 0x04) = ax_n;
 		Eq_n sp_n = <invalid>;
@@ -6094,10 +5732,7 @@ cui16 fn0800-3B0A(Eq_n wArg0A, Eq_n wArg0C, ptr16 & dxOut, union Eq_n & bpOut, s
 		}
 		ss->*((word32) sp_n + 0x02) = (ss->*(bp_n - 0x02)).t0000;
 		ss->*sp_n = (ss->*(bp_n - 0x04)).t0000;
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg2 = <invalid>;
-		ax_n = fn0800-4346(ds_n, stackArg2, ss->*((word32) sp_n + 0x02), out cx_n, out dx, out bx_n, out ds);
+		ax_n = fn0800-4346(ds_n, ss->*((word32) sp_n + 0x02), out cx_n, out dx, out bx_n, out ds);
 	}
 	Eq_n bp_n = (ss->*bp_n).t0000;
 	dxOut = dx;
@@ -6109,17 +5744,11 @@ cui16 fn0800-3B0A(Eq_n wArg0A, Eq_n wArg0C, ptr16 & dxOut, union Eq_n & bpOut, s
 // 0800:3BC3: Register word16 fn0800-3BC3(Register Eq_n cx, Register Eq_n dx, Register Eq_n ds, Register out Eq_n dsOut)
 word16 fn0800-3BC3(Eq_n cx, Eq_n dx, Eq_n ds, union Eq_n & dsOut)
 {
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg6 = <invalid>;
-	Eq_n stackArg8 = <invalid>;
 	Eq_n di_n;
 	struct Eq_n Eq_n::* bp_n;
 	Eq_n ds_n;
 	Eq_n dx_n;
-	Eq_n ax_n = fn0800-4234(fn0800-37BE(cx, dx, ds, 0x43AD, ds, stackArg6, stackArg8, out di_n), di_n, ds, 0x43AD, ds, 0x0A61, ds, out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
+	Eq_n ax_n = fn0800-4234(fn0800-37BE(cx, dx, ds, 0x43AD, ds, out di_n), di_n, ds, 0x43AD, ds, 0x0A61, ds, out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
 	*((word32) ds_n + 10709) = dx_n;
 	*((word32) ds_n + 10707) = ax_n;
 	Eq_n sp_n = <invalid>;
@@ -6169,12 +5798,9 @@ word16 fn0800-3BC3(Eq_n cx, Eq_n dx, Eq_n ds, union Eq_n & dsOut)
 	Eq_n sp_n = <invalid>;
 	ss->*((word32) sp_n + 0x0A) = *((word32) ds_n + 10709);
 	ss->*((word32) sp_n + 0x08) = *((word32) ds_n + 10707);
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg4 = <invalid>;
 	word16 si_n;
 	Eq_n ds_n;
-	fn0800_A614(ds_n, ss->*((word32) sp_n + 0x08), stackArg4, out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
+	fn0800_A614(ds_n, ss->*((word32) sp_n + 0x08), out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
 	Eq_n sp_n = <invalid>;
 	ss->*((word32) sp_n + 0x02) = ds_n;
 	(ss->*sp_n).u0 = 0x43AD;
@@ -6259,22 +5885,16 @@ byte fn0800-3C99(Eq_n si, Eq_n di, Eq_n ds, ptr16 & bpOut, union Eq_n & siOut, s
 	Eq_n sp_n = <invalid>;
 	ss->*((word32) sp_n + 0x0A) = ss->*(bp_n - 0x02);
 	ss->*((word32) sp_n + 0x08) = ss->*(bp_n - 0x04);
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg4 = <invalid>;
 	Eq_n ds_n;
-	fn0800_A614(ds_n, ss->*((word32) sp_n + 0x08), stackArg4, out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
+	fn0800_A614(ds_n, ss->*((word32) sp_n + 0x08), out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
 	Eq_n sp_n = <invalid>;
 	ss->*((word32) sp_n + 0x02) = *((word32) ds_n + 10705);
 	ss->*sp_n = *((word32) ds_n + 10703);
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg4 = <invalid>;
 	word16 bp_n;
 	Eq_n ds_n;
 	Eq_n si_n;
 	Eq_n di_n;
-	fn0800_A614(ds_n, ss->*sp_n, stackArg4, out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
+	fn0800_A614(ds_n, ss->*sp_n, out cx_n, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
 	Eq_n sp_n = <invalid>;
 	(ss->*((word32) sp_n + 0x02)).u0 = 0x0180;
 	ss->*sp_n = ds_n;
@@ -6292,10 +5912,7 @@ byte fn0800-3C99(Eq_n si, Eq_n di, Eq_n ds, ptr16 & bpOut, union Eq_n & siOut, s
 		ss->*((word32) sp_n + 0x02) = ss;
 		ss->*sp_n = bp_n - 0x6A;
 		(ss->*(sp_n - 0x02)).t0000.u0 = 0x0A;
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg6 = <invalid>;
-		fn0800-0D24(ds_n, (ss->*(sp_n - 0x02)).t0000, ss->*sp_n, stackArg6, out cx_n, out dx_n, out bx_n, out si_n, out di_n, out es_n, out ds_n, out Top_n);
+		fn0800-0D24(ds_n, (ss->*(sp_n - 0x02)).t0000, ss->*sp_n, out cx_n, out dx_n, out bx_n, out si_n, out di_n, out es_n, out ds_n, out Top_n);
 	}
 	ss->*((word32) sp_n + 0x02) = ds_n;
 	(ss->*sp_n).u0 = 2661;
@@ -6316,8 +5933,8 @@ byte fn0800-3C99(Eq_n si, Eq_n di, Eq_n ds, ptr16 & bpOut, union Eq_n & siOut, s
 	return (byte) cx_n;
 }
 
-// 0800:3DCF: Register word16 fn0800-3DCF(Register Eq_n ds, Stack Eq_n ptrArg02, Stack Eq_n wArg04, Register out Eq_n chOut, Register out ptr16 dxOut, Register out ptr16 diOut, Register out Eq_n dsOut, Register out Eq_n TopOut)
-word16 fn0800-3DCF(Eq_n ds, Eq_n ptrArg02, Eq_n wArg04, union Eq_n & chOut, ptr16 & dxOut, ptr16 & diOut, union Eq_n & dsOut, union Eq_n & TopOut)
+// 0800:3DCF: Register word16 fn0800-3DCF(Register Eq_n ds, Stack Eq_n ptrArg02, Register out Eq_n chOut, Register out ptr16 dxOut, Register out ptr16 diOut, Register out Eq_n dsOut, Register out Eq_n TopOut)
+word16 fn0800-3DCF(Eq_n ds, Eq_n ptrArg02, union Eq_n & chOut, ptr16 & dxOut, ptr16 & diOut, union Eq_n & dsOut, union Eq_n & TopOut)
 {
 	Eq_n wArg04_n = SLICE(ptrArg02, word16, 16);
 	Eq_n wArg02_n = SLICE(ptrArg02, word16, 0);
@@ -6328,25 +5945,17 @@ word16 fn0800-3DCF(Eq_n ds, Eq_n ptrArg02, Eq_n wArg04, union Eq_n & chOut, ptr1
 	if (v10_n >= 0x00)
 	{
 		struct Eq_n * ax_n = *((word32) ptrArg02 + 0x0E);
-		union Eq_n Eq_n::* si_n = *((word32) ptrArg02 + 0x0C);
+		byte Eq_n::* si_n = *((word32) ptrArg02 + 0x0C);
 		*((word32) ptrArg02 + 0x0C) = (word32) *((word32) ptrArg02 + 0x0C) + 0x01;
 		ax_n = DPB(DPB(ax_n, ax_n->*si_n, 0), 0x00, 8);
 	}
 	else
-	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
-		ax_n = fn0800_AEC2(ds, SEQ(wArg04_n, wArg02_n), stackArg4, out ch_n, out dx);
-	}
+		ax_n = fn0800_AEC2(ds, SEQ(wArg04_n, wArg02_n), out ch_n, out dx);
 	byte bLoc04_n = SLICE(ax_n, byte, 0);
 	if (ax_n == ~0x00)
 	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg6 = <invalid>;
 		word16 dx_n;
-		ax_n = fn0800-0D24(ds, 0x08, SEQ(dx_n, fn0800-4271(ds, wArg02_n, wArg04_n, out dx_n)), stackArg6, out cx_n, out dx, out bx_n, out si_n, out di, out es_n, out ds, out Top_n);
+		ax_n = fn0800-0D24(ds, 0x08, SEQ(dx_n, fn0800-4271(ds, wArg02_n, wArg04_n, out dx_n)), out cx_n, out dx, out bx_n, out si_n, out di, out es_n, out ds, out Top_n);
 	}
 	chOut.u0 = <invalid>;
 	dxOut = dx;
@@ -6359,19 +5968,13 @@ word16 fn0800-3DCF(Eq_n ds, Eq_n ptrArg02, Eq_n wArg04, union Eq_n & chOut, ptr1
 // 0800:3E27: Register ui16 fn0800-3E27(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04, Register out ptr16 cxOut, Register out ptr16 dxOut, Register out ptr16 diOut, Register out (ptr16 Eq_n) dsOut, Register out Eq_n TopOut)
 ui16 fn0800-3E27(Eq_n ds, Eq_n wArg02, Eq_n wArg04, ptr16 & cxOut, ptr16 & dxOut, ptr16 & diOut, struct Eq_n & dsOut, union Eq_n & TopOut)
 {
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg4 = <invalid>;
-	Eq_n stackArg4 = <invalid>;
 	Eq_n cx_n = <invalid>;
 	Eq_n ds_n;
 	ptr16 dx_n;
 	Eq_n Top_n;
 	ptr16 di_n;
 	struct Eq_n * ds_n;
-	ui16 ax_n = (DPB(fn0800-3DCF(ds, SEQ(wArg04, wArg02), stackArg4, out ch_n, out dx_n, out di_n, out ds_n, out Top_n), 0x00, 8) << 0x08) + DPB(fn0800-3DCF(ds_n, SEQ(wArg04, wArg02), stackArg4, out ch_n, out dx_n, out di_n, out ds_n, out Top_n), 0x00, 8);
+	ui16 ax_n = (DPB(fn0800-3DCF(ds, SEQ(wArg04, wArg02), out ch_n, out dx_n, out di_n, out ds_n, out Top_n), 0x00, 8) << 0x08) + DPB(fn0800-3DCF(ds_n, SEQ(wArg04, wArg02), out ch_n, out dx_n, out di_n, out ds_n, out Top_n), 0x00, 8);
 	cxOut = (ptr16) DPB(cx_n, 0x08, 0);
 	dxOut = dx_n;
 	diOut = di_n;
@@ -6392,8 +5995,8 @@ word16 fn0800-3E5D(Eq_n ds, Eq_n wArg02, Eq_n wArg04, struct Eq_n & dsOut, union
 	return dx_n;
 }
 
-// 0800:3E9A: Register word16 fn0800-3E9A(Register Eq_n ds, Stack Eq_n ptrArg02, Stack Eq_n wArg04, Register out ptr16 dxOut, Register out Eq_n dsOut)
-word16 fn0800-3E9A(Eq_n ds, Eq_n ptrArg02, Eq_n wArg04, ptr16 & dxOut, union Eq_n & dsOut)
+// 0800:3E9A: Register word16 fn0800-3E9A(Register Eq_n ds, Stack Eq_n ptrArg02, Register out ptr16 dxOut, Register out Eq_n dsOut)
+word16 fn0800-3E9A(Eq_n ds, Eq_n ptrArg02, ptr16 & dxOut, union Eq_n & dsOut)
 {
 	Eq_n wArg04_n = SLICE(ptrArg02, word16, 16);
 	Eq_n wArg02_n = SLICE(ptrArg02, word16, 0);
@@ -6403,25 +6006,17 @@ word16 fn0800-3E9A(Eq_n ds, Eq_n ptrArg02, Eq_n wArg04, ptr16 & dxOut, union Eq_
 	if (v10_n >= 0x00)
 	{
 		struct Eq_n * ax_n = *((word32) ptrArg02 + 0x0E);
-		union Eq_n Eq_n::* si_n = *((word32) ptrArg02 + 0x0C);
+		byte Eq_n::* si_n = *((word32) ptrArg02 + 0x0C);
 		*((word32) ptrArg02 + 0x0C) = (word32) *((word32) ptrArg02 + 0x0C) + 0x01;
 		ax_n = DPB(DPB(ax_n, ax_n->*si_n, 0), 0x00, 8);
 	}
 	else
-	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
-		ax_n = fn0800_AEC2(ds, SEQ(wArg04_n, wArg02_n), stackArg4, out ch_n, out dx_n);
-	}
+		ax_n = fn0800_AEC2(ds, SEQ(wArg04_n, wArg02_n), out ch_n, out dx_n);
 	byte bLoc04_n = SLICE(ax_n, byte, 0);
 	if (ax_n == ~0x00)
 	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg6 = <invalid>;
 		word16 dx_n;
-		fn0800-0D24(ds, 0x08, SEQ(dx_n, fn0800-4271(ds, wArg02_n, wArg04_n, out dx_n)), stackArg6, out cx_n, out dx_n, out bx_n, out si_n, out di_n, out es_n, out ds, out Top_n);
+		fn0800-0D24(ds, 0x08, SEQ(dx_n, fn0800-4271(ds, wArg02_n, wArg04_n, out dx_n)), out cx_n, out dx_n, out bx_n, out si_n, out di_n, out es_n, out ds, out Top_n);
 	}
 	ptr16 dx_n;
 	word16 ax_n = DPB(fn0800_ACB3(ds, wArg02_n, wArg04_n, 0x01, out cx_n, out dx_n, out bx_n), bLoc04_n, 0);
@@ -6433,16 +6028,10 @@ word16 fn0800-3E9A(Eq_n ds, Eq_n ptrArg02, Eq_n wArg04, ptr16 & dxOut, union Eq_
 // 0800:3F0A: Register ui16 fn0800-3F0A(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04, Register out ptr16 dxOut, Register out Eq_n dsOut)
 ui16 fn0800-3F0A(Eq_n ds, Eq_n wArg02, Eq_n wArg04, ptr16 & dxOut, union Eq_n & dsOut)
 {
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg4 = <invalid>;
 	Eq_n ds_n;
-	cui16 ax_n = DPB(fn0800-3DCF(ds, SEQ(wArg04, wArg02), stackArg4, out ch_n, out dx_n, out di_n, out ds_n, out Top_n), 0x00, 8);
-	Eq_n stackArg4 = <invalid>;
+	cui16 ax_n = DPB(fn0800-3DCF(ds, SEQ(wArg04, wArg02), out ch_n, out dx_n, out di_n, out ds_n, out Top_n), 0x00, 8);
 	Eq_n ds_n;
-	word16 ax_n = DPB(fn0800-3DCF(ds_n, SEQ(wArg04, wArg02), stackArg4, out ch_n, out dx_n, out di_n, out ds_n, out Top_n), 0x00, 8);
+	word16 ax_n = DPB(fn0800-3DCF(ds_n, SEQ(wArg04, wArg02), out ch_n, out dx_n, out di_n, out ds_n, out Top_n), 0x00, 8);
 	ptr16 dx_n;
 	fn0800_ACB3(ds_n, wArg02, wArg04, 0x01, out cx_n, out dx_n, out bx_n);
 	dxOut = dx_n;
@@ -6467,39 +6056,27 @@ word16 fn0800-3F58(Eq_n ds, Eq_n wArg02, Eq_n wArg04, ptr16 & diOut, union Eq_n 
 // 0800:3FAD: Register ui16 fn0800-3FAD(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04, Register out Eq_n chOut, Register out ptr16 diOut, Register out (ptr16 Eq_n) dsOut)
 ui16 fn0800-3FAD(Eq_n ds, Eq_n wArg02, Eq_n wArg04, union Eq_n & chOut, ptr16 & diOut, struct Eq_n & dsOut)
 {
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg4 = <invalid>;
-	Eq_n stackArg4 = <invalid>;
 	Eq_n ds_n;
 	ptr16 di_n;
 	struct Eq_n * ds_n;
-	ui16 ax_n = (DPB(fn0800-3DCF(ds_n, SEQ(wArg04, wArg02), stackArg4, out ch_n, out dx_n, out di_n, out ds_n, out Top_n), 0x00, 8) << 0x08) + DPB(fn0800-3DCF(ds, SEQ(wArg04, wArg02), stackArg4, out ch_n, out dx_n, out di_n, out ds_n, out Top_n), 0x00, 8);
+	ui16 ax_n = (DPB(fn0800-3DCF(ds_n, SEQ(wArg04, wArg02), out ch_n, out dx_n, out di_n, out ds_n, out Top_n), 0x00, 8) << 0x08) + DPB(fn0800-3DCF(ds, SEQ(wArg04, wArg02), out ch_n, out dx_n, out di_n, out ds_n, out Top_n), 0x00, 8);
 	chOut.u0 = <invalid>;
 	diOut = di_n;
 	dsOut = ds_n;
 	return ax_n;
 }
 
-// 0800:401E: Register word16 fn0800-401E(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04, Stack Eq_n wArg06, Register out ptr16 cxOut, Register out ptr16 dxOut, Register out ptr16 bxOut, Register out (ptr16 Eq_n) dsOut, Register out Eq_n TopOut)
-word16 fn0800-401E(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut, struct Eq_n & dsOut, union Eq_n & TopOut)
+// 0800:401E: Register word16 fn0800-401E(Register Eq_n ds, Stack Eq_n bArg02, Stack Eq_n wArg04, Stack Eq_n wArg06, Register out ptr16 cxOut, Register out ptr16 dxOut, Register out ptr16 bxOut, Register out (ptr16 Eq_n) dsOut, Register out Eq_n TopOut)
+word16 fn0800-401E(Eq_n ds, Eq_n bArg02, Eq_n wArg04, Eq_n wArg06, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut, struct Eq_n & dsOut, union Eq_n & TopOut)
 {
 	byte bArg02_n = SLICE(wArg02, byte, 0);
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg6 = <invalid>;
-	Eq_n stackArg6 = <invalid>;
 	Eq_n ds_n;
 	ptr16 bx_n;
 	ptr16 cx_n;
 	ptr16 dx_n;
 	Eq_n Top_n;
 	struct Eq_n * ds_n;
-	word16 ax_n = fn0800-4047(ds_n, SLICE(DPB(fn0800-4047(ds, SLICE(wArg02 >> 0x08, byte, 0), SEQ(wArg06, wArg04), stackArg6, out cx_n, out dx_n, out bx_n, out di_n, out ds_n, out Top_n), bArg02_n, 0), byte, 0), SEQ(wArg06, wArg04), stackArg6, out cx_n, out dx_n, out bx_n, out di_n, out ds_n, out Top_n);
+	word16 ax_n = fn0800-4047(ds_n, SLICE(DPB(fn0800-4047(ds, SLICE(wArg02 >> 0x08, byte, 0), SEQ(wArg06, wArg04), out cx_n, out dx_n, out bx_n, out di_n, out ds_n, out Top_n), bArg02_n, 0), byte, 0), SEQ(wArg06, wArg04), out cx_n, out dx_n, out bx_n, out di_n, out ds_n, out Top_n);
 	cxOut = cx_n;
 	dxOut = dx_n;
 	bxOut = bx_n;
@@ -6508,15 +6085,15 @@ word16 fn0800-401E(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, ptr16 & cxOut
 	return ax_n;
 }
 
-// 0800:4047: Register Eq_n fn0800-4047(Register Eq_n ds, Stack Eq_n bArg02, Stack Eq_n ptrArg04, Stack Eq_n wArg06, Register out ptr16 cxOut, Register out ptr16 dxOut, Register out ptr16 bxOut, Register out Eq_n diOut, Register out Eq_n dsOut, Register out Eq_n TopOut)
-Eq_n fn0800-4047(Eq_n ds, Eq_n bArg02, Eq_n ptrArg04, Eq_n wArg06, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut, union Eq_n & diOut, union Eq_n & dsOut, union Eq_n & TopOut)
+// 0800:4047: Register Eq_n fn0800-4047(Register Eq_n ds, Stack Eq_n bArg02, Stack Eq_n ptrArg04, Register out ptr16 cxOut, Register out ptr16 dxOut, Register out ptr16 bxOut, Register out Eq_n diOut, Register out Eq_n dsOut, Register out Eq_n TopOut)
+Eq_n fn0800-4047(Eq_n ds, Eq_n bArg02, Eq_n ptrArg04, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut, union Eq_n & diOut, union Eq_n & dsOut, union Eq_n & TopOut)
 {
 	Eq_n wArg06_n = SLICE(ptrArg04, word16, 16);
 	Eq_n wArg04_n = SLICE(ptrArg04, word16, 0);
 	Eq_n Top_n = 0x00;
 	ptr16 dx_n;
 	Eq_n ax_n;
-	Eq_n v10_n = (word32) *ptrArg04 + 0x01;
+	ci16 v10_n = (word32) *ptrArg04 + 0x01;
 	*ptrArg04 = v10_n;
 	word16 cx_n = DPB(cx, bArg02, 0);
 	ptr16 cx_n = DPB(cx, bArg02, 0);
@@ -6531,19 +6108,11 @@ Eq_n fn0800-4047(Eq_n ds, Eq_n bArg02, Eq_n ptrArg04, Eq_n wArg06, ptr16 & cxOut
 		ax_n = DPB(DPB(ax_n, bArg02, 0), 0x00, 8);
 	}
 	else
-	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg6 = <invalid>;
-		ax_n = fn0800_B30A(ds, SLICE(cx_n, byte, 0), SEQ(wArg06_n, wArg04_n), stackArg6, out cx_n, out dx_n, out bx_n);
-	}
+		ax_n = fn0800_B30A(ds, SLICE(cx_n, byte, 0), SEQ(wArg06_n, wArg04_n), out cx_n, out dx_n, out bx_n);
 	if (ax_n == ~0x00)
 	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg6 = <invalid>;
 		word16 dx_n;
-		ax_n = fn0800-0D24(ds, 0x09, SEQ(dx_n, fn0800-4271(ds, wArg04_n, wArg06_n, out dx_n)), stackArg6, out cx_n, out dx_n, out bx_n, out si_n, out di, out es_n, out ds, out Top_n);
+		ax_n = fn0800-0D24(ds, 0x09, SEQ(dx_n, fn0800-4271(ds, wArg04_n, wArg06_n, out dx_n)), out cx_n, out dx_n, out bx_n, out si_n, out di, out es_n, out ds, out Top_n);
 	}
 	cxOut = cx_n;
 	dxOut = dx_n;
@@ -6569,22 +6138,16 @@ word16 fn0800-409C(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08, 
 	return ax_n;
 }
 
-// 0800:40BF: Register word16 fn0800-40BF(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n bArg03, Stack Eq_n wArg04, Stack Eq_n wArg06, Register out ptr16 dxOut, Register out ptr16 diOut, Register out (ptr16 Eq_n) dsOut)
-word16 fn0800-40BF(Eq_n ds, Eq_n wArg02, Eq_n bArg03, Eq_n wArg04, Eq_n wArg06, ptr16 & dxOut, ptr16 & diOut, struct Eq_n & dsOut)
+// 0800:40BF: Register word16 fn0800-40BF(Register Eq_n ds, Stack Eq_n bArg02, Stack Eq_n bArg03, Stack Eq_n wArg04, Stack Eq_n wArg06, Register out ptr16 dxOut, Register out ptr16 diOut, Register out (ptr16 Eq_n) dsOut)
+word16 fn0800-40BF(Eq_n ds, Eq_n bArg02, Eq_n bArg03, Eq_n wArg04, Eq_n wArg06, ptr16 & dxOut, ptr16 & diOut, struct Eq_n & dsOut)
 {
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg6 = <invalid>;
 	Eq_n ds_n;
-	fn0800-4047(ds, SLICE(DPB(ax, bArg02 & ~0x00, 0), byte, 0), SEQ(wArg06, wArg04), stackArg6, out cx_n, out dx_n, out bx_n, out di_n, out ds_n, out Top_n);
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
+	fn0800-4047(ds, SLICE(DPB(ax, bArg02 & ~0x00, 0), byte, 0), SEQ(wArg06, wArg04), out cx_n, out dx_n, out bx_n, out di_n, out ds_n, out Top_n);
 	cu16 wArg02_n = SEQ(bArg03, bArg02);
-	Eq_n stackArg6 = <invalid>;
 	ptr16 dx_n;
 	ptr16 di_n;
 	struct Eq_n * ds_n;
-	word16 ax_n = fn0800-4047(ds_n, SLICE(DPB(wArg02_n >> 0x08, (byte) (wArg02_n >> 0x08) & ~0x00, 0), byte, 0), SEQ(wArg06, wArg04), stackArg6, out cx_n, out dx_n, out bx_n, out di_n, out ds_n, out Top_n);
+	word16 ax_n = fn0800-4047(ds_n, SLICE(DPB(wArg02_n >> 0x08, (byte) (wArg02_n >> 0x08) & ~0x00, 0), byte, 0), SEQ(wArg06, wArg04), out cx_n, out dx_n, out bx_n, out di_n, out ds_n, out Top_n);
 	dxOut = dx_n;
 	diOut = di_n;
 	dsOut = ds_n;
@@ -6600,11 +6163,8 @@ byte fn0800-4110(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08, Eq
 	Eq_n cx_n = <invalid>;
 	if (wArg08 != 0x00 || ax_n != wArg06)
 	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg6 = <invalid>;
 		word16 dx_n;
-		fn0800-0D24(ds, 0x08, SEQ(dx_n, fn0800-4271(ds, wArg0A, wArg0C, out dx_n)), stackArg6, out cx_n, out dx_n, out bx_n, out si_n, out di_n, out es_n, out ds, out Top_n);
+		fn0800-0D24(ds, 0x08, SEQ(dx_n, fn0800-4271(ds, wArg0A, wArg0C, out dx_n)), out cx_n, out dx_n, out bx_n, out si_n, out di_n, out es_n, out ds, out Top_n);
 	}
 	siOut = si_n;
 	diOut = di_n;
@@ -6619,11 +6179,8 @@ byte fn0800-4152(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg0A, Eq
 	Eq_n ax_n = fn0800_AD85(ds, wArg02, wArg04, 0x01, wArg06, wArg0A, wArg0C, out bp_n);
 	if ((ss->*bp_n).w000A != 0x00 || ax_n != (ss->*bp_n).t0008)
 	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg6 = <invalid>;
 		word16 dx_n;
-		ax_n = fn0800-0D24(ds, 0x09, SEQ(dx_n, fn0800-4271(ds, (ss->*bp_n).t000C, (ss->*bp_n).t000E, out dx_n)), stackArg6, out cx_n, out dx_n, out bx_n, out si_n, out di_n, out es_n, out ds, out Top_n);
+		ax_n = fn0800-0D24(ds, 0x09, SEQ(dx_n, fn0800-4271(ds, (ss->*bp_n).t000C, (ss->*bp_n).t000E, out dx_n)), out cx_n, out dx_n, out bx_n, out si_n, out di_n, out es_n, out ds, out Top_n);
 	}
 	dsOut = ds;
 	return (byte) ax_n;
@@ -6632,15 +6189,9 @@ byte fn0800-4152(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg0A, Eq
 // 0800:4194: void fn0800-4194(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04)
 void fn0800-4194(Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 {
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg4 = <invalid>;
-	fn0800_AD2F(ds, SEQ(wArg04, wArg02), stackArg4, out dx_n);
+	fn0800_AD2F(ds, SEQ(wArg04, wArg02), out dx_n);
 	fn0800_ACB3(ds, wArg02, wArg04, 0x02, out cx_n, out dx_n, out bx_n);
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg4 = <invalid>;
-	fn0800_AD2F(ds, SEQ(wArg04, wArg02), stackArg4, out dx_n);
+	fn0800_AD2F(ds, SEQ(wArg04, wArg02), out dx_n);
 	fn0800_ACB3(ds, wArg02, wArg04, 0x00, out cx_n, out dx_n, out bx_n);
 }
 
@@ -6662,10 +6213,7 @@ Eq_n fn0800-4234(Eq_n si, Eq_n di, Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n wArg0
 		ss->*((word32) sp_n + 0x06) = (ss->*bp_n).w0006;
 		ss->*((word32) sp_n + 0x04) = (ss->*bp_n).t0004;
 		(ss->*((word32) sp_n + 0x02)).u0 = 0x07;
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg6 = <invalid>;
-		fn0800-0D24(ds_n, ss->*((word32) sp_n + 0x02), ss->*((word32) sp_n + 0x04), stackArg6, out cx_n, out dx_n, out bx_n, out si_n, out di_n, out es_n, out ds_n, out Top_n);
+		fn0800-0D24(ds_n, ss->*((word32) sp_n + 0x02), ss->*((word32) sp_n + 0x04), out cx_n, out dx_n, out bx_n, out si_n, out di_n, out es_n, out ds_n, out Top_n);
 	}
 	Eq_n dx_n = ss->*(bp_n - 0x02);
 	Eq_n ax_n = ss->*(bp_n - 0x04);
@@ -6734,21 +6282,15 @@ word16 fn0800-4271(Eq_n ds, Eq_n wArg02, Eq_n wArg04, union Eq_n & dxOut)
 	}
 }
 
-// 0800:4311: Register Eq_n fn0800-4311(Stack Eq_n wArg02, Stack Eq_n wArg04, Register out Eq_n dxOut, Register out Eq_n bpOut, Register out ptr16 siOut, Register out ptr16 diOut, Register out Eq_n dsOut)
-Eq_n fn0800-4311(Eq_n wArg02, Eq_n wArg04, union Eq_n & dxOut, union Eq_n & bpOut, ptr16 & siOut, ptr16 & diOut, union Eq_n & dsOut)
+// 0800:4311: Register Eq_n fn0800-4311(Register out Eq_n dxOut, Register out Eq_n bpOut, Register out ptr16 siOut, Register out ptr16 diOut, Register out Eq_n dsOut)
+Eq_n fn0800-4311(union Eq_n & dxOut, union Eq_n & bpOut, ptr16 & siOut, ptr16 & diOut, union Eq_n & dsOut)
 {
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg2 = <invalid>;
-	Eq_n stackArg4 = <invalid>;
 	union Eq_n Eq_n::* bp_n;
 	Eq_n dx_n;
 	ptr16 di_n;
 	Eq_n ds_n;
 	ptr16 si_n;
-	Eq_n ax_n = fn0800-9F89(stackArg2, stackArg4, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
+	Eq_n ax_n = fn0800-9F89(out dx_n, out bp_n, out si_n, out di_n, out ds_n);
 	ss->*(bp_n - 0x02) = dx_n;
 	ss->*(bp_n - 0x04) = ax_n;
 	Eq_n sp_n = <invalid>;
@@ -6757,10 +6299,7 @@ Eq_n fn0800-4311(Eq_n wArg02, Eq_n wArg04, union Eq_n & dxOut, union Eq_n & bpOu
 		ss->*((word32) sp_n + 0x02) = ds_n;
 		(ss->*sp_n).u0 = 2668;
 		(ss->*(sp_n - 0x02)).t0000.u0 = 0x06;
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg6 = <invalid>;
-		fn0800-0D24(ds_n, (ss->*(sp_n - 0x02)).t0000, ss->*sp_n, stackArg6, out cx_n, out dx_n, out bx_n, out si_n, out di_n, out es_n, out ds_n, out Top_n);
+		fn0800-0D24(ds_n, (ss->*(sp_n - 0x02)).t0000, ss->*sp_n, out cx_n, out dx_n, out bx_n, out si_n, out di_n, out es_n, out ds_n, out Top_n);
 	}
 	Eq_n ax_n = ss->*(bp_n - 0x04);
 	Eq_n bp_n = ss->*bp_n;
@@ -6772,8 +6311,8 @@ Eq_n fn0800-4311(Eq_n wArg02, Eq_n wArg04, union Eq_n & dxOut, union Eq_n & bpOu
 	return ax_n;
 }
 
-// 0800:4346: Register word16 fn0800-4346(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04, Register out ptr16 cxOut, Register out ptr16 dxOut, Register out ptr16 bxOut, Register out (ptr16 Eq_n) dsOut)
-word16 fn0800-4346(Eq_n ds, Eq_n wArg02, Eq_n wArg04, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut, struct Eq_n & dsOut)
+// 0800:4346: Register word16 fn0800-4346(Register Eq_n ds, Stack Eq_n wArg04, Register out ptr16 cxOut, Register out ptr16 dxOut, Register out ptr16 bxOut, Register out (ptr16 Eq_n) dsOut)
+word16 fn0800-4346(Eq_n ds, Eq_n wArg04, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut, struct Eq_n & dsOut)
 {
 	struct Eq_n * ds_n;
 	ptr16 dx_n;
@@ -6787,8 +6326,8 @@ word16 fn0800-4346(Eq_n ds, Eq_n wArg02, Eq_n wArg04, ptr16 & cxOut, ptr16 & dxO
 	return ax_n;
 }
 
-// 0800:4357: Register word16 fn0800-4357(Stack Eq_n ptrArg02, Stack Eq_n wArg04, Stack Eq_n ptrArg06, Stack Eq_n wArg08)
-word16 fn0800-4357(Eq_n ptrArg02, Eq_n wArg04, Eq_n ptrArg06, Eq_n wArg08)
+// 0800:4357: Register word16 fn0800-4357(Stack Eq_n ptrArg02, Stack Eq_n ptrArg06)
+word16 fn0800-4357(Eq_n ptrArg02, Eq_n ptrArg06)
 {
 	while (true)
 	{
@@ -6867,8 +6406,8 @@ void fn0800-43D4(Eq_n wArg02, Eq_n psegArg04, Eq_n wArg06)
 	}
 }
 
-// 0800:441C: void fn0800-441C(Register Eq_n ds, Stack Eq_n ptrArg02, Stack Eq_n psegArg04, Stack Eq_n wArg06)
-void fn0800-441C(Eq_n ds, Eq_n ptrArg02, Eq_n psegArg04, Eq_n wArg06)
+// 0800:441C: void fn0800-441C(Register Eq_n ds, Stack (memptr Eq_n Eq_n) wArg02, Stack Eq_n psegArg04, Stack Eq_n wArg06)
+void fn0800-441C(Eq_n ds, struct Eq_n Eq_n::* wArg02, Eq_n psegArg04, Eq_n wArg06)
 {
 	word16 di_n = 0x00;
 	Eq_n cx_n = 0x00;
@@ -6993,11 +6532,8 @@ void fn0800-4550(Eq_n wArg02, Eq_n psegArg04, Eq_n wArg06)
 					ss->*(sp_n - 0x04) = wLoc0A_n;
 					ss->*(sp_n - 0x06) = wLoc04_n;
 					ss->*(sp_n - 0x08) = wLoc06_n;
-					// Failed to bind call argument.
-					// Please report this issue at https://github.com/uxmal/reko
-					Eq_n stackArg0 = <invalid>;
 					uint16 dx_n;
-					Eq_n ax_n = fn0800-8BC2(stackArg0, ss->*(sp_n - 0x08), ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), out cx_n, out dx_n, out bx_n);
+					Eq_n ax_n = fn0800-8BC2(ss->*(sp_n - 0x08), ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), out cx_n, out dx_n, out bx_n);
 					Eq_n sp_n = <invalid>;
 					ss->*((word32) sp_n + 0x06) = dx_n;
 					ss->*((word32) sp_n + 0x04) = ax_n;
@@ -7111,12 +6647,9 @@ Eq_n fn0800-46FE(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 		Eq_n ax_n = fn0800-3FAD(ds, *((word32) ds + 0x000029E3), *((word32) ds + 0x000029E5), out ch_n, out di_n, out ds_n);
 		if (*((word32) ds_n + 10757) > 0x00 || *((word32) ds_n + 10757) >= 0x00 && (word32) ax_n + 0x0024 <= *((word32) ds_n + 10755))
 		{
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg0 = <invalid>;
 			Eq_n ds_n;
 			Eq_n dx_n;
-			Eq_n ax_n = fn0800-8CAA(fn0800_ACB3(ds_n, *((word32) ds_n + 0x000029E3), *((word32) ds_n + 0x000029E5), 0x00, out cx_n, out dx_n, out bx_n), 0x08, fn0800-3F58(ds_n, *((word32) ds_n + 0x000029E3), *((word32) ds_n + 0x000029E5), out di_n, out ds_n), stackArg0, out dx_n);
+			Eq_n ax_n = fn0800-8CAA(fn0800_ACB3(ds_n, *((word32) ds_n + 0x000029E3), *((word32) ds_n + 0x000029E5), 0x00, out cx_n, out dx_n, out bx_n), 0x08, fn0800-3F58(ds_n, *((word32) ds_n + 0x000029E3), *((word32) ds_n + 0x000029E5), out di_n, out ds_n), out dx_n);
 			Eq_n sp_n = <invalid>;
 			if (dx_n != 0x52 || ax_n != 0x4E43)
 			{
@@ -7128,11 +6661,8 @@ Eq_n fn0800-46FE(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 			{
 				ss->*(sp_n - 0x02) = *((word32) ds_n + 0x000029E5);
 				ss->*(sp_n - 0x04) = *((word32) ds_n + 0x000029E3);
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				Eq_n stackArg4 = <invalid>;
 				Eq_n dx_n;
-				Eq_n ax_n = fn0800_AD2F(ds_n, ss->*(sp_n - 0x04), stackArg4, out dx_n);
+				Eq_n ax_n = fn0800_AD2F(ds_n, ss->*(sp_n - 0x04), out dx_n);
 				(ss->*(sp_n - 0x02)).u0 = 0x00;
 				(ss->*(sp_n - 0x04)).u0 = 0x00;
 				(ss->*(sp_n - 0x06)).u0 = 0x02;
@@ -7151,10 +6681,7 @@ Eq_n fn0800-46FE(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 				Eq_n wLoc0C_n = ax_n;
 				if (di_n != 0x00)
 					wLoc0C_n = ax_n - 0x01;
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				Eq_n stackArg0 = <invalid>;
-				fn0800-8C69(wLoc0C_n, 0x09, 0x00, stackArg0, out cl_n, out dx_n);
+				fn0800-8C69(wLoc0C_n, 0x09, 0x00, out cl_n, out dx_n);
 				Eq_n sp_n = <invalid>;
 				(ss->*(sp_n - 0x02)).u0 = 0x00;
 				(ss->*(sp_n - 0x04)).u0 = 0x00;
@@ -7275,10 +6802,7 @@ Eq_n fn0800-46FE(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 				{
 					ss->*(sp_n - 0x02) = *((word32) ds_n + 0x000029E5);
 					ss->*(sp_n - 0x04) = *((word32) ds_n + 0x000029E3);
-					// Failed to bind call argument.
-					// Please report this issue at https://github.com/uxmal/reko
-					Eq_n stackArg4 = <invalid>;
-					word16 ax_n = DPB(fn0800-3DCF(ds_n, ss->*(sp_n - 0x04), stackArg4, out ch_n, out dx_n, out di_n, out ds_n, out Top_n), 0x00, 8);
+					word16 ax_n = DPB(fn0800-3DCF(ds_n, ss->*(sp_n - 0x04), out ch_n, out dx_n, out di_n, out ds_n, out Top_n), 0x00, 8);
 					word16 di_n = ax_n;
 					if (ax_n != 0x00)
 					{
@@ -7294,11 +6818,8 @@ Eq_n fn0800-46FE(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 								break;
 							ss->*(sp_n - 0x02) = *((word32) ds_n + 0x000029E5);
 							ss->*(sp_n - 0x04) = *((word32) ds_n + 0x000029E3);
-							// Failed to bind call argument.
-							// Please report this issue at https://github.com/uxmal/reko
-							Eq_n stackArg4 = <invalid>;
 							Eq_n ds_n;
-							si_n = (word32) si_n + DPB(fn0800-3DCF(ds_n, ss->*(sp_n - 0x04), stackArg4, out ch_n, out dx_n, out di_n, out ds_n, out Top_n), 0x00, 8);
+							si_n = (word32) si_n + DPB(fn0800-3DCF(ds_n, ss->*(sp_n - 0x04), out ch_n, out dx_n, out di_n, out ds_n, out Top_n), 0x00, 8);
 							ss->*(sp_n - 0x02) = *((word32) ds_n + 10721);
 							ss->*(sp_n - 0x04) = *((word32) ds_n + 10719);
 							ss->*(sp_n - 0x06) = si_n;
@@ -7314,49 +6835,31 @@ Eq_n fn0800-46FE(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 				cui16 di_n;
 				ss->*(sp_n - 0x02) = *((word32) ds_n + 10721);
 				ss->*(sp_n - 0x04) = *((word32) ds_n + 10719);
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				Eq_n stackArg4 = <invalid>;
 				ci16 dx_n;
-				Eq_n ax_n = fn0800_AD2F(ds_n, ss->*(sp_n - 0x04), stackArg4, out dx_n);
+				Eq_n ax_n = fn0800_AD2F(ds_n, ss->*(sp_n - 0x04), out dx_n);
 				if (dx_n <= 0x00 && (dx_n < 0x00 || ax_n < 0x0200))
 				{
 					ss->*(sp_n - 0x02) = *((word32) ds_n + 10721);
 					ss->*(sp_n - 0x04) = *((word32) ds_n + 10719);
-					// Failed to bind call argument.
-					// Please report this issue at https://github.com/uxmal/reko
-					Eq_n stackArg4 = <invalid>;
-					di_n = 0x0200 - fn0800_AD2F(ds_n, ss->*(sp_n - 0x04), stackArg4, out dx_n);
+					di_n = 0x0200 - fn0800_AD2F(ds_n, ss->*(sp_n - 0x04), out dx_n);
 				}
 				else
 				{
 					ss->*(sp_n - 0x02) = *((word32) ds_n + 10721);
 					ss->*(sp_n - 0x04) = *((word32) ds_n + 10719);
-					// Failed to bind call argument.
-					// Please report this issue at https://github.com/uxmal/reko
-					Eq_n stackArg4 = <invalid>;
-					di_n = 0x10 - fn0800_AD2F(ds_n, ss->*(sp_n - 0x04), stackArg4, out dx_n) & 0x0F;
+					di_n = 0x10 - fn0800_AD2F(ds_n, ss->*(sp_n - 0x04), out dx_n) & 0x0F;
 				}
 				while (di_n != 0x00)
 				{
 					ss->*(sp_n - 0x02) = *((word32) ds_n + 10721);
 					ss->*(sp_n - 0x04) = *((word32) ds_n + 10719);
 					ss->*(sp_n - 0x06) = DPB(di_n, 0x00, 0);
-					// Failed to bind call argument.
-					// Please report this issue at https://github.com/uxmal/reko
-					Eq_n stackArg6 = <invalid>;
-					fn0800-4047(ds_n, ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), stackArg6, out cx_n, out dx_n, out bx_n, out di_n, out ds_n, out Top_n);
+					fn0800-4047(ds_n, ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), out cx_n, out dx_n, out bx_n, out di_n, out ds_n, out Top_n);
 				}
 				ss->*(sp_n - 0x02) = *((word32) ds_n + 10721);
 				ss->*(sp_n - 0x04) = *((word32) ds_n + 10719);
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				Eq_n stackArg4 = <invalid>;
-				Eq_n stackArg0 = <invalid>;
 				Eq_n dx_n;
-				fn0800-8C8A(fn0800_AD2F(ds_n, ss->*(sp_n - 0x04), stackArg4, out dx_n), 0x04, dx_n, stackArg0, out cl_n, out dx_n);
+				fn0800-8C8A(fn0800_AD2F(ds_n, ss->*(sp_n - 0x04), out dx_n), 0x04, dx_n, out cl_n, out dx_n);
 				Eq_n sp_n = <invalid>;
 				(ss->*(sp_n - 0x02)).u0 = 0x00;
 				ss->*(sp_n - 0x04) = dx_n;
@@ -7372,11 +6875,8 @@ Eq_n fn0800-46FE(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 				{
 					ss->*(sp_n - 0x02) = *((word32) ds_n + 10721);
 					ss->*(sp_n - 0x04) = *((word32) ds_n + 10719);
-					// Failed to bind call argument.
-					// Please report this issue at https://github.com/uxmal/reko
-					Eq_n stackArg4 = <invalid>;
 					Eq_n dx_n;
-					Eq_n ax_n = fn0800_AD2F(ds_n, ss->*(sp_n - 0x04), stackArg4, out dx_n);
+					Eq_n ax_n = fn0800_AD2F(ds_n, ss->*(sp_n - 0x04), out dx_n);
 					ss->*(bp_n - 0x06) = dx_n;
 					ss->*(bp_n - 0x08) = ax_n;
 					(ss->*(sp_n - 0x02)).u0 = 0x00;
@@ -7399,11 +6899,8 @@ Eq_n fn0800-46FE(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 					union Eq_n Eq_n::* bp_n;
 					Eq_n ds_n;
 					fn0800-3B0A(ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), out dx_n, out bp_n, out ds_n);
-					// Failed to bind call argument.
-					// Please report this issue at https://github.com/uxmal/reko
 					Eq_n di_n = ss->*(bp_n - 0x08);
-					Eq_n stackArg0 = <invalid>;
-					ss->*(bp_n - 0x0A) = fn0800-8CAA(ss->*(bp_n - 0x08), 0x09, ss->*(bp_n - 0x06), stackArg0, out dx_n);
+					ss->*(bp_n - 0x0A) = fn0800-8CAA(ss->*(bp_n - 0x08), 0x09, ss->*(bp_n - 0x06), out dx_n);
 					Eq_n sp_n = <invalid>;
 					if ((di_n & 0x01FF) != 0x00)
 						ss->*(bp_n - 0x0A) = (word16) (ss->*(bp_n - 0x0A)) + 0x01;
@@ -7577,11 +7074,8 @@ Eq_n fn0800-4C55(Eq_n ax, word16 bp, Eq_n ds, union Eq_n & dxOut, union Eq_n & d
 		fn0800-409C(ds_n, ax_n, dx_n, *((word32) ds_n + 10719), *((word32) ds_n + 10721), out dx_n, out ds_n, out Top_n);
 		Eq_n ds_n;
 		fn0800-409C(ds_n, ax_n - 0x01, dx_n - (ax_n < 0x01), *((word32) ds_n + 10719), *((word32) ds_n + 10721), out dx_n, out ds_n, out Top_n);
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
 		Eq_n dx_n;
-		Eq_n ax_n = fn0800_AD2F(ds_n, SEQ(*((word32) ds_n + 10721), *((word32) ds_n + 10719)), stackArg4, out dx_n);
+		Eq_n ax_n = fn0800_AD2F(ds_n, SEQ(*((word32) ds_n + 10721), *((word32) ds_n + 10719)), out dx_n);
 		*((word32) ds_n + 0x00004E8E) = dx_n;
 		*((word32) ds_n + 20108) = ax_n;
 		fn0800_ACB3(ds_n, *((word32) ds_n + 0x000029E3), *((word32) ds_n + 0x000029E5), 0x01, out cx_n, out dx_n, out bx_n);
@@ -7605,14 +7099,11 @@ Eq_n fn0800-4C55(Eq_n ax, word16 bp, Eq_n ds, union Eq_n & dxOut, union Eq_n & d
 		Eq_n v45_n = *((word32) ds_n + 0x000029E5);
 		Eq_n v46_n = *((word32) ds_n + 0x000029E3);
 		Eq_n ax_n = fn0800_ACB3(ds_n, v46_n, v45_n, 0x01, out cx_n, out dx_n, out bx_n);
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
 		Eq_n v48_n = *((word32) ds_n + 0x000029E3);
 		Eq_n ds_n;
 		word16 dx_n = fn0800-3E5D(ds_n, v48_n, *((word32) ds_n + 0x000029E5), out ds_n, out Top_n) + (ax_n <u 0x01);
-		Eq_n stackArg0 = <invalid>;
 		Eq_n dx_n;
-		Eq_n ax_n = fn0800-8C69((word32) ax_n + 0x01, 0x02, dx_n, stackArg0, out cl_n, out dx_n);
+		Eq_n ax_n = fn0800-8C69((word32) ax_n + 0x01, 0x02, dx_n, out cl_n, out dx_n);
 		Eq_n sp_n = <invalid>;
 		ss->*(sp_n - 0x02) = dx_n;
 		ss->*(sp_n - 0x04) = ax_n;
@@ -7621,11 +7112,8 @@ Eq_n fn0800-4C55(Eq_n ax, word16 bp, Eq_n ds, union Eq_n & dxOut, union Eq_n & d
 		fn0800_ACB3(ds_n, ss->*(sp_n - 0x08), ss->*(sp_n - 0x06), ss->*sp_n, out cx_n, out dx_n, out bx_n);
 		ss->*sp_n = *((word32) ds_n + 0x000029E5);
 		ss->*(sp_n - 0x02) = *((word32) ds_n + 0x000029E3);
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
 		Eq_n dx_n;
-		Eq_n ax_n = fn0800_AD2F(ds_n, ss->*(sp_n - 0x02), stackArg4, out dx_n);
+		Eq_n ax_n = fn0800_AD2F(ds_n, ss->*(sp_n - 0x02), out dx_n);
 		ss->*sp_n = ax_n;
 		ss->*(sp_n - 0x02) = dx_n;
 		ss->*(sp_n - 0x04) = *((word32) ds_n + 0x000029E5);
@@ -7681,20 +7169,14 @@ Eq_n fn0800-4C55(Eq_n ax, word16 bp, Eq_n ds, union Eq_n & dxOut, union Eq_n & d
 // 0800:4F2C: void fn0800-4F2C(Register Eq_n ax, Register Eq_n ds)
 void fn0800-4F2C(Eq_n ax, Eq_n ds)
 {
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg0 = <invalid>;
 	Eq_n dx_n;
 	Eq_n ds_n;
-	Eq_n ax_n = fn0800-8C69(ax, 0x02, fn0800-3E5D(ds, *((word32) ds + 0x000029E3), *((word32) ds + 0x000029E5), out ds_n, out Top_n), stackArg0, out cl_n, out dx_n);
+	Eq_n ax_n = fn0800-8C69(ax, 0x02, fn0800-3E5D(ds, *((word32) ds + 0x000029E3), *((word32) ds + 0x000029E5), out ds_n, out Top_n), out cl_n, out dx_n);
 	Eq_n sp_n = <invalid>;
 	ss->*(sp_n - 0x02) = *((word32) ds_n + 0x000029E5);
 	ss->*(sp_n - 0x04) = *((word32) ds_n + 0x000029E3);
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg4 = <invalid>;
 	Eq_n dx_n;
-	Eq_n ax_n = fn0800_AD2F(ds_n, ss->*(sp_n - 0x04), stackArg4, out dx_n);
+	Eq_n ax_n = fn0800_AD2F(ds_n, ss->*(sp_n - 0x04), out dx_n);
 	if (dx_n >= 0x00 && (dx_n > 0x00 || ax_n > 0x12))
 	{
 		ss->*(sp_n - 0x02) = *((word32) ds_n + 0x000029E5);
@@ -7709,22 +7191,16 @@ void fn0800-4F2C(Eq_n ax, Eq_n ds)
 	}
 	ss->*(sp_n - 0x02) = *((word32) ds_n + 0x000029E5);
 	ss->*(sp_n - 0x04) = *((word32) ds_n + 0x000029E3);
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg0 = <invalid>;
 	Eq_n ds_n;
 	word16 dx_n;
-	Eq_n ax_n = fn0800-8CAA(ax_n, 0x08, fn0800-3F58(ds_n, ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), out di_n, out ds_n), stackArg0, out dx_n);
+	Eq_n ax_n = fn0800-8CAA(ax_n, 0x08, fn0800-3F58(ds_n, ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), out di_n, out ds_n), out dx_n);
 	Eq_n sp_n = <invalid>;
 	if (dx_n != 0x52 || ax_n != 0x4E43)
 	{
 		ss->*(sp_n - 0x02) = *((word32) ds_n + 10721);
 		ss->*(sp_n - 0x04) = *((word32) ds_n + 10719);
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg0 = <invalid>;
 		Eq_n dx_n;
-		Eq_n ax_n = fn0800-8CAA(ax_n, 0x02, dx_n, stackArg0, out dx_n);
+		Eq_n ax_n = fn0800-8CAA(ax_n, 0x02, dx_n, out dx_n);
 		Eq_n sp_n = <invalid>;
 		ss->*(sp_n - 0x02) = dx_n;
 		ss->*(sp_n - 0x04) = ax_n;
@@ -7795,11 +7271,8 @@ void fn0800-4F2C(Eq_n ax, Eq_n ds)
 					ss->*(sp_n - 0x06) = ax_n - 0x01;
 					struct Eq_n * ds_n;
 					fn0800-409C(ds_n, ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), ss->*sp_n, out dx_n, out ds_n, out Top_n);
-					// Failed to bind call argument.
-					// Please report this issue at https://github.com/uxmal/reko
-					Eq_n stackArg0 = <invalid>;
 					Eq_n dx_n;
-					Eq_n ax_n = fn0800-8C69(ss->*(bp_n - 0x06), 0x02, ss->*(bp_n - 0x04), stackArg0, out cl_n, out dx_n);
+					Eq_n ax_n = fn0800-8C69(ss->*(bp_n - 0x06), 0x02, ss->*(bp_n - 0x04), out cl_n, out dx_n);
 					Eq_n sp_n = <invalid>;
 					ss->*(sp_n - 0x02) = dx_n;
 					ss->*(sp_n - 0x04) = ax_n;
@@ -7822,11 +7295,8 @@ void fn0800-4F2C(Eq_n ax, Eq_n ds)
 	{
 		ss->*(sp_n - 0x02) = *((word32) ds_n + 10721);
 		ss->*(sp_n - 0x04) = *((word32) ds_n + 10719);
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg0 = <invalid>;
 		Eq_n dx_n;
-		Eq_n ax_n = fn0800-8CAA(wLoc18, 0x02, wLoc16, stackArg0, out dx_n);
+		Eq_n ax_n = fn0800-8CAA(wLoc18, 0x02, wLoc16, out dx_n);
 		Eq_n sp_n = <invalid>;
 		ss->*(sp_n - 0x02) = dx_n;
 		ss->*(sp_n - 0x04) = ax_n;
@@ -7834,11 +7304,8 @@ void fn0800-4F2C(Eq_n ax, Eq_n ds)
 		fn0800-409C(ds_n, ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), ss->*sp_n, ss->*((word32) sp_n + 0x02), out dx_n, out ds_n, out Top_n);
 		ss->*((word32) sp_n + 0x02) = *((word32) ds_n + 10721);
 		ss->*sp_n = *((word32) ds_n + 10719);
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
 		Eq_n dx_n;
-		Eq_n ax_n = fn0800_AD2F(ds_n, ss->*sp_n, stackArg4, out dx_n);
+		Eq_n ax_n = fn0800_AD2F(ds_n, ss->*sp_n, out dx_n);
 		(ss->*((word32) sp_n + 0x02)).u0 = 0x00;
 		ss->*sp_n = *((word32) ds_n + 0x00004E8E);
 		(ss->*(sp_n - 0x02)).t0000 = *((word32) ds_n + 20108);
@@ -7906,11 +7373,8 @@ Eq_n fn0800-51A9(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 		union Eq_n Eq_n::* sp_n = sp_n - 0x02;
 		ss->*sp_n = *((word32) ds + 0x000029E5);
 		ss->*(sp_n - 0x02) = *((word32) ds + 0x000029E3);
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
 		Eq_n dx_n;
-		Eq_n ax_n = fn0800_AD2F(ds, ss->*(sp_n - 0x02), stackArg4, out dx_n);
+		Eq_n ax_n = fn0800_AD2F(ds, ss->*(sp_n - 0x02), out dx_n);
 		ss->*sp_n = ax_n;
 		ss->*(sp_n - 0x02) = dx_n;
 		ss->*(sp_n - 0x04) = *((word32) ds + 0x000029E5);
@@ -7922,11 +7386,8 @@ Eq_n fn0800-51A9(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 			break;
 		ss->*sp_n = *((word32) ds + 0x000029E5);
 		ss->*(sp_n - 0x02) = *((word32) ds + 0x000029E3);
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
 		Eq_n dx_n;
-		Eq_n ax_n = fn0800-3E9A(ds, ss->*(sp_n - 0x02), stackArg4, out dx_n, out ds);
+		Eq_n ax_n = fn0800-3E9A(ds, ss->*(sp_n - 0x02), out dx_n, out ds);
 		if (ax_n != 0x00)
 		{
 			if (ax_n != 0x01)
@@ -7941,15 +7402,9 @@ Eq_n fn0800-51A9(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 						ss->*(sp_n - 0x02) = *((word32) ds + 10719);
 						ss->*(sp_n - 0x04) = *((word32) ds + 0x000029E5);
 						ss->*(sp_n - 0x06) = *((word32) ds + 0x000029E3);
-						// Failed to bind call argument.
-						// Please report this issue at https://github.com/uxmal/reko
-						Eq_n stackArg4 = <invalid>;
 						Eq_n ds_n;
-						ss->*(sp_n - 0x04) = fn0800-3DCF(ds, ss->*(sp_n - 0x06), stackArg4, out ch_n, out dx_n, out di_n, out ds_n, out Top_n);
-						// Failed to bind call argument.
-						// Please report this issue at https://github.com/uxmal/reko
-						Eq_n stackArg6 = <invalid>;
-						fn0800-4047(ds_n, ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), stackArg6, out cx_n, out dx_n, out bx_n, out di_n, out ds, out Top_n);
+						ss->*(sp_n - 0x04) = fn0800-3DCF(ds, ss->*(sp_n - 0x06), out ch_n, out dx_n, out di_n, out ds_n, out Top_n);
+						fn0800-4047(ds_n, ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), out cx_n, out dx_n, out bx_n, out di_n, out ds, out Top_n);
 					}
 				}
 				else
@@ -7961,11 +7416,8 @@ Eq_n fn0800-51A9(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 					ss->*(sp_n - 0x02) = dx_n;
 					ss->*(sp_n - 0x04) = *((word32) ds + 0x000029E5);
 					ss->*(sp_n - 0x06) = *((word32) ds + 0x000029E3);
-					// Failed to bind call argument.
-					// Please report this issue at https://github.com/uxmal/reko
-					Eq_n stackArg4 = <invalid>;
 					ui16 dx_n;
-					ui32 bx_cx_n = SEQ(ss->*(sp_n - 0x02), ss->*sp_n) - SEQ(dx_n, fn0800_AD2F(ds, ss->*(sp_n - 0x06), stackArg4, out dx_n));
+					ui32 bx_cx_n = SEQ(ss->*(sp_n - 0x02), ss->*sp_n) - SEQ(dx_n, fn0800_AD2F(ds, ss->*(sp_n - 0x06), out dx_n));
 					ss->*sp_n = SLICE(bx_cx_n, word16, 16);
 					ss->*(sp_n - 0x02) = (word16) bx_cx_n;
 					ss->*(sp_n - 0x04) = *((word32) ds + 10721);
@@ -8000,12 +7452,9 @@ Eq_n fn0800-51A9(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 			Eq_n ax_n = fn0800-40BF(ds_n, ss->*(sp_n - 0x04), ss->*(sp_n - 0x03), ss->*(sp_n - 0x02), ss->*sp_n, out dx_n, out di_n, out ds_n);
 			ss->*sp_n = *((word32) ds_n + 0x000029E5);
 			ss->*(sp_n - 0x02) = *((word32) ds_n + 0x000029E3);
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg0 = <invalid>;
 			Eq_n ds_n;
 			word16 dx_n;
-			Eq_n ax_n = fn0800-8CAA(ax_n, 0x08, fn0800-3F58(ds_n, ss->*(sp_n - 0x02), ss->*sp_n, out di_n, out ds_n), stackArg0, out dx_n);
+			Eq_n ax_n = fn0800-8CAA(ax_n, 0x08, fn0800-3F58(ds_n, ss->*(sp_n - 0x02), ss->*sp_n, out di_n, out ds_n), out dx_n);
 			Eq_n sp_n = <invalid>;
 			if (dx_n != 0x52 || ax_n != 0x4E43)
 			{
@@ -8058,15 +7507,9 @@ Eq_n fn0800-51A9(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 		ss->*(sp_n - 0x02) = *((word32) ds + 10719);
 		ss->*(sp_n - 0x04) = *((word32) ds + 0x000029E5);
 		ss->*(sp_n - 0x06) = *((word32) ds + 0x000029E3);
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
 		Eq_n ds_n;
-		ss->*(sp_n - 0x04) = fn0800-3DCF(ds, ss->*(sp_n - 0x06), stackArg4, out ch_n, out dx_n, out di_n, out ds_n, out Top_n);
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg6 = <invalid>;
-		fn0800-4047(ds_n, ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), stackArg6, out cx_n, out dx_n, out bx_n, out di_n, out ds, out Top_n);
+		ss->*(sp_n - 0x04) = fn0800-3DCF(ds, ss->*(sp_n - 0x06), out ch_n, out dx_n, out di_n, out ds_n, out Top_n);
+		fn0800-4047(ds_n, ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), out cx_n, out dx_n, out bx_n, out di_n, out ds, out Top_n);
 		sp_n = (char *) sp_n + 0x02;
 	}
 	dxOut = dx_n;
@@ -8077,10 +7520,7 @@ Eq_n fn0800-51A9(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 // 0800:5374: Register word16 fn0800-5374(Register Eq_n ds, Register out Eq_n dxOut, Register out Eq_n bpOut, Register out Eq_n dsOut)
 word16 fn0800-5374(Eq_n ds, union Eq_n & dxOut, union Eq_n & bpOut, union Eq_n & dsOut)
 {
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg4 = <invalid>;
-	Eq_n ax_n = fn0800_AD2F(ds, SEQ(*((word32) ds + 0x000029E5), *((word32) ds + 0x000029E3)), stackArg4, out dx_n);
+	Eq_n ax_n = fn0800_AD2F(ds, SEQ(*((word32) ds + 0x000029E5), *((word32) ds + 0x000029E3)), out dx_n);
 	Eq_n ds_n;
 	fn0800-3E5D(ds, *((word32) ds + 0x000029E3), *((word32) ds + 0x000029E5), out ds_n, out Top_n);
 	*((word32) ds_n + 0x00002A21) = ax_n & 0x03;
@@ -8105,16 +7545,10 @@ word16 fn0800-5374(Eq_n ds, union Eq_n & dxOut, union Eq_n & bpOut, union Eq_n &
 		{
 			ss->*((word32) sp_n + 0x06) = 0x01;
 			ss->*((word32) sp_n + 0x04) = 0x0F;
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg2 = <invalid>;
-			Eq_n stackArg4 = <invalid>;
 			union Eq_n Eq_n::* bp_n;
 			struct Eq_n * ds_n;
 			Eq_n dx_n;
-			Eq_n ax_n = fn0800-4311(stackArg2, stackArg4, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
+			Eq_n ax_n = fn0800-4311(out dx_n, out bp_n, out si_n, out di_n, out ds_n);
 			ss->*(bp_n - 0x06) = dx_n;
 			ss->*(bp_n - 0x08) = ax_n;
 			ds_n->w2E73 = (word16) ((word32) dx_n + 0x01);
@@ -8122,16 +7556,10 @@ word16 fn0800-5374(Eq_n ds, union Eq_n & dxOut, union Eq_n & bpOut, union Eq_n &
 			Eq_n sp_n = <invalid>;
 			(ss->*((word32) sp_n + 0x02)).u0 = 0x01;
 			(ss->*sp_n).u0 = 0x0F;
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg2 = <invalid>;
-			Eq_n stackArg4 = <invalid>;
 			union Eq_n Eq_n::* bp_n;
 			Eq_n ds_n;
 			Eq_n dx_n;
-			Eq_n ax_n = fn0800-4311(stackArg2, stackArg4, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
+			Eq_n ax_n = fn0800-4311(out dx_n, out bp_n, out si_n, out di_n, out ds_n);
 			ss->*(bp_n - 0x02) = dx_n;
 			ss->*(bp_n - 0x04) = ax_n;
 			*((word32) ds_n + 11867) = (word32) dx_n + 0x01;
@@ -8143,7 +7571,7 @@ word16 fn0800-5374(Eq_n ds, union Eq_n & dxOut, union Eq_n & bpOut, union Eq_n &
 			*((word32) ds_n + 11863) = *((word32) ds_n + 11867);
 			*((word32) ds_n + 11861) = dx_n;
 			((word32) ds_n + 11853)->u0 = 0x00;
-			((word32) ds_n + 11845)->u1 = 0x00;
+			((word32) ds_n + 11845)->u0 = 0x00;
 			((word32) ds_n + 0x000029FD)->u0 = 0x00;
 			((word32) ds_n + 10747)->u0 = 0x00;
 			((word32) ds_n + 0x00002A01)->u0 = 0x00;
@@ -8191,18 +7619,12 @@ word16 fn0800-5374(Eq_n ds, union Eq_n & dxOut, union Eq_n & bpOut, union Eq_n &
 			*((word32) ds_n + 11855) = ss->*(bp_n - 0x0E);
 			ss->*((word32) sp_n + 0x02) = ss->*(bp_n - 0x06);
 			ss->*sp_n = ss->*(bp_n - 0x08);
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg2 = <invalid>;
 			Eq_n ds_n;
-			fn0800-4346(ds_n, stackArg2, ss->*((word32) sp_n + 0x02), out cx_n, out dx_n, out bx_n, out ds_n);
+			fn0800-4346(ds_n, ss->*((word32) sp_n + 0x02), out cx_n, out dx_n, out bx_n, out ds_n);
 			ss->*((word32) sp_n + 0x02) = ss->*(bp_n - 0x02);
 			ss->*sp_n = ss->*(bp_n - 0x04);
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg2 = <invalid>;
 			Eq_n ds_n;
-			fn0800-4346(ds_n, stackArg2, ss->*((word32) sp_n + 0x02), out cx_n, out dx_n, out bx_n, out ds_n);
+			fn0800-4346(ds_n, ss->*((word32) sp_n + 0x02), out cx_n, out dx_n, out bx_n, out ds_n);
 			Eq_n v40_n = (word32) *((word32) ds_n + 10755) + 0x0012;
 			*((word32) ds_n + 10755) = v40_n;
 			Mem462[ds_n:0x2A05:word16] = Mem458[ds_n:0x2A05:word16] + (v40_n <u 0x00);
@@ -8343,13 +7765,10 @@ word16 fn0800-55E8(Eq_n ds, struct Eq_n & dsOut)
 				word16 bx_n = DPB(DPB((word16) es_bx_n, *es_bx_n, 0), 0x00, 8);
 				ss->*sp_n = dx_n << 0x08;
 				ss->*(sp_n - 0x02) = dx_n;
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
 				int32 dx_ax_n = SEQ(ss->*(sp_n - 0x02), ss->*sp_n) + (int32) bx_n;
-				Eq_n stackArg0 = <invalid>;
 				Eq_n sp_n = <invalid>;
 				Eq_n dx_n;
-				ss->*(sp_n - 0x02) = fn0800-8C69((word16) dx_ax_n, *((word32) ds + 11845), SLICE(dx_ax_n, word16, 16), stackArg0, out cl_n, out dx_n);
+				ss->*(sp_n - 0x02) = fn0800-8C69((word16) dx_ax_n, *((word32) ds + 11845), SLICE(dx_ax_n, word16, 16), out cl_n, out dx_n);
 				ui16 ax_n = 0x01 << *((word32) ds + 11845);
 				ss->*(sp_n - 0x04) = dx_n;
 				int32 dx_ax_n = (int32) (ax_n - 0x01);
@@ -8368,13 +7787,13 @@ word16 fn0800-55E8(Eq_n ds, struct Eq_n & dsOut)
 			ss->*sp_n = ds_n;
 			(ss->*(sp_n - 0x02)).u0 = 10127;
 			Eq_n ax_n = fn0800-5A8D(ds_n, ss->*(sp_n - 0x02), ss->*sp_n, out ds);
-			*((word32) ds + 11817) = (ui16) ((word32) ax_n + 0x02);
+			*((word32) ds + 11817) = (word32) ax_n + 0x02;
 			Eq_n v19_n = (word32) *((word32) ds + 0x000029FF) + ((word32) ax_n + 0x02);
 			*((word32) ds + 0x000029FF) = v19_n;
 			Mem410[ds:0x2A01:word16] = Mem406[ds:0x2A01:word16] + (v19_n <u 0x00);
 			while (true)
 			{
-				ui16 ax_n = *((word32) ds + 11817);
+				Eq_n ax_n = *((word32) ds + 11817);
 				--*((word32) ds + 11817);
 				if (ax_n == 0x00)
 					break;
@@ -8463,12 +7882,12 @@ l0800_nCF:
 			else
 			{
 				ds = fn0800-5975(ds_n);
-				Eq_n v28_n = (word32) *((word32) ds + 0x000029FF) + *((word32) ds + 11817);
+				word16 v28_n = Mem143[ds:0x29FF:word16] + Mem143[ds:11817:word16];
 				*((word32) ds + 0x000029FF) = v28_n;
 				Mem192[ds:0x2A01:word16] = Mem188[ds:0x2A01:word16] + (v28_n <u 0x00);
 				while (true)
 				{
-					ui16 ax_n = *((word32) ds + 11817);
+					Eq_n ax_n = *((word32) ds + 11817);
 					--*((word32) ds + 11817);
 					if (ax_n == 0x00)
 						break;
@@ -8486,7 +7905,7 @@ l0800_nCF:
 		Eq_n ds_n;
 		if (fn0800-5CD9(ds_n, 0x01, out ds_n) == 0x00)
 		{
-			*((word32) ds_n + 11817) = 0x03;
+			((word32) ds_n + 11817)->u0 = 0x03;
 l0800_n:
 			ds = fn0800-5975(ds_n);
 			goto l0800_n;
@@ -8497,16 +7916,16 @@ l0800_n:
 			goto l0800_n;
 		fn0800-5CD9(ds_n, 0x01, out ds);
 	}
-	*((word32) ds_n + 11817) = 0x02;
+	((word32) ds_n + 11817)->u0 = 0x02;
 	*((word32) ds_n + 11819) = DPB(fn0800-5B15(ds_n, out si_n, out di_n, out ds_n), 0x00, 8) + 0x01;
 	ds = ds_n;
 l0800_n:
-	Eq_n v13_n = (word32) *((word32) ds + 0x000029FF) + *((word32) ds + 11817);
+	word16 v13_n = Mem415[ds:0x29FF:word16] + Mem415[ds:11817:word16];
 	*((word32) ds + 0x000029FF) = v13_n;
 	Mem423[ds:0x2A01:word16] = Mem419[ds:0x2A01:word16] + (v13_n <u 0x00);
 	while (true)
 	{
-		ui16 ax_n = *((word32) ds + 11817);
+		Eq_n ax_n = *((word32) ds + 11817);
 		--*((word32) ds + 11817);
 		if (ax_n == 0x00)
 			break;
@@ -8631,11 +8050,8 @@ word16 fn0800-5B15(Eq_n ds, union Eq_n & siOut, ptr16 & diOut, union Eq_n & dsOu
 		Eq_n ax_n;
 		Eq_n dx_n;
 		fn0800-4194(ds, *((word32) ds + 0x000029E3), *((word32) ds + 0x000029E5));
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
 		ui16 dx_n;
-		ui32 bx_cx_n = SEQ((word32) dx_n + 0x0000FFFD, ax_n) - SEQ(dx_n, fn0800_AD2F(ds, SEQ(*((word32) ds + 0x000029E5), *((word32) ds + 0x000029E3)), stackArg4, out dx_n));
+		ui32 bx_cx_n = SEQ((word32) dx_n + 0x0000FFFD, ax_n) - SEQ(dx_n, fn0800_AD2F(ds, SEQ(*((word32) ds + 0x000029E5), *((word32) ds + 0x000029E3)), out dx_n));
 		Eq_n cx_n = (word16) bx_cx_n;
 		Eq_n bx_n = SLICE(bx_cx_n, word16, 16);
 		if (bx_n >= 0x00 && (bx_n > 0x00 || cx_n > ~0x02))
@@ -8716,18 +8132,15 @@ cui16 fn0800-5C39(Eq_n ds, Eq_n wArg02, ptr16 & siOut, ptr16 & diOut, union Eq_n
 		{
 			Eq_n ds_n;
 			word16 ax_n = DPB(fn0800-5B15(ds, out si_n, out di_n, out ds_n), 0x00, 8);
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
 			word16 ax_n = fn0800-5B15(ds_n, out si_n, out di_n, out ds);
-			Eq_n stackArg0 = <invalid>;
 			word16 dx_n;
-			Eq_n ax_n = fn0800-8C69(DPB(DPB(DPB(ax_n, 0x00, 8), *((word32) *((word32) ds + 11885) + 0x01), 0), 0x00, 8), 0x18, 0x00, stackArg0, out cl_n, out dx_n);
+			Eq_n ax_n = fn0800-8C69(DPB(DPB(DPB(ax_n, 0x00, 8), *((word32) *((word32) ds + 11885) + 0x01), 0), 0x00, 8), 0x18, 0x00, out cl_n, out dx_n);
 			cup16 ax_n = (word32) ax_n + (DPB(ax_n, 0x00, 8) << 0x08);
 			Eq_n es_bx_n = *((word32) ds + 11885);
 			Eq_n ax_n = ax_n + ax_n;
 			*((word32) ds + 0x000029FD) = (bool) (ax_n < 0x00) + ((bool) (ax_n < 0x00) + ((bool) (ax_n < 0x00) + (dx_n + DPB(DPB((word16) es_bx_n, *es_bx_n, 0), 0x00, 8))));
 			*((word32) ds + 10747) = ax_n;
-			((word32) ds + 11845)->u1 = 0x10;
+			((word32) ds + 11845)->u0 = 0x10;
 			sp_n.u0 = <invalid>;
 		}
 		if ((*((word32) ds + 10747) & 0x01) != 0x00)
@@ -8762,7 +8175,7 @@ ui16 fn0800-5CD9(Eq_n ds, Eq_n wArg02, union Eq_n & dsOut)
 			Eq_n ax_n = DPB(fn0800-5B15(ds, out si_n, out di_n, out ds), 0x00, 8);
 			((word32) ds + 0x000029FD)->u0 = 0x00;
 			*((word32) ds + 10747) = ax_n;
-			((word32) ds + 11845)->u1 = 0x08;
+			((word32) ds + 11845)->u0 = 0x08;
 		}
 		si_n <<= 0x01;
 		if ((*((word32) ds + 10747) & 0x80) != 0x00)
@@ -8921,11 +8334,8 @@ word16 fn0800-5E64(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 		Eq_n di_n = ax_n;
 		if (ss->*(bp_n - 0x22) != 0x00)
 			di_n = ax_n - 0x01;
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg0 = <invalid>;
 		word16 dx_n;
-		word16 ax_n = fn0800-8C69(di_n, 0x09, 0x00, stackArg0, out cl_n, out dx_n) + Mem237[ss:(bp_n - 0x22) + 0x00:word16];
+		word16 ax_n = fn0800-8C69(di_n, 0x09, 0x00, out cl_n, out dx_n) + Mem237[ss:(bp_n - 0x22) + 0x00:word16];
 		ss->*(bp_n - 0x02) = (bool) (ax_n < 0x00) + dx_n;
 		ss->*(bp_n - 0x04) = ax_n;
 		Eq_n sp_n = <invalid>;
@@ -8995,16 +8405,10 @@ word16 fn0800-5E64(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 		{
 			(ss->*(sp_n - 0x02)).u0 = 0x00;
 			(ss->*(sp_n - 0x04)).u0 = ~0x00;
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg2 = <invalid>;
-			Eq_n stackArg4 = <invalid>;
 			Eq_n dx_n;
 			Eq_n di_n;
 			Eq_n ds_n;
-			Eq_n ax_n = fn0800-4311(stackArg2, stackArg4, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
+			Eq_n ax_n = fn0800-4311(out dx_n, out bp_n, out si_n, out di_n, out ds_n);
 			ss->*(bp_n - 0x0A) = dx_n;
 			ss->*(bp_n - 0x0C) = ax_n;
 			Eq_n sp_n = <invalid>;
@@ -9028,13 +8432,10 @@ word16 fn0800-5E64(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 				ss->*(bp_n - 0x22) = fn0800-3FAD(ds_n, (ss->*(sp_n - 0x02)).t0000, (ss->*sp_n).t0000, out ch_n, out di_n, out ds_n);
 				(ss->*sp_n).t0000 = *((word32) ds_n + 0x000029E5);
 				(ss->*(sp_n - 0x02)).t0000 = *((word32) ds_n + 0x000029E3);
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
 				Eq_n ax_n = fn0800-3FAD(ds_n, (ss->*(sp_n - 0x02)).t0000, (ss->*sp_n).t0000, out ch_n, out di_n, out ds_n);
-				Eq_n stackArg0 = <invalid>;
 				byte cl_n;
 				word16 dx_n;
-				word16 ax_n = fn0800-8C69(ax_n, 0x04, 0x00, stackArg0, out cl_n, out dx_n) + Mem666[ss:(bp_n - 0x22) + 0x00:word16];
+				word16 ax_n = fn0800-8C69(ax_n, 0x04, 0x00, out cl_n, out dx_n) + Mem666[ss:(bp_n - 0x22) + 0x00:word16];
 				Eq_n es_n = ss->*(bp_n - 0x0A);
 				bx_n = ss->*(bp_n - 0x36);
 				es_n->*((word32) bx_n + 0x02) = (word16) ((bool) (ax_n < 0x00) + dx_n);
@@ -9070,18 +8471,12 @@ word16 fn0800-5E64(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 				(ss->*sp_n).t0000 = *((word32) ds_n + 10721);
 				(ss->*(sp_n - 0x02)).t0000 = *((word32) ds_n + 10719);
 				(ss->*(sp_n - 0x04)).t0000 = DPB(ax_n & 0x0F, 0x00, 0);
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				Eq_n stackArg6 = <invalid>;
 				Eq_n ds_n;
-				fn0800-4047(ds_n, (ss->*(sp_n - 0x04)).t0000, (ss->*(sp_n - 0x02)).t0000, stackArg6, out cx_n, out dx_n, out bx_n, out di_n, out ds_n, out Top_n);
+				fn0800-4047(ds_n, (ss->*(sp_n - 0x04)).t0000, (ss->*(sp_n - 0x02)).t0000, out cx_n, out dx_n, out bx_n, out di_n, out ds_n, out Top_n);
 				(ss->*sp_n).t0000 = *((word32) ds_n + 10721);
 				(ss->*(sp_n - 0x02)).t0000 = *((word32) ds_n + 10719);
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				Eq_n stackArg0 = <invalid>;
 				Eq_n sp_n = <invalid>;
-				ss->*(sp_n - 0x02) = fn0800-8CAA(ss->*(bp_n - 0x10), 0x04, ss->*(bp_n - 0x0E), stackArg0, out dx_n);
+				ss->*(sp_n - 0x02) = fn0800-8CAA(ss->*(bp_n - 0x10), 0x04, ss->*(bp_n - 0x0E), out dx_n);
 				struct Eq_n Eq_n::* di_n;
 				Eq_n ds_n;
 				fn0800-40BF(ds_n, ss->*(sp_n - 0x02), ss->*(sp_n - 0x01), ss->*sp_n, ss->*((word32) sp_n + 0x02), out dx_n, out di_n, out ds_n);
@@ -9106,11 +8501,8 @@ word16 fn0800-5E64(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 					ss->*((word32) sp_n + 0x02) = *((word32) ds_n + 10721);
 					ss->*sp_n = *((word32) ds_n + 10719);
 					(ss->*(sp_n - 0x02)).t0000 = DPB(ax_n, ss->*(bp_n - 0x18), 0);
-					// Failed to bind call argument.
-					// Please report this issue at https://github.com/uxmal/reko
-					Eq_n stackArg6 = <invalid>;
 					word16 di_n;
-					fn0800-4047(ds_n, (ss->*(sp_n - 0x02)).t0000, ss->*sp_n, stackArg6, out cx_n, out dx_n, out bx_n, out di_n, out ds_n, out Top_n);
+					fn0800-4047(ds_n, (ss->*(sp_n - 0x02)).t0000, ss->*sp_n, out cx_n, out dx_n, out bx_n, out di_n, out ds_n, out Top_n);
 					ss->*(bp_n - 0x22) = (word16) (ss->*(bp_n - 0x22)) + 0x01;
 					di_n = di_n + 0x04;
 					si_n = (word32) si_n + 0x01;
@@ -9125,10 +8517,7 @@ word16 fn0800-5E64(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 				ss->*((word32) sp_n + 0x02) = *((word32) ds_n + 10721);
 				ss->*sp_n = *((word32) ds_n + 10719);
 				(ss->*(sp_n - 0x02)).t0000 = DPB(ax_n, ss->*(bp_n - 0x22), 0);
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				Eq_n stackArg6 = <invalid>;
-				fn0800-4047(ds_n, (ss->*(sp_n - 0x02)).t0000, ss->*sp_n, stackArg6, out cx_n, out dx_n, out bx_n, out di_n, out ds_n, out Top_n);
+				fn0800-4047(ds_n, (ss->*(sp_n - 0x02)).t0000, ss->*sp_n, out cx_n, out dx_n, out bx_n, out di_n, out ds_n, out Top_n);
 				(ss->*((word32) sp_n + 0x02)).u0 = 0x01;
 				Eq_n ax_n = ss->*(bp_n - 0x22);
 				ss->*sp_n = SLICE(cond((word32) ax_n + 0x02), bool, 1);
@@ -9141,28 +8530,19 @@ word16 fn0800-5E64(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 			struct Eq_n Eq_n::* sp_n = sp_n - 0x02;
 			(ss->*sp_n).t0000 = ss->*(bp_n - 0x0A);
 			(ss->*(sp_n - 0x02)).t0000 = ss->*(bp_n - 0x0C);
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg2 = <invalid>;
-			ax_n = fn0800-4346(ds_n, stackArg2, (ss->*sp_n).t0000, out cx_n, out dx_n, out bx_n, out ds_n);
+			ax_n = fn0800-4346(ds_n, (ss->*sp_n).t0000, out cx_n, out dx_n, out bx_n, out ds_n);
 			sp_n = &(ss->*sp_n).t0002;
 		}
 		union Eq_n Eq_n::* sp_n = sp_n - 0x02;
 		ss->*sp_n = *((word32) ds_n + 10721);
 		ss->*(sp_n - 0x02) = *((word32) ds_n + 10719);
 		ss->*(sp_n - 0x04) = DPB(ax_n, 0x00, 0);
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg6 = <invalid>;
 		Eq_n ds_n;
-		fn0800-4047(ds_n, ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), stackArg6, out cx_n, out dx_n, out bx_n, out di_n, out ds_n, out Top_n);
+		fn0800-4047(ds_n, ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), out cx_n, out dx_n, out bx_n, out di_n, out ds_n, out Top_n);
 		ss->*sp_n = *((word32) ds_n + 10721);
 		ss->*(sp_n - 0x02) = *((word32) ds_n + 10719);
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
 		word16 dx_n;
-		Eq_n ax_n = fn0800_AD2F(ds_n, ss->*(sp_n - 0x02), stackArg4, out dx_n);
+		Eq_n ax_n = fn0800_AD2F(ds_n, ss->*(sp_n - 0x02), out dx_n);
 		ss->*(bp_n - 0x1A) = (bool) (ax_n < ~0x1F) + (dx_n + ~0x00);
 		ss->*(bp_n - 0x1C) = (word32) ax_n + 0x0000FFE0;
 		while (true)
@@ -9174,10 +8554,7 @@ word16 fn0800-5E64(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 			ss->*sp_n = *((word32) ds_n + 10721);
 			ss->*(sp_n - 0x02) = *((word32) ds_n + 10719);
 			ss->*(sp_n - 0x04) = DPB(ax_n & 0x0F, 0x00, 0);
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg6 = <invalid>;
-			fn0800-4047(ds_n, ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), stackArg6, out cx_n, out dx_n, out bx_n, out di_n, out ds_n, out Top_n);
+			fn0800-4047(ds_n, ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), out cx_n, out dx_n, out bx_n, out di_n, out ds_n, out Top_n);
 			Eq_n v163_n = (word16) (ss->*(bp_n - 0x1C)) + 0x01;
 			ss->*(bp_n - 0x1C) = v163_n;
 			Mem1111[ss:bp_n - 0x1A + 0x00:word16] = Mem1107[ss:bp_n - 0x1A + 0x00:word16] + (v163_n <u 0x00);
@@ -9232,10 +8609,7 @@ word16 fn0800-5E64(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 		ss->*((word32) sp_n + 0x02) = ss->*(bp_n - 0x1C);
 		Eq_n ds_n;
 		fn0800-40BF(ds_n, ss->*((word32) sp_n + 0x02), ss->*((word32) sp_n + 0x03), ss->*((word32) sp_n + 0x04), ss->*((word32) sp_n + 0x06), out dx_n, out di_n, out ds_n);
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg0 = <invalid>;
-		ss->*(bp_n - 0x22) = fn0800-8CAA(*((word32) ds_n + 10755), 0x04, *((word32) ds_n + 10757), stackArg0, out dx_n);
+		ss->*(bp_n - 0x22) = fn0800-8CAA(*((word32) ds_n + 10755), 0x04, *((word32) ds_n + 10757), out dx_n);
 		Eq_n sp_n = <invalid>;
 		if ((*((word32) ds_n + 10755) & 0x0F) != 0x00)
 			ss->*(bp_n - 0x22) = (word16) (ss->*(bp_n - 0x22)) + 0x01;
@@ -9246,11 +8620,8 @@ word16 fn0800-5E64(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 		fn0800-40BF(ds_n, ss->*(sp_n - 0x06), ss->*(sp_n - 0x05), ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), out dx_n, out di_n, out ds_n);
 		ss->*(sp_n - 0x02) = *((word32) ds_n + 10721);
 		ss->*(sp_n - 0x04) = *((word32) ds_n + 10719);
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg0 = <invalid>;
 		Eq_n sp_n = <invalid>;
-		Mem1393[ss:sp_n - 0x02 + 0x00:word16] = Mem1376[ss:bp_n - 0x22 + 0x00:word16] + fn0800-8CAA(ss->*(bp_n - 0x1C), 0x04, ss->*(bp_n - 0x1A), stackArg0, out dx_n);
+		Mem1393[ss:sp_n - 0x02 + 0x00:word16] = Mem1376[ss:bp_n - 0x22 + 0x00:word16] + fn0800-8CAA(ss->*(bp_n - 0x1C), 0x04, ss->*(bp_n - 0x1A), out dx_n);
 		Eq_n ds_n;
 		fn0800-40BF(ds_n, ss->*(sp_n - 0x02), ss->*(sp_n - 0x01), ss->*sp_n, ss->*((word32) sp_n + 0x02), out dx_n, out di_n, out ds_n);
 		ui32 ax_dx_n = SEQ(ss->*(bp_n - 0x02), ss->*(bp_n - 0x04)) - SEQ(*((word32) ds_n + 10757), *((word32) ds_n + 10755)) + SEQ(*((word32) ds_n + 20106), *((word32) ds_n + 0x00004E88));
@@ -9284,11 +8655,8 @@ word16 fn0800-5E64(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 		fn0800_ACB3(ds_n, (ss->*(sp_n - 0x06)).t0000, (ss->*(sp_n - 0x04)).t0000, ss->*((word32) sp_n + 0x02), out cx_n, out dx_n, out bx_n);
 		ss->*((word32) sp_n + 0x02) = *((word32) ds_n + 10721);
 		ss->*sp_n = *((word32) ds_n + 10719);
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
 		Eq_n dx_n;
-		Eq_n ax_n = fn0800_AD2F(ds_n, ss->*sp_n, stackArg4, out dx_n);
+		Eq_n ax_n = fn0800_AD2F(ds_n, ss->*sp_n, out dx_n);
 		ss->*(bp_n - 0x1E) = dx_n;
 		ss->*(bp_n - 0x20) = ax_n;
 		ui32 dx_bx_n = SEQ(*((word32) ds_n + 10761), *((word32) ds_n + 0x00002A07)) - SEQ(ss->*(bp_n - 0x02), ss->*(bp_n - 0x04));
@@ -9303,10 +8671,7 @@ word16 fn0800-5E64(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 		Eq_n ds_n;
 		fn0800-3B0A(ss->*sp_n, ss->*((word32) sp_n + 0x02), out dx_n, out bp_n, out ds_n);
 		ss->*(bp_n - 0x22) = ss->*(bp_n - 0x20) & 0x01FF;
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg0 = <invalid>;
-		fn0800-8CAA(ss->*(bp_n - 0x20), 0x09, ss->*(bp_n - 0x1E), stackArg0, out dx_n);
+		fn0800-8CAA(ss->*(bp_n - 0x20), 0x09, ss->*(bp_n - 0x1E), out dx_n);
 		Eq_n sp_n = <invalid>;
 		ss->*(bp_n - 0x22) == 0x00;
 		(ss->*(sp_n - 0x02)).u0 = 0x00;
@@ -9399,10 +8764,7 @@ word16 fn0800-5E64(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 		Eq_n v157_n = (word16) (ss->*(bp_n - 0x08)) + ((word16) (0x10 - SEQ(ss->*(bp_n - 0x06), ss->*(bp_n - 0x08))) & 0x0F);
 		ss->*(bp_n - 0x08) = v157_n;
 		Mem1974[ss:bp_n - 0x06 + 0x00:word16] = Mem1970[ss:bp_n - 0x06 + 0x00:word16] + (v157_n <u 0x00);
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg0 = <invalid>;
-		Eq_n ax_n = fn0800-8CAA(ss->*(bp_n - 0x08), 0x04, ss->*(bp_n - 0x06), stackArg0, out dx_n);
+		Eq_n ax_n = fn0800-8CAA(ss->*(bp_n - 0x08), 0x04, ss->*(bp_n - 0x06), out dx_n);
 		ss->*(bp_n - 0x28) = ax_n;
 		Eq_n sp_n = <invalid>;
 		ss->*(sp_n - 0x02) = *((word32) ds_n + 10721);
@@ -9418,11 +8780,8 @@ word16 fn0800-5E64(Eq_n ds, union Eq_n & dxOut, union Eq_n & dsOut)
 		Eq_n ds_n;
 		fn0800-40BF(ds_n, ss->*(sp_n - 0x06), ss->*(sp_n - 0x05), ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), out dx_n, out di_n, out ds_n);
 		ui32 dx_ax_n = SEQ(ss->*(bp_n - 0x02), ss->*(bp_n - 0x04)) + SEQ(*((word32) ds_n + 20106), *((word32) ds_n + 0x00004E88));
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
 		cup16 ax_n = (word16) dx_ax_n;
-		Eq_n stackArg0 = <invalid>;
-		Eq_n ax_n = fn0800-8CAA(ax_n + 0x20, 0x04, (bool) (ax_n < 0x20) + SLICE(dx_ax_n, word16, 16), stackArg0, out dx_n);
+		Eq_n ax_n = fn0800-8CAA(ax_n + 0x20, 0x04, (bool) (ax_n < 0x20) + SLICE(dx_ax_n, word16, 16), out dx_n);
 		ss->*(bp_n - 44) = ax_n;
 		Eq_n sp_n = <invalid>;
 		ss->*(sp_n - 0x02) = *((word32) ds_n + 10721);
@@ -9649,19 +9008,13 @@ word16 fn0800-67BF(Eq_n ds, ptr16 & dxOut, union Eq_n & dsOut)
 		union Eq_n Eq_n::* sp_n = sp_n - 0x02;
 		ss->*sp_n = *((word32) ds_n + 10721);
 		ss->*(sp_n - 0x02) = *((word32) ds_n + 10719);
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
-		Eq_n ax_n = fn0800_AD2F(ds_n, ss->*(sp_n - 0x02), stackArg4, out dx_n);
+		Eq_n ax_n = fn0800_AD2F(ds_n, ss->*(sp_n - 0x02), out dx_n);
 		if ((ax_n & 0x01) != 0x00)
 		{
 			ss->*sp_n = *((word32) ds_n + 10721);
 			ss->*(sp_n - 0x02) = *((word32) ds_n + 10719);
 			ss->*(sp_n - 0x04) = DPB(ax_n & 0x01, 0x90, 0);
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg6 = <invalid>;
-			fn0800-4047(ds_n, ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), stackArg6, out cx_n, out dx_n, out bx_n, out di_n, out ds_n, out Top_n);
+			fn0800-4047(ds_n, ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), out cx_n, out dx_n, out bx_n, out di_n, out ds_n, out Top_n);
 			Eq_n v50_n = (word16) (ss->*(bp_n - 0x08)) + 0x01;
 			ss->*(bp_n - 0x08) = v50_n;
 			Mem458[ss:bp_n - 0x06 + 0x00:word16] = Mem454[ss:bp_n - 0x06 + 0x00:word16] + (v50_n <u 0x00);
@@ -9675,11 +9028,8 @@ word16 fn0800-67BF(Eq_n ds, ptr16 & dxOut, union Eq_n & dsOut)
 		fn0800-409C(ds_n, ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), ss->*sp_n, out dx_n, out ds_n, out Top_n);
 		ss->*sp_n = *((word32) ds_n + 10721);
 		ss->*(sp_n - 0x02) = *((word32) ds_n + 10719);
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
 		word16 dx_n;
-		Eq_n ax_n = fn0800_AD2F(ds_n, ss->*(sp_n - 0x02), stackArg4, out dx_n);
+		Eq_n ax_n = fn0800_AD2F(ds_n, ss->*(sp_n - 0x02), out dx_n);
 		*((word32) ds_n + 10757) = (bool) (ax_n < ~0x1F) + (dx_n + ~0x00);
 		*((word32) ds_n + 10755) = (word32) ax_n + 0x0000FFE0;
 		(ss->*sp_n).u0 = 0x00;
@@ -9823,11 +9173,8 @@ word16 fn0800-6AD4(word16 bp, Eq_n si, Eq_n ds, union Eq_n & dxOut, union Eq_n &
 			word16 dx_n;
 			Eq_n ds_n;
 			fn0800-409C(ds_n, (DPB(DPB(fn0800-409C(ds_n, (word16) ax_n + 0x01, dx_n + (ax_n <u 0x01), Mem337[ds_n:10719:word16], Mem321[ds_n:10721:word16], out dx_n, out ds_n, out Top_n), Mem351[ds_n:11893:byte], 0), 0x00, 8) << 0x08) + DPB(DPB(dx_n, Mem351[ds_n:11894:byte], 0), 0x00, 8) - 0x0C >>u 0x02, 0x00, Mem383[ds_n:10719:word16], Mem380[ds_n:10721:word16], out dx_n, out ds_n, out Top_n);
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg4 = <invalid>;
 			Eq_n dx_n;
-			Eq_n ax_n = fn0800_AD2F(ds_n, SEQ(*((word32) ds_n + 10721), *((word32) ds_n + 10719)), stackArg4, out dx_n);
+			Eq_n ax_n = fn0800_AD2F(ds_n, SEQ(*((word32) ds_n + 10721), *((word32) ds_n + 10719)), out dx_n);
 			*((word32) ds_n + 0x00004E8E) = dx_n;
 			*((word32) ds_n + 20108) = ax_n;
 			ui32 ax_dx_n = SEQ(dx_n, ax_n) - SEQ(dx_n, ax_n);
@@ -9851,11 +9198,8 @@ word16 fn0800-6AD4(word16 bp, Eq_n si, Eq_n ds, union Eq_n & dxOut, union Eq_n &
 			Eq_n ax_n = (DPB(DPB(ax_n, *((word32) ds_n + 11893), 0), 0x00, 8) << 0x08) + DPB(DPB(dx_n, *((word32) ds_n + 11894), 0), 0x00, 8);
 			Eq_n ds_n;
 			fn0800-4152(ds_n, 0x2E77, ds_n, ax_n, *((word32) ds_n + 10719), *((word32) ds_n + 10721), out ds_n);
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg4 = <invalid>;
 			Eq_n dx_n;
-			Eq_n ax_n = fn0800_AD2F(ds_n, SEQ(*((word32) ds_n + 0x000029E5), *((word32) ds_n + 0x000029E3)), stackArg4, out dx_n);
+			Eq_n ax_n = fn0800_AD2F(ds_n, SEQ(*((word32) ds_n + 0x000029E5), *((word32) ds_n + 0x000029E3)), out dx_n);
 			if (dx_n >= *((word32) ds_n + 10761) && (dx_n != *((word32) ds_n + 10761) || ax_n >= *((word32) ds_n + 0x00002A07)))
 			{
 				dxOut = dx_n;
@@ -9902,8 +9246,8 @@ word16 fn0800-6AD4(word16 bp, Eq_n si, Eq_n ds, union Eq_n & dxOut, union Eq_n &
 	}
 }
 
-// 0800:6EE6: void fn0800-6EE6(Register Eq_n cx, Register Eq_n dx, Register Eq_n bx, Register Eq_n ds, Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06)
-void fn0800-6EE6(Eq_n cx, Eq_n dx, Eq_n bx, Eq_n ds, word16 wArg02, word16 wArg04, word16 wArg06)
+// 0800:6EE6: void fn0800-6EE6(Register Eq_n cx, Register Eq_n dx, Register Eq_n bx, Register Eq_n ds)
+void fn0800-6EE6(Eq_n cx, Eq_n dx, Eq_n bx, Eq_n ds)
 {
 	fn0800_B2EF(cx, dx, bx, ds, 0x2223, ds, out si_n, out di_n);
 }
@@ -9919,20 +9263,14 @@ void fn0800-6EFF(Eq_n cx, Eq_n dx, Eq_n bx, Eq_n ds, cup16 wArg02)
 // 0800:6F20: void fn0800-6F20(Register Eq_n ax, Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04)
 void fn0800-6F20(Eq_n ax, Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 {
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg0 = <invalid>;
 	Eq_n dx_n;
 	Eq_n ds_n;
-	Eq_n ax_n = fn0800-8C69(ax, 0x02, fn0800-3E5D(ds, *((word32) ds + 0x000029E3), *((word32) ds + 0x000029E5), out ds_n, out Top_n), stackArg0, out cl_n, out dx_n);
+	Eq_n ax_n = fn0800-8C69(ax, 0x02, fn0800-3E5D(ds, *((word32) ds + 0x000029E3), *((word32) ds + 0x000029E5), out ds_n, out Top_n), out cl_n, out dx_n);
 	Eq_n sp_n = <invalid>;
 	ss->*(sp_n - 0x02) = *((word32) ds_n + 0x000029E5);
 	ss->*(sp_n - 0x04) = *((word32) ds_n + 0x000029E3);
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg4 = <invalid>;
 	Eq_n dx_n;
-	Eq_n ax_n = fn0800_AD2F(ds_n, ss->*(sp_n - 0x04), stackArg4, out dx_n);
+	Eq_n ax_n = fn0800_AD2F(ds_n, ss->*(sp_n - 0x04), out dx_n);
 	(ss->*(sp_n - 0x02)).u0 = 0x01;
 	ss->*(sp_n - 0x04) = dx_n;
 	ss->*(sp_n - 0x06) = ax_n;
@@ -9960,11 +9298,8 @@ void fn0800-6F20(Eq_n ax, Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 			union Eq_n Eq_n::* sp_n = sp_n - 0x02;
 			ss->*sp_n = *((word32) ds_n + 0x000029E5);
 			ss->*(sp_n - 0x02) = *((word32) ds_n + 0x000029E3);
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg0 = <invalid>;
 			cui16 dx_n;
-			Eq_n ax_n = fn0800-8C69(ax_n, 0x02, fn0800-3E5D(ds_n, ss->*(sp_n - 0x02), ss->*sp_n, out ds_n, out Top_n), stackArg0, out cl_n, out dx_n);
+			Eq_n ax_n = fn0800-8C69(ax_n, 0x02, fn0800-3E5D(ds_n, ss->*(sp_n - 0x02), ss->*sp_n, out ds_n, out Top_n), out cl_n, out dx_n);
 			Eq_n sp_n = <invalid>;
 			Mem220 = Mem182;
 			if ((ax_n | dx_n) != 0x00)
@@ -9982,11 +9317,8 @@ void fn0800-6F20(Eq_n ax, Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 	}
 	ss->*sp_n = *((word32) ds_n + 0x000029E5);
 	ss->*(sp_n - 0x02) = *((word32) ds_n + 0x000029E3);
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg4 = <invalid>;
 	ui16 dx_n;
-	ui32 dx_ax_n = SEQ(dx_n, fn0800_AD2F(ds_n, ss->*(sp_n - 0x02), stackArg4, out dx_n)) - SEQ(dx_n, ax_n);
+	ui32 dx_ax_n = SEQ(dx_n, fn0800_AD2F(ds_n, ss->*(sp_n - 0x02), out dx_n)) - SEQ(dx_n, ax_n);
 	Eq_n dx_n = SLICE(dx_ax_n, word16, 16);
 	*((word32) ds_n + 10757) = dx_n;
 	Eq_n ax_n = (word16) dx_ax_n;
@@ -9999,11 +9331,8 @@ void fn0800-6F20(Eq_n ax, Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 	fn0800-409C(ds_n, ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), ss->*sp_n, out dx_n, out ds_n, out Top_n);
 	ss->*sp_n = *((word32) ds_n + 10721);
 	ss->*(sp_n - 0x02) = *((word32) ds_n + 10719);
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg4 = <invalid>;
 	Eq_n dx_n;
-	Eq_n ax_n = fn0800_AD2F(ds_n, ss->*(sp_n - 0x02), stackArg4, out dx_n);
+	Eq_n ax_n = fn0800_AD2F(ds_n, ss->*(sp_n - 0x02), out dx_n);
 	union Eq_n Eq_n::* sp_n = (char *) sp_n + 0x02;
 	if (dx_n >= 0x00 && (dx_n > 0x00 || ax_n > 0x12))
 	{
@@ -10132,11 +9461,8 @@ void fn0800-6F20(Eq_n ax, Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 					ss->*(sp_n - 0x06) = ax_n + 0x01;
 					struct Eq_n * ds_n;
 					fn0800-409C(ds_n, ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), (ss->*sp_n).t0000, out dx_n, out ds_n, out Top_n);
-					// Failed to bind call argument.
-					// Please report this issue at https://github.com/uxmal/reko
-					Eq_n stackArg0 = <invalid>;
 					Eq_n dx_n;
-					Eq_n ax_n = fn0800-8C69(ss->*(bp_n - 0x04), 0x02, ss->*(bp_n - 0x02), stackArg0, out cl_n, out dx_n);
+					Eq_n ax_n = fn0800-8C69(ss->*(bp_n - 0x04), 0x02, ss->*(bp_n - 0x02), out cl_n, out dx_n);
 					Eq_n sp_n = <invalid>;
 					ss->*(sp_n - 0x02) = dx_n;
 					ss->*(sp_n - 0x04) = ax_n;
@@ -10169,22 +9495,16 @@ void fn0800-6F20(Eq_n ax, Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 		Eq_n sp_n;
 		if ((ss->*(bp_n - 0x04) & 0x03) != 0x00)
 		{
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg0 = <invalid>;
 			word16 dx_n;
-			Eq_n ax_n = fn0800-8CAA(ss->*(bp_n - 0x04), 0x02, ss->*(bp_n - 0x02), stackArg0, out dx_n);
+			Eq_n ax_n = fn0800-8CAA(ss->*(bp_n - 0x04), 0x02, ss->*(bp_n - 0x02), out dx_n);
 			ss->*(bp_n - 0x02) = (bool) (ax_n < 0x01) + dx_n;
 			ss->*(bp_n - 0x04) = (word32) ax_n + 0x01;
 			sp_n.u0 = <invalid>;
 		}
 		else
 		{
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg0 = <invalid>;
 			Eq_n dx_n;
-			Eq_n ax_n = fn0800-8CAA(ss->*(bp_n - 0x04), 0x02, ss->*(bp_n - 0x02), stackArg0, out dx_n);
+			Eq_n ax_n = fn0800-8CAA(ss->*(bp_n - 0x04), 0x02, ss->*(bp_n - 0x02), out dx_n);
 			ss->*(bp_n - 0x02) = dx_n;
 			ss->*(bp_n - 0x04) = ax_n;
 			sp_n.u0 = <invalid>;
@@ -10198,10 +9518,7 @@ void fn0800-6F20(Eq_n ax, Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 			ss->*sp_n = *((word32) ds_n + 10721);
 			ss->*(sp_n - 0x02) = *((word32) ds_n + 10719);
 			ss->*(sp_n - 0x04) = DPB(ax_n & 0x03, 0x00, 0);
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg6 = <invalid>;
-			fn0800-4047(ds_n, ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), stackArg6, out cx_n, out dx_n, out bx_n, out di_n, out ds_n, out Top_n);
+			fn0800-4047(ds_n, ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), out cx_n, out dx_n, out bx_n, out di_n, out ds_n, out Top_n);
 			Eq_n v101_n = (word32) *((word32) ds_n + 10755) + 0x01;
 			*((word32) ds_n + 10755) = v101_n;
 			Mem1001[ds_n:0x2A05:word16] = Mem997[ds_n:0x2A05:word16] + (v101_n <u 0x00);
@@ -10210,11 +9527,8 @@ void fn0800-6F20(Eq_n ax, Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 		union Eq_n Eq_n::* sp_n = sp_n - 0x02;
 		ss->*sp_n = *((word32) ds_n + 10721);
 		ss->*(sp_n - 0x02) = *((word32) ds_n + 10719);
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
 		Eq_n dx_n;
-		Eq_n ax_n = fn0800_AD2F(ds_n, ss->*(sp_n - 0x02), stackArg4, out dx_n);
+		Eq_n ax_n = fn0800_AD2F(ds_n, ss->*(sp_n - 0x02), out dx_n);
 		ss->*(bp_n - 0x06) = dx_n;
 		ss->*(bp_n - 0x08) = ax_n;
 		(ss->*sp_n).u0 = 0x01;
@@ -10226,11 +9540,8 @@ void fn0800-6F20(Eq_n ax, Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 		fn0800_ACB3(ds_n, ss->*(sp_n - 0x08), ss->*(sp_n - 0x06), ss->*sp_n, out cx_n, out dx_n, out bx_n);
 		ss->*sp_n = *((word32) ds_n + 10721);
 		ss->*(sp_n - 0x02) = *((word32) ds_n + 10719);
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg0 = <invalid>;
 		Eq_n dx_n;
-		Eq_n ax_n = fn0800-8CAA(*((word32) ds_n + 10755), 0x02, *((word32) ds_n + 10757), stackArg0, out dx_n);
+		Eq_n ax_n = fn0800-8CAA(*((word32) ds_n + 10755), 0x02, *((word32) ds_n + 10757), out dx_n);
 		Eq_n sp_n = <invalid>;
 		ss->*(sp_n - 0x02) = dx_n;
 		ss->*(sp_n - 0x04) = ax_n;
@@ -10296,19 +9607,13 @@ word16 fn0800-741D(Eq_n ds, union Eq_n & dxOut)
 		union Eq_n Eq_n::* sp_n = sp_n - 0x02;
 		ss->*sp_n = *((word32) ds + 0x000029E5);
 		ss->*(sp_n - 0x02) = *((word32) ds + 0x000029E3);
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
 		Eq_n dx_n;
-		Eq_n ax_n = fn0800_AD2F(ds, ss->*(sp_n - 0x02), stackArg4, out dx_n);
+		Eq_n ax_n = fn0800_AD2F(ds, ss->*(sp_n - 0x02), out dx_n);
 		if (dx_n >= *((word32) ds + 10761) && (dx_n != *((word32) ds + 10761) || ax_n >= *((word32) ds + 0x00002A07)))
 			break;
 		ss->*sp_n = *((word32) ds + 0x000029E5);
 		ss->*(sp_n - 0x02) = *((word32) ds + 0x000029E3);
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
-		Eq_n ax_n = fn0800-3E9A(ds, ss->*(sp_n - 0x02), stackArg4, out dx_n, out ds);
+		Eq_n ax_n = fn0800-3E9A(ds, ss->*(sp_n - 0x02), out dx_n, out ds);
 		if (ax_n != 0x00)
 		{
 			if (ax_n != 0x01)
@@ -10323,26 +9628,17 @@ word16 fn0800-741D(Eq_n ds, union Eq_n & dxOut)
 						ss->*(sp_n - 0x02) = *((word32) ds + 10719);
 						ss->*(sp_n - 0x04) = *((word32) ds + 0x000029E5);
 						ss->*(sp_n - 0x06) = *((word32) ds + 0x000029E3);
-						// Failed to bind call argument.
-						// Please report this issue at https://github.com/uxmal/reko
-						Eq_n stackArg4 = <invalid>;
 						Eq_n ds_n;
-						ss->*(sp_n - 0x04) = fn0800-3DCF(ds, ss->*(sp_n - 0x06), stackArg4, out ch_n, out dx_n, out di_n, out ds_n, out Top_n);
-						// Failed to bind call argument.
-						// Please report this issue at https://github.com/uxmal/reko
-						Eq_n stackArg6 = <invalid>;
-						fn0800-4047(ds_n, ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), stackArg6, out cx_n, out dx_n, out bx_n, out di_n, out ds, out Top_n);
+						ss->*(sp_n - 0x04) = fn0800-3DCF(ds, ss->*(sp_n - 0x06), out ch_n, out dx_n, out di_n, out ds_n, out Top_n);
+						fn0800-4047(ds_n, ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), out cx_n, out dx_n, out bx_n, out di_n, out ds, out Top_n);
 					}
 				}
 				else
 				{
 					ss->*sp_n = *((word32) ds + 0x000029E5);
 					ss->*(sp_n - 0x02) = *((word32) ds + 0x000029E3);
-					// Failed to bind call argument.
-					// Please report this issue at https://github.com/uxmal/reko
-					Eq_n stackArg4 = <invalid>;
 					ui16 dx_n;
-					ui32 bx_cx_n = SEQ(*((word32) ds + 10761), *((word32) ds + 0x00002A07)) - SEQ(dx_n, fn0800_AD2F(ds, ss->*(sp_n - 0x02), stackArg4, out dx_n));
+					ui32 bx_cx_n = SEQ(*((word32) ds + 10761), *((word32) ds + 0x00002A07)) - SEQ(dx_n, fn0800_AD2F(ds, ss->*(sp_n - 0x02), out dx_n));
 					ss->*sp_n = SLICE(bx_cx_n, word16, 16);
 					ss->*(sp_n - 0x02) = (word16) bx_cx_n;
 					ss->*(sp_n - 0x04) = *((word32) ds + 10721);
@@ -10433,15 +9729,9 @@ word16 fn0800-741D(Eq_n ds, union Eq_n & dxOut)
 			ss->*(sp_n - 0x02) = *((word32) ds + 10719);
 			ss->*(sp_n - 0x04) = *((word32) ds + 0x000029E5);
 			ss->*(sp_n - 0x06) = *((word32) ds + 0x000029E3);
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg4 = <invalid>;
 			Eq_n ds_n;
-			ss->*(sp_n - 0x04) = fn0800-3DCF(ds, ss->*(sp_n - 0x06), stackArg4, out ch_n, out dx_n, out di_n, out ds_n, out Top_n);
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg6 = <invalid>;
-			fn0800-4047(ds_n, ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), stackArg6, out cx_n, out dx_n, out bx_n, out di_n, out ds, out Top_n);
+			ss->*(sp_n - 0x04) = fn0800-3DCF(ds, ss->*(sp_n - 0x06), out ch_n, out dx_n, out di_n, out ds_n, out Top_n);
+			fn0800-4047(ds_n, ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), out cx_n, out dx_n, out bx_n, out di_n, out ds, out Top_n);
 			sp_n = (struct Eq_n Eq_n::*) ((char *) sp_n + 0x02);
 		}
 	}
@@ -10485,16 +9775,10 @@ Eq_n fn0800-75EA(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08, un
 		*((word32) ds + 0x00004E88) = 0x00;
 		*((word32) ds + 0x000029F9) = 0x00;
 		*((word32) ds + 0x000029F7) = 0x00;
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg2 = <invalid>;
-		Eq_n stackArg4 = <invalid>;
 		union Eq_n Eq_n::* bp_n;
 		struct Eq_n * ds_n;
 		Eq_n dx_n;
-		Eq_n ax_n = fn0800-4311(stackArg2, stackArg4, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
+		Eq_n ax_n = fn0800-4311(out dx_n, out bp_n, out si_n, out di_n, out ds_n);
 		ss->*(bp_n - 0x14) = dx_n;
 		ss->*(bp_n - 22) = ax_n;
 		ds_n->w2E73 = (word16) ((word32) dx_n + 0x01);
@@ -10502,16 +9786,10 @@ Eq_n fn0800-75EA(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08, un
 		Eq_n sp_n = <invalid>;
 		(ss->*((word32) sp_n + 0x02)).u0 = 0x01;
 		(ss->*sp_n).u0 = 0x10;
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg2 = <invalid>;
-		Eq_n stackArg4 = <invalid>;
 		union Eq_n Eq_n::* bp_n;
 		struct Eq_n * ds_n;
 		Eq_n dx_n;
-		Eq_n ax_n = fn0800-4311(stackArg2, stackArg4, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
+		Eq_n ax_n = fn0800-4311(out dx_n, out bp_n, out si_n, out di_n, out ds_n);
 		ss->*(bp_n - 0x10) = dx_n;
 		ss->*(bp_n - 0x12) = ax_n;
 		ds_n->w2E39 = (word16) ((word32) dx_n + 0x01);
@@ -10519,16 +9797,10 @@ Eq_n fn0800-75EA(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08, un
 		Eq_n sp_n = <invalid>;
 		(ss->*((word32) sp_n + 0x02)).u0 = 0x01;
 		(ss->*sp_n).u0 = 0x10;
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg2 = <invalid>;
-		Eq_n stackArg4 = <invalid>;
 		union Eq_n Eq_n::* bp_n;
 		struct Eq_n * ds_n;
 		Eq_n dx_n;
-		Eq_n ax_n = fn0800-4311(stackArg2, stackArg4, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
+		Eq_n ax_n = fn0800-4311(out dx_n, out bp_n, out si_n, out di_n, out ds_n);
 		ss->*(bp_n - 0x0C) = dx_n;
 		ss->*(bp_n - 0x0E) = ax_n;
 		ds_n->w2E35 = (word16) ((word32) dx_n + 0x01);
@@ -10536,16 +9808,10 @@ Eq_n fn0800-75EA(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08, un
 		Eq_n sp_n = <invalid>;
 		(ss->*((word32) sp_n + 0x02)).u0 = 0x01;
 		(ss->*sp_n).u0 = 0x10;
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg2 = <invalid>;
-		Eq_n stackArg4 = <invalid>;
 		union Eq_n Eq_n::* bp_n;
 		struct Eq_n * ds_n;
 		Eq_n dx_n;
-		Eq_n ax_n = fn0800-4311(stackArg2, stackArg4, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
+		Eq_n ax_n = fn0800-4311(out dx_n, out bp_n, out si_n, out di_n, out ds_n);
 		ss->*(bp_n - 0x08) = dx_n;
 		ss->*(bp_n - 0x0A) = ax_n;
 		ds_n->w2E41 = (word16) ((word32) dx_n + 0x01);
@@ -10553,15 +9819,9 @@ Eq_n fn0800-75EA(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08, un
 		Eq_n sp_n = <invalid>;
 		(ss->*((word32) sp_n + 0x02)).u0 = 0x01;
 		(ss->*sp_n).u0 = 0x10;
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg2 = <invalid>;
-		Eq_n stackArg4 = <invalid>;
 		Eq_n ds_n;
 		Eq_n dx_n;
-		Eq_n ax_n = fn0800-4311(stackArg2, stackArg4, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
+		Eq_n ax_n = fn0800-4311(out dx_n, out bp_n, out si_n, out di_n, out ds_n);
 		ss->*(bp_n - 0x04) = dx_n;
 		ss->*(bp_n - 0x06) = ax_n;
 		*((word32) ds_n + 11837) = (struct Eq_n *) ((word32) dx_n + 0x01);
@@ -10570,20 +9830,14 @@ Eq_n fn0800-75EA(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08, un
 		Eq_n sp_n = <invalid>;
 		ss->*((word32) sp_n + 0x02) = *((word32) ds_n + 0x000029E5);
 		ss->*sp_n = *((word32) ds_n + 0x000029E3);
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
 		ui16 dx_n;
-		Eq_n ax_n = fn0800_AD2F(ds_n, ss->*sp_n, stackArg4, out dx_n);
+		Eq_n ax_n = fn0800_AD2F(ds_n, ss->*sp_n, out dx_n);
 		*((word32) ds_n + 0x00004664) = dx_n;
 		*((word32) ds_n + 0x00004662) = ax_n;
 		ss->*((word32) sp_n + 0x02) = *((word32) ds_n + 10721);
 		ss->*sp_n = *((word32) ds_n + 10719);
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
 		int16 dx_n;
-		Eq_n ax_n = fn0800_AD2F(ds_n, ss->*sp_n, stackArg4, out dx_n);
+		Eq_n ax_n = fn0800_AD2F(ds_n, ss->*sp_n, out dx_n);
 		*((word32) ds_n + 0x00004660) = dx_n;
 		*((word32) ds_n + 18014) = ax_n;
 		ss->*((word32) sp_n + 0x02) = *((word32) ds_n + 10721);
@@ -10646,7 +9900,7 @@ Eq_n fn0800-75EA(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08, un
 			ss->*sp_n = *((word32) ds_n + 11855);
 			fn0800-8465(ds_n, ss->*sp_n, ss->*((word32) sp_n + 0x02));
 		}
-		word16 ax_n = *((word32) ds_n + 0x00002A21);
+		cui16 ax_n = *((word32) ds_n + 0x00002A21);
 		if (ax_n != 0x01)
 		{
 			if (ax_n == 0x02)
@@ -10687,11 +9941,8 @@ Eq_n fn0800-75EA(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08, un
 		}
 		ss->*((word32) sp_n + 0x02) = *((word32) ds_n + 10721);
 		ss->*sp_n = *((word32) ds_n + 10719);
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
 		int16 dx_n;
-		int32 dx_ax_n = SEQ(dx_n, fn0800_AD2F(ds_n, ss->*sp_n, stackArg4, out dx_n)) - SEQ(*((word32) ds_n + 0x00004660), *((word32) ds_n + 18014));
+		int32 dx_ax_n = SEQ(dx_n, fn0800_AD2F(ds_n, ss->*sp_n, out dx_n)) - SEQ(*((word32) ds_n + 0x00004660), *((word32) ds_n + 18014));
 		*((word32) ds_n + 10757) = SLICE(dx_ax_n, word16, 16);
 		*((word32) ds_n + 10755) = (word16) dx_ax_n;
 		(ss->*((word32) sp_n + 0x02)).u0 = 0x00;
@@ -10721,19 +9972,13 @@ Eq_n fn0800-75EA(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08, un
 		ss->*((word32) sp_n + 0x02) = *((word32) ds_n + 10721);
 		ss->*sp_n = *((word32) ds_n + 10719);
 		(ss->*(sp_n - 0x02)).t0000 = DPB(ax_n, *((word32) ds_n + 0x00004E88), 0);
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg6 = <invalid>;
 		Eq_n ds_n;
-		word16 ax_n = fn0800-4047(ds_n, (ss->*(sp_n - 0x02)).t0000, ss->*sp_n, stackArg6, out cx_n, out dx_n, out bx_n, out di_n, out ds_n, out Top_n);
+		word16 ax_n = fn0800-4047(ds_n, (ss->*(sp_n - 0x02)).t0000, ss->*sp_n, out cx_n, out dx_n, out bx_n, out di_n, out ds_n, out Top_n);
 		ss->*((word32) sp_n + 0x02) = *((word32) ds_n + 10721);
 		ss->*sp_n = *((word32) ds_n + 10719);
 		(ss->*(sp_n - 0x02)).t0000 = DPB(ax_n, *((word32) ds_n + 0x000029F7), 0);
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg6 = <invalid>;
 		Eq_n ds_n;
-		fn0800-4047(ds_n, (ss->*(sp_n - 0x02)).t0000, ss->*sp_n, stackArg6, out cx_n, out dx_n, out bx_n, out di_n, out ds_n, out Top_n);
+		fn0800-4047(ds_n, (ss->*(sp_n - 0x02)).t0000, ss->*sp_n, out cx_n, out dx_n, out bx_n, out di_n, out ds_n, out Top_n);
 		(ss->*((word32) sp_n + 0x02)).u0 = 0x00;
 		ui32 ax_dx_n = SEQ(*((word32) ds_n + 0x00004660), *((word32) ds_n + 18014)) + SEQ(*((word32) ds_n + 10757), *((word32) ds_n + 10755));
 		ss->*sp_n = SLICE(ax_dx_n, word16, 16);
@@ -10750,40 +9995,25 @@ Eq_n fn0800-75EA(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08, un
 		fn0800_ACB3(ds_n, (ss->*(sp_n - 0x06)).t0000, (ss->*(sp_n - 0x04)).t0000, ss->*((word32) sp_n + 0x02), out cx_n, out dx_n, out bx_n);
 		ss->*((word32) sp_n + 0x02) = ss->*(bp_n - 0x14);
 		ss->*sp_n = ss->*(bp_n - 22);
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg2 = <invalid>;
 		Eq_n ds_n;
-		fn0800-4346(ds_n, stackArg2, ss->*((word32) sp_n + 0x02), out cx_n, out dx_n, out bx_n, out ds_n);
+		fn0800-4346(ds_n, ss->*((word32) sp_n + 0x02), out cx_n, out dx_n, out bx_n, out ds_n);
 		ss->*((word32) sp_n + 0x02) = ss->*(bp_n - 0x10);
 		ss->*sp_n = ss->*(bp_n - 0x12);
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg2 = <invalid>;
 		Eq_n ds_n;
-		fn0800-4346(ds_n, stackArg2, ss->*((word32) sp_n + 0x02), out cx_n, out dx_n, out bx_n, out ds_n);
+		fn0800-4346(ds_n, ss->*((word32) sp_n + 0x02), out cx_n, out dx_n, out bx_n, out ds_n);
 		ss->*((word32) sp_n + 0x02) = ss->*(bp_n - 0x0C);
 		ss->*sp_n = ss->*(bp_n - 0x0E);
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg2 = <invalid>;
 		Eq_n ds_n;
-		fn0800-4346(ds_n, stackArg2, ss->*((word32) sp_n + 0x02), out cx_n, out dx_n, out bx_n, out ds_n);
+		fn0800-4346(ds_n, ss->*((word32) sp_n + 0x02), out cx_n, out dx_n, out bx_n, out ds_n);
 		ss->*((word32) sp_n + 0x02) = ss->*(bp_n - 0x08);
 		ss->*sp_n = ss->*(bp_n - 0x0A);
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg2 = <invalid>;
 		Eq_n ds_n;
-		fn0800-4346(ds_n, stackArg2, ss->*((word32) sp_n + 0x02), out cx_n, out dx_n, out bx_n, out ds_n);
+		fn0800-4346(ds_n, ss->*((word32) sp_n + 0x02), out cx_n, out dx_n, out bx_n, out ds_n);
 		ss->*((word32) sp_n + 0x02) = ss->*(bp_n - 0x04);
 		ss->*sp_n = ss->*(bp_n - 0x06);
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg2 = <invalid>;
 		Eq_n bx_n;
 		Eq_n cx_n;
-		fn0800-4346(ds_n, stackArg2, ss->*((word32) sp_n + 0x02), out cx_n, out dx_n, out bx_n, out ds);
+		fn0800-4346(ds_n, ss->*((word32) sp_n + 0x02), out cx_n, out dx_n, out bx_n, out ds);
 		ss->*((word32) sp_n + 0x02) = ds;
 		(ss->*sp_n).u0 = 0x223C;
 		fn0800_B2EF(cx_n, dx_n, bx_n, ds, ss->*sp_n, ss->*((word32) sp_n + 0x02), out si_n, out di_n);
@@ -10813,18 +10043,9 @@ byte fn0800-7A02(Eq_n ds, union Eq_n & dsOut)
 		fn0800-441C(ds, 10511, ds, 0x10);
 		fn0800-441C(ds, 10319, ds, 0x10);
 		fn0800-441C(ds, 10127, ds, 0x10);
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
-		fn0800-83A1(ds, SEQ(ds, 10511), stackArg4, 0x10);
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
-		fn0800-83A1(ds, SEQ(ds, 10319), stackArg4, 0x10);
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
-		fn0800-83A1(ds, SEQ(ds, 10127), stackArg4, 0x10);
+		fn0800-83A1(ds, SEQ(ds, 10511), 0x10);
+		fn0800-83A1(ds, SEQ(ds, 10319), 0x10);
+		fn0800-83A1(ds, SEQ(ds, 10127), 0x10);
 		fn0800-8489(ds, *((word32) ds + 0x0000466A), 0x10);
 		while (true)
 		{
@@ -10913,10 +10134,7 @@ byte fn0800-7A02(Eq_n ds, union Eq_n & dsOut)
 		Eq_n v29_n = (word32) *((word32) ds + 0x000029F7) + 0x01;
 		*((word32) ds + 0x000029F7) = v29_n;
 		*((word32) ds + 0x000029F9) = (word16) ((bool) (v29_n < 0x00) + *((word32) ds + 0x000029F9));
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
-		fn0800_AD2F(ds, SEQ(*((word32) ds + 0x000029E5), *((word32) ds + 0x000029E3)), stackArg4, out dx_n);
+		fn0800_AD2F(ds, SEQ(*((word32) ds + 0x000029E5), *((word32) ds + 0x000029E3)), out dx_n);
 	}
 	*((word32) ds + 11843) >>= 0x10 - *((word32) ds + 11845);
 	if (*((word32) ds + 11845) != 0x00 || Mem33[ds:20098:word16] != 0x00)
@@ -11024,10 +10242,7 @@ byte fn0800-7C78(Eq_n ds, union Eq_n & dsOut)
 		Eq_n v31_n = (word32) *((word32) ds + 0x000029F7) + 0x01;
 		*((word32) ds + 0x000029F7) = v31_n;
 		*((word32) ds + 0x000029F9) = (word16) ((bool) (v31_n < 0x00) + *((word32) ds + 0x000029F9));
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
-		fn0800_AD2F(ds, SEQ(*((word32) ds + 0x000029E5), *((word32) ds + 0x000029E3)), stackArg4, out dx_n);
+		fn0800_AD2F(ds, SEQ(*((word32) ds + 0x000029E5), *((word32) ds + 0x000029E3)), out dx_n);
 	}
 	*((word32) ds + 11843) <<= 0x08 - *((word32) ds + 11845);
 	if (*((word32) ds + 11845) != 0x00 || Mem33[ds:20098:word16] != 0x00)
@@ -11145,7 +10360,7 @@ Eq_n fn0800-7FDC(Eq_n ds)
 			wLoc04_n = *((word32) ds + 18040);
 			wLoc06_n = *((word32) ds + 0x00004676);
 		}
-		Eq_n dx_n = (word32) *((word32) ds + 11889) + *((word32) ds + 11825);
+		word16 dx_n = Mem124[ds:11889:word16] + Mem124[ds:11825:word16];
 		*((word32) ds + 11887) = *((word32) ds + 11891);
 		*((word32) ds + 11885) = dx_n;
 		union Eq_n Eq_n::* sp_n = sp_n - 0x02;
@@ -11234,13 +10449,10 @@ Eq_n fn0800-7FDC(Eq_n ds)
 				Eq_n ax_n = fn0800-8F18(99, *((word32) ds + 0x00004668), 0x00, *((word32) ds + 0x00004666), out ch_n, out dx_n);
 				ss->*(sp_n - 0x04) = dx_n;
 				ss->*(sp_n - 0x06) = ax_n;
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				Eq_n stackArg0 = <invalid>;
 				Eq_n bx_n;
 				Eq_n cx_n;
 				Eq_n dx_n;
-				Eq_n ax_n = fn0800-8BC2(stackArg0, ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), ss->*sp_n, out cx_n, out dx_n, out bx_n);
+				Eq_n ax_n = fn0800-8BC2(ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), ss->*sp_n, out cx_n, out dx_n, out bx_n);
 				Eq_n sp_n = <invalid>;
 				ss->*((word32) sp_n + 0x06) = dx_n;
 				ss->*((word32) sp_n + 0x04) = ax_n;
@@ -11296,8 +10508,8 @@ Eq_n fn0800-7FDC(Eq_n ds)
 	return ds_n;
 }
 
-// 0800:831D: Register Eq_n fn0800-831D(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n ptrArg04)
-Eq_n fn0800-831D(Eq_n ds, Eq_n wArg02, Eq_n ptrArg04)
+// 0800:831D: Register Eq_n fn0800-831D(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04)
+Eq_n fn0800-831D(Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 {
 	Eq_n ax_n;
 	if (wArg02 > 0x01)
@@ -11305,7 +10517,7 @@ Eq_n fn0800-831D(Eq_n ds, Eq_n wArg02, Eq_n ptrArg04)
 	else
 		ax_n = wArg02;
 	struct Eq_n * es_n = SLICE(ptrArg04, selector, 16);
-	word16 bx_n = (word16) (ptrArg04 + ax_n *s 0x0C);
+	struct Eq_n Eq_n::* bx_n = (word16) ((word32) (ax_n *s 0x0C) + ptrArg04);
 	cup16 v14_n = (es_n->*bx_n).w0000 + 0x01;
 	(es_n->*bx_n).w0000 = v14_n;
 	(es_n->*bx_n).w0002 = (word16) ((bool) (v14_n < 0x00) + (es_n->*bx_n).w0002);
@@ -11317,11 +10529,8 @@ Eq_n fn0800-831D(Eq_n ds, Eq_n wArg02, Eq_n ptrArg04)
 // 0800:8359: Register byte fn0800-8359(Register Eq_n ds, Register out (ptr16 Eq_n) dsOut)
 byte fn0800-8359(Eq_n ds, struct Eq_n & dsOut)
 {
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg4 = <invalid>;
 	struct Eq_n * ds_n;
-	Eq_n ax_n = fn0800-3DCF(ds, SEQ(*((word32) ds + 0x000029E5), *((word32) ds + 0x000029E3)), stackArg4, out ch_n, out dx_n, out di_n, out ds_n, out Top_n);
+	Eq_n ax_n = fn0800-3DCF(ds, SEQ(*((word32) ds + 0x000029E5), *((word32) ds + 0x000029E3)), out ch_n, out dx_n, out di_n, out ds_n, out Top_n);
 	byte al_n = (byte) ax_n;
 	Eq_n ax_n = (&(ss->*(ss->*ds_n).a2A29))[(DPB(DPB(ax_n, ds_n->t2E4B ^ al_n, 0), 0x00, 8) & 0xFF) * 0x02] ^ ds_n->t2E4B >> 0x08;
 	ds_n->t2E4B = ax_n;
@@ -11332,8 +10541,8 @@ byte fn0800-8359(Eq_n ds, struct Eq_n & dsOut)
 	return (byte) DPB(ax_n, al_n, 0);
 }
 
-// 0800:83A1: void fn0800-83A1(Register Eq_n ds, Stack segptr32 ptrArg02, Stack Eq_n psegArg04, Stack Eq_n wArg06)
-void fn0800-83A1(Eq_n ds, segptr32 ptrArg02, Eq_n psegArg04, Eq_n wArg06)
+// 0800:83A1: void fn0800-83A1(Register Eq_n ds, Stack segptr32 wArg02, Stack Eq_n wArg06)
+void fn0800-83A1(Eq_n ds, segptr32 wArg02, Eq_n wArg06)
 {
 	struct Eq_n * psegArg04_n = SLICE(ptrArg02, selector, 16);
 	Eq_n di_n = wArg06;
@@ -11360,8 +10569,8 @@ void fn0800-83A1(Eq_n ds, segptr32 ptrArg02, Eq_n psegArg04, Eq_n wArg06)
 	}
 }
 
-// 0800:8407: void fn0800-8407(Register Eq_n ds, Stack Eq_n wArg02, Stack segptr32 ptrArg04)
-void fn0800-8407(Eq_n ds, Eq_n wArg02, segptr32 ptrArg04)
+// 0800:8407: void fn0800-8407(Register Eq_n ds, Stack Eq_n wArg02, Stack segptr32 wArg04)
+void fn0800-8407(Eq_n ds, Eq_n wArg02, segptr32 wArg04)
 {
 	Eq_n ax_n;
 	if (wArg02 > 0x01)
@@ -11432,8 +10641,8 @@ void fn0800-8489(Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 	}
 }
 
-// 0800:854B: void fn0800-854B(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04, Stack byte bArg05)
-void fn0800-854B(Eq_n ds, Eq_n wArg02, Eq_n wArg04, byte bArg05)
+// 0800:854B: void fn0800-854B(Register Eq_n ds, Stack Eq_n wArg02, Stack byte bArg04, Stack byte bArg05)
+void fn0800-854B(Eq_n ds, Eq_n wArg02, byte bArg04, byte bArg05)
 {
 	uint16 di_n = 0x01 << bArg04 - 0x01;
 	word16 wArg04_n = SEQ(bArg05, bArg04);
@@ -11506,10 +10715,7 @@ byte fn0800-8624(Eq_n ds, Eq_n bArg02, union Eq_n & diOut, union Eq_n & dsOut)
 	Eq_n dx_n = *((word32) ds + 10755);
 	if (ax_n <= *((word32) ds + 20102) && (ax_n < *((word32) ds + 20102) || dx_n < *((word32) ds + 20100)))
 	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg6 = <invalid>;
-		ax_n = SEQ(ds, 0x2A29)[(DPB(DPB(fn0800-4047(ds, SLICE(DPB(ax_n, bArg02, 0), byte, 0), SEQ(Mem7[ds:10721:word16], Mem23[ds:10719:word16]), stackArg6, out cx_n, out dx_n, out bx_n, out di, out ds, out Top_n), Mem32[ds:11849:byte] ^ bArg02, 0), 0x00, 8) & 0xFF) * 0x02] ^ Mem32[ds:11849:word16] >>u 0x08;
+		ax_n = SEQ(ds, 0x2A29)[(DPB(DPB(fn0800-4047(ds, SLICE(DPB(ax_n, bArg02, 0), byte, 0), SEQ(Mem7[ds:10721:word16], Mem23[ds:10719:word16]), out cx_n, out dx_n, out bx_n, out di, out ds, out Top_n), Mem32[ds:11849:byte] ^ bArg02, 0), 0x00, 8) & 0xFF) * 0x02] ^ Mem32[ds:11849:word16] >>u 0x08;
 		*((word32) ds + 11849) = ax_n;
 		Eq_n v18_n = (word32) *((word32) ds + 10755) + 0x01;
 		*((word32) ds + 10755) = v18_n;
@@ -11878,7 +11084,7 @@ void fn0800-87F8(Eq_n ds)
 	Eq_n es_di_n = *((word32) ds + 11831);
 	struct Eq_n * es_n = SLICE(es_di_n, selector, 16);
 	word16 Eq_n::* di_n = (word16) es_di_n;
-	uint16 ax_n = *((word32) ds + 11825);
+	Eq_n ax_n = *((word32) ds + 11825);
 	word16 cx_n;
 	for (cx_n = 0x8000; cx_n != 0x00; --cx_n)
 	{
@@ -11888,7 +11094,7 @@ void fn0800-87F8(Eq_n ds)
 	Eq_n es_di_n = *((word32) ds + 0x00002E33);
 	struct Eq_n * es_n = SLICE(es_di_n, selector, 16);
 	word16 Eq_n::* di_n = (word16) es_di_n;
-	uint16 ax_n = *((word32) ds + 11825);
+	Eq_n ax_n = *((word32) ds + 11825);
 	word16 cx_n;
 	for (cx_n = 0x8000; cx_n != 0x00; --cx_n)
 	{
@@ -11898,7 +11104,7 @@ void fn0800-87F8(Eq_n ds)
 	Eq_n es_di_n = *((word32) ds + 11835);
 	struct Eq_n * es_n = SLICE(es_di_n, selector, 16);
 	word16 Eq_n::* di_n = (word16) es_di_n;
-	uint16 cx_n;
+	Eq_n cx_n;
 	for (cx_n = *((word32) ds + 11825); cx_n != 0x00; --cx_n)
 	{
 		es_n->*di_n = 0x00;
@@ -11908,7 +11114,7 @@ void fn0800-87F8(Eq_n ds)
 	struct Eq_n * es_n = SLICE(es_di_n, selector, 16);
 	word16 Eq_n::* di_n = (word16) es_di_n;
 	word16 ax_n = 0x00;
-	uint16 cx_n;
+	Eq_n cx_n;
 	do
 	{
 		es_n->*di_n = ax_n;
@@ -11925,12 +11131,12 @@ void fn0800-8832(Eq_n ds)
 	fn0800-889A(ds);
 	if (*((word32) ds + 11817) >= 0x02 && *((word32) ds + 11877) - *((word32) ds + 11885) >= 0x03)
 	{
-		uint16 ax_n = *((word32) ds + 11821);
+		Eq_n ax_n = *((word32) ds + 11821);
 		Eq_n si_n = *((word32) ds + 11817);
 		Eq_n di_n = *((word32) ds + 11819);
-		uint16 ax_n = ax_n + 0x01;
-		if (ax_n + 0x01 == *((word32) ds + 11825))
-			ax_n = 0x00;
+		Eq_n ax_n = (word32) ax_n + 0x01;
+		if ((word32) ax_n + 0x01 == *((word32) ds + 11825))
+			ax_n.u0 = 0x00;
 		*((word32) ds + 11821) = ax_n;
 		*((word32) ds + 11885) = (word32) *((word32) ds + 11885) + 0x01;
 		fn0800-889A(ds);
@@ -11952,10 +11158,10 @@ void fn0800-8832(Eq_n ds)
 // 0800:889A: void fn0800-889A(Register Eq_n ds)
 void fn0800-889A(Eq_n ds)
 {
-	((word32) ds + 11819)->u0 = 0x00;
-	((word32) ds + 11817)->u0 = 0x01;
-	Eq_n es_di_n = *((word32) ds + 11885);
-	Eq_n ax_n = *es_di_n;
+	*((word32) ds + 11819) = 0x00;
+	*((word32) ds + 11817) = 0x01;
+	ui16 * es_di_n = *((word32) ds + 11885);
+	ui16 ax_n = *es_di_n;
 	*((word32) ds + 20112) = ax_n;
 	word16 di_n = (word16) es_di_n;
 	word16 dx_n = *((word32) ds + 11881) - (di_n + 0x01);
@@ -11976,23 +11182,23 @@ void fn0800-889A(Eq_n ds)
 	if (!Z_n)
 		--cx_n;
 	*((word32) ds + 0x00004E94) = *((word32) ds + 11881) - (word16) (*((word32) ds + 11885));
-	Eq_n dx_n = dx_n - cx_n;
-	uint16 ax_n = (&(ss->*(ss->**((word32) ds + 11833)).a0000))[*((word32) ds + 20112) * 0x02];
+	uint16 dx_n = dx_n - cx_n;
+	cu16 ax_n = (&(ss->*(ss->**((word32) ds + 11833)).a0000))[*((word32) ds + 20112) * 0x02];
 	while (ax_n != *((word32) ds + 11825))
 	{
 		Eq_n di_n = ax_n << 0x01;
 		*((word32) ds + 20114) = *((word32) ds + 11841)->*di_n;
-		uint16 bx_n = *((word32) ds + 11821);
+		cu16 bx_n = *((word32) ds + 11821);
 		if (bx_n <= ax_n)
 			bx_n += *((word32) ds + 11825);
-		Eq_n es_si_n = *((word32) ds + 11885);
-		Eq_n bx_n = bx_n - ax_n;
+		ui16 * es_si_n = *((word32) ds + 11885);
+		uint16 bx_n = bx_n - ax_n;
 		if (*((word32) ds + 20112) == SLICE(es_si_n, selector, 16)->*((word16) es_si_n - bx_n))
 		{
-			Eq_n cx_n = *((word32) ds + 11837)->*di_n;
+			uint16 cx_n = *((word32) ds + 11837)->*di_n;
 			if (cx_n > bx_n)
 			{
-				bx_n.u0 = 0x01;
+				bx_n = 0x01;
 				cx_n = dx_n;
 			}
 			else
@@ -12004,14 +11210,14 @@ void fn0800-889A(Eq_n ds)
 				}
 				if (cx_n == dx_n)
 				{
-					Eq_n es_di_n = *((word32) ds + 11885);
-					byte Eq_n::* di_n = (word32) cx_n + (word16) es_di_n;
+					ui16 * es_di_n = *((word32) ds + 11885);
+					byte Eq_n::* di_n = (word16) es_di_n + cx_n;
 					word16 ax_n = *((word32) ds + 0x00004E94) - cx_n;
 					struct Eq_n * es_n = SLICE(es_di_n, selector, 16);
 					byte Eq_n::* si_n = di_n - bx_n;
 					bool Z_n = SLICE(cond(ax_n), bool, 2);
 					word16 cx_n = ax_n;
-					Eq_n ds_n = *((word32) ds + 11887);
+					struct Eq_n * ds_n = *((word32) ds + 11887);
 					while (cx_n != 0x00)
 					{
 						Z_n = SLICE(cond(ds_n->*si_n - es_n->*di_n), bool, 2);
@@ -12025,7 +11231,7 @@ void fn0800-889A(Eq_n ds)
 					}
 					if (!Z_n)
 						++cx_n;
-					cx_n = (word32) dx_n + (ax_n - cx_n);
+					cx_n = dx_n + (ax_n - cx_n);
 					Mem167 = Mem123;
 				}
 			}
@@ -12041,36 +11247,36 @@ void fn0800-889A(Eq_n ds)
 	}
 	if (*((word32) ds + 11817) == 0x02 && *((word32) ds + 11819) > 0x0100)
 	{
-		((word32) ds + 11817)->u0 = 0x01;
-		((word32) ds + 11819)->u0 = 0x00;
+		*((word32) ds + 11817) = 0x01;
+		*((word32) ds + 11819) = 0x00;
 	}
 }
 
 // 0800:89A8: void fn0800-89A8(Register Eq_n ds, Stack Eq_n wArg02)
 void fn0800-89A8(Eq_n ds, Eq_n wArg02)
 {
-	uint16 dx_n = *((word32) ds + 11825);
+	Eq_n dx_n = *((word32) ds + 11825);
 l0800_nB1:
-	uint16 di_n = *((word32) ds + 11821);
+	Eq_n di_n = *((word32) ds + 11821);
 	struct Eq_n * es_n = *((word32) ds + 11841);
-	uint16 ax_n = (&(ss->*(ss->*es_n).a0000))[di_n * 0x02];
-	(&(ss->*(ss->*es_n).a0000))[di_n * 0x02] = dx_n;
+	Eq_n ax_n = (&(ss->*(ss->*es_n).a0000).t0000)[di_n * 0x02];
+	(&(ss->*(ss->*es_n).a0000).t0000)[di_n * 0x02] = (struct Eq_n) dx_n;
 	if (*((word32) ds + 11821) != ax_n)
 	{
 		Eq_n es_di_n = *((word32) ds + 11885);
 		ui16 di_n = SLICE(es_di_n, selector, 16)->*((word16) es_di_n - dx_n);
-		(&(ss->*(ss->**((word32) ds + 11833)).a0000))[di_n * 0x02] = ax_n;
+		(&(ss->*(ss->**((word32) ds + 11833)).a0000).t0000)[di_n * 0x02] = (struct Eq_n) ax_n;
 		if (ax_n == dx_n)
-			(&(ss->*(ss->**((word32) ds + 11829)).a0000))[di_n * 0x02] = dx_n;
+			(&(ss->*(ss->**((word32) ds + 11829)).a0000).t0000)[di_n * 0x02] = (struct Eq_n) dx_n;
 	}
 	Eq_n di_n = **((word32) ds + 11885);
-	uint16 ax_n = *((word32) ds + 11821);
+	Eq_n ax_n = *((word32) ds + 11821);
 	struct Eq_n * es_n = *((word32) ds + 11833);
-	if ((&(ss->*(ss->*es_n).a0000))[di_n * 0x02] == dx_n)
-		(&(ss->*(ss->*es_n).a0000))[di_n * 0x02] = ax_n;
+	if ((&(ss->*(ss->*es_n).a0000).t0000)[di_n * 0x02] == dx_n)
+		(&(ss->*(ss->*es_n).a0000).t0000)[di_n * 0x02] = (struct Eq_n) ax_n;
 	else
-		(&(ss->*(ss->**((word32) ds + 11841)).a0000))[(&(ss->*(ss->**((word32) ds + 11829)).a0000))[di_n * 0x02] * 0x02] = ax_n;
-	(&(ss->*(ss->**((word32) ds + 11829)).a0000))[di_n * 0x02] = ax_n;
+		(&(ss->*(ss->**((word32) ds + 11841)).a0000).t0000)[(&(ss->*(ss->**((word32) ds + 11829)).a0000).t0000)[di_n * 0x02] * 0x02] = (struct Eq_n) ax_n;
+	(&(ss->*(ss->**((word32) ds + 11829)).a0000).t0000)[di_n * 0x02] = (struct Eq_n) ax_n;
 	Eq_n es_di_n = *((word32) ds + 11885);
 	word16 di_n = (word16) es_di_n;
 	word16 bx_n = *((word32) ds + 11881) - (di_n + 0x01);
@@ -12094,10 +11300,10 @@ l0800_nB1:
 	(&(ss->*(ss->**((word32) ds + 11837)).a0000))[*((word32) ds + 11821) * 0x02] = bx_n;
 	while (true)
 	{
-		uint16 ax_n = *((word32) ds + 11821);
-		uint16 ax_n = ax_n + 0x01;
-		if (ax_n + 0x01 == dx_n)
-			ax_n = 0x00;
+		Eq_n ax_n = *((word32) ds + 11821);
+		Eq_n ax_n = (word32) ax_n + 0x01;
+		if ((word32) ax_n + 0x01 == dx_n)
+			ax_n.u0 = 0x00;
 		*((word32) ds + 11821) = ax_n;
 		*((word32) ds + 11885) = (word32) *((word32) ds + 11885) + 0x01;
 		Eq_n v20_n = wArg02 - 0x01;
@@ -12110,24 +11316,24 @@ l0800_nB1:
 			Mem16 = Mem121;
 			goto l0800_nB1;
 		}
-		uint16 di_n = *((word32) ds + 11821);
+		Eq_n di_n = *((word32) ds + 11821);
 		(&(ss->*(ss->**((word32) ds + 11837)).a0000))[di_n * 0x02] = bx_n;
 		struct Eq_n * es_n = *((word32) ds + 11841);
-		uint16 v22_n = (&(ss->*(ss->*es_n).a0000))[di_n * 0x02];
-		(&(ss->*(ss->*es_n).a0000))[di_n * 0x02] = *((word32) ds + 11821);
+		Eq_n v22_n = (&(ss->*(ss->*es_n).a0000).t0000)[di_n * 0x02];
+		(&(ss->*(ss->*es_n).a0000).t0000)[di_n * 0x02] = (struct Eq_n) *((word32) ds + 11821);
 		if (*((word32) ds + 11821) != v22_n)
 		{
 			Eq_n es_di_n = *((word32) ds + 11885);
 			ui16 di_n = SLICE(es_di_n, selector, 16)->*((word16) es_di_n - dx_n);
-			(&(ss->*(ss->**((word32) ds + 11833)).a0000))[di_n * 0x02] = v22_n;
+			(&(ss->*(ss->**((word32) ds + 11833)).a0000).t0000)[di_n * 0x02] = (struct Eq_n) v22_n;
 			if (v22_n == dx_n)
-				(&(ss->*(ss->**((word32) ds + 11829)).a0000))[di_n * 0x02] = dx_n;
+				(&(ss->*(ss->**((word32) ds + 11829)).a0000).t0000)[di_n * 0x02] = (struct Eq_n) dx_n;
 		}
 	}
 }
 
-// 0800:8ACF: void fn0800-8ACF(Register word16 cx, Register Eq_n ds, Stack segptr32 ptrArg02, Stack (ptr32 word16) ptrArg06)
-void fn0800-8ACF(word16 cx, Eq_n ds, segptr32 ptrArg02, word16 * ptrArg06)
+// 0800:8ACF: void fn0800-8ACF(Register word16 cx, Register Eq_n ds, Stack word16 wArg02, Stack (ptr32 word16) ptrArg06)
+void fn0800-8ACF(word16 cx, Eq_n ds, word16 wArg02, word16 * ptrArg06)
 {
 	msdos_unknown_n();
 	Eq_n ax_n = DPB(DPB(ax, 0x43, 8), 0x00, 0);
@@ -12234,8 +11440,8 @@ void fn0800-8BA8(struct Eq_n * ptrArg02)
 	ptrArg02->w0002 = DPB(DPB(dx, dh_n, 8), dl_n, 0);
 }
 
-// 0800:8BBB: Register word16 fn0800-8BBB(Stack Eq_n wArg00, Stack Eq_n wArg02, Stack Eq_n wArg04, Stack Eq_n wArg06, Stack Eq_n wArg08, Register out ptr16 cxOut, Register out ptr16 dxOut, Register out ptr16 bxOut)
-word16 fn0800-8BBB(Eq_n wArg00, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut)
+// 0800:8BBB: Register word16 fn0800-8BBB(Stack Eq_n wArg02, Stack Eq_n wArg04, Stack Eq_n wArg06, Stack Eq_n wArg08, Register out ptr16 cxOut, Register out ptr16 dxOut, Register out ptr16 bxOut)
+word16 fn0800-8BBB(Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut)
 {
 	ptr16 bx_n;
 	ptr16 cx_n;
@@ -12247,8 +11453,8 @@ word16 fn0800-8BBB(Eq_n wArg00, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg
 	return ax_n;
 }
 
-// 0800:8BC2: Register word16 fn0800-8BC2(Stack Eq_n wArg00, Stack Eq_n wArg02, Stack Eq_n wArg04, Stack Eq_n wArg06, Stack Eq_n wArg08, Register out ptr16 cxOut, Register out ptr16 dxOut, Register out ptr16 bxOut)
-word16 fn0800-8BC2(Eq_n wArg00, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut)
+// 0800:8BC2: Register word16 fn0800-8BC2(Stack Eq_n wArg02, Stack Eq_n wArg04, Stack Eq_n wArg06, Stack Eq_n wArg08, Register out ptr16 cxOut, Register out ptr16 dxOut, Register out ptr16 bxOut)
+word16 fn0800-8BC2(Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut)
 {
 	ptr16 bx_n;
 	ptr16 cx_n;
@@ -12260,8 +11466,8 @@ word16 fn0800-8BC2(Eq_n wArg00, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg
 	return ax_n;
 }
 
-// 0800:8BCA: Register word16 fn0800-8BCA(Stack Eq_n wArg00, Stack Eq_n wArg02, Stack Eq_n wArg04, Stack Eq_n wArg06, Stack Eq_n wArg08, Register out ptr16 dxOut)
-word16 fn0800-8BCA(Eq_n wArg00, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08, ptr16 & dxOut)
+// 0800:8BCA: Register word16 fn0800-8BCA(Stack Eq_n wArg02, Stack Eq_n wArg04, Stack Eq_n wArg06, Stack Eq_n wArg08, Register out ptr16 dxOut)
+word16 fn0800-8BCA(Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08, ptr16 & dxOut)
 {
 	ptr16 dx_n;
 	word16 ax_n = fn0800-8BD8(0x02, wArg02, wArg04, wArg06, wArg08, out cx_n, out dx_n, out bx_n);
@@ -12345,8 +11551,8 @@ Eq_n fn0800-8BD8(Eq_n cx, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08, Eq_n wArg0A, un
 	return ax_n;
 }
 
-// 0800:8C69: Register Eq_n fn0800-8C69(Register Eq_n ax, Register Eq_n cl, Register Eq_n dx, Stack Eq_n wArg00, Register out Eq_n clOut, Register out Eq_n dxOut)
-Eq_n fn0800-8C69(Eq_n ax, Eq_n cl, Eq_n dx, Eq_n wArg00, union Eq_n & clOut, union Eq_n & dxOut)
+// 0800:8C69: Register Eq_n fn0800-8C69(Register Eq_n ax, Register Eq_n cl, Register Eq_n dx, Register out Eq_n clOut, Register out Eq_n dxOut)
+Eq_n fn0800-8C69(Eq_n ax, Eq_n cl, Eq_n dx, union Eq_n & clOut, union Eq_n & dxOut)
 {
 	if (cl >= 0x10)
 	{
@@ -12363,8 +11569,8 @@ Eq_n fn0800-8C69(Eq_n ax, Eq_n cl, Eq_n dx, Eq_n wArg00, union Eq_n & clOut, uni
 	}
 }
 
-// 0800:8C8A: Register Eq_n fn0800-8C8A(Register Eq_n ax, Register cu8 cl, Register Eq_n dx, Stack Eq_n wArg00, Register out Eq_n clOut, Register out Eq_n dxOut)
-Eq_n fn0800-8C8A(Eq_n ax, cu8 cl, Eq_n dx, Eq_n wArg00, union Eq_n & clOut, union Eq_n & dxOut)
+// 0800:8C8A: Register Eq_n fn0800-8C8A(Register Eq_n ax, Register cu8 cl, Register Eq_n dx, Register out Eq_n clOut, Register out Eq_n dxOut)
+Eq_n fn0800-8C8A(Eq_n ax, cu8 cl, Eq_n dx, union Eq_n & clOut, union Eq_n & dxOut)
 {
 	if (cl >= 0x10)
 	{
@@ -12382,8 +11588,8 @@ Eq_n fn0800-8C8A(Eq_n ax, cu8 cl, Eq_n dx, Eq_n wArg00, union Eq_n & clOut, unio
 	}
 }
 
-// 0800:8CAA: Register Eq_n fn0800-8CAA(Register Eq_n ax, Register cu8 cl, Register Eq_n dx, Stack Eq_n wArg00, Register out Eq_n dxOut)
-Eq_n fn0800-8CAA(Eq_n ax, cu8 cl, Eq_n dx, Eq_n wArg00, union Eq_n & dxOut)
+// 0800:8CAA: Register Eq_n fn0800-8CAA(Register Eq_n ax, Register cu8 cl, Register Eq_n dx, Register out Eq_n dxOut)
+Eq_n fn0800-8CAA(Eq_n ax, cu8 cl, Eq_n dx, union Eq_n & dxOut)
 {
 	if (cl >= 0x10)
 	{
@@ -12397,8 +11603,8 @@ Eq_n fn0800-8CAA(Eq_n ax, cu8 cl, Eq_n dx, Eq_n wArg00, union Eq_n & dxOut)
 	}
 }
 
-// 0800:8CCB: Register Eq_n fn0800-8CCB(Register Eq_n ax, Register ci16 cx, Register Eq_n dx, Register Eq_n bx, Stack Eq_n psegArg00, Register out Eq_n chOut, Register out ptr16 dxOut)
-Eq_n fn0800-8CCB(Eq_n ax, ci16 cx, Eq_n dx, Eq_n bx, Eq_n psegArg00, union Eq_n & chOut, ptr16 & dxOut)
+// 0800:8CCB: Register Eq_n fn0800-8CCB(Register Eq_n ax, Register ci16 cx, Register Eq_n dx, Register Eq_n bx, Register out Eq_n chOut, Register out ptr16 dxOut)
+Eq_n fn0800-8CCB(Eq_n ax, ci16 cx, Eq_n dx, Eq_n bx, union Eq_n & chOut, ptr16 & dxOut)
 {
 	byte dh_n = SLICE(dx, byte, 8);
 	byte cl_n = (byte) cx;
@@ -12551,8 +11757,8 @@ word16 fn0800-8E09(word16 wArg02, word16 wArg04, Eq_n wArg06, ptr16 & diOut)
 	return si_n;
 }
 
-// 0800:8E29: Register Eq_n fn0800-8E29(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04, Stack Eq_n wArg06, Stack Eq_n bArg08, Register out Eq_n cxOut, Register out Eq_n dxOut, Register out Eq_n bxOut)
-Eq_n fn0800-8E29(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n bArg08, union Eq_n & cxOut, union Eq_n & dxOut, union Eq_n & bxOut)
+// 0800:8E29: Register Eq_n fn0800-8E29(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04, Stack Eq_n wArg06, Stack Eq_n wArg08, Register out Eq_n cxOut, Register out Eq_n dxOut, Register out Eq_n bxOut)
+Eq_n fn0800-8E29(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08, union Eq_n & cxOut, union Eq_n & dxOut, union Eq_n & bxOut)
 {
 	SEQ(ds, 0x24EA)[wArg02 * 0x02] &= ~0x0200;
 	Eq_n ax_n = DPB(DPB(ax, 66, 8), bArg08, 0);
@@ -12569,8 +11775,8 @@ Eq_n fn0800-8E29(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n bArg08, un
 	return ax_n;
 }
 
-// 0800:8E52: Register Eq_n fn0800-8E52(Register Eq_n al, Register Eq_n ds, Stack segptr32 ptrArg02)
-Eq_n fn0800-8E52(Eq_n al, Eq_n ds, segptr32 ptrArg02)
+// 0800:8E52: Register Eq_n fn0800-8E52(Register Eq_n al, Register Eq_n ds, Stack segptr32 wArg02)
+Eq_n fn0800-8E52(Eq_n al, Eq_n ds, segptr32 wArg02)
 {
 	Eq_n ax_n;
 	__syscall(33);
@@ -12661,8 +11867,8 @@ l0800_nF7D:
 	return ax_n;
 }
 
-// 0800:8F7F: Register word16 fn0800-8F7F(Register Eq_n al, Register Eq_n ds, Stack Eq_n ptrArg02)
-word16 fn0800-8F7F(Eq_n al, Eq_n ds, Eq_n ptrArg02)
+// 0800:8F7F: Register word16 fn0800-8F7F(Register Eq_n al, Register Eq_n ds, Stack Eq_n wArg02)
+word16 fn0800-8F7F(Eq_n al, Eq_n ds, Eq_n wArg02)
 {
 	word16 dx_n = (word16) ptrArg02;
 	Eq_n ax_n = DPB(ax, 0x41, 8);
@@ -12910,16 +12116,7 @@ l0800_nFCB:
 					}
 					else
 					{
-						// Failed to bind call argument.
-						// Please report this issue at https://github.com/uxmal/reko
-						// Failed to bind call argument.
-						// Please report this issue at https://github.com/uxmal/reko
-						// Failed to bind call argument.
-						// Please report this issue at https://github.com/uxmal/reko
-						stackArg0.u0 = <invalid>;
-						stackArg2.u0 = <invalid>;
-						stackArg4.u0 = <invalid>;
-						fn0800-93BE(fp - 0x02, stackArg0, stackArg2, stackArg4, out bp_n, out di_n);
+						fn0800-93BE(fp - 0x02, out bp_n, out di_n);
 						diOut = di_n;
 						return (byte) cx_n;
 					}
@@ -13161,16 +12358,7 @@ l0800_nE:
 							} while (al_n != 0x00);
 						}
 					}
-					// Failed to bind call argument.
-					// Please report this issue at https://github.com/uxmal/reko
-					// Failed to bind call argument.
-					// Please report this issue at https://github.com/uxmal/reko
-					// Failed to bind call argument.
-					// Please report this issue at https://github.com/uxmal/reko
-					stackArg0.u0 = <invalid>;
-					stackArg2.u0 = <invalid>;
-					stackArg4.u0 = <invalid>;
-					fn0800-93BE(fp - 0x02, stackArg0, stackArg2, stackArg4, out bp_n, out di_n);
+					fn0800-93BE(fp - 0x02, out bp_n, out di_n);
 					diOut = di_n;
 					return (byte) cx_n;
 				case 0x11:
@@ -13240,16 +12428,7 @@ l0800_n:
 					}
 					else
 					{
-						// Failed to bind call argument.
-						// Please report this issue at https://github.com/uxmal/reko
-						// Failed to bind call argument.
-						// Please report this issue at https://github.com/uxmal/reko
-						// Failed to bind call argument.
-						// Please report this issue at https://github.com/uxmal/reko
-						stackArg0.u0 = <invalid>;
-						stackArg2.u0 = <invalid>;
-						stackArg4.u0 = <invalid>;
-						fn0800-93BE(fp - 0x02, stackArg0, stackArg2, stackArg4, out bp_n, out di_n);
+						fn0800-93BE(fp - 0x02, out bp_n, out di_n);
 						diOut = di_n;
 						return (byte) cx_n;
 					}
@@ -13414,25 +12593,16 @@ word16 fn0800-93A6(Eq_n bp, ptr16 & bpOut, ptr16 & diOut)
 {
 	(seg0800->*(ss->*((word32) bp + 0x06)))();
 	(ss->*(bp - 0x04)).t0000 = (ss->*(bp - 0x04)).t0000 - ((ss->*(bp - 0x04)).t0000 < 0x01);
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg0 = <invalid>;
-	Eq_n stackArg2 = <invalid>;
-	Eq_n stackArg4 = <invalid>;
 	ptr16 bp_n;
 	ptr16 di_n;
-	word16 ax_n = fn0800-93BE(bp, stackArg0, stackArg2, stackArg4, out bp_n, out di_n);
+	word16 ax_n = fn0800-93BE(bp, out bp_n, out di_n);
 	bpOut = bp_n;
 	diOut = di_n;
 	return ax_n;
 }
 
-// 0800:93BE: Register Eq_n fn0800-93BE(Register Eq_n bp, Stack Eq_n psegArg00, Stack Eq_n wArg02, Stack Eq_n wArg04, Register out Eq_n bpOut, Register out Eq_n diOut)
-Eq_n fn0800-93BE(Eq_n bp, Eq_n psegArg00, Eq_n wArg02, Eq_n wArg04, union Eq_n & bpOut, union Eq_n & diOut)
+// 0800:93BE: Register Eq_n fn0800-93BE(Register Eq_n bp, Register out Eq_n bpOut, Register out ptr16 diOut)
+Eq_n fn0800-93BE(Eq_n bp, union Eq_n & bpOut, ptr16 & diOut)
 {
 	Eq_n ax_n = ss->*(bp - 0x04);
 	bpOut = ss->*bp;
@@ -13949,8 +13119,8 @@ byte fn0800-97CC(Eq_n ds, int16 wArg02)
 	return (byte) ax_n;
 }
 
-// 0800:97F8: Register word16 fn0800-97F8(Register Eq_n al, Register Eq_n ds, Stack Eq_n ptrArg02)
-word16 fn0800-97F8(Eq_n al, Eq_n ds, Eq_n ptrArg02)
+// 0800:97F8: Register word16 fn0800-97F8(Register Eq_n al, Register Eq_n ds, Stack Eq_n wArg02)
+word16 fn0800-97F8(Eq_n al, Eq_n ds, Eq_n wArg02)
 {
 	word16 dx_n = (word16) ptrArg02;
 	Eq_n ax_n = DPB(ax, 0x41, 8);
@@ -13984,8 +13154,8 @@ byte Eq_n::* fn0800-9820(byte al, byte Eq_n::* di, Eq_n es)
 	return di + 0x01;
 }
 
-// 0800:9828: Register Eq_n fn0800-9828(Register Eq_n cx, Register Eq_n dx, Register Eq_n bx, Register Eq_n ds, Stack Eq_n wArg02, Stack segptr32 ptrArg04, Stack Eq_n psegArg06, Register out ptr16 siOut, Register out ptr16 diOut)
-Eq_n fn0800-9828(Eq_n cx, Eq_n dx, Eq_n bx, Eq_n ds, Eq_n wArg02, segptr32 ptrArg04, Eq_n psegArg06, ptr16 & siOut, ptr16 & diOut)
+// 0800:9828: Register Eq_n fn0800-9828(Register Eq_n cx, Register Eq_n dx, Register Eq_n bx, Register Eq_n ds, Stack Eq_n wArg02, Stack segptr32 wArg04, Register out ptr16 siOut, Register out ptr16 diOut)
+Eq_n fn0800-9828(Eq_n cx, Eq_n dx, Eq_n bx, Eq_n ds, Eq_n wArg02, segptr32 wArg04, ptr16 & siOut, ptr16 & diOut)
 {
 	ci8 bLoc16_n = 0x50;
 	Eq_n sp_n = fp - 0x9E;
@@ -14659,14 +13829,8 @@ struct Eq_n Eq_n::* fn0800-9858(Eq_n cx, Eq_n dx, Eq_n bx, struct Eq_n Eq_n::* b
 // 0800:9CE6: Register word16 fn0800-9CE6(Stack Eq_n wArg02, Stack Eq_n wArg04, Stack Eq_n wArg06, Stack Eq_n wArg08, Register out Eq_n dxOut)
 word16 fn0800-9CE6(Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08, union Eq_n & dxOut)
 {
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg4 = <invalid>;
-	Eq_n ax_n = fn0800_BFC7(SEQ(wArg08, wArg06), stackArg4, out cx_n);
-	Eq_n stackArg4 = <invalid>;
-	fn0800_B03B(SEQ(wArg04, wArg02), stackArg4, SEQ(wArg08, wArg06), (word32) ax_n + 0x01);
+	Eq_n ax_n = fn0800_BFC7(SEQ(wArg08, wArg06), out cx_n);
+	fn0800_B03B(SEQ(wArg04, wArg02), SEQ(wArg08, wArg06), (word32) ax_n + 0x01);
 	dxOut = wArg04;
 	return wArg02 + ax_n;
 }
@@ -14874,18 +14038,15 @@ Eq_n fn0800-9F5C(Eq_n ax, Eq_n dx, Eq_n ds, struct Eq_n & dxOut)
 	return 0x04;
 }
 
-// 0800:9F7F: Register word16 fn0800-9F7F(Stack Eq_n wArg02, Register out ptr16 dxOut, Register out Eq_n bpOut, Register out ptr16 siOut, Register out ptr16 diOut, Register out (ptr16 Eq_n) dsOut)
-word16 fn0800-9F7F(Eq_n wArg02, ptr16 & dxOut, union Eq_n & bpOut, ptr16 & siOut, ptr16 & diOut, struct Eq_n & dsOut)
+// 0800:9F7F: Register word16 fn0800-9F7F(Register out ptr16 dxOut, Register out Eq_n bpOut, Register out ptr16 siOut, Register out ptr16 diOut, Register out (ptr16 Eq_n) dsOut)
+word16 fn0800-9F7F(ptr16 & dxOut, union Eq_n & bpOut, ptr16 & siOut, ptr16 & diOut, struct Eq_n & dsOut)
 {
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg0 = <invalid>;
 	Eq_n bp_n;
 	struct Eq_n * ds_n;
 	ptr16 dx_n;
 	ptr16 di_n;
 	ptr16 si_n;
-	word16 ax_n = fn0800-9F92(stackArg0, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
+	word16 ax_n = fn0800-9F92(out dx_n, out bp_n, out si_n, out di_n, out ds_n);
 	dxOut = dx_n;
 	bpOut = bp_n;
 	siOut = si_n;
@@ -14894,18 +14055,15 @@ word16 fn0800-9F7F(Eq_n wArg02, ptr16 & dxOut, union Eq_n & bpOut, ptr16 & siOut
 	return ax_n;
 }
 
-// 0800:9F89: Register word16 fn0800-9F89(Stack Eq_n wArg02, Stack Eq_n wArg04, Register out ptr16 dxOut, Register out ptr16 bpOut, Register out ptr16 siOut, Register out ptr16 diOut, Register out (ptr16 Eq_n) dsOut)
-word16 fn0800-9F89(Eq_n wArg02, Eq_n wArg04, ptr16 & dxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, struct Eq_n & dsOut)
+// 0800:9F89: Register word16 fn0800-9F89(Register out ptr16 dxOut, Register out ptr16 bpOut, Register out ptr16 siOut, Register out ptr16 diOut, Register out (ptr16 Eq_n) dsOut)
+word16 fn0800-9F89(ptr16 & dxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, struct Eq_n & dsOut)
 {
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg0 = <invalid>;
 	ptr16 bp_n;
 	struct Eq_n * ds_n;
 	ptr16 dx_n;
 	ptr16 di_n;
 	ptr16 si_n;
-	word16 ax_n = fn0800-9F92(stackArg0, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
+	word16 ax_n = fn0800-9F92(out dx_n, out bp_n, out si_n, out di_n, out ds_n);
 	dxOut = dx_n;
 	bpOut = bp_n;
 	siOut = si_n;
@@ -14914,8 +14072,8 @@ word16 fn0800-9F89(Eq_n wArg02, Eq_n wArg04, ptr16 & dxOut, ptr16 & bpOut, ptr16
 	return ax_n;
 }
 
-// 0800:9F92: Register cu16 fn0800-9F92(Stack Eq_n wArg00, Register out Eq_n dxOut, Register out Eq_n bpOut, Register out ptr16 siOut, Register out ptr16 diOut, Register out Eq_n dsOut)
-cu16 fn0800-9F92(Eq_n wArg00, union Eq_n & dxOut, union Eq_n & bpOut, ptr16 & siOut, ptr16 & diOut, union Eq_n & dsOut)
+// 0800:9F92: Register cu16 fn0800-9F92(Register out Eq_n dxOut, Register out ptr16 bpOut, Register out ptr16 siOut, Register out ptr16 diOut, Register out Eq_n dsOut)
+cu16 fn0800-9F92(union Eq_n & dxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, union Eq_n & dsOut)
 {
 	seg0800->t9D3B = ds;
 	if ((ax | dx) == 0x00)
@@ -14930,21 +14088,12 @@ cu16 fn0800-9F92(Eq_n wArg00, union Eq_n & dxOut, union Eq_n & bpOut, ptr16 & si
 	}
 	else
 	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg0 = <invalid>;
-		Eq_n stackArg2 = <invalid>;
-		Eq_n stackArg4 = <invalid>;
-		Eq_n bp_n;
+		ptr16 bp_n;
 		ptr16 di_n;
 		Eq_n ds_n;
 		Eq_n dx_n;
 		ptr16 si_n;
-		cu16 ax_n = fn0800-9F9F(ax, dx, stackArg0, stackArg2, stackArg4, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
+		cu16 ax_n = fn0800-9F9F(ax, dx, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
 		dxOut = dx_n;
 		bpOut = bp_n;
 		siOut = si_n;
@@ -14954,8 +14103,8 @@ cu16 fn0800-9F92(Eq_n wArg00, union Eq_n & dxOut, union Eq_n & bpOut, ptr16 & si
 	}
 }
 
-// 0800:9F9F: Register cu16 fn0800-9F9F(Register cu16 ax, Register Eq_n dx, Stack Eq_n wArg00, Stack Eq_n wArg02, Stack Eq_n wArg04, Register out Eq_n dxOut, Register out Eq_n bpOut, Register out Eq_n siOut, Register out Eq_n diOut, Register out Eq_n dsOut)
-cu16 fn0800-9F9F(cu16 ax, Eq_n dx, Eq_n wArg00, Eq_n wArg02, Eq_n wArg04, union Eq_n & dxOut, union Eq_n & bpOut, union Eq_n & siOut, union Eq_n & diOut, union Eq_n & dsOut)
+// 0800:9F9F: Register cu16 fn0800-9F9F(Register cu16 ax, Register Eq_n dx, Register out Eq_n dxOut, Register out ptr16 bpOut, Register out ptr16 siOut, Register out ptr16 diOut, Register out Eq_n dsOut)
+cu16 fn0800-9F9F(cu16 ax, Eq_n dx, union Eq_n & dxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, union Eq_n & dsOut)
 {
 	cu16 ax_n;
 	Eq_n dx_n;
@@ -15010,14 +14159,8 @@ l0800_nFFD:
 // 0800:A006: void fn0800_A006(Register Eq_n bx)
 void fn0800_A006(Eq_n bx)
 {
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg2 = <invalid>;
-	Eq_n stackArg4 = <invalid>;
 	struct Eq_n * dx_n;
-	fn0800-9F89(stackArg2, stackArg4, out dx_n, out bp_n, out si_n, out di_n, out ds_n);
+	fn0800-9F89(out dx_n, out bp_n, out si_n, out di_n, out ds_n);
 	if (dx_n == 0x00)
 		return;
 	word16 dx_n = *bx;
@@ -15102,7 +14245,7 @@ word16 fn0800_A162(Eq_n ds, Eq_n wArg02, Eq_n wArg04, union Eq_n & cxOut, union 
 		if (ax_n != ~0x00)
 		{
 			Mem54[ds:0x91:word16] = Mem39[ds:0x7B:word16] + ax_n;
-			((word32) ds + 0x008F)->u1 = 0x00;
+			((word32) ds + 0x008F)->u0 = 0x00;
 			ax_n = 0x00;
 l0800_A1D1:
 			cxOut = cx_n;
@@ -15150,16 +14293,13 @@ l0800_A213:
 	goto l0800_A213;
 }
 
-// 0800:A215: Register Eq_n fn0800_A215(Register Eq_n ds, Stack Eq_n dwArg02, Stack uint16 wArg04, Register out Eq_n dxOut)
-Eq_n fn0800_A215(Eq_n ds, Eq_n dwArg02, uint16 wArg04, union Eq_n & dxOut)
+// 0800:A215: Register Eq_n fn0800_A215(Register Eq_n ds, Stack uint16 wArg02, Stack uint16 wArg04, Register out Eq_n dxOut)
+Eq_n fn0800_A215(Eq_n ds, uint16 wArg02, uint16 wArg04, union Eq_n & dxOut)
 {
 	Eq_n dx_n;
 	Eq_n ax_n;
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg0 = <invalid>;
 	word16 dx_n;
-	word16 ax_n = fn0800-8C69(*((word32) ds + 141), 0x04, 0x00, stackArg0, out cl_n, out dx_n) + Mem7[ds:0x8B:word16];
+	word16 ax_n = fn0800-8C69(*((word32) ds + 141), 0x04, 0x00, out cl_n, out dx_n) + Mem7[ds:0x8B:word16];
 	ui32 dwArg02_n = SEQ(wArg04, wArg02);
 	ui32 dx_ax_n = SEQ(dx_n + (ax_n < 0x00), ax_n) + dwArg02_n;
 	ci16 wArg04_n = SLICE(dwArg02_n, word16, 16);
@@ -15168,11 +14308,8 @@ Eq_n fn0800_A215(Eq_n ds, Eq_n dwArg02, uint16 wArg04, union Eq_n & dxOut)
 	ci16 dx_n = SLICE(dx_ax_n, word16, 16);
 	if (dx_n < 0x0F || dx_n <= 0x0F && ax_n <= ~0x00)
 	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg0 = <invalid>;
 		Eq_n dx_n;
-		Eq_n ax_n = fn0800-8CCB(*((word32) ds + 0x008B), wArg04_n, *((word32) ds + 141), wArg02_n, stackArg0, out ch_n, out dx_n);
+		Eq_n ax_n = fn0800-8CCB(*((word32) ds + 0x008B), wArg04_n, *((word32) ds + 141), wArg02_n, out ch_n, out dx_n);
 		Eq_n bx_n = *((word32) ds + 0x0087);
 		fn0800-8F2F((byte) ax_n, ax_n, *((word32) ds + 0x0089), dx_n, (byte) bx_n, bx_n, out cx_n, out dx_n, out bx_n);
 		Eq_n sp_n = <invalid>;
@@ -15205,8 +14342,8 @@ l0800_A29F:
 	goto l0800_A29F;
 }
 
-// 0800:A2A3: Register Eq_n fn0800_A2A3(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04, Stack byte bArg05, Stack Eq_n ptrArg06, Stack Eq_n wArg0A, Register out Eq_n cxOut)
-Eq_n fn0800_A2A3(Eq_n ds, Eq_n wArg02, Eq_n wArg04, byte bArg05, Eq_n ptrArg06, Eq_n wArg0A, union Eq_n & cxOut)
+// 0800:A2A3: Register Eq_n fn0800_A2A3(Register Eq_n ds, Stack Eq_n wArg04, Stack byte bArg05, Stack Eq_n wArg06, Register out ptr16 cxOut)
+Eq_n fn0800_A2A3(Eq_n ds, Eq_n wArg04, byte bArg05, Eq_n wArg06, ptr16 & cxOut)
 {
 	msdos_unknown_n();
 	Eq_n dx_n = (word16) ptrArg06;
@@ -15285,8 +14422,8 @@ ptr16 fn0800_A401(Eq_n al, Eq_n ds, struct Eq_n * psegArg02, Eq_n wArg04, ptr16 
 	return ax_n;
 }
 
-// 0800:A471: Register uint16 fn0800_A471(Register Eq_n ds, Stack segptr32 ptrArg02, Register out Eq_n dxOut, Register out Eq_n bpOut)
-uint16 fn0800_A471(Eq_n ds, segptr32 ptrArg02, union Eq_n & dxOut, union Eq_n & bpOut)
+// 0800:A471: Register uint16 fn0800_A471(Register Eq_n ds, Stack segptr32 wArg02, Register out Eq_n dxOut, Register out Eq_n bpOut)
+uint16 fn0800_A471(Eq_n ds, segptr32 wArg02, union Eq_n & dxOut, union Eq_n & bpOut)
 {
 	struct Eq_n Eq_n::* sp_n = fp - 0x0A;
 	struct Eq_n * es_n = SLICE(ptrArg02, selector, 16);
@@ -15363,20 +14500,12 @@ l0800_A49E:
 // 0800:A4F6: void fn0800_A4F6(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04, Stack Eq_n wArg06)
 void fn0800_A4F6(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06)
 {
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg8 = <invalid>;
-	if (fn0800_A53C(ds, SEQ(wArg04, wArg02), 0x00, stackArg8, out cx_n) == ~0x00)
-		return;
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg8 = <invalid>;
-	if (fn0800_A53C(ds, SEQ(wArg04, wArg02), 0x01, stackArg8, out cx_n) == ~0x00)
+	if (fn0800_A53C(ds, SEQ(wArg04, wArg02), 0x00, out cx_n) == ~0x00 || fn0800_A53C(ds, SEQ(wArg04, wArg02), 0x01, out cx_n) == ~0x00)
 		;
 }
 
-// 0800:A53C: Register Eq_n fn0800_A53C(Register Eq_n ds, Stack segptr32 ptrArg02, Stack byte bArg06, Stack Eq_n wArg08, Register out Eq_n cxOut)
-Eq_n fn0800_A53C(Eq_n ds, segptr32 ptrArg02, byte bArg06, Eq_n wArg08, union Eq_n & cxOut)
+// 0800:A53C: Register Eq_n fn0800_A53C(Register Eq_n ds, Stack segptr32 wArg02, Stack byte bArg06, Register out Eq_n cxOut)
+Eq_n fn0800_A53C(Eq_n ds, segptr32 wArg02, byte bArg06, union Eq_n & cxOut)
 {
 	Eq_n ax_n;
 	msdos_unknown_n();
@@ -15476,8 +14605,8 @@ l0800_A60D:
 	goto l0800_A610;
 }
 
-// 0800:A614: Register word16 fn0800_A614(Register Eq_n ds, Stack Eq_n ptrArg02, Stack Eq_n wArg04, Register out Eq_n cxOut, Register out ptr16 dxOut, Register out Eq_n bpOut, Register out Eq_n siOut, Register out ptr16 diOut, Register out Eq_n dsOut)
-word16 fn0800_A614(Eq_n ds, Eq_n ptrArg02, Eq_n wArg04, union Eq_n & cxOut, ptr16 & dxOut, union Eq_n & bpOut, union Eq_n & siOut, ptr16 & diOut, union Eq_n & dsOut)
+// 0800:A614: Register word16 fn0800_A614(Register Eq_n ds, Stack Eq_n ptrArg02, Register out Eq_n cxOut, Register out ptr16 dxOut, Register out Eq_n bpOut, Register out Eq_n siOut, Register out ptr16 diOut, Register out Eq_n dsOut)
+word16 fn0800_A614(Eq_n ds, Eq_n ptrArg02, union Eq_n & cxOut, ptr16 & dxOut, union Eq_n & bpOut, union Eq_n & siOut, ptr16 & diOut, union Eq_n & dsOut)
 {
 	word16 wArg02_n = SLICE(ptrArg02, word16, 0);
 	Eq_n wArg04_n = SLICE(ptrArg02, word16, 16);
@@ -15554,8 +14683,8 @@ l0800_A6B2:
 	return si_n;
 }
 
-// 0800:A6B7: Register word16 fn0800_A6B7(Register Eq_n ds, Stack Eq_n ptrArg02, Stack Eq_n wArg04, Register out ptr16 dxOut, Register out Eq_n bxOut, Register out Eq_n bpOut)
-word16 fn0800_A6B7(Eq_n ds, Eq_n ptrArg02, Eq_n wArg04, ptr16 & dxOut, union Eq_n & bxOut, union Eq_n & bpOut)
+// 0800:A6B7: Register word16 fn0800_A6B7(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04, Register out ptr16 dxOut, Register out Eq_n bxOut, Register out Eq_n bpOut)
+word16 fn0800_A6B7(Eq_n ds, Eq_n wArg02, Eq_n wArg04, ptr16 & dxOut, union Eq_n & bxOut, union Eq_n & bpOut)
 {
 	Eq_n bx_n;
 	word16 ax_n;
@@ -15584,9 +14713,9 @@ l0800_A77A:
 		ci16 ax_n = ptrArg02_n->w0006 + ptrArg02_n->w0000;
 		ptrArg02_n->w0000 -= ax_n + 0x01;
 		Eq_n ax_n = ptrArg02_n->t000A;
-		word16 dx_n = ptrArg02_n->w0008;
+		Eq_n dx_n = ptrArg02_n->t0008;
 		ptrArg02_n->t000E = ax_n;
-		ptrArg02_n->w000C = dx_n;
+		ptrArg02_n->t000C = dx_n;
 		if (fn0800_C632(ds, (int16) ptrArg02_n->b0004, dx_n, ax_n, ax_n + 0x01, out dx, out bx_n) != ax_n + 0x01)
 		{
 			bx_n = (word16) ptrArg02_n;
@@ -15603,7 +14732,7 @@ l0800_A77A:
 	{
 		dx = wArg02_n + 0x05;
 		ptrArg02_n = SEQ(wArg04_n, wArg02_n);
-		if (ptrArg02_n->t000E != wArg04_n || ptrArg02_n->w000C != wArg02_n + 0x05)
+		if (ptrArg02_n->t000E != wArg04_n || ptrArg02_n->t000C != wArg02_n + 0x05)
 		{
 l0800_A778:
 			ax_n = 0x00;
@@ -15623,8 +14752,8 @@ l0800_A778:
 	goto l0800_A778;
 }
 
-// 0800:A77D: Register word16 fn0800_A77D(Register Eq_n ds, Stack word16 wArg02, Stack Eq_n wArg04, Stack ci16 wArg06, Stack (ptr32 Eq_n) ptrArg08, Stack Eq_n wArg0A, Register out Eq_n dxOut)
-word16 fn0800_A77D(Eq_n ds, word16 wArg02, Eq_n wArg04, ci16 wArg06, struct Eq_n * ptrArg08, Eq_n wArg0A, union Eq_n & dxOut)
+// 0800:A77D: Register word16 fn0800_A77D(Register Eq_n ds, Stack word16 wArg02, Stack Eq_n wArg04, Stack ci16 wArg06, Stack (ptr32 Eq_n) ptrArg08, Register out Eq_n dxOut)
+word16 fn0800_A77D(Eq_n ds, word16 wArg02, Eq_n wArg04, ci16 wArg06, struct Eq_n * ptrArg08, union Eq_n & dxOut)
 {
 	ci16 di_n = wArg06;
 	Eq_n cx_n = 0x00;
@@ -15652,10 +14781,7 @@ word16 fn0800_A77D(Eq_n ds, word16 wArg02, Eq_n wArg04, ci16 wArg06, struct Eq_n
 		}
 		else
 		{
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg4 = <invalid>;
-			ax_n = fn0800_AEC2(ds, SEQ(wArg0A_n, wArg08_n), stackArg4, out ch_n, out dx_n);
+			ax_n = fn0800_AEC2(ds, SEQ(wArg0A_n, wArg08_n), out ch_n, out dx_n);
 			ptrArg08 = SEQ(wArg0A_n, wArg08_n);
 		}
 		byte cl_n = (byte) ax_n;
@@ -15697,8 +14823,8 @@ l0800_A811:
 	return ax_n;
 }
 
-// 0800:A817: Register Eq_n fn0800_A817(Register Eq_n al, Register Eq_n ds, Stack segptr32 ptrArg02, Stack Eq_n ptrArg06, Stack cui16 wArg0A, Register out Eq_n cxOut, Register out ptr16 dxOut)
-Eq_n fn0800_A817(Eq_n al, Eq_n ds, segptr32 ptrArg02, Eq_n ptrArg06, cui16 wArg0A, union Eq_n & cxOut, ptr16 & dxOut)
+// 0800:A817: Register Eq_n fn0800_A817(Register Eq_n al, Register Eq_n ds, Stack segptr32 wArg02, Stack Eq_n wArg06, Stack cui16 wArg0A, Register out Eq_n cxOut, Register out ptr16 dxOut)
+Eq_n fn0800_A817(Eq_n al, Eq_n ds, segptr32 wArg02, Eq_n wArg06, cui16 wArg0A, union Eq_n & cxOut, ptr16 & dxOut)
 {
 	Eq_n ax_n;
 	word32 es_bx_n = msdos_get_disk_transfer_area_address();
@@ -15716,8 +14842,8 @@ Eq_n fn0800_A817(Eq_n al, Eq_n ds, segptr32 ptrArg02, Eq_n ptrArg06, cui16 wArg0
 	return ax_n;
 }
 
-// 0800:A84A: Register Eq_n fn0800_A84A(Register Eq_n al, Register Eq_n ds, Stack segptr32 ptrArg02, Register out Eq_n cxOut, Register out ptr16 dxOut)
-Eq_n fn0800_A84A(Eq_n al, Eq_n ds, segptr32 ptrArg02, union Eq_n & cxOut, ptr16 & dxOut)
+// 0800:A84A: Register Eq_n fn0800_A84A(Register Eq_n al, Register Eq_n ds, Stack segptr32 wArg02, Register out Eq_n cxOut, Register out ptr16 dxOut)
+Eq_n fn0800_A84A(Eq_n al, Eq_n ds, segptr32 wArg02, union Eq_n & cxOut, ptr16 & dxOut)
 {
 	Eq_n ax_n;
 	word32 es_bx_n = msdos_get_disk_transfer_area_address();
@@ -15771,8 +14897,8 @@ Eq_n fn0800_A877(Eq_n ds, ptr16 & bxOut)
 	return <invalid>;
 }
 
-// 0800:A8B7: Register cui16 fn0800_A8B7(Register Eq_n ds, Stack (ptr32 word16) ptrArg02, Stack (ptr32 cui16) ptrArg06, Stack (ptr32 Eq_n) ptrArg0A, Stack Eq_n wArg0C, Register out Eq_n clOut)
-cui16 fn0800_A8B7(Eq_n ds, word16 * ptrArg02, cui16 * ptrArg06, union Eq_n * ptrArg0A, Eq_n wArg0C, union Eq_n & clOut)
+// 0800:A8B7: Register cui16 fn0800_A8B7(Register Eq_n ds, Stack (ptr32 word16) ptrArg02, Stack (ptr32 cui16) ptrArg06, Stack (ptr32 Eq_n) ptrArg0A, Register out Eq_n clOut)
+cui16 fn0800_A8B7(Eq_n ds, word16 * ptrArg02, cui16 * ptrArg06, union Eq_n * ptrArg0A, union Eq_n & clOut)
 {
 	word16 wArg0A_n = SLICE(ptrArg0A, word16, 0);
 	word16 wArg0C_n = SLICE(ptrArg0A, word16, 16);
@@ -15842,18 +14968,15 @@ l0800_A953:
 	goto l0800_A967;
 }
 
-// 0800:A96D: Register Eq_n fn0800_A96D(Register Eq_n si, Register Eq_n di, Register Eq_n ds, Stack cui16 wArg02, Stack Eq_n wArg04, Stack Eq_n wArg06, Stack Eq_n wArg08, Stack Eq_n wArg0A, Stack (ptr32 Eq_n) ptrArg0C, Stack Eq_n wArg0E, Register out ptr16 cxOut, Register out ptr16 dxOut, Register out Eq_n bpOut, Register out Eq_n siOut, Register out Eq_n diOut, Register out Eq_n dsOut)
-Eq_n fn0800_A96D(Eq_n si, Eq_n di, Eq_n ds, cui16 wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08, Eq_n wArg0A, struct Eq_n * ptrArg0C, Eq_n wArg0E, ptr16 & cxOut, ptr16 & dxOut, union Eq_n & bpOut, union Eq_n & siOut, union Eq_n & diOut, union Eq_n & dsOut)
+// 0800:A96D: Register Eq_n fn0800_A96D(Register Eq_n si, Register Eq_n di, Register Eq_n ds, Stack cui16 wArg02, Stack Eq_n wArg04, Stack Eq_n wArg06, Stack Eq_n wArg08, Stack Eq_n wArg0A, Stack (ptr32 Eq_n) ptrArg0C, Register out ptr16 cxOut, Register out ptr16 dxOut, Register out Eq_n bpOut, Register out Eq_n siOut, Register out Eq_n diOut, Register out Eq_n dsOut)
+Eq_n fn0800_A96D(Eq_n si, Eq_n di, Eq_n ds, cui16 wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08, Eq_n wArg0A, struct Eq_n * ptrArg0C, ptr16 & cxOut, ptr16 & dxOut, union Eq_n & bpOut, union Eq_n & siOut, union Eq_n & diOut, union Eq_n & dsOut)
 {
 	word16 wArg0E_n = SLICE(ptrArg0C, word16, 16);
 	word16 wArg0C_n = SLICE(ptrArg0C, word16, 0);
 	ptr16 dx_n;
 	Eq_n ax_n;
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg12 = <invalid>;
 	byte cl_n;
-	cui16 ax_n = fn0800_A8B7(ds, fp - 0x06, fp - 0x04, SEQ(wArg06, wArg04), stackArg12, out cl_n);
+	cui16 ax_n = fn0800_A8B7(ds, fp - 0x06, fp - 0x04, SEQ(wArg06, wArg04), out cl_n);
 	ptrArg0C->w0002 = ax_n;
 	struct Eq_n Eq_n::* bp_n = fp - 0x02;
 	ptr16 cx_n = DPB(cx, cl_n, 0);
@@ -15880,11 +15003,8 @@ l0800_A9B9:
 			ax_n = 0x01;
 		else
 			ax_n = 0x00;
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
 		Eq_n sp_n = <invalid>;
-		if (fn0800_BA89(ds, SEQ(wArg0E_n, wArg0C_n), stackArg4, 0x00, 0x00, ax_n, 0x0200, out cx_n, out bp_n, out si, out di, out ds) == 0x00)
+		if (fn0800_BA89(ds, SEQ(wArg0E_n, wArg0C_n), 0x00, 0x00, ax_n, 0x0200, out cx_n, out bp_n, out si, out di, out ds) == 0x00)
 		{
 			*((word32) (ss->*bp_n).t000E + 0x0010) = 0x00;
 			dx_n = (ss->*bp_n).ptr0010;
@@ -15893,10 +15013,7 @@ l0800_A9B9:
 		}
 		ss->*((word32) sp_n + 0x0A) = (ss->*bp_n).ptr0010;
 		ss->*((word32) sp_n + 0x08) = (ss->*bp_n).t000E;
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
-		fn0800_A614(ds, ss->*((word32) sp_n + 0x08), stackArg4, out cx_n, out dx_n, out bp_n, out si, out di, out ds);
+		fn0800_A614(ds, ss->*((word32) sp_n + 0x08), out cx_n, out dx_n, out bp_n, out si, out di, out ds);
 		Eq_n sp_n = <invalid>;
 		cx_n = ss->*((word32) sp_n + 0x02);
 l0800_A9C7:
@@ -15960,12 +15077,7 @@ word16 fn0800_AA7E(Eq_n si, Eq_n di, Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n wAr
 		ax_n = 0x00;
 	}
 	else
-	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg14 = <invalid>;
-		ax_n = fn0800_A96D(si, di, ds, 0x00, wArg06, wArg08, wArg02, wArg04, SEQ(dx_n, ax_n), stackArg14, out cx, out dx_n, out bp_n, out si, out di, out ds);
-	}
+		ax_n = fn0800_A96D(si, di, ds, 0x00, wArg06, wArg08, wArg02, wArg04, SEQ(dx_n, ax_n), out cx, out dx_n, out bp_n, out si, out di, out ds);
 	ptr16 bp_n = ss->*bp_n;
 	cxOut = cx;
 	dxOut = dx_n;
@@ -15976,8 +15088,8 @@ word16 fn0800_AA7E(Eq_n si, Eq_n di, Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n wAr
 	return ax_n;
 }
 
-// 0800:AAB3: Register Eq_n fn0800_AAB3(Register Eq_n dx, Register Eq_n ds, Stack Eq_n ptrArg02, Stack Eq_n wArg04, Stack Eq_n wArg06, Stack Eq_n ptrArg08, Stack Eq_n wArg0A, Register out Eq_n chOut)
-Eq_n fn0800_AAB3(Eq_n dx, Eq_n ds, Eq_n ptrArg02, Eq_n wArg04, Eq_n wArg06, Eq_n ptrArg08, Eq_n wArg0A, union Eq_n & chOut)
+// 0800:AAB3: Register Eq_n fn0800_AAB3(Register Eq_n dx, Register Eq_n ds, Stack Eq_n ptrArg02, Stack Eq_n wArg06, Stack Eq_n wArg08, Stack Eq_n wArg0A, Register out Eq_n chOut)
+Eq_n fn0800_AAB3(Eq_n dx, Eq_n ds, Eq_n ptrArg02, Eq_n wArg06, Eq_n wArg08, Eq_n wArg0A, union Eq_n & chOut)
 {
 	do
 	{
@@ -16020,10 +15132,7 @@ l0800_AB50:
 				}
 				else
 				{
-					// Failed to bind call argument.
-					// Please report this issue at https://github.com/uxmal/reko
-					Eq_n stackArg4 = <invalid>;
-					ax_n = fn0800_AEC2(ds, SEQ(wArg04_n, wArg02_n), stackArg4, out ch_n, out dx_n);
+					ax_n = fn0800_AEC2(ds, SEQ(wArg04_n, wArg02_n), out ch_n, out dx_n);
 					ptrArg02 = SEQ(wArg04_n, wArg02_n);
 					Mem110 = Mem78;
 				}
@@ -16033,7 +15142,7 @@ l0800_AB50:
 				if (ax_n == ~0x00)
 					break;
 				*ptrArg08_n = dl_n;
-				ptrArg08_n = SEQ(wArg0A, wArg08 + 0x01);
+				ptrArg08_n = SEQ(wArg0A, (word32) wArg08 + 0x01);
 			}
 			if (dx != ~0x00)
 				continue;
@@ -16056,7 +15165,7 @@ l0800_AB50:
 		}
 		Eq_n ax_n = fn0800-8F50(ds, (int16) *((word32) ptrArg02 + 0x04), SEQ(wArg0A, wArg08), di_n, out ch_n, out dx_n);
 		dx = ax_n;
-		wArg08 = (word16) ((word32) ax_n + wArg08);
+		wArg08 += ax_n;
 	} while (ax_n == di_n);
 	wArg06 = (word32) wArg06 + (di_n - ax_n);
 l0800_AB3D:
@@ -16079,11 +15188,8 @@ uint16 fn0800_ABA3(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08, 
 		Eq_n ax_n = fn0800-8F18(wArg08, 0x00, 0x00, wArg06, out ch_n, out dx_n);
 		if (dx_n <= 0x01 && (dx_n < 0x01 || Test(ULT,false)))
 		{
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg4 = <invalid>;
 			sp_n = fp - 0x0A;
-			ax_n = (uint16) ((uint32) (uint16) (ax_n - fn0800_AAB3(dx_n, ds, SEQ(wArg0C, wArg0A), stackArg4, ax_n, wArg02, wArg04, out ch_n)) /u wArg06);
+			ax_n = (uint16) ((uint32) (uint16) (ax_n - fn0800_AAB3(dx_n, ds, SEQ(wArg0C, wArg0A), ax_n, wArg02, wArg04, out ch_n)) /u wArg06);
 		}
 		else
 		{
@@ -16100,17 +15206,11 @@ uint16 fn0800_ABA3(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08, 
 				(ss->*(sp_n - 0x04)).t0000 = wArg06;
 				(ss->*(sp_n - 0x06)).t0000 = wArg0C;
 				(ss->*(sp_n - 0x08)).t0000 = wArg0A;
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				Eq_n stackArg4 = <invalid>;
-				if (fn0800_AAB3(dx_n, ds, (ss->*(sp_n - 0x08)).t0000, stackArg4, (ss->*(sp_n - 0x04)).t0000, (ss->*(sp_n - 0x02)).t0000, (ss->*sp_n).t0000, out ch_n) != 0x00)
+				if (fn0800_AAB3(dx_n, ds, (ss->*(sp_n - 0x08)).t0000, (ss->*(sp_n - 0x04)).t0000, (ss->*(sp_n - 0x02)).t0000, (ss->*sp_n).t0000, out ch_n) != 0x00)
 					break;
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				Eq_n stackArg0 = <invalid>;
 				sp_n.u0 = <invalid>;
 				wArg04 = dx_n;
-				wArg02 = fn0800-8CCB(wArg02, 0x00, wArg04, wArg06, stackArg0, out ch_n, out dx_n);
+				wArg02 = fn0800-8CCB(wArg02, 0x00, wArg04, wArg06, out ch_n, out dx_n);
 				Mem57 = Mem107;
 				dx_n = dx_n;
 			}
@@ -16227,8 +15327,8 @@ word16 fn0800_ACB3(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n wArg0A, union Eq_n & 
 	return ax_n;
 }
 
-// 0800:AD2F: Register uint16 fn0800_AD2F(Register Eq_n ds, Stack Eq_n ptrArg02, Stack Eq_n wArg04, Register out Eq_n dxOut)
-uint16 fn0800_AD2F(Eq_n ds, Eq_n ptrArg02, Eq_n wArg04, union Eq_n & dxOut)
+// 0800:AD2F: Register uint16 fn0800_AD2F(Register Eq_n ds, Stack Eq_n ptrArg02, Register out Eq_n dxOut)
+uint16 fn0800_AD2F(Eq_n ds, Eq_n ptrArg02, union Eq_n & dxOut)
 {
 	word16 wArg04_n = SLICE(ptrArg02, word16, 16);
 	word16 wArg02_n = SLICE(ptrArg02, word16, 0);
@@ -16270,11 +15370,8 @@ uint16 fn0800_AD85(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08, 
 		Eq_n ax_n = fn0800-8F18(wArg08, 0x00, 0x00, wArg06, out ch_n, out dx_n);
 		if (dx_n <= 0x01 && (dx_n < 0x01 || Test(ULT,false)))
 		{
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg4 = <invalid>;
 			uint16 di_n;
-			ax_n = (uint16) ((uint32) (uint16) fn0800_B4BE(ds, SEQ(wArg0C, wArg0A), stackArg4, ax_n, wArg02, wArg04, out bp_n, out si_n, out di_n) /u di_n);
+			ax_n = (uint16) ((uint32) (uint16) fn0800_B4BE(ds, SEQ(wArg0C, wArg0A), ax_n, wArg02, wArg04, out bp_n, out si_n, out di_n) /u di_n);
 l0800_AE0A:
 			bpOut = (ss->*bp_n).ptr0000;
 			return ax_n;
@@ -16289,21 +15386,15 @@ l0800_AE0A:
 				ss->*(sp_n - 0x04) = di_n;
 				ss->*(sp_n - 0x06) = (ss->*bp_n).t000E;
 				ss->*(sp_n - 0x08) = (ss->*bp_n).t000C;
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				Eq_n stackArg4 = <invalid>;
 				uint16 si_n;
-				Eq_n ax_n = fn0800_B4BE(ds, ss->*(sp_n - 0x08), stackArg4, ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), ss->*sp_n, out bp_n, out si_n, out di_n);
+				Eq_n ax_n = fn0800_B4BE(ds, ss->*(sp_n - 0x08), ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), ss->*sp_n, out bp_n, out si_n, out di_n);
 				if (false || ax_n != di_n)
 				{
 					ax_n = si_n;
 					goto l0800_AE0A;
 				}
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				Eq_n stackArg0 = <invalid>;
 				Eq_n dx_n;
-				Eq_n ax_n = fn0800-8CCB((ss->*bp_n).t0004, 0x00, (ss->*bp_n).t0006, di_n, stackArg0, out ch_n, out dx_n);
+				Eq_n ax_n = fn0800-8CCB((ss->*bp_n).t0004, 0x00, (ss->*bp_n).t0006, di_n, out ch_n, out dx_n);
 				(ss->*bp_n).t0006 = dx_n;
 				(ss->*bp_n).t0004 = ax_n;
 				sp_n.u0 = <invalid>;
@@ -16390,8 +15481,8 @@ word16 fn0800_AE4C(Eq_n ds, struct Eq_n * ptrArg02, ptr16 & dxOut, union Eq_n & 
 	return ax_n;
 }
 
-// 0800:AEC2: Register word16 fn0800_AEC2(Register Eq_n ds, Stack (ptr32 word16) ptrArg02, Stack Eq_n wArg04, Register out Eq_n chOut, Register out ptr16 dxOut)
-word16 fn0800_AEC2(Eq_n ds, word16 * ptrArg02, Eq_n wArg04, union Eq_n & chOut, ptr16 & dxOut)
+// 0800:AEC2: Register word16 fn0800_AEC2(Register Eq_n ds, Stack (ptr32 word16) ptrArg02, Register out Eq_n chOut, Register out ptr16 dxOut)
+word16 fn0800_AEC2(Eq_n ds, word16 * ptrArg02, union Eq_n & chOut, ptr16 & dxOut)
 {
 	cui16 wArg04_n = SLICE(ptrArg02, word16, 16);
 	++*ptrArg02;
@@ -16402,8 +15493,8 @@ word16 fn0800_AEC2(Eq_n ds, word16 * ptrArg02, Eq_n wArg04, union Eq_n & chOut, 
 	return ax_n;
 }
 
-// 0800:AED6: Register word16 fn0800_AED6(Register Eq_n ds, Stack Eq_n ptrArg02, Stack cui16 wArg04, Register out ptr16 dxOut)
-word16 fn0800_AED6(Eq_n ds, Eq_n ptrArg02, cui16 wArg04, ptr16 & dxOut)
+// 0800:AED6: Register word16 fn0800_AED6(Register Eq_n ds, Stack cui16 wArg02, Stack cui16 wArg04, Register out ptr16 dxOut)
+word16 fn0800_AED6(Eq_n ds, cui16 wArg02, cui16 wArg04, ptr16 & dxOut)
 {
 	word16 ax_n;
 	struct Eq_n Eq_n::* bp_n = fp - 0x02;
@@ -16552,8 +15643,8 @@ l0800_B035:
 	return ax_n;
 }
 
-// 0800:B03B: void fn0800_B03B(Stack Eq_n ptrArg02, Stack Eq_n wArg04, Stack Eq_n ptrArg06, Stack Eq_n wArg0A)
-void fn0800_B03B(Eq_n ptrArg02, Eq_n wArg04, Eq_n ptrArg06, Eq_n wArg0A)
+// 0800:B03B: void fn0800_B03B(Stack Eq_n wArg02, Stack Eq_n wArg06, Stack Eq_n wArg0A)
+void fn0800_B03B(Eq_n wArg02, Eq_n wArg06, Eq_n wArg0A)
 {
 	struct Eq_n * es_n = SLICE(ptrArg02, selector, 16);
 	struct Eq_n Eq_n::* di_n = (word16) ptrArg02;
@@ -16570,8 +15661,8 @@ void fn0800_B03B(Eq_n ptrArg02, Eq_n wArg04, Eq_n ptrArg06, Eq_n wArg0A)
 		(es_n->*di_n).t0000 = (ds_n->*si_n).t0000;
 }
 
-// 0800:B05F: void fn0800_B05F(Stack (ptr32 byte) ptrArg02, Stack cu16 wArg06, Stack byte bArg08)
-void fn0800_B05F(byte * ptrArg02, cu16 wArg06, byte bArg08)
+// 0800:B05F: void fn0800_B05F(Stack (ptr32 byte) ptrArg02, Stack cu16 wArg06, Stack Eq_n wArg08)
+void fn0800_B05F(byte * ptrArg02, cu16 wArg06, Eq_n wArg08)
 {
 	word16 ax_n = DPB(DPB(ax, bArg08, 0), bArg08, 8);
 	Eq_n di_n = (word16) ptrArg02;
@@ -16603,14 +15694,14 @@ void fn0800_B05F(byte * ptrArg02, cu16 wArg06, byte bArg08)
 		es_n->*di_n = bArg08;
 }
 
-// 0800:B083: void fn0800_B083(Stack Eq_n wArg02, Stack Eq_n wArg04, Stack Eq_n bArg06, Stack cu16 wArg08)
-void fn0800_B083(Eq_n wArg02, Eq_n wArg04, Eq_n bArg06, cu16 wArg08)
+// 0800:B083: void fn0800_B083(Stack Eq_n wArg02, Stack Eq_n wArg04, Stack cu16 wArg08)
+void fn0800_B083(Eq_n wArg02, Eq_n wArg04, cu16 wArg08)
 {
 	fn0800_B05F(SEQ(wArg04, wArg02), wArg08, SLICE(DPB(ax, bArg06, 0), byte, 0));
 }
 
-// 0800:B0A1: void fn0800_B0A1(Stack Eq_n ptrArg02, Stack Eq_n wArg04, Stack Eq_n ptrArg06, Stack Eq_n wArg08, Stack Eq_n wArg0A)
-void fn0800_B0A1(Eq_n ptrArg02, Eq_n wArg04, Eq_n ptrArg06, Eq_n wArg08, Eq_n wArg0A)
+// 0800:B0A1: void fn0800_B0A1(Stack Eq_n wArg02, Stack Eq_n wArg04, Stack Eq_n wArg06, Stack Eq_n wArg08, Stack Eq_n wArg0A)
+void fn0800_B0A1(Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08, Eq_n wArg0A)
 {
 	Eq_n ax_n;
 	fn0800-8F2F((byte) wArg02, wArg02, wArg08, wArg04, (byte) wArg06, wArg06, out cx_n, out dx_n, out bx_n);
@@ -16666,8 +15757,8 @@ void fn0800_B0F3(Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08, Eq_n wArg0A
 	fn0800_B0A1(wArg06, wArg08, wArg02, wArg04, wArg0A);
 }
 
-// 0800:B113: Register Eq_n fn0800_B113(Register Eq_n ds, Stack Eq_n wArg02, Stack segptr32 ptrArg04, Register out Eq_n cxOut)
-Eq_n fn0800_B113(Eq_n ds, Eq_n wArg02, segptr32 ptrArg04, union Eq_n & cxOut)
+// 0800:B113: Register Eq_n fn0800_B113(Register Eq_n ds, Stack Eq_n wArg02, Stack segptr32 wArg04, Register out Eq_n cxOut)
+Eq_n fn0800_B113(Eq_n ds, Eq_n wArg02, segptr32 wArg04, union Eq_n & cxOut)
 {
 	Eq_n ax_n;
 	if (msdos_create_truncate_file(wArg02, SLICE(ptrArg04, selector, 16), (word16) ptrArg04, out ax_n))
@@ -16694,11 +15785,8 @@ byte fn0800_B140(Eq_n si, Eq_n di, Eq_n ds, Eq_n wArg02, Eq_n wArg04, cui16 wArg
 		si_n = wArg06 | *((word32) ds + 0x00002512) & 0xC000;
 	Eq_n ax_n;
 	Eq_n di_n;
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg8 = <invalid>;
 	ptr16 cx_n;
-	Eq_n ax_n = fn0800_A53C(ds, SEQ(wArg04, wArg02), 0x00, stackArg8, out cx_n);
+	Eq_n ax_n = fn0800_A53C(ds, SEQ(wArg04, wArg02), 0x00, out cx_n);
 	ptr16 wLoc0A_n = SLICE(ptrLoc0A_n, word16, 0);
 	ptr16 wLoc08_n = SLICE(ptrLoc0A_n, word16, 16);
 	Eq_n wLoc04_n = ax_n;
@@ -16767,50 +15855,28 @@ l0800_B29A:
 			return (byte) ax_n;
 		}
 	}
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg7 = <invalid>;
-	Eq_n ax_n = fn0800_B2A0(ds, SEQ(wArg04, wArg02), si_n, stackArg7, out cx_n);
+	Eq_n ax_n = fn0800_B2A0(ds, SEQ(wArg04, wArg02), si_n, out cx_n);
 	di_n = ax_n;
 	if (ax_n >= 0x00)
 	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg2 = <invalid>;
-		Eq_n stackArg10 = <invalid>;
-		cui16 ax_n = fn0800_A2A3(ds, stackArg2, 0x00, 0x00, ptrLoc0A_n, stackArg10, out cx_n);
+		cui16 ax_n = fn0800_A2A3(ds, 0x00, 0x00, ptrLoc0A_n, out cx_n);
 		cx_n = 0x00;
 		if ((ax_n & 0x80) != 0x00)
 		{
 			si_n |= 0x2000;
 			if ((si_n & 0x8000) != 0x00)
-			{
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				Eq_n stackArg2 = <invalid>;
-				Eq_n stackArg10 = <invalid>;
-				fn0800_A2A3(ds, stackArg2, 0x01, 0x00, (uint32) (uint16) (ax_n & 0xFF | 0x20), stackArg10, out cx_n);
-			}
+				fn0800_A2A3(ds, 0x01, 0x00, (uint32) (uint16) (ax_n & 0xFF | 0x20), out cx_n);
 		}
 		else if ((si_n & 0x0200) != 0x00)
 			cx_n = fn0800_B12E(ds, ax_n);
 		if ((wLoc04_n & 0x01) != 0x00 && ((si_n & 0x0100) != 0x00 && (si_n & 0xF0) != 0x00))
-		{
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg8 = <invalid>;
-			fn0800_A53C(ds, SEQ(wArg04, wArg02), 0x01, stackArg8, out cx_n);
-		}
+			fn0800_A53C(ds, SEQ(wArg04, wArg02), 0x01, out cx_n);
 	}
 	goto l0800_B265;
 }
 
-// 0800:B2A0: Register Eq_n fn0800_B2A0(Register Eq_n ds, Stack segptr32 ptrArg02, Stack cui16 wArg06, Stack Eq_n bArg07, Register out Eq_n cxOut)
-Eq_n fn0800_B2A0(Eq_n ds, segptr32 ptrArg02, cui16 wArg06, Eq_n bArg07, union Eq_n & cxOut)
+// 0800:B2A0: Register Eq_n fn0800_B2A0(Register Eq_n ds, Stack segptr32 ptrArg02, Stack cui16 wArg06, Register out Eq_n cxOut)
+Eq_n fn0800_B2A0(Eq_n ds, segptr32 ptrArg02, cui16 wArg06, union Eq_n & cxOut)
 {
 	byte bArg06_n = SLICE(wArg06, byte, 0);
 	byte bArg07_n = SLICE(wArg06, byte, 8);
@@ -16839,36 +15905,30 @@ Eq_n fn0800_B2A0(Eq_n ds, segptr32 ptrArg02, cui16 wArg06, Eq_n bArg07, union Eq
 // 0800:B2EF: Register word16 fn0800_B2EF(Register Eq_n cx, Register Eq_n dx, Register Eq_n bx, Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04, Register out ptr16 siOut, Register out ptr16 diOut)
 word16 fn0800_B2EF(Eq_n cx, Eq_n dx, Eq_n bx, Eq_n ds, Eq_n wArg02, Eq_n wArg04, ptr16 & siOut, ptr16 & diOut)
 {
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg6 = <invalid>;
 	ptr16 di_n;
 	ptr16 si_n;
-	word16 ax_n = fn0800-9828(cx, dx, bx, ds, fp + 0x06, SEQ(wArg04, wArg02), stackArg6, out si_n, out di_n);
+	word16 ax_n = fn0800-9828(cx, dx, bx, ds, fp + 0x06, SEQ(wArg04, wArg02), out si_n, out di_n);
 	siOut = si_n;
 	diOut = di_n;
 	return ax_n;
 }
 
-// 0800:B30A: Register word16 fn0800_B30A(Register Eq_n ds, Stack byte bArg02, Stack Eq_n ptrArg04, Stack Eq_n wArg06, Register out ptr16 cxOut, Register out ptr16 dxOut, Register out ptr16 bxOut)
-word16 fn0800_B30A(Eq_n ds, byte bArg02, Eq_n ptrArg04, Eq_n wArg06, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut)
+// 0800:B30A: Register word16 fn0800_B30A(Register Eq_n ds, Stack byte bArg02, Stack Eq_n ptrArg04, Register out ptr16 cxOut, Register out ptr16 dxOut, Register out ptr16 bxOut)
+word16 fn0800_B30A(Eq_n ds, byte bArg02, Eq_n ptrArg04, ptr16 & cxOut, ptr16 & dxOut, ptr16 & bxOut)
 {
 	--*ptrArg04;
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg6 = <invalid>;
 	ptr16 bx_n;
 	ptr16 cx_n;
 	ptr16 dx_n;
-	word16 ax_n = fn0800_B324(ds, SLICE((int16) bArg02, byte, 0), ptrArg04, stackArg6, out cx_n, out dx_n, out bx_n, out bp_n);
+	word16 ax_n = fn0800_B324(ds, SLICE((int16) bArg02, byte, 0), ptrArg04, out cx_n, out dx_n, out bx_n, out bp_n);
 	cxOut = cx_n;
 	dxOut = dx_n;
 	bxOut = bx_n;
 	return ax_n;
 }
 
-// 0800:B324: Register (ptr16 Eq_n) fn0800_B324(Register Eq_n ds, Stack Eq_n bArg02, Stack Eq_n ptrArg04, Stack Eq_n wArg06, Register out Eq_n cxOut, Register out ptr16 dxOut, Register out Eq_n bxOut, Register out Eq_n bpOut)
-struct Eq_n * fn0800_B324(Eq_n ds, Eq_n bArg02, Eq_n ptrArg04, Eq_n wArg06, union Eq_n & cxOut, ptr16 & dxOut, union Eq_n & bxOut, union Eq_n & bpOut)
+// 0800:B324: Register (ptr16 Eq_n) fn0800_B324(Register Eq_n ds, Stack Eq_n bArg02, Stack Eq_n ptrArg04, Register out Eq_n cxOut, Register out ptr16 dxOut, Register out Eq_n bxOut, Register out Eq_n bpOut)
+struct Eq_n * fn0800_B324(Eq_n ds, Eq_n bArg02, Eq_n ptrArg04, union Eq_n & cxOut, ptr16 & dxOut, union Eq_n & bxOut, union Eq_n & bpOut)
 {
 	Eq_n wArg04_n = SLICE(ptrArg04, word16, 0);
 	Eq_n wArg06_n = SLICE(ptrArg04, word16, 16);
@@ -16980,8 +16040,8 @@ l0800_B495:
 	goto l0800_B495;
 }
 
-// 0800:B4BE: Register Eq_n fn0800_B4BE(Register Eq_n ds, Stack Eq_n ptrArg02, Stack Eq_n wArg04, Stack Eq_n wArg06, Stack Eq_n ptrArg08, Stack Eq_n wArg0A, Register out Eq_n bpOut, Register out ptr16 siOut, Register out Eq_n diOut)
-Eq_n fn0800_B4BE(Eq_n ds, Eq_n ptrArg02, Eq_n wArg04, Eq_n wArg06, Eq_n ptrArg08, Eq_n wArg0A, union Eq_n & bpOut, ptr16 & siOut, union Eq_n & diOut)
+// 0800:B4BE: Register Eq_n fn0800_B4BE(Register Eq_n ds, Stack Eq_n ptrArg02, Stack Eq_n wArg06, Stack Eq_n wArg08, Stack Eq_n wArg0A, Register out Eq_n bpOut, Register out ptr16 siOut, Register out Eq_n diOut)
+Eq_n fn0800_B4BE(Eq_n ds, Eq_n ptrArg02, Eq_n wArg06, Eq_n wArg08, Eq_n wArg0A, union Eq_n & bpOut, ptr16 & siOut, union Eq_n & diOut)
 {
 	Eq_n wArg04_n = SLICE(ptrArg02, word16, 16);
 	Eq_n wArg02_n = SLICE(ptrArg02, word16, 0);
@@ -17002,12 +16062,9 @@ Eq_n fn0800_B4BE(Eq_n ds, Eq_n ptrArg02, Eq_n wArg04, Eq_n wArg06, Eq_n ptrArg08
 			Eq_n es_bx_n = (ss->*bp_n).t000A;
 			(ss->*bp_n).t000A = (word32) (ss->*bp_n).t000A + 0x01;
 			(ss->*(sp_n - 0x04)).u0 = (int16) *es_bx_n;
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
 			Eq_n sp_n = <invalid>;
-			Eq_n stackArg6 = <invalid>;
 			sp_n = (struct Eq_n Eq_n::*) ((word32) sp_n + 0x06);
-		} while (fn0800_B324(ds, ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), stackArg6, out cx_n, out dx_n, out bx_n, out bp_n) != ~0x00);
+		} while (fn0800_B324(ds, ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), out cx_n, out dx_n, out bx_n, out bp_n) != ~0x00);
 		goto l0800_B4F5;
 	}
 	Eq_n bx_n = (word16) ptrArg02;
@@ -17041,10 +16098,7 @@ Eq_n fn0800_B4BE(Eq_n ds, Eq_n ptrArg02, Eq_n wArg04, Eq_n wArg06, Eq_n ptrArg08
 				}
 				else
 				{
-					// Failed to bind call argument.
-					// Please report this issue at https://github.com/uxmal/reko
-					Eq_n stackArg6 = <invalid>;
-					ax_n = fn0800_B30A(ds, SLICE(DPB(di_n, *ptrArg08_n, 0), byte, 0), SEQ(wArg04_n, wArg02_n), stackArg6, out cx_n, out dx_n, out bx_n);
+					ax_n = fn0800_B30A(ds, SLICE(DPB(di_n, *ptrArg08_n, 0), byte, 0), SEQ(wArg04_n, wArg02_n), out cx_n, out dx_n, out bx_n);
 					ptrArg02 = SEQ(wArg04_n, wArg02_n);
 					ptrArg08_n = SEQ(wArg0A_n, wArg08_n + 0x01);
 					Mem435 = Mem342;
@@ -17129,10 +16183,7 @@ l0800_B6A0:
 		Eq_n es_bx_n = (ss->*bp_n).t0004;
 		(ss->*(sp_n - 0x06)).t0000 = *((word32) es_bx_n + 0x0E);
 		(ss->*(sp_n - 0x08)).t0000 = *((word32) es_bx_n + 0x0C);
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
-		fn0800_B03B((ss->*(sp_n - 0x08)).t0000, stackArg4, (ss->*(sp_n - 0x04)).t0000, (ss->*sp_n).t0000);
+		fn0800_B03B((ss->*(sp_n - 0x08)).t0000, (ss->*(sp_n - 0x04)).t0000, (ss->*sp_n).t0000);
 		Eq_n es_bx_n = (ss->*bp_n).t0004;
 		Mem109[es_bx_n + 0x00:word16] = Mem93[es_bx_n + 0x00:word16] + wArg06;
 		Mem111[es_bx_n + 0x0C:word16] = Mem109[es_bx_n + 0x0C:word16] + wArg06;
@@ -17370,22 +16421,16 @@ l0800_B7BD:
 		Eq_n ax_n = wLoc06 - wLoc0E;
 		(ss->*sp_n).t0002 = 0x00 - (ax_n < 0x00);
 		(ss->*sp_n).t0000 = ax_n;
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg0 = <invalid>;
-		Eq_n ax_n = fn0800-8BBB(stackArg0, (ss->*sp_n).t0000, (ss->*sp_n).t0002, (ss->*sp_n).t0004, (ss->*sp_n).t0006, out cx_n, out dx_n, out bx_n);
+		Eq_n ax_n = fn0800-8BBB((ss->*sp_n).t0000, (ss->*sp_n).t0002, (ss->*sp_n).t0004, (ss->*sp_n).t0006, out cx_n, out dx_n, out bx_n);
 		Eq_n sp_n = <invalid>;
 		(ss->*(sp_n - 0x02)).u0 = 0x00;
 		ss->*(sp_n - 0x04) = *((word32) ds + 20200);
 		Eq_n dx_n = (word32) wArg04 + (word16) (*((word32) ds + 20200) *s si_n) - wLoc06;
 		ss->*(sp_n - 0x06) = 0x00 - (dx_n < 0x00);
 		ss->*(sp_n - 0x08) = dx_n;
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg0 = <invalid>;
 		Eq_n bx_n;
 		word16 cx_n;
-		Eq_n ax_n = fn0800-8BBB(stackArg0, ss->*(sp_n - 0x08), ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), out cx_n, out dx_n, out bx_n);
+		Eq_n ax_n = fn0800-8BBB(ss->*(sp_n - 0x08), ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), out cx_n, out dx_n, out bx_n);
 		Eq_n sp_n = <invalid>;
 		si_n = ax_n;
 		if (ax_n < ax_n)
@@ -17452,8 +16497,8 @@ void fn0800_B95E(word16 cx, Eq_n bx, Eq_n si, Eq_n di, Eq_n ds, Eq_n wArg02, Eq_
 	}
 }
 
-// 0800:B97F: Register Eq_n fn0800_B97F(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n ptrArg04, Stack Eq_n wArg06, Stack Eq_n wArg08, Register out ptr16 dxOut)
-Eq_n fn0800_B97F(Eq_n ds, Eq_n wArg02, Eq_n ptrArg04, Eq_n wArg06, Eq_n wArg08, ptr16 & dxOut)
+// 0800:B97F: Register Eq_n fn0800_B97F(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04, Stack Eq_n wArg06, Stack Eq_n wArg08, Register out ptr16 dxOut)
+Eq_n fn0800_B97F(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08, ptr16 & dxOut)
 {
 	Eq_n ax_n;
 	if (wArg02 >= *((word32) ds + 9448))
@@ -17526,16 +16571,16 @@ Eq_n fn0800_BA4A(Eq_n ds, Eq_n ptrArg02, Eq_n ptrArg06)
 	return ax_n;
 }
 
-// 0800:BA67: void fn0800_BA67(Register Eq_n ds, Stack Eq_n ptrArg02, Stack Eq_n wArg04)
-void fn0800_BA67(Eq_n ds, Eq_n ptrArg02, Eq_n wArg04)
+// 0800:BA67: void fn0800_BA67(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04)
+void fn0800_BA67(Eq_n ds, Eq_n wArg02, Eq_n wArg04)
 {
 	struct Eq_n * ptrArg02_n = SEQ(wArg04, wArg02);
 	if (fn0800_ACB3(ds, wArg02, wArg04, 0x00, out cx_n, out dx_n, out bx_n) == 0x00)
 		ptrArg02_n->w0002 &= ~0x10;
 }
 
-// 0800:BA89: Register word16 fn0800_BA89(Register Eq_n ds, Stack (ptr32 Eq_n) ptrArg02, Stack Eq_n wArg04, Stack cui16 wArg06, Stack cui16 wArg08, Stack ci16 wArg0A, Stack cup16 wArg0C, Register out Eq_n cxOut, Register out Eq_n bpOut, Register out ptr16 siOut, Register out Eq_n diOut, Register out Eq_n dsOut)
-word16 fn0800_BA89(Eq_n ds, struct Eq_n * ptrArg02, Eq_n wArg04, cui16 wArg06, cui16 wArg08, ci16 wArg0A, cup16 wArg0C, union Eq_n & cxOut, union Eq_n & bpOut, ptr16 & siOut, union Eq_n & diOut, union Eq_n & dsOut)
+// 0800:BA89: Register word16 fn0800_BA89(Register Eq_n ds, Stack (ptr32 Eq_n) ptrArg02, Stack cui16 wArg06, Stack cui16 wArg08, Stack ci16 wArg0A, Stack cup16 wArg0C, Register out Eq_n cxOut, Register out Eq_n bpOut, Register out ptr16 siOut, Register out Eq_n diOut, Register out Eq_n dsOut)
+word16 fn0800_BA89(Eq_n ds, struct Eq_n * ptrArg02, cui16 wArg06, cui16 wArg08, ci16 wArg0A, cup16 wArg0C, union Eq_n & cxOut, union Eq_n & bpOut, ptr16 & siOut, union Eq_n & diOut, union Eq_n & dsOut)
 {
 	word16 wArg02_n = SLICE(ptrArg02, word16, 0);
 	word16 wArg04_n = SLICE(ptrArg02, word16, 16);
@@ -17588,11 +16633,8 @@ l0800_BADB:
 					*((word32) ds + 0x00002352) = ~0x380F;
 					if ((wArg06 | wArg08) == 0x00)
 					{
-						// Failed to bind call argument.
-						// Please report this issue at https://github.com/uxmal/reko
-						Eq_n stackArg2 = <invalid>;
 						cui16 dx_n;
-						cui16 ax_n = fn0800-9F7F(stackArg2, out dx_n, out bp_n, out si_n, out di_n, out ds);
+						cui16 ax_n = fn0800-9F7F(out dx_n, out bp_n, out si_n, out di_n, out ds);
 						Eq_n sp_n = <invalid>;
 						cx = ss->*sp_n;
 						(ss->*bp_n).w000A = dx_n;
@@ -17640,34 +16682,23 @@ l0800_BB94:
 	goto l0800_BADB;
 }
 
-// 0800:BB98: void fn0800_BB98(Stack Eq_n wArg02, Stack word16 wArg04, Stack word16 wArg06, Stack segptr32 ptrArg08, Stack cui16 wArg0A)
-void fn0800_BB98(Eq_n wArg02, word16 wArg04, word16 wArg06, segptr32 ptrArg08, cui16 wArg0A)
+// 0800:BB98: void fn0800_BB98(Stack Eq_n wArg02, Stack word16 wArg04, Stack word16 wArg06, Stack cui16 wArg08, Stack cui16 wArg0A)
+void fn0800_BB98(Eq_n wArg02, word16 wArg04, word16 wArg06, cui16 wArg08, cui16 wArg0A)
 {
 	if ((wArg08 | wArg0A) != 0x00)
 	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
-		if (fn0800_BFC7(SEQ(wArg06, wArg04), stackArg4, out cx_n) >= wArg02)
+		if (fn0800_BFC7(SEQ(wArg06, wArg04), out cx_n) >= wArg02)
 		{
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg4 = <invalid>;
-			fn0800_C01E(SEQ(wArg0A, wArg08), stackArg4, SEQ(wArg06, wArg04), wArg02);
+			fn0800_C01E(SEQ(wArg0A, wArg08), SEQ(wArg06, wArg04), wArg02);
 			Mem90[SEQ(wArg0A, wArg08) + wArg02:byte] = 0x00;
 		}
 		else
-		{
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg4 = <invalid>;
-			fn0800_BF9E(SEQ(wArg0A, wArg08), stackArg4, SEQ(wArg06, wArg04));
-		}
+			fn0800_BF9E(SEQ(wArg0A, wArg08), SEQ(wArg06, wArg04));
 	}
 }
 
-// 0800:BBE9: void fn0800_BBE9(Register word16 bp, Stack Eq_n ptrArg02, Stack word16 wArg04)
-void fn0800_BBE9(word16 bp, Eq_n ptrArg02, word16 wArg04)
+// 0800:BBE9: void fn0800_BBE9(Register word16 bp, Stack Eq_n ptrArg02)
+void fn0800_BBE9(word16 bp, Eq_n ptrArg02)
 {
 	word16 wArg02_n = SLICE(ptrArg02, word16, 0);
 	word16 wArg04_n = SLICE(ptrArg02, word16, 16);
@@ -17691,25 +16722,25 @@ void fn0800_BBE9(word16 bp, Eq_n ptrArg02, word16 wArg04)
 	}
 }
 
-// 0800:BC49: Register word16 fn0800_BC49(Register mp16 bp, Register Eq_n si, Register Eq_n di, Stack Eq_n ptrArg02, Stack Eq_n wArg04, Stack Eq_n ptrArg06, Stack (ptr16 Eq_n) wArg08, Stack Eq_n ptrArg0A, Stack (ptr16 Eq_n) wArg0C, Stack Eq_n ptrArg0E, Stack (ptr16 Eq_n) wArg10, Stack Eq_n ptrArg12, Stack (ptr16 Eq_n) wArg14)
-word16 fn0800_BC49(mp16 bp, Eq_n si, Eq_n di, Eq_n ptrArg02, Eq_n wArg04, Eq_n ptrArg06, struct Eq_n * wArg08, Eq_n ptrArg0A, struct Eq_n * wArg0C, Eq_n ptrArg0E, struct Eq_n * wArg10, Eq_n ptrArg12, struct Eq_n * wArg14)
+// 0800:BC49: Register word16 fn0800_BC49(Register mp16 bp, Register Eq_n si, Register Eq_n di, Stack Eq_n ptrArg02, Stack Eq_n wArg06, Stack (ptr16 Eq_n) wArg08, Stack Eq_n wArg0A, Stack (ptr16 Eq_n) wArg0C, Stack Eq_n wArg0E, Stack (ptr16 Eq_n) wArg10, Stack Eq_n wArg12, Stack (ptr16 Eq_n) wArg14)
+word16 fn0800_BC49(mp16 bp, Eq_n si, Eq_n di, Eq_n ptrArg02, Eq_n wArg06, struct Eq_n * wArg08, Eq_n wArg0A, struct Eq_n * wArg0C, Eq_n wArg0E, struct Eq_n * wArg10, Eq_n wArg12, struct Eq_n * wArg14)
 {
-	byte * ptrArg06_n = wArg06;
+	byte * ptrArg06_n = wArg06.u0;
 	wArg06 = SLICE(ptrArg06_n, word16, 0);
 	wArg08 = SLICE(ptrArg06_n, word16, 16);
 	if ((wArg06 | wArg08) != 0x00)
 		*ptrArg06_n = 0x00;
-	byte * ptrArg0A_n = wArg0A;
+	byte * ptrArg0A_n = wArg0A.u0;
 	wArg0A = SLICE(ptrArg0A_n, word16, 0);
 	wArg0C = SLICE(ptrArg0A_n, word16, 16);
 	if ((wArg0A | wArg0C) != 0x00)
 		*ptrArg0A_n = 0x00;
-	byte * ptrArg0E_n = wArg0E;
+	byte * ptrArg0E_n = wArg0E.u0;
 	wArg0E = SLICE(ptrArg0E_n, word16, 0);
 	wArg10 = SLICE(ptrArg0E_n, word16, 16);
 	if ((wArg0E | wArg10) != 0x00)
 		*ptrArg0E_n = 0x00;
-	byte * ptrArg12_n = wArg12;
+	byte * ptrArg12_n = wArg12.u0;
 	wArg12 = SLICE(ptrArg12_n, word16, 0);
 	wArg14 = SLICE(ptrArg12_n, word16, 16);
 	if ((wArg12 | wArg14) != 0x00)
@@ -17726,19 +16757,13 @@ word16 fn0800_BC49(mp16 bp, Eq_n si, Eq_n di, Eq_n ptrArg02, Eq_n wArg04, Eq_n p
 		ptrArg02 = SEQ(wArg04_n, wArg02_n + 0x01);
 		Mem69 = Mem76;
 	}
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg4 = <invalid>;
-	Eq_n ax_n = fn0800_BFC7(ptrArg02, stackArg4, out cx_n);
+	Eq_n ax_n = fn0800_BFC7(ptrArg02, out cx_n);
 	Eq_n si_n = ax_n;
 	if (ax_n > 0x50)
 		si_n.u0 = 0x50;
 	*ptrLoc06_n = 0x00;
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg4 = <invalid>;
 	word16 v23_n = (word32) si_n + (wLoc06_n + 0x01);
-	word16 dx_n = fn0800_C01E(SEQ(wLoc04_n, wLoc06_n + 0x01), stackArg4, SEQ(wArg04_n, wArg02_n), si_n);
+	word16 dx_n = fn0800_C01E(SEQ(wLoc04_n, wLoc06_n + 0x01), SEQ(wArg04_n, wArg02_n), si_n);
 	*SEQ(wLoc04_n, v23_n) = 0x00;
 	word16 wLoc06_n = v23_n;
 	segptr32 ptrArg02_n = SEQ(wArg04_n, wArg02_n);
@@ -17767,22 +16792,16 @@ word16 fn0800_BC49(mp16 bp, Eq_n si, Eq_n di, Eq_n ptrArg02, Eq_n wArg04, Eq_n p
 // 0800:BE3B: Register word16 fn0800_BE3B(Register Eq_n si, Register Eq_n di, Stack Eq_n wArg02, Stack Eq_n wArg04, Stack Eq_n wArg06, Stack (ptr16 Eq_n) wArg08, Stack Eq_n wArg0A, Stack (ptr16 Eq_n) wArg0C, Stack Eq_n wArg0E, Stack (ptr16 Eq_n) wArg10, Stack Eq_n wArg12, Stack (ptr16 Eq_n) wArg14)
 word16 fn0800_BE3B(Eq_n si, Eq_n di, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, struct Eq_n * wArg08, Eq_n wArg0A, struct Eq_n * wArg0C, Eq_n wArg0E, struct Eq_n * wArg10, Eq_n wArg12, struct Eq_n * wArg14)
 {
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg4 = <invalid>;
-	return fn0800_BC49(fp - 0x02, si, di, SEQ(wArg04, wArg02), stackArg4, wArg06, wArg08, wArg0A, wArg0C, wArg0E, wArg10, wArg12, wArg14);
+	return fn0800_BC49(fp - 0x02, si, di, SEQ(wArg04, wArg02), wArg06, wArg08, wArg0A, wArg0C, wArg0E, wArg10, wArg12, wArg14);
 }
 
 // 0800:BEA2: Register word16 fn0800_BEA2(Register Eq_n cx, Register Eq_n dx, Register Eq_n ds, Stack (ptr32 byte) ptrArg02, Stack word16 wArg06, Stack Eq_n wArg08, Register out ptr16 diOut)
 word16 fn0800_BEA2(Eq_n cx, Eq_n dx, Eq_n ds, byte * ptrArg02, word16 wArg06, Eq_n wArg08, ptr16 & diOut)
 {
 	*ptrArg02 = 0x00;
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg6 = <invalid>;
 	ptr16 di_n;
 	word16 si_n;
-	fn0800-9828(cx, dx, (word16) ptrArg02, ds, fp + 0x0A, SEQ(wArg08, wArg06), stackArg6, out si_n, out di_n);
+	fn0800-9828(cx, dx, (word16) ptrArg02, ds, fp + 0x0A, SEQ(wArg08, wArg06), out si_n, out di_n);
 	diOut = di_n;
 	return si_n;
 }
@@ -17796,8 +16815,8 @@ byte fn0800_BF18(Eq_n cx, Eq_n dx, uint16 bx, Eq_n si, Eq_n di, struct Eq_n * es
 	return (byte) cx_n;
 }
 
-// 0800:BF5F: void fn0800_BF5F(Stack segptr32 ptrArg02, Stack segptr32 ptrArg06)
-void fn0800_BF5F(segptr32 ptrArg02, segptr32 ptrArg06)
+// 0800:BF5F: void fn0800_BF5F(Stack segptr32 wArg02, Stack segptr32 wArg06)
+void fn0800_BF5F(segptr32 wArg02, segptr32 wArg06)
 {
 	byte Eq_n::* di_n = (word16) ptrArg02;
 	struct Eq_n * es_n = SLICE(ptrArg02, selector, 16);
@@ -17847,8 +16866,8 @@ void fn0800_BF5F(segptr32 ptrArg02, segptr32 ptrArg06)
 		(es_n->*di_n).t0000 = es_n->*si_n;
 }
 
-// 0800:BF9E: void fn0800_BF9E(Stack segptr32 ptrArg02, Stack Eq_n wArg04, Stack segptr32 ptrArg06)
-void fn0800_BF9E(segptr32 ptrArg02, Eq_n wArg04, segptr32 ptrArg06)
+// 0800:BF9E: void fn0800_BF9E(Stack segptr32 wArg02, Stack segptr32 wArg06)
+void fn0800_BF9E(segptr32 wArg02, segptr32 wArg06)
 {
 	byte Eq_n::* di_n = (word16) ptrArg06;
 	struct Eq_n * es_n = SLICE(ptrArg06, selector, 16);
@@ -17873,8 +16892,8 @@ void fn0800_BF9E(segptr32 ptrArg02, Eq_n wArg04, segptr32 ptrArg06)
 	}
 }
 
-// 0800:BFC7: Register ptr16 fn0800_BFC7(Stack Eq_n ptrArg02, Stack Eq_n wArg04, Register out ptr16 cxOut)
-ptr16 fn0800_BFC7(Eq_n ptrArg02, Eq_n wArg04, ptr16 & cxOut)
+// 0800:BFC7: Register ptr16 fn0800_BFC7(Stack Eq_n wArg02, Register out ptr16 cxOut)
+ptr16 fn0800_BFC7(Eq_n wArg02, ptr16 & cxOut)
 {
 	word16 wArg04_n = SLICE(ptrArg02, word16, 16);
 	byte Eq_n::* di_n = (word16) ptrArg02;
@@ -17900,8 +16919,8 @@ ptr16 fn0800_BFC7(Eq_n ptrArg02, Eq_n wArg04, ptr16 & cxOut)
 	return ax_n;
 }
 
-// 0800:BFE6: Register Eq_n fn0800_BFE6(Stack Eq_n ptrArg02, Stack Eq_n ptrArg06, Stack Eq_n wArg0A)
-Eq_n fn0800_BFE6(Eq_n ptrArg02, Eq_n ptrArg06, Eq_n wArg0A)
+// 0800:BFE6: Register Eq_n fn0800_BFE6(Stack Eq_n wArg02, Stack Eq_n wArg06, Stack Eq_n wArg0A)
+Eq_n fn0800_BFE6(Eq_n wArg02, Eq_n wArg06, Eq_n wArg0A)
 {
 	byte Eq_n::* di_n = (word16) ptrArg06;
 	struct Eq_n * es_n = SLICE(ptrArg06, selector, 16);
@@ -17940,8 +16959,8 @@ Eq_n fn0800_BFE6(Eq_n ptrArg02, Eq_n ptrArg06, Eq_n wArg0A)
 	return ax_n;
 }
 
-// 0800:C01E: Register word16 fn0800_C01E(Stack Eq_n ptrArg02, Stack Eq_n wArg04, Stack Eq_n ptrArg06, Stack Eq_n wArg0A)
-word16 fn0800_C01E(Eq_n ptrArg02, Eq_n wArg04, Eq_n ptrArg06, Eq_n wArg0A)
+// 0800:C01E: Register word16 fn0800_C01E(Stack Eq_n wArg02, Stack Eq_n wArg06, Stack Eq_n wArg0A)
+word16 fn0800_C01E(Eq_n wArg02, Eq_n wArg06, Eq_n wArg0A)
 {
 	word16 wArg04_n = SLICE(ptrArg02, word16, 16);
 	byte Eq_n::* di_n = (word16) ptrArg06;
@@ -18081,20 +17100,14 @@ void fn0800_C177(Eq_n ds)
 	(ss->*(sp_n - 0x04)).u0 = 0x3C;
 	ss->*(sp_n - 0x06) = (ss->*bp_n).t0006;
 	ss->*(sp_n - 0x08) = (ss->*bp_n).t0004;
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg0 = <invalid>;
-	(ss->*bp_n).ptr000C->b0003 = (byte) fn0800-8BCA(stackArg0, ss->*(sp_n - 0x08), ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), out dx_n);
+	(ss->*bp_n).ptr000C->b0003 = (byte) fn0800-8BCA(ss->*(sp_n - 0x08), ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), out dx_n);
 	Eq_n sp_n = <invalid>;
 	(ss->*(sp_n - 0x02)).u0 = 0x00;
 	(ss->*(sp_n - 0x04)).u0 = 0x3C;
 	ss->*(sp_n - 0x06) = (ss->*bp_n).t0006;
 	ss->*(sp_n - 0x08) = (ss->*bp_n).t0004;
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg0 = <invalid>;
 	Eq_n dx_n;
-	Eq_n ax_n = fn0800-8BBB(stackArg0, ss->*(sp_n - 0x08), ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), out cx_n, out dx_n, out bx_n);
+	Eq_n ax_n = fn0800-8BBB(ss->*(sp_n - 0x08), ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), out cx_n, out dx_n, out bx_n);
 	(ss->*bp_n).t0006 = dx_n;
 	(ss->*bp_n).t0004 = ax_n;
 	Eq_n sp_n = <invalid>;
@@ -18102,20 +17115,14 @@ void fn0800_C177(Eq_n ds)
 	(ss->*(sp_n - 0x04)).u0 = 0x3C;
 	ss->*(sp_n - 0x06) = (ss->*bp_n).t0006;
 	ss->*(sp_n - 0x08) = (ss->*bp_n).t0004;
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg0 = <invalid>;
-	(ss->*bp_n).ptr000C->b0000 = (byte) fn0800-8BCA(stackArg0, ss->*(sp_n - 0x08), ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), out dx_n);
+	(ss->*bp_n).ptr000C->b0000 = (byte) fn0800-8BCA(ss->*(sp_n - 0x08), ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), out dx_n);
 	Eq_n sp_n = <invalid>;
 	(ss->*(sp_n - 0x02)).u0 = 0x00;
 	(ss->*(sp_n - 0x04)).u0 = 0x3C;
 	ss->*(sp_n - 0x06) = (ss->*bp_n).t0006;
 	ss->*(sp_n - 0x08) = (ss->*bp_n).t0004;
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg0 = <invalid>;
 	Eq_n dx_n;
-	Eq_n ax_n = fn0800-8BBB(stackArg0, ss->*(sp_n - 0x08), ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), out cx_n, out dx_n, out bx_n);
+	Eq_n ax_n = fn0800-8BBB(ss->*(sp_n - 0x08), ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), out cx_n, out dx_n, out bx_n);
 	(ss->*bp_n).t0006 = dx_n;
 	(ss->*bp_n).t0004 = ax_n;
 	Eq_n sp_n = <invalid>;
@@ -18123,20 +17130,14 @@ void fn0800_C177(Eq_n ds)
 	(ss->*(sp_n - 0x04)).u0 = 0x88F8;
 	ss->*(sp_n - 0x06) = (ss->*bp_n).t0006;
 	ss->*(sp_n - 0x08) = (ss->*bp_n).t0004;
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg0 = <invalid>;
-	*(ss->*bp_n).t0008 = (fn0800-8BBB(stackArg0, ss->*(sp_n - 0x08), ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), out cx_n, out dx_n, out bx_n) << 0x02) + 0x07BC;
+	*(ss->*bp_n).t0008 = (fn0800-8BBB(ss->*(sp_n - 0x08), ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), out cx_n, out dx_n, out bx_n) << 0x02) + 0x07BC;
 	Eq_n sp_n = <invalid>;
 	(ss->*(sp_n - 0x02)).u0 = 0x00;
 	(ss->*(sp_n - 0x04)).u0 = 0x88F8;
 	ss->*(sp_n - 0x06) = (ss->*bp_n).t0006;
 	ss->*(sp_n - 0x08) = (ss->*bp_n).t0004;
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg0 = <invalid>;
 	Eq_n dx_n;
-	Eq_n ax_n = fn0800-8BCA(stackArg0, ss->*(sp_n - 0x08), ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), out dx_n);
+	Eq_n ax_n = fn0800-8BCA(ss->*(sp_n - 0x08), ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), out dx_n);
 	(ss->*bp_n).t0006 = dx_n;
 	(ss->*bp_n).t0004 = ax_n;
 	Eq_n v10_n = (word16) v11_v10_n;
@@ -18152,10 +17153,7 @@ void fn0800_C177(Eq_n ds)
 		(ss->*(sp_n - 0x04)).u0 = 0x2238;
 		ss->*(sp_n - 0x06) = (ss->*bp_n).t0006;
 		ss->*(sp_n - 0x08) = (ss->*bp_n).t0004;
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg0 = <invalid>;
-		Eq_n ax_n = fn0800-8BBB(stackArg0, ss->*(sp_n - 0x08), ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), out cx_n, out dx_n, out bx_n);
+		Eq_n ax_n = fn0800-8BBB(ss->*(sp_n - 0x08), ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), out cx_n, out dx_n, out bx_n);
 		Eq_n es_bx_n = (ss->*bp_n).t0008;
 		Mem248[es_bx_n + 0x00:word16] = Mem234[es_bx_n + 0x00:word16] + ax_n;
 		Eq_n sp_n = <invalid>;
@@ -18163,11 +17161,8 @@ void fn0800_C177(Eq_n ds)
 		(ss->*(sp_n - 0x04)).u0 = 0x2238;
 		ss->*(sp_n - 0x06) = (ss->*bp_n).t0006;
 		ss->*(sp_n - 0x08) = (ss->*bp_n).t0004;
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg0 = <invalid>;
 		Eq_n dx_n;
-		Eq_n ax_n = fn0800-8BCA(stackArg0, ss->*(sp_n - 0x08), ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), out dx_n);
+		Eq_n ax_n = fn0800-8BCA(ss->*(sp_n - 0x08), ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), out dx_n);
 		(ss->*bp_n).t0006 = dx_n;
 		(ss->*bp_n).t0004 = ax_n;
 		sp_n.u0 = <invalid>;
@@ -18179,20 +17174,14 @@ void fn0800_C177(Eq_n ds)
 		(ss->*(sp_n - 0x02)).u0 = 0x18;
 		ss->*(sp_n - 0x04) = (ss->*bp_n).t0006;
 		ss->*(sp_n - 0x06) = (ss->*bp_n).t0004;
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg0 = <invalid>;
 		Eq_n sp_n = <invalid>;
-		ss->*(sp_n - 0x02) = fn0800-8BCA(stackArg0, ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), ss->*sp_n, out dx_n);
+		ss->*(sp_n - 0x02) = fn0800-8BCA(ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), ss->*sp_n, out dx_n);
 		(ss->*(sp_n - 0x04)).u0 = 0x00;
 		(ss->*(sp_n - 0x06)).u0 = 0x18;
 		ss->*(sp_n - 0x08) = (ss->*bp_n).t0006;
 		ss->*(sp_n - 0x0A) = (ss->*bp_n).t0004;
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg0 = <invalid>;
 		Eq_n sp_n = <invalid>;
-		ss->*(sp_n - 0x02) = fn0800-8BBB(stackArg0, ss->*(sp_n - 0x0A), ss->*(sp_n - 0x08), ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), out cx_n, out dx_n, out bx_n);
+		ss->*(sp_n - 0x02) = fn0800-8BBB(ss->*(sp_n - 0x0A), ss->*(sp_n - 0x08), ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), out cx_n, out dx_n, out bx_n);
 		(ss->*(sp_n - 0x04)).u0 = 0x00;
 		ss->*(sp_n - 0x06) = (word32) *(ss->*bp_n).t0008 + 63566;
 		sp_n = (word32) sp_n + 0x02;
@@ -18208,20 +17197,14 @@ void fn0800_C177(Eq_n ds)
 	(ss->*(sp_n - 0x02)).u0 = 0x18;
 	ss->*(sp_n - 0x04) = (ss->*bp_n).t0006;
 	ss->*(sp_n - 0x06) = (ss->*bp_n).t0004;
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg0 = <invalid>;
-	(ss->*bp_n).ptr000C->b0001 = (byte) fn0800-8BCA(stackArg0, ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), ss->*sp_n, out dx_n);
+	(ss->*bp_n).ptr000C->b0001 = (byte) fn0800-8BCA(ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), ss->*sp_n, out dx_n);
 	Eq_n sp_n = <invalid>;
 	(ss->*(sp_n - 0x02)).u0 = 0x00;
 	(ss->*(sp_n - 0x04)).u0 = 0x18;
 	ss->*(sp_n - 0x06) = (ss->*bp_n).t0006;
 	ss->*(sp_n - 0x08) = (ss->*bp_n).t0004;
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg0 = <invalid>;
 	Eq_n dx_n;
-	Eq_n ax_n = fn0800-8BBB(stackArg0, ss->*(sp_n - 0x08), ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), out cx_n, out dx_n, out bx_n);
+	Eq_n ax_n = fn0800-8BBB(ss->*(sp_n - 0x08), ss->*(sp_n - 0x06), ss->*(sp_n - 0x04), ss->*(sp_n - 0x02), out cx_n, out dx_n, out bx_n);
 	(ss->*bp_n).t0006 = dx_n;
 	(ss->*bp_n).t0004 = ax_n;
 	Eq_n v49_n = (word32) (ss->*bp_n).t0004 + 0x01;
@@ -18275,13 +17258,10 @@ Eq_n fn0800_C379(Eq_n ds)
 	union Eq_n Eq_n::* bp_n = fp - 0x02;
 	if ((ax_n | dx_n) != 0x00)
 	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
 		byte * ptrLoc06_n = SEQ(dx_n, ax_n);
-		Eq_n stackArg4 = <invalid>;
 		struct Eq_n Eq_n::* wLoc06_n = SLICE(ptrLoc06_n, word16, 0);
 		word16 wLoc04_n = SLICE(ptrLoc06_n, word16, 16);
-		if (fn0800_BFC7(SEQ(dx_n, ax_n), stackArg4, out cx_n) >= 0x04)
+		if (fn0800_BFC7(SEQ(dx_n, ax_n), out cx_n) >= 0x04)
 		{
 			struct Eq_n * es_n = SLICE(ptrLoc06_n, selector, 16);
 			if (((int16) ((int16) *ptrLoc06_n + 0x2251) & 0x0C) != 0x00 && (((int16) ((int16) (es_n->*wLoc06_n).b0001 + 0x2251) & 0x0C) != 0x00 && ((int16) ((int16) (es_n->*wLoc06_n).b0002 + 0x2251) & 0x0C) != 0x00))
@@ -18295,14 +17275,8 @@ Eq_n fn0800_C379(Eq_n ds)
 					struct Eq_n * es_n = SLICE(ptrLoc06_n, selector, 16);
 					if (((int16) ((int16) ptrLoc06_n->b0003 + 0x2251) & 0x02) != 0x00 || ((int16) ((int16) (es_n->*wLoc06_n).b0004 + 0x2251) & 0x02) != 0x00)
 					{
-						// Failed to bind call argument.
-						// Please report this issue at https://github.com/uxmal/reko
-						Eq_n stackArg6 = <invalid>;
-						fn0800_B083(*((word32) ds + 9950), *((word32) ds + 9952), stackArg6, 0x04);
-						// Failed to bind call argument.
-						// Please report this issue at https://github.com/uxmal/reko
-						Eq_n stackArg4 = <invalid>;
-						fn0800_C01E(SEQ(*((word32) ds + 9948), *((word32) ds + 9946)), stackArg4, SEQ(wLoc04_n, wLoc06_n), 0x03);
+						fn0800_B083(*((word32) ds + 9950), *((word32) ds + 9952), 0x04);
+						fn0800_C01E(SEQ(*((word32) ds + 9948), *((word32) ds + 9946)), SEQ(wLoc04_n, wLoc06_n), 0x03);
 						((word32) ds + 9946)->u1->b0003 = 0x00;
 						Eq_n sp_n = <invalid>;
 						Eq_n dx_n;
@@ -18321,10 +17295,7 @@ Eq_n fn0800_C379(Eq_n ds)
 								word16 ax_n = Mem231[ss:bp_n - 0x04 + 0x00:word16] + si_n;
 								ss->*((word32) sp_n + 0x02) = ss->*(bp_n - 0x02);
 								ss->*sp_n = ax_n;
-								// Failed to bind call argument.
-								// Please report this issue at https://github.com/uxmal/reko
-								Eq_n stackArg4 = <invalid>;
-								if (fn0800_BFC7(ss->*sp_n, stackArg4, out cx_n) >= 0x03)
+								if (fn0800_BFC7(ss->*sp_n, out cx_n) >= 0x03)
 								{
 									Eq_n es_bx_n = ss->*(bp_n - 0x04);
 									struct Eq_n * es_n = SLICE(es_bx_n, selector, 16);
@@ -18336,10 +17307,7 @@ Eq_n fn0800_C379(Eq_n ds)
 										(ss->*(sp_n - 0x02)).t0000 = ax_n;
 										(ss->*(sp_n - 0x04)).t0000 = *((word32) ds + 9952);
 										(ss->*(sp_n - 0x06)).t0000 = *((word32) ds + 9950);
-										// Failed to bind call argument.
-										// Please report this issue at https://github.com/uxmal/reko
-										Eq_n stackArg4 = <invalid>;
-										fn0800_C01E((ss->*(sp_n - 0x06)).t0000, stackArg4, (ss->*(sp_n - 0x02)).t0000, ss->*((word32) sp_n + 0x02));
+										fn0800_C01E((ss->*(sp_n - 0x06)).t0000, (ss->*(sp_n - 0x02)).t0000, ss->*((word32) sp_n + 0x02));
 										*((word32) *((word32) ds + 9950) + 0x03) = 0x00;
 										*((word32) ds + 0x000026E6) = 0x01;
 									}
@@ -18357,14 +17325,8 @@ Eq_n fn0800_C379(Eq_n ds)
 	*((word32) ds + 0x000026E6) = 0x01;
 	*((word32) ds + 9956) = 0x00;
 	((word32) ds + 0x000026E2)->u0 = 18000;
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg4 = <invalid>;
-	fn0800_BF9E(SEQ(*((word32) ds + 9948), *((word32) ds + 9946)), stackArg4, SEQ(ds, 9963));
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg4 = <invalid>;
-	fn0800_BF9E(SEQ(*((word32) ds + 9952), *((word32) ds + 9950)), stackArg4, SEQ(ds, 9967));
+	fn0800_BF9E(SEQ(*((word32) ds + 9948), *((word32) ds + 9946)), SEQ(ds, 9963));
+	fn0800_BF9E(SEQ(*((word32) ds + 9952), *((word32) ds + 9950)), SEQ(ds, 9967));
 	return ss->*bp_n;
 }
 
@@ -18423,8 +17385,8 @@ l0800_C626:
 	return ax_n;
 }
 
-// 0800:C632: Register Eq_n fn0800_C632(Register Eq_n ds, Stack Eq_n wArg02, Stack word16 wArg04, Stack Eq_n wArg06, Stack Eq_n wArg08, Register out Eq_n dxOut, Register out Eq_n bxOut)
-Eq_n fn0800_C632(Eq_n ds, Eq_n wArg02, word16 wArg04, Eq_n wArg06, Eq_n wArg08, union Eq_n & dxOut, union Eq_n & bxOut)
+// 0800:C632: Register Eq_n fn0800_C632(Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04, Stack Eq_n wArg06, Stack Eq_n wArg08, Register out Eq_n dxOut, Register out Eq_n bxOut)
+Eq_n fn0800_C632(Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08, union Eq_n & dxOut, union Eq_n & bxOut)
 {
 	Eq_n ax_n;
 	if (wArg02 >= *((word32) ds + 9448))
@@ -18552,18 +17514,15 @@ void fn1483-0ADB()
 {
 }
 
-// 1483:0ADC: void fn1483-0ADC(Register int16 ax, Register uint8 ch, Register byte cl, Register byte dh, Register byte dl, Register byte bl, Register byte bh, Register Eq_n bp, Register Eq_n si, Register Eq_n di, Register Eq_n es, Register Eq_n ds, Register byte FPUF, Stack Eq_n wArg00, Stack Eq_n wArg02, Stack word16 wArg04, Stack word16 wArg06, Stack word16 wArg08, Stack word16 wArg0A, Stack word16 wArg0C, Stack word16 wArg0E)
-void fn1483-0ADC(int16 ax, uint8 ch, byte cl, byte dh, byte dl, byte bl, byte bh, Eq_n bp, Eq_n si, Eq_n di, Eq_n es, Eq_n ds, byte FPUF, Eq_n wArg00, Eq_n wArg02, word16 wArg04, word16 wArg06, word16 wArg08, word16 wArg0A, word16 wArg0C, word16 wArg0E)
+// 1483:0ADC: void fn1483-0ADC(Register int16 ax, Register uint8 ch, Register byte cl, Register byte dh, Register byte dl, Register byte bl, Register byte bh, Register Eq_n bp, Register Eq_n si, Register Eq_n di, Register Eq_n es, Register Eq_n ds, Register byte FPUF, Stack Eq_n wArg00, Stack Eq_n wArg02, Stack word16 wArg04, Stack word16 wArg0A)
+void fn1483-0ADC(int16 ax, uint8 ch, byte cl, byte dh, byte dl, byte bl, byte bh, Eq_n bp, Eq_n si, Eq_n di, Eq_n es, Eq_n ds, byte FPUF, Eq_n wArg00, Eq_n wArg02, word16 wArg04, word16 wArg0A)
 {
 	Eq_n cx_n = DPB(cx, ch, 8);
 	Eq_n bx_n = DPB(bx, bl, 0);
 	Eq_n dx_n = DPB(dx, dh, 8);
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg8 = <invalid>;
 	struct Eq_n * es_n;
 	union Eq_n * Top_n;
-	*Top_n = (union Eq_n *) ((es_n->*fn1483-0D3F(ax, ch, cx_n, dh, dx_n, bl, bx_n, bp, si, di, es, ds, FPUF, wLoc02, wArg00, wArg02, wArg04, stackArg8, wArg0A, out es_n, out Top_n)).rE086 - *Top_n);
+	*Top_n = (union Eq_n *) ((es_n->*fn1483-0D3F(ax, ch, cx_n, dh, dx_n, bl, bx_n, bp, si, di, es, ds, FPUF, wLoc02, wArg00, wArg02, wArg04, wArg0A, out es_n, out Top_n)).rE086 - *Top_n);
 }
 
 // 1483:0C11: Register Eq_n fn1483-0C11(Register cu8 al, Register word32 ecx, Register word16 bx, Register word16 bp, Register Eq_n si, Register Eq_n di, Register (ptr16 Eq_n) es, Register Eq_n ds)
@@ -18575,14 +17534,8 @@ Eq_n fn1483-0C11(cu8 al, word32 ecx, word16 bx, word16 bp, Eq_n si, Eq_n di, str
 		word32 eax_n = DPB(eax, al + 0x01, 0);
 		// Failed to bind call argument.
 		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
 		Eq_n stackArg0 = <invalid>;
-		Eq_n stackArg2 = <invalid>;
-		Eq_n stackArg4 = <invalid>;
-		return fn1483-0C55((word16) eax_n, ds, stackArg0, stackArg2, stackArg4);
+		return fn1483-0C55((word16) eax_n, ds, stackArg0);
 	}
 	else
 	{
@@ -18627,14 +17580,11 @@ Eq_n fn1483-0C11(cu8 al, word32 ecx, word16 bx, word16 bp, Eq_n si, Eq_n di, str
 				// Please report this issue at https://github.com/uxmal/reko
 				// Failed to bind call argument.
 				// Please report this issue at https://github.com/uxmal/reko
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				Eq_n stackArg0 = <invalid>;
 				Eq_n stackArg2 = <invalid>;
 				Eq_n stackArg4 = <invalid>;
 				Eq_n stackArg6 = <invalid>;
 				Eq_n Top_n;
-				fn1483-0C91(ax_n * 0x02, (byte) ecx_n, (word16) ecx_n, ax_n, &(ds_n->*si_n).b0000 + 0x01, ds_n, stackArg0, stackArg2, stackArg4, stackArg6, out es_n, out Top_n);
+				fn1483-0C91(ax_n * 0x02, (byte) ecx_n, (word16) ecx_n, ax_n, &(ds_n->*si_n).b0000 + 0x01, ds_n, stackArg2, stackArg4, stackArg6, out es_n, out Top_n);
 				return Top_n;
 			}
 		}
@@ -18643,16 +17593,16 @@ Eq_n fn1483-0C11(cu8 al, word32 ecx, word16 bx, word16 bp, Eq_n si, Eq_n di, str
 	}
 }
 
-// 1483:0C55: Register int8 fn1483-0C55(Register word16 ax, Register Eq_n ds, Stack Eq_n wArg00, Stack Eq_n wArg02, Stack Eq_n wArg04)
-int8 fn1483-0C55(word16 ax, Eq_n ds, Eq_n wArg00, Eq_n wArg02, Eq_n wArg04)
+// 1483:0C55: Register int8 fn1483-0C55(Register word16 ax, Register Eq_n ds, Stack Eq_n wArg00)
+int8 fn1483-0C55(word16 ax, Eq_n ds, Eq_n wArg00)
 {
 	if (Z)
 		return fn1483-0C11((byte) ax, ecx, bx, bp, si, di, es, ds);
 	return 0x00;
 }
 
-// 1483:0C91: Register word16 fn1483-0C91(Register Eq_n al, Register byte ch, Register Eq_n cl, Register (memptr Eq_n Eq_n) bx, Register Eq_n si, Register Eq_n ds, Stack Eq_n psegArg00, Stack Eq_n wArg02, Stack Eq_n wArg04, Stack Eq_n wArg06, Register out Eq_n esOut, Register out Eq_n TopOut)
-word16 fn1483-0C91(Eq_n al, byte ch, Eq_n cl, struct Eq_n Eq_n::* bx, Eq_n si, Eq_n ds, Eq_n psegArg00, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, union Eq_n & esOut, union Eq_n & TopOut)
+// 1483:0C91: Register word16 fn1483-0C91(Register Eq_n al, Register byte ch, Register Eq_n cl, Register (memptr Eq_n Eq_n) bx, Register Eq_n si, Register Eq_n ds, Stack Eq_n wArg02, Stack Eq_n wArg04, Stack Eq_n wArg06, Register out Eq_n esOut, Register out Eq_n TopOut)
+word16 fn1483-0C91(Eq_n al, byte ch, Eq_n cl, struct Eq_n Eq_n::* bx, Eq_n si, Eq_n ds, Eq_n wArg02, Eq_n wArg04, Eq_n wArg06, union Eq_n & esOut, union Eq_n & TopOut)
 {
 	byte al_n = (byte) ax;
 	word16 cx_n = DPB(cx, ch, 8);
@@ -18660,13 +17610,7 @@ word16 fn1483-0C91(Eq_n al, byte ch, Eq_n cl, struct Eq_n Eq_n::* bx, Eq_n si, E
 	word16 ax_n = DPB(ax, al_n, 0);
 	if (!OVERFLOW(al_n))
 	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg2 = <invalid>;
-		Eq_n stackArg4 = <invalid>;
-		Eq_n Top_n = fn1483-0C55(ax_n, ds, wArg02, stackArg2, stackArg4);
+		Eq_n Top_n = fn1483-0C55(ax_n, ds, wArg02);
 		esOut.u0 = <invalid>;
 		TopOut = Top_n;
 		return di;
@@ -18717,8 +17661,8 @@ Eq_n fn1483-0CA0(byte al, Eq_n wArg00, Eq_n wArg02, Eq_n wArg04, union Eq_n & To
 	return <invalid>;
 }
 
-// 1483:0CED: Register Eq_n fn1483-0CED(Register Eq_n ax, Register (memptr Eq_n Eq_n) bx, Register Eq_n si, Register Eq_n di, Register Eq_n es, Register Eq_n ds, Stack Eq_n wArg00, Stack int16 wArg02, Stack Eq_n wArg04, Stack Eq_n wArg06, Stack Eq_n wArg08, Stack word16 wArg0A, Stack word16 wArg10, Register out Eq_n esOut, Register out Eq_n TopOut)
-Eq_n fn1483-0CED(Eq_n ax, struct Eq_n Eq_n::* bx, Eq_n si, Eq_n di, Eq_n es, Eq_n ds, Eq_n wArg00, int16 wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08, word16 wArg0A, word16 wArg10, union Eq_n & esOut, union Eq_n & TopOut)
+// 1483:0CED: Register Eq_n fn1483-0CED(Register Eq_n ax, Register (memptr Eq_n Eq_n) bx, Register Eq_n si, Register Eq_n di, Register Eq_n es, Register Eq_n ds, Stack int16 wArg02, Stack Eq_n wArg04, Stack Eq_n wArg06, Stack Eq_n wArg08, Stack word16 wArg0A, Stack word16 wArg10, Register out Eq_n esOut, Register out Eq_n TopOut)
+Eq_n fn1483-0CED(Eq_n ax, struct Eq_n Eq_n::* bx, Eq_n si, Eq_n di, Eq_n es, Eq_n ds, int16 wArg02, Eq_n wArg04, Eq_n wArg06, Eq_n wArg08, word16 wArg0A, word16 wArg10, union Eq_n & esOut, union Eq_n & TopOut)
 {
 	byte bl_n = (byte) bx;
 	byte al_n = (byte) ax;
@@ -18766,34 +17710,22 @@ int16 fn1483-0CFC(byte al, byte bl, int16 wArg00, Eq_n wArg02, Eq_n wArg04, Eq_n
 	Mem55[ss:bp + si:word16] = ~0x2E00;
 	if (cx == 0x00)
 	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		stackArg0.u0 = <invalid>;
-		di_n = fn1483-0C91(ax_n, ch_n, cx_n, bx_n, si, ds, stackArg0, wArg02, wArg04, wArg06, out es_n, out Top_n);
+		di_n = fn1483-0C91(ax_n, ch_n, cx_n, bx_n, si, ds, wArg02, wArg04, wArg06, out es_n, out Top_n);
 		esOut = es_n;
 		TopOut = Top_n;
 		return di_n;
 	}
 	else
 	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		stackArg2.u0 = <invalid>;
-		stackArg10.u0 = <invalid>;
-		stackArg12.u0 = <invalid>;
-		di_n = fn1483-0D06(ax_n, dx, bx_n, ds, fs, wArg00, stackArg2, wArg04, wArg08, stackArg10, stackArg12, wArg0E);
+		di_n = fn1483-0D06(ax_n, dx, bx_n, ds, fs, wArg00, wArg04, wArg08, wArg0E);
 		esOut = es;
 		TopOut.u0 = 0x00;
 		return di_n;
 	}
 }
 
-// 1483:0D06: Register int16 fn1483-0D06(Register Eq_n ax, Register (memptr Eq_n Eq_n) dx, Register (memptr Eq_n Eq_n) bx, Register Eq_n ds, Register (ptr16 Eq_n) fs, Stack int16 wArg00, Stack Eq_n wArg02, Stack Eq_n wArg04, Stack word16 wArg08, Stack Eq_n wArg0A, Stack Eq_n wArg0C, Stack word16 wArg0E)
-int16 fn1483-0D06(Eq_n ax, struct Eq_n Eq_n::* dx, struct Eq_n Eq_n::* bx, Eq_n ds, struct Eq_n * fs, int16 wArg00, Eq_n wArg02, Eq_n wArg04, word16 wArg08, Eq_n wArg0A, Eq_n wArg0C, word16 wArg0E)
+// 1483:0D06: Register int16 fn1483-0D06(Register Eq_n ax, Register (memptr Eq_n Eq_n) dx, Register (memptr Eq_n Eq_n) bx, Register Eq_n ds, Register (ptr16 Eq_n) fs, Stack int16 wArg00, Stack Eq_n wArg04, Stack word16 wArg08, Stack word16 wArg0E)
+int16 fn1483-0D06(Eq_n ax, struct Eq_n Eq_n::* dx, struct Eq_n Eq_n::* bx, Eq_n ds, struct Eq_n * fs, int16 wArg00, Eq_n wArg04, word16 wArg08, word16 wArg0E)
 {
 	(ds->*bx).wE209 = (ds->*bx).wE209 - dx - C;
 	if (bx != dx)
@@ -18805,8 +17737,8 @@ int16 fn1483-0D06(Eq_n ax, struct Eq_n Eq_n::* dx, struct Eq_n Eq_n::* bx, Eq_n 
 	return di;
 }
 
-// 1483:0D3F: Register Eq_n fn1483-0D3F(Register int16 ax, Register uint8 ch, Register Eq_n cl, Register byte dh, Register Eq_n dl, Register byte bl, Register Eq_n bh, Register Eq_n bp, Register Eq_n si, Register Eq_n di, Register Eq_n es, Register Eq_n ds, Register byte FPUF, Stack Eq_n wArg00, Stack Eq_n wArg02, Stack Eq_n wArg04, Stack word16 wArg06, Stack Eq_n wArg08, Stack word16 wArg0C, Register out Eq_n esOut, Register out Eq_n TopOut)
-Eq_n fn1483-0D3F(int16 ax, uint8 ch, Eq_n cl, byte dh, Eq_n dl, byte bl, Eq_n bh, Eq_n bp, Eq_n si, Eq_n di, Eq_n es, Eq_n ds, byte FPUF, Eq_n wArg00, Eq_n wArg02, Eq_n wArg04, word16 wArg06, Eq_n wArg08, word16 wArg0C, union Eq_n & esOut, union Eq_n & TopOut)
+// 1483:0D3F: Register Eq_n fn1483-0D3F(Register int16 ax, Register uint8 ch, Register Eq_n cl, Register byte dh, Register Eq_n dl, Register byte bl, Register Eq_n bh, Register Eq_n bp, Register Eq_n si, Register Eq_n di, Register Eq_n es, Register Eq_n ds, Register byte FPUF, Stack Eq_n wArg00, Stack Eq_n wArg02, Stack Eq_n wArg04, Stack word16 wArg06, Stack word16 wArg0C, Register out Eq_n esOut, Register out Eq_n TopOut)
+Eq_n fn1483-0D3F(int16 ax, uint8 ch, Eq_n cl, byte dh, Eq_n dl, byte bl, Eq_n bh, Eq_n bp, Eq_n si, Eq_n di, Eq_n es, Eq_n ds, byte FPUF, Eq_n wArg00, Eq_n wArg02, Eq_n wArg04, word16 wArg06, word16 wArg0C, union Eq_n & esOut, union Eq_n & TopOut)
 {
 	byte al_n = (byte) ax;
 	if (P)
@@ -18829,12 +17761,9 @@ Eq_n fn1483-0D3F(int16 ax, uint8 ch, Eq_n cl, byte dh, Eq_n dl, byte bl, Eq_n bh
 	word16 dx_n = DPB(dx, dh ^ 0x17, 8);
 	if ((dh ^ 0x17) < 0x00)
 	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg0 = <invalid>;
 		Eq_n Top_n;
 		Eq_n es_n;
-		Eq_n di_n = fn1483-0CED(ax_n, bx_n, si, di, es, ds, stackArg0, ax, wArg00, wArg02, wArg04, wArg06, wArg0C, out es_n, out Top_n);
+		Eq_n di_n = fn1483-0CED(ax_n, bx_n, si, di, es, ds, ax, wArg00, wArg02, wArg04, wArg06, wArg0C, out es_n, out Top_n);
 		esOut = es_n;
 		TopOut = Top_n;
 		return di_n;

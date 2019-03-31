@@ -525,10 +525,7 @@ fn10001388_entry:
 // SymbolicIn:
 
 l10001388:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg4 = <invalid>
-	word32 ebp_13 = fn100017E8(ebx, esi, edi, dwLoc0C, stackArg4, 0x00000010)
+	word32 ebp_13 = fn100017E8(ebx, esi, edi, dwLoc0C, 0x00000010)
 	word32 ebx_116 = Mem7[ebp_13 + 0x00000008:word32]
 	Mem26[ebp_13 - 0x0000001C:word32] = 0x00000001
 	Mem28[ebp_13 - 0x00000004:word32] = 0x00000000
@@ -593,7 +590,7 @@ l100013E7:
 	Mem83[esp_81:word32] = ecx
 	Mem86[esp_81 - 4:word32] = edx
 	Mem89[esp_81 - 8:word32] = ebx_116
-	word32 eax_92 = fn100011E9(edx_65, ebx_116, ebp_13, edx, ecx, Mem89[esp_81 - 4:word32], out ecx_307, out edx, out ebx_116, out esi_113, out edi_110)
+	word32 eax_92 = fn100011E9(edx_65, ebx_116, ebp_13, edx, ecx, Mem89[esp_81 - 4:word32], out ecx_302, out edx, out ebx_116, out esi_113, out edi_110)
 	Mem104[ebp_13 - 0x0000001C:word32] = eax_92
 	esp_103 = esp_81 + 0x00000004
 	branch eax_92 == 0x00000000 l1000147A
@@ -721,20 +718,8 @@ l1000147A:
 	Mem257[ebp_13 - 0x00000004:word32] = Mem254[ebp_13 - 0x00000004:word32] & 0x00000000
 	Mem260[ebp_13 - 0x00000004:word32] = 0xFFFFFFFE
 	fn10001493()
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
 	word32 eax_261 = Mem260[ebp_13 - 0x0000001C:word32]
-	word32 stackArg4 = <invalid>
-	word32 stackArg8 = <invalid>
-	word32 stackArg12 = <invalid>
-	word32 stackArg16 = <invalid>
-	fn1000182D(ebp_13, Mem260[esp_103 + -4:word32], stackArg4, stackArg8, stackArg12, stackArg16)
+	fn1000182D(ebp_13, Mem260[esp_103 + -4:word32])
 	return eax_261
 // DataOut:
 // DataOut (flags):
@@ -825,10 +810,7 @@ fn100015CF_entry:
 l100015CF:
 	word32 eax_110
 	word32 esp_81
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg4 = <invalid>
-	word32 ebp_13 = fn100017E8(ebx, esi, edi, dwLoc0C, stackArg4, 0x00000014)
+	word32 ebp_13 = fn100017E8(ebx, esi, edi, dwLoc0C, 0x00000014)
 	word32 esp_14 = <invalid>
 	Mem21[esp_14 - 4:word32] = Mem7[0x100033B4:word32]
 	word32 eax_23 = _decode_pointer(Mem21[esp_14 - 4:(ptr32 void)])
@@ -891,19 +873,7 @@ l100015F2:
 // SymbolicIn:
 
 l1000165F:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg4 = <invalid>
-	word32 stackArg8 = <invalid>
-	word32 stackArg12 = <invalid>
-	word32 stackArg16 = <invalid>
-	fn1000182D(ebp_13, Mem97[esp_81 + -4:word32], stackArg4, stackArg8, stackArg12, stackArg16)
+	fn1000182D(ebp_13, Mem97[esp_81 + -4:word32])
 	return eax_110
 // DataOut:
 // DataOut (flags):
@@ -943,7 +913,7 @@ fn10001665_exit:
 
 
 
-void fn1000166E(word32 ebx, word32 esi, word32 edi, word32 dwArg04)
+void fn1000166E(word32 ebx, word32 esi, word32 edi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  ebx:[0..31] edi:[0..31] esi:[0..31] fs:[0..15]
@@ -1151,10 +1121,7 @@ fn10001742_entry:
 
 l10001742:
 	word32 eax_60
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg4 = <invalid>
-	word32 ebp_13 = fn100017E8(ebx, esi, edi, dwLoc0C, stackArg4, 0x00000008)
+	word32 ebp_13 = fn100017E8(ebx, esi, edi, dwLoc0C, 0x00000008)
 	Mem20[ebp_13 - 0x00000004:word32] = Mem7[ebp_13 - 0x00000004:word32] & 0x00000000
 	word32 esp_14 = <invalid>
 	Mem25[esp_14 - 4:word32] = 0x10000000
@@ -1188,19 +1155,7 @@ l10001774:
 // SymbolicIn:
 
 l100017A8:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg4 = <invalid>
-	word32 stackArg8 = <invalid>
-	word32 stackArg12 = <invalid>
-	word32 stackArg16 = <invalid>
-	word32 edi_79 = fn1000182D(ebp_13, Mem75[esp_14 + -4:word32], stackArg4, stackArg8, stackArg12, stackArg16)
+	word32 edi_79 = fn1000182D(ebp_13, Mem75[esp_14 + -4:word32])
 	edxOut = edx_23
 	ediOut = edi_79
 	return eax_60
@@ -1258,7 +1213,7 @@ fn100017C6_exit:
 
 
 
-word32 fn100017E8(word32 ebx, word32 esi, word32 edi, word32 dwArg00, word32 dwArg04, word32 dwArg08)
+word32 fn100017E8(word32 ebx, word32 esi, word32 edi, word32 dwArg00, word32 dwArg08)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  ebx:[0..31] edi:[0..31] esi:[0..31] fs:[0..15] Stack +0000:[0..31] Stack +0008:[0..31]
@@ -1290,7 +1245,7 @@ fn100017E8_exit:
 
 
 
-word32 fn1000182D(word32 ebp, word32 dwArg00, word32 dwArg04, word32 dwArg08, word32 dwArg0C, word32 dwArg10)
+word32 fn1000182D(word32 ebp, word32 dwArg00)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  ebp:[0..31] fs:[0..15] Stack +0000:[0..31]

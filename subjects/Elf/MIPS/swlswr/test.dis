@@ -376,7 +376,7 @@ frame_dummy_exit:
 
 
 
-void main(word32 dwArg00, word32 dwArg04)
+void main()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 

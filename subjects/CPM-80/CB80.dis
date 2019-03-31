@@ -30,7 +30,7 @@ fn0387_exit:
 
 
 
-word16 fn0390(byte b, byte c, byte e, word16 wArg00, word16 wArg02)
+word16 fn0390(byte b, byte c, byte e, byte bArg02)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  b:[0..7] c:[0..7] e:[0..7] Stack +0002:[0..7]
@@ -197,7 +197,7 @@ fn0400_exit:
 
 
 
-word16 fn040D(byte b, byte c, byte e, word16 wArg00, word16 wArg02, ptr16 & spOut, ptr16 & fOut)
+word16 fn040D(byte b, byte c, byte e, byte bArg02, ptr16 & spOut, ptr16 & fOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  b:[0..7] c:[0..7] e:[0..7] Stack +0002:[0..7]
@@ -336,7 +336,7 @@ fn0473_exit:
 
 
 
-word16 fn0483(byte b, byte c, byte d, byte e, word16 wArg00, word16 wArg02)
+word16 fn0483(byte b, byte c, byte d, byte e, byte bArg02)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  b:[0..7] c:[0..7] d:[0..7] e:[0..7] Stack +0002:[0..7]
@@ -499,11 +499,8 @@ l0534:
 // SymbolicIn:
 
 l0555:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
 	word16 hl_36 = Mem35[0x14BC:word16]
-	word16 stackArg0 = <invalid>
-	bc_45 = fn0483(SLICE(hl_36, byte, 8), (byte) hl_36, 0x02, 0x00, stackArg0, 0x14C0)
+	bc_45 = fn0483(SLICE(hl_36, byte, 8), (byte) hl_36, 0x02, 0x00, 0x14C0)
 	Mem54[0x14BE:word16] = 0x0000
 // DataOut:
 // DataOut (flags):
@@ -1170,7 +1167,7 @@ fn0814_exit:
 
 
 
-word16 fn082F(word16 af, byte b, byte c, byte e, word16 wArg00, word16 wArg02, word16 wArg04, ptr16 & spOut)
+word16 fn082F(word16 af, byte b, byte c, byte e, byte bArg02, byte bArg04, ptr16 & spOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  af:[8..15] b:[0..7] c:[0..7] e:[0..7] Stack +0002:[0..7] Stack +0004:[0..7]
@@ -1703,11 +1700,8 @@ l0990:
 	Mem8[0x1694:byte] = e
 	Mem11[0x1693:byte] = b
 	Mem14[0x1692:byte] = c
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
 	word16 hl_23 = Mem22[0x168B:word16]
-	word16 stackArg0 = <invalid>
-	word16 sp_35 = fn0390(SLICE(hl_23 + 0x0001, byte, 8), (byte) (hl_23 + 0x0001), 0x20, stackArg0, DPB(bc_20, 0x0B, 0))
+	word16 sp_35 = fn0390(SLICE(hl_23 + 0x0001, byte, 8), (byte) (hl_23 + 0x0001), 0x20, DPB(bc_20, 0x0B, 0))
 	Mem42[0x1696:byte] = Mem22[Mem22[0x1692:word16]:byte]
 	word16 hl_43 = Mem42[0x1692:word16]
 	Mem45[0x1692:word16] = hl_43 + 0x0001
@@ -1874,11 +1868,8 @@ l0AA0:
 
 l0AE5:
 	Mem295[sp_35 - 0x0002:word16] = DPB(bc_232, 0x03, 0)
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
 	word16 hl_297 = Mem295[0x168B:word16]
-	word16 stackArg0 = <invalid>
-	fn0390(SLICE(hl_297 + 0x000C, byte, 8), (byte) (hl_297 + 0x000C), 0x00, stackArg0, Mem295[sp_35 - 0x0002:word16])
+	fn0390(SLICE(hl_297 + 0x000C, byte, 8), (byte) (hl_297 + 0x000C), 0x00, Mem295[sp_35 - 0x0002:word16])
 	Mem318[Mem295[0x168B:word16] + 0x0020:byte] = 0x00
 	Mem320[0x1697:byte] = 0x00
 // DataOut:
@@ -2070,7 +2061,7 @@ l0C04:
 l0C07:
 	fn05CE(0x02, 0x96)
 	byte a_52 = Mem13[0x138A:byte]
-	fn06CE(0x00, a_52 - 0x01, out de_265, out f_266)
+	fn06CE(0x00, a_52 - 0x01, out de_263, out f_264)
 	fn0814()
 	af_90 = DPB(af, a_52 - 0x01, 0) (alias)
 // DataOut:
@@ -2083,22 +2074,16 @@ l0C1A:
 	Mem79[0x1645:byte] = a_76 + 0x30
 	Mem82[hl_74 - 0x0002:word16] = 0x0231
 	Mem85[hl_74 - 0x0004:word16] = 0x1642
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word16 stackArg0 = <invalid>
 	word16 sp_101
-	word16 af_96 = fn082F(DPB(af_90, a_76 + 0x30, 0), 0x00, 0x5C, 0x10, stackArg0, Mem85[hl_74 - 0x0004:word16], Mem85[hl_74 - 0x0002:word16], out sp_101)
+	word16 af_96 = fn082F(DPB(af_90, a_76 + 0x30, 0), 0x00, 0x5C, 0x10, Mem85[hl_74 - 0x0004:word16], Mem85[hl_74 - 0x0002:word16], out sp_101)
 	Mem108[sp_101 - 0x0002:word16] = 0x005C
 	word16 hl_116 = (word16) fn1346(0x01, 0x0103)
 	byte l_128
 	fn1326(0x07, SLICE(hl_116, byte, 8), (byte) hl_116, out l_128)
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
 	word16 hl_137 = Mem108[0x0108:word16]
-	word16 stackArg0 = <invalid>
 	word16 sp_147
 	byte f_143
-	word16 de_145 = fn040D(SLICE(hl_137, byte, 8), (byte) hl_137, l_128, stackArg0, Mem108[sp_101 + 0xFFFC:word16], out sp_147, out f_143)
+	word16 de_145 = fn040D(SLICE(hl_137, byte, 8), (byte) hl_137, l_128, Mem108[sp_101 + 0xFFFC:word16], out sp_147, out f_143)
 	Mem160[sp_147 - 0x0002:word16] = DPB(af_96, 0x00 - (Mem108[0x138A:byte] <u 0x01), 0)
 	word16 bc_168 = Mem160[sp_147 - 0x0002:word16]
 	byte b_170 = SLICE(bc_168, byte, 8)
@@ -2618,7 +2603,7 @@ fn1055_exit:
 
 
 
-void fn106E(word16 af, word16 wArg00)
+void fn106E(word16 af, byte bArg00)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  a:[0..7] af:[8..15] Stack +0000:[0..7]

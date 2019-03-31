@@ -83,8 +83,8 @@ void _mm_free(real64 (* rdi)[])
 	free(rdi);
 }
 
-// 00000000000007A8: void vec_add(Register word64 rdi, Stack word64 qwArg00)
-void vec_add(word64 rdi, word64 qwArg00)
+// 00000000000007A8: void vec_add(Register word64 rdi)
+void vec_add(word64 rdi)
 {
 	__align(fp);
 	uint64 rax_n = (uint64) ((uint128) (uint64) rdi /u globals->qw0B00);
@@ -134,10 +134,7 @@ void main(Eq_n xmm0)
 		xmm0 = __xorpd(xmm0, xmm0);
 		rax_n[qwLoc20_n] = (real64) xmm0;
 	}
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word64 stackArg0 = <invalid>;
-	vec_add(0x0400, stackArg0);
+	vec_add(0x0400);
 	up64 qwLoc28_n;
 	for (qwLoc28_n = 0x00; qwLoc28_n < 0x0400; ++qwLoc28_n)
 		printf("%g\n", 0x00);

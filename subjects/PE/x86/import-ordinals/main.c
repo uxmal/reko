@@ -60,10 +60,7 @@ Eq_n Win32CrtStartup()
 {
 	int8 Top_n = 0x00;
 	fn0040165E();
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg4 = <invalid>;
-	struct Eq_n * ebp_n = fn00401980(ebx, esi, edi, dwLoc0C, stackArg4, 0x14);
+	struct Eq_n * ebp_n = fn00401980(ebx, esi, edi, dwLoc0C, 0x14);
 	Eq_n esp_n = <invalid>;
 	*(esp_n - 0x04) = 0x01;
 	word32 dwLoc04_n = 0x14;
@@ -74,10 +71,7 @@ Eq_n Win32CrtStartup()
 l00401172:
 		esp_n -= 0x04;
 		*esp_n = 0x07;
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg0 = <invalid>;
-		fn0040176D(stackArg0, *esp_n);
+		fn0040176D(*esp_n);
 	}
 	*(ebp_n - 0x19) = 0x00;
 	*(ebp_n - 0x04) &= 0x00;
@@ -194,27 +188,12 @@ l00401172:
 		union Eq_n * esp_n = esp_n - 0x04;
 		*esp_n = 0x00;
 		*(esp_n - 0x04) = 0x01;
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
-		fn004015E6(stackArg4, *esp_n);
+		fn004015E6(*esp_n);
 		*(ebp_n - 0x04) = ~0x01;
 		esp_n = (struct Eq_n *) ((char *) esp_n + 0x04);
 		eax_n = eax_n;
 l004012C3:
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg4 = <invalid>;
-		Eq_n stackArg8 = <invalid>;
-		Eq_n stackArg12 = <invalid>;
-		Eq_n stackArg16 = <invalid>;
-		fn004019C6(ebp_n, esp_n->ptrFFFFFFFC, stackArg4, stackArg8, stackArg12, stackArg16, out ebp_n, out esi_n, out edi_n);
+		fn004019C6(ebp_n, esp_n->ptrFFFFFFFC, out ebp_n, out esi_n, out edi_n);
 		return eax_n;
 	}
 	goto l00401172;
@@ -289,10 +268,7 @@ byte fn0040146F(word32 edx, word32 dwArg04)
 struct Eq_n * fn0040153F(word32 ebx, Eq_n esi, Eq_n edi, ptr32 & edxOut, ptr32 & ebxOut, ptr32 & ebpOut, ptr32 & esiOut, ptr32 & ediOut)
 {
 	struct Eq_n * eax_n;
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg4 = <invalid>;
-	struct Eq_n * ebp_n = fn00401980(ebx, esi, edi, dwLoc0C, stackArg4, 0x08);
+	struct Eq_n * ebp_n = fn00401980(ebx, esi, edi, dwLoc0C, 0x08);
 	*(ebp_n - 0x04) &= 0x00;
 	Eq_n esp_n = <invalid>;
 	struct Eq_n * eax_n = (struct Eq_n *) 23117;
@@ -309,22 +285,10 @@ struct Eq_n * fn0040153F(word32 ebx, Eq_n esi, Eq_n edi, ptr32 & edxOut, ptr32 &
 				*(ebp_n - 0x04) = ~0x01;
 				eax_n = (struct Eq_n *) DPB(eax_n, 0x01, 0);
 l004015C3:
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				Eq_n stackArg4 = <invalid>;
-				Eq_n stackArg8 = <invalid>;
-				Eq_n stackArg12 = <invalid>;
-				Eq_n stackArg16 = <invalid>;
 				ptr32 ebp_n;
 				ptr32 edi_n;
 				ptr32 esi_n;
-				ptr32 ebx_n = fn004019C6(ebp_n, *((word32) esp_n - 0x04), stackArg4, stackArg8, stackArg12, stackArg16, out ebp_n, out esi_n, out edi_n);
+				ptr32 ebx_n = fn004019C6(ebp_n, *((word32) esp_n - 0x04), out ebp_n, out esi_n, out edi_n);
 				edxOut = edx;
 				ebxOut = ebx_n;
 				ebpOut = ebp_n;
@@ -346,8 +310,8 @@ void fn004015C9(Eq_n bArg04)
 		globals->dw403338 = 0x00;
 }
 
-// 004015E6: void fn004015E6(Stack Eq_n dwArg04, Stack Eq_n bArg08)
-void fn004015E6(Eq_n dwArg04, Eq_n bArg08)
+// 004015E6: void fn004015E6(Stack Eq_n bArg08)
+void fn004015E6(Eq_n bArg08)
 {
 	if (globals->b403354 == 0x00 || bArg08 == 0x00)
 	{
@@ -389,8 +353,8 @@ ptr32 fn00401767()
 	return 0x00403380;
 }
 
-// 0040176D: void fn0040176D(Stack Eq_n dwArg00, Stack word32 dwArg04)
-void fn0040176D(Eq_n dwArg00, word32 dwArg04)
+// 0040176D: void fn0040176D(Stack word32 dwArg04)
+void fn0040176D(word32 dwArg04)
 {
 	if (IsProcessorFeaturePresent(0x17) == 0x00)
 	{
@@ -439,8 +403,8 @@ void fn00401972()
 	globals->ptr4020D4();
 }
 
-// 00401980: Register ptr32 fn00401980(Register word32 ebx, Register Eq_n esi, Register Eq_n edi, Stack word32 dwArg00, Stack Eq_n dwArg04, Stack ui32 dwArg08)
-ptr32 fn00401980(word32 ebx, Eq_n esi, Eq_n edi, word32 dwArg00, Eq_n dwArg04, ui32 dwArg08)
+// 00401980: Register ptr32 fn00401980(Register word32 ebx, Register Eq_n esi, Register Eq_n edi, Stack word32 dwArg00, Stack ui32 dwArg08)
+ptr32 fn00401980(word32 ebx, Eq_n esi, Eq_n edi, word32 dwArg00, ui32 dwArg08)
 {
 	ptr32 esp_n = fp - 0x08 - dwArg08;
 	*(esp_n - 0x04) = ebx;
@@ -452,8 +416,8 @@ ptr32 fn00401980(word32 ebx, Eq_n esi, Eq_n edi, word32 dwArg00, Eq_n dwArg04, u
 	return fp + 0x08;
 }
 
-// 004019C6: Register Eq_n fn004019C6(Register (ptr32 Eq_n) ebp, Stack ptr32 dwArg00, Stack Eq_n dwArg04, Stack Eq_n dwArg08, Stack Eq_n dwArg0C, Stack Eq_n dwArg10, Register out ptr32 ebpOut, Register out Eq_n esiOut, Register out Eq_n ediOut)
-Eq_n fn004019C6(struct Eq_n * ebp, ptr32 dwArg00, Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, Eq_n dwArg10, ptr32 & ebpOut, union Eq_n & esiOut, union Eq_n & ediOut)
+// 004019C6: Register word32 fn004019C6(Register (ptr32 Eq_n) ebp, Stack ptr32 dwArg00, Register out ptr32 ebpOut, Register out ptr32 esiOut, Register out ptr32 ediOut)
+word32 fn004019C6(struct Eq_n * ebp, ptr32 dwArg00, ptr32 & ebpOut, ptr32 & esiOut, ptr32 & ediOut)
 {
 	fs->dw0000 = *(ebp - 0x10);
 	ptr32 ebp_n = ebp->ptr0000;

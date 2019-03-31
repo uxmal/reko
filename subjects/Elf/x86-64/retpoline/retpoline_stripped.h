@@ -38,12 +38,12 @@ Eq_45: (union "Eq_45" (int64 u0) (size_t u1))
 	T_46 (in size : size_t)
 	T_47 (in (int64) edi : int64)
 	T_48 (in (int64) esi : int64)
-Eq_52: (fn void (word64))
-	T_52 (in fn0000000000400700 : ptr64)
-	T_53 (in signature of fn0000000000400700 : void)
-Eq_56: (fn void ())
-	T_56 (in __pause : ptr64)
-	T_57 (in signature of __pause : void)
+Eq_50: (fn void ())
+	T_50 (in fn0000000000400700 : ptr64)
+	T_51 (in signature of fn0000000000400700 : void)
+Eq_53: (fn void ())
+	T_53 (in __pause : ptr64)
+	T_54 (in signature of __pause : void)
 // Type Variables ////////////
 globals_t: (in globals : (ptr64 (struct "Globals")))
   Class: Eq_1
@@ -241,40 +241,28 @@ T_49: (in calloc((int64) edi, (int64) esi) : (ptr64 void))
   Class: Eq_49
   DataType: (ptr64 void)
   OrigDataType: (ptr64 void)
-T_50: (in stackArg0 : word64)
+T_50: (in fn0000000000400700 : ptr64)
   Class: Eq_50
-  DataType: word64
-  OrigDataType: word64
-T_51: (in <invalid> : void)
+  DataType: (ptr64 Eq_50)
+  OrigDataType: (ptr64 (fn T_52 ()))
+T_51: (in signature of fn0000000000400700 : void)
   Class: Eq_50
-  DataType: word64
-  OrigDataType: void
-T_52: (in fn0000000000400700 : ptr64)
-  Class: Eq_52
-  DataType: (ptr64 Eq_52)
-  OrigDataType: (ptr64 (fn T_55 (T_50)))
-T_53: (in signature of fn0000000000400700 : void)
-  Class: Eq_52
-  DataType: (ptr64 Eq_52)
+  DataType: (ptr64 Eq_50)
   OrigDataType: 
-T_54: (in qwArg00 : word64)
-  Class: Eq_50
-  DataType: word64
-  OrigDataType: word64
-T_55: (in fn0000000000400700(stackArg0) : void)
-  Class: Eq_55
+T_52: (in fn0000000000400700() : void)
+  Class: Eq_52
   DataType: void
   OrigDataType: void
-T_56: (in __pause : ptr64)
-  Class: Eq_56
-  DataType: (ptr64 Eq_56)
-  OrigDataType: (ptr64 (fn T_58 ()))
-T_57: (in signature of __pause : void)
-  Class: Eq_56
-  DataType: (ptr64 Eq_56)
+T_53: (in __pause : ptr64)
+  Class: Eq_53
+  DataType: (ptr64 Eq_53)
+  OrigDataType: (ptr64 (fn T_55 ()))
+T_54: (in signature of __pause : void)
+  Class: Eq_53
+  DataType: (ptr64 Eq_53)
   OrigDataType: 
-T_58: (in __pause() : void)
-  Class: Eq_58
+T_55: (in __pause() : void)
+  Class: Eq_55
   DataType: void
   OrigDataType: void
 */
@@ -310,7 +298,7 @@ typedef union Eq_45 {
 	size_t u1;
 } Eq_45;
 
-typedef void (Eq_52)(word64);
+typedef void (Eq_50)();
 
-typedef void (Eq_56)();
+typedef void (Eq_53)();
 

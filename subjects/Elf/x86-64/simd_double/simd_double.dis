@@ -346,7 +346,7 @@ _mm_free_exit:
 
 
 
-void vec_add(word64 rdi, word64 qwArg00)
+void vec_add(word64 rdi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  rdi:[0..63]
@@ -505,10 +505,7 @@ l00000000000009AC:
 // SymbolicIn:
 
 l00000000000009D6:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word64 stackArg0 = <invalid>
-	vec_add(0x0000000000000400, stackArg0)
+	vec_add(0x0000000000000400)
 	word64 qwLoc28_219 = 0x0000000000000000
 // DataOut:
 // DataOut (flags):

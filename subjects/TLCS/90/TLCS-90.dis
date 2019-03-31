@@ -1,4 +1,4 @@
-void fn0000(byte a, word16 wArg00)
+void fn0000(byte a)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  a:[0..7]
@@ -829,10 +829,7 @@ fn0805_entry:
 
 l0805:
 	__disable_interrupts()
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word16 stackArg0 = <invalid>
-	fn0823(stackArg0)
+	fn0823()
 	fn0822()
 	__halt()
 // DataOut:
@@ -859,10 +856,7 @@ l0822:
 // SymbolicIn:
 
 l0822_thunk_fn0823:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word16 stackArg0 = <invalid>
-	fn0823(stackArg0)
+	fn0823()
 	return
 // DataOut:
 // DataOut (flags):
@@ -875,7 +869,7 @@ fn0822_exit:
 
 
 
-void fn0823(word16 wArg00)
+void fn0823()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
@@ -1179,7 +1173,7 @@ l0BFE:
 
 
 
-void fn0C1D(word16 de, word16 ix, word16 wArg00, word16 wArg22)
+void fn0C1D(word16 de, word16 ix, word16 wArg22)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  de:[0..15] ix:[0..15] Stack +0022:[0..15]
@@ -1605,7 +1599,7 @@ fn0E13_exit:
 
 
 
-void fn0F9A(word16 wArg00)
+void fn0F9A()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
@@ -1630,7 +1624,7 @@ fn0F9A_exit:
 
 
 
-void fn164F(word16 af, byte c, byte b, byte h, word16 ix, word16 wArg13, word16 wArg1A, word16 wArg1B)
+void fn164F(word16 af, byte c, byte b, byte h, word16 ix, word16 wArg13, byte bArg1A, word16 wArg1B)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  a:[0..7] af:[0..7] b:[0..7] c:[0..7] h:[0..7] ix:[0..15] Stack +0013:[0..15] Stack +001A:[0..7] Stack +001B:[0..15]
@@ -1819,7 +1813,7 @@ fn1873_exit:
 
 
 
-void fn1929(word16 af, word16 bc, byte e, byte d, word16 ix, word16 wArg11, word16 wArg13, word16 wArg1A)
+void fn1929(word16 af, word16 bc, byte e, byte d, word16 ix, byte bArg11, word16 wArg1A)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  a:[0..7] af:[0..7] bc:[0..7] d:[0..7] e:[0..7] ix:[0..15] Stack +0011:[0..7] Stack +001A:[0..15]
@@ -1893,7 +1887,7 @@ fn1929_exit:
 
 
 
-void fn1BA4(word16 bc, word16 de, word16 wArg00, word16 wArg10, word16 wArg1D, word16 wArg1F)
+void fn1BA4(word16 bc, word16 de)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  bc:[0..7] de:[0..15]
@@ -1908,10 +1902,7 @@ l1BCF:
 // SymbolicIn:
 
 l1BD8_thunk_fn0000:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	stackArg0 = <invalid>
-	fn0000(a, stackArg0)
+	fn0000(a)
 	return
 // DataOut:
 // DataOut (flags):
@@ -2062,7 +2053,7 @@ l1C54:
 
 
 
-void fn1C89(byte a, byte c, word16 wArg00)
+void fn1C89(byte a, byte c)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  a:[0..7] c:[0..7]
@@ -2103,7 +2094,7 @@ fn1C89_exit:
 
 
 
-void fn22A6(word16 bc, word16 hl, word16 ix, word16 wArg03, word16 wArg05, word16 wArg0D, word16 wArg10)
+void fn22A6(word16 bc, word16 hl, word16 ix, word16 wArg05, word16 wArg10)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  bc:[0..15] hl:[0..15] ix:[0..15] Stack +0005:[0..15] Stack +0010:[0..15]
@@ -2217,7 +2208,7 @@ fn384A_exit:
 
 
 
-void fn3E2D(word16 bc, word16 ix, word16 wArg03, word16 wArg05, word16 wArg0D, word16 wArg10)
+void fn3E2D(word16 bc, word16 ix, word16 wArg05, word16 wArg0D, word16 wArg10)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  bc:[0..15] ix:[0..15] Stack +0005:[0..15] Stack +000D:[0..15] Stack +0010:[0..15]
@@ -2251,13 +2242,7 @@ l3E2D:
 // SymbolicIn:
 
 l3EBF_thunk_fn3EC2:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word16 stackArg3 = <invalid>
-	word16 stackArg5 = <invalid>
-	fn3EC2(v41_126, stackArg3, stackArg5)
+	fn3EC2(v41_126)
 	return
 // DataOut:
 // DataOut (flags):
@@ -2270,7 +2255,7 @@ fn3E2D_exit:
 
 
 
-void fn3EC2(byte b, word16 wArg03, word16 wArg05)
+void fn3EC2(byte b)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  b:[0..7]
@@ -2302,7 +2287,7 @@ l3EC2:
 
 
 
-void fn59FE(word16 wArg0A, word16 wArg10)
+void fn59FE()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
@@ -2427,7 +2412,7 @@ l59FE:
 
 
 
-void fn5A49(byte c, byte b, word16 de, word16 hl, word16 ix, word16 wArg02, word16 wArg06, word16 wArg08)
+void fn5A49(byte c, byte b, word16 de, word16 hl, word16 ix, word16 wArg06)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  b:[0..7] c:[0..7] de:[0..15] hl:[0..7] ix:[0..15] Stack +0006:[0..15]

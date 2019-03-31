@@ -4,8 +4,8 @@
 
 #include "test.h"
 
-// 00011000: Register word32 fn00011000(Stack word32 dwArg00, Stack word32 dwArg04, Stack word32 dwArg08, Stack word32 dwArg0C, Register out ptr32 raOut)
-word32 fn00011000(word32 dwArg00, word32 dwArg04, word32 dwArg08, word32 dwArg0C, ptr32 & raOut)
+// 00011000: Register word32 fn00011000(Register out ptr32 raOut)
+word32 fn00011000(ptr32 & raOut)
 {
 	memset(fp + -0x0014, 0x00, 0x05);
 	memcpy(calloc(0x01, 0x05), fp + ~0x1B, 0x05);
@@ -19,43 +19,16 @@ word32 fn00011000(word32 dwArg00, word32 dwArg04, word32 dwArg08, word32 dwArg0C
 Eq_n Win32CrtStartup()
 {
 	fn000111C4(r2, r9, ra);
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg0 = <invalid>;
-	word32 stackArg4 = <invalid>;
-	word32 stackArg8 = <invalid>;
-	word32 stackArg12 = <invalid>;
-	return fn000110E8(ra, stackArg0, stackArg4, stackArg8, stackArg12);
+	return fn000110E8(ra);
 }
 
-// 000110E8: Register Eq_n fn000110E8(Register word32 ra, Stack word32 dwArg00, Stack word32 dwArg04, Stack word32 dwArg08, Stack word32 dwArg0C)
-Eq_n fn000110E8(word32 ra, word32 dwArg00, word32 dwArg04, word32 dwArg08, word32 dwArg0C)
+// 000110E8: Register Eq_n fn000110E8(Register word32 ra)
+Eq_n fn000110E8(word32 ra)
 {
 	fn000114E4(ra);
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg0 = <invalid>;
-	word32 stackArg4 = <invalid>;
-	word32 stackArg8 = <invalid>;
-	word32 stackArg12 = <invalid>;
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
 	word32 ra_n;
-	Eq_n r2_n = fn00011000(stackArg0, stackArg4, stackArg8, stackArg12, out ra_n);
-	word32 stackArg0 = <invalid>;
-	fn00011278(r2_n, r2_n, ra_n, stackArg0);
+	Eq_n r2_n = fn00011000(out ra_n);
+	fn00011278(r2_n, r2_n, ra_n);
 	return r2_n;
 }
 
@@ -95,34 +68,19 @@ void fn000111C4(word32 r2, ui32 r9, word32 ra)
 	globals->dw13034 = ~dwLoc0C_n;
 }
 
-// 00011278: void fn00011278(Register Eq_n r2, Register Eq_n r4, Register word32 ra, Stack word32 dwArg00)
-void fn00011278(Eq_n r2, Eq_n r4, word32 ra, word32 dwArg00)
+// 00011278: void fn00011278(Register Eq_n r2, Register Eq_n r4, Register word32 ra)
+void fn00011278(Eq_n r2, Eq_n r4, word32 ra)
 {
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg0 = <invalid>;
-	word32 stackArg4 = <invalid>;
-	word32 stackArg8 = <invalid>;
-	fn000112A8(r2, r4, 0x00, 0x00, ra, stackArg0, stackArg4, stackArg8);
+	fn000112A8(r2, r4, 0x00, 0x00, ra);
 }
 
-// 000112A8: void fn000112A8(Register Eq_n r2, Register Eq_n r4, Register int32 r5, Register int32 r6, Register word32 ra, Stack word32 dwArg00, Stack word32 dwArg04, Stack word32 dwArg08)
-void fn000112A8(Eq_n r2, Eq_n r4, int32 r5, int32 r6, word32 ra, word32 dwArg00, word32 dwArg04, word32 dwArg08)
+// 000112A8: void fn000112A8(Register Eq_n r2, Register Eq_n r4, Register int32 r5, Register int32 r6, Register word32 ra)
+void fn000112A8(Eq_n r2, Eq_n r4, int32 r5, int32 r6, word32 ra)
 {
 	globals->b13038 = (byte) (r6 << 0x18 >> 0x18);
 	if (r5 != 0x00)
 	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		word32 stackArg0 = <invalid>;
-		word32 stackArg4 = <invalid>;
-		fn0001147C(&globals->dw12018, &globals->dw1201C, ra, stackArg0, stackArg4);
+		fn0001147C(&globals->dw12018, &globals->dw1201C, ra);
 		if (r6 != 0x00)
 			return;
 		TerminateProcess(fn00011460(), r4);
@@ -130,13 +88,7 @@ void fn000112A8(Eq_n r2, Eq_n r4, int32 r5, int32 r6, word32 ra, word32 dwArg00,
 	else if (globals->t13040 == 0x00)
 	{
 l00011374:
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		word32 stackArg0 = <invalid>;
-		word32 stackArg4 = <invalid>;
-		fn0001147C(&globals->dw12010, &globals->dw12014, ra, stackArg0, stackArg4);
+		fn0001147C(&globals->dw12010, &globals->dw12014, ra);
 	}
 	else
 	{
@@ -157,49 +109,22 @@ l00011374:
 	}
 }
 
-// 000113D8: void fn000113D8(Register Eq_n r2, Register Eq_n r4, Register word32 ra, Stack word32 dwArg00)
-void fn000113D8(Eq_n r2, Eq_n r4, word32 ra, word32 dwArg00)
+// 000113D8: void fn000113D8(Register Eq_n r2, Register Eq_n r4, Register word32 ra)
+void fn000113D8(Eq_n r2, Eq_n r4, word32 ra)
 {
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg0 = <invalid>;
-	word32 stackArg4 = <invalid>;
-	word32 stackArg8 = <invalid>;
-	fn000112A8(r2, r4, 0x01, 0x00, ra, stackArg0, stackArg4, stackArg8);
+	fn000112A8(r2, r4, 0x01, 0x00, ra);
 }
 
 // 00011408: void fn00011408(Register Eq_n r2, Register word32 ra)
 void fn00011408(Eq_n r2, word32 ra)
 {
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg0 = <invalid>;
-	word32 stackArg4 = <invalid>;
-	word32 stackArg8 = <invalid>;
-	fn000112A8(r2, 0x00, 0x00, 0x01, ra, stackArg0, stackArg4, stackArg8);
+	fn000112A8(r2, 0x00, 0x00, 0x01, ra);
 }
 
 // 00011434: void fn00011434(Register Eq_n r2, Register word32 ra)
 void fn00011434(Eq_n r2, word32 ra)
 {
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg0 = <invalid>;
-	word32 stackArg4 = <invalid>;
-	word32 stackArg8 = <invalid>;
-	fn000112A8(r2, 0x00, 0x01, 0x01, ra, stackArg0, stackArg4, stackArg8);
+	fn000112A8(r2, 0x00, 0x01, 0x01, ra);
 }
 
 // 00011460: Register int32 fn00011460()
@@ -208,8 +133,8 @@ int32 fn00011460()
 	return 66;
 }
 
-// 0001147C: void fn0001147C(Register (ptr32 word32) r4, Register (ptr32 word32) r5, Register word32 ra, Stack word32 dwArg00, Stack word32 dwArg04)
-void fn0001147C(word32 * r4, word32 * r5, word32 ra, word32 dwArg00, word32 dwArg04)
+// 0001147C: void fn0001147C(Register (ptr32 word32) r4, Register (ptr32 word32) r5, Register word32 ra)
+void fn0001147C(word32 * r4, word32 * r5, word32 ra)
 {
 	word32 * dwArg00_n = r4;
 	while ((word32) (dwArg00_n < r5) != 0x00)
@@ -223,24 +148,12 @@ void fn0001147C(word32 * r4, word32 * r5, word32 ra, word32 dwArg00, word32 dwAr
 // 000114E4: void fn000114E4(Register word32 ra)
 void fn000114E4(word32 ra)
 {
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg0 = <invalid>;
-	word32 stackArg4 = <invalid>;
-	fn0001147C(&globals->dw12008, &globals->dw1200C, ra, stackArg0, stackArg4);
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg0 = <invalid>;
-	word32 stackArg4 = <invalid>;
-	fn0001147C(&globals->dw12000, &globals->dw12004, ra, stackArg0, stackArg4);
+	fn0001147C(&globals->dw12008, &globals->dw1200C, ra);
+	fn0001147C(&globals->dw12000, &globals->dw12004, ra);
 }
 
-// 0001152C: Register word32 fn0001152C(Register word32 r2, Register word32 r4, Register word32 r5, Register word32 ra, Stack word32 dwArg00)
-word32 fn0001152C(word32 r2, word32 r4, word32 r5, word32 ra, word32 dwArg00)
+// 0001152C: Register word32 fn0001152C(Register word32 r2, Register word32 r4, Register word32 r5, Register word32 ra)
+word32 fn0001152C(word32 r2, word32 r4, word32 r5, word32 ra)
 {
 	Eq_n r8_n = globals->t13040;
 	Eq_n r8_n = globals->t1303C;
@@ -300,12 +213,9 @@ word32 fn0001152C(word32 r2, word32 r4, word32 r5, word32 ra, word32 dwArg00)
 	}
 }
 
-// 000116FC: void fn000116FC(Register word32 r2, Register word32 r4, Register word32 r5, Register word32 ra, Stack word32 dwArg00)
-void fn000116FC(word32 r2, word32 r4, word32 r5, word32 ra, word32 dwArg00)
+// 000116FC: void fn000116FC(Register word32 r2, Register word32 r4, Register word32 r5, Register word32 ra)
+void fn000116FC(word32 r2, word32 r4, word32 r5, word32 ra)
 {
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg0 = <invalid>;
-	fn0001152C(r2, r4, r5, ra, stackArg0) == 0x00;
+	fn0001152C(r2, r4, r5, ra) == 0x00;
 }
 

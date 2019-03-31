@@ -36,16 +36,13 @@ void fn0000000000400560(word32 esi, word32 edi)
 // 00000000004006F0: void fn00000000004006F0()
 void fn00000000004006F0()
 {
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word64 stackArg0 = <invalid>;
-	fn0000000000400700(stackArg0);
+	fn0000000000400700();
 	while (true)
 		__pause();
 }
 
-// 0000000000400700: void fn0000000000400700(Stack word64 qwArg00)
-void fn0000000000400700(word64 qwArg00)
+// 0000000000400700: void fn0000000000400700()
+void fn0000000000400700()
 {
 }
 

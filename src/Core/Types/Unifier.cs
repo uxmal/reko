@@ -197,10 +197,12 @@ namespace Reko.Core.Types
                     AreCompatible(mpA.BasePointer, mpB.BasePointer, ++depth) && 
 				    AreCompatible(mpA.Pointee, mpB.Pointee, ++depth);
 			PrimitiveType pb = b as PrimitiveType;
-			if (pb != null)
+			if (pb != null && pb.BitSize == mpA.BitSize)
 			{
-				if (pb == PrimitiveType.Word16 || pb.Domain == Domain.Pointer ||
-                    pb.Domain == Domain.Selector || pb.Domain == Domain.Offset)
+				if (pb == PrimitiveType.Word16 || pb == PrimitiveType.Word32  ||
+                    pb.Domain == Domain.Pointer ||
+                    pb.Domain == Domain.Selector ||
+                    pb.Domain == Domain.Offset)
 					return true;
 			}
 			return false;
@@ -215,6 +217,12 @@ namespace Reko.Core.Types
                //$BUG: should emit warning in the error log.
                 --recDepth;
                 Debug.Print("Exceeded stack depth, giving up");
+                if (a == null && b == null)
+                    return null;
+                if (a == null)
+                    return b;
+                if (b == null)
+                    return a;
                 return factory.CreateUnionType(null, null, new[] { a, b });
             }
             var u = UnifyInternal(a, b);

@@ -396,12 +396,12 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        public void NarrowedStackArgument()
+        public void GcrNarrowedStackArgument()
         {
             var arg = proc.Frame.EnsureStackArgument(4, PrimitiveType.Word32);
-            flow.StackArguments[arg] = 16;
+            flow.BitsUsed[arg.Storage] = new BitRange(0, 16);
             crw.EnsureSignature(ssa, proc.Frame, flow);
-            Assert.AreEqual("void foo(Stack uipr16 dwArg04)", proc.Signature.ToString(proc.Name));
+            Assert.AreEqual("void foo(Stack word16 wArg04)", proc.Signature.ToString(proc.Name));
         }
 
         [Test]
@@ -411,17 +411,20 @@ namespace Reko.UnitTests.Analysis
             f.ReturnAddressKnown = true;
             f.ReturnAddressSize = PrimitiveType.Word16.Size;
 
-            f.EnsureStackVariable(Constant.Word16(8), 2, PrimitiveType.Word16);
-            f.EnsureStackVariable(Constant.Word16(6), 2, PrimitiveType.Word16);
-            f.EnsureStackVariable(Constant.Word16(0x0E), 2, PrimitiveType.Word32);
+            var uses = new List<KeyValuePair<Storage, BitRange>>
+            {
+                new KeyValuePair<Storage,BitRange>(new StackArgumentStorage(8, PrimitiveType.Word16), new BitRange(0, 16)),
+                new KeyValuePair<Storage,BitRange>(new StackArgumentStorage(6, PrimitiveType.Word16), new BitRange(0, 16)),
+                new KeyValuePair<Storage,BitRange>(new StackArgumentStorage(0xE, PrimitiveType.Word32), new BitRange(0, 32))
+            };
 
             CallRewriter gcr = new CallRewriter(null, null, new FakeDecompilerEventListener());
             using (FileUnitTester fut = new FileUnitTester("Analysis/GcrStackParameters.txt"))
             {
-                foreach (KeyValuePair<int, Identifier> de in gcr.GetSortedStackArguments(f))
+                foreach ((int, Identifier) de in gcr.GetSortedStackArguments(f, uses))
                 {
-                    fut.TextWriter.Write("{0:X4} ", de.Key);
-                    de.Value.Write(true, fut.TextWriter);
+                    fut.TextWriter.Write("{0:X4} ", de.Item1);
+                    de.Item2.Write(true, fut.TextWriter);
                     fut.TextWriter.WriteLine();
                 }
                 fut.AssertFilesEqual();

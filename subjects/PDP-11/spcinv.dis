@@ -186,17 +186,11 @@ l0338:
 // SymbolicIn:
 
 l033E:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg0 = <invalid>
 	word16 r4_154
 	word16 r5_155
-	word16 r0_153 = fn0486(r0_106, r4_110, r5, stackArg0, out r4_154, out r5_155)
+	word16 r0_153 = fn0486(r0_106, r4_110, r5, out r4_154, out r5_155)
 	Mem160[0x0F16:word16] = 0x0002
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg0 = <invalid>
-	r0_106 = fn0470(r0_153, r4_154, r5_155, stackArg0, out r4_110)
+	r0_106 = fn0470(r0_153, r4_154, r5_155, out r4_110)
 	Mem170[0x0F18:word16] = 0x0078
 // DataOut:
 // DataOut (flags):
@@ -305,12 +299,9 @@ l03E6:
 // SymbolicIn:
 
 l040A:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg0 = <invalid>
 	word16 r4_324
 	word16 r5_325
-	word16 r0_323 = fn0486(r0_106, r4_110, r5, stackArg0, out r4_324, out r5_325)
+	word16 r0_323 = fn0486(r0_106, r4_110, r5, out r4_324, out r5_325)
 	word16 sp_326 = <invalid>
 	Mem331[sp_326 - 0x0001:byte] = 0x01
 	Mem332[sp_326:byte] = 0x18
@@ -324,7 +315,7 @@ l040A:
 // SymbolicIn:
 
 l041C_thunk_fn0AE8:
-	fn0AE8(r0_335, r4_336, 0x0420, Mem343[sp_338 - 2:word16], out r0_449, out r4_450, out r5_451)
+	fn0AE8(r0_335, r4_336, 0x0420, Mem343[sp_338 - 2:word16], out r0_446, out r4_447, out r5_448)
 	return
 // DataOut:
 // DataOut (flags):
@@ -360,9 +351,9 @@ l02B0:
 // SymbolicIn:
 
 l02B8:
-	r1_366 = r1_452 + 0x0002
-	r1_452 = r1_366
-	branch Mem365[r1_452:word16] - r0_93 != 0x0000 l02B8
+	r1_366 = r1_449 + 0x0002
+	r1_449 = r1_366
+	branch Mem365[r1_449:word16] - r0_93 != 0x0000 l02B8
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -387,7 +378,7 @@ l0234:
 
 
 
-word16 fn0470(word16 r0, word16 r4, word16 r5, byte bArg00, ptr16 & r4Out)
+word16 fn0470(word16 r0, word16 r4, word16 r5, ptr16 & r4Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r0:[0..15] r4:[0..15] r5:[0..15]
@@ -426,7 +417,7 @@ fn0470_exit:
 
 
 
-word16 fn0486(word16 r0, word16 r4, word16 r5, byte bArg00, ptr16 & r4Out, ptr16 & r5Out)
+word16 fn0486(word16 r0, word16 r4, word16 r5, ptr16 & r4Out, ptr16 & r5Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r0:[0..15] r4:[0..15] r5:[0..15]
@@ -549,11 +540,8 @@ l04F8:
 // SymbolicIn:
 
 l04FE:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg0 = <invalid>
 	sp_111 = <invalid>
-	branch fn05D4(r0_101, r3_15, r4, r5_10, pc, stackArg0, out r0_101, out r3_15, out r4, out r5_10) l0584
+	branch fn05D4(r0_101, r3_15, r4, r5_10, pc, out r0_101, out r3_15, out r4, out r5_10) l0584
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -666,10 +654,7 @@ l0542:
 	word16 r5_226
 	fn0A7C(fn0AB6(r0_206, r4, r5_10, out r4_218, out r5_219), r4_218, r5_219, out r4_225, out r5_226)
 	Mem236[pc + 0x05F2:word16] = Mem214[pc + 0x05F2:word16] + Mem214[r2_112 + 0x0DD4:word16]
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	byte stackArg0 = <invalid>
-	r4 = fn0B1A(r4_225, r5_226, stackArg0, out r5_10)
+	r4 = fn0B1A(r4_225, r5_226, out r5_10)
 	word16 v65_246 = Mem236[0x0F12:word16] - 0x0001
 	Mem247[0x0F14:word16] = v65_246
 	sp_111 = <invalid>
@@ -743,7 +728,7 @@ l05B4:
 l05B4_thunk_fn0AE8:
 	word16 r4_292
 	word16 r5_293
-	fn0AE8(r0_103, r4, 0x05B8, Mem285[sp_281:word16], out r0_359, out r4_292, out r5_293)
+	fn0AE8(r0_103, r4, 0x05B8, Mem285[sp_281:word16], out r0_358, out r4_292, out r5_293)
 	r5Out = r5_293
 	return r4_292
 // DataOut:
@@ -764,7 +749,7 @@ fn04A0_exit:
 
 
 
-bool fn05D4(word16 r0, word16 r3, word16 r4, word16 r5, word16 pc, byte bArg00, ptr16 & r0Out, ptr16 & r3Out, ptr16 & r4Out, ptr16 & r5Out)
+bool fn05D4(word16 r0, word16 r3, word16 r4, word16 r5, word16 pc, ptr16 & r0Out, ptr16 & r3Out, ptr16 & r4Out, ptr16 & r5Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  pc:[0..15] r0:[0..15] r3:[0..15] r4:[0..15] r5:[0..15]
@@ -2209,7 +2194,7 @@ fn0AF6_exit:
 
 
 
-word16 fn0B1A(word16 r4, word16 r5, byte bArg00, ptr16 & r5Out)
+word16 fn0B1A(word16 r4, word16 r5, ptr16 & r5Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r4:[0..15] r5:[0..15]

@@ -89,17 +89,11 @@ l02A2:
 					goto l0370;
 				if (globals->w0F18 == 0x00)
 					goto l03AE;
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				Eq_n stackArg0 = <invalid>;
 				byte * r4_n;
 				Eq_n r5_n;
-				Eq_n r0_n = fn0486(r0_n, r4_n, r5, stackArg0, out r4_n, out r5_n);
+				Eq_n r0_n = fn0486(r0_n, r4_n, r5, out r4_n, out r5_n);
 				globals->w0F16 = 0x02;
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				Eq_n stackArg0 = <invalid>;
-				r0_n = fn0470(r0_n, r4_n, r5_n, stackArg0, out r4_n);
+				r0_n = fn0470(r0_n, r4_n, r5_n, out r4_n);
 				globals->w0F18 = 0x78;
 			}
 			if (globals->w0EF8 == 0x00)
@@ -160,12 +154,9 @@ l03E6:
 					r0_n.u0 = 0x0601;
 				}
 			}
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg0 = <invalid>;
 			byte * r4_n;
 			Eq_n r5_n;
-			Eq_n r0_n = fn0486(r0_n, r4_n, r5, stackArg0, out r4_n, out r5_n);
+			Eq_n r0_n = fn0486(r0_n, r4_n, r5, out r4_n, out r5_n);
 			Eq_n sp_n = <invalid>;
 			*(sp_n - 0x01) = 0x01;
 			sp_n->u0 = 0x18;
@@ -193,8 +184,8 @@ l0392:
 	(*((char *) globals->a02CC + (r1_n - 711) * 0x02))();
 }
 
-// 0470: Register Eq_n fn0470(Register Eq_n r0, Register (ptr16 byte) r4, Register Eq_n r5, Stack Eq_n bArg00, Register out ptr16 r4Out)
-Eq_n fn0470(Eq_n r0, byte * r4, Eq_n r5, Eq_n bArg00, ptr16 & r4Out)
+// 0470: Register Eq_n fn0470(Register Eq_n r0, Register (ptr16 byte) r4, Register Eq_n r5, Register out ptr16 r4Out)
+Eq_n fn0470(Eq_n r0, byte * r4, Eq_n r5, ptr16 & r4Out)
 {
 	byte * r4_n;
 	word16 r5_n;
@@ -208,8 +199,8 @@ Eq_n fn0470(Eq_n r0, byte * r4, Eq_n r5, Eq_n bArg00, ptr16 & r4Out)
 	return r0_n;
 }
 
-// 0486: Register Eq_n fn0486(Register Eq_n r0, Register (ptr16 byte) r4, Register Eq_n r5, Stack Eq_n bArg00, Register out ptr16 r4Out, Register out ptr16 r5Out)
-Eq_n fn0486(Eq_n r0, byte * r4, Eq_n r5, Eq_n bArg00, ptr16 & r4Out, ptr16 & r5Out)
+// 0486: Register Eq_n fn0486(Register Eq_n r0, Register (ptr16 byte) r4, Register Eq_n r5, Register out ptr16 r4Out, Register out ptr16 r5Out)
+Eq_n fn0486(Eq_n r0, byte * r4, Eq_n r5, ptr16 & r4Out, ptr16 & r5Out)
 {
 	byte * r4_n;
 	Eq_n r5_n;
@@ -260,11 +251,8 @@ l04EE:
 					word16 r1_n = (word32) r0_n + 0x01;
 					if (r0_n == 0x03 && globals->t0F02 > 0x00)
 					{
-						// Failed to bind call argument.
-						// Please report this issue at https://github.com/uxmal/reko
-						Eq_n stackArg0 = <invalid>;
 						sp_n.u0 = <invalid>;
-						if (!fn05D4(r0_n, r3_n, r4, r5_n, pc, stackArg0, out r0_n, out r3_n, out r4, out r5_n))
+						if (!fn05D4(r0_n, r3_n, r4, r5_n, pc, out r0_n, out r3_n, out r4, out r5_n))
 							goto l0504;
 					}
 					else
@@ -308,10 +296,7 @@ l0524:
 													Eq_n r5_n;
 													fn0A7C(fn0AB6(r0_n, r4, r5_n, out r4_n, out r5_n), r4_n, r5_n, out r4_n, out r5_n);
 													pc->w05F2 = (word16) r2_n[1770] + pc->w05F2;
-													// Failed to bind call argument.
-													// Please report this issue at https://github.com/uxmal/reko
-													Eq_n stackArg0 = <invalid>;
-													r4 = fn0B1A(r4_n, r5_n, stackArg0, out r5_n);
+													r4 = fn0B1A(r4_n, r5_n, out r5_n);
 													Eq_n v65_n = globals->w0F12 - 0x01;
 													globals->t0F14 = v65_n;
 													sp_n.u0 = <invalid>;
@@ -379,8 +364,8 @@ l0588:
 	}
 }
 
-// 05D4: FlagGroup bool fn05D4(Register Eq_n r0, Register Eq_n r3, Register (ptr16 byte) r4, Register Eq_n r5, Register (ptr16 Eq_n) pc, Stack Eq_n bArg00, Register out Eq_n r0Out, Register out Eq_n r3Out, Register out (ptr16 byte) r4Out, Register out Eq_n r5Out)
-bool fn05D4(Eq_n r0, Eq_n r3, byte * r4, Eq_n r5, struct Eq_n * pc, Eq_n bArg00, union Eq_n & r0Out, union Eq_n & r3Out, byte & r4Out, union Eq_n & r5Out)
+// 05D4: FlagGroup bool fn05D4(Register Eq_n r0, Register Eq_n r3, Register (ptr16 byte) r4, Register Eq_n r5, Register (ptr16 Eq_n) pc, Register out Eq_n r0Out, Register out Eq_n r3Out, Register out (ptr16 byte) r4Out, Register out Eq_n r5Out)
+bool fn05D4(Eq_n r0, Eq_n r3, byte * r4, Eq_n r5, struct Eq_n * pc, union Eq_n & r0Out, union Eq_n & r3Out, byte & r4Out, union Eq_n & r5Out)
 {
 	cup16 v11_n = 0x04 - (r3 - globals->t0F02);
 	bool Z_n = SLICE(cond(v11_n), bool, 2);
@@ -495,13 +480,13 @@ void fn06A2()
 		Eq_n r5_n;
 		do
 		{
-			if (r5_n.u1[0x0EF0] == 0x00)
+			if (*((word32) r5_n + 0x0EF0) == 0x00)
 			{
 				Eq_n r0_n = globals->t0F14;
 				if (r0_n <= 0x08)
 				{
-					r5_n.u1[0x0EF0] = (struct Eq_n) ((word32) r0_n + 0x02);
-					r5_n.u1[0x0EF3] = (struct Eq_n) 0x18;
+					*((word32) r5_n + 0x0EF0) = (word32) r0_n + 0x02;
+					((word32) r5_n + 0x0EF3)->u0 = 0x18;
 					globals->t0F0C.u0 = 0x00;
 				}
 				return;
@@ -970,8 +955,8 @@ byte * fn0AF6(byte * r4, Eq_n r5, ptr16 & r5Out)
 	return &globals->b1178;
 }
 
-// 0B1A: Register (ptr16 byte) fn0B1A(Register (ptr16 byte) r4, Register Eq_n r5, Stack Eq_n bArg00, Register out (ptr16 Eq_n) r5Out)
-byte * fn0B1A(byte * r4, Eq_n r5, Eq_n bArg00, struct Eq_n & r5Out)
+// 0B1A: Register (ptr16 byte) fn0B1A(Register (ptr16 byte) r4, Register Eq_n r5, Register out (ptr16 Eq_n) r5Out)
+byte * fn0B1A(byte * r4, Eq_n r5, struct Eq_n & r5Out)
 {
 	byte * r4_n;
 	word16 r5_n;

@@ -408,7 +408,7 @@ fn054C_exit:
 
 
 
-void fn0608(word16 wArg00, byte bArg01, word16 wArg02, byte bArg03)
+void fn0608(word16 wArg00, word16 wArg02)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  Stack +0000:[0..15] Stack +0002:[0..15]
@@ -1109,7 +1109,7 @@ fn0A64_exit:
 
 
 
-void fn0AAE(word16 r5, word16 wArg00)
+void fn0AAE(word16 r5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r5:[0..15]
@@ -1247,10 +1247,7 @@ l0AC4:
 // SymbolicIn:
 
 l0AC8_thunk_fn0AE6:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word16 stackArg2 = <invalid>
-	fn0AE6(r3, r4, 0x01, wLoc01_20, stackArg2, bArg01, wArg02, wArg04)
+	fn0AE6(r3, r4, 0x01, wLoc01_20, bArg01, wArg02, wArg04)
 	return
 // DataOut:
 // DataOut (flags):
@@ -1282,10 +1279,7 @@ l0AE2:
 // SymbolicIn:
 
 l0AE2_thunk_fn0AE6:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word16 stackArg2 = <invalid>
-	fn0AE6(r3, r4, 0x02, wLoc01_20, stackArg2, bArg01, wArg02, wArg04)
+	fn0AE6(r3, r4, 0x02, wLoc01_20, bArg01, wArg02, wArg04)
 	return
 // DataOut:
 // DataOut (flags):
@@ -1298,7 +1292,7 @@ fn0AE2_exit:
 
 
 
-void fn0AE6(word16 r3, word16 r4, word16 wArg00, word16 wArg01, word16 wArg02, byte bArg03, word16 wArg04, word16 wArg06)
+void fn0AE6(word16 r3, word16 r4, byte bArg00, word16 wArg01, byte bArg03, word16 wArg04, word16 wArg06)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r3:[0..15] r4:[0..15] Stack +0000:[0..7] Stack +0001:[0..15] Stack +0003:[0..7] Stack +0004:[0..15] Stack +0006:[0..15]
@@ -1402,10 +1396,7 @@ l0B3E:
 // SymbolicIn:
 
 l0B42_thunk_fn0B60:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word16 stackArg2 = <invalid>
-	fn0B60(r0, r3, 0x02, wLoc01_20, stackArg2, bArg01, wArg02, ptrArg04)
+	fn0B60(r0, r3, 0x02, wLoc01_20, bArg01, wArg02, ptrArg04)
 	return
 // DataOut:
 // DataOut (flags):
@@ -1437,10 +1428,7 @@ l0B44:
 // SymbolicIn:
 
 l0B48_thunk_fn0B60:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word16 stackArg2 = <invalid>
-	fn0B60(r0, r3, 0x01, wLoc01_20, stackArg2, bArg01, wArg02, ptrArg04)
+	fn0B60(r0, r3, 0x01, wLoc01_20, bArg01, wArg02, ptrArg04)
 	return
 // DataOut:
 // DataOut (flags):
@@ -1453,7 +1441,7 @@ fn0B44_exit:
 
 
 
-void fn0B60(word16 r0, word16 r3, word16 wArg00, word16 wArg01, word16 wArg02, byte bArg03, word16 wArg04, ptr16 ptrArg06)
+void fn0B60(word16 r0, word16 r3, byte bArg00, word16 wArg01, byte bArg03, word16 wArg04, ptr16 ptrArg06)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r0:[0..15] r3:[0..15] Stack +0000:[0..7] Stack +0001:[0..15] Stack +0003:[0..7] Stack +0004:[0..15] Stack +0006:[0..15]
@@ -1764,7 +1752,7 @@ fn0D3E_exit:
 
 
 
-void fn0D7A(word16 r0, word16 r1, word16 r2, word16 r3, word16 r4, word16 r5, word16 wArg00, word16 wArg02, word16 wArg04)
+void fn0D7A(word16 r0, word16 r1, word16 r2, word16 r3, word16 r4, word16 r5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r0:[0..15] r1:[0..15] r2:[0..15] r3:[0..15] r4:[0..15] r5:[0..15]
@@ -1796,7 +1784,7 @@ fn0D7A_exit:
 
 
 
-void fn0DC8(word16 r0, word16 r1, word16 r2, word16 r3, word16 r4, word16 r5, word16 wArg00, word16 wArg02, word16 wArg04)
+void fn0DC8(word16 r0, word16 r1, word16 r2, word16 r3, word16 r4, word16 r5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r0:[0..15] r1:[0..15] r2:[0..15] r3:[0..15] r4:[0..15] r5:[0..15]
@@ -1968,7 +1956,7 @@ fn0EA8_exit:
 
 
 
-void fn0EF8(word16 r4, word16 r5, word16 wArg00, byte bArg01)
+void fn0EF8(word16 r4, word16 r5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r4:[0..15] r5:[0..15]
@@ -2775,28 +2763,10 @@ l1386:
 // SymbolicIn:
 
 l138A_thunk_fn1836:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word16 stackArg0 = <invalid>
-	word16 stackArg2 = <invalid>
-	word16 stackArg4 = <invalid>
-	word16 stackArg6 = <invalid>
-	word16 stackArg8 = <invalid>
-	word16 stackArg10 = <invalid>
 	word16 r2_24
 	word16 r3_25
 	word16 r4_26
-	word16 r0_23 = fn1836(r0, r3, r4, stackArg0, stackArg2, stackArg4, stackArg6, stackArg8, stackArg10, out r2_24, out r3_25, out r4_26)
+	word16 r0_23 = fn1836(r0, r3, r4, out r2_24, out r3_25, out r4_26)
 	r2Out = r2_24
 	r3Out = r3_25
 	r4Out = r4_26
@@ -3123,25 +3093,7 @@ l150E:
 // SymbolicIn:
 
 l1518:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word16 stackArg0 = <invalid>
-	word16 stackArg2 = <invalid>
-	word16 stackArg4 = <invalid>
-	word16 stackArg6 = <invalid>
-	word16 stackArg8 = <invalid>
-	word16 stackArg10 = <invalid>
-	r0_102 = fn1836(r0_102, r3_101, r4_100, stackArg0, stackArg2, stackArg4, stackArg6, stackArg8, stackArg10, out r2_362, out r3_101, out r4_100)
+	r0_102 = fn1836(r0_102, r3_101, r4_100, out r2_350, out r3_101, out r4_100)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3264,9 +3216,9 @@ l15AA:
 // SymbolicIn:
 
 l15B0:
-	r0_223 = r0_363 + 0x0002
-	r0_363 = r0_223
-	branch r2 - Mem214[r0_363:word16] != 0x0000 l15B0
+	r0_223 = r0_351 + 0x0002
+	r0_351 = r0_223
+	branch r2 - Mem214[r0_351:word16] != 0x0000 l15B0
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3307,25 +3259,7 @@ l1594:
 // SymbolicIn:
 
 l14F6:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word16 stackArg0 = <invalid>
-	word16 stackArg2 = <invalid>
-	word16 stackArg4 = <invalid>
-	word16 stackArg6 = <invalid>
-	word16 stackArg8 = <invalid>
-	word16 stackArg10 = <invalid>
-	r0_102 = fn1836(r0_102, r3_101, r4_100, stackArg0, stackArg2, stackArg4, stackArg6, stackArg8, stackArg10, out r2_355, out r3_101, out r4_100)
+	r0_102 = fn1836(r0_102, r3_101, r4_100, out r2_349, out r3_101, out r4_100)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3420,25 +3354,7 @@ l16E6:
 // SymbolicIn:
 
 l16EC:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word16 stackArg0 = <invalid>
-	word16 stackArg2 = <invalid>
-	word16 stackArg4 = <invalid>
-	word16 stackArg6 = <invalid>
-	word16 stackArg8 = <invalid>
-	word16 stackArg10 = <invalid>
-	r0 = fn1836(r0, r3, r4, stackArg0, stackArg2, stackArg4, stackArg6, stackArg8, stackArg10, out r2_89, out r3, out r4)
+	r0 = fn1836(r0, r3, r4, out r2_83, out r3, out r4)
 	Mem24[r4 + 0x0018:word16] = 0x0000
 	Mem27[r4:word16] = Mem24[r4:word16] & ~0x0002
 // DataOut:
@@ -3465,26 +3381,8 @@ l170A:
 // SymbolicIn:
 
 l1710:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word16 stackArg0 = <invalid>
-	word16 stackArg2 = <invalid>
-	word16 stackArg4 = <invalid>
-	word16 stackArg6 = <invalid>
-	word16 stackArg8 = <invalid>
-	word16 stackArg10 = <invalid>
 	word16 r4_57
-	r3 = fn18BE(r0, r3, r4, stackArg0, stackArg2, stackArg4, stackArg6, stackArg8, stackArg10, out r4_57)
+	r3 = fn18BE(r0, r3, r4, out r4_57)
 	Mem65[r4_57 + 0x0016:word16] = Mem34[r4_57 + 0x0016:word16] - 0x0001
 // DataOut:
 // DataOut (flags):
@@ -3617,7 +3515,7 @@ fn172C_exit:
 
 
 
-word16 fn1836(word16 r0, word16 r3, word16 r4, word16 wArg00, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, word16 wArg0A, ptr16 & r2Out, ptr16 & r3Out, ptr16 & r4Out)
+word16 fn1836(word16 r0, word16 r3, word16 r4, ptr16 & r2Out, ptr16 & r3Out, ptr16 & r4Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r0:[0..15] r3:[0..15] r4:[0..15]
@@ -3683,7 +3581,7 @@ fn1836_exit:
 
 
 
-word16 fn18BE(word16 r0, word16 r3, word16 r4, word16 wArg00, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, word16 wArg0A, ptr16 & r4Out)
+word16 fn18BE(word16 r0, word16 r3, word16 r4, ptr16 & r4Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r0:[0..15] r3:[0..15] r4:[0..15]
@@ -4239,7 +4137,7 @@ fn1CFA_exit:
 
 
 
-void fn1CFC(word16 wArg00, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, word16 wArg0A)
+void fn1CFC(word16 wArg02)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  Stack +0002:[0..15]
@@ -4365,25 +4263,7 @@ l1D3E:
 // SymbolicIn:
 
 l1D80:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word16 stackArg0 = <invalid>
-	word16 stackArg2 = <invalid>
-	word16 stackArg4 = <invalid>
-	word16 stackArg6 = <invalid>
-	word16 stackArg8 = <invalid>
-	word16 stackArg10 = <invalid>
-	r0 = fn1836(r0, r3, r0, stackArg0, stackArg2, stackArg4, stackArg6, stackArg8, stackArg10, out r2_115, out r3, out r4_4)
+	r0 = fn1836(r0, r3, r0, out r2_109, out r3, out r4_4)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4661,13 +4541,7 @@ l243A:
 // SymbolicIn:
 
 l243A_thunk_fn0EF8:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word16 stackArg0 = <invalid>
-	byte stackArg1 = <invalid>
-	fn0EF8(0x243E, r5, stackArg0, stackArg1)
+	fn0EF8(0x243E, r5)
 	return
 // DataOut:
 // DataOut (flags):
@@ -4698,13 +4572,7 @@ l2B90:
 // SymbolicIn:
 
 l2B90_thunk_fn0EF8:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word16 stackArg0 = <invalid>
-	byte stackArg1 = <invalid>
-	fn0EF8(0x2B94, r5, stackArg0, stackArg1)
+	fn0EF8(0x2B94, r5)
 	return
 // DataOut:
 // DataOut (flags):
@@ -4735,13 +4603,7 @@ l2E20:
 // SymbolicIn:
 
 l2E20_thunk_fn0EF8:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word16 stackArg0 = <invalid>
-	byte stackArg1 = <invalid>
-	fn0EF8(0x2E24, r5, stackArg0, stackArg1)
+	fn0EF8(0x2E24, r5)
 	return
 // DataOut:
 // DataOut (flags):
@@ -4772,13 +4634,7 @@ l2EC4:
 // SymbolicIn:
 
 l2EC4_thunk_fn0EF8:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word16 stackArg0 = <invalid>
-	byte stackArg1 = <invalid>
-	fn0EF8(0x2EC8, r5, stackArg0, stackArg1)
+	fn0EF8(0x2EC8, r5)
 	return
 // DataOut:
 // DataOut (flags):
@@ -4809,13 +4665,7 @@ l3220:
 // SymbolicIn:
 
 l3220_thunk_fn0EF8:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word16 stackArg0 = <invalid>
-	byte stackArg1 = <invalid>
-	fn0EF8(0x3224, r5, stackArg0, stackArg1)
+	fn0EF8(0x3224, r5)
 	return
 // DataOut:
 // DataOut (flags):
@@ -4846,13 +4696,7 @@ l34AC:
 // SymbolicIn:
 
 l34AC_thunk_fn0EF8:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word16 stackArg0 = <invalid>
-	byte stackArg1 = <invalid>
-	fn0EF8(0x34B0, r5, stackArg0, stackArg1)
+	fn0EF8(0x34B0, r5)
 	return
 // DataOut:
 // DataOut (flags):
@@ -4883,13 +4727,7 @@ l395C:
 // SymbolicIn:
 
 l395C_thunk_fn0EF8:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word16 stackArg0 = <invalid>
-	byte stackArg1 = <invalid>
-	fn0EF8(0x3960, r5, stackArg0, stackArg1)
+	fn0EF8(0x3960, r5)
 	return
 // DataOut:
 // DataOut (flags):
@@ -4920,13 +4758,7 @@ l3B3C:
 // SymbolicIn:
 
 l3B3C_thunk_fn0EF8:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word16 stackArg0 = <invalid>
-	byte stackArg1 = <invalid>
-	fn0EF8(0x3B40, r5, stackArg0, stackArg1)
+	fn0EF8(0x3B40, r5)
 	return
 // DataOut:
 // DataOut (flags):
@@ -4957,13 +4789,7 @@ l3E12:
 // SymbolicIn:
 
 l3E12_thunk_fn0EF8:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word16 stackArg0 = <invalid>
-	byte stackArg1 = <invalid>
-	fn0EF8(0x3E16, r5, stackArg0, stackArg1)
+	fn0EF8(0x3E16, r5)
 	return
 // DataOut:
 // DataOut (flags):
@@ -4994,13 +4820,7 @@ l3F42:
 // SymbolicIn:
 
 l3F42_thunk_fn0EF8:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word16 stackArg0 = <invalid>
-	byte stackArg1 = <invalid>
-	fn0EF8(0x3F46, r5, stackArg0, stackArg1)
+	fn0EF8(0x3F46, r5)
 	return
 // DataOut:
 // DataOut (flags):
@@ -5031,13 +4851,7 @@ l4030:
 // SymbolicIn:
 
 l4030_thunk_fn0EF8:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word16 stackArg0 = <invalid>
-	byte stackArg1 = <invalid>
-	fn0EF8(0x4034, r5, stackArg0, stackArg1)
+	fn0EF8(0x4034, r5)
 	return
 // DataOut:
 // DataOut (flags):
@@ -5068,13 +4882,7 @@ l4072:
 // SymbolicIn:
 
 l4072_thunk_fn0EF8:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word16 stackArg0 = <invalid>
-	byte stackArg1 = <invalid>
-	fn0EF8(0x4076, r5, stackArg0, stackArg1)
+	fn0EF8(0x4076, r5)
 	return
 // DataOut:
 // DataOut (flags):
@@ -5105,13 +4913,7 @@ l413C:
 // SymbolicIn:
 
 l413C_thunk_fn0EF8:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word16 stackArg0 = <invalid>
-	byte stackArg1 = <invalid>
-	fn0EF8(0x4140, r5, stackArg0, stackArg1)
+	fn0EF8(0x4140, r5)
 	return
 // DataOut:
 // DataOut (flags):
@@ -5142,13 +4944,7 @@ l4180:
 // SymbolicIn:
 
 l4180_thunk_fn0EF8:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word16 stackArg0 = <invalid>
-	byte stackArg1 = <invalid>
-	fn0EF8(0x4184, r5, stackArg0, stackArg1)
+	fn0EF8(0x4184, r5)
 	return
 // DataOut:
 // DataOut (flags):
@@ -5179,13 +4975,7 @@ l4230:
 // SymbolicIn:
 
 l4230_thunk_fn0EF8:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word16 stackArg0 = <invalid>
-	byte stackArg1 = <invalid>
-	fn0EF8(0x4234, r5, stackArg0, stackArg1)
+	fn0EF8(0x4234, r5)
 	return
 // DataOut:
 // DataOut (flags):
@@ -5216,13 +5006,7 @@ l4534:
 // SymbolicIn:
 
 l4534_thunk_fn0EF8:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word16 stackArg0 = <invalid>
-	byte stackArg1 = <invalid>
-	fn0EF8(0x4538, r5, stackArg0, stackArg1)
+	fn0EF8(0x4538, r5)
 	return
 // DataOut:
 // DataOut (flags):
@@ -5253,13 +5037,7 @@ l457C:
 // SymbolicIn:
 
 l457C_thunk_fn0EF8:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word16 stackArg0 = <invalid>
-	byte stackArg1 = <invalid>
-	fn0EF8(0x4580, r5, stackArg0, stackArg1)
+	fn0EF8(0x4580, r5)
 	return
 // DataOut:
 // DataOut (flags):
@@ -5290,13 +5068,7 @@ l45C8:
 // SymbolicIn:
 
 l45C8_thunk_fn0EF8:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word16 stackArg0 = <invalid>
-	byte stackArg1 = <invalid>
-	fn0EF8(0x45CC, r5, stackArg0, stackArg1)
+	fn0EF8(0x45CC, r5)
 	return
 // DataOut:
 // DataOut (flags):

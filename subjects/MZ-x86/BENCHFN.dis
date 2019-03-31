@@ -1621,7 +1621,7 @@ fn0800_065B_exit:
 
 
 
-void _fseek(selector ds, word16 wArg02, ui32 dwArg04, word16 wArg06, word16 wArg08)
+void _fseek(selector ds, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  ds:[0..15] Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..15] Stack +0008:[0..15]
@@ -2664,7 +2664,7 @@ fn0800_0BE2_exit:
 
 
 
-word16 _lseek(selector ds, word16 wArg02, word16 wArg04, word16 wArg06, byte bArg08, ptr16 & dxOut)
+word16 _lseek(selector ds, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, ptr16 & dxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  ds:[0..15] Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..15] Stack +0008:[0..15]
@@ -3341,7 +3341,7 @@ fn0800_1044_exit:
 
 
 
-word16 fn0800_1048(word16 di, selector es, selector ds, word16 wArg02)
+word16 fn0800_1048(word16 di, selector es, selector ds, byte bArg02)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  di:[0..15] ds:[0..15] es:[0..15] Stack +0002:[0..7]
@@ -5246,16 +5246,16 @@ l0800_1A23:
 l0800_1A35:
 	al_1033 = Mem175[ds:si_1057:byte]
 	byte ch_1109 = SLICE(cx, byte, 8)
-	dx = DPB(dx_1697, dl_1108, 0) (alias)
-	dx = DPB(dx_1697, dl_1108, 0) (alias)
-	dx = DPB(dx_1697, dl_1108, 0) (alias)
-	dx_1087 = DPB(dx_1697, dl_1108, 0) (alias)
-	word16 dx_1099 = DPB(dx_1697, dl_1108, 0)
-	dx = DPB(dx_1697, dl_1108, 0) (alias)
-	ax_1038 = DPB(ax_1694, al_1033, 0) (alias)
-	ax_1038 = DPB(ax_1694, al_1033, 0) (alias)
-	word16 ax_1049 = DPB(ax_1694, al_1033, 0)
-	ax_1038 = DPB(ax_1694, al_1033, 0) (alias)
+	dx = DPB(dx_1688, dl_1108, 0) (alias)
+	dx = DPB(dx_1688, dl_1108, 0) (alias)
+	dx = DPB(dx_1688, dl_1108, 0) (alias)
+	dx_1087 = DPB(dx_1688, dl_1108, 0) (alias)
+	word16 dx_1099 = DPB(dx_1688, dl_1108, 0)
+	dx = DPB(dx_1688, dl_1108, 0) (alias)
+	ax_1038 = DPB(ax_1685, al_1033, 0) (alias)
+	ax_1038 = DPB(ax_1685, al_1033, 0) (alias)
+	word16 ax_1049 = DPB(ax_1685, al_1033, 0)
+	ax_1038 = DPB(ax_1685, al_1033, 0) (alias)
 	si_1057 = si_1057 + 0x0001
 	branch al_1033 == 0x00 l0800_1A60
 // DataOut:
@@ -5268,18 +5268,9 @@ l0800_1A60:
 // SymbolicIn:
 
 l0800_1A60_thunk_fn0800_1AFF:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	selector stackArg0 = <invalid>
-	word16 stackArg2 = <invalid>
-	word16 stackArg4 = <invalid>
 	word16 bp_183
 	selector es_185
-	fn0800_1AFF(fp - 2, stackArg0, stackArg2, stackArg4, out bp_183, out es_185)
+	fn0800_1AFF(fp - 2, out bp_183, out es_185)
 	bxOut = bx_76 << 0x0001
 	bpOut = bp_183
 	esOut = es_185
@@ -5295,7 +5286,7 @@ l0800_1A3A:
 // SymbolicIn:
 
 l0800_1A63:
-	word16 v61_191 = wLoc24_1698 & 0x7FFF
+	word16 v61_191 = wLoc24_1689 & 0x7FFF
 	wArg08 = si_1057
 	wLoc24 = v61_191
 	word16 si_194 = v61_191
@@ -5348,7 +5339,7 @@ l0800_1AD9:
 l0800_1ADD_thunk_fn0800_1AEB:
 	word16 bp_247
 	selector es_250
-	fn0800_1AEB(cx_235, fp - 2, out cx_1691, out bp_247, out es_250)
+	fn0800_1AEB(cx_235, fp - 2, out cx_1682, out bp_247, out es_250)
 	bxOut = bx_229
 	bpOut = bp_247
 	esOut = es_250
@@ -5366,7 +5357,7 @@ l0800_1ADF:
 l0800_1AE3_thunk_fn0800_1AEB:
 	word16 bp_262
 	selector es_265
-	fn0800_1AEB(cx_235, fp - 2, out cx_1692, out bp_262, out es_265)
+	fn0800_1AEB(cx_235, fp - 2, out cx_1683, out bp_262, out es_265)
 	bxOut = bx_229
 	bpOut = bp_262
 	esOut = es_265
@@ -5384,7 +5375,7 @@ l0800_1AE5:
 l0800_1AE8_thunk_fn0800_1AEB:
 	word16 bp_280
 	selector es_283
-	fn0800_1AEB(cx_235, fp - 2, out cx_1693, out bp_280, out es_283)
+	fn0800_1AEB(cx_235, fp - 2, out cx_1684, out bp_280, out es_283)
 	bxOut = bx_229
 	bpOut = bp_280
 	esOut = es_283
@@ -5408,14 +5399,14 @@ l0800_1A8A:
 // SymbolicIn:
 
 l0800_1AA7:
-	ax_1696 = ax_1072
+	ax_1687 = ax_1072
 	branch (bLoc2B & 0x10) == 0x00 l0800_1AB6
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_1A9F:
-	ax_1695 = ax_1072
+	ax_1686 = ax_1072
 	branch (bLoc2B & 0x10) == 0x00 l0800_1AAD
 // DataOut:
 // DataOut (flags):
@@ -5501,9 +5492,9 @@ l0800_1A46:
 l0800_1A4B:
 	byte al_395 = Mem175[ds:si_1057:byte] - dl_1108
 	si_1057 = si_1057 + 0x0001
-	ax_1039 = DPB(ax_1694, al_395, 0) (alias)
-	ax_1694 = ax_1039
-	dx_1697 = dx_1087
+	ax_1039 = DPB(ax_1685, al_395, 0) (alias)
+	ax_1685 = ax_1039
+	dx_1688 = dx_1087
 	branch al_395 == 0x00 l0800_1A35
 // DataOut:
 // DataOut (flags):
@@ -5511,7 +5502,7 @@ l0800_1A4B:
 
 l0800_1A50:
 	byte dl_398 = dl_1108 + al_395
-	dx_1087 = DPB(dx_1697, dl_398, 0) (alias)
+	dx_1087 = DPB(dx_1688, dl_398, 0) (alias)
 	dl_1108 = dl_398 (alias)
 // DataOut:
 // DataOut (flags):
@@ -5523,7 +5514,7 @@ l0800_1A52:
 	Mem410[ss:fp - 0x0022 + di_1071:byte] = Mem408[ss:fp - 0x0022 + di_1071:byte] | ch_1109
 	al_395 = al_395 - 0x01
 	cx = DPB(cx, ch_1109, 8) (alias)
-	ax_1039 = DPB(ax_1694, al_395, 0) (alias)
+	ax_1039 = DPB(ax_1685, al_395, 0) (alias)
 	branch al_395 != 0x00 l0800_1A52
 // DataOut:
 // DataOut (flags):
@@ -5595,7 +5586,7 @@ l0800_1908:
 	word16 sp_463 = sp_1137 - 2
 	Mem464[ss:sp_463:word16] = fp - 0x0026
 	Mem467[ss:sp_463 - 2:word16] = fp - 0x0028
-	Mem473[ss:sp_463 - 4:word16] = wLoc24_1698 & 0x7FFF
+	Mem473[ss:sp_463 - 4:word16] = wLoc24_1689 & 0x7FFF
 	Mem476[ss:sp_463 - 6:word16] = wArg06
 	Mem479[ss:sp_463 - 8:word16] = wArg04
 	Mem482[ss:sp_463 - 10:word16] = wArg02
@@ -5621,7 +5612,7 @@ l0800_1905:
 l0800_1905_thunk_fn0800_1AEB:
 	word16 bp_492
 	selector es_495
-	fn0800_1AEB(cx, fp - 2, out cx_1690, out bp_492, out es_495)
+	fn0800_1AEB(cx, fp - 2, out cx_1681, out bp_492, out es_495)
 	bxOut = bx_76 << 0x0001
 	bpOut = bp_492
 	esOut = es_495
@@ -5636,18 +5627,9 @@ l0800_1969:
 // SymbolicIn:
 
 l0800_1969_thunk_fn0800_1AFF:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	selector stackArg0 = <invalid>
-	word16 stackArg2 = <invalid>
-	word16 stackArg4 = <invalid>
 	word16 bp_504
 	selector es_506
-	fn0800_1AFF(fp - 2, stackArg0, stackArg2, stackArg4, out bp_504, out es_506)
+	fn0800_1AFF(fp - 2, out bp_504, out es_506)
 	bxOut = bx_76 << 0x0001
 	bpOut = bp_504
 	esOut = es_506
@@ -5745,7 +5727,7 @@ l0800_184E:
 	word16 sp_568 = sp_1137 - 2
 	Mem570[ss:sp_568:word16] = fp - 0x0026
 	Mem573[ss:sp_568 - 2:word16] = fp - 0x0028
-	Mem579[ss:sp_568 - 4:word16] = wLoc24_1698 & 0x7FFF
+	Mem579[ss:sp_568 - 4:word16] = wLoc24_1689 & 0x7FFF
 	Mem584[ss:sp_568 - 6:word16] = si_118
 	Mem587[ss:sp_568 - 8:word16] = wArg06
 	Mem590[ss:sp_568 - 10:word16] = wArg04
@@ -5770,7 +5752,7 @@ l0800_1892:
 l0800_1892_thunk_fn0800_1AEB:
 	word16 bp_629
 	selector es_632
-	fn0800_1AEB(cx, fp - 2, out cx_1683, out bp_629, out es_632)
+	fn0800_1AEB(cx, fp - 2, out cx_1680, out bp_629, out es_632)
 	bxOut = bx
 	bpOut = bp_629
 	esOut = es_632
@@ -5785,18 +5767,9 @@ l0800_188F:
 // SymbolicIn:
 
 l0800_188F_thunk_fn0800_1AFF:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	selector stackArg0 = <invalid>
-	word16 stackArg2 = <invalid>
-	word16 stackArg4 = <invalid>
 	word16 bp_641
 	selector es_643
-	fn0800_1AFF(fp - 2, stackArg0, stackArg2, stackArg4, out bp_641, out es_643)
+	fn0800_1AFF(fp - 2, out bp_641, out es_643)
 	bxOut = bx
 	bpOut = bp_641
 	esOut = es_643
@@ -5852,8 +5825,8 @@ l0800_19CE:
 // SymbolicIn:
 
 l0800_19D1:
-	word16 si_1117 = wLoc24_1698
-	branch wLoc24_1698 >= 0x0000 l0800_19DB
+	word16 si_1117 = wLoc24_1689
+	branch wLoc24_1689 >= 0x0000 l0800_19DB
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -5866,7 +5839,7 @@ l0800_19D8:
 
 l0800_19DB:
 	Mem759 = Mem63
-	branch wLoc24_1698 == 0x0000 l0800_19F7
+	branch wLoc24_1689 == 0x0000 l0800_19F7
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -5914,7 +5887,7 @@ l0800_1A03:
 l0800_1A03_thunk_fn0800_1AEB:
 	word16 bp_741
 	selector es_744
-	fn0800_1AEB(cx, fp - 2, out cx_1682, out bp_741, out es_744)
+	fn0800_1AEB(cx, fp - 2, out cx_1679, out bp_741, out es_744)
 	bxOut = bx
 	bpOut = bp_741
 	esOut = es_744
@@ -5951,15 +5924,15 @@ l0800_1A00:
 l0800_17EF:
 	wLoc24 = ax_60 - 0x0030
 	Mem57 = Mem770
-	wLoc24_1698 = wLoc24
-	branch wLoc24_1698 < 0x0000 l0800_1794
+	wLoc24_1689 = wLoc24
+	branch wLoc24_1689 < 0x0000 l0800_1794
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_17F9:
-	dx = SLICE(wLoc24_1698 *u 0x000A, word16, 16) (alias)
-	wLoc24 = ax_60 - 0x0030 + (word16) (wLoc24_1698 *u 0x000A)
+	dx = SLICE(wLoc24_1689 *u 0x000A, word16, 16) (alias)
+	wLoc24 = ax_60 - 0x0030 + (word16) (wLoc24_1689 *u 0x000A)
 	Mem57 = Mem780
 // DataOut:
 // DataOut (flags):
@@ -6355,18 +6328,9 @@ l0800_1AEB:
 // SymbolicIn:
 
 l0800_1AFB_thunk_fn0800_1AFF:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	selector stackArg0 = <invalid>
-	word16 stackArg2 = <invalid>
-	word16 stackArg4 = <invalid>
 	word16 bp_32
 	selector es_34
-	word16 ax_31 = fn0800_1AFF(bp, stackArg0, stackArg2, stackArg4, out bp_32, out es_34)
+	word16 ax_31 = fn0800_1AFF(bp, out bp_32, out es_34)
 	cxOut = cx_24
 	bpOut = bp_32
 	esOut = es_34
@@ -6382,7 +6346,7 @@ fn0800_1AEB_exit:
 
 
 
-word16 fn0800_1AFF(word16 bp, selector psegArg00, word16 wArg02, word16 wArg04, ptr16 & bpOut, ptr16 & esOut)
+word16 fn0800_1AFF(word16 bp, ptr16 & bpOut, ptr16 & esOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  bp:[0..15] ss:[0..15]

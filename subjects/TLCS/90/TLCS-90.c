@@ -4,8 +4,8 @@
 
 #include "TLCS-90.h"
 
-// 0000: void fn0000(Register byte a, Stack Eq_n wArg00)
-void fn0000(byte a, Eq_n wArg00)
+// 0000: void fn0000(Register byte a)
+void fn0000(byte a)
 {
 	null = (byte *) a;
 }
@@ -363,10 +363,7 @@ void fn060E(Eq_n a, cu8 c, Eq_n de, struct Eq_n * ix, Eq_n wArg20)
 void fn0805()
 {
 	__disable_interrupts();
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg0 = <invalid>;
-	fn0823(stackArg0);
+	fn0823();
 	fn0822();
 	__halt();
 }
@@ -374,14 +371,11 @@ void fn0805()
 // 0822: void fn0822()
 void fn0822()
 {
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg0 = <invalid>;
-	fn0823(stackArg0);
+	fn0823();
 }
 
-// 0823: void fn0823(Stack Eq_n wArg00)
-void fn0823(Eq_n wArg00)
+// 0823: void fn0823()
+void fn0823()
 {
 }
 
@@ -475,8 +469,8 @@ void fn0BFE()
 {
 }
 
-// 0C1D: void fn0C1D(Register Eq_n de, Register (ptr16 Eq_n) ix, Stack word16 wArg00, Stack Eq_n wArg22)
-void fn0C1D(Eq_n de, struct Eq_n * ix, word16 wArg00, Eq_n wArg22)
+// 0C1D: void fn0C1D(Register Eq_n de, Register (ptr16 Eq_n) ix, Stack Eq_n wArg22)
+void fn0C1D(Eq_n de, struct Eq_n * ix, Eq_n wArg22)
 {
 	Eq_n c_n = ix->tFFFFFFE6;
 	Eq_n b_n = ix->tFFFFFFE7;
@@ -667,13 +661,13 @@ void fn0E13(Eq_n de, struct Eq_n * ix, Eq_n wArg20)
 	}
 }
 
-// 0F9A: void fn0F9A(Stack word16 wArg00)
-void fn0F9A(word16 wArg00)
+// 0F9A: void fn0F9A()
+void fn0F9A()
 {
 }
 
-// 164F: void fn164F(Register word16 af, Register byte c, Register byte b, Register byte h, Register (ptr16 Eq_n) ix, Stack Eq_n wArg13, Stack word16 wArg1A, Stack (ptr16 Eq_n) wArg1B)
-void fn164F(word16 af, byte c, byte b, byte h, struct Eq_n * ix, Eq_n wArg13, word16 wArg1A, struct Eq_n * wArg1B)
+// 164F: void fn164F(Register word16 af, Register byte c, Register byte b, Register byte h, Register (ptr16 Eq_n) ix, Stack Eq_n wArg13, Stack byte bArg1A, Stack (ptr16 Eq_n) wArg1B)
+void fn164F(word16 af, byte c, byte b, byte h, struct Eq_n * ix, Eq_n wArg13, byte bArg1A, struct Eq_n * wArg1B)
 {
 	byte bArg1B_n = SLICE(wArg1B, byte, 0);
 	ix->bFFFFFFEC = a;
@@ -758,8 +752,8 @@ void fn1873(Eq_n c, Eq_n b, Eq_n de, struct Eq_n * ix, struct Eq_n * wArg13, Eq_
 	fn0C35(c, b, de, 0x02, h_n, ix, wArg20);
 }
 
-// 1929: void fn1929(Register word16 af, Register word16 bc, Register byte e, Register byte d, Register (ptr16 Eq_n) ix, Stack word16 wArg11, Stack word16 wArg13, Stack Eq_n wArg1A)
-void fn1929(word16 af, word16 bc, byte e, byte d, struct Eq_n * ix, word16 wArg11, word16 wArg13, Eq_n wArg1A)
+// 1929: void fn1929(Register word16 af, Register word16 bc, Register byte e, Register byte d, Register (ptr16 Eq_n) ix, Stack byte bArg11, Stack Eq_n wArg1A)
+void fn1929(word16 af, word16 bc, byte e, byte d, struct Eq_n * ix, byte bArg11, Eq_n wArg1A)
 {
 	word16 de_n = DPB(DPB(de, e, 0), d, 8);
 	cu8 c_n = (byte) bc;
@@ -778,8 +772,8 @@ void fn1929(word16 af, word16 bc, byte e, byte d, struct Eq_n * ix, word16 wArg1
 	}
 }
 
-// 1BA4: void fn1BA4(Register word16 bc, Register Eq_n de, Stack word16 wArg00, Stack word16 wArg10, Stack word16 wArg1D, Stack word16 wArg1F)
-void fn1BA4(word16 bc, Eq_n de, word16 wArg00, word16 wArg10, word16 wArg1D, word16 wArg1F)
+// 1BA4: void fn1BA4(Register word16 bc, Register Eq_n de)
+void fn1BA4(word16 bc, Eq_n de)
 {
 	Eq_n de;
 	word16 bc;
@@ -818,13 +812,13 @@ void fn1C54()
 {
 }
 
-// 1C89: void fn1C89(Register byte a, Register byte c, Stack word16 wArg00)
-void fn1C89(byte a, byte c, word16 wArg00)
+// 1C89: void fn1C89(Register byte a, Register byte c)
+void fn1C89(byte a, byte c)
 {
 }
 
-// 22A6: void fn22A6(Register word16 bc, Register (ptr16 Eq_n) hl, Register (ptr16 Eq_n) ix, Stack word16 wArg03, Stack word16 wArg05, Stack word16 wArg0D, Stack word16 wArg10)
-void fn22A6(word16 bc, struct Eq_n * hl, struct Eq_n * ix, word16 wArg03, word16 wArg05, word16 wArg0D, word16 wArg10)
+// 22A6: void fn22A6(Register word16 bc, Register (ptr16 Eq_n) hl, Register (ptr16 Eq_n) ix, Stack word16 wArg05, Stack word16 wArg10)
+void fn22A6(word16 bc, struct Eq_n * hl, struct Eq_n * ix, word16 wArg05, word16 wArg10)
 {
 	ix->bFFFFFFFC = ix->bFFFFFFF7;
 	ix->bFFFFFFFD = 0x00;
@@ -850,8 +844,8 @@ void fn384A(word16 ix)
 {
 }
 
-// 3E2D: void fn3E2D(Register word16 bc, Register (ptr16 Eq_n) ix, Stack word16 wArg03, Stack word16 wArg05, Stack word16 wArg0D, Stack word16 wArg10)
-void fn3E2D(word16 bc, struct Eq_n * ix, word16 wArg03, word16 wArg05, word16 wArg0D, word16 wArg10)
+// 3E2D: void fn3E2D(Register word16 bc, Register (ptr16 Eq_n) ix, Stack word16 wArg05, Stack word16 wArg0D, Stack word16 wArg10)
+void fn3E2D(word16 bc, struct Eq_n * ix, word16 wArg05, word16 wArg0D, word16 wArg10)
 {
 	ix->bFFFFFFFC = ix->bFFFFFFF7;
 	ix->bFFFFFFFD = 0x00;
@@ -869,30 +863,24 @@ void fn3E2D(word16 bc, struct Eq_n * ix, word16 wArg03, word16 wArg05, word16 wA
 	struct Eq_n * hl_n = wArg0D + DPB(DPB(DPB(DPB(bc, v28_n, 0), 0x00, 8), l_n, 0), h_n, 8);
 	byte v38_n = *hl_n;
 	byte v41_n = ((word16) (DPB(DPB(hl_n, v38_n, 0), 0x00, 8) * 0x08) + DPB(DPB(wArg05 + 0x03, v38_n, 0), 0x00, 8) + DPB(DPB(DPB(DPB(DPB(DPB(bc, v28_n, 0), 0x00, 8), l_n, 0), h_n, 8), hl_n->b0000, 0), hl_n->b0001, 8))->b0003;
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg3 = <invalid>;
-	Eq_n stackArg5 = <invalid>;
-	fn3EC2(v41_n, stackArg3, stackArg5);
+	fn3EC2(v41_n);
 }
 
-// 3EC2: void fn3EC2(Register byte b, Stack Eq_n wArg03, Stack Eq_n wArg05)
-void fn3EC2(byte b, Eq_n wArg03, Eq_n wArg05)
+// 3EC2: void fn3EC2(Register byte b)
+void fn3EC2(byte b)
 {
 	fn03AA();
 }
 
-// 59FE: void fn59FE(Stack word16 wArg0A, Stack word16 wArg10)
-void fn59FE(word16 wArg0A, word16 wArg10)
+// 59FE: void fn59FE()
+void fn59FE()
 {
 	<type-error> Mem0;
 	fn0BFE();
 }
 
-// 5A49: void fn5A49(Register cu8 c, Register cu8 b, Register word16 de, Register word16 hl, Register (ptr16 Eq_n) ix, Stack word16 wArg02, Stack (ptr16 Eq_n) wArg06, Stack word16 wArg08)
-void fn5A49(cu8 c, cu8 b, word16 de, word16 hl, struct Eq_n * ix, word16 wArg02, struct Eq_n * wArg06, word16 wArg08)
+// 5A49: void fn5A49(Register cu8 c, Register cu8 b, Register word16 de, Register word16 hl, Register (ptr16 Eq_n) ix, Stack (ptr16 Eq_n) wArg06)
+void fn5A49(cu8 c, cu8 b, word16 de, word16 hl, struct Eq_n * ix, struct Eq_n * wArg06)
 {
 	word16 bc_n = DPB(DPB(DPB(DPB(DPB(DPB(DPB(DPB(bc, c, 0), b, 8), c, 0), b, 8), c, 0), b, 8), c, 0), b, 8);
 	word16 hl_n = DPB(hl, (bool) C + (ix->bFFFFFFFD + 0x80), 8) + de;

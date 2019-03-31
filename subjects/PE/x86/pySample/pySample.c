@@ -186,10 +186,7 @@ l10001384:
 // 10001388: Register word32 fn10001388(Register Eq_n ecx, Register Eq_n edx, Register (ptr32 Eq_n) ebx, Register ptr32 esi, Register word32 edi)
 word32 fn10001388(Eq_n ecx, Eq_n edx, Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi)
 {
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg4 = <invalid>;
-	struct Eq_n * ebp_n = fn100017E8(ebx, esi, edi, dwLoc0C, stackArg4, 0x10);
+	struct Eq_n * ebp_n = fn100017E8(ebx, esi, edi, dwLoc0C, 0x10);
 	Eq_n ebx_n = ebp_n->t0008;
 	*(ebp_n - 0x1C) = 0x01;
 	*(ebp_n - 0x04) = 0x00;
@@ -223,20 +220,8 @@ l1000147A:
 			*(ebp_n - 0x04) &= 0x00;
 			*(ebp_n - 0x04) = ~0x01;
 			fn10001493();
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
 			word32 eax_n = *(ebp_n - 0x1C);
-			Eq_n stackArg4 = <invalid>;
-			Eq_n stackArg8 = <invalid>;
-			Eq_n stackArg12 = <invalid>;
-			Eq_n stackArg16 = <invalid>;
-			fn1000182D(ebp_n, *((word32) esp_n - 0x04), stackArg4, stackArg8, stackArg12, stackArg16);
+			fn1000182D(ebp_n, *((word32) esp_n - 0x04));
 			return eax_n;
 		}
 		LPVOID * esp_n = esp_n - 0x04;
@@ -330,10 +315,7 @@ Eq_n fn100015CF(Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi)
 {
 	Eq_n eax_n;
 	Eq_n esp_n;
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg4 = <invalid>;
-	struct Eq_n * ebp_n = fn100017E8(ebx, esi, edi, dwLoc0C, stackArg4, 0x14);
+	struct Eq_n * ebp_n = fn100017E8(ebx, esi, edi, dwLoc0C, 0x14);
 	Eq_n esp_n = <invalid>;
 	*(esp_n - 0x04) = globals->ptr100033B4;
 	word32 * eax_n = _decode_pointer(*(esp_n - 0x04));
@@ -380,19 +362,7 @@ Eq_n fn100015CF(Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi)
 		esp_n = esp_n + 0x1C;
 		eax_n = (Eq_n) *(ebp_n - 0x24);
 	}
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg4 = <invalid>;
-	Eq_n stackArg8 = <invalid>;
-	Eq_n stackArg12 = <invalid>;
-	Eq_n stackArg16 = <invalid>;
-	fn1000182D(ebp_n, *((word32) esp_n - 0x04), stackArg4, stackArg8, stackArg12, stackArg16);
+	fn1000182D(ebp_n, *((word32) esp_n - 0x04));
 	return eax_n;
 }
 
@@ -402,8 +372,8 @@ void fn10001665(word32 ecx)
 	unlock();
 }
 
-// 1000166E: void fn1000166E(Register (ptr32 Eq_n) ebx, Register ptr32 esi, Register word32 edi, Stack word32 dwArg04)
-void fn1000166E(Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi, word32 dwArg04)
+// 1000166E: void fn1000166E(Register (ptr32 Eq_n) ebx, Register ptr32 esi, Register word32 edi)
+void fn1000166E(Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi)
 {
 	fn100015CF(ebx, esi, edi);
 }
@@ -465,10 +435,7 @@ l1000173E:
 ui32 fn10001742(Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi, ptr32 & edxOut, ptr32 & ediOut)
 {
 	ui32 eax_n;
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg4 = <invalid>;
-	struct Eq_n * ebp_n = fn100017E8(ebx, esi, edi, dwLoc0C, stackArg4, 0x08);
+	struct Eq_n * ebp_n = fn100017E8(ebx, esi, edi, dwLoc0C, 0x08);
 	*(ebp_n - 0x04) &= 0x00;
 	Eq_n esp_n = <invalid>;
 	*(esp_n - 0x04) = 0x10000000;
@@ -483,19 +450,7 @@ ui32 fn10001742(Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi, ptr32 &
 			eax_n = ~(eax_n->dw0024 >> 0x1F) & 0x01;
 			*(ebp_n - 0x04) = ~0x01;
 l100017A8:
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg4 = <invalid>;
-			Eq_n stackArg8 = <invalid>;
-			Eq_n stackArg12 = <invalid>;
-			Eq_n stackArg16 = <invalid>;
-			ptr32 edi_n = fn1000182D(ebp_n, *((word32) esp_n - 0x04), stackArg4, stackArg8, stackArg12, stackArg16);
+			ptr32 edi_n = fn1000182D(ebp_n, *((word32) esp_n - 0x04));
 			edxOut = edx_n;
 			ediOut = edi_n;
 			return eax_n;
@@ -514,8 +469,8 @@ word32 fn100017C6(Eq_n dwArg04, word32 dwArg08)
 	return 0x01;
 }
 
-// 100017E8: Register ptr32 fn100017E8(Register (ptr32 Eq_n) ebx, Register ptr32 esi, Register word32 edi, Stack word32 dwArg00, Stack Eq_n dwArg04, Stack ui32 dwArg08)
-ptr32 fn100017E8(Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi, word32 dwArg00, Eq_n dwArg04, ui32 dwArg08)
+// 100017E8: Register ptr32 fn100017E8(Register (ptr32 Eq_n) ebx, Register ptr32 esi, Register word32 edi, Stack word32 dwArg00, Stack ui32 dwArg08)
+ptr32 fn100017E8(Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi, word32 dwArg00, ui32 dwArg08)
 {
 	ptr32 esp_n = fp - 0x08 - dwArg08;
 	*(esp_n - 0x04) = (Eq_n (**)(LONG *, Eq_n, Eq_n)) ebx;
@@ -527,8 +482,8 @@ ptr32 fn100017E8(Eq_n (* ebx)(LONG *, Eq_n, Eq_n), ptr32 esi, word32 edi, word32
 	return fp + 0x08;
 }
 
-// 1000182D: Register Eq_n fn1000182D(Register (ptr32 Eq_n) ebp, Stack word32 dwArg00, Stack Eq_n dwArg04, Stack Eq_n dwArg08, Stack Eq_n dwArg0C, Stack Eq_n dwArg10)
-Eq_n fn1000182D(struct Eq_n * ebp, word32 dwArg00, Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, Eq_n dwArg10)
+// 1000182D: Register word32 fn1000182D(Register (ptr32 Eq_n) ebp, Stack word32 dwArg00)
+word32 fn1000182D(struct Eq_n * ebp, word32 dwArg00)
 {
 	fs->dw0000 = *(ebp - 0x10);
 	ebp->dw0000 = dwArg00;

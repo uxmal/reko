@@ -147,9 +147,9 @@ namespace Reko.Analysis
 				}
 			}
 
-			foreach (var id in GetSortedStackArguments(proc.Frame).Values)
+			foreach (var id in GetSortedStackArguments((Frame)frame, flow.BitsUsed))
 			{
-				AddStackArgument(id, flow, sb);
+				AddStackArgument(id.Item2, flow, sb);
 			}
 
             foreach (var oFpu in flow.BitsUsed.
@@ -231,14 +231,25 @@ namespace Reko.Analysis
 			return arguments;
 		}
 
-		/// <summary>
-		/// Returns a list of all stack arguments accessed, indexed by their offsets
-		/// as seen by a caller. I.e. the first argument is at offset 0, &c.
-		/// </summary>
-        public SortedList<int, Identifier> GetSortedStackArguments(Frame frame)
-		{
-			return GetSortedArguments(frame, typeof (StackArgumentStorage), 0);
-		}
+        /// <summary>
+        /// Returns a list of all stack arguments accessed, indexed by their offsets
+        /// as seen by a caller. I.e. the first argument is at offset 0, &c.
+        /// </summary>
+        public IEnumerable<(int, Identifier)> GetSortedStackArguments(Frame frame, IEnumerable<KeyValuePair<Storage, BitRange>> mayuse)
+        {
+            return mayuse
+                .Select(kv => (stg: kv.Key as StackStorage, range: kv.Value))
+                .Where(item => item.stg != null)
+                .OrderBy(item => item.stg.StackOffset)
+                .Select(item =>
+                {
+                    var id = frame.EnsureStackArgument(
+                        item.stg.StackOffset,
+                        PrimitiveType.CreateWord(item.range.Extent));
+                    return (item.stg.StackOffset - frame.ReturnAddressSize, id);
+                });
+
+        }
 
         public SortedList<int, Identifier> GetSortedFpuStackArguments(Frame frame, int d)
 		{

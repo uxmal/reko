@@ -15,8 +15,8 @@ word16 fn0387(ptr16 & spOut)
 	return hl_n;
 }
 
-// 0390: Register ptr16 fn0390(Register byte b, Register Eq_n c, Register byte e, Stack Eq_n wArg00, Stack word16 wArg02)
-ptr16 fn0390(byte b, Eq_n c, byte e, Eq_n wArg00, word16 wArg02)
+// 0390: Register ptr16 fn0390(Register byte b, Register Eq_n c, Register byte e, Stack Eq_n bArg02)
+ptr16 fn0390(byte b, Eq_n c, byte e, Eq_n bArg02)
 {
 	globals->b1656 = e;
 	globals->b1655 = b;
@@ -63,8 +63,8 @@ void fn0400()
 	globals->w164E = 0x80;
 }
 
-// 040D: Register Eq_n fn040D(Register byte b, Register Eq_n c, Register cu8 e, Stack Eq_n wArg00, Stack word16 wArg02, Register out ptr16 spOut, Register out Eq_n fOut)
-Eq_n fn040D(byte b, Eq_n c, cu8 e, Eq_n wArg00, word16 wArg02, ptr16 & spOut, union Eq_n & fOut)
+// 040D: Register Eq_n fn040D(Register byte b, Register Eq_n c, Register cu8 e, Stack Eq_n bArg02, Register out ptr16 spOut, Register out Eq_n fOut)
+Eq_n fn040D(byte b, Eq_n c, cu8 e, Eq_n bArg02, ptr16 & spOut, union Eq_n & fOut)
 {
 	globals->b165E = e;
 	globals->b165D = b;
@@ -111,8 +111,8 @@ Eq_n fn0473(Eq_n c)
 	return <invalid>;
 }
 
-// 0483: Register word16 fn0483(Register byte b, Register Eq_n c, Register byte d, Register Eq_n e, Stack Eq_n wArg00, Stack word16 wArg02)
-word16 fn0483(byte b, Eq_n c, byte d, Eq_n e, Eq_n wArg00, word16 wArg02)
+// 0483: Register word16 fn0483(Register byte b, Register Eq_n c, Register byte d, Register Eq_n e, Stack Eq_n bArg02)
+word16 fn0483(byte b, Eq_n c, byte d, Eq_n e, Eq_n bArg02)
 {
 	globals->b1665 = d;
 	globals->t1664 = e;
@@ -178,11 +178,8 @@ word16 fn0534(byte c)
 	globals->w14BE = hl_n + 0x01;
 	if (!fn1335((byte) (hl_n + 0x01), SLICE(hl_n + 0x01, byte, 8), 0x00, 0x02))
 	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
 		ptr16 hl_n = globals->ptr14BC;
-		Eq_n stackArg0 = <invalid>;
-		bc_n = fn0483(SLICE(hl_n, byte, 8), (byte) hl_n, 0x02, 0x00, stackArg0, 0x14C0);
+		bc_n = fn0483(SLICE(hl_n, byte, 8), (byte) hl_n, 0x02, 0x00, 0x14C0);
 		globals->w14BE = 0x00;
 	}
 	return bc_n;
@@ -434,8 +431,8 @@ void fn0814()
 		fn07B3();
 }
 
-// 082F: Register word16 fn082F(Register word16 af, Register byte b, Register Eq_n c, Register cu8 e, Stack Eq_n wArg00, Stack word16 wArg02, Stack word16 wArg04, Register out ptr16 spOut)
-word16 fn082F(word16 af, byte b, Eq_n c, cu8 e, Eq_n wArg00, word16 wArg02, word16 wArg04, ptr16 & spOut)
+// 082F: Register word16 fn082F(Register word16 af, Register byte b, Register Eq_n c, Register cu8 e, Stack Eq_n bArg02, Stack Eq_n bArg04, Register out ptr16 spOut)
+word16 fn082F(word16 af, byte b, Eq_n c, cu8 e, Eq_n bArg02, Eq_n bArg04, ptr16 & spOut)
 {
 	globals->b168D = e;
 	globals->b168C = b;
@@ -641,11 +638,8 @@ Eq_n fn0990(word16 af, byte b, Eq_n c, byte d, Eq_n e, ptr16 & afOut)
 	globals->t1694 = e;
 	globals->b1693 = b;
 	globals->t1692 = c;
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
 	Eq_n hl_n = globals->t168B;
-	Eq_n stackArg0 = <invalid>;
-	struct Eq_n * sp_n = fn0390(SLICE((word16) hl_n + 0x01, byte, 8), (byte) ((word16) hl_n + 0x01), 0x20, stackArg0, DPB(bc_n, 11, 0));
+	struct Eq_n * sp_n = fn0390(SLICE((word16) hl_n + 0x01, byte, 8), (byte) ((word16) hl_n + 0x01), 0x20, DPB(bc_n, 11, 0));
 	globals->t1696 = *globals->t1692;
 	Eq_n hl_n = globals->t1692;
 	globals->t1692 = (word16) hl_n + 0x01;
@@ -756,11 +750,8 @@ Eq_n fn0990(word16 af, byte b, Eq_n c, byte d, Eq_n e, ptr16 & afOut)
 		} while (l_n != 0x00);
 	}
 	*(sp_n - 0x02) = (byte **) DPB(bc_n, 0x03, 0);
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
 	Eq_n hl_n = globals->t168B;
-	Eq_n stackArg0 = <invalid>;
-	fn0390(SLICE((word16) hl_n + 0x0C, byte, 8), (byte) ((word16) hl_n + 0x0C), 0x00, stackArg0, *(sp_n - 0x02));
+	fn0390(SLICE((word16) hl_n + 0x0C, byte, 8), (byte) ((word16) hl_n + 0x0C), 0x00, *(sp_n - 0x02));
 	((word16) globals->t168B + 0x0020)->u0 = 0x00;
 	globals->t1697.u0 = 0x00;
 	do
@@ -826,22 +817,16 @@ void fn0BE4(word16 af)
 	globals->b1645 = a_n + 0x30;
 	*(hl_n - 0x02) = 0x0231;
 	*(hl_n - 0x04) = 0x1642;
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg0 = <invalid>;
 	struct Eq_n * sp_n;
-	word16 af_n = fn082F(DPB(af_n, a_n + 0x30, 0), 0x00, 0x5C, 0x10, stackArg0, *(hl_n - 0x04), *(hl_n - 0x02), out sp_n);
+	word16 af_n = fn082F(DPB(af_n, a_n + 0x30, 0), 0x00, 0x5C, 0x10, *(hl_n - 0x04), *(hl_n - 0x02), out sp_n);
 	*(sp_n - 0x02) = 0x5C;
 	word16 hl_n = (word16) fn1346(0x01, &globals->t0103);
 	cu8 l_n;
 	fn1326(0x07, SLICE(hl_n, byte, 8), (byte) hl_n, out l_n);
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
 	word16 hl_n = globals->w0108;
-	Eq_n stackArg0 = <invalid>;
 	ptr16 sp_n;
 	byte f_n;
-	word16 de_n = fn040D(SLICE(hl_n, byte, 8), (byte) hl_n, l_n, stackArg0, sp_n->wFFFC, out sp_n, out f_n);
+	word16 de_n = fn040D(SLICE(hl_n, byte, 8), (byte) hl_n, l_n, sp_n->tFFFC, out sp_n, out f_n);
 	*(sp_n - 0x02) = DPB(af_n, 0x00 - (globals->b138A < 0x01), 0);
 	word16 bc_n = *(sp_n - 0x02);
 	byte b_n = SLICE(bc_n, byte, 8);
@@ -996,8 +981,8 @@ void fn1055(word16 af)
 	fn1078(af_n);
 }
 
-// 106E: void fn106E(Register word16 af, Stack word16 wArg00)
-void fn106E(word16 af, word16 wArg00)
+// 106E: void fn106E(Register word16 af, Stack byte bArg00)
+void fn106E(word16 af, byte bArg00)
 {
 	bcu8 a_n = 0x00 - (a < ~0x00) & SLICE(wArg00, byte, 8);
 	word16 af_n = DPB(af, a_n >> 0x01, 0);

@@ -1,4 +1,4 @@
-word32 fn00400220(word32 r2, word32 r13, word32 r14, word32 r15, word32 r16, word32 r17, word32 r18, word32 r19, word32 r20, word32 r21, word32 r22, word32 r23, word32 r24, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, word32 dwArg08, word32 dwArg18, word32 dwArg1C, ptr32 & r3Out, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
+word32 fn00400220(word32 r2, word32 r13, word32 r14, word32 r15, word32 r16, word32 r17, word32 r18, word32 r19, word32 r20, word32 r21, word32 r22, word32 r23, word32 r24, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, ptr32 & r3Out, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  lr:[0..31] r13:[0..31] r14:[0..31] r15:[0..31] r16:[0..31] r17:[0..31] r18:[0..31] r19:[0..31] r2:[0..31] r20:[0..31] r21:[0..31] r22:[0..31] r23:[0..31] r24:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r30:[0..31] r31:[0..31]
@@ -11,37 +11,10 @@ fn00400220_entry:
 // SymbolicIn:
 
 l00400220:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
-	word32 stackArg24 = <invalid>
-	word32 stackArg28 = <invalid>
-	word32 stackArg32 = <invalid>
-	word32 stackArg36 = <invalid>
-	word32 stackArg40 = <invalid>
-	word32 stackArg44 = <invalid>
-	word32 stackArg48 = <invalid>
-	word32 stackArg52 = <invalid>
 	word32 r29_56
 	word32 r30_58
 	word32 r31_59
-	word32 r2_46 = fn00400268(r2, Mem11[r2 + 68:word32], r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, r26, r27, r28, r29, r30, r31, lr, stackArg8, stackArg24, stackArg28, stackArg32, stackArg36, stackArg40, stackArg44, stackArg48, stackArg52, out r29_56, out r30_58, out r31_59)
+	word32 r2_46 = fn00400268(r2, Mem11[r2 + 68:word32], r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, r26, r27, r28, r29, r30, r31, lr, out r29_56, out r30_58, out r31_59)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -63,7 +36,7 @@ fn00400220_exit:
 
 
 
-word32 fn00400268(word32 r2, word32 r3, word32 r13, word32 r14, word32 r15, word32 r16, word32 r17, word32 r18, word32 r19, word32 r20, word32 r21, word32 r22, word32 r23, word32 r24, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, word32 dwArg08, word32 dwArg18, word32 dwArg1C, word32 dwArg20, word32 dwArg24, word32 dwArg28, word32 dwArg2C, word32 dwArg30, word32 dwArg34, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
+word32 fn00400268(word32 r2, word32 r3, word32 r13, word32 r14, word32 r15, word32 r16, word32 r17, word32 r18, word32 r19, word32 r20, word32 r21, word32 r22, word32 r23, word32 r24, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  lr:[0..31] r13:[0..31] r14:[0..31] r15:[0..31] r16:[0..31] r17:[0..31] r18:[0..31] r19:[0..31] r2:[0..31] r20:[0..31] r21:[0..31] r22:[0..31] r23:[0..31] r24:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31]
@@ -79,19 +52,7 @@ l00400268:
 	Mem23[v11:word32] = r29
 	Mem26[v11 + 4:word32] = r30
 	Mem29[v11 + 8:word32] = r31
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
 	word32 r31_34 = Mem29[r2 + 72:word32]
-	word32 stackArg8 = <invalid>
-	word32 stackArg8 = <invalid>
-	word32 stackArg32 = <invalid>
-	word32 stackArg8 = <invalid>
 	word32 r3_45
 	word32 r31_46
 	word32 r25_55
@@ -102,7 +63,7 @@ l00400268:
 	word32 r3_100
 	word32 r30_101
 	word32 r31_102
-	word32 r2_125 = fn00400430(fn004004B4(fn004002F8(r2, r31_34 + 32, r25, r26, r27, r28, r29, r30, r31_34 + 32, lr, stackArg8, out r3_45, out r25_55, out r26_56, out r27_57, out r28_58, out r29_59, out r31_46), r31_46, r3, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25_55, r26_56, r27_57, r28_58, r29_59, r3_45, r31_46, lr, stackArg8, stackArg32, out r3_100, out r25_167, out r26_168, out r27_169, out r28_170, out r29_171, out r30_101, out r31_102), r30_101, r31_102, r3_100, r30_101, stackArg8)
+	word32 r2_125 = fn00400430(fn004004B4(fn004002F8(r2, r31_34 + 32, r25, r26, r27, r28, r29, r30, r31_34 + 32, lr, out r3_45, out r25_55, out r26_56, out r27_57, out r28_58, out r29_59, out r31_46), r31_46, r3, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25_55, r26_56, r27_57, r28_58, r29_59, r3_45, r31_46, lr, out r3_100, out r25_164, out r26_165, out r27_166, out r28_167, out r29_168, out r30_101, out r31_102), r30_101, r31_102, r3_100, r30_101)
 	r29Out = dwLoc10
 	r30Out = dwLoc0C
 	r31Out = dwLoc08
@@ -118,7 +79,7 @@ fn00400268_exit:
 
 
 
-word32 fn004002F8(word32 r2, word32 r3, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, word32 dwArg08, ptr32 & r3Out, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r31Out)
+word32 fn004002F8(word32 r2, word32 r3, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, ptr32 & r3Out, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r31Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  lr:[0..31] r2:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31]
@@ -197,12 +158,9 @@ l00400394:
 // SymbolicIn:
 
 l004003AC:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
 	word32 r3_77
 	word32 r30_78
-	r2 = fn00400F9C(r2, 4096, r25, r26, r27, r28, r29, r30_52, r3, lr, stackArg8, out r3_77, out r25, out r26, out r27, out r28, out r29, out r30_78, out r31_13)
+	r2 = fn00400F9C(r2, 4096, r25, r26, r27, r28, r29, r30_52, r3, lr, out r3_77, out r25, out r26, out r27, out r28, out r29, out r30_78, out r31_13)
 	Mem90[r30_78:word32] = r3_77
 	r11_100 = r3_77
 	branch r3_77 != 0x00000000 l004003E0
@@ -274,7 +232,7 @@ fn004002F8_exit:
 
 
 
-word32 fn00400430(word32 r2, word32 r3, word32 r4, word32 r29, word32 r30, word32 dwArg08)
+word32 fn00400430(word32 r2, word32 r3, word32 r4, word32 r29, word32 r30)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r4:[0..31]
@@ -299,10 +257,7 @@ l00400488:
 // SymbolicIn:
 
 l00400494:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
-	r2 = fn004012B0(r2, r4, r29, r30, r4, stackArg8, out r3_110, out r29_111, out r30_112, out r31_113)
+	r2 = fn004012B0(r2, r4, r29, r30, r4, out r3_108, out r29_109, out r30_110, out r31_111)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -314,11 +269,8 @@ l0040044C:
 // SymbolicIn:
 
 l00400458:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
 	word32 r31_48
-	r2 = fn004012B0(r2, r4, r29, r30, r4, stackArg8, out r3_106, out r29_107, out r30_108, out r31_48)
+	r2 = fn004012B0(r2, r4, r29, r30, r4, out r3_105, out r29_106, out r30_107, out r31_48)
 	word32 r4_61 = Mem11[r31_48 + 12:word32]
 	Mem63[r31_48 + 24:word32] = 0
 	Mem64[r31_48:word32] = 0
@@ -341,7 +293,7 @@ fn00400430_exit:
 
 
 
-word32 fn004004B4(word32 r2, word32 r3, word32 r4, word32 r13, word32 r14, word32 r15, word32 r16, word32 r17, word32 r18, word32 r19, word32 r20, word32 r21, word32 r22, word32 r23, word32 r24, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, word32 dwArg08, word32 dwArg20, ptr32 & r3Out, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
+word32 fn004004B4(word32 r2, word32 r3, word32 r4, word32 r13, word32 r14, word32 r15, word32 r16, word32 r17, word32 r18, word32 r19, word32 r20, word32 r21, word32 r22, word32 r23, word32 r24, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, ptr32 & r3Out, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  lr:[0..31] r13:[0..31] r14:[0..31] r15:[0..31] r16:[0..31] r17:[0..31] r18:[0..31] r19:[0..31] r2:[0..31] r20:[0..31] r21:[0..31] r22:[0..31] r23:[0..31] r24:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31]
@@ -442,10 +394,7 @@ l004005B0:
 // SymbolicIn:
 
 l004005C8:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
-	r2 = fn00400E04(r2, r31_198, r3, fp + -648, r25, r26_170, r27, r28, r29, r30, lr, stackArg8, out r25, out r26_170, out r27, out r28, out r29, out r30)
+	r2 = fn00400E04(r2, r31_198, r3, fp + -648, r25, r26_170, r27, r28, r29, r30, lr, out r25, out r26_170, out r27, out r28, out r29, out r30)
 	r23_193 = r23_193 + 1
 	r31_198 = (int32) (int8) (word32) Mem144[r23_193:byte]
 // DataOut:
@@ -453,10 +402,7 @@ l004005C8:
 // SymbolicIn:
 
 l004005EC:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
-	r2 = fn00400E04(r2, r31_198, r3, fp + -648, r25, r26_170, r27, r28, r29, r30, lr, stackArg8, out r25, out r26_170, out r27, out r28, out r29, out r30)
+	r2 = fn00400E04(r2, r31_198, r3, fp + -648, r25, r26_170, r27, r28, r29, r30, lr, out r25, out r26_170, out r27, out r28, out r29, out r30)
 	Mem237 = Mem201
 // DataOut:
 // DataOut (flags):
@@ -566,7 +512,7 @@ fn00400838_exit:
 
 
 
-word32 fn00400E04(word32 r2, word32 r3, word32 r4, word32 r5, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 lr, word32 dwArg08, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r30Out)
+word32 fn00400E04(word32 r2, word32 r3, word32 r4, word32 r5, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 lr, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r30Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  lr:[0..31] r2:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r4:[0..31] r5:[0..31]
@@ -589,11 +535,8 @@ l00400E04:
 // SymbolicIn:
 
 l00400E5C:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
 	word32 r3_31
-	r2 = fn00401598(r2, r3, r4, r25, r26, r27, r28, r29, r30, r5, lr, stackArg8, out r3_31, out r25, out r26, out r27, out r28, out r29, out r30, out r31_33)
+	r2 = fn00401598(r2, r3, r4, r25, r26, r27, r28, r29, r30, r5, lr, out r3_31, out r25, out r26, out r27, out r28, out r29, out r30, out r31_33)
 	r11_47 = r3_31
 // DataOut:
 // DataOut (flags):
@@ -646,7 +589,7 @@ fn00400E04_exit:
 
 
 
-void fn00400E9C(word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, word32 dwArg08)
+void fn00400E9C(word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  lr:[0..31] r2:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31] r5:[0..31] r6:[0..31]
@@ -673,13 +616,10 @@ l00400E9C:
 // SymbolicIn:
 
 l00400ECC:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
-	r2 = fn00400E04(r2, r28_25, r29_27, r30_29, r25, r26, r27, r28_25, r29_27, r30_29, lr, stackArg8, out r25, out r26, out r27, out r28_25, out r29_27, out r30_29)
-	r31_31 = r31_129 + -1
-	r31_129 = r31_31
-	branch r31_129 > 0x00000000 l00400ECC
+	r2 = fn00400E04(r2, r28_25, r29_27, r30_29, r25, r26, r27, r28_25, r29_27, r30_29, lr, out r25, out r26, out r27, out r28_25, out r29_27, out r30_29)
+	r31_31 = r31_128 + -1
+	r31_128 = r31_31
+	branch r31_128 > 0x00000000 l00400ECC
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -697,7 +637,7 @@ fn00400E9C_exit:
 
 
 
-void fn00400F00(word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, word32 dwArg08)
+void fn00400F00(word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  lr:[0..31] r2:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31] r5:[0..31] r6:[0..31]
@@ -724,13 +664,10 @@ l00400F00:
 // SymbolicIn:
 
 l00400F30:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
-	r2 = fn00400E04(r2, (int32) (int8) (word32) Mem30[r30_25:byte], r28_27, r29_29, r25, r26, r27, r28_27, r29_29, r30_25 + 1, lr, stackArg8, out r25, out r26, out r27, out r28_27, out r29_29, out r30_25)
-	r31_31 = r31_134 + -1
-	r31_134 = r31_31
-	branch r31_134 > 0x00000000 l00400F30
+	r2 = fn00400E04(r2, (int32) (int8) (word32) Mem30[r30_25:byte], r28_27, r29_29, r25, r26, r27, r28_27, r29_29, r30_25 + 1, lr, out r25, out r26, out r27, out r28_27, out r29_29, out r30_25)
+	r31_31 = r31_133 + -1
+	r31_133 = r31_31
+	branch r31_133 > 0x00000000 l00400F30
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -800,7 +737,7 @@ fn00400F88_exit:
 
 
 
-word32 fn00400F9C(word32 r2, word32 r3, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, word32 dwArg08, ptr32 & r3Out, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
+word32 fn00400F9C(word32 r2, word32 r3, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, ptr32 & r3Out, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  lr:[0..31] r2:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31]
@@ -813,9 +750,6 @@ fn00400F9C_entry:
 // SymbolicIn:
 
 l00400F9C:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
 	word32 r25_26
 	word32 r26_27
 	word32 r27_28
@@ -824,7 +758,7 @@ l00400F9C:
 	word32 r3_31
 	word32 r30_32
 	word32 r31_33
-	word32 r2_25 = fn00400FC4(r2, r3, Mem0[Mem0[r2 + 100:word32]:word32], r25, r26, r27, r28, r29, r30, r31, lr, stackArg8, out r3_31, out r25_26, out r26_27, out r27_28, out r28_29, out r29_30, out r30_32, out r31_33)
+	word32 r2_25 = fn00400FC4(r2, r3, Mem0[Mem0[r2 + 100:word32]:word32], r25, r26, r27, r28, r29, r30, r31, lr, out r3_31, out r25_26, out r26_27, out r27_28, out r28_29, out r29_30, out r30_32, out r31_33)
 	r3Out = r3_31
 	r25Out = r25_26
 	r26Out = r26_27
@@ -845,7 +779,7 @@ fn00400F9C_exit:
 
 
 
-word32 fn00400FC4(word32 r2, word32 r3, word32 r4, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, word32 dwArg08, ptr32 & r3Out, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
+word32 fn00400FC4(word32 r2, word32 r3, word32 r4, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, ptr32 & r3Out, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  lr:[0..31] r2:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31]
@@ -873,11 +807,8 @@ l00400FF8:
 // SymbolicIn:
 
 l00401004:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
 	word32 r3_38
-	word32 r2_49 = fn0040105C(r2, r31_23, r25, r26, r27, r28, r29, r30_15, r31_23, lr, stackArg8, out r3_38, out r25, out r26, out r27, out r28, out r29, out r30_15, out r31_23)
+	word32 r2_49 = fn0040105C(r2, r31_23, r25, r26, r27, r28, r29, r30_15, r31_23, lr, out r3_38, out r25, out r26, out r27, out r28, out r29, out r30_15, out r31_23)
 	branch r3_38 != 0x00000000 l00401048
 // DataOut:
 // DataOut (flags):
@@ -904,11 +835,8 @@ l00401048:
 // SymbolicIn:
 
 l0040101C:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
 	word32 r3_71
-	r2 = fn004017F0(r2_49, r31_23, stackArg8, out r3_71)
+	r2 = fn004017F0(r2_49, r31_23, out r3_71)
 	branch r3_71 != 0x00000000 l00401004
 // DataOut:
 // DataOut (flags):
@@ -949,7 +877,7 @@ fn00400FC4_exit:
 
 
 
-word32 fn0040105C(word32 r2, word32 r3, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, word32 dwArg08, ptr32 & r3Out, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
+word32 fn0040105C(word32 r2, word32 r3, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, ptr32 & r3Out, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  lr:[0..31] r2:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31]
@@ -974,12 +902,9 @@ l0040105C:
 // SymbolicIn:
 
 l00401088:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
 	word32 r29_52
 	word32 r3_53
-	r2 = fn00401ADC(r2, r3, r25, r26, r27, r28, r29, r3, r3_23, lr, stackArg8, out r3_53, out r25, out r26, out r27, out r28, out r29_52, out r30_114)
+	r2 = fn00401ADC(r2, r3, r25, r26, r27, r28, r29, r3, r3_23, lr, out r3_53, out r25, out r26, out r27, out r28, out r29_52, out r30_114)
 	branch r3_53 == -1 l004010C0
 // DataOut:
 // DataOut (flags):
@@ -1008,10 +933,7 @@ l0040109C:
 // SymbolicIn:
 
 l004010B4:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
-	r2 = fn00401AB4(r2, r29_52, r30_114, stackArg8, out r29_237, out r30_114)
+	r2 = fn00401AB4(r2, r29_52, r30_114, out r29_235, out r30_114)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1024,11 +946,8 @@ l004010D8:
 // SymbolicIn:
 
 l00401100:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
 	word32 r3_122
-	r2 = fn0040115C(r2, r31_105, r30_114, -4, r30_114, r31_105, stackArg8, out r3_122, out r29_110, out r31_105)
+	r2 = fn0040115C(r2, r31_105, r30_114, -4, r30_114, r31_105, out r3_122, out r29_110, out r31_105)
 	branch r3_122 == 0x00000000 l00401128
 // DataOut:
 // DataOut (flags):
@@ -1066,7 +985,7 @@ fn0040105C_exit:
 
 
 
-word32 fn0040115C(word32 r2, word32 r3, word32 r4, word32 r29, word32 r30, word32 r31, word32 dwArg08, ptr32 & r3Out, ptr32 & r29Out, ptr32 & r31Out)
+word32 fn0040115C(word32 r2, word32 r3, word32 r4, word32 r29, word32 r30, word32 r31, ptr32 & r3Out, ptr32 & r29Out, ptr32 & r31Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31]
@@ -1088,11 +1007,8 @@ l0040115C:
 // SymbolicIn:
 
 l0040119C:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
 	word32 r3_33
-	r2 = fn004019CC(r2, stackArg8, out r3_33)
+	r2 = fn004019CC(r2, out r3_33)
 	branch r3_33 == 0x00000000 l004011E4
 // DataOut:
 // DataOut (flags):
@@ -1128,7 +1044,7 @@ fn0040115C_exit:
 
 
 
-word32 fn004011FC(word32 r2, word32 r3, word32 r29, word32 r30, word32 dwArg08, ptr32 & r3Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
+word32 fn004011FC(word32 r2, word32 r3, word32 r29, word32 r30, ptr32 & r3Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31] r29:[0..31] r3:[0..31] r30:[0..31]
@@ -1147,14 +1063,11 @@ l004011FC:
 // SymbolicIn:
 
 l00401234:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
 	word32 r29_19
 	word32 r3_20
 	word32 r30_21
 	word32 r31_22
-	word32 r2_28 = fn004012B0(r2, r3, r29, r30, r3, stackArg8, out r3_20, out r29_19, out r30_21, out r31_22)
+	word32 r2_28 = fn004012B0(r2, r3, r29, r30, r3, out r3_20, out r29_19, out r30_21, out r31_22)
 	branch r3_20 == 0x00000000 l0040125C
 // DataOut:
 // DataOut (flags):
@@ -1179,13 +1092,10 @@ l00401298:
 // SymbolicIn:
 
 l00401268:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
 	word32 r29_45
 	word32 r3_46
 	word32 r30_47
-	word32 r2_56 = fn004020BC(r2_28, Mem12[r31_22 + 16:word32], r29_19, r30_21, r31_22, stackArg8, out r3_46, out r29_45, out r30_47)
+	word32 r2_56 = fn004020BC(r2_28, Mem12[r31_22 + 16:word32], r29_19, r30_21, r31_22, out r3_46, out r29_45, out r30_47)
 	word32 r3_135 = -1
 	branch r3_46 != 0x00000000 l00401284
 // DataOut:
@@ -1223,13 +1133,10 @@ l00401244:
 // SymbolicIn:
 
 l00401218:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
 	word32 r3_79
 	word32 r29_86
 	word32 r30_87
-	word32 r2_88 = fn00401380(r2, 0, r27, r28, r29, r30, r3, stackArg8, out r3_79, out r29_86, out r30_87)
+	word32 r2_88 = fn00401380(r2, 0, r27, r28, r29, r30, r3, out r3_79, out r29_86, out r30_87)
 	r3Out = r3_79
 	r27Out = <invalid>
 	r28Out = <invalid>
@@ -1248,7 +1155,7 @@ fn004011FC_exit:
 
 
 
-word32 fn004012B0(word32 r2, word32 r3, word32 r29, word32 r30, word32 r31, word32 dwArg08, ptr32 & r3Out, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
+word32 fn004012B0(word32 r2, word32 r3, word32 r29, word32 r30, word32 r31, ptr32 & r3Out, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31]
@@ -1287,12 +1194,9 @@ l004012E0:
 // SymbolicIn:
 
 l004012F0:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
 	word32 r3_36
 	word32 r30_46
-	r2 = fn00402248(r2, Mem23[r3 + 16:word32], r4_27, r30_29, 0, r30_29, r3, stackArg8, out r3_36, out r29_24, out r30_46, out r31_16)
+	r2 = fn00402248(r2, Mem23[r3 + 16:word32], r4_27, r30_29, 0, r30_29, r3, out r3_36, out r29_24, out r30_46, out r31_16)
 	branch r3_36 != r30_46 l00401324
 // DataOut:
 // DataOut (flags):
@@ -1338,7 +1242,7 @@ fn004012B0_exit:
 
 
 
-void fn0040135C(word32 r2, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 dwArg08)
+void fn0040135C(word32 r2, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r30:[0..31] r31:[0..31]
@@ -1351,10 +1255,7 @@ fn0040135C_entry:
 // SymbolicIn:
 
 l0040135C:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
-	fn00401380(r2, 1, r27, r28, r29, r30, r31, stackArg8, out r3_33, out r29_34, out r30_35)
+	fn00401380(r2, 1, r27, r28, r29, r30, r31, out r3_32, out r29_33, out r30_34)
 	return
 // DataOut:
 // DataOut (flags):
@@ -1367,7 +1268,7 @@ fn0040135C_exit:
 
 
 
-word32 fn00401380(word32 r2, word32 r3, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 dwArg08, ptr32 & r3Out, ptr32 & r29Out, ptr32 & r30Out)
+word32 fn00401380(word32 r2, word32 r3, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, ptr32 & r3Out, ptr32 & r29Out, ptr32 & r30Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31]
@@ -1421,11 +1322,8 @@ l004013E8:
 // SymbolicIn:
 
 l004013F4:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
 	word32 r3_76
-	r2 = fn004011FC(r2, r31_100, r29_105, r30_102, stackArg8, out r3_76, out r27_22, out r28_108, out r29_105, out r30_102, out r31_100)
+	r2 = fn004011FC(r2, r31_100, r29_105, r30_102, out r3_76, out r27_22, out r28_108, out r29_105, out r30_102, out r31_100)
 	branch r3_76 != -1 l00401408
 // DataOut:
 // DataOut (flags):
@@ -1438,11 +1336,8 @@ l00401404:
 // SymbolicIn:
 
 l004013C8:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
 	word32 r3_92
-	r2 = fn004011FC(r2, r31_100, r29_105, r30_102, stackArg8, out r3_92, out r27_22, out r28_108, out r29_105, out r30_102, out r31_100)
+	r2 = fn004011FC(r2, r31_100, r29_105, r30_102, out r3_92, out r27_22, out r28_108, out r29_105, out r30_102, out r31_100)
 	branch r3_92 == -1 l00401408
 // DataOut:
 // DataOut (flags):
@@ -1701,7 +1596,7 @@ fn00401554_exit:
 
 
 
-word32 fn00401598(word32 r2, word32 r3, word32 r4, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, word32 dwArg08, ptr32 & r3Out, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
+word32 fn00401598(word32 r2, word32 r3, word32 r4, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, ptr32 & r3Out, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  lr:[0..31] r2:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31]
@@ -1824,10 +1719,7 @@ l00401668:
 // SymbolicIn:
 
 l0040167C:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
-	r2 = fn0040298C(r2, r4, r25, r26, r3, 0, r29, r30_151, lr, stackArg8, out r25, out r26, out r27_147, out r28_148, out r30_151)
+	r2 = fn0040298C(r2, r4, r25, r26, r3, 0, r29, r30_151, lr, out r25, out r26, out r27_147, out r28_148, out r30_151)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1840,11 +1732,8 @@ l00401688:
 // SymbolicIn:
 
 l0040170C:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
 	word32 r3_184
-	r2 = fn00402248(r2, r30_151, fp + -24, 1, 1, r30_151, r4, stackArg8, out r3_184, out r29_193, out r30_468, out r31_195)
+	r2 = fn00402248(r2, r30_151, fp + -24, 1, 1, r30_151, r4, out r3_184, out r29_193, out r30_466, out r31_195)
 	r28_148 = r3_184
 // DataOut:
 // DataOut (flags):
@@ -1868,20 +1757,14 @@ l004016D4:
 // SymbolicIn:
 
 l004016E8:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
-	r2 = fn004026B8(r2, r30_151, 0, 2, r26, r27_147, r28_148, r29_193, r30_151, r4, stackArg8, out r26, out r27_147, out r28_148, out r29_193, out r31_195)
+	r2 = fn004026B8(r2, r30_151, 0, 2, r26, r27_147, r28_148, r29_193, r30_151, r4, out r26, out r27_147, out r28_148, out r29_193, out r31_195)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l004016B8:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
 	word32 r3_247
-	r2 = fn00402248(r2, r30_151, Mem209[r4 + 8:word32], r29_193, r29_193, r30_151, r4, stackArg8, out r3_247, out r29_193, out r30_470, out r31_195)
+	r2 = fn00402248(r2, r30_151, Mem209[r4 + 8:word32], r29_193, r29_193, r30_151, r4, out r3_247, out r29_193, out r30_467, out r31_195)
 	r28_148 = r3_247
 // DataOut:
 // DataOut (flags):
@@ -1961,7 +1844,7 @@ fn0040178C_exit:
 
 
 
-word32 fn004017F0(word32 r2, word32 r3, word32 dwArg08, ptr32 & r3Out)
+word32 fn004017F0(word32 r2, word32 r3, ptr32 & r3Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31] r3:[0..31]
@@ -1980,10 +1863,7 @@ l004017F0:
 // SymbolicIn:
 
 l0040180C:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg20 = <invalid>
-	fn00403F10(r2, Mem12[Mem12[r2 + 128:word32]:word32], stackArg20)
+	fn00403F10(r2, Mem12[Mem12[r2 + 128:word32]:word32])
 	r2 = dwLoc24
 	branch r3 == 0x00000000 l00401838
 // DataOut:
@@ -2011,7 +1891,7 @@ fn004017F0_exit:
 
 
 
-word32 fn004019CC(word32 r2, word32 dwArg08, ptr32 & r3Out)
+word32 fn004019CC(word32 r2, ptr32 & r3Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31]
@@ -2031,11 +1911,8 @@ l004019CC:
 // SymbolicIn:
 
 l004019EC:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
 	word32 r3_20
-	r2 = fn00401A34(r2, stackArg8, out r3_20)
+	r2 = fn00401A34(r2, out r3_20)
 	branch r3_20 != 0x00000000 l00401A10
 // DataOut:
 // DataOut (flags):
@@ -2064,7 +1941,7 @@ fn004019CC_exit:
 
 
 
-word32 fn00401A34(word32 r2, word32 dwArg08, ptr32 & r3Out)
+word32 fn00401A34(word32 r2, ptr32 & r3Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31]
@@ -2077,10 +1954,7 @@ fn00401A34_entry:
 // SymbolicIn:
 
 l00401A34:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg20 = <invalid>
-	fn00404104(r2, stackArg20)
+	fn00404104(r2)
 	branch true l00401A68
 // DataOut:
 // DataOut (flags):
@@ -2096,11 +1970,11 @@ l00401A68:
 // SymbolicIn:
 
 l00401A84:
-	Mem25[r10_18:word32] = r11_74
-	r10_18 = r11_74
-	r11_22 = r11_74 + 8
-	r11_74 = r11_22
-	branch r11_74 < 8184 l00401A84
+	Mem25[r10_18:word32] = r11_73
+	r10_18 = r11_73
+	r11_22 = r11_73 + 8
+	r11_73 = r11_22
+	branch r11_73 < 8184 l00401A84
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2127,7 +2001,7 @@ fn00401A34_exit:
 
 
 
-word32 fn00401AB4(word32 r2, word32 r29, word32 r30, word32 dwArg08, ptr32 & r29Out, ptr32 & r30Out)
+word32 fn00401AB4(word32 r2, word32 r29, word32 r30, ptr32 & r29Out, ptr32 & r30Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31] r29:[0..31] r30:[0..31]
@@ -2140,12 +2014,9 @@ fn00401AB4_entry:
 // SymbolicIn:
 
 l00401AB4:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
 	word32 r29_18
 	word32 r30_20
-	word32 r2_17 = fn00402C4C(r2, 18, r29, r30, stackArg8, out r29_18, out r30_20)
+	word32 r2_17 = fn00402C4C(r2, 18, r29, r30, out r29_18, out r30_20)
 	r29Out = r29_18
 	r30Out = r30_20
 	return r2_17
@@ -2160,7 +2031,7 @@ fn00401AB4_exit:
 
 
 
-word32 fn00401ADC(word32 r2, word32 r3, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, word32 dwArg08, ptr32 & r3Out, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r30Out)
+word32 fn00401ADC(word32 r2, word32 r3, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, ptr32 & r3Out, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r30Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  lr:[0..31] r2:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31]
@@ -2205,11 +2076,8 @@ l00401B2C:
 // SymbolicIn:
 
 l00401B40:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
 	word32 r3_71
-	r2 = fn00401DD8(r2, r30_112, r26_232, r26_232, r27_113, r28_114, r29_105, r30_112, r31, lr, stackArg8, out r3_71, out r26_232, out r27_113, out r28_114, out r29_105, out r30_112, out r31)
+	r2 = fn00401DD8(r2, r30_112, r26_232, r26_232, r27_113, r28_114, r29_105, r30_112, r31, lr, out r3_71, out r26_232, out r27_113, out r28_114, out r29_105, out r30_112, out r31)
 	branch r3_71 != -1 l00401B80
 // DataOut:
 // DataOut (flags):
@@ -2271,10 +2139,7 @@ l00401BB4:
 // SymbolicIn:
 
 l00401BC4:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg20 = <invalid>
-	r2 = Mem39[fn0040408C(r2, stackArg20) + 20:word32]
+	r2 = Mem39[fn0040408C(r2) + 20:word32]
 	r9_128 = Mem39[r29_125:word32]
 // DataOut:
 // DataOut (flags):
@@ -2293,20 +2158,14 @@ l00401BE0:
 // SymbolicIn:
 
 l00401BF4:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg20 = <invalid>
-	fn004040A4(r2, stackArg20)
+	fn004040A4(r2)
 	branch r31_131 != 0x00000000 l00401C24
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00401C24:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg20 = <invalid>
-	word32 r1_165 = fn004040BC(dwLoc44, stackArg20)
+	word32 r1_165 = fn004040BC(dwLoc44)
 	r2 = Mem39[r1_165 + 20:word32]
 	branch Mem39[r29_125:word32] == 0x00000000 l00401C6C
 // DataOut:
@@ -2315,13 +2174,7 @@ l00401C24:
 
 l00401C3C:
 	Mem177[r1_165 + 56:word32] = Mem39[r28_114:word32]
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg20 = <invalid>
-	word32 stackArg20 = <invalid>
-	r2 = Mem177[fn004040EC(Mem177[fn004040D4(r2, stackArg20) + 20:word32], stackArg20) + 20:word32]
+	r2 = Mem177[fn004040EC(Mem177[fn004040D4(r2) + 20:word32]) + 20:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2364,11 +2217,8 @@ l00401CB8:
 // SymbolicIn:
 
 l00401CC8:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
 	word32 r3_273
-	word32 r2_271 = fn00401CE8(r2, r27_113, r26_232, r26_232, r27_113, r28_114, r29_125, r30_112, r31, lr, stackArg8, out r3_273)
+	word32 r2_271 = fn00401CE8(r2, r27_113, r26_232, r26_232, r27_113, r28_114, r29_125, r30_112, r31, lr, out r3_273)
 	r3Out = r3_273
 	r25Out = <invalid>
 	r26Out = <invalid>
@@ -2401,7 +2251,7 @@ fn00401ADC_exit:
 
 
 
-word32 fn00401CE8(word32 r2, word32 r3, word32 r4, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, word32 dwArg08, ptr32 & r3Out)
+word32 fn00401CE8(word32 r2, word32 r3, word32 r4, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, ptr32 & r3Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  lr:[0..31] r2:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31]
@@ -2430,10 +2280,7 @@ l00401D1C:
 // SymbolicIn:
 
 l00401D20:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg20 = <invalid>
-	fn00404104(r2, stackArg20)
+	fn00404104(r2)
 	word32 r3_31 = r31_24 + 8
 	word32 r2_124 = dwLoc34
 	branch r3_31 == 0x00000000 l00401DC0
@@ -2467,13 +2314,10 @@ l00401D78:
 	Mem65[r8_51 + 12:word32] = r3_31
 	Mem67[r8_51 + 8:word32] = r31_24
 	Mem69[r8_51 + 4:word32] = 0
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
 	word32 r3_91
 	word32 r30_92
 	word32 r31_93
-	word32 r2_86 = fn00401DD8(dwLoc34, r3, r4, r26, r27, r28, r4, r3, r31_24, lr, stackArg8, out r3_91, out r26_216, out r27_217, out r28_218, out r29_219, out r30_92, out r31_93)
+	word32 r2_86 = fn00401DD8(dwLoc34, r3, r4, r26, r27, r28, r4, r3, r31_24, lr, out r3_91, out r26_214, out r27_215, out r28_216, out r29_217, out r30_92, out r31_93)
 	branch r3_91 == 0x00000000 l00401DA8
 // DataOut:
 // DataOut (flags):
@@ -2487,10 +2331,7 @@ l00401DA8:
 // SymbolicIn:
 
 l00401D9C:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
-	r2_124 = fn00401ED4(r2_86, r30_92, r30_92, r31_93, stackArg8)
+	r2_124 = fn00401ED4(r2_86, r30_92, r30_92, r31_93)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2509,7 +2350,7 @@ fn00401CE8_exit:
 
 
 
-word32 fn00401DD8(word32 r2, word32 r3, word32 r4, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, word32 dwArg08, ptr32 & r3Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
+word32 fn00401DD8(word32 r2, word32 r3, word32 r4, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, ptr32 & r3Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  lr:[0..31] r2:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31]
@@ -2540,10 +2381,7 @@ l00401DD8:
 // SymbolicIn:
 
 l00401E24:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg20 = <invalid>
-	fn0040411C(r2, stackArg20)
+	fn0040411C(r2)
 	word32 r10_52 = Mem36[Mem36[r29_19:word32]:word32]
 	r28 = r30_30 - r10_31 + r9_29 + 8 & -8
 	r2 = dwLoc3C
@@ -2562,25 +2400,19 @@ l00401E78:
 
 l00401E88:
 	Mem71[r11_27 + 4:word32] = Mem61[r11_27 + 4:word32] + r30_30
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
 	word32 r26_86
 	word32 r27_87
 	word32 r29_89
 	word32 r3_90
 	word32 r30_91
-	word32 r2_107 = fn00402CE0(r2, r8_37, r30_30, r26, r27, r28, r29_19, r30_30, r3 << 0x04, lr, stackArg8, out r3_90, out r26_86, out r27_87, out r29_89, out r30_91)
+	word32 r2_107 = fn00402CE0(r2, r8_37, r30_30, r26, r27, r28, r29_19, r30_30, r3 << 0x04, lr, out r3_90, out r26_86, out r27_87, out r29_89, out r30_91)
 	branch r3_90 == 0x00000000 l00401EBC
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00401EB4:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
-	r2_107 = fn00401AB4(r2_107, r29_89, r30_91, stackArg8, out r29_215, out r30_216)
+	r2_107 = fn00401AB4(r2_107, r29_89, r30_91, out r29_212, out r30_213)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2618,7 +2450,7 @@ fn00401DD8_exit:
 
 
 
-word32 fn00401ED4(word32 r2, word32 r3, word32 r30, word32 r31, word32 dwArg08)
+word32 fn00401ED4(word32 r2, word32 r3, word32 r30, word32 r31)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31] r3:[0..31] r30:[0..31] r31:[0..31]
@@ -2641,10 +2473,7 @@ l00401ED4:
 // SymbolicIn:
 
 l00401F04:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg20 = <invalid>
-	r2 = Mem20[fn00404134(r2, stackArg20) + 20:word32]
+	r2 = Mem20[fn00404134(r2) + 20:word32]
 	r11_16 = Mem20[r30_13:word32]
 // DataOut:
 // DataOut (flags):
@@ -2830,7 +2659,7 @@ l00401FA8:
 
 
 
-word32 fn004020BC(word32 r2, word32 r3, word32 r29, word32 r30, word32 r31, word32 dwArg08, ptr32 & r3Out, ptr32 & r29Out, ptr32 & r30Out)
+word32 fn004020BC(word32 r2, word32 r3, word32 r29, word32 r30, word32 r31, ptr32 & r3Out, ptr32 & r29Out, ptr32 & r30Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31]
@@ -2907,10 +2736,7 @@ l00402114:
 // SymbolicIn:
 
 l00402138:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg20 = <invalid>
-	fn00404074(r2, stackArg20)
+	fn00404074(r2)
 	branch fp == 0xFFFFFFA0 l00402184
 // DataOut:
 // DataOut (flags):
@@ -2937,10 +2763,7 @@ l00402190:
 // SymbolicIn:
 
 l004021B4:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg20 = <invalid>
-	fn00403F3C(dwLoc84, stackArg20)
+	fn00403F3C(dwLoc84)
 	branch fp == 0xFFFFFFA0 l004021F8
 // DataOut:
 // DataOut (flags):
@@ -2982,7 +2805,7 @@ fn004020BC_exit:
 
 
 
-word32 fn00402248(word32 r2, word32 r3, word32 r4, word32 r5, word32 r29, word32 r30, word32 r31, word32 dwArg08, ptr32 & r3Out, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
+word32 fn00402248(word32 r2, word32 r3, word32 r4, word32 r5, word32 r29, word32 r30, word32 r31, ptr32 & r3Out, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31] r5:[0..31]
@@ -3055,11 +2878,8 @@ l00402314:
 // SymbolicIn:
 
 l00402324:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg20 = <invalid>
 	r3_66 = fp + -96
-	r2_101 = Mem73[fn0040405C(r2, stackArg20) + 20:word32]
+	r2_101 = Mem73[fn0040405C(r2) + 20:word32]
 	r11_126 = dwLoc38
 // DataOut:
 // DataOut (flags):
@@ -3070,10 +2890,7 @@ l00402294:
 	word32 r30_80 = Mem24[r31_78 + 4:word32]
 	Mem81[r31_78 + 16:word32] = r4
 	Mem82[r31_78 + 12:word32] = r5
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg20 = <invalid>
-	r2_101 = Mem82[fn00403F10(r2, Mem82[r30_80 + 16:word32], stackArg20) + 20:word32]
+	r2_101 = Mem82[fn00403F10(r2, Mem82[r30_80 + 16:word32]) + 20:word32]
 	r3_66 = (int32) (int16) r31_78
 	branch r3_66 == 0x00000000 l004022D8
 // DataOut:
@@ -3126,7 +2943,7 @@ fn00402248_exit:
 
 
 
-void fn00402398(word32 r2, word32 r28, word32 r29, word32 r30, word32 r31, word32 dwArg08)
+void fn00402398(word32 r2, word32 r28, word32 r29, word32 r30, word32 r31)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31] r28:[0..31] r29:[0..31] r30:[0..31] r31:[0..31]
@@ -3152,12 +2969,9 @@ l00402398:
 // SymbolicIn:
 
 l004023C4:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
 	word32 r3_33
 	word32 r31_35
-	r2 = fn00403170(r2, r31_19, r28, r29_16, r30_23, r31_19, stackArg8, out r3_33, out r28, out r29_16, out r30_23, out r31_35)
+	r2 = fn00403170(r2, r31_19, r28, r29_16, r30_23, r31_19, out r3_33, out r28, out r29_16, out r30_23, out r31_35)
 	branch r3_33 == -1 l004023DC
 // DataOut:
 // DataOut (flags):
@@ -3189,7 +3003,7 @@ fn00402398_exit:
 
 
 
-word32 fn00402404(word32 r2, word32 r29, word32 r30, word32 r31, word32 dwArg08, ptr32 & r29Out, ptr32 & r30Out)
+word32 fn00402404(word32 r2, word32 r29, word32 r30, word32 r31, ptr32 & r29Out, ptr32 & r30Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31] r29:[0..31] r30:[0..31] r31:[0..31]
@@ -3202,35 +3016,20 @@ fn00402404_entry:
 // SymbolicIn:
 
 l00402404:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
 	word32 r29_17
 	word32 r30_18
 	word32 r31_19
-	word32 r2_23 = fn0040262C(r2, Mem0[r2 + 168:word32], Mem0[r2 + 172:word32], r29, r30, r31, stackArg8, out r29_17, out r30_18, out r31_19)
-	word32 stackArg8 = <invalid>
-	word32 stackArg20 = <invalid>
-	word32 stackArg20 = <invalid>
+	word32 r2_23 = fn0040262C(r2, Mem0[r2 + 168:word32], Mem0[r2 + 172:word32], r29, r30, r31, out r29_17, out r30_18, out r31_19)
 	word32 r29_28
 	word32 r30_29
-	word32 r2_52 = Mem13[fn00404044(Mem13[fn00404044(fn0040262C(r2_23, Mem13[r2_23 + 176:word32], Mem13[r2_23 + 180:word32], r29_17, r30_18, r31_19, stackArg8, out r29_28, out r30_29, out r31_92), stackArg20) + 20:word32], stackArg20) + 20:word32]
+	word32 r2_52 = Mem13[fn00404044(Mem13[fn00404044(fn0040262C(r2_23, Mem13[r2_23 + 176:word32], Mem13[r2_23 + 180:word32], r29_17, r30_18, r31_19, out r29_28, out r30_29, out r31_90)) + 20:word32]) + 20:word32]
 	branch 0xFFFFF90E == 0x00000000 l00402480
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00402458:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg20 = <invalid>
-	word32 r1_59 = fn00403F9C(r2_52, stackArg20)
+	word32 r1_59 = fn00403F9C(r2_52)
 	r2_52 = Mem13[r1_59 + 20:word32]
 	branch true l00402480
 // DataOut:
@@ -3258,7 +3057,7 @@ fn00402404_exit:
 
 
 
-word32 fn004024F0(word32 r2, word32 r3, word32 r4, word32 r5, word32 r29, word32 r30, word32 r31, word32 dwArg08, ptr32 & r29Out, ptr32 & r31Out)
+word32 fn004024F0(word32 r2, word32 r3, word32 r4, word32 r5, word32 r29, word32 r30, word32 r31, ptr32 & r29Out, ptr32 & r31Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31] r5:[0..31]
@@ -3290,31 +3089,22 @@ l0040251C:
 // SymbolicIn:
 
 l0040252C:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
-	r2 = fn0040262C(r2, r3_28, Mem26[Mem26[r2 + 192:word32]:word32], r29, r3, r5, stackArg8, out r29, out r30_20, out r31_22)
+	r2 = fn0040262C(r2, r3_28, Mem26[Mem26[r2 + 192:word32]:word32], r29, r3, r5, out r29, out r30_20, out r31_22)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00402538:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
-	r2 = fn0040262C(r2, Mem26[r2 + 196:word32], Mem26[r2 + 200:word32], r29, r30_20, r31_22, stackArg8, out r29, out r30_20, out r31_22)
+	r2 = fn0040262C(r2, Mem26[r2 + 196:word32], Mem26[r2 + 200:word32], r29, r30_20, r31_22, out r29, out r30_20, out r31_22)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00402544:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
 	word32 r29_66
 	word32 r30_67
 	word32 r31_68
-	word32 r2_124 = fn0040262C(r2, Mem26[r2 + 204:word32], Mem26[r2 + 208:word32], r29, r30_20, r31_22, stackArg8, out r29_66, out r30_67, out r31_68)
+	word32 r2_124 = fn0040262C(r2, Mem26[r2 + 204:word32], Mem26[r2 + 208:word32], r29, r30_20, r31_22, out r29_66, out r30_67, out r31_68)
 	branch r31_68 != 0x00000000 l00402574
 // DataOut:
 // DataOut (flags):
@@ -3334,10 +3124,7 @@ l00402568:
 // SymbolicIn:
 
 l0040256C:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
-	r2_124 = fn00403248(r2_124, stackArg8)
+	r2_124 = fn00403248(r2_124)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3357,7 +3144,7 @@ fn004024F0_exit:
 
 
 
-word32 fn0040262C(word32 r2, word32 r3, word32 r4, word32 r29, word32 r30, word32 r31, word32 dwArg08, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
+word32 fn0040262C(word32 r2, word32 r3, word32 r4, word32 r29, word32 r30, word32 r31, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31]
@@ -3393,10 +3180,7 @@ l00402658:
 // SymbolicIn:
 
 l00402664:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg20 = <invalid>
-	r2 = Mem22[fn00403F10(r2, r31_25, stackArg20) + 20:word32]
+	r2 = Mem22[fn00403F10(r2, r31_25) + 20:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3424,7 +3208,7 @@ fn0040262C_exit:
 
 
 
-word32 fn004026B8(word32 r2, word32 r3, word32 r4, word32 r5, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 dwArg08, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r31Out)
+word32 fn004026B8(word32 r2, word32 r3, word32 r4, word32 r5, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r31Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31] r5:[0..31]
@@ -3517,10 +3301,7 @@ l00402758:
 // SymbolicIn:
 
 l0040277C:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg20 = <invalid>
-	r1_136 = fn00403FE4(r2, stackArg20)
+	r1_136 = fn00403FE4(r2)
 	r3_130 = fp + -104
 	r2 = Mem96[r1_136 + 20:word32]
 	r29_105 = r4 + dwLoc3A
@@ -3555,10 +3336,7 @@ l004027BC:
 // SymbolicIn:
 
 l004027E0:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg20 = <invalid>
-	r1_136 = fn00403FFC(r2, stackArg20)
+	r1_136 = fn00403FFC(r2)
 	r3_130 = fp + -104
 	r2 = Mem133[r1_136 + 20:word32]
 	r29_105 = r4 + dwLoc4C
@@ -3599,12 +3377,9 @@ l00402844:
 	Mem173[r31_146 + 46:word32] = r29_105
 	Mem176[r31_146 + 24:word16] = (word16) (int32) (int16) r4_169
 	Mem179[r31_146 + 44:word16] = 0x0001
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg20 = <invalid>
 	r3_130 = r31_146
 	word32 r27_177 = (r3 << 0x02) + r27_165
-	r2 = Mem179[fn00404014(r2, stackArg20) + 20:word32]
+	r2 = Mem179[fn00404014(r2) + 20:word32]
 	branch r31_146 != -39 l00402920
 // DataOut:
 // DataOut (flags):
@@ -3634,11 +3409,8 @@ l004028AC:
 	word32 r4_204 = Mem199[r27_177:word32]
 	Mem207[r31_146 + 28:word32] = r29_105
 	Mem210[r31_146 + 24:word16] = (word16) (int32) (int16) r4_204
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg20 = <invalid>
 	r3_130 = r31_146
-	r2 = Mem210[fn0040402C(r2, stackArg20) + 20:word32]
+	r2 = Mem210[fn0040402C(r2) + 20:word32]
 	branch r31_146 != 0x00000000 l00402920
 // DataOut:
 // DataOut (flags):
@@ -3669,11 +3441,8 @@ l00402900:
 	Mem240[r31_146 + 44:word16] = 0x0001
 	Mem242[r31_146 + 46:word32] = r29_105
 	Mem245[r31_146 + 24:word16] = (word16) (int32) (int16) r27_236
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg20 = <invalid>
 	r3_130 = r31_146
-	r2 = Mem245[fn00404014(r2, stackArg20) + 20:word32]
+	r2 = Mem245[fn00404014(r2) + 20:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3726,7 +3495,7 @@ fn004026B8_exit:
 
 
 
-word32 fn0040298C(word32 r2, word32 r3, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 lr, word32 dwArg08, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r30Out)
+word32 fn0040298C(word32 r2, word32 r3, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 lr, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r30Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  lr:[0..31] r2:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31]
@@ -3741,9 +3510,6 @@ fn0040298C_entry:
 l0040298C:
 	word32 r4_5 = Mem0[r2 + 76:word32]
 	Mem17[r4_5:word32] = Mem0[r4_5:word32] + 1
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
 	word32 r25_31
 	word32 r26_32
 	word32 r27_33
@@ -3751,7 +3517,7 @@ l0040298C:
 	word32 r3_36
 	word32 r30_37
 	word32 r31_38
-	word32 r2_30 = fn00400F9C(r2, 4096, r25, r26, r27, r28, r29, r30, r3, lr, stackArg8, out r3_36, out r25_31, out r26_32, out r27_33, out r28_34, out r29_101, out r30_37, out r31_38)
+	word32 r2_30 = fn00400F9C(r2, 4096, r25, r26, r27, r28, r29, r30, r3, lr, out r3_36, out r25_31, out r26_32, out r27_33, out r28_34, out r29_100, out r30_37, out r31_38)
 	Mem49[r31_38 + 8:word32] = r3_36
 	branch r3_36 == 0x00000000 l004029E4
 // DataOut:
@@ -3796,7 +3562,7 @@ fn0040298C_exit:
 
 
 
-void fn00402A24(word32 r2, word32 r3, word32 r4, word32 r5, word32 r11, word32 r13, word32 r14, word32 r15, word32 r16, word32 r17, word32 r18, word32 r19, word32 r20, word32 r21, word32 r22, word32 r23, word32 r24, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, word32 dwArg08)
+void fn00402A24(word32 r2, word32 r3, word32 r4, word32 r5, word32 r11, word32 r13, word32 r14, word32 r15, word32 r16, word32 r17, word32 r18, word32 r19, word32 r20, word32 r21, word32 r22, word32 r23, word32 r24, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  lr:[0..31] r11:[0..31] r13:[0..31] r14:[0..31] r15:[0..31] r16:[0..31] r17:[0..31] r18:[0..31] r19:[0..31] r2:[0..31] r20:[0..31] r21:[0..31] r22:[0..31] r23:[0..31] r24:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31] r5:[0..31]
@@ -3827,10 +3593,7 @@ l00402A24:
 // SymbolicIn:
 
 l00402AB0:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg20 = <invalid>
-	word32 r1_40 = fn00403F9C(r2, stackArg20)
+	word32 r1_40 = fn00403F9C(r2)
 	word32 r2_43 = Mem33[r1_40 + 20:word32]
 	branch true l00402B04
 // DataOut:
@@ -3838,10 +3601,7 @@ l00402AB0:
 // SymbolicIn:
 
 l00402AD0:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg20 = <invalid>
-	r1_40 = fn00403FB4(r2_43, stackArg20)
+	r1_40 = fn00403FB4(r2_43)
 	r2_43 = Mem33[r1_40 + 20:word32]
 	branch fp != 0xFFFFFDE0 l00402AF4
 // DataOut:
@@ -3867,79 +3627,19 @@ l00402B04:
 // SymbolicIn:
 
 l00402B4C:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
-	word32 stackArg24 = <invalid>
-	word32 stackArg28 = <invalid>
-	word32 stackArg32 = <invalid>
-	word32 stackArg36 = <invalid>
-	word32 stackArg40 = <invalid>
-	word32 stackArg44 = <invalid>
-	word32 stackArg48 = <invalid>
-	word32 stackArg52 = <invalid>
-	word32 stackArg8 = <invalid>
 	word32 r29_131
 	word32 r3_132
 	word32 r30_133
 	word32 r31_134
-	r2_156 = fn00402248(fn004032FC(r2_43, Mem33[r2_43 + 216:word32], r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, r26, r3, r4, r5, r30, r1_40 + 64, lr, stackArg8, stackArg24, stackArg28, stackArg32, stackArg36, stackArg40, stackArg44, stackArg48, stackArg52, out r3_132, out r29_131, out r30_133, out r31_134), 2, r31_134, r3_132, r29_131, r30_133, r31_134, stackArg8, out r3_438, out r29_157, out r30_158, out r31_159)
+	r2_156 = fn00402248(fn004032FC(r2_43, Mem33[r2_43 + 216:word32], r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, r26, r3, r4, r5, r30, r1_40 + 64, lr, out r3_132, out r29_131, out r30_133, out r31_134), 2, r31_134, r3_132, r29_131, r30_133, r31_134, out r3_415, out r29_157, out r30_158, out r31_159)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00402B0C:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
-	word32 stackArg24 = <invalid>
-	word32 stackArg28 = <invalid>
-	word32 stackArg32 = <invalid>
-	word32 stackArg36 = <invalid>
-	word32 stackArg40 = <invalid>
-	word32 stackArg44 = <invalid>
-	word32 stackArg48 = <invalid>
-	word32 stackArg52 = <invalid>
-	word32 r2_183 = fn004032FC(r2_43, Mem33[r2_43 + 216:word32], r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, r26, r3, r4, r5, r30, r1_40 + 64, lr, stackArg8, stackArg24, stackArg28, stackArg32, stackArg36, stackArg40, stackArg44, stackArg48, stackArg52, out r3_448, out r29_157, out r30_158, out r31_159)
+	word32 r2_183 = fn004032FC(r2_43, Mem33[r2_43 + 216:word32], r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, r26, r3, r4, r5, r30, r1_40 + 64, lr, out r3_416, out r29_157, out r30_158, out r31_159)
 	fn004032AC(r31_159)
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg20 = <invalid>
-	r2_156 = Mem33[fn00403FCC(r2_183, stackArg20) + 20:word32]
+	r2_156 = Mem33[fn00403FCC(r2_183) + 20:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3952,58 +3652,22 @@ l00402A50:
 // SymbolicIn:
 
 l00402A60:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
-	r2 = fn00403450(r2, r31_219 + 64, 0, 4, 0, r25, r26, r3, r4, r5, r30, r31_219, lr, stackArg8, out r25, out r26, out r27_234, out r28_22, out r29_236, out r31_219)
+	r2 = fn00403450(r2, r31_219 + 64, 0, 4, 0, r25, r26, r3, r4, r5, r30, r31_219, lr, out r25, out r26, out r27_234, out r28_22, out r29_236, out r31_219)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00402A7C:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
 	word32 r30_260 = r31_219 + 64
-	word32 stackArg8 = <invalid>
-	word32 stackArg24 = <invalid>
-	word32 stackArg28 = <invalid>
-	word32 stackArg32 = <invalid>
-	word32 stackArg36 = <invalid>
-	word32 stackArg40 = <invalid>
-	word32 stackArg44 = <invalid>
-	word32 stackArg48 = <invalid>
-	word32 stackArg52 = <invalid>
-	word32 stackArg8 = <invalid>
 	word32 r29_299
 	word32 r30_301
-	r2_156 = fn004011FC(fn004033C4(r2, r30_260, Mem33[r2 + 216:word32], r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, r26, r27_234, r28_22, r29_236, r30_260, r31_219, lr, stackArg8, stackArg24, stackArg28, stackArg32, stackArg36, stackArg40, stackArg44, stackArg48, stackArg52, out r29_299, out r30_301, out r31_159), r30_301, r29_299, r30_301, stackArg8, out r3_422, out r27_423, out r28_424, out r29_157, out r30_158, out r31_425)
+	r2_156 = fn004011FC(fn004033C4(r2, r30_260, Mem33[r2 + 216:word32], r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, r26, r27_234, r28_22, r29_236, r30_260, r31_219, lr, out r29_299, out r30_301, out r31_159), r30_301, r29_299, r30_301, out r3_411, out r27_412, out r28_413, out r29_157, out r30_158, out r31_414)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00402B84:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
-	fn0040326C(r2_156, r29_157, r30_158, r31_159, lr, stackArg8)
+	fn0040326C(r2_156, r29_157, r30_158, r31_159, lr)
 	return
 // DataOut:
 // DataOut (flags):
@@ -4016,7 +3680,7 @@ fn00402A24_exit:
 
 
 
-word32 fn00402BA0(word32 r2, word32 r3, word32 r29, word32 r30, word32 r31, word32 dwArg08, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
+word32 fn00402BA0(word32 r2, word32 r3, word32 r29, word32 r30, word32 r31, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31]
@@ -4045,10 +3709,7 @@ l00402BB8:
 // SymbolicIn:
 
 l00402BD0:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
-	r2 = fn00401AB4(r2, r29, -4, stackArg8, out r29, out r30_19)
+	r2 = fn00401AB4(r2, r29, -4, out r29, out r30_19)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4098,7 +3759,7 @@ fn00402BA0_exit:
 
 
 
-word32 fn00402C4C(word32 r2, word32 r3, word32 r29, word32 r30, word32 dwArg08, ptr32 & r29Out, ptr32 & r30Out)
+word32 fn00402C4C(word32 r2, word32 r3, word32 r29, word32 r30, ptr32 & r29Out, ptr32 & r30Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31] r29:[0..31] r3:[0..31] r30:[0..31]
@@ -4111,22 +3772,13 @@ fn00402C4C_entry:
 // SymbolicIn:
 
 l00402C4C:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
-	word32 stackArg8 = <invalid>
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
 	word32 r29_21
 	word32 r30_23
 	word32 r31_24
 	word32 r29_42
 	word32 r30_44
-	word32 r2_41 = fn00403618(fn004035CC(r2, r29, r30, r3, stackArg8, out r29_21, out r30_23, out r31_24), r31_24, r29_21, r30_23, r31_24, stackArg8, out r29_42, out r30_44, out r31_73)
-	word32 stackArg20 = <invalid>
-	fn00403F10(r2_41, Mem9[Mem9[r2_41 + 224:word32]:word32], stackArg20)
+	word32 r2_41 = fn00403618(fn004035CC(r2, r29, r30, r3, out r29_21, out r30_23, out r31_24), r31_24, r29_21, r30_23, r31_24, out r29_42, out r30_44, out r31_71)
+	fn00403F10(r2_41, Mem9[Mem9[r2_41 + 224:word32]:word32])
 	r29Out = r29_42
 	r30Out = r30_44
 	return dwLoc2C
@@ -4141,7 +3793,7 @@ fn00402C4C_exit:
 
 
 
-word32 fn00402CE0(word32 r2, word32 r3, word32 r4, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, word32 dwArg08, ptr32 & r3Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r29Out, ptr32 & r30Out)
+word32 fn00402CE0(word32 r2, word32 r3, word32 r4, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, ptr32 & r3Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r29Out, ptr32 & r30Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  lr:[0..31] r2:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31]
@@ -4160,34 +3812,25 @@ l00402CE0:
 	Mem18[v5 + 12:word32] = r29
 	Mem21[v5 + 16:word32] = r30
 	Mem24[v5 + 20:word32] = r31
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
 	word32 dwLoc28_287 = fp + -56
 	word32 r3_41
-	word32 r2_127 = fn004019CC(r2, stackArg8, out r3_41)
+	word32 r2_127 = fn004019CC(r2, out r3_41)
 	branch r3_41 == 0x00000000 l00403014
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00402D30:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
 	word32 r3_55
-	r2_127 = fn004019CC(r2_127, stackArg8, out r3_55)
+	r2_127 = fn004019CC(r2_127, out r3_55)
 	branch r3_55 == 0x00000000 l00403014
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00402D48:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
 	word32 r3_69
-	r2_127 = fn004019CC(r2_127, stackArg8, out r3_69)
+	r2_127 = fn004019CC(r2_127, out r3_69)
 	branch r3_69 == 0x00000000 l00403014
 // DataOut:
 // DataOut (flags):
@@ -4513,7 +4156,7 @@ fn00403104_exit:
 
 
 
-word32 fn00403170(word32 r2, word32 r3, word32 r28, word32 r29, word32 r30, word32 r31, word32 dwArg08, ptr32 & r3Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
+word32 fn00403170(word32 r2, word32 r3, word32 r28, word32 r29, word32 r30, word32 r31, ptr32 & r3Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31]
@@ -4543,22 +4186,13 @@ l004031AC:
 // SymbolicIn:
 
 l004031B4:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
-	word32 stackArg8 = <invalid>
-	word32 stackArg8 = <invalid>
 	word32 r29_28
 	word32 r3_29
 	word32 r31_31
 	word32 r29_52
 	word32 r30_54
 	word32 r3_67
-	r2 = fn00403898(fn00403A0C(fn004012B0(r2, r3, r29, -1, r3, stackArg8, out r3_29, out r29_28, out r30_241, out r31_31), r31_31, r29_28, r3_29, stackArg8, out r29_52, out r30_54), Mem19[r31_31 + 16:word32], r28, r29_52, r30_54, r31_31, stackArg8, out r3_67, out r28, out r29, out r30_112, out r31_113)
+	r2 = fn00403898(fn00403A0C(fn004012B0(r2, r3, r29, -1, r3, out r3_29, out r29_28, out r30_240, out r31_31), r31_31, r29_28, r3_29, out r29_52, out r30_54), Mem19[r31_31 + 16:word32], r28, r29_52, r30_54, r31_31, out r3_67, out r28, out r29, out r30_112, out r31_113)
 	branch r3_67 >= 0x00000000 l004031F0
 // DataOut:
 // DataOut (flags):
@@ -4577,14 +4211,11 @@ l00403228:
 // SymbolicIn:
 
 l004031FC:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
 	word32 r3_88
 	word32 r29_96
 	word32 r31_98
 	word32 r30_104
-	word32 r2_95 = fn00403744(r2, r3_84, r29, r30_112, r31_113, stackArg8, out r3_88, out r29_96, out r30_104, out r31_98)
+	word32 r2_95 = fn00403744(r2, r3_84, r29, r30_112, r31_113, out r3_88, out r29_96, out r30_104, out r31_98)
 	branch r3_88 == 0x00000000 l00403210
 // DataOut:
 // DataOut (flags):
@@ -4597,10 +4228,7 @@ l0040320C:
 // SymbolicIn:
 
 l00403210:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
-	r2 = fn00402BA0(r2_95, Mem19[r31_98 + 28:word32], r29_96, r30_104, r31_98, stackArg8, out r29, out r30_112, out r31_113)
+	r2 = fn00402BA0(r2_95, Mem19[r31_98 + 28:word32], r29_96, r30_104, r31_98, out r29, out r30_112, out r31_113)
 	Mem130[r31_113 + 28:word32] = 0
 // DataOut:
 // DataOut (flags):
@@ -4643,7 +4271,7 @@ fn00403170_exit:
 
 
 
-word32 fn00403248(word32 r2, word32 dwArg08)
+word32 fn00403248(word32 r2)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31]
@@ -4656,10 +4284,7 @@ fn00403248_entry:
 // SymbolicIn:
 
 l00403248:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg20 = <invalid>
-	fn00403F84(r2, stackArg20)
+	fn00403F84(r2)
 	return dwLoc24
 // DataOut:
 // DataOut (flags):
@@ -4672,7 +4297,7 @@ fn00403248_exit:
 
 
 
-void fn0040326C(word32 r2, word32 r29, word32 r30, word32 r31, word32 lr, word32 dwArg08)
+void fn0040326C(word32 r2, word32 r29, word32 r30, word32 r31, word32 lr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  lr:[0..31] r2:[0..31] r29:[0..31] r30:[0..31] r31:[0..31]
@@ -4685,22 +4310,13 @@ fn0040326C_entry:
 // SymbolicIn:
 
 l0040326C:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
-	word32 stackArg8 = <invalid>
-	word32 stackArg8 = <invalid>
 	word32 r29_21
 	word32 r30_23
 	word32 r31_24
 	word32 r30_35
 	word32 r31_36
 	word32 r29_41
-	fn004035A0(fn00403B08(fn00403618(r2, 10, r29, r30, r31, stackArg8, out r29_21, out r30_23, out r31_24), 22, r29_21, r30_23, r31_24, lr, stackArg8, out r29_41, out r30_35, out r31_36), 3, r29_41, r30_35, r31_36, stackArg8, out r29_67, out r31_68)
+	fn004035A0(fn00403B08(fn00403618(r2, 10, r29, r30, r31, out r29_21, out r30_23, out r31_24), 22, r29_21, r30_23, r31_24, lr, out r29_41, out r30_35, out r31_36), 3, r29_41, r30_35, r31_36, out r29_64, out r31_65)
 	return
 // DataOut:
 // DataOut (flags):
@@ -4787,7 +4403,7 @@ fn004032AC_exit:
 
 
 
-word32 fn004032FC(word32 r2, word32 r4, word32 r13, word32 r14, word32 r15, word32 r16, word32 r17, word32 r18, word32 r19, word32 r20, word32 r21, word32 r22, word32 r23, word32 r24, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, word32 dwArg08, word32 dwArg18, word32 dwArg1C, word32 dwArg20, word32 dwArg24, word32 dwArg28, word32 dwArg2C, word32 dwArg30, word32 dwArg34, ptr32 & r3Out, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
+word32 fn004032FC(word32 r2, word32 r4, word32 r13, word32 r14, word32 r15, word32 r16, word32 r17, word32 r18, word32 r19, word32 r20, word32 r21, word32 r22, word32 r23, word32 r24, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, ptr32 & r3Out, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  lr:[0..31] r13:[0..31] r14:[0..31] r15:[0..31] r16:[0..31] r17:[0..31] r18:[0..31] r19:[0..31] r2:[0..31] r20:[0..31] r21:[0..31] r22:[0..31] r23:[0..31] r24:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r30:[0..31] r31:[0..31] r4:[0..31]
@@ -4802,12 +4418,6 @@ fn004032FC_entry:
 l004032FC:
 	Mem26[v13:word32] = r30
 	Mem29[v13 + 4:word32] = r31
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
-	word32 stackArg32 = <invalid>
 	word32 r25_74
 	word32 r26_75
 	word32 r27_76
@@ -4815,7 +4425,7 @@ l004032FC:
 	word32 r3_79
 	word32 r31_81
 	word32 r29_108
-	word32 r2_115 = fn004004B4(r2, fp + -40, r4, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, r26, r27, r28, r29, r30, fp + -40, lr, stackArg8, stackArg32, out r3_79, out r25_74, out r26_75, out r27_76, out r28_77, out r29_108, out r30_199, out r31_81)
+	word32 r2_115 = fn004004B4(r2, fp + -40, r4, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, r26, r27, r28, r29, r30, fp + -40, lr, out r3_79, out r25_74, out r26_75, out r27_76, out r28_77, out r29_108, out r30_197, out r31_81)
 	word32 r4_95 = Mem42[r31_81 + 4:word32]
 	Mem100[r31_81 + 4:word32] = r4_95 + -1
 	word32 r30_110 = r3_79
@@ -4825,10 +4435,7 @@ l004032FC:
 // SymbolicIn:
 
 l0040339C:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
-	r2_115 = fn00401598(r2_115, 0, r31_81, r25_74, r26_75, r27_76, r28_77, r29_108, r3_79, r31_81, lr, stackArg8, out r3_201, out r25_122, out r26_121, out r27_106, out r28_107, out r29_108, out r30_110, out r31_202)
+	r2_115 = fn00401598(r2_115, 0, r31_81, r25_74, r26_75, r27_76, r28_77, r29_108, r3_79, r31_81, lr, out r3_198, out r25_122, out r26_121, out r27_106, out r28_107, out r29_108, out r30_110, out r31_199)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4857,7 +4464,7 @@ fn004032FC_exit:
 
 
 
-word32 fn004033C4(word32 r2, word32 r3, word32 r4, word32 r13, word32 r14, word32 r15, word32 r16, word32 r17, word32 r18, word32 r19, word32 r20, word32 r21, word32 r22, word32 r23, word32 r24, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, word32 dwArg08, word32 dwArg18, word32 dwArg1C, word32 dwArg20, word32 dwArg24, word32 dwArg28, word32 dwArg2C, word32 dwArg30, word32 dwArg34, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
+word32 fn004033C4(word32 r2, word32 r3, word32 r4, word32 r13, word32 r14, word32 r15, word32 r16, word32 r17, word32 r18, word32 r19, word32 r20, word32 r21, word32 r22, word32 r23, word32 r24, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  lr:[0..31] r13:[0..31] r14:[0..31] r15:[0..31] r16:[0..31] r17:[0..31] r18:[0..31] r19:[0..31] r2:[0..31] r20:[0..31] r21:[0..31] r22:[0..31] r23:[0..31] r24:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31]
@@ -4873,18 +4480,6 @@ l004033C4:
 	Mem26[v13:word32] = r29
 	Mem29[v13 + 4:word32] = r30
 	Mem32[v13 + 8:word32] = r31
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
-	word32 stackArg8 = <invalid>
-	word32 stackArg32 = <invalid>
-	word32 stackArg8 = <invalid>
 	word32 r3_44
 	word32 r31_45
 	word32 r25_54
@@ -4895,7 +4490,7 @@ l004033C4:
 	word32 r3_99
 	word32 r30_100
 	word32 r31_101
-	word32 r2_124 = fn00400430(fn004004B4(fn004002F8(r2, r3, r25, r26, r27, r28, r29, r30, r3, lr, stackArg8, out r3_44, out r25_54, out r26_55, out r27_56, out r28_57, out r29_58, out r31_45), r31_45, r4, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25_54, r26_55, r27_56, r28_57, r29_58, r3_44, r31_45, lr, stackArg8, stackArg32, out r3_99, out r25_166, out r26_167, out r27_168, out r28_169, out r29_170, out r30_100, out r31_101), r30_100, r31_101, r3_99, r30_100, stackArg8)
+	word32 r2_124 = fn00400430(fn004004B4(fn004002F8(r2, r3, r25, r26, r27, r28, r29, r30, r3, lr, out r3_44, out r25_54, out r26_55, out r27_56, out r28_57, out r29_58, out r31_45), r31_45, r4, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25_54, r26_55, r27_56, r28_57, r29_58, r3_44, r31_45, lr, out r3_99, out r25_163, out r26_164, out r27_165, out r28_166, out r29_167, out r30_100, out r31_101), r30_100, r31_101, r3_99, r30_100)
 	r29Out = dwLoc10
 	r30Out = dwLoc0C
 	r31Out = dwLoc08
@@ -4911,7 +4506,7 @@ fn004033C4_exit:
 
 
 
-word32 fn00403450(word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, word32 dwArg08, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r31Out)
+word32 fn00403450(word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r31Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  lr:[0..31] r2:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31] r5:[0..31] r6:[0..31]
@@ -4960,18 +4555,12 @@ l0040349C:
 // SymbolicIn:
 
 l004034B4:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
-	word32 stackArg8 = <invalid>
 	word32 r29_48
 	word32 r30_50
 	word32 r30_73
 	word32 r29_121
 	word32 r31_112
-	word32 r2_104 = fn00403A0C(fn004012B0(r2, r3, r4, r5, r3, stackArg8, out r3_295, out r29_48, out r30_50, out r31_112), r31_112, r29_48, r30_50, stackArg8, out r29_121, out r30_73)
+	word32 r2_104 = fn00403A0C(fn004012B0(r2, r3, r4, r5, r3, out r3_294, out r29_48, out r30_50, out r31_112), r31_112, r29_48, r30_50, out r29_121, out r30_73)
 	word32 r11_84 = Mem32[r31_112 + 12:word32]
 	Mem87[r31_112 + 12:word32] = r11_84 & -14605
 	branch (r30_73 & 0x00000004) == 0x00000000 l004034F8
@@ -4992,11 +4581,8 @@ l00403540:
 // SymbolicIn:
 
 l00403500:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
 	word32 r3_110
-	r2_104 = fn00400F9C(r2_104, r6, r25, r26, 0, r6, r29_121, r30_73 & 0x00000004, r31_112, lr, stackArg8, out r3_110, out r25, out r26, out r27_298, out r28_108, out r29_299, out r30_300, out r31_112)
+	r2_104 = fn00400F9C(r2_104, r6, r25, r26, 0, r6, r29_121, r30_73 & 0x00000004, r31_112, lr, out r3_110, out r25, out r26, out r27_295, out r28_108, out r29_296, out r30_297, out r31_112)
 	r29_121 = r3_110
 	branch r3_110 != 0x00000000 l00403530
 // DataOut:
@@ -5064,7 +4650,7 @@ fn00403450_exit:
 
 
 
-void fn00403574(word32 r2, word32 r3, word32 r29, word32 r30, word32 r31, word32 dwArg08)
+void fn00403574(word32 r2, word32 r3, word32 r29, word32 r30, word32 r31)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31]
@@ -5077,10 +4663,7 @@ fn00403574_entry:
 // SymbolicIn:
 
 l00403574:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
-	fn004024F0(r2, r3, 0, 0, r29, r30, r31, stackArg8, out r29_34, out r31_35)
+	fn004024F0(r2, r3, 0, 0, r29, r30, r31, out r29_33, out r31_34)
 	return
 // DataOut:
 // DataOut (flags):
@@ -5093,7 +4676,7 @@ fn00403574_exit:
 
 
 
-word32 fn004035A0(word32 r2, word32 r3, word32 r29, word32 r30, word32 r31, word32 dwArg08, ptr32 & r29Out, ptr32 & r31Out)
+word32 fn004035A0(word32 r2, word32 r3, word32 r29, word32 r30, word32 r31, ptr32 & r29Out, ptr32 & r31Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31]
@@ -5106,12 +4689,9 @@ fn004035A0_entry:
 // SymbolicIn:
 
 l004035A0:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
 	word32 r29_19
 	word32 r31_22
-	word32 r2_18 = fn004024F0(r2, r3, 1, 0, r29, r30, r31, stackArg8, out r29_19, out r31_22)
+	word32 r2_18 = fn004024F0(r2, r3, 1, 0, r29, r30, r31, out r29_19, out r31_22)
 	r29Out = r29_19
 	r31Out = r31_22
 	return r2_18
@@ -5126,7 +4706,7 @@ fn004035A0_exit:
 
 
 
-word32 fn004035CC(word32 r2, word32 r29, word32 r30, word32 r31, word32 dwArg08, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
+word32 fn004035CC(word32 r2, word32 r29, word32 r30, word32 r31, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31] r29:[0..31] r30:[0..31] r31:[0..31]
@@ -5139,35 +4719,26 @@ fn004035CC_entry:
 // SymbolicIn:
 
 l004035CC:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
 	word32 r29_21
 	word32 r30_23
 	word32 r31_24
-	word32 r2_20 = fn00403618(r2, 252, r29, r30, r31, stackArg8, out r29_21, out r30_23, out r31_24)
+	word32 r2_20 = fn00403618(r2, 252, r29, r30, r31, out r29_21, out r30_23, out r31_24)
 	branch Mem7[Mem7[r2_20 + 232:word32]:word32] == 0x00000000 l00403600
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l004035F0:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg20 = <invalid>
-	r2_20 = Mem7[fn00403F10(r2_20, Mem7[Mem7[r2_20 + 232:word32]:word32], stackArg20) + 20:word32]
+	r2_20 = Mem7[fn00403F10(r2_20, Mem7[Mem7[r2_20 + 232:word32]:word32]) + 20:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00403600:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
 	word32 r29_54
 	word32 r30_56
 	word32 r31_57
-	word32 r2_53 = fn00403618(r2_20, 255, r29_21, r30_23, r31_24, stackArg8, out r29_54, out r30_56, out r31_57)
+	word32 r2_53 = fn00403618(r2_20, 255, r29_21, r30_23, r31_24, out r29_54, out r30_56, out r31_57)
 	r29Out = r29_54
 	r30Out = r30_56
 	r31Out = r31_57
@@ -5183,7 +4754,7 @@ fn004035CC_exit:
 
 
 
-word32 fn00403618(word32 r2, word32 r3, word32 r29, word32 r30, word32 r31, word32 dwArg08, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
+word32 fn00403618(word32 r2, word32 r3, word32 r29, word32 r30, word32 r31, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31]
@@ -5240,10 +4811,7 @@ l00403684:
 // SymbolicIn:
 
 l00403694:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
-	r2 = fn00402248(r2, 2, r4_34, r5_40, r29, r30, r31, stackArg8, out r3_146, out r29, out r30, out r31)
+	r2 = fn00402248(r2, 2, r4_34, r5_40, r29, r30, r31, out r3_145, out r29, out r30, out r31)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -5360,7 +4928,7 @@ fn004036B0_exit:
 
 
 
-word32 fn00403744(word32 r2, word32 r3, word32 r29, word32 r30, word32 r31, word32 dwArg08, ptr32 & r3Out, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
+word32 fn00403744(word32 r2, word32 r3, word32 r29, word32 r30, word32 r31, ptr32 & r3Out, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31]
@@ -5450,10 +5018,7 @@ l004037C4:
 // SymbolicIn:
 
 l004037E8:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg20 = <invalid>
-	word32 r2_126 = Mem91[fn00403F54(r2, stackArg20) + 20:word32]
+	word32 r2_126 = Mem91[fn00403F54(r2) + 20:word32]
 	branch fp != 0xFFFFFFA0 l00403840
 // DataOut:
 // DataOut (flags):
@@ -5480,10 +5045,7 @@ l0040380C:
 // SymbolicIn:
 
 l00403830:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg20 = <invalid>
-	r2_126 = Mem119[fn00403F6C(r2_126, stackArg20) + 20:word32]
+	r2_126 = Mem119[fn00403F6C(r2_126) + 20:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -5522,7 +5084,7 @@ fn00403744_exit:
 
 
 
-word32 fn00403898(word32 r2, word32 r3, word32 r28, word32 r29, word32 r30, word32 r31, word32 dwArg08, ptr32 & r3Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
+word32 fn00403898(word32 r2, word32 r3, word32 r28, word32 r29, word32 r30, word32 r31, ptr32 & r3Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31]
@@ -5588,10 +5150,7 @@ l004038E4:
 // SymbolicIn:
 
 l00403904:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg20 = <invalid>
-	fn00403F24(r2, stackArg20)
+	fn00403F24(r2)
 	branch fp == 0xFFFFFFA0 l0040394C
 // DataOut:
 // DataOut (flags):
@@ -5618,11 +5177,8 @@ l00403958:
 // SymbolicIn:
 
 l0040397C:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg20 = <invalid>
 	r3_131 = fp + -96
-	r2 = Mem100[fn00403F3C(dwLoc84, stackArg20) + 20:word32]
+	r2 = Mem100[fn00403F3C(dwLoc84) + 20:word32]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -5682,7 +5238,7 @@ fn00403898_exit:
 
 
 
-word32 fn00403A0C(word32 r2, word32 r3, word32 r29, word32 r30, word32 dwArg08, ptr32 & r29Out, ptr32 & r30Out)
+word32 fn00403A0C(word32 r2, word32 r3, word32 r29, word32 r30, ptr32 & r29Out, ptr32 & r30Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31] r29:[0..31] r3:[0..31] r30:[0..31]
@@ -5708,11 +5264,8 @@ l00403A2C:
 // SymbolicIn:
 
 l00403A34:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
 	word32 r31_23
-	r2 = fn00402BA0(r2, Mem14[r3 + 8:word32], r29, r30, r3, stackArg8, out r29, out r30, out r31_23)
+	r2 = fn00402BA0(r2, Mem14[r3 + 8:word32], r29, r30, r3, out r29, out r30, out r31_23)
 	word32 r4_39 = Mem14[r31_23 + 12:word32]
 	Mem41[r31_23:word32] = 0
 	Mem42[r31_23 + 8:word32] = 0
@@ -5737,7 +5290,7 @@ fn00403A0C_exit:
 
 
 
-word32 fn00403B08(word32 r2, word32 r3, word32 r29, word32 r30, word32 r31, word32 lr, word32 dwArg08, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
+word32 fn00403B08(word32 r2, word32 r3, word32 r29, word32 r30, word32 r31, word32 lr, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  lr:[0..31] r2:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31]
@@ -5789,20 +5342,14 @@ l00403BDC:
 // SymbolicIn:
 
 l00403BE4:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
-	r2 = fn004035A0(r2, 3, r3_37, r3, r31_42, stackArg8, out r29_41, out r31_42)
+	r2 = fn004035A0(r2, 3, r3_37, r3, r31_42, out r29_41, out r31_42)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00403BF0:
 	Mem64[r29_41 + 8:word32] = 0
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg20 = <invalid>
-	fn00403F10(r2, r31_42, stackArg20)
+	fn00403F10(r2, r31_42)
 	r29Out = dwLoc10
 	r30Out = <invalid>
 	r31Out = <invalid>
@@ -5925,10 +5472,7 @@ Win32CrtStartup_entry:
 
 l00403C6C:
 	Mem13[Mem7[r2 + 340:word32]:word32] = fn00403DD8()
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg8 = <invalid>
-	fn00403CA0(r2, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, r26, r27, r28, r29, r30, r31, lr, stackArg8)
+	fn00403CA0(r2, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, r26, r27, r28, r29, r30, r31, lr)
 	return
 // DataOut:
 // DataOut (flags):
@@ -5941,7 +5485,7 @@ Win32CrtStartup_exit:
 
 
 
-void fn00403CA0(word32 r2, word32 r13, word32 r14, word32 r15, word32 r16, word32 r17, word32 r18, word32 r19, word32 r20, word32 r21, word32 r22, word32 r23, word32 r24, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, word32 dwArg08)
+void fn00403CA0(word32 r2, word32 r13, word32 r14, word32 r15, word32 r16, word32 r17, word32 r18, word32 r19, word32 r20, word32 r21, word32 r22, word32 r23, word32 r24, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  lr:[0..31] r13:[0..31] r14:[0..31] r15:[0..31] r16:[0..31] r17:[0..31] r18:[0..31] r19:[0..31] r2:[0..31] r20:[0..31] r21:[0..31] r22:[0..31] r23:[0..31] r24:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r30:[0..31] r31:[0..31]
@@ -5975,29 +5519,14 @@ l00403CD0:
 // SymbolicIn:
 
 l00403D38:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
 	word32 r31_62 = Mem60[r2 + 352:word32]
-	word32 stackArg8 = <invalid>
-	word32 stackArg8 = <invalid>
-	word32 stackArg24 = <invalid>
-	word32 stackArg28 = <invalid>
-	word32 stackArg8 = <invalid>
 	word32 r29_68
 	word32 r30_70
 	word32 r29_131
 	word32 r3_132
 	word32 r30_133
 	word32 r31_134
-	fn00403574(fn00400220(fn00402404(r2, r29_22, Mem60[r2 + 348:word32], r31_62, stackArg8, out r29_68, out r30_70), r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, r26, r27, r28, r29_68, r30_70, r31_62, lr, stackArg8, stackArg24, stackArg28, out r3_132, out r29_131, out r30_133, out r31_134), r3_132, r29_131, r30_133, r31_134, stackArg8)
+	fn00403574(fn00400220(fn00402404(r2, r29_22, Mem60[r2 + 348:word32], r31_62, out r29_68, out r30_70), r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25, r26, r27, r28, r29_68, r30_70, r31_62, lr, out r3_132, out r29_131, out r30_133, out r31_134), r3_132, r29_131, r30_133, r31_134)
 	return
 // DataOut:
 // DataOut (flags):
@@ -6136,7 +5665,7 @@ fn00403ED4_exit:
 
 
 
-word32 fn00403F10(word32 r2, word32 r12, word32 dwArg14)
+word32 fn00403F10(word32 r2, word32 r12)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r12:[0..31] r2:[0..31]
@@ -6166,7 +5695,7 @@ fn00403F10_exit:
 
 
 
-void fn00403F24(word32 r2, word32 dwArg14)
+void fn00403F24(word32 r2)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31]
@@ -6195,7 +5724,7 @@ fn00403F24_exit:
 
 
 
-word32 fn00403F3C(word32 r2, word32 dwArg14)
+word32 fn00403F3C(word32 r2)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31]
@@ -6226,7 +5755,7 @@ fn00403F3C_exit:
 
 
 
-word32 fn00403F54(word32 r2, word32 dwArg14)
+word32 fn00403F54(word32 r2)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31]
@@ -6257,7 +5786,7 @@ fn00403F54_exit:
 
 
 
-word32 fn00403F6C(word32 r2, word32 dwArg14)
+word32 fn00403F6C(word32 r2)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31]
@@ -6288,7 +5817,7 @@ fn00403F6C_exit:
 
 
 
-void fn00403F84(word32 r2, word32 dwArg14)
+void fn00403F84(word32 r2)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31]
@@ -6317,7 +5846,7 @@ fn00403F84_exit:
 
 
 
-word32 fn00403F9C(word32 r2, word32 dwArg14)
+word32 fn00403F9C(word32 r2)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31]
@@ -6348,7 +5877,7 @@ fn00403F9C_exit:
 
 
 
-word32 fn00403FB4(word32 r2, word32 dwArg14)
+word32 fn00403FB4(word32 r2)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31]
@@ -6379,7 +5908,7 @@ fn00403FB4_exit:
 
 
 
-word32 fn00403FCC(word32 r2, word32 dwArg14)
+word32 fn00403FCC(word32 r2)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31]
@@ -6410,7 +5939,7 @@ fn00403FCC_exit:
 
 
 
-word32 fn00403FE4(word32 r2, word32 dwArg14)
+word32 fn00403FE4(word32 r2)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31]
@@ -6441,7 +5970,7 @@ fn00403FE4_exit:
 
 
 
-word32 fn00403FFC(word32 r2, word32 dwArg14)
+word32 fn00403FFC(word32 r2)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31]
@@ -6472,7 +6001,7 @@ fn00403FFC_exit:
 
 
 
-word32 fn00404014(word32 r2, word32 dwArg14)
+word32 fn00404014(word32 r2)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31]
@@ -6503,7 +6032,7 @@ fn00404014_exit:
 
 
 
-word32 fn0040402C(word32 r2, word32 dwArg14)
+word32 fn0040402C(word32 r2)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31]
@@ -6534,7 +6063,7 @@ fn0040402C_exit:
 
 
 
-word32 fn00404044(word32 r2, word32 dwArg14)
+word32 fn00404044(word32 r2)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31]
@@ -6565,7 +6094,7 @@ fn00404044_exit:
 
 
 
-word32 fn0040405C(word32 r2, word32 dwArg14)
+word32 fn0040405C(word32 r2)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31]
@@ -6596,7 +6125,7 @@ fn0040405C_exit:
 
 
 
-void fn00404074(word32 r2, word32 dwArg14)
+void fn00404074(word32 r2)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31]
@@ -6625,7 +6154,7 @@ fn00404074_exit:
 
 
 
-word32 fn0040408C(word32 r2, word32 dwArg14)
+word32 fn0040408C(word32 r2)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31]
@@ -6656,7 +6185,7 @@ fn0040408C_exit:
 
 
 
-void fn004040A4(word32 r2, word32 dwArg14)
+void fn004040A4(word32 r2)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31]
@@ -6685,7 +6214,7 @@ fn004040A4_exit:
 
 
 
-word32 fn004040BC(word32 r2, word32 dwArg14)
+word32 fn004040BC(word32 r2)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31]
@@ -6716,7 +6245,7 @@ fn004040BC_exit:
 
 
 
-word32 fn004040D4(word32 r2, word32 dwArg14)
+word32 fn004040D4(word32 r2)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31]
@@ -6747,7 +6276,7 @@ fn004040D4_exit:
 
 
 
-word32 fn004040EC(word32 r2, word32 dwArg14)
+word32 fn004040EC(word32 r2)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31]
@@ -6778,7 +6307,7 @@ fn004040EC_exit:
 
 
 
-void fn00404104(word32 r2, word32 dwArg14)
+void fn00404104(word32 r2)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31]
@@ -6807,7 +6336,7 @@ fn00404104_exit:
 
 
 
-void fn0040411C(word32 r2, word32 dwArg14)
+void fn0040411C(word32 r2)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31]
@@ -6836,7 +6365,7 @@ fn0040411C_exit:
 
 
 
-word32 fn00404134(word32 r2, word32 dwArg14)
+word32 fn00404134(word32 r2)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  r2:[0..31]

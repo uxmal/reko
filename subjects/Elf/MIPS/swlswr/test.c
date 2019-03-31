@@ -88,8 +88,8 @@ void frame_dummy()
 	register_tm_clones();
 }
 
-// 000007F0: void main(Stack word32 dwArg00, Stack word32 dwArg04)
-void main(word32 dwArg00, word32 dwArg04)
+// 000007F0: void main()
+void main()
 {
 	memset(fp + -0x0014, 0x00, 0x05);
 	struct Eq_n * r2_n = calloc(0x01, 0x05);

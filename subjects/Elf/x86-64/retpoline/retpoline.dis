@@ -393,10 +393,7 @@ __llvm_retpoline_r11_entry:
 // SymbolicIn:
 
 l00000000004006F0:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word64 stackArg0 = <invalid>
-	fn0000000000400700(stackArg0)
+	fn0000000000400700()
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -409,7 +406,7 @@ l00000000004006F5:
 
 
 
-void fn0000000000400700(word64 qwArg00)
+void fn0000000000400700()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 

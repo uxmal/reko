@@ -1,4 +1,4 @@
-void _start(word32 g1, word32 o1, word32 o2, word32 o3, word32 o4, word32 o5, word32 o7, word32 dwArg40)
+void _start(word32 g1, word32 o1, word32 o2, word32 o3, word32 o4, word32 o5, word32 o7)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  g1:[0..31] o1:[0..31] o2:[0..31] o3:[0..31] o4:[0..31] o5:[0..31] o7:[0..31]
@@ -30,13 +30,7 @@ l00011498_ds_t:
 l000114BC:
 	atexit(0x00016EE4)
 	Mem52[0x0002B40C:word32] = fp + 0x00000044 + ((_init(0x00016EE4, o1, o2, o3, o4, o5, o7) << 0x00000002) + 0x00000004)
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg68 = <invalid>
-	word32 stackArg72 = <invalid>
-	exit(main(fp + 0x00000044, stackArg68, stackArg72))
+	exit(main(fp + 0x00000044))
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -315,7 +309,7 @@ init_dummy_exit:
 
 
 
-word32 notice(word32 o0, word32 dwArg48, word32 dwArg4C, word32 dwArg50, word32 dwArg54, word32 dwArg58, ptr32 & i1Out, ptr32 & i2Out, ptr32 & i6Out)
+word32 notice(word32 o0, ptr32 & i1Out, ptr32 & i2Out, ptr32 & i6Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  o0:[0..31]
@@ -414,22 +408,7 @@ l00011674_ds_f:
 // SymbolicIn:
 
 l0001168C:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg72 = <invalid>
-	word32 stackArg76 = <invalid>
-	word32 stackArg80 = <invalid>
-	word32 stackArg84 = <invalid>
-	word32 stackArg88 = <invalid>
-	notice(0x000170A8, stackArg72, stackArg76, stackArg80, stackArg84, stackArg88, out i1_61, out i2_62, out i6_63)
+	notice(0x000170A8, out i1_56, out i2_57, out i6_58)
 	exit(0x00000021)
 // DataOut:
 // DataOut (flags):
@@ -508,22 +487,7 @@ l000116DC_ds_f:
 // SymbolicIn:
 
 l000116E4:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg72 = <invalid>
-	word32 stackArg76 = <invalid>
-	word32 stackArg80 = <invalid>
-	word32 stackArg84 = <invalid>
-	word32 stackArg88 = <invalid>
-	notice(0x000170A8, stackArg72, stackArg76, stackArg80, stackArg84, stackArg88, out i1_87, out i2_88, out i6_89)
+	notice(0x000170A8, out i1_82, out i2_83, out i6_84)
 	exit(0x00000021)
 // DataOut:
 // DataOut (flags):
@@ -661,22 +625,7 @@ fancy_abort_entry:
 // SymbolicIn:
 
 l00011780:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg72 = <invalid>
-	word32 stackArg76 = <invalid>
-	word32 stackArg80 = <invalid>
-	word32 stackArg84 = <invalid>
-	word32 stackArg88 = <invalid>
-	notice(0x000170C8, stackArg72, stackArg76, stackArg80, stackArg84, stackArg88, out i1_39, out i2_40, out i6_41)
+	notice(0x000170C8, out i1_34, out i2_35, out i6_36)
 	exit(0x00000021)
 // DataOut:
 // DataOut (flags):
@@ -1053,22 +1002,7 @@ l000118CC:
 	word32 l3_74
 	shortpath(0x00000000, o3, out l0_169, out l2_73, out l3_74, out l4_170, out i0_171, out i1_172)
 	xstrerror(l2_73)
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg72 = <invalid>
-	word32 stackArg76 = <invalid>
-	word32 stackArg80 = <invalid>
-	word32 stackArg84 = <invalid>
-	word32 stackArg88 = <invalid>
-	notice(l3_74 | 0x000000E0, stackArg72, stackArg76, stackArg80, stackArg84, stackArg88, out i1_103, out i2_178, out i6_179)
+	notice(l3_74 | 0x000000E0, out i1_103, out i2_173, out i6_174)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1243,22 +1177,7 @@ usage_entry:
 // SymbolicIn:
 
 l00011998:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg72 = <invalid>
-	word32 stackArg76 = <invalid>
-	word32 stackArg80 = <invalid>
-	word32 stackArg84 = <invalid>
-	word32 stackArg88 = <invalid>
-	notice(0x00017108, stackArg72, stackArg76, stackArg80, stackArg84, stackArg88, out i1_40, out i2_41, out i6_42)
+	notice(0x00017108, out i1_35, out i2_36, out i6_37)
 	exit(0x00000021)
 // DataOut:
 // DataOut (flags):
@@ -2778,22 +2697,7 @@ l000120D8_ds_f:
 // SymbolicIn:
 
 l000120E0:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg72 = <invalid>
-	word32 stackArg76 = <invalid>
-	word32 stackArg80 = <invalid>
-	word32 stackArg84 = <invalid>
-	word32 stackArg88 = <invalid>
-	notice(0x00017148, stackArg72, stackArg76, stackArg80, stackArg84, stackArg88, out i1_324, out i2_325, out i6_326)
+	notice(0x00017148, out i1_319, out i2_320, out i6_321)
 	exit(0x00000021)
 // DataOut:
 // DataOut (flags):
@@ -3337,22 +3241,7 @@ l00012368:
 	word32 l0_97
 	shortpath(0x00000000, l1_34, out l0_97, out l2, out l3, out l4_101, out i0_224, out i1_225)
 	xstrerror(l2)
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg72 = <invalid>
-	word32 stackArg76 = <invalid>
-	word32 stackArg80 = <invalid>
-	word32 stackArg84 = <invalid>
-	word32 stackArg88 = <invalid>
-	Mem136[i6_134 + -88:word32] = notice(l0_97, stackArg72, stackArg76, stackArg80, stackArg84, stackArg88, out i1_129, out i2_231, out i6_134)
+	Mem136[i6_134 + -88:word32] = notice(l0_97, out i1_129, out i2_226, out i6_134)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3420,22 +3309,7 @@ aux_info_corrupted_entry:
 // SymbolicIn:
 
 l000123D0:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg72 = <invalid>
-	word32 stackArg76 = <invalid>
-	word32 stackArg80 = <invalid>
-	word32 stackArg84 = <invalid>
-	word32 stackArg88 = <invalid>
-	notice(0x00017190, stackArg72, stackArg76, stackArg80, stackArg84, stackArg88, out i1_41, out i2_42, out i6_43)
+	notice(0x00017190, out i1_36, out i2_37, out i6_38)
 	exit(0x00000021)
 // DataOut:
 // DataOut (flags):
@@ -4160,7 +4034,7 @@ l00012928_ds_f:
 
 l00012938:
 	word32 i0_766
-	word32 i0_748 = check_aux_info(0x00000001 - (((int32) Mem656[check_aux_info(0x00000001 - (((int32) Mem656[check_aux_info(0x00000001 - (((int32) Mem656[check_aux_info(0x00000001 - (((int32) Mem656[check_aux_info(0x00000001 - (((int32) Mem656[i1_596 + 0x00000001:int8] ^ 0x00000020) >u 0x00000000), out i1_1167) + 0x00000001:int8] ^ 0x0000002F) >u 0x00000000), out i1_1168) + 0x00000001:int8] ^ 0x0000002A) >u 0x00000000), out i1_1169) + 0x00000001:int8] ^ 0x00000020) >u 0x00000000), out i1_1170) + 0x00000001:int8] ^ 0x00000028) >u 0x00000000), out i1_1171)
+	word32 i0_748 = check_aux_info(0x00000001 - (((int32) Mem656[check_aux_info(0x00000001 - (((int32) Mem656[check_aux_info(0x00000001 - (((int32) Mem656[check_aux_info(0x00000001 - (((int32) Mem656[check_aux_info(0x00000001 - (((int32) Mem656[i1_596 + 0x00000001:int8] ^ 0x00000020) >u 0x00000000), out i1_1162) + 0x00000001:int8] ^ 0x0000002F) >u 0x00000000), out i1_1163) + 0x00000001:int8] ^ 0x0000002A) >u 0x00000000), out i1_1164) + 0x00000001:int8] ^ 0x00000020) >u 0x00000000), out i1_1165) + 0x00000001:int8] ^ 0x00000028) >u 0x00000000), out i1_1166)
 	branch (int32) Mem656[i0_748 + 0x00000001:int8] == 0x00000029 l00012938_ds_t
 // DataOut:
 // DataOut (flags):
@@ -4198,8 +4072,8 @@ l000129C8_ds_f:
 
 l000129D8:
 	word32 i0_783
-	Mem806[l2_172 + 36:word32] = dupnstr(i0_748 + 0x00000001, i0_766 + 0xFFFFFFFF - (i0_748 + 0x00000001), out sp_1172, out l0_1173, out i0_783, out i6_1174)
-	word32 i0_815 = check_aux_info(0x00000001 - (((int32) Mem806[i0_783 + 0x00000001:int8] ^ 0x00000020) >u 0x00000000), out i1_1175)
+	Mem806[l2_172 + 36:word32] = dupnstr(i0_748 + 0x00000001, i0_766 + 0xFFFFFFFF - (i0_748 + 0x00000001), out sp_1167, out l0_1168, out i0_783, out i6_1169)
+	word32 i0_815 = check_aux_info(0x00000001 - (((int32) Mem806[i0_783 + 0x00000001:int8] ^ 0x00000020) >u 0x00000000), out i1_1170)
 	branch (int32) Mem806[i0_815 + 0x00000001:int8] != 0x0000002A l000129D8_ds_t
 // DataOut:
 // DataOut (flags):
@@ -4241,7 +4115,7 @@ l00012A4C_ds_t:
 // SymbolicIn:
 
 l00012A5C:
-	dupnstr(i0_815 + 0x00000001, check_aux_info(0x00000001 - (((int32) Mem806[i0_833 + 0xFFFFFFFF:int8] ^ 0x00000020) >u 0x00000000), out i1_1176) - (i0_815 + 0x00000001), out sp_1177, out l0_1178, out i0_1179, out i6_1180)
+	dupnstr(i0_815 + 0x00000001, check_aux_info(0x00000001 - (((int32) Mem806[i0_833 + 0xFFFFFFFF:int8] ^ 0x00000020) >u 0x00000000), out i1_1171) - (i0_815 + 0x00000001), out sp_1172, out l0_1173, out i0_1174, out i6_1175)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4343,22 +4217,7 @@ l000128DC_ds_f:
 // SymbolicIn:
 
 l000128F4:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg72 = <invalid>
-	word32 stackArg76 = <invalid>
-	word32 stackArg80 = <invalid>
-	word32 stackArg84 = <invalid>
-	word32 stackArg88 = <invalid>
-	notice(0x000171D8, stackArg72, stackArg76, stackArg80, stackArg84, stackArg88, out i1_1164, out i2_1165, out i6_1166)
+	notice(0x000171D8, out i1_1159, out i2_1160, out i6_1161)
 	exit(0x00000021)
 // DataOut:
 // DataOut (flags):
@@ -4656,24 +4515,9 @@ l00012ED8:
 	word32 o0_157 = Mem127[o1_155:word32]
 	word32 o2_159 = Mem127[l0_141 + 336:word32]
 	Mem161[sp_150 + 92:word32] = 0x00000007
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg68 = <invalid>
-	word32 stackArg72 = <invalid>
-	word32 stackArg76 = <invalid>
-	word32 stackArg84 = <invalid>
-	word32 stackArg88 = <invalid>
 	word32 i6_170
 	word32 l0_172
-	branch pexecute(o0_157, o1_155, o2_159, o0_143, i6_139 + 0xFFFFFFEC, i6_139 + 0xFFFFFFE8, o7_149, l1_142, stackArg68, stackArg72, stackArg76, stackArg84, stackArg88, Mem161[sp_150 + 92:word32], out l0_172, out i6_170) != 0xFFFFFFFF l00012ED8_ds_t
+	branch pexecute(o0_157, o1_155, o2_159, o0_143, i6_139 + 0xFFFFFFEC, i6_139 + 0xFFFFFFE8, o7_149, l1_142, Mem161[sp_150 + 92:word32], out l0_172, out i6_170) != 0xFFFFFFFF l00012ED8_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4684,7 +4528,7 @@ l00012ED8_ds_t:
 // SymbolicIn:
 
 l00012F6C:
-	pwait(i6_170 + 0xFFFFFFE4, out i2_286, out i6_287)
+	pwait(i6_170 + 0xFFFFFFE4, out i2_276, out i6_277)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4730,22 +4574,7 @@ l00012E54_ds_f:
 // SymbolicIn:
 
 l00012EBC:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg72 = <invalid>
-	word32 stackArg76 = <invalid>
-	word32 stackArg80 = <invalid>
-	word32 stackArg84 = <invalid>
-	word32 stackArg88 = <invalid>
-	notice(0x00017250, stackArg72, stackArg76, stackArg80, stackArg84, stackArg88, out i1_283, out i2_284, out i6_285)
+	notice(0x00017250, out i1_273, out i2_274, out i6_275)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4844,22 +4673,7 @@ l000130A0_ds_f:
 // SymbolicIn:
 
 l000130AC:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg72 = <invalid>
-	word32 stackArg76 = <invalid>
-	word32 stackArg80 = <invalid>
-	word32 stackArg84 = <invalid>
-	word32 stackArg88 = <invalid>
-	i0_112 = notice(0x000172D0, stackArg72, stackArg76, stackArg80, stackArg84, stackArg88, out i1_113, out i2_102, out i6_118)
+	i0_112 = notice(0x000172D0, out i1_113, out i2_102, out i6_118)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -5004,7 +4818,7 @@ l00013218_ds_t:
 // SymbolicIn:
 
 l00013250:
-	xmalloc(l0 + 0x00000001, out i1_598, out i2_599, out i6_600, out i7_601)
+	xmalloc(l0 + 0x00000001, out i1_593, out i2_594, out i6_595, out i7_596)
 	Mem251[l0 + 0x00000001 + l0:byte] = 0x00
 	l0 = safe_read(o0_227, l0 + 0x00000001, l0, out l1, out l2_266)
 	branch o0_227 - l0 == 0x00000000 l00013250_ds_t
@@ -5055,24 +4869,9 @@ l0001327C:
 
 l000132BC:
 	word32 l2_311
-	l1 = shortpath(0x00000000, l4_149, out l0, out l2_311, out l3_614, out l4_615, out i0_616, out i1_617)
+	l1 = shortpath(0x00000000, l4_149, out l0, out l2_311, out l3_604, out l4_605, out i0_606, out i1_607)
 	xstrerror(l2_311)
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg72 = <invalid>
-	word32 stackArg76 = <invalid>
-	word32 stackArg80 = <invalid>
-	word32 stackArg84 = <invalid>
-	word32 stackArg88 = <invalid>
-	notice(l0, stackArg72, stackArg76, stackArg80, stackArg84, stackArg88, out i1_623, out i2_624, out i6_625)
+	notice(l0, out i1_608, out i2_609, out i6_610)
 	free(l0 + 0x00000001)
 	close(o0_227)
 // DataOut:
@@ -5104,24 +4903,9 @@ l00013238:
 l00013314:
 	word32 l0_410
 	word32 l2_412
-	shortpath(0x00000000, l4_149, out l0_410, out l2_412, out l3_602, out l4_603, out i0_604, out i1_605)
+	shortpath(0x00000000, l4_149, out l0_410, out l2_412, out l3_597, out l4_598, out i0_599, out i1_600)
 	xstrerror(l2_412)
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg72 = <invalid>
-	word32 stackArg76 = <invalid>
-	word32 stackArg80 = <invalid>
-	word32 stackArg84 = <invalid>
-	word32 stackArg88 = <invalid>
-	notice(l0_410, stackArg72, stackArg76, stackArg80, stackArg84, stackArg88, out i1_611, out i2_612, out i6_613)
+	notice(l0_410, out i1_601, out i2_602, out i6_603)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -5162,7 +4946,7 @@ l00013130:
 l000131D0:
 	word32 l0_486
 	word32 l2_488
-	shortpath(0x00000000, o1_458, out l0_486, out l2_488, out l3_594, out l4_595, out i0_596, out i1_597)
+	shortpath(0x00000000, o1_458, out l0_486, out l2_488, out l3_589, out l4_590, out i0_591, out i1_592)
 	xstrerror(l2_488)
 	o0_514 = l0_486
 // DataOut:
@@ -5170,22 +4954,7 @@ l000131D0:
 // SymbolicIn:
 
 l000131F0:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg72 = <invalid>
-	word32 stackArg76 = <invalid>
-	word32 stackArg80 = <invalid>
-	word32 stackArg84 = <invalid>
-	word32 stackArg88 = <invalid>
-	notice(o0_514, stackArg72, stackArg76, stackArg80, stackArg84, stackArg88, out i1_631, out i2_632, out i6_633)
+	notice(o0_514, out i1_611, out i2_612, out i6_613)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -5402,22 +5171,7 @@ l000136A0:
 	word32 l0_44
 	shortpath(0x00000000, Mem0[0x00028180:word32], out l0_44, out l2_133, out l3_134, out l4_135, out i0_36, out i1_136)
 	identify_lineno(i0_36)
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg72 = <invalid>
-	word32 stackArg76 = <invalid>
-	word32 stackArg80 = <invalid>
-	word32 stackArg84 = <invalid>
-	word32 stackArg88 = <invalid>
-	notice(l0_44, stackArg72, stackArg76, stackArg80, stackArg84, stackArg88, out i1_142, out i2_143, out i6_144)
+	notice(l0_44, out i1_137, out i2_138, out i6_139)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -5429,23 +5183,8 @@ l00013664_ds_f:
 
 l00013670:
 	word32 l0_98
-	shortpath(0x00000000, Mem0[0x00028180:word32], out l0_98, out l2_145, out l3_146, out l4_147, out i0_148, out i1_149)
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg72 = <invalid>
-	word32 stackArg76 = <invalid>
-	word32 stackArg80 = <invalid>
-	word32 stackArg84 = <invalid>
-	word32 stackArg88 = <invalid>
-	notice(l0_98, stackArg72, stackArg76, stackArg80, stackArg84, stackArg88, out i1_155, out i2_156, out i6_157)
+	shortpath(0x00000000, Mem0[0x00028180:word32], out l0_98, out l2_140, out l3_141, out l4_142, out i0_143, out i1_144)
+	notice(l0_98, out i1_145, out i2_146, out i6_147)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -5903,7 +5642,7 @@ other_variable_style_function_exit:
 
 
 
-void edit_fn_declaration(word32 o0, word32 dwArg44, word32 dwArg48)
+void edit_fn_declaration(word32 o0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  o0:[0..31]
@@ -5940,22 +5679,7 @@ l00013914_ds_f:
 
 l00013950:
 	restore_pointers()
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg72 = <invalid>
-	word32 stackArg76 = <invalid>
-	word32 stackArg80 = <invalid>
-	word32 stackArg84 = <invalid>
-	word32 stackArg88 = <invalid>
-	notice(0x00017470, stackArg72, stackArg76, stackArg80, stackArg84, stackArg88, out i1_52, out i2_53, out i6_57)
+	notice(0x00017470, out i1_52, out i2_53, out i6_57)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -6332,22 +6056,7 @@ l00013D80:
 	l1_253 = identify_lineno(l3_490)
 	word32 l0_527
 	dupnstr(l3_490, l4_491, out sp_683, out l0_527, out i0_684, out i6_685)
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg72 = <invalid>
-	word32 stackArg76 = <invalid>
-	word32 stackArg80 = <invalid>
-	word32 stackArg84 = <invalid>
-	word32 stackArg88 = <invalid>
-	notice(l0_527, stackArg72, stackArg76, stackArg80, stackArg84, stackArg88, out i1_218, out i2_220, out i6_691)
+	notice(l0_527, out i1_218, out i2_220, out i6_686)
 	i0_469 = 0x00000001
 // DataOut:
 // DataOut (flags):
@@ -6539,7 +6248,7 @@ find_rightmost_formals_list_exit:
 
 
 
-void edit_fn_definition(word32 o1, word32 dwArg44, word32 dwArg48)
+void edit_fn_definition(word32 o1)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  o1:[0..31]
@@ -6565,23 +6274,8 @@ l00013EDC_ds_t:
 
 l00013FB0:
 	restore_pointers()
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg72 = <invalid>
-	word32 stackArg76 = <invalid>
-	word32 stackArg80 = <invalid>
-	word32 stackArg84 = <invalid>
-	word32 stackArg88 = <invalid>
 	word32 i1_48
-	notice(0x000174D0, stackArg72, stackArg76, stackArg80, stackArg84, stackArg88, out i1_48, out i2_260, out i6_261)
+	notice(0x000174D0, out i1_48, out i2_255, out i6_256)
 	output_up_to(i1_48, out l2_67, out i0_56, out i1_57, out i2_58)
 // DataOut:
 // DataOut (flags):
@@ -6652,24 +6346,9 @@ l00013F34_ds_f:
 l00013F48:
 	word32 i1_191
 	word32 l0_198
-	shortpath(0x00000000, Mem24[Mem24[Mem24[o1_182 + 4:word32]:word32] + 4:word32], out l0_198, out l2_262, out l3_263, out l4_264, out i0_265, out i1_191)
+	shortpath(0x00000000, Mem24[Mem24[Mem24[o1_182 + 4:word32]:word32] + 4:word32], out l0_198, out l2_257, out l3_258, out l4_259, out i0_260, out i1_191)
 	identify_lineno(i1_191)
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg72 = <invalid>
-	word32 stackArg76 = <invalid>
-	word32 stackArg80 = <invalid>
-	word32 stackArg84 = <invalid>
-	word32 stackArg88 = <invalid>
-	notice(l0_198, stackArg72, stackArg76, stackArg80, stackArg84, stackArg88, out i1_271, out i2_272, out i6_273)
+	notice(l0_198, out i1_261, out i2_262, out i6_263)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -6857,7 +6536,7 @@ careful_find_l_paren_exit:
 
 
 
-void scan_for_missed_items(word32 dwArg44)
+void scan_for_missed_items()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
@@ -7308,38 +6987,8 @@ l00014804:
 	word32 l0_455
 	shortpath(0x00000000, Mem293[Mem293[o1_328:word32] + 4:word32], out l0_455, out l2_629, out l3_630, out l4_631, out i0_447, out i1_632)
 	identify_lineno(i0_447)
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg72 = <invalid>
-	word32 stackArg76 = <invalid>
-	word32 stackArg80 = <invalid>
-	word32 stackArg84 = <invalid>
-	word32 stackArg88 = <invalid>
-	notice(l0_455, stackArg72, stackArg76, stackArg80, stackArg84, stackArg88, out i1_638, out i2_639, out i6_640)
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg72 = <invalid>
-	word32 stackArg76 = <invalid>
-	word32 stackArg80 = <invalid>
-	word32 stackArg84 = <invalid>
-	word32 stackArg88 = <invalid>
-	notice(0x000175D8, stackArg72, stackArg76, stackArg80, stackArg84, stackArg88, out i1_646, out i2_647, out i6_648)
+	notice(l0_455, out i1_633, out i2_634, out i6_635)
+	notice(0x000175D8, out i1_636, out i2_637, out i6_638)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -7449,22 +7098,7 @@ l000148DC_ds_f:
 l000148F0:
 	word32 l0_129
 	shortpath(0x00000000, Mem40[0x00028180:word32], out l0_129, out l2_217, out l3_218, out l4_219, out i0_220, out i1_221)
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg72 = <invalid>
-	word32 stackArg76 = <invalid>
-	word32 stackArg80 = <invalid>
-	word32 stackArg84 = <invalid>
-	word32 stackArg88 = <invalid>
-	notice(l0_129, stackArg72, stackArg76, stackArg80, stackArg84, stackArg88, out i1_227, out i2_228, out i6_229)
+	notice(l0_129, out i1_222, out i2_223, out i6_224)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -7545,7 +7179,7 @@ do_processing_exit:
 
 
 
-word32 main(word32 o1, word32 dwArg44, word32 dwArg48)
+word32 main(word32 o1)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  o1:[0..31]
@@ -7690,7 +7324,7 @@ l0001509C:
 	Mem209[l6_141 + 844:word32] = o1_207
 	word32 o0_210 = o1_207 + 0x00000001 << 0x00000002
 	word32 i6_218
-	xmalloc(o0_210, out i1_482, out i2_483, out i6_218, out i7_484)
+	xmalloc(o0_210, out i1_477, out i2_478, out i6_218, out i7_479)
 	Mem225[0x00028160:word32] = o0_210
 	word32 o1_226 = Mem225[l7_142 + 104:word32]
 	Mem227[l6_141 + 844:word32] = 0x00000000
@@ -7747,23 +7381,8 @@ l00015120_ds_t:
 
 l00015150:
 	word32 l3_299
-	shortpath(0x00000000, 0x00000000, out l0_485, out l2_236, out l3_299, out l4_234, out i0_486, out i1_487)
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg72 = <invalid>
-	word32 stackArg76 = <invalid>
-	word32 stackArg80 = <invalid>
-	word32 stackArg84 = <invalid>
-	word32 stackArg88 = <invalid>
-	notice(0x00017850, stackArg72, stackArg76, stackArg80, stackArg84, stackArg88, out i1_493, out i2_494, out i6_218)
+	shortpath(0x00000000, 0x00000000, out l0_480, out l2_236, out l3_299, out l4_234, out i0_481, out i1_482)
+	notice(0x00017850, out i1_483, out i2_484, out i6_218)
 	Mem327[l3_299 + 800:word32] = Mem238[l3_299 + 800:word32] + 0x00000001
 // DataOut:
 // DataOut (flags):
@@ -7889,22 +7508,7 @@ l00014EE8_ds_f:
 
 l00014F14:
 	xstrerror(Mem414[0x0002B760:word32])
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg72 = <invalid>
-	word32 stackArg76 = <invalid>
-	word32 stackArg80 = <invalid>
-	word32 stackArg84 = <invalid>
-	word32 stackArg88 = <invalid>
-	notice(0x00017810, stackArg72, stackArg76, stackArg80, stackArg84, stackArg88, out i1_479, out i2_480, out i6_481)
+	notice(0x00017810, out i1_474, out i2_475, out i6_476)
 	exit(0x00000021)
 // DataOut:
 // DataOut (flags):
@@ -10106,7 +9710,7 @@ _getopt_initialize_exit:
 
 
 
-word32 _getopt_internal(word32 o1, word32 o2, word32 o4, word32 o5, word32 dwArg44, word32 dwArg50, ptr32 & l6Out, ptr32 & l7Out, ptr32 & i6Out)
+word32 _getopt_internal(word32 o1, word32 o2, word32 o4, word32 o5, ptr32 & l6Out, ptr32 & l7Out, ptr32 & i6Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  o1:[0..31] o2:[0..31] o4:[0..31] o5:[0..31]
@@ -12215,13 +11819,7 @@ getopt_entry:
 // SymbolicIn:
 
 l00016980:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg68 = <invalid>
-	word32 stackArg80 = <invalid>
-	_getopt_internal(o1, o2, 0x00000000, 0x00000000, stackArg68, stackArg80, out l6_68, out l7_69, out i6_33)
+	_getopt_internal(o1, o2, 0x00000000, 0x00000000, out l6_66, out l7_67, out i6_33)
 	return
 // DataOut:
 // DataOut (flags):
@@ -12247,16 +11845,10 @@ getopt_long_entry:
 // SymbolicIn:
 
 l000169A8:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg68 = <invalid>
-	word32 stackArg80 = <invalid>
 	word32 i6_33
 	word32 l6_39
 	word32 l7_52
-	word32 l0_35 = _getopt_internal(o1, o2, o4, 0x00000000, stackArg68, stackArg80, out l6_39, out l7_52, out i6_33)
+	word32 l0_35 = _getopt_internal(o1, o2, o4, 0x00000000, out l6_39, out l7_52, out i6_33)
 	l6Out = l6_39
 	l7Out = l7_52
 	i6Out = i6_33
@@ -12285,13 +11877,7 @@ getopt_long_only_entry:
 // SymbolicIn:
 
 l000169D0:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word32 stackArg68 = <invalid>
-	word32 stackArg80 = <invalid>
-	_getopt_internal(o1, o2, o4, 0x00000001, stackArg68, stackArg80, out l6_68, out l7_69, out i6_33)
+	_getopt_internal(o1, o2, o4, 0x00000001, out l6_66, out l7_67, out i6_33)
 	return
 // DataOut:
 // DataOut (flags):
@@ -12304,7 +11890,7 @@ getopt_long_only_exit:
 
 
 
-word32 pexecute(word32 o0, word32 o1, word32 o2, word32 o3, word32 o4, word32 o5, word32 o7, word32 l1, word32 dwArg44, word32 dwArg48, word32 dwArg4C, word32 dwArg54, word32 dwArg58, word32 dwArg5C, ptr32 & l0Out, ptr32 & i6Out)
+word32 pexecute(word32 o0, word32 o1, word32 o2, word32 o3, word32 o4, word32 o5, word32 o7, word32 l1, word32 dwArg5C, ptr32 & l0Out, ptr32 & i6Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  l1:[0..31] o0:[0..31] o1:[0..31] o2:[0..31] o3:[0..31] o4:[0..31] o5:[0..31] o7:[0..31] Stack +005C:[0..31]

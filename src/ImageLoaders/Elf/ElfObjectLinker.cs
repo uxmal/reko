@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -262,7 +262,8 @@ namespace Reko.ImageLoaders.Elf
                 var addr =
                     loader.Sections[(int)sym.SectionIndex].Address +
                     sym.Value;
-                interceptedCalls.Add(addr, new ExternalProcedure(sym.Name, null));
+                //$TODO: get the signature for this
+                interceptedCalls.Add(addr, new ExternalProcedure(sym.Name, new FunctionType()));
             }
         }
     }

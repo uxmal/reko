@@ -1343,71 +1343,35 @@ void init_dummy()
 {
 }
 
-// 004007B0: void handle_stop(Register word32 r1, Register word32 r4, Register word32 ra, Stack word32 dwArg00)
-void handle_stop(word32 r1, word32 r4, word32 ra, word32 dwArg00)
+// 004007B0: void handle_stop(Register word32 r1, Register word32 r4, Register word32 ra)
+void handle_stop(word32 r1, word32 r4, word32 ra)
 {
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg0 = <invalid>;
-	Eq_n stackArg4 = <invalid>;
-	Eq_n stackArg8 = <invalid>;
-	Eq_n stackArg12 = <invalid>;
-	print_log((int32 *) 0x03, 0x00409DD4, 4234744, 0x0050, fp + -0x0030, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+	print_log((int32 *) 0x03, 0x00409DD4, 4234744, 0x0050, fp + -0x0030, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 	*globals->ptr100008C0 = 0x01;
 }
 
-// 0040083C: void handle_log_rotate(Register word32 r4, Register word32 r30, Register word32 ra, Stack word32 dwArg00)
-void handle_log_rotate(word32 r4, word32 r30, word32 ra, word32 dwArg00)
+// 0040083C: void handle_log_rotate(Register word32 r4, Register word32 r30, Register word32 ra)
+void handle_log_rotate(word32 r4, word32 r30, word32 ra)
 {
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg0 = <invalid>;
-	Eq_n stackArg4 = <invalid>;
-	Eq_n stackArg8 = <invalid>;
-	Eq_n stackArg12 = <invalid>;
-	print_log((int32 *) 0x03, 0x00409E04, 0x00409E30, 0x005A, fp + -0x0030, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+	print_log((int32 *) 0x03, 0x00409E04, 0x00409E30, 0x005A, fp + -0x0030, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 	log_rotate(fp + -0x0030, ra);
 }
 
-// 004008D0: void main(Register int32 r4, Register (arr Eq_n) r5, Register word32 r16, Register word32 r30, Register word32 ra, Stack word32 dwArg00, Stack word32 dwArg04)
-void main(int32 r4, Eq_n r5[], word32 r16, word32 r30, word32 ra, word32 dwArg00, word32 dwArg04)
+// 004008D0: void main(Register int32 r4, Register (arr Eq_n) r5, Register word32 r16, Register word32 r30, Register word32 ra)
+void main(int32 r4, Eq_n r5[], word32 r16, word32 r30, word32 ra)
 {
 	FILE ** r1_n = globals->ptr10000A20;
 	*r1_n = *globals->ptr10000914;
 	signal(0x02, handle_stop);
 	signal(0x01, handle_log_rotate);
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	stackArg0.u0 = <invalid>;
-	Eq_n stackArg4 = <invalid>;
 	word32 r6_n;
 	word32 r7_n;
-	properties_load(r5[0x00], 0x00, (char *) fp - 0x01A0, ra, stackArg0, stackArg4, out r3_n, out r6_n, out r7_n);
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	stackArg0.u0 = <invalid>;
-	Eq_n stackArg4 = <invalid>;
+	properties_load(r5[0x00], 0x00, (char *) fp - 0x01A0, ra, out r3_n, out r6_n, out r7_n);
 	word32 r4_n;
 	word32 r5_n;
 	word32 r6_n;
 	word32 r7_n;
-	word32 r3_n = properties_parse_command_line(r1_n, r4, r5, r6_n, r7_n, r16, (char *) fp - 0x01A0, ra, stackArg0, stackArg4, out r4_n, out r5_n, out r6_n, out r7_n);
+	word32 r3_n = properties_parse_command_line(r1_n, r4, r5, r6_n, r7_n, r16, (char *) fp - 0x01A0, ra, out r4_n, out r5_n, out r6_n, out r7_n);
 	dwLoc0160_n = 0x02;
 	word32 r2_n = globals->ptr10000A40->dw04BC;
 	if (r2_n != 0x00)
@@ -1438,9 +1402,6 @@ void main(int32 r4, Eq_n r5[], word32 r16, word32 r30, word32 ra, word32 dwArg00
 	*globals->ptr10000A28 = globals->ptr10000A40->dw0684 << 0x0A;
 	time_t * r1_n = globals->ptr1000090C;
 	*r1_n = (int32) globals->ptr10000A40->t05EC;
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	stackArg0.u0 = <invalid>;
 	word32 r5_n;
 	word32 r6_n;
 	word32 r7_n;
@@ -1458,20 +1419,8 @@ void main(int32 r4, Eq_n r5[], word32 r16, word32 r30, word32 ra, word32 dwArg00
 	dwLoc20_n = r2_n;
 	if (r2_n < 0x00)
 		dwLoc20_n = r2_n + 0x03FF;
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
 	Eq_n r2_n = globals->ptr10000A40->t0554;
-	Eq_n stackArg0 = <invalid>;
-	stackArg4.u0 = <invalid>;
-	Eq_n stackArg8 = <invalid>;
-	stackArg12.u0 = <invalid>;
-	print_log((int32 *) 0x03, 4234832, r2_n, *globals->ptr10000A60, (char *) fp - 0x01A0, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+	print_log((int32 *) 0x03, 4234832, r2_n, *globals->ptr10000A60, (char *) fp - 0x01A0, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 	int32 dwLoc0174_n = dwLoc20_n >> 0x0A;
 	struct Eq_n * r2_n = clist_new((char *) fp - 0x01A0, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 	if (r2_n != null)
@@ -1479,51 +1428,9 @@ void main(int32 r4, Eq_n r5[], word32 r16, word32 r30, word32 ra, word32 dwArg00
 		Eq_n r2_n = slist_new((char *) fp - 0x01A0, ra, out r3_n);
 		if (r2_n != 0x00)
 		{
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg0 = <invalid>;
-			stackArg4.u0 = <invalid>;
-			Eq_n stackArg6 = <invalid>;
-			stackArg8.u0 = <invalid>;
-			Eq_n stackArg12 = <invalid>;
-			Eq_n stackArg0 = <invalid>;
-			stackArg4.u0 = <invalid>;
-			slist_add(r2_n, server_new((char *) &(globals->ptr10000A40->a0004 + 0x01)->ptr0000 + 0x01, globals->ptr10000A40->dw012C, globals->ptr10000A40->t0554, 0x00, (char *) fp - 0x01A0, ra, stackArg0, stackArg4, stackArg6, stackArg8, stackArg12, out r3_n, out r6_n, out r7_n), stackArg0, stackArg4, out r3_n);
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			stackArg0.u0 = <invalid>;
-			Eq_n stackArg4 = <invalid>;
-			stackArg6.u0 = <invalid>;
-			Eq_n stackArg8 = <invalid>;
-			stackArg12.u0 = <invalid>;
-			Eq_n r2_n = server_new((char *) &(globals->ptr10000A40->a0004 + 0x01)->ptr0000 + 0x01, globals->ptr10000A40->dw01C4, globals->ptr10000A40->t0554, 0x01, (char *) fp - 0x01A0, ra, stackArg0, stackArg4, stackArg6, stackArg8, stackArg12, out r3_n, out r6_n, out r7_n);
-			Eq_n stackArg0 = <invalid>;
-			stackArg4.u0 = <invalid>;
-			slist_add(r2_n, r2_n, stackArg0, stackArg4, out r3_n);
+			slist_add(r2_n, server_new((char *) &(globals->ptr10000A40->a0004 + 0x01)->ptr0000 + 0x01, globals->ptr10000A40->dw012C, globals->ptr10000A40->t0554, 0x00, (char *) fp - 0x01A0, ra, out r3_n, out r6_n, out r7_n), out r3_n);
+			Eq_n r2_n = server_new((char *) &(globals->ptr10000A40->a0004 + 0x01)->ptr0000 + 0x01, globals->ptr10000A40->dw01C4, globals->ptr10000A40->t0554, 0x01, (char *) fp - 0x01A0, ra, out r3_n, out r6_n, out r7_n);
+			slist_add(r2_n, r2_n, out r3_n);
 			bzero((char *) fp - 0x0148, 0x0010);
 			word32 r2_n = (word32) globals->ptr10000A40->w02F6;
 			Eq_n r7_n = <invalid>;
@@ -1539,10 +1446,7 @@ void main(int32 r4, Eq_n r5[], word32 r16, word32 r30, word32 ra, word32 dwArg00
 				r28_n = 0x10008860;
 				if (dwLoc0150_n == null)
 					break;
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				stackArg0.u0 = <invalid>;
-				if (server_open(dwLoc0150_n, r16, (char *) fp - 0x01A0, ra, stackArg0, out r3_n, out r5_n, out r6_n, out r7_n) == 0x00)
+				if (server_open(dwLoc0150_n, r16, (char *) fp - 0x01A0, ra, out r3_n, out r5_n, out r6_n, out r7_n) == 0x00)
 				{
 					exit(-0x01);
 					r5_n = r5_n;
@@ -1632,20 +1536,8 @@ void main(int32 r4, Eq_n r5[], word32 r16, word32 r30, word32 ra, word32 dwArg00
 					r3_n = *__errno_location();
 					if (r3_n == 0x04)
 						continue;
-					// Failed to bind call argument.
-					// Please report this issue at https://github.com/uxmal/reko
-					// Failed to bind call argument.
-					// Please report this issue at https://github.com/uxmal/reko
-					// Failed to bind call argument.
-					// Please report this issue at https://github.com/uxmal/reko
-					// Failed to bind call argument.
-					// Please report this issue at https://github.com/uxmal/reko
 					int32 * r2_n = __errno_location();
-					stackArg0.u0 = <invalid>;
-					stackArg4.u0 = <invalid>;
-					Eq_n stackArg8 = <invalid>;
-					stackArg12.u0 = <invalid>;
-					print_log(null, 0x00409EB0, *r2_n, strerror(*__errno_location()), (char *) fp - 0x01A0, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+					print_log(null, 0x00409EB0, *r2_n, strerror(*__errno_location()), (char *) fp - 0x01A0, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 					exit(-0x01);
 					r16_n = r2_n;
 					r5_n = r5_n;
@@ -1668,31 +1560,10 @@ void main(int32 r4, Eq_n r5[], word32 r16, word32 r30, word32 ra, word32 dwArg00
 						dwLoc015C_n = r2_n;
 						if (r2_n != 0x00)
 						{
-							// Failed to bind call argument.
-							// Please report this issue at https://github.com/uxmal/reko
-							// Failed to bind call argument.
-							// Please report this issue at https://github.com/uxmal/reko
-							Eq_n stackArg0 = <invalid>;
-							stackArg4.u0 = <invalid>;
 							r28_n = 0x10008860;
-							if (clist_add(r2_n, r2_n, stackArg0, stackArg4, out r3_n, out r5_n, out r6_n, out r7_n) == 0x00)
+							if (clist_add(r2_n, r2_n, out r3_n, out r5_n, out r6_n, out r7_n) == 0x00)
 							{
-								// Failed to bind call argument.
-								// Please report this issue at https://github.com/uxmal/reko
-								// Failed to bind call argument.
-								// Please report this issue at https://github.com/uxmal/reko
-								// Failed to bind call argument.
-								// Please report this issue at https://github.com/uxmal/reko
-								// Failed to bind call argument.
-								// Please report this issue at https://github.com/uxmal/reko
-								// Failed to bind call argument.
-								// Please report this issue at https://github.com/uxmal/reko
-								Eq_n stackArg0 = <invalid>;
-								stackArg4.u0 = <invalid>;
-								stackArg8.u0 = <invalid>;
-								stackArg12.u0 = <invalid>;
-								stackArg0.u0 = <invalid>;
-								r3_n = client_destroy(print_log((int32 *) 0x01, 0x00409ECC, 4235000, 224, (char *) fp - 0x01A0, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n), r2_n, (char *) fp - 0x01A0, ra, stackArg0, out r5_n, out r6_n, out r7_n);
+								r3_n = client_destroy(print_log((int32 *) 0x01, 0x00409ECC, 4235000, 224, (char *) fp - 0x01A0, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n), r2_n, (char *) fp - 0x01A0, ra, out r5_n, out r6_n, out r7_n);
 								r28_n = 0x10008860;
 							}
 						}
@@ -1729,11 +1600,8 @@ void main(int32 r4, Eq_n r5[], word32 r16, word32 r30, word32 ra, word32 dwArg00
 							{
 								<anonymous> * r2_n = *((word32) dwLoc0158_n + 6080);
 								r2_n();
-								// Failed to bind call argument.
-								// Please report this issue at https://github.com/uxmal/reko
-								stackArg0.u0 = <invalid>;
 								dwLoc1C_n = r2_n;
-								r3_n = client_send_request(dwLoc0158_n, (char *) fp - 0x01A0, ra, stackArg0, out r5_n, out r6_n, out r7_n);
+								r3_n = client_send_request(dwLoc0158_n, (char *) fp - 0x01A0, ra, out r5_n, out r6_n, out r7_n);
 								r28_n = 0x10008860;
 							}
 						}
@@ -1763,7 +1631,7 @@ void main(int32 r4, Eq_n r5[], word32 r16, word32 r30, word32 ra, word32 dwArg00
 							}
 							else
 							{
-								void (* r2_n)(struct Eq_n *, ptr32, word32, Eq_n) = *((word32) dwLoc0158_n + 0x000017C4);
+								void (* r2_n)(struct Eq_n *, ptr32, word32) = *((word32) dwLoc0158_n + 0x000017C4);
 								r2_n();
 								dwLoc18_n = r2_n;
 								r28_n = 0x10008860;
@@ -1776,7 +1644,7 @@ void main(int32 r4, Eq_n r5[], word32 r16, word32 r30, word32 ra, word32 dwArg00
 						r3_n = (word32) r2_n + 0x001F;
 						if (fp->aFFFFFF50[*dwLoc0158_n >> 0x05] >> (word32) r2_n + 0x001F != 0x01)
 						{
-							void (* r2_n)(struct Eq_n *, ptr32, word32, Eq_n) = *((word32) dwLoc0158_n + 0x000017C4);
+							void (* r2_n)(struct Eq_n *, ptr32, word32) = *((word32) dwLoc0158_n + 0x000017C4);
 							r2_n();
 							dwLoc14_n = r2_n;
 							r28_n = 0x10008860;
@@ -1845,10 +1713,7 @@ l00401A80:
 			}
 			<anonymous> * r25_n = *(r28_n - 0x7ED0);
 			r25_n();
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			stackArg0.u0 = <invalid>;
-			slist_destroy(r2_n, (char *) fp - 0x01A0, ra, stackArg0);
+			slist_destroy(r2_n, (char *) fp - 0x01A0, ra);
 			if (r2_n != (struct Eq_n *) 0x0695 && (word32) r2_n->b0695 != 0x00)
 				unlink(&r2_n->b0695);
 			exit(0x00);
@@ -1860,62 +1725,33 @@ l00401A80:
 		exit(-0x01);
 }
 
-// 00401B70: void client_new(Register (ptr32 Eq_n) r4, Register (ptr32 Eq_n) r5, Register int32 r6, Register int32 r7, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00, Stack Eq_n dwArg04, Stack Eq_n dwArg08, Stack Eq_n dwArg0C)
-void client_new(struct Eq_n * r4, struct Eq_n * r5, int32 r6, int32 r7, ptr32 r30, word32 ra, Eq_n dwArg00, Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C)
+// 00401B70: void client_new(Register (ptr32 Eq_n) r4, Register (ptr32 Eq_n) r5, Register int32 r6, Register int32 r7, Register ptr32 r30, Register word32 ra)
+void client_new(struct Eq_n * r4, struct Eq_n * r5, int32 r6, int32 r7, ptr32 r30, word32 ra)
 {
 	Eq_n r2_n = malloc(6100);
 	Eq_n r7_n = <invalid>;
 	Eq_n r6_n = <invalid>;
 	if (r2_n == 0x00)
-	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg0 = <invalid>;
-		Eq_n stackArg4 = <invalid>;
-		Eq_n stackArg8 = <invalid>;
-		Eq_n stackArg12 = <invalid>;
-		print_log(null, 0x00409F00, r6_n, r7_n, fp + -0x0048, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
-	}
+		print_log(null, 0x00409F00, r6_n, r7_n, fp + -0x0048, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 	else
 	{
 		bzero((word32) r2_n + 6040, 0x0010);
-		*((word32) r2_n + 6040) = 0x02;
-		*((word32) r2_n + 0x0000179A) = (word16) (word32) r4->w0002;
+		((word32) r2_n + 6040)->u1 = 0x02;
+		((word32) r2_n + 0x0000179A)->u1 = (word16) (word32) r4->w0002;
 		*((word32) r2_n + 6044) = r4->dw0004;
 		*r2_n = accept(r6, (word32) r2_n + 6040, fp + -0x0020);
-		*((word32) r2_n + 6056) = 0x02;
-		*((word32) r2_n + 0x000017AA) = (word16) (word32) r5->w0002;
+		((word32) r2_n + 6056)->u1 = 0x02;
+		((word32) r2_n + 0x000017AA)->u1 = (word16) (word32) r5->w0002;
 		*((word32) r2_n + 6060) = r5->dw0004;
 		*((word32) r2_n + 0x00001790) = r7;
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg0 = <invalid>;
 		word32 r5_n;
 		word32 r6_n;
 		word32 r7_n;
-		Eq_n r2_n = open_destination((word32) r2_n + 6056, r16, fp + -0x0048, ra, stackArg0, out r5_n, out r6_n, out r7_n);
+		Eq_n r2_n = open_destination((word32) r2_n + 6056, r16, fp + -0x0048, ra, out r5_n, out r6_n, out r7_n);
 		*((word32) r2_n + 0x04) = r2_n;
 		if (*((word32) r2_n + 0x04) < 0x00)
 		{
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg0 = <invalid>;
-			Eq_n stackArg4 = <invalid>;
-			Eq_n stackArg8 = <invalid>;
-			Eq_n stackArg12 = <invalid>;
-			print_log((int32 *) 0x01, 0x00409F28, 0x00409F54, 55, fp + -0x0048, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+			print_log((int32 *) 0x01, 0x00409F28, 0x00409F54, 55, fp + -0x0048, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 			close(*r2_n);
 			free(r2_n);
 		}
@@ -1923,21 +1759,9 @@ void client_new(struct Eq_n * r4, struct Eq_n * r5, int32 r6, int32 r7, ptr32 r3
 		{
 			word32 r2_n;
 			inet_ntoa();
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
 			Eq_n r2_n = *r2_n;
 			Eq_n r2_n = *((word32) r2_n + 0x04);
-			Eq_n stackArg0 = <invalid>;
-			Eq_n stackArg4 = <invalid>;
-			Eq_n stackArg8 = <invalid>;
-			Eq_n stackArg12 = <invalid>;
-			print_log((int32 *) 0x03, 0x00409F60, 0x00409F54, 0x003D, fp + -0x0048, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+			print_log((int32 *) 0x03, 0x00409F60, 0x00409F54, 0x003D, fp + -0x0048, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 			*((word32) r2_n + 2008) = 0x00;
 			*((word32) r2_n + 0x0FAC) = 0x00;
 			*((word32) r2_n + 0x0000178C) = 0x00;
@@ -1956,14 +1780,8 @@ void client_new(struct Eq_n * r4, struct Eq_n * r5, int32 r6, int32 r7, ptr32 r3
 				{
 					*((word32) r2_n + 6080) = client_copy_request;
 					*((word32) r2_n + 0x000017C4) = client_parse_reply;
-					// Failed to bind call argument.
-					// Please report this issue at https://github.com/uxmal/reko
-					Eq_n stackArg0 = <invalid>;
-					client_prepare_connect(r2_n, r16, fp + -0x0048, ra, stackArg0, out r3_n, out r5_n, out r6_n, out r7_n);
-					// Failed to bind call argument.
-					// Please report this issue at https://github.com/uxmal/reko
-					Eq_n stackArg0 = <invalid>;
-					client_send_request(r2_n, fp + -0x0048, ra, stackArg0, out r5_n, out r6_n, out r7_n);
+					client_prepare_connect(r2_n, r16, fp + -0x0048, ra, out r3_n, out r5_n, out r6_n, out r7_n);
+					client_send_request(r2_n, fp + -0x0048, ra, out r5_n, out r6_n, out r7_n);
 				}
 			}
 			else
@@ -1975,8 +1793,8 @@ void client_new(struct Eq_n * r4, struct Eq_n * r5, int32 r6, int32 r7, ptr32 r3
 	}
 }
 
-// 00402028: Register word32 client_prepare_connect(Register Eq_n r4, Register word32 r16, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00, Register out ptr32 r3Out, Register out ptr32 r5Out, Register out ptr32 r6Out, Register out ptr32 r7Out)
-word32 client_prepare_connect(Eq_n r4, word32 r16, ptr32 r30, word32 ra, Eq_n dwArg00, ptr32 & r3Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out)
+// 00402028: Register word32 client_prepare_connect(Register Eq_n r4, Register word32 r16, Register ptr32 r30, Register word32 ra, Register out ptr32 r3Out, Register out ptr32 r5Out, Register out ptr32 r6Out, Register out ptr32 r7Out)
+word32 client_prepare_connect(Eq_n r4, word32 r16, ptr32 r30, word32 ra, ptr32 & r3Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out)
 {
 	word32 r3_n;
 	word32 r7_n;
@@ -1997,23 +1815,11 @@ word32 client_prepare_connect(Eq_n r4, word32 r16, ptr32 r30, word32 ra, Eq_n dw
 	Eq_n dwLoc18_n = r2_n;
 	if ((word32) (r2_n < 0x0100) == 0x00)
 		dwLoc18_n.u0 = 0x0100;
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg0 = <invalid>;
-	Eq_n stackArg4 = <invalid>;
-	Eq_n stackArg8 = <invalid>;
-	Eq_n stackArg12 = <invalid>;
 	ptr32 r3_n;
 	ptr32 r7_n;
 	ptr32 r5_n;
 	ptr32 r6_n;
-	add_to_request(r3_n, r4, *((word32) r4 + 0x0FB0), fp + -0x0118, dwLoc18_n, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r5_n, out r6_n, out r7_n);
+	add_to_request(r3_n, r4, *((word32) r4 + 0x0FB0), fp + -0x0118, dwLoc18_n, ra, out r3_n, out r5_n, out r6_n, out r7_n);
 	r3Out = r3_n;
 	r5Out = r5_n;
 	r6Out = r6_n;
@@ -2021,16 +1827,16 @@ word32 client_prepare_connect(Eq_n r4, word32 r16, ptr32 r30, word32 ra, Eq_n dw
 	return 0x00;
 }
 
-// 004021A0: void client_copy_request(Register (ptr32 Eq_n) r4, Stack word32 dwArg00)
-void client_copy_request(struct Eq_n * r4, word32 dwArg00)
+// 004021A0: void client_copy_request(Register (ptr32 Eq_n) r4)
+void client_copy_request(struct Eq_n * r4)
 {
 	memcpy((char *) &r4->t07D8 + 0x04, (char *) r4 + 0x08, r4->t07D8);
 	r4->ptr0FB0 = (char *) &r4->t07D8 + 0x04;
 	r4->t0FAC = r4->t07D8;
 }
 
-// 00402244: void client_parse_request(Register word32 r3, Register Eq_n r4, Register word32 r7, Register word32 r30, Register word32 ra, Stack word32 dwArg00)
-void client_parse_request(word32 r3, Eq_n r4, word32 r7, word32 r30, word32 ra, word32 dwArg00)
+// 00402244: void client_parse_request(Register word32 r3, Register Eq_n r4, Register word32 r7, Register word32 r30, Register word32 ra)
+void client_parse_request(word32 r3, Eq_n r4, word32 r7, word32 r30, word32 ra)
 {
 	int8 * dwLoc40_n = (word32) r4 + 0x08;
 	int32 r2_n = *((word32) r4 + 2008);
@@ -2038,16 +1844,7 @@ void client_parse_request(word32 r3, Eq_n r4, word32 r7, word32 r30, word32 ra, 
 	Eq_n dwLoc20_n = *((word32) r4 + 4020);
 	while (r2_n > 0x00)
 	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg0 = <invalid>;
-		Eq_n stackArg4 = <invalid>;
-		Eq_n stackArg8 = <invalid>;
-		int8 * r2_n = get_a_line(fp + -0x0810, dwLoc40_n, fp + -0x0818, stackArg0, stackArg4, stackArg8, out r5_n, out r6_n, out r7_n);
+		int8 * r2_n = get_a_line(fp + -0x0810, dwLoc40_n, fp + -0x0818, out r5_n, out r6_n, out r7_n);
 		int32 dwLoc1C_n = 0x00;
 		if ((word32) bLoc0810 == 0x0A || (word32) bLoc0810 == 0x0D)
 			dwLoc1C_n = 0x01;
@@ -2063,126 +1860,38 @@ void client_parse_request(word32 r3, Eq_n r4, word32 r7, word32 r30, word32 ra, 
 					{
 						if (*((word32) r4 + 4020) != 0x00)
 						{
-							// Failed to bind call argument.
-							// Please report this issue at https://github.com/uxmal/reko
-							// Failed to bind call argument.
-							// Please report this issue at https://github.com/uxmal/reko
-							// Failed to bind call argument.
-							// Please report this issue at https://github.com/uxmal/reko
-							// Failed to bind call argument.
-							// Please report this issue at https://github.com/uxmal/reko
-							Eq_n stackArg0 = <invalid>;
-							Eq_n stackArg4 = <invalid>;
-							Eq_n stackArg8 = <invalid>;
-							Eq_n stackArg12 = <invalid>;
-							print_log((int32 *) 0x04, 0x0040A008, 0x0040A024, 0x00A5, fp + -0x0838, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
-							// Failed to bind call argument.
-							// Please report this issue at https://github.com/uxmal/reko
-							// Failed to bind call argument.
-							// Please report this issue at https://github.com/uxmal/reko
+							print_log((int32 *) 0x04, 0x0040A008, 0x0040A024, 0x00A5, fp + -0x0838, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 							Eq_n r2_n = *((word32) r4 + 4020);
-							Eq_n stackArg0 = <invalid>;
-							Eq_n stackArg4 = <invalid>;
 							dwLoc20_n = r2_n;
-							if (request_parse_line(fp + -0x0810, r2_n, fp + -0x0810, fp + -0x0838, ra, stackArg0, stackArg4, out r3_n, out r7_n) == 0x00)
+							if (request_parse_line(fp + -0x0810, r2_n, fp + -0x0810, fp + -0x0838, ra, out r3_n, out r7_n) == 0x00)
 							{
-								// Failed to bind call argument.
-								// Please report this issue at https://github.com/uxmal/reko
-								// Failed to bind call argument.
-								// Please report this issue at https://github.com/uxmal/reko
-								// Failed to bind call argument.
-								// Please report this issue at https://github.com/uxmal/reko
-								// Failed to bind call argument.
-								// Please report this issue at https://github.com/uxmal/reko
-								Eq_n stackArg0 = <invalid>;
-								Eq_n stackArg4 = <invalid>;
-								Eq_n stackArg8 = <invalid>;
-								Eq_n stackArg12 = <invalid>;
-								print_log((int32 *) 0x04, 4235324, 0x0040A024, 0x00A9, fp + -0x0838, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
-								// Failed to bind call argument.
-								// Please report this issue at https://github.com/uxmal/reko
-								Eq_n stackArg0 = <invalid>;
-								request_destroy(r2_n, stackArg0);
+								print_log((int32 *) 0x04, 4235324, 0x0040A024, 0x00A9, fp + -0x0838, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+								request_destroy(r2_n);
 								dwLoc20_n.u0 = 0x00;
 							}
 						}
 						else
-						{
-							// Failed to bind call argument.
-							// Please report this issue at https://github.com/uxmal/reko
-							Eq_n stackArg0 = <invalid>;
-							dwLoc20_n = request_new(fp + -0x0810, fp + -0x0838, ra, stackArg0, out r7_n);
-						}
+							dwLoc20_n = request_new(fp + -0x0810, fp + -0x0838, ra, out r7_n);
 						*((word32) r4 + 4020) = dwLoc20_n;
 						if (dwLoc20_n != 0x00)
 							((word32) r4 + 6036)->u0 = 0x01;
 						else
 						{
-							// Failed to bind call argument.
-							// Please report this issue at https://github.com/uxmal/reko
-							// Failed to bind call argument.
-							// Please report this issue at https://github.com/uxmal/reko
-							// Failed to bind call argument.
-							// Please report this issue at https://github.com/uxmal/reko
-							// Failed to bind call argument.
-							// Please report this issue at https://github.com/uxmal/reko
-							Eq_n stackArg0 = <invalid>;
-							Eq_n stackArg4 = <invalid>;
-							Eq_n stackArg8 = <invalid>;
-							Eq_n stackArg12 = <invalid>;
 							Eq_n r3_n;
-							print_log((int32 *) 0x03, 0x0040A074, 0x0040A024, 181, fp + -0x0838, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
-							// Failed to bind call argument.
-							// Please report this issue at https://github.com/uxmal/reko
-							// Failed to bind call argument.
-							// Please report this issue at https://github.com/uxmal/reko
-							// Failed to bind call argument.
-							// Please report this issue at https://github.com/uxmal/reko
-							// Failed to bind call argument.
-							// Please report this issue at https://github.com/uxmal/reko
-							Eq_n stackArg0 = <invalid>;
-							Eq_n stackArg4 = <invalid>;
-							Eq_n stackArg8 = <invalid>;
-							Eq_n stackArg12 = <invalid>;
-							add_to_request(r3_n, r4, dwLoc28_n, fp + -0x0810, 0x00, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r5_n, out r6_n, out r7_n);
+							print_log((int32 *) 0x03, 0x0040A074, 0x0040A024, 181, fp + -0x0838, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+							add_to_request(r3_n, r4, dwLoc28_n, fp + -0x0810, 0x00, ra, out r3_n, out r5_n, out r6_n, out r7_n);
 							((word32) r4 + 6036)->u0 = 0x02;
 						}
 					}
 					else
-					{
-						// Failed to bind call argument.
-						// Please report this issue at https://github.com/uxmal/reko
-						// Failed to bind call argument.
-						// Please report this issue at https://github.com/uxmal/reko
-						// Failed to bind call argument.
-						// Please report this issue at https://github.com/uxmal/reko
-						// Failed to bind call argument.
-						// Please report this issue at https://github.com/uxmal/reko
-						Eq_n stackArg0 = <invalid>;
-						Eq_n stackArg4 = <invalid>;
-						Eq_n stackArg8 = <invalid>;
-						Eq_n stackArg12 = <invalid>;
-						add_to_request(r2_n, r4, dwLoc28_n, fp + -0x0810, 0x00, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r5_n, out r6_n, out r7_n);
-					}
+						add_to_request(r2_n, r4, dwLoc28_n, fp + -0x0810, 0x00, ra, out r3_n, out r5_n, out r6_n, out r7_n);
 				}
 			}
 			else if (r2_n != 0x02)
 			{
 				if (r2_n == 0x03)
 				{
-					// Failed to bind call argument.
-					// Please report this issue at https://github.com/uxmal/reko
-					// Failed to bind call argument.
-					// Please report this issue at https://github.com/uxmal/reko
-					// Failed to bind call argument.
-					// Please report this issue at https://github.com/uxmal/reko
-					// Failed to bind call argument.
-					// Please report this issue at https://github.com/uxmal/reko
-					Eq_n stackArg0 = <invalid>;
-					Eq_n stackArg4 = <invalid>;
-					Eq_n stackArg8 = <invalid>;
-					Eq_n stackArg12 = <invalid>;
-					dwLoc28_n = add_to_request(r2_n, r4, dwLoc28_n, fp + -0x0810, 0x00, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r5_n, out r6_n, out r7_n);
+					dwLoc28_n = add_to_request(r2_n, r4, dwLoc28_n, fp + -0x0810, 0x00, ra, out r3_n, out r5_n, out r6_n, out r7_n);
 					*((byte) dwLoc20_n.u0 + 0x0554) = *((byte) dwLoc20_n.u0 + 0x0554);
 					if (*((byte) dwLoc20_n.u0 + 0x0554) == 0x00)
 						((word32) r4 + 6036)->u0 = 0x00;
@@ -2190,19 +1899,7 @@ void client_parse_request(word32 r3, Eq_n r4, word32 r7, word32 r30, word32 ra, 
 			}
 			else
 			{
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				Eq_n stackArg0 = <invalid>;
-				Eq_n stackArg4 = <invalid>;
-				Eq_n stackArg8 = <invalid>;
-				Eq_n stackArg12 = <invalid>;
-				dwLoc28_n = add_to_request(r2_n, r4, dwLoc28_n, fp + -0x0810, 0x00, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r5_n, out r6_n, out r7_n);
+				dwLoc28_n = add_to_request(r2_n, r4, dwLoc28_n, fp + -0x0810, 0x00, ra, out r3_n, out r5_n, out r6_n, out r7_n);
 				if (dwLoc1C_n != 0x00)
 				{
 					if (dwLoc20_n != 0x00 && *((byte) dwLoc20_n.u0 + 0x0554) == 0x00)
@@ -2214,34 +1911,14 @@ void client_parse_request(word32 r3, Eq_n r4, word32 r7, word32 r30, word32 ra, 
 				{
 					Eq_n r3_n = <invalid>;
 					if (strncasecmp(&globals->t409FF4, fp + -0x0810, 0x0A) == 0x00)
-					{
-						// Failed to bind call argument.
-						// Please report this issue at https://github.com/uxmal/reko
-						// Failed to bind call argument.
-						// Please report this issue at https://github.com/uxmal/reko
-						Eq_n stackArg0 = <invalid>;
-						Eq_n stackArg4 = <invalid>;
-						request_get_content_length(r3_n, dwLoc20_n, fp + -0x0810, fp + -0x0838, ra, stackArg0, stackArg4, out r7_n);
-					}
+						request_get_content_length(r3_n, dwLoc20_n, fp + -0x0810, fp + -0x0838, ra, out r7_n);
 				}
 			}
 			goto l00402A34;
 		}
 		if (dwLoc1C_n != 0x00)
 		{
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg0 = <invalid>;
-			Eq_n stackArg4 = <invalid>;
-			Eq_n stackArg8 = <invalid>;
-			Eq_n stackArg12 = <invalid>;
-			print_log((int32 *) 0x02, 4235444, 0x0040A024, 0x00C3, fp + -0x0838, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+			print_log((int32 *) 0x02, 4235444, 0x0040A024, 0x00C3, fp + -0x0838, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 			((word32) r4 + 6036)->u0 = 0x00;
 			return;
 		}
@@ -2251,72 +1928,16 @@ void client_parse_request(word32 r3, Eq_n r4, word32 r7, word32 r30, word32 ra, 
 			if (strncasecmp(fp + -0x0810, "host: ", 0x06) != 0x00)
 				goto l004027F8;
 			if (dwLoc20_n == 0x00)
-			{
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				Eq_n stackArg0 = <invalid>;
-				Eq_n stackArg4 = <invalid>;
-				Eq_n stackArg8 = <invalid>;
-				Eq_n stackArg12 = <invalid>;
-				print_log((int32 *) 0x02, 0x00409FC4, 0x0040A024, 0x00CC, fp + -0x0838, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
-			}
+				print_log((int32 *) 0x02, 0x00409FC4, 0x0040A024, 0x00CC, fp + -0x0838, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 			else
 			{
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				Eq_n stackArg0 = <invalid>;
-				Eq_n stackArg4 = <invalid>;
 				word32 r3_n;
-				request_get_host(r3_n, dwLoc20_n, fp + -0x0810, fp + -0x0838, ra, stackArg0, stackArg4, out r3_n, out r5_n, out r6_n, out r7_n);
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				Eq_n stackArg0 = <invalid>;
-				request_make_url(r3_n, dwLoc20_n, ra, stackArg0);
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
+				request_get_host(r3_n, dwLoc20_n, fp + -0x0810, fp + -0x0838, ra, out r3_n, out r5_n, out r6_n, out r7_n);
+				request_make_url(r3_n, dwLoc20_n, ra);
 				Eq_n r2_n = strlen((byte) dwLoc20_n.u0 + 0x0214);
-				Eq_n stackArg0 = <invalid>;
-				Eq_n stackArg4 = <invalid>;
-				Eq_n stackArg8 = <invalid>;
-				Eq_n stackArg12 = <invalid>;
-				Eq_n stackArg0 = <invalid>;
-				Eq_n stackArg4 = <invalid>;
-				Eq_n stackArg8 = <invalid>;
-				Eq_n stackArg0 = <invalid>;
-				Eq_n stackArg4 = <invalid>;
-				Eq_n stackArg8 = <invalid>;
-				Eq_n stackArg12 = <invalid>;
 				word32 r7_n;
 				Eq_n r3_n;
-				dwLoc28_n = add_to_request(r3_n, r4, request_add_lines(dwLoc20_n, r4, add_to_request(r2_n, r4, dwLoc28_n, (byte) dwLoc20_n.u0 + 0x0214, r2_n, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r5_n, out r6_n, out r7_n), r7_n, fp + -0x0838, ra, stackArg0, stackArg4, stackArg8, out r3_n), fp + -0x0810, 0x00, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r5_n, out r6_n, out r7_n);
+				dwLoc28_n = add_to_request(r3_n, r4, request_add_lines(dwLoc20_n, r4, add_to_request(r2_n, r4, dwLoc28_n, (byte) dwLoc20_n.u0 + 0x0214, r2_n, ra, out r3_n, out r5_n, out r6_n, out r7_n), r7_n, fp + -0x0838, ra, out r3_n), fp + -0x0810, 0x00, ra, out r3_n, out r5_n, out r6_n, out r7_n);
 				((word32) r4 + 6036)->u0 = 0x02;
 			}
 			goto l00402A34;
@@ -2327,50 +1948,20 @@ l004027F8:
 			r3_n.u0 = <invalid>;
 			if (strncasecmp(&globals->t409FE0, fp + -0x0810, 0x0A) != 0x00)
 				goto l00402894;
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg0 = <invalid>;
-			Eq_n stackArg4 = <invalid>;
-			Eq_n stackArg0 = <invalid>;
-			Eq_n stackArg4 = <invalid>;
-			Eq_n stackArg8 = <invalid>;
-			Eq_n stackArg11 = <invalid>;
-			request_save_line(request_get_content_length(r3_n, dwLoc20_n, fp + -0x0810, fp + -0x0838, ra, stackArg0, stackArg4, out r7_n), dwLoc20_n, fp + -0x0810, 0x00, fp + -0x0838, ra, stackArg0, stackArg4, stackArg8, stackArg11, out r7_n);
+			request_save_line(request_get_content_length(r3_n, dwLoc20_n, fp + -0x0810, fp + -0x0838, ra, out r7_n), dwLoc20_n, fp + -0x0810, 0x00, fp + -0x0838, ra, out r7_n);
 		}
 		else
 		{
 l00402894:
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg0 = <invalid>;
-			Eq_n stackArg4 = <invalid>;
-			Eq_n stackArg8 = <invalid>;
-			Eq_n stackArg11 = <invalid>;
-			request_save_line(r3_n, dwLoc20_n, fp + -0x0810, 0x00, fp + -0x0838, ra, stackArg0, stackArg4, stackArg8, stackArg11, out r7_n);
+			request_save_line(r3_n, dwLoc20_n, fp + -0x0810, 0x00, fp + -0x0838, ra, out r7_n);
 		}
 l00402A34:
 		dwLoc40_n = r2_n;
 	}
 }
 
-// 00402A60: Register (ptr32 void) add_to_request(Register Eq_n r3, Register Eq_n r4, Register (ptr32 void) r5, Register (ptr32 void) r6, Register Eq_n r7, Register word32 ra, Stack Eq_n dwArg00, Stack Eq_n dwArg04, Stack Eq_n dwArg08, Stack Eq_n dwArg0C, Register out Eq_n r3Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out)
-void * add_to_request(Eq_n r3, Eq_n r4, void * r5, void * r6, Eq_n r7, word32 ra, Eq_n dwArg00, Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, union Eq_n & r3Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out)
+// 00402A60: Register (ptr32 void) add_to_request(Register Eq_n r3, Register Eq_n r4, Register (ptr32 void) r5, Register (ptr32 void) r6, Register Eq_n r7, Register word32 ra, Register out Eq_n r3Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out)
+void * add_to_request(Eq_n r3, Eq_n r4, void * r5, void * r6, Eq_n r7, word32 ra, union Eq_n & r3Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out)
 {
 	Eq_n r7_n;
 	Eq_n r6_n;
@@ -2379,19 +1970,7 @@ void * add_to_request(Eq_n r3, Eq_n r4, void * r5, void * r6, Eq_n r7, word32 ra
 	Eq_n r5_n;
 	if (r5 == null)
 	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg0 = <invalid>;
-		Eq_n stackArg4 = <invalid>;
-		Eq_n stackArg8 = <invalid>;
-		Eq_n stackArg12 = <invalid>;
-		print_log((int32 *) 0x01, 0x0040A0E4, 0x0040A114, 0x0100, fp + -0x0028, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+		print_log((int32 *) 0x01, 0x0040A0E4, 0x0040A114, 0x0100, fp + -0x0028, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 		r2_n = null;
 	}
 	else if (r6 != null && r7 > 0x00)
@@ -2408,38 +1987,14 @@ void * add_to_request(Eq_n r3, Eq_n r4, void * r5, void * r6, Eq_n r7, word32 ra
 		}
 		else
 		{
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg0 = <invalid>;
-			Eq_n stackArg4 = <invalid>;
-			Eq_n stackArg8 = <invalid>;
-			Eq_n stackArg12 = <invalid>;
-			print_log((int32 *) 0x01, 0x0040A148, 0x0040A114, 0x010F, fp + -0x0028, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+			print_log((int32 *) 0x01, 0x0040A148, 0x0040A114, 0x010F, fp + -0x0028, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 			*((word32) r4 + 0x0FAC) = 0x00;
 			r2_n = null;
 		}
 	}
 	else
 	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg0 = <invalid>;
-		Eq_n stackArg4 = <invalid>;
-		Eq_n stackArg8 = <invalid>;
-		Eq_n stackArg12 = <invalid>;
-		print_log((int32 *) 0x02, 4235556, 0x0040A114, 0x0105, fp + -0x0028, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+		print_log((int32 *) 0x02, 4235556, 0x0040A114, 0x0105, fp + -0x0028, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 		r2_n = r5;
 	}
 	r3Out = r3_n;
@@ -2449,8 +2004,8 @@ void * add_to_request(Eq_n r3, Eq_n r4, void * r5, void * r6, Eq_n r7, word32 ra
 	return r2_n;
 }
 
-// 00402C1C: Register (ptr32 int8) get_a_line(Register (ptr32 byte) r4, Register (ptr32 int8) r5, Register (ptr32 int32) r6, Stack Eq_n dwArg00, Stack Eq_n dwArg04, Stack Eq_n dwArg08, Register out (ptr32 int8) r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out)
-int8 * get_a_line(byte * r4, int8 * r5, int32 * r6, Eq_n dwArg00, Eq_n dwArg04, Eq_n dwArg08, int8 & r5Out, union Eq_n & r6Out, union Eq_n & r7Out)
+// 00402C1C: Register (ptr32 int8) get_a_line(Register (ptr32 byte) r4, Register (ptr32 int8) r5, Register (ptr32 int32) r6, Register out (ptr32 int8) r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out)
+int8 * get_a_line(byte * r4, int8 * r5, int32 * r6, int8 & r5Out, union Eq_n & r6Out, union Eq_n & r7Out)
 {
 	byte * dwArg00_n = r4;
 	int8 * dwArg04_n = r5;
@@ -2485,8 +2040,8 @@ int8 * get_a_line(byte * r4, int8 * r5, int32 * r6, Eq_n dwArg00, Eq_n dwArg04, 
 	return dwArg04_n;
 }
 
-// 00402E44: void client_read_request(Register (ptr32 Eq_n) r4, Register word32 r30, Register word32 ra, Stack word32 dwArg00)
-void client_read_request(struct Eq_n * r4, word32 r30, word32 ra, word32 dwArg00)
+// 00402E44: void client_read_request(Register (ptr32 Eq_n) r4, Register word32 r30, Register word32 ra)
+void client_read_request(struct Eq_n * r4, word32 r30, word32 ra)
 {
 	r4->t17CC = time(null);
 	word32 r2_n;
@@ -2494,8 +2049,8 @@ void client_read_request(struct Eq_n * r4, word32 r30, word32 ra, word32 dwArg00
 	r4->dw07D8 = r2_n;
 }
 
-// 00402EF8: Register Eq_n client_send_request(Register Eq_n r4, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out)
-Eq_n client_send_request(Eq_n r4, ptr32 r30, word32 ra, Eq_n dwArg00, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out)
+// 00402EF8: Register Eq_n client_send_request(Register Eq_n r4, Register ptr32 r30, Register word32 ra, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out)
+Eq_n client_send_request(Eq_n r4, ptr32 r30, word32 ra, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out)
 {
 	Eq_n r2_n = time(null);
 	*((word32) r4 + 0x000017CC) = r2_n;
@@ -2517,19 +2072,7 @@ Eq_n client_send_request(Eq_n r4, ptr32 r30, word32 ra, Eq_n dwArg00, union Eq_n
 		{
 			*((word32) r4 + 0x0FB0) = (word32) *((word32) r4 + 0x0FB0) + r2_n;
 			*((word32) r4 + 0x0FAC) -= r2_n;
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg0 = <invalid>;
-			Eq_n stackArg4 = <invalid>;
-			Eq_n stackArg8 = <invalid>;
-			Eq_n stackArg12 = <invalid>;
-			print_log((int32 *) 0x04, 0x0040A174, 0x0040A194, 333, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+			print_log((int32 *) 0x04, 0x0040A174, 0x0040A194, 333, fp + -0x0038, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 		}
 	}
 	r5Out = r5_n;
@@ -2538,34 +2081,23 @@ Eq_n client_send_request(Eq_n r4, ptr32 r30, word32 ra, Eq_n dwArg00, union Eq_n
 	return r3_n;
 }
 
-// 0040307C: void client_read_reply(Register (ptr32 Eq_n) r4, Stack word32 dwArg00)
-void client_read_reply(struct Eq_n * r4, word32 dwArg00)
+// 0040307C: void client_read_reply(Register (ptr32 Eq_n) r4)
+void client_read_reply(struct Eq_n * r4)
 {
 	r4->t17D0 = time(null);
 	r4->t178C = read(r4->dw0004, &r4->dw0004 + 1005, 1999);
 	r4->ptr1788 = &r4->dw0004 + 1005;
 }
 
-// 00403140: void client_parse_reply(Register (ptr32 Eq_n) r4, Register word32 r30, Register word32 ra, Stack word32 dwArg00)
-void client_parse_reply(struct Eq_n * r4, word32 r30, word32 ra, word32 dwArg00)
+// 00403140: void client_parse_reply(Register (ptr32 Eq_n) r4, Register word32 r30, Register word32 ra)
+void client_parse_reply(struct Eq_n * r4, word32 r30, word32 ra)
 {
-	if (r4->dw178C > 0x00)
-	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg0 = <invalid>;
-		if (client_check_reply_http(r4, stackArg0) == 0x00)
-		{
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg0 = <invalid>;
-			client_copy_reply(r4, fp + -0x0028, ra, stackArg0);
-		}
-	}
+	if (r4->dw178C > 0x00 && client_check_reply_http(r4) == 0x00)
+		client_copy_reply(r4, fp + -0x0028, ra);
 }
 
-// 004031DC: void client_copy_reply(Register (ptr32 Eq_n) r4, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00)
-void client_copy_reply(struct Eq_n * r4, ptr32 r30, word32 ra, Eq_n dwArg00)
+// 004031DC: void client_copy_reply(Register (ptr32 Eq_n) r4, Register ptr32 r30, Register word32 ra)
+void client_copy_reply(struct Eq_n * r4, ptr32 r30, word32 ra)
 {
 	if (r4->dw178C > 0x00)
 	{
@@ -2585,8 +2117,8 @@ void client_copy_reply(struct Eq_n * r4, ptr32 r30, word32 ra, Eq_n dwArg00)
 	}
 }
 
-// 00403318: Register word32 client_check_reply_http(Register (ptr32 Eq_n) r4, Stack Eq_n dwArg00)
-word32 client_check_reply_http(struct Eq_n * r4, Eq_n dwArg00)
+// 00403318: Register word32 client_check_reply_http(Register (ptr32 Eq_n) r4)
+word32 client_check_reply_http(struct Eq_n * r4)
 {
 	struct Eq_n * dwLoc18_n = r4->ptr1788;
 	int32 dwLoc14_n = r4->dw178C;
@@ -2637,8 +2169,8 @@ word32 client_check_reply_http(struct Eq_n * r4, Eq_n dwArg00)
 	return r2_n;
 }
 
-// 004036BC: void client_close(Register Eq_n r4, Stack Eq_n dwArg00)
-void client_close(Eq_n r4, Eq_n dwArg00)
+// 004036BC: void client_close(Register Eq_n r4)
+void client_close(Eq_n r4)
 {
 	if (r4 != 0x00)
 	{
@@ -2655,20 +2187,12 @@ void client_close(Eq_n r4, Eq_n dwArg00)
 	}
 }
 
-// 00403794: Register Eq_n client_destroy(Register word32 r2, Register Eq_n r4, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out)
-Eq_n client_destroy(word32 r2, Eq_n r4, ptr32 r30, word32 ra, Eq_n dwArg00, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out)
+// 00403794: Register Eq_n client_destroy(Register word32 r2, Register Eq_n r4, Register ptr32 r30, Register word32 ra, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out)
+Eq_n client_destroy(word32 r2, Eq_n r4, ptr32 r30, word32 ra, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out)
 {
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg0 = <invalid>;
-	client_close(r4, stackArg0);
+	client_close(r4);
 	if (*((word32) r4 + 4020) != 0x00)
-	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg0 = <invalid>;
-		request_destroy(*((word32) r4 + 4020), stackArg0);
-	}
+		request_destroy(*((word32) r4 + 4020));
 	free(r4);
 	r5Out.u0 = <invalid>;
 	r6Out.u0 = <invalid>;
@@ -2676,48 +2200,20 @@ Eq_n client_destroy(word32 r2, Eq_n r4, ptr32 r30, word32 ra, Eq_n dwArg00, unio
 	return <invalid>;
 }
 
-// 00403840: void client_check_activ(Register (ptr32 Eq_n) r4, Register Eq_n r5, Register word32 r30, Register word32 ra, Stack word32 dwArg00, Stack word32 dwArg04)
-void client_check_activ(struct Eq_n * r4, Eq_n r5, word32 r30, word32 ra, word32 dwArg00, word32 dwArg04)
+// 00403840: void client_check_activ(Register (ptr32 Eq_n) r4, Register Eq_n r5, Register word32 r30, Register word32 ra)
+void client_check_activ(struct Eq_n * r4, Eq_n r5, word32 r30, word32 ra)
 {
 	Eq_n dwArg04_n = r5;
 	if (r5 < 0x00)
 		dwArg04_n = time(null);
 	if ((word32) (*globals->ptr1000090C < dwArg04_n - r4->dw17CC) != 0x00)
-	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg0 = <invalid>;
-		Eq_n stackArg4 = <invalid>;
-		Eq_n stackArg8 = <invalid>;
-		Eq_n stackArg12 = <invalid>;
-		print_log((int32 *) 0x03, 0x0040A1B0, 0x0040A1E0, 0x01D3, fp + -0x0040, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
-	}
+		print_log((int32 *) 0x03, 0x0040A1B0, 0x0040A1E0, 0x01D3, fp + -0x0040, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 	if ((word32) (*globals->ptr1000090C < dwArg04_n - r4->t17D0) != 0x00)
-	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg0 = <invalid>;
-		Eq_n stackArg4 = <invalid>;
-		Eq_n stackArg8 = <invalid>;
-		Eq_n stackArg12 = <invalid>;
-		print_log((int32 *) 0x03, 0x0040A1F4, 0x0040A1E0, 0x01D9, fp + -0x0040, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
-	}
+		print_log((int32 *) 0x03, 0x0040A1F4, 0x0040A1E0, 0x01D9, fp + -0x0040, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 }
 
-// 00403A1C: Register int32 open_destination(Register (ptr32 Eq_n) r4, Register word32 r16, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out)
-int32 open_destination(struct sockaddr * r4, word32 r16, ptr32 r30, word32 ra, Eq_n dwArg00, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out)
+// 00403A1C: Register int32 open_destination(Register (ptr32 Eq_n) r4, Register word32 r16, Register ptr32 r30, Register word32 ra, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out)
+int32 open_destination(struct sockaddr * r4, word32 r16, ptr32 r30, word32 ra, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out)
 {
 	Eq_n r7_n;
 	Eq_n r6_n;
@@ -2728,19 +2224,7 @@ int32 open_destination(struct sockaddr * r4, word32 r16, ptr32 r30, word32 ra, E
 	{
 		__errno_location();
 		strerror(*__errno_location());
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg0 = <invalid>;
-		Eq_n stackArg4 = <invalid>;
-		Eq_n stackArg8 = <invalid>;
-		Eq_n stackArg12 = <invalid>;
-		print_log((int32 *) 0x01, 0x0040A224, 0x0040A254, 0x01E9, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+		print_log((int32 *) 0x01, 0x0040A224, 0x0040A254, 0x01E9, fp + -0x0038, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 		r2_n = -0x01;
 	}
 	else
@@ -2752,19 +2236,7 @@ int32 open_destination(struct sockaddr * r4, word32 r16, ptr32 r30, word32 ra, E
 		{
 			__errno_location();
 			strerror(*__errno_location());
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg0 = <invalid>;
-			Eq_n stackArg4 = <invalid>;
-			Eq_n stackArg8 = <invalid>;
-			Eq_n stackArg12 = <invalid>;
-			print_log((int32 *) 0x01, 0x0040A268, 0x0040A254, 0x01F0, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+			print_log((int32 *) 0x01, 0x0040A268, 0x0040A254, 0x01F0, fp + -0x0038, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 			r2_n = -0x01;
 		}
 		else
@@ -2785,19 +2257,7 @@ Eq_n clist_new(ptr32 r30, word32 ra, union Eq_n & r3Out, union Eq_n & r4Out, uni
 	Eq_n r4_n = <invalid>;
 	if (r2_n == 0x00)
 	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg0 = <invalid>;
-		Eq_n stackArg4 = <invalid>;
-		Eq_n stackArg8 = <invalid>;
-		Eq_n stackArg12 = <invalid>;
-		print_log(null, 0x0040A2A0, r6, r7, fp + -0x0030, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+		print_log(null, 0x0040A2A0, r6, r7, fp + -0x0030, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 		r2_n.u0 = 0x00;
 	}
 	else
@@ -2815,8 +2275,8 @@ Eq_n clist_new(ptr32 r30, word32 ra, union Eq_n & r3Out, union Eq_n & r4Out, uni
 	return r2_n;
 }
 
-// 00403CBC: Register (ptr32 Eq_n) clist_add(Register (ptr32 Eq_n) r4, Register Eq_n r5, Stack Eq_n dwArg00, Stack Eq_n dwArg04, Register out (ptr32 Eq_n) r3Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out)
-struct Eq_n * clist_add(struct Eq_n * r4, Eq_n r5, Eq_n dwArg00, Eq_n dwArg04, struct Eq_n & r3Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out)
+// 00403CBC: Register (ptr32 Eq_n) clist_add(Register (ptr32 Eq_n) r4, Register Eq_n r5, Register out (ptr32 Eq_n) r3Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out)
+struct Eq_n * clist_add(struct Eq_n * r4, Eq_n r5, struct Eq_n & r3Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out)
 {
 	if (r4->t0008 != 0x00)
 	{
@@ -2840,8 +2300,8 @@ struct Eq_n * clist_add(struct Eq_n * r4, Eq_n r5, Eq_n dwArg00, Eq_n dwArg04, s
 	return r2_n;
 }
 
-// 00403DBC: Register Eq_n clist_remove(Register Eq_n r4, Register Eq_n r5, Stack Eq_n dwArg00, Stack Eq_n dwArg04)
-Eq_n clist_remove(Eq_n r4, Eq_n r5, Eq_n dwArg00, Eq_n dwArg04)
+// 00403DBC: Register Eq_n clist_remove(Register Eq_n r4, Register Eq_n r5)
+Eq_n clist_remove(Eq_n r4, Eq_n r5)
 {
 	if (r5 != 0x00)
 	{
@@ -2856,163 +2316,94 @@ Eq_n clist_remove(Eq_n r4, Eq_n r5, Eq_n dwArg00, Eq_n dwArg04)
 	return <invalid>;
 }
 
-// 00403EC0: void clist_find_fdin(Register (ptr32 Eq_n) r4, Register word32 r5, Stack word32 dwArg00, Stack word32 dwArg04)
-void clist_find_fdin(struct Eq_n * r4, word32 r5, word32 dwArg00, word32 dwArg04)
+// 00403EC0: void clist_find_fdin(Register (ptr32 Eq_n) r4, Register word32 r5)
+void clist_find_fdin(struct Eq_n * r4, word32 r5)
 {
 	struct Eq_n * dwLoc10_n = r4->ptr0008;
 	while (dwLoc10_n != null && dwLoc10_n->dw0000 != r5)
 		dwLoc10_n = dwLoc10_n->ptr17B8;
 }
 
-// 00403F5C: void clist_find_fdout(Register (ptr32 Eq_n) r4, Register word32 r5, Stack word32 dwArg00, Stack word32 dwArg04)
-void clist_find_fdout(struct Eq_n * r4, word32 r5, word32 dwArg00, word32 dwArg04)
+// 00403F5C: void clist_find_fdout(Register (ptr32 Eq_n) r4, Register word32 r5)
+void clist_find_fdout(struct Eq_n * r4, word32 r5)
 {
 	struct Eq_n * dwLoc10_n = r4->ptr0008;
 	while (dwLoc10_n != null && dwLoc10_n->dw0004 != r5)
 		dwLoc10_n = dwLoc10_n->ptr17B8;
 }
 
-// 00403FF8: void clist_delete(Register Eq_n r4, Register Eq_n r5, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00, Stack Eq_n dwArg04)
-void clist_delete(Eq_n r4, Eq_n r5, ptr32 r30, word32 ra, Eq_n dwArg00, Eq_n dwArg04)
+// 00403FF8: void clist_delete(Register Eq_n r4, Register Eq_n r5, Register ptr32 r30, Register word32 ra)
+void clist_delete(Eq_n r4, Eq_n r5, ptr32 r30, word32 ra)
 {
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg0 = <invalid>;
-	Eq_n stackArg4 = <invalid>;
-	clist_remove(r4, r5, stackArg0, stackArg4);
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg0 = <invalid>;
-	client_destroy(r2, r5, fp + -0x0028, ra, stackArg0, out r5_n, out r6_n, out r7_n);
+	clist_remove(r4, r5);
+	client_destroy(r2, r5, fp + -0x0028, ra, out r5_n, out r6_n, out r7_n);
 }
 
-// 00404070: void clist_close_all(Register Eq_n r4, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00)
-void clist_close_all(Eq_n r4, ptr32 r30, word32 ra, Eq_n dwArg00)
+// 00404070: void clist_close_all(Register Eq_n r4, Register ptr32 r30, Register word32 ra)
+void clist_close_all(Eq_n r4, ptr32 r30, word32 ra)
 {
 	Eq_n dwLoc18_n = *((word32) r4 + 0x08);
 	while (dwLoc18_n != 0x00)
 	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg0 = <invalid>;
-		client_close(dwLoc18_n, stackArg0);
+		client_close(dwLoc18_n);
 		dwLoc18_n = *((word32) dwLoc18_n + 0x000017B8);
 	}
 }
 
-// 00404108: void clist_destroy_all(Register Eq_n r4, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00)
-void clist_destroy_all(Eq_n r4, ptr32 r30, word32 ra, Eq_n dwArg00)
+// 00404108: void clist_destroy_all(Register Eq_n r4, Register ptr32 r30, Register word32 ra)
+void clist_destroy_all(Eq_n r4, ptr32 r30, word32 ra)
 {
 	while (*((word32) r4 + 0x08) != 0x00)
-	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg0 = <invalid>;
-		Eq_n stackArg4 = <invalid>;
-		clist_delete(r4, *((word32) r4 + 0x08), fp + -0x0030, ra, stackArg0, stackArg4);
-	}
+		clist_delete(r4, *((word32) r4 + 0x08), fp + -0x0030, ra);
 }
 
-// 004041B0: void clist_destroy(Register Eq_n r4, Register word32 r30, Register word32 ra, Stack word32 dwArg00)
-void clist_destroy(Eq_n r4, word32 r30, word32 ra, word32 dwArg00)
+// 004041B0: void clist_destroy(Register Eq_n r4, Register word32 r30, Register word32 ra)
+void clist_destroy(Eq_n r4, word32 r30, word32 ra)
 {
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg0 = <invalid>;
-	clist_close_all(r4, fp + -0x0028, ra, stackArg0);
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg0 = <invalid>;
-	clist_destroy_all(r4, fp + -0x0028, ra, stackArg0);
+	clist_close_all(r4, fp + -0x0028, ra);
+	clist_destroy_all(r4, fp + -0x0028, ra);
 	free(r4);
 }
 
-// 00404240: Register Eq_n request_new(Register Eq_n r4, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00, Register out Eq_n r7Out)
-Eq_n request_new(Eq_n r4, ptr32 r30, word32 ra, Eq_n dwArg00, union Eq_n & r7Out)
+// 00404240: Register Eq_n request_new(Register Eq_n r4, Register ptr32 r30, Register word32 ra, Register out Eq_n r7Out)
+Eq_n request_new(Eq_n r4, ptr32 r30, word32 ra, union Eq_n & r7Out)
 {
 	Eq_n r2_n;
 	Eq_n r2_n = malloc(0x055C);
 	if (r2_n == 0x00)
 	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg0 = <invalid>;
-		Eq_n stackArg4 = <invalid>;
-		Eq_n stackArg8 = <invalid>;
-		Eq_n stackArg12 = <invalid>;
-		print_log(null, 0x0040A308, r6, r7, fp + -0x0030, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+		print_log(null, 0x0040A308, r6, r7, fp + -0x0030, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 		r2_n.u0 = 0x00;
-		goto l00404364;
 	}
-	r2_n->u0 = 0x00;
-	*((word32) r2_n + 0x0114) = 0x00;
-	*((word32) r2_n + 788) = 0x00;
-	*((word32) r2_n + 0x0214) = 0x00;
-	*((word32) r2_n + 0x0014) = 0x00;
-	*((word32) r2_n + 0x0414) = 0x00;
-	*((word32) r2_n + 0x0558) = -0x01;
-	*((word32) r2_n + 0x0554) = 0x00;
-	if (r4 != 0x00)
+	else
 	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg0 = <invalid>;
-		Eq_n stackArg4 = <invalid>;
-		if (request_parse_line(r4, r2_n, r4, fp + -0x0030, ra, stackArg0, stackArg4, out r3_n, out r7_n) == 0x00)
-		{
+		r2_n->u0 = 0x00;
+		*((word32) r2_n + 0x0114) = 0x00;
+		*((word32) r2_n + 788) = 0x00;
+		*((word32) r2_n + 0x0214) = 0x00;
+		*((word32) r2_n + 0x0014) = 0x00;
+		*((word32) r2_n + 0x0414) = 0x00;
+		*((word32) r2_n + 0x0558) = -0x01;
+		*((word32) r2_n + 0x0554) = 0x00;
+		if (r4 != 0x00 && request_parse_line(r4, r2_n, r4, fp + -0x0030, ra, out r3_n, out r7_n) == 0x00)
 			r2_n.u0 = 0x00;
-l00404364:
-			r7Out.u0 = <invalid>;
-			return r2_n;
-		}
+		else
+			r2_n = r2_n;
 	}
-	r2_n = r2_n;
-	goto l00404364;
+	r7Out.u0 = <invalid>;
+	return r2_n;
 }
 
-// 00404378: Register Eq_n request_parse_line(Register Eq_n r2, Register Eq_n r4, Register Eq_n r5, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00, Stack Eq_n dwArg04, Register out Eq_n r3Out, Register out Eq_n r7Out)
-Eq_n request_parse_line(Eq_n r2, Eq_n r4, Eq_n r5, ptr32 r30, word32 ra, Eq_n dwArg00, Eq_n dwArg04, union Eq_n & r3Out, union Eq_n & r7Out)
+// 00404378: Register Eq_n request_parse_line(Register Eq_n r2, Register Eq_n r4, Register Eq_n r5, Register ptr32 r30, Register word32 ra, Register out Eq_n r3Out, Register out Eq_n r7Out)
+Eq_n request_parse_line(Eq_n r2, Eq_n r4, Eq_n r5, ptr32 r30, word32 ra, union Eq_n & r3Out, union Eq_n & r7Out)
 {
 	Eq_n r2_n;
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg0 = <invalid>;
-	Eq_n stackArg4 = <invalid>;
-	word32 r2_n = get_method(r4, r5, r6, fp + -0x0030, ra, stackArg0, stackArg4, out r5_n);
-	Eq_n stackArg0 = <invalid>;
-	if (is_a_method(r4, stackArg0) == 0x00)
+	word32 r2_n = get_method(r4, r5, r6, fp + -0x0030, ra, out r5_n);
+	if (is_a_method(r4) == 0x00)
 		r2_n.u0 = 0x00;
 	else
 	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg0 = <invalid>;
-		Eq_n stackArg4 = <invalid>;
-		Eq_n stackArg0 = <invalid>;
-		Eq_n stackArg4 = <invalid>;
-		get_version((word32) r4 + 788, get_uri((word32) r4 + 0x0114, r2_n, r6, fp + -0x0030, ra, stackArg0, stackArg4), r6, fp + -0x0030, ra, stackArg0, stackArg4);
+		get_version((word32) r4 + 788, get_uri((word32) r4 + 0x0114, r2_n, r6, fp + -0x0030, ra), r6, fp + -0x0030, ra);
 		r2_n.u0 = 0x01;
 	}
 	r3Out.u0 = <invalid>;
@@ -3020,64 +2411,24 @@ Eq_n request_parse_line(Eq_n r2, Eq_n r4, Eq_n r5, ptr32 r30, word32 ra, Eq_n dw
 	return r2_n;
 }
 
-// 00404458: Register Eq_n request_save_line(Register Eq_n r3, Register Eq_n r4, Register (ptr32 void) r5, Register Eq_n r6, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00, Stack Eq_n dwArg04, Stack Eq_n dwArg08, Stack Eq_n bArg0B, Register out Eq_n r7Out)
-Eq_n request_save_line(Eq_n r3, Eq_n r4, void * r5, Eq_n r6, ptr32 r30, word32 ra, Eq_n dwArg00, Eq_n dwArg04, Eq_n dwArg08, Eq_n bArg0B, union Eq_n & r7Out)
+// 00404458: Register Eq_n request_save_line(Register Eq_n r3, Register Eq_n r4, Register (ptr32 void) r5, Register Eq_n r6, Register ptr32 r30, Register word32 ra, Register out Eq_n r7Out)
+Eq_n request_save_line(Eq_n r3, Eq_n r4, void * r5, Eq_n r6, ptr32 r30, word32 ra, union Eq_n & r7Out)
 {
 	Eq_n r7_n;
 	Eq_n r3_n;
 	byte bArg0B_n = SLICE(r6, byte, 0);
 	word24 nArg08_n = SLICE(r6, word24, 8);
 	if (r4 == 0x00)
-	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg0 = <invalid>;
-		Eq_n stackArg4 = <invalid>;
-		Eq_n stackArg8 = <invalid>;
-		Eq_n stackArg12 = <invalid>;
-		print_log((int32 *) 0x02, 0x0040A398, 0x0040A330, 0x004B, fp + -0x0030, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
-	}
+		print_log((int32 *) 0x02, 0x0040A398, 0x0040A330, 0x004B, fp + -0x0030, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 	else if ((word32) (*((word32) r4 + 0x0558) < 0x003F) == 0x00)
-	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg0 = <invalid>;
-		Eq_n stackArg4 = <invalid>;
-		Eq_n stackArg8 = <invalid>;
-		Eq_n stackArg12 = <invalid>;
-		print_log((int32 *) 0x02, 0x0040A344, 0x0040A330, 0x0050, fp + -0x0030, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
-	}
+		print_log((int32 *) 0x02, 0x0040A344, 0x0040A330, 0x0050, fp + -0x0030, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 	else
 	{
 		*((word32) r4 + 0x0558) = (word32) *((word32) r4 + 0x0558) + 0x01;
 		*((word32) ((word32) r4 + 0x04) + (*((word32) r4 + 0x0558) * 0x04 + 1040)) = (word32) malloc(r6);
 		if (*((word32) ((word32) r4 + 0x04) + (*((word32) r4 + 0x0558) * 0x04 + 1040)) == 0x00)
 		{
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg0 = <invalid>;
-			Eq_n stackArg4 = <invalid>;
-			Eq_n stackArg8 = <invalid>;
-			Eq_n stackArg12 = <invalid>;
-			print_log((int32 *) 0x02, 0x0040A364, 0x0040A330, 0x0057, fp + -0x0030, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+			print_log((int32 *) 0x02, 0x0040A364, 0x0040A330, 0x0057, fp + -0x0030, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 			*((word32) r4 + 0x0558) = (word32) *((word32) r4 + 0x0558) - 0x01;
 			r3_n = r4;
 		}
@@ -3093,25 +2444,11 @@ Eq_n request_save_line(Eq_n r3, Eq_n r4, void * r5, Eq_n r6, ptr32 r30, word32 r
 	return r3_n;
 }
 
-// 004046C4: void request_make_url(Register word32 r3, Register Eq_n r4, Register word32 ra, Stack Eq_n dwArg00)
-void request_make_url(word32 r3, Eq_n r4, word32 ra, Eq_n dwArg00)
+// 004046C4: void request_make_url(Register word32 r3, Register Eq_n r4, Register word32 ra)
+void request_make_url(word32 r3, Eq_n r4, word32 ra)
 {
 	if (r4 == 0x00)
-	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg0 = <invalid>;
-		Eq_n stackArg4 = <invalid>;
-		Eq_n stackArg8 = <invalid>;
-		Eq_n stackArg12 = <invalid>;
-		print_log((int32 *) 0x02, 4236228, 4236264, 0x0066, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
-	}
+		print_log((int32 *) 0x02, 4236228, 4236264, 0x0066, fp + -0x0038, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 	else if (strncasecmp((word32) r4 + 0x0114, "http://", 0x07) == 0x00)
 		snprintf((word32) r4 + 0x0214, 0x0100, "%s %s %s\r\n", 0x00);
 	else if ((word32) *((word32) r4 + 0x0114) == 0x002F)
@@ -3120,8 +2457,8 @@ void request_make_url(word32 r3, Eq_n r4, word32 ra, Eq_n dwArg00)
 		snprintf((word32) r4 + 0x0214, 0x0100, "%s http://%s/%s %s\r\n", 0x00);
 }
 
-// 004048DC: Register (ptr32 void) request_add_lines(Register Eq_n r4, Register Eq_n r5, Register (ptr32 void) r6, Register word32 r7, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00, Stack Eq_n dwArg04, Stack Eq_n dwArg08, Register out Eq_n r3Out)
-void * request_add_lines(Eq_n r4, Eq_n r5, void * r6, word32 r7, ptr32 r30, word32 ra, Eq_n dwArg00, Eq_n dwArg04, Eq_n dwArg08, union Eq_n & r3Out)
+// 004048DC: Register (ptr32 void) request_add_lines(Register Eq_n r4, Register Eq_n r5, Register (ptr32 void) r6, Register word32 r7, Register ptr32 r30, Register word32 ra, Register out Eq_n r3Out)
+void * request_add_lines(Eq_n r4, Eq_n r5, void * r6, word32 r7, ptr32 r30, word32 ra, union Eq_n & r3Out)
 {
 	ptr32 r28_n = 0x10008860;
 	void * dwArg08_n = r6;
@@ -3166,8 +2503,8 @@ void * request_add_lines(Eq_n r4, Eq_n r5, void * r6, word32 r7, ptr32 r30, word
 	return dwArg08_n;
 }
 
-// 00404B34: Register Eq_n get_method(Register Eq_n r4, Register Eq_n r5, Register word32 r6, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00, Stack Eq_n dwArg04, Register out Eq_n r5Out)
-Eq_n get_method(Eq_n r4, Eq_n r5, word32 r6, ptr32 r30, word32 ra, Eq_n dwArg00, Eq_n dwArg04, union Eq_n & r5Out)
+// 00404B34: Register Eq_n get_method(Register Eq_n r4, Register Eq_n r5, Register word32 r6, Register ptr32 r30, Register word32 ra, Register out Eq_n r5Out)
+Eq_n get_method(Eq_n r4, Eq_n r5, word32 r6, ptr32 r30, word32 ra, union Eq_n & r5Out)
 {
 	union Eq_n * r2_n;
 	strsep();
@@ -3177,8 +2514,8 @@ Eq_n get_method(Eq_n r4, Eq_n r5, word32 r6, ptr32 r30, word32 ra, Eq_n dwArg00,
 	return r5;
 }
 
-// 00404BC8: Register word32 get_uri(Register Eq_n r4, Register word32 r5, Register word32 r6, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00, Stack Eq_n dwArg04)
-word32 get_uri(Eq_n r4, word32 r5, word32 r6, ptr32 r30, word32 ra, Eq_n dwArg00, Eq_n dwArg04)
+// 00404BC8: Register word32 get_uri(Register Eq_n r4, Register word32 r5, Register word32 r6, Register ptr32 r30, Register word32 ra)
+word32 get_uri(Eq_n r4, word32 r5, word32 r6, ptr32 r30, word32 ra)
 {
 	union Eq_n * r2_n;
 	strsep();
@@ -3186,16 +2523,16 @@ word32 get_uri(Eq_n r4, word32 r5, word32 r6, ptr32 r30, word32 ra, Eq_n dwArg00
 	return r5;
 }
 
-// 00404C5C: void get_version(Register Eq_n r4, Register word32 r5, Register word32 r6, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00, Stack Eq_n dwArg04)
-void get_version(Eq_n r4, word32 r5, word32 r6, ptr32 r30, word32 ra, Eq_n dwArg00, Eq_n dwArg04)
+// 00404C5C: void get_version(Register Eq_n r4, Register word32 r5, Register word32 r6, Register ptr32 r30, Register word32 ra)
+void get_version(Eq_n r4, word32 r5, word32 r6, ptr32 r30, word32 ra)
 {
 	union Eq_n * r2_n;
 	strsep();
 	strncpy(r4, r2_n, 0x0100);
 }
 
-// 00404CF0: Register (ptr32 Eq_n) request_get_host(Register Eq_n r3, Register Eq_n r4, Register (ptr32 Eq_n) r5, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00, Stack Eq_n dwArg04, Register out Eq_n r3Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out)
-union Eq_n * request_get_host(Eq_n r3, Eq_n r4, union Eq_n * r5, ptr32 r30, word32 ra, Eq_n dwArg00, Eq_n dwArg04, union Eq_n & r3Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out)
+// 00404CF0: Register (ptr32 Eq_n) request_get_host(Register Eq_n r3, Register Eq_n r4, Register (ptr32 Eq_n) r5, Register ptr32 r30, Register word32 ra, Register out Eq_n r3Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out)
+union Eq_n * request_get_host(Eq_n r3, Eq_n r4, union Eq_n * r5, ptr32 r30, word32 ra, union Eq_n & r3Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out)
 {
 	Eq_n r3_n;
 	Eq_n r5_n;
@@ -3208,19 +2545,7 @@ union Eq_n * request_get_host(Eq_n r3, Eq_n r4, union Eq_n * r5, ptr32 r30, word
 		union Eq_n * dwLoc18_n = r2_n;
 		if (r2_n == null)
 		{
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg0 = <invalid>;
-			Eq_n stackArg4 = <invalid>;
-			Eq_n stackArg8 = <invalid>;
-			Eq_n stackArg12 = <invalid>;
-			print_log((int32 *) 0x02, 0x0040A470, 4236440, 191, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+			print_log((int32 *) 0x02, 0x0040A470, 4236440, 191, fp + -0x0038, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 			r2_n = null;
 			goto l00404FAC;
 		}
@@ -3230,37 +2555,13 @@ union Eq_n * request_get_host(Eq_n r3, Eq_n r4, union Eq_n * r5, ptr32 r30, word
 		dwLoc14 = r2_n;
 		if (r2_n == null)
 		{
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg0 = <invalid>;
-			Eq_n stackArg4 = <invalid>;
-			Eq_n stackArg8 = <invalid>;
-			Eq_n stackArg12 = <invalid>;
-			print_log((int32 *) 0x02, 0x0040A4AC, 4236440, 0x00C6, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+			print_log((int32 *) 0x02, 0x0040A4AC, 4236440, 0x00C6, fp + -0x0038, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 			r2_n = null;
 			goto l00404FAC;
 		}
 		if ((word32) (r2_n - dwLoc18_n < 0x0101) == 0x00)
 		{
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg0 = <invalid>;
-			Eq_n stackArg4 = <invalid>;
-			Eq_n stackArg8 = <invalid>;
-			Eq_n stackArg12 = <invalid>;
-			print_log((int32 *) 0x02, 0x0040A4D0, 4236440, 202, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+			print_log((int32 *) 0x02, 0x0040A4D0, 4236440, 202, fp + -0x0038, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 			r2_n = null;
 			goto l00404FAC;
 		}
@@ -3273,21 +2574,7 @@ union Eq_n * request_get_host(Eq_n r3, Eq_n r4, union Eq_n * r5, ptr32 r30, word
 		r3_n = r2_n + 0x0010;
 	}
 	else
-	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg0 = <invalid>;
-		Eq_n stackArg4 = <invalid>;
-		Eq_n stackArg8 = <invalid>;
-		Eq_n stackArg12 = <invalid>;
-		print_log((int32 *) 0x02, 0x0040A4F0, 4236440, 0x00D0, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
-	}
+		print_log((int32 *) 0x02, 0x0040A4F0, 4236440, 0x00D0, fp + -0x0038, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 	r2_n = dwLoc14;
 l00404FAC:
 	r3Out = r3_n;
@@ -3297,8 +2584,8 @@ l00404FAC:
 	return r2_n;
 }
 
-// 00404FC0: Register Eq_n request_get_content_length(Register Eq_n r3, Register Eq_n r4, Register (ptr32 Eq_n) r5, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00, Stack Eq_n dwArg04, Register out Eq_n r7Out)
-Eq_n request_get_content_length(Eq_n r3, Eq_n r4, union Eq_n * r5, ptr32 r30, word32 ra, Eq_n dwArg00, Eq_n dwArg04, union Eq_n & r7Out)
+// 00404FC0: Register Eq_n request_get_content_length(Register Eq_n r3, Register Eq_n r4, Register (ptr32 Eq_n) r5, Register ptr32 r30, Register word32 ra, Register out Eq_n r7Out)
+Eq_n request_get_content_length(Eq_n r3, Eq_n r4, union Eq_n * r5, ptr32 r30, word32 ra, union Eq_n & r7Out)
 {
 	Eq_n r3_n;
 	Eq_n r7_n;
@@ -3308,19 +2595,7 @@ Eq_n request_get_content_length(Eq_n r3, Eq_n r4, union Eq_n * r5, ptr32 r30, wo
 		union Eq_n * dwLoc18_n = r2_n;
 		if (r2_n == null)
 		{
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg0 = <invalid>;
-			Eq_n stackArg4 = <invalid>;
-			Eq_n stackArg8 = <invalid>;
-			Eq_n stackArg12 = <invalid>;
-			print_log((int32 *) 0x02, 4236644, 0x0040A51C, 226, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+			print_log((int32 *) 0x02, 4236644, 0x0040A51C, 226, fp + -0x0038, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 			goto l00405250;
 		}
 		while ((word32) (dwLoc18_n < &r5->u0 + 0x0100) != 0x00 && ((word32) (*dwLoc18_n) == 0x0020 || (word32) (*dwLoc18_n) == 0x09))
@@ -3328,36 +2603,12 @@ Eq_n request_get_content_length(Eq_n r3, Eq_n r4, union Eq_n * r5, ptr32 r30, wo
 		union Eq_n * r2_n = strpbrk(dwLoc18_n, " \n\r");
 		if (r2_n == null)
 		{
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg0 = <invalid>;
-			Eq_n stackArg4 = <invalid>;
-			Eq_n stackArg8 = <invalid>;
-			Eq_n stackArg12 = <invalid>;
-			print_log((int32 *) 0x02, 0x0040A4AC, 0x0040A51C, 0x00EB, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+			print_log((int32 *) 0x02, 0x0040A4AC, 0x0040A51C, 0x00EB, fp + -0x0038, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 			goto l00405250;
 		}
 		if ((word32) (r2_n - dwLoc18_n < 0x0101) == 0x00)
 		{
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg0 = <invalid>;
-			Eq_n stackArg4 = <invalid>;
-			Eq_n stackArg8 = <invalid>;
-			Eq_n stackArg12 = <invalid>;
-			print_log((int32 *) 0x02, 0x0040A4D0, 0x0040A51C, 0x00F0, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+			print_log((int32 *) 0x02, 0x0040A4D0, 0x0040A51C, 0x00F0, fp + -0x0038, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 			goto l00405250;
 		}
 		Eq_n r2_n = strtoul(dwLoc18_n, fp + -0x0014, 0x0A);
@@ -3366,28 +2617,14 @@ Eq_n request_get_content_length(Eq_n r3, Eq_n r4, union Eq_n * r5, ptr32 r30, wo
 		r3_n = r2_n;
 	}
 	else
-	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg0 = <invalid>;
-		Eq_n stackArg4 = <invalid>;
-		Eq_n stackArg8 = <invalid>;
-		Eq_n stackArg12 = <invalid>;
-		print_log((int32 *) 0x02, 4236600, 0x0040A51C, 0x00F6, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
-	}
+		print_log((int32 *) 0x02, 4236600, 0x0040A51C, 0x00F6, fp + -0x0038, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 l00405250:
 	r7Out = r7_n;
 	return r3_n;
 }
 
-// 00405264: Register int32 is_a_method(Register Eq_n r4, Stack Eq_n dwArg00)
-int32 is_a_method(Eq_n r4, Eq_n dwArg00)
+// 00405264: Register int32 is_a_method(Register Eq_n r4)
+int32 is_a_method(Eq_n r4)
 {
 	ui32 dwLoc18_n = 0x00;
 	do
@@ -3404,8 +2641,8 @@ int32 is_a_method(Eq_n r4, Eq_n dwArg00)
 	return r2_n;
 }
 
-// 00405328: Register Eq_n request_destroy(Register Eq_n r4, Stack Eq_n dwArg00)
-Eq_n request_destroy(Eq_n r4, Eq_n dwArg00)
+// 00405328: Register Eq_n request_destroy(Register Eq_n r4)
+Eq_n request_destroy(Eq_n r4)
 {
 	while (*((word32) r4 + 0x0558) >= 0x00)
 	{
@@ -3417,30 +2654,16 @@ Eq_n request_destroy(Eq_n r4, Eq_n dwArg00)
 	return <invalid>;
 }
 
-// 004053F0: void properties_parse_int(Register (ptr32 Eq_n) r4, Register (ptr32 int8) r5, Register word32 r30, Register word32 ra, Stack word32 dwArg00, Stack word32 dwArg04)
-void properties_parse_int(union Eq_n * r4, int8 * r5, word32 r30, word32 ra, word32 dwArg00, word32 dwArg04)
+// 004053F0: void properties_parse_int(Register (ptr32 Eq_n) r4, Register (ptr32 int8) r5, Register word32 r30, Register word32 ra)
+void properties_parse_int(union Eq_n * r4, int8 * r5, word32 r30, word32 ra)
 {
 	strtoul(r4, fp + -0x0018, 0x00);
 	if ((word32) *dwLoc18 != 0x00 && dwLoc18 != r5)
-	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg0 = <invalid>;
-		Eq_n stackArg4 = <invalid>;
-		Eq_n stackArg8 = <invalid>;
-		Eq_n stackArg12 = <invalid>;
-		print_log((int32 *) 0x02, 0x0040A590, 0x0040A5A8, 0x001F, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
-	}
+		print_log((int32 *) 0x02, 0x0040A590, 0x0040A5A8, 0x001F, fp + -0x0038, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 }
 
-// 004054D0: Register int32 properties_load(Register Eq_n r4, Register Eq_n r5, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00, Stack Eq_n dwArg04, Register out Eq_n r3Out, Register out Eq_n r6Out, Register out Eq_n r7Out)
-int32 properties_load(Eq_n r4, Eq_n r5, ptr32 r30, word32 ra, Eq_n dwArg00, Eq_n dwArg04, union Eq_n & r3Out, union Eq_n & r6Out, union Eq_n & r7Out)
+// 004054D0: Register int32 properties_load(Register Eq_n r4, Register Eq_n r5, Register ptr32 r30, Register word32 ra, Register out Eq_n r3Out, Register out Eq_n r6Out, Register out Eq_n r7Out)
+int32 properties_load(Eq_n r4, Eq_n r5, ptr32 r30, word32 ra, union Eq_n & r3Out, union Eq_n & r6Out, union Eq_n & r7Out)
 {
 	int32 r2_n;
 	Eq_n r6_n = (word32) globals->b40A5E8;
@@ -3463,19 +2686,7 @@ int32 properties_load(Eq_n r4, Eq_n r5, ptr32 r30, word32 ra, Eq_n dwArg00, Eq_n
 		dwArg04_n = r2_n;
 		if (r2_n == 0x00)
 		{
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg0 = <invalid>;
-			Eq_n stackArg4 = <invalid>;
-			Eq_n stackArg8 = <invalid>;
-			Eq_n stackArg12 = <invalid>;
-			print_log((int32 *) 0x01, 0x0040A5EC, 0x0040A604, 0x0039, fp + -0x0170, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+			print_log((int32 *) 0x01, 0x0040A5EC, 0x0040A604, 0x0039, fp + -0x0170, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 			r2_n = 0x00;
 			goto l00405CBC;
 		}
@@ -3495,19 +2706,7 @@ int32 properties_load(Eq_n r4, Eq_n r5, ptr32 r30, word32 ra, Eq_n dwArg00, Eq_n
 	FILE * r2_n = fopen(dwArg04_n, "r");
 	if (r2_n == null)
 	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg0 = <invalid>;
-		Eq_n stackArg4 = <invalid>;
-		Eq_n stackArg8 = <invalid>;
-		Eq_n stackArg12 = <invalid>;
-		print_log((int32 *) 0x01, 4236824, 0x0040A604, 0x004B, fp + -0x0170, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+		print_log((int32 *) 0x01, 4236824, 0x0040A604, 0x004B, fp + -0x0170, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 		r2_n = 0x00;
 	}
 	else
@@ -3546,19 +2745,7 @@ int32 properties_load(Eq_n r4, Eq_n r5, ptr32 r30, word32 ra, Eq_n dwArg00, Eq_n
 				Eq_n r3_n = <invalid>;
 				if (r2_n == null)
 				{
-					// Failed to bind call argument.
-					// Please report this issue at https://github.com/uxmal/reko
-					// Failed to bind call argument.
-					// Please report this issue at https://github.com/uxmal/reko
-					// Failed to bind call argument.
-					// Please report this issue at https://github.com/uxmal/reko
-					// Failed to bind call argument.
-					// Please report this issue at https://github.com/uxmal/reko
-					Eq_n stackArg0 = <invalid>;
-					Eq_n stackArg4 = <invalid>;
-					Eq_n stackArg8 = <invalid>;
-					Eq_n stackArg12 = <invalid>;
-					print_log((int32 *) 0x02, 0x0040A648, 0x0040A604, 110, fp + -0x0170, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+					print_log((int32 *) 0x02, 0x0040A648, 0x0040A604, 110, fp + -0x0170, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 					dwLoc0160 = fp + -0x0148;
 				}
 				else
@@ -3606,19 +2793,7 @@ int32 properties_load(Eq_n r4, Eq_n r5, ptr32 r30, word32 ra, Eq_n dwArg00, Eq_n
 					}
 					if (dwLoc2C == 0x00)
 					{
-						// Failed to bind call argument.
-						// Please report this issue at https://github.com/uxmal/reko
-						// Failed to bind call argument.
-						// Please report this issue at https://github.com/uxmal/reko
-						// Failed to bind call argument.
-						// Please report this issue at https://github.com/uxmal/reko
-						// Failed to bind call argument.
-						// Please report this issue at https://github.com/uxmal/reko
-						Eq_n stackArg0 = <invalid>;
-						Eq_n stackArg4 = <invalid>;
-						Eq_n stackArg8 = <invalid>;
-						Eq_n stackArg12 = <invalid>;
-						print_log((int32 *) 0x01, 0x0040A5C4, 0x0040A604, 0x008E, fp + -0x0170, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+						print_log((int32 *) 0x01, 0x0040A5C4, 0x0040A604, 0x008E, fp + -0x0170, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 						dwLoc0160 = r2_n;
 					}
 				}
@@ -3637,8 +2812,8 @@ l00405CBC:
 	return r2_n;
 }
 
-// 00405CD0: Register int32 properties_parse_command_line(Register (ptr32 (ptr32 Eq_n)) r1, Register int32 r4, Register (arr Eq_n) r5, Register word32 r6, Register word32 r7, Register word32 r16, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00, Stack Eq_n dwArg04, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out)
-int32 properties_parse_command_line(FILE ** r1, int32 r4, Eq_n r5[], word32 r6, word32 r7, word32 r16, ptr32 r30, word32 ra, Eq_n dwArg00, Eq_n dwArg04, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out)
+// 00405CD0: Register int32 properties_parse_command_line(Register (ptr32 (ptr32 Eq_n)) r1, Register int32 r4, Register (arr Eq_n) r5, Register word32 r6, Register word32 r7, Register word32 r16, Register ptr32 r30, Register word32 ra, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out)
+int32 properties_parse_command_line(FILE ** r1, int32 r4, Eq_n r5[], word32 r6, word32 r7, word32 r16, ptr32 r30, word32 ra, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out)
 {
 	ptr32 r28_n = 0x10008860;
 	int32 dwLoc28_n = 0x00;
@@ -3738,10 +2913,7 @@ l004061C8:
 				word32 r2_n = (word32) bLoc1C_n;
 				<anonymous> * r25_n = *(r28_n - 32372);
 				r25_n();
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				Eq_n stackArg0 = <invalid>;
-				r3_n = properties_print_usage(r5[0x00], fp + -0x0048, ra, stackArg0);
+				r3_n = properties_print_usage(r5[0x00], fp + -0x0048, ra);
 				break;
 			}
 		}
@@ -3754,8 +2926,8 @@ l004061C8:
 	return r3_n;
 }
 
-// 0040628C: Register Eq_n properties_print_usage(Register Eq_n r4, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00)
-Eq_n properties_print_usage(Eq_n r4, ptr32 r30, word32 ra, Eq_n dwArg00)
+// 0040628C: Register Eq_n properties_print_usage(Register Eq_n r4, Register ptr32 r30, Register word32 ra)
+Eq_n properties_print_usage(Eq_n r4, ptr32 r30, word32 ra)
 {
 	Eq_n r6_n;
 	Eq_n r5_n;
@@ -3809,8 +2981,8 @@ Eq_n properties_print_usage(Eq_n r4, ptr32 r30, word32 ra, Eq_n dwArg00)
 	return r3_n;
 }
 
-// 00406610: Register word32 print_log(Register Eq_n r4, Register ptr32 r5, Register Eq_n r6, Register Eq_n r7, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00, Stack Eq_n dwArg04, Stack Eq_n dwArg08, Stack Eq_n dwArg0C, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out ptr32 r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out)
-word32 print_log(Eq_n r4, ptr32 r5, Eq_n r6, Eq_n r7, ptr32 r30, word32 ra, Eq_n dwArg00, Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, time_t & r3Out, time_t & r4Out, ptr32 & r5Out, union Eq_n & r6Out, union Eq_n & r7Out)
+// 00406610: Register word32 print_log(Register Eq_n r4, Register ptr32 r5, Register Eq_n r6, Register Eq_n r7, Register ptr32 r30, Register word32 ra, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out ptr32 r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out)
+word32 print_log(Eq_n r4, ptr32 r5, Eq_n r6, Eq_n r7, ptr32 r30, word32 ra, time_t & r3Out, time_t & r4Out, ptr32 & r5Out, union Eq_n & r6Out, union Eq_n & r7Out)
 {
 	Eq_n r3_n = *globals->ptr100008F4;
 	word32 r2_n = (word32) (r3_n < r4);
@@ -3829,8 +3001,8 @@ word32 print_log(Eq_n r4, ptr32 r5, Eq_n r6, Eq_n r7, ptr32 r30, word32 ra, Eq_n
 	return r2_n;
 }
 
-// 004066E8: Register Eq_n open_log(Register (ptr32 char) r4, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out)
-Eq_n open_log(char * r4, ptr32 r30, word32 ra, Eq_n dwArg00, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out)
+// 004066E8: Register Eq_n open_log(Register (ptr32 char) r4, Register ptr32 r30, Register word32 ra, Register out Eq_n r5Out, Register out Eq_n r6Out, Register out Eq_n r7Out)
+Eq_n open_log(char * r4, ptr32 r30, word32 ra, union Eq_n & r5Out, union Eq_n & r6Out, union Eq_n & r7Out)
 {
 	Eq_n r6_n;
 	Eq_n r5_n;
@@ -3844,19 +3016,7 @@ Eq_n open_log(char * r4, ptr32 r30, word32 ra, Eq_n dwArg00, union Eq_n & r5Out,
 		if (*globals->ptr10000A20 == null)
 		{
 			*globals->ptr10000A20 = *globals->ptr10000914;
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg0 = <invalid>;
-			Eq_n stackArg4 = <invalid>;
-			Eq_n stackArg8 = <invalid>;
-			Eq_n stackArg12 = <invalid>;
-			print_log(null, 0x0040A704, *globals->ptr100008A0, r7, fp + -0x0028, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+			print_log(null, 0x0040A704, *globals->ptr100008A0, r7, fp + -0x0028, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 		}
 	}
 	else
@@ -3883,14 +3043,11 @@ void log_rotate(ptr32 r30, word32 ra)
 		Eq_n r3_n = <invalid>;
 		rename();
 	}
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg0 = <invalid>;
-	open_log("w", fp + -0x0128, ra, stackArg0, out r5_n, out r6_n, out r7_n);
+	open_log("w", fp + -0x0128, ra, out r5_n, out r6_n, out r7_n);
 }
 
-// 0040697C: void log_string(Register word32 r1, Register (ptr32 Eq_n) r4, Register word32 r5, Register word32 r7, Register word32 r16, Register word32 r17, Register word32 r30, Register word32 ra, Register word32 hi, Stack word32 dwArg00)
-void log_string(word32 r1, FILE * r4, word32 r5, word32 r7, word32 r16, word32 r17, word32 r30, word32 ra, word32 hi, word32 dwArg00)
+// 0040697C: void log_string(Register word32 r1, Register (ptr32 Eq_n) r4, Register word32 r5, Register word32 r7, Register word32 r16, Register word32 r17, Register word32 r30, Register word32 ra, Register word32 hi)
+void log_string(word32 r1, FILE * r4, word32 r5, word32 r7, word32 r16, word32 r17, word32 r30, word32 ra, word32 hi)
 {
 	gettimeofday(fp + -0x0028, null);
 	Eq_n r3_n = <invalid>;
@@ -3921,8 +3078,8 @@ void log_string(word32 r1, FILE * r4, word32 r5, word32 r7, word32 r16, word32 r
 	}
 }
 
-// 00406BF0: Register Eq_n server_new(Register word32 r4, Register word32 r5, Register Eq_n r6, Register int32 r7, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00, Stack Eq_n dwArg04, Stack Eq_n wArg06, Stack Eq_n dwArg08, Stack Eq_n dwArg0C, Register out ptr32 r3Out, Register out ptr32 r6Out, Register out ptr32 r7Out)
-Eq_n server_new(word32 r4, word32 r5, Eq_n r6, int32 r7, ptr32 r30, word32 ra, Eq_n dwArg00, Eq_n dwArg04, Eq_n wArg06, Eq_n dwArg08, Eq_n dwArg0C, ptr32 & r3Out, ptr32 & r6Out, ptr32 & r7Out)
+// 00406BF0: Register Eq_n server_new(Register word32 r4, Register word32 r5, Register Eq_n r6, Register int32 r7, Register ptr32 r30, Register word32 ra, Register out ptr32 r3Out, Register out ptr32 r6Out, Register out ptr32 r7Out)
+Eq_n server_new(word32 r4, word32 r5, Eq_n r6, int32 r7, ptr32 r30, word32 ra, ptr32 & r3Out, ptr32 & r6Out, ptr32 & r7Out)
 {
 	ptr32 r7_n;
 	ptr32 r6_n;
@@ -3934,19 +3091,7 @@ Eq_n server_new(word32 r4, word32 r5, Eq_n r6, int32 r7, ptr32 r30, word32 ra, E
 	Eq_n r6_n = <invalid>;
 	if (r2_n == 0x00)
 	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg0 = <invalid>;
-		Eq_n stackArg4 = <invalid>;
-		Eq_n stackArg8 = <invalid>;
-		Eq_n stackArg12 = <invalid>;
-		print_log(null, 0x0040A770, r6_n, r7_n, fp + -0x0030, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+		print_log(null, 0x0040A770, r6_n, r7_n, fp + -0x0030, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 		r2_n.u0 = 0x00;
 	}
 	else
@@ -3957,9 +3102,9 @@ Eq_n server_new(word32 r4, word32 r5, Eq_n r6, int32 r7, ptr32 r30, word32 ra, E
 		((word32) r2_n + 0x001C)->u0 = 0x00;
 		*((word32) r2_n + 0x04) = r6;
 		bzero((word32) r2_n + 0x08, 0x0010);
-		((word32) r2_n + 0x08)->u0 = 0x02;
+		((word32) r2_n + 0x08)->u1 = 0x02;
 		word32 r2_n = (word32) wArg06_n;
-		*((word32) r2_n + 0x0A) = (word16) r2_n;
+		((word32) r2_n + 0x0A)->u1 = (word16) r2_n;
 		Eq_n r7_n = <invalid>;
 		Eq_n r6_n = <invalid>;
 		Eq_n r5_n = <invalid>;
@@ -3975,8 +3120,8 @@ Eq_n server_new(word32 r4, word32 r5, Eq_n r6, int32 r7, ptr32 r30, word32 ra, E
 	return r2_n;
 }
 
-// 00406D4C: Register int32 server_open(Register (ptr32 Eq_n) r4, Register word32 r16, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00, Register out (ptr32 Eq_n) r3Out, Register out ptr32 r5Out, Register out ptr32 r6Out, Register out ptr32 r7Out)
-int32 server_open(struct Eq_n * r4, word32 r16, ptr32 r30, word32 ra, Eq_n dwArg00, struct Eq_n & r3Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out)
+// 00406D4C: Register int32 server_open(Register (ptr32 Eq_n) r4, Register word32 r16, Register ptr32 r30, Register word32 ra, Register out (ptr32 Eq_n) r3Out, Register out ptr32 r5Out, Register out ptr32 r6Out, Register out ptr32 r7Out)
+int32 server_open(struct Eq_n * r4, word32 r16, ptr32 r30, word32 ra, struct Eq_n & r3Out, ptr32 & r5Out, ptr32 & r6Out, ptr32 & r7Out)
 {
 	ptr32 r7_n;
 	ptr32 r6_n;
@@ -3988,19 +3133,7 @@ int32 server_open(struct Eq_n * r4, word32 r16, ptr32 r30, word32 ra, Eq_n dwArg
 	{
 		__errno_location();
 		strerror(*__errno_location());
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg0 = <invalid>;
-		Eq_n stackArg4 = <invalid>;
-		Eq_n stackArg8 = <invalid>;
-		Eq_n stackArg12 = <invalid>;
-		print_log((int32 *) 0x01, 4237212, 0x0040A7C8, 0x0031, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+		print_log((int32 *) 0x01, 4237212, 0x0040A7C8, 0x0031, fp + -0x0038, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 		r2_n = 0x00;
 	}
 	else
@@ -4012,19 +3145,7 @@ int32 server_open(struct Eq_n * r4, word32 r16, ptr32 r30, word32 ra, Eq_n dwArg
 		{
 			__errno_location();
 			strerror(*__errno_location());
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			// Failed to bind call argument.
-			// Please report this issue at https://github.com/uxmal/reko
-			Eq_n stackArg0 = <invalid>;
-			Eq_n stackArg4 = <invalid>;
-			Eq_n stackArg8 = <invalid>;
-			Eq_n stackArg12 = <invalid>;
-			print_log((int32 *) 0x01, 0x0040A7D4, 0x0040A7C8, 55, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+			print_log((int32 *) 0x01, 0x0040A7D4, 0x0040A7C8, 55, fp + -0x0038, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 			r2_n = 0x00;
 		}
 		else
@@ -4035,19 +3156,7 @@ int32 server_open(struct Eq_n * r4, word32 r16, ptr32 r30, word32 ra, Eq_n dwArg
 			{
 				__errno_location();
 				strerror(*__errno_location());
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				// Failed to bind call argument.
-				// Please report this issue at https://github.com/uxmal/reko
-				Eq_n stackArg0 = <invalid>;
-				Eq_n stackArg4 = <invalid>;
-				Eq_n stackArg8 = <invalid>;
-				Eq_n stackArg12 = <invalid>;
-				print_log((int32 *) 0x01, 0x0040A7FC, 0x0040A7C8, 0x0041, fp + -0x0038, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+				print_log((int32 *) 0x01, 0x0040A7FC, 0x0040A7C8, 0x0041, fp + -0x0038, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 				r2_n = 0x00;
 			}
 			else
@@ -4065,8 +3174,8 @@ int32 server_open(struct Eq_n * r4, word32 r16, ptr32 r30, word32 ra, Eq_n dwArg
 	return r2_n;
 }
 
-// 00406FF8: void server_close(Register Eq_n r4, Stack Eq_n dwArg00)
-void server_close(Eq_n r4, Eq_n dwArg00)
+// 00406FF8: void server_close(Register Eq_n r4)
+void server_close(Eq_n r4)
 {
 	if (r4 != 0x00 && *r4 > 0x00)
 	{
@@ -4075,26 +3184,11 @@ void server_close(Eq_n r4, Eq_n dwArg00)
 	}
 }
 
-// 0040708C: void server_destroy(Register Eq_n r4, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00)
-void server_destroy(Eq_n r4, ptr32 r30, word32 ra, Eq_n dwArg00)
+// 0040708C: void server_destroy(Register Eq_n r4, Register ptr32 r30, Register word32 ra)
+void server_destroy(Eq_n r4, ptr32 r30, word32 ra)
 {
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg0 = <invalid>;
-	Eq_n stackArg4 = <invalid>;
-	Eq_n stackArg8 = <invalid>;
-	Eq_n stackArg12 = <invalid>;
-	print_log((int32 *) 0x04, 4237340, 0x0040A838, 0x005A, fp + -0x0030, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg0 = <invalid>;
-	server_close(r4, stackArg0);
+	print_log((int32 *) 0x04, 4237340, 0x0040A838, 0x005A, fp + -0x0030, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+	server_close(r4);
 	free(r4);
 }
 
@@ -4105,19 +3199,7 @@ Eq_n slist_new(ptr32 r30, word32 ra, union Eq_n & r3Out)
 	Eq_n r2_n = malloc(0x0C);
 	if (r2_n == 0x00)
 	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg0 = <invalid>;
-		Eq_n stackArg4 = <invalid>;
-		Eq_n stackArg8 = <invalid>;
-		Eq_n stackArg12 = <invalid>;
-		print_log(null, 0x0040A850, r6, r7, fp + -0x0030, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+		print_log(null, 0x0040A850, r6, r7, fp + -0x0030, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 		r2_n.u0 = 0x00;
 	}
 	else
@@ -4131,8 +3213,8 @@ Eq_n slist_new(ptr32 r30, word32 ra, union Eq_n & r3Out)
 	return r2_n;
 }
 
-// 0040720C: Register Eq_n slist_add(Register Eq_n r4, Register Eq_n r5, Stack Eq_n dwArg00, Stack Eq_n dwArg04, Register out Eq_n r3Out)
-Eq_n slist_add(Eq_n r4, Eq_n r5, Eq_n dwArg00, Eq_n dwArg04, union Eq_n & r3Out)
+// 0040720C: Register Eq_n slist_add(Register Eq_n r4, Register Eq_n r5, Register out Eq_n r3Out)
+Eq_n slist_add(Eq_n r4, Eq_n r5, union Eq_n & r3Out)
 {
 	if (*((word32) r4 + 0x08) != 0x00)
 	{
@@ -4153,8 +3235,8 @@ Eq_n slist_add(Eq_n r4, Eq_n r5, Eq_n dwArg00, Eq_n dwArg04, union Eq_n & r3Out)
 	return r2_n;
 }
 
-// 0040730C: void slist_remove(Register Eq_n r4, Register Eq_n r5, Stack Eq_n dwArg00, Stack Eq_n dwArg04)
-void slist_remove(Eq_n r4, Eq_n r5, Eq_n dwArg00, Eq_n dwArg04)
+// 0040730C: void slist_remove(Register Eq_n r4, Register Eq_n r5)
+void slist_remove(Eq_n r4, Eq_n r5)
 {
 	if (r5 != 0x00)
 	{
@@ -4168,84 +3250,48 @@ void slist_remove(Eq_n r4, Eq_n r5, Eq_n dwArg00, Eq_n dwArg04)
 	}
 }
 
-// 00407410: void slist_find_fd(Register (ptr32 Eq_n) r4, Register word32 r5, Stack word32 dwArg00, Stack word32 dwArg04)
-void slist_find_fd(struct Eq_n * r4, word32 r5, word32 dwArg00, word32 dwArg04)
+// 00407410: void slist_find_fd(Register (ptr32 Eq_n) r4, Register word32 r5)
+void slist_find_fd(struct Eq_n * r4, word32 r5)
 {
 	struct Eq_n * dwLoc10_n = r4->ptr0008;
 	while (dwLoc10_n != null && dwLoc10_n->dw0000 != r5)
 		dwLoc10_n = dwLoc10_n->ptr0018;
 }
 
-// 004074AC: void slist_delete(Register Eq_n r2, Register Eq_n r4, Register Eq_n r5, Register word32 r6, Register word32 r7, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00, Stack Eq_n dwArg04)
-void slist_delete(Eq_n r2, Eq_n r4, Eq_n r5, word32 r6, word32 r7, ptr32 r30, word32 ra, Eq_n dwArg00, Eq_n dwArg04)
+// 004074AC: void slist_delete(Register Eq_n r2, Register Eq_n r4, Register Eq_n r5, Register word32 r6, Register word32 r7, Register ptr32 r30, Register word32 ra)
+void slist_delete(Eq_n r2, Eq_n r4, Eq_n r5, word32 r6, word32 r7, ptr32 r30, word32 ra)
 {
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg0 = <invalid>;
-	Eq_n stackArg4 = <invalid>;
-	slist_remove(r4, r5, stackArg0, stackArg4);
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg0 = <invalid>;
-	Eq_n stackArg4 = <invalid>;
-	Eq_n stackArg8 = <invalid>;
-	Eq_n stackArg12 = <invalid>;
-	print_log((int32 *) 0x02, 4237436, 4237464, 0x0055, fp + -0x0030, ra, stackArg0, stackArg4, stackArg8, stackArg12, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg0 = <invalid>;
-	server_destroy(r5, fp + -0x0030, ra, stackArg0);
+	slist_remove(r4, r5);
+	print_log((int32 *) 0x02, 4237436, 4237464, 0x0055, fp + -0x0030, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
+	server_destroy(r5, fp + -0x0030, ra);
 }
 
-// 00407568: void slist_close_all(Register Eq_n r4, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00)
-void slist_close_all(Eq_n r4, ptr32 r30, word32 ra, Eq_n dwArg00)
+// 00407568: void slist_close_all(Register Eq_n r4, Register ptr32 r30, Register word32 ra)
+void slist_close_all(Eq_n r4, ptr32 r30, word32 ra)
 {
 	Eq_n dwLoc18_n = *((word32) r4 + 0x08);
 	while (dwLoc18_n != 0x00)
 	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		Eq_n stackArg0 = <invalid>;
-		server_close(dwLoc18_n, stackArg0);
+		server_close(dwLoc18_n);
 		dwLoc18_n = *((word32) dwLoc18_n + 0x0018);
 	}
 }
 
-// 00407600: void slist_destroy_all(Register Eq_n r4, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00)
-void slist_destroy_all(Eq_n r4, ptr32 r30, word32 ra, Eq_n dwArg00)
+// 00407600: void slist_destroy_all(Register Eq_n r4, Register ptr32 r30, Register word32 ra)
+void slist_destroy_all(Eq_n r4, ptr32 r30, word32 ra)
 {
 	while (*((word32) r4 + 0x08) != 0x00)
 	{
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
-		// Failed to bind call argument.
-		// Please report this issue at https://github.com/uxmal/reko
 		Eq_n r2_n = *((word32) r4 + 0x08);
-		Eq_n stackArg0 = <invalid>;
-		Eq_n stackArg4 = <invalid>;
-		slist_delete(r2_n, r4, r2_n, r6, r7, fp + -0x0030, ra, stackArg0, stackArg4);
+		slist_delete(r2_n, r4, r2_n, r6, r7, fp + -0x0030, ra);
 	}
 }
 
-// 004076A8: void slist_destroy(Register Eq_n r4, Register ptr32 r30, Register word32 ra, Stack Eq_n dwArg00)
-void slist_destroy(Eq_n r4, ptr32 r30, word32 ra, Eq_n dwArg00)
+// 004076A8: void slist_destroy(Register Eq_n r4, Register ptr32 r30, Register word32 ra)
+void slist_destroy(Eq_n r4, ptr32 r30, word32 ra)
 {
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg0 = <invalid>;
-	slist_close_all(r4, fp + -0x0028, ra, stackArg0);
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	Eq_n stackArg0 = <invalid>;
-	slist_destroy_all(r4, fp + -0x0028, ra, stackArg0);
+	slist_close_all(r4, fp + -0x0028, ra);
+	slist_destroy_all(r4, fp + -0x0028, ra);
 	free(r4);
 }
 
