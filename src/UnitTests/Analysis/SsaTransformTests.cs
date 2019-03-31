@@ -3843,6 +3843,58 @@ SsaLocalStackSlice_exit:
             AssertProcedureCode(expected);
         }
 
+        [Test]
+        [Category(Categories.FailedTests)]
+        public void SsaLocalStackCommonSequence()
+        {
+            var proc = Given_Procedure(nameof(SsaLocalStackCommonSequence), m =>
+            {
+                var fp = m.Frame.FramePointer;
+                var a = m.Reg16("a", 1);
+                var b = m.Reg16("b", 2);
+                m.Label("b_init");
+                m.MStore(m.ISubS(fp, 2), a);
+                m.MStore(m.ISubS(fp, 4), b);
+                m.BranchIf(m.Eq(b, 0), "b1");
+
+                m.Label("b0");
+                m.MStore(m.Word32(0xA), m.Mem32(m.ISubS(fp, 4)));
+                m.Goto("finalize");
+
+                m.Label("b1");
+                m.MStore(m.Word32(0xB), m.Mem32(m.ISubS(fp, 4)));
+
+                m.Label("finalize");
+                m.Return();
+            });
+
+            When_RunSsaTransform();
+            When_RenameFrameAccesses();
+
+            var expected =
+            #region Expected
+@"SsaLocalStackCommonSequence_entry:
+	def a
+	def fp
+	def b
+b_init:
+	wLoc02_8 = a
+	wLoc04_9 = b
+	dwLoc04_10 = SEQ(wLoc02_8, wLoc04_9)
+	branch b == 0x0000 b1
+b0:
+	Mem7[0x0000000A:word32] = dwLoc04_10
+	goto finalize
+b1:
+	Mem6[0x0000000B:word32] = dwLoc04_10
+finalize:
+	return
+SsaLocalStackCommonSequence_exit:
+";
+            #endregion
+            AssertProcedureCode(expected);
+        }
+
         private void MakeEndiannessCheck(ProcedureBuilder m)
         {
             var fp = m.Frame.FramePointer;
