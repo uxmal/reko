@@ -1638,7 +1638,7 @@ l000000014000199D:
 l00000001400019DE:
 	call KERNEL32.dll!RtlVirtualUnwind (retsize: 8;)
 		uses: r8:qwLoc03E0,r9:rax_27,rax:rax_27,rbp:fp - 0x00000000000004C8,rbx:qwLoc03E0,rcx:0x0000000000000000,rdx:qwArg10,rsp:fp - 1480,Stack +0008:tLoc05C8_116,Stack +000C:dwLoc05C4_117,Stack +0010:dwLoc05C0,Stack +0018:tLoc05B8,Stack +0028:fp - 0x00000000000004D8,Stack +0030:fp + 0x0000000000000020,Stack +0038:fp + 0x0000000000000018,Stack +0040:qwLoc0590 & 0x0000000000000000,Stack +0048:qwLoc0588,Stack +0050:qwLoc0580,Stack +0058:dwLoc0578,Stack +005C:dwLoc0574,Stack +0068:qwLoc0568,Stack +0190:qwLoc0440,Stack +01F0:qwLoc03E0,Stack +05C8:rbp,Stack +05D0:qwArg00,Stack +05D8:rbx,Stack +05E0:qwArg10
-	ptrLoc05C8_106 = SEQ(dwLoc05C4_117, tLoc05C8_116)
+	ptrLoc05C8_106 = SEQ(dwLoc05C4_117, tLoc05C8_116) (alias)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

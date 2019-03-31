@@ -157,9 +157,9 @@ void _sin(real64 rArg04, real64 rArg0C, Eq_n tArg14)
 {
 	word32 dwArg04_n = SLICE(rArg04, word32, 0);
 	word32 dwArg08_n = SLICE(rArg04, word32, 32);
-	real64 v9_n = (real64) ((real96) SEQ(dwArg04_n, dwArg08_n) * SEQ(dwArg04_n, dwArg08_n));
-	word32 dwLoc20_n = 0x02;
 	real64 rLoc0C_n = SEQ(dwArg04_n, dwArg08_n);
+	real64 v9_n = (real64) ((real96) rLoc0C_n * rLoc0C_n);
+	word32 dwLoc20_n = 0x02;
 	real64 rLoc14_n = 1.0;
 	while ((real64) ((real96) rLoc0C_n / rLoc14_n) >= rArg0C)
 	{

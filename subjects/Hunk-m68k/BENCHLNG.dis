@@ -3979,7 +3979,7 @@ l00002772:
 	d5_19 = DPB(d5_248, (word16) d6_249, 0)
 	d6_17 = DPB(d6_249, 0x0000, 0)
 	bLoc26_339 = true
-	dwLoc24 = SEQ((word16) d1_101, wLoc22_419)
+	dwLoc24 = SEQ((word16) d1_101, wLoc22_419) (alias)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

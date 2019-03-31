@@ -42,6 +42,7 @@ byte g_b05EF = 0x22;
 byte g_b0601 = 0x20;
 <anonymous> * g_ptr0ABE = &g_t0AC0;
 <anonymous> g_t0AC0 = <code>;
+<anonymous> g_t0BEC = <code>;
 <anonymous> g_t0D7E = <code>;
 <anonymous> g_t0DCC = <code>;
 <anonymous> g_t0FE2 = <code>;

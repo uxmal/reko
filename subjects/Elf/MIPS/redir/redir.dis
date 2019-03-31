@@ -7658,7 +7658,7 @@ l00404544_ds_f:
 // SymbolicIn:
 
 l004045DC:
-	print_log(2, 0x0040A364, 0x0040A330, 87, fp + -48, ra, out r3_171, out r4_172, out r5_173, out r6_174, out r7_121)
+	print_log(2, 0x0040A364, 0x0040A330, 87, fp + -48, ra, out r3_170, out r4_171, out r5_172, out r6_173, out r7_121)
 	Mem105[r4 + 0x00000558:word32] = Mem49[r4 + 0x00000558:word32] + -1
 	r3_101 = r4
 // DataOut:
@@ -7671,7 +7671,7 @@ l004044D4_ds_f:
 // SymbolicIn:
 
 l004044F0:
-	print_log(2, 0x0040A344, 0x0040A330, 80, fp + -48, ra, out r3_101, out r4_168, out r5_169, out r6_170, out r7_121)
+	print_log(2, 0x0040A344, 0x0040A330, 80, fp + -48, ra, out r3_101, out r4_167, out r5_168, out r6_169, out r7_121)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

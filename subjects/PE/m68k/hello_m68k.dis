@@ -116,9 +116,9 @@ fn000014E8_entry:
 l000014E8:
 	Mem14[0x0000:word16] = 0x0000
 	__syscall(0xA9A0)
-	word32 dwLoc12_183 = SEQ(wLoc12, 0x4441)
-	word32 dwLoc02_193 = SEQ(SLICE(a3, word16, 0), wArg00)
-	branch SEQ(wLoc12, 0x4441) == 0x00000000 l00001592
+	word32 dwLoc12_181 = SEQ(wLoc12, 0x4441)
+	word32 dwLoc02_191 = SEQ(SLICE(a3, word16, 0), wArg00)
+	branch dwLoc12_181 == 0x00000000 l00001592
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -131,7 +131,7 @@ l00001592:
 // SymbolicIn:
 
 l000014FE:
-	word32 a3_23 = Mem14[dwLoc12_183:word32]
+	word32 a3_23 = Mem14[dwLoc12_181:word32]
 	word32 d0_26 = Mem14[a3_23:word32]
 	word32 a2_27 = a5 - d0_26
 	word32 a0_28 = a2_27
@@ -253,7 +253,7 @@ l00001586:
 // SymbolicIn:
 
 l00001582:
-	Mem161[a2_130:word32] = Mem83[a2_130:word32] + dwLoc02_193
+	Mem161[a2_130:word32] = Mem83[a2_130:word32] + dwLoc02_191
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

@@ -521,24 +521,17 @@ void fn0AE6(word16 r3, <anonymous> ** r4, byte bArg00, cup16 wArg01, byte bArg03
 {
 	byte bArg02_n = SLICE(wArg01, byte, 8);
 	byte bArg01_n = SLICE(wArg01, byte, 0);
-	struct Eq_n * r3_n = globals->ptr5424;
-	wLoc04_n = (uint16) (uint8) bArg00;
 	uint16 wLoc04_n = (uint16) (uint8) bArg00;
-	if ((uint16) (uint8) bArg00 != 0x01 && wLoc04_n != 0x08)
+	struct Eq_n * r3_n = globals->ptr5424;
+	if (wLoc04_n != 0x01 && wLoc04_n != 0x08)
 		wLoc04_n += 0x03;
-	uint16 v15_n = wLoc04_n + (wArg01 - SEQ(bArg01_n, bArg00) < 0x00);
+	cup16 wArg00_n = SEQ(bArg01_n, bArg00);
+	uint16 v15_n = wLoc04_n + (wArg01 - wArg00_n < 0x00);
 	r3_n->w00A4 = v15_n;
-	word16 wArg00_n = SEQ(bArg01_n, bArg00);
-	word16 wArg02_n = SEQ(bArg03, bArg02_n);
-	word16 wArg00_n = SEQ(bArg01_n, bArg00);
 	<anonymous> * wArg02_n = SEQ(bArg03, bArg02_n);
+	byte bArg00_n = SLICE(wArg00_n, byte, 0);
+	byte bArg01_n = SLICE(wArg00_n, byte, 8);
 	byte bLoc03_n = SLICE(v15_n, byte, 8);
-	byte bArg00_n = SLICE(wArg00_n, byte, 0);
-	byte bArg01_n = SLICE(wArg00_n, byte, 8);
-	byte bArg02_n = SLICE(wArg02_n, byte, 0);
-	byte bArg03_n = SLICE(wArg02_n, byte, 8);
-	byte bArg00_n = SLICE(wArg00_n, byte, 0);
-	byte bArg01_n = SLICE(wArg00_n, byte, 8);
 	byte bArg02_n = SLICE(wArg02_n, byte, 0);
 	byte bArg03_n = SLICE(wArg02_n, byte, 8);
 	if (r3_n->b0074 == 0x00)
@@ -575,28 +568,21 @@ void fn0B60(uint16 r0, word16 * r3, byte bArg00, cup16 wArg01, byte bArg03, <ano
 {
 	byte bArg02_n = SLICE(wArg01, byte, 8);
 	byte bArg01_n = SLICE(wArg01, byte, 0);
+	uint16 wLoc04_n = (uint16) (uint8) bArg00;
 	word16 * wLoc02_n = r3;
 	struct Eq_n * r3_n = globals->ptr5424;
-	wLoc04_n = (uint16) (uint8) bArg00;
-	uint16 wLoc04_n = (uint16) (uint8) bArg00;
-	if ((uint16) (uint8) bArg00 != 0x01 && wLoc04_n != 0x08)
+	if (wLoc04_n != 0x01 && wLoc04_n != 0x08)
 		wLoc04_n += 0x03;
 	word16 wArg01_n;
 	word16 * sp_n;
 	<anonymous> ** sp_n;
-	uint16 v22_n = wLoc04_n + (wArg01 - SEQ(bArg01_n, bArg00) < 0x00);
+	cup16 wArg00_n = SEQ(bArg01_n, bArg00);
+	uint16 v22_n = wLoc04_n + (wArg01 - wArg00_n < 0x00);
 	r3_n->w00A4 = v22_n;
-	word16 wArg00_n = SEQ(bArg01_n, bArg00);
-	word16 wArg02_n = SEQ(bArg03, bArg02_n);
-	word16 wArg00_n = SEQ(bArg01_n, bArg00);
 	<anonymous> * wArg02_n = SEQ(bArg03, bArg02_n);
-	uint16 wLoc04_n = v22_n;
-	bArg00_n = SLICE(wArg00_n, byte, 0);
-	byte bArg01_n = SLICE(wArg00_n, byte, 8);
-	byte bArg02_n = SLICE(wArg02_n, byte, 0);
-	bArg03_n = SLICE(wArg02_n, byte, 8);
 	byte bArg00_n = SLICE(wArg00_n, byte, 0);
 	byte bArg01_n = SLICE(wArg00_n, byte, 8);
+	uint16 wLoc04_n = v22_n;
 	byte bArg02_n = SLICE(wArg02_n, byte, 0);
 	byte bArg03_n = SLICE(wArg02_n, byte, 8);
 	if (r3_n->b0074 != 0x00)
@@ -604,7 +590,7 @@ void fn0B60(uint16 r0, word16 * r3, byte bArg00, cup16 wArg01, byte bArg03, <ano
 		r3_n->w0052 = wArg00_n;
 		r3_n->ptr0044 = wArg02_n;
 		r3_n->w005A = *wArg04;
-		r3_n->w007E = 0x0BEC;
+		r3_n->ptr007E = &globals->t0BEC;
 		sp_n = fp + 0x06;
 		wArg01_n = SEQ(bArg02_n, bArg01_n);
 l0BC6:
@@ -625,7 +611,7 @@ l0BC6:
 		if (v38_n == 0x00)
 		{
 			*(sp_n - 0x04) = *(sp_n - 0x02);
-			*(sp_n - 0x02) = r3_n->w007E;
+			*(sp_n - 0x02) = (<anonymous> **) r3_n->ptr007E;
 			(*(sp_n - 0x02))();
 			return;
 		}
@@ -633,7 +619,7 @@ l0BC6:
 	else
 	{
 		r3_n->w0052 = wArg00_n;
-		r3_n->w007E = wArg02_n;
+		r3_n->ptr007E = wArg02_n;
 		r3_n->ptr0044 = wArg04;
 		r3_n->w005A = *ptrArg06;
 		wLoc04_n = r0;
@@ -735,15 +721,15 @@ l0E7C:
 	goto l0E7C;
 }
 
-// 0EA8: void fn0EA8(Register (ptr16 Eq_n) r3, Stack word16 wArg00)
-void fn0EA8(struct Eq_n * r3, word16 wArg00)
+// 0EA8: void fn0EA8(Register (ptr16 Eq_n) r3, Stack (ptr16 code) wArg00)
+void fn0EA8(struct Eq_n * r3, <anonymous> * wArg00)
 {
 	struct Eq_n * r3_n = globals->ptr5424;
 	r3_n->ptr0044 = null;
 	<anonymous> ** sp_n = fp - 0x02;
 	if (r3_n->b0074 == 0x00)
 	{
-		r3_n->w007E = wArg00;
+		r3_n->ptr007E = wArg00;
 		r3_n = r3;
 		sp_n = fp + 0x02;
 	}
@@ -762,7 +748,7 @@ void fn0EA8(struct Eq_n * r3, word16 wArg00)
 	}
 	else
 	{
-		*(sp_n - 0x02) = r3_n->w007E;
+		*(sp_n - 0x02) = (<anonymous> **) r3_n->ptr007E;
 		r3_n->t0072.u0 = 0x00;
 		r3_n->t0070.u0 = 0x00;
 		r3_n->t0014.u0 = 0x00;
