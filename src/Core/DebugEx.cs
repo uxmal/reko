@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -32,6 +32,42 @@ namespace Reko.Core
         public static void PrintIf(bool trace, string message, params object[] args)
         {
             if (trace)
+            {
+                Debug.Print(message, args);
+            }
+        }
+
+        [Conditional("DEBUG")]
+        public static void Error(TraceSwitch trace, string message, params object[] args)
+        {
+            if (trace.TraceError)
+            {
+                Debug.Print(message, args);
+            }
+        }
+
+        [Conditional("DEBUG")]
+        public static void Warn(TraceSwitch trace, string message, params object[] args)
+        {
+            if (trace.TraceWarning)
+            {
+                Debug.Print(message, args);
+            }
+        }
+
+        [Conditional("DEBUG")]
+        public static void Info(TraceSwitch trace, string message, params object[] args)
+        {
+            if (trace.TraceInfo)
+            {
+                Debug.Print(message, args);
+            }
+        }
+
+        [Conditional("DEBUG")]
+        public static void Verbose(TraceSwitch trace, string message, params object[]args)
+        {
+            if (trace.TraceVerbose)
             {
                 Debug.Print(message, args);
             }

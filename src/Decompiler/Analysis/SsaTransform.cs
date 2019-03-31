@@ -49,7 +49,7 @@ namespace Reko.Analysis
     [DebuggerDisplay("{SsaState.Procedure.Name}")]
     public partial class SsaTransform : InstructionTransformer 
     {
-        private static TraceSwitch trace = new TraceSwitch("SsaTransform", "Traces the progress of SSA analysis") { Level = TraceLevel.Info };
+        private static TraceSwitch trace = new TraceSwitch("SsaTransform", "Traces the progress of SSA analysis") { Level = TraceLevel.Warning };
 
         private readonly IProcessorArchitecture arch;
         private readonly Program program;
@@ -105,8 +105,9 @@ namespace Reko.Analysis
         /// <param name="proc"></param>
         public SsaState Transform()
         {
+            DebugEx.Info(trace, "SsaTransform: {0}, rename frame accesses {1}", ssa.Procedure.Name, this.RenameFrameAccesses);
             this.sidsToRemove = new HashSet<SsaIdentifier>();
-            foreach(var bs in blockstates.Values)
+            foreach (var bs in blockstates.Values)
             {
                 bs.Visited = false;
             }
@@ -116,10 +117,12 @@ namespace Reko.Analysis
 
             foreach (Block b in new DfsIterator<Block>(ssa.Procedure.ControlGraph).ReversePostOrder())
             {
+                DebugEx.Verbose(trace, "SsaTransform:   {0}", b.Name);
                 this.block = b;
                 foreach (var s in b.Statements.ToList())
                 {
                     this.stmCur = s;
+                    DebugEx.Verbose(trace, "SsaTransform:     {0:X4} {1}", s.LinearAddress, s);
                     s.Instruction = s.Instruction.Accept(this);
                     if (blockstates[b].terminates)
                     {
