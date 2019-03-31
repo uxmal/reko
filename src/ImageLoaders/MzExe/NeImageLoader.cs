@@ -475,7 +475,7 @@ namespace Reko.ImageLoaders.MzExe
             Dictionary<int, string> names,
             IProcessorArchitecture arch)
         {
-            DebugEx.PrintIf(trace.TraceInfo, "== Loading entry points from offset {0:X}", offEntryTable);
+            DebugEx.Info(trace, "== Loading entry points from offset {0:X}", offEntryTable);
             var rdr = new LeImageReader(RawImage, offEntryTable);
 
             var entries = new List<ImageSymbol>();
@@ -519,7 +519,7 @@ namespace Reko.ImageLoaders.MzExe
                         ep.ProcessorState = arch.CreateProcessorState();
                         imageSymbols[ep.Address] = ep;
                         entries.Add(ep);
-                        DebugEx.PrintIf(trace.TraceVerbose, "   {0:X2} {1} {2} - {3}", segNum, ep.Address, ep.Name, bundleOrdinal + i);
+                        DebugEx.Verbose(trace, "   {0:X2} {1} {2} - {3}", segNum, ep.Address, ep.Name, bundleOrdinal + i);
                     }
                 }
                 bundleOrdinal = nextbundleOrdinal;

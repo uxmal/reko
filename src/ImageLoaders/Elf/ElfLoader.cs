@@ -522,7 +522,7 @@ namespace Reko.ImageLoaders.Elf
                     {
                         ImageSymbol gotSym = CreateGotSymbol(addrGot, symbol.Name);
                         symbols[addrGot] = gotSym;
-                        DebugEx.PrintIf(ElfImageLoader.trace.TraceVerbose, "{0}+{1:X4}: Found GOT entry {2}, referring to symbol at {3}",
+                        DebugEx.Verbose(ElfImageLoader.trace, "{0}+{1:X4}: Found GOT entry {2}, referring to symbol at {3}",
                             gotStart, addrGot - gotStart, gotSym, symbol);
                         program.ImportReferences.Add(
                             addrGot,
@@ -538,7 +538,7 @@ namespace Reko.ImageLoaders.Elf
                     // This GOT entry has no corresponding symbol. It's likely a global
                     // variable with no name.
                     ImageSymbol gotDataSym = ImageSymbol.Create(SymbolType.Data, this.Architecture, addrGot);
-                    DebugEx.PrintIf(ElfImageLoader.trace.TraceVerbose, "{0}+{1:X4}: GOT entry with no symbol, assuming local data {2}",
+                    DebugEx.Verbose(ElfImageLoader.trace, "{0}+{1:X4}: GOT entry with no symbol, assuming local data {2}",
                         gotStart, addrGot - gotStart, addrGot);
                     program.ImportReferences.Add(
                         addrGot,
@@ -1362,7 +1362,7 @@ namespace Reko.ImageLoaders.Elf
 
                 uint sym = info >> 8;
                 string symStr = GetStrPtr(symtab, sym);
-                DebugEx.PrintIf(ElfImageLoader.trace.TraceVerbose, "  RELA {0:X8} {1,3} {2:X8} {3:X8} {4}", offset, info & 0xFF, sym, addend, symStr);
+                DebugEx.Verbose(ElfImageLoader.trace, "  RELA {0:X8} {1,3} {2:X8} {3:X8} {4}", offset, info & 0xFF, sym, addend, symStr);
             }
         }
 
@@ -1632,7 +1632,7 @@ namespace Reko.ImageLoaders.Elf
 
         public override Dictionary<int, ElfSymbol> LoadSymbolsSection(ElfSection symSection)
         {
-            DebugEx.PrintIf(ElfImageLoader.trace.TraceInfo , "== Symbols from {0} ==", symSection.Name);
+            DebugEx.Info(ElfImageLoader.trace, "== Symbols from {0} ==", symSection.Name);
             var stringtableSection = symSection.LinkedSection;
             var rdr = CreateReader(symSection.FileOffset);
             var symbols = new Dictionary<int, ElfSymbol>();
@@ -1640,7 +1640,7 @@ namespace Reko.ImageLoaders.Elf
             {
                 var sym = Elf32_Sym.Load(rdr);
                 var symName = RemoveModuleSuffix(ReadAsciiString(stringtableSection.FileOffset + sym.st_name));
-                DebugEx.PrintIf(ElfImageLoader.trace.TraceVerbose, "  {0,3} {1,-25} {2,-12} {3,6} {4,-15} {5:X8} {6,9}",
+                DebugEx.Verbose(ElfImageLoader.trace, "  {0,3} {1,-25} {2,-12} {3,6} {4,-15} {5:X8} {6,9}",
                     i,
                     string.IsNullOrWhiteSpace(symName) ? "<empty>" : symName,
                     (ElfSymbolType)(sym.st_info & 0xF),

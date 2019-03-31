@@ -110,7 +110,7 @@ namespace Reko.Scanning
         private void Dump(string message)
         {
             Debug.WriteLineIf(trace.TraceInfo, message);
-            DebugEx.PrintIf(trace.TraceInfo, "  icfg nodes: {0}, conflicts: {1}", sr.ICFG.Nodes.Count, conflicts.Count);
+            DebugEx.Info(trace, "  icfg nodes: {0}, conflicts: {1}", sr.ICFG.Nodes.Count, conflicts.Count);
         }
 
         /// <summary>

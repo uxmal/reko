@@ -182,7 +182,7 @@ namespace Reko.Analysis
         public bool RemoveUnusedDefinedValues(SsaState ssa, WorkList<SsaState> wl)
         {
             bool change = false;
-            DebugEx.PrintIf(trace.TraceVerbose, "UVR: {0}", ssa.Procedure.Name);
+            DebugEx.Verbose(trace, "UVR: {0}", ssa.Procedure.Name);
             var liveOutStorages = this.dataFlow[ssa.Procedure].BitsLiveOut;
             var deadStms = new HashSet<Statement>();
             var deadStgs = new HashSet<Storage>();
@@ -191,7 +191,7 @@ namespace Reko.Analysis
             // Remove 'use' statements that are known to be dead from the exit block.
             foreach (var stm in deadStms)
             {
-                DebugEx.PrintIf(trace.TraceVerbose, "UVR: {0}, deleting {1}", ssa.Procedure.Name, stm.Instruction);
+                DebugEx.Verbose(trace, "UVR: {0}, deleting {1}", ssa.Procedure.Name, stm.Instruction);
                 ssa.DeleteStatement(stm);
                 change = true;
             }
@@ -246,7 +246,7 @@ namespace Reko.Analysis
         /// <returns></returns>
         private Dictionary<Storage, BitRange> CollectLiveOutStorages(Procedure procCallee)
         {
-            DebugEx.PrintIf(trace.TraceVerbose, "== Collecting live out storages of {0}", procCallee.Name);
+            DebugEx.Verbose(trace, "== Collecting live out storages of {0}", procCallee.Name);
             var liveOutStorages = new Dictionary<Storage, BitRange>();
 
             var sig = procCallee.Signature;
@@ -269,7 +269,7 @@ namespace Reko.Analysis
                 {
                     if (!(stm.Instruction is CallInstruction ci))
                         continue;
-                    DebugEx.PrintIf(trace.TraceVerbose, "  {0}", ci);
+                    DebugEx.Verbose(trace, "  {0}", ci);
                     var ssaCaller = this.procToSsa[stm.Block.Procedure];
                     foreach (var def in ci.Definitions)
                     {
@@ -279,7 +279,7 @@ namespace Reko.Analysis
                         if (sid.Uses.Count > 0)
                         {
                             var br = urf.Classify(ssaCaller, sid, def.Storage, true);
-                            DebugEx.PrintIf(trace.TraceVerbose, "  {0}: {1}", sid.Identifier.Name, br);
+                            DebugEx.Verbose(trace, "  {0}: {1}", sid.Identifier.Name, br);
                             if (liveOutStorages.TryGetValue(def.Storage, out BitRange brOld))
                             {
                                 br = br | brOld;

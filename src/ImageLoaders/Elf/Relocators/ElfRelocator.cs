@@ -391,7 +391,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
             foreach (var section in loader.Sections.Where(s => s.Type == SectionHeaderType.SHT_REL))
             {
-                DebugEx.PrintIf(ElfImageLoader.trace.TraceInfo, "REL: offset {0:X} symbol section {1}, relocating in section {2}",
+                DebugEx.Info(ElfImageLoader.trace, "REL: offset {0:X} symbol section {1}, relocating in section {2}",
                     section.FileOffset,
                     section.LinkedSection.Name,
                     section.RelocatedSection.Name);
@@ -400,7 +400,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 for (uint i = 0; i < section.EntryCount(); ++i)
                 {
                     var rel = Elf32_Rel.Read(rdr);
-                    DebugEx.PrintIf(ElfImageLoader.trace.TraceVerbose,
+                    DebugEx.Verbose(ElfImageLoader.trace,
                         "  off:{0:X8} type:{1,-16} {3,3} {2}",
                         rel.r_offset,
                         RelocationTypeToString(rel.r_info & 0xFF),
@@ -415,7 +415,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
             foreach (var section in loader.Sections.Where(s => s.Type == SectionHeaderType.SHT_RELA))
             {
-                DebugEx.PrintIf(ElfImageLoader.trace.TraceInfo, 
+                DebugEx.Info(ElfImageLoader.trace, 
                     "RELA: offset {0:X} symbol section {1}, relocating in section {2}",
                     section.FileOffset,
                     section.LinkedSection.Name,
@@ -426,7 +426,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 for (uint i = 0; i < section.EntryCount(); ++i)
                 {
                     var rela = Elf32_Rela.Read(rdr);
-                    DebugEx.PrintIf(ElfImageLoader.trace.TraceVerbose,
+                    DebugEx.Verbose(ElfImageLoader.trace,
                         "  off:{0:X8} type:{1,-16} add:{3,-20} {4,3} {2}",
                         rela.r_offset,
                         RelocationTypeToString(rela.r_info & 0xFF),

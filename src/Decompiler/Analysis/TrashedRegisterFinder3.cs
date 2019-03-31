@@ -326,7 +326,7 @@ namespace Reko.Analysis
         public bool VisitAssignment(Assignment ass)
         {
             var value = ass.Src.Accept(eval);
-            DebugEx.PrintIf(trace.TraceVerbose, "{0} = [{1}]", ass.Dst, value);
+            DebugEx.Verbose(trace, "{0} = [{1}]", ass.Dst, value);
 
             if (ass.Src is DepositBits dpb && 
                 dpb.Source is Identifier idDpb &&
@@ -358,7 +358,7 @@ namespace Reko.Analysis
                 foreach (var d in ci.Definitions)
                 {
                     ctx.SetValue((Identifier) d.Expression, Constant.Invalid);
-                    DebugEx.PrintIf(trace.TraceVerbose, "  {0} = [{1}]", d.Expression, Constant.Invalid);
+                    DebugEx.Verbose(trace, "  {0} = [{1}]", d.Expression, Constant.Invalid);
                 }
                 return true;
             }
@@ -395,7 +395,7 @@ namespace Reko.Analysis
                 if (flow.Trashed.Contains(d.Storage))
                 {
                     ctx.SetValue((Identifier)d.Expression, Constant.Invalid);
-                    DebugEx.PrintIf(trace.TraceVerbose, "  {0} = [{1}]", d.Expression, Constant.Invalid);
+                    DebugEx.Verbose(trace, "  {0} = [{1}]", d.Expression, Constant.Invalid);
                 }
                 if (flow.Preserved.Contains(d.Storage))
                 {
@@ -404,7 +404,7 @@ namespace Reko.Analysis
                         .Select(u => u.Expression.Accept(eval))
                         .SingleOrDefault();
                     ctx.SetValue((Identifier)d.Expression, before);
-                    DebugEx.PrintIf(trace.TraceVerbose, "  {0} = [{1}]", d.Expression, before);
+                    DebugEx.Verbose(trace, "  {0} = [{1}]", d.Expression, before);
                 }
             }
             return true;
@@ -418,7 +418,7 @@ namespace Reko.Analysis
         public bool VisitDeclaration(Declaration decl)
         {
             var value = decl.Expression.Accept(eval);
-            DebugEx.PrintIf(trace.TraceVerbose, "{0} = [{1}]", decl.Identifier, value);
+            DebugEx.Verbose(trace, "{0} = [{1}]", decl.Identifier, value);
             ctx.SetValue(decl.Identifier, value);
             return true;
         }
@@ -463,7 +463,7 @@ namespace Reko.Analysis
             {
                 ctx.SetValue(phi.Dst, total);
             }
-            DebugEx.PrintIf(trace.TraceVerbose, "{0} = φ[{1}]", phi.Dst, total);
+            DebugEx.Verbose(trace, "{0} = φ[{1}]", phi.Dst, total);
             return true;
         }
 
@@ -600,11 +600,11 @@ namespace Reko.Analysis
             var b = block ?? this.block;
             foreach (var de in blockCtx[b].IdState.OrderBy(i => i.Key.Name))
             {
-                DebugEx.PrintIf(trace.TraceVerbose, "{0}: [{1}]", de.Key, de.Value);
+                DebugEx.Verbose(trace, "{0}: [{1}]", de.Key, de.Value);
             }
             foreach (var de in blockCtx[b].StackState.OrderBy(i => i.Key))
             {
-                DebugEx.PrintIf(trace.TraceVerbose, "fp {0} {1}: [{2}]", de.Key >= 0 ? "+" : "-", Math.Abs(de.Key), de.Value);
+                DebugEx.Verbose(trace, "fp {0} {1}: [{2}]", de.Key >= 0 ? "+" : "-", Math.Abs(de.Key), de.Value);
             }
         }
 
@@ -776,13 +776,13 @@ namespace Reko.Analysis
                 {
                     if (!StackState.TryGetValue(stack.StackOffset, out Expression oldValue))
                     {
-                        DebugEx.PrintIf(trace.TraceVerbose, "Trf: Stack offset {0:X4} now has value {1}", stack.StackOffset, value);
+                        DebugEx.Verbose(trace, "Trf: Stack offset {0:X4} now has value {1}", stack.StackOffset, value);
                         IsDirty = true;
                         StackState.Add(stack.StackOffset, value);
                     }
                     else if (!cmp.Equals(oldValue, value) && oldValue != Constant.Invalid)
                     {
-                        DebugEx.PrintIf(trace.TraceVerbose, "Trf: Stack offset {0:X4} now has value {1}, was {2}", stack.StackOffset, value, oldValue);
+                        DebugEx.Verbose(trace, "Trf: Stack offset {0:X4} now has value {1}, was {2}", stack.StackOffset, value, oldValue);
                         IsDirty = true;
                         StackState[stack.StackOffset] = Constant.Invalid;
                     }
@@ -791,13 +791,13 @@ namespace Reko.Analysis
                 {
                     if (!IdState.TryGetValue(id, out Tuple<Expression, BitRange> oldValue))
                     {
-                        DebugEx.PrintIf(trace.TraceVerbose, "Trf: id {0} now has value {1}", id, value);
+                        DebugEx.Verbose(trace, "Trf: id {0} now has value {1}", id, value);
                         IsDirty = true;
                         IdState.Add(id, Tuple.Create(value, range));
                     }
                     else if (!cmp.Equals(oldValue.Item1, value) && oldValue.Item1 != Constant.Invalid)
                     {
-                        DebugEx.PrintIf(trace.TraceVerbose, "Trf: id {0} now has value {1}, was {2}", id, value, oldValue);
+                        DebugEx.Verbose(trace, "Trf: id {0} now has value {1}, was {2}", id, value, oldValue);
                         IsDirty = true;
                         IdState[id] = Tuple.Create((Expression)Constant.Invalid, range);
                     }
@@ -813,13 +813,13 @@ namespace Reko.Analysis
                 if (!StackState.TryGetValue(offset.Value, out Expression oldValue))
                 {
                     IsDirty = true;
-                    DebugEx.PrintIf(trace.TraceVerbose, "Trf: Stack offset {0:X4} now has value {1}", offset.Value, value);
+                    DebugEx.Verbose(trace, "Trf: Stack offset {0:X4} now has value {1}", offset.Value, value);
                     StackState.Add(offset.Value, value);
                 }
                 else if (!cmp.Equals(oldValue, value))
                 {
                     IsDirty = true;
-                    DebugEx.PrintIf(trace.TraceVerbose, "Trf: Stack offset {0:X4} now has value {1}, was {2}", offset.Value, value, oldValue);
+                    DebugEx.Verbose(trace, "Trf: Stack offset {0:X4} now has value {1}, was {2}", offset.Value, value, oldValue);
                     StackState[offset.Value] = value;
                 }
             }

@@ -206,8 +206,8 @@ namespace Reko.Analysis
                             return RewriteSeqOfSlices(dtWide, sids, slices);
                         }
                     }
-                    DebugEx.PrintIf(trace.TraceWarning, "Prpr: Couldn't fuse assignments in {0}", ssa.Procedure.Name);
-                    DebugEx.PrintIf(trace.TraceWarning, "{0}", string.Join(Environment.NewLine, ass.Select(a => $"    {a}")));
+                    DebugEx.Warn(trace, "Prpr: Couldn't fuse assignments in {0}", ssa.Procedure.Name);
+                    DebugEx.Warn(trace, "{0}", string.Join(Environment.NewLine, ass.Select(a => $"    {a}")));
                     return null;
                 }
 
@@ -229,8 +229,8 @@ namespace Reko.Analysis
                     // All of the identifiers in the sequence were defined by the same call.
                     return RewriteSeqDefinedByCall(sids, call, idWide);
                 }
-                DebugEx.PrintIf(trace.TraceWarning, "Prpr: Couldn't fuse statements in {0}", ssa.Procedure.Name);
-                DebugEx.PrintIf(trace.TraceWarning, "{0}", string.Join(Environment.NewLine, sids.Select(s => $"    {s.DefStatement}")));
+                DebugEx.Warn(trace, "Prpr: Couldn't fuse statements in {0}", ssa.Procedure.Name);
+                DebugEx.Warn(trace, "{0}", string.Join(Environment.NewLine, sids.Select(s => $"    {s.DefStatement}")));
                 return null;
             }
 

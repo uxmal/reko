@@ -200,7 +200,7 @@ namespace Reko.Analysis
                     block))
                 .ToList();
             block.Statements.AddRange(stms);
-            DebugEx.PrintIf(trace.TraceVerbose, "AddUsesToExitBlock");
+            DebugEx.Verbose(trace, "AddUsesToExitBlock");
             stms.ForEach(u =>
             {
                 var use = (UseInstruction)u.Instruction;

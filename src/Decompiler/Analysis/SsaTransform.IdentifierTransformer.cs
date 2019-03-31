@@ -161,7 +161,7 @@ namespace Reko.Analysis
                 var blockFrom = sidFrom.DefStatement.Block;
                 var stgFrom = sidFrom.Identifier.Storage;
                 var stgTo = id.Storage;
-                DebugEx.PrintIf(trace.TraceVerbose, "  MaybeGenerateAliasStatement({0},{1})", sidFrom.Identifier.Name, id.Name);
+                DebugEx.Verbose(trace, "  MaybeGenerateAliasStatement({0},{1})", sidFrom.Identifier.Name, id.Name);
 
                 if (stgFrom == stgTo)
                 {
@@ -191,7 +191,7 @@ namespace Reko.Analysis
                 else
                 {
                     this.liveBits = this.liveBits - stgFrom.GetBitRange();
-                    DebugEx.PrintIf(trace.TraceVerbose, "  MaybeGenerateAliasStatement proceeding to {0}", blockFrom.Name);
+                    DebugEx.Verbose(trace, "  MaybeGenerateAliasStatement proceeding to {0}", blockFrom.Name);
                     sidUse = ReadVariableRecursive(bsTo);
                     e = new DepositBits(sidUse.Identifier, aliasFrom.SsaId.Identifier, (int) stgFrom.BitAddress);
                 }
@@ -321,10 +321,10 @@ namespace Reko.Analysis
             private bool TryRemoveTrivial(SsaIdentifier phi, out SsaIdentifier sid)
             {
                 var phiFunc = ((PhiAssignment) phi.DefStatement.Instruction).Src;
-                DebugEx.PrintIf(trace.TraceVerbose, "  Checking {0} for triviality", phiFunc);
+                DebugEx.Verbose(trace, "  Checking {0} for triviality", phiFunc);
                 if (phiFunc.Arguments.All(a => a.Value == phi.Identifier))
                 {
-                    DebugEx.PrintIf(trace.TraceVerbose, "  {0} is a def", phi.Identifier);
+                    DebugEx.Verbose(trace, "  {0} is a def", phi.Identifier);
                     // Undef'ined or unreachable parameter; assume it's a def.
                     sid = NewDefInstruction(phi.OriginalIdentifier, phi.DefStatement.Block);
                 }
@@ -344,7 +344,7 @@ namespace Reko.Analysis
                 sid.Uses.RemoveAll(u => u == phi.DefStatement);
 
                 // Remove all phi uses which may have become trivial now.
-                DebugEx.PrintIf(trace.TraceVerbose, "Removing {0} and uses {1}", phi.Identifier.Name, string.Join(",", users));
+                DebugEx.Verbose(trace, "Removing {0} and uses {1}", phi.Identifier.Name, string.Join(",", users));
                 foreach (var use in users)
                 {
                     if (use.Instruction is PhiAssignment phiAss)
@@ -499,7 +499,7 @@ namespace Reko.Analysis
 
             public override SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs)
             {
-                DebugEx.PrintIf(trace.TraceVerbose, "  ReadBlockLocalVariable: ({0}, {1}, ({2})", bs.Block.Name, id, this.liveBits);
+                DebugEx.Verbose(trace, "  ReadBlockLocalVariable: ({0}, {1}, ({2})", bs.Block.Name, id, this.liveBits);
                 if (!bs.currentDef.TryGetValue(id.Storage.Domain, out var alias))
                     return null;
 
@@ -507,7 +507,7 @@ namespace Reko.Analysis
                 // Has the alias already been calculated?
                 for (var a = alias; a != null; a = a.PrevState)
                 {
-                    DebugEx.PrintIf(trace.TraceVerbose, "    found alias ({0}, {1}, ({2})", bs.Block.Name, a.SsaId.Identifier.Name, string.Join(",", a.Aliases.Select(aa => aa.Value.Identifier.Name)));
+                    DebugEx.Verbose(trace, "    found alias ({0}, {1}, ({2})", bs.Block.Name, a.SsaId.Identifier.Name, string.Join(",", a.Aliases.Select(aa => aa.Value.Identifier.Name)));
                     SsaIdentifier ssaId = a.SsaId;
                     if (a.SsaId.OriginalIdentifier == id ||
                         a.Aliases.TryGetValue(id, out ssaId))
@@ -696,14 +696,11 @@ namespace Reko.Analysis
                 foreach (var use in ints.SelectMany(i => i.Item1.Uses))
                 {
                     if (use.Instruction is AliasAssignment alias && 
-                        alias.Dst.Storage is StackStorage stg)
+                        alias.Dst.Storage is StackStorage stg &&
+                        stg.StackOffset == offsetInterval.Start &&
+                        stg.DataType.Size == offsetInterval.End - offsetInterval.Start)
                     {
-                        if (stg.StackOffset == offsetInterval.Start &&
-                            stg.DataType.Size == offsetInterval.End - offsetInterval.Start)
-                        {
-                            var sidAlias = ssaIds[alias.Dst];
-                            return sidAlias;
-                        }
+                        return ssaIds[alias.Dst];
                     }
                 }
 
