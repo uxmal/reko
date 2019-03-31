@@ -26,7 +26,7 @@ using System.ComponentModel.Design;
 using System.IO;
 using System.Text;
 
-namespace Reko.UnitTests.Environments.MacOS
+namespace Reko.UnitTests.Environments.MacOS.Classic
 {
     [TestFixture]
     public class ResourceForkTests

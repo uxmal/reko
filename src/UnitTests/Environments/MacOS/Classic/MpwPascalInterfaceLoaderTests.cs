@@ -25,7 +25,7 @@ using Reko.Environments.MacOS.Classic;
 using System.Linq;
 using System.Text;
 
-namespace Reko.UnitTests.Environments.MacOS
+namespace Reko.UnitTests.Environments.MacOS.Classic
 {
     [TestFixture]
     public class MpwPascalInterfaceLoaderTests

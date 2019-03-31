@@ -24,7 +24,7 @@ using Reko.Core;
 using Reko.Environments.MacOS.Classic;
 using System.Text;
 
-namespace Reko.UnitTests.Environments.MacOS
+namespace Reko.UnitTests.Environments.MacOS.Classic
 {
     class MacsBugSymbolScannerTests
     {

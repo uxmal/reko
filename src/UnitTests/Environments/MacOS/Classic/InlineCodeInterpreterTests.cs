@@ -28,7 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Reko.UnitTests.Environments.MacOS
+namespace Reko.UnitTests.Environments.MacOS.Classic
 {
     [TestFixture]
     public class InlineCodeInterpreterTests
