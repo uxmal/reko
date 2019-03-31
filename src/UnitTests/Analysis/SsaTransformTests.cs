@@ -2783,12 +2783,12 @@ r1_7: orig: r1
     uses: use r1_7
 wLoc02_8: orig: wLoc02
     def:  wLoc02_8 = 0x1234
-    uses: dwLoc04_10 = SEQ(wLoc02_8, wLoc04_9)
+    uses: dwLoc04_10 = SEQ(wLoc02_8, wLoc04_9) (alias)
 wLoc04_9: orig: wLoc04
     def:  wLoc04_9 = 0x5678
-    uses: dwLoc04_10 = SEQ(wLoc02_8, wLoc04_9)
+    uses: dwLoc04_10 = SEQ(wLoc02_8, wLoc04_9) (alias)
 dwLoc04_10: orig: dwLoc04
-    def:  dwLoc04_10 = SEQ(wLoc02_8, wLoc04_9)
+    def:  dwLoc04_10 = SEQ(wLoc02_8, wLoc04_9) (alias)
     uses: r1_7 = dwLoc04_10
 // proc1
 // Return size: 0
@@ -2802,7 +2802,7 @@ l1:
 	wLoc02_8 = 0x1234
 	r63_5 = fp - 0x00000004
 	wLoc04_9 = 0x5678
-	dwLoc04_10 = SEQ(wLoc02_8, wLoc04_9)
+	dwLoc04_10 = SEQ(wLoc02_8, wLoc04_9) (alias)
 	r1_7 = dwLoc04_10
 	return
 	// succ:  proc1_exit
@@ -3519,14 +3519,13 @@ body:
 	dwLoc04_9 = SLICE(qwLoc08_6, word32, 32) (alias)
 	dwLoc08_7 = 0x00001234
 	dwLoc08_8 = dwLoc08_7 + 0x00000001
-	qwLoc08_10 = SEQ(dwLoc04_9, dwLoc08_8)
+	qwLoc08_10 = SEQ(dwLoc04_9, dwLoc08_8) (alias)
 	Mem5[0x0000567C:word64] = qwLoc08_10
 	return
 proc_exit:
 ";
             #endregion
             AssertProcedureCode(expected);
-
         }
 
         [Test]
@@ -3713,7 +3712,7 @@ l1:
 	dwLoc08_13 = r1_7
 	r1_9 = Mem8[0x00123408:word32]
 	dwLoc04_14 = r1_9
-	nLoc0C_15 = SEQ(dwLoc0C_12, dwLoc08_13, dwLoc04_14)
+	nLoc0C_15 = SEQ(dwLoc0C_12, dwLoc08_13, dwLoc04_14) (alias)
 	fp0_11 = nLoc0C_15
 	return
 Ssa96BitStackLocal_exit:
@@ -3834,7 +3833,7 @@ b1:
 finalize:
 	byte_4 = PHI((byte_3, b0), (byte_2, b1))
 	bLoc04_9 = byte_4
-	dwLoc04_12 = SEQ(nLoc03, bLoc04_9)
+	dwLoc04_12 = SEQ(nLoc03, bLoc04_9) (alias)
 	byte_8 = dwLoc04_12 & 0x000000FF
 	return
 SsaLocalStackSlice_exit:
@@ -3880,7 +3879,7 @@ SsaLocalStackSlice_exit:
 b_init:
 	wLoc02_8 = a
 	wLoc04_9 = b
-	dwLoc04_10 = SEQ(wLoc02_8, wLoc04_9)
+	dwLoc04_10 = SEQ(wLoc02_8, wLoc04_9) (alias)
 	branch b == 0x0000 b1
 b0:
 	Mem7[0x0000000A:word32] = dwLoc04_10
@@ -4044,7 +4043,7 @@ l1:
 	dwLoc08_12 = 0x3FF00000
 	dwLoc04_13 = 0x00000000
 	r1_4 = 0x00000000
-	qwLoc08_16 = SEQ(dwLoc04_13, dwLoc08_12)
+	qwLoc08_16 = SEQ(dwLoc04_13, dwLoc08_12) (alias)
 m0:
 	qwLoc08_14 = PHI((qwLoc08_16, l1), (qwLoc08_15, m0))
 	r1_8 = PHI((r1_4, l1), (r1_11, m0))
@@ -4144,12 +4143,12 @@ es_bx_4: orig: es_bx
 wArg02:Stack +0002
     def:  def wArg02
     uses: si_3 = wArg02
-          ptrArg02_7 = SEQ(wArg04, wArg02)
+          ptrArg02_7 = SEQ(wArg04, wArg02) (alias)
 wArg04:Stack +0004
     def:  def wArg04
-    uses: ptrArg02_7 = SEQ(wArg04, wArg02)
+    uses: ptrArg02_7 = SEQ(wArg04, wArg02) (alias)
 ptrArg02_7: orig: ptrArg02
-    def:  ptrArg02_7 = SEQ(wArg04, wArg02)
+    def:  ptrArg02_7 = SEQ(wArg04, wArg02) (alias)
     uses: es_bx_4 = ptrArg02_7
 bx_8: orig: bx
     def:  bx_8 = (word16) es_bx_4 (alias)
@@ -4168,7 +4167,7 @@ proc1_entry:
 	// succ:  l1
 l1:
 	si_3 = wArg02
-	ptrArg02_7 = SEQ(wArg04, wArg02)
+	ptrArg02_7 = SEQ(wArg04, wArg02) (alias)
 	// succ:  m1
 m1:
 	es_bx_4 = ptrArg02_7

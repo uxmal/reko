@@ -490,8 +490,6 @@ namespace Reko.Analysis
             }
         }
 
-
-
         public class RegisterTransformer : IdentifierTransformer
         {
             public RegisterTransformer(Identifier id, Statement stm, SsaTransform outer)
@@ -693,6 +691,21 @@ namespace Reko.Analysis
                 if (ints.Length == 0)
                     return null;
 
+                // Try to find an existing alias first. If we can find one, we 
+                // return that and quit early.
+                foreach (var use in ints.SelectMany(i => i.Item1.Uses))
+                {
+                    if (use.Instruction is AliasAssignment alias && 
+                        alias.Dst.Storage is StackStorage stg)
+                    {
+                        if (stg.StackOffset == offsetInterval.Start &&
+                            stg.DataType.Size == offsetInterval.End - offsetInterval.Start)
+                        {
+                            var sidAlias = ssaIds[alias.Dst];
+                            return sidAlias;
+                        }
+                    }
+                }
 
                 // Part of 'id' is defined locally in this block. We now 
                 // walk across the bits of 'id'.
@@ -733,8 +746,8 @@ namespace Reko.Analysis
                      var seq = outer.arch.Endianness.MakeSequence(
                         this.id.DataType, 
                         sequence.Select(e => (Expression) MakeSequenceElement(bs, e).Identifier)
-                                            .ToArray());
-                    var assSeq = new Assignment(id, seq);
+                                .ToArray());
+                    var assSeq = new AliasAssignment(id, seq);
                     SsaIdentifier sidTo = InsertBeforeStatement(bs.Block, this.stm, assSeq);
 
                     foreach (Identifier item in seq.Expressions)
