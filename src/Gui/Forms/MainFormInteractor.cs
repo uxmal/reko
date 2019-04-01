@@ -60,6 +60,7 @@ namespace Reko.Gui.Forms
         private IPhasePageInteractor currentPhase;
         private InitialPageInteractor pageInitial;
         private IScannedPageInteractor pageScanned;
+        private ILibraryIdentifcationInteractor pageLibIdent;
         private IAnalyzedPageInteractor pageAnalyzed;
         private IFinalPageInteractor pageFinal;
 
@@ -119,6 +120,7 @@ namespace Reko.Gui.Forms
         {
             pageInitial =  svcFactory.CreateInitialPageInteractor();
             pageScanned = svcFactory.CreateScannedPageInteractor();
+            pageLibIdent = svcFactory.CreateLibraryPageInteractor();
             pageAnalyzed = new AnalyzedPageInteractorImpl(sc);
             pageFinal = new FinalPageInteractor(sc);
         }
@@ -470,6 +472,10 @@ namespace Reko.Gui.Forms
                 next = pageScanned;
             }
             else if (phase == pageScanned)
+            {
+                next = pageLibIdent;
+            }
+            else if (phase == pageLibIdent)
             {
                 next = pageAnalyzed;
             }

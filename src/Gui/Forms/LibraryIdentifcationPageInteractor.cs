@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2018 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,27 +19,29 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Types;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
+using Reko.Core.Types;
+
 
 namespace Reko.Gui.Forms
 {
-    public interface IScannedPageInteractor : IPhasePageInteractor
+
+    public interface ILibraryIdentifcationInteractor : IPhasePageInteractor
     {
     }
 
-    public class ScannedPageInteractor : PhasePageInteractorImpl, IScannedPageInteractor
+
+    public class LibraryIdentifcationPageInteractor : PhasePageInteractorImpl, ILibraryIdentifcationInteractor
     {
         private Dictionary<int, MenuCommand> mpCmdidToCommand;
         private IDecompilerService decompilerSvc;
         private IStatusBarService sbSvc;
         private ILowLevelViewService memSvc;
 
-        public ScannedPageInteractor(IServiceProvider services) : base(services)
+        public LibraryIdentifcationPageInteractor(IServiceProvider services) : base(services)
         {
             decompilerSvc = services.RequireService<IDecompilerService>();
             sbSvc = services.RequireService<IStatusBarService>();
@@ -61,19 +63,21 @@ namespace Reko.Gui.Forms
         {
             if (cmdId.Guid == CmdSets.GuidReko)
             {
+                /*
                 switch (cmdId.ID)
                 {
-                case CmdIds.ViewShowUnscanned:
-                    return ViewUnscannedBlocks();
+                    case CmdIds.ViewShowUnscanned:
+                       // return ViewUnscannedBlocks();
                 }
+                */
             }
             return base.Execute(cmdId);
         }
 
         public override void PerformWork(IWorkerDialogService workerDialogSvc)
         {
-            workerDialogSvc.SetCaption("Scanning source program.");
-            Decompiler.ScanPrograms();
+            workerDialogSvc.SetCaption("Identifying librarys in the source program.");
+            Decompiler.LibraryIdentifcation();
         }
 
         public override void EnterPage()
@@ -126,13 +130,13 @@ namespace Reko.Gui.Forms
                     return true;
                 case CmdIds.ActionNextPhase:
                     status.Status = MenuStatus.Visible | MenuStatus.Enabled;
-                    text.Text = Resources.SignatureAnalysis;
+                    text.Text = Resources.AnalyzeDataflow;
                     return true;
                 default:
                     MenuCommand cmd;
                     if (!mpCmdidToCommand.TryGetValue(cmdId.ID, out cmd))
                         return false;
-                    status.Status = (MenuStatus)cmd.OleStatus;
+                    status.Status = (MenuStatus) cmd.OleStatus;
                     return true;
                 }
             }

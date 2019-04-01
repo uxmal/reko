@@ -113,5 +113,14 @@ namespace Reko.Gui {
                 return ResourceManager.GetString("ScanBinaries", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Signature Analysis.
+        /// </summary>
+        internal static string SignatureAnalysis {
+            get {
+                return ResourceManager.GetString("SignatureAnalysis", resourceCulture);
+            }
+        }
     }
 }

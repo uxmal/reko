@@ -146,6 +146,7 @@
     <Compile Include="Forms\ISelectItemDialog.cs" />
     <Compile Include="Forms\ISymbolSourceDialog.cs" />
     <Compile Include="Forms\KeyBindingsInteractor.cs" />
+    <Compile Include="Forms\LibraryIdentifcationPageInteractor.cs" />
     <Compile Include="Forms\ScannedPageInteractor.cs" />
     <Compile Include="Forms\SymbolSourceInteractor.cs" />
     <Compile Include="ICallGraphViewService.cs" />

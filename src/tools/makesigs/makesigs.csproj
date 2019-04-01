@@ -54,15 +54,33 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataBuffer.cs" />
+    <Compile Include="FileBuffer.cs" />
     <Compile Include="Program.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SignitureGenerator.cs" />
+    <Compile Include="UNIXLibraryHeader.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Core.csproj">
+      <Project>{5c315c78-1f97-4b16-81aa-917284969dfe}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ImageLoaders\Coff\Coff.csproj">
+      <Project>{02595a47-2592-441d-b44d-8ea8c19ee5e2}</Project>
+      <Name>Coff</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RekoSig\RekoSig.csproj">
+      <Project>{1bee788b-ff62-4c55-8afb-cdeae17b6b3b}</Project>
+      <Name>RekoSig</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

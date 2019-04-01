@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
 * Copyright (C) 1999-2019 John Källén.
 *
@@ -46,6 +46,7 @@ namespace Reko.Gui
 
         InitialPageInteractor CreateInitialPageInteractor();
         IScannedPageInteractor CreateScannedPageInteractor();
+        ILibraryIdentifcationInteractor CreateLibraryPageInteractor();
         IAnalyzedPageInteractor CreateAnalyzedPageInteractor();
         IFinalPageInteractor CreateFinalPageInteractor();
         ILowLevelViewService CreateMemoryViewService();

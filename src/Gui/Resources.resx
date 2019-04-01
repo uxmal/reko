@@ -113,6 +113,9 @@
   <data name="ScanBinaries" xml:space="preserve">
     <value>Sca&amp;n binaries</value>
   </data>
+  <data name="SignatureAnalysis" xml:space="preserve">
+    <value>Signature Analysis</value>
+  </data>
   <data name="CallGraphTitle" xml:space="preserve">
     <value>Call graph</value>
   </data>

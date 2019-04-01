@@ -73,7 +73,7 @@ namespace Reko.Analysis
                     var sig = ser.Deserialize(sProc.Signature, proc.Frame);
                     if (sig != null)
                     {
-                        proc.Name = sProc.Name;
+                        proc.UpdateNameByUser(sProc.Name);
                         if (userProc.Decompile)
                         {
                             ApplySignatureToProcedure(addr, sig, proc);

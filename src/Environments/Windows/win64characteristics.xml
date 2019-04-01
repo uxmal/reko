@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <characteristics xmlns="http://schemata.jklnet.org/Decompiler">
   <entry name="printf">
     <characteristics>
@@ -12,7 +12,7 @@
   </entry>
   <entry name="ExitProcess">
     <characteristics>
-      <terminates>true</terminates>
+      <terminates>false</terminates>
     </characteristics>
   </entry>
   <entry name="sprintf">

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -107,6 +107,11 @@ namespace Reko.UserInterfaces.WindowsForms
         public IScannedPageInteractor CreateScannedPageInteractor()
         {
             return new ScannedPageInteractor(services);
+        }
+
+        public ILibraryIdentifcationInteractor CreateLibraryPageInteractor()
+        {
+            return new LibraryIdentifcationPageInteractor(services);
         }
 
         public ITypeLibraryLoaderService CreateTypeLibraryLoaderService()

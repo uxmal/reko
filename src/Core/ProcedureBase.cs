@@ -27,24 +27,70 @@ using System.IO;
 
 namespace Reko.Core
 {
+    public enum NameStatus
+    {
+        SystemAssigned,
+        SignautureAssigned,
+        UserAssigned,
+    }
+
+
     /// <summary>
     /// Abstract base class for all things callable.
     /// </summary>
 	[DefaultProperty("Name")]
 	public abstract class ProcedureBase
 	{
+        
 		public ProcedureBase(string name)
 		{
-			this.Name = name;
+            nameAssignedBy = NameStatus.SystemAssigned;
+            this.name = name;
 			this.Characteristics = DefaultProcedureCharacteristics.Instance;
 		}
 
         /// <summary>
         /// The name of the procedure.
         /// </summary>
-        public string Name { get { return name; } set { name = value; NameChanged.Fire(this); } }
+        public string Name { get { return name; }
+        }
+             //set { name = value; NameChanged.Fire(this); } }
         public event EventHandler NameChanged;
         private string name;
+        private NameStatus nameAssignedBy;
+
+        public void UpdateNameWithSignatureName(string sigName)
+        {
+            if (nameAssignedBy == NameStatus.SystemAssigned)
+            {
+                name = sigName;
+                nameAssignedBy = NameStatus.SignautureAssigned;
+                NameChanged.Fire(this);
+            }
+        }
+
+        public void UpdateNameByUser(string sigName)
+        {
+            name = sigName;
+            nameAssignedBy = NameStatus.UserAssigned;
+            NameChanged.Fire(this);
+        }
+
+        public void UpdateNameBySystem(string sigName)
+        {
+            name = sigName;
+            nameAssignedBy = NameStatus.SystemAssigned;
+            NameChanged.Fire(this);
+        }
+
+        public NameStatus NameAssignedBy
+        {
+            get
+            {
+                return nameAssignedBy;
+            }
+        }
+
 
 		public abstract FunctionType Signature { get; set; }
 

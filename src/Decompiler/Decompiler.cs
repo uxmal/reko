@@ -21,13 +21,16 @@ using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.Assemblers;
 using Reko.Core.Lib;
+using Reko.Core.Machine;
 using Reko.Core.Output;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.Loading;
 using Reko.Scanning;
 using Reko.Structure;
 using Reko.Typing;
+using RekoSig;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -43,6 +46,7 @@ namespace Reko
         bool Load(string fileName, string loader=null);
         Program LoadRawImage(string file, LoadDetails raw);
         void ScanPrograms();
+        void LibraryIdentifcation();
         ProcedureBase ScanProcedure(ProgramAddress paddr, IProcessorArchitecture arch);
         void AnalyzeDataFlow();
         void ReconstructTypes();
@@ -92,6 +96,7 @@ namespace Reko
                 Load(filename, loader);
                 ExtractResources();
                 ScanPrograms();
+                ApplySignitures();
                 AnalyzeDataFlow();
                 ReconstructTypes();
                 StructureProgram();
@@ -130,6 +135,162 @@ namespace Reko
                 host.WriteIntermediateCode(program, writer => { EmitProgram(program, dfa, writer); });
             }
             eventListener.ShowStatus("Interprocedural analysis complete.");
+        }
+
+
+        public virtual void ApplySignitures()
+        {
+            foreach (Program program in Project.Programs)
+            {
+                ApplySigniture(program);
+            }
+        }
+
+        public virtual void ApplySigniture(Program program)
+        {
+            try
+            {
+                var eventListener = services.RequireService<DecompilerEventListener>();
+                eventListener.ShowStatus("Performing signature analysis.");
+
+                // Get the architeture for the program so we know which directory of sig files to load
+                string name = program.Architecture.Name;
+                string path = Directory.GetCurrentDirectory();
+                string[] fileEntries = Directory.GetFiles(path + "\\Sigs\\" + name, "*.sig");
+                if (fileEntries.Length == 0)
+                {
+                    return;
+                }
+
+                // Create instance of sig flirt engine
+                SignatureMatcher signitureEngine = new SignatureMatcher(services);
+
+                foreach (string fileName in fileEntries)
+                {
+                    signitureEngine.LoadSignitures(fileName);
+                }
+
+                // We need to look at the instructions to work out were and transfer address exists in the code
+                // the reason for doing this is that the values in the static library will have been updated 
+                // as a result of the linker on the application build process.
+                // By finding them we will know which bytes we can ignore as part of the matching process.
+
+                // Get the list of instructions in the program
+                Dictionary<ImageMapBlock, MachineInstruction[]> instructions;
+
+                instructions = new Dictionary<ImageMapBlock, MachineInstruction[]>();
+                foreach (var bi in program.ImageMap.Items.Values.OfType<ImageMapBlock>().ToList())
+                {
+                    var instrs = new List<MachineInstruction>();
+                    var addrStart = bi.Address;
+                    var addrEnd = bi.Address + bi.Size;
+                    var dasm = program.CreateDisassembler(program.Architecture, addrStart).GetEnumerator();
+                    while (dasm.MoveNext() && dasm.Current.Address < addrEnd)
+                    {
+                        instrs.Add(dasm.Current);
+
+                    }
+                    instructions.Add(bi, instrs.ToArray());
+                }
+
+                // Loop through each prodecure we have to go through a number of steps to get the dat we need for the signiture match
+                foreach (Procedure proc in program.Procedures.Values)
+                {
+                    try
+                    {
+                        {
+                            Address funcStartAddress = proc.ControlGraph.Blocks[2].Address;
+                            int lastInstLength = 0;
+                            ImageSegment seg;
+                            ImageMapItem item;
+                            
+                            if (proc.ControlGraph.Blocks.Count < 3)
+                            {
+                                break;
+                            }
+
+                            Block endBlock = proc.ControlGraph.Blocks[2];
+                            // Loop through the blocks in the procedure and find the call and transfer instuctions and record the address for each
+                            for (int blockIndex = 2; blockIndex < proc.ControlGraph.Blocks.Count; blockIndex++)
+                            {
+                                Block block = proc.ControlGraph.Blocks[blockIndex];
+                                Address funcBlockAddress = block.Address;
+
+                                // Find the last address in the blocks, do not assume the last block contains the last address
+                                if (block.Address >= endBlock.Address)
+                                {
+                                    endBlock = block;
+  
+                                    if (funcBlockAddress != null)
+                                    {
+                                        program.SegmentMap.TryFindSegment(funcBlockAddress, out seg);
+                                        program.ImageMap.TryFindItem(funcBlockAddress, out item);
+
+                                        var itemBlock = item as ImageMapBlock;
+
+                                        MachineInstruction[] instrs = instructions[itemBlock];
+
+                                        // Step through and check each instruction
+                                        lastInstLength = instrs[instrs.Length - 1].Length;
+                                    }
+                                }
+                            }
+
+                            // We now need to get the bytes of the method,
+                            var linStart = funcStartAddress.ToLinear();
+
+                            // Take the address of the last statement and then add the length of the statement, which will give us the last byte of the method.
+                            ulong linEnd = endBlock.Statements[endBlock.Statements.Count - 1].LinearAddress + (ulong) lastInstLength;
+                            ulong procLength = (linEnd - linStart);
+
+                            byte[] abCode = new byte[procLength];
+                            int index = 0;
+                            bool gettingDataError = false;
+                            var rdr = program.CreateImageReader(program.Architecture, funcStartAddress);
+                            while (rdr.Address.ToLinear() < linEnd)
+                            {
+                                try
+                                {
+                                    if (rdr.IsValid)
+                                    {
+                                        abCode[index] = rdr.ReadByte();
+                                        ++index;
+                                    }
+                                    else
+                                    {
+                                        gettingDataError = true;
+                                        break;
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    eventListener.Error(new NullCodeLocation(""), ex, "An error occurred while performing getting procudred data in signature analysis.");
+                                }
+                            }
+
+                            // We name have the length of an address, list of locations of call and transfer addresses, and the procedure byte stream.
+                            // Can now call the signitrue matcher, if it returns a string, we can rename the prodecure.
+                            if (gettingDataError == false)
+                            {
+                                string sigMethodName = signitureEngine.FindMatchingSignitureStart(abCode, (int)procLength);
+                                if (sigMethodName.Length > 0)
+                                {
+                                    proc.UpdateNameWithSignatureName(sigMethodName);
+                                }
+                            }
+                        }
+                    }
+                    catch(Exception ex)
+                    {
+                        eventListener.Error(new NullCodeLocation(""), ex, "An error occurred while performing procedure signature analysis.");
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                eventListener.Error(new NullCodeLocation(""), ex, "An error occurred while performing signature analysis.");
+            }
+            eventListener.ShowStatus("Signature analysis complete.");
         }
 
         public void DumpAssembler(Program program, Formatter wr)
@@ -537,6 +698,35 @@ namespace Reko
                 eventListener.ShowStatus("Writing .asm and .dis files.");
                 host.WriteDisassembly(program, w => DumpAssembler(program, w));
                 host.WriteIntermediateCode(program, w => EmitProgram(program, null, w));
+            }
+        }
+
+        public void LibraryIdentifcation()
+        {
+            if (Project.Programs.Count == 0)
+                throw new InvalidOperationException("Programs must be loaded first.");
+
+            foreach (Program program in Project.Programs)
+            {
+                LibraryIdentifcationProgram(program);
+            }
+        }
+
+        private void LibraryIdentifcationProgram(Program program)
+        {
+            try
+            {
+                eventListener.ShowStatus("Scanning code for librarys and applying signitures.");
+                ApplySigniture(program);
+                eventListener.ShowStatus("Finished Scanning code for librarys and applying signitures.");
+            }
+            catch (Exception ex)
+            {
+                eventListener.Error(new NullCodeLocation(""), ex, "Error when Identifying and renaming methods from Signature files.");
+            }
+            finally
+            {
+
             }
         }
 
