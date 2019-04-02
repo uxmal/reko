@@ -270,6 +270,7 @@
     <Compile Include="Environments\MacOS\Classic\InlineCodeInterpreterTests.cs" />
     <Compile Include="Core\Expressions\ExpressionTreeTests.cs" />
     <Compile Include="Core\Lib\IntervalTreeTests.cs" />
+    <Compile Include="Environments\MacOS\Classic\TypeImporterTests.cs" />
     <Compile Include="Environments\RT11\LdaFileLoaderTests.cs" />
     <Compile Include="Environments\SysV\ArchSpecific\Arm32CallingConventionTests.cs" />
     <Compile Include="Environments\SysV\ArchSpecific\Avr8CallingConventionTests.cs" />

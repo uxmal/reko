@@ -192,7 +192,7 @@ namespace Reko.Tools.C2Xml.UnitTests
 @"<?xml version=""1.0"" encoding=""utf-16""?>
 <library xmlns=""http://schemata.jklnet.org/Decompiler"">
   <Types>
-    <struct name=""tagPoint"">
+    <struct name=""tagPoint"" size=""8"">
       <field offset=""0"" name=""x"">
         <prim domain=""SignedInt"" size=""4"" />
       </field>
@@ -212,7 +212,7 @@ namespace Reko.Tools.C2Xml.UnitTests
 @"<?xml version=""1.0"" encoding=""utf-16""?>
 <library xmlns=""http://schemata.jklnet.org/Decompiler"">
   <Types>
-    <struct name=""link"">
+    <struct name=""link"" size=""4"">
       <field offset=""0"" name=""next"">
         <ptr size=""4"">
           <struct name=""link"" />
@@ -272,7 +272,7 @@ namespace Reko.Tools.C2Xml.UnitTests
     <typedef name=""FOO"">
       <struct name=""foo"" />
     </typedef>
-    <struct name=""foo"">
+    <struct name=""foo"" size=""12"">
       <field offset=""0"" name=""x"">
         <prim domain=""SignedInt"" size=""4"" />
       </field>
@@ -299,7 +299,7 @@ namespace Reko.Tools.C2Xml.UnitTests
 @"<?xml version=""1.0"" encoding=""utf-16""?>
 <library xmlns=""http://schemata.jklnet.org/Decompiler"">
   <Types>
-    <struct name=""foo"">
+    <struct name=""foo"" size=""4"">
       <field offset=""0"" name=""x"">
         <prim domain=""SignedInt"" size=""4"" />
       </field>
@@ -347,7 +347,7 @@ namespace Reko.Tools.C2Xml.UnitTests
         <prim domain=""Real"" size=""4"" />
       </alt>
     </union>
-    <struct name=""tagVariant"">
+    <struct name=""tagVariant"" size=""8"">
       <field offset=""0"" name=""type"">
         <prim domain=""SignedInt"" size=""4"" />
       </field>
@@ -420,7 +420,7 @@ namespace Reko.Tools.C2Xml.UnitTests
     <typedef name=""byte"">
       <prim domain=""UnsignedInt"" size=""1"" />
     </typedef>
-    <struct name=""header"">
+    <struct name=""header"" size=""20"">
       <field offset=""0"" name=""signature"">
         <arr length=""16"">
           <type>byte</type>
@@ -493,12 +493,12 @@ namespace Reko.Tools.C2Xml.UnitTests
                 @"<?xml version=""1.0"" encoding=""utf-16""?>
 <library xmlns=""http://schemata.jklnet.org/Decompiler"">
   <Types>
-    <struct name=""struct_0"">
+    <struct name=""struct_0"" size=""4"">
       <field offset=""0"" name=""x"">
         <prim domain=""SignedInt"" size=""4"" />
       </field>
     </struct>
-    <struct name=""Foo"">
+    <struct name=""Foo"" size=""4"">
       <field offset=""0"" name=""a"">
         <struct name=""struct_0"" />
       </field>
@@ -591,7 +591,7 @@ namespace Reko.Tools.C2Xml.UnitTests
             var sExp = @"<?xml version=""1.0"" encoding=""utf-16""?>
 <library xmlns=""http://schemata.jklnet.org/Decompiler"">
   <Types>
-    <struct name=""struct_0"">
+    <struct name=""struct_0"" size=""4"">
       <field offset=""0"" name=""bar"">
         <prim domain=""SignedInt"" size=""4"" />
       </field>
@@ -805,7 +805,7 @@ namespace Reko.Tools.C2Xml.UnitTests
             var sExp = @"<?xml version=""1.0"" encoding=""utf-16""?>
 <library xmlns=""http://schemata.jklnet.org/Decompiler"">
   <Types>
-    <struct name=""foo"">
+    <struct name=""foo"" size=""4"">
       <field offset=""0"" name=""x"">
         <prim domain=""SignedInt"" size=""4"" />
       </field>

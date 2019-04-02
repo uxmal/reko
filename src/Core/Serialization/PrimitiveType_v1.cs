@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -104,6 +104,16 @@ namespace Reko.Core.Serialization
         public static SerializedType Real64()
         {
             return new PrimitiveType_v1 { Domain = Domain.Real, ByteSize = 8 };
+        }
+
+        public static SerializedType Real80()
+        {
+            return new PrimitiveType_v1 { Domain = Domain.Real, ByteSize = 10 };
+        }
+
+        public static SerializedType Ptr32()
+        {
+            return new PrimitiveType_v1 { Domain = Domain.Pointer, ByteSize = 4 };
         }
 
         public PrimitiveType_v1(Domain domain, int byteSize)

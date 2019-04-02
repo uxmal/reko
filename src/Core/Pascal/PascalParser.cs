@@ -264,13 +264,16 @@ namespace Reko.Core.Pascal
                 return new Primitive { Type = Serialization.PrimitiveType_v1.Bool() };
             case TokenType.Char:
                 lexer.Read();
-                return new Primitive { Type = Serialization.PrimitiveType_v1.Char8() };
+                return Primitive.Char();
             case TokenType.Integer:
                 lexer.Read();
                 return new Primitive { Type = Serialization.PrimitiveType_v1.Int16() };
             case TokenType.Longint:
                 lexer.Read();
                 return new Primitive { Type = Serialization.PrimitiveType_v1.Int32() };
+            case TokenType.Extended:    //$REFACTOR: Mac MPW specific.
+                lexer.Read();
+                return new Primitive { Type = Serialization.PrimitiveType_v1.Real80() };
             case TokenType.Id:
                 var id = Expect<string>(TokenType.Id);
                 return new TypeReference(id);
@@ -278,6 +281,9 @@ namespace Reko.Core.Pascal
                 lexer.Read();
                 var type = ParseType();
                 return new Pointer(type);
+            case TokenType.File:
+                lexer.Read();
+                return new File();
             case TokenType.Packed:
                 lexer.Read();
                 if (PeekAndDiscard(TokenType.Record))

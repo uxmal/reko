@@ -44,7 +44,8 @@ namespace Reko.Core.Types
         public override bool IsIntegral => Referent.IsIntegral;
         public override bool IsPointer => Referent.IsPointer;
 
-        public DataType Referent { get; private set; }
+        public DataType Referent { get; set; }
+
         public override int Size
         {
             get { return Referent.Size; }

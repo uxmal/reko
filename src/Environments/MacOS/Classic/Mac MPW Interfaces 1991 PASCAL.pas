@@ -428,8 +428,8 @@ TYPE
 ID = LONGINT;
 MarkerIdType = INTEGER;
 ChunkHeader = RECORD
-ckID: ID;
-ckSize: LONGINT;
+	ckID: ID;
+	ckSize: LONGINT;
 END;
 ContainerChunk = RECORD
 ckID: ID;
@@ -3365,35 +3365,33 @@ crmSerialDevice = 1;
 { version of the CRMSerialRecord below }
 curCRMSerRecVers = 1;
 TYPE
-{ Maintains compatibility w/ apps & tools that expect an old style icon
-CRMIconPtr = ^CRMIconRecord;
-CRMIconHandle = ^CRMIconPtr;
-CRMIconRecord = RECORD
-oldIcon: ARRAY [0..31] OF LONGINT;
-{ ICN#
-}
-oldMask: ARRAY [0..31] OF LONGINT;
-theSuite: Handle;
-{ Handle to an IconSuite
-}
-reserved: LONGINT;
+	{ Maintains compatibility w/ apps & tools that expect an old style icon }
+	CRMIconPtr = ^CRMIconRecord;
+	CRMIconHandle = ^CRMIconPtr;
+	CRMIconRecord = RECORD
+	oldIcon: ARRAY [0..31] OF LONGINT;
+	{ ICN#
+	}
+	oldMask: ARRAY [0..31] OF LONGINT;
+	theSuite: Handle;
+	{ Handle to an IconSuite
+	}
+	reserved: LONGINT;
 END;
 
-}
-
 
 
 
 CRMSerialPtr = ^CRMSerialRecord;
 CRMSerialRecord = RECORD
-version: INTEGER;
-inputDriverName: StringHandle;
-outputDriverName: StringHandle;
-name: StringHandle;
-deviceIcon: CRMIconHandle;
-ratedSpeed: LONGINT;
-maxSpeed: LONGINT;
-reserved: LONGINT;
+	version: INTEGER;
+	inputDriverName: StringHandle;
+	outputDriverName: StringHandle;
+	name: StringHandle;
+	deviceIcon: CRMIconHandle;
+	ratedSpeed: LONGINT;
+	maxSpeed: LONGINT;
+	reserved: LONGINT;
 END;
 
 {$ENDC} { UsingCRMSerialDevices }
@@ -21972,7 +21970,7 @@ tmSearchNoDiacrit = $0100; {These are only for TMSearchTypes}
 tmSearchNoCase = $0200;
 {These are only for TMSearchTypes}
 TYPE
-{ TMSelTypes & TMSearchTypes
+{ TMSelTypes & TMSearchTypes }
 TMSearchTypes = INTEGER;
 
 TMSelTypes = INTEGER;
@@ -21983,16 +21981,11 @@ cursorGraphics = 2;
 TYPE
 TMCursorTypes = INTEGER;
 
-CONST
-{ TMTermTypes }
+CONST { TMTermTypes }
 tmTextTerminal = $0001;
 tmGraphicsTerminal = $0002;
-TYPE
-{ TMTermTypes
-}
-TMTermTypes = INTEGER;
-
-}
+TYPE { TMTermTypes }
+	TMTermTypes = INTEGER;
 
 TermDataBlockPtr = ^TermDataBlock;
 TermDataBlockH = ^TermDataBlockPtr;

@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Pascal;
 using Reko.Core.Serialization;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -31,14 +32,19 @@ using System.Threading.Tasks;
 
 namespace Reko.Environments.MacOS.Classic
 {
+    /// <summary>
+    /// Loads an MPW Pascal interface definition file into a Reko type library.
+    /// </summary>
     public class MpwPascalInterfaceLoader : MetadataLoader
     {
-        private byte[] bytes;
+        private readonly byte[] bytes;
+        private readonly IDiagnosticsService diagSvc;
 
         public MpwPascalInterfaceLoader(IServiceProvider services, string filename, byte[] bytes)
             : base(services, filename, bytes)
         {
             this.bytes = bytes;
+            this.diagSvc = this.Services.RequireService<IDiagnosticsService>();
         }
 
         public override TypeLibrary Load(IPlatform platform, TypeLibrary dstLib)
@@ -50,8 +56,8 @@ namespace Reko.Environments.MacOS.Classic
             var declarations = parser.Parse();
             var tldser = new TypeLibraryDeserializer(platform, true, dstLib);
             var constants = EvaluateConstants(declarations);
-            var typeImporter = new TypeImporter(tldser, constants, dstLib);
-            LoadTypes(declarations, typeImporter);
+            var typeImporter = new TypeImporter(platform, tldser, constants, dstLib);
+            typeImporter.LoadTypes(declarations);
             LoadServices(declarations, typeImporter, constants, platform, dstLib);
             return dstLib;
         }
@@ -68,16 +74,15 @@ namespace Reko.Environments.MacOS.Classic
             foreach (var decl in declarations.OfType<CallableDeclaration>())
             {
                 var ft = (SerializedSignature) decl.Accept(typeImporter);
-                var inline = decl.Body as InlineMachineCode;
-                if (inline == null)
+                if (!(decl.Body is InlineMachineCode inline))
                     continue;
                 var ici = new InlineCodeInterpreter(constants);
                 var syscall =  ici.BuildSystemCallFromMachineCode(decl.Name, ft, inline.Opcodes);
                 if (syscall != null)
                 {
                     var svc = syscall.Build(platform, typelib);
-                    List<SystemService> svcs;
-                    if (!module.ServicesByVector.TryGetValue(svc.SyscallInfo.Vector, out svcs))
+                    PostProcessSignature(platform, svc);
+                    if (!module.ServicesByVector.TryGetValue(svc.SyscallInfo.Vector, out List<SystemService> svcs))
                     {
                         svcs = new List<SystemService>();
                         module.ServicesByVector.Add(svc.SyscallInfo.Vector, svcs);
@@ -87,13 +92,39 @@ namespace Reko.Environments.MacOS.Classic
             }
         }
 
-        private void LoadTypes(List<Declaration> declarations, TypeImporter typeImporter)
+        private void PostProcessSignature(IPlatform platform, SystemService svc)
         {
-            var decls = new Dictionary<string, PascalType>(StringComparer.OrdinalIgnoreCase);
-            foreach (var typedef in declarations.OfType<TypeDeclaration>())
+            var parameters = svc.Signature.Parameters;
+            for (int i = 0; i < parameters.Length; ++i)
             {
-                typedef.Accept(typeImporter);
+                var p = parameters[i];
+                var at = p.DataType.ResolveAs<Reko.Core.Types.ArrayType>();
+                if (at != null && (at.IsUnbounded || at.Length <= 1))
+                {
+                    // Size 1 arrays are commonly used as boundless arrays in signatures.
+                    var dtNew = new Core.Types.Pointer(at.ElementType, platform.PointerType.BitSize);
+                    Storage stgNew = CreateStorage(dtNew, p.Storage);
+                    p = new Identifier(p.Name, dtNew, stgNew);
+                    parameters[i] = p;
+                }
+                var st = p.DataType.ResolveAs<Core.Types.StructureType>();
+                if (st != null)
+                {
+                    st.Size = st.GetInferredSize(); 
+                }
             }
+        }
+
+        private Storage CreateStorage(Core.Types.DataType dt, Storage stg)
+        {
+            switch (stg)
+            {
+            case RegisterStorage reg:
+                return reg;
+            case StackStorage stk:
+                return new StackArgumentStorage(stk.StackOffset, dt);
+            }
+            throw new NotImplementedException();
         }
 
         private Dictionary<string,Constant> EvaluateConstants(IEnumerable<Declaration> decls)

@@ -49,7 +49,7 @@ namespace Reko.Analysis
     [DebuggerDisplay("{SsaState.Procedure.Name}")]
     public partial class SsaTransform : InstructionTransformer 
     {
-        private static TraceSwitch trace = new TraceSwitch("SsaTransform", "Traces the progress of SSA analysis") { Level = TraceLevel.Warning };
+        private static TraceSwitch trace = new TraceSwitch("SsaTransform", "Traces the progress of SSA analysis") { Level = TraceLevel.Info };
 
         private readonly IProcessorArchitecture arch;
         private readonly Program program;
@@ -117,10 +117,14 @@ namespace Reko.Analysis
 
             foreach (Block b in new DfsIterator<Block>(ssa.Procedure.ControlGraph).ReversePostOrder())
             {
+                //if (b.Procedure.Name == "fn001054EA")
+                //    trace.Level = TraceLevel.Verbose;//$DEBUG
                 DebugEx.Verbose(trace, "SsaTransform:   {0}", b.Name);
                 this.block = b;
                 foreach (var s in b.Statements.ToList())
                 {
+                    if (s.LinearAddress == 0x105628)
+                        s.ToString();   //$DEBUG
                     this.stmCur = s;
                     DebugEx.Verbose(trace, "SsaTransform:     {0:X4} {1}", s.LinearAddress, s);
                     s.Instruction = s.Instruction.Accept(this);

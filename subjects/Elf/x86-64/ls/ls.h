@@ -6367,10 +6367,10 @@ Eq_7914: (struct "Eq_7914" (14 byte b0014))
 Eq_7947: (fn void ((ptr64 Eq_7949)))
 	T_7947 (in fn000000000040AB30 : ptr64)
 	T_7948 (in signature of fn000000000040AB30 : void)
-Eq_7949: (struct "timespec" (0 int32 tv_sec) (4 int32 tv_nsec) (8 int64 qw0008))
+Eq_7949: (struct "timespec" 0008 (0 int32 tv_sec) (4 int32 tv_nsec) (8 int64 qw0008))
 	T_7949 (in rdi : (ptr64 Eq_7949))
 	T_7950 (in 0x000000000061B180 : uint64)
-	T_12678 (in rsi : (ptr64 (struct "timespec")))
+	T_12678 (in rsi : (ptr64 (struct "timespec" 0008)))
 Eq_7977: (fn Eq_8 (int32, Eq_8, Eq_8, Eq_8, Eq_8, Eq_8, (ptr32 Eq_15), ptr64, Eq_7215))
 	T_7977 (in fn0000000000406A80 : ptr64)
 	T_7978 (in signature of fn0000000000406A80 : void)
@@ -7310,9 +7310,9 @@ Eq_16136: (union "Eq_16136" (uint64 u0) (ptr64 u1))
 	T_16172 (in 0x0000000000000000 : uint64)
 	T_16173 (in rdx_66 : Eq_16136)
 	T_16175 (in rbx_14 + 0x0000000000000010 : word64)
-Eq_16155: (struct "passwd" (0 (ptr64 char) pw_name) (4 (ptr64 char) pw_passwd) (8 uid_t pw_uid) (C gid_t pw_gid) (10 (ptr64 char) pw_gecos) (14 (ptr64 char) pw_dir) (18 (ptr64 char) pw_shell))
+Eq_16155: (struct "passwd" 001C (0 (ptr64 char) pw_name) (4 (ptr64 char) pw_passwd) (8 uid_t pw_uid) (C gid_t pw_gid) (10 (ptr64 char) pw_gecos) (14 (ptr64 char) pw_dir) (18 (ptr64 char) pw_shell))
 	T_16155 (in rax_31 : (ptr64 Eq_16155))
-	T_16160 (in getpwuid((uint64) ebp_28) : (ptr64 (struct "passwd")))
+	T_16160 (in getpwuid((uint64) ebp_28) : (ptr64 (struct "passwd" 001C)))
 	T_16161 (in 0x0000000000000000 : word64)
 Eq_16156: (fn (ptr64 Eq_16155) (Eq_16158))
 	T_16156 (in getpwuid : ptr64)
@@ -39823,7 +39823,7 @@ T_7948: (in signature of fn000000000040AB30 : void)
 T_7949: (in rdi : (ptr64 Eq_7949))
   Class: Eq_7949
   DataType: (ptr64 Eq_7949)
-  OrigDataType: (ptr64 (struct "timespec"))
+  OrigDataType: (ptr64 (struct "timespec" 0008))
 T_7950: (in 0x000000000061B180 : uint64)
   Class: Eq_7949
   DataType: (ptr64 Eq_7949)
@@ -58736,7 +58736,7 @@ T_12677: (in rdi : clockid_t)
   Class: Eq_12677
   DataType: Eq_12677
   OrigDataType: 
-T_12678: (in rsi : (ptr64 (struct "timespec")))
+T_12678: (in rsi : (ptr64 (struct "timespec" 0008)))
   Class: Eq_7949
   DataType: (ptr64 Eq_7949)
   OrigDataType: 
@@ -72647,7 +72647,7 @@ T_16154: (in 0x0000000000416919 : uint64)
 T_16155: (in rax_31 : (ptr64 Eq_16155))
   Class: Eq_16155
   DataType: (ptr64 Eq_16155)
-  OrigDataType: (ptr64 (struct "passwd"))
+  OrigDataType: (ptr64 (struct "passwd" 001C))
 T_16156: (in getpwuid : ptr64)
   Class: Eq_16156
   DataType: (ptr64 Eq_16156)
@@ -72664,10 +72664,10 @@ T_16159: (in (uint64) ebp_28 : uint64)
   Class: Eq_16158
   DataType: Eq_16158
   OrigDataType: (union (uint64 u0) (uid_t u1))
-T_16160: (in getpwuid((uint64) ebp_28) : (ptr64 (struct "passwd")))
+T_16160: (in getpwuid((uint64) ebp_28) : (ptr64 (struct "passwd" 001C)))
   Class: Eq_16155
   DataType: (ptr64 Eq_16155)
-  OrigDataType: (ptr64 (struct "passwd"))
+  OrigDataType: (ptr64 (struct "passwd" 001C))
 T_16161: (in 0x0000000000000000 : word64)
   Class: Eq_16155
   DataType: (ptr64 Eq_16155)
@@ -96317,7 +96317,7 @@ typedef struct Eq_7914 {
 
 typedef void (Eq_7947)(timespec *);
 
-typedef struct timespec {
+typedef struct timespec {	// size: 8 8
 	int32 tv_sec;	// 0
 	int32 tv_nsec;	// 4
 	int64 qw0008;	// 8
@@ -97098,7 +97098,7 @@ typedef union Eq_16136 {
 	ptr64 u1;
 } Eq_16136;
 
-typedef struct passwd {
+typedef struct passwd {	// size: 28 1C
 	char * pw_name;	// 0
 	char * pw_passwd;	// 4
 	uid_t pw_uid;	// 8

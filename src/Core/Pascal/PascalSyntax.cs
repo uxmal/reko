@@ -307,6 +307,16 @@ namespace Reko.Core.Pascal
             if (pt.ByteSize == 4)
                 writer.Write("longint");
         }
+
+        public static Primitive Char()
+        {
+            return new Primitive { Type = Serialization.PrimitiveType_v1.Char8() };
+        }
+
+        public static Primitive Integer()
+        {
+            return new Primitive { Type = Serialization.PrimitiveType_v1.Int16() };
+        }
     }
 
     public class Pointer : PascalType
@@ -327,6 +337,21 @@ namespace Reko.Core.Pascal
         {
             pointee.Write(writer);
             writer.Write("^");
+        }
+    }
+
+    public class File : PascalType
+    {
+        public File() { }
+
+        public override T Accept<T>(IPascalSyntaxVisitor<T> visitor)
+        {
+            return visitor.VisitFile(this);
+        }
+
+        public override void Write(TextWriter writer)
+        {
+            writer.Write("file");
         }
     }
 
@@ -632,6 +657,7 @@ namespace Reko.Core.Pascal
         T VisitCallableDeclaration(CallableDeclaration cd);
         T VisitConstantDeclaration(ConstantDeclaration cd);
         T VisitEnumType(EnumType enumType);
+        T VisitFile(File file);
         T VisitIdentifier(Id id);
         T VisitInlineMachineCode(InlineMachineCode code);
         T VisitNumericLiteral(NumericLiteral number);

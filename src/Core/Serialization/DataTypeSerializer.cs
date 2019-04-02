@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -50,11 +50,9 @@ namespace Reko.Core.Serialization
 
         public SerializedType VisitEnum(EnumType e)
         {
-            var members = e.Members != null
-                ? e.Members.Select(
+            var members = e.Members?.Select(
                     m => new SerializedEnumValue { Name = m.Key, Value = (int)m.Value })
-                    .ToArray()
-                : null;
+                .ToArray();
             return new SerializedEnumType
             {
                 Name = e.Name,

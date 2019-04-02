@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -31,11 +31,13 @@ namespace Reko.Core.CLanguage
     /// </summary>
     public class TypeSizer : ISerializedTypeVisitor<int>
     {
-        private Dictionary<string, SerializedType> typedefs;
-        private Dictionary<SerializedTaggedType, int> tagSizes;
+        private readonly IPlatform platform;
+        private readonly IDictionary<string, SerializedType> typedefs;
+        private readonly Dictionary<SerializedTaggedType, int> tagSizes;
 
-        public TypeSizer(Dictionary<string, SerializedType> typedefs)
+        public TypeSizer(IPlatform platform, IDictionary<string, SerializedType> typedefs)
         {
+            this.platform = platform;
             this.typedefs = typedefs;
             this.tagSizes = new Dictionary<SerializedTaggedType, int>(new SerializedTypeComparer());
         }
@@ -57,17 +59,17 @@ namespace Reko.Core.CLanguage
 
         public int VisitPointer(PointerType_v1 pointer)
         {
-            return 4;           //$BUGBUG: architecture dependent
+            return platform.PointerType.Size;
         }
 
         public int VisitReference(ReferenceType_v1 pointer)
         {
-            return 4;           //$BUGBUG: architecture dependent
+            return platform.PointerType.Size;
         }
 
         public int VisitMemberPointer(MemberPointer_v1 memptr)
         {
-            return 4;       //$BUGBUG: architecture dependent
+            return platform.FramePointerType.Size;
         }
 
         public int VisitArray(ArrayType_v1 array)
@@ -77,7 +79,8 @@ namespace Reko.Core.CLanguage
 
         public int VisitEnum(SerializedEnumType e)
         {
-            return 4;           //$BUGBUG: at most sizeof int according to the C lang def, but varies widely among compilers.
+            //$BUGBUG: at most sizeof int according to the C lang def, but varies widely among compilers.
+            return 4;
         }
 
         public int VisitSignature(SerializedSignature signature)
@@ -87,7 +90,7 @@ namespace Reko.Core.CLanguage
 
         public int VisitString(StringType_v2 str)
         {
-            throw new NotImplementedException();
+            return platform.PointerType.Size;
         }
 
         public int VisitStructure(StructType_v1 structure)
@@ -100,17 +103,21 @@ namespace Reko.Core.CLanguage
             }
             foreach (var field in structure.Fields)
             {
+                field.Offset = size;
                 size += field.Type.Accept(this);
             }
+            structure.ByteSize = size;
             return size;
         }
 
         public int VisitTypedef(SerializedTypedef typedef)
         {
-            throw new NotImplementedException();
             //int size = typedef.DataType.Accept(this);
             //namedTypeSizes[typedef.Name] = size;
             //return size;
+
+            int size = typedef.DataType.Accept(this);
+            return size;
         }
 
         public int VisitTypeReference(TypeReference_v1 typeReference)

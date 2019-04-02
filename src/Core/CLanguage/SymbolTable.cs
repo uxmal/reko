@@ -31,7 +31,7 @@ namespace Reko.Core.CLanguage
     /// </summary>
     public class SymbolTable 
     {
-        private IPlatform platform;
+        private readonly IPlatform platform;
 
         public SymbolTable(IPlatform platform) : this(platform,
             new Dictionary<string, PrimitiveType_v1>(),
@@ -55,7 +55,7 @@ namespace Reko.Core.CLanguage
             this.Variables = new List<GlobalDataItem_v2>();
             this.PrimitiveTypes = primitiveTypes;
             this.NamedTypes = namedTypes;
-            this.Sizer = new TypeSizer(this.NamedTypes);
+            this.Sizer = new TypeSizer(platform, this.NamedTypes);
         }
 
         public List<SerializedType> Types { get; private set; }
@@ -78,16 +78,15 @@ namespace Reko.Core.CLanguage
         public List<SerializedType> AddDeclaration(Decl decl)
         {
             var types = new List<SerializedType>();
-            var fndec = decl as FunctionDecl;
-            if (fndec != null)
+            if (decl is FunctionDecl fndec)
             {
                 return types;
             }
 
             IEnumerable<DeclSpec> declspecs = decl.decl_specs;
             var isTypedef = false;
-            var scspec = decl.decl_specs[0] as StorageClassSpec;
-            if (scspec != null && scspec.Type == CTokenType.Typedef)
+            if (decl.decl_specs[0] is StorageClassSpec scspec &&
+                scspec.Type == CTokenType.Typedef)
             {
                 declspecs = decl.decl_specs.Skip(1);
                 isTypedef = true;
@@ -99,8 +98,7 @@ namespace Reko.Core.CLanguage
                 var nt = ntde.GetNameAndType(declarator.Declarator);
                 var serType = nt.DataType;
 
-                var sSig = nt.DataType as SerializedSignature;
-                if (sSig != null)
+                if (nt.DataType is SerializedSignature sSig)
                 {
                     if (sSig.ReturnValue != null)
                     {

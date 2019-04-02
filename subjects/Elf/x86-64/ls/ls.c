@@ -5529,7 +5529,7 @@ void fn000000000040AB30(struct timespec * rdi)
 	{
 		gettimeofday(fp - 0x18, null);
 		rdi->tv_sec = (int32) qwLoc18;
-		rdi->qw0008 = qwLoc10 *s 1000;
+		rdi[0x01] = (struct timespec) (qwLoc10 *s 1000);
 	}
 }
 

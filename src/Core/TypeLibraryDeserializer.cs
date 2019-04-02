@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -46,11 +46,9 @@ namespace Reko.Core
 
         public TypeLibraryDeserializer(IPlatform platform, bool caseInsensitive, TypeLibrary dstLib)
         {
-            if (dstLib == null)
-                throw new ArgumentNullException("dstLib");
+            this.library = dstLib ?? throw new ArgumentNullException("dstLib");
             this.platform = platform;
             var cmp = caseInsensitive ? StringComparer.InvariantCultureIgnoreCase : StringComparer.InvariantCulture;
-            this.library = dstLib;
             types = dstLib.Types;
             this.unions = new Dictionary<string, UnionType>(cmp);
             this.structures = new Dictionary<string, StructureType>(cmp);
@@ -319,6 +317,7 @@ namespace Reko.Core
                     var fields = structure.Fields.Select(f => new StructureField(f.Offset, f.Type.Accept(this), f.Name));
                     str.Fields.AddRange(fields);
                 }
+                // str.Size = str.GetInferredSize();
                 return str;
             }
             else if (str.Fields.Count == 0 && structure.Fields != null)
@@ -341,14 +340,22 @@ namespace Reko.Core
         public DataType VisitTypedef(SerializedTypedef typedef)
         {
             var dt = typedef.DataType.Accept(this);
-            types[typedef.Name] = dt;       //$BUGBUG: check for type equality if already exists.
-            return null;
+            //$BUGBUG: check for type equality if already exists.
+            if (types.TryGetValue(typedef.Name, out var dtOld) &&
+                dtOld is TypeReference tr)
+            {
+                tr.Referent = dt;
+            }
+            else
+            {
+                types[typedef.Name] = dt;
+            }
+            return dt;
         }
 
         public DataType VisitTypeReference(TypeReference_v1 typeReference)
         {
-            DataType type;
-            if (types.TryGetValue(typeReference.TypeName, out type))
+            if (types.TryGetValue(typeReference.TypeName, out DataType type))
                 return new TypeReference(typeReference.TypeName, type);
             return new TypeReference(typeReference.TypeName, new UnknownType());
         }

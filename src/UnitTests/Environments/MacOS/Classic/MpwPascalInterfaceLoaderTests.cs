@@ -18,10 +18,13 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Arch.M68k;
 using Reko.Core;
+using Reko.Core.Services;
 using Reko.Environments.MacOS.Classic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
@@ -32,12 +35,17 @@ namespace Reko.UnitTests.Environments.MacOS.Classic
     {
         private MacOSClassic platform;
         private TypeLibrary tlib;
+        private Mock<IDiagnosticsService> diagSvc;
+        private ServiceContainer sc;
 
         [SetUp]
         public void Setup()
         {
             this.platform = new MacOSClassic(null, new M68kArchitecture("m68k"));
             this.tlib = new TypeLibrary();
+            this.diagSvc = new Moq.Mock<IDiagnosticsService>();
+            this.sc = new ServiceContainer();
+            this.sc.AddService(diagSvc.Object);
         }
 
         [Test]
@@ -59,11 +67,11 @@ EventRecord = RECORD
 END; 
 FUNCTION GetNextEvent(eventMask: INTEGER;VAR theEvent: EventRecord): BOOLEAN; INLINE $A970;
 END.");
-            var mpwl = new MpwPascalInterfaceLoader(null, "foo.pas", bytes);
+            var mpwl = new MpwPascalInterfaceLoader(sc, "foo.pas", bytes);
             var tlibNew = mpwl.Load(platform, tlib);
 
             var svc = tlibNew.Modules.Values.First().ServicesByVector[0xA970].First(s => s.SyscallInfo.Matches(0xA970, null));
-            Assert.AreEqual("Stack BOOLEAN GetNextEvent(Stack int16 eventMask, Stack (ref EventRecord) theEvent)", svc.Signature.ToString(svc.Name));
+            Assert.AreEqual("Stack bool GetNextEvent(Stack int16 eventMask, Stack (ref EventRecord) theEvent)", svc.Signature.ToString(svc.Name));
         }
 
         [Test]
@@ -75,7 +83,7 @@ TYPE ResType = PACKED ARRAY[1..4] OF CHAR;
 FUNCTION GetResource(theType: ResType;theID: INTEGER): Handle;
     INLINE $A9A0;
 END.");
-            var mpwl = new MpwPascalInterfaceLoader(null, "foo.pas", image);
+            var mpwl = new MpwPascalInterfaceLoader(sc, "foo.pas", image);
             var tlibNew = mpwl.Load(platform, tlib);
 
             var svc = tlibNew.Modules.Values.First().ServicesByVector[0xA9A0].First(s => s.SyscallInfo.Matches(0xA9A0, null));
