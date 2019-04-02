@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -255,10 +255,13 @@ namespace Reko.Core.Pascal
             }
         }
 
-        private PascalType ParseType()
+        public PascalType ParseType()
         {
             switch (lexer.Peek().Type)
             {
+            case TokenType.Boolean:
+                lexer.Read();
+                return new Primitive { Type = Serialization.PrimitiveType_v1.Bool() };
             case TokenType.Char:
                 lexer.Read();
                 return new Primitive { Type = Serialization.PrimitiveType_v1.Char8() };
@@ -294,7 +297,7 @@ namespace Reko.Core.Pascal
             case TokenType.Array:
                 lexer.Read();
                 var arr = ParseArray();
-                arr.Packed = true;
+                arr.Packed = false;
                 return arr;
             case TokenType.String:
                 lexer.Read();
@@ -325,37 +328,102 @@ namespace Reko.Core.Pascal
 
         public Record ParseRecord()
         {
+            var (fields, variantPart) = ParseFieldList();
+            Expect(TokenType.End);
+            return new Record
+            {
+                Fields = fields,
+                VariantPart = variantPart
+            };
+        }
+
+        private (List<Field>, VariantPart) ParseFieldList()
+        {
             var fields = new List<Field>();
-            while (!PeekAndDiscard(TokenType.End))
+            while (lexer.Peek().Type != TokenType.End)
             {
                 if (PeekAndDiscard(TokenType.Case))
                 {
                     // Always last.
-                    ParseVariantRecord();
+                    var vp = ParseVariantPart();
+                    return (fields, vp);
                 }
                 else
                 {
-                    var fname = Expect<string>(TokenType.Id);
+                    var fnames = new List<string>();
+                    do
+                    {
+                        var fname = Expect<string>(TokenType.Id);
+                        fnames.Add(fname);
+                    } while (PeekAndDiscard(TokenType.Comma));
                     Expect(TokenType.Colon);
                     var type = ParseType();
-                    Expect(TokenType.Semi);
-                    fields.Add(new Field(fname, type));
+                    fields.Add(new Field(fnames, type));
+                    if (!PeekAndDiscard(TokenType.Semi))
+                        break;
+                    var next = lexer.Peek().Type;
+                    if (next != TokenType.Id && next != TokenType.Case)
+                        break;
                 }
             }
-            return new Record
+            return (fields, null);
+        }
+
+        private VariantPart ParseVariantPart()
+        {
+            string variantID = null;
+            PascalType ordinalType;
+            if (lexer.Peek().Type == TokenType.Id)
             {
-                Fields = fields,
+                variantID = (string) lexer.Read().Value;
+                if (PeekAndDiscard(TokenType.Colon))
+                {
+                    ordinalType = ParseType();
+                }
+                else
+                { 
+                    ordinalType = new TypeReference(variantID);
+                    variantID = null;
+                }
+            }
+            else
+            {
+                ordinalType = ParseType();
+            }
+            Expect(TokenType.Of);
+            List<Variant> variants = new List<Variant>();
+            do
+            {
+                var variant = ParseVariant();
+                variants.Add(variant);
+            } while (PeekAndDiscard(TokenType.Semi) &&
+                lexer.Peek().Type != TokenType.End);
+            return new VariantPart
+            {
+                VariantTag = variantID,
+                TagType = ordinalType,
+                Variants = variants
             };
         }
 
-        private void ParseVariantRecord()
+        private Variant ParseVariant()
         {
-            //$TODO: too lazy to do this now, just eat all tokens until the end.
-            //$BUG Won't work if nested structures occur....
-            while (lexer.Peek().Type != TokenType.End)
+            var tagValues = new List<Pascal.Exp>();
+            do
             {
-                lexer.Read();
-            }
+                var c = ParseExp();
+                tagValues.Add(c);
+            } while (PeekAndDiscard(TokenType.Comma));
+            Expect(TokenType.Colon);
+            Expect(TokenType.LParen);
+            var (fields, vp) = ParseFieldList();
+            Expect(TokenType.RParen);
+            return new Variant
+            {
+                TagValues = tagValues,
+                Fields = fields,
+                VariantPart = vp,
+            };
         }
 
         private Pascal.Array ParseArray()

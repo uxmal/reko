@@ -17001,17 +17001,13 @@ Ptr;
 fCodeAddr: Ptr);
 
 { ptr to jt entry }
+
 { code address w/i jt entry (returned) }
 
 RTSetSegLoadParam:
-(fUserHdlr:
-fOldUserHdlr:
-
-{ ptr to user handler }
-{ ptr to old user handler (returned) }
-
-Ptr;
-Ptr);
+(fUserHdlr:		Ptr;	{ ptr to user handler }
+ fOldUserHdlr:	Ptr		{ ptr to old user handler (returned) }
+);
 
 END;
 RTPBPtr = ^RTPB;
@@ -24044,15 +24040,15 @@ h: INTEGER);
 END;
 RectPtr = ^Rect;
 Rect = RECORD
-CASE INTEGER OF
-1:
-(top: INTEGER;
-left: INTEGER;
-bottom: INTEGER;
-right: INTEGER);
-2:
-(topLeft: Point;
-botRight: Point);
+    CASE INTEGER OF
+    1:
+        (top: INTEGER;
+         left: INTEGER;
+         bottom: INTEGER;
+         right: INTEGER);
+    2:
+       (topLeft: Point;
+        botRight: Point);
 END;
 
 PROCEDURE Debugger;

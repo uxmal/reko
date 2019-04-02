@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -76,7 +76,6 @@ namespace Reko.Core.Pascal
             return visitor.VisitTypeDeclaration(this);
         }
 
-
         public override void Write(TextWriter writer)
         {
             writer.Write("type");
@@ -87,6 +86,9 @@ namespace Reko.Core.Pascal
         }
     }
 
+    /// <summary>
+    /// A Callable is either a FUNCTION or PROCEDURE.
+    /// </summary>
     public class CallableDeclaration : Declaration
     {
         public PascalType ReturnType;
@@ -438,12 +440,20 @@ namespace Reko.Core.Pascal
     {
         public List<Field> Fields;
         public bool Packed;
+        public VariantPart VariantPart;
 
         public override void Write(TextWriter writer)
         {
             writer.Write("record");
             writer.Write(" ");
             WriteList(writer, "; ", Fields, WriteField);
+            if (VariantPart != null)
+            {
+                if (Fields.Count > 0)
+                    writer.Write("; ");
+                VariantPart.Write(writer);
+            }
+            writer.Write(" end");
         }
 
         public override T Accept<T>(IPascalSyntaxVisitor<T> visitor)
@@ -451,20 +461,65 @@ namespace Reko.Core.Pascal
             return visitor.VisitRecord(this);
         }
 
-        private void WriteField(TextWriter writer, Field field)
+        public static void WriteField(TextWriter writer, Field field)
         {
-            writer.Write(field.Name);
+            writer.Write(string.Join(", ", field.Names));
             writer.Write(" : ");
             field.Type.Write(writer);
         }
     }
 
-    public class Field
+    public class VariantPart
     {
-        public string Name;
+        public string VariantTag;
+        public PascalType TagType;
+        public List<Variant> Variants;
+
+        public void Write(TextWriter writer)
+        {
+            writer.Write("case ");
+            if (VariantTag != null)
+            {
+                writer.Write(VariantTag);
+                writer.Write(" :");
+            }
+            TagType.Write(writer);
+            writer.Write(" of ");
+            PascalSyntax.WriteList(writer, "; ", Variants, WriteVariant);
+        }
+
+        private void WriteVariant(TextWriter writer, Variant variant)
+        {
+            PascalSyntax.WriteList(writer, ",", variant.TagValues);
+            writer.Write(" : (");
+            PascalSyntax.WriteList(writer, ";", variant.Fields, Record.WriteField);
+            writer.Write(")");
+        }
+    }
+
+    public class Variant
+    { 
+        public List<Exp> TagValues;
+        public List<Field> Fields;
+        public VariantPart VariantPart;
+    }
+
+    public class Field : PascalSyntax
+    {
+        public List<string> Names;
         public PascalType Type;
 
-        public Field(string name, PascalType type) { this.Name = name; this.Type = type; }
+        public Field(List<string> names, PascalType type) { this.Names = names; this.Type = type; }
+
+        public override T Accept<T>(IPascalSyntaxVisitor<T> visitor)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Write(TextWriter writer)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class ParameterDeclaration

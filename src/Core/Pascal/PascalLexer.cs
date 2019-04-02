@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -32,6 +32,7 @@ namespace Reko.Core.Pascal
         private static Dictionary<string, TokenType> keywords = new Dictionary<string, TokenType>(StringComparer.OrdinalIgnoreCase)
         {
             { "array",      TokenType.Array},
+            { "boolean",    TokenType.Boolean },
             { "case",       TokenType.Case },
             { "char",       TokenType.Char },
             { "const",      TokenType.Const },

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -89,6 +89,13 @@ namespace Reko.UnitTests.Core.Pascal
         {
             var src = "(* -- alternative *)\r\nProcEdUrE";
             RunTest(src, T(TokenType.Procedure));
+        }
+
+        [Test]
+        public void PLex_Boolean()
+        {
+            var src = "BooleaN";
+            RunTest(src, T(TokenType.Boolean));
         }
     }
 }
