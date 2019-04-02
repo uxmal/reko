@@ -33,6 +33,8 @@ namespace Reko.Core.Expressions
 	{
         public MkSequence(DataType dt, params Expression [] exprs) : base(dt)
         {
+            if (exprs.Length < 1)
+                throw new ArgumentException("A sequence must have a least one expression.");
             this.Expressions = exprs;
         }
 
