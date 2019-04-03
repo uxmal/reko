@@ -3843,7 +3843,7 @@ SsaLocalStackSlice_exit:
         }
 
         [Test]
-        [Category(Categories.FailedTests)]
+        [Category(Categories.UnitTests)]
         public void SsaLocalStackCommonSequence()
         {
             var proc = Given_Procedure(nameof(SsaLocalStackCommonSequence), m =>
