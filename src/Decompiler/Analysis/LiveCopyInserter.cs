@@ -118,7 +118,7 @@ namespace Reko.Analysis
 			{
                 Identifier id = phi.Src.Arguments[i].Value as Identifier;
                 Block pred = phi.Src.Arguments[i].Block;
-				if (id != null && idDst != id)
+				if (id != null && !(id is MemoryIdentifier) && idDst != id)
 				{
 					if (IsLiveAtCopyPoint(idDst, pred))
 					{

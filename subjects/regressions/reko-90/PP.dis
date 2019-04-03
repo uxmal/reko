@@ -225,7 +225,6 @@ l0800_0235:
 	call SEQ(0x0800, Mem31[es:dx_13 + 0x0002:word16]) (retsize: 2;)
 		uses: ah:ah_35,bx:dx_20,dx:dx_20,sp:fp - 2,Stack +0002:es,Top:Top_98
 		defs: Top:Top_40
-	Mem80 = Mem31
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -234,7 +233,6 @@ l0800_022E:
 	call Mem31[es:dx_13 + 0x0002:ptr32] (retsize: 4;)
 		uses: ah:ah_35,bx:dx_20,dx:dx_20,sp:fp - 2,Stack +0004:es,Top:Top_98
 		defs: Top:Top_48
-	Mem80 = Mem31
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2256,7 +2254,6 @@ l0800_0C58:
 
 l0800_0C4C:
 	ptrLoc06_66 = SEQ(wLoc04_75, wLoc06_67 + 0x0001) (alias)
-	Mem34 = Mem44
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2307,7 +2304,6 @@ l0800_0C88:
 l0800_0C71:
 	Mem39[ptrArg02:byte] = (byte) (word16) fn0800_97CC(ds, (int16) Mem11[ptrArg02:byte])
 	ptrArg02 = SEQ(wArg04_53, wArg02_49 + 0x0001) (alias)
-	Mem11 = Mem41
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -7753,7 +7749,6 @@ l0800_29A1:
 
 l0800_29A8:
 	ptrArg06_282 = SEQ(es_196, di_178 + 0x0004) (alias)
-	Mem76 = Mem216
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -8603,7 +8598,6 @@ l0800_2CD8:
 	bArg08 = SLICE(ax_39, byte, 0) (alias)
 	bArg09 = SLICE(ax_39, byte, 8) (alias)
 	ptrArg02 = SEQ(wArg04_65, wArg02_60 + 0x0001) (alias)
-	Mem22 = Mem43
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -9368,7 +9362,6 @@ l0800_3076:
 
 l0800_3085:
 	si_1046 = fn0800_33CD(ds, fp - 0x0012, ss, 0x0000, 0x45B2, ds, out cx, out dx)
-	Mem914 = Mem892
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -9775,7 +9768,6 @@ l0800_32AE_3:
 l0800_32B0:
 	di = di_204 - 0x0001
 	word16 cx_239 = cx_195
-	Mem244 = Mem217
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -11162,7 +11154,6 @@ l0800_370E:
 l0800_371E:
 	Mem259[ptrLoc0A_332:byte] = 0x5C
 	ptrLoc06_329 = SEQ(wLoc08_358, wLoc0A_359 + 0x0001) (alias)
-	Mem102 = Mem265
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -13362,7 +13353,6 @@ l0800_4382:
 l0800_4376:
 	ptrArg02_125 = SEQ(wArg04_124, wArg02_101 + 0x0001) (alias)
 	ptrArg02 = ptrArg02_125
-	Mem27 = Mem36
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -13429,7 +13419,6 @@ l0800_43B3:
 
 l0800_43B6:
 	ptrArg06 = SEQ(wArg08_120, wArg06_109 + 0x0001) (alias)
-	Mem11 = Mem73
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -13556,7 +13545,6 @@ l0800_4439:
 l0800_4445:
 	di_16 = di_16 + 0x0001
 	wLoc04 = cx_17
-	Mem47 = Mem40
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -13776,7 +13764,6 @@ l0800_4589:
 	sp_114 = sp_59 + 0x000A
 	wLoc06_129 = v20_82
 	wLoc04_128 = SLICE(v21_v20_124, word16, 16)
-	Mem96 = Mem87
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -13793,7 +13780,6 @@ l0800_45C3:
 	wLoc0C_132 = wLoc0C_132 + 0x0001
 	wLoc08_130 = wLoc08_130 >>u 0x0001
 	wLoc0A_131 = __rcr(wLoc0A_131, 0x01, SLICE(cond(wLoc08_130 >>u 0x0001), bool, 1))
-	Mem24 = Mem113
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -13901,7 +13887,6 @@ l0800_463B:
 l0800_4661:
 	word16 ax_32 = Mem29[psegArg04:si_24 + 0x0002:word16]
 	word16 dx_33 = Mem29[psegArg04:si_24:word16]
-	Mem106 = Mem35
 	branch (dx_33 | ax_32) == 0x0000 l0800_46CD
 // DataOut:
 // DataOut (flags):
@@ -13926,7 +13911,6 @@ l0800_4682:
 // SymbolicIn:
 
 l0800_46AB:
-	Mem106 = Mem35
 	branch ax_32 >u wLoc0C_155 l0800_46CD
 // DataOut:
 // DataOut (flags):
@@ -13939,7 +13923,6 @@ l0800_46B6:
 // SymbolicIn:
 
 l0800_46B8:
-	Mem106 = Mem35
 	branch dx_33 >=u wLoc0E_156 l0800_46CD
 // DataOut:
 // DataOut (flags):
@@ -14661,7 +14644,6 @@ l0800_4CBC:
 
 l0800_4CEC:
 	ax_180 = ax_180 | dx_79
-	Mem66 = Mem129
 	branch ax_180 != 0x0000 l0800_4C8E
 // DataOut:
 // DataOut (flags):
@@ -14706,7 +14688,6 @@ l0800_4DBE:
 	word16 v56_439 = wLoc06_761 - 0x0001
 	wLoc06_761 = v56_439
 	wLoc04_760 = wLoc04_760 - (v56_439 <u 0x0000)
-	Mem389 = Mem444
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -16124,7 +16105,6 @@ l0800_58DA:
 l0800_58C8:
 	ptr32 es_bx_203 = Mem198[ds:0x2E55:segptr32]
 	ds = fn0800_5D2F(ds, SLICE(DPB(ax_196, Mem198[SLICE(es_bx_203, selector, 16):(word16) es_bx_203 - Mem198[ds:0x2E2B:word16]:byte], 0), byte, 0))
-	Mem195 = Mem213
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -16155,7 +16135,6 @@ l0800_5881:
 	selector ds_262
 	word16 ax_258 = fn0800_5B15(ds, out si_497, out di_498, out ds_262)
 	ds = fn0800_5D2F(ds_262, SLICE(DPB(ax_258, (byte) ax_258 ^ Mem252[ds_262:0x2E4F:byte], 0), byte, 0))
-	Mem249 = Mem278
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -16252,7 +16231,6 @@ l0800_5858:
 l0800_5846:
 	ptr32 es_bx_434 = Mem429[ds:0x2E55:segptr32]
 	ds = fn0800_5D2F(ds, SLICE(DPB(ax_427, Mem429[SLICE(es_bx_434, selector, 16):(word16) es_bx_434 - Mem429[ds:0x2E2B:word16]:byte], 0), byte, 0))
-	Mem426 = Mem444
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -16511,7 +16489,6 @@ l0800_5ACC:
 l0800_5A9F:
 	di_18 = di_18 + 0x000C
 	wLoc04_123 = wLoc04_123 + 0x0001
-	Mem21 = Mem49
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -18640,7 +18617,6 @@ l0800_6B66:
 
 l0800_6B96:
 	ax_115 = ax_115 | dx_104
-	Mem91 = Mem154
 	branch ax_115 != 0x0000 l0800_6B38
 // DataOut:
 // DataOut (flags):
@@ -18687,7 +18663,6 @@ l0800_6C89:
 	word16 v58_484 = wLoc06_736 - 0x0001
 	wLoc06_736 = v58_484
 	wLoc04_735 = wLoc04_735 - (v58_484 <u 0x0000)
-	Mem434 = Mem489
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -18951,7 +18926,6 @@ l0800_6F86:
 	word16 dx_174
 	word16 ax_171 = fn0800_8C69(ax_115, 0x02, fn0800_3E5D(ds_102, Mem155[ss:sp_150 - 2:word16], Mem155[ss:sp_150:word16], out ds_102, out Top_1391), out cl_1392, out dx_174)
 	word16 sp_175 = <invalid>
-	Mem220 = Mem182
 	branch (ax_171 | dx_174) == 0x0000 l0800_6FC4
 // DataOut:
 // DataOut (flags):
@@ -20314,7 +20288,6 @@ l0800_7B24:
 	selector ds_483
 	word16 ax_479 = (word16) fn0800_8359(ds, out ds_483)
 	fn0800_8624(ds_483, SLICE(DPB(ax_479, (byte) ax_479 ^ Mem473[ds_483:0x2E4F:byte], 0), byte, 0), out di_864, out ds)
-	Mem470 = Mem498
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -20772,7 +20745,6 @@ l0800_7FA5:
 	word16 ax_142 = (word16) fn0800_8359(ds, out ds_146)
 	fn0800_8600(ds_146, SLICE(DPB(ax_142, (byte) ax_142 ^ Mem155[ds_146:0x2E4F:byte], 0), byte, 0), out ds)
 	si_100 = si_100 - 0x0001
-	Mem155 = Mem162
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -20812,7 +20784,6 @@ l0800_7F5D:
 	selector ds_216
 	word16 ax_212 = (word16) fn0800_8359(ds, out ds_216)
 	di_204 = fn0800_8600(ds_216, SLICE(DPB(ax_212, (byte) ax_212 ^ Mem225[ds_216:0x2E4F:byte], 0), byte, 0), out ds) + 0x0001
-	Mem225 = Mem232
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -22332,7 +22303,6 @@ fn0800_867A_exit:
 // SymbolicIn:
 
 l0800_87E5:
-	Mem46 = Mem262
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -22977,7 +22947,6 @@ l0800_895B:
 
 l0800_895C:
 	cx_100 = dx_44 + (ax_113 - cx_115)
-	Mem167 = Mem123
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -23239,7 +23208,6 @@ l0800_8A7C:
 // SymbolicIn:
 
 l0800_8AA5:
-	Mem16 = Mem121
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -27363,7 +27331,6 @@ l0800_98BF:
 	byte bLoc0D_1326 = 0x00
 	word16 wLoc0A_1327 = 0xFFFF
 	word16 wLoc0C_1328 = 0xFFFF
-	Mem74 = Mem62
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -27430,14 +27397,12 @@ l0800_98F7:
 
 l0800_992D:
 	wLoc04_1325 = wLoc04_1325 | 0x0020
-	Mem994 = Mem84
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_9927:
 	wLoc04_1325 = wLoc04_1325 & 0xFFDF
-	Mem994 = Mem88
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -27504,7 +27469,6 @@ l0800_9AE2:
 	di_142 = (word16) es_di_137 (alias)
 	wArg02 = wArg02 + 0x0004
 	Z_156 = SLICE(cond(es_140 | di_142), bool, 2) (alias)
-	Mem181 = Mem139
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -27563,7 +27527,6 @@ l0800_9AA5:
 	di_142 = fp - 0x0047
 	cx_172 = 0x0001
 	ptrArg04 = SEQ(psegArg06_1800, si_1134) (alias)
-	Mem574 = Mem200
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -27673,7 +27636,6 @@ l0800_9AA0:
 // SymbolicIn:
 
 l0800_9AA2:
-	Mem487 = Mem322
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -27844,7 +27806,6 @@ l0800_9B5E:
 
 l0800_9B62:
 	wLoc10_1324 = dx_231
-	Mem528 = Mem523
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -27882,7 +27843,6 @@ l0800_9B7C:
 
 l0800_9B83:
 	wLoc10_1324 = wLoc10_1324 - 0x0001
-	Mem576 = Mem553
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -27928,7 +27888,6 @@ l0800_9BBB:
 	wLoc04_1325 = wLoc04_1325 | 0x0040
 	bx_578 = wLoc0A_1327 - 0x0002
 	wLoc10_1324 = v40_599
-	Mem616 = Mem600
 	branch v40_599 >= 0x0000 l0800_9BCC
 // DataOut:
 // DataOut (flags):
@@ -27936,7 +27895,6 @@ l0800_9BBB:
 
 l0800_9BC7:
 	wLoc10_1324 = 0x0000
-	Mem616 = Mem603
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -27949,7 +27907,6 @@ l0800_9BA4:
 
 l0800_9BAA:
 	wLoc10_1324 = 0x0001
-	Mem617 = Mem606
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -28100,8 +28057,6 @@ l0800_9C31:
 
 l0800_9C34:
 	cx = cx - 0x0001
-	Mem812 = Mem821
-	Mem1113 = Mem821
 	branch cx != 0x0000 l0800_9C26
 // DataOut:
 // DataOut (flags):
@@ -28157,7 +28112,6 @@ l0800_9941:
 	wLoc04_1325 = wLoc04_1325 | 0x0008
 	ch_1223 = 0x01
 	cx_1233 = DPB(cx_1232, 0x01, 8) (alias)
-	Mem993 = Mem864
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -28170,14 +28124,12 @@ l0800_99CC:
 
 l0800_99D1:
 	wLoc04_1325 = wLoc04_1325 & 0xFFEF
-	Mem994 = Mem876
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_99C5:
 	wLoc04_1325 = wLoc04_1325 | 0x0010
-	Mem994 = Mem880
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -28206,7 +28158,6 @@ l0800_99A9:
 l0800_99AE:
 	wLoc0C_1328 = ax_891
 	ax_1183 = wLoc0C_1328
-	Mem995 = Mem901
 	branch wLoc0C_1328 == 0x0000 l0800_996A
 // DataOut:
 // DataOut (flags):
@@ -28215,7 +28166,6 @@ l0800_99AE:
 l0800_99B5:
 	ax_1183 = (wLoc0C_1328 << 0x0003) + (wLoc0C_1328 << 0x0001)
 	wLoc0C_1328 = ax_891 + ax_1183
-	Mem993 = Mem913
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -28226,7 +28176,6 @@ l0800_9990:
 	cx_1233 = DPB(cx_2053, 0x02, 8) (alias)
 	wLoc0A_1327 = ax_891
 	ax_1183 = wLoc0A_1327
-	Mem995 = Mem917
 	branch wLoc0A_1327 < 0x0000 l0800_996A
 // DataOut:
 // DataOut (flags):
@@ -28235,7 +28184,6 @@ l0800_9990:
 l0800_9999:
 	ax_1183 = (wLoc0A_1327 << 0x0003) + (wLoc0A_1327 << 0x0001)
 	wLoc0A_1327 = ax_891 + ax_1183
-	Mem993 = Mem929
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -28250,7 +28198,6 @@ l0800_997F:
 	ch_1223 = 0x04
 	cx_1233 = DPB(cx_1232, 0x04, 8) (alias)
 	wLoc0C_1328 = wLoc0C_1328 + 0x0001
-	Mem993 = Mem935
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -28263,7 +28210,6 @@ l0800_990C:
 
 l0800_9911:
 	wLoc04_1325 = wLoc04_1325 | 0x0002
-	Mem993 = Mem940
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -28291,7 +28237,6 @@ l0800_9972:
 	ch_1223 = ch_1223 + 0x01
 	wLoc0C_1328 = ax_1183
 	cx_1233 = DPB(cx_1232, ch_1223, 8) (alias)
-	Mem993 = Mem951
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -28313,7 +28258,6 @@ l0800_9965:
 	wLoc0A_1327 = ax_1183
 	ch_1223 = 0x03
 	cx_1242 = DPB(cx_1232, 0x03, 8) (alias)
-	Mem995 = Mem966
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -28332,7 +28276,6 @@ l0800_9901:
 
 l0800_9906:
 	wLoc04_1325 = wLoc04_1325 | 0x0001
-	Mem993 = Mem971
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -28356,7 +28299,6 @@ l0800_991C:
 
 l0800_9922:
 	bLoc0D_1326 = dl_131
-	Mem996 = Mem978
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -28450,7 +28392,6 @@ l0800_98A5:
 	ax = DPB(ax_1144, al_1078, 0) (alias)
 	di_1010 = di_1010 + 0x0001
 	bLoc16_1529 = v16_1084
-	Mem36 = Mem1085
 	branch v16_1084 > 0x00 l0800_989B
 // DataOut:
 // DataOut (flags):
@@ -28458,7 +28399,6 @@ l0800_98A5:
 
 l0800_98AE:
 	di_1010 = fn0800_9858(cx, dx, bx, fp - 2, di_1010, es_1009)
-	Mem36 = Mem1085
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -30980,7 +30920,6 @@ l0800_A7D1:
 l0800_A798:
 	Mem83[ptrLoc06_154:byte] = cl_80
 	ptrLoc06_154 = SEQ(wLoc04_158, wLoc06_155 + 0x0001) (alias)
-	Mem32 = Mem85
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -31207,7 +31146,6 @@ l0800_A89A:
 
 l0800_A8A4:
 	ptrLoc06_86 = SEQ(wLoc04_87, wLoc06_91 + 0x0014) (alias)
-	Mem32 = Mem65
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -31564,7 +31502,6 @@ l0800_AA42:
 
 l0800_AA4C:
 	ptrLoc06_61 = SEQ(wLoc04_66, wLoc06_62 + 0x0014) (alias)
-	Mem16 = Mem27
 	branch wLoc06_62 <u (word16) (Mem27[ds:0x24E8:word16] *s 0x0014) + 0x2358 l0800_AA42
 // DataOut:
 // DataOut (flags):
@@ -31770,7 +31707,6 @@ l0800_AB5D:
 l0800_AB7A:
 	ax_102 = fn0800_AEC2(ds, SEQ(wArg04_229, wArg02_231), out ch_337, out dx_338)
 	ptrArg02 = SEQ(wArg04_229, wArg02_231) (alias)
-	Mem110 = Mem78
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -31822,7 +31758,6 @@ l0800_AB0E:
 l0800_AB00:
 	di_128 = di_128 + Mem133[ptrArg02 + 0x0006:word16]
 	wArg06 = wArg06 - Mem133[ptrArg02 + 0x0006:word16]
-	Mem133 = Mem147
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -31932,7 +31867,6 @@ l0800_ABF8:
 	sp_100 = <invalid>
 	wArg04 = dx_98
 	wArg02 = fn0800_8CCB(wArg02, 0x0000, wArg04, wArg06, out ch_264, out dx_98)
-	Mem57 = Mem107
 	dx_28 = dx_98
 // DataOut:
 // DataOut (flags):
@@ -32865,7 +32799,6 @@ l0800_B002:
 	word16 v23_120 = wLoc06_166 + 0x0004
 	wLoc06_166 = v23_120
 	di_151 = (word16) SEQ(es_47, v23_120) (alias)
-	Mem62 = Mem121
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -34214,7 +34147,6 @@ l0800_B659:
 	ax_344 = fn0800_B30A(ds, SLICE(DPB(di_16, Mem335[ptrArg08_484:byte], 0), byte, 0), SEQ(wArg04_480, wArg02_482), out cx_346, out dx_347, out bx_345)
 	ptrArg02 = SEQ(wArg04_480, wArg02_482) (alias)
 	ptrArg08_484 = SEQ(wArg0A_495, wArg08_485 + 0x0001) (alias)
-	Mem435 = Mem342
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -34542,7 +34474,6 @@ l0800_B7F0:
 	Mem256[ss:sp_221:word16] = wLoc0E
 	fn0800_B6A8(ds, Mem256[ss:sp_221:segptr32], Mem256[ss:sp_221 + 4:segptr32], out cx_144)
 	wLoc0E = wLoc0E + Mem256[ds:0x4EE8:word16]
-	Mem272 = Mem268
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -34643,7 +34574,6 @@ l0800_B883:
 
 l0800_B89A:
 	wLoc06 = wLoc06 + Mem383[ds:0x4EE8:word16]
-	Mem427 = Mem424
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -34716,7 +34646,6 @@ l0800_B93D:
 	cx = fn0800_B6D6(cx_534, bx_533, fp - 2, ax_532, ax_498, ds, stackArg2, wArg02, wArg04, out bx, out Top_116)
 	sp_14 = sp_536
 	wArg04 = wLoc06
-	Mem24 = Mem569
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -35528,7 +35457,6 @@ l0800_BC9D:
 l0800_BC9A:
 	ptrArg02_289 = SEQ(wArg04_237, wArg02_235 + 0x0001) (alias)
 	ptrArg02 = ptrArg02_289
-	Mem69 = Mem76
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -36850,7 +36778,6 @@ l0800_C57C:
 
 l0800_C579:
 	wArg04 = wArg04 + 0x0001
-	Mem55 = Mem63
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

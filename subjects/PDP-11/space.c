@@ -890,16 +890,13 @@ void fn11A6(ptr16 r0, word16 * r5)
 		r5_n = (word16 **) ((char *) r5_n + 0x02);
 		Eq_n wLoc02_n = v24_n;
 		bool Z_n = SLICE(cond(v24_n), bool, 2);
-		Mem50 = Mem45;
 		while (!Z_n)
 		{
 			Eq_n v27_n = __ror(wLoc02_n, wLoc02_n);
 			wLoc02_n = v27_n;
-			Mem68 = Mem52;
 			if (v27_n < 0x00)
 			{
 				r4_n &= 0x01;
-				Mem68 = Mem52;
 				if (r4_n != 0x00)
 				{
 					*r3_n = *r5_n;

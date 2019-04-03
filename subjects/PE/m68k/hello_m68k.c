@@ -209,7 +209,6 @@ void fn000016D0(word32 d3, word32 d4, word32 d5, word32 d6, word32 d7, word32 a2
 			a0_n = dwArg08_n;
 			d6_n = DPB(d6_n, v38_n, 0);
 			++dwArg08_n;
-			Mem57 = Mem112;
 			if (v38_n == 0x00)
 				return;
 		}
@@ -1783,7 +1782,6 @@ l00002DE8:
 			a5->ptrFFFFFAD0 = (struct Eq_n *) *dwLoc1C_n;
 			struct Eq_n *** v30_n = (char *) dwLoc1C_n + 0x04;
 			dwLoc1C_n = v30_n;
-			Mem138 = Mem148;
 		} while (*v30_n != 0x00);
 	}
 	a3Out = a3;

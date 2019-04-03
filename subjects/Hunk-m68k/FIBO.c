@@ -1836,10 +1836,7 @@ void fn00002B98(Eq_n d2, Eq_n a3, Eq_n dwArg04)
 		while (a2_n != 0x00)
 		{
 			if ((*((word32) a2_n + 0x0018) & 0x02) != 0x00)
-			{
 				fn00001FA4(d2, a3, a2_n, out a0_n, out a1_n, out a5_n);
-				Mem43 = Mem25;
-			}
 			a2_n = *((word32) a2_n + 0x0C);
 		}
 	}
@@ -3191,10 +3188,7 @@ Eq_n fn00003DC8(Eq_n d2, Eq_n a3, ptr32 & a1Out, ptr32 & a5Out)
 	while (a2_n != 0x00)
 	{
 		if ((*((word32) a2_n + 0x0018) & 0x0202) == 0x0202 && *a2_n != 0x00)
-		{
 			fn00001FA4(d2, a3, a2_n, out a0_n, out a1, out a5);
-			Mem42 = Mem24;
-		}
 		a2_n = *((word32) a2_n + 0x0C);
 		d0_n = a2_n;
 	}
@@ -3228,10 +3222,7 @@ Eq_n fn00003E04(Eq_n a3, byte * dwArg04, union Eq_n & d1Out, byte & a1Out, ptr32
 				d1.u0 = (int32) *a0_n;
 			}
 			else
-			{
 				d1 = fn00001E90(d2_n, a3, (int32) (int16) *a2_n, *(union Eq_n *) 0x3FF4, out a0_n, out a1, out a5);
-				Mem103 = Mem55;
-			}
 			if (d1 == -0x01)
 			{
 				&d0_n.u0->t0000 = -0x01;

@@ -508,7 +508,6 @@ l00001C24:
 	a0_106 = dwArg08_198
 	d6_110 = DPB(d6_110, v38_107, 0)
 	dwArg08_198 = dwArg08_198 + 0x00000001
-	Mem57 = Mem112
 	branch v38_107 != 0x00 l0000170E
 // DataOut:
 // DataOut (flags):
@@ -3654,7 +3653,6 @@ l00002DF0:
 	Mem146[a5 + -1328:word32] = Mem143[dwLoc1C_312:word32]
 	word32 v30_147 = dwLoc1C_312 + 0x00000004
 	dwLoc1C_312 = v30_147
-	Mem138 = Mem148
 	branch Mem148[v30_147:word32] != 0x00000000 l00002DF0
 // DataOut:
 // DataOut (flags):

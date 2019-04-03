@@ -600,10 +600,7 @@ ci16 fn0800-065B(struct Eq_n * ds, struct Eq_n Eq_n::* wArg02)
 			di_n = (word16) di_n + 0x01;
 			di_n = di_n;
 			if (ds->*di_n == 0x0A)
-			{
 				++wLoc04_n;
-				Mem38 = Mem44;
-			}
 		}
 		ax_n = wLoc04_n;
 	}
@@ -644,10 +641,7 @@ void fn0800-075B(struct Eq_n * ds)
 		if (di_n == 0x00)
 			break;
 		if (((ds->*si_n).w0002 & 0x0300) == 0x0300)
-		{
 			_fflush(ds, si_n);
-			Mem51 = Mem30;
-		}
 		++si_n;
 	}
 }
@@ -720,10 +714,7 @@ void _fgetc(struct Eq_n * ds, struct Eq_n Eq_n::* wArg02)
 							(ds->*wArg02).w0002 = (ds->*wArg02).w0002 & 65151 | 0x20;
 						return;
 					}
-					if (bLoc03 != 0x0D)
-						break;
-					Mem44 = Mem73;
-				} while (((ds->*wArg02).w0002 & 0x40) == 0x00);
+				} while (bLoc03 == 0x0D && ((ds->*wArg02).w0002 & 0x40) == 0x00);
 				(ds->*wArg02).w0002 &= ~0x20;
 				return;
 			}
@@ -735,7 +726,6 @@ void _fgetc(struct Eq_n * ds, struct Eq_n Eq_n::* wArg02)
 			else
 				ax_n = 0x00;
 			_setvbuf(ds, wArg02, 0x00, ax_n, 0x0200);
-			Mem31 = Mem174;
 		}
 	} while (fn0800-0782(ds, wArg02) == 0x00);
 }
@@ -1190,7 +1180,6 @@ l0800_nDA:
 				byte bLoc8F_n = 0x00;
 				Eq_n wLoc94_n = ~0x00;
 				Eq_n wLoc92_n = ~0x00;
-				Mem74 = Mem62;
 				while (true)
 				{
 					Eq_n ax_n = DPB(ax_n, 0x00, 8);
@@ -1245,16 +1234,12 @@ l0800_nDA:
 						if (ch_n > 0x00)
 							goto l0800_n;
 						if (bLoc8F_n != 0x2B)
-						{
 							bLoc8F_n = dl_n;
-							Mem994 = Mem983;
-						}
 						break;
 					case 0x01:
 						if (ch_n > 0x00)
 							goto l0800_n;
 						wLoc9A_n |= 0x01;
-						Mem992 = Mem976;
 						break;
 					case 0x02:
 						ax_n = ds->*wArg02;
@@ -1264,7 +1249,6 @@ l0800_nDA:
 							wLoc94_n = ax_n;
 							ch_n = 0x03;
 							cx_n = DPB(cx_n, 0x03, 8);
-							Mem993 = Mem971;
 							goto l0800_nE5;
 						}
 						if (ch_n != 0x04)
@@ -1272,13 +1256,11 @@ l0800_nDA:
 						++ch_n;
 						wLoc92_n = ax_n;
 						cx_n = DPB(cx_n, ch_n, 8);
-						Mem992 = Mem968;
 						break;
 					case 0x03:
 						if (ch_n > 0x00)
 							goto l0800_n;
 						wLoc9A_n |= 0x02;
-						Mem992 = Mem957;
 						break;
 					case 0x04:
 						if (ch_n >= 0x04)
@@ -1297,12 +1279,10 @@ l0800_n:
 							cx_n = DPB(cx_n, 0x02, 8);
 							wLoc94_n = ax_n;
 							ax_n = wLoc94_n;
-							Mem993 = Mem937;
 							if (wLoc94_n < 0x00)
 								goto l0800_nE5;
 							ax_n = (wLoc94_n << 0x03) + (wLoc94_n << 0x01);
 							wLoc94_n = ax_n + ax_n;
-							Mem992 = Mem949;
 						}
 						else
 						{
@@ -1313,31 +1293,26 @@ l0800_nCE:
 							}
 							wLoc92_n = ax_n;
 							ax_n = wLoc92_n;
-							Mem993 = Mem921;
 							if (wLoc92_n < 0x00)
 								goto l0800_nE5;
 							ax_n = (wLoc92_n << 0x03) + (wLoc92_n << 0x01);
 							wLoc92_n = ax_n + ax_n;
-							Mem992 = Mem933;
 						}
 						break;
 					case 0x06:
 						wLoc9A_n |= 0x10;
 						ch_n = 0x05;
 						cx_n = DPB(cx_n, 0x05, 8);
-						Mem992 = Mem900;
 						break;
 					case 0x07:
 						wLoc9A_n = (wLoc9A_n | 0x0100) & ~0x10;
 						ch_n = 0x05;
 						cx_n = DPB(cx_n, 0x05, 8);
-						Mem992 = Mem895;
 						break;
 					case 0x08:
 						wLoc9A_n = wLoc9A_n & ~0x10 | 0x80;
 						ch_n = 0x05;
 						cx_n = DPB(cx_n, 0x05, 8);
-						Mem992 = Mem887;
 						break;
 					case 0x09:
 						cx_n = cx;
@@ -1348,7 +1323,6 @@ l0800_nCE:
 							wLoc9A_n |= 0x08;
 							ch_n = 0x01;
 							cx_n = DPB(cx_n, 0x01, 8);
-							Mem992 = Mem879;
 						}
 						else
 						{
@@ -1434,7 +1408,6 @@ l0800_nA2:
 										--cx;
 									} while (cx != 0x00);
 								}
-								Mem32 = Mem383;
 								goto l0800_nDA;
 							}
 						}
@@ -1485,7 +1458,6 @@ l0800_nF1:
 						dx_n = wLoc92_n;
 						if (wLoc92_n <= di_n)
 							dx_n = di_n;
-						Mem488 = Mem324;
 						goto l0800_n;
 					case 0x0F:
 						Eq_n cx_n = wLoc92_n;
@@ -1534,10 +1506,7 @@ l0800_n:
 									--cx_n;
 								dx_n -= cx_n;
 								if (dx_n > 0x00)
-								{
 									wLoc8E_n = dx_n;
-									Mem527 = Mem524;
-								}
 							}
 						}
 						if (bLoc8F_n != 0x00 && es->*di_n.u0 != 0x2D)
@@ -1557,7 +1526,6 @@ l0800_n:
 						sp_n = (char *) sp_n + 0x02;
 						di_n = fp - 0x89;
 						cx_n.u0 = 0x01;
-						Mem567 = Mem198;
 						goto l0800_n;
 					case 0x11:
 						bool Z_n;
@@ -1578,7 +1546,6 @@ l0800_n:
 							di_n = (word16) es_di_n;
 							wArg02 = (word32) wArg02 + 0x04;
 							Z_n = SLICE(cond(es | di_n), bool, 2);
-							Mem179 = Mem137;
 						}
 						if (!Z_n)
 						{
@@ -1608,12 +1575,8 @@ l0800_n:
 									wLoc9A_n |= 0x40;
 									bx_n = wLoc94_n - 0x02;
 									wLoc8E_n = v37_n;
-									Mem609 = Mem593;
 									if (v37_n < 0x00)
-									{
 										wLoc8E_n.u0 = 0x00;
-										Mem609 = Mem596;
-									}
 								}
 l0800_nB5:
 								cx = cx_n + wLoc8E_n;
@@ -1680,8 +1643,6 @@ l0800_nB5:
 										if (v42_n <= 0x00)
 											di_n = fn0800-10A1(cx, dx, bx_n, fp - 0x02, di_n, es);
 										--cx;
-										Mem796 = Mem805;
-										Mem1112 = Mem805;
 									} while (cx != 0x00);
 								}
 								bx = bx_n;
@@ -1699,10 +1660,7 @@ l0800_nB5:
 								goto l0800_nDA;
 							}
 							if (wLoc8E_n <= 0x00)
-							{
 								wLoc8E_n.u0 = 0x01;
-								Mem610 = Mem599;
-							}
 						}
 						goto l0800_nB5;
 					case 0x12:
@@ -1746,13 +1704,11 @@ l0800_n:
 						wLoc9A_n &= ~0x20;
 						ch_n = 0x05;
 						cx_n = DPB(cx_n, 0x05, 8);
-						Mem992 = Mem91;
 						break;
 					case 0x17:
 						wLoc9A_n |= 0x20;
 						ch_n = 0x05;
 						cx_n = DPB(cx_n, 0x05, 8);
-						Mem992 = Mem86;
 						break;
 					}
 					cx_n = DPB(cx_n, ch_n, 8);
@@ -1768,12 +1724,8 @@ l0800_n:
 		ax = DPB(ax_n, al_n, 0);
 		++di_n;
 		bLoc57_n = v15_n;
-		Mem36 = Mem1083;
 		if (v15_n <= 0x00)
-		{
 			di_n = fn0800-10A1(cx, dx, bx, fp - 0x02, di_n, es);
-			Mem36 = Mem1083;
-		}
 	}
 l0800_n:
 	if (bLoc57_n < 0x50)
@@ -1963,7 +1915,6 @@ l0800_n:
 		{
 			wLoc24.u0 = ~0x00;
 			bLoc2B = 0x00;
-			Mem57 = Mem54;
 			while (true)
 			{
 				++si_n;
@@ -1997,17 +1948,14 @@ l0800_nE6:
 					goto l0800_nF;
 				case 0x04:
 					bLoc2B |= 0x01;
-					Mem57 = Mem783;
 					break;
 				case 0x05:
 					wLoc24 = ax_n - 0x30;
-					Mem57 = Mem770;
 					wLoc24_n = wLoc24;
 					if (wLoc24_n >= 0x00)
 					{
 						dx = SLICE(wLoc24_n * 0x0A, word16, 16);
 						wLoc24 = (word16) (ax_n - 0x30) + (word16) (wLoc24_n * 0x0A);
-						Mem57 = Mem780;
 					}
 					break;
 				case 0x06:
@@ -2016,7 +1964,6 @@ l0800_nE6:
 					Eq_n si_n = wLoc24_n;
 					if (wLoc24_n < 0x00)
 						si_n.u0 = 0x01;
-					Mem759 = Mem63;
 					if (wLoc24_n != 0x00)
 					{
 						do
@@ -2054,10 +2001,7 @@ l0800_nE6:
 						} while (si_n > 0x00);
 					}
 					if ((bLoc2B & 0x01) == 0x00)
-					{
 						++wLoc2A_n;
-						Mem1008 = Mem766;
-					}
 					goto l0800_n;
 				case 0x07:
 				case 0x08:
@@ -2125,15 +2069,12 @@ l0800_nE6:
 					}
 				case 11:
 					bLoc2B |= 0x08;
-					Mem57 = Mem459;
 					break;
 				case 0x0C:
 					bLoc2B |= 0x02;
-					Mem57 = Mem455;
 					break;
 				case 0x0D:
 					bLoc2B |= 0x04;
-					Mem57 = Mem451;
 					break;
 				case 0x0E:
 					si_n.u0 = 0x08;
@@ -2168,14 +2109,12 @@ l0800_nE6:
 					word16 ax_n = (word16) al_n;
 					struct Eq_n Eq_n::* si_n = si_n + 0x01;
 					bLoc2B = v42_n;
-					Mem1053 = Mem143;
 					if (al_n == 0x5E)
 					{
 						al_n = si_n[0x01];
 						bLoc2B = v42_n | 0x10;
 						ax_n = DPB(ax_n, al_n, 0);
 						si_n = si_n + 0x02;
-						Mem1053 = Mem148;
 					}
 					cu16 ax_n = DPB(DPB(ax_n, 0x00, 8), al_n, 0);
 l0800_nA23:
@@ -2208,12 +2147,8 @@ l0800_nA23:
 							wArg08 = si_n;
 							wLoc24 = v61_n;
 							Eq_n si_n = v61_n;
-							Mem210 = Mem192;
 							if ((bLoc2B & 0x01) == 0x00)
-							{
 								di_n = fn0800-1708(fp - 0x02, ds, out es_n);
-								Mem210 = Mem192;
-							}
 							while (true)
 							{
 								Eq_n si_n = si_n - 0x01;
@@ -2293,7 +2228,6 @@ l0800_nAB6:
 										cx = (ss->*sp_n).t0002;
 										es_n = (ss->*sp_n).t0004;
 										sp_n = (char *) &(ss->*sp_n).t0004 + 0x02;
-										Mem372 = Mem366;
 										if ((word32) si_n + 0x01 < v61_n)
 											break;
 										goto l0800_nAD3;
@@ -2349,7 +2283,6 @@ l0800_nAD3:
 					dx.u0 = 0x00;
 					if ((bLoc2B & 0x01) == 0x00)
 						goto l0800_nE;
-					Mem57 = Mem63;
 					break;
 				case 0x12:
 					si_n.u0 = 0x10;
@@ -2418,11 +2351,9 @@ l0800_nE:
 					return dx;
 				case 0x14:
 					bLoc2B &= 223;
-					Mem57 = Mem88;
 					break;
 				case 0x15:
 					bLoc2B |= 0x20;
-					Mem57 = Mem84;
 					break;
 				}
 			}
@@ -2474,7 +2405,6 @@ l0800_n:
 					cx = (ss->*sp_n).t0002;
 					sp_n = (char *) &(ds->*sp_n).t0002 + 0x02;
 					--wLoc28_n;
-					Mem29 = Mem963;
 					goto l0800_n;
 				}
 				Eq_n v25_n = (word32) wLoc28_n + 0x01;

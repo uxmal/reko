@@ -4191,7 +4191,6 @@ l00002B96:
 
 l00002B9E:
 	fn00001F80(d2, a3, a2_10, out a0_109, out a1_110, out a5_111)
-	Mem43 = Mem25
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -7054,7 +7053,6 @@ l00003DC4:
 
 l00003DC8:
 	fn00001F80(d2, a3, a2_11, out a0_97, out a1, out a5)
-	Mem42 = Mem24
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -7127,7 +7125,6 @@ l00003E0A:
 
 l00003E36:
 	d1 = fn00001E6C(d2_101, a3, (int32) (int16) Mem46[a2_12:byte], Mem26[0x00003FD0:word32], out a0_65, out a1, out a5)
-	Mem103 = Mem55
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

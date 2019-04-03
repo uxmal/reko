@@ -84,7 +84,6 @@ word32 verify(Eq_n rdi[])
 			return (word32) rax_n;
 		}
 		++dwLoc0C_n;
-		Mem11 = Mem83;
 	}
 	rax_n = DPB(rax_n, (word32) (dwLoc0C_n == 0x17), 0);
 	return (word32) rax_n;

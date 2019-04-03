@@ -489,7 +489,6 @@ void fn0A94(int16 r3, Eq_n r4, word16 * r5)
 			r4 = r4_n | 0x4000;
 			r5 = (word16 *) &r5_n->w0002;
 			wLoc02_n = v24_n;
-			Mem29 = Mem58;
 		} while (v24_n > 0x00);
 		r5_n->w0002 = 0xF700;
 		r5_n->w0004 = 0x00;
@@ -561,7 +560,6 @@ void fn0B06(int16 r3, Eq_n r4, word16 * r5)
 				fn0C36(r2_n, v31_n);
 			fn13AA(r2_n + 0x03);
 			0x0B8E = 2959;
-			Mem27 = Mem108;
 		} while (0x0B8E != 0x00);
 		globals->t005E = (word16) globals->t005E + 0x04;
 		globals->t0068 = (word16) globals->t0068 + 2000;
@@ -832,7 +830,6 @@ l0EF0:
 		ci16 v29_n = wLoc02_n - 0x01;
 		++r5;
 		wLoc02_n = v29_n;
-		Mem14 = Mem85;
 	} while (v29_n > 0x00);
 	return r5;
 }

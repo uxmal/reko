@@ -2424,7 +2424,6 @@ l0000000000405440:
 					else if (al_n < 0x41 || al_n > 0x5F && (byte) (rax_n - 0x61) > 0x1D)
 					{
 l0000000000405460:
-						Mem214 = Mem183;
 						do
 						{
 							rax_n = DPB(rax_n, mbrtowc(fp + ~0x205B, r15_n, r13_n - r15_n, fp + ~0x2057), 0);
@@ -5127,7 +5126,6 @@ Eq_n fn0000000000409E50(Eq_n rax, Eq_n rcx, Eq_n rdx, Eq_n rsi[], Eq_n rdi)
 					qwLoc50_n = rbx_n;
 					rbp_n += rcx;
 					r14_n = rsi[rbx_n * 0x02];
-					Mem47 = Mem123;
 					if (r14_n == 0x00)
 						break;
 					continue;
@@ -5140,13 +5138,9 @@ Eq_n fn0000000000409E50(Eq_n rax, Eq_n rcx, Eq_n rdx, Eq_n rsi[], Eq_n rdi)
 						cl_n = 0x01;
 					rax_n.u0 = 0x01;
 					bLoc41_n = cl_n;
-					Mem118 = Mem106;
 				}
 				else
-				{
 					bLoc41_n = 0x01;
-					Mem118 = Mem86;
-				}
 			}
 			rbx_n = (word32) rbx_n + 0x01;
 			rbp_n += rcx;
@@ -7320,7 +7314,6 @@ l000000000040CE03:
 			{
 				*r15_n = 0xFFFD;
 				bLoc39_n = 0x01;
-				Mem103 = Mem100;
 				ebx_n = ebx_n;
 			}
 			r15_n += 0x04;
@@ -7520,7 +7513,6 @@ l000000000040D2C3:
 						Eq_n rbx_n = rax_n;
 						if (rax_n == ~0x00)
 						{
-							Mem236 = Mem122;
 							if (r15d_n != 0x00)
 								goto l000000000040D369;
 							goto l000000000040D29B;
@@ -7531,7 +7523,6 @@ l000000000040D2C3:
 								goto l000000000040D369;
 							rbp_n = r13_n;
 							r12d_n = (word32) (uint64) (r12d_n + 0x01);
-							Mem98 = Mem122;
 							if (false)
 								goto l000000000040D401;
 							goto l000000000040D2AC;
@@ -7564,7 +7555,6 @@ l000000000040D2C3:
 						int32 eax_n = mbsinit(fp - 0x48);
 						rbp_n += rbx_n;
 						rax_n.u1 = DPB(rax_n, eax_n, 0);
-						Mem235 = Mem122;
 					} while (eax_n == 0x00);
 				}
 				else

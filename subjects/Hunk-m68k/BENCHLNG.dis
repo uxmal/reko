@@ -4245,7 +4245,6 @@ l00002BCE:
 
 l00002BD6:
 	fn000020B0(d2, a3, a2_10, out a0_109, out a1_110, out a5_111)
-	Mem43 = Mem25
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -7120,7 +7119,6 @@ l00003DFC:
 
 l00003E00:
 	fn000020B0(d2, a3, a2_11, out a0_97, out a1, out a5)
-	Mem42 = Mem24
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

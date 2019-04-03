@@ -195,7 +195,6 @@ Eq_n fn004004B4(Eq_n r2, Eq_n r3, byte * r4, word32 r13, word32 r14, word32 r15,
 				r10_n = 0x00;
 			int32 r4_n = (int32) (int8) ((int32) (int8) (word32) *((byte) (r14_n->aFFFFFFE4 + 0x0020 + dwLoc0284_n) + r10_n * 0x08) >> 0x04);
 			dwLoc0284_n = r4_n;
-			Mem237 = Mem125;
 			if (r4_n < 0x08)
 			{
 				lr = fn004005A0(r4_n << 0x02, lr);
@@ -206,7 +205,6 @@ Eq_n fn004004B4(Eq_n r2, Eq_n r3, byte * r4, word32 r13, word32 r14, word32 r15,
 					r31_n = (int32) (int8) (word32) *r23_n;
 				}
 				r2 = fn00400E04(r2, r31_n, r3, fp + -0x0288, r25, r26_n, r27, r28, r29, r30, out r25, out r26_n, out r27, out r28, out r29, out r30);
-				Mem237 = Mem201;
 			}
 			++r23_n;
 			r31_n = (int32) (int8) (word32) *r23_n;

@@ -2422,7 +2422,6 @@ l11C6:
 	r5_15 = r5_15 + 0x0002
 	word16 wLoc02_92 = v24_44
 	bool Z_48 = SLICE(cond(v24_44), bool, 2)
-	Mem50 = Mem45
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2436,7 +2435,6 @@ l11CC:
 l11CE:
 	word16 v27_51 = __ror(wLoc02_92, wLoc02_92)
 	wLoc02_92 = v27_51
-	Mem68 = Mem52
 	branch v27_51 >=u 0x0000 l11DC
 // DataOut:
 // DataOut (flags):
@@ -2444,7 +2442,6 @@ l11CE:
 
 l11D4:
 	r4_37 = r4_37 & 0x0001
-	Mem68 = Mem52
 	branch r4_37 == 0x0000 l11DC
 // DataOut:
 // DataOut (flags):

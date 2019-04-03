@@ -4561,7 +4561,6 @@ l000000000040554F:
 // SymbolicIn:
 
 l0000000000405460:
-	Mem214 = Mem183
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -10531,7 +10530,6 @@ l0000000000409EA0:
 
 l0000000000409F50:
 	bLoc41_169 = 0x01
-	Mem118 = Mem86
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -10552,7 +10550,6 @@ l0000000000409ED1_1:
 l0000000000409ED4:
 	rax_157 = 0x0000000000000001
 	bLoc41_169 = cl_102
-	Mem118 = Mem106
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -10571,7 +10568,6 @@ l0000000000409F10:
 	qwLoc50_168 = rbx_109
 	rbp_114 = rbp_114 + rcx
 	r14_119 = Mem123[rsi + rbx_109 * 0x0000000000000008:word64]
-	Mem47 = Mem123
 	branch r14_119 != 0x0000000000000000 l0000000000409EE8
 // DataOut:
 // DataOut (flags):
@@ -15295,7 +15291,6 @@ l000000000040D010:
 l000000000040D019:
 	Mem98[r15_102:word32] = 0x0000FFFD
 	bLoc39_593 = 0x01
-	Mem103 = Mem100
 	ebx_357 = ebx_362
 // DataOut:
 // DataOut (flags):
@@ -15840,7 +15835,6 @@ l000000000040D2F4:
 // SymbolicIn:
 
 l000000000040D360:
-	Mem236 = Mem122
 	branch r15d_310 == 0x00000000 l000000000040D29B
 // DataOut:
 // DataOut (flags):
@@ -15868,7 +15862,6 @@ l000000000040D3E8:
 l000000000040D3F1:
 	rbp_128 = r13_16
 	r12d_143 = (word32) (uint64) (r12d_143 + 0x00000001) (alias)
-	Mem98 = Mem122
 	branch true l000000000040D2AC
 // DataOut:
 // DataOut (flags):
@@ -15950,7 +15943,6 @@ l000000000040D2E3:
 	word32 eax_206 = mbsinit(fp - 0x0000000000000048)
 	rbp_128 = rbp_128 + rbx_135
 	rax_106 = DPB(rax_299, eax_206, 0) (alias)
-	Mem235 = Mem122
 	branch eax_206 != 0x00000000 l000000000040D2A3
 // DataOut:
 // DataOut (flags):

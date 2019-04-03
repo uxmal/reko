@@ -375,7 +375,6 @@ l00400524:
 l00400548:
 	word32 r4_122 = (int32) (int8) ((int32) (int8) (word32) Mem89[r14_84 + 4 + ((r10_105 << 0x03) + dwLoc0284_306):byte] >> 0x00000004)
 	dwLoc0284_306 = r4_122
-	Mem237 = Mem125
 	branch r4_122 >= 0x00000008 l00400DDC
 // DataOut:
 // DataOut (flags):
@@ -403,7 +402,6 @@ l004005C8:
 
 l004005EC:
 	r2 = fn00400E04(r2, r31_198, r3, fp + -648, r25, r26_170, r27, r28, r29, r30, out r25, out r26_170, out r27, out r28, out r29, out r30)
-	Mem237 = Mem201
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

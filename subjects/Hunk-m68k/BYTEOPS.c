@@ -1710,10 +1710,7 @@ void fn00002A44(int32 d2, Eq_n a3, struct Eq_n * dwArg04)
 		for (a2_n = *(struct Eq_n **) 0x2CF0; a2_n != null; a2_n = a2_n->ptr000C)
 		{
 			if ((a2_n->dw0018 & 0x02) != 0x00)
-			{
 				fn00001F48(d2, a3, a2_n, out a0_n, out a5_n);
-				Mem43 = Mem25;
-			}
 		}
 	}
 }

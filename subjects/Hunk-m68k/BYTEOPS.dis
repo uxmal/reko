@@ -3819,7 +3819,6 @@ l00002A66:
 
 l00002A6E:
 	fn00001F48(d2, a3, a2_10, out a0_109, out a5_110)
-	Mem43 = Mem25
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

@@ -1562,7 +1562,6 @@ l0AB0:
 	r4 = r4_42 | 0x4000
 	r5 = r5_50 + 0x0002
 	wLoc02_77 = v24_57
-	Mem29 = Mem58
 	branch v24_57 > 0x0000 l0AB0
 // DataOut:
 // DataOut (flags):
@@ -1753,7 +1752,6 @@ l0B84:
 l0B88:
 	fn13AA(r2_48 + 0x0003)
 	0x0B8E = 0x0B8F
-	Mem27 = Mem108
 	branch 0x0B8E != 0x0000 l0B12
 // DataOut:
 // DataOut (flags):
@@ -2456,7 +2454,6 @@ l0EF0:
 	word16 v29_84 = wLoc02_101 - 0x0001
 	r5 = r5 + 0x0004
 	wLoc02_101 = v29_84
-	Mem14 = Mem85
 	branch v29_84 > 0x0000 l0EA2
 // DataOut:
 // DataOut (flags):

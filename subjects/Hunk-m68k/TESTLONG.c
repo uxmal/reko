@@ -1837,10 +1837,7 @@ void fn00002AFC(Eq_n d2, Eq_n a3, Eq_n dwArg04)
 		while (a2_n != 0x00)
 		{
 			if ((*((word32) a2_n + 0x0018) & 0x02) != 0x00)
-			{
 				fn00001F08(d2, a3, a2_n, out a0_n, out a1_n, out a5_n);
-				Mem43 = Mem25;
-			}
 			a2_n = *((word32) a2_n + 0x0C);
 		}
 	}
@@ -3202,10 +3199,7 @@ Eq_n fn00003D2C(Eq_n d2, Eq_n a3, ptr32 & a1Out, ptr32 & a5Out)
 	while (a2_n != 0x00)
 	{
 		if ((*((word32) a2_n + 0x0018) & 0x0202) == 0x0202 && *a2_n != 0x00)
-		{
 			fn00001F08(d2, a3, a2_n, out a0_n, out a1, out a5);
-			Mem42 = Mem24;
-		}
 		a2_n = *((word32) a2_n + 0x0C);
 		d0_n = a2_n;
 	}

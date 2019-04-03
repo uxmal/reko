@@ -1591,7 +1591,6 @@ l0800_0683:
 
 l0800_068B:
 	wLoc04_63 = wLoc04_63 + 0x0001
-	Mem38 = Mem44
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1745,7 +1744,6 @@ l0800_0765:
 
 l0800_0770:
 	_fflush(ds, si_12)
-	Mem51 = Mem30
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1933,7 +1931,6 @@ l0800_08C9:
 // SymbolicIn:
 
 l0800_08CF:
-	Mem44 = Mem73
 	branch (Mem73[ds:wArg02 + 0x0002:word16] & 0x0040) == 0x0000 l0800_0881
 // DataOut:
 // DataOut (flags):
@@ -2001,7 +1998,6 @@ l0800_086D:
 
 l0800_0874:
 	_setvbuf(ds, wArg02, 0x0000, ax_158, 0x0200)
-	Mem31 = Mem174
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3454,7 +3450,6 @@ l0800_10FF:
 	byte bLoc8F_1331 = 0x00
 	word16 wLoc94_1332 = 0xFFFF
 	word16 wLoc92_1333 = 0xFFFF
-	Mem74 = Mem62
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3523,7 +3518,6 @@ l0800_11AD:
 	wLoc9A_1330 = wLoc9A_1330 | 0x0020
 	ch_1225 = 0x05
 	cx_1238 = DPB(cx_1237, 0x05, 8) (alias)
-	Mem992 = Mem86
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3532,7 +3526,6 @@ l0800_11A3:
 	wLoc9A_1330 = wLoc9A_1330 & 0xFFDF
 	ch_1225 = 0x05
 	cx_1238 = DPB(cx_1237, 0x05, 8) (alias)
-	Mem992 = Mem91
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3585,7 +3578,6 @@ l0800_13A7:
 	di_140 = (word16) es_di_135 (alias)
 	wArg02 = wArg02 + 0x0004
 	Z_154 = SLICE(cond(es | di_140), bool, 2) (alias)
-	Mem179 = Mem137
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3643,7 +3635,6 @@ l0800_1369:
 	sp_1023 = sp_189 + 2
 	di_140 = fp - 0x0089
 	cx_170 = 0x0001
-	Mem567 = Mem198
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3759,7 +3750,6 @@ l0800_1364:
 // SymbolicIn:
 
 l0800_1366:
-	Mem488 = Mem324
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3929,7 +3919,6 @@ l0800_1441:
 
 l0800_1445:
 	wLoc8E_1329 = dx_225
-	Mem527 = Mem524
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3997,7 +3986,6 @@ l0800_14A1:
 	wLoc9A_1330 = wLoc9A_1330 | 0x0040
 	bx_571 = wLoc94_1332 - 0x0002
 	wLoc8E_1329 = v37_592
-	Mem609 = Mem593
 	branch v37_592 >= 0x0000 l0800_14B5
 // DataOut:
 // DataOut (flags):
@@ -4005,7 +3993,6 @@ l0800_14A1:
 
 l0800_14AF:
 	wLoc8E_1329 = 0x0000
-	Mem609 = Mem596
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4018,7 +4005,6 @@ l0800_1487:
 
 l0800_148E:
 	wLoc8E_1329 = 0x0001
-	Mem610 = Mem599
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4169,8 +4155,6 @@ l0800_151E:
 
 l0800_1521:
 	cx = cx - 0x0001
-	Mem796 = Mem805
-	Mem1112 = Mem805
 	branch cx != 0x0000 l0800_1514
 // DataOut:
 // DataOut (flags):
@@ -4250,7 +4234,6 @@ l0800_12E7:
 // SymbolicIn:
 
 l0800_12EE:
-	Mem32 = Mem383
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4272,7 +4255,6 @@ l0800_11C4:
 	wLoc9A_1330 = wLoc9A_1330 | 0x0008
 	ch_1225 = 0x01
 	cx_1238 = DPB(cx_1237, 0x01, 8) (alias)
-	Mem992 = Mem879
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4281,7 +4263,6 @@ l0800_125C:
 	wLoc9A_1330 = wLoc9A_1330 & 0xFFEF | 0x0080
 	ch_1225 = 0x05
 	cx_1238 = DPB(cx_1237, 0x05, 8) (alias)
-	Mem992 = Mem887
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4290,7 +4271,6 @@ l0800_124C:
 	wLoc9A_1330 = (wLoc9A_1330 | 0x0100) & 0xFFEF
 	ch_1225 = 0x05
 	cx_1238 = DPB(cx_1237, 0x05, 8) (alias)
-	Mem992 = Mem895
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4299,7 +4279,6 @@ l0800_1242:
 	wLoc9A_1330 = wLoc9A_1330 | 0x0010
 	ch_1225 = 0x05
 	cx_1238 = DPB(cx_1237, 0x05, 8) (alias)
-	Mem992 = Mem900
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4321,7 +4300,6 @@ l0800_1224:
 l0800_1229:
 	wLoc92_1333 = ax_911
 	ax_1181 = wLoc92_1333
-	Mem993 = Mem921
 	branch wLoc92_1333 < 0x0000 l0800_11E5
 // DataOut:
 // DataOut (flags):
@@ -4330,7 +4308,6 @@ l0800_1229:
 l0800_1231:
 	ax_1181 = (wLoc92_1333 << 0x0003) + (wLoc92_1333 << 0x0001)
 	wLoc92_1333 = ax_911 + ax_1181
-	Mem992 = Mem933
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4341,7 +4318,6 @@ l0800_1209:
 	cx_1238 = DPB(cx_1981, 0x02, 8) (alias)
 	wLoc94_1332 = ax_911
 	ax_1181 = wLoc94_1332
-	Mem993 = Mem937
 	branch wLoc94_1332 < 0x0000 l0800_11E5
 // DataOut:
 // DataOut (flags):
@@ -4350,7 +4326,6 @@ l0800_1209:
 l0800_1213:
 	ax_1181 = (wLoc94_1332 << 0x0003) + (wLoc94_1332 << 0x0001)
 	wLoc94_1332 = ax_911 + ax_1181
-	Mem992 = Mem949
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4376,7 +4351,6 @@ l0800_1184:
 
 l0800_1189:
 	wLoc9A_1330 = wLoc9A_1330 | 0x0002
-	Mem992 = Mem957
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4404,7 +4378,6 @@ l0800_11ED:
 	ch_1225 = ch_1225 + 0x01
 	wLoc92_1333 = ax_1181
 	cx_1238 = DPB(cx_1237, ch_1225, 8) (alias)
-	Mem992 = Mem968
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4413,7 +4386,6 @@ l0800_11DF:
 	wLoc94_1332 = ax_1181
 	ch_1225 = 0x03
 	cx_1246 = DPB(cx_1237, 0x03, 8) (alias)
-	Mem993 = Mem971
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4432,7 +4404,6 @@ l0800_1178:
 
 l0800_117D:
 	wLoc9A_1330 = wLoc9A_1330 | 0x0001
-	Mem992 = Mem976
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4456,7 +4427,6 @@ l0800_1195:
 
 l0800_119C:
 	bLoc8F_1331 = dl_129
-	Mem994 = Mem983
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4545,7 +4515,6 @@ l0800_10E6:
 	ax = DPB(ax_1140, al_1075, 0) (alias)
 	di_1007 = di_1007 + 0x0001
 	bLoc57_1321 = v15_1082
-	Mem36 = Mem1083
 	branch v15_1082 > 0x00 l0800_10DD
 // DataOut:
 // DataOut (flags):
@@ -4553,7 +4522,6 @@ l0800_10E6:
 
 l0800_10EE:
 	di_1007 = fn0800_10A1(cx, dx, bx, fp - 2, di_1007, es)
-	Mem36 = Mem1083
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -5098,7 +5066,6 @@ l0800_172B:
 l0800_178B:
 	wLoc24 = 0xFFFF
 	bLoc2B = 0x00
-	Mem57 = Mem54
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -5133,14 +5100,12 @@ l0800_17AE:
 
 l0800_181D:
 	bLoc2B = bLoc2B | 0x20
-	Mem57 = Mem84
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_1816:
 	bLoc2B = bLoc2B & 0xDF
-	Mem57 = Mem88
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -5182,7 +5147,6 @@ l0800_1824:
 // SymbolicIn:
 
 l0800_182F:
-	Mem57 = Mem63
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -5210,7 +5174,6 @@ l0800_1A13:
 	word16 ax_1034 = (word16) al_1033
 	word16 si_1057 = si_26 + 0x0001
 	bLoc2B = v42_142
-	Mem1053 = Mem143
 	branch al_1033 != 0x5E l0800_1A21
 // DataOut:
 // DataOut (flags):
@@ -5221,7 +5184,6 @@ l0800_1A1C:
 	bLoc2B = v42_142 | 0x10
 	ax_1034 = DPB(ax_1034, al_1033, 0) (alias)
 	si_1057 = si_26 + 0x0002
-	Mem1053 = Mem148
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -5290,7 +5252,6 @@ l0800_1A63:
 	wArg08 = si_1057
 	wLoc24 = v61_191
 	word16 si_194 = v61_191
-	Mem210 = Mem192
 	branch (bLoc2B & 0x01) != 0x00 l0800_1A77
 // DataOut:
 // DataOut (flags):
@@ -5298,7 +5259,6 @@ l0800_1A63:
 
 l0800_1A74:
 	di_1071 = fn0800_1708(fp - 2, ds, out es_1115)
-	Mem210 = Mem192
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -5441,7 +5401,6 @@ l0800_1AB6:
 	cx = Mem343[ss:sp_344 + 2:word16]
 	es_1115 = Mem343[ss:sp_344 + 4:selector]
 	sp_1137 = sp_344 + 6
-	Mem372 = Mem366
 	branch si_205 + 0x0001 >= v61_191 l0800_1AD3
 // DataOut:
 // DataOut (flags):
@@ -5563,21 +5522,18 @@ l0800_1832:
 
 l0800_1809:
 	bLoc2B = bLoc2B | 0x04
-	Mem57 = Mem451
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_180F:
 	bLoc2B = bLoc2B | 0x02
-	Mem57 = Mem455
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_1803:
 	bLoc2B = bLoc2B | 0x08
-	Mem57 = Mem459
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -5838,7 +5794,6 @@ l0800_19D8:
 // SymbolicIn:
 
 l0800_19DB:
-	Mem759 = Mem63
 	branch wLoc24_1689 == 0x0000 l0800_19F7
 // DataOut:
 // DataOut (flags):
@@ -5911,7 +5866,6 @@ l0800_19F7:
 
 l0800_19FD:
 	wLoc2A_1181 = wLoc2A_1181 + 0x0001
-	Mem1008 = Mem766
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -5923,7 +5877,6 @@ l0800_1A00:
 
 l0800_17EF:
 	wLoc24 = ax_60 - 0x0030
-	Mem57 = Mem770
 	wLoc24_1689 = wLoc24
 	branch wLoc24_1689 < 0x0000 l0800_1794
 // DataOut:
@@ -5933,14 +5886,12 @@ l0800_17EF:
 l0800_17F9:
 	dx = SLICE(wLoc24_1689 *u 0x000A, word16, 16) (alias)
 	wLoc24 = ax_60 - 0x0030 + (word16) (wLoc24_1689 *u 0x000A)
-	Mem57 = Mem780
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_17E9:
 	bLoc2B = bLoc2B | 0x01
-	Mem57 = Mem783
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -6073,7 +6024,6 @@ l0800_1767:
 	cx = Mem936[ss:sp_937 + 2:word16]
 	sp_1137 = sp_937 + 4
 	wLoc28_1182 = wLoc28_1182 - 0x0001
-	Mem29 = Mem963
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

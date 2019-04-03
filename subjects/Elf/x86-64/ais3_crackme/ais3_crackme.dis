@@ -314,7 +314,6 @@ l0000000000400531:
 
 l000000000040059D:
 	dwLoc0C_103 = dwLoc0C_103 + 0x00000001
-	Mem11 = Mem83
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
