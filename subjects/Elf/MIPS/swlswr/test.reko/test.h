@@ -65,7 +65,7 @@ Eq_134: (union "Eq_134" (byte u0) (word32 u1))
 Eq_158: (fn void ())
 	T_158 (in _init : ptr32)
 	T_159 (in signature of _init : void)
-Eq_218: (fn void (word32))
+Eq_218: (fn void ())
 	T_218 (in _fini : ptr32)
 	T_219 (in signature of _fini : void)
 // Type Variables ////////////
@@ -940,37 +940,33 @@ T_217: (in Mem0[r28 - 0x00007FF0 + 0x00000000:word32] : word32)
 T_218: (in _fini : ptr32)
   Class: Eq_218
   DataType: (ptr32 Eq_218)
-  OrigDataType: (ptr32 (fn T_221 (T_212)))
+  OrigDataType: (ptr32 (fn T_220 ()))
 T_219: (in signature of _fini : void)
   Class: Eq_218
   DataType: (ptr32 Eq_218)
   OrigDataType: 
-T_220: (in ra : word32)
-  Class: Eq_212
-  DataType: word32
-  OrigDataType: word32
-T_221: (in _fini(ra) : void)
-  Class: Eq_221
+T_220: (in _fini() : void)
+  Class: Eq_220
   DataType: void
   OrigDataType: void
-T_222: (in r25_15 : ptr32)
+T_221: (in r25_15 : ptr32)
   Class: Eq_6
   DataType: ptr32
   OrigDataType: ptr32
-T_223: (in 00020A4C : ptr32)
-  Class: Eq_223
+T_222: (in 00020A4C : ptr32)
+  Class: Eq_222
   DataType: (ptr32 ptr32)
-  OrigDataType: (ptr32 (struct (0 T_224 t0000)))
-T_224: (in Mem10[0x00020A4C:word32] : word32)
+  OrigDataType: (ptr32 (struct (0 T_223 t0000)))
+T_223: (in Mem10[0x00020A4C:word32] : word32)
   Class: Eq_6
   DataType: ptr32
   OrigDataType: word32
-T_225: (in 1780 : int32)
-  Class: Eq_225
+T_224: (in 1780 : int32)
+  Class: Eq_224
   DataType: int32
   OrigDataType: int32
-T_226: (in r25_15 + 1780 : word32)
-  Class: Eq_226
+T_225: (in r25_15 + 1780 : word32)
+  Class: Eq_225
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
 */
@@ -1056,5 +1052,5 @@ typedef union Eq_134 {
 
 typedef void (Eq_158)();
 
-typedef void (Eq_218)(word32);
+typedef void (Eq_218)();
 

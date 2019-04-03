@@ -296,8 +296,8 @@ l0738:
 	goto l06B0;
 }
 
-// 0754: void fn0754(Register word16 r5, Stack (ptr16 code) wArg00, Stack Eq_n wArg02, Stack Eq_n wArg04, Stack cui16 wArg06, Stack uint16 wArg08)
-void fn0754(word16 r5, <anonymous> * wArg00, Eq_n wArg02, Eq_n wArg04, cui16 wArg06, uint16 wArg08)
+// 0754: void fn0754(Stack (ptr16 code) wArg00, Stack Eq_n wArg02, Stack Eq_n wArg04, Stack cui16 wArg06, Stack uint16 wArg08)
+void fn0754(<anonymous> * wArg00, Eq_n wArg02, Eq_n wArg04, cui16 wArg06, uint16 wArg08)
 {
 	struct Eq_n * r4_n = globals->ptr5424;
 	r4_n->ptr002A = wArg00;
@@ -646,14 +646,14 @@ struct Eq_n * fn0D3E(struct Eq_n * r0, Eq_n r2)
 	return (char *) &r0->t0002 + 0x02;
 }
 
-// 0D7A: void fn0D7A(Register word16 r0, Register word16 r1, Register word16 r2, Register word16 r4, Register word16 r5)
-void fn0D7A(word16 r0, word16 r1, word16 r2, word16 r4, word16 r5)
+// 0D7A: void fn0D7A(Register word16 r0)
+void fn0D7A(word16 r0)
 {
 	globals->t0D7E();
 }
 
-// 0DC8: void fn0DC8(Register word16 r0, Register word16 r1, Register word16 r2, Register word16 r4, Register word16 r5)
-void fn0DC8(word16 r0, word16 r1, word16 r2, word16 r4, word16 r5)
+// 0DC8: void fn0DC8(Register word16 r0)
+void fn0DC8(word16 r0)
 {
 	globals->t0DCC();
 }
@@ -791,20 +791,20 @@ void fn0F9C()
 		r0_n();
 }
 
-// 0FA4: void fn0FA4(Register word16 r0, Register word16 r1, Register word16 r2, Register word16 r3, Register word16 r4, Register word16 r5, Stack word16 wArg00, Stack (ptr16 Eq_n) wArg02, Stack word16 wArg04, Stack word16 wArg06)
-void fn0FA4(word16 r0, word16 r1, word16 r2, word16 r3, word16 r4, word16 r5, word16 wArg00, union Eq_n * wArg02, word16 wArg04, word16 wArg06)
+// 0FA4: void fn0FA4(Register word16 r0, Stack word16 wArg00, Stack (ptr16 Eq_n) wArg02, Stack word16 wArg04, Stack word16 wArg06)
+void fn0FA4(word16 r0, word16 wArg00, union Eq_n * wArg02, word16 wArg04, word16 wArg06)
 {
-	fn0FB2(r0, r1, r2, r3, r4, r5, &globals->t1020, wArg00, wArg02, wArg04, wArg06);
+	fn0FB2(r0, &globals->t1020, wArg00, wArg02, wArg04, wArg06);
 }
 
-// 0FAE: void fn0FAE(Register word16 r0, Register word16 r1, Register word16 r2, Register word16 r3, Register word16 r4, Register word16 r5, Stack word16 wArg00, Stack (ptr16 Eq_n) wArg02, Stack word16 wArg04, Stack word16 wArg06)
-void fn0FAE(word16 r0, word16 r1, word16 r2, word16 r3, word16 r4, word16 r5, word16 wArg00, union Eq_n * wArg02, word16 wArg04, word16 wArg06)
+// 0FAE: void fn0FAE(Register word16 r0, Stack word16 wArg00, Stack (ptr16 Eq_n) wArg02, Stack word16 wArg04, Stack word16 wArg06)
+void fn0FAE(word16 r0, word16 wArg00, union Eq_n * wArg02, word16 wArg04, word16 wArg06)
 {
-	fn0FB2(r0, r1, r2, r3, r4, r5, &globals->t101E, wArg00, wArg02, wArg04, wArg06);
+	fn0FB2(r0, &globals->t101E, wArg00, wArg02, wArg04, wArg06);
 }
 
-// 0FB2: void fn0FB2(Register word16 r0, Register word16 r1, Register word16 r2, Register word16 r3, Register word16 r4, Register word16 r5, Stack (ptr16 Eq_n) wArg00, Stack word16 wArg02, Stack (ptr16 Eq_n) wArg04, Stack word16 wArg06, Stack word16 wArg08)
-void fn0FB2(word16 r0, word16 r1, word16 r2, word16 r3, word16 r4, word16 r5, struct Eq_n * wArg00, word16 wArg02, union Eq_n * wArg04, word16 wArg06, word16 wArg08)
+// 0FB2: void fn0FB2(Register word16 r0, Stack (ptr16 Eq_n) wArg00, Stack word16 wArg02, Stack (ptr16 Eq_n) wArg04, Stack word16 wArg06, Stack word16 wArg08)
+void fn0FB2(word16 r0, struct Eq_n * wArg00, word16 wArg02, union Eq_n * wArg04, word16 wArg06, word16 wArg08)
 {
 	struct Eq_n * r3_n = globals->ptr5424;
 	r3_n->ptr0064 = fp + 0x0A;

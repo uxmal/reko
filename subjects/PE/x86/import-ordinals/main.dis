@@ -23,10 +23,10 @@ fn00401000_exit:
 
 
 
-void fn00401010(word32 ebp, word32 esi, word32 dwArg04)
+void fn00401010(word32 dwArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ebp:[0..31] esi:[0..31] Stack +0004:[0..31]
+// MayUse:  Stack +0004:[0..31]
 // LiveOut:
 // Trashed: SCZO eax ecx Top
 // Preserved: ebp esi esp
@@ -39,7 +39,7 @@ l00401010:
 	word32 esp_14
 	word32 eax_16
 	call _acrt_iob_func (retsize: 4;)
-		uses: Stack +0004:0x00000001,Stack +0008:esi,Stack +000C:ebp,Stack +0014:dwArg04
+		uses: Stack +0004:0x00000001,Stack +0014:dwArg04
 		defs: eax:eax_16,esp:esp_14
 	Mem23[esp_14:word32] = fp + 0x00000008
 	Mem25[esp_14 - 4:word32] = 0x00000000
@@ -62,10 +62,10 @@ fn00401010_exit:
 
 
 
-word32 fn00401040(word32 ecx, word32 ebp, word32 esi)
+word32 fn00401040(word32 ecx)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ebp:[0..31] ecx:[0..31] esi:[0..31]
+// MayUse:  ecx:[0..31]
 // LiveOut: eax
 // Trashed: SCZO eax ecx Top
 // Preserved: ebp esp
@@ -77,7 +77,7 @@ fn00401040_entry:
 l00401040:
 	word32 esp_12
 	call driver.dll!Ordinal_1 (retsize: 4;)
-		uses: ecx:fp - 0x00000008,Stack +0004:ecx,Stack +0008:ebp
+		uses: ecx:fp - 0x00000008,Stack +0004:ecx
 		defs: esp:esp_12
 	Mem18[esp_12 - 4:word32] = 0x00000003
 	word32 esp_20
@@ -97,7 +97,7 @@ l00401040:
 	Mem44[esp_36 - 4:word32] = ecx
 	Mem47[esp_36 - 8:word32] = Mem44[driver.dll!Ordinal_11:word32]
 	Mem49[esp_36 - 12:word32] = 0x00402118
-	fn00401010(fp - 4, esi, Mem49[esp_36 - 12:word32])
+	fn00401010(Mem49[esp_36 - 12:word32])
 	return 0x00000000
 // DataOut:
 // DataOut (flags):
@@ -160,7 +160,7 @@ l00401179:
 
 l00401196:
 	word32 eax_298
-	word32 esp_294
+	word32 esp_292
 	branch eax_69 != 0x00000000 l004011E3
 // DataOut:
 // DataOut (flags):
@@ -178,7 +178,7 @@ l0040119A:
 	word32 esp_84 = esp_35 - 4
 	Mem85[esp_84:word32] = 0x004020F0
 	Mem87[esp_84 - 4:word32] = 0x004020E4
-	esp_294 = esp_84 + 4
+	esp_292 = esp_84 + 4
 	branch _initterm_e(Mem87[esp_84 - 4:(ptr32 PVFV)], Mem87[esp_84:(ptr32 PVFV)]) == 0x00000000 l004011C6
 // DataOut:
 // DataOut (flags):
@@ -274,16 +274,16 @@ l00401236:
 	Mem239[esp_232 - 4:word32] = eax_234
 	Mem242[esp_232 - 8:word32] = Mem239[eax_220:word32]
 	Mem245[esp_232 - 12:word32] = Mem242[eax_227:word32]
-	word32 eax_248 = fn00401040(ecx_233, ebp_135, eax_227)
-	byte bl_268 = SLICE(ebx_127, byte, 0)
-	word32 esp_255 = esp_232
+	word32 eax_246 = fn00401040(ecx_233)
+	byte bl_266 = SLICE(ebx_127, byte, 0)
+	word32 esp_253 = esp_232
 	branch SLICE((uint32) (uint8) fn0040188B(), byte, 0) != 0x00 l00401267
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00401267:
-	branch bl_268 != 0x00 l00401270
+	branch bl_266 != 0x00 l00401270
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -291,25 +291,25 @@ l00401267:
 l0040126B:
 	call cexit (retsize: 4;)
 		uses: edx:edx_236,Stack +FFFFFFF8:0x00000001
-		defs: esp:esp_274
+		defs: esp:esp_272
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00401270:
-	word32 esp_281 = esp_255 - 4
-	Mem282[esp_281:word32] = 0x00000000
-	Mem284[esp_281 - 4:word32] = 0x00000001
-	fn004015E6(Mem284[esp_281:byte])
+	word32 esp_279 = esp_253 - 4
+	Mem280[esp_279:word32] = 0x00000000
+	Mem282[esp_279 - 4:word32] = 0x00000001
+	fn004015E6(Mem282[esp_279:byte])
 	Mem296[ebp_135 - 0x00000004:word32] = 0xFFFFFFFE
-	esp_294 = esp_281 + 4
-	eax_298 = eax_248
+	esp_292 = esp_279 + 4
+	eax_298 = eax_246
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00401261:
-	Mem300[esp_232 - 4:word32] = eax_248
+	Mem300[esp_232 - 4:word32] = eax_246
 	exit(Mem300[esp_232 - 4:int32])
 // DataOut:
 // DataOut (flags):
@@ -326,7 +326,7 @@ l004012C3:
 	word32 ebp_308
 	word32 edi_311
 	word32 esi_312
-	fn004019C6(ebp_135, Mem307[esp_294 + -4:word32], out ebp_308, out esi_312, out edi_311)
+	fn004019C6(ebp_135, Mem307[esp_292 + -4:word32], out ebp_308, out esi_312, out edi_311)
 	return eax_298
 // DataOut:
 // DataOut (flags):

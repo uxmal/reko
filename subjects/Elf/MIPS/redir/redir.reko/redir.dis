@@ -1,7 +1,7 @@
-void _init(word32 ra)
+void _init()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ra:[0..31]
+// MayUse: 
 // LiveOut:
 // Trashed: r25 r28
 // Preserved: ra sp
@@ -12,7 +12,7 @@ _init_entry:
 
 l004001BC:
 	call 0x0040072C (retsize: 0;)
-		uses: r25:0x0040072C,Stack +0010:0x10008860,Stack +0018:0x10008860,Stack +001C:ra
+		uses: r25:0x0040072C,Stack +0010:0x10008860,Stack +0018:0x10008860
 	call 0x00409C10 (retsize: 0;)
 		uses: r25:0x00409C10
 	return
@@ -3709,7 +3709,7 @@ l00401FB4:
 	Mem221[r2_29 + 0x000017C4:word32] = client_parse_reply
 	word32 r6_227
 	word32 r7_228
-	client_prepare_connect(r2_29, r16, fp + -72, ra, out r6_227, out r7_228)
+	client_prepare_connect(r2_29, ra, out r6_227, out r7_228)
 	word32 r25_234
 	client_send_request(r2_29, ra, out r25_234)
 // DataOut:
@@ -3776,10 +3776,10 @@ client_new_exit:
 
 
 
-word32 client_prepare_connect(word32 r4, word32 r16, word32 r30, word32 ra, ptr32 & r6Out, ptr32 & r7Out)
+word32 client_prepare_connect(word32 r4, word32 ra, ptr32 & r6Out, ptr32 & r7Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r16:[0..31] r30:[0..31] r4:[0..31] ra:[0..31]
+// MayUse:  r4:[0..31] ra:[0..31]
 // LiveOut: r5 r6 r7
 // Trashed: r2 r25 r28 r3 r4 r5 r6 r7
 // Preserved: r16 r30 ra sp
@@ -3790,7 +3790,7 @@ client_prepare_connect_entry:
 
 l00402028:
 	call getsockopt (retsize: 0;)
-		uses: r2:fp + -24,r25:r25_74,r3:r4,r4:Mem24[r4:word32],r5:0x00000000,r6:80,r7:r4 + 6040,Stack +0010:fp + -24,Stack +0020:0x10008860,Stack +0128:16,Stack +0134:r16,Stack +0138:r30,Stack +013C:ra,Stack +0140:r4
+		uses: r2:fp + -24,r25:r25_74,r3:r4,r4:Mem24[r4:word32],r5:0x00000000,r6:80,r7:r4 + 6040,Stack +0010:fp + -24,Stack +0020:0x10008860,Stack +0128:16,Stack +0140:r4
 	call inet_ntoa (retsize: 0;)
 		uses: r2:r4,r25:r25_74,r4:Mem24[r4 + 0x0000179C:word32]
 	call inet_ntoa (retsize: 0;)
@@ -4818,10 +4818,10 @@ get_a_line_exit:
 
 
 
-void client_read_request(word32 r4, word32 r30, word32 ra)
+void client_read_request(word32 r4)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r30:[0..31] r4:[0..31] ra:[0..31]
+// MayUse:  r4:[0..31]
 // LiveOut:
 // Trashed: r2 r25 r28 r3 r4 r5 r6 r7
 // Preserved: r30 ra sp
@@ -4835,7 +4835,7 @@ l00402E44:
 	word32 r25_37
 	word32 r2_39
 	call recv (retsize: 0;)
-		uses: r2:r4 + 8,r25:r25_37,r3:r4,r4:Mem28[r4:word32],r5:r4 + 8,r6:1744,r7:16384,Stack +0010:0x10008860,Stack +001C:r30,Stack +0020:ra,Stack +0028:r4
+		uses: r2:r4 + 8,r25:r25_37,r3:r4,r4:Mem28[r4:word32],r5:r4 + 8,r6:1744,r7:16384,Stack +0010:0x10008860,Stack +0028:r4
 		defs: r2:r2_39,r25:r25_37
 	Mem47[r4 + 0x000007D8:word32] = r2_39
 	return
@@ -6574,7 +6574,7 @@ request_parse_line_entry:
 l00404378:
 	word32 r2_56
 	word32 r5_23
-	word32 r2_24 = get_method(r4, r5, fp + -48, ra, out r5_23)
+	word32 r2_24 = get_method(r4, r5, out r5_23)
 	branch is_a_method(r4) != 0x00000000 l00404378_ds_t
 // DataOut:
 // DataOut (flags):
@@ -6586,7 +6586,7 @@ l00404378_ds_t:
 // SymbolicIn:
 
 l004043E8:
-	get_version(r4 + 788, get_uri(r4 + 276, r2_24, fp + -48, ra), fp + -48, ra)
+	get_version(r4 + 788, get_uri(r4 + 276, r2_24))
 	r2_56 = 1
 // DataOut:
 // DataOut (flags):
@@ -6978,10 +6978,10 @@ request_add_lines_exit:
 
 
 
-word32 get_method(word32 r4, word32 r5, word32 r30, word32 ra, ptr32 & r5Out)
+word32 get_method(word32 r4, word32 r5, ptr32 & r5Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r30:[0..31] r4:[0..31] r5:[0..31] ra:[0..31]
+// MayUse:  r4:[0..31] r5:[0..31]
 // LiveOut: r2 r5
 // Trashed: r2 r25 r28 r4 r5 r6
 // Preserved: r30 ra sp
@@ -6993,7 +6993,7 @@ get_method_entry:
 l00404B34:
 	word32 r2_26
 	call strsep (retsize: 0;)
-		uses: r2:fp + 4,r25:r25_34,r4:fp + 4,r5:0x0040A464,Stack +0010:0x10008860,Stack +0024:r30,Stack +0028:ra,Stack +0030:r4,Stack +0034:r5
+		uses: r2:fp + 4,r25:r25_34,r4:fp + 4,r5:0x0040A464,Stack +0010:0x10008860,Stack +0030:r4,Stack +0034:r5
 		defs: r2:r2_26
 	strncpy(r4, r2_26, 256)
 	word32 r5_36 = <invalid>
@@ -7011,10 +7011,10 @@ get_method_exit:
 
 
 
-word32 get_uri(word32 r4, word32 r5, word32 r30, word32 ra)
+word32 get_uri(word32 r4, word32 r5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r30:[0..31] r4:[0..31] r5:[0..31] ra:[0..31]
+// MayUse:  r4:[0..31] r5:[0..31]
 // LiveOut: r2
 // Trashed: r2 r25 r28 r4 r5 r6
 // Preserved: r30 ra sp
@@ -7026,7 +7026,7 @@ get_uri_entry:
 l00404BC8:
 	word32 r2_26
 	call strsep (retsize: 0;)
-		uses: r2:fp + 4,r25:r25_34,r4:fp + 4,r5:0x0040A464,Stack +0010:0x10008860,Stack +0024:r30,Stack +0028:ra,Stack +0030:r4,Stack +0034:r5
+		uses: r2:fp + 4,r25:r25_34,r4:fp + 4,r5:0x0040A464,Stack +0010:0x10008860,Stack +0030:r4,Stack +0034:r5
 		defs: r2:r2_26
 	strncpy(r4, r2_26, 256)
 	word32 r25_34 = <invalid>
@@ -7042,10 +7042,10 @@ get_uri_exit:
 
 
 
-void get_version(word32 r4, word32 r5, word32 r30, word32 ra)
+void get_version(word32 r4, word32 r5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r30:[0..31] r4:[0..31] r5:[0..31] ra:[0..31]
+// MayUse:  r4:[0..31] r5:[0..31]
 // LiveOut:
 // Trashed: r2 r25 r28 r4 r5 r6
 // Preserved: r30 ra sp
@@ -7057,7 +7057,7 @@ get_version_entry:
 l00404C5C:
 	word32 r2_26
 	call strsep (retsize: 0;)
-		uses: r2:fp + 4,r25:r25_34,r4:fp + 4,r5:0x0040A468,Stack +0010:0x10008860,Stack +0024:r30,Stack +0028:ra,Stack +0030:r4,Stack +0034:r5
+		uses: r2:fp + 4,r25:r25_34,r4:fp + 4,r5:0x0040A468,Stack +0010:0x10008860,Stack +0030:r4,Stack +0034:r5
 		defs: r2:r2_26
 	strncpy(r4, r2_26, 256)
 	word32 r25_34 = <invalid>
@@ -9010,10 +9010,10 @@ log_rotate_exit:
 
 
 
-void log_string(word32 r4, word32 r5, word32 r7, word32 r16, word32 r17, word32 r30, word32 ra)
+void log_string(word32 r4, word32 r5, word32 r7, word32 ra)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r16:[0..31] r17:[0..31] r30:[0..31] r4:[0..31] r5:[0..31] r7:[0..31] ra:[0..31]
+// MayUse:  r4:[0..31] r5:[0..31] r7:[0..31] ra:[0..31]
 // LiveOut:
 // Trashed: hi lo r1 r2 r25 r28 r3 r4 r5 r6 r7
 // Preserved: r16 r17 r30 ra sp
@@ -9028,7 +9028,7 @@ l0040697C:
 	word32 r5_30 = <invalid>
 	word32 r2_43
 	call gmtime (retsize: 0;)
-		uses: r2:fp + -40,r25:r25_92,r3:r3_98,r4:fp + -40,r5:r5_30,r6:r6_95,r7:r7_33,Stack +0018:0x10008860,Stack +0044:dwLoc24,Stack +0054:r16,Stack +0058:r17,Stack +005C:r30,Stack +0060:ra,Stack +0068:r4
+		uses: r2:fp + -40,r25:r25_92,r3:r3_98,r4:fp + -40,r5:r5_30,r6:r6_95,r7:r7_33,Stack +0018:0x10008860,Stack +0044:dwLoc24,Stack +0068:r4
 		defs: r2:r2_43
 	strftime(fp + -72, 28, 0x0040A74C, r2_43)
 	fprintf(r4, 0x0040A760, 0x00000000)
@@ -15231,10 +15231,10 @@ init_dummy_exit:
 
 
 
-void _fini(word32 ra)
+void _fini()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ra:[0..31]
+// MayUse: 
 // LiveOut:
 // Trashed: r25 r28
 // Preserved: ra sp
@@ -15245,7 +15245,7 @@ _fini_entry:
 
 l00409CB0:
 	call 0x00400620 (retsize: 0;)
-		uses: r25:0x00400620,Stack +0010:0x10008860,Stack +0018:0x10008860,Stack +001C:ra
+		uses: r25:0x00400620,Stack +0010:0x10008860,Stack +0018:0x10008860
 	return
 // DataOut:
 // DataOut (flags):

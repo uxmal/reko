@@ -4,14 +4,14 @@
 
 #include "Executable.h"
 
-// 00401000: Register word32 fn00401000(Register (ptr32 Eq_n) ebp, Register (ptr32 word32) esi)
-word32 fn00401000(struct Eq_n * ebp, word32 * esi)
+// 00401000: Register word32 fn00401000()
+word32 fn00401000()
 {
 	InitializeCriticalSection(&exported_critical_section);
-	fn00401060(ebp, esi, 0x00402108);
+	fn00401060(0x00402108);
 	slow_and_safe_increment(0x01);
-	fn00401060(ebp, esi, 0x00402108);
-	fn00401060(ebp, esi, 0x00402108);
+	fn00401060(0x00402108);
+	fn00401060(0x00402108);
 	return 0x00;
 }
 
@@ -21,8 +21,8 @@ ptr32 fn00401050()
 	return 0x00403378;
 }
 
-// 00401060: void fn00401060(Register (ptr32 Eq_n) ebp, Register (ptr32 word32) esi, Stack word32 dwArg04)
-void fn00401060(struct Eq_n * ebp, word32 * esi, word32 dwArg04)
+// 00401060: void fn00401060(Stack word32 dwArg04)
+void fn00401060(word32 dwArg04)
 {
 	ptr32 * esp_n;
 	word32 eax_n;
@@ -132,7 +132,7 @@ l00401177:
 		*(esp_n - 0x04) = eax_n;
 		*(esp_n - 0x08) = *eax_n;
 		*(esp_n - 0x0C) = *eax_n;
-		Eq_n eax_n = fn00401000(ebp_n, eax_n);
+		Eq_n eax_n = fn00401000();
 		byte bl_n = (byte) ebx_n;
 		ptr32 esp_n = esp_n;
 		if ((byte) (uint32) (uint8) fn0040188F() == 0x00)

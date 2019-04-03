@@ -191,10 +191,10 @@ __do_global_dtors_aux_exit:
 
 
 
-void frame_dummy(word64 rbp, word64 r8)
+void frame_dummy(word64 r8)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r8:[0..63] rbp:[0..63]
+// MayUse:  r8:[0..63]
 // LiveOut:
 // Trashed: SCZO r8 rax rdi rdx rsi
 // Preserved: rbp rsp
@@ -230,7 +230,7 @@ l0000000000400528_thunk_register_tm_clones:
 l0000000000400514:
 	word64 r8_28
 	call fn0000000000000000 (retsize: 8;)
-		uses: r8:r8,rdi:0x0000000000600E20,Stack +0008:rbp
+		uses: r8:r8,rdi:0x0000000000600E20
 		defs: r8:r8_28
 // DataOut:
 // DataOut (flags):

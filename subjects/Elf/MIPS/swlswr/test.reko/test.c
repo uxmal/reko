@@ -158,11 +158,11 @@ void memset(ptr32 r28, word32 ra)
 void calloc(ptr32 r28, word32 ra)
 {
 	(*(r28 - 0x7FF0))();
-	_fini(ra);
+	_fini();
 }
 
-// 00000A10: void _fini(Register word32 ra)
-void _fini(word32 ra)
+// 00000A10: void _fini()
+void _fini()
 {
 	ptr32 r25_n = *(ptr32 *) 0x00020A4C;
 	(r25_n + 0x06F4)();

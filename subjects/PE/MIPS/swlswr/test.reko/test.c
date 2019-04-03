@@ -31,8 +31,8 @@ Eq_n fn000110E8()
 	return r2_n;
 }
 
-// 0001116C: void fn0001116C(Register (ptr32 Eq_n) r2, Register (ptr32 (ptr32 word32)) r4, Register word32 r30, Register word32 ra, Stack word32 dwArg00)
-void fn0001116C(struct Eq_n * r2, word32 ** r4, word32 r30, word32 ra, word32 dwArg00)
+// 0001116C: void fn0001116C(Register (ptr32 Eq_n) r2, Register (ptr32 (ptr32 word32)) r4, Stack word32 dwArg00)
+void fn0001116C(struct Eq_n * r2, word32 ** r4, word32 dwArg00)
 {
 	r2->ptrFFFFFFEC = r4;
 	r2->ptrFFFFFFF0 = r2->ptrFFFFFFEC;
