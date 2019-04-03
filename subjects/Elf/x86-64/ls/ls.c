@@ -9178,8 +9178,8 @@ word64 fn0000000000410600(Eq_n rcx, Eq_n rdx, Eq_n rbx, Eq_n rbp, Eq_n rsi, Eq_n
 	return rax_n;
 }
 
-// 0000000000410630: void fn0000000000410630(Register uint64 rcx, Register Eq_n rbx, Register Eq_n rbp, Register uint64 rsi, Register (ptr64 Eq_n) rdi, Register ptr64 r8, Register uint64 r9, Register (ptr64 word64) r10, Register Eq_n r12, Register (ptr64 Eq_n) r13, Register Eq_n r14, Register Eq_n r15)
-void fn0000000000410630(uint64 rcx, Eq_n rbx, Eq_n rbp, uint64 rsi, FILE * rdi, ptr64 r8, uint64 r9, word64 * r10, Eq_n r12, union Eq_n * r13, Eq_n r14, Eq_n r15)
+// 0000000000410630: void fn0000000000410630(Register uint64 rcx, Register Eq_n rbx, Register Eq_n rbp, Register uint64 rsi, Register (ptr64 Eq_n) rdi, Register uint64 r9, Register (ptr64 word64) r10, Register Eq_n r12, Register (ptr64 Eq_n) r13, Register Eq_n r14, Register Eq_n r15)
+void fn0000000000410630(uint64 rcx, Eq_n rbx, Eq_n rbp, uint64 rsi, FILE * rdi, uint64 r9, word64 * r10, Eq_n r12, union Eq_n * r13, Eq_n r14, Eq_n r15)
 {
 	uint64 r9_n;
 	if (rsi != 0x00)
@@ -9229,7 +9229,7 @@ void fn0000000000410AC0(uint64 rcx, Eq_n rbx, Eq_n rbp, uint64 rsi, FILE * rdi, 
 				break;
 		}
 	}
-	fn0000000000410630(rcx, rbx, rbp, rsi, rdi, fp - 88, r9_n, r10_n, r12, r13, r14, r15);
+	fn0000000000410630(rcx, rbx, rbp, rsi, rdi, r9_n, r10_n, r12, r13, r14, r15);
 }
 
 // 0000000000410B30: void fn0000000000410B30(Register byte al, Register uint64 rcx, Register Eq_n rbx, Register Eq_n rbp, Register uint64 rsi, Register (ptr64 Eq_n) rdi, Register Eq_n r12, Register (ptr64 Eq_n) r13, Register Eq_n r14, Register Eq_n r15)

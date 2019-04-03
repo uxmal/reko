@@ -3295,8 +3295,8 @@ void slist_destroy(Eq_n r4, ptr32 r30, word32 ra)
 	free(r4);
 }
 
-// 00407740: void __fixunsdfsi(Register word64 f12, Register word64 f13, Register word32 FCSR)
-void __fixunsdfsi(word64 f12, word64 f13, word32 FCSR)
+// 00407740: void __fixunsdfsi(Register word64 f12, Register word64 f13)
+void __fixunsdfsi(word64 f12, word64 f13)
 {
 	Eq_n f12_f13_n = SEQ(f12, f13);
 }

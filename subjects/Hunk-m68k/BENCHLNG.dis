@@ -206,7 +206,7 @@ l000011CC:
 // SymbolicIn:
 
 l000011CE_thunk_fn0000127C:
-	fn0000127C(20, out a1_694, out a5_695)
+	fn0000127C(out a1_694, out a5_695)
 	return
 // DataOut:
 // DataOut (flags):
@@ -411,7 +411,7 @@ l00001202:
 // SymbolicIn:
 
 l00001212_thunk_fn0000127C:
-	fn0000127C(0, out a1_696, out a5_697)
+	fn0000127C(out a1_696, out a5_697)
 	return
 // DataOut:
 // DataOut (flags):
@@ -518,7 +518,7 @@ l00001278:
 l00001278_thunk_fn0000127C:
 	word32 a1_6
 	word32 a5_9
-	word32 d1_13 = fn0000127C(dwArg04, out a1_6, out a5_9)
+	word32 d1_13 = fn0000127C(out a1_6, out a5_9)
 	a1Out = a1_6
 	a5Out = a5_9
 	return d1_13
@@ -533,10 +533,10 @@ fn00001278_exit:
 
 
 
-word32 fn0000127C(word32 d2, ptr32 & a1Out, ptr32 & a5Out)
+word32 fn0000127C(ptr32 & a1Out, ptr32 & a5Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  d2:[0..31]
+// MayUse: 
 // LiveOut: a1 a5 d1
 // Trashed: CVZN a1 a2 a4 a5 a6 a7 d0 d1
 // Preserved:

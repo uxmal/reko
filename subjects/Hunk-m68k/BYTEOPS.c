@@ -75,7 +75,7 @@ void fn00001000(int32 d0, union Eq_n * a0)
 				d2_n = 1005;
 				if (d0_n == 0x00)
 				{
-					fn0000127C(0x0014);
+					fn0000127C();
 					return;
 				}
 				globals->dw2B9C = d0_n;
@@ -195,7 +195,7 @@ l00001202:
 						globals->dw2BB0 = a0_n;
 						globals->ptr2BB4 = fp - 0x0010;
 						fn00001354(d2_n, a0_n, a2_n, d0_n, dwLoc10, dwLoc0C_n);
-						fn0000127C(0x00);
+						fn0000127C();
 						return;
 					}
 					goto l000011F8;
@@ -230,14 +230,14 @@ void fn0000126C(struct Eq_n * a2)
 	ReplyMsg(a2);
 }
 
-// 00001278: Register word32 fn00001278(Stack Eq_n dwArg04)
-word32 fn00001278(Eq_n dwArg04)
+// 00001278: Register word32 fn00001278(Stack ptr32 dwArg04)
+word32 fn00001278(ptr32 dwArg04)
 {
-	return fn0000127C(dwArg04);
+	return fn0000127C();
 }
 
-// 0000127C: Register (ptr32 Eq_n) fn0000127C(Register Eq_n d2)
-struct Eq_n * fn0000127C(Eq_n d2)
+// 0000127C: Register (ptr32 Eq_n) fn0000127C()
+struct Eq_n * fn0000127C()
 {
 	ptr32 a7_n = globals->ptr2B88;
 	struct Eq_n * v7_n = *(a7_n - 0x04);
@@ -251,8 +251,8 @@ struct Eq_n * fn0000127C(Eq_n d2)
 	return v7_n;
 }
 
-// 000012D0: Register word32 fn000012D0(Register int32 d2, Register (ptr32 Eq_n) a2, Register (ptr32 Eq_n) a3, Stack Eq_n dwArg04)
-word32 fn000012D0(int32 d2, struct Eq_n * a2, struct Eq_n * a3, Eq_n dwArg04)
+// 000012D0: Register word32 fn000012D0(Register int32 d2, Register (ptr32 Eq_n) a2, Register (ptr32 Eq_n) a3, Stack ptr32 dwArg04)
+word32 fn000012D0(int32 d2, struct Eq_n * a2, struct Eq_n * a3, ptr32 dwArg04)
 {
 	if (0x2CD0 != 0x00)
 	{
@@ -273,8 +273,8 @@ word32 fn000012D0(int32 d2, struct Eq_n * a2, struct Eq_n * a3, Eq_n dwArg04)
 	return fn00001278(dwArg04);
 }
 
-// 0000131C: Register word32 fn0000131C(Register int32 d2, Register (ptr32 Eq_n) a2, Register Eq_n a3, Stack Eq_n dwArg04)
-word32 fn0000131C(int32 d2, struct Eq_n * a2, Eq_n a3, Eq_n dwArg04)
+// 0000131C: Register word32 fn0000131C(Register int32 d2, Register (ptr32 Eq_n) a2, Register Eq_n a3, Stack ptr32 dwArg04)
+word32 fn0000131C(int32 d2, struct Eq_n * a2, Eq_n a3, ptr32 dwArg04)
 {
 	if (globals->dw2BB8 == 0x00)
 	{

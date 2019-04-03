@@ -1,7 +1,7 @@
-void fn80000000(word32 d2)
+void fn80000000()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  d2:[0..31]
+// MayUse: 
 // LiveOut:
 // Trashed: CVZN d0 d1 fp0 fp1
 // Preserved: a7
@@ -11,7 +11,7 @@ fn80000000_entry:
 // SymbolicIn:
 
 l80000000:
-	fn800003CC(d2)
+	fn800003CC()
 	return
 // DataOut:
 // DataOut (flags):
@@ -24,10 +24,10 @@ fn80000000_exit:
 
 
 
-real96 fn80000132(word32 d2, real96 rArg04, real96 rArg10)
+real96 fn80000132(real96 rArg04, real96 rArg10)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  d2:[0..31] Stack +0004:[0..95] Stack +0010:[0..95]
+// MayUse:  Stack +0004:[0..95] Stack +0010:[0..95]
 // LiveOut: fp0
 // Trashed: CVZN d0 d1 fp0
 // Preserved: X a6 a7 d2
@@ -76,10 +76,10 @@ l8000015A:
 
 
 
-real96 fn8000018E(word32 d2, real96 rArg04)
+real96 fn8000018E(real96 rArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  d2:[0..31] Stack +0004:[0..95]
+// MayUse:  Stack +0004:[0..95]
 // LiveOut: fp0
 // Trashed: CVZN d0 d1 fp0
 // Preserved: X a6 a7 d2 fp1
@@ -128,10 +128,10 @@ l800001B8:
 
 
 
-real96 fn800001F2(word32 d2, real96 rArg04)
+real96 fn800001F2(real96 rArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  d2:[0..31] Stack +0004:[0..95]
+// MayUse:  Stack +0004:[0..95]
 // LiveOut: fp0
 // Trashed: CVZN d0 d1 fp0 fp1
 // Preserved: X a6 a7 d2 fp2
@@ -169,7 +169,7 @@ fn800001F2_exit:
 // SymbolicIn:
 
 l80000224:
-	real96 fp0_91 = (real96) (real80) ((real96) (real80) fn80000132(d2, rArg04, (real96) dwLoc20_110) / (real80) fn8000018E(d2, (real96) dwLoc20_110)) * rLoc1C_109
+	real96 fp0_91 = (real96) (real80) ((real96) (real80) fn80000132(rArg04, (real96) dwLoc20_110) / (real80) fn8000018E((real96) dwLoc20_110)) * rLoc1C_109
 	real96 fp1_93 = rLoc10_127 + (real80) fp0_91
 	dwLoc10_112 = SLICE(fp1_93, word32, 64) (alias)
 	dwLoc0C_113 = SLICE(fp1_93, word32, 32) (alias)
@@ -182,10 +182,10 @@ l80000224:
 
 
 
-real96 fn800002AE(word32 d2, real96 rArg04)
+real96 fn800002AE(real96 rArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  d2:[0..31] Stack +0004:[0..95]
+// MayUse:  Stack +0004:[0..95]
 // LiveOut: fp0
 // Trashed: CVZN d0 d1 fp0 fp1
 // Preserved: X a6 a7 d2 fp2
@@ -224,7 +224,7 @@ fn800002AE_exit:
 // SymbolicIn:
 
 l800002E2:
-	real96 fp0_91 = (real96) (real80) ((real96) (real80) fn80000132(d2, rArg04, (real96) dwLoc20_109) / (real80) fn8000018E(d2, (real96) dwLoc20_109)) * rLoc1C_108
+	real96 fp0_91 = (real96) (real80) ((real96) (real80) fn80000132(rArg04, (real96) dwLoc20_109) / (real80) fn8000018E((real96) dwLoc20_109)) * rLoc1C_108
 	real96 fp1_93 = rLoc10_126 + (real80) fp0_91
 	dwLoc10_111 = SLICE(fp1_93, word32, 64) (alias)
 	dwLoc0C_112 = SLICE(fp1_93, word32, 32) (alias)
@@ -237,10 +237,10 @@ l800002E2:
 
 
 
-void fn8000036C(word32 d2, real96 rArg04)
+void fn8000036C(real96 rArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  d2:[0..31] Stack +0004:[0..95]
+// MayUse:  Stack +0004:[0..95]
 // LiveOut:
 // Trashed: CVZN d0 d1 fp0 fp1
 // Preserved: a6 a7 d2 fp2
@@ -250,8 +250,8 @@ fn8000036C_entry:
 // SymbolicIn:
 
 l8000036C:
-	fn800001F2(d2, rArg04)
-	fn800002AE(d2, rArg04)
+	fn800001F2(rArg04)
+	fn800002AE(rArg04)
 	return
 // DataOut:
 // DataOut (flags):
@@ -264,10 +264,10 @@ fn8000036C_exit:
 
 
 
-void fn800003CC(word32 d2)
+void fn800003CC()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  d2:[0..31]
+// MayUse: 
 // LiveOut:
 // Trashed: CVZN d0 d1 fp0 fp1
 // Preserved: a6 a7
@@ -278,11 +278,11 @@ fn800003CC_entry:
 
 l800003CC:
 	real96 fp0_8 = Mem5[0x80000538:real96]
-	fn80000132(d2, fp0_8, fp0_8)
-	fn8000018E(d2, fp0_8)
-	fn800001F2(d2, fp0_8)
-	fn800002AE(d2, fp0_8)
-	fn8000036C(d2, fp0_8)
+	fn80000132(fp0_8, fp0_8)
+	fn8000018E(fp0_8)
+	fn800001F2(fp0_8)
+	fn800002AE(fp0_8)
+	fn8000036C(fp0_8)
 	return
 // DataOut:
 // DataOut (flags):

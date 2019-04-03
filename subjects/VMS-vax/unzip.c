@@ -895,8 +895,8 @@ word32 fn0000AEF2(Eq_n r3, struct Eq_n * ap, union Eq_n * fp, ptr32 & r1Out, str
 	}
 }
 
-// 0000AFDA: void fn0000AFDA(Register (ptr32 Eq_n) ap, Register word32 fp)
-void fn0000AFDA(struct Eq_n * ap, word32 fp)
+// 0000AFDA: void fn0000AFDA(Register (ptr32 Eq_n) ap)
+void fn0000AFDA(struct Eq_n * ap)
 {
 	word32 r0_n = ap->dw0008;
 	--ap->dw0008;
@@ -2504,8 +2504,8 @@ void fn0000D4A2()
 {
 }
 
-// 0000D50E: void fn0000D50E(Register (ptr32 Eq_n) ap, Register word32 fp)
-void fn0000D50E(struct Eq_n * ap, word32 fp)
+// 0000D50E: void fn0000D50E(Register (ptr32 Eq_n) ap)
+void fn0000D50E(struct Eq_n * ap)
 {
 	if (ap->dwC5FB > 0x00)
 		ap->dw0084 += ap->dwC5FB;

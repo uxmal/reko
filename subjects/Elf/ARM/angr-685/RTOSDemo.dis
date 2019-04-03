@@ -839,10 +839,10 @@ l00000308:
 
 
 
-void uxQueueMessagesWaiting(word32 r0, word32 cpsr)
+void uxQueueMessagesWaiting(word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  cpsr:[0..31] r0:[0..31]
+// MayUse:  cpsr:[0..31]
 // LiveOut:
 // Trashed: NZCV r0 r2
 // Preserved: r4 sp
@@ -866,10 +866,10 @@ uxQueueMessagesWaiting_exit:
 
 
 
-void uxQueueSpacesAvailable(word32 r0, word32 cpsr)
+void uxQueueSpacesAvailable(word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  cpsr:[0..31] r0:[0..31]
+// MayUse:  cpsr:[0..31]
 // LiveOut:
 // Trashed: NZCV r0 r2
 // Preserved: r3 r4 r5 sp
@@ -1244,10 +1244,10 @@ xQueueIsQueueFullFromISR_exit:
 
 
 
-void uxQueueMessagesWaitingFromISR(word32 r0)
+void uxQueueMessagesWaitingFromISR()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r0:[0..31]
+// MayUse: 
 // LiveOut:
 // Trashed: r0
 // Preserved: sp
@@ -5353,10 +5353,10 @@ xEventGroupSync_exit:
 
 
 
-void xEventGroupGetBitsFromISR(word32 r0, word32 cpsr)
+void xEventGroupGetBitsFromISR(word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  cpsr:[0..31] r0:[0..31]
+// MayUse:  cpsr:[0..31]
 // LiveOut:
 // Trashed: r0 r2 r3
 // Preserved: sp
@@ -8183,10 +8183,10 @@ MPU_xQueueGenericSend_exit:
 
 
 
-void MPU_uxQueueMessagesWaiting(word32 r0, word32 cpsr)
+void MPU_uxQueueMessagesWaiting(word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  cpsr:[0..31] r0:[0..31]
+// MayUse:  cpsr:[0..31]
 // LiveOut:
 // Trashed: NZCV r2
 // Preserved: r3 r4 r5 sp
@@ -8197,7 +8197,7 @@ MPU_uxQueueMessagesWaiting_entry:
 
 l00008B1C:
 	word32 r0_15 = xPortRaisePrivilege(cpsr)
-	uxQueueMessagesWaiting(r0, cpsr)
+	uxQueueMessagesWaiting(cpsr)
 	branch r0_15 == 0x00000001 l00008B3E
 // DataOut:
 // DataOut (flags):
@@ -8222,10 +8222,10 @@ MPU_uxQueueMessagesWaiting_exit:
 
 
 
-void MPU_uxQueueSpacesAvailable(word32 r0, word32 cpsr)
+void MPU_uxQueueSpacesAvailable(word32 cpsr)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  cpsr:[0..31] r0:[0..31]
+// MayUse:  cpsr:[0..31]
 // LiveOut:
 // Trashed: NZCV r2
 // Preserved: r3 r4 r5 sp
@@ -8236,7 +8236,7 @@ MPU_uxQueueSpacesAvailable_entry:
 
 l00008B44:
 	word32 r0_15 = xPortRaisePrivilege(cpsr)
-	uxQueueSpacesAvailable(r0, cpsr)
+	uxQueueSpacesAvailable(cpsr)
 	branch r0_15 == 0x00000001 l00008B66
 // DataOut:
 // DataOut (flags):
@@ -10084,10 +10084,10 @@ GPIOPinIntDisable_exit:
 
 
 
-void GPIOPinIntStatus(word32 r0, word32 r1)
+void GPIOPinIntStatus(word32 r1)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r0:[0..31] r1:[0..31]
+// MayUse:  r1:[0..31]
 // LiveOut:
 // Trashed: r0
 // Preserved: sp
@@ -10417,10 +10417,10 @@ GPIOPortIntUnregister_exit:
 
 
 
-void GPIOPinRead(word32 r0, word32 r1)
+void GPIOPinRead()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r0:[0..31] r1:[0..31]
+// MayUse: 
 // LiveOut:
 // Trashed: r0
 // Preserved: sp
@@ -10968,10 +10968,10 @@ IntPrioritySet_exit:
 
 
 
-void IntPriorityGet(word32 r0)
+void IntPriorityGet()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r0:[0..31]
+// MayUse: 
 // LiveOut:
 // Trashed: NZCV r0 r2 r3
 // Preserved: sp
@@ -12064,10 +12064,10 @@ SSIIntDisable_exit:
 
 
 
-void SSIIntStatus(word32 r0, word32 r1)
+void SSIIntStatus(word32 r1)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r0:[0..31] r1:[0..31]
+// MayUse:  r1:[0..31]
 // LiveOut:
 // Trashed: r0
 // Preserved: sp
@@ -13578,10 +13578,10 @@ UARTParityModeSet_exit:
 
 
 
-void UARTParityModeGet(word32 r0)
+void UARTParityModeGet()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r0:[0..31]
+// MayUse: 
 // LiveOut:
 // Trashed: r0
 // Preserved: sp
@@ -13742,10 +13742,10 @@ UARTDisable_exit:
 
 
 
-void UARTCharsAvail(word32 r0)
+void UARTCharsAvail()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r0:[0..31]
+// MayUse: 
 // LiveOut:
 // Trashed: r0
 // Preserved: sp
@@ -13767,10 +13767,10 @@ UARTCharsAvail_exit:
 
 
 
-void UARTSpaceAvail(word32 r0)
+void UARTSpaceAvail()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r0:[0..31]
+// MayUse: 
 // LiveOut:
 // Trashed: r0
 // Preserved: sp
@@ -14804,10 +14804,10 @@ I2CMasterSlaveAddrSet_exit:
 
 
 
-void I2CMasterBusy(word32 r0)
+void I2CMasterBusy()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r0:[0..31]
+// MayUse: 
 // LiveOut:
 // Trashed: r0
 // Preserved: sp
@@ -14829,10 +14829,10 @@ I2CMasterBusy_exit:
 
 
 
-void I2CMasterBusBusy(word32 r0)
+void I2CMasterBusBusy()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r0:[0..31]
+// MayUse: 
 // LiveOut:
 // Trashed: r0
 // Preserved: sp
@@ -14955,10 +14955,10 @@ I2CMasterDataPut_exit:
 
 
 
-void I2CMasterDataGet(word32 r0)
+void I2CMasterDataGet()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r0:[0..31]
+// MayUse: 
 // LiveOut:
 // Trashed: r0
 // Preserved: sp
@@ -14980,10 +14980,10 @@ I2CMasterDataGet_exit:
 
 
 
-void I2CSlaveStatus(word32 r0)
+void I2CSlaveStatus()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r0:[0..31]
+// MayUse: 
 // LiveOut:
 // Trashed: r0
 // Preserved: sp
@@ -15031,10 +15031,10 @@ I2CSlaveDataPut_exit:
 
 
 
-void I2CSlaveDataGet(word32 r0)
+void I2CSlaveDataGet()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r0:[0..31]
+// MayUse: 
 // LiveOut:
 // Trashed: r0
 // Preserved: sp

@@ -1311,10 +1311,10 @@ vTaskStartScheduler_exit:
 
 
 
-void vTaskEndScheduler(word20 sr)
+void vTaskEndScheduler()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  sr:[0..19]
+// MayUse: 
 // LiveOut:
 // Trashed: sr
 // Preserved: sp
@@ -1613,10 +1613,10 @@ xTaskGetTickCount_exit:
 
 
 
-void uxTaskGetNumberOfTasks(word20 sr)
+void uxTaskGetNumberOfTasks()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  sr:[0..19]
+// MayUse: 
 // LiveOut:
 // Trashed: VNZC r15 sr
 // Preserved: sp
@@ -3191,10 +3191,10 @@ xQueueReceiveFromISR_exit:
 
 
 
-void uxQueueMessagesWaiting(word20 sr, word20 r15)
+void uxQueueMessagesWaiting()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r15:[0..19] sr:[0..19]
+// MayUse: 
 // LiveOut:
 // Trashed: VNZC r15 sr
 // Preserved: sp

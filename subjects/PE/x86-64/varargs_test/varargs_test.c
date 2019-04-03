@@ -829,8 +829,8 @@ void fn0000000140001F12(word64 * rcx, word64 rdx, word64 rbp)
 	seh_filter_exe();
 }
 
-// 0000000140001F30: void fn0000000140001F30(Register word64 rcx)
-void fn0000000140001F30(word64 rcx)
+// 0000000140001F30: void fn0000000140001F30()
+void fn0000000140001F30()
 {
 }
 

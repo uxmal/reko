@@ -3450,10 +3450,10 @@ fn130E_exit:
 
 
 
-void fn1315(word16 de)
+void fn1315()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  de:[0..15]
+// MayUse: 
 // LiveOut:
 // Trashed: SZPC de f hl
 // Preserved: sp
@@ -3536,10 +3536,10 @@ fn1335_exit:
 
 
 
-void fn133C(byte a, byte e, byte d)
+void fn133C()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  a:[0..7] d:[0..7] e:[0..7]
+// MayUse: 
 // LiveOut:
 // Trashed: SZPC b c f h l
 // Preserved: sp
@@ -3649,10 +3649,10 @@ fn1353_exit:
 
 
 
-void fn1356(word16 de, byte l, byte h)
+void fn1356()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  de:[0..15] h:[0..7] l:[0..7]
+// MayUse: 
 // LiveOut:
 // Trashed: SZPC de f h l
 // Preserved: sp

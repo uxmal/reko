@@ -1341,8 +1341,8 @@ ptr16 fn130E()
 	return sp_n;
 }
 
-// 1315: void fn1315(Register word16 de)
-void fn1315(word16 de)
+// 1315: void fn1315()
+void fn1315()
 {
 }
 
@@ -1366,8 +1366,8 @@ bool fn1335(uint8 e, ui8 d, uint8 l, ui8 h)
 	return SLICE(cond(SLICE(SEQ(d, e) - SEQ(h, l), byte, 8)), bool, 0);
 }
 
-// 133C: void fn133C(Register byte a, Register byte e, Register byte d)
-void fn133C(byte a, byte e, byte d)
+// 133C: void fn133C()
+void fn133C()
 {
 }
 
@@ -1397,8 +1397,8 @@ byte * fn1353(byte a, byte * de, union Eq_n & lOut, union Eq_n & fOut)
 	return de + 0x01;
 }
 
-// 1356: void fn1356(Register word16 de, Register byte l, Register byte h)
-void fn1356(word16 de, byte l, byte h)
+// 1356: void fn1356()
+void fn1356()
 {
 }
 

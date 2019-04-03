@@ -10923,10 +10923,10 @@ slist_destroy_exit:
 
 
 
-void __fixunsdfsi(word64 f12, word64 f13, word32 FCSR)
+void __fixunsdfsi(word64 f12, word64 f13)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  f12:[0..63] f13:[0..63] FCSR:[0..31]
+// MayUse:  f12:[0..63] f13:[0..63]
 // LiveOut:
 // Trashed: cc0 f0 f1 f2 r1 r2 r25 r28 r3
 // Preserved: FCSR sp

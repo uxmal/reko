@@ -2379,10 +2379,10 @@ fn0000000140001F12_exit:
 
 
 
-void fn0000000140001F30(word64 rcx)
+void fn0000000140001F30()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  rcx:[0..63]
+// MayUse: 
 // LiveOut:
 // Trashed: SCZO rax rcx
 // Preserved: rbp rsp

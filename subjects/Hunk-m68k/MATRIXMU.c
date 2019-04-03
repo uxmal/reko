@@ -75,7 +75,7 @@ void fn00001000(int32 d0, union Eq_n * a0)
 				d2_n = 1005;
 				if (d0_n == 0x00)
 				{
-					fn0000127C(0x0014);
+					fn0000127C();
 					return;
 				}
 				globals->dw14A8 = d0_n;
@@ -195,7 +195,7 @@ l00001202:
 						*(word32 *) 0x14BC = a0_n;
 						*(ptr32 *) 0x14C0 = fp - 0x0010;
 						fn00001354(d2_n, a0_n, a2_n, d0_n, dwLoc10, dwLoc0C_n);
-						fn0000127C(0x00);
+						fn0000127C();
 						return;
 					}
 					goto l000011F8;
@@ -230,14 +230,14 @@ void fn0000126C(struct Eq_n * a2)
 	ReplyMsg(a2);
 }
 
-// 00001278: void fn00001278(Stack int32 dwArg04)
-void fn00001278(int32 dwArg04)
+// 00001278: void fn00001278(Stack word32 dwArg04)
+void fn00001278(word32 dwArg04)
 {
-	fn0000127C(dwArg04);
+	fn0000127C();
 }
 
-// 0000127C: void fn0000127C(Register int32 d2)
-void fn0000127C(int32 d2)
+// 0000127C: void fn0000127C()
+void fn0000127C()
 {
 	ptr32 a7_n = globals->ptr1494;
 	struct Eq_n * v7_n = *(a7_n - 0x04);
@@ -250,8 +250,8 @@ void fn0000127C(int32 d2)
 	FreeMem(v7_n, v7_n->dw0000);
 }
 
-// 000012D0: void fn000012D0(Register int32 d2, Register (ptr32 Eq_n) a2, Register (ptr32 Eq_n) a3, Stack int32 dwArg04)
-void fn000012D0(int32 d2, union Eq_n * a2, struct Eq_n * a3, int32 dwArg04)
+// 000012D0: void fn000012D0(Register int32 d2, Register (ptr32 Eq_n) a2, Register (ptr32 Eq_n) a3, Stack word32 dwArg04)
+void fn000012D0(int32 d2, union Eq_n * a2, struct Eq_n * a3, word32 dwArg04)
 {
 	if (0x14D0 != 0x00)
 	{
@@ -272,8 +272,8 @@ void fn000012D0(int32 d2, union Eq_n * a2, struct Eq_n * a3, int32 dwArg04)
 	fn00001278(dwArg04);
 }
 
-// 0000131C: void fn0000131C(Register int32 d2, Register (ptr32 Eq_n) a2, Register (ptr32 word32) a3, Stack int32 dwArg04)
-void fn0000131C(int32 d2, union Eq_n * a2, word32 * a3, int32 dwArg04)
+// 0000131C: void fn0000131C(Register int32 d2, Register (ptr32 Eq_n) a2, Register (ptr32 word32) a3, Stack word32 dwArg04)
+void fn0000131C(int32 d2, union Eq_n * a2, word32 * a3, word32 dwArg04)
 {
 	if (*(int32 *) 0x14C4 == 0x00)
 	{

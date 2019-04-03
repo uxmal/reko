@@ -11148,7 +11148,7 @@ l0800_36DF:
 // SymbolicIn:
 
 l0800_36FE:
-	branch fn0800_8E52(ax_195, ds, SEQ(wArg04, wArg02)) == 0x0000 l0800_371E
+	branch fn0800_8E52(ax_195, ds) == 0x0000 l0800_371E
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -21955,7 +21955,7 @@ fn0800_867A_entry:
 // SymbolicIn:
 
 l0800_867A:
-	word16 si_27 = fn0800_87EF(wArg04 + 0x0004, psegArg06)
+	word16 si_27 = fn0800_87EF(wArg04 + 0x0004)
 	byte al_37 = Mem32[psegArg06:si_27 + 0x000A:byte] * 0x02 + true
 	selector ds_20 = psegArg06
 	word16 di_189 = wArg08
@@ -22560,10 +22560,10 @@ l0800_8733_1:
 
 
 
-word16 fn0800_87EF(word16 si, selector ds)
+word16 fn0800_87EF(word16 si)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ds:[0..15] si:[0..15]
+// MayUse:  si:[0..15]
 // LiveOut: si
 // Trashed: ax bx si Top
 // Preserved: sp
@@ -22573,13 +22573,13 @@ fn0800_87EF_entry:
 // SymbolicIn:
 
 l0800_87EF:
-	word16 si_7 = fn0800_87F4(si, ds)
+	word16 si_7 = fn0800_87F4(si)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0800_87F2_thunk_fn0800_87F4:
-	return fn0800_87F4(si_7, ds)
+	return fn0800_87F4(si_7)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -22591,10 +22591,10 @@ fn0800_87EF_exit:
 
 
 
-word16 fn0800_87F4(word16 si, selector ds)
+word16 fn0800_87F4(word16 si)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ds:[0..15] si:[0..15]
+// MayUse:  si:[0..15]
 // LiveOut: si
 // Trashed: ax si Top
 // Preserved: sp
@@ -23246,10 +23246,10 @@ l0800_8AA5:
 
 
 
-void fn0800_8ACF(word16 cx, selector ds, word16 wArg02, segptr32 ptrArg06)
+void fn0800_8ACF(word16 cx, selector ds, segptr32 ptrArg06)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  cx:[0..15] ds:[0..15] Stack +0002:[0..15] Stack +0006:[0..31]
+// MayUse:  cx:[0..15] ds:[0..15] Stack +0006:[0..31]
 // LiveOut:
 // Trashed: SCZO ax bx dx es Top
 // Preserved: bp ds sp
@@ -24370,10 +24370,10 @@ fn0800_8E29_exit:
 
 
 
-word16 fn0800_8E52(byte al, selector ds, word16 wArg02)
+word16 fn0800_8E52(byte al, selector ds)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ax:[0..7] ds:[0..15] Stack +0002:[0..15]
+// MayUse:  ax:[0..7] ds:[0..15]
 // LiveOut: ax
 // Trashed: SCZO ax dx Top
 // Preserved: bp ds sp
@@ -26956,10 +26956,10 @@ fn0800_94B0_exit:
 
 
 
-void fn0800_9652(segptr32 ptrArg02)
+void fn0800_9652()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  Stack +0002:[0..31]
+// MayUse: 
 // LiveOut:
 // Trashed: ah cx dx es Top
 // Preserved: bp si sp
@@ -26982,10 +26982,10 @@ fn0800_9652_exit:
 
 
 
-void fn0800_9667(segptr32 ptrArg02)
+void fn0800_9667()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  Stack +0002:[0..31]
+// MayUse: 
 // LiveOut:
 // Trashed: ah cx dx es Top
 // Preserved: bp si sp
@@ -30310,7 +30310,7 @@ fn0800_A4F6_entry:
 // SymbolicIn:
 
 l0800_A4F6:
-	branch fn0800_A53C(ds, SEQ(wArg04, wArg02), 0x00, out cx_22) != 0xFFFF l0800_A513
+	branch fn0800_A53C(ds, 0x00, out cx_22) != 0xFFFF l0800_A513
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -30327,7 +30327,7 @@ l0800_A51D:
 // SymbolicIn:
 
 l0800_A520:
-	branch fn0800_A53C(ds, SEQ(wArg04, wArg02), 0x01, out cx_115) == 0xFFFF l0800_A50F
+	branch fn0800_A53C(ds, 0x01, out cx_115) == 0xFFFF l0800_A50F
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -30355,10 +30355,10 @@ fn0800_A4F6_exit:
 
 
 
-word16 fn0800_A53C(selector ds, word16 wArg02, byte bArg06, ptr16 & cxOut)
+word16 fn0800_A53C(selector ds, byte bArg06, ptr16 & cxOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ds:[0..15] Stack +0002:[0..15] Stack +0006:[8..15]
+// MayUse:  ds:[0..15] Stack +0006:[8..15]
 // LiveOut: ax cx
 // Trashed: ax cx dx Top
 // Preserved: SCZO bp ds sp
@@ -33325,7 +33325,7 @@ l0800_B15C:
 	word16 ax_324
 	word16 di_114
 	word16 cx_110
-	word16 ax_42 = fn0800_A53C(ds, SEQ(wArg04, wArg02), 0x00, out cx_110)
+	word16 ax_42 = fn0800_A53C(ds, 0x00, out cx_110)
 	word16 wLoc04_369 = ax_42
 	branch (si_16 & 0x0100) == 0x0000 l0800_B1F2
 // DataOut:
@@ -33488,7 +33488,7 @@ l0800_B24E:
 // SymbolicIn:
 
 l0800_B254:
-	fn0800_A53C(ds, SEQ(wArg04, wArg02), 0x01, out cx_110)
+	fn0800_A53C(ds, 0x01, out cx_110)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -37348,10 +37348,10 @@ fn1483_0ADC_exit:
 
 
 
-int8 fn1483_0C11(byte al, word32 ecx, word16 bx, word16 bp, word16 si, word16 di, selector es, selector ds)
+int8 fn1483_0C11(byte al, word32 ecx, word16 bx, word16 si, word16 di, selector es, selector ds)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  al:[0..7] bp:[0..15] cs:[0..15] cx:[0..31] di:[0..15] ds:[0..15] ebx:[0..15] ecx:[16..31] es:[0..15] si:[0..15] ss:[0..15]
+// MayUse:  al:[0..7] cs:[0..15] cx:[0..31] di:[0..15] ds:[0..15] ebx:[0..15] ecx:[16..31] es:[0..15] si:[0..15] ss:[0..15]
 // LiveOut: Top
 // Trashed: SCZDO bp di ds dx eax ebx ecx es si sp ss Top
 // Preserved:
@@ -37379,10 +37379,7 @@ l1483_0C4D:
 // SymbolicIn:
 
 l1483_0C53_thunk_fn1483_0C55:
-	// Failed to bind call argument.
-	// Please report this issue at https://github.com/uxmal/reko
-	word16 stackArg0 = <invalid>
-	return fn1483_0C55((word16) eax_28, ds, stackArg0)
+	return fn1483_0C55((word16) eax_28, ds)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -37402,7 +37399,7 @@ l1483_0C6C:
 	selector ds_67
 	selector es_70
 	word16 si_71
-	ui32 dh_ax_152 = SEQ(SLICE(dx_68, byte, 8), fn1483_1BB8(0x55, 0x1955, ecx_60, 0x8000, bx_43, bp, si, di, es, ds, out cx_192, out dl_193, out bx_65, out si_71, out di_66, out es_70, out ds_67)) + SEQ(Mem44[ds_67:si_71 + 0x147C:byte], Mem44[ds_67:bx_65 + 0x3303:word16])
+	ui32 dh_ax_152 = SEQ(SLICE(dx_68, byte, 8), fn1483_1BB8(0x55, 0x1955, ecx_60, 0x8000, bx_43, si, di, es, ds, out cx_192, out dl_193, out bx_65, out si_71, out di_66, out es_70, out ds_67)) + SEQ(Mem44[ds_67:si_71 + 0x147C:byte], Mem44[ds_67:bx_65 + 0x3303:word16])
 	selector ss_73 = <invalid>
 	word16 sp_72 = <invalid>
 	word16 di_79 = di_66 + Mem44[ds_67:bx_65:word16]
@@ -37448,7 +37445,7 @@ l1483_0C8F_thunk_fn1483_0C91:
 	word16 stackArg4 = <invalid>
 	word16 stackArg6 = <invalid>
 	int8 Top_143
-	fn1483_0C91(ax_120 * 0x0002, (byte) ecx_136, (word16) ecx_136, ax_80, si_71 + 0x0001, ds_67, stackArg2, stackArg4, stackArg6, out es_198, out Top_143)
+	fn1483_0C91(ax_120 * 0x0002, (byte) ecx_136, (word16) ecx_136, ax_80, si_71 + 0x0001, ds_67, stackArg2, stackArg4, stackArg6, out es_197, out Top_143)
 	return Top_143
 // DataOut:
 // DataOut (flags):
@@ -37467,10 +37464,10 @@ l1483_0C24:
 
 
 
-int8 fn1483_0C55(word16 ax, selector ds, word16 wArg00)
+int8 fn1483_0C55(word16 ax, selector ds)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ax:[0..15] ds:[0..15] Stack +0000:[0..15]
+// MayUse:  ax:[0..15] ds:[0..15]
 // LiveOut: Top
 // Trashed: SCZO ax di dx si sp Top
 // Preserved: ax
@@ -37491,7 +37488,7 @@ l1483_0C55:
 // SymbolicIn:
 
 l1483_0C55_thunk_fn1483_0C11:
-	return fn1483_0C11((byte) ax, ecx, bx, bp, si, di, es, ds)
+	return fn1483_0C11((byte) ax, ecx, bx, si, di, es, ds)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -37537,7 +37534,7 @@ l1483_0C91:
 // SymbolicIn:
 
 l1483_0C96_thunk_fn1483_0C55:
-	int8 Top_31 = fn1483_0C55(ax_19, ds, wArg02)
+	int8 Top_31 = fn1483_0C55(ax_19, ds)
 	esOut = <invalid>
 	TopOut = Top_31
 	return di
@@ -37684,10 +37681,10 @@ fn1483_0CA0_exit:
 
 
 
-word16 fn1483_0CED(word16 ax, word16 bx, word16 si, word16 di, selector es, selector ds, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, word16 wArg0A, word16 wArg10, ptr16 & esOut, ptr16 & TopOut)
+word16 fn1483_0CED(word16 ax, word16 bx, word16 si, word16 di, selector es, selector ds, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg0A, word16 wArg10, ptr16 & esOut, ptr16 & TopOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ax:[0..15] bx:[0..15] di:[0..15] ds:[0..15] es:[0..15] si:[0..15] Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..15] Stack +0008:[0..15] Stack +000A:[0..15] Stack +0010:[0..15]
+// MayUse:  ax:[0..15] bx:[0..15] di:[0..15] ds:[0..15] es:[0..15] si:[0..15] Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..15] Stack +000A:[0..15] Stack +0010:[0..15]
 // LiveOut: di es Top
 // Trashed: SCZO ax bp bx cx di dx es si sp Top
 // Preserved:
@@ -37730,9 +37727,12 @@ l1483_0CF8:
 // SymbolicIn:
 
 l1483_0CF9_thunk_fn1483_0CFC:
+	// Failed to bind call argument.
+	// Please report this issue at https://github.com/uxmal/reko
+	word16 stackArg6 = <invalid>
 	selector es_37
 	int8 Top_40
-	word16 di_35 = fn1483_0CFC(al_30, bl_17 + 0x01, wArg02, wArg04, wArg06, wArg08, wArg0A, wArg10, out es_37, out Top_40)
+	word16 di_35 = fn1483_0CFC(al_30, bl_17 + 0x01, wArg02, wArg04, wArg06, stackArg6, wArg10, out es_37, out Top_40)
 	esOut = es_37
 	TopOut = Top_40
 	return di_35
@@ -37747,10 +37747,10 @@ fn1483_0CED_exit:
 
 
 
-word16 fn1483_0CFA(byte al, byte ch, byte bl, word16 si, selector ds, word16 wArg00, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, word16 wArg0E, ptr16 & esOut, ptr16 & TopOut)
+word16 fn1483_0CFA(byte al, byte ch, byte bl, word16 si, selector ds, word16 wArg00, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg0E, ptr16 & esOut, ptr16 & TopOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  al:[0..7] bl:[0..7] ch:[0..7] ds:[0..15] si:[0..15] Stack +0000:[0..15] Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..15] Stack +0008:[0..15] Stack +000E:[0..15]
+// MayUse:  al:[0..7] bl:[0..7] ch:[0..7] ds:[0..15] si:[0..15] Stack +0000:[0..15] Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..15] Stack +000E:[0..15]
 // LiveOut: di es Top
 // Trashed: SCZO ax bp bx cx di dx es si sp Top
 // Preserved:
@@ -37773,7 +37773,7 @@ l1483_0CFA:
 l1483_0CFA_thunk_fn1483_0CFC:
 	selector es_21
 	int8 Top_24
-	word16 di_19 = fn1483_0CFC(al, bl, wArg00, wArg02, wArg04, wArg06, wArg08, wArg0E, out es_21, out Top_24)
+	word16 di_19 = fn1483_0CFC(al, bl, wArg00, wArg02, wArg04, wArg06, wArg0E, out es_21, out Top_24)
 	esOut = es_21
 	TopOut = Top_24
 	return di_19
@@ -37788,10 +37788,10 @@ fn1483_0CFA_exit:
 
 
 
-word16 fn1483_0CFC(byte al, byte bl, word16 wArg00, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg08, word16 wArg0E, ptr16 & esOut, ptr16 & TopOut)
+word16 fn1483_0CFC(byte al, byte bl, word16 wArg00, word16 wArg02, word16 wArg04, word16 wArg06, word16 wArg0E, ptr16 & esOut, ptr16 & TopOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  al:[0..7] bl:[0..7] Stack +0000:[0..15] Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..15] Stack +0008:[0..15] Stack +000E:[0..15]
+// MayUse:  al:[0..7] bl:[0..7] Stack +0000:[0..15] Stack +0002:[0..15] Stack +0004:[0..15] Stack +0006:[0..15] Stack +000E:[0..15]
 // LiveOut: di es Top
 // Trashed: SCZO ax bp bx cx di dx es si sp Top
 // Preserved:
@@ -37817,7 +37817,7 @@ l1483_0D04_thunk_fn1483_0C91:
 // SymbolicIn:
 
 l1483_0D02_thunk_fn1483_0D06:
-	di_35 = fn1483_0D06(ax_12, dx, bx, ds, fs, Mem9[ss:sp:word16], Mem9[ss:sp + 4:word16], Mem9[ss:sp + 8:word16], Mem9[ss:sp + 14:word16])
+	di_35 = fn1483_0D06(dx, bx, ds, fs, Mem9[ss:sp:word16], Mem9[ss:sp + 4:word16], Mem9[ss:sp + 14:word16])
 	esOut = es
 	TopOut = Top
 	return di_35
@@ -37849,7 +37849,7 @@ l1483_0D04_thunk_fn1483_0C91:
 // SymbolicIn:
 
 l1483_0D04_thunk_fn1483_0D06:
-	di_77 = fn1483_0D06(ax_57, dx, bx_52, ds, fs, wArg00, wArg04, wArg08, wArg0E)
+	di_77 = fn1483_0D06(dx, bx_52, ds, fs, wArg00, wArg04, wArg0E)
 	esOut = es
 	TopOut = 0
 	return di_77
@@ -37864,10 +37864,10 @@ fn1483_0CFC_exit:
 
 
 
-word16 fn1483_0D06(word16 ax, word16 dx, word16 bx, selector ds, selector fs, word16 wArg00, word16 wArg04, word16 wArg08, word16 wArg0E)
+word16 fn1483_0D06(word16 dx, word16 bx, selector ds, selector fs, word16 wArg00, word16 wArg04, word16 wArg0E)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ax:[0..15] bx:[0..15] ds:[0..15] dx:[0..15] fs:[0..15] Stack +0000:[0..15] Stack +0004:[0..15] Stack +0008:[0..15] Stack +000E:[0..15]
+// MayUse:  bx:[0..15] ds:[0..15] dx:[0..15] fs:[0..15] Stack +0000:[0..15] Stack +0004:[0..15] Stack +000E:[0..15]
 // LiveOut: di
 // Trashed: SCZO ax bp bx cx di dx si sp Top
 // Preserved:
@@ -37926,7 +37926,7 @@ l1483_0D3F:
 l1483_0D40_thunk_fn1483_0CFA:
 	selector es_20
 	int8 Top_23
-	word16 di_18 = fn1483_0CFA(al_13, ch, bl, si, ds, ax, wArg00, wArg02, wArg04, wArg06, wArg0C, out es_20, out Top_23)
+	word16 di_18 = fn1483_0CFA(al_13, ch, bl, si, ds, ax, wArg00, wArg02, wArg04, wArg0C, out es_20, out Top_23)
 	esOut = es_20
 	TopOut = Top_23
 	return di_18
@@ -37952,7 +37952,7 @@ l1483_0D42:
 l1483_0D50_thunk_fn1483_0CED:
 	int8 Top_51
 	selector es_56
-	word16 di_49 = fn1483_0CED(ax_38, bx_33, si, di, es, ds, ax, wArg00, wArg02, wArg04, wArg06, wArg0C, out es_56, out Top_51)
+	word16 di_49 = fn1483_0CED(ax_38, bx_33, si, di, es, ds, ax, wArg00, wArg02, wArg06, wArg0C, out es_56, out Top_51)
 	esOut = es_56
 	TopOut = Top_51
 	return di_49
@@ -38383,7 +38383,7 @@ l1483_1B91:
 l1483_1BB7_thunk_fn1483_1BB9:
 	word32 ecx_57
 	int8 Top_59
-	fn1483_1BB9(ax_54, ecx_43, fp, bx_17, bp, si, v18_35, es, psegArg00, out ecx_57, out dl_74, out bx_75, out si_76, out di_77, out es_78, out ds_79, out Top_59)
+	fn1483_1BB9(ax_54, ecx_43, fp, bx_17, si, v18_35, es, psegArg00, out ecx_57, out dl_73, out bx_74, out si_75, out di_76, out es_77, out ds_78, out Top_59)
 	ecxOut = ecx_57
 	TopOut = Top_59
 	return <invalid>
@@ -38398,10 +38398,10 @@ fn1483_1B91_exit:
 
 
 
-word16 fn1483_1BB8(byte al, byte ah, word32 ecx, word16 dx, word16 bx, word16 bp, word16 si, word16 di, selector es, selector ds, ptr16 & cxOut, ptr16 & dlOut, ptr16 & bxOut, ptr16 & siOut, ptr16 & diOut, ptr16 & esOut, ptr16 & dsOut)
+word16 fn1483_1BB8(byte al, byte ah, word32 ecx, word16 dx, word16 bx, word16 si, word16 di, selector es, selector ds, ptr16 & cxOut, ptr16 & dlOut, ptr16 & bxOut, ptr16 & siOut, ptr16 & diOut, ptr16 & esOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  al:[0..7] ax:[8..15] bp:[0..15] bx:[0..15] cs:[0..15] cx:[0..31] di:[0..15] ds:[0..15] dx:[0..15] ecx:[16..31] es:[0..15] si:[0..15] ss:[0..15]
+// MayUse:  al:[0..7] ax:[8..15] bx:[0..15] cs:[0..15] cx:[0..31] di:[0..15] ds:[0..15] dx:[0..15] ecx:[16..31] es:[0..15] si:[0..15] ss:[0..15]
 // LiveOut: ax bx di ds dx ecx es si sp ss
 // Trashed: SCZO ax bp bx di ds dx ecx es si sp ss Top
 // Preserved:
@@ -38423,7 +38423,7 @@ l1483_1BB8_thunk_fn1483_1BB9:
 	selector ds_30
 	word16 si_33
 	selector es_36
-	word16 ax_26 = fn1483_1BB9(ax_16, ecx_22, dx, bx, bp, si, di, es, ds, out ecx_32, out dl_49, out bx_28, out si_33, out di_29, out es_36, out ds_30, out Top_50)
+	word16 ax_26 = fn1483_1BB9(ax_16, ecx_22, dx, bx, si, di, es, ds, out ecx_32, out dl_49, out bx_28, out si_33, out di_29, out es_36, out ds_30, out Top_50)
 	cxOut = <invalid>
 	dlOut = <invalid>
 	bxOut = bx_28
@@ -38443,10 +38443,10 @@ fn1483_1BB8_exit:
 
 
 
-word16 fn1483_1BB9(word16 ax, word32 ecx, word16 dx, word16 bx, word16 bp, word16 si, word16 di, selector es, selector ds, ptr16 & ecxOut, ptr16 & dlOut, ptr16 & bxOut, ptr16 & siOut, ptr16 & diOut, ptr16 & esOut, ptr16 & dsOut, ptr16 & TopOut)
+word16 fn1483_1BB9(word16 ax, word32 ecx, word16 dx, word16 bx, word16 si, word16 di, selector es, selector ds, ptr16 & ecxOut, ptr16 & dlOut, ptr16 & bxOut, ptr16 & siOut, ptr16 & diOut, ptr16 & esOut, ptr16 & dsOut, ptr16 & TopOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ax:[0..15] bp:[0..15] bx:[0..15] cs:[0..15] cx:[0..31] di:[0..15] ds:[0..15] dx:[0..15] ecx:[16..31] es:[0..15] si:[0..15] ss:[0..15]
+// MayUse:  ax:[0..15] bx:[0..15] cs:[0..15] cx:[0..31] di:[0..15] ds:[0..15] dx:[0..15] ecx:[16..31] es:[0..15] si:[0..15] ss:[0..15]
 // LiveOut: ax bx di ds dx ecx es si sp ss Top
 // Trashed: SCZO ax bp bx di ds dx ecx es si sp ss Top
 // Preserved:

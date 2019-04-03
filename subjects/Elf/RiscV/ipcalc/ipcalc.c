@@ -1160,8 +1160,8 @@ Eq_n fn0000000000016830(struct Eq_n * gp, Eq_n a0)
 	}
 }
 
-// 00000000000168B8: void fn00000000000168B8(Register (ptr64 Eq_n) gp, Register word64 a0, Register Eq_n a1)
-void fn00000000000168B8(struct Eq_n * gp, word64 a0, Eq_n a1)
+// 00000000000168B8: void fn00000000000168B8(Register (ptr64 Eq_n) gp, Register Eq_n a1)
+void fn00000000000168B8(struct Eq_n * gp, Eq_n a1)
 {
 	fn0000000000016830(gp, a1);
 }

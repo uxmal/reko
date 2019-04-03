@@ -1,7 +1,7 @@
-void _f(word32 eax, word32 dwArg00)
+void _f(word32 eax)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  eax:[0..31] Stack +0000:[0..31]
+// MayUse:  eax:[0..31]
 // LiveOut:
 // Trashed: SCZO eax ebp esp
 // Preserved:

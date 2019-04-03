@@ -1153,14 +1153,14 @@ ptr32 fn0000243C(word32 a2, Eq_n a5, struct Eq_n * a6, ptr32 dwArg04, union Eq_n
 	return d0_n;
 }
 
-// 000024B0: void fn000024B0(Register word32 d3, Register ptr32 a3, Register (ptr32 Eq_n) a5, Stack Eq_n dwArg04)
-void fn000024B0(word32 d3, ptr32 a3, struct Eq_n * a5, Eq_n dwArg04)
+// 000024B0: void fn000024B0(Register ptr32 a3, Register (ptr32 Eq_n) a5, Stack Eq_n dwArg04)
+void fn000024B0(ptr32 a3, struct Eq_n * a5, Eq_n dwArg04)
 {
-	fn000024C4(d3, a3, a5, dwArg04);
+	fn000024C4(a3, a5, dwArg04);
 }
 
-// 000024C4: Register word32 fn000024C4(Register word32 d3, Register ptr32 a3, Register (ptr32 Eq_n) a5, Stack Eq_n dwArg04)
-word32 fn000024C4(word32 d3, ptr32 a3, struct Eq_n * a5, Eq_n dwArg04)
+// 000024C4: Register word32 fn000024C4(Register ptr32 a3, Register (ptr32 Eq_n) a5, Stack Eq_n dwArg04)
+word32 fn000024C4(ptr32 a3, struct Eq_n * a5, Eq_n dwArg04)
 {
 	ptr32 a7_n = fp - 0x0C;
 	if (dwArg04 > -0x0020)
@@ -1584,7 +1584,6 @@ int32 fn000029C8(Eq_n a0, ptr32 a3, struct Eq_n * a5, ui32 dwArg04, up32 dwArg08
 		a1_n->dw0004 = 0x00;
 		Eq_n (* a2_n)[];
 		struct Eq_n * a7_n;
-		word32 d3_n;
 		ui32 d5_n;
 		d0_n = fn00002A54(a3, a5, dwArg04, dwArg08, out d3_n, out d4_n, out d5_n, out a2_n, out a3, out a5, out a6_n, out a7_n);
 		if (d0_n == 0x00)
@@ -1598,7 +1597,7 @@ l00002A4C:
 			return d0_n;
 		}
 		a7_n->dw0004 = d5_n;
-		fn00002AE0(d3_n, a2_n, a5, a7_n->dw0004);
+		fn00002AE0(a2_n, a5, a7_n->dw0004);
 	}
 	d0_n = -0x01;
 	goto l00002A4C;
@@ -1658,8 +1657,8 @@ int32 fn00002A54(ptr32 a3, struct Eq_n * a5, ui32 dwArg04, up32 dwArg08, ptr32 &
 	return 0x00;
 }
 
-// 00002AE0: void fn00002AE0(Register word32 d3, Register (arr Eq_n) a2, Register (ptr32 Eq_n) a5, Stack ui32 dwArg04)
-void fn00002AE0(word32 d3, Eq_n a2[], struct Eq_n * a5, ui32 dwArg04)
+// 00002AE0: void fn00002AE0(Register (arr Eq_n) a2, Register (ptr32 Eq_n) a5, Stack ui32 dwArg04)
+void fn00002AE0(Eq_n a2[], struct Eq_n * a5, ui32 dwArg04)
 {
 	if (*((char *) *a5->ptrFFFFFADC + dwArg04 * 0x10) != 0x00)
 		__syscall(0xA01F);

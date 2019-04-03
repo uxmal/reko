@@ -2374,10 +2374,10 @@ fn0000243C_exit:
 
 
 
-void fn000024B0(word32 d3, word32 a3, word32 a5, word32 dwArg04)
+void fn000024B0(word32 a3, word32 a5, word32 dwArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  a3:[0..31] a5:[0..31] d3:[0..31] Stack +0004:[0..31]
+// MayUse:  a3:[0..31] a5:[0..31] Stack +0004:[0..31]
 // LiveOut:
 // Trashed: CVZN a0 a1 a2 a3 a5 a6 a7 d0 d1 d2 d3 d4 d5 d6 d7
 // Preserved:
@@ -2387,7 +2387,7 @@ fn000024B0_entry:
 // SymbolicIn:
 
 l000024B0:
-	fn000024C4(d3, a3, a5, dwArg04)
+	fn000024C4(a3, a5, dwArg04)
 	return
 // DataOut:
 // DataOut (flags):
@@ -2400,10 +2400,10 @@ fn000024B0_exit:
 
 
 
-word32 fn000024C4(word32 d3, word32 a3, word32 a5, word32 dwArg04)
+word32 fn000024C4(word32 a3, word32 a5, word32 dwArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  a3:[0..31] a5:[0..31] d3:[0..31] Stack +0004:[0..31]
+// MayUse:  a3:[0..31] a5:[0..31] Stack +0004:[0..31]
 // LiveOut: a6
 // Trashed: CVZN a0 a1 a2 a3 a5 a6 a7 d0 d1 d2 d3 d4 d5 d6 d7
 // Preserved: X
@@ -3305,9 +3305,8 @@ l00002A20:
 	Mem81[a1_72 + 4:word32] = 0
 	word32 a2_99
 	word32 a7_103
-	word32 d3_107
 	word32 d5_109
-	d0_104 = fn00002A54(a3, a5, dwArg04, dwArg08, out d3_107, out d4_196, out d5_109, out a2_99, out a3, out a5, out a6_102, out a7_103)
+	d0_104 = fn00002A54(a3, a5, dwArg04, dwArg08, out d3_196, out d4_197, out d5_109, out a2_99, out a3, out a5, out a6_102, out a7_103)
 	branch d0_104 == 0x00000000 l00002A4C
 // DataOut:
 // DataOut (flags):
@@ -3315,7 +3314,7 @@ l00002A20:
 
 l00002A42:
 	Mem122[a7_103 + 4:word32] = d5_109
-	fn00002AE0(d3_107, a2_99, a5, Mem122[a7_103 + 4:word32])
+	fn00002AE0(a2_99, a5, Mem122[a7_103 + 4:word32])
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3443,10 +3442,10 @@ fn00002A54_exit:
 
 
 
-void fn00002AE0(word32 d3, word32 a2, word32 a5, word32 dwArg04)
+void fn00002AE0(word32 a2, word32 a5, word32 dwArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  a2:[0..31] a5:[0..31] d3:[0..31] Stack +0004:[0..31]
+// MayUse:  a2:[0..31] a5:[0..31] Stack +0004:[0..31]
 // LiveOut:
 // Trashed: CVZNX a0 d2
 // Preserved: a6 a7 d3

@@ -19205,10 +19205,10 @@ fn0000000000410600_exit:
 
 
 
-void fn0000000000410630(word64 rcx, word64 rbx, word64 rbp, word64 rsi, word64 rdi, word64 r8, word64 r9, word64 r10, word64 r12, word64 r13, word64 r14, word64 r15)
+void fn0000000000410630(word64 rcx, word64 rbx, word64 rbp, word64 rsi, word64 rdi, word64 r9, word64 r10, word64 r12, word64 r13, word64 r14, word64 r15)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r10:[0..63] r12:[0..63] r13:[0..63] r14:[0..63] r15:[0..63] r8:[0..63] r9:[0..63] rbp:[0..63] rbx:[0..63] rcx:[0..63] rdi:[0..63] rsi:[0..63]
+// MayUse:  r10:[0..63] r12:[0..63] r13:[0..63] r14:[0..63] r15:[0..63] r9:[0..63] rbp:[0..63] rbx:[0..63] rcx:[0..63] rdi:[0..63] rsi:[0..63]
 // LiveOut:
 // Trashed: SCZO r10 r12 r8 r9 rax rbp rbx rcx rdi rdx rsi rsp
 // Preserved: r13 r14 r15
@@ -19334,7 +19334,7 @@ l0000000000410B13:
 // SymbolicIn:
 
 l0000000000410B18:
-	fn0000000000410630(rcx, rbx, rbp, rsi, rdi, fp - 0x0000000000000058, r9_23, r10_15, r12, r13, r14, r15)
+	fn0000000000410630(rcx, rbx, rbp, rsi, rdi, r9_23, r10_15, r12, r13, r14, r15)
 	return
 // DataOut:
 // DataOut (flags):

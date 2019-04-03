@@ -476,8 +476,8 @@ void vTaskStartScheduler(word20 pc, word20 sr)
 	}
 }
 
-// 4736: void vTaskEndScheduler(Register word20 sr)
-void vTaskEndScheduler(word20 sr)
+// 4736: void vTaskEndScheduler()
+void vTaskEndScheduler()
 {
 	Mem5[0x020E:ptr16] = 0x00;
 	vPortEndScheduler();
@@ -584,8 +584,8 @@ word20 xTaskGetTickCount(word20 sr, ptr16 & r15Out)
 	return sr_n;
 }
 
-// 4834: void uxTaskGetNumberOfTasks(Register word20 sr)
-void uxTaskGetNumberOfTasks(word20 sr)
+// 4834: void uxTaskGetNumberOfTasks()
+void uxTaskGetNumberOfTasks()
 {
 	Mem6[0x0218:ptr16] = Mem0[0x0218:ptr16] + 0x01;
 	if (Mem6[0x0218:ptr16] != 0x00)
@@ -1136,8 +1136,8 @@ word20 xQueueReceiveFromISR(word20 sr, word20 r13, word20 r14, word20 r15)
 	return r15_n;
 }
 
-// 5068: void uxQueueMessagesWaiting(Register word20 sr, Register word20 r15)
-void uxQueueMessagesWaiting(word20 sr, word20 r15)
+// 5068: void uxQueueMessagesWaiting()
+void uxQueueMessagesWaiting()
 {
 	Mem6[0x0218:ptr16] = Mem0[0x0218:ptr16] + 0x01;
 	if (Mem6[0x0218:ptr16] != 0x00)

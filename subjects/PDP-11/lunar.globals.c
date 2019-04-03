@@ -115,7 +115,7 @@ cui16 g_w008E = 0x0000;
 cui16 g_w0090 = 0x0000;
 struct Eq_n * g_ptr0092 = null;
 word16 g_w0096 = 0x00CE;
-struct Eq_n * g_ptr009E = &g_ptr009E;
+ci16 * g_ptr009E = &g_ptr009E;
 ci16 g_w00A0 = 0x0000;
 ci16 g_w00A2 = 0x0000;
 ci16 g_w00A4 = 0x0000;
@@ -227,7 +227,7 @@ Eq_n g_t35CE =
 	};
 word16 g_w35D0 = 0x4F20;
 word16 g_w35D2 = 0x2046;
-struct Eq_n * g_ptr3FFC;
+ci16 * g_ptr3FFC;
 word16 g_wF400;
 word16 g_wF402;
 ci8 g_bFB8C;

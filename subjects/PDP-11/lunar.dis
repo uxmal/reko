@@ -1275,7 +1275,7 @@ l0884:
 l0888:
 	word16 r0_91 = Mem90[0x0078:word16]
 	Mem95[sp_193 - 0x0002:word16] = r0_91
-	fn0CCA(r4_63, Mem95[sp_193 - 0x0002:word16])
+	fn0CCA(Mem95[sp_193 - 0x0002:word16])
 	word16 v62_104 = Mem95[sp_193 - 0x0002:word16]
 	switch (Mem95[sp_193:word16]) { l0896_thunk_fn0790 l07EE }
 // DataOut:
@@ -2009,10 +2009,10 @@ fn0C90_exit:
 
 
 
-void fn0CCA(word16 r4, word16 wArg02)
+void fn0CCA(word16 wArg02)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r4:[0..15] Stack +0002:[0..15]
+// MayUse:  Stack +0002:[0..15]
 // LiveOut:
 // Trashed: NZVC
 // Preserved: r4 sp
@@ -2069,7 +2069,6 @@ l0CEC:
 	Mem24[r5_10:word16] = r4_22
 	Mem26[0x0082:word16] = r4_22
 	Mem27[r5_10 + 0x0002:word16] = 0x8C50
-	word16 sp_11 = <invalid>
 	word16 r5_28 = r5_10 + 0x0004
 	word16 r0_29 = 0x28F0
 // DataOut:
@@ -2078,7 +2077,7 @@ l0CEC:
 
 l0D10:
 	r0_29 = r0_29 + 0x0008
-	r5_28 = fn0D78((Mem27[r0_29:word16] >> 5) + 0x0017, r5_28, Mem27[sp_11 + -2:word16])
+	r5_28 = fn0D78((Mem27[r0_29:word16] >> 5) + 0x0017, r5_28)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2118,10 +2117,10 @@ fn0D3C_exit:
 
 
 
-void fn0D66(word16 wArg0A)
+void fn0D66()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  Stack +000A:[0..15]
+// MayUse: 
 // LiveOut:
 // Trashed: NZV r0 r1 r2 r3 r4 sp
 // Preserved:
@@ -2143,10 +2142,10 @@ fn0D66_exit:
 
 
 
-word16 fn0D78(word16 r4, word16 r5, word16 wArg00)
+word16 fn0D78(word16 r4, word16 r5)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r4:[0..15] r5:[0..15] Stack +0000:[0..15]
+// MayUse:  r4:[0..15] r5:[0..15]
 // LiveOut: r5
 // Trashed: NZVC r4 r5
 // Preserved: sp
@@ -2594,7 +2593,7 @@ l0F7C:
 l0F92:
 	word16 r4_138 = r4_133 + Mem134[0x00AA:word16] + r3_104
 	Mem143[sp_11 - 0x0002:word16] = r4_138
-	r5_147 = fn0D78(r4_138, r5_147, Mem143[sp_11 + 0xFFFC:word16])
+	r5_147 = fn0D78(r4_138, r5_147)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

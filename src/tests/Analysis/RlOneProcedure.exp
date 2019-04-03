@@ -1,6 +1,6 @@
 // fn0C00_0000 /////////////////////
 	LiveOut:  
-	BitsUsed:  ax:[0..15] ds:[0..15] Stack +0004:[0..15]
+	BitsUsed: 
 	Trashed:   SCZO ax si Top
 	Preserved: bp sp
 // fn0C00_0000

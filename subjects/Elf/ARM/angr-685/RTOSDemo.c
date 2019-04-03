@@ -380,15 +380,15 @@ l000003CC:
 	goto l000003CC;
 }
 
-// 00000428: void uxQueueMessagesWaiting(Register word32 r0, Register ptr32 cpsr)
-void uxQueueMessagesWaiting(word32 r0, ptr32 cpsr)
+// 00000428: void uxQueueMessagesWaiting(Register ptr32 cpsr)
+void uxQueueMessagesWaiting(ptr32 cpsr)
 {
 	vPortEnterCritical(cpsr, out r0_n);
 	vPortExitCritical(cpsr);
 }
 
-// 0000043C: void uxQueueSpacesAvailable(Register word32 r0, Register ptr32 cpsr)
-void uxQueueSpacesAvailable(word32 r0, ptr32 cpsr)
+// 0000043C: void uxQueueSpacesAvailable(Register ptr32 cpsr)
+void uxQueueSpacesAvailable(ptr32 cpsr)
 {
 	vPortEnterCritical(cpsr, out r0_n);
 	vPortExitCritical(cpsr);
@@ -496,8 +496,8 @@ void xQueueIsQueueFullFromISR(struct Eq_n * r0)
 	__clz(r0->dw003C - r0->dw0038);
 }
 
-// 000005B0: void uxQueueMessagesWaitingFromISR(Register word32 r0)
-void uxQueueMessagesWaitingFromISR(word32 r0)
+// 000005B0: void uxQueueMessagesWaitingFromISR()
+void uxQueueMessagesWaitingFromISR()
 {
 }
 
@@ -1966,8 +1966,8 @@ void xEventGroupSync(struct Eq_n * r0, ui32 r1, ui32 r2, Eq_n r3, ptr32 cpsr)
 	xTaskResumeAll(cpsr);
 }
 
-// 00001988: void xEventGroupGetBitsFromISR(Register word32 r0, Register ptr32 cpsr)
-void xEventGroupGetBitsFromISR(word32 r0, ptr32 cpsr)
+// 00001988: void xEventGroupGetBitsFromISR(Register ptr32 cpsr)
+void xEventGroupGetBitsFromISR(ptr32 cpsr)
 {
 	Eq_n r3_n = __mrs(cpsr);
 	__msr(cpsr, 191);
@@ -2851,20 +2851,20 @@ Eq_n MPU_xQueueGenericSend(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n lr, ptr32 cp
 	return lr_n;
 }
 
-// 00008B1C: void MPU_uxQueueMessagesWaiting(Register word32 r0, Register ptr32 cpsr)
-void MPU_uxQueueMessagesWaiting(word32 r0, ptr32 cpsr)
+// 00008B1C: void MPU_uxQueueMessagesWaiting(Register ptr32 cpsr)
+void MPU_uxQueueMessagesWaiting(ptr32 cpsr)
 {
 	Eq_n r0_n = xPortRaisePrivilege(cpsr);
-	uxQueueMessagesWaiting(r0, cpsr);
+	uxQueueMessagesWaiting(cpsr);
 	if (r0_n != 0x01)
 		__msr(cpsr, __mrs(cpsr) | 0x01);
 }
 
-// 00008B44: void MPU_uxQueueSpacesAvailable(Register word32 r0, Register ptr32 cpsr)
-void MPU_uxQueueSpacesAvailable(word32 r0, ptr32 cpsr)
+// 00008B44: void MPU_uxQueueSpacesAvailable(Register ptr32 cpsr)
+void MPU_uxQueueSpacesAvailable(ptr32 cpsr)
 {
 	Eq_n r0_n = xPortRaisePrivilege(cpsr);
-	uxQueueSpacesAvailable(r0, cpsr);
+	uxQueueSpacesAvailable(cpsr);
 	if (r0_n != 0x01)
 		__msr(cpsr, __mrs(cpsr) | 0x01);
 }
@@ -3366,8 +3366,8 @@ void GPIOPinIntDisable(struct Eq_n * r0, ui32 r1)
 	r0->dw0410 &= ~(r1 << 0x00);
 }
 
-// 000092FC: void GPIOPinIntStatus(Register word32 r0, Register word32 r1)
-void GPIOPinIntStatus(word32 r0, word32 r1)
+// 000092FC: void GPIOPinIntStatus(Register word32 r1)
+void GPIOPinIntStatus(word32 r1)
 {
 	if (r1 != 0x00)
 		;
@@ -3473,8 +3473,8 @@ void GPIOPortIntUnregister(up32 r0)
 	}
 }
 
-// 0000944C: void GPIOPinRead(Register word32 r0, Register word32 r1)
-void GPIOPinRead(word32 r0, word32 r1)
+// 0000944C: void GPIOPinRead()
+void GPIOPinRead()
 {
 }
 
@@ -3608,8 +3608,8 @@ void IntPrioritySet(ui32 r0, ui32 r1)
 	*r4_n = r1 << r0_n | *r4_n & ~((0xFF << r0_n) << 0x00);
 }
 
-// 000095BC: void IntPriorityGet(Register word32 r0)
-void IntPriorityGet(word32 r0)
+// 000095BC: void IntPriorityGet()
+void IntPriorityGet()
 {
 }
 
@@ -3949,8 +3949,8 @@ void SSIIntDisable(struct Eq_n * r0, ui32 r1)
 	r0->dw0014 &= ~(r1 << 0x00);
 }
 
-// 00009A88: void SSIIntStatus(Register word32 r0, Register word32 r1)
-void SSIIntStatus(word32 r0, word32 r1)
+// 00009A88: void SSIIntStatus(Register word32 r1)
+void SSIIntStatus(word32 r1)
 {
 	if (r1 != 0x00)
 		;
@@ -4341,8 +4341,8 @@ void UARTParityModeSet(struct Eq_n * r0, ui32 r1)
 	r0->dw002C = r1 | r0->dw002C & ~0x86;
 }
 
-// 00009F44: void UARTParityModeGet(Register word32 r0)
-void UARTParityModeGet(word32 r0)
+// 00009F44: void UARTParityModeGet()
+void UARTParityModeGet()
 {
 }
 
@@ -4389,13 +4389,13 @@ void UARTDisable(struct Eq_n * r0)
 	r0->dw0030 = r0->dw0030 & ~0x0300 & ~0x01;
 }
 
-// 0000A00C: void UARTCharsAvail(Register word32 r0)
-void UARTCharsAvail(word32 r0)
+// 0000A00C: void UARTCharsAvail()
+void UARTCharsAvail()
 {
 }
 
-// 0000A018: void UARTSpaceAvail(Register word32 r0)
-void UARTSpaceAvail(word32 r0)
+// 0000A018: void UARTSpaceAvail()
+void UARTSpaceAvail()
 {
 }
 
@@ -4632,13 +4632,13 @@ void I2CMasterSlaveAddrSet(struct Eq_n * r0, ui32 r1, ui32 r2)
 	r0->dw0000 = r2 | r1 << 0x01;
 }
 
-// 0000A210: void I2CMasterBusy(Register word32 r0)
-void I2CMasterBusy(word32 r0)
+// 0000A210: void I2CMasterBusy()
+void I2CMasterBusy()
 {
 }
 
-// 0000A218: void I2CMasterBusBusy(Register word32 r0)
-void I2CMasterBusBusy(word32 r0)
+// 0000A218: void I2CMasterBusBusy()
+void I2CMasterBusBusy()
 {
 }
 
@@ -4662,13 +4662,13 @@ void I2CMasterDataPut(struct Eq_n * r0, ui32 r1)
 	r0->dw0008 = r1;
 }
 
-// 0000A240: void I2CMasterDataGet(Register word32 r0)
-void I2CMasterDataGet(word32 r0)
+// 0000A240: void I2CMasterDataGet()
+void I2CMasterDataGet()
 {
 }
 
-// 0000A244: void I2CSlaveStatus(Register word32 r0)
-void I2CSlaveStatus(word32 r0)
+// 0000A244: void I2CSlaveStatus()
+void I2CSlaveStatus()
 {
 }
 
@@ -4678,8 +4678,8 @@ void I2CSlaveDataPut(struct Eq_n * r0, word32 r1)
 	r0->dw0008 = r1;
 }
 
-// 0000A24C: void I2CSlaveDataGet(Register word32 r0)
-void I2CSlaveDataGet(word32 r0)
+// 0000A24C: void I2CSlaveDataGet()
+void I2CSlaveDataGet()
 {
 }
 

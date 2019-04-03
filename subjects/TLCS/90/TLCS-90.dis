@@ -1043,7 +1043,7 @@ l0B51_thunk_fn0350:
 // SymbolicIn:
 
 l0B51_thunk_fn0B55:
-	fn0B55(de, ix, Mem24[sp + 36:word16])
+	fn0B55(de, Mem24[sp + 36:word16])
 	return
 // DataOut:
 // DataOut (flags):
@@ -1075,7 +1075,7 @@ l0B51_thunk_fn0350:
 // SymbolicIn:
 
 l0B51_thunk_fn0B55:
-	fn0B55(de, ix, wArg24)
+	fn0B55(de, wArg24)
 	return
 // DataOut:
 // DataOut (flags):
@@ -1088,10 +1088,10 @@ fn0B2C_exit:
 
 
 
-void fn0B55(word16 de, word16 ix, word16 wArg24)
+void fn0B55(word16 de, word16 wArg24)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  de:[0..15] ix:[0..15] Stack +0024:[0..15]
+// MayUse:  de:[0..15] Stack +0024:[0..15]
 // LiveOut:
 // Trashed: SZHVNC bc de hl ix sp
 // Preserved:
@@ -1482,7 +1482,7 @@ l0E0F_thunk_fn060E:
 // SymbolicIn:
 
 l0E0F_thunk_fn0E13:
-	fn0E13(de, ix, wArg20)
+	fn0E13(de, wArg20)
 	return
 // DataOut:
 // DataOut (flags):
@@ -1526,7 +1526,7 @@ l0E0F_thunk_fn060E:
 // SymbolicIn:
 
 l0E0F_thunk_fn0E13:
-	fn0E13(de, ix, wArg20)
+	fn0E13(de, wArg20)
 	return
 // DataOut:
 // DataOut (flags):
@@ -1539,10 +1539,10 @@ fn0DFC_exit:
 
 
 
-void fn0E13(word16 de, word16 ix, word16 wArg20)
+void fn0E13(word16 de, word16 wArg20)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  de:[0..15] ix:[0..15] Stack +0020:[0..15]
+// MayUse:  de:[0..15] Stack +0020:[0..15]
 // LiveOut:
 // Trashed: SZHVNC bc de hl ix sp
 // Preserved:
@@ -2183,10 +2183,10 @@ l294B:
 
 
 
-void fn384A(word16 ix)
+void fn384A()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ix:[0..15]
+// MayUse: 
 // LiveOut:
 // Trashed: ix l sp
 // Preserved:

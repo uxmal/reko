@@ -1489,7 +1489,7 @@ l081E:
 // SymbolicIn:
 
 l0824:
-	fn093C(r0, r1_154, r3_159)
+	fn093C(r0, r1_154)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -1654,10 +1654,10 @@ fn07A6_exit:
 
 
 
-void fn093C(word16 r0, word16 r1, word16 r3)
+void fn093C(word16 r0, word16 r1)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r0:[0..15] r1:[0..15] r3:[0..15]
+// MayUse:  r0:[0..15] r1:[0..15]
 // LiveOut:
 // Trashed: NZVC
 // Preserved: r3 sp
@@ -2233,10 +2233,10 @@ fn0B1A_exit:
 
 
 
-void fn0B60(word16 r0, word16 r1, word16 r3, word16 r4)
+void fn0B60(word16 r0, word16 r3, word16 r4)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r0:[0..15] r1:[0..15] r3:[0..15] r4:[0..15]
+// MayUse:  r0:[0..15] r3:[0..15] r4:[0..15]
 // LiveOut:
 // Trashed: NZVC r0 r3 r4
 // Preserved: r1 r2 r5 sp

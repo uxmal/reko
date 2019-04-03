@@ -63,7 +63,7 @@ l00400268:
 	word32 r3_100
 	word32 r30_101
 	word32 r31_102
-	word32 r2_125 = fn00400430(fn004004B4(fn004002F8(r2, r31_34 + 32, r25, r26, r27, r28, r29, r30, r31_34 + 32, lr, out r3_45, out r25_55, out r26_56, out r27_57, out r28_58, out r29_59, out r31_46), r31_46, r3, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25_55, r26_56, r27_57, r28_58, r29_59, r3_45, r31_46, lr, out r3_100, out r25_164, out r26_165, out r27_166, out r28_167, out r29_168, out r30_101, out r31_102), r30_101, r31_102, r3_100, r30_101)
+	word32 r2_125 = fn00400430(fn004004B4(fn004002F8(r2, r31_34 + 32, r25, r26, r27, r28, r29, r30, r31_34 + 32, out r3_45, out r25_55, out r26_56, out r27_57, out r28_58, out r29_59, out r31_46), r31_46, r3, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25_55, r26_56, r27_57, r28_58, r29_59, r3_45, r31_46, lr, out r3_100, out r25_164, out r26_165, out r27_166, out r28_167, out r29_168, out r30_101, out r31_102), r30_101, r31_102, r3_100, r30_101)
 	r29Out = dwLoc10
 	r30Out = dwLoc0C
 	r31Out = dwLoc08
@@ -79,10 +79,10 @@ fn00400268_exit:
 
 
 
-word32 fn004002F8(word32 r2, word32 r3, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, ptr32 & r3Out, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r31Out)
+word32 fn004002F8(word32 r2, word32 r3, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, ptr32 & r3Out, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r31Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  lr:[0..31] r2:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31]
+// MayUse:  r2:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31]
 // LiveOut: r2 r25 r26 r27 r28 r29 r3 r31
 // Trashed: cr0 ctr r0 r10 r11 r12 r2 r25 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
 // Preserved: lr r1
@@ -160,7 +160,7 @@ l00400394:
 l004003AC:
 	word32 r3_77
 	word32 r30_78
-	r2 = fn00400F9C(r2, 4096, r25, r26, r27, r28, r29, r30_52, r3, lr, out r3_77, out r25, out r26, out r27, out r28, out r29, out r30_78, out r31_13)
+	r2 = fn00400F9C(r2, 4096, r25, r26, r27, r28, r29, r30_52, r3, out r3_77, out r25, out r26, out r27, out r28, out r29, out r30_78, out r31_13)
 	Mem90[r30_78:word32] = r3_77
 	r11_100 = r3_77
 	branch r3_77 != 0x00000000 l004003E0
@@ -394,7 +394,7 @@ l004005B0:
 // SymbolicIn:
 
 l004005C8:
-	r2 = fn00400E04(r2, r31_198, r3, fp + -648, r25, r26_170, r27, r28, r29, r30, lr, out r25, out r26_170, out r27, out r28, out r29, out r30)
+	r2 = fn00400E04(r2, r31_198, r3, fp + -648, r25, r26_170, r27, r28, r29, r30, out r25, out r26_170, out r27, out r28, out r29, out r30)
 	r23_193 = r23_193 + 1
 	r31_198 = (int32) (int8) (word32) Mem144[r23_193:byte]
 // DataOut:
@@ -402,7 +402,7 @@ l004005C8:
 // SymbolicIn:
 
 l004005EC:
-	r2 = fn00400E04(r2, r31_198, r3, fp + -648, r25, r26_170, r27, r28, r29, r30, lr, out r25, out r26_170, out r27, out r28, out r29, out r30)
+	r2 = fn00400E04(r2, r31_198, r3, fp + -648, r25, r26_170, r27, r28, r29, r30, out r25, out r26_170, out r27, out r28, out r29, out r30)
 	Mem237 = Mem201
 // DataOut:
 // DataOut (flags):
@@ -462,10 +462,10 @@ fn004005A0_exit:
 
 
 
-void fn00400680(word32 r11, word32 lr)
+void fn00400680()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  lr:[0..31] r11:[0..31]
+// MayUse: 
 // LiveOut:
 // Trashed: lr r0
 // Preserved: r1
@@ -487,10 +487,10 @@ fn00400680_exit:
 
 
 
-void fn00400838(word32 r11, word32 lr)
+void fn00400838()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  lr:[0..31] r11:[0..31]
+// MayUse: 
 // LiveOut:
 // Trashed: lr r0
 // Preserved: r1
@@ -512,10 +512,10 @@ fn00400838_exit:
 
 
 
-word32 fn00400E04(word32 r2, word32 r3, word32 r4, word32 r5, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 lr, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r30Out)
+word32 fn00400E04(word32 r2, word32 r3, word32 r4, word32 r5, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r30Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  lr:[0..31] r2:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r4:[0..31] r5:[0..31]
+// MayUse:  r2:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r4:[0..31] r5:[0..31]
 // LiveOut: r2 r25 r26 r27 r28 r29 r30
 // Trashed: cr0 ctr r0 r10 r11 r12 r2 r25 r26 r27 r28 r29 r3 r30 r4 r5 r6 r7 r8 r9
 // Preserved: lr r1 r31
@@ -536,7 +536,7 @@ l00400E04:
 
 l00400E5C:
 	word32 r3_31
-	r2 = fn00401598(r2, r3, r4, r25, r26, r27, r28, r29, r30, r5, lr, out r3_31, out r25, out r26, out r27, out r28, out r29, out r30, out r31_33)
+	r2 = fn00401598(r2, r3, r4, r25, r26, r27, r28, r29, r30, r5, out r3_31, out r25, out r26, out r27, out r28, out r29, out r30, out r31_33)
 	r11_47 = r3_31
 // DataOut:
 // DataOut (flags):
@@ -589,10 +589,10 @@ fn00400E04_exit:
 
 
 
-void fn00400E9C(word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr)
+void fn00400E9C(word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  lr:[0..31] r2:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31] r5:[0..31] r6:[0..31]
+// MayUse:  r2:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31] r5:[0..31] r6:[0..31]
 // LiveOut:
 // Trashed: cr1 ctr r0 r10 r11 r12 r2 r25 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
 // Preserved: cr0 lr r1
@@ -616,7 +616,7 @@ l00400E9C:
 // SymbolicIn:
 
 l00400ECC:
-	r2 = fn00400E04(r2, r28_25, r29_27, r30_29, r25, r26, r27, r28_25, r29_27, r30_29, lr, out r25, out r26, out r27, out r28_25, out r29_27, out r30_29)
+	r2 = fn00400E04(r2, r28_25, r29_27, r30_29, r25, r26, r27, r28_25, r29_27, r30_29, out r25, out r26, out r27, out r28_25, out r29_27, out r30_29)
 	r31_31 = r31_128 + -1
 	r31_128 = r31_31
 	branch r31_128 > 0x00000000 l00400ECC
@@ -637,10 +637,10 @@ fn00400E9C_exit:
 
 
 
-void fn00400F00(word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr)
+void fn00400F00(word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  lr:[0..31] r2:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31] r5:[0..31] r6:[0..31]
+// MayUse:  r2:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31] r5:[0..31] r6:[0..31]
 // LiveOut:
 // Trashed: cr1 ctr r0 r10 r11 r12 r2 r25 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
 // Preserved: cr0 lr r1
@@ -664,7 +664,7 @@ l00400F00:
 // SymbolicIn:
 
 l00400F30:
-	r2 = fn00400E04(r2, (int32) (int8) (word32) Mem30[r30_25:byte], r28_27, r29_29, r25, r26, r27, r28_27, r29_29, r30_25 + 1, lr, out r25, out r26, out r27, out r28_27, out r29_29, out r30_25)
+	r2 = fn00400E04(r2, (int32) (int8) (word32) Mem30[r30_25:byte], r28_27, r29_29, r25, r26, r27, r28_27, r29_29, r30_25 + 1, out r25, out r26, out r27, out r28_27, out r29_29, out r30_25)
 	r31_31 = r31_133 + -1
 	r31_133 = r31_31
 	branch r31_133 > 0x00000000 l00400F30
@@ -737,10 +737,10 @@ fn00400F88_exit:
 
 
 
-word32 fn00400F9C(word32 r2, word32 r3, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, ptr32 & r3Out, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
+word32 fn00400F9C(word32 r2, word32 r3, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, ptr32 & r3Out, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  lr:[0..31] r2:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31]
+// MayUse:  r2:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31]
 // LiveOut: r2 r25 r26 r27 r28 r29 r3 r30 r31
 // Trashed: cr1 ctr r0 r10 r11 r12 r2 r25 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
 // Preserved: lr r1
@@ -758,7 +758,7 @@ l00400F9C:
 	word32 r3_31
 	word32 r30_32
 	word32 r31_33
-	word32 r2_25 = fn00400FC4(r2, r3, Mem0[Mem0[r2 + 100:word32]:word32], r25, r26, r27, r28, r29, r30, r31, lr, out r3_31, out r25_26, out r26_27, out r27_28, out r28_29, out r29_30, out r30_32, out r31_33)
+	word32 r2_25 = fn00400FC4(r2, r3, Mem0[Mem0[r2 + 100:word32]:word32], r25, r26, r27, r28, r29, r30, r31, out r3_31, out r25_26, out r26_27, out r27_28, out r28_29, out r29_30, out r30_32, out r31_33)
 	r3Out = r3_31
 	r25Out = r25_26
 	r26Out = r26_27
@@ -779,10 +779,10 @@ fn00400F9C_exit:
 
 
 
-word32 fn00400FC4(word32 r2, word32 r3, word32 r4, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, ptr32 & r3Out, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
+word32 fn00400FC4(word32 r2, word32 r3, word32 r4, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, ptr32 & r3Out, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  lr:[0..31] r2:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31]
+// MayUse:  r2:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31]
 // LiveOut: r2 r25 r26 r27 r28 r29 r3 r30 r31
 // Trashed: cr1 ctr r0 r10 r11 r12 r2 r25 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
 // Preserved: cr0 lr r1
@@ -808,7 +808,7 @@ l00400FF8:
 
 l00401004:
 	word32 r3_38
-	word32 r2_49 = fn0040105C(r2, r31_23, r25, r26, r27, r28, r29, r30_15, r31_23, lr, out r3_38, out r25, out r26, out r27, out r28, out r29, out r30_15, out r31_23)
+	word32 r2_49 = fn0040105C(r2, r31_23, r25, r26, r27, r28, r29, r30_15, r31_23, out r3_38, out r25, out r26, out r27, out r28, out r29, out r30_15, out r31_23)
 	branch r3_38 != 0x00000000 l00401048
 // DataOut:
 // DataOut (flags):
@@ -877,10 +877,10 @@ fn00400FC4_exit:
 
 
 
-word32 fn0040105C(word32 r2, word32 r3, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, ptr32 & r3Out, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
+word32 fn0040105C(word32 r2, word32 r3, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, ptr32 & r3Out, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  lr:[0..31] r2:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31]
+// MayUse:  r2:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31]
 // LiveOut: r2 r25 r26 r27 r28 r29 r3 r30 r31
 // Trashed: cr0 ctr r0 r10 r11 r12 r2 r25 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
 // Preserved: lr r1
@@ -904,7 +904,7 @@ l0040105C:
 l00401088:
 	word32 r29_52
 	word32 r3_53
-	r2 = fn00401ADC(r2, r3, r25, r26, r27, r28, r29, r3, r3_23, lr, out r3_53, out r25, out r26, out r27, out r28, out r29_52, out r30_114)
+	r2 = fn00401ADC(r2, r3, r25, r26, r27, r28, r29, r3, r3_23, out r3_53, out r25, out r26, out r27, out r28, out r29_52, out r30_114)
 	branch r3_53 == -1 l004010C0
 // DataOut:
 // DataOut (flags):
@@ -1596,10 +1596,10 @@ fn00401554_exit:
 
 
 
-word32 fn00401598(word32 r2, word32 r3, word32 r4, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, ptr32 & r3Out, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
+word32 fn00401598(word32 r2, word32 r3, word32 r4, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, ptr32 & r3Out, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  lr:[0..31] r2:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31]
+// MayUse:  r2:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31]
 // LiveOut: r2 r25 r26 r27 r28 r29 r3 r30 r31
 // Trashed: cr0 ctr r0 r10 r11 r12 r2 r25 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
 // Preserved: lr r1
@@ -1719,7 +1719,7 @@ l00401668:
 // SymbolicIn:
 
 l0040167C:
-	r2 = fn0040298C(r2, r4, r25, r26, r3, 0, r29, r30_151, lr, out r25, out r26, out r27_147, out r28_148, out r30_151)
+	r2 = fn0040298C(r2, r4, r25, r26, r3, 0, r29, r30_151, out r25, out r26, out r27_147, out r28_148, out r30_151)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -2031,10 +2031,10 @@ fn00401AB4_exit:
 
 
 
-word32 fn00401ADC(word32 r2, word32 r3, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, ptr32 & r3Out, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r30Out)
+word32 fn00401ADC(word32 r2, word32 r3, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, ptr32 & r3Out, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r30Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  lr:[0..31] r2:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31]
+// MayUse:  r2:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31]
 // LiveOut: r2 r25 r26 r27 r28 r29 r3 r30
 // Trashed: cr1 ctr r0 r10 r11 r12 r2 r25 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
 // Preserved: cr0 lr r1
@@ -2077,7 +2077,7 @@ l00401B2C:
 
 l00401B40:
 	word32 r3_71
-	r2 = fn00401DD8(r2, r30_112, r26_232, r26_232, r27_113, r28_114, r29_105, r30_112, r31, lr, out r3_71, out r26_232, out r27_113, out r28_114, out r29_105, out r30_112, out r31)
+	r2 = fn00401DD8(r2, r30_112, r26_232, r26_232, r27_113, r28_114, r29_105, r30_112, r31, out r3_71, out r26_232, out r27_113, out r28_114, out r29_105, out r30_112, out r31)
 	branch r3_71 != -1 l00401B80
 // DataOut:
 // DataOut (flags):
@@ -2218,7 +2218,7 @@ l00401CB8:
 
 l00401CC8:
 	word32 r3_273
-	word32 r2_271 = fn00401CE8(r2, r27_113, r26_232, r26_232, r27_113, r28_114, r29_125, r30_112, r31, lr, out r3_273)
+	word32 r2_271 = fn00401CE8(r2, r27_113, r26_232, r26_232, r27_113, r28_114, r29_125, r30_112, r31, out r3_273)
 	r3Out = r3_273
 	r25Out = <invalid>
 	r26Out = <invalid>
@@ -2251,10 +2251,10 @@ fn00401ADC_exit:
 
 
 
-word32 fn00401CE8(word32 r2, word32 r3, word32 r4, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, ptr32 & r3Out)
+word32 fn00401CE8(word32 r2, word32 r3, word32 r4, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, ptr32 & r3Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  lr:[0..31] r2:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31]
+// MayUse:  r2:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31]
 // LiveOut: r2 r3
 // Trashed: cr0 ctr r0 r10 r11 r12 r2 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
 // Preserved: lr r1
@@ -2317,7 +2317,7 @@ l00401D78:
 	word32 r3_91
 	word32 r30_92
 	word32 r31_93
-	word32 r2_86 = fn00401DD8(dwLoc34, r3, r4, r26, r27, r28, r4, r3, r31_24, lr, out r3_91, out r26_214, out r27_215, out r28_216, out r29_217, out r30_92, out r31_93)
+	word32 r2_86 = fn00401DD8(dwLoc34, r3, r4, r26, r27, r28, r4, r3, r31_24, out r3_91, out r26_214, out r27_215, out r28_216, out r29_217, out r30_92, out r31_93)
 	branch r3_91 == 0x00000000 l00401DA8
 // DataOut:
 // DataOut (flags):
@@ -2350,10 +2350,10 @@ fn00401CE8_exit:
 
 
 
-word32 fn00401DD8(word32 r2, word32 r3, word32 r4, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, ptr32 & r3Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
+word32 fn00401DD8(word32 r2, word32 r3, word32 r4, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, ptr32 & r3Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  lr:[0..31] r2:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31]
+// MayUse:  r2:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31]
 // LiveOut: r2 r26 r27 r28 r29 r3 r30 r31
 // Trashed: cr1 ctr r0 r10 r11 r12 r2 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
 // Preserved: cr0 lr r1
@@ -2405,7 +2405,7 @@ l00401E88:
 	word32 r29_89
 	word32 r3_90
 	word32 r30_91
-	word32 r2_107 = fn00402CE0(r2, r8_37, r30_30, r26, r27, r28, r29_19, r30_30, r3 << 0x04, lr, out r3_90, out r26_86, out r27_87, out r29_89, out r30_91)
+	word32 r2_107 = fn00402CE0(r2, r8_37, r30_30, r26, r27, r28, r29_19, r30_30, r3 << 0x04, out r3_90, out r26_86, out r27_87, out r29_89, out r30_91)
 	branch r3_90 == 0x00000000 l00401EBC
 // DataOut:
 // DataOut (flags):
@@ -3495,10 +3495,10 @@ fn004026B8_exit:
 
 
 
-word32 fn0040298C(word32 r2, word32 r3, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 lr, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r30Out)
+word32 fn0040298C(word32 r2, word32 r3, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r30Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  lr:[0..31] r2:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31]
+// MayUse:  r2:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31]
 // LiveOut: r2 r25 r26 r27 r28 r30
 // Trashed: cr1 ctr r10 r11 r12 r2 r25 r26 r27 r28 r29 r3 r30 r4 r5 r6 r7 r8 r9
 // Preserved: lr r1 r31
@@ -3517,7 +3517,7 @@ l0040298C:
 	word32 r3_36
 	word32 r30_37
 	word32 r31_38
-	word32 r2_30 = fn00400F9C(r2, 4096, r25, r26, r27, r28, r29, r30, r3, lr, out r3_36, out r25_31, out r26_32, out r27_33, out r28_34, out r29_100, out r30_37, out r31_38)
+	word32 r2_30 = fn00400F9C(r2, 4096, r25, r26, r27, r28, r29, r30, r3, out r3_36, out r25_31, out r26_32, out r27_33, out r28_34, out r29_100, out r30_37, out r31_38)
 	Mem49[r31_38 + 8:word32] = r3_36
 	branch r3_36 == 0x00000000 l004029E4
 // DataOut:
@@ -3652,7 +3652,7 @@ l00402A50:
 // SymbolicIn:
 
 l00402A60:
-	r2 = fn00403450(r2, r31_219 + 64, 0, 4, 0, r25, r26, r3, r4, r5, r30, r31_219, lr, out r25, out r26, out r27_234, out r28_22, out r29_236, out r31_219)
+	r2 = fn00403450(r2, r31_219 + 64, 0, 4, 0, r25, r26, r3, r4, r5, r30, r31_219, out r25, out r26, out r27_234, out r28_22, out r29_236, out r31_219)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3667,7 +3667,7 @@ l00402A7C:
 // SymbolicIn:
 
 l00402B84:
-	fn0040326C(r2_156, r29_157, r30_158, r31_159, lr)
+	fn0040326C(r2_156, r29_157, r30_158, r31_159)
 	return
 // DataOut:
 // DataOut (flags):
@@ -3793,10 +3793,10 @@ fn00402C4C_exit:
 
 
 
-word32 fn00402CE0(word32 r2, word32 r3, word32 r4, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, ptr32 & r3Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r29Out, ptr32 & r30Out)
+word32 fn00402CE0(word32 r2, word32 r3, word32 r4, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, ptr32 & r3Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r29Out, ptr32 & r30Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  lr:[0..31] r2:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31]
+// MayUse:  r2:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31]
 // LiveOut: r2 r26 r27 r29 r3 r30
 // Trashed: cr0 ctr r0 r10 r11 r12 r2 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
 // Preserved: lr r1
@@ -3947,7 +3947,7 @@ l00402E50:
 // SymbolicIn:
 
 l00402DD4:
-	fn00402DEC(r3_87 + 3 << 0x02, lr)
+	fn00402DEC()
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -3998,10 +3998,10 @@ fn00402CE0_exit:
 
 
 
-void fn00402DEC(word32 r11, word32 lr)
+void fn00402DEC()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  lr:[0..31] r11:[0..31]
+// MayUse: 
 // LiveOut:
 // Trashed: lr r0
 // Preserved: r1
@@ -4297,10 +4297,10 @@ fn00403248_exit:
 
 
 
-void fn0040326C(word32 r2, word32 r29, word32 r30, word32 r31, word32 lr)
+void fn0040326C(word32 r2, word32 r29, word32 r30, word32 r31)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  lr:[0..31] r2:[0..31] r29:[0..31] r30:[0..31] r31:[0..31]
+// MayUse:  r2:[0..31] r29:[0..31] r30:[0..31] r31:[0..31]
 // LiveOut:
 // Trashed: cr1 ctr r10 r11 r12 r2 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
 // Preserved: lr r1
@@ -4316,7 +4316,7 @@ l0040326C:
 	word32 r30_35
 	word32 r31_36
 	word32 r29_41
-	fn004035A0(fn00403B08(fn00403618(r2, 10, r29, r30, r31, out r29_21, out r30_23, out r31_24), 22, r29_21, r30_23, r31_24, lr, out r29_41, out r30_35, out r31_36), 3, r29_41, r30_35, r31_36, out r29_64, out r31_65)
+	fn004035A0(fn00403B08(fn00403618(r2, 10, r29, r30, r31, out r29_21, out r30_23, out r31_24), 22, r29_21, r30_23, r31_24, out r29_41, out r30_35, out r31_36), 3, r29_41, r30_35, r31_36, out r29_64, out r31_65)
 	return
 // DataOut:
 // DataOut (flags):
@@ -4435,7 +4435,7 @@ l004032FC:
 // SymbolicIn:
 
 l0040339C:
-	r2_115 = fn00401598(r2_115, 0, r31_81, r25_74, r26_75, r27_76, r28_77, r29_108, r3_79, r31_81, lr, out r3_198, out r25_122, out r26_121, out r27_106, out r28_107, out r29_108, out r30_110, out r31_199)
+	r2_115 = fn00401598(r2_115, 0, r31_81, r25_74, r26_75, r27_76, r28_77, r29_108, r3_79, r31_81, out r3_198, out r25_122, out r26_121, out r27_106, out r28_107, out r29_108, out r30_110, out r31_199)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -4490,7 +4490,7 @@ l004033C4:
 	word32 r3_99
 	word32 r30_100
 	word32 r31_101
-	word32 r2_124 = fn00400430(fn004004B4(fn004002F8(r2, r3, r25, r26, r27, r28, r29, r30, r3, lr, out r3_44, out r25_54, out r26_55, out r27_56, out r28_57, out r29_58, out r31_45), r31_45, r4, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25_54, r26_55, r27_56, r28_57, r29_58, r3_44, r31_45, lr, out r3_99, out r25_163, out r26_164, out r27_165, out r28_166, out r29_167, out r30_100, out r31_101), r30_100, r31_101, r3_99, r30_100)
+	word32 r2_124 = fn00400430(fn004004B4(fn004002F8(r2, r3, r25, r26, r27, r28, r29, r30, r3, out r3_44, out r25_54, out r26_55, out r27_56, out r28_57, out r29_58, out r31_45), r31_45, r4, r13, r14, r15, r16, r17, r18, r19, r20, r21, r22, r23, r24, r25_54, r26_55, r27_56, r28_57, r29_58, r3_44, r31_45, lr, out r3_99, out r25_163, out r26_164, out r27_165, out r28_166, out r29_167, out r30_100, out r31_101), r30_100, r31_101, r3_99, r30_100)
 	r29Out = dwLoc10
 	r30Out = dwLoc0C
 	r31Out = dwLoc08
@@ -4506,10 +4506,10 @@ fn004033C4_exit:
 
 
 
-word32 fn00403450(word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, word32 lr, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r31Out)
+word32 fn00403450(word32 r2, word32 r3, word32 r4, word32 r5, word32 r6, word32 r25, word32 r26, word32 r27, word32 r28, word32 r29, word32 r30, word32 r31, ptr32 & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r29Out, ptr32 & r31Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  lr:[0..31] r2:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31] r5:[0..31] r6:[0..31]
+// MayUse:  r2:[0..31] r25:[0..31] r26:[0..31] r27:[0..31] r28:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31] r4:[0..31] r5:[0..31] r6:[0..31]
 // LiveOut: r2 r25 r26 r27 r28 r29 r31
 // Trashed: cr0 ctr r0 r10 r11 r12 r2 r25 r26 r27 r28 r29 r3 r30 r31 r4 r5 r6 r7 r8 r9
 // Preserved: lr r1
@@ -4582,7 +4582,7 @@ l00403540:
 
 l00403500:
 	word32 r3_110
-	r2_104 = fn00400F9C(r2_104, r6, r25, r26, 0, r6, r29_121, r30_73 & 0x00000004, r31_112, lr, out r3_110, out r25, out r26, out r27_295, out r28_108, out r29_296, out r30_297, out r31_112)
+	r2_104 = fn00400F9C(r2_104, r6, r25, r26, 0, r6, r29_121, r30_73 & 0x00000004, r31_112, out r3_110, out r25, out r26, out r27_295, out r28_108, out r29_296, out r30_297, out r31_112)
 	r29_121 = r3_110
 	branch r3_110 != 0x00000000 l00403530
 // DataOut:
@@ -5290,10 +5290,10 @@ fn00403A0C_exit:
 
 
 
-word32 fn00403B08(word32 r2, word32 r3, word32 r29, word32 r30, word32 r31, word32 lr, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
+word32 fn00403B08(word32 r2, word32 r3, word32 r29, word32 r30, word32 r31, ptr32 & r29Out, ptr32 & r30Out, ptr32 & r31Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  lr:[0..31] r2:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31]
+// MayUse:  r2:[0..31] r29:[0..31] r3:[0..31] r30:[0..31] r31:[0..31]
 // LiveOut: r2 r29 r30 r31
 // Trashed: cr1 ctr r0 r10 r11 r12 r2 r29 r3 r30 r31 r4 r5
 // Preserved: lr r1
@@ -5321,7 +5321,7 @@ l00403B94:
 // SymbolicIn:
 
 l00403B28:
-	fn00403B84(r3 + -2 << 0x02, lr)
+	fn00403B84()
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -5374,10 +5374,10 @@ fn00403B08_exit:
 
 
 
-void fn00403B84(word32 r11, word32 lr)
+void fn00403B84()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  lr:[0..31] r11:[0..31]
+// MayUse: 
 // LiveOut:
 // Trashed: lr r0
 // Preserved: r1

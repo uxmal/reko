@@ -82,6 +82,7 @@ namespace Reko.Analysis
                     var vp = new ValuePropagator(program.SegmentMap, ssa, program.CallGraph, importResolver, eventListener);
                     vp.Transform();
                     change |= RemoveUnusedDefinedValues(ssa, wl);
+                    change |= RemoveLiveInStorages(ssa.Procedure, dataFlow[ssa.Procedure], wl);
                 }
             } while (change);
             foreach (var proc in procToSsa.Keys)
@@ -91,6 +92,40 @@ namespace Reko.Analysis
                 flow.BitsLiveOut = SummarizeStorageBitranges(flow.BitsLiveOut.Concat(liveOut));
                 flow.grfLiveOut = SummarizeFlagGroups(liveOut);
             }
+        }
+
+        /// <summary>
+        /// Remove any storages in the ProcedureFlow <paramref name="flow"/> associated
+        /// with the procedure <paramref name="proc"/> if they are dead.
+        /// </summary>
+        private bool RemoveLiveInStorages(Procedure proc, ProcedureFlow flow, WorkList<SsaState> wl)
+        {
+            var defs = proc.EntryBlock.Statements
+                .Select(s => s.Instruction as DefInstruction)
+                .Where(s => s != null)
+                .Select(s => s.Identifier.Storage)
+                .ToHashSet();
+            var deadStgs = flow.BitsUsed.Keys.Except(defs).ToHashSet();
+            bool changed = false;
+            foreach (var d in deadStgs)
+            {
+                flow.BitsUsed.Remove(d);
+                changed = true;
+            }
+            if (changed)
+            {
+                foreach (Statement stm in program.CallGraph.CallerStatements(proc))
+                {
+                    if (!(stm.Instruction is CallInstruction ci))
+                        continue;
+                    var ssaCaller = this.procToSsa[stm.Block.Procedure];
+                    if (RemoveDeadCallUses(ssaCaller, stm, ci, deadStgs))
+                    {
+                        wl.Add(ssaCaller);
+                    }
+                }
+            }
+            return changed;
         }
 
         /// <summary>
@@ -341,6 +376,30 @@ namespace Reko.Analysis
                         var sidDef = ssa.Identifiers[id];
                         sidDef.DefStatement = null;
                         sidDef.DefExpression = null;
+                        return true;
+                    }
+                }
+                return false;
+            });
+            return cRemoved > 0;
+        }
+
+        /// <summary>
+        /// From the call instruction <paramref name="ci"/>, in statement <paramref name="stmCall"/>,
+        /// removes those 'use's that have been marked as dead in <paramref name="deadStgs"/>.
+        /// </summary>
+        private bool RemoveDeadCallUses(SsaState ssa, Statement stmCall, CallInstruction ci, HashSet<Storage> deadStgs)
+        {
+            //$REVIEW: this code is similar to DeadCode.AdjustCallWithDeadDefinitions
+            // Move it to SsaState? Somewhere else?
+            int cRemoved = ci.Uses.RemoveWhere(use =>
+            {
+                if (use.Expression is Identifier id)
+                {
+                    if (deadStgs.Contains(id.Storage))
+                    {
+                        var sidUse = ssa.Identifiers[id];
+                        sidUse.Uses.Remove(stmCall);
                         return true;
                     }
                 }

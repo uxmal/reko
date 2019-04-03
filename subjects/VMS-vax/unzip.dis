@@ -2278,10 +2278,10 @@ fn0000AEF2_exit:
 
 
 
-void fn0000AFDA(word32 ap, word32 fp)
+void fn0000AFDA(word32 ap)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ap:[0..31] fp:[0..31]
+// MayUse:  ap:[0..31]
 // LiveOut:
 // Trashed: CVZN ap fp r0 r1 r2 r3 sp
 // Preserved:
@@ -5290,10 +5290,10 @@ l0000D4A2:
 
 
 
-void fn0000D50E(word32 ap, word32 fp)
+void fn0000D50E(word32 ap)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  ap:[0..31] fp:[0..31]
+// MayUse:  ap:[0..31]
 // LiveOut:
 // Trashed: CVZN ap fp sp
 // Preserved:

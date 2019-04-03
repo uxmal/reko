@@ -3008,10 +3008,10 @@ l000000000001684C:
 
 
 
-void fn00000000000168B8(word64 gp, word64 a0, word64 a1)
+void fn00000000000168B8(word64 gp, word64 a1)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  a0:[0..63] a1:[0..63] gp:[0..63]
+// MayUse:  a1:[0..63] gp:[0..63]
 // LiveOut:
 // Trashed: a0 a4 a5
 // Preserved: ra s0 sp

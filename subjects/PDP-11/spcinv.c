@@ -630,7 +630,7 @@ Eq_n fn07A6(byte * r4, struct Eq_n * pc, byte & r4Out, union Eq_n & r5Out)
 						if (r0 == 0x17)
 							globals->t0F02 = sp_n;
 						if (r0 <= 22)
-							fn093C(r0, r1_n, r3_n);
+							fn093C(r0, r1_n);
 						struct Eq_n * sp_n = sp_n - 0x01;
 						sp_n->t0000 = r1_n->t0000;
 						sp_n->t0001 = r0;
@@ -745,8 +745,8 @@ l093A:
 	return r0;
 }
 
-// 093C: void fn093C(Register Eq_n r0, Register (ptr16 Eq_n) r1, Register cui16 r3)
-void fn093C(Eq_n r0, struct Eq_n * r1, cui16 r3)
+// 093C: void fn093C(Register Eq_n r0, Register (ptr16 Eq_n) r1)
+void fn093C(Eq_n r0, struct Eq_n * r1)
 {
 	word16 r3_n = r1->t0000;
 	cui16 r3_n = r3_n - 0x01;
@@ -970,8 +970,8 @@ byte * fn0B1A(byte * r4, Eq_n r5, struct Eq_n & r5Out)
 	return r4_n;
 }
 
-// 0B60: void fn0B60(Register cup16 r0, Register word16 r1, Register ci16 r3, Register (ptr16 word16) r4)
-void fn0B60(cup16 r0, word16 r1, ci16 r3, word16 * r4)
+// 0B60: void fn0B60(Register cup16 r0, Register ci16 r3, Register (ptr16 word16) r4)
+void fn0B60(cup16 r0, ci16 r3, word16 * r4)
 {
 	word16 wLoc08_n = 0x00;
 	if (r3 >= 0x00)

@@ -14,73 +14,69 @@ globals_t: (in globals : (ptr32 (struct "Globals")))
 T_2: (in eax : (ptr32 byte))
   Class: Eq_2
   DataType: (ptr32 byte)
-  OrigDataType: (ptr32 (struct (0 T_8 t0000)))
-T_3: (in dwArg00 : word32)
+  OrigDataType: (ptr32 (struct (0 T_7 t0000)))
+T_3: (in al_5 : byte)
   Class: Eq_3
+  DataType: byte
+  OrigDataType: byte
+T_4: (in (byte) eax : byte)
+  Class: Eq_3
+  DataType: byte
+  OrigDataType: byte
+T_5: (in 0x00000000 : word32)
+  Class: Eq_5
   DataType: word32
   OrigDataType: word32
-T_4: (in al_5 : byte)
-  Class: Eq_4
-  DataType: byte
-  OrigDataType: byte
-T_5: (in (byte) eax : byte)
-  Class: Eq_4
-  DataType: byte
-  OrigDataType: byte
-T_6: (in 0x00000000 : word32)
+T_6: (in eax + 0x00000000 : word32)
   Class: Eq_6
   DataType: word32
   OrigDataType: word32
-T_7: (in eax + 0x00000000 : word32)
+T_7: (in Mem0[eax + 0x00000000:byte] : byte)
   Class: Eq_7
+  DataType: byte
+  OrigDataType: byte
+T_8: (in *eax + al_5 : byte)
+  Class: Eq_7
+  DataType: byte
+  OrigDataType: byte
+T_9: (in 0x00000000 : word32)
+  Class: Eq_9
   DataType: word32
   OrigDataType: word32
-T_8: (in Mem0[eax + 0x00000000:byte] : byte)
-  Class: Eq_8
-  DataType: byte
-  OrigDataType: byte
-T_9: (in *eax + al_5 : byte)
-  Class: Eq_8
-  DataType: byte
-  OrigDataType: byte
-T_10: (in 0x00000000 : word32)
+T_10: (in eax + 0x00000000 : word32)
   Class: Eq_10
-  DataType: word32
-  OrigDataType: word32
-T_11: (in eax + 0x00000000 : word32)
-  Class: Eq_11
   DataType: (ptr32 byte)
   OrigDataType: (ptr32 byte)
-T_12: (in Mem7[eax + 0x00000000:byte] : byte)
-  Class: Eq_8
+T_11: (in Mem7[eax + 0x00000000:byte] : byte)
+  Class: Eq_7
   DataType: byte
   OrigDataType: byte
-T_13: (in 0x00000000 : word32)
+T_12: (in 0x00000000 : word32)
+  Class: Eq_12
+  DataType: word32
+  OrigDataType: word32
+T_13: (in eax + 0x00000000 : word32)
   Class: Eq_13
-  DataType: word32
-  OrigDataType: word32
-T_14: (in eax + 0x00000000 : word32)
-  Class: Eq_14
   DataType: (ptr32 byte)
   OrigDataType: (ptr32 byte)
-T_15: (in Mem7[eax + 0x00000000:byte] : byte)
-  Class: Eq_8
+T_14: (in Mem7[eax + 0x00000000:byte] : byte)
+  Class: Eq_7
   DataType: byte
   OrigDataType: byte
-T_16: (in *eax + al_5 : byte)
-  Class: Eq_8
+T_15: (in *eax + al_5 : byte)
+  Class: Eq_7
   DataType: byte
   OrigDataType: byte
-T_17: (in 0x00000000 : word32)
+T_16: (in 0x00000000 : word32)
+  Class: Eq_16
+  DataType: word32
+  OrigDataType: word32
+T_17: (in eax + 0x00000000 : word32)
   Class: Eq_17
-  DataType: word32
-  OrigDataType: word32
-T_18: (in eax + 0x00000000 : word32)
-  Class: Eq_18
   DataType: (ptr32 byte)
   OrigDataType: (ptr32 byte)
-T_19: (in Mem9[eax + 0x00000000:byte] : byte)
-  Class: Eq_8
+T_18: (in Mem9[eax + 0x00000000:byte] : byte)
+  Class: Eq_7
   DataType: byte
   OrigDataType: byte
 */

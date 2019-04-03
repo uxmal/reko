@@ -439,11 +439,11 @@ void fn0B2C(Eq_n wArg24)
 	if ((a_n | a_n | a_n | c) != 0x00)
 		fn0350(a_n, a_n, a_n, ix, out bc_n, out de_n, out hl_n, out ix_n);
 	else
-		fn0B55(de, ix, wArg24);
+		fn0B55(de, wArg24);
 }
 
-// 0B55: void fn0B55(Register Eq_n de, Register (ptr16 Eq_n) ix, Stack Eq_n wArg24)
-void fn0B55(Eq_n de, struct Eq_n * ix, Eq_n wArg24)
+// 0B55: void fn0B55(Register Eq_n de, Stack Eq_n wArg24)
+void fn0B55(Eq_n de, Eq_n wArg24)
 {
 	Eq_n hl_n = fp + 0x1C;
 	word16 bc_n;
@@ -622,7 +622,7 @@ void fn0CB7(cu8 c, cu8 b, Eq_n de, uint8 h, byte l, struct Eq_n * ix, Eq_n wArg2
 	if (a_n != 0x00)
 		fn060E(a_n, v69_n + ~0x00, de, ix, wArg20);
 	else
-		fn0E13(de, ix, wArg20);
+		fn0E13(de, wArg20);
 }
 
 // 0DFC: void fn0DFC(Register cu8 c, Register cu8 b, Register Eq_n de, Register cu8 l, Register byte h, Register (ptr16 Eq_n) ix, Stack Eq_n wArg20)
@@ -636,11 +636,11 @@ void fn0DFC(cu8 c, cu8 b, Eq_n de, cu8 l, byte h, struct Eq_n * ix, Eq_n wArg20)
 	if (a_n != 0x00)
 		fn060E(a_n, c, de, ix, wArg20);
 	else
-		fn0E13(de, ix, wArg20);
+		fn0E13(de, wArg20);
 }
 
-// 0E13: void fn0E13(Register Eq_n de, Register (ptr16 Eq_n) ix, Stack Eq_n wArg20)
-void fn0E13(Eq_n de, struct Eq_n * ix, Eq_n wArg20)
+// 0E13: void fn0E13(Register Eq_n de, Stack Eq_n wArg20)
+void fn0E13(Eq_n de, Eq_n wArg20)
 {
 	Eq_n hl_n = fp + 0x0C;
 	word16 bc_n;
@@ -839,8 +839,8 @@ void fn291C(byte a, ptr16 hl)
 	fn1C54();
 }
 
-// 384A: void fn384A(Register word16 ix)
-void fn384A(word16 ix)
+// 384A: void fn384A()
+void fn384A()
 {
 }
 
