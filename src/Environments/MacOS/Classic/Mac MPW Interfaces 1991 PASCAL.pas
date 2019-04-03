@@ -7868,6 +7868,7 @@ INLINE $205F,$A045,$3E80;
 FUNCTION PBFlushFileAsync(paramBlock: ParmBlkPtr): OSErr;
 INLINE $205F,$A445,$3E80;
 FUNCTION PBMountVol(paramBlock: ParmBlkPtr): OSErr;
+	inline $A00F;		{ added by @uxmal; needs verification }
 FUNCTION PBUnmountVol(paramBlock: ParmBlkPtr): OSErr;
 FUNCTION PBEject(paramBlock: ParmBlkPtr): OSErr;
 FUNCTION PBOffLine(paramBlock: ParmBlkPtr): OSErr;
@@ -11164,6 +11165,7 @@ FUNCTION GetHandleSize(h: Handle): Size;
   	INLINE $205F, $A025, $3E80;				{ added by @uxmal; needs verification}
 	
 PROCEDURE SetHandleSize(h: Handle;newSize: Size);
+	inline $A024;							{ added by @uxmal; needs verification}
 PROCEDURE EmptyHandle(h: Handle);
 INLINE $205F,$A02B;
 PROCEDURE ReallocHandle(h: Handle;byteCount: Size);
@@ -12457,6 +12459,7 @@ PROCEDURE Date2Secs(d: DateTimeRec;VAR secs: LONGINT);
 PROCEDURE Secs2Date(secs: LONGINT;VAR d: DateTimeRec);
   	INLINE $201F, $225F, $A9C6;			{added by @uxmal; needs verification}
 PROCEDURE Delay(numTicks: LONGINT;VAR finalTicks: LONGINT);
+	inline $A03B;						{added by @uxmal; needs verification}
 FUNCTION GetTrapAddress(trapNum: INTEGER): LONGINT;
   	INLINE $201F, $A146, $2E88;			{added by @uxmal; needs verification}
 PROCEDURE SetTrapAddress(trapAddr: LONGINT;trapNum: INTEGER);
