@@ -102,6 +102,7 @@ namespace Reko.UnitTests.Environments.MacOS.Classic
             Assert.AreEqual(32, typelib.Types["Point"].BitSize);
         }
 
+        [Test]
         public void MacTi_VariantRecord()
         {
             var decls = new List<Declaration>
@@ -135,7 +136,7 @@ namespace Reko.UnitTests.Environments.MacOS.Classic
 
             typeimporter.LoadTypes(decls);
 
-            Assert.AreEqual("32", typelib.Types["Point"].BitSize);
+            Assert.AreEqual(16, typelib.Types["UnionType"].BitSize);
         }
     }
 }

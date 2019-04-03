@@ -534,7 +534,7 @@ namespace Reko.Core.CLanguage
             }
         }
 
-        private IEnumerable<SerializedUnionAlternative> ExpandUnionFields(IEnumerable<StructDecl> decls)
+        private IEnumerable<UnionAlternative_v1> ExpandUnionFields(IEnumerable<StructDecl> decls)
         {
             foreach (var decl in decls)
             {
@@ -542,7 +542,7 @@ namespace Reko.Core.CLanguage
                 foreach (var declarator in decl.FieldDeclarators)
                 {
                     var nt = ndte.GetNameAndType(declarator);
-                    yield return new SerializedUnionAlternative
+                    yield return new UnionAlternative_v1
                     {
                         Name = nt.Name,
                         Type = nt.DataType

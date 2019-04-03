@@ -334,7 +334,7 @@ namespace Reko.Tools.C2Xml.UnitTests
 @"<?xml version=""1.0"" encoding=""utf-16""?>
 <library xmlns=""http://schemata.jklnet.org/Decompiler"">
   <Types>
-    <union name=""u"">
+    <union name=""u"" size=""4"">
       <alt name=""i"">
         <prim domain=""SignedInt"" size=""4"" />
       </alt>

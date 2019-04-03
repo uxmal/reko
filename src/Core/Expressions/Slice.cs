@@ -30,16 +30,13 @@ namespace Reko.Core.Expressions
 	/// </summary>
 	public class Slice : Expression
 	{
-		private byte offset;			// Bit-offset of value
-
-		public Slice(DataType dt, Expression i, int bitOffset) : base(dt)
-		{
-			if (bitOffset > 255)
-				throw new ArgumentOutOfRangeException("bitOffset", "Offset is too large.");
+        public Slice(DataType dt, Expression i, int bitOffset) : base(dt)
+        {
             if (bitOffset < 0)
                 throw new ArgumentOutOfRangeException("bitOffset", "Offset must be non-negative.");
-			Expression = i; offset = (byte) bitOffset;
-		}
+            Expression = i;
+            Offset = bitOffset;
+        }
 
         /// <summary>
         /// The expression being sliced.
@@ -49,7 +46,7 @@ namespace Reko.Core.Expressions
         /// <summary>
         /// Bit offset of the slice.
         /// </summary>
-        public int Offset { get { return offset; } }
+        public int Offset { get; }
 
         public override IEnumerable<Expression> Children
         {
@@ -73,7 +70,7 @@ namespace Reko.Core.Expressions
 
 		public override Expression CloneExpression()
 		{
-			return new Slice(DataType, Expression, offset);
+			return new Slice(DataType, Expression, Offset);
 		}
 	}
 }

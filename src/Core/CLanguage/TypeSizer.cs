@@ -134,6 +134,7 @@ namespace Reko.Core.CLanguage
             {
                 size = Math.Max(size, field.Type.Accept(this));
             }
+            union.ByteSize = size;
             return size;
         }
 

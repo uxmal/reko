@@ -195,7 +195,7 @@ namespace Reko.Core.Serialization
 
             unions.Add(ut.Name);
             var alts = ut.Alternatives.Select(
-                    a => new SerializedUnionAlternative(a.Value.Name, a.Value.DataType.Accept(this))
+                    a => new UnionAlternative_v1(a.Value.Name, a.Value.DataType.Accept(this))
             );
             union.Alternatives = alts.ToArray();
             return union;

@@ -123,8 +123,6 @@ namespace Reko.Analysis
                 this.block = b;
                 foreach (var s in b.Statements.ToList())
                 {
-                    if (s.LinearAddress == 0x105628)
-                        s.ToString();   //$DEBUG
                     this.stmCur = s;
                     DebugEx.Verbose(trace, "SsaTransform:     {0:X4} {1}", s.LinearAddress, s);
                     s.Instruction = s.Instruction.Accept(this);

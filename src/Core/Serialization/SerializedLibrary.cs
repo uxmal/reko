@@ -114,7 +114,7 @@ namespace Reko.Core.Serialization
             typeof(StructType_v1),
             typeof(StructField_v1),
             typeof(UnionType_v1),
-            typeof(SerializedUnionAlternative),
+            typeof(UnionAlternative_v1),
             typeof(StringType_v2),
             typeof(SerializedSignature),
             typeof(SerializedTypedef),

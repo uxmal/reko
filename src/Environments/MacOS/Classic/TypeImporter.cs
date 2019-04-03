@@ -271,30 +271,78 @@ namespace Reko.Environments.MacOS.Classic
             var fields = new List<StructField_v1>();
             if (record.Fields != null)
             {
-                foreach (var recfield in record.Fields)
-                {
-                    var dt = recfield.Type.Accept(this);
-                    foreach (string fieldName in recfield.Names)
-                    {
-                        var field = new StructField_v1
-                        {
-                            Name = fieldName,
-                            Type = dt
-                        };
-                        fields.Add(field);
-                        //$REVIEW: alignment?
-                    }
-                }
+                fields.AddRange(VisitFields(record.Fields));
             }
             if (record.VariantPart != null)
             {
-
+                if (record.VariantPart.VariantTag != null)
+                {
+                    var sTagType = record.VariantPart.TagType.Accept(this);
+                    fields.Add(new StructField_v1
+                    {
+                        Name = record.VariantPart.VariantTag,
+                        Type = sTagType
+                    });
+                }
+                var variants = VisitVariants(record.VariantPart.Variants);
+                var union = new UnionType_v1
+                {
+                    Alternatives = variants.ToArray()
+                };
+                fields.Add(new StructField_v1
+                {
+                    Name = "",
+                    Type = union,
+                });
             }
             return new StructType_v1
             {
                 ForceStructure = true,
                 Fields = fields.ToArray()
             };
+        }
+
+        private IEnumerable<StructField_v1> VisitFields(List<Core.Pascal.Field> fields)
+        {
+            var result = new List<StructField_v1>();
+            foreach (var recfield in fields)
+            {
+                var dt = recfield.Type.Accept(this);
+                foreach (string fieldName in recfield.Names)
+                {
+                    var field = new StructField_v1
+                    {
+                        Name = fieldName,
+                        Type = dt
+                    };
+                    result.Add(field);
+                    //$REVIEW: alignment?
+                }
+            }
+            return result;
+        }
+
+        private List<UnionAlternative_v1> VisitVariants(List<Variant> variants)
+        {
+            var alternatives = new List<UnionAlternative_v1>();
+            foreach (var variant in variants)
+            {
+                var fields = VisitFields(variant.Fields);
+                foreach (var q in variant.TagValues)
+                {
+                    var altName = "u" + q;
+                    var alt = new UnionAlternative_v1
+                    {
+                        Name = altName,
+                        Type = new StructType_v1
+                        {
+                             Fields = fields.ToArray()
+                        }
+                    };
+                    alternatives.Add(alt);
+                }
+            }
+            return alternatives;
         }
 
         public SerializedType VisitSetType(SetType setType)

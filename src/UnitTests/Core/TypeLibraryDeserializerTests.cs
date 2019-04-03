@@ -255,11 +255,11 @@ namespace Reko.UnitTests.Core
                 Name = "variant_union",
                 Alternatives = new[]
                 {
-                    new SerializedUnionAlternative {
+                    new UnionAlternative_v1 {
                         Name = "foo",
                         Type = new PrimitiveType_v1 { Domain = Domain.Integer, ByteSize=4 },
                     },
-                    new SerializedUnionAlternative {
+                    new UnionAlternative_v1 {
                         Name = "bar",
                         Type = new PrimitiveType_v1 { Domain = Domain.Real, ByteSize=4 }
                     }
