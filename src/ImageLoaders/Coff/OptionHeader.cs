@@ -98,6 +98,7 @@ namespace Reko.ImageLoaders.Coff
         internal ImageDataDirectory CLRRuntimeHeader;
         internal ImageDataDirectory Reserved;
 
+        public const int Size = 20;
 
         public static OptionHeader32 Load(LeImageReader rdr)
         {
@@ -206,6 +207,7 @@ namespace Reko.ImageLoaders.Coff
         internal ImageDataDirectory CLRRuntimeHeader;
         internal ImageDataDirectory Reserved;
 
+        public const int Size = 20;
 
         public static OptionHeader64 Load(LeImageReader rdr)
         {

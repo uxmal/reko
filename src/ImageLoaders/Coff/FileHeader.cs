@@ -26,8 +26,8 @@ namespace Reko.ImageLoaders.Coff
     public class FileHeader
     {
         // Values of Machine:
-        const ushort PE_MACHINE_I386 = 0x14c;
-        const ushort PE_MACHINE_X8664 = 0x8664;
+        internal const ushort PE_MACHINE_I386 = 0x14c;
+        internal const ushort PE_MACHINE_X8664 = 0x8664;
 
         // Bits for Flags:
         const short PE_F_RELFLG = 0x0001;  // relocation info stripped from file

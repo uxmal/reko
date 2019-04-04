@@ -54,7 +54,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataBuffer.cs" />
     <Compile Include="FileBuffer.cs" />
     <Compile Include="Program.cs">
       <SubType>Code</SubType>
@@ -73,9 +72,17 @@
       <Project>{5c315c78-1f97-4b16-81aa-917284969dfe}</Project>
       <Name>Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\ImageLoaders\Ar\Ar.csproj">
+      <Project>{6fbdc880-489e-49d0-9426-6a6ca914e369}</Project>
+      <Name>Ar</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\ImageLoaders\Coff\Coff.csproj">
       <Project>{02595a47-2592-441d-b44d-8ea8c19ee5e2}</Project>
       <Name>Coff</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ImageLoaders\Elf\Elf.csproj">
+      <Project>{33dcec6d-66f2-4ab7-9dd9-293dbb5414b1}</Project>
+      <Name>Elf</Name>
     </ProjectReference>
     <ProjectReference Include="..\RekoSig\RekoSig.csproj">
       <Project>{1bee788b-ff62-4c55-8afb-cdeae17b6b3b}</Project>

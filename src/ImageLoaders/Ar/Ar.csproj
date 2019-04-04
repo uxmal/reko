@@ -4,12 +4,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1E75CFB3-C0DC-43DB-9E91-6431B98032D7}</ProjectGuid>
+    <ProjectGuid>{6FBDC880-489E-49D0-9426-6A6CA914E369}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Unix</RootNamespace>
-    <AssemblyName>Unix</AssemblyName>
-    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <RootNamespace>Reko.ImageLoaders.Ar</RootNamespace>
+    <AssemblyName>Reko.ImageLoaders.Ar</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
@@ -42,13 +42,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UnixHeaderLibrary.cs" />
-    <Compile Include="UnixLoader.cs" />
+    <Compile Include="ArHeader.cs" />
+    <Compile Include="ArLoader.cs" />
+    <Compile Include="ArPackage.cs" />
+    <Compile Include="DataTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">
-      <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
+      <Project>{5c315c78-1f97-4b16-81aa-917284969dfe}</Project>
       <Name>Core</Name>
     </ProjectReference>
   </ItemGroup>

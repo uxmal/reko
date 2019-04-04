@@ -77,6 +77,8 @@
     <Compile Include="Elf32_Rel.cs" />
     <Compile Include="ElfDynamicEntry.cs" />
     <Compile Include="ElfLoader.cs" />
+    <Compile Include="ElfLoader32.cs" />
+    <Compile Include="ElfLoader64.cs" />
     <Compile Include="ElfRelocation.cs" />
     <Compile Include="ElfSection.cs" />
     <Compile Include="Elf32_Sym.cs" />

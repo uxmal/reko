@@ -80,11 +80,12 @@ namespace Reko.ImageLoaders.Coff
         List<SectionHeader> SectionHeaders;         // Copy of section headers
         List<SymbolTableEntry> SymbolTable;         // Pointer to symbol table (for object files)
         Dictionary<int, string> StringTable;        // Pointer to string table (for object files)
-        //Int64 ImageBase;                          // Image base (for executable files)
-        //OptionHeader32 optionHeader;              // Optional header (for executable files)
+        OptionHeader32 optionHeader32;              // Optional header (for executable files)
+        OptionHeader64 optionHeader64;              // Optional header (for executable files)
+        Int64 ImageBase;                            // Image base (for executable files)
         //SCOFF_IMAGE_DATA_DIRECTORY pImageDirs;    // Pointer to image directories (for executable files)
-        //uint NumImageDirs;                        // Number of image directories (for executable files)
-        //uint EntryPoint;                          // Entry point (for executable files)
+        uint NumImageDirs;                          // Number of image directories (for executable files)
+        uint EntryPoint;                            // Entry point (for executable files)
         List<SignitureEntry> signitures;
 
         public CoffLoader(IServiceProvider services, string filename, byte[] rawBytes)
@@ -252,23 +253,38 @@ namespace Reko.ImageLoaders.Coff
             // Find optional header if executable file
             if (fileHeader.SizeOfOptionalHeader > 0 && FileHeaderOffset > 0)
             {
-                rdr.Offset += fileHeader.SizeOfOptionalHeader;
-
                 // This will need updating so that the Optional header infomation is extracted for use,
                 // there are 32 and 64 bit versions which will need to be taken into account
 
-                //optionHeader = OptionHeader32.Load(rdr);
+                if (fileHeader.SizeOfOptionalHeader == OptionHeader32.Size)
+                {
+                    optionHeader32 = OptionHeader32.Load(rdr);
 
-                // Find image data directories
-                //NumImageDirs = optionHeader.NumberOfRvaAndSizes;
-                //EntryPoint = optionHeader.AddressOfEntryPoint;
-                //ImageBase = optionHeader.ImageBase;     
+                    // Find image data directories
+                    NumImageDirs = optionHeader32.NumberOfRvaAndSizes;
+                    EntryPoint = optionHeader32.AddressOfEntryPoint;
+                    ImageBase = optionHeader32.ImageBase; 
+                }
+                else if(fileHeader.SizeOfOptionalHeader == OptionHeader64.Size)
+                {
+                    optionHeader64 = OptionHeader64.Load(rdr);
+
+                    // Find image data directories
+                    NumImageDirs = optionHeader64.NumberOfRvaAndSizes;
+                    EntryPoint = optionHeader64.AddressOfEntryPoint;
+                    ImageBase = optionHeader64.ImageBase; 
+                }
+                else
+                {
+                    // Size of option header does not match expeted data size, so jump across this to recover.
+                    rdr.Offset += fileHeader.SizeOfOptionalHeader;
+                }
             }
 
             // Find section headers
             for (int i = 0; i < fileHeader.NumberOfSections; i++)
             {
-                SectionHeaders.Add(SectionHeader.Load(rdr));
+                SectionHeaders.Add(SectionHeader.Load(rdr, fileHeader.Machine));
                 
                 // Check for _ILDATA section
                 if (SectionHeaders[i].Name == "_ILDATA")

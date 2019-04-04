@@ -58,19 +58,19 @@ namespace Reko.ImageLoaders.Coff
         const uint PE_SCN_MEM_WRITE = 0x80000000;  // section is writeable
 
 
-        internal string Name;        // section name char Name[8]; 
+        internal string Name;         // section name char Name[8]; 
         internal uint VirtualSize;    // size of section when loaded. (Should be 0 for object files, but it seems to be accumulated size of all sections)
         internal uint VirtualAddress; // subtracted from offsets during relocation. preferably 0
         internal uint SizeOfRawData;  // section size in file
         internal uint PRawData;       // file  to raw data for section
         internal uint PRelocations;   // file  to relocation entries
         internal uint PLineNumbers;   // file  to line number entries
-        internal ushort NRelocations;   // number of relocation entries
-        internal ushort NLineNumbers;   // number of line number entries
+        internal ushort NRelocations; // number of relocation entries
+        internal ushort NLineNumbers; // number of line number entries
         internal uint Flags;          // flags
 
         public const int Size = 40;
-
+        internal ushort MachineType;
 
         internal List<Relocation> relocationList;
 
@@ -80,10 +80,12 @@ namespace Reko.ImageLoaders.Coff
             relocationList = new List<Relocation>();
         }
 
-        public static SectionHeader Load(LeImageReader rdr)
+        public static SectionHeader Load(LeImageReader rdr, ushort machineType)
         {
             SectionHeader header = new SectionHeader();
-    
+
+            header.MachineType = machineType;
+
             header.Name = Encoding.UTF8.GetString(rdr.Bytes, (int)rdr.Offset, 8);   // section name char Name[8]; 
             rdr.Offset += 8;
             string tmp = header.Name.Replace('\0', ' ');
@@ -111,7 +113,7 @@ namespace Reko.ImageLoaders.Coff
             {
                 if((reco.VirtualAddress > start) && (reco.VirtualAddress < end))
                 {
-                    if (true)
+                    if (MachineType == FileHeader.PE_MACHINE_I386)
                     {
                         switch (reco.Type)
                         {
@@ -147,7 +149,6 @@ namespace Reko.ImageLoaders.Coff
                                 exemptList.Add(reco.VirtualAddress + 1 - start);
                             }
                             break;
-
 
                             case Relocation.COFF64_RELOC_ABS32:     // 32 bit absolute virtual address
                             case Relocation.COFF64_RELOC_IMGREL:    // 32 bit image-relative
