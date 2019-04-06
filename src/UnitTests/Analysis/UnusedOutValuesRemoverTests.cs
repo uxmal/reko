@@ -91,7 +91,7 @@ namespace Reko.UnitTests.Analysis
             var actual = writer.ToString();
             if (actual != expected)
             {
-                Debug.Print(actual);
+                Console.WriteLine(actual);
             }
             Assert.AreEqual(expected, actual);
         }
@@ -121,7 +121,7 @@ namespace Reko.UnitTests.Analysis
             var sActual = sb.ToString();
             if (sExp != sActual)
             {
-                Debug.Print(sActual);
+                Console.WriteLine(sActual);
                 Assert.AreEqual(sExp, sActual);
             }
         }
