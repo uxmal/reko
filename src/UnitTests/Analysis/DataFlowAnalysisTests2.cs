@@ -259,6 +259,8 @@ test_exit:
 
             var importResolver = new Mock<IImportResolver>().Object;
             program.Platform = platform.Object;
+            var usb = new UserSignatureBuilder(program);
+            usb.BuildSignatures(new FakeDecompilerEventListener());
             var dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
             dfa.AnalyzeProgram();
             var sExp = @"// test
