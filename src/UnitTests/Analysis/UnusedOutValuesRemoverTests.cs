@@ -43,6 +43,7 @@ namespace Reko.UnitTests.Analysis
         private List<SsaState> ssaStates;
         private RegisterStorage regA;
         private RegisterStorage regB;
+        private RegisterStorage lowA;
 
         [SetUp]
         public void Setup()
@@ -55,6 +56,7 @@ namespace Reko.UnitTests.Analysis
             this.ssaStates = new List<SsaState>();
             this.regA = new RegisterStorage("regA", 0x1234, 0, PrimitiveType.Word32);
             this.regB = new RegisterStorage("regB", 0x5678, 0, PrimitiveType.Word32);
+            this.lowA = new RegisterStorage("lowA", 0x1234, 0, PrimitiveType.Byte);
         }
 
         private void Given_Procedure(
@@ -444,6 +446,35 @@ body:
 		defs: regB:b
 	Mem2[0x00005678:word32] = b
 main_exit:
+";
+            #endregion
+            AssertProceduresCode(expected);
+        }
+
+        [Test]
+        [Category(Categories.FailedTests)]
+        public void Uvr_Call_UseRegIsWiderThanSignatureReturn()
+        {
+            Given_Procedure("fn", m =>
+            {
+                m.Ssa.Procedure.Signature = FunctionType.Func(
+                    new Identifier("", lowA.DataType, lowA));
+                var a = m.Reg("a", regA);
+                m.Label("body");
+                m.Assign(a, 0x12);
+                m.AddUseToExitBlock(a);
+            });
+
+            When_RunUnusedOutValuesRemover();
+
+            var expected =
+            #region
+@"========================
+fn_entry:
+body:
+	a = 0x00000012
+fn_exit:
+	use a
 ";
             #endregion
             AssertProceduresCode(expected);
