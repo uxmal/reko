@@ -79,6 +79,11 @@ namespace Reko.UnitTests.Analysis
                         CSignature = this.CSignature
                     });
             }
+            if (this.CSignature != null)
+            {
+                var usb = new UserSignatureBuilder(program);
+                usb.BuildSignatures(new FakeDecompilerEventListener());
+            }
         }
 
         protected void Given_CSignature(string CSignature)

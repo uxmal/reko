@@ -115,14 +115,16 @@ namespace Reko.Analysis
         {
             eventListener.ShowProgress("Rewriting procedures.", 0, program.Procedures.Count);
 
-            var usb = new UserSignatureBuilder(program);
-            usb.BuildSignatures(eventListener);
-                
             IntraBlockDeadRegisters.Apply(program, eventListener);
 
             AdjacentBranchCollector.Transform(program, eventListener);
 
             var ssts = RewriteProceduresToSsa();
+
+            // Recreate user-defined signatures. It should prevent type
+            // inference between user-defined parameters and other expressions
+            var usb = new UserSignatureBuilder(program);
+            usb.BuildSignatures(eventListener);
 
             // Discover ssaId's that are live out at each call site.
             // Delete all others.

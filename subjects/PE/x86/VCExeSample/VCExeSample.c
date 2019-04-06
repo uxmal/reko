@@ -46,7 +46,7 @@ void test5()
 // 00401120: void test6(Stack Eq_n c, Stack int32 a, Stack int32 b)
 void test6(Eq_n c, int32 a, int32 b)
 {
-	c.u0->vtbl->method04(c, c.u0->vtbl->sum(c, a, b));
+	c->vtbl->method04(c, c->vtbl->sum(c, a, b));
 }
 
 // 00401160: void test7(Stack real64 rArg04)
