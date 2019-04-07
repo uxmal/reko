@@ -3414,6 +3414,50 @@ proc_exit:
         }
 
         [Test]
+        [Category(Categories.FailedTests)]
+        public void SsaByteArg()
+        {
+            var proc = Given_Procedure("proc", m =>
+            {
+                var a = m.Reg32("a", 0);
+                var fp = m.Frame.FramePointer;
+
+                m.Label("body");
+                m.Assign(a, m.Mem32(m.IAdd(fp, 4)));
+                m.Assign(a, m.And(a, 0xFF));
+                m.MStore(m.Word32(0x5678), a);
+                m.Return();
+            });
+            proc.Signature = FunctionType.Action(
+                new Identifier(
+                    "byteArg",
+                    PrimitiveType.Byte,
+                    new StackArgumentStorage(4, PrimitiveType.Byte))
+            );
+
+            When_RunSsaTransform();
+            When_RenameFrameAccesses();
+
+            var expected =
+            #region Expected
+@"proc_entry:
+	def fp
+	def Mem0
+	def dwArg04
+	def byteArg
+	dwArg04_7 = DPB(dwArg04, byteArg, 0)
+body:
+	a_3 = dwArg04_7
+	a_4 = a_3 & 0x000000FF
+	Mem5[0x00005678:word32] = a_4
+	return
+proc_exit:
+";
+            #endregion
+            AssertProcedureCode(expected);
+        }
+
+        [Test]
         public void SsaGlobals()
         {
             var proc = Given_Procedure("proc", m =>
