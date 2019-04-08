@@ -84,7 +84,7 @@ namespace Reko.ImageLoaders.Elf
         protected IPlatform platform;
         protected byte[] rawImage;
         private SegmentMap segmentMap;
-
+        
         protected ElfLoader(ElfImageLoader imgLoader, ushort machine, byte endianness) : this()
         {
             this.imgLoader = imgLoader;
@@ -101,6 +101,9 @@ namespace Reko.ImageLoaders.Elf
             this.Segments = new List<ElfSegment>();
             this.DynamicEntries = new Dictionary<long, ElfDynamicEntry>();
             this.Dependencies = new List<string>();
+            this.FunctionNames = new List<string>();
+            this.SignatureEntries = new List<SignatureEntry>();
+            this.GeneratedRelocationTables = new Dictionary<int, List<uint>>();
         }
 
         public IProcessorArchitecture Architecture { get; private set; }
@@ -113,6 +116,10 @@ namespace Reko.ImageLoaders.Elf
         public Dictionary<int, ElfSymbol> DynamicSymbols { get; private set; }
         public Dictionary<long, ElfDynamicEntry> DynamicEntries { get; private set; }
         public List<string> Dependencies { get; private set; }
+
+        private List<string> FunctionNames;
+        private List<SignatureEntry> SignatureEntries;
+        protected Dictionary<int, List<uint>> GeneratedRelocationTables;
 
         public abstract ulong AddressToFileOffset(ulong addr);
 
@@ -145,6 +152,8 @@ namespace Reko.ImageLoaders.Elf
         public abstract Address GetEntryPointAddress(Address addrBase);
 
         public abstract IEnumerable<ElfDynamicEntry> GetDynamicEntries(ulong offsetDynamic);
+
+        protected abstract void GenerateRelocationTables();
 
         /// <summary>
         /// Find the names of all shared objects this image depends on.
@@ -182,7 +191,7 @@ namespace Reko.ImageLoaders.Elf
                 }
                 else if (addrEnd < pair.Item1)
                 {
-                    var size = (uint)(addrEnd - addr);
+                    var size = (uint) (addrEnd - addr);
                     mems.Add(addr, new MemoryArea(addr, new byte[size]));
                     addr = pair.Item1;
                     addrEnd = pair.Item1 + pair.Item2;
@@ -194,7 +203,7 @@ namespace Reko.ImageLoaders.Elf
             }
             if (addr != null)
             {
-                var size = (uint)(addrEnd - addr);
+                var size = (uint) (addrEnd - addr);
                 mems.Add(addr, new MemoryArea(addr, new byte[size]));
             }
             return mems;
@@ -205,7 +214,7 @@ namespace Reko.ImageLoaders.Elf
             var cfgSvc = Services.RequireService<IConfigurationService>();
             string arch;
             string stackRegName = null;
-            switch ((ElfMachine)machineType)
+            switch ((ElfMachine) machineType)
             {
             case ElfMachine.EM_NONE: return null; // No machine
             case ElfMachine.EM_SPARC:
@@ -269,7 +278,7 @@ namespace Reko.ImageLoaders.Elf
             return a;
         }
 
- 
+
 
         private static Dictionary<ElfSymbolType, SymbolType> mpSymbolType = new Dictionary<ElfSymbolType, SymbolType>
         {
@@ -326,10 +335,10 @@ namespace Reko.ImageLoaders.Elf
             else if (sym.Size == 0)
             {
                 return new UnknownType();
-        }
+            }
             else
             {
-                return PrimitiveType.CreateWord(DataType.BitsPerByte * (int)sym.Size);
+                return PrimitiveType.CreateWord(DataType.BitsPerByte * (int) sym.Size);
             }
         }
 
@@ -452,8 +461,8 @@ namespace Reko.ImageLoaders.Elf
                 var imgSym = CreateImageSymbol(sym, isExecutable);
                 if (imgSym == null || imgSym.Address.ToLinear() == 0)
                     continue;
-                    imgSymbols[imgSym.Address] = imgSym;
-                }
+                imgSymbols[imgSym.Address] = imgSym;
+            }
             return imgSymbols;
         }
 
@@ -522,19 +531,19 @@ namespace Reko.ImageLoaders.Elf
                     {
                         ImageSymbol gotSym = CreateGotSymbol(addrGot, symbol.Name);
                         symbols[addrGot] = gotSym;
-                        DebugEx.PrintIf(ElfImageLoader.trace.TraceVerbose, "{0}+{1:X4}: Found GOT entry {2}, referring to symbol at {3}", 
-                            gotStart, addrGot-gotStart, gotSym, symbol);
-                            program.ImportReferences.Add(
-                                addrGot, 
-                                new NamedImportReference(
-                                    addrGot, 
-                                    null, 
-                                    symbol.Name,
-                                    symbol.Type));
-                        }
+                        DebugEx.PrintIf(ElfImageLoader.trace.TraceVerbose, "{0}+{1:X4}: Found GOT entry {2}, referring to symbol at {3}",
+                            gotStart, addrGot - gotStart, gotSym, symbol);
+                        program.ImportReferences.Add(
+                            addrGot,
+                            new NamedImportReference(
+                                addrGot,
+                                null,
+                                symbol.Name,
+                                symbol.Type));
                     }
                 }
             }
+        }
 
         public ImageSymbol CreateGotSymbol(Address addrGot, string name)
         {
@@ -553,7 +562,7 @@ namespace Reko.ImageLoaders.Elf
         {
             if (0 <= shidx && shidx < Sections.Count)
             {
-                return Sections[(int)shidx];
+                return Sections[(int) shidx];
             }
             else
             {
@@ -566,6 +575,12 @@ namespace Reko.ImageLoaders.Elf
             return Sections.FirstOrDefault(s => s.Name == sectionName);
         }
 
+        public ElfSection GetSectionInfoByType(SectionHeaderType sectionType)
+        {
+            return Sections.FirstOrDefault(s => s.Type == sectionType);
+        }
+
+       
         protected string ReadSectionName(uint idxString)
         {
             ulong offset = (ulong)GetSectionNameOffset(idxString);
@@ -698,7 +713,7 @@ namespace Reko.ImageLoaders.Elf
             while (bytes[u] != 0)
             {
                 ++u;
-        }
+            }
             return Encoding.ASCII.GetString(bytes, (int) fileOffset, u - (int) fileOffset);
         }
 
@@ -741,6 +756,93 @@ namespace Reko.ImageLoaders.Elf
             sb.Append((flags & 2) != 0 ? 'w' : '-');
             sb.Append((flags & 1) != 0 ? 'x' : '-');
             return sb.ToString();
+        }
+
+
+        byte[] GetSectionData(ElfSection section)
+        {
+            if ((section.FileOffset + section.Size) >= (ulong) this.rawImage.Length)
+            {
+                return null;
+            }
+
+            byte[] data = new byte[section.Size];
+            Buffer.BlockCopy(this.rawImage, (int)section.FileOffset, data, 0, (int)section.Size);
+            return data;
+        }
+
+        protected byte[] GetSectionData(ElfSection section, int offset, int size)
+        {
+            byte[] fullData = GetSectionData(section);
+
+            byte[] data = new byte[size];
+            Buffer.BlockCopy(fullData, offset, data, 0, size);
+            return data;
+        }
+
+        public List<String> GetPublicNames()
+        {
+            return FunctionNames;        
+        }
+
+        public List<SignatureEntry> GetSignatures()
+        {
+            return SignatureEntries;
+        }
+
+        
+        public void GenarateSignatures()
+        {
+            LoadSegments();
+            LoadSectionHeaders();
+            LoadSymbolsFromSections();
+            GenerateRelocationTables();
+
+
+            FunctionNames.Clear();
+            SignatureEntries.Clear();
+
+            foreach (Dictionary<int, ElfSymbol> sym in Symbols.Values)
+            {
+                foreach (ElfSymbol item in sym.Values)
+                {
+                    if(item.Type == ElfSymbolType.STT_FUNC)
+                    {
+                        FunctionNames.Add(item.Name);
+                        byte[] bin = GetSectionData(Sections[(int)item.SectionIndex], (int)item.Value, (int)item.Size);
+
+                        SignatureEntry sigItem = new SignatureEntry();
+                        sigItem.Name = item.Name;
+                        sigItem.Length = (int)item.Size;
+                        sigItem.Data = GetSectionData(Sections[(int) item.SectionIndex], (int) item.Value, (int) item.Size);
+                        sigItem.MissBytes = GetRelocationBytes((int)item.SectionIndex, (int) item.Value, (int) (item.Value + item.Size));
+
+                        //DataWordSize;
+                        SignatureEntries.Add(sigItem);
+                    }
+                }
+            }
+        }
+
+        List<uint> GetRelocationBytes(int sectionIndex, int start, int end)
+        {
+            List<uint> a = new List<uint>();
+
+            if (GeneratedRelocationTables.ContainsKey(sectionIndex) == true)
+            {
+                List<uint> sectionRelocations = GeneratedRelocationTables[sectionIndex];
+
+                foreach(uint val in sectionRelocations)
+                {
+                    if((val >= start) && (val <=  end))
+                    {
+                        a.Add(val);
+                    }
+                }
+            }
+
+            a.Sort();
+            return a;
         }
     }
 

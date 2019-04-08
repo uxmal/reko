@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -30,6 +30,7 @@ namespace Reko.ImageLoaders.Elf
     {
         public uint r_offset;
         public uint r_info;
+        public int SymbolIndex => (int) (r_info >> 8);
 
         public static Elf32_Rel Read(EndianImageReader rdr)
         {

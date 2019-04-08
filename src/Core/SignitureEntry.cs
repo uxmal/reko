@@ -23,7 +23,7 @@ using System.Collections.Generic;
 
 namespace Reko.Core
 {
-    public class SignitureEntry
+    public class SignatureEntry
     {
         public string Name;
         public int Length;
@@ -31,7 +31,7 @@ namespace Reko.Core
         public List<uint> MissBytes;
 
 
-        public SignitureEntry()
+        public SignatureEntry()
         {
             MissBytes = new List<uint>();
         }

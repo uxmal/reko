@@ -488,5 +488,70 @@ namespace Reko.ImageLoaders.Elf
             var addr = Address.Ptr32(uAddr);
             return addr;
         }
+
+        protected override void GenerateRelocationTables()
+        {
+            List<uint> sectionRelocations;
+
+            foreach (ElfSection section in Sections)
+            {
+                if (section.Type == SectionHeaderType.SHT_REL)
+                {
+                    byte[] bin = GetSectionData(section, 0, (int) section.Size);
+
+                    LeImageReader rdr = new LeImageReader(bin);
+
+                    while (rdr.Offset + 8 <= (long) section.Size)
+                    {
+                        uint addressOffset = rdr.ReadUInt32();
+                        var i = rdr.ReadUInt32();
+                        int symbolIndex = (int) (i >> 8);
+
+                        if (GeneratedRelocationTables.ContainsKey(symbolIndex) == false)
+                        {
+                            sectionRelocations = new List<uint>();
+                        }
+                        else
+                        {
+                            sectionRelocations = GeneratedRelocationTables[symbolIndex];
+                        }
+
+                        sectionRelocations.Add(addressOffset);
+                        sectionRelocations.Add(addressOffset + 1);
+                        sectionRelocations.Add(addressOffset + 2);
+                        sectionRelocations.Add(addressOffset + 3);
+                    }
+                }
+                else if (section.Type == SectionHeaderType.SHT_RELA)
+                {
+                    byte[] bin = GetSectionData(section, (int) section.FileOffset, (int) section.Size);
+
+                    LeImageReader rdr = new LeImageReader(bin);
+
+                    while (rdr.Offset + 12 <= (long) section.Size)
+                    {
+                        uint addressOffset = rdr.ReadUInt32();
+                        var i = rdr.ReadUInt32();
+                        rdr.ReadUInt32();
+                        int symbolIndex = (int) (i >> 8);
+
+                        if (GeneratedRelocationTables.ContainsKey(symbolIndex) == false)
+                        {
+                            sectionRelocations = new List<uint>();
+                        }
+                        else
+                        {
+                            sectionRelocations = GeneratedRelocationTables[symbolIndex];
+                        }
+
+                        sectionRelocations.Add(addressOffset);
+                        sectionRelocations.Add(addressOffset + 1);
+                        sectionRelocations.Add(addressOffset + 2);
+                        sectionRelocations.Add(addressOffset + 3);
+                    }
+                }
+            }
+        }
+
     }
 }

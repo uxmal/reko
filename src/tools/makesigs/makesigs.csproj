@@ -46,6 +46,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -68,9 +69,17 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Arch\X86\X86.csproj">
+      <Project>{0942acb2-eba0-4e2b-b363-205df72a77b2}</Project>
+      <Name>X86</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Core\Core.csproj">
       <Project>{5c315c78-1f97-4b16-81aa-917284969dfe}</Project>
       <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Environments\SysV\SysV.csproj">
+      <Project>{5307665e-072f-4398-872d-6550be6fc1eb}</Project>
+      <Name>SysV</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\ImageLoaders\Ar\Ar.csproj">
       <Project>{6fbdc880-489e-49d0-9426-6a6ca914e369}</Project>

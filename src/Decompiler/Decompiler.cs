@@ -272,7 +272,7 @@ namespace Reko
                             // Can now call the signitrue matcher, if it returns a string, we can rename the prodecure.
                             if (gettingDataError == false)
                             {
-                                string sigMethodName = signitureEngine.FindMatchingSignitureStart(abCode, (int)procLength);
+                                string sigMethodName = signitureEngine.FindMatchingSignitureStart(eventListener.CreateAddressNavigator(program, proc.EntryAddress), abCode, (int)procLength);
                                 if (sigMethodName.Length > 0)
                                 {
                                     proc.UpdateNameWithSignatureName(sigMethodName);

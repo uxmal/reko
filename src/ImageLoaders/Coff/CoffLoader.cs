@@ -86,13 +86,13 @@ namespace Reko.ImageLoaders.Coff
         //SCOFF_IMAGE_DATA_DIRECTORY pImageDirs;    // Pointer to image directories (for executable files)
         uint NumImageDirs;                          // Number of image directories (for executable files)
         uint EntryPoint;                            // Entry point (for executable files)
-        List<SignitureEntry> signitures;
+        List<SignatureEntry> signitures;
 
         public CoffLoader(IServiceProvider services, string filename, byte[] rawBytes)
             : base(services, filename, rawBytes)
         {
             SectionHeaders = new List<SectionHeader>();
-            signitures = new List<SignitureEntry>();
+            signitures = new List<SignatureEntry>();
             SymbolTable = new List<SymbolTableEntry>();
             StringTable = new Dictionary<int, string>();
 
@@ -116,7 +116,7 @@ namespace Reko.ImageLoaders.Coff
             throw new NotImplementedException();
         }
 
-        public List<SignitureEntry> GetSignitures()
+        public List<SignatureEntry> GetSignitures()
         {
             return signitures;
         }
@@ -377,7 +377,7 @@ namespace Reko.ImageLoaders.Coff
                                 if (rdr.Bytes[CodeOffset + end] == 0xC3)
                                 {
                                     //  have found the end of the method, so lets create a signture object
-                                    SignitureEntry entry = new SignitureEntry();
+                                    SignatureEntry entry = new SignatureEntry();
                                     entry.Name = SymbolTable[symbIndex].s.Name;
                                     entry.Length = (int) (end - start) + 1;
                                     entry.Data = new byte[entry.Length];

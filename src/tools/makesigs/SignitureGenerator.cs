@@ -32,13 +32,15 @@ namespace makesigs
 
     class SignitureGenerator
     {
+        IServiceProvider Services;
         string InputFilePath;
         FileBuffer.FileTypes FileType;
         SignatureCreator signiture;
         FileBuffer fileBuffer;
 
-        internal SignitureGenerator(string filename) 
+        internal SignitureGenerator(IServiceProvider services, string filename) 
         {
+            Services = services;
             InputFilePath = filename;
             FileType = FileBuffer.FileTypes.UNKNOWN;
             fileBuffer = null;
@@ -72,9 +74,9 @@ namespace makesigs
         }
 
 
-        internal void AddToSignitureTree(List<SignitureEntry> signitures)
+        internal void AddToSignitureTree(List<SignatureEntry> signitures)
         {
-            foreach (SignitureEntry entry in signitures)
+            foreach (SignatureEntry entry in signitures)
             {
                 signiture.AddMethodSigniture(Path.GetFileName(InputFilePath), entry.Name, entry.Data, entry.Length, entry.MissBytes);
             }
@@ -144,29 +146,35 @@ namespace makesigs
                     case ArFileType.FILETYPE_ELF:
                     {
                         // Use ELF Image loader to get the data
-                       
-                        //ElfImageLoader elf = new ElfImageLoader(null, pack.PackageName, pack.PackageData);
-                       // elf.LoadElfIdentification();
-                       // ElfLoader elfLoader = elf.CreateLoader();
+
+                        Console.WriteLine("\nELF Image {0} \n", pack.PackageName);
+
+                        ElfImageLoader elf = new ElfImageLoader(Services, pack.PackageName, pack.PackageData);
+                        elf.LoadElfIdentification();
+                        ElfLoader elfLoader = elf.CreateLoader();
+
+                        elfLoader.GenarateSignatures();
 
 
+                        List<String> names = elfLoader.GetPublicNames();
+                        foreach (string name in names)
+                        {
+                            Console.WriteLine(name);
+                        }
 
-                        //List<String> names = elf.GetPublicNames();
-                        //foreach (string name in names)
-                        //{
-                        //    Console.WriteLine(name);
-                        //}
-
-                        // List<SignitureEntry> signitures = elf.GetSignitures();
-                        // Add to the signiture tree
-                        //  AddToSignitureTree(signitures);
+                        List<SignatureEntry> signitures = elfLoader.GetSignatures();
+                        //Add to the signiture tree
+                        AddToSignitureTree(signitures);
                     }
                     break;
 
 
                     case ArFileType.FILETYPE_COFF:
                     {
-                        CoffLoader cl = new CoffLoader(null, pack.PackageName, pack.PackageData);
+
+                        Console.WriteLine("\nCOFF Image {0} \n", pack.PackageName);
+
+                        CoffLoader cl = new CoffLoader(Services, pack.PackageName, pack.PackageData);
 
                         List<String> names = cl.GetPublicNames();
                         foreach (string name in names)
@@ -174,7 +182,7 @@ namespace makesigs
                             Console.WriteLine(name);
                         }
 
-                        List<SignitureEntry> signitures = cl.GetSignitures();
+                        List<SignatureEntry> signitures = cl.GetSignitures();
                         // Add to the signiture tree
                         AddToSignitureTree(signitures);
                     }

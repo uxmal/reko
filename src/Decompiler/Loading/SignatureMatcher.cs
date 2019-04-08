@@ -75,7 +75,9 @@ namespace Reko.Loading
                         lengthList.Add(item);
                     }
 
-                    RemoveDuplicateSigs();
+                    // Commented out so that dups are not removed, instead the user will get informed there 
+                    // are a number of options that match, so that the user can decide to update manaually.
+                    //RemoveDuplicateSigs();
                     return true;
                 }
                 catch (Exception ex)
@@ -101,20 +103,42 @@ namespace Reko.Loading
 
 
 
-        public string FindMatchingSignitureStart(byte[] data, int dataLength)
+        public string FindMatchingSignitureStart(ICodeLocation currentName, byte[] data, int dataLength)
         {
             // Check if we have a signiture of this length, this will speed up the processing
             if (IsThereSignitureOfLength(dataLength))
             {
                 List<SigItem> lengthList = SignatureMap[dataLength];
 
+                List<SigItem> matches = new List<SigItem>();
                 foreach (SigItem item in lengthList)
                 {
                     if (item.DoesSignatureMatchBytes(data))
                     {
-                        return item.methodName;
+                        matches.Add(item);
+                        //return item.methodName;
                     }
                 }
+
+                if(matches.Count == 1)
+                {
+                    return matches[0].methodName;
+                }
+                else if(matches.Count > 1)
+                {
+                    // Output to the log and tell the user they have a number of options
+                    //eventListener.
+                    string message = "The address function has mutiple options form signature analysis, the options are :- ";
+
+                    foreach(SigItem item in matches)
+                    {
+                        message += ", " + item.methodName + " form " + item.libraryName + " ";
+                    }
+
+                    var dc = services.RequireService<DecompilerEventListener>();
+                    dc.Warn(currentName, message);
+                }
+
                 return "";
             }
             return "";
