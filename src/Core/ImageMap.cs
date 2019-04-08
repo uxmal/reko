@@ -40,12 +40,12 @@ namespace Reko.Core
         public ImageMap(Address addrBase)
         {
             this.BaseAddress = addrBase ?? throw new ArgumentNullException(nameof(addrBase));
-            this.Items = new SortedList<Address, ImageMapItem>(new ItemComparer());
+            this.Items = new BTreeDictionary<Address, ImageMapItem>(new ItemComparer());
         }
 
         public Address BaseAddress { get; private set; }
 
-        public SortedList<Address, ImageMapItem> Items { get; private set; }
+        public BTreeDictionary<Address, ImageMapItem> Items { get; private set; }
 
         /// <summary>
         /// Adds an image map item at the specified address. 
