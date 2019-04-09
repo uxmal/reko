@@ -507,7 +507,7 @@ namespace Reko.ImageLoaders.Elf
         /// <param name="gotEnd"></param>
         public void ConstructGotEntries(Program program, SortedList<Address, ImageSymbol> symbols, Address gotStart, Address gotEnd, bool makeGlobals)
         {
-            Debug.Print("== Constructing GOT entries ==");
+            DebugEx.Verbose(ElfImageLoader.trace, "== Constructing GOT entries ==");
             var rdr = program.CreateImageReader(program.Architecture, gotStart);
             while (rdr.Address < gotEnd)
             {
@@ -522,7 +522,7 @@ namespace Reko.ImageLoaders.Elf
                     {
                         ImageSymbol gotSym = CreateGotSymbol(addrGot, symbol.Name);
                         symbols[addrGot] = gotSym;
-                        DebugEx.PrintIf(ElfImageLoader.trace.TraceVerbose, "{0}+{1:X4}: Found GOT entry {2}, referring to symbol at {3}",
+                        DebugEx.Verbose(ElfImageLoader.trace, "{0}+{1:X4}: Found GOT entry {2}, referring to symbol at {3}",
                             gotStart, addrGot - gotStart, gotSym, symbol);
                         program.ImportReferences.Add(
                             addrGot,
@@ -538,7 +538,7 @@ namespace Reko.ImageLoaders.Elf
                     // This GOT entry has no corresponding symbol. It's likely a global
                     // variable with no name.
                     ImageSymbol gotDataSym = ImageSymbol.Create(SymbolType.Data, this.Architecture, addrGot);
-                    DebugEx.PrintIf(ElfImageLoader.trace.TraceVerbose, "{0}+{1:X4}: GOT entry with no symbol, assuming local data {2}",
+                    DebugEx.Verbose(ElfImageLoader.trace, "{0}+{1:X4}: GOT entry with no symbol, assuming local data {2}",
                         gotStart, addrGot - gotStart, addrGot);
                     program.ImportReferences.Add(
                         addrGot,
@@ -998,7 +998,7 @@ namespace Reko.ImageLoaders.Elf
                         (uint)p.p_pmemsz)));
             foreach (var ph in Segments)
             {
-                Debug.Print("ph: addr {0:X8} filesize {0:X8} memsize {0:X8}", ph.p_vaddr, ph.p_filesz, ph.p_pmemsz);
+                DebugEx.Inform(ElfImageLoader.trace, "ph: addr {0:X8} filesize {0:X8} memsize {0:X8}", ph.p_vaddr, ph.p_filesz, ph.p_pmemsz);
                 if (!IsLoadable(ph.p_pmemsz, ph.p_type))
                     continue;
                 var vaddr = platform.MakeAddressFromLinear(ph.p_vaddr);
@@ -1362,7 +1362,7 @@ namespace Reko.ImageLoaders.Elf
 
                 uint sym = info >> 8;
                 string symStr = GetStrPtr(symtab, sym);
-                DebugEx.PrintIf(ElfImageLoader.trace.TraceVerbose, "  RELA {0:X8} {1,3} {2:X8} {3:X8} {4}", offset, info & 0xFF, sym, addend, symStr);
+                DebugEx.Verbose(ElfImageLoader.trace, "  RELA {0:X8} {1,3} {2:X8} {3:X8} {4}", offset, info & 0xFF, sym, addend, symStr);
             }
         }
 
@@ -1453,7 +1453,7 @@ namespace Reko.ImageLoaders.Elf
 
             foreach (var ph in Segments)
             {
-                Debug.Print("ph: addr {0:X8} filesize {0:X8} memsize {0:X8}", ph.p_vaddr, ph.p_filesz, ph.p_pmemsz);
+                DebugEx.Inform(ElfImageLoader.trace, "ph: addr {0:X8} filesize {0:X8} memsize {0:X8}", ph.p_vaddr, ph.p_filesz, ph.p_pmemsz);
                 if (!IsLoadable(ph.p_pmemsz, ph.p_type))
                     continue;
                 var vaddr = Address.Ptr32((uint)ph.p_vaddr);

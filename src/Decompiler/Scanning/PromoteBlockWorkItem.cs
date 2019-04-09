@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -35,7 +35,9 @@ namespace Reko.Scanning
 {
     public class PromoteBlockWorkItem : WorkItem
     {
-        public Block Block;
+        private static TraceSwitch trace = new TraceSwitch(nameof(PromoteBlockWorkItem), "Trace the workings of PromoteBlockWorkItem") { Level = TraceLevel.Info };
+
+        public Block Block; 
         public Procedure ProcNew;
         public IScanner Scanner;
         public Program Program;
@@ -63,7 +65,7 @@ namespace Reko.Scanning
                 if (b.Procedure == ProcNew || b == b.Procedure.ExitBlock || b.Procedure.EntryBlock.Succ[0] == b)
                     continue;
 
-                Debug.Print("PromoteBlock visiting block {0}", b.Name);
+                DebugEx.Inform(trace, "PromoteBlock visiting block {0}, stack depth {1}", b.Name, stack.Count);
                 b.Procedure.RemoveBlock(b);
                 ProcNew.AddBlock(b);
                 b.Procedure = ProcNew;
@@ -83,13 +85,13 @@ namespace Reko.Scanning
             }
         }
 
-        [Conditional("DEBUG_VERBOSE")]
+        [Conditional("DEBU")]
         private void DumpBlocks(Procedure procedure)
         {
-            Debug.Print("{0}", procedure.Name);
+            DebugEx.Verbose(trace, "{0}", procedure.Name);
             foreach (var block in procedure.ControlGraph.Blocks)
             {
-                Debug.Print("  {0}; {1}", block.Name, block.Procedure.Name);
+                DebugEx.Verbose(trace, "  {0}; {1}", block.Name, block.Procedure.Name);
             }
         }
 

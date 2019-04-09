@@ -232,13 +232,13 @@ namespace Reko.ImageLoaders.Elf.Relocators
             if (addrEnd != 0)
             {
                 // We have found some symbols to ensure.
-                Debug.Print("Symbols in the DT_DYNAMIC segment");
+                DebugEx.Verbose(ElfImageLoader.trace, "== Symbols in the DT_DYNAMIC segment");
                 int i = 0;
                 for (ulong uSymAddr = symtab.UValue; uSymAddr < addrEnd; uSymAddr += syment.UValue)
                 {
                     var elfSym = Loader.EnsureSymbol(offSymtab, i, syment.UValue, offStrtab);
                     ++i;
-                    Debug.Print("  {0:X8} {1}", elfSym.Value, elfSym.Name);
+                    DebugEx.Verbose(ElfImageLoader.trace, "  {0:X8} {1}", elfSym.Value, elfSym.Name);
                     var imgSym = Loader.CreateImageSymbol(elfSym, true);
                     if (imgSym == null || imgSym.Address.ToLinear() == 0)
                         continue;
