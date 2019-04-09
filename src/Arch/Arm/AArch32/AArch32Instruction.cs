@@ -249,11 +249,18 @@ namespace Reko.Arch.Arm.AArch32
             switch (op)
             {
             case ImmediateOperand imm:
-                int v = imm.Value.ToInt32();
-                if (0 <= v && v <= 9)
-                    writer.WriteFormat($"#{imm.Value.ToInt32()}");
-                else 
-                    writer.WriteFormat($"#&{imm.Value.ToUInt64():X}");
+                if (imm.Value.IsReal)
+                {
+                    writer.WriteFormat("#{0}", imm.Value.ToString());
+                }
+                else
+                {
+                    int v = imm.Value.ToInt32();
+                    if (0 <= v && v <= 9)
+                        writer.WriteFormat($"#{imm.Value.ToInt32()}");
+                    else
+                        writer.WriteFormat($"#&{imm.Value.ToUInt64():X}");
+                }
                 break;
             case AddressOperand aop:
                 writer.WriteAddress($"${aop.Address}", aop.Address);

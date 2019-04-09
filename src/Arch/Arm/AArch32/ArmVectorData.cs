@@ -1,4 +1,4 @@
-﻿/*
+/*
 * Copyright (C) 1999-2019 John Källén.
 *
 * This program is free software; you can redistribute it and/or modify
@@ -46,14 +46,23 @@ namespace Reko.Arch.Arm.AArch32
         F32,
         F64,
 
-        F64S32,
-        F32S32,
-        F16U16,
         S16F16,
-        U16F16,
-        F16S16,
         S32F32,
-        F32U32,
+        S32F64,
+     
+        U16F16,
         U32F32,
+        U32F64,
+
+        F16S16,
+        F16U16,
+
+        F32S32,
+        F32F64,
+        F32U32,
+
+        F64S32,
+        F64U32,
+        F64F32,
     }
 }
