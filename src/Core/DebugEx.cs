@@ -72,5 +72,33 @@ namespace Reko.Core
                 Debug.Print(message, args);
             }
         }
+
+        [Conditional("DEBUG")]
+        public static void Error(TraceSwitch trace, string fmt, params object[] args)
+        {
+            if (trace.TraceError)
+                Debug.Print(fmt, args);
+        }
+
+        [Conditional("DEBUG")]
+        public static void Warn(TraceSwitch trace, string fmt, params object[] args)
+        {
+            if (trace.TraceWarning)
+                Debug.Print(fmt, args);
+        }
+
+        [Conditional("DEBUG")]
+        public static void Inform(TraceSwitch trace, string fmt, params object[] args)
+        {
+            if (trace.TraceInfo)
+                Debug.Print(fmt, args);
+        }
+
+        [Conditional("DEBUG")]
+        public static void Verbose(TraceSwitch trace, string fmt, params object[] args)
+        {
+            if (trace.TraceVerbose)
+                Debug.Print(fmt, args);
+        }
     }
 }
