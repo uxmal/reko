@@ -87,11 +87,9 @@ namespace Reko.Core.Lib
             public int totalCount;  // # of recursively reachable children.
             public TKey[] keys;
 
-            public abstract (Node, Node) Add(TKey key, TValue value, BTreeDictionary<TKey, TValue> tree);
+            public abstract (Node, Node) Put(TKey key, TValue value, bool setting, BTreeDictionary<TKey, TValue> tree);
 
             public abstract (TValue, bool) Get(TKey key, BTreeDictionary<TKey, TValue> tree);
-
-            public abstract (Node, Node) Set(TKey key, TValue value, BTreeDictionary<TKey, TValue> tree);
 
             public abstract bool Remove(TKey key, BTreeDictionary<TKey, TValue> tree);
 
@@ -115,14 +113,6 @@ namespace Reko.Core.Lib
                 this.values = new TValue[children];
             }
 
-            public override (Node, Node) Add(TKey key, TValue value, BTreeDictionary<TKey, TValue> tree)
-            {
-                int idx = Array.BinarySearch(keys, 0, count, key, tree.Comparer);
-                if (idx >= 0)
-                    throw new ArgumentException("Duplicate key.");
-                return Insert(~idx, key, value, tree);
-            }
-
             public override (TValue, bool) Get(TKey key, BTreeDictionary<TKey, TValue> tree)
             {
                 int idx = Array.BinarySearch(keys, 0, count, key, tree.Comparer);
@@ -131,15 +121,20 @@ namespace Reko.Core.Lib
                 return (values[idx], true);
             }
 
-            public override (Node, Node) Set(TKey key, TValue value, BTreeDictionary<TKey, TValue> tree)
+            public override (Node, Node) Put(TKey key, TValue value, bool setting, BTreeDictionary<TKey, TValue> tree)
             {
                 int idx = Array.BinarySearch(keys, 0, count, key, tree.Comparer);
                 if (idx >= 0)
                 {
+                    if (!setting)
+                        throw new ArgumentException("Duplicate key.");
                     values[idx] = value;
                     return (this, null);
                 }
-                return Insert(~idx, key, value, tree);
+                else
+                {
+                    return Insert(~idx, key, value, tree);
+                }
             }
 
             public override bool Remove(TKey key, BTreeDictionary<TKey, TValue> tree)
@@ -197,9 +192,9 @@ namespace Reko.Core.Lib
                 right.nextLeaf = this.nextLeaf;
                 this.nextLeaf = right;
                 if (tree.Comparer.Compare(right.keys[0], key) < 0)
-                    right.Add(key, value, tree);
+                    right.Put(key, value, false, tree);
                 else
-                    this.Add(key, value, tree);
+                    this.Put(key, value, false, tree);
                 return right;
             }
         }
@@ -217,33 +212,6 @@ namespace Reko.Core.Lib
                 this.nodes = new Node[children];
             }
 
-            public override (Node, Node) Add(TKey key, TValue value, BTreeDictionary<TKey, TValue> tree)
-            {
-                int idx = Array.BinarySearch(keys, 1, count-1, key, tree.Comparer);
-                int iPos;
-                if (idx >= 0)
-                    iPos = idx - 1;
-                else
-                    iPos = (~idx) - 1;
-                var subnode = nodes[iPos];
-                var (leftNode, rightNode) = subnode.Add(key, value, tree);
-                if (rightNode == null)
-                {
-                    this.totalCount = SumNodeCounts(this.nodes, this.count);
-                    return (leftNode, null);
-                }
-                return Insert(iPos + 1, rightNode.keys[0], rightNode,  tree);
-            }
-
-            public Node Add(TKey key, Node node, BTreeDictionary<TKey, TValue> tree)
-            {
-                int idx = Array.BinarySearch(keys, 1, count-1, key, tree.Comparer);
-                if (idx >= 0)
-                    throw new ArgumentException("Duplicate key.");
-                var subnode = nodes[~idx];
-                return Insert(~idx, node.keys[0], node, tree).Item1;
-            }
-
             public override (TValue, bool) Get(TKey key, BTreeDictionary<TKey, TValue> tree)
             {
                 int idx = Array.BinarySearch(keys, 1, count - 1, key, tree.Comparer);
@@ -256,24 +224,31 @@ namespace Reko.Core.Lib
                 }
             }
 
-            public override (Node, Node) Set(TKey key, TValue value, BTreeDictionary<TKey, TValue> tree)
+            public override (Node, Node) Put(TKey key, TValue value, bool setting, BTreeDictionary<TKey, TValue> tree)
             {
-                int idx = Array.BinarySearch(keys, 1, count - 1, key, tree.Comparer);
+                int idx = Array.BinarySearch(keys, 1, count-1, key, tree.Comparer);
                 int iPos = (idx >= 0)
                     ? idx
                     : (~idx) - 1;
                 var subnode = nodes[iPos];
-                var (leftNode, rightNode) = subnode.Set(key, value, tree);
+                var (leftNode, rightNode) = subnode.Put(key, value, setting, tree);
                 if (rightNode == null)
                 {
                     this.totalCount = SumNodeCounts(this.nodes, this.count);
-                    tree.Validate(this);
                     return (leftNode, null);
                 }
                 else
                 {
                     return Insert(iPos + 1, rightNode.keys[0], rightNode, tree);
                 }
+            }
+
+            public Node AddNode(TKey key, Node node, BTreeDictionary<TKey, TValue> tree)
+            {
+                int idx = Array.BinarySearch(keys, 1, count-1, key, tree.Comparer);
+                if (idx >= 0)
+                    throw new ArgumentException("Duplicate key.");
+                return Insert(~idx, node.keys[0], node, tree).Item1;
             }
 
             public override bool Remove(TKey key, BTreeDictionary<TKey, TValue> tree)
@@ -289,7 +264,10 @@ namespace Reko.Core.Lib
                     var iPos = (~idx) - 1;
                     removed = nodes[iPos].Remove(key, tree);
                 }
-                --this.totalCount;
+                if (removed)
+                {
+                    --this.totalCount;
+                }
                 return removed;
             }
 
@@ -324,12 +302,12 @@ namespace Reko.Core.Lib
                 Array.Clear(this.nodes, iSplit, right.count);
                 if (tree.Comparer.Compare(right.keys[0], key) < 0)
                 {
-                    right.Add(key, node, tree);
+                    right.AddNode(key, node, tree);
                     this.totalCount = SumNodeCounts(this.nodes, this.count);
                 }
                 else
                 {
-                    this.Add(key, node, tree);
+                    this.AddNode(key, node, tree);
                     right.totalCount = SumNodeCounts(right.nodes, right.count);
                 }
                 return right;
@@ -359,7 +337,7 @@ namespace Reko.Core.Lib
             set
             {
                 EnsureRoot();
-                var (left, right) = root.Set(key, value, this);
+                var (left, right) = root.Put(key, value, true, this);
                 if (right != null)
                     root = NewInternalRoot(left, right);
                 ++version;
@@ -368,7 +346,6 @@ namespace Reko.Core.Lib
         }
 
         public IComparer<TKey> Comparer { get; }
-
 
         ICollection<TKey> IDictionary<TKey, TValue>.Keys => Keys;
 
@@ -385,7 +362,7 @@ namespace Reko.Core.Lib
         public void Add(TKey key, TValue value)
         {
             EnsureRoot();
-            var (left, right) = root.Add(key, value, this);
+            var (left, right) = root.Put(key, value, false, this);
             if (right != null)
                 root = NewInternalRoot(left, right);
             ++version;
@@ -511,7 +488,15 @@ namespace Reko.Core.Lib
         {
             if (root == null)
                 return false;
-            return root.Remove(key, this);
+            if (root.Remove(key, this))
+            {
+                ++this.version;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         bool ICollection<KeyValuePair<TKey,TValue>>.Remove(KeyValuePair<TKey, TValue> item)
@@ -567,7 +552,6 @@ namespace Reko.Core.Lib
             }
             else
                 throw new ArgumentOutOfRangeException("Index was out of range. Must be non-negative and less than the size of the collection.");
-
         }
 
         private InternalNode NewInternalRoot(Node left, Node right)
