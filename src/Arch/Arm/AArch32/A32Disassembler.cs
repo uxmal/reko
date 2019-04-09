@@ -724,15 +724,17 @@ namespace Reko.Arch.Arm.AArch32
             };
         }
 
-        private static Bitfield[] baseRegFields = new[]
-            {  new Bitfield(22, 1), new Bitfield(12, 4)
-        };
+        
 
         private static Mutator<A32Disassembler> Md(int pos, int size)
         {
             var bitfields = new[]
             {
                 new Bitfield(pos, size)
+            };
+            var baseRegFields = new[]
+            {
+                new Bitfield(22, 1), new Bitfield(12, 4)
             };
             return (u, d) =>
             {
@@ -751,11 +753,15 @@ namespace Reko.Arch.Arm.AArch32
             {
                 new Bitfield(pos, size)
             };
+            var baseRegFields = new[]
+            {
+                new Bitfield(12, 4), new Bitfield(22, 1),
+            };
             return (u, d) =>
             {
                 var imm = Bitfield.ReadFields(bitfields, u);
                 var baseReg = (int) Bitfield.ReadFields(baseRegFields, u);
-                var regs = d.SBitfield(u, 1, 7);
+                var regs = d.SBitfield(u, 0, 8);
                 var bitmask = (((1u << regs) - 1u) << baseReg);
                 d.state.ops.Add(new MultiRegisterOperand(Registers.SRegs, PrimitiveType.Word32, bitmask));
                 return true;
@@ -973,6 +979,17 @@ namespace Reko.Arch.Arm.AArch32
                 return true;
             };
         }
+
+        private static Mutator<A32Disassembler> Imm(Constant c)
+        {
+            return (u, d) =>
+            {
+                d.state.ops.Add(new ImmediateOperand(c));
+                return true;
+            };
+        }
+        private static readonly Mutator<A32Disassembler> Imm0_r32 = Imm(Constant.Real32(0));
+        private static readonly Mutator<A32Disassembler> Imm0_r64 = Imm(Constant.Real64(0));
 
         private static ArmVectorData[] dtFromCmode =
         {
@@ -2362,7 +2379,7 @@ namespace Reko.Arch.Arm.AArch32
                         Instr(Opcode.mrrc, CP(8),i(4,4),r(3),r(4),CR(0)))),
                 invalid);
 
-            var SystemRegister_LdSt = Select(12, 0xF, n => n != 5, 
+            var SystemRegister_LdSt = Select("SystemRegister_LdSt", 12, 0xF, n => n != 5, 
                 invalid,
                 Mask(20, 1,         // L (load)
                     Mask("SystemRegister_LdSt puw", 23, 2, 21, 1,
@@ -2405,7 +2422,6 @@ namespace Reko.Arch.Arm.AArch32
                         Instr(Opcode.vcvt, S32F64, S12_22, D5_0),
                         Instr(Opcode.vcvtr, S32F64, S12_22, D5_0)));
 
-
             var FloatingPointDataProcessing2regs = Mask(19, 1, 16, 3,
                 Mask(7, 0b111,  // size:o3
                     invalid,
@@ -2442,7 +2458,13 @@ namespace Reko.Arch.Arm.AArch32
                         Instr(Opcode.vcmpe, F16, S12_22, S0_5),
                         Instr(Opcode.vcmpe, F32, S12_22, S0_5),
                         Instr(Opcode.vcmpe, F64, D22_12, D5_0))),
-                nyi("Floating-point data-procesing (two registers) 0 101"),
+                Select("vcmpe #0", 0, 0xF, u => u == 0,
+                    Mask("0101", 7, 3,
+                        Instr(Opcode.vcmp, F32, S12_22, Imm0_r32),
+                        Instr(Opcode.vcmpe, F32, S12_22, Imm0_r32),
+                        Instr(Opcode.vcmp, F64, D22_12, Imm0_r64),
+                        Instr(Opcode.vcmpe, F64, D22_12, Imm0_r64)),
+                    invalid),
                 nyi("Floating-point data-procesing (two registers) 0 110"),
                 Mask("Floating-point data-procesing (two registers) 0 111 - op3", 6, 3, 
                     invalid,
@@ -2597,27 +2619,22 @@ namespace Reko.Arch.Arm.AArch32
                 invalid,
                 invalid,
 
-                Mask("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0100", 8, 3,
+                Mask("PUWL: 0b0100", 8, 3,
                     invalid,
                     nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0100 size: 0b01"),
-                    nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0100 size: 0b10"),
-                    nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0100 size: 0b11")),
-
-                Mask(8, 3,
+                    Instr(Opcode.vstmia, w(21), r(4), Ms(0, 16)),
+                    Instr(Opcode.vstmia, w(21), r(4), Md(0, 16))),
+                Mask("PUWL: 0b0101", 8, 3,
                     nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0101 size: 0b00"),
                     nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0101 size: 0b01"),
-                    nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0101 size: 0b10"),
-                    Mask(0, 1,
-                        Instr(Opcode.vldmia, w(21), r(4),Md(0,16)),
-                        nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0101 size: 0b11 xxxxxx1"))),
-                Mask(8, 3,
+                    Instr(Opcode.vldmia, w(21), r(4),Ms(0,16)),
+                    Instr(Opcode.vldmia, w(21), r(4),Md(0,16))),
+                Mask("PUWL: 0b0110", 8, 3,
                     nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0110 size: 0b00"),
                     nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0110 size: 0b01"),
-                    nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0110 size: 0b10"),
-                    Mask(0, 1,
-                        Instr(Opcode.vstmia, w(21), r(4),Md(0,16)),
-                        nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0110 size: 0b11 xxxxxx1"))),
-                Mask(8, 3,
+                    Instr(Opcode.vstmia, w(21), r(4),Ms(0,16)),
+                    Instr(Opcode.vstmia, w(21), r(4),Md(0,16))),
+                Mask("PUWL: 0b0111", 8, 3,
                     invalid,
                     invalid,
                     nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0111 size: 0b10"),
@@ -2687,7 +2704,7 @@ namespace Reko.Arch.Arm.AArch32
                     Instr(Opcode.mrc, CP(8),i(21,3),r(3),CR(16),CR(0),i(5,3))),
                 invalid);
 
-            var AdvancedSimd_ThreeRegisters = Mask(24, 1,
+            var AdvancedSimd_ThreeRegisters = Mask("AdvancedSimd_ThreeRegisters", 24, 1,
                 Mask(8, 0xF, // AdvancedSimd_ThreeRegisters - U = 0
                     Mask(20, 3, // AdvancedSimd_ThreeRegisters - U = 0, opc=0b0000
                         Mask(4, 1, // AdvancedSimd_ThreeRegisters - U = 0, opc=0b0000 size=00
@@ -3004,9 +3021,7 @@ namespace Reko.Arch.Arm.AArch32
                         invalid),
                     invalid));
 
-            var unconditionalDecoder = Mask(
-                "Unconditional", 
-                25, 7,
+            var unconditionalDecoder = Mask("Unconditional", 25, 7,
                 UncMiscellaneous,
                 AdvancedSimd,
                 new MaskDecoder(20, 1,
