@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -40,6 +40,7 @@ namespace Reko.Arch.Arm.AArch32
         public bool Add;
         public int Scale;
         public bool PreIndex;
+        public int Alignment;
 
         public MemoryOperand(PrimitiveType dataType) : base(dataType)
         {

@@ -22,6 +22,7 @@ using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Reko.Arch.Arm.AArch32
 {
@@ -41,15 +42,8 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteCdp(string name)
         {
-            throw new NotImplementedException();
-            //auto cdp = host.PseudoProcedure(name, VoidType.Instance, instr->detail->arm.op_count);
-            //auto begin = &instr->detail->arm.operands[0];
-            //auto end = begin + instr->detail->arm.op_count;
-            //for (auto op = begin; op != end; ++op)
-            //{
-            //	m.AddArg(Operand(*op));
-            //}
-            //m.SideEffect(m.Fn(cdp));
+            var ops = instr.ops.Select(o => Operand(o)).ToArray();
+            m.SideEffect(host.PseudoProcedure("__cdp", VoidType.Instance, ops));
         }
 
         private void RewriteCps()
@@ -112,6 +106,18 @@ namespace Reko.Arch.Arm.AArch32
             m.SideEffect(intrinsicCall);
         }
 
+        private void RewriteMcrr()
+        {
+            var cop = Operand(instr.ops[0]);
+            var cmd = Operand(instr.ops[1]);
+            var cr = Operand(instr.ops[4]);
+            var rhi = ((RegisterOperand) instr.ops[2]).Register;
+            var rlo = ((RegisterOperand) instr.ops[3]).Register;
+            var nBits = (int) (rhi.BitSize + rlo.BitSize);
+            var rseq = binder.EnsureSequence(rhi, rlo, PrimitiveType.CreateWord(nBits));
+            m.Assign(rseq, host.PseudoProcedure("__mcrr", VoidType.Instance, cop, cmd, cr, rseq));
+        }
+
         private void RewriteMrc()
         {
             int cArgs = 0;
@@ -132,6 +138,18 @@ namespace Reko.Arch.Arm.AArch32
             }
             var intrinsicCall = host.PseudoProcedure("__mrc", VoidType.Instance, args.ToArray());
             m.Assign(dst, intrinsicCall);
+        }
+
+        private void RewriteMrrc()
+        {
+            var cop = Operand(instr.ops[0]);
+            var cmd = Operand(instr.ops[1]);
+            var cr = Operand(instr.ops[4]);
+            var rhi = ((RegisterOperand) instr.ops[2]).Register;
+            var rlo = ((RegisterOperand) instr.ops[3]).Register;
+            var nBits = (int) (rhi.BitSize + rlo.BitSize);
+            var rseq = binder.EnsureSequence(rhi, rlo, PrimitiveType.CreateWord(nBits));
+            m.Assign(rseq, host.PseudoProcedure("__mrrc", rseq.DataType, cop, cmd, cr));
         }
 
         private void RewriteMrs()

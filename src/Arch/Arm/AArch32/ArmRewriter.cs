@@ -115,7 +115,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.ldrexd:
                 case Opcode.ldrexh:
                 case Opcode.mcr2:
-                case Opcode.mcrr:
                 case Opcode.mcrr2:
                 case Opcode.mrc2:
                 case Opcode.mrrc2:
@@ -288,7 +287,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.vswp:
                 case Opcode.vtbl:
                 case Opcode.vtbx:
-                case Opcode.vcvtr:
                 case Opcode.vtrn:
                 case Opcode.vtst:
                 case Opcode.vuzp:
@@ -362,12 +360,14 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.lsr: RewriteShift(m.Shr); break;
                 case Opcode.nop: m.Nop(); break;
                 case Opcode.mcr: RewriteMcr(); break;
+                case Opcode.mcrr: RewriteMcrr(); break;
                 case Opcode.mla: RewriteMultiplyAccumulate(m.IAdd); break;
                 case Opcode.mls: RewriteMultiplyAccumulate(m.ISub); break;
                 case Opcode.mov: RewriteMov(); break;
                 case Opcode.movt: RewriteMovt(); break;
                 case Opcode.movw: RewriteMovw(); break;
                 case Opcode.mrc: RewriteMrc(); break;
+                case Opcode.mrrc: RewriteMrrc(); break;
                 case Opcode.mrs: RewriteMrs(); break;
                 case Opcode.msr: RewriteMsr(); break;
                 case Opcode.mul: RewriteBinOp(m.IMul); break;
@@ -487,6 +487,7 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.vclt: RewriteVectorBinOp("__vclt_{0}"); break;
                 case Opcode.vcmpe: RewriteVcmp(); break;
                 case Opcode.vcvt: RewriteVcvt(); break;
+                case Opcode.vcvtr: RewriteVcvtr(); break;
                 case Opcode.vdiv: RewriteVecBinOp(m.FDiv); break;
                 case Opcode.vdup: RewriteVdup(); break;
                 case Opcode.veor: RewriteVecBinOp(m.Xor); break;
@@ -559,7 +560,7 @@ namespace Reko.Arch.Arm.AArch32
             {
                 wInstr = rdr.PeekLeUInt16(-2);
             }
-            host.Error(instr.Address, "AArch32 instruction '{0}' ({1:X4}) is not supported yet.", instr.opcode, wInstr);
+            host.Error(instr.Address, "AArch32 instruction '{0}' ({1:X4}) is not supported yet.", instr, wInstr);
             EmitUnitTest(instr);
             Invalid();
         }
