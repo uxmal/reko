@@ -643,16 +643,17 @@ means
         {
             BuildTest(0xEE123F10);  // mrc p15,#0,r3,c2
             AssertCode(
-             "0|L--|00100000(4): 1 instructions",
-             "1|L--|r3 = __mrc(p15, 0x00000000, c2, c0, 0x00000000)");
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r3 = __mrc(p15, 0x00000000, c2, c0, 0x00000000)");
         }
 
         [Test]
-        [Ignore("Find an example in a binary")]
         public void ArmRw_mrrc()
         {
-            BuildTest(0xEC5F5554);        // mrrc\tp5,#5,r5,pc,c4
-            AssertCode("1|L--|00100000(4): 1 instructions");
+            BuildTest(0xEC565554);        // mrrc\tp5,#5,r5,r6,c4
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r5_r6 = __mrrc(p5, 0x00000005, c4)");
         }
 
         [Test]
@@ -1136,14 +1137,13 @@ means
         }
 
         [Test]
-        [Ignore("Can't find documentation for this instruction")]
         public void ArmRw_cdplo()
         {
             BuildTest(0x3e200000);  // cdplo p0, #2, c0, c0, c0, #0
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
                 "1|T--|if (Test(UGE,C)) branch 00100004",
-                "2|L--|__cdp(p0, 0x00000002, 0x00, 0x00, 0x00, 0x00000000)");
+                "2|L--|__cdp(p0, 0x00000002, c0, c0, c0, 0x00000000)");
         }
 
         [Test]
@@ -1628,15 +1628,6 @@ means
         }
 
         [Test]
-        public void ArmRw_vmov_gp_to_scalar()
-        {
-            BuildTest(0xEE6F6974);        // vmov\td15,r6
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|d15 = (word64) r6");
-        }
-
-        [Test]
         public void ArmRw_hvc()
         {
             BuildTest(0xE14C7472);        // hvc\t#&C742
@@ -1661,6 +1652,24 @@ means
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|q4 = __vaddl_u32(d15, d0)");
+        }
+
+        [Test]
+        public void ArmRw_vcvt()
+        {
+            BuildTest(0xEEF70AC7);
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|d16 = (real64) s14");
+        }
+
+        [Test]
+        public void ArmRw_vcvtr()
+        {
+            BuildTest(0xEEFD9AE9);
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|s19 = (int32) trunc(s19)");
         }
     }
 }

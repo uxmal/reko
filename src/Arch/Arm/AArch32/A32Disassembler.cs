@@ -122,7 +122,7 @@ namespace Reko.Arch.Arm.AArch32
         {
             switch (bitSize)
             {
-            default:  throw new ArgumentException(nameof(bitSize), "Bit size must be 8, 16, or 32.");
+            default: throw new ArgumentException(nameof(bitSize), "Bit size must be 8, 16, or 32.");
             case 8: return ArmVectorData.I8;
             case 16: return ArmVectorData.I16;
             case 32: return ArmVectorData.I32;
@@ -134,13 +134,12 @@ namespace Reko.Arch.Arm.AArch32
         {
             switch (bitSize)
             {
-            default: throw new ArgumentException(nameof(bitSize),"Bit size must be 8, 16, or 32.");
+            default: throw new ArgumentException(nameof(bitSize), "Bit size must be 8, 16, or 32.");
             case 16: return ArmVectorData.F16;
             case 32: return ArmVectorData.F32;
             case 64: return ArmVectorData.F64;
             }
         }
-
 
         private ArmVectorData VectorElementUntypedReverse(uint imm)
         {
@@ -152,8 +151,6 @@ namespace Reko.Arch.Arm.AArch32
             default: return ArmVectorData.INVALID;
             }
         }
-
-
 
         private RegisterOperand Coprocessor(uint wInstr, int bitPos)
         {
@@ -169,7 +166,7 @@ namespace Reko.Arch.Arm.AArch32
 
         private int SBitfield(uint wInstr, int bitPos, int size)
         {
-            return (int)((wInstr >> bitPos) & ((1u << size) - 1));
+            return (int) ((wInstr >> bitPos) & ((1u << size) - 1));
         }
 
         public static ulong SimdExpandImm(uint op, uint cmode, uint imm)
@@ -227,7 +224,7 @@ namespace Reko.Arch.Arm.AArch32
                     ulong MakeByte(uint n, int bit)
                     {
                         return ((n >> bit) & 1u) == 1u
-                            ? (ulong)0xFF
+                            ? (ulong) 0xFF
                             : (ulong) 0;
                     }
                     var imm8a = MakeByte(imm, 7); var imm8b = MakeByte(imm, 6);
@@ -304,7 +301,7 @@ namespace Reko.Arch.Arm.AArch32
         private (Opcode, int) DecodeImmShift(uint wInstr)
         {
             uint type = bitmask(wInstr, 5, 0x3);
-            int shift_n = (int)bitmask(wInstr, 7, 0x1F);
+            int shift_n = (int) bitmask(wInstr, 7, 0x1F);
             Opcode shift_t;
             switch (type)
             {
@@ -334,7 +331,7 @@ namespace Reko.Arch.Arm.AArch32
         private (Opcode, MachineOperand) DecodeRegShift(uint wInstr)
         {
             uint type = bitmask(wInstr, 5, 0x3);
-            var shift_n = Registers.GpRegs[(int)bitmask(wInstr, 8, 0xF)];
+            var shift_n = Registers.GpRegs[(int) bitmask(wInstr, 8, 0xF)];
             Opcode shift_t;
             switch (type)
             {
@@ -360,7 +357,7 @@ namespace Reko.Arch.Arm.AArch32
         private ImmediateOperand DecodeImm12(uint wInstr)
         {
             var unrotated_value = wInstr & 0xFF;
-            var n = Bits.RotateR32(unrotated_value, 2 * (int)bitmask(wInstr, 8, 0xF));
+            var n = Bits.RotateR32(unrotated_value, 2 * (int) bitmask(wInstr, 8, 0xF));
             return ImmediateOperand.Word32(n);
         }
 
@@ -379,10 +376,19 @@ namespace Reko.Arch.Arm.AArch32
             };
         }
 
-        private static Mutator<A32Disassembler> vi(int offset)
+        private static Mutator<A32Disassembler> vi(int offset, int [] sizes)
         {
-            return (u, d) => { d.state.vectorData = d.VectorElementInteger(offset); return true; };
+            return (u, d) => {
+                var size = sizes[bitmask(u, offset, 3)];
+                if (size == 0)
+                    return false;
+                d.state.vectorData = d.VectorElementInteger(size);
+                return true;
+            };
         }
+        private static readonly Mutator<A32Disassembler> vi_ld1 = vi(10, new[] { 8, 16, 32, 0 });
+        private static readonly Mutator<A32Disassembler> vi_ld3 = vi(6, new[] { 8, 16, 32, 0 });
+        private static readonly Mutator<A32Disassembler> vi_ld4 = vi(6, new[] { 8, 16, 32, 0 });
 
         private static Mutator<A32Disassembler> vf(int offset)
         {
@@ -417,7 +423,7 @@ namespace Reko.Arch.Arm.AArch32
         private static Mutator<A32Disassembler> J =>
             (u, d) =>
             {
-                var offset = 8 + (((int)u << 8) >> 6);
+                var offset = 8 + (((int) u << 8) >> 6);
                 d.state.ops.Add(AddressOperand.Create(d.addr + offset));
                 return true;
             };
@@ -435,8 +441,8 @@ namespace Reko.Arch.Arm.AArch32
         private static Mutator<A32Disassembler> X =>
             (u, d) =>
             {
-                var offset = 8 + (((int)u << 8) >> 6);
-                offset |= ((int)u >> 23) & 2;
+                var offset = 8 + (((int) u << 8) >> 6);
+                offset |= ((int) u >> 23) & 2;
                 d.state.ops.Add(AddressOperand.Create(d.addr + offset));
                 return true;
             };
@@ -455,7 +461,7 @@ namespace Reko.Arch.Arm.AArch32
             (u, d) =>
             {
                 var imm = (u & 0xFFF) | ((u >> 4) & 0xF000);
-                d.state.ops.Add(ImmediateOperand.Word16((ushort)imm));
+                d.state.ops.Add(ImmediateOperand.Word16((ushort) imm));
                 return true;
             };
 
@@ -546,7 +552,9 @@ namespace Reko.Arch.Arm.AArch32
                 return true;
             };
         }
-        private readonly static Mutator<A32Disassembler> W7_16 = W(7,1,16,4);
+
+        private readonly static Mutator<A32Disassembler> W5_0 = W(5, 1, 0, 4);
+        private readonly static Mutator<A32Disassembler> W7_16 = W(7, 1, 16, 4);
         private readonly static Mutator<A32Disassembler> W22_12 = W(22, 1, 12, 4);
         /// <summary>
         /// Set the SIMD vector index
@@ -560,19 +568,19 @@ namespace Reko.Arch.Arm.AArch32
             return (u, d) =>
             {
                 var imm = Bitfield.ReadFields(fields, u);
-                d.state.vector_index = (int)imm;
+                d.state.vector_index = (int) imm;
                 return true;
             };
         }
-        private (MemoryOperand,bool) MakeMemoryOperand(
-            uint wInstr, 
+        private (MemoryOperand, bool) MakeMemoryOperand(
+            uint wInstr,
             RegisterStorage n,
             RegisterStorage m,
-            Constant offset, 
+            Constant offset,
             Opcode shiftType,
             int shiftAmt,
             PrimitiveType dt)
-        { 
+        {
             bool add = Bits.IsBitSet(wInstr, 23);
             bool preIndex = Bits.IsBitSet(wInstr, 24);
             bool wback = Bits.IsBitSet(wInstr, 21);
@@ -611,7 +619,7 @@ namespace Reko.Arch.Arm.AArch32
             return (u, d) =>
             {
                 var n = Registers.GpRegs[bitmask(u, 16, 0xF)];
-                var offset = Constant.Int32((int)bitmask(u, 0, 0xFFF));
+                var offset = Constant.Int32((int) bitmask(u, 0, 0xFFF));
                 MemoryOperand mem;
                 (mem, d.state.writeback) = d.MakeMemoryOperand(u, n, null, offset, Opcode.Invalid, 0, dt);
                 d.state.ops.Add(mem);
@@ -639,7 +647,7 @@ namespace Reko.Arch.Arm.AArch32
             {
                 var n = Registers.GpRegs[bitmask(u, 16, 0xF)];
                 var offset = Constant.Int32(
-                    (int)(((u >> 4) & 0xF0) | (u & 0x0F)));
+                    (int) (((u >> 4) & 0xF0) | (u & 0x0F)));
                 MemoryOperand mem;
                 (mem, d.state.writeback) = d.MakeMemoryOperand(u, n, null, offset, Opcode.Invalid, 0, dt);
                 if (!allowWriteback && d.state.writeback)
@@ -672,7 +680,7 @@ namespace Reko.Arch.Arm.AArch32
             return (u, d) =>
             {
                 var n = Registers.GpRegs[bitmask(u, 16, 0xF)];
-                var offset = Constant.Int32((int)bitmask(u, 0, 0xFF) << shift);
+                var offset = Constant.Int32((int) bitmask(u, 0, 0xFF) << shift);
                 MemoryOperand mem;
                 (mem, d.state.writeback) = d.MakeMemoryOperand(u, n, null, offset, Opcode.Invalid, 0, dt);
                 d.state.ops.Add(mem);
@@ -719,12 +727,36 @@ namespace Reko.Arch.Arm.AArch32
             return (u, d) =>
             {
                 var imm = Bitfield.ReadFields(bitfields, u);
-                d.state.ops.Add(new MultiRegisterOperand(Registers.GpRegs, PrimitiveType.Word16, (ushort)imm));
+                d.state.ops.Add(new MultiRegisterOperand(Registers.GpRegs, PrimitiveType.Word16, (ushort) imm));
                 return true;
             };
         }
 
-        
+
+        private static Mutator<A32Disassembler> Vel(int count, int step)
+        {
+            Bitfield[] velFields = new[]
+            {
+                new Bitfield(22,1),
+                new Bitfield(12,4),
+            };
+            return (u, d) =>
+            {
+                var baseReg = (int)Bitfield.ReadFields(velFields, u);
+                var regs = new RegisterStorage[count];
+                uint bitmask = 0;
+                for (int i = 0; i < count; ++i)
+                {
+                    bitmask |= (1u << (baseReg + i * step));
+                }
+                d.state.ops.Add(new MultiRegisterOperand(
+                    Registers.DRegs, 
+                    Registers.DRegs[0].DataType, 
+                    bitmask)); 
+                return true;
+            };
+        }
+
 
         private static Mutator<A32Disassembler> Md(int pos, int size)
         {
@@ -766,6 +798,49 @@ namespace Reko.Arch.Arm.AArch32
                 d.state.ops.Add(new MultiRegisterOperand(Registers.SRegs, PrimitiveType.Word32, bitmask));
                 return true;
             };
+        }
+
+
+        // Vector element access with alignment.
+        private static readonly int []mveAlignments = { 0, 64, 128, 256 };
+
+        private static bool Mve(uint uInstr, A32Disassembler dasm)
+        {
+            var regBase = Registers.GpRegs[bitmask(uInstr, 16, 0xF)];
+            var uIdx = bitmask(uInstr, 0, 0xF);
+            var align = mveAlignments[bitmask(uInstr, 4, 0x3)];
+            var dt = Registers.DRegs[0].DataType;
+            MemoryOperand mop;
+            switch (uIdx)
+            {
+            case 13:
+                dasm.state.writeback = true;
+                mop = new MemoryOperand(dt)
+                {
+                    BaseRegister = regBase,
+                    Alignment = align,
+                };
+                break;
+            case 15:
+                mop = new MemoryOperand(dt)
+                {
+                    BaseRegister = regBase,
+                    Alignment = align
+                };
+                break;
+            default:
+                dasm.state.writeback = true;
+                mop = new MemoryOperand(dt)
+                {
+                    BaseRegister = regBase,
+                    Index = Registers.GpRegs[uIdx],
+                    Alignment = align,
+                    Add = true,
+                };
+                break;
+            }
+            dasm.state.ops.Add(mop);
+            return true;
         }
 
         private static Mutator<A32Disassembler> SR =>
@@ -811,6 +886,7 @@ namespace Reko.Arch.Arm.AArch32
             };
         }
         private static readonly Mutator<A32Disassembler> D5_0 = D(5, 1, 0, 4);
+        private static readonly Mutator<A32Disassembler> D7_16 = D(7, 1, 16, 4);
         private static readonly Mutator<A32Disassembler> D22_12 = D(22, 1, 12, 4);
 
         private static Mutator<A32Disassembler> Q(int pos1, int size1, int pos2, int size2)
@@ -862,6 +938,20 @@ namespace Reko.Arch.Arm.AArch32
             return (u, d) =>
             {
                 var imm = Bitfield.ReadFields(fields, u);
+                d.state.ops.Add(ImmediateOperand.Word32(imm));
+                return true;
+            };
+        }
+
+        private static Mutator<A32Disassembler> i(int pos, int size, int lshift)
+        {
+            var fields = new[]
+            {
+                new Bitfield(pos, size),
+            };
+            return (u, d) =>
+            {
+                var imm = Bitfield.ReadFields(fields, u) << lshift;
                 d.state.ops.Add(ImmediateOperand.Word32(imm));
                 return true;
             };
@@ -1456,9 +1546,9 @@ namespace Reko.Arch.Arm.AArch32
                         LdrsbRegister,
                         LdrshRegister)));
 
-            var LdrdLiteral = Instr(Opcode.ldrd, rp(3), x("*)"));
-            var LdrhLiteral = Instr(Opcode.ldrh, x(""));
-            var LdrsbLiteral = Instr(Opcode.ldrsb, x(""));
+            var LdrdLiteral = Instr(Opcode.ldrd, rp(3), r(3), Mh(w8, false));
+            var LdrhLiteral = Instr(Opcode.ldrh, r(3), Mh(w2, false));
+            var LdrsbLiteral = Instr(Opcode.ldrsb, r(3),Mh(s1, false));
             var LdrshLiteral = Instr(Opcode.ldrsh, r(3),Mh(s2, false));
             var StrhImmediate = Instr(Opcode.strh, r(3),Mh(w2));
             var LdrdImmediate = Instr(Opcode.ldrd, rp(3),Mh(w8));
@@ -2377,7 +2467,12 @@ namespace Reko.Arch.Arm.AArch32
                     Mask(20, 1,
                         Instr(Opcode.mcrr, CP(8),i(4,4),r(3),r(4),CR(0)),
                         Instr(Opcode.mrrc, CP(8),i(4,4),r(3),r(4),CR(0)))),
-                invalid);
+                Mask(22, 1,
+                    invalid,
+                    Mask(20, 1,
+                        Instr(Opcode.mcrr2, CP(8), i(4, 4), r(3), r(4), CR(0)),
+                        Instr(Opcode.mrrc2, CP(8), i(4, 4), r(3), r(4), CR(0)))));
+
 
             var SystemRegister_LdSt = Select("SystemRegister_LdSt", 12, 0xF, n => n != 5, 
                 invalid,
@@ -2497,51 +2592,51 @@ namespace Reko.Arch.Arm.AArch32
             var FloatingPointDataProcessing3regs = Mask(23, 1, 20, 2, 6, 1,
                 Mask(8, 0x3,
                     invalid,
-                    Instr(Opcode.vmla, F16, S12_22, S(16,4,7,1),S0_5),
-                    Instr(Opcode.vmla, F32, S12_22, S16_7,S0_5),
-                    Instr(Opcode.vmla, F64, D22_12,D(7,1,16,4),D5_0)),
+                    Instr(Opcode.vmla, F16, S12_22, S16_7, S0_5),
+                    Instr(Opcode.vmla, F32, S12_22, S16_7, S0_5),
+                    Instr(Opcode.vmla, F64, D22_12,D7_16,D5_0)),
                 Mask(8, 0x3,
                     invalid,
                     Instr(Opcode.vmls, F16, S12_22, S16_7,S0_5),
                     Instr(Opcode.vmls, F32, S12_22, S16_7,S0_5),
-                    Instr(Opcode.vmls, F64, D22_12,D(7,1,16,4),D5_0)),
+                    Instr(Opcode.vmls, F64, D22_12,D7_16,D5_0)),
                 Mask(8, 0x3,
                     invalid,
                     Instr(Opcode.vnmls, F16, S12_22, S16_7,S0_5),
                     Instr(Opcode.vnmls, F32, S12_22, S16_7,S0_5),
-                    Instr(Opcode.vnmls, F64, D22_12,D(7,1,16,4),D5_0)),
+                    Instr(Opcode.vnmls, F64, D22_12,D7_16,D5_0)),
                 Mask(8, 0x3,
                     invalid,
                     Instr(Opcode.vnmla, F16, S12_22, S16_7,S0_5),
                     Instr(Opcode.vnmla, F32, S12_22, S16_7,S0_5),
-                    Instr(Opcode.vnmla, F64, D22_12,D(7,1,16,4),D5_0)),
+                    Instr(Opcode.vnmla, F64, D22_12, D7_16, D5_0)),
 
                 Mask(8, 0x3, 
                     invalid,
-                    Instr(Opcode.vmul, F16, S12_22, S16_7,S0_5),
-                    Instr(Opcode.vmul, F32, S12_22, S16_7,S0_5),
-                    Instr(Opcode.vmul, F64, D22_12,D(7,1,16,4),D5_0)),
+                    Instr(Opcode.vmul, F16, S12_22, S16_7, S0_5),
+                    Instr(Opcode.vmul, F32, S12_22, S16_7, S0_5),
+                    Instr(Opcode.vmul, F64, D22_12, D7_16, D5_0)),
                 Mask(8, 0x3,
                     invalid,
                     Instr(Opcode.vnmul, F16, S12_22, S16_7,S0_5),
                     Instr(Opcode.vnmul, F32, S12_22, S16_7,S0_5),
-                    Instr(Opcode.vnmul, F64, D22_12,D(7,1,16,4),D5_0)),
+                    Instr(Opcode.vnmul, F64, D22_12, D7_16, D5_0)),
                 Mask(8, 0x3,
                     invalid,
                     Instr(Opcode.vadd, F16, S12_22, S16_7,S0_5),
                     Instr(Opcode.vadd, F32, S12_22, S16_7,S0_5),
-                    Instr(Opcode.vadd, F64, D22_12,D(7,1,16,4),D5_0)),
+                    Instr(Opcode.vadd, F64, D22_12, D7_16, D5_0)),
                 Mask(8, 0x3,
                     invalid,
                     Instr(Opcode.vsub, F16, S12_22, S16_7,S0_5),
                     Instr(Opcode.vsub, F32, S12_22, S16_7,S0_5),
-                    Instr(Opcode.vsub, F64, D22_12,D(7,1,16,4),D5_0)),
+                    Instr(Opcode.vsub, F64, D22_12, D7_16, D5_0)),
 
                 Mask(8, 0x3,
                     invalid,
                     Instr(Opcode.vdiv, F16, S12_22, S16_7,S0_5),
                     Instr(Opcode.vdiv, F32, S12_22, S16_7,S0_5),
-                    Instr(Opcode.vdiv, F64, D22_12,D(7,1,16,4),D5_0)),
+                    Instr(Opcode.vdiv, F64, D22_12,D7_16,D5_0)),
                 invalid,
                 Instr(Opcode.vfnms, x(" vfnms")),
                 Instr(Opcode.vfnma, x(" vfnma")),
@@ -2569,36 +2664,49 @@ namespace Reko.Arch.Arm.AArch32
                             nyi("floating point minNum/maxNum"),
                             nyi("floating point data processing")))));
 
-            var AdvancedSIMDElementMovDuplicate = Mask("AdvancedSIMDElementMovDuplicate", 20, 1,
-                Mask(23, 1,
-                    Instr(Opcode.vmov, vW(22,1,5,1), D(7,1,16,4),r(3)),
+            var AdvancedSimd_32bitTransfer = Mask("AdvancedSimd_32bitTransfer LC=??", 20, 1, 8, 1,
+                nyi("AdvancedSimd_32bitTransfer LC=00"),
+                Mask("AdvancedSimd_32bitTransfer LC=01 A=?xx", 23, 1,
+                    Instr(Opcode.vmov, vW(22, 1, 5, 1), D7_16, r(3)),
                     Mask(6, 1,
-                        Instr(Opcode.vdup, vW(22,1,5,1), q(21), W7_16,r(3)),
+                        Instr(Opcode.vdup, vW(22, 1, 5, 1), q(21), W7_16, r(3)),
                         invalid)),
-                Mask(21,2,5,2,
-                    Instr(Opcode.vmov, I32, r(3),D(7,1,16,4), Ix(21,1)),
-                    Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b00 01)")),
-                    Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b00 10)")),
-                    Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b00 11)")),
+                nyi("AdvancedSimd_32bitTransfer LC=10"),
+                Mask("AdvancedSimd_32bitTransfer LC=11 U:opc1:opc2=??xxx", 22, 0b11,
+                    Mask("U:opc1:opc2=00x?? = 0", 5, 0b11,
+                        Instr(Opcode.vmov, I32, r(3), D7_16, Ix(21,1)),
+                        Instr(Opcode.vmov, I16, r(3), D7_16, Ix(21,1)),
+                        invalid,
+                        Instr(Opcode.vmov, I16, r(3), D7_16, Ix(21,1))),
+                    Instr(Opcode.vmov, I8, r(3), D7_16, Ix(21,1)),
+                    nyi("AdvancedSimd_32bitTransfer LC=11 U:opc1:opc2=10xxx"),
+                    Instr(Opcode.vmov, I8, r(3), D7_16, Ix(21,1))));
 
-                    Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b01 00)")),
-                    Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b01 01)")),
-                    Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b01 10)")),
-                    Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b01 11)")),
+            //var AdvancedSIMDElementMovDuplicate = Mask("AdvancedSIMDElementMovDuplicate", 20, 1,
+            //    Mask(21,2,5,2,
+            //        Instr(Opcode.vmov, I32, r(3), D7_16, Ix(21,1)),
+            //        Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b00 01)")),
+            //        Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b00 10)")),
+            //        Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b00 11)")),
 
-                    Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b10 00)")),
-                    Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b10 01)")),
-                    Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b10 10)")),
-                    Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b10 11)")),
+            //Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b01 00)")),
+            //Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b01 01)")),
+            //Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b01 10)")),
+            //Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b01 11)")),
 
-                    Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b11 00)")),
-                    Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b11 01)")),
-                    Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b11 10)")),
-                    Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b11 11)))"))));
+            //Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b10 00)")),
+            //Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b10 01)")),
+            //Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b10 10)")),
+            //Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b10 11)")),
+
+            //Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b11 00)")),
+            //Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b11 01)")),
+            //Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b11 10)")),
+            //Instr(Opcode.vmov, r(3), x("*Scalar to GP op1:op2=0b11 11)))"))));
 
             var FloatingPointMoveSpecialReg = Mask(20, 1,
-                Instr(Opcode.vmsr, i(16,4),r(3)),
-                Instr(Opcode.vmrs, r(3),i(16,4)));
+                Instr(Opcode.vmsr, i(16,4), r(3)),
+                Instr(Opcode.vmrs, r(3), i(16,4)));
 
             var AdvancedSIMDandFloatingPoint32bitMove = Mask(8, 1,
                     Mask(21, 7,
@@ -2611,7 +2719,7 @@ namespace Reko.Arch.Arm.AArch32
                         invalid,
                         invalid,
                         FloatingPointMoveSpecialReg),
-                    AdvancedSIMDElementMovDuplicate);
+                    AdvancedSimd_32bitTransfer);
 
             var AdvancedSimd_and_floatingpoint_LdSt = Mask("AdvancedSimd_and_floatingpoint_LdSt", 23, 2, 20, 2,
                 invalid,
@@ -2627,27 +2735,31 @@ namespace Reko.Arch.Arm.AArch32
                 Mask("PUWL: 0b0101", 8, 3,
                     nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0101 size: 0b00"),
                     nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0101 size: 0b01"),
-                    Instr(Opcode.vldmia, w(21), r(4),Ms(0,16)),
-                    Instr(Opcode.vldmia, w(21), r(4),Md(0,16))),
+                    Instr(Opcode.vldmia, w(21), r(4), Ms(0,16)),
+                    Instr(Opcode.vldmia, w(21), r(4), Md(0,16))),
                 Mask("PUWL: 0b0110", 8, 3,
                     nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0110 size: 0b00"),
                     nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0110 size: 0b01"),
-                    Instr(Opcode.vstmia, w(21), r(4),Ms(0,16)),
-                    Instr(Opcode.vstmia, w(21), r(4),Md(0,16))),
+                    Instr(Opcode.vstmia, w(21), r(4), Ms(0,16)),
+                    Instr(Opcode.vstmia, w(21), r(4), Md(0,16))),
                 Mask("PUWL: 0b0111", 8, 3,
                     invalid,
                     invalid,
                     nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0111 size: 0b10"),
                     Mask(0, 1,
-                        Instr(Opcode.vldmia, w(21), r(4),Md(0,16)),
+                        Instr(Opcode.vldmia, w(21), r(4), Md(0,16)),
                         nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b0111 size: 0b11 xxxxxx1"))),
 
                 Mask(8, 3, // size
                     invalid,
-                    Instr(Opcode.vstr, I16, S(12, 4, 22, 1), Mi(1, w2)),
-                    Instr(Opcode.vstr, S(12, 4, 22, 1), Mi(2, w4)),
-                    Instr(Opcode.vstr, D(22, 1, 12, 4), Mi(2, w8))),
-                nyi("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b1001"),
+                    Instr(Opcode.vstr, I16, S12_22, Mi(1, w2)),
+                    Instr(Opcode.vstr, S12_22, Mi(2, w4)),
+                    Instr(Opcode.vstr, D22_12, Mi(2, w8))),
+                Mask("AdvancedSimd_and_floatingpoint_LdSt - PUWL: 0b1001", 8, 3, // size
+                    invalid,
+                    Instr(Opcode.vldr, I16, S12_22, Mi(1, w2)),
+                    Instr(Opcode.vldr, S12_22, Mi(2, w4)),
+                    Instr(Opcode.vldr, D22_12, Mi(2, w8))),
                 Mask(8, 3,
                     invalid,
                     invalid,
@@ -2676,7 +2788,7 @@ namespace Reko.Arch.Arm.AArch32
                 invalid,
                 invalid);
 
-            var AdvancedSimd_and_floatingpoint64bitmove = Mask(22, 1,
+            var AdvancedSimd_and_floatingpoint64bitmove = Mask("AdvancedSimd_and_floatingpoint64bitmove", 22, 1,
                 invalid,
                 Mask(4, 1, // o3
                     invalid,
@@ -2687,12 +2799,12 @@ namespace Reko.Arch.Arm.AArch32
                                 invalid,
                                 invalid,
                                 nyi("vmov from 2 gp regs to 2 single floats"),
-                                Instr(Opcode.vmov, D5_0,r(3),r(4))),
+                                Instr(Opcode.vmov, D5_0, r(3),r(4))),
                             Mask(8, 3, // size
                                 invalid,
                                 invalid,
                                 nyi("vmov to 2 gp regs from 2 single floats"),
-                                nyi("vmov to 2 gp regs from 1 double float"))))));
+                                Instr(Opcode.vmov, r(3), r(4), D5_0))))));
 
             var AdvancedSimd_LdSt_64bitmove = Select("AdvancedSimd_LdSt_64bitmove", 21, 0b1101, n => n == 0,
                 AdvancedSimd_and_floatingpoint64bitmove,
@@ -2716,61 +2828,77 @@ namespace Reko.Arch.Arm.AArch32
                     Mask(20, 3, // AdvancedSimd_ThreeRegisters - U = 0, opc=0b0001
                         Mask(4, 1, // AdvancedSimd_ThreeRegisters - U = 0, opc=0b0001 size=00 o1
                             nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b0001 size=00 o1=0"),
-                            Instr(Opcode.vand, q(6), W22_12,W7_16,W(5,1,0,4))),
+                            Instr(Opcode.vand, q(6), W22_12, W7_16, W5_0)),
                         nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b0001 size=01"),
                         Mask(4, 1, // AdvancedSimd_ThreeRegisters - U = 0, opc=0b0001 size=10 o1
                             nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b0001 size=10 o1=0"),
-                            Instr(Opcode.vorr, q(6), W22_12,W7_16,W(5,1,0,4))),
+                            Instr(Opcode.vorr, q(6), W22_12, W7_16, W5_0)),
                         nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b0001 size=11")),
                     nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b0010"),
-                    nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b0011"),
+                    Mask("AdvancedSimd_ThreeRegisters - U=0, opc=0b0011", 4, 1,
+                        Mask(20, 3, // AdvancedSimd_ThreeRegisters - U=0, opc=0b0100 o1=0
+                            Instr(Opcode.vcgt, S8, q(6), W22_12, W5_0, W7_16),
+                            Instr(Opcode.vcgt, S16, q(6), W22_12, W5_0, W7_16),
+                            Instr(Opcode.vcgt, S32, q(6), W22_12, W5_0, W7_16),
+                            Instr(Opcode.vcgt, S64, q(6), W22_12, W5_0, W7_16)),
+                        Mask(20, 3, // AdvancedSimd_ThreeRegisters - U=0, opc=0b0100 o1=0
+                            Instr(Opcode.vcge, S8, q(6), W22_12, W5_0, W7_16),
+                            Instr(Opcode.vcge, S16, q(6), W22_12, W5_0, W7_16),
+                            Instr(Opcode.vcge, S32, q(6), W22_12, W5_0, W7_16),
+                            Instr(Opcode.vcge, S64, q(6), W22_12, W5_0, W7_16))),
 
                     Mask(4, 1, // AdvancedSimd_ThreeRegisters - U=0, opc=0b0100
                         Mask(20, 3, // AdvancedSimd_ThreeRegisters - U=0, opc=0b0100 o1=0
-                            Instr(Opcode.vshl, S8, q(6), W22_12,W(5,1,0,4),W7_16),
-                            Instr(Opcode.vshl, S16, q(6), W22_12,W(5,1,0,4),W7_16),
-                            Instr(Opcode.vshl, S32, q(6), W22_12,W(5,1,0,4),W7_16),
-                            Instr(Opcode.vshl, S64, q(6), W22_12,W(5,1,0,4),W7_16)),
+                            Instr(Opcode.vshl, S8, q(6), W22_12, W5_0, W7_16),
+                            Instr(Opcode.vshl, S16, q(6), W22_12, W5_0, W7_16),
+                            Instr(Opcode.vshl, S32, q(6), W22_12, W5_0, W7_16),
+                            Instr(Opcode.vshl, S64, q(6), W22_12, W5_0, W7_16)),
                         Mask(20, 3, // AdvancedSimd_ThreeRegisters - U=0, opc=0b0100 o1=1
-                            Instr(Opcode.vqshl, S8, q(6), W22_12,W7_16,W(5,1,0,4)),
-                            Instr(Opcode.vqshl, S16, q(6), W22_12,W7_16,W(5,1,0,4)),
-                            Instr(Opcode.vqshl, S32, q(6), W22_12,W7_16,W(5,1,0,4)),
-                            Instr(Opcode.vqshl, S64, q(6), W22_12,W7_16,W(5,1,0,4)))), 
+                            Instr(Opcode.vqshl, S8, q(6), W22_12, W7_16, W5_0),
+                            Instr(Opcode.vqshl, S16, q(6), W22_12, W7_16, W5_0),
+                            Instr(Opcode.vqshl, S32, q(6), W22_12, W7_16, W5_0),
+                            Instr(Opcode.vqshl, S64, q(6), W22_12, W7_16, W5_0))),
                     nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b0101"),
                     Mask(4, 1, // AdvancedSimd_ThreeRegisters - U = 0, opc=0b0110 u=0  
-                        Mask(20, 3, 
-                            Instr(Opcode.vmax, S8, q(6), W22_12,W7_16,W(5,1,0,4)),
-                            Instr(Opcode.vmax, S16, q(6), W22_12,W7_16,W(5,1,0,4)),
-                            Instr(Opcode.vmax, S32, q(6), W22_12,W7_16,W(5,1,0,4)),
+                        Mask(20, 3,
+                            Instr(Opcode.vmax, S8, q(6), W22_12, W7_16, W5_0),
+                            Instr(Opcode.vmax, S16, q(6), W22_12, W7_16, W5_0),
+                            Instr(Opcode.vmax, S32, q(6), W22_12, W7_16, W5_0),
                             invalid),
                         Mask(20, 3,
-                            Instr(Opcode.vmin, S8, q(6), W22_12,W7_16,W(5,1,0,4)),
-                            Instr(Opcode.vmin, S16, q(6), W22_12,W7_16,W(5,1,0,4)),
-                            Instr(Opcode.vmin, S32, q(6), W22_12 ,W7_16,W(5,1,0,4)),
+                            Instr(Opcode.vmin, S8, q(6), W22_12, W7_16, W5_0),
+                            Instr(Opcode.vmin, S16, q(6), W22_12, W7_16, W5_0),
+                            Instr(Opcode.vmin, S32, q(6), W22_12, W7_16, W5_0),
                             invalid)),
                     nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b0111"),
 
-                    nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b1000"),
+                    Mask("AdvancedSimd_ThreeRegisters - U = 0, opc=0b1000", 4, 1,
+                        Mask(20, 3,
+                            Instr(Opcode.vadd, I8, q(6), W22_12, W7_16, W5_0),
+                            Instr(Opcode.vadd, I16, q(6), W22_12, W7_16, W5_0),
+                            Instr(Opcode.vadd, I32, q(6), W22_12, W7_16, W5_0),
+                            Instr(Opcode.vadd, I64, q(6), W22_12, W7_16, W5_0)),
+                        Instr(Opcode.vtst, x("*"))),
                     nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b1001"),
                     Mask(6, 1, // AdvancedSimd_ThreeRegisters - U = 0, opc=0b1010
                         Mask(4, 1, // AdvancedSimd_ThreeRegisters - U = 0, opc=0b1010 Q=0 
                             Mask(20, 3, // AdvancedSimd_ThreeRegisters - U = 0, opc=0b1010 Q=0 o1=0
-                                Instr(Opcode.vpmax, S8, D22_12,D(7,1,16,4),D5_0),
-                                Instr(Opcode.vpmax, S16, D22_12,D(7,1,16,4),D5_0),
-                                Instr(Opcode.vpmax, S32, D22_12,D(7,1,16,4),D5_0),
+                                Instr(Opcode.vpmax, S8, D22_12,D7_16,D5_0),
+                                Instr(Opcode.vpmax, S16, D22_12,D7_16,D5_0),
+                                Instr(Opcode.vpmax, S32, D22_12,D7_16,D5_0),
                                 invalid),
                             Mask(20, 3, // AdvancedSimd_ThreeRegisters - U = 0, opc=0b1010 Q=0 o1=1
-                                Instr(Opcode.vpmin, S8, D22_12,D(7,1,16,4),D5_0),
-                                Instr(Opcode.vpmin, S16, D22_12,D(7,1,16,4),D5_0),
-                                Instr(Opcode.vpmin, S32, D22_12,D(7,1,16,4),D5_0),
+                                Instr(Opcode.vpmin, S8, D22_12,D7_16,D5_0),
+                                Instr(Opcode.vpmin, S16, D22_12,D7_16,D5_0),
+                                Instr(Opcode.vpmin, S32, D22_12,D7_16,D5_0),
                                 invalid)),
                         invalid),
                     Mask(4, 1,
                         nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b1011 o1=0"),
                         Mask(20, 3,
-                            Instr(Opcode.vpadd, I8, D22_12,D(7,1,16,4),D5_0),
-                            Instr(Opcode.vpadd, I16, D22_12,D(7,1,16,4),D5_0),
-                            Instr(Opcode.vpadd, I32, D22_12,D(7,1,16,4),D5_0),
+                            Instr(Opcode.vpadd, I8, D22_12,D7_16,D5_0),
+                            Instr(Opcode.vpadd, I16, D22_12,D7_16,D5_0),
+                            Instr(Opcode.vpadd, I32, D22_12,D7_16,D5_0),
                             invalid)),
 
                     nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b1100"),
@@ -2779,43 +2907,61 @@ namespace Reko.Arch.Arm.AArch32
                     nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b1111")),
 
                 Mask(8, 0xF, // AdvancedSimd_ThreeRegisters - U = 1
-                    nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b0000"),
+                    Mask("AdvancedSimd_ThreeRegisters - U = 1, opc=0b0000 B=?", 4, 1, 9, 1,
+                        Mask(20, 3,
+                            Instr(Opcode.vhadd, U8, q(6), W22_12, W7_16, W5_0),
+                            Instr(Opcode.vhadd, U16, q(6), W22_12, W7_16, W5_0),
+                            Instr(Opcode.vhadd, U32, q(6), W22_12, W7_16, W5_0),
+                            Instr(Opcode.vhadd, U64, q(6), W22_12, W7_16, W5_0)),
+                        Mask(20, 3,
+                            Instr(Opcode.vhsub, U8, q(6), W22_12, W7_16, W5_0),
+                            Instr(Opcode.vhsub, U16, q(6), W22_12, W7_16, W5_0),
+                            Instr(Opcode.vhsub, U32, q(6), W22_12, W7_16, W5_0),
+                            Instr(Opcode.vhsub, U64, q(6), W22_12, W7_16, W5_0)),
+                        Instr(Opcode.vqadd, x("*")),
+                        Instr(Opcode.vqsub, x("*"))),
                     Mask(20, 3, // AdvancedSimd_ThreeRegisters - U = 1, opc=0b0001
                         Mask(4, 1, // AdvancedSimd_ThreeRegisters - U = 1, opc=0b0001 size=00 o1
                             nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b0001 size=00 o1=0"),
-                            Instr(Opcode.veor, q(6), W22_12 ,W7_16,W(5,1,0,4))),
+                            Instr(Opcode.veor, q(6), W22_12 ,W7_16,W5_0)),
                         nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b0001 size=01"),
-                        Instr(Opcode.vbit, q(6), W(22, 1, 12, 4), W(7, 1, 16, 4), W(5, 1, 0, 4)),
+                        Instr(Opcode.vbit, q(6), W22_12, W7_16, W5_0),
                         nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b0001 size=11")),
                     nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b0010"),
                     nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b0011"),
 
                     Mask(4, 1, // AdvancedSimd_ThreeRegisters - U = 1, opc=0b0100
                         Mask(20, 3, // AdvancedSimd_ThreeRegisters - U=1, opc=0b0100 o1=0
-                            Instr(Opcode.vshl, U8, q(6), W22_12 ,W(5,1,0,4),W7_16),
-                            Instr(Opcode.vshl, U16, q(6), W22_12 ,W(5,1,0,4),W7_16),
-                            Instr(Opcode.vshl, U32, q(6), W22_12 ,W(5,1,0,4),W7_16),
-                            Instr(Opcode.vshl, U64, q(6), W22_12 ,W(5,1,0,4),W7_16)),
+                            Instr(Opcode.vshl, U8, q(6), W22_12 ,W5_0,W7_16),
+                            Instr(Opcode.vshl, U16, q(6), W22_12 ,W5_0,W7_16),
+                            Instr(Opcode.vshl, U32, q(6), W22_12 ,W5_0,W7_16),
+                            Instr(Opcode.vshl, U64, q(6), W22_12 ,W5_0,W7_16)),
                         Mask(20, 3, // AdvancedSimd_ThreeRegisters - U=1, opc=0b0100 o1=1
-                            Instr(Opcode.vqshl, U8, q(6), W22_12 ,W7_16,W(5,1,0,4)),
-                            Instr(Opcode.vqshl, U16, q(6), W22_12 ,W7_16,W(5,1,0,4)),
-                            Instr(Opcode.vqshl, U32, q(6), W22_12 ,W7_16,W(5,1,0,4)),
-                            Instr(Opcode.vqshl, U64, q(6), W22_12 ,W7_16,W(5,1,0,4)))),
+                            Instr(Opcode.vqshl, U8, q(6), W22_12 ,W7_16,W5_0),
+                            Instr(Opcode.vqshl, U16, q(6), W22_12 ,W7_16,W5_0),
+                            Instr(Opcode.vqshl, U32, q(6), W22_12 ,W7_16,W5_0),
+                            Instr(Opcode.vqshl, U64, q(6), W22_12 ,W7_16,W5_0))),
                     nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b0101"),
                     Mask(4, 1, // AdvancedSimd_ThreeRegisters - U = 1, opc=0b0110
                         Mask(20, 3, // AdvancedSimd_ThreeRegisters - U = 1, opc=0b0110 max
-                            Instr(Opcode.vmax, U8, q(6), W22_12 ,W7_16,W(5,1,0,4)),
-                            Instr(Opcode.vmax, U16, q(6), W22_12 ,W7_16,W(5,1,0,4)),
-                            Instr(Opcode.vmax, U32, q(6), W22_12 ,W7_16,W(5,1,0,4)),
+                            Instr(Opcode.vmax, U8, q(6), W22_12, W7_16, W5_0),
+                            Instr(Opcode.vmax, U16, q(6), W22_12, W7_16, W5_0),
+                            Instr(Opcode.vmax, U32, q(6), W22_12, W7_16, W5_0),
                             invalid),
                         Mask(20, 3, // AdvancedSimd_ThreeRegisters - U = 1, opc=0b0110 min
-                            Instr(Opcode.vmin, U8, q(6), W22_12 ,W7_16,W(5,1,0,4)),
-                            Instr(Opcode.vmin, U16, q(6), W22_12 ,W7_16,W(5,1,0,4)),
-                            Instr(Opcode.vmin, U32, q(6), W22_12 ,W7_16,W(5,1,0,4)),
+                            Instr(Opcode.vmin, U8, q(6), W22_12 ,W7_16,W5_0),
+                            Instr(Opcode.vmin, U16, q(6), W22_12 ,W7_16,W5_0),
+                            Instr(Opcode.vmin, U32, q(6), W22_12 ,W7_16,W5_0),
                             invalid)),
                     nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b0111"),
 
-                    nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b1000"),
+                    Mask("AdvancedSimd_ThreeRegisters - U = 1, opc=0b1000", 4, 1,
+                        Mask(20, 3,
+                            Instr(Opcode.vsub, I8, q(6), W22_12, W7_16, W5_0),
+                            Instr(Opcode.vsub, I16, q(6), W22_12, W7_16, W5_0),
+                            Instr(Opcode.vsub, I32, q(6), W22_12, W7_16, W5_0),
+                            Instr(Opcode.vsub, I64, q(6), W22_12, W7_16, W5_0)),
+                        nyi("AdvancedSimd_ThreeRegisters - U = 1, opc = 0b1000 op=1")),
                     nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b1001"),
                     nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b1010"),
                     nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b1011"),
@@ -2836,16 +2982,53 @@ namespace Reko.Arch.Arm.AArch32
                     nyi("AdvancedSimd_TwoRegistersScalarExtension op1=1 op3:op4=1:0"),
                     nyi("AdvancedSimd_TwoRegistersScalarExtension op1=1 op3:op4=1:1")));
 
+            var CoprocessorDataOperations = new PcDecoder(28,
+                Instr(Opcode.cdp, CP(8), i(20,4), CR(12), CR(16), CR(0), i(5, 3)),
+                Instr(Opcode.cdp2, CP(8), i(20,4), CR(12), CR(16), CR(0), i(5, 3)));
+
+            var CoprocessorInstructionsAndSupervisorCall = Select("CoprocessorInstructionsAndSupervisorCall coproc=???x", 9, 0b111,
+                u => u == 5,
+                Mask("coproc=101x op1=??xxxx", 24, 0b11,
+                    Select("op1=00?x?x", 21, 0b101, u => u == 0,
+                        AdvancedSimd_LdSt_64bitmove,
+                        AdvancedSimd_and_floatingpoint_LdSt),
+                    AdvancedSimd_and_floatingpoint_LdSt,
+                    Mask("10xxxx op=?", 4, 1,
+                        FloatingPointDataProcessing,
+                        AdvancedSIMDandFloatingPoint32bitMove),
+                    Instr(Opcode.svc, InstrClass.Transfer | InstrClass.Call, i(0,24))),
+                Mask("coproc!=101x ??xxxx", 24, 0b11,
+                    Select("op1=00?x?x", 21, 0b101, u => u == 0,
+                        SystemRegister_64bitMove,
+                        Mask(20, 1,
+                            Instr(Opcode.stc, CP(8), CR(12), Mi(2, w4)),
+                            Instr(Opcode.ldc, CP(8), CR(12), Mi(2, w4)))),
+                    Select("op1=00?x?x", 21, 0b101, u => u == 0,
+                        SystemRegister_64bitMove,
+                        Mask(20, 1,
+                            Instr(Opcode.stc, CP(8), CR(12), Mi(2, w4)),
+                            Instr(Opcode.ldc, CP(8), CR(12), Mi(2, w4)))),
+                    Mask("10xxxx op=?", 4, 1,
+                        CoprocessorDataOperations,
+                        Mask("10xxx? op=0", 20, 1,
+                            Instr(Opcode.mcr, CP(8), i(21,3), r(3), CR(16), CR(0), i(5,3)),
+                            Instr(Opcode.mrc, CP(8), i(21,3), r(3), CR(16), CR(0), i(5,3)))),
+                    Instr(Opcode.svc, InstrClass.Transfer | InstrClass.Call, i(0,24))));
+
             Decoder SystemRegister_AdvancedSimd_FloatingPoint = Mask("SystemRegister_AdvancedSimd_FloatingPoint", 24, 3,
                 Select(9, 7, n => n == 7,
                     SystemRegister_LdSt_64bitMove,
                     new PcDecoder(28, 
-                        Select(10, 3, n => n == 2, AdvancedSimd_LdSt_64bitmove, SystemRegister_LdSt_64bitMove),
+                        Select(10, 3, n => n == 2, 
+                            AdvancedSimd_LdSt_64bitmove,
+                            SystemRegister_LdSt_64bitMove),
                         AdvancedSimd_ThreeRegisters)),
                 Select(9, 7, n => n == 7,
                     SystemRegister_LdSt_64bitMove,
                     new PcDecoder(28,
-                        Select(10, 3, n => n == 2, AdvancedSimd_LdSt_64bitmove, SystemRegister_LdSt_64bitMove),
+                        Select(10, 3, n => n == 2,
+                            AdvancedSimd_LdSt_64bitmove,
+                            SystemRegister_LdSt_64bitMove),
                         AdvancedSimd_ThreeRegisters)),
                 Select(9, 7, n => n == 7,
                     Mask(4, 1, invalid, SystemRegister32BitMove),
@@ -2858,7 +3041,6 @@ namespace Reko.Arch.Arm.AArch32
                         Select(10, 3, n => n == 2, AdvancedSimd_TwoRegistersScalarExtension, invalid))),
                     Instr(Opcode.svc, InstrClass.Transfer | InstrClass.Call, i(0,24)));
 
-
             var ConditionalDecoder = new CondMaskDecoder(25, 0x7,
                 DataProcessingAndMisc,
                 DataProcessingAndMisc,
@@ -2868,17 +3050,17 @@ namespace Reko.Arch.Arm.AArch32
                     Media),
                 Branch_BranchLink_BlockDataTransfer,
                 Branch_BranchLink_BlockDataTransfer,
-                SystemRegister_AdvancedSimd_FloatingPoint,
-                SystemRegister_AdvancedSimd_FloatingPoint);
+                CoprocessorInstructionsAndSupervisorCall,
+                CoprocessorInstructionsAndSupervisorCall);
 
             var VmullIntegerPolynomial = nyi("VmullIntegerPolynomial");
 
             var AdvanceSimd_ThreeRegistersDifferentLength = Mask("AdvanceSimd_ThreeRegistersDifferentLength",
                     8, 0xF,
                     Mask(20, 3, 
-                        Instr(Opcode.vaddl, U8, Q(22,1,12,4), D(7,1,16,4), D5_0),
-                        Instr(Opcode.vaddl, U16, Q(22, 1, 12, 4), D(7, 1, 16, 4), D5_0),
-                        Instr(Opcode.vaddl, U32, Q(22, 1, 12, 4), D(7, 1, 16, 4), D5_0),
+                        Instr(Opcode.vaddl, U8, Q(22,1,12,4), D7_16, D5_0),
+                        Instr(Opcode.vaddl, U16, Q(22, 1, 12, 4), D7_16, D5_0),
+                        Instr(Opcode.vaddl, U32, Q(22, 1, 12, 4), D7_16, D5_0),
                         invalid),
                     Instr(Opcode.vaddw, x("*")),
                     Instr(Opcode.vsubl, x("*")),
@@ -2914,19 +3096,20 @@ namespace Reko.Arch.Arm.AArch32
                 20, 0x3,
                 n => n == 0b11,
                 Mask(24, 1,
-                    Instr(Opcode.vext, U8, q(6), W(22, 1, 12, 4), W(7, 1, 16, 4), W(5, 1, 0, 4), i(8, 4)),
+                    Instr(Opcode.vext, U8, q(6), W22_12, W7_16, W5_0, i(8, 4, 3)),
                     nyi("AdvancedSimd_TwoRegisterOrThreeRegisters op1==0b11 op0=1")),
                 Mask("AdvancedSimd_TwoRegisterOrThreeRegisters op1!=0b11 op=0",
                     6, 1,
                     AdvanceSimd_ThreeRegistersDifferentLength,
                     nyi("AdvanceSimd_TwoRegistersScalar")));
 
-            var vmov_A1 = Instr(Opcode.vmov, I32, q(6), W22_12 , Is(24,1,16,3,0,4));
-            var vmov_A4 = Instr(Opcode.vmov, DtFromCmode(8,2), q(6), W22_12 , Is(24,1,16,3,0,4));
+            var vmov_A1 = Instr(Opcode.vmov, I32, q(6), W22_12, Is(24,1,16,3,0,4));
+            var vmov_A3 = Instr(Opcode.vmov, I16, q(6), W22_12, Is(24,1,16,3,0,4));
+            var vmov_A4 = Instr(Opcode.vmov, DtFromCmode(8,2), q(6), W22_12, Is(24,1,16,3,0,4));
 
             var AdvancedSimd_OneRegisterModifiedImmediate = Mask("AdvancedSimd_OneRegisterModifiedImmediate", 8,4,5,1,
                 vmov_A1,
-                Instr(Opcode.vmvn, I32, q(6), W22_12 ,Is(24,1,16,3,0,4)),
+                Instr(Opcode.vmvn, I32, q(6), W22_12, Is(24,1,16,3,0,4)),
                 Instr(Opcode.vorr, x("immediate - A1")),
                 Instr(Opcode.vbic, x("immediate - A1")),
 
@@ -2945,12 +3128,12 @@ namespace Reko.Arch.Arm.AArch32
                 Instr(Opcode.vorr, x("immediate - A1")),
                 Instr(Opcode.vbic, x("immediate - A1")),
 
-                Instr(Opcode.vmov, x("immediate - A3")),
+                vmov_A3,
                 Instr(Opcode.vmvn, x("immediate - A2")),
                 Instr(Opcode.vorr, x("immediate - A2")),
                 Instr(Opcode.vbic, x("immediate - A2")),
 
-                Instr(Opcode.vmov, x("immediate - A3")),
+                vmov_A3,
                 Instr(Opcode.vmvn, x("immediate - A2")),
                 Instr(Opcode.vorr, x("immediate - A2")),
                 Instr(Opcode.vbic, x("immediate - A2")),
@@ -2979,7 +3162,63 @@ namespace Reko.Arch.Arm.AArch32
                     AdvancedSimd_TwoRegisterOrThreeRegisters,
                     AdvancedSimd_ShiftsAndImmediate));
 
-            var AdvancedSimdElementLoadStore = nyi("AdvancedSimdElementLoadStore");
+            var AdvancedSimdElementLoadStore = Mask("AdvancedSimdElementLoadStore A=?", 23, 1,
+                Mask("AdvancedSimdElementLoadStore A=0 B=????", 8, 0b1111,
+                    Mask(21, 1,
+                        Instr(Opcode.vst4, vi_ld4, Vel(4,1), Mve),
+                        Instr(Opcode.vld4, vi_ld4, Vel(4,1), Mve)),
+                    Mask(21, 1,
+                        Instr(Opcode.vst4, vi_ld4, Vel(4,2), Mve),
+                        Instr(Opcode.vld4, vi_ld4, Vel(4,2), Mve)),
+                    nyi("AdvancedSimdElementLoadStore A=0 B=0010"),
+                    Mask(21, 1,
+                        Instr(Opcode.vst2, vi_ld4, Vel(4, 1), Mve),
+                        Instr(Opcode.vld2, vi_ld4, Vel(4, 1), Mve)),
+
+                    Mask(21, 1,
+                        Instr(Opcode.vst3, vi_ld3, Vel(4, 1), Mve),
+                        Instr(Opcode.vld3, vi_ld3, Vel(4, 1), Mve)),
+                    Mask(21, 1,
+                        Instr(Opcode.vst3, vi_ld3, Vel(4, 2), Mve),
+                        Instr(Opcode.vld3, vi_ld3, Vel(4, 2), Mve)),
+                    nyi("AdvancedSimdElementLoadStore A=0 B=0110"),
+                    nyi("AdvancedSimdElementLoadStore A=0 B=0111"),
+
+                    Mask(21, 1,
+                        Instr(Opcode.vst2, vi_ld1, Vel(4, 1), Mve),
+                        Instr(Opcode.vld2, vi_ld1, Vel(4, 1), Mve)),
+                    Mask(21, 1,
+                        Instr(Opcode.vst2, vi_ld1, Vel(2, 2), Mve),
+                        Instr(Opcode.vld2, vi_ld1, Vel(2, 2), Mve)),
+                    nyi("AdvancedSimdElementLoadStore A=0 B=1010"),
+                    nyi("AdvancedSimdElementLoadStore A=0 B=1011"),
+
+                    invalid,
+                    invalid,
+                    invalid,
+                    invalid),
+                Mask("AdvancedSimdElementLoadStore A=1 B=????", 8, 0b1111,
+                    Mask(21, 1,
+                        Instr(Opcode.vst1, vi_ld1, Vel(1, 1), Mve),
+                        Instr(Opcode.vld1, vi_ld1, Vel(1, 1), Mve)),
+                    nyi("AdvancedSimdElementLoadStore A=1 B=0001"),
+                    nyi("AdvancedSimdElementLoadStore A=1 B=0010"),
+                    nyi("AdvancedSimdElementLoadStore A=1 B=0011"),
+
+                    nyi("AdvancedSimdElementLoadStore A=1 B=0100"),
+                    nyi("AdvancedSimdElementLoadStore A=1 B=0101"),
+                    nyi("AdvancedSimdElementLoadStore A=1 B=0110"),
+                    nyi("AdvancedSimdElementLoadStore A=1 B=0111"),
+
+                    nyi("AdvancedSimdElementLoadStore A=1 B=1000"),
+                    nyi("AdvancedSimdElementLoadStore A=1 B=1001"),
+                    nyi("AdvancedSimdElementLoadStore A=1 B=1010"),
+                    nyi("AdvancedSimdElementLoadStore A=1 B=1011"),
+
+                    invalid,
+                    invalid,
+                    invalid,
+                    invalid));
 
             var Barriers = Mask(4, 0xF,
                 invalid,
@@ -3021,7 +3260,192 @@ namespace Reko.Arch.Arm.AArch32
                         invalid),
                     invalid));
 
-            var unconditionalDecoder = Mask("Unconditional", 25, 7,
+            var vext = Instr(Opcode.vext, U8, q(6), W22_12, W7_16, W5_0, i(8, 4));
+            
+            var AdvancedSimdDataProcessing = Mask("AdvancedSimdDataProcessing", 23, 1,
+                AdvancedSimd_ThreeRegisters,
+                Mask("AdvancedSimdDataProcessing A=1x??x", 20, 0b11,
+                    Mask("AdvancedSimdDataProcessing A=1x00?", 19, 1,
+                        Mask("AdvancedSimdDataProcessing A=1x000 C=????", 4, 0b1111,
+                            AdvanceSimd_ThreeRegistersDifferentLength,
+                            AdvancedSimd_OneRegisterModifiedImmediate,
+                            AdvanceSimd_ThreeRegistersDifferentLength,
+                            AdvancedSimd_OneRegisterModifiedImmediate,
+
+                            nyi("AdvancedSimdDataProcessing A=1x000 C=0100"),
+                            AdvancedSimd_OneRegisterModifiedImmediate,
+                            nyi("AdvancedSimdDataProcessing A=1x000 C=0110"),
+                            AdvancedSimd_OneRegisterModifiedImmediate,
+
+                            AdvanceSimd_ThreeRegistersDifferentLength,
+                            nyi("AdvancedSimdDataProcessing A=1x000 C=1001"),
+                            AdvanceSimd_ThreeRegistersDifferentLength,
+                            nyi("AdvancedSimdDataProcessing A=1x000 C=1011"),
+
+                            nyi("AdvancedSimdDataProcessing A=1x000 C=1100"),
+                            nyi("AdvancedSimdDataProcessing A=1x000 C=1101"),
+                            nyi("AdvancedSimdDataProcessing A=1x000 C=1110"),
+                            nyi("AdvancedSimdDataProcessing A=1x000 C=1111")),
+                        Mask("AdvancedSimdDataProcessing A=1x001 C=????", 4, 0b1111,
+                            AdvanceSimd_ThreeRegistersDifferentLength,
+                            AdvancedSimd_TwoRegisterShiftAmount,
+                            AdvanceSimd_ThreeRegistersDifferentLength,
+                            AdvancedSimd_TwoRegisterShiftAmount,
+
+                            nyi("AdvancedSimdDataProcessing A=1x001 C=0100"),
+                            AdvancedSimd_TwoRegisterShiftAmount,
+                            nyi("AdvancedSimdDataProcessing A=1x001 C=0110"),
+                            AdvancedSimd_TwoRegisterShiftAmount,
+
+                            AdvanceSimd_ThreeRegistersDifferentLength,
+                            AdvancedSimd_TwoRegisterShiftAmount,
+                            AdvanceSimd_ThreeRegistersDifferentLength,
+                            AdvancedSimd_TwoRegisterShiftAmount,
+
+                            nyi("AdvancedSimdDataProcessing A=1x001 C=1100"),
+                            AdvancedSimd_TwoRegisterShiftAmount,
+                            nyi("AdvancedSimdDataProcessing A=1x001 C=1110"),
+                            AdvancedSimd_TwoRegisterShiftAmount)),
+                    Mask("AdvancedSimdDataProcessing A=1x01x C=????", 4, 0b1111,
+                        AdvanceSimd_ThreeRegistersDifferentLength,
+                        AdvancedSimd_TwoRegisterShiftAmount,
+                        AdvanceSimd_ThreeRegistersDifferentLength,
+                        AdvancedSimd_TwoRegisterShiftAmount,
+
+                        nyi("AdvancedSimdDataProcessing A=1x01x C=0100"),
+                        AdvancedSimd_TwoRegisterShiftAmount,
+                        nyi("AdvancedSimdDataProcessing A=1x01x C=0110"),
+                        AdvancedSimd_TwoRegisterShiftAmount,
+
+                        AdvanceSimd_ThreeRegistersDifferentLength,
+                        AdvancedSimd_TwoRegisterShiftAmount,
+                        AdvanceSimd_ThreeRegistersDifferentLength,
+                        AdvancedSimd_TwoRegisterShiftAmount,
+                        
+                        nyi("AdvancedSimdDataProcessing A=1x01x C=1100"),
+                        AdvancedSimd_TwoRegisterShiftAmount,
+                        nyi("AdvancedSimdDataProcessing A=1x01x C=1110"),
+                        AdvancedSimd_TwoRegisterShiftAmount),
+                    Mask("AdvancedSimdDataProcessing A=1x10x C=????", 4, 0b1111,
+                        AdvanceSimd_ThreeRegistersDifferentLength,
+                        AdvancedSimd_TwoRegisterShiftAmount,
+                        AdvanceSimd_ThreeRegistersDifferentLength,
+                        AdvancedSimd_TwoRegisterShiftAmount,
+
+                        nyi("AdvancedSimdDataProcessing A=1x10x C=0100"),
+                        AdvancedSimd_TwoRegisterShiftAmount,
+                        nyi("AdvancedSimdDataProcessing A=1x10x C=0110"),
+                        AdvancedSimd_TwoRegisterShiftAmount,
+
+                        AdvanceSimd_ThreeRegistersDifferentLength,
+                        AdvancedSimd_TwoRegisterShiftAmount,
+                        AdvanceSimd_ThreeRegistersDifferentLength,
+                        AdvancedSimd_TwoRegisterShiftAmount,
+
+                        nyi("AdvancedSimdDataProcessing A=1x10x C=1100"),
+                        AdvancedSimd_TwoRegisterShiftAmount,
+                        nyi("AdvancedSimdDataProcessing A=1x10x C=1110"),
+                        AdvancedSimd_TwoRegisterShiftAmount),
+                    Mask("AdvancedSimdDataProcessing A=1x11x C=????", 4, 0b1111,
+                        nyi("AdvancedSimdDataProcessing A=1x11x C=0000"),
+                        AdvancedSimd_TwoRegisterShiftAmount,
+                        nyi("AdvancedSimdDataProcessing A=1x11x C=0010"),
+                        AdvancedSimd_TwoRegisterShiftAmount,
+
+                        nyi("AdvancedSimdDataProcessing A=1x11x C=0100"),
+                        AdvancedSimd_TwoRegisterShiftAmount,
+                        nyi("AdvancedSimdDataProcessing A=1x11x C=0110"),
+                        AdvancedSimd_TwoRegisterShiftAmount,
+
+                        nyi("AdvancedSimdDataProcessing A=1x11x C=1000"),
+                        AdvancedSimd_TwoRegisterShiftAmount,
+                        nyi("AdvancedSimdDataProcessing A=1x11x C=1010"),
+                        AdvancedSimd_TwoRegisterShiftAmount,
+
+                        vext,
+                        AdvancedSimd_TwoRegisterShiftAmount,
+                        Mask(4, 1, 
+                            vext,
+                            nyi("AdvancedSimdDataProcessing A=1x11x C=1110 U=1")),
+                        AdvancedSimd_TwoRegisterShiftAmount)));
+
+        var MemoryHintsAdvancedSimdMiscellaneous = Mask("MemoryHintsAdvancedSimdMiscellaneous", 24, 0b111,
+                invalid,
+                Select("op1=001????", 20, 0b1111, u => u == 0,
+                    Mask("Rn=xxx?", 16, 1,
+                        Mask("op2=xx?x", 5, 1,
+                            ChangeProcessState,
+                            invalid),
+                        Select("op2=0000", 4, 0b1111, u => u == 0,
+                            Instr(Opcode.setend, E(9, 1)), invalid)),
+                    invalid),
+                AdvancedSimdDataProcessing,
+                AdvancedSimdDataProcessing,
+
+                Mask("op1=100x???", 20, 0b111,
+                    AdvancedSimdElementLoadStore,
+                    nyi("Unallocated memory hint (treat as NOP)"),
+                    AdvancedSimdElementLoadStore,
+                    invalid,
+
+                    AdvancedSimdElementLoadStore,
+                    nyi("Preload instruction"),
+                    AdvancedSimdElementLoadStore,
+                    invalid),
+                Mask("op1=101xxx?", 20, 1,
+                    invalid,
+                    Mask("op1=101???1", 21, 0b111,
+                        nyi("op1=1010001"),
+                        nyi("op1=1010011"),
+                        nyi("op1=1010101"),
+                        Barriers,
+                        
+                        nyi("op1=1011001"),
+                        nyi("op1=1011011"),
+                        nyi("op1=1011101"),
+                        nyi("op1=1011111"))),
+                nyi("op1=110xxxx"),
+                nyi("op1=111xxxx"));
+
+            var UnconditionalDecoder = Mask("Unconditional", 25, 0b111,
+                MemoryHintsAdvancedSimdMiscellaneous,
+                MemoryHintsAdvancedSimdMiscellaneous,
+                MemoryHintsAdvancedSimdMiscellaneous,
+                MemoryHintsAdvancedSimdMiscellaneous,
+
+                nyi("Unconditional op1=0b100xxxxx"),
+                Branch_BranchLink_BlockDataTransfer,
+                new PcDecoder(28, 
+                    Mask("Unconditional op1=0b110x?x??", 20, 7,
+                        Instr(Opcode.stc, CP(8), CR(12), Mi(2, w4)),
+                        Instr(Opcode.ldc, CP(8), CR(12), Mi(2, w4)),
+                        Instr(Opcode.stc, CP(8), CR(12), Mi(2, w4)),
+                        Instr(Opcode.ldc, CP(8), CR(12), Mi(2, w4)),
+
+                        Instr(Opcode.stcl, CP(8), CR(12), Mi(2, w4)),
+                        Instr(Opcode.ldcl, CP(8), CR(12), Mi(2, w4)),
+                        Instr(Opcode.stcl, CP(8), CR(12), Mi(2, w4)),
+                        Instr(Opcode.ldcl, CP(8), CR(12), Mi(2, w4))),
+                    Mask("Unconditional op1=0b110x?x??", 20, 7,
+                        Instr(Opcode.stc2, CP(8), CR(12), Mi(2, w4)),
+                        Instr(Opcode.ldc2, CP(8), CR(12), Mi(2, w4)),
+                        Instr(Opcode.stc2, CP(8), CR(12), Mi(2, w4)),
+                        Instr(Opcode.ldc2, CP(8), CR(12), Mi(2, w4)),
+
+                        Instr(Opcode.stc2l, CP(8), CR(12), Mi(2, w4)),
+                        Instr(Opcode.ldc2l, CP(8), CR(12), Mi(2, w4)),
+                        Instr(Opcode.stc2l, CP(8), CR(12), Mi(2, w4)),
+                        Instr(Opcode.ldc2l, CP(8), CR(12), Mi(2, w4)))),
+
+                Mask("Unconditional op1=0b111....", 24, 1,
+                    Mask("op", 4, 1,
+                        CoprocessorDataOperations,
+                        Mask("Unconditional op1=0b111....x", 20, 1,
+                            Instr(Opcode.mcr2, CP(8), i(21,3), r(3), CR(16), CR(0), i(5,3)),
+                            Instr(Opcode.mrc2, CP(8), i(21,3), r(3), CR(16), CR(0), i(5,3)))),
+                    invalid));
+
+            var unconditional = Mask("Unconditional", 25, 7,
                 UncMiscellaneous,
                 AdvancedSimd,
                 new MaskDecoder(20, 1,
@@ -3056,7 +3480,7 @@ namespace Reko.Arch.Arm.AArch32
                 ConditionalDecoder,
                 ConditionalDecoder,
                 ConditionalDecoder,
-                unconditionalDecoder);
+                UnconditionalDecoder);
         }
     }
 }

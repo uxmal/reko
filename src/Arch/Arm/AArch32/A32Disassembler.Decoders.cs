@@ -32,7 +32,6 @@ namespace Reko.Arch.Arm.AArch32
 {
     public partial class A32Disassembler
     {
-
         public abstract class Decoder
         {
             public abstract AArch32Instruction Decode(uint wInstr, A32Disassembler dasm);
@@ -44,7 +43,7 @@ namespace Reko.Arch.Arm.AArch32
 
             protected void DumpMaskedInstruction(uint wInstr, uint shMask, string tag)
             {
-                //return;
+                return;
                 var hibit = 0x80000000u;
                 var sb = new StringBuilder();
                 for (int i = 0; i < 32; ++i)
@@ -167,6 +166,7 @@ namespace Reko.Arch.Arm.AArch32
 
             public override AArch32Instruction Decode(uint wInstr, A32Disassembler dasm)
             {
+                Debug.Print("NYI: {0}", message);
                 return dasm.NotYetImplemented(message, wInstr);
             }
 

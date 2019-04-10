@@ -7322,7 +7322,6 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|r7 = r5 / r3");
         }
 
-
         [Test]
         public void ThumbRw_smlaltb()
         {
@@ -7333,13 +7332,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.Capstone)]
         public void ThumbRw_smlaltt()
         {
-            RewriteCode("CFFBB168");	// smlaltt r6, r8, pc, r1
+            RewriteCode("C3FBB168");	// smlaltt r6, r8, r3, r1
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r6_r8 = (int16) (pc >> 16) *s (int16) (r1 >> 16) + r6_r8");
+                "1|L--|r6_r8 = (int16) (r3 >> 16) *s (int16) (r1 >> 16) + r6_r8");
         }
 
         [Test]
