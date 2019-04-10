@@ -998,7 +998,7 @@ namespace Reko.ImageLoaders.Elf
                         (uint)p.p_pmemsz)));
             foreach (var ph in Segments)
             {
-                DebugEx.Inform(ElfImageLoader.trace, "ph: addr {0:X8} filesize {0:X8} memsize {0:X8}", ph.p_vaddr, ph.p_filesz, ph.p_pmemsz);
+                DebugEx.Info(ElfImageLoader.trace, "ph: addr {0:X8} filesize {0:X8} memsize {0:X8}", ph.p_vaddr, ph.p_filesz, ph.p_pmemsz);
                 if (!IsLoadable(ph.p_pmemsz, ph.p_type))
                     continue;
                 var vaddr = platform.MakeAddressFromLinear(ph.p_vaddr);
@@ -1453,7 +1453,7 @@ namespace Reko.ImageLoaders.Elf
 
             foreach (var ph in Segments)
             {
-                DebugEx.Inform(ElfImageLoader.trace, "ph: addr {0:X8} filesize {0:X8} memsize {0:X8}", ph.p_vaddr, ph.p_filesz, ph.p_pmemsz);
+                DebugEx.Info(ElfImageLoader.trace, "ph: addr {0:X8} filesize {0:X8} memsize {0:X8}", ph.p_vaddr, ph.p_filesz, ph.p_pmemsz);
                 if (!IsLoadable(ph.p_pmemsz, ph.p_type))
                     continue;
                 var vaddr = Address.Ptr32((uint)ph.p_vaddr);

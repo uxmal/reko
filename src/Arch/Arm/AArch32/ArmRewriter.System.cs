@@ -114,7 +114,7 @@ namespace Reko.Arch.Arm.AArch32
             var rhi = ((RegisterOperand) instr.ops[2]).Register;
             var rlo = ((RegisterOperand) instr.ops[3]).Register;
             var nBits = (int) (rhi.BitSize + rlo.BitSize);
-            var rseq = binder.EnsureSequence(rhi, rlo, PrimitiveType.CreateWord(nBits));
+            var rseq = binder.EnsureSequence(PrimitiveType.CreateWord(nBits), rhi, rlo);
             m.Assign(rseq, host.PseudoProcedure("__mcrr", VoidType.Instance, cop, cmd, cr, rseq));
         }
 
@@ -148,7 +148,7 @@ namespace Reko.Arch.Arm.AArch32
             var rhi = ((RegisterOperand) instr.ops[2]).Register;
             var rlo = ((RegisterOperand) instr.ops[3]).Register;
             var nBits = (int) (rhi.BitSize + rlo.BitSize);
-            var rseq = binder.EnsureSequence(rhi, rlo, PrimitiveType.CreateWord(nBits));
+            var rseq = binder.EnsureSequence(PrimitiveType.CreateWord(nBits), rhi, rlo);
             m.Assign(rseq, host.PseudoProcedure("__mrrc", rseq.DataType, cop, cmd, cr));
         }
 

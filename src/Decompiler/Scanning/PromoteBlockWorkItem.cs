@@ -65,7 +65,7 @@ namespace Reko.Scanning
                 if (b.Procedure == ProcNew || b == b.Procedure.ExitBlock || b.Procedure.EntryBlock.Succ[0] == b)
                     continue;
 
-                DebugEx.Inform(trace, "PromoteBlock visiting block {0}, stack depth {1}", b.Name, stack.Count);
+                DebugEx.Info(trace, "PromoteBlock visiting block {0}, stack depth {1}", b.Name, stack.Count);
                 b.Procedure.RemoveBlock(b);
                 ProcNew.AddBlock(b);
                 b.Procedure = ProcNew;
