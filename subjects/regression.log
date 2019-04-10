@@ -49,6 +49,70 @@ fn092A_exit: warning: Phi functions will be ignored by type analysis. This may b
 === Elf\ARM\angr-685\RTOSDemo.axf
 *** Elf\ARM\angr-685\RTOSDemo.axf
 00008200: error: The method or operation is not implemented.
+// Reko: a decoder for A32 instruction F8DF0000 at address 000012EE has not been implemented. (Unconditional op1=0b100xxxxx)
+[Test]
+public void ArmDasm_F8DF0000()
+{
+    Disassemble32(0xF8DF0000);
+    Expect_Code("@@@");
+}
+
+// Reko: a decoder for A32 instruction ED90E000 at address 000014EA has not been implemented. (ldc)
+[Test]
+public void ArmDasm_ED90E000()
+{
+    Disassemble32(0xED90E000);
+    Expect_Code("@@@");
+}
+
+// Reko: a decoder for A32 instruction ED9C0002 at address 00001502 has not been implemented. (ldc)
+[Test]
+public void ArmDasm_ED9C0002()
+{
+    Disassemble32(0xED9C0002);
+    Expect_Code("@@@");
+}
+
+// Reko: a decoder for A32 instruction F7FFBF00 at address 000019CE has not been implemented. (op1=111xxxx)
+[Test]
+public void ArmDasm_F7FFBF00()
+{
+    Disassemble32(0xF7FFBF00);
+    Expect_Code("@@@");
+}
+
+// Reko: a decoder for A32 instruction F8D04000 at address 0000910A has not been implemented. (Unconditional op1=0b100xxxxx)
+[Test]
+public void ArmDasm_F8D04000()
+{
+    Disassemble32(0xF8D04000);
+    Expect_Code("@@@");
+}
+
+// Reko: a decoder for A32 instruction F8D0BF00 at address 0000915A has not been implemented. (Unconditional op1=0b100xxxxx)
+[Test]
+public void ArmDasm_F8D0BF00()
+{
+    Disassemble32(0xF8D0BF00);
+    Expect_Code("@@@");
+}
+
+// Reko: a decoder for A32 instruction F8C0BF00 at address 0000930A has not been implemented. (Unconditional op1=0b100xxxxx)
+[Test]
+public void ArmDasm_F8C0BF00()
+{
+    Disassemble32(0xF8C0BF00);
+    Expect_Code("@@@");
+}
+
+// Reko: a decoder for A32 instruction F840BF00 at address 00009452 has not been implemented. (Unconditional op1=0b100xxxxx)
+[Test]
+public void ArmDasm_F840BF00()
+{
+    Disassemble32(0xF840BF00);
+    Expect_Code("@@@");
+}
+
 0000951A: error: An error occurred while processing the statement Mem29[r3_24 + 0x00000000:word32] = Mem0[r3_24 - r4_10 + 0x00000000:word32].
     Not handling (ptr32 (struct (0 T_7353 t0000))) and (ptr32 (struct (0 (arr T_9507) a0000))) yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 377
@@ -1621,4 +1685,4 @@ l0800_906A: warning: Non-integral switch expression
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
 Stripping SSA identifier numbers
-Decompiled 56 binaries in 73.89 seconds ---
+Decompiled 56 binaries in 74.75 seconds ---
