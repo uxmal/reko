@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -46,10 +46,9 @@ namespace Reko.UnitTests.Core
         [SetUp]
         public void Setup()
         {
-            sp = new RegisterStorage("sp", 42, 0, PrimitiveType.Ptr32);
             arch = new FakeArchitecture();
+            sp = new RegisterStorage("sp", 42, 0, PrimitiveType.Ptr32);
             arch.StackRegister = sp;
-
 
             idSp = new Identifier(sp.Name, sp.DataType, sp);
             m = new ExpressionEmitter();
@@ -325,9 +324,9 @@ namespace Reko.UnitTests.Core
 
         public class TestProcessorState : ProcessorState
         {
-            private IProcessorArchitecture arch;
-            private Dictionary<RegisterStorage, Constant> regs = new Dictionary<RegisterStorage, Constant>();
-            private SortedList<int, Constant> stack = new SortedList<int, Constant>();
+            private readonly IProcessorArchitecture arch;
+            private readonly Dictionary<RegisterStorage, Constant> regs = new Dictionary<RegisterStorage, Constant>();
+            private readonly SortedList<int, Constant> stack = new SortedList<int, Constant>();
 
             public TestProcessorState(IProcessorArchitecture arch)
             {
@@ -345,15 +344,14 @@ namespace Reko.UnitTests.Core
 
             public override Constant GetRegister(RegisterStorage r)
             {
-                Constant c;
-                if (!regs.TryGetValue(r, out c))
+                if (!regs.TryGetValue(r, out Constant c))
                     c = Constant.Invalid;
                 return c;
             }
 
             public override void SetRegister(RegisterStorage r, Constant v)
             {
-                throw new NotImplementedException();
+                regs[r] = v;
             }
 
             public override void SetInstructionPointer(Address addr)
