@@ -3413,6 +3413,10 @@ proc_exit:
 
         }
 
+        /// <summary>
+        /// The signature (which is canonical), specifies that the stack argument is byte-wide.
+        /// However, since that byte is word-aligned, compilers commonly read the whole word.
+        /// </summary>
         [Test]
         [Category(Categories.FailedTests)]
         public void SsaByteArg()
@@ -3443,9 +3447,8 @@ proc_exit:
 @"proc_entry:
 	def fp
 	def Mem0
-	def dwArg04
 	def byteArg
-	dwArg04_7 = DPB(dwArg04, byteArg, 0)
+	dwArg04_7 = DPB(0x00000000, byteArg, 0)
 body:
 	a_3 = dwArg04_7
 	a_4 = a_3 & 0x000000FF
