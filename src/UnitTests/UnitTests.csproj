@@ -215,6 +215,7 @@
     <Compile Include="Core\Lib\BitfieldTests.cs" />
     <Compile Include="Core\Lib\BTreeDictionaryTests.cs" />
     <Compile Include="Core\Lib\Float16Tests.cs" />
+    <Compile Include="Core\Lib\IntervalTreeTests.cs" />
     <Compile Include="Core\Pascal\PascalLexerTests.cs" />
     <Compile Include="Core\Pascal\PascalParserTests.cs" />
     <Compile Include="Arch\MSP430\MSP430DisassemblerTests.cs" />
