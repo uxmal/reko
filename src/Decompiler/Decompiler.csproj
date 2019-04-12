@@ -443,9 +443,9 @@
       <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
       <Name>Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\tools\RekoSig\RekoSig.csproj">
+    <ProjectReference Include="..\tools\RekoSig\SigGenerator.csproj">
       <Project>{1bee788b-ff62-4c55-8afb-cdeae17b6b3b}</Project>
-      <Name>RekoSig</Name>
+      <Name>SigGenerator</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

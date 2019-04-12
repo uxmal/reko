@@ -21,7 +21,6 @@
 using makesigs;
 using Reko.Core;
 using Reko.Core.Configuration;
-using RekoSig;
 using System;
 using System.ComponentModel.Design;
 
@@ -67,25 +66,21 @@ namespace RekoMakeSigs
                 Console.WriteLine("Too many parameter specfied");
                 return;
             }
-           
-
 
             var services = new ServiceContainer();
             var config = RekoConfigurationService.Load();
 
             services.AddService<IConfigurationService>(config);
-
-            
+           
             SignitureGenerator buf = new SignitureGenerator(services, sourceFile);
             if (buf.GenerateSigniture(destFile))
             {
-                Console.WriteLine("Signiture generation completed");
+                Console.WriteLine("Signature generation completed");
             }
             else
             {
-                Console.WriteLine("Error generating the signitures");
+                Console.WriteLine("Error generating the signatures");
             }
-        }
-        
+        }      
     }
 }

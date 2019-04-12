@@ -57,7 +57,6 @@ namespace Reko.ImageLoaders.Coff
         const uint PE_SCN_MEM_READ = 0x40000000;  // section is readable
         const uint PE_SCN_MEM_WRITE = 0x80000000;  // section is writeable
 
-
         internal string Name;         // section name char Name[8]; 
         internal uint VirtualSize;    // size of section when loaded. (Should be 0 for object files, but it seems to be accumulated size of all sections)
         internal uint VirtualAddress; // subtracted from offsets during relocation. preferably 0
@@ -73,7 +72,6 @@ namespace Reko.ImageLoaders.Coff
         internal ushort MachineType;
 
         internal List<Relocation> relocationList;
-
 
         public SectionHeader()
         {

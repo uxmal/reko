@@ -1,3 +1,23 @@
+#region License
+/* 
+ * Copyright (C) 1999-2019 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,11 +64,11 @@ namespace Reko.ImageLoaders.Ar
             return false;
         }
 
-
         internal static uint GetUint8(byte[] data, int offset)
         {
             return data[offset];
         }
+
         internal static uint GetUint16(byte[] data, int offset)
         {
             return BitConverter.ToUInt16(data, offset);
@@ -59,7 +79,6 @@ namespace Reko.ImageLoaders.Ar
             return BitConverter.ToUInt32(data, offset);
         }
 
-        
         public static ArFileType GetFileType(byte[] data)
         {
             uint t = GetUint32(data, 0);
@@ -78,10 +97,6 @@ namespace Reko.ImageLoaders.Ar
                 // Mach-O 64 little endian
                 return ArFileType.FILETYPE_MACHO_LE;
             } 
-            else if (GetUint32(data, 0) == 0xFFFF0000 || GetUint32(data, 0) == 0x10000)
-            {
-                
-            }
             else if (GetUint16(data, 0) == PE_MACHINE_I386)
             {
                 // COFF/PE 32
@@ -91,8 +106,7 @@ namespace Reko.ImageLoaders.Ar
             {
                 // COFF64/PE32+
                 return ArFileType.FILETYPE_COFF;
-            }
-           
+            }          
             else if ((GetUint16(data, 0) & 0xFFF9) == 0x5A49)
             {
                 // DOS file or file with DOS stub

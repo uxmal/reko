@@ -28,7 +28,7 @@ namespace Reko.Core
         public string Name;
         public int Length;
         public byte[] Data;
-        public List<uint> MissBytes;
+        public List<uint> MissBytes; // Thi is a list of indexed bytes that wil need to be skipped within the matching process
 
 
         public SignatureEntry()

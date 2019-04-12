@@ -30,7 +30,6 @@ using Reko.Loading;
 using Reko.Scanning;
 using Reko.Structure;
 using Reko.Typing;
-using RekoSig;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -46,7 +45,7 @@ namespace Reko
         bool Load(string fileName, string loader=null);
         Program LoadRawImage(string file, LoadDetails raw);
         void ScanPrograms();
-        void LibraryIdentifcation();
+        void IdentifyLibraryCode();
         ProcedureBase ScanProcedure(ProgramAddress paddr, IProcessorArchitecture arch);
         void AnalyzeDataFlow();
         void ReconstructTypes();
@@ -96,7 +95,7 @@ namespace Reko
                 Load(filename, loader);
                 ExtractResources();
                 ScanPrograms();
-                ApplySignitures();
+                ApplyByteSignitures();
                 AnalyzeDataFlow();
                 ReconstructTypes();
                 StructureProgram();
@@ -138,15 +137,15 @@ namespace Reko
         }
 
 
-        public virtual void ApplySignitures()
+        public virtual void ApplyByteSignitures()
         {
             foreach (Program program in Project.Programs)
             {
-                ApplySigniture(program);
+                ApplyByteSigniture(program);
             }
         }
 
-        public virtual void ApplySigniture(Program program)
+        public virtual void ApplyByteSigniture(Program program)
         {
             try
             {
@@ -155,7 +154,8 @@ namespace Reko
 
                 // Get the architeture for the program so we know which directory of sig files to load
                 string name = program.Architecture.Name;
-                string path = Directory.GetCurrentDirectory();
+                var fsSvc = services.RequireService<IFileSystemService>();
+                string path = fsSvc.GetCurrentDirectory();
                 string[] fileEntries = Directory.GetFiles(path + "\\Sigs\\" + name, "*.sig");
                 if (fileEntries.Length == 0)
                 {
@@ -163,11 +163,11 @@ namespace Reko
                 }
 
                 // Create instance of sig flirt engine
-                SignatureMatcher signitureEngine = new SignatureMatcher(services);
+                ByteSignatureMatcher signitureEngine = new ByteSignatureMatcher(services);
 
                 foreach (string fileName in fileEntries)
                 {
-                    signitureEngine.LoadSignitures(fileName);
+                    signitureEngine.LoadByteSignatures(fileName);
                 }
 
                 // We need to look at the instructions to work out were and transfer address exists in the code
@@ -188,7 +188,6 @@ namespace Reko
                     while (dasm.MoveNext() && dasm.Current.Address < addrEnd)
                     {
                         instrs.Add(dasm.Current);
-
                     }
                     instructions.Add(bi, instrs.ToArray());
                 }
@@ -275,7 +274,7 @@ namespace Reko
                                 string sigMethodName = signitureEngine.FindMatchingSignitureStart(eventListener.CreateAddressNavigator(program, proc.EntryAddress), abCode, (int)procLength);
                                 if (sigMethodName.Length > 0)
                                 {
-                                    proc.UpdateNameWithSignatureName(sigMethodName);
+                                    proc.ChangeName(sigMethodName, ProvenanceType.ByteSignature);
                                 }
                             }
                         }
@@ -561,8 +560,6 @@ namespace Reko
             return true;
         }
 
-
-
         /// <summary>
         /// Extracts type information from the typeless rewritten programs.
         /// </summary>
@@ -701,32 +698,28 @@ namespace Reko
             }
         }
 
-        public void LibraryIdentifcation()
+        public void IdentifyLibraryCode()
         {
             if (Project.Programs.Count == 0)
                 throw new InvalidOperationException("Programs must be loaded first.");
 
             foreach (Program program in Project.Programs)
             {
-                LibraryIdentifcationProgram(program);
+                IdentifyLibraryCode(program);
             }
         }
 
-        private void LibraryIdentifcationProgram(Program program)
+        private void IdentifyLibraryCode(Program program)
         {
             try
             {
-                eventListener.ShowStatus("Scanning code for librarys and applying signitures.");
-                ApplySigniture(program);
-                eventListener.ShowStatus("Finished Scanning code for librarys and applying signitures.");
+                eventListener.ShowStatus("Scanning code for libraries and applying signitures.");
+                ApplyByteSigniture(program);
+                eventListener.ShowStatus("Finished Scanning code for libraries and applying signitures.");
             }
             catch (Exception ex)
             {
-                eventListener.Error(new NullCodeLocation(""), ex, "Error when Identifying and renaming methods from Signature files.");
-            }
-            finally
-            {
-
+                eventListener.Error(new NullCodeLocation(""), ex, "Error when identifying and renaming methods from signature files.");
             }
         }
 

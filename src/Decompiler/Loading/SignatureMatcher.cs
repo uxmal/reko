@@ -20,7 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Services;
-using RekoSig;
+using Reko.Tools.SignatureGenerator;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -28,16 +28,18 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Reko.Loading
 {
-    public class SignatureMatcher
+    public class ByteSignatureMatcher
     {
         Dictionary<int, List<SigItem>> SignatureMap;
         IServiceProvider services;
         DecompilerEventListener eventListener;
+        IFileSystemService fsSvc;
 
-        public SignatureMatcher(IServiceProvider services)
+        public ByteSignatureMatcher(IServiceProvider services)
         {
             SignatureMap = new Dictionary<int, List<SigItem>>();
             this.eventListener = services.RequireService<DecompilerEventListener>();
+            fsSvc = services.RequireService<IFileSystemService>();
         }
 
 
@@ -46,9 +48,9 @@ namespace Reko.Loading
         /// </summary>
         /// <param name="fileName">The filename to load.</param>
         /// <returns>True if the signature was loaded correctly</returns>
-        public bool LoadSignitures(string fileName)
+        public bool LoadByteSignatures(string fileName)
         {
-            if (File.Exists(fileName))
+            if (fsSvc.FileExists(fileName))
             {
                 try
                 {
@@ -91,18 +93,26 @@ namespace Reko.Loading
 
 
         // <summary>
-        /// This check is to see if a signature of the specfied length exists. This
+        /// This check is to see if a byte signature of the specfied length exists. This
         /// done to improve the processing of producer processing
         /// </summary>
         /// <param name="length">L</param>
-        /// <returns>True if a signature of the specified lenght exists</returns>
+        /// <returns>True if a signature of the specified length exists</returns>
         bool IsThereSignitureOfLength(int length)
         {
             return SignatureMap.ContainsKey(length);
         }
 
 
-
+        // <summary>
+        /// This is used to see if a byte match can be found, in order to not to slow the performace a check is carried out 
+        /// to see if any signatures exist of that size, if there are some a byte comparision check is carried out whilst also ignoring
+        /// bytes whcih are demmed as holding relocatable values
+        /// </summary>
+        /// <param name="currentName">Current name of the procedure</param>
+        /// <param name="data">the bute sequence of the procedure</param>
+        /// <param name="dataLength">length of the byte stream</param>
+        /// <returns>IF a single match is found, it returns the name by which the procedure is know from within the library</returns>
         public string FindMatchingSignitureStart(ICodeLocation currentName, byte[] data, int dataLength)
         {
             // Check if we have a signiture of this length, this will speed up the processing
@@ -134,7 +144,7 @@ namespace Reko.Loading
                     {
                         message += ", " + item.methodName + " form " + item.libraryName + " ";
                     }
-
+                    //$TODO show user a dialog with choices if they click on the diagnostic
                     var dc = services.RequireService<DecompilerEventListener>();
                     dc.Warn(currentName, message);
                 }
@@ -142,42 +152,6 @@ namespace Reko.Loading
                 return "";
             }
             return "";
-        }
-
-
-        private void RemoveDuplicateSigs()
-        {
-            foreach (List<SigItem> lengthList in SignatureMap.Values)
-            {
-                List<int> removeList = new List<int>();
-
-                if (lengthList.Count > 1)
-                {
-                    for (int index = 0; index < lengthList.Count; index++)
-                    {
-                        for (int index2 = index + 1; index2 < lengthList.Count; index2++)
-                        {
-                            // compare the 2 sigItems
-                            if (lengthList[index].DoesSignatureMatchBytes(lengthList[index2].data))
-                            {
-                                removeList.Add(index2);
-                            }
-                        }
-                    }
-
-                    if (removeList.Count > 0)
-                    {
-                        // get the list in order and reverse it, so it will be easier to remove from the list
-                        removeList.Sort();
-                        removeList.Reverse();
-
-                        foreach (int a in removeList)
-                        {
-                            lengthList.RemoveAt(a);
-                        }
-                    }
-                }
-            }
         }
     }
 }

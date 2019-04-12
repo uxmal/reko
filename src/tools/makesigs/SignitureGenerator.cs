@@ -20,12 +20,12 @@
 
 using Reko.Core;
 using Reko.ImageLoaders.Coff;
-using RekoSig;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using Reko.ImageLoaders.Ar;
 using Reko.ImageLoaders.Elf;
+using Reko.Tools.SignatureGenerator;
 
 namespace makesigs
 {
@@ -85,8 +85,7 @@ namespace makesigs
         private bool ReadFile()
         {
             using (FileStream fs = File.Open(InputFilePath, FileMode.Open))
-            {
-                
+            {                
                 byte[] dataStream = new byte[fs.Length];
                 int read = fs.Read(dataStream, 0, dataStream.Length);
                 if (read == dataStream.Length)
@@ -99,10 +98,8 @@ namespace makesigs
             return false;
         }
 
-
         internal void ProcessFile()
-        {
-           
+        {   
             // Dispatch according to library type
             switch (FileType)
             {
@@ -125,7 +122,6 @@ namespace makesigs
                 break;
             }
         }
-
 
         private void ExtractArchive()
         {
@@ -155,7 +151,6 @@ namespace makesigs
 
                         elfLoader.GenarateSignatures();
 
-
                         List<String> names = elfLoader.GetPublicNames();
                         foreach (string name in names)
                         {
@@ -167,7 +162,6 @@ namespace makesigs
                         AddToSignitureTree(signitures);
                     }
                     break;
-
 
                     case ArFileType.FILETYPE_COFF:
                     {
@@ -206,8 +200,6 @@ namespace makesigs
                 }
             }  
         }
- 
-
 
         void ExtractOMF()
         {
@@ -216,9 +208,7 @@ namespace makesigs
             fileBuffer.GetDataSize();
 
             byte[] tmp = new byte[fileBuffer.GetDataSize() - 8];
-            Buffer.BlockCopy(fileBuffer.GetData(), 8, tmp, 0, fileBuffer.GetDataSize() - 8);
-            
+            Buffer.BlockCopy(fileBuffer.GetData(), 8, tmp, 0, fileBuffer.GetDataSize() - 8);        
         }
-
     }
 }

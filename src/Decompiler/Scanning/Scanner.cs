@@ -496,7 +496,7 @@ namespace Reko.Scanning
                     {
                         var loader = Program.CreateTypeLibraryDeserializer();
                         var exp = loader.LoadExternalProcedure(sProc);
-                        proc.UpdateNameBySystem(exp.Name);
+                        proc.ChangeName(exp.Name, ProvenanceType.Scanning);
                         proc.Signature = exp.Signature;
                         proc.EnclosingType = exp.EnclosingType;
                     }

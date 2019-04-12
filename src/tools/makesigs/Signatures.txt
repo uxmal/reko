@@ -2,28 +2,28 @@
 What are signature files
 ========================
 
-A libray file contents a function in binary format, the function name and a few other bits of inforamtion 
-that can assist in the decompilation process. A signature file is a representation of the library in a format
-so then signature analysis is carried out the decompiler can automatically rename procedures tothe libray name.
-This can assit the person doing the investigation to either find a procedure in the exectuable code, of help illiminate
-chucks of code fomr the investigation. Either way its a help.
+A library file contents a function in binary format, the function name and a few other bits of information 
+that can assist in the decomplication process. A signature file is a representation of the library in a format
+so then signature analysis is carried out the decompile can automatically rename procedures to the library name.
+This can assist the person doing the investigation to either find a procedure in the executable code, of help eliminate
+chucks of code from the investigation. Either way it’s a help.
 
 
 ---------------------------------------------
 Create a signature file
 ========================
 
-Currently the Signature maker tool only supports Archive files (.lib and.a) which eith COFF or ELF object files.
-People can add further procesing here following the current model.
-Run the commandline tool makesigs passing inthe name of the library and the output destination.
+Currently the Signature maker tool only supports Archive files (.lib and.a) which either COFF or ELF object files.
+People can add further processing here following the current model.
+Run the commandline tool makesigs passing in the name of the library and the output destination.
 
 -------------------------------------------------
 
 Location of Signature files
 ===========================
-In the directory of the Reko binary create a directort called 'Sigs'. This is the location to store the signatures files.
-So that the Signature analysis is speed up, signature files are stored in sub directorys which relate to the decomplied 
-apps architecture the list of achitectures Reko supports is as follows :-
+In the directory of the Reko binary create a directory called 'Sigs'. This is the location to store the signatures files.
+So that the Signature analysis is speed up, signature files are stored in sub directory’s which relate to the decompiled 
+apps architecture the list of architectures Reko supports is as follows:-
 
 mips-be-32
 mips-le-32
@@ -51,9 +51,8 @@ Place the generated signature file into the correct directory.
 Running signature files against a binary
 ========================================
 
-Reko just does this, as the second phase of the decompilation process.
-Reko looks into the enviroment direcoty matching the binary being decompiled  and loads all of the revent signatures.
-It then checks every procedure for lenthg and if any signatures havs the same length it will then check for a match. If one is found it will automatically rename the procedure.
-If several options are found, the procedure address and the lis of possibel matches are display in the diagnostice window allow the user to make the choose and rename the procedure accordingly.
-
+Reko just does this, as the second phase of the decomplication process.
+Reko looks into the environment directory matching the binary being decompiled and loads all of the relevant signatures.
+It then checks every procedure for length and if any signatures have the same length it will then check for a match. If one is found it will automatically rename the procedure.
+If several options are found, the procedure address and the list of the possible matches are display in the diagnostic window allow the user to make the choose and rename the procedure accordingly.
 

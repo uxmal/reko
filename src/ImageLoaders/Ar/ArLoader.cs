@@ -27,6 +27,9 @@ using System.Threading.Tasks;
 
 namespace Reko.ImageLoaders.Ar
 {
+    /// <summary>
+    /// This class knows how to load an "ar" static library.
+    /// </summary>
     public class ArLoader : ImageLoader
     {
         // https://en.wikipedia.org/wiki/Ar_(Unix)

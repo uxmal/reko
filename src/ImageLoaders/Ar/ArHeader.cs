@@ -27,6 +27,8 @@ using System.Threading.Tasks;
 
 namespace Reko.ImageLoaders.Ar
 {
+    // https://en.wikipedia.org/wiki/Ar_(Unix)
+
     public class ArHeader
     {
         public string Name;                      // Member name

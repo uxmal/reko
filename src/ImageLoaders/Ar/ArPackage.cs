@@ -29,6 +29,8 @@ namespace Reko.ImageLoaders.Ar
 {
     public class ArPackage
     {
+        // https://en.wikipedia.org/wiki/Ar_(Unix)
+
         ArHeader header;
         byte[] packageData;
 
@@ -45,8 +47,9 @@ namespace Reko.ImageLoaders.Ar
             //int LongNamesSize = 16;       // Size of long names member
             string Name = "";             // Name of member
 
-
             HeaderExtra = 0;
+
+            // See Wiki link for information about the magic string here
 
             // Size of member
             MemberSize = Convert.ToInt32(package.header.FileSize);

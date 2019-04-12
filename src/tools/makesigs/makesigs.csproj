@@ -93,9 +93,9 @@
       <Project>{33dcec6d-66f2-4ab7-9dd9-293dbb5414b1}</Project>
       <Name>Elf</Name>
     </ProjectReference>
-    <ProjectReference Include="..\RekoSig\RekoSig.csproj">
+    <ProjectReference Include="..\RekoSig\SigGenerator.csproj">
       <Project>{1bee788b-ff62-4c55-8afb-cdeae17b6b3b}</Project>
-      <Name>RekoSig</Name>
+      <Name>SigGenerator</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

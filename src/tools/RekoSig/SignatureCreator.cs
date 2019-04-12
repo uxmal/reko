@@ -24,7 +24,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
 
-namespace RekoSig
+namespace Reko.Tools.SignatureGenerator
 {
     public class SignatureCreator
     {
@@ -38,7 +38,7 @@ namespace RekoSig
 
 
         // <summary>
-        /// Saves the signature data tot he specified filename
+        /// Saves the signature data to the specified filename
         /// </summary>
         /// <param name="fileName">The filename to load.</param>
         /// <returns>True if the save was successful</returns>

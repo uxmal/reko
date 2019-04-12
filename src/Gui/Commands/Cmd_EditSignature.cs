@@ -60,7 +60,9 @@ namespace Reko.Gui.Commands
                     dlg.ApplyChanges();
                     program.User.Procedures[address] = sProc;
                     if (procedure != null)
-                        procedure.UpdateNameByUser(sProc.Name);
+                    {
+                        procedure.ChangeName(sProc.Name, ProvenanceType.UserInput);
+                    }
                 }
             }
         }

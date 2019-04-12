@@ -77,7 +77,7 @@ namespace Reko.Gui.Forms
         public override void PerformWork(IWorkerDialogService workerDialogSvc)
         {
             workerDialogSvc.SetCaption("Identifying librarys in the source program.");
-            Decompiler.LibraryIdentifcation();
+            Decompiler.IdentifyLibraryCode();
         }
 
         public override void EnterPage()

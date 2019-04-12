@@ -246,7 +246,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                 if (CSignature != null)
                     up.CSignature = CSignature;
                 if (proc != null)
-                    proc.UpdateNameByUser(procName);
+                    proc.ChangeName(procName, ProvenanceType.UserInput);
                 else
                 {
                     var pAddr = new ProgramAddress(program, address);

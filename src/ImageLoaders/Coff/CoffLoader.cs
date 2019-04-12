@@ -73,8 +73,6 @@ namespace Reko.ImageLoaders.Coff
         const short COFF_SECTION_P_TV = -4;         // indicates symbol needs postload transfer vector
         const short COFF_SECTION_REMOVE_ME = -99;   // Specific for objconv program: Debug or exception section being removed
 
-
-
         int NumberOfSymbols;                        // Number of symbols in the Coff package
         FileHeader fileHeader;                      // File header
         List<SectionHeader> SectionHeaders;         // Copy of section headers
@@ -86,13 +84,13 @@ namespace Reko.ImageLoaders.Coff
         //SCOFF_IMAGE_DATA_DIRECTORY pImageDirs;    // Pointer to image directories (for executable files)
         uint NumImageDirs;                          // Number of image directories (for executable files)
         uint EntryPoint;                            // Entry point (for executable files)
-        List<SignatureEntry> signitures;
+        List<SignatureEntry> byteSignitures;
 
         public CoffLoader(IServiceProvider services, string filename, byte[] rawBytes)
             : base(services, filename, rawBytes)
         {
             SectionHeaders = new List<SectionHeader>();
-            signitures = new List<SignatureEntry>();
+            byteSignitures = new List<SignatureEntry>();
             SymbolTable = new List<SymbolTableEntry>();
             StringTable = new Dictionary<int, string>();
 
@@ -109,8 +107,7 @@ namespace Reko.ImageLoaders.Coff
         {
             throw new NotImplementedException();
         }
-
-        
+       
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
             throw new NotImplementedException();
@@ -118,7 +115,7 @@ namespace Reko.ImageLoaders.Coff
 
         public List<SignatureEntry> GetSignitures()
         {
-            return signitures;
+            return byteSignitures;
         }
 
         public List<string> GetPublicNames()
@@ -138,7 +135,6 @@ namespace Reko.ImageLoaders.Coff
             }
             return publicNames;
         }
-
 
         void GetSymbolTables(LeImageReader rdr)
         {
@@ -194,7 +190,6 @@ namespace Reko.ImageLoaders.Coff
             }
         }
 
-
         private void GetRelocations(LeImageReader rdr)
         {
             foreach (SectionHeader header in SectionHeaders)
@@ -212,7 +207,6 @@ namespace Reko.ImageLoaders.Coff
             }
         }
 
-
         private void ParseFile()
         {
             LeImageReader rdr = new LeImageReader(RawImage);
@@ -228,7 +222,6 @@ namespace Reko.ImageLoaders.Coff
                 rdr.Offset = 0;
                 if (Signature + 8 < rdr.Bytes.Length && rdr.ReadUInt16((int) Signature) == 0x4550)
                 {
-                    // Executable PE file
                     FileHeaderOffset = (int) (Signature + 4);
                 }
                 else
@@ -299,7 +292,7 @@ namespace Reko.ImageLoaders.Coff
             NumberOfSymbols = fileHeader.NumberOfSymbols;
 
             // Find string table
-            int stringTableOffset = (int) (fileHeader.PSymbolTable + NumberOfSymbols * SymbolTableEntry.Size);
+            int stringTableOffset = (int) (fileHeader.PSymbolTable + (NumberOfSymbols * SymbolTableEntry.Size));
             
             long tmp = rdr.Offset;
             rdr.Offset = 0;
@@ -309,23 +302,23 @@ namespace Reko.ImageLoaders.Coff
             if (StringTableSize > 0)
             {
                 int startPoint = stringTableOffset + 4;
-                int CharCount = 0;
+                int charCount = 0;
                 int x = 4;
                 while (x < StringTableSize)
                 {
-                    CharCount = 0;
-                    while (rdr.Bytes[startPoint + CharCount] != 0)
+                    charCount = 0;
+                    while (rdr.Bytes[startPoint + charCount] != 0)
                     {
-                        CharCount++;
+                        charCount++;
                         x++;
                     }
-                    string strTmp = Encoding.UTF8.GetString(rdr.Bytes, startPoint, CharCount);
+                    string strTmp = Encoding.UTF8.GetString(rdr.Bytes, startPoint, charCount);
                     if (strTmp != "")
                     {
                         StringTable.Add(startPoint - stringTableOffset, strTmp);
                     }
 
-                    startPoint += CharCount;
+                    startPoint += charCount;
                     startPoint++;
                     x++;
                 }
@@ -344,11 +337,9 @@ namespace Reko.ImageLoaders.Coff
             GenerateSignitures(rdr);
         }
 
-
-
         void GenerateSignitures(LeImageReader rdr)
         {
-            signitures.Clear();
+            byteSignitures.Clear();
             
             int symbIndex = 0;
 
@@ -384,7 +375,7 @@ namespace Reko.ImageLoaders.Coff
                                     entry.MissBytes = sh.FindLocationPoints(start, end);
                                     Buffer.BlockCopy(rdr.Bytes, (int) (CodeOffset + start), entry.Data, 0, entry.Length);
                                     nextIndex = SymbolTable.Count;
-                                    signitures.Add(entry);
+                                    byteSignitures.Add(entry);
                                     break;
                                 }
                                 end--;

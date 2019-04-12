@@ -27,24 +27,16 @@ using System.IO;
 
 namespace Reko.Core
 {
-    public enum NameStatus
-    {
-        SystemAssigned,
-        SignautureAssigned,
-        UserAssigned,
-    }
-
-
+    
     /// <summary>
     /// Abstract base class for all things callable.
     /// </summary>
 	[DefaultProperty("Name")]
 	public abstract class ProcedureBase
-	{
-        
+	{ 
 		public ProcedureBase(string name)
 		{
-            nameAssignedBy = NameStatus.SystemAssigned;
+            NameProvenance = ProvenanceType.Scanning;
             this.name = name;
 			this.Characteristics = DefaultProcedureCharacteristics.Instance;
 		}
@@ -54,17 +46,27 @@ namespace Reko.Core
         /// </summary>
         public string Name { get { return name; }
         }
-             //set { name = value; NameChanged.Fire(this); } }
+
         public event EventHandler NameChanged;
         private string name;
-        private NameStatus nameAssignedBy;
+        private ProvenanceType NameProvenance;
 
-        public void UpdateNameWithSignatureName(string sigName)
+        public void ChangeName(string sigName, ProvenanceType provenance)
         {
-            if (nameAssignedBy == NameStatus.SystemAssigned)
+            if((provenance == ProvenanceType.ByteSignature))
+            {
+                // We want to prevent a signature over writing a user name
+                if (NameProvenance == ProvenanceType.Scanning)
+                {
+                    name = sigName;
+                    NameProvenance = ProvenanceType.ByteSignature;
+                    NameChanged.Fire(this);
+                }
+            }
+            else
             {
                 name = sigName;
-                nameAssignedBy = NameStatus.SignautureAssigned;
+                NameProvenance = ProvenanceType.UserInput;
                 NameChanged.Fire(this);
             }
         }
@@ -72,25 +74,24 @@ namespace Reko.Core
         public void UpdateNameByUser(string sigName)
         {
             name = sigName;
-            nameAssignedBy = NameStatus.UserAssigned;
+            NameProvenance = ProvenanceType.UserInput;
             NameChanged.Fire(this);
         }
 
         public void UpdateNameBySystem(string sigName)
         {
             name = sigName;
-            nameAssignedBy = NameStatus.SystemAssigned;
+            NameProvenance = ProvenanceType.Scanning;
             NameChanged.Fire(this);
         }
 
-        public NameStatus NameAssignedBy
+        public ProvenanceType NameAssignedBy
         {
             get
             {
-                return nameAssignedBy;
+                return NameProvenance;
             }
         }
-
 
 		public abstract FunctionType Signature { get; set; }
 

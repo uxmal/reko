@@ -21,7 +21,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace RekoSig
+namespace Reko.Tools.SignatureGenerator
 {
     [Serializable()]
     public class SigItem 

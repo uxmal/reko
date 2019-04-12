@@ -736,7 +736,7 @@
     <Compile Include="Services\ITypeLibraryLoaderService.cs" />
     <Compile Include="Services\IUnpackerService.cs" />
     <Compile Include="SignatureBuilder.cs" />
-    <Compile Include="SignitureEntry.cs" />
+    <Compile Include="SignatureEntry.cs" />
     <Compile Include="Statement.cs" />
     <Compile Include="StatementCorrelatedException.cs" />
     <Compile Include="StatementList.cs" />

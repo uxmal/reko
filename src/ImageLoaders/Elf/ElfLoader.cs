@@ -84,7 +84,10 @@ namespace Reko.ImageLoaders.Elf
         protected IPlatform platform;
         protected byte[] rawImage;
         private SegmentMap segmentMap;
-        
+        private List<string> FunctionNames;
+        private List<SignatureEntry> SignatureEntries;
+        protected Dictionary<int, List<uint>> GeneratedRelocationTables;
+
         protected ElfLoader(ElfImageLoader imgLoader, ushort machine, byte endianness) : this()
         {
             this.imgLoader = imgLoader;
@@ -116,10 +119,6 @@ namespace Reko.ImageLoaders.Elf
         public Dictionary<int, ElfSymbol> DynamicSymbols { get; private set; }
         public Dictionary<long, ElfDynamicEntry> DynamicEntries { get; private set; }
         public List<string> Dependencies { get; private set; }
-
-        private List<string> FunctionNames;
-        private List<SignatureEntry> SignatureEntries;
-        protected Dictionary<int, List<uint>> GeneratedRelocationTables;
 
         public abstract ulong AddressToFileOffset(ulong addr);
 
@@ -277,8 +276,6 @@ namespace Reko.ImageLoaders.Elf
             }
             return a;
         }
-
-
 
         private static Dictionary<ElfSymbolType, SymbolType> mpSymbolType = new Dictionary<ElfSymbolType, SymbolType>
         {
@@ -626,7 +623,6 @@ namespace Reko.ImageLoaders.Elf
             Debug.Print(sw.ToString());
         }
 
-
         protected string DumpShFlags(ulong shf)
         {
             return string.Format("{0}{1}{2}",
@@ -634,7 +630,6 @@ namespace Reko.ImageLoaders.Elf
                 ((shf & SHF_ALLOC) != 0) ? "a" : " ",
                 ((shf & SHF_WRITE) != 0) ? "w" : " ");
         }
-
 
         protected ImageSymbol EnsureEntryPoint(List<ImageSymbol> entryPoints, SortedList<Address, ImageSymbol> symbols, Address addr)
         {
@@ -798,7 +793,6 @@ namespace Reko.ImageLoaders.Elf
             LoadSymbolsFromSections();
             GenerateRelocationTables();
 
-
             FunctionNames.Clear();
             SignatureEntries.Clear();
 
@@ -845,5 +839,4 @@ namespace Reko.ImageLoaders.Elf
             return a;
         }
     }
-
 }

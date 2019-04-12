@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -42,6 +42,7 @@ namespace Reko.Core
         UserInput,          // reached here because users input "said so".
         Scanning,           // reached here as part of the scanning process.
         Heuristic,          // reached here a a guess.
+        ByteSignature,      // reached here as a part of the signature analysis
     }
 
     public class Provenance<T> : Provenance
