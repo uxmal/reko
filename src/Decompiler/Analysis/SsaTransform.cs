@@ -442,7 +442,6 @@ namespace Reko.Analysis
             else
             {
                 fpuStackDelta = calleeFlow.GetFpuStackDelta(arch);
-                var spDepth = GetStackDepthAtCall(ssa.Procedure, ci);
                 var ab = arch.CreateFrameApplicationBuilder(ssa.Procedure.Frame, ci.CallSite, ci.Callee);
                 foreach (var stgUse in calleeFlow.BitsUsed.Keys)
                 {
