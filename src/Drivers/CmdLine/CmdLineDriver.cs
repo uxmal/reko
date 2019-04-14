@@ -148,7 +148,8 @@ namespace Reko.CmdLine
             pArgs.TryGetValue("--loader", out object loader);
             try
             {
-                decompiler.Load((string) pArgs["filename"], (string) loader);
+                if (!decompiler.Load((string) pArgs["filename"], (string) loader))
+                    return;
 
                 decompiler.Project.Programs[0].User.ExtractResources =
                    !pArgs.TryGetValue("extract-resources", out var oExtractResources) ||

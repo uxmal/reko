@@ -49,6 +49,54 @@ fn092A_exit: warning: Phi functions will be ignored by type analysis. This may b
 === Elf\ARM\angr-685\RTOSDemo.axf
 *** Elf\ARM\angr-685\RTOSDemo.axf
 00008200: error: The method or operation is not implemented.
+// Reko: a decoder for A32 instruction F8DF0000 at address 000012EE has not been implemented. (Unconditional op1=0b100xxxxx)
+[Test]
+public void ArmDasm_F8DF0000()
+{
+    Disassemble32(0xF8DF0000);
+    Expect_Code("@@@");
+}
+
+// Reko: a decoder for A32 instruction F7FFBF00 at address 000019CE has not been implemented. (op1=111xxxx)
+[Test]
+public void ArmDasm_F7FFBF00()
+{
+    Disassemble32(0xF7FFBF00);
+    Expect_Code("@@@");
+}
+
+// Reko: a decoder for A32 instruction F8D04000 at address 0000910A has not been implemented. (Unconditional op1=0b100xxxxx)
+[Test]
+public void ArmDasm_F8D04000()
+{
+    Disassemble32(0xF8D04000);
+    Expect_Code("@@@");
+}
+
+// Reko: a decoder for A32 instruction F8D0BF00 at address 0000915A has not been implemented. (Unconditional op1=0b100xxxxx)
+[Test]
+public void ArmDasm_F8D0BF00()
+{
+    Disassemble32(0xF8D0BF00);
+    Expect_Code("@@@");
+}
+
+// Reko: a decoder for A32 instruction F8C0BF00 at address 0000930A has not been implemented. (Unconditional op1=0b100xxxxx)
+[Test]
+public void ArmDasm_F8C0BF00()
+{
+    Disassemble32(0xF8C0BF00);
+    Expect_Code("@@@");
+}
+
+// Reko: a decoder for A32 instruction F840BF00 at address 00009452 has not been implemented. (Unconditional op1=0b100xxxxx)
+[Test]
+public void ArmDasm_F840BF00()
+{
+    Disassemble32(0xF840BF00);
+    Expect_Code("@@@");
+}
+
 0000951A: error: An error occurred while processing the statement Mem29[r3_24 + 0x00000000:word32] = Mem0[r3_24 - r4_10 + 0x00000000:word32].
     Not handling (ptr32 (struct (0 T_7353 t0000))) and (ptr32 (struct (0 (arr T_9507) a0000))) yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 377
@@ -100,7 +148,7 @@ fn092A_exit: warning: Phi functions will be ignored by type analysis. This may b
 004069E0: warning: Unable to resolve imported reference gmtime.
 00406D0C: warning: Unable to resolve imported reference inet_addr.
 00406F18: warning: Unable to resolve imported reference listen.
-00404F60: error: An error occurred while processing the statement Mem210[r4 + 4 + ((r2_128 - dwLoc18_112) + 16):byte] = 0x00.
+00404F60: error: An error occurred while processing the statement Mem209[r4 + 4 + ((r2_127 - dwLoc18_111) + 16):byte] = 0x00.
     Pulling difference int32 and (ptr32 (struct 0001 (0 int8 b0000)))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 273
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 98
@@ -173,7 +221,7 @@ Parameter name: index
    at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
    at Reko.Structure.CompoundConditionCoalescer.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
    at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 593
+   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 589
 00017540: warning: Expected sizes of arrays to have been determined by now
 00017540: warning: Expected sizes of arrays to have been determined by now
 === Elf\x86-64\ais3_crackme\ais3_crackme
@@ -1620,4 +1668,5 @@ l0800_906A: warning: Non-integral switch expression
 === regressions\snowman-74\int16.dll
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
-Decompiled 56 binaries in 64.86 seconds ---
+Stripping SSA identifier numbers
+Decompiled 56 binaries in 76.09 seconds ---

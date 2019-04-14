@@ -4,11 +4,18 @@
 
 #include "redir.h"
 
-Eq_4782 g_tFFFFFFEC;
+Eq_n g_tFFFFFFEC;
 <anonymous> g_tFFFFFFFF;
 word32 g_dw01C4;
-Eq_3066 g_t0695;
-Eq_2883 g_t10000000 = 
+Eq_n g_t0695;
+<anonymous> g_t400620 = <code>;
+<anonymous> g_t40072C = <code>;
+<anonymous> g_t4053F0 = <code>;
+<anonymous> g_t40697C = <code>;
+<anonymous> g_t4077E0 = <code>;
+<anonymous> g_t408180 = <code>;
+<anonymous> g_t409C10 = <code>;
+Eq_n g_t10000000 = 
 	{
 		&g_ptr10000860,
 		0,
@@ -19,7 +26,7 @@ int32 g_dw10000014 = 0;
 int32 g_dw10000018 = 4;
 int32 g_dw1000001C = 204800;
 int32 g_dw10000020 = 0;
-Eq_3066 g_t10000024 = 
+Eq_n g_t10000024 = 
 	{
 		
 		{
@@ -34,9 +41,7 @@ word32 g_a100007E0[] =
 	{
 	};
 <anonymous> * g_ptr10000860 = null;
-struct Eq_2883 * g_ptr10000878 = &g_t10000000;
-ptr32 g_ptr1000087C = 0x00400000;
-ptr32 g_ptr10000880 = 0x00410000;
+struct Eq_n * g_ptr10000878 = &g_t10000000;
 int8 ** g_ptr100008A0 = &g_ptr10000AAC;
 int32 * g_ptr100008C0 = &g_dw10000014;
 int32 * g_ptr100008F4 = &g_dw10000018;
@@ -45,7 +50,7 @@ word32 * g_ptr10000914 = &g_dw01C4;
 word32 (* g_ptr100009C8)[] = &g_a100007E0;
 word32 * g_ptr10000A20 = &g_dw10000AA8;
 int32 * g_ptr10000A28 = &g_dw1000001C;
-struct Eq_3066 * g_ptr10000A40 = &g_t10000024;
+struct Eq_n * g_ptr10000A40 = &g_t10000024;
 uint16 (** g_ptr10000A6C)[] = null;
 word32 g_dw10000AA8 = 0x00000000;
 int8 * g_ptr10000AAC = null;

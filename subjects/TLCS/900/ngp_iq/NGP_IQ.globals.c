@@ -10,7 +10,7 @@ byte g_b6DA0;
 byte g_b6F83;
 byte g_b6F86;
 byte g_b6F91;
-Eq_198 g_a7000[];
+Eq_n g_a7000[];
 byte g_b8002;
 byte g_b8003;
 byte g_b8004;

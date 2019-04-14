@@ -63,10 +63,7 @@ the installer.
 ### Non-Windows users
 
 The following prerequisite software must be installed on your machine first:
-* mono version 5.14.0 (https://download.mono-project.com/archive/5.14.0/)
-
-**Note**: we've been unable to test Reko with the most recent version of mono, 5.16.0, because
-a bug in said version makes it impossible to build. This has been reported in mono/mono#11663.
+* mono version 5.18.0 or later (https://download.mono-project.com/archive/5.18.0/)
 
 After installing mono, you can proceed by either downloading binaries directly
 from the integration build server, or by building Reko from sources (see `Hacking` 

@@ -83,7 +83,6 @@ namespace Reko.UnitTests.Gui.Forms
             sc.AddService<IFileSystemService>(fsSvc.Object);
 
             i = new TestInitialPageInteractor(sc, dec.Object);
-
 		}
 
 		[TearDown]
@@ -125,7 +124,7 @@ namespace Reko.UnitTests.Gui.Forms
         [Test]
         public void Ipi_OpenBinary_ShouldShowMemoryWindow()
         {
-            dec.Setup(d => d.Load("floxe.exe", null)).Returns(false);
+            dec.Setup(d => d.Load("floxe.exe", null)).Returns(true);
             dec.Setup(d => d.Project).Returns(project);
             browserSvc.Setup(d => d.Load(project));
             memSvc.Setup(s => s.ViewImage(program)).Verifiable();
@@ -138,7 +137,7 @@ namespace Reko.UnitTests.Gui.Forms
         [Test]
         public void Ipi_OpenBinary_ShouldBrowseProject()
         {
-            dec.Setup(d => d.Load("foo.exe", null)).Returns(false);
+            dec.Setup(d => d.Load("foo.exe", null)).Returns(true);
             dec.Setup(d => d.Project).Returns(project);
             browserSvc.Setup(b => b.Load(project)).Verifiable();
             memSvc.Setup(m => m.ViewImage(program));

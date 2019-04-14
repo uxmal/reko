@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 1999-2019 John Källén.
+* Copyright (C) 1999-2019 John KÃ¤llÃ©n.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -50,11 +50,25 @@ namespace Reko.Arch.Arm.AArch32
             DataType dstType;
             switch (instr.vector_data)
             {
-            case ArmVectorData.F64S32: dstType = PrimitiveType.Real64; break;
             case ArmVectorData.F32S32: dstType = PrimitiveType.Real32; break;
+            case ArmVectorData.F64S32: dstType = PrimitiveType.Real64; break;
+            case ArmVectorData.F64F32: dstType = PrimitiveType.Real64; break;
             default: NotImplementedYet(); return;
             }
             m.Assign(dst, m.Cast(dstType, src));
+        }
+
+        private void RewriteVcvtr()
+        {
+            var src = Operand(Src1());
+            var dst = Operand(Dst(), PrimitiveType.Word32, true);
+            DataType dstType;
+            switch (instr.vector_data)
+            {
+            case ArmVectorData.S32F32: dstType = PrimitiveType.Int32; break;
+            default: NotImplementedYet(); return;
+            }
+            m.Assign(dst, m.Cast(dstType, host.PseudoProcedure("trunc", src.DataType, src)));
         }
 
         private void RewriteVext()

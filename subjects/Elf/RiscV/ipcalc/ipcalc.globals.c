@@ -4,13 +4,13 @@
 
 #include "ipcalc.h"
 
-Eq_5 g_t0098;
+Eq_n g_t0098;
 void g_v10880 = ??void??;
 void g_v10898 = ??void??;
 void g_v108B0 = ??void??;
 void g_v108C0 = ??void??;
 void g_v108D0 = ??void??;
-Eq_35 g_t108E0 = 
+Eq_n g_t108E0 = 
 	{
 	};
 void g_v10BE0 = ??void??;
@@ -55,7 +55,7 @@ void g_v115A8 = ??void??;
 char g_str115C8[] = "%.2x";
 char g_str115D0[] = "/dev/urandom";
 void g_v115E0 = ??void??;
-Eq_2575 g_t11780 = 
+Eq_n g_t11780 = 
 	{
 		0x31,
 		0x00,
@@ -99,7 +99,7 @@ char g_str11D18[] = "COUNTRY=%s\n";
 char g_str11D28[] = "CITY=\"%s\"\n";
 char g_str11D38[] = "CITY=%s\n";
 char g_str11D48[] = "COORDINATES=\"%s\"\n";
-Eq_2575 g_t12660 = 
+Eq_n g_t12660 = 
 	{
 		0x32,
 		0x00,
@@ -115,7 +115,7 @@ char g_str12AE8[] = "GeoIP_id_by_ipnum";
 char g_str12B00[] = "GeoIP_id_by_ipnum_v6";
 char g_str12B18[] = "GeoIP_record_by_ipnum_v6";
 char g_str12B38[] = "GeoIP_code_by_id";
-Eq_3496 g_t12B50 = 
+Eq_n g_t12B50 = 
 	{
 		0x69
 	};

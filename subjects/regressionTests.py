@@ -15,6 +15,7 @@ import re
 import subprocess
 import sys
 import time
+import fileinput
 
 script_dir = os.path.dirname(os.path.realpath(__file__))
 os.chdir(script_dir)
@@ -29,10 +30,14 @@ parser.add_option("-o", "--check-output", dest="check_output",
 parser.add_option("-p", "--platform", dest="platform",
                   help="define platform (x86, x64)",
                   default="x64")
+parser.add_option("--strip-suffixes", dest="strip_suffixes",
+                  help="strip number suffixes from SSA identifiers (yes, no)",
+                  default="yes")
 (options, dirs) = parser.parse_args()
 if len(dirs) == 0:
     dirs = [script_dir]
 (options, args) = parser.parse_args()
+options.strip_suffixes = (options.strip_suffixes != 'no')
 
 reko_cmdline_dir = os.path.abspath(script_dir + "/../src/Drivers/CmdLine")
 
@@ -41,6 +46,7 @@ start_dir = os.getcwd()
 reko_cmdline = os.path.join(reko_cmdline_dir, "bin", options.platform, options.configuration, "decompile.exe")
 
 output_extensions = [".asm", ".c", ".dis", ".h"]
+source_extensions = [".c"]
 
 class Job:
     def __init__(self, dir, rel_pname, exe_and_args):
@@ -81,6 +87,28 @@ def clear_dir(dir_name, files):
         for ext in output_extensions:
             if pname.endswith(ext):
                 os.remove(os.path.join(dir_name, pname))
+
+def strip_id_nums(dirs):
+    for dir in dirs:
+        for root, subdirs, files in os.walk(dir):
+            strip_id_nums_for_dir(root, files)
+
+def strip_id_nums_for_dir(dir_name, files):
+    for pname in files:
+        for ext in source_extensions:
+            if pname.endswith(ext):
+                strip_id_nums_for_file(os.path.join(dir_name, pname))
+
+numbered_id_regexp = re.compile('(?P<id_name>\w+)_\d+')
+fn_seg_name_regexp = re.compile('(?P<seg_name>fn\w+)_(?P<offset_name>\d+)')
+
+def strip_id_nums_for_file(file_name):
+    file = fileinput.FileInput(file_name, inplace=True)
+    for line in file:
+        #remove EOLN
+        line = line[:-1]
+        line = fn_seg_name_regexp.sub('\g<seg_name>-\g<offset_name>', line)
+        print(numbered_id_regexp.sub('\g<id_name>_n', line))
 
 def collect_jobs(dir_name, files, pool_state):
     needClear = True
@@ -231,6 +259,9 @@ if __name__ == '__main__':
         sys.stdout.write(output)
 
     save_weights(new_weights, WEIGHTS_FILENAME)
+    if options.strip_suffixes:
+        print("Stripping SSA identifier numbers")
+        strip_id_nums(dirs)
     if options.check_output:
         check_output_files()
 

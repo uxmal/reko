@@ -256,7 +256,9 @@ namespace Reko.Core.Serialization
             }
             else
             {
-                program = loader.LoadExecutable(binAbsPath, bytes, sUser.Loader, address);
+                program = loader.LoadExecutable(binAbsPath, bytes, sUser.Loader, address)
+                    ?? new Program();   // A previous save of the project was able to read the file, 
+                                        // but now we can't...
             }
             LoadUserData(sUser, program, program.User);
             program.Filename = binAbsPath;
@@ -295,7 +297,9 @@ namespace Reko.Core.Serialization
             }
             else
             {
-                program = loader.LoadExecutable(sInput.Filename, bytes, null, address);
+                program = loader.LoadExecutable(sInput.Filename, bytes, null, address)
+                    ?? new Program();   // A previous save of the project was able to read the file, 
+                                        // but now we can't...
             }
             this.platform = program.Platform;
             program.Filename = ConvertToAbsolutePath(projectFilePath, sInput.Filename);
@@ -654,7 +658,9 @@ namespace Reko.Core.Serialization
         public MetadataFile LoadMetadataFile(string filename)
         {
             var platform = DeterminePlatform(filename);
-            this.project.LoadedMetadata = loader.LoadMetadata(filename, platform, this.project.LoadedMetadata);
+            this.project.LoadedMetadata = 
+                loader.LoadMetadata(filename, platform, this.project.LoadedMetadata)
+                ?? new TypeLibrary();   // was able to load before, but not now?
             return new MetadataFile
             {
                 Filename = filename,

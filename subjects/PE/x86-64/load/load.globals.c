@@ -4,9 +4,9 @@
 
 #include "load.h"
 
-Eq_1473 g_t0001;
-Eq_1473 g_t0007;
-Eq_1473 g_t000B;
+Eq_n g_t0001;
+Eq_n g_t0007;
+Eq_n g_t000B;
 word16 g_w0020;
 word32 g_dw403000 = 0x0000000A;
 word64 * g_ptr403010 = &g_qw402DF0;
@@ -16,17 +16,17 @@ word64 g_qw4030A0 = 0x0000000000000000;
 word32 * g_ptr4042D0 = &g_dw403050;
 word32 * g_ptr4042E0 = &g_dw403060;
 ui64 (* g_ptr4042F0)[] = &g_a402DD0;
-struct Eq_1797 * g_ptr404300 = &g_t4049C0;
-struct Eq_1797 * g_ptr404310 = &g_t4049C0;
+struct Eq_n * g_ptr404300 = &g_t4049C0;
+struct Eq_n * g_ptr404310 = &g_t4049C0;
 word64 * g_ptr404320 = &g_qw404060;
-struct Eq_37 * g_ptr404330 = &g_t400000;
+struct Eq_n * g_ptr404330 = &g_t400000;
 word64 ** g_ptr404340 = &g_ptr4082F4;
 byte *** g_ptr404350 = &g_ptr40831C;
 word32 ** g_ptr404360 = &g_ptr408334;
-union Eq_931 * g_ptr404370 = &g_t40834C;
-struct Eq_400 ** g_ptr404380 = &g_qw407640;
+union Eq_n * g_ptr404370 = &g_t40834C;
+struct Eq_n ** g_ptr404380 = &g_qw407640;
 word64 * g_ptr404390 = &g_qw407988;
-union Eq_265 * g_ptr4043A0 = &g_t407980;
+union Eq_n * g_ptr4043A0 = &g_t407980;
 word64 * g_ptr4043B0 = &g_qw407970;
 word64 * g_ptr4043C0 = &g_qw407978;
 PVFV * g_ptr4043D0 = &g_t409000;
@@ -74,11 +74,11 @@ word64 g_qw407978 = 0x0000000000000000;
 word64 g_qw40826C = 0x00000000000084E2;
 word64 g_qw4082C4 = 0x00000000000085C8;
 word64 g_qw4082CC = 0x00000000000085DA;
-union Eq_1327 g_u408314 = 
+union Eq_n g_u408314 = 
 	{
 		0x0000865C
 	};
-union Eq_1738 g_u408394 = 
+union Eq_n g_u408394 = 
 	{
 		0x00008704
 	};
@@ -90,25 +90,25 @@ word32 g_dw403060 = 0xFFFFFFFF;
 ui64 g_a402DD0[] = 
 	{
 	};
-Eq_1797 g_t4049C0;
+Eq_n g_t4049C0;
 word64 g_qw404060 = 0x00000000004019F0;
-Eq_37 g_t400000;
+Eq_n g_t400000;
 word64 * g_ptr4082F4 = &g_qw8620;
 byte ** g_ptr40831C = &g_ptr8670;
 word32 * g_ptr408334 = &g_dw8692;
-Eq_931 g_t40834C = 
+Eq_n g_t40834C = 
 	{
 		0x000086B0
 	};
 word64 g_qw407988 = 0x0000000000000000;
-Eq_265 g_t407980 = 
+Eq_n g_t407980 = 
 	{
 		0x00000000
 	};
-Eq_321 g_t409000 = null;
-Eq_316 g_t409010 = null;
-Eq_321 g_t409018 = null;
-Eq_316 g_t409030 = null;
+Eq_n g_t409000 = null;
+Eq_n g_t409010 = null;
+Eq_n g_t409018 = null;
+Eq_n g_t409030 = null;
 word32 g_dw407630 = 0x00000000;
 word32 g_dw4075E0 = 0x00000000;
 word32 g_dw407610 = 0x00000000;

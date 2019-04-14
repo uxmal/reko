@@ -100,8 +100,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
         /// <remarks>
         /// Some versions of GCC emit a R_386_JUMP_SLOT relocation where the symbol being referred to
         /// has a value of 0, where it normally would have been the virtual address of a PLT stub. Those
-        /// versions of GCC put, in the GOT entry for the relication, a pointer to the PLT stub + 6 bytes.
-        /// We remove those 6 bytes to obtain a pointer to the PLT stub.
+        /// versions of GCC put, in the GOT entry for the relocation, a pointer to the PLT stub + 6 bytes.
+        /// We subtract those 6 bytes to obtain a pointer to the PLT stub.
         /// </remarks>
         protected ElfSymbol CreatePltStubSymbolFromRelocation(ElfSymbol sym, ulong gotEntry, int offset)
         {
@@ -232,13 +232,13 @@ namespace Reko.ImageLoaders.Elf.Relocators
             if (addrEnd != 0)
             {
                 // We have found some symbols to ensure.
-                Debug.Print("Symbols in the DT_DYNAMIC segment");
+                DebugEx.Verbose(ElfImageLoader.trace, "== Symbols in the DT_DYNAMIC segment");
                 int i = 0;
                 for (ulong uSymAddr = symtab.UValue; uSymAddr < addrEnd; uSymAddr += syment.UValue)
                 {
                     var elfSym = Loader.EnsureSymbol(offSymtab, i, syment.UValue, offStrtab);
                     ++i;
-                    Debug.Print("  {0:X8} {1}", elfSym.Value, elfSym.Name);
+                    DebugEx.Verbose(ElfImageLoader.trace, "  {0:X8} {1}", elfSym.Value, elfSym.Name);
                     var imgSym = Loader.CreateImageSymbol(elfSym, true);
                     if (imgSym == null || imgSym.Address.ToLinear() == 0)
                         continue;

@@ -4,11 +4,11 @@
 
 #include "ais3_crackme.h"
 
-Eq_16 g_t4005C5 = Unexpected function type (fn int32 (int32, (ptr64 (ptr64 char)), (ptr64 (ptr64 char))))
+Eq_n g_t4005C5 = Unexpected function type (fn int32 (int32, (ptr64 (ptr64 char)), (ptr64 (ptr64 char))))
 ;
-Eq_19 g_t400620 = Unexpected function type (fn void ())
+Eq_n g_t400620 = Unexpected function type (fn void ())
 ;
-Eq_20 g_t4006B0 = Unexpected function type (fn void ())
+Eq_n g_t4006B0 = Unexpected function type (fn void ())
 ;
 char g_str4006C8[] = "You need to enter the secret key!";
 char g_str4006F0[] = "Correct! that is the secret key!";

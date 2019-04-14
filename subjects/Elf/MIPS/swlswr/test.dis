@@ -130,7 +130,7 @@ deregister_tm_clones_entry:
 
 l00000670:
 	word32 r2_8 = Mem0[0x00010AA4:word32]
-	branch r2_8 == Mem0[0x00010AA8:word32] + 2692 l00000670_ds_t
+	branch r2_8 == 0x00010A84 l00000670_ds_t
 // DataOut: r19
 // DataOut (flags): 
 // SymbolicIn: sp:fp r25:0x00000670
@@ -203,9 +203,8 @@ register_tm_clones_entry:
 // SymbolicIn: sp:fp
 
 l000006A8:
-	word32 r5_10 = Mem0[0x00010AA4:word32] - (Mem0[0x00010AA8:word32] + 2692)
-	word32 r2_12 = r5_10 >> 0x02 >>u 0x1F
-	branch r2_12 + (r5_10 >> 0x02) >> 0x01 == 0x00000000 l000006A8_ds_t
+	word32 r5_11 = Mem0[0x00010AA4:word32] - 0x00010A84 >> 0x02
+	branch (r5_11 >>u 0x1F) + r5_11 >> 0x01 == 0x00000000 l000006A8_ds_t
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp r25:0x000006A8
@@ -279,8 +278,8 @@ __do_global_dtors_aux_entry:
 // LocalsOut: fp(32)
 
 l000006F4:
-	word32 r19_10 = Mem0[0x00010AA8:word32]
-	branch (word32) Mem0[r19_10 + 0x00000AF0:byte] != 0x00000000 l000006F4_ds_t
+	word32 r19_37 = 0x00010000
+	branch (word32) Mem0[0x00010AF0:byte] != 0x00000000 l000006F4_ds_t
 // DataOut: r19
 // DataOut (flags): 
 // SymbolicIn: sp:fp r25:0x000006F4
@@ -323,19 +322,17 @@ l00000734:
 	word32 r4_101
 	word32 r3_102
 	call __cxa_finalize (retsize: 0; depth: 48)
-		uses: dwLoc04_13,dwLoc08_8,dwLoc0C_15,dwLoc10_17,dwLoc14_19,dwLoc20_11,r16,r17,r18,r19_10,r2_88,r25_89,r28_5,r3,r4_90,ra,sp_6
+		uses: dwLoc04_12,dwLoc08_8,dwLoc0C_14,dwLoc10_16,dwLoc14_18,dwLoc20_10,r16,r17,r18,r19_9,r2_88,r25_89,r28_5,r3,r4_90,ra,sp_6
 		defs: r16_99,r17_98,r18_97,r19_95,r2_100,r25_94,r28_93,r3_102,r4_101,ra_96,sp_92
 // DataOut: r19
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -48 r25:0x000006F4 r28:0x00018A80 r19:<invalid> r2:<invalid> -32(fp):0x00018A80 -20(fp):r16 -16(fp):r17 -12(fp):r18 -8(fp):r19 -4(fp):ra
 
 l00000744:
-	word32 r17_41 = Mem0[0x00010AA8:word32]
-	word32 r2_39 = Mem0[0x00010AA8:word32]
-	word32 r2_45 = Mem0[r17_41 + 0x00000AF4:word32]
-	word32 r16_47 = (Mem0[0x00010AB0:word32] - (r2_39 + 2664) >> 0x02) + -1
-	word32 r18_43 = r2_39 + 2664
-	branch (word32) (r2_45 <u r16_47) == 0x00000000 l00000744_ds_t
+	word32 r2_45 = Mem0[0x00010AF4:word32]
+	word32 r17_41 = 0x00010000
+	word32 r18_43 = 0x00010A68
+	branch (word32) (r2_45 <u (Mem0[0x00010AB0:word32] - 0x00010A68 >> 0x02) + -1) == 0x00000000 l00000744_ds_t
 // DataOut: r16 r17 r18 r19 r2
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -48 r25:<invalid> r28:0x00018A80 r19:<invalid> r2:<invalid> r4:<invalid> -32(fp):0x00018A80 -20(fp):r16 -16(fp):r17 -12(fp):r18 -8(fp):r19 -4(fp):ra
@@ -364,7 +361,7 @@ l00000774:
 	word32 r4_80
 	word32 r3_81
 	call r25_70 (retsize: 0; depth: 48)
-		uses: dwLoc04_13,dwLoc08_8,dwLoc0C_15,dwLoc10_17,dwLoc14_19,dwLoc20_11,r16_47,r17_65,r18_64,r19_37,r2_69,r25_70,r28_34,r3_67,r4_33,ra_36,sp_38
+		uses: dwLoc04_12,dwLoc08_8,dwLoc0C_14,dwLoc10_16,dwLoc14_18,dwLoc20_10,r16_47,r17_65,r18_64,r19_37,r2_69,r25_70,r28_34,r3_67,r4_33,ra_36,sp_38
 		defs: r16_78,r17_77,r18_76,r19_74,r2_79,r25_73,r28_72,r3_81,r4_80,ra_75,sp_71
 	r2_45 = Mem68[r17_41 + 0x00000AF4:word32]
 	branch (word32) (r2_45 <u r16_78) != 0x00000000 l00000774_ds_t
@@ -389,7 +386,7 @@ l000007A0:
 
 l000007A4:
 	deregister_tm_clones()
-	Mem61[r19_10 + 0x00000AF0:byte] = 0x01
+	Mem61[r19_37 + 0x00000AF0:byte] = 0x01
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -48 r25:<invalid> r28:0x00018A80 r19:<invalid> r2:<invalid> r4:<invalid> r16:<invalid> r17:<invalid> r3:<invalid> r18:<invalid> -32(fp):0x00018A80 -20(fp):r16 -16(fp):r17 -12(fp):r18 -8(fp):r19 -4(fp):ra
@@ -520,7 +517,7 @@ l00000920:
 	word32 ra_70
 	word32 r17_71
 	call r25_54 (retsize: 0; depth: 56)
-		uses: dwLoc04_26,dwLoc08_10,dwLoc0C_14,dwLoc10_18,dwLoc14_22,dwLoc18_28,dwLoc1C_24,dwLoc28_8,r16_53,r17_55,r18_34,r19_51,r20_50,r21_49,r25_54,r28_29,r4_58,r5_57,r6_56,ra,sp_6
+		uses: dwLoc04_27,dwLoc08_11,dwLoc0C_15,dwLoc10_19,dwLoc14_23,dwLoc18_29,dwLoc1C_25,dwLoc28_9,r16_53,r17_55,r18_34,r19_51,r20_50,r21_49,r25_54,r28_30,r4_58,r5_57,r6_56,ra,sp_6
 		defs: r16_69,r17_71,r18_68,r19_66,r20_64,r21_62,r25_61,r28_60,r4_67,r5_65,r6_63,ra_70,sp_59
 	branch r18_68 != r17_71 l00000920_ds_t
 // DataOut: r16 r17 r18
@@ -590,8 +587,7 @@ __do_global_ctors_aux_entry:
 // LocalsOut: fp(32)
 
 l00000970:
-	word32 r3_7 = Mem0[0x00010AA8:word32]
-	word32 r25_17 = Mem0[r3_7 + 0x00000A60:word32]
+	word32 r25_17 = Mem0[0x00010A60:word32]
 	branch r25_17 == -1 l00000970_ds_t
 // DataOut: r3
 // DataOut (flags): 
@@ -622,7 +618,7 @@ l000009A8:
 	word32 r17_36
 	word32 r16_37
 	call r25_17 (retsize: 0; depth: 40)
-		uses: dwLoc04_12,dwLoc08_14,dwLoc0C_16,dwLoc18_10,r16_29,r17_26,r2_9,r25_17,r28_5,r3_7,ra,sp_8
+		uses: dwLoc04_11,dwLoc08_13,dwLoc0C_15,dwLoc18_9,r16_29,r17_26,r2_8,r25_17,r28_5,r3_6,ra,sp_7
 		defs: r16_37,r17_36,r2_34,r25_32,r28_31,r3_33,ra_35,sp_30
 	branch Mem0[r16_37:word32] != -1 l000009A8_ds_t
 // DataOut: r16

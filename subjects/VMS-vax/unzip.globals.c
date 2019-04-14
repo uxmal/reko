@@ -4,13 +4,13 @@
 
 #include "unzip.h"
 
-Eq_644 g_tFFFFFFB7;
-Eq_4564 g_t0001;
-Eq_31781 g_t0002;
-Eq_643 g_t0004;
-Eq_4383 g_t0009;
-Eq_4383 g_t004C;
-Eq_4564 g_t00FF;
+Eq_n g_tFFFFFFB7;
+Eq_n g_t0001;
+Eq_n g_t0002;
+Eq_n g_t0004;
+Eq_n g_t0009;
+Eq_n g_t004C;
+Eq_n g_t00FF;
 ui32 g_a0974[];
 word32 g_dw0A38;
 byte g_b1001 = 0x00;

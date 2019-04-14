@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -122,6 +122,8 @@ namespace Reko.Typing
 
 		public override void VisitConstant(Constant c)
 		{
+            if (!c.IsValid)
+                return;
 			DataType dt = c.TypeVariable.DataType;
             int offset = StructureField.ToOffset(c);
 			Pointer ptr = dt as Pointer;

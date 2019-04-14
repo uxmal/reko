@@ -9,18 +9,18 @@ void _init()
 {
 	if (__gmon_start__ != 0x00)
 	{
-		word64 rsp_14;
-		byte SCZO_15;
-		word64 rax_16;
-		byte SZO_17;
-		bool C_18;
-		bool Z_19;
+		word64 rsp_n;
+		byte SCZO_n;
+		word64 rax_n;
+		byte SZO_n;
+		bool C_n;
+		bool Z_n;
 		__gmon_start__();
 	}
 }
 
-// 0000000000000620: void _start(Register (ptr64 Eq_13) rdx, Stack Eq_14 qwArg00)
-void _start( * rdx, Eq_14 qwArg00)
+// 0000000000000620: void _start(Register (ptr64 Eq_n) rdx, Stack Eq_n qwArg00)
+void _start( * rdx, Eq_n qwArg00)
 {
 	__align((char *) fp + 0x08);
 	__libc_start_main(&globals->t0898, qwArg00, (char *) fp + 0x08, &globals->t0A70, &globals->t0AE0, rdx, fp);
@@ -32,32 +32,32 @@ void deregister_tm_clones()
 {
 	if (2101320 == 2101320 || _ITM_deregisterTMCloneTable == null)
 		return;
-	word64 rsp_32;
-	word64 rdi_33;
-	word64 rbp_34;
-	word64 rax_35;
-	byte SCZO_36;
-	bool Z_37;
-	byte SZO_38;
-	bool C_39;
+	word64 rsp_n;
+	word64 rdi_n;
+	word64 rbp_n;
+	word64 rax_n;
+	byte SCZO_n;
+	bool Z_n;
+	byte SZO_n;
+	bool C_n;
 	_ITM_deregisterTMCloneTable();
 }
 
 // 0000000000000690: void register_tm_clones()
 void register_tm_clones()
 {
-	int64 rsi_7 = 2101320 - 2101320;
-	if ((rsi_7 >> 0x03) + ((rsi_7 >> 0x03) >>u 0x3F) >> 0x01 == 0x00 || _ITM_registerTMCloneTable == null)
+	int64 rsi_n = 2101320 - 2101320;
+	if ((rsi_n >> 0x03) + ((rsi_n >> 0x03) >>u 0x3F) >> 0x01 == 0x00 || _ITM_registerTMCloneTable == null)
 		return;
-	word64 rsp_39;
-	word64 rdi_40;
-	word64 rsi_41;
-	word64 rbp_42;
-	byte SCZO_43;
-	word64 rax_44;
-	bool Z_45;
-	byte SZO_46;
-	bool C_47;
+	word64 rsp_n;
+	word64 rdi_n;
+	word64 rsi_n;
+	word64 rbp_n;
+	byte SCZO_n;
+	word64 rax_n;
+	bool Z_n;
+	byte SZO_n;
+	bool C_n;
 	_ITM_registerTMCloneTable();
 }
 
@@ -68,11 +68,11 @@ void __do_global_dtors_aux()
 		return;
 	if (__cxa_finalize != 0x00)
 	{
-		word64 rsp_25;
-		byte SCZO_26;
-		bool Z_27;
-		word64 rbp_28;
-		word64 rdi_29;
+		word64 rsp_n;
+		byte SCZO_n;
+		bool Z_n;
+		word64 rbp_n;
+		word64 rdi_n;
 		__cxa_finalize();
 	}
 	deregister_tm_clones();
@@ -85,35 +85,35 @@ void frame_dummy()
 	register_tm_clones();
 }
 
-// 000000000000072A: Register (ptr64 void) _mm_malloc(Register uint64 rsi, Register Eq_107 rdi)
-void(uint64 rsi, Eq_107 rdi)
+// 000000000000072A: Register (ptr64 void) _mm_malloc(Register uint64 rsi, Register Eq_n rdi)
+void(uint64 rsi, Eq_n rdi)
 {
-	void * rax_22;
+	void * rax_n;
 	if (rsi == 0x01)
-		rax_22 = malloc(rdi);
+		rax_n = malloc(rdi);
 	else
 	{
 		if (rsi == 0x02 || rsi == 0x04)
 			;
-		word64 rsp_44;
-		word64 rbp_45;
-		byte SCZO_46;
-		word64 rdi_47;
-		word64 rsi_48;
-		bool Z_49;
-		word64 rax_50;
-		word64 rdx_51;
-		word64 rcx_52;
-		word32 eax_53;
-		byte SZO_54;
-		bool C_55;
+		word64 rsp_n;
+		word64 rbp_n;
+		byte SCZO_n;
+		word64 rdi_n;
+		word64 rsi_n;
+		bool Z_n;
+		word64 rax_n;
+		word64 rdx_n;
+		word64 rcx_n;
+		word32 eax_n;
+		byte SZO_n;
+		bool C_n;
 		posix_memalign();
-		if (eax_53 == 0x00)
-			rax_22 = qwLoc10;
+		if (eax_n == 0x00)
+			rax_n = qwLoc10;
 		else
-			rax_22 = null;
+			rax_n = null;
 	}
-	return rax_22;
+	return rax_n;
 }
 
 // 000000000000078D: void _mm_free(Register (ptr64 (arr real64)) rdi)
@@ -126,65 +126,65 @@ void _mm_free(real64 * rdi[])
 void vec_add(real64 * rcx[], real64 * rdx[], real64 * rsi[], word64 rdi, word64 qwArg00)
 {
 	__align(fp);
-	uint64 rax_29 = (uint64) ((uint128) (uint64) rdi /u globals->qw0B00);
-	if (0x00 >= rax_29)
+	uint64 rax_n = (uint64) ((uint128) (uint64) rdi /u globals->qw0B00);
+	if (0x00 >= rax_n)
 		;
 }
 
-// 0000000000000898: void main(Register Eq_159 xmm0)
-void main(Eq_159 xmm0)
+// 0000000000000898: void main(Register Eq_n xmm0)
+void main(Eq_n xmm0)
 {
-	real64 rax_13[] = _mm_malloc(0x20, 0x2000);
-	real64 rax_20[] = _mm_malloc(0x20, 0x2000);
-	real64 rax_27[] = _mm_malloc(0x20, 0x2000);
-	Eq_176 qwLoc10_164 = 0x00;
-	while (qwLoc10_164 < 0x0400)
+	real64 rax_n[] = _mm_malloc(0x20, 0x2000);
+	real64 rax_n[] = _mm_malloc(0x20, 0x2000);
+	real64 rax_n[] = _mm_malloc(0x20, 0x2000);
+	Eq_n qwLoc10_n = 0x00;
+	while (qwLoc10_n < 0x0400)
 	{
-		real64 * rcx_151 = rax_13 + qwLoc10_164;
-		ui32 eax_153 = (word32) qwLoc10_164;
-		if (qwLoc10_164 >= 0x00)
-			xmm0 = DPB(xmm0, (real64) qwLoc10_164, 0);
+		real64 * rcx_n = rax_n + qwLoc10_n;
+		ui32 eax_n = (word32) qwLoc10_n;
+		if (qwLoc10_n >= 0x00)
+			xmm0 = DPB(xmm0, (real64) qwLoc10_n, 0);
 		else
 		{
-			real64 v26_174 = (real64) (qwLoc10_164 >> 0x01 | (uint64) (eax_153 & 0x01));
-			xmm0 = DPB(xmm0, v26_174 + v26_174, 0);
+			real64 v26_n = (real64) (qwLoc10_n >> 0x01 | (uint64) (eax_n & 0x01));
+			xmm0 = DPB(xmm0, v26_n + v26_n, 0);
 		}
-		*rcx_151 = (real64) xmm0;
-		qwLoc10_164 = (word64) qwLoc10_164 + 0x01;
+		*rcx_n = (real64) xmm0;
+		qwLoc10_n = (word64) qwLoc10_n + 0x01;
 	}
-	Eq_176 qwLoc18_134 = 0x00;
-	while (qwLoc18_134 < 0x0400)
+	Eq_n qwLoc18_n = 0x00;
+	while (qwLoc18_n < 0x0400)
 	{
-		Eq_209 rax_118 = (word64) qwLoc18_134.u1 + 0x01;
-		ui32 eax_119 = (word32) rax_118;
-		real64 * rcx_123 = rax_20 + qwLoc18_134;
-		if (rax_118 >= 0x00)
-			xmm0 = DPB(xmm0, (real64) rax_118, 0);
+		Eq_n rax_n = (word64) qwLoc18_n.u1 + 0x01;
+		ui32 eax_n = (word32) rax_n;
+		real64 * rcx_n = rax_n + qwLoc18_n;
+		if (rax_n >= 0x00)
+			xmm0 = DPB(xmm0, (real64) rax_n, 0);
 		else
 		{
-			real64 v19_144 = (real64) (rax_118 >> 0x01 | (uint64) (eax_119 & 0x01));
-			xmm0 = DPB(xmm0, v19_144 + v19_144, 0);
+			real64 v19_n = (real64) (rax_n >> 0x01 | (uint64) (eax_n & 0x01));
+			xmm0 = DPB(xmm0, v19_n + v19_n, 0);
 		}
-		*rcx_123 = (real64) xmm0;
-		qwLoc18_134 = (word64) qwLoc18_134.u1 + 0x01;
+		*rcx_n = (real64) xmm0;
+		qwLoc18_n = (word64) qwLoc18_n.u1 + 0x01;
 	}
-	Eq_176 qwLoc20_115 = 0x00;
-	while (qwLoc20_115 < 0x0400)
+	Eq_n qwLoc20_n = 0x00;
+	while (qwLoc20_n < 0x0400)
 	{
 		xmm0 = __xorpd(xmm0, xmm0);
-		rax_27[qwLoc20_115] = (real64) xmm0;
-		qwLoc20_115 = (word64) qwLoc20_115.u1 + 0x01;
+		rax_n[qwLoc20_n] = (real64) xmm0;
+		qwLoc20_n = (word64) qwLoc20_n.u1 + 0x01;
 	}
-	vec_add(rax_20, rax_13, rax_27, 0x0400, qwLoc60);
-	Eq_176 qwLoc28_104 = 0x00;
-	while (qwLoc28_104 < 0x0400)
+	vec_add(rax_n, rax_n, rax_n, 0x0400, qwLoc60);
+	Eq_n qwLoc28_n = 0x00;
+	while (qwLoc28_n < 0x0400)
 	{
 		printf("%g\n", tLoc60);
-		qwLoc28_104 = (word64) qwLoc28_104 + 0x01;
+		qwLoc28_n = (word64) qwLoc28_n + 0x01;
 	}
-	_mm_free(rax_13);
-	_mm_free(rax_20);
-	_mm_free(rax_27);
+	_mm_free(rax_n);
+	_mm_free(rax_n);
+	_mm_free(rax_n);
 }
 
 // 0000000000000A70: void __libc_csu_init(Register word32 edi)
@@ -195,25 +195,25 @@ void __libc_csu_init(word32 edi)
 	{
 		do
 		{
-			word64 rsp_72;
-			word64 r15_73;
-			word64 r14_74;
-			word32 r15d_75;
-			word32 edi_76;
-			word64 r13_77;
-			word64 r12_78;
-			word64 rbp_79;
-			word64 rbx_80;
-			word64 rsi_81;
-			word64 rdx_82;
-			byte SCZO_83;
-			byte SZO_84;
-			bool C_85;
-			bool Z_86;
-			word32 ebx_87;
-			word64 rdi_88;
+			word64 rsp_n;
+			word64 r15_n;
+			word64 r14_n;
+			word32 r15d_n;
+			word32 edi_n;
+			word64 r13_n;
+			word64 r12_n;
+			word64 rbp_n;
+			word64 rbx_n;
+			word64 rsi_n;
+			word64 rdx_n;
+			byte SCZO_n;
+			byte SZO_n;
+			bool C_n;
+			bool Z_n;
+			word32 ebx_n;
+			word64 rdi_n;
 			globals->ptr200DE8();
-		} while (rbp_79 != rbx_80 + 0x01);
+		} while (rbp_n != rbx_n + 0x01);
 	}
 }
 

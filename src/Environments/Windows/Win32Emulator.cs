@@ -266,7 +266,7 @@ namespace Reko.Environments.Windows
             return true;
         }
 
-        public ProcedureConstant ResolveToImportedProcedureConstant(Statement stm, Constant c)
+        public Expression ResolveToImportedValue(Statement stm, Constant c)
         {
             throw new NotImplementedException();
         }

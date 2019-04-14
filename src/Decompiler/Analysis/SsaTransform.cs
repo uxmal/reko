@@ -803,7 +803,7 @@ namespace Reko.Analysis
 
                 if (c != null)
                 {
-                    var e = importResolver.ResolveToImportedProcedureConstant(stmCur, c);
+                    var e = importResolver.ResolveToImportedValue(stmCur, c);
                     if (e != null)
                         return e;
                 }

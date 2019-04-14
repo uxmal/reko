@@ -249,11 +249,18 @@ namespace Reko.Arch.Arm.AArch32
             switch (op)
             {
             case ImmediateOperand imm:
-                int v = imm.Value.ToInt32();
-                if (0 <= v && v <= 9)
-                    writer.WriteFormat($"#{imm.Value.ToInt32()}");
-                else 
-                    writer.WriteFormat($"#&{imm.Value.ToUInt64():X}");
+                if (imm.Value.IsReal)
+                {
+                    writer.WriteFormat("#{0}", imm.Value.ToString());
+                }
+                else
+                {
+                    int v = imm.Value.ToInt32();
+                    if (0 <= v && v <= 9)
+                        writer.WriteFormat($"#{imm.Value.ToInt32()}");
+                    else
+                        writer.WriteFormat($"#&{imm.Value.ToUInt64():X}");
+                }
                 break;
             case AddressOperand aop:
                 writer.WriteAddress($"${aop.Address}", aop.Address);
@@ -265,7 +272,7 @@ namespace Reko.Arch.Arm.AArch32
                 }
                 else
                 {
-                    WriteMemoryOperand(mem, writer);
+                    RenderMemoryOperand(mem, writer);
                 }
                 break;
             default:
@@ -274,13 +281,17 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
-        private void WriteMemoryOperand(MemoryOperand mem, MachineInstructionWriter writer)
+        private void RenderMemoryOperand(MemoryOperand mem, MachineInstructionWriter writer)
         {
             writer.WriteChar('[');
             writer.WriteString(mem.BaseRegister.Name);
             if (this.Writeback && !mem.PreIndex)
             {
                 // Post-indexed
+                if (mem.Alignment != 0)
+                {
+                    writer.WriteFormat(":{0}", mem.Alignment);
+                }
                 writer.WriteString("]");
                 if (mem.Offset != null && !mem.Offset.IsIntegerZero)
                 {
@@ -324,6 +335,10 @@ namespace Reko.Arch.Arm.AArch32
                         }
                     }
                 }
+                if (mem.Alignment != 0)
+                {
+                    writer.WriteFormat(":{0}", mem.Alignment);
+                }
                 writer.WriteChar(']');
                 if (this.Writeback)
                 {
@@ -343,13 +358,13 @@ namespace Reko.Arch.Arm.AArch32
                 writer.WriteChar(']');
 
                 var sr = new StringRenderer();
-                WriteMemoryOperand(mem, sr);
+                RenderMemoryOperand(mem, sr);
                 var str = sr.ToString();
                 writer.AddAnnotation(str);
             }
             else
             {
-                WriteMemoryOperand(mem, writer);
+                RenderMemoryOperand(mem, writer);
                 writer.AddAnnotation(addr.ToString());
             }
         }

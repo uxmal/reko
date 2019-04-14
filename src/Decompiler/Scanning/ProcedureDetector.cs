@@ -202,19 +202,21 @@ namespace Reko.Scanning
             var nodesLeft = new HashSet<RtlBlock>(sr.ICFG.Nodes);
             var clusters = new List<Cluster>();
             int totalCount = nodesLeft.Count;
-            listener.ShowProgress("Finding procedure candidates", 0, totalCount);
-            while (nodesLeft.Count > 0)
+            if (totalCount > 0)
             {
-                if (listener.IsCanceled())
-                    break;
-                var node = nodesLeft.First();
-                var cluster = new Cluster();
-                clusters.Add(cluster);
+                listener.ShowProgress("Finding procedure candidates", 0, totalCount);
+                while (nodesLeft.Count > 0)
+                {
+                    if (listener.IsCanceled())
+                        break;
+                    var node = nodesLeft.First();
+                    var cluster = new Cluster();
+                    clusters.Add(cluster);
 
-                BuildWCC(node, cluster, nodesLeft);
-                sr.BreakOnWatchedAddress(cluster.Blocks.Select(b => b.Address));
-                listener.ShowProgress("Finding procedure candidates", totalCount - nodesLeft.Count, totalCount);
-
+                    BuildWCC(node, cluster, nodesLeft);
+                    sr.BreakOnWatchedAddress(cluster.Blocks.Select(b => b.Address));
+                    listener.ShowProgress("Finding procedure candidates", totalCount - nodesLeft.Count, totalCount);
+                }
             }
             return clusters;
         }

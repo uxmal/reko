@@ -64,7 +64,7 @@ namespace Reko.Scanning
         private SegmentMap segmentMap;
         private ImageMap imageMap;
         private IImportResolver importResolver;
-        private SortedList<Address, BlockRange> blocks;
+        private BTreeDictionary<Address, BlockRange> blocks;
         private Dictionary<Block, Address> blockStarts;
         private Dictionary<Address, ImportReference> importReferences;
         private HashSet<Procedure> visitedProcs;
@@ -92,7 +92,7 @@ namespace Reko.Scanning
             }
             this.imageMap = program.ImageMap;
             this.procQueue = new PriorityQueue<WorkItem>();
-            this.blocks = new SortedList<Address, BlockRange>();
+            this.blocks = new BTreeDictionary<Address, BlockRange>();
             this.blockStarts = new Dictionary<Block, Address>();
             this.importReferences = program.ImportReferences;
             this.visitedProcs = new HashSet<Procedure>();
