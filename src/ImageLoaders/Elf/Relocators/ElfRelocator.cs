@@ -100,8 +100,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
         /// <remarks>
         /// Some versions of GCC emit a R_386_JUMP_SLOT relocation where the symbol being referred to
         /// has a value of 0, where it normally would have been the virtual address of a PLT stub. Those
-        /// versions of GCC put, in the GOT entry for the relication, a pointer to the PLT stub + 6 bytes.
-        /// We remove those 6 bytes to obtain a pointer to the PLT stub.
+        /// versions of GCC put, in the GOT entry for the relocation, a pointer to the PLT stub + 6 bytes.
+        /// We subtract those 6 bytes to obtain a pointer to the PLT stub.
         /// </remarks>
         protected ElfSymbol CreatePltStubSymbolFromRelocation(ElfSymbol sym, ulong gotEntry, int offset)
         {

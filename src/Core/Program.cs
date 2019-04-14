@@ -552,13 +552,13 @@ namespace Reko.Core
                 {
                     var loader = this.CreateTypeLibraryDeserializer();
                     var exp = loader.LoadExternalProcedure(sProc);
-                    proc.Name = exp.Name;
+                    proc.UpdateNameBySystem(exp.Name);
                     proc.Signature = exp.Signature;
                     proc.EnclosingType = exp.EnclosingType;
                 }
                 else
                 {
-                    proc.Name = procedureName;
+                    proc.UpdateNameBySystem(procedureName);
                 }
             }
             this.Procedures.Add(addr, proc);

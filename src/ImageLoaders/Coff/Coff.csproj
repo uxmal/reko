@@ -52,8 +52,11 @@
   <ItemGroup>
     <Compile Include="CoffLoader.cs" />
     <Compile Include="FileHeader.cs" />
+    <Compile Include="OptionHeader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Relocation.cs" />
     <Compile Include="SectionHeader.cs" />
+    <Compile Include="SymbolTableEntry.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Arch\X86\X86.csproj">

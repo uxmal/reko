@@ -90,18 +90,53 @@ namespace Reko.ImageLoaders.Elf.Relocators
             20  R_ARM_COPY                                  S
             21  R_ARM_GLOB_DAT Dynamic      Data            (S + A) | T 
             22  R_ARM_JUMP_SLOT Dynamic     Data            (S + A) | T 
+            23  R_ARM_RELATIVE Dynamic      Data            B(S) + A  [Note: see Table 4-18]
             */
+            var addr = referringSection != null
+                ? referringSection.Address + rela.Offset
+                : loader.CreateAddress(rela.Offset);
+
+            var arch = program.Architecture;
+            var relR = program.CreateImageReader(arch, addr);
+            var relW = program.CreateImageWriter(arch, addr);
+
+            var A = rela.Addend;
+            uint S = (uint) symbol.Value;
+            uint mask = ~0u;
+            int sh = 0;
             var rt = (Arm32Rt)(rela.Info & 0xFF);
             switch (rt)
             {
             case Arm32Rt.R_ARM_COPY:
+                A = S = 0;
+                break;
+            case Arm32Rt.R_ARM_ABS32:
                 break;
             case Arm32Rt.R_ARM_GLOB_DAT:
             case Arm32Rt.R_ARM_JUMP_SLOT:
+                A = S = 0;
+                break;
+            case Arm32Rt.R_ARM_RELATIVE:
+                // From the docs:
+                //
+                // (S ≠ 0) B(S) resolves to the difference between the address
+                // at which the segment defining the symbol S was loaded and
+                // the address at which it was linked. 
+                // (S = 0) B(S) resolves to the difference between the address
+                // at which the segment being relocated was loaded and the
+                // address at which it was linked.
+                //
+                // Reko always loads objects at their specified physical address, 
+                // so this relocation is a no-op;
+                A = S = 0;
                 break;
             default:
                 throw new NotImplementedException($"AArch32 relocation type {rt} is not implemented yet.");
             }
+            var w = relR.ReadLeUInt32();
+            w += ((uint) (S + A) >> sh) & mask;
+            relW.WriteLeUInt32(w);
+
             return symbol;
         }
 
@@ -128,5 +163,6 @@ namespace Reko.ImageLoaders.Elf.Relocators
         R_ARM_COPY = 20,
         R_ARM_GLOB_DAT = 21,
         R_ARM_JUMP_SLOT = 22,
+        R_ARM_RELATIVE = 23,
     }
 }

@@ -224,6 +224,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Evaluation\DistributedCastRule.cs" />
+    <Compile Include="Loading\SignatureMatcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -441,6 +442,10 @@
     <ProjectReference Include="..\Core\Core.csproj">
       <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
       <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\tools\RekoSig\SigGenerator.csproj">
+      <Project>{1bee788b-ff62-4c55-8afb-cdeae17b6b3b}</Project>
+      <Name>SigGenerator</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

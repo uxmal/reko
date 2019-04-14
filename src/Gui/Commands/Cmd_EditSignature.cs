@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -60,7 +60,9 @@ namespace Reko.Gui.Commands
                     dlg.ApplyChanges();
                     program.User.Procedures[address] = sProc;
                     if (procedure != null)
-                        procedure.Name = sProc.Name;
+                    {
+                        procedure.ChangeName(sProc.Name, ProvenanceType.UserInput);
+                    }
                 }
             }
         }

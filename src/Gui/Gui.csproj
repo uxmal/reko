@@ -146,6 +146,7 @@
     <Compile Include="Forms\ISelectItemDialog.cs" />
     <Compile Include="Forms\ISymbolSourceDialog.cs" />
     <Compile Include="Forms\KeyBindingsInteractor.cs" />
+    <Compile Include="Forms\LibraryIdentifcationPageInteractor.cs" />
     <Compile Include="Forms\ScannedPageInteractor.cs" />
     <Compile Include="Forms\SymbolSourceInteractor.cs" />
     <Compile Include="ICallGraphViewService.cs" />
@@ -251,6 +252,10 @@
     <ProjectReference Include="..\Decompiler\Decompiler.csproj">
       <Project>{5E21C722-F9C6-4192-95EC-89FCEF2ACDB7}</Project>
       <Name>Decompiler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\tools\RekoSig\SigGenerator.csproj">
+      <Project>{1bee788b-ff62-4c55-8afb-cdeae17b6b3b}</Project>
+      <Name>SigGenerator</Name>
     </ProjectReference>
     <ProjectReference Include="..\tools\xslt\xslt.csproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>

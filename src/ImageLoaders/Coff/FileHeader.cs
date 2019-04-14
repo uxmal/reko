@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -18,21 +18,46 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Reko.Core;
+
 
 namespace Reko.ImageLoaders.Coff
 {
     public class FileHeader
     {
-        public ushort f_magic;         // magic number
-        public ushort f_nscns;         // number of sections
-        public uint f_timdat;          // time & date stamp
-        public uint f_symptr;          // file pointer to symtab
-        public uint f_nsyms;           // number of symtab entries
-        public ushort f_opthdr;        // sizeof(optional hdr)
-        public ushort f_flags;         // flags
+        // Values of Machine:
+        internal const ushort PE_MACHINE_I386 = 0x14c;
+        internal const ushort PE_MACHINE_X8664 = 0x8664;
+
+        // Bits for Flags:
+        const short PE_F_RELFLG = 0x0001;  // relocation info stripped from file
+        const short PE_F_EXEC = 0x0002;    // file is executable (no unresolved external references)
+        const short PE_F_LNNO = 0x0004;    // line numbers stripped from file
+        const short PE_F_LSYMS = 0x0008;   // local symbols stripped from file
+
+
+        internal ushort Machine;              // Machine ID (magic number)
+        internal short NumberOfSections;      // number of sections
+        internal uint TimeDateStamp;          // time & date stamp 
+        internal int PSymbolTable;            // file pointer to symbol table
+        internal int NumberOfSymbols;         // number of symbol table entries 
+        internal ushort SizeOfOptionalHeader; // size of optional header
+        internal ushort Flags;                // Flags indicating attributes
+
+        public const int Size = 20;
+
+        public static FileHeader Load(LeImageReader rdr)
+        {
+            var hdr = new FileHeader();
+
+            hdr.Machine = rdr.ReadLeUInt16();
+            hdr.NumberOfSections = rdr.ReadInt16();
+            hdr.TimeDateStamp = rdr.ReadUInt32();
+            hdr.PSymbolTable = rdr.ReadInt32();
+            hdr.NumberOfSymbols = rdr.ReadInt32();
+            hdr.SizeOfOptionalHeader = rdr.ReadUInt16();
+            hdr.Flags = rdr.ReadUInt16();
+            return hdr;
+        }
     }
 }

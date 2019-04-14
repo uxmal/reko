@@ -27,24 +27,71 @@ using System.IO;
 
 namespace Reko.Core
 {
+    
     /// <summary>
     /// Abstract base class for all things callable.
     /// </summary>
 	[DefaultProperty("Name")]
 	public abstract class ProcedureBase
-	{
+	{ 
 		public ProcedureBase(string name)
 		{
-			this.Name = name;
+            NameProvenance = ProvenanceType.Scanning;
+            this.name = name;
 			this.Characteristics = DefaultProcedureCharacteristics.Instance;
 		}
 
         /// <summary>
         /// The name of the procedure.
         /// </summary>
-        public string Name { get { return name; } set { name = value; NameChanged.Fire(this); } }
+        public string Name { get { return name; }
+        }
+
         public event EventHandler NameChanged;
         private string name;
+        private ProvenanceType NameProvenance;
+
+        public void ChangeName(string sigName, ProvenanceType provenance)
+        {
+            if((provenance == ProvenanceType.ByteSignature))
+            {
+                // We want to prevent a signature over writing a user name
+                if (NameProvenance == ProvenanceType.Scanning)
+                {
+                    name = sigName;
+                    NameProvenance = ProvenanceType.ByteSignature;
+                    NameChanged.Fire(this);
+                }
+            }
+            else
+            {
+                name = sigName;
+                NameProvenance = ProvenanceType.UserInput;
+                NameChanged.Fire(this);
+            }
+        }
+
+        public void UpdateNameByUser(string sigName)
+        {
+            name = sigName;
+            NameProvenance = ProvenanceType.UserInput;
+            NameChanged.Fire(this);
+        }
+
+        public void UpdateNameBySystem(string sigName)
+        {
+            name = sigName;
+            NameProvenance = ProvenanceType.Scanning;
+            NameChanged.Fire(this);
+        }
+
+        public ProvenanceType NameAssignedBy
+        {
+            get
+            {
+                return NameProvenance;
+            }
+        }
 
 		public abstract FunctionType Signature { get; set; }
 
