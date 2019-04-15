@@ -58,7 +58,7 @@ namespace Reko.Analysis
         private readonly Dictionary<Block, SsaBlockState> blockstates;
         private readonly SsaState ssa;
         private readonly TransformerFactory factory;
-        public readonly HashSet<SsaIdentifier> incompletePhis;
+        private readonly HashSet<SsaIdentifier> incompletePhis;
         private readonly HashSet<Procedure> sccProcs;
         private readonly ExpressionEmitter m;
         private HashSet<SsaIdentifier> sidsToRemove;
@@ -969,22 +969,6 @@ namespace Reko.Analysis
                 x.AddPhiOperands(phi);
             }
             incompletePhis.Clear();
-        }
-
-        private Expression ReadParameter(Block b, FunctionType sig, Storage stg)
-        {
-            if (!sig.ParametersValid)
-                return null;
-            var param = sig.Parameters
-                .FirstOrDefault(p => p.Storage.Covers(stg));
-            if (param == null)
-                return null;
-            var sidParam = ssa.EnsureSsaIdentifier(param, b);
-            var idParam = sidParam.Identifier;
-            if (idParam.Storage.BitSize == stg.BitSize)
-                return idParam;
-            var dt = PrimitiveType.CreateWord((int) stg.BitSize);
-            return m.Slice(dt, idParam, idParam.Storage.OffsetOf(stg));
         }
 
         public class SsaBlockState

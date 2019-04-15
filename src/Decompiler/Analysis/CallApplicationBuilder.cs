@@ -234,7 +234,7 @@ Please report this issue at https://github.com/uxmal/reko";
         {
             var id = ssaCaller.Procedure.Frame.EnsureRegister(reg);
             var entryBlock = ssaCaller.Procedure.EntryBlock;
-            var sid = ssaCaller.EnsureSsaIdentifier(id, entryBlock);
+            var sid = ssaCaller.EnsureDefInstruction(id, entryBlock);
             sid.Uses.Add(stmCall);
             return sid.Identifier;
         }

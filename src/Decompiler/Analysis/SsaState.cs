@@ -105,7 +105,7 @@ namespace Reko.Analysis
         /// <returns>
         /// New or existing SSA identifier for <paramref name="id"/>
         /// </returns>
-        public SsaIdentifier EnsureSsaIdentifier(Identifier id, Block b)
+        public SsaIdentifier EnsureDefInstruction(Identifier id, Block b)
         {
             if (Identifiers.TryGetValue(id, out var sid))
                 return sid;

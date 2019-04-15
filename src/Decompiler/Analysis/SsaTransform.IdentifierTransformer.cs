@@ -427,7 +427,7 @@ namespace Reko.Analysis
             public SsaIdentifier NewDefInstruction(Identifier id, Block b)
             {
                 var sig = outer.ssa.Procedure.Signature;
-                var param = outer.ReadParameter(b, sig, id.Storage);
+                var param = ReadParameter(b, sig, id.Storage);
                 if (param != null)
                 {
                     var copy = new Assignment(id, param);
@@ -439,7 +439,7 @@ namespace Reko.Analysis
                     outer.ssa.AddUses(stmCopy);
                     return sidCopy;
                 }
-                return outer.ssa.EnsureSsaIdentifier(id, b);
+                return outer.ssa.EnsureDefInstruction(id, b);
             }
 
             private void ReplaceBy(SsaIdentifier sidOld, SsaIdentifier idNew)
@@ -465,6 +465,34 @@ namespace Reko.Analysis
                             bs.currentFpuDef[de.Key] = idNew;
                         }
                     }
+                }
+            }
+
+            private Expression ReadParameter(Block b, FunctionType sig, Storage stg)
+            {
+                if (!sig.ParametersValid)
+                    return null;
+                var param = sig.Parameters
+                    .FirstOrDefault(p => p.Storage.OverlapsWith(stg));
+                if (param == null)
+                    return null;
+                var sidParam = outer.SsaState.EnsureDefInstruction(param, b);
+                var idParam = sidParam.Identifier;
+                if (idParam.Storage.BitSize == stg.BitSize)
+                    return idParam;
+                var dt = PrimitiveType.CreateWord((int) stg.BitSize);
+                if (param.Storage.Covers(stg))
+                {
+                    return outer.m.Slice(dt, idParam, idParam.Storage.OffsetOf(stg));
+                }
+                else
+                {
+                    var sidWider = outer.SsaState.EnsureDefInstruction(id, b);
+                    // The procedure is reading more bits than the signature 
+                    // specifies. This pattern is common; typically the high bits
+                    // are ignored in the later parts of the procedure. We 
+                    // arbitrarily fill the unused part of the word with zeros. 
+                    return outer.m.Dpb(sidWider.Identifier, idParam, 0);
                 }
             }
 

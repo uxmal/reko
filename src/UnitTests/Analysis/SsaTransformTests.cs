@@ -3448,9 +3448,10 @@ proc_exit:
 	def fp
 	def Mem0
 	def byteArg
-	dwArg04_7 = DPB(0x00000000, byteArg, 0)
+	def dwArg04
+	dwArg04_8 = DPB(dwArg04, byteArg, 0)
 body:
-	a_3 = dwArg04_7
+	a_3 = dwArg04_8
 	a_4 = a_3 & 0x000000FF
 	Mem5[0x00005678:word32] = a_4
 	return
