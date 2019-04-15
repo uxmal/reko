@@ -222,7 +222,6 @@ test_exit:
 
         [Test]
         [Category(Categories.FailedTests)]
-        //[Ignore(Categories.FailedTests)]
         public void Dfa2_UserDefinedStackArgs()
         {
             var arch = new X86ArchitectureFlat32("x86-protected-32");
@@ -251,11 +250,6 @@ test_exit:
             platform.Setup(p => p.GetCallingConvention(null))
                 .Returns(new X86CallingConvention(4, 4, 4, true, false));
             platform.Setup(p => p.GetByteSizeFromCBasicType(CBasicType.Int)).Returns(4);
-            //platform.Test_CreateProcedureSerializer = (t, d) =>
-            //{
-            //    var typeLoader = new TypeLibraryDeserializer(platform, false, new TypeLibrary());
-            //    return new ProcedureSerializer(program.Platform, typeLoader, "__cdecl");
-            //};
 
             var importResolver = new Mock<IImportResolver>().Object;
             program.Platform = platform.Object;
