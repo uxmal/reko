@@ -618,6 +618,61 @@ namespace Reko.UnitTests.Scanning
             Assert.AreEqual(new BitRange(0, 32), bwslc.Live.First().Value.BitRange);
         }
 
+
+        [Test(Description = "Handle m68k-style sign extensions.")]
+        [Category(Categories.UnitTests)]
+        [Ignore(Categories.FailedTests)]
+        public void Bwslc_SignExtension()
+        {
+            var CVZNX = Cc("CVZNX");
+            var CVZN = Cc("CVZN");
+            var VZN = Cc("VZN");
+            var r1 = Reg("r1");
+            var v80 = binder.CreateTemporary("v80", PrimitiveType.Word32);
+            var v82 = binder.CreateTemporary("v82", PrimitiveType.Word32);
+
+            var b1 = Given_Block(0x1000);
+            Given_Instrs(b1, m =>
+            {
+                m.Assign(v80, m.ISub(r1, 0x28));
+                m.Assign(CVZN, m.Cond(v80));
+                m.Branch(m.Test(ConditionCode.GT, VZN), Address.Ptr16(0x1020), InstrClass.ConditionalTransfer);
+            });
+
+            var b2 = Given_Block(0x1010);
+            Given_Instrs(b2, m =>
+            {
+                m.Assign(r1, m.IAdd(r1, r1));
+                m.Assign(CVZNX, m.Cond(r1));
+                m.Assign(v82, m.Mem16(m.IAdd(m.Word32(0x001066A4), r1)));
+                m.Assign(r1, m.Dpb(r1, v82, 0));
+                m.Assign(CVZN, m.Cond(v82));
+                m.Goto(
+                    m.IAdd(
+                        m.Word32(0x001066A2),
+                        m.Cast(PrimitiveType.Int32, m.Cast(PrimitiveType.Int16, r1))),
+                    InstrClass.Transfer);
+            });
+
+            //m.Label("default_case");
+            //m.Return();
+
+            graph.Nodes.Add(b1);
+            graph.Nodes.Add(b2);
+            graph.AddEdge(b1, b2);
+
+            var bwslc = new BackwardSlicer(host, b2, processorState);
+            Assert.IsTrue(bwslc.Start(b2, 5, Target(b2)));
+            while (bwslc.Step())
+                ;
+
+            Assert.AreEqual(2, bwslc.Live.Count);
+            Assert.AreEqual("(int32) (int16) DPB(r1 * 0x00000002, Mem0[r1 * 0x00000002 + 0x001066A4:word16], 0) + 0x001066A2", bwslc.JumpTableFormat.ToString());
+            Assert.AreEqual("v80", bwslc.JumpTableIndex.ToString());
+            Assert.AreEqual("v80", bwslc.JumpTableIndexToUse.ToString(), "Expression to use when indexing");
+            Assert.AreEqual("1[0,17]", bwslc.JumpTableIndexInterval.ToString());
+        }
+
         [Test]
         public void Bwslc_Issue_691()
         {
