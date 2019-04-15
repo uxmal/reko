@@ -263,7 +263,7 @@ namespace Reko.Analysis
                 foreach (var id in ids)
                 {
                     var stg = id.Storage;
-                    if (!liveOutStorages.ContainsKey(stg))
+                    if (!liveOutStorages.Keys.Any(stgLiveOut => stgLiveOut.OverlapsWith(stg)))
                     {
                         deadStgs.Add(stg);
                         deadStms.Add(stm);

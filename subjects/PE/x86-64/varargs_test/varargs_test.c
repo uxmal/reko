@@ -255,11 +255,11 @@ Eq_n Win32CrtStartup()
 {
 	word64 rax_n = fn000000014000186C(qwLoc20, dwLoc18, dwLoc14);
 	fn00000001400012BC(rax_n, rdx, rbx, rbp, rsi, rdi, r8, r9, xmm0);
-	return <invalid>;
+	return (DWORD) rax_n;
 }
 
-// 0000000140001448: Register Eq_n fn0000000140001448(Stack Eq_n tArg00, Stack Eq_n tArg08)
-Eq_n fn0000000140001448(Eq_n tArg00, Eq_n tArg08)
+// 0000000140001448: Register word32 fn0000000140001448(Stack Eq_n tArg00, Stack Eq_n tArg08)
+word32 fn0000000140001448(Eq_n tArg00, Eq_n tArg08)
 {
 	SetUnhandledExceptionFilter(tLoc28);
 	UnhandledExceptionFilter(tLoc28);

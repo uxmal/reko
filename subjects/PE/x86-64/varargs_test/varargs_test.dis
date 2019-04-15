@@ -623,7 +623,7 @@ l0000000140001434:
 
 l0000000140001441_thunk_fn00000001400012BC:
 	fn00000001400012BC(rax_6, rdx, rbx, rbp, rsi, rdi, r8, r9, xmm0)
-	return <invalid>
+	return (DWORD) rax_26
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

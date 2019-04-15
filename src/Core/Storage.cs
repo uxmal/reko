@@ -66,24 +66,10 @@ namespace Reko.Core
         public abstract T Accept<T>(StorageVisitor<T> visitor);
         public abstract T Accept<C, T>(StorageVisitor<C, T> visitor, C context);
 
-
+        /// <summary>
+        /// Returns true if the Storage <paramref name="that"/> overlaps with this
+        /// Storage.
         public abstract bool OverlapsWith(Storage that);
-        /*
-        {
-            if (this.Domain == StorageDomain.Memory && 
-                that.Domain == StorageDomain.Memory)
-            {
-                return true;
-            }
-            if (this.Domain != that.Domain || this.Number != that.Number)
-                return false;
-            var thisStart = this.BitAddress;
-            var thisEnd = this.BitAddress + this.BitSize;
-            var thatStart = that.BitAddress;
-            var thatEnd = that.BitAddress + that.BitSize;
-            return thisStart < thatEnd && thatStart < thisEnd;
-        }
-        */
 
         /// <summary>
         /// A storage <code>a</code> is said to cover a storage 
