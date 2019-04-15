@@ -39,21 +39,21 @@ namespace Reko.Analysis
     [DebuggerDisplay("{Procedure.Name}")]
 	public class SsaState
 	{
-		private SsaIdentifierCollection ids;
-
 		public SsaState(Procedure proc)
 		{
 			this.Procedure = proc;
-			this.ids = new SsaIdentifierCollection();
+			this.Identifiers = new SsaIdentifierCollection();
 		}
+
+        public SsaIdentifierCollection Identifiers { get; }
 
         public Procedure Procedure { get; }
 
-		/// <summary>
-		/// Given a procedure in SSA form, converts it back to "normal" form.
-		/// </summary>
-		/// <param name="renameVariables"></param>
-		public void ConvertBack(bool renameVariables)
+        /// <summary>
+        /// Given a procedure in SSA form, converts it back to "normal" form.
+        /// </summary>
+        /// <param name="renameVariables"></param>
+        public void ConvertBack(bool renameVariables)
 		{
 			UnSSA unssa = new UnSSA(this);
 			foreach (Block block in Procedure.ControlGraph.Blocks)
@@ -79,6 +79,12 @@ namespace Reko.Analysis
 			Procedure.ExitBlock.Statements.Clear();
 		}
 
+        /// <summary>
+        /// Returns the index of the last <see cref="DefInstruction"/> in the 
+        /// <paramref name="stmts"/> statement list.
+        /// </summary>
+        /// <param name="stmts"></param>
+        /// <returns></returns>
         private int LastDefPosition(StatementList stmts)
         {
             for (int i = stmts.Count - 1; i >= 0; --i)
@@ -148,7 +154,7 @@ namespace Reko.Analysis
 
         /// <summary>
         /// Check if there are uses which is not in the procedure statements
-        /// list
+        /// list.
         /// </summary>
         private void ValidateDeadUses(Action<string> error)
         {
@@ -166,7 +172,7 @@ namespace Reko.Analysis
         }
 
         /// <summary>
-        /// Compare uses stored in SsaState with actual ones
+        /// Compare uses stored in SsaState with actual ones.
         /// </summary>
         public void ValidateUses(Action<string> error)
         {
@@ -220,7 +226,7 @@ namespace Reko.Analysis
         }
 
         /// <summary>
-        /// Compare definitions stored in SsaState with actual ones
+        /// Compare definitions stored in SsaState with actual ones.
         /// </summary>
         public void ValidateDefinitions(Action<string> error)
         {
@@ -300,15 +306,19 @@ namespace Reko.Analysis
 		/// <param name="writer"></param>
 		public void Write(TextWriter writer)
 		{
-			foreach (SsaIdentifier id in ids)
+			foreach (SsaIdentifier id in Identifiers)
 			{
 				id.Write(writer);
 				writer.WriteLine();
 			}
 		}
 
-		public SsaIdentifierCollection Identifiers { get { return ids; } }
-
+        /// <summary>
+        /// For each <see cref="SsaIdentifier"/>, if its defining statement is
+        /// <paramref name="stmOld"/>, replace it with <paramref name="stmNew"/>.
+        /// </summary>
+        /// <param name="stmOld"></param>
+        /// <param name="stmNew"></param>
 		public void ReplaceDefinitions(Statement stmOld, Statement stmNew)
 		{
 			foreach (var sid in Identifiers)

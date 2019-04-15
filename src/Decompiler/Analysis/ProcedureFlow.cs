@@ -39,6 +39,7 @@ namespace Reko.Analysis
 	public class ProcedureFlow : DataFlow
 	{
         public Procedure Procedure { get; }
+        public FunctionType Signature;
 
         /// <summary>
         /// A collection of all each storage that is live-in to the procedure,
@@ -76,17 +77,16 @@ namespace Reko.Analysis
         /// </summary>
         public Dictionary<Storage, Constant> Constants; 
 
-		public HashSet<Storage> ByPass { get; set; }
-		public Dictionary<RegisterStorage, uint> grfByPass;
-		public HashSet<Storage> MayUse;
-		public Dictionary<RegisterStorage, uint> grfMayUse;
-		public HashSet<Storage> Summary;
-		public Dictionary<RegisterStorage, uint> grfSummary;
+		[Obsolete] public HashSet<Storage> ByPass { get; set; }
+		[Obsolete] public Dictionary<RegisterStorage, uint> grfByPass;
+		[Obsolete] public HashSet<Storage> MayUse;
+		[Obsolete] public Dictionary<RegisterStorage, uint> grfMayUse;
+		[Obsolete] public HashSet<Storage> Summary;
+		[Obsolete] public Dictionary<RegisterStorage, uint> grfSummary;
 
 		public Hashtable StackArguments;		//$REFACTOR: make this a strongly typed dictionary (Var -> PrimitiveType)
 
 
-		public FunctionType Signature;
 
         // True if calling this procedure terminates the thread/process. This implies
         // that no code path reached the exit block without first terminating the process.
@@ -101,18 +101,24 @@ namespace Reko.Analysis
             Constants = new Dictionary<Storage, Constant>();
 
             grfTrashed = new Dictionary<RegisterStorage, uint>();
-            grfSummary = new Dictionary<RegisterStorage, uint>();
-            grfByPass = new Dictionary<RegisterStorage, uint>();
-            grfMayUse = new Dictionary<RegisterStorage, uint>();
             grfPreserved = new Dictionary<RegisterStorage, uint>();
             grfLiveOut = new Dictionary<RegisterStorage, uint>();
 
-            ByPass = new HashSet<Storage>();
-            MayUse = new HashSet<Storage>();
             BitsLiveOut = new Dictionary<Storage, BitRange>();
 
             StackArguments = new Hashtable();
             this.BitsUsed = new Dictionary<Storage, BitRange>();
+            InitObsoleteCode();
+        }
+
+        [Obsolete]
+        private void InitObsoleteCode()
+        {
+            grfSummary = new Dictionary<RegisterStorage, uint>();
+            grfByPass = new Dictionary<RegisterStorage, uint>();
+            grfMayUse = new Dictionary<RegisterStorage, uint>();
+            ByPass = new HashSet<Storage>();
+            MayUse = new HashSet<Storage>();
         }
 
         [Conditional("DEBUG")]

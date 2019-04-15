@@ -229,6 +229,10 @@ namespace Reko.Analysis
             return preds;
         }
 
+        /// <summary>
+        /// Given a stream of <see cref="Identifier"/>s, some of which are sequences, return
+        /// a stream where the sequences have been broken apart into their constituent parts.
+        /// </summary>
         public IEnumerable<Identifier> SeparateSequences(IEnumerable<Identifier> ids)
         {
             foreach (var id in ids)
