@@ -14,9 +14,9 @@
     <PackageReference Include="NUnit" Version="3.11.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Gui\Gui.csproj" />
-    <ProjectReference Include="..\..\UserInterfaces\WindowsForms\WindowsForms.csproj" />
-    <ProjectReference Include="..\UnitTests.csproj" />
+    <ProjectReference Include="..\Gui\Gui.csproj" />
+    <ProjectReference Include="..\UserInterfaces\WindowsForms\WindowsForms.csproj" />
+    <ProjectReference Include="..\UnitTests\UnitTests.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Windows.Forms" />

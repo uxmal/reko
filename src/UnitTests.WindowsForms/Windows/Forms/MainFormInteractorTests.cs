@@ -427,7 +427,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         {
             this.decompiler = new Mock<IDecompiler>();
             // Having a compiler presupposes having a project.
-            var platform = mockFactory.CreateMockPlatform();
+            var platform = mockFactory.CreateMockPlatform().Object;
             var mem = new MemoryArea(Address.Ptr32(0x00010000), new byte[100]);
             var project = new Project
             {

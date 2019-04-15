@@ -2,6 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>netcoreapp2.0;net472;netstandard2.0</TargetFrameworks>
+    <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <ApplicationIcon/>
     <OutputType>Exe</OutputType>
