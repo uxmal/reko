@@ -39,10 +39,10 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         public event EventHandler AfterSelect;
         public event EventHandler<Gui.Controls.TreeViewEventArgs> AfterExpand;
         public event EventHandler<Gui.Controls.TreeViewEventArgs> BeforeExpand;
-        public event DragEventHandler DragEnter;
-        public event DragEventHandler DragOver;
-        public event DragEventHandler DragDrop;
-        public event MouseEventHandler MouseWheel;
+        public event Gui.Controls.DragEventHandler DragEnter;
+        public event Gui.Controls.DragEventHandler DragOver;
+        public event Gui.Controls.DragEventHandler DragDrop;
+        public event Gui.Controls.MouseEventHandler MouseWheel;
         public event EventHandler DragLeave;
 
         private readonly TreeView treeView;
@@ -99,7 +99,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             this.BeforeExpand?.Invoke(this, new Gui.Controls.TreeViewEventArgs((ITreeNode) e.Node));
         }
 
-        void treeView_DragDrop(object sender, DragEventArgs e)
+        void treeView_DragDrop(object sender, System.Windows.Forms.DragEventArgs e)
         {
             DragDrop?.Invoke(this, e);
         }

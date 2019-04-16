@@ -36,7 +36,7 @@ using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
 using DataObject = System.Windows.Forms.DataObject;
-using DragDropEffects = System.Windows.Forms.DragDropEffects;
+using DragDropEffects = Reko.Gui.Controls.DragDropEffects;
 using DragEventArgs = System.Windows.Forms.DragEventArgs;
 using DragEventHandler = System.Windows.Forms.DragEventHandler;
 
@@ -694,8 +694,9 @@ namespace Reko.UnitTests.Gui.Windows
 
             var project = new Project();
             pbs.Load(project);
-            mockTree.PerformDragEnter(TreeViewWrapper.Convert(e));
-            Assert.AreEqual(DragDropEffects.None, e.Effect);
+            var winEvent = TreeViewWrapper.Convert(e);
+            mockTree.PerformDragEnter(winEvent);
+            Assert.AreEqual(DragDropEffects.None, (DragDropEffects)(int) winEvent.Effect);
         }
 
         [Test]
@@ -733,8 +734,8 @@ namespace Reko.UnitTests.Gui.Windows
 
             return new DragEventArgs(
                     dObject, 0, 40, 40,
-                    DragDropEffects.All,
-                    DragDropEffects.All);
+                    (System.Windows.Forms.DragDropEffects) (int) DragDropEffects.All,
+                    (System.Windows.Forms.DragDropEffects) (int) DragDropEffects.All);
         }
 
         [Test]

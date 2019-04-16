@@ -7,6 +7,7 @@
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
     <RootNamespace>Reko.UnitTests</RootNamespace>
     <AssemblyName>Reko.UnitTests</AssemblyName>
+    <SolutionDir>$(ProjectDir)..\</SolutionDir>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Arch\Alpha\Alpha.csproj">
@@ -136,8 +137,6 @@
     <ProjectReference Include="..\Libraries\Microchip\Utils\Microchip.Utils.csproj">
     </ProjectReference>
 
-    <ProjectReference Include="..\Libraries\Python\Python.csproj" />
-
     <ProjectReference Include="..\Native\NativeProxy.csproj" />
     <ProjectReference Include="..\Symbols\LGSymLoader\LGSymLoader.csproj" />
   </ItemGroup>
@@ -182,9 +181,12 @@
     <Reference Include="Rhino.Mocks">
       <HintPath>..\..\..\..\..\idocx\Build\External\Rhino.Mocks.dll</HintPath>
     </Reference>
+    <PackageReference Include="Moq" Version="4.13.0" />
+    <PackageReference Include="NUnit" Version="3.12.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.13.0" />
   </ItemGroup>
-  <Target Name="AfterBuild">
-    <Message Importance="normal" Text="Copying Decompiler metadata files to $(TargetDir)" />
+  <Target Name="CopyAllTheFiles" AfterTargets="CopyFilesToOutputDirectory">
+    <Message Importance="high" Text="AWOOGA Copying Decompiler metadata files to $(TargetDir)" />
     <Copy SourceFiles="@(Architectures)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(DecompilerMetadata)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(ExternalComponents)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
