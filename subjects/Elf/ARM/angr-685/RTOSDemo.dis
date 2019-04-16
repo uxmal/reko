@@ -9100,7 +9100,6 @@ vCoRoutineSchedule_entry:
 
 l00008F2C:
 	word32 r5_16 = Mem15[0x00009088:word32]
-	cpsr_489 = cpsr
 	branch Mem15[r5_16 + 84:word32] == 0x00000000 l00008F82
 // DataOut:
 // DataOut (flags):
@@ -9134,7 +9133,6 @@ l00008F76_1:
 
 l00008F78:
 	vListInsertEnd(r0, r4_25 + 0x00000004)
-	cpsr_490 = cpsr
 	branch Mem64[r5_16 + 84:word32] != 0x00000000 l00008F3C
 // DataOut:
 // DataOut (flags):
@@ -9195,7 +9193,7 @@ l00008FAC:
 // SymbolicIn:
 
 l00008FC4:
-	__msr(cpsr_489, 0x000000BF)
+	__msr(cpsr, 0x000000BF)
 	__isb_sy()
 	__dsb_sy()
 	word32 r6_117 = r4_109 + 0x00000004
@@ -9213,7 +9211,7 @@ l00008FE4:
 // SymbolicIn:
 
 l00008FE8:
-	__msr(cpsr_489, 0x00000000)
+	__msr(cpsr, 0x00000000)
 	word32 r3_143 = Mem127[r4_109 + 44:word32]
 	word32 r0_153 = r8_84 + r3_143 * 0x00000014
 	branch r3_143 <=u Mem127[r5_16 + 112:word32] l00009000
@@ -9280,7 +9278,7 @@ l00009026:
 
 l00009080:
 	pcOut = pc
-	cpsrOut = cpsr_489
+	cpsrOut = cpsr
 	return lr
 // DataOut:
 // DataOut (flags):
@@ -9353,7 +9351,7 @@ l00009074:
 	word32 pc_285
 	word32 cpsr_295
 	call r3_253 (retsize: 0;)
-		uses: cpsr:cpsr_68,lr:lr,pc:pc,r0:r0_245,r1:Mem252[r0_245 + 48:word32],r2:r2_243,r3:r3_253,r4:r4,r5:r5,r6:r6,r7:r7,r8:r8,sp:fp,Stack +FFFFFFE8:r4,Stack +FFFFFFEC:r5,Stack +FFFFFFF0:r6,Stack +FFFFFFF4:r7,Stack +FFFFFFF8:r8,Stack +FFFFFFFC:lr
+		uses: cpsr:cpsr,lr:lr,pc:pc,r0:r0_245,r1:Mem252[r0_245 + 48:word32],r2:r2_243,r3:r3_253,r4:r4,r5:r5,r6:r6,r7:r7,r8:r8,sp:fp,Stack +FFFFFFE8:r4,Stack +FFFFFFEC:r5,Stack +FFFFFFF0:r6,Stack +FFFFFFF4:r7,Stack +FFFFFFF8:r8,Stack +FFFFFFFC:lr
 		defs: cpsr:cpsr_295,lr:lr_272,pc:pc_285
 	pcOut = pc_285
 	cpsrOut = cpsr_295
@@ -9365,7 +9363,7 @@ l00009074:
 l00009046:
 	Mem303[r5_16 + 112:word32] = r2_197
 	pcOut = pc
-	cpsrOut = cpsr_489
+	cpsrOut = cpsr
 	return lr
 // DataOut:
 // DataOut (flags):

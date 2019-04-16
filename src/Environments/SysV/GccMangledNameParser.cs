@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -282,7 +282,7 @@ namespace Reko.Environments.SysV
         private void Expect(char ch)
         {
             if (str[i++] != ch)
-                Error("Expected '{0}' but found '{1} ({2}'.", ch, str[i - 1], str.Substring(i-1));
+                Error("Expected '{0}' but found '{1}' ({2}).", ch, str[i - 1], str.Substring(i-1));
         }
 
         private bool Peek(char ch)

@@ -3081,7 +3081,6 @@ bool vCoRoutineAddToDelayedList(Eq_n r0, struct Eq_n * r1)
 word32 vCoRoutineSchedule(struct Eq_n * r0, word32 r4, word32 r5, word32 r6, word32 r7, word32 r8, word32 lr, ptr32 pc, ptr32 cpsr, ptr32 & pcOut, ptr32 & cpsrOut)
 {
 	struct Eq_n * r5_n = globals->ptr9088;
-	cpsr_n = cpsr;
 	while (r5_n->dw0054 != 0x00)
 	{
 		__msr(cpsr, 191);
@@ -3096,7 +3095,6 @@ word32 vCoRoutineSchedule(struct Eq_n * r0, word32 r4, word32 r5, word32 r6, wor
 		if (r3_n > r5_n->dw0070)
 			r5_n->dw0070 = r3_n;
 		vListInsertEnd(r0, (char *) r4_n + 0x04);
-		cpsr_n = cpsr;
 	}
 	MPU_xTaskGetTickCount(cpsr);
 	up32 r3_n = r5_n->dw0074;
@@ -3126,7 +3124,7 @@ l00008F94:
 			goto l00008F94;
 		do
 		{
-			__msr(cpsr_n, 191);
+			__msr(cpsr, 191);
 			__isb_sy();
 			__dsb_sy();
 			struct Eq_n * r6_n = &r4_n->dw0004;
@@ -3134,7 +3132,7 @@ l00008F94:
 			struct Eq_n * r0_n = &r4_n->dw0004 + 0x05;
 			if (r4_n->dw0028 != 0x00)
 				uxListRemove(r0_n);
-			__msr(cpsr_n, 0x00);
+			__msr(cpsr, 0x00);
 			uint32 r3_n = r4_n->dw002C;
 			struct Eq_n * r0_n = r8_n + r3_n * 0x14;
 			if (r3_n > r5_n->dw0070)
@@ -3160,7 +3158,7 @@ l00008F94:
 		if (r1_n == 0x00)
 		{
 			pcOut = pc;
-			cpsrOut = cpsr_n;
+			cpsrOut = cpsr;
 			return lr;
 		}
 		r3_n = r1_n - 0x01 << 0x02;
@@ -3172,7 +3170,7 @@ l00008F94:
 l00009046:
 				r5_n->dw0070 = r2_n;
 				pcOut = pc;
-				cpsrOut = cpsr_n;
+				cpsrOut = cpsr;
 				return lr;
 			}
 			r3_n = r1_n - 0x02 << 0x02;

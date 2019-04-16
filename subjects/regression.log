@@ -50,7 +50,7 @@ public void ArmDasm_F840BF00()
 }
 
 0000951A: error: An error occurred while processing the statement Mem21[r3_14 + 0x00000000:word32] = Mem19[r3_14 - r4_11 + 0x00000000:word32].
-    Not handling (ptr32 (struct (0 T_7529 t0000))) and (ptr32 (struct (0 (arr T_9659) a0000))) yet.
+    Not handling (ptr32 (struct (0 T_7527 t0000))) and (ptr32 (struct (0 (arr T_9657) a0000))) yet.
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 377
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 227
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -1857,4 +1857,4 @@ l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
 Stripping SSA identifier numbers
-Decompiled 56 binaries in 78.03 seconds ---
+Decompiled 56 binaries in 90.58 seconds ---

@@ -452,10 +452,14 @@ namespace Reko.Analysis
                 {
                     if (bs.currentDef.TryGetValue(sidOld.Identifier.Storage.Domain, out var alias))
                     {
-                        if (alias.SsaId == sidOld)
+                        do
                         {
-                            alias.SsaId = idNew;
-                        }
+                            if (alias.SsaId == sidOld)
+                            {
+                                alias.SsaId = idNew;
+                            }
+                            alias = alias.PrevState;
+                        } while (alias != null);
                     }
                     ReplaceStackDefs(bs, sidOld, idNew);
                     foreach (var de in bs.currentFpuDef.ToList())
