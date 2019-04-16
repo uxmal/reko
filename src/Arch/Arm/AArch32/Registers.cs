@@ -117,7 +117,7 @@ namespace Reko.Arch.Arm.AArch32
                 .Concat(SRegs)
                 .ToDictionary(r => r.Name);
 
-            SIMDRegisters = QRegs.Concat(DRegs).Concat(SRegs).ToHashSet();
+            SIMDRegisters = new HashSet<RegisterStorage>(QRegs.Concat(DRegs).Concat(SRegs));
             RegistersByDomain = GpRegs
                 .Concat(new[] { cpsr, fpscr, spsr })
                 .Concat(CoprocessorRegisters)

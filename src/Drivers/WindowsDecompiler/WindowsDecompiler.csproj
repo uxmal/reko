@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="$(SolutionDir)Drivers\Common.items" />
+  <Import Project="$(ProjectDir)..\Common.items" />
   <PropertyGroup>
     <TargetFrameworks>net472</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -136,5 +136,5 @@
   <ItemGroup>
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
-  <Import Project="$(SolutionDir)Drivers\PreBuild.targets" />
+  <Import Project="$(ProjectDir)..\PreBuild.targets" />
 </Project>

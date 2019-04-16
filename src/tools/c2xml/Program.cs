@@ -49,7 +49,7 @@ Options:
   -e (win32|sysV)  Operating environment
 ";
 
-        static int Main(string[] args)
+        public static int Main(string[] args)
         {
             return new Program().Execute(args);
         }
