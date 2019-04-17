@@ -664,12 +664,14 @@ namespace Reko.Analysis
                 bool changed = false;
                 foreach (var de in ctxOther.StackState)
                 {
-                    if (!this.StackState.ContainsKey(de.Key))
+                    if (!this.StackState.TryGetValue(de.Key, out var oldValue))
                     {
                         changed = true;
                         this.StackState.Add(de.Key, de.Value);
                     }
-                    else if (!cmp.Equals(this.StackState[de.Key], de.Value))
+                    //$TODO: adding the commented check for Constant.Invalid
+                    // is actually correct, but causes big regressions.
+                    else if (/*oldValue != Constant.Invalid && */ !cmp.Equals(oldValue, de.Value))
                     {
                         changed = true;
                         this.StackState[de.Key] = Constant.Invalid;
@@ -816,11 +818,11 @@ namespace Reko.Analysis
                     DebugEx.Verbose(trace, "Trf: Stack offset {0:X4} now has value {1}", offset.Value, value);
                     StackState.Add(offset.Value, value);
                 }
-                else if (!cmp.Equals(oldValue, value))
+                else if (!cmp.Equals(oldValue, value) && oldValue != Constant.Invalid)
                 {
                     IsDirty = true;
                     DebugEx.Verbose(trace, "Trf: Stack offset {0:X4} now has value {1}, was {2}", offset.Value, value, oldValue);
-                    StackState[offset.Value] = value;
+                    StackState[offset.Value] = Constant.Invalid;
                 }
             }
 

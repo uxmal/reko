@@ -126,9 +126,9 @@ namespace Reko.Typing
                 return;
 			DataType dt = c.TypeVariable.DataType;
             int offset = StructureField.ToOffset(c);
-			Pointer ptr = dt as Pointer;
-			if (ptr != null)
-			{
+            switch (dt)
+            {
+            case Pointer ptr:
 				// C is a constant pointer.
 				if (offset == 0)
 					return;				// null pointer is null (//$REVIEW: except for some platforms + archs)
@@ -149,10 +149,7 @@ namespace Reko.Typing
                     }
                 }
 				return;
-			}
-			MemberPointer mptr = dt as MemberPointer;
-			if (mptr != null)
-			{
+            case MemberPointer mptr:
                 // C is a constant offset into a segment.
                 var seg = ((Pointer) mptr.BasePointer).Pointee.ResolveAs<StructureType>();
                 if (seg != null && //$DEBUG
@@ -160,7 +157,8 @@ namespace Reko.Typing
                 {
                     seg.Fields.Add(offset, mptr.Pointee);
                 }
-//				VisitConstantMemberPointer(offset, mptr);
+                //				VisitConstantMemberPointer(offset, mptr);
+                return;
 			}
 		}
 

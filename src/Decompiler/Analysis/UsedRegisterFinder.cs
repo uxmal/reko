@@ -406,7 +406,8 @@ namespace Reko.Analysis
 
         public BitRange VisitTestCondition(TestCondition tc)
         {
-            throw new NotImplementedException();
+            var use = tc.Expression.Accept(this);
+            return use;
         }
 
         public BitRange VisitUnaryExpression(UnaryExpression unary)

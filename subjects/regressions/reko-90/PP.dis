@@ -29353,7 +29353,7 @@ void fn0800_A006(word16 bx)
 
 // MayUse:  bx:[0..15]
 // LiveOut:
-// Trashed: SCZDO ax bp bx cx di ds es si Top
+// Trashed: SCZDO ax bp bx cx di ds dx es si Top
 // Preserved: sp
 fn0800_A006_entry:
 // DataOut:
