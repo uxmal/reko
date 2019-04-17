@@ -32,9 +32,9 @@ namespace Reko.Analysis
 {
     public class TerminationAnalysis : InstructionVisitorBase
     {
+        private readonly ProgramDataFlow flow;
+        private readonly DecompilerEventListener eventListener;
         private Block curBlock;
-        private ProgramDataFlow flow;
-        private DecompilerEventListener eventListener;
 
         public TerminationAnalysis(ProgramDataFlow flow, DecompilerEventListener eventListener)
         {
@@ -56,8 +56,7 @@ namespace Reko.Analysis
         public override void VisitApplication(Application appl)
         {
             base.VisitApplication(appl);
-            var pc = appl.Procedure as ProcedureConstant;
-            if (pc == null)
+            if (!(appl.Procedure is ProcedureConstant pc))
                 return;
             if (ProcedureTerminates(pc.Procedure))
             {
@@ -69,8 +68,7 @@ namespace Reko.Analysis
         {
             if (proc.Characteristics != null && proc.Characteristics.Terminates)
                 return true;
-            var callee = proc as Procedure;
-            if (callee == null)
+            if (!(proc is Procedure callee))
                 return false;
 
             return (callee != null && flow[callee].TerminatesProcess);
@@ -79,8 +77,7 @@ namespace Reko.Analysis
         public override void VisitCallInstruction(CallInstruction ci)
         {
             base.VisitCallInstruction(ci);
-            var pc = ci.Callee as ProcedureConstant;
-            if (pc != null && ProcedureTerminates(pc.Procedure))
+            if (ci.Callee is ProcedureConstant pc && ProcedureTerminates(pc.Procedure))
             {
                 flow[curBlock].TerminatesProcess = true;
             }

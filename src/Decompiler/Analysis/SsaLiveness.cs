@@ -21,9 +21,7 @@
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
-using Reko.Core.Lib;
 using Reko.Core.Output;
-using System;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
@@ -44,8 +42,8 @@ namespace Reko.Analysis
             public List<SsaIdentifier> LiveOut { get; private set; }
         }
 
-		private SsaState ssa;
-		private SsaIdentifierCollection ssaIds;
+		private readonly SsaState ssa;
+		private readonly SsaIdentifierCollection ssaIds;
         private HashSet<Block> visited;
 		private Dictionary<Statement, List<Identifier>> defined;		// maps statement to -> List of identifiers
 		private InterferenceGraph interference;
@@ -77,8 +75,7 @@ namespace Reko.Analysis
 			{
 				if (ssa.Uses.Count > 0 && ssa.DefStatement != null)
 				{
-					List<Identifier> al;
-                    if (!defined.TryGetValue(ssa.DefStatement, out al))
+                    if (!defined.TryGetValue(ssa.DefStatement, out List<Identifier> al))
 					{
 						al = new List<Identifier>();
 						defined.Add(ssa.DefStatement, al);
@@ -212,7 +209,7 @@ namespace Reko.Analysis
 
         private class SsaBlockDecorator : BlockDecorator
         {
-            private Dictionary<Block, Record> records;
+            private readonly Dictionary<Block, Record> records;
 
             public SsaBlockDecorator(Dictionary<Block, Record> records)
             {
@@ -250,10 +247,9 @@ namespace Reko.Analysis
 
 		public PhiFunction GetPhiFunction(Statement stm)
 		{
-			PhiAssignment ass = stm.Instruction as PhiAssignment;
-			if (ass == null)
-				return null;
-			return ass.Src;
+            return (stm.Instruction is PhiAssignment ass)
+                ? ass.Src
+                : null;
 		}
 
 		private void Set(List<SsaIdentifier> s, SsaIdentifier v)

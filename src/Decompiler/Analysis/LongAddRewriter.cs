@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -229,8 +229,7 @@ namespace Reko.Analysis
 
         private Instruction Assign(Expression dst, Expression src)
         {
-            var idDst = dst as Identifier;
-            if (idDst != null)
+            if (dst is Identifier idDst)
             {
                 return new Assignment(idDst, src);
             }
@@ -242,11 +241,10 @@ namespace Reko.Analysis
 
         private SsaIdentifier GetSsaIdentifierOf(Expression dst)
         {
-            var id = dst as Identifier;
-            if (id == null)
-                return null;
-            else
+            if (dst is Identifier id)
                 return ssa.Identifiers[id];
+            else
+                return null;
         }
 
         public void Transform()
@@ -299,8 +297,7 @@ namespace Reko.Analysis
                     asc.Statement = use;
                     return asc;
                 }
-                var ass = use.Instruction as Assignment;
-                if (ass == null)
+                if (!(use.Instruction is Assignment ass))
                     continue;
                 if (ass.Src is Slice)
                 {
