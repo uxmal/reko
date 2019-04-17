@@ -669,9 +669,7 @@ namespace Reko.Analysis
                         changed = true;
                         this.StackState.Add(de.Key, de.Value);
                     }
-                    //$TODO: adding the commented check for Constant.Invalid
-                    // is actually correct, but causes big regressions.
-                    else if (/*oldValue != Constant.Invalid && */ !cmp.Equals(oldValue, de.Value))
+                    else if (oldValue != Constant.Invalid && !cmp.Equals(oldValue, de.Value))
                     {
                         changed = true;
                         this.StackState[de.Key] = Constant.Invalid;
