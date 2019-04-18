@@ -479,5 +479,55 @@ fn_exit:
             #endregion
             AssertProceduresCode(expected);
         }
+
+        [Test]
+        [Category(Categories.FailedTests)]
+        public void Uvr_Call_UseRegIsWiderThanSignatureReturn_TwoProcedures()
+        {
+            Given_Procedure("fn", m =>
+            {
+                var a = m.Reg("a", regA);
+                m.Label("body");
+                m.Assign(a, 0x12);
+                m.AddUseToExitBlock(a);
+            });
+            Given_Procedure("main", m =>
+            {
+                m.Ssa.Procedure.Signature = FunctionType.Func(
+                    new Identifier("", lowA.DataType, lowA));
+                var a = m.Reg("a", regA);
+                m.Label("body");
+                var uses = new (Storage, Expression)[]
+                {
+                };
+                var defines = new (Storage, Identifier)[]
+                {
+                    (regA, a)
+                };
+                m.Call("fn", 4, uses, defines);
+                m.AddUseToExitBlock(a);
+            });
+
+            When_RunUnusedOutValuesRemover();
+
+            var expected =
+            #region
+@"========================
+fn_entry:
+body:
+	a = 0x00000012
+fn_exit:
+	use a
+========================
+main_entry:
+body:
+	call fn (retsize: 4;)
+		defs: regA:a
+main_exit:
+	use a
+";
+            #endregion
+            AssertProceduresCode(expected);
+        }
     }
 }
