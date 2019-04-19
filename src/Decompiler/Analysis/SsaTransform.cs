@@ -117,8 +117,6 @@ namespace Reko.Analysis
 
             foreach (Block b in new DfsIterator<Block>(ssa.Procedure.ControlGraph).ReversePostOrder())
             {
-                //if (b.Procedure.Name == "fn001054EA")
-                //    trace.Level = TraceLevel.Verbose;//$DEBUG
                 DebugEx.Verbose(trace, "SsaTransform:   {0}", b.Name);
                 this.block = b;
                 foreach (var s in b.Statements.ToList())
@@ -668,6 +666,17 @@ namespace Reko.Analysis
         public override Instruction TransformDefInstruction(DefInstruction def)
         {
             return def;
+        }
+
+        public override Instruction TransformReturnInstruction(ReturnInstruction ret)
+        {
+            if (!ssa.Procedure.Signature.ParametersValid)
+                return base.TransformReturnInstruction(ret);
+            var retValue = ssa.Procedure.Signature.ReturnValue;
+            if (retValue == null || retValue.DataType is VoidType)
+                return base.TransformReturnInstruction(ret);
+            var newId = NewUse(retValue, this.stmCur, false);
+            return new ReturnInstruction(newId);
         }
 
         public override Instruction TransformStore(Store store)

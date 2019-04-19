@@ -4246,5 +4246,44 @@ proc1_exit:
                 m.Return();
             });
         }
+
+        // If the procedure has a valid signature, we bind all return statements using the 
+        // storage of the return value in the signature.
+        [Test]
+        public void SsaReturnInstruction_ValidSignature()
+        {
+            var sExp =
+            #region Expected
+@"Mem0:Mem
+    def:  def Mem0
+    uses: al_2 = Mem0[0x00123400:byte]
+al_2: orig: al
+    def:  al_2 = Mem0[0x00123400:byte]
+    uses: return al_2
+// proc1
+// Return size: 0
+byte proc1()
+proc1_entry:
+	def Mem0
+	// succ:  l1
+l1:
+	al_2 = Mem0[0x00123400:byte]
+	return al_2
+	// succ:  proc1_exit
+proc1_exit:
+======
+";
+            #endregion
+
+            RunTest(sExp, m =>
+            {
+                var al = m.Reg8("al", 0);
+                m.Procedure.Signature = FunctionType.Func(
+                    new Identifier("", PrimitiveType.Byte, al.Storage));
+
+                m.Assign(al, m.Mem8(m.Word32(0x00123400)));
+                m.Return();
+            });
+        }
     }
 }
