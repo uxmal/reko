@@ -162,6 +162,8 @@
     <Compile Include="Arch\M6800\M6812RewriterTests.cs" />
     <Compile Include="Arch\Pdp11\Pdp11ArchitectureTests.cs" />
     <Compile Include="Arch\PowerPC\PowerPcDisassemblerTests.750.cs" />
+    <Compile Include="Arch\Rl78\Rl78DisassemblerTests.cs" />
+    <Compile Include="Arch\Rl78\Rl78RewriterTests.cs" />
     <Compile Include="Arch\Sparc\SparcDisassemblerTests.cs" />
     <Compile Include="Arch\Tms7000\Tms7000DisassemblerTests.cs" />
     <Compile Include="Arch\Tms7000\Tms7000RewriterTests.cs" />
@@ -832,6 +834,10 @@
     <ProjectReference Include="..\Arch\RiscV\RiscV.csproj">
       <Project>{E0697F4C-5F5E-4037-9F0E-7A9064A55B4D}</Project>
       <Name>RiscV</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arch\Rl78\Rl78.csproj">
+      <Project>{54029784-C8A6-43F5-9D00-62EC8DA04FA1}</Project>
+      <Name>Rl78</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\Sparc\Sparc.csproj">
       <Project>{454D9734-EDF3-4646-8C7F-8449C68EB826}</Project>

@@ -153,6 +153,14 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\Arch\Rl78\Rl78.csproj">
+      <Name>Rl78</Name>
+      <Project>{54029784-c8a6-43f5-9d00-62ec8da04fa1}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\Arch\Sparc\Sparc.csproj">
       <Name>Sparc</Name>
       <Project>{454d9734-edf3-4646-8c7f-8449c68eb826}</Project>

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -48,6 +48,11 @@ namespace Reko.Core
             NamesToRegisters.Add(name, reg);
             ++iReg;
             return reg;
+        }
+
+        public RegisterStorage Reg16(string format)
+        {
+            return Reg(format, PrimitiveType.Word16);
         }
 
         public RegisterStorage Reg32(string format)
