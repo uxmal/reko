@@ -2506,6 +2506,12 @@ Global
 		{54029784-C8A6-43F5-9D00-62EC8DA04FA1}.Release|x64.Build.0 = Release|Any CPU
 		{54029784-C8A6-43F5-9D00-62EC8DA04FA1}.Release|x86.ActiveCfg = Release|Any CPU
 		{54029784-C8A6-43F5-9D00-62EC8DA04FA1}.Release|x86.Build.0 = Release|Any CPU
+		{54029784-C8A6-43F5-9D00-62EC8DA04FA1}.TravisRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{54029784-C8A6-43F5-9D00-62EC8DA04FA1}.TravisRelease|Any CPU.Build.0 = Release|Any CPU
+		{54029784-C8A6-43F5-9D00-62EC8DA04FA1}.TravisRelease|x64.ActiveCfg = Release|Any CPU
+		{54029784-C8A6-43F5-9D00-62EC8DA04FA1}.TravisRelease|x64.Build.0 = Release|Any CPU
+		{54029784-C8A6-43F5-9D00-62EC8DA04FA1}.TravisRelease|x86.ActiveCfg = Release|Any CPU
+		{54029784-C8A6-43F5-9D00-62EC8DA04FA1}.TravisRelease|x86.Build.0 = Release|Any CPU
 		{54029784-C8A6-43F5-9D00-62EC8DA04FA1}.UnixRelease|Any CPU.ActiveCfg = Release|Any CPU
 		{54029784-C8A6-43F5-9D00-62EC8DA04FA1}.UnixRelease|Any CPU.Build.0 = Release|Any CPU
 		{54029784-C8A6-43F5-9D00-62EC8DA04FA1}.UnixRelease|x64.ActiveCfg = Release|Any CPU

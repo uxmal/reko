@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
@@ -29,13 +30,11 @@ namespace Reko.Arch.Rl78
 {
     public class Rl78Instruction : MachineInstruction
     {
-        public InstructionClass IClass { get; set; }
+        public InstrClass IClass { get; set; }
         public Mnemonic Mnemonic { get; set; }
-        public MachineOperand[] Operands;
+        public MachineOperand[] Operands { get; set; }
 
-        public override InstructionClass InstructionClass => IClass;
-
-        public override bool IsValid => Mnemonic != Mnemonic.invalid;
+        public override InstrClass InstructionClass => IClass;
 
         public override int OpcodeAsInteger => (int) Mnemonic;
 
@@ -49,7 +48,31 @@ namespace Reko.Arch.Rl78
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            base.Render(writer, options);
+            writer.WriteOpcode(Mnemonic.ToString());
+            if (Operands.Length == 0)
+                return;
+            writer.Tab();
+            RenderOperand(Operands[0], writer, options);
+            if (Operands.Length == 1)
+                return;
+            writer.WriteString(",");
+            RenderOperand(Operands[1], writer, options);
+        }
+
+        private void RenderOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            switch (op)
+            {
+            case RegisterOperand reg:
+                writer.WriteString(reg.Register.Name);
+                return;
+            case ImmediateOperand imm:
+                var sbImm = new StringBuilder("#");
+                var sImm = imm.Value.ToString();
+                writer.WriteString(sImm);
+                return;
+            }
+            throw new NotImplementedException($"Rl78Instruction - RenderOperand {op.GetType().Name}.");
         }
     }
 }

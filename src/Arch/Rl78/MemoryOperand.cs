@@ -18,6 +18,9 @@
  */
 #endregion
 
+using Reko.Core;
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,45 +29,20 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.Rl78
 {
-    public enum Mnemonic
+    public class MemoryOperand : MachineOperand
     {
-        invalid,
-        nop,
-        mov,
-        inc,
-        ADDW,
-        ADD,
-        MOV,
-        XCH,
-        MOVW,
-        ADDC,
-        SUBW,
-        SUB,
-        XCHW,
-        SUBC,
-        CMP,
-        CMPW,
-        AND,
-        OR,
-        XOR,
-        INC,
-        DEC,
-        INCW,
-        DECW,
-        POP,
-        PUSH,
-        CMP0,
-        MULU,
-        RET,
-        BC,
-        BZ,
-        BNC,
-        BNZ,
-        ONEB,
-        ONEW,
-        BR,
-        CLRB,
-        CLRW,
-        CALL,
+        public MemoryOperand(PrimitiveType dt) : base(dt)
+        {
+        }
+
+        public RegisterStorage Base { get; set; }
+
+        public int Offset { get; set; }
+        public RegisterStorage Index { get; internal set; }
+
+        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

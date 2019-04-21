@@ -61,5 +61,11 @@ namespace Reko.UnitTests.Arch.Rl78
         {
             AssertCode("nop", "00");
         }
+
+        [Test]
+        public void Rl78Dis_mov_x_imm()
+        {
+            AssertCode("mov\tx,0x42", "50 42");
+        }
     }
 }

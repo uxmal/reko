@@ -30,13 +30,47 @@ namespace Reko.Arch.Rl78
 {
     public static class Registers
     {
+        public static readonly RegisterStorage ax;
+        public static readonly RegisterStorage bc;
+        public static readonly RegisterStorage de;
+        public static readonly RegisterStorage hl;
         public static readonly RegisterStorage sp;
+        public static readonly RegisterStorage es;
+        public static readonly RegisterStorage cs;
+
+
+        public static readonly RegisterStorage[] ByteRegs;
+
+        public static readonly RegisterStorage x;
+        public static readonly RegisterStorage a;
+        public static readonly RegisterStorage c;
+        public static readonly RegisterStorage b;
+        public static readonly RegisterStorage e;
+        public static readonly RegisterStorage d;
+        public static readonly RegisterStorage l;
+        public static readonly RegisterStorage h;
 
         static Registers()
         {
             var f = new StorageFactory();
+            ax = f.Reg16("ax");
+            bc = f.Reg16("bc");
+            de = f.Reg16("de");
+            hl = f.Reg16("hl");
             sp = f.Reg16("sp");
+            es = f.Reg("es", PrimitiveType.Byte);
+            cs = f.Reg("cs", PrimitiveType.Byte);
 
+            x = new RegisterStorage("x", ax.Number, 0, PrimitiveType.Byte);
+            a = new RegisterStorage("a", ax.Number, 8, PrimitiveType.Byte);
+            c = new RegisterStorage("c", ax.Number, 0, PrimitiveType.Byte);
+            b = new RegisterStorage("b", ax.Number, 8, PrimitiveType.Byte);
+            e = new RegisterStorage("e", ax.Number, 0, PrimitiveType.Byte);
+            d = new RegisterStorage("d", ax.Number, 8, PrimitiveType.Byte);
+            l = new RegisterStorage("l", ax.Number, 0, PrimitiveType.Byte);
+            h = new RegisterStorage("h", ax.Number, 8, PrimitiveType.Byte);
+
+            ByteRegs = new RegisterStorage[8] { x, a, c, b, e, d, l, h };
         }
     }
 
