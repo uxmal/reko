@@ -57,7 +57,7 @@ namespace Reko.UnitTests.Arch.Rl78
         }
 
         [Test]
-        public void Rl78Dis_Nop()
+        public void Rl78Dis_nop()
         {
             AssertCode("nop", "00");
         }
@@ -67,5 +67,48 @@ namespace Reko.UnitTests.Arch.Rl78
         {
             AssertCode("mov\tx,0x42", "50 42");
         }
+
+        [Test]
+        public void Rl78Dis_cmp_a_hl()
+        {
+            AssertCode("cmp\ta,[hl]", "4D");
+        }
+
+        [Test]
+        public void Rl78Dis_sub_a_es_addr16()
+        {
+            AssertCode("sub\ta,es:[1234h]", "11 2F 34 12");
+        }
+
+        [Test]
+        public void Rl78Dis_add_a_hl_off()
+        {
+            AssertCode("add\ta,[hl+80h]", "0E 80");
+        }
+
+        [Test]
+        public void Rl78Dis_movw_addr_c_ax()
+        {
+            AssertCode("movw\t[1234h+c],ax", "68 34 12");
+        }
+
+        [Test]
+        public void Rl78Dis_mov_psw_imm()
+        {
+            AssertCode("mov\t[0FFFFAh],0x42", "CE FA 42");
+        }
+
+        [Test]
+        public void Rl78Dis_shr_a_6()
+        {
+            AssertCode("shr\ta,0x06", "31 6A");
+        }
+
+        [Test]
+        public void Rl78Dis_set1_hl()
+        {
+            AssertCode("set1\t[hl].7", "71 F2");
+        }
+
     }
 }

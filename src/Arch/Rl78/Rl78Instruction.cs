@@ -38,6 +38,8 @@ namespace Reko.Arch.Rl78
 
         public override int OpcodeAsInteger => (int) Mnemonic;
 
+        public RegisterStorage Prefix { get; internal set; }
+
         public override MachineOperand GetOperand(int i)
         {
             if (0 <= i && i < Operands.Length)
@@ -70,6 +72,44 @@ namespace Reko.Arch.Rl78
                 var sbImm = new StringBuilder("#");
                 var sImm = imm.Value.ToString();
                 writer.WriteString(sImm);
+                return;
+            case MemoryOperand mem:
+                if (Prefix != null)
+                {
+                    writer.WriteFormat("{0}:", Prefix.Name);
+                }
+                writer.WriteChar('[');
+                if (mem.Base != null)
+                {
+                    writer.WriteString(mem.Base.Name);
+                    if (mem.Index != null)
+                    {
+                        writer.WriteFormat("+{0}", mem.Index.Name);
+                    }
+                    else if (mem.Offset != 0)
+                    {
+                        if (mem.Offset >= 0xA0)
+                            writer.WriteFormat("+0{0:X2}h", mem.Offset);
+                        else
+                            writer.WriteFormat("+{0:X2}h", mem.Offset);
+                    }
+                }
+                else
+                {
+                    if (mem.Offset >= 0xA000)
+                        writer.WriteFormat("0{0:X4}h", mem.Offset);
+                    else
+                        writer.WriteFormat("{0:X4}h", mem.Offset);
+                    if (mem.Index != null)
+                    {
+                        writer.WriteFormat("+{0}", mem.Index.Name);
+                    }
+                }
+                writer.WriteChar(']');
+                return;
+            case BitOperand bit:
+                this.RenderOperand(bit.Operand, writer, options);
+                writer.WriteFormat(".{0}", bit.BitPosition);
                 return;
             }
             throw new NotImplementedException($"Rl78Instruction - RenderOperand {op.GetType().Name}.");

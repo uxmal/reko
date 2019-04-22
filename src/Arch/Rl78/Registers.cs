@@ -35,9 +35,9 @@ namespace Reko.Arch.Rl78
         public static readonly RegisterStorage de;
         public static readonly RegisterStorage hl;
         public static readonly RegisterStorage sp;
+        public static readonly RegisterStorage psw;
         public static readonly RegisterStorage es;
         public static readonly RegisterStorage cs;
-
 
         public static readonly RegisterStorage[] ByteRegs;
 
@@ -50,6 +50,8 @@ namespace Reko.Arch.Rl78
         public static readonly RegisterStorage l;
         public static readonly RegisterStorage h;
 
+        public static readonly FlagGroupStorage cy;
+
         static Registers()
         {
             var f = new StorageFactory();
@@ -58,6 +60,7 @@ namespace Reko.Arch.Rl78
             de = f.Reg16("de");
             hl = f.Reg16("hl");
             sp = f.Reg16("sp");
+            psw = f.Reg("psw", PrimitiveType.Byte);
             es = f.Reg("es", PrimitiveType.Byte);
             cs = f.Reg("cs", PrimitiveType.Byte);
 
@@ -71,6 +74,8 @@ namespace Reko.Arch.Rl78
             h = new RegisterStorage("h", ax.Number, 8, PrimitiveType.Byte);
 
             ByteRegs = new RegisterStorage[8] { x, a, c, b, e, d, l, h };
+
+            cy = new FlagGroupStorage(psw, (uint) FlagM.CF, "cy", PrimitiveType.Bool);
         }
     }
 

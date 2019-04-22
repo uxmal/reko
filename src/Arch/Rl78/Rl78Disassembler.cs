@@ -31,12 +31,16 @@ namespace Reko.Arch.Rl78
     public class Rl78Disassembler : DisassemblerBase<Rl78Instruction>
     {
         private static readonly Decoder[] s_decoders;
+        private static readonly Decoder[] s_ext2;
+        private static readonly Decoder[] s_ext3;
+        private static readonly Decoder[] s_ext4;
         private static readonly Decoder s_invalid;
 
         private readonly Rl78Architecture arch;
         private readonly EndianImageReader rdr;
         private readonly List<MachineOperand> ops;
         private Address addr;
+        private RegisterStorage prefix;
 
         public Rl78Disassembler(Rl78Architecture arch, EndianImageReader rdr)
         {
@@ -51,6 +55,7 @@ namespace Reko.Arch.Rl78
             if (!rdr.TryReadByte(out byte op))
                 return null;
             ops.Clear();
+            prefix = null;
             var instr = s_decoders[op].Decode(op, this);
             instr.Address = addr;
             instr.Length = (int) (rdr.Address - addr);
@@ -83,6 +88,16 @@ namespace Reko.Arch.Rl78
             };
         }
 
+
+        private static Mutator<Rl78Disassembler> Flag(FlagGroupStorage grf)
+        {
+            return (u, d) =>
+            {
+                d.ops.Add(new FlagGroupOperand(grf));
+                return true;
+            };
+        }
+
         private readonly static Mutator<Rl78Disassembler> X = Reg(Registers.x);
         private readonly static Mutator<Rl78Disassembler> A = Reg(Registers.a);
         private readonly static Mutator<Rl78Disassembler> C = Reg(Registers.c);
@@ -99,6 +114,11 @@ namespace Reko.Arch.Rl78
         private readonly static Mutator<Rl78Disassembler> SP = Reg(Registers.sp);
 
         private readonly static Mutator<Rl78Disassembler> ES = Reg(Registers.es);
+
+        private readonly static Mutator<Rl78Disassembler> PSW = Reg(Registers.psw);
+
+        private readonly static Mutator<Rl78Disassembler> CY = Flag(Registers.cy);
+
 
         private static bool Ib(uint uInstr, Rl78Disassembler dasm)
         {
@@ -129,10 +149,10 @@ namespace Reko.Arch.Rl78
                 return true;
             };
         }
-        private static readonly Mutator<Rl78Disassembler> M_de_b = MemOff(PrimitiveType.Byte, Registers.de);
-        private static readonly Mutator<Rl78Disassembler> M_de_w = MemOff(PrimitiveType.Word16, Registers.de);
-        private static readonly Mutator<Rl78Disassembler> M_hl_b = MemOff(PrimitiveType.Byte, Registers.hl);
-        private static readonly Mutator<Rl78Disassembler> M_hl_w = MemOff(PrimitiveType.Word16, Registers.hl);
+        private static readonly Mutator<Rl78Disassembler> M_de_b = Mem(PrimitiveType.Byte, Registers.de);
+        private static readonly Mutator<Rl78Disassembler> M_de_w = Mem(PrimitiveType.Word16, Registers.de);
+        private static readonly Mutator<Rl78Disassembler> M_hl_b = Mem(PrimitiveType.Byte, Registers.hl);
+        private static readonly Mutator<Rl78Disassembler> M_hl_w = Mem(PrimitiveType.Word16, Registers.hl);
 
 
         // [HL+byte]
@@ -160,6 +180,23 @@ namespace Reko.Arch.Rl78
         private static readonly Mutator<Rl78Disassembler> M_sp_off_b = MemOff(PrimitiveType.Byte, Registers.sp);
         private static readonly Mutator<Rl78Disassembler> M_sp_off_w = MemOff(PrimitiveType.UInt16, Registers.sp);
 
+
+        private static Mutator<Rl78Disassembler> M_idx(PrimitiveType dt, RegisterStorage baseReg, RegisterStorage idx)
+        {
+            return (u, d) =>
+            {
+                var mem = new MemoryOperand(dt)
+                {
+                    Base = baseReg,
+                    Index = idx
+                };
+                d.ops.Add(mem);
+                return true;
+            };
+        }
+        private static readonly Mutator<Rl78Disassembler> M_hl_c_b = M_idx(PrimitiveType.Byte, Registers.hl, Registers.c);
+        private static readonly Mutator<Rl78Disassembler> M_hl_b_b = M_idx(PrimitiveType.Byte, Registers.hl, Registers.b);
+
         private static Mutator<Rl78Disassembler> MwordReg(PrimitiveType dt, RegisterStorage indexReg)
         {
             return (u, d) =>
@@ -181,6 +218,19 @@ namespace Reko.Arch.Rl78
         private static readonly Mutator<Rl78Disassembler> Mword_c_w = MwordReg(PrimitiveType.Word16, Registers.c);
         private static readonly Mutator<Rl78Disassembler> Mword_bc_b = MwordReg(PrimitiveType.Byte, Registers.bc);
         private static readonly Mutator<Rl78Disassembler> Mword_bc_w = MwordReg(PrimitiveType.Word16, Registers.bc);
+
+        private static Mutator<Rl78Disassembler> Mabs(ushort uAddr)
+        {
+            var mem = new MemoryOperand(PrimitiveType.Word16)
+            {
+                Offset = uAddr
+            };
+            return (u, d) =>
+            {
+                d.ops.Add(mem);
+                return true;
+            };
+        }
 
         private static Mutator<Rl78Disassembler> Maddr16(PrimitiveType dt)
         {
@@ -260,7 +310,42 @@ namespace Reko.Arch.Rl78
             return true;
         }
 
+        // Modify previous operand to refer to a specific bit.
+        private static Mutator<Rl78Disassembler> Bit(int nBit)
+        {
+            return (u, d) =>
+            {
+                var iOp = d.ops.Count - 1;
+                var bit = new BitOperand(d.ops[iOp], nBit);
+                d.ops[iOp] = bit;
+                return true;
+            };
+        }
+
+        private static Mutator<Rl78Disassembler> n(int value)
+        {
+            return (u, d) =>
+            {
+                d.ops.Add(ImmediateOperand.Byte((byte) value));
+                return true;
+            };
+        }
+
+        private static Mutator<Rl78Disassembler> RegisterBank(int n)
+        {
+            return (u, d) =>
+            {
+                d.ops.Add(new RegisterBankOperand(n));
+                return true;
+            };
+        }
+        private static readonly Mutator<Rl78Disassembler> RB0 = RegisterBank(0);
+        private static readonly Mutator<Rl78Disassembler> RB1 = RegisterBank(1);
+        private static readonly Mutator<Rl78Disassembler> RB2 = RegisterBank(2);
+        private static readonly Mutator<Rl78Disassembler> RB3 = RegisterBank(3);
+
         #endregion
+
         private abstract class Decoder
         {
             public abstract Rl78Instruction Decode(uint uInstr, Rl78Disassembler dasm);
@@ -290,9 +375,38 @@ namespace Reko.Arch.Rl78
                 {
                     IClass = iclass,
                     Mnemonic = mnem,
+                    Prefix = dasm.prefix,
                     Operands = dasm.ops.ToArray()
                 };
                 return instr;
+            }
+        }
+
+        private class TwoByteDecoder : Decoder
+        {
+            private readonly Decoder[] decoders;
+
+            public TwoByteDecoder(Decoder[] decoders)
+            {
+                this.decoders = decoders;
+            }
+
+            public override Rl78Instruction Decode(uint uInstr, Rl78Disassembler dasm)
+            {
+                if (!dasm.rdr.TryReadByte(out byte op))
+                    return dasm.Invalid();
+                return decoders[op].Decode(op, dasm);
+            }
+        }
+
+        private class PrefixDecoder : Decoder
+        {
+            public override Rl78Instruction Decode(uint uInstr, Rl78Disassembler dasm)
+            {
+                if (!dasm.rdr.TryReadByte(out byte op))
+                    return dasm.Invalid();
+                dasm.prefix = Registers.es;
+                return s_decoders[op].Decode(op, dasm);
             }
         }
 
@@ -322,6 +436,12 @@ namespace Reko.Arch.Rl78
             return new InstrDecoder(InstrClass.Linear, mnem, mutators);
         }
 
+        private static Decoder TwoByte(Decoder[] decoders)
+        {
+            return new TwoByteDecoder(decoders);
+        }
+
+
         private static Decoder Nyi(string message)
         {
             return new NyiDecoder(message);
@@ -331,370 +451,1357 @@ namespace Reko.Arch.Rl78
         {
             s_invalid = Instr(Mnemonic.invalid, InstrClass.Invalid);
 
-            /*
-             * ext-1
-             *  ADD X,A ADD A,A ADD C,A ADD B,A ADD E,A ADD D,A ADD L,A ADD H,A ADD A,X ADDW AX,[HL+byte] ADD A,C ADD A,B ADD A,E ADD A,D ADD A,L ADD A,H 1 ADDC X,A ADDC A,A ADDC C,A ADDC B,A ADDC E,A ADDC D,A ADDC L,A ADDC H,A ADDC A,X ADDC A,C ADDC A,B ADDC A,E ADDC A,D ADDC A,L ADDC A,H 2 SUB X,A SUB A,A SUB C,A SUB B,A SUB E,A SUB D,A SUB L,A SUB H,A SUB A,X SUBW AX,[HL+byte] SUB A,C SUB A,B SUB A,E SUB A,D SUB A,L SUB A,H 3 SUBC X,A SUBC A,A SUBC C,A SUBC B,A SUBC E,A SUBC D,A SUBC L,A SUBC H,A SUBC A,X SUBC A,C SUBC A,B SUBC A,E SUBC A,D SUBC A,L SUBC A,H 4 CMP X,A CMP A,A CMP C,A CMP B,A CMP E,A CMP D,A CMP L,A CMP H,A CMP A,X CMPW AX,[HL+byte] CMP A,C CMP A,B CMP A,E CMP A,D CMP A,L CMP A,H 5 AND X,A AND A,A AND C,A AND B,A AND E,A AND D,A AND L,A AND H,A AND A,X INC [HL+byte] AND A,C AND A,B AND A,E AND A,D AND A,L AND A,H 6 OR X,A OR A,A OR C,A OR B,A OR E,A OR D,A OR L,A OR H,A OR A,X DEC [HL+byte] OR A,C OR A,B OR A,E OR A,D OR A,L OR A,H 7 XOR X,A XOR A,A XOR C,A XOR B,A XOR E,A XOR D,A XOR L,A XOR H,A XOR A,X INCW [HL+byte] XOR A,C XOR A,B XOR A,E XOR A,D XOR A,L XOR A,H 8 ADD A,[HL+B] ADD A,[HL+C] CALLT [0080h] CALLT [0090h] CALLT [00A0h] CALLT [00B0h] DECW [HL+byte] XCH A,C XCH A,B XCH A,E XCH A,D XCH A,L XCH A,H 9 ADDC A,[HL+B] ADDC A,[HL+C] CALLT [0082h] CALLT [0092h] CALLT [00A2h] CALLT [00B2h] a SUB A,[HL+B] SUB A,[HL+C] CALLT [0084h] CALLT [0094h] CALLT [00A4h] CALLT [00B4h] XCH A,saddr XCH A,[HL+C] XCH A,!addr16 XCH A,sfr XCH A,M_hl XCH A,[HL+byte] XCH A,[DE] XCH A,M_de_off_b b SUBC A,[HL+B] SUBC A,[HL+C] CALLT [0086h] CALLT [0096h] CALLT [00A6h] CALLT [00B6h] MOV ES,saddr XCH A,[HL+B] c CMP A,[HL+B] CMP A,[HL+C] BH PcRelative8 CALLT [0088h] CALLT [0098h] CALLT [00A8h] CALLT [00B8h] SKC MOV A,[HL+B] CALL AX BR AX BRK POP PSW MOVS [HL+byte],X SEL RB0Note d AND A,[HL+B] AND A,[HL+C] BNH PcRelative8 CALLT [008Ah] CALLT [009Ah] CALLT [00AAh] CALLT [00BAh] SKNC MOV [HL+B],A CALL BC ROR A,1 ROLC A,1 PUSH PSW CMPS X,[HL+byte] SEL RB1Note e OR A,[HL+B] OR A,[HL+C] SKH CALLT [008Ch] CALLT [009Ch] CALLT [00ACh] CALLT [00BCh] SKZ MOV A,[HL+C] CALL DE ROL A,1 RETB HALT ROLWC AX,1 SEL RB2Note f XOR A,[HL+B] XOR A,[HL+C] SKNH CALLT [008Eh] CALLT [009Eh] CALLT [00AEh] CALLT [00BEh] SKNZ MOV [HL+C],A CALL HL RORC A,1 RETI STOP ROLWC BC,1 SEL RB3Note Note Not mounted
-             */
+            s_ext2 = new Decoder[256] {
+                Instr(Mnemonic.add, X,A),
+                Instr(Mnemonic.add, A,A),
+                Instr(Mnemonic.add, C,A),
+                Instr(Mnemonic.add, B,A),
 
+                Instr(Mnemonic.add, E,A),
+                Instr(Mnemonic.add, D,A),
+                Instr(Mnemonic.add, L,A),
+                Instr(Mnemonic.add, H,A),
 
-            /*
-             * ext-3
-             *  0 SET1 !addr16.0 MOV1 saddr.0,CY SET1 saddr.0 CLR1 saddr.0 MOV1 CY,saddr.0 AND1 CY,saddr.0 OR1 CY,saddr.0 XOR1 CY,saddr.0 CLR1 !addr16.0 MOV1 sfr.0,CY SET1 sfr.0 CLR1 sfr.0 MOV1 CY,sfr.0 AND1 CY,sfr.0 OR1 CY,sfr.0 XOR1 CY,sfr.0 1 SET1 !addr16.1 MOV1 saddr.1,CY SET1 saddr.1 CLR1 saddr.1 MOV1 CY,saddr.1 AND1 CY,saddr.1 OR1 CY,saddr.1 XOR1 CY,saddr.1 CLR1 !addr16.1 MOV1 sfr.1,CY SET1 sfr.1 CLR1 sfr.1 MOV1 CY,sfr.1 AND1 CY,sfr.1 OR1 CY,sfr.1 XOR1 CY,sfr.1 2 SET1 !addr16.2 MOV1 saddr.2,CY SET1 saddr.2 CLR1 saddr.2 MOV1 CY,saddr.2 AND1 CY,saddr.2 OR1 CY,saddr.2 XOR1 CY,saddr.2 CLR1 !addr16.2 MOV1 sfr.2,CY SET1 sfr.2 CLR1 sfr.2 MOV1 CY,sfr.2 AND1 CY,sfr.2 OR1 CY,sfr.2 XOR1 CY,sfr.2 3 SET1 !addr16.3 MOV1 saddr.3,CY SET1 saddr.3 CLR1 saddr.3 MOV1 CY,saddr.3 AND1 CY,saddr.3 OR1 CY,saddr.3 XOR1 CY,saddr.3 CLR1 !addr16.3 MOV1 sfr.3,CY SET1 sfr.3 CLR1 sfr.3 MOV1 CY,sfr.3 AND1 CY,sfr.3 OR1 CY,sfr.3 XOR1 CY,sfr.3 4 SET1 !addr16.4 MOV1 saddr.4,CY SET1 saddr.4 CLR1 saddr.4 MOV1 CY,saddr.4 AND1 CY,saddr.4 OR1 CY,saddr.4 XOR1 CY,saddr.4 CLR1 !addr16.4 MOV1 sfr.4,CY SET1 sfr.4 CLR1 sfr.4 MOV1 CY,sfr.4 AND1 CY,sfr.4 OR1 CY,sfr.4 XOR1 CY,sfr.4 5 SET1 !addr16.5 MOV1 saddr.5,CY SET1 saddr.5 CLR1 saddr.5 MOV1 CY,saddr.5 AND1 CY,saddr.5 OR1 CY,saddr.5 XOR1 CY,saddr.5 CLR1 !addr16.5 MOV1 sfr.5,CY SET1 sfr.5 CLR1 sfr.5 MOV1 CY,sfr.5 AND1 CY,sfr.5 OR1 CY,sfr.5 XOR1 CY,sfr.5 6 SET1 !addr16.6 MOV1 saddr.6,CY SET1 saddr.6 CLR1 saddr.6 MOV1 CY,saddr.6 AND1 CY,saddr.6 OR1 CY,saddr.6 XOR1 CY,saddr.6 CLR1 !addr16.6 MOV1 sfr.6,CY SET1 sfr.6 CLR1 sfr.6 MOV1 CY,sfr.6 AND1 CY,sfr.6 OR1 CY,sfr.6 XOR1 CY,sfr.6 7 SET1 !addr16.7 MOV1 saddr.7,CY SET1 saddr.7 CLR1 saddr.7 MOV1 CY,saddr.7 AND1 CY,saddr.7 OR1 CY,saddr.7 XOR1 CY,saddr.7 CLR1 !addr16.7 MOV1 sfr.7,CY SET1 sfr.7 CLR1 sfr.7 MOV1 CY,sfr.7 AND1 CY,sfr.7 OR1 CY,sfr.7 XOR1 CY,sfr.7 8 SET1 CY MOV1 M_hl.0,CY SET1 M_hl.0 CLR1 M_hl.0 MOV1 CY,M_hl.0 AND1 CY,M_hl.0 OR1 CY,M_hl.0 XOR1 CY,M_hl.0 CLR1 CY MOV1 A.0,CY SET1 A.0 CLR1 A.0 MOV1 CY,A.0 AND1 CY,A.0 OR1 CY,A.0 XOR1 CY,A.0 9 MOV1 M_hl.1,CY SET1 M_hl.1 CLR1 M_hl.1 MOV1 CY,M_hl.1 AND1 CY,M_hl.1 OR1 CY,M_hl.1 XOR1 CY,M_hl.1 MOV1 A.1,CY SET1 A.1 CLR1 A.1 MOV1 CY,A.1 AND1 CY,A.1 OR1 CY,A.1 XOR1 CY,A.1 a MOV1 M_hl.2,CY SET1 M_hl.2 CLR1 M_hl.2 MOV1 CY,M_hl.2 AND1 CY,M_hl.2 OR1 CY,M_hl.2 XOR1 CY,M_hl.2 MOV1 A.2,CY SET1 A.2 CLR1 A.2 MOV1 CY,A.2 AND1 CY,A.2 OR1 CY,A.2 XOR1 CY,A.2 b MOV1 M_hl.3,CY SET1 M_hl.3 CLR1 M_hl.3 MOV1 CY,M_hl.3 AND1 CY,M_hl.3 OR1 CY,M_hl.3 XOR1 CY,M_hl.3 MOV1 A.3,CY SET1 A.3 CLR1 A.3 MOV1 CY,A.3 AND1 CY,A.3 OR1 CY,A.3 XOR1 CY,A.3 c NOT1 CY MOV1 M_hl.4,CY SET1 M_hl.4 CLR1 M_hl.4 MOV1 CY,M_hl.4 AND1 CY,M_hl.4 OR1 CY,M_hl.4 XOR1 CY,M_hl.4 MOV1 A.4,CY SET1 A.4 CLR1 A.4 MOV1 CY,A.4 AND1 CY,A.4 OR1 CY,A.4 XOR1 CY,A.4 d MOV1 M_hl.5,CY SET1 M_hl.5 CLR1 M_hl.5 MOV1 CY,M_hl.5 AND1 CY,M_hl.5 OR1 CY,M_hl.5 XOR1 CY,M_hl.5 MOV1 A.5,CY SET1 A.5 CLR1 A.5 MOV1 CY,A.5 AND1 CY,A.5 OR1 CY,A.5 XOR1 CY,A.5 e MOV1 M_hl.6,CY SET1 M_hl.6 CLR1 M_hl.6 MOV1 CY,M_hl.6 AND1 CY,M_hl.6 OR1 CY,M_hl.6 XOR1 CY,M_hl.6 MOV1 A.6,CY SET1 A.6 CLR1 A.6 MOV1 CY,A.6 AND1 CY,A.6 OR1 CY,A.6 XOR1 CY,A.6 f MOV1 M_hl.7,CY SET1 M_hl.7 CLR1 M_hl.7 MOV1 CY,M_hl.7 AND1 CY,M_hl.7 OR1 CY,M_hl.7 XOR1 CY,M_hl.7 MOV1 A.7,CY SET1 A.7 CLR1 A.7 MOV1 CY,A.7 AND1 CY,A.7 OR1 CY,A.7 XOR1 CY,A.7 
-             */
+                Instr(Mnemonic.add, A,X),
+                Instr(Mnemonic.addw, AX,M_hl_off_b),
+                Instr(Mnemonic.add, A,C),
+                Instr(Mnemonic.add, A,B),
 
-            /*
-             * ext-4
-             *  BTCLR saddr.0,PcRelative8 BTCLR A.0,PcRelative8 BT saddr.0,PcRelative8 BT A.0,PcRelative8 BF saddr.0,PcRelative8 BF A.0,PcRelative8 1 BTCLR saddr.1,PcRelative8 BTCLR A.1,PcRelative8 BT saddr.1,PcRelative8 BT A.1,PcRelative8 BF saddr.1,PcRelative8 BF A.1,PcRelative8 SHL C,1 SHL B,1 SHL A,1 SHR A,1 SAR A,1 SHLW BC,1 SHLW AX,1 SHRW AX,1 SARW AX,1 2 BTCLR saddr.2,PcRelative8 BTCLR A.2,PcRelative8 BT saddr.2,PcRelative8 BT A.2,PcRelative8 BF saddr.2,PcRelative8 BF A.2,PcRelative8 SHL C,2 SHL B,2 SHL A,2 SHR A,2 SAR A,2 SHLW BC,2 SHLW AX,2 SHRW AX,2 SARW AX,2 3 BTCLR saddr.3,PcRelative8 BTCLR A.3,PcRelative8 BT saddr.3,PcRelative8 BT A.3,PcRelative8 BF saddr.3,PcRelative8 BF A.3,PcRelative8 SHL C,3 SHL B,3 SHL A,3 SHR A,3 SAR A,3 SHLW BC,3 SHLW AX,3 SHRW AX,3 SARW AX,3 4 BTCLR saddr.4,PcRelative8 BTCLR A.4,PcRelative8 BT saddr.4,PcRelative8 BT A.4,PcRelative8 BF saddr.4,PcRelative8 BF A.4,PcRelative8 SHL C,4 SHL B,4 SHL A,4 SHR A,4 SAR A,4 SHLW BC,4 SHLW AX,4 SHRW AX,4 SARW AX,4 5 BTCLR saddr.5,PcRelative8 BTCLR A.5,PcRelative8 BT saddr.5,PcRelative8 BT A.5,PcRelative8 BF saddr.5,PcRelative8 BF A.5,PcRelative8 SHL C,5 SHL B,5 SHL A,5 SHR A,5 SAR A,5 SHLW BC,5 SHLW AX,5 SHRW AX,5 SARW AX,5 6 BTCLR saddr.6,PcRelative8 BTCLR A.6,PcRelative8 BT saddr.6,PcRelative8 BT A.6,PcRelative8 BF saddr.6,PcRelative8 BF A.6,PcRelative8 SHL C,6 SHL B,6 SHL A,6 SHR A,6 SAR A,6 SHLW BC,6 SHLW AX,6 SHRW AX,6 SARW AX,6 7 BTCLR saddr.7,PcRelative8 BTCLR A.7,PcRelative8 BT saddr.7,PcRelative8 BT A.7,PcRelative8 BF saddr.7,PcRelative8 BF A.7,PcRelative8 SHL C,7 SHL B,7 SHL A,7 SHR A,7 SAR A,7 SHLW BC,7 SHLW AX,7 SHRW AX,7 SARW AX,7 8 BTCLR sfr.0,PcRelative8 BTCLR M_hl.0,PcRelative8 BT sfr.0,PcRelative8 BT M_hl.0,PcRelative8 BF sfr.0,PcRelative8 BF M_hl.0,PcRelative8 SHLW BC,8 SHLW AX,8 SHRW AX,8 SARW AX,8 9 BTCLR sfr.1,PcRelative8 BTCLR M_hl.1,PcRelative8 BT sfr.1,PcRelative8 BT M_hl.1,PcRelative8 BF sfr.1,PcRelative8 BF M_hl.1,PcRelative8 SHLW BC,9 SHLW AX,9 SHRW AX,9 SARW AX,9 a BTCLR sfr.2,PcRelative8 BTCLR M_hl.2,PcRelative8 BT sfr.2,PcRelative8 BT M_hl.2,PcRelative8 BF sfr.2,PcRelative8 BF M_hl.2,PcRelative8 SHLW BC,10 SHLW AX,10 SHRW AX,10 SARW AX,10 b BTCLR sfr.3,PcRelative8 BTCLR M_hl.3,PcRelative8 BT sfr.3,PcRelative8 BT M_hl.3,PcRelative8 BF sfr.3,PcRelative8 BF M_hl.3,PcRelative8 SHLW BC,11 SHLW AX,11 SHRW AX,11 SARW AX,11 c BTCLR sfr.4,PcRelative8 BTCLR M_hl.4,PcRelative8 BT sfr.4,PcRelative8 BT M_hl.4,PcRelative8 BF sfr.4,PcRelative8 BF M_hl.4,PcRelative8 SHLW BC,12 SHLW AX,12 SHRW AX,12 SARW AX,12 d BTCLR sfr.5,PcRelative8 BTCLR M_hl.5,PcRelative8 BT sfr.5,PcRelative8 BT M_hl.5,PcRelative8 BF sfr.5,PcRelative8 BF M_hl.5,PcRelative8 SHLW BC,13 SHLW AX,13 SHRW AX,13 SARW AX,13 e BTCLR sfr.6,PcRelative8 BTCLR M_hl.6,PcRelative8 BT sfr.6,PcRelative8 BT M_hl.6,PcRelative8 BF sfr.6,PcRelative8 BF M_hl.6,PcRelative8 SHLW BC,14 SHLW AX,14 SHRW AX,14 SARW AX,14 f BTCLR sfr.7,PcRelative8 BTCLR M_hl.7,PcRelative8 BT sfr.7,PcRelative8 BT M_hl.7,PcRelative8 BF sfr.7,PcRelative8 BF M_hl.7,PcRelative8 SHLW BC,15 SHLW AX,15 SHRW AX,15 SARW AX,15 
-             */
+                Instr(Mnemonic.add, A,E),
+                Instr(Mnemonic.add, A,D),
+                Instr(Mnemonic.add, A,L),
+                Instr(Mnemonic.add, A,H), 
+                // 0x01
+                Instr(Mnemonic.addc, X,A),
+                Instr(Mnemonic.addc, A,A),
+                Instr(Mnemonic.addc, C,A),
+                Instr(Mnemonic.addc, B,A),
 
-            s_decoders = new Decoder[]
+                Instr(Mnemonic.addc, E,A),
+                Instr(Mnemonic.addc, D,A),
+                Instr(Mnemonic.addc, L,A),
+                Instr(Mnemonic.addc, H,A),
+
+                Instr(Mnemonic.addc, A,X),
+                s_invalid,
+                Instr(Mnemonic.addc, A,C),
+                Instr(Mnemonic.addc, A,B),
+
+                Instr(Mnemonic.addc, A,E),
+                Instr(Mnemonic.addc, A,D),
+                Instr(Mnemonic.addc, A,L),
+                Instr(Mnemonic.addc, A,H),
+                // 0x20
+                Instr(Mnemonic.sub, X,A),
+                Instr(Mnemonic.sub, A,A),
+                Instr(Mnemonic.sub, C,A),
+                Instr(Mnemonic.sub, B,A),
+
+                Instr(Mnemonic.sub, E,A),
+                Instr(Mnemonic.sub, D,A),
+                Instr(Mnemonic.sub, L,A),
+                Instr(Mnemonic.sub, H,A),
+
+                Instr(Mnemonic.sub, A,X),
+                Instr(Mnemonic.subw, AX,M_hl_off_w),
+                Instr(Mnemonic.sub, A,C),
+                Instr(Mnemonic.sub, A,B),
+
+                Instr(Mnemonic.sub, A,E),
+                Instr(Mnemonic.sub, A,D),
+                Instr(Mnemonic.sub, A,L),
+                Instr(Mnemonic.sub, A,H),
+                // 0x30
+                Instr(Mnemonic.subc, X,A),
+                Instr(Mnemonic.subc, A,A),
+                Instr(Mnemonic.subc, C,A),
+                Instr(Mnemonic.subc, B,A),
+
+                Instr(Mnemonic.subc, E,A),
+                Instr(Mnemonic.subc, D,A),
+                Instr(Mnemonic.subc, L,A),
+                Instr(Mnemonic.subc, H,A),
+
+                Instr(Mnemonic.subc, A,X),
+                s_invalid,
+                Instr(Mnemonic.subc, A,C),
+                Instr(Mnemonic.subc, A,B),
+
+                Instr(Mnemonic.subc, A,E),
+                Instr(Mnemonic.subc, A,D),
+                Instr(Mnemonic.subc, A,L),
+                Instr(Mnemonic.subc, A,H),
+                
+                // 0x40
+                Instr(Mnemonic.cmp, X,A),
+                Instr(Mnemonic.cmp, A,A),
+                Instr(Mnemonic.cmp, C,A),
+                Instr(Mnemonic.cmp, B,A),
+
+                Instr(Mnemonic.cmp, E,A),
+                Instr(Mnemonic.cmp, D,A),
+                Instr(Mnemonic.cmp, L,A),
+                Instr(Mnemonic.cmp, H,A),
+
+                Instr(Mnemonic.cmp, A,X),
+                Instr(Mnemonic.cmpw, AX,M_hl_off_w),
+                Instr(Mnemonic.cmp, A,C),
+                Instr(Mnemonic.cmp, A,B),
+
+                Instr(Mnemonic.cmp, A,E),
+                Instr(Mnemonic.cmp, A,D),
+                Instr(Mnemonic.cmp, A,L),
+                Instr(Mnemonic.cmp, A,H),
+                // 0x50
+                Instr(Mnemonic.and, X,A),
+                Instr(Mnemonic.and, A,A),
+                Instr(Mnemonic.and, C,A),
+                Instr(Mnemonic.and, B,A),
+
+                Instr(Mnemonic.and, E,A),
+                Instr(Mnemonic.and, D,A),
+                Instr(Mnemonic.and, L,A),
+                Instr(Mnemonic.and, H,A),
+
+                Instr(Mnemonic.and, A,X),
+                Instr(Mnemonic.inc, M_hl_off_b),
+                Instr(Mnemonic.and, A,C),
+                Instr(Mnemonic.and, A,B),
+
+                Instr(Mnemonic.and, A,E),
+                Instr(Mnemonic.and, A,D),
+                Instr(Mnemonic.and, A,L),
+                Instr(Mnemonic.and, A,H),
+                // 0x60
+                Instr(Mnemonic.or, X,A),
+                Instr(Mnemonic.or, A,A),
+                Instr(Mnemonic.or, C,A),
+                Instr(Mnemonic.or, B,A),
+
+                Instr(Mnemonic.or, E,A),
+                Instr(Mnemonic.or, D,A),
+                Instr(Mnemonic.or, L,A),
+                Instr(Mnemonic.or, H,A),
+
+                Instr(Mnemonic.or, A,X),
+                Instr(Mnemonic.dec, M_hl_off_b),
+                Instr(Mnemonic.or, A,C),
+                Instr(Mnemonic.or, A,B),
+
+                Instr(Mnemonic.or, A,E),
+                Instr(Mnemonic.or, A,D),
+                Instr(Mnemonic.or, A,L),
+                Instr(Mnemonic.or, A,H),
+                // 0x70
+                Instr(Mnemonic.xor, X,A),
+                Instr(Mnemonic.xor, A,A),
+                Instr(Mnemonic.xor, C,A),
+                Instr(Mnemonic.xor, B,A),
+
+                Instr(Mnemonic.xor, E,A),
+                Instr(Mnemonic.xor, D,A),
+                Instr(Mnemonic.xor, L,A),
+                Instr(Mnemonic.xor, H,A),
+
+                Instr(Mnemonic.xor, A,X),
+                Instr(Mnemonic.incw, M_hl_off_w),
+                Instr(Mnemonic.xor, A,C),
+                Instr(Mnemonic.xor, A,B),
+
+                Instr(Mnemonic.xor, A,E),
+                Instr(Mnemonic.xor, A,D),
+                Instr(Mnemonic.xor, A,L),
+                Instr(Mnemonic.xor, A,H),
+
+                // 0x80
+                Instr(Mnemonic.add, A,M_hl_b_b),
+                s_invalid,
+                Instr(Mnemonic.add, A,M_hl_c_b),
+                s_invalid,
+
+                Instr(Mnemonic.callt, Mabs(0x0080)),
+                Instr(Mnemonic.callt, Mabs(0x0090)),
+                Instr(Mnemonic.callt, Mabs(0x00A0)),
+                Instr(Mnemonic.callt, Mabs(0x00B0)),
+
+                s_invalid,
+                Instr(Mnemonic.decw, M_hl_off_w),
+                Instr(Mnemonic.xch, A,C),
+                Instr(Mnemonic.xch, A,B),
+
+                Instr(Mnemonic.xch, A,E),
+                Instr(Mnemonic.xch, A,D),
+                Instr(Mnemonic.xch, A,L),
+                Instr(Mnemonic.xch, A,H),
+                
+                // 0x90
+                Instr(Mnemonic.addc, A,M_hl_b_b),
+                s_invalid,
+                Instr(Mnemonic.addc, A,M_hl_c_b),
+                s_invalid,
+
+                Instr(Mnemonic.callt, Mabs(0x0082)),
+                Instr(Mnemonic.callt, Mabs(0x0092)),
+                Instr(Mnemonic.callt, Mabs(0x00A2)),
+                Instr(Mnemonic.callt, Mabs(0x00B2)),
+
+                s_invalid,
+                s_invalid,
+                s_invalid,
+                s_invalid,
+
+                s_invalid,
+                s_invalid,
+                s_invalid,
+                s_invalid,
+
+                // 0xA0,
+                Instr(Mnemonic.sub, A,M_hl_b_b),
+                s_invalid,
+                Instr(Mnemonic.sub, A,M_hl_c_b),
+                s_invalid,
+
+                Instr(Mnemonic.callt, Mabs(0x0084)),
+                Instr(Mnemonic.callt, Mabs(0x0094)),
+                Instr(Mnemonic.callt, Mabs(0x00A4)),
+                Instr(Mnemonic.callt, Mabs(0x00B4)),
+
+                Instr(Mnemonic.xch, A,saddr),
+                Instr(Mnemonic.xch, A,M_hl_c_b),
+                Instr(Mnemonic.xch, A,Maddr16b),
+                Instr(Mnemonic.xch, A,sfr),
+
+                Instr(Mnemonic.xch, A,M_hl_b),
+                Instr(Mnemonic.xch, A,M_hl_off_b),
+                Instr(Mnemonic.xch, A,M_de_b),
+                Instr(Mnemonic.xch, A,M_de_off_b),
+
+                //  0xB0
+                Instr(Mnemonic.subc, A,M_hl_b_b),
+                s_invalid,
+                Instr(Mnemonic.subc, A,M_hl_c_b),
+                s_invalid,
+
+                Instr(Mnemonic.callt, Mabs(0x0086)),
+                Instr(Mnemonic.callt, Mabs(0x0096)),
+                Instr(Mnemonic.callt, Mabs(0x00A6)),
+                Instr(Mnemonic.callt, Mabs(0x00B6)),
+
+                Instr(Mnemonic.mov, ES,saddr),
+                Instr(Mnemonic.xch, A,M_hl_b_b),
+                s_invalid,
+                s_invalid,
+
+                s_invalid,
+                s_invalid,
+                s_invalid,
+                s_invalid,
+
+                // 0xC0
+                Instr(Mnemonic.cmp, A,M_hl_b_b),
+                s_invalid,
+                Instr(Mnemonic.cmp, A,M_hl_c_b),
+                Instr(Mnemonic.bh, PcRelative8),
+
+                Instr(Mnemonic.callt, Mabs(0x0088)),
+                Instr(Mnemonic.callt, Mabs(0x0098)),
+                Instr(Mnemonic.callt, Mabs(0x00A8)),
+                Instr(Mnemonic.callt, Mabs(0x00B8)),
+
+                Instr(Mnemonic.skc),
+                Instr(Mnemonic.mov, A,M_hl_b_b),
+                Instr(Mnemonic.call, AX),
+                Instr(Mnemonic.br, AX),
+
+                Instr(Mnemonic.brk),
+                Instr(Mnemonic.pop, PSW),
+                Instr(Mnemonic.movs, M_hl_off_b,X),
+                Instr(Mnemonic.sel, RB0),
+
+                // 0xD0
+                Instr(Mnemonic.and, A,M_hl_b_b),
+                s_invalid,
+                Instr(Mnemonic.and, A,M_hl_c_b),
+                Instr(Mnemonic.bnh, PcRelative8),
+
+                Instr(Mnemonic.callt, Mabs(0x008A)),
+                Instr(Mnemonic.callt, Mabs(0x009A)),
+                Instr(Mnemonic.callt, Mabs(0x00AA)),
+                Instr(Mnemonic.callt, Mabs(0x00BA)),
+
+                Instr(Mnemonic.sknc),
+                Instr(Mnemonic.mov, M_hl_b_b,A),
+                Instr(Mnemonic.call, BC),
+                Instr(Mnemonic.ror, A,n(1)),
+
+                Instr(Mnemonic.rolc, A,n(1)),
+                Instr(Mnemonic.push, PSW),
+                Instr(Mnemonic.cmps, X,M_hl_off_b),
+                Instr(Mnemonic.sel, RB1), // Note
+    
+                // 0xE0
+                Instr(Mnemonic.or, A,M_hl_b_b),
+                s_invalid,
+                Instr(Mnemonic.or, A,M_hl_c_b),
+                Instr(Mnemonic.skh),
+
+                Instr(Mnemonic.callt, Mabs(0x008C)),
+                Instr(Mnemonic.callt, Mabs(0x009C)),
+                Instr(Mnemonic.callt, Mabs(0x00AC)),
+                Instr(Mnemonic.callt, Mabs(0x00BC)),
+
+                Instr(Mnemonic.skz),
+                Instr(Mnemonic.mov, A,M_hl_c_b),
+                Instr(Mnemonic.call, DE),
+                Instr(Mnemonic.rol, A,n(1)),
+
+                Instr(Mnemonic.retb),
+                Instr(Mnemonic.halt),
+                Instr(Mnemonic.rolwc, AX,n(1)),
+                Instr(Mnemonic.sel, RB2), // Note
+                // 0xF0
+                Instr(Mnemonic.xor, A,M_hl_b_b),
+                s_invalid,
+                Instr(Mnemonic.xor, A,M_hl_c_b),
+                Instr(Mnemonic.sknh),
+
+                Instr(Mnemonic.callt, Mabs(0x008E)),
+                Instr(Mnemonic.callt, Mabs(0x009E)),
+                Instr(Mnemonic.callt, Mabs(0x00AE)),
+                Instr(Mnemonic.callt, Mabs(0x00BE)),
+
+                Instr(Mnemonic.sknz),
+                Instr(Mnemonic.mov, M_hl_c_b,A),
+                Instr(Mnemonic.call, HL),
+                Instr(Mnemonic.rorc, A,n(1)),
+
+                Instr(Mnemonic.reti),
+                Instr(Mnemonic.stop),
+                Instr(Mnemonic.rolwc, BC,n(1)),
+                Instr(Mnemonic.sel, RB3)
+             };
+
+            s_ext3 = new Decoder[256] {
+                // 0x00
+                Instr(Mnemonic.set1, Maddr16b,Bit(0)),
+                Instr(Mnemonic.mov1, saddr,Bit(0),CY),
+                Instr(Mnemonic.set1, saddr,Bit(0)),
+                Instr(Mnemonic.clr1, saddr,Bit(0)),
+
+                Instr(Mnemonic.mov1, CY,saddr,Bit(0)),
+                Instr(Mnemonic.and1, CY,saddr,Bit(0)),
+                Instr(Mnemonic.or1, CY,saddr,Bit(0)),
+                Instr(Mnemonic.xor1, CY,saddr,Bit(0)),
+
+                Instr(Mnemonic.clr1, Maddr16b,Bit(0)),
+                Instr(Mnemonic.mov1, sfr,Bit(0),CY),
+                Instr(Mnemonic.set1, sfr,Bit(0)),
+                Instr(Mnemonic.clr1, sfr,Bit(0)),
+
+                Instr(Mnemonic.mov1, CY,sfr,Bit(0)),
+                Instr(Mnemonic.and1, CY,sfr,Bit(0)),
+                Instr(Mnemonic.or1, CY,sfr,Bit(0)),
+                Instr(Mnemonic.xor1, CY,sfr,Bit(0)),
+                
+                // 0x10
+                Instr(Mnemonic.set1, Maddr16b,Bit(1)),
+                Instr(Mnemonic.mov1, saddr,Bit(1),CY),
+                Instr(Mnemonic.set1, saddr,Bit(1)),
+                Instr(Mnemonic.clr1, saddr,Bit(1)),
+
+                Instr(Mnemonic.mov1, CY,saddr,Bit(1)),
+                Instr(Mnemonic.and1, CY,saddr,Bit(1)),
+                Instr(Mnemonic.or1, CY,saddr,Bit(1)),
+                Instr(Mnemonic.xor1, CY,saddr,Bit(1)),
+
+                Instr(Mnemonic.clr1, Maddr16b,Bit(1)),
+                Instr(Mnemonic.mov1, sfr,Bit(1),CY),
+                Instr(Mnemonic.set1, sfr,Bit(1)),
+                Instr(Mnemonic.clr1, sfr,Bit(1)),
+
+                Instr(Mnemonic.mov1, CY,sfr,Bit(1)),
+                Instr(Mnemonic.and1, CY,sfr,Bit(1)),
+                Instr(Mnemonic.or1, CY,sfr,Bit(1)),
+                Instr(Mnemonic.xor1, CY,sfr,Bit(1)),
+    
+                // 0x20
+                Instr(Mnemonic.set1, Maddr16b,Bit(2)),
+                Instr(Mnemonic.mov1, saddr,Bit(2),CY),
+                Instr(Mnemonic.set1, saddr,Bit(2)),
+                Instr(Mnemonic.clr1, saddr,Bit(2)),
+
+                Instr(Mnemonic.mov1, CY,saddr,Bit(2)),
+                Instr(Mnemonic.and1, CY,saddr,Bit(2)),
+                Instr(Mnemonic.or1, CY,saddr,Bit(2)),
+                Instr(Mnemonic.xor1, CY,saddr,Bit(2)),
+
+                Instr(Mnemonic.clr1, Maddr16b,Bit(2)),
+                Instr(Mnemonic.mov1, sfr,Bit(2),CY),
+                Instr(Mnemonic.set1, sfr,Bit(2)),
+                Instr(Mnemonic.clr1, sfr,Bit(2)),
+
+                Instr(Mnemonic.mov1, CY,sfr,Bit(2)),
+                Instr(Mnemonic.and1, CY,sfr,Bit(2)),
+                Instr(Mnemonic.or1, CY,sfr,Bit(2)),
+                Instr(Mnemonic.xor1, CY,sfr,Bit(2)),
+                
+                // 0x30
+                Instr(Mnemonic.set1, Maddr16b,Bit(3)),
+                Instr(Mnemonic.mov1, saddr,Bit(3),CY),
+                Instr(Mnemonic.set1, saddr,Bit(3)),
+                Instr(Mnemonic.clr1, saddr,Bit(3)),
+
+                Instr(Mnemonic.mov1, CY,saddr,Bit(3)),
+                Instr(Mnemonic.and1, CY,saddr,Bit(3)),
+                Instr(Mnemonic.or1, CY,saddr,Bit(3)),
+                Instr(Mnemonic.xor1, CY,saddr,Bit(3)),
+
+                Instr(Mnemonic.clr1, Maddr16b,Bit(3)),
+                Instr(Mnemonic.mov1, sfr,Bit(3),CY),
+                Instr(Mnemonic.set1, sfr,Bit(3)),
+                Instr(Mnemonic.clr1, sfr,Bit(3)),
+
+                Instr(Mnemonic.mov1, CY,sfr,Bit(3)),
+                Instr(Mnemonic.and1, CY,sfr,Bit(3)),
+                Instr(Mnemonic.or1, CY,sfr,Bit(3)),
+                Instr(Mnemonic.xor1, CY,sfr,Bit(3)),
+                
+                // 0x40
+                Instr(Mnemonic.set1, Maddr16b,Bit(4)),
+                Instr(Mnemonic.mov1, saddr,Bit(4),CY),
+                Instr(Mnemonic.set1, saddr,Bit(4)),
+                Instr(Mnemonic.clr1, saddr,Bit(4)),
+
+                Instr(Mnemonic.mov1, CY,saddr,Bit(4)),
+                Instr(Mnemonic.and1, CY,saddr,Bit(4)),
+                Instr(Mnemonic.or1, CY,saddr,Bit(4)),
+                Instr(Mnemonic.xor1, CY,saddr,Bit(4)),
+
+                Instr(Mnemonic.clr1, Maddr16b,Bit(4)),
+                Instr(Mnemonic.mov1, sfr,Bit(4),CY),
+                Instr(Mnemonic.set1, sfr,Bit(4)),
+                Instr(Mnemonic.clr1, sfr,Bit(4)),
+
+                Instr(Mnemonic.mov1, CY,sfr,Bit(4)),
+                Instr(Mnemonic.and1, CY,sfr,Bit(4)),
+                Instr(Mnemonic.or1, CY,sfr,Bit(4)),
+                Instr(Mnemonic.xor1, CY,sfr,Bit(4)),
+    
+                // 0x50
+                Instr(Mnemonic.set1, Maddr16b,Bit(5)),
+                Instr(Mnemonic.mov1, saddr,Bit(5),CY),
+                Instr(Mnemonic.set1, saddr,Bit(5)),
+                Instr(Mnemonic.clr1, saddr,Bit(5)),
+
+                Instr(Mnemonic.mov1, CY,saddr,Bit(5)),
+                Instr(Mnemonic.and1, CY,saddr,Bit(5)),
+                Instr(Mnemonic.or1, CY,saddr,Bit(5)),
+                Instr(Mnemonic.xor1, CY,saddr,Bit(5)),
+
+                Instr(Mnemonic.clr1, Maddr16b,Bit(5)),
+                Instr(Mnemonic.mov1, sfr,Bit(5),CY),
+                Instr(Mnemonic.set1, sfr,Bit(5)),
+                Instr(Mnemonic.clr1, sfr,Bit(5)),
+
+                Instr(Mnemonic.mov1, CY,sfr,Bit(5)),
+                Instr(Mnemonic.and1, CY,sfr,Bit(5)),
+                Instr(Mnemonic.or1, CY,sfr,Bit(5)),
+                Instr(Mnemonic.xor1, CY,sfr,Bit(5)),
+    
+                // 0x60
+                Instr(Mnemonic.set1, Maddr16b,Bit(6)),
+                Instr(Mnemonic.mov1, saddr,Bit(6),CY),
+                Instr(Mnemonic.set1, saddr,Bit(6)),
+                Instr(Mnemonic.clr1, saddr,Bit(6)),
+
+                Instr(Mnemonic.mov1, CY,saddr,Bit(6)),
+                Instr(Mnemonic.and1, CY,saddr,Bit(6)),
+                Instr(Mnemonic.or1, CY,saddr,Bit(6)),
+                Instr(Mnemonic.xor1, CY,saddr,Bit(6)),
+
+                Instr(Mnemonic.clr1, Maddr16b,Bit(6)),
+                Instr(Mnemonic.mov1, sfr,Bit(6),CY),
+                Instr(Mnemonic.set1, sfr,Bit(6)),
+                Instr(Mnemonic.clr1, sfr,Bit(6)),
+
+                Instr(Mnemonic.mov1, CY,sfr,Bit(6)),
+                Instr(Mnemonic.and1, CY,sfr,Bit(6)),
+                Instr(Mnemonic.or1, CY,sfr,Bit(6)),
+                Instr(Mnemonic.xor1, CY,sfr,Bit(6)),
+    
+                // 0x70
+                Instr(Mnemonic.set1, Maddr16b,Bit(7)),
+                Instr(Mnemonic.mov1, saddr,Bit(7),CY),
+                Instr(Mnemonic.set1, saddr,Bit(7)),
+                Instr(Mnemonic.clr1, saddr,Bit(7)),
+
+                Instr(Mnemonic.mov1, CY,saddr,Bit(7)),
+                Instr(Mnemonic.and1, CY,saddr,Bit(7)),
+                Instr(Mnemonic.or1, CY,saddr,Bit(7)),
+                Instr(Mnemonic.xor1, CY,saddr,Bit(7)),
+
+                Instr(Mnemonic.clr1, Maddr16b,Bit(7)),
+                Instr(Mnemonic.mov1, sfr,Bit(7),CY),
+                Instr(Mnemonic.set1, sfr,Bit(7)),
+                Instr(Mnemonic.clr1, sfr,Bit(7)),
+
+                Instr(Mnemonic.mov1, CY,sfr,Bit(7)),
+                Instr(Mnemonic.and1, CY,sfr,Bit(7)),
+                Instr(Mnemonic.or1, CY,sfr,Bit(7)),
+                Instr(Mnemonic.xor1, CY,sfr,Bit(7)),
+    
+                // 0x80
+                Instr(Mnemonic.set1, CY),
+                Instr(Mnemonic.mov1, M_hl_b,Bit(0),CY),
+                Instr(Mnemonic.set1, M_hl_b,Bit(0)),
+                Instr(Mnemonic.clr1, M_hl_b,Bit(0)),
+
+                Instr(Mnemonic.mov1, CY,M_hl_b,Bit(0)),
+                Instr(Mnemonic.and1, CY,M_hl_b,Bit(0)),
+                Instr(Mnemonic.or1, CY,M_hl_b,Bit(0)),
+                Instr(Mnemonic.xor1, CY,M_hl_b,Bit(0)),
+
+                Instr(Mnemonic.clr1, CY),
+                Instr(Mnemonic.mov1, A,Bit(0),CY),
+                Instr(Mnemonic.set1, A,Bit(0)),
+                Instr(Mnemonic.clr1, A,Bit(0)),
+
+                Instr(Mnemonic.mov1, CY,A,Bit(0)),
+                Instr(Mnemonic.and1, CY,A,Bit(0)),
+                Instr(Mnemonic.or1, CY,A,Bit(0)),
+                Instr(Mnemonic.xor1, CY,A,Bit(0)),
+   
+                // 0x90
+                s_invalid,
+                Instr(Mnemonic.mov1, M_hl_b,Bit(1),CY),
+                Instr(Mnemonic.set1, M_hl_b,Bit(1)),
+                Instr(Mnemonic.clr1, M_hl_b,Bit(1)),
+
+                Instr(Mnemonic.mov1, CY,M_hl_b,Bit(1)),
+                Instr(Mnemonic.and1, CY,M_hl_b,Bit(1)),
+                Instr(Mnemonic.or1, CY,M_hl_b,Bit(1)),
+                Instr(Mnemonic.xor1, CY,M_hl_b,Bit(1)),
+
+                s_invalid,
+                Instr(Mnemonic.mov1, A,Bit(1),CY),
+                Instr(Mnemonic.set1, A,Bit(1)),
+                Instr(Mnemonic.clr1, A,Bit(1)),
+
+                Instr(Mnemonic.mov1, CY,A,Bit(1)),
+                Instr(Mnemonic.and1, CY,A,Bit(1)),
+                Instr(Mnemonic.or1, CY,A,Bit(1)),
+                Instr(Mnemonic.xor1, CY,A,Bit(1)),
+    
+                // 0xA0
+                s_invalid,
+                Instr(Mnemonic.mov1, M_hl_b,Bit(2),CY),
+                Instr(Mnemonic.set1, M_hl_b,Bit(2)),
+                Instr(Mnemonic.clr1, M_hl_b,Bit(2)),
+
+                Instr(Mnemonic.mov1, CY,M_hl_b,Bit(2)),
+                Instr(Mnemonic.and1, CY,M_hl_b,Bit(2)),
+                Instr(Mnemonic.or1, CY,M_hl_b,Bit(2)),
+                Instr(Mnemonic.xor1, CY,M_hl_b,Bit(2)),
+
+                s_invalid,
+                Instr(Mnemonic.mov1, A,Bit(2),CY),
+                Instr(Mnemonic.set1, A,Bit(2)),
+                Instr(Mnemonic.clr1, A,Bit(2)),
+
+                Instr(Mnemonic.mov1, CY,A,Bit(2)),
+                Instr(Mnemonic.and1, CY,A,Bit(2)),
+                Instr(Mnemonic.or1, CY,A,Bit(2)),
+                Instr(Mnemonic.xor1, CY,A,Bit(2)),
+    
+                // 0xB0
+                s_invalid,
+                Instr(Mnemonic.mov1, M_hl_b,Bit(3),CY),
+                Instr(Mnemonic.set1, M_hl_b,Bit(3)),
+                Instr(Mnemonic.clr1, M_hl_b,Bit(3)),
+
+                Instr(Mnemonic.mov1, CY,M_hl_b,Bit(3)),
+                Instr(Mnemonic.and1, CY,M_hl_b,Bit(3)),
+                Instr(Mnemonic.or1, CY,M_hl_b,Bit(3)),
+                Instr(Mnemonic.xor1, CY,M_hl_b,Bit(3)),
+
+                s_invalid,
+                Instr(Mnemonic.mov1, A,Bit(3),CY),
+                Instr(Mnemonic.set1, A,Bit(3)),
+                Instr(Mnemonic.clr1, A,Bit(3)),
+
+                Instr(Mnemonic.mov1, CY,A,Bit(3)),
+                Instr(Mnemonic.and1, CY,A,Bit(3)),
+                Instr(Mnemonic.or1, CY,A,Bit(3)),
+                Instr(Mnemonic.xor1, CY,A,Bit(3)),
+    
+                // 0xC0
+                Instr(Mnemonic.not1, CY),
+                Instr(Mnemonic.mov1, M_hl_b,Bit(4),CY),
+                Instr(Mnemonic.set1, M_hl_b,Bit(4)),
+                Instr(Mnemonic.clr1, M_hl_b,Bit(4)),
+
+                Instr(Mnemonic.mov1, CY,M_hl_b,Bit(4)),
+                Instr(Mnemonic.and1, CY,M_hl_b,Bit(4)),
+                Instr(Mnemonic.or1, CY,M_hl_b,Bit(4)),
+                Instr(Mnemonic.xor1, CY,M_hl_b,Bit(4)),
+
+                s_invalid,
+                Instr(Mnemonic.mov1, A,Bit(4),CY),
+                Instr(Mnemonic.set1, A,Bit(4)),
+                Instr(Mnemonic.clr1, A,Bit(4)),
+
+                Instr(Mnemonic.mov1, CY,A,Bit(4)),
+                Instr(Mnemonic.and1, CY,A,Bit(4)),
+                Instr(Mnemonic.or1, CY,A,Bit(4)),
+                Instr(Mnemonic.xor1, CY,A,Bit(4)),
+
+                // 0xD0
+                s_invalid,
+                Instr(Mnemonic.mov1, M_hl_b,Bit(5),CY),
+                Instr(Mnemonic.set1, M_hl_b,Bit(5)),
+                Instr(Mnemonic.clr1, M_hl_b,Bit(5)),
+
+                Instr(Mnemonic.mov1, CY,M_hl_b,Bit(5)),
+                Instr(Mnemonic.and1, CY,M_hl_b,Bit(5)),
+                Instr(Mnemonic.or1, CY,M_hl_b,Bit(5)),
+                Instr(Mnemonic.xor1, CY,M_hl_b,Bit(5)),
+
+                s_invalid,
+                Instr(Mnemonic.mov1, A,Bit(5),CY),
+                Instr(Mnemonic.set1, A,Bit(5)),
+                Instr(Mnemonic.clr1, A,Bit(5)),
+
+                Instr(Mnemonic.mov1, CY,A,Bit(5)),
+                Instr(Mnemonic.and1, CY,A,Bit(5)),
+                Instr(Mnemonic.or1, CY,A,Bit(5)),
+                Instr(Mnemonic.xor1, CY,A,Bit(5)),
+    
+                // 0xE0
+                s_invalid,
+                Instr(Mnemonic.mov1, M_hl_b,Bit(6),CY),
+                Instr(Mnemonic.set1, M_hl_b,Bit(6)),
+                Instr(Mnemonic.clr1, M_hl_b,Bit(6)),
+
+                Instr(Mnemonic.mov1, CY,M_hl_b,Bit(6)),
+                Instr(Mnemonic.and1, CY,M_hl_b,Bit(6)),
+                Instr(Mnemonic.or1, CY,M_hl_b,Bit(6)),
+                Instr(Mnemonic.xor1, CY,M_hl_b,Bit(6)),
+
+                s_invalid,
+                Instr(Mnemonic.mov1, A,Bit(6),CY),
+                Instr(Mnemonic.set1, A,Bit(6)),
+                Instr(Mnemonic.clr1, A,Bit(6)),
+
+                Instr(Mnemonic.mov1, CY,A,Bit(6)),
+                Instr(Mnemonic.and1, CY,A,Bit(6)),
+                Instr(Mnemonic.or1, CY,A,Bit(6)),
+                Instr(Mnemonic.xor1, CY,A,Bit(6)),
+    
+                // 0xF0
+                s_invalid,
+                Instr(Mnemonic.mov1, M_hl_b,Bit(7),CY),
+                Instr(Mnemonic.set1, M_hl_b,Bit(7)),
+                Instr(Mnemonic.clr1, M_hl_b,Bit(7)),
+
+                Instr(Mnemonic.mov1, CY,M_hl_b,Bit(7)),
+                Instr(Mnemonic.and1, CY,M_hl_b,Bit(7)),
+                Instr(Mnemonic.or1, CY,M_hl_b,Bit(7)),
+                Instr(Mnemonic.xor1, CY,M_hl_b,Bit(7)),
+
+                s_invalid,
+                Instr(Mnemonic.mov1, A,Bit(7),CY),
+                Instr(Mnemonic.set1, A,Bit(7)),
+                Instr(Mnemonic.clr1, A,Bit(7)),
+
+                Instr(Mnemonic.mov1, CY,A,Bit(7)),
+                Instr(Mnemonic.and1, CY,A,Bit(7)),
+                Instr(Mnemonic.or1, CY,A,Bit(7)),
+                Instr(Mnemonic.xor1, CY,A,Bit(7))
+            };
+
+            s_ext4 = new Decoder[256] {
+                Instr(Mnemonic.btclr, saddr,Bit(0),PcRelative8),
+                Instr(Mnemonic.btclr, A,Bit(0),PcRelative8),
+                Instr(Mnemonic.bt, saddr,Bit(0),PcRelative8),
+                Instr(Mnemonic.bt, A,Bit(0),PcRelative8),
+
+                Instr(Mnemonic.bf, saddr,Bit(0),PcRelative8),
+                Instr(Mnemonic.bf, A,Bit(0),PcRelative8),
+                s_invalid,
+                s_invalid,
+
+                s_invalid,
+                s_invalid,
+                s_invalid,
+                s_invalid,
+
+                s_invalid,
+                s_invalid,
+                s_invalid,
+                s_invalid,
+
+                // 0x10
+                Instr(Mnemonic.btclr, saddr,Bit(1),PcRelative8),
+                Instr(Mnemonic.btclr, A,Bit(1),PcRelative8),
+                Instr(Mnemonic.bt, saddr,Bit(1),PcRelative8),
+                Instr(Mnemonic.bt, A,Bit(1),PcRelative8),
+
+                Instr(Mnemonic.bf, saddr,Bit(1),PcRelative8),
+                Instr(Mnemonic.bf, A,Bit(1),PcRelative8),
+                s_invalid,
+                Instr(Mnemonic.shl, C,n(1)),
+
+                Instr(Mnemonic.shl, B,n(1)),
+                Instr(Mnemonic.shl, A,n(1)),
+                Instr(Mnemonic.shr, A,n(1)),
+                Instr(Mnemonic.sar, A,n(1)),
+
+                Instr(Mnemonic.shlw, BC,n(1)),
+                Instr(Mnemonic.shlw, AX,n(1)),
+                Instr(Mnemonic.shrw, AX,n(1)),
+                Instr(Mnemonic.sarw, AX,n(1)),
+
+                // 0x20
+                Instr(Mnemonic.btclr, saddr,Bit(2),PcRelative8),
+                Instr(Mnemonic.btclr, A,Bit(2),PcRelative8),
+                Instr(Mnemonic.bt, saddr,Bit(2),PcRelative8),
+                Instr(Mnemonic.bt, A,Bit(2),PcRelative8),
+
+                Instr(Mnemonic.bf, saddr,Bit(2),PcRelative8),
+                Instr(Mnemonic.bf, A,Bit(2),PcRelative8),
+                s_invalid,
+                Instr(Mnemonic.shl, C,n(2)),
+
+                Instr(Mnemonic.shl, B,n(2)),
+                Instr(Mnemonic.shl, A,n(2)),
+                Instr(Mnemonic.shr, A,n(2)),
+                Instr(Mnemonic.sar, A,n(2)),
+
+                Instr(Mnemonic.shlw, BC,n(2)),
+                Instr(Mnemonic.shlw, AX,n(2)),
+                Instr(Mnemonic.shrw, AX,n(2)),
+                Instr(Mnemonic.sarw, AX,n(2)),
+    
+                // 0x30
+                Instr(Mnemonic.btclr, saddr,Bit(3),PcRelative8),
+                Instr(Mnemonic.btclr, A,Bit(3),PcRelative8),
+                Instr(Mnemonic.bt, saddr,Bit(3),PcRelative8),
+                Instr(Mnemonic.bt, A,Bit(3),PcRelative8),
+
+                Instr(Mnemonic.bf, saddr,Bit(3),PcRelative8),
+                Instr(Mnemonic.bf, A,Bit(3),PcRelative8),
+                s_invalid,
+                Instr(Mnemonic.shl, C,n(3)),
+
+                Instr(Mnemonic.shl, B,n(3)),
+                Instr(Mnemonic.shl, A,n(3)),
+                Instr(Mnemonic.shr, A,n(3)),
+                Instr(Mnemonic.sar, A,n(3)),
+
+                Instr(Mnemonic.shlw, BC,n(3)),
+                Instr(Mnemonic.shlw, AX,n(3)),
+                Instr(Mnemonic.shrw, AX,n(3)),
+                Instr(Mnemonic.sarw, AX,n(3)),
+    
+                // 0x40
+                Instr(Mnemonic.btclr, saddr,Bit(4),PcRelative8),
+                Instr(Mnemonic.btclr, A,Bit(4),PcRelative8),
+                Instr(Mnemonic.bt, saddr,Bit(4),PcRelative8),
+                Instr(Mnemonic.bt, A,Bit(4),PcRelative8),
+
+                Instr(Mnemonic.bf, saddr,Bit(4),PcRelative8),
+                Instr(Mnemonic.bf, A,Bit(4),PcRelative8),
+                s_invalid,
+                Instr(Mnemonic.shl, C,n(4)),
+
+                Instr(Mnemonic.shl, B,n(4)),
+                Instr(Mnemonic.shl, A,n(4)),
+                Instr(Mnemonic.shr, A,n(4)),
+                Instr(Mnemonic.sar, A,n(4)),
+
+                Instr(Mnemonic.shlw, BC,n(4)),
+                Instr(Mnemonic.shlw, AX,n(4)),
+                Instr(Mnemonic.shrw, AX,n(4)),
+                Instr(Mnemonic.sarw, AX,n(4)),
+    
+                // 0x50
+                Instr(Mnemonic.btclr, saddr,Bit(5),PcRelative8),
+                Instr(Mnemonic.btclr, A,Bit(5),PcRelative8),
+                Instr(Mnemonic.bt, saddr,Bit(5),PcRelative8),
+                Instr(Mnemonic.bt, A,Bit(5),PcRelative8),
+
+                Instr(Mnemonic.bf, saddr,Bit(5),PcRelative8),
+                Instr(Mnemonic.bf, A,Bit(5),PcRelative8),
+                s_invalid,
+                Instr(Mnemonic.shl, C,n(5)),
+
+                Instr(Mnemonic.shl, B,n(5)),
+                Instr(Mnemonic.shl, A,n(5)),
+                Instr(Mnemonic.shr, A,n(5)),
+                Instr(Mnemonic.sar, A,n(5)),
+
+                Instr(Mnemonic.shlw, BC,n(5)),
+                Instr(Mnemonic.shlw, AX,n(5)),
+                Instr(Mnemonic.shrw, AX,n(5)),
+                Instr(Mnemonic.sarw, AX,n(5)),
+                
+                // 0x60
+                Instr(Mnemonic.btclr, saddr,Bit(6),PcRelative8),
+                Instr(Mnemonic.btclr, A,Bit(6),PcRelative8),
+                Instr(Mnemonic.bt, saddr,Bit(6),PcRelative8),
+                Instr(Mnemonic.bt, A,Bit(6),PcRelative8),
+
+                Instr(Mnemonic.bf, saddr,Bit(6),PcRelative8),
+                Instr(Mnemonic.bf, A,Bit(6),PcRelative8),
+                s_invalid,
+                Instr(Mnemonic.shl, C,n(6)),
+
+                Instr(Mnemonic.shl, B,n(6)),
+                Instr(Mnemonic.shl, A,n(6)),
+                Instr(Mnemonic.shr, A,n(6)),
+                Instr(Mnemonic.sar, A,n(6)),
+
+                Instr(Mnemonic.shlw, BC,n(6)),
+                Instr(Mnemonic.shlw, AX,n(6)),
+                Instr(Mnemonic.shrw, AX,n(6)),
+                Instr(Mnemonic.sarw, AX,n(6)),
+                
+                // 0x70
+                Instr(Mnemonic.btclr, saddr,Bit(7),PcRelative8),
+                Instr(Mnemonic.btclr, A,Bit(7),PcRelative8),
+                Instr(Mnemonic.bt, saddr,Bit(7),PcRelative8),
+                Instr(Mnemonic.bt, A,Bit(7),PcRelative8),
+
+                Instr(Mnemonic.bf, saddr,Bit(7),PcRelative8),
+                Instr(Mnemonic.bf, A,Bit(7),PcRelative8),
+                s_invalid,
+                Instr(Mnemonic.shl, C,n(7)),
+
+                Instr(Mnemonic.shl, B,n(7)),
+                Instr(Mnemonic.shl, A,n(7)),
+                Instr(Mnemonic.shr, A,n(7)),
+                Instr(Mnemonic.sar, A,n(7)),
+
+                Instr(Mnemonic.shlw, BC,n(7)),
+                Instr(Mnemonic.shlw, AX,n(7)),
+                Instr(Mnemonic.shrw, AX,n(7)),
+                Instr(Mnemonic.sarw, AX,n(7)),
+                
+                // 0x80
+                Instr(Mnemonic.btclr, sfr,Bit(0),PcRelative8),
+                Instr(Mnemonic.btclr, M_hl_b,Bit(0),PcRelative8),
+                Instr(Mnemonic.bt, sfr,Bit(0),PcRelative8),
+                Instr(Mnemonic.bt, M_hl_b,Bit(0),PcRelative8),
+
+                Instr(Mnemonic.bf, sfr,Bit(0),PcRelative8),
+                Instr(Mnemonic.bf, M_hl_b,Bit(0),PcRelative8),
+                s_invalid,
+                s_invalid,
+
+                s_invalid,
+                s_invalid,
+                s_invalid,
+                s_invalid,
+
+                Instr(Mnemonic.shlw, BC,n(8)),
+                Instr(Mnemonic.shlw, AX,n(8)),
+                Instr(Mnemonic.shrw, AX,n(8)),
+                Instr(Mnemonic.sarw, AX,n(8)),
+
+                // 0x90
+                Instr(Mnemonic.btclr, sfr,Bit(1),PcRelative8),
+                Instr(Mnemonic.btclr, M_hl_b,Bit(1),PcRelative8),
+                Instr(Mnemonic.bt, sfr,Bit(1),PcRelative8),
+                Instr(Mnemonic.bt, M_hl_b,Bit(1),PcRelative8),
+
+                Instr(Mnemonic.bf, sfr,Bit(1),PcRelative8),
+                Instr(Mnemonic.bf, M_hl_b,Bit(1),PcRelative8),
+                s_invalid,
+                s_invalid,
+
+                s_invalid,
+                s_invalid,
+                s_invalid,
+                s_invalid,
+
+                Instr(Mnemonic.shlw, BC,n(9)),
+                Instr(Mnemonic.shlw, AX,n(9)),
+                Instr(Mnemonic.shrw, AX,n(9)),
+                Instr(Mnemonic.sarw, AX,n(9)),
+
+                // 0xA0
+                Instr(Mnemonic.btclr, sfr,Bit(2),PcRelative8),
+                Instr(Mnemonic.btclr, M_hl_b,Bit(2),PcRelative8),
+                Instr(Mnemonic.bt, sfr,Bit(2),PcRelative8),
+                Instr(Mnemonic.bt, M_hl_b,Bit(2),PcRelative8),
+
+                Instr(Mnemonic.bf, sfr,Bit(2),PcRelative8),
+                Instr(Mnemonic.bf, M_hl_b,Bit(2),PcRelative8),
+                s_invalid,
+                s_invalid,
+
+                s_invalid,
+                s_invalid,
+                s_invalid,
+                s_invalid,
+
+                Instr(Mnemonic.shlw, BC,n(10)),
+                Instr(Mnemonic.shlw, AX,n(10)),
+                Instr(Mnemonic.shrw, AX,n(10)),
+                Instr(Mnemonic.sarw, AX,n(10)),
+                
+                // 0xB0
+                Instr(Mnemonic.btclr, sfr,Bit(3),PcRelative8),
+                Instr(Mnemonic.btclr, M_hl_b,Bit(3),PcRelative8),
+                Instr(Mnemonic.bt, sfr,Bit(3),PcRelative8),
+                Instr(Mnemonic.bt, M_hl_b,Bit(3),PcRelative8),
+
+                Instr(Mnemonic.bf, sfr,Bit(3),PcRelative8),
+                Instr(Mnemonic.bf, M_hl_b,Bit(3),PcRelative8),
+                s_invalid,
+                s_invalid,
+
+                s_invalid,
+                s_invalid,
+                s_invalid,
+                s_invalid,
+
+                Instr(Mnemonic.shlw, BC,n(11)),
+                Instr(Mnemonic.shlw, AX,n(11)),
+                Instr(Mnemonic.shrw, AX,n(11)),
+                Instr(Mnemonic.sarw, AX,n(11)),
+                
+                // 0xC0
+                Instr(Mnemonic.btclr, sfr,Bit(4),PcRelative8),
+                Instr(Mnemonic.btclr, M_hl_b,Bit(4),PcRelative8),
+                Instr(Mnemonic.bt, sfr,Bit(4),PcRelative8),
+                Instr(Mnemonic.bt, M_hl_b,Bit(4),PcRelative8),
+
+                Instr(Mnemonic.bf, sfr,Bit(4),PcRelative8),
+                Instr(Mnemonic.bf, M_hl_b,Bit(4),PcRelative8),
+                s_invalid,
+                s_invalid,
+
+                s_invalid,
+                s_invalid,
+                s_invalid,
+                s_invalid,
+
+                Instr(Mnemonic.shlw, BC,n(12)),
+                Instr(Mnemonic.shlw, AX,n(12)),
+                Instr(Mnemonic.shrw, AX,n(12)),
+                Instr(Mnemonic.sarw, AX,n(12)),
+                
+                // 0xD0
+                Instr(Mnemonic.btclr, sfr,Bit(5),PcRelative8),
+                Instr(Mnemonic.btclr, M_hl_b,Bit(5),PcRelative8),
+                Instr(Mnemonic.bt, sfr,Bit(5),PcRelative8),
+                Instr(Mnemonic.bt, M_hl_b,Bit(5),PcRelative8),
+
+                Instr(Mnemonic.bf, sfr,Bit(5),PcRelative8),
+                Instr(Mnemonic.bf, M_hl_b,Bit(5),PcRelative8),
+                s_invalid,
+                s_invalid,
+
+                s_invalid,
+                s_invalid,
+                s_invalid,
+                s_invalid,
+
+                Instr(Mnemonic.shlw, BC,n(13)),
+                Instr(Mnemonic.shlw, AX,n(13)),
+                Instr(Mnemonic.shrw, AX,n(13)),
+                Instr(Mnemonic.sarw, AX,n(13)),
+                
+                // 0xE0
+                Instr(Mnemonic.btclr, sfr,Bit(6),PcRelative8),
+                Instr(Mnemonic.btclr, M_hl_b,Bit(6),PcRelative8),
+                Instr(Mnemonic.bt, sfr,Bit(6),PcRelative8),
+                Instr(Mnemonic.bt, M_hl_b,Bit(6),PcRelative8),
+
+                Instr(Mnemonic.bf, sfr,Bit(6),PcRelative8),
+                Instr(Mnemonic.bf, M_hl_b,Bit(6),PcRelative8),
+                s_invalid,
+                s_invalid,
+
+                s_invalid,
+                s_invalid,
+                s_invalid,
+                s_invalid,
+
+                Instr(Mnemonic.shlw, BC,n(14)),
+                Instr(Mnemonic.shlw, AX,n(14)),
+                Instr(Mnemonic.shrw, AX,n(14)),
+                Instr(Mnemonic.sarw, AX,n(14)),
+                
+                // 0xF0
+                Instr(Mnemonic.btclr, sfr,Bit(7),PcRelative8),
+                Instr(Mnemonic.btclr, M_hl_b,Bit(7),PcRelative8),
+                Instr(Mnemonic.bt, sfr,Bit(7),PcRelative8),
+                Instr(Mnemonic.bt, M_hl_b,Bit(7),PcRelative8),
+
+                Instr(Mnemonic.bf, sfr,Bit(7),PcRelative8),
+                Instr(Mnemonic.bf, M_hl_b,Bit(7),PcRelative8),
+                s_invalid,
+                s_invalid,
+
+                s_invalid,
+                s_invalid,
+                s_invalid,
+                s_invalid,
+
+                Instr(Mnemonic.shlw, BC,n(15)),
+                Instr(Mnemonic.shlw, AX,n(15)),
+                Instr(Mnemonic.shrw, AX,n(15)),
+                Instr(Mnemonic.sarw, AX,n(15))
+            };
+
+            s_decoders = new Decoder[256]
             {
-// 0x00
-Instr(Mnemonic.nop, InstrClass.Linear | InstrClass.Padding | InstrClass.Zero),
-Instr(Mnemonic.ADDW, AX, AX),                Instr(Mnemonic.ADDW, AX,Maddr16w),
-Instr(Mnemonic.ADDW, AX, BC),
-
-Instr(Mnemonic.ADDW, AX,Iw ),
-Instr(Mnemonic.ADDW, AX,DE),
-Instr(Mnemonic.ADDW, AX,saddrp),
-Instr(Mnemonic.ADDW, AX,HL),
-
-Instr(Mnemonic.XCH, A,X),
-Instr(Mnemonic.MOV, A,Mword_b_b),
-Instr(Mnemonic.ADD, saddr,Ib),
-Instr(Mnemonic.ADD, A,saddr),
-
-Instr(Mnemonic.ADD, A,Ib ),
-Instr(Mnemonic.ADD, A,M_hl_b),
-Instr(Mnemonic.ADD, A,M_hl_off_b),
-Instr(Mnemonic.ADD, A,Maddr16b),
-
-// 0x10
-Instr(Mnemonic.ADDW, SP,Ib ),
-Nyi("PREFIX "),
-Instr(Mnemonic.MOVW, BC,AX),
-Instr(Mnemonic.MOVW, AX,BC),
-
-Instr(Mnemonic.MOVW, DE,AX),
-Instr(Mnemonic.MOVW, AX,DE),
-Instr(Mnemonic.MOVW, HL,AX),
-Instr(Mnemonic.MOVW, AX,HL),
-
-Instr(Mnemonic.MOV, Mword_b_b,A),
-Instr(Mnemonic.MOV, Mword_b_b,Ib ),
-Instr(Mnemonic.ADDC, saddr,Ib ),
-Instr(Mnemonic.ADDC, A,saddr),
-
-Instr(Mnemonic.ADDC, A,Ib ),
-Instr(Mnemonic.ADDC, A,M_hl_b),
-Instr(Mnemonic.ADDC, A,M_hl_off_b),
-Instr(Mnemonic.ADDC, A,Maddr16b),
-
-// 0x20
-Instr(Mnemonic.SUBW, SP,Ib ),
-Nyi("0x21"),
-Instr(Mnemonic.SUBW, AX,Maddr16w),
-Instr(Mnemonic.SUBW, AX, BC),
-
-
-Instr(Mnemonic.SUBW, AX,Iw ),
-Instr(Mnemonic.SUBW, AX,DE),
-Instr(Mnemonic.SUBW, AX,saddrp),
-Instr(Mnemonic.SUBW, AX,HL),
-
-Instr(Mnemonic.MOV, Mword_c_b,A),
-Instr(Mnemonic.MOV, A,Mword_c_b),
-Instr(Mnemonic.SUB, saddr,Ib ),
-Instr(Mnemonic.SUB, A,saddr),
-
-Instr(Mnemonic.SUB, A,Ib ),
-Instr(Mnemonic.SUB, A,M_hl_b),
-Instr(Mnemonic.SUB, A,M_hl_off_b),
-Instr(Mnemonic.SUB, A,Maddr16b),
-
-// 0x30
-Instr(Mnemonic.MOVW, AX,Iw),
-Nyi("4th MAP"),
-Instr(Mnemonic.MOVW, BC,Iw ),
-Instr(Mnemonic.XCHW, AX,BC),
-
-Instr(Mnemonic.MOVW, DE,Iw ),
-Instr(Mnemonic.XCHW, AX, DE),
-Instr(Mnemonic.MOVW, HL,Iw ),
-Instr(Mnemonic.XCHW, AX,HL),
-
-Instr(Mnemonic.MOV, Mword_c_b,Ib ),
-Instr(Mnemonic.MOV, Mword_bc_b,Ib ),
-Instr(Mnemonic.SUBC, saddr,Ib ),
-Instr(Mnemonic.SUBC, A, saddr),
-
-
-Instr(Mnemonic.SUBC, A,Ib ),
-Instr(Mnemonic.SUBC, A,M_hl_b),
-Instr(Mnemonic.SUBC, A,M_hl_off_b),
-Instr(Mnemonic.SUBC, A,Maddr16b),
-
-// 0x40
-Instr(Mnemonic.CMP, Maddr16b,Ib ),
-Instr(Mnemonic.MOV, ES,Ib ),
-Instr(Mnemonic.CMPW, AX,Maddr16w),
-Instr(Mnemonic.CMPW, AX,BC),
-
-Instr(Mnemonic.CMPW, AX,Iw ),
-Instr(Mnemonic.CMPW, AX, DE),
-Instr(Mnemonic.CMPW, AX, saddrp),
-Instr(Mnemonic.CMPW, AX, HL),
-
-
-Instr(Mnemonic.MOV, Mword_bc_b, A),
-Instr(Mnemonic.MOV, A, Mword_bc_b),
-Instr(Mnemonic.CMP, saddr,Ib ),
-Instr(Mnemonic.CMP, A,saddr),
-
-Instr(Mnemonic.CMP, A,Ib ),
-Instr(Mnemonic.CMP, A,M_hl_b),
-Instr(Mnemonic.CMP, A,M_hl_off_b),
-Instr(Mnemonic.CMP, A,Maddr16b),
-
-// 0x50
-Instr(Mnemonic.MOV, X,Ib ),
-Instr(Mnemonic.MOV, A,Ib ),
-Instr(Mnemonic.MOV, C,Ib ),
-Instr(Mnemonic.MOV, B,Ib ),
-
-Instr(Mnemonic.MOV, E,Ib ),
-Instr(Mnemonic.MOV, D,Ib ),
-Instr(Mnemonic.MOV, L,Ib ),
-Instr(Mnemonic.MOV, H,Ib ),
-
-Instr(Mnemonic.MOVW, Mword_b_w,AX),
-Instr(Mnemonic.MOVW, AX,Mword_b_w),
-Instr(Mnemonic.AND, saddr,Ib ),
-Instr(Mnemonic.AND, A, saddr),
-
-
-Instr(Mnemonic.AND, A,Ib ),
-Instr(Mnemonic.AND, A,M_hl_b),
-Instr(Mnemonic.AND, A,M_hl_off_b),
-Instr(Mnemonic.AND, A,Maddr16b),
-
-// 0x60
-Instr(Mnemonic.MOV, A,X),
-Nyi("2nd MAP"),
-Instr(Mnemonic.MOV, A, C),
-Instr(Mnemonic.MOV, A, B),
-
-
-Instr(Mnemonic.MOV, A, E),
-Instr(Mnemonic.MOV, A, D),
-Instr(Mnemonic.MOV, A, L),
-Instr(Mnemonic.MOV, A, H),
-
-
-Instr(Mnemonic.MOVW, Mword_c_w, AX),
-Instr(Mnemonic.MOVW, AX, Mword_c_w),
-Instr(Mnemonic.OR, saddr,Ib ),
-Instr(Mnemonic.OR, A,saddr),
-
-Instr(Mnemonic.OR, A,Ib ),
-Instr(Mnemonic.OR, A,M_hl_b),
-Instr(Mnemonic.OR, A,M_hl_off_b),
-Instr(Mnemonic.OR, A,Maddr16b),
-
-// 0x70
-Instr(Mnemonic.MOV, X,A),
-Nyi("3rd MAP"),
-Instr(Mnemonic.MOV, C, A),
-Instr(Mnemonic.MOV, B, A),
-
-
-Instr(Mnemonic.MOV, E, A),
-Instr(Mnemonic.MOV, D, A),
-Instr(Mnemonic.MOV, L, A),
-Instr(Mnemonic.MOV, H, A),
-
-
-Instr(Mnemonic.MOVW, Mword_bc_w, AX),
-Instr(Mnemonic.MOVW, AX, Mword_bc_w),
-Instr(Mnemonic.XOR, saddr,Ib ),
-Instr(Mnemonic.XOR, A,saddr),
-
-Instr(Mnemonic.XOR, A,Ib ),
-Instr(Mnemonic.XOR, A,M_hl_b),
-Instr(Mnemonic.XOR, A,M_hl_off_b),
-Instr(Mnemonic.XOR, A,Maddr16b),
-
-// 0x80
-Instr(Mnemonic.INC, X),
-Instr(Mnemonic.INC, A),
-Instr(Mnemonic.INC, C),
-Instr(Mnemonic.INC, B),
-
-Instr(Mnemonic.INC, E),
-Instr(Mnemonic.INC, D),
-Instr(Mnemonic.INC, L),
-Instr(Mnemonic.INC, H),
-
-Instr(Mnemonic.MOV, A,M_sp_off_b ),
-Instr(Mnemonic.MOV, A,M_de_b),
-Instr(Mnemonic.MOV, A,M_de_off_b),
-Instr(Mnemonic.MOV, A,M_hl_b),
-
-
-Instr(Mnemonic.MOV, A,M_hl_off_b),
-Instr(Mnemonic.MOV, A, saddr),
-Instr(Mnemonic.MOV, A, sfr),
-Instr(Mnemonic.MOV, A,Maddr16b),
-
-// 0x90 
-Instr(Mnemonic.DEC, X),
-Instr(Mnemonic.DEC, A),
-Instr(Mnemonic.DEC, C),
-Instr(Mnemonic.DEC, B),
-
-Instr(Mnemonic.DEC, E),
-Instr(Mnemonic.DEC, D),
-Instr(Mnemonic.DEC, L),
-Instr(Mnemonic.DEC, H),
-
-Instr(Mnemonic.MOV,M_sp_off_b, A),
-Instr(Mnemonic.MOV,M_de_b,A),
-Instr(Mnemonic.MOV,M_de_off_b, A),
-Instr(Mnemonic.MOV,M_hl_b,A),
-
-Instr(Mnemonic.MOV,M_hl_off_b, A),
-Instr(Mnemonic.MOV, saddr, A),
-Instr(Mnemonic.MOV, sfr, A),
-Instr(Mnemonic.MOV, Maddr16b,A),
-
-// 0xInstr(Mnemonic.A,0),
-Instr(Mnemonic.INC, Maddr16b),
-Instr(Mnemonic.INCW, AX),
-Instr(Mnemonic.INCW, Maddr16w),
-Instr(Mnemonic.INCW, BC),
-
-Instr(Mnemonic.INC, saddr),
-Instr(Mnemonic.INCW, DE),
-Instr(Mnemonic.INCW, saddrp),
-Instr(Mnemonic.INCW, HL),
-
-Instr(Mnemonic.MOVW, AX,M_sp_off_w ),
-Instr(Mnemonic.MOVW, AX,M_de_w),
-Instr(Mnemonic.MOVW, AX,M_de_off_w),
-Instr(Mnemonic.MOVW, AX,M_hl_w),
-
-
-Instr(Mnemonic.MOVW, AX,M_hl_off_w),
-Instr(Mnemonic.MOVW, AX, saddrp),
-Instr(Mnemonic.MOVW, AX, sfrp),
-Instr(Mnemonic.MOVW, AX,Maddr16w),
-
-// 0xInstr(B0),
-Instr(Mnemonic.DEC, Maddr16b),
-Instr(Mnemonic.DECW, AX),
-Instr(Mnemonic.DECW, Maddr16w),
-Instr(Mnemonic.DECW, BC),
-
-Instr(Mnemonic.DEC, saddr),
-Instr(Mnemonic.DECW, DE),
-Instr(Mnemonic.DECW, saddrp),
-Instr(Mnemonic.DECW, HL),
-
-Instr(Mnemonic.MOVW,M_sp_off_w, AX),
-Instr(Mnemonic.MOVW,M_de_w,AX),
-Instr(Mnemonic.MOVW,M_de_off_b, AX),
-Instr(Mnemonic.MOVW,M_hl_w,AX),
-
-Instr(Mnemonic.MOVW,M_hl_off_w, AX),
-Instr(Mnemonic.MOVW, saddrp, AX),
-Instr(Mnemonic.MOVW, sfrp, AX),
-Instr(Mnemonic.MOVW, Maddr16w,AX),
-
-// 0xInstr(C0),
-Instr(Mnemonic.POP, AX),
-Instr(Mnemonic.PUSH, AX),
-Instr(Mnemonic.POP, BC),
-Instr(Mnemonic.PUSH, BC),
-
-Instr(Mnemonic.POP, DE),
-Instr(Mnemonic.PUSH, DE),
-Instr(Mnemonic.POP, HL),
-Instr(Mnemonic.PUSH, HL),
-
-Instr(Mnemonic.MOV,M_sp_off_b,Ib ),
-Instr(Mnemonic.MOVW, saddrp,Iw ),
-Instr(Mnemonic.MOV,M_de_off_b,Ib ),
-Instr(Mnemonic.MOVW, sfrp,Iw ),
-
-Instr(Mnemonic.MOV,M_hl_off_b,Ib ),
-Instr(Mnemonic.MOV, saddr,Ib ),
-Instr(Mnemonic.MOV, sfr,Ib ),
-Instr(Mnemonic.MOV, Maddr16b,Ib ),
-
-// 0xInstr(D0),
-Instr(Mnemonic.CMP0, X),
-Instr(Mnemonic.CMP0, A),
-Instr(Mnemonic.CMP0, C),
-Instr(Mnemonic.CMP0, B),
-
-
-Instr(Mnemonic.CMP0, saddr),
-Instr(Mnemonic.CMP0, Maddr16b),
-Instr(Mnemonic.MULU, X),
-Instr(Mnemonic.RET),
-
-
-Instr(Mnemonic.MOV, X, saddr),
-Instr(Mnemonic.MOV, X,Maddr16b),
-Instr(Mnemonic.MOVW, BC,saddrp),
-Instr(Mnemonic.MOVW, BC,Maddr16b),
-
-Instr(Mnemonic.BC, PcRelative8),
-Instr(Mnemonic.BZ, PcRelative8),
-Instr(Mnemonic.BNC, PcRelative8),
-Instr(Mnemonic.BNZ, PcRelative8),
-
-// 0xInstr(E0),
-Instr(Mnemonic.ONEB, X),
-Instr(Mnemonic.ONEB, A),
-Instr(Mnemonic.ONEB, C),
-Instr(Mnemonic.ONEB, B),
-
-Instr(Mnemonic.ONEB, saddr),
-Instr(Mnemonic.ONEB, Maddr16b),
-Instr(Mnemonic.ONEW, AX),
-Instr(Mnemonic.ONEW, BC),
-
-Instr(Mnemonic.MOV, B,saddr),
-Instr(Mnemonic.MOV, B,Maddr16b),
-Instr(Mnemonic.MOVW, DE,saddrp),
-Instr(Mnemonic.MOVW, DE,Maddr16w),
-
-Instr(Mnemonic.BR, ImmAddr20),
-Instr(Mnemonic.BR, ImmAddr16),
-Instr(Mnemonic.BR, PcRelative16),
-Instr(Mnemonic.BR, PcRelative8),
-
-// 0xInstr(F0),
-Instr(Mnemonic.CLRB, X),
-Instr(Mnemonic.CLRB, A),
-Instr(Mnemonic.CLRB, C),
-Instr(Mnemonic.CLRB, B),
-
-Instr(Mnemonic.CLRB, saddr),
-Instr(Mnemonic.CLRB, Maddr16b),
-Instr(Mnemonic.CLRW, AX),
-Instr(Mnemonic.CLRW, BC),
-
-Instr(Mnemonic.MOV, C,saddr),
-Instr(Mnemonic.MOV, C,Maddr16b),
-Instr(Mnemonic.MOVW, HL,saddrp),
-Instr(Mnemonic.MOVW, HL,Maddr16w),
-
-Instr(Mnemonic.CALL, ImmAddr20),
-Instr(Mnemonic.CALL, Maddr16w),
-Instr(Mnemonic.CALL, PcRelative16),
-s_invalid
+                // 0x00
+                Instr(Mnemonic.nop, InstrClass.Linear | InstrClass.Padding | InstrClass.Zero),
+                Instr(Mnemonic.addw, AX, AX),
+                Instr(Mnemonic.addw, AX,Maddr16w),
+                Instr(Mnemonic.addw, AX, BC),
+
+                Instr(Mnemonic.addw, AX,Iw ),
+                Instr(Mnemonic.addw, AX,DE),
+                Instr(Mnemonic.addw, AX,saddrp),
+                Instr(Mnemonic.addw, AX,HL),
+
+                Instr(Mnemonic.xch, A,X),
+                Instr(Mnemonic.mov, A,Mword_b_b),
+                Instr(Mnemonic.add, saddr,Ib),
+                Instr(Mnemonic.add, A,saddr),
+
+                Instr(Mnemonic.add, A,Ib ),
+                Instr(Mnemonic.add, A,M_hl_b),
+                Instr(Mnemonic.add, A,M_hl_off_b),
+                Instr(Mnemonic.add, A,Maddr16b),
+
+                // 0x10
+                Instr(Mnemonic.addw, SP,Ib ),
+                new PrefixDecoder(),
+                Instr(Mnemonic.movw, BC,AX),
+                Instr(Mnemonic.movw, AX,BC),
+
+                Instr(Mnemonic.movw, DE,AX),
+                Instr(Mnemonic.movw, AX,DE),
+                Instr(Mnemonic.movw, HL,AX),
+                Instr(Mnemonic.movw, AX,HL),
+
+                Instr(Mnemonic.mov, Mword_b_b,A),
+                Instr(Mnemonic.mov, Mword_b_b,Ib ),
+                Instr(Mnemonic.addc, saddr,Ib ),
+                Instr(Mnemonic.addc, A,saddr),
+
+                Instr(Mnemonic.addc, A,Ib ),
+                Instr(Mnemonic.addc, A,M_hl_b),
+                Instr(Mnemonic.addc, A,M_hl_off_b),
+                Instr(Mnemonic.addc, A,Maddr16b),
+
+                // 0x20
+                Instr(Mnemonic.subw, SP,Ib ),
+                Nyi("0x21"),
+                Instr(Mnemonic.subw, AX,Maddr16w),
+                Instr(Mnemonic.subw, AX, BC),
+
+
+                Instr(Mnemonic.subw, AX,Iw ),
+                Instr(Mnemonic.subw, AX,DE),
+                Instr(Mnemonic.subw, AX,saddrp),
+                Instr(Mnemonic.subw, AX,HL),
+
+                Instr(Mnemonic.mov, Mword_c_b,A),
+                Instr(Mnemonic.mov, A,Mword_c_b),
+                Instr(Mnemonic.sub, saddr,Ib ),
+                Instr(Mnemonic.sub, A,saddr),
+
+                Instr(Mnemonic.sub, A,Ib ),
+                Instr(Mnemonic.sub, A,M_hl_b),
+                Instr(Mnemonic.sub, A,M_hl_off_b),
+                Instr(Mnemonic.sub, A,Maddr16b),
+
+                // 0x30
+                Instr(Mnemonic.movw, AX,Iw),
+                TwoByte(s_ext4),
+                Instr(Mnemonic.movw, BC,Iw ),
+                Instr(Mnemonic.xchw, AX,BC),
+
+                Instr(Mnemonic.movw, DE,Iw ),
+                Instr(Mnemonic.xchw, AX, DE),
+                Instr(Mnemonic.movw, HL,Iw ),
+                Instr(Mnemonic.xchw, AX,HL),
+
+                Instr(Mnemonic.mov, Mword_c_b,Ib ),
+                Instr(Mnemonic.mov, Mword_bc_b,Ib ),
+                Instr(Mnemonic.subc, saddr,Ib ),
+                Instr(Mnemonic.subc, A, saddr),
+
+
+                Instr(Mnemonic.subc, A,Ib ),
+                Instr(Mnemonic.subc, A,M_hl_b),
+                Instr(Mnemonic.subc, A,M_hl_off_b),
+                Instr(Mnemonic.subc, A,Maddr16b),
+
+                // 0x40
+                Instr(Mnemonic.cmp, Maddr16b,Ib ),
+                Instr(Mnemonic.mov, ES,Ib ),
+                Instr(Mnemonic.cmpw, AX,Maddr16w),
+                Instr(Mnemonic.cmpw, AX,BC),
+
+                Instr(Mnemonic.cmpw, AX,Iw ),
+                Instr(Mnemonic.cmpw, AX, DE),
+                Instr(Mnemonic.cmpw, AX, saddrp),
+                Instr(Mnemonic.cmpw, AX, HL),
+
+                Instr(Mnemonic.mov, Mword_bc_b, A),
+                Instr(Mnemonic.mov, A, Mword_bc_b),
+                Instr(Mnemonic.cmp, saddr,Ib ),
+                Instr(Mnemonic.cmp, A,saddr),
+
+                Instr(Mnemonic.cmp, A,Ib ),
+                Instr(Mnemonic.cmp, A,M_hl_b),
+                Instr(Mnemonic.cmp, A,M_hl_off_b),
+                Instr(Mnemonic.cmp, A,Maddr16b),
+
+                // 0x50
+                Instr(Mnemonic.mov, X,Ib ),
+                Instr(Mnemonic.mov, A,Ib ),
+                Instr(Mnemonic.mov, C,Ib ),
+                Instr(Mnemonic.mov, B,Ib ),
+
+                Instr(Mnemonic.mov, E,Ib ),
+                Instr(Mnemonic.mov, D,Ib ),
+                Instr(Mnemonic.mov, L,Ib ),
+                Instr(Mnemonic.mov, H,Ib ),
+
+                Instr(Mnemonic.movw, Mword_b_w,AX),
+                Instr(Mnemonic.movw, AX,Mword_b_w),
+                Instr(Mnemonic.and, saddr,Ib ),
+                Instr(Mnemonic.and, A, saddr),
+
+
+                Instr(Mnemonic.and, A,Ib ),
+                Instr(Mnemonic.and, A,M_hl_b),
+                Instr(Mnemonic.and, A,M_hl_off_b),
+                Instr(Mnemonic.and, A,Maddr16b),
+
+                // 0x60
+                Instr(Mnemonic.mov, A,X),
+                TwoByte(s_ext2),
+                Instr(Mnemonic.mov, A, C),
+                Instr(Mnemonic.mov, A, B),
+
+
+                Instr(Mnemonic.mov, A, E),
+                Instr(Mnemonic.mov, A, D),
+                Instr(Mnemonic.mov, A, L),
+                Instr(Mnemonic.mov, A, H),
+
+
+                Instr(Mnemonic.movw, Mword_c_w, AX),
+                Instr(Mnemonic.movw, AX, Mword_c_w),
+                Instr(Mnemonic.or, saddr,Ib ),
+                Instr(Mnemonic.or, A,saddr),
+
+                Instr(Mnemonic.or, A,Ib ),
+                Instr(Mnemonic.or, A,M_hl_b),
+                Instr(Mnemonic.or, A,M_hl_off_b),
+                Instr(Mnemonic.or, A,Maddr16b),
+
+                // 0x70
+                Instr(Mnemonic.mov, X,A),
+                TwoByte(s_ext3),
+                Instr(Mnemonic.mov, C, A),
+                Instr(Mnemonic.mov, B, A),
+
+                Instr(Mnemonic.mov, E, A),
+                Instr(Mnemonic.mov, D, A),
+                Instr(Mnemonic.mov, L, A),
+                Instr(Mnemonic.mov, H, A),
+
+
+                Instr(Mnemonic.movw, Mword_bc_w, AX),
+                Instr(Mnemonic.movw, AX, Mword_bc_w),
+                Instr(Mnemonic.xor, saddr,Ib ),
+                Instr(Mnemonic.xor, A,saddr),
+
+                Instr(Mnemonic.xor, A,Ib ),
+                Instr(Mnemonic.xor, A,M_hl_b),
+                Instr(Mnemonic.xor, A,M_hl_off_b),
+                Instr(Mnemonic.xor, A,Maddr16b),
+
+                // 0x80
+                Instr(Mnemonic.inc, X),
+                Instr(Mnemonic.inc, A),
+                Instr(Mnemonic.inc, C),
+                Instr(Mnemonic.inc, B),
+
+                Instr(Mnemonic.inc, E),
+                Instr(Mnemonic.inc, D),
+                Instr(Mnemonic.inc, L),
+                Instr(Mnemonic.inc, H),
+
+                Instr(Mnemonic.mov, A,M_sp_off_b ),
+                Instr(Mnemonic.mov, A,M_de_b),
+                Instr(Mnemonic.mov, A,M_de_off_b),
+                Instr(Mnemonic.mov, A,M_hl_b),
+
+                Instr(Mnemonic.mov, A,M_hl_off_b),
+                Instr(Mnemonic.mov, A, saddr),
+                Instr(Mnemonic.mov, A, sfr),
+                Instr(Mnemonic.mov, A,Maddr16b),
+
+                // 0x90 
+                Instr(Mnemonic.dec, X),
+                Instr(Mnemonic.dec, A),
+                Instr(Mnemonic.dec, C),
+                Instr(Mnemonic.dec, B),
+
+                Instr(Mnemonic.dec, E),
+                Instr(Mnemonic.dec, D),
+                Instr(Mnemonic.dec, L),
+                Instr(Mnemonic.dec, H),
+
+                Instr(Mnemonic.mov,M_sp_off_b, A),
+                Instr(Mnemonic.mov,M_de_b,A),
+                Instr(Mnemonic.mov,M_de_off_b, A),
+                Instr(Mnemonic.mov,M_hl_b,A),
+
+                Instr(Mnemonic.mov,M_hl_off_b, A),
+                Instr(Mnemonic.mov, saddr, A),
+                Instr(Mnemonic.mov, sfr, A),
+                Instr(Mnemonic.mov, Maddr16b,A),
+
+                // 0xA0
+                Instr(Mnemonic.inc, Maddr16b),
+                Instr(Mnemonic.incw, AX),
+                Instr(Mnemonic.incw, Maddr16w),
+                Instr(Mnemonic.incw, BC),
+
+                Instr(Mnemonic.inc, saddr),
+                Instr(Mnemonic.incw, DE),
+                Instr(Mnemonic.incw, saddrp),
+                Instr(Mnemonic.incw, HL),
+
+                Instr(Mnemonic.movw, AX,M_sp_off_w ),
+                Instr(Mnemonic.movw, AX,M_de_w),
+                Instr(Mnemonic.movw, AX,M_de_off_w),
+                Instr(Mnemonic.movw, AX,M_hl_w),
+
+
+                Instr(Mnemonic.movw, AX,M_hl_off_w),
+                Instr(Mnemonic.movw, AX, saddrp),
+                Instr(Mnemonic.movw, AX, sfrp),
+                Instr(Mnemonic.movw, AX,Maddr16w),
+
+                // 0xB0
+                Instr(Mnemonic.dec, Maddr16b),
+                Instr(Mnemonic.decw, AX),
+                Instr(Mnemonic.decw, Maddr16w),
+                Instr(Mnemonic.decw, BC),
+
+                Instr(Mnemonic.dec, saddr),
+                Instr(Mnemonic.decw, DE),
+                Instr(Mnemonic.decw, saddrp),
+                Instr(Mnemonic.decw, HL),
+
+                Instr(Mnemonic.movw,M_sp_off_w, AX),
+                Instr(Mnemonic.movw,M_de_w,AX),
+                Instr(Mnemonic.movw,M_de_off_b, AX),
+                Instr(Mnemonic.movw,M_hl_w,AX),
+
+                Instr(Mnemonic.movw,M_hl_off_w, AX),
+                Instr(Mnemonic.movw, saddrp, AX),
+                Instr(Mnemonic.movw, sfrp, AX),
+                Instr(Mnemonic.movw, Maddr16w,AX),
+
+                // 0xC0
+                Instr(Mnemonic.pop, AX),
+                Instr(Mnemonic.push, AX),
+                Instr(Mnemonic.pop, BC),
+                Instr(Mnemonic.push, BC),
+
+                Instr(Mnemonic.pop, DE),
+                Instr(Mnemonic.push, DE),
+                Instr(Mnemonic.pop, HL),
+                Instr(Mnemonic.push, HL),
+
+                Instr(Mnemonic.mov,M_sp_off_b,Ib ),
+                Instr(Mnemonic.movw, saddrp,Iw ),
+                Instr(Mnemonic.mov,M_de_off_b,Ib ),
+                Instr(Mnemonic.movw, sfrp,Iw ),
+
+                Instr(Mnemonic.mov,M_hl_off_b,Ib ),
+                Instr(Mnemonic.mov, saddr,Ib ),
+                Instr(Mnemonic.mov, sfr,Ib ),
+                Instr(Mnemonic.mov, Maddr16b,Ib ),
+
+                // 0xInstr(D0),
+                Instr(Mnemonic.cmp0, X),
+                Instr(Mnemonic.cmp0, A),
+                Instr(Mnemonic.cmp0, C),
+                Instr(Mnemonic.cmp0, B),
+
+
+                Instr(Mnemonic.cmp0, saddr),
+                Instr(Mnemonic.cmp0, Maddr16b),
+                Instr(Mnemonic.mulu, X),
+                Instr(Mnemonic.ret),
+
+
+                Instr(Mnemonic.mov, X, saddr),
+                Instr(Mnemonic.mov, X,Maddr16b),
+                Instr(Mnemonic.movw, BC,saddrp),
+                Instr(Mnemonic.movw, BC,Maddr16b),
+
+                Instr(Mnemonic.bc, PcRelative8),
+                Instr(Mnemonic.bz, PcRelative8),
+                Instr(Mnemonic.bnc, PcRelative8),
+                Instr(Mnemonic.bnz, PcRelative8),
+
+                // 0xInstr(E0),
+                Instr(Mnemonic.oneb, X),
+                Instr(Mnemonic.oneb, A),
+                Instr(Mnemonic.oneb, C),
+                Instr(Mnemonic.oneb, B),
+
+                Instr(Mnemonic.oneb, saddr),
+                Instr(Mnemonic.oneb, Maddr16b),
+                Instr(Mnemonic.onew, AX),
+                Instr(Mnemonic.onew, BC),
+
+                Instr(Mnemonic.mov, B,saddr),
+                Instr(Mnemonic.mov, B,Maddr16b),
+                Instr(Mnemonic.movw, DE,saddrp),
+                Instr(Mnemonic.movw, DE,Maddr16w),
+
+                Instr(Mnemonic.br, ImmAddr20),
+                Instr(Mnemonic.br, ImmAddr16),
+                Instr(Mnemonic.br, PcRelative16),
+                Instr(Mnemonic.br, PcRelative8),
+
+                // 0xInstr(F0),
+                Instr(Mnemonic.clrb, X),
+                Instr(Mnemonic.clrb, A),
+                Instr(Mnemonic.clrb, C),
+                Instr(Mnemonic.clrb, B),
+
+                Instr(Mnemonic.clrb, saddr),
+                Instr(Mnemonic.clrb, Maddr16b),
+                Instr(Mnemonic.clrw, AX),
+                Instr(Mnemonic.clrw, BC),
+
+                Instr(Mnemonic.mov, C,saddr),
+                Instr(Mnemonic.mov, C,Maddr16b),
+                Instr(Mnemonic.movw, HL,saddrp),
+                Instr(Mnemonic.movw, HL,Maddr16w),
+
+                Instr(Mnemonic.call, ImmAddr20),
+                Instr(Mnemonic.call, Maddr16w),
+                Instr(Mnemonic.call, PcRelative16),
+                s_invalid
             };
         }
     }
