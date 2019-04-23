@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
@@ -33,14 +34,19 @@ namespace Reko.Arch.Rl78
 {
     public class Rl78Architecture : ProcessorArchitecture
     {
+        private Dictionary<uint, FlagGroupStorage> flagGroups;
+
         public Rl78Architecture(string archId) : base(archId)
         {
-            InstructionBitSize = 16;
+            InstructionBitSize = 8;
             FramePointerType = PrimitiveType.Ptr32;
             PointerType = PrimitiveType.Ptr32;
             WordWidth = PrimitiveType.Word32;
             CarryFlagMask = (uint) FlagM.CF;
             StackRegister = Registers.sp;
+
+            this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
+
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
@@ -85,17 +91,23 @@ namespace Reko.Arch.Rl78
 
         public override ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new Rl78ProcessorState(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            return new Rl78Rewriter(this, rdr, state, binder, host);
         }
 
         public override FlagGroupStorage GetFlagGroup(uint grf)
         {
-            throw new NotImplementedException();
+            if (flagGroups.TryGetValue(grf, out FlagGroupStorage f))
+                return f;
+
+            PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+            var fl = new FlagGroupStorage(Registers.psw, grf, GrfToString(grf), dt);
+            flagGroups.Add(grf, fl);
+            return fl;
         }
 
         public override FlagGroupStorage GetFlagGroup(string name)
@@ -130,12 +142,16 @@ namespace Reko.Arch.Rl78
 
         public override string GrfToString(uint grf)
         {
-            throw new NotImplementedException();
+            var s = new StringBuilder();
+            var flags = (FlagM) grf;
+            if ((flags & FlagM.CF) != 0) s.Append('C');
+            if ((flags & FlagM.ZF) != 0) s.Append('Z');
+            return s.ToString();
         }
 
         public override Address MakeAddressFromConstant(Constant c)
         {
-            throw new NotImplementedException();
+            return Address.Ptr32(c.ToUInt32());
         }
 
         public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
@@ -150,7 +166,7 @@ namespace Reko.Arch.Rl78
 
         public override bool TryParseAddress(string txtAddr, out Address addr)
         {
-            throw new NotImplementedException();
+            return Address.TryParse32(txtAddr, out addr);
         }
 
         public override bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value)

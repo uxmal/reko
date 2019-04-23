@@ -111,6 +111,15 @@ namespace Reko.Arch.Rl78
                 this.RenderOperand(bit.Operand, writer, options);
                 writer.WriteFormat(".{0}", bit.BitPosition);
                 return;
+            case AddressOperand aop:
+                writer.WriteAddress(aop.Address.ToString(), aop.Address);
+                return;
+            case RegisterBankOperand rbop:
+                writer.WriteFormat("rb{0}", rbop.Bank);
+                return;
+            case FlagGroupOperand grf:
+                writer.WriteString(grf.FlagGroup.Name);
+                return;
             }
             throw new NotImplementedException($"Rl78Instruction - RenderOperand {op.GetType().Name}.");
         }

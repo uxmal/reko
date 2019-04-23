@@ -172,13 +172,13 @@ namespace Reko.Arch.Rl78
             };
         }
         private static readonly Mutator<Rl78Disassembler> M_de_off_b = MemOff(PrimitiveType.Byte, Registers.de);
-        private static readonly Mutator<Rl78Disassembler> M_de_off_w = MemOff(PrimitiveType.UInt16, Registers.de);
+        private static readonly Mutator<Rl78Disassembler> M_de_off_w = MemOff(PrimitiveType.Word16, Registers.de);
 
         private static readonly Mutator<Rl78Disassembler> M_hl_off_b = MemOff(PrimitiveType.Byte, Registers.hl);
-        private static readonly Mutator<Rl78Disassembler> M_hl_off_w = MemOff(PrimitiveType.UInt16, Registers.hl);
+        private static readonly Mutator<Rl78Disassembler> M_hl_off_w = MemOff(PrimitiveType.Word16, Registers.hl);
 
         private static readonly Mutator<Rl78Disassembler> M_sp_off_b = MemOff(PrimitiveType.Byte, Registers.sp);
-        private static readonly Mutator<Rl78Disassembler> M_sp_off_w = MemOff(PrimitiveType.UInt16, Registers.sp);
+        private static readonly Mutator<Rl78Disassembler> M_sp_off_w = MemOff(PrimitiveType.Word16, Registers.sp);
 
 
         private static Mutator<Rl78Disassembler> M_idx(PrimitiveType dt, RegisterStorage baseReg, RegisterStorage idx)
@@ -619,10 +619,10 @@ namespace Reko.Arch.Rl78
                 Instr(Mnemonic.add, A,M_hl_c_b),
                 s_invalid,
 
-                Instr(Mnemonic.callt, Mabs(0x0080)),
-                Instr(Mnemonic.callt, Mabs(0x0090)),
-                Instr(Mnemonic.callt, Mabs(0x00A0)),
-                Instr(Mnemonic.callt, Mabs(0x00B0)),
+                Instr(Mnemonic.callt, InstrClass.Transfer|InstrClass.Call, Mabs(0x0080)),
+                Instr(Mnemonic.callt, InstrClass.Transfer|InstrClass.Call, Mabs(0x0090)),
+                Instr(Mnemonic.callt, InstrClass.Transfer|InstrClass.Call, Mabs(0x00A0)),
+                Instr(Mnemonic.callt, InstrClass.Transfer|InstrClass.Call, Mabs(0x00B0)),
 
                 s_invalid,
                 Instr(Mnemonic.decw, M_hl_off_w),
@@ -640,10 +640,10 @@ namespace Reko.Arch.Rl78
                 Instr(Mnemonic.addc, A,M_hl_c_b),
                 s_invalid,
 
-                Instr(Mnemonic.callt, Mabs(0x0082)),
-                Instr(Mnemonic.callt, Mabs(0x0092)),
-                Instr(Mnemonic.callt, Mabs(0x00A2)),
-                Instr(Mnemonic.callt, Mabs(0x00B2)),
+                Instr(Mnemonic.callt, InstrClass.Transfer|InstrClass.Call, Mabs(0x0082)),
+                Instr(Mnemonic.callt, InstrClass.Transfer|InstrClass.Call, Mabs(0x0092)),
+                Instr(Mnemonic.callt, InstrClass.Transfer|InstrClass.Call, Mabs(0x00A2)),
+                Instr(Mnemonic.callt, InstrClass.Transfer|InstrClass.Call, Mabs(0x00B2)),
 
                 s_invalid,
                 s_invalid,
@@ -661,10 +661,10 @@ namespace Reko.Arch.Rl78
                 Instr(Mnemonic.sub, A,M_hl_c_b),
                 s_invalid,
 
-                Instr(Mnemonic.callt, Mabs(0x0084)),
-                Instr(Mnemonic.callt, Mabs(0x0094)),
-                Instr(Mnemonic.callt, Mabs(0x00A4)),
-                Instr(Mnemonic.callt, Mabs(0x00B4)),
+                Instr(Mnemonic.callt, InstrClass.Transfer|InstrClass.Call, Mabs(0x0084)),
+                Instr(Mnemonic.callt, InstrClass.Transfer|InstrClass.Call, Mabs(0x0094)),
+                Instr(Mnemonic.callt, InstrClass.Transfer|InstrClass.Call, Mabs(0x00A4)),
+                Instr(Mnemonic.callt, InstrClass.Transfer|InstrClass.Call, Mabs(0x00B4)),
 
                 Instr(Mnemonic.xch, A,saddr),
                 Instr(Mnemonic.xch, A,M_hl_c_b),
@@ -682,10 +682,10 @@ namespace Reko.Arch.Rl78
                 Instr(Mnemonic.subc, A,M_hl_c_b),
                 s_invalid,
 
-                Instr(Mnemonic.callt, Mabs(0x0086)),
-                Instr(Mnemonic.callt, Mabs(0x0096)),
-                Instr(Mnemonic.callt, Mabs(0x00A6)),
-                Instr(Mnemonic.callt, Mabs(0x00B6)),
+                Instr(Mnemonic.callt, InstrClass.Transfer|InstrClass.Call, Mabs(0x0086)),
+                Instr(Mnemonic.callt, InstrClass.Transfer|InstrClass.Call, Mabs(0x0096)),
+                Instr(Mnemonic.callt, InstrClass.Transfer|InstrClass.Call, Mabs(0x00A6)),
+                Instr(Mnemonic.callt, InstrClass.Transfer|InstrClass.Call, Mabs(0x00B6)),
 
                 Instr(Mnemonic.mov, ES,saddr),
                 Instr(Mnemonic.xch, A,M_hl_b_b),
@@ -701,17 +701,17 @@ namespace Reko.Arch.Rl78
                 Instr(Mnemonic.cmp, A,M_hl_b_b),
                 s_invalid,
                 Instr(Mnemonic.cmp, A,M_hl_c_b),
-                Instr(Mnemonic.bh, PcRelative8),
+                Instr(Mnemonic.bh, InstrClass.ConditionalTransfer, PcRelative8),
 
-                Instr(Mnemonic.callt, Mabs(0x0088)),
-                Instr(Mnemonic.callt, Mabs(0x0098)),
-                Instr(Mnemonic.callt, Mabs(0x00A8)),
-                Instr(Mnemonic.callt, Mabs(0x00B8)),
+                Instr(Mnemonic.callt, InstrClass.Transfer|InstrClass.Call, Mabs(0x0088)),
+                Instr(Mnemonic.callt, InstrClass.Transfer|InstrClass.Call, Mabs(0x0098)),
+                Instr(Mnemonic.callt, InstrClass.Transfer|InstrClass.Call, Mabs(0x00A8)),
+                Instr(Mnemonic.callt, InstrClass.Transfer|InstrClass.Call, Mabs(0x00B8)),
 
-                Instr(Mnemonic.skc),
+                Instr(Mnemonic.skc, InstrClass.ConditionalTransfer),
                 Instr(Mnemonic.mov, A,M_hl_b_b),
-                Instr(Mnemonic.call, AX),
-                Instr(Mnemonic.br, AX),
+                Instr(Mnemonic.call, InstrClass.Transfer|InstrClass.Call, AX),
+                Instr(Mnemonic.br, InstrClass.Transfer, AX),
 
                 Instr(Mnemonic.brk),
                 Instr(Mnemonic.pop, PSW),
@@ -722,16 +722,16 @@ namespace Reko.Arch.Rl78
                 Instr(Mnemonic.and, A,M_hl_b_b),
                 s_invalid,
                 Instr(Mnemonic.and, A,M_hl_c_b),
-                Instr(Mnemonic.bnh, PcRelative8),
+                Instr(Mnemonic.bnh, InstrClass.ConditionalTransfer, PcRelative8),
 
-                Instr(Mnemonic.callt, Mabs(0x008A)),
-                Instr(Mnemonic.callt, Mabs(0x009A)),
-                Instr(Mnemonic.callt, Mabs(0x00AA)),
-                Instr(Mnemonic.callt, Mabs(0x00BA)),
+                Instr(Mnemonic.callt, InstrClass.Transfer|InstrClass.Call, Mabs(0x008A)),
+                Instr(Mnemonic.callt, InstrClass.Transfer|InstrClass.Call, Mabs(0x009A)),
+                Instr(Mnemonic.callt, InstrClass.Transfer|InstrClass.Call, Mabs(0x00AA)),
+                Instr(Mnemonic.callt, InstrClass.Transfer|InstrClass.Call, Mabs(0x00BA)),
 
-                Instr(Mnemonic.sknc),
+                Instr(Mnemonic.sknc, InstrClass.ConditionalTransfer),
                 Instr(Mnemonic.mov, M_hl_b_b,A),
-                Instr(Mnemonic.call, BC),
+                Instr(Mnemonic.call, InstrClass.Transfer|InstrClass.Call, BC),
                 Instr(Mnemonic.ror, A,n(1)),
 
                 Instr(Mnemonic.rolc, A,n(1)),
@@ -743,40 +743,40 @@ namespace Reko.Arch.Rl78
                 Instr(Mnemonic.or, A,M_hl_b_b),
                 s_invalid,
                 Instr(Mnemonic.or, A,M_hl_c_b),
-                Instr(Mnemonic.skh),
+                Instr(Mnemonic.skh, InstrClass.ConditionalTransfer),
 
-                Instr(Mnemonic.callt, Mabs(0x008C)),
-                Instr(Mnemonic.callt, Mabs(0x009C)),
-                Instr(Mnemonic.callt, Mabs(0x00AC)),
-                Instr(Mnemonic.callt, Mabs(0x00BC)),
+                Instr(Mnemonic.callt, InstrClass.Transfer|InstrClass.Call, Mabs(0x008C)),
+                Instr(Mnemonic.callt, InstrClass.Transfer|InstrClass.Call, Mabs(0x009C)),
+                Instr(Mnemonic.callt, InstrClass.Transfer|InstrClass.Call, Mabs(0x00AC)),
+                Instr(Mnemonic.callt, InstrClass.Transfer|InstrClass.Call, Mabs(0x00BC)),
 
-                Instr(Mnemonic.skz),
+                Instr(Mnemonic.skz, InstrClass.ConditionalTransfer),
                 Instr(Mnemonic.mov, A,M_hl_c_b),
-                Instr(Mnemonic.call, DE),
+                Instr(Mnemonic.call, InstrClass.Transfer|InstrClass.Call, DE),
                 Instr(Mnemonic.rol, A,n(1)),
 
-                Instr(Mnemonic.retb),
-                Instr(Mnemonic.halt),
+                Instr(Mnemonic.retb, InstrClass.Transfer),
+                Instr(Mnemonic.halt, InstrClass.Terminates),
                 Instr(Mnemonic.rolwc, AX,n(1)),
                 Instr(Mnemonic.sel, RB2), // Note
                 // 0xF0
                 Instr(Mnemonic.xor, A,M_hl_b_b),
                 s_invalid,
                 Instr(Mnemonic.xor, A,M_hl_c_b),
-                Instr(Mnemonic.sknh),
+                Instr(Mnemonic.sknh, InstrClass.ConditionalTransfer),
 
-                Instr(Mnemonic.callt, Mabs(0x008E)),
-                Instr(Mnemonic.callt, Mabs(0x009E)),
-                Instr(Mnemonic.callt, Mabs(0x00AE)),
-                Instr(Mnemonic.callt, Mabs(0x00BE)),
+                Instr(Mnemonic.callt, InstrClass.Transfer|InstrClass.Call, Mabs(0x008E)),
+                Instr(Mnemonic.callt, InstrClass.Transfer|InstrClass.Call, Mabs(0x009E)),
+                Instr(Mnemonic.callt, InstrClass.Transfer|InstrClass.Call, Mabs(0x00AE)),
+                Instr(Mnemonic.callt, InstrClass.Transfer|InstrClass.Call, Mabs(0x00BE)),
 
-                Instr(Mnemonic.sknz),
+                Instr(Mnemonic.sknz, InstrClass.ConditionalTransfer),
                 Instr(Mnemonic.mov, M_hl_c_b,A),
-                Instr(Mnemonic.call, HL),
+                Instr(Mnemonic.call, InstrClass.Transfer|InstrClass.Call, HL),
                 Instr(Mnemonic.rorc, A,n(1)),
 
-                Instr(Mnemonic.reti),
-                Instr(Mnemonic.stop),
+                Instr(Mnemonic.reti, InstrClass.Transfer),
+                Instr(Mnemonic.stop, InstrClass.Terminates),
                 Instr(Mnemonic.rolwc, BC,n(1)),
                 Instr(Mnemonic.sel, RB3)
              };
@@ -1120,13 +1120,13 @@ namespace Reko.Arch.Rl78
             };
 
             s_ext4 = new Decoder[256] {
-                Instr(Mnemonic.btclr, saddr,Bit(0),PcRelative8),
-                Instr(Mnemonic.btclr, A,Bit(0),PcRelative8),
-                Instr(Mnemonic.bt, saddr,Bit(0),PcRelative8),
-                Instr(Mnemonic.bt, A,Bit(0),PcRelative8),
+                Instr(Mnemonic.btclr, InstrClass.ConditionalTransfer, saddr,Bit(0),PcRelative8),
+                Instr(Mnemonic.btclr, InstrClass.ConditionalTransfer, A,Bit(0),PcRelative8),
+                Instr(Mnemonic.bt, InstrClass.ConditionalTransfer, saddr,Bit(0),PcRelative8),
+                Instr(Mnemonic.bt, InstrClass.ConditionalTransfer, A,Bit(0),PcRelative8),
 
-                Instr(Mnemonic.bf, saddr,Bit(0),PcRelative8),
-                Instr(Mnemonic.bf, A,Bit(0),PcRelative8),
+                Instr(Mnemonic.bf, InstrClass.ConditionalTransfer, saddr,Bit(0),PcRelative8),
+                Instr(Mnemonic.bf, InstrClass.ConditionalTransfer, A,Bit(0),PcRelative8),
                 s_invalid,
                 s_invalid,
 
@@ -1141,13 +1141,13 @@ namespace Reko.Arch.Rl78
                 s_invalid,
 
                 // 0x10
-                Instr(Mnemonic.btclr, saddr,Bit(1),PcRelative8),
-                Instr(Mnemonic.btclr, A,Bit(1),PcRelative8),
-                Instr(Mnemonic.bt, saddr,Bit(1),PcRelative8),
-                Instr(Mnemonic.bt, A,Bit(1),PcRelative8),
+                Instr(Mnemonic.btclr, InstrClass.ConditionalTransfer,saddr,Bit(1),PcRelative8),
+                Instr(Mnemonic.btclr, InstrClass.ConditionalTransfer, A,Bit(1),PcRelative8),
+                Instr(Mnemonic.bt, InstrClass.ConditionalTransfer,  saddr,Bit(1),PcRelative8),
+                Instr(Mnemonic.bt, InstrClass.ConditionalTransfer, A,Bit(1),PcRelative8),
 
-                Instr(Mnemonic.bf, saddr,Bit(1),PcRelative8),
-                Instr(Mnemonic.bf, A,Bit(1),PcRelative8),
+                Instr(Mnemonic.bf, InstrClass.ConditionalTransfer, saddr,Bit(1),PcRelative8),
+                Instr(Mnemonic.bf, InstrClass.ConditionalTransfer, A,Bit(1),PcRelative8),
                 s_invalid,
                 Instr(Mnemonic.shl, C,n(1)),
 
@@ -1162,13 +1162,13 @@ namespace Reko.Arch.Rl78
                 Instr(Mnemonic.sarw, AX,n(1)),
 
                 // 0x20
-                Instr(Mnemonic.btclr, saddr,Bit(2),PcRelative8),
-                Instr(Mnemonic.btclr, A,Bit(2),PcRelative8),
-                Instr(Mnemonic.bt, saddr,Bit(2),PcRelative8),
-                Instr(Mnemonic.bt, A,Bit(2),PcRelative8),
+                Instr(Mnemonic.btclr, InstrClass.ConditionalTransfer, saddr,Bit(2),PcRelative8),
+                Instr(Mnemonic.btclr, InstrClass.ConditionalTransfer, A,Bit(2),PcRelative8),
+                Instr(Mnemonic.bt, InstrClass.ConditionalTransfer, saddr,Bit(2),PcRelative8),
+                Instr(Mnemonic.bt, InstrClass.ConditionalTransfer, A,Bit(2),PcRelative8),
 
-                Instr(Mnemonic.bf, saddr,Bit(2),PcRelative8),
-                Instr(Mnemonic.bf, A,Bit(2),PcRelative8),
+                Instr(Mnemonic.bf, InstrClass.ConditionalTransfer, saddr,Bit(2),PcRelative8),
+                Instr(Mnemonic.bf, InstrClass.ConditionalTransfer, A,Bit(2),PcRelative8),
                 s_invalid,
                 Instr(Mnemonic.shl, C,n(2)),
 
@@ -1183,13 +1183,13 @@ namespace Reko.Arch.Rl78
                 Instr(Mnemonic.sarw, AX,n(2)),
     
                 // 0x30
-                Instr(Mnemonic.btclr, saddr,Bit(3),PcRelative8),
-                Instr(Mnemonic.btclr, A,Bit(3),PcRelative8),
-                Instr(Mnemonic.bt, saddr,Bit(3),PcRelative8),
-                Instr(Mnemonic.bt, A,Bit(3),PcRelative8),
+                Instr(Mnemonic.btclr, InstrClass.ConditionalTransfer, saddr,Bit(3),PcRelative8),
+                Instr(Mnemonic.btclr, InstrClass.ConditionalTransfer, A,Bit(3),PcRelative8),
+                Instr(Mnemonic.bt, InstrClass.ConditionalTransfer, saddr,Bit(3),PcRelative8),
+                Instr(Mnemonic.bt, InstrClass.ConditionalTransfer, A,Bit(3),PcRelative8),
 
-                Instr(Mnemonic.bf, saddr,Bit(3),PcRelative8),
-                Instr(Mnemonic.bf, A,Bit(3),PcRelative8),
+                Instr(Mnemonic.bf, InstrClass.ConditionalTransfer, saddr,Bit(3),PcRelative8),
+                Instr(Mnemonic.bf, InstrClass.ConditionalTransfer, A,Bit(3),PcRelative8),
                 s_invalid,
                 Instr(Mnemonic.shl, C,n(3)),
 
@@ -1204,13 +1204,13 @@ namespace Reko.Arch.Rl78
                 Instr(Mnemonic.sarw, AX,n(3)),
     
                 // 0x40
-                Instr(Mnemonic.btclr, saddr,Bit(4),PcRelative8),
-                Instr(Mnemonic.btclr, A,Bit(4),PcRelative8),
-                Instr(Mnemonic.bt, saddr,Bit(4),PcRelative8),
-                Instr(Mnemonic.bt, A,Bit(4),PcRelative8),
+                Instr(Mnemonic.btclr, InstrClass.ConditionalTransfer, saddr,Bit(4),PcRelative8),
+                Instr(Mnemonic.btclr, InstrClass.ConditionalTransfer, A,Bit(4),PcRelative8),
+                Instr(Mnemonic.bt, InstrClass.ConditionalTransfer, saddr,Bit(4),PcRelative8),
+                Instr(Mnemonic.bt, InstrClass.ConditionalTransfer, A,Bit(4),PcRelative8),
 
-                Instr(Mnemonic.bf, saddr,Bit(4),PcRelative8),
-                Instr(Mnemonic.bf, A,Bit(4),PcRelative8),
+                Instr(Mnemonic.bf, InstrClass.ConditionalTransfer, saddr,Bit(4),PcRelative8),
+                Instr(Mnemonic.bf, InstrClass.ConditionalTransfer, A,Bit(4),PcRelative8),
                 s_invalid,
                 Instr(Mnemonic.shl, C,n(4)),
 
@@ -1225,13 +1225,13 @@ namespace Reko.Arch.Rl78
                 Instr(Mnemonic.sarw, AX,n(4)),
     
                 // 0x50
-                Instr(Mnemonic.btclr, saddr,Bit(5),PcRelative8),
-                Instr(Mnemonic.btclr, A,Bit(5),PcRelative8),
-                Instr(Mnemonic.bt, saddr,Bit(5),PcRelative8),
-                Instr(Mnemonic.bt, A,Bit(5),PcRelative8),
+                Instr(Mnemonic.btclr, InstrClass.ConditionalTransfer, saddr,Bit(5),PcRelative8),
+                Instr(Mnemonic.btclr, InstrClass.ConditionalTransfer, A,Bit(5),PcRelative8),
+                Instr(Mnemonic.bt, InstrClass.ConditionalTransfer, saddr,Bit(5),PcRelative8),
+                Instr(Mnemonic.bt, InstrClass.ConditionalTransfer, A,Bit(5),PcRelative8),
 
-                Instr(Mnemonic.bf, saddr,Bit(5),PcRelative8),
-                Instr(Mnemonic.bf, A,Bit(5),PcRelative8),
+                Instr(Mnemonic.bf, InstrClass.ConditionalTransfer, saddr,Bit(5),PcRelative8),
+                Instr(Mnemonic.bf, InstrClass.ConditionalTransfer, A,Bit(5),PcRelative8),
                 s_invalid,
                 Instr(Mnemonic.shl, C,n(5)),
 
@@ -1246,13 +1246,13 @@ namespace Reko.Arch.Rl78
                 Instr(Mnemonic.sarw, AX,n(5)),
                 
                 // 0x60
-                Instr(Mnemonic.btclr, saddr,Bit(6),PcRelative8),
-                Instr(Mnemonic.btclr, A,Bit(6),PcRelative8),
-                Instr(Mnemonic.bt, saddr,Bit(6),PcRelative8),
-                Instr(Mnemonic.bt, A,Bit(6),PcRelative8),
+                Instr(Mnemonic.btclr, InstrClass.ConditionalTransfer, saddr,Bit(6),PcRelative8),
+                Instr(Mnemonic.btclr, InstrClass.ConditionalTransfer, A,Bit(6),PcRelative8),
+                Instr(Mnemonic.bt, InstrClass.ConditionalTransfer, saddr,Bit(6),PcRelative8),
+                Instr(Mnemonic.bt, InstrClass.ConditionalTransfer, A,Bit(6),PcRelative8),
 
-                Instr(Mnemonic.bf, saddr,Bit(6),PcRelative8),
-                Instr(Mnemonic.bf, A,Bit(6),PcRelative8),
+                Instr(Mnemonic.bf, InstrClass.ConditionalTransfer, saddr,Bit(6),PcRelative8),
+                Instr(Mnemonic.bf, InstrClass.ConditionalTransfer, A,Bit(6),PcRelative8),
                 s_invalid,
                 Instr(Mnemonic.shl, C,n(6)),
 
@@ -1267,13 +1267,13 @@ namespace Reko.Arch.Rl78
                 Instr(Mnemonic.sarw, AX,n(6)),
                 
                 // 0x70
-                Instr(Mnemonic.btclr, saddr,Bit(7),PcRelative8),
-                Instr(Mnemonic.btclr, A,Bit(7),PcRelative8),
-                Instr(Mnemonic.bt, saddr,Bit(7),PcRelative8),
-                Instr(Mnemonic.bt, A,Bit(7),PcRelative8),
+                Instr(Mnemonic.btclr, InstrClass.ConditionalTransfer, saddr,Bit(7),PcRelative8),
+                Instr(Mnemonic.btclr, InstrClass.ConditionalTransfer, A,Bit(7),PcRelative8),
+                Instr(Mnemonic.bt, InstrClass.ConditionalTransfer, saddr,Bit(7),PcRelative8),
+                Instr(Mnemonic.bt, InstrClass.ConditionalTransfer, A,Bit(7),PcRelative8),
 
-                Instr(Mnemonic.bf, saddr,Bit(7),PcRelative8),
-                Instr(Mnemonic.bf, A,Bit(7),PcRelative8),
+                Instr(Mnemonic.bf, InstrClass.ConditionalTransfer, saddr,Bit(7),PcRelative8),
+                Instr(Mnemonic.bf, InstrClass.ConditionalTransfer, A,Bit(7),PcRelative8),
                 s_invalid,
                 Instr(Mnemonic.shl, C,n(7)),
 
@@ -1288,13 +1288,13 @@ namespace Reko.Arch.Rl78
                 Instr(Mnemonic.sarw, AX,n(7)),
                 
                 // 0x80
-                Instr(Mnemonic.btclr, sfr,Bit(0),PcRelative8),
-                Instr(Mnemonic.btclr, M_hl_b,Bit(0),PcRelative8),
-                Instr(Mnemonic.bt, sfr,Bit(0),PcRelative8),
-                Instr(Mnemonic.bt, M_hl_b,Bit(0),PcRelative8),
+                Instr(Mnemonic.btclr, InstrClass.ConditionalTransfer, sfr,Bit(0),PcRelative8),
+                Instr(Mnemonic.btclr, InstrClass.ConditionalTransfer, M_hl_b,Bit(0),PcRelative8),
+                Instr(Mnemonic.bt, InstrClass.ConditionalTransfer, sfr,Bit(0),PcRelative8),
+                Instr(Mnemonic.bt, InstrClass.ConditionalTransfer, M_hl_b,Bit(0),PcRelative8),
 
-                Instr(Mnemonic.bf, sfr,Bit(0),PcRelative8),
-                Instr(Mnemonic.bf, M_hl_b,Bit(0),PcRelative8),
+                Instr(Mnemonic.bf, InstrClass.ConditionalTransfer, sfr,Bit(0),PcRelative8),
+                Instr(Mnemonic.bf, InstrClass.ConditionalTransfer, M_hl_b,Bit(0),PcRelative8),
                 s_invalid,
                 s_invalid,
 
@@ -1309,13 +1309,13 @@ namespace Reko.Arch.Rl78
                 Instr(Mnemonic.sarw, AX,n(8)),
 
                 // 0x90
-                Instr(Mnemonic.btclr, sfr,Bit(1),PcRelative8),
-                Instr(Mnemonic.btclr, M_hl_b,Bit(1),PcRelative8),
-                Instr(Mnemonic.bt, sfr,Bit(1),PcRelative8),
-                Instr(Mnemonic.bt, M_hl_b,Bit(1),PcRelative8),
+                Instr(Mnemonic.btclr, InstrClass.ConditionalTransfer, sfr,Bit(1),PcRelative8),
+                Instr(Mnemonic.btclr, InstrClass.ConditionalTransfer, M_hl_b,Bit(1),PcRelative8),
+                Instr(Mnemonic.bt, InstrClass.ConditionalTransfer, sfr,Bit(1),PcRelative8),
+                Instr(Mnemonic.bt, InstrClass.ConditionalTransfer, M_hl_b,Bit(1),PcRelative8),
 
-                Instr(Mnemonic.bf, sfr,Bit(1),PcRelative8),
-                Instr(Mnemonic.bf, M_hl_b,Bit(1),PcRelative8),
+                Instr(Mnemonic.bf, InstrClass.ConditionalTransfer, sfr,Bit(1),PcRelative8),
+                Instr(Mnemonic.bf, InstrClass.ConditionalTransfer, M_hl_b,Bit(1),PcRelative8),
                 s_invalid,
                 s_invalid,
 
@@ -1330,13 +1330,13 @@ namespace Reko.Arch.Rl78
                 Instr(Mnemonic.sarw, AX,n(9)),
 
                 // 0xA0
-                Instr(Mnemonic.btclr, sfr,Bit(2),PcRelative8),
-                Instr(Mnemonic.btclr, M_hl_b,Bit(2),PcRelative8),
-                Instr(Mnemonic.bt, sfr,Bit(2),PcRelative8),
-                Instr(Mnemonic.bt, M_hl_b,Bit(2),PcRelative8),
+                Instr(Mnemonic.btclr, InstrClass.ConditionalTransfer, sfr,Bit(2),PcRelative8),
+                Instr(Mnemonic.btclr, InstrClass.ConditionalTransfer, M_hl_b,Bit(2),PcRelative8),
+                Instr(Mnemonic.bt, InstrClass.ConditionalTransfer, sfr,Bit(2),PcRelative8),
+                Instr(Mnemonic.bt, InstrClass.ConditionalTransfer, M_hl_b,Bit(2),PcRelative8),
 
-                Instr(Mnemonic.bf, sfr,Bit(2),PcRelative8),
-                Instr(Mnemonic.bf, M_hl_b,Bit(2),PcRelative8),
+                Instr(Mnemonic.bf, InstrClass.ConditionalTransfer, sfr,Bit(2),PcRelative8),
+                Instr(Mnemonic.bf, InstrClass.ConditionalTransfer, M_hl_b,Bit(2),PcRelative8),
                 s_invalid,
                 s_invalid,
 
@@ -1351,13 +1351,13 @@ namespace Reko.Arch.Rl78
                 Instr(Mnemonic.sarw, AX,n(10)),
                 
                 // 0xB0
-                Instr(Mnemonic.btclr, sfr,Bit(3),PcRelative8),
-                Instr(Mnemonic.btclr, M_hl_b,Bit(3),PcRelative8),
-                Instr(Mnemonic.bt, sfr,Bit(3),PcRelative8),
-                Instr(Mnemonic.bt, M_hl_b,Bit(3),PcRelative8),
+                Instr(Mnemonic.btclr, InstrClass.ConditionalTransfer, sfr,Bit(3),PcRelative8),
+                Instr(Mnemonic.btclr, InstrClass.ConditionalTransfer, M_hl_b,Bit(3),PcRelative8),
+                Instr(Mnemonic.bt, InstrClass.ConditionalTransfer, sfr,Bit(3),PcRelative8),
+                Instr(Mnemonic.bt, InstrClass.ConditionalTransfer, M_hl_b,Bit(3),PcRelative8),
 
-                Instr(Mnemonic.bf, sfr,Bit(3),PcRelative8),
-                Instr(Mnemonic.bf, M_hl_b,Bit(3),PcRelative8),
+                Instr(Mnemonic.bf, InstrClass.ConditionalTransfer, sfr,Bit(3),PcRelative8),
+                Instr(Mnemonic.bf, InstrClass.ConditionalTransfer, M_hl_b,Bit(3),PcRelative8),
                 s_invalid,
                 s_invalid,
 
@@ -1372,13 +1372,13 @@ namespace Reko.Arch.Rl78
                 Instr(Mnemonic.sarw, AX,n(11)),
                 
                 // 0xC0
-                Instr(Mnemonic.btclr, sfr,Bit(4),PcRelative8),
-                Instr(Mnemonic.btclr, M_hl_b,Bit(4),PcRelative8),
-                Instr(Mnemonic.bt, sfr,Bit(4),PcRelative8),
-                Instr(Mnemonic.bt, M_hl_b,Bit(4),PcRelative8),
+                Instr(Mnemonic.btclr, InstrClass.ConditionalTransfer, sfr,Bit(4),PcRelative8),
+                Instr(Mnemonic.btclr, InstrClass.ConditionalTransfer, M_hl_b,Bit(4),PcRelative8),
+                Instr(Mnemonic.bt, InstrClass.ConditionalTransfer, sfr,Bit(4),PcRelative8),
+                Instr(Mnemonic.bt, InstrClass.ConditionalTransfer, M_hl_b,Bit(4),PcRelative8),
 
-                Instr(Mnemonic.bf, sfr,Bit(4),PcRelative8),
-                Instr(Mnemonic.bf, M_hl_b,Bit(4),PcRelative8),
+                Instr(Mnemonic.bf, InstrClass.ConditionalTransfer, sfr,Bit(4),PcRelative8),
+                Instr(Mnemonic.bf, InstrClass.ConditionalTransfer, M_hl_b,Bit(4),PcRelative8),
                 s_invalid,
                 s_invalid,
 
@@ -1393,13 +1393,13 @@ namespace Reko.Arch.Rl78
                 Instr(Mnemonic.sarw, AX,n(12)),
                 
                 // 0xD0
-                Instr(Mnemonic.btclr, sfr,Bit(5),PcRelative8),
-                Instr(Mnemonic.btclr, M_hl_b,Bit(5),PcRelative8),
-                Instr(Mnemonic.bt, sfr,Bit(5),PcRelative8),
-                Instr(Mnemonic.bt, M_hl_b,Bit(5),PcRelative8),
+                Instr(Mnemonic.btclr, InstrClass.ConditionalTransfer, sfr,Bit(5),PcRelative8),
+                Instr(Mnemonic.btclr, InstrClass.ConditionalTransfer, M_hl_b,Bit(5),PcRelative8),
+                Instr(Mnemonic.bt, InstrClass.ConditionalTransfer, sfr,Bit(5),PcRelative8),
+                Instr(Mnemonic.bt, InstrClass.ConditionalTransfer, M_hl_b,Bit(5),PcRelative8),
 
-                Instr(Mnemonic.bf, sfr,Bit(5),PcRelative8),
-                Instr(Mnemonic.bf, M_hl_b,Bit(5),PcRelative8),
+                Instr(Mnemonic.bf, InstrClass.ConditionalTransfer, sfr,Bit(5),PcRelative8),
+                Instr(Mnemonic.bf, InstrClass.ConditionalTransfer, M_hl_b,Bit(5),PcRelative8),
                 s_invalid,
                 s_invalid,
 
@@ -1414,13 +1414,13 @@ namespace Reko.Arch.Rl78
                 Instr(Mnemonic.sarw, AX,n(13)),
                 
                 // 0xE0
-                Instr(Mnemonic.btclr, sfr,Bit(6),PcRelative8),
-                Instr(Mnemonic.btclr, M_hl_b,Bit(6),PcRelative8),
-                Instr(Mnemonic.bt, sfr,Bit(6),PcRelative8),
-                Instr(Mnemonic.bt, M_hl_b,Bit(6),PcRelative8),
+                Instr(Mnemonic.btclr, InstrClass.ConditionalTransfer, sfr,Bit(6),PcRelative8),
+                Instr(Mnemonic.btclr, InstrClass.ConditionalTransfer, M_hl_b,Bit(6),PcRelative8),
+                Instr(Mnemonic.bt, InstrClass.ConditionalTransfer, sfr,Bit(6),PcRelative8),
+                Instr(Mnemonic.bt, InstrClass.ConditionalTransfer, M_hl_b,Bit(6),PcRelative8),
 
-                Instr(Mnemonic.bf, sfr,Bit(6),PcRelative8),
-                Instr(Mnemonic.bf, M_hl_b,Bit(6),PcRelative8),
+                Instr(Mnemonic.bf, InstrClass.ConditionalTransfer, sfr,Bit(6),PcRelative8),
+                Instr(Mnemonic.bf, InstrClass.ConditionalTransfer, M_hl_b,Bit(6),PcRelative8),
                 s_invalid,
                 s_invalid,
 
@@ -1435,13 +1435,13 @@ namespace Reko.Arch.Rl78
                 Instr(Mnemonic.sarw, AX,n(14)),
                 
                 // 0xF0
-                Instr(Mnemonic.btclr, sfr,Bit(7),PcRelative8),
-                Instr(Mnemonic.btclr, M_hl_b,Bit(7),PcRelative8),
-                Instr(Mnemonic.bt, sfr,Bit(7),PcRelative8),
-                Instr(Mnemonic.bt, M_hl_b,Bit(7),PcRelative8),
+                Instr(Mnemonic.btclr, InstrClass.ConditionalTransfer, sfr,Bit(7),PcRelative8),
+                Instr(Mnemonic.btclr, InstrClass.ConditionalTransfer, M_hl_b,Bit(7),PcRelative8),
+                Instr(Mnemonic.bt, InstrClass.ConditionalTransfer, sfr,Bit(7),PcRelative8),
+                Instr(Mnemonic.bt, InstrClass.ConditionalTransfer, M_hl_b,Bit(7),PcRelative8),
 
-                Instr(Mnemonic.bf, sfr,Bit(7),PcRelative8),
-                Instr(Mnemonic.bf, M_hl_b,Bit(7),PcRelative8),
+                Instr(Mnemonic.bf, InstrClass.ConditionalTransfer, sfr,Bit(7),PcRelative8),
+                Instr(Mnemonic.bf, InstrClass.ConditionalTransfer, M_hl_b,Bit(7),PcRelative8),
                 s_invalid,
                 s_invalid,
 
@@ -1738,28 +1738,26 @@ namespace Reko.Arch.Rl78
                 Instr(Mnemonic.mov, sfr,Ib ),
                 Instr(Mnemonic.mov, Maddr16b,Ib ),
 
-                // 0xInstr(D0),
+                // 0xD0
                 Instr(Mnemonic.cmp0, X),
                 Instr(Mnemonic.cmp0, A),
                 Instr(Mnemonic.cmp0, C),
                 Instr(Mnemonic.cmp0, B),
 
-
                 Instr(Mnemonic.cmp0, saddr),
                 Instr(Mnemonic.cmp0, Maddr16b),
                 Instr(Mnemonic.mulu, X),
-                Instr(Mnemonic.ret),
-
+                Instr(Mnemonic.ret, InstrClass.Transfer),
 
                 Instr(Mnemonic.mov, X, saddr),
                 Instr(Mnemonic.mov, X,Maddr16b),
                 Instr(Mnemonic.movw, BC,saddrp),
                 Instr(Mnemonic.movw, BC,Maddr16b),
 
-                Instr(Mnemonic.bc, PcRelative8),
-                Instr(Mnemonic.bz, PcRelative8),
-                Instr(Mnemonic.bnc, PcRelative8),
-                Instr(Mnemonic.bnz, PcRelative8),
+                Instr(Mnemonic.bc, InstrClass.ConditionalTransfer, PcRelative8),
+                Instr(Mnemonic.bz, InstrClass.ConditionalTransfer, PcRelative8),
+                Instr(Mnemonic.bnc, InstrClass.ConditionalTransfer, PcRelative8),
+                Instr(Mnemonic.bnz, InstrClass.ConditionalTransfer, PcRelative8),
 
                 // 0xInstr(E0),
                 Instr(Mnemonic.oneb, X),
@@ -1777,10 +1775,10 @@ namespace Reko.Arch.Rl78
                 Instr(Mnemonic.movw, DE,saddrp),
                 Instr(Mnemonic.movw, DE,Maddr16w),
 
-                Instr(Mnemonic.br, ImmAddr20),
-                Instr(Mnemonic.br, ImmAddr16),
-                Instr(Mnemonic.br, PcRelative16),
-                Instr(Mnemonic.br, PcRelative8),
+                Instr(Mnemonic.br, InstrClass.Transfer, ImmAddr20),
+                Instr(Mnemonic.br, InstrClass.Transfer, ImmAddr16),
+                Instr(Mnemonic.br, InstrClass.Transfer, PcRelative16),
+                Instr(Mnemonic.br, InstrClass.Transfer, PcRelative8),
 
                 // 0xInstr(F0),
                 Instr(Mnemonic.clrb, X),
@@ -1798,9 +1796,9 @@ namespace Reko.Arch.Rl78
                 Instr(Mnemonic.movw, HL,saddrp),
                 Instr(Mnemonic.movw, HL,Maddr16w),
 
-                Instr(Mnemonic.call, ImmAddr20),
-                Instr(Mnemonic.call, Maddr16w),
-                Instr(Mnemonic.call, PcRelative16),
+                Instr(Mnemonic.call, InstrClass.Transfer|InstrClass.Call, ImmAddr20),
+                Instr(Mnemonic.call, InstrClass.Transfer|InstrClass.Call, Maddr16w),
+                Instr(Mnemonic.call, InstrClass.Transfer|InstrClass.Call, PcRelative16),
                 s_invalid
             };
         }
