@@ -121,7 +121,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.pkhbt:
                 case Opcode.pkhtb:
                 case Opcode.pldw:
-                case Opcode.pld:
                 case Opcode.pli:
                 case Opcode.qasx:
                 case Opcode.qsax:
@@ -381,6 +380,7 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.qdsub: RewriteQDAddSub(m.ISub); break;
                 case Opcode.qsub: RewriteQAddSub(m.ISub); break;
                 case Opcode.qsub16: RewriteVectorBinOp("__qsub_{0}", ArmVectorData.S16); break;
+                case Opcode.pld: RewritePld(); break;
                 case Opcode.pop: RewritePop(); break;
                 case Opcode.push: RewritePush(); break;
                 case Opcode.ror: RewriteShift(Ror); break;
@@ -793,8 +793,9 @@ namespace Reko.Arch.Arm.AArch32
                                 ea = m.IAdd(ea, ix);
                                 break;
                             case Opcode.rrx:
-                                //$TODO: handle this (very unlikely) case!
-                                throw new NotImplementedException();
+                                var rrx = host.PseudoProcedure(PseudoProcedure.RorC, ireg.DataType, ireg, Constant.Int32(mop.Shift), C());
+                                ea = m.IAdd(ea, rrx);
+                                break;
                             }
                         }
                         return m.Mem(dt, ea);

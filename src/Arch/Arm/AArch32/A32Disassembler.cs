@@ -773,6 +773,10 @@ namespace Reko.Arch.Arm.AArch32
                 var imm = Bitfield.ReadFields(bitfields, u);
                 var baseReg = (int)Bitfield.ReadFields(baseRegFields, u);
                 var regs = d.SBitfield(u, 1, 7);
+                if(regs == 0 || regs > 16 || (baseReg + regs) > 32)
+                {
+                    return false;
+                }
                 var bitmask = (((1u << regs) - 1u) << baseReg);
                 d.state.ops.Add(new MultiRegisterOperand(Registers.DRegs, PrimitiveType.Word64, bitmask));
                 return true;
@@ -794,6 +798,10 @@ namespace Reko.Arch.Arm.AArch32
                 var imm = Bitfield.ReadFields(bitfields, u);
                 var baseReg = (int) Bitfield.ReadFields(baseRegFields, u);
                 var regs = d.SBitfield(u, 0, 8);
+                if(regs == 0 || (baseReg + regs) > 32)
+                {
+                    return false;
+                }
                 var bitmask = (((1u << regs) - 1u) << baseReg);
                 d.state.ops.Add(new MultiRegisterOperand(Registers.SRegs, PrimitiveType.Word32, bitmask));
                 return true;
@@ -3397,12 +3405,12 @@ namespace Reko.Arch.Arm.AArch32
                     Mask("op1=101???1", 21, 0b111,
                         nyi("op1=1010001"),
                         nyi("op1=1010011"),
-                        nyi("op1=1010101"),
+                        Instr(Opcode.pldw, x("*")),
                         Barriers,
                         
                         nyi("op1=1011001"),
                         nyi("op1=1011011"),
-                        nyi("op1=1011101"),
+                        Instr(Opcode.pld, Mo(w4)),
                         nyi("op1=1011111"))),
                 nyi("op1=110xxxx"),
                 nyi("op1=111xxxx"));

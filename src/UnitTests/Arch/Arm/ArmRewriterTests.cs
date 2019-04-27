@@ -1671,5 +1671,15 @@ means
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|s19 = (int32) trunc(s19)");
         }
+
+
+        [Test]
+        public void ArmRw_pld()
+        {
+            BuildTest(0xF5D0F020);
+            AssertCode(// pld\t[r0,#&20]
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__pld(r0 + 32)");
+        }
     }
 }

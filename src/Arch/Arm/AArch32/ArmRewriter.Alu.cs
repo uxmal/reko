@@ -541,6 +541,14 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
+        private void RewritePld()
+        {
+            var dst = ((MemoryAccess) this.Operand(Dst())).EffectiveAddress;
+               m.SideEffect(host.PseudoProcedure("__pld",
+                VoidType.Instance,
+                dst));
+        }
+
         private void RewritePop()
         {
             var sp = Reg(Registers.sp);

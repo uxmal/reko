@@ -1054,6 +1054,13 @@ namespace Reko.UnitTests.Arch.Arm
             Disassemble32(0xECC00B04);
             Expect_Code("vstmia\tr0,{d16-d17}");
         }
+        
+        [Test]
+        public void ArmDasm_invalid_vstmia()
+        {
+            Disassemble32(0x0CA0BBC0);
+            Expect_Code("Invalid");
+        }
 
         [Test]
         public void ArmDasm_ldrbtgt()
@@ -1692,6 +1699,13 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Disassemble32(0x2D207325);
             Expect_Code("stchs\tp3,c7,[r0,-#&94]!");
+        }
+
+        [Test]
+        public void ArmDasm_pld()
+        {
+            Disassemble32(0xF5D0F020);
+            Expect_Code("pld\t[r0,#&20]");
         }
 
 #if BORED
