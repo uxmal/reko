@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -196,6 +196,13 @@ namespace Reko.Arch.Arm
 #if NATIVE
             return new ArmRewriterRetired(regsByNumber, rdr, (ArmProcessorState) state, binder, host);
 #endif
+        }
+
+        public override Core.CallingConvention GetCallingConvention(string name)
+        {
+            // At this point, we're falling back onto the architecture-defined
+            // calling convention.
+            return new Arm32CallingConvention();
         }
 
         public override RegisterStorage GetRegister(int i)
