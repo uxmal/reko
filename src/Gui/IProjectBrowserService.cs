@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -49,5 +49,7 @@ namespace Reko.Gui
         void Clear();
 
         void Reload();
+
+        void Show();
     }
 }

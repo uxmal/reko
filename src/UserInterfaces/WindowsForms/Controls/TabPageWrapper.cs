@@ -18,20 +18,28 @@
  */
 #endregion
 
+using Reko.Gui.Controls;
 using System;
-using System.Drawing;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
-namespace Reko.Gui.Controls
+namespace Reko.UserInterfaces.WindowsForms.Controls
 {
-    public interface IControl
+    public class TabPageWrapper : ITabPage
     {
-        event EventHandler GotFocus;
-        event EventHandler LostFocus;
+        private readonly TabPage tabPage;
 
-        Color ForeColor { get; set; }
-        Color BackColor { get; set; }
-        bool Enabled { get; set; }
+        public TabPageWrapper(TabPage tabPage)
+        {
+            this.tabPage = tabPage;
+        }
 
-        void Focus();
+        public void Select()
+        {
+            ((TabControl) tabPage.Parent).SelectedTab = tabPage;
+        }
     }
 }

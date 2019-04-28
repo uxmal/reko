@@ -53,6 +53,7 @@ namespace Reko.Gui.Forms
         private ISearchResultService srSvc;
         private IWorkerDialogService workerDlgSvc;
         private IProjectBrowserService projectBrowserSvc;
+        private IProcedureListService procedureListSvc;
         private IDialogFactory dlgFactory;
         private ITabControlHostService searchResultsTabControl;
         private ILoader loader;
@@ -174,6 +175,9 @@ namespace Reko.Gui.Forms
 
             this.projectBrowserSvc = svcFactory.CreateProjectBrowserService();
             sc.AddService<IProjectBrowserService>(projectBrowserSvc);
+
+            this.procedureListSvc = svcFactory.CreateProcedureListService();
+            sc.AddService<IProcedureListService>(procedureListSvc);
 
             var upSvc = svcFactory.CreateUiPreferencesService();
             sc.AddService<IUiPreferencesService>(upSvc);
@@ -397,6 +401,7 @@ namespace Reko.Gui.Forms
 
             CloseAllDocumentWindows();
             sc.RequireService<IProjectBrowserService>().Clear();
+            sc.RequireService<IProcedureListService>().Clear();
             diagnosticsSvc.ClearDiagnostics();
             decompilerSvc.Decompiler = null;
             this.ProjectFileName = null;
@@ -449,6 +454,7 @@ namespace Reko.Gui.Forms
             CloseAllDocumentWindows();
             diagnosticsSvc.ClearDiagnostics();
             projectBrowserSvc.Reload();
+            projectBrowserSvc.Show();
         }
 
         public void NextPhase()
@@ -771,6 +777,8 @@ namespace Reko.Gui.Forms
                 return searchResultsTabControl;
             if (projectBrowserSvc.ContainsFocus)
                 return projectBrowserSvc;
+            if (procedureListSvc.ContainsFocus)
+                return procedureListSvc;
             return subWindowCommandTarget;
         }
 

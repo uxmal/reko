@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -34,7 +34,5 @@ namespace Reko.Gui.Controls
         string Text { get; set; }
 
         void SelectAll();
-
-        void Focus();
     }
 }

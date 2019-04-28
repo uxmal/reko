@@ -1,4 +1,4 @@
-﻿using Reko.Arch.X86;
+using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Gui;
 using Reko.UserInterfaces.WindowsForms.Controls;
@@ -14,7 +14,7 @@ namespace Reko.WindowsItp
         public ProjectBrowserDialog()
         {
             InitializeComponent();
-            pbs = new ProjectBrowserService(null, new TreeViewWrapper(treeView));
+            pbs = new ProjectBrowserService(null, null, new TreeViewWrapper(treeView));
         }
 
         private void btnLoad_Click(object sender, EventArgs e)

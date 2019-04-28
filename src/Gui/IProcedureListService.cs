@@ -18,20 +18,31 @@
  */
 #endregion
 
+using Reko.Core;
 using System;
-using System.Drawing;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Reko.Gui.Controls
+namespace Reko.Gui
 {
-    public interface IControl
+    public interface IProcedureListService : ICommandTarget
     {
-        event EventHandler GotFocus;
-        event EventHandler LostFocus;
+        /// <summary>
+        /// The currently selected object in the project browser tree.
+        /// </summary>
+        Procedure SelectedProcedure { get; set; }
 
-        Color ForeColor { get; set; }
-        Color BackColor { get; set; }
-        bool Enabled { get; set; }
+        /// <summary>
+        /// Returns true if any of the controls has focus.
+        /// </summary>
+        bool ContainsFocus { get; }
 
-        void Focus();
+        void Clear();
+
+        void Load(Project project);
+
+        void Show();
     }
 }

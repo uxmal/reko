@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -48,6 +48,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             InitializeComponent();
             docWindows = new DocumentWindowCollection(this);
             ProjectBrowser = new TreeViewWrapper(treeBrowser);
+            ProjectBrowserTab = new TabPageWrapper(tabProject);
 
             this.Load += MainForm_Load;
             this.ProcessCommandKey += this.MainForm_ProcessCommandKey;
@@ -81,8 +82,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             var frame = uiSvc.ActiveFrame;
             if (frame != null)
             {
-                var ct = frame.Pane as ICommandTarget;
-                if (ct != null)
+                if (frame.Pane is ICommandTarget ct)
                 {
                     e.Handled = dm.ProcessKey(ct.GetType().FullName, ct, e.KeyData);
                     if (e.Handled)
@@ -94,8 +94,8 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
         private void toolBar_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            var cmd = e.ClickedItem.Tag as MenuCommand;
-            if (cmd == null) throw new NotImplementedException("Button not hooked up.");
+            if (!(e.ClickedItem.Tag is MenuCommand cmd))
+                throw new NotImplementedException("Button not hooked up.");
             interactor.Execute(cmd.CommandID);
         }
 
@@ -154,6 +154,23 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         public TabPage ConsolePage
         {
             get { return tabConsole; }
+        }
+
+        public ITabPage ProjectBrowserTab { get; }
+
+        public TabPage ProcedureListTab
+        {
+            get { return tabProcedures; }
+        }
+
+        public TextBox ProcedureFilter
+        {
+            get { return txtProcedureFilter; }
+        }
+
+        public ListView ProcedureList
+        {
+            get { return listProcedures; }
         }
 
         public ListView DiagnosticsList
@@ -220,8 +237,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             var text = new CommandText();
             foreach (ToolStripItem item in ToolBar.Items)
             {
-                var cmd = item.Tag as MenuCommand;
-                if (cmd != null)
+                if (item.Tag is MenuCommand cmd)
                 {
                     text.Text = null;
                     var st = interactor.QueryStatus(cmd.CommandID, status, text);

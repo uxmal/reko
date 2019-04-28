@@ -65,6 +65,7 @@
     <Compile Include="Controls\ByteMapView.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\TabPageWrapper.cs" />
     <Compile Include="Controls\CombinedCodeView.cs">
       <SubType>UserControl</SubType>
     </Compile>

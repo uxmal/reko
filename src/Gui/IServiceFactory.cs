@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
 * Copyright (C) 1999-2019 John Källén.
 *
@@ -61,5 +61,6 @@ namespace Reko.Gui
         IViewImportsService CreateViewImportService();
         ISymbolLoadingService CreateSymbolLoadingService();
         ISelectionService CreateSelectionService();
+        IProcedureListService CreateProcedureListService();
     }
 }

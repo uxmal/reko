@@ -19,19 +19,15 @@
 #endregion
 
 using System;
-using System.Drawing;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Reko.Gui.Controls
 {
-    public interface IControl
+    public interface ITabPage
     {
-        event EventHandler GotFocus;
-        event EventHandler LostFocus;
-
-        Color ForeColor { get; set; }
-        Color BackColor { get; set; }
-        bool Enabled { get; set; }
-
-        void Focus();
+        void Select();
     }
 }
