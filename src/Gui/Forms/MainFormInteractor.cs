@@ -238,7 +238,10 @@ namespace Reko.Gui.Forms
                 SwitchInteractor(InitialPageInteractor);
                 if (openAction(file) || onFailAction(file))
                 {
-                    ProjectFileName = file;
+                    if (file.EndsWith(Project_v3.FileExtension))
+                    {
+                        ProjectFileName = file;
+                    }
                 }
             }
             catch (Exception ex)
@@ -914,7 +917,7 @@ namespace Reko.Gui.Forms
             if (0 <= iMru && iMru < mru.Items.Count)
             {
                 string file = mru.Items[iMru];
-                OpenBinary(file, (f) => pageInitial.OpenBinary(file), f => OpenBinaryAs(f));
+                OpenBinary(file, pageInitial.OpenBinary, OpenBinaryAs);
                 RememberFilenameInMru(file);
                 return true;
             }
