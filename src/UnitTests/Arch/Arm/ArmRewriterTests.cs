@@ -1672,7 +1672,6 @@ means
                 "1|L--|s19 = (int32) trunc(s19)");
         }
 
-
         [Test]
         public void ArmRw_pld()
         {

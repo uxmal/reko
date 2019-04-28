@@ -798,7 +798,7 @@ namespace Reko.Arch.Arm.AArch32
                 var imm = Bitfield.ReadFields(bitfields, u);
                 var baseReg = (int) Bitfield.ReadFields(baseRegFields, u);
                 var regs = d.SBitfield(u, 0, 8);
-                if(regs == 0 || (baseReg + regs) > 32)
+                if (regs == 0 || (baseReg + regs) > 32)
                 {
                     return false;
                 }
@@ -807,7 +807,6 @@ namespace Reko.Arch.Arm.AArch32
                 return true;
             };
         }
-
 
         // Vector element access with alignment.
         private static readonly int []mveAlignments = { 0, 64, 128, 256 };

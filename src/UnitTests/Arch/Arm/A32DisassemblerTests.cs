@@ -1438,7 +1438,7 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void ArmDasm_vstmdb_lt()
         {
-            Disassemble32(0xBD672AB9);
+            Disassemble32(0xBD672A19);
             Expect_Code("vstmdblt\tr7!,{s5-s29}");
         }
 
