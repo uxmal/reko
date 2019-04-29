@@ -603,6 +603,16 @@ namespace Reko.Gui.Forms
                 throw new NotSupportedException();
         }
 
+        public void ViewProjectBrowser()
+        {
+            this.projectBrowserSvc.Show();
+        }
+
+        public void ViewProcedureList()
+        {
+            this.procedureListSvc.Show();
+        }
+
         public void FindProcedures(ISearchResultService svc)
         {
             var hits = this.decompilerSvc.Decompiler.Project.Programs
@@ -801,6 +811,8 @@ namespace Reko.Gui.Forms
                 case CmdIds.FileExit:
                 case CmdIds.FileOpenAs:
                 case CmdIds.FileAssemble:
+                case CmdIds.ViewProjectBrowser:
+                case CmdIds.ViewProcedureList:
                 case CmdIds.ToolsOptions:
                 case CmdIds.WindowsCascade: 
                 case CmdIds.WindowsTileVertical:
@@ -897,6 +909,8 @@ namespace Reko.Gui.Forms
 
                 case CmdIds.EditFind: EditFind(); retval = true; break;
 
+                case CmdIds.ViewProjectBrowser: ViewProjectBrowser(); retval = true; break;
+                case CmdIds.ViewProcedureList: ViewProcedureList(); retval = true; break;
                 case CmdIds.ViewDisassembly: ViewDisassemblyWindow(); retval = true; break;
                 case CmdIds.ViewMemory: ViewMemoryWindow(); retval = true; break;
                 case CmdIds.ViewCallGraph: ViewCallGraph(); retval = true; break;
