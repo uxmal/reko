@@ -189,7 +189,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public IProcedureListService CreateProcedureListService()
         {
-            return new ProcedureListService(mainForm.ProcedureListTab, mainForm.ProcedureFilter, mainForm.ProcedureList);
+            return new ProcedureListService(services, mainForm.ProcedureListTab, mainForm.ProcedureFilter, mainForm.ProcedureList);
         }
     }
 }

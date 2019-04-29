@@ -158,7 +158,6 @@
     <Compile Include="Forms\ITextEncodingDialog.cs" />
     <Compile Include="IViewImportsService.cs" />
     <Compile Include="JumpVectorNavigator.cs" />
-    <Compile Include="ProcedureListService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BlockNavigator.cs" />
     <Compile Include="CommandGroup.cs" />

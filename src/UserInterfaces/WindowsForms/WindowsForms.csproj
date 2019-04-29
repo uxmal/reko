@@ -317,6 +317,7 @@
     <Compile Include="NavigationInteractor.cs" />
     <Compile Include="NumericUpDownWrapper.cs" />
     <Compile Include="PreviewInteractor.cs" />
+    <Compile Include="ProcedureListService.cs" />
     <Compile Include="ProgressbarWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyGridWrapper.cs" />

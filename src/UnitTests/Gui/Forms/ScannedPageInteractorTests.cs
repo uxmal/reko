@@ -113,6 +113,7 @@ namespace Reko.UnitTests.Gui.Forms
         public void Lpi_PopulateBrowserWithScannedProcedures()
         {
             var brSvc = AddService<IProjectBrowserService>();
+            AddService<IProcedureListService>();
             brSvc.Setup(b => b.Reload()).Verifiable();
 
             // Instead write expectations for the two added items.
@@ -138,7 +139,7 @@ namespace Reko.UnitTests.Gui.Forms
             AddService<ILowLevelViewService>();
             AddService<IDisassemblyViewService>();
             AddService<IProjectBrowserService>();
-
+            AddService<IProcedureListService>();
             interactor.EnterPage();
         }
 
@@ -159,6 +160,7 @@ namespace Reko.UnitTests.Gui.Forms
             AddService<ILowLevelViewService>();
             AddService<IDisassemblyViewService>();
             AddService<IProjectBrowserService>();
+            AddService<IProcedureListService>();
 
             Assert.IsNotNull(sc);
             interactor.EnterPage();

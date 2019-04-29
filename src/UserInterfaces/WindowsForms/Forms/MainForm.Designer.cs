@@ -308,6 +308,7 @@
             this.colProcAddress,
             this.colProcName});
             this.listProcedures.FullRowSelect = true;
+            this.listProcedures.HideSelection = false;
             this.listProcedures.Location = new System.Drawing.Point(0, 26);
             this.listProcedures.Name = "listProcedures";
             this.listProcedures.Size = new System.Drawing.Size(169, 289);

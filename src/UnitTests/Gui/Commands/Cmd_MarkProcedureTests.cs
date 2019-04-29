@@ -58,9 +58,11 @@ namespace Reko.UnitTests.Gui.Commands
             var dc = new Mock<IDecompiler>();
             var dcSvc = new Mock<IDecompilerService>();
             var brSvc = new Mock<IProjectBrowserService>();
+            var procSvc = new Mock<IProcedureListService>();
             dcSvc.Setup(d => d.Decompiler).Returns(dc.Object);
             sc.AddService<IDecompilerService>(dcSvc.Object);
             sc.AddService<IProjectBrowserService>(brSvc.Object);
+            sc.AddService<IProcedureListService>(procSvc.Object);
             sc.AddService<IDecompilerShellUiService>(new FakeShellUiService());
             dc.Setup(d => d. ScanProcedure(
                 It.IsAny<ProgramAddress>(),
