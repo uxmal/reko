@@ -47,14 +47,15 @@
             this.sfd = new System.Windows.Forms.SaveFileDialog();
             this.splitContainerMain = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.tabDocuments = new System.Windows.Forms.TabControl();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabProject = new System.Windows.Forms.TabPage();
             this.tabProcedures = new System.Windows.Forms.TabPage();
-            this.txtProcedureFilter = new System.Windows.Forms.TextBox();
             this.listProcedures = new System.Windows.Forms.ListView();
             this.colProcAddress = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colProcName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.txtProcedureFilter = new System.Windows.Forms.TextBox();
+            this.tabDocuments = new System.Windows.Forms.TabControl();
+            this.colProcSegment = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.statusStrip.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabDiagnostics.SuspendLayout();
@@ -245,16 +246,6 @@
             this.splitContainer2.SplitterDistance = 179;
             this.splitContainer2.TabIndex = 0;
             // 
-            // tabDocuments
-            // 
-            this.tabDocuments.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabDocuments.ImageList = this.imageList;
-            this.tabDocuments.Location = new System.Drawing.Point(0, 0);
-            this.tabDocuments.Name = "tabDocuments";
-            this.tabDocuments.SelectedIndex = 0;
-            this.tabDocuments.Size = new System.Drawing.Size(601, 339);
-            this.tabDocuments.TabIndex = 0;
-            // 
             // tabControl2
             // 
             this.tabControl2.Controls.Add(this.tabProject);
@@ -289,16 +280,6 @@
             this.tabProcedures.Text = "Procedures";
             this.tabProcedures.UseVisualStyleBackColor = true;
             // 
-            // txtProcedureFilter
-            // 
-            this.txtProcedureFilter.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtProcedureFilter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtProcedureFilter.Location = new System.Drawing.Point(0, 0);
-            this.txtProcedureFilter.Name = "txtProcedureFilter";
-            this.txtProcedureFilter.Size = new System.Drawing.Size(169, 20);
-            this.txtProcedureFilter.TabIndex = 0;
-            // 
             // listProcedures
             // 
             this.listProcedures.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -306,7 +287,8 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listProcedures.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.colProcAddress,
-            this.colProcName});
+            this.colProcName,
+            this.colProcSegment});
             this.listProcedures.FullRowSelect = true;
             this.listProcedures.HideSelection = false;
             this.listProcedures.Location = new System.Drawing.Point(0, 26);
@@ -319,11 +301,36 @@
             // colProcAddress
             // 
             this.colProcAddress.Text = "Address";
+            this.colProcAddress.Width = 62;
             // 
             // colProcName
             // 
             this.colProcName.Text = "Name";
             this.colProcName.Width = 200;
+            // 
+            // txtProcedureFilter
+            // 
+            this.txtProcedureFilter.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtProcedureFilter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtProcedureFilter.Location = new System.Drawing.Point(0, 0);
+            this.txtProcedureFilter.Name = "txtProcedureFilter";
+            this.txtProcedureFilter.Size = new System.Drawing.Size(169, 20);
+            this.txtProcedureFilter.TabIndex = 0;
+            // 
+            // tabDocuments
+            // 
+            this.tabDocuments.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabDocuments.ImageList = this.imageList;
+            this.tabDocuments.Location = new System.Drawing.Point(0, 0);
+            this.tabDocuments.Name = "tabDocuments";
+            this.tabDocuments.SelectedIndex = 0;
+            this.tabDocuments.Size = new System.Drawing.Size(601, 339);
+            this.tabDocuments.TabIndex = 0;
+            // 
+            // colProcSegment
+            // 
+            this.colProcSegment.Text = "Segment";
             // 
             // MainForm
             // 
@@ -385,6 +392,7 @@
         private System.Windows.Forms.ColumnHeader colProcAddress;
         private System.Windows.Forms.ColumnHeader colProcName;
         private System.Windows.Forms.TextBox txtProcedureFilter;
+        private System.Windows.Forms.ColumnHeader colProcSegment;
     }
 }
 

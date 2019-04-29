@@ -105,7 +105,7 @@ namespace Reko.Gui
             var items = sProcs.Select(CreateListItem).ToArray();
             if (items.Length == 0)
             {
-                items = new[] { new ListViewItem(new[] { "(None)", "" }) };
+                items = new[] { new ListViewItem(new[] { "(None)", "", "" }) };
             }
             this.listProcedures.Items.Clear();
             this.listProcedures.Items.AddRange(items);
@@ -113,7 +113,15 @@ namespace Reko.Gui
 
         private ListViewItem CreateListItem((Program program, Procedure proc) item)
         {
-            return new ListViewItem(new[] { item.proc.EntryAddress.ToString(), item.proc.Name })
+            var segName = item.program.SegmentMap.TryFindSegment(item.proc.EntryAddress, out var seg)
+                ? seg.Name
+                : "???";
+            var subItems = new[] {
+                item.proc.EntryAddress.ToString(),
+                item.proc.Name,
+                segName
+            };
+            return new ListViewItem(subItems)
             {
                 Tag = item
             };
