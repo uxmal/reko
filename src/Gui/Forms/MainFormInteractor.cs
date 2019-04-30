@@ -512,6 +512,7 @@ namespace Reko.Gui.Forms
                 prev.EnterPage();
                 CurrentPhase = prev;
                 projectBrowserSvc.Reload();
+                procedureListSvc.Load(decompilerSvc.Decompiler.Project);
             }
             catch (Exception ex)
             {
