@@ -58,19 +58,6 @@ namespace Reko.Gui
             Clear();
         }
 
-        public Procedure SelectedProcedure
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
         public bool ContainsFocus
         {
             get { return this.txtProcedureFilter.Focused || this.listProcedures.Focused;  }
@@ -141,7 +128,6 @@ namespace Reko.Gui
         {
             int cItems = listProcedures.SelectedItems.Count;
             var singleItemSelected = cItems == 1;
-            var multipleItemsSelected = cItems >= 1;
             if (cmdId.Guid == CmdSets.GuidReko)
             {
                 switch (cmdId.ID) {

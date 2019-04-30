@@ -30,11 +30,6 @@ namespace Reko.Gui
     public interface IProcedureListService : ICommandTarget
     {
         /// <summary>
-        /// The currently selected object in the project browser tree.
-        /// </summary>
-        Procedure SelectedProcedure { get; set; }
-
-        /// <summary>
         /// Returns true if any of the controls has focus.
         /// </summary>
         bool ContainsFocus { get; }
