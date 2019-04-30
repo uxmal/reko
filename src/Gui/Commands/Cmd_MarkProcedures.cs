@@ -50,6 +50,8 @@ namespace Reko.Gui.Commands
         public override void DoIt()
         {
             var brSvc = Services.RequireService<IProjectBrowserService>();
+            var procsSvc = Services.RequireService<IProcedureListService>();
+
             //$TODO if arch > 1 pick arch.
             try
             {
@@ -92,6 +94,8 @@ namespace Reko.Gui.Commands
 
             //$REVIEW: browser service should listen to changes in UserProcedures, no?
             brSvc.Reload();
+            procsSvc.Load(decSvc.Decompiler.Project);
+            procsSvc.Show();
         }
 
         private ProcedureBase DoScanProcedure(ProgramAddress paddr, string sArch)

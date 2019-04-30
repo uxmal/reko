@@ -52,6 +52,11 @@ namespace Reko.Core
             return reg;
         }
 
+        public RegisterStorage Reg16(string format)
+        {
+            return Reg(format, PrimitiveType.Word16);
+        }
+
         public RegisterStorage Reg32(string format)
         {
             return Reg(format, PrimitiveType.Word32);

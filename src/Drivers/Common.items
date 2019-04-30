@@ -39,6 +39,7 @@ by the PreBuild.targets file.
     <Architectures Include="$(SolutionDir)Arch\Xtensa\bin\$(Configuration)\Reko.Arch.Xtensa.*" />
     <Architectures Include="$(SolutionDir)Arch\Z80\bin\$(Configuration)\Reko.Arch.Z80.*" />
     <Architectures Include="$(SolutionDir)Arch\zSeries\bin\$(Configuration)\Reko.Arch.zSeries.*" />
+    <Architectures Include="$(SolutionDir)Arch\Rl78\bin\$(Configuration)\Reko.Arch.Rl78.*" />
 
     <DecompilerMetadata Include="$(SolutionDir)..\external\wine\*.spec" />
     <DecompilerMetadata Include="$(SolutionDir)Decompiler\Loading\Signatures\*.xml" />

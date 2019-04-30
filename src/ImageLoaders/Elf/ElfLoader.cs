@@ -524,13 +524,16 @@ namespace Reko.ImageLoaders.Elf
                         symbols[addrGot] = gotSym;
                         DebugEx.Verbose(ElfImageLoader.trace, "{0}+{1:X4}: Found GOT entry {2}, referring to symbol at {3}",
                             gotStart, addrGot - gotStart, gotSym, symbol);
-                        program.ImportReferences.Add(
-                            addrGot,
-                            new NamedImportReference(
+                        if (symbol.Type == SymbolType.ExternalProcedure)
+                        {
+                            program.ImportReferences.Add(
                                 addrGot,
-                                null,
-                                symbol.Name,
-                                symbol.Type));
+                                new NamedImportReference(
+                                    addrGot,
+                                    null,
+                                    symbol.Name,
+                                    symbol.Type));
+                        }
                     }
                 }
                 else if (makeGlobals)

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -52,5 +52,7 @@ namespace Reko.UserInterfaces.WindowsForms
         public Color BackColor { get { return ctrl.BackColor; } set { ctrl.BackColor = value; } }
         public Color ForeColor { get { return ctrl.ForeColor; } set { ctrl.ForeColor = value; } }
         public bool Enabled { get { return ctrl.Enabled; } set { ctrl.Enabled = value; } }
+
+        public void Focus() { ctrl.Focus(); }
     }
 }

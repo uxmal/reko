@@ -153,6 +153,7 @@
         <File Source="$(var.PowerPC.TargetPath)" />
         <File Source="$(var.PowerPC.Design.TargetPath)" />
         <File Source="$(var.RiscV.TargetPath)" />
+        <File Source="$(var.Rl78.TargetPath)" />
         <File Source="$(var.Sparc.TargetPath)" />
         <File Source="$(var.SuperH.TargetPath)" />
         <File Source="$(var.Tlcs.TargetPath)" />

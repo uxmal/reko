@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -31,5 +31,7 @@ namespace Reko.Gui.Controls
         Color ForeColor { get; set; }
         Color BackColor { get; set; }
         bool Enabled { get; set; }
+
+        void Focus();
     }
 }

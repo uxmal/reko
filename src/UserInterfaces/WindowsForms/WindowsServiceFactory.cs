@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -116,7 +116,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public IProjectBrowserService CreateProjectBrowserService()
         {
-            return new ProjectBrowserService(services, mainForm.ProjectBrowser);
+            return new ProjectBrowserService(services, mainForm.ProjectBrowserTab, mainForm.ProjectBrowser);
         }
 
         public ISearchResultService CreateSearchResultService()
@@ -185,6 +185,11 @@ namespace Reko.UserInterfaces.WindowsForms
         public ISelectionService CreateSelectionService()
         {
             return new SelectionService();
+        }
+
+        public IProcedureListService CreateProcedureListService()
+        {
+            return new ProcedureListService(services, mainForm.ProcedureListTab, mainForm.ProcedureFilter, mainForm.ProcedureList);
         }
     }
 }

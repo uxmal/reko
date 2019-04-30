@@ -174,6 +174,13 @@ namespace Reko.Arch.Arm
 #endif
         }
 
+        public override Core.CallingConvention GetCallingConvention(string name)
+        {
+            // At this point, we're falling back onto the architecture-defined
+            // calling convention.
+            return new Arm32CallingConvention();
+        }
+
         public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
             if (Registers.RegistersByDomain.TryGetValue(domain, out var reg))

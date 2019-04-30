@@ -136,7 +136,7 @@ namespace Reko.Arch.Arm.AArch32
                 }
                 ++cArgs;
             }
-            var intrinsicCall = host.PseudoProcedure("__mrc", VoidType.Instance, args.ToArray());
+            var intrinsicCall = host.PseudoProcedure("__mrc", dst.DataType, args.ToArray());
             m.Assign(dst, intrinsicCall);
         }
 

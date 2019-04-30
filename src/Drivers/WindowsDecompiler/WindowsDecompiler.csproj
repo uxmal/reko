@@ -224,6 +224,10 @@
       <Project>{16550df3-0916-4bdd-aa7a-7e1bad7aba3b}</Project>
       <Name>PowerPC.Design</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Arch\Rl78\Rl78.csproj">
+      <Project>{54029784-c8a6-43f5-9d00-62ec8da04fa1}</Project>
+      <Name>Rl78</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Arch\SuperH\SuperH.csproj">
       <Project>{fc3aa408-b2b1-4b40-b29d-9ebb46aa8b33}</Project>
       <Name>SuperH</Name>

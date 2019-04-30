@@ -125,6 +125,7 @@
     <Compile Include="Controls\INumericUpDownWrapper.cs" />
     <Compile Include="Controls\IPropertyGrid.cs" />
     <Compile Include="Controls\IRadioButton.cs" />
+    <Compile Include="Controls\ITabPage.cs" />
     <Compile Include="Controls\ITypeMarker.cs" />
     <Compile Include="Controls\KeyEventArgs.cs" />
     <Compile Include="Design\ArchitectureDesigner.cs" />
@@ -151,6 +152,7 @@
     <Compile Include="ICallGraphViewService.cs" />
     <Compile Include="ICommandFactory.cs" />
     <Compile Include="IFindStringsDialog.cs" />
+    <Compile Include="IProcedureListService.cs" />
     <Compile Include="IResourceEditorService.cs" />
     <Compile Include="Forms\IWorkerDialog.cs" />
     <Compile Include="Forms\ITextEncodingDialog.cs" />
