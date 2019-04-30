@@ -179,6 +179,13 @@
       <DependentUpon>AssumedRegisterValuesDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\AssumedRegisterValuesInteractor.cs" />
+    <Compile Include="Forms\CallHierarchyInteractor.cs" />
+    <Compile Include="Forms\CallHierarchyView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\CallHierarchyView.Designer.cs">
+      <DependentUpon>CallHierarchyView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\CallSiteDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -400,6 +407,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\AssumedRegisterValuesDialog.resx">
       <DependentUpon>AssumedRegisterValuesDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\CallHierarchyView.resx">
+      <DependentUpon>CallHierarchyView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\CallSiteDialog.resx">
       <DependentUpon>CallSiteDialog.cs</DependentUpon>

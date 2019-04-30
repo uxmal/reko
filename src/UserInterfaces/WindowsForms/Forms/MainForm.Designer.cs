@@ -42,6 +42,7 @@
             this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.tabFindResults = new System.Windows.Forms.TabPage();
             this.listFindResults = new System.Windows.Forms.ListView();
+            this.tabCallHierarchy = new System.Windows.Forms.TabPage();
             this.tabConsole = new System.Windows.Forms.TabPage();
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.sfd = new System.Windows.Forms.SaveFileDialog();
@@ -56,10 +57,12 @@
             this.txtProcedureFilter = new System.Windows.Forms.TextBox();
             this.tabDocuments = new System.Windows.Forms.TabControl();
             this.colProcSegment = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.callHierarchyView = new Reko.UserInterfaces.WindowsForms.Forms.CallHierarchyView();
             this.statusStrip.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabDiagnostics.SuspendLayout();
             this.tabFindResults.SuspendLayout();
+            this.tabCallHierarchy.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerMain)).BeginInit();
             this.splitContainerMain.Panel1.SuspendLayout();
             this.splitContainerMain.Panel2.SuspendLayout();
@@ -122,6 +125,7 @@
             // 
             this.tabControl1.Controls.Add(this.tabDiagnostics);
             this.tabControl1.Controls.Add(this.tabFindResults);
+            this.tabControl1.Controls.Add(this.tabCallHierarchy);
             this.tabControl1.Controls.Add(this.tabConsole);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
@@ -201,6 +205,16 @@
             this.listFindResults.Size = new System.Drawing.Size(770, 136);
             this.listFindResults.TabIndex = 0;
             this.listFindResults.UseCompatibleStateImageBehavior = false;
+            // 
+            // tabCallHierarchy
+            // 
+            this.tabCallHierarchy.Controls.Add(this.callHierarchyView);
+            this.tabCallHierarchy.Location = new System.Drawing.Point(4, 22);
+            this.tabCallHierarchy.Name = "tabCallHierarchy";
+            this.tabCallHierarchy.Size = new System.Drawing.Size(776, 142);
+            this.tabCallHierarchy.TabIndex = 3;
+            this.tabCallHierarchy.Text = "Call hierarchy";
+            this.tabCallHierarchy.UseVisualStyleBackColor = true;
             // 
             // tabConsole
             // 
@@ -332,6 +346,14 @@
             // 
             this.colProcSegment.Text = "Segment";
             // 
+            // callHierarchyView
+            // 
+            this.callHierarchyView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.callHierarchyView.Location = new System.Drawing.Point(0, 0);
+            this.callHierarchyView.Name = "callHierarchyView";
+            this.callHierarchyView.Size = new System.Drawing.Size(776, 142);
+            this.callHierarchyView.TabIndex = 0;
+            // 
             // MainForm
             // 
             this.AllowDrop = true;
@@ -349,6 +371,7 @@
             this.tabControl1.ResumeLayout(false);
             this.tabDiagnostics.ResumeLayout(false);
             this.tabFindResults.ResumeLayout(false);
+            this.tabCallHierarchy.ResumeLayout(false);
             this.splitContainerMain.Panel1.ResumeLayout(false);
             this.splitContainerMain.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerMain)).EndInit();
@@ -393,6 +416,8 @@
         private System.Windows.Forms.ColumnHeader colProcName;
         private System.Windows.Forms.TextBox txtProcedureFilter;
         private System.Windows.Forms.ColumnHeader colProcSegment;
+        private System.Windows.Forms.TabPage tabCallHierarchy;
+        private CallHierarchyView callHierarchyView;
     }
 }
 

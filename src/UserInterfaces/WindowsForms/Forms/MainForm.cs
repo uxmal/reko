@@ -253,6 +253,11 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             get { return statusStrip; }
         }
 
+        public CallHierarchyView CallHierarchy
+        {
+            get { return callHierarchyView; }
+        }
+
         public event KeyEventHandler ProcessCommandKey;
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)

@@ -62,5 +62,6 @@ namespace Reko.Gui
         ISymbolLoadingService CreateSymbolLoadingService();
         ISelectionService CreateSelectionService();
         IProcedureListService CreateProcedureListService();
+        ICallHierarchyService CreateCallHierarchyService();
     }
 }

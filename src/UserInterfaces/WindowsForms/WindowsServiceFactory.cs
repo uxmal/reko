@@ -191,5 +191,11 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             return new ProcedureListService(services, mainForm.ProcedureListTab, mainForm.ProcedureFilter, mainForm.ProcedureList);
         }
+
+        public ICallHierarchyService CreateCallHierarchyService()
+        {
+            var svc = new CallHierarchyInteractor(mainForm.CallHierarchy);
+            return svc;
+        }
     }
 }
