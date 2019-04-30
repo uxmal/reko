@@ -32,13 +32,16 @@ namespace Reko.Gui
     public class ProcedureListService : IProcedureListService
     {
         private const string HelpText = "Search procedures";
+        private const int icolAddress = 0;
+        private const int icolName = 1;
+        private const int icolSegment = 2;
 
         private readonly IServiceProvider services;
         private readonly TabPage tabPage;
         private readonly TextBox txtProcedureFilter;
         private readonly ListView listProcedures;
         private bool showHelpText;
-        private List<(Program, Procedure)> procs;
+        private List<ProgramProcedure> procs;
 
         public ProcedureListService(IServiceProvider services, TabPage tabPage, TextBox txtProcedureFilter, ListView listProcedures)
         {
@@ -51,9 +54,9 @@ namespace Reko.Gui
             txtProcedureFilter.LostFocus += TxtProcedureFilter_LostFocus;
             txtProcedureFilter.TextChanged += TxtProcedureFilter_TextChanged;
             listProcedures.DoubleClick += ListProcedures_DoubleClick;
+            services.RequireService<IDecompilerShellUiService>().SetContextMenu(listProcedures, Reko.Gui.MenuIds.CtxProcedureList);
             Clear();
         }
-
 
         public Procedure SelectedProcedure
         {
@@ -75,17 +78,18 @@ namespace Reko.Gui
 
         public void Clear()
         {
-            procs = new List<(Program,Procedure)>();
+            procs = new List<ProgramProcedure>();
             this.showHelpText = true;
             this.txtProcedureFilter.Text = HelpText;
             this.txtProcedureFilter.ForeColor = System.Drawing.SystemColors.GrayText;
-            ShowProcedures(new (Program, Procedure)[0]);
+            ShowProcedures(new ProgramProcedure[0]);
         }
 
         public void Load(Project project)
         {
             this.procs = project.Programs
-                .SelectMany(program => program.Procedures.Values.Select(p => (program, p)))
+                .SelectMany(program => program.Procedures.Values
+                    .Select(p => new ProgramProcedure { Program = program, Procedure = p } ))
                 .ToList();
             if (procs.Count == 0)
             {
@@ -100,7 +104,7 @@ namespace Reko.Gui
             return (proc.EntryAddress.ToString(), proc.Name);
         }
 
-        private void ShowProcedures(IEnumerable<(Program program, Procedure proc)> sProcs)
+        private void ShowProcedures(IEnumerable<ProgramProcedure> sProcs)
         {
             var items = sProcs.Select(CreateListItem).ToArray();
             if (items.Length == 0)
@@ -111,35 +115,98 @@ namespace Reko.Gui
             this.listProcedures.Items.AddRange(items);
         }
 
-        private ListViewItem CreateListItem((Program program, Procedure proc) item)
+        private ListViewItem CreateListItem(ProgramProcedure item)
         {
-            var segName = item.program.SegmentMap.TryFindSegment(item.proc.EntryAddress, out var seg)
-                ? seg.Name
-                : "???";
-            var subItems = new[] {
-                item.proc.EntryAddress.ToString(),
-                item.proc.Name,
-                segName
-            };
+            string[] subItems = CreateListItemTexts(item);
             return new ListViewItem(subItems)
             {
                 Tag = item
             };
         }
 
+        private static string[] CreateListItemTexts(ProgramProcedure item)
+        {
+            var segName = item.Program.SegmentMap.TryFindSegment(item.Procedure.EntryAddress, out var seg)
+                ? seg.Name
+                : "???";
+            var subItems = new[] {
+                item.Procedure.EntryAddress.ToString(),
+                item.Procedure.Name,
+                segName
+            };
+            return subItems;
+        }
+
         public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
         {
+            int cItems = listProcedures.SelectedItems.Count;
+            var singleItemSelected = cItems == 1;
+            var multipleItemsSelected = cItems >= 1;
+            if (cmdId.Guid == CmdSets.GuidReko)
+            {
+                switch (cmdId.ID) {
+                case CmdIds.ActionEditSignature:
+                case CmdIds.ViewGoToAddress:
+                    status.Status = singleItemSelected
+                        ? MenuStatus.Enabled | MenuStatus.Visible
+                        : MenuStatus.Visible;
+                    return true;
+                }
+            }
             return false;
         }
 
         public bool Execute(CommandID cmdId)
         {
+            if (cmdId.Guid == CmdSets.GuidReko)
+            {
+                switch (cmdId.ID)
+                {
+                case CmdIds.ActionEditSignature:
+                    EditProcedureSignature();
+                    return true;
+                case CmdIds.ViewGoToAddress:
+                    GotoProcedureAddress();
+                    return true;
+                }
+            }
             return false;
         }
 
         public void Show()
         {
             ((TabControl) tabPage.Parent).SelectedTab = tabPage;
+        }
+
+        private void EditProcedureSignature()
+        {
+            var item = listProcedures.SelectedItems[0];
+            var pp = (ProgramProcedure) item.Tag;
+            services.RequireService<ICommandFactory>().EditSignature(pp.Program, pp.Procedure, pp.Procedure.EntryAddress).Do();
+            UpdateItem(item);
+        }
+
+        private void GotoProcedureAddress()
+        {
+            var item = listProcedures.SelectedItems[0];
+            var pp = (ProgramProcedure) item.Tag;
+            services.RequireService<ILowLevelViewService>().ShowMemoryAtAddress(pp.Program, pp.Procedure.EntryAddress);
+        }
+
+        private IEnumerable<ProgramProcedure> SelectedItems()
+        {
+            return listProcedures.SelectedItems
+                .OfType<ListViewItem>()
+                .Select(i => (ProgramProcedure)i.Tag);
+        }
+
+        private void UpdateItem(ListViewItem item)
+        {
+            var subItems = CreateListItemTexts((ProgramProcedure) item.Tag);
+            for (int i = 0; i < subItems.Length; ++i)
+            {
+                item.SubItems[i].Text = subItems[i];
+            }
         }
 
         private void TxtProcedureFilter_LostFocus(object sender, EventArgs e)
@@ -167,7 +234,7 @@ namespace Reko.Gui
             if (showHelpText)
                 return;
             var searchText = txtProcedureFilter.Text.Trim();
-            IEnumerable<(Program, Procedure)> procs = this.procs;
+            IEnumerable<ProgramProcedure> procs = this.procs;
             if (!string.IsNullOrEmpty(searchText))
             {
                 procs = procs.Where(sItem => FilterProcedure(searchText, sItem));
@@ -175,10 +242,10 @@ namespace Reko.Gui
             ShowProcedures(procs);
         }
 
-        private bool FilterProcedure(string searchtext, (Program program, Procedure proc) sItem)
+        private bool FilterProcedure(string searchtext, ProgramProcedure sItem)
         {
-            return (sItem.proc.EntryAddress.ToString().Contains(searchtext) || 
-                sItem.proc.Name.Contains(searchtext));
+            return (sItem.Procedure.EntryAddress.ToString().Contains(searchtext) || 
+                sItem.Procedure.Name.Contains(searchtext));
         }
 
         private void ListProcedures_DoubleClick(object sender, EventArgs e)
@@ -186,8 +253,15 @@ namespace Reko.Gui
             var item = listProcedures.FocusedItem;
             if (item == null || !item.Selected || item.Tag == null)
                 return;
-            var (program, proc) = ((Program, Procedure)) item.Tag;
-            services.RequireService<ICodeViewerService>().DisplayProcedure(program, proc, program.NeedsScanning);
+            var pp = (ProgramProcedure) item.Tag;
+            services.RequireService<ICodeViewerService>().DisplayProcedure(pp.Program, pp.Procedure, pp.Program.NeedsScanning);
+        }
+
+        private struct ProgramProcedure
+        {
+            public Program Program;
+            public Procedure Procedure;
         }
     }
+
 }
