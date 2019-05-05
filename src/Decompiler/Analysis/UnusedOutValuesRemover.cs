@@ -317,7 +317,7 @@ namespace Reko.Analysis
                             DebugEx.Verbose(trace, "  {0}: {1}", sid.Identifier.Name, br);
                             if (liveOutStorages.TryGetValue(def.Storage, out BitRange brOld))
                             {
-                                br = br | brOld;
+                                br |= brOld;
                                 liveOutStorages[def.Storage] = br;
                             }
                             else if (!br.IsEmpty)

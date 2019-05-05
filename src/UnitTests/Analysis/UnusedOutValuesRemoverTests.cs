@@ -44,6 +44,8 @@ namespace Reko.UnitTests.Analysis
         private RegisterStorage regA;
         private RegisterStorage regB;
         private RegisterStorage lowA;
+        private RegisterStorage psw;
+        private FlagGroupStorage C;
 
         [SetUp]
         public void Setup()
@@ -57,6 +59,8 @@ namespace Reko.UnitTests.Analysis
             this.regA = new RegisterStorage("regA", 0x1234, 0, PrimitiveType.Word32);
             this.regB = new RegisterStorage("regB", 0x5678, 0, PrimitiveType.Word32);
             this.lowA = new RegisterStorage("lowA", 0x1234, 0, PrimitiveType.Byte);
+            this.psw = new RegisterStorage("psw", 0x4242, 0, PrimitiveType.Word32);
+            this.C = new FlagGroupStorage(psw, 0b01, "C", PrimitiveType.Bool);
         }
 
         private void Given_Procedure(
@@ -481,7 +485,7 @@ fn_exit:
         }
 
         [Test]
-        [Category(Categories.FailedTests)]
+        [Category(Categories.UnitTests)]
         public void Uvr_Call_UseRegIsWiderThanSignatureReturn_TwoProcedures()
         {
             Given_Procedure("fn", m =>
@@ -527,6 +531,71 @@ main_exit:
 	use a
 ";
             #endregion
+            AssertProceduresCode(expected);
+        }
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void Uvr_FlagGroup_SingleBit()
+        {
+            Given_Procedure("fn", m =>
+            {
+                var a = m.Reg("a", regA);
+                var C_1 = m.Flags("C_1", this.C);
+                m.Label("body");
+                m.Assign(C_1, m.Cond(m.ISub(a, 0x12)));
+                m.Return();
+                m.AddUseToExitBlock(a);
+                m.AddUseToExitBlock(C_1);
+            });
+            Given_Procedure("main", m =>
+            {
+                m.Ssa.Procedure.Signature = FunctionType.Func(
+                    new Identifier("", lowA.DataType, lowA));
+                var a = m.Reg("a", regA);
+                var C_2 = m.Flags("C_2", this.C);
+                m.Label("body");
+                var uses = new (Storage, Expression)[]
+                {
+                };
+                var defines = new (Storage, Identifier)[]
+                {
+                    (C, C_2)
+                };
+                m.Call("fn", 4, uses, defines);
+                m.BranchIf(C_2, "m3");
+                m.Label("m2");
+                m.MStore(m.Word32(0x00123400), m.Byte(0));
+                m.Label("m3");
+                m.Return();
+                m.AddUseToExitBlock(C_2);
+            });
+
+            When_RunUnusedOutValuesRemover();
+
+            var expected =
+            #region 
+@"========================
+fn_entry:
+body:
+	C_1 = cond(a - 0x00000012)
+	return
+fn_exit:
+	use C_1
+========================
+main_entry:
+body:
+	call fn (retsize: 4;)
+		defs: C:C_2
+	branch C_2 m3
+m2:
+	Mem2[0x00123400:byte] = 0x00
+m3:
+	return
+main_exit:
+";
+            #endregion
+
             AssertProceduresCode(expected);
         }
     }

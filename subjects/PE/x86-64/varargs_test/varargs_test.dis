@@ -395,11 +395,11 @@ fn00000001400012A0_exit:
 
 
 
-void fn00000001400012BC(word64 rax, word64 rdx, word64 rbx, word64 rbp, word64 rsi, word64 rdi, word64 r8, word64 r9, word128 xmm0)
+word32 fn00000001400012BC(word64 rax, word64 rdx, word64 rbx, word64 rbp, word64 rsi, word64 rdi, word64 r8, word64 r9, word128 xmm0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  al:[0..63] r8:[0..63] r9:[0..63] rax:[8..63] rbp:[0..63] rbx:[0..63] rdi:[0..63] rdx:[0..63] rsi:[0..63] xmm0:[0..127]
-// LiveOut:
+// LiveOut: rax
 // Trashed: SCZO r8 r9 rax rcx rdx xmm0
 // Preserved: rbx rdi rsi rsp
 fn00000001400012BC_entry:
@@ -444,6 +444,7 @@ l00000001400012FE:
 // SymbolicIn:
 
 l0000000140001308:
+	word64 rax_246
 	word64 rcx_163 = DPB(rcx_164, ecx_37, 0)
 	branch ecx_37 != 0x00000000 l0000000140001356
 // DataOut:
@@ -554,6 +555,8 @@ l00000001400013B7:
 	word64 rax_213 = fn0000000140001000(rax_195, rsi_110, rax_169, out rcx_214, out rdx_215, out r8_211, out r9_212, out xmm0_216)
 	fn0000000140001AC0(rax)
 	word64 rbx_222 = (uint64) (word32) rax_213
+	word32 ebx_243 = (word32) rbx_222
+	ebx_243 = (word32) rbx_222 (alias)
 	word32 ebx_247 = (word32) rbx_222
 	branch (byte) rax_213 != 0x00 l00000001400013EB
 // DataOut:
@@ -575,6 +578,7 @@ l00000001400013F0:
 
 l00000001400013F5:
 	fn00000001400017D8(dl)
+	rax_246 = (uint64) ebx_243
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -586,12 +590,13 @@ l00000001400013E4:
 // SymbolicIn:
 
 l000000014000132D:
+	rax_246 = 0x00000000000000FF
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l0000000140001423:
-	return
+	return (word32) rax_246
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -622,8 +627,7 @@ l0000000140001434:
 // SymbolicIn:
 
 l0000000140001441_thunk_fn00000001400012BC:
-	fn00000001400012BC(rax_6, rdx, rbx, rbp, rsi, rdi, r8, r9, xmm0)
-	return (DWORD) rax_26
+	return (DWORD) (word64) fn00000001400012BC(rax_6, rdx, rbx, rbp, rsi, rdi, r8, r9, xmm0)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

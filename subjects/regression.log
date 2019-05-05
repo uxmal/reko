@@ -1176,7 +1176,7 @@ varargs_test.exe: warning: Win32 X86-64 main procedure finder not implemented ye
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 85
 0000000140001752: error: An error occurred while processing the statement r8_23 = rcx - 0x0000000140000000.
-    Pulling difference (union ((ptr64 (struct (0 T_866 t0000) (6 T_879 t0006) (14 T_887 t0014) (18 T_872 t0018))) u1) (uint64 u0) (ptr64 u2)) and ptr64
+    Pulling difference (union ((ptr64 (struct (0 T_874 t0000) (6 T_887 t0006) (14 T_895 t0014) (18 T_880 t0018))) u1) (uint64 u0) (ptr64 u2)) and ptr64
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 284
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 109
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
@@ -1857,4 +1857,4 @@ l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
 Stripping SSA identifier numbers
-Decompiled 56 binaries in 114.28 seconds ---
+Decompiled 56 binaries in 78.21 seconds ---

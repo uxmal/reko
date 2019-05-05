@@ -253,9 +253,16 @@ namespace Reko.Analysis
             if (useLiveness)
             {
                 var stg = ((Identifier)use.Expression).Storage;
-                if (!procFlow.BitsLiveOut.TryGetValue(stg, out BitRange br))
-                    return BitRange.Empty;
-                return br;
+                var bitrange = procFlow.BitsLiveOut.Aggregate(
+                    BitRange.Empty,
+                    (br, entry) =>
+                    {
+                        if (entry.Key.OverlapsWith(stg))
+                            return br | entry.Value;
+                        else
+                            return br;
+                    });
+                return bitrange;
             }
             else
             {

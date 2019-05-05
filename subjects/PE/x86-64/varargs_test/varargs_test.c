@@ -153,8 +153,8 @@ void fn00000001400012A0()
 	set_new_mode();
 }
 
-// 00000001400012BC: void fn00000001400012BC(Register word64 rax, Register ptr64 rdx, Register (ptr64 int32) rbx, Register ptr64 rbp, Register word64 rsi, Register word64 rdi, Register word64 r8, Register word64 r9, Register word128 xmm0)
-void fn00000001400012BC(word64 rax, ptr64 rdx, int32 * rbx, ptr64 rbp, word64 rsi, word64 rdi, word64 r8, word64 r9, word128 xmm0)
+// 00000001400012BC: Register word32 fn00000001400012BC(Register word64 rax, Register ptr64 rdx, Register (ptr64 int32) rbx, Register ptr64 rbp, Register word64 rsi, Register word64 rdi, Register word64 r8, Register word64 r9, Register word128 xmm0)
+word32 fn00000001400012BC(word64 rax, ptr64 rdx, int32 * rbx, ptr64 rbp, word64 rsi, word64 rdi, word64 r8, word64 r9, word128 xmm0)
 {
 	struct Eq_n * rax_n = DPB(rax, al, 0);
 	fn0000000140001600(ecx, edx);
@@ -176,6 +176,7 @@ void fn00000001400012BC(word64 rax, ptr64 rdx, int32 * rbx, ptr64 rbp, word64 rs
 		rax_n = fn0000000140001974(0x07, rbx_n, rbp, qwLoc40, qwLoc30, out rcx_n, out rdx, out r8);
 		ecx_n = (word32) rcx_n;
 	}
+	uint64 rax_n;
 	Eq_n rcx_n = DPB(rcx_n, ecx_n, 0);
 	if (ecx_n == 0x00)
 	{
@@ -183,7 +184,10 @@ void fn00000001400012BC(word64 rax, ptr64 rdx, int32 * rbx, ptr64 rbp, word64 rs
 		int32 eax_n = _initterm_e(&globals->t400021B8, &globals->t400021D0);
 		rax_n = DPB(rax_n, eax_n, 0);
 		if (eax_n != 0x00)
-			return;
+		{
+			rax_n = 0xFF;
+			return (word32) rax_n;
+		}
 		_initterm(&globals->t400021A0, &globals->t400021B0);
 		globals->dw400035B0 = 0x02;
 		rdx = 0x1400021B0;
@@ -240,11 +244,15 @@ void fn00000001400012BC(word64 rax, ptr64 rdx, int32 * rbx, ptr64 rbp, word64 rs
 	fn0000000140001AC0(rax);
 	uint64 rbx_n = (uint64) (word32) rax_n;
 	word32 ebx_n = (word32) rbx_n;
+	ebx_n = (word32) rbx_n;
+	word32 ebx_n = (word32) rbx_n;
 	if ((byte) rax_n != 0x00)
 	{
 		if (sil_n == 0x00)
 			cexit();
 		fn00000001400017D8(dl);
+		rax_n = (uint64) ebx_n;
+		return (word32) rax_n;
 	}
 	else
 		exit((uint64) ebx_n);
@@ -254,8 +262,7 @@ void fn00000001400012BC(word64 rax, ptr64 rdx, int32 * rbx, ptr64 rbp, word64 rs
 Eq_n Win32CrtStartup()
 {
 	word64 rax_n = fn000000014000186C(qwLoc20, dwLoc18, dwLoc14);
-	fn00000001400012BC(rax_n, rdx, rbx, rbp, rsi, rdi, r8, r9, xmm0);
-	return (DWORD) rax_n;
+	return (DWORD) (word64) fn00000001400012BC(rax_n, rdx, rbx, rbp, rsi, rdi, r8, r9, xmm0);
 }
 
 // 0000000140001448: Register word32 fn0000000140001448(Stack Eq_n tArg00, Stack Eq_n tArg08)
