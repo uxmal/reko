@@ -62,9 +62,9 @@ namespace Reko.Core.Code
 	{
 		public Store(Expression dst, Expression src)
 		{
-			Dst = dst;
-			Src = src;
-		}
+            Dst = dst ?? throw new ArgumentNullException(nameof(dst));
+			Src = src ?? throw new ArgumentNullException(nameof(src));
+        }
 
         public Expression Dst { get; set; }
 

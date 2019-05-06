@@ -117,8 +117,6 @@ namespace Reko.Analysis
 
             foreach (Block b in new DfsIterator<Block>(ssa.Procedure.ControlGraph).ReversePostOrder())
             {
-                //if (b.Procedure.Name == "fn001054EA")
-                //    trace.Level = TraceLevel.Verbose;//$DEBUG
                 DebugEx.Verbose(trace, "SsaTransform:   {0}", b.Name);
                 this.block = b;
                 foreach (var s in b.Statements.ToList())
@@ -136,6 +134,7 @@ namespace Reko.Analysis
                 blockstates[b].terminates = false;
             }
             ProcessIncompletePhis();
+            RemoveRedundantPhis();
             RemoveDeadSsaIdentifiers();
             return ssa;
         }
@@ -208,6 +207,71 @@ namespace Reko.Analysis
                 var use = (UseInstruction)u.Instruction;
                 use.Expression = NewUse((Identifier)use.Expression, u, true);
             });
+        }
+
+        /// <summary>
+        /// Remove SCC's of phi assignments whose arguments are other variables in the SCC
+        /// or a single external value.
+        /// </summary>
+        /// <remarks>
+        /// Implements Algorithm 5 of the Braun et al. paper.
+        /// </remarks>
+        private void RemoveRedundantPhis(PhiAssignment[] phis = null)
+        {
+            if (phis == null)
+            {
+                phis = ssa.Procedure.Statements
+                    .Select(stm => stm.Instruction as PhiAssignment)
+                    .Where(p => p != null)
+                    .ToArray();
+            }
+
+            SccFinder<PhiAssignment> sccFinder = new SccFinder<PhiAssignment>(new PhiGraph(ssa, phis), processScc);
+            sccFinder.FindAll();
+
+            void processScc(IList<PhiAssignment> scc)
+            {
+                if (scc.Count == 1)
+                    return;
+                var sccIds = new HashSet<Expression>(scc.Select(p => (Expression) p.Dst));
+                var inner = new HashSet<PhiAssignment>();
+                var outerOps = new HashSet<Expression>();
+                foreach (var phi in scc)
+                {
+                    bool isInner = true;
+                    foreach (var arg in phi.Src.Arguments)
+                    {
+                        if (!sccIds.Contains(arg.Value))
+                        {
+                            outerOps.Add(arg.Value);
+                            isInner = false;
+                        }
+                    }
+                    if (isInner)
+                        inner.Add(phi);
+                }
+
+                if (outerOps.Count == 1)
+                {
+                    ReplaceWithValue(scc, outerOps.First());
+                }
+                //$TODO: this code is causing stack overflows in many places.
+                //else if (outerOps.Count > 1)
+                //{
+                //    RemoveRedundantPhis(inner.ToArray());
+                //}
+            }
+        }
+
+        private void ReplaceWithValue(IEnumerable<PhiAssignment> scc, Expression value)
+        {
+            foreach (var phi in scc)
+            {
+                var stm = ssa.Identifiers[phi.Dst].DefStatement;
+                ssa.RemoveUses(stm);
+                stm.Instruction = new AliasAssignment(phi.Dst, value);
+                ssa.AddUses(stm);
+            }
         }
 
         private ISet<Block> FindPredecessorClosure(Block start)
