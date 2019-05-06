@@ -3660,7 +3660,6 @@ void __extendsfdf2(word32 r2, word32 r3, word32 r6, word32 r7, word32 ra, word64
 void _fpadd_parts(struct Eq_n * r4, struct Eq_n * r5, struct Eq_n * r6)
 {
 	Eq_n r7_n = r4->t0000;
-	struct Eq_n * r13_n = r6;
 	if ((word32) (r7_n < 0x02) != 0x00)
 		return;
 	Eq_n r4_n = r5->t0000;
@@ -3807,9 +3806,9 @@ l0040840C:
 		{
 			Eq_n r7_n = r9_n << 0x01;
 			Eq_n r6_n = r6_n | r2_n;
-			r13_n->dw0008 += -0x01;
-			r13_n->t0010 = r6_n;
-			r13_n->t0014 = r7_n;
+			r6->dw0008 += -0x01;
+			r6->t0010 = r6_n;
+			r6->t0014 = r7_n;
 			uint32 r4_n = (word32) r6_n - 0x01 + (word32) (r7_n < 0x00);
 			if ((word32) (r4_n > 0x0FFFFFFF) != 0x00)
 				break;
@@ -3828,18 +3827,18 @@ l0040840C:
 		}
 	}
 l00408490:
-	if ((word32) (r13_n->t0010 > 0x1FFFFFFF) != 0x00)
+	if ((word32) (r6->t0010 > 0x1FFFFFFF) != 0x00)
 	{
-		r13_n->t0000.u0 = 0x03;
-		Eq_n r4_n = r13_n->t0010;
-		Eq_n r5_n = r13_n->t0014;
-		int32 r6_n = r13_n->dw0008;
-		r13_n->t0010 = r4_n | r4_n >> 0x01;
-		r13_n->t0014 = (word32) r5_n.u1 + 0x01 | (r5_n >> 0x01 | r4_n << 0x1F);
-		r13_n->dw0008 = r6_n + 0x01;
+		r6->t0000.u0 = 0x03;
+		Eq_n r4_n = r6->t0010;
+		Eq_n r5_n = r6->t0014;
+		int32 r6_n = r6->dw0008;
+		r6->t0010 = r4_n | r4_n >> 0x01;
+		r6->t0014 = (word32) r5_n.u1 + 0x01 | (r5_n >> 0x01 | r4_n << 0x1F);
+		r6->dw0008 = r6_n + 0x01;
 	}
 	else
-		r13_n->t0000.u0 = 0x03;
+		r6->t0000.u0 = 0x03;
 }
 
 // 004084FC: void __adddf3(Register word32 r16, Register word32 r17, Register word32 r18, Register word32 ra, Register word64 f12, Register word64 f13, Register word64 f14, Register word64 f15)

@@ -151,14 +151,12 @@ void frame_dummy(Eq_n r1, word64 r2, word64 r3, word64 r13, word64 r14)
 {
 	byte * r13_n = DPB(r13, 0x08D8, 0);
 	byte * r2_n = DPB(r2, 0x1E18, 0);
-	word64 qwLoc38_n = r13;
-	word64 qwLoc30_n = r14;
-	Eq_n qwLoc28_n = fp - 0x00A0;
 	Eq_n r15_n = fp - 0x0140;
 	Eq_n CC_n = cond(*r13_n - *r2_n);
 	if (*r13_n == *r2_n)
 	{
 l00000740:
+		Mem18 = Mem10;
 		Eq_n v8_n = (word64) r15_n + 0x0108;
 		r13_n = (byte *) *v8_n;
 		Eq_n r14_n = *((word64) v8_n + 0x08);

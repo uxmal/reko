@@ -58,13 +58,10 @@ word32 fn00401040(word32 eax, word32 ecx, struct Eq_n * ebp, word32 * esi)
 // 004012C9: Register Eq_n Win32CrtStartup()
 Eq_n Win32CrtStartup()
 {
-	int8 Top_n = 0x00;
 	fn0040165E();
 	struct Eq_n * ebp_n = fn00401980(ebx, esi, edi, dwLoc0C, 0x14);
 	Eq_n esp_n = <invalid>;
 	*(esp_n - 0x04) = 0x01;
-	word32 dwLoc04_n = 0x14;
-	word32 dwLoc08_n = 0x00402508;
 	Eq_n esp_n = esp_n;
 	if ((byte) (word32) fn0040146F(edx, *(esp_n - 0x04)) == 0x00)
 	{
@@ -77,6 +74,8 @@ l00401172:
 	*(ebp_n - 0x04) &= 0x00;
 	word32 edx_n;
 	*(ebp_n - 0x24) = (byte) (word32) fn0040143A(out edx_n);
+	int8 Top_n = 0x00;
+	struct Eq_n * ebp_n = ebp_n;
 	word32 ebx_n = DPB(ebx, 0x00, 0);
 	word32 eax_n = globals->dw403334;
 	if (eax_n != 0x01)

@@ -62,6 +62,8 @@ namespace Reko.Analysis
 
         public void Transform()
         {
+            if (ssa.Procedure.Name == "fn0800_8D87")//$DEBUG
+                ssa.ToString();
             var prjf = new ProjectionFilter(arch, ssa);
             var wl = new WorkList<Statement>(ssa.Procedure.Statements);
             while (wl.GetWorkItem(out var stm))
@@ -76,8 +78,8 @@ namespace Reko.Analysis
 
         private class ProjectionFilter : InstructionTransformer
         {
-            private IProcessorArchitecture arch;
-            private SsaState ssa;
+            private readonly IProcessorArchitecture arch;
+            private readonly SsaState ssa;
 
             public ProjectionFilter(IProcessorArchitecture arch, SsaState ssa)
             {
@@ -125,7 +127,7 @@ namespace Reko.Analysis
                     return e;
 
                 if (!(accessNew.BasePointer is Identifier idSeg))
-                    return null;
+                    return e;
                 var sidSeg = ssa.Identifiers[idSeg];
                 if (accessNew.EffectiveAddress is Identifier idEa)
                 {
@@ -251,8 +253,7 @@ namespace Reko.Analysis
                     //$BUG: EnsureSequence needs to take an arbitrary # of subregisters.
                     idWide = ssa.Procedure.Frame.EnsureSequence(
                         dt,
-                        sids[0].Identifier.Storage,
-                        sids[1].Identifier.Storage);
+                        sids.Select(s => s.Identifier.Storage).ToArray());
                 }
                 return idWide;
             }
@@ -376,7 +377,7 @@ namespace Reko.Analysis
                     var sidPred = ssa.Identifiers.Add(idWide, stmPred, null, false);
                     var phiArgs = phis.Select(p => p.Src.Arguments[iBlock].Value).ToArray();
                     stmPred.Instruction = 
-                        new Assignment(
+                        new AliasAssignment(
                             sidPred.Identifier,
                             new MkSequence(
                                 sidPred.Identifier.DataType,

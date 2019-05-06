@@ -9,7 +9,6 @@ void prvUnlockQueue(Eq_n r0, Eq_n r6, ptr32 cpsr)
 {
 	Eq_n r0_n;
 	vPortEnterCritical(cpsr, out r0_n);
-	Eq_n r5_n = r0;
 	int32 r4_n = (int32) (int8) (word32) *((word32) r0 + 0x0045);
 	if (r4_n > 0x00)
 	{
@@ -19,6 +18,7 @@ void prvUnlockQueue(Eq_n r0, Eq_n r6, ptr32 cpsr)
 l00000080:
 		r0_n = r6;
 	}
+	Mem57 = Mem11;
 	if (xTaskRemoveFromEventList(r0_n) != 0x00)
 	{
 		vTaskMissedYield();
@@ -34,22 +34,23 @@ l00000080:
 		if (r3_n == 0x00)
 			goto l00000098;
 	}
-	if (*((word32) r5_n + 0x0024) == 0x00)
+	if (*((word32) r0 + 0x0024) == 0x00)
 	{
 l00000098:
-		*((word32) r5_n + 0x0045) = ~0x00;
+		*((word32) r0 + 0x0045) = ~0x00;
 		vPortExitCritical(cpsr);
 		Eq_n r0_n;
 		vPortEnterCritical(cpsr, out r0_n);
-		int32 r4_n = (int32) (int8) (word32) *((word32) r5_n + 0x0044);
+		int32 r4_n = (int32) (int8) (word32) *((word32) r0 + 0x0044);
 		if (r4_n > 0x00)
 		{
-			if (*((word32) r5_n + 0x0010) == 0x00)
+			if (*((word32) r0 + 0x0010) == 0x00)
 				goto l000000DE;
-			r6 = (word32) r5_n + 0x0010;
+			r6 = (word32) r0 + 0x0010;
 l000000C6:
 			r0_n = r6;
 		}
+		Mem115 = Mem62;
 		if (xTaskRemoveFromEventList(r0_n) != 0x00)
 		{
 			vTaskMissedYield();
@@ -65,10 +66,10 @@ l000000C6:
 			if (r3_n == 0x00)
 				goto l000000DE;
 		}
-		if (*((word32) r5_n + 0x0010) == 0x00)
+		if (*((word32) r0 + 0x0010) == 0x00)
 		{
 l000000DE:
-			*((word32) r5_n + 0x0044) = ~0x00;
+			*((word32) r0 + 0x0044) = ~0x00;
 			vPortExitCritical(cpsr);
 			return;
 		}
@@ -2550,8 +2551,6 @@ void prvFlashCoRoutine(struct Eq_n * r0, Eq_n r7, Eq_n lr, ptr32 cpsr)
 	Eq_n r6_n;
 	word32 r0_n;
 	word32 r3_n = (word32) r0->w0068;
-	struct Eq_n * sp_n = fp - 0x0018;
-	struct Eq_n * r4_n = r0;
 	if (r3_n != 0x01C2)
 	{
 		if (r3_n == 0x01C3)
@@ -2568,7 +2567,7 @@ l00008696:
 		bool Z_n = xQueueCRReceive(*r5_n, r6_n, ~0x00, r6_n, r7, lr, cpsr, out r0_n, out r6_n, out r7, out lr);
 		if (Z_n)
 		{
-			r4_n->w0068 = 0x01C2;
+			r0->w0068 = 0x01C2;
 			return;
 		}
 		if (!Z_n)
@@ -2580,7 +2579,7 @@ l000086AA:
 				goto l00008696;
 			}
 l00008690:
-			vParTestToggleLED(sp_n->dw0004, cpsr);
+			vParTestToggleLED(dwLoc14, cpsr);
 			goto l00008696;
 		}
 	}
@@ -2590,7 +2589,7 @@ l00008690:
 		if (xQueueCRReceive(*r5_n, fp - 0x0014, 0x00, fp - 0x0014, r7, lr, cpsr, out r0_n, out r6_n, out r7, out lr))
 			goto l000086AA;
 	}
-	r4_n->w0068 = 0x01C3;
+	r0->w0068 = 0x01C3;
 }
 
 // 000086E8: void prvFixedDelayCoRoutine(Register (ptr32 Eq_n) r0, Register ui32 r1, Register Eq_n r7, Register Eq_n lr, Register ptr32 cpsr)
