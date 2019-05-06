@@ -37,8 +37,8 @@ namespace Reko.Analysis
     /// </summary>
     public class SequenceIdentifierGenerator : InstructionTransformer
     {
-        private SsaTransform sst;
-        private SsaState ssa;
+        private readonly SsaTransform sst;
+        private readonly SsaState ssa;
         private Statement stmCur;
 
         public SequenceIdentifierGenerator(SsaTransform sst)
@@ -58,8 +58,7 @@ namespace Reko.Analysis
 
         public override Instruction TransformAssignment(Assignment ass)
         {
-            var seq = ass.Dst.Storage as SequenceStorage;
-            if (seq == null)
+            if (!(ass.Dst.Storage is SequenceStorage seq))
                 return ass;
             var sid = ssa.Identifiers[ass.Dst];
             var stores = sid.Uses
@@ -140,17 +139,14 @@ namespace Reko.Analysis
 
         private StoreOffset ClassifyStore(Statement stm)
         {
-            var store = stm.Instruction as Store;
-            if (store == null)
+            if (!(stm.Instruction is Store store))
                 return null;
             Expression ea;
-            var access = store.Dst as MemoryAccess;
-            if (access != null)
+            if (store.Dst is MemoryAccess access)
                 ea = access.EffectiveAddress;
             else
             {
-                var segAccess = store.Dst as SegmentedAccess;
-                if (segAccess != null)
+                if (store.Dst is SegmentedAccess segAccess)
                     ea = segAccess.EffectiveAddress;
                 else
                     return null;
@@ -160,8 +156,7 @@ namespace Reko.Analysis
                 offset = Constant.Zero(ea.DataType);
             else
             {
-                var bin = ea as BinaryExpression;
-                if (bin != null)
+                if (ea is BinaryExpression bin)
                 {
                     if (bin.Operator == Operator.IAdd || bin.Operator == Operator.ISub)
                     {
