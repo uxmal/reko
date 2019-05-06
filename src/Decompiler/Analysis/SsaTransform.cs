@@ -513,24 +513,20 @@ namespace Reko.Analysis
                 var ab = arch.CreateFrameApplicationBuilder(ssa.Procedure.Frame, ci.CallSite, ci.Callee);
                 foreach (var stgUse in calleeFlow.BitsUsed.Keys)
                 {
+                    Expression e;
                     if (stgUse is FpuStackStorage fpuUse)
                     {
-                        var fpuUseExpr = arch.CreateFpuStackAccess(
+                        e = arch.CreateFpuStackAccess(
                             ssa.Procedure.Frame,
                             fpuUse.FpuStackOffset,
                             PrimitiveType.Word64); //$TODO: datatype?
-                        fpuUseExpr = fpuUseExpr.Accept(this);
-                        ci.Uses.Add(
-                            new CallBinding(
-                                stgUse,
-                                fpuUseExpr));
                     }
                     else
                     {
-                        var arg = stgUse.Accept(ab);
-                        arg = arg.Accept(this);
-                        ci.Uses.Add(new CallBinding(stgUse, arg));
+                        e = stgUse.Accept(ab);
                     }
+                    e = e.Accept(this);
+                    ci.Uses.Add(new CallBinding(stgUse, e));
                 }
 
                 if (calleeFlow.TerminatesProcess)

@@ -393,8 +393,6 @@ namespace Reko.Analysis
                 // they will have no "ProcedureFlow" associated with them yet, in
                 // which case the the SSA treats the call as a "hell node".
                 var sst = new SsaTransform(program, proc, sccProcs, importResolver, this.ProgramDataFlow);
-                if (proc.Name == "fn0800_9828") //$DEBUG
-                    proc.ToString();
                 var ssa = sst.Transform();
 
                 // Merge unaligned memory accesses.
