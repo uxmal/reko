@@ -7608,7 +7608,6 @@ l00404458:
 	word32 r7_121
 	word32 r3_101
 	byte bArg0B_152 = SLICE(r6, byte, 0)
-	word24 nArg08_153 = SLICE(r6, word24, 8)
 	branch r4 != 0x00000000 l00404458_ds_t
 // DataOut:
 // DataOut (flags):
@@ -7645,7 +7644,7 @@ l00404544_ds_t:
 
 l0040463C:
 	Mem65[r4 + 4 + (Mem49[r4 + 0x00000558:word32] + 1296):byte] = (byte) (word32) bArg0B_152
-	memcpy(Mem65[r4 + 4 + ((Mem65[r4 + 0x00000558:word32] << 0x02) + 1040):word32], r5, SEQ(nArg08_153, bArg0B_152))
+	memcpy(Mem65[r4 + 4 + ((Mem65[r4 + 0x00000558:word32] << 0x02) + 1040):word32], r5, r6)
 	r3_101 = <invalid>
 	r7_121 = <invalid>
 // DataOut:
@@ -10923,21 +10922,20 @@ slist_destroy_exit:
 
 
 
-void __fixunsdfsi(word64 f12, word64 f13)
+void __fixunsdfsi(real64 f12_f13)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  f12:[0..63] f13:[0..63]
+// MayUse:  Sequence f12:f13:[0..63]
 // LiveOut:
 // Trashed: cc0 f0 f1 f2 r1 r2 r25 r28 r3
 // Preserved: FCSR sp
 __fixunsdfsi_entry:
-	real64 f12_f13_13 = SEQ(f12, f13)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l00407740:
-	branch !(f12_f13_13 >= 28.0F) l00407740_ds_t
+	branch !(f12_f13 >= 28.0F) l00407740_ds_t
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

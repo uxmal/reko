@@ -47,7 +47,9 @@ namespace Reko.UnitTests.Analysis
         {
             var m = new SsaProcedureBuilder(arch);
             builder(m);
-            var prpr = new ProjectionPropagator(m.Ssa);
+            var sac = new SegmentedAccessClassifier(m.Ssa);
+            sac.Classify();
+            var prpr = new ProjectionPropagator(m.Ssa, sac);
             prpr.Transform();
             var sw = new StringWriter();
             m.Ssa.Procedure.WriteBody(false, sw);
@@ -249,8 +251,8 @@ l1:
 	hl_1 = hl (alias)
 loop:
 	hl_3 = PHI((hl_1, l1), (hl_2, loop))
-	h_4 = PHI((h, l1), (h_2, loop))
-	l_5 = PHI((l, l1), (l_3, loop))
+	h_4 = SLICE(hl_3, word16, 8) (alias)
+	l_5 = SLICE(hl_3, word16, 0) (alias)
 	hl_1 = hl_3 << 0x01
 	h_2 = SLICE(hl_1, byte, 8)
 	l_3 = (byte) hl_1
@@ -562,6 +564,60 @@ SsaProcedureBuilder_exit:
                 m.Return();
                 m.AddUseToExitBlock(ax_2);
                 m.AddUseToExitBlock(es_3);
+            });
+        }
+
+        [Test]
+        public void Prjpr_Phi_StackVars()
+        {
+            var sExp =
+            #region Expected
+@"SsaProcedureBuilder_entry:
+m1:
+	wLoc06_1 = Mem7[0x1200:word16]
+	wLoc08_1 = Mem8[0x1202:word16]
+	branch Mem9[0x1100:byte] == 0x00 m3
+	dwLoc08_1 = SEQ(wLoc08_1, wLoc06_1) (alias)
+m2:
+	wLoc06_2 = Mem10[0x1204:word16]
+	wLoc08_2 = Mem11[0x1206:word16]
+	dwLoc08_2 = SEQ(wLoc08_2, wLoc06_2) (alias)
+m3:
+	dwLoc08_3 = PHI((dwLoc08_1, m1), (dwLoc08_2, m2))
+	wLoc08_3 = SLICE(dwLoc08_3, word32, 0) (alias)
+	wLoc06_3 = SLICE(dwLoc08_3, word32, 16) (alias)
+	ptrLoc06_1 = dwLoc08_3
+	return
+SsaProcedureBuilder_exit:
+";
+            #endregion
+
+            Given_X86_16_Arch();
+            RunTest(sExp, arch, m =>
+            {
+                var wLoc06_1 = m.Local16("wLoc06_1", -6);
+                var wLoc06_2 = m.Local16("wLoc06_2", -6);
+                var wLoc06_3 = m.Local16("wLoc06_3", -6);
+
+                var wLoc08_1 = m.Local16("wLoc08_1", -8);
+                var wLoc08_2 = m.Local16("wLoc08_2", -8);
+                var wLoc08_3 = m.Local16("wLoc08_3", -8);
+                var ptrLoc06_1 = m.Local32("ptrLoc06_1", -6);
+
+                m.Label("m1");
+                m.Assign(wLoc06_1, m.Mem16(m.Word16(0x1200)));
+                m.Assign(wLoc08_1, m.Mem16(m.Word16(0x1202)));
+                m.BranchIf(m.Eq0(m.Mem8(m.Word16(0x1100))), "m3");
+
+                m.Label("m2");
+                m.Assign(wLoc06_2, m.Mem16(m.Word16(0x1204)));
+                m.Assign(wLoc08_2, m.Mem16(m.Word16(0x1206)));
+
+                m.Label("m3");
+                m.Phi(wLoc08_3, (wLoc08_1, "m1"), (wLoc08_2, "m2"));
+                m.Phi(wLoc06_3, (wLoc06_1, "m1"), (wLoc06_2, "m2"));
+                m.Assign(ptrLoc06_1, m.Seq(wLoc08_3, wLoc06_3));
+                m.Return();
             });
         }
     }

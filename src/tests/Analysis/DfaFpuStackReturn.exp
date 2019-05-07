@@ -10,24 +10,24 @@ void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	Mem10[ds:0x0400:real64] = fn0C00_000C(Mem0[ds:0x0300:word16], ds)
+	Mem11[ds:0x0400:real64] = fn0C00_000C(SEQ(ds, Mem0[ds:0x0300:word16]))
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 
-// FpuStack real64 fn0C00_000C(Register word16 bx, Register selector ds)
+// FpuStack real64 fn0C00_000C(Sequence word32 ds_bx)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-// MayUse:  bx:[0..15] ds:[0..15]
+// MayUse:  Sequence ds:bx:[0..31]
 // LiveOut: FPU -1
 // Trashed: FPU -1 FPU -2 Top
 // Preserved: sp
 // fn0C00_000C
 // Return size: 0
-real64 fn0C00_000C(word16 bx, selector ds)
+real64 fn0C00_000C(word32 ds_bx)
 fn0C00_000C_entry:
 	// succ:  l0C00_000C
 l0C00_000C:
-	return Mem0[ds:bx:real64] + Mem0[ds:bx + 0x0008:real64]
+	return Mem0[ds_bx:real64] + Mem0[ds_bx + 0x0008:real64]
 	// succ:  fn0C00_000C_exit
 fn0C00_000C_exit:
 

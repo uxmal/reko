@@ -13,22 +13,25 @@ void fn0C00_0000(Register selector ds)
 // ax:ax
 // al:al
 // Top:Top
+// ds_si:Sequence ds:si
 // return address size: 2
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	def ds
 	// succ:  l0C00_0000
 l0C00_0000:
-	ax_6 = fn0C00_0015(0x0200, ds)
-	Mem7[ds:0x0202:word16] = ax_6
-	ax_9 = fn0C00_0015(0x0300, ds)
-	al_10 = (byte) ax_9 (alias)
-	Mem11[ds:0x0302:byte] = al_10
+	ds_si_6 = SEQ(ds, 0x0200) (alias)
+	ax_7 = fn0C00_0015(ds_si_6)
+	Mem8[ds:0x0202:word16] = ax_7
+	ds_si_10 = SEQ(ds, 0x0300) (alias)
+	ax_11 = fn0C00_0015(ds_si_10)
+	al_12 = (byte) ax_11 (alias)
+	Mem13[ds:0x0302:byte] = al_12
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
-Register word16 fn0C00_0015(Register word16 si, Register selector ds)
-// MayUse:  ds:[0..15] si:[0..15]
+Register word16 fn0C00_0015(Sequence word32 ds_si)
+// MayUse:  Sequence ds:si:[0..31]
 // LiveOut: ax
 // Trashed: ax Top
 // Preserved: sp
@@ -41,15 +44,15 @@ Register word16 fn0C00_0015(Register word16 si, Register selector ds)
 // si:si
 // ds:ds
 // Top:Top
+// ds_si:Sequence ds:si
 // return address size: 2
-word16 fn0C00_0015(word16 si, selector ds)
+word16 fn0C00_0015(word32 ds_si)
 fn0C00_0015_entry:
-	def ds
-	def si
+	def ds_si
 	def Mem0
 	// succ:  l0C00_0015
 l0C00_0015:
-	ax_7 = Mem0[ds:si:word16]
+	ax_7 = Mem0[ds_si:word16]
 	return ax_7
 	// succ:  fn0C00_0015_exit
 fn0C00_0015_exit:

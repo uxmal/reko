@@ -1,17 +1,16 @@
 // fn0C00_0000 /////////////////////
 	LiveOut:  
-	BitsUsed:  bx:[0..15] ds:[0..15]
+	BitsUsed:  Sequence ds:bx:[0..31]
 	Trashed:   ax Top
 	Preserved: sp
 // fn0C00_0000
 define fn0C00_0000
 fn0C00_0000_entry:
-	def ds
-	def bx
+	def ds_bx
 l0C00_0000:
 	call fn0C00_0006 (retsize: 2;)
 		defs: ax:ax_4
-	Mem7[ds:bx:word16] = ax_4
+	Mem7[ds_bx:word16] = ax_4
 	return
 fn0C00_0000_exit:
 // fn0C00_0006 /////////////////////

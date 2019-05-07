@@ -2417,7 +2417,6 @@ Eq_n request_save_line(Eq_n r3, Eq_n r4, void * r5, Eq_n r6, ptr32 r30, word32 r
 	Eq_n r7_n;
 	Eq_n r3_n;
 	byte bArg0B_n = SLICE(r6, byte, 0);
-	word24 nArg08_n = SLICE(r6, word24, 8);
 	if (r4 == 0x00)
 		print_log((int32 *) 0x02, 0x0040A398, 0x0040A330, 0x004B, fp + -0x0030, ra, out r3_n, out r4_n, out r5_n, out r6_n, out r7_n);
 	else if ((word32) (*((word32) r4 + 0x0558) < 0x003F) == 0x00)
@@ -2435,7 +2434,7 @@ Eq_n request_save_line(Eq_n r3, Eq_n r4, void * r5, Eq_n r6, ptr32 r30, word32 r
 		else
 		{
 			(word32) r4 + 0x04 + ((word32) (*((word32) r4 + 0x0558)) + 0x0510) = (byte *) (byte) (word32) bArg0B_n;
-			memcpy(*((word32) ((word32) r4 + 0x04) + (*((word32) r4 + 0x0558) * 0x04 + 1040)), r5, SEQ(nArg08_n, bArg0B_n));
+			memcpy(*((word32) ((word32) r4 + 0x04) + (*((word32) r4 + 0x0558) * 0x04 + 1040)), r5, r6);
 			r3_n.u0 = <invalid>;
 			r7_n.u0 = <invalid>;
 		}
@@ -3295,10 +3294,9 @@ void slist_destroy(Eq_n r4, ptr32 r30, word32 ra)
 	free(r4);
 }
 
-// 00407740: void __fixunsdfsi(Register word64 f12, Register word64 f13)
-void __fixunsdfsi(word64 f12, word64 f13)
+// 00407740: void __fixunsdfsi(Sequence Eq_n f12_f13)
+void __fixunsdfsi(Eq_n f12_f13)
 {
-	Eq_n f12_f13_n = SEQ(f12, f13);
 }
 
 // 004077E0: void _fpadd_parts(Register (ptr32 Eq_n) r4, Register (ptr32 Eq_n) r5, Register (ptr32 Eq_n) r6)

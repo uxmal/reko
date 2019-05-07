@@ -1,37 +1,36 @@
 // fn0C00_0000 /////////////////////
 	LiveOut:  
-	BitsUsed:  di:[0..15] ds:[0..15]
+	BitsUsed:  Sequence ds:di:[0..31]
 	Trashed:   SCZO ax Top
 	Preserved: di sp
 // fn0C00_0000
 define fn0C00_0000
 fn0C00_0000_entry:
-	def ds
-	def di
+	def ds_di
+	ds = SLICE(ds_di, selector, 16)
 l0C00_0000:
 	call fn0C00_000F (retsize: 2;)
-		uses: di:di,ds:ds
+		uses: Sequence ds:di:ds_di
 	call fn0C00_0014 (retsize: 2;)
 		uses: ax:0x0100
-		defs: ax:ax_10
-	Mem16[ds:0x0300:word16] = ax_10
+		defs: ax:ax_11
+	Mem17[ds:0x0300:word16] = ax_11
 l0C00_000E_thunk_fn0C00_000F:
 	call fn0C00_000F (retsize: 0;)
-		uses: di:di,ds:ds
+		uses: Sequence ds:di:ds_di
 	return
 fn0C00_0000_exit:
 // fn0C00_000F /////////////////////
 	LiveOut:  
-	BitsUsed:  di:[0..15] ds:[0..15]
+	BitsUsed:  Sequence ds:di:[0..31]
 	Trashed:   Top
 	Preserved: sp
 // fn0C00_000F
 define fn0C00_000F
 fn0C00_000F_entry:
-	def ds
-	def di
+	def ds_di
 l0C00_000F:
-	Mem6[ds:di:word16] = 0x0000
+	Mem6[ds_di:word16] = 0x0000
 	return
 fn0C00_000F_exit:
 // fn0C00_0014 /////////////////////

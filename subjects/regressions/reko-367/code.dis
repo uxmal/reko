@@ -37,24 +37,21 @@ fn80000132_entry:
 // SymbolicIn:
 
 l80000132:
-	real96 fp0_12 = Mem11[0x800004FC:real96]
-	word32 dwLoc10_62 = SLICE(fp0_12, word32, 64)
-	word32 dwLoc0C_63 = SLICE(fp0_12, word32, 32)
-	word32 dwLoc08_64 = SLICE(fp0_12, word32, 0)
 	word32 dwLoc14_59 = 0x00000000
+	real96 rLoc10_90 = Mem11[0x800004FC:real96]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l8000014A:
-	real96 rLoc10_71 = SEQ(dwLoc10_62, dwLoc0C_63, dwLoc08_64)
+	real96 rLoc10_71 = SEQ(SLICE(rLoc10_90, real96, 0), SLICE(rLoc10_90, real96, 32), SLICE(rLoc10_90, real96, 64))
 	branch (real96) dwLoc14_59 >= rArg10 l80000172
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l80000172:
-	return SEQ(dwLoc10_62, dwLoc0C_63, dwLoc08_64)
+	return rLoc10_90
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -65,11 +62,8 @@ fn80000132_exit:
 // SymbolicIn:
 
 l8000015A:
-	real96 fp0_49 = rLoc10_71 * rArg04
-	dwLoc10_62 = SLICE(fp0_49, word32, 64) (alias)
-	dwLoc0C_63 = SLICE(fp0_49, word32, 32) (alias)
-	dwLoc08_64 = SLICE(fp0_49, word32, 0) (alias)
 	dwLoc14_59 = dwLoc14_59 + 0x00000001
+	rLoc10_90 = rLoc10_71 * rArg04 (alias)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -89,24 +83,21 @@ fn8000018E_entry:
 // SymbolicIn:
 
 l8000018E:
-	real96 fp0_12 = Mem11[0x80000508:real96]
-	word32 dwLoc10_62 = SLICE(fp0_12, word32, 64)
-	word32 dwLoc0C_63 = SLICE(fp0_12, word32, 32)
-	word32 dwLoc08_64 = SLICE(fp0_12, word32, 0)
 	word32 dwLoc14_59 = 1
+	real96 rLoc10_90 = Mem11[0x80000508:real96]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l800001A8:
-	real96 rLoc10_71 = SEQ(dwLoc10_62, dwLoc0C_63, dwLoc08_64)
+	real96 rLoc10_71 = SEQ(SLICE(rLoc10_90, real96, 0), SLICE(rLoc10_90, real96, 32), SLICE(rLoc10_90, real96, 64))
 	branch (real96) dwLoc14_59 > rArg04 l800001D4
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l800001D4:
-	return SEQ(dwLoc10_62, dwLoc0C_63, dwLoc08_64)
+	return rLoc10_90
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -117,11 +108,8 @@ fn8000018E_exit:
 // SymbolicIn:
 
 l800001B8:
-	real96 fp1_49 = rLoc10_71 * (real80) ((real96) dwLoc14_59)
-	dwLoc10_62 = SLICE(fp1_49, word32, 64) (alias)
-	dwLoc0C_63 = SLICE(fp1_49, word32, 32) (alias)
-	dwLoc08_64 = SLICE(fp1_49, word32, 0) (alias)
 	dwLoc14_59 = dwLoc14_59 + 0x00000001
+	rLoc10_90 = rLoc10_71 * (real80) ((real96) dwLoc14_59) (alias)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -141,24 +129,22 @@ fn800001F2_entry:
 // SymbolicIn:
 
 l800001F2:
-	word32 dwLoc10_112 = SLICE(rArg04, word32, 64)
-	word32 dwLoc0C_113 = SLICE(rArg04, word32, 32)
-	word32 dwLoc08_114 = SLICE(rArg04, word32, 0)
 	real96 rLoc1C_109 = Mem17[0x80000514:real96]
 	word32 dwLoc20_110 = 3
+	real96 rLoc10_146 = rArg04
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l8000021C:
-	real96 rLoc10_127 = SEQ(dwLoc10_112, dwLoc0C_113, dwLoc08_114)
+	real96 rLoc10_127 = SEQ(SLICE(rLoc10_146, real96, 0), SLICE(rLoc10_146, real96, 32), SLICE(rLoc10_146, real96, 64))
 	branch dwLoc20_110 > 100 l8000028A
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l8000028A:
-	return SEQ(dwLoc10_112, dwLoc0C_113, dwLoc08_114)
+	return rLoc10_146
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -170,12 +156,9 @@ fn800001F2_exit:
 
 l80000224:
 	real96 fp0_91 = (real96) (real80) ((real96) (real80) fn80000132(rArg04, (real96) dwLoc20_110) / (real80) fn8000018E((real96) dwLoc20_110)) * rLoc1C_109
-	real96 fp1_93 = rLoc10_127 + (real80) fp0_91
-	dwLoc10_112 = SLICE(fp1_93, word32, 64) (alias)
-	dwLoc0C_113 = SLICE(fp1_93, word32, 32) (alias)
-	dwLoc08_114 = SLICE(fp1_93, word32, 0) (alias)
 	rLoc1C_109 = fp0_91
 	dwLoc20_110 = dwLoc20_110 + 0x00000002
+	rLoc10_146 = rLoc10_127 + (real80) fp0_91 (alias)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -195,25 +178,22 @@ fn800002AE_entry:
 // SymbolicIn:
 
 l800002AE:
-	real96 fp0_15 = Mem14[0x80000520:real96]
-	word32 dwLoc10_111 = SLICE(fp0_15, word32, 64)
-	word32 dwLoc0C_112 = SLICE(fp0_15, word32, 32)
-	word32 dwLoc08_113 = SLICE(fp0_15, word32, 0)
 	real96 rLoc1C_108 = Mem17[0x8000052C:real96]
 	word32 dwLoc20_109 = 2
+	real96 rLoc10_146 = Mem14[0x80000520:real96]
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l800002DA:
-	real96 rLoc10_126 = SEQ(dwLoc10_111, dwLoc0C_112, dwLoc08_113)
+	real96 rLoc10_126 = SEQ(SLICE(rLoc10_146, real96, 0), SLICE(rLoc10_146, real96, 32), SLICE(rLoc10_146, real96, 64))
 	branch dwLoc20_109 > 100 l80000348
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
 
 l80000348:
-	return SEQ(dwLoc10_111, dwLoc0C_112, dwLoc08_113)
+	return rLoc10_146
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:
@@ -225,12 +205,9 @@ fn800002AE_exit:
 
 l800002E2:
 	real96 fp0_91 = (real96) (real80) ((real96) (real80) fn80000132(rArg04, (real96) dwLoc20_109) / (real80) fn8000018E((real96) dwLoc20_109)) * rLoc1C_108
-	real96 fp1_93 = rLoc10_126 + (real80) fp0_91
-	dwLoc10_111 = SLICE(fp1_93, word32, 64) (alias)
-	dwLoc0C_112 = SLICE(fp1_93, word32, 32) (alias)
-	dwLoc08_113 = SLICE(fp1_93, word32, 0) (alias)
 	rLoc1C_108 = fp0_91
 	dwLoc20_109 = dwLoc20_109 + 0x00000002
+	rLoc10_146 = rLoc10_126 + (real80) fp0_91 (alias)
 // DataOut:
 // DataOut (flags):
 // SymbolicIn:

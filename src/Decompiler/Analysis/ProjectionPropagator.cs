@@ -54,17 +54,19 @@ namespace Reko.Analysis
         private static readonly TraceSwitch trace = new TraceSwitch("ProjectionPropagator", "Traces projection propagator", "Warning");
 
         private readonly IProcessorArchitecture arch;
+        private readonly SegmentedAccessClassifier sac;
         private readonly SsaState ssa;
 
-        public ProjectionPropagator(SsaState ssa)
+        public ProjectionPropagator(SsaState ssa, SegmentedAccessClassifier sac)
         {
             this.ssa = ssa;
+            this.sac = sac;
             this.arch = ssa.Procedure.Architecture;
         }
 
         public void Transform()
         {
-            var prjf = new ProjectionFilter(arch, ssa);
+            var prjf = new ProjectionFilter(arch, ssa, sac);
             var wl = new WorkList<Statement>(ssa.Procedure.Statements);
             while (wl.GetWorkItem(out var stm))
             {
@@ -80,11 +82,13 @@ namespace Reko.Analysis
         {
             private readonly IProcessorArchitecture arch;
             private readonly SsaState ssa;
+            private readonly SegmentedAccessClassifier sac;
 
-            public ProjectionFilter(IProcessorArchitecture arch, SsaState ssa)
+            public ProjectionFilter(IProcessorArchitecture arch, SsaState ssa, SegmentedAccessClassifier sac)
             {
                 this.arch = arch;
                 this.ssa = ssa;
+                this.sac = sac;
                 this.NewStatements = new HashSet<Statement>();
             }
 
@@ -126,6 +130,8 @@ namespace Reko.Analysis
                     return e;
 
                 if (!(accessNew.BasePointer is Identifier idSeg))
+                    return e;
+                if (sac.AssociatedIdentifier(idSeg) == null)
                     return e;
                 var sidSeg = ssa.Identifiers[idSeg];
                 if (accessNew.EffectiveAddress is Identifier idEa)
@@ -188,7 +194,9 @@ namespace Reko.Analysis
                 // Are all the definitions of the ids in the same basic block? If they're
                 // not, we give up.
 
-                if (!AllSame(sids, (a, b) => a.DefStatement.Block == b.DefStatement.Block))
+                if (!AllSame(sids, (a, b) =>
+                    a.DefStatement.Block == b.DefStatement.Block &&
+                    a.Identifier.Storage.GetType() == b.Identifier.Storage.GetType()))
                     return null;
 
                 var dtWide = PrimitiveType.CreateWord(sids.Sum(s => s.Identifier.DataType.BitSize));
@@ -250,10 +258,10 @@ namespace Reko.Analysis
                     var regWide = arch.GetRegister(sd, bits);
                     idWide = ssa.Procedure.Frame.EnsureRegister(regWide);
                 }
-                //else if (sids.All(sid => sid.Identifier.Storage is StackStorage))
-                //{
-                //    idWide = CombineAdjacentStorages(sids);
-                //}
+                else if (sids.All(sid => sid.Identifier.Storage is StackStorage))
+                {
+                    idWide = CombineAdjacentStorages(sids);
+                }
                 else 
                 {
                     idWide = ssa.Procedure.Frame.EnsureSequence(
@@ -372,6 +380,7 @@ namespace Reko.Analysis
                 //     ...SEQ(a_3,b_3)
                 // and we want 
                 //    ab_3 = PHI(ab_1, ab_2)
+                //    a_3 = SLICE(ab_3, ...)
                 //    ...ab_3
 
                 foreach (var s in sids)
@@ -415,6 +424,16 @@ namespace Reko.Analysis
                         sidDst.Identifier,
                         widePhiArgs.ToArray());
                 sidDst.Uses.Add(this.Statement);
+
+                // Replace all the "unfused" phis with slices of the "fused" phi.
+                foreach (var sid in sids)
+                {
+                    ssa.RemoveUses(sid.DefStatement);
+                    sid.DefStatement.Instruction = new AliasAssignment(
+                        sid.Identifier,
+                        new Slice(sidDst.Identifier.DataType, sidDst.Identifier, idWide.Storage.OffsetOf(sid.Identifier.Storage)));
+                    sidDst.Uses.Add(sid.DefStatement);
+                }
                 return sidDst.Identifier;
             }
 

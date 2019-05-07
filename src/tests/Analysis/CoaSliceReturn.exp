@@ -4,18 +4,20 @@ Top_3: orig: Top
 si_4: orig: si
 ds:ds
     def:  def ds
-    uses: Mem7[ds:0x0202:word16] = fn0C00_0015(0x0200, ds)
-          Mem11[ds:0x0302:byte] = (byte) fn0C00_0015(0x0300, ds)
-          Mem7[ds:0x0202:word16] = fn0C00_0015(0x0200, ds)
-          Mem11[ds:0x0302:byte] = (byte) fn0C00_0015(0x0300, ds)
-ax_6: orig: ax
-Mem7: orig: Mem0
-    def:  Mem7[ds:0x0202:word16] = fn0C00_0015(0x0200, ds)
-si_8: orig: si
-ax_9: orig: ax
-al_10: orig: al
-Mem11: orig: Mem0
-    def:  Mem11[ds:0x0302:byte] = (byte) fn0C00_0015(0x0300, ds)
+    uses: Mem8[ds:0x0202:word16] = fn0C00_0015(SEQ(ds, 0x0200))
+          Mem13[ds:0x0302:byte] = (byte) fn0C00_0015(SEQ(ds, 0x0300))
+          Mem8[ds:0x0202:word16] = fn0C00_0015(SEQ(ds, 0x0200))
+          Mem13[ds:0x0302:byte] = (byte) fn0C00_0015(SEQ(ds, 0x0300))
+ds_si_6: orig: ds_si
+ax_7: orig: ax
+Mem8: orig: Mem0
+    def:  Mem8[ds:0x0202:word16] = fn0C00_0015(SEQ(ds, 0x0200))
+si_9: orig: si
+ds_si_10: orig: ds_si
+ax_11: orig: ax
+al_12: orig: al
+Mem13: orig: Mem0
+    def:  Mem13[ds:0x0302:byte] = (byte) fn0C00_0015(SEQ(ds, 0x0300))
 // fn0C00_0000
 // Return size: 0
 void fn0C00_0000(selector ds)
@@ -23,8 +25,8 @@ fn0C00_0000_entry:
 	def ds
 	// succ:  l0C00_0000
 l0C00_0000:
-	Mem7[ds:0x0202:word16] = fn0C00_0015(0x0200, ds)
-	Mem11[ds:0x0302:byte] = (byte) fn0C00_0015(0x0300, ds)
+	Mem8[ds:0x0202:word16] = fn0C00_0015(SEQ(ds, 0x0200))
+	Mem13[ds:0x0302:byte] = (byte) fn0C00_0015(SEQ(ds, 0x0300))
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -33,25 +35,23 @@ fp:fp
 sp_2: orig: sp
 Top_3: orig: Top
 ds:ds
-    def:  def ds
-    uses: return Mem0[ds:si:word16]
 si:si
-    def:  def si
-    uses: return Mem0[ds:si:word16]
 Mem0:Mem
     def:  def Mem0
-    uses: return Mem0[ds:si:word16]
+    uses: return Mem0[ds_si:word16]
 ax_7: orig: ax
+ds_si:Sequence ds:si
+    def:  def ds_si
+    uses: return Mem0[ds_si:word16]
 // fn0C00_0015
 // Return size: 0
-word16 fn0C00_0015(word16 si, selector ds)
+word16 fn0C00_0015(word32 ds_si)
 fn0C00_0015_entry:
-	def ds
-	def si
+	def ds_si
 	def Mem0
 	// succ:  l0C00_0015
 l0C00_0015:
-	return Mem0[ds:si:word16]
+	return Mem0[ds_si:word16]
 	// succ:  fn0C00_0015_exit
 fn0C00_0015_exit:
 

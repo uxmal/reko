@@ -41,8 +41,6 @@ namespace Reko.Analysis
 		private readonly Identifier overAssociatedId = new Identifier("overAssociated", VoidType.Instance, null);
         private readonly Constant overAssociatedConst = Constant.Real64(0.0);
 
-		private int sequencePoint;
-
 		public SegmentedAccessClassifier(SsaState  ssa)
 		{
 			this.ssa = ssa;
@@ -102,12 +100,10 @@ namespace Reko.Analysis
 
         public void Classify()
         {
-            sequencePoint = 0;
             foreach (Statement stm in ssa.Procedure.Statements)
             {
                 stm.Instruction.Accept(this);
             }
-            ++sequencePoint;
         }
 
 		public bool IsOnlyAssociatedWithConstants(Identifier pointer)
@@ -123,17 +119,18 @@ namespace Reko.Analysis
 		{
             if (!(access.BasePointer is Identifier pointer))
                 return;
-            if (access.EffectiveAddress is BinaryExpression bin)
+            switch (access.EffectiveAddress)
             {
-                Identifier mp = bin.Left as Identifier;
-                if (bin.Operator == BinaryOperator.IAdd && mp != null)
+            case Identifier id:
+                Associate(pointer, id);
+                return;
+            case BinaryExpression bin:
+                if (bin.Operator == BinaryOperator.IAdd && bin.Left is Identifier mp)
                 {
                     Associate(pointer, mp);
                 }
                 return;
-            }
-            if (access.EffectiveAddress is Constant c)
-            {
+            case Constant c:
                 Associate(pointer, c);
                 return;
             }

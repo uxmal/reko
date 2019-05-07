@@ -94,6 +94,15 @@ namespace Reko.UnitTests.Mocks
             return sid.Identifier;
         }
 
+        public override Identifier Local16(string name, int offset)
+        {
+            var local = base.Local16(null, offset);
+            var idNew = new Identifier(name, local.DataType, local.Storage);
+            var sid = new SsaIdentifier(idNew, local, null, null, false);
+            Ssa.Identifiers.Add(idNew, sid);
+            return sid.Identifier;
+        }
+
         public Identifier Temp(string name, TemporaryStorage stg)
         {
             var id = new Identifier(stg.Name, stg.DataType, stg);
@@ -205,6 +214,26 @@ namespace Reko.UnitTests.Mocks
             var sid = new SsaIdentifier(idNew, idOld, null, null, false);
             Ssa.Identifiers.Add(idNew, sid);
             return idNew;
+        }
+
+        public override MemoryAccess Mem8(Expression ea)
+        {
+            var access = base.Mem8(ea);
+            var memId = AddMemIdToSsa(access.MemoryId);
+            return new MemoryAccess(
+                memId,
+                access.EffectiveAddress,
+                access.DataType);
+        }
+
+        public override MemoryAccess Mem16(Expression ea)
+        {
+            var access = base.Mem16(ea);
+            var memId = AddMemIdToSsa(access.MemoryId);
+            return new MemoryAccess(
+                memId,
+                access.EffectiveAddress,
+                access.DataType);
         }
 
         public override MemoryAccess Mem32(Expression ea)

@@ -63,6 +63,11 @@ namespace Reko.Core
 			AddInParam(binder.EnsureRegister(reg));
 		}
 
+        public void AddSequenceArgument(SequenceStorage seq)
+        {
+			AddInParam(binder.EnsureSequence(seq.DataType, seq.Elements));
+        }
+
         public Identifier AddOutParam(Identifier idOrig)
         {
             if (this.ret == null)
@@ -90,5 +95,6 @@ namespace Reko.Core
 		{
 			return new FunctionType(ret, args.ToArray());
 		}
-	}
+
+    }
 }

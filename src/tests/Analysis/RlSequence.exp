@@ -9,69 +9,71 @@ fn0C00_0000_entry:
 	def ds
 	def es
 l0C00_0000:
+	ds_si_6 = SEQ(ds, 0x1234) (alias)
 	call fn0C00_000B (retsize: 2;)
-		uses: ds:ds,es:es,si:0x1234
-		defs: ax:ax_7
-	Mem13[ds:0x4321:word16] = ax_7
+		uses: es:es,Sequence ds:si:ds_si_6
+		defs: ax:ax_8
+	Mem14[ds:0x4321:word16] = ax_8
 	return
 fn0C00_0000_exit:
 // fn0C00_000B /////////////////////
 	LiveOut:   ax:[0..15]
-	BitsUsed:  ds:[0..15] es:[0..15] si:[0..15]
+	BitsUsed:  es:[0..15] Sequence ds:si:[0..31]
 	Trashed:   SCZO ax di Top
 	Preserved: si sp
 // fn0C00_000B
 define fn0C00_000B
 fn0C00_000B_entry:
-	def si
-	def ds
+	def ds_si
+	si = SLICE(ds_si, word16, 0)
+	ds = SLICE(ds_si, selector, 16)
 	def es
 l0C00_000B:
 	call fn0C00_0026 (retsize: 2;)
-		uses: ds:ds,si:si
-		defs: ax:ax_9
-	Mem11[ds:ax_9:word16] = 0x0000
-	Mem12[ds:ax_9 + 0x0002:word16] = 0x0000
-	Mem13[ds:ax_9 + 0x0004:word16] = 0x0000
+		uses: Sequence ds:si:ds_si
+		defs: ax:ax_10
+	Mem12[ds:ax_10:word16] = 0x0000
+	Mem13[ds:ax_10 + 0x0002:word16] = 0x0000
+	Mem14[ds:ax_10 + 0x0004:word16] = 0x0000
 	call fn0C00_0035 (retsize: 2;)
-		uses: di:ax_9,ds:ds,es:es,si:si
-	ax_21 = si
+		uses: di:ax_10,es:es,Sequence ds:si:ds_si
+	ax_23 = si
 	return
 fn0C00_000B_exit:
-	use ax_21
+	use ax_23
 // fn0C00_0026 /////////////////////
 	LiveOut:   ax:[0..15]
-	BitsUsed:  ds:[0..15] si:[0..15]
+	BitsUsed:  Sequence ds:si:[0..31]
 	Trashed:   ax Top
 	Preserved: si sp
 // fn0C00_0026
 define fn0C00_0026
 fn0C00_0026_entry:
-	def si
-	def ds
+	def ds_si
+	si = SLICE(ds_si, word16, 0)
 l0C00_0026:
-	Mem9[ds:si:word16] = 0x0001
-	Mem10[ds:si + 0x0002:word16] = 0x0000
+	Mem9[ds_si:word16] = 0x0001
+	Mem10[ds_si + 0x0002:word16] = 0x0000
 	ax_11 = si + 0x0004
 	return
 fn0C00_0026_exit:
 	use ax_11
 // fn0C00_0035 /////////////////////
 	LiveOut:  
-	BitsUsed:  di:[0..15] ds:[0..15] es:[0..15] si:[0..15]
+	BitsUsed:  di:[0..15] es:[0..15] Sequence ds:si:[0..31]
 	Trashed:   SCZO ax di Top
 	Preserved: sp
 // fn0C00_0035
 define fn0C00_0035
 fn0C00_0035_entry:
+	def ds_si
 	def di
-	def ds
-	def si
+	si = SLICE(ds_si, word16, 0)
 	def es
 l0C00_0035:
-	v7_10 = Mem7[ds:si + 0x0002:word16] + 0x0001
-	Mem11[ds:si + 0x0002:word16] = v7_10
-	ax_12 = Mem11[ds:si + 0x0002:word16]
+	v7_10 = Mem7[ds_si + 0x0002:word16] + 0x0001
+	Mem11[ds_si + 0x0002:word16] = v7_10
+	ax_12 = Mem11[ds_si + 0x0002:word16]
 	di_15 = si + 0x0004 + (ax_12 << 0x0002)
 	Mem20[es:di_15:word16] = di
 	return

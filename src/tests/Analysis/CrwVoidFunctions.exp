@@ -1,5 +1,5 @@
-void fn0C00_0000(Register word16 di, Register selector ds)
-// MayUse:  di:[0..15] ds:[0..15]
+void fn0C00_0000(Sequence word32 ds_di)
+// MayUse:  Sequence ds:di:[0..31]
 // LiveOut:
 // Trashed: SCZO ax bx si Top
 // Preserved: sp
@@ -14,6 +14,7 @@ void fn0C00_0000(Register word16 di, Register selector ds)
 // Top:Top
 // ds:ds
 // di:di
+// ds_di:Sequence ds:di
 // ax:ax
 // bx:bx
 // S:S
@@ -22,19 +23,18 @@ void fn0C00_0000(Register word16 di, Register selector ds)
 // O:O
 // wLoc02:Local -0002
 // return address size: 2
-void fn0C00_0000(word16 di, selector ds)
+void fn0C00_0000(word32 ds_di)
 fn0C00_0000_entry:
-	def ds
-	def di
+	def ds_di
 	// succ:  l0C00_0000
 l0C00_0000:
-	fn0C00_0010(0x0100, di, ds)
-	fn0C00_0017(di, ds, 0x0100)
+	fn0C00_0010(ds_di, 0x0100)
+	fn0C00_0017(ds_di, 0x0100)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
-void fn0C00_0010(Register word16 si, Register word16 di, Register selector ds)
-// MayUse:  di:[0..15] ds:[0..15] si:[0..15]
+void fn0C00_0010(Sequence word32 ds_di, Register word16 si)
+// MayUse:  Sequence ds:di:[0..31] si:[0..15]
 // LiveOut:
 // Trashed: ax Top
 // Preserved: sp
@@ -48,22 +48,24 @@ void fn0C00_0010(Register word16 si, Register word16 di, Register selector ds)
 // ds:ds
 // Top:Top
 // di:di
+// ds_di:Sequence ds:di
+// ds_si:Sequence ds:si
 // return address size: 2
-void fn0C00_0010(word16 si, word16 di, selector ds)
+void fn0C00_0010(word32 ds_di, word16 si)
 fn0C00_0010_entry:
-	def ds
+	def ds_di
+	ds = SLICE(ds_di, selector, 16)
 	def si
 	def Mem0
-	def di
 	// succ:  l0C00_0010
 l0C00_0010:
 	ax_7 = Mem0[ds:si + 0x0002:word16]
-	fn0C00_0029(ax_7, di, ds)
+	fn0C00_0029(ds_di, ax_7)
 	return
 	// succ:  fn0C00_0010_exit
 fn0C00_0010_exit:
-void fn0C00_0017(Register word16 di, Register selector ds, Stack word16 wArg02)
-// MayUse:  di:[0..15] ds:[0..15] Stack +0002:[0..15]
+void fn0C00_0017(Sequence word32 ds_di, Stack word16 wArg02)
+// MayUse:  Sequence ds:di:[0..31] Stack +0002:[0..15]
 // LiveOut:
 // Trashed: SCZO ax bx Top
 // Preserved: bp sp
@@ -80,6 +82,7 @@ void fn0C00_0017(Register word16 di, Register selector ds, Stack word16 wArg02)
 // SCZO:SCZO
 // Top:Top
 // di:di
+// ds_di:Sequence ds:di
 // wLoc02:Local -0002
 // wArg02:Stack +0002
 // wLoc04:Local -0004
@@ -88,20 +91,20 @@ void fn0C00_0017(Register word16 di, Register selector ds, Stack word16 wArg02)
 // Z:Z
 // O:O
 // return address size: 2
-void fn0C00_0017(word16 di, selector ds, word16 wArg02)
+void fn0C00_0017(word32 ds_di, word16 wArg02)
 fn0C00_0017_entry:
-	def ds
-	def di
+	def ds_di
+	ds = SLICE(ds_di, selector, 16)
 	def wArg02
 	// succ:  l0C00_0017
 l0C00_0017:
 	ax_11 = Mem7[ds:wArg02 + 0x0002:word16]
-	fn0C00_002C(di, ds, ax_11)
+	fn0C00_002C(ds_di, ax_11)
 	return
 	// succ:  fn0C00_0017_exit
 fn0C00_0017_exit:
-void fn0C00_0029(Register word16 ax, Register word16 di, Register selector ds)
-// MayUse:  ax:[0..15] di:[0..15] ds:[0..15]
+void fn0C00_0029(Sequence word32 ds_di, Register word16 ax)
+// MayUse:  ax:[0..15] Sequence ds:di:[0..31]
 // LiveOut:
 // Trashed: Top
 // Preserved: sp
@@ -114,20 +117,20 @@ void fn0C00_0029(Register word16 ax, Register word16 di, Register selector ds)
 // ds:ds
 // ax:ax
 // Top:Top
+// ds_di:Sequence ds:di
 // return address size: 2
-void fn0C00_0029(word16 ax, word16 di, selector ds)
+void fn0C00_0029(word32 ds_di, word16 ax)
 fn0C00_0029_entry:
+	def ds_di
 	def ax
-	def ds
-	def di
 	// succ:  l0C00_0029
 l0C00_0029:
-	Mem7[ds:di:word16] = ax
+	Mem7[ds_di:word16] = ax
 	return
 	// succ:  fn0C00_0029_exit
 fn0C00_0029_exit:
-void fn0C00_002C(Register word16 di, Register selector ds, Stack word16 wArg02)
-// MayUse:  di:[0..15] ds:[0..15] Stack +0002:[0..15]
+void fn0C00_002C(Sequence word32 ds_di, Stack word16 wArg02)
+// MayUse:  Sequence ds:di:[0..31] Stack +0002:[0..15]
 // LiveOut:
 // Trashed: ax Top
 // Preserved: bp sp
@@ -144,15 +147,15 @@ void fn0C00_002C(Register word16 di, Register selector ds, Stack word16 wArg02)
 // Top:Top
 // wLoc02:Local -0002
 // wArg02:Stack +0002
+// ds_di:Sequence ds:di
 // return address size: 2
-void fn0C00_002C(word16 di, selector ds, word16 wArg02)
+void fn0C00_002C(word32 ds_di, word16 wArg02)
 fn0C00_002C_entry:
-	def ds
-	def di
+	def ds_di
 	def wArg02
 	// succ:  l0C00_002C
 l0C00_002C:
-	Mem12[ds:di:word16] = wArg02
+	Mem12[ds_di:word16] = wArg02
 	return
 	// succ:  fn0C00_002C_exit
 fn0C00_002C_exit:
