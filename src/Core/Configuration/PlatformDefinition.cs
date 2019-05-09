@@ -48,13 +48,13 @@ namespace Reko.Core.Configuration
 
         public string MemoryMapFile { get; set; }
 
-        public List<TypeLibraryDefinition> TypeLibraries { get; internal set; }
-        public List<TypeLibraryDefinition> CharacteristicsLibraries { get; internal set; }
-        public List<PlatformArchitectureDefinition> Architectures { get; internal set; }
-        public List<SignatureFileDefinition> SignatureFiles { get; internal set; }
-        public Dictionary<string, object> Options { get; internal set; }
+        public virtual List<TypeLibraryDefinition> TypeLibraries { get; internal set; }
+        public virtual List<TypeLibraryDefinition> CharacteristicsLibraries { get; internal set; }
+        public virtual List<PlatformArchitectureDefinition> Architectures { get; internal set; }
+        public virtual List<SignatureFileDefinition> SignatureFiles { get; internal set; }
+        public virtual Dictionary<string, object> Options { get; internal set; }
 
-        public IPlatform Load(IServiceProvider services, IProcessorArchitecture arch)
+        public virtual IPlatform Load(IServiceProvider services, IProcessorArchitecture arch)
         {
             var type = Type.GetType(TypeName, true);
             if (type == null)
