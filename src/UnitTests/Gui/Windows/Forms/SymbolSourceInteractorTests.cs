@@ -52,7 +52,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             cfgSvc = new Mock<IConfigurationService>();
             uiSvc = new Mock<IDecompilerShellUiService>();
             cfgSvc.Setup(c => c.GetSymbolSources())
-                .Returns(new List<SymbolSource>());
+                .Returns(new List<SymbolSourceDefinition>());
 
             sc.AddService<IConfigurationService>(cfgSvc.Object);
             sc.AddService<IFileSystemService>(fsSvc.Object);

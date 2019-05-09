@@ -62,7 +62,7 @@ namespace Reko.UnitTests.Arch.zSeries
 
         private void Given_MachineCode(string hex)
         {
-            var bytes = OperatingEnvironmentElement.LoadHexBytes(hex)
+            var bytes = PlatformDefinition.LoadHexBytes(hex)
                 .ToArray();
             this.image = new MemoryArea(LoadAddress, bytes);
         }

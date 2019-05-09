@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -25,14 +25,7 @@ using System.Text;
 
 namespace Reko.Core.Configuration
 {
-    public interface AssemblerElement
-    {
-        string Name { get; }
-        string Description { get; }
-        string TypeName { get; }
-    }
-
-    public class AssemblerElementImpl : AssemblerElement
+    public class AssemblerDefinition
     {
         /// <summary>
         /// Short, technical name for the assembler.

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -29,23 +29,16 @@ namespace Reko.Core.Configuration
     /// Contains processor-specific settings for a particular 
     /// platform.
     /// </summary>
-    public interface IPlatformArchitectureElement
+    public class PlatformArchitectureDefinition
     {
-        string Name { get; }
-        List<string> TrashedRegisters { get; }
-        List<ITypeLibraryElement> TypeLibraries { get; }
-    }
-
-    public class PlatformArchitectureElement : IPlatformArchitectureElement
-    {
-        public PlatformArchitectureElement()
+        public PlatformArchitectureDefinition()
         {
             this.TrashedRegisters = new List<string>();
-            this.TypeLibraries = new List<ITypeLibraryElement>();
+            this.TypeLibraries = new List<TypeLibraryDefinition>();
         }
 
         public string Name { get; set; }
         public List<string> TrashedRegisters { get; internal set; }
-        public List<ITypeLibraryElement> TypeLibraries { get; internal set; }
+        public List<TypeLibraryDefinition> TypeLibraries { get; internal set; }
     }
 }

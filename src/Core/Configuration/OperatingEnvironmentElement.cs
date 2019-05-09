@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,31 +28,14 @@ using System.Text;
 
 namespace Reko.Core.Configuration
 {
-    public interface OperatingEnvironment
+    public class PlatformDefinition
     {
-        string Name { get; }
-        string Description { get; }
-        string TypeName { get; }
-        string MemoryMapFile { get; }
-        Dictionary<string, object> Options { get; }
-
-        PlatformHeuristics_v1 Heuristics { get; }
-        List<ITypeLibraryElement> TypeLibraries { get; }
-        List<ITypeLibraryElement> CharacteristicsLibraries { get; }
-        List<SignatureFile> SignatureFiles { get; }
-        List<IPlatformArchitectureElement> Architectures { get; }
-
-        IPlatform Load(IServiceProvider services, IProcessorArchitecture arch);
-    }
-
-    public class OperatingEnvironmentElement : OperatingEnvironment
-    {
-        public OperatingEnvironmentElement()
+        public PlatformDefinition()
         {
-            this.TypeLibraries = new List<ITypeLibraryElement>();
-            this.CharacteristicsLibraries = new List<ITypeLibraryElement>();
-            this.SignatureFiles = new List<SignatureFile>();
-            this.Architectures = new List<IPlatformArchitectureElement>();
+            this.TypeLibraries = new List<TypeLibraryDefinition>();
+            this.CharacteristicsLibraries = new List<TypeLibraryDefinition>();
+            this.SignatureFiles = new List<SignatureFileDefinition>();
+            this.Architectures = new List<PlatformArchitectureDefinition>();
         }
 
         public string Name { get; set; }
@@ -65,10 +48,10 @@ namespace Reko.Core.Configuration
 
         public string MemoryMapFile { get; set; }
 
-        public List<ITypeLibraryElement> TypeLibraries { get; internal set; }
-        public List<ITypeLibraryElement> CharacteristicsLibraries { get; internal set; }
-        public List<IPlatformArchitectureElement> Architectures { get; internal set; }
-        public List<SignatureFile> SignatureFiles { get; internal set; }
+        public List<TypeLibraryDefinition> TypeLibraries { get; internal set; }
+        public List<TypeLibraryDefinition> CharacteristicsLibraries { get; internal set; }
+        public List<PlatformArchitectureDefinition> Architectures { get; internal set; }
+        public List<SignatureFileDefinition> SignatureFiles { get; internal set; }
         public Dictionary<string, object> Options { get; internal set; }
 
         public IPlatform Load(IServiceProvider services, IProcessorArchitecture arch)

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -26,14 +26,7 @@ using System.Threading.Tasks;
 
 namespace Reko.Core.Configuration
 {
-    public interface SymbolSource
-    {
-        string Description { get; }
-        string Name { get; }
-        string TypeName { get; }
-    }
-
-    public class SymbolSourceDefinition : SymbolSource
+    public class SymbolSourceDefinition
     {
         public string Description { get;  set; }
         public string Extension { get;  set; }

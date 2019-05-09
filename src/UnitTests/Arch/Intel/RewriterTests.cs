@@ -78,12 +78,12 @@ namespace Reko.UnitTests.Arch.Intel
         private void DoRewriteCore()
         {
             var cfgSvc = new Mock<IConfigurationService>();
-            var env = new Mock<OperatingEnvironment>();
+            var env = new Mock<PlatformDefinition>();
             var tlSvc = new Mock<ITypeLibraryLoaderService>();
             var eventListener = new FakeDecompilerEventListener();
             cfgSvc.Setup(c => c.GetEnvironment("ms-dos")).Returns(env.Object);
-            env.Setup(e => e.TypeLibraries).Returns(new List<ITypeLibraryElement>());
-            env.Setup(e => e.CharacteristicsLibraries).Returns(new List<ITypeLibraryElement>());
+            env.Setup(e => e.TypeLibraries).Returns(new List<TypeLibraryDefinition>());
+            env.Setup(e => e.CharacteristicsLibraries).Returns(new List<TypeLibraryDefinition>());
             sc.AddService<DecompilerHost>(new FakeDecompilerHost());
             sc.AddService<DecompilerEventListener>(eventListener);
             sc.AddService<IConfigurationService>(cfgSvc.Object);

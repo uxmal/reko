@@ -128,11 +128,11 @@ namespace Reko.UnitTests.Analysis
             var arch = new X86ArchitectureReal("x86-real-16");
             var sc = new ServiceContainer();
             var cfgSvcMock = new Mock<IConfigurationService>();
-            var envMock = new Mock<OperatingEnvironment>();
+            var envMock = new Mock<PlatformDefinition>();
             var tlSvcMock = new Mock<ITypeLibraryLoaderService>();
             cfgSvcMock.Setup(c => c.GetEnvironment("ms-dos")).Returns(envMock.Object);
-            envMock.Setup(e => e.TypeLibraries).Returns(new List<ITypeLibraryElement>());
-            envMock.Setup(e => e.CharacteristicsLibraries).Returns(new List<ITypeLibraryElement>());
+            envMock.Setup(e => e.TypeLibraries).Returns(new List<TypeLibraryDefinition>());
+            envMock.Setup(e => e.CharacteristicsLibraries).Returns(new List<TypeLibraryDefinition>());
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
             sc.AddService<IConfigurationService>(cfgSvcMock.Object);
             sc.AddService<ITypeLibraryLoaderService>(tlSvcMock.Object);

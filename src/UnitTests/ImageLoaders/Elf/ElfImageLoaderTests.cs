@@ -351,7 +351,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             this.tlSvc = new Mock<ITypeLibraryLoaderService>(); 
             sc.AddService<ITypeLibraryLoaderService>(tlSvc.Object);
             cfgSvc.Setup(d => d.GetArchitecture("x86-protected-32")).Returns(arch.Object);
-            cfgSvc.Setup(d => d.GetEnvironment("elf-neutral")).Returns(new OperatingEnvironmentElement
+            cfgSvc.Setup(d => d.GetEnvironment("elf-neutral")).Returns(new PlatformDefinition
             {
                 TypeName = typeof(SysVPlatform).AssemblyQualifiedName
             });
@@ -428,7 +428,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         [Test]
         public void EIL_LoadCellLv2()
         {
-            var opEl = new Mock<OperatingEnvironment>();
+            var opEl = new Mock<PlatformDefinition>();
             var platform = new DefaultPlatform(sc, arch.Object);
             cfgSvc.Setup(d => d.GetEnvironment("elf-cell-lv2")).Returns(opEl.Object);
             opEl.Setup(o => o.Load(

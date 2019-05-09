@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -39,7 +39,7 @@ namespace hunktool
             throw new NotImplementedException();
         }
 
-        public ICollection<Architecture> GetArchitectures()
+        public ICollection<ArchitectureDefinition> GetArchitectures()
         {
             throw new NotImplementedException();
         }
@@ -49,21 +49,21 @@ namespace hunktool
             throw new NotImplementedException();
         }
 
-        public ICollection<AssemblerElement> GetAssemblers()
+        public ICollection<AssemblerDefinition> GetAssemblers()
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<UiStyle> GetDefaultPreferences()
+        public IEnumerable<UiStyleDefinition> GetDefaultPreferences()
         {
             throw new NotImplementedException();
         }
 
-        public OperatingEnvironment GetEnvironment(string envName)
+        public PlatformDefinition GetEnvironment(string envName)
         {
             if (envName == "amigaOS")
             {
-                return new OperatingEnvironmentElement
+                return new PlatformDefinition
                 {
                      TypeName = typeof(AmigaOSPlatform).AssemblyQualifiedName,
                 };
@@ -71,17 +71,17 @@ namespace hunktool
             throw new NotImplementedException();
         }
 
-        public ICollection<OperatingEnvironment> GetEnvironments()
+        public ICollection<PlatformDefinition> GetEnvironments()
         {
             throw new NotImplementedException();
         }
 
-        public ICollection<LoaderConfiguration> GetImageLoaders()
+        public ICollection<LoaderDefinition> GetImageLoaders()
         {
             throw new NotImplementedException();
         }
 
-        public LoaderConfiguration GetImageLoader(string loaderName)
+        public LoaderDefinition GetImageLoader(string loaderName)
         {
             throw new NotImplementedException();
         }
@@ -91,22 +91,22 @@ namespace hunktool
             throw new NotImplementedException();
         }
 
-        public RawFileElement GetRawFile(string rawFileFormat)
+        public RawFileDefinition GetRawFile(string rawFileFormat)
         {
             throw new NotImplementedException();
         }
 
-        public ICollection<RawFileElement> GetRawFiles()
+        public ICollection<RawFileDefinition> GetRawFiles()
         {
             throw new NotImplementedException();
         }
 
-        public ICollection<SignatureFile> GetSignatureFiles()
+        public ICollection<SignatureFileDefinition> GetSignatureFiles()
         {
             throw new NotImplementedException();
         }
 
-        public ICollection<SymbolSource> GetSymbolSources()
+        public ICollection<SymbolSourceDefinition> GetSymbolSources()
         {
             throw new NotImplementedException();
         }

@@ -69,12 +69,12 @@ namespace Reko.UnitTests.Environments.Windows
             tlSvc.Verify();
         }
 
-        private void Expect_TypeLibraryLoaderService_LoadLibrary(ITypeLibraryElement expected, TypeLibrary dstLib)
+        private void Expect_TypeLibraryLoaderService_LoadLibrary(TypeLibraryDefinition expected, TypeLibrary dstLib)
         {
             environmentMetadata = dstLib;
             tlSvc.Setup(t => t.LoadMetadataIntoLibrary(
                 It.IsNotNull<IPlatform>(),
-                It.Is<ITypeLibraryElement>(a => a.Name == expected.Name),
+                It.Is<TypeLibraryDefinition>(a => a.Name == expected.Name),
                 It.IsNotNull<TypeLibrary>()))
                 .Returns(dstLib)
                 .Verifiable();
@@ -83,7 +83,7 @@ namespace Reko.UnitTests.Environments.Windows
         private void Expect_TypeLibraryLoaderService_LoadLibrary(string expected)
         {
             Expect_TypeLibraryLoaderService_LoadLibrary(
-                new TypeLibraryElement
+                new TypeLibraryDefinition
                 {
                     Name = expected
                 },
@@ -98,7 +98,7 @@ namespace Reko.UnitTests.Environments.Windows
                 new Dictionary<string, DataType>());
 
             Expect_TypeLibraryLoaderService_LoadLibrary(
-                new TypeLibraryElement
+                new TypeLibraryDefinition
                 {
                     Name = expected,
                 },
@@ -108,11 +108,11 @@ namespace Reko.UnitTests.Environments.Windows
         private void Given_Configuration_With_Win32_Element()
         {
             var dcSvc = new Mock<IConfigurationService>();
-            var opEnv = new OperatingEnvironmentElement 
+            var opEnv = new PlatformDefinition 
             {
                 TypeLibraries =
                 {
-                    new TypeLibraryElement
+                    new TypeLibraryDefinition
                     {
                         Name = "windows.xml"
                     }

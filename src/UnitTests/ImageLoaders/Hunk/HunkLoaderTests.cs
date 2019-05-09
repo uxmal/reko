@@ -44,7 +44,7 @@ namespace Reko.UnitTests.ImageLoaders.Hunk
         {
             mh = new HunkMaker();
             var cfgSvc = new Mock<IConfigurationService>();
-            var opEnv = new Mock<OperatingEnvironment>();
+            var opEnv = new Mock<PlatformDefinition>();
             var tlSvc = new Mock<ITypeLibraryLoaderService>();
             cfgSvc.Setup(c => c.GetEnvironment("amigaOS")).Returns(opEnv.Object);
             cfgSvc.Setup(c => c.GetArchitecture("m68k")).Returns(new M68kArchitecture("m68k"));
@@ -53,8 +53,8 @@ namespace Reko.UnitTests.ImageLoaders.Hunk
                 It.IsAny<IProcessorArchitecture>()))
                 .Returns((IServiceProvider sp, IProcessorArchitecture arch) =>
                     new AmigaOSPlatform(sp, arch));
-            opEnv.Setup(o => o.TypeLibraries).Returns(new List<ITypeLibraryElement>());
-            opEnv.Setup(o => o.CharacteristicsLibraries).Returns(new List<ITypeLibraryElement>());
+            opEnv.Setup(o => o.TypeLibraries).Returns(new List<TypeLibraryDefinition>());
+            opEnv.Setup(o => o.CharacteristicsLibraries).Returns(new List<TypeLibraryDefinition>());
             sc = new ServiceContainer();
             sc.AddService<IConfigurationService>(cfgSvc.Object);
             sc.AddService<ITypeLibraryLoaderService>(tlSvc.Object);

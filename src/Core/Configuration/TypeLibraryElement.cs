@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -26,18 +26,7 @@ using System.Text;
 
 namespace Reko.Core.Configuration
 {
-    public interface ITypeLibraryElement
-    {
-        string Name { get; }
-
-        string Architecture { get; set; }
-
-        string Module { get; set; }
-
-        string Loader { get; set; }
-    }
-
-    public class TypeLibraryElement : ITypeLibraryElement
+    public class TypeLibraryDefinition
     {
         public string Name { get; set; }
 

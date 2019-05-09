@@ -51,7 +51,7 @@ namespace Reko.UnitTests.ImageLoaders.Llvm
             this.arch.Setup(a => a.Name).Returns("FakeArch");
             this.arch.Setup(a => a.PointerType).Returns(PrimitiveType.Ptr32);
             var cfgSvc = new Mock<IConfigurationService>();
-            var openv = new Mock<OperatingEnvironment>();
+            var openv = new Mock<PlatformDefinition>();
             cfgSvc.Setup(c => c.GetArchitecture("x86-protected-64")).Returns(arch.Object);
             cfgSvc.Setup(c => c.GetEnvironment("elf-neutral")).Returns(openv.Object);
             openv.Setup(o => o.Load(sc, arch.Object)).Returns(new DefaultPlatform(sc, arch.Object));

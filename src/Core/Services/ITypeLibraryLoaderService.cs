@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -29,7 +29,7 @@ namespace Reko.Core.Services
 {
     public interface ITypeLibraryLoaderService
     {
-        TypeLibrary LoadMetadataIntoLibrary(IPlatform platform, ITypeLibraryElement tlElement, TypeLibrary libDst);
+        TypeLibrary LoadMetadataIntoLibrary(IPlatform platform, TypeLibraryDefinition tlElement, TypeLibrary libDst);
 
         string InstalledFileLocation(string name);
 
@@ -51,7 +51,7 @@ namespace Reko.Core.Services
             this.services = services;
         }
 
-        public TypeLibrary LoadMetadataIntoLibrary(IPlatform platform, ITypeLibraryElement tlElement, TypeLibrary libDst)
+        public TypeLibrary LoadMetadataIntoLibrary(IPlatform platform, TypeLibraryDefinition tlElement, TypeLibrary libDst)
         {
             var cfgSvc = services.RequireService<IConfigurationService>();
             var fsSvc = services.RequireService<IFileSystemService>();
@@ -76,7 +76,7 @@ namespace Reko.Core.Services
             }
         }
 
-        public MetadataLoader CreateLoader(ITypeLibraryElement tlElement, string filename, byte[] bytes)
+        public MetadataLoader CreateLoader(TypeLibraryDefinition tlElement, string filename, byte[] bytes)
         {
             Type loaderType = null;
             if (string.IsNullOrEmpty(tlElement.Loader))

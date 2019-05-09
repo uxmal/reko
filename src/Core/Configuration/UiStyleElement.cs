@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -26,22 +26,7 @@ using System.Text;
 
 namespace Reko.Core.Configuration
 {
-    public interface UiStyle
-    {
-        string Name { get; }
-        string FontName { get; }
-        string ForeColor { get; }
-        string BackColor { get; }
-        string Cursor { get; }
-        string Width { get; }
-        string TextAlign { get; }
-        string PaddingTop { get; }
-        string PaddingLeft { get; }
-        string PaddingBottom { get; }
-        string PaddingRight { get; }
-    }
-
-    public class UiStyleElement : UiStyle
+    public class UiStyleDefinition
     {
         public string Name { get; set; }
 

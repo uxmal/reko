@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -26,15 +26,7 @@ using System.Text;
 
 namespace Reko.Core.Configuration
 {
-    public interface SignatureFile
-    {
-        string Filename { get; }
-        
-        string Label { get; }
-        string Type { get; }
-    }
-
-    public class SignatureFileElement : SignatureFile
+    public class SignatureFileDefinition
     {
         public string Filename { get; set; }
 
