@@ -83,19 +83,32 @@ namespace Reko.Core.Lib
 
         private abstract class Node
         {
-            public int count;       // # of direct children
-            public int totalCount;  // # of recursively reachable children.
-            public TKey[] keys;
+            public readonly TKey[] keys;
+            public readonly int count;       // # of direct children
+            public readonly int totalCount;  // # of recursively reachable children.
+
+            protected Node(TKey[] keys, int count, int totalCount)
+            {
+                this.keys = keys;
+                this.count = count;
+                this.totalCount = totalCount;
+            }
 
             public abstract (Node, Node) Put(TKey key, TValue value, bool setting, ConcurrentBTreeDictionary<TKey, TValue> tree);
 
             public abstract (TValue, bool) Get(TKey key, ConcurrentBTreeDictionary<TKey, TValue> tree);
 
-            public abstract bool Remove(TKey key, ConcurrentBTreeDictionary<TKey, TValue> tree);
+            /// <summary>
+            /// Removes the key from the node.
+            /// </summary>
+            /// <param name="key">Key to remove</param>
+            /// <param name="tree">The ConcurrentBTreeDictionary</param>
+            /// <returns>A new node if <paramref name="key"/> was found and deleted, otherwise null.</returns>
+            public abstract Node Remove(TKey key, ConcurrentBTreeDictionary<TKey, TValue> tree);
 
             public override string ToString()
             {
-                return $"{GetType().Name}: {count} items; keys: {string.Join(",",keys)}.";
+                return $"{GetType().Name}: {count} items; keys: {string.Join(",",keys.Take(count))}.";
             }
         }
 
@@ -104,13 +117,12 @@ namespace Reko.Core.Lib
         /// </summary>
         private class LeafNode : Node 
         {
-            public LeafNode nextLeaf;   // leaves are threaded together for ease of enumeration.
-            public TValue[] values;
+            public readonly TValue[] values;
 
-            public LeafNode(int children)
+            public LeafNode(TKey[] keys, TValue[] values, int count, int totalCount):
+                base(keys, count, totalCount)
             {
-                this.keys = new TKey[children];
-                this.values = new TValue[children];
+                this.values = values;
             }
 
             public override (TValue, bool) Get(TKey key, ConcurrentBTreeDictionary<TKey, TValue> tree)
@@ -128,8 +140,13 @@ namespace Reko.Core.Lib
                 {
                     if (!setting)
                         throw new ArgumentException("Duplicate key.");
-                    values[idx] = value;
-                    return (this, null);
+                    var nKeys = new TKey[tree.LeafNodeChildren];
+                    var nValues = new TValue[tree.LeafNodeChildren];
+                    Array.Copy(this.keys, 0, nKeys, 0, this.count);
+                    Array.Copy(this.values, 0, nValues, 0, this.count);
+                    nValues[idx] = value;
+                    var newNode = new LeafNode(nKeys, nValues, this.count, this.totalCount);
+                    return (newNode, null);
                 }
                 else
                 {
@@ -137,65 +154,99 @@ namespace Reko.Core.Lib
                 }
             }
 
-            public override bool Remove(TKey key, ConcurrentBTreeDictionary<TKey, TValue> tree)
+            public override Node Remove(TKey key, ConcurrentBTreeDictionary<TKey, TValue> tree)
             {
                 int idx = Array.BinarySearch(keys, 0, count, key, tree.Comparer);
                 if (idx >= 0)
                 {
-                    --count;
-                    --totalCount;
-                    Array.Copy(keys, idx + 1, keys, idx, count - idx);
-                    Array.Copy(values, idx + 1, values, idx, count - idx);
-                    keys[count] = default(TKey);
-                    values[count] = default(TValue);
-                    return true;
+                    var nKeys = new TKey[this.keys.Length];
+                    var nValues = new TValue[this.values.Length];
+                    var nCount = this.count - 1;
+                    if (idx > 0)
+                    {
+                        Array.Copy(keys, 0, nKeys, 0, idx - 1);
+                        Array.Copy(values, 0, nValues, 0, idx - 1);
+                    }
+                    Array.Copy(keys, idx + 1, nKeys, idx, nCount);
+                    Array.Copy(values, idx + 1, nValues, idx, nCount);
+                    var newNode = new LeafNode(nKeys, nValues, nCount, nCount);
+                    return newNode;
                 }
-                return false;
+                return null;
             }
 
             private (Node, Node) Insert(int idx, TKey key, TValue value, ConcurrentBTreeDictionary<TKey, TValue> tree)
             {
                 if (count == keys.Length)
                 {
-                    var newRight = SplitAndInsert(key, value, tree);
-                    return (this, newRight);
+                    return SplitAndInsert(key, value, tree);
                 }
-                else if (idx < count)
+                var nKeys = new TKey[tree.LeafNodeChildren];
+                var nValues = new TValue[tree.LeafNodeChildren];
+                Array.Copy(keys, 0, nKeys, 0, idx);
+                Array.Copy(values, 0, nValues, 0, idx);
+                if (idx < count)
                 {
-                    // Make a hole
-                    Array.Copy(keys, idx, keys, idx + 1, count - idx);
-                    Array.Copy(values, idx, values, idx + 1, count - idx);
+                    // Leave a hole at position idx.
+                    Array.Copy(keys, idx, nKeys, idx + 1, count - idx);
+                    Array.Copy(values, idx, nValues, idx + 1, count - idx);
                 }
-                keys[idx] = key;
-                values[idx] = value;
-                ++this.count;
-                ++this.totalCount;
-                return (this, null);
+                nKeys[idx] = key;
+                nValues[idx] = value;
+                var newNode = new LeafNode(nKeys, nValues, this.count + 1, this.totalCount + 1);
+                return (newNode, null);
             }
 
             /// <summary>
-            /// Splits this node into subnodes by creating a new "right" node
-            /// and adds the (key,value) to the appropriate subnode.
+            /// Splits this node into subnodes by creating a new "left" and 
+            /// a new "right" node and adds the (key,value) to the appropriate subnode.
             /// </summary>
-            private Node SplitAndInsert(TKey key, TValue value, ConcurrentBTreeDictionary<TKey, TValue> tree)
+            private (Node, Node) SplitAndInsert(TKey key, TValue value, ConcurrentBTreeDictionary<TKey, TValue> tree)
             {
-                var iSplit = (count + 1) / 2;
-                var right = new LeafNode(tree.LeafNodeChildren);
-                right.count = count - iSplit;
-                this.count = iSplit;
-                right.totalCount = right.count;
-                this.totalCount = this.count;
-                Array.Copy(this.keys, iSplit, right.keys, 0, right.count);
-                Array.Clear(this.keys, iSplit, right.count);
-                Array.Copy(this.values, iSplit, right.values, 0, right.count);
-                Array.Clear(this.values, iSplit, right.count);
-                right.nextLeaf = this.nextLeaf;
-                this.nextLeaf = right;
-                if (tree.Comparer.Compare(right.keys[0], key) < 0)
-                    right.Put(key, value, false, tree);
+                var iSplit = (this.count + 1) / 2;
+                var leftCount = iSplit;
+                var rightCount = this.count - iSplit;
+                var lKeys = new TKey[tree.LeafNodeChildren];
+                var rKeys = new TKey[tree.LeafNodeChildren];
+                var lValues = new TValue[tree.LeafNodeChildren];
+                var rValues = new TValue[tree.LeafNodeChildren];
+                Array.Copy(this.keys, 0, lKeys, 0, leftCount);
+                Array.Copy(this.keys, iSplit, rKeys, 0, rightCount);
+                Array.Copy(this.values, 0, lValues, 0, leftCount);
+                Array.Copy(this.values, iSplit, rValues, 0, rightCount);
+                TKey[] nKeys;
+                TValue[] nValues;
+                int count;
+                if (tree.Comparer.Compare(rKeys[0], key) < 0)
+                {
+                    nKeys = rKeys;
+                    nValues = rValues;
+                    count = rightCount;
+                    ++rightCount;
+                }
                 else
-                    this.Put(key, value, false, tree);
-                return right;
+                {
+                    nKeys = lKeys;
+                    nValues = lValues;
+                    count = leftCount;
+                    ++leftCount;
+                }
+                int idx = Array.BinarySearch(nKeys, 0, count, key, tree.Comparer);
+                if (idx >= 0)
+                    throw new ArgumentException("Duplicate key.");
+                idx = ~idx;
+                if (idx < count)
+                {
+                    // Make a 'hole'
+                    Array.Copy(nKeys, idx, nKeys, idx + 1, count - idx);
+                    Array.Copy(nValues, idx, nValues, idx + 1, count - idx);
+                }
+                nKeys[idx] = key;
+                nValues[idx] = value;
+
+                var left = new LeafNode(lKeys, lValues, leftCount, leftCount);
+                var right = new LeafNode(rKeys, rValues, rightCount, rightCount);
+                return (left, right);
             }
         }
 
@@ -204,12 +255,12 @@ namespace Reko.Core.Lib
         /// </summary>
         private class InternalNode : Node
         {
-            public Node[] nodes;
+            public readonly Node[] nodes;
 
-            public InternalNode(int children)
+            public InternalNode(TKey[] keys, Node[] nodes, int count, int totalCount) :
+                base(keys, count, totalCount)
             {
-                this.keys = new TKey[children];
-                this.nodes = new Node[children];
+                this.nodes = nodes;
             }
 
             public override (TValue, bool) Get(TKey key, ConcurrentBTreeDictionary<TKey, TValue> tree)
@@ -234,83 +285,115 @@ namespace Reko.Core.Lib
                 var (leftNode, rightNode) = subnode.Put(key, value, setting, tree);
                 if (rightNode == null)
                 {
-                    this.totalCount = SumNodeCounts(this.nodes, this.count);
-                    return (leftNode, null);
+                    var nKeys = new TKey[tree.InternalNodeChildren];
+                    var nNodes = new Node[tree.InternalNodeChildren];
+                    Array.Copy(this.keys, 0, nKeys, 0, this.count);
+                    Array.Copy(this.nodes, 0, nNodes, 0, this.count);
+                    nNodes[iPos] = leftNode;
+                    var newNode = new InternalNode(nKeys, nNodes, this.count, SumNodeCounts(nNodes, this.count));
+                    return (newNode, null);
                 }
                 else
                 {
-                    return Insert(iPos + 1, rightNode.keys[0], rightNode, tree);
+                    return Insert(iPos + 1, rightNode.keys[0], leftNode, rightNode, tree);
                 }
             }
 
-            public Node AddNode(TKey key, Node node, ConcurrentBTreeDictionary<TKey, TValue> tree)
-            {
-                int idx = Array.BinarySearch(keys, 1, count-1, key, tree.Comparer);
-                if (idx >= 0)
-                    throw new ArgumentException("Duplicate key.");
-                return Insert(~idx, node.keys[0], node, tree).Item1;
-            }
-
-            public override bool Remove(TKey key, ConcurrentBTreeDictionary<TKey, TValue> tree)
+            public override Node Remove(TKey key, ConcurrentBTreeDictionary<TKey, TValue> tree)
             {
                 int idx = Array.BinarySearch(keys, 1, count - 1, key, tree.Comparer);
-                bool removed;
+                Node removed;
+                int iPos;
                 if (idx >= 0)
                 {
-                    removed = nodes[idx].Remove(key, tree);
+                    iPos = idx;
                 }
                 else
                 {
-                    var iPos = (~idx) - 1;
-                    removed = nodes[iPos].Remove(key, tree);
+                    iPos = (~idx) - 1;
                 }
-                if (removed)
+                removed = nodes[iPos].Remove(key, tree);
+                if (removed != null)
                 {
-                    --this.totalCount;
+                    var nKeys = new TKey[tree.InternalNodeChildren];
+                    var nNodes = new Node[tree.InternalNodeChildren];
+                    Array.Copy(this.keys, 0, nKeys, 0, this.count);
+                    Array.Copy(this.nodes, 0, nNodes, 0, this.count);
+                    nNodes[iPos] = removed;
+                    removed = new InternalNode(nKeys, nNodes, this.count, this.totalCount - 1);
                 }
                 return removed;
             }
 
-            private (Node, Node) Insert(int idx, TKey key, Node node, ConcurrentBTreeDictionary<TKey, TValue> tree)
+            private (Node, Node) Insert(int idx, TKey key, Node leftNode, Node node, ConcurrentBTreeDictionary<TKey, TValue> tree)
             {
                 if (count == keys.Length)
                 {
-                    var newRight = SplitAndInsert(key, node, tree);
-                    return (this, newRight);
+                    return SplitAndInsert(key, node, tree);
                 }
+                var nKeys = new TKey[tree.InternalNodeChildren];
+                var nNodes = new Node[tree.InternalNodeChildren];
+                Array.Copy(this.keys, 0, nKeys, 0, idx);
+                Array.Copy(this.nodes, 0, nNodes, 0, idx);
+
                 if (idx < count)
                 {
-                    Array.Copy(keys, idx, keys, idx + 1, count - idx);
-                    Array.Copy(nodes, idx, nodes, idx + 1, count - idx);
+                    // Leave a 'hole' at position idx.
+                    Array.Copy(this.keys, idx, nKeys, idx + 1, count - idx);
+                    Array.Copy(this.nodes, idx, nNodes, idx + 1, count - idx);
                 }
-                keys[idx] = key;
-                nodes[idx] = node;
-                ++this.count;
-                this.totalCount = SumNodeCounts(this.nodes, this.count);
-                return (this, null);
+                nNodes[idx - 1] = leftNode;
+                nKeys[idx] = key;
+                nNodes[idx] = node;
+                int nCount = this.count + 1;
+                var newNode = new InternalNode(nKeys, nNodes, this.count + 1, SumNodeCounts(nNodes, nCount));
+                return (newNode, null);
             }
 
-            private Node SplitAndInsert(TKey key, Node node, ConcurrentBTreeDictionary<TKey, TValue> tree)
+            private (Node, Node) SplitAndInsert(TKey key, Node node, ConcurrentBTreeDictionary<TKey, TValue> tree)
             {
-                var iSplit = (count + 1) / 2;
-                var right = new InternalNode(tree.InternalNodeChildren);
-                right.count = count - iSplit;
-                this.count = iSplit;
-                Array.Copy(this.keys, iSplit, right.keys, 0, right.count);
-                Array.Clear(this.keys, iSplit, right.count);
-                Array.Copy(this.nodes, iSplit, right.nodes, 0, right.count);
-                Array.Clear(this.nodes, iSplit, right.count);
-                if (tree.Comparer.Compare(right.keys[0], key) < 0)
+                var iSplit = (this.count + 1) / 2;
+                var lKeys = new TKey[tree.InternalNodeChildren];
+                var rKeys = new TKey[tree.InternalNodeChildren];
+                var lNodes = new Node[tree.InternalNodeChildren];
+                var rNodes = new Node[tree.InternalNodeChildren];
+                var leftCount = iSplit;
+                var rightCount = this.count - iSplit;
+                Array.Copy(this.keys, 0, lKeys, 0, leftCount);
+                Array.Copy(this.keys, iSplit, rKeys, 0, rightCount);
+                Array.Copy(this.nodes, 0, lNodes, 0, leftCount);
+                Array.Copy(this.nodes, iSplit, rNodes, 0, rightCount);
+                TKey []nKeys;
+                Node []nNodes;
+                int count;
+                if (tree.Comparer.Compare(rKeys[0], key) < 0)
                 {
-                    right.AddNode(key, node, tree);
-                    this.totalCount = SumNodeCounts(this.nodes, this.count);
+                    nKeys = rKeys;
+                    nNodes = rNodes;
+                    count = rightCount;
+                    ++rightCount;
                 }
                 else
                 {
-                    this.AddNode(key, node, tree);
-                    right.totalCount = SumNodeCounts(right.nodes, right.count);
+                    nKeys = lKeys;
+                    nNodes = lNodes;
+                    count = leftCount;
+                    ++leftCount;
                 }
-                return right;
+
+                int idx = Array.BinarySearch(keys, 1, count - 1, key, tree.Comparer);
+                if (idx < count)
+                {
+                    // Leave a 'hole' at position idx.
+                    Array.Copy(this.keys, idx, nKeys, idx + 1, count - idx);
+                    Array.Copy(this.nodes, idx, nNodes, idx + 1, count - idx);
+                }
+                nKeys[idx] = key;
+                nNodes[idx] = node;
+
+                var left = new InternalNode(lKeys, lNodes, leftCount, SumNodeCounts(lNodes, leftCount));
+                var right = new InternalNode(rKeys, rNodes, rightCount, SumNodeCounts(lNodes, leftCount));
+                return (left, right);
             }
 
             private static int SumNodeCounts(Node[] nodes, int count)
@@ -340,8 +423,10 @@ namespace Reko.Core.Lib
                 var (left, right) = root.Put(key, value, true, this);
                 if (right != null)
                     root = NewInternalRoot(left, right);
+                else
+                    root = left;
                 ++version;
-                // Validate(root);
+                Validate(root);
             }
         }
 
@@ -363,10 +448,14 @@ namespace Reko.Core.Lib
         {
             EnsureRoot();
             var (left, right) = root.Put(key, value, false, this);
+            Node newRoot;
             if (right != null)
-                root = NewInternalRoot(left, right);
+                newRoot = NewInternalRoot(left, right);
+            else
+                newRoot = left;
+            root = newRoot;
             ++version;
-            // Validate(root);
+            Validate(root);
         }
 
         public void Add(KeyValuePair<TKey, TValue> item)
@@ -392,7 +481,7 @@ namespace Reko.Core.Lib
         {
             if (root == null)
                 return false;
-            var (value, found) = root.Get(key, this);
+            var (_, found) = root.Get(key, this);
             return found;
         }
 
@@ -419,19 +508,38 @@ namespace Reko.Core.Lib
                 yield break;
             // Get the leftmost leaf node.
             Node node;
+            var stack = new Stack<(Node,int)>();
             for (node = root; node is InternalNode intern; node = intern.nodes[0])
-                ;
-            var leaf = (LeafNode)node;
+                stack.Push((intern, 0));
+            stack.Push((node, 0));
             int myVersion = this.version;
-            while (leaf != null)
+            while (stack.Count > 0)
             {
+                // Invariant: the top of the stack is a leaf node.
+
+                var (nLeaf, _) = stack.Pop();
+                var leaf = (LeafNode) nLeaf;
                 for (int i = 0; i < leaf.count; ++i)
                 {
                     if (myVersion != this.version)
                         throw new InvalidOperationException("Collection was modified after the enumerator was instantiated.");
                     yield return new KeyValuePair<TKey, TValue>(leaf.keys[i], leaf.values[i]);
                 }
-                leaf = leaf.nextLeaf;
+                while (stack.Count > 0)
+                {
+                    // Find a parent who is not exhausted. Then find the deepest leaf node.
+                    var (nParent, iParent) = stack.Pop();
+                    var parent = (InternalNode) nParent;
+                    ++iParent;
+                    if (iParent < parent.count)
+                    {
+                        stack.Push((parent, iParent));
+                        for (node = parent.nodes[iParent]; node is InternalNode intern; node = intern.nodes[0])
+                            stack.Push((intern, 0));
+                        stack.Push((node, 0));
+                        break;
+                    }
+                }
             }
         }
 
@@ -488,8 +596,10 @@ namespace Reko.Core.Lib
         {
             if (root == null)
                 return false;
-            if (root.Remove(key, this))
+            var newRoot = root.Remove(key, this);
+            if (newRoot != null)
             {
+                root = newRoot;
                 ++this.version;
                 return true;
             }
@@ -525,7 +635,10 @@ namespace Reko.Core.Lib
         {
             if (root != null)
                 return;
-            root = new LeafNode(LeafNodeChildren);
+            root = new LeafNode(
+                new TKey[LeafNodeChildren],
+                new TValue[LeafNodeChildren],
+                0, 0);
         }
 
         private KeyValuePair<TKey,TValue> GetEntry(int index)
@@ -556,9 +669,11 @@ namespace Reko.Core.Lib
 
         private InternalNode NewInternalRoot(Node left, Node right)
         {
-            var intern = new InternalNode(InternalNodeChildren);
-            intern.count = 2;
-            intern.totalCount = left.totalCount + right.totalCount;
+            var intern = new InternalNode(
+                new TKey[InternalNodeChildren], 
+                new Node[InternalNodeChildren],
+                2,
+                left.totalCount + right.totalCount);
             intern.keys[0] = left.keys[0];
             intern.keys[1] = right.keys[0];
             intern.nodes[0] = left;
@@ -612,6 +727,7 @@ namespace Reko.Core.Lib
         [Conditional("DEBUG")]
         private void Validate(Node node)
         {
+            Dump();
             if (node is LeafNode leaf)
             {
                 if (leaf.totalCount != leaf.count)
