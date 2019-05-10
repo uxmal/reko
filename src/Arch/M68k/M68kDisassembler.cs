@@ -244,9 +244,6 @@ namespace Reko.Arch.M68k
                 this.mask = mask;
                 this.match = match;
                 this.ea_mask = ea_mask;
-
-                if (opcode == Opcode.nop)
-                    opcode.ToString();
                 this.opcode = opcode;
                 this.iclass = iclass;
             }
@@ -331,7 +328,6 @@ namespace Reko.Arch.M68k
                 opcode,
                 iclass);
         }
-
 
         // Opcode handler jump table 
         private static Decoder[] g_instruction_table = new Decoder[0x10000];
