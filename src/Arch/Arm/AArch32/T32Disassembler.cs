@@ -1162,6 +1162,43 @@ namespace Reko.Arch.Arm.AArch32
         }
 
         /// <summary>
+        /// Modified SIMD immediate
+        /// </summary>
+        private static Mutator<T32Disassembler> Is(int pos1, int size1, int pos2, int size2, int pos3, int size3)
+        {
+            var fields = new[]
+            {
+                new Bitfield(pos1, size1),
+                new Bitfield(pos2, size2),
+                new Bitfield(pos3, size3),
+            };
+            var op0size = new[,]
+            { 
+                {
+                 ArmVectorData.I32, ArmVectorData.I32, ArmVectorData.I32, ArmVectorData.I32,
+                 ArmVectorData.I32, ArmVectorData.I32, ArmVectorData.I32, ArmVectorData.I32,
+                 ArmVectorData.I16, ArmVectorData.I16, ArmVectorData.I16, ArmVectorData.I16,
+                 ArmVectorData.I32, ArmVectorData.I32, ArmVectorData.I8, ArmVectorData.F32,
+                },
+            {
+                 ArmVectorData.I32, ArmVectorData.I32, ArmVectorData.I32, ArmVectorData.I32,
+                 ArmVectorData.I32, ArmVectorData.I32, ArmVectorData.I32, ArmVectorData.I32,
+                 ArmVectorData.I16, ArmVectorData.I16, ArmVectorData.I16, ArmVectorData.I16,
+                 ArmVectorData.I32, ArmVectorData.I32, ArmVectorData.I64, ArmVectorData.INVALID,
+            } };
+            return (u, d) =>
+            {
+                var imm = Bitfield.ReadFields(fields, u);
+                var cmode = (u >> 8) & 0xF;
+                var op = (u >> 5) & 1;
+                d.state.vectorData = op0size[op, cmode];
+                d.state.ops.Add(ImmediateOperand.Word64(A32Disassembler.SimdExpandImm(op, cmode, (uint) imm)));
+                return true;
+            };
+        }
+
+
+        /// <summary>
         /// Vector immediate quantity.
         /// </summary>
         private static bool IW0(uint uInstr, T32Disassembler dasm)
@@ -2545,7 +2582,7 @@ namespace Reko.Arch.Arm.AArch32
                     Instr(Opcode.vmov, "*immediate - T3"),
                     Instr(Opcode.vmvn, "*immediate - T2")),
                 Mask(5, 1,  // op
-                    Instr(Opcode.vorr, "*immediate - T2"),
+                    Instr(Opcode.vorr, q(6), vif, W22_12, Is(28,1,16,3,0,4)),
                     Instr(Opcode.vbic, "*immediate - T2")),
 
                 Mask(5, 1,  // op
@@ -2887,7 +2924,7 @@ namespace Reko.Arch.Arm.AArch32
                 Mask(4, 3,      // op1 = 0b101
                     Select(w => SBitfield(w, 12, 4) != 0xF,
                         Instr(Opcode.smmla, R8,R16,R0,R12),
-                        Instr(Opcode.smmul, R8, R16, R0)),
+                        Instr(Opcode.smmul, Rnp8, Rnp16, Rnp0)),
                     Select(w => SBitfield(w, 12, 4) != 0xF,
                         Instr(Opcode.smmlar, R8, R16, R0, R12),
                         Instr(Opcode.smmulr, R8, R16, R0)),

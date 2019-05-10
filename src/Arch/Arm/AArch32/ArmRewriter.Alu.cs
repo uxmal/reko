@@ -706,6 +706,17 @@ namespace Reko.Arch.Arm.AArch32
                 src3));
         }
 
+        private void RewriteSmmul()
+        {
+            var src1 = Operand(Src1());
+            var src2 = Operand(Src2());
+            var dst = Operand(Dst());
+
+            var mul = m.SMul(src1, src2);
+            mul.DataType = PrimitiveType.Int64;
+            m.Assign(dst, m.Cast(PrimitiveType.Int32, m.Sar(mul, m.Int32(32))));
+        }
+
         private void RewriteMulw(bool highPart)
         {
             var dst = this.Operand(Dst(), PrimitiveType.Word32, true);

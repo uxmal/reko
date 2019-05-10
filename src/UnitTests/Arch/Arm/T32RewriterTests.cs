@@ -7015,13 +7015,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_vorr_imm()
         {
             RewriteCode("C4FF104B");	// vorr.i16 d20, #0xc000
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|d20 = d20 | 0xC000C000C000C000");
         }
 
         [Test]
@@ -7818,13 +7817,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_smmul()
         {
-            RewriteCode("5FFB04F1");	// smmul r1, pc, r4
+            RewriteCode("5AFB04F1");	// smmul r1, r10, r4
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|r1 = (int32) (r10 *s r4 >> 32)");
         }
 
         [Test]

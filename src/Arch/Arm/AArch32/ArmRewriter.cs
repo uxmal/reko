@@ -150,7 +150,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.shsax:
                 case Opcode.smmlar:
                 case Opcode.smmlsr:
-                case Opcode.smmul:
                 case Opcode.smmulr:
                 case Opcode.smuad:
                 case Opcode.smuadx:
@@ -418,6 +417,7 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.smlsldx: RewriteMlxd(true, PrimitiveType.Int16, m.SMul, m.ISub); break;
                 case Opcode.smmla: RewriteSmml(m.IAdd); break;
                 case Opcode.smmls: RewriteSmml(m.ISub); break;
+                case Opcode.smmul: RewriteSmmul(); break;
                 case Opcode.smulbb: RewriteMulbb(false, false, PrimitiveType.Int16, m.SMul); break;
                 case Opcode.smulbt: RewriteMulbb(false, true, PrimitiveType.Int16, m.SMul); break;
                 case Opcode.smulwb: RewriteMulw(false); break;

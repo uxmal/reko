@@ -29,10 +29,20 @@ namespace Reko.Arch.Arm.AArch32
     {
         private void RewriteVecBinOp(Func<Expression, Expression, Expression> fn)
         {
-            var src1 = Operand(Src1());
-            var src2 = Operand(Src2());
-            var dst = Operand(Dst(), PrimitiveType.Word32, true);
-            m.Assign(dst, fn(src1, src2));
+            if (instr.ops.Length == 3)
+            {
+                var src1 = Operand(Src1());
+                var src2 = Operand(Src2());
+                var dst = Operand(Dst(), PrimitiveType.Word32, true);
+                m.Assign(dst, fn(src1, src2));
+            }
+            else
+            {
+                var src1 = Operand(Dst());
+                var src2 = Operand(Src1());
+                var dst = Operand(Dst(), PrimitiveType.Word32, true);
+                m.Assign(dst, fn(src1, src2));
+            }
         }
 
         private void RewriteVcmp()
