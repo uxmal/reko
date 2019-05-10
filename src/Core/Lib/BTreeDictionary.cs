@@ -392,7 +392,7 @@ namespace Reko.Core.Lib
         {
             if (root == null)
                 return false;
-            var (value, found) = root.Get(key, this);
+            var (_, found) = root.Get(key, this);
             return found;
         }
 

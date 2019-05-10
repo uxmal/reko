@@ -352,7 +352,9 @@ namespace Reko.UnitTests.Core.Lib
             var btree = Given_Dictionary(Enumerable.Range(0, 40));
             foreach (var n in Enumerable.Range(0, 40))
             {
-                Assert.IsTrue(btree.Remove(n.ToString()));
+                if (n == 17) //$DEBUG
+                    n.ToString();
+                Assert.IsTrue(btree.Remove(n.ToString()), $"Failed to remove key \"{n}\"");
             }
             foreach (var n in Enumerable.Range(0, 40))
             {

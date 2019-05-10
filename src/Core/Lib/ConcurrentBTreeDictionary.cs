@@ -167,8 +167,8 @@ namespace Reko.Core.Lib
                         Array.Copy(keys, 0, nKeys, 0, idx - 1);
                         Array.Copy(values, 0, nValues, 0, idx - 1);
                     }
-                    Array.Copy(keys, idx + 1, nKeys, idx, nCount);
-                    Array.Copy(values, idx + 1, nValues, idx, nCount);
+                    Array.Copy(keys, idx + 1, nKeys, idx, nCount - idx);
+                    Array.Copy(values, idx + 1, nValues, idx, nCount - idx);
                     var newNode = new LeafNode(nKeys, nValues, nCount, nCount);
                     return newNode;
                 }
@@ -329,7 +329,7 @@ namespace Reko.Core.Lib
             {
                 if (count == keys.Length)
                 {
-                    return SplitAndInsert(key, node, tree);
+                    return SplitAndInsert(key, idx, leftNode, node, tree);
                 }
                 var nKeys = new TKey[tree.InternalNodeChildren];
                 var nNodes = new Node[tree.InternalNodeChildren];
@@ -350,7 +350,7 @@ namespace Reko.Core.Lib
                 return (newNode, null);
             }
 
-            private (Node, Node) SplitAndInsert(TKey key, Node node, ConcurrentBTreeDictionary<TKey, TValue> tree)
+            private (Node, Node) SplitAndInsert(TKey key, int iLeft, Node leftNode, Node node, ConcurrentBTreeDictionary<TKey, TValue> tree)
             {
                 var iSplit = (this.count + 1) / 2;
                 var lKeys = new TKey[tree.InternalNodeChildren];
@@ -363,8 +363,16 @@ namespace Reko.Core.Lib
                 Array.Copy(this.keys, iSplit, rKeys, 0, rightCount);
                 Array.Copy(this.nodes, 0, lNodes, 0, leftCount);
                 Array.Copy(this.nodes, iSplit, rNodes, 0, rightCount);
-                TKey []nKeys;
-                Node []nNodes;
+                if (iLeft < iSplit)
+                {
+                    lNodes[iLeft] = leftNode;
+                }
+                else
+                {
+                    lNodes[iLeft - iSplit] = leftNode;
+                }
+                TKey[] nKeys;
+                Node[] nNodes;
                 int count;
                 if (tree.Comparer.Compare(rKeys[0], key) < 0)
                 {
