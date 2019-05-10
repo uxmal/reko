@@ -63,8 +63,8 @@ namespace Reko.Arch.Arm.AArch32
                 return null;
             this.state = new DasmState();
             var instr = decoders[wInstr >> 13].Decode(this, wInstr);
-            instr.iclass |= wInstr == 0 ? InstrClass.Zero : 0;
-            instr.iclass |= instr.condition != ArmCondition.AL ? InstrClass.Conditional : 0;
+            instr.InstructionClass |= wInstr == 0 ? InstrClass.Zero : 0;
+            instr.InstructionClass |= instr.condition != ArmCondition.AL ? InstrClass.Conditional : 0;
             instr.Address = addr;
             instr.Length = (int)(rdr.Address - addr);
             if ((itState & 0x1F) == 0x10)
@@ -107,7 +107,7 @@ namespace Reko.Arch.Arm.AArch32
                 return new T32Instruction
                 {
                     opcode = opcode,
-                    iclass = iclass,
+                    InstructionClass = iclass,
                     ops = ops.ToArray(),
                     condition = cc,
                     SetFlags = updateFlags,
@@ -429,7 +429,7 @@ namespace Reko.Arch.Arm.AArch32
             return new T32Instruction
             {
                 opcode = state.opcode,
-                iclass = state.iclass,
+                InstructionClass = state.iclass,
                 condition = state.cc,
                 SetFlags = state.updateFlags,
                 ops = state.ops.ToArray(),

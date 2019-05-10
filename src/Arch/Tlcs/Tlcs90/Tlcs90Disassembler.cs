@@ -61,7 +61,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
 
             var instr = Oprecs[b].Decode(b, this);
             if (instr == null)
-                instr = new Tlcs90Instruction { Opcode = Opcode.invalid, iclass = InstrClass.Invalid };
+                instr = new Tlcs90Instruction { Opcode = Opcode.invalid, InstructionClass = InstrClass.Invalid };
             var len = rdr.Address - addr;
             instr.Address = addr;
             instr.Length = (int) len;
@@ -273,13 +273,13 @@ namespace Reko.Arch.Tlcs.Tlcs90
                         return new Tlcs90Instruction
                         {
                             Opcode = Opcode.invalid,
-                            iclass = InstrClass.Invalid
+                            InstructionClass = InstrClass.Invalid
                         };
                 }
                 return new Tlcs90Instruction
                 {
                     Opcode = opcode,
-                    iclass = iclass,
+                    InstructionClass = iclass,
                     op1 = dasm.ops.Count > 0 ? dasm.ops[0] : null,
                     op2 = dasm.ops.Count > 1 ? dasm.ops[1] : null,
                 };
@@ -502,7 +502,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 return new Tlcs90Instruction
                 {
                     Opcode = Opcode.invalid,
-                    iclass = InstrClass.Invalid
+                    InstructionClass = InstrClass.Invalid
                 };
             }
         }

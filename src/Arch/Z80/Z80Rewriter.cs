@@ -56,7 +56,7 @@ namespace Reko.Arch.Z80
             {
                 var addr = dasm.Current.Address;
                 var len = dasm.Current.Length;
-                this.rtlc = dasm.Current.IClass;
+                this.rtlc = dasm.Current.InstructionClass;
                 this.rtlInstructions = new List<RtlInstruction>();
                 m = new RtlEmitter(rtlInstructions);
                 switch (dasm.Current.Code)

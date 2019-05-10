@@ -31,12 +31,9 @@ namespace Reko.Arch.Tlcs.Tlcs90
     public class Tlcs90Instruction : MachineInstruction
     {
         public Opcode Opcode { get; set; }
-        internal InstrClass iclass;
         internal MachineOperand op1;
         internal MachineOperand op2;
 
-
-        public override InstrClass InstructionClass => iclass;
 
         public override int OpcodeAsInteger => (int) Opcode;
 

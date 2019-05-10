@@ -83,7 +83,7 @@ namespace Reko.Arch.SuperH
                 var instr = new SuperHInstruction
                 {
                     Opcode = this.opcode,
-                    IClass = iclass,
+                    InstructionClass = iclass,
                 };
                 if (ops.Count > 0)
                 {

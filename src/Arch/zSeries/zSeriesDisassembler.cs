@@ -57,7 +57,7 @@ namespace Reko.Arch.zSeries
             state.Reset();
             instr.Address = addr;
             instr.Length = (int)(rdr.Address - addr);
-            instr.IClass |= opcode == 0 ? InstrClass.Zero : 0;
+            instr.InstructionClass |= opcode == 0 ? InstrClass.Zero : 0;
             return instr;
         }
 

@@ -70,7 +70,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
         {
             return new Tlcs900Instruction {
                 Address = this.addr,
-                iclass = InstrClass.Invalid,
+                InstructionClass = InstrClass.Invalid,
                 Opcode = Opcode.invalid };
 
         }
@@ -517,14 +517,14 @@ namespace Reko.Arch.Tlcs.Tlcs900
                         return new Tlcs900Instruction
                         {
                             Opcode = Opcode.invalid,
-                            iclass = iclass,
+                            InstructionClass = iclass,
                             Address = dasm.addr
                         };
                 }
                 var instr = new Tlcs900Instruction
                 {
                     Opcode = opcode,
-                    iclass = iclass,
+                    InstructionClass = iclass,
                     Address = dasm.addr,
                     op1 = dasm.ops.Count > 0 ? dasm.ops[0] : null,
                     op2 = dasm.ops.Count > 1 ? dasm.ops[1] : null,
@@ -691,7 +691,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 return new Tlcs900Instruction
                 {
                     Opcode = dasm.opSize.Size == 2 ? Opcode.ldirw : Opcode.ldir,
-                    iclass = InstrClass.Linear,
+                    InstructionClass = InstrClass.Linear,
                     Address = dasm.addr
                 };
             }

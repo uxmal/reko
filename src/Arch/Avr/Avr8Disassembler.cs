@@ -780,7 +780,7 @@ namespace Reko.Arch.Avr
                 return new AvrInstruction
                 {
                     opcode = opcode,
-                    iclass = iclass,
+                    InstructionClass = iclass,
                     operands = dasm.ops.ToArray(),
                 };
             }
@@ -847,7 +847,7 @@ namespace Reko.Arch.Avr
                 o(wInstr, dasm);
                 return new AvrInstruction
                 {
-                    iclass = InstrClass.ConditionalTransfer,
+                    InstructionClass = InstrClass.ConditionalTransfer,
                     opcode = branches[br],
                     operands = dasm.ops.ToArray()
                 };

@@ -61,14 +61,11 @@ namespace Reko.Arch.Mips
         };
 
         public Opcode opcode;
-        public InstrClass iclass;
         public MachineOperand op1;
         public MachineOperand op2;
         public MachineOperand op3;
 
         public override int OpcodeAsInteger { get { return (int)opcode; } }
-
-        public override InstrClass InstructionClass => iclass;
 
         public override MachineOperand GetOperand(int i)
         {

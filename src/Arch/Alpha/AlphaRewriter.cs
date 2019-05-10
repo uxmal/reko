@@ -59,7 +59,7 @@ namespace Reko.Arch.Alpha
                 this.instr = dasm.Current;
                 var instrs = new List<RtlInstruction>();
                 this.m = new RtlEmitter(instrs);
-                this.rtlc = instr.iclass;
+                this.rtlc = instr.InstructionClass;
                 switch (instr.Opcode)
                 {
                 default:

@@ -76,7 +76,7 @@ namespace Reko.Arch.Avr
         {
             this.instr = instr;
             this.rtlInstructions = new List<RtlInstruction>();
-            this.rtlc = instr.iclass;
+            this.rtlc = instr.InstructionClass;
             this.m = new RtlEmitter(rtlInstructions);
             switch (instr.opcode)
             {

@@ -30,17 +30,13 @@ namespace Reko.Arch.Sparc
     public class SparcInstruction : MachineInstruction
     {
         public Opcode Opcode;
-        public InstrClass IClass;
-
         public MachineOperand Op1;
         public MachineOperand Op2;
         public MachineOperand Op3;
 
         public override int OpcodeAsInteger => (int)Opcode; 
 
-        public override InstrClass InstructionClass => IClass;
-
-        public bool Annul => (IClass & InstrClass.Annul) != 0;
+        public bool Annul => (InstructionClass & InstrClass.Annul) != 0;
 
         public override MachineOperand GetOperand(int i)
         {

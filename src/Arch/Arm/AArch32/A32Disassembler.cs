@@ -59,8 +59,8 @@ namespace Reko.Arch.Arm.AArch32
             this.state = new DasmState();
             var instr = rootDecoder.Decode(wInstr, this);
             instr.Address = this.addr;
-            instr.iclass |= wInstr == 0 ? InstrClass.Zero : 0;
-            instr.iclass |= instr.condition != ArmCondition.AL ? InstrClass.Conditional : 0;
+            instr.InstructionClass |= wInstr == 0 ? InstrClass.Zero : 0;
+            instr.InstructionClass |= instr.condition != ArmCondition.AL ? InstrClass.Conditional : 0;
             instr.Length = 4;
             return instr;
         }
@@ -103,7 +103,7 @@ namespace Reko.Arch.Arm.AArch32
             {
                 var instr = new A32Instruction
                 {
-                    iclass = iclass,
+                    InstructionClass = iclass,
                     opcode = opcode,
                     ops = ops.ToArray(),
                     ShiftType = shiftOp,

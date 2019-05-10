@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -37,14 +37,6 @@ namespace Reko.Arch.Cil
 
         public OpCode Opcode { get; set; }
         public override int OpcodeAsInteger { get { return (int)Opcode.Value; } }
-
-        public override InstrClass InstructionClass
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
 
         public override MachineOperand GetOperand(int i)
         {

@@ -63,7 +63,7 @@ namespace Reko.Arch.Vax
                 var addr = this.instr.Address;
                 var len = this.instr.Length;
                 rtlInstructions = new List<RtlInstruction>();
-                rtlc = this.instr.IClass;
+                rtlc = this.instr.InstructionClass;
                 m = new RtlEmitter(rtlInstructions);
                 switch (this.instr.Opcode)
                 {

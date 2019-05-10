@@ -313,7 +313,7 @@ namespace Reko.Arch.Arm.AArch32
                     opcode = st
                         ? Opcode.stm
                         : Opcode.ldm,
-                    iclass = InstrClass.Linear,
+                    InstructionClass = InstrClass.Linear,
                     Writeback = w,
                     ops = new MachineOperand[] {
                             new RegisterOperand(rn),
@@ -346,7 +346,7 @@ namespace Reko.Arch.Arm.AArch32
                     return new T32Instruction
                     {
                         opcode = l != 0 ? Opcode.pop : Opcode.push,
-                        iclass = InstrClass.Linear,
+                        InstructionClass = InstrClass.Linear,
                         Wide = true,
                         Writeback = w,
                         ops = new MachineOperand[] { new MultiRegisterOperand(Registers.GpRegs, PrimitiveType.Word16, (registers)) }
@@ -357,7 +357,7 @@ namespace Reko.Arch.Arm.AArch32
                     return new T32Instruction
                     {
                         opcode = opcode,
-                        iclass = InstrClass.Linear,
+                        InstructionClass = InstrClass.Linear,
                         Writeback = w,
                         ops = new MachineOperand[] {
                             new RegisterOperand(rn),
@@ -397,7 +397,7 @@ namespace Reko.Arch.Arm.AArch32
                 var instr = new T32Instruction
                 {
                     opcode = Opcode.it,
-                    iclass = InstrClass.Linear,
+                    InstructionClass = InstrClass.Linear,
                     condition = (ArmCondition)SBitfield(wInstr, 4, 4),
                     itmask = (byte)SBitfield(wInstr, 0, 4)
                 };

@@ -68,7 +68,7 @@ namespace Reko.Arch.M68k
                 var addr = instr.Address;
                 var len = instr.Length;
                 rtlInstructions = new List<RtlInstruction>();
-                rtlc = instr.iclass;
+                rtlc = instr.InstructionClass;
                 m = new RtlEmitter(rtlInstructions);
                 orw = new OperandRewriter(arch, this.m, this.binder, instr.dataWidth);
                 switch (instr.code)

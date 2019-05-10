@@ -2866,7 +2866,7 @@ l0000532A:
 	mov.b	@r10,r15
 	sxt.w	r15
 	add.w	#0001,r10
-	call	09B2
+	call	&09B2
 	cmp.w	#0000,r15
 	jl	00005342
 
@@ -2907,7 +2907,7 @@ l00005358:
 
 l0000535C:
 	mov.w	r10,r15
-	call	09B2
+	call	&09B2
 	cmp.w	#0000,r15
 	jl	00005374
 

@@ -61,7 +61,7 @@ namespace Reko.Arch.M6800.M6812
                 this.instr = dasm.Current;
                 var rtlInstrs = new List<RtlInstruction>();
                 this.m = new RtlEmitter(rtlInstrs);
-                this.rtlc = instr.iclass;
+                this.rtlc = instr.InstructionClass;
                 switch (instr.Opcode)
                 {
                 case Opcode.mov: 

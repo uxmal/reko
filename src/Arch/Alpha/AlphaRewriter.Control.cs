@@ -59,7 +59,7 @@ namespace Reko.Arch.Alpha
         {
             var dst = ((AddressOperand)instr.op2).Address;
             var src = Rewrite(instr.op1);
-            m.Branch(fn(src), dst, instr.iclass);
+            m.Branch(fn(src), dst, instr.InstructionClass);
         }
 
         private void RewriteCmov(Func<Expression, Expression> skip)

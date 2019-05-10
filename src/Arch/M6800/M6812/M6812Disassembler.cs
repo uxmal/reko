@@ -96,7 +96,7 @@ namespace Reko.Arch.M6800.M6812
                 return new M6812Instruction
                 {
                     Opcode = this.opcode,
-                    iclass = iclass,
+                    InstructionClass = iclass,
                     Operands = dasm.operands.ToArray()
                 };
             }

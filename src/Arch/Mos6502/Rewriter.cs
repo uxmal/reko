@@ -66,7 +66,7 @@ namespace Reko.Arch.Mos6502
             {
                 this.instrCur = dasm.Current;
                 var instrs = new List<RtlInstruction>();
-                this.rtlc = instrCur.IClass;
+                this.rtlc = instrCur.InstructionClass;
                 this.m = new RtlEmitter(instrs);
                 switch (instrCur.Code)
                 {

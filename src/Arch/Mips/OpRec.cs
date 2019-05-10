@@ -63,7 +63,7 @@ namespace Reko.Arch.Mips
                 {
                     return new MipsInstruction
                     {
-                        iclass = InstrClass.Invalid,
+                        InstructionClass = InstrClass.Invalid,
                         opcode = Opcode.illegal
                     };
                 }
@@ -71,7 +71,7 @@ namespace Reko.Arch.Mips
             return new MipsInstruction
             {
                 opcode = opcode,
-                iclass = iclass,
+                InstructionClass = iclass,
                 Address = dasm.addr,
                 Length = 4,
                 op1 = dasm.ops.Count > 0 ? dasm.ops[0] : null,
@@ -102,7 +102,7 @@ namespace Reko.Arch.Mips
             else
                 return new MipsInstruction
                 {
-                    iclass = InstrClass.Invalid,
+                    InstructionClass = InstrClass.Invalid,
                     opcode = Opcode.illegal
                 };
         }

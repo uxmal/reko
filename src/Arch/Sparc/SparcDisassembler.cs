@@ -87,7 +87,7 @@ namespace Reko.Arch.Sparc
                 instrCur = new SparcInstruction
                 {
                     Opcode = Opcode.call,
-                    IClass = LinkTransfer,
+                    InstructionClass = LinkTransfer,
                     Op1 = new AddressOperand((imageReader.Address - 4) + ((int) wInstr << 2)),
                 };
                 break;
@@ -100,7 +100,7 @@ namespace Reko.Arch.Sparc
             }
             instrCur.Address = addr;
             instrCur.Length = 4;
-            instrCur.IClass |= wInstr == 0 ? InstrClass.Zero : 0;
+            instrCur.InstructionClass |= wInstr == 0 ? InstrClass.Zero : 0;
             return instrCur;
         }
 
@@ -120,7 +120,7 @@ namespace Reko.Arch.Sparc
                 return new SparcInstruction
                 {
                     Opcode = code,
-                    IClass = iclass,
+                    InstructionClass = iclass,
                     Op1 = dasm.ops.Count > 0 ? dasm.ops[0] : null,
                     Op2 = dasm.ops.Count > 1 ? dasm.ops[1] : null,
                     Op3 = dasm.ops.Count > 2 ? dasm.ops[2] : null,
@@ -370,7 +370,7 @@ namespace Reko.Arch.Sparc
             {
                 uint i = ((wInstr >> 25) & 0xF) + offset;
                 SparcInstruction instr = branchOps[i].Decode(dasm, wInstr);
-                instr.IClass |= ((wInstr & (1u << 29)) != 0) ? InstrClass.Annul : 0;
+                instr.InstructionClass |= ((wInstr & (1u << 29)) != 0) ? InstrClass.Annul : 0;
                 return instr;
             }
         }

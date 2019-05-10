@@ -31,14 +31,11 @@ namespace Reko.Arch.Tlcs.Tlcs900
     public class Tlcs900Instruction : MachineInstruction
     {
         public Opcode Opcode;
-        public InstrClass iclass;
         public MachineOperand op1;
         public MachineOperand op2;
         public MachineOperand op3;
 
         public override int OpcodeAsInteger => (int) Opcode;
-
-        public override InstrClass InstructionClass => iclass;
 
         public override MachineOperand GetOperand(int i)
         {

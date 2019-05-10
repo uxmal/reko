@@ -29,21 +29,6 @@ namespace Reko.Arch.Msp430
 {
     public class Msp430Instruction : MachineInstruction
     {
-        private static Dictionary<Opcode, InstrClass> classes = new Dictionary<Opcode, InstrClass>
-        {
-            { Opcode.br, InstrClass.Transfer },
-            { Opcode.call, InstrClass.Call | InstrClass.Transfer },
-            { Opcode.jc, InstrClass.Conditional | InstrClass.Transfer },
-            { Opcode.jge, InstrClass.Conditional | InstrClass.Transfer },
-            { Opcode.jl, InstrClass.Conditional | InstrClass.Transfer },
-            { Opcode.jmp, InstrClass.Transfer },
-            { Opcode.jn, InstrClass.Conditional | InstrClass.Transfer },
-            { Opcode.jnc, InstrClass.Conditional | InstrClass.Transfer },
-            { Opcode.jnz, InstrClass.Conditional | InstrClass.Transfer },
-            { Opcode.jz, InstrClass.Conditional | InstrClass.Transfer },
-            { Opcode.ret, InstrClass.Transfer  }
-        };
-
         public Opcode opcode;
         public PrimitiveType dataWidth;
         public MachineOperand op1;
@@ -51,24 +36,7 @@ namespace Reko.Arch.Msp430
         public int repeatImm;
         public RegisterStorage repeatReg;
 
-        public override InstrClass InstructionClass
-        {
-            get
-            {
-                if (!classes.TryGetValue(opcode, out var c))
-                    return InstrClass.Linear;
-                return c;
-            }
-        }
-        public InstrClass IClass;
-
-        public override int OpcodeAsInteger
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public override int OpcodeAsInteger => (int) opcode;
 
         public override MachineOperand GetOperand(int i)
         {
@@ -114,7 +82,7 @@ namespace Reko.Arch.Msp430
 
         private void Write(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
         {
-            if (op is AddressOperand && (InstructionClass & InstrClass.Transfer) == 0)
+            if (op is AddressOperand && (base.InstructionClass & InstrClass.Transfer) == 0)
             {
                 writer.WriteString("&");
             }

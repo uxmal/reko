@@ -30,18 +30,17 @@ namespace Reko.UnitTests.Mocks
     {
         private Operation operation;
         private MachineOperand[] ops;
-        private InstrClass iClass;
 
         public FakeInstruction(Operation operation, params MachineOperand[] ops)
         {
             this.operation = operation;
             this.ops = ops;
-            this.iClass = InstrClass.Invalid;
+            this.InstructionClass = InstrClass.Invalid;
         }
 
         public FakeInstruction(InstrClass iClass, Operation operation, params MachineOperand[] ops)
         {
-            this.iClass = iClass;
+            this.InstructionClass = iClass;
             this.operation = operation;
             this.ops = ops;
         }
@@ -49,7 +48,6 @@ namespace Reko.UnitTests.Mocks
         public override int OpcodeAsInteger { get { return (int)operation; } }
         public Operation Operation { get { return operation; } }
         public MachineOperand[] Operands { get { return ops; } }
-        public override InstrClass InstructionClass { get { return iClass; } }
 
         public override MachineOperand GetOperand(int i)
         {

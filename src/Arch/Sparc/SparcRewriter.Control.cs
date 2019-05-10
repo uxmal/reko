@@ -45,7 +45,7 @@ namespace Reko.Arch.Sparc
         private void RewriteBranch(Expression cond)
         {
             // SPARC architecture always has delay slot.
-            var rtlClass = instrCur.IClass;
+            var rtlClass = instrCur.InstructionClass;
             this.rtlc = rtlClass;
             if (cond is Constant c && c.ToBoolean())
             {

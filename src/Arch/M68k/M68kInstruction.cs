@@ -31,13 +31,10 @@ namespace Reko.Arch.M68k
     public class M68kInstruction : MachineInstruction
     {
         public Opcode code;
-        public InstrClass iclass;
         public PrimitiveType dataWidth;
         public MachineOperand op1;
         public MachineOperand op2;
         public MachineOperand op3;
-
-        public override InstrClass InstructionClass => iclass;
 
         public override int OpcodeAsInteger => (int) code;
 

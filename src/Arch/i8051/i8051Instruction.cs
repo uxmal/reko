@@ -30,9 +30,6 @@ namespace Reko.Arch.i8051
 {
     public class i8051Instruction : MachineInstruction
     {
-        public override InstrClass InstructionClass => IClass;
-
-        public InstrClass IClass { get; set; }
         public override int OpcodeAsInteger => (int)Opcode;
 
         public Opcode Opcode { get; set; }
