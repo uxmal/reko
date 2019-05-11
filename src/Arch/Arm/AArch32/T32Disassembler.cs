@@ -26,6 +26,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using static Reko.Arch.Arm.AArch32.ArmVectorData;
 
 namespace Reko.Arch.Arm.AArch32
 {
@@ -970,6 +971,17 @@ namespace Reko.Arch.Arm.AArch32
             return false;
         }
 
+        private static Mutator<T32Disassembler> vi(int bitpos)
+        {
+            var field = new Bitfield(bitpos, 2);
+            var sizes = new ArmVectorData [] { I8, I16, I32, INVALID}; 
+            return (u, d) => 
+            {
+                d.state.vectorData = sizes[field.Read(u)];
+                return true;
+            };
+        }
+
         private static bool R0(uint wInstr, T32Disassembler dasm)
         {
             dasm.state.ops.Add(new RegisterOperand(Registers.GpRegs[
@@ -1080,6 +1092,20 @@ namespace Reko.Arch.Arm.AArch32
             return true;
         }
 
+        private static bool Q7_16(uint wInstr, T32Disassembler dasm)
+        {
+            var q = ((wInstr >> 3) & 0x10) | ((wInstr >> 16) & 0xF);
+            dasm.state.ops.Add(new RegisterOperand(Registers.QRegs[q >> 1]));
+            return true;
+        }
+
+        private static bool D7_16(uint wInstr, T32Disassembler dasm)
+        {
+            var d = ((wInstr >> 3) & 0x10) | ((wInstr >> 16) & 0xF);
+            dasm.state.ops.Add(new RegisterOperand(Registers.DRegs[d]));
+            return true;
+        }
+
         private static bool D5_0(uint wInstr, T32Disassembler dasm)
         {
             dasm.state.ops.Add(new RegisterOperand(Registers.DRegs[
@@ -1090,7 +1116,7 @@ namespace Reko.Arch.Arm.AArch32
         private static bool Q5_0(uint wInstr, T32Disassembler dasm)
         {
             var q = ((wInstr >> 1) & 0x10) | (wInstr & 0xF);
-            dasm.state.ops.Add(new RegisterOperand(Registers.QRegs[q]));
+            dasm.state.ops.Add(new RegisterOperand(Registers.QRegs[q>>1]));
             return true;
         }
 
@@ -1304,8 +1330,14 @@ namespace Reko.Arch.Arm.AArch32
 
         private static InstrDecoder2 Instr(Opcode opcode, params Mutator<T32Disassembler>[] mutators)
         {
-            return new InstrDecoder2(opcode, InstrClass.Linear, mutators);
+            return new InstrDecoder2(opcode, InstrClass.Linear, ArmVectorData.INVALID, mutators);
         }
+
+        private static InstrDecoder2 Instr(Opcode opcode, ArmVectorData vec, params Mutator<T32Disassembler>[] mutators)
+        {
+            return new InstrDecoder2(opcode, InstrClass.Linear, vec, mutators);
+        }
+
 
         private static MaskDecoder Mask(int shift, uint mask, params Decoder [] decoders)
         {
@@ -2246,12 +2278,13 @@ namespace Reko.Arch.Arm.AArch32
                         Mask(6, 1, // Q
                             Instr(Opcode.vtst, "vi20:2,D22:1:12:4,D7:1:16:4,D5:1:0:4"),
                             Instr(Opcode.vtst, "vi20:2,Q22:1:12:4,Q7:1:16:4,Q5:1:0:4"))),
-                    Mask(4, 1, // op1
-                        Mask(6, 1, // Q
+                    Mask(4, 1, "opc=8 U=1 op1",
+                        Mask(6, 1, "opc=8 U=1 op1=0 Q",
                             Instr(Opcode.vsub, "vi20:2,D22:1:12:4,D7:1:16:4,D5:1:0:4"),
                             Instr(Opcode.vsub, "vi20:2,Q22:1:12:4,Q7:1:16:4,Q5:1:0:4")),
-                        Instr(Opcode.vceq, "*"))),
-
+                        Mask(6, 1, "opc=8 U=1 op1=0 Q",
+                            Instr(Opcode.vceq, vi(20), D22_12,D7_16,D5_0),
+                            Instr(Opcode.vceq, vi(20), Q22_12,Q7_16,Q5_0)))),
                 // opc9
                 Mask(12 + 16, 1,  // U
                     Mask(4, 1,      // op1
@@ -2312,7 +2345,12 @@ namespace Reko.Arch.Arm.AArch32
                                 Instr(Opcode.vcge, "vfs D22:1:12:4,D7:1:16:4,D5:1:0:4"),
                                 Instr(Opcode.vcge, "vfh Q22:1:12:4,Q7:1:16:4,Q5:1:0:4")),
                             Instr(Opcode.vacge, "*")),
-                        Nyi("AdvancedSimd3RegistersSameLength_opcE U=1 size=1x"))),
+                        Mask(4, 1, // op1
+                            Mask(6, 1,    // Q
+                                Instr(Opcode.vcgt, F32, D22_12,D7_16,D5_0),
+                                Instr(Opcode.vcgt, F16, Q22_12,Q7_16,Q5_0)),
+                            Nyi("AdvancedSimd3RegistersSameLength_opcE U=1 size=1x o1=1")))),
+                // opc = F
                 Mask(12 + 16, 1,  // U
                     Nyi("AdvancedSimd3RegistersSameLength_opcF U=0"),
                     Mask(4, 1,      // op1

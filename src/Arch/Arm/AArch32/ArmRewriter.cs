@@ -202,10 +202,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.vbif:
                 case Opcode.vbit:
                 case Opcode.vbsl:
-                case Opcode.vceq:
-                case Opcode.vcge:
-                case Opcode.vcgt:
-                case Opcode.vcle:
                 case Opcode.vcls:
                 case Opcode.vclz:
                 case Opcode.vcnt:
@@ -484,6 +480,10 @@ namespace Reko.Arch.Arm.AArch32
                 case Opcode.vaddl: RewriteVectorBinOp("__vaddl_{0}"); break;
                 case Opcode.vand: RewriteVecBinOp(m.And); break;
                 case Opcode.vcmp: RewriteVcmp(); break;
+                case Opcode.vceq: RewriteVectorBinOp("__vceq_{0}"); break;
+                case Opcode.vcge: RewriteVectorBinOp("__vcge_{0}"); break;
+                case Opcode.vcgt: RewriteVectorBinOp("__vcgt_{0}"); break;
+                case Opcode.vcle: RewriteVectorBinOp("__vcle_{0}"); break;
                 case Opcode.vclt: RewriteVectorBinOp("__vclt_{0}"); break;
                 case Opcode.vcmpe: RewriteVcmp(); break;
                 case Opcode.vcvt: RewriteVcvt(); break;

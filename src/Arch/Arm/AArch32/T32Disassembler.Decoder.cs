@@ -60,7 +60,7 @@ namespace Reko.Arch.Arm.AArch32
             [Conditional("DEBUG")]
             public static void TraceDecoder(uint wInstr, uint shMask, string debugString)
             {
-                // return;
+                return;
                 var hibit = 0x80000000u;
                 var sb = new StringBuilder();
                 for (int i = 0; i < 32; ++i)
@@ -253,12 +253,14 @@ namespace Reko.Arch.Arm.AArch32
         {
             private readonly Opcode opcode;
             private readonly InstrClass iclass;
+            private readonly ArmVectorData vec;
             private readonly Mutator<T32Disassembler>[] mutators;
 
-            public InstrDecoder2(Opcode opcode, InstrClass iclass, params Mutator<T32Disassembler>[] mutators)
+            public InstrDecoder2(Opcode opcode, InstrClass iclass, ArmVectorData vec, params Mutator<T32Disassembler>[] mutators)
             {
                 this.opcode = opcode;
                 this.iclass = iclass;
+                this.vec = vec;
                 this.mutators = mutators;
             }
 
@@ -266,6 +268,7 @@ namespace Reko.Arch.Arm.AArch32
             {
                 dasm.state.opcode = this.opcode;
                 dasm.state.iclass = this.iclass;
+                dasm.state.vectorData = this.vec;
                 for (int i = 0; i < mutators.Length; ++i)
                 {
                     if (!mutators[i](wInstr, dasm))

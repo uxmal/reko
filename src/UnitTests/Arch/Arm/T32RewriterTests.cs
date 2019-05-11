@@ -6534,13 +6534,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_vcge()
         {
             RewriteCode("44FF051E");	// vcge.f32 d17, d4, d5
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|d17 = __vcge_f32(d4, d5)");
         }
 
         [Test]
@@ -6702,13 +6701,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
-        public void ThumbRw_vceq()
+        public void ThumbRw_vceq_i32()
         {
             RewriteCode("21FF1048");	// vceq.i32 d4, d1, d0
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|d4 = __vceq_i32(d1, d0)");
         }
 
         [Test]
@@ -6747,7 +6745,6 @@ namespace Reko.UnitTests.Arch.Arm
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|@@@");
         }
-
 
         [Test]
         [Ignore(Categories.FailedTests)]
@@ -7420,13 +7417,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
-        public void ThumbRw_vcgt()
+        public void ThumbRw_vcgt_f32()
         {
             RewriteCode("26FFA18E");	// vcgt.f32 d8, d22, d17
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|d8 = __vcgt_f32(d22, d17)");
         }
 
         [Test]
