@@ -5848,7 +5848,6 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|Mem0[r1:word16] = (uint16) r3");
         }
 
-
         [Test]
         public void ThumbRw_uxtb()
         {
@@ -6273,8 +6272,6 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|@@@");
         }
 
-
-
         [Test]
         [Ignore(Categories.FailedTests)]
         public void ThumbRw_ldc2l()
@@ -6333,16 +6330,13 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|r0 = r1 + r0 * r2");
         }
 
-
-
         [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_bkpt()
         {
             RewriteCode("22BE");	// bkpt #0x22
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|__breakpoint()");
         }
 
         [Test]
@@ -7906,13 +7900,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
         public void ThumbRw_cps()
         {
             RewriteCode("66B6");	// cpsie ai
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|__cps_id()");
         }
 
         [Test]

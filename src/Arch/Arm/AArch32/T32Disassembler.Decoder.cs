@@ -60,7 +60,7 @@ namespace Reko.Arch.Arm.AArch32
             [Conditional("DEBUG")]
             public static void TraceDecoder(uint wInstr, uint shMask, string debugString)
             {
-                return;
+                //return;
                 var hibit = 0x80000000u;
                 var sb = new StringBuilder();
                 for (int i = 0; i < 32; ++i)
@@ -329,12 +329,10 @@ namespace Reko.Arch.Arm.AArch32
         private class LdmStmDecoder32 : Decoder
         {
             private readonly Opcode opcode;
-            private readonly string format;
 
-            public LdmStmDecoder32(Opcode opcode, string format)
+            public LdmStmDecoder32(Opcode opcode)
             {
                 this.opcode = opcode;
-                this.format = format;
             }
 
             public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
@@ -352,7 +350,7 @@ namespace Reko.Arch.Arm.AArch32
                         InstructionClass = InstrClass.Linear,
                         Wide = true,
                         Writeback = w,
-                        ops = new MachineOperand[] { new MultiRegisterOperand(Registers.GpRegs, PrimitiveType.Word16, (registers)) }
+                        ops = new MachineOperand[] { new MultiRegisterOperand(Registers.GpRegs, PrimitiveType.Word16, registers) }
                     };
                 }
                 else
@@ -364,7 +362,7 @@ namespace Reko.Arch.Arm.AArch32
                         Writeback = w,
                         ops = new MachineOperand[] {
                             new RegisterOperand(rn),
-                            new MultiRegisterOperand(Registers.GpRegs, PrimitiveType.Word16, (registers))
+                            new MultiRegisterOperand(Registers.GpRegs, PrimitiveType.Word16, registers)
                         }
                     };
                 }
@@ -372,13 +370,11 @@ namespace Reko.Arch.Arm.AArch32
         }
 
         // Decodes Mov/Movs instructions with optional shifts
-        private class MovMovsDecoder : InstrDecoder
+        private class MovMovsDecoder : InstrDecoder2
         {
-            private readonly string format;
 
-            public MovMovsDecoder(Opcode opcode, string format) : base(opcode, InstrClass.Linear, format)
+            public MovMovsDecoder(Opcode opcode, params Mutator<T32Disassembler>[] mutators) : base(opcode, InstrClass.Linear, ArmVectorData.INVALID, mutators)
             {
-                this.format = format;
             }
 
             public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
@@ -413,9 +409,9 @@ namespace Reko.Arch.Arm.AArch32
 
         // Decode BFC and BFI instructions, which display their immediate constants
         // differently from how they are repesented in the word.
-        private class BfcBfiDecoder : InstrDecoder
+        private class BfcBfiDecoder : InstrDecoder2
         {
-            public BfcBfiDecoder(Opcode opcode, string format) : base(opcode, InstrClass.Linear, format)
+            public BfcBfiDecoder(Opcode opcode, Mutator<T32Disassembler> [] mutators) : base(opcode, InstrClass.Linear, ArmVectorData.INVALID, mutators)
             {
             }
 

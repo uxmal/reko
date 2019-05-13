@@ -825,6 +825,20 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("Invalid");
         }
 
+        [Test]
+        public void ThumbDis_ldrb_regression()
+        {
+            Given_Instructions(0xF895, 0x4045);
+            Expect_Code("ldrb\tr4,[r5,#&45]");
+        }
+
+        [Test]
+        public void ThumbDis_ldr_regression2()
+        {
+            Given_Instructions(0x6A6B);
+            Expect_Code("ldr\tr3,[r5,#&24]");
+        }
+
         //.data:00000016 ED04 E000  stc  0, cr14, [r4, #-0]
         //.data:0000001a ED24 E000  stc	0, cr14, [r4, #-0]
         //.data:0000001e ED9C E000  ldc	0, cr14, [r12]
