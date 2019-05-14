@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -201,6 +201,11 @@ namespace Reko.Evaluation
         public Expression GetDefiningExpression(Identifier id)
         {
             return null;
+        }
+
+        public List<Statement> GetDefiningStatementClosure(Identifier id)
+        {
+            return new List<Statement>();
         }
 
         public Expression MakeSegmentedAddress(Constant seg, Constant off)

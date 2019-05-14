@@ -381,7 +381,7 @@ namespace Reko.UnitTests.Mocks
             return Frame.EnsureRegister(new RegisterStorage(name, number, 0, PrimitiveType.Word64));
         }
 
-        public Identifier Reg32(string name, int number)
+        public virtual Identifier Reg32(string name, int number)
         {
             return Frame.EnsureRegister(new RegisterStorage(name, number, 0, PrimitiveType.Word32));
         }

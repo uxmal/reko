@@ -82,6 +82,8 @@ namespace Reko.Analysis
                 Changed = false;
                 foreach (Statement stm in ssa.Procedure.Statements.ToArray())
                 {
+                    if (eventListener.IsCanceled())
+                        return;
                     this.stmCur = stm;
                     Transform(stm);
                 }
@@ -100,6 +102,8 @@ namespace Reko.Analysis
 
         public Instruction VisitAssignment(Assignment a)
         {
+            if (a.Dst.Name == "d3_192")//$DEBUG
+                a.ToString();
             a.Src = a.Src.Accept(eval);
             ssa.Identifiers[a.Dst].DefExpression = a.Src;
             return a;

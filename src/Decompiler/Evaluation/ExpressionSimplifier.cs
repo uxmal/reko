@@ -519,15 +519,15 @@ namespace Reko.Evaluation
                 return Constant.Invalid;
             }
             d = new DepositBits(src, bits, d.BitPosition);
+            while (dpbdpbRule.Match(d))
+            {
+                Changed = true;
+                d = dpbdpbRule.Transform();
+            }
             if (dpbConstantRule.Match(d))
             {
                 Changed = true;
                 return dpbConstantRule.Transform();
-            }
-            if (dpbdpbRule.Match(d))
-            {
-                Changed = true;
-                return dpbdpbRule.Transform();
             }
             if (selfdpbRule.Match(d))
             {

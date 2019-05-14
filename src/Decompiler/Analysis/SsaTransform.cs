@@ -49,7 +49,7 @@ namespace Reko.Analysis
     [DebuggerDisplay("{SsaState.Procedure.Name}")]
     public partial class SsaTransform : InstructionTransformer 
     {
-        private static TraceSwitch trace = new TraceSwitch("SsaTransform", "Traces the progress of SSA analysis") { Level = TraceLevel.Info };
+        private static readonly TraceSwitch trace = new TraceSwitch("SsaTransform", "Traces the progress of SSA analysis") { Level = TraceLevel.Info };
 
         private readonly IProcessorArchitecture arch;
         private readonly Program program;
@@ -106,6 +106,11 @@ namespace Reko.Analysis
         public SsaState Transform()
         {
             DebugEx.Info(trace, "SsaTransform: {0}, rename frame accesses {1}", ssa.Procedure.Name, this.RenameFrameAccesses);
+            if (ssa.Procedure.Name == "fn101BD733")
+            {
+                ssa.ToString();//$DEBUG
+            }
+
             this.sidsToRemove = new HashSet<SsaIdentifier>();
             foreach (var bs in blockstates.Values)
             {
@@ -117,7 +122,7 @@ namespace Reko.Analysis
 
             foreach (Block b in new DfsIterator<Block>(ssa.Procedure.ControlGraph).ReversePostOrder())
             {
-                DebugEx.Verbose(trace, "SsaTransform:   {0}", b.Name);
+                DebugEx.Verbose(trace, "SsaTransform:   {0} ({1} statements)", b.Name, b.Statements.Count);
                 this.block = b;
                 foreach (var s in b.Statements.ToList())
                 {
@@ -170,6 +175,7 @@ namespace Reko.Analysis
             // (e.g. eax, ax, al, ah) and render them as a single
             // register (eax).
             this.block = ssa.Procedure.ExitBlock;
+            DebugEx.Verbose(trace, "SsaTransform: AddUsesToExitBlock  {0}", this.block);
 
             // Compute the set of all blocks b such that there is a path from
             // b to the exit block.
@@ -205,6 +211,7 @@ namespace Reko.Analysis
             stms.ForEach(u =>
             {
                 var use = (UseInstruction)u.Instruction;
+                DebugEx.Verbose(trace, "SsaTransform:   {0}", use);
                 use.Expression = NewUse((Identifier)use.Expression, u, true);
             });
         }
@@ -762,7 +769,7 @@ namespace Reko.Analysis
                     var idDst = NewDef(idFrame, src, false);
                     return idDst;
                 }
-                else if (this.RenameFrameAccesses && IsConstFpuStackAccess(ssa.Procedure, acc))
+                else if (this.RenameFrameAccesses && IsConstFpuStackAccess(acc))
                 {
                     ssa.Identifiers[acc.MemoryId].DefStatement = null;
                     var idFrame = ssa.Procedure.Frame.EnsureFpuStackVariable(((Constant)acc.EffectiveAddress).ToInt32(), acc.DataType);
@@ -913,7 +920,7 @@ namespace Reko.Analysis
                     var idNew = NewUse(idFrame, stmCur, true);
                     return idNew;
                 }
-                if (IsConstFpuStackAccess(ssa.Procedure, access))
+                if (IsConstFpuStackAccess(access))
                 {
                     ssa.Identifiers[access.MemoryId].Uses.Remove(stmCur);
                     var idFrame = ssa.Procedure.Frame.EnsureFpuStackVariable(
@@ -1001,7 +1008,7 @@ namespace Reko.Analysis
             return bin.Right is Constant;
         }
 
-        private static bool IsConstFpuStackAccess(Procedure proc, MemoryAccess acc)
+        private bool IsConstFpuStackAccess(MemoryAccess acc)
         {
             if (!acc.MemoryId.Name.StartsWith("ST"))  //$HACK: gross hack but we have to start somewhere.
                 return false;
