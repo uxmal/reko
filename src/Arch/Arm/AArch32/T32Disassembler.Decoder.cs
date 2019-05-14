@@ -227,36 +227,18 @@ namespace Reko.Arch.Arm.AArch32
 
         /// <summary>
         /// This decoder hands control back to the disassembler, passing the 
-        /// deduced opcode and a format string describing the encoding of the 
-        /// instruction operands.
+        /// deduced opcode and an array of mutator functions that are called in
+        /// order to build instruction operands and other ARM instruction
+        /// fields.
         /// </summary>
         private class InstrDecoder : Decoder
-        {
-            private readonly Opcode opcode;
-            private readonly InstrClass iclass;
-            private readonly string format;
-
-            public InstrDecoder(Opcode opcode, InstrClass iclass, string format)
-            {
-                this.opcode = opcode;
-                this.iclass = iclass;
-                this.format = format;
-            }
-
-            public override AArch32Instruction Decode(T32Disassembler dasm, uint wInstr)
-            {
-                return dasm.DecodeFormat(wInstr, opcode, iclass, format);
-            }
-        }
-
-        private class InstrDecoder2 : Decoder
         {
             private readonly Opcode opcode;
             private readonly InstrClass iclass;
             private readonly ArmVectorData vec;
             private readonly Mutator<T32Disassembler>[] mutators;
 
-            public InstrDecoder2(Opcode opcode, InstrClass iclass, ArmVectorData vec, params Mutator<T32Disassembler>[] mutators)
+            public InstrDecoder(Opcode opcode, InstrClass iclass, ArmVectorData vec, params Mutator<T32Disassembler>[] mutators)
             {
                 this.opcode = opcode;
                 this.iclass = iclass;
@@ -370,7 +352,7 @@ namespace Reko.Arch.Arm.AArch32
         }
 
         // Decodes Mov/Movs instructions with optional shifts
-        private class MovMovsDecoder : InstrDecoder2
+        private class MovMovsDecoder : InstrDecoder
         {
 
             public MovMovsDecoder(Opcode opcode, params Mutator<T32Disassembler>[] mutators) : base(opcode, InstrClass.Linear, ArmVectorData.INVALID, mutators)
@@ -409,7 +391,7 @@ namespace Reko.Arch.Arm.AArch32
 
         // Decode BFC and BFI instructions, which display their immediate constants
         // differently from how they are repesented in the word.
-        private class BfcBfiDecoder : InstrDecoder2
+        private class BfcBfiDecoder : InstrDecoder
         {
             public BfcBfiDecoder(Opcode opcode, Mutator<T32Disassembler> [] mutators) : base(opcode, InstrClass.Linear, ArmVectorData.INVALID, mutators)
             {
@@ -457,6 +439,5 @@ namespace Reko.Arch.Arm.AArch32
         }
 
         #endregion
-
     }
 }

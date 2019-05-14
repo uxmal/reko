@@ -1530,7 +1530,7 @@ B2E4           	uxtb	r4,r4
 D806           	bhi	$00000A8C
 
 l00000A7E:
-E8DF F002     	tbb	[pc,-r2]                                 ; 00000A80
+E8DF F002     	tbb	[pc,r2]                                  ; 00000A80
 
 l00000A82:
 0C3A           	lsrs	r2,r7,#&10
@@ -1624,7 +1624,7 @@ B2E4           	uxtb	r4,r4
 D806           	bhi	$00000B4A
 
 l00000B3C:
-E8DF F002     	tbb	[pc,-r2]                                 ; 00000B40
+E8DF F002     	tbb	[pc,r2]                                  ; 00000B40
 
 l00000B40:
 0C2A           	lsrs	r2,r5,#&10
