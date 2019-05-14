@@ -98,7 +98,7 @@ public void ArmDasm_F840BF00()
 }
 
 0000951A: error: An error occurred while processing the statement Mem29[r3_24 + 0x00000000:word32] = Mem0[r3_24 - r4_10 + 0x00000000:word32].
-    Not handling (ptr32 (struct (0 T_7353 t0000))) and (ptr32 (struct (0 (arr T_9507) a0000))) yet
+    Not handling (ptr32 (struct (0 T_7352 t0000))) and (ptr32 (struct (0 (arr T_9506) a0000))) yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 377
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 227
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -1669,4 +1669,4 @@ l0800_906A: warning: Non-integral switch expression
 === regressions\snowman-82\flags
 === regressions\snowman-83\flags3
 Stripping SSA identifier numbers
-Decompiled 56 binaries in 75.73 seconds ---
+Decompiled 56 binaries in 93.64 seconds ---

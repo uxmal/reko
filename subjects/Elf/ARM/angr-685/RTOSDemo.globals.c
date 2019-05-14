@@ -28,17 +28,25 @@ ui32 g_dwE000ED24;
 word32 g_dwE000ED90;
 ui32 g_dwE000ED9C;
 ui32 g_dwE000EDA0;
-Eq_n g_tF88EF001;
 Eq_n g_tFE200008;
 Eq_n g_tFEBF00E7;
 Eq_n g_tFF2400BD;
 Eq_n g_tFFF04F23;
 Eq_n g_tFFF04FFF;
-Eq_n g_tFFFFFFFF;
+struct Eq_n g_tFFFFFFFF;
 Eq_n g_t0001 = 
 	{
-		0x09200002,
+		&g_t9200002,
+		&g_t1000080,
+		&g_t5000080,
 		&g_t0080,
+		0x00000000,
+		0x00000000,
+		0xE5000016,
+		0x00000016,
+		null,
+		0x00,
+		0x00,
 	};
 Eq_n g_t0003 = 
 	{
@@ -51,6 +59,7 @@ Eq_n g_t0003 =
 		null,
 		0x00000000,
 		null,
+		0x8900,
 		0x0016E500,
 		null,
 		0x00000000,
@@ -64,7 +73,6 @@ Eq_n g_t0003 =
 		0x00B26440,
 		0x2C,
 		0x16,
-		0xA36A,
 	};
 struct Eq_n g_t0004 = 
 	{
@@ -84,6 +92,7 @@ Eq_n g_t0008 =
 		&g_t1715,
 		0x00000000,
 		&g_t1689,
+		0x16E5,
 		0x00000000,
 		null,
 		0x00000000,
@@ -97,7 +106,6 @@ Eq_n g_t0008 =
 		0x6A6BDD16,
 		0xA3,
 		0xB1,
-		0x0624,
 	};
 struct Eq_n g_t000C = 
 	{
@@ -113,7 +121,18 @@ struct Eq_n g_t000F =
 	};
 Eq_n g_t0080 = 
 	{
-		&g_tF88EF001,
+		
+		{
+			0xF0004630
+		},
+		0x2800FFCB,
+		0x3C01D0F4,
+		0xF88EF001,
+		0x0610F105,
+		1006755845,
+		0xD0F42800,
+		0x2B00B25C,
+		0x23FFD1F1,
 	};
 struct Eq_n g_t00BF = 
 	{
@@ -139,6 +158,7 @@ Eq_n g_t00FF =
 		&g_t7063A560,
 		0x22FA4BF0,
 		&g_t5268E36C,
+		0x2142,
 		0xE3428B44,
 		&g_t63D20260,
 		0xE2441A68,
@@ -152,7 +172,6 @@ Eq_n g_t00FF =
 		0x016860E7,
 		0xF0,
 		0x75,
-		0x6635,
 	};
 word32 * g_ptr02A0 = &g_dwE000ED04;
 word32 * g_ptr0424 = &g_dwE000ED04;
@@ -247,6 +266,7 @@ Eq_n g_t1689 =
 		&g_t11F38000,
 		0x08681940,
 		&g_t4F10168,
+		0x1A01,
 		0xA20FF0E8,
 		&g_tB00FF0E8,
 		0x830FF8E8,
@@ -260,7 +280,6 @@ Eq_n g_t1689 =
 		0xBFF04F84,
 		0x03,
 		0x83,
-		0xBF88,
 	};
 struct Eq_n ** g_ptr16E0 = &g_ptr200000C8;
 word32 * g_ptr1710 = &g_dwE000ED04;
@@ -275,6 +294,7 @@ Eq_n g_t1715 =
 		&g_t67F7FF34,
 		0x40B1AA68,
 		&g_tD351B3F2,
+		0xC0F8,
 		0x09428C44,
 		&g_t742A2D8,
 		0xC36819D2,
@@ -288,7 +308,6 @@ Eq_n g_t1715 =
 		0x1A0207F0,
 		0x60,
 		0xE3,
-		0x0002,
 	};
 struct Eq_n *** g_ptr1724 = &g_ptrE000ED08;
 struct Eq_n * g_ptr1728 = &g_dwE000ED9C;
@@ -307,6 +326,7 @@ Eq_n g_t8001 =
 		&g_t3BF000D1,
 		0x80200001,
 		&g_tFE200008,
+		0x00E7,
 		0x092400B5,
 		&g_t1B0834D,
 		0x003401A9,
@@ -320,7 +340,6 @@ Eq_n g_t8001 =
 		0x80E7EDFB,
 		0x08,
 		0x00,
-		0x0BB5,
 	};
 word32 * g_ptr802C = &g_dw20000160;
 word32 * g_ptr8030 = &g_dw20000880;
@@ -358,6 +377,7 @@ Eq_n g_t8671 =
 		&g_tFFF04FFF,
 		0xAFF7FF68,
 		&g_t181D02FE,
+		0x43D0,
 		0xF02801D0,
 		&g_tC2200D0,
 		0xEF601A4B,
@@ -371,7 +391,6 @@ Eq_n g_t8671 =
 		0x014D03BD,
 		0xAE,
 		0xDE,
-		0xE1F4,
 	};
 struct Eq_n ** g_ptr86E0 = &g_ptr200007F8;
 word32 * g_ptr86E4 = &g_dw200000C0;
@@ -386,6 +405,7 @@ Eq_n g_t86E9 =
 		&g_tA373CBF4,
 		0xCBF5B3BD,
 		&g_t17D1FA7F,
+		0x004B,
 		0xFFA90168,
 		&g_t2FE1EF7,
 		0x43D0201D,
@@ -399,7 +419,6 @@ Eq_n g_t86E9 =
 		0x02D0E72B,
 		0xB0,
 		0x10,
-		0x004B,
 	};
 struct Eq_n * (* g_ptr8778)[] = &g_aA284;
 struct Eq_n ** g_ptr877C = &g_ptr200007F8;
@@ -508,6 +527,7 @@ word32 * g_aA554[] =
 Eq_n g_t800500;
 Eq_n g_t800920;
 Eq_n g_t810900;
+Eq_n g_t1000080;
 Eq_n g_t146047F;
 Eq_n g_t14B0F60;
 Eq_n g_t14D0AE7;
@@ -518,10 +538,12 @@ Eq_n g_t2429312;
 Eq_n g_t2FE1EF7;
 Eq_n g_t4F10168;
 Eq_n g_t4FB96F0;
+Eq_n g_t5000080;
 Eq_n g_t72E0260;
 Eq_n g_t742A2D8;
 Eq_n g_t83045F8;
 Eq_n g_t8E92D60;
+Eq_n g_t9200002;
 Eq_n g_t9F3EF80;
 Eq_n g_tA68A0B9;
 Eq_n g_tC0F04F0;
