@@ -34,12 +34,35 @@ namespace Reko.Arch.PaRisc
     {
         private void RewriteAddib()
         {
-            if (instr.Annul)
-                iclass |= InstrClass.Annul;
-            var imm = ((ImmediateOperand)instr.Operands[0]).Value.ToInt32();
+            var imm = ((ImmediateOperand) instr.Operands[0]).Value.ToInt32();
             var reg = RewriteOp(instr.Operands[1]);
             m.Assign(reg, m.IAddS(reg, imm));
-            MaybeConditionalJump(((AddressOperand) instr.Operands[2]).Address, reg);
+            var addrDest = ((AddressOperand) instr.Operands[2]).Address;
+            if (instr.Annul)
+            {
+                if (addrDest <= instr.Address)
+                {
+                    // We're jumping backward, so we annul the falling out of the loop.
+                    // Generate the jump out of the loop, without delay slot.
+                    MaybeConditionalJump(InstrClass.ConditionalTransfer, instr.Address + 8, true, reg);
+                    // Generate jump to top of loop, with delay slot.
+                    m.GotoD(addrDest);
+                }
+                else
+                {
+                    // We're jumping forward, so we annul only when the branch is taken. 
+                    // This is equivalent to a branch on a "normal" architecture with no
+                    // delay slots.
+                    MaybeConditionalJump(InstrClass.ConditionalTransfer, addrDest, false, reg);
+                    this.iclass = InstrClass.ConditionalTransfer;
+                }
+            }
+            else
+            {
+                MaybeConditionalJump(
+                    InstrClass.ConditionalTransfer|InstrClass.Delay,
+                    addrDest, false, reg);
+            }
         }
 
         private void RewriteBranch()
@@ -133,7 +156,7 @@ namespace Reko.Arch.PaRisc
         {
             var left = RewriteOp(instr.Operands[0]);
             var right = RewriteOp(instr.Operands[1]);
-            MaybeConditionalJump(((AddressOperand)instr.Operands[2]).Address, left, right);
+            MaybeConditionalJump(iclass, ((AddressOperand)instr.Operands[2]).Address, false, left, right);
         }
     }
 }

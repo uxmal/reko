@@ -38,7 +38,7 @@ namespace Reko.Arch.PaRisc
             var src2 = RewriteOp(instr.Operands[1]);
             var dst = RewriteOp(instr.Operands[2]);
             m.Assign(dst, m.IAdd(src1, src2));
-            MaybeSkipNextInstruction(dst, null);
+            MaybeSkipNextInstruction(iclass, false, dst, null);
         }
 
         private void RewriteAddi()
@@ -47,7 +47,7 @@ namespace Reko.Arch.PaRisc
             var src2 = RewriteOp(instr.Operands[0]);
             var dst = RewriteOp(instr.Operands[2]);
             m.Assign(dst, m.IAdd(src1, src2));
-            MaybeSkipNextInstruction(dst, null);
+            MaybeSkipNextInstruction(iclass, false, dst, null);
         }
 
         private void RewriteExtrw()
@@ -103,7 +103,7 @@ namespace Reko.Arch.PaRisc
             }
             var dst = binder.EnsureRegister(rDst);
             m.Assign(dst, m.IAdd(src1, src2));
-            MaybeSkipNextInstruction(dst, null);
+            MaybeSkipNextInstruction(iclass, false, dst, null);
         }
 
         private void RewriteShladd()
@@ -115,7 +115,7 @@ namespace Reko.Arch.PaRisc
             e = m.IAdd(src, e);
             var dst = RewriteOp(instr.Operands[3]);
             m.Assign(dst, e);
-            MaybeSkipNextInstruction(e, null);
+            MaybeSkipNextInstruction(iclass, false, e, null);
         }
 
         private void RewriteSt(PrimitiveType size)
@@ -135,7 +135,7 @@ namespace Reko.Arch.PaRisc
             var src2 = RewriteOp(instr.Operands[1]);
             var dst = RewriteOp(instr.Operands[2]);
             m.Assign(dst, m.ISub(src1, src2));
-            MaybeSkipNextInstruction(dst, null);
+            MaybeSkipNextInstruction(iclass, false, dst, null);
         }
 
         private void RewriteFstw()

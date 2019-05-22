@@ -33,12 +33,7 @@ namespace Reko.UnitTests.Arch.PaRisc
     [TestFixture]
     public class PaRiscDisassemblerTests : DisassemblerTestBase<PaRiscInstruction>
     {
-        private readonly PaRiscArchitecture arch;
-
-        public PaRiscDisassemblerTests()
-        {
-            this.arch = new PaRiscArchitecture("paRisc");
-        }
+        private PaRiscArchitecture arch;
 
         public override IProcessorArchitecture Architecture => arch;
 
@@ -52,6 +47,15 @@ namespace Reko.UnitTests.Arch.PaRisc
 
         private void AssertCode(string sExp, string hexBytes)
         {
+            this.arch = new PaRiscArchitecture("paRisc");
+            var i = DisassembleHexBytes(hexBytes);
+            Assert.AreEqual(sExp, i.ToString());
+        }
+
+        private void AssertCode64(string sExp, string hexBytes)
+        {
+            this.arch = new PaRiscArchitecture("paRisc");
+            arch.Options["WordSize"] = "64";
             var i = DisassembleHexBytes(hexBytes);
             Assert.AreEqual(sExp, i.ToString());
         }
@@ -156,13 +160,13 @@ namespace Reko.UnitTests.Arch.PaRisc
         [Test]
         public void PaRiscDis_addib_64()
         {
-            AssertCode("addib,*>=\t-10,r30,000FF7F0", "AFC1CFD5");
+            AssertCode64("addib,*>=\t-00000010,r30,000FF7F0", "AFC1CFD5");
         }
 
         [Test]
         public void PaRiscDis_stb()
         {
-            AssertCode("stb\tr17,2837(r11)", "61716B15");
+            AssertCode("stb\tr17,-2678(r11)", "61716B15");
         }
 
         [Test]
@@ -172,11 +176,40 @@ namespace Reko.UnitTests.Arch.PaRisc
         }
 
         [Test]
-        public void PaRiscDis_sth_neg()
+        public void PaRiscDis_sth_2000()
         {
-            AssertCode("sth\tr13,-264e(r11)", "656d6d65");
+            AssertCode64("sth\tr14,8192(r11)", "656E4000");
         }
 
+        [Test]
+        public void PaRiscDis_sth_4000()
+        {
+            AssertCode("sth\tr14,0(r11)", "656E8000");
+        }
+
+        [Test]
+        public void PaRiscDis_sth_8000()
+        {
+            AssertCode("sth\tr14,-8192(r11)", "656E8001");
+        }
+
+        [Test]
+        public void PaRiscDis_sth_8000_64()
+        {
+            AssertCode64("sth\tr14,-24576(r11)", "656E8001");
+        }
+
+        [Test]
+        public void PaRiscRw_sth_64()
+        {
+            AssertCode64("sth\tr14,12800(r11)", "656e6400");
+        }
+
+        [Test]
+        public void PaRiscDis_sth_neg()
+        {
+            AssertCode("sth\tr13,-2382(r11)", "656d6d65");
+        }
 
         [Test]
         public void PaRiscDis_depwi()
@@ -199,7 +232,13 @@ namespace Reko.UnitTests.Arch.PaRisc
         [Test]
         public void PaRiscDis_fldw()
         {
-            AssertCode("fldw\t-4(r27),fr0", "27791000");
+            AssertCode("fldw\t-16(r24),fr7", "27011007");
+        }
+
+        [Test]
+        public void PaRiscDis_fldw_R()
+        {
+            AssertCode("fldw\t-16(r24),fr7R", "27011047");
         }
 
         [Test]
@@ -293,12 +332,6 @@ namespace Reko.UnitTests.Arch.PaRisc
         }
 
         [Test]
-        public void PaRiscDis_fldw_R()
-        {
-            AssertCode("fldw\t-16(r24),fr7R", "27011047");
-        }
-
-        [Test]
         public void PaRiscDis_fldw_24000000()
         {
             AssertCode("fldw\tr0(r0),fr0", "24000000");
@@ -365,18 +398,21 @@ namespace Reko.UnitTests.Arch.PaRisc
         }
 
         [Test]
+        [Ignore("")]
         public void PaRiscDis_copr_0_1312f7_n_31312e37()
         {
             AssertCode("copr_0_1312f7_n\t", "31313137");
         }
 
         [Test]
+        [Ignore("")]
         public void PaRiscDis_copr_0_100000_31000000()
         {
             AssertCode("copr_0_100000\t", "31000000");
         }
 
         [Test]
+        [Ignore("")]
         public void PaRiscDis_copr_0_232300_n_32323020()
         {
             AssertCode("copr_0_232300_n\t", "32323220");
@@ -458,13 +494,13 @@ namespace Reko.UnitTests.Arch.PaRisc
         [Test]
         public void PaRiscDis_movb()
         {
-            AssertCode("movb\tr16,r18,00100848", "ca505080");
+            AssertCode("movb,<\tr16,r18,00100848", "ca505080");
         }
 
         [Test]
         public void PaRiscDis_movib()
         {
-            AssertCode("movib\t8,r7,0xffffe374", "ccf0f0d9");
+            AssertCode("movib,ev\t8,r7,000FE874", "ccf0f0d9");
         }
 
 
@@ -493,15 +529,15 @@ namespace Reko.UnitTests.Arch.PaRisc
         }
 
         [Test]
-        public void PaRiscDis_addb_nuv_n()
+        public void PaRiscDis_addb_le_n()
         {
-            AssertCode("addb_nuv_n\tr24,r11,0xffffe0f0", "a17878d3");
+            AssertCode("addb,<=,n\tr24,r11,000FEC70", "a17878d3");
         }
 
         [Test]
-        public void PaRiscDis_addib_eq()
+        public void PaRiscDis_addib()
         {
-            AssertCode("addib,=\t-6,r24,0xfffffb78", "a71515e5");
+            AssertCode("addib\t-00000006,r24,000FFAF8", "a71515e5");
         }
 
         [Test]
@@ -525,7 +561,7 @@ namespace Reko.UnitTests.Arch.PaRisc
         [Test]
         public void PaRiscDis_ldb_neg_disp()
         {
-            AssertCode("ldb\t-34de(r26),r15", "434f4f45");
+            AssertCode("ldb\t-14430(r26),r15", "434f4f45");
         }
 
         [Test]

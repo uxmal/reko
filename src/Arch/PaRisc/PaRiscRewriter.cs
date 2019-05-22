@@ -60,7 +60,7 @@ namespace Reko.Arch.PaRisc
             while (dasm.MoveNext())
             {
                 this.instr = dasm.Current;
-                this.iclass = instr.IClass;
+                this.iclass = instr.InstructionClass;
                 var instrs = new List<RtlInstruction>();
                 m = new RtlEmitter(instrs);
                 switch (instr.Opcode)
@@ -129,13 +129,13 @@ namespace Reko.Arch.PaRisc
             Console.WriteLine("");
         }
 
-        private void MaybeSkipNextInstruction(Expression left, Expression right = null)
+        private void MaybeSkipNextInstruction(InstrClass iclass, bool invert, Expression left, Expression right = null)
         {
             var addrNext = instr.Address + 8;
-            MaybeConditionalJump(addrNext, left, right);
+            MaybeConditionalJump(iclass, addrNext, invert, left, right);
         }
 
-        private void MaybeConditionalJump(Address addrTaken, Expression left, Expression right = null)
+        private void MaybeConditionalJump(InstrClass iclass, Address addrTaken, bool invert, Expression left, Expression right = null)
         {
             if (instr.Condition == null)
                 return;
@@ -160,11 +160,15 @@ namespace Reko.Arch.PaRisc
             case ConditionType.Nuv:
             case ConditionType.Nuv64:
                 e = m.Test(ConditionCode.OV, m.ISub(left,right)); break;
+            case ConditionType.Nsv:
+                //$TODO: need signed minus/unsigned minus.
+                e = m.Test(ConditionCode.OV, m.ISub(left, right)); break;
             default:
             throw new NotImplementedException(instr.Condition.ToString());
             }
-            this.iclass = InstrClass.ConditionalTransfer;
-            m.Branch(e, addrTaken, this.iclass);
+            if (invert)
+                e = e.Invert();
+            m.Branch(e, addrTaken, iclass);
         }
 
         private Expression RewriteOp(MachineOperand op)

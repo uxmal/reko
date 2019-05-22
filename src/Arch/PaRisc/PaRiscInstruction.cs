@@ -27,8 +27,8 @@ namespace Reko.Arch.PaRisc
 {
     public class PaRiscInstruction : MachineInstruction
     {
-        public InstrClass IClass { get; set; }
         public Opcode Opcode { get; set; }
+        
         // Completers
         public int Coprocessor { get; set; }
         public bool Zero { get; set; }
@@ -38,17 +38,15 @@ namespace Reko.Arch.PaRisc
         public FpFormat FpFmt { get; set; }
 
         public ConditionOperand Condition { get; set; }
-
         public MachineOperand[] Operands { get; set; }
-
-        public override InstrClass InstructionClass => IClass;
 
         public override int OpcodeAsInteger => (int) Opcode;
 
-
         public override MachineOperand GetOperand(int i)
         {
-            throw new System.NotImplementedException();
+            return (0 <= i && i < Operands.Length)
+                ? Operands[i]
+                : null;
         }
 
         public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)

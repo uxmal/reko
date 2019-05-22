@@ -43,6 +43,7 @@ namespace Reko.Arch.PaRisc
         private readonly PaRiscArchitecture arch;
         private readonly EndianImageReader rdr;
         private readonly bool is64bit;
+        private readonly PrimitiveType dtSignedWord;
 
         private Address addr;
         private readonly List<MachineOperand> ops;
@@ -60,6 +61,7 @@ namespace Reko.Arch.PaRisc
             this.rdr = rdr;
             this.ops = new List<MachineOperand>();
             is64bit = arch.Is64Bit();
+            this.dtSignedWord = is64bit ? PrimitiveType.Int64 : PrimitiveType.Int32;
         }
 
         public override PaRiscInstruction DisassembleInstruction()
@@ -79,7 +81,7 @@ namespace Reko.Arch.PaRisc
             var instr = rootDecoder.Decode(uInstr, this);
             instr.Address = this.addr;
             instr.Length = (int) (rdr.Address - addr);
-            instr.IClass |= uInstr == 0 ? InstrClass.Zero : 0;
+            instr.InstructionClass |= uInstr == 0 ? InstrClass.Zero : 0;
             return instr;
         }
 
@@ -109,6 +111,7 @@ namespace Reko.Arch.PaRisc
             return (u, d) =>
             {
                 var v = field.Read(u);
+                Decoder.DumpMaskedInstruction(u, field.Mask << field.Position, "Unsigned immediate");
                 d.ops.Add(new ImmediateOperand(Constant.Create(dt, v)));
                 return true;
             };
@@ -174,8 +177,26 @@ namespace Reko.Arch.PaRisc
                 return true;
             };
         }
-        private static Mutator<PaRiscDisassembler> s32(int bitPos, int bitLength) => u(bitPos, bitLength, PrimitiveType.Int32);
+        private static Mutator<PaRiscDisassembler> s32(int bitPos, int bitLength) => s(bitPos, bitLength, PrimitiveType.Int32);
 
+
+        /// <summary>
+        /// Wonky "low sign extend" format. 
+        /// </summary>
+        /// <remarks>
+        /// From the manual:
+        /// sign_ext(cat(x{ len - 1},x{ 0..len - 2}),len))
+        /// </remarks>
+        private static Mutator<PaRiscDisassembler> lse(int bitPos, int bitLength)
+        {
+            var fields = BeFields((bitPos + bitLength - 1, 1), (bitPos, bitLength - 1));
+            return (u, d) =>
+            {
+                var v = Bitfield.ReadSignedFields(fields, u);
+                d.ops.Add(new ImmediateOperand(Constant.Create(d.dtSignedWord, v)));
+                return true;
+            };
+        }
 
         /// <summary>
         /// Signed immediate constant spread across multiple fields with a postprocessor.
@@ -231,7 +252,7 @@ namespace Reko.Arch.PaRisc
                 return true;
             };
         }
-        private static readonly Mutator<PaRiscDisassembler> fr6_24 = frsng((27, 5), (24,1));
+        private static readonly Mutator<PaRiscDisassembler> fr27_24 = frsng((27, 5), (24,1));
         private static readonly Mutator<PaRiscDisassembler> fr11_19 = frsng((27, 5), (19,1));
 
         /// <summary>
@@ -269,6 +290,7 @@ namespace Reko.Arch.PaRisc
             var field = BeField(bitPos, bitLen);
             return (u, d) =>
             {
+                Decoder.DumpMaskedInstruction(u, field.Mask << field.Position, "conditional field");
                 var iCond = field.Read(u);
                 var cond = conds[iCond];
                 if (cond == null)
@@ -404,6 +426,80 @@ namespace Reko.Arch.PaRisc
             ConditionOperand.Ge,
             ConditionOperand.Even,
         });
+
+        private static Mutator<PaRiscDisassembler> cf16_add_3 = cf(16, 3, new[]
+        {
+            ConditionOperand.Never,
+            ConditionOperand.Eq,
+            ConditionOperand.Lt,
+            ConditionOperand.Le,
+            ConditionOperand.Nuv,
+            ConditionOperand.Znv,
+            ConditionOperand.Sv,
+            ConditionOperand.Odd
+        });
+
+        private static Mutator<PaRiscDisassembler> cf16_add_3_neg = cf(16, 3, new[]
+        {
+            ConditionOperand.Tr,
+            ConditionOperand.Ne,
+            ConditionOperand.Ge,
+            ConditionOperand.Gt,
+            ConditionOperand.Uv,
+            ConditionOperand.Vnz,
+            ConditionOperand.Nsv,
+            ConditionOperand.Even
+        });
+
+        private static Mutator<PaRiscDisassembler> cf16_add_3_64 = cf(16, 3, new[]
+        {
+            ConditionOperand.Never,
+            ConditionOperand.Eq,   
+            ConditionOperand.Lt,   
+            ConditionOperand.Le,   
+            ConditionOperand.Nuv,  
+            ConditionOperand.Eq64, 
+            ConditionOperand.Lt64, 
+            ConditionOperand.Le64, 
+        });
+
+        private static Mutator<PaRiscDisassembler> cf16_add_3_neg_64 = cf(16, 3, new[]
+        {
+            ConditionOperand.Tr,
+            ConditionOperand.Ne,
+            ConditionOperand.Ge,
+            ConditionOperand.Gt,
+            ConditionOperand.Uv,
+            ConditionOperand.Ne64,
+            ConditionOperand.Ge64,
+            ConditionOperand.Gt64
+        });
+
+        private static bool cfadd_bitsize(uint uInstr, PaRiscDisassembler dasm)
+        {
+            if (dasm.is64bit)
+            {
+                return cf16_add_3_64(uInstr, dasm);
+            }
+            else
+            {
+                return cf16_add_3(uInstr, dasm);
+            }
+        }
+
+        private static bool cfadd_bitsize_neg(uint uInstr, PaRiscDisassembler dasm)
+        {
+            if (dasm.is64bit)
+            {
+                return cf16_add_3_neg_64(uInstr, dasm);
+            }
+            else
+            {
+                return cf16_add_3_neg(uInstr, dasm);
+            }
+        }
+
+
         private static readonly Mutator<PaRiscDisassembler> cf27_fp = cf(27, 5, new[]
         {
             new ConditionOperand(ConditionType.FpFalseQ, "false?"),
@@ -798,7 +894,7 @@ namespace Reko.Arch.PaRisc
         {
             public abstract PaRiscInstruction Decode(uint uInstr, PaRiscDisassembler dasm);
 
-            protected void DumpMaskedInstruction(uint wInstr, uint shMask, string tag)
+            public static void DumpMaskedInstruction(uint wInstr, uint shMask, string tag)
             {
                 var hibit = 0x80000000u;
                 var sb = new StringBuilder();
@@ -845,7 +941,7 @@ namespace Reko.Arch.PaRisc
                 }
                 return new PaRiscInstruction
                 {
-                    IClass = iclass,
+                    InstructionClass = iclass,
                     Opcode = opcode,
                     Coprocessor = dasm.coprocessor,
                     Condition = dasm.cond,
@@ -872,7 +968,7 @@ namespace Reko.Arch.PaRisc
 
             public override PaRiscInstruction Decode(uint uInstr, PaRiscDisassembler dasm)
             {
-                base.DumpMaskedInstruction(uInstr, bitfield.Mask << bitfield.Position, "");
+                DumpMaskedInstruction(uInstr, bitfield.Mask << bitfield.Position, "");
                 uint code = bitfield.Read(uInstr);
                 return decoders[code].Decode(uInstr, dasm);
             }
@@ -895,7 +991,7 @@ namespace Reko.Arch.PaRisc
 
             public override PaRiscInstruction Decode(uint uInstr, PaRiscDisassembler dasm)
             {
-                base.DumpMaskedInstruction(uInstr, field.Mask << field.Position, "");
+                DumpMaskedInstruction(uInstr, field.Mask << field.Position, "");
                 var u = field.Read(uInstr);
                 var cond = predicate(u);
                 var decoder = cond ? trueDecoder : falseDecoder;
@@ -929,7 +1025,7 @@ namespace Reko.Arch.PaRisc
                     });
                 return new PaRiscInstruction
                 {
-                    IClass = 0,
+                    InstructionClass = 0,
                     Opcode = mnemonic,
                     Operands = new MachineOperand[0]
                 };
@@ -1114,7 +1210,7 @@ namespace Reko.Arch.PaRisc
                         Nyi(Opcode.fldw, "(index)"),
                         Nyi(Opcode.fstw, "(index)")),
                     Mask(22, 1,
-                        Instr(Opcode.fldw, M(PrimitiveType.Real32, 6, BeFields((11,5)), low_sign_ext5), fr27),
+                        Instr(Opcode.fldw, M(PrimitiveType.Real32, 6, BeFields((11,5)), low_sign_ext5), fr27_24),
                         Instr(Opcode.fstw, fr27, M(PrimitiveType.Real32, 6, BeFields((11,5)), low_sign_ext5)))),
                 invalid);
             var copr = Mask(21, 2,
@@ -1134,7 +1230,7 @@ namespace Reko.Arch.PaRisc
             var floatDecoder = Mask(21, 2,
                 Nyi("FP 0E zero"),
                 Nyi("FP 0E one"),
-                Instr(Opcode.fcmp, cf27_fp, fr6_24,fr11_19),
+                Instr(Opcode.fcmp, cf27_fp, fr27_24,fr11_19),
                 Nyi("FP 0E three"));
             var productSpecific = Nyi("productSpecific");
             var subi = Mask(20, 1,
@@ -1221,10 +1317,10 @@ namespace Reko.Arch.PaRisc
                 Nyi(Opcode.fmpysub, ""),
                 invalid,
 
-                Nyi(Opcode.addb, ""),
-                Instr(Opcode.addib, CTD, s32(11,5),r6,PcRel(assemble_12, BeFields((19,11),(31,1))),Annul(30)),
-                Nyi(Opcode.addb, ""),
-                Instr(Opcode.addib, CTD, s32(11,5),r6,PcRel(assemble_12, BeFields((19,11),(31,1))),Annul(30)),
+                Instr(Opcode.addb, CTD, cf16_add_3, r11, r6,PcRel(assemble_12, BeFields((19,11),(31,1))), Annul(30)),
+                Instr(Opcode.addib, CTD, cfadd_bitsize, lse(11,5),r6,PcRel(assemble_12, BeFields((19,11),(31,1))),Annul(30)),
+                Instr(Opcode.addb, CTD, cf16_add_3_neg, r11, r6, PcRel(assemble_12, BeFields((19, 11), (31, 1))), Annul(30)),
+                Instr(Opcode.addib, CTD, cfadd_bitsize_neg, lse(11,5),r6,PcRel(assemble_12, BeFields((19,11),(31,1))),Annul(30)),
 
                 addit,
                 addi,
@@ -1235,7 +1331,7 @@ namespace Reko.Arch.PaRisc
                 Nyi(Opcode.bvb, ""),
                 Nyi(Opcode.bb, ""),
                 Instr(Opcode.movb, CTD, cf16_shext, r11,r6,PcRel(assemble_12, BeFields((19, 11), (31, 1))), Annul(30)),
-                Nyi(Opcode.movib, ""),
+                Instr(Opcode.movib, CTD, cf16_shext, lse(11,5),r6,PcRel(assemble_12, BeFields((19, 11), (31, 1))), Annul(30)),
 
                 extract,
                 deposit,

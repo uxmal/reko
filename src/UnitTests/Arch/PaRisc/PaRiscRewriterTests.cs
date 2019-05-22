@@ -232,8 +232,9 @@ namespace Reko.UnitTests.Arch.PaRisc
         {
             BuildTest("AFC1CFD5");  // addibf\t+00000001,r30,00101FB4
             AssertCode(
-                "0|TD-|00100000(4): 1 instructions",
-                "1|L--|r30 = r30 + 1");
+                "0|TD-|00100000(4): 2 instructions",
+                "1|L--|r30 = r30 + 1",
+                "2|TD-|goto 00101FB4");
         }
 
         [Test]
@@ -242,7 +243,7 @@ namespace Reko.UnitTests.Arch.PaRisc
             BuildTest("61716B15");  // stb\tr17,-2A76(r11)
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|Mem0[r11 + -2678:byte] = SLICE(r17, byte, 0)");
         }
 
         [Test]
@@ -251,7 +252,7 @@ namespace Reko.UnitTests.Arch.PaRisc
             BuildTest("656e6400");  // sth\tr14,1024(r11)
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[r11 + 0x4444:word16] = SLICE(r14, word16, 0)");
+                "1|L--|Mem0[r11 + 4608:word16] = SLICE(r14, word16, 0)");
         }
 
         [Test]
@@ -344,7 +345,18 @@ namespace Reko.UnitTests.Arch.PaRisc
                 "0|L--|00100000(4): 3 instructions",
                 "1|L--|v4 = r30 + 128",
                 "2|L--|r30 = v4",
-                "3|L--|Mem0[r30 + 128:word32] = v4");
+                "3|L--|Mem0[v4:word32] = r3");
+        }
+
+        [Test]
+        public void PaRiscRw_stw_mb()
+        {
+            BuildTest("6fc32100");  // stw,ma\tr3,128(r30)
+            AssertCode(
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v4 = r30 + 4224",
+                "2|L--|r30 = v4",
+                "3|L--|Mem0[v4:word32] = v3");
         }
 
         [Test]
@@ -397,10 +409,11 @@ namespace Reko.UnitTests.Arch.PaRisc
         [Test]
         public void PaRiscRw_addib()
         {
-            BuildTest("AC7F5FDD");	// addibf	+0000001F,r3,00003140
+            BuildTest("AC7F5FDD");	// addibf	-1,r3,00003140
             AssertCode(
-                "0|TD-|00100000(4): 1 instructions",
-                "1|L--|r3 = r3 + 31");
+                "0|TD-|00100000(4): 2 instructions",
+                "1|L--|r3 = r3 + -1",
+                "2|TD-|if (r3 >= 0x00000000) branch 000FFFF4");
         }
 
         [Test]
@@ -411,6 +424,31 @@ namespace Reko.UnitTests.Arch.PaRisc
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|r30 = r30 + -64",
                 "2|L--|r3 = Mem0[r30:word32]");
+        }
+
+        // If you're making a backward jump, annul the following instruction
+        // only if you don't take the branch back.
+        [Test]
+        public void PaRiscRw_addib_annul_back()
+        {
+            BuildTest("A45930FF"); //  "addib,=\t-00000004,r2,000FF884");
+            AssertCode(
+                "0|TD-|00100000(4): 3 instructions",
+                "1|L--|r2 = r2 + -4",
+                "2|T--|if (r2 != 0x00000000) branch 00100008",
+                "3|TD-|goto 000FF884");
+        }
+
+        // If you're making a forward jump, annul the following instruction
+        // only if you do take the branch forward.
+        [Test]
+        public void PaRiscRw_addib_annul_forward()
+        {
+            BuildTest("A459200A"); //  "addib,*=\t-00000004,r2,0010F7F0");
+            AssertCode(
+                "0|T--|00100000(4): 2 instructions",
+                "1|L--|r2 = r2 + -4",
+                "2|T--|if (r2 == 0x00000000) branch 0010000C");
         }
     }
 }

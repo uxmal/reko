@@ -91,7 +91,7 @@ namespace Reko.Core
         /// Creates an array of 32-bit registers.
         /// </summary>
         public RegisterStorage[] RangeOfReg32(int count, string format)
-            => RangeOfReg(count, n => string.Format(format, n), PrimitiveType .Word32);
+            => RangeOfReg(count, n => string.Format(format, n), PrimitiveType.Word32);
 
         /// <summary>
         /// Creates an array of 64-bit registers.
