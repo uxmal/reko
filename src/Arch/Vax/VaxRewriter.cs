@@ -62,9 +62,9 @@ namespace Reko.Arch.Vax
                 instr = dasm.Current;
                 var addr = this.instr.Address;
                 var len = this.instr.Length;
-                var rtlInstructions = new List<RtlInstruction>();
-                rtlc = this.instr.InstructionClass;
-                m = new RtlEmitter(rtlInstructions);
+                this.rtlInstructions = new List<RtlInstruction>();
+                this.rtlc = this.instr.InstructionClass;
+                this.m = new RtlEmitter(rtlInstructions);
                 switch (this.instr.Opcode)
                 {
                 default:
