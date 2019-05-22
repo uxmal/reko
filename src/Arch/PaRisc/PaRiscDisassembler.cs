@@ -252,8 +252,41 @@ namespace Reko.Arch.PaRisc
                 return true;
             };
         }
-        private static readonly Mutator<PaRiscDisassembler> fr27_24 = frsng((27, 5), (24,1));
+        private static readonly Mutator<PaRiscDisassembler> fr25_27 = frsng((25,1), (27, 5));
         private static readonly Mutator<PaRiscDisassembler> fr11_19 = frsng((27, 5), (19,1));
+
+        /// <summary>
+        /// Floating point register used in multiple operation instruction.
+        /// </summary>
+        private static Mutator<PaRiscDisassembler> fmo(int bitpos)
+        {
+            var field_dbl = BeField(bitpos, 5);
+            return (u, d) =>
+            {
+                var iReg = field_dbl.Read(u);
+                RegisterStorage freg;
+                if (d.fpFormat == FpFormat.dbl)
+                {
+                    freg = Registers.FpRegs[iReg];
+                }
+                else
+                {
+                    if (iReg == 0)
+                        return false;       // 16L is invalid according to HP.
+                    var bank = iReg & 0x10;
+                    iReg = (iReg & 0x0F) | 0x10;
+                    freg = Registers.FpRegs32[iReg | bank];
+                }
+                d.ops.Add(new RegisterOperand(freg));
+                return true;
+            };
+        }
+        private static Mutator<PaRiscDisassembler> fmo6 = fmo(6);
+        private static Mutator<PaRiscDisassembler> fmo11 = fmo(11);
+        private static Mutator<PaRiscDisassembler> fmo16 = fmo(16);
+        private static Mutator<PaRiscDisassembler> fmo21 = fmo(21);
+        private static Mutator<PaRiscDisassembler> fmo27 = fmo(27);
+
 
         /// <summary>
         /// Specific register.
@@ -498,7 +531,6 @@ namespace Reko.Arch.PaRisc
                 return cf16_add_3_neg(uInstr, dasm);
             }
         }
-
 
         private static readonly Mutator<PaRiscDisassembler> cf27_fp = cf(27, 5, new[]
         {
@@ -754,18 +786,27 @@ namespace Reko.Arch.PaRisc
         }
 
         // Set the 'fpFormat' completer
-        private static readonly Bitfield fpFmtField = BeField(19, 2);
-        private static readonly Dictionary<uint, FpFormat> fpFormats = new Dictionary<uint, FpFormat>
+        private static Mutator<PaRiscDisassembler> fpFmt(Bitfield field, FpFormat[] fpFormats)
         {
-            { 0, FpFormat.sgl },
-            { 1, FpFormat.dbl },
-            { 3, FpFormat.quad },
-        };
-        private static bool fpFmt(uint uInstr, PaRiscDisassembler dasm)
-        {
-            var uFormat = fpFmtField.Read(uInstr);
-            return fpFormats.TryGetValue(uFormat, out dasm.fpFormat);
+            return (uint uInstr, PaRiscDisassembler dasm) =>
+            {
+                {
+                    var uFormat = field.Read(uInstr);
+                    dasm.fpFormat = fpFormats[uFormat];
+                    return dasm.fpFormat != FpFormat.None;
+                };
+            };
         }
+        private static readonly Mutator<PaRiscDisassembler> fpFmt2 = fpFmt(BeField(19, 2), new[] {
+            FpFormat.sgl,
+            FpFormat.dbl,
+            FpFormat.None,
+            FpFormat.quad
+        });
+        private static readonly Mutator<PaRiscDisassembler> fpFmt1 = fpFmt(BeField(26, 1), new[] {
+            FpFormat.dbl,
+            FpFormat.sgl,
+        });
 
         private static bool Eq0(uint u) => u == 0;
         private static bool IsFpuProcessor(uint u) => (u & ~1) == 0;
@@ -1159,7 +1200,7 @@ namespace Reko.Arch.PaRisc
                 (0x33, Nyi(Opcode.subto, "")),
                 (0x14, Instr(Opcode.sub_b, cf16_cmpsub, r11,r6,r27)),
                 (0x34, Nyi(Opcode.subbo, "")),
-                (0x11, Nyi(Opcode.ds, "")),
+                (0x11, Instr(Opcode.ds, r11,r6,r27)),
                 (0x00, Nyi(Opcode.andcm, "")),
                 (0x08, Instr(Opcode.and, cf16_log,r11,r6,r27)),
                 (0x09, Instr(Opcode.or, cf16_log,r11,r6,r27)),
@@ -1180,7 +1221,7 @@ namespace Reko.Arch.PaRisc
                     (0x0, Instr(Opcode.ldb, Mx(PrimitiveType.Byte, 5, 11, 16), r27)),
                     (0x1, Instr(Opcode.ldh, Mx(PrimitiveType.Word16, 5, 11, 16), r27)),
                     (0x2, Instr(Opcode.ldw, Mx(PrimitiveType.Word32, 5, 11, 16), r27)),
-                    (0x3, Nyi(Opcode.ldd, "(index")),
+                    (0x3, Instr(Opcode.ldd, Mx(PrimitiveType.Word32, 5, 11, 16), r27)),
                     (0x4, Nyi(Opcode.ldda, "(index")),
                     (0x5, Nyi(Opcode.ldcd, "(index")),
                     (0x6, Nyi(Opcode.ldwa, "(index")),
@@ -1189,7 +1230,7 @@ namespace Reko.Arch.PaRisc
                     (0x0, Instr(Opcode.ldb, Mshort(PrimitiveType.Byte), r27)),
                     (0x1, Instr(Opcode.ldh, Mshort(PrimitiveType.Word16), r27)),
                     (0x2, Instr(Opcode.ldw, Mshort(PrimitiveType.Word32), r27)),
-                    (0x3, Nyi(Opcode.ldd, "(short")),
+                    (0x3, Instr(Opcode.ldd, Mshort(PrimitiveType.Word64), r27)),
                     (0x4, Nyi(Opcode.ldda, "(short")),
                     (0x5, Nyi(Opcode.ldcd, "(short")),
                     (0x6, Nyi(Opcode.ldwa, "(short")),
@@ -1197,30 +1238,52 @@ namespace Reko.Arch.PaRisc
                     (0x8, Instr(Opcode.stb, r27, Mshort(PrimitiveType.Byte))),
                     (0x9, Instr(Opcode.sth, r27, Mshort(PrimitiveType.Word16))),
                     (0xA, Instr(Opcode.stw, r27, Mshort(PrimitiveType.Word32))),
-                    (0xB, Nyi(Opcode.std, "(short")),
+                    (0xB, Instr(Opcode.std, r27, Mshort(PrimitiveType.Word32))),
                     (0xC, Nyi(Opcode.stby, "(short")),
                     (0xD, Nyi(Opcode.stdby, "(short")),
                     (0xE, Instr(Opcode.stwa, r27, Mshort(PrimitiveType.Word32))),
                     (0xF, Nyi(Opcode.stda, "(short"))));
 
-            var spopN = Nyi("spopN");
+            var spopN = Mask(21, 2,
+                Instr(Opcode.spop0, u(23, 3, PrimitiveType.UInt32), u(27, 5, PrimitiveType.UInt32), Annul(26)),
+                Instr(Opcode.spop1),
+                Instr(Opcode.spop2),
+                Instr(Opcode.spop3));
+
             var coprW = Cond(23, 3, IsFpuProcessor,
                 Mask(19, 1,
                     Mask(22, 1,
                         Nyi(Opcode.fldw, "(index)"),
                         Nyi(Opcode.fstw, "(index)")),
                     Mask(22, 1,
-                        Instr(Opcode.fldw, M(PrimitiveType.Real32, 6, BeFields((11,5)), low_sign_ext5), fr27_24),
-                        Instr(Opcode.fstw, fr27, M(PrimitiveType.Real32, 6, BeFields((11,5)), low_sign_ext5)))),
+                        Instr(Opcode.fldw, M(PrimitiveType.Real32, 6, BeFields((11,5)), low_sign_ext5), fr25_27),
+                        Instr(Opcode.fstw, fr25_27, M(PrimitiveType.Real32, 6, BeFields((11,5)), low_sign_ext5)))),
                 invalid);
             var copr = Mask(21, 2,
-                Nyi("FP 0C zero"),
-                Nyi("FP 0C one"),
+                Mask(16, 3,
+                    Nyi("fid"),
+                    invalid,
+                    Nyi("fcpy"),
+                    Nyi("fabs"),
+
+                    Nyi("fsqrt"),
+                    Nyi("frnd"),
+                    Nyi("fneg"),
+                    Nyi("fnegabs")),
+                Mask(16, 3,
+                    Nyi("fcnv: Convert from floating-point to floating - point"),
+                    Nyi("fcnv: Convert from fixed-point to floating-point"),
+                    Nyi("fcnv: Convert from floating - point to fixed-point"),
+                    Nyi("fcnv: Convert from floating - point to fixed-point with explicit round to zero rounding"),
+                    invalid,
+                    Nyi("fcnv: Convert from unsigned fixed-point to floating - point"),
+                    Nyi("fcnv: Convert from floating-point to unsigned fixed-point"),
+                    Nyi("fcnv: Convert from floating-point to unsigned fixed-point with explicit round to zero rounding")),
                 Nyi("FP 0C two"),
                 Mask(16, 3,
                     Nyi(Opcode.fadd, ""),
                     Nyi(Opcode.fsub, ""),
-                    Instr(Opcode.fmpy, fpFmt, fr6, fr11, fr27),
+                    Instr(Opcode.fmpy, fpFmt2, fr6, fr11, fr27),
                     Nyi(Opcode.fdiv, ""),
 
                     invalid,
@@ -1230,7 +1293,7 @@ namespace Reko.Arch.PaRisc
             var floatDecoder = Mask(21, 2,
                 Nyi("FP 0E zero"),
                 Nyi("FP 0E one"),
-                Instr(Opcode.fcmp, cf27_fp, fr27_24,fr11_19),
+                Instr(Opcode.fcmp, cf27_fp, fr25_27,fr11_19),
                 Nyi("FP 0E three"));
             var productSpecific = Nyi("productSpecific");
             var subi = Mask(20, 1,
@@ -1270,7 +1333,7 @@ namespace Reko.Arch.PaRisc
 
                 spopN,
                 Nyi(Opcode.diag, ""),
-                Nyi(Opcode.fmpyadd, ""),
+                Instr(Opcode.fmpyadd, fpFmt1, fmo6,fmo11,fmo27,fmo21,fmo16),
                 invalid,
 
                 Instr(Opcode.ldil, u(11, 21, PrimitiveType.Word32), r6),
@@ -1314,7 +1377,7 @@ namespace Reko.Arch.PaRisc
 
                 Nyi(Opcode.comiclr, ""),
                 subi,
-                Nyi(Opcode.fmpysub, ""),
+                Instr(Opcode.fmpysub, fpFmt1, fmo6,fmo11,fmo27,fmo21,fmo16),
                 invalid,
 
                 Instr(Opcode.addb, CTD, cf16_add_3, r11, r6,PcRel(assemble_12, BeFields((19,11),(31,1))), Annul(30)),

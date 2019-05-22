@@ -56,18 +56,11 @@ namespace Reko.Arch.PaRisc
                 return;
             writer.Tab();
             Operands[0].Write(writer, options);
-            if (Operands.Length == 1)
-                return;
-            writer.WriteChar(',');
-            Operands[1].Write(writer, options);
-            if (Operands.Length == 2)
-                return;
-            writer.WriteChar(',');
-            Operands[2].Write(writer, options);
-            if (Operands.Length == 3)
-                return;
-            writer.WriteChar(',');
-            Operands[3].Write(writer, options);
+            for (int i = 1; i < Operands.Length; ++i)
+            {
+                writer.WriteChar(',');
+                Operands[i].Write(writer, options);
+            }
         }
 
         private void WriteMnemonic(MachineInstructionWriter writer)

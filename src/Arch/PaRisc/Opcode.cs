@@ -149,5 +149,9 @@ namespace Reko.Arch.PaRisc
         fmpy,
         fdiv,
         fcmp,
+        spop0,
+        spop1,
+        spop2,
+        spop3,
     }
 }

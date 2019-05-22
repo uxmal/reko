@@ -172,7 +172,7 @@ namespace Reko.UnitTests.Arch.PaRisc
         [Test]
         public void PaRiscDis_sth()
         {
-            AssertCode("sth\tr14,1024(r11)", "656e6400");
+            AssertCode("sth\tr14,4608(r11)", "656e6400");
         }
 
         [Test]
@@ -226,13 +226,13 @@ namespace Reko.UnitTests.Arch.PaRisc
         [Test]
         public void PaRiscDis_fstw()
         {
-            AssertCode("fstw\tfr0,-4(r27)", "27791200");
+            AssertCode("fstw\tfr0L,-4(r27)", "27791200");
         }
 
         [Test]
-        public void PaRiscDis_fldw()
+        public void PaRiscDis_fldw_L()
         {
-            AssertCode("fldw\t-16(r24),fr7", "27011007");
+            AssertCode("fldw\t-16(r24),fr7L", "27011007");
         }
 
         [Test]
@@ -289,6 +289,7 @@ namespace Reko.UnitTests.Arch.PaRisc
         {
             AssertCode("stw,ma\tr3,128(r30)", "6fc35555");
         }
+
         [Test]
         public void PaRiscDis_ldb()
         {
@@ -320,15 +321,15 @@ namespace Reko.UnitTests.Arch.PaRisc
         }
 
         [Test]
-        public void PaRiscDis_27101005()
+        public void PaRiscDis_fldw_fr5L()
         {
-            AssertCode("fldw\t8(r24),fr5", "27101005");
+            AssertCode("fldw\t8(r24),fr5L", "27101005");
         }
 
         [Test]
-        public void PaRiscDis_27101045()
+        public void PaRiscDis_fldw_fr5R()
         {
-            AssertCode("fldw\t8(r24),fr5", "27101005");
+            AssertCode("fldw\t8(r24),fr5R", "27101045");
         }
 
         [Test]
@@ -340,7 +341,7 @@ namespace Reko.UnitTests.Arch.PaRisc
         [Test]
         public void PaRiscDis_fldw_24504c54()
         {
-            AssertCode("fldw\tr16(sr1,rp),fr20R", "24505054");
+            AssertCode("fldw\t8(r2),fr20R", "24505054");
         }
 
         [Test]
@@ -350,9 +351,9 @@ namespace Reko.UnitTests.Arch.PaRisc
         }
 
         [Test]
-        public void PaRiscDis_fmpy_dbl_2()
+        public void PaRiscDis_fmpy_sgl()
         {
-            AssertCode("fmpy_dbl\tfr10,fr4,fr24", "31444418");
+            AssertCode("fmpy,sg_dbl\tfr10,fr4,fr24", "31444418");
         }
 
         [Test]
@@ -368,9 +369,9 @@ namespace Reko.UnitTests.Arch.PaRisc
         }
 
         [Test]
-        public void PaRiscDis_spop0_0_4_10000004()
+        public void PaRiscDis_spop0()
         {
-            AssertCode("spop0_0_4\t", "10000004");
+            AssertCode("spop0\t00000007,0000001F", "100001DF");
         }
 
         [Test]
@@ -421,7 +422,7 @@ namespace Reko.UnitTests.Arch.PaRisc
         [Test]
         public void PaRiscDis_stw_mb()
         {
-            AssertCode("stw_mb\tr20,-4d8(r3)", "6c747451");
+            AssertCode("stw,mb\tr20,-1496(r3)", "6c747451");
         }
 
         [Test]
@@ -439,9 +440,8 @@ namespace Reko.UnitTests.Arch.PaRisc
         [Test]
         public void PaRiscDis_fmpyadd_dbl_1b8177db()
         {
-            AssertCode("fmpyadd_dbl\tfr28,fpe2,fr27,fr31,fr14", "1b8181db");
+            AssertCode("fmpyadd,dbl\tfr28,fr1,fr27,fr7,fr16", "1b8181db");
         }
-
 
         [Test]
         public void PaRiscDis_add_c()
@@ -500,20 +500,19 @@ namespace Reko.UnitTests.Arch.PaRisc
         [Test]
         public void PaRiscDis_movib()
         {
-            AssertCode("movib,ev\t8,r7,000FE874", "ccf0f0d9");
+            AssertCode("movib,ev\t+00000008,r7,000FE874", "ccf0f0d9");
         }
-
 
         [Test]
         public void PaRiscDis_fmpysub_sgl()
         {
-            AssertCode("fmpysub_sgl\tfr26,fr21,fr31,fr21,fr24", "9b55556f");
+            AssertCode("fmpysub,sgl\tfr26L,fr21L,fr31L,fr21L,fr26L", "9b55556f");
         }
 
         [Test]
         public void PaRiscDis_fmpysub_dbl()
         {
-            AssertCode("fmpysub_dbl\tfr26,fr21,fr7,fr22,fr8", "9b555587");
+            AssertCode("fmpysub,dbl\tfr26,fr21,fr7,fr22,fr10", "9b555587");
         }
 
         [Test]
@@ -600,7 +599,6 @@ namespace Reko.UnitTests.Arch.PaRisc
             AssertCode("addil\tL%-00080800,r27,r1", "2b7f7fff");
         }
 
-
         [Test]
         public void PaRiscDis_fcnvxf_sgl_dbl()
         {
@@ -616,7 +614,7 @@ namespace Reko.UnitTests.Arch.PaRisc
         [Test]
         public void PaRiscDis_fcnvfxt()
         {
-            AssertCode("fcnvfxt,dbl,sgl fr24, fr7", "33018a07");
+            AssertCode("fcnvfxt,dbl,sgl\tfr24,fr7", "33018a07");
         }
 
         [Test]

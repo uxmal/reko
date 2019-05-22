@@ -38,32 +38,9 @@ namespace Reko.Arch.PaRisc
             var reg = RewriteOp(instr.Operands[1]);
             m.Assign(reg, m.IAddS(reg, imm));
             var addrDest = ((AddressOperand) instr.Operands[2]).Address;
-            if (instr.Annul)
-            {
-                if (addrDest <= instr.Address)
-                {
-                    // We're jumping backward, so we annul the falling out of the loop.
-                    // Generate the jump out of the loop, without delay slot.
-                    MaybeConditionalJump(InstrClass.ConditionalTransfer, instr.Address + 8, true, reg);
-                    // Generate jump to top of loop, with delay slot.
-                    m.GotoD(addrDest);
-                }
-                else
-                {
-                    // We're jumping forward, so we annul only when the branch is taken. 
-                    // This is equivalent to a branch on a "normal" architecture with no
-                    // delay slots.
-                    MaybeConditionalJump(InstrClass.ConditionalTransfer, addrDest, false, reg);
-                    this.iclass = InstrClass.ConditionalTransfer;
-                }
-            }
-            else
-            {
-                MaybeConditionalJump(
-                    InstrClass.ConditionalTransfer|InstrClass.Delay,
-                    addrDest, false, reg);
-            }
+            MaybeBranchAndAnnul(addrDest, reg);
         }
+
 
         private void RewriteBranch()
         {
@@ -156,7 +133,36 @@ namespace Reko.Arch.PaRisc
         {
             var left = RewriteOp(instr.Operands[0]);
             var right = RewriteOp(instr.Operands[1]);
-            MaybeConditionalJump(iclass, ((AddressOperand)instr.Operands[2]).Address, false, left, right);
+            MaybeBranchAndAnnul(((AddressOperand)instr.Operands[2]).Address, left, right);
+        }
+
+        private void MaybeBranchAndAnnul(Address addrDest, Expression reg, Expression right = null)
+        {
+            if (instr.Annul)
+            {
+                if (addrDest <= instr.Address)
+                {
+                    // We're jumping backward, so we annul the falling out of the loop.
+                    // Generate the jump out of the loop, without delay slot.
+                    MaybeConditionalJump(InstrClass.ConditionalTransfer, instr.Address + 8, true, reg, right);
+                    // Generate jump to top of loop, with delay slot.
+                    m.GotoD(addrDest);
+                }
+                else
+                {
+                    // We're jumping forward, so we annul only when the branch is taken. 
+                    // This is equivalent to a branch on a "normal" architecture with no
+                    // delay slots.
+                    MaybeConditionalJump(InstrClass.ConditionalTransfer, addrDest, false, reg, right);
+                    this.iclass = InstrClass.ConditionalTransfer;
+                }
+            }
+            else
+            {
+                MaybeConditionalJump(
+                    InstrClass.ConditionalTransfer | InstrClass.Delay,
+                    addrDest, false, reg, right);
+            }
         }
     }
 }

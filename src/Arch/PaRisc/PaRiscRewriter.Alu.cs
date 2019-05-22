@@ -38,7 +38,10 @@ namespace Reko.Arch.PaRisc
             var src2 = RewriteOp(instr.Operands[1]);
             var dst = RewriteOp(instr.Operands[2]);
             m.Assign(dst, m.IAdd(src1, src2));
-            MaybeSkipNextInstruction(iclass, false, dst, null);
+            if (MaybeSkipNextInstruction(InstrClass.ConditionalTransfer, false, dst, null))
+            {
+                this.iclass = InstrClass.ConditionalTransfer;
+            }
         }
 
         private void RewriteAddi()
@@ -138,12 +141,17 @@ namespace Reko.Arch.PaRisc
             MaybeSkipNextInstruction(iclass, false, dst, null);
         }
 
-        private void RewriteFstw()
+        private void RewriteFldw()
         {
-            //$BUG: L and R
             var src = RewriteOp(instr.Operands[0]);
             var dst = RewriteOp(instr.Operands[1]);
-            src = m.Slice(dst.DataType, src, 0);
+            m.Assign(dst, src);
+        }
+
+        private void RewriteFstw()
+        {
+            var src = RewriteOp(instr.Operands[0]);
+            var dst = RewriteOp(instr.Operands[1]);
             m.Assign(dst, src);
         }
     }

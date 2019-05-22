@@ -80,6 +80,7 @@ namespace Reko.Arch.PaRisc
                 case Opcode.cmpb: RewriteCmpb(); break;
                 case Opcode.@break: RewriteBreak(); break;
                 case Opcode.extrw: RewriteExtrw(); break;
+                case Opcode.fldw: RewriteFldw(); break;
                 case Opcode.fstw: RewriteFstw(); break;
                 case Opcode.ldb: RewriteLd(PrimitiveType.Byte); break;
                 case Opcode.ldh: RewriteLd(PrimitiveType.Word16); break;
@@ -129,16 +130,16 @@ namespace Reko.Arch.PaRisc
             Console.WriteLine("");
         }
 
-        private void MaybeSkipNextInstruction(InstrClass iclass, bool invert, Expression left, Expression right = null)
+        private bool MaybeSkipNextInstruction(InstrClass iclass, bool invert, Expression left, Expression right = null)
         {
             var addrNext = instr.Address + 8;
-            MaybeConditionalJump(iclass, addrNext, invert, left, right);
+            return MaybeConditionalJump(iclass, addrNext, invert, left, right);
         }
 
-        private void MaybeConditionalJump(InstrClass iclass, Address addrTaken, bool invert, Expression left, Expression right = null)
+        private bool MaybeConditionalJump(InstrClass iclass, Address addrTaken, bool invert, Expression left, Expression right = null)
         {
             if (instr.Condition == null)
-                return;
+                return false;
 
             right = right ?? Constant.Word(left.DataType.BitSize, 0);
             Expression e;
@@ -146,7 +147,7 @@ namespace Reko.Arch.PaRisc
             {
             case ConditionType.Tr:
                 m.Goto(addrTaken);
-                return;
+                return true;
             case ConditionType.Eq: e = m.Eq(left, right); break;
             case ConditionType.Ne: e = m.Ne(left, right); break;
             case ConditionType.Lt: e = m.Lt(left, right); break;
@@ -169,6 +170,7 @@ namespace Reko.Arch.PaRisc
             if (invert)
                 e = e.Invert();
             m.Branch(e, addrTaken, iclass);
+            return true;
         }
 
         private Expression RewriteOp(MachineOperand op)
