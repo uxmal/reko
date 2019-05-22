@@ -38,15 +38,15 @@ namespace Reko.Arch.Arm.AArch32
 {
     public partial class ArmRewriter : IEnumerable<RtlInstructionCluster>
     {
-        private IProcessorArchitecture arch;
-        private EndianImageReader rdr;
-        private IRewriterHost host;
-        private IStorageBinder binder;
-        private IEnumerator<AArch32Instruction> dasm;
+        private readonly IProcessorArchitecture arch;
+        private readonly EndianImageReader rdr;
+        private readonly IRewriterHost host;
+        private readonly IStorageBinder binder;
+        private readonly IEnumerator<AArch32Instruction> dasm;
+        protected int pcValueOffset;        // The offset to add to the current instruction's address when reading the PC register. 
         protected AArch32Instruction instr;
         protected InstrClass rtlClass;
         protected RtlEmitter m;
-        protected int pcValueOffset;        // The offset to add to the current instruction's address when reading the PC register. 
 
         public ArmRewriter(Arm32Architecture arch, EndianImageReader rdr, IRewriterHost host, IStorageBinder binder) : this(arch, rdr, host, binder, new A32Disassembler(arch, rdr).GetEnumerator())
         {

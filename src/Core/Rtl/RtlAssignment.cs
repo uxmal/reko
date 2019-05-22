@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -35,8 +35,8 @@ namespace Reko.Core.Rtl
             this.Class = InstrClass.Linear;
         }
 
-        public Expression Dst { get; private set; }
-        public Expression Src { get; private set; }
+        public Expression Dst { get; }
+        public Expression Src { get; }
 
         public override T Accept<T>(RtlInstructionVisitor<T> visitor)
         {

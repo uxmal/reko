@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2019 John Källén.
  *
@@ -93,8 +93,6 @@ namespace Reko.Structure
             }
             stmts.RemoveAll(s => s == null);
         }
-
- 
 
         private AbsynFor TryRewriteWhileLoop(AbsynWhile whi, List<AbsynStatement> stmts, int i)
         {

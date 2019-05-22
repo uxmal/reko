@@ -32,14 +32,14 @@ namespace Reko.Arch.Pdp11
 {
     public partial class Pdp11Rewriter : IEnumerable<RtlInstructionCluster>
     {
-        private Pdp11Architecture arch;
-        private IEnumerator<Pdp11Instruction> dasm;
+        private readonly Pdp11Architecture arch;
+        private readonly IEnumerator<Pdp11Instruction> dasm;
+        private readonly IStorageBinder binder;
+        private readonly IRewriterHost host;
         private Pdp11Instruction instr;
-        private IStorageBinder binder;
         private InstrClass rtlc;
         private List<RtlInstruction> rtlInstructions;
         private RtlEmitter m;
-        private IRewriterHost host;
 
         public Pdp11Rewriter(
             Pdp11Architecture arch,

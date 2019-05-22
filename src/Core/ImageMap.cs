@@ -43,9 +43,9 @@ namespace Reko.Core
             this.Items = new BTreeDictionary<Address, ImageMapItem>(new ItemComparer());
         }
 
-        public Address BaseAddress { get; private set; }
+        public Address BaseAddress { get; }
 
-        public BTreeDictionary<Address, ImageMapItem> Items { get; private set; }
+        public BTreeDictionary<Address, ImageMapItem> Items { get; }
 
         /// <summary>
         /// Adds an image map item at the specified address. 

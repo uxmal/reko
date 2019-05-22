@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2019 John Källén.
+ * Copyright (C) 1999-2019 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -414,10 +414,10 @@ namespace Reko.Core
         public long ReadBeInt64() { return (long)ReadBeUInt64(); }
         public long ReadLeInt64() { return (long)ReadLeUInt64(); }
 
-        public ulong PeekLeUInt64(int offset) { return MemoryArea.ReadLeUInt64(bytes, off); }
-        public ulong PeekBeUInt64(int offset) { return MemoryArea.ReadBeUInt64(bytes, off); }
-        public long PeekLeInt64(int offset) { return (long)MemoryArea.ReadLeUInt64(bytes, off); }
-        public long PeekBeInt64(int offset) { return (long)MemoryArea.ReadBeUInt64(bytes, off); }
+        public ulong PeekLeUInt64(int offset) { return MemoryArea.ReadLeUInt64(bytes, off + offset); }
+        public ulong PeekBeUInt64(int offset) { return MemoryArea.ReadBeUInt64(bytes, off + offset); }
+        public long PeekLeInt64(int offset) { return (long)MemoryArea.ReadLeUInt64(bytes, off + offset); }
+        public long PeekBeInt64(int offset) { return (long)MemoryArea.ReadBeUInt64(bytes, off + offset); }
 
 
         public long Seek(long offset, SeekOrigin origin = SeekOrigin.Current)

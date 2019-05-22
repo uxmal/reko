@@ -1226,20 +1226,16 @@ namespace Reko.Scanning
 
         private SystemService MatchSyscallToService(RtlSideEffect side)
         {
-            var fn = side.Expression as Application;
-            if (fn == null)
+            if (!(side.Expression is Application fn))
                 return null;
-            var pc = fn.Procedure as ProcedureConstant;
-            if (pc == null)
+            if (!(fn.Procedure is ProcedureConstant pc))
                 return null;
-            var ppp = pc.Procedure as PseudoProcedure;
-            if (ppp == null)
+            if (!(pc.Procedure is PseudoProcedure ppp))
                 return null;
             if (ppp.Name != PseudoProcedure.Syscall || fn.Arguments.Length == 0)
                 return null;
 
-            var vector = fn.Arguments[0] as Constant;
-            if (vector == null)
+            if (!(fn.Arguments[0] is Constant vector))
                 return null;
             var svc = program.Platform.FindService(vector.ToInt32(), state);
             //$TODO if SVC uis null (and not-speculating) report the error.

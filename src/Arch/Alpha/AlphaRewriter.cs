@@ -19,16 +19,16 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Operators;
 using Reko.Core.Rtl;
-using System.Collections.Generic;
+using Reko.Core.Types;
 using System;
 using System.Collections;
-using Reko.Core.Machine;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Reko.Core.Expressions;
-using Reko.Core.Types;
-using Reko.Core.Operators;
 
 namespace Reko.Arch.Alpha
 {

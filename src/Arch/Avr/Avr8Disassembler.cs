@@ -307,26 +307,6 @@ namespace Reko.Arch.Avr
             };
         }
 
-        private MachineOperand IncDec(bool inc, char cReg)
-        {
-            RegisterStorage reg;
-            switch (cReg)
-            {
-            case 'X': reg = Avr8Architecture.x; break;
-            case 'Y': reg = Avr8Architecture.y; break;
-            case 'Z': reg = Avr8Architecture.z; break;
-            default: Debug.Assert(false, "Must be X, Y, or Z");
-                reg = null;
-                break;
-            }
-            return new MemoryOperand(PrimitiveType.Byte)
-            {
-                Base = reg,
-                PostIncrement = inc,
-                PreDecrement = !inc,
-            };
-        }
-
         private short Displacement(ushort wInstr)
         {
             var d = 

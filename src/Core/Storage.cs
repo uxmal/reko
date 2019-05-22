@@ -42,14 +42,30 @@ namespace Reko.Core
         }
 
         public string Kind { get; private set; }
+
+        /// <summary>
+        /// The storage domain for this storage. 
+        /// </summary>
         public StorageDomain Domain { get; set; }
+
+        /// <summary>
+        /// The starting bit position of this storage.
+        /// </summary>
         public ulong BitAddress { get; set; }
+
+        /// <summary>
+        /// Size of this storage, in bits.
+        /// </summary>
         public virtual ulong BitSize { get; set; }
+
         /// <summary>
         /// The size and domain of the storage.
         /// </summary>
         public DataType DataType { get; }
 
+        /// <summary>
+        /// The name of this storage.
+        /// </summary>
         public string Name { get; protected set; }
 
         public abstract int OffsetOf(Storage storage);
@@ -96,7 +112,15 @@ namespace Reko.Core
             this.Name = name;
         }
 
+        /// <summary>
+        /// The architectural register in which the flag group bits are
+        /// located.
+        /// </summary>
         public RegisterStorage FlagRegister { get; private set; }
+
+        /// <summary>
+        /// Combined bit mask of the flag group bits.
+        /// </summary>
         public uint FlagGroupBits { get; private set; }
 
         public override T Accept<T>(StorageVisitor<T> visitor)
@@ -420,9 +444,7 @@ namespace Reko.Core
             writer.Write(Name);
         }
 
-        public static RegisterStorage None => none;
-
-        private static RegisterStorage none =
+        public static RegisterStorage None { get; } = 
             new RegisterStorage("None", -1, 0, PrimitiveType.Create(Types.Domain.Any, 0))
             {
                 Domain = StorageDomain.None,
