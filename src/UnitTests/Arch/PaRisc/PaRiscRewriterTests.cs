@@ -140,10 +140,10 @@ namespace Reko.UnitTests.Arch.PaRisc
         [Test]
         public void PaRiscRw_ldx_short()
         {
-            BuildTest("0EC41093");  // ldw\t4(sr0,r22),r19
+            BuildTest("0EC41093");  // ldw\t2(sr0,r22),r19
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r19 = Mem0[r27 + 4:word32]");
+                "1|L--|r19 = Mem0[r22 + 2:word32]");
         }
 
         [Test]
@@ -364,8 +364,8 @@ namespace Reko.UnitTests.Arch.PaRisc
         {
             BuildTest("6FC35555");  // stw,ma\tr3,128(r30)
             AssertCode(
-                "0|L--|00100000(4): 3 instructions",
-                "1|L--|@@@",
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|r30 = r30 + -5464",
                 "2|L--|@@@",
                 "3|L--|@@@");
         }
@@ -385,7 +385,7 @@ namespace Reko.UnitTests.Arch.PaRisc
             BuildTest("0f201212");  // stb\tr0,9(r25)
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[r25 + 9:byte] = SLICE(r18, byte, 0)");
+                "1|L--|Mem0[r25 + 9:byte] = SLICE(r0, byte, 0)");
         }
 
         [Test]

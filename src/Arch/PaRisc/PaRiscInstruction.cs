@@ -33,9 +33,10 @@ namespace Reko.Arch.PaRisc
         public int Coprocessor { get; set; }
         public bool Zero { get; set; }
         public SignExtension Sign { get; set; }
-        public BaseRegMod BaseReg { get; set; }
+        public AddrRegMod BaseReg { get; set; }
         public bool Annul { get; set; }
         public FpFormat FpFmt { get; set; }
+        public CacheHint CacheHint { get; set; }
 
         public ConditionOperand Condition { get; set; }
         public MachineOperand[] Operands { get; set; }
@@ -67,6 +68,8 @@ namespace Reko.Arch.PaRisc
         {
             var sb = new StringBuilder();
             sb.Append(Opcode.ToString().Replace('_',','));
+            if (Coprocessor != -1)
+                sb.AppendFormat(",{0}", Coprocessor);
             if (FpFmt != FpFormat.None)
                 sb.AppendFormat(",{0}", FpFmt);
             if (Zero)
@@ -75,8 +78,10 @@ namespace Reko.Arch.PaRisc
                 sb.AppendFormat(",{0}", Sign);
             if (Condition != null)
                 sb.AppendFormat(",{0}", Condition.Display);
-            if (BaseReg != BaseRegMod.None)
-                sb.AppendFormat(",{0}", BaseReg);
+            if (BaseReg != AddrRegMod.None)
+                sb.AppendFormat(",{0}", BaseReg.ToString().Replace('_',','));
+            if (CacheHint != CacheHint.None)
+                sb.AppendFormat(",{0}", CacheHint);
             if (Annul)
                 sb.Append(",n");
             writer.WriteOpcode(sb.ToString());
@@ -88,13 +93,23 @@ namespace Reko.Arch.PaRisc
         None, s, u
     }
 
-    public enum BaseRegMod
+    public enum AddrRegMod
     {
-        None, ma, mb, o
+        None,
+        ma, mb, o,
+        m, s, sm,
+        b_m, e, e_m,
     }
 
     public enum FpFormat
     {
         None, sgl,dbl,quad 
+    }
+
+    public enum CacheHint
+    {
+        None,
+        sl,     // Spatial locality
+        bc,     // Block copy
     }
 }

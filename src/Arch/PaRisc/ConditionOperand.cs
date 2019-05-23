@@ -89,5 +89,10 @@ namespace Reko.Arch.PaRisc
         public static readonly ConditionOperand Nsv64 = new ConditionOperand(ConditionType.Nsv64, "*nsv");
         public static readonly ConditionOperand Even64 = new ConditionOperand(ConditionType.Even64, "*ev");
 
+        public static readonly ConditionOperand Ult64 = new ConditionOperand(ConditionType.Ult64, "*<<");
+        public static readonly ConditionOperand Ule64 = new ConditionOperand(ConditionType.Ule64, "*<<=");
+        public static readonly ConditionOperand Uge64 = new ConditionOperand(ConditionType.Uge64, "*>>=");
+        public static readonly ConditionOperand Ugt64 = new ConditionOperand(ConditionType.Ugt64, "*>>");
+
     }
 }

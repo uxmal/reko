@@ -152,11 +152,14 @@ namespace Reko.Arch.PaRisc
             case ConditionType.Ne: e = m.Ne(left, right); break;
             case ConditionType.Lt: e = m.Lt(left, right); break;
             case ConditionType.Le: e = m.Le(left, right); break;
-            case ConditionType.Ge: e = m.Ge(left, right); break;
+            case ConditionType.Ge:
+            case ConditionType.Ge64: e = m.Ge(left, right); break;
             case ConditionType.Gt: e = m.Gt(left, right); break;
             case ConditionType.Ult: e = m.Ult(left, right); break;
             case ConditionType.Ule: e = m.Ule(left, right); break;
-            case ConditionType.Uge: e = m.Uge(left, right); break;
+            case ConditionType.Uge:
+            case ConditionType.Uge64:
+                e = m.Uge(left, right); break;
             case ConditionType.Ugt: e = m.Ugt(left, right); break;
             case ConditionType.Nuv:
             case ConditionType.Nuv64:
@@ -164,6 +167,9 @@ namespace Reko.Arch.PaRisc
             case ConditionType.Nsv:
                 //$TODO: need signed minus/unsigned minus.
                 e = m.Test(ConditionCode.OV, m.ISub(left, right)); break;
+            case ConditionType.Even:
+            case ConditionType.Even64:
+                e = m.Eq0(m.And(left, 1)); break;
             default:
             throw new NotImplementedException(instr.Condition.ToString());
             }
@@ -200,12 +206,12 @@ namespace Reko.Arch.PaRisc
                 {
                     ea = m.IAddS(ea, mem.Offset);
                 }
-                if (instr.BaseReg == BaseRegMod.mb)
+                if (instr.BaseReg == AddrRegMod.mb)
                 {
                     m.Assign(rb, ea);
                     ea = rb;
                 }
-                else if (instr.BaseReg == BaseRegMod.ma)
+                else if (instr.BaseReg == AddrRegMod.ma)
                 {
                     var tmp = binder.CreateTemporary(rb.DataType);
                     m.Assign(tmp, ea);

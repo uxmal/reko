@@ -63,7 +63,7 @@ namespace Reko.Arch.PaRisc
             {
                 sb.AppendFormat("{0}(", Offset, Base.Name);
             }
-            if (Space != null)
+            if (Space != null && Space != Registers.SpaceRegs[0])
                 sb.AppendFormat("{0},", Space.Name);
             sb.AppendFormat("{0})", Base.Name);
             writer.WriteString(sb.ToString());

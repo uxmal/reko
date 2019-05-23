@@ -57,6 +57,10 @@ namespace Reko.Arch.PaRisc
         Vnz64,
         Nsv64,
         Even64,
+        Ult64,
+        Ule64,
+        Uge64,
+        Ugt64,
 
         FpFalseQ,
         FpFalse,

@@ -51,9 +51,10 @@ namespace Reko.Arch.PaRisc
         private bool zero;
         private SignExtension signExtend;
         private ConditionOperand cond;
-        private BaseRegMod addrMod;
+        private AddrRegMod addrMod;
         private int coprocessor;
         private FpFormat fpFormat;
+        private CacheHint cacheHint;
 
         public PaRiscDisassembler(PaRiscArchitecture arch, EndianImageReader rdr)
         {
@@ -73,8 +74,9 @@ namespace Reko.Arch.PaRisc
             this.signExtend = 0;
             this.cond = null;
             this.coprocessor = -1;
-            this.addrMod = BaseRegMod.None;
+            this.addrMod = AddrRegMod.None;
             this.fpFormat = FpFormat.None;
+            this.cacheHint = CacheHint.None;
 
             if (!rdr.TryReadBeUInt32(out uint uInstr))
                 return null;
@@ -86,7 +88,7 @@ namespace Reko.Arch.PaRisc
         }
 
         /// <summary>
-        /// Create a Reko bitfield using PA Risc bit position + bit length.
+        /// Create a Reko bitfield using PA Risc bit position and bit length.
         /// </summary>
         /// <remarks>
         /// PA Risc instruction bits are numbered from the MSB to LSB, but 
@@ -100,6 +102,15 @@ namespace Reko.Arch.PaRisc
         private static Bitfield[] BeFields(params (int bitPos, int bitLength)[] flds)
         {
             return flds.Select(f => BeField(f.bitPos, f.bitLength)).ToArray();
+        }
+
+        /// <summary>
+        /// Tests if the bit at big-endian position <paramref name="bitPos"/> of the word 
+        /// <paramref name="u"/> is set.
+        /// </summary>
+        private static bool BeBitSet(uint u, int bitPos)
+        {
+            return Bits.IsBitSet(u, 31 - bitPos);
         }
 
         /// <summary>
@@ -268,9 +279,10 @@ namespace Reko.Arch.PaRisc
                 return true;
             };
         }
+        private static readonly Mutator<PaRiscDisassembler> fr6_25 = frsng((6, 5), (25,1));
+        private static readonly Mutator<PaRiscDisassembler> fr11_19 = frsng((11, 5), (19,1));
         private static readonly Mutator<PaRiscDisassembler> fr25_27 = frsng((25,1), (27, 5));
-        private static readonly Mutator<PaRiscDisassembler> fr11_19 = frsng((27, 5), (19,1));
-
+        
         /// <summary>
         /// Floating point register used in multiple operation instruction.
         /// </summary>
@@ -369,7 +381,8 @@ namespace Reko.Arch.PaRisc
                 return true;
             };
         }
-        private static Mutator<PaRiscDisassembler> cf16_cmpsub = cf(16, 4, new[]
+        // Table D-3 in PA-RISC 2.0 Manual
+        private static Mutator<PaRiscDisassembler> cf16_cmpsub_32 = cf(16, 4, new[]
         {
             ConditionOperand.Never,
             ConditionOperand.Tr,
@@ -391,7 +404,31 @@ namespace Reko.Arch.PaRisc
             ConditionOperand.Odd,
             ConditionOperand.Even,
         });
-        private static Mutator<PaRiscDisassembler> cf16_add = cf(16, 4, new[]
+        // Table D-4 in PA-RISC 2.0 Manual
+        private static Mutator<PaRiscDisassembler> cf16_cmpsub_64 = cf(16, 4, new[]
+        {
+            ConditionOperand.Never64,
+            ConditionOperand.Tr64,
+            ConditionOperand.Eq64,
+            ConditionOperand.Ne64,
+
+            ConditionOperand.Lt64,
+            ConditionOperand.Ge64,
+            ConditionOperand.Le64,
+            ConditionOperand.Gt64,
+
+            ConditionOperand.Ult64,
+            ConditionOperand.Uge64,
+            ConditionOperand.Ule64,
+            ConditionOperand.Ugt64,
+
+            ConditionOperand.Sv64,
+            ConditionOperand.Nsv64,
+            ConditionOperand.Odd64,
+            ConditionOperand.Even64,
+        });
+
+        private static Mutator<PaRiscDisassembler> cf16_add_32 = cf(16, 4, new[]
         {
             ConditionOperand.Never,
             ConditionOperand.Tr,
@@ -413,7 +450,7 @@ namespace Reko.Arch.PaRisc
             ConditionOperand.Odd,
             ConditionOperand.Even,
         });
-        private static Mutator<PaRiscDisassembler> cf16_add64 = cf(16, 4, new[]
+        private static Mutator<PaRiscDisassembler> cf16_add_64 = cf(16, 4, new[]
         {
             ConditionOperand.Never64,
             ConditionOperand.Tr64,
@@ -435,7 +472,7 @@ namespace Reko.Arch.PaRisc
             ConditionOperand.Odd64,
             ConditionOperand.Even64,
         });
-        private static Mutator<PaRiscDisassembler> cf16_log = cf(16, 4, new[]
+        private static Mutator<PaRiscDisassembler> cf16_log_32 = cf(16, 4, new[]
         {
             ConditionOperand.Never,
             ConditionOperand.Tr,
@@ -457,6 +494,57 @@ namespace Reko.Arch.PaRisc
             ConditionOperand.Odd,
             ConditionOperand.Even,
         });
+        private static Mutator<PaRiscDisassembler> cf16_log_64 = cf(16, 4, new[]
+        {
+            ConditionOperand.Never64,
+            ConditionOperand.Tr64,
+            ConditionOperand.Eq64,
+            ConditionOperand.Ne64,
+
+            ConditionOperand.Lt64,
+            ConditionOperand.Ge64,
+            ConditionOperand.Le64,
+            ConditionOperand.Gt64,
+
+            null,
+            null,
+            null,
+            null,
+
+            null,
+            null,
+            ConditionOperand.Odd64,
+            ConditionOperand.Even64,
+        });
+
+        private static Mutator<PaRiscDisassembler> cf_add()
+        {
+            return (u, d) =>
+            {
+                var is64bit = BeBitSet(u, 26);
+                var fn = is64bit ? cf16_add_64 : cf16_add_32;
+                return fn(u, d);
+            };
+        }
+        private static Mutator<PaRiscDisassembler> cf_log()
+        {
+            return (u, d) =>
+            {
+                var is64bit = BeBitSet(u, 26);
+                var fn = is64bit ? cf16_log_64 : cf16_log_32;
+                return fn(u, d);
+            };
+        }
+        private static Mutator<PaRiscDisassembler> cf_cmpsub()
+        {
+            return (u, d) =>
+            {
+                var is64bit = BeBitSet(u, 26);
+                var fn = is64bit ? cf16_cmpsub_64 : cf16_cmpsub_32;
+                return fn(u, d);
+            };
+        }
+
         private static Mutator<PaRiscDisassembler> cf16_cmp32_t = cf(16, 3, new[]
         {
             ConditionOperand.Never,
@@ -481,6 +569,31 @@ namespace Reko.Arch.PaRisc
             ConditionOperand.Nsv,
             ConditionOperand.Even,
         });
+        private static Mutator<PaRiscDisassembler> cf16_cmp64_t = cf(16, 3, new[]
+{
+            ConditionOperand.Never,
+            ConditionOperand.Eq64,
+            ConditionOperand.Lt64,
+            ConditionOperand.Le64,
+
+            ConditionOperand.Ult64,
+            ConditionOperand.Ule64,
+            ConditionOperand.Sv64,
+            ConditionOperand.Odd64,
+        });
+        private static Mutator<PaRiscDisassembler> cf16_cmp64_f = cf(16, 3, new[]
+        {
+            ConditionOperand.Tr64,
+            ConditionOperand.Ne64,
+            ConditionOperand.Ge64,
+            ConditionOperand.Gt64,
+
+            ConditionOperand.Uge64,
+            ConditionOperand.Ugt64,
+            ConditionOperand.Nsv64,
+            ConditionOperand.Even64,
+        });
+
         private static Mutator<PaRiscDisassembler> cf16_shext = cf(16, 3, new[]
         {
             ConditionOperand.Never,
@@ -543,7 +656,7 @@ namespace Reko.Arch.PaRisc
         });
 
         // Table D-15 of PA-RISC 2.0 manual
-        private static Mutator<PaRiscDisassembler> cf16_bb_1 = cf(16, 3, new[]
+        private static readonly Mutator<PaRiscDisassembler> cf16_bb_1 = cf(16, 3, new[]
         {
             null,
             null,
@@ -555,6 +668,20 @@ namespace Reko.Arch.PaRisc
             ConditionOperand.Ge,
             ConditionOperand.Ge64,
         });
+
+        private static readonly Mutator<PaRiscDisassembler> cf16_sh_ex_dp_3 = cf(16, 3, new[]
+        {
+            ConditionOperand.Never64,
+            ConditionOperand.Eq64,
+            ConditionOperand.Lt64,
+            ConditionOperand.Odd64,
+
+            ConditionOperand.Tr64,
+            ConditionOperand.Ne64,
+            ConditionOperand.Ge64,
+            ConditionOperand.Even64,
+        });
+
         private static bool cfadd_bitsize(uint uInstr, PaRiscDisassembler dasm)
         {
             if (dasm.is64bit)
@@ -653,40 +780,81 @@ namespace Reko.Arch.PaRisc
                 var iBaseReg = baseRegField.Read(u);
                 var am = Bitfield.ReadFields(amFields, u);
                 d.addrMod = disp > 0
-                    ? BaseRegMod.ma
-                    : BaseRegMod.mb;
+                    ? AddrRegMod.ma
+                    : AddrRegMod.mb;
                 d.ops.Add(MemoryOperand.Indirect(dt, disp, Registers.GpRegs[iBaseReg]));
                 return true;
             };
         }
 
-        private static readonly BaseRegMod[] baseRegMods = new[]
+        // Table H-1 in PA-RISC 2.0 manual
+        private static readonly AddrRegMod[] baseRegMods = new[]
         {
-            BaseRegMod.None,
-            BaseRegMod.ma,
-            BaseRegMod.None,
-            BaseRegMod.mb
+            AddrRegMod.None,
+            AddrRegMod.ma,
+            AddrRegMod.None,
+            AddrRegMod.mb
         };
+
+        // Table H-1 in PA-RISC 2.0 manual
+        private static readonly AddrRegMod[] indexRegMods = new[]
+        {
+            AddrRegMod.None,
+            AddrRegMod.m,       // Modify base register
+            AddrRegMod.s,       // Pre-shift index register by data size
+            AddrRegMod.sm,      // Pre-shift index register and modify base register.
+        };
+
+        // Table 7-7 in PA-RISC 2.0. manual
+        private static readonly AddrRegMod[] stbyMods = new[]
+        {
+            AddrRegMod.None,
+            AddrRegMod.b_m,     // Begin case, modify baseregister
+            AddrRegMod.e,       // End case
+            AddrRegMod.e_m,     // End case, modify base register.
+        };
+
+
         private static readonly Bitfield[] amFields = BeFields((18, 1), (26, 1));
 
         /// <summary>
         /// Register indirect with short displacement with space register
+        /// _OR_
+        /// Register indexed indirect.
         /// </summary>
-        private static Mutator<PaRiscDisassembler> Mshort(int dispFieldPos, PrimitiveType dt)
+        private static Mutator<PaRiscDisassembler> Mshort(int dispFieldPos, PrimitiveType dt, AddrRegMod[] baseRegMods = null)
         {
             var dispField = BeField(dispFieldPos, 5);
             var baseRegField = BeField(6, 5);
             var spaceRegField = BeField(16, 2);
+            baseRegMods = baseRegMods ?? PaRiscDisassembler.baseRegMods;
             return (u, d) =>
             {
-                var disp = low_sign_ext(dispField, u);
                 var iBaseReg = baseRegField.Read(u);
+                var baseReg = Registers.GpRegs[iBaseReg];
                 var iSpaceReg = spaceRegField.Read(u);
-                var am = Bitfield.ReadFields(amFields, u);
-                d.addrMod =  (am == 1 && disp == 0)
-                    ? BaseRegMod.o
-                    : baseRegMods[am];
-                d.ops.Add(MemoryOperand.Indirect(dt, disp, Registers.GpRegs[iBaseReg], Registers.SpaceRegs[iSpaceReg]));
+                var spaceReg = Registers.SpaceRegs[iSpaceReg];
+                MemoryOperand mem;
+                if (BeBitSet(u, 19))
+                {
+                    // Short displacement
+                    var disp = low_sign_ext(dispField, u);
+                    var am = Bitfield.ReadFields(amFields, u);
+                    d.addrMod = (am == 1 && disp == 0)
+                        ? AddrRegMod.o
+                        : baseRegMods[am];
+                    mem = MemoryOperand.Indirect(dt, disp, baseReg, spaceReg);
+                }
+                else
+                {
+                    // Index
+                    var iIndexReg = dispField.Read(u);
+                    var indexReg = Registers.GpRegs[iIndexReg];
+                    var um = Bitfield.ReadFields(amFields, u);
+                    d.addrMod = indexRegMods[um];
+                    mem = MemoryOperand.Indexed(dt, baseReg, indexReg, spaceReg);
+                }
+                d.ops.Add(mem);
                 return true;
             };
         }
@@ -706,7 +874,7 @@ namespace Reko.Arch.PaRisc
                 var iSpaceReg = spaceRegField.Read(u);
                 var am = Bitfield.ReadFields(amFields, u);
                 d.addrMod = (am == 1 && disp == 0)
-                    ? BaseRegMod.o
+                    ? AddrRegMod.o
                     : baseRegMods[am];
                 d.ops.Add(MemoryOperand.Indirect(dt, disp, Registers.GpRegs[iBaseReg], Registers.SpaceRegs[iSpaceReg]));
                 return true;
@@ -759,10 +927,8 @@ namespace Reko.Arch.PaRisc
                 var iBaseReg = baseRegField.Read(u);
                 var iIdxReg = idxRegField.Read(u);
                 var iSpaceRegField = spaceRegField.Read(u);
-                var am = Bitfield.ReadFields(amFields, u);
-                d.addrMod = (am == 1 && iIdxReg == 0)
-                    ? BaseRegMod.o
-                    : baseRegMods[am];
+                var um = Bitfield.ReadFields(amFields, u);
+                d.addrMod = indexRegMods[um];
                 d.ops.Add(MemoryOperand.Indexed(dt, Registers.GpRegs[iBaseReg], Registers.GpRegs[iIdxReg], Registers.SpaceRegs[iSpaceRegField]));
                 return true;
             };
@@ -808,6 +974,36 @@ namespace Reko.Arch.PaRisc
             };
         }
 
+        /// <summary>
+        /// Cache control hint completer.
+        /// </summary>
+        private static Mutator<PaRiscDisassembler> cc(int bitpos, CacheHint[] cacheHints)
+        {
+            var ccField = BeField(bitpos, 2);
+            return (u, d) =>
+            {
+                var cc = ccField.Read(u);
+                d.cacheHint = cacheHints[cc];
+                return true;
+            };
+        }
+
+        private static readonly Mutator<PaRiscDisassembler> cc_loads = cc(20, new[]
+        {
+            CacheHint.None,
+            CacheHint.None, // Reserved treated as None
+            CacheHint.sl,
+            CacheHint.None, // Reserved treated as None
+        });
+
+        private static readonly Mutator<PaRiscDisassembler> cc_stores = cc(20, new[]
+        {
+            CacheHint.None,
+            CacheHint.bc,
+            CacheHint.sl,
+            CacheHint.None, // Reserved treated as None
+        });
+
         // Set the 'z' completer
         private static Mutator<PaRiscDisassembler> z(int bitPos)
         {
@@ -837,11 +1033,10 @@ namespace Reko.Arch.PaRisc
         {
             return (uint uInstr, PaRiscDisassembler dasm) =>
             {
-                {
-                    var uFormat = field.Read(uInstr);
-                    dasm.fpFormat = fpFormats[uFormat];
-                    return dasm.fpFormat != FpFormat.None;
-                };
+                Decoder.DumpMaskedInstruction(uInstr, field.Mask << field.Position, "FP format completer");
+                var uFormat = field.Read(uInstr);
+                dasm.fpFormat = fpFormats[uFormat];
+                return dasm.fpFormat != FpFormat.None;
             };
         }
         private static readonly Mutator<PaRiscDisassembler> fpFmt2 = fpFmt(BeField(19, 2), new[] {
@@ -851,6 +1046,10 @@ namespace Reko.Arch.PaRisc
             FpFormat.quad
         });
         private static readonly Mutator<PaRiscDisassembler> fpFmt1 = fpFmt(BeField(26, 1), new[] {
+            FpFormat.dbl,
+            FpFormat.sgl,
+        });
+        private static readonly Mutator<PaRiscDisassembler> fpFmt20_1 = fpFmt(BeField(20, 1), new[] {
             FpFormat.dbl,
             FpFormat.sgl,
         });
@@ -1033,7 +1232,10 @@ namespace Reko.Arch.PaRisc
                 foreach (var m in mutators)
                 {
                     if (!m(uInstr, dasm))
+                    {
+                        dasm.coprocessor = -1;
                         return invalid.Decode(uInstr, dasm);
+                    }
                 }
                 return new PaRiscInstruction
                 {
@@ -1046,7 +1248,8 @@ namespace Reko.Arch.PaRisc
                     Zero = dasm.zero,
                     Sign = dasm.signExtend,
                     BaseReg = dasm.addrMod,
-                    FpFmt = dasm.fpFormat
+                    FpFmt = dasm.fpFormat,
+                    CacheHint = dasm.cacheHint
                 };
             }
         }
@@ -1122,6 +1325,7 @@ namespace Reko.Arch.PaRisc
                 return new PaRiscInstruction
                 {
                     InstructionClass = 0,
+                    Coprocessor = -1,
                     Opcode = mnemonic,
                     Operands = new MachineOperand[0]
                 };
@@ -1224,9 +1428,9 @@ namespace Reko.Arch.PaRisc
                 Nyi("memMgmt-19:0"),
                 Mask(18, 8, invalid,
                     (0x60, Nyi(Opcode.idtlbt, "")),
-                    (0x48, Nyi(Opcode.pdtlb, "")),
                     (0x49, Nyi(Opcode.pdtlbe, "")),
-                    (0x58, Nyi(Opcode.pdtlb, "")),
+                    (0x48, Instr(Opcode.pdtlb, Mx(PrimitiveType.Word32, 6, 11, 16))),
+                    (0x58, Instr(Opcode.pdtlb_l, Mx(PrimitiveType.Word32, 6, 11, 16))),
                     (0x4A, Nyi(Opcode.fdc, "(index)")),
                     (0xCA, Nyi(Opcode.fdc, "(imm)")),
                     (0x4B, Nyi(Opcode.fdce, "")),
@@ -1238,68 +1442,96 @@ namespace Reko.Arch.PaRisc
                     (0xC7, Nyi(Opcode.probei, "")),
                     (0x4D, Nyi(Opcode.lpa, "")),
                     (0x4C, Nyi(Opcode.lci, ""))));
+
+
             var arithLog = Mask(20, 6, invalid,
-                (0x18, Mask(26, 1,
-                    Instr(Opcode.add, cf16_add, r11,r6,r27),
-                    Instr(Opcode.add, cf16_add64, r11,r6,r27))),
-                (0x38, Nyi(Opcode.addo, "")),
-                (0x1C, Instr(Opcode.add_c, cf16_add, r11, r6, r27)),
-                (0x3C, Nyi(Opcode.addco, "")),
-                (0x19, Nyi(Opcode.shladd, "")),
-                (0x39, Nyi(Opcode.shladdo, "")),
-                (0x1A, Instr(Opcode.shladd, r11,s(24, 2, PrimitiveType.Byte),r6,r27)),
-                (0x3A, Nyi(Opcode.shladdo, "")),
-                (0x1B, Nyi(Opcode.shladd, "")),
-                (0x3B, Nyi(Opcode.shladdo, "")),
-                (0x10, Nyi(Opcode.sub, "")),
-                (0x30, Nyi(Opcode.subo, "")),
-                (0x13, Nyi(Opcode.subt, "")),
-                (0x33, Nyi(Opcode.subto, "")),
-                (0x14, Instr(Opcode.sub_b, cf16_cmpsub, r11,r6,r27)),
-                (0x34, Nyi(Opcode.subbo, "")),
-                (0x11, Instr(Opcode.ds, r11,r6,r27)),
-                (0x00, Nyi(Opcode.andcm, "")),
-                (0x08, Instr(Opcode.and, cf16_log,r11,r6,r27)),
-                (0x09, Instr(Opcode.or, cf16_log,r11,r6,r27)),
-                (0x0A, Nyi(Opcode.xor, "")),
-                (0x0E, Nyi(Opcode.uxor, "")),
-                (0x22, Nyi(Opcode.comclr, "")),
-                (0x26, Nyi(Opcode.uaddcm, "")),
-                (0x27, Nyi(Opcode.uaddcmt, "")),
-                (0x28, Instr(Opcode.add_l, cf16_add, r11,r6,r27)),
-                (0x29, Nyi(Opcode.sh1addl, "")),
+                (0x00, Instr(Opcode.andcm, cf_log(), r11, r6, r27)),
+
+                (0x04, Instr(Opcode.hsub_us, r11, r6, r27)),
+                (0x05, Instr(Opcode.hsub_ss, r11, r6, r27)),
+                (0x07, Instr(Opcode.hsub, r11, r6, r27)),
+
+                (0x08, Instr(Opcode.and, cf_log(), r11, r6, r27)),
+                (0x09, Instr(Opcode.or, cf_log(), r11, r6, r27)),
+                (0x0A, Instr(Opcode.xor, cf_log(), r11, r6, r27)),
+                (0x0B, Instr(Opcode.havg, r11, r6, r27)),
+
+                (0x0C, Instr(Opcode.hadd_us, r11, r6, r27)),
+                (0x0D, Instr(Opcode.hadd_ss, r11, r6, r27)),
+                (0x0E, Instr(Opcode.uxor, cf_log(), r11, r6, r27)),
+                (0x0F, Instr(Opcode.hadd, r11, r6, r27)),
+
+                (0x10, Instr(Opcode.sub, cf_log(), r11, r6, r27)),
+                (0x11, Instr(Opcode.ds, r11, r6, r27)),
+                (0x13, Instr(Opcode.sub_tc, cf_cmpsub(), r11, r6, r27)),
+
+                (0x14, Instr(Opcode.sub_b, cf_cmpsub(), r11, r6, r27)),
+                (0x15, Instr(Opcode.hshradd, r11, u(24, 2, PrimitiveType.Int32), r6, r27)),
+                (0x16, Instr(Opcode.hshradd, r11, u(24, 2, PrimitiveType.Int32), r6, r27)),
+                (0x17, Instr(Opcode.hshradd, r11, u(24, 2, PrimitiveType.Int32), r6, r27)),
+
+                (0x18, Instr(Opcode.add, cf_add(), r11, r6, r27)),
+                (0x19, Instr(Opcode.shladd, r11, u(24, 2, PrimitiveType.Byte), r6, r27)),
+                (0x1A, Instr(Opcode.shladd, r11, u(24, 2, PrimitiveType.Byte), r6, r27)),
+                (0x1B, Instr(Opcode.shladd, r11, u(24, 2, PrimitiveType.Byte), r6, r27)),
+
+                (0x1C, Instr(Opcode.add_c, cf_add(), r11, r6, r27)),
+                (0x1D, Instr(Opcode.hshladd, r11, u(24, 2, PrimitiveType.Int32), r6, r27)),
+                (0x1E, Instr(Opcode.hshladd, r11, u(24, 2, PrimitiveType.Int32), r6, r27)),
+                (0x1F, Instr(Opcode.hshladd, r11, u(24, 2, PrimitiveType.Int32), r6, r27)),
+
+                (0x22, Instr(Opcode.cmpclr, cf_cmpsub(), r11, r6, r27)),
+
+                (0x26, Instr(Opcode.uaddcm, r11, r6, r27)),
+                (0x27, Instr(Opcode.uaddcm_tc, r11, r6, r27)),
+
+                (0x28, Instr(Opcode.add_l, cf_add(), r11, r6, r27)),
+                (0x29, Instr(Opcode.shladd, r11, u(24, 2, PrimitiveType.Byte), r6, r27)),
                 (0x2A, Instr(Opcode.shladd, r11, u(24, 2, PrimitiveType.Byte), r6, r27)),
-                (0x2B, Nyi(Opcode.sh3addl, "")),
-                (0x2E, Nyi(Opcode.dcor, "")),
-                (0x2F, Nyi(Opcode.idcor, "")));
+                (0x2B, Instr(Opcode.shladd, r11, u(24, 2, PrimitiveType.Byte), r6, r27)),
+
+                (0x2E, Instr(Opcode.dcor)),
+                (0x2F, Instr(Opcode.dcor_i)),
+
+                (0x30, Instr(Opcode.sub_tsv, cf_cmpsub(), r11, r6, r27)),
+                (0x33, Instr(Opcode.sub_tsv_tc, cf_cmpsub(), r11, r6, r27)),
+
+                (0x34, Instr(Opcode.sub_b_tsv, cf_cmpsub(), r11, r6, r27)),
+
+                (0x38, Instr(Opcode.add_tsv, cf_add(), r11, r6, r27)),
+                (0x39, Instr(Opcode.shladd_tsv, r11, u(24, 2, PrimitiveType.Byte), r6, r27)),
+                (0x3A, Instr(Opcode.shladd_tsv, r11, u(24, 2, PrimitiveType.Byte), r6, r27)),
+                (0x3B, Instr(Opcode.shladd_tsv, r11, u(24, 2, PrimitiveType.Byte), r6, r27)),
+
+                (0x3C, Instr(Opcode.add_c_tsv, cf_add(), r11, r6, r27)));
 
             var indexMem = Mask(19, 1,  // opc=3
                 Mask(22, 4, invalid,
-                    (0x0, Instr(Opcode.ldb, Mx(PrimitiveType.Byte, 5, 11, 16), r27)),
-                    (0x1, Instr(Opcode.ldh, Mx(PrimitiveType.Word16, 5, 11, 16), r27)),
-                    (0x2, Instr(Opcode.ldw, Mx(PrimitiveType.Word32, 5, 11, 16), r27)),
-                    (0x3, Instr(Opcode.ldd, Mx(PrimitiveType.Word32, 5, 11, 16), r27)),
-                    (0x4, Nyi(Opcode.ldda, "(index")),
-                    (0x5, Nyi(Opcode.ldcd, "(index")),
-                    (0x6, Nyi(Opcode.ldwa, "(index")),
-                    (0x7, Nyi(Opcode.ldcw, "(index"))),
+                    (0x0, Instr(Opcode.ldb, Mx(PrimitiveType.Byte, 6, 11, 16), r27)),
+                    (0x1, Instr(Opcode.ldh, Mx(PrimitiveType.Word16, 6, 11, 16), r27)),
+                    (0x2, Instr(Opcode.ldw, Mx(PrimitiveType.Word32, 6, 11, 16), r27)),
+                    (0x3, Instr(Opcode.ldd, Mx(PrimitiveType.Word32, 6, 11, 16), r27)),
+                    (0x4, Instr(Opcode.ldda, Mx(PrimitiveType.Word32, 6, 11, 16), r27)),
+                    (0x5, Instr(Opcode.ldcd, Mx(PrimitiveType.Word32, 6, 11, 16), r27)),
+                    (0x6, Instr(Opcode.ldwa, Mx(PrimitiveType.Word32, 6, 11, 16), r27)),
+                    (0x7, Instr(Opcode.ldcw, Mx(PrimitiveType.Word32, 6, 11, 16), r27))),
                 Mask(22, 4, invalid,
-                    (0x0, Instr(Opcode.ldb, Mshort(11, PrimitiveType.Byte), r27)),
-                    (0x1, Instr(Opcode.ldh, Mshort(11, PrimitiveType.Word16), r27)),
-                    (0x2, Instr(Opcode.ldw, Mshort(11, PrimitiveType.Word32), r27)),
-                    (0x3, Instr(Opcode.ldd, Mshort(11, PrimitiveType.Word64), r27)),
-                    (0x4, Nyi(Opcode.ldda, "(short")),
-                    (0x5, Nyi(Opcode.ldcd, "(short")),
-                    (0x6, Nyi(Opcode.ldwa, "(short")),
-                    (0x7, Nyi(Opcode.ldcw, "(short")),
-                    (0x8, Instr(Opcode.stb, r11, Mshort(27, PrimitiveType.Byte))),
-                    (0x9, Instr(Opcode.sth, r11, Mshort(27, PrimitiveType.Word16))),
-                    (0xA, Instr(Opcode.stw, r11, Mshort(27, PrimitiveType.Word32))),
-                    (0xB, Instr(Opcode.std, r11, Mshort(27, PrimitiveType.Word32))),
-                    (0xC, Nyi(Opcode.stby, "(short")),
-                    (0xD, Nyi(Opcode.stdby, "(short")),
-                    (0xE, Instr(Opcode.stwa, r27, Mshort(27, PrimitiveType.Word32))),
-                    (0xF, Nyi(Opcode.stda, "(short"))));
+                    (0x0, Instr(Opcode.ldb, cc_loads, Mshort(11, PrimitiveType.Byte), r27)),
+                    (0x1, Instr(Opcode.ldh, cc_loads, Mshort(11, PrimitiveType.Word16), r27)),
+                    (0x2, Instr(Opcode.ldw, cc_loads, Mshort(11, PrimitiveType.Word32), r27)),
+                    (0x3, Instr(Opcode.ldd, cc_loads, Mshort(11, PrimitiveType.Word64), r27)),
+                    (0x4, Instr(Opcode.ldda, cc_loads, Mshort(11, PrimitiveType.Word64), r27)),
+                    (0x5, Instr(Opcode.ldcd, cc_loads, Mshort(11, PrimitiveType.Word64), r27)),
+                    (0x6, Instr(Opcode.ldwa, cc_loads, Mshort(11, PrimitiveType.Word64), r27)),
+                    (0x7, Instr(Opcode.ldcw, cc_loads, Mshort(11, PrimitiveType.Word64), r27)),
+                    (0x8, Instr(Opcode.stb, cc_stores, r11, Mshort(27, PrimitiveType.Byte))),
+                    (0x9, Instr(Opcode.sth, cc_stores, r11, Mshort(27, PrimitiveType.Word16))),
+                    (0xA, Instr(Opcode.stw, cc_stores, r11, Mshort(27, PrimitiveType.Word32))),
+                    (0xB, Instr(Opcode.std, cc_stores, r11, Mshort(27, PrimitiveType.Word32))),
+                    (0xC, Instr(Opcode.stby, cc_stores, r11, Mshort(27, PrimitiveType.Byte, stbyMods))),
+                    (0xD, Instr(Opcode.stdby, cc_stores, r11, Mshort(27, PrimitiveType.Byte, stbyMods))),
+                    (0xE, Instr(Opcode.stwa, cc_stores, r11, Mshort(27, PrimitiveType.Word32))),
+                    (0xF, Instr(Opcode.stda, cc_stores, r11, Mshort(27, PrimitiveType.Byte)))));
 
             var spopN = Mask(21, 2,
                 Instr(Opcode.spop0, u(23, 3, PrimitiveType.UInt32), u(27, 5, PrimitiveType.UInt32), Annul(26)),
@@ -1308,14 +1540,21 @@ namespace Reko.Arch.PaRisc
                 Instr(Opcode.spop3));
 
             var coprW = Cond(23, 3, IsFpuProcessor,
-                Mask(19, 1,
-                    Mask(22, 1,
-                        Nyi(Opcode.fldw, "(index)"),
-                        Nyi(Opcode.fstw, "(index)")),
-                    Mask(22, 1,
-                        Instr(Opcode.fldw, M(PrimitiveType.Real32, 6, BeFields((11,5)), low_sign_ext5), fr25_27),
-                        Instr(Opcode.fstw, fr25_27, M(PrimitiveType.Real32, 6, BeFields((11,5)), low_sign_ext5)))),
-                invalid);
+                Mask(22, 1,
+                    Instr(Opcode.fldw, cc_loads, Mshort(11, PrimitiveType.Real32), fr25_27),
+                    Instr(Opcode.fstw, cc_stores, fr25_27, Mshort(11, PrimitiveType.Real32))),
+                Mask(22, 1,
+                    Instr(Opcode.cldw, cc_loads, cop(23, 3), Mshort(11, PrimitiveType.Word32), r27),
+                    Instr(Opcode.cstw, cc_stores, cop(23, 3), r27, Mshort(11, PrimitiveType.Word32))));
+
+            var coprDW = Cond(23, 3, IsFpuProcessor,
+                Mask(22, 1,
+                    Instr(Opcode.fldd, cc_loads, Mshort(11, PrimitiveType.Real64), fr27),
+                    Instr(Opcode.fstd, cc_stores, Mshort(11, PrimitiveType.Real64), fr27)),
+                Mask(22, 1,
+                    Instr(Opcode.cldd, cc_loads,cop(23, 3), Mshort(11, PrimitiveType.Word64), r27),
+                    Instr(Opcode.cstd, cc_stores, cop(23, 3), r27, Mshort(11, PrimitiveType.Word64))));
+
             var copr = Mask(21, 2,
                 Mask(16, 3,
                     Nyi("fid"),
@@ -1350,19 +1589,29 @@ namespace Reko.Arch.PaRisc
             var floatDecoder = Mask(21, 2,
                 Nyi("FP 0E zero"),
                 Nyi("FP 0E one"),
-                Instr(Opcode.fcmp, cf27_fp, fr25_27,fr11_19),
-                Nyi("FP 0E three"));
+                Instr(Opcode.fcmp, cf27_fp, fr25_27, fr11_19),
+                Mask(23, 1,
+                    Mask(16, 3,
+                        Instr(Opcode.fadd, fpFmt20_1),
+                        Instr(Opcode.fsub, fpFmt20_1),
+                        Instr(Opcode.fmpy, fpFmt20_1),
+                        Instr(Opcode.fdiv, fpFmt20_1),
+                        invalid,
+                        invalid,
+                        invalid,
+                        invalid),
+                    Instr(Opcode.xmpyu, fr6_25, fr11_19, fr27)));
             var productSpecific = Nyi("productSpecific");
             var subi = Mask(20, 1,
-                Instr(Opcode.subi, cf16_cmpsub, s(PrimitiveType.Int32, BeFields((21, 11)), low_sign_ext11), r6, r11),
-                Instr(Opcode.subi_tsv, cf16_cmpsub, s(PrimitiveType.Int32, BeFields((21, 11)), low_sign_ext11), r6, r11));
+                Instr(Opcode.subi, cf16_cmpsub_32, s(PrimitiveType.Int32, BeFields((21, 11)), low_sign_ext11), r6, r11),
+                Instr(Opcode.subi_tsv, cf16_cmpsub_32, s(PrimitiveType.Int32, BeFields((21, 11)), low_sign_ext11), r6, r11));
             var addit = Nyi("addit");
             var addi = Mask(20, 1,
-                Instr(Opcode.addi, cf16_add, s(PrimitiveType.Int32, BeFields((21,11)), low_sign_ext11),r6,r11), 
+                Instr(Opcode.addi, cf16_add_32, s(PrimitiveType.Int32, BeFields((21,11)), low_sign_ext11),r6,r11), 
                 Nyi("addi-tsv"));
             var extract = Mask(19, 2,
                 Nyi("extract-00"),
-                Nyi("extract-01"),
+                Instr(Opcode.shrpw, cf16_sh_ex_dp_3, r11, r6, cf16_sh_ex_dp_3, r27),
                 Nyi("extract-10"),
                 Instr(Opcode.extrw, cf16_shext, se(21), r6, u(22, 5,PrimitiveType.Byte), u8From32(27, 5), r11));
             var deposit = Mask(19, 2,
@@ -1396,9 +1645,7 @@ namespace Reko.Arch.PaRisc
                 Instr(Opcode.ldil, u(11, 21, PrimitiveType.Word32), r6),
                 coprW,
                 Instr(Opcode.addil, Left(BeFields((11,21)), assemble_21, 11), r6,reg(Registers.GpRegs[1])),
-                Mask(19, 1,
-                    Instr(Opcode.cstd, cop(23, 3), r27,Mx(PrimitiveType.Real64,6,11,16)),
-                    Instr(Opcode.cstd, cop(23, 3), r27,Msh(PrimitiveType.Real64,BeFields((11,5)), 6, 16))),
+                coprDW,
 
                 copr,
                 Instr(Opcode.ldo, M(PrimitiveType.Word32, 6, BeFields((16,2),(18,14)), assemble_16),r11),
@@ -1432,7 +1679,11 @@ namespace Reko.Arch.PaRisc
                 Instr(Opcode.cmpb,  InstrClass.ConditionalTransfer, cf16_cmp32_f,r11,r6,PcRel(assemble_12, BeFields((19, 11), (31, 1))), Annul(30)),
                 Instr(Opcode.cmpib, InstrClass.ConditionalTransfer, cf16_cmp32_f,s(11,5,PrimitiveType.Word32),r6,PcRel(assemble_12, BeFields((19, 11), (31, 1))), Annul(30)),
 
-                Nyi(Opcode.comiclr, ""),
+                Mask(19, 2, 
+                    Instr(Opcode.cmpiclr, InstrClass.Linear|InstrClass.Annul, cf16_cmp32_t, lse(20, 11), r6, r11),
+                    Instr(Opcode.cmpiclr, InstrClass.Linear|InstrClass.Annul, cf16_cmp64_t, lse(20, 11), r6, r11),
+                    Instr(Opcode.cmpiclr, InstrClass.Linear|InstrClass.Annul, cf16_cmp32_f, lse(20, 11), r6, r11),
+                    Instr(Opcode.cmpiclr, InstrClass.Linear|InstrClass.Annul, cf16_cmp64_f, lse(20, 11), r6, r11)),
                 subi,
                 Instr(Opcode.fmpysub, fpFmt1, fmo6,fmo11,fmo27,fmo21,fmo16),
                 invalid,
