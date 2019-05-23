@@ -105,6 +105,7 @@ namespace Reko.Arch.PaRisc
         mfsp,
         mtctl,
         mfctl,
+        mfctl_w,
         bve,
         blrpush,
 

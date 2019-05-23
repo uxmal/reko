@@ -211,6 +211,22 @@ namespace Reko.Arch.PaRisc
             };
         }
 
+        /// <summary>
+        /// Bit position used by the 'bb' instruction.
+        /// </summary>
+        private static Mutator<PaRiscDisassembler> bb_bitpos()
+        {
+            var pField = BeField(6, 5);
+            var dField = BeField(18, 1);
+            return (u, dasm) =>
+            {
+                var pos = pField.Read(u);
+                var imm = ImmediateOperand.UInt32(pos);
+                dasm.ops.Add(imm);
+                return true;
+            };
+        }
+
         private static Mutator<PaRiscDisassembler> r(int bitPos, int bitLength)
         {
             var field = BeField(bitPos, bitLength);
@@ -310,6 +326,24 @@ namespace Reko.Arch.PaRisc
             {
                 var iReg = field.Read(u);
                 d.ops.Add(new RegisterOperand(Registers.SpaceRegs[iReg]));
+                return true;
+            };
+        }
+
+        /// <summary>
+        /// Control register
+        /// </summary>
+        private static Mutator<PaRiscDisassembler> cr(int bitpos, int bitlen)
+        {
+            var field = BeField(bitpos, bitlen);
+            return (u, d) =>
+            {
+                var iReg = (int)field.Read(u);
+                if (!Registers.ControlRegisters.TryGetValue(iReg, out var cReg))
+                {
+                    return false;
+                }
+                d.ops.Add(new RegisterOperand(cReg));
                 return true;
             };
         }
@@ -508,6 +542,19 @@ namespace Reko.Arch.PaRisc
             ConditionOperand.Gt64
         });
 
+        // Table D-15 of PA-RISC 2.0 manual
+        private static Mutator<PaRiscDisassembler> cf16_bb_1 = cf(16, 3, new[]
+        {
+            null,
+            null,
+            ConditionOperand.Lt,
+            ConditionOperand.Lt64,
+
+            null,
+            null,
+            ConditionOperand.Ge,
+            ConditionOperand.Ge64,
+        });
         private static bool cfadd_bitsize(uint uInstr, PaRiscDisassembler dasm)
         {
             if (dasm.is64bit)
@@ -625,14 +672,14 @@ namespace Reko.Arch.PaRisc
         /// <summary>
         /// Register indirect with short displacement with space register
         /// </summary>
-        private static Mutator<PaRiscDisassembler> Mshort(PrimitiveType dt)
+        private static Mutator<PaRiscDisassembler> Mshort(int dispFieldPos, PrimitiveType dt)
         {
-            var dispField = BeField(11, 5);
+            var dispField = BeField(dispFieldPos, 5);
             var baseRegField = BeField(6, 5);
             var spaceRegField = BeField(16, 2);
             return (u, d) =>
             {
-                var disp = dispField.ReadSigned(u);
+                var disp = low_sign_ext(dispField, u);
                 var iBaseReg = baseRegField.Read(u);
                 var iSpaceReg = spaceRegField.Read(u);
                 var am = Bitfield.ReadFields(amFields, u);
@@ -915,6 +962,14 @@ namespace Reko.Arch.PaRisc
             return p;
         }
 
+        private static int low_sign_ext(Bitfield field, uint u)
+        {
+            var x = field.Read(u);
+            var x_lsb = x & 1;
+            var p = (x >> 1) | (x << (field.Length- 1));
+            return (int)Bits.SignExtend(p, field.Length);
+        }
+
         private static Func<bool, uint, Bitfield[], uint> low_sign_ext(int width)
         {
             return (is64bit, u, fields) =>
@@ -1160,8 +1215,10 @@ namespace Reko.Arch.PaRisc
                     Instr(Opcode.ldsid, sr(16),r27))),
                 (0xC1, Instr(Opcode.mtsp, r(11,5),sr(16))),
                 (0x25, Nyi(Opcode.mfsp, "")),
-                (0xC2, Nyi(Opcode.mtctl, "")),
-                (0x45, Nyi(Opcode.mfctl, "")));
+                (0xC2, Instr(Opcode.mtctl, r11, cr(6,5))),
+                (0x45, Mask(17, 1, 
+                    Instr(Opcode.mfctl, cr(6,5), r27),
+                    Instr(Opcode.mfctl_w, cr(6,5), r27))));
 
             var memMgmt = Mask(19, 1,
                 Nyi("memMgmt-19:0"),
@@ -1227,21 +1284,21 @@ namespace Reko.Arch.PaRisc
                     (0x6, Nyi(Opcode.ldwa, "(index")),
                     (0x7, Nyi(Opcode.ldcw, "(index"))),
                 Mask(22, 4, invalid,
-                    (0x0, Instr(Opcode.ldb, Mshort(PrimitiveType.Byte), r27)),
-                    (0x1, Instr(Opcode.ldh, Mshort(PrimitiveType.Word16), r27)),
-                    (0x2, Instr(Opcode.ldw, Mshort(PrimitiveType.Word32), r27)),
-                    (0x3, Instr(Opcode.ldd, Mshort(PrimitiveType.Word64), r27)),
+                    (0x0, Instr(Opcode.ldb, Mshort(11, PrimitiveType.Byte), r27)),
+                    (0x1, Instr(Opcode.ldh, Mshort(11, PrimitiveType.Word16), r27)),
+                    (0x2, Instr(Opcode.ldw, Mshort(11, PrimitiveType.Word32), r27)),
+                    (0x3, Instr(Opcode.ldd, Mshort(11, PrimitiveType.Word64), r27)),
                     (0x4, Nyi(Opcode.ldda, "(short")),
                     (0x5, Nyi(Opcode.ldcd, "(short")),
                     (0x6, Nyi(Opcode.ldwa, "(short")),
                     (0x7, Nyi(Opcode.ldcw, "(short")),
-                    (0x8, Instr(Opcode.stb, r27, Mshort(PrimitiveType.Byte))),
-                    (0x9, Instr(Opcode.sth, r27, Mshort(PrimitiveType.Word16))),
-                    (0xA, Instr(Opcode.stw, r27, Mshort(PrimitiveType.Word32))),
-                    (0xB, Instr(Opcode.std, r27, Mshort(PrimitiveType.Word32))),
+                    (0x8, Instr(Opcode.stb, r11, Mshort(27, PrimitiveType.Byte))),
+                    (0x9, Instr(Opcode.sth, r11, Mshort(27, PrimitiveType.Word16))),
+                    (0xA, Instr(Opcode.stw, r11, Mshort(27, PrimitiveType.Word32))),
+                    (0xB, Instr(Opcode.std, r11, Mshort(27, PrimitiveType.Word32))),
                     (0xC, Nyi(Opcode.stby, "(short")),
                     (0xD, Nyi(Opcode.stdby, "(short")),
-                    (0xE, Instr(Opcode.stwa, r27, Mshort(PrimitiveType.Word32))),
+                    (0xE, Instr(Opcode.stwa, r27, Mshort(27, PrimitiveType.Word32))),
                     (0xF, Nyi(Opcode.stda, "(short"))));
 
             var spopN = Mask(21, 2,
@@ -1392,7 +1449,7 @@ namespace Reko.Arch.PaRisc
 
                 // 30
                 Nyi(Opcode.bvb, ""),
-                Nyi(Opcode.bb, ""),
+                Instr(Opcode.bb, CTD, cf16_bb_1, r11, bb_bitpos(), PcRel(assemble_12, BeFields((19, 11), (31, 1))), Annul(30)),
                 Instr(Opcode.movb, CTD, cf16_shext, r11,r6,PcRel(assemble_12, BeFields((19, 11), (31, 1))), Annul(30)),
                 Instr(Opcode.movib, CTD, cf16_shext, lse(11,5),r6,PcRel(assemble_12, BeFields((19, 11), (31, 1))), Annul(30)),
 

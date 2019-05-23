@@ -385,7 +385,7 @@ namespace Reko.UnitTests.Arch.PaRisc
             BuildTest("0f201212");  // stb\tr0,9(r25)
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[r25:byte] = SLICE(r18, byte, 0)");
+                "1|L--|Mem0[r25 + 9:byte] = SLICE(r18, byte, 0)");
         }
 
         [Test]

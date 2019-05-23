@@ -37,6 +37,10 @@ namespace Reko.Arch.PaRisc
         public static readonly RegisterStorage[] FpRights;
         public static readonly RegisterStorage[] FpRegs32;
 
+        public static readonly RegisterStorage SAR; // Shift amount register
+
+        public static readonly Dictionary<int, RegisterStorage> ControlRegisters;
+
         static Registers()
         {
             var factory = new StorageFactory();
@@ -52,6 +56,54 @@ namespace Reko.Arch.PaRisc
             //$BUG: triple-check the formatting of 6-bit floating point
             // register identifiers.
             FpRegs32 = FpLefts.Concat(FpRights).ToArray();
+
+            ControlRegisters = new[] {
+                "rctr",
+                "cr1",
+                "cr2",
+                "cr3",
+
+                "cr4",
+                "cr5",
+                "cr6",
+                "cr7",
+
+                // CR[8]
+                "pidr1",
+                "pidr2",
+                "ccr",
+                "sar",
+
+                "pidr3",
+                "pidr4",
+                "iva",
+                "eiem",
+
+                // CR[16]
+                "itmr",
+                "pcsq",
+                "pcoq",
+                "iir",
+
+                "isr",
+                "ior",
+                "ipsw",
+                "eirr",
+
+                // CR[24]
+                "tr0",
+                "tr1",
+                "tr2",
+                "tr3",
+
+                "tr4",
+                "tr5",
+                "tr6",
+                "tr7",
+            }.Select((regName, i) => (i, factory.Reg32(regName)))
+            .ToDictionary(item => item.i, item => item.Item2);
+
+            SAR = ControlRegisters[11];
         }
     }
 }

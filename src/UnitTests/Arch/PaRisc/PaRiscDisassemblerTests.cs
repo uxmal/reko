@@ -100,7 +100,7 @@ namespace Reko.UnitTests.Arch.PaRisc
         [Test]
         public void PaRiscDis_ldx_short()
         {
-            AssertCode("ldw\t4(sr0,r22),r19", "0EC41093");
+            AssertCode("ldw\t2(sr0,r22),r19", "0EC41093");
         }
 
         [Test]
@@ -299,7 +299,7 @@ namespace Reko.UnitTests.Arch.PaRisc
         [Test]
         public void PaRiscDis_stb_disp()
         {
-            AssertCode("stb\tr0,9(r25)", "0f201212");
+            AssertCode("stb\tr0,9(sr0,r25)", "0F201212");
         }
 
         [Test]
@@ -452,7 +452,7 @@ namespace Reko.UnitTests.Arch.PaRisc
         [Test]
         public void PaRiscDis_fmpysub_sgl_99c4bb7d()
         {
-            AssertCode("fmpysub_sgl\tfr30,fr20,fr29,fr29,fr23", "99c4c47d");
+            AssertCode("fmpysub,sgl\tfr30L,fr20L,fr29L,fr17L,fr24L", "99c4c47d");
         }
 
         [Test]
@@ -542,7 +542,7 @@ namespace Reko.UnitTests.Arch.PaRisc
         [Test]
         public void PaRiscDis_spop0_0_c040()
         {
-            AssertCode("spop0_0_c0400\t", "13010100");
+            AssertCode("spop0\t00000004,00000000\t", "13010100");
         }
 
         [Test]
@@ -590,7 +590,7 @@ namespace Reko.UnitTests.Arch.PaRisc
         [Test]
         public void PaRiscDis_bb_uge_n()
         {
-            AssertCode("bb_uge_n\tr22,1e,0x10", "c7d6d612");
+            AssertCode("bb,>=,n\tr22,0000001E,00100B10", "c7d6d612");
         }
 
         [Test]
@@ -662,13 +662,46 @@ namespace Reko.UnitTests.Arch.PaRisc
         [Test]
         public void PaRiscDis_mtctl()
         {
-            AssertCode("mtctl\tr26,tr3", "037a7a40");
+            AssertCode("mtctl\tr26,tr3", "037A1840");
         }
+
 
         [Test]
         public void PaRiscDis_mfctl()
         {
-            AssertCode("mfctl\ttr3,ret0", "036060bc");
+            AssertCode("mfctl\trctr,r0", "000008A0");
+            AssertCode("mfctl\tcr1,r0", "002008A0");
+            AssertCode("mfctl\tcr2,r0", "004008A0");
+            AssertCode("mfctl\tcr3,r0", "006008A0");
+            AssertCode("mfctl\tcr4,r0", "008008A0");
+            AssertCode("mfctl\tcr5,r0", "00A008A0");
+            AssertCode("mfctl\tcr6,r0", "00C008A0");
+            AssertCode("mfctl\tcr7,r0", "00E008A0");
+            AssertCode("mfctl\tpidr1,r0", "010008A0");
+            AssertCode("mfctl\tpidr2,r0", "012008A0");
+            AssertCode("mfctl\tccr,r0", "014008A0");
+            AssertCode("mfctl\tsar,r0", "016008A0");
+            AssertCode("mfctl\tpidr3,r0", "018008A0");
+            AssertCode("mfctl\tpidr4,r0", "01A008A0");
+            AssertCode("mfctl\tiva,r0", "01C008A0");
+            AssertCode("mfctl\teiem,r0", "01E008A0");
+            AssertCode("mfctl\titmr,r0", "020008A0");
+            AssertCode("mfctl\tpcsq,r0", "022008A0");
+            AssertCode("mfctl\tpcoq,r0", "024008A0");
+            AssertCode("mfctl\tiir,r0", "026008A0");
+            AssertCode("mfctl\tisr,r0", "028008A0");
+            AssertCode("mfctl\tior,r0", "02A008A0");
+            AssertCode("mfctl\tipsw,r0", "02C008A0");
+            AssertCode("mfctl\teirr,r0", "02E008A0");
+            AssertCode("mfctl\ttr0,r0", "030008A0");
+            AssertCode("mfctl\ttr1,r0", "032008A0");
+            AssertCode("mfctl\ttr2,r0", "034008A0");
+            AssertCode("mfctl\ttr3,r0", "036008A0");
+            AssertCode("mfctl\ttr4,r0", "038008A0");
+            AssertCode("mfctl\ttr5,r0", "03A008A0");
+            AssertCode("mfctl\ttr6,r0", "03C008A0");
+            AssertCode("mfctl\ttr7,r0", "03E008A0");
+            AssertCode("mfctl,w\tsar,r0", "016048A0"); 
         }
 
         [Test]
