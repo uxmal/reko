@@ -36,6 +36,7 @@ namespace Reko.Arch.PaRisc
         public AddrRegMod BaseReg { get; set; }
         public bool Annul { get; set; }
         public FpFormat FpFmt { get; set; }
+        public FpFormat FpFmtDst { get; set; }
         public CacheHint CacheHint { get; set; }
 
         public ConditionOperand Condition { get; set; }
@@ -72,6 +73,8 @@ namespace Reko.Arch.PaRisc
                 sb.AppendFormat(",{0}", Coprocessor);
             if (FpFmt != FpFormat.None)
                 sb.AppendFormat(",{0}", FpFmt);
+            if (FpFmtDst != FpFormat.None)
+                sb.AppendFormat(",{0}", FpFmtDst);
             if (Zero)
                 sb.Append(",z");
             if (Sign != SignExtension.None)
@@ -101,9 +104,12 @@ namespace Reko.Arch.PaRisc
         b_m, e, e_m,
     }
 
-    public enum FpFormat
+    public enum FpFormat : byte
     {
-        None, sgl,dbl,quad 
+        None,
+        sgl,dbl,quad,
+        w, dw, qw,
+        uw, udw, uqw
     }
 
     public enum CacheHint

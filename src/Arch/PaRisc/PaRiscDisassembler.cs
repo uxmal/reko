@@ -54,6 +54,7 @@ namespace Reko.Arch.PaRisc
         private AddrRegMod addrMod;
         private int coprocessor;
         private FpFormat fpFormat;
+        private FpFormat fpFormatDst;
         private CacheHint cacheHint;
 
         public PaRiscDisassembler(PaRiscArchitecture arch, EndianImageReader rdr)
@@ -76,6 +77,7 @@ namespace Reko.Arch.PaRisc
             this.coprocessor = -1;
             this.addrMod = AddrRegMod.None;
             this.fpFormat = FpFormat.None;
+            this.fpFormatDst = FpFormat.None;
             this.cacheHint = CacheHint.None;
 
             if (!rdr.TryReadBeUInt32(out uint uInstr))
@@ -1028,7 +1030,9 @@ namespace Reko.Arch.PaRisc
             };
         }
 
-        // Set the 'fpFormat' completer
+        /// <summary>
+        /// Set the 'fpFormat' completer
+        /// </summary>
         private static Mutator<PaRiscDisassembler> fpFmt(Bitfield field, FpFormat[] fpFormats)
         {
             return (uint uInstr, PaRiscDisassembler dasm) =>
@@ -1037,6 +1041,20 @@ namespace Reko.Arch.PaRisc
                 var uFormat = field.Read(uInstr);
                 dasm.fpFormat = fpFormats[uFormat];
                 return dasm.fpFormat != FpFormat.None;
+            };
+        }
+
+        /// <summary>
+        /// Set the 'fpFormatDst' completer
+        /// </summary>
+        private static Mutator<PaRiscDisassembler> fpFmtD(Bitfield field, FpFormat[] fpFormats)
+        {
+            return (uint uInstr, PaRiscDisassembler dasm) =>
+            {
+                Decoder.DumpMaskedInstruction(uInstr, field.Mask << field.Position, "FP dst format completer");
+                var uFormat = field.Read(uInstr);
+                dasm.fpFormatDst = fpFormats[uFormat];
+                return dasm.fpFormatDst != FpFormat.None;
             };
         }
         private static readonly Mutator<PaRiscDisassembler> fpFmt2 = fpFmt(BeField(19, 2), new[] {
@@ -1053,6 +1071,46 @@ namespace Reko.Arch.PaRisc
             FpFormat.dbl,
             FpFormat.sgl,
         });
+
+        /// <summary>
+        /// Convert floats
+        /// </summary>
+        private static readonly FpFormat[] cvf = new[]
+        {
+            FpFormat.sgl,
+            FpFormat.dbl,
+            FpFormat.None,
+            FpFormat.quad
+        };
+
+        /// <summary>
+        /// Convert signed ints
+        /// </summary>
+        private static readonly FpFormat[] cvx = new[]
+        {
+            FpFormat.w,
+            FpFormat.dw,
+            FpFormat.None,
+            FpFormat.qw
+        };
+
+        /// <summary>
+        /// Convert unsigned ints
+        /// </summary>
+        private static readonly FpFormat[] cvu = new[]
+        {
+            FpFormat.uw,
+            FpFormat.udw,
+            FpFormat.None,
+            FpFormat.uqw
+        };
+
+        private static readonly Mutator<PaRiscDisassembler> cvf_s = fpFmt(BeField(19, 2), cvf);
+        private static readonly Mutator<PaRiscDisassembler> cvf_d = fpFmtD(BeField(17, 2), cvf);
+        private static readonly Mutator<PaRiscDisassembler> cvx_s = fpFmt(BeField(19, 2), cvx);
+        private static readonly Mutator<PaRiscDisassembler> cvx_d = fpFmtD(BeField(17, 2), cvx);
+        private static readonly Mutator<PaRiscDisassembler> cvu_s = fpFmt(BeField(19, 2), cvu);
+        private static readonly Mutator<PaRiscDisassembler> cvu_d = fpFmtD(BeField(17, 2), cvu);
 
         private static bool Eq0(uint u) => u == 0;
         private static bool IsFpuProcessor(uint u) => (u & ~1) == 0;
@@ -1249,6 +1307,7 @@ namespace Reko.Arch.PaRisc
                     Sign = dasm.signExtend,
                     BaseReg = dasm.addrMod,
                     FpFmt = dasm.fpFormat,
+                    FpFmtDst = dasm.fpFormatDst,
                     CacheHint = dasm.cacheHint
                 };
             }
@@ -1566,15 +1625,16 @@ namespace Reko.Arch.PaRisc
                     Nyi("frnd"),
                     Nyi("fneg"),
                     Nyi("fnegabs")),
-                Mask(16, 3,
-                    Nyi("fcnv: Convert from floating-point to floating - point"),
-                    Nyi("fcnv: Convert from fixed-point to floating-point"),
-                    Nyi("fcnv: Convert from floating - point to fixed-point"),
-                    Nyi("fcnv: Convert from floating - point to fixed-point with explicit round to zero rounding"),
+                Mask(14, 3,
+                    Instr(Opcode.fcnvff, cvf_s,cvf_d,fr6,fr27),
+                    Instr(Opcode.fcnvxf, cvx_s,cvf_d,fr6,fr27),
+                    Instr(Opcode.fcnvfx, cvf_s,cvx_d,fr6,fr27),
+                    Instr(Opcode.fcnvfxt, cvf_s,cvx_d,fr6,fr27),
+
                     invalid,
-                    Nyi("fcnv: Convert from unsigned fixed-point to floating - point"),
-                    Nyi("fcnv: Convert from floating-point to unsigned fixed-point"),
-                    Nyi("fcnv: Convert from floating-point to unsigned fixed-point with explicit round to zero rounding")),
+                    Instr(Opcode.fcnv, cvu_s,cvf_d,fr6,fr27),
+                    Instr(Opcode.fcnv, cvf_s,cvu_d,fr6,fr27),
+                    Instr(Opcode.fcnv_t, cvf_s,cvu_d,fr6,fr27)),
                 Nyi("FP 0C two"),
                 Mask(16, 3,
                     Nyi(Opcode.fadd, ""),

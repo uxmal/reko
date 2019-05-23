@@ -694,15 +694,81 @@ namespace Reko.UnitTests.Arch.PaRisc
         }
 
         [Test]
-        public void PaRiscDis_fcnvfxt_dbl_sgl()
+        public void PaRiscDis_fcnvfxt()
         {
-            AssertCode("fcnvfxt_dbl_sgl\tfr24,fr7", "33010107");
+            AssertCode("fcnvfxt,dbl,w\tfr24,fr7", "33018a07");
         }
 
         [Test]
-        public void PaRiscDis_fcnvfxt()
+        public void PaRiscDis_fcnvff_sgl_sgl()
         {
-            AssertCode("fcnvfxt,dbl,sgl\tfr24,fr7", "33018a07");
+            AssertCode("fcnvff,sgl,sgl\tfr8,fr0", "31000200");
+        }
+
+        [Test]
+        public void PaRiscDis_fcnvff_dbl_sgl()
+        {
+            AssertCode("fcnvff,dbl,sgl\tfr8,fr0", "31000a00");
+        }
+
+        [Test]
+        public void PaRiscDis_fcnvff_quad_sgl()
+        {
+            AssertCode("fcnvff,quad,sgl\tfr8,fr0", "31001a00");
+        }
+
+        [Test]
+        public void PaRiscDis_fcnvff_sgl_dbl()
+        {
+            AssertCode("fcnvff,sgl,dbl\tfr8,fr0", "31002200");
+        }
+
+        [Test]
+        public void PaRiscDis_fcnvff_dbl_dbl()
+        {
+            AssertCode("fcnvff,dbl,dbl\tfr8,fr0", "31002a00");
+        }
+
+        [Test]
+        public void PaRiscDis_fcnvff_quad_dbl()
+        {
+            AssertCode("fcnvff,quad,dbl\tfr8,fr0", "31003a00");
+        }
+
+        [Test]
+        public void PaRiscDis_fcnvxf_w_sgl()
+        {
+            AssertCode("fcnvxf,w,sgl\tfr8,fr0", "31008200");
+        }
+
+        [Test]
+        public void PaRiscDis_fcnvfx_sgl_w()
+        {
+            AssertCode("fcnvfx,sgl,w\tfr8,fr0", "31010200");
+        }
+
+        [Test]
+        public void PaRiscDis_fcnvfxt_sgl_w()
+        {
+            AssertCode("fcnvfxt,sgl,w\tfr8,fr0", "31018200");
+        }
+
+        [Test]
+        public void PaRiscDis_fcnv_uw_sgl()
+        {
+            AssertCode("fcnv,uw,sgl\tfr8,fr0", "31028200");
+        }
+
+        [Test]
+        public void PaRiscDis_fcnv_sgl_uw()
+        {
+            AssertCode("fcnv,sgl,uw\tfr8,fr0", "31030200");
+        }
+
+        [Test]
+        public void PaRiscDis_fcnv_t_sgl_uw()
+        {
+            AssertCode("fcnv,t,sgl,uw\tfr8,fr0", "31038200");
         }
 
 
