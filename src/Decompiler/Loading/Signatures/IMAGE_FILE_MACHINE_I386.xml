@@ -435,12 +435,13 @@
     <ENTRYPOINT>558BEC6AFF6810F2400068749D400064A100000000506489250000000083EC58</ENTRYPOINT>
     <ENTIREPE />
   </ENTRY>
+  <!-- false positive - https://www.zscaler.com/blogs/research/your-windows-8-packed
   <ENTRY>
     <NAME>Armadillo v1.xx - v2.xx</NAME>
     <COMMENTS />
     <ENTRYPOINT>558BEC538B5D08568B750C578B7D1085F6</ENTRYPOINT>
     <ENTIREPE />
-  </ENTRY>
+  </ENTRY>-->
   <ENTRY>
     <NAME>Armadillo v2.00</NAME>
     <COMMENTS />
