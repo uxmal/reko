@@ -688,9 +688,27 @@ namespace Reko.UnitTests.Arch.PaRisc
         }
 
         [Test]
-        public void PaRiscDis_fcnvxf_sgl_dbl()
+        public void PaRiscDis_fcnv_sgl_dbl_0E()
         {
-            AssertCode("fcnvxf_sgl_dbl\tfr9R,fr10", "3920208a");
+            AssertCode("fcnv,sgl,dbl\tfr9L,fr10R", "392022ca");
+        }
+
+        [Test]
+        public void PaRiscDis_fcnv_w_dbl_0E()
+        {
+            AssertCode("fcnv,w,dbl\tfr9L,fr10R", "3920a28a");
+        }
+
+        [Test]
+        public void PaRiscDis_fcnv_sgl_dw_0E()
+        {
+            AssertCode("fcnv,sgl,dw\tfr9L,fr10R", "3921224a");
+        }
+
+        [Test]
+        public void PaRiscDis_fcnvfxt_sgl_dw_0E()
+        {
+            AssertCode("fcnv,t,sgl,dw\tfr9L,fr10R", "3921a20a");
         }
 
         [Test]

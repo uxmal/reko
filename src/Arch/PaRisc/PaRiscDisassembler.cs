@@ -284,7 +284,9 @@ namespace Reko.Arch.PaRisc
         private static readonly Mutator<PaRiscDisassembler> fr6_25 = frsng((6, 5), (25,1));
         private static readonly Mutator<PaRiscDisassembler> fr11_19 = frsng((11, 5), (19,1));
         private static readonly Mutator<PaRiscDisassembler> fr25_27 = frsng((25,1), (27, 5));
-        
+        private static readonly Mutator<PaRiscDisassembler> fr6_20 = frsng((20, 1), (6, 5));
+        private static readonly Mutator<PaRiscDisassembler> fr27_18 = frsng((18, 1), (27, 5));
+
         /// <summary>
         /// Floating point register used in multiple operation instruction.
         /// </summary>
@@ -1648,7 +1650,16 @@ namespace Reko.Arch.PaRisc
                     invalid));
             var floatDecoder = Mask(21, 2,
                 Nyi("FP 0E zero"),
-                Nyi("FP 0E one"),
+                Mask(14, 3,
+                    Instr(Opcode.fcnv, cvf_s, cvf_d, fr6_20, fr27_18),
+                    Instr(Opcode.fcnv, cvx_s, cvf_d, fr6_20, fr27_18),
+                    Instr(Opcode.fcnv, cvf_s, cvx_d, fr6_20, fr27_18),
+                    Instr(Opcode.fcnv_t, cvf_s, cvx_d, fr6_20, fr27_18),
+
+                    invalid,
+                    Instr(Opcode.fcnv, cvu_s, cvf_d, fr6_20, fr27_18),
+                    Instr(Opcode.fcnv, cvf_s, cvu_d, fr6_20, fr27_18),
+                    Instr(Opcode.fcnv_t, cvf_s, cvu_d, fr6_20, fr27_18)),
                 Instr(Opcode.fcmp, cf27_fp, fr25_27, fr11_19),
                 Mask(23, 1,
                     Mask(16, 3,
