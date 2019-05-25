@@ -441,7 +441,7 @@ namespace Reko.UnitTests.Arch.PaRisc
         [Test]
         public void PaRiscDis_fmpy_dbl_0E()
         {
-            AssertCode("fmpy,dbl\tfr10,fr4,fr24", "39444618");
+            AssertCode("fmpy,dbl\tfr10L,fr4L,fr24L", "39444618");
         }
 
         [Test]
@@ -666,7 +666,7 @@ namespace Reko.UnitTests.Arch.PaRisc
         [Test]
         public void PaRiscDis_ds()
         {
-            AssertCode("ds\tr0,ret1,r0", "0ba0a040");
+            AssertCode("ds\tr1,r2,r3", "08410443");
         }
 
         [Test]

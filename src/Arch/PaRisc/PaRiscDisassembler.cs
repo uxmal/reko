@@ -282,7 +282,9 @@ namespace Reko.Arch.PaRisc
             };
         }
         private static readonly Mutator<PaRiscDisassembler> fr6_25 = frsng((6, 5), (25,1));
+        private static readonly Mutator<PaRiscDisassembler> fr24_6 = frsng((24,1), (6, 5));
         private static readonly Mutator<PaRiscDisassembler> fr11_19 = frsng((11, 5), (19,1));
+        private static readonly Mutator<PaRiscDisassembler> fr24_11 = frsng((24,1), (11, 5));
         private static readonly Mutator<PaRiscDisassembler> fr25_27 = frsng((25,1), (27, 5));
         private static readonly Mutator<PaRiscDisassembler> fr6_20 = frsng((20, 1), (6, 5));
         private static readonly Mutator<PaRiscDisassembler> fr27_18 = frsng((18, 1), (27, 5));
@@ -1665,7 +1667,7 @@ namespace Reko.Arch.PaRisc
                     Mask(16, 3,
                         Instr(Opcode.fadd, fpFmt20_1),
                         Instr(Opcode.fsub, fpFmt20_1),
-                        Instr(Opcode.fmpy, fpFmt20_1),
+                        Instr(Opcode.fmpy, fpFmt20_1, fr24_6, fr24_11, fr25_27),
                         Instr(Opcode.fdiv, fpFmt20_1),
                         invalid,
                         invalid,
