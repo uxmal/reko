@@ -152,7 +152,7 @@ namespace Reko.UnitTests.Arch.PaRisc
             BuildTest("02C010A1");  // ldsid\tr22,r1
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|r1 = r22");
         }
 
         [Test]
@@ -161,7 +161,7 @@ namespace Reko.UnitTests.Arch.PaRisc
             BuildTest("00011820");  // mtsp\tr1,sr0
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|sr0 = r1");
         }
 
         [Test]
@@ -197,7 +197,7 @@ namespace Reko.UnitTests.Arch.PaRisc
             BuildTest("23E12000");  // ldil\t00012000,r31
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|r31 = 0x09000000");
         }
 
         [Test]
@@ -261,16 +261,16 @@ namespace Reko.UnitTests.Arch.PaRisc
             BuildTest("d7c01c1d");  // depwi\t00,1F,00000003,r30
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|r30 = DPB(r30, 0x0, 0)");
         }
 
         [Test]
         public void PaRiscRw_depwi_z()
         {
-            BuildTest("d7c0181d");  // depwi,z\t00,1F,00000003,r30
+            BuildTest("d7c6181d");  // depwi,z\t03,1F,00000003,r30
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|r30 = DPB(0x00000000, 0x3, 0)");
         }
 
         [Test]
@@ -325,7 +325,7 @@ namespace Reko.UnitTests.Arch.PaRisc
             BuildTest("d0a619fa");  // extrw,u\tr5,0F,06,r6
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r6 = (uint32) SLICE(r5, word6, 11)");
+                "1|L--|r6 = (uint32) SLICE(r5, word6, 17)");
         }
 
         [Test]
@@ -366,8 +366,7 @@ namespace Reko.UnitTests.Arch.PaRisc
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|r30 = r30 + -5464",
-                "2|L--|@@@",
-                "3|L--|@@@");
+                "2|L--|Mem0[r30:word32] = r3");
         }
 
         [Test]

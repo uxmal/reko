@@ -314,13 +314,13 @@ namespace Reko.UnitTests.Arch.PaRisc
         [Test]
         public void PaRiscDis_depwi()
         {
-            AssertCode("depwi\t00,1F,00000003,r30", "d7c01c1d");
+            AssertCode("depwi\t+00000003,1F,00000003,r30", "d7c61c1d");
         }
 
         [Test]
         public void PaRiscDis_depwi_z()
         {
-            AssertCode("depwi,z\t00,1F,00000003,r30", "d7c0181d");
+            AssertCode("depwi,z\t+00000003,1F,00000003,r30", "d7c6181d");
         }
 
         [Test]

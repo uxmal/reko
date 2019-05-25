@@ -53,6 +53,27 @@ namespace Reko.Arch.PaRisc
             MaybeSkipNextInstruction(iclass, false, dst, null);
         }
 
+        private void RewriteDepwi()
+        {
+            var imm = ((ImmediateOperand) instr.Operands[0]).Value.ToInt32();
+            var pos = RewriteOp(instr.Operands[1]);
+            var len = ((ImmediateOperand) instr.Operands[2]).Value.ToInt32();
+            var dst = RewriteOp(instr.Operands[3]);
+            Expression orig = instr.Zero
+                ? Constant.Zero(dst.DataType)
+                : dst;
+                 
+            if (pos is Constant cpos)
+            {
+                var dt = PrimitiveType.CreateWord(len);
+                var lePos = 31 - cpos.ToInt32();
+                m.Assign(dst, m.Dpb(orig, Constant.Create(dt, imm), lePos));
+                return;
+            }
+            throw new NotImplementedException("depwi sar not implemented yet.");
+
+        }
+
         private void RewriteExtrw()
         {
             var src = RewriteOp(instr.Operands[0]);
@@ -85,11 +106,33 @@ namespace Reko.Arch.PaRisc
             m.Assign(dst, src);
         }
 
+        private void RewriteLdil()
+        {
+            long n = ((ImmediateOperand) instr.Operands[0]).Value.ToInt32();
+            var src = Constant.Create(arch.WordWidth, n << 11);
+            var dst = RewriteOp(instr.Operands[1]);
+            m.Assign(dst, src);
+        }
+
         private void RewriteLdo()
         {
             var src = (MemoryAccess) RewriteOp(instr.Operands[0]);
             var dst = RewriteOp(instr.Operands[1]);
             m.Assign(dst, src.EffectiveAddress);
+        }
+
+        private void RewriteLdsid()
+        {
+            var src = RewriteOp(instr.Operands[0]);
+            var dst = RewriteOp(instr.Operands[1]);
+            m.Assign(dst, src);
+        }
+
+        private void RewriteMtsp()
+        {
+            var src = RewriteOp(instr.Operands[0]);
+            var dst = RewriteOp(instr.Operands[1]);
+            m.Assign(dst, src);
         }
 
         private void RewriteOr()

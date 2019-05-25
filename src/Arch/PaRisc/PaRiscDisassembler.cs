@@ -1691,7 +1691,7 @@ namespace Reko.Arch.PaRisc
                 Nyi("depw-var"),
                 Nyi("depw-fixed"),
                 Nyi("depwi-var"),
-                Instr(Opcode.depwi, cf16_shext, z(21), s(11, 5, PrimitiveType.Byte), u8From31(22, 5), u(BeFields((0, 0), (27, 5)), assemble_6), r6));
+                Instr(Opcode.depwi, cf16_shext, z(21), lse(11, 5), u8From31(22, 5), u(BeFields((0, 0), (27, 5)), assemble_6), r6));
 
             var branch = Mask(16, 3,
                 Instr(Opcode.b_l, PcRel(assemble_17, BeFields((11,5),(19,11),(31,1))),r6, Annul(30)),

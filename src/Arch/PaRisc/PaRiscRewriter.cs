@@ -79,13 +79,17 @@ namespace Reko.Arch.PaRisc
                 case Opcode.bv: RewriteBv(); break;
                 case Opcode.cmpb: RewriteCmpb(); break;
                 case Opcode.@break: RewriteBreak(); break;
+                case Opcode.depwi: RewriteDepwi(); break;
                 case Opcode.extrw: RewriteExtrw(); break;
                 case Opcode.fldw: RewriteFldw(); break;
                 case Opcode.fstw: RewriteFstw(); break;
                 case Opcode.ldb: RewriteLd(PrimitiveType.Byte); break;
                 case Opcode.ldh: RewriteLd(PrimitiveType.Word16); break;
-                case Opcode.ldw: RewriteLd(PrimitiveType.Word32); break;
+                case Opcode.ldil: RewriteLdil(); break;
                 case Opcode.ldo: RewriteLdo(); break;
+                case Opcode.ldsid: RewriteLdsid(); break;
+                case Opcode.ldw: RewriteLd(PrimitiveType.Word32); break;
+                case Opcode.mtsp: RewriteMtsp(); break;
                 case Opcode.or: RewriteOr(); break;
                 case Opcode.shladd: RewriteShladd(); break;
                 case Opcode.stb: RewriteSt(PrimitiveType.Byte); break;
