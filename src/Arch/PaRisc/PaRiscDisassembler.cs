@@ -1615,11 +1615,11 @@ namespace Reko.Arch.PaRisc
                     (0x8, Instr(Opcode.stb, cc_stores, r11, Mshort(27, PrimitiveType.Byte))),
                     (0x9, Instr(Opcode.sth, cc_stores, r11, Mshort(27, PrimitiveType.Word16))),
                     (0xA, Instr(Opcode.stw, cc_stores, r11, Mshort(27, PrimitiveType.Word32))),
-                    (0xB, Instr(Opcode.std, cc_stores, r11, Mshort(27, PrimitiveType.Word32))),
+                    (0xB, Instr(Opcode.std, cc_stores, r11, Mshort(27, PrimitiveType.Word64))),
                     (0xC, Instr(Opcode.stby, cc_stores, r11, Mshort(27, PrimitiveType.Byte, stbyMods))),
                     (0xD, Instr(Opcode.stdby, cc_stores, r11, Mshort(27, PrimitiveType.Byte, stbyMods))),
                     (0xE, Instr(Opcode.stwa, cc_stores, r11, Mshort(27, PrimitiveType.Word32))),
-                    (0xF, Instr(Opcode.stda, cc_stores, r11, Mshort(27, PrimitiveType.Byte)))));
+                    (0xF, Instr(Opcode.stda, cc_stores, r11, Mshort(27, PrimitiveType.Word64)))));
 
             var spopN = Mask(21, 2,
                 Instr(Opcode.spop0, u(23, 3, PrimitiveType.UInt32), u(27, 5, PrimitiveType.UInt32), Annul(26)),
@@ -1638,7 +1638,7 @@ namespace Reko.Arch.PaRisc
             var coprDW = Cond(23, 3, IsFpuProcessor,
                 Mask(22, 1,
                     Instr(Opcode.fldd, cc_loads, Mshort(11, PrimitiveType.Real64), fr27),
-                    Instr(Opcode.fstd, cc_stores, Mshort(11, PrimitiveType.Real64), fr27)),
+                    Instr(Opcode.fstd, cc_stores, fr27, Mshort(11, PrimitiveType.Real64))),
                 Mask(22, 1,
                     Instr(Opcode.cldd, cc_loads,cop(23, 3), Mshort(11, PrimitiveType.Word64), r27),
                     Instr(Opcode.cstd, cc_stores, cop(23, 3), r27, Mshort(11, PrimitiveType.Word64))));
@@ -1805,10 +1805,10 @@ namespace Reko.Arch.PaRisc
                 invalid,
 
                 // 20
-                Instr(Opcode.cmpb,  InstrClass.ConditionalTransfer, cf16_cmp32_t,r11,r6,PcRel(assemble_12, BeFields((19,11),(31,1))), Annul(30)),
-                Instr(Opcode.cmpib, InstrClass.ConditionalTransfer, cf16_cmp32_t,s(11,5,PrimitiveType.Word32),r6,PcRel(assemble_12, BeFields((19, 11), (31, 1))), Annul(30)),
-                Instr(Opcode.cmpb,  InstrClass.ConditionalTransfer, cf16_cmp32_f,r11,r6,PcRel(assemble_12, BeFields((19, 11), (31, 1))), Annul(30)),
-                Instr(Opcode.cmpib, InstrClass.ConditionalTransfer, cf16_cmp32_f,s(11,5,PrimitiveType.Word32),r6,PcRel(assemble_12, BeFields((19, 11), (31, 1))), Annul(30)),
+                Instr(Opcode.cmpb,  CTD, cf16_cmp32_t,r11,r6,PcRel(assemble_12, BeFields((19,11),(31,1))), Annul(30)),
+                Instr(Opcode.cmpib, CTD, cf16_cmp32_t,s(11,5,PrimitiveType.Word32),r6,PcRel(assemble_12, BeFields((19, 11), (31, 1))), Annul(30)),
+                Instr(Opcode.cmpb,  CTD, cf16_cmp32_f,r11,r6,PcRel(assemble_12, BeFields((19, 11), (31, 1))), Annul(30)),
+                Instr(Opcode.cmpib, CTD, cf16_cmp32_f,s(11,5,PrimitiveType.Word32),r6,PcRel(assemble_12, BeFields((19, 11), (31, 1))), Annul(30)),
 
                 Mask(19, 2, 
                     Instr(Opcode.cmpiclr, InstrClass.Linear|InstrClass.Annul, cf16_cmp32_t, lse(20, 11), r6, r11),

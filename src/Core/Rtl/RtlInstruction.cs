@@ -76,7 +76,8 @@ namespace Reko.Core.Rtl
             case InstrClass.Terminates | InstrClass.System:
                 sb.Append('H'); break;
             case InstrClass.System:
-            case InstrClass.Transfer | InstrClass.System:
+            case InstrClass.System | InstrClass.Linear:
+            case InstrClass.System | InstrClass.Transfer:
                 sb.Append('S'); break;
             default: sb.Append('-'); break;
             }

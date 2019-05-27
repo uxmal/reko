@@ -69,33 +69,61 @@ namespace Reko.Arch.PaRisc
                     EmitUnitTest();
                     goto case Opcode.invalid;
                 case Opcode.invalid: m.Invalid(); break;
-                case Opcode.add: RewriteAdd(); break;
-                case Opcode.addi: RewriteAddi(); break;
-                case Opcode.addib: RewriteAddib(); break;
-                case Opcode.addil: RewriteAddi(); break;
+                case Opcode.add: RewriteAdd(true); break;
+                case Opcode.add_c: RewriteAdd_c(); break;
+                case Opcode.add_l: RewriteAdd(false); break;
+                case Opcode.addb: RewriteAddb(); break;
+                case Opcode.addi: RewriteAddi(false); break;
+                case Opcode.addi_tc: RewriteAddi(true); break;
+                case Opcode.addib: RewriteAddb(); break;
+                case Opcode.addil: RewriteAddi(false); break;
+                case Opcode.and: RewriteLogical(m.And); break;
+                case Opcode.andcm: RewriteLogical((a, b) => m.And(a, m.Comp(b))); break;
                 case Opcode.b_l: RewriteBranch(); break;
                 case Opcode.be: RewriteBe(); break;
                 case Opcode.be_l: RewriteBe(); break;
                 case Opcode.bv: RewriteBv(); break;
-                case Opcode.cmpb: RewriteCmpb(); break;
+                case Opcode.cmpb: RewriteCmpb(0, 1); break;
+                case Opcode.cmpib: RewriteCmpb(1, 0); break;
                 case Opcode.@break: RewriteBreak(); break;
                 case Opcode.depwi: RewriteDepwi(); break;
+                case Opcode.diag: RewriteDiag(); break;
                 case Opcode.extrw: RewriteExtrw(); break;
-                case Opcode.fldw: RewriteFldw(); break;
-                case Opcode.fstw: RewriteFstw(); break;
+                case Opcode.fadd: RewriteFpArithmetic(m.FAdd); break;
+                case Opcode.fcpy: RewriteFcpy(); break;
+                case Opcode.fid: RewriteFid(); break;
+                case Opcode.fldd: RewriteFld(PrimitiveType.Real64); break;
+                case Opcode.fldw: RewriteFld(PrimitiveType.Real32); break;
+                case Opcode.fmpy: RewriteFpArithmetic(m.FMul); break;
+                case Opcode.fstd: RewriteFst(PrimitiveType.Real64); break;
+                case Opcode.fstw: RewriteFst(PrimitiveType.Real32); break;
+                case Opcode.fsub: RewriteFpArithmetic(m.FSub); break;
                 case Opcode.ldb: RewriteLd(PrimitiveType.Byte); break;
+                case Opcode.ldd: RewriteLd(PrimitiveType.Word64); break;
                 case Opcode.ldh: RewriteLd(PrimitiveType.Word16); break;
                 case Opcode.ldil: RewriteLdil(); break;
                 case Opcode.ldo: RewriteLdo(); break;
                 case Opcode.ldsid: RewriteLdsid(); break;
                 case Opcode.ldw: RewriteLd(PrimitiveType.Word32); break;
+                case Opcode.ldwa: RewriteLd(PrimitiveType.Word32); break;
+                case Opcode.mfctl: RewriteMfctl(); break;
+                case Opcode.mfctl_w: RewriteMfctl(); break;
+                case Opcode.mtctl: RewriteMtctl(); break;
+                case Opcode.mtsm: RewriteMtsm(); break;
                 case Opcode.mtsp: RewriteMtsp(); break;
                 case Opcode.or: RewriteOr(); break;
+                case Opcode.rfi: RewriteRfi("__rfi"); break;
+                case Opcode.rfi_r: RewriteRfi("__rfi_r"); break;
                 case Opcode.shladd: RewriteShladd(); break;
+                case Opcode.shrpd: RewriteShrp(PrimitiveType.Word64, PrimitiveType.Word128); break;
+                case Opcode.shrpw: RewriteShrp(PrimitiveType.Word32, PrimitiveType.Word64); break;
                 case Opcode.stb: RewriteSt(PrimitiveType.Byte); break;
+                case Opcode.std: RewriteSt(PrimitiveType.Word64); break;
+                case Opcode.stda: RewriteSt(PrimitiveType.Word64); break;
                 case Opcode.sth: RewriteSt(PrimitiveType.Word16); break;
                 case Opcode.stw: RewriteSt(PrimitiveType.Word32); break;
                 case Opcode.sub: RewriteSub(); break;
+                case Opcode.subi: RewriteSubi(); break;
                 }
                 yield return new RtlInstructionCluster(instr.Address, instr.Length, instrs.ToArray())
                 {
@@ -134,10 +162,24 @@ namespace Reko.Arch.PaRisc
             Console.WriteLine("");
         }
 
+        private void MaybeAnnulNextInstruction(InstrClass iclass, Expression e)
+        {
+            var addrNext = instr.Address + 8;
+            MaybeConditionalJump(InstrClass.ConditionalTransfer, addrNext, false, e);
+        }
+
         private bool MaybeSkipNextInstruction(InstrClass iclass, bool invert, Expression left, Expression right = null)
         {
             var addrNext = instr.Address + 8;
-            return MaybeConditionalJump(iclass, addrNext, invert, left, right);
+            if (MaybeConditionalJump(iclass, addrNext, invert, left, right))
+            {
+                this.iclass = InstrClass.ConditionalTransfer;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         private bool MaybeConditionalJump(InstrClass iclass, Address addrTaken, bool invert, Expression left, Expression right = null)
@@ -146,36 +188,14 @@ namespace Reko.Arch.PaRisc
                 return false;
 
             right = right ?? Constant.Word(left.DataType.BitSize, 0);
-            Expression e;
-            switch (instr.Condition.Type)
+            Expression e = RewriteCondition(left, right);
+            if (e is Constant c)
             {
-            case ConditionType.Tr:
-                m.Goto(addrTaken);
-                return true;
-            case ConditionType.Eq: e = m.Eq(left, right); break;
-            case ConditionType.Ne: e = m.Ne(left, right); break;
-            case ConditionType.Lt: e = m.Lt(left, right); break;
-            case ConditionType.Le: e = m.Le(left, right); break;
-            case ConditionType.Ge:
-            case ConditionType.Ge64: e = m.Ge(left, right); break;
-            case ConditionType.Gt: e = m.Gt(left, right); break;
-            case ConditionType.Ult: e = m.Ult(left, right); break;
-            case ConditionType.Ule: e = m.Ule(left, right); break;
-            case ConditionType.Uge:
-            case ConditionType.Uge64:
-                e = m.Uge(left, right); break;
-            case ConditionType.Ugt: e = m.Ugt(left, right); break;
-            case ConditionType.Nuv:
-            case ConditionType.Nuv64:
-                e = m.Test(ConditionCode.OV, m.ISub(left,right)); break;
-            case ConditionType.Nsv:
-                //$TODO: need signed minus/unsigned minus.
-                e = m.Test(ConditionCode.OV, m.ISub(left, right)); break;
-            case ConditionType.Even:
-            case ConditionType.Even64:
-                e = m.Eq0(m.And(left, 1)); break;
-            default:
-            throw new NotImplementedException(instr.Condition.ToString());
+                if (!c.IsZero)
+                {
+                    m.Goto(addrTaken);
+                    return true;
+                }
             }
             if (invert)
                 e = e.Invert();
@@ -188,7 +208,10 @@ namespace Reko.Arch.PaRisc
             switch (op)
             {
             case RegisterOperand r:
-                return binder.EnsureRegister(r.Register);
+                if (r.Register == Registers.GpRegs[0])
+                    return Constant.Zero(r.Register.DataType);
+                else
+                    return binder.EnsureRegister(r.Register);
             case ImmediateOperand i:
                 return i.Value;
             case LeftImmediateOperand l:
@@ -225,6 +248,46 @@ namespace Reko.Arch.PaRisc
                 return m.Mem(mem.Width, ea);
             }
             throw new NotImplementedException($"Unimplemented PA-RISC operand type {op.GetType()}.");
+        }
+
+        private Expression RewriteCondition(Expression left, Expression right)
+        {
+            Expression e;
+            switch (instr.Condition.Type)
+            {
+            case ConditionType.Tr: e = Constant.True(); break;
+            case ConditionType.Never: e = Constant.False(); break;
+            case ConditionType.Eq:
+            case ConditionType.Eq64:
+                e = m.Eq(left, right); break;
+            case ConditionType.Ne:
+            case ConditionType.Ne64:
+                e = m.Ne(left, right); break;
+            case ConditionType.Lt: e = m.Lt(left, right); break;
+            case ConditionType.Le: e = m.Le(left, right); break;
+            case ConditionType.Ge:
+            case ConditionType.Ge64: e = m.Ge(left, right); break;
+            case ConditionType.Gt: e = m.Gt(left, right); break;
+            case ConditionType.Ult: e = m.Ult(left, right); break;
+            case ConditionType.Ule: e = m.Ule(left, right); break;
+            case ConditionType.Uge:
+            case ConditionType.Uge64:
+                e = m.Uge(left, right); break;
+            case ConditionType.Ugt: e = m.Ugt(left, right); break;
+            case ConditionType.Nuv:
+            case ConditionType.Nuv64:
+                e = m.Test(ConditionCode.OV, m.ISub(left, right)); break;
+            case ConditionType.Nsv:
+                //$TODO: need signed minus/unsigned minus.
+                e = m.Test(ConditionCode.OV, m.ISub(left, right)); break;
+            case ConditionType.Even:
+            case ConditionType.Even64:
+                e = m.Eq0(m.And(left, 1)); break;
+            default:
+                throw new NotImplementedException(instr.Condition.ToString());
+            }
+            return e;
+
         }
     }
 }

@@ -30,17 +30,23 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.PaRisc
 {
-    partial class PaRiscRewriter
+    public partial class PaRiscRewriter
     {
-        private void RewriteAddib()
+        private void RewriteAddb()
         {
-            var imm = ((ImmediateOperand) instr.Operands[0]).Value.ToInt32();
             var reg = RewriteOp(instr.Operands[1]);
-            m.Assign(reg, m.IAddS(reg, imm));
+            if (instr.Operands[0] is ImmediateOperand imm)
+            {
+                m.Assign(reg, m.IAddS(reg, imm.Value.ToInt32()));
+            }
+            else
+            {
+                var src = (RegisterOperand) instr.Operands[0];
+                m.Assign(reg, m.IAdd(reg, binder.EnsureRegister(src.Register)));
+            }
             var addrDest = ((AddressOperand) instr.Operands[2]).Address;
             MaybeBranchAndAnnul(addrDest, reg);
         }
-
 
         private void RewriteBranch()
         {
@@ -129,10 +135,10 @@ namespace Reko.Arch.PaRisc
             m.GotoD(m.IAdd(gotoDst, idx));
         }
 
-        private void RewriteCmpb()
+        private void RewriteCmpb(int iLeft, int iRight)
         {
-            var left = RewriteOp(instr.Operands[0]);
-            var right = RewriteOp(instr.Operands[1]);
+            var left = RewriteOp(instr.Operands[iLeft]);
+            var right = RewriteOp(instr.Operands[iRight]);
             MaybeBranchAndAnnul(((AddressOperand)instr.Operands[2]).Address, left, right);
         }
 
@@ -163,6 +169,12 @@ namespace Reko.Arch.PaRisc
                     InstrClass.ConditionalTransfer | InstrClass.Delay,
                     addrDest, false, reg, right);
             }
+        }
+
+        private void RewriteRfi(string intrinsic)
+        {
+            m.SideEffect(host.PseudoProcedure(intrinsic, VoidType.Instance));
+            m.Return(0, 0);
         }
     }
 }

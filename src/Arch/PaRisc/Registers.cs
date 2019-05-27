@@ -37,14 +37,18 @@ namespace Reko.Arch.PaRisc
         public static readonly RegisterStorage[] FpRights;
         public static readonly RegisterStorage[] FpRegs32;
 
+        public static readonly RegisterStorage PSW; // Program Status Word
+
         public static readonly RegisterStorage SAR; // Shift amount register
 
         public static readonly Dictionary<int, RegisterStorage> ControlRegisters;
 
+        public static readonly FlagGroupStorage CF;
+
         static Registers()
         {
             var factory = new StorageFactory();
-            GpRegs = factory.RangeOfReg32(32, "r{0}");
+            GpRegs = factory.RangeOfReg64(32, "r{0}");
             SpaceRegs = factory.RangeOfReg32(8, "sr{0}");
             FpRegs = factory.RangeOfReg64(32, "fr{0}");
             FpLefts = FpRegs
@@ -57,6 +61,7 @@ namespace Reko.Arch.PaRisc
             // register identifiers.
             FpRegs32 = FpLefts.Concat(FpRights).ToArray();
 
+            PSW = factory.Reg64("psw");
             ControlRegisters = new[] {
                 "rctr",
                 "cr1",
@@ -104,6 +109,9 @@ namespace Reko.Arch.PaRisc
             .ToDictionary(item => item.i, item => item.Item2);
 
             SAR = ControlRegisters[11];
+
+            CF = new FlagGroupStorage(PSW, 0xF000, "C", PrimitiveType.Byte);
+
         }
     }
 }

@@ -76,6 +76,11 @@ namespace Reko.Core
             return Reg(format, PrimitiveType.Word32);
         }
 
+        public RegisterStorage Reg64(string format)
+        {
+            return Reg(format, PrimitiveType.Word64);
+        }
+
         /// <summary>
         /// Creates an array of <paramref name="count"/> registers of size
         /// <paramref name="size"/>. 

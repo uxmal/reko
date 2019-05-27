@@ -30,27 +30,64 @@ using Reko.Core.Types;
 
 namespace Reko.Arch.PaRisc
 {
-    partial class PaRiscRewriter
+    public partial class PaRiscRewriter
     {
-        private void RewriteAdd()
+        private void RewriteAdd(bool setCarry)
         {
             var src1 = RewriteOp(instr.Operands[0]);
             var src2 = RewriteOp(instr.Operands[1]);
             var dst = RewriteOp(instr.Operands[2]);
             m.Assign(dst, m.IAdd(src1, src2));
-            if (MaybeSkipNextInstruction(InstrClass.ConditionalTransfer, false, dst, null))
+            if (setCarry)
             {
-                this.iclass = InstrClass.ConditionalTransfer;
+                var cf = binder.EnsureFlagGroup(Registers.CF);
+                m.Assign(cf, m.Cond(dst));
             }
+            MaybeSkipNextInstruction(InstrClass.ConditionalTransfer, false, dst, null);
         }
 
-        private void RewriteAddi()
+        private void RewriteAdd_c()
+        {
+            var src1 = RewriteOp(instr.Operands[0]);
+            var src2 = RewriteOp(instr.Operands[1]);
+            var dst = RewriteOp(instr.Operands[2]);
+            // We do not take the trouble of widening the CF to the word size
+            // to simplify code analysis in later stages. 
+            var c = binder.EnsureFlagGroup(Registers.CF);
+            m.Assign(
+                dst,
+                m.IAdd(
+                    m.IAdd(src1, src2),
+                                c));
+        }
+
+
+        private void RewriteAddi(bool trapIfCondition)
         {
             var src1 = RewriteOp(instr.Operands[1]);
             var src2 = RewriteOp(instr.Operands[0]);
             var dst = RewriteOp(instr.Operands[2]);
             m.Assign(dst, m.IAdd(src1, src2));
-            MaybeSkipNextInstruction(iclass, false, dst, null);
+            if (trapIfCondition)
+            {
+                var zero = Constant.Zero(SizeFromCondition(instr.Condition.Type));
+                var c = RewriteCondition(dst, zero);
+                m.BranchInMiddleOfInstruction(c.Invert(), instr.Address + 4, InstrClass.ConditionalTransfer);
+                m.SideEffect(host.PseudoProcedure("__trap", VoidType.Instance));
+            }
+            else
+            {
+                MaybeSkipNextInstruction(iclass, false, dst, null);
+            }
+        }
+
+        private void RewriteLogical(Func<Expression,Expression,Expression> fn)
+        {
+            var src1 = RewriteOp(instr.Operands[0]);
+            var src2 = RewriteOp(instr.Operands[1]);
+            var dst = RewriteOp(instr.Operands[2]);
+            m.Assign(dst, fn(src1, src2));
+            MaybeAnnulNextInstruction(iclass, dst);
         }
 
         private void RewriteDepwi()
@@ -128,13 +165,6 @@ namespace Reko.Arch.PaRisc
             m.Assign(dst, src);
         }
 
-        private void RewriteMtsp()
-        {
-            var src = RewriteOp(instr.Operands[0]);
-            var dst = RewriteOp(instr.Operands[1]);
-            m.Assign(dst, src);
-        }
-
         private void RewriteOr()
         {
             var src1 = RewriteOp(instr.Operands[0]);
@@ -164,11 +194,28 @@ namespace Reko.Arch.PaRisc
             MaybeSkipNextInstruction(iclass, false, e, null);
         }
 
+        private void RewriteShrp(PrimitiveType dt, PrimitiveType dtSeq)
+        {
+            var rHi = ((RegisterOperand) instr.Operands[0]).Register;
+            var rLo = ((RegisterOperand) instr.Operands[1]).Register;
+            var regp = binder.EnsureSequence(rHi, rLo, dtSeq);
+            m.Assign(regp, m.Seq(binder.EnsureRegister(rHi), binder.EnsureRegister(rLo)));
+            var shamt = RewriteOp(instr.Operands[2]);
+            var dst = RewriteOp(instr.Operands[3]);
+            m.Assign(dst, m.Slice(dt, m.Shr(regp, shamt), 0));
+            MaybeSkipNextInstruction(InstrClass.ConditionalTransfer, false, dst);
+        }
+
+
         private void RewriteSt(PrimitiveType size)
         {
-            var src = RewriteOp(instr.Operands[0]);
             var dst = RewriteOp(instr.Operands[1]);
-            if (src.DataType.BitSize > dst.DataType.BitSize)
+            var src = RewriteOp(instr.Operands[0]);
+            if (src is Constant cSrc)
+            {
+                src = Constant.Create(dst.DataType, cSrc.ToInt64());
+            }
+            else if (src.DataType.BitSize > dst.DataType.BitSize)
             {
                 src = m.Slice(dst.DataType, src, 0);
             }
@@ -184,18 +231,60 @@ namespace Reko.Arch.PaRisc
             MaybeSkipNextInstruction(iclass, false, dst, null);
         }
 
-        private void RewriteFldw()
+        private void RewriteSubi()
         {
-            var src = RewriteOp(instr.Operands[0]);
-            var dst = RewriteOp(instr.Operands[1]);
-            m.Assign(dst, src);
+            var src1 = RewriteOp(instr.Operands[1]);
+            var src2 = RewriteOp(instr.Operands[0]);
+            var dst = RewriteOp(instr.Operands[2]);
+            m.Assign(dst, m.ISub(src1, src2));
+            MaybeSkipNextInstruction(iclass, false, dst, null);
         }
 
-        private void RewriteFstw()
+        private PrimitiveType SizeFromCondition(ConditionType ct)
         {
-            var src = RewriteOp(instr.Operands[0]);
-            var dst = RewriteOp(instr.Operands[1]);
-            m.Assign(dst, src);
+            switch (ct)
+            {
+            case ConditionType.Eq:
+            case ConditionType.Lt:
+            case ConditionType.Le:
+            case ConditionType.Nuv:
+            case ConditionType.Znv:
+            case ConditionType.Sv:
+            case ConditionType.Odd:
+            case ConditionType.Tr:
+            case ConditionType.Ne:
+            case ConditionType.Ge:
+            case ConditionType.Gt:
+            case ConditionType.Uv:
+            case ConditionType.Vnz:
+            case ConditionType.Nsv:
+            case ConditionType.Even:
+            case ConditionType.Ult:
+            case ConditionType.Ule:
+            case ConditionType.Uge:
+            case ConditionType.Ugt:
+                return PrimitiveType.Word32;
+            case ConditionType.Eq64:
+            case ConditionType.Lt64:
+            case ConditionType.Le64:
+            case ConditionType.Nuv64:
+            case ConditionType.Znv64:
+            case ConditionType.Sv64:
+            case ConditionType.Odd64:
+            case ConditionType.Ne64:
+            case ConditionType.Ge64:
+            case ConditionType.Gt64:
+            case ConditionType.Uv64:
+            case ConditionType.Vnz64:
+            case ConditionType.Nsv64:
+            case ConditionType.Even64:
+            case ConditionType.Ult64:
+            case ConditionType.Ule64:
+            case ConditionType.Uge64:
+            case ConditionType.Ugt64:
+                return PrimitiveType.Word64;
+            }
+            throw new NotImplementedException($"Condition type {ct} not implemented.");
         }
     }
 }
