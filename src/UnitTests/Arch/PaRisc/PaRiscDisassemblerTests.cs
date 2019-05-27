@@ -1050,5 +1050,77 @@ namespace Reko.UnitTests.Arch.PaRisc
         {
             AssertCode("hshladd\tr18,+00000002,r4,r3", "08920783");
         }
+
+        [Test]
+        public void PaRiscDis_addi_tc()
+        {
+            AssertCode("addi,tc,=\t+00000000,r25,r0", "B3202000");
+        }
+        
+        [Test]
+        public void PaRiscDis_depw_z()
+        {
+            AssertCode("depw,z\tr2,1A,0000001B,r19", "D66208A5");
+        }
+
+        [Test]
+        public void PaRiscDis_fcpy_0C()
+        {
+            AssertCode("fcpy,dbl\tfr6L,fr14L", "3872502E");
+        }
+
+        [Test]
+        public void PaRiscDis_shrpd()
+        {
+            AssertCode("shrpd,*<>\tr9,r5,00000034,r19", "D0A9A573");
+        }
+
+        [Test]
+        public void PaRiscDis_addi_tsv()
+        {
+            AssertCode("addi,tsv,<=\t-0000018C,r31,r25", "B7F96CE9");
+        }
+
+        [Test]
+        public void PaRiscDis_fsub_0C()
+        {
+            AssertCode("fsub,dbl\tfr9,fr22,fr17", "31362F31");
+        }
+
+        [Test]
+        public void PaRiscDis_fid()
+        {
+            AssertCode("fid", "30000000");
+        }
+
+        [Test]
+        public void PaRiscDis_fcpy_0E()
+        {
+            AssertCode("fcpy,dbl\tfr29R,fr20R", "3BC541D4");
+        }
+
+        [Test]
+        public void PaRiscDis_diag()
+        {
+            AssertCode("diag\t+00008000", "14008000");
+        }
+
+        [Test]
+        public void PaRiscDis_rfi()
+        {
+            AssertCode("rfi", "00002C00");
+        }
+
+        [Test]
+        public void PaRiscDis_rfi_r()
+        {
+            AssertCode("rfi,r", "00002CA0");
+        }
+
+        [Test]
+        public void PaRiscDis_mtsm()
+        {
+            AssertCode("mtsm\tr0", "00003860");
+        }
     }
 }

@@ -240,6 +240,24 @@ namespace Reko.Arch.PaRisc
             };
         }
 
+        /// <summary>
+        /// Fixed shift amount 
+        /// </summary>
+        private static Mutator<PaRiscDisassembler> shamt(Bitfield[] fields)
+        {
+            return (u, d) =>
+            {
+                var sh = Bitfield.ReadFields(fields, u);
+                sh = 63 - sh;
+                var imm = ImmediateOperand.UInt32(sh);
+                d.ops.Add(imm);
+                return true;
+            };
+        }
+
+
+        // Registers
+
         private static Mutator<PaRiscDisassembler> r(int bitPos, int bitLength)
         {
             var field = BeField(bitPos, bitLength);
@@ -281,6 +299,7 @@ namespace Reko.Arch.PaRisc
                 return true;
             };
         }
+        private static readonly Mutator<PaRiscDisassembler> fr6_24 = frsng((6, 5), (24,1));
         private static readonly Mutator<PaRiscDisassembler> fr6_25 = frsng((6, 5), (25,1));
         private static readonly Mutator<PaRiscDisassembler> fr24_6 = frsng((24,1), (6, 5));
         private static readonly Mutator<PaRiscDisassembler> fr11_19 = frsng((11, 5), (19,1));
@@ -1472,11 +1491,11 @@ namespace Reko.Arch.PaRisc
                 (0x00, Instr(Opcode.@break, InstrClass.Call|InstrClass.Transfer, u8(27,5), u16(6,13))),
                 (0x20, Nyi(Opcode.sync, "")),
                 (0x20, Nyi(Opcode.syncdma, "")),
-                (0x60, Nyi(Opcode.rfi, "")),
-                (0x65, Nyi(Opcode.rfir, "")),
+                (0x60, Instr(Opcode.rfi, InstrClass.System | InstrClass.Transfer)),
+                (0x65, Instr(Opcode.rfi_r, InstrClass.System | InstrClass.Transfer)),
                 (0x6B, Nyi(Opcode.ssm, "")),
                 (0x73, Nyi(Opcode.rsm, "")),
-                (0xC3, Nyi(Opcode.mtsm, "")),
+                (0xC3, Instr(Opcode.mtsm, InstrClass.System|InstrClass.Transfer, r11)),
                 (0x85, Cond(16,2, Eq0,
                     Instr(Opcode.ldsid, r6,r27),
                     Instr(Opcode.ldsid, sr(16),r27))),
@@ -1488,7 +1507,13 @@ namespace Reko.Arch.PaRisc
                     Instr(Opcode.mfctl_w, cr(6,5), r27))));
 
             var memMgmt = Mask(19, 1,
-                Nyi("memMgmt-19:0"),
+                Mask(19, 7, invalid,
+                    (0x20, Nyi(Opcode.iitlbt, "")),
+                    (0x08, Nyi(Opcode.pitlb, "")),
+                    (0x09, Nyi(Opcode.pitlbe, "")),
+                    (0x18, Nyi(Opcode.pitlb_l, "")),
+                    (0x0A, Nyi(Opcode.fic_0a, "")),
+                    (0x0B, Nyi(Opcode.fice, ""))),
                 Mask(18, 8, invalid,
                     (0x60, Nyi(Opcode.idtlbt, "")),
                     (0x49, Nyi(Opcode.pdtlbe, "")),
@@ -1620,15 +1645,17 @@ namespace Reko.Arch.PaRisc
 
             var copr = Mask(21, 2,
                 Mask(16, 3,
-                    Nyi("fid"),
+                    Cond(6, 26, Eq0,
+                        Instr(Opcode.fid),
+                        invalid),
                     invalid,
-                    Nyi("fcpy"),
-                    Nyi("fabs"),
+                    Instr(Opcode.fcpy, fpFmt2, fr6, fr27),
+                    Instr(Opcode.fabs, fpFmt2, fr6, fr27),
 
-                    Nyi("fsqrt"),
+                    Instr(Opcode.fsqrt, fpFmt2, fr6, fr27),
                     Nyi("frnd"),
-                    Nyi("fneg"),
-                    Nyi("fnegabs")),
+                    Instr(Opcode.fneg, fpFmt2, fr6, fr27),
+                    Instr(Opcode.fnegabs, fpFmt2, fr6, fr27)),
                 Mask(14, 3,
                     Instr(Opcode.fcnvff, cvf_s,cvf_d,fr6,fr27),
                     Instr(Opcode.fcnvxf, cvx_s,cvf_d,fr6,fr27),
@@ -1641,17 +1668,26 @@ namespace Reko.Arch.PaRisc
                     Instr(Opcode.fcnv_t, cvf_s,cvu_d,fr6,fr27)),
                 Nyi("FP 0C two"),
                 Mask(16, 3,
-                    Nyi(Opcode.fadd, ""),
-                    Nyi(Opcode.fsub, ""),
+                    Instr(Opcode.fadd, fpFmt2, fr6, fr11, fr27),
+                    Instr(Opcode.fsub, fpFmt2, fr6, fr11, fr27),
                     Instr(Opcode.fmpy, fpFmt2, fr6, fr11, fr27),
-                    Nyi(Opcode.fdiv, ""),
+                    Instr(Opcode.fdiv, fpFmt2, fr6, fr11, fr27),
 
                     invalid,
                     invalid,
                     invalid,
                     invalid));
-            var floatDecoder = Mask(21, 2,
-                Nyi("FP 0E zero"),
+            var float0EDecoder = Mask(21, 2,
+                Mask(16, 3,
+                    invalid,
+                    invalid,
+                    Instr(Opcode.fcpy, fpFmt20_1, fr6_24, fr25_27),
+                    Nyi(Opcode.fabs, ""),
+
+                    Nyi(Opcode.fsqrt, ""),
+                    Nyi(Opcode.frnd, ""),
+                    Nyi(Opcode.fneg, ""),
+                    Nyi(Opcode.fnegabs, "")),
                 Mask(14, 3,
                     Instr(Opcode.fcnv, cvf_s, cvf_d, fr6_20, fr27_18),
                     Instr(Opcode.fcnv, cvx_s, cvf_d, fr6_20, fr27_18),
@@ -1678,31 +1714,53 @@ namespace Reko.Arch.PaRisc
             var subi = Mask(20, 1,
                 Instr(Opcode.subi, cf16_cmpsub_32, s(PrimitiveType.Int32, BeFields((21, 11)), low_sign_ext11), r6, r11),
                 Instr(Opcode.subi_tsv, cf16_cmpsub_32, s(PrimitiveType.Int32, BeFields((21, 11)), low_sign_ext11), r6, r11));
-            var addit = Nyi("addit");
-            var addi = Mask(20, 1,
-                Instr(Opcode.addi, cf16_add_32, s(PrimitiveType.Int32, BeFields((21,11)), low_sign_ext11),r6,r11), 
-                Nyi("addi-tsv"));
-            var extract = Mask(19, 2,
-                Nyi("extract-00"),
-                Instr(Opcode.shrpw, cf16_sh_ex_dp_3, r11, r6, cf16_sh_ex_dp_3, r27),
-                Nyi("extract-10"),
+            var extract_34 = Mask(19, 3,
+                Instr(Opcode.shrpw, cf16_sh_ex_dp_3, r11, r6, r27),
+                Cond(23, 4, Eq0,
+                    Instr(Opcode.shrpd, cf16_sh_ex_dp_3, r11, r6, reg(Registers.SAR), r27),
+                    Instr(Opcode.shrpd, cf16_sh_ex_dp_3, r11, r6, shamt(BeFields((20,1),(22,5))), r27)),
+                Instr(Opcode.shrpw, cf16_sh_ex_dp_3, r11, r6, r27),
+                Instr(Opcode.shrpd, cf16_sh_ex_dp_3, r11, r6, r27),
+
+                Nyi("extract-100"),
+                Nyi("extract-101"),
+                Instr(Opcode.extrw, cf16_shext, se(21), r6, u(22, 5,PrimitiveType.Byte), u8From32(27, 5), r11),
                 Instr(Opcode.extrw, cf16_shext, se(21), r6, u(22, 5,PrimitiveType.Byte), u8From32(27, 5), r11));
-            var deposit = Mask(19, 2,
-                Nyi("depw-var"),
-                Nyi("depw-fixed"),
+            var deposit_35 = Mask(19, 2,
+                Instr(Opcode.depw, cf16_shext, z(21), r11, u8From31(22, 5), u(BeFields((0, 0), (27, 5)), assemble_6), r6),
+                Instr(Opcode.depw, cf16_shext, z(21), r11, u8From31(22, 5), u(BeFields((0, 0), (27, 5)), assemble_6), r6),
                 Nyi("depwi-var"),
                 Instr(Opcode.depwi, cf16_shext, z(21), lse(11, 5), u8From31(22, 5), u(BeFields((0, 0), (27, 5)), assemble_6), r6));
+            var extract_3C = Nyi("extract_3C");
+            var deposit_3D = Nyi("deposit_3D");
+            var multimedia = Mask(16, 1,
+                Nyi(Opcode.permh, ""),
+                Mask(17, 2,
+                    Mask(20, 2,
+                        Nyi(Opcode.mixw_l, ""),
+                        Nyi(Opcode.mixh_l, ""),
+                        Nyi(Opcode.hshl, ""),
+                        invalid),
+                    invalid,
+                    Mask(20, 2,
+                        Nyi(Opcode.mixw_r, ""),
+                        Nyi(Opcode.mixh_r, ""),
+                        Nyi(Opcode.hshr_u, ""),
+                        Nyi(Opcode.hshr_s, "")),
+                    invalid));
 
             var branch = Mask(16, 3,
                 Instr(Opcode.b_l, PcRel(assemble_17, BeFields((11,5),(19,11),(31,1))),r6, Annul(30)),
-                Nyi(Opcode.gate, ""),
-                Instr(Opcode.b_l, r11,r6,Annul(30)),
-                Nyi(Opcode.blrpush, ""),
-
+                Nyi(Opcode.b_gate, ""),
+                Nyi(Opcode.blr, ""),
                 invalid,
+
+                Instr(Opcode.b_l_push, r11,r6,Annul(30)),
                 Instr(Opcode.b_l, PcRel(assemble_22, BeFields((6,5),(11,5),(19,11),(31,1))),reg(Registers.GpRegs[2]), Annul(30)),
-                Instr(Opcode.bv, Mx(PrimitiveType.Ptr32, 6, 11), Annul(30)),
-                Nyi(Opcode.bve, ""));
+                Mask(19, 1,
+                    Instr(Opcode.bv, Mx(PrimitiveType.Ptr32, 6, 11), Annul(30)),
+                    Instr(Opcode.bv, Mx(PrimitiveType.Ptr32, 6, 11), Annul(30))),
+                Nyi(Opcode.bve_l, ""));
 
             rootDecoder = Mask(0, 6,
                 systemOp,
@@ -1711,7 +1769,7 @@ namespace Reko.Arch.PaRisc
                 indexMem,
 
                 spopN,
-                Nyi(Opcode.diag, ""),
+                Instr(Opcode.diag, InstrClass.Linear|InstrClass.System, u(6, 26, PrimitiveType.Int32)),
                 Instr(Opcode.fmpyadd, fpFmt1, fmo6,fmo11,fmo27,fmo21,fmo16),
                 invalid,
 
@@ -1722,7 +1780,7 @@ namespace Reko.Arch.PaRisc
 
                 copr,
                 Instr(Opcode.ldo, M(PrimitiveType.Word32, 6, BeFields((16,2),(18,14)), assemble_16),r11),
-                floatDecoder,
+                float0EDecoder,
                 productSpecific,
 
                 // 10
@@ -1766,8 +1824,12 @@ namespace Reko.Arch.PaRisc
                 Instr(Opcode.addb, CTD, cf16_add_3_neg, r11, r6, PcRel(assemble_12, BeFields((19, 11), (31, 1))), Annul(30)),
                 Instr(Opcode.addib, CTD, cfadd_bitsize_neg, lse(11,5),r6,PcRel(assemble_12, BeFields((19,11),(31,1))),Annul(30)),
 
-                addit,
-                addi,
+                Mask(20, 1,
+                    Instr(Opcode.addi_tc, cf16_add_32, s(PrimitiveType.Int32, BeFields((21, 11)), low_sign_ext11), r6, r11),
+                    Instr(Opcode.addi_tsv_tc, cf16_add_32, s(PrimitiveType.Int32, BeFields((21, 11)), low_sign_ext11), r6, r11)),
+                Mask(20, 1,
+                    Instr(Opcode.addi, cf16_add_32, s(PrimitiveType.Int32, BeFields((21, 11)), low_sign_ext11), r6, r11),
+                    Instr(Opcode.addi_tsv, cf16_add_32, s(PrimitiveType.Int32, BeFields((21, 11)), low_sign_ext11), r6, r11)),
                 invalid,
                 invalid,
 
@@ -1777,8 +1839,8 @@ namespace Reko.Arch.PaRisc
                 Instr(Opcode.movb, CTD, cf16_shext, r11,r6,PcRel(assemble_12, BeFields((19, 11), (31, 1))), Annul(30)),
                 Instr(Opcode.movib, CTD, cf16_shext, lse(11,5),r6,PcRel(assemble_12, BeFields((19, 11), (31, 1))), Annul(30)),
 
-                extract,
-                deposit,
+                extract_34,
+                deposit_35,
                 invalid,
                 invalid,
 
@@ -1787,9 +1849,9 @@ namespace Reko.Arch.PaRisc
                 branch,
                 invalid,
 
-                invalid,
-                invalid,
-                invalid,
+                extract_3C,
+                deposit_3D,
+                multimedia,
                 invalid);
         }
     }
