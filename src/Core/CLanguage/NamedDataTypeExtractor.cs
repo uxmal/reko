@@ -293,13 +293,6 @@ namespace Reko.Core.CLanguage
             }
         }
 
-        private int ToStackSize(int p)
-        {
-            const int align = 4;
-            //$REVIEW: depends on type and call convention + alignment
-            return ((p + (align-1)) / align) * align;
-        }
-        
         public Func<NamedDataType,NamedDataType> VisitCallConvention(CallConventionDeclarator conv)
         {
             ApplyCallConvention(conv.Convention);

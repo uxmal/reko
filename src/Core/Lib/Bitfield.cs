@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -59,6 +59,11 @@ namespace Reko.Core.Lib
             n = n << (32 - bitsTotal);
             n = n >> (32 - bitsTotal);
             return n;
+        }
+
+        public override string ToString()
+        {
+            return $"[{Position}..{Position + Length})";
         }
     }
 }
